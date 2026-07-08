@@ -1,0 +1,34 @@
+---
+title: "ClimaxSegment"
+description: "音乐高潮片段设置。"
+---
+<a id="class_climaxsegment__prototype"></a>
+
+```dart
+class ClimaxSegment {
+  const ClimaxSegment({this.startTimeMs, this.endTimeMs});
+
+  @JsonKey(name: 'startTimeMs')
+  final int? startTimeMs;
+
+  @JsonKey(name: 'endTimeMs')
+  final int? endTimeMs;
+
+  factory ClimaxSegment.fromJson(Map<String, dynamic> json) =>
+      _$ClimaxSegmentFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ClimaxSegmentToJson(this);
+}
+```
+
+<a id="class_climaxsegment__parameters"></a>
+
+## 属性
+
+### `startTimeMs`
+
+音乐高潮片段的开始时间点，单位毫秒。
+
+### `endTimeMs`
+
+音乐高潮片段的结束时间点，单位毫秒。

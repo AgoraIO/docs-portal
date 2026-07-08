@@ -1,0 +1,43 @@
+---
+title: "SnapshotConfig"
+description: "视频截图设置。"
+---
+<a id="class_snapshotconfig__prototype"></a>
+
+```dart
+class SnapshotConfig {
+  const SnapshotConfig({this.filePath, this.position});
+
+  @JsonKey(name: 'filePath')
+  final String? filePath;
+
+  @JsonKey(name: 'position')
+  final VideoModulePosition? position;
+
+  factory SnapshotConfig.fromJson(Map<String, dynamic> json) =>
+      _$SnapshotConfigFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SnapshotConfigToJson(this);
+}
+```
+
+<a id="class_snapshotconfig__parameters"></a>
+
+## 属性
+
+### `filePath`
+
+:::info[注]
+请确保目录存在且可写。
+:::
+
+截图的本地保存路径，需精确到文件名及格式，例如：
+
+- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg
+- iOS: /App Sandbox/Library/Caches/example.jpg
+- macOS: ～/Library/Logs/example.jpg
+- Android: /storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg
+
+### `position`
+
+截图的视频帧在视频链路中的位置。详见 [VideoModulePosition](/zh-CN/api-reference/rtc/flutter/enum-videomoduleposition)。

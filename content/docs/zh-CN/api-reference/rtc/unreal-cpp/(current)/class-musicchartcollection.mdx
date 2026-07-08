@@ -1,0 +1,29 @@
+---
+title: "MusicChartCollection"
+description: "音乐榜单的详细信息。"
+---
+<a id="class_musicchartcollection__prototype"></a>
+
+```cpp
+class MusicChartCollection : public RefCountInterface {
+public:
+    virtual int getCount() = 0;
+    virtual MusicChartInfo* get(int index) = 0;
+protected:
+    virtual ~MusicChartCollection() = default;
+};
+```
+
+<a id="class_musicchartcollection__detailed_desc"></a>
+
+<a id="class_musicchartcollection__sub-method"></a>
+
+## 方法
+
+### `getCount`
+
+获取本次请求的音乐榜单数量，详见 [getCount [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/api-musicchartcollection-getcount)。
+
+### `get`
+
+获取音乐榜单的详细信息，详见 [get](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_musicchartcollection_get)。

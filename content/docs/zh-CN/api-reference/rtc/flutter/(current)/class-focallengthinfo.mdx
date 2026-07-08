@@ -1,0 +1,41 @@
+---
+title: "FocalLengthInfo"
+description: "摄像头支持的焦距信息，包含摄像头的方向以及焦距类型。"
+---
+<a id="class_focallengthinfo__prototype"></a>
+
+```dart
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class FocalLengthInfo {
+  const FocalLengthInfo({this.cameraDirection, this.focalLengthType});
+
+  @JsonKey(name: 'cameraDirection')
+  final int? cameraDirection;
+
+  @JsonKey(name: 'focalLengthType')
+  final CameraFocalLengthType? focalLengthType;
+
+  factory FocalLengthInfo.fromJson(Map<String, dynamic> json) =>
+      _$FocalLengthInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FocalLengthInfoToJson(this);
+}
+```
+
+<a id="class_focallengthinfo__detailed_desc"></a>
+
+:::info[注]
+仅适用于 Android 和 iOS。
+:::
+
+<a id="class_focallengthinfo__parameters"></a>
+
+## 属性
+
+### `cameraDirection`
+
+摄像头方向。详见 [CameraDirection](/zh-CN/api-reference/rtc/flutter/enum-cameradirection)。
+
+### `focalLengthType`
+
+焦距类型。详见 [CameraFocalLengthType](/zh-CN/api-reference/rtc/flutter/enum-camerafocallengthtype)。

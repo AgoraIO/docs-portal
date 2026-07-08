@@ -1,0 +1,114 @@
+---
+title: "ScreenCaptureSourceInfo"
+description: "可共享窗口或屏幕的信息。"
+---
+<a id="class_screencapturesourceinfo__prototype"></a>
+
+```dart
+class ScreenCaptureSourceInfo {
+  const ScreenCaptureSourceInfo(
+      {this.type,
+      this.sourceId,
+      this.sourceName,
+      this.thumbImage,
+      this.iconImage,
+      this.processPath,
+      this.sourceTitle,
+      this.primaryMonitor,
+      this.position,
+      this.minimizeWindow,
+      this.sourceDisplayId});
+
+  @JsonKey(name: 'type')
+  final ScreenCaptureSourceType? type;
+
+  @JsonKey(name: 'sourceId')
+  final int? sourceId;
+
+  @JsonKey(name: 'sourceName')
+  final String? sourceName;
+
+  @JsonKey(name: 'thumbImage')
+  final ThumbImageBuffer? thumbImage;
+
+  @JsonKey(name: 'iconImage')
+  final ThumbImageBuffer? iconImage;
+
+  @JsonKey(name: 'processPath')
+  final String? processPath;
+
+  @JsonKey(name: 'sourceTitle')
+  final String? sourceTitle;
+
+  @JsonKey(name: 'primaryMonitor')
+  final bool? primaryMonitor;
+
+  @JsonKey(name: 'position')
+  final Rectangle? position;
+
+  @JsonKey(name: 'minimizeWindow')
+  final bool? minimizeWindow;
+
+  @JsonKey(name: 'sourceDisplayId')
+  final int? sourceDisplayId;
+
+  factory ScreenCaptureSourceInfo.fromJson(Map<String, dynamic> json) =>
+      _$ScreenCaptureSourceInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ScreenCaptureSourceInfoToJson(this);
+}
+```
+
+<a id="class_screencapturesourceinfo__parameters"></a>
+
+## 属性
+
+### `type`
+
+共享目标的类型。详见 [ScreenCaptureSourceType](/zh-CN/api-reference/rtc/flutter/enum-screencapturesourcetype)。
+
+### `sourceId`
+
+对于窗口，表示窗口 ID（Window ID）；对于屏幕，表示屏幕 ID（Display ID）。
+
+### `sourceName`
+
+窗口或屏幕的名称。UTF-8 编码。
+
+### `thumbImage`
+
+缩略图的图像内容。详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/flutter/class-thumbimagebuffer)。
+
+### `iconImage`
+
+图标的图像内容。详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/flutter/class-thumbimagebuffer)。
+
+### `processPath`
+
+窗口所属的进程。UTF-8 编码。
+
+### `sourceTitle`
+
+窗口标题。UTF-8 编码。
+
+### `primaryMonitor`
+
+屏幕是否为主显示屏：
+
+- true: 屏幕为主显示屏。
+- false: 屏幕不是主显示屏。
+
+### `position`
+
+窗口相对于整个屏幕空间（包含所有可共享屏幕）的位置。详见 [Rectangle](/zh-CN/api-reference/rtc/flutter/class-rectangle)。
+
+### `minimizeWindow`
+
+(仅适用于 Windows) 窗口是否已最小化：
+
+- true: 窗口已最小化。
+- false: 窗口未最小化。
+
+### `sourceDisplayId`
+
+(仅适用于 Windows) 窗口所在的屏幕 ID。如果窗口为跨屏幕显示，则表示与该窗口相交面积最大的屏幕 ID。如果窗口位于可见屏幕之外，则该成员的值为 -2。

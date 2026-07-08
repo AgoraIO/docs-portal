@@ -1,0 +1,36 @@
+---
+title: "IsFeatureAvailableOnDevice"
+description: "查询设备是否支持指定进阶功能。"
+---
+<a id="api_irtcengine_isfeatureavailableondevice__prototype"></a>
+
+```csharp
+public abstract bool IsFeatureAvailableOnDevice(FeatureType type);
+```
+
+<a id="api_irtcengine_isfeatureavailableondevice__detailed_desc"></a>
+
+## 详情
+
+查询当前设备能力是否满足虚拟背景、美颜等进阶功能的要求。
+
+<a id="api_irtcengine_isfeatureavailableondevice__scenario"></a>
+
+## 适用场景
+
+在使用进阶音视频功能前，你可以根据查询结果判断当前设备是否支持这些功能，从而避免在低端设备上开启进阶功能导致性能下降或功能不可用的问题。你可以根据该方法的返回值，决定是否显示或启用相应的功能按钮，或者在设备能力不足时，为用户提示相应信息。
+
+<a id="api_irtcengine_isfeatureavailableondevice__parameters"></a>
+
+## 参数
+
+### `type`
+
+进阶功能类型，详见 [FeatureType](/zh-CN/api-reference/rtc/csharp-windows/enum-featuretype)。
+
+<a id="api_irtcengine_isfeatureavailableondevice__return_values"></a>
+
+## 返回值
+
+- true: 设备支持指定进阶功能。
+- false: 设备不支持指定进阶功能。

@@ -1,0 +1,50 @@
+---
+title: "FLastmileProbeOneWayResult"
+description: "上行或下行 Last mile 网络质量探测结果。"
+---
+<a id="class_lastmileprobeonewayresult__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FLastmileProbeOneWayResult {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeOneWayResult")
+	int64 packetLossRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeOneWayResult")
+	int64 jitter = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeOneWayResult")
+	int64 availableBandwidth = 0;
+	FLastmileProbeOneWayResult(){}
+	FLastmileProbeOneWayResult(const agora::rtc::LastmileProbeOneWayResult & AgoraData){
+		packetLossRate = AgoraData.packetLossRate;
+		jitter = AgoraData.jitter;
+		availableBandwidth = AgoraData.availableBandwidth;
+	}
+	agora::rtc::LastmileProbeOneWayResult CreateAgoraData() const {
+		agora::rtc::LastmileProbeOneWayResult AgoraData;
+		AgoraData.packetLossRate = packetLossRate;
+		AgoraData.jitter = jitter;
+		AgoraData.availableBandwidth = availableBandwidth;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::LastmileProbeOneWayResult & AgoraData) const {
+	}
+};
+```
+
+<a id="class_lastmileprobeonewayresult__parameters"></a>
+
+## 属性
+
+### `packetLossRate`
+
+丢包率。
+
+### `jitter`
+
+网络抖动 (ms)。
+
+### `availableBandwidth`
+
+可用网络带宽预估 (bps)。

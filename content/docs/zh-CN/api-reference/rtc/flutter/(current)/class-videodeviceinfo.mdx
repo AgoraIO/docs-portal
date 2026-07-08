@@ -1,0 +1,31 @@
+---
+title: "VideoDeviceInfo"
+description: "VideoDeviceInfo 类，包含视频设备的 ID 和设备名称。"
+---
+<a id="class_videodeviceinfo__prototype"></a>
+
+```dart
+class VideoDeviceInfo {
+  const VideoDeviceInfo({this.deviceId, this.deviceName});
+
+  @JsonKey(name: 'deviceId')
+  final String? deviceId;
+  @JsonKey(name: 'deviceName')
+  final String? deviceName;
+  factory VideoDeviceInfo.fromJson(Map<String, dynamic> json) =>
+      _$VideoDeviceInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$VideoDeviceInfoToJson(this);
+}
+```
+
+<a id="class_videodeviceinfo__parameters"></a>
+
+## 属性
+
+### `deviceId`
+
+设备 ID。
+
+### `deviceName`
+
+设备名称。

@@ -1,0 +1,56 @@
+---
+title: "RtcImage"
+description: "用于设置水印和背景图像属性。"
+---
+<a id="class_rtcimage__prototype"></a>
+
+```cpp
+typedef struct RtcImage {
+  const char* url;
+  int x;
+  int y;
+  int width;
+  int height;
+  int zOrder;
+  double alpha;
+} RtcImage;
+```
+
+<a id="class_rtcimage__parameters"></a>
+
+## 属性
+
+### `url`
+
+图像的 HTTP/HTTPS URL 地址，最大长度为 1024 字节。
+
+### `x`
+
+图像在视频帧中的 x 坐标（以视频帧左上角为原点，单位为像素）。
+
+### `y`
+
+图像在视频帧中的 y 坐标（以视频帧左上角为原点，单位为像素）。
+
+### `width`
+
+图像在视频帧中的宽度（单位为像素）。
+
+### `height`
+
+图像在视频帧中的高度（单位为像素）。
+
+### `zOrder`
+
+图像的图层索引。
+
+- 当使用水印数组添加一个或多个水印时，必须设置为 [1, 255] 范围内的值，否则 SDK 会报错。
+- 其他情况下为可选，取值范围为 [0, 255]，默认值为 0。
+- 0 表示底层，255 表示顶层。
+
+### `alpha`
+
+图像的透明度，取值范围为 [0.0, 1.0]：
+
+- 0.0：完全透明。
+- 1.0：（默认）不透明。

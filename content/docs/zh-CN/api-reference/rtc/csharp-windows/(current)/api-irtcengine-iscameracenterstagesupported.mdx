@@ -1,0 +1,32 @@
+---
+title: "IsCameraCenterStageSupported"
+description: "查询摄像头是否支持人像锁定。"
+---
+<a id="api_irtcengine_iscameracenterstagesupported__prototype"></a>
+
+```csharp
+public abstract bool IsCameraCenterStageSupported();
+```
+
+<a id="api_irtcengine_iscameracenterstagesupported__detailed_desc"></a>
+
+在调用 [EnableCameraCenterStage](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-enablecameracenterstage) 开启人像锁定功能前，建议你先调用该方法查询当前设备是否支持人像锁定。
+
+<a id="api_irtcengine_iscameracenterstagesupported__timing"></a>
+
+## 调用时机
+
+该方法必须在摄像头成功开启后调用，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
+
+<a id="api_irtcengine_iscameracenterstagesupported__restriction"></a>
+
+## 调用限制
+
+无。
+
+<a id="api_irtcengine_iscameracenterstagesupported__return_values"></a>
+
+## 返回值
+
+- true: 当前摄像头支持人像锁定。
+- false: 当前摄像头不支持人像锁定。

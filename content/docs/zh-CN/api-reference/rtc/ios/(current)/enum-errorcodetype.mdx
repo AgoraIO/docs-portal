@@ -1,0 +1,194 @@
+---
+title: "AgoraErrorCode"
+description: "错误码。"
+---
+<a id="enum_errorcodetype__parameters"></a>
+
+## 枚举值
+
+### `AgoraErrorCodeNoError`
+
+（0）：无错误。
+
+### `AgoraErrorCodeFailed`
+
+（1）：通用错误，原因未分类。请重试调用该方法。
+
+### `AgoraErrorCodeInvalidArgument`
+
+（2）：参数无效。例如，频道名包含非法字符。请重新设置参数。
+
+### `AgoraErrorCodeNotReady`
+
+（3）：SDK 尚未就绪。可能的原因包括： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 初始化失败；调用方法时无用户加入频道；调用 [rate:rating:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_rate) 或 [complain:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_complain) 方法时用户尚未离开频道；音频模块被禁用；程序不完整。
+
+### `AgoraErrorCodeNotSupported`
+
+（4）： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 不支持该请求。可能的原因包括：内置加密模式设置错误，或 SDK 加载外部加密库失败。请检查加密模式设置或重新加载外部加密库。
+
+### `AgoraErrorCodeRefused`
+
+（5）：请求被拒绝。可能的原因包括： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 初始化失败；加入频道时频道名为空字符串 `""`；调用 [joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 方法加入多个频道时，指定的频道名已被使用。
+
+### `AgoraErrorCodeBufferTooSmall`
+
+（6）：缓冲区大小不足，无法存储返回数据。
+
+### `AgoraErrorCodeNotInitialized`
+
+（7）：在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 初始化前调用了方法。请确保在调用该方法前已初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。
+
+### `AgoraErrorCodeInvalidState`
+
+（8）：状态无效。
+
+### `AgoraErrorCodeNoPermission`
+
+（9）：无访问权限。请检查应用是否已获得音视频设备的访问权限。
+
+### `AgoraErrorCodeTimedOut`
+
+（10）：超时错误。部分 API 调用需要 SDK 返回执行结果，若超过 10 秒未返回，则触发该错误。
+
+### `AgoraErrorCodeJoinChannelRejected`
+
+（17）：加入频道请求被拒绝。可能的原因包括：用户已在频道中。建议通过 connectionChangedToState:reason: 回调判断用户是否在频道中，除非收到 AgoraConnectionStateDisconnected（1）状态，否则不要调用此方法加入频道；调用 startEchoTestWithConfig: 进行通话测试后，未调用 stopEchoTest 结束测试就尝试加入频道。要加入频道，必须先调用 stopEchoTest 结束测试。
+
+### `AgoraErrorCodeLeaveChannelRejected`
+
+（18）：离开频道失败。可能的原因包括：在调用 leaveChannel:leaveChannelBlock: 方法前用户已离开频道，建议停止调用此方法以清除错误；在加入频道前调用了 leaveChannel:leaveChannelBlock: 方法，此情况下无需额外操作。
+
+### `AgoraErrorCodeAlreadyInUse`
+
+（19）：资源已被占用。
+
+### `AgoraErrorCodeAbort`
+
+（20）：请求被 SDK 放弃，可能是因为请求发送过于频繁。
+
+### `AgoraErrorCodeInitNetEngine`
+
+（21）：由于特定的 Windows 防火墙设置，AgoraRtcEngineKit 初始化失败并崩溃。
+
+### `AgoraErrorCodeResourceLimited`
+
+（22）：由于应用程序使用了过多系统资源或系统资源不足，SDK 分配资源失败。
+
+### `AgoraErrorCodeInvalidAppId`
+
+（101）：指定的 App ID 无效。请使用有效的 App ID 重新加入频道。
+
+### `AgoraErrorCodeInvalidChannelId`
+
+（102）：指定的频道名无效。可能的原因是参数类型不正确。请使用有效的频道名重新加入频道。
+
+### `AgoraErrorCodeNoServerResources`
+
+（103）：在指定区域无法获取服务器资源。请在调用 sharedEngine 时尝试指定其他区域。
+
+### `AgoraErrorCodeTokenExpired`
+
+（109）：当前 Token 已过期。请在服务器上申请新的 Token，并调用 renewToken: 方法。
+
+### `AgoraErrorCodeInvalidToken`
+
+（110）：Token 无效。常见原因包括：
+
+- 在声网控制台启用了 App 证书，但代码仍使用 App ID 进行鉴权。启用 App 证书后，必须使用 Token 进行鉴权。
+- 用于生成 Token 的 uid 与加入频道时使用的 uid 不一致。
+
+### `AgoraErrorCodeConnectionInterrupted`
+
+（111）：网络连接中断。建立连接后，如果 SDK 与服务器失去连接超过 4 秒，会触发此回调。
+
+### `AgoraErrorCodeConnectionLost`
+
+（112）：网络连接丢失。连接中断后，如果 SDK 在 10 秒内无法重新连接到声网边缘服务器，会触发此回调。
+
+### `AgoraErrorCodeNotInChannel`
+
+（113）：调用 sendStreamMessage:data: 方法时，用户不在频道中。
+
+### `AgoraErrorCodeSizeTooLarge`
+
+（114）：调用 sendStreamMessage:data: 方法时，数据大小超过 1 KB。
+
+### `AgoraErrorCodeBitrateLimit`
+
+（115）：调用 sendStreamMessage:data: 方法时，数据传输码率超过 6 KB/s。
+
+### `AgoraErrorCodeTooManyDataStreams`
+
+（116）：调用 createDataStream:config: 方法时创建了超过五个数据流。
+
+### `AgoraErrorCodeEncryptedStreamNotAllowedPublish`
+
+（130）：SDK 不支持将加密流推送到 CDN。
+
+### `AgoraErrorCodeInvalidUserAccount`
+
+（134）：用户账号无效，可能是因为包含无效参数。
+
+### `AgoraErrorCodePcmSendFormat`
+
+（200）：不支持的 PCM 格式。
+
+### `AgoraErrorCodePcmSendBufferOverflow`
+
+（201）：缓冲区溢出，PCM 发送速率过快。
+
+### `AgoraErrorCodeLoadMediaEngine`
+
+（1001）：加载媒体引擎失败。
+
+### `AgoraErrorCodeStartCall`
+
+（1002）：启用媒体引擎后启动通话失败。
+
+### `AgoraErrorCodeStartCamera`
+
+（1003）：启动摄像头失败。
+
+### `AgoraErrorCodeStartVideoRender`
+
+（1004）：启动视频渲染模块失败。
+
+### `AgoraErrorCodeAdmGeneralError`
+
+（1005）：发生通用错误（无明确原因）。请检查音频设备是否被其他应用占用，或尝试重新加入频道。
+
+### `AgoraErrorCodeAdmJavaResource`
+
+（1006）：音频设备模块：使用 Java 资源时发生错误。
+
+### `AgoraErrorCodeAdmSampleRate`
+
+（1007）：音频设备模块：设置采样率时发生错误。
+
+### `AgoraErrorCodeAdmInitPlayout`
+
+（1008）：初始化播放设备时发生错误。请检查播放设备是否被其他应用占用，或尝试重新加入频道。
+
+### `AgoraErrorCodeAdmStartPlayout`
+
+（1009）：启动播放设备时发生错误。请检查播放设备。
+
+### `AgoraErrorCodeAdmStopPlayout`
+
+（1010）：停止播放设备时发生错误。
+
+### `AgoraErrorCodeAdmInitRecording`
+
+（1011）：初始化录音设备时发生错误。请检查录音设备，或尝试重新加入频道。
+
+### `AgoraErrorCodeAdmStartRecording`
+
+（1012）：启动录音设备时发生错误。请检查录音设备。
+
+### `AgoraErrorCodeAdmStopRecording`
+
+（1013）：停止录音设备时发生错误。
+
+### `AgoraErrorCodeAdmRuntimePlayoutError`
+
+（1015）：音频设备模块：播放过程中发生错误。请检查播放设备，或尝试重新加入频道。

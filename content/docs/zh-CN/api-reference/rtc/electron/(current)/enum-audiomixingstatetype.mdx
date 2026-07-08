@@ -1,0 +1,30 @@
+---
+title: "AudioMixingStateType"
+description: "音乐文件播放状态。"
+---
+<a id="enum_audiomixingstatetype__parameters"></a>
+
+## 枚举值
+
+### `AudioMixingStatePlaying`
+
+710: 音乐文件正常播放。
+
+### `AudioMixingStatePaused`
+
+711: 音乐文件暂停播放。
+
+### `AudioMixingStateStopped`
+
+713: 音乐文件停止播放。 该状态可能由以下原因导致：
+
+- AudioMixingReasonAllLoopsCompleted(723)
+- AudioMixingReasonStoppedByUser(724)
+
+### `AudioMixingStateFailed`
+
+714: 音乐文件播放出错。 该状态可能由以下原因导致：
+
+- AudioMixingReasonCanNotOpen(701)
+- AudioMixingReasonTooFrequentCall(702)
+- AudioMixingReasonInterruptedEof(703)

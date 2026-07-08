@@ -1,0 +1,43 @@
+---
+title: "Rectangle"
+description: "目标区域相对于整个屏幕或窗口的位置，如不填，则表示整个屏幕或窗口。"
+---
+<a id="class_rectangle__prototype"></a>
+
+```dart
+class Rectangle {
+  const Rectangle({this.x, this.y, this.width, this.height});
+
+  @JsonKey(name: 'x')
+  final int? x;
+  @JsonKey(name: 'y')
+  final int? y;
+  @JsonKey(name: 'width')
+  final int? width;
+  @JsonKey(name: 'height')
+  final int? height;
+  factory Rectangle.fromJson(Map<String, dynamic> json) =>
+      _$RectangleFromJson(json);
+  Map<String, dynamic> toJson() => _$RectangleToJson(this);
+}
+```
+
+<a id="class_rectangle__parameters"></a>
+
+## 属性
+
+### `x`
+
+左上角的横向偏移。
+
+### `y`
+
+左上角的纵向偏移。
+
+### `width`
+
+目标区域的宽度。
+
+### `height`
+
+目标区域的高度。

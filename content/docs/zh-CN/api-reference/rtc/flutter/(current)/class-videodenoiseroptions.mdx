@@ -1,0 +1,34 @@
+---
+title: "VideoDenoiserOptions"
+description: "视频降噪选项。"
+---
+<a id="class_videodenoiseroptions__prototype"></a>
+
+```dart
+class VideoDenoiserOptions {
+  const VideoDenoiserOptions({this.mode, this.level});
+
+  @JsonKey(name: 'mode')
+  final VideoDenoiserMode? mode;
+
+  @JsonKey(name: 'level')
+  final VideoDenoiserLevel? level;
+
+  factory VideoDenoiserOptions.fromJson(Map<String, dynamic> json) =>
+      _$VideoDenoiserOptionsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$VideoDenoiserOptionsToJson(this);
+}
+```
+
+<a id="class_videodenoiseroptions__parameters"></a>
+
+## 属性
+
+### `level`
+
+视频降噪等级。
+
+### `mode`
+
+视频降噪模式。

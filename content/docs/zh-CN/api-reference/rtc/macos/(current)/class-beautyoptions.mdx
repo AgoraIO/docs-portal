@@ -1,0 +1,39 @@
+---
+title: "AgoraBeautyOptions"
+description: "美颜特效选项。"
+---
+<a id="class_beautyoptions__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraBeautyOptions : NSObject
+@property(nonatomic, assign) AgoraLighteningContrastLevel lighteningContrastLevel;
+@property(nonatomic, assign) float lighteningLevel;
+@property(nonatomic, assign) float smoothnessLevel;
+@property(nonatomic, assign) float rednessLevel;
+@property(nonatomic, assign) float sharpnessLevel;
+@end
+```
+
+<a id="class_beautyoptions__parameters"></a>
+
+## 属性
+
+### `lighteningContrastLevel`
+
+对比度等级，与 `lighteningLevel` 参数配合使用。值越大，明暗对比越强。详见 [AgoraLighteningContrastLevel](/zh-CN/api-reference/rtc/macos/enum-lighteningcontrastlevel)。
+
+### `lighteningLevel`
+
+美白等级，取值范围为 [0.0, 1.0]。0.0 表示原始亮度，默认值为 0.7。值越大，美白程度越高。
+
+### `smoothnessLevel`
+
+磨皮等级，取值范围为 [0.0, 1.0]。0.0 表示原始平滑度，默认值为 0.5。值越大，磨皮程度越高。
+
+### `rednessLevel`
+
+红润等级，取值范围为 [0.0, 1.0]。0.0 表示原始红润度，默认值为 0.1。值越大，红润程度越高。
+
+### `sharpnessLevel`
+
+锐化等级，取值范围为 [0.0, 1.0]。0.0 表示原始锐度，默认值为 0.1。值越大，锐化程度越高。

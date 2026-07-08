@@ -1,0 +1,793 @@
+---
+title: "视频渲染"
+description: "视频渲染 API reference."
+---
+<a id="toc_video_rendering"></a>
+
+<a id="api_irtcengine_enableinstantmediarendering"></a>
+
+## enableInstantMediaRendering
+
+开启音视频帧加速渲染。
+
+<a id="api_irtcengine_enableinstantmediarendering__prototype"></a>
+
+```cpp
+virtual int enableInstantMediaRendering() = 0;
+```
+
+<a id="api_irtcengine_enableinstantmediarendering__detailed_desc"></a>
+
+成功调用该方法后，SDK 会开启加速出图和出声模式，可加快用户加入频道后的首帧出图与出声速度。
+
+<a id="api_irtcengine_enableinstantmediarendering__scenario"></a>
+
+### 适用场景
+
+声网推荐在直播场景下，对观众开启该模式。
+
+<a id="api_irtcengine_enableinstantmediarendering__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_enableinstantmediarendering__restriction"></a>
+
+### 调用限制
+
+主播端和观众端都需调用该方法开启音视频帧加速渲染才可体验该功能。
+
+一旦成功调用该方法，只能通过调用 [Release](/zh-CN/api-reference/rtc/unreal-cpp/initialize#api_irtcengine_release) 方法销毁 IRtcEngine 对象来取消加速渲染。
+
+<a id="api_irtcengine_enableinstantmediarendering__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+  - -7: IRtcEngine 尚未初始化就调用方法。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalrendermode"></a>
+
+## setLocalRenderMode [1/2]
+
+设置本地视图显示模式。
+
+<a id="api_irtcengine_setlocalrendermode__prototype"></a>
+
+```cpp
+virtual int setLocalRenderMode(media::base::RENDER_MODE_TYPE renderMode) = 0;
+```
+
+<a id="api_irtcengine_setlocalrendermode__detailed_desc"></a>
+
+### 详情
+
+#### `弃用：`
+
+该方法已废弃，请使用 [setLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setlocalrendermode2) 作为替代。
+
+该方法设置本地视图显示模式。 App 可以多次调用此方法更改显示模式。
+
+<a id="api_irtcengine_setlocalrendermode__parameters"></a>
+
+### 参数
+
+#### `renderMode`
+
+本地视图显示模式。详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-rendermodetype)。
+
+<a id="api_irtcengine_setlocalrendermode__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalrendermode2"></a>
+
+## setLocalRenderMode [2/2]
+
+更新本地视图显示模式。
+
+<a id="api_irtcengine_setlocalrendermode2__prototype"></a>
+
+```cpp
+virtual int setLocalRenderMode(media::base::RENDER_MODE_TYPE renderMode, VIDEO_MIRROR_MODE_TYPE mirrorMode) = 0;
+```
+
+<a id="api_irtcengine_setlocalrendermode2__detailed_desc"></a>
+
+初始化本地用户视图后，你可以调用该方法更新本地用户视图的渲染和镜像模式。该方法只影响本地用户看到的视频画面，不影响本地视频的发布。
+
+<a id="api_irtcengine_setlocalrendermode2__timing"></a>
+
+### 调用时机
+
+- 请在调用 [setupLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setuplocalvideo) 方法初始化本地视图后，调用该方法。
+- 你可以在通话中多次调用该方法，多次更新本地用户视图的显示模式。
+
+<a id="api_irtcengine_setlocalrendermode2__restriction"></a>
+
+### 调用限制
+
+该方法仅对第一个摄像头 `(PRIMARY_CAMERA_SOURCE)` 生效。在自定义视频采集或使用其他类型视频源的场景下，你需要使用 [setupLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setuplocalvideo) 方法替代该方法。
+
+<a id="api_irtcengine_setlocalrendermode2__parameters"></a>
+
+### 参数
+
+#### `renderMode`
+
+本地视图显示模式。详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-rendermodetype)。
+
+#### `mirrorMode`
+
+本地视图的镜像模式，详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videomirrormodetype)。
+
+:::warning[注意]
+该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
+:::
+
+:::warning[注意]
+如果你使用前置摄像头，默认启动本地用户视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
+:::
+
+<a id="api_irtcengine_setlocalrendermode2__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalrendertargetfps"></a>
+
+## setLocalRenderTargetFps
+
+设置本地视频渲染的最大帧率。
+
+<a id="api_irtcengine_setlocalrendertargetfps__prototype"></a>
+
+```cpp
+virtual int setLocalRenderTargetFps(VIDEO_SOURCE_TYPE sourceType, int targetFps) = 0;
+```
+
+<a id="api_irtcengine_setlocalrendertargetfps__detailed_desc"></a>
+
+<a id="api_irtcengine_setlocalrendertargetfps__scenario"></a>
+
+### 适用场景
+
+在对视频渲染帧率要求不高的场景（例如：屏幕共享、在线教育）下，你可以调用该方法设置本地视频渲染的最大帧率，SDK 进行本地渲染的实际帧率会尽量接近该值，从而减小 CPU 消耗、提升系统性能。
+
+<a id="api_irtcengine_setlocalrendertargetfps__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_irtcengine_setlocalrendertargetfps__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_setlocalrendertargetfps__parameters"></a>
+
+### 参数
+
+#### `sourceType`
+
+视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
+
+#### `targetFps`
+
+最大渲染帧率 (fps)。支持的参数值为：1、7、10、15、24、30、60。
+
+:::warning[警告]
+请将此参数设置为低于视频实际帧率的渲染帧率，否则设置将不会生效。
+:::
+
+<a id="api_irtcengine_setlocalrendertargetfps__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalvideomirrormode"></a>
+
+## setLocalVideoMirrorMode
+
+设置本地视频镜像。
+
+<a id="api_irtcengine_setlocalvideomirrormode__prototype"></a>
+
+```cpp
+virtual int setLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode) = 0;
+```
+
+<a id="api_irtcengine_setlocalvideomirrormode__detailed_desc"></a>
+
+### 详情
+
+#### `弃用:`
+
+该方法已废弃。
+
+请改用 [setupLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setuplocalvideo) 或 [setLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setlocalrendermode2)。
+
+<a id="api_irtcengine_setlocalvideomirrormode__parameters"></a>
+
+### 参数
+
+#### `mirrorMode`
+
+本地视频镜像模式。详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videomirrormodetype)。
+
+:::warning[注意]
+该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
+:::
+
+<a id="api_irtcengine_setlocalvideomirrormode__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setremoterendermode2"></a>
+
+## setRemoteRenderMode
+
+更新远端视图显示模式。
+
+<a id="api_irtcengine_setremoterendermode2__prototype"></a>
+
+```cpp
+virtual int setRemoteRenderMode(uid_t userId, RENDER_MODE_TYPE renderMode, VIDEO_MIRROR_MODE_TYPE mirrorMode) = 0;
+```
+
+<a id="api_irtcengine_setremoterendermode2__detailed_desc"></a>
+
+### 详情
+
+初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
+
+:::warning[注意]
+- 请在调用 setupRemoteVideo 方法初始化远端视图后，调用该方法。
+- 你可以在通话中多次调用该方法，多次更新远端用户视图的显示模式。
+:::
+
+<a id="api_irtcengine_setremoterendermode2__parameters"></a>
+
+### 参数
+
+#### `userId`
+
+远端用户 ID。
+
+#### `renderMode`
+
+远端用户视图的渲染模式，详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-rendermodetype)。
+
+#### `mirrorMode`
+
+远端用户视图的镜像模式，详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videomirrormodetype)。
+
+:::warning[注意]
+该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
+:::
+
+<a id="api_irtcengine_setremoterendermode2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_setremoterendermodeex"></a>
+
+## setRemoteRenderModeEx
+
+设置远端视图显示模式。
+
+<a id="api_irtcengineex_setremoterendermodeex__prototype"></a>
+
+```cpp
+virtual int setRemoteRenderModeEx(uid_t uid, media::base::RENDER_MODE_TYPE renderMode,
+       VIDEO_MIRROR_MODE_TYPE mirrorMode, const RtcConnection& connection) = 0;
+```
+
+<a id="api_irtcengineex_setremoterendermodeex__detailed_desc"></a>
+
+### 详情
+
+初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
+
+:::warning[注意]
+- 请在调用 setupRemoteVideo 方法初始化远端视图后，调用该方法。
+- 你可以在通话中多次调用该方法，多次更新远端用户视图的显示模式。
+:::
+
+<a id="api_irtcengineex_setremoterendermodeex__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+远端用户 ID。
+
+#### `renderMode`
+
+远端视图显示模式，详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-rendermodetype)。
+
+#### `mirrorMode`
+
+远端用户视图的镜像模式，详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videomirrormodetype)。
+
+:::warning[注意]
+该参数不生效。如需实现镜像显示效果，请在 Unreal Engine 中进行镜像设置。
+:::
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+<a id="api_irtcengineex_setremoterendermodeex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_setremoterendertargetfps"></a>
+
+## setRemoteRenderTargetFps
+
+设置视频在远端渲染的最大帧率。
+
+<a id="api_irtcengine_setremoterendertargetfps__prototype"></a>
+
+```cpp
+virtual int setRemoteRenderTargetFps(int targetFps) = 0;
+```
+
+<a id="api_irtcengine_setremoterendertargetfps__detailed_desc"></a>
+
+<a id="api_irtcengine_setremoterendertargetfps__scenario"></a>
+
+### 适用场景
+
+在对视频渲染帧率要求不高的场景（例如：屏幕共享、在线教育）或者远端使用中低端设备的场景下，你可以调用该方法设置视频在远端渲染的最大帧率，SDK 进行远端视频渲染的实际帧率会尽量接近该值，从而减小 CPU 消耗、提升系统性能。
+
+<a id="api_irtcengine_setremoterendertargetfps__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_irtcengine_setremoterendertargetfps__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_setremoterendertargetfps__parameters"></a>
+
+### 参数
+
+#### `targetFps`
+
+最大渲染帧率 (fps)。支持的参数值为：1、7、10、15、24、30、60。
+
+:::warning[警告]
+请将此参数设置为低于视频实际帧率的渲染帧率，否则设置将不会生效。
+:::
+
+<a id="api_irtcengine_setremoterendertargetfps__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediaplayer_setrendermode"></a>
+
+## setRenderMode
+
+设置播放器视图的渲染模式。
+
+<a id="api_imediaplayer_setrendermode__prototype"></a>
+
+```cpp
+virtual int setRenderMode(media::base::RENDER_MODE_TYPE renderMode) = 0;
+```
+
+<a id="api_imediaplayer_setrendermode__parameters"></a>
+
+### 参数
+
+#### `renderMode`
+
+播放器视图的渲染模式。详见 [RENDER_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-rendermodetype)。
+
+<a id="api_imediaplayer_setrendermode__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
+
+<a id="api_irtcengine_setuplocalvideo"></a>
+
+## setupLocalVideo
+
+初始化本地视图。
+
+<a id="api_irtcengine_setuplocalvideo__prototype"></a>
+
+```cpp
+virtual int setupLocalVideo(const VideoCanvas& canvas) = 0;
+```
+
+<a id="api_irtcengine_setuplocalvideo__detailed_desc"></a>
+
+该方法初始化本地视图并设置本地用户视频显示属性，只影响本地用户看到的视频画面，不影响本地视频的发布。调用该方法绑定本地视频流的显示视窗 (view)，并设置本地用户视图的渲染模式和镜像模式。
+
+退出频道后绑定仍然有效。如果需要停止渲染或解除绑定，可以调用该方法将参数 view 设为 NULL，以停止渲染并清理渲染缓存。
+
+:::warning[注意]
+- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 setLocalRenderMode [2/2] 方法。
+:::
+
+<a id="api_irtcengine_setuplocalvideo__scenario"></a>
+
+### 适用场景
+
+在 App 开发中，通常在初始化后调用该方法进行本地视频设置，然后再加入频道。
+
+如果你需要在本地视频预览的画面中同时看到多个预览画面、且不同画面分别处于视频链路上不同观测点，可以重复调用该方法设置不同的 view，并针对每个 view 设置不同的观测位置。例如：将视频源设置为摄像头，然后对应两个 view 分别设置 position 为 POSITION_POST_CAPTURER_ORIGIN 和 POSITION_POST_CAPTURER，即可在本地视频预览中同时看到没有经过视频前处理的原始画面和已经过视频前处理（美颜、虚拟背景、水印本地预览）的画面。
+
+<a id="api_irtcengine_setuplocalvideo__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_irtcengine_setuplocalvideo__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_setuplocalvideo__parameters"></a>
+
+### 参数
+
+#### `canvas`
+
+本地视频显示属性。详见 [VideoCanvas](/zh-CN/api-reference/rtc/unreal-cpp/class-videocanvas)。
+
+<a id="api_irtcengine_setuplocalvideo__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setupremotevideo"></a>
+
+## setupRemoteVideo
+
+初始化远端用户视图。
+
+<a id="api_irtcengine_setupremotevideo__prototype"></a>
+
+```cpp
+virtual int setupRemoteVideo(const VideoCanvas& canvas) = 0;
+```
+
+<a id="api_irtcengine_setupremotevideo__detailed_desc"></a>
+
+### 详情
+
+该方法绑定远端用户和显示视图，并设置远端用户视图在本地显示时的渲染模式和镜像模式，只影响本地用户看到的视频画面。
+
+调用该方法时需要指定远端视频的用户 ID，一般可以在进频道前提前设置好。如果无法在加入频道前得到远端用户的 ID，可以在收到 [onUserJoined](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onuserjoined) 回调时调用该方法。
+
+如需解除某个远端用户的绑定视图，可以调用该方法并将 view 设置为空。
+
+离开频道后，SDK 会清除远端用户视图的绑定关系。
+
+:::warning[注意]
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 setRemoteRenderMode 方法。
+- 当使用录制服务时，由于它不会发送视频流，App 无需为它绑定视图。如果 App 无法识别录制服务，可以在收到 onFirstRemoteVideoDecoded 回调时再绑定远端用户视图。
+:::
+
+<a id="api_irtcengine_setupremotevideo__parameters"></a>
+
+### 参数
+
+#### `canvas`
+
+远端视频显示属性。详见 [VideoCanvas](/zh-CN/api-reference/rtc/unreal-cpp/class-videocanvas)。
+
+<a id="api_irtcengine_setupremotevideo__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_setupremotevideoex"></a>
+
+## setupRemoteVideoEx
+
+初始化远端用户视图。
+
+<a id="api_irtcengineex_setupremotevideoex__prototype"></a>
+
+```cpp
+virtual int setupRemoteVideoEx(const VideoCanvas& canvas, const RtcConnection& connection) = 0;
+```
+
+<a id="api_irtcengineex_setupremotevideoex__detailed_desc"></a>
+
+### 详情
+
+该方法绑定远端用户和显示视图，并设置远端用户视图在本地显示时的渲染模式和镜像模式，只影响本地用户看到的视频画面。
+
+调用该方法时需要在 [VideoCanvas](/zh-CN/api-reference/rtc/unreal-cpp/class-videocanvas) 中指定远端视频的用户 ID，一般可以在进频道前提前设置好。
+
+如果无法在加入频道前得到远端用户的 uid，可以在收到 [onUserJoined](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onuserjoined) 回调时调用该方法。如果启用了视频录制功能，视频录制服务会做为一个哑客户端加入频道，因此其他客户端也会收到它的 `onUserJoined` 事件， App 不应给它绑定视图（因为它不会发送视频流）。
+
+如需解除某个远端用户的绑定视图，可以调用该方法并将 view 设置为空。
+
+离开频道后，SDK 会清除远端用户视图的绑定关系。
+
+:::warning[注意]
+- 该方法需要在 joinChannelEx 之后调用。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 setRemoteRenderModeEx 方法。
+:::
+
+<a id="api_irtcengineex_setupremotevideoex__parameters"></a>
+
+### 参数
+
+#### `canvas`
+
+视频画布信息。详见 [VideoCanvas](/zh-CN/api-reference/rtc/unreal-cpp/class-videocanvas)。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+<a id="api_irtcengineex_setupremotevideoex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_startmediarenderingtracing"></a>
+
+## startMediaRenderingTracing
+
+开启视频帧渲染数据打点。
+
+<a id="api_irtcengine_startmediarenderingtracing__prototype"></a>
+
+```cpp
+virtual int startMediaRenderingTracing() = 0;
+```
+
+<a id="api_irtcengine_startmediarenderingtracing__detailed_desc"></a>
+
+### 详情
+
+成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
+
+:::info[注]
+- SDK 默认以调用 joinChannel [2/2] 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
+- 离开当前频道后，SDK 会自动重置该时间点为下一次成功加入频道的时刻。
+:::
+
+<a id="api_irtcengine_startmediarenderingtracing__scenario"></a>
+
+### 适用场景
+
+声网推荐你将该方法和 App 中的 UI 设置（按钮、滑动条等）结合使用，用于针对终端用户的体验改进。例如：在终端用户在点击 加入频道 按钮的时刻调用该方法进行打点，然后通过 onVideoRenderingTracingResult 回调获取视频帧渲染过程中的指标，从而针对指标进行专项优化。
+
+<a id="api_irtcengine_startmediarenderingtracing__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+  - -7: IRtcEngine 尚未初始化就调用方法。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_startmediarenderingtracingex"></a>
+
+## startMediaRenderingTracingEx
+
+开启视频帧渲染数据打点。
+
+<a id="api_irtcengineex_startmediarenderingtracingex__prototype"></a>
+
+```cpp
+virtual int startMediaRenderingTracingEx(const RtcConnection& connection) = 0;
+```
+
+<a id="api_irtcengineex_startmediarenderingtracingex__detailed_desc"></a>
+
+### 详情
+
+成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
+
+:::info[注]
+- SDK 默认以调用 joinChannel [2/2] 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
+- 离开当前频道后，SDK 会自动重置该时间点为下一次成功加入频道的时刻。
+:::
+
+<a id="api_irtcengineex_startmediarenderingtracingex__scenario"></a>
+
+### 适用场景
+
+声网推荐你将该方法和 App 中的 UI 设置（按钮、滑动条等）结合使用，用于针对终端用户的体验改进。例如：在终端用户在点击 加入频道 按钮的时刻调用该方法进行打点，然后通过 onVideoRenderingTracingResult 回调获取视频帧渲染过程中的指标，从而针对指标进行专项优化。
+
+<a id="api_irtcengineex_startmediarenderingtracingex__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+<a id="api_irtcengineex_startmediarenderingtracingex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
+
+<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo"></a>
+
+## onTranscodedStreamLayoutInfo
+
+已接收携带布局信息的合图视频流回调。
+
+<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__prototype"></a>
+
+```cpp
+virtual void onTranscodedStreamLayoutInfo(uid_t uid, int width, int height, int layoutCount,const VideoLayout* layoutlist) {
+    (void)uid;
+    (void)width;
+    (void)height;
+    (void)layoutCount;
+    (void)layoutlist;
+  }
+```
+
+<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__detailed_desc"></a>
+
+### 详情
+
+当本地第一次接收到合图服务器发送的合图视频流，或者合图流的布局信息有变化时，SDK 会触发该回调，报告合图视频流中每一路子视频流的布局信息。
+
+<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+#### `uid`
+
+发布合图视频流的用户 ID。
+
+#### `width`
+
+合图视频流的宽度 (px)。
+
+#### `height`
+
+合图视频流的高度 (px)。
+
+#### `layoutCount`
+
+合图视频流中布局信息的数量。
+
+#### `layoutlist`
+
+某一路合图视频流的详细布局信息。详见 [VideoLayout](/zh-CN/api-reference/rtc/unreal-cpp/class-videolayout)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onvideorenderingtracingresult"></a>
+
+## onVideoRenderingTracingResult
+
+视频帧渲染事件回调。
+
+<a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__prototype"></a>
+
+```cpp
+ virtual void onVideoRenderingTracingResult(uid_t uid, MEDIA_TRACE_EVENT currentEvent, VideoRenderingTracingInfo tracingInfo) {
+  (void)uid;
+  (void)currentEvent;
+  (void)tracingInfo;
+}
+```
+
+<a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__detailed_desc"></a>
+
+调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后，SDK 会触发该回调，报告视频帧渲染的事件和渲染过程中的指标。开发者可以针对指标进行专项优化，以提高出图效率。
+
+<a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+#### `uid`
+
+用户 ID。
+
+#### `currentEvent`
+
+当前视频帧渲染事件。详见 [MEDIA_TRACE_EVENT](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediatraceevent)。
+
+#### `tracingInfo`
+
+视频帧渲染过程中的指标。开发者需要尽可能降低指标值，以提高出图效率。详见 [VideoRenderingTracingInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-videorenderingtracinginfo)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

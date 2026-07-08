@@ -1,0 +1,55 @@
+---
+title: "CameraCapturerConfiguration"
+description: "摄像头采集配置。"
+---
+<a id="class_cameracapturerconfiguration__prototype"></a>
+
+```csharp
+public class CameraCapturerConfiguration : IOptionalJsonParse
+    {
+        public Optional<CAMERA_DIRECTION> cameraDirection = new Optional<CAMERA_DIRECTION>();
+        public Optional<CAMERA_FOCAL_LENGTH_TYPE> cameraFocalLengthType = new Optional<CAMERA_FOCAL_LENGTH_TYPE>();
+        public Optional<string> deviceId = new Optional<string>();
+        public Optional<string> cameraId = new Optional<string>();
+        public Optional<bool> followEncodeDimensionRatio = new Optional<bool>();
+        public VideoFormat format;
+
+        public CameraCapturerConfiguration()
+        {
+            this.format = new VideoFormat(0, 0, 0);
+        }
+
+        public CameraCapturerConfiguration(Optional<CAMERA_DIRECTION> cameraDirection, Optional<CAMERA_FOCAL_LENGTH_TYPE> cameraFocalLengthType, Optional<string> deviceId, Optional<string> cameraId, Optional<bool> followEncodeDimensionRatio, VideoFormat format)
+        {
+            this.cameraDirection = cameraDirection;
+            this.cameraFocalLengthType = cameraFocalLengthType;
+            this.deviceId = deviceId;
+            this.cameraId = cameraId;
+            this.followEncodeDimensionRatio = followEncodeDimensionRatio;
+            this.format = format;
+        }
+    }
+```
+
+<a id="class_cameracapturerconfiguration__parameters"></a>
+
+## 属性
+
+### `cameraDirection`
+
+（可选）摄像头方向。详见 [CAMERA_DIRECTION](/zh-CN/api-reference/rtc/csharp-windows/enum-cameradirection)。
+
+### `format`
+
+（可选）视频帧格式。详见 [VideoFormat](/zh-CN/api-reference/rtc/csharp-windows/class-videoformat)。
+
+### `deviceId`
+
+（可选）摄像头的 ID。
+
+### `followEncodeDimensionRatio`
+
+（可选）是否跟随 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 中设置的视频宽高比：
+
+- true：(默认) 跟随。SDK 会将采集到的视频按照已设置的视频宽高比进行裁剪，会同步改变本地预览画面、 [OnCaptureVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 和 [OnPreEncodeVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 中的视频画面。
+- false：不跟随。SDK不改变采集到的视频帧宽高比。

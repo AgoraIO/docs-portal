@@ -1,0 +1,51 @@
+---
+title: "LOCAL_AUDIO_STREAM_REASON"
+description: "本地音频状态变化的原因。"
+---
+<a id="enum_localaudiostreamreason__parameters"></a>
+
+## 枚举值
+
+### `LOCAL_AUDIO_STREAM_REASON_OK`
+
+（0）：本地音频状态正常。
+
+### `LOCAL_AUDIO_STREAM_REASON_FAILURE`
+
+（1）：本地音频异常，原因不明确。建议用户尝试重新加入频道。
+
+### `LOCAL_AUDIO_STREAM_REASON_DEVICE_NO_PERMISSION`
+
+（2）：无权限使用本地音频采集设备。建议用户授予麦克风权限。
+
+### `LOCAL_AUDIO_STREAM_REASON_DEVICE_BUSY`
+
+（3）：仅适用于 Android 和 iOS 平台，本地音频采集设备被占用。建议用户检查是否有其他应用占用麦克风。麦克风空闲约五秒后音频采集会自动恢复，也可在麦克风空闲后重新加入频道。
+
+### `LOCAL_AUDIO_STREAM_REASON_RECORD_FAILURE`
+
+（4）：本地音频采集失败。
+
+### `LOCAL_AUDIO_STREAM_REASON_ENCODE_FAILURE`
+
+（5）：本地音频编码失败。
+
+### `LOCAL_AUDIO_STREAM_REASON_NO_RECORDING_DEVICE`
+
+（6）：仅适用于 Windows 和 macOS 平台，未检测到本地音频采集设备。建议用户在设备控制面板中检查麦克风是否正确连接或工作正常。
+
+### `LOCAL_AUDIO_STREAM_REASON_NO_PLAYOUT_DEVICE`
+
+（7）：仅适用于 Windows 和 macOS 平台，未检测到本地音频播放设备。建议用户在设备控制面板中检查扬声器是否正确连接或工作正常。
+
+### `LOCAL_AUDIO_STREAM_REASON_INTERRUPTED`
+
+（8）：仅适用于 Android 和 iOS 平台，本地音频采集被系统电话、智能助手或闹钟中断。如需继续采集音频，建议用户结束相关任务。
+
+### `LOCAL_AUDIO_STREAM_REASON_RECORD_INVALID_ID`
+
+（9）：仅适用于 Windows 平台，本地音频采集设备的 ID 无效。建议用户检查音频采集设备 ID 是否正确。
+
+### `LOCAL_AUDIO_STREAM_REASON_PLAYOUT_INVALID_ID`
+
+（10）：仅适用于 Windows 平台，本地音频播放设备的 ID 无效。建议用户检查音频播放设备 ID 是否正确。

@@ -1,0 +1,28 @@
+---
+title: "Packet"
+description: "用于配置 Packet 实例。"
+---
+<a id="class_packet__prototype"></a>
+
+```cpp
+struct Packet {
+  const unsigned char* buffer;
+  unsigned int size;
+};
+```
+
+<a id="class_packet__parameters"></a>
+
+## 属性
+
+### `buffer`
+
+发送或接收数据的缓冲区地址。
+
+:::info[注]
+声网建议将 `buffer` 设置为大于 2048 字节的值。否则，可能会遇到未定义行为（如崩溃）。
+:::
+
+### `size`
+
+发送或接收数据的缓冲区大小。

@@ -1,0 +1,47 @@
+---
+title: "LogUploadServerInfo"
+description: "日志服务器的配置信息。"
+---
+<a id="class_loguploadserverinfo__prototype"></a>
+
+```cpp
+struct LogUploadServerInfo {
+  const char* serverDomain;
+ 
+  const char* serverPath;
+ 
+  int serverPort;
+ 
+  bool serverHttps;
+ 
+  LogUploadServerInfo() : serverDomain(nullptr), serverPath(nullptr), serverPort(0), serverHttps(true) {}
+ 
+  LogUploadServerInfo(const char* domain, const char* path, int port, bool https) : serverDomain(domain),
+serverPath(path), serverPort(port), serverHttps(https) {}
+};
+```
+
+<a id="class_loguploadserverinfo__detailed_desc"></a>
+
+<a id="class_loguploadserverinfo__parameters"></a>
+
+## 属性
+
+### `serverDomain`
+
+日志服务器的域名。
+
+### `serverPath`
+
+日志在服务器上的存储路径。
+
+### `serverPort`
+
+日志服务器的端口。
+
+### `serverHttps`
+
+日志服务器是否使用 HTTPS 协议：
+
+- true: 使用 HTTPS 协议。
+- false: 使用 HTTP 协议。

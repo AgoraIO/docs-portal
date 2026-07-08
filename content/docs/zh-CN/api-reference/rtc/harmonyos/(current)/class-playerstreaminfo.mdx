@@ -1,0 +1,81 @@
+---
+title: "MediaStreamInfo"
+description: "播放器媒体流的所有信息。"
+---
+<a id="class_playerstreaminfo__prototype"></a>
+
+```arkts
+export class MediaStreamInfo
+{
+  public streamIndex:number = 0
+  public mediaStreamType:number = 0
+  public codecName:string = ""
+  public language:string = ""
+  public videoFrameRate:number = 0
+  public videoBitRate:number = 0
+  public videoWidth:number = 0
+  public videoHeight:number = 0
+  public videoRotation:number = 0
+  public audioSampleRate:number = 0
+  public audioChannels:number = 0
+  public audioBytesPerSample:number = 0
+  public duration:bigint = BigInt(0)
+}
+```
+
+<a id="class_playerstreaminfo__parameters"></a>
+
+### `streamIndex`
+
+媒体流的索引值。
+
+### `mediaStreamType`
+
+此条媒体流的类型。
+
+- STREAM_TYPE_UNKNOWN (0): 未知类型。
+- STREAM_TYPE_VIDEO (1): 视频流。
+- STREAM_TYPE_AUDIO (2): 音频流。
+- STREAM_TYPE_SUBTITLE (3): 字幕流。
+
+### `codecName`
+
+此条媒体流的编码规格。
+
+### `language`
+
+此条媒体流的语言。
+
+### `videoFrameRate`
+
+该参数仅对视频流生效，表示视频帧率 (fps)。
+
+### `videoBitRate`
+
+该参数仅对视频流生效，表示视频码率 (bps)。
+
+### `videoWidth`
+
+该参数仅对视频流生效，表示视频宽度 (px)。
+
+### `videoHeight`
+
+该参数仅对视频流生效，表示视频高度 (px)。
+
+该参数仅对视频流生效，表示旋转角度。
+
+### `audioSampleRate`
+
+该参数仅对音频流生效，表示音频采样率 (Hz)。
+
+### `audioChannels`
+
+该参数仅对音频流生效，表示声道数。
+
+### `audioBytesPerSample`
+
+该参数仅对音频流生效，表示每个音频采样点的位数 (bit)。
+
+### `duration`
+
+媒体流的时长（毫秒）。

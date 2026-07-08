@@ -1,0 +1,30 @@
+---
+title: "setDestChannelInfo"
+description: "设置目标频道信息。"
+---
+<a id="api_channelmediarelayconfiguration_setdestchannelinfo__prototype"></a>
+
+```arkts
+public setDestChannelInfo(channelName: string, destInfo: ChannelMediaInfo) {
+  this.destInfos.set(channelName, destInfo);
+}
+```
+
+<a id="api_channelmediarelayconfiguration_setdestchannelinfo__parameters"></a>
+
+## 参数
+
+### `channelName`
+
+目标频道的频道名。
+
+### `destInfo`
+
+目标频道信息 ChannelMediaInfo，包含如下成员：
+
+- channelName：目标频道的频道名。
+- token：能加入目标频道的 token。由你在 destInfos 中设置的 channelName 和 uid 生成。:::warning [注意]
+由于目标频道中任意频道的 token 过期会导致所有跨频道推流停止，因此建议你将目标频道的 token 设置为相同的过期时长。:::
+  - 如未启用 App Certificate，可直接将该参数设为默认值 NULL，表示 SDK 填充 App ID。
+  - 如已启用 App Certificate，则务必填入使用 channelName 和 uid 生成的 token。
+- uid：标识目标频道中的转发媒体流的 UID。取值范围为 0 到（2 32 -1），请确保与目标频道中的所有 UID 不同。默认值为 0，表示 SDK 随机分配一个 UID。

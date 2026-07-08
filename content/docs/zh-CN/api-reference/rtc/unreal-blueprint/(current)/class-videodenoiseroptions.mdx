@@ -1,0 +1,32 @@
+---
+title: "FUABT_VideoDenoiserOptions"
+description: "视频降噪选项。"
+---
+<a id="class_videodenoiseroptions__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FUABT_VideoDenoiserOptions
+{
+	GENERATED_BODY()
+
+public:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	EUABT_VIDEO_DENOISER_MODE mode = EUABT_VIDEO_DENOISER_MODE::VIDEO_DENOISER_AUTO;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	EUABT_VIDEO_DENOISER_LEVEL  level = EUABT_VIDEO_DENOISER_LEVEL ::VIDEO_DENOISER_LEVEL_HIGH_QUALITY;
+};
+```
+
+<a id="class_videodenoiseroptions__parameters"></a>
+
+## 属性
+
+### `level`
+
+视频降噪等级。 详见 [EUABT_VIDEO_DENOISER_LEVEL](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videodenoiserlevel)。
+
+### `mode`
+
+视频降噪模式。 详见 [EVIDEO_DENOISER_MODE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videodenoisermode)。

@@ -1,0 +1,37 @@
+---
+title: "SimulcastStreamConfig"
+description: "视频小流的配置。"
+---
+<a id="class_simulcaststreamconfig__prototype"></a>
+
+```dart
+class SimulcastStreamConfig {
+  const SimulcastStreamConfig({this.dimensions, this.kBitrate, this.framerate});
+
+  @JsonKey(name: 'dimensions')
+  final VideoDimensions? dimensions;
+  @JsonKey(name: 'kBitrate')
+  final int? kBitrate;
+  @JsonKey(name: 'framerate')
+  final int? framerate;
+  factory SimulcastStreamConfig.fromJson(Map<String, dynamic> json) =>
+      _$SimulcastStreamConfigFromJson(json);
+  Map<String, dynamic> toJson() => _$SimulcastStreamConfigToJson(this);
+}
+```
+
+<a id="class_simulcaststreamconfig__parameters"></a>
+
+## 属性
+
+### `dimensions`
+
+视频尺寸。详见 [VideoDimensions](/zh-CN/api-reference/rtc/flutter/class-videodimensions)。默认值为视频大流的 50%。
+
+### `kBitrate`
+
+视频码率 (Kbps)，默认值为 -1。该参数无需设置，SDK 会根据你设定的视频分辨率和帧率自动匹配最合适的码率。
+
+### `framerate`
+
+视频帧率 (fps)。默认值为 5。

@@ -1,0 +1,35 @@
+---
+title: "AgoraVideoCodecType"
+description: "视频编解码器类型。"
+---
+<a id="enum_videocodectype__parameters"></a>
+
+## 枚举值
+
+### `AgoraVideoCodecTypeNone`
+
+（0）：（默认）未指定的编解码器格式。SDK 会根据当前视频流的分辨率和设备性能自动匹配合适的编解码器格式。
+
+### `AgoraVideoCodecTypeVP8`
+
+（1）：标准 VP8 编解码器格式。
+
+### `AgoraVideoCodecTypeH264`
+
+（2）：标准 H.264 编解码器格式。
+
+### `AgoraVideoCodecTypeH265`
+
+（3）：标准 H.265 编解码器格式。
+
+### `AgoraVideoCodecTypeGeneric`
+
+（6）：通用类型。用于传输原始视频数据，例如加密的视频帧。SDK 会在回调中返回此类型的视频帧，需由用户自行解码和渲染。
+
+### `AgoraVideoCodecTypeVP9`
+
+（13）：标准 VP9 编解码器格式。
+
+### `AgoraVideoCodecTypeGenericJpeg`
+
+（20）：通用 JPEG 编解码器格式。该类型计算资源消耗最少，适用于 IoT 设备。

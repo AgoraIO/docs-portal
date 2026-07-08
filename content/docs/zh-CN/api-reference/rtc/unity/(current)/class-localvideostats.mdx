@@ -1,0 +1,148 @@
+---
+title: "LocalVideoStats"
+description: "本地视频流统计信息。"
+---
+<a id="class_localvideostats__prototype"></a>
+
+```csharp
+public class LocalVideoStats
+    {
+        public LocalVideoStats()
+        {
+        }
+
+        public uint uid { set; get; }
+        public int sentBitrate { set; get; }
+        public int sentFrameRate { set; get; }
+        public int captureFrameRate { set; get; }
+        public int captureFrameWidth { set; get; }
+        public int captureFrameHeight { set; get; }
+        public int regulatedCaptureFrameRate { set; get; }
+        public int regulatedCaptureFrameWidth { set; get; 
+        public int regulatedCaptureFrameHeight { set; get; }
+        public int encoderOutputFrameRate { set; get; }
+        public int encodedFrameWidth { set; get; }
+        public int encodedFrameHeight { set; get; }
+        public int rendererOutputFrameRate { set; get; }
+        public int targetBitrate { set; get; }
+        public int targetFrameRate { set; get; }
+        public QUALITY_ADAPT_INDICATION qualityAdaptIndication { set; get; }
+        public int encodedBitrate { set; get; }
+        public int encodedFrameCount { set; get; }
+        public VIDEO_CODEC_TYPE codecType { set; get; }
+        public ushort txPacketLossRate { set; get; }
+        public CAPTURE_BRIGHTNESS_LEVEL_TYPE captureBrightnessLevel { set; get; }
+        public int hwEncoderAccelerating { set; get; }
+    };
+```
+
+<a id="class_localvideostats__parameters"></a>
+
+## 属性
+
+### `uid`
+
+本地用户的 ID。
+
+### `sentBitrate`
+
+实际发送码率 (Kbps)
+
+:::info[注]
+不包含丢包后重传视频等的发送码率。
+:::
+
+### `sentFrameRate`
+
+实际发送帧率 (fps)。
+
+:::info[注]
+不包含丢包后重传视频等的发送帧率。
+:::
+
+### `captureFrameRate`
+
+本地视频采集帧率 (fps)。
+
+### `captureFrameWidth`
+
+本地视频采集宽度 (px)。
+
+### `captureFrameHeight`
+
+本地视频采集高度 (px)。
+
+### `regulatedCaptureFrameRate`
+
+SDK 内置的视频采集适配器（regulator）调整后的摄像头采集视频帧率 (fps)。Regulator 根据视频编码配置对摄像头采集视频的帧率进行调整。
+
+### `regulatedCaptureFrameWidth`
+
+SDK 内置的视频采集适配器（regulator）调整后的摄像头采集视频宽度 (px)。Regulator 根据视频编码配置对摄像头采集视频的宽高进行调整。
+
+### `regulatedCaptureFrameHeight`
+
+SDK 内置的视频采集适配器（regulator）调整后的摄像头采集视频高度 (px)。Regulator 根据视频编码配置对摄像头采集视频的宽高进行调整。
+
+### `encoderOutputFrameRate`
+
+本地视频编码器的输出帧率，单位为 fps。
+
+### `rendererOutputFrameRate`
+
+本地视频渲染器的输出帧率，单位为 fps。
+
+### `targetBitrate`
+
+当前编码器的目标编码码率 (Kbps)，该码率为 SDK 根据当前网络状况预估的一个值。
+
+### `targetFrameRate`
+
+当前编码器的目标编码帧率 (fps)。
+
+### `qualityAdaptIndication`
+
+统计周期内本地视频质量（基于目标帧率和目标码率）的自适应情况。详见 [QUALITY_ADAPT_INDICATION](/zh-CN/api-reference/rtc/unity/enum-qualityadaptindication)。
+
+### `encodedBitrate`
+
+视频编码码率（Kbps）。
+
+:::info[注]
+不包含丢包后重传视频等的编码码率。
+:::
+
+### `encodedFrameHeight`
+
+视频编码高度（px）。
+
+### `encodedFrameWidth`
+
+视频编码宽度（px）。
+
+### `encodedFrameCount`
+
+视频发送的帧数，累计值。
+
+### `codecType`
+
+视频的编码类型。详见 [VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc/unity/enum-videocodectype)。
+
+### `txPacketLossRate`
+
+弱网对抗前本端到声网边缘服务器的视频丢包率 (%)。
+
+### `captureFrameRate`
+
+本地视频采集帧率 (fps)。
+
+### `captureBrightnessLevel`
+
+本地采集的画质亮度级别。详见 [CAPTURE_BRIGHTNESS_LEVEL_TYPE](/zh-CN/api-reference/rtc/unity/enum-capturebrightnessleveltype)。
+
+### `hwEncoderAccelerating`
+
+本地视频编码加速类型。
+
+- 0：采用软件编码，未加速。
+- 1：采用硬件编码进行加速。

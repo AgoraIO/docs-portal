@@ -1,0 +1,49 @@
+---
+title: "AgoraVirtualBackgroundSource"
+description: "设置自定义背景。"
+---
+<a id="class_virtualbackgroundsource__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraVirtualBackgroundSource : NSObject
+@property(nonatomic, assign) AgoraVirtualBackgroundSourceType backgroundSourceType NS_SWIFT_NAME(backgroundSourceType);
+@property(nonatomic, assign) NSUInteger color NS_SWIFT_NAME(color);
+@property(nonatomic, copy) NSString* _Nullable source NS_SWIFT_NAME(source);
+@property(nonatomic, assign) AgoraBlurDegree blurDegree;
+@end
+```
+
+<a id="class_virtualbackgroundsource__parameters"></a>
+
+## 属性
+
+### `backgroundSourceType`
+
+自定义背景的类型。详见 [AgoraVirtualBackgroundSourceType](/zh-CN/api-reference/rtc/macos/enum-backgroundsourcetype)。
+
+### `color`
+
+自定义背景图像的颜色。颜色格式为 RGB 十六进制整数，不带 # 符号，例如浅粉色为 0xFFB6C1。默认值为 0xFFFFFF（白色）。取值范围为 [0x000000, 0xFFFFFF]。如果取值无效，SDK 会将原始背景图替换为白色背景图。
+
+:::info[注]
+该参数仅适用于以下类型的自定义背景：
+
+- AgoraVirtualBackgroundColor：背景图为传入颜色的纯色图像。
+- AgoraVirtualBackgroundImg：如果 source 中的图像具有透明背景，则透明部分将使用该参数传入的颜色填充。
+:::
+
+### `source`
+
+自定义背景图像的本地绝对路径。支持 PNG、JPG、MP4、AVI、MKV 和 FLV 格式。如果路径无效，SDK 将使用原始背景图或由 `color` 指定的纯色图像。
+
+:::info[注]
+该参数仅在自定义背景类型为 `AgoraVirtualBackgroundImg` 或 `AgoraVirtualBackgroundVideo` 时生效。
+:::
+
+### `blurDegree`
+
+自定义背景图像的模糊程度。详见 [AgoraBlurDegree](/zh-CN/api-reference/rtc/macos/enum-backgroundblurdegree)。
+
+:::info[注]
+该参数仅在自定义背景类型为 `AgoraVirtualBackgroundBlur` 时生效。
+:::
