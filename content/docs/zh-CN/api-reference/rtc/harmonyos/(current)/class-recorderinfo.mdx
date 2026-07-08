@@ -1,0 +1,35 @@
+---
+title: "RecorderInfo"
+description: "录制文件信息。"
+---
+<a id="class_recorderinfo__prototype"></a>
+
+```arkts
+export class RecorderInfo {
+  
+  public fileName: string;
+  
+  public durationMs: number;
+  
+  public fileSize: number;
+  public constructor(fileName: string, durationMs: number, fileSize: number) {
+    this.fileName = fileName;
+    this.durationMs = durationMs;
+    this.fileSize = fileSize;
+  }
+}
+```
+
+<a id="class_recorderinfo__parameters"></a>
+
+### `fileName`
+
+录制文件的绝对存储路径。
+
+### `durationMs`
+
+录制文件的时长，单位为毫秒。
+
+### `fileSize`
+
+录制文件的大小，单位为字节。

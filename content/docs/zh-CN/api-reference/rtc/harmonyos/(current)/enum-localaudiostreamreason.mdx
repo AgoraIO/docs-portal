@@ -1,0 +1,31 @@
+---
+title: "LocalAudioStreamReason"
+description: "本地音频状态改变原因。"
+---
+<a id="enum_localaudiostreamreason__parameters"></a>
+
+## 枚举值
+
+### `OK`
+
+0：本地音频状态正常。
+
+### `FAILURE`
+
+1：本地音频出错原因不明确。建议提示用户尝试重新加入频道。
+
+### `DEVICE_NO_PERMISSION`
+
+2：没有权限启动本地音频采集设备。请提示用户开启权限。
+
+##### `弃用：`
+
+该枚举已废弃。请改用 [onPermissionError](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onpermissionerror) 回调中的 RECORD_AUDIO。
+
+### `CAPTURE_FAILURE`
+
+4：本地音频采集失败。
+
+### `ENCODE_FAILURE`
+
+5：本地音频编码失败。

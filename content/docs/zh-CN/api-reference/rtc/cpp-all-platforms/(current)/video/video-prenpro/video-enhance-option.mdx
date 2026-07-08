@@ -1,0 +1,1032 @@
+---
+title: "视频增强"
+description: "视频增强 API reference."
+---
+<a id="toc_video_enhance_option"></a>
+
+<a id="api_ivideoeffectobject_addorupdatevideoeffect"></a>
+
+## addOrUpdateVideoEffect
+
+添加或更新指定视频特效节点和模板的特效。
+
+<a id="api_ivideoeffectobject_addorupdatevideoeffect__prototype"></a>
+
+```cpp
+virtual int addOrUpdateVideoEffect(uint32_t nodeId, const char* templateName) = 0;
+```
+
+<a id="api_ivideoeffectobject_addorupdatevideoeffect__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+:::info[注]
+优先级规则：
+
+- 风格妆 (VIDEO_EFFECT_NODE_ID::STYLE_MAKEUP) 节点优先于滤镜特效 (VIDEO_EFFECT_NODE_ID::FILTER) 节点。
+- 若要应用滤镜特效，必须先移除风格妆特效节点：
+
+```cpp
+removeVideoEffect(VIDEO_EFFECT_NODE_ID::STYLE_MAKEUP);
+addOrUpdateVideoEffect(VIDEO_EFFECT_NODE_ID::FILTER, "template name");
+```
+:::
+
+<a id="api_ivideoeffectobject_addorupdatevideoeffect__parameters"></a>
+
+### 参数
+
+#### `nodeId`
+
+视频特效节点的唯一标识符或标识符组合。详见 [VIDEO_EFFECT_NODE_ID](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videoeffectnodeid)。 示例：
+
+- 单一特效： VIDEO_EFFECT_NODE_ID::BEAUTY
+- 组合特效： VIDEO_EFFECT_NODE_ID::BEAUTY | VIDEO_EFFECT_NODE_ID::STYLE_MAKEUP
+
+#### `templateName`
+
+特效模板名称。如果设置为 NULL 或空字符串，SDK 会从资源包中加载默认配置。
+
+<a id="api_ivideoeffectobject_addorupdatevideoeffect__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject)
+
+<a id="api_irtcengine_createvideoeffectobject"></a>
+
+## createVideoEffectObject
+
+创建一个 IVideoEffectObject 视频特效对象。
+
+<a id="api_irtcengine_createvideoeffectobject__prototype"></a>
+
+```cpp
+virtual agora_refptr<IVideoEffectObject> createVideoEffectObject(const char* bundlePath, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
+```
+
+<a id="api_irtcengine_createvideoeffectobject__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="api_irtcengine_createvideoeffectobject__parameters"></a>
+
+### 参数
+
+#### `bundlePath`
+
+视频特效资源包的路径。
+
+#### `type`
+
+媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
+
+<a id="api_irtcengine_createvideoeffectobject__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回 IVideoEffectObject 对象指针，详见 IVideoEffectObject。
+- 方法调用失败，返回 NULL。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_destroyvideoeffectobject"></a>
+
+## destroyVideoEffectObject
+
+销毁视频特效对象。
+
+<a id="api_irtcengine_destroyvideoeffectobject__prototype"></a>
+
+```cpp
+virtual int destroyVideoEffectObject(agora_refptr<IVideoEffectObject> videoEffectObject) = 0;
+```
+
+<a id="api_irtcengine_destroyvideoeffectobject__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="api_irtcengine_destroyvideoeffectobject__parameters"></a>
+
+### 参数
+
+#### `videoEffectObject`
+
+要销毁的视频特效对象。详见 [IVideoEffectObject](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject)。
+
+<a id="api_irtcengine_destroyvideoeffectobject__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getfaceshapeareaoptions"></a>
+
+## getFaceShapeAreaOptions
+
+获取美型区域选项。
+
+<a id="api_irtcengine_getfaceshapeareaoptions__prototype"></a>
+
+```cpp
+virtual int getFaceShapeAreaOptions(agora::rtc::FaceShapeAreaOptions::FACE_SHAPE_AREA shapeArea, FaceShapeAreaOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
+```
+
+<a id="api_irtcengine_getfaceshapeareaoptions__detailed_desc"></a>
+
+<a id="api_irtcengine_getfaceshapeareaoptions__scenario"></a>
+
+### 适用场景
+
+当用户在应用中打开美型区域和塑形强度菜单时，可以调用该方法获取当前的美颜特效选项，然后根据结果刷新用户界面中的菜单并更新 UI。
+
+<a id="api_irtcengine_getfaceshapeareaoptions__timing"></a>
+
+### 调用时机
+
+在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 方法之后调用该方法。
+
+<a id="api_irtcengine_getfaceshapeareaoptions__parameters"></a>
+
+### 参数
+
+#### `shapeArea`
+
+美型增强区域，详见 [FACE_SHAPE_AREA](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-faceshapearea)。
+
+#### `options`
+
+输出参数，表示美型增强区域的选项，详见 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-faceshapeareaoptions)。
+
+#### `type`
+
+媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
+
+:::info[注]
+在该方法中，该参数仅支持以下两种设置：
+
+- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
+- 如果使用自定义视频源，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+:::
+
+<a id="api_irtcengine_getfaceshapeareaoptions__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getfaceshapebeautyoptions"></a>
+
+## getFaceShapeBeautyOptions
+
+获取美型选项。
+
+<a id="api_irtcengine_getfaceshapebeautyoptions__prototype"></a>
+
+```cpp
+virtual int getFaceShapeBeautyOptions(FaceShapeBeautyOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
+```
+
+<a id="api_irtcengine_getfaceshapebeautyoptions__detailed_desc"></a>
+
+<a id="api_irtcengine_getfaceshapebeautyoptions__scenario"></a>
+
+### 适用场景
+
+当用户在应用中打开美型风格和风格强度菜单时，可以调用该方法获取当前的美型选项，然后根据结果刷新用户界面中的菜单，并更新 UI。
+
+<a id="api_irtcengine_getfaceshapebeautyoptions__timing"></a>
+
+### 调用时机
+
+在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 后调用该方法。
+
+<a id="api_irtcengine_getfaceshapebeautyoptions__parameters"></a>
+
+### 参数
+
+#### `options`
+
+输出参数，表示美型风格选项。详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-faceshapebeautyoptions)。
+
+#### `type`
+
+应用滤镜特效的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
+
+:::info[注]
+在该方法中，该参数仅支持以下两种设置：
+
+- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
+- 如果使用自定义视频源，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+:::
+
+<a id="api_irtcengine_getfaceshapebeautyoptions__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_ivideoeffectobject_getvideoeffectboolparam"></a>
+
+## getVideoEffectBoolParam
+
+获取视频特效中的布尔参数。
+
+<a id="api_ivideoeffectobject_getvideoeffectboolparam__prototype"></a>
+
+```cpp
+virtual bool getVideoEffectBoolParam(const char* option, const char* key) = 0;
+```
+
+<a id="api_ivideoeffectobject_getvideoeffectboolparam__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="api_ivideoeffectobject_getvideoeffectboolparam__parameters"></a>
+
+### 参数
+
+#### `option`
+
+参数所属的选项类别。
+
+#### `key`
+
+参数的键名。
+
+<a id="api_ivideoeffectobject_getvideoeffectboolparam__return_values"></a>
+
+### 返回值
+
+- true：参数已启用。
+- false：参数未启用或不存在。
+
+### 所属接口类
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject)
+
+<a id="api_ivideoeffectobject_getvideoeffectfloatparam"></a>
+
+## getVideoEffectFloatParam
+
+获取视频特效中指定 float 类型参数的值。
+
+<a id="api_ivideoeffectobject_getvideoeffectfloatparam__prototype"></a>
+
+```cpp
+virtual float getVideoEffectFloatParam(const char* option, const char* key) = 0;
+```
+
+<a id="api_ivideoeffectobject_getvideoeffectfloatparam__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="api_ivideoeffectobject_getvideoeffectfloatparam__parameters"></a>
+
+### 参数
+
+#### `option`
+
+参数所属选项的类别。
+
+#### `key`
+
+参数的键名。
+
+<a id="api_ivideoeffectobject_getvideoeffectfloatparam__return_values"></a>
+
+### 返回值
+
+- 如果参数存在，返回对应的 float 值。
+- 如果参数不存在或发生错误，返回 0.0f。
+
+### 所属接口类
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject)
+
+<a id="api_ivideoeffectobject_getvideoeffectintparam"></a>
+
+## getVideoEffectIntParam
+
+获取视频特效中的整数类型参数。
+
+<a id="api_ivideoeffectobject_getvideoeffectintparam__prototype"></a>
+
+```cpp
+virtual int getVideoEffectIntParam(const char* option, const char* key) = 0;
+```
+
+<a id="api_ivideoeffectobject_getvideoeffectintparam__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="api_ivideoeffectobject_getvideoeffectintparam__parameters"></a>
+
+### 参数
+
+#### `option`
+
+参数选项的类别。
+
+#### `key`
+
+参数的键名。
+
+<a id="api_ivideoeffectobject_getvideoeffectintparam__return_values"></a>
+
+### 返回值
+
+- 如果参数存在，返回对应的整数值。
+- 如果参数不存在或发生错误，返回 0。
+
+### 所属接口类
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject)
+
+<a id="api_ivideoeffectobject_performvideoeffectaction"></a>
+
+## performVideoEffectAction
+
+对指定的视频特效节点执行操作。
+
+<a id="api_ivideoeffectobject_performvideoeffectaction__prototype"></a>
+
+```cpp
+virtual int performVideoEffectAction(uint32_t nodeId, VIDEO_EFFECT_ACTION actionId) = 0;
+```
+
+<a id="api_ivideoeffectobject_performvideoeffectaction__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="api_ivideoeffectobject_performvideoeffectaction__parameters"></a>
+
+### 参数
+
+#### `nodeId`
+
+视频特效节点的唯一标识符。
+
+#### `actionId`
+
+要执行的操作，详见 [VIDEO_EFFECT_ACTION](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videoeffectaction)。
+
+<a id="api_ivideoeffectobject_performvideoeffectaction__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject)
+
+<a id="api_ivideoeffectobject_removevideoeffect"></a>
+
+## removeVideoEffect
+
+移除指定节点 ID 的视频特效。
+
+<a id="api_ivideoeffectobject_removevideoeffect__prototype"></a>
+
+```cpp
+virtual int removeVideoEffect(uint32_t nodeId) = 0;
+```
+
+<a id="api_ivideoeffectobject_removevideoeffect__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="api_ivideoeffectobject_removevideoeffect__parameters"></a>
+
+### 参数
+
+#### `nodeId`
+
+要移除的视频特效节点的唯一标识符，详见 [VIDEO_EFFECT_NODE_ID](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videoeffectnodeid)。
+
+<a id="api_ivideoeffectobject_removevideoeffect__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject)
+
+<a id="api_irtcengine_setbeautyeffectoptions"></a>
+
+## setBeautyEffectOptions
+
+设置美颜特效选项。
+
+<a id="api_irtcengine_setbeautyeffectoptions__prototype"></a>
+
+```cpp
+virtual int setBeautyEffectOptions(bool enabled, const BeautyOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
+```
+
+<a id="api_irtcengine_setbeautyeffectoptions__detailed_desc"></a>
+
+:::info[注]
+- 该方法依赖美颜特效动态库 libagora_clear_vision_extension.dll。如果该动态库被删除，将无法正常启用该功能。
+- 该功能对设备性能要求较高。调用该方法时，SDK 会自动检测当前设备的性能能力。
+:::
+
+<a id="api_irtcengine_setbeautyeffectoptions__timing"></a>
+
+### 调用时机
+
+在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 或 `startPreview` 之后调用该方法。
+
+<a id="api_irtcengine_setbeautyeffectoptions__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用美颜特效功能：
+
+- true：启用美颜特效功能。
+- false：（默认）禁用美颜特效功能。
+
+#### `options`
+
+美颜特效选项。详见 [BeautyOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-beautyoptions)。
+
+#### `type`
+
+媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
+
+- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
+- 如果使用自定义视频源，设置为 CUSTOM_VIDEO_SOURCE。
+
+<a id="api_irtcengine_setbeautyeffectoptions__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+  - -4：当前设备不支持该功能。可能原因包括：
+    - 当前设备性能不满足美颜特效的要求。建议更换为高性能设备。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setcolorenhanceoptions"></a>
+
+## setColorEnhanceOptions
+
+设置视频色彩增强效果。
+
+<a id="api_irtcengine_setcolorenhanceoptions__prototype"></a>
+
+```cpp
+virtual int setColorEnhanceOptions(bool enabled, const ColorEnhanceOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
+```
+
+<a id="api_irtcengine_setcolorenhanceoptions__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.0.0 版本新增。
+
+摄像头采集的视频图像可能存在色彩失真。色彩增强功能可智能调整视频的饱和度和对比度等特性，从而增强视频的色彩丰富度和还原度，使画面更加生动。
+
+:::info[注]
+- 请在调用 enableVideo 方法后调用此方法。
+- 色彩增强功能对设备性能有一定要求。开启该功能后，如设备出现严重发热，声网建议你降低色彩增强等级以减少性能消耗，或关闭该功能。
+- 此方法依赖美颜特效动态库 libagora_clear_vision_extension.dll。若该动态库被删除，将无法正常启用该功能。
+:::
+
+<a id="api_irtcengine_setcolorenhanceoptions__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否开启色彩增强功能：
+
+- true：开启色彩增强。
+- false：（默认）关闭色彩增强。
+
+#### `options`
+
+色彩增强选项。详见 [ColorEnhanceOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-colorenhanceoptions)。
+
+#### `type`
+
+媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
+
+- 使用摄像头采集本地视频时，使用默认值 PRIMARY_CAMERA_SOURCE。
+- 使用自定义视频源时，设置为 CUSTOM_VIDEO_SOURCE。
+
+<a id="api_irtcengine_setcolorenhanceoptions__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setfaceshapeareaoptions"></a>
+
+## setFaceShapeAreaOptions
+
+设置面部区域的美颜特效选项并指定媒体源。
+
+<a id="api_irtcengine_setfaceshapeareaoptions__prototype"></a>
+
+```cpp
+virtual int setFaceShapeAreaOptions(const FaceShapeAreaOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
+```
+
+<a id="api_irtcengine_setfaceshapeareaoptions__detailed_desc"></a>
+
+如果通过 [setFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) 实现的预设美颜特效无法满足预期效果，你可以使用该方法设置美颜区域选项，单独微调面部的每个部分，从而实现更精细的美颜效果。
+
+:::info[注]
+- 该方法仅适用于 Android 4.4 或更高版本。
+- 该方法依赖美颜特效动态库 libagora_clear_vision_extension.dll。如果该动态库被删除，则无法正常启用该功能。
+- 该功能对设备性能要求较高。调用该方法时，SDK 会自动检测当前设备的能力。
+:::
+
+<a id="api_irtcengine_setfaceshapeareaoptions__timing"></a>
+
+### 调用时机
+
+在调用 [setFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) 之后调用该方法。
+
+<a id="api_irtcengine_setfaceshapeareaoptions__parameters"></a>
+
+### 参数
+
+#### `options`
+
+面部增强区域，详见 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-faceshapeareaoptions)。
+
+#### `type`
+
+媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
+
+:::info[注]
+该参数仅支持以下两种设置：
+
+- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
+- 如果使用自定义视频源，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+:::
+
+<a id="api_irtcengine_setfaceshapeareaoptions__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+  - -4：当前设备不支持该功能。可能原因包括：
+    - 当前设备能力不满足美颜特效的要求。声网建议更换为高性能设备。
+    - 当前设备版本低于 Android 4.4，不支持该功能。声网建议更换设备或升级操作系统。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setfaceshapebeautyoptions"></a>
+
+## setFaceShapeBeautyOptions
+
+设置美型选项并指定媒体源。
+
+<a id="api_irtcengine_setfaceshapebeautyoptions__prototype"></a>
+
+```cpp
+virtual int setFaceShapeBeautyOptions(bool enabled, const FaceShapeBeautyOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
+```
+
+<a id="api_irtcengine_setfaceshapebeautyoptions__detailed_desc"></a>
+
+调用该方法可以通过预设参数一次性调整多个面部部位，实现瘦脸、放大眼睛、瘦鼻等轻度美颜效果，并支持整体调节美型强度。
+
+:::info[注]
+该方法仅适用于 Android 4.4 或更高版本。 该方法依赖美颜特效动态库 libagora_clear_vision_extension.dll。如果该动态库被删除，将无法正常启用该功能。 该功能对设备性能要求较高。调用该方法时，SDK 会自动检测当前设备的能力。
+:::
+
+<a id="api_irtcengine_setfaceshapebeautyoptions__timing"></a>
+
+### 调用时机
+
+在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 方法之后调用该方法。
+
+<a id="api_irtcengine_setfaceshapebeautyoptions__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用美型特效：
+
+- true：启用美型特效。
+- false：（默认）关闭美型特效。
+
+#### `options`
+
+美型风格选项，详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-faceshapebeautyoptions)。
+
+#### `type`
+
+要应用滤镜特效的媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。 该参数仅支持以下两种设置：
+
+- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
+- 如果使用自定义视频源，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+
+<a id="api_irtcengine_setfaceshapebeautyoptions__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+  - -4：当前设备不支持该功能。可能原因包括：
+    - 当前设备能力不满足美颜特效要求。声网建议更换为高性能设备。
+    - 当前设备版本低于 Android 4.4，不支持该功能。声网建议更换设备或升级操作系统。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setfiltereffectoptions"></a>
+
+## setFilterEffectOptions
+
+设置滤镜特效选项并指定媒体源。
+
+<a id="api_irtcengine_setfiltereffectoptions__prototype"></a>
+
+```cpp
+virtual int setFilterEffectOptions(bool enabled, const FilterEffectOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
+```
+
+<a id="api_irtcengine_setfiltereffectoptions__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.1 版本新增。
+
+:::info[注]
+该方法依赖美颜特效动态库 libagora_clear_vision_extension.dll。如果该动态库被删除，则无法正常启用此功能。 该功能对设备性能要求较高。调用该方法时，SDK 会自动检测当前设备的性能能力。
+:::
+
+<a id="api_irtcengine_setfiltereffectoptions__timing"></a>
+
+### 调用时机
+
+在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 方法之后调用本方法。
+
+<a id="api_irtcengine_setfiltereffectoptions__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用滤镜特效：
+
+- true：启用。
+- false：（默认）不启用。
+
+#### `options`
+
+滤镜特效选项。详见 [FilterEffectOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-filtereffectoptions)。
+
+#### `type`
+
+应用滤镜特效的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
+
+- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
+- 如果使用自定义视频源，设置为 CUSTOM_VIDEO_SOURCE。
+
+<a id="api_irtcengine_setfiltereffectoptions__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlowlightenhanceoptions"></a>
+
+## setLowlightEnhanceOptions
+
+设置暗光增强功能。
+
+<a id="api_irtcengine_setlowlightenhanceoptions__prototype"></a>
+
+```cpp
+virtual int setLowlightEnhanceOptions(bool enabled, const LowlightEnhanceOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
+```
+
+<a id="api_irtcengine_setlowlightenhanceoptions__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.0.0 版本新增。
+
+你可以调用该方法启用暗光增强功能，并设置增强效果的参数。
+
+:::info[注]
+- 该方法依赖美颜特效动态库 libagora_clear_vision_extension.dll。如果该动态库被删除，该功能将无法正常启用。
+- 暗光增强对设备性能有一定要求。如果启用暗光增强后设备出现过热，声网建议将暗光增强选项设置为较低的性能消耗等级，或完全关闭暗光增强功能。
+- 如果你希望在使用暗光增强功能时优先保证画质（LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY ），需要先调用 setVideoDenoiserOptions 实现视频降噪，具体对应关系如下：
+  - 当暗光增强设置为自动模式（LOW_LIGHT_ENHANCE_AUTO ）时，视频降噪需设置为优先保证画质（VIDEO_DENOISER_LEVEL_HIGH_QUALITY ）和自动模式（VIDEO_DENOISER_AUTO ）。
+  - 当暗光增强设置为手动模式（LOW_LIGHT_ENHANCE_MANUAL ）时，视频降噪需设置为优先保证画质（VIDEO_DENOISER_LEVEL_HIGH_QUALITY ）和手动模式（VIDEO_DENOISER_MANUAL ）。
+:::
+
+<a id="api_irtcengine_setlowlightenhanceoptions__scenario"></a>
+
+### 适用场景
+
+暗光增强功能可自适应调整在背光、多云或黑暗等低光或光线不均的场景中采集的视频亮度值，恢复或突出图像细节，提升视频整体视觉效果。
+
+<a id="api_irtcengine_setlowlightenhanceoptions__timing"></a>
+
+### 调用时机
+
+请在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 后调用该方法。
+
+<a id="api_irtcengine_setlowlightenhanceoptions__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用暗光增强功能：
+
+- true：启用暗光增强功能。
+- false：（默认）关闭暗光增强功能。
+
+#### `options`
+
+暗光增强选项，详见 [LowlightEnhanceOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-lowlightenhanceoptions)。
+
+#### `type`
+
+媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
+
+:::info[注]
+在该方法中，该参数仅支持以下两种设置：
+
+- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
+- 如果使用自定义视频源，设置为 CUSTOM_VIDEO_SOURCE。
+:::
+
+<a id="api_irtcengine_setlowlightenhanceoptions__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setvideodenoiseroptions"></a>
+
+## setVideoDenoiserOptions
+
+设置视频降噪功能。
+
+<a id="api_irtcengine_setvideodenoiseroptions__prototype"></a>
+
+```cpp
+virtual int setVideoDenoiserOptions(bool enabled, const VideoDenoiserOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
+```
+
+<a id="api_irtcengine_setvideodenoiseroptions__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.0.0 版本新增。
+
+:::info[注]
+- 该方法依赖美颜特效动态库 libagora_clear_vision_extension.dll。如果该动态库被删除，将无法正常启用该功能。
+- 视频降噪对设备性能有一定要求。如果你在启用视频降噪后设备出现过热情况，声网建议你将视频降噪选项设置为较低的性能消耗等级，或完全关闭视频降噪功能。
+- 如果该方法实现的视频降噪效果无法满足你的需求，声网建议你调用 setBeautyEffectOptions 方法启用美颜和磨皮功能，以获得更好的视频降噪效果。推荐用于强降噪效果的 BeautyOptions 设置如下：
+  - lighteningContrastLevel：LIGHTENING_CONTRAST_NORMAL。
+  - lighteningLevel：0.0。
+  - smoothnessLevel：0.5。
+  - rednessLevel：0.0。
+  - sharpnessLevel：0.1。
+:::
+
+<a id="api_irtcengine_setvideodenoiseroptions__scenario"></a>
+
+### 适用场景
+
+在光线较暗的环境中或使用低端视频采集设备时，视频图像可能会出现明显噪点，影响视频质量。在实时互动场景中，视频噪点还会占用码流资源，降低编码效率。该方法适用于多频道场景。
+
+<a id="api_irtcengine_setvideodenoiseroptions__timing"></a>
+
+### 调用时机
+
+调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 方法后调用该方法。
+
+<a id="api_irtcengine_setvideodenoiseroptions__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用视频降噪功能：
+
+- true：启用视频降噪。
+- false：（默认）关闭视频降噪。
+
+#### `options`
+
+视频降噪选项，详见 [VideoDenoiserOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videodenoiseroptions)。
+
+#### `type`
+
+媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
+
+:::info[注]
+在该方法中，该参数仅支持以下两种设置：
+
+- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
+- 如果使用自定义视频源，设置该参数为 CUSTOM_VIDEO_SOURCE。
+:::
+
+<a id="api_irtcengine_setvideodenoiseroptions__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_ivideoeffectobject_setvideoeffectboolparam"></a>
+
+## setVideoEffectBoolParam
+
+设置视频特效的布尔参数。
+
+<a id="api_ivideoeffectobject_setvideoeffectboolparam__prototype"></a>
+
+```cpp
+virtual int setVideoEffectBoolParam(const char* option, const char* key, bool param) = 0;
+```
+
+<a id="api_ivideoeffectobject_setvideoeffectboolparam__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="api_ivideoeffectobject_setvideoeffectboolparam__parameters"></a>
+
+### 参数
+
+#### `option`
+
+参数选项的类别。
+
+#### `key`
+
+参数的键名。
+
+#### `param`
+
+要设置的布尔值：
+
+- true：启用该选项。
+- false：禁用该选项。
+
+<a id="api_ivideoeffectobject_setvideoeffectboolparam__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject)
+
+<a id="api_ivideoeffectobject_setvideoeffectfloatparam"></a>
+
+## setVideoEffectFloatParam
+
+设置视频特效的浮点参数。
+
+<a id="api_ivideoeffectobject_setvideoeffectfloatparam__prototype"></a>
+
+```cpp
+virtual int setVideoEffectFloatParam(const char* option, const char* key, float param) = 0;
+```
+
+<a id="api_ivideoeffectobject_setvideoeffectfloatparam__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="api_ivideoeffectobject_setvideoeffectfloatparam__parameters"></a>
+
+### 参数
+
+#### `option`
+
+参数选项的类别。
+
+#### `key`
+
+参数的键名。
+
+#### `param`
+
+要设置的浮点值。
+
+<a id="api_ivideoeffectobject_setvideoeffectfloatparam__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject)
+
+<a id="api_ivideoeffectobject_setvideoeffectintparam"></a>
+
+## setVideoEffectIntParam
+
+setVideoEffectIntParam：设置视频特效的整数参数。
+
+<a id="api_ivideoeffectobject_setvideoeffectintparam__prototype"></a>
+
+```cpp
+virtual int setVideoEffectIntParam(const char* option, const char* key, int param) = 0;
+```
+
+<a id="api_ivideoeffectobject_setvideoeffectintparam__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="api_ivideoeffectobject_setvideoeffectintparam__parameters"></a>
+
+### 参数
+
+#### `option`
+
+参数所属选项的类别。
+
+#### `key`
+
+参数的键名。
+
+#### `param`
+
+要设置的整数参数值。
+
+<a id="api_ivideoeffectobject_setvideoeffectintparam__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject)

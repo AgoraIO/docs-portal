@@ -1,0 +1,27 @@
+---
+title: "RemoteAudioState"
+description: "远端音频流状态。"
+---
+<a id="enum_remoteaudiostate__parameters"></a>
+
+## 枚举值
+
+### `STOPPED`
+
+0: 远端音频默认初始状态。在 LOCAL_MUTED、 REMOTE_MUTED 或 REMOTE_OFFLINE 的情况下，会报告该状态。
+
+### `STARTING`
+
+1: 本地用户已接收远端音频首包。
+
+### `DECODING`
+
+2: 远端音频流正在解码，正常播放。在 NETWORK_RECOVERY、 LOCAL_UNMUTED 或 REMOTE_UNMUTED 的情况下，会报告该状态。
+
+### `FROZEN`
+
+3: 远端音频流卡顿。在 NETWORK_CONGESTION 的情况下，会报告该状态。
+
+### `FAILED`
+
+4: 远端音频流播放失败。在 INTERNAL 的情况下，会报告该状态。

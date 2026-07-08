@@ -1,0 +1,44 @@
+---
+title: "AgoraChannelMediaRelayConfiguration"
+description: "配置跨频道媒体流转发。"
+---
+<a id="class_channelmediarelayconfiguration__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraChannelMediaRelayConfiguration: NSObject
+@property (strong, nonatomic, readonly) NSDictionary<NSString *, AgoraChannelMediaRelayInfo *> *_Nullable destinationInfos;
+@property (strong, nonatomic) AgoraChannelMediaRelayInfo *_Nonnull sourceInfo;
+@end
+```
+
+<a id="class_channelmediarelayconfiguration__parameters"></a>
+
+## 属性
+
+### `destinationInfos`
+
+:::info[注]
+如果任一目标频道的 Token 过期，整个媒体流转发将停止。建议为所有目标频道设置相同的 Token 过期时间。
+:::
+
+目标频道信息。包含以下成员：
+
+- channelName：目标频道的名称。
+- token：加入目标频道所需的 Token。该 Token 是使用你在 destinationInfos 中设置的 channelName 和 uid 生成的。
+  - 如果未启用 App 证书，将该参数设置为 nil，表示 SDK 使用 App ID。
+  - 如果启用了 App 证书，必须使用基于 channelName 和 uid 生成的 Token。
+- uid：用于标识目标频道中转发流的唯一用户 ID，取值范围为 0 到 (2^32 - 1)。为避免用户 ID 冲突，该 ID 必须与目标频道中其他用户的 ID 不同。默认值为 0，表示 SDK 自动生成随机 UID。
+
+详见 [AgoraChannelMediaRelayInfo](/zh-CN/api-reference/rtc/ios/class-channelmediainfo)。
+
+### `sourceInfo`
+
+源频道信息。包含以下成员：
+
+- channelName：源频道的名称。默认值为 nil，表示 SDK 使用当前频道名称。
+- token：加入源频道所需的 Token。该 Token 是使用你在 sourceInfo 中设置的 channelName 和 uid 生成的。
+  - 如果未启用 App 证书，将该参数设置为 nil，表示 SDK 使用 App ID。
+  - 如果启用了 App 证书，必须使用基于 channelName 和 uid 生成的 Token，且 uid 必须设置为 0。
+- uid：用于标识源频道中转发流的唯一用户 ID。建议保持默认值 0 不变。
+
+详见 [AgoraChannelMediaRelayInfo](/zh-CN/api-reference/rtc/ios/class-channelmediainfo)。

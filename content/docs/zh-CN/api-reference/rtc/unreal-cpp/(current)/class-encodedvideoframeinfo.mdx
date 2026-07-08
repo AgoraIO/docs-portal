@@ -1,0 +1,102 @@
+---
+title: "EncodedVideoFrameInfo"
+description: "外部编码视频帧的信息。"
+---
+<a id="class_encodedvideoframeinfo__prototype"></a>
+
+```cpp
+struct EncodedVideoFrameInfo {
+  EncodedVideoFrameInfo()
+    : codecType(VIDEO_CODEC_H264),
+      width(0),
+      height(0),
+      framesPerSecond(0),
+      frameType(VIDEO_FRAME_TYPE_BLANK_FRAME),
+      rotation(VIDEO_ORIENTATION_0),
+      trackId(0),
+      captureTimeMs(0),
+      decodeTimeMs(0),
+      uid(0),
+      streamType(VIDEO_STREAM_HIGH) {}
+
+  EncodedVideoFrameInfo(const EncodedVideoFrameInfo& rhs)
+    : codecType(rhs.codecType),
+      width(rhs.width),
+      height(rhs.height),
+      framesPerSecond(rhs.framesPerSecond),
+      frameType(rhs.frameType),
+      rotation(rhs.rotation),
+      trackId(rhs.trackId),
+      captureTimeMs(rhs.captureTimeMs),
+      decodeTimeMs(rhs.decodeTimeMs),
+      uid(rhs.uid),
+      streamType(rhs.streamType) {}
+
+  EncodedVideoFrameInfo& operator=(const EncodedVideoFrameInfo& rhs) {
+    if (this == &rhs) return *this;
+    codecType = rhs.codecType;
+    width = rhs.width;
+    height = rhs.height;
+    framesPerSecond = rhs.framesPerSecond;
+    frameType = rhs.frameType;
+    rotation = rhs.rotation;
+    trackId = rhs.trackId;
+    captureTimeMs = rhs.captureTimeMs;
+    decodeTimeMs = rhs.decodeTimeMs;
+    uid = rhs.uid;
+    streamType = rhs.streamType;
+    return *this;
+  }
+```
+
+<a id="class_encodedvideoframeinfo__parameters"></a>
+
+## 属性
+
+### `codecType`
+
+视频编码类型，详见 [VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videocodectype)。默认值为 `VIDEO_CODEC_H264 (2)`。
+
+### `width`
+
+视频帧的宽度 (px)。
+
+### `height`
+
+视频帧的高度 (px)。
+
+### `framesPerSecond`
+
+每秒的视频帧数。
+
+当该参数不为 `0` 时，你可以用它计算外部编码视频帧的 Unix 时间戳。
+
+### `frameType`
+
+视频帧的类型，详见 [VIDEO_FRAME_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videoframetype)。
+
+### `rotation`
+
+视频帧的旋转信息，详见 [VIDEO_ORIENTATION](/zh-CN/api-reference/rtc/unreal-cpp/enum-videoorientation)。
+
+### `trackId`
+
+预留参数。
+
+轨道 ID。适用于频道中有多个视频轨道的场景。
+
+### `captureTimeMs`
+
+采集外部编码视频帧的 Unix 时间戳 (ms)。
+
+### `decodeTimeMs`
+
+将外部编码视频帧进行解码的时间戳 (ms)。
+
+### `uid`
+
+推送外部编码视频帧的用户 ID。
+
+### `streamType`
+
+视频流类型。 详见 [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videostreamtype)。

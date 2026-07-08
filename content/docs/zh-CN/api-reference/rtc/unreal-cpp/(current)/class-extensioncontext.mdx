@@ -1,0 +1,40 @@
+---
+title: "ExtensionContext"
+description: "插件上下文信息。"
+---
+<a id="class_extensioncontext__prototype"></a>
+
+```cpp
+struct ExtensionContext {
+    bool isValid;
+    uid_t uid;
+    const char *providerName;
+    const char *extensionName;
+    ExtensionContext():isValid(false), uid(0), providerName(NULL), extensionName(NULL) {}
+};
+```
+
+<a id="class_extensioncontext__detailed_desc"></a>
+
+<a id="class_extensioncontext__parameters"></a>
+
+## 属性
+
+### `isValid`
+
+ExtensionContext 中报告的 uid 是否有效：
+
+- true： uid 有效。
+- false： uid 无效。
+
+### `uid`
+
+用户 ID。0 代表本地用户，大于 0 代表远端用户。
+
+### `providerName`
+
+提供插件的服务商名称。
+
+### `extensionName`
+
+插件的名称。

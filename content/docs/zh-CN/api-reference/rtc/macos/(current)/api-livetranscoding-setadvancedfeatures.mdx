@@ -1,0 +1,31 @@
+---
+title: "setAdvancedFeatures:opened:"
+description: "启用或禁用带转码的 RTMP 或 RTMPS 推流的高级功能。"
+---
+<a id="api_livetranscoding_setadvancedfeatures__prototype"></a>
+
+```objectivec
+- (void)setAdvancedFeatures:(NSString* _Nonnull)featureName opened:(BOOL)opened NS_SWIFT_NAME(setAdvancedFeatures(_:opened:));
+```
+
+<a id="api_livetranscoding_setadvancedfeatures__detailed_desc"></a>
+
+通过该方法可以启用或禁用带转码的 RTMP 或 RTMPS 推流的高级功能。
+
+<a id="api_livetranscoding_setadvancedfeatures__parameters"></a>
+
+## 参数
+
+### `featureName`
+
+高级功能名称，包括以下选项：
+
+- LBHQ：低码率高画质的视频高级功能。
+- VEO：优化视频编码器的高级功能。
+
+### `opened`
+
+是否启用该高级功能：
+
+- YES：启用该高级功能。
+- NO：（默认）禁用该高级功能。

@@ -1,0 +1,81 @@
+---
+title: "VoiceBeautifierPreset"
+description: "预设的美声效果选项。"
+---
+<a id="enum_voicebeautifierpreset__parameters"></a>
+
+## 枚举值
+
+### `VoiceBeautifierOff`
+
+原声，即关闭美声效果。
+
+### `ChatBeautifierMagnetic`
+
+磁性（男）。
+
+:::info[注]
+该设置仅对男声有效，请勿用于设置女声，否则音频会失真。
+:::
+
+### `ChatBeautifierFresh`
+
+清新（女）。
+
+:::info[注]
+该设置仅对女声有效，请勿用于设置男声，否则音频会失真。
+:::
+
+### `ChatBeautifierVitality`
+
+活力（女）。
+
+:::info[注]
+该设置仅对女声有效，请勿用于设置男声，否则音频会失真。
+:::
+
+### `SingingBeautifier`
+
+歌唱美声。
+
+- 如果调用 setVoiceBeautifierPreset (SingingBeautifier)，你可以美化男声并添加歌声在小房间的混响效果。请勿用于设置女声，否则音频会失真。
+- 如果调用 setVoiceBeautifierParameters (SingingBeautifier, param1, param2)，你可以美化男声或女声并添加混响效果。
+
+### `TimbreTransformationVigorous`
+
+浑厚。
+
+### `TimbreTransformationDeep`
+
+低沉。
+
+### `TimbreTransformationMellow`
+
+圆润。
+
+### `TimbreTransformationFalsetto`
+
+假音。
+
+### `TimbreTransformationFull`
+
+饱满。
+
+### `TimbreTransformationClear`
+
+清澈。
+
+### `TimbreTransformationResounding`
+
+高亢。
+
+### `TimbreTransformationRinging`
+
+嘹亮。
+
+### `UltraHighQualityVoice`
+
+超高音质，即让音频更清晰、细节更丰富。
+
+- 为达到更好的效果，建议在调用 setVoiceBeautifierPreset 前将 setAudioProfile2 的 profile 参数设置为 AudioProfileMusicHighQuality (4) 或 AudioProfileMusicHighQualityStereo (5)，且 scenario 参数设置为 AudioScenarioGameStreaming (3)。
+- 如果用户的音频采集设备可以高度还原音频细节，建议你不要开启超高音质，否则 SDK 会过度还原音频细节，达不到预期效果。

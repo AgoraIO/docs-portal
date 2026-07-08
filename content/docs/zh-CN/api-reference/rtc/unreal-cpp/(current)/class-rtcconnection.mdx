@@ -1,0 +1,28 @@
+---
+title: "RtcConnection"
+description: "包含连接信息的类。"
+---
+<a id="class_rtcconnection__prototype"></a>
+
+```cpp
+struct RtcConnection {
+  const char* channelId;
+  uid_t localUid;
+
+  RtcConnection() : RtcConnection(NULL, 0) {}
+  RtcConnection(const char* channel_id, uid_t local_uid)
+      : channelId(channel_id), localUid(local_uid) {}
+};
+```
+
+<a id="class_rtcconnection__parameters"></a>
+
+## 属性
+
+### `channelId`
+
+频道名。
+
+### `localUid`
+
+本地用户 ID。

@@ -1,0 +1,42 @@
+---
+title: "AudioDeviceInfo"
+description: "AudioDeviceInfo 类，包含音频设备的 ID 和设备名称。"
+---
+<a id="class_audiodeviceinfo__prototype"></a>
+
+```dart
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class AudioDeviceInfo {
+  const AudioDeviceInfo({this.deviceId, this.deviceTypeName, this.deviceName});
+
+  @JsonKey(name: 'deviceId')
+  final String? deviceId;
+
+  @JsonKey(name: 'deviceTypeName')
+  final String? deviceTypeName;
+
+  @JsonKey(name: 'deviceName')
+  final String? deviceName;
+
+  factory AudioDeviceInfo.fromJson(Map<String, dynamic> json) =>
+      _$AudioDeviceInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AudioDeviceInfoToJson(this);
+}
+```
+
+<a id="class_audiodeviceinfo__parameters"></a>
+
+## 属性
+
+### `deviceId`
+
+设备 ID。
+
+### `deviceName`
+
+设备名称。
+
+### `deviceTypeName`
+
+音频设备类型，如：built-in、USB、HDMI 等。

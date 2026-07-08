@@ -1,0 +1,223 @@
+---
+title: "FLocalVideoStats"
+description: "本地视频流统计信息。"
+---
+<a id="class_localvideostats__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FLocalVideoStats
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int64 uid = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int sentBitrate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int sentFrameRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int captureFrameRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int captureFrameWidth = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int captureFrameHeight = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int regulatedCaptureFrameRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int regulatedCaptureFrameWidth = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int regulatedCaptureFrameHeight = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int encoderOutputFrameRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int encodedFrameWidth = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int encodedFrameHeight = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int rendererOutputFrameRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int targetBitrate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int targetFrameRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	EQUALITY_ADAPT_INDICATION qualityAdaptIndication = EQUALITY_ADAPT_INDICATION::ADAPT_NONE;
+	int encodedBitrate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int encodedFrameCount = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	EVIDEO_CODEC_TYPE codecType = EVIDEO_CODEC_TYPE::VIDEO_CODEC_GENERIC_H264;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int txPacketLossRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	FENUMWRAP_CAPTURE_BRIGHTNESS_LEVEL_TYPE  captureBrightnessLevel = EENUMCUSTOM_CAPTURE_BRIGHTNESS_LEVEL_TYPE::CAPTURE_BRIGHTNESS_LEVEL_INVALID;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	bool dualStreamEnabled = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalVideoStats")
+	int hwEncoderAccelerating = 0;
+
+	FLocalVideoStats(){}
+	FLocalVideoStats(const agora::rtc::LocalVideoStats & AgoraData){
+		uid = AgoraData.uid;
+		sentBitrate = AgoraData.sentBitrate;
+		sentFrameRate = AgoraData.sentFrameRate;
+		captureFrameRate = AgoraData.captureFrameRate;
+		captureFrameWidth = AgoraData.captureFrameWidth;
+		captureFrameHeight = AgoraData.captureFrameHeight;
+		regulatedCaptureFrameRate = AgoraData.regulatedCaptureFrameRate;
+		regulatedCaptureFrameWidth = AgoraData.regulatedCaptureFrameWidth;
+		regulatedCaptureFrameHeight = AgoraData.regulatedCaptureFrameHeight;
+		encoderOutputFrameRate = AgoraData.encoderOutputFrameRate;
+		encodedFrameWidth = AgoraData.encodedFrameWidth;
+		encodedFrameHeight = AgoraData.encodedFrameHeight;
+		rendererOutputFrameRate = AgoraData.rendererOutputFrameRate;
+		targetBitrate = AgoraData.targetBitrate;
+		targetFrameRate = AgoraData.targetFrameRate;
+		qualityAdaptIndication = static_cast<EQUALITY_ADAPT_INDICATION>(AgoraData.qualityAdaptIndication);
+		encodedBitrate = AgoraData.encodedBitrate;
+		encodedFrameCount = AgoraData.encodedFrameCount;
+		codecType = static_cast<EVIDEO_CODEC_TYPE>(AgoraData.codecType);
+		txPacketLossRate = AgoraData.txPacketLossRate;
+		captureBrightnessLevel = FENUMWRAP_CAPTURE_BRIGHTNESS_LEVEL_TYPE(AgoraData.captureBrightnessLevel);
+		dualStreamEnabled = AgoraData.dualStreamEnabled;
+		hwEncoderAccelerating = AgoraData.hwEncoderAccelerating;
+	}
+	agora::rtc::LocalVideoStats CreateAgoraData() const {
+		agora::rtc::LocalVideoStats AgoraData;
+		AgoraData.uid = uid;
+		AgoraData.sentBitrate = sentBitrate;
+		AgoraData.sentFrameRate = sentFrameRate;
+		AgoraData.captureFrameRate = captureFrameRate;
+		AgoraData.captureFrameWidth = captureFrameWidth;
+		AgoraData.captureFrameHeight = captureFrameHeight;
+		AgoraData.regulatedCaptureFrameRate = regulatedCaptureFrameRate;
+		AgoraData.regulatedCaptureFrameWidth = regulatedCaptureFrameWidth;
+		AgoraData.regulatedCaptureFrameHeight = regulatedCaptureFrameHeight;
+		AgoraData.encoderOutputFrameRate = encoderOutputFrameRate;
+		AgoraData.encodedFrameWidth = encodedFrameWidth;
+		AgoraData.encodedFrameHeight = encodedFrameHeight;
+		AgoraData.rendererOutputFrameRate = rendererOutputFrameRate;
+		AgoraData.targetBitrate = targetBitrate;
+		AgoraData.targetFrameRate = targetFrameRate;
+		AgoraData.qualityAdaptIndication = static_cast<agora::rtc::QUALITY_ADAPT_INDICATION>(qualityAdaptIndication);
+		AgoraData.encodedBitrate = encodedBitrate;
+		AgoraData.encodedFrameCount = encodedFrameCount;
+		AgoraData.codecType = static_cast<agora::rtc::VIDEO_CODEC_TYPE>(codecType);
+		AgoraData.txPacketLossRate = txPacketLossRate;
+		AgoraData.captureBrightnessLevel = captureBrightnessLevel.GetRawValue();
+		AgoraData.dualStreamEnabled = dualStreamEnabled;
+		AgoraData.hwEncoderAccelerating = hwEncoderAccelerating;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::LocalVideoStats & AgoraData) const
+	{
+	}
+};
+```
+
+<a id="class_localvideostats__parameters"></a>
+
+## 属性
+
+### `uid`
+
+本地用户的 ID。
+
+### `sentBitrate`
+
+实际发送码率 (Kbps)
+
+:::warning[注意]
+不包含丢包后重传视频等的发送码率。
+:::
+
+### `sentFrameRate`
+
+实际发送帧率 (fps)。
+
+:::warning[注意]
+不包含丢包后重传视频等的发送帧率。
+:::
+
+### `captureFrameRate`
+
+本地视频采集帧率 (fps)。
+
+### `captureFrameWidth`
+
+本地视频采集宽度 (px)。
+
+### `captureFrameHeight`
+
+本地视频采集高度 (px)。
+
+### `regulatedCaptureFrameRate`
+
+SDK 内置的视频采集适配器（regulator）调整后的摄像头采集视频帧率 (fps)。Regulator 根据视频编码配置对摄像头采集视频的帧率进行调整。
+
+### `regulatedCaptureFrameWidth`
+
+SDK 内置的视频采集适配器（regulator）调整后的摄像头采集视频宽度 (px)。Regulator 根据视频编码配置对摄像头采集视频的宽高进行调整。
+
+### `regulatedCaptureFrameHeight`
+
+SDK 内置的视频采集适配器（regulator）调整后的摄像头采集视频高度 (px)。Regulator 根据视频编码配置对摄像头采集视频的宽高进行调整。
+
+### `encoderOutputFrameRate`
+
+本地视频编码器的输出帧率，单位为 fps。
+
+### `rendererOutputFrameRate`
+
+本地视频渲染器的输出帧率，单位为 fps。
+
+### `targetBitrate`
+
+当前编码器的目标编码码率 (Kbps)，该码率为 SDK 根据当前网络状况预估的一个值。
+
+### `targetFrameRate`
+
+当前编码器的目标编码帧率 (fps)。
+
+### `qualityAdaptIndication`
+
+统计周期内本地视频质量（基于目标帧率和目标码率）的自适应情况。 详见 [EQUALITY_ADAPT_INDICATION](/zh-CN/api-reference/rtc/unreal-blueprint/enum-qualityadaptindication)。
+
+### `encodedBitrate`
+
+视频编码码率（Kbps）。
+
+:::warning[注意]
+不包含丢包后重传视频等的编码码率。
+:::
+
+### `encodedFrameHeight`
+
+视频编码高度（px）。
+
+### `encodedFrameWidth`
+
+视频编码宽度（px）。
+
+### `encodedFrameCount`
+
+视频发送的帧数，累计值。
+
+### `codecType`
+
+视频的编码类型。 详见 [EUABT_VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videocodectype)。
+
+### `txPacketLossRate`
+
+弱网对抗前本端到声网边缘服务器的视频丢包率 (%)。
+
+### `captureBrightnessLevel`
+
+本地采集的画质亮度级别。详见 [FENUMWRAP_CAPTURE_BRIGHTNESS_LEVEL_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-capturebrightnessleveltype)。
+
+### `hwEncoderAccelerating`
+
+本地视频编码加速类型。
+
+- 0：采用软件编码，未加速。
+- 1：采用硬件编码进行加速。

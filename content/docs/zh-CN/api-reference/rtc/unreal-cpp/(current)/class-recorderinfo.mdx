@@ -1,0 +1,32 @@
+---
+title: "RecorderInfo"
+description: "录制文件信息。"
+---
+<a id="class_recorderinfo__prototype"></a>
+
+```cpp
+struct RecorderInfo {
+  const char* fileName;
+  unsigned int durationMs;
+  unsigned int fileSize;
+
+  RecorderInfo() : fileName(NULL), durationMs(0), fileSize(0) {}
+  RecorderInfo(const char* name, unsigned int dur, unsigned int size) : fileName(name), durationMs(dur), fileSize(size) {}
+};
+```
+
+<a id="class_recorderinfo__parameters"></a>
+
+## 属性
+
+### `fileName`
+
+录制文件的绝对存储路径。
+
+### `durationMs`
+
+录制文件的时长，单位为毫秒。
+
+### `fileSize`
+
+录制文件的大小，单位为字节。

@@ -1,0 +1,31 @@
+---
+title: "SnapshotConfig"
+description: "视频截图设置。"
+---
+<a id="class_snapshotconfig__prototype"></a>
+
+```typescript
+export class SnapshotConfig {
+  filePath?: string;
+  position?: VideoModulePosition;
+}
+```
+
+<a id="class_snapshotconfig__parameters"></a>
+
+## 属性
+
+### `filePath`
+
+:::info[注]
+请确保目录存在且可写。
+:::
+
+截图的本地保存路径，需精确到文件名及格式，例如：
+
+- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg
+- macOS: ～/Library/Logs/example.jpg
+
+### `position`
+
+截图的视频帧在视频链路中的位置。详见 [VideoModulePosition](/zh-CN/api-reference/rtc/electron/enum-videomoduleposition)。

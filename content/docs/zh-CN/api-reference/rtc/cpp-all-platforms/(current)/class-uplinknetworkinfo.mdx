@@ -1,0 +1,22 @@
+---
+title: "UplinkNetworkInfo"
+description: "上行网络信息结构体。"
+---
+<a id="class_uplinknetworkinfo__prototype"></a>
+
+```cpp
+struct UplinkNetworkInfo {
+  int video_encoder_target_bitrate_bps;
+  bool operator==(const UplinkNetworkInfo& rhs) const {
+    return (video_encoder_target_bitrate_bps == rhs.video_encoder_target_bitrate_bps);
+  }
+};
+```
+
+<a id="class_uplinknetworkinfo__parameters"></a>
+
+## 属性
+
+### `video_encoder_target_bitrate_bps`
+
+目标视频编码器码率，单位为 bps。

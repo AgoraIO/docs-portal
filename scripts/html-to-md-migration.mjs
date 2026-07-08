@@ -148,6 +148,11 @@ function stripHtml(name) {
   return name.replace(/\.html$/, '');
 }
 
+function sourceNameFromHref(href) {
+  if (!href) return null;
+  return path.basename(href.split('#')[0]);
+}
+
 function toKebab(value) {
   return value
     .replace(/_/g, '-')
@@ -594,7 +599,9 @@ function renderPage({ $, currentSource, pageTitleBySource, pageDescriptionBySour
 // ============================================================================
 
 function parseTocTree($) {
-  const rootList = $('nav.toc > ul > li > ul').first();
+  const rootList = $(
+    'nav.toc > ul > li > ul, nav > ul.map > li > ul, nav > ul > li > ul',
+  ).first();
   return parseList($, rootList);
 }
 
@@ -608,7 +615,7 @@ function parseList($, list) {
 
 function parseItem($, item) {
   const anchor = item.children('a').first();
-  const sourceName = anchor.length ? path.basename(anchor.attr('href')) : null;
+  const sourceName = anchor.length ? sourceNameFromHref(anchor.attr('href')) : null;
   const title = normalizeText(
     anchor.length ? anchor.text() : item.children('span').first().text(),
   );
@@ -635,6 +642,14 @@ function assignRoutes(nodes, parentSegments, sourceToRoute) {
   }
 }
 
+function collectSourceNames(nodes, sourceNames = new Set()) {
+  for (const node of nodes) {
+    if (node.sourceName) sourceNames.add(node.sourceName);
+    collectSourceNames(node.children, sourceNames);
+  }
+  return sourceNames;
+}
+
 // ============================================================================
 // File Writing
 // ============================================================================
@@ -647,6 +662,53 @@ async function writeJson(filePath, data) {
 async function writeFile(filePath, contents) {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   await fs.writeFile(filePath, contents, 'utf8');
+}
+
+async function directoryExists(dirPath) {
+  try {
+    return (await fs.stat(dirPath)).isDirectory();
+  } catch {
+    return false;
+  }
+}
+
+async function readHtmlFileNames(apiDir) {
+  const entries = await fs.readdir(apiDir);
+  return entries.filter((name) => name.endsWith('.html')).sort();
+}
+
+async function validateSourceLayout(sourceDir) {
+  const apiDir = path.join(sourceDir, 'API');
+  if (!(await directoryExists(apiDir))) {
+    console.error(
+      [
+        `Unsupported HTML source layout: ${sourceDir}`,
+        '',
+        'This migration script only supports DITA-OT/Oxygen generated API references.',
+        'Expected layout:',
+        `  ${path.join(sourceDir, 'index.html')} (optional TOC)`,
+        `  ${path.join(sourceDir, 'API')}/`,
+        '    *.html',
+        '',
+        'TypeDoc, JSDoc, Docusaurus, and other HTML outputs need a source-specific migration path.',
+      ].join('\n'),
+    );
+    process.exit(1);
+  }
+
+  const fileNames = await readHtmlFileNames(apiDir);
+  if (fileNames.length === 0) {
+    console.error(
+      [
+        `Unsupported HTML source layout: ${sourceDir}`,
+        '',
+        'The API/ directory exists, but it contains no .html files to migrate.',
+      ].join('\n'),
+    );
+    process.exit(1);
+  }
+
+  return fileNames;
 }
 
 // ============================================================================
@@ -718,6 +780,7 @@ async function main() {
   const sourceDir = opts.source;
   const targetRoot = opts.output;
   const targetBasePath = `${opts.routeBasePath}/${opts.product}/${opts.platform}`;
+  const fileNames = await validateSourceLayout(sourceDir);
 
   // Read TOC
   const tocPath = path.join(sourceDir, 'index.html');
@@ -729,11 +792,6 @@ async function main() {
   } catch (e) {
     console.log(`⚠️  No index.html found, will process all HTML files in directory`);
   }
-
-  // Get all HTML files
-  const fileNames = (await fs.readdir(path.join(sourceDir, 'API')))
-    .filter((name) => name.endsWith('.html'))
-    .sort();
 
   // If no TOC, create a flat structure
   if (tocNodes.length === 0) {
@@ -748,6 +806,12 @@ async function main() {
   // Assign routes
   const sourceToRoute = new Map();
   assignRoutes(tocNodes, [], sourceToRoute);
+  const tocSourceNames = collectSourceNames(tocNodes);
+  const hiddenFileNames = fileNames.filter((name) => !tocSourceNames.has(name));
+  for (const name of hiddenFileNames) {
+    const slug = toKebab(stripHtml(name).replace(/^toc_/, ''));
+    sourceToRoute.set(name, [slug]);
+  }
 
   // Read page titles and descriptions
   const pageTitleBySource = new Map();
@@ -769,6 +833,10 @@ async function main() {
     }
     if (fileNames.length > 20) console.log(`  ... and ${fileNames.length - 20} more`);
     console.log(`\nTarget path: ${targetBasePath}`);
+    if (tocNodes.length > 0) {
+      console.log(`TOC pages: ${tocSourceNames.size}`);
+      console.log(`Hidden linked pages: ${hiddenFileNames.length}`);
+    }
     return;
   }
 
@@ -802,6 +870,24 @@ This directory contains the migrated ${opts.product} ${opts.platform} API refere
     await writeNode(output, node, pageTitleBySource, pageDescriptionBySource, sourceToRoute, cheerio);
     writtenCount++;
     if (opts.verbose) console.log(`  ✅ ${node.slug}`);
+  }
+
+  for (const name of hiddenFileNames) {
+    const routeSegments = sourceToRoute.get(name);
+    const filePath = path.join(targetRoot, `${routeSegments.join('/')}.mdx`);
+    await writeFile(
+      filePath,
+      renderPage({
+        $: cheerio.load(await fs.readFile(path.join(sourceDir, 'API', name), 'utf8')),
+        currentSource: name,
+        pageDescriptionBySource,
+        pageTitleBySource,
+        sourceToRoute,
+        targetBasePath,
+      }),
+    );
+    writtenCount++;
+    if (opts.verbose) console.log(`  ✅ ${routeSegments.join('/')} (hidden)`);
   }
 
   console.log(`\n${'─'.repeat(50)}`);

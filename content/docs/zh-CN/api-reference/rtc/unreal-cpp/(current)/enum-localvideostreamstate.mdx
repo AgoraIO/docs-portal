@@ -1,0 +1,23 @@
+---
+title: "LOCAL_VIDEO_STREAM_STATE"
+description: "本地视频状态。"
+---
+<a id="enum_localvideostreamstate__parameters"></a>
+
+## 枚举值
+
+### `LOCAL_VIDEO_STREAM_STATE_STOPPED`
+
+0: 本地视频默认初始状态。
+
+### `LOCAL_VIDEO_STREAM_STATE_CAPTURING`
+
+1: 本地视频采集设备启动成功。 调用 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapturebywindowid) 方法共享窗口且共享窗口为最大化时，也会报告该状态。
+
+### `LOCAL_VIDEO_STREAM_STATE_ENCODING`
+
+2: 本地视频首帧编码成功。
+
+### `LOCAL_VIDEO_STREAM_STATE_FAILED`
+
+3: 本地视频启动失败。

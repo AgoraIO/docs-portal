@@ -1,0 +1,44 @@
+---
+title: "AudioPcmFrame"
+description: "外部 PCM 格式音频帧的信息。"
+---
+<a id="class_audiopcmframe__prototype"></a>
+
+```csharp
+public struct AudioPcmFrame {
+        public UInt32 capture_timestamp;
+        public UInt64 samples_per_channel_;
+        public int sample_rate_hz_;
+        public UInt64 num_channels_;
+        public BYTES_PER_SAMPLE bytes_per_sample;
+        public Int16[] data_;
+    };
+```
+
+<a id="class_audiopcmframe__parameters"></a>
+
+## 属性
+
+### `capture_timestamp`
+
+音频帧的时间戳 (ms)。
+
+### `samples_per_channel_`
+
+每个声道的采样点数。
+
+### `sample_rate_hz_`
+
+音频采样率 (Hz)。
+
+### `num_channels_`
+
+音频声道数。
+
+### `bytes_per_sample`
+
+音频数据的字节数。
+
+### `data_`
+
+音频帧数据。

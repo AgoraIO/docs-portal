@@ -1,0 +1,132 @@
+---
+title: "TranscodingVideoStream"
+description: "参与本地合图的视频流。"
+---
+<a id="class_transcodingvideostream__prototype"></a>
+
+```dart
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class TranscodingVideoStream {
+  const TranscodingVideoStream(
+      {this.sourceType,
+      this.remoteUserUid,
+      this.imageUrl,
+      this.mediaPlayerId,
+      this.x,
+      this.y,
+      this.width,
+      this.height,
+      this.zOrder,
+      this.alpha,
+      this.mirror});
+
+  @JsonKey(name: 'sourceType')
+  final VideoSourceType? sourceType;
+
+  @JsonKey(name: 'remoteUserUid')
+  final int? remoteUserUid;
+
+  @JsonKey(name: 'imageUrl')
+  final String? imageUrl;
+
+  @JsonKey(name: 'mediaPlayerId')
+  final int? mediaPlayerId;
+
+  @JsonKey(name: 'x')
+  final int? x;
+
+  @JsonKey(name: 'y')
+  final int? y;
+
+  @JsonKey(name: 'width')
+  final int? width;
+
+  @JsonKey(name: 'height')
+  final int? height;
+
+  @JsonKey(name: 'zOrder')
+  final int? zOrder;
+
+  @JsonKey(name: 'alpha')
+  final double? alpha;
+
+  @JsonKey(name: 'mirror')
+  final bool? mirror;
+
+  factory TranscodingVideoStream.fromJson(Map<String, dynamic> json) =>
+      _$TranscodingVideoStreamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TranscodingVideoStreamToJson(this);
+}
+```
+
+<a id="class_transcodingvideostream__parameters"></a>
+
+## 属性
+
+### `sourceType`
+
+参与本地合图的视频源类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/flutter/enum-videosourcetype)。
+
+### `remoteUserUid`
+
+远端用户 ID。
+
+:::info[注]
+请仅在参与本地合图的视频源类型为 `videoSourceRemote` 时，使用该参数。
+:::
+
+### `imageUrl`
+
+:::info[注]
+请仅在参与本地合图的视频源类型为图片时，使用该参数。
+:::
+
+本地图片的路径。 示例路径：
+
+- Android: /storage/emulated/0/Pictures/image.png
+- iOS: /var/mobile/Containers/Data/Application/&lt;APP-UUID&gt;/Documents/image.png
+- macOS: ~/Pictures/image.png
+- Windows: C:\\\\Users\\\\\{username\}\\\\Pictures\\\\image.png
+
+### `mediaPlayerId`
+
+（可选）媒体播放器 ID。当你将 `sourceType` 设置为 `videoSourceMediaPlayer` 时，需要设置该参数。
+
+### `x`
+
+参与本地合图的视频的左上角相对于合图画布左上角（原点）的横向位移。
+
+### `y`
+
+参与本地合图的视频的左上角相对于合图画布左上角（原点）的纵向位移。
+
+### `width`
+
+参与本地合图的视频的宽度 (px)。
+
+### `height`
+
+参与本地合图的视频的高度 (px)。
+
+### `zOrder`
+
+参与本地合图的视频所属的图层的编号。取值范围为 [0,100]。
+
+- 0:（默认值）图层在最下层。
+- 100: 图层在最上层。
+
+### `alpha`
+
+参与本地合图的视频的透明度。取值范围为 [0.0,1.0]。 0.0 表示透明度为完全透明，1.0 表示透明度为完全不透明。
+
+### `mirror`
+
+:::info[注]
+该参数仅对视频源类型为摄像头的视频生效。
+:::
+
+是否对参与本地合图的的视频进行镜像：
+
+- true: 将参与本地合图的视频进行镜像。
+- false: （默认值）不将参与本地合图的视频进行镜像。

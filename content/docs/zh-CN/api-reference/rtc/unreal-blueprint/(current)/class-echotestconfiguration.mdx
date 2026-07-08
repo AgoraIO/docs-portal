@@ -1,0 +1,82 @@
+---
+title: "FEchoTestConfiguration"
+description: "音视频通话回路测试的配置。"
+---
+<a id="class_echotestconfiguration__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FEchoTestConfiguration
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|EchoTestConfiguration")
+	UImage* view = nullptr;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|EchoTestConfiguration")
+	bool enableAudio = true;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|EchoTestConfiguration")
+	bool enableVideo = true;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|EchoTestConfiguration")
+	FString token = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|EchoTestConfiguration")
+	FString channelId = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|EchoTestConfiguration")
+	int intervalInSeconds = 2;
+	
+	FEchoTestConfiguration() {}
+	FEchoTestConfiguration(const agora::rtc::EchoTestConfiguration& AgoraData) {
+		view = nullptr; 		enableAudio = AgoraData.enableAudio;
+		enableVideo = AgoraData.enableVideo;
+		token = AgoraData.token;
+		channelId = AgoraData.channelId;
+		intervalInSeconds = AgoraData.intervalInSeconds;
+	}
+	agora::rtc::EchoTestConfiguration CreateAgoraData() const{
+		agora::rtc::EchoTestConfiguration AgoraData;
+				AgoraData.enableAudio = enableAudio;
+		AgoraData.enableVideo = enableVideo;
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.token,this->token)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.channelId, this->channelId)
+		AgoraData.intervalInSeconds = intervalInSeconds;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::EchoTestConfiguration& AgoraData) const {
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.token)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.channelId)
+	}
+};
+```
+
+<a id="class_echotestconfiguration__parameters"></a>
+
+## 属性
+
+### `view`
+
+用于渲染本地用户视频的视图。该参数仅适用于测试视频设备的场景，请确保 enableVideo 为 true。
+
+### `enableAudio`
+
+是否开启音频设备：
+
+- true: (默认) 开启音频设备。如需测试音频设备，请设为 true。
+- false: 关闭音频设备。
+
+### `enableVideo`
+
+是否开启视频设备。暂不支持视频设备检测，请将该参数设为 `false`。
+
+### `token`
+
+用于保证音视频通话回路测试安全性的 Token。如果你在控制台未启用 App 证书，则不需要向该参数传值；如果你在控制台已启用 App 证书，则必须向该参数传入 Token，且在你生成 Token 时使用的 `uid` 必须为 0xFFFFFFFF，使用的频道名必须为标识每个音视频通话回路测试的频道名。服务端生成 Token 的方式请参考 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/unreal-blueprint/basic-features/token-authentication)。
+
+### `channelId`
+
+标识每个音视频通话回路测试的频道名。为保证回路测试功能正常，同一个项目（App ID） 的各终端用户在不同设备上做音视频通话回路测试时，传入的标识每个回路测试的频道名不能相同。
+
+### `intervalInSeconds`
+
+设置返回音视频回路测试结果的时间间隔或延迟，取值范围为 [2,10]，单位为秒，默认为 2 秒。
+
+- 对于音频回路测试，测试结果会根据你设置的时间间隔返回。
+- 对于视频回路测试，视频画面会在短时间内显示，之后延迟会逐渐增加，直至达到你设置的延迟。

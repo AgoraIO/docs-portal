@@ -1,0 +1,55 @@
+---
+title: "LocalAudioStreamReason"
+description: "本地音频状态改变原因。"
+---
+<a id="enum_localaudiostreamreason__parameters"></a>
+
+## 枚举值
+
+### `localAudioStreamReasonOk`
+
+0：本地音频状态正常。
+
+### `localAudioStreamReasonFailure`
+
+1：本地音频出错原因不明确。建议提示用户尝试重新加入频道。
+
+### `localAudioStreamReasonDeviceNoPermission`
+
+2：没有权限启动本地音频采集设备。请提示用户开启权限。
+
+:::info[注]
+弃用：该枚举已废弃。请改用 [onPermissionError](/zh-CN/api-reference/rtc/flutter/network#callback_irtcengineeventhandler_onpermissionerror) 回调中的 `recordAudio`。
+:::
+
+### `localAudioStreamReasonDeviceBusy`
+
+3：（仅适用于 Android 和 iOS）本地音频采集设备已经在使用中。请提示用户检查麦克风是否被其他应用占用。麦克风空闲约 5 秒后本地音频采集会自动恢复，你也可以在麦克风空闲后尝试重新加入频道。
+
+### `localAudioStreamReasonRecordFailure`
+
+4：本地音频采集失败。
+
+### `localAudioStreamReasonEncodeFailure`
+
+5：本地音频编码失败。
+
+### `localAudioStreamReasonNoRecordingDevice`
+
+6：（仅适用于 Windows 和 macOS）无本地音频采集设备。请提示用户在设备的控制面板中检查麦克风是否与设备连接正常，检查麦克风是否正常工作。
+
+### `localAudioStreamReasonNoPlayoutDevice`
+
+7：（仅适用于 Windows 和 macOS）无本地音频播放设备。请提示用户在设备的控制面板中检查扬声器是否与设备连接正常，检查扬声器是否正常工作。
+
+### `localAudioStreamReasonInterrupted`
+
+8:（仅适用于 Android 和 iOS）本地音频采集被系统来电、智能助手、闹钟中断。如需恢复本地音频采集，请用户中止电话、智能助手、闹钟。
+
+### `localAudioStreamReasonRecordInvalidId`
+
+9：（仅适用于 Windows）本地音频采集设备的 ID 无效。请提示用户检查音频采集设备 ID。
+
+### `localAudioStreamReasonPlayoutInvalidId`
+
+10：（仅适用于 Windows）本地音频播放设备的 ID 无效。请提示用户检查音频播放设备 ID。

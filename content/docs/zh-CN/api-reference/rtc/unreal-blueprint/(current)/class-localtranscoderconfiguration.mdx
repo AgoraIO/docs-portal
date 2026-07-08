@@ -1,0 +1,59 @@
+---
+title: "FLocalTranscoderConfiguration"
+description: "本地合图的配置。"
+---
+<a id="class_localtranscoderconfiguration__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FLocalTranscoderConfiguration
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalTranscoderConfiguration")
+	int64 streamCount = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalTranscoderConfiguration")
+	TArray<FTranscodingVideoStream> videoInputStreams;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalTranscoderConfiguration")
+	FVideoEncoderConfiguration videoOutputConfiguration = FVideoEncoderConfiguration();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LocalTranscoderConfiguration")
+	bool syncWithPrimaryCamera = true;
+	FLocalTranscoderConfiguration(){}
+	FLocalTranscoderConfiguration(const agora::rtc::LocalTranscoderConfiguration & AgoraData){
+		streamCount = AgoraData.streamCount;
+		for(int i = 0; i< streamCount; i++){
+			videoInputStreams.Add(FTranscodingVideoStream(AgoraData.videoInputStreams[i]));
+		}
+		videoOutputConfiguration = FVideoEncoderConfiguration(AgoraData.videoOutputConfiguration);
+		syncWithPrimaryCamera = AgoraData.syncWithPrimaryCamera;
+	}
+	agora::rtc::LocalTranscoderConfiguration CreateAgoraData() const {
+		agora::rtc::LocalTranscoderConfiguration AgoraData;
+		AgoraData.streamCount = streamCount;
+		SET_UABT_TARRARY_CUSTOMDATA_TO_AGORA_ARRAY___MEMALLOC(AgoraData.videoInputStreams, agora::rtc::TranscodingVideoStream, streamCount, this->videoInputStreams)
+		AgoraData.videoOutputConfiguration = videoOutputConfiguration.CreateAgoraData();
+		AgoraData.syncWithPrimaryCamera = syncWithPrimaryCamera;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::LocalTranscoderConfiguration & AgoraData) const {
+		SET_UABT_TARRARY_CUSTOMDATA_TO_AGORA_ARRAY___MEMFREE(AgoraData.videoInputStreams, streamCount, FTranscodingVideoStream)
+		videoOutputConfiguration.FreeAgoraData(AgoraData.videoOutputConfiguration);
+	}
+};
+```
+
+<a id="class_localtranscoderconfiguration__parameters"></a>
+
+## 属性
+
+### `streamCount`
+
+参与本地合图的视频流的数量。
+
+### `videoInputStreams`
+
+参与本地合图的视频流。详见 [FTranscodingVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/class-transcodingvideostream)。
+
+### `videoOutputConfiguration`
+
+本地合图后，合图视频的编码配置。详见 [FUABT_VideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/class-videoencoderconfiguration)。

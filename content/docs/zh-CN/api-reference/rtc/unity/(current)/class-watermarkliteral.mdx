@@ -1,0 +1,72 @@
+---
+title: "WatermarkLiteral"
+description: "用于配置文字水印。"
+---
+<a id="class_watermarkliteral__prototype"></a>
+
+```csharp
+    public class WatermarkLiteral
+    {
+        public int fontSize;
+
+        public int strokeWidth;
+
+        public string wmLiteral;
+
+        public string fontFilePath;
+
+        public WatermarkLiteral()
+        {
+            this.wmLiteral = "";
+            this.fontFilePath = "";
+            this.fontSize = 10;
+            this.strokeWidth = 1;
+        }
+
+        public WatermarkLiteral(int fontSize, int strokeWidth, string wmLiteral, string fontFilePath)
+        {
+            this.fontSize = fontSize;
+            this.strokeWidth = strokeWidth;
+            this.wmLiteral = wmLiteral;
+            this.fontFilePath = fontFilePath;
+        }
+    }
+```
+
+<a id="class_watermarkliteral__detailed_desc"></a>
+
+### `自从`
+
+自 v4.6.2 版本新增。
+
+:::info[注]
+仅适用于 Linux 平台。
+:::
+
+<a id="class_watermarkliteral__parameters"></a>
+
+## 属性
+
+### `fontSize`
+
+文字的字体大小。默认值为 10。
+
+### `strokeWidth`
+
+文字的描边宽度。默认值为 1。
+
+### `wmLiteral`
+
+水印的文字内容。默认值为 `NULL`。
+
+:::info[注]
+如果异步使用，请将字符串复制到不会被释放的内存中。
+:::
+
+### `fontFilePath`
+
+字体文件的路径。默认值为 `NULL`。字体文件应为.ttf 格式。如果未设置，SDK 会使用系统默认字体（如果可用）。
+
+:::info[注]
+如果异步使用，请将字符串复制到不会被释放的内存中。
+:::

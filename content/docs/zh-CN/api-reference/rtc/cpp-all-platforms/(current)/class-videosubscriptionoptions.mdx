@@ -1,0 +1,27 @@
+---
+title: "VideoSubscriptionOptions"
+description: "用于配置视频订阅选项。"
+---
+<a id="class_videosubscriptionoptions__prototype"></a>
+
+```cpp
+struct VideoSubscriptionOptions {
+  Optional<VIDEO_STREAM_TYPE> type;
+  Optional<bool> encodedFrameOnly;
+};
+```
+
+<a id="class_videosubscriptionoptions__parameters"></a>
+
+## 属性
+
+### `type`
+
+你希望订阅的视频流类型，详见 [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videostreamtype)。默认值为 `VIDEO_STREAM_HIGH`，表示订阅高质量的视频流。
+
+### `encodedFrameOnly`
+
+是否仅订阅编码后的视频帧：
+
+- true：仅订阅编码后的视频数据（结构化数据）；SDK 不解码或渲染原始视频数据。
+- false：（默认）同时订阅原始视频数据和编码后的视频数据。

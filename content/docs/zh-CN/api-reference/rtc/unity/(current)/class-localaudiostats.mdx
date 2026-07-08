@@ -1,0 +1,56 @@
+---
+title: "LocalAudioStats"
+description: "本地音频统计数据。"
+---
+<a id="class_localaudiostats__prototype"></a>
+
+```csharp
+public class LocalAudioStats
+                {
+                    public int numChannels;
+                    public int sentSampleRate;
+                    public int sentBitrate
+                    public int internalCodec;
+                    public ushort txPacketLossRate;
+                    public int audioDeviceDelay;
+                    public int audioPlayoutDelay
+                    public int earMonitorDelay
+                    public int aecEstimatedDelay;
+                }
+```
+
+<a id="class_localaudiostats__parameters"></a>
+
+## 属性
+
+### `numChannels`
+
+声道数。
+
+### `sentSampleRate`
+
+发送本地音频的采样率，单位为 Hz。
+
+### `sentBitrate`
+
+发送本地音频的码率平均值，单位为 Kbps。
+
+### `txPacketLossRate`
+
+弱网对抗前本端到声网边缘服务器的丢包率 (%)。
+
+### `internalCodec`
+
+内部的 payload 类型。
+
+### `audioDeviceDelay`
+
+播放或录制音频时，音频设备模块的延迟 (ms)。
+
+### `earMonitorDelay`
+
+耳返延迟 (ms)，即声音从麦克风输入到耳机输出的延迟。
+
+### `aecEstimatedDelay`
+
+回声消除延迟 (ms)，即回声消除 (Acoustic Echo Cancellation, AEC) 模块测算出音频在本地播放前与被本地采集后的信号延迟。

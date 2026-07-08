@@ -1,0 +1,45 @@
+---
+title: "ColorEnhanceOptions"
+description: "色彩增强配置选项。"
+---
+<a id="class_colorenhanceoptions__prototype"></a>
+
+```cpp
+struct ColorEnhanceOptions {
+  float strengthLevel;
+  float skinProtectLevel;
+};
+```
+
+<a id="class_colorenhanceoptions__detailed_desc"></a>
+
+### `自从`
+
+自 v4.0.0 版本新增。
+
+<a id="class_colorenhanceoptions__parameters"></a>
+
+## 属性
+
+### `strengthLevel`
+
+色彩增强等级。取值范围为 [0.0, 1.0]。
+
+- 0.0：默认值，不对视频进行色彩增强。
+- 值越大，色彩增强效果越明显。
+
+默认值为 `0.5`。
+
+### `skinProtectLevel`
+
+肤色保护等级。取值范围为 [0.0, 1.0]。
+
+- 0.0：不启用肤色保护。
+- 值越大，肤色保护效果越强。
+
+默认值为 `1.0`。
+
+- 当色彩增强等级较高时，人像肤色可能会出现明显失真，因此建议设置合适的肤色保护等级。
+- 当肤色保护等级较高时，色彩增强效果可能会略有降低。
+
+为获得最佳效果，建议根据实际情况调整 `strengthLevel` 和 `skinProtectLevel` 的值。

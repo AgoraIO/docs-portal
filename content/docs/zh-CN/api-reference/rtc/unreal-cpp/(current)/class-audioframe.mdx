@@ -1,0 +1,70 @@
+---
+title: "AudioFrame"
+description: "原始音频数据。"
+---
+<a id="class_audioframe__prototype"></a>
+
+```cpp
+  struct AudioFrame {
+    AUDIO_FRAME_TYPE type;
+    int samplesPerChannel;
+    agora::rtc::BYTES_PER_SAMPLE bytesPerSample;
+    int channels;
+    int samplesPerSec;
+    void* buffer;
+    int64_t renderTimeMs;
+    int avsync_type;
+
+    AudioFrame() : type(FRAME_TYPE_PCM16),
+                   samplesPerChannel(0),
+                   bytesPerSample(rtc::TWO_BYTES_PER_SAMPLE),
+                   channels(0),
+                   samplesPerSec(0),
+                   buffer(NULL),
+                   renderTimeMs(0),
+                   avsync_type(0),
+  };
+```
+
+<a id="class_audioframe__parameters"></a>
+
+## 属性
+
+### `type`
+
+音频帧类型，详见 [AUDIO_FRAME_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-audioframetype)。
+
+### `samplesPerChannel`
+
+每个声道的采样点数。
+
+### `bytesPerSample`
+
+每个采样点的字节数。对于 PCM 来说，一般使用 16 bit，即两个字节。
+
+### `channels`
+
+声道数量(如果是立体声，数据是交叉的)。
+
+- 1: 单声道
+- 2: 双声道
+
+### `samplesPerSec`
+
+每声道每秒的采样点数。
+
+### `buffer`
+
+声音数据缓存区（如果是立体声，数据是交叉存储的）。
+
+缓存区数据大小 `buffer` = `samples` × `channels` × `bytesPerSample`。
+
+### `renderTimeMs`
+
+外部音频帧的渲染时间戳。
+
+你可以使用该时间戳还原音频帧顺序；在有视频的场景中（包含使用外部视频源的场景），该参数可以用于实现音视频同步。
+
+### `avsync_type`
+
+保留参数。

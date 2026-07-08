@@ -1,0 +1,127 @@
+---
+title: "FRtcEngineContext"
+description: "FRtcEngineContext 定义。"
+---
+<a id="class_rtcengineconfig__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FRtcEngineContext
+{
+	GENERATED_BODY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcEngineContext")
+	EAgoraBPuEventHandlerType EventHandlerCreationType = EAgoraBPuEventHandlerType::EventHandler;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcEngineContext")
+	FString appId = "";
+
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcEngineContext")
+	ECHANNEL_PROFILE_TYPE channelProfile = ECHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_LIVE_BROADCASTING;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcEngineContext")
+	FString license = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcEngineContext")
+	EAUDIO_SCENARIO_TYPE audioScenario = EAUDIO_SCENARIO_TYPE::AUDIO_SCENARIO_DEFAULT;
+
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcEngineContext")
+	FENUMWRAP_AREA_CODE areaCode = EENUMCUSTOM_AREA_CODE::AREA_CODE_GLOB;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcEngineContext")
+	FLogConfig logConfig;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcEngineContext")
+	bool threadPriority_SetValue = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcEngineContext")
+	ETHREAD_PRIORITY_TYPE threadPriority = ETHREAD_PRIORITY_TYPE::NORMAL;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcEngineContext")
+	bool useExternalEglContext = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcEngineContext")
+	bool domainLimit = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcEngineContext")
+	bool autoRegisterAgoraExtensions = true;
+
+	FRtcEngineContext() {}
+	agora::rtc::RtcEngineContext CreateAgoraData() const {
+		agora::rtc::RtcEngineContext AgoraData;
+
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.appId, this->appId)
+
+		AgoraData.channelProfile = (agora::CHANNEL_PROFILE_TYPE)channelProfile;
+
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.license, this->license)
+		AgoraData.audioScenario = (agora::rtc::AUDIO_SCENARIO_TYPE)audioScenario;
+		AgoraData.areaCode = areaCode.GetRawValue();
+		AgoraData.logConfig = logConfig.CreateAgoraData();
+		SET_AGORA_OPTIONAL_VAL_ASSIGN_VAL(AgoraData.threadPriority, this->threadPriority, static_cast<agora::rtc::THREAD_PRIORITY_TYPE>(this->threadPriority))
+		AgoraData.useExternalEglContext = useExternalEglContext;
+		AgoraData.domainLimit = domainLimit;
+		AgoraData.autoRegisterAgoraExtensions = autoRegisterAgoraExtensions;
+
+		return AgoraData;
+	}
+
+	void FreeAgoraData(agora::rtc::RtcEngineContext& AgoraData) const {
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.appId)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.license)
+		logConfig.FreeAgoraData(AgoraData.logConfig);
+	}
+};
+```
+
+<a id="class_rtcengineconfig__parameters"></a>
+
+## 属性
+
+### `eventHandler`
+
+[IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 的事件句柄，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)。
+
+### `appId`
+
+声网为 App 开发者签发的 App ID。 使用同一个 App ID 的 App 才能进入同一个频道进行通话或直播。一个 App ID 只能用于创建一个 IRtcEngine。如需更换 App ID，必须先调用 [Release](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_release) 销毁当前 IRtcEngine 再重新创建。
+
+### `channelProfile`
+
+频道使用场景。详见 [ECHANNEL_PROFILE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-channelprofiletype)。
+
+### `audioScenario`
+
+音频场景。不同的音频场景下，设备的音量类型是不同的。 详见 [EAUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-audioscenariotype)。
+
+### `areaCode`
+
+服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。支持的区域详见 [FENUMWRAP_AREA_CODE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-areacode)。区域码支持位操作。
+
+指定访问区域后，集成了 SDK 的 App 会连接指定区域内的声网服务器。
+
+### `logConfig`
+
+设置 SDK 输出的日志文件。详见 [FLogConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-logconfig)。
+
+默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 调用日志文件，规则如下：
+
+- SDK 日志文件的名称分别为： agorasdk.log、 agorasdk.1.log、 agorasdk.2.log、 agorasdk.3.log、 agorasdk.4.log。
+- API 调用日志文件的名称分别为： agoraapi.log、 agoraapi.1.log、 agoraapi.2.log、 agoraapi.3.log、 agoraapi.4.log。
+- 每个 SDK 日志文件的默认大小为 2,048 KB；API 调用日志文件的默认大小为 2,048 KB。日志文件均为 UTF-8 编码。
+- 最新的日志永远写在 agorasdk.log 和 agoraapi.log 中。
+- 当 agorasdk.log 写满后，SDK 会按照以下顺序对日志文件进行操作：
+  1. 删除 agorasdk.4.log 文件（如有）。
+  2. 将 agorasdk.3.log 重命名为 agorasdk.4.log。
+  3. 将 agorasdk.2.log 重命名为 agorasdk.3.log。
+  4. 将 agorasdk.1.log 重命名为 agorasdk.2.log。
+  5. 新建 agorasdk.log 文件。
+- agoraapi.log 文件的覆盖规则与 agorasdk.log 相同。
+
+### `domainLimit`
+
+是否开启域名限制：
+
+- true：开启域名限制。该设置适用于 IoT 设备使用物联网卡进行网络访问的场景。SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+- false：（默认）关闭域名限制。该设置适用于大部分普通场景。
+
+### `autoRegisterAgoraExtensions`
+
+是否在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 时自动注册声网插件：
+
+- true：（默认）初始化 IRtcEngine 时自动注册声网插件。
+- false：初始化 IRtcEngine 时不注册声网插件。你需要调用 EnableExtension 来注册声网插件。

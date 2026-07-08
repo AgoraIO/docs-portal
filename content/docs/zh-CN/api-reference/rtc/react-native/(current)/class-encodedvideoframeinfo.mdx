@@ -1,0 +1,68 @@
+---
+title: "EncodedVideoFrameInfo"
+description: "外部编码视频帧的信息。"
+---
+<a id="class_encodedvideoframeinfo__prototype"></a>
+
+```typescript
+export class EncodedVideoFrameInfo {
+
+  codecType?: VideoCodecType;
+
+  width?: number;
+
+  height?: number;
+
+  framesPerSecond?: number;
+
+  frameType?: VideoFrameType;
+
+  rotation?: VideoOrientation;
+
+  trackId?: number;
+
+  captureTimeMs?: number;
+
+  streamType?: VideoStreamType;
+}
+```
+
+<a id="class_encodedvideoframeinfo__parameters"></a>
+
+## 属性
+
+### `codecType`
+
+视频编码类型，详见 [VideoCodecType](/zh-CN/api-reference/rtc/react-native/enum-videocodectype)。默认值为 `VideoCodecH264 (2)`。
+
+### `width`
+
+视频帧的宽度 (px)。
+
+### `height`
+
+视频帧的高度 (px)。
+
+### `framesPerSecond`
+
+每秒的视频帧数。 当该参数不为 `0` 时，你可以用它计算外部编码视频帧的 Unix 时间戳。
+
+### `frameType`
+
+视频帧的类型，详见 [VideoFrameType](/zh-CN/api-reference/rtc/react-native/enum-videoframetype)。
+
+### `rotation`
+
+视频帧的旋转信息，详见 [VideoOrientation](/zh-CN/api-reference/rtc/react-native/enum-videoorientation)。
+
+### `trackId`
+
+预留参数。
+
+### `captureTimeMs`
+
+采集外部编码视频帧的 Unix 时间戳 (ms)。
+
+### `streamType`
+
+视频流类型。详见 [VideoStreamType](/zh-CN/api-reference/rtc/react-native/enum-videostreamtype)。

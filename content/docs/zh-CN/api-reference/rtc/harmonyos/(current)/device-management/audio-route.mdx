@@ -1,0 +1,161 @@
+---
+title: "音频路由"
+description: "音频路由 API reference."
+---
+<a id="toc_audio_route"></a>
+
+<a id="api_irtcengine_isspeakerphoneenabled"></a>
+
+## isSpeakerphoneEnabled
+
+检查扬声器状态启用状态。
+
+<a id="api_irtcengine_isspeakerphoneenabled__prototype"></a>
+
+```arkts
+public abstract isSpeakerphoneEnabled(): boolean;
+```
+
+<a id="api_irtcengine_isspeakerphoneenabled__detailed_desc"></a>
+
+<a id="api_irtcengine_isspeakerphoneenabled__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后都能调用。
+
+<a id="api_irtcengine_isspeakerphoneenabled__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_isspeakerphoneenabled__return_values"></a>
+
+### 返回值
+
+- true: 扬声器已开启，语音会输出到扬声器。
+- false: 扬声器未开启，语音会输出到非扬声器（听筒，耳机等）。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone"></a>
+
+## setDefaultAudioRouteToSpeakerphone
+
+设置默认的音频路由。
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__prototype"></a>
+
+```arkts
+public abstract setDefaultAudioRoutetoSpeakerphone(defaultToSpeaker:boolean):number;
+```
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__detailed_desc"></a>
+
+手机设备一般有两个音频路由，一个是位于顶部的听筒，播放声音偏小；一个是位于底部的扬声器，播放声音偏大。设置默认的音频路由，就是在没有外接设备的前提下，设置系统使用听筒还是扬声器播放音频。
+
+不同场景下，系统默认的音频路由也不同。具体如下：
+
+- 语音通话：听筒
+- 语音直播：扬声器
+- 视频通话：扬声器
+- 视频直播：扬声器
+
+调用该 API 可以改变上述默认音频路由。
+
+:::info[注]
+在调用该方法设置默认音频路由后，系统实际音频路由会随着外接音频设备（有线耳机或蓝牙耳机）的连接发生改变。详见 音频路由。
+:::
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__related"></a>
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__parameters"></a>
+
+### 参数
+
+#### `defaultToSpeaker`
+
+是否使用扬声器作为默认的音频路由：
+
+- true: 设置默认音频路由为扬声器。
+- false: 设置默认音频路由为听筒。
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setenablespeakerphone"></a>
+
+## setEnableSpeakerphone
+
+开启或关闭扬声器播放。
+
+<a id="api_irtcengine_setenablespeakerphone__prototype"></a>
+
+```arkts
+
+```
+
+<a id="api_irtcengine_setenablespeakerphone__detailed_desc"></a>
+
+<a id="api_irtcengine_setenablespeakerphone__scenario"></a>
+
+### 适用场景
+
+如果 SDK 默认的音频路由或 [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/harmonyos/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) 的设置无法满足你的需求，你可以调用该方法切换当前的音频路由。
+
+<a id="api_irtcengine_setenablespeakerphone__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_setenablespeakerphone__restriction"></a>
+
+### 调用限制
+
+- 该方法只设置用户在当前频道内使用的音频路由，不会影响 SDK 默认的音频路由。如果用户离开当前频道并加入新的频道，则用户还是会使用 SDK 默认的音频路由。
+- 如果用户使用了蓝牙耳机、有线耳机等外接音频播放设备，则该方法的设置无效，音频只会通过外接设备播放。当有多个外接设备时，音频会通过最后一个接入的设备播放。
+
+<a id="api_irtcengine_setenablespeakerphone__related"></a>
+
+<a id="api_irtcengine_setenablespeakerphone__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+设置是否开启扬声器播放：
+
+- true: 开启。音频路由为扬声器。
+- false: 关闭。音频路由为听筒。
+
+<a id="api_irtcengine_setenablespeakerphone__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)

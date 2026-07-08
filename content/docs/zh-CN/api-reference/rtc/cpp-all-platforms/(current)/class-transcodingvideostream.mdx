@@ -1,0 +1,94 @@
+---
+title: "TranscodingVideoStream"
+description: "用于设置本地合成画面的视频流。"
+---
+<a id="class_transcodingvideostream__prototype"></a>
+
+```cpp
+struct TranscodingVideoStream {
+  VIDEO_SOURCE_TYPE sourceType;
+  uid_t remoteUserUid;
+  const char* imageUrl;
+  int mediaPlayerId;
+  int x;
+  int y;
+  int width;
+  int height;
+  int zOrder;
+  double alpha;
+  bool mirror;
+};
+```
+
+<a id="class_transcodingvideostream__parameters"></a>
+
+## 属性
+
+### `sourceType`
+
+视频源类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
+
+### `remoteUserUid`
+
+远端用户 ID。
+
+:::info[注]
+仅当视频源类型为 `VIDEO_SOURCE_REMOTE` 时使用该参数。
+:::
+
+### `imageUrl`
+
+本地图像的文件路径，例如：Windows: C:\\Users\\\{username\}\\Pictures\\image.png。
+
+:::info[注]
+仅当视频源类型为图像时使用该参数。
+:::
+
+### `mediaPlayerId`
+
+媒体播放器 ID。
+
+:::info[注]
+仅当视频源类型为 `VIDEO_SOURCE_MEDIA_PLAYER` 时使用该参数。
+:::
+
+### `x`
+
+视频左上角相对于画布原点（画布左上角）的横向偏移。
+
+### `y`
+
+视频左上角相对于画布原点（画布左上角）的纵向偏移。
+
+### `width`
+
+视频在画布上的宽度（像素）。
+
+### `height`
+
+视频在画布上的高度（像素）。
+
+### `zOrder`
+
+视频图层的层级，取值范围为 [0, 100]。
+
+- 0：（默认）图层位于最底层。
+- 100：图层位于最顶层。
+
+### `alpha`
+
+视频的透明度，取值范围为 [0.0, 1.0]。
+
+- 0.0：完全透明。
+- 1.0：完全不透明。
+
+### `mirror`
+
+:::info[注]
+该参数仅对摄像头类型的视频源生效。
+:::
+
+是否对视频进行镜像处理。
+
+- true：镜像视频。
+- false：（默认）不镜像视频。

@@ -1,0 +1,162 @@
+---
+title: "AgoraEduSubRoomContext"
+description: "AgoraEduSubRoomContext 类。"
+---
+<a id="class_subroomcontext"></a>
+
+AgoraEduSubRoomContext 类。
+
+<a id="class_subroomcontext__detailed_desc"></a>
+
+AgoraEduSubRoomContext 类提供的方法用于子房间控制。
+
+<a id="api_joinsubroom"></a>
+
+## joinSubRoom
+
+加入子房间。
+
+<a id="api_joinsubroom__prototype"></a>
+
+```swift
+void joinSubRoom(Callback<Void> success,
+                 Callback<AgoraEduContextError> failure)
+```
+
+<a id="api_joinsubroom__detailed_desc"></a>
+
+<a id="api_joinsubroom__parameters"></a>
+
+### 参数
+
+#### `success`
+
+调用成功。
+
+#### `fail`
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
+
+<a id="api_joinsubroom__return_values"></a>
+
+### 返回值
+
+调用成功，则返回子房间信息 [AgoraEduContextSubRoomInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_subroominfo)。
+
+<a id="api_leavesubroom"></a>
+
+## leaveSubRoom
+
+离开子房间。
+
+<a id="api_leavesubroom__prototype"></a>
+
+```swift
+void leaveSubRoom()
+```
+
+<a id="api_getsubroominfo"></a>
+
+## getSubRoomInfo
+
+获取子房间信息。
+
+<a id="api_getsubroominfo__prototype"></a>
+
+```swift
+AgoraEduContextSubRoomInfo getSubRoomInfo()
+```
+
+<a id="api_getsubroominfo__return_values"></a>
+
+### 返回值
+
+调用成功，则返回子房间信息 [AgoraEduContextSubRoomInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_subroominfo)。
+
+<a id="api_getsubroomproperties"></a>
+
+## getSubRoomProperties
+
+获取子房间自定义属性。
+
+<a id="api_getsubroomproperties__prototype"></a>
+
+```swift
+Map<String, Any> getSubRoomProperties()
+```
+
+<a id="api_getsubroomproperties__return_values"></a>
+
+### 返回值
+
+子房间自定义属性 `Map<String, Any>`。可为空。
+
+<a id="api_updatesubroomproperties"></a>
+
+## updateSubRoomProperties
+
+更新子房间自定义属性。
+
+<a id="api_updatesubroomproperties__prototype"></a>
+
+```swift
+void updateSubRoomProperties(Map<String, Any> properties,
+                             Map<String, Any> cause,
+                             Callback<Void> success,
+                             Callback<AgoraEduContextError> failure)
+```
+
+<a id="api_updatesubroomproperties__parameters"></a>
+
+### 参数
+
+#### `properties`
+
+房间属性。
+
+#### `cause`
+
+更新原因。可为空。
+
+#### `success`
+
+调用成功。
+
+#### `fail`
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
+
+<a id="api_deletesubroomproperties"></a>
+
+## deleteSubRoomProperties
+
+删除子房间自定义属性。
+
+<a id="api_deletesubroomproperties__prototype"></a>
+
+```swift
+void deleteSubRoomProperties(Array<String> keyPaths,
+                             Map<String, Any> cause,
+                             Callback<Void> success,
+                             Callback<AgoraEduContextError> failure)
+```
+
+<a id="api_deletesubroomproperties__parameters"></a>
+
+### 参数
+
+#### `keyPaths`
+
+你想要删除的属性的 key path，如 key1.subkey1。
+
+#### `cause`
+
+删除原因。可为空。
+
+#### `success`
+
+调用成功。
+
+#### `fail`
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
