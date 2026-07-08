@@ -1694,6 +1694,31 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('collapses a localized index-only folder whose title does not match the URL slug into a leaf', () => {
+    expect(
+      pageTreeNodeToSidebarNodes({
+        $id: 'faq-integration-folder',
+        children: [
+          {
+            $id: 'faq-integration-index-child',
+            name: '集成类',
+            type: 'page',
+            url: '/zh-CN/api-reference/faq/integration',
+          },
+        ],
+        name: '集成类',
+        type: 'folder',
+      }),
+    ).toEqual([
+      {
+        id: '/zh-CN/api-reference/faq/integration',
+        title: '集成类',
+        type: 'page',
+        url: '/zh-CN/api-reference/faq/integration',
+      },
+    ]);
+  });
+
   it('leaves a normal folder (distinct visible index) as a plain section', () => {
     expect(
       pageTreeNodeToSidebarNodes({
