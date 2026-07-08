@@ -53,37 +53,47 @@ function FilterDropdown({
 }
 
 export function FaqFilterToolbar({
+  clearLabel = 'Clear',
   hasActiveFilters,
   onClear,
   onPlatformChange,
   onProductChange,
   platform,
+  platformLabel = 'Platform',
+  platforms = faqPlatforms,
   product,
+  productLabel = 'Product',
+  products = faqProducts,
 }: {
+  clearLabel?: string;
   hasActiveFilters: boolean;
   onClear: () => void;
   onPlatformChange: (platform: string) => void;
   onProductChange: (product: string) => void;
   platform: string;
+  platformLabel?: string;
+  platforms?: string[];
   product: string;
+  productLabel?: string;
+  products?: string[];
 }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <FilterDropdown
-        label="Product"
+        label={productLabel}
         onSelect={onProductChange}
-        options={faqProducts}
+        options={products}
         value={product}
       />
       <FilterDropdown
-        label="Platform"
+        label={platformLabel}
         onSelect={onPlatformChange}
-        options={faqPlatforms}
+        options={platforms}
         value={platform}
       />
       {hasActiveFilters ? (
         <Button onClick={onClear} size="sm" type="button" variant="ghost">
-          Clear
+          {clearLabel}
         </Button>
       ) : null}
     </div>

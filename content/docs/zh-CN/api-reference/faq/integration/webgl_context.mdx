@@ -1,0 +1,12 @@
+---
+title: "运行 Electron App 时，控制台提示 “WARNING:Too many active WebGL contexts” 怎么办？"
+---
+**现象**：运行 Electron App 时，控制台提示：`WARNING: Too many active WebGL contexts. Oldest context will be lost.`。
+
+**原因**：Electron 中的渲染视图默认使用 WebGL 渲染。WebGL 渲染具有性能优势，但也存在一些限制。例如：每个进程只能创建 16 个 WebGL 上下文 (`WebGLRenderingContext`)。如果一个进程创建了超过 16 个 WebGL 上下文，旧的上下文将会被丢弃（表现为 canvas 无法再绘制）。
+
+因此，如果你在 Electron App 中创建了超过 16 个渲染视图，为了避免旧的视图被丢弃，声网 SDK 会把旧的渲染视图切换为 `CanvasRenderingContext2D` 渲染。`CanvasRenderingContext2D` 的性能不如 WebGL，但它不会受到 WebGL 上下文限制的影响。
+
+当渲染视图切换到 `CanvasRenderingContext2D` 渲染时，控制台会提示：`Warning: Too many active WebGL contexts. Oldest context will be lost.`。
+
+**解决方案**：该 WARNING 不影响 App 正常运行，你可以忽略该 WARNING。

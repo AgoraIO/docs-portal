@@ -1,0 +1,245 @@
+---
+title: "Electron 平台常见开发问题"
+---
+本页介绍在开发 Electron App 的集成 SDK 阶段、编译运行阶段和打包阶段可能遇到的问题及解决方案。
+
+## 集成 SDK 阶段
+
+### npm install 下载很慢或超时
+
+错误信息：`code ETIMEDOUT`
+
+这种情况一般是网络或代理问题，参考以下任意一种解决方案进行尝试：
+
+- 设置镜像源
+
+    `https://registry.npmjs.org/` 是 npm 官方原始镜像下载地址，国内用户下载较慢。切换为位于中国大陆的可靠镜像源地址能有效提高下载速度，以淘宝 npm 镜像源为例：
+
+    ```shell
+    # 设置 npm 的镜像源为淘宝源
+    npm config set registry https://registry.npmmirror.com/
+    # 设置 npm 的 Electron 镜像源为淘宝镜像源
+    npm config set ELECTRON_MIRROR https://npmmirror.com/mirrors/electron/
+    ```
+
+- 正确设置代理
+
+    如果你使用了网络代理，你需要确保命令行工具的代理设置正确：
+
+    :::info[信息]
+    通常，代理工具中会提供一键复制命令设置终端代理的功能。
+    :::
+
+    ```shell
+    # 查看全局代理地址
+    npm config get proxy
+    # 设置全局代理（HTTP 代理地址）
+    npm config set proxy http://<代理服务器地址>:<端口号>
+    # 设置全局代理（HTTPS 代理地址）
+    npm config set proxy https://<代理服务器地址>:<端口号>
+    ```
+
+- 修改环境变量
+
+<Tabs defaultValue="win">
+<TabsList>
+  <TabsTrigger value="win">Windows</TabsTrigger>
+  <TabsTrigger value="mac">macOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="win">
+
+右键单击**计算机** > **属性** > **高级系统设置** > **环境变量**。在**用户变量**下新建以下变量：
+
+| 变量名 | 变量值 |
+| --- | --- |
+| ELECTRON_MIRROR | https://npmmirror.com/mirrors/electron/ |
+
+    设置完成后，重新打开一个命令行工具，运行 `npm install` 安装依赖。
+
+</TabsContent>
+
+<TabsContent value="mac">
+
+在终端中运行以下命令以修改环境变量：
+
+```shell
+export ELECTRON_MIRROR='https://npmmirror.com/mirrors/electron/'
+export ELECTRON_GET_USE_PROXY=true
+```
+
+:::warning[注意]
+使用上述方法修改的环境变量仅会在当前终端生效，如果你想让环境变量永久生效，则需要将上述参数配置到 `.zshrc` 或 `.bashrc` 中。
+:::
+
+</TabsContent>
+</Tabs>
+
+### 使用 cnpm 和 yarn 安装依赖时报错
+
+遇到这种情况，声网推荐你先参考 [`npm install` 下载很慢或超时](#npm-install-下载很慢或超时)中的方法，使用 npm 原生命令设置镜像源和代理地址后安装依赖。
+
+你也可以参考以下命令设置 yarn 的代理和镜像源：
+
+```shell
+# 设置代理
+yarn config set proxy <代理服务器地址>:<端口号>
+yarn config set https-proxy <代理服务器地址>:<端口号>
+
+# 设置镜像源
+yarn config set registry https://registry.npmmirror.com/
+yarn config set ELECTRON_MIRROR https://npmmirror.com/mirrors/electron/
+```
+
+### 符号链接层数过多
+
+报错信息：`Too many levels of symbolic links error`
+
+报错表示项目中使用的符号链接（symbolic link, 又叫软连接）层数过多，可能存在循环依赖的现象，导致无法安装库。
+
+使用以下命令可以在安装 npm 包时阻止创建符号链接：
+
+```shell
+npm install --no-bin-links
+```
+
+### 如何识别 Electron SDK 版本号与 Native SDK 版本号的对应关系？
+
+- 通过发版说明判断：在[发版说明](/doc/rtc/electron/overview/release-notes)中列出的 SDK 版本号与 Native 版本号完全一致。
+
+- 通过 Demo 获取：Electron Demo 中最下方会直接显示出 Native SDK 的版本号，如图：
+
+![](/img/rtc/native-version-check.png)
+
+## 编译运行阶段
+
+### Windows 上运行提示非 32 位的应用
+
+![](/img/rtc/electron-notwin32app.png)
+
+报错信息：`agora_node_ext.node is not a valid Win32 application`
+
+默认情况下，npm 在安装依赖的时候会根据当前电脑的架构来下载相对应架构的原生模块。
+
+当前报错表示在下载依赖的时候，下载了错误的架构，导致应用无法启动，提示需要 32 位的 `agora_node_ext.node`。
+
+你可以尝试以下任意一种方法修复该问题：
+
+- 使用 npm 环境变量
+
+    你可以直接在项目根目录中新建 `.npmrc` 文件用于配置 npm 环境变量，并写入以下内容：
+
+    ```npm
+    agora_electron_sdk_arch=ia32
+    arch=ia32
+    ```
+
+    配置保存后，你需要重新安装 `agora-electron-sdk`，之后再次尝试打包。
+
+- 手动配置 `package.json` 中的 `"agora_electron"`
+
+    `"agora_electron"` 可以配置以下字段：
+
+      - （可选）`platform`：默认根据系统选择，macOS 为 `darwin`，Windows 为 `win32`。
+      - （可选）`prebuilt`：默认设为 `true`，防止出现 Electron 或 Node.js 版本与 SDK 不兼容的问题。
+      - （可选）`arch`：默认根据系统架构选择。
+
+    比如想要在 Windows 64 位的电脑上打包 32 位的应用，你需要按下面的例子配置 `package.json`：
+
+    ```json
+    "agora_electron":{
+      "platform":"win32",
+      "arch":"ia32"
+      }
+    ```
+
+    配置保存后，你需要重新安装 `agora-electron-sdk`，之后再次尝试打包。
+
+### 无法获取应用程序窗口，导致无法共享屏幕
+
+遇到无法通过 `getScreenWindowsInfo` 获取应用程序窗口，导致无法共享屏幕的问题时，你可以参考以下步骤进行排查：
+
+1. 确认 API 调用是否正确
+
+    你可以参考以下文档检查屏幕共享相关的 API 调用是否正确：
+
+    - [屏幕共享 API 的参考文档](https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_screencapture)
+    - [Electron 屏幕共享 Demo 源码](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/advanced/ScreenShare/ScreenShare.tsx)
+    - [错误码](/api-ref/rtc/electron/error-code)
+
+2. 检查是否授权
+
+    查阅 [Electron 官网文档](https://www.electronjs.org/docs/latest/api/system-preferences#systempreferencesgetmediaaccessstatusmediatype-windows-macos)确保屏幕共享相关权限已授权。
+
+3. 联系声网工程师排查
+
+    如果前两个步骤仍未排查出问题，请[联系声网技术支持](https://ticket.shengwang.cn/)。
+
+## 打包阶段
+
+### 在 macOS 上打包崩溃
+
+![](/img/rtc/mac-dist-crash.png)
+
+如果遇到上述问题，请依次检查：
+
+1. 检查报错信息中的文件是否存在。图中为找不到 `AgoraRtcwrapper`。
+
+2. 检查 `webpack.config` 是否配置正确
+
+    确保 `webpack.config` 文件的语法正确且与你的项目需求相符。你可以参考 [webpack 官方中文文档](https://www.webpackjs.com/concepts/)。
+
+3. 检查 `asar.unpacked` 是否配置正确
+
+    `asar.unpacked` 配置用于指定哪些文件应该被解包到应用程序包中。你可以参考 [Demo 中的配置](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/package.json#L20)，或查阅[ Electron 官网文档](https://www.electron.build/configuration/configuration#configuration-asarUnpack)。
+
+4. 需确保项目对 SDK 的依赖方式为 `require`
+
+    在 macOS 上，`import` 语句可能会导致一些符号冲突问题，从而导致打包失败，`require` 语句则可以避免这些问题。采用 Vue 框架的项目有大概率因此打包失败。
+
+    ```typescript
+    import createAgoraRtcEngine from 'agora-electron-sdk';
+    /// import 修改为 require
+    const createAgoraRtcEngine = require("agora-electron-sdk");
+    ```
+
+### 应用授权相关报错
+
+报错信息：`com.apple.security.app-sandbox of null`
+
+该报错表示 `app-sandbox` 异常。`app-sandbox` 是一种安全机制，可限制应用程序对系统资源的访问。
+
+如果你不需要发布 App 至 App Store，可以直接在 `.entitlements` 文件中删除 `com.apple.security.app-sandbox`。否则，请检查 `.entitlements` 文件是否正确配置，确保无语法和命名等错误。
+
+### asar.unpacked 配置不正确
+
+报错信息：`Uncaught SyntaxError:Error parsing`
+
+打包遇到此报错一般是用于指定哪些文件应该被解包到应用程序包中的 `asar.unpacked` 配置不正确，你可以参考 [Demo 中的配置](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/package.json#L20)，或查阅 [Electron 官网文档](https://www.electron.build/configuration#asarunpack)。
+
+### 无法解析库或找不到模组
+
+- 报错 1：`failed to compile, can't resolve agora-electron-sdk `
+
+- 报错 2：`failed to compile, can't resolve agora_node_ext`
+
+- 报错 3：`cannot find module`
+
+以上报错表示无法解析库或找不到模组。该报错通常是由于编译工具的配置不正确导致的。参考以下方法解决：
+
+1. 如果你的项目使用的是 Vue，确保项目对 SDK 的依赖方式为 `require`，而不是 `import`
+
+    ```typescript
+    import createAgoraRtcEngine from 'agora-electron-sdk';
+    /// import 修改为 require
+    const createAgoraRtcEngine = require("agora-electron-sdk");
+    ```
+
+2. 修改工具配置
+
+    根据你使用的语言以及编译工具，参考以下页面进行配置：
+
+    - Vue：https://nklayman.github.io/vue-cli-plugin-electron-builder/
+    - Vite：https://electron-vite.github.io/
+    - React：https://github.com/electron-react-boilerplate/electron-react-boilerplate
+    - Webpack：https://webpack.electron.build/

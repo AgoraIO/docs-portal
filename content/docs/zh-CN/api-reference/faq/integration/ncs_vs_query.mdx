@@ -1,0 +1,33 @@
+---
+title: "消息通知服务和 query 方法有什么区别？"
+---
+为保障云端录制和云端转码服务的可用性，你可以通过 `query` 方法或消息通知服务来监视服务状态，并在服务状态异常时及时采取措施。本文介绍两种状态监视方案的优缺点。
+
+## 方案一：query 方法
+
+你可以定时调用 `query` 方法查询云端录制或云端转码的状态。详见[查询云端录制状态](/doc/cloud-recording/restful/cloud-recording/operations/get-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-query)或[查询云端转码状态](https://docs.agora.io/cn/cloud-transcoding/cloud_transcoder?platform=All%20Platforms#query：查询-cloud-transcoder-状态信息)。
+
+方案一的优缺点如下：
+
+- 优点：服务状态为主动查询后获得，可靠性高。
+- 缺点：
+  - 提供的状态信息有限。
+  - 需要主动查询，且有每秒请求数（QPS）限制，实时性不如消息通知服务。
+
+如果你对状态查询的可靠性要求较高，声网强烈建议你使用 `query` 方法。
+
+## 方案二：消息通知服务
+
+声网消息通知服务用于辅助监听云端录制或云端转码的事件。你需要配置一个 HTTPS 服务器来接收事件通知。详见[云端录制消息通知服务](/doc/cloud-recording/restful/webhook/enable-ncs)或[云端转码消息通知服务](/doc/cloud-recording/restful/webhook/enable-ncs)。
+
+方案二的优缺点如下：
+
+- 优点：实时性好。
+- 缺点：
+  - 服务器被动接收消息，可能会出现消息丢失的情况。
+  - 为避免消息投递的确认消息可能丢失，声网会重传消息。因此，你需要对消息进行去重。
+  - 不保证消息有序到达。
+
+:::warning[注意]
+消息通知服务只能作为辅助手段来监控录制状态。不建议你的核心业务逻辑依赖消息通知服务。如果你的业务对该服务强依赖，建议[联系技术支持](https://ticket.shengwang.cn/)开通该服务的冗余消息功能，即接收双路消息通知，降低消息丢失的概率。冗余消息功能仍然不能保证 100% 的消息到达率。
+:::

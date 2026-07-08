@@ -1,0 +1,71 @@
+---
+title: "如何处理 Token 相关错误码？"
+---
+当你的声网项目中启用了[主要/次要证书](/doc/console/general/user-guides/manage_authentication#启用主要证书)且不允许仅 App ID 加入，则表示你选择使用动态密钥 Token 对用户进行鉴权。
+
+由于 Token 具有一定的时效性，因此 App 在运行过程中，你有可能会收到如下与 Token 相关的错误码或事件回调。本文对这些事件进行了梳理，提供触发的原因以及解决方法，帮助你在 App 出现异常时进行问题排查。
+
+:::info[信息]
+本文适用于 RTC 产品。
+:::
+
+## 101：App ID 无效
+
+**问题描述：**
+
+Native 端：SDK 在初始化声网服务时返回错误码 `ERR_INVALID_APP_ID(101)`；或调用 `joinChannel` 方法加入频道时，SDK 回调 `onError` 事件，并报告错误码 `ERR_INVALID_APP_ID(101)`。
+
+**问题原因：** 不是有效的 App ID，一般是由于 App ID 的数据类型不对引起的。
+
+**解决方法：** 建议检查 App ID 数据格式是否有效。声网的 App ID 为 String 型，请使用正确数据类型的  App ID，重新初始化声网服务。
+
+## 109：Token 已过期
+
+**问题描述：**
+
+调用 `joinChannel` 方法加入频道时，SDK 回调 `onError` 事件，并报告错误码 `ERR_TOKEN_EXPIRED(109)`。
+
+**问题原因：** Token 过期。
+
+**解决方法：** Token 一旦过期，你就需要在服务端重新生成一个 Token，然后调用 `renewToken` 方法尝试重新加入频道；在多频道场景下，你可以调用 `updateChannelMediaOptionsEx`（iOS 上为 `updateChannelExWithMediaOptions`）传入新的 Token。
+
+## 110：Token 无效
+
+**问题描述：**
+
+调用 `joinChannel` 方法加入频道时，SDK 回调 `onError` 事件，并报告错误码 `ERR_INVALID_TOKEN(110)`。
+
+**问题原因：** 生成的 Token 无效。一般有以下原因：
+
+- 你的声网项目中启用了主要/次要证书且不允许仅 App ID 加入，但是加入频道时却未传入 Token；或者项目未开启主要/次要证书，就试图使用 Token 加入频道。
+- 你在服务端生成 Token 时填入的 App ID、用户 ID 和频道名，与你初始化和加入频道时填入的 App ID、用户 ID 和频道名不匹配。
+
+**解决方法：**
+
+- 在加入频道前，请确认你在初始化时填入的 App ID 对应的项目是否已启用主要/次要证书。
+  - 如果未启用主要/次要证书，则不能使用 Token 加入频道。
+  - 如果项目中已启用主要/次要证书且允许仅 App ID 加入，则既可以仅使用 App ID 加入频道，也可以使用主要/次要证书生成的 Token 加入频道。
+  - 如果项目中已启用主要/次要证书且不允许仅 App ID 加入，则必须使用 Token 加入频道。
+- 当确认使用 Token 加入频道时，还需要确认：
+	- 用于生成 Token 的 App ID 和初始化服务时填入的 App ID 一致。
+	- 用于生成 Token 的用户 ID 和加入频道时填入的用户 ID 一致，且数据类型也一致。
+	- 用于生成 Token 的频道名和加入频道时填入的频道名一致。
+
+## Token 过期相关事件回调
+
+为保证通信体验，声网提供如下两个回调，提醒用户 Token 即将过期或已经过期：
+
+- `onTokenPrivilegeWillExpire`：该回调表示 Token 即将在 30 秒内失效。收到这个回调时，你需要在服务端重新生成 Token，然后调用 `renewToken` 方法，将新生成的 Token 传给 SDK。
+- `onRequestToken`：该回调表示 Token 已经失效。收到这个回调时，你需要在服务端重新生成 Token，然后通过下列任意一种方式来更新 Token：
+  - 单频道场景：
+    - 调用 `renewToken` 来传入新的 Token。
+    - 调用 `leaveChannel` 来离开当前频道，然后再调用 `joinChannel` 并传入新的 Token 重新加入频道。
+  - 多频道场景：调用 `updateChannelMediaOptionsEx`（iOS 上为 `updateChannelExWithMediaOptions`） 传入新的 Token。
+
+## 各语言 Token 错误码对照表
+
+| 错误码 | Java/C++/C# | Objective-C |
+| ---------------- | ---------------- | ---------------- |
+| 101      | `ERR_INVALID_APP_ID`      | `AgoraErrorCodeInvalidAppId`      |
+| 109      | `ERR_TOKEN_EXPIRED`      | `AgoraErrorCodeTokenExpired`      |
+| 110      | `ERR_INVALID_TOKEN`      | `AgoraErrorCodeInvalidToken`      |

@@ -1,0 +1,28 @@
+---
+title: "使用 RTM SDK 开发的 iOS App 如何增加隐私清单？"
+---
+## 背景介绍
+
+为确保终端用户的隐私安全，所有在苹果应用商店（App Store） 上架的 App 均需要按照 Apple 的要求提供一份隐私清单，描述其（包括 App 的开发代码或使用第三方 SDK 的代码）使用可能影响用户隐私的 Apple 原生 API 的必要理由，并确保 App 仅为实现预期目的使用这些 API。
+
+如果你上传的 App 使用了上述 API、但未在隐私清单中描述必要理由，Apple 会发送电子邮件提醒你将理由添加到 App 的隐私清单中。
+
+自 2024 年 5 月 1 日起，仍未在隐私清单中描述其使用上述 API 必要理由的 App 将无法通过 App Store Connect 的审核。详见 [Apple 官方文档](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api)以了解更多信息。
+
+## 操作指导
+
+### 自动导入
+
+自 v2.1.11 起，RTM SDK 已经自动添加了隐私清单，无需手动添加。你可以将 RTM SDK 升级到该版本，即可实现自动导入隐私清单。
+
+### 手动导入
+
+如果你的 App 使用了 v2.1.10 及之前版本的 RTM SDK，你需要参考以下步骤在 Xcode 中手动添加隐私清单。
+
+- 如果你的 Xcode 项目中没有隐私清单文件，可以下载 [PrivacyInfo](https://download.agora.io/rtm2/release/PrivacyInfo.xcprivacy) 文件，然后将其添加到 Xcode 项目中即可，如下图所示：
+
+![导入隐私清单](/img/rtc/privacyinfofile.png)
+
+- 如果你的 Xcode 项目中已经有隐私清单文件，可以在 Xcode 项目导航器中选择隐私清单文件，然后点击 **+** 按钮添加新行，手动在隐私清单文件中增加以下内容：
+
+![手动添加隐私清单项](/img/rtc/addprivacylist.png)
