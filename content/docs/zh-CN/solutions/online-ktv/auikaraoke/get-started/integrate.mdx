@@ -1,0 +1,1108 @@
+---
+title: "快速实现"
+---
+
+<PlatformStructured platform="android">
+
+AUIKaraoke 是一个基于 [AUIKit](https://github.com/AgoraIO-Community/AUIKit/blob/main/Android) 搭建的、针对 K 歌场景的开源 UI 组件，提供 K 歌房间相关功能。`asceneskit` 是 K 歌房的容器组件，你可以通过 `asceneskit` 自定义 K 歌房间的用户界面逻辑并实现房间管理等功能。
+
+本文介绍如何通过 [AUIKaraoke](/zh-CN/solutions/online-ktv/auikaraoke/build/manage-karaoke/uikitkaraoke) 快速搭建一个含 UI 界面的在线 K 歌房。
+
+## 示例项目
+
+声网在 GitHub 上提供一个开源的[示例项目](https://github.com/AgoraIO-Community/API-Examples-AUIKit/tree/main/Android/KaraokeApp) 供你参考。
+
+## 准备开发环境
+
+本节介绍集成 AUIKaraoke 的前提条件和项目相关配置。
+
+### 前提条件
+
+- [Git](https://git-scm.com/downloads)
+
+- Android API Level 24 及以上
+
+- Android Studio 3.5 及以上
+
+- Android 设备，版本 Android 7.0 及以上
+
+  :::warning[注意]
+  声网推荐使用真机运行项目。部分模拟机可能存在功能缺失或者性能问题。
+  :::
+
+- [Java Development Kit](https://www.oracle.com/java/technologies/javase-downloads.html) 17 及以上
+
+- 你的声网项目的 App ID、证书，以及环信项目的 APPKEY、Client ID 以及 Client Secret，如何获取请参考[开通服务](/zh-CN/solutions/online-ktv/auikaraoke/build/setup-and-access/enable-service)
+
+### 创建项目并配置权限
+
+本节介绍如何创建项目并为项目添加体验实时互动所需的权限。
+
+1. 如需创建新项目，在 **Android Studio** 里，依次选择 **Phone and Tablet > Empty Activity**，创建 [Android 项目](https://developer.android.com/studio/projects/create-project)，如果你已有 Android 项目，可跳过这一步骤。
+
+   :::info[信息]
+   创建项目后，**Android Studio** 会自动开始同步 Gradle，稍等片刻，待同步成功后再进行下一步操作。
+   :::
+
+2. 配置项目权限。在 `app/src/main/AndroidManifest.xml` 文件中添加下列内容：
+
+    ```xml
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        package="io.agora.app.karaoke">
+
+        <!-- asceneskit 运行所需权限 -->
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.RECORD_AUDIO" />
+        <uses-permission android:name="android.permission.CAMERA" />
+        <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+        <uses-permission android:name="android.permission.CALL_PHONE" />
+
+        ...
+    </manifest>
+    ```
+
+   如果你使用的不是 https 的业务服务器域名，还需要在 `app/src/main/AndroidManifest.xml` 文件中将 `usersCleartextTraffic` 属性设为 `true` 以允许所有明文请求：
+
+    ```xml
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        package="io.agora.app.karaoke">
+
+        ...
+
+        <application
+            ...
+            android:usesCleartextTraffic="true">
+
+            ...
+        </application>
+
+    </manifest>
+    ```
+
+3. 防止代码混淆。打开 `app/proguard-rules.pro` 文件，添加如下行以防止代码混淆：
+
+   ```java
+   -keep class io.agora.**{*;}
+   -dontwarn javax.**
+   -dontwarn com.google.devtools.build.android.**
+   ```
+
+### 添加依赖库
+
+1. 下载声网提供的 [AUIKaraoke](https://github.com/AgoraIO-Community/AUIKaraoke) 源码。运行以下命令克隆项目到本地：
+
+   ```shell
+   git clone git@github.com:AgoraIO-Community/AUIKaraoke.git
+   ```
+
+2. 将 AUIKaraoke 源码目录下 `Android/asceneskit` 文件夹复制到与你的 App 文件夹所在的同一级目录下。
+
+3. 将 AUIKaraoke 源码目录下 `Android/app/src/main/java/io/agora/app/karaoke/KaraokeUIKit.kt` 类复制到你的项目的 `app/src/main/java/<package_name>` 目录下。
+
+4. 添加 `asceneskit` 库到你的项目中。在 `settings.gradle.kts` 文件中，将 `dependencyResolutionManagement` 替换为下列代码：
+
+   ```kotlin
+   dependencyResolutionManagement {
+       repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+       repositories {
+           google()
+           mavenCentral()
+           // 添加 jitpack 仓库
+           maven { url = java.net.URI.create("https://www.jitpack.io") }
+       }
+   }
+
+
+   rootProject.name = "KaraokeApp"
+   include(":app")
+   // 添加 asceneskit 库到项目里
+   include(":asceneskit")
+   ```
+
+5. 添加 namespace。（可选）
+
+   :::info[信息]
+   如果你使用的 Android Gradle Plugin 版本为 8.0，则需要添加 namespace，否则可跳过该步骤。
+   :::
+
+**添加 namespace**
+
+在 `asceneskit/build.gradle` 文件中添加 namespace。
+
+```java
+android {
+    // Android Gradle Plugin 8.0 要求添加 namespace
+    namespace = "io.agora.asceneskit"
+    compileSdkVersion 30
+    ...
+}
+```
+
+
+6. 修改 Java 版本号。（可选）
+
+   :::info[信息]
+   如果你使用的 Java Development Kit 版本为 17，则需要修改版本号，否则可跳过该步骤。
+   :::
+
+**修改版本**
+
+在 `asceneskit/build.gradle` 文件中修改 Java 版本号。
+
+```java
+android {
+    ...
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    ...
+}
+```
+
+
+7. 设置主题样式。
+
+   1. 在 `app/src/main/res/values/themes.xml` 文件中修改主题（Theme）为 K 歌房主题：
+
+      ```xml
+      <resources>
+
+          <!-- Karaoke 主题 -->
+          <style name="Theme.KaraokeApp" parent="Theme.AKaraoke" />
+
+      </resources>
+      ```
+
+    2. 在 `app/src/main/AndroidManifest.xml` 文件中添加主题：
+
+       ```xml
+       <application
+           ···
+       android:theme="@style/Theme.KaraokeApp">
+           ···
+       </application>
+       ```
+
+8. 添加 asceneskit 依赖。
+
+   在 `app/build.gradle.kts` 文件中添加 asceneskit 依赖。
+
+   ```kotlin
+   dependencies {
+       ...
+
+       // asceneskit依赖
+       implementation(project(":asceneskit"))
+   }
+   ```
+
+9. 点击 **Sync Project with Gradle Files** 来同步项目。
+
+## 创建在线 K 歌房
+
+本节介绍如何以房主身份快速搭建一个在线 K 歌房来体验 K 歌场景。
+
+### 1. 初始化 AUIKaraoke
+
+调用 `setup` 初始化 KaraokeUIKit。打开 `app/src/main/java/MainActivity.kt` 文件，在 `onCreate` 方法里调用 `setup` 进行初始化。
+
+```kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    ...
+
+    // 初始化 KaraokeUiKit
+    val config = AUICommonConfig()
+    config.context = this
+    // 你的业务服务器域名
+    config.host = ""
+    // 你的声网 AppID
+    config.appId = ""
+    // 你的声网 App 证书
+    config.appCert = ""
+    // 你的 IM AppKey
+    config.imAppKey = ""
+    // 你的 IM Client ID
+    config.imClientId = ""
+    // 你的 IM Client Secret
+    config.imClientSecret = ""
+    config.owner = AUIUserThumbnailInfo().apply {
+        // 用户 ID
+        userId = (Random().nextInt(1000) + 10000).toString()
+        // 用户名
+        userName = "User-$userId"
+        // 用户头像
+        userAvatar = "https://accktvpic.oss-cn-beijing.aliyuncs.com/pic/sample_avatar/sample_avatar_1.png"
+    }
+    // Setup KaraokeUIKit
+    KaraokeUIKit.setup(
+        commonConfig = config, // must
+        apiConfig = AUIAPIConfig(
+            ktvApi = null,
+            rtcEngineEx = null,
+            rtmClient = null
+        )
+    )
+}
+```
+
+### 2. 创建并进入房间
+
+1. 添加**创建房间**按钮。
+
+   1. 在 `app/src/main/res` 路径下新建一个名为 **layout** 的文件夹，在该文件夹下创建一个 `.xml` 文件，文件名为 **main_activity.xml**，然后将下列代码复制到该文件中：
+
+       ```kotlin
+       <?xml version="1.0" encoding="utf-8"?>
+       <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:gravity="center">
+
+           <Button
+               android:id="@+id/btnCreateRoom"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginBottom="12dp"
+               android:text="创建房间"/>
+
+       </LinearLayout>
+       ```
+
+   2. 设置 UI 布局。打开 `app/src/main/java/MainActivity.kt` 文件，设置 xml 布局并设置按钮点击事件。
+
+      ```kotlin
+      override fun onCreate(savedInstanceState: Bundle?) {
+          super.onCreate(savedInstanceState)
+          // 将 jectpack compose 布局改成 xml 布局
+          setContentView(R.layout.main_activity)
+
+          // 设置点击事件并弹窗
+          findViewById<Button>(R.id.btnCreateRoom).setOnClickListener {
+              // 创建房间按钮点击
+
+          }
+      }
+      ```
+
+2. 创建房间详情页界面。
+
+   1. 在 `app/src/main/res/layout/` 路径下新建一个 `.xml` 文件，文件名为 **room_activity.xml**，然后将下列代码复制到该文件中：
+
+      ```xml
+      <?xml version="1.0" encoding="utf-8"?>
+      <io.agora.asceneskit.karaoke.KaraokeRoomView
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/karaokeRoomView"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" />
+      ```
+
+    2. 在 `app/src/main/java/MainActivity.kt` 同级目录下创建一个 `RoomActivity` 类用于显示和处理与在线 K 歌房间相关的用户界面和逻辑。
+
+        ```kotlin
+        class RoomActivity : FragmentActivity() {
+
+            companion object {
+                const val EXTRA_ROOM_INFO = "RoomInfo"
+                const val EXTRA_IS_CREATE = "isCreate"
+
+                fun launch(context: Context, roomInfo: AUIRoomInfo, isCreate: Boolean){
+                    val intent = Intent(context, RoomActivity::class.java)
+                    intent.putExtra(EXTRA_ROOM_INFO, roomInfo)
+                    intent.putExtra(EXTRA_IS_CREATE, isCreate)
+                    context.startActivity(intent)
+                }
+            }
+
+            // 房间信息
+            private val isCreate by lazy {
+                intent.getSerializableExtra(EXTRA_ROOM_INFO) as AUIRoomInfo
+            }
+
+            // 是否创建房间
+            private val isCreate by lazy {
+                intent.getBooleanExtra(EXTRA_IS_CREATE, false)
+            }
+
+            override fun onCreate(savedInstanceState: Bundle?) {
+                super.onCreate(savedInstanceState)
+                // 设置布局
+                setContentView(R.layout.room_activity)
+
+                // 初始化布局
+                val karaokeRoomView = findViewById<KaraokeRoomView>(R.id.karaokeRoomView)
+                karaokeRoomView.setFragmentActivity(this@RoomActivity)
+
+
+            }
+        }
+        ```
+
+    3. 在 `app/src/main/AndroidManifest.xml` 文件中配置 `RoomActivity`：
+
+        ```xml
+        <application>
+            ...
+
+            <activity android:name=".RoomActivity"
+                android:windowSoftInputMode="adjustNothing"/>
+
+        </application>
+        ```
+
+3. 进入 K 歌房间。用户点击**创建房间**按钮后，随机生成一个房间名和 ID 并进入到新创建的房间中。在 `MainActivity.kt` 文件中，将下列示例代码添加至 `findViewById<Button>(R.id.btnCreateRoom).setOnClickListener {` 之后：
+
+   ```kotlin
+   findViewById<Button>(R.id.btnCreateRoom).setOnClickListener {
+       // 点击创建房间按钮
+       // 随机生成房间名
+       val roomName = "${Random().nextInt(100) + 1000}"
+       val roomInfo = AUIRoomInfo()
+       roomInfo.roomId = UUID.randomUUID().toString()
+       roomInfo.roomName = roomName
+       roomInfo.thumbnail = "https://accktvpic.oss-cn-beijing.aliyuncs.com/pic/sample_avatar/sample_avatar_1.png"
+       roomInfo.owner = AUIRoomContext.shared().currentUserInfo
+       RoomActivity.launch(this@MainActivity, roomInfo, true)
+   }
+   ```
+
+4. 启动房间。
+
+   在 `RoomActivity` 的`onCreate`方法里，调用 `createRoom` 创建并启动房间。在 `app/src/main/java/RoomActivity` 文件中，将下列代码添加至初始化布局之后：
+
+   ```kotlin
+   class RoomActivity : FragmentActivity() {
+       override fun onCreate(savedInstanceState: Bundle?) {
+
+           ...
+
+           // 检查并申请运行时权限
+           PermissionHelp(this).checkMicPerm(
+               granted = {
+                   // 获取到权限
+
+                   // 生成 RoomConfig 配置
+                   KaraokeUIKit.generateToken(roomInfo.roomId,
+                       onSuccess = { roomConfig ->
+                           // 启动房间
+                           if(isCreate){
+                               // 创建并进入房间
+                               KaraokeUIKit.createRoom(roomInfo, roomConfig, karaokeRoomView){ ex, roomInfo ->
+                                   if(ex != null){
+                                       // 创建房间失败，直接退出
+                                       finish()
+                                   }
+                               }
+                           }
+                       },
+                       onFailure = {
+                           // 获取 Token 失败，直接退出
+                           finish()
+                       })
+               },
+               unGranted = {
+                   // 没有获取到权限
+                   finish()
+               })
+       }
+   }
+   ```
+
+至此，你已经成功创建一个在线 K 歌房。
+
+### 测试 App
+
+按照以下步骤测试你的 App：
+
+1. 开启 Android 设备的开发者选项，打开 USB 调试，通过 USB 连接线将 Android 设备接入电脑，并在 Android 设备选项中勾选你的 Android 设备。
+
+2. 在 Android Studio 中，点击 **Sync Project with Gradle Files** 按钮，以让项目与 Gradle 文件同步。
+
+3. 待同步成功后，点击 ![](https://web-cdn.agora.io/docs-files/1687670569781) 开始编译。
+
+4. 编译成功后，你的 Android 设备上会出现 **AUIKaraoke** App。打开 App，点击**创建房间**创建一个新的房间来体验在线 K 歌。
+
+![](https://web-cdn.agora.io/docs-files/1696931506007)
+
+## 后续步骤
+
+成功搭建一个在线 K 歌房间后，你还可以参考本节来进一步了解启动 K 歌房间后的后续步骤。
+
+### 听众进入房间
+
+1. 添加**加入房间**按钮。
+
+   1. 在 `app/src/main/java/res/layout/main_activity.xml` 文件中，添加下列代码：
+
+      ```xml
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+          ...
+
+          <Button
+              android:id="@+id/btnJoinRoom"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="12dp"
+              android:text="加入房间"/>
+
+      </LinearLayout>
+      ```
+
+    2. 在 `app/src/main/java/MainActivity.kt` 文件中设置点击事件，并弹出输入房间名的弹窗。
+
+       ```kotlin
+       findViewById<Button>(R.id.btnJoinRoom).setOnClickListener {
+           // 弹出房间名输入弹窗
+           val input = EditText(this@MainActivity)
+           input.hint = "Room Name"
+           AlertDialog.Builder(this@MainActivity)
+               .setTitle("Launch Room")
+               .setView(input)
+               .setPositiveButton("Confirm"){ dialog: DialogInterface, i: Int ->
+                   // 确认加入房间
+
+               }
+               .setNegativeButton("Cancel"){ dialog: DialogInterface, i: Int ->
+                   dialog.dismiss()
+               }
+               .show()
+       }
+       ```
+
+2. 获取房间信息以加入房间。
+
+   在 `app/src/main/java/MainActivity.kt` 文件中，将下列代码添加至 `setPositiveButton` 之后：
+
+    ```kotlin
+    val roomName = input.text.toString()
+    if(TextUtils.isEmpty(roomName)){
+        Toast.makeText(this@MainActivity, "Room name is empty", Toast.LENGTH_SHORT).show()
+        dialog.dismiss()
+        return@setPositiveButton
+    }
+    // 查询房间信息
+    KaraokeUIKit.getRoomList(0, 50,
+        success = { list ->
+            val roomInfo = list.findLast { it.roomName == roomName }
+            if(roomInfo == null){
+                Toast.makeText(this@MainActivity, "The room is unavailable. RoomName=$roomName", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+                return@getRoomList
+            }
+            // 启动房间
+            RoomActivity.launch(this@MainActivity, roomInfo, false)
+        },
+        failure = {
+            Toast.makeText(this@MainActivity, "Get room list failed. ${it.code} - ${it.message}", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+        })
+    ```
+
+3. 进入房间。
+
+    在 `RoomActivity` 获取到 `roomConfig` 后，调用 `enterRoom` 进入房间。在 `app/src/main/java/RoomActivity` 文件中，将下列代码添加至获取到 `roomConfig` 之后：
+
+    ```kotlin
+    KaraokeUIKit.generateToken(roomInfo.roomId,
+    onSuccess = {roomConfig ->
+        // 启动房间
+        if(isCreate){
+            // 创建并进入房间
+            ...
+        }else{
+            // 进入房间
+            KaraokeUIKit.enterRoom(roomInfo, roomConfig, karaokeRoomView){ ex, roomInfo ->
+                if(ex != null){
+                    // 进入房间失败，直接退出
+                    finish()
+                }
+            }
+        }
+    },
+    onFailure = {
+        // 获取 Token 失败，直接退出
+        finish()
+    })
+    ```
+
+### 退出及销毁房间
+
+- 当房间被销毁时，退出该房间。
+
+  调用 `registerRoomRespObserver` 方法来注册房间事件观测器。通过 `onRoomDestroy` 回调获取房间销毁事件。当房间被销毁时，调用 `leaveRoom` 退出该房间。在 `app/src/main/java/RoomActivity.kt` 文件中，添加下列代码：
+
+  ```kotlin
+  // 房间事件观测器
+  private val roomManagerRespObserver = object: AUIKaraokeRoomServiceRespObserver{
+      override fun onRoomDestroy(roomId: String) {
+          super.onRoomDestroy(roomId)
+          // 房间被销毁
+          destroyRoom()
+          finish()
+      }
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+      super.onCreate(savedInstanceState)
+      ...
+
+      // 注册房间事件观测器
+      KaraokeUIKit.registerRoomRespObserver(roomInfo.roomId, roomManagerRespObserver)
+  }
+
+  private fun destroyRoom() {
+      // 退出房间
+      KaraokeUIKit.leaveRoom(roomInfo.roomId)
+      // 取消注册房间事件观测器
+      KaraokeUIKit.unRegisterRoomRespObserver(roomInfo.roomId, roomManagerRespObserver)
+  }
+  ```
+
+- 主动退出并销毁房间。
+
+  当你结束 K 歌并需要释放 K 歌房使用的所有资源时，调用 `leaveRoom` 来退出并销毁房间。然后调用 `unRegisterRoomRespObserver` 来取消注册房间事件观察器，取消后不会再收到任何房间事件的通知。在 `app/src/main/java/RoomActivity.kt` 文件中，添加下列代码：
+
+  ```kotlin
+  override fun onCreate(savedInstanceState: Bundle?) {
+      super.onCreate(savedInstanceState)
+      // 设置布局
+      setContentView(R.layout.room_activity)
+      // 初始化布局
+      val karaokeRoomView = findViewById<KaraokeRoomView>(R.id.karaokeRoomView)
+      karaokeRoomView.setFragmentActivity(this@RoomActivity)
+      karaokeRoomView.setOnShutDownClick {
+          // 主动退出房间
+          destroyRoom()
+          finish()
+      }
+      ...
+  }
+
+
+  override fun onBackPressed() {
+      destroyRoom()
+      super.onBackPressed()
+  }
+
+
+  private fun destroyRoom() {
+      // 退出、销毁房间
+      KaraokeUIKit.leaveRoom(roomInfo.roomId)
+      // 取消注册房间事件观察器
+      KaraokeUIKit.unRegisterRoomRespObserver(roomInfo.roomId, roomManagerRespObserver)
+  }
+  ```
+
+## API 参考
+
+- [AUIKaraoke Kotlin API](/zh-CN/solutions/online-ktv/auikaraoke/reference/auikaraoke-api)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+AUIKaraoke 是一个基于 [AUIKit](https://github.com/AgoraIO-Community/AUIKit/blob/main/iOS) 搭建的、针对 K 歌场景的开源 UI 组件，提供 K 歌房间相关功能。AScenesKit 是 K 歌房的容器组件，你可以通过 AScenesKit 自定义 K 歌房间的界面逻辑，并实现房间管理等功能。
+
+本文介绍如何通过 [AUIKaraoke](/zh-CN/solutions/online-ktv/auikaraoke/build/manage-karaoke/uikitkaraoke) 快速搭建一个含 UI 界面的在线 K 歌房。
+
+## 示例项目
+
+声网在 GitHub 上提供一个开源的[示例项目](https://github.com/AgoraIO-Community/API-Examples-AUIKit/tree/main/iOS/KaraokeApp) 供你参考。
+
+## 准备开发环境
+
+本节介绍集成 AUIKaraoke 的前提条件和项目相关配置。
+
+### 前提条件
+
+- [Git](https://git-scm.com/downloads)
+
+- [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 1.12.1 及以上
+
+- [Xcode](https://apps.apple.com/cn/app/xcode/id497799835?mt=12) 14.0 及以上
+
+- iOS 设备，版本 13.0 及以上
+
+  :::info[信息]
+  声网推荐使用真机运行项目。部分模拟机可能存在功能缺失或者性能问题。
+  :::
+
+- 有效的苹果开发者账号
+
+- 你的声网项目的 App ID、App 证书，以及环信项目的 APPKEY、Client ID 以及 Client Secret，如何获取请参考[开通服务](/zh-CN/solutions/online-ktv/auikaraoke/build/setup-and-access/enable-service)
+
+### 创建并配置项目
+
+按照下列步骤来创建并配置你的项目。
+
+1. [创建一个新的项目](https://help.apple.com/xcode/mac/current/#/dev07db0e578)，**Application** 选择 **App**，**Interface** 选择 **Storyboard**，**Language** 选择 **Swift**。
+
+   如果你没有添加过开发团队信息，会看到 **Add account…** 按钮。点击该按钮并按照屏幕提示登录 Apple ID，点击 **Next**，完成后即可选择你的 Apple 账户作为开发团队。
+
+2. 为你的项目设置[自动签名](https://help.apple.com/xcode/mac/current/#/dev23aab79b4)。
+
+3. 设置部署你的 App 的[目标设备](https://help.apple.com/xcode/mac/current/#/deve69552ee5)。
+
+4. 添加项目的设备权限。在项目导航栏中 `info` 下，配置麦克风权限，如下图所示：
+
+   ![](https://web-cdn.agora.io/docs-files/1697770935216)
+
+### 添加依赖库
+
+1. 下载声网提供的 [AUIKaraoke](https://github.com/AgoraIO-Community/AUIKaraoke) 源码。运行以下命令克隆项目到本地：
+
+   ```shell
+   git clone git@github.com:AgoraIO-Community/AUIKaraoke.git
+   ```
+
+2. 将 AUIKaraoke 源码目录下 `iOS/AScenesKit` 文件夹复制到你的项目路径下，例如放在和 `AUIKitDemo.xcodeproj` 同级的目录下。
+
+3. 将 AUIKaraoke 源码目录下 `iOS/Example/AUIKaraoke/KaraokeUIKit.swift` 类复制到你的项目路径下。
+
+   1. 选中项目下 `AUIKitDemo` 文件夹，右键选择 **Add Files to "AUIKitDemo"**。
+
+![](/img/online-ktv/add-kit1-ios.png)
+
+   2. 指定 `KaraokeUIKit.swift` 文件，勾选 **Destination: Copy items if neeed**，点击右下角 `Add`。
+
+![](/img/online-ktv/add-kit-ios.png)
+
+4. 在 `AUIKitDemo.xcodeproj` 同级目录下创建一个 Podfile 文件，并添加如下内容：
+
+   ```ruby
+   source 'https://github.com/CocoaPods/Specs.git'
+   platform :ios, '13.0'
+
+   target 'AUIKitDemo' do
+     use_frameworks!
+
+     pod 'AScenesKit', :path => './AScenesKit'
+     pod 'AgoraRtcEngine_Special_iOS', '4.1.1.29'
+   end
+
+   post_install do |installer|
+     installer.pods_project.targets.each do |target|
+       target.build_configurations.each do |config|
+         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+       end
+     end
+   end
+   ```
+
+5. 在 Podfile 文件目录下打开终端，执行下列命令来把 AScenesKit 的相关依赖集成进 App 中：
+
+   ```shell
+   pod update --verbose
+   ```
+
+   成功后，该目录下会新生成一个 `AUIKitDemo.xcworkspace` 文件。如果你在执行上述命令时因网络问题而失败，可尝试更换镜像源，详见[常见问题](#pod)。
+
+6. 打开 `AUIKitDemo.xcworkspace` 文件，点击 **Start the active scheme** 来编译项目。如果你使用的 Xcode 15，在编译时可能遇到报错，可参考[常见问题](#xcode)解决报错。
+
+## 创建在线 K 歌房
+
+本节介绍如何以房主身份快速搭建一个在线 K 歌房来体验 K 歌场景。
+
+### 1. 初始化 AUIKaraoke
+
+1. 添加依赖。
+
+   在 `AppDelegate.swift` 文件中添加下列代码来添加依赖：
+
+   ```swift
+   import AUIKitCore
+   import AScenesKit
+   ```
+
+2. 初始化 KaraokeUIKit。
+
+   创建 `AUICommonConfig` 对象，并调用 `setup` 方法初始化 `KaraokeUIKit`。在 `AppDelegate.swift` 文件中添加下列代码：
+
+    ```swift
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // 随机设置用户 uid
+        let uid = Int(arc4random_uniform(99999999))
+
+        let commonConfig = AUICommonConfig()
+        // 你的声网 AppID
+        commonConfig.appId = KeyCenter.AppId
+        // 你的声网 App 证书
+        commonConfig.appCert = KeyCenter.AppCertificate
+        // 你的 IM AppKey
+        commonConfig.imAppKey = KeyCenter.IMAppKey
+        // 你的 IM Client ID
+        commonConfig.imClientId = KeyCenter.IMClientId
+        // 你的 IM Client Secret
+        commonConfig.imClientSecret = KeyCenter.IMClientSecret
+
+        // 你的业务服务器域名
+        commonConfig.host = KeyCenter.HostUrl
+
+        let ownerInfo = AUIUserThumbnailInfo()
+
+        // 用户 ID
+        ownerInfo.userId = "\(uid)"
+
+        // 用户名
+        ownerInfo.userName = "user_\(uid)"
+
+        // 用户头像
+        ownerInfo.userAvatar = "https://accktvpic.oss-cn-beijing.aliyuncs.com/pic/sample_avatar/sample_avatar_1.png"
+        commonConfig.owner = ownerInfo
+
+        KaraokeUIKit.shared.setup(commonConfig: commonConfig,
+                                  // apiConfig 包含 KtvApi、RtcEngine、RtmClient 对象。如果你的项目中还未使用这几个对象，请传入 nil， AUIKaraoke 内部会自行创建
+                                  apiConfig: nil)
+
+        return true
+    }
+
+    ```
+
+### 2. 创建并进入房间
+
+1. 在 `ViewController.swift` 文件中添加下列依赖：
+
+   ```swift
+   import AUIKitCore
+   import AScenesKit
+   ```
+
+2. 添加**创建房间**按钮。
+
+   在 `ViewController.swift` 文件中，将 `viewDidLoad` 替换为下列代码：
+
+   ```swift
+   override func viewDidLoad() {
+       super.viewDidLoad()
+
+       //作为房主创建房间的按钮
+       let createButton = UIButton(frame: CGRect(x: 10, y: 100, width: 100, height: 60))
+       createButton.setTitle("创建房间", for: .normal)
+       createButton.setTitleColor(.red, for: .normal)
+       createButton.addTarget(self, action: #selector(onCreateAction), for: .touchUpInside)
+       view.addSubview(createButton)
+   }
+   ```
+
+3. 在 `ViewController` 文件中声明一个在线 K 歌房间容器的属性。
+
+   ```swift
+   class ViewController: UIViewController {
+       var karaokeView: AUIKaraokeRoomView?
+
+       ....
+   }
+   ```
+
+4. 生成启动房间所需的 RTC Token 和 RTM Token。在 `ViewController.swift` 文件中，将下列代码添加至 `viewDidLoad` 之后：
+
+    ```swift
+    // 生成并配置房间的 Token
+    private func generateToken(channelName: String,
+                               roomConfig: AUIRoomConfig,
+                               completion: @escaping ((Error?) -> Void)) {
+        // 获取当前用户的 ID
+        let uid = KaraokeUIKit.shared.commonConfig?.owner?.userId ?? ""
+        // 定义 RTC 合唱频道的名称
+        let rtcChorusChannelName = "\(channelName)_rtc_ex"
+        // 主频道的频道名
+        roomConfig.channelName = channelName
+        // 和合唱频道的频道名
+        roomConfig.rtcChorusChannelName = rtcChorusChannelName
+        print("generateTokens: \(uid)")
+
+        let group = DispatchGroup()
+
+        var err: Error?
+        group.enter()
+        let tokenModel1 = AUITokenGenerateNetworkModel()
+        tokenModel1.channelName = channelName
+        tokenModel1.userId = uid
+        // 发起网络请求来生成 Token
+        tokenModel1.request { error, result in
+            defer {
+                if err == nil {
+                    err = error
+                }
+                group.leave()
+            }
+            guard let tokenMap = result as? [String: String], tokenMap.count >= 2 else {return}
+            roomConfig.rtcToken = tokenMap["rtcToken"] ?? ""
+            roomConfig.rtmToken = tokenMap["rtmToken"] ?? ""
+        }
+
+        group.enter()
+        let tokenModel2 = AUITokenGenerateNetworkModel()
+        tokenModel2.channelName = rtcChorusChannelName
+        tokenModel2.userId = uid
+        // 发起网络请求来生成 Token
+        tokenModel2.request { error, result in
+            defer {
+                if err == nil {
+                    err = error
+                }
+                group.leave()
+            }
+
+            guard let tokenMap = result as? [String: String], tokenMap.count >= 2 else {return}
+
+            roomConfig.rtcChorusRtcToken = tokenMap["rtcToken"] ?? ""
+        }
+
+        group.notify(queue: DispatchQueue.main) {
+            completion(err)
+        }
+    }
+    ```
+
+5. 创建房间详情页再调用 `createRoom` 创建并进入房间。在 `ViewController.swift` 文件中，将下列代码添加至 `viewDidLoad` 之后：
+
+   ```swift
+   @objc func onCreateAction(_ button: UIButton) {
+       button.isEnabled = false
+
+       // 生成一个随机的房间 ID
+       let roomId = Int(arc4random_uniform(99999999))
+
+       let roomInfo = AUIRoomInfo()
+       roomInfo.roomId = "\(roomId)"
+       roomInfo.roomName = "\(roomId)"
+       roomInfo.owner = AUIRoomContext.shared.currentUserInfo
+
+       let roomConfig = AUIRoomConfig()
+
+       // 创建房间容器
+       let karaokeView = AUIKaraokeRoomView(frame: self.view.bounds)
+       // 生成进入房间所需的 Token
+       generateToken(channelName: "\(roomId)",
+                     roomConfig: roomConfig,
+                     completion: {[weak self] error in
+                       guard let self = self else {return}
+                       if let error = error {
+                           button.isEnabled = true
+                           self.navigationController?.popViewController(animated: true)
+                           AUIToast.show(text: error.localizedDescription)
+                           return
+                       }
+                       // 创建房间
+                       KaraokeUIKit.shared.createRoom(roomInfo: roomInfo,
+                                                      roomConfig: roomConfig,
+                                                      karaokeView: karaokeView) {[weak self] error in
+                                                       guard let self = self else {return}
+                                                       button.isEnabled = true
+                                                       if let error = error {
+                                                           AUIToast.show(text: error.localizedDescription)
+                                                           return
+                                                       }
+                       }
+       })
+       // 将房间视图添加到当前视图
+       self.view.addSubview(karaokeView)
+       self.karaokeView = karaokeView
+   }
+
+   ```
+
+  至此，你已经成功创建一个在线 K 歌房。
+
+### 测试 App
+
+参考以下步骤来测试你的 App：
+
+1. 将 iOS 设备连接至计算机。
+2. 点击 **start the active scheme** 来运行你的项目，需等待几秒至 App 安装完成。
+3. （可选）如果设备上弹出不受信任的开发者提示，则首先点击取消关闭该提示，然后在 iOS 设备上打开设置 > 通用 > VPN 与设备管理，在开发者 APP 中选择信任该开发者。
+4. 安装成功后，你的 iOS 设备上会出现 **AUIKaraoke** App。打开 App，点击**创建房间**创建一个新的房间来体验在线 K 歌。
+
+![](https://web-cdn.agora.io/docs-files/1696931506007)
+
+## 后续步骤
+
+成功搭建一个在线 K 歌房间后，你还可以参考本节来进一步了解启动 K 歌房间后的后续步骤。
+
+### 听众进入房间
+
+1. 添加**加入房间**按钮。
+   在 `ViewController` 文件中添加下列代码：
+
+   ```swift
+   override func viewDidLoad() {
+       super.viewDidLoad()
+       ...
+       // 观众加入房间的按钮
+       let joinButton = UIButton(frame: CGRect(x: 10, y: 160, width: 100, height: 60))
+       joinButton.setTitle("加入房间", for: .normal)
+       joinButton.setTitleColor(.red, for: .normal)
+       joinButton.addTarget(self, action: #selector(onJoinAction), for: .touchUpInside)
+       view.addSubview(joinButton)
+   }
+   ```
+
+2. 获取房间信息并调用 `enterRoom` 加入房间。在 `ViewController` 文件中，将下列代码添加至 `func onCreateAction` 之后：
+
+   ```swift
+   @objc func onJoinAction() {
+       let alertController = UIAlertController(title: "房间名", message: "", preferredStyle: .alert)
+       alertController.addTextField { (textField) in
+           textField.placeholder = "请输入"
+       }
+       let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+       }
+       let saveAction = UIAlertAction(title: "确认", style: .default) { (_) in
+           if let inputText = alertController.textFields?.first?.text {
+               // 处理用户输入的内容，获取房间信息列表
+               KaraokeUIKit.shared.getRoomInfoList(lastCreateTime: 0, pageSize: 50) { error, roomList in
+                   guard let roomList = roomList else {return}
+                   for room in roomList {
+                       if room.roomName == inputText {
+                           self.enterRoom(roomInfo: room)
+                           break
+                       }
+                   }
+               }
+           }
+       }
+       alertController.addAction(cancelAction)
+       alertController.addAction(saveAction)
+
+       present(alertController, animated: true, completion: nil)
+   }
+   // 进入房间
+   func enterRoom(roomInfo: AUIRoomInfo) {
+        let karaokeView = AUIKaraokeRoomView(frame: self.view.bounds)
+        let roomId = roomInfo.roomId
+        let roomConfig = AUIRoomConfig()
+        generateToken(channelName: roomId,
+                      roomConfig: roomConfig) {[weak self] err  in
+            guard let self = self else {return}
+            KaraokeUIKit.shared.enterRoom(roomId: roomId,
+                                          roomConfig: roomConfig,
+                                          karaokeView: karaokeView) {[weak self] roomInfo, error in
+                guard let self = self else {return}
+                if let error = error {
+                    self.navigationController?.popViewController(animated: true)
+                    AUIToast.show(text: error.localizedDescription)
+                    return
+                }
+            }
+        }
+
+        self.view.addSubview(karaokeView)
+        self.karaokeView = karaokeView
+    }
+   ```
+
+### 退出及销毁房间
+
+当你不再需要进行 K 歌时，调用 `leaveRoom` 销毁房间。调用 `unbindRespDelegate` 取消绑定对应房间的响应。取消后，将不再通知 `AUIRoomManagerRespDelegate` 对象与房间管理操作相关的结果或响应。 在 `ViewController` 文件中添加下列代码：
+
+```swift
+func destroyRoom(roomId: String) {
+    //点击退出
+    self.karaokeView?.onBackAction()
+    self.karaokeView?.removeFromSuperview()
+
+    KaraokeUIKit.shared.leaveRoom(roomId: roomId)
+    //在退出房间时取消订阅
+    KaraokeUIKit.shared.unbindRespDelegate(delegate: self)
+}
+```
+
+- 当房间被销毁时，退出该房间。
+
+  调用 `bindRespDelegate` 来订阅房间相关事件。在销毁房间时，调用 `unbindRespDelegate` 取消订阅房间相关事件，然后通过 `onRoomDestroy` 来处理房间销毁。在`ViewController` 文件将下列代码添加至 `destroyRoom` 之后：
+
+  ```swift
+  class ViewController: UIViewController {
+      @objc func onCreateAction(_ button: UIButton) {
+          ...
+          // 房主订阅房间被销毁回调
+          KaraokeUIKit.shared.bindRespDelegate(delegate: self)
+      }
+
+      func enterRoom(roomInfo: AUIRoomInfo) {
+          ...
+
+          // 听众订阅房间被销毁回调
+          KaraokeUIKit.shared.bindRespDelegate(delegate: self)
+      }
+  }
+
+  extension ViewController: AUIKaraokeRoomServiceRespDelegate {
+      //房间销毁
+      func onRoomDestroy(roomId: String) {
+          self.destroyRoom(roomId: roomId)
+      }
+  }
+  ```
+
+- 主动退出房间。当你结束 K 歌并需要释放 K 歌房使用的所有资源时，退出并销毁当前房间。示例代码如下：
+
+  ```swift
+  @objc func onCreateAction(_ button: UIButton) {
+      ...
+
+      let karaokeView = AUIKaraokeRoomView(frame: self.view.bounds)
+      karaokeView.onClickOffButton = { [weak self] in
+          // 房主退出并销毁房间
+          self?.destroyRoom(roomId: roomInfo.roomId)
+      }
+  }
+
+  func enterRoom(roomInfo: AUIRoomInfo) {
+      ...
+
+      let karaokeView = AUIKaraokeRoomView(frame: self.view.bounds)
+      karaokeView.onClickOffButton = { [weak self] in
+          // 听众退出房间
+          self?.destroyRoom(roomId: roomInfo.roomId)
+      }
+  }
+  ```
+
+<a id="pod"></a>
+## 常见问题
+### pod update 失败
+
+如果你在执行 `pod update` 命令时，因网络问题而失败，可尝试使用国内镜像源。
+
+1. 打开 `Podfile` 文件，将 `source` 替换为国内镜像源：
+
+   ```ruby
+   source 'https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git'
+   ```
+
+2. 保存文件，重新执行 `pod update` 命令。
+
+<a id="xcode"></a>
+### 使用 Xcode 15 编译报错
+
+如果你使用 Xcode 15，在编译时可能遇到下列报错：
+
+```
+Sandbox: rsync.samba(47334) deny(1) file-write-create...
+```
+
+你可以在导航栏的 **Build Settings** 中将 **User Script Sandboxing** 设为 `NO`，如下图所示：
+
+![](https://web-cdn.agora.io/docs-files/1697794691823)
+
+## API 参考
+
+- [AUIKaraoke Swift API](/zh-CN/solutions/online-ktv/auikaraoke/reference/auikaraoke-api)
+
+</PlatformStructured>

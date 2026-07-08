@@ -200,7 +200,7 @@ request(options, function (error, response) {
 
 ### 3. 创建 UI
 
-修改 `activity_main.xml` 为如下内容，可以看到整个视图由一个白板页面填充，页面 `com.herewhite.sdk.WhiteboardView` 由白板 SDK 实现。
+修改 `activity_main.xml` 为如下内容，可以看到整个视图由一个白板页面填充，页面 `com.herewhite.sdk.WhiteboardView` 由互动白板 SDK 实现。
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // 将 layout 中的白板 view 赋值给 WhiteboardView 对象
         whiteboardView = findViewById(R.id.white);
-        // 创建 WhiteSdk 对象，用于初始化白板 SDK
+        // 创建 WhiteSdk 对象，用于初始化互动白板 SDK
         WhiteSdk whiteSdk = new WhiteSdk(whiteboardView, MainActivity.this, sdkConfiguration);
         // 加入房间
         whiteSdk.joinRoom(roomParams, new Promise<Room>() {
@@ -691,7 +691,7 @@ class ViewController: UIViewController {
 
 ## 前提条件
 
-- 满足[最低版本要求的浏览器](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/solution-compare)。
+- 满足[最低版本要求的浏览器](/zh-CN/realtime-media/whiteboard#如何选择白板-sdk-和-fastboard-sdk)。
 - 有效的声网[开发者账号](https://docs.agora.io/cn/AgoraPlatform/sign_in_and_sign_up)。
 - 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 - [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。

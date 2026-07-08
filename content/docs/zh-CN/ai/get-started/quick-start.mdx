@@ -31,7 +31,7 @@ title: "使用 RESTful API 实现对话式 AI 引擎"
 
 ### 创建对话式智能体
 
-调用[创建对话式智能体](./../convoai/operations/start-agent)创建一个智能体实例，并传入上一步中使用的频道名和 Token 让智能体加入同一个 RTC 频道。
+调用[创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)创建一个智能体实例，并传入上一步中使用的频道名和 Token 让智能体加入同一个 RTC 频道。
 
 :::info[提示]
 - 声网推荐你前往控制台的 [**Playground**](https://console.shengwang.cn/product/ConversationAI?tab=Playground) 快速体验与 AI 智能体对话，正确配置各项参数并完成体验后，点击右上角的 **View code** 复制自动生成的服务端 API 调用示例代码。
@@ -116,7 +116,7 @@ curl --request POST \
 
 ### 停止对话式智能体
 
-当用户与智能体对话结束后，你可以调用[停止对话式智能体](./../convoai/operations/stop-agent)，传入创建智能体时返回的 `agent_id` 让指定智能体离开 RTC 频道。
+当用户与智能体对话结束后，你可以调用[停止对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/leave)，传入创建智能体时返回的 `agent_id` 让指定智能体离开 RTC 频道。
 
 #### 请求
 
@@ -146,9 +146,9 @@ curl --request POST \
 
 ### API 参考
 
-- [创建对话式智能体](./../convoai/operations/start-agent)
-- [停止对话式智能体](./../convoai/operations/stop-agent)
-- [更新智能体配置](./../convoai/operations/agent-update)
-- [查询智能体状态](./../convoai/operations/query-agent-status)
-- [获取智能体列表](./../convoai/operations/get-agent-list)
+- [创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)
+- [停止对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/leave)
+- [更新智能体配置](/zh-CN/api-reference/api-ref/conversational-ai/update)
+- [查询智能体状态](/zh-CN/api-reference/api-ref/conversational-ai/query)
+- [获取智能体列表](/zh-CN/api-reference/api-ref/conversational-ai/list)
 - [响应状态码](/zh-CN/ai/api/response-code)

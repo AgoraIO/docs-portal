@@ -20,6 +20,9 @@ const speechToTextRoot = resolve(
 const contentRoot = resolve(process.cwd(), 'content/docs/zh-CN');
 const standardFirstLevelPages = ['index', 'get-started', 'build', 'reference'];
 const standardFirstLevelPageSet = new Set(standardFirstLevelPages);
+const allowedProductFamilyEntries: Record<string, Set<string>> = {
+  'realtime-media/whiteboard': new Set(['whiteboard-sdk', 'fastboard-sdk']),
+};
 
 function readMeta(path: string): DocsMeta {
   return JSON.parse(readFileSync(path, 'utf8')) as DocsMeta;
@@ -71,6 +74,11 @@ function getRedirectTargetProductRoots() {
 
   for (const redirectUrl of Object.values(ZH_CN_PRODUCT_IA_REDIRECTS)) {
     const { slugSegments, tab } = parseZhCnDocsUrl(redirectUrl);
+
+    if (tab !== 'realtime-media' && tab !== 'solutions') {
+      continue;
+    }
+
     const standardEntryIndex = slugSegments.findIndex((segment) =>
       standardFirstLevelPageSet.has(segment),
     );
@@ -255,8 +263,12 @@ describe('zh-CN product IA standard', () => {
       const absoluteRoot = resolve(contentRoot, productRoot);
       const meta = readMeta(resolve(absoluteRoot, 'meta.json'));
       const pages = (meta.pages ?? []).map(stripPagePrefix);
+      const allowedFamilyEntries =
+        allowedProductFamilyEntries[productRoot] ?? new Set<string>();
       const disallowedPages = pages.filter(
-        (page) => !standardFirstLevelPageSet.has(getFirstLevelPage(page)),
+        (page) =>
+          !standardFirstLevelPageSet.has(getFirstLevelPage(page)) &&
+          !allowedFamilyEntries.has(getFirstLevelPage(page)),
       );
       const missingFlattenedLeaves = pages.filter(
         (page) =>

@@ -1,18 +1,59 @@
 ---
-title: 响应状态码
-description: 控制台 RESTful API 的通用响应状态说明。
+title: "响应状态码"
 ---
+在调用控制台 RESTful API 过程中，你可能收到如下 HTTP 状态码：
 
-控制台 RESTful API 在响应中返回 HTTP 状态码和 JSON 响应包体。请求失败时，请结合状态码和响应中的 `message` 字段排查问题。
+- 如果状态码为 `200` 或 `201`，则请求成功。
 
-## 常见状态
+- 如果状态码不为 `200` 或 `201`，则请求失败。
 
-| 状态码 | 说明 |
-| --- | --- |
-| `201` | 请求成功。 |
-| 非 `201` | 请求失败，请根据响应包体中的 `message` 字段排查。 |
+例如，请求失败时，你可能收到如下响应。以下示例对应 `400 Bad Request` 响应：
 
-## 相关页面
+```json
+{
+  "statusCode": 400,
+  "error": "Bad Request",
+  "message": "Exceeded app limit"
+}
+```
 
-- [控制台 RESTful API 概览](index)
-- [RESTful API 鉴权](authentication)
+下表展示使用控制台 RESTful API 发起请求时，你可能会收到的所有状态码、对应的含义以及建议措施：
+
+| 状态码 | 含义 | 建议措施 |
+| --- | --- | --- |
+| `200 OK` | 操作成功。 | 无需排查。 |
+| `201 Created` | 请求成功并创建了新的资源。 | 无需排查。 |
+| `400 Bad Request` | <Slot name="response-code-markdown-0-3-1" /> | 结合响应 Body 中的 `message` 字段进一步排查。 |
+| `401 Unauthorized` | 未经授权。 | <Slot name="response-code-markdown-0-4-2" /> |
+| `403 Forbidden` | 禁止访问。 | 授权信息错误，[联系技术支持](https://ticket.shengwang.cn)。 |
+| `404 Not Found` | 请求的资源未找到。 | 确认请求的 URL 和资源是否正确。 |
+| `415 Unsupported Media Type` | 不支持的媒体类型。 | 检查并确保请求 Header 中的 `Content-Type` 设置为 `application/json`。 |
+| `429 Too Many Requests` | 请求过于频繁。 | 等待一段时间后再重试。 |
+| `500 Internal Server Error` | 服务器内部错误。 | 使用退避策略进行查询请求或[联系技术支持](https://ticket.shengwang.cn)。 |
+
+<Slot for="response-code-markdown-0-3-1">
+
+请求无效。可能的原因包括：
+
+- 项目名称不能重复。
+- 公司已被禁用。
+- 项目数量超出最大限制。
+
+</Slot>
+
+<Slot for="response-code-markdown-0-4-2">
+
+检查并确认你的认证信息是否正确。可能的原因包括：
+
+- 客户 ID 不存在。
+- 客户 ID 和客户密钥不匹配。
+
+</Slot>
+
+:::info[信息]
+如果根据表格中的排查措施并未解决问题，请务必在日志中打印出响应 Header 中的 `X-Request-ID` 和 `X-Resource-ID` 字段值，并[联系技术支持](https://ticket.shengwang.cn)。
+:::
+
+以下是一个排查问题的示例：
+
+使用控制台 RESTful API 创建项目时，如果响应状态码为 `400 Bad Request`，`message` 为 `"Exceeded app limit"`，则表示因创建项目数量已达限额，本次项目创建失败。如需创建更多项目，请通过[工单系统](https://ticket.shengwang.cn/)申请。
