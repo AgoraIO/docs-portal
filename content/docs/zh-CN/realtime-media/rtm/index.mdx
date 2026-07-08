@@ -1,77 +1,174 @@
 ---
-title: Signaling
-status: beta
-description: 使用声网 Signaling（RTM）构建低延迟消息、在线状态和实时协作能力，并根据业务阶段选择合适套餐。
+title: Signaling概览
+description: 通过 Signaling SDK 接入低延时消息、信令、状态同步和频道管理能力。
 ---
 
-import { PlanCards } from '@/components/mdx/PlanCards';
+## 开始构建
 
-## 这项能力是什么
+<Cards>
+  <Card title="快速开始" href="/zh-CN/realtime-media/rtm/get-started/quick-start" description="运行示例或完成最小可用集成，快速验证核心流程。" />
+  <Card title="下载 SDK" href="/zh-CN/api-reference/sdks?product=signaling" description="按平台选择 Signaling SDK 和可用历史版本。" />
+  <Card title="构建功能" href="/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup" description="按业务任务接入核心能力，并完成生产环境配置。" />
+  <Card title="参考信息" href="/zh-CN/realtime-media/rtm/reference/release-notes" description="查看版本、计费、限制、错误码、API 和兼容性说明。" />
+</Cards>
 
-Signaling（RTM）面向频道消息、Presence、状态同步和业务事件协作场景，帮助应用在实时音视频、直播、在线教育、IoT、AI 智能体等业务中传递低延迟消息。
+## RTM 是什么？
 
-## 推荐阅读路径
+**实时消息**（Real-Time Messaging，RTM）为开发者提供一整套低延时、高并发、可扩展、高可靠的实时消息及状态同步解决方案。RTM 负责管理应用程序实时通信层所需的基础设施。为方便用户开发与创新，RTM 在保障 99.95% 的 SLA 正常运行时间的同时，提供丰富的 Demo App 及开放的第三方 API 扩展。
 
-1. 先确认你的业务是否需要频道消息、用户在线状态或跨端状态同步。
-2. 再进入快速开始和使用指南，跑通最短消息链路。
-3. 上线前查看计费说明，选择体验套餐、自助套餐或企业套餐。
+<Card padding={32} borderSize="large" style={{borderColor: "var(--gray-bg-form)"}}>
 
-## 套餐选择
+![](/img/dummy-product/rtm.png)
 
-<PlanCards
-  plans={[
-    {
-      name: '体验套餐',
-      description: '适合免费试用和验证产品能力。',
-      accent: 'blue',
-      features: [
-        '包含每月消息数、峰值连接数和存储容量等基础额度。',
-        '适合 PoC、Demo 和小规模内部测试。',
-        '可在用量增长后平滑评估升级到自助套餐。',
-      ],
-      cta: {
-        label: '查看计费说明',
-        href: '/zh-CN/realtime-media/rtm/reference/billing/billing-strategy',
-      },
-    },
-    {
-      name: '自助套餐',
-      description: '适合业务增长阶段，兼顾灵活用量和服务保障。',
-      accent: 'green',
-      badge: '推荐',
-      features: [
-        '支持按业务规模选择更合适的套餐额度。',
-        '覆盖线上业务需要的服务支持和 SLA 保障。',
-        '适合稳定增长的消息、Presence 和状态同步场景。',
-      ],
-      cta: {
-        label: '比较套餐权益',
-        href: '/zh-CN/realtime-media/rtm/reference/billing/billing-strategy',
-      },
-    },
-    {
-      name: '企业套餐',
-      description: '适合高服务支持、架构指导、用量折扣和合规需求。',
-      accent: 'purple',
-      features: [
-        '可结合项目规模获取架构方案和容量规划建议。',
-        '支持更高服务支持等级、商务折扣和定制化诉求。',
-        '适合复杂生产环境、大规模连接和重点项目上线。',
-      ],
-      cta: {
-        label: '联系商务支持',
-        href: 'https://www.agora.io/cn/contact-sales/',
-      },
-    },
-  ]}
-/>
+RTM 沉淀了声网多年的技术经验、应用了分布全球的网络部署，并由具备丰富经验的产品和研发专家团队维护。
+在使用 RTM 的过程中，用户可以借助声网团队的专业知识和运营技能，快速接入可靠的消息/信令传输与实时状态同步数据流网络，避免自行开发、运维带来的高成本和高风险。
 
-## 常见适用场景
+</Card>
 
-- 实时音视频频道内的弹幕、礼物、控制消息和状态变更。
-- AI 智能体、客户端和服务端之间的低延迟事件同步。
-- 多端协作、在线状态、临时状态和 Presence 展示。
+<div style={{marginTop:60}}></div>
 
-## 下一步
+## RTM 应用场景
 
-- 查看 [RTM 计费说明](/zh-CN/realtime-media/rtm/reference/billing/billing-strategy)，了解套餐额度、权益和后续计费表之间的关系。
+RTM 已被 3000+ 客户广泛应用在以下领域，如果你对某个场景感兴趣，可以联系声网 RTM 团队（rtm-support@agora.io）获得更多信息。
+![元宇宙](/img/rtm2/usecase/metaverse.png)
+
+- 元宇宙
+
+![互动游戏](/img/rtm2/usecase/interactive-game.png)
+
+- 互动游戏
+
+![在线教育](/img/rtm2/usecase/online-education.png)
+
+- 在线教育
+
+![电商零售](/img/rtm2/usecase/e-commerce.png)
+
+- 电商零售
+
+![互动直播](/img/rtm2/usecase/interactive-live.png)
+
+- 互动直播
+
+![协同办公](/img/rtm2/usecase/collaborative-work.png)
+
+- 协同办公
+
+![IoT/智能设备](/img/rtm2/usecase/iot.png)
+
+- IoT/智能设备
+
+![远程医疗](/img/rtm2/usecase/remote-healthcare.png)
+
+- 远程医疗
+
+![交通运输/位置追踪](/img/rtm2/usecase/location-track.png)
+
+- 交通运输/位置追踪
+
+![金融科技](/img/rtm2/usecase/financial-tech.png)
+
+- 金融科技
+
+![平行操控](/img/rtm2/usecase/parallel-manipulation.png)
+
+- 平行操控
+
+![智慧城市](/img/rtm2/usecase/smart-city.png)
+
+- 智慧城市
+
+<div style={{marginTop:60}}></div>
+## 如何快速开始？
+
+声网提供由浅及深的不同类型文档，你可以根据自身对 RTM 的了解情况选择合适的文档，从而快速上手。
+
+<Cards>
+  <Card
+    title="快速开始"
+    href="/doc/rtm2//get-started/quick-start"
+    description="RTM 为用户提供免费的体验套餐，你只需按照快速开始的指引一步步操作，即可在 10 分钟内建立起你的 App。RTM 会帮助你在 100 ms 内与全世界的服务器相连接，随时随地发送消息。"
+  />
+
+  <Card
+    title="使用指南"
+    href="/doc/rtm2//user-guide/setup/account-and-billing"
+    description="系统地了解 RTM 产品的功能特性，并在此过程中掌握使用方法。"
+  />
+
+  <Card
+    title="API 参考"
+    href="/api-ref/rtm2//toc-configuration/configuration"
+    description="了解 RTM SDK 各 API 的详细说明。"
+  />
+</Cards>
+
+根据你对 RTM 的了解程度，在下方选择一条路径开启学习：
+
+### 首次集成 RTM
+
+如果你首次集成 RTM，请查看以下文档了解如何开通服务并实现收发消息。
+
+- [开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)
+- [实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)
+
+### 从旧版本升级至 v2
+
+如果你是 RTM 旧版本的用户，想要升级至 v2 体验新特性，请参考迁移指南。
+
+- [迁移指南](/zh-CN/realtime-media/rtm/reference/migration-guide)
+
+成功实现收发消息基础功能后，你还可以查看如下文档，加深对 RTM 的理解：
+
+<Cards>
+  <Card
+    title="使用指南"
+    href="/doc/rtm2//user-guide/setup/account-and-billing"
+    description="系统地了解 RTM 产品的功能特性，并在此过程中掌握使用方法。"
+  />
+
+  <Card
+    title="API 参考"
+    href="/api-ref/rtm2//toc-configuration/configuration"
+    description="了解 RTM SDK 各 API 的详细说明。"
+  />
+</Cards>
+
+<div style={{marginTop:60}}></div>
+## RTM 如何计费？
+
+RTM 为不同业务阶段的用户提供了 **体验版**、**自助版**、**企业版** 三种套餐服务，用户可以根据自己业务用量情况进行合理选择，优化成本支出。
+
+- **体验套餐**：免费体验产品所有特性
+  - 1,000,000 条消息/月
+  - 20 峰值连接数/月
+  - 1 GB 免费存储容量/月
+
+- **自助套餐**：灵活选择，助力业务加速
+  - 套餐灵活选择
+  - 12 × 7 小时服务支持
+  - 99.95% SLA 保障
+
+- **企业套餐**：随用随付，专属服务
+  - 专属 SA 24 × 7 小时支持
+  - 专属技术专家架构指导
+  - 基于用量保证的折扣
+  - 定制化需求服务
+  - GDPR & HIPAA 合规保证
+
+<Cards>
+  <Card
+    title="计费说明"
+    href="/doc/rtm2//overview/billing/billing-strategy"
+    description="了解关于价格、套餐及服务的更多信息。"
+  />
+</Cards>
+
+## 常见问题解答
+
+声网非常重视用户体验，深知在使用新工具或新服务进行开发时可能会遇到各种问题和困惑。因此，声网致力于为用户提供优质的技术服务，包括梳理数千家客户在使用 RTM 产品过程中产生的常见问题，整理成常见问题文档，以便开发者快速、准确、方便地查询和解决问题。
+
+通过访问以下页面，你可以查看声网整理的常见问题文档，并找到你感兴趣的内容。如果你在使用 RTM 产品的过程中遇到了任何问题或疑问，也可以随时联系声网 RTM 团队（rtm-support@agora.io），他们将会尽快为你提供帮助。
+<Cards>
+  <Card title="常见问题" href="/zh-CN/api-reference/faq/integration" />
+</Cards>
