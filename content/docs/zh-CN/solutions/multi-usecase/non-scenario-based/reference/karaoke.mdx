@@ -7,7 +7,7 @@ title: "非场景化 API 方案"
 本文介绍如何通过声网实时互动 SDK v4.x 在你的 Android 项目里实现在线 K 歌房的主要功能。
 
 :::info[信息]
-如果你想简化集成步骤，请参考[场景化 API 解决方案](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/get-music)。
+如果你想简化集成步骤，请参考[场景化 API 解决方案](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/get-music)。
 :::
 
 ## 技术原理
@@ -43,10 +43,10 @@ title: "非场景化 API 方案"
    加入歌房前，调用 `create [2/2]` 方法创建并初始化 `RtcEngine` 实例，并将实例的音频场景设置为合唱（`CHORUS`）。
 
 2. 用户通过第三方云服务发起上麦指令，并调用 `setClientRole` 方法将用户角色设置为主播（ `BROADCASTER`）。上麦后成为连麦主播，此时可以与房间内其他连麦主播进行语音互动。同时房间内所有用户收到主播端的上麦信息并更新房间内麦位信息。
-3. 用户可以点歌，从[声网内容中心](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/music-content-center)获取歌单，并下载歌曲文件和歌词文件，成为主唱。
+3. 用户可以点歌，从[声网内容中心](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center)获取歌单，并下载歌曲文件和歌词文件，成为主唱。
 4. 主唱可以独唱，也可以发起合唱邀请指令，邀请房间内其他连麦主播一起合唱歌曲。
 5. 主唱调用 `IMediaPlayer` 类的方法播放歌曲，并伴随歌曲唱歌。如需切换原唱或伴奏模式，可以调用 `setAudioDualMonoMode` 方法。同时，主唱调用 `joinChannelEx` 方法，实现合唱。
-6. 主唱在唱歌的同时，调用 `sendStreamMessage` 方法获将当前歌曲播放进度同步到房间内所有用户。合唱者和听众可以结合歌词组件实现歌词同步显示，并自定义歌词界面，详见[歌词组件](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
+6. 主唱在唱歌的同时，调用 `sendStreamMessage` 方法获将当前歌曲播放进度同步到房间内所有用户。合唱者和听众可以结合歌词组件实现歌词同步显示，并自定义歌词界面，详见[歌词组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
 7. 主唱通过第三方云服务发起下麦指令，并调用 `leaveChannel` 方法离开歌房。
 
 ### 合唱者实现流程
@@ -61,7 +61,7 @@ title: "非场景化 API 方案"
 2. 用户通过第三方云服务发起上麦指令，并调用 `setClientRole` 方法将用户角色设置为主播（ `BROADCASTER`）。上麦后成为连麦主播，此时可以与房间内其他连麦主播进行语音互动。同时房间内所有用户收到主播端的上麦信息并更新房间内麦位信息。
 3. 主唱点歌并发出合唱邀请指令后，连麦主播可以接受主唱的邀请，并下载歌曲文件和歌词文件，成为合唱者。
 4. 合唱者调用 `IMediaPlayer` 类的方法播放本地歌曲，并伴随歌曲与主唱一起唱歌，并调用 `muteRemoteAudioStream` 方法静音主唱的歌曲。
-5. 合唱者通过 `onStreamMessage` 回调接收主唱发送的数据流，实现歌曲同步。同时结合歌词组件实现歌词同步显示，并自定义歌词界面，详见[歌词组件](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
+5. 合唱者通过 `onStreamMessage` 回调接收主唱发送的数据流，实现歌曲同步。同时结合歌词组件实现歌词同步显示，并自定义歌词界面，详见[歌词组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
 6. 合唱者通过第三方云服务发起下麦指令，并调用 `leaveChannel` 方法离开歌房。
 
 ### 听众实现流程
@@ -100,13 +100,13 @@ title: "非场景化 API 方案"
 
 ## 项目配置
 
-根据下表提供的链接，下载对应平台的 SDK 并集成到你的项目中，并[开通内容中心服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/music-content-center#开通服务)。
+根据下表提供的链接，下载对应平台的 SDK 并集成到你的项目中，并[开通内容中心服务](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center#开通服务)。
 
 | 产品 | SDK 下载 | 集成文档 |
 | --- | --- | --- |
 | 声网实时互动 SDK v4.x | [声网实时互动 SDK v4.x ](/zh-CN/realtime-media/rtc/reference/downloads) | [实现纯语音互动](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start) |
 | 第三方云服务 | [第三方云服务 SDK](https://leancloud.cn/docs/sdk_down.html) | <Slot name="karaoke-android-markdown-1-2-2" /> |
-| 声网歌词打分组件 | [源码](https://github.com/AgoraIO-Community/LyricsView/tree/main) | [歌词组件](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring) |
+| 声网歌词打分组件 | [源码](https://github.com/AgoraIO-Community/LyricsView/tree/main) | [歌词组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring) |
 
 <Slot for="karaoke-android-markdown-1-2-2">
 
@@ -436,12 +436,12 @@ public void onStreamMessage(int uid, int streamId, byte[] data) {
 
 #### 歌唱评分
 
-调用 `enableAudioVolumeIndication` 方法开启歌唱评分功能，并通过 `onAudioVolumeIndication` 回调，结合声网歌词组件实现歌唱评分效果，详见[歌词打分组件](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
+调用 `enableAudioVolumeIndication` 方法开启歌唱评分功能，并通过 `onAudioVolumeIndication` 回调，结合声网歌词组件实现歌唱评分效果，详见[歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
 
 ### 相关文档
 
-- [声网内容中心](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/music-content-center)
-- [歌词打分组件](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)
+- [声网内容中心](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center)
+- [歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)
 - [实时互动 API 参考](/api-ref/rtc/android/API/rtc_api_overview)
 
 </PlatformStructured>
@@ -451,7 +451,7 @@ public void onStreamMessage(int uid, int streamId, byte[] data) {
 本文介绍如何通过声网实时互动 SDK 在你的 iOS 项目里实现在线 K 歌房的主要功能。
 
 :::info[信息]
-如果你想简化集成步骤，请参考[场景化 API 解决方案](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/get-music)。
+如果你想简化集成步骤，请参考[场景化 API 解决方案](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/get-music)。
 :::
 
 ## 技术原理
@@ -487,10 +487,10 @@ public void onStreamMessage(int uid, int streamId, byte[] data) {
    加入歌房前，调用 `sharedEngineWithConfig` 方法创建并初始化 `AgoraRtcEngineKit` 实例，并将实例的音频场景设置为合唱（`AgoraAudioScenarioChorus`）。
 
 2. 用户通过第三方云服务发起上麦指令，并调用 `setClientRole` 方法将用户角色设置为主播（ `AgoraClientRoleBroadcaster`）。上麦后成为连麦主播，此时可以与房间内其他连麦主播进行语音互动。同时房间内所有用户收到主播端的上麦信息并更新房间内麦位信息。
-3. 用户可以点歌，从[声网内容中心](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/music-content-center)获取歌单，并下载歌曲文件和歌词文件，成为主唱。
+3. 用户可以点歌，从[声网内容中心](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center)获取歌单，并下载歌曲文件和歌词文件，成为主唱。
 4. 主唱可以独唱，也可以发起合唱邀请指令，邀请房间内其他连麦主播一起合唱歌曲。
 5. 主唱调用 `AgoraRtcMediaPlayerProtocol` 类的方法播放歌曲，并伴随歌曲唱歌。如需切换原唱或伴奏模式，可以调用 `setAudioDualMonoMode` 方法。同时，主唱调用 `joinChannelExByToken` 方法，实现合唱。
-6. 主唱在唱歌的同时，调用 `sendStreamMessage` 方法获将当前歌曲播放进度同步到房间内所有用户。合唱者和听众可以结合歌词组件实现歌词同步显示，并自定义歌词界面，详见[歌词打分组件](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
+6. 主唱在唱歌的同时，调用 `sendStreamMessage` 方法获将当前歌曲播放进度同步到房间内所有用户。合唱者和听众可以结合歌词组件实现歌词同步显示，并自定义歌词界面，详见[歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
 7. 主唱通过第三方云服务发起下麦指令，并调用 `leaveChannel` 方法离开歌房。
 
 ### 合唱者实现流程
@@ -503,7 +503,7 @@ public void onStreamMessage(int uid, int streamId, byte[] data) {
 2. 用户通过第三方云服务发起上麦指令，并调用 `setClientRole` 方法将用户角色设置为主播（ `AgoraClientRoleBroadcaster`）。上麦后成为连麦主播，此时可以与房间内其他连麦主播进行语音互动。同时房间内所有用户收到主播端的上麦信息并更新房间内麦位信息。
 3. 主唱点歌并发出合唱邀请指令后，连麦主播可以接受主唱的邀请，并下载歌曲文件和歌词文件，成为合唱者。
 4. 合唱者调用 `AgoraRtcMediaPlayerProtocol` 类的方法播放本地歌曲，并伴随歌曲与主唱一起唱歌，并调用 `muteRemoteAudioStream` 方法静音主唱的歌曲。
-5. 合唱者通过 `receiveStreamMessageFromUid` 回调接收主唱发送的数据流，实现歌曲同步。同时结合歌词组件实现歌词同步显示，并自定义歌词界面，详见[歌词打分组件](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
+5. 合唱者通过 `receiveStreamMessageFromUid` 回调接收主唱发送的数据流，实现歌曲同步。同时结合歌词组件实现歌词同步显示，并自定义歌词界面，详见[歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
 6. 合唱者通过第三方云服务发起下麦指令，并调用 `leaveChannel` 方法离开歌房。
 
 ### 听众实现流程
@@ -543,12 +543,12 @@ public void onStreamMessage(int uid, int streamId, byte[] data) {
 
 ## 项目配置
 
-根据下表提供的链接，下载对应平台的 SDK 并集成到你的项目中，并[开通内容中心服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/music-content-center#开通服务)。
+根据下表提供的链接，下载对应平台的 SDK 并集成到你的项目中，并[开通内容中心服务](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center#开通服务)。
 | 产品 | SDK 下载 | 集成文档 |
 | --- | --- | --- |
 | 声网实时互动 SDK v4.x | [声网实时互动 SDK v4.x](/zh-CN/realtime-media/rtc/reference/downloads) | [实现纯语音互动](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start) |
 | 第三方云服务 | [第三方云服务 SDK](https://leancloud.cn/docs/sdk_down.html) | <Slot name="karaoke-ios-markdown-1-2-2" /> |
-| 声网歌词组件 | [源码](https://github.com/AgoraIO-Community/LrcView-iOS/tree/feature/1.1.1) | [歌词打分组件](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring) |
+| 声网歌词组件 | [源码](https://github.com/AgoraIO-Community/LrcView-iOS/tree/feature/1.1.1) | [歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring) |
 
 <Slot for="karaoke-ios-markdown-1-2-2">
 
@@ -932,12 +932,12 @@ func rtcEngine(_: AgoraRtcEngineKit, receiveStreamMessageFromUid uid: UInt, stre
 
 #### 歌唱评分
 
-调用 `enableAudioVolumeIndication` 方法开启歌唱评分功能，并通过 `reportAudioVolumeIndicationOfSpeakers` 回调，结合声网歌词组件实现歌唱评分效果，详见[歌词打分组件](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
+调用 `enableAudioVolumeIndication` 方法开启歌唱评分功能，并通过 `reportAudioVolumeIndicationOfSpeakers` 回调，结合声网歌词组件实现歌唱评分效果，详见[歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)。
 
 ### 相关文档
 
-- [声网内容中心](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/music-content-center)
-- [歌词打分组件](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)
+- [声网内容中心](/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center)
+- [歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)
 - [实时互动 API 参考](/api-ref/rtc/ios/API/rtc_api_overview)
 
 </PlatformStructured>

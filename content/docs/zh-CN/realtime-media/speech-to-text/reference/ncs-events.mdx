@@ -1,9 +1,11 @@
 ---
-title: "Webhook 事件"
+title: "消息通知事件类型"
 ---
-开通声网消息通知后，声网通知服务器以 HTTPS POST 请求方法向你的服务器发送频道事件通知回调。数据格式为 JSON，字符编码为 UTF-8，签名算法为 HMAC/SHA1 或 HMAC/SHA256。
+开通声网消息通知后，声网通知服务器以 HTTPS POST 请求方法向你的服务器发送频道事件通知回调。
 
-本页介绍实时转录翻译的各事件类型及含义。
+数据格式为 JSON，字符编码为 UTF-8，签名算法为 HMAC/SHA1 或 HMAC/SHA256。
+
+本页是实时转录翻译消息通知事件的参考，介绍请求结构、事件类型、字段含义和 `payload` 示例。如果你需要开通消息通知服务、配置 Webhook URL、接收回调或验证签名，请参考[接收 Webhook 事件](/zh-CN/realtime-media/speech-to-text/build/monitor-events/receive-webhook)。
 
 ## 请求 Body
 

@@ -1,0 +1,697 @@
+---
+title: "AUIKaraoke Kotlin API"
+---
+
+<PlatformStructured platform="android">
+
+本文介绍 AUIKaraoke 组件的 API。你可以在 GitHub 上查看[源码文件](https://github.com/AgoraIO-Community/AUIKaraoke/tree/main/Android)。
+
+<a id="karaokeuikit"></a>
+## KaraokeUIKit
+
+提供 `AUIKitKaraoke` 的核心类，可用于实现组件初始化、创建、销毁房间等基础功能。
+
+<a id="setup"></a>
+### setup
+
+```kotlin
+fun setup(
+    config: AUICommonConfig,
+    apiConfig: AUIAPIConfig
+)
+```
+
+初始化 AUIKaraoke。
+
+在调用 `KaraokeUIKit` 类下的其他 API 前，你需要先调用该方法进行初始化。
+
+**参数**
+
+- `config`：初始化设置，详见 [`AUICommonConfig`](#AUICommonConfig)。
+- `apiConfig`：声网 API 实例结构体，包括 [`RtcEngineEx`](/api-ref/rtc/android/API/rtc_interface_class#class_irtcengineex)、[`RtmClient`](/api-ref/rtm2/android/toc-configuration/configuration#create)和 [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api) 实例。如需使用其中任意一个实例，请通过该结构体传入；如果未传入，系统内部会自动创建。详见 [`AUIAPIConfig`](#AUIAPIConfig)。
+
+<a id="getroomlist"></a>
+### getRoomList
+
+```kotlin
+fun getRoomList(
+  startTime: Long?,
+  pageSize: Int,
+  success: (List<AUIRoomInfo>) -> Unit,
+  failure: (AUIException) -> Unit
+)
+```
+
+获取 K 歌房间列表。
+
+你可以调用该方法获取当前已创建的 K 歌房间列表。
+
+**参数**
+
+- `startTime`：房间创建的时间，用于筛选在该时间之后创建的房间。
+- `pageSize`：每一页房间列表所展示的房间数量。
+- `success`：回调函数，当成功获取到 K 歌房间列表时调用，会返回一个房间信息列表，详见 [`AUIRoomInfo`](#AUIRoomInfo)。
+- `failure`：回调函数，当房间创建失败时调用，接受一个 `AUIException` 参数表示房间创建失败的异常，无返回值。
+
+<a id="createroom"></a>
+### createRoom
+
+```kotlin
+fun createRoom(
+    roomInfo: AUIRoomInfo,
+    roomConfig: AUIRoomConfig,
+    karaokeView: KaraokeRoomView,
+    completion: (AUIException?, AUIRoomInfo?) -> Unit
+)
+```
+
+创建并启动 K 歌房间。
+
+如果用户角色为房主，可以调用该方法来创建并进入 K 歌房间。如果用户角色为听众，调用 [`enterRoom`](#enterroom) 进入房间。
+
+**参数**
+
+- `roomInfo`：所创建的房间信息，详见 [`AUIRoomInfo`](#AUIRoomInfo)。
+- `roomConfig`：K 歌房间配置，如房间名、Token 等，详见[`AUIRoomConfig`](#AUIRoomConfig)。
+- `karaokeView`：`KaraokeRoomView` 实例，用于显示 K 歌房间的界面。
+- `completion`：回调函数，当房间创建失败时接受一个 `AUIException` 参数，表示房间创建失败的异常；当房间创建成功时 `AUIException` 为空并会返回 [`AUIRoomInfo`](#AUIRoomInfo)，包含房间信息。
+
+<a id="enterroom"></a>
+### enterRoom
+
+```kotlin
+fun enterRoom(
+    roomInfo: AUIRoomInfo,
+    roomConfig: AUIRoomConfig,
+    karaokeView: KaraokeRoomView,
+    completion: (AUIException?, AUIRoomInfo?) -> Unit
+)
+```
+
+进入 K 歌房间。
+
+如果用户角色为听众，可以调用此方法进入 K 歌房间。
+
+**参数**
+
+- `roomInfo`：房间信息，详见 [`AUIRoomInfo`](#AUIRoomInfo)。
+- `roomConfig`：K 歌房间配置，如房间名、Token 等，详见[`AUIRoomConfig`](#AUIRoomConfig)。
+- `karaokeView`： `KaraokeRoomView` 实例，用于显示 K 歌房间的界面。
+- `completion`：回调函数，当进入房间失败时接受一个 `AUIException` 参数，表示进入房间失败的异常；当进入房间成功时 `AUIException` 为空并会返回 [`AUIRoomInfo`](#AUIRoomInfo)，包含房间信息。
+
+<a id="leaveRoom"></a>
+### leaveRoom
+
+```kotlin
+fun leaveRoom(roomId: String?)
+```
+
+离开 K 歌房间。
+
+如果用户角色为房主，调用该方法后会离开并销毁房间。房主成功销毁房间后会触发 [`onRoomDestroy`](#onroomdestroy) 回调报告房间被销毁。
+
+**参数**
+
+- `roomId`：房间的 ID。
+
+<a id="release"></a>
+### release
+
+```kotlin
+fun release()
+```
+
+释放 AUIKaraoke 的所有资源。
+
+<a id="renewtoken"></a>
+### renewToken
+
+```kotlin
+fun renewToken(roomId: String, roomConfig: AUIRoomConfig)
+```
+
+当 Token 过期时，更新房间内 Token 配置。
+
+**参数**
+
+- `roomId`：房间的 ID。
+- `roomConfig`：K 歌房间配置，如房间名、Token 等，详见[`AUIRoomConfig`](#AUIRoomConfig)。
+
+<a id="registerroomrespobserver"></a>
+### registerRoomRespObserver
+
+```kotlin
+fun registerRoomRespObserver(roomId: String, observer: AUIKaraokeRoomServiceRespObserver)
+```
+
+注册房间事件观测器。
+
+你可以调用该方法注册一个 `AUIKaraokeRoomServiceRespObserver` 对象，以便监听房间相关的事件回调，例如房间被销毁、房间信息更新等。
+
+**参数**
+
+- `roomId`：房间的 ID。
+- `observer`：[`AUIKaraokeRoomServiceRespObserver`](#AUIKaraokeRoomServiceRespObserver) 对象，用于处理与房间操作相关的各种事件。你可以根据你的业务需求来实现该接口类中的方法。
+
+<a id="unregisterroomrespobserver"></a>
+### unRegisterRoomRespObserver
+
+```kotlin
+fun unRegisterRoomRespObserver(roomId: String, observer: AUIKaraokeRoomServiceRespObserver)
+```
+
+取消注册房间事件观测器。
+
+当你退出或销毁房间时，可以调用该方法取消注册房间事件观测器。取消后，你不会再收到任何与房间相关的事件通知。
+
+**参数**
+
+- `roomId`：房间的 ID。
+- `observer`：[`AUIKaraokeRoomServiceRespObserver`](#AUIKaraokeRoomServiceRespObserver) 对象，用于处理与房间操作相关的各种事件。你可以根据你的业务需求来实现该接口类中的方法。
+
+<a id="AUIKaraokeRoomServiceRespObserver"></a>
+## AUIKaraokeRoomServiceRespObserver
+
+该接口类提供房间相关的响应回调。
+
+<a id="ontokenprivilegewillexpire"></a>
+### onTokenPrivilegeWillExpire
+
+```kotlin
+fun onTokenPrivilegeWillExpire(roomId: String)
+```
+
+Token 即将过期时回调。
+
+在收到该回调后，声网建议你重新生成 Token，然后调用 [`renewToken`](#renewtoken) 来传入更新后的 Token。
+
+**参数**
+
+- `roomId`：房间 ID。
+
+<a id="onroomdestroy"></a>
+### onRoomDestroy
+
+```kotlin
+fun onRoomDestroy(roomId: String)
+```
+
+房间被销毁回调。
+
+当房主调用 [`leaveRoom`](#leaveroom) 离开并销毁房间后，会触发该回调。
+
+**参数**
+
+- `roomId`：被销毁的房间 ID。
+
+<a id="onroominfochange"></a>
+### onRoomInfoChange
+
+```kotlin
+fun onRoomInfoChange(roomId: String, roomInfo: AUIRoomInfo)
+```
+
+房间相关信息变更回调。
+
+当房间的房主、房间内人数等信息发生变化时，可通过该回调获取变化后的信息。
+
+**参数**
+
+- `roomId`：房间 ID。
+- `roomInfo`：房间信息，详见 [`AUIRoomInfo`](#AUIRoomInfo)。
+
+<a id="数据模型"></a>
+<a id="AUICommonConfig"></a>
+## 数据模型
+### AUICommonConfig
+
+```kotlin
+public class AUICommonConfig {
+    public @NonNull Context context;
+    public @NonNull String host = "";
+    public @NonNull AUIUserThumbnailInfo owner = "";
+    public @NonNull String appId = "";
+    public @NonNull String appCert = "";
+    public @NonNull String basicAuth = "";
+    public @NonNull String imAppKey = "";
+    public @NonNull String imClientId = "";
+    public @NonNull String imClientSecret = "";
+}
+```
+
+通用设置。
+
+**参数**
+
+- `context`：安卓 Context 上下文。
+- `host`：你的业务服务器域名。
+- `owner`：用户信息，详见 [`AUIUserThumbnailInfo`](#AUIUserThumbnailInfo)。
+- `appId`：你的声网项目的 App ID。
+- `appCert`：你的声网项目的 App 证书。
+- `basicAuth`：预留参数，传空。
+- `imAppKey`：环信 IM App Key。
+- `imClientId`：环信 IM Client ID。
+- `imClientSecret`：环信 IM Client Secret。
+
+:::info[信息]
+上述信息可参考[开通服务](/zh-CN/solutions/online-ktv/auikaraoke/build/setup-and-access/enable-service)获取。
+:::
+
+<a id="AUIAPIConfig"></a>
+### AUIAPIConfig
+
+```kotlin
+data class AUIAPIConfig(
+    val ktvApi: KTVApi? = null,
+    val rtcEngineEx: RtcEngineEx? = null,
+    val rtmClient: RtmClient? = null
+)
+```
+
+声网 API 实例结构体。
+
+**参数**
+
+- `ktvApi`：[K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api) 实例，如果未传入，AUIKaraoke 内部会自行创建场景化 API 实例。
+- `rtcEngineEx`：[`RtcEngineEx`](/api-ref/rtc/android/API/rtc_interface_class#class_irtcengineex) 实例。如果未传入，AUIKaraoke 内部会自行创建 `RtcEngineEx` 实例。
+- `rtmClient`：[`RtmClient`](/api-ref/rtm2/android/toc-configuration/configuration#create) 实例。如果未传入，AUIKaraoke 内部会自行创建 `RtmClient` 实例。
+
+<a id="AUIRoomInfo"></a>
+### AUIRoomInfo
+
+```kotlin
+public class AUIRoomInfo extends AUICreateRoomInfo implements Serializable {
+    public @NonNull String roomId = "";
+    public @Nullable AUIUserThumbnailInfo roomOwner;
+    public int onlineUsers = 0;
+    public long createTime = 0;
+}
+```
+
+已创建的 K 歌房间的相关信息。
+
+**参数**
+
+- `roomId`：房间 ID。
+- `roomOwner`：房主信息，详见 [`AUIUserThumbnailInfo`](#AUIUserThumbnailInfo)。
+- `onlineUsers`：房间内的人数。
+- `createTime`：房间创建的时间，单位为毫秒。
+
+<a id="AUIUserThumbnailInfo"></a>
+### AUIUserThumbnailInfo
+
+```kotlin
+public class AUIUserThumbnailInfo implements Serializable {
+    public @NonNull String userId = "";
+    public @NonNull String userName = "";
+    public @NonNull String userAvatar = "";
+}
+```
+
+K 歌中房主的相关信息。
+
+**参数**
+
+- `userId`：房主的 ID。
+- `userName`：房主的用户名。
+- `userAvatar`：房主的头像。
+
+<a id="AUIException"></a>
+### AUIException
+
+```kotlin
+public AUIException(int code, String message)
+```
+
+错误码及信息。
+
+**参数**
+
+- `code`：错误码。
+- `message`：错误信息。
+
+<a id="AUIRoomConfig"></a>
+### AUIRoomConfig
+
+```kotlin
+public class AUIRoomConfig {
+    @NonNull public String channelName = "";
+    @NonNull public String rtmToken = "";
+    @NonNull public String rtcToken = "";
+    @NonNull public String rtcChorusChannelName = "";
+    @NonNull public String rtcChorusRtcToken = "";
+}
+```
+
+K 歌房间配置，包括登录 RTM 频道使用的 RTM Token、登录 RTC 频道使用的 RTC Token 等。
+
+**参数**
+
+- `channelName`：主频道的频道名。在合唱场景下，领唱需要加入两个频道，在主频道发布人声和播放器的混流，在合唱频道发布麦克风采集的音频流。伴唱需要加入合唱频道来同步领唱的人声。
+
+- `rtmToken`：登录 RTM 系统时使用的 RTM Token，详见[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+
+  :::warning[注意]
+  请确保你使用的 RTM Token 是 AccessToken2。
+  :::
+
+- `rtcToken`：加入主频道时使用的 RTC Token。
+  :::warning[注意]
+  请确保你使用的 RTC Token 是 AccessToken2。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+  :::
+
+- `rtcChorusChannelName`：合唱频道名。独唱场景下，该参数可为空。
+
+- `rtcChorusRtcToken`：根据合唱频道名和用户 ID 生成的 RTC Token，用于加入合唱频道时进行鉴权。独唱场景下，该参数可为空。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文介绍 AUIKaraoke 组件的 API。你可以在 GitHub 上查看[源码文件](https://github.com/AgoraIO-Community/AUIKaraoke/tree/main/iOS)。
+
+<a id="karaokeuikit"></a>
+## KaraokeUIKit
+
+提供 `AUIKaraoke` 的核心类，可用于实现组件初始化、创建、销毁房间等基础功能。
+
+<a id="setup"></a>
+### setup
+
+```swift
+func setup(commonConfig: AUICommonConfig,
+            apiConfig: AUIAPIConfig? = nil)
+```
+
+初始化 AUIKaraoke。
+
+在调用 `KaraokeUIKit` 类下的其他 API 前，你需要先调用该方法进行初始化。
+
+**参数**
+
+- `commonConfig`：初始化配置，详见 [`AUICommonConfig`](#AUICommonConfig)。
+- `apiConfig`：声网 API 实例结构体，包括 [`RtcEngineEx`](/api-ref/rtc/ios/API/rtc_interface_class#class_irtcengineex)、[`RtmClient`](/zh-CN/realtime-media/rtm)和 [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api) 实例。如需使用其中任一一个实例，请通过该结构体进行传入，如果未传入，系统内部会自动创建。详见 [`AUIAPIConfig`](#AUIAPIConfig)。
+
+<a id="getroominfolist"></a>
+### getRoomInfoList
+
+```swift
+func getRoomInfoList(lastCreateTime: Int64?,
+                     pageSize: Int,
+                     callback: @escaping AUIRoomListCallback)
+```
+
+获取 K 歌房间列表。
+
+你可以调用该方法获取当前已创建的 K 歌房间列表。
+
+**参数**
+
+- `lastCreateTime`：（可选）房间创建的时间，单位毫秒。例如：1681879844085。
+- `pageSize`：每一页房间列表所展示的房间数量。
+- `callback`：用于处理获取房间列表结果的回调闭包，在成功获取房间列表结果后会被调用。回调闭包接受一个 `AUIRoomListCallback` 对象作为参数。
+
+<a id="createroom"></a>
+### createRoom
+
+```swift
+func createRoom(roomInfo: AUIRoomInfo,
+                roomConfig: AUIRoomConfig,
+                karaokeView: AUIKaraokeRoomView,
+                completion: @escaping (NSError?) -> Void)
+```
+
+创建并启动 K 歌房间。
+
+如果用户角色为房主，可以调用该方法来创建并进入 K 歌房间。如果用户角色为听众，调用 [`enterRoom`](#enterroom) 进入房间。
+
+**参数**
+
+- `roomInfo`：一个 [`AUIRoomInfo`](#AUIRoomInfo) 对象，包含要创建的房间信息。
+- `roomConfig`：K 歌房间配置，如房间名、Token 等，详见[`AUIRoomConfig`](#AUIRoomConfig)。
+- `karaokeView`：`AUIKaraokeRoomView` 实例，用于显示 K 歌房间的界面。
+- `completion`：回调闭包，其参数是一个可选的 `NSError` 对象。创建房间成功，则这个参数为 `nil`；如果在创建过程中出现了错误，该参数为一个 `NSError` 对象，包含对应的错误信息。
+
+<a id="enterroom"></a>
+### enterRoom
+
+```swift
+func enterRoom(roomId: String,
+               roomConfig: AUIRoomConfig,
+               karaokeView: AUIKaraokeRoomView,
+               completion: @escaping (AUIRoomInfo?, NSError?) -> Void)
+```
+
+进入 K 歌房间。
+
+如果用户角色为听众，可以调用此方法进入 K 歌房间。
+
+**参数**
+
+- `roomId`：房间 ID。
+- `roomConfig`：K 歌房间配置，如房间名、Token 等，详见[`AUIRoomConfig`](#AUIRoomConfig)。
+- `karaokeView`： `AUIKaraokeRoomView` 对象，用于显示 K 歌房间的界面。
+- `completion`：回调闭包，在进入房间操作完成后被调用。如果进入房间成功，`AUIRoomInfo` 会包含所进入的房间的信息；`NSError` 为 `nil`。如果在进入房间的过程中出现错误，`AUIRoomInfo` 为 `nil`，`NSError` 会包含相应的错误信息。
+
+<a id="leaveroom"></a>
+### leaveRoom
+
+```swift
+func leaveRoom(roomId: String)
+```
+
+离开 K 歌房间。
+
+如果用户角色为房主，调用该方法后会离开并销毁房间。房主成功销毁房间后会触发 [`onRoomDestroy`](#onroomdestroy) 回调报告房间被销毁。
+
+**参数**
+
+- `roomId`：房间的 ID。
+
+<a id="renew"></a>
+### renew
+
+```swift
+func renew(config: AUIRoomConfig)
+```
+
+当 Token 过期时，更新房间内 Token 配置。
+
+**参数**
+
+- `config`：K 歌房间配置，如房间名、Token 等，详见 [`AUIRoomConfig`](#AUIRoomConfig)。
+
+<a id="bindrespdelegate"></a>
+### bindRespDelegate
+
+```swift
+func bindRespDelegate(delegate: AUIKaraokeRoomServiceRespDelegate)
+```
+
+绑定对应房间的响应。
+
+你可以调用该方法将实现了 `AUIKaraokeRoomServiceRespDelegate` 的对象绑定到当前事件，以便在事件完成时，回调或通知这个对象以处理相应的结果或响应，例如房间被销毁、用户被踢出、房间的信息更新等。
+
+请确保你的 `AUIKaraokeRoomServiceRespDelegate` 对象实现了 `AUIKaraokeRoomServiceRespDelegate` 中的方法，以便能够正确处理响应。
+
+**参数**
+
+- `delegate`：[AUIKaraokeRoomServiceRespDelegate](#AUIKaraokeRoomServiceRespDelegate) 对象，用于处理与房间操作相关的各种响应事件。你可以根据你的业务需求选择性实现该协议中的方法。
+
+<a id="unbindrespdelegate"></a>
+### unbindRespDelegate
+
+```swift
+func unbindRespDelegate(delegate: AUIKaraokeRoomServiceRespDelegate)
+```
+
+取消绑定对应房间的响应。
+
+你可以调用该方法取消已绑定到当前操作或事件的 `AUIKaraokeRoomServiceRespDelegate` 对象。解除绑定后，将不再通知 `AUIKaraokeRoomServiceRespDelegate` 对象与房间管理操作相关的结果或响应。
+
+**参数**
+
+`delegate`：[AUIKaraokeRoomServiceRespDelegate](#AUIKaraokeRoomServiceRespDelegate) 对象，用于处理与房间操作相关的各种响应事件。你可以根据你的业务需求选择性实现该协议中的方法。
+
+<a id="AUIKaraokeRoomServiceRespDelegate"></a>
+## AUIKaraokeRoomServiceRespDelegate
+
+该接口类提供房间相关的响应回调。
+
+<a id="ontokenprivilegewillexpire"></a>
+### onTokenPrivilegeWillExpire
+
+```swift
+func onTokenPrivilegeWillExpire(roomId: String?)
+```
+
+Token 即将过期时回调。
+
+在收到该回调后，声网建议你重新生成 Token，然后调用 [`renewToken`](#renewtoken) 来传入更新后的 Token。
+
+**参数**
+
+`roomId`：房间 ID。
+
+<a id="onroomdestroy"></a>
+### onRoomDestroy
+
+```swift
+func onRoomDestroy(roomId: String)
+```
+
+房间被销毁回调。
+
+当房主调用 [`leaveRoom`](#leaveroom) 离开并销毁房间后，会触发该回调。
+
+**参数**
+
+`roomId`：被销毁的房间 ID。
+
+<a id="onroominfochange"></a>
+### onRoomInfoChange
+
+```swift
+func onRoomInfoChange(roomId: String, roomInfo: AUIRoomInfo)
+```
+
+房间相关信息变更回调。
+
+当房间的房主、房间内人数等信息发生变化时，可通过该回调获取变化后的信息。
+
+**参数**
+
+- `roomId`：房间 ID。
+- `roomInfo`：房间信息，详见 [AUIRoomInfo](#AUIRoomInfo)。
+
+<a id="数据模型"></a>
+<a id="AUICommonConfig"></a>
+## 数据模型
+### AUICommonConfig
+
+```swift
+open class AUICommonConfig: NSObject {
+    public var host: String = ""
+    public var appId: String = ""
+    public var appCert: String = ""
+    public var basicAuth: String = ""
+    public var imAppKey: String = ""
+    public var imClientId: String = ""
+    public var imClientSecret: String = ""
+    public var owner: AUIUserThumbnailInfo?
+}
+```
+
+通用设置。
+
+**属性**
+
+- `host`：你的业务服务器域名。
+- `appId`：你的声网项目的 App ID。
+- `appCert`：你的声网项目的 App 证书。
+- `basicAuth`：预留参数，传空。
+- `imAppKey`：环信 IM App Key。
+- `imClientId`：环信 IM Client ID。
+- `imClientSecret`：环信 IM Client Secret。
+- `owner`：用户信息，详见 [`AUIUserThumbnailInfo`](#AUIUserThumbnailInfo)。
+
+:::info[信息]
+上述信息可参考[开通服务](/zh-CN/solutions/online-ktv/auikaraoke/build/setup-and-access/enable-service)获取。
+:::
+
+<a id="AUIRoomInfo"></a>
+### AUIRoomInfo
+
+```swift
+open class AUIRoomInfo: AUICreateRoomInfo {
+    public var roomId: String = ""
+    public var owner: AUIUserThumbnailInfo?
+    public var memberCount: UInt = 0
+    public var createTime: Int64 = 0
+}
+```
+
+K 歌房间的相关信息。
+
+**属性**
+
+- `roomId`：房间 ID。
+- `owner`：房主信息，详见 [`AUIUserThumbnailInfo`](#AUIUserThumbnailInfo)。
+- `memberCount`：房间内的人数。
+- `createTime`：房间创建的时间，单位为毫秒。
+
+<a id="AUIUserThumbnailInfo"></a>
+### AUIUserThumbnailInfo
+
+```swift
+open class AUIUserThumbnailInfo: NSObject,AUIUserCellUserDataProtocol {
+    public var userId: String = ""
+    public var userName: String = ""
+    public var userAvatar: String = ""
+}
+```
+
+K 歌中房主的相关信息。
+
+**属性**
+AUIAPIConfig
+
+- `userId`：房主的 ID。
+- `userName`：房主的用户名。
+- `userAvatar`：房主的头像。
+
+<a id="AUIAPIConfig"></a>
+### AUIAPIConfig
+
+```swift
+public class AUIAPIConfig: NSObject {
+    var rtcEngine: AgoraRtcEngineKit? = nil
+    var ktvApi: KTVApiDelegate? = nil
+    var rtmClient: AgoraRtmClientKit? = nil
+}
+```
+
+声网 API 实例结构体。
+
+**属性**
+
+- `rtcEngineEx`：[`RtcEngineEx`](/api-ref/rtc/ios/API/rtc_interface_class#class_irtcengineex) 实例。如果未传入，AUIKaraoke 内部会自行创建 `RtcEngineEx` 实例。
+- `ktvApi`：[K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api) 实例，如果未传入，AUIKaraoke 内部会自行创建场景化 API 实例。
+- `rtmClient`：[`AgoraRtmClientKit`](/zh-CN/realtime-media/rtm) 实例。如果未传入，AUIKaraoke 内部会自行创建 `RtmClient` 实例。
+
+<a id="AUIRoomConfig"></a>
+### AUIRoomConfig
+
+```swift
+open class AUIRoomConfig: NSObject {
+    public var channelName: String = ""
+    public var rtmToken: String = ""
+    public var rtcToken: String = ""
+    public var rtcChorusChannelName: String = ""
+    public var rtcChorusRtcToken: String = ""
+}
+```
+
+K 歌房间配置，包括登录 RTM 频道使用的 RTM Token、登录 RTC 频道使用的 RTC Token 等。
+
+**属性**
+
+- `channelName`：主频道的频道名。在合唱场景下，领唱需要加入两个频道，在主频道发布人声和播放器的混流，在合唱频道发布麦克风采集的音频流。伴唱需要加入合唱频道来同步领唱的人声。
+
+- `rtmToken`：登陆 RTM 系统时用的 RTM Token，详见 [部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+
+  :::warning[注意]
+  请确保你使用的 RTM Token 是 AccessToken2。
+  :::
+
+- `rtcToken`： 加入主频道时使用的 RTC Token。
+
+  :::warning[注意]
+  请确保你使用的 RTC Token 是 AccessToken2。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+  :::
+
+- `rtcChorusChannelName`：合唱频道名。独唱场景下，该参数可为空。
+
+- `rtcChorusRtcToken`：根据合唱频道名和用户 ID 生成的 RTC Token，用于加入合唱频道时进行鉴权。独唱场景下，该参数可为空。
+
+</PlatformStructured>
