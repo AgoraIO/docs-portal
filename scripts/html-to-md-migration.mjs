@@ -664,53 +664,6 @@ async function writeFile(filePath, contents) {
   await fs.writeFile(filePath, contents, 'utf8');
 }
 
-async function directoryExists(dirPath) {
-  try {
-    return (await fs.stat(dirPath)).isDirectory();
-  } catch {
-    return false;
-  }
-}
-
-async function readHtmlFileNames(apiDir) {
-  const entries = await fs.readdir(apiDir);
-  return entries.filter((name) => name.endsWith('.html')).sort();
-}
-
-async function validateSourceLayout(sourceDir) {
-  const apiDir = path.join(sourceDir, 'API');
-  if (!(await directoryExists(apiDir))) {
-    console.error(
-      [
-        `Unsupported HTML source layout: ${sourceDir}`,
-        '',
-        'This migration script only supports DITA-OT/Oxygen generated API references.',
-        'Expected layout:',
-        `  ${path.join(sourceDir, 'index.html')} (optional TOC)`,
-        `  ${path.join(sourceDir, 'API')}/`,
-        '    *.html',
-        '',
-        'TypeDoc, JSDoc, Docusaurus, and other HTML outputs need a source-specific migration path.',
-      ].join('\n'),
-    );
-    process.exit(1);
-  }
-
-  const fileNames = await readHtmlFileNames(apiDir);
-  if (fileNames.length === 0) {
-    console.error(
-      [
-        `Unsupported HTML source layout: ${sourceDir}`,
-        '',
-        'The API/ directory exists, but it contains no .html files to migrate.',
-      ].join('\n'),
-    );
-    process.exit(1);
-  }
-
-  return fileNames;
-}
-
 // ============================================================================
 // Main Processing
 // ============================================================================
@@ -780,7 +733,6 @@ async function main() {
   const sourceDir = opts.source;
   const targetRoot = opts.output;
   const targetBasePath = `${opts.routeBasePath}/${opts.product}/${opts.platform}`;
-  const fileNames = await validateSourceLayout(sourceDir);
 
   // Read TOC
   const tocPath = path.join(sourceDir, 'index.html');
@@ -792,6 +744,11 @@ async function main() {
   } catch (e) {
     console.log(`⚠️  No index.html found, will process all HTML files in directory`);
   }
+
+  // Get all HTML files
+  const fileNames = (await fs.readdir(path.join(sourceDir, 'API')))
+    .filter((name) => name.endsWith('.html'))
+    .sort();
 
   // If no TOC, create a flat structure
   if (tocNodes.length === 0) {
