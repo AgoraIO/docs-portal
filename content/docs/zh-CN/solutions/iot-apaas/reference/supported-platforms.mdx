@@ -9,52 +9,60 @@ description: "声网灵隼物联网云平台支持的设备端和客户端平台
 
 设备端平台兼容信息如下：
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Linux</td>
-      <td><div><ul><li>x86 / x86_64 架构：gcc 内核 2.6.35 及以上</li><li>ARM 架构：<ul><li>arm-linux-gnueabi 4.4.x 及以上</li><li>arm-linux-gnueabihf 4.8.x 及以上</li><li>aarch64-linux-gnu 4.8.x 及以上</li><li>arm-linux-musleabihf 5.2.x 及以上</li><li>arm-linux-musleabi 5.5.x 及以上</li><li>aarch64-linux-musl 5.5.x 及以上</li><li>arm-linux-uclibceabi 4.4.x 及以上</li><li>arm-linux-uclibceabihf 4.8.x 及以上</li></ul></li><li>MIPS 架构：mips-linux-uclibceabihf 4.7.x 及以上</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>HarmonyOS</td>
-      <td><div><p>ARM 架构：arm-liteos-eabi 内核 liteOS 2.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>FreeRTOS</td>
-      <td><div><p>目前仅支持乐鑫 ESP32 S3</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>Android 版本 ≥ 4.1</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Linux | <Slot name="supported-platforms-html-0-0-1" /> |
+| HarmonyOS | ARM 架构：arm-liteos-eabi 内核 liteOS 2.0 |
+| FreeRTOS | 目前仅支持乐鑫 ESP32 S3 |
+| Android | <Slot name="supported-platforms-html-0-3-1" /> |
+
+<Slot for="supported-platforms-html-0-0-1">
+
+- x86 / x86_64 架构：gcc 内核 2.6.35 及以上
+- ARM 架构：
+  - arm-linux-gnueabi 4.4.x 及以上
+  - arm-linux-gnueabihf 4.8.x 及以上
+  - aarch64-linux-gnu 4.8.x 及以上
+  - arm-linux-musleabihf 5.2.x 及以上
+  - arm-linux-musleabi 5.5.x 及以上
+  - aarch64-linux-musl 5.5.x 及以上
+  - arm-linux-uclibceabi 4.4.x 及以上
+  - arm-linux-uclibceabihf 4.8.x 及以上
+- MIPS 架构：mips-linux-uclibceabihf 4.7.x 及以上
+
+</Slot>
+
+<Slot for="supported-platforms-html-0-3-1">
+
+Android 版本 ≥ 4.1
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
 
 ## 客户端
 
 客户端平台兼容信息如下：
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>Android 版本 ≥ 4.1</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>iOS 版本 ≥ 12</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Android | <Slot name="supported-platforms-html-1-0-1" /> |
+| iOS | iOS 版本 ≥ 12 |
+
+<Slot for="supported-platforms-html-1-0-1">
+
+Android 版本 ≥ 4.1
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>

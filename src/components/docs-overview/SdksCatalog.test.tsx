@@ -49,7 +49,7 @@ describe('SdksCatalog', () => {
     fireEvent.click(within(videoCard).getByRole('tab', { name: 'Web' }));
 
     expect(
-      within(videoCard).getByText('npm i agora-rtc-sdk-ng@4.24.3'),
+      within(videoCard).getByText('npm i agora-rtc-sdk-ng@4.24.5'),
     ).toBeVisible();
     expect(within(videoCard).getByRole('tab', { name: 'Web' })).toHaveAttribute(
       'aria-selected',

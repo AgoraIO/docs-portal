@@ -50,6 +50,10 @@ describe('platform registry', () => {
     expect(isKnownPlatform('android')).toBe(true);
     expect(isKnownPlatform('web')).toBe(true);
     expect(isKnownPlatform('react-js')).toBe(true);
+    expect(isKnownPlatform('typescript')).toBe(true);
+    expect(isKnownPlatform('go')).toBe(true);
+    expect(isKnownPlatform('csharp')).toBe(true);
+    expect(isKnownPlatform('cscrip')).toBe(true);
     expect(isKnownPlatform('windows')).toBe(true);
     expect(isKnownPlatform('cpp')).toBe(true);
     expect(isKnownPlatform('macos')).toBe(true);
@@ -66,6 +70,8 @@ describe('platform registry', () => {
 
   it('normalizes legacy platform aliases to registered keys', () => {
     expect(normalizePlatformKey('react-js')).toBe('javascript');
+    expect(normalizePlatformKey('cscrip')).toBe('csharp');
+    expect(normalizePlatformKey('cscript')).toBe('csharp');
     expect(normalizePlatformKey('android')).toBe('android');
   });
 
@@ -74,6 +80,9 @@ describe('platform registry', () => {
     expect(getPlatformLabel('web', 'zh-CN')).toBe('Web');
     expect(getPlatformLabel('javascript', 'en')).toBe('JavaScript');
     expect(getPlatformLabel('javascript', 'zh-CN')).toBe('JavaScript');
+    expect(getPlatformLabel('typescript', 'en')).toBe('TypeScript');
+    expect(getPlatformLabel('go', 'en')).toBe('Go');
+    expect(getPlatformLabel('csharp', 'en')).toBe('C#');
     expect(getPlatformLabel('ios', 'en')).toBe('iOS');
     expect(getPlatformLabel('windows', 'en')).toBe('Windows');
     expect(getPlatformLabel('cpp', 'en')).toBe('C++');

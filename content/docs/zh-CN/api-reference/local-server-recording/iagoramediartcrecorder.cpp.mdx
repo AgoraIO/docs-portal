@@ -112,7 +112,7 @@ virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `enabled` | `bool` | <Slot name="iagoramediartcrecorder-cpp-html-2-1-2" /> |
-| `config` | `const EncryptionConfig&` | 内置加密配置。详见 [`EncryptionConfig`](/zh-CN/api-reference/local-server-recording/struct.cpp#encryptionconfig)。 |
+| `config` | `const EncryptionConfig&` | 内置加密配置。详见 [`EncryptionConfig`](/zh-CN/api-reference/local-server-recording/struct?platform=cpp#encryptionconfig)。 |
 
 <Slot for="iagoramediartcrecorder-cpp-html-2-1-2">
 
@@ -159,7 +159,7 @@ virtual int subscribeAllVideo(const agora::rtc::VideoSubscriptionOptions& subscr
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `subscriptionOptions` | `const agora::rtc::VideoSubscriptionOptions&` | 视频订阅选项。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/local-server-recording/struct.cpp#videosubscriptionoptions)。 |
+| `subscriptionOptions` | `const agora::rtc::VideoSubscriptionOptions&` | 视频订阅选项。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/local-server-recording/struct?platform=cpp#videosubscriptionoptions)。 |
 
 #### 返回值
 
@@ -254,7 +254,7 @@ virtual int subscribeVideo(user_id_t userId, const VideoSubscriptionOptions& sub
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `userId` | `user_id_t` | 你想要订阅的视频所属的远端用户 ID。 |
-| `subscriptionOptions` | `const VideoSubscriptionOptions&` | 视频订阅选项，例如仅订阅编码后的视频数据，或订阅低码率的视频流。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/local-server-recording/struct.cpp#videosubscriptionoptions)。 |
+| `subscriptionOptions` | `const VideoSubscriptionOptions&` | 视频订阅选项，例如仅订阅编码后的视频数据，或订阅低码率的视频流。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/local-server-recording/struct?platform=cpp#videosubscriptionoptions)。 |
 
 #### 返回值
 
@@ -290,7 +290,7 @@ virtual int unsubscribeVideo(user_id_t userId) = 0;
 virtual int setAudioVolumeIndicationParameters(int intervalInMS) = 0;
 ```
 
-设置 [`onAudioVolumeIndication`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onaudiovolumeindication) 回调的时间间隔。
+设置 [`onAudioVolumeIndication`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler?platform=cpp#onaudiovolumeindication) 回调的时间间隔。
 
 #### 参数
 
@@ -325,7 +325,7 @@ virtual int setVideoMixingLayout(const VideoMixingLayout& layout) = 0;
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `layout` | `const VideoMixingLayout&` | 混合视频流的布局。详见 [`VideoMixingLayout`](/zh-CN/api-reference/local-server-recording/struct.cpp#videomixinglayout)。 |
+| `layout` | `const VideoMixingLayout&` | 混合视频流的布局。详见 [`VideoMixingLayout`](/zh-CN/api-reference/local-server-recording/struct?platform=cpp#videomixinglayout)。 |
 
 #### 返回值
 
@@ -345,7 +345,7 @@ virtual int setRecorderConfig(const media::MediaRecorderConfiguration& config) =
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `config` | `const media::MediaRecorderConfiguration&` | 录制器实例配置。详见 [`MediaRecorderConfiguration`](/zh-CN/api-reference/local-server-recording/struct.cpp#mediarecorderconfiguration)。 |
+| `config` | `const media::MediaRecorderConfiguration&` | 录制器实例配置。详见 [`MediaRecorderConfiguration`](/zh-CN/api-reference/local-server-recording/struct?platform=cpp#mediarecorderconfiguration)。 |
 
 #### 返回值
 
@@ -365,7 +365,7 @@ virtual int enableAndUpdateVideoWatermarks(WatermarkConfig* watermark_configs, i
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `watermark_configs` | `WatermarkConfig*` | 水印配置。详见 [`WatermarkConfig`](/zh-CN/api-reference/local-server-recording/struct.cpp#watermarkconfig)。 |
+| `watermark_configs` | `WatermarkConfig*` | 水印配置。详见 [`WatermarkConfig`](/zh-CN/api-reference/local-server-recording/struct?platform=cpp#watermarkconfig)。 |
 | `num` | `int` | 水印配置的数量。 |
 
 #### 返回值
@@ -468,7 +468,7 @@ virtual int setRecorderConfigByUid(const media::MediaRecorderConfiguration& conf
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `config` | `const media::MediaRecorderConfiguration&` | 录制器实例的配置。详见 [`MediaRecorderConfiguration`](/zh-CN/api-reference/local-server-recording/struct.cpp#mediarecorderconfiguration)。 |
+| `config` | `const media::MediaRecorderConfiguration&` | 录制器实例的配置。详见 [`MediaRecorderConfiguration`](/zh-CN/api-reference/local-server-recording/struct?platform=cpp#mediarecorderconfiguration)。 |
 | `userId` | `user_id_t` | 要设置录制配置的用户 ID。 |
 
 #### 返回值
@@ -489,7 +489,7 @@ virtual int enableAndUpdateVideoWatermarksByUid(WatermarkConfig* watermark_confi
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `watermark_configs` | `WatermarkConfig*` | 水印配置数组。详见 [`WatermarkConfig`](/zh-CN/api-reference/local-server-recording/struct.cpp#watermarkconfig)。 |
+| `watermark_configs` | `WatermarkConfig*` | 水印配置数组。详见 [`WatermarkConfig`](/zh-CN/api-reference/local-server-recording/struct?platform=cpp#watermarkconfig)。 |
 | `num` | `int` | 水印配置的数量。 |
 | `userId` | `user_id_t` | 你想要添加水印的视频流所属用户的 ID。 |
 
@@ -531,7 +531,7 @@ virtual int registerRecorderEventHandle(IAgoraMediaRtcRecorderEventHandler* hand
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `handler` | `IAgoraMediaRtcRecorderEventHandler*` | 录制事件处理器。详见 [`IAgoraMediaRtcRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp)。 |
+| `handler` | `IAgoraMediaRtcRecorderEventHandler*` | 录制事件处理器。详见 [`IAgoraMediaRtcRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler?platform=cpp)。 |
 
 #### 返回值
 
@@ -551,7 +551,7 @@ virtual int unregisterRecorderEventHandle(IAgoraMediaRtcRecorderEventHandler* ha
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `handler` | `IAgoraMediaRtcRecorderEventHandler*` | 录制事件处理器。详见 [`IAgoraMediaRtcRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp)。 |
+| `handler` | `IAgoraMediaRtcRecorderEventHandler*` | 录制事件处理器。详见 [`IAgoraMediaRtcRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler?platform=cpp)。 |
 
 #### 返回值
 
@@ -573,7 +573,7 @@ virtual int setGlobalLocalAccessPoint(const LocalAccessPointConfiguration& confi
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `config` | `const LocalAccessPointConfiguration&` | 本地接入点配置。详见 [`LocalAccessPointConfiguration`](/zh-CN/api-reference/local-server-recording/struct.cpp#localaccesspointconfiguration)。 |
+| `config` | `const LocalAccessPointConfiguration&` | 本地接入点配置。详见 [`LocalAccessPointConfiguration`](/zh-CN/api-reference/local-server-recording/struct?platform=cpp#localaccesspointconfiguration)。 |
 
 #### 返回值
 
@@ -591,9 +591,9 @@ virtual int renewToken(const char* token) = 0;
 
  Token 在一段时间后会过期。你必须在以下任一情况下从服务器重新生成新的 Token，并调用该方法进行更新，否则 SDK 会断开与频道的连接：
 
-- [`onError`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onerror) 回调报告错误码 ERR_TOKEN_EXPIRED(109)。
-- 触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#ontokenprivilegewillexpire) 回调。
-- 触发 [`onTokenPrivilegeDidExpire`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#ontokenprivilegedidexpire) 回调。
+- [`onError`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler?platform=cpp#onerror) 回调报告错误码 ERR_TOKEN_EXPIRED(109)。
+- 触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler?platform=cpp#ontokenprivilegewillexpire) 回调。
+- 触发 [`onTokenPrivilegeDidExpire`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler?platform=cpp#ontokenprivilegedidexpire) 回调。
 
 #### 参数
 
@@ -620,7 +620,7 @@ virtual int enableRecorderVideoFrameCapture(bool enable, const RecorderVideoFram
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `enable` | `bool` | <Slot name="iagoramediartcrecorder-cpp-html-21-1-2" /> |
-| `config` | `const RecorderVideoFrameCaptureConfig&` | 视频帧采集配置，详见 [`RecorderVideoFrameCaptureConfig`](/zh-CN/api-reference/local-server-recording/struct.cpp#recordervideoframecaptureconfig)。 |
+| `config` | `const RecorderVideoFrameCaptureConfig&` | 视频帧采集配置，详见 [`RecorderVideoFrameCaptureConfig`](/zh-CN/api-reference/local-server-recording/struct?platform=cpp#recordervideoframecaptureconfig)。 |
 
 <Slot for="iagoramediartcrecorder-cpp-html-21-1-2">
 

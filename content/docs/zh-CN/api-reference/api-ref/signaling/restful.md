@@ -1,11 +1,10 @@
 ---
 title: RESTful
-description: Overview of Signaling RESTful APIs.
+description: 实时消息 RTM RESTful API 概览。
 ---
 
-Signaling RESTful APIs provide server-side access to messaging and event query
-operations for peer and channel scenarios.
+实时消息 RTM RESTful API 提供服务端接口，用于在单聊和频道场景中访问消息与事件查询能力。
 
-## Reference surfaces
+## 参考入口
 
-- [Messaging and Events RESTful APIs](/zh-CN/realtime-media/rtm/rest-api)
+- [消息与事件 RESTful API](/zh-CN/realtime-media/rtm/rest-api)

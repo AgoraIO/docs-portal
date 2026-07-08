@@ -1,11 +1,11 @@
 ---
-title: Signaling
-description: API reference entry points for Signaling.
+title: 实时消息 RTM
+description: 实时消息 RTM API 参考入口。
 ---
 
-Use this page to choose the Signaling API reference surface.
+选择实时消息 RTM API 参考入口。
 
-## Reference surfaces
+## 参考入口
 
-- [SDK references](/zh-CN/api-reference/rtm)
-- [RESTful APIs](/zh-CN/realtime-media/rtm/rest-api)
+- [SDK 参考](/zh-CN/api-reference/rtm)
+- [RESTful API](/zh-CN/realtime-media/rtm/rest-api)

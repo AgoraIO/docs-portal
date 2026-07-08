@@ -1,11 +1,11 @@
 ---
-title: "Channel Metadata"
+title: "频道元数据"
 ---
 Storage 服务为你提供了 Channel Metadata 的能力，可以用来存储和分发你应用中的上下文数据，例如：道具、公告、成员列表和关系链等。Channel Metadata 在被设置、更新和删除的时候会触发 `config.onstorageevent` 事件通知，频道中的其他人会在 100 ms 内收到此信息。Storage 服务对于 Message Channel 和 Stream Channel 都有效，在使用的时候可以通过 `channelType` 参数区分。
 
 Channel Metadata 属于永久存储数据，一旦被设置将会长期保存在 RTM 数据库，不会因为你的频道被销毁而丢失，除非你手动删除。这将影响你的存储计费项，详见[计费规则](/zh-CN/realtime-media/rtm/reference/billing/billing-strategy)。
 
-## 设置 Channel Metadata
+## 设置频道元数据
 
 你可以为指定频道设置一组 Channel Metadata，用以实现业务上房间级别的数据存储和实时通知，例如房间内的道具信息、拍卖品价格更新、群公告等。每个频道只能有一组 Channel Metadata，但每组 Channel Metadata 可以包含一个或多个 Metadata Item，相关限制详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。每个 Metadata Item 包含 `key`、`value`、`revision` 等预定义字段。
 
@@ -270,7 +270,7 @@ public void onSuccess(Void responseInfo) {
 
 同时，RTM 还会触发一个 `enumv.storageeventtypeupdate` 类型的 `config.onstorageevent` 事件通知，并在 100 ms 内通知到频道中的其他人，详见[事件通知](/zh-CN/realtime-media/rtm/build/manage-metadata/event)。
 
-## 获取 Channel Metadata
+## 获取频道元数据
 
 你可以调用 `storage.getchannel` 方法获得指定频道的全部 Channel Metadata。关于 `storage.getchannel` 接口的更多信息见 [Storage API 参考](/api-ref/rtm2//toc-storage/storage)。
 
@@ -593,7 +593,7 @@ try {
 }
 ```
 
-## 更新 Channel Metadata
+## 更新频道元数据
 
 你可以使用 `storage.updatechannel` 来更新更新频道中已存在的 Metadata Item。如果该 Metadata Item 不存在，则会返回错误。该接口可用于如下需要权限控制的业务场景：
 
@@ -825,7 +825,7 @@ public void onSuccess(Void responseInfo) {
 
 同时，RTM 还会触发一个 `enumv.storageeventtypeupdate` 类型的 `config.onstorageevent` 事件通知，并在 100ms 内通知到频道中的其他人。`config.onstorageevent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/manage-metadata/event)。
 
-## 删除 Channel Metadata
+## 删除频道元数据
 
 如果你不再需要 Channel Metadata 或者某几个 Metadata Item，你可以参考以下示例代码使用 `storage.removechannel` 进行删除操作：
 
@@ -1317,7 +1317,7 @@ try {
 
 如果你开启了版本控制能力，那么你需要关注 `config.onstorageevent` 事件通知以获取 `majorRevision` 和 `revision` 更新后的值，以便于在接口调用时提供最新值。
 
-## Lock 的使用
+## 锁的使用
 
 Lock 为用户提供了对临界资源互斥访问的能力，你可以解决用户在访问共享资源时的竞争问题。例如，在频道中特定时间只能允许一位管理员存在，且只有管理员才能对 Channel Metadata 进行设置、删除和修改等操作。
 

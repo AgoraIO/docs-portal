@@ -10,12 +10,12 @@ title: "使用 Wwise 插件实现空间音频"
 
 声网提供的 Wwise 插件主要用于数据流传输，可与声网 RTC SDK 结合使用，增强 RTC SDK 使用时的灵活性。
 
-| 声网插件名称              | 插件类别          | 插件用途                                        |
+| 声网插件名称 | 插件类别 | 插件用途 |
 | ------------------------- | ----------------- | -------------------------------------- |
-| AgoraAudioInputSource   | Wwise Source 插件 | 将 RTC SDK 采集的本地用户音频数据传输给 Wwise   |
-| AgoraReceiveSource      | Wwise Source 插件 | 将 RTC SDK 接收到的远端用户音频数据传输给 Wwise |
-| AgoraSendEffect         | Wwise Effect 插件 | 将用户音频数据发送给声网服务器                  |
-| AgoraAudioSessionEffect | Wwise Effect 插件 | 用于在总线上获取参考信号以进行回声消除          |
+| AgoraAudioInputSource | Wwise Source 插件 | 将 RTC SDK 采集的本地用户音频数据传输给 Wwise |
+| AgoraReceiveSource | Wwise Source 插件 | 将 RTC SDK 接收到的远端用户音频数据传输给 Wwise |
+| AgoraSendEffect | Wwise Effect 插件 | 将用户音频数据发送给声网服务器 |
+| AgoraAudioSessionEffect | Wwise Effect 插件 | 用于在总线上获取参考信号以进行回声消除 |
 
 声网 Wwise 插件当前支持如下架构：
 
@@ -545,12 +545,12 @@ Assets/Wwise/API/Runtime/Plugins/iOS
 
 声网提供的 Wwise 插件主要用于数据流传输，可与声网 RTC SDK 结合使用，增强 RTC SDK 使用时的灵活性。
 
-| 声网插件名称              | 插件类别          | 插件用途                                        |
+| 声网插件名称 | 插件类别 | 插件用途 |
 | ------------------------- | ----------------- | ----------------------------------------------- |
-| AgoraAudioInputSource   | Wwise Source 插件 | 将 RTC SDK 采集的本地用户音频数据传输给 Wwise   |
-| AgoraReceiveSource      | Wwise Source 插件 | 将 RTC SDK 接收到的远端用户音频数据传输给 Wwise |
-| AgoraSendEffect         | Wwise Effect 插件 | 将用户音频数据发送给声网服务器                  |
-| AgoraAudioSessionEffect | Wwise Effect 插件 | 用于在总线上获取参考信号以进行回声消除          |
+| AgoraAudioInputSource | Wwise Source 插件 | 将 RTC SDK 采集的本地用户音频数据传输给 Wwise |
+| AgoraReceiveSource | Wwise Source 插件 | 将 RTC SDK 接收到的远端用户音频数据传输给 Wwise |
+| AgoraSendEffect | Wwise Effect 插件 | 将用户音频数据发送给声网服务器 |
+| AgoraAudioSessionEffect | Wwise Effect 插件 | 用于在总线上获取参考信号以进行回声消除 |
 
 声网 Wwise 插件当前支持如下架构：
 
@@ -650,7 +650,23 @@ Assets/Wwise/API/Runtime/Plugins/iOS
 
 | 替换前 | 替换后 |
 | --- | --- |
-| SDK 来源：从[下载页](/zh-CN/solutions/game-voice/reference/downloads)获取<br />SDK 文件夹名称：AgoraPlugin<br />SDK 区别：不含 Wwise 模块 | SDK 来源：从本节获取<br />SDK 文件夹名称：AgoraPlugin<br />SDK 区别：含有 Wwise 模块 |
+| <Slot name="spatial-audio-wwise-651-2-0" /> | <Slot name="spatial-audio-wwise-651-2-1" /> |
+
+<Slot for="spatial-audio-wwise-651-2-0">
+
+- SDK 来源：从[下载页](/zh-CN/solutions/game-voice/reference/downloads)获取
+- SDK 文件夹名称：AgoraPlugin
+- SDK 区别：不含 Wwise 模块
+
+</Slot>
+
+<Slot for="spatial-audio-wwise-651-2-1">
+
+- SDK 来源：从本节获取
+- SDK 文件夹名称：AgoraPlugin
+- SDK 区别：含有 Wwise 模块
+
+</Slot>
 
 2. 打开 Unreal Engine 项目，对 API 进行如下修改：
 

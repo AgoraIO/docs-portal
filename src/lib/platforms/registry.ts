@@ -17,6 +17,13 @@ export const platformRegistry = {
     },
     order: 15,
   },
+  typescript: {
+    label: {
+      en: 'TypeScript',
+      'zh-CN': 'TypeScript',
+    },
+    order: 16,
+  },
   android: {
     label: {
       en: 'Android',
@@ -79,6 +86,13 @@ export const platformRegistry = {
       'zh-CN': 'C++',
     },
     order: 65,
+  },
+  csharp: {
+    label: {
+      en: 'C#',
+      'zh-CN': 'C#',
+    },
+    order: 66,
   },
   swift: {
     label: {
@@ -157,6 +171,13 @@ export const platformRegistry = {
     },
     order: 120,
   },
+  go: {
+    label: {
+      en: 'Go',
+      'zh-CN': 'Go',
+    },
+    order: 122,
+  },
   'linux-cpp': {
     label: {
       en: 'Linux C++',
@@ -190,6 +211,8 @@ export const platformRegistry = {
 export type PlatformKey = keyof typeof platformRegistry;
 
 const platformAliases = {
+  cscrip: 'csharp',
+  cscript: 'csharp',
   'react-js': 'javascript',
 } as const;
 

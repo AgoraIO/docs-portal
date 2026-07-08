@@ -64,7 +64,19 @@ title: "内嵌水晶球数据"
 
 | 参数    | 描述                                                        |
 | :------ | :---------------------------------------------------------- |
-| feature | 内嵌的水晶球功能。支持设为以下值：<li> `callSearch`：通话调查功能。</li><li>`realtimeMonitoring`：实时监控功能。</li><li>`dataInsightsPlus`：数据洞察 Plus。</li><li>`dataInsightUsage`：数据洞察-用量概览功能。</li><li>`dataInsightQuality`：数据洞察-质量概览功能。</li> |
+| feature | <Slot name="embeded-slot-1-2-1" /> |
+
+<Slot for="embeded-slot-1-2-1">
+
+内嵌的水晶球功能。支持设为以下值：
+
+- `callSearch`：通话调查功能。
+- `realtimeMonitoring`：实时监控功能。
+- `dataInsightsPlus`：数据洞察 Plus。
+- `dataInsightUsage`：数据洞察-用量概览功能。
+- `dataInsightQuality`：数据洞察-质量概览功能。
+
+</Slot>
 
 **请求示例**
 
@@ -103,6 +115,7 @@ URL: https://analytics-lab.agora.io/api/analytics/research
 | toUid | （选填）接收端用户 ID。 |
 | fromTs | （选填）查询开始时间，Unix 时间戳 （秒）。设置后，你可以查询该时间点（包含）之后的通话。 |
 | toTs | （选填）查询结束时间，Unix 时间戳 （秒）。设置后，你可以查询该时间点（包含）之前的通话。 |
+
 
 <Slot for="embeded-markdown-3-2-1">
 
@@ -148,10 +161,37 @@ URL: https://analytics-lab.agora.io/api/analytics/research
 
 | 参数 | 描述 |
 | --- | --- |
-| locale | 语言。<li>`zh`: 中文。</li><li>`en`: 英文。</li> |
-| timezone | 时区。<li>`UTC`: UTC 时区。</li><li>`Local`: 本地时区。</li> |
-| showProjectSelector | 是否在页面上显示项目选择下拉框：<li>`true`: 显示。</li><li>`false`: 不显示。</li> |
+| locale | <Slot name="embeded-slot-4-2-1" /> |
+| timezone | <Slot name="embeded-slot-4-3-1" /> |
+| showProjectSelector | <Slot name="embeded-slot-4-4-1" /> |
 | projectId | <Slot name="embeded-markdown-4-4-1" /> |
+
+<Slot for="embeded-slot-4-2-1">
+
+语言。
+
+- `zh`: 中文。
+- `en`: 英文。
+
+</Slot>
+
+<Slot for="embeded-slot-4-3-1">
+
+时区。
+
+- `UTC`: UTC 时区。
+- `Local`: 本地时区。
+
+</Slot>
+
+<Slot for="embeded-slot-4-4-1">
+
+是否在页面上显示项目选择下拉框：
+
+- `true`: 显示。
+- `false`: 不显示。
+
+</Slot>
 
 <Slot for="embeded-markdown-4-4-1">
 

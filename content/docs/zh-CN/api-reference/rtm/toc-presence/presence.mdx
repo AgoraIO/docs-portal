@@ -1,5 +1,5 @@
 ---
-title: "Presence"
+title: "在线状态"
 ---
 
 <PlatformStructured platform="android">
@@ -2437,5 +2437,842 @@ type ErrorInfo = {
 ```
 
 你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/api-reference/rtm/error-codes)了解错误原因，并找到对应的解决方法。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+Presence 提供监控用户上线、下线及用户历史状态变更通知的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开指定频道的实时事件通知
+- 自定义临时用户状态及其变更实时事件通知
+- 查询指定用户加入或订阅了哪些频道
+- 查询指定频道有哪些用户加入及其用户临时状态数据
+
+:::info[信息]
+**Presence** 能力适用于 Message Channel 和 Stream Channel。
+:::
+
+## whoNow
+
+### 接口描述
+
+调用 `whoNow` 方法，你可以实时查询指定频道的在线用户数量、在线用户列表及在线用户的临时状态等信息。
+
+### 接口方法
+
+你可以通过以下方式调用 `whoNow` 方法：
+
+```cpp
+virtual void whoNow(const char* channelName, RTM_CHANNEL_TYPE channelType, const PresenceOptions& options, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | const char* | 必填 | - | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `options` | `const PresenceOptions&` | 必填 | - | 查询附加选项。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+`PresenceOptions` 数据类型包含以下属性：
+
+|       属性       |  类型   | 是否必填 | 默认值  | 描述  |
+| ------------- | ---- | ----- | ---- | --------------- |
+| `includeUserId` | bool |   选填   | `true`  | 返回结果中是否包含在线成员的用户 ID。              |
+| `includeState`  | bool |   选填   | `false` | 返回结果中是否包含在线用户的临时状态数据。         |
+|      `page`      | const char*  |   选填   |    `NULL`    | 页码书签。如果不填写，则 SDK 默认返回第一页结果。你可以在返回值中查看是否还有下一页。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onWhoNowResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `userStateList` | `const UserState*` | 频道在线用户及其临时状态信息列表。 |
+| `count` | const size_t | `UserState` 列表长度，当 `whoNow` 属性中 `includeUserId`、`includeState` 属性都设置为 `false` 时，此值表示频道当前总在线人数。 |
+| `nextPage` | const char* | <Slot name="presence-cpp-html-1-4-2" /> |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
+
+<Slot for="presence-cpp-html-1-4-2">
+
+下一页书签。通过该属性可以确认是否有下一页：
+
+    - 值为空表示没有下一页。
+    - 值不为空表示有下一页。你可以将该值填写在 `whoNow` 的 `page` 属性中，从而查询下一页结果。
+
+</Slot>
+
+`UserState` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | -------- |
+| `userId`         |  const char*  |  用户 ID。     |
+| `states`         |    `const StateItem*`      | 频道在线用户及其临时状态信息列表。        |
+| `statesCount`         |    size_t      | 用户状态的数量。        |
+
+`StateItem` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `key`         |         const char*        | 用户状态的键。如果指定的键已经存在，则该键的值会被新值覆盖；如果指定的键不存在，则 SDK 会新增该键/值对。     |
+| `value` | const char* | 用户状态的值。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+PresenceOptions options;
+options.includeState = true;
+options.includeUserId =true;
+options.page = "yourBookMark";
+
+uint64_t requestId;
+rtmClient->getPresence()->whoNow("channelName", RTM_CHANNEL_TYPE_MESSAGE, options, requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onWhoNowResult(const uint64_t requestId, const UserState *userStateList, const size_t count, const char *nextPage, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("who now failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("who now success\n");
+            for (int i = 0 ;i < count; i++) {
+                printf("user: %s\n", userStateList[i].userId);
+                for (int j = 0 ; j < userStateList[i].statesCount; j++) {
+                    printf("key: %s value: %s\n", userStateList[i].states[j].key, userStateList[i].states[j].value);
+                }
+            }
+        }
+    }
+};
+```
+
+## whereNow
+
+### 接口描述
+
+在数据统计、App 调试等场景中，你可能需要了解指定用户订阅或加入的所有频道。调用 `whereNow` 方法，你可以实时获取指定用户所在频道的列表。
+
+### 接口方法
+
+你可以通过以下方式调用 `whereNow` 方法：
+
+```cpp
+virtual void whereNow(const char* userId, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | const char* | 必填 | - | 用户 ID。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onWhereNowResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `channels` | `const ChannelInfo*` | 频道信息。 |
+| `count` | const size_t | 频道数量。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
+
+`ChannelInfo` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `channelName`     | const char* |  频道名称。         |
+| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+uint64_t requestId;
+rtmClient->getPresence()->whereNow("tony", requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onWhereNowResult(const uint64_t requestId, const ChannelInfo *channels, const size_t count, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("where now failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("where now success\n");
+            for (int i = 0; i < count; i++) {
+                printf("channel: %s channel type: %d\n", channels[i].channelName, channels[i].channelType);
+            }
+        }
+    }
+};
+```
+
+## setState
+
+### 接口描述
+
+为满足不同业务场景对用户状态的设置需求，RTM 提供 `setState` 方法自定义临时用户状态。用户可以为自己添加分数、游戏状态、位置、心情、连麦状态等自定义状态。
+
+设置成功后，只要用户保持订阅频道并一直在线，自定义状态就会在频道中持续存在。`setState` 方法设置的是临时用户状态，当用户离开频道或断开与 RTM 的连接时，状态会消失。如果需要在重新加入频道或者重新连接时恢复用户状态，你需要实时在本地缓存该数据。如果你希望永久保存用户状态数据，声网推荐改用 Storage 功能的 `setUserMetadata` 方法。
+
+如果用户修改了临时用户状态，RTM 会实时触发 `RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED` 类型的 `onPresenceEvent` 事件通知。你可以通过订阅频道并配置对应属性来接收该事件。
+
+### 接口方法
+
+你可以通过以下方式调用 `setState` 方法：
+
+```cpp
+virtual void setState(const char* channelName, RTM_CHANNEL_TYPE channelType, const StateItem* items, size_t count, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | const char* | 必填 | - | 频道名称 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `items` | `const StateItem*` | 必填 | - | 用户状态。 |
+| `count` | size_t | 必填 | - | 用户状态的数量。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+`StateItem` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `key`         |         const char*        | 用户状态的键。如果指定的键已经存在，则该键的值会被新值覆盖；如果指定的键不存在，则 SDK 会新增该键/值对。     |
+| `value` | const char* | 用户状态的值。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onPresenceSetStateResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+std::vector<StateItem> items;
+StateItem item;
+item.key = "mood";
+item.value = "pumped";
+items.push_back(item);
+
+uint64_t requestId;
+rtmClient->getPresence()->setState("channelName", RTM_CHANNEL_TYPE_MESSAGE, items.data(), items.size(), requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onPresenceSetStateResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("SetState failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("SetState success\n");
+        }
+    }
+};
+```
+
+## getState
+
+### 接口描述
+
+如需获取指定频道中指定用户的临时用户状态，你可以调用 `getState` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getState` 方法：
+
+```cpp
+virtual void getState(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* userId, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | const char* | 必填 | - | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `userId` | const char* | 必填 | - | 用户 ID。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onPresenceGetStateResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `state` | `const UserState&` | 频道在线用户及其临时状态信息列表。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
+
+`UserState` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | -------- |
+| `userId`         |  const char*  |  用户 ID。     |
+| `states`         |    `const StateItem*`      | 频道在线用户及其临时状态信息列表。        |
+| `statesCount`         |    size_t      | 用户状态的数量。        |
+
+`StateItem` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `key`         |         const char*        | 用户状态的键。如果指定的键已经存在，则该键的值会被新值覆盖；如果指定的键不存在，则 SDK 会新增该键/值对。     |
+| `value` | const char* | 用户状态的值。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+uint64_t requestId;
+rtmClient->getPresence()->getState("channelName", RTM_CHANNEL_TYPE_MESSAGE, "tony", requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onPresenceGetStateResult(const uint64_t requestId, const UserState &state, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("GetState failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("GetState user id: %s success\n", state.userId);
+            for (int i = 0; i < state.statesCount; i++) {
+                printf("key: %s, value: %s\n", state.states[i].key, state.states[i].value);
+            }
+        }
+    }
+};
+```
+
+## removeState
+
+### 接口描述
+
+当不再需要某个临时用户状态时，你可以调用 `removeState` 方法删除自己的一个或多个临时状态。
+
+成功删除用户状态后，订阅该频道且开启 Presence 事件监听的用户会收到 `RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED` 类型的 `onPresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeState` 方法：
+
+```cpp
+virtual void removeState(const char* channelName, RTM_CHANNEL_TYPE channelType, const char** keys, size_t count, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | const char* | 必填 | - | 频道名称 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `keys` | const char** | 必填 | - | 需要删除状态的 `key` 列表。如果不填写，则删除全部状态。 |
+| `count` | size_t | 必填 | - | `key` 的数量。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onPresenceRemoveStateResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+std::vector<const char*> keys;
+keys.push_back("key0");
+keys.push_back("key1");
+keys.push_back("key2");
+
+uint64_t requestId;
+rtmClient->getPresence()->removeState("channelName", RTM_CHANNEL_TYPE_MESSAGE, keys.data(), keys.size(), requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onPresenceRemoveStateResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("RemoveState failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("RemoveState success\n");
+        }
+    }
+};
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+Presence 提供监控用户上线、下线及用户历史状态变更通知的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开指定频道的实时事件通知
+- 自定义临时用户状态及其变更实时事件通知
+- 查询指定用户加入或订阅了哪些频道
+- 查询指定频道有哪些用户加入及其用户临时状态数据
+
+:::info[信息]
+Presence 能力适用于 Message Channel 和 Stream Channel。
+:::
+
+## whoNow
+
+### 接口描述
+
+调用 `whoNow` 方法，你可以实时查询指定频道的在线用户数量、在线用户列表及在线用户的临时状态等信息。
+
+### 接口方法
+
+你可以通过以下方式调用 `whoNow` 方法：
+
+```swift
+whoNow(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    options: AgoraRtmPresenceOptions?
+)   async -> (AgoraRtmWhoNowResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+whoNow(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    options: AgoraRtmPresenceOptions?,
+    completion completionBlock: AgoraRtmWhoNowBlock? = nil
+)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `options` | `AgoraRtmPresenceOptions` | 选填 | - | 查询附加选项。 |
+| `completion` | `AgoraRtmWhoNowBlock` | 选填 | - | <Slot name="presence-swift-html-0-4-4" /> |
+
+<Slot for="presence-swift-html-0-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmWhoNowResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmPresenceOptions` 数据类型包含以下属性：
+
+|       属性       |  类型   | 是否必填 | 默认值  | 描述  |
+| -------------- | ----- | ------ | ----- | --------------- |
+| `includeUserId` | Bool |   选填   | `true`  | 返回结果中是否包含在线成员的用户 ID。              |
+| `includeState`  | Bool |   选填   | `false` | 返回结果中是否包含在线用户的临时状态数据。         |
+|      `page`      | String  |   必填   |    -    | 页码书签。你可以在返回值中查看是否还有下一页。 |
+
+`AgoraRtmWhoNowResponse` 数据类型包含以下属性：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `totalOccupancy` | Int32 | `userStateList` 列表长度。当 `AgoraRtmPresenceOptions` 中的 `includeUserId` 和 `includeState` 属性都设置为 `false` 时，此值表示频道当前总在线人数。 |
+| `userStateList` | `[AgoraRtmUserState]` | 频道在线用户及其临时状态信息列表。 |
+| `nextPage` | String | <Slot name="presence-swift-html-1-3-2" /> |
+
+<Slot for="presence-swift-html-1-3-2">
+
+下一页书签。通过该属性可以确认是否有下一页：
+
+    - 值为空表示没有下一页。
+    - 值不为空表示有下一页。你可以将该值填写在 `whoNow` 的 `page` 属性中，从而查询下一页结果。
+
+</Slot>
+
+`AgoraRtmUserState` 数据类型包含以下属性：
+
+| 属性     | 类型                | 描述                               |
+| ------- | ---- | ------ |
+| `userId` | String            | 用户 ID。                          |
+| `states` | `[String : String]` | 频道在线用户及其临时状态信息列表。 |
+
+### 接口方法
+
+```swift tab="async-await"
+// async-await
+let presenceOptions = AgoraRtmPresenceOptions()
+presenceOptions.includeUserId = true
+presenceOptions.includeState = true
+
+let (response, error) = await rtmClient.getPresence()!.whoNow(
+    channelName: "exampleChannel",
+    channelType: .message,
+    options: presenceOptions)
+
+if let errorInfo = error {
+    print("Error querying presence: \(errorInfo.reason)")
+} else if let whoNowResponse = response {
+    // Handle the response containing user presence information
+    print("Users in channel: \(whoNowResponse)")
+}
+```
+
+```swift tab="callback"
+// callback
+let presenceOptions = AgoraRtmPresenceOptions()
+presenceOptions.includeUserId = true
+presenceOptions.includeState = true
+
+rtmClient.getPresence()!.whoNow(
+    channelName: "exampleChannel",
+    channelType: .message,
+    options: presenceOptions
+) { (response, error) in
+    if let errorInfo = error {
+        print("Error querying presence: \(errorInfo.reason)")
+    } else if let whoNowResponse = response {
+        // Handle the response containing user presence information
+        print("Users in channel: \(whoNowResponse)")
+    } else {
+        print("Presence query completed with no response or error.")
+    }
+}
+```
+
+## whereNow
+
+### 接口描述
+
+在数据统计、App 调试等场景中，你可能需要了解指定用户订阅或加入的所有频道。调用 `whereNow` 方法，你可以实时获取指定用户所在频道的列表。
+
+### 接口方法
+
+你可以通过以下方式调用 `whereNow` 方法：
+
+```swift
+whereNow(userId: String) async -> (AgoraRtmWhereNowResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+whereNow(userId: String, completion completionBlock: AgoraRtmWhereNowBlock? = nil)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | String | 必填 | - | 用户 ID。 |
+| `completion` | `AgoraRtmWhereNowBlock` | 选填 | - | <Slot name="presence-swift-html-2-2-4" /> |
+
+<Slot for="presence-swift-html-2-2-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmWhereNowResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmWhereNowResponse` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述                            |
+| ---- | ------ | --------- |
+| `totalChannel`         |  Int32  |  用户所在频道个数。     |
+| `channels`         |    `[AgoraRtmChannelInfo]`      | 用户所在频道信息类表，其中包含频道名和频道类型。        |
+
+`AgoraRtmChannelInfo` 数据类型包含以下属性：
+
+| 属性          | 类型                   | 描述                          |
+| ------------ | ----------------- | --------- |
+| `channelName` | String               | 频道名称。                    |
+| `channelType` | `AgoraRtmChannelType` | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let (response, error) = await rtmClient.getPresence()!.whereNow(userId:"your_userID")
+if let errorInfo = error {
+    print("Error querying presence: \(errorInfo.reason)")
+} else if let whereNowResponse = response {
+    // Handle the response containing user presence information
+    print("channels: \(whereNowResponse)")
+}
+```
+
+```swift tab="callback"
+// callback
+rtmClient.getPresence()!.whereNow(userId: "your_userID") { (response, error) in
+    if let errorInfo = error {
+        print("Error querying presence: \(errorInfo.reason)")
+    } else if let whereNowResponse = response {
+        // Process the list of channels the user is currently in
+        print("User is present in channels: \(whereNowResponse.channels)")
+    } else {
+        print("No response or error.")
+    }
+}
+```
+
+## setState
+
+### 接口描述
+
+为满足不同业务场景对用户状态的设置需求，RTM 提供 `setState` 方法自定义临时用户状态。用户可以为自己添加分数、游戏状态、位置、心情、连麦状态等自定义状态。
+
+设置成功后，只要用户保持订阅频道并一直在线，自定义状态就会在频道中持续存在。`setState` 方法设置的是临时用户状态，当用户离开频道或断开与 RTM 的连接时，状态会消失。如果需要在重新加入频道或者重新连接时恢复用户状态，你需要实时在本地缓存该数据。如果你希望永久保存用户状态数据，声网推荐改用 Storage 功能的 `setUserMetadata` 方法。
+
+如果用户修改了临时用户状态，RTM 会实时触发 `remoteStateChanged` 类型的 `didReceivePresenceEvent` 事件通知。你可以通过订阅频道并配置对应属性来接收该事件。
+
+### 接口方法
+
+你可以通过以下方式调用 `setState` 方法：
+
+```swift
+setState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    items: [String : String]
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+setState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    items: [String : String],
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `items` | `[String: String]` | 必填 | - | 用户状态，类型为 `StateItem` 数组。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="presence-swift-html-3-4-4" /> |
+
+<Slot for="presence-swift-html-3-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 接口方法
+
+```swift tab="async-await"
+// async-await
+let stateItems: [String: String] = ["user1": "online","user2": "busy"]
+// Call the setState function
+let (response, error) = await rtmClient.getPresence()!.setState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    items: stateItems
+  )
+if let errorInfo = error {
+    print("Error setting state: \(errorInfo.reason)")
+} else if let setStateResponse = response {
+    // Handle the response indicating the result of the state update
+    print("State update response: \(setStateResponse)")
+}
+```
+
+```swift tab="callback"
+// callback
+let stateItems: [String: String] = ["user1": "online", "user2": "busy"]
+// Call the setState function using a callback
+rtmClient.getPresence()?.setState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    items: stateItems
+) { (response, error) in
+    if let errorInfo = error {
+        print("Error setting state: \(errorInfo.reason)")
+    } else if let setStateResponse = response {
+        // Handle the response indicating the result of the state update
+        print("State update response: \(setStateResponse)")
+    } else {
+        print("No response or error received.")
+    }
+}
+```
+
+## getState
+
+### 接口描述
+
+如需获取指定频道中指定用户的临时用户状态，你可以调用 `getState` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getState` 方法：
+
+```swift
+getState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    userId: String
+)   async -> (AgoraRtmPresenceGetStateResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+getState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    userId: String,
+    completion completionBlock: AgoraRtmPresenceGetStateBlock? = nil
+)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `userId` | String | 必填 | - | 用户 ID。 |
+| `completion` | `AgoraRtmPresenceGetStateBlock` | 选填 | - | <Slot name="presence-swift-html-4-4-4" /> |
+
+<Slot for="presence-swift-html-4-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmPresenceGetStateResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmPresenceGetStateResponse` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述                            |
+| ---- | ----- | -------- |
+| `state`         |    `AgoraRtmUserState`      | 频道在线用户及其临时状态信息列表。        |
+
+`AgoraRtmUserState` 数据类型包含以下属性：
+
+| 属性     |        类型         |                描述                |
+| ------- | ---------------- | --- |
+| `userId` |      String       |             用户 ID。              |
+| `states` | `[String : String]` | 频道在线用户及其临时状态信息列表。 |
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let userId = "user1"
+// Call the getState function
+let (response, error) = await rtmClient.getPresence()!.getState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    userId: userId
+)
+if let errorInfo = error {
+    print("Error getting state: \(errorInfo.reason)")
+} else if let getStateResponse = response {
+    // Handle the response containing the user's state
+    print("User state response: \(getStateResponse)")
+}
+```
+
+```swift tab="callback"
+// callback
+let userId = "user1"
+// Call the getState function
+rtmClient.getPresence()?.getState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    userId: userId,
+    completion: { (response, error) in
+        if let errorInfo = error {
+            print("Error getting state: \(error.reason)")
+        } else if let getStateResponse = response {
+            // Handle the response containing the user's state
+            print("User state response: \(getStateResponse)")
+        }
+    }
+)
+```
+
+## removeState
+
+### 接口描述
+
+当不再需要某个临时用户状态时，你可以调用 `removeState` 方法删除自己的一个或多个临时状态。成功删除用户状态后，订阅该频道且开启 Presence 事件监听的用户会收到 `remoteStateChanged` 类型的 `didReceivePresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeState` 方法：
+
+```swift
+removeState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    keys: [String]
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+removeState(
+  channelName: String,
+  channelType: AgoraRtmChannelType,
+  keys: [String],
+  completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `keys` | `[String]` | 必填 | - | 需要删除状态的 `key` 列表。如果不填写，则删除全部状态。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="presence-swift-html-5-4-4" /> |
+
+<Slot for="presence-swift-html-5-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let stateKeys: [String] = ["user1", "user2"]
+// Call the removeState function
+let (response, error) = await rtmClient.getPresence()!.removeState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    keys: stateKeys
+)
+if let errorInfo = error {
+    print("Error removing state: \(errorInfo.reason)")
+} else if let removeStateResponse = response {
+    // Handle the response indicating the result of the state removal
+    print("State removal response: \(removeStateResponse)")
+}
+```
+
+```swift tab="callback"
+// callback
+let stateKeys: [String] = ["user1", "user2"]
+rtmClient.getPresence()?.removeState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    keys: stateKeys,
+    completion: { (response, error) in
+        if let errorInfo = error {
+            print("Error removing state: \(errorInfo.reason)")
+        } else if let removeStateResponse = response {
+            // Handle the response indicating the result of the state removal
+            print("State removal response: \(removeStateResponse)")
+        }
+    }
+)
+```
 
 </PlatformStructured>

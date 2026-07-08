@@ -55,7 +55,7 @@ RTM 消息数定义为用户通过 RTM SDK、RESTful API、Webhook 或 Serverles
 - 发布消息所产生的异步回调不会计作消息数。
 :::
 
-### Presence 操作
+### 在线状态操作
 
 - 1 次 `presence.whonow` 查询计作 1 条消息。
 - 1 次 `presence.wherenow` 查询计作 1 条消息。
@@ -70,7 +70,7 @@ RTM 消息数定义为用户通过 RTM SDK、RESTful API、Webhook 或 Serverles
 - 如果客户端不加入或不订阅频道，则不会收到该频道的 Presence 事件通知，也将不会产生消息计数。
 :::
 
-### Storage 操作
+### 存储操作
 
 - 设置 (`storage.setchannel`) 任何 1 条 Channel Metadata，计作 1 条消息。
 - 查询 (`storage.getchannel`) 任何 1 条 Channel Metadata，计作 1 条消息。
@@ -92,7 +92,7 @@ RTM 消息数定义为用户通过 RTM SDK、RESTful API、Webhook 或 Serverles
 - 如果用户在声网控制台中关闭了 Storage 功能模块，则不会产生 Storage 消息计数或 Storage 存储占用。
 :::
 
-### Lock 操作
+### 锁操作
 
 - 任意 1 次对锁的设置 (`lock.set`) 操作计作 1 条消息。
 - 任意 1 次对锁的获取 (`lock.acquire`) 操作计作 1 条消息。
