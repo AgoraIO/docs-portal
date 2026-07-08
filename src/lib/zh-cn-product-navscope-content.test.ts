@@ -73,10 +73,10 @@ describe('zh-CN product nav scope content', () => {
       'utf8',
     );
 
-    expect(rtcMeta.title).toBe('语音与视频');
+    expect(rtcMeta.title).toBe('语音与视频 RTC');
     expect(rtcMeta.navScope).toEqual({});
     expect(rtcMeta.pages).toContain('index');
-    expect(rtcIndex).toMatch(/^title:\s*"?语音与视频概览"?$/m);
+    expect(rtcIndex).toMatch(/^title:\s*"?语音与视频 RTC 概览"?$/m);
   });
 
   it('keeps fully shared MCP and Skills docs only under introduction', () => {
