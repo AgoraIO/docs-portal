@@ -1,0 +1,177 @@
+---
+title: "如何处理 JavaScript SDK 常见集成问题？"
+---
+## 如何处理 Token 过期？
+
+Token 过期后，你需要先调用 `logout` 方法登出 RTM 系统，然后使用新的 Token 创建 RTM 实例，再调用 `login` 方法重新登录 RTM 系统。
+
+## 如何获取断线重连期间加入和离开 Stream Channel 的用户列表？
+
+监听 `topic` 事件通知后，在弱网环境下，如果断线重连，你会在 `topic` 中收到 `SNAPSHOT` 事件。
+
+如需获取断线重连期间加入或离开 Stream Channel 的用户列表，参考以下示例代码生成本地缓存并与 `SNAPSHOT` 事件中的用户列表进行比较：
+
+- `SNAPSHOT` 事件比本地缓存中多的用户是断线重连期间加入频道的用户。
+- `SNAPSHOT` 事件比本地缓存中少的用户是断线重连期间离开频道的用户。
+
+```javascript
+// global variable
+const channelTopics: Map<string, Map<string, RTMEvents.PublishInfo[]>> = new Map();
+// event handler
+const rtmConfig = {};
+const rtm = new RTM("appid", "uid", rtmConfig);
+rtm.addEventListener("topic", (topicEvent) => {
+      console.log(topicEvent, "topic");
+
+      const topicsCache: Map<string, RTMEvents.PublishInfo[]> = channelTopics.get(topicEvent.channelName) ?? new Map();
+      const remoteLeaved: Map<string, RTMEvents.PublishInfo[]> = new Map();
+      const remoteJoined: Map<string, RTMEvents.PublishInfo[]> = new Map();
+      const { publisher: user, channelName } = topicEvent;
+      if (topicEvent.eventType === "SNAPSHOT") {
+        topicEvent.topicInfos.forEach(({
+          publishers,
+          topicName }) => {
+          remoteJoined.set(topicName, []);
+          remoteLeaved.set(topicName, []);
+          const topicDetailsByCache = topicsCache.get(topicName) ?? [];
+
+          // removed
+          topicDetailsByCache.forEach(({ publisherMeta, publisherUserId: targetUid }) => {
+            if (!publishers.some(({ publisherUserId: eventUid }) => targetUid === eventUid)) {
+              remoteLeaved.get(topicName)?.push({ publisherUserId: targetUid, publisherMeta });
+              topicDetailsByCache.filter(({ publisherUserId: cacheUid }) => cacheUid !== targetUid);
+            }
+          });
+          // added
+          publishers.forEach(({ publisherMeta, publisherUserId: eventUid }) => {
+            if (!topicDetailsByCache.some(({ publisherUserId: cacheUid }) => {
+              return eventUid === cacheUid;
+            })) {
+              remoteJoined.get(topicName)?.push({ publisherUserId: eventUid, publisherMeta });
+              topicDetailsByCache.push({ publisherUserId: eventUid, publisherMeta })
+            }
+          });
+          topicsCache.set(topicName, topicDetailsByCache);
+        });
+      } else {
+        // your code for handling the updated event
+        topicEvent.topicInfos.forEach(({ topicName, publishers }) => {
+          const topicDetailsByCache = topicsCache.get(topicName) ?? [];
+          publishers.forEach(({ publisherMeta, publisherUserId }) => {
+            if (user === publisherUserId) {
+              switch (topicEvent.eventType) {
+                case "REMOTE_JOIN": {
+                  topicDetailsByCache.push({ publisherMeta, publisherUserId });
+                  break;
+                }
+                case "REMOTE_LEAVE": {
+                  topicDetailsByCache.filter(({publisherUserId: uid}) =>
+                    uid !== publisherUserId
+                  )
+                  break;
+                }
+              }
+              topicsCache.set(topicName, topicDetailsByCache);
+            }
+          });
+        })
+      }
+      channelTopics.set(channelName, topicsCache);
+      console.log({ remoteJoined, remoteLeaved, channelTopics, channelName }, "topic diff for debug");
+    });
+```
+
+## 为什么 `login` 成功后，立即调用 Presence 相关方法会报错？
+
+**背景**
+
+自 v2.2.4 起，RTM SDK 调整了登录行为：
+
+- 变更前：`login` 接口会等待 Presence 服务就绪后再返回结果。
+- 变更后：`login` 接口登录成功后立即返回，Presence 服务异步初始化，需短暂延迟后才可正常使用。
+
+业务影响：
+
+- 登录成功后立即调用 `subscribe`，在线成员快照与远端用户加入事件会有至少 1s 延迟。
+- 登录成功后立即调用 `whereNow`、`whoNow`、`getState(remoteUid)` 会报错；本地调用 `getState(localUid)`、`updateState`、`removeState` 不受影响，登录成功后会自动同步。
+
+**解决方案**
+
+你可以参考以下示例代码，在收到 `login` 成功通知后，等待 Presence 服务就绪后再调用 Presence 相关方法。如果等待超时，则认为 Presence 服务未就绪，需要提示用户稍后重试。
+
+```ts
+/**
+ * 等待 Presence 服务就绪：通过临时订阅一个随机 Message 频道并监听 SNAPSHOT，
+ * 收到与当前频道匹配的 SNAPSHOT 即表示 Presence 已可用。
+ * @param timeoutMs 仅作用于「订阅成功后等待 SNAPSHOT」的时长；建议在 3～10 秒按需调整。
+ */
+const waitPresenceReady = async (
+  client: RTM,
+  timeoutMs = 5_000,
+): Promise<boolean> => {
+  // 随机频道名，避免与业务频道冲突（碰撞概率极低）
+  const detectorChannel = `wait-presence-${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2, 8)}`;
+
+  let settled = false;
+  let resolveReady!: (value: boolean) => void;
+
+  const readyPromise = new Promise<boolean>((resolve) => {
+    resolveReady = resolve;
+  });
+
+  const settle = (value: boolean) => {
+    if (settled) return;
+    settled = true;
+    resolveReady(value);
+  };
+
+  const onPresence = (event: RTMEvents.PresenceEvent) => {
+    const { channelName, channelType, eventType } = event;
+    // 仅认当前探测器频道的 Message 频道 SNAPSHOT，避免误匹配其他频道
+    if (
+      channelName === detectorChannel &&
+      channelType === "MESSAGE" &&
+      eventType === "SNAPSHOT"
+    ) {
+      settle(true);
+    }
+  };
+
+  const timer = setTimeout(() => settle(false), timeoutMs);
+  client.addEventListener("presence", onPresence);
+
+  try {
+    await client.subscribe(detectorChannel, {
+      withPresence: true,
+      beQuiet: true,
+      withLock: false,
+      withMessage: false,
+      withMetadata: false,
+    });
+
+    return await readyPromise;
+  } catch {
+    // 订阅失败时无法通过 SNAPSHOT 探测，视为未就绪
+    return false;
+  } finally {
+    clearTimeout(timer);
+    client.removeEventListener("presence", onPresence);
+    // 清理临时频道；失败时 unsubscribe 可能报错，忽略即可
+    client.unsubscribe(detectorChannel).catch(() => {});
+  }
+};
+
+// // 使用示例
+// await client.login(options);
+
+// const ready = await waitPresenceReady(client, 5000);
+// if (!ready) {
+//   // 建议：延迟后重试，或提示用户稍后重试
+//   return;
+// }
+
+// // 只有 ready=true 后再调用 presence API
+// // await client.presence.xxx(...)
+```

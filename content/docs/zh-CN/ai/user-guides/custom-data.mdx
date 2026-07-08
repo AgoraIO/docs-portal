@@ -24,8 +24,8 @@ title: "传递自定义信息"
 调用 [POST 创建对话式智能体](./../convoai/operations/start-agent)时，将 `advanced_features.enable_rtm` 配置设置为 `true` 即可启用 RTM，并设置 `llm.vendor` 为 `"custom"` 以启用自定义大模型。以下为请求示例：
 
 :::info[信息]
-- 声网推荐启动 RTM 时开启 String UID（`enable_string_uid` 配置为 `true`），并参考 [FAQ](https://doc.shengwang.cn/faq/integration-issues/generate-token) 生成同时具备 RTC 和 RTM 权限的 Token，之后传入 `agent_rtc_uid` 字段即可。
-- 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多使用 String UID 的相关信息请参考[如何使用 String 型用户 ID](https://doc.shengwang.cn/faq/integration-issues/string-uid)。
+- 声网推荐启动 RTM 时开启 String UID（`enable_string_uid` 配置为 `true`），并参考 [FAQ](/zh-CN/api-reference/faq/integration/rtc_rtm_token) 生成同时具备 RTC 和 RTM 权限的 Token，之后传入 `agent_rtc_uid` 字段即可。
+- 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多使用 String UID 的相关信息请参考[如何使用 String 型用户 ID](/zh-CN/api-reference/faq/integration/string_uid)。
 :::
 
 ```shell
