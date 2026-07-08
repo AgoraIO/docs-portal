@@ -1,0 +1,50 @@
+---
+title: "FVideoFormat"
+description: "视频帧格式。"
+---
+<a id="class_videoformat__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FVideoFormat {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|VideoFormat")
+	int width = 640;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|VideoFormat")
+	int height = 360;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|VideoFormat")
+	int fps = 15;
+	FVideoFormat(){}
+	FVideoFormat(const agora::rtc::VideoFormat & AgoraData){
+		width = AgoraData.width;
+		height = AgoraData.height;
+		fps = AgoraData.fps;
+	}
+	agora::rtc::VideoFormat CreateAgoraData() const {
+		agora::rtc::VideoFormat AgoraData;
+		AgoraData.width = width;
+		AgoraData.height = height;
+		AgoraData.fps = fps;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::VideoFormat& AgoraData) const {
+	}
+};
+```
+
+<a id="class_videoformat__parameters"></a>
+
+## 属性
+
+### `width`
+
+视频帧的宽度（px）。默认值为 960。
+
+### `height`
+
+视频帧的高度（px）。默认值为 540.
+
+### `fps`
+
+视频帧的帧率。默认值为 15。

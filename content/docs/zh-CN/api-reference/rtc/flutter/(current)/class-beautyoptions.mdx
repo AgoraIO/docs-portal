@@ -1,0 +1,54 @@
+---
+title: "BeautyOptions"
+description: "美颜选项。"
+---
+<a id="class_beautyoptions__prototype"></a>
+
+```dart
+class BeautyOptions {
+    const BeautyOptions(
+        {this.lighteningContrastLevel,
+        this.lighteningLevel,
+        this.smoothnessLevel,
+        this.rednessLevel,
+        this.sharpnessLevel});
+  
+    @JsonKey(name: 'lighteningContrastLevel')
+    final LighteningContrastLevel? lighteningContrastLevel;
+    @JsonKey(name: 'lighteningLevel')
+    final double? lighteningLevel;
+    @JsonKey(name: 'smoothnessLevel')
+    final double? smoothnessLevel;
+    @JsonKey(name: 'rednessLevel')
+    final double? rednessLevel;
+    @JsonKey(name: 'sharpnessLevel')
+    final double? sharpnessLevel;
+    factory BeautyOptions.fromJson(Map<String, dynamic> json) =>
+        _$BeautyOptionsFromJson(json);
+    Map<String, dynamic> toJson() => _$BeautyOptionsToJson(this);
+  }
+```
+
+<a id="class_beautyoptions__parameters"></a>
+
+## 属性
+
+### `lighteningContrastLevel`
+
+对比度，常与 `lighteningLevel` 搭配使用。取值越大，明暗对比程度越大。详见 [LighteningContrastLevel](/zh-CN/api-reference/rtc/flutter/enum-lighteningcontrastlevel)。
+
+### `lighteningLevel`
+
+美白程度，取值范围为 [0.0,1.0]，其中 0.0 表示原始亮度，默认值为 0.0。取值越大，美白程度越大。
+
+### `smoothnessLevel`
+
+磨皮程度，取值范围为 [0.0,1.0]，其中 0.0 表示原始磨皮程度，默认值为 0.0。取值越大，磨皮程度越大。
+
+### `rednessLevel`
+
+红润度，取值范围为 [0.0,1.0]，其中 0.0 表示原始红润度，默认值为 0.0。取值越大，红润程度越大。
+
+### `sharpnessLevel`
+
+锐化程度，取值范围为 [0.0,1.0]，其中 0.0 表示原始锐度，默认值为 0.0。取值越大，锐化程度越大。

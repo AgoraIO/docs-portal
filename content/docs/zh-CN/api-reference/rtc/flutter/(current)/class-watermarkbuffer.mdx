@@ -1,0 +1,63 @@
+---
+title: "WatermarkBuffer"
+description: "用于配置水印图像的格式、尺寸和像素缓冲区。"
+---
+<a id="class_watermarkbuffer__prototype"></a>
+
+```dart
+class WatermarkBuffer implements AgoraSerializable {
+  const WatermarkBuffer(
+      {this.width, this.height, this.length, this.format, this.buffer});
+
+  @JsonKey(name: 'width')
+  final int? width;
+
+  @JsonKey(name: 'height')
+  final int? height;
+
+  @JsonKey(name: 'length')
+  final int? length;
+
+  @JsonKey(name: 'format')
+  final VideoPixelFormat? format;
+
+  @JsonKey(name: 'buffer', ignore: true)
+  final Uint8List? buffer;
+
+  factory WatermarkBuffer.fromJson(Map<String, dynamic> json) =>
+      _$WatermarkBufferFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$WatermarkBufferToJson(this);
+}
+```
+
+<a id="class_watermarkbuffer__detailed_desc"></a>
+
+### `自从`
+
+自 v6.6.2 版本新增。
+
+<a id="class_watermarkbuffer__parameters"></a>
+
+## 属性
+
+### `width`
+
+水印图像的宽度，单位为像素。
+
+### `height`
+
+水印图像的高度，单位为像素。
+
+### `length`
+
+水印图像缓冲区的长度，单位为字节。
+
+### `format`
+
+水印图像的像素格式，详见 [VideoPixelFormat](/zh-CN/api-reference/rtc/flutter/enum-videopixelformat)。
+
+### `buffer`
+
+水印图像的像素缓冲区数据。

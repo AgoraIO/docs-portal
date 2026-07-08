@@ -1,0 +1,589 @@
+---
+title: "网络及其他"
+description: "介绍跟网络相关的方法以及其他方法和回调。"
+---
+<a id="toc_network"></a>
+
+介绍跟网络相关的方法以及其他方法和回调。
+
+<a id="api_irtcengine_enableencryption"></a>
+
+## enableEncryption
+
+开启或关闭内置加密。
+
+<a id="api_irtcengine_enableencryption__prototype"></a>
+
+```arkts
+public abstract enableEncryption(enabled: boolean, config: EncryptionConfig): number;
+```
+
+<a id="api_irtcengine_enableencryption__detailed_desc"></a>
+
+用户离开频道后，SDK 会自动关闭加密。如需重新开启加密，你需要在用户再次加入频道前调用该方法。
+
+<a id="api_irtcengine_enableencryption__scenario"></a>
+
+### 适用场景
+
+对安全要求较高的场景。
+
+<a id="api_irtcengine_enableencryption__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_enableencryption__restriction"></a>
+
+### 调用限制
+
+- 同一频道内的所有用户在调用该方法时，必须设置相同的加密模式和密钥。
+- 如果开启了内置加密，则不能使用旁路推流功能。
+
+<a id="api_irtcengine_enableencryption__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否开启内置加密：
+
+- true: 开启内置加密。
+- false:（默认）关闭内置加密。
+
+#### `config`
+
+配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/harmonyos/class-encryptionconfig)。
+
+<a id="api_irtcengine_enableencryption__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败
+  - -2: 调用了无效的参数。需重新指定参数。
+  - -4: 设置的加密模式不正确或加载外部加密库失败。需检查枚举值是否正确或重新加载外部加密库。
+  - -7: SDK 尚未初始化。需在调用 API 之前已创建 RtcEngine 对象并完成初始化。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getcallid"></a>
+
+## getCallId
+
+获取通话 ID。
+
+<a id="api_irtcengine_getcallid__prototype"></a>
+
+```arkts
+public abstract getCallId(): string;
+```
+
+<a id="api_irtcengine_getcallid__detailed_desc"></a>
+
+客户端在每次加入频道后会生成一个对应的 callId，标识该客户端的此次通话。
+
+<a id="api_irtcengine_getcallid__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_getcallid__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_getcallid__parameters"></a>
+
+### 参数
+
+#### `callId`
+
+输出参数，当前的通话 ID。
+
+<a id="api_irtcengine_getcallid__return_values"></a>
+
+### 返回值
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_getcallidex"></a>
+
+## getCallIdEx
+
+使用连接 ID 获取通话 ID。
+
+<a id="api_irtcengineex_getcallidex__prototype"></a>
+
+```arkts
+public abstract  getCallIdEx(connection:RtcConnection):string;
+```
+
+<a id="api_irtcengineex_getcallidex__detailed_desc"></a>
+
+客户端在每次加入频道后会生成一个对应的 callId，标识该客户端的此次通话。
+
+<a id="api_irtcengineex_getcallidex__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengineex_getcallidex__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengineex_getcallidex__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+### 返回值
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms"></a>
+
+## getCurrentMonotonicTimeInMs
+
+获取 SDK 当前的 Monotonic Time。
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__prototype"></a>
+
+```arkts
+public abstract getCurrentMonotonicTimeInMs(): number;
+```
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__detailed_desc"></a>
+
+Monotonic Time 是指一个单调递增的时间序列，它的值会随着时间的推移而增加。单位为毫秒。
+
+在自定义视频采集、自定义音频采集场景中，为确保音视频同步，声网建议你调用该方法获取 SDK 当前的 Monotonic Time 后，将该值传入采集的视频帧（[VideoFrame](/zh-CN/api-reference/rtc/harmonyos/class-videoframe) ）、音频帧（[AudioFrame](/zh-CN/api-reference/rtc/harmonyos/class-audioframe) ）的时间戳参数。
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__return_values"></a>
+
+### 返回值
+
+- ≥ 0: 方法调用成功，返回 SDK 当前的 Monotonic Time（毫秒）。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_geterrordescription"></a>
+
+## getErrorDescription
+
+获取警告或错误描述。
+
+<a id="api_irtcengine_geterrordescription__prototype"></a>
+
+```arkts
+public static getErrorDescription(error: number): string {
+  return RtcEngineImpl.getErrorDescriptionInternal(error);
+}
+```
+
+<a id="api_irtcengine_geterrordescription__parameters"></a>
+
+### 参数
+
+#### `error`
+
+SDK 报告的错误码。
+
+<a id="api_irtcengine_geterrordescription__return_values"></a>
+
+### 返回值
+
+具体的错误描述。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getnativehandle"></a>
+
+## getNativeHandle
+
+获取 Native SDK 的 C++ 句柄。
+
+<a id="api_irtcengine_getnativehandle__prototype"></a>
+
+```arkts
+public abstract getNativeHandle():bigint;
+```
+
+<a id="api_irtcengine_getnativehandle__detailed_desc"></a>
+
+### 详情
+
+该方法获取 Native SDK 引擎 的 C++ 句柄，用于包括注册音视频回调在内的特殊场景。
+
+<a id="api_irtcengine_getnativehandle__return_values"></a>
+
+### 返回值
+
+SDK 引擎的 Native 句柄。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getversion"></a>
+
+## getSdkVersion
+
+获取 SDK 版本。
+
+<a id="api_irtcengine_getversion__prototype"></a>
+
+```arkts
+public static getSdkVersion(): string {
+  return RtcEngineImpl.getRtcSdkVersion();
+}
+```
+
+<a id="api_irtcengine_getversion__parameters"></a>
+
+### 参数
+
+<a id="api_irtcengine_getversion__return_values"></a>
+
+### 返回值
+
+当前的 SDK 版本号。格式为字符串。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setparameters"></a>
+
+## setParameters
+
+SDK 的 JSON 配置信息，用于提供技术预览或特别定制功能。
+
+<a id="api_irtcengine_setparameters__prototype"></a>
+
+```arkts
+public abstract setParameters(parameters: string): number;
+```
+
+<a id="api_irtcengine_setparameters__parameters"></a>
+
+### 参数
+
+#### `parameters`
+
+JSON 字符串形式的参数。
+
+<a id="api_irtcengine_setparameters__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startlastmileprobetest"></a>
+
+## startLastmileProbeTest
+
+开始通话前网络质量探测。
+
+<a id="api_irtcengine_startlastmileprobetest__prototype"></a>
+
+```arkts
+public abstract startLastmileProbeTest(config: LastmileProbeConfig): number;
+```
+
+<a id="api_irtcengine_startlastmileprobetest__detailed_desc"></a>
+
+开始通话前网络质量探测，向用户反馈上下行网络的带宽、丢包、网络抖动和往返时延数据。
+
+<a id="api_irtcengine_startlastmileprobetest__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用，且在收到 onLastmileQuality 和 onLastmileProbeResult 回调之前请不要调用其他方法，否则可能会由于 API 操作过于频繁导致此方法无法执行。
+
+<a id="api_irtcengine_startlastmileprobetest__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_startlastmileprobetest__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会依次触发如下 2 个回调：
+
+- onLastmileQuality，视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
+- onLastmileProbeResult，视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
+
+<a id="api_irtcengine_startlastmileprobetest__parameters"></a>
+
+### 参数
+
+#### `config`
+
+Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference/rtc/harmonyos/class-lastmileprobeconfig)。
+
+<a id="api_irtcengine_startlastmileprobetest__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoplastmileprobetest"></a>
+
+## stopLastmileProbeTest
+
+停止通话前网络质量探测。
+
+<a id="api_irtcengine_stoplastmileprobetest__prototype"></a>
+
+```arkts
+public abstract stopLastmileProbeTest(): number;
+```
+
+<a id="api_irtcengine_stoplastmileprobetest__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onconnectionlost"></a>
+
+## onConnectionLost
+
+网络连接中断，且 SDK 无法在 10 秒内连接服务器回调。
+
+<a id="callback_irtcengineeventhandler_onconnectionlost__prototype"></a>
+
+```arkts
+onConnectionLost?:() => void;
+```
+
+<a id="callback_irtcengineeventhandler_onconnectionlost__detailed_desc"></a>
+
+SDK 在调用 joinChannelWithOptions 后，无论是否加入成功，只要 10 秒和服务器无法连接就会触发该回调。如果 SDK 在断开连接后，20 分钟内还是没能重新加入频道，SDK 会停止尝试重连。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged"></a>
+
+## onConnectionStateChanged
+
+网络连接状态已改变回调。
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged__prototype"></a>
+
+```arkts
+onConnectionStateChanged ? : ( state: Constants.ConnectionState, reason: Constants.ConnectionChangedReason ) => void
+```
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged__detailed_desc"></a>
+
+该回调在网络连接状态发生改变的时候触发，并告知用户当前的网络连接状态和引起网络状态改变的原因。
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged__parameters"></a>
+
+### 参数
+
+#### `state`
+
+当前网络连接状态。 详见 [ConnectionState](/zh-CN/api-reference/rtc/harmonyos/enum-connectionstatetype)。
+
+#### `reason`
+
+引起当前网络连接状态改变的原因。详见 [ConnectionChangedReason](/zh-CN/api-reference/rtc/harmonyos/enum-connectionchangedreasontype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onencryptionerror"></a>
+
+## onEncryptionError
+
+内置加密出错回调。
+
+<a id="callback_irtcengineeventhandler_onencryptionerror__prototype"></a>
+
+```arkts
+onEncryptionError?:(errorType:Constants.EncryptionError) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onencryptionerror__detailed_desc"></a>
+
+调用 [enableEncryption](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_enableencryption) 开启加密后， 如果发流端、收流端出现加解密出错，SDK 会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onencryptionerror__parameters"></a>
+
+### 参数
+
+#### `errorType`
+
+错误类型，详见 [EncryptionError](/zh-CN/api-reference/rtc/harmonyos/enum-encryptionerrortype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult"></a>
+
+## onLastmileProbeResult
+
+通话前网络上下行 Last mile 质量探测报告回调。
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult__prototype"></a>
+
+```arkts
+onLastmileProbeResult? : (result:LastmileProbeResult) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult__detailed_desc"></a>
+
+在调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_startlastmileprobetest) 之后，SDK 会在约 30 秒内返回该回调。
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult__parameters"></a>
+
+### 参数
+
+#### `result`
+
+上下行 Last mile 质量探测结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/harmonyos/class-lastmileproberesult)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlastmilequality"></a>
+
+## onLastmileQuality
+
+网络上下行 last mile 质量报告回调。
+
+<a id="callback_irtcengineeventhandler_onlastmilequality__prototype"></a>
+
+```arkts
+onLastmileQuality? : (quality:Constants.QualityType) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onlastmilequality__detailed_desc"></a>
+
+该回调描述本地用户在加入频道前的 last mile 网络探测的结果，其中 last mile 是指设备到声网边缘服务器的网络状态。
+
+加入频道前，调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_startlastmileprobetest) 之后，SDK 触发该回调报告本地用户在加入频道前的 last mile 网络探测的结果。
+
+<a id="callback_irtcengineeventhandler_onlastmilequality__parameters"></a>
+
+### 参数
+
+#### `quality`
+
+Last mile 网络质量。 详见 [NetworkQuality](/zh-CN/api-reference/rtc/harmonyos/enum-qualitytype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onnetworkquality"></a>
+
+## onNetworkQuality
+
+通话中每个用户的网络上下行 last mile 质量报告回调。
+
+<a id="callback_irtcengineeventhandler_onnetworkquality__prototype"></a>
+
+```arkts
+onNetworkQuality? : (uid: number, txQuality: Constants.NetworkQuality, rxQuality: Constants.NetworkQuality) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onnetworkquality__detailed_desc"></a>
+
+该回调描述每个用户在通话中的 last mile 网络状态，其中 last mile 是指设备到声网边缘服务器的网络状态。
+
+该回调每 2 秒触发一次。如果远端有多个用户，该回调每 2 秒会被触发多次。
+
+该回调通过频道内的广播包反馈网络质量。过多的广播包可能引发广播风暴。为防止广播风暴导致频道内大量数据传输，该回调默认支持同时反馈最多 4 个远端主播的网络质量。
+
+:::info[注]
+用户不发流时， txQuality 为 `UNKNOWN`；用户不收流时， rxQuality 为 `UNKNOWN`。
+:::
+
+<a id="callback_irtcengineeventhandler_onnetworkquality__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+用户 ID。表示该回调报告的是持有该 ID 的用户的网络质量。如果当 uid 为 0 时，返回的是本地用户的网络质量。
+
+#### `txQuality`
+
+该用户的上行网络质量，基于发送码率、上行丢包率、平均往返时延和网络抖动计算。 该值代表当前的上行网络质量，帮助判断是否可以支持当前设置的视频编码属性。 假设上行码率是 1000 Kbps，那么支持直播场景下 640 × 480 的分辨率、15 fps 的帧率没有问题，但是支持 1280 × 720 的分辨率就会有困难。 详见 [NetworkQuality](/zh-CN/api-reference/rtc/harmonyos/enum-qualitytype)。
+
+#### `rxQuality`
+
+该用户的下行网络质量，基于下行网络的丢包率、平均往返延时和网络抖动计算。 详见 [NetworkQuality](/zh-CN/api-reference/rtc/harmonyos/enum-qualitytype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onpermissionerror"></a>
+
+## onPermissionError
+
+获取设备权限出错回调。
+
+<a id="callback_irtcengineeventhandler_onpermissionerror__prototype"></a>
+
+```arkts
+onPermissionError?:(permission:Constants.PermissionType) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onpermissionerror__detailed_desc"></a>
+
+无法获取设备权限时，SDK 会触发该回调，报告哪个设备的权限无法获取。
+
+<a id="callback_irtcengineeventhandler_onpermissionerror__parameters"></a>
+
+### 参数
+
+#### `permission`
+
+设备权限类型。详见 [PermissionType](/zh-CN/api-reference/rtc/harmonyos/enum-permissiontype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

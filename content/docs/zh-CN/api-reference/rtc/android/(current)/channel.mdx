@@ -1,6 +1,6 @@
 ---
 title: "频道相关"
-description: RTC Android API 参考迁移页。
+description: "频道相关 API reference."
 ---
 <a id="toc_channel"></a>
 
@@ -18,7 +18,7 @@ public abstract int getUserInfoByUid(int uid, UserInfo userInfo);
 
 <a id="api_irtcengine_getuserinfobyuid__detailed_desc"></a>
 
-当远端用户加入频道后，SDK 会获取该远端用户的用户 ID 和用户 User Account，并将其缓存在映射表中，同时在本地客户端触发 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到该回调后，你可以调用 [getUserInfoByUid](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_getuserinfobyuid) 方法并传入用户 ID，从 [UserInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-userinfo) 对象中获取指定用户的用户 User Account。
+当远端用户加入频道后，SDK 会获取该远端用户的用户 ID 和用户 User Account，并将其缓存在映射表中，同时在本地客户端触发 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到该回调后，你可以调用 [getUserInfoByUid](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_getuserinfobyuid) 方法并传入用户 ID，从 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo) 对象中获取指定用户的用户 User Account。
 
 <a id="api_irtcengine_getuserinfobyuid__timing"></a>
 
@@ -36,7 +36,7 @@ public abstract int getUserInfoByUid(int uid, UserInfo userInfo);
 
 #### `userInfo`
 
-输入和输出参数，用于标识用户信息的 [UserInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-userinfo) 对象。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-userinfo)。
+输入和输出参数，用于标识用户信息的 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo) 对象。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo)。
 
 <a id="api_irtcengine_getuserinfobyuid__return_values"></a>
 
@@ -46,7 +46,7 @@ public abstract int getUserInfoByUid(int uid, UserInfo userInfo);
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getuserinfobyuidex"></a>
 
@@ -62,7 +62,7 @@ public abstract int getUserInfoByUidEx(int uid, UserInfo userInfo, RtcConnection
 
 <a id="api_irtcengineex_getuserinfobyuidex__detailed_desc"></a>
 
-当远端用户加入频道后，SDK 会获取该远端用户的用户 ID 和用户 User Account，并将其缓存在映射表中，同时在本地客户端触发 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到该回调后，你可以调用 [getUserInfoByUidEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_getuserinfobyuidex) 并传入用户 ID，从 [UserInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-userinfo) 对象中获取指定用户的用户 User Account。
+当远端用户加入频道后，SDK 会获取该远端用户的用户 ID 和用户 User Account，并将其缓存在映射表中，同时在本地客户端触发 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到该回调后，你可以调用 [getUserInfoByUidEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_getuserinfobyuidex) 并传入用户 ID，从 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo) 对象中获取指定用户的用户 User Account。
 
 <a id="api_irtcengineex_getuserinfobyuidex__scenario"></a>
 
@@ -80,11 +80,11 @@ public abstract int getUserInfoByUidEx(int uid, UserInfo userInfo, RtcConnection
 
 #### `userInfo`
 
-用于标识用户信息的对象。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-userinfo)。
+用于标识用户信息的对象。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo)。
 
 #### `connection`
 
-连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
 <a id="api_irtcengineex_getuserinfobyuidex__return_values"></a>
 
@@ -94,7 +94,7 @@ public abstract int getUserInfoByUidEx(int uid, UserInfo userInfo, RtcConnection
 - 方法调用失败，返回 null。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_getuserinfobyuseraccount"></a>
 
@@ -110,7 +110,7 @@ public abstract int getUserInfoByUserAccount(String userAccount, UserInfo userIn
 
 <a id="api_irtcengine_getuserinfobyuseraccount__detailed_desc"></a>
 
-当远端用户加入频道后，SDK 会获取该远端用户的用户 ID 和用户 User Account，并将其缓存在映射表中，同时在本地客户端触发 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到该回调后，你可以调用 [getUserInfoByUserAccount](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_getuserinfobyuseraccount) 方法并传入用户 User Account，从 [UserInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-userinfo) 对象中获取指定用户的信息。
+当远端用户加入频道后，SDK 会获取该远端用户的用户 ID 和用户 User Account，并将其缓存在映射表中，同时在本地客户端触发 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到该回调后，你可以调用 [getUserInfoByUserAccount](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_getuserinfobyuseraccount) 方法并传入用户 User Account，从 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo) 对象中获取指定用户的信息。
 
 <a id="api_irtcengine_getuserinfobyuseraccount__parameters"></a>
 
@@ -122,7 +122,7 @@ public abstract int getUserInfoByUserAccount(String userAccount, UserInfo userIn
 
 #### `userInfo`
 
-用于标识用户信息的 [UserInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-userinfo) 对象。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-userinfo)。
+用于标识用户信息的 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo) 对象。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo)。
 
 <a id="api_irtcengine_getuserinfobyuseraccount__return_values"></a>
 
@@ -132,7 +132,7 @@ public abstract int getUserInfoByUserAccount(String userAccount, UserInfo userIn
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getuserinfobyuseraccountex"></a>
 
@@ -148,7 +148,7 @@ public abstract int getUserInfoByUserAccountEx(String userAccount, UserInfo user
 
 <a id="api_irtcengineex_getuserinfobyuseraccountex__detailed_desc"></a>
 
-远端用户加入频道后，SDK 会获取该远端用户的用户 ID 和用户 User Account，并将其缓存在映射表中，同时在本地客户端触发 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到该回调后，你可以调用 [getUserInfoByUserAccountEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_getuserinfobyuseraccountex) 并传入用户 User Account，从 [UserInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-userinfo) 对象中获取指定用户的用户信息。
+远端用户加入频道后，SDK 会获取该远端用户的用户 ID 和用户 User Account，并将其缓存在映射表中，同时在本地客户端触发 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到该回调后，你可以调用 [getUserInfoByUserAccountEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_getuserinfobyuseraccountex) 并传入用户 User Account，从 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo) 对象中获取指定用户的用户信息。
 
 <a id="api_irtcengineex_getuserinfobyuseraccountex__scenario"></a>
 
@@ -166,11 +166,11 @@ public abstract int getUserInfoByUserAccountEx(String userAccount, UserInfo user
 
 #### `userInfo`
 
-输入和输出参数，用于标识用户信息。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-userinfo)。
+输入和输出参数，用于标识用户信息。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo)。
 
 #### `connection`
 
-连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
 <a id="api_irtcengineex_getuserinfobyuseraccountex__return_values"></a>
 
@@ -180,7 +180,7 @@ public abstract int getUserInfoByUserAccountEx(String userAccount, UserInfo user
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_joinchannel1"></a>
 
@@ -198,11 +198,11 @@ public abstract int joinChannel(String token, String channelId, String optionalI
 
 默认情况下，用户会订阅频道中其他所有用户的音视频流，从而产生使用量和计费。如需停止订阅指定流或所有远端流，请调用 `muteRemoteAudio/VideoStream` 或 `muteAllRemoteAudio/VideoStreams`。
 
-注：
-
+:::info[注]
 - 该方法仅支持用户同时加入一个频道。
 - 不同 App ID 的用户无法互通。
 - 加入频道前，请确保用于生成 Token 的 App ID 与调用 create [2/2] 方法时传入的 App ID 相同，否则可能会导致加入频道失败。
+:::
 
 <a id="api_irtcengine_joinchannel1__timing"></a>
 
@@ -229,11 +229,11 @@ public abstract int joinChannel(String token, String channelId, String optionalI
 
 在你的服务器上生成的用于鉴权的 Token。
 
-注：
-
+:::info[注]
 - （推荐）如果你的项目启用了安全模式（使用 App ID 和 Token 进行鉴权），该参数为必填。
 - 如果你仅启用了测试模式（使用 App ID 进行鉴权），该参数为可选。成功加入频道后，24 小时后会自动退出频道。
 - 如果你需要同时加入多个频道或在频道间切换，声网建议使用通配符 Token，这样每次加入频道时无需重新申请 Token。
+:::
 
 #### `channelId`
 
@@ -267,7 +267,7 @@ public abstract int joinChannel(String token, String channelId, String optionalI
   - -121：用户 ID 无效。请在 uid 中传入有效的用户 ID 重新加入频道。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannel2"></a>
 
@@ -285,11 +285,11 @@ public abstract int joinChannel(String token, String channelId, int uid, Channel
 
 该方法新增 `options` 参数，用于设置媒体选项，例如是否在频道内发布音视频流，或在加入频道时是否自动订阅所有远端用户的音视频流。默认情况下，用户会订阅频道中所有其他用户的音视频流，从而产生使用量和计费。如需停止订阅其他流，请设置 `options` 参数或调用 `muteRemoteAudio/VideoStream` 或 `muteAllRemoteAudio/VideoStreams`。
 
-注：
-
+:::info[注]
 - 该方法仅支持用户同时加入一个频道。
 - 不同 App ID 的用户无法互通。
 - 加入频道前，请确保用于生成 Token 的 App ID 与调用 create [2/2] 方法时传入的 App ID 一致，否则可能导致加入频道失败。
+:::
 
 <a id="api_irtcengine_joinchannel2__timing"></a>
 
@@ -316,11 +316,11 @@ public abstract int joinChannel(String token, String channelId, int uid, Channel
 
 在你的服务器上生成的用于鉴权的 Token。
 
-注：
-
+:::info[注]
 - （推荐）如果你的项目启用了安全模式（使用 App ID 和 Token 进行鉴权），该参数为必填。
 - 如果只启用了测试模式（使用 App ID 进行鉴权），该参数为可选。成功加入频道后，24 小时后会自动退出频道。
 - 如果你需要同时加入多个频道或在频道间切换，声网建议使用通配符 Token，这样每次加入频道时无需重新申请 Token。
+:::
 
 #### `channelId`
 
@@ -337,7 +337,7 @@ public abstract int joinChannel(String token, String channelId, int uid, Channel
 
 #### `options`
 
-频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-channelmediaoptions)。
+频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions)。
 
 <a id="api_irtcengine_joinchannel2__return_values"></a>
 
@@ -354,7 +354,7 @@ public abstract int joinChannel(String token, String channelId, int uid, Channel
   - -121：用户 ID 无效。请在 uid 中传入有效的用户 ID 重新加入频道。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_joinchannelex"></a>
 
@@ -407,23 +407,23 @@ public abstract int joinChannelEx(String token, RtcConnection connection, Channe
 
 用于鉴权的 Token。
 
-注：
-
+:::info[注]
 - （推荐）如果你的项目启用了安全模式（使用 App ID 和 Token 进行鉴权），该参数为必填。
 - 如果你只启用了测试模式（使用 App ID 进行鉴权），该参数为可选。成功加入频道后，你将在 24 小时后自动退出频道。
 - 如果你需要同时加入不同频道或在频道之间切换，声网建议使用通配符 Token，这样你每次加入频道时无需重新申请 Token。
+:::
 
 #### `connection`
 
-连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
 #### `options`
 
-频道媒体选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-channelmediaoptions)。
+频道媒体选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions)。
 
 #### `eventHandler`
 
-回调类。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)。你可以通过该参数传入的 `eventHandler` 对象获取多个频道的回调事件。
+回调类。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)。你可以通过该参数传入的 `eventHandler` 对象获取多个频道的回调事件。
 
 <a id="api_irtcengineex_joinchannelex__return_values"></a>
 
@@ -440,7 +440,7 @@ public abstract int joinChannelEx(String token, RtcConnection connection, Channe
   - -121：用户 ID 无效。你需要在 uid 中传入有效的用户 ID 以重新加入频道。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_joinchannelwithuseraccount1"></a>
 
@@ -458,12 +458,12 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 
 调用 [registerLocalUserAccount](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_registerlocaluseraccount) 注册用户 User Account 后再调用此方法加入频道，可以缩短进入频道所需的时间。如果你尚未调用 [registerLocalUserAccount](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_registerlocaluseraccount) 注册用户 User Account，当你调用此方法加入频道时，SDK 会自动为你创建一个用户 User Account。 一旦用户加入频道，默认会订阅频道中所有其他用户的音视频流，从而产生用量和计费。如需停止订阅指定流或所有远端流，请调用 `muteRemoteAudio/VideoStream` 或 `muteAllRemoteAudio/VideoStreams`。
 
-注：
-
+:::info[注]
 - 该方法仅支持用户同时加入一个频道。
 - 不同 App ID 的用户无法互通。
 - 加入频道前，请确保用于生成 Token 的 App ID 与调用 create [2/2] 方法时传入的 App ID 相同，否则可能会导致使用该 Token 加入频道失败。
 - 为确保通信顺畅，请使用相同的参数类型标识用户。例如，如果某用户使用 uid 加入频道，则其他用户也应使用 uid；如果使用用户 User Account 加入频道，则其他用户也应使用用户 User Account。如果用户使用声网 Web SDK 加入频道，请确保用户 ID 设置为相同的参数类型。
+:::
 
 <a id="api_irtcengine_joinchannelwithuseraccount1__timing"></a>
 
@@ -475,7 +475,7 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 
 ### 相关回调
 
-本地客户端： [onLocalUserRegistered](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onlocaluserregistered)、 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。 远端客户端：如果用户在 `COMMUNICATION` 频道场景中加入频道，或主播在 `LIVE_BROADCASTING` 频道场景中加入频道，则会触发 [onUserJoined](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserjoined) 和 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。
+本地客户端： [onLocalUserRegistered](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onlocaluserregistered)、 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。 远端客户端：如果用户在 `COMMUNICATION` 频道场景中加入频道，或主播在 `LIVE_BROADCASTING` 频道场景中加入频道，则会触发 [onUserJoined](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserjoined) 和 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。
 
 <a id="api_irtcengine_joinchannelwithuseraccount1__parameters"></a>
 
@@ -485,11 +485,11 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 
 在你的服务器上生成的用于鉴权的 Token。
 
-注：
-
+:::info[注]
 - （推荐）如果你的项目启用了安全模式（使用 App ID 和 Token 进行鉴权），该参数为必填。
 - 如果你只启用了测试模式（使用 App ID 进行鉴权），该参数为可选。成功加入频道后，你将在 24 小时后自动退出频道。
 - 如果你需要同时加入不同频道或在频道间切换，声网建议使用通配符 Token，这样你每次加入频道时无需重新申请 Token。
+:::
 
 #### `channelName`
 
@@ -525,7 +525,7 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
   - -121：用户 ID 无效。你需要在 uid 中传入有效的用户 ID 重新加入频道。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannelwithuseraccount2"></a>
 
@@ -547,12 +547,12 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 
 该方法新增了 `options` 参数，用于设置媒体选项，例如是否在频道内发布音视频流。默认情况下，用户会订阅频道内所有其他用户的音视频流，从而产生使用量和计费。如需停止订阅其他流，请设置 `options` 参数或调用 `muteRemoteAudio/VideoStream` 或 `muteAllRemoteAudio/VideoStreams`。
 
-注：
-
+:::info[注]
 - 此方法仅支持用户同时加入一个频道。
 - 不同 App ID 的用户无法互通。
 - 加入频道前，请确保用于生成 Token 的 App ID 与调用 create [2/2] 方法时传入的 App ID 相同，否则可能会因 Token 不匹配而加入频道失败。
 - 为确保通信顺畅，请使用相同的参数类型标识用户。例如，如果某用户使用用户 ID 加入频道，则其他用户也应使用用户 ID；用户 User Account 亦同理。如果用户使用声网 Web SDK 加入频道，请确保用户 ID 的类型一致。
+:::
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__timing"></a>
 
@@ -564,7 +564,7 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 
 ### 相关回调
 
-本地客户端： [onLocalUserRegistered](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onlocaluserregistered)、 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。 远端客户端：如果用户在 `COMMUNICATION` 频道场景中加入频道，或主播在 `LIVE_BROADCASTING` 频道场景中加入频道，则触发 [onUserJoined](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserjoined) 和 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。
+本地客户端： [onLocalUserRegistered](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onlocaluserregistered)、 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。 远端客户端：如果用户在 `COMMUNICATION` 频道场景中加入频道，或主播在 `LIVE_BROADCASTING` 频道场景中加入频道，则触发 [onUserJoined](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserjoined) 和 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__parameters"></a>
 
@@ -574,11 +574,11 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 
 在你的服务器上生成的用于鉴权的 Token。
 
-注：
-
+:::info[注]
 - （推荐）如果你的项目启用了安全模式（使用 App ID 和 Token 进行鉴权），此参数为必填。
 - 如果你仅启用了测试模式（使用 App ID 进行鉴权），此参数为可选。成功加入频道后，24 小时后会自动退出频道。
 - 如果你需要同时加入多个频道或在频道间切换，声网建议使用通配符 Token，这样你每次加入频道时无需重新申请 Token。
+:::
 
 #### `channelName`
 
@@ -601,7 +601,7 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 
 #### `options`
 
-频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-channelmediaoptions)。
+频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions)。
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__return_values"></a>
 
@@ -618,7 +618,7 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
   - -121：用户 ID 无效。请在 uid 中传入有效的用户 ID 重新加入频道。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_joinchannelwithuseraccountex"></a>
 
@@ -636,12 +636,12 @@ public abstract int joinChannelWithUserAccountEx(String token, String channelId,
 
 在调用此方法之前，如果你尚未调用 [registerLocalUserAccount](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_registerlocaluseraccount) 注册用户 User Account，SDK 会在你调用此方法加入频道时自动创建用户 User Account。提前调用 [registerLocalUserAccount](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_registerlocaluseraccount) 可以缩短加入频道所需的时间。 一旦用户加入频道，默认会订阅频道中所有其他用户的音视频流，从而产生使用量和计费。如果你希望停止订阅其他用户的媒体流，可以设置 `options` 参数或调用 `muteRemoteAudio/VideoStream` 或 `muteAllRemoteAudio/VideoStreams`。
 
-注：
-
+:::info[注]
 - 该方法仅支持用户同时加入一个频道。
 - 不同 App ID 的用户无法互通。
 - 加入频道前，请确保用于生成 Token 的 App ID 与调用 create [2/2] 方法时传入的 App ID 相同，否则可能导致加入频道失败。
 - 为确保通信顺畅，请使用相同的参数类型标识用户。例如，如果某用户使用 uid 加入频道，则其他用户也应使用 uid；如果使用用户 User Account 加入频道，则其他用户也应使用用户 User Account。若使用声网 Web SDK 加入频道，请确保用户 ID 的参数类型一致。
+:::
 
 <a id="api_irtcengineex_joinchannelwithuseraccountex__scenario"></a>
 
@@ -659,7 +659,7 @@ public abstract int joinChannelWithUserAccountEx(String token, String channelId,
 
 ### 相关回调
 
-本地客户端： [onLocalUserRegistered](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onlocaluserregistered)、 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。 远端客户端：如果用户在 `COMMUNICATION` 频道场景中加入频道，或主播在 `LIVE_BROADCASTING` 频道场景中加入频道，则触发 [onUserJoined](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserjoined) 和 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。
+本地客户端： [onLocalUserRegistered](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onlocaluserregistered)、 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。 远端客户端：如果用户在 `COMMUNICATION` 频道场景中加入频道，或主播在 `LIVE_BROADCASTING` 频道场景中加入频道，则触发 [onUserJoined](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserjoined) 和 [onUserInfoUpdated](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。
 
 <a id="api_irtcengineex_joinchannelwithuseraccountex__parameters"></a>
 
@@ -669,11 +669,11 @@ public abstract int joinChannelWithUserAccountEx(String token, String channelId,
 
 在你的服务器上生成的用于鉴权的 Token。
 
-注：
-
+:::info[注]
 - （推荐）如果你的项目启用了安全模式（使用 App ID 和 Token 进行鉴权），该参数为必填。
 - 如果你只启用了测试模式（使用 App ID 进行鉴权），该参数为可选。成功加入频道后，你将在 24 小时后自动退出频道。
 - 如果你需要同时加入多个频道或在频道间切换，声网建议使用通配符 Token，这样你无需每次加入频道时都申请新的 Token。
+:::
 
 #### `channelId`
 
@@ -696,11 +696,11 @@ public abstract int joinChannelWithUserAccountEx(String token, String channelId,
 
 #### `options`
 
-频道媒体选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-channelmediaoptions)。
+频道媒体选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions)。
 
 #### `eventHandler`
 
-[RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex) 的回调类。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)。你可以通过该参数传入的 `eventHandler` 对象获取多个频道的回调事件。
+[RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex) 的回调类。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)。你可以通过该参数传入的 `eventHandler` 对象获取多个频道的回调事件。
 
 <a id="api_irtcengineex_joinchannelwithuseraccountex__return_values"></a>
 
@@ -717,7 +717,7 @@ public abstract int joinChannelWithUserAccountEx(String token, String channelId,
   - -121：用户 ID 无效。请在 uid 中传入有效的用户 ID 后重新加入频道。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_leavechannel"></a>
 
@@ -735,11 +735,11 @@ public abstract int leaveChannel();
 
 调用该方法后，SDK 会终止音视频互动，释放与会话相关的所有资源。加入频道后，必须调用该方法结束通话，否则无法开始下一次通话。
 
-注：
-
+:::info[注]
 - 如果在调用该方法后立即调用 destroy [2/2]，SDK 不会触发 onLeaveChannel 回调。
 - 此方法为异步调用。当该方法返回时，并不代表用户已完全离开频道。
 - 如果你调用了 joinChannelEx 加入了多个频道，调用该方法会离开你加入的所有频道。
+:::
 
 <a id="api_irtcengine_leavechannel__timing"></a>
 
@@ -767,7 +767,7 @@ public abstract int leaveChannel();
   - -7：SDK 未初始化。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_leavechannel2"></a>
 
@@ -810,7 +810,7 @@ public abstract int leaveChannel(LeaveChannelOptions options);
 
 #### `options`
 
-离开频道的选项，详见 [LeaveChannelOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-leavechanneloptions)。
+离开频道的选项，详见 [LeaveChannelOptions](/zh-CN/api-reference/rtc/android/class-leavechanneloptions)。
 
 <a id="api_irtcengine_leavechannel2__return_values"></a>
 
@@ -820,7 +820,7 @@ public abstract int leaveChannel(LeaveChannelOptions options);
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_leavechannelex"></a>
 
@@ -838,11 +838,11 @@ public abstract int leaveChannelEx(RtcConnection connection);
 
 调用该方法后，SDK 会终止音视频互动，离开当前频道，并释放与会话相关的所有资源。调用 [joinChannelEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex) 加入频道后，必须调用此方法或 `leaveChannelEx` 结束通话，否则无法开始下一次通话。
 
-注：
-
+:::info[注]
 - 如果在调用该方法后立即调用 destroy [2/2]，SDK 不会触发 onLeaveChannel 回调。
 - 该方法为异步调用，方法返回时并不代表用户已离开频道。
 - 如果调用 leaveChannel [1/2] 或 leaveChannel [2/2]，你将离开通过 joinChannel [1/2]、 joinChannel [2/2] 或 joinChannelEx 加入的所有频道。
+:::
 
 <a id="api_irtcengineex_leavechannelex__scenario"></a>
 
@@ -871,7 +871,7 @@ public abstract int leaveChannelEx(RtcConnection connection);
 
 #### `connection`
 
-连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
 <a id="api_irtcengineex_leavechannelex__return_values"></a>
 
@@ -881,7 +881,7 @@ public abstract int leaveChannelEx(RtcConnection connection);
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengineex_leavechannelex2"></a>
 
@@ -903,11 +903,11 @@ public abstract int leaveChannelEx(RtcConnection connection, LeaveChannelOptions
 
 调用该方法后，SDK 会终止音视频互动，并释放与会话相关的所有资源。调用 [joinChannelEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex) 加入频道后，必须调用此方法或 `leaveChannelEx(RtcConnection connection)` 结束通话，否则无法开始下一次通话。
 
-注：
-
+:::info[注]
 - 如果在调用该方法后立即调用 destroy()，SDK 不会触发 onLeaveChannel 回调。
 - 此方法为异步调用。当该方法返回时，并不代表你已离开频道。
 - 如果调用 leaveChannel() 或 leaveChannel(LeaveChannelOptions options)，将会离开通过 joinChannel [1/2]、 joinChannel [2/2] 或 joinChannelEx 加入的所有频道。
+:::
 
 <a id="api_irtcengineex_leavechannelex2__scenario"></a>
 
@@ -936,14 +936,14 @@ public abstract int leaveChannelEx(RtcConnection connection, LeaveChannelOptions
 
 #### `connection`
 
-连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
 #### `options`
 
 离开频道的选项。
 
 :::info[注]
-该参数仅支持 [LeaveChannelOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-leavechanneloptions) 中的 `stopMicrophoneRecording` 成员，设置其他成员无效。
+该参数仅支持 [LeaveChannelOptions](/zh-CN/api-reference/rtc/android/class-leavechanneloptions) 中的 `stopMicrophoneRecording` 成员，设置其他成员无效。
 :::
 
 <a id="api_irtcengineex_leavechannelex2__return_values"></a>
@@ -954,7 +954,7 @@ public abstract int leaveChannelEx(RtcConnection connection, LeaveChannelOptions
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_preloadchannel"></a>
 
@@ -972,12 +972,12 @@ public abstract int preloadChannel(String token, String channelName, int optiona
 
 当观众需要频繁切换不同频道时，调用该方法可以缩短加入频道的时间，从而减少观众听到和看到主播的延迟时间。如果你加入了一个已预加载的频道，离开后想重新加入该频道，除非用于预加载频道的 Token 过期，否则无需再次调用该方法。
 
-注：
-
+:::info[注]
 - 调用该方法时，请确保将用户角色设置为观众，且未将音频场景设置为 AUDIO_SCENARIO_CHORUS，否则该方法不生效。
 - 你还需要确保用于预加载的频道名、用户 ID 和 Token 与加入频道时传入的值一致，否则该方法不生效。
 - 一个 RtcEngine 实例最多支持预加载 20 个频道，超出限制时，仅最近的 20 个预加载频道生效。
 - 预加载频道失败并不意味着无法加入频道，也不会增加加入频道所需的时间。
+:::
 
 <a id="api_irtcengine_preloadchannel__parameters"></a>
 
@@ -1015,7 +1015,7 @@ public abstract int preloadChannel(String token, String channelName, int optiona
   - -102：频道名无效。请传入有效的频道名并重新加入频道。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_preloadchannelwithuseraccount"></a>
 
@@ -1033,12 +1033,12 @@ public abstract int preloadChannelWithUserAccount(String token, String channelNa
 
 当观众需要频繁切换不同频道时，调用该方法可以缩短加入频道的时间，从而减少观众听到和看到主播的延迟。如果你加入了一个已预加载的频道，离开后想重新加入同一个频道，除非用于预加载频道的 Token 过期，否则无需再次调用该方法。
 
-注：
-
+:::info[注]
 - 调用该方法时，请确保将用户角色设置为观众，且未将音频场景设置为 AUDIO_SCENARIO_CHORUS，否则该方法不生效。
 - 你需要确保用于预加载的用户 User Account、频道名和 Token 与加入频道时传入的值一致，否则该方法不生效。
 - 一个 RtcEngine 实例最多支持预加载 20 个频道。超过该限制时，仅最近的 20 个预加载频道生效。
 - 预加载频道失败不会影响加入频道的能力，也不会增加加入频道所需的时间。
+:::
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__timing"></a>
 
@@ -1089,7 +1089,7 @@ public abstract int preloadChannelWithUserAccount(String token, String channelNa
   - -102：频道名无效。请传入有效的频道名后重新加入频道。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registerlocaluseraccount"></a>
 
@@ -1142,7 +1142,7 @@ public abstract int registerLocalUserAccount(String appId, String userAccount);
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_renewtoken"></a>
 
@@ -1184,7 +1184,7 @@ public abstract int renewToken(String token);
     - 生成的 Token 与加入频道时传入的 Token 相同。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setchannelprofile"></a>
 
@@ -1235,7 +1235,7 @@ SDK 会根据不同的频道场景采用不同的优化策略，例如在直播�
   - -7：SDK 未初始化。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole1"></a>
 
@@ -1303,7 +1303,7 @@ public abstract int setClientRole(int role);
   - -7：SDK 未初始化。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole2"></a>
 
@@ -1362,7 +1362,7 @@ public abstract int setClientRole(int role, ClientRoleOptions options);
 
 #### `options`
 
-用户的详细选项，详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-clientroleoptions)。
+用户的详细选项，详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/android/class-clientroleoptions)。
 
 <a id="api_irtcengine_setclientrole2__return_values"></a>
 
@@ -1376,7 +1376,7 @@ public abstract int setClientRole(int role, ClientRoleOptions options);
   - -7：SDK 未初始化。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatechannelmediaoptions"></a>
 
@@ -1398,7 +1398,7 @@ public abstract int updateChannelMediaOptions(ChannelMediaOptions options);
 
 #### `options`
 
-频道媒体选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-channelmediaoptions)。
+频道媒体选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions)。
 
 <a id="api_irtcengine_updatechannelmediaoptions__return_values"></a>
 
@@ -1411,7 +1411,7 @@ public abstract int updateChannelMediaOptions(ChannelMediaOptions options);
   - -8： RtcEngine 对象的内部状态错误。可能的原因是用户不在频道中。声网建议你使用 onConnectionStateChanged 回调判断用户是否在频道中。如果你收到 CONNECTION_STATE_DISCONNECTED （1）或 CONNECTION_STATE_FAILED （5）状态，说明用户不在频道中。你需要先调用 joinChannel 加入频道，再调用该方法。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex"></a>
 
@@ -1439,11 +1439,11 @@ public abstract int updateChannelMediaOptionsEx(ChannelMediaOptions options, Rtc
 
 #### `options`
 
-频道媒体选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-channelmediaoptions)。
+频道媒体选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions)。
 
 #### `connection`
 
-连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__return_values"></a>
 
@@ -1456,7 +1456,7 @@ public abstract int updateChannelMediaOptionsEx(ChannelMediaOptions options, Rtc
   - -8： RtcEngine 对象的内部状态错误，可能的原因是用户不在频道中。声网建议你使用 onConnectionStateChanged 回调判断用户是否在频道中。如果你收到 CONNECTION_STATE_DISCONNECTED （1）或 CONNECTION_STATE_FAILED （5）状态，说明用户不在频道中。你需要先调用 joinChannel 加入频道，再调用该方法。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_updatepreloadchanneltoken"></a>
 
@@ -1498,7 +1498,7 @@ public abstract int updatePreloadChannelToken(String token);
   - -7： RtcEngine 对象尚未初始化。你需要先初始化 RtcEngine 对象再调用此方法。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged"></a>
 
@@ -1547,10 +1547,10 @@ public void onClientRoleChanged(int oldRole, int newRole, ClientRoleOptions newR
 
 #### `newRoleOptions`
 
-用户切换后的角色属性，详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-clientroleoptions)。
+用户切换后的角色属性，详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/android/class-clientroleoptions)。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed"></a>
 
@@ -1572,7 +1572,7 @@ public void onClientRoleChangeFailed(int reason, int currentRole)
 
 ### 触发时机
 
-该回调在本地用户加入频道后调用 [setClientRole [1/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_setclientrole1) 或 [setClientRole [2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_setclientrole2) （带 [ClientRoleOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-clientroleoptions) 参数）切换用户角色失败时被触发。
+该回调在本地用户加入频道后调用 [setClientRole [1/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_setclientrole1) 或 [setClientRole [2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_setclientrole2) （带 [ClientRoleOptions](/zh-CN/api-reference/rtc/android/class-clientroleoptions) 参数）切换用户角色失败时被触发。
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed__parameters"></a>
 
@@ -1599,7 +1599,7 @@ public void onClientRoleChangeFailed(int reason, int currentRole)
 - CLIENT_ROLE_AUDIENCE (2)：观众，只能接收音视频流。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onerror"></a>
 
@@ -1632,7 +1632,7 @@ public void onError(int err)
 错误码。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)文档。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess"></a>
 
@@ -1671,7 +1671,7 @@ public void onJoinChannelSuccess(String channel, int uid, int elapsed)
 从本地用户调用 `joinChannel` 加入频道到 SDK 触发该回调的时间间隔，单位为毫秒。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onleavechannel"></a>
 
@@ -1699,10 +1699,10 @@ public void onLeaveChannel(RtcStats stats) {}
 
 #### `stats`
 
-通话统计信息。详见 [RtcStats](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcstats)。
+通话统计信息。详见 [RtcStats](/zh-CN/api-reference/rtc/android/class-rtcstats)。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered"></a>
 
@@ -1743,7 +1743,7 @@ public void onLocalUserRegistered(int uid, String userAccount)
 本地用户的用户 User Account。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess"></a>
 
@@ -1784,7 +1784,7 @@ public void onRejoinChannelSuccess(String channel, int uid, int elapsed)
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间间隔，单位为毫秒。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrenewtokenresult"></a>
 
@@ -1822,10 +1822,10 @@ public void onRenewTokenResult(String token, Constants.RenewTokenErrorCode code)
 
 #### `code`
 
-错误码。详见 [RenewTokenErrorCode](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-renewtokenerrorcode)。
+错误码。详见 [RenewTokenErrorCode](/zh-CN/api-reference/rtc/android/enum-renewtokenerrorcode)。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrequesttoken"></a>
 
@@ -1855,7 +1855,7 @@ public void onRequestToken() {}
 该回调在 Token 过期时被触发。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrtcstats"></a>
 
@@ -1883,10 +1883,10 @@ public void onRtcStats(RtcStats stats) {}
 
 #### `stats`
 
-RTC 引擎的统计信息，详见 [RtcStats](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcstats)。
+RTC 引擎的统计信息，详见 [RtcStats](/zh-CN/api-reference/rtc/android/class-rtcstats)。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire"></a>
 
@@ -1924,7 +1924,7 @@ public void onTokenPrivilegeWillExpire(String token)
 即将过期的 Token。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated"></a>
 
@@ -1962,10 +1962,10 @@ public void onUserInfoUpdated(int uid, UserInfo userInfo) {}
 
 #### `userInfo`
 
-包含远端用户的用户 ID 和用户 User Account 信息。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-userinfo)。
+包含远端用户的用户 ID 和用户 User Account 信息。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo)。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserjoined"></a>
 
@@ -2006,7 +2006,7 @@ public void onUserJoined(int uid, int elapsed)
 从本地用户调用 `joinChannel` 到该回调被触发的延迟（毫秒）。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuseroffline"></a>
 
@@ -2050,4 +2050,4 @@ public void onUserOffline(int uid, int reason)
 - USER_OFFLINE_BECOME_AUDIENCE (2)：用户将角色从主播切换为观众。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,0 +1,55 @@
+---
+title: "RemoteVideoStateReason"
+description: "远端视频流状态切换原因。"
+---
+<a id="enum_remotevideostatereason__parameters"></a>
+
+## 枚举值
+
+### `RemoteVideoStateReasonInternal`
+
+0: 视频状态发生改变时，会报告该原因。
+
+### `RemoteVideoStateReasonNetworkCongestion`
+
+1: 网络阻塞。
+
+### `RemoteVideoStateReasonNetworkRecovery`
+
+2: 网络恢复正常。
+
+### `RemoteVideoStateReasonLocalMuted`
+
+3: 本地用户停止接收远端视频流或本地用户禁用视频模块。
+
+### `RemoteVideoStateReasonLocalUnmuted`
+
+4: 本地用户恢复接收远端视频流或本地用户启动视频模块。
+
+### `RemoteVideoStateReasonRemoteMuted`
+
+5: 远端用户停止发送视频流或远端用户禁用视频模块。
+
+### `RemoteVideoStateReasonRemoteUnmuted`
+
+6: 远端用户恢复发送视频流或远端用户启用视频模块。
+
+### `RemoteVideoStateReasonRemoteOffline`
+
+7: 远端用户离开频道。
+
+### `RemoteVideoStateReasonAudioFallback`
+
+8: 弱网情况下，远端音视频流回退为音频流。
+
+### `RemoteVideoStateReasonAudioFallbackRecovery`
+
+9: 网络情况改善时，远端音频流恢复为音视频流。
+
+### `RemoteVideoStateReasonSdkInBackground`
+
+12：(仅适用于 iOS) 远端用户的 App 已切换到后台。
+
+### `RemoteVideoStateReasonCodecNotSupport`
+
+13：本地的视频解码器不支持对收到的远端视频流进行解码。

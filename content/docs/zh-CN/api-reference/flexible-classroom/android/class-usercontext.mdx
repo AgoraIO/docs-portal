@@ -1,0 +1,293 @@
+---
+title: "UserContext"
+description: "UserContext 类。"
+---
+<a id="class_usercontext"></a>
+
+UserContext 类。
+
+<a id="class_usercontext__detailed_desc"></a>
+
+UserContext 类提供的方法用于：
+
+- 控制用户上下台行为。
+- 更新用户信息和属性。
+
+<a id="api_getlocaluserinfo"></a>
+
+## getLocalUserInfo
+
+获取本地用户信息。
+
+<a id="api_getlocaluserinfo__prototype"></a>
+
+```kotlin
+abstract fun getLocalUserInfo(): AgoraEduContextUserInfo
+```
+
+<a id="api_getlocaluserinfo__return_values"></a>
+
+### 返回值
+
+调用成功，则返回 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_userinfo)。
+
+<a id="api_getcohostlist"></a>
+
+## getCoHostList
+
+获取所有上台用户的信息。
+
+<a id="api_getcohostlist__prototype"></a>
+
+```kotlin
+abstract fun getCoHostList(): List<AgoraEduContextUserInfo>
+```
+
+<a id="api_getcohostlist__return_values"></a>
+
+### 返回值
+
+调用成功，则返回 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_userinfo) 数组。
+
+<a id="api_getuserlist"></a>
+
+## getUserList
+
+获取指定角色的用户信息。
+
+<a id="api_getuserlist__prototype"></a>
+
+```kotlin
+abstract fun getUserList(role: AgoraEduContextUserRole): List<AgoraEduContextUserInfo>
+```
+
+<a id="api_getuserlist__parameters"></a>
+
+### 参数
+
+#### `role`
+
+用户角色，详见 [AgoraEduContextUserRole](/zh-CN/api-reference/flexible-classroom/android/api-data-type#enum_userrole)。
+
+<a id="api_getuserlist__return_values"></a>
+
+### 返回值
+
+调用成功，则返回 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_userinfo) 数组。
+
+<a id="api_getalluserlist"></a>
+
+## getAllUserList
+
+获取房间内所有用户的信息。
+
+<a id="api_getalluserlist__prototype"></a>
+
+```kotlin
+abstract fun getAllUserList(): List<AgoraEduContextUserInfo>
+```
+
+<a id="api_getalluserlist__return_values"></a>
+
+### 返回值
+
+调用成功，则返回 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_userinfo) 数组。
+
+<a id="api_updateuserproperties"></a>
+
+## updateUserProperties
+
+新增或更新自定义用户属性。
+
+<a id="api_updateuserproperties__prototype"></a>
+
+```kotlin
+abstract fun updateUserProperties(userUuid: String,
+                                  properties: MutableMap<String, Any>,
+                                  cause: MutableMap<String, Any>?,
+                                  callback: EduContextCallback<Unit>? = null)
+```
+
+<a id="api_updateuserproperties__detailed_desc"></a>
+
+详见 [如何设置自定义用户属性](https://doc.shengwang.cn/faq/integration-issues/class-properties)。
+
+属性成功更新后，会触发 [onUserPropertiesUpdated](/zh-CN/api-reference/flexible-classroom/android/class-userhandler#api_onuserpropertiesupdated) 回调。
+
+<a id="api_updateuserproperties__parameters"></a>
+
+### 参数
+
+#### `userUuid`
+
+用户 ID。
+
+#### `properties`
+
+用户属性。
+
+#### `cause`
+
+更新原因，可为空。
+
+#### `callback`
+
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。
+
+<a id="api_deleteuserproperties"></a>
+
+## deleteUserProperties
+
+删除自定义用户属性。
+
+<a id="api_deleteuserproperties__prototype"></a>
+
+```kotlin
+abstract fun deleteUserProperties(userUuid: String,
+                                  keys: MutableList<String>,
+                                  cause: MutableMap<String, Any>?,
+                                  callback: EduContextCallback<Unit>? = null)
+```
+
+<a id="api_deleteuserproperties__parameters"></a>
+
+### 参数
+
+#### `userUuid`
+
+用户 ID。
+
+#### `keys`
+
+你想要删除的属性的 key path，如 "key1.subkey1"。
+
+#### `cause`
+
+删除原因，可为空。
+
+#### `callback`
+
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。
+
+<a id="api_getuserproperties"></a>
+
+## getUserProperties
+
+获取指定用户的自定义属性。
+
+<a id="api_getuserproperties__prototype"></a>
+
+```kotlin
+abstract fun getUserProperties(userUuid: String): MutableMap<String, Any>
+```
+
+<a id="api_getuserproperties__parameters"></a>
+
+### 参数
+
+#### `userUuid`
+
+用户 ID。
+
+<a id="api_getuserproperties__return_values"></a>
+
+### 返回值
+
+调用成功，则返回用户自定义属性。
+
+<a id="api_getuserrewardcount"></a>
+
+## getUserRewardCount
+
+获取指定用户拥有的奖励数量。
+
+<a id="api_getuserrewardcount__prototype"></a>
+
+```kotlin
+abstract fun getUserRewardCount(userUuid: String): Int
+```
+
+<a id="api_getuserrewardcount__parameters"></a>
+
+### 参数
+
+#### `userUuid`
+
+用户 ID。
+
+<a id="api_getuserrewardcount__return_values"></a>
+
+### 返回值
+
+调用成功，则返回奖励数量。
+
+<a id="api_gethandswaveenable"></a>
+
+## getHandsWaveEnable
+
+确认是否能举手。
+
+<a id="api_gethandswaveenable__prototype"></a>
+
+```kotlin
+abstract fun getHandsWaveEnable(): Boolean
+```
+
+<a id="api_gethandswaveenable__detailed_desc"></a>
+
+确认当前房间内学生是否能举手申请上讲台。
+
+<a id="api_gethandswaveenable__return_values"></a>
+
+### 返回值
+
+请求成功，则返回确认结果。
+
+<a id="api_handswave"></a>
+
+## handsWave
+
+举手申请上讲台发言。
+
+<a id="api_handswave__prototype"></a>
+
+```kotlin
+abstract fun handsWave(duration: Int,
+                       callback: EduContextCallback<Unit>? = null)
+```
+
+<a id="api_handswave__parameters"></a>
+
+### 参数
+
+#### `duration`
+
+申请上讲台的时长，单位为秒。
+
+#### `payload`
+
+自定义信息，可为空。
+
+#### `callback`
+
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。
+
+<a id="api_handsdown"></a>
+
+## handsDown
+
+取消举手。
+
+<a id="api_handsdown__prototype"></a>
+
+```kotlin
+abstract fun handsDown(callback: EduContextCallback<Unit>? = null)
+```
+
+<a id="api_handsdown__parameters"></a>
+
+### 参数
+
+#### `callback`
+
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。

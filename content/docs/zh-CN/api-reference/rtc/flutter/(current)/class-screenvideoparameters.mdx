@@ -1,0 +1,44 @@
+---
+title: "ScreenVideoParameters"
+description: "共享屏幕流的视频编码配置。"
+---
+<a id="class_screenvideoparameters__prototype"></a>
+
+```dart
+class ScreenVideoParameters {
+  const ScreenVideoParameters(
+      {this.dimensions, this.frameRate, this.bitrate, this.contentHint});
+ 
+  @JsonKey(name: 'dimensions')
+  final VideoDimensions? dimensions;
+  @JsonKey(name: 'frameRate')
+  final int? frameRate;
+  @JsonKey(name: 'bitrate')
+  final int? bitrate;
+  @JsonKey(name: 'contentHint')
+  final VideoContentHint? contentHint;
+  factory ScreenVideoParameters.fromJson(Map<String, dynamic> json) =>
+      _$ScreenVideoParametersFromJson(json);
+  Map<String, dynamic> toJson() => _$ScreenVideoParametersToJson(this);
+}
+```
+
+<a id="class_screenvideoparameters__parameters"></a>
+
+## 属性
+
+### `dimensions`
+
+视频编码的分辨率。默认值为 1280 × 720。
+
+### `frameRate`
+
+视频编码帧率 (fps)。默认值为 15。
+
+### `bitrate`
+
+视频编码码率 (Kbps)。
+
+### `contentHint`
+
+屏幕共享视频的内容类型。

@@ -1,0 +1,97 @@
+---
+title: "RtePlayerEvent"
+description: "播放器事件类型。"
+---
+<a id="enum_rteplayerevent__detailed_desc"></a>
+
+### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="enum_rteplayerevent__parameters"></a>
+
+## 枚举值
+
+### `kRtePlayerEventSeekBegin`
+
+（0）：开始跳转到指定位置播放。
+
+### `kRtePlayerEventSeekComplete`
+
+（1）：跳转到指定位置完成。
+
+### `kRtePlayerEventSeekError`
+
+（2）：跳转到指定位置时发生错误。
+
+### `kRtePlayerEventBufferLow`
+
+（3）：当前缓冲区不足，无法支持播放。
+
+### `kRtePlayerEventBufferRecover`
+
+（4）：当前缓冲区已恢复至可播放状态。
+
+### `kRtePlayerEventFreezeStart`
+
+（5）：检测到音视频卡顿。
+
+### `kRtePlayerEventFreezeStop`
+
+（6）：音视频卡顿结束。
+
+### `kRtePlayerEventOneLoopPlaybackCompleted`
+
+（7）：完成一次循环播放。
+
+### `kRtePlayerEventAuthenticationWillExpire`
+
+（8）：Token 即将过期。你需要重新生成新的 Token，并通过 [OpenWithUrl](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_openwithurl) 更新 URL。
+
+### `kRtePlayerEventAbrFallbackToAudioOnlyLayer`
+
+（9）：由于网络问题，从接收音视频降级为仅接收音频。
+
+### `kRtePlayerEventAbrRecoverFromAudioOnlyLayer`
+
+（10）：网络恢复后，从仅接收音频恢复为接收音视频。
+
+### `kRtePlayerEventSwitchBegin`
+
+（11）：开始切换到新 URL。
+
+### `kRtePlayerEventSwitchComplete`
+
+（12）：切换到新 URL 完成。
+
+### `kRtePlayerEventSwitchError`
+
+（13）：切换到新 URL 时发生错误。
+
+### `kRtePlayerEventFirstDisplayed`
+
+（14）：首帧视频已显示。
+
+### `kRtePlayerEventReachCacheFileMaxCount`
+
+（15）：达到缓存文件数量上限。
+
+### `kRtePlayerEventReachCacheFileMaxSize`
+
+（16）：达到缓存文件大小上限。
+
+### `kRtePlayerEventTryOpenStart`
+
+（17）：开始尝试打开新 URL。
+
+### `kRtePlayerEventTryOpenSucceed`
+
+（18）：成功打开新 URL。
+
+### `kRtePlayerEventTryOpenFailed`
+
+（19）：打开新 URL 失败。
+
+### `kRtePlayerEventAudioTrackChanged`
+
+（20）：当前音轨已变更。

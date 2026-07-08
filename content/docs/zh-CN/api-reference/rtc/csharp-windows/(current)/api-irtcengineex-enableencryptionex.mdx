@@ -1,0 +1,55 @@
+---
+title: "EnableEncryptionEx"
+description: "开启或关闭内置加密。"
+---
+<a id="api_irtcengineex_enableencryptionex__prototype"></a>
+
+```csharp
+public abstract int EnableEncryptionEx(RtcConnection connection, bool enabled, EncryptionConfig config);
+```
+
+<a id="api_irtcengineex_enableencryptionex__detailed_desc"></a>
+
+用户离开频道后，SDK 会自动关闭加密。如需重新开启加密，你需要在用户再次加入频道前调用该方法。
+
+<a id="api_irtcengineex_enableencryptionex__scenario"></a>
+
+## 适用场景
+
+对安全要求较高的场景。
+
+<a id="api_irtcengineex_enableencryptionex__timing"></a>
+
+## 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengineex_enableencryptionex__restriction"></a>
+
+## 调用限制
+
+- 同一频道内的所有用户在调用该方法时，必须设置相同的加密模式和密钥。
+- 如果开启了内置加密，则不能使用旁路推流功能。
+
+<a id="api_irtcengineex_enableencryptionex__parameters"></a>
+
+## 参数
+
+### `enabled`
+
+是否开启内置加密：
+
+- true: 开启内置加密。
+- false:（默认）关闭内置加密。
+
+### `config`
+
+配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/csharp-windows/class-encryptionconfig)。
+
+### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+<a id="api_irtcengineex_enableencryptionex__return_values"></a>
+
+## 返回值

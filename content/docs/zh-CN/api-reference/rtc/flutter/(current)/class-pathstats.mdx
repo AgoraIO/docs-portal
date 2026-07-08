@@ -1,0 +1,48 @@
+---
+title: "PathStats"
+description: "用于获取特定网络路径的统计数据。"
+---
+<a id="class_pathstats__prototype"></a>
+
+```dart
+class PathStats implements AgoraSerializable {
+  const PathStats({this.type, this.txKBitRate, this.rxKBitRate});
+
+  @JsonKey(name: 'type')
+  final MultipathType? type;
+
+  @JsonKey(name: 'txKBitRate')
+  final int? txKBitRate;
+
+  @JsonKey(name: 'rxKBitRate')
+  final int? rxKBitRate;
+
+  factory PathStats.fromJson(Map<String, dynamic> json) =>
+      _$PathStatsFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$PathStatsToJson(this);
+}
+```
+
+<a id="class_pathstats__detailed_desc"></a>
+
+### `自从`
+
+自 v6.6.2 版本新增。
+
+<a id="class_pathstats__parameters"></a>
+
+## 属性
+
+### `type`
+
+网络路径的类型。详见 [MultipathType](/zh-CN/api-reference/rtc/flutter/enum-multipathtype)。
+
+### `txKBitRate`
+
+该路径的传输码率，单位为 Kbps。
+
+### `rxKBitRate`
+
+该路径的接收码率，单位为 Kbps。

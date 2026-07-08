@@ -1,0 +1,43 @@
+---
+title: "FAgoraRhythmPlayerConfig"
+description: "虚拟节拍器配置。"
+---
+<a id="class_agorarhythmplayerconfig__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FAgoraRhythmPlayerConfig
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|AgoraRhythmPlayerConfig")
+	int beatsPerMeasure = 4;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|AgoraRhythmPlayerConfig")
+	int beatsPerMinute = 60;
+	FAgoraRhythmPlayerConfig(){}
+	FAgoraRhythmPlayerConfig(const agora::rtc::AgoraRhythmPlayerConfig & AgoraData){
+		beatsPerMeasure = AgoraData.beatsPerMeasure;
+		beatsPerMinute = AgoraData.beatsPerMinute;
+	}
+	agora::rtc::AgoraRhythmPlayerConfig CreateAgoraData() const {
+		agora::rtc::AgoraRhythmPlayerConfig AgoraData;
+		AgoraData.beatsPerMeasure = beatsPerMeasure;
+		AgoraData.beatsPerMinute = beatsPerMinute;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::AgoraRhythmPlayerConfig & AgoraData) const {
+	}
+};
+```
+
+<a id="class_agorarhythmplayerconfig__parameters"></a>
+
+## 属性
+
+### `beatsPerMeasure`
+
+每小节的拍数，取值范围为 [1,9]。默认值为 4，即每小节包含 1 个强拍和 3 个弱拍。
+
+### `beatsPerMinute`
+
+节拍速度（拍/分钟），取值范围为 [60,360]。默认值为 60，即 1 分钟有 60 拍。

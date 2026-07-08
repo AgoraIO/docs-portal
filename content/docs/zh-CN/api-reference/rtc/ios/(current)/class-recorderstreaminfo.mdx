@@ -1,0 +1,29 @@
+---
+title: "AgoraRecorderStreamInfo"
+description: "待录制音视频流的信息。"
+---
+<a id="class_recorderstreaminfo__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraRecorderStreamInfo: NSObject
+@property (nonatomic, nonatomic) NSUInteger uid;
+@property (nonatomic, copy) NSString *_Nonnull channelId;
+@property (assign, nonatomic) AgoraRecorderStreamType type;
+@end
+```
+
+<a id="class_recorderstreaminfo__parameters"></a>
+
+## 属性
+
+### `uid`
+
+待录制的远端用户 ID。
+
+### `channelId`
+
+待录制的目标频道名。
+
+### `type`
+
+待录制的视频流类型，详见 [AgoraRecorderStreamType](/zh-CN/api-reference/rtc/ios/enum-recorderstreamtype)。

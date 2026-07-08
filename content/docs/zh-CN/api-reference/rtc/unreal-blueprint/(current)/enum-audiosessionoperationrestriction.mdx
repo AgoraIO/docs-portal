@@ -1,0 +1,27 @@
+---
+title: "EAUDIO_SESSION_OPERATION_RESTRICTION"
+description: "SDK 对 Audio Session 的操作权限。"
+---
+<a id="enum_audiosessionoperationrestriction__parameters"></a>
+
+## 枚举值
+
+### `AUDIO_SESSION_OPERATION_RESTRICTION_NONE`
+
+没有限制，SDK 可以对 Audio Session 进行更改。
+
+### `AUDIO_SESSION_OPERATION_RESTRICTION_SET_CATEGORY`
+
+SDK 不能更改 Audio Session 的 category。
+
+### `AUDIO_SESSION_OPERATION_RESTRICTION_CONFIGURE_SESSION`
+
+SDK 不能更改 Audio Session 的 category、mode 或 categoryOptions。
+
+### `AUDIO_SESSION_OPERATION_RESTRICTION_DEACTIVATE_SESSION`
+
+离开频道时，SDK 会保持 Audio Session 处于活动状态，例如在后台播放音频。
+
+### `AUDIO_SESSION_OPERATION_RESTRICTION_ALL`
+
+完全限制 SDK 对 Audio Session 的操作权限，SDK 不能再对 Audio Session 进行任何更改。

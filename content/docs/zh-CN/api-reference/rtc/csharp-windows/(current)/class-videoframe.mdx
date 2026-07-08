@@ -1,0 +1,171 @@
+---
+title: "VideoFrame"
+description: "视频帧的属性设置。"
+---
+<a id="class_videoframe__prototype"></a>
+
+```csharp
+public class VideoFrame
+    {
+        public VIDEO_PIXEL_FORMAT type;
+
+        public int width;
+
+        public int height;
+
+        public int yStride;
+
+        public int uStride;
+
+        public int vStride;
+
+        public byte[] yBuffer;
+
+        public IntPtr yBufferPtr;
+
+        public byte[] uBuffer;
+
+        public IntPtr uBufferPtr;
+
+        public byte[] vBuffer;
+
+        public IntPtr vBufferPtr;
+
+        public int rotation;
+
+        public long renderTimeMs;
+
+        public int avsync_type;
+
+        public IntPtr metadata_buffer;
+
+        public int metadata_size;
+
+        public IntPtr sharedContext;
+
+        public int textureId;
+
+        public IntPtr d3d11Texture2d;
+
+        public float[] matrix;
+
+        public byte[] alphaBuffer;
+
+        public ALPHA_STITCH_MODE alphaStitchMode;
+
+        public IVideoFrameMetaInfo metaInfo;
+
+        public ColorSpace colorSpace;
+    };
+```
+
+<a id="class_videoframe__detailed_desc"></a>
+
+缓冲区给出的是指向指针的指针，该接口不能修改缓冲区的指针，只能修改缓冲区的内容。
+
+<a id="class_videoframe__parameters"></a>
+
+## 属性
+
+### `type`
+
+像素格式。详见 [VIDEO_PIXEL_FORMAT](/zh-CN/api-reference/rtc/csharp-windows/enum-videopixelformat)。
+
+### `width`
+
+视频像素宽度。
+
+### `height`
+
+视频像素高度。
+
+### `yStride`
+
+对 YUV 数据，表示 Y 缓冲区的行跨度；对 RGBA 数据，表示总的数据长度。
+
+:::warning[注意]
+在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
+:::
+
+### `uStride`
+
+对 YUV 数据，表示 U 缓冲区的行跨度；对 RGBA 数据，值为 0。
+
+:::warning[注意]
+在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
+:::
+
+### `vStride`
+
+对 YUV 数据，表示 V 缓冲区的行跨度；对 RGBA 数据，值为 0。
+
+:::warning[注意]
+在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
+:::
+
+### `yBuffer`
+
+对 YUV 数据，表示 Y 缓冲区的指针；对 RGBA 数据，表示数据缓冲区。
+
+### `uBuffer`
+
+对 YUV 数据，表示 U 缓冲区的指针；对 RGBA 数据，值为空。
+
+### `vBuffer`
+
+对 YUV 数据，表示 V 缓冲区的指针；对 RGBA 数据，值为空。
+
+### `rotation`
+
+在渲染视频前设置该帧的顺时针旋转角度，目前支持 0 度、90 度、180 度，和 270 度。
+
+### `renderTimeMs`
+
+视频帧被渲染时的 Unix 时间戳（毫秒）。该时间戳可用于指导渲染视频帧。该参数为必填。
+
+### `avsync_type`
+
+保留参数。
+
+### `metadata_buffer`
+
+该参数仅适用于 Texture 格式的视频数据。指 MetaData 的数据缓冲区，默认值为 `NULL`。
+
+### `metadata_size`
+
+该参数仅适用于 Texture 格式的视频数据。指 MetaData 的大小，默认值为 `0`。
+
+### `sharedContext`
+
+该参数仅适用于 Texture 格式的视频数据。EGL Context。
+
+### `textureId`
+
+该参数仅适用于 Texture 格式的视频数据。Texture ID。
+
+### `matrix`
+
+该参数仅适用于 Texture 格式的视频数据。为一个输入的 4x4 变换矩阵，典型值为一个单位矩阵。
+
+### `colorSpace`
+
+视频帧的色彩空间属性，默认情况下会应用 Full Range 和 BT.709 标准配置。你可以根据自定义采集、自定义渲染的业务需求进行自定义设置，详见 [VideoColorSpace](https://developer.mozilla.org/en-US/docs/Web/API/VideoColorSpace)。
+
+### `alphaBuffer`
+
+采用人像分割算法输出的 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。
+
+你可以通过设置该参数，实现将视频背景自渲染为各种效果，例如：透明、纯色、图片、视频等。
+
+:::warning[注意]
+- 在自定义视频渲染场景下，需确保传入的视频帧和 alphaBuffer 均为 Full Range 类型；其他类型可能导致 Alpha 数据渲染不正常。
+- 请务必确保 alphaBuffer 跟视频帧的尺寸 (width × height) 完全一致，否则可能会导致 App 崩溃。
+:::
+
+### `alphaStitchMode`
+
+当视频帧中包含 Alpha 通道数据时，设置 alphaBuffer 和视频帧的相对位置。 详见 [ALPHA_STITCH_MODE](/zh-CN/api-reference/rtc/csharp-windows/enum-alphastitchmode)。
+
+### `metaInfo`
+
+视频帧中的元信息。该参数需要 [联系技术支持](https://ticket.shengwang.cn/) 使用。

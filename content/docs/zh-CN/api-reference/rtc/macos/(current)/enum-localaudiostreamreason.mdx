@@ -1,0 +1,43 @@
+---
+title: "AgoraAudioLocalReason"
+description: "本地音频状态变化的原因。"
+---
+<a id="enum_localaudiostreamreason__parameters"></a>
+
+## 枚举值
+
+### `AgoraAudioLocalReasonOK`
+
+（0）：本地音频状态正常。
+
+### `AgoraAudioLocalReasonFailure`
+
+（1）：本地音频异常，原因不明确。请提示用户尝试重新加入频道。
+
+### `AgoraAudioLocalReasonDeviceNoPermission`
+
+（2）：无权限使用本地音频采集设备。请提示用户授予麦克风权限。
+
+### `AgoraAudioLocalReasonDeviceBusy`
+
+（3）：（仅适用于 iOS 平台）本地音频采集设备被占用。请提示用户检查是否有其他应用占用了麦克风。麦克风空闲约五秒后音频采集会自动恢复，或可在麦克风空闲后重新加入频道。
+
+### `AgoraAudioLocalReasonRecordFailure`
+
+（4）：本地音频采集失败。
+
+### `AgoraAudioLocalReasonEncodeFailure`
+
+（5）：本地音频编码失败。
+
+### `AgoraAudioLocalReasonNoRecordingDevice`
+
+（6）：（仅适用于 macOS 平台）无本地音频采集设备。请提示用户在系统设置中检查麦克风是否正确连接或工作正常。
+
+### `AgoraAudioLocalReasonNoPlayoutDevice`
+
+（7）：（仅适用于 macOS 平台）无本地音频播放设备。请提示用户在系统设置中检查扬声器是否正确连接或工作正常。
+
+### `AgoraAudioLocalReasonInterrupted`
+
+（8）：（仅适用于 iOS 平台）本地音频采集被系统电话、智能助手或闹钟中断。如需继续采集，请提示用户结束相关任务。

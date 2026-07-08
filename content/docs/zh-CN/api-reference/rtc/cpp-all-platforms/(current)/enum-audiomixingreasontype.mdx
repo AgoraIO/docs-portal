@@ -1,0 +1,39 @@
+---
+title: "AUDIO_MIXING_REASON_TYPE"
+description: "混音文件播放状态变化的原因。"
+---
+<a id="enum_audiomixingreasontype__parameters"></a>
+
+## 枚举值
+
+### `AUDIO_MIXING_REASON_CAN_NOT_OPEN`
+
+（701）：无法打开音乐文件。例如，本地文件不存在、格式不受支持，或无法访问文件 URL。
+
+### `AUDIO_MIXING_REASON_TOO_FREQUENT_CALL`
+
+（702）：调用 `startAudioMixing` 过于频繁。建议调用间隔大于 500 毫秒。
+
+### `AUDIO_MIXING_REASON_INTERRUPTED_EOF`
+
+（703）：音乐文件播放被中断。
+
+### `AUDIO_MIXING_REASON_ONE_LOOP_COMPLETED`
+
+（721）：音乐文件完成一次循环播放。
+
+### `AUDIO_MIXING_REASON_ALL_LOOPS_COMPLETED`
+
+（723）：音乐文件完成所有循环播放。
+
+### `AUDIO_MIXING_REASON_STOPPED_BY_USER`
+
+（724）：调用 [stopAudioMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-mixing#api_irtcengine_stopaudiomixing) 成功，停止播放音乐文件。
+
+### `AUDIO_MIXING_REASON_RESUMED_BY_USER`
+
+（726）：混音播放已由用户恢复。
+
+### `AUDIO_MIXING_REASON_OK`
+
+（0）：成功打开音乐文件。

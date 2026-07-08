@@ -1,0 +1,52 @@
+---
+title: "SetLocalRenderTargetFps"
+description: "设置本地视频渲染的最大帧率。"
+---
+<a id="api_irtcengine_setlocalrendertargetfps__prototype"></a>
+
+```csharp
+public abstract int SetLocalRenderTargetFps(VIDEO_SOURCE_TYPE sourceType, int targetFps);
+```
+
+<a id="api_irtcengine_setlocalrendertargetfps__detailed_desc"></a>
+
+<a id="api_irtcengine_setlocalrendertargetfps__scenario"></a>
+
+## 适用场景
+
+在对视频渲染帧率要求不高的场景（例如：屏幕共享、在线教育）下，你可以调用该方法设置本地视频渲染的最大帧率，SDK 进行本地渲染的实际帧率会尽量接近该值，从而减小 CPU 消耗、提升系统性能。
+
+<a id="api_irtcengine_setlocalrendertargetfps__timing"></a>
+
+## 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_irtcengine_setlocalrendertargetfps__restriction"></a>
+
+## 调用限制
+
+无。
+
+<a id="api_irtcengine_setlocalrendertargetfps__parameters"></a>
+
+## 参数
+
+### `sourceType`
+
+视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
+
+### `targetFps`
+
+最大渲染帧率 (fps)。支持的参数值为：1、7、10、15、24、30、60。
+
+:::warning[警告]
+请将此参数设置为低于视频实际帧率的渲染帧率，否则设置将不会生效。
+:::
+
+<a id="api_irtcengine_setlocalrendertargetfps__return_values"></a>
+
+## 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。

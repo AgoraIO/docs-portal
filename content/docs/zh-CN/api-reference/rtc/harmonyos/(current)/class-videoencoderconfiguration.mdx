@@ -1,0 +1,78 @@
+---
+title: "VideoEncoderConfiguration"
+description: "视频编码器的配置。"
+---
+<a id="class_videoencoderconfiguration__prototype"></a>
+
+```arkts
+export class VideoEncoderConfiguration{
+  public dimensions:VideoDimensions = new VideoDimensions(960,540);
+  public frameRate:number = 15;
+  public bitrate:number = 0;
+  public minBitrate:number = -1;
+  public orientationMode:OrientationMode = OrientationMode.ORIENTATION_MODE_ADAPTIVE;
+  public degradationPrefer:DegradationPreference = DegradationPreference.MAINTAIN_QUALITY;
+  public mirrorMode:MirrorModeType = MirrorModeType.MIRROR_MODE_DISABLED;
+  public advanceOptions:AdvanceOptions = new AdvanceOptions();
+  constructor() {}
+}
+```
+
+<a id="class_videoencoderconfiguration__parameters"></a>
+
+### `dimensions`
+
+视频编码的分辨率 (px)，详见 [VideoDimensions](/zh-CN/api-reference/rtc/harmonyos/class-videodimensions)。该参数用于衡量编码质量，以长 × 宽表示，默认值为 960 × 540。用户可以自行设置分辨率。
+
+### `codecType`
+
+视频编码类型，详见 [VideoCodecType](/zh-CN/api-reference/rtc/harmonyos/enum-videocodectype)。
+
+### `frameRate`
+
+视频编码的帧率(fps)，默认值为 15。详见 [FRAME_RATE](/zh-CN/api-reference/rtc/harmonyos/enum-framerate)。
+
+### `bitrate`
+
+视频编码码率，单位为 Kbps。 该参数无需设置，保留默认值 STANDARD_BITRATE 即可，SDK 会根据你设定的视频分辨率和帧率自动匹配最合适的码率。有关视频分辨率和帧率的对应关系，详见 [视频属性](https://doc.shengwang.cn/doc/rtc/harmonyos/basic-features/video-profile)。
+
+- STANDARD_BITRATE (0): (默认) 标准码率模式。
+- COMPATIBLE_BITRATE (-1): 适配码率模式。一般情况下，声网建议你不要使用该值。
+
+### `minBitrate`
+
+最低编码码率，单位为 Kbps。
+
+SDK 会根据网络状况自动调整视频编码码率。将参数设为高于默认值可强制视频编码器输出高质量图片，但在网络状况不佳情况下可能导致网络丢包并影响视频播放的流畅度造成卡顿。因此如非对画质有特殊需求，声网建议不要修改该参数的值。
+
+:::warning[注意]
+该参数仅适用于直播场景。
+:::
+
+### `orientationMode`
+
+视频编码的方向模式，详见 [ORIENTATION_MODE](/zh-CN/api-reference/rtc/harmonyos/enum-orientationmode)。
+
+### `degradationPreference`
+
+带宽受限时，视频编码降级偏好。详见 [DegradationPreference](/zh-CN/api-reference/rtc/harmonyos/enum-degradationpreference)。
+
+:::warning[注意]
+当该参数设置为 MAINTAIN_FRAMERATE (1) 或者 MAINTAIN_BALANCED (2) 时，需要同时将 orientationMode 设置为 ORIENTATION_MODE_ADAPTIVE (0)，否则设置不生效。
+:::
+
+### `mirrorMode`
+
+发送编码视频时是否开启镜像模式，只影响远端用户看到的视频画面。
+
+- VIDEO_MIRROR_MODE_AUTO (0)：SDK 决定镜像模式。默认关闭远端用户的镜像模式。
+- VIDEO_MIRROR_MODE_ENABLED (1)：开启远端用户的镜像模式。
+- VIDEO_MIRROR_MODE_DISABLED (2)：关闭远端用户的镜像模式。
+
+:::warning[注意]
+默认关闭镜像模式。
+:::
+
+### `advanceOptions`
+
+视频编码的高级选项。详见 [AdvanceOptions](/zh-CN/api-reference/rtc/harmonyos/class-advanceoptions)。

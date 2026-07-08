@@ -1,0 +1,63 @@
+---
+title: "WatermarkConfig"
+description: "用于配置水印信息。"
+---
+<a id="class_watermarkconfig__prototype"></a>
+
+```typescript
+export class WatermarkConfig {
+id?: string;
+type?: WatermarkSourceType;
+buffer?: WatermarkBuffer;
+timestamp?: WatermarkTimestamp;
+literal?: WatermarkLiteral;
+imageUrl?: string;
+options?: WatermarkOptions;
+}
+```
+
+<a id="class_watermarkconfig__detailed_desc"></a>
+
+### `自从`
+
+自 v4.6.2 版本新增。
+
+<a id="class_watermarkconfig__parameters"></a>
+
+## 属性
+
+### `id`
+
+水印的唯一标识符，建议使用 UUID。
+
+### `type`
+
+水印类型，详见 [WatermarkSourceType](/zh-CN/api-reference/rtc/electron/enum-watermarksourcetype)。
+
+### `buffer`
+
+水印的缓冲区。详见 [WatermarkBuffer](/zh-CN/api-reference/rtc/electron/class-watermarkbuffer)。
+
+### `timestamp`
+
+水印的时间戳。
+
+:::info[注]
+仅支持在 Linux 平台使用。
+:::
+
+### `literal`
+
+水印的文本内容。
+
+:::info[注]
+仅支持在 Linux 平台使用。
+:::
+
+### `imageUrl`
+
+水印图像文件的 URL，默认值为 `NULL`。
+
+### `options`
+
+水印的配置选项。详见 [WatermarkOptions](/zh-CN/api-reference/rtc/electron/class-watermarkoptions)。

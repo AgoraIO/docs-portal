@@ -1,0 +1,19 @@
+---
+title: "CompressionPreference"
+description: "视频编码的压缩偏好类型。"
+---
+<a id="enum_compressionpreference__parameters"></a>
+
+## 枚举值
+
+### `PreferCompressionAuto`
+
+-1:（默认）自动模式。SDK 会根据你设置的视频场景，自动选择 PreferLowLatency 或 PreferQuality，以获得最佳的用户体验。
+
+### `PreferLowLatency`
+
+0: 低延时偏好。SDK 会对视频帧进行压缩处理，以降低延时。该偏好适用于流畅性优先且允许画质降低的场景。
+
+### `PreferQuality`
+
+1：高质量偏好。SDK 会对视频帧进行压缩处理，同时保持视频质量。该偏好适用于画质优先的场景。

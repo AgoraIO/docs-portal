@@ -1,0 +1,51 @@
+---
+title: "WatermarkOptions"
+description: "水印图像配置。"
+---
+<a id="class_watermarkoptions__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface WatermarkOptions : NSObject
+@property(assign, nonatomic) BOOL visibleInPreview;
+@property(assign, nonatomic) CGRect positionInLandscapeMode;
+@property(assign, nonatomic) CGRect positionInPortraitMode;
+@property(assign, nonatomic)  int zOrder;
+@end
+```
+
+<a id="class_watermarkoptions__detailed_desc"></a>
+
+用于设置水印图像的显示配置。
+
+<a id="class_watermarkoptions__parameters"></a>
+
+## 属性
+
+### `visibleInPreview`
+
+水印图像是否在本地预览视图中可见：
+
+- YES：（默认）水印在本地预览视图中可见。
+- NO：水印在本地预览视图中不可见。
+
+### `positionInLandscapeMode`
+
+横屏模式下水印图像的显示区域，包含以下成员：
+
+- x：水印相对于左上角的水平位置。
+- y：水印相对于左上角的垂直位置。
+- width：水印区域的宽度（像素）。
+- height：水印区域的高度（像素）。
+
+### `positionInPortraitMode`
+
+竖屏模式下水印图像的显示区域，包含以下成员：
+
+- x：水印相对于左上角的水平位置。
+- y：水印相对于左上角的垂直位置。
+- width：水印区域的宽度（像素）。
+- height：水印区域的高度（像素）。
+
+### `zOrder`
+
+水印图像的图层顺序，默认值为 0。

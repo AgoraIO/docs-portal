@@ -1,0 +1,33 @@
+---
+title: "setDestChannelInfo"
+description: "设置目标频道的信息。"
+---
+<a id="api_channelmediarelayconfiguration_setdestchannelinfo__prototype"></a>
+
+```java
+public void setDestChannelInfo(String channelName, ChannelMediaInfo destInfo)
+```
+
+<a id="api_channelmediarelayconfiguration_setdestchannelinfo__detailed_desc"></a>
+
+如果你希望将媒体流转发到多个频道，最多可调用该方法四次。
+
+<a id="api_channelmediarelayconfiguration_setdestchannelinfo__parameters"></a>
+
+## 参数
+
+### `channelName`
+
+目标频道的名称。该值必须与 `destInfo` 中 `channelName` 成员的值一致。
+
+### `destInfo`
+
+目标频道的信息。包括以下成员：
+
+- channelName：目标频道的名称。
+- uid：目标频道中主播的用户 ID，取值范围为 0 到 (2&lt;sup&gt;32&lt;/sup&gt; - 1)。为避免用户 ID 冲突，该值必须与目标频道中其他用户 ID 不同。默认值为 0，表示 SDK 会随机生成一个用户 ID。
+- token：加入目标频道所需的 Token。该 Token 是根据 channelName 和 uid 生成的。
+  - 如果未启用 App Certificate，将该参数设置为 null，表示 SDK 使用 App ID。
+  - 如果已启用 App Certificate，必须使用根据 channelName 和 uid 生成的 Token。
+
+详见 [ChannelMediaInfo](/zh-CN/api-reference/rtc/android/class-channelmediainfo)。

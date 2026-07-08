@@ -1,0 +1,44 @@
+---
+title: "AudioPcmFrame"
+description: "外部 PCM 格式音频帧的信息。"
+---
+<a id="class_audiopcmframe__prototype"></a>
+
+```typescript
+export class AudioPcmFrame {
+  capture_timestamp?: number;
+  samples_per_channel_?: number;
+  sample_rate_hz_?: number;
+  num_channels_?: number;
+  bytes_per_sample?: BytesPerSample;
+  data_?: number[];
+}
+```
+
+<a id="class_audiopcmframe__parameters"></a>
+
+## 属性
+
+### `capture_timestamp`
+
+音频帧的时间戳 (ms)。
+
+### `samples_per_channel_`
+
+每个声道的采样点数。
+
+### `sample_rate_hz_`
+
+音频采样率 (Hz)。
+
+### `num_channels_`
+
+音频声道数。
+
+### `bytes_per_sample`
+
+音频数据的字节数。
+
+### `data_`
+
+音频帧数据。

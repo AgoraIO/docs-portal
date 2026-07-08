@@ -1,0 +1,31 @@
+---
+title: "LogFilterType"
+description: "日志过滤等级。"
+---
+<a id="enum_logfiltertype__parameters"></a>
+
+## 枚举值
+
+### `logFilterOff`
+
+0: 不输出日志信息。
+
+### `logFilterDebug`
+
+0x080f: 输出所有 API 日志信息。如果你想获取最完整的日志，可以将日志级别设为该等级。
+
+### `logFilterInfo`
+
+0x000f: 输出 `logFilterCritical`、 `logFilterError`、 `logFilterWarn` 和 `logFilterInfo` 级别的日志信息。建议你将日志级别设为该等级。
+
+### `logFilterWarn`
+
+0x000e: 输出 `logFilterCritical`、 `logFilterError` 和 `logFilterWarn` 级别的日志信息。
+
+### `logFilterError`
+
+0x000c: 输出 `logFilterCritical` 和 `logFilterError` 级别的日志信息。
+
+### `logFilterCritical`
+
+0x0008: 输出 `logFilterCritical` 级别的日志信息。

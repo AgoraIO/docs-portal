@@ -1,0 +1,65 @@
+---
+title: "VideoRenderingTracingInfo"
+description: "表示视频帧渲染过程中各阶段的耗时指标。"
+---
+<a id="class_videorenderingtracinginfo__prototype"></a>
+
+```cpp
+struct VideoRenderingTracingInfo {
+  int elapsedTime;
+  int start2JoinChannel;
+  int join2JoinSuccess;
+  int joinSuccess2RemoteJoined;
+  int remoteJoined2SetView;
+  int remoteJoined2UnmuteVideo;
+  int remoteJoined2PacketReceived;
+};
+```
+
+<a id="class_videorenderingtracinginfo__parameters"></a>
+
+## 属性
+
+### `elapsedTime`
+
+从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到 SDK 触发 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调的时间间隔（毫秒）。声网建议你在加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing)。
+
+### `start2JoinChannel`
+
+从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到调用 `joinChannel` 的时间间隔（毫秒）。如果该值为负数，表示 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing) 在 `joinChannel` 之后调用。
+
+### `join2JoinSuccess`
+
+从调用 `joinChannel` 到成功加入频道的时间间隔（毫秒）。
+
+### `joinSuccess2RemoteJoined`
+
+你成功加入频道到远端用户加入频道的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到远端用户加入频道的时间间隔（毫秒），取决于你调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing) 的时机。
+
+:::info[注]
+如果你在远端用户加入频道后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该值为 0，且无意义。为了减少远端用户首帧渲染时间，声网建议你在远端用户已在频道中时加入频道，以减少该值。
+:::
+
+### `remoteJoined2SetView`
+
+远端用户加入频道到你设置远端视图的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到设置远端视图的时间间隔（毫秒），取决于你调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing) 的时机。
+
+:::info[注]
+如果你在设置远端视图后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该值为 0，且无效。为了减少远端用户首帧渲染时间，声网建议你在远端用户加入频道前设置远端视图，或在远端用户加入频道后立即设置远端视图，以减少该值。
+:::
+
+### `remoteJoined2UnmuteVideo`
+
+远端用户加入频道到你订阅远端视频流的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到订阅远端视频流的时间间隔（毫秒），取决于你调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing) 的时机。
+
+:::info[注]
+如果你在订阅远端视频流后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该值为 0，且无效。为了减少远端用户首帧渲染时间，声网建议远端用户加入频道后，你立即订阅远端视频流，以减少该值。
+:::
+
+### `remoteJoined2PacketReceived`
+
+远端用户加入频道到你接收到远端视频流的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到接收远端视频流的时间间隔（毫秒），取决于你调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing) 的时机。
+
+:::info[注]
+如果你在接收远端视频流后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该值为 0，且无效。为了减少远端用户首帧渲染时间，声网建议远端用户在加入频道后立即发布视频流，你立即订阅远端视频流，以减少该值。
+:::

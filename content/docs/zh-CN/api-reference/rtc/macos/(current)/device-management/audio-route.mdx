@@ -1,0 +1,42 @@
+---
+title: "音频路由"
+description: "音频路由 API reference."
+---
+<a id="toc_audio_route"></a>
+
+<a id="callback_irtcengineeventhandler_onaudioroutingchanged"></a>
+
+## rtcEngine:didAudioRouteChanged:
+
+本地音频路由发生变化时的回调。
+
+<a id="callback_irtcengineeventhandler_onaudioroutingchanged__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didAudioRouteChanged:(AgoraAudioOutputRouting)routing NS_SWIFT_NAME(rtcEngine(_:didAudioRouteChanged:));
+```
+
+<a id="callback_irtcengineeventhandler_onaudioroutingchanged__detailed_desc"></a>
+
+该回调在本地音频路由发生变化时触发，例如从听筒切换到扬声器。
+
+<a id="callback_irtcengineeventhandler_onaudioroutingchanged__timing"></a>
+
+### 触发时机
+
+该回调在本地音频路由发生变化时被触发。
+
+<a id="callback_irtcengineeventhandler_onaudioroutingchanged__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 实例。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `routing`
+
+当前的音频路由。详见 [AgoraAudioOutputRouting](/zh-CN/api-reference/rtc/macos/enum-audioroute)。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)

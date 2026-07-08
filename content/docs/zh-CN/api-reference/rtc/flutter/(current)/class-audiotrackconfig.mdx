@@ -1,0 +1,45 @@
+---
+title: "AudioTrackConfig"
+description: "自定义音频轨道的配置选项。"
+---
+<a id="class_audiotrackconfig__prototype"></a>
+
+```dart
+class AudioTrackConfig {
+  const AudioTrackConfig(
+      {this.enableLocalPlayback, this.enableAudioProcessing});
+
+  @JsonKey(name: 'enableLocalPlayback')
+  final bool? enableLocalPlayback;
+
+  @JsonKey(name: 'enableAudioProcessing')
+  final bool? enableAudioProcessing;
+
+  factory AudioTrackConfig.fromJson(Map<String, dynamic> json) =>
+      _$AudioTrackConfigFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AudioTrackConfigToJson(this);
+}
+```
+
+<a id="class_audiotrackconfig__parameters"></a>
+
+## 属性
+
+### `enableLocalPlayback`
+
+是否启用本地音频播放：
+
+- true：(默认) 启用本地音频播放。
+- false：不启用本地音频播放。
+
+### `enableAudioProcessing`
+
+:::info[注]
+该参数设置仅对 audioTrackDirect 类型的自定义音频采集轨道生效。
+:::
+
+是否启用音频处理模块：
+
+- true：启用音频处理模块，应用回声消除 (AEC)、降噪 (ANS) 和自动增益控制 (AGC) 效果。
+- false：（默认）不启用音频处理模块。

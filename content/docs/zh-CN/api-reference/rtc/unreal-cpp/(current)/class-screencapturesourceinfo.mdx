@@ -1,0 +1,82 @@
+---
+title: "ScreenCaptureSourceInfo"
+description: "可共享窗口或屏幕的信息。在 IScreenCaptureSourceList 中返回。"
+---
+<a id="class_screencapturesourceinfo__prototype"></a>
+
+```cpp
+struct ScreenCaptureSourceInfo {
+  ScreenCaptureSourceType type;
+  int64_t sourceId;
+  const char* sourceName;
+  ThumbImageBuffer thumbImage;
+  ThumbImageBuffer iconImage;
+  const char* processPath;
+  const char* sourceTitle;
+  bool primaryMonitor;
+  bool isOccluded;
+  Rectangle position;
+#if defined(_WIN32)
+  bool minimizeWindow;
+  int64_t sourceDisplayId;
+  ScreenCaptureSourceInfo() : type(ScreenCaptureSourceType_Unknown), sourceId(0), sourceName(nullptr),
+                              processPath(nullptr), sourceTitle(nullptr), primaryMonitor(false), isOccluded(false), minimizeWindow(false), sourceDisplayId(-2) {}
+#else
+  ScreenCaptureSourceInfo() : type(ScreenCaptureSourceType_Unknown), sourceId(0), sourceName(nullptr), processPath(nullptr), sourceTitle(nullptr), primaryMonitor(false), isOccluded(false) {}
+#endif
+};
+```
+
+<a id="class_screencapturesourceinfo__parameters"></a>
+
+## 属性
+
+### `type`
+
+共享目标的类型。详见 [ScreenCaptureSourceType](/zh-CN/api-reference/rtc/unreal-cpp/enum-screencapturesourcetype)。
+
+### `sourceId`
+
+对于窗口，表示窗口 ID（Window ID）；对于屏幕，表示屏幕 ID（Display ID）。
+
+### `sourceName`
+
+窗口或屏幕的名称。UTF-8 编码。
+
+### `thumbImage`
+
+缩略图的图像内容。 详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/unreal-cpp/class-thumbimagebuffer)。
+
+### `iconImage`
+
+图标的图像内容。 详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/unreal-cpp/class-thumbimagebuffer)。
+
+### `processPath`
+
+窗口所属的进程。UTF-8 编码。
+
+### `sourceTitle`
+
+窗口标题。UTF-8 编码。
+
+### `primaryMonitor`
+
+屏幕是否为主显示屏：
+
+- true: 屏幕为主显示屏。
+- false: 屏幕不是主显示屏。
+
+### `position`
+
+窗口相对于整个屏幕空间（包含所有可共享屏幕）的位置。 详见 [Rectangle](/zh-CN/api-reference/rtc/unreal-cpp/class-rectangle)。
+
+### `minimizeWindow`
+
+(仅适用于 Windows) 窗口是否已最小化：
+
+- true: 窗口已最小化。
+- false: 窗口未最小化。
+
+### `sourceDisplayId`
+
+(仅适用于 Windows) 窗口所在的屏幕 ID。如果窗口为跨屏幕显示，则表示与该窗口相交面积最大的屏幕 ID。如果窗口位于可见屏幕之外，则该成员的值为 -2。
