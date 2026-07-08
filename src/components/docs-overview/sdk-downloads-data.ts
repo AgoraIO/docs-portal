@@ -2,7 +2,10 @@ export type SdkDownloadVersion = {
   downloadLink?: string;
   id: string;
   label: string;
+  md5?: string;
+  packageName?: string;
   packageManager?: string;
+  releaseDate?: string;
 };
 
 export type SdkDownloadProduct = {
