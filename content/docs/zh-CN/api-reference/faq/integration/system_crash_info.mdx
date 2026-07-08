@@ -1,0 +1,51 @@
+---
+title: "如何获取崩溃信息"
+---
+当应用程序发生崩溃时，操作系统会生成相应的崩溃日志或文件。以下介绍各平台获取系统崩溃信息的方法：
+
+<Tabs defaultValue="android" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="macos">macOS</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+运行 `adb bugreport` 命令获取系统生成的崩溃报告。
+
+如果你在 App 中集成了 Bugly，也可以直接通过 Bugly 获取崩溃信息。
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+通过以下步骤在 Xcode 中获取崩溃日志：
+
+1. 将 iOS 设备连接到电脑
+2. 打开 **Xcode**
+3. 选择 **Window** > **Devices and Simulators**
+4. 在设备列表中选择你的 iOS 设备
+5. 在右侧点击 **View Device Logs**，这里会显示设备上的所有崩溃日志
+6. 在日志列表中找到你的 App 崩溃日志
+
+如果你在 App 中集成了 Bugly，也可以直接通过 Bugly 获取崩溃信息。
+
+</TabsContent>
+
+<TabsContent value="macos">
+
+系统崩溃日志存储在 `~/Library/Logs/DiagnosticReports/` 目录下。
+
+</TabsContent>
+
+<TabsContent value="windows">
+
+需要通过 WinDbg 工具抓取系统生成的 dump 文件，可参考以下教程：
+
+- [WinDbg 抓取程序报错 dump 文件的方法](https://www.cnblogs.com/jinjiangongzuoshi/p/4268467.html)
+- [WinDbg 如何抓取 dump 文件](https://blog.csdn.net/wojiuguowei/article/details/78860699)
+
+</TabsContent>
+</Tabs>

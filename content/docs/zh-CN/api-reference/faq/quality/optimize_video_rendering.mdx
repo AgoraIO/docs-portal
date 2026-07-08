@@ -1,0 +1,188 @@
+---
+title: "如何调查首帧出图时间较长的问题？"
+---
+## 问题描述
+
+在使用声网 SDK 进行实时音视频开发时，部分开发者反馈在加入频道后远端视频首帧出图速度较慢，影响用户体验。具体表现为用户加入频道后，远端视频画面需要等待较长时间才显示出来。
+
+## 问题原因
+
+首帧出图慢的问题可能由多个阶段的延迟叠加导致，如设置远端主播视图的渲染时机太晚、未及时订阅远端主播的视频流等。
+
+## 解决方案
+
+声网 SDK 提供了视频首帧渲染耗时追踪机制，帮助开发者定位具体耗时阶段。该机制通过 `onVideoRenderingTracingResult` 回调提供了首帧出图过程中的关键阶段的耗时。默认情况下，`onVideoRenderingTracingResult` 回调中记录的耗时数据以调用 `joinChannel` 方法的时刻为起始开始计算，如果你调用了 `startMediaRenderingTracing` 设置自定义视频数据打点时刻，则以你调用该方法的时刻为起始开始计算。
+
+本节介绍三种典型的排查场景供参考。
+
+**加入频道前设置渲染数据打点**
+
+在 App 用户触发加入频道的操作时（如点击加入按钮或滑动切换频道），立即调用 `startMediaRenderingTracing`方法开始打点，这样获得的首帧出图时间数据将更符合用户的实际体验感受。此时 `onVideoRenderingTracingResult` 中 `tracingInfo` 报告的数据含义如下表所示：
+
+| 字段名 | 含义 | 参考范围 | 说明及建议 |
+| --- | --- | --- | --- |
+| `elapsedTime` | <Slot name="video-frame-rendering-markdown-0-1-1" /> | <Slot name="video-frame-rendering-markdown-0-1-2" /> | <Slot name="video-frame-rendering-markdown-0-1-3" /> |
+| `start2JoinChannel` | 从调用 `startMediaRenderingTracing` 到调用 `joinChannel` 的耗时 | 10 ms 以内 | 如果该值偏大，请检查在 App 用户点击加入频道之后、调用 `joinChannel` 之前，是否存在可能的耗时点 |
+| `join2JoinSuccess` | 从调用 `joinChannel` 到加入频道成功（`onJoinChannelSuccess`）的耗时 | 50-500 ms | <Slot name="video-frame-rendering-markdown-0-3-3" /> |
+| `joinSuccess2RemoteJoined` | 从加入频道成功（`onJoinChannelSuccess`）到感知远端主播已加入频道（`onUserJoined`）的耗时 | 50 ms 以内 | <Slot name="video-frame-rendering-markdown-0-4-3" /> |
+| `remoteJoined2SetView` | 从远端主播加入频道（`onUserJoined`）到设置远端视图（`setupRemoteVideo`）的耗时 | 0-20 ms | 如果收到 `onUserJoined` 回调后立即设置远端主播的视图渲染，该耗时一般在 20 ms 内。如果可以在加入频道前获取远端主播的用户 ID，并在加入频道前来设置视图渲染，该值可以降为 0。 |
+| `remoteJoined2UnmuteVideo` | 从远端主播加入频道（`onUserJoined`）到订阅远端视频流的耗时 | 0 ms | 如果该值偏大，建议检查是否及时订阅对端视频流。加入频道时默认订阅远端视频流时，该值为 0 |
+| `remoteJoined2PacketReceived` | 从远端主播加入频道（`onUserJoined`）到本地用户接收首个远端主播的视频包的耗时 | 0-50 ms | <Slot name="video-frame-rendering-markdown-0-7-3" /> |
+
+<Slot for="video-frame-rendering-markdown-0-1-1">
+
+- 解码事件：从调用 `startMediaRenderingTracing` 到首帧解码（`onFirstRemoteVideoDecoded`）的耗时
+- 渲染事件：从调用 `startMediaRenderingTracing` 到首帧渲染（`onFirstRemoteVideoFrame`）的耗时
+
+</Slot>
+
+<Slot for="video-frame-rendering-markdown-0-1-2">
+
+- 解码事件：1000 ms 以下
+- 渲染事件：1000 ms 以下
+
+</Slot>
+
+<Slot for="video-frame-rendering-markdown-0-1-3">
+
+- 如果两个事件报告的 `elapsedTime` 差值较大（例如大于 200 ms），表示渲染耗时较高，应检查是否及时设置渲染视图，若排除该因素可联系声网技术支持
+- 如果仅收到解码事件，未收到渲染事件，可能的原因包括：
+
+  - 未设置远端视图
+  - 使用了外部渲染器
+
+</Slot>
+
+<Slot for="video-frame-rendering-markdown-0-3-3">
+
+如果该值偏大，建议：
+
+- 检查网络状况
+- 加入频道前调用 `preloadChannel` 以提前获取服务器资源，从而降低加入频道的耗时
+
+</Slot>
+
+<Slot for="video-frame-rendering-markdown-0-4-3">
+
+如果该值偏大，建议：
+
+- 检查是否是观众先加入频道，主播后加入频道。这种情况下该值可能较大，没有参考意义
+- 检查是否是加入频道时默认不订阅所有流
+
+</Slot>
+
+<Slot for="video-frame-rendering-markdown-0-7-3">
+
+如果该值偏大，建议：
+
+- 检查是否加入频道后未及时订阅远端视频流，此时 `remoteJoined2UnmuteVideo` 的值也会偏大
+- 检查远端主播加入频道后是否及时发布视频流
+
+</Slot>
+
+**未设置渲染数据打点**
+
+如果不调用 `startMediaRenderingTracing` 设置视频渲染数据打点，则 SDK 默认以调用 `joinChannel` 加入频道为起始时刻开始计算耗时。除了以下两个字段的含义和[加入频道前设置渲染数据打点](#加入频道前设置渲染数据打点)的含义有所不同之外，其他字段的含义、正常值和说明建议均一致，可参考上表。
+
+| 字段名 | 含义 | 参考范围 | 说明及建议 |
+| --- | --- | --- | --- |
+| `elapsedTime` | <Slot name="video-frame-rendering-markdown-1-1-1" /> | <Slot name="video-frame-rendering-markdown-1-1-2" /> | <Slot name="video-frame-rendering-markdown-1-1-3" /> |
+| `start2JoinChannel` | 从调用 `startMediaRenderingTracing` 到调用 `joinChannel` 的耗时 | 0 ms | 该值理论上为 0，表示起始点就是调用 `joinChannel` 的时刻 |
+
+<Slot for="video-frame-rendering-markdown-1-1-1">
+
+- 解码事件：从调用 `joinChannel` 到首帧解码（`onFirstRemoteVideoDecoded`）的耗时
+- 渲染事件：从调用 `joinChannel` 到首帧渲染（`onFirstRemoteVideoFrame`）的耗时
+
+</Slot>
+
+<Slot for="video-frame-rendering-markdown-1-1-2">
+
+- 解码事件：1000 ms 以下
+- 渲染事件：1000 ms 以下
+
+</Slot>
+
+<Slot for="video-frame-rendering-markdown-1-1-3">
+
+- 如果两个事件报告的 `elapsedTime` 差值较大（例如大于 200 ms），表示渲染耗时较高，应检查是否及时设置渲染视图，若排除该因素可联系声网技术支持
+- 如果仅收到解码事件，未收到渲染事件，可能的原因包括：
+
+  - 未设置远端视图
+  - 使用了外部渲染器
+
+</Slot>
+
+**加入频道但暂不订阅流**
+
+在对首帧出图要求极高的情况下，可以先加入频道但不订阅媒体流，等用户在 App 上实际触发加入频道的操作时，调用 `startMediaRenderingTracing` 设置渲染数据打点，然后订阅远端主播的媒体流，详细实现见[首帧出图最佳实践](/doc/rtc/android/best-practice/first-frame-rendering)。在该场景下 `onVideoRenderingTracingResult` 中 `tracingInfo` 报告的数据含义如下表所示：
+
+| 字段名 | 含义 | 参考范围 | 说明及建议 |
+| --- | --- | --- | --- |
+| `elapsedTime` | <Slot name="video-frame-rendering-markdown-2-1-1" /> | <Slot name="video-frame-rendering-markdown-2-1-2" /> | 如果渲染事件的 `elapsedTime` 比解码事件的值大很多，建议检查是否及时设置远端视图渲染 |
+| `start2JoinChannel` | 从 `joinChannel` 到调用 `startMediaRenderingTracing` 的耗时 | 负值 | 由于已经先加入频道，因此该值无需关注 |
+| `join2JoinSuccess` | 从调用 `joinChannel` 到加入频道成功（`onJoinChannelSuccess`）的耗时 | 50-500 ms | 由于已经先加入频道，因此该值无需关注 |
+| `joinSuccess2RemoteJoined` | 从调用 `startMediaRenderingTracing` 到远端主播加入频道（`onUserJoined`）的耗时 | 0 ms | <Slot name="video-frame-rendering-markdown-2-4-3" /> |
+| `remoteJoined2SetView` | 从调用 `startMediaRenderingTracing` 到设置远端视图（`setupRemoteVideo`）的耗时 | 0 ms | <Slot name="video-frame-rendering-markdown-2-5-3" /> |
+| `remoteJoined2UnmuteVideo` | 从调用 `startMediaRenderingTracing` 到订阅视频流的耗时 | 0 ms | 在用户触发加入频道的操作时调用 `startMediaRenderingTracing` 并订阅视频流。该值理论上为 0 ms。如果该值偏大，请检查在用户触发加入频道操作并调用 `startMediaRenderingTracing` 之后、订阅视频流之前，是否存在可能的耗时点 |
+| `remoteJoined2PacketReceived` | 从调用 `startMediaRenderingTracing` 到本地用户接收首个远端主播的视频包的耗时 | 100 ms | 如果该值偏大，建议检查远端主播加入频道后是否及时发布视频流 |
+
+<Slot for="video-frame-rendering-markdown-2-1-1">
+
+- 解码事件：从调用 `startMediaRenderingTracing` 到首帧解码（`onFirstRemoteVideoDecoded`）的耗时
+- 渲染事件：从调用 `startMediaRenderingTracing` 到首帧渲染（`onFirstRemoteVideoFrame`）的耗时
+
+</Slot>
+
+<Slot for="video-frame-rendering-markdown-2-1-2">
+
+- 解码事件：500 ms 以内
+- 渲染事件：500 ms 以内
+
+</Slot>
+
+<Slot for="video-frame-rendering-markdown-2-4-3">
+
+- 如果该值大于 0，可能是用户切换频道过于频繁
+- 在 SDK 触发 `onUserJoined` 之后调用 `startMediaRenderingTracing`，该值没有参考意义
+
+</Slot>
+
+<Slot for="video-frame-rendering-markdown-2-5-3">
+
+- 如果该值大于 0，检查是否及时设置远端视图
+- 在设置远端视图之后调用 `startMediaRenderingTracing`，该值没有参考意义
+
+</Slot>
+
+## 参考信息
+
+### API 参考
+
+- Windows
+  - [`joinChannel`](/api-ref/rtc/windows/API/toc_channel#joinChannel%20[2/2])
+  - [`startMediaRenderingTracing`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing)
+  - [`onVideoRenderingTracingResult`](/api-ref/rtc/windows/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
+  - [`preloadChannel`](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_preloadchannel)
+
+- Android
+  - [`joinChannel`](/api-ref/rtc/android/API/toc_channel#joinChannel%20[2/2])
+  - [`startMediaRenderingTracing`](/api-ref/rtc/android/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing)
+  - [`onVideoRenderingTracingResult`](/api-ref/rtc/android/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
+  - [`preloadChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_preloadchannel)
+
+- iOS
+  - [`joinChannel`](/api-ref/rtc/ios/API/toc_channel#joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:)
+  - [`startMediaRenderingTracing`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing)
+  - [`onVideoRenderingTracingResult`](/api-ref/rtc/ios/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
+  - [`preloadChannel`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_preloadchannel)
+
+- macOS
+  - [`joinChannel`](/api-ref/rtc/macos/API/toc_channel#joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:)
+  - [`startMediaRenderingTracing`](/api-ref/rtc/macos/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing)
+  - [`onVideoRenderingTracingResult`](/api-ref/rtc/macos/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
+  - [`preloadChannel`](/api-ref/rtc/macos/API/toc_channel#api_irtcengine_preloadchannel)
+
+### 相关文档
+
+- [加快首帧出图](https://doc.shengwang.cn/doc/rtc/android/best-practice/first-frame-rendering)

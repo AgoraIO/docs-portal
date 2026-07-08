@@ -1,14 +1,19 @@
 import { ArrowRightIcon } from 'lucide-react';
 import { type FaqItem, faqCategories } from './faq-data';
+import type { FaqCategoryMeta } from './faq-dataset';
 
 export function FaqItemCard({
+  categories = faqCategories,
   item,
+  readLabel = 'Read',
   showCategory = false,
 }: {
+  categories?: FaqCategoryMeta[];
   item: FaqItem;
+  readLabel?: string;
   showCategory?: boolean;
 }) {
-  const categoryLabel = faqCategories.find(
+  const categoryLabel = categories.find(
     (category) => category.id === item.category,
   )?.label;
 
@@ -31,7 +36,7 @@ export function FaqItemCard({
         </span>
       </span>
       <span className="flex items-center gap-2 text-sm font-medium text-primary sm:justify-end">
-        Read
+        {readLabel}
         <ArrowRightIcon className="transition-transform group-hover:translate-x-0.5" />
       </span>
     </a>

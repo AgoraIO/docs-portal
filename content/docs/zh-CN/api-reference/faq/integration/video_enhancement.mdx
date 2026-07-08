@@ -1,0 +1,232 @@
+---
+title: "如何使用视频增强插件？"
+---
+Video SDK v4.x 中提供了视频增强插件，可以实现美颜、暗光增强、色彩增强、视频降噪功能。
+
+## 功能介绍
+
+视频增强插件的主要功能如下：
+
+- **美颜**
+
+  通过调整对比度，美白，磨皮，红润，锐化等参数来实现不同的美颜效果。
+
+- **暗光增强**
+
+  在光线不足、光照不均匀、背光场景下开启暗光增强，可实现智能补光、动态提升画面的整体亮度、改善画面的可视范围和观看质量。
+
+- **色彩增强**
+
+  由于摄像头的多样性，采集到的视频可能存在饱和度不足、画面发灰等问题。开启色彩增强算法，可调整图像和视频画面的饱和度，使画面色彩更加丰富逼真，提升人的视觉主观感受。
+
+  同时，该算法专门提供肤色保护功能，避免人的肤色受到过大影响。
+
+- **视频降噪**
+
+  在采集光线较暗或采集设备较差的场景下开启视频降噪，可消除噪声像素点。
+
+:::warning[注意]
+- 视频增强对设备性能有影响，请根据实际场景需求和用户设备性能适度使用视频增强。
+- 为确保 SDK 在 RTC Engine 初始化阶段自动加载视频增强动态库，请勿手动删除该动态库。更多关于动态库的介绍详见[插件列表](/doc/rtc/android/best-practice/reduce-app-size#插件列表)。
+:::
+
+## 参数设置
+
+### 美颜
+
+调用 `setBeautyEffectOptions`，并通过 `options` 参数调节各种美颜效果，详见 `setBeautyEffectOptions` 文档。
+
+### 暗光增强
+
+调用 `setExtensionProperty`，并对参数进行如下设置：
+
+- `provider_name` ：`agora_video_filters_clear_vision`
+
+- `extension_name` ： `clear_vision`
+
+- `key` ： `lowlight_enhance_option`
+
+- `value` 参数中的 `enable`、`mode` 和 `level` 描述如下：
+
+| 参数 | 描述 |
+| --- | --- |
+| <Slot name="video-enhancement-markdown-0-1-0" /> | <Slot name="video-enhancement-markdown-0-1-1" /> |
+| <Slot name="video-enhancement-markdown-0-2-0" /> | <Slot name="video-enhancement-markdown-0-2-1" /> |
+| <Slot name="video-enhancement-markdown-0-3-0" /> | <Slot name="video-enhancement-markdown-0-3-1" /> |
+
+<Slot for="video-enhancement-markdown-0-1-0">
+
+`enable`
+（开关）
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-0-1-1">
+
+是否开启暗光增强：
+
+- 0：（默认）关闭暗光增强。
+- 1：开启暗光增强。
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-0-2-0">
+
+`mode`
+（模式）
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-0-2-1">
+
+暗光增强模式：
+
+- 0：（默认）自适应模式，可根据采集环境光照条件自动开启和关闭暗光增强功能。
+- 1：手动模式。
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-0-3-0">
+
+`level`
+（等级）
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-0-3-1">
+
+暗光增强等级：
+
+- 0：（默认）画质优先，提高亮度的同时抑制画面噪声，但需要消耗更多 CPU 算力。
+- 1：性能优先，可节省 CPU 算力、减少处理时间。
+
+</Slot>
+
+### 色彩增强
+
+调用 `setExtensionProperty`， 并对参数进行如下设置：
+
+- `provider_name` ： `agora_video_filters_clear_vision`
+
+- `extension_name` ： `clear_vision`
+
+- `key` ： `color_enhance_option`
+
+- `value` 参数中的 `enable`、`Strength` 和 `Skin Protection` 描述如下：
+
+| 参数 | 描述 |
+| --- | --- |
+| <Slot name="video-enhancement-markdown-1-1-0" /> | <Slot name="video-enhancement-markdown-1-1-1" /> |
+| <Slot name="video-enhancement-markdown-1-2-0" /> | <Slot name="video-enhancement-markdown-1-2-1" /> |
+| <Slot name="video-enhancement-markdown-1-3-0" /> | <Slot name="video-enhancement-markdown-1-3-1" /> |
+
+<Slot for="video-enhancement-markdown-1-1-0">
+
+`enable`
+（开关）
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-1-1-1">
+
+是否开启色彩增强：
+
+- 0：（默认）关闭色彩增强。
+- 1：开启色彩增强。
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-1-2-0">
+
+`Strength`
+（色彩增强强度）
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-1-2-1">
+
+画面颜色饱和度的提升程度，取值范围为 [0.0,1.0]，默认值为 0.5。
+ 参数值越大，画面颜色饱和度越高。
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-1-3-0">
+
+`Skin Protection`
+（肤色保护强度）
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-1-3-1">
+
+肤色被保护的强度，取值范围为 [0.0，1.0]，默认值为 1.0。
+参数值越大、肤色受色彩增强的影响越小。
+
+</Slot>
+
+### 视频降噪
+
+调用 `setExtensionProperty`， 并对参数进行如下设置：
+
+- `provider_name` ： `agora_video_filters_clear_vision`
+
+- `extension_name` ： `clear_vision`
+
+- `key` ： `video_denoiser_option`
+
+- `value` 参数中的 `enable`、`mode` 和 `level` 描述如下：
+
+ | 参数 | 描述 |
+ | --- | --- |
+ | <Slot name="video-enhancement-markdown-2-1-0" /> | <Slot name="video-enhancement-markdown-2-1-1" /> |
+ | <Slot name="video-enhancement-markdown-2-2-0" /> | <Slot name="video-enhancement-markdown-2-2-1" /> |
+ | <Slot name="video-enhancement-markdown-2-3-0" /> | <Slot name="video-enhancement-markdown-2-3-1" /> |
+
+ <Slot for="video-enhancement-markdown-2-1-0">
+
+ `enable`
+ （开关）
+
+ </Slot>
+
+ <Slot for="video-enhancement-markdown-2-1-1">
+
+ 是否开启视频降噪：
+
+ - 0：（默认）关闭视频降噪。
+ - 1：开启视频降噪。
+
+ </Slot>
+
+ <Slot for="video-enhancement-markdown-2-2-0">
+
+ `mode`
+ （模式）
+
+ </Slot>
+
+ <Slot for="video-enhancement-markdown-2-2-1">
+
+ 视频降噪模式：
+
+ - 0：（默认）自适应模式，可根据采集环境光照条件自动开启和关闭视频降噪功能。
+ - 1：手动模式。
+
+ </Slot>
+
+ <Slot for="video-enhancement-markdown-2-3-0">
+
+ `level`
+ （等级）
+
+ </Slot>
+
+ <Slot for="video-enhancement-markdown-2-3-1">
+
+ 视频降噪等级：
+
+ - 0：（默认）时域降噪，降噪效果中等，抗拖影效果好，App 鲁棒性强，适用于大部分场景。
+ - 1：快速降噪，降噪效果中等，适用于固定摄像头场景。
+ - 2：在时域降噪的基础上增加了空域降噪，降噪效果强，提升画面纯净度，适用于高噪点场景。
+
+ </Slot>

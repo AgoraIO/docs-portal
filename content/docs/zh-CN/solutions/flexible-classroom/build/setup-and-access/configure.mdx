@@ -115,7 +115,7 @@ title: "配置灵动课堂"
 传入 `storageConfig` JSON 对象用于存储录制文件。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `storageConfig` 的介绍，请注意以下字段的设置：
 
   - `endpoint`: 一般是由 Bucket 名称和访问域名拼成的完整路径。例如，你的 Bucket 名称为 `agora-recording`，OSS 访问域名为 `oss-cn-shanghai.aliyuncs.com`，则 endpoint 字段需要设为 `https://agora-recording.oss-cn-shanghai.aliyuncs.com`。该字段会应用在[查询录制列表](/zh-CN/solutions/flexible-classroom/reference/api-recording#查询录制列表)接口返回的 url 字段里的地址的域名。如果你的 OSS 配置了 CDN 加速，也可以直接将 endpoint 设置为 CDN 加速域名，最终录制页面的 URL 为 `https://agora-adc-artifacts.oss-accelerate.aliyuncs.com/xxxxx.mp4`。
-  - `fileNamePrefix`:（选填）String 数组，指定录制文件在第三方云存储中的存储位置。前缀长度（包括斜杠）不得超过 128 个字符。字符串支持26 个大小写英文字母 a-z、A-Z、10 个数字 0-9，不得出现斜杠、下划线、括号等符号字符。你可使用变量来指定一个动态路径。你发起录制时，灵动课堂云服务会用真实的值替换变量。详见[如何指定动态存储路径](/faq/integration-issues/class-dynamic)。
+  - `fileNamePrefix`:（选填）String 数组，指定录制文件在第三方云存储中的存储位置。前缀长度（包括斜杠）不得超过 128 个字符。字符串支持26 个大小写英文字母 a-z、A-Z、10 个数字 0-9，不得出现斜杠、下划线、括号等符号字符。你可使用变量来指定一个动态路径。你发起录制时，灵动课堂云服务会用真实的值替换变量。详见[如何指定动态存储路径](/zh-CN/api-reference/faq/integration/dynamic_storage_path)。
 
 `storageConfig` JSON 对象示例：
 
@@ -348,7 +348,7 @@ title: "配置灵动课堂"
 传入 `storageConfig` JSON 对象用于存储录制文件。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `storageConfig` 的介绍，请注意以下字段的设置：
 
   - `endpoint`: 一般是由 Bucket 名称和访问域名拼成的完整路径。例如，你的 Bucket 名称为 `agora-recording`，OSS 访问域名为 `oss-cn-shanghai.aliyuncs.com`，则 endpoint 字段需要设为 `https://agora-recording.oss-cn-shanghai.aliyuncs.com`。该字段会应用在[查询录制列表](/zh-CN/solutions/flexible-classroom/reference/api-recording#查询录制列表)接口返回的 url 字段里的地址的域名。如果你的 OSS 配置了 CDN 加速，也可以直接将 endpoint 设置为 CDN 加速域名，最终录制页面的 URL 为 `https://agora-adc-artifacts.oss-accelerate.aliyuncs.com/xxxxx.mp4`。
-  - `fileNamePrefix`:（选填）String 数组，指定录制文件在第三方云存储中的存储位置。前缀长度（包括斜杠）不得超过 128 个字符。字符串支持26 个大小写英文字母 a-z、A-Z、10 个数字 0-9，不得出现斜杠、下划线、括号等符号字符。你可使用变量来指定一个动态路径。你发起录制时，灵动课堂云服务会用真实的值替换变量。详见[如何指定动态存储路径](/faq/integration-issues/class-dynamic)。
+  - `fileNamePrefix`:（选填）String 数组，指定录制文件在第三方云存储中的存储位置。前缀长度（包括斜杠）不得超过 128 个字符。字符串支持26 个大小写英文字母 a-z、A-Z、10 个数字 0-9，不得出现斜杠、下划线、括号等符号字符。你可使用变量来指定一个动态路径。你发起录制时，灵动课堂云服务会用真实的值替换变量。详见[如何指定动态存储路径](/zh-CN/api-reference/faq/integration/dynamic_storage_path)。
 
 `storageConfig` JSON 对象示例：
 
@@ -581,7 +581,7 @@ title: "配置灵动课堂"
 传入 `storageConfig` JSON 对象用于存储录制文件。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `storageConfig` 的介绍，请注意以下字段的设置：
 
   - `endpoint`: 一般是由 Bucket 名称和访问域名拼成的完整路径。例如，你的 Bucket 名称为 `agora-recording`，OSS 访问域名为 `oss-cn-shanghai.aliyuncs.com`，则 endpoint 字段需要设为 `https://agora-recording.oss-cn-shanghai.aliyuncs.com`。该字段会应用在[查询录制列表](/zh-CN/solutions/flexible-classroom/reference/api-recording#查询录制列表)接口返回的 url 字段里的地址的域名。如果你的 OSS 配置了 CDN 加速，也可以直接将 endpoint 设置为 CDN 加速域名，最终录制页面的 URL 为 `https://agora-adc-artifacts.oss-accelerate.aliyuncs.com/xxxxx.mp4`。
-  - `fileNamePrefix`:（选填）String 数组，指定录制文件在第三方云存储中的存储位置。前缀长度（包括斜杠）不得超过 128 个字符。字符串支持26 个大小写英文字母 a-z、A-Z、10 个数字 0-9，不得出现斜杠、下划线、括号等符号字符。你可使用变量来指定一个动态路径。你发起录制时，灵动课堂云服务会用真实的值替换变量。详见[如何指定动态存储路径](/faq/integration-issues/class-dynamic)。
+  - `fileNamePrefix`:（选填）String 数组，指定录制文件在第三方云存储中的存储位置。前缀长度（包括斜杠）不得超过 128 个字符。字符串支持26 个大小写英文字母 a-z、A-Z、10 个数字 0-9，不得出现斜杠、下划线、括号等符号字符。你可使用变量来指定一个动态路径。你发起录制时，灵动课堂云服务会用真实的值替换变量。详见[如何指定动态存储路径](/zh-CN/api-reference/faq/integration/dynamic_storage_path)。
 
 `storageConfig` JSON 对象示例：
 
@@ -814,7 +814,7 @@ title: "配置灵动课堂"
 传入 `storageConfig` JSON 对象用于存储录制文件。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `storageConfig` 的介绍，请注意以下字段的设置：
 
   - `endpoint`: 一般是由 Bucket 名称和访问域名拼成的完整路径。例如，你的 Bucket 名称为 `agora-recording`，OSS 访问域名为 `oss-cn-shanghai.aliyuncs.com`，则 endpoint 字段需要设为 `https://agora-recording.oss-cn-shanghai.aliyuncs.com`。该字段会应用在[查询录制列表](/zh-CN/solutions/flexible-classroom/reference/api-recording#查询录制列表)接口返回的 url 字段里的地址的域名。如果你的 OSS 配置了 CDN 加速，也可以直接将 endpoint 设置为 CDN 加速域名，最终录制页面的 URL 为 `https://agora-adc-artifacts.oss-accelerate.aliyuncs.com/xxxxx.mp4`。
-  - `fileNamePrefix`:（选填）String 数组，指定录制文件在第三方云存储中的存储位置。前缀长度（包括斜杠）不得超过 128 个字符。字符串支持26 个大小写英文字母 a-z、A-Z、10 个数字 0-9，不得出现斜杠、下划线、括号等符号字符。你可使用变量来指定一个动态路径。你发起录制时，灵动课堂云服务会用真实的值替换变量。详见[如何指定动态存储路径](/faq/integration-issues/class-dynamic)。
+  - `fileNamePrefix`:（选填）String 数组，指定录制文件在第三方云存储中的存储位置。前缀长度（包括斜杠）不得超过 128 个字符。字符串支持26 个大小写英文字母 a-z、A-Z、10 个数字 0-9，不得出现斜杠、下划线、括号等符号字符。你可使用变量来指定一个动态路径。你发起录制时，灵动课堂云服务会用真实的值替换变量。详见[如何指定动态存储路径](/zh-CN/api-reference/faq/integration/dynamic_storage_path)。
 
 `storageConfig` JSON 对象示例：
 

@@ -1,0 +1,164 @@
+---
+title: "如何使用连麦鉴权功能？"
+---
+## 功能介绍
+
+连麦鉴权，主要用于控制频道内的用户是否有发布流的权限，需要开发者通过自己的业务服务端部署并生成 Token、声网服务器再对生成的 Token 校验实现。
+
+该功能可以确保频道内的发流用户都经过授权，从而防止黑客通过利用业务漏洞或盗取 Token 进行直播间炸房等行为。
+
+:::warning[注意]
+- 开通连麦鉴权功能涉及 app 逻辑修改。请确保在开通前阅读本文。
+- 该功能仅适用于 `setChannelProfile` 中的 `profile` 为 `LIVE_BROADCASTING` 的场景。
+:::
+
+## 实现方法
+
+### 1. 修改 Token 参数设置
+
+本文以 C++ 的 API 为例，介绍生成 AccessToken2 的 `role` 参数变更方式。具体的参数解释也适用于其他语言。
+
+```cpp
+#include <cstdlib>
+#include <iostream>
+
+#include "../src/RtcTokenBuilder2.h"
+
+using namespace agora::tools;
+
+int main(int argc, char const *argv[]) {
+  (void)argc;
+  (void)argv;
+
+  // 获取环境变量 AGORA_APP_ID 的值。请确保你将该变量设为你在声网控制台获取的 App ID
+  const char *env_app_id = getenv("AGORA_APP_ID");
+  std::string app_id = env_app_id ? env_app_id : "";
+  // 获取环境变量 AGORA_APP_CERTIFICATE 的值。请确保你将该变量设为你在声网控制台获取的 App 证书
+  const char *env_app_certificate = getenv("AGORA_APP_CERTIFICATE");
+  std::string app_certificate = env_app_certificate ? env_app_certificate : "";
+  // 将 channelName 替换为需要加入的频道名
+  std::string channel_name = "channelName";
+  // 填入你实际的用户 ID
+  uint32_t uid = 2882341273
+  // Token 的有效时间，单位秒
+  uint32_t token_expiration_in_seconds = 3600;
+  // 所有的权限的有效时间，单位秒
+  uint32_t privilege_expiration_in_seconds = 3600;
+  std::string result;
+
+  std::cout << "App Id:" << app_id << std::endl;
+  std::cout << "App Certificate:" << app_certificate << std::endl;
+  if (app_id == "" || app_certificate == "") {
+    std::cout << "Need to set environment variable AGORA_APP_ID and "
+                 "AGORA_APP_CERTIFICATE"
+              << std::endl;
+    return -1;
+  }
+  // 生成 Token
+  result = RtcTokenBuilder2::BuildTokenWithUid(
+      app_id, app_certificate, channel_name, uid, UserRole::kRolePublisher,
+      token_expiration_in_seconds, privilege_expiration_in_seconds);
+  std::cout << "Token With Int Uid:" << result << std::endl;
+
+  return 0;
+}
+```
+
+| 参数 | 概述 |
+| --- | --- |
+| `role` | <Slot name="token-cohost-html-0-1-1" /> |
+
+<Slot for="token-cohost-html-0-1-1">
+
+用户发流权限：
+
+        - `kRolePublisher(1)`:（默认）用户有发流权限。
+        - `kRoleSubscriber(2)`： 用户没有发流权限。
+
+</Slot>
+
+### 2. 修改 app 层实现逻辑
+
+你可以参考如下步骤在业务层对连麦用户的发流权限进行校验（适用于连麦观众需要上麦的场景）：
+
+1. 加入频道前，客户端向业务服务器申请权限为 `kRoleSubscriber` 的 Token。业务服务器将生成的角色为 `kRoleSubscriber` 的 Token 回传给客户端。
+2. 客户端在调用 `joinChannel` 方法时，传入以 `kRoleSubscriber` 权限生成的 Token。
+3. 客户端由观众切换为主播前，向业务服务器申请角色为 `kRolePublisher` 的 Token。业务服务器将生成的权限为 `kRolePublisher` 的 Token 回传给客户端。
+4. 客户端调用 `renewToken` 方法将新的 Token 同步给 声网服务器。
+5. 客户端调用 `setClientRole` 将用户角色切换为主播。声网服务器会在调用 `setClientRole` 方法的同时校验用户权限，如果 Token 角色为 `kRolePublisher`，则客户端成功获得发布流的权限。
+
+:::info[信息]
+- 如果客户端想要由主播切换回观众，同理，可以参考上述步骤 3-5，先申请角色为 `Audience` 的 Token，然后调用 `renewToken`，再调用 `setClientRole` 即可。
+  - 如果 Token 超过服务有效期，则需要生成新的 Token，并调用 `renewToken` 将新的 Token 传给 SDK。新生成的 Token 同样有服务有效期。
+:::
+
+### 3. 开启连麦鉴权
+
+请参考以下步骤在声网控制台开启连麦鉴权服务：
+
+1. 登录[声网控制台](https://console.shengwang.cn/)，在页面左上方选择需要开通连麦鉴权的项目。
+2. 在**全部产品**下选择**实时互动 RTC**，然后选择**功能配置**。
+3. 点击**连麦鉴权**，然后将状态设为**启用**，如下图所示：
+
+![示意图](/img/rtc/cohost.png)
+
+在控制台启用连麦鉴权后，该服务会在约 5 分钟后生效。
+
+项目一旦开启了连麦鉴权服务，则用户在频道中发流需要同时满足两个条件：
+
+- 在 `setClientRole` 中设置的 `role` 参数为 `BROADCASTER`。
+- 在生成 Token 的代码中设置的 `role` 参数为 `kRolePublisher`。
+
+## 升级注意事项
+
+**1. 假设用户角色为主播。升级到连麦鉴权后，会发生不能说话的情况吗？**
+
+回答：不会。但是当用户当前 Token 过期后，需要重新在服务端申请权限为 `kRolePublisher` 的 Token，然后调用 `renewToken` 将新的 Token 同步给 SDK。
+
+**2. 假设用户角色为观众。升级到连麦鉴权后，如果该用户想要上麦变成主播说话，有哪些注意事项？**
+
+回答：app 开通连麦鉴权后，用户是否能上麦发言必须同时满足两个条件：
+
+- 申请 Token 时填入的 role 为 `kRolePublisher`
+- `setClientRole` 方法中设置的 role 为 `BROADCASTER`
+
+因此如果观众用户想要上麦说话，需要参考上述修改 App 层实现逻辑的步骤，获取权限为 `kRolePublisher` 的 Token，并调用 `renewToken` 更新 Token，再调用 `setClientRole` 将用户角色设为主播。
+
+## 相关文档
+
+为方便你对频道中的用户的发流权限进行更精细的控制，声网还提供一个同名的重载方法。支持你对用户分别设置加入频道、发布音频流、发布视频流及发布数据流的权限进行分别设置。
+
+```cpp
+static std::string buildTokenWithUid(
+     const std:string& app_id,
+     const std::string& app_certificate,
+     const std::string& channel_name,
+     uint32_t uid,
+     uint32_t token_expire,
+     uint32_t join_channel_privilege_expire = 0,
+     unit32_t pub_audio_privilege_expire = 0,
+     uint32_t pub_video_privilege_expire = 0,
+     uint32_t pub_data_stream_privilege_expire = 0);
+```
+
+该方法生成带角色权限的 RTC Token，支持对如下权限及其过期时间进行更精确的设置：
+
+- 加入 RTC 频道
+- 在 RTC 频道中发布音频
+- 在 RTC 频道中发布视频
+- 在 RTC 频道中发布数据流
+
+其中，发布音频、视频和数据流的权限仅在开通连麦鉴权服务后才生效。
+
+一个用户可以设置多个权限。每个权限的最大有效时间为 24 小时。权限即将过期或已经过期后，SDK 会分别触发 `onTokenPriviegeWillExpire` 或 `onRequestToken` 回调。你需要在业务层区分即将过期或已经过期的是哪个权限，并根据业务需要及时生成新的 Token，然后调用 `renewToken` 将新的 Token 传给 SDK，或重新调用 `joinChannel` 加入频道。
+
+:::info[信息]
+你需要根据实际业务场景设置合理的过期时间戳。例如，如果加入频道的权限过期时间早于发布音频权限的过期时间，则在加入频道的权限过期后，用户就会被踢出 RTC 频道；即便发布音频的权限没有过期，对用户来讲这个权限是没有意义的。
+:::
+
+| 参数 | 描述 |
+| ---------------- | ---------------- |
+| `join_channel_privilege_expire`      | **加入频道权限**的 Unix 过期时间戳，单位为秒。该值为当前时间戳和权限有效期的总和。比如，你将 `join_channel_privilege_expire` 设为当前时间戳再加 600 秒，那么加入频道的权限会在生成 10 分钟后过期。      |
+| `pub_audio_privilege_expire`        | **发布音频权限**的 Unix 过期时间戳，单位为秒。该参数仅在开启连麦鉴权后生效。该值为当前时间戳和权限有效期的总和。比如，你将 `pub_audio_privilege_expire` 设为当前时间戳再加 600 秒，那么发布音频的权限会在生成 10 分钟后过期。如果希望该权限永久有效，则将该参数设为当前时间戳。|
+| `pub_video_privilege_expire`     | **发布视频权限**的 Unix 过期时间戳，单位为秒。该参数仅在开启连麦鉴权后生效。该值为当前时间戳和权限有效期的总和。比如，你将 `pub_video_privilege_expire` 设为当前时间戳再加 600 秒，那么发布视频的权限会在 10 分钟后过期。如果希望该权限永久有效，则将该参数设为当前时间戳。|
+| `pub_data_stream_privilege_expire`     | **发布数据流权限**的 Unix 过期时间戳，单位为秒。该参数仅在开启连麦鉴权后生效。该值为当前时间戳和权限有效期的总和。比如，你将 `pub_data_stream_privilege_expire` 设为当前时间戳再加 600 秒，那么发布数据流的权限会在 10 分钟后过期。如果希望该权限永久有效，则将该参数设为当前时间戳。 |

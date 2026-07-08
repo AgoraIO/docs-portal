@@ -1,0 +1,26 @@
+---
+title: "为什么 Android 9 无法使用 startAudioMixing 或 playEffect 播放音频文件？"
+---
+## 问题描述
+
+Android 9 手机上，调用 `startAudioMixing` 或 `playEffect` 无法播放音频文件。
+
+## 问题原因
+
+该问题是 Android 权限限制导致的。当 `targetSdkVersion` >= 28 时，需要添加 App 权限，否则会无法正常播放音频文件。
+
+## 解决方案
+
+如果你的 Android 项目 `targetSdkVersion` >= 28，在项目的 AndroidManifest.xml 文件中 `application` 区域添加如下行，即可正常播放音乐文件：
+
+```xml
+<application>
+   android:usesCleartextTraffic="true"
+   android:requestLegacyExternalStorage="true"
+   …
+</application>
+```
+
+## 相关链接
+
+更多的 Android 权限配置及注意事项，请参考[建立项目](/doc/rtc/android/get-started/quick-start#建立项目)。
