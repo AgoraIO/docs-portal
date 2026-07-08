@@ -1295,6 +1295,20 @@
   overflow: visible;
 }
 
+/* Fumadocs emits paragraph/list margins outside Tailwind layers.
+   Keep table-cell edges tight while preserving spacing between block children. */
+:where(html)
+  .prose
+  :where(td > :first-child):not(:where(.not-prose, .not-prose *)) {
+  margin-top: 0;
+}
+
+:where(html)
+  .prose
+  :where(td > :last-child):not(:where(.not-prose, .not-prose *)) {
+  margin-bottom: 0;
+}
+
 /* Fumadocs emits unlayered prose link styles after Tailwind layers.
    Keep the product decision for body links here so the rendered underline
    matches the foreground text instead of the brand accent. */
