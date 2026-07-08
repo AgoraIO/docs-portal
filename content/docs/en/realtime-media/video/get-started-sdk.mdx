@@ -243,7 +243,7 @@ import io.agora.rtc2.ChannelMediaOptions
 
 ### Initialize the engine
 
-For real-time communication, initialize an `RtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineConfig` to specify the application context, [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id), and custom [event handler](#subscribe-to-video-sdk-events), then call `RtcEngine.create(config)` to initialize the engine, enabling further channel operations. In your `MainActivity` file, add the following code:
+For real-time communication, initialize an `RtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineConfig` to specify the application context, [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate), and custom [event handler](#subscribe-to-video-sdk-events), then call `RtcEngine.create(config)` to initialize the engine, enabling further channel operations. In your `MainActivity` file, add the following code:
 
 <Tabs defaultValue="java">
 <TabsList>
@@ -1511,7 +1511,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
 
 
 ```swift
@@ -2166,7 +2166,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
 
 
 ```swift
@@ -2777,7 +2777,7 @@ function initializeClient() {
 
 To join a channel, call `join` with the following parameters:
 
-- **App ID**: The [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) for your project.
+- **App ID**: The [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate) for your project.
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
@@ -3385,7 +3385,7 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 
 ### Initialize the engine
 
-For real-time communication, initialize an `IRtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id), and custom [event handler](#subscribe-to-video-sdk-events), then call `initialize` to initialize the engine, enabling further channel operations. Add the following code to your header and `.cpp` files:
+For real-time communication, initialize an `IRtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate), and custom [event handler](#subscribe-to-video-sdk-events), then call `initialize` to initialize the engine, enabling further channel operations. Add the following code to your header and `.cpp` files:
 
 ```cpp
 // Declare the required variables
@@ -4412,7 +4412,7 @@ let uid = 123;
 
 ### Initialize the engine
 
-For real-time communication, create an `IRtcEngine` object by calling `createAgoraRtcEngine` and then call `initialize` with `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id). Call `registerEventHandler` to register a custom [event handler](#subscribe-to-video-sdk-events) for managing user interactions within the channel.
+For real-time communication, create an `IRtcEngine` object by calling `createAgoraRtcEngine` and then call `initialize` with `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate). Call `registerEventHandler` to register a custom [event handler](#subscribe-to-video-sdk-events) for managing user interactions within the channel.
 
 ```js
 let rtcEngine;
@@ -5052,7 +5052,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 ### Initialize the engine
 
-For real-time communication, initialize an `RtcEngine` instance. Use `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id), and other configuration parameters. In your dart file, add the following code:
+For real-time communication, initialize an `RtcEngine` instance. Use `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate), and other configuration parameters. In your dart file, add the following code:
 
 
 ```dart
@@ -5679,7 +5679,7 @@ import {
 
 
 ### Initialize the engine
-For real-time communication, call `createAgoraRtcEngine` to create an `RtcEngine` instance, and then `initialize` the engine using `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id).
+For real-time communication, call `createAgoraRtcEngine` to create an `RtcEngine` instance, and then `initialize` the engine using `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate).
 
 
 ```tsx
@@ -6505,7 +6505,7 @@ export const VideoCalling = () => {
 
 To join a channel, use the `useJoin` hook. You can specify the following `joinOptions`:
 
-- **App ID**: [`appid`](/en/realtime-media/video/manage-agora-account#get-the-app-id) identifies the project you created in Agora Console.
+- **App ID**: [`appid`](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate) identifies the project you created in Agora Console.
 
 - **Channel name**: The name of the `channel` to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
@@ -7660,7 +7660,7 @@ To import Agora library, add the following to `AgoraWidget.h`:
 
 ### Initialize the engine
 
-For real-time communication, initialize an `IRtcEngine` instance and set up an event handler to manage user interactions within the channel. Use `RtcEngineContext` to specify [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id), and custom [event handler](#subscribe-to-video-sdk-events), then call `RtcEngineProxy->initialize(RtcEngineContext)` to initialize the engine, enabling further channel operations.
+For real-time communication, initialize an `IRtcEngine` instance and set up an event handler to manage user interactions within the channel. Use `RtcEngineContext` to specify [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate), and custom [event handler](#subscribe-to-video-sdk-events), then call `RtcEngineProxy->initialize(RtcEngineContext)` to initialize the engine, enabling further channel operations.
 
 Add the `SetupSDKEngine` method declaration and implementation to the following files:
 

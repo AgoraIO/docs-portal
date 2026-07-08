@@ -9,8 +9,8 @@ Before using Chat, you need to enable and configure it through [Agora Console](h
 
 To enable Chat, make sure that you have the following:
 
-- A valid [Agora account](/en/realtime-media/im/get-started/manage-agora-account#create-an-agora-account).
-- An [Agora project](/en/realtime-media/im/get-started/manage-agora-account#create-an-agora-project) that uses  **App ID** and **Token** for authentication.
+- A valid [Agora account](/en/realtime-media/im/get-started/manage-agora-account#sign-up-for-an-agora-account).
+- An [Agora project](/en/realtime-media/im/get-started/manage-agora-account#your-first-agora-project) that uses  **App ID** and **Token** for authentication.
 - A Chat pricing plan. For details on how to subscribe, see [Subscribe to the pricing plan](/en/realtime-media/im/reference/pricing#subscribe-to-the-pricing-plan).
 
 ## Enable Chat

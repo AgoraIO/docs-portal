@@ -1,0 +1,25 @@
+## Security and authentication
+
+Use the following features from your Agora account to implement security and authentication features in your apps.
+
+### Generate temporary tokens
+
+To ensure communication security, best practice is to use tokens to authenticate the users who log in from your app.
+
+To generate a temporary RTC token for use in your project:
+
+1. On the [Projects](https://console.agora.io/v2/project-management) page, click the pencil icon next to your project.
+2. On the **Security** panel, click **Generate Temp Token**, enter a channel name in the pop-up box and click **Generate**.
+3. Copy the generated RTC token.
+
+To generate a token for other Agora products:
+
+1. In your browser, navigate to the [Agora token builder](https://agora-token-generator-demo.vercel.app/).
+2. Choose the Agora product your user wants to log in to. Fill in **App ID** and **App Certificate** with the details of your project in Agora Console.
+3. Customize the token for each user. The required fields are visible in the Agora token builder.
+4. In token-based authentication, each token is specific to a user ID in your app. Generate a token for each user, and make sure the user ID in your SDK login or join call matches the user ID used to create the token.
+5. Click **Generate Token**.
+
+   The token appears in Token Builder.
+
+6. Copy the token and use it in your app.

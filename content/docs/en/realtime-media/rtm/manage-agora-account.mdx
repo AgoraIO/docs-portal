@@ -1,0 +1,84 @@
+---
+title: "Agora account management"
+description: "Create, manage and update your Agora account."
+---
+
+<include cwd>content/includes/en/shared/console/get-started.mdx</include>
+
+## Enable and configure Signaling
+
+Before using Signaling, you need to enable it for each app ID in Agora Console and configure its main features.
+
+:::info
+The following steps apply to the new version of Agora Console. If you are using the old one, switch to the new version by clicking **Switch to the new version** at the top of the screen.
+
+:::
+
+### Enable Signaling for your project
+
+1. Select your project on the [Projects](https://console.agora.io/v2) page and click the corresponding pencil icon to configure it.
+
+    ![configure_project](https://assets-docs.agora.io/images/signaling/configure_project.png)
+
+1. Go to **All features** > **Signaling** > **Basic information** and select a data center in the dropdown.
+
+    ![project_settings_signaling](https://assets-docs.agora.io/images/signaling/project_settings_signaling.png)
+
+:::info
+   The data center setting determines the storage location for user state data, channel metadata, and user metadata for your application. Once you select a data center, this setting cannot be changed.
+
+:::
+
+1. Go to **Subscriptions** > **Signaling** and subscribe to a plan.
+
+    ![signaling-pricing-page](https://assets-docs.agora.io/images/signaling/signaling-pricing-plans.png)
+
+   Once subscribed, you will be able to unsubscribe from the same page.
+
+:::info
+   To avoid service disruption, ensure that you are subscribed to either a paid package or the Free Package. Using Signaling without an active subscription will result in account suspension.
+
+:::
+
+### Presence configuration
+
+To configure presence, go to **All features** > **Signaling** > **Presence Configuration** in Agora Console and set the following:
+
+- **Max number of instant events**
+
+    Sets the maximum number of instant notifications that can be sent. After reaching this limit, Signaling switches to interval mode for sending notifications. The value range is 8–128, with a default value of 50. If your specific requirement is beyond this range, contact [technical support](mailto:support@agora.io).
+
+- **Timed event notification interval**
+
+    Sets how often periodic notifications are sent. The value range is 5–300 seconds, with a default value is 30 seconds.
+
+- **Event notification debounce time**
+
+    Specifies the time interval within which no presence event is triggered if a user quickly leaves and re-joins. The default value is 2 seconds.
+
+   ![signaling-presence-configuration](https://assets-docs.agora.io/images/signaling/signaling-presence-configuration.png)
+
+### Storage configuration
+
+To configure storage, go to **All features** > **Signaling** > **Storage Configuration** in Agora Console and toggle the following:
+
+   - **Storage** : Enable/disable storage of user and channel attributes.
+   - **User attribute callback**: Enable/disable callbacks for user attribute changes.
+   - **Channel attribute callback**: Enable/disable callbacks for channel attribute changes.
+   - **Distributed lock**: Enable/disable distributed locks.
+
+   ![signaling-storage-configuration](https://assets-docs.agora.io/images/signaling/signaling-storage-configuration.png)
+
+### Activate stream channels
+
+The activation of Stream Channel functionality in Signaling directly depends on the activation of the 128-host feature in Real-Time Communication (RTC). To ensure proper activation:
+
+1. Submit a formal request to [support@agora.io](mailto:support@agora.io).
+2. Specifically request activation of the 128-host feature.
+3. Wait for confirmation before implementing Stream Channel features.
+
+For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io).
+
+<include cwd>content/includes/en/shared/console/generate-tokens.mdx</include>
+
+For more information on managing other aspects of your Agora account, see [Agora console overview](/en/realtime-media/rtm/console-overview).
