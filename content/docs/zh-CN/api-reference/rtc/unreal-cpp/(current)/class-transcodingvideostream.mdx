@@ -1,0 +1,102 @@
+---
+title: "TranscodingVideoStream"
+description: "参与本地合图的视频流。"
+---
+<a id="class_transcodingvideostream__prototype"></a>
+
+```cpp
+struct TranscodingVideoStream {
+  VIDEO_SOURCE_TYPE sourceType;
+  uid_t remoteUserUid;
+  const char* imageUrl;
+  int mediaPlayerId;
+  int x;
+  int y;
+  int width;
+  int height;
+  int zOrder;
+  double alpha;
+  bool mirror;
+  TranscodingVideoStream()
+    : sourceType(VIDEO_SOURCE_CAMERA_PRIMARY),
+      remoteUserUid(0),
+      imageUrl(NULL),
+      x(0),
+      y(0),
+      width(0),
+      height(0),
+      zOrder(0),
+      alpha(1.0),
+      mirror(false) {}
+};
+```
+
+<a id="class_transcodingvideostream__parameters"></a>
+
+## 属性
+
+### `sourceType`
+
+参与本地合图的视频源类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
+
+### `remoteUserUid`
+
+远端用户 ID。
+
+:::warning[注意]
+请仅在参与本地合图的视频源类型为 VIDEO_SOURCE_REMOTE 时，使用该参数。
+:::
+
+### `imageUrl`
+
+本地图片的路径。
+
+:::warning[注意]
+请仅在参与本地合图的视频源类型为图片时，使用该参数。
+:::
+
+示例路径：
+
+- Windows: C:\\\\Users\\\\\{username\}\\\\Pictures\\\\image.png
+
+### `mediaPlayerId`
+
+（可选）媒体播放器 ID。当你将 sourceType 设置为 VIDEO_SOURCE_MEDIA_PLAYER 时，需要设置该参数。
+
+### `x`
+
+参与本地合图的视频的左上角相对于合图画布左上角（原点）的横向位移。
+
+### `y`
+
+参与本地合图的视频的左上角相对于合图画布左上角（原点）的纵向位移。
+
+### `width`
+
+参与本地合图的视频的宽度 (px)。
+
+### `height`
+
+参与本地合图的视频的高度 (px)。
+
+### `zOrder`
+
+参与本地合图的视频所属的图层的编号。取值范围为 [0,100]。
+
+- 0:（默认值）图层在最下层。
+- 100: 图层在最上层。
+
+### `alpha`
+
+参与本地合图的视频的透明度。取值范围为 [0.0,1.0]。 0.0 表示透明度为完全透明，1.0 表示透明度为完全不透明。
+
+### `mirror`
+
+是否对参与本地合图的的视频进行镜像：
+
+- true: 将参与本地合图的视频进行镜像。
+- false: （默认值）不将参与本地合图的视频进行镜像。
+
+:::warning[注意]
+该参数仅对视频源类型为摄像头的视频生效。
+:::

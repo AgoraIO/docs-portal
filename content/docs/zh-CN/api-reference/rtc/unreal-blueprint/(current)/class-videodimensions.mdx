@@ -1,0 +1,42 @@
+---
+title: "FUABT_VideoDimensions"
+description: "视频尺寸。"
+---
+<a id="class_videodimensions__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FVideoDimensions {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FVideoDimensions")
+	int width = 640;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FVideoDimensions")
+	int height = 480;
+	FVideoDimensions(){}
+	FVideoDimensions(const agora::rtc::VideoDimensions & AgoraData){
+		width = AgoraData.width;
+		height = AgoraData.height;
+	}
+	agora::rtc::VideoDimensions CreateAgoraData() const{
+		agora::rtc::VideoDimensions AgoraData;
+		AgoraData.width = width;
+		AgoraData.height = height;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::VideoDimensions& AgoraData) const {
+	}
+};
+```
+
+<a id="class_videodimensions__parameters"></a>
+
+## 属性
+
+### `width`
+
+视频宽度，单位为像素。
+
+### `height`
+
+视频高度，单位为像素。

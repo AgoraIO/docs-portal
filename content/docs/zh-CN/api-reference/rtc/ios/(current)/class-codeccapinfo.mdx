@@ -1,0 +1,29 @@
+---
+title: "AgoraVideoCodecCapInfo"
+description: "SDK 的编解码能力信息。"
+---
+<a id="class_codeccapinfo__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraVideoCodecCapInfo : NSObject
+@property(assign, nonatomic) AgoraVideoCodecType codecType;
+@property(assign, nonatomic) NSUInteger codecCapMask;
+@property(strong, nonatomic) AgoraVideoCodecCapLevels *_Nonnull codecCapLevels;
+@end
+```
+
+<a id="class_codeccapinfo__parameters"></a>
+
+## 属性
+
+### `codecType`
+
+视频编解码器类型，详见 [AgoraVideoCodecType](/zh-CN/api-reference/rtc/ios/enum-videocodectype)。
+
+### `codecCapMask`
+
+SDK 中编解码器类型的位掩码。
+
+### `codecCapLevels`
+
+编解码能力，详见 [AgoraVideoCodecCapLevels](/zh-CN/api-reference/rtc/ios/class-codeccaplevels)。

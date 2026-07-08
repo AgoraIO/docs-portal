@@ -1,0 +1,35 @@
+---
+title: "SegmentationProperty"
+description: "背景图像的处理属性。"
+---
+<a id="class_segmentationproperty__prototype"></a>
+
+```typescript
+export class SegmentationProperty {
+
+  modelType?: SegModelType;
+
+  greenCapacity?: number;
+
+ screenColorType?: ScreenColorType;}
+```
+
+<a id="class_segmentationproperty__parameters"></a>
+
+## 属性
+
+### `modelType`
+
+进行背景处理的算法。详见 [SegModelType](/zh-CN/api-reference/rtc/electron/enum-segmodeltype)。
+
+### `greenCapacity`
+
+对画面中背景颜色识别的精度范围。取值范围为 [0,1]，默认值为 0.5。取值越大，代表可识别的纯色范围越大。当该参数取值过大时，人像边缘和人像范围内的纯色也会被识别。建议你根据实际效果动态调整该参数的值。
+
+:::info[注]
+该参数仅在 `modelType` 设置为 `SegModelGreen` 时生效。
+:::
+
+### `screenColorType`
+
+屏幕颜色类型。详见 [ScreenColorType](/zh-CN/api-reference/rtc/electron/enum-screencolortype)。

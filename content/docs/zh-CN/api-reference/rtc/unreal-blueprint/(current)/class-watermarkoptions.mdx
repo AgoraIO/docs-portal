@@ -1,0 +1,76 @@
+---
+title: "FWatermarkOptions"
+description: "水印图片的设置。"
+---
+<a id="class_watermarkoptions__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FWatermarkOptions
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|WatermarkOptions")
+	bool visibleInPreview = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|WatermarkOptions")
+	FRectangle positionInLandscapeMode = FRectangle();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|WatermarkOptions")
+	FRectangle positionInPortraitMode = FRectangle();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|WatermarkOptions")
+	FWatermarkRatio watermarkRatio = FWatermarkRatio();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|WatermarkOptions")
+	EWATERMARK_FIT_MODE mode = EWATERMARK_FIT_MODE::FIT_MODE_COVER_POSITION;
+	FWatermarkOptions(){}
+	FWatermarkOptions(const agora::rtc::WatermarkOptions & AgoraData){
+		visibleInPreview = AgoraData.visibleInPreview;
+		positionInLandscapeMode = FRectangle(AgoraData.positionInLandscapeMode);
+		positionInPortraitMode = FRectangle(AgoraData.positionInPortraitMode);
+		watermarkRatio = FWatermarkRatio(AgoraData.watermarkRatio);
+		mode = static_cast<EWATERMARK_FIT_MODE>(AgoraData.mode);
+	}
+	agora::rtc::WatermarkOptions CreateAgoraData() const {
+		agora::rtc::WatermarkOptions AgoraData;
+		AgoraData.visibleInPreview = visibleInPreview;
+		AgoraData.positionInLandscapeMode = positionInLandscapeMode.CreateAgoraData();
+		AgoraData.positionInPortraitMode = positionInPortraitMode.CreateAgoraData();
+		AgoraData.watermarkRatio = watermarkRatio.CreateAgoraData();
+		AgoraData.mode = static_cast<agora::rtc::WATERMARK_FIT_MODE>(mode);
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::WatermarkOptions & AgoraData) const {
+		positionInLandscapeMode.FreeAgoraData(AgoraData.positionInLandscapeMode);
+		positionInPortraitMode.FreeAgoraData(AgoraData.positionInPortraitMode);
+		watermarkRatio.FreeAgoraData(AgoraData.watermarkRatio);
+	}
+	
+};
+```
+
+<a id="class_watermarkoptions__detailed_desc"></a>
+
+<a id="class_watermarkoptions__parameters"></a>
+
+## 属性
+
+### `visibleInPreview`
+
+水印是否在本地预览视图中可见：
+
+- true: （默认）水印在本地预览视图中可见。
+- false: 水印在本地预览视图中不可见。
+
+### `positionInLandscapeMode`
+
+水印的适配模式为 FIT_MODE_COVER_POSITION 时，用于设置横屏模式下水印图片的区域。详见 [FRectangle](/zh-CN/api-reference/rtc/unreal-blueprint/class-rectangle)。
+
+### `positionInPortraitMode`
+
+水印的适配模式为 FIT_MODE_COVER_POSITION 时，用于设置竖屏模式下水印图片的区域。详见 [FRectangle](/zh-CN/api-reference/rtc/unreal-blueprint/class-rectangle)。
+
+### `watermarkRatio`
+
+水印的适配模式为 FIT_MODE_USE_IMAGE_RATIO 时，该参数可设置缩放模式下的水印坐标。详见 [FWatermarkRatio](/zh-CN/api-reference/rtc/unreal-blueprint/class-watermarkratio)。
+
+### `mode`
+
+水印的适配模式。详见 [EWATERMARK_FIT_MODE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-watermarkfitmode)。

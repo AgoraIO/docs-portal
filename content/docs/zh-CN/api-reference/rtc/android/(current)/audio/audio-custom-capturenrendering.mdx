@@ -1,6 +1,6 @@
 ---
 title: "自定义音频采集和渲染"
-description: RTC Android API 参考迁移页。
+description: "自定义音频采集和渲染 API reference."
 ---
 <a id="toc_audio_custom_capturenrendering"></a>
 
@@ -47,7 +47,7 @@ public abstract int adjustCustomAudioPlayoutVolume(int trackId, int volume);
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume"></a>
 
@@ -92,7 +92,7 @@ public abstract int adjustCustomAudioPublishVolume(int trackId, int volume);
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_createcustomaudiotrack"></a>
 
@@ -114,9 +114,9 @@ public abstract int createCustomAudioTrack(Constants.AudioTrackType trackType, A
 2. 调用 joinChannel 加入频道。在 ChannelMediaOptions 中，将 publishCustomAudioTrackId 设置为步骤 1 中获取的音频轨道 ID，并将 publishCustomAudioTrack 设置为 true。
 3. 调用 pushExternalAudioFrame，并将 trackId 设置为步骤 2 中的音频轨道 ID，即可在频道中发布对应的自定义音频源。
 
-    :::info[注]
-    该方法需要在加入频道前调用。
-    :::
+:::info[注]
+该方法需要在加入频道前调用。
+:::
 
 <a id="api_irtcengine_createcustomaudiotrack__parameters"></a>
 
@@ -124,15 +124,15 @@ public abstract int createCustomAudioTrack(Constants.AudioTrackType trackType, A
 
 #### `trackType`
 
-自定义音频轨道的类型，详见 [AudioTrackType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-audiotracktype)。
+自定义音频轨道的类型，详见 [AudioTrackType](/zh-CN/api-reference/rtc/android/enum-audiotracktype)。
 
 :::info[注]
-如果该参数设置为 `AUDIO_TRACK_DIRECT`，则在调用 `joinChannel` 加入频道时，必须将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设置为 false，否则加入频道会失败并返回错误码 -2。
+如果该参数设置为 `AUDIO_TRACK_DIRECT`，则在调用 `joinChannel` 加入频道时，必须将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设置为 false，否则加入频道会失败并返回错误码 -2。
 :::
 
 #### `config`
 
-自定义音频轨道的配置，详见 [AudioTrackConfig](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-audiotrackconfig)。
+自定义音频轨道的配置，详见 [AudioTrackConfig](/zh-CN/api-reference/rtc/android/class-audiotrackconfig)。
 
 <a id="api_irtcengine_createcustomaudiotrack__return_values"></a>
 
@@ -142,7 +142,7 @@ public abstract int createCustomAudioTrack(Constants.AudioTrackType trackType, A
 - 方法调用失败，返回 0xffffffff。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroycustomaudiotrack"></a>
 
@@ -174,7 +174,7 @@ public abstract int destroyCustomAudioTrack(int trackId);
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback"></a>
 
@@ -219,7 +219,7 @@ public abstract int enableCustomAudioLocalPlayback(int trackId, boolean enabled)
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pullaudioframe"></a>
 
@@ -237,12 +237,14 @@ public abstract int pullPlaybackAudioFrame(byte[] data, int lengthInByte);
 
 调用该方法前，请先调用 [setExternalAudioSink](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) 并设置 `enabled` 为 true，以启用外部音频渲染。
 
-注： `pullPlaybackAudioFrame` 方法和 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调都可用于获取远端混音后的音频数据。启用外部音频渲染（调用 [setExternalAudioSink](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) ）后，无法再通过 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调获取数据。请根据实际业务需求选择使用 `pullPlaybackAudioFrame` 方法或 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调。两者区别如下：
+:::info[注]
+`pullPlaybackAudioFrame` 方法和 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调都可用于获取远端混音后的音频数据。启用外部音频渲染（调用 [setExternalAudioSink](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) ）后，无法再通过 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调获取数据。请根据实际业务需求选择使用 `pullPlaybackAudioFrame` 方法或 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调。两者区别如下：
 
 - 调用 pullPlaybackAudioFrame 方法后，App 会自动从 SDK 拉取音频数据。通过设置音频数据参数，SDK 会调整帧缓冲区以帮助 App 处理延迟，有效避免音频播放抖动。
 - 注册 onPlaybackAudioFrame 回调后，SDK 会通过回调将音频数据发送给 App。若处理音频帧存在延迟，可能会导致音频抖动。
 
 该方法仅用于获取远端混音后的音频数据。如需获取采集、播放等其他音频处理阶段的数据，可通过调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册相应的回调。
+:::
 
 <a id="api_irtcengine_pullaudioframe__timing"></a>
 
@@ -270,7 +272,7 @@ public abstract int pullPlaybackAudioFrame(byte[] data, int lengthInByte);
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pullaudioframe2"></a>
 
@@ -288,12 +290,12 @@ public abstract int pullPlaybackAudioFrame(ByteBuffer data, int lengthInByte);
 
 在调用该方法之前，你需要调用 [setExternalAudioSink](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) 方法，并将 `enabled` 设置为 true，以启用并设置外部音频播放。调用该方法成功后，App 会拉取解码并混音后的音频数据用于播放。
 
-注：
-
+:::info[注]
 - 该方法需要在加入频道后调用。
 - 该方法与 onPlaybackAudioFrame 回调的区别如下：
   - onPlaybackAudioFrame：SDK 通过该回调将音频数据发送给 App。若 App 处理音频帧存在延迟，可能会导致音频抖动。
   - pullPlaybackAudioFrame：App 主动拉取远端音频数据。设置音频参数后，SDK 会调整帧缓冲区，避免外部音频播放中因抖动引发的问题。
+:::
 
 <a id="api_irtcengine_pullaudioframe2__parameters"></a>
 
@@ -315,7 +317,7 @@ public abstract int pullPlaybackAudioFrame(ByteBuffer data, int lengthInByte);
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pushaudioframe2"></a>
 
@@ -390,7 +392,7 @@ public abstract int pushExternalAudioFrame(byte[] data, long timestamp, int samp
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setexternalaudiosink"></a>
 
@@ -459,7 +461,7 @@ public abstract int setExternalAudioSink(boolean enabled, int sampleRate, int ch
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setexternalaudiosource"></a>
 
@@ -517,7 +519,7 @@ public abstract int setExternalAudioSource(boolean enabled, int sampleRate, int 
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setexternalaudiosource2"></a>
 
@@ -593,4 +595,4 @@ public abstract int setExternalAudioSource(boolean enabled, int sampleRate, int 
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)

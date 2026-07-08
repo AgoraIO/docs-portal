@@ -1,0 +1,46 @@
+---
+title: "LogConfig"
+description: "SDK 日志文件的配置。"
+---
+<a id="class_logconfig__prototype"></a>
+
+```cpp
+struct LogConfig
+{
+  const char* filePath;
+  uint32_t fileSizeInKB;
+  LOG_LEVEL level;
+  LogConfig() : filePath(NULL), fileSizeInKB(DEFAULT_LOG_SIZE_IN_KB), level(OPTIONAL_LOG_LEVEL_SPECIFIER LOG_LEVEL_INFO) {}
+};
+```
+
+<a id="class_logconfig__parameters"></a>
+
+## 属性
+
+### `filePath`
+
+日志文件的完整路径。声网建议你使用默认的日志路径。如果你需要修改默认的日志路径，请确保你指定的路径存在且可写。
+
+默认路径为：
+
+- Android： /storage/emulated/0/Android/data/&lt;packagename&gt;/files/agorasdk.log。
+- iOS： App Sandbox/Library/caches/agorasdk.log。
+- macOS：
+  - 开启沙盒: App Sandbox/Library/Logs/agorasdk.log，例如 /Users/&lt;username&gt;/Library/Containers/&lt;AppBundleIdentifier&gt;/Data/Library/Logs/agorasdk.log。
+  - 关闭沙盒: ～/Library/Logs/agorasdk.log
+- Windows： C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\agorasdk.log。
+
+### `fileSizeInKB`
+
+单个 `agorasdk.log` 日志文件的大小，单位为 KB，取值范围为 [128,20480]，默认值为 2,048 KB。如果你将 `fileSizeInKByte` 设为小于 128 KB，SDK 会自动调整到 128 KB；如果你将 `fileSizeInKByte` 设为大于 20,480 KB，SDK 会自动调整到 20,480 KB。
+
+:::warning[注意]
+该方法仅用于设置 `agorasdk.log` 文件的大小，对 `agoraapi.log` 不生效。
+:::
+
+### `level`
+
+SDK 的日志输出等级，详见 [LOG_LEVEL](/zh-CN/api-reference/rtc/unreal-cpp/enum-loglevel)。
+
+例如，如果你选择 WARN 级别，就可以看到在 FATAL、ERROR 和 WARN 级别上的所有日志信息。

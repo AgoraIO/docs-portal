@@ -1,0 +1,59 @@
+---
+title: "ScreenCaptureConfiguration"
+description: "用于设置屏幕采集的相关参数。"
+---
+<a id="class_screencaptureconfiguration__prototype"></a>
+
+```cpp
+struct ScreenCaptureConfiguration {
+  bool isCaptureWindow;
+  int64_t displayId;
+  Rectangle screenRect;
+  int64_t windowId;
+  ScreenCaptureParameters params;
+  Rectangle regionRect;
+};
+```
+
+<a id="class_screencaptureconfiguration__parameters"></a>
+
+## 属性
+
+### `isCaptureWindow`
+
+是否采集屏幕上的窗口：
+
+- true：采集窗口。
+- false：（默认）采集整个屏幕，而非窗口。
+
+### `displayId`
+
+屏幕的显示 ID。
+
+:::info[注]
+该参数仅在 macOS 上采集屏幕时生效。
+:::
+
+### `screenRect`
+
+共享屏幕相对于虚拟屏幕的位置。详见 [Rectangle](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rectangle)。
+
+:::info[注]
+该参数仅在 Windows 上采集屏幕时生效。
+:::
+
+### `windowId`
+
+窗口 ID。
+
+:::info[注]
+该参数仅在采集窗口时生效。
+:::
+
+### `params`
+
+屏幕采集配置。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureparameters)。
+
+### `regionRect`
+
+共享区域相对于整个屏幕的位置。详见 [Rectangle](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rectangle)。如果未设置该参数，SDK 会共享整个屏幕。如果设置的区域超出屏幕边界，仅共享屏幕内的部分。如果在 [Rectangle](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rectangle) 中设置的宽度或高度为 0，则共享整个屏幕。

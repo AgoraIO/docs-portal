@@ -1,0 +1,1939 @@
+---
+title: "网络及其他"
+description: "网络及其他 API reference."
+---
+<a id="toc_network"></a>
+
+<a id="api_irtcengine_complain"></a>
+
+## complain
+
+允许用户在通话结束后投诉通话质量。
+
+<a id="api_irtcengine_complain__prototype"></a>
+
+```cpp
+virtual int complain(const char* callId, const char* description) = 0;
+```
+
+<a id="api_irtcengine_complain__detailed_desc"></a>
+
+请在用户离开频道后调用该方法。
+
+<a id="api_irtcengine_complain__parameters"></a>
+
+### 参数
+
+#### `callId`
+
+当前通话的通话 ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_getcallid) 获取。
+
+#### `description`
+
+（可选）对通话的描述。字符串长度应小于 800 字节。
+
+<a id="api_irtcengine_complain__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+  - -1：发生通用错误（无明确原因）。
+  - -2：参数无效。
+  - -7：在 IRtcEngine 初始化之前调用该方法。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enableencryption"></a>
+
+## enableEncryption
+
+启用或关闭内置加密功能。
+
+<a id="api_irtcengine_enableencryption__prototype"></a>
+
+```cpp
+virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
+```
+
+<a id="api_irtcengine_enableencryption__detailed_desc"></a>
+
+用户离开频道后，SDK 会自动关闭内置加密功能。若需启用该功能，请在用户重新加入频道前调用该方法。
+
+:::info[注]
+- 同一频道内的所有用户在调用该方法时必须设置相同的加密配置。
+- 启用内置加密功能后，无法使用旁路推流功能。
+:::
+
+<a id="api_irtcengine_enableencryption__scenario"></a>
+
+### 适用场景
+
+适用于安全性要求较高的场景。
+
+<a id="api_irtcengine_enableencryption__timing"></a>
+
+### 调用时机
+
+请在加入频道前调用该方法。
+
+<a id="api_irtcengine_enableencryption__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用内置加密功能：
+
+- true：启用内置加密功能。
+- false：（默认）关闭内置加密功能。
+
+#### `config`
+
+内置加密配置。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-encryptionconfig)。
+
+<a id="api_irtcengine_enableencryption__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+  - -2：参数无效，请传入有效参数。
+  - -4：内置加密模式错误或 SDK 加载外部加密库失败，请检查枚举值或重新加载外部加密库。
+  - -7：SDK 未初始化，请先初始化 IRtcEngine 实例后再调用该方法。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_enableencryptionex"></a>
+
+## enableEncryptionEx
+
+启用或关闭内置加密功能。
+
+<a id="api_irtcengineex_enableencryptionex__prototype"></a>
+
+```cpp
+virtual int enableEncryptionEx(const RtcConnection& connection, bool enabled, const EncryptionConfig& config) = 0;
+```
+
+<a id="api_irtcengineex_enableencryptionex__detailed_desc"></a>
+
+用户离开频道后，SDK 会自动关闭内置加密。若需启用内置加密，请在用户重新加入频道前调用该方法。
+
+:::info[注]
+- 同一频道内的所有用户在调用该方法时必须设置相同的加密配置。
+- 启用内置加密后，无法使用旁路推流功能。
+:::
+
+<a id="api_irtcengineex_enableencryptionex__scenario"></a>
+
+### 适用场景
+
+适用于多频道场景，或对安全性要求较高的场景。
+
+<a id="api_irtcengineex_enableencryptionex__timing"></a>
+
+### 调用时机
+
+请在加入频道前调用该方法。
+
+<a id="api_irtcengineex_enableencryptionex__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+#### `enabled`
+
+是否启用内置加密：
+
+- true：启用内置加密。
+- false：（默认）关闭内置加密。
+
+#### `config`
+
+内置加密配置。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-encryptionconfig)。
+
+<a id="api_irtcengineex_enableencryptionex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_enablewebsdkinteroperability"></a>
+
+## enableWebSdkInteroperability
+
+启用与声网 Web SDK 的互通功能（仅适用于直播场景）。
+
+<a id="api_irtcengine_enablewebsdkinteroperability__prototype"></a>
+
+```cpp
+virtual int enableWebSdkInteroperability(bool enabled) __deprecated = 0;
+```
+
+<a id="api_irtcengine_enablewebsdkinteroperability__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃。SDK 自动开启与 Web SDK 的互通，无需调用该方法开启。
+
+你可以调用该方法启用或关闭与声网 Web SDK 的互通功能。如果频道中有 Web SDK 用户，必须调用该方法，否则 Native 用户的视频画面在 Web 端会显示为黑屏。该方法仅适用于直播场景，在语音通话场景中默认启用互通功能。
+
+<a id="api_irtcengine_enablewebsdkinteroperability__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用互通功能：
+
+- true：启用互通功能。
+- false：（默认）关闭互通功能。
+
+<a id="api_irtcengine_enablewebsdkinteroperability__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getcallid"></a>
+
+## getCallId
+
+获取当前通话 ID。
+
+<a id="api_irtcengine_getcallid__prototype"></a>
+
+```cpp
+virtual int getCallId(agora::util::AString& callId) = 0;
+```
+
+<a id="api_irtcengine_getcallid__detailed_desc"></a>
+
+当用户在客户端加入频道时，SDK 会生成一个用于标识该通话的 `callId`。你可以调用该方法获取 `callId`，并在调用 [rate](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_rate) 和 [complain](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_complain) 等方法时传入该值。
+
+<a id="api_irtcengine_getcallid__timing"></a>
+
+### 调用时机
+
+在加入频道后调用该方法。
+
+<a id="api_irtcengine_getcallid__parameters"></a>
+
+### 参数
+
+#### `callId`
+
+输出参数，当前通话的 `callId`。
+
+<a id="api_irtcengine_getcallid__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_getcallidex"></a>
+
+## getCallIdEx
+
+获取与连接 ID 对应的通话 ID。
+
+<a id="api_irtcengineex_getcallidex__prototype"></a>
+
+```cpp
+virtual int getCallIdEx(agora::util::AString& callId, const RtcConnection& connection) = 0;
+```
+
+<a id="api_irtcengineex_getcallidex__detailed_desc"></a>
+
+当用户在客户端加入频道时，SDK 会生成一个用于标识该通话的 `callId`。你可以调用该方法获取 `callId`，并在调用如 [rate](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_rate) 和 [complain](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_complain) 等方法时传入该值。
+
+<a id="api_irtcengineex_getcallidex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_getcallidex__timing"></a>
+
+### 调用时机
+
+请在加入频道后调用该方法。
+
+<a id="api_irtcengineex_getcallidex__parameters"></a>
+
+### 参数
+
+#### `callId`
+
+输出参数，当前通话的 `callId`。
+
+#### `connection`
+
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+<a id="api_irtcengineex_getcallidex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_getconnectionstate"></a>
+
+## getConnectionState
+
+获取 SDK 当前的连接状态。
+
+<a id="api_irtcengine_getconnectionstate__prototype"></a>
+
+```cpp
+virtual CONNECTION_STATE_TYPE getConnectionState() = 0;
+```
+
+<a id="api_irtcengine_getconnectionstate__detailed_desc"></a>
+
+<a id="api_irtcengine_getconnectionstate__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_getconnectionstate__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回当前连接状态，详见 [CONNECTION_STATE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-connectionstatetype)。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_getconnectionstateex"></a>
+
+## getConnectionStateEx
+
+获取 SDK 当前的连接状态。
+
+<a id="api_irtcengineex_getconnectionstateex__prototype"></a>
+
+```cpp
+virtual CONNECTION_STATE_TYPE getConnectionStateEx(const RtcConnection& connection) = 0;
+```
+
+<a id="api_irtcengineex_getconnectionstateex__detailed_desc"></a>
+
+<a id="api_irtcengineex_getconnectionstateex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_getconnectionstateex__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或加入频道后调用。
+
+<a id="api_irtcengineex_getconnectionstateex__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+<a id="api_irtcengineex_getconnectionstateex__return_values"></a>
+
+### 返回值
+
+当前的连接状态。详见 [CONNECTION_STATE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-connectionstatetype)。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms"></a>
+
+## getCurrentMonotonicTimeInMs
+
+获取 SDK 当前的单调时间。
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__prototype"></a>
+
+```cpp
+virtual int64_t getCurrentMonotonicTimeInMs() = 0;
+```
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__detailed_desc"></a>
+
+在自定义视频采集或自定义音频采集场景中，为确保音视频同步，建议调用该方法获取 SDK 当前的单调时间（单位为毫秒），并将该值传入采集的视频帧（[VideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoframe) ）和音频帧（[AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe) ）的时间戳参数中。单调时间是指一个随时间单调递增的时间序列。
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__return_values"></a>
+
+### 返回值
+
+- ≥ 0：方法调用成功，返回 SDK 当前的单调时间（单位为毫秒）。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_geterrordescription"></a>
+
+## getErrorDescription
+
+getErrorDescription：获取警告或错误描述。
+
+<a id="api_irtcengine_geterrordescription__prototype"></a>
+
+```cpp
+virtual const char* getErrorDescription(int code) = 0;
+```
+
+<a id="api_irtcengine_geterrordescription__detailed_desc"></a>
+
+<a id="api_irtcengine_geterrordescription__parameters"></a>
+
+### 参数
+
+#### `code`
+
+SDK 报告的错误码。
+
+<a id="api_irtcengine_geterrordescription__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回错误码对应的描述字符串。
+- 方法调用失败时，返回空字符串。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getnetworktype"></a>
+
+## getNetworkType
+
+获取本地网络连接类型。
+
+<a id="api_irtcengine_getnetworktype__prototype"></a>
+
+```cpp
+virtual int getNetworkType() = 0;
+```
+
+<a id="api_irtcengine_getnetworktype__detailed_desc"></a>
+
+:::info[注]
+[getNetworkType](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_getnetworktype) 方法可在加入频道前或加入频道后调用。
+:::
+
+<a id="api_irtcengine_getnetworktype__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功，返回本地网络连接类型。
+  - 0：SDK 与网络断开连接。
+  - 1：网络类型为 LAN。
+  - 2：网络类型为 Wi-Fi（包括热点）。
+  - 3：网络类型为移动 2G。
+  - 4：网络类型为移动 3G。
+  - 5：网络类型为移动 4G。
+  - 6：网络类型为移动 5G。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+  - -1：网络类型未知。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getntpwalltimeinms"></a>
+
+## getNtpWallTimeInMs
+
+获取当前的 NTP（网络时间协议）时间。
+
+<a id="api_irtcengine_getntpwalltimeinms__prototype"></a>
+
+```cpp
+virtual uint64_t getNtpWallTimeInMs() = 0;
+```
+
+<a id="api_irtcengine_getntpwalltimeinms__detailed_desc"></a>
+
+在实时合唱场景中，尤其是当多个接收端因网络问题导致下行链路不一致时，可以调用该方法获取当前的 NTP 时间作为参考时间，以对齐多个接收端的歌词和音乐，实现合唱同步。
+
+<a id="api_irtcengine_getntpwalltimeinms__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回当前 NTP 时间的 Unix 时间戳（毫秒）。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getversion"></a>
+
+## getVersion
+
+获取 SDK 版本号。
+
+<a id="api_irtcengine_getversion__prototype"></a>
+
+```cpp
+virtual const char* getVersion(int* build) = 0;
+```
+
+<a id="api_irtcengine_getversion__detailed_desc"></a>
+
+<a id="api_irtcengine_getversion__parameters"></a>
+
+### 参数
+
+#### `build`
+
+输出参数，表示 SDK 的构建索引。
+
+<a id="api_irtcengine_getversion__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回 SDK 的版本号字符串。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_isfeatureavailableondevice"></a>
+
+## isFeatureAvailableOnDevice
+
+检查当前设备是否支持指定的高级功能。
+
+<a id="api_irtcengine_isfeatureavailableondevice__prototype"></a>
+
+```cpp
+virtual bool isFeatureAvailableOnDevice(FeatureType type) = 0;
+```
+
+<a id="api_irtcengine_isfeatureavailableondevice__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.3.0 版本新增。
+
+你可以通过该方法判断当前设备是否满足使用虚拟背景、美颜特效等高级功能的性能要求，从而避免在低性能设备上启用相关功能导致性能下降或功能不可用。根据返回结果，你可以决定是否展示或启用对应功能按钮，或在设备性能不足时提示用户。
+
+<a id="api_irtcengine_isfeatureavailableondevice__parameters"></a>
+
+### 参数
+
+#### `type`
+
+高级功能的类型，详见 [FeatureType](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-featuretype)。
+
+<a id="api_irtcengine_isfeatureavailableondevice__return_values"></a>
+
+### 返回值
+
+- true：当前设备支持指定的功能。
+- false：当前设备不支持指定的功能。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_querydevicescore"></a>
+
+## queryDeviceScore
+
+查询设备评分。
+
+<a id="api_irtcengine_querydevicescore__prototype"></a>
+
+```cpp
+virtual int queryDeviceScore() = 0;
+```
+
+<a id="api_irtcengine_querydevicescore__detailed_desc"></a>
+
+在高清或超高清的视频场景中，可以调用该方法查询设备评分。如果返回的评分较低（例如低于 60），建议降低视频分辨率，以避免影响视频体验。不同业务场景对设备评分的最低要求不同，具体建议请[联系技术支持](https://ticket.shengwang.cn/)。
+
+<a id="api_irtcengine_querydevicescore__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回当前设备评分，范围为 [0, 100]，数值越大表示设备性能越强。大多数设备评分在 60 到 100 之间。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_queryinterface"></a>
+
+## queryInterface
+
+获取指定接口的指针。
+
+<a id="api_irtcengine_queryinterface__prototype"></a>
+
+```cpp
+virtual int queryInterface(INTERFACE_ID_TYPE iid, void** inter) = 0;
+```
+
+<a id="api_irtcengine_queryinterface__detailed_desc"></a>
+
+<a id="api_irtcengine_queryinterface__parameters"></a>
+
+### 参数
+
+#### `iid`
+
+接口的 ID，详见 [INTERFACE_ID_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-interfaceidtype)。
+
+#### `inter`
+
+输出参数，表示指定接口的指针。
+
+<a id="api_irtcengine_queryinterface__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_rate"></a>
+
+## rate
+
+允许用户在通话结束后对通话进行评分。
+
+<a id="api_irtcengine_rate__prototype"></a>
+
+```cpp
+virtual int rate(const char* callId, int rating, const char* description) = 0;
+```
+
+<a id="api_irtcengine_rate__detailed_desc"></a>
+
+:::info[注]
+请确保在离开频道后再调用该方法。
+:::
+
+<a id="api_irtcengine_rate__parameters"></a>
+
+### 参数
+
+#### `callId`
+
+当前通话的 ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_getcallid) 获取。
+
+#### `rating`
+
+评分值，范围为 1（最低分）到 5（最高分）。
+
+#### `description`
+
+（可选）通话的描述信息，字符串长度应小于 800 字节。
+
+<a id="api_irtcengine_rate__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+  - -1：发生通用错误（无具体原因）。
+  - -2：参数无效。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_registerpacketobserver"></a>
+
+## registerPacketObserver
+
+注册一个数据包观察器。
+
+<a id="api_irtcengine_registerpacketobserver__prototype"></a>
+
+```cpp
+virtual int registerPacketObserver(IPacketObserver* observer) = 0;
+```
+
+<a id="api_irtcengine_registerpacketobserver__detailed_desc"></a>
+
+调用该方法注册一个数据包观察器。当声网 SDK 触发用于语音或视频数据包传输的 [IPacketObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ipacketobserver) 回调时，你可以通过该方法处理数据包，例如加密或解密。
+
+:::info[注]
+- 处理后发送到网络的数据包大小不得超过 1200 字节，否则 SDK 可能无法发送该数据包。
+- 请确保接收端和发送端都调用该方法，否则可能会出现无声音或黑屏等未定义行为。
+- 当你使用媒体推流或录制功能时，声网不建议调用该方法。
+- 请在加入频道前调用该方法。
+:::
+
+<a id="api_irtcengine_registerpacketobserver__parameters"></a>
+
+### 参数
+
+#### `observer`
+
+数据包观察器。详见 [IPacketObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ipacketobserver)。
+
+<a id="api_irtcengine_registerpacketobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_sendcustomreportmessage"></a>
+
+## sendCustomReportMessage
+
+上报自定义消息。
+
+<a id="api_irtcengine_sendcustomreportmessage__prototype"></a>
+
+```cpp
+virtual int sendCustomReportMessage(const char* id, const char* category, const char* event, const char* label, int value) = 0;
+```
+
+<a id="api_irtcengine_sendcustomreportmessage__detailed_desc"></a>
+
+该功能处于测试阶段，支持上报和分析自定义消息，当前提供免费试用。在测试版本中，最多支持在 6 秒内上报 10 条消息，每条消息不超过 256 字节，每个字符串不超过 100 字节。如需试用该功能，请联系销售并与我们讨论自定义消息的格式。
+
+<a id="api_irtcengine_sendcustomreportmessage__parameters"></a>
+
+### 参数
+
+#### `id`
+
+消息的唯一标识。
+
+#### `category`
+
+消息的分类。
+
+#### `event`
+
+事件名称。
+
+#### `label`
+
+消息标签。
+
+#### `value`
+
+消息的数值。
+
+<a id="api_irtcengine_sendcustomreportmessage__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_sendcustomreportmessageex"></a>
+
+## sendCustomReportMessageEx
+
+支持上报和分析自定义消息。
+
+<a id="api_irtcengineex_sendcustomreportmessageex__prototype"></a>
+
+```cpp
+virtual int sendCustomReportMessageEx(const char* id, const char* category, const char* event, const char* label, int value, const RtcConnection& connection) = 0;
+```
+
+<a id="api_irtcengineex_sendcustomreportmessageex__detailed_desc"></a>
+
+该功能目前处于测试阶段，提供免费试用。在测试版本中，最多支持在 6 秒内上报 10 条消息，每条消息不超过 256 字节，每个字符串不超过 100 字节。如需试用该功能，请联系销售并与我们讨论自定义消息的格式。
+
+<a id="api_irtcengineex_sendcustomreportmessageex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_sendcustomreportmessageex__parameters"></a>
+
+### 参数
+
+#### `id`
+
+自定义消息的唯一标识。
+
+#### `category`
+
+自定义消息的分类。
+
+#### `event`
+
+自定义消息的事件名称。
+
+#### `label`
+
+自定义消息的标签。
+
+#### `value`
+
+自定义消息的数值。
+
+#### `connection`
+
+[RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection) 对象。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+<a id="api_irtcengineex_sendcustomreportmessageex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_setavsyncsource"></a>
+
+## setAVSyncSource
+
+设置发送端的音视频同步。
+
+<a id="api_irtcengine_setavsyncsource__prototype"></a>
+
+```cpp
+virtual int setAVSyncSource(const char* channelId, uid_t uid) = 0;
+```
+
+<a id="api_irtcengine_setavsyncsource__detailed_desc"></a>
+
+用户可能会使用两台独立设备分别发送音频和视频流。为了确保接收端的音视频同步，你可以在视频发送端调用该方法，并传入音频发送端的频道名和用户 ID。SDK 会以音频流的时间戳为参考，自动调整视频流，即使两台发送设备处于不同的上行网络（如 Wi-Fi 和 4G），也能实现音视频同步。
+
+:::info[注]
+声网建议你在加入频道前调用该方法。
+:::
+
+<a id="api_irtcengine_setavsyncsource__parameters"></a>
+
+### 参数
+
+#### `channelId`
+
+音频发送端的频道名。
+
+#### `uid`
+
+音频发送端的用户 ID。
+
+<a id="api_irtcengine_setavsyncsource__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setcloudproxy"></a>
+
+## setCloudProxy
+
+设置云代理服务。
+
+<a id="api_irtcengine_setcloudproxy__prototype"></a>
+
+```cpp
+virtual int setCloudProxy(CLOUD_PROXY_TYPE proxyType) = 0;
+```
+
+<a id="api_irtcengine_setcloudproxy__detailed_desc"></a>
+
+#### `自从`
+
+自 v3.3.0 版本新增。
+
+当用户的网络访问受防火墙限制时，需要先配置防火墙，允许访问声网提供的特定 IP 地址和端口，然后调用该方法启用云代理，并通过 `proxyType` 参数设置云代理类型。 成功连接到云代理后，SDK 会触发 [onConnectionStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调，状态为 `CONNECTION_STATE_CONNECTING`，原因为 `CONNECTION_CHANGED_SETTING_PROXY_SERVER`。 要禁用已设置的云代理，请调用 `setCloudProxy(NONE_PROXY)`。 要更改已设置的云代理类型，请先调用 `setCloudProxy(NONE_PROXY)`，然后再调用 [setCloudProxy](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_setcloudproxy) 设置新的 `proxyType`。
+
+:::info[注]
+- 建议在加入频道前调用该方法。
+- 当用户处于防火墙之后并使用强制 UDP 云代理时，旁路推流和跨频道联播服务不可用。
+- 当使用强制 TCP 云代理时，调用 startAudioMixing 播放 HTTP 协议的在线音乐文件会发生错误。旁路推流和跨频道联播服务使用基于 TCP 协议的云代理。
+:::
+
+<a id="api_irtcengine_setcloudproxy__related"></a>
+
+### 相关回调
+
+成功连接到云代理后，SDK 会触发 [onConnectionStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调，状态为 `CONNECTION_STATE_CONNECTING`，原因为 `CONNECTION_CHANGED_SETTING_PROXY_SERVER`。
+
+<a id="api_irtcengine_setcloudproxy__parameters"></a>
+
+### 参数
+
+#### `proxyType`
+
+云代理类型，详见 [CLOUD_PROXY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-cloudproxytype)。
+
+<a id="api_irtcengine_setcloudproxy__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+  - -2：参数无效。
+  - -7：SDK 未初始化。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalaccesspoint"></a>
+
+## setLocalAccessPoint
+
+配置连接到声网私有媒体服务器接入模块。
+
+<a id="api_irtcengine_setlocalaccesspoint__prototype"></a>
+
+```cpp
+virtual int setLocalAccessPoint(const LocalAccessPointConfiguration& config) = 0;
+```
+
+<a id="api_irtcengine_setlocalaccesspoint__detailed_desc"></a>
+
+成功部署声网私有媒体服务器并在内网客户端集成 4.x RTC SDK 后，你可以调用该方法指定本地接入点，并将接入模块分配给 SDK。
+
+:::info[注]
+该方法仅在部署声网混合云解决方案后生效。你可以联系销售了解详情并部署声网混合云。
+:::
+
+<a id="api_irtcengine_setlocalaccesspoint__timing"></a>
+
+### 调用时机
+
+该方法必须在加入频道前调用。
+
+<a id="api_irtcengine_setlocalaccesspoint__parameters"></a>
+
+### 参数
+
+#### `config`
+
+本地接入点配置。详见 [LocalAccessPointConfiguration](class_localaccesspointconfiguration.html)。
+
+<a id="api_irtcengine_setlocalaccesspoint__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlogfile"></a>
+
+## setLogFile
+
+设置 SDK 输出日志文件路径。
+
+<a id="api_irtcengine_setlogfile__prototype"></a>
+
+```cpp
+virtual int setLogFile(const char* filePath) = 0;
+```
+
+<a id="api_irtcengine_setlogfile__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃，请改用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 中的 `context` 设置日志文件路径。
+
+用于指定 SDK 输出日志的文件路径，日志文件记录 SDK 运行过程中的所有日志数据。你需要在调用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 后立即调用该方法，否则日志输出可能不完整。
+
+:::info[注]
+请确保日志文件所在目录已存在且具有写权限。
+:::
+
+<a id="api_irtcengine_setlogfile__timing"></a>
+
+### 调用时机
+
+该方法需要在调用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 后立即调用，否则输出日志可能不完整。
+
+<a id="api_irtcengine_setlogfile__parameters"></a>
+
+### 参数
+
+#### `filePath`
+
+日志文件的完整路径，使用 UTF-8 编码。
+
+<a id="api_irtcengine_setlogfile__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlogfilesize"></a>
+
+## setLogFileSize
+
+设置日志文件大小。
+
+<a id="api_irtcengine_setlogfilesize__prototype"></a>
+
+```cpp
+virtual int setLogFileSize(unsigned int fileSizeInKBytes) = 0;
+```
+
+<a id="api_irtcengine_setlogfilesize__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃，请改用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 中的 `logConfig` 设置日志文件大小。
+
+默认情况下，SDK 会生成五个 SDK 日志文件和五个 API 调用日志文件，规则如下：
+
+- SDK 日志文件包括： agorasdk.log、 agorasdk.1.log、 agorasdk.2.log、 agorasdk.3.log 和 agorasdk.4.log。
+- API 调用日志文件包括： agoraapi.log、 agoraapi.1.log、 agoraapi.2.log、 agoraapi.3.log 和 agoraapi.4.log。
+- 每个日志文件的默认大小为 2,048 KB，采用 UTF-8 编码。
+- SDK 会将最新日志写入 agorasdk.log 或 agoraapi.log 文件。
+- 当 agorasdk.log 写满时，SDK 会按以下顺序处理日志文件：
+  1. 删除 agorasdk.4.log （如果存在）。
+  2. 将 agorasdk.3.log 重命名为 agorasdk.4.log。
+  3. 将 agorasdk.2.log 重命名为 agorasdk.3.log。
+  4. 将 agorasdk.1.log 重命名为 agorasdk.2.log。
+  5. 创建新的 agorasdk.log 文件。
+- agoraapi.log 的覆盖规则与 agorasdk.log 相同。
+
+:::info[注]
+该方法仅用于设置 `agorasdk.log` 文件的大小，不影响 `agoraapi.log` 文件。
+:::
+
+<a id="api_irtcengine_setlogfilesize__parameters"></a>
+
+### 参数
+
+#### `fileSizeInKBytes`
+
+`agorasdk.log` 文件的大小（单位：KB）。取值范围为 [128, 20480]。默认值为 2,048 KB。如果设置值小于 128 KB，SDK 会自动调整为 128 KB；如果设置值大于 20,480 KB，SDK 会自动调整为 20,480 KB。
+
+<a id="api_irtcengine_setlogfilesize__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlogfilter"></a>
+
+## setLogFilter
+
+设置 SDK 的日志输出等级。
+
+<a id="api_irtcengine_setlogfilter__prototype"></a>
+
+```cpp
+virtual int setLogFilter(unsigned int filter) = 0;
+```
+
+<a id="api_irtcengine_setlogfilter__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃，请改用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 中的 `logConfig` 设置日志过滤等级。
+
+你可以使用一个或多个日志过滤等级的组合来设置 SDK 的日志输出等级。日志等级的顺序为 `LOG_FILTER_OFF`、 `LOG_FILTER_CRITICAL`、 `LOG_FILTER_ERROR`、 `LOG_FILTER_WARN`、 `LOG_FILTER_INFO` 和 `LOG_FILTER_DEBUG`。选择某个等级后，将输出该等级及更高级别的日志。例如，如果将日志等级设置为 `LOG_FILTER_WARN`，你将看到 `LOG_FILTER_CRITICAL`、 `LOG_FILTER_ERROR` 和 `LOG_FILTER_WARN` 等级的日志。
+
+<a id="api_irtcengine_setlogfilter__parameters"></a>
+
+### 参数
+
+#### `filter`
+
+SDK 的日志输出等级，详见 [LOG_FILTER_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-logfiltertype)。
+
+<a id="api_irtcengine_setlogfilter__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setloglevel"></a>
+
+## setLogLevel
+
+设置 SDK 的输出日志等级。
+
+<a id="api_irtcengine_setloglevel__prototype"></a>
+
+```cpp
+virtual int setLogLevel(commons::LOG_LEVEL level) = 0;
+```
+
+<a id="api_irtcengine_setloglevel__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃，请改用 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 中的 `context` 设置日志等级。
+
+选择一个日志等级，以查看该等级及以上的日志信息。
+
+<a id="api_irtcengine_setloglevel__parameters"></a>
+
+### 参数
+
+#### `level`
+
+日志等级，详见 [LOG_LEVEL](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-loglevel)。
+
+<a id="api_irtcengine_setloglevel__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setparameters"></a>
+
+## setParameters
+
+通过配置 JSON 选项为 SDK 提供技术预览功能或特殊定制。
+
+<a id="api_irtcengine_setparameters__prototype"></a>
+
+```cpp
+virtual int setParameters(const char* parameters) = 0;
+```
+
+<a id="api_irtcengine_setparameters__detailed_desc"></a>
+
+请[联系技术支持](https://ticket.shengwang.cn/)以获取 JSON 配置方法。
+
+<a id="api_irtcengine_setparameters__parameters"></a>
+
+### 参数
+
+#### `parameters`
+
+指向 JSON 字符串格式的参数集合。
+
+<a id="api_irtcengine_setparameters__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setremotesubscribefallbackoption"></a>
+
+## setRemoteSubscribeFallbackOption
+
+根据网络状况设置订阅端的视频流回退选项。
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__prototype"></a>
+
+```cpp
+virtual int setRemoteSubscribeFallbackOption(STREAM_FALLBACK_OPTIONS option) = 0;
+```
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__detailed_desc"></a>
+
+不稳定的网络会影响视频通话或互动直播中的音视频质量。你可以通过设置 `option` 为 `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW` 或 `STREAM_FALLBACK_OPTION_AUDIO_ONLY`，在下行网络无法同时支持音视频时，SDK 会自动将视频从高质量流切换为低质量流，或关闭视频以保障音频质量。SDK 会持续监测网络状况，并在网络改善时恢复音视频流的订阅。
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__related"></a>
+
+### 相关回调
+
+当订阅的视频流回退为纯音频流，或从纯音频流恢复为音视频流时，SDK 会触发 [onRemoteSubscribeFallbackToAudioOnly](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly) 回调。
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__parameters"></a>
+
+### 参数
+
+#### `option`
+
+订阅流的回退选项，详见 [STREAM_FALLBACK_OPTIONS](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-streamfallbackoptions)。
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startechotest3"></a>
+
+## startEchoTest
+
+启动音视频通话回路测试。
+
+<a id="api_irtcengine_startechotest3__prototype"></a>
+
+```cpp
+virtual int startEchoTest(const EchoTestConfiguration& config) = 0;
+```
+
+<a id="api_irtcengine_startechotest3__detailed_desc"></a>
+
+你可以调用该方法进行音视频通话回路测试，用于检测本地音视频设备以及上下行网络是否正常。开始测试后，你需要发出声音或面对摄像头，音频或视频将在约两秒后回放。
+
+- 如果音频播放正常，说明音频设备和上下行网络正常。
+- 如果视频播放正常，说明视频设备和上下行网络正常。
+
+:::info[注]
+- 在频道中调用该方法时，请确保未发布任何音视频流。
+- 调用该方法后需调用 stopEchoTest 结束测试，否则你将无法进行下一次音视频通话回路测试，也无法加入频道。
+- 在直播场景中，该方法仅适用于主播角色。
+:::
+
+<a id="api_irtcengine_startechotest3__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或加入频道后调用该方法。
+
+<a id="api_irtcengine_startechotest3__parameters"></a>
+
+### 参数
+
+#### `config`
+
+音视频通话回路测试的配置。详见 [EchoTestConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-echotestconfiguration)。
+
+<a id="api_irtcengine_startechotest3__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startlastmileprobetest"></a>
+
+## startLastmileProbeTest
+
+启动 Last-mile 网络探测测试。
+
+<a id="api_irtcengine_startlastmileprobetest__prototype"></a>
+
+```cpp
+virtual int startLastmileProbeTest(const LastmileProbeConfig& config) = 0;
+```
+
+<a id="api_irtcengine_startlastmileprobetest__detailed_desc"></a>
+
+调用时序：在收到 [onLastmileQuality](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onlastmilequality) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onlastmileproberesult) 回调前，不要调用其他方法，否则可能会中断这些回调。 相关回调：成功调用该方法后，SDK 会依次触发以下两个回调：
+
+- onLastmileQuality：SDK 会在约两秒内根据网络状况触发该回调。该回调用于评估网络质量，更贴近用户体验。
+- onLastmileProbeResult：SDK 会在约 30 秒内根据网络状况触发该回调。该回调返回网络状况的实时统计数据，更加客观。
+
+<a id="api_irtcengine_startlastmileprobetest__parameters"></a>
+
+### 参数
+
+#### `config`
+
+Last-mile 网络探测测试的配置。详见 [LastmileProbeConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-lastmileprobeconfig)。
+
+<a id="api_irtcengine_startlastmileprobetest__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopechotest"></a>
+
+## stopEchoTest
+
+停止音频通话测试。
+
+<a id="api_irtcengine_stopechotest__prototype"></a>
+
+```cpp
+virtual int stopEchoTest() = 0;
+```
+
+<a id="api_irtcengine_stopechotest__detailed_desc"></a>
+
+调用 [startEchoTest](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_startechotest3) 后，必须调用该方法结束测试，否则无法进行下一次音视频通话回路测试，也无法加入频道。
+
+<a id="api_irtcengine_stopechotest__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+  - -5（ERR_REFUSED ）：停止回声测试失败，可能未在运行中。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoplastmileprobetest"></a>
+
+## stopLastmileProbeTest
+
+停止 Last-mile 网络探测测试。
+
+<a id="api_irtcengine_stoplastmileprobetest__prototype"></a>
+
+```cpp
+virtual int stopLastmileProbeTest() = 0;
+```
+
+<a id="api_irtcengine_stoplastmileprobetest__detailed_desc"></a>
+
+<a id="api_irtcengine_stoplastmileprobetest__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onconnectionbanned"></a>
+
+## onConnectionBanned
+
+连接被声网服务器封禁时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onconnectionbanned__prototype"></a>
+
+```cpp
+virtual void onConnectionBanned() __deprecated {}
+```
+
+<a id="callback_irtcengineeventhandler_onconnectionbanned__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃，请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onconnectioninterrupted"></a>
+
+## onConnectionInterrupted
+
+onConnectionInterrupted 回调。
+
+<a id="callback_irtcengineeventhandler_onconnectioninterrupted__prototype"></a>
+
+```cpp
+virtual void onConnectionInterrupted() __deprecated {}
+```
+
+<a id="callback_irtcengineeventhandler_onconnectioninterrupted__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃，请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+
+当 SDK 建立连接后与服务器断开超过 4 秒时，会触发该回调。触发后，SDK 会尝试重新连接服务器。你可以通过该回调实现弹窗提醒功能。
+
+:::info[注]
+[onConnectionInterrupted](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectioninterrupted) 与 [onConnectionLost](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionlost) 的区别如下：
+
+- 当 SDK 成功加入频道后与服务器断开连接超过 4 秒时，会触发 onConnectionInterrupted 回调。
+- 无论是否加入频道，当 SDK 与服务器断开连接超过 10 秒时，会触发 onConnectionLost 回调。
+
+如果 SDK 在与声网边缘服务器断开连接 20 分钟后仍未重新加入频道，则停止重连。
+:::
+
+<a id="callback_irtcengineeventhandler_onconnectioninterrupted__timing"></a>
+
+### 触发时机
+
+当 SDK 与服务器的连接中断超过 4 秒时触发。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onconnectionlost"></a>
+
+## onConnectionLost
+
+onConnectionLost 回调。当 SDK 与声网边缘服务器的连接中断后 10 秒内无法重新连接时触发。
+
+<a id="callback_irtcengineeventhandler_onconnectionlost__prototype"></a>
+
+```cpp
+virtual void onConnectionLost() {}
+```
+
+<a id="callback_irtcengineeventhandler_onconnectionlost__detailed_desc"></a>
+
+调用 `joinChannel` 方法后，如果 SDK 与声网边缘服务器的连接中断，并在 10 秒内无法重新连接，则触发该回调。无论此时是否在频道中，都会触发该回调。如果在断开连接后 20 分钟内仍无法重新加入频道，SDK 将停止尝试重新加入。
+
+<a id="callback_irtcengineeventhandler_onconnectionlost__timing"></a>
+
+### 触发时机
+
+当 SDK 与声网边缘服务器的连接中断后 10 秒内无法重新连接时触发。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged"></a>
+
+## onConnectionStateChanged
+
+网络连接状态发生变化时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged__prototype"></a>
+
+```cpp
+virtual void onConnectionStateChanged(CONNECTION_STATE_TYPE state, CONNECTION_CHANGED_REASON_TYPE reason)
+```
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged__detailed_desc"></a>
+
+该回调在网络连接状态发生变化时触发，报告当前的连接状态以及导致状态变化的原因。
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged__parameters"></a>
+
+### 参数
+
+#### `state`
+
+当前的连接状态。详见 [CONNECTION_STATE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-connectionstatetype)。
+
+#### `reason`
+
+连接状态变化的原因。详见 [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-connectionchangedreasontype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onencryptionerror"></a>
+
+## onEncryptionError
+
+报告内置加密错误的回调。
+
+<a id="callback_irtcengineeventhandler_onencryptionerror__prototype"></a>
+
+```cpp
+virtual void onEncryptionError(ENCRYPTION_ERROR_TYPE errorType)
+```
+
+<a id="callback_irtcengineeventhandler_onencryptionerror__detailed_desc"></a>
+
+调用 [enableEncryption](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_enableencryption) 启用加密功能后，如果在发送端或接收端的加密或解密过程中发生错误，SDK 会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onencryptionerror__parameters"></a>
+
+### 参数
+
+#### `errorType`
+
+错误类型，详见 [ENCRYPTION_ERROR_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-encryptionerrortype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult"></a>
+
+## onLastmileProbeResult
+
+上行和下行 Last-mile 网络探测结果回调。
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult__prototype"></a>
+
+```cpp
+virtual void onLastmileProbeResult(const LastmileProbeResult& result)
+```
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult__detailed_desc"></a>
+
+调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_startlastmileprobetest) 后，SDK 会在 30 秒内触发该回调。
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult__parameters"></a>
+
+### 参数
+
+#### `result`
+
+上行和下行 Last-mile 网络探测测试结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/cpp-all-platforms/class-lastmileproberesult)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlastmilequality"></a>
+
+## onLastmileQuality
+
+报告本地用户的 Last-mile 网络质量回调。
+
+<a id="callback_irtcengineeventhandler_onlastmilequality__prototype"></a>
+
+```cpp
+virtual void onLastmileQuality(int quality) { (void)quality; }
+```
+
+<a id="callback_irtcengineeventhandler_onlastmilequality__detailed_desc"></a>
+
+该回调在加入频道前触发，用于报告本地用户与声网边缘服务器之间连接的网络质量（即 last-mile 网络状况）。调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_startlastmileprobetest) 后，SDK 会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onlastmilequality__parameters"></a>
+
+### 参数
+
+#### `quality`
+
+Last-mile 网络质量，详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-qualitytype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onmultipathstats"></a>
+
+## onMultipathStats
+
+多路径传输统计信息的回调。
+
+<a id="callback_irtcengineeventhandler_onmultipathstats__prototype"></a>
+
+```cpp
+virtual void onMultipathStats(const MultipathStats& stats)
+```
+
+<a id="callback_irtcengineeventhandler_onmultipathstats__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="callback_irtcengineeventhandler_onmultipathstats__timing"></a>
+
+### 触发时机
+
+该回调在你将 `enableMultipath` 设置为 true 以启用多路径传输后触发。
+
+<a id="callback_irtcengineeventhandler_onmultipathstats__parameters"></a>
+
+### 参数
+
+#### `stats`
+
+多路径传输统计信息。详见 [MultipathStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-multipathstats)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onnetworkquality"></a>
+
+## onNetworkQuality
+
+报告频道中每个用户的 Last-mile 网络质量。
+
+<a id="callback_irtcengineeventhandler_onnetworkquality__prototype"></a>
+
+```cpp
+virtual void onNetworkQuality(uid_t uid, int txQuality, int rxQuality)
+```
+
+<a id="callback_irtcengineeventhandler_onnetworkquality__detailed_desc"></a>
+
+该回调报告频道中每个用户的 Last-mile 网络状况。Last-mile 指的是本地设备与声网边缘服务器之间的连接。SDK 每两秒触发一次该回调。如果频道中有多个用户，SDK 会触发多次该回调。该回调通过在频道内发送和接收广播数据包来反馈网络质量。为避免广播风暴导致频道内数据传输量过大，该回调默认最多同时反馈 4 个远端用户的网络质量。
+
+:::info[注]
+`txQuality` 在用户未发送流时为 `UNKNOWN`； `rxQuality` 在用户未接收流时为 `UNKNOWN`。
+:::
+
+<a id="callback_irtcengineeventhandler_onnetworkquality__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+用户 ID。用于指定要报告网络质量的用户。如果该值为 0，则表示报告本地用户的网络质量。
+
+#### `txQuality`
+
+用户的上行网络质量评分，依据上行网络的传输码率、丢包率、平均往返时延（RTT）和抖动情况评估。该评分有助于判断当前上行网络是否能支持所选的视频编码器配置。例如，1000 Kbps 的上行网络可能足以支持分辨率为 640 × 480、帧率为 15 fps 的视频帧，但可能不足以支持高于 1280 × 720 的分辨率。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-qualitytype)。
+
+#### `rxQuality`
+
+用户的下行网络质量评分，依据下行网络的丢包率、平均 RTT 和抖动情况评估。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-qualitytype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onnetworktypechanged"></a>
+
+## onNetworkTypeChanged
+
+本地网络类型发生变化时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onnetworktypechanged__prototype"></a>
+
+```cpp
+virtual void onNetworkTypeChanged(NETWORK_TYPE type)
+```
+
+<a id="callback_irtcengineeventhandler_onnetworktypechanged__detailed_desc"></a>
+
+你可以通过该回调获取连接状态及其变化原因。当网络连接中断时，该回调可用于判断中断是由于网络类型变化还是网络状况不佳导致的。
+
+<a id="callback_irtcengineeventhandler_onnetworktypechanged__parameters"></a>
+
+### 参数
+
+#### `type`
+
+本地网络连接的类型，详见 [NETWORK_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-networktype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onpermissionerror"></a>
+
+## onPermissionError
+
+报告 SDK 无法获取设备权限。
+
+<a id="callback_irtcengineeventhandler_onpermissionerror__prototype"></a>
+
+```cpp
+virtual void onPermissionError(PERMISSION_TYPE permissionType)
+```
+
+<a id="callback_irtcengineeventhandler_onpermissionerror__detailed_desc"></a>
+
+该回调在 SDK 无法获取设备权限时触发，用于报告无法获取的设备权限类型。
+
+<a id="callback_irtcengineeventhandler_onpermissionerror__parameters"></a>
+
+### 参数
+
+#### `permissionType`
+
+设备权限类型，详见 [PERMISSION_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-permissiontype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onpermissiongranted"></a>
+
+## onPermissionGranted
+
+权限被授予时的回调。
+
+<a id="callback_irtcengineeventhandler_onpermissiongranted__prototype"></a>
+
+```cpp
+virtual void onPermissionGranted(agora::rtc::PERMISSION_TYPE permissionType) {}
+```
+
+<a id="callback_irtcengineeventhandler_onpermissiongranted__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onpermissiongranted__parameters"></a>
+
+### 参数
+
+#### `permissionType`
+
+权限类型，详见 [PERMISSION_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-permissiontype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onproxyconnected"></a>
+
+## onProxyConnected
+
+代理连接状态回调。
+
+<a id="callback_irtcengineeventhandler_onproxyconnected__prototype"></a>
+
+```cpp
+virtual void onProxyConnected(const char* channel, uid_t uid, PROXY_TYPE proxyType, const char* localProxyIp, int elapsed)
+```
+
+<a id="callback_irtcengineeventhandler_onproxyconnected__detailed_desc"></a>
+
+[onProxyConnected](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onproxyconnected) 回调用于监听 SDK 连接代理的状态。当用户调用 [setCloudProxy](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_setcloudproxy) 并成功加入频道后，SDK 会触发该回调，报告用户 ID、连接的代理类型，以及从调用 `joinChannel` 到触发该回调所经历的时间（毫秒）。
+
+<a id="callback_irtcengineeventhandler_onproxyconnected__parameters"></a>
+
+### 参数
+
+#### `channel`
+
+频道名。
+
+#### `uid`
+
+用户 ID。
+
+#### `proxyType`
+
+连接的代理类型，详见 [PROXY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-proxytype)。
+
+#### `localProxyIp`
+
+预留参数，暂未使用。
+
+#### `elapsed`
+
+从调用 `joinChannel` 到触发该回调所经历的时间，单位为毫秒。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_ipacketobserver_onreceiveaudiopacket"></a>
+
+## onReceiveAudioPacket
+
+当本地用户接收到音频包时触发的回调。
+
+<a id="callback_ipacketobserver_onreceiveaudiopacket__prototype"></a>
+
+```cpp
+virtual bool onReceiveAudioPacket(Packet& packet) = 0;
+```
+
+<a id="callback_ipacketobserver_onreceiveaudiopacket__detailed_desc"></a>
+
+<a id="callback_ipacketobserver_onreceiveaudiopacket__parameters"></a>
+
+### 参数
+
+#### `packet`
+
+接收到的音频包。详见 [Packet](/zh-CN/api-reference/rtc/cpp-all-platforms/class-packet)。
+
+<a id="callback_ipacketobserver_onreceiveaudiopacket__return_values"></a>
+
+### 返回值
+
+true：音频包接收成功。 false：音频包被丢弃。
+
+### 所属接口类
+- [IPacketObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ipacketobserver)
+
+<a id="callback_ipacketobserver_onreceivevideopacket"></a>
+
+## onReceiveVideoPacket
+
+本地用户接收到视频数据包时触发的回调。
+
+<a id="callback_ipacketobserver_onreceivevideopacket__prototype"></a>
+
+```cpp
+virtual bool onReceiveVideoPacket(Packet& packet) = 0;
+```
+
+<a id="callback_ipacketobserver_onreceivevideopacket__detailed_desc"></a>
+
+<a id="callback_ipacketobserver_onreceivevideopacket__parameters"></a>
+
+### 参数
+
+#### `packet`
+
+接收到的视频数据包。详见 [Packet](/zh-CN/api-reference/rtc/cpp-all-platforms/class-packet)。
+
+<a id="callback_ipacketobserver_onreceivevideopacket__return_values"></a>
+
+### 返回值
+
+true：视频数据包接收成功。 false：视频数据包被丢弃。
+
+### 所属接口类
+- [IPacketObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ipacketobserver)
+
+<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly"></a>
+
+## onRemoteSubscribeFallbackToAudioOnly
+
+远端媒体流因网络变化在音频流与视频流之间切换时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__prototype"></a>
+
+```cpp
+virtual void onRemoteSubscribeFallbackToAudioOnly(uid_t uid, bool isFallbackOrRecover)
+```
+
+<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__detailed_desc"></a>
+
+如果你调用了 [setRemoteSubscribeFallbackOption](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_setremotesubscribefallbackoption) 并将 `option` 设置为 `STREAM_FALLBACK_OPTION_AUDIO_ONLY`，SDK 会在以下情况下触发该回调：
+
+- 下行网络条件较差，已订阅的视频流被降级为纯音频流。
+- 下行网络条件改善，已订阅的流恢复为视频流。
+
+:::info[注]
+当远端媒体流因网络较弱切换为视频小流时，你可以通过 [onRemoteVideoStats](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调监控高质量与视频小流之间的切换。
+:::
+
+<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+远端用户 ID。
+
+#### `isFallbackOrRecover`
+
+是否因网络变化导致媒体流切换：
+
+- true：由于网络条件差，已订阅的媒体流降级为纯音频流。
+- false：网络条件改善后，已订阅的媒体流恢复为视频流。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_ipacketobserver_onsendaudiopacket"></a>
+
+## onSendAudioPacket
+
+本地用户发送音频包时触发的回调。
+
+<a id="callback_ipacketobserver_onsendaudiopacket__prototype"></a>
+
+```cpp
+virtual bool onSendAudioPacket(Packet& packet) = 0;
+```
+
+<a id="callback_ipacketobserver_onsendaudiopacket__detailed_desc"></a>
+
+<a id="callback_ipacketobserver_onsendaudiopacket__parameters"></a>
+
+### 参数
+
+#### `packet`
+
+发送的音频包。详见 [Packet](/zh-CN/api-reference/rtc/cpp-all-platforms/class-packet)。
+
+<a id="callback_ipacketobserver_onsendaudiopacket__return_values"></a>
+
+### 返回值
+
+true：音频包发送成功。 false：音频包被丢弃。
+
+### 所属接口类
+- [IPacketObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ipacketobserver)
+
+<a id="callback_ipacketobserver_onsendvideopacket"></a>
+
+## onSendVideoPacket
+
+本地用户发送视频数据包时触发的回调。
+
+<a id="callback_ipacketobserver_onsendvideopacket__prototype"></a>
+
+```cpp
+virtual bool onSendVideoPacket(Packet& packet) = 0;
+```
+
+<a id="callback_ipacketobserver_onsendvideopacket__detailed_desc"></a>
+
+<a id="callback_ipacketobserver_onsendvideopacket__parameters"></a>
+
+### 参数
+
+#### `packet`
+
+发送的视频数据包。详见 [Packet](/zh-CN/api-reference/rtc/cpp-all-platforms/class-packet)。
+
+<a id="callback_ipacketobserver_onsendvideopacket__return_values"></a>
+
+### 返回值
+
+true：视频数据包发送成功。 false：视频数据包被丢弃。
+
+### 所属接口类
+- [IPacketObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ipacketobserver)
+
+<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated"></a>
+
+## onUplinkNetworkInfoUpdated
+
+上行网络信息发生变化时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__prototype"></a>
+
+```cpp
+virtual void onUplinkNetworkInfoUpdated(const UplinkNetworkInfo& info)
+```
+
+<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__detailed_desc"></a>
+
+:::info[注]
+该回调仅适用于将外部编码的 H.264 格式视频数据推送至 SDK 的场景。
+:::
+
+<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__parameters"></a>
+
+### 参数
+
+#### `info`
+
+上行网络信息。详见 [UplinkNetworkInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-uplinknetworkinfo)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

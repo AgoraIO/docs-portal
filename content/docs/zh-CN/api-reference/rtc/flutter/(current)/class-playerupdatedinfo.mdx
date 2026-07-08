@@ -1,0 +1,47 @@
+---
+title: "PlayerUpdatedInfo"
+description: "媒体播放器相关信息。"
+---
+<a id="class_playerupdatedinfo__prototype"></a>
+
+```dart
+class PlayerUpdatedInfo {
+  const PlayerUpdatedInfo({this.playerId, this.deviceId});
+
+  @JsonKey(name: 'playerId')
+  final String? playerId;
+  @JsonKey(name: 'deviceId')
+  final String? deviceId;
+  factory PlayerUpdatedInfo.fromJson(Map<String, dynamic> json) =>
+      _$PlayerUpdatedInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$PlayerUpdatedInfoToJson(this);
+}
+```
+
+<a id="class_playerupdatedinfo__parameters"></a>
+
+## 属性
+
+### `deviceId`
+
+设备 ID，标识一个设备。
+
+### `videoHeight`
+
+视频高度 (pixel)。
+
+### `videoWidth`
+
+视频宽度 (pixel)。
+
+### `audioSampleRate`
+
+音频采样率 (Hz)。
+
+### `audioChannels`
+
+声道数。
+
+### `audioBitsPerSample`
+
+每个音频采样点的位数 (bit)。

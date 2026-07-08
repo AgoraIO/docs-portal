@@ -1,0 +1,43 @@
+---
+title: "Metadata"
+description: "媒体附属信息。"
+---
+<a id="class_metadata__prototype"></a>
+
+```cpp
+struct Metadata {
+    const char* channelId;
+    unsigned int uid;
+    unsigned int size;
+    unsigned char *buffer;
+    long long timeStampMs;
+    Metadata() : channelId(NULL), uid(0), size(0), buffer(NULL), timeStampMs(0) {}
+    };
+```
+
+<a id="class_metadata__parameters"></a>
+
+## 属性
+
+### `channelId`
+
+频道名称。
+
+### `uid`
+
+用户 ID。
+
+- 对于接收者：发送该 Metadata 的远端用户的 ID。
+- 对于发送者：请忽略。
+
+### `size`
+
+接收到的或发送的 Metadata 的缓存大小。
+
+### `buffer`
+
+接收到的 Metadata 的缓存地址。
+
+### `timeStampMs`
+
+发送 Metadata 的时间戳，单位为毫秒。

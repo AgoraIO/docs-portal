@@ -1,0 +1,1713 @@
+---
+title: "网络及其他"
+description: "网络及其他 API reference."
+---
+<a id="toc_network"></a>
+
+<a id="api_irtcengine_complain"></a>
+
+## complain
+
+投诉通话质量。
+
+<a id="api_irtcengine_complain__prototype"></a>
+
+```typescript
+abstract complain(callId: string, description: string): number;
+```
+
+<a id="api_irtcengine_complain__detailed_desc"></a>
+
+该方法允许用户就通话质量进行投诉。需要在离开频道后调用。
+
+<a id="api_irtcengine_complain__parameters"></a>
+
+### 参数
+
+#### `callId`
+
+通话 ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_getcallid) 获取该参数。
+
+#### `description`
+
+通话的描述。长度应小于 800 字节。
+
+<a id="api_irtcengine_complain__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+  - -1: 一般性的错误（未明确归类）。
+  - -2: 参数无效。
+  - -7: IRtcEngine 尚未初始化就调用方法。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enableencryption"></a>
+
+## enableEncryption
+
+开启或关闭内置加密。
+
+<a id="api_irtcengine_enableencryption__prototype"></a>
+
+```typescript
+abstract enableEncryption(enabled: boolean, config: EncryptionConfig): number;
+```
+
+<a id="api_irtcengine_enableencryption__detailed_desc"></a>
+
+用户离开频道后，SDK 会自动关闭加密。如需重新开启加密，你需要在用户再次加入频道前调用该方法。
+
+:::info[注]
+- 同一频道内的所有用户在调用该方法时，必须设置相同的加密模式和密钥。
+- 如果开启了内置加密，则不能使用旁路推流功能。
+:::
+
+<a id="api_irtcengine_enableencryption__scenario"></a>
+
+### 适用场景
+
+对安全要求较高的场景。
+
+<a id="api_irtcengine_enableencryption__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_enableencryption__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否开启内置加密：
+
+- true: 开启内置加密。
+- false:（默认）关闭内置加密。
+
+#### `config`
+
+配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/react-native/class-encryptionconfig)。
+
+<a id="api_irtcengine_enableencryption__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败
+  - -2: 调用了无效的参数。需重新指定参数。
+  - -4: 设置的加密模式不正确或加载外部加密库失败。需检查枚举值是否正确或重新加载外部加密库。
+  - -7: SDK 尚未初始化。需在调用 API 之前已创建 IRtcEngine 对象并完成初始化。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_enableencryptionex"></a>
+
+## enableEncryptionEx
+
+开启或关闭内置加密。
+
+<a id="api_irtcengineex_enableencryptionex__prototype"></a>
+
+```typescript
+abstract enableEncryptionEx(
+    connection: RtcConnection,
+    enabled: boolean,
+    config: EncryptionConfig
+  ): number;
+```
+
+<a id="api_irtcengineex_enableencryptionex__detailed_desc"></a>
+
+用户离开频道后，SDK 会自动关闭加密。如需重新开启加密，你需要在用户再次加入频道前调用该方法。
+
+:::info[注]
+- 同一频道内的所有用户在调用该方法时，必须设置相同的加密模式和密钥。
+- 如果开启了内置加密，则不能使用旁路推流功能。
+:::
+
+<a id="api_irtcengineex_enableencryptionex__scenario"></a>
+
+### 适用场景
+
+对安全要求较高的场景。
+
+<a id="api_irtcengineex_enableencryptionex__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengineex_enableencryptionex__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否开启内置加密：
+
+- true: 开启内置加密。
+- false:（默认）关闭内置加密。
+
+#### `config`
+
+配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/react-native/class-encryptionconfig)。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+<a id="api_irtcengineex_enableencryptionex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_enablewebsdkinteroperability"></a>
+
+## enableWebSdkInteroperability
+
+打开与 Web SDK 的互通（仅在直播场景适用）。
+
+<a id="api_irtcengine_enablewebsdkinteroperability__prototype"></a>
+
+```typescript
+abstract enableWebSdkInteroperability(enabled: boolean): number;
+```
+
+<a id="api_irtcengine_enablewebsdkinteroperability__detailed_desc"></a>
+
+#### `废弃`
+
+弃用: 该方法已废弃，SDK 自动开启与 Web SDK 的互通，无需调用该方法开启。
+
+该方法打开或关闭与 Web SDK 的互通。如果有用户通过 Web SDK 加入频道，请确保调用该方法，否则 Web 端用户看 Native 端的画面会是黑屏。 该方法仅在直播场景下适用，通信场景下默认互通是打开的。
+
+<a id="api_irtcengine_enablewebsdkinteroperability__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否打开与 Web SDK 的互通：
+
+- true: 打开互通。
+- false: (默认) 关闭互通。
+
+<a id="api_irtcengine_enablewebsdkinteroperability__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getcallid"></a>
+
+## getCallId
+
+获取通话 ID。
+
+<a id="api_irtcengine_getcallid__prototype"></a>
+
+```typescript
+abstract getCallId(): string;
+```
+
+<a id="api_irtcengine_getcallid__detailed_desc"></a>
+
+客户端在每次加入频道后会生成一个对应的 `callId`，标识该客户端的此次通话。你可以调用该方法获取 `callId` 参数，然后在调用 [rate](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_rate)、 [complain](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_complain) 等方法时填入。
+
+<a id="api_irtcengine_getcallid__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_getcallid__return_values"></a>
+
+### 返回值
+
+- 方法调用成功则返回当前的通话 ID。
+- 方法调用失败则返回空字符串。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_getcallidex"></a>
+
+## getCallIdEx
+
+使用连接 ID 获取通话 ID。
+
+<a id="api_irtcengineex_getcallidex__prototype"></a>
+
+```typescript
+abstract getCallIdEx(connection: RtcConnection): string;
+```
+
+<a id="api_irtcengineex_getcallidex__detailed_desc"></a>
+
+客户端在每次加入频道后会生成一个对应的 `callId`，标识该客户端的此次通话。你可以调用该方法获取 `callId` 参数，然后在调用 [rate](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_rate)、 [complain](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_complain) 等方法时填入。
+
+<a id="api_irtcengineex_getcallidex__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengineex_getcallidex__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_getconnectionstate"></a>
+
+## getConnectionState
+
+获取当前网络连接状态。
+
+<a id="api_irtcengine_getconnectionstate__prototype"></a>
+
+```typescript
+abstract getConnectionState(): ConnectionStateType;
+```
+
+<a id="api_irtcengine_getconnectionstate__detailed_desc"></a>
+
+<a id="api_irtcengine_getconnectionstate__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_getconnectionstate__return_values"></a>
+
+### 返回值
+
+当前网络连接状态。详见 [ConnectionStateType](/zh-CN/api-reference/rtc/react-native/enum-connectionstatetype)。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_getconnectionstateex"></a>
+
+## getConnectionStateEx
+
+获取当前网络连接状态。
+
+<a id="api_irtcengineex_getconnectionstateex__prototype"></a>
+
+```typescript
+abstract getConnectionStateEx(connection: RtcConnection): ConnectionStateType;
+```
+
+<a id="api_irtcengineex_getconnectionstateex__detailed_desc"></a>
+
+<a id="api_irtcengineex_getconnectionstateex__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengineex_getconnectionstateex__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+<a id="api_irtcengineex_getconnectionstateex__return_values"></a>
+
+### 返回值
+
+当前网络连接状态。详见 [ConnectionStateType](/zh-CN/api-reference/rtc/react-native/enum-connectionstatetype)。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms"></a>
+
+## getCurrentMonotonicTimeInMs
+
+获取 SDK 当前的 Monotonic Time。
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__prototype"></a>
+
+```typescript
+abstract getCurrentMonotonicTimeInMs(): number;
+```
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__detailed_desc"></a>
+
+Monotonic Time 是指一个单调递增的时间序列，它的值会随着时间的推移而增加。单位为毫秒。 在自定义视频采集、自定义音频采集场景中，为确保音视频同步，声网建议你调用该方法获取 SDK 当前的 Monotonic Time 后，将该值传入采集的视频帧（[VideoFrame](/zh-CN/api-reference/rtc/react-native/class-videoframe) ）、音频帧（[AudioFrame](/zh-CN/api-reference/rtc/react-native/class-audioframe) ）的时间戳参数。
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__return_values"></a>
+
+### 返回值
+
+- ≥ 0: 方法调用成功，返回 SDK 当前的 Monotonic Time（毫秒）。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_geterrordescription"></a>
+
+## getErrorDescription
+
+获取警告或错误描述。
+
+<a id="api_irtcengine_geterrordescription__prototype"></a>
+
+```typescript
+abstract getErrorDescription(code: number): string;
+```
+
+<a id="api_irtcengine_geterrordescription__detailed_desc"></a>
+
+<a id="api_irtcengine_geterrordescription__parameters"></a>
+
+### 参数
+
+#### `code`
+
+SDK 报告的错误码。
+
+<a id="api_irtcengine_geterrordescription__return_values"></a>
+
+### 返回值
+
+具体的错误描述。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getnativehandle"></a>
+
+## getNativeHandle
+
+获取 Native SDK 的 C++ 句柄。
+
+<a id="api_irtcengine_getnativehandle__prototype"></a>
+
+```typescript
+abstract getNativeHandle(): number;
+```
+
+<a id="api_irtcengine_getnativehandle__detailed_desc"></a>
+
+该方法获取 Native SDK 引擎 的 C++ 句柄，用于包括注册音视频回调在内的特殊场景。
+
+<a id="api_irtcengine_getnativehandle__return_values"></a>
+
+### 返回值
+
+SDK 引擎的 Native 句柄。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getnetworktype"></a>
+
+## getNetworkType
+
+获取本地网络连接类型。
+
+<a id="api_irtcengine_getnetworktype__prototype"></a>
+
+```typescript
+abstract getNetworkType(): number;
+```
+
+<a id="api_irtcengine_getnetworktype__detailed_desc"></a>
+
+你可以在任何阶段通过该方法获取正在使用的网络类型。
+
+:::info[注]
+该方法在加入频道前后均可调用。
+:::
+
+<a id="api_irtcengine_getnetworktype__return_values"></a>
+
+### 返回值
+
+- ≥ 0: 方法调用成功，返回本地网络连接类型。
+  - 0：网络连接已断开。
+  - 1：网络类型为 LAN。
+  - 2：网络类型为 Wi-Fi（包含热点）。
+  - 3：网络类型为 2G 移动网络。
+  - 4：网络类型为 3G 移动网络。
+  - 5：网络类型为 4G 移动网络。
+  - 6：网络类型为 5G 移动网络。
+- &lt; 0: 方法调用失败，返回错误码。
+  - -1：网络连接类型未知。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getntpwalltimeinms"></a>
+
+## getNtpWallTimeInMs
+
+获取当前的 NTP (网络时间协议) 时间。
+
+<a id="api_irtcengine_getntpwalltimeinms__prototype"></a>
+
+```typescript
+abstract getNtpWallTimeInMs(): number;
+```
+
+<a id="api_irtcengine_getntpwalltimeinms__detailed_desc"></a>
+
+在实时合唱的场景中，特别是在各个接收端由于网络原因导致下行链路不一致的情况下，你可以调用该方法来获取当前的 NTP 时间作为基准时间，以对齐多个接收端的歌词和音乐，实现合唱同步。
+
+<a id="api_irtcengine_getntpwalltimeinms__return_values"></a>
+
+### 返回值
+
+当前 NTP 时间的 Unix 时间戳 (毫秒)。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getversion"></a>
+
+## getVersion
+
+获取 SDK 版本。
+
+<a id="api_irtcengine_getversion__prototype"></a>
+
+```typescript
+abstract getVersion(): SDKBuildInfo;
+```
+
+<a id="api_irtcengine_getversion__detailed_desc"></a>
+
+<a id="api_irtcengine_getversion__return_values"></a>
+
+### 返回值
+
+[SDKBuildInfo](/zh-CN/api-reference/rtc/react-native/class-sdkbuildinfo) 对象。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_isfeatureavailableondevice"></a>
+
+## isFeatureAvailableOnDevice
+
+查询设备是否支持指定进阶功能。
+
+<a id="api_irtcengine_isfeatureavailableondevice__prototype"></a>
+
+```typescript
+abstract isFeatureAvailableOnDevice(type: FeatureType): boolean;
+```
+
+<a id="api_irtcengine_isfeatureavailableondevice__detailed_desc"></a>
+
+查询当前设备能力是否满足虚拟背景、美颜等进阶功能的要求。
+
+<a id="api_irtcengine_isfeatureavailableondevice__scenario"></a>
+
+### 适用场景
+
+在使用进阶音视频功能前，你可以根据查询结果判断当前设备是否支持这些功能，从而避免在低端设备上开启进阶功能导致性能下降或功能不可用的问题。你可以根据该方法的返回值，决定是否显示或启用相应的功能按钮，或者在设备能力不足时，为用户提示相应信息。
+
+<a id="api_irtcengine_isfeatureavailableondevice__parameters"></a>
+
+### 参数
+
+#### `type`
+
+进阶功能类型，详见 `FeatureType`。
+
+<a id="api_irtcengine_isfeatureavailableondevice__return_values"></a>
+
+### 返回值
+
+- true: 设备支持指定进阶功能。
+- false: 设备不支持指定进阶功能。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_querydevicescore"></a>
+
+## queryDeviceScore
+
+查询设备评分等级。
+
+<a id="api_irtcengine_querydevicescore__prototype"></a>
+
+```typescript
+abstract queryDeviceScore(): number;
+```
+
+<a id="api_irtcengine_querydevicescore__detailed_desc"></a>
+
+<a id="api_irtcengine_querydevicescore__scenario"></a>
+
+### 适用场景
+
+在高清或超高清视频场景下，可以先调用该方法查询设备的等级评分。如果返回的评分较低（比如低于 60），则需要适当调低视频分辨率，以避免影响视频体验。不同业务场景要求的最低设备评分等级不同，具体评分推荐请[联系技术支持](https://ticket.shengwang.cn/)。
+
+<a id="api_irtcengine_querydevicescore__return_values"></a>
+
+### 返回值
+
+- &gt; 0: 方法调用成功，值为当前设备的评分等级，取值范围为[0,100]，数值越大表示设备能力越强。大部分设备的评分在 60 到 100 之间。
+- &lt; 0: 方法调用失败。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_rate"></a>
+
+## rate
+
+给通话评分。
+
+<a id="api_irtcengine_rate__prototype"></a>
+
+```typescript
+abstract rate(callId: string, rating: number, description: string): number;
+```
+
+<a id="api_irtcengine_rate__detailed_desc"></a>
+
+:::info[注]
+该方法需要在用户离开频道后调用。
+:::
+
+<a id="api_irtcengine_rate__parameters"></a>
+
+### 参数
+
+#### `callId`
+
+通话 ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_getcallid) 获取该参数。
+
+#### `rating`
+
+给通话的评分，最低 1 分，最高 5 分。
+
+#### `description`
+
+给通话的描述。长度应小于 800 字节。
+
+<a id="api_irtcengine_rate__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+  - -1: 一般性的错误（未明确归类）。
+  - -2: 参数无效。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_sendcustomreportmessage"></a>
+
+## sendCustomReportMessage
+
+发送自定义上报消息。
+
+<a id="api_irtcengine_sendcustomreportmessage__prototype"></a>
+
+```typescript
+abstract sendCustomReportMessage(
+    id: string,
+    category: string,
+    event: string,
+    label: string,
+    value: number
+  ): number;
+```
+
+<a id="api_irtcengine_sendcustomreportmessage__detailed_desc"></a>
+
+声网提供自定义数据上报和分析服务。该服务当前处于免费内测期。内测期提供的能力为 6 秒内最多上报 10 条数据，每条自定义数据不能超过 256 字节，每个字符串不能超过 100 字节。如需试用该服务，请[联系销售](https://www.shengwang.cn/contact-sales/)开通并商定自定义数据格式。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_sendcustomreportmessageex"></a>
+
+## sendCustomReportMessageEx
+
+自定义数据上报和分析服务。
+
+<a id="api_irtcengineex_sendcustomreportmessageex__prototype"></a>
+
+```typescript
+abstract sendCustomReportMessageEx(
+    id: string,
+    category: string,
+    event: string,
+    label: string,
+    value: number,
+    connection: RtcConnection
+  ): number;
+```
+
+<a id="api_irtcengineex_sendcustomreportmessageex__detailed_desc"></a>
+
+声网提供自定义数据上报和分析服务。该服务当前处于免费内测期。内测期提供的能力为 6 秒内最多上报 10 条数据，每条自定义数据不能超过 256 字节，每个字符串不能超过 100 字节。如需试用该服务，请[联系销售](https://www.shengwang.cn/contact-sales/)开通并商定自定义数据格式。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_setavsyncsource"></a>
+
+## setAVSyncSource
+
+设置发流端音画同步。
+
+<a id="api_irtcengine_setavsyncsource__prototype"></a>
+
+```typescript
+abstract setAVSyncSource(channelId: string, uid: number): number;
+```
+
+<a id="api_irtcengine_setavsyncsource__detailed_desc"></a>
+
+同一用户可能使用两个设备分别发送音频流和视频流，为保证接收端听到和看到的音频和视频的时间同步性，你可以在视频发送端调用该方法，并传入音频发送端的频道名、用户 ID。 SDK 会以发送的音频流的时间戳为基准进行自动调节发送的视频流，以保证即使在两个发送端的上行网络情况不一致（如分别使用 Wi-Fi 和 4G 网络）的情况下，也能让接收到的音视频具有时间同步性。
+
+:::info[注]
+建议你在加入频道前调用该方法。
+:::
+
+<a id="api_irtcengine_setavsyncsource__parameters"></a>
+
+### 参数
+
+#### `channelId`
+
+标识音频发送端所在频道的频道名。
+
+#### `uid`
+
+音频发送端的用户 ID。
+
+<a id="api_irtcengine_setavsyncsource__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setcloudproxy"></a>
+
+## setCloudProxy
+
+设置云代理服务。
+
+<a id="api_irtcengine_setcloudproxy__prototype"></a>
+
+```typescript
+abstract setCloudProxy(proxyType: CloudProxyType): number;
+```
+
+<a id="api_irtcengine_setcloudproxy__detailed_desc"></a>
+
+当用户的网络访问受到防火墙限制时，你需要将声网提供的 IP 和端口号添加到防火墙白名单，然后调用该方法开启云代理，并通过 `proxyType` 参数设置云代理类型。 成功连接云代理后，SDK 会触发 [onConnectionStateChanged](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onconnectionstatechanged) (ConnectionStateConnecting, ConnectionChangedSettingProxyServer) 回调。 如果你想关闭已设置的 Force UDP 或 Force TCP 云代理，请调用 `setCloudProxy(NoneProxy)`。 如果你想更改已设置的云代理类型，请先调用 `setCloudProxy(NoneProxy)`，再调用 [setCloudProxy](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_setcloudproxy) 并传入你期望的 `proxyType` 值。
+
+:::info[注]
+- 建议你在频道外调用该方法。
+- 如果用户处于内网防火墙环境下，使用 Force UDP 云代理时，旁路推流和跨频道媒体流转发功能不可用。
+- 使用 Force UDP 云代理时，调用 startAudioMixing 方法时无法播放 HTTP 协议的在线音频文件。旁路推流和跨频道媒体流转发功能会使用 TCP 协议的云代理。
+:::
+
+<a id="api_irtcengine_setcloudproxy__parameters"></a>
+
+### 参数
+
+#### `proxyType`
+
+云代理类型，详见 [CloudProxyType](/zh-CN/api-reference/rtc/react-native/enum-cloudproxytype)。 该参数为必填参数，如果你不赋值，SDK 会报错。
+
+<a id="api_irtcengine_setcloudproxy__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+  - -2: 传入的参数无效。
+  - -7: SDK 尚未初始化。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalaccesspoint"></a>
+
+## setLocalAccessPoint
+
+配置与声网私有媒体服务器接入模块的连接。
+
+<a id="api_irtcengine_setlocalaccesspoint__prototype"></a>
+
+```typescript
+abstract setLocalAccessPoint(config: LocalAccessPointConfiguration): number;
+```
+
+<a id="api_irtcengine_setlocalaccesspoint__detailed_desc"></a>
+
+成功部署声网私有媒体服务器并在内网终端集成 4.x RTC SDK 后，你可以调用该方法指定 Local Access Point，给 SDK 分配接入模块。
+
+:::info[注]
+该方法仅在部署声网混合云方案后生效。你可以[联系销售](https://www.shengwang.cn/contact-sales/)了解和部署声网混合云。
+:::
+
+<a id="api_irtcengine_setlocalaccesspoint__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_setlocalaccesspoint__parameters"></a>
+
+### 参数
+
+#### `config`
+
+Local Access Point 配置。详见 [LocalAccessPointConfiguration](class_localaccesspointconfiguration.html)。
+
+<a id="api_irtcengine_setlocalaccesspoint__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlogfile"></a>
+
+## setLogFile
+
+设置日志文件
+
+<a id="api_irtcengine_setlogfile__prototype"></a>
+
+```typescript
+abstract setLogFile(filePath: string): number;
+```
+
+<a id="api_irtcengine_setlogfile__detailed_desc"></a>
+
+#### `废弃`
+
+弃用： 该方法已废弃，请在调用 [initialize](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_initialize) 时通过 `context` 参数设置日志文件路径。
+
+设置 SDK 的输出 log 文件。SDK 运行时产生的所有 log 将写入该文件。
+
+:::info[注]
+App 必须保证指定的目录存在而且可写。
+:::
+
+<a id="api_irtcengine_setlogfile__timing"></a>
+
+### 调用时机
+
+该方法需要在 [initialize](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_initialize) 后立即调用，否则输出日志可能不完整。
+
+<a id="api_irtcengine_setlogfile__parameters"></a>
+
+### 参数
+
+#### `filePath`
+
+日志文件的完整路径。该日志文件为 UTF-8 编码。
+
+<a id="api_irtcengine_setlogfile__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlogfilesize"></a>
+
+## setLogFileSize
+
+设置 SDK 输出的日志文件的大小。
+
+<a id="api_irtcengine_setlogfilesize__prototype"></a>
+
+```typescript
+abstract setLogFileSize(fileSizeInKBytes: number): number;
+```
+
+<a id="api_irtcengine_setlogfilesize__detailed_desc"></a>
+
+#### `废弃`
+
+弃用： 该方法已废弃，请改用 [initialize](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_initialize) 中的 `logConfig` 参数设置日志文件大小。
+
+默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 调用日志文件，规则如下：
+
+- SDK 日志文件的名称分别为： agorasdk.log、 agorasdk.1.log、 agorasdk.2.log、 agorasdk.3.log、 agorasdk.4.log。
+- API 调用日志文件的名称分别为： agoraapi.log、 agoraapi.1.log、 agoraapi.2.log、 agoraapi.3.log、 agoraapi.4.log。
+- 每个 SDK 日志文件的默认大小为 2,048 KB；API 调用日志文件的默认大小为 2,048 KB。日志文件均为 UTF-8 编码。
+- 最新的日志永远写在 agorasdk.log 和 agoraapi.log 中。
+- 当 agorasdk.log 写满后，SDK 会按照以下顺序对日志文件进行操作：
+  1. 删除 agorasdk.4.log 文件（如有）。
+  2. 将 agorasdk.3.log 重命名为 agorasdk.4.log。
+  3. 将 agorasdk.2.log 重命名为 agorasdk.3.log。
+  4. 将 agorasdk.1.log 重命名为 agorasdk.2.log。
+  5. 新建 agorasdk.log 文件。
+- agoraapi.log 文件的覆盖规则与 agorasdk.log 相同。
+
+:::info[注]
+该方法仅用于设置 `agorasdk.log` 文件的大小，对 `agoraapi.log` 不生效。
+:::
+
+<a id="api_irtcengine_setlogfilesize__parameters"></a>
+
+### 参数
+
+#### `fileSizeInKBytes`
+
+单个 `agorasdk.log` 日志文件的大小，单位为 KB，取值范围为 [128,20480]，默认值为 2,048 KB。如果你将 `fileSizeInKByte` 设为小于 128 KB，SDK 会自动调整到 128 KB；如果你将 `fileSizeInKByte` 设为大于 20,480 KB，SDK 会自动调整到 20,480 KB。
+
+<a id="api_irtcengine_setlogfilesize__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlogfilter"></a>
+
+## setLogFilter
+
+设置日志输出等级。
+
+<a id="api_irtcengine_setlogfilter__prototype"></a>
+
+```typescript
+abstract setLogFilter(filter: LogFilterType): number;
+```
+
+<a id="api_irtcengine_setlogfilter__detailed_desc"></a>
+
+#### `废弃`
+
+弃用： 请改用 [initialize](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_initialize) 中的 `logConfig`。
+
+该方法设置 SDK 的输出日志输出等级。不同的输出等级可以单独或组合使用。日志级别顺序依次为 `LogFilterOff`、 `LogFilterCritical`、 `LogFilterError`、 `LogFilterWarn`、 `LogFilterInfo` 和 `LogFilterDebug`。 选择一个级别，你就可以看到在该级别之前所有级别的日志信息。 例如，你选择 `LogFilterWarn` 级别，就可以看到在 `LogFilterCritical`、 `LogFilterError` 和 `LogFilterWarn` 级别的日志信息。
+
+<a id="api_irtcengine_setlogfilter__parameters"></a>
+
+### 参数
+
+#### `filter`
+
+日志过滤等级。详见 [LogFilterType](/zh-CN/api-reference/rtc/react-native/enum-logfiltertype)。
+
+<a id="api_irtcengine_setlogfilter__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setloglevel"></a>
+
+## setLogLevel
+
+设置 SDK 的日志输出级别。
+
+<a id="api_irtcengine_setloglevel__prototype"></a>
+
+```typescript
+abstract setLogLevel(level: LogLevel): number;
+```
+
+<a id="api_irtcengine_setloglevel__detailed_desc"></a>
+
+#### `废弃`
+
+弃用： 该方法已废弃，请在调用 [initialize](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_initialize) 时通过 `context` 参数设置日志输出级别。
+
+选择一个级别，你就可以看到该级别的日志信息。
+
+<a id="api_irtcengine_setloglevel__parameters"></a>
+
+### 参数
+
+#### `level`
+
+日志级别。详见 [LogLevel](/zh-CN/api-reference/rtc/react-native/enum-loglevel)。
+
+<a id="api_irtcengine_setloglevel__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setparameters"></a>
+
+## setParameters
+
+SDK 的 JSON 配置信息，用于提供技术预览或特别定制功能。
+
+<a id="api_irtcengine_setparameters__prototype"></a>
+
+```typescript
+abstract setParameters(parameters: string): number;
+```
+
+<a id="api_irtcengine_setparameters__detailed_desc"></a>
+
+<a id="api_irtcengine_setparameters__parameters"></a>
+
+### 参数
+
+#### `parameters`
+
+JSON 字符串形式的参数。
+
+<a id="api_irtcengine_setparameters__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setremotesubscribefallbackoption"></a>
+
+## setRemoteSubscribeFallbackOption
+
+设置弱网环境下订阅的音视频流回退选项。
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__prototype"></a>
+
+```typescript
+abstract setRemoteSubscribeFallbackOption(
+    option: StreamFallbackOptions
+  ): number;
+```
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__detailed_desc"></a>
+
+网络不理想的环境下，实时通信音视频的质量会下降。你可以调用该方法并将 `option` 设置为 `StreamFallbackOptionVideoStreamLow` 或 `StreamFallbackOptionAudioOnly`，SDK 会在下行弱网且音视频质量严重受影响时，将视频流切换为小流或关闭视频流，从而保证音频质量。同时，SDK 会持续监控网络质量，并在网络质量改善时恢复订阅音视频流。 当订阅流回退为音频流或由音频流恢复为音视频流时，SDK 会触发 [onRemoteSubscribeFallbackToAudioOnly](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly) 回调。
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__parameters"></a>
+
+### 参数
+
+#### `option`
+
+订阅流的回退选项。详见 [STREAM_FALLBACK_OPTIONS](/zh-CN/api-reference/rtc/react-native/enum-streamfallbackoptions)。
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startechotest3"></a>
+
+## startEchoTest
+
+开始音视频通话回路测试。
+
+<a id="api_irtcengine_startechotest3__prototype"></a>
+
+```typescript
+abstract startEchoTest(config: EchoTestConfiguration): number;
+```
+
+<a id="api_irtcengine_startechotest3__detailed_desc"></a>
+
+为测试用户本地发流、收流是否正常，你可以调用该方法进行音视频通话回路测试，即测试系统的音视频设备和用户的上下行网络是否正常。 开始测试后，用户需发出声音或面对摄像头，音频或视频会在约 2 秒后播放出来。如果音频播放正常，则表示系统音频设备和用户上下行网络均正常； 如果视频播放正常，则表示系统视频设备和用户上下行网络均正常。
+
+:::info[注]
+- 在频道内调用该方法时，需确保当前没有发布音视频流。
+- 调用该方法后，必须调用 stopEchoTest 结束测试，否则该用户无法进行下一次音视频通话回路测试，也无法加入频道。
+- 直播场景下，该方法仅能由主播调用。
+:::
+
+<a id="api_irtcengine_startechotest3__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_irtcengine_startechotest3__parameters"></a>
+
+### 参数
+
+#### `config`
+
+音视频通话回路测试的配置。详见 [EchoTestConfiguration](/zh-CN/api-reference/rtc/react-native/class-echotestconfiguration)。
+
+<a id="api_irtcengine_startechotest3__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startlastmileprobetest"></a>
+
+## startLastmileProbeTest
+
+开始通话前网络质量探测。
+
+<a id="api_irtcengine_startlastmileprobetest__prototype"></a>
+
+```typescript
+abstract startLastmileProbeTest(config: LastmileProbeConfig): number;
+```
+
+<a id="api_irtcengine_startlastmileprobetest__detailed_desc"></a>
+
+开始通话前网络质量探测，向用户反馈上下行网络的带宽、丢包、网络抖动和往返时延数据。
+
+<a id="api_irtcengine_startlastmileprobetest__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用，且在收到 [onLastmileQuality](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onlastmilequality) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onlastmileproberesult) 回调之前请不要调用其他方法，否则可能会由于 API 操作过于频繁导致此方法无法执行。
+
+<a id="api_irtcengine_startlastmileprobetest__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会依次触发如下 2 个回调：
+
+- onLastmileQuality，视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
+- onLastmileProbeResult，视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
+
+<a id="api_irtcengine_startlastmileprobetest__parameters"></a>
+
+### 参数
+
+#### `config`
+
+Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference/rtc/react-native/class-lastmileprobeconfig)。
+
+<a id="api_irtcengine_startlastmileprobetest__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopechotest"></a>
+
+## stopEchoTest
+
+停止语音通话回路测试。
+
+<a id="api_irtcengine_stopechotest__prototype"></a>
+
+```typescript
+abstract stopEchoTest(): number;
+```
+
+<a id="api_irtcengine_stopechotest__detailed_desc"></a>
+
+调用 [startEchoTest](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_startechotest3) 后，必须调用该方法结束测试，否则该用户无法进行下一次音视频通话回路测试，也无法加入频道。
+
+<a id="api_irtcengine_stopechotest__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+  - -5(ERR_REFUSED): 停止测试失败，可能是测试不在运行中。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoplastmileprobetest"></a>
+
+## stopLastmileProbeTest
+
+停止通话前网络质量探测。
+
+<a id="api_irtcengine_stoplastmileprobetest__prototype"></a>
+
+```typescript
+abstract stopLastmileProbeTest(): number;
+```
+
+<a id="api_irtcengine_stoplastmileprobetest__detailed_desc"></a>
+
+<a id="api_irtcengine_stoplastmileprobetest__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onconnectionbanned"></a>
+
+## onConnectionBanned
+
+网络连接已被服务器禁止回调。
+
+<a id="callback_irtcengineeventhandler_onconnectionbanned__prototype"></a>
+
+```typescript
+onConnectionBanned?(connection: RtcConnection): void;
+```
+
+<a id="callback_irtcengineeventhandler_onconnectionbanned__detailed_desc"></a>
+
+#### `废弃`
+
+弃用: 请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+
+<a id="callback_irtcengineeventhandler_onconnectionbanned__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onconnectioninterrupted"></a>
+
+## onConnectionInterrupted
+
+网络连接中断回调。
+
+<a id="callback_irtcengineeventhandler_onconnectioninterrupted__prototype"></a>
+
+```typescript
+onConnectionInterrupted?(connection: RtcConnection): void;
+```
+
+<a id="callback_irtcengineeventhandler_onconnectioninterrupted__detailed_desc"></a>
+
+#### `废弃`
+
+弃用: 请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+
+SDK 在和服务器建立连接后，失去了网络连接超过 4 秒，会触发该回调。在触发事件后，SDK 会主动重连服务器，所以该事件可以用于 UI 提示。该回调与 [onConnectionLost](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onconnectionlost) 的区别是：
+
+- onConnectionInterrupted 回调一定是发生在成功加入频道后，且 SDK 刚失去和服务器连接超过 4 秒时触发。
+- onConnectionLost 回调是无论是否成功加入频道，只要 10 秒内和服务器无法建立连接都会触发。
+
+如果 SDK 在断开连接后，20 分钟内还是没能重新加入频道，SDK 会停止尝试重连。
+
+<a id="callback_irtcengineeventhandler_onconnectioninterrupted__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onconnectionlost"></a>
+
+## onConnectionLost
+
+网络连接中断，且 SDK 无法在 10 秒内连接服务器回调。
+
+<a id="callback_irtcengineeventhandler_onconnectionlost__prototype"></a>
+
+```typescript
+onConnectionLost?(connection: RtcConnection): void;
+```
+
+<a id="callback_irtcengineeventhandler_onconnectionlost__detailed_desc"></a>
+
+SDK 在调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 后，无论是否加入成功，只要 10 秒和服务器无法连接就会触发该回调。如果 SDK 在断开连接后，20 分钟内还是没能重新加入频道，SDK 会停止尝试重连。
+
+<a id="callback_irtcengineeventhandler_onconnectionlost__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged"></a>
+
+## onConnectionStateChanged
+
+网络连接状态已改变回调。
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged__prototype"></a>
+
+```typescript
+onConnectionStateChanged?(
+    connection: RtcConnection,
+    state: ConnectionStateType,
+    reason: ConnectionChangedReasonType
+  ): void;
+```
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged__detailed_desc"></a>
+
+该回调在网络连接状态发生改变的时候触发，并告知用户当前的网络连接状态和引起网络状态改变的原因。
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+#### `state`
+
+当前网络连接状态。详见 [ConnectionStateType](/zh-CN/api-reference/rtc/react-native/enum-connectionstatetype)。
+
+#### `reason`
+
+引起当前网络连接状态改变的原因。详见 [ConnectionChangedReasonType](/zh-CN/api-reference/rtc/react-native/enum-connectionchangedreasontype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onencryptionerror"></a>
+
+## onEncryptionError
+
+内置加密出错回调。
+
+<a id="callback_irtcengineeventhandler_onencryptionerror__prototype"></a>
+
+```typescript
+onEncryptionError?(
+    connection: RtcConnection,
+    errorType: EncryptionErrorType
+  ): void;
+```
+
+<a id="callback_irtcengineeventhandler_onencryptionerror__detailed_desc"></a>
+
+调用 [enableEncryption](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_enableencryption) 开启加密后， 如果发流端、收流端出现加解密出错，SDK 会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onencryptionerror__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+#### `errorType`
+
+错误类型，详见 [EncryptionErrorType](/zh-CN/api-reference/rtc/react-native/enum-encryptionerrortype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult"></a>
+
+## onLastmileProbeResult
+
+通话前网络上下行 Last mile 质量探测报告回调。
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult__prototype"></a>
+
+```typescript
+onLastmileProbeResult?(result: LastmileProbeResult): void;
+```
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult__detailed_desc"></a>
+
+在调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_startlastmileprobetest) 之后，SDK 会在约 30 秒内返回该回调。
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult__parameters"></a>
+
+### 参数
+
+#### `result`
+
+上下行 Last mile 质量探测结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/react-native/class-lastmileproberesult)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlastmilequality"></a>
+
+## onLastmileQuality
+
+网络上下行 last mile 质量报告回调。
+
+<a id="callback_irtcengineeventhandler_onlastmilequality__prototype"></a>
+
+```typescript
+onLastmileQuality?(quality: QualityType): void;
+```
+
+<a id="callback_irtcengineeventhandler_onlastmilequality__detailed_desc"></a>
+
+该回调描述本地用户在加入频道前的 last mile 网络探测的结果，其中 last mile 是指设备到声网边缘服务器的网络状态。 加入频道前，调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_startlastmileprobetest) 之后，SDK 触发该回调报告本地用户在加入频道前的 last mile 网络探测的结果。
+
+<a id="callback_irtcengineeventhandler_onlastmilequality__parameters"></a>
+
+### 参数
+
+#### `quality`
+
+Last mile 网络质量。详见 [QualityType](/zh-CN/api-reference/rtc/react-native/enum-qualitytype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onmultipathstats"></a>
+
+## onMultipathStats
+
+多路径传输统计信息的回调。
+
+<a id="callback_irtcengineeventhandler_onmultipathstats__prototype"></a>
+
+```typescript
+onMultipathStats?(connection: RtcConnection, stats: MultipathStats): void;
+```
+
+<a id="callback_irtcengineeventhandler_onmultipathstats__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.2 版本新增。
+
+<a id="callback_irtcengineeventhandler_onmultipathstats__timing"></a>
+
+### 触发时机
+
+该回调在你将 `enableMultipath` 设置为 true 以启用多路径传输后触发。
+
+<a id="callback_irtcengineeventhandler_onmultipathstats__parameters"></a>
+
+### 参数
+
+#### `stats`
+
+多路径传输统计信息。详见 [MultipathStats](/zh-CN/api-reference/rtc/react-native/class-multipathstats)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onnetworkquality"></a>
+
+## onNetworkQuality
+
+通话中每个用户的网络上下行 last mile 质量报告回调。
+
+<a id="callback_irtcengineeventhandler_onnetworkquality__prototype"></a>
+
+```typescript
+onNetworkQuality?(
+    connection: RtcConnection,
+    remoteUid: number,
+    txQuality: QualityType,
+    rxQuality: QualityType
+  ): void;
+```
+
+<a id="callback_irtcengineeventhandler_onnetworkquality__detailed_desc"></a>
+
+该回调描述每个用户在通话中的 last mile 网络状态，其中 last mile 是指设备到声网边缘服务器的网络状态。 该回调每 2 秒触发一次。如果远端有多个用户，该回调每 2 秒会被触发多次。 该回调通过频道内的广播包反馈网络质量。过多的广播包可能引发广播风暴。为防止广播风暴导致频道内大量数据传输，该回调默认支持同时反馈最多 4 个远端主播的网络质量。
+
+:::info[注]
+用户不发流时， `txQuality` 为 `Unknown`；用户不收流时， `rxQuality` 为 `Unknown`。
+:::
+
+<a id="callback_irtcengineeventhandler_onnetworkquality__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+#### `remoteUid`
+
+用户 ID。表示该回调报告的是持有该 ID 的用户的网络质量。如果当 uid 为 0 时，返回的是本地用户的网络质量。
+
+#### `txQuality`
+
+该用户的上行网络质量，基于发送码率、上行丢包率、平均往返时延和网络抖动计算。 该值代表当前的上行网络质量，帮助判断是否可以支持当前设置的视频编码属性。 假设上行码率是 1000 Kbps，那么支持直播场景下 640 × 480 的分辨率、15 fps 的帧率没有问题，但是支持 1280 × 720 的分辨率就会有困难。
+
+#### `rxQuality`
+
+该用户的下行网络质量，基于下行网络的丢包率、平均往返延时和网络抖动计算。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onnetworktypechanged"></a>
+
+## onNetworkTypeChanged
+
+本地网络类型发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onnetworktypechanged__prototype"></a>
+
+```typescript
+onNetworkTypeChanged?(connection: RtcConnection, type: NetworkType): void;
+```
+
+<a id="callback_irtcengineeventhandler_onnetworktypechanged__detailed_desc"></a>
+
+本地网络连接类型发生改变时，SDK 会触发该回调，并在回调中明确当前的网络连接类型。你可以通过该回调获取正在使用的网络类型；当连接中断时，该回调能辨别引起中断的原因是网络切换还是网络条件不好。
+
+<a id="callback_irtcengineeventhandler_onnetworktypechanged__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+#### `type`
+
+本地网络连接类型。详见 [NetworkType](/zh-CN/api-reference/rtc/react-native/enum-networktype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onpermissionerror"></a>
+
+## onPermissionError
+
+获取设备权限出错回调。
+
+<a id="callback_irtcengineeventhandler_onpermissionerror__prototype"></a>
+
+```typescript
+onPermissionError?(permissionType: PermissionType): void;
+```
+
+<a id="callback_irtcengineeventhandler_onpermissionerror__detailed_desc"></a>
+
+无法获取设备权限时，SDK 会触发该回调，报告哪个设备的权限无法获取。
+
+<a id="callback_irtcengineeventhandler_onpermissionerror__parameters"></a>
+
+### 参数
+
+#### `permissionType`
+
+设备权限类型。详见 [PermissionType](/zh-CN/api-reference/rtc/react-native/enum-permissiontype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onpermissiongranted"></a>
+
+## onPermissionGranted
+
+权限被授予时的回调。
+
+<a id="callback_irtcengineeventhandler_onpermissiongranted__prototype"></a>
+
+```typescript
+onPermissionGranted?(permissionType: PermissionType): void;
+```
+
+<a id="callback_irtcengineeventhandler_onpermissiongranted__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onpermissiongranted__parameters"></a>
+
+### 参数
+
+#### `permissionType`
+
+权限类型，详见 [PermissionType](/zh-CN/api-reference/rtc/react-native/enum-permissiontype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onproxyconnected"></a>
+
+## onProxyConnected
+
+代理连接状态回调。
+
+<a id="callback_irtcengineeventhandler_onproxyconnected__prototype"></a>
+
+```typescript
+onProxyConnected?(
+    channel: string,
+    uid: number,
+    proxyType: ProxyType,
+    localProxyIp: string,
+    elapsed: number
+  ): void;
+```
+
+<a id="callback_irtcengineeventhandler_onproxyconnected__detailed_desc"></a>
+
+通过该回调你可以监听 SDK 连接代理的状态。例如，当用户调用 [setCloudProxy](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_setcloudproxy) 设置代理并成功加入频道后，SDK 会触发该回调报告用户 ID、连接的代理类型和从调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 到触发该回调经过的时间等。
+
+<a id="callback_irtcengineeventhandler_onproxyconnected__parameters"></a>
+
+### 参数
+
+#### `channel`
+
+频道名称。
+
+#### `uid`
+
+用户 ID
+
+#### `proxyType`
+
+连接上的代理类型。详见 [ProxyType](/zh-CN/api-reference/rtc/react-native/enum-proxytype)。
+
+#### `localProxyIp`
+
+预留参数，暂不支持。
+
+#### `elapsed`
+
+从调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 到 SDK 触发该回调的经过的时间（毫秒）。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly"></a>
+
+## onRemoteSubscribeFallbackToAudioOnly
+
+订阅流已回退为音频流或恢复为音视频流回调。
+
+<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__prototype"></a>
+
+```typescript
+onRemoteSubscribeFallbackToAudioOnly?(
+    uid: number,
+    isFallbackOrRecover: boolean
+  ): void;
+```
+
+<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__detailed_desc"></a>
+
+当你调用了 [setRemoteSubscribeFallbackOption](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_setremotesubscribefallbackoption) 并将 `option` 设置为 `StreamFallbackOptionAudioOnly` 后，该回调会在下列情况时被触发：
+
+- 下行网络环境较差，订阅的音视频流回退为音频流
+- 下行网络环境改善，订阅音频流恢复为音视频流
+
+:::info[注]
+订阅流因弱网环境而回退为视频小流时，你可以通过 [onRemoteVideoStats](/zh-CN/api-reference/rtc/react-native/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调来监控远端视频大小流的切换。
+:::
+
+<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+远端用户的用户 ID。
+
+#### `isFallbackOrRecover`
+
+- true: 由于网络环境不理想，订阅流已回退为音频流。
+- false: 由于网络环境改善，订阅流已恢复为音视频流。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated"></a>
+
+## onUplinkNetworkInfoUpdated
+
+上行网络信息变化回调。
+
+<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__prototype"></a>
+
+```typescript
+onUplinkNetworkInfoUpdated?(info: UplinkNetworkInfo): void;
+```
+
+<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__detailed_desc"></a>
+
+只有当上行网络信息发生变化时，SDK 才会触发该回调。
+
+:::info[注]
+该回调仅适用于向 SDK 推送 H.264 格式的外部编码视频数据的场景。
+:::
+
+<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__parameters"></a>
+
+### 参数
+
+#### `info`
+
+上行网络信息，详见 [UplinkNetworkInfo](/zh-CN/api-reference/rtc/react-native/class-uplinknetworkinfo)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)

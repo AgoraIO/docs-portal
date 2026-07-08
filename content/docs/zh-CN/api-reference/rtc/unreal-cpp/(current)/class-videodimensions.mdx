@@ -1,0 +1,29 @@
+---
+title: "VideoDimensions"
+description: "视频尺寸。"
+---
+<a id="class_videodimensions__prototype"></a>
+
+```cpp
+struct VideoDimensions {
+  int width;
+  int height;
+  VideoDimensions() : width(640), height(480) {}
+  VideoDimensions(int w, int h) : width(w), height(h) {}
+  bool operator==(const VideoDimensions& rhs) const {
+    return width == rhs.width && height == rhs.height;
+  }
+};
+```
+
+<a id="class_videodimensions__parameters"></a>
+
+## 属性
+
+### `width`
+
+视频宽度，单位为像素。
+
+### `height`
+
+视频高度，单位为像素。

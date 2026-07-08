@@ -1,0 +1,42 @@
+---
+title: "Metadata"
+description: "用于表示媒体元数据。"
+---
+<a id="class_metadata__prototype"></a>
+
+```cpp
+struct Metadata {
+    const char* channelId;
+    unsigned int uid;
+    unsigned int size;
+    unsigned char *buffer;
+    long long timeStampMs;
+};
+```
+
+<a id="class_metadata__parameters"></a>
+
+## 属性
+
+### `channelId`
+
+频道名。
+
+### `uid`
+
+用户 ID。
+
+- 对于接收方：发送该 Metadata 的远端用户 ID。
+- 对于发送方：忽略该字段。
+
+### `size`
+
+[Metadata](/zh-CN/api-reference/rtc/cpp-all-platforms/class-metadata) 的缓冲区大小。
+
+### `buffer`
+
+输出参数，表示接收的 [Metadata](/zh-CN/api-reference/rtc/cpp-all-platforms/class-metadata) 缓冲区地址。
+
+### `timeStampMs`
+
+发送 [Metadata](/zh-CN/api-reference/rtc/cpp-all-platforms/class-metadata) 时的时间戳（单位为毫秒）。

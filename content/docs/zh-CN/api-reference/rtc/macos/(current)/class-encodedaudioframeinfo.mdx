@@ -1,0 +1,34 @@
+---
+title: "AgoraEncodedAudioFrameInfo"
+description: "编码后的音频帧信息。"
+---
+<a id="class_encodedaudioframeinfo__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraEncodedAudioFrameInfo: NSObject
+@property (assign, nonatomic) NSInteger samplesPerChannel;
+@property (assign, nonatomic) NSInteger channels;
+@property (assign, nonatomic) NSInteger samplesPerSec;
+@property (assign, nonatomic) AgoraAudioCodecType codecType;
+@end
+```
+
+<a id="class_encodedaudioframeinfo__parameters"></a>
+
+## 属性
+
+### `samplesPerChannel`
+
+每个声道的音频采样数。
+
+### `channels`
+
+音频声道数。
+
+### `samplesPerSec`
+
+音频采样率（Hz）。
+
+### `codecType`
+
+音频编解码器类型。详见 [AgoraAudioCodecType](/zh-CN/api-reference/rtc/macos/enum-audiocodectype)。

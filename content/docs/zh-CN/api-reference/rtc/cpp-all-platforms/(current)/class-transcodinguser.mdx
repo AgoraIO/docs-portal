@@ -1,0 +1,77 @@
+---
+title: "TranscodingUser"
+description: "用于配置每位主播的转码参数。"
+---
+<a id="class_transcodinguser__prototype"></a>
+
+```cpp
+struct TranscodingUser {
+  uid_t uid;
+  int x;
+  int y;
+  int width;
+  int height;
+  int zOrder;
+  double alpha;
+  int audioChannel;
+};
+```
+
+<a id="class_transcodinguser__parameters"></a>
+
+## 属性
+
+### `uid`
+
+主播的用户 ID。
+
+### `x`
+
+主播视频在输出画面中的 x 坐标（像素），以画面左上角为原点。取值范围为 [0, width]，其中 width 为 [LiveTranscoding](/zh-CN/api-reference/rtc/cpp-all-platforms/class-livetranscoding) 中设置的宽度。
+
+### `y`
+
+主播视频在输出画面中的 y 坐标（像素），以画面左上角为原点。取值范围为 [0, height]，其中 height 为 [LiveTranscoding](/zh-CN/api-reference/rtc/cpp-all-platforms/class-livetranscoding) 中设置的高度。
+
+### `width`
+
+主播视频的宽度（像素）。
+
+### `height`
+
+主播视频的高度（像素）。
+
+### `zOrder`
+
+:::info[注]
+- 如果取值小于 0 或大于 100，会返回 ERR_INVALID_ARGUMENT 错误。
+- 支持将 zOrder 设置为 0。
+:::
+
+主播视频的图层索引。取值范围为 [0, 100]。
+
+- 0：（默认）主播视频处于底层。
+- 100：主播视频处于顶层。
+
+### `alpha`
+
+主播视频的透明度。取值范围为 [0.0, 1.0]。
+
+- 0.0：完全透明。
+- 1.0：（默认）不透明。
+
+### `audioChannel`
+
+:::info[注]
+如果该值不为 0，需要使用特殊播放器。
+:::
+
+主播音频在输出音频中使用的音频声道。默认值为 0，取值范围为 [0, 5]。
+
+- 0：（推荐）默认设置，最多支持双声道，取决于主播的上行音频。
+- 1：主播音频使用 FL 声道。如果主播上行使用多个声道，声网服务器会先将其混合为单声道。
+- 2：主播音频使用 FC 声道。如果主播上行使用多个声道，声网服务器会先将其混合为单声道。
+- 3：主播音频使用 FR 声道。如果主播上行使用多个声道，声网服务器会先将其混合为单声道。
+- 4：主播音频使用 BL 声道。如果主播上行使用多个声道，声网服务器会先将其混合为单声道。
+- 5：主播音频使用 BR 声道。如果主播上行使用多个声道，声网服务器会先将其混合为单声道。
+- 0xFF 或大于 5 的值：主播音频将被静音，声网服务器会移除该主播的音频。

@@ -1,0 +1,731 @@
+---
+title: "发布和订阅"
+description: "发布和订阅 API reference."
+---
+<a id="toc_publishnsubscribe"></a>
+
+<a id="api_irtcengine_muteallremoteaudiostreams"></a>
+
+## muteAllRemoteAudioStreams
+
+取消或恢复订阅所有远端用户的音频流。
+
+<a id="api_irtcengine_muteallremoteaudiostreams__prototype"></a>
+
+```arkts
+public abstract muteAllRemoteAudioStreams(muted: boolean): number;
+```
+
+<a id="api_irtcengine_muteallremoteaudiostreams__detailed_desc"></a>
+
+成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的音频流，包括在调用该方法后加入频道的用户的音频流。
+
+:::warning[注意]
+SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修改此行为，可以在调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeAudio 为 `false`，即可在加入频道时取消订阅所有用户的音频流。
+:::
+
+<a id="api_irtcengine_muteallremoteaudiostreams__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_muteallremoteaudiostreams__restriction"></a>
+
+### 调用限制
+
+如果在调用该方法之后又调用了 [enableAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_enableaudio) 或 [disableAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_disableaudio)，则后调用的方法会生效。
+
+<a id="api_irtcengine_muteallremoteaudiostreams__parameters"></a>
+
+### 参数
+
+#### `muted`
+
+是否取消订阅所有远端用户的音频流：
+
+- true: 取消订阅所有远端用户的音频流。
+- false:（默认）订阅所有远端用户的音频流。
+
+<a id="api_irtcengine_muteallremoteaudiostreams__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_muteallremoteaudiostreamsex"></a>
+
+## muteAllRemoteAudioStreamsEx
+
+取消或恢复订阅所有远端用户的音频流。
+
+<a id="api_irtcengineex_muteallremoteaudiostreamsex__prototype"></a>
+
+```arkts
+public abstract muteAllRemoteAudioStreamsEx(muted:boolean,connection:RtcConnection):number;
+```
+
+<a id="api_irtcengineex_muteallremoteaudiostreamsex__detailed_desc"></a>
+
+### 详情
+
+成功调用该方法后，本地用户会取消或恢复订阅远端用户的音频流，包括在调用该方法后加入频道的用户的音频流。
+
+:::warning[注意]
+- 该方法需要在加入频道后调用。
+- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 joinChannelWithOptions 加入频道时设置 autoSubscribeAudio 为 false。
+:::
+
+<a id="api_irtcengineex_muteallremoteaudiostreamsex__parameters"></a>
+
+### 参数
+
+#### `muted`
+
+是否取消订阅所有远端用户的音频流：
+
+- true: 取消订阅所有远端用户的音频流。
+- false:（默认）订阅所有远端用户的音频流。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+<a id="api_irtcengineex_muteallremoteaudiostreamsex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_muteallremotevideostreams"></a>
+
+## muteAllRemoteVideoStreams
+
+取消或恢复订阅所有远端用户的视频流。
+
+<a id="api_irtcengine_muteallremotevideostreams__prototype"></a>
+
+```arkts
+public abstract muteAllRemoteVideoStreams(muted: boolean): number;
+```
+
+<a id="api_irtcengine_muteallremotevideostreams__detailed_desc"></a>
+
+成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的视频流，包括在调用该方法后加入频道的用户的视频流。
+
+:::warning[注意]
+SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修改此行为，可以在调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeVideo 为 `false`，即可在加入频道时取消订阅所有用户的视频流。
+:::
+
+<a id="api_irtcengine_muteallremotevideostreams__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_muteallremotevideostreams__restriction"></a>
+
+### 调用限制
+
+如果在调用该方法之后又调用了 [enableVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_disablevideo)，则后调用的方法会生效。
+
+<a id="api_irtcengine_muteallremotevideostreams__parameters"></a>
+
+### 参数
+
+#### `muted`
+
+是否取消订阅所有远端用户的视频流。
+
+- true: 取消订阅所有用户的视频流。
+- false:（默认）订阅所有用户的视频流。
+
+<a id="api_irtcengine_muteallremotevideostreams__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_muteallremotevideostreamsex"></a>
+
+## muteAllRemoteVideoStreamsEx
+
+取消或恢复订阅所有远端用户的视频流。
+
+<a id="api_irtcengineex_muteallremotevideostreamsex__prototype"></a>
+
+```arkts
+public abstract muteAllRemoteVideoStreamsEx(muted:boolean,connection:RtcConnection):number;
+```
+
+<a id="api_irtcengineex_muteallremotevideostreamsex__detailed_desc"></a>
+
+### 详情
+
+成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的视频流，包括在调用该方法后加入频道的用户的视频流。
+
+<a id="api_irtcengineex_muteallremotevideostreamsex__parameters"></a>
+
+### 参数
+
+#### `muted`
+
+是否取消订阅所有远端用户的视频流。
+
+- true: 取消订阅所有用户的视频流。
+- false:（默认）订阅所有用户的视频流。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+<a id="api_irtcengineex_muteallremotevideostreamsex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_mutelocalaudiostream"></a>
+
+## muteLocalAudioStream
+
+取消或恢复发布本地音频流。
+
+<a id="api_irtcengine_mutelocalaudiostream__prototype"></a>
+
+```arkts
+public abstract muteLocalAudioStream(muted: boolean): number;
+```
+
+<a id="api_irtcengine_mutelocalaudiostream__detailed_desc"></a>
+
+该方法用于控制是否发布本地采集的音频流。如果不发布本地采集的音频流，也不会禁用音频采集设备，所以不影响音频的采集状态。
+
+<a id="api_irtcengine_mutelocalaudiostream__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_mutelocalaudiostream__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_mutelocalaudiostream__related"></a>
+
+### 相关回调
+
+成功调用该方法后，本地会触发 [onAudioPublishStateChanged](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged) 回调；远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+
+<a id="api_irtcengine_mutelocalaudiostream__parameters"></a>
+
+### 参数
+
+#### `muted`
+
+是否取消发布本地音频流。
+
+- true: 取消发布。
+- false:（默认）发布。
+
+<a id="api_irtcengine_mutelocalaudiostream__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_mutelocalaudiostreamex"></a>
+
+## muteLocalAudioStreamEx
+
+取消或恢复发布本地音频流。
+
+<a id="api_irtcengineex_mutelocalaudiostreamex__prototype"></a>
+
+```arkts
+public abstract muteLocalAudioStreamEx(muted:boolean,connection:RtcConnection):number;
+```
+
+<a id="api_irtcengineex_mutelocalaudiostreamex__detailed_desc"></a>
+
+### 详情
+
+:::warning[注意]
+该方法不影响音频采集状态，因为没有禁用音频采集设备。
+:::
+
+成功调用该方法后，远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+
+<a id="api_irtcengineex_mutelocalaudiostreamex__parameters"></a>
+
+### 参数
+
+#### `muted`
+
+是否取消发布本地音频流。
+
+- true: 取消发布。
+- false:（默认）发布。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+<a id="api_irtcengineex_mutelocalaudiostreamex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_mutelocalvideostream"></a>
+
+## muteLocalVideoStream
+
+取消或恢复发布本地视频流。
+
+<a id="api_irtcengine_mutelocalvideostream__prototype"></a>
+
+```arkts
+public abstract muteLocalVideoStream(muted: boolean): number;
+```
+
+<a id="api_irtcengine_mutelocalvideostream__detailed_desc"></a>
+
+该方法用于控制是否发布本地采集的视频流。如果不发布本地采集的视频流，也不会禁用视频采集设备，所以不影响视频的采集状态。
+
+相比于调用 [enableLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_enablelocalvideo) (`false`) 关闭本地视频流采集、从而取消发布本地视频流的方法，该方法响应速度更快。
+
+<a id="api_irtcengine_mutelocalvideostream__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_mutelocalvideostream__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_mutelocalvideostream__related"></a>
+
+### 相关回调
+
+成功调用该方法后，本地会触发 [onVideoPublishStateChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) 回调；远端会触发 [onUserMuteVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调和 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
+
+<a id="api_irtcengine_mutelocalvideostream__parameters"></a>
+
+### 参数
+
+#### `muted`
+
+是否取消发送本地视频流。
+
+- true: 取消发送本地视频流。
+- false: （默认）发送本地视频流。
+
+<a id="api_irtcengine_mutelocalvideostream__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_mutelocalvideostreamex"></a>
+
+## muteLocalVideoStreamEx
+
+取消或恢复发布本地视频流。
+
+<a id="api_irtcengineex_mutelocalvideostreamex__prototype"></a>
+
+```arkts
+public abstract muteLocalVideoStreamEx(muted:boolean,connection:RtcConnection):number;
+```
+
+<a id="api_irtcengineex_mutelocalvideostreamex__detailed_desc"></a>
+
+### 详情
+
+成功调用该方法后，远端会触发 [onUserMuteVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
+
+:::warning[注意]
+- 该方法不影响视频采集状态，没有禁用摄像头。
+:::
+
+<a id="api_irtcengineex_mutelocalvideostreamex__parameters"></a>
+
+### 参数
+
+#### `muted`
+
+是否取消发送本地视频流。
+
+- true: 取消发送本地视频流。
+- false: （默认）发送本地视频流。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+<a id="api_irtcengineex_mutelocalvideostreamex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_muteremoteaudiostream"></a>
+
+## muteRemoteAudioStream
+
+取消或恢复订阅指定远端用户的音频流。
+
+<a id="api_irtcengine_muteremoteaudiostream__prototype"></a>
+
+```arkts
+public abstract muteRemoteAudioStream(uid: number, muted: boolean): number;
+```
+
+<a id="api_irtcengine_muteremoteaudiostream__detailed_desc"></a>
+
+<a id="api_irtcengine_muteremoteaudiostream__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_muteremoteaudiostream__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_muteremoteaudiostream__related"></a>
+
+### 相关回调
+
+成功调用该方法后，本地会触发 [onAudioSubscribeStateChanged](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#callback_irtcengineeventhandler_onaudiosubscribestatechanged) 回调。
+
+<a id="api_irtcengine_muteremoteaudiostream__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+指定用户的用户 ID。
+
+#### `muted`
+
+是否取消订阅指定远端用户的音频流。
+
+- true: 取消订阅指定用户的音频流。
+- false:（默认）订阅指定用户的音频流。
+
+<a id="api_irtcengine_muteremoteaudiostream__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_muteremoteaudiostreamex"></a>
+
+## muteRemoteAudioStreamEx
+
+停止/恢复接收指定的音频流。
+
+<a id="api_irtcengineex_muteremoteaudiostreamex__prototype"></a>
+
+```arkts
+public abstract muteRemoteAudioStreamEx(uid:number,muted:boolean,connection:RtcConnection):number;
+```
+
+<a id="api_irtcengineex_muteremoteaudiostreamex__detailed_desc"></a>
+
+### 详情
+
+该方法停止/恢复接收某一个指定远端用户的音频流。在加入频道前或后都可以调用。该方法的设置在离开频道后失效。
+
+<a id="api_irtcengineex_muteremoteaudiostreamex__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+指定用户的 ID。
+
+#### `muted`
+
+是否停止接收指定音频流：
+
+- true: 停止接收指定音频流。
+- false:（默认）继续接收指定音频流。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+<a id="api_irtcengineex_muteremoteaudiostreamex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_muteremotevideostream"></a>
+
+## muteRemoteVideoStream
+
+取消或恢复订阅指定远端用户的视频流。
+
+<a id="api_irtcengine_muteremotevideostream__prototype"></a>
+
+```arkts
+public abstract muteRemoteVideoStream(uid: number, muted: boolean): number;
+```
+
+<a id="api_irtcengine_muteremotevideostream__detailed_desc"></a>
+
+<a id="api_irtcengine_muteremotevideostream__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_muteremotevideostream__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_muteremotevideostream__related"></a>
+
+### 相关回调
+
+成功调用该方法后，本地会触发 [onVideoSubscribeStateChanged](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#callback_irtcengineeventhandler_onvideosubscribestatechanged) 回调。
+
+<a id="api_irtcengine_muteremotevideostream__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+指定用户的用户 ID。
+
+#### `muted`
+
+是否取消订阅指定远端用户的视频流。
+
+- true: 取消订阅指定用户的视频流。
+- false: （默认）订阅指定用户的视频流。
+
+<a id="api_irtcengine_muteremotevideostream__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_muteremotevideostreamex"></a>
+
+## muteRemoteVideoStreamEx
+
+停止/恢复接收指定的视频流。
+
+<a id="api_irtcengineex_muteremotevideostreamex__prototype"></a>
+
+```arkts
+public abstract muteRemoteVideoStreamEx(uid:number,muted:boolean,connection:RtcConnection):number;
+```
+
+<a id="api_irtcengineex_muteremotevideostreamex__detailed_desc"></a>
+
+### 详情
+
+该方法停止/恢复接收某一个指定远端用户的视频流。在加入频道前或后都可以调用。该方法的设置在离开频道后失效。
+
+<a id="api_irtcengineex_muteremotevideostreamex__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+远端用户的 ID。
+
+#### `muted`
+
+是否停止接收某个远端用户的视频：
+
+- true: 停止接收。
+- false: （默认）恢复接收。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+<a id="api_irtcengineex_muteremotevideostreamex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+
+<a id="callback_irtcengineeventhandler_onaudiopublishstatechanged"></a>
+
+## onAudioPublishStateChanged
+
+音频发布状态改变回调。
+
+<a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__prototype"></a>
+
+```arkts
+onAudioPublishStateChanged?:(channel:string, oldState:Constants.StreamPublishState, newState:Constants.StreamPublishState, elapseSinceLastState:number) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__parameters"></a>
+
+### 参数
+
+#### `channel`
+
+频道名。
+
+#### `oldState`
+
+之前的发布状态，详见 [StreamPublishState](/zh-CN/api-reference/rtc/harmonyos/enum-streampublishstate)。
+
+#### `newState`
+
+当前的发布状态，详见 StreamPublishState。
+
+#### `elapseSinceLastState`
+
+两次状态变化时间间隔（毫秒）。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged"></a>
+
+## onAudioSubscribeStateChanged
+
+音频订阅状态发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged__prototype"></a>
+
+```arkts
+onAudioSubscribeStateChanged?:(channel:string,uid:number,oldState:Constants.StreamSubscribeState,newState:Constants.StreamSubscribeState,elapseSinceLastState:number) =>void;
+```
+
+<a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged__parameters"></a>
+
+### 参数
+
+#### `channel`
+
+频道名。
+
+#### `uid`
+
+远端用户的 ID。
+
+#### `oldState`
+
+之前的订阅状态，详见 [StreamSubscribeState](/zh-CN/api-reference/rtc/harmonyos/enum-streamsubscribestate)。
+
+#### `newState`
+
+当前的订阅状态，详见 StreamSubscribeState。
+
+#### `elapseSinceLastState`
+
+两次状态变化时间间隔（毫秒）。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged"></a>
+
+## onVideoSubscribeStateChanged
+
+视频订阅状态发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__prototype"></a>
+
+```arkts
+onVideoSubscribeStateChanged?:(channel:string,uid:number,oldState:Constants.StreamSubscribeState,newState:Constants.StreamSubscribeState,elapseSinceLastState:number) =>void;
+```
+
+<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__parameters"></a>
+
+### 参数
+
+#### `channel`
+
+频道名。
+
+#### `uid`
+
+远端用户的 ID。
+
+#### `oldState`
+
+之前的订阅状态，详见 [StreamSubscribeState](/zh-CN/api-reference/rtc/harmonyos/enum-streamsubscribestate)。
+
+#### `newState`
+
+当前的订阅状态，详见 StreamSubscribeState。
+
+#### `elapseSinceLastState`
+
+两次状态变化时间间隔（毫秒）。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

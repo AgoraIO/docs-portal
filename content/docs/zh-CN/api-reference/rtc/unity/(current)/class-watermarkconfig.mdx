@@ -1,0 +1,88 @@
+---
+title: "WatermarkConfig"
+description: "用于配置水印信息。"
+---
+<a id="class_watermarkconfig__prototype"></a>
+
+```csharp
+    public class WatermarkConfig
+    {
+        public string id;
+
+        public WATERMARK_SOURCE_TYPE type;
+
+        public WatermarkBuffer buffer;
+
+        public WatermarkTimestamp timestamp;
+
+        public WatermarkLiteral literal;
+
+        public string imageUrl;
+
+        public WatermarkOptions options;
+
+        public WatermarkConfig()
+        {
+            this.id = "";
+            this.type = WATERMARK_SOURCE_TYPE.IMAGE;
+            this.imageUrl = "";
+        }
+
+        public WatermarkConfig(string id, WATERMARK_SOURCE_TYPE type, WatermarkBuffer buffer, WatermarkTimestamp timestamp, WatermarkLiteral literal, string imageUrl, WatermarkOptions options)
+        {
+            this.id = id;
+            this.type = type;
+            this.buffer = buffer;
+            this.timestamp = timestamp;
+            this.literal = literal;
+            this.imageUrl = imageUrl;
+            this.options = options;
+        }
+    }
+```
+
+<a id="class_watermarkconfig__detailed_desc"></a>
+
+### `自从`
+
+自 v4.6.2 版本新增。
+
+<a id="class_watermarkconfig__parameters"></a>
+
+## 属性
+
+### `id`
+
+水印的唯一标识符，建议使用 UUID。
+
+### `type`
+
+水印类型，详见 [WATERMARK_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-watermarksourcetype)。
+
+### `buffer`
+
+水印的缓冲区。详见 [WatermarkBuffer](/zh-CN/api-reference/rtc/unity/class-watermarkbuffer)。
+
+### `timestamp`
+
+水印的时间戳。
+
+:::info[注]
+仅支持在 Linux 平台使用。
+:::
+
+### `literal`
+
+水印的文本内容。
+
+:::info[注]
+仅支持在 Linux 平台使用。
+:::
+
+### `imageUrl`
+
+水印图像文件的 URL，默认值为 `NULL`。
+
+### `options`
+
+水印的配置选项。详见 [WatermarkOptions](/zh-CN/api-reference/rtc/unity/class-watermarkoptions)。

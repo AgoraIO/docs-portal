@@ -1,0 +1,51 @@
+---
+title: "SetExternalMediaProjection"
+description: "设置 SDK 外部的 MediaProjection 采集屏幕视频流。"
+---
+<a id="api_irtcengine_setexternalmediaprojection__prototype"></a>
+
+```csharp
+public abstract int SetExternalMediaProjection(IntPtr mediaProjection);
+```
+
+<a id="api_irtcengine_setexternalmediaprojection__detailed_desc"></a>
+
+成功调用该方法后，你设置的外部 `MediaProjection` 会替换掉 SDK 申请的 `MediaProjection` 采集屏幕视频流。
+
+当停止屏幕共享或销毁 [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 时，SDK 会自动释放 MediaProjection。
+
+<a id="api_irtcengine_setexternalmediaprojection__scenario"></a>
+
+## 适用场景
+
+如果你具备自行申请 `MediaProjection` 的开发能力，可以直接使用该 `MediaProjection` 取代 SDK 申请的 `MediaProjection`。以下列出两种使用场景：
+
+- 在定制系统的设备上，可避免系统弹窗（即需要用户授予屏幕采集权限），直接开始采集屏幕视频流。
+- 一个屏幕共享进程中存在一个或多个子进程，避免在子进程中自行创建对象的过程出错而导致采集失败。
+
+<a id="api_irtcengine_setexternalmediaprojection__timing"></a>
+
+## 调用时机
+
+该方法需要在 [StartScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapture) 之前调用。
+
+<a id="api_irtcengine_setexternalmediaprojection__restriction"></a>
+
+## 调用限制
+
+在调用该方法前，必须先申请 `MediaProjection` 权限。
+
+<a id="api_irtcengine_setexternalmediaprojection__parameters"></a>
+
+## 参数
+
+### `mediaProjection`
+
+一个 [MediaProjection](https://developer.android.com/reference/android/media/projection/MediaProjection) 对象，用于采集屏幕视频流。
+
+<a id="api_irtcengine_setexternalmediaprojection__return_values"></a>
+
+## 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。

@@ -1,0 +1,29 @@
+---
+title: "ContentInspectModule"
+description: "用于设置本地截图上传的频率。"
+---
+<a id="class_contentinspectmodule__prototype"></a>
+
+```cpp
+struct ContentInspectModule {
+  CONTENT_INSPECT_TYPE type;
+  unsigned int interval;
+  base::VIDEO_MODULE_POSITION position;
+};
+```
+
+<a id="class_contentinspectmodule__parameters"></a>
+
+## 属性
+
+### `type`
+
+功能模块的类型。详见 [CONTENT_INSPECT_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-contentinspecttype)。
+
+### `interval`
+
+本地截图上传的频率，单位为秒。该值必须大于 0。默认值为 0，表示 SDK 不进行截图。声网建议设置为 10 秒，可根据业务需求进行调整。
+
+### `position`
+
+视频观察器的位置。详见 [VIDEO_MODULE_POSITION](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videomoduleposition)。

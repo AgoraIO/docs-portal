@@ -1,0 +1,83 @@
+---
+title: "FPlayerUpdatedInfo"
+description: "媒体播放器相关信息。"
+---
+<a id="class_playerupdatedinfo__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FPlayerUpdatedInfo {
+	GENERATED_BODY()
+public:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerUpdatedInfo")
+	FString internalPlayerUuid = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerUpdatedInfo")
+	FString deviceId = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerUpdatedInfo")
+	int videoHeight = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerUpdatedInfo")
+	int videoWidth = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerUpdatedInfo")
+	int audioSampleRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerUpdatedInfo")
+	int audioChannels = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerUpdatedInfo")
+	int audioBitsPerSample = 0;
+
+	FPlayerUpdatedInfo(){}
+	FPlayerUpdatedInfo(const agora::media::base::PlayerUpdatedInfo& playerUpdatedInfo) {
+		
+		internalPlayerUuid = UTF8_TO_TCHAR(playerUpdatedInfo.internalPlayerUuid);
+		deviceId = UTF8_TO_TCHAR(playerUpdatedInfo.deviceId);
+		videoHeight = playerUpdatedInfo.videoHeight;
+		videoWidth = playerUpdatedInfo.videoWidth;
+		audioSampleRate = playerUpdatedInfo.audioSampleRate;
+		audioChannels = playerUpdatedInfo.audioChannels;
+		audioBitsPerSample = playerUpdatedInfo.audioBitsPerSample;
+	}
+	agora::media::base::PlayerUpdatedInfo CreateAgoraData() const {
+		agora::media::base::PlayerUpdatedInfo AgoraData;
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.internalPlayerUuid,this->internalPlayerUuid)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.deviceId,this->deviceId)
+		AgoraData.videoHeight = videoHeight;
+		AgoraData.videoWidth = videoWidth;
+		AgoraData.audioSampleRate = audioSampleRate;
+		AgoraData.audioChannels = audioChannels;
+		AgoraData.audioBitsPerSample = audioBitsPerSample;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::media::base::PlayerUpdatedInfo & AgoraData) const {
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.internalPlayerUuid)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.deviceId)
+	}
+};
+```
+
+<a id="class_playerupdatedinfo__parameters"></a>
+
+## 属性
+
+### `deviceId`
+
+设备 ID，标识一个设备。
+
+### `videoHeight`
+
+视频高度 (pixel)。
+
+### `videoWidth`
+
+视频宽度 (pixel)。
+
+### `audioSampleRate`
+
+音频采样率 (Hz)。
+
+### `audioChannels`
+
+声道数。
+
+### `audioBitsPerSample`
+
+每个音频采样点的位数 (bit)。

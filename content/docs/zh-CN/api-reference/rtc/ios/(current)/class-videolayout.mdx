@@ -1,0 +1,58 @@
+---
+title: "AgoraVideoLayout"
+description: "描述混合流中某个子视频流的布局信息。"
+---
+<a id="class_videolayout__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraVideoLayout: NSObject
+@property(copy, nonatomic) NSString* _Nonnull channelId NS_SWIFT_NAME(channelId);
+@property (assign, nonatomic) NSUInteger uid NS_SWIFT_NAME(uid);
+@property(copy, nonatomic) NSString* _Nullable strUid NS_SWIFT_NAME(strUid);
+@property (assign, nonatomic) NSUInteger videoState NS_SWIFT_NAME(videoState);
+@property (assign, nonatomic) NSUInteger x NS_SWIFT_NAME(x);
+@property (assign, nonatomic) NSUInteger y NS_SWIFT_NAME(y);
+@property (assign, nonatomic) NSUInteger width NS_SWIFT_NAME(width);
+@property (assign, nonatomic) NSUInteger height NS_SWIFT_NAME(height);
+@end
+```
+
+<a id="class_videolayout__parameters"></a>
+
+## 属性
+
+### `channelId`
+
+子视频流所属的频道名。
+
+### `uid`
+
+发布该子视频流的用户 ID。
+
+### `strUid`
+
+预留参数。
+
+### `videoState`
+
+子视频流在视频合流画布上的状态：
+
+- 0：正常。子视频流已被渲染到合流画布上。
+- 1：占位图像。子视频流没有视频帧，在合流画布上显示为占位图。
+- 2：黑色图像。子视频流被黑色图像替代。
+
+### `x`
+
+子视频流在视频合流画布上的 X 坐标（单位：px），表示视频左上角相对于画布原点（左上角）的水平位移。
+
+### `y`
+
+子视频流在视频合流画布上的 Y 坐标（单位：px），表示视频左上角相对于画布原点（左上角）的垂直位移。
+
+### `width`
+
+子视频流的宽度（单位：px）。
+
+### `height`
+
+子视频流的高度（单位：px）。

@@ -1,0 +1,38 @@
+---
+title: "LastmileProbeOneWayResult"
+description: "上行或下行 Last mile 网络质量探测结果。"
+---
+<a id="class_lastmileprobeonewayresult__prototype"></a>
+
+```dart
+class LastmileProbeOneWayResult {
+  const LastmileProbeOneWayResult(
+      {this.packetLossRate, this.jitter, this.availableBandwidth});
+
+  @JsonKey(name: 'packetLossRate')
+  final int? packetLossRate;
+  @JsonKey(name: 'jitter')
+  final int? jitter;
+  @JsonKey(name: 'availableBandwidth')
+  final int? availableBandwidth;
+  factory LastmileProbeOneWayResult.fromJson(Map<String, dynamic> json) =>
+      _$LastmileProbeOneWayResultFromJson(json);
+  Map<String, dynamic> toJson() => _$LastmileProbeOneWayResultToJson(this);
+}
+```
+
+<a id="class_lastmileprobeonewayresult__parameters"></a>
+
+## 属性
+
+### `packetLossRate`
+
+丢包率。
+
+### `jitter`
+
+网络抖动 (ms)。
+
+### `availableBandwidth`
+
+可用网络带宽预估 (bps)。

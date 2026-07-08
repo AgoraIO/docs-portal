@@ -1,0 +1,38 @@
+---
+title: "ContentInspectModule"
+description: "ContentInspectModule 结构体，用于配置本地截图上传的频率。"
+---
+<a id="class_contentinspectmodule__prototype"></a>
+
+```dart
+class ContentInspectModule {
+
+  const ContentInspectModule({this.type, this.interval, this.position});
+  @JsonKey(name: 'type')
+  final ContentInspectType? type;
+  @JsonKey(name: 'interval')
+  final int? interval;
+  @JsonKey(name: 'position')
+  final VideoModulePosition? position;
+  factory ContentInspectModule.fromJson(Map<String, dynamic> json) =>
+      _$ContentInspectModuleFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ContentInspectModuleToJson(this);
+}
+```
+
+<a id="class_contentinspectmodule__parameters"></a>
+
+## 属性
+
+### `type`
+
+功能模块的类型。详见 [ContentInspectType](/zh-CN/api-reference/rtc/flutter/enum-contentinspecttype)。
+
+### `interval`
+
+本地截图上传的间隔，单位为秒，取值必须大于 0。默认值为 0，表示不进行截图上传。推荐值为 10 秒，你也可以根据业务需求自行调整。
+
+### `position`
+
+视频观察器的位置。详见 [VideoModulePosition](/zh-CN/api-reference/rtc/flutter/enum-videomoduleposition)。

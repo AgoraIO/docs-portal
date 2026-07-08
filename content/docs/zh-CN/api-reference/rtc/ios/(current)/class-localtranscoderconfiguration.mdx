@@ -1,0 +1,36 @@
+---
+title: "AgoraLocalTranscoderConfiguration"
+description: "本地视频合图配置。"
+---
+<a id="class_localtranscoderconfiguration__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraLocalTranscoderConfiguration: NSObject
+@property(copy, nonatomic) NSArray<AgoraTranscodingVideoStream *> *_Nullable videoInputStreams;
+@property (strong, nonatomic) AgoraVideoEncoderConfiguration *_Nonnull videoOutputConfiguration;
+@property(assign, nonatomic) BOOL syncWithPrimaryCamera;
+@end
+```
+
+<a id="class_localtranscoderconfiguration__detailed_desc"></a>
+
+用于设置本地客户端的视频合图参数。
+
+<a id="class_localtranscoderconfiguration__parameters"></a>
+
+## 属性
+
+### `videoInputStreams`
+
+用于本地合图的视频流。详见 [AgoraTranscodingVideoStream](/zh-CN/api-reference/rtc/ios/class-transcodingvideostream)。
+
+### `videoOutputConfiguration`
+
+本地合图后合图视频的编码配置。详见 [AgoraVideoEncoderConfiguration](/zh-CN/api-reference/rtc/ios/class-videoencoderconfiguration)。
+
+### `syncWithPrimaryCamera`
+
+是否使用主摄像头采集的视频帧的时间戳作为合图视频的时间戳。
+
+- YES：（默认）使用采集视频帧的时间戳作为合图视频的时间戳。
+- NO：不使用采集视频帧的时间戳，而使用构建合图视频时的时间戳。

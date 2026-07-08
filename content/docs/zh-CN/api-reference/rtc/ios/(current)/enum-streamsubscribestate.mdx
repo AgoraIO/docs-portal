@@ -1,0 +1,32 @@
+---
+title: "AgoraStreamSubscribeState"
+description: "订阅状态。"
+---
+<a id="enum_streamsubscribestate__parameters"></a>
+
+## 枚举值
+
+### `AgoraStreamSubscribeStateIdle`
+
+（0）：加入频道后的初始订阅状态。
+
+### `AgoraStreamSubscribeStateNoSubscribed`
+
+（1）：订阅远端流失败。可能的原因包括：
+
+- 远端用户：
+  - 调用 muteLocalAudioStream: （YES）或 muteLocalVideoStream: （YES）停止发送本地媒体流。
+  - 调用 disableAudio 或 disableVideo 禁用本地音频或视频模块。
+  - 调用 enableLocalAudio: （NO）或 enableLocalVideo: （NO）禁用本地音频或视频采集。
+  - 角色为观众。
+- 本地用户：
+  - 调用 muteRemoteAudioStream:mute: （YES）或 muteAllRemoteAudioStreams: （YES）停止接收远端音频流。
+  - 调用 muteRemoteVideoStream:mute: （YES）或 muteAllRemoteVideoStreams: （YES）停止接收远端视频流。
+
+### `AgoraStreamSubscribeStateSubscribing`
+
+（2）：正在订阅远端流。
+
+### `AgoraStreamSubscribeStateSubscribed`
+
+（3）：已成功接收远端流。

@@ -1,0 +1,176 @@
+---
+title: "RtcStats"
+description: "通话相关的统计信息。"
+---
+<a id="class_rtcstats__prototype"></a>
+
+```arkts
+export class RtcStats {
+  
+  public totalDuration:number = 0;
+  
+  public txBytes:number = 0;
+  
+  public rxBytes:number = 0;
+  
+  public txKBitRate:number = 0;
+  
+  public txAudioBytes:number = 0;
+  
+  public rxAudioBytes:number = 0;
+  
+  public txVideoBytes:number = 0;
+  
+  public rxVideoBytes:number = 0;
+  
+  public rxKBitRate:number = 0;
+  
+  public txAudioKBitRate:number = 0;
+  
+  public rxAudioKBitRate:number = 0;
+  
+  public txVideoKBitRate:number = 0;
+  
+  public rxVideoKBitRate:number = 0;
+  
+  public lastmileDelay:number = 0;
+  
+  public cpuTotalUsage:number = 0;
+  
+  public gatewayRtt:number = 0;
+  
+  public cpuAppUsage:number = 0;
+  
+  public users:number = 0;
+  
+  public connectTimeMs:number = 0;
+  
+  public txPacketLossRate:number = 0;
+  
+  public rxPacketLossRate:number = 0;
+  
+  public memoryAppUsageRatio:number = 0;
+  
+  public memoryTotalUsageRatio:number = 0;
+  
+  public memoryAppUsageInKbytes:number = 0;
+}
+```
+
+<a id="class_rtcstats__parameters"></a>
+
+### `totalDuration`
+
+本地用户通话时长（秒），累计值。
+
+### `txBytes`
+
+发送字节数 (bytes)。
+
+### `rxBytes`
+
+接收字节数 (bytes)。
+
+### `txAudioBytes`
+
+发送音频字节数 (bytes)，累计值。
+
+### `txVideoBytes`
+
+发送视频字节数 (bytes)，累计值。
+
+### `rxAudioBytes`
+
+接收音频字节数 (bytes)，累计值。
+
+### `rxVideoBytes`
+
+接收视频字节数 (bytes)，累计值。
+
+### `txKBitRate`
+
+发送码率 (Kbps)。
+
+### `rxKBitRate`
+
+接收码率 (Kbps)。
+
+### `rxAudioKBitRate`
+
+音频接收码率 (Kbps)。
+
+### `txAudioKBitRate`
+
+音频包的发送码率 (Kbps)。
+
+### `rxVideoKBitRate`
+
+视频接收码率 (Kbps)。
+
+### `txVideoKBitRate`
+
+视频发送码率 (Kbps)。
+
+### `lastmileDelay`
+
+客户端-接入服务器延时 (毫秒)。
+
+### `txPacketLossRate`
+
+使用抗丢包技术前，客户端上行发送到服务器丢包率 (%)。
+
+### `rxPacketLossRate`
+
+使用抗丢包技术前，服务器下行发送到客户端丢包率 (%)。
+
+### `users`
+
+当前频道内的用户人数。
+
+### `cpuAppUsage`
+
+当前 App 的 CPU 使用率 (%)。
+
+:::warning[注意]
+- onLeaveChannel 回调中报告的 cpuAppUsage 恒为 0。
+:::
+
+### `cpuTotalUsage`
+
+当前系统的 CPU 使用率 (%)。
+
+:::warning[注意]
+- onLeaveChannel 回调中报告的 cpuTotalUsage 恒为 0。
+:::
+
+### `connectTimeMs`
+
+从开始建立连接到成功连接的时间（毫秒）。如报告 0，则表示无效。
+
+### `gatewayRtt`
+
+客户端到本地路由器的往返时延 (ms)。
+
+### `memoryAppUsageRatio`
+
+当前 App 的内存占比 (%)。
+
+:::warning[注意]
+该值仅作参考。受系统限制可能无法获取。
+:::
+
+### `memoryTotalUsageRatio`
+
+当前系统的内存占比 (%)。
+
+:::warning[注意]
+该值仅作参考。受系统限制可能无法获取。
+:::
+
+### `memoryAppUsageInKbytes`
+
+当前 App 的内存大小 (KB)。
+
+:::warning[注意]
+该值仅作参考。受系统限制可能无法获取。
+:::

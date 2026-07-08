@@ -1,0 +1,35 @@
+---
+title: "RteErrorCode"
+description: "RTE 相关的状态和错误码。"
+---
+<a id="enum_rteerrorcode__parameters"></a>
+
+## 枚举值
+
+### `kRteOk`
+
+（0）：操作成功。
+
+### `kRteErrorDefault`
+
+（1）：通用错误，未提供具体原因。
+
+### `kRteErrorInvalidArgument`
+
+（2）：方法参数无效，例如包含非法字符或传入对象为 null。请重新设置参数。
+
+### `kRteErrorInvalidOperation`
+
+（3）：当前状态不支持该操作，例如对象已被销毁或无效。
+
+### `kRteErrorNetworkError`
+
+（4）：网络错误。请检查网络连接。
+
+### `kRteErrorAuthenticationFailed`
+
+（5）：Token 鉴权失败，可能原因包括 Token 无效或已过期。请检查 Token。
+
+### `kRteErrorStreamNotFound`
+
+（6）：未找到媒体流，例如加入频道后 10 秒内未接收到主播端的媒体流。

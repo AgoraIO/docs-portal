@@ -1,0 +1,58 @@
+---
+title: "DirectCdnStreamingMediaOptions"
+description: "主播端的媒体选项。"
+---
+<a id="class_directcdnstreamingmediaoptions__prototype"></a>
+
+```csharp
+public class DirectCdnStreamingMediaOptions : OptionalJsonParse
+    {
+        public Optional<bool> publishCameraTrack = new Optional<bool>();
+        public Optional<bool> publishMicrophoneTrack = new Optional<bool>();
+        public Optional<bool> publishCustomAudioTrack = new Optional<bool>();
+        public Optional<bool> publishCustomVideoTrack = new Optional<bool>();
+        public Optional<bool> publishMediaPlayerAudioTrack = new Optional<bool>();
+        public Optional<int> publishMediaPlayerId = new Optional<int>();
+        public Optional<video_track_id_t> customVideoTrackId = new Optional<video_track_id_t>();
+    }
+```
+
+<a id="class_directcdnstreamingmediaoptions__detailed_desc"></a>
+
+## 详情
+
+<a id="class_directcdnstreamingmediaoptions__parameters"></a>
+
+## 属性
+
+### `publishCameraTrack`
+
+设置是否发布摄像头采集的视频。
+
+- true: 发布摄像头采集的视频。
+- false:（默认）不发布摄像头采集的视频。
+
+### `publishMicrophoneTrack`
+
+设置是否发布麦克风采集的音频。
+
+- true: 发布麦克风采集的音频。
+- false:（默认）不发布麦克风采集的音频。
+
+### `publishCustomAudioTrack`
+
+设置是否发布自定义采集的音频。
+
+- true: 发布自定义采集的音频。
+- false:（默认）不发布自定义采集的音频。
+
+### `publishCustomVideoTrack`
+
+设置是否发布自定义采集的视频。
+
+- true: 发布自定义采集的视频。
+- false:（默认）不发布自定义采集的视频。
+
+### `customVideoTrackId`
+
+调用 [CreateCustomVideoTrack](/zh-CN/api-reference/rtc/csharp-windows/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。默认值为 0。

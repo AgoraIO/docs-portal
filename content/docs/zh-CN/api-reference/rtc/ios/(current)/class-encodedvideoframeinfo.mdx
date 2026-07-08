@@ -1,0 +1,64 @@
+---
+title: "AgoraEncodedVideoFrameInfo"
+description: "描述外部编码视频帧的信息。"
+---
+<a id="class_encodedvideoframeinfo__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraEncodedVideoFrameInfo: NSObject
+@property (assign, nonatomic) AgoraVideoCodecType codecType;
+@property (assign, nonatomic) NSInteger width;
+@property (assign, nonatomic) NSInteger height;
+@property (assign, nonatomic) NSInteger framesPerSecond;
+@property (assign, nonatomic) AgoraVideoFrameType frameType;
+@property (assign, nonatomic) NSInteger rotation;
+@property (assign, nonatomic) NSInteger trackId;
+@property (assign, nonatomic) NSInteger captureTimeMs;
+@property (assign, nonatomic) NSInteger decodeTimeMs;
+@property (assign, nonatomic) AgoraVideoStreamType streamType;
+@end
+```
+
+<a id="class_encodedvideoframeinfo__parameters"></a>
+
+## 属性
+
+### `codecType`
+
+本地视频流的首选编码器类型，详见 [AgoraVideoCodecType](/zh-CN/api-reference/rtc/ios/enum-videocodectype)。
+
+### `width`
+
+视频帧的宽度（像素）。
+
+### `height`
+
+视频帧的高度（像素）。
+
+### `framesPerSecond`
+
+视频帧的每秒帧数。当该参数不为 0 时，可用于计算外部编码视频帧的 Unix 时间戳。
+
+### `frameType`
+
+视频帧的类型，详见 [AgoraVideoFrameType](/zh-CN/api-reference/rtc/ios/enum-videoframetype)。
+
+### `rotation`
+
+视频帧的旋转信息。
+
+### `trackId`
+
+预留参数，用于未来支持多个视频轨道。
+
+### `captureTimeMs`
+
+外部编码视频帧的采集时间戳（毫秒）。
+
+### `decodeTimeMs`
+
+输出参数，表示用于解码视频帧的时间戳（毫秒）。
+
+### `streamType`
+
+视频流的类型，详见 [AgoraVideoStreamType](/zh-CN/api-reference/rtc/ios/enum-videostreamtype)。

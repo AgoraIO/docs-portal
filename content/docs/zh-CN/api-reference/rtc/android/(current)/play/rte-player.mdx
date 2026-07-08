@@ -1,0 +1,2835 @@
+---
+title: "URL 拉流播放"
+description: "URL 拉流播放 API reference."
+---
+<a id="toc_rte_player"></a>
+
+<a id="api_rteplayerinfo_abrsubscriptionlayer"></a>
+
+## abrSubscriptionLayer
+
+获取当前订阅的视频层级。
+
+<a id="api_rteplayerinfo_abrsubscriptionlayer__prototype"></a>
+
+```java
+public Constants.AbrSubscriptionLayer abrSubscriptionLayer()
+```
+
+<a id="api_rteplayerinfo_abrsubscriptionlayer__detailed_desc"></a>
+
+该方法仅在打开 RTE URL 时有效。
+
+<a id="api_rteplayerinfo_abrsubscriptionlayer__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回 [AbrSubscriptionLayer](/zh-CN/api-reference/rtc/android/enum-rteabrsubscriptionlayer) 对象。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="api_canvas_addview"></a>
+
+## addView
+
+添加一个渲染视图。
+
+<a id="api_canvas_addview__prototype"></a>
+
+```java
+public void addView(View view, ViewConfig viewConfig) throws RteException
+```
+
+<a id="api_canvas_addview__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+当你需要使用播放器播放视频时，可以调用该方法将视图添加到视频渲染器中，以显示视频内容。
+
+:::info[注]
+当前仅支持一个视图。
+:::
+
+<a id="api_canvas_addview__scenario"></a>
+
+### 适用场景
+
+当你需要使用播放器播放视频时，可以调用此方法将视图添加到视频渲染器中，以显示视频内容。
+
+<a id="api_canvas_addview__timing"></a>
+
+### 调用时机
+
+必须在调用 [setCanvas](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_setcanvas) 之前调用该方法。
+
+<a id="api_canvas_addview__parameters"></a>
+
+### 参数
+
+#### `view`
+
+`SurfaceView` 对象。
+
+#### `viewConfig`
+
+视图的相关设置。
+
+<a id="api_canvas_addview__exception"></a>
+
+### 异常
+
+添加渲染视图失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [Canvas](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvas)
+
+<a id="api_rteplayerinfo_audiobitspersample"></a>
+
+## audioBitsPerSample
+
+获取每个音频采样点的位数。
+
+<a id="api_rteplayerinfo_audiobitspersample__prototype"></a>
+
+```java
+public int audioBitsPerSample()
+```
+
+<a id="api_rteplayerinfo_audiobitspersample__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+:::info[注]
+[audioBitsPerSample](/zh-CN/api-reference/rtc/android/play/rte-player#api_rteplayerinfo_audiobitspersample) 仅在打开非 RTM URL 时有效。
+:::
+
+<a id="api_rteplayerinfo_audiobitspersample__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回每个音频采样点的位数，单位为 bit。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="api_rteplayerinfo_audiochannels"></a>
+
+## audioChannels
+
+获取音频通道数。
+
+<a id="api_rteplayerinfo_audiochannels__prototype"></a>
+
+```java
+public int audioChannels()
+```
+
+<a id="api_rteplayerinfo_audiochannels__detailed_desc"></a>
+
+<a id="api_rteplayerinfo_audiochannels__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回音频通道数。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="api_rteplayerinfo_audiosamplerate"></a>
+
+## audioSampleRate
+
+获取音频采样率。
+
+<a id="api_rteplayerinfo_audiosamplerate__prototype"></a>
+
+```java
+public int audioSampleRate()
+```
+
+<a id="api_rteplayerinfo_audiosamplerate__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+<a id="api_rteplayerinfo_audiosamplerate__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回音频采样率，单位为 Hz。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="api_canvas_canvas_canvas"></a>
+
+## Canvas
+
+构造一个 Canvas 对象。
+
+<a id="api_canvas_canvas_canvas__prototype"></a>
+
+```java
+public Canvas(Rte rte, CanvasInitialConfig config)
+```
+
+<a id="api_canvas_canvas_canvas__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_canvas_canvas_canvas__parameters"></a>
+
+### 参数
+
+#### `rte`
+
+用于构造 [Canvas](/zh-CN/api-reference/rtc/android/play/rte-player#api_canvas_canvas_canvas) 的 [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte) 对象，详见 [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte)。
+
+#### `config`
+
+初始化配置对象。你可以传入 `null`。
+
+### 所属接口类
+- [Canvas](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvas)
+
+<a id="api_error_code"></a>
+
+## code
+
+获取 API 调用失败时返回的错误码。
+
+<a id="api_error_code__prototype"></a>
+
+```java
+public Constants.ErrorCode code()
+```
+
+<a id="api_error_code__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_error_code__timing"></a>
+
+### 调用时机
+
+你可以在 API 调用失败时调用此方法获取错误码。
+
+<a id="api_error_code__return_values"></a>
+
+### 返回值
+
+- 方法调用失败时，返回错误码。详见 ErrorCode。
+
+### 所属接口类
+- [Error](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_error)
+
+<a id="api_rteplayerinfo_currenturl"></a>
+
+## currentUrl
+
+获取当前正在播放的 URL。
+
+<a id="api_rteplayerinfo_currenturl__prototype"></a>
+
+```java
+public String currentUrl()
+```
+
+<a id="api_rteplayerinfo_currenturl__detailed_desc"></a>
+
+<a id="api_rteplayerinfo_currenturl__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回当前正在播放的 URL。 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="api_rte_destroy_rte"></a>
+
+## destroy
+
+销毁 RTE 对象，释放相关资源。
+
+<a id="api_rte_destroy_rte__prototype"></a>
+
+```java
+public synchronized void destroy() throws RteException
+```
+
+<a id="api_rte_destroy_rte__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_rte_destroy_rte__exception"></a>
+
+### 异常
+
+销毁失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte)
+
+<a id="api_rteplayerinfo_duration"></a>
+
+## duration
+
+获取当前媒体资源的时长。
+
+<a id="api_rteplayerinfo_duration__prototype"></a>
+
+```java
+public long duration()
+```
+
+<a id="api_rteplayerinfo_duration__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+:::info[注]
+该方法仅在播放本地媒体文件或输入在线媒体流时有效。
+:::
+
+<a id="api_rteplayerinfo_duration__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回当前媒体资源的时长，单位为毫秒。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="api_rteexception_errorcode_rteexception"></a>
+
+## errorCode
+
+获取 RteException 中携带的错误码。
+
+<a id="api_rteexception_errorcode_rteexception__prototype"></a>
+
+```java
+public Constants.ErrorCode errorCode()
+```
+
+<a id="api_rteexception_errorcode_rteexception__detailed_desc"></a>
+
+<a id="api_rteexception_errorcode_rteexception__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回 [ErrorCode](/zh-CN/api-reference/rtc/android/enum-rteerrorcode) 对象。
+
+### 所属接口类
+- [RteException](/zh-CN/api-reference/rtc/android/class-rteexception)
+
+<a id="api_playerconfig_getabrfallbacklayer"></a>
+
+## getAbrFallbackLayer
+
+获取已配置的视频流回退选项。
+
+<a id="api_playerconfig_getabrfallbacklayer__prototype"></a>
+
+```java
+public Constants.AbrFallbackLayer getAbrFallbackLayer() throws RteException
+```
+
+<a id="api_playerconfig_getabrfallbacklayer__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_playerconfig_getabrfallbacklayer__timing"></a>
+
+### 调用时机
+
+你必须在调用 `getConfigs` 之后调用此方法。
+
+<a id="api_playerconfig_getabrfallbacklayer__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+<a id="api_playerconfig_getabrfallbacklayer__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回已配置的视频流回退选项。详见 [AbrFallbackLayer](/zh-CN/api-reference/rtc/android/enum-rteabrfallbacklayer)。
+
+### 所属接口类
+- [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)
+
+<a id="api_playerconfig_getabrsubscriptionlayer"></a>
+
+## getAbrSubscriptionLayer
+
+获取已订阅视频流的质量层级。
+
+<a id="api_playerconfig_getabrsubscriptionlayer__prototype"></a>
+
+```java
+public Constants.AbrSubscriptionLayer getAbrSubscriptionLayer() throws RteException
+```
+
+<a id="api_playerconfig_getabrsubscriptionlayer__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_playerconfig_getabrsubscriptionlayer__timing"></a>
+
+### 调用时机
+
+你需要在调用 `getConfigs` 方法之后调用此方法。
+
+<a id="api_playerconfig_getabrsubscriptionlayer__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出包含相应错误信息的 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception) 异常。你需要捕获并处理该异常。
+
+<a id="api_playerconfig_getabrsubscriptionlayer__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回当前设置的视频质量层级。详见 [AbrSubscriptionLayer](/zh-CN/api-reference/rtc/android/enum-rteabrsubscriptionlayer)。
+
+### 所属接口类
+- [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)
+
+<a id="api_config_getappid"></a>
+
+## getAppId
+
+获取已设置的 App ID。
+
+<a id="api_config_getappid__prototype"></a>
+
+```java
+public String getAppId() throws RteException
+```
+
+<a id="api_config_getappid__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_config_getappid__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回已设置的 App ID。 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [Config](/zh-CN/api-reference/rtc/android/class-config)
+
+<a id="api_playerconfig_getautoplay"></a>
+
+## getAutoPlay
+
+获取媒体播放器的自动播放设置。
+
+<a id="api_playerconfig_getautoplay__prototype"></a>
+
+```java
+public boolean getAutoPlay() throws RteException
+```
+
+<a id="api_playerconfig_getautoplay__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_playerconfig_getautoplay__timing"></a>
+
+### 调用时机
+
+此方法必须在调用 `getConfigs` 之后调用。
+
+<a id="api_playerconfig_getautoplay__exception"></a>
+
+### 异常
+
+获取自动播放设置失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+<a id="api_playerconfig_getautoplay__return_values"></a>
+
+### 返回值
+
+- true：获取成功。
+- false：获取失败。
+
+### 所属接口类
+- [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)
+
+<a id="api_canvas_getconfigs_canvas"></a>
+
+## getConfigs [3/3]
+
+获取播放器当前的视频渲染配置。
+
+<a id="api_canvas_getconfigs_canvas__prototype"></a>
+
+```java
+public void getConfigs(CanvasConfig config) throws RteException
+```
+
+<a id="api_canvas_getconfigs_canvas__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_canvas_getconfigs_canvas__timing"></a>
+
+### 调用时机
+
+你必须在调用 [Canvas](/zh-CN/api-reference/rtc/android/play/rte-player#api_canvas_canvas_canvas) 之后调用此方法。
+
+<a id="api_canvas_getconfigs_canvas__parameters"></a>
+
+### 参数
+
+#### `config`
+
+[Canvas](/zh-CN/api-reference/rtc/android/play/rte-player#api_canvas_canvas_canvas) 对象的设置，详见 [CanvasConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvasconfig)。
+
+<a id="api_canvas_getconfigs_canvas__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出包含相应错误信息的 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception)。你需要捕获并处理该异常。
+
+### 所属接口类
+- [Canvas](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvas)
+
+<a id="api_player_getconfigs_player"></a>
+
+## getConfigs [2/3]
+
+获取当前媒体播放器的配置选项。
+
+<a id="api_player_getconfigs_player__prototype"></a>
+
+```java
+public void getConfigs(PlayerConfig config) throws RteException
+```
+
+<a id="api_player_getconfigs_player__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_player_getconfigs_player__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [Player](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_player_player) 之后使用。
+
+<a id="api_player_getconfigs_player__parameters"></a>
+
+### 参数
+
+#### `config`
+
+媒体播放器配置对象，详见 [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)。
+
+<a id="api_player_getconfigs_player__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_rte_getconfigs_rte"></a>
+
+## getConfigs [1/3]
+
+获取 Rte 对象的配置信息。
+
+<a id="api_rte_getconfigs_rte__prototype"></a>
+
+```java
+public void getConfigs(Config config) throws RteException
+```
+
+<a id="api_rte_getconfigs_rte__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_rte_getconfigs_rte__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [Rte](/zh-CN/api-reference/rtc/android/play/rte-player#api_rte_rte_rte) 之后使用。
+
+<a id="api_rte_getconfigs_rte__parameters"></a>
+
+### 参数
+
+#### `config`
+
+详见 [Config](/zh-CN/api-reference/rtc/android/class-config)。
+
+<a id="api_rte_getconfigs_rte__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception) 并返回相应的错误信息。你需要捕获并处理该异常。
+
+### 所属接口类
+- [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte)
+
+<a id="api_rte_getfrombridge"></a>
+
+## getFromBridge
+
+从 RtcEngine 中桥接一个 RTE 对象。
+
+<a id="api_rte_getfrombridge__prototype"></a>
+
+```java
+public static synchronized Rte getFromBridge() throws RteException
+```
+
+<a id="api_rte_getfrombridge__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+通过该方法创建的 `RTE` 对象无需通过 [initMediaEngine](/zh-CN/api-reference/rtc/android/play/rte-player#api_rte_initmediaengine) 进行初始化。如果你尚未创建并初始化 `RTC` 引擎，可以先调用 `RTE` 创建一个 `RTE` 对象，再调用 [initMediaEngine](/zh-CN/api-reference/rtc/android/play/rte-player#api_rte_initmediaengine) 进行初始化。
+
+<a id="api_rte_getfrombridge__timing"></a>
+
+### 调用时机
+
+调用此方法前，请确保已调用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 初始化 `RTC` 引擎。
+
+<a id="api_rte_getfrombridge__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception) 并返回相应的错误信息。你需要捕获并处理该异常。
+
+<a id="api_rte_getfrombridge__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回 `RTE` 对象。
+
+### 所属接口类
+- [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte)
+
+<a id="api_player_getinfo"></a>
+
+## getInfo
+
+检索与播放器和媒体流相关的信息。
+
+<a id="api_player_getinfo__prototype"></a>
+
+```java
+public void getInfo(PlayerInfo info) throws RteException
+```
+
+<a id="api_player_getinfo__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_player_getinfo__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [Player](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_player_player) 之后使用。
+
+<a id="api_player_getinfo__parameters"></a>
+
+### 参数
+
+#### `info`
+
+与播放器和媒体流相关的信息，详见 [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)。
+
+<a id="api_player_getinfo__exception"></a>
+
+### 异常
+
+如果该方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_config_getjsonparameter_config"></a>
+
+## getJsonParameter
+
+获取当前设置的 JSON 格式的私有参数集。
+
+<a id="api_config_getjsonparameter_config__prototype"></a>
+
+```java
+public String getJsonParameter() throws RteException
+```
+
+<a id="api_config_getjsonparameter_config__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_config_getjsonparameter_config__exception"></a>
+
+### 异常
+
+调用失败，SDK 会抛出 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception) 异常，你需要捕获异常并进行处理。
+
+<a id="api_config_getjsonparameter_config__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回已设置的 JSON 格式的参数集。 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [Config](/zh-CN/api-reference/rtc/android/class-config)
+
+<a id="api_playerconfig_getloopcount"></a>
+
+## getLoopCount
+
+获取媒体文件的循环播放次数。
+
+<a id="api_playerconfig_getloopcount__prototype"></a>
+
+```java
+public int getLoopCount() throws RteException
+```
+
+<a id="api_playerconfig_getloopcount__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+<a id="api_playerconfig_getloopcount__exception"></a>
+
+### 异常
+
+获取失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+<a id="api_playerconfig_getloopcount__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回媒体文件的循环播放次数。
+
+### 所属接口类
+- [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)
+
+<a id="api_canvasconfig_getmirrormode"></a>
+
+## getVideoMirrorMode
+
+获取视频镜像模式。
+
+<a id="api_canvasconfig_getmirrormode__prototype"></a>
+
+```java
+public Constants.VideoMirrorMode getVideoMirrorMode() throws RteException
+```
+
+<a id="api_canvasconfig_getmirrormode__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_canvasconfig_getmirrormode__exception"></a>
+
+### 异常
+
+获取视频镜像模式失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+<a id="api_canvasconfig_getmirrormode__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回视频镜像模式，详见 [VideoMirrorMode](/zh-CN/api-reference/rtc/android/enum-rtevideomirrormode)。
+
+### 所属接口类
+- [CanvasConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvasconfig)
+
+<a id="api_playerconfig_getplaybackspeed"></a>
+
+## getPlaybackSpeed
+
+获取播放速度参数。
+
+<a id="api_playerconfig_getplaybackspeed__prototype"></a>
+
+```java
+public int getPlaybackSpeed() throws RteException
+```
+
+<a id="api_playerconfig_getplaybackspeed__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+<a id="api_playerconfig_getplaybackspeed__exception"></a>
+
+### 异常
+
+获取播放速度失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+<a id="api_playerconfig_getplaybackspeed__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回播放速度的值。
+
+### 所属接口类
+- [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)
+
+<a id="api_playerconfig_getplayoutvolume"></a>
+
+## getPlayoutVolume
+
+获取媒体播放器的播放音量。
+
+<a id="api_playerconfig_getplayoutvolume__prototype"></a>
+
+```java
+public int getPlayoutVolume() throws RteException
+```
+
+<a id="api_playerconfig_getplayoutvolume__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+<a id="api_playerconfig_getplayoutvolume__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回媒体播放器的播放音量级别。
+
+### 所属接口类
+- [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)
+
+<a id="api_player_getposition"></a>
+
+## getPosition
+
+获取当前的播放位置。
+
+<a id="api_player_getposition__prototype"></a>
+
+```java
+public long getPosition() throws RteException
+```
+
+<a id="api_player_getposition__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+<a id="api_player_getposition__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出一个 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception) 异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+<a id="api_player_getposition__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回当前的播放位置，单位为毫秒。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_canvasconfig_getrendermode"></a>
+
+## getVideoRenderMode
+
+获取当前设置的视频镜像模式。
+
+<a id="api_canvasconfig_getrendermode__prototype"></a>
+
+```java
+public Constants.VideoRenderMode getVideoRenderMode() throws RteException
+```
+
+<a id="api_canvasconfig_getrendermode__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_canvasconfig_getrendermode__timing"></a>
+
+### 调用时机
+
+你需要在调用 `getConfigs` 之后调用此方法。
+
+<a id="api_canvasconfig_getrendermode__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+<a id="api_canvasconfig_getrendermode__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回当前设置的视频镜像模式。详见 [VideoMirrorMode](/zh-CN/api-reference/rtc/android/enum-rtevideomirrormode)。
+
+### 所属接口类
+- [CanvasConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvasconfig)
+
+<a id="api_player_getstats"></a>
+
+## getStats
+
+获取播放器当前播放媒体资源的统计信息。
+
+<a id="api_player_getstats__prototype"></a>
+
+```java
+public void getStats(PlayerGetStatsCallback callback)
+```
+
+<a id="api_player_getstats__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+该方法通过回调异步返回播放器的统计信息。
+
+<a id="api_player_getstats__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 之后调用。
+
+<a id="api_player_getstats__parameters"></a>
+
+### 参数
+
+#### `callback`
+
+用于异步接收统计信息和错误信息的回调接口。详见 [PlayerGetStatsCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playergetstatscallback)。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_rteplayerinfo_hasaudio"></a>
+
+## hasAudio
+
+判断媒体资源是否包含音频流。
+
+<a id="api_rteplayerinfo_hasaudio__prototype"></a>
+
+```java
+public boolean hasAudio()
+```
+
+<a id="api_rteplayerinfo_hasaudio__detailed_desc"></a>
+
+<a id="api_rteplayerinfo_hasaudio__return_values"></a>
+
+### 返回值
+
+- true：媒体资源中包含音频流。
+- false：媒体资源中不包含音频流。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="api_rteplayerinfo_hasvideo"></a>
+
+## hasVideo
+
+判断是否包含视频流。
+
+<a id="api_rteplayerinfo_hasvideo__prototype"></a>
+
+```java
+public boolean hasVideo()
+```
+
+<a id="api_rteplayerinfo_hasvideo__detailed_desc"></a>
+
+<a id="api_rteplayerinfo_hasvideo__return_values"></a>
+
+### 返回值
+
+true：URL 源包含视频流。 false：URL 源不包含视频流。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="api_rte_initmediaengine"></a>
+
+## initMediaEngine
+
+初始化 RTE 引擎。
+
+<a id="api_rte_initmediaengine__prototype"></a>
+
+```java
+public void initMediaEngine(AsyncCallback callBack) throws RteException
+```
+
+<a id="api_rte_initmediaengine__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+该方法为异步方法，通过回调函数返回初始化结果。你需要在创建 `RTE` 对象并设置 App ID 后调用该方法。
+
+<a id="api_rte_initmediaengine__parameters"></a>
+
+### 参数
+
+#### `callBack`
+
+异步返回引擎初始化结果的回调。详见 [AsyncCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_asynccallback)。
+
+<a id="api_rte_initmediaengine__exception"></a>
+
+### 异常
+
+初始化失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte)
+
+<a id="api_rteplayerinfo_isaudiomuted"></a>
+
+## isAudioMuted
+
+判断播放器是否停止接收远端音频流。
+
+<a id="api_rteplayerinfo_isaudiomuted__prototype"></a>
+
+```java
+public boolean isAudioMuted()
+```
+
+<a id="api_rteplayerinfo_isaudiomuted__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_rteplayerinfo_isaudiomuted__return_values"></a>
+
+### 返回值
+
+- true：播放器已停止接收远端音频流。
+- false：播放器仍在接收远端音频流。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="api_rteplayerinfo_isvideomuted"></a>
+
+## isVideoMuted
+
+判断播放器是否停止接收远端视频流。
+
+<a id="api_rteplayerinfo_isvideomuted__prototype"></a>
+
+```java
+public boolean isVideoMuted()
+```
+
+<a id="api_rteplayerinfo_isvideomuted__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+:::info[注]
+[isVideoMuted](/zh-CN/api-reference/rtc/android/play/rte-player#api_rteplayerinfo_isvideomuted) 接口仅在打开 RTE URL 时有效。
+:::
+
+<a id="api_rteplayerinfo_isvideomuted__return_values"></a>
+
+### 返回值
+
+- true：播放器已停止接收远端视频流。
+- false：播放器仍在接收远端视频流。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="api_error_message"></a>
+
+## message
+
+获取详细的错误信息。
+
+<a id="api_error_message__prototype"></a>
+
+```java
+public String message()
+```
+
+<a id="api_error_message__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_error_message__timing"></a>
+
+### 调用时机
+
+当 API 调用失败时，可以调用该方法获取错误信息，以帮助排查问题。
+
+<a id="api_error_message__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回错误信息字符串。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [Error](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_error)
+
+<a id="api_player_muteaudio"></a>
+
+## muteAudio
+
+开始或停止接收音频流。
+
+<a id="api_player_muteaudio__prototype"></a>
+
+```java
+public void muteAudio(boolean mute) throws RteException
+```
+
+<a id="api_player_muteaudio__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_player_muteaudio__timing"></a>
+
+### 调用时机
+
+该方法需要在调用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 方法之后调用。
+
+<a id="api_player_muteaudio__related"></a>
+
+### 相关回调
+
+调用该方法成功后，会触发 [onPlayerInfoUpdated](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerinfoupdated) 回调，上报最新的播放器和媒体拉流信息。
+
+<a id="api_player_muteaudio__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+是否接收音频流：
+
+- true：不接收音频流。
+- false：接收音频流。
+
+<a id="api_player_muteaudio__exception"></a>
+
+### 异常
+
+方法调用失败时，SDK 会抛出包含错误信息的 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception) 异常。你需要捕获并处理该异常。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_player_mutevideo"></a>
+
+## muteVideo
+
+开始或停止接收远端视频流。
+
+<a id="api_player_mutevideo__prototype"></a>
+
+```java
+public void muteVideo(boolean mute) throws RteException
+```
+
+<a id="api_player_mutevideo__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_player_mutevideo__timing"></a>
+
+### 调用时机
+
+你必须在调用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 之后调用该方法。
+
+<a id="api_player_mutevideo__related"></a>
+
+### 相关回调
+
+该方法调用成功后，会触发 [onPlayerInfoUpdated](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerinfoupdated) 回调，用于上报最新的播放器和媒体流信息。
+
+<a id="api_player_mutevideo__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+是否接收远端视频流：
+
+- true：不接收远端视频流。
+- false：接收远端视频流。
+
+<a id="api_player_mutevideo__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出带有相应错误信息的 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception) 异常。你需要捕获并处理该异常。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_player_openwithurl"></a>
+
+## openWithUrl
+
+打开一个 URL 资源。
+
+<a id="api_player_openwithurl__prototype"></a>
+
+```java
+public void openWithUrl(String url, long startTime, AsyncCallback callback)
+```
+
+<a id="api_player_openwithurl__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+该方法支持通过 URL 打开实时流媒体资源。如果你希望加快打开速度，可以在调用该方法前使用 [preloadWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_preloadwithurl) 预加载资源。 如果资源打开失败，你会收到 [onStateChanged](/zh-CN/api-reference/rtc/android/play/rte-player#callback_playerobserver_onstatechanged) 回调，播放器状态为 `FAILED`。此时需要先调用 [stop](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_stop_player)，然后再次调用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 重新打开资源。 如果你关闭了自动播放功能，可以在资源打开后调用 [play](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_play_player) 开始播放。
+
+:::info[注]
+该方法目前仅支持以 `rte://` 开头的 URL、CDN 推流 URL 和本地媒体文件。
+:::
+
+<a id="api_player_openwithurl__timing"></a>
+
+### 调用时机
+
+该方法必须在 [Player](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_player_player) 之后调用。
+
+<a id="api_player_openwithurl__related"></a>
+
+### 相关回调
+
+调用该方法后会触发 [onStateChanged](/zh-CN/api-reference/rtc/android/play/rte-player#callback_playerobserver_onstatechanged) 回调，播放器状态为 `OPENING`，表示正在打开 URL。成功打开后，播放器状态为 `OPEN_COMPLETED`。
+
+<a id="api_player_openwithurl__parameters"></a>
+
+### 参数
+
+#### `url`
+
+要打开的 URL，可以是 CDN 推流 URL、本地媒体文件，或以 `rte://` 为前缀的 URL。
+
+#### `startTime`
+
+播放的起始位置，单位为毫秒。
+
+#### `callback`
+
+异步通知打开 URL 资源结果的回调。你可以通过该回调的 [onResult](/zh-CN/api-reference/rtc/android/play/rte-player#callback_asynccallback_onresult_asynccallback) 方法获取错误信息。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_player_pause_player"></a>
+
+## pause
+
+暂停播放。
+
+<a id="api_player_pause_player__prototype"></a>
+
+```java
+public void pause() throws RteException
+```
+
+<a id="api_player_pause_player__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+调用 [play](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_play_player) 播放 URL 资源后，如需暂停播放，可以调用该方法。如需停止播放，请调用 [stop](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_stop_player)。
+
+<a id="api_player_pause_player__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [play](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_play_player) 之后调用。
+
+<a id="api_player_pause_player__related"></a>
+
+### 相关回调
+
+成功调用该方法后，会触发 [onStateChanged](/zh-CN/api-reference/rtc/android/play/rte-player#callback_playerobserver_onstatechanged) 回调，报告播放器状态为 `PAUSED`。
+
+<a id="api_player_pause_player__exception"></a>
+
+### 异常
+
+如果该方法调用失败，SDK 会抛出带有相应错误信息的 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception) 异常。你需要捕获并处理该异常。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_player_play_player"></a>
+
+## play
+
+播放一个 URL 资源。
+
+<a id="api_player_play_player__prototype"></a>
+
+```java
+public void play() throws RteException
+```
+
+<a id="api_player_play_player__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+如果你已关闭自动播放，在使用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 成功打开一个在线媒体流后，可以调用该方法开始播放。
+
+:::info[注]
+该方法当前仅支持以 `rte://` 为前缀的 URL。
+:::
+
+<a id="api_player_play_player__timing"></a>
+
+### 调用时机
+
+仅在收到状态为 `OPEN_COMPLETED` 的 [onStateChanged](/zh-CN/api-reference/rtc/android/play/rte-player#callback_playerobserver_onstatechanged) 回调后调用该方法。
+
+<a id="api_player_play_player__related"></a>
+
+### 相关回调
+
+调用该方法成功后，会触发 [onStateChanged](/zh-CN/api-reference/rtc/android/play/rte-player#callback_playerobserver_onstatechanged) 回调以上报播放器状态。
+
+<a id="api_player_play_player__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出包含相应错误信息的 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception) 异常。你需要捕获并处理该异常。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_player_player_player"></a>
+
+## Player
+
+构造一个 Player 播放器对象。
+
+<a id="api_player_player_player__prototype"></a>
+
+```java
+public Player(Rte rte, PlayerInitialConfig initialConfig)
+```
+
+<a id="api_player_player_player__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_player_player_player__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [initMediaEngine](/zh-CN/api-reference/rtc/android/play/rte-player#api_rte_initmediaengine) 之后调用。
+
+<a id="api_player_player_player__parameters"></a>
+
+### 参数
+
+#### `rte`
+
+一个 [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte) 对象。详见 [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte)。
+
+#### `initialConfig`
+
+播放器对象的初始化设置。你可以传入 `null`。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_player_preloadwithurl"></a>
+
+## preloadWithUrl
+
+预加载 URL 资源。
+
+<a id="api_player_preloadwithurl__prototype"></a>
+
+```java
+public static void preloadWithUrl(String url) throws RteException
+```
+
+<a id="api_player_preloadwithurl__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+成功预加载资源可以加快使用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 打开 URL 资源的速度，从而减少等待时间。
+
+:::info[注]
+该方法目前仅适用于以 `rte://` 为前缀的 URL。最多可预加载 20 个 URL，若超过限制，新预加载的 URL 会替换最早的 URL。
+:::
+
+<a id="api_player_preloadwithurl__scenario"></a>
+
+### 适用场景
+
+在打开媒体资源前预加载，可以减少用户等待时间，提供更流畅的视听体验。
+
+<a id="api_player_preloadwithurl__timing"></a>
+
+### 调用时机
+
+必须在调用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 之前调用该方法。
+
+<a id="api_player_preloadwithurl__parameters"></a>
+
+### 参数
+
+#### `url`
+
+以 `rte://` 为前缀的 URL。各字段的详细信息参见观众端的“输入在线媒体流”。
+
+<a id="api_player_preloadwithurl__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出包含相应错误信息的 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception)。你需要捕获并处理该异常。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_player_registerobserver_player"></a>
+
+## registerObserver
+
+注册播放器的观察者对象。
+
+<a id="api_player_registerobserver_player__prototype"></a>
+
+```java
+public void registerObserver(PlayerObserver observer) throws RteException
+```
+
+<a id="api_player_registerobserver_player__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+在调用此方法之前，你需要实现一个继承自 [PlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerobserver) 的接口类。
+
+<a id="api_player_registerobserver_player__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [Player](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_player_player) 之后执行。
+
+<a id="api_player_registerobserver_player__parameters"></a>
+
+### 参数
+
+#### `observer`
+
+详见 [PlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerobserver)。
+
+<a id="api_player_registerobserver_player__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_canvas_removeview"></a>
+
+## removeView
+
+移除一个渲染视图。
+
+<a id="api_canvas_removeview__prototype"></a>
+
+```java
+public void removeView(View view, ViewConfig viewConfig) throws RteException
+```
+
+<a id="api_canvas_removeview__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+:::info[注]
+每次只能移除一个视图。
+:::
+
+<a id="api_canvas_removeview__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [addView](/zh-CN/api-reference/rtc/android/play/rte-player#api_canvas_addview) 之后调用。
+
+<a id="api_canvas_removeview__parameters"></a>
+
+### 参数
+
+#### `view`
+
+要移除的视图对象。
+
+#### `viewConfig`
+
+`view` 对象的设置。
+
+<a id="api_canvas_removeview__return_values"></a>
+
+### 返回值
+
+调用失败时，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [Canvas](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvas)
+
+<a id="api_rte_rte_rte"></a>
+
+## Rte
+
+构造一个 Rte 对象。
+
+<a id="api_rte_rte_rte__prototype"></a>
+
+```java
+public Rte(InitialConfig initialConfig)
+```
+
+<a id="api_rte_rte_rte__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_rte_rte_rte__timing"></a>
+
+### 调用时机
+
+你必须在调用 [initMediaEngine](/zh-CN/api-reference/rtc/android/play/rte-player#api_rte_initmediaengine) 之前调用此方法。
+
+<a id="api_rte_rte_rte__parameters"></a>
+
+### 参数
+
+#### `initialConfig`
+
+初始化设置。你可以传入 `null`。
+
+### 所属接口类
+- [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte)
+
+<a id="api_player_seek"></a>
+
+## seek
+
+跳转到指定的播放位置。
+
+<a id="api_player_seek__prototype"></a>
+
+```java
+public void seek(long newTime) throws RteException
+```
+
+<a id="api_player_seek__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+<a id="api_player_seek__parameters"></a>
+
+### 参数
+
+#### `newTime`
+
+要跳转到的播放位置，单位为毫秒。
+
+<a id="api_player_seek__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出一个 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception) 异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_playerconfig_setabrfallbacklayer"></a>
+
+## setAbrFallbackLayer
+
+设置已订阅远端视频流的回退选项。
+
+<a id="api_playerconfig_setabrfallbacklayer__prototype"></a>
+
+```java
+public void setAbrFallbackLayer(Constants.AbrFallbackLayer fallbackLayer) throws RteException
+```
+
+<a id="api_playerconfig_setabrfallbacklayer__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+在网络状况不佳时，SDK 会将已订阅远端视频流的分辨率降级到指定的视频质量层。每个质量层对应特定的分辨率和码率。网络恢复后，SDK 会将视频流恢复至原始质量层。
+
+:::info[注]
+如果未开启 ABR 功能，视频流的回退质量层只能设置为 `LOW` 或 `AUDIO_ONLY`。
+:::
+
+<a id="api_playerconfig_setabrfallbacklayer__scenario"></a>
+
+### 适用场景
+
+一般场景下，可调用该方法并将回退质量层设置为 `kRteAbrFallbackLow` 或 `kRteAbrFallbackAudioOnly`。当网络较差时，SDK 会回退为视频小流或仅接收音频流。 如果对回退视频流的分辨率有更高要求，可[联系技术支持](https://ticket.shengwang.cn/)开启 ABR 功能。开启后，可自定义每一层的分辨率。SDK 会以你指定的最低质量层的分辨率为下限，并根据网络状况在该范围内动态调整分辨率。
+
+<a id="api_playerconfig_setabrfallbacklayer__timing"></a>
+
+### 调用时机
+
+必须在调用 `setConfigs` 之前调用该方法。
+
+<a id="api_playerconfig_setabrfallbacklayer__parameters"></a>
+
+### 参数
+
+#### `fallbackLayer`
+
+视频流的回退质量层，详见 [AbrFallbackLayer](/zh-CN/api-reference/rtc/android/enum-rteabrfallbacklayer)。
+
+:::info[注]
+自定义分辨率时，请确保视频质量层按从高到低的分辨率排序；若分辨率相同，则按帧率从高到低排序。
+
+| 视频质量层 | 分辨率 |
+| --- | --- |
+| `LAYER1` | 2160p (4K) |
+| `LAYER2` | 1440p (2K) |
+| `LAYER3` | 1080p (HD) |
+| `LAYER4` | 720p (HD) |
+| `LAYER5` | 540p (SD) |
+| `LAYER6` | 480p (SD) |
+:::
+
+<a id="api_playerconfig_setabrfallbacklayer__exception"></a>
+
+### 异常
+
+调用失败时，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)
+
+<a id="api_playerconfig_setabrsubscriptionlayer"></a>
+
+## setAbrSubscriptionLayer
+
+设置订阅媒体流的视频质量等级。
+
+<a id="api_playerconfig_setabrsubscriptionlayer__prototype"></a>
+
+```java
+public void setAbrSubscriptionLayer(Constants.AbrSubscriptionLayer subscriptionLayer) throws RteException
+```
+
+<a id="api_playerconfig_setabrsubscriptionlayer__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+你可以根据实际网络状况，在所订阅的视频流中切换不同的视频质量等级。如果你需要更高级的视频分辨率切换控制，可以[联系技术支持](https://ticket.shengwang.cn/)开启 ABR（自适应码率）功能。开启后，你可以为每个视频质量等级自定义分辨率，使观众可以根据需要在多质量层级视频流的所有等级之间切换。
+
+:::info[注]
+如果未开启 ABR 功能，你只能订阅 `HIGH` 或 `LOW` 视频质量等级。
+:::
+
+<a id="api_playerconfig_setabrsubscriptionlayer__scenario"></a>
+
+### 适用场景
+
+在网络环境不稳定的场景中，订阅端可根据实际网络状况选择合适的视频质量层级，以保障流畅的观看体验。
+
+<a id="api_playerconfig_setabrsubscriptionlayer__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 `setConfigs` 之前调用。
+
+<a id="api_playerconfig_setabrsubscriptionlayer__parameters"></a>
+
+### 参数
+
+#### `subscriptionLayer`
+
+要订阅的视频质量等级，详见 [AbrSubscriptionLayer](/zh-CN/api-reference/rtc/android/enum-rteabrsubscriptionlayer)。在自定义 `LAYER1` 到 `LAYER6` 的分辨率时，你可以参考下表，或根据实际需求进行配置： 注意：自定义分辨率时，必须按分辨率从高到低排序各视频质量等级（Layer），若分辨率相同，则按帧率从高到低排序。
+
+| 视频质量等级 | 分辨率 |
+| --- | --- |
+| `LAYER1` | 2160p (4K) |
+| `LAYER2` | 1440p (2K) |
+| `LAYER3` | 1080p (HD) |
+| `LAYER4` | 720p (HD) |
+| `LAYER5` | 540p (SD) |
+| `LAYER6` | 480p (SD) |
+
+<a id="api_playerconfig_setabrsubscriptionlayer__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出包含相应错误信息的 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception) 异常。你需要捕获并处理该异常。
+
+### 所属接口类
+- [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)
+
+<a id="api_config_setappid"></a>
+
+## setAppId
+
+设置项目的声网 App ID。
+
+<a id="api_config_setappid__prototype"></a>
+
+```java
+public void setAppId(String appId) throws RteException
+```
+
+<a id="api_config_setappid__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_config_setappid__timing"></a>
+
+### 调用时机
+
+你必须在调用 [initMediaEngine](/zh-CN/api-reference/rtc/android/play/rte-player#api_rte_initmediaengine) 之前调用此方法。
+
+<a id="api_config_setappid__parameters"></a>
+
+### 参数
+
+#### `appId`
+
+声网 App ID，可从控制台获取。
+
+<a id="api_config_setappid__exception"></a>
+
+### 异常
+
+调用失败时，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [Config](/zh-CN/api-reference/rtc/android/class-config)
+
+<a id="api_playerconfig_setautoplay"></a>
+
+## setAutoPlay
+
+设置是否启用自动播放。
+
+<a id="api_playerconfig_setautoplay__prototype"></a>
+
+```java
+public void setAutoPlay(boolean autoPlay) throws RteException
+```
+
+<a id="api_playerconfig_setautoplay__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+你可以在调用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 之前调用此方法设置是否启用自动播放。如果未设置，默认启用自动播放。
+
+<a id="api_playerconfig_setautoplay__timing"></a>
+
+### 调用时机
+
+此方法必须在调用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 之前调用。
+
+<a id="api_playerconfig_setautoplay__parameters"></a>
+
+### 参数
+
+#### `autoPlay`
+
+是否启用自动播放：
+
+- true：（默认）启用自动播放。
+- false：关闭自动播放。
+
+<a id="api_playerconfig_setautoplay__exception"></a>
+
+### 异常
+
+设置失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)
+
+<a id="api_player_setcanvas"></a>
+
+## setCanvas
+
+设置用于显示视频的视图窗口。
+
+<a id="api_player_setcanvas__prototype"></a>
+
+```java
+public void setCanvas(Canvas canvas) throws RteException
+```
+
+<a id="api_player_setcanvas__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+该方法用于设置用于显示视频的 [Canvas](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvas) 对象。
+
+<a id="api_player_setcanvas__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [Player](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_player_player) 之后调用。
+
+<a id="api_player_setcanvas__parameters"></a>
+
+### 参数
+
+#### `canvas`
+
+用于渲染视频帧的对象，详见 [Canvas](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvas)。
+
+<a id="api_player_setcanvas__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_canvas_setconfigs_canvas"></a>
+
+## setConfigs [3/3]
+
+设置播放器的视频渲染配置。
+
+<a id="api_canvas_setconfigs_canvas__prototype"></a>
+
+```java
+public void setConfigs(CanvasConfig config) throws RteException
+```
+
+<a id="api_canvas_setconfigs_canvas__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_canvas_setconfigs_canvas__timing"></a>
+
+### 调用时机
+
+该方法需要在调用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 之前调用。
+
+<a id="api_canvas_setconfigs_canvas__parameters"></a>
+
+### 参数
+
+#### `config`
+
+用于设置 [Canvas](/zh-CN/api-reference/rtc/android/play/rte-player#api_canvas_canvas_canvas) 对象的配置，详见 [CanvasConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvasconfig)。
+
+<a id="api_canvas_setconfigs_canvas__exception"></a>
+
+### 异常
+
+调用失败时，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [Canvas](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvas)
+
+<a id="api_player_setconfigs_player"></a>
+
+## setConfigs [2/3]
+
+设置播放器配置。
+
+<a id="api_player_setconfigs_player__prototype"></a>
+
+```java
+public void setConfigs(PlayerConfig config) throws RteException
+```
+
+<a id="api_player_setconfigs_player__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+你可以调用此方法配置播放器，例如启用自动播放、订阅不同分辨率和码率的视频流。
+
+<a id="api_player_setconfigs_player__timing"></a>
+
+### 调用时机
+
+此方法必须在调用 [Player](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_player_player) 之后调用。
+
+<a id="api_player_setconfigs_player__parameters"></a>
+
+### 参数
+
+#### `config`
+
+播放器配置对象，详见 [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)。
+
+<a id="api_player_setconfigs_player__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出包含相应错误信息的 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception)。你需要捕获并处理该异常。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_rte_setconfigs_rte"></a>
+
+## setConfigs [1/3]
+
+配置 RTE 对象的信息。
+
+<a id="api_rte_setconfigs_rte__prototype"></a>
+
+```java
+public void setConfigs(Config config) throws RteException
+```
+
+<a id="api_rte_setconfigs_rte__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_rte_setconfigs_rte__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [Rte](/zh-CN/api-reference/rtc/android/play/rte-player#api_rte_rte_rte) 之后调用。
+
+<a id="api_rte_setconfigs_rte__parameters"></a>
+
+### 参数
+
+#### `config`
+
+用于设置 `RTE` 对象的配置信息，详见 [Config](/zh-CN/api-reference/rtc/android/class-config)。
+
+<a id="api_rte_setconfigs_rte__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception) 并返回相应的错误信息。你需要捕获并处理该异常。
+
+### 所属接口类
+- [Rte](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rte)
+
+<a id="api_config_setjsonparameter_config"></a>
+
+## setJsonParameter
+
+通过 JSON 配置 SDK 的技术预览或定制化功能。
+
+<a id="api_config_setjsonparameter_config__prototype"></a>
+
+```java
+public void setJsonParameter(String jsonParameter) throws RteException
+```
+
+<a id="api_config_setjsonparameter_config__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_config_setjsonparameter_config__scenario"></a>
+
+### 适用场景
+
+当你需要设置私有参数或使用定制化功能时，可以调用此方法。
+
+<a id="api_config_setjsonparameter_config__timing"></a>
+
+### 调用时机
+
+此方法必须在调用 `setConfigs` 之前调用。
+
+<a id="api_config_setjsonparameter_config__parameters"></a>
+
+### 参数
+
+#### `jsonParameter`
+
+JSON 字符串格式的参数。
+
+<a id="api_config_setjsonparameter_config__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出包含相应错误信息的 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception)。你需要捕获并处理该异常。
+
+### 所属接口类
+- [Config](/zh-CN/api-reference/rtc/android/class-config)
+
+<a id="api_playerconfig_setloopcount"></a>
+
+## setLoopCount
+
+设置媒体文件在播放期间循环播放的次数。
+
+<a id="api_playerconfig_setloopcount__prototype"></a>
+
+```java
+public void setLoopCount(int count) throws RteException
+```
+
+<a id="api_playerconfig_setloopcount__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+<a id="api_playerconfig_setloopcount__parameters"></a>
+
+### 参数
+
+#### `count`
+
+媒体文件循环播放的次数：
+
+- 1：播放一次。
+- 2：播放两次。
+- -1：无限循环播放，直到调用 stop 停止播放。
+
+<a id="api_playerconfig_setloopcount__exception"></a>
+
+### 异常
+
+设置失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)
+
+<a id="api_canvasconfig_setmirrormode"></a>
+
+## setVideoMirrorMode
+
+设置视频镜像模式。
+
+<a id="api_canvasconfig_setmirrormode__prototype"></a>
+
+```java
+public void setVideoMirrorMode(Constants.VideoMirrorMode mode) throws RteException
+```
+
+<a id="api_canvasconfig_setmirrormode__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+你必须在调用 `setConfigs` 方法之前调用此方法。
+
+<a id="api_canvasconfig_setmirrormode__timing"></a>
+
+### 调用时机
+
+你必须在调用 `setConfigs` 之前调用此方法。
+
+<a id="api_canvasconfig_setmirrormode__parameters"></a>
+
+### 参数
+
+#### `mode`
+
+镜像模式，详见 [VideoMirrorMode](/zh-CN/api-reference/rtc/android/enum-rtevideomirrormode)。默认值为 `AUTO`，由 SDK 自动决定镜像模式。
+
+<a id="api_canvasconfig_setmirrormode__exception"></a>
+
+### 异常
+
+方法调用失败时，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [CanvasConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvasconfig)
+
+<a id="api_playerconfig_setplaybackspeed"></a>
+
+## setPlaybackSpeed
+
+设置播放速度参数。
+
+<a id="api_playerconfig_setplaybackspeed__prototype"></a>
+
+```java
+public void setPlaybackSpeed(int speed) throws RteException
+```
+
+<a id="api_playerconfig_setplaybackspeed__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+你可以在调用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 后调用该方法。
+
+<a id="api_playerconfig_setplaybackspeed__parameters"></a>
+
+### 参数
+
+#### `speed`
+
+播放速度。有效范围为 [50, 400]。
+
+<a id="api_playerconfig_setplaybackspeed__exception"></a>
+
+### 异常
+
+设置播放速度失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)
+
+<a id="api_playerconfig_setplayoutvolume"></a>
+
+## setPlayoutVolume
+
+设置播放音量参数。
+
+<a id="api_playerconfig_setplayoutvolume__prototype"></a>
+
+```java
+public void setPlayoutVolume(int volume) throws RteException
+```
+
+<a id="api_playerconfig_setplayoutvolume__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+<a id="api_playerconfig_setplayoutvolume__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+播放器的音量值。有效范围为 [0, 400]。
+
+<a id="api_playerconfig_setplayoutvolume__exception"></a>
+
+### 异常
+
+设置播放音量失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [PlayerConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerconfig)
+
+<a id="api_canvasconfig_setrendermode_canvasconfig"></a>
+
+## setVideoRenderMode
+
+设置视频渲染模式。
+
+<a id="api_canvasconfig_setrendermode_canvasconfig__prototype"></a>
+
+```java
+public void setVideoRenderMode(Constants.VideoRenderMode mode) throws RteException
+```
+
+<a id="api_canvasconfig_setrendermode_canvasconfig__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="api_canvasconfig_setrendermode_canvasconfig__parameters"></a>
+
+### 参数
+
+#### `mode`
+
+要设置的视频渲染模式，详见 [VideoRenderMode](/zh-CN/api-reference/rtc/android/enum-rtevideorendermode)。
+
+:::info[注]
+默认值为 `VideoRenderMode.HIDDEN`。
+:::
+
+<a id="api_canvasconfig_setrendermode_canvasconfig__exception"></a>
+
+### 异常
+
+[RteException](/zh-CN/api-reference/rtc/android/class-rteexception)： `RteException.errorCode()` 可能返回以下错误码：
+
+- ErrorCode.INVALID_ARGUMENT： mode 参数设置为非法值。
+
+### 所属接口类
+- [CanvasConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvasconfig)
+
+<a id="api_rteplayerinfo_state"></a>
+
+## state
+
+获取当前播放器状态。
+
+<a id="api_rteplayerinfo_state__prototype"></a>
+
+```java
+public int state()
+```
+
+<a id="api_rteplayerinfo_state__detailed_desc"></a>
+
+<a id="api_rteplayerinfo_state__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回当前播放器的状态。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="api_player_stop_player"></a>
+
+## stop
+
+停止播放媒体资源。
+
+<a id="api_player_stop_player__prototype"></a>
+
+```java
+public void stop() throws RteException
+```
+
+<a id="api_player_stop_player__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+如果使用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 打开 URL 流失败，你需要先调用该方法，然后再调用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 重新打开 URL。
+
+<a id="api_player_stop_player__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [openWithUrl](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_openwithurl) 之后调用。
+
+<a id="api_player_stop_player__related"></a>
+
+### 相关回调
+
+调用成功后，该方法会触发 [onStateChanged](/zh-CN/api-reference/rtc/android/play/rte-player#callback_playerobserver_onstatechanged) 回调，并上报播放器状态为 `STOPPED`。
+
+<a id="api_player_stop_player__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_rteplayerinfo_streamcount"></a>
+
+## streamCount
+
+获取当前播放源中的流的数量。
+
+<a id="api_rteplayerinfo_streamcount__prototype"></a>
+
+```java
+public int streamCount()
+```
+
+<a id="api_rteplayerinfo_streamcount__detailed_desc"></a>
+
+该方法仅在打开非 RTE URL 时有效。
+
+<a id="api_rteplayerinfo_streamcount__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回流的数量。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="api_player_switchwithurl"></a>
+
+## switchWithUrl
+
+在播放过程中切换到新的 URL。
+
+<a id="api_player_switchwithurl__prototype"></a>
+
+```java
+public void switchWithUrl(String url, boolean syncPts, AsyncCallback callback)
+```
+
+<a id="api_player_switchwithurl__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+当 SDK 返回播放器状态为 `OPEN_COMPLETED` 时，必须调用该方法。
+
+:::info[注]
+该方法仅在播放器打开非 RTE URL 时有效。
+:::
+
+<a id="api_player_switchwithurl__parameters"></a>
+
+### 参数
+
+#### `url`
+
+要切换的 URL 资源。
+
+#### `syncPts`
+
+- true：同步播放位置。
+- false：（默认）不同步播放位置。
+
+#### `callback`
+
+异步通知切换操作结果的回调。你可以通过该回调的 `err` 参数得知操作的结果或错误码信息，详见 [AsyncCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_asynccallback)。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_player_unregisterobserver_player"></a>
+
+## unregisterObserver
+
+取消注册媒体播放器事件观察者对象。
+
+<a id="api_player_unregisterobserver_player__prototype"></a>
+
+```java
+public void unregisterObserver(PlayerObserver observer) throws RteException
+```
+
+<a id="api_player_unregisterobserver_player__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+调用 [registerObserver](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_registerobserver_player) 注册媒体播放器事件观察者对象后，如需取消注册，请调用该方法。
+
+<a id="api_player_unregisterobserver_player__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [registerObserver](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_registerobserver_player) 之后调用。
+
+<a id="api_player_unregisterobserver_player__parameters"></a>
+
+### 参数
+
+#### `observer`
+
+详见 [PlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerobserver)。
+
+<a id="api_player_unregisterobserver_player__exception"></a>
+
+### 异常
+
+如果方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [Player](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_player)
+
+<a id="api_rteplayerinfo_videoheight"></a>
+
+## videoHeight
+
+获取视频分辨率的高度。
+
+<a id="api_rteplayerinfo_videoheight__prototype"></a>
+
+```java
+public int videoHeight()
+```
+
+<a id="api_rteplayerinfo_videoheight__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+<a id="api_rteplayerinfo_videoheight__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回视频分辨率的高度，单位为像素。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="api_rteplayerinfo_videowidth"></a>
+
+## videoWidth
+
+获取视频分辨率的宽度。
+
+<a id="api_rteplayerinfo_videowidth__prototype"></a>
+
+```java
+public int videoWidth()
+```
+
+<a id="api_rteplayerinfo_videowidth__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.5.1 版本新增。
+
+<a id="api_rteplayerinfo_videowidth__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回视频分辨率的宽度，单位为像素。
+
+### 所属接口类
+- [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)
+
+<a id="callback_playerobserver_onaudiovolumeindication_playerobserver"></a>
+
+## onAudioVolumeIndication
+
+播放器音量变化回调。
+
+<a id="callback_playerobserver_onaudiovolumeindication_playerobserver__prototype"></a>
+
+```java
+public void onAudioVolumeIndication(int volume)
+```
+
+<a id="callback_playerobserver_onaudiovolumeindication_playerobserver__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="callback_playerobserver_onaudiovolumeindication_playerobserver__timing"></a>
+
+### 触发时机
+
+该回调在播放器音量发生变化时被触发。
+
+<a id="callback_playerobserver_onaudiovolumeindication_playerobserver__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+播放器当前的音量，取值范围为 [0, 225]。
+
+### 所属接口类
+- [PlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerobserver)
+
+<a id="callback_playerobserver_onevent"></a>
+
+## onEvent
+
+播放器事件回调。
+
+<a id="callback_playerobserver_onevent__prototype"></a>
+
+```java
+public void onEvent(int event)
+```
+
+<a id="callback_playerobserver_onevent__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+如果你需要监听播放器事件，必须先调用 [registerObserver](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_registerobserver_player) 注册播放器观察者对象。
+
+<a id="callback_playerobserver_onevent__timing"></a>
+
+### 触发时机
+
+该回调在播放器事件发生变化时被触发。
+
+<a id="callback_playerobserver_onevent__parameters"></a>
+
+### 参数
+
+#### `event`
+
+播放器事件。
+
+:::info[注]
+详见 [PlayerEvent](/zh-CN/api-reference/rtc/android/enum-rteplayerevent)。
+:::
+
+### 所属接口类
+- [PlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerobserver)
+
+<a id="callback_playerobserver_onmetadata_playerobserver"></a>
+
+## onMetadata [2/2]
+
+接收媒体流附加信息的回调。
+
+<a id="callback_playerobserver_onmetadata_playerobserver__prototype"></a>
+
+```java
+public void onMetadata(int type, byte[] data)
+```
+
+<a id="callback_playerobserver_onmetadata_playerobserver__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+调用 [registerObserver](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_registerobserver_player) 注册播放器观察者对象后，才能接收媒体流中的附加信息。
+
+<a id="callback_playerobserver_onmetadata_playerobserver__timing"></a>
+
+### 触发时机
+
+该回调在 SDK 解析播放器正在播放的媒体流中的附加信息后触发，报告数据类型及其具体内容。
+
+<a id="callback_playerobserver_onmetadata_playerobserver__parameters"></a>
+
+### 参数
+
+#### `type`
+
+附加信息的类型：
+
+- 0：SEI（Supplemental Enhancement Information）类型。
+
+#### `data`
+
+解析后的附加信息。
+
+### 所属接口类
+- [PlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerobserver)
+
+<a id="callback_playerobserver_onplayerinfoupdated_playerobserver"></a>
+
+## onPlayerInfoUpdated [2/2]
+
+播放器和媒体流信息发生变化回调。
+
+<a id="callback_playerobserver_onplayerinfoupdated_playerobserver__prototype"></a>
+
+```java
+public void onPlayerInfoUpdated(PlayerInfo info)
+```
+
+<a id="callback_playerobserver_onplayerinfoupdated_playerobserver__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+你可以调用 [registerObserver](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_registerobserver_player) 注册播放器观察者对象来获取播放器和媒体流的信息，也可以直接调用 [getInfo](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_getinfo) 方法获取信息。
+
+<a id="callback_playerobserver_onplayerinfoupdated_playerobserver__timing"></a>
+
+### 触发时机
+
+该回调在播放器和媒体流信息发生变化时被触发。
+
+<a id="callback_playerobserver_onplayerinfoupdated_playerobserver__parameters"></a>
+
+### 参数
+
+#### `info`
+
+播放器及媒体流的相关信息，详见 [PlayerInfo](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_rteplayerinfo)。
+
+### 所属接口类
+- [PlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerobserver)
+
+<a id="callback_playerobserver_onpositionchanged_playerobserver"></a>
+
+## onPositionChanged
+
+播放进度变化回调。
+
+<a id="callback_playerobserver_onpositionchanged_playerobserver__prototype"></a>
+
+```java
+public void onPositionChanged(long curr_time, long utc_time)
+```
+
+<a id="callback_playerobserver_onpositionchanged_playerobserver__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="callback_playerobserver_onpositionchanged_playerobserver__timing"></a>
+
+### 触发时机
+
+该回调在媒体资源播放过程中每秒触发一次。
+
+<a id="callback_playerobserver_onpositionchanged_playerobserver__parameters"></a>
+
+### 参数
+
+#### `curr_time`
+
+当前播放进度，单位为毫秒。
+
+#### `utc_time`
+
+当前 NTP（网络时间协议）时间，单位为毫秒。
+
+### 所属接口类
+- [PlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerobserver)
+
+<a id="callback_playerobserver_onresolutionchanged"></a>
+
+## onResolutionChanged
+
+视频分辨率变化的回调。
+
+<a id="callback_playerobserver_onresolutionchanged__prototype"></a>
+
+```java
+public void onResolutionChanged(int width, int height)
+```
+
+<a id="callback_playerobserver_onresolutionchanged__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+你必须先调用 [registerObserver](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_registerobserver_player) 注册一个播放器观察者对象，才能监听视频流分辨率的变化。
+
+<a id="callback_playerobserver_onresolutionchanged__timing"></a>
+
+### 触发时机
+
+该回调在视频流的分辨率发生变化时被触发，报告当前视频的宽度和高度。
+
+<a id="callback_playerobserver_onresolutionchanged__parameters"></a>
+
+### 参数
+
+#### `width`
+
+视频帧的宽度，单位为 px。
+
+#### `height`
+
+视频帧的高度，单位为 px。
+
+### 所属接口类
+- [PlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerobserver)
+
+<a id="callback_asynccallback_onresult_asynccallback"></a>
+
+## onResult
+
+onResult 回调，用于报告异步操作的结果。
+
+<a id="callback_asynccallback_onresult_asynccallback__prototype"></a>
+
+```java
+@CalledByNative void onResult(Error error);
+```
+
+<a id="callback_asynccallback_onresult_asynccallback__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="callback_asynccallback_onresult_asynccallback__timing"></a>
+
+### 触发时机
+
+该回调在异步操作完成时被触发，用于报告操作结果。
+
+<a id="callback_asynccallback_onresult_asynccallback__parameters"></a>
+
+### 参数
+
+#### `error`
+
+状态码或错误码。详见 [Error](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_error)。
+
+### 所属接口类
+- [AsyncCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_asynccallback)
+
+<a id="callback_playergetstatscallback_onresult_playergetstatscallback"></a>
+
+## onResult
+
+异步获取媒体资源统计信息操作完成时触发的回调。
+
+<a id="callback_playergetstatscallback_onresult_playergetstatscallback__prototype"></a>
+
+```java
+@CalledByNative void onResult(PlayerStats playerStats, Error error);
+```
+
+<a id="callback_playergetstatscallback_onresult_playergetstatscallback__detailed_desc"></a>
+
+<a id="callback_playergetstatscallback_onresult_playergetstatscallback__timing"></a>
+
+### 触发时机
+
+该回调在异步获取媒体资源信息的操作完成时被触发。
+
+<a id="callback_playergetstatscallback_onresult_playergetstatscallback__parameters"></a>
+
+### 参数
+
+#### `playerStats`
+
+媒体资源的统计信息。详见 [PlayerStats](/zh-CN/api-reference/rtc/android/class-rteplayerstats)。
+
+#### `error`
+
+状态和错误信息。详见 [Error](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_error)。
+
+### 所属接口类
+- [PlayerGetStatsCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playergetstatscallback)
+
+<a id="callback_playerobserver_onstatechanged"></a>
+
+## onStateChanged
+
+播放器状态变化的回调。
+
+<a id="callback_playerobserver_onstatechanged__prototype"></a>
+
+```java
+public void onStateChanged(int old_state, int new_state, Error error)
+```
+
+<a id="callback_playerobserver_onstatechanged__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+如果你需要监听播放器状态的变化，必须先调用 [registerObserver](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_registerobserver_player) 注册播放器观察者对象。
+
+<a id="callback_playerobserver_onstatechanged__timing"></a>
+
+### 触发时机
+
+该回调在播放器状态发生变化时被触发。
+
+<a id="callback_playerobserver_onstatechanged__parameters"></a>
+
+### 参数
+
+#### `old_state`
+
+变更前的播放器状态。详见 [PlayerState](/zh-CN/api-reference/rtc/android/enum-rteplayerstate)。
+
+#### `new_state`
+
+当前的播放器状态。详见 [PlayerState](/zh-CN/api-reference/rtc/android/enum-rteplayerstate)。如果当前状态为 `FAILED`，你可以通过 `error` 参数获取详细的错误信息。
+
+#### `error`
+
+状态或错误信息。详见 [Error](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_error)。
+
+### 所属接口类
+- [PlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_playerobserver)

@@ -1,0 +1,53 @@
+---
+title: "PathStats"
+description: "用于获取特定网络路径的统计数据。"
+---
+<a id="class_pathstats__prototype"></a>
+
+```csharp
+    public class PathStats
+    {
+        public MultipathType type;
+
+        public int txKBitRate;
+
+        public int rxKBitRate;
+
+        public PathStats()
+        {
+            this.type = MultipathType.Unknown;
+            this.txKBitRate = 0;
+            this.rxKBitRate = 0;
+        }
+
+        public PathStats(MultipathType t, int tx, int rx)
+        {
+            this.type = t;
+            this.txKBitRate = tx;
+            this.rxKBitRate = rx;
+        }
+
+    }
+```
+
+<a id="class_pathstats__detailed_desc"></a>
+
+### `自从`
+
+自 v4.6.2 版本新增。
+
+<a id="class_pathstats__parameters"></a>
+
+## 属性
+
+### `type`
+
+网络路径的类型。详见 [MultipathType](/zh-CN/api-reference/rtc/unity/enum-multipathtype)。
+
+### `txKBitRate`
+
+该路径的传输码率，单位为 Kbps。
+
+### `rxKBitRate`
+
+该路径的接收码率，单位为 Kbps。

@@ -1,0 +1,137 @@
+---
+title: "VideoEncoderConfiguration"
+description: "视频编码器的配置。"
+---
+<a id="class_videoencoderconfiguration__prototype"></a>
+
+```csharp
+public class VideoEncoderConfiguration
+    {
+        public VIDEO_CODEC_TYPE codecType;
+        public VideoDimensions dimensions;
+        public int frameRate;
+        public int bitrate;
+        public int minBitrate;
+        public ORIENTATION_MODE orientationMode;
+        public DEGRADATION_PREFERENCE degradationPreference;
+        public VIDEO_MIRROR_MODE_TYPE mirrorMode;
+        public AdvanceOptions advanceOptions;
+
+        public VideoEncoderConfiguration(VideoDimensions d, int f, int b, ORIENTATION_MODE m, VIDEO_MIRROR_MODE_TYPE mirror = VIDEO_MIRROR_MODE_TYPE.VIDEO_MIRROR_MODE_DISABLED)
+        {
+            this.codecType = VIDEO_CODEC_TYPE.VIDEO_CODEC_NONE;
+            this.dimensions = d;
+            this.frameRate = f;
+            this.bitrate = b;
+            this.minBitrate = (int)BITRATE.DEFAULT_MIN_BITRATE;
+            this.orientationMode = m;
+            this.degradationPreference = DEGRADATION_PREFERENCE.MAINTAIN_QUALITY;
+            this.mirrorMode = mirror;
+            this.advanceOptions = new AdvanceOptions(ENCODING_PREFERENCE.PREFER_AUTO, COMPRESSION_PREFERENCE.PREFER_LOW_LATENCY);
+        }
+
+        public VideoEncoderConfiguration(int width, int height, int f, int b, ORIENTATION_MODE m, VIDEO_MIRROR_MODE_TYPE mirror = VIDEO_MIRROR_MODE_TYPE.VIDEO_MIRROR_MODE_DISABLED)
+        {
+            this.codecType = VIDEO_CODEC_TYPE.VIDEO_CODEC_NONE;
+            this.dimensions = new VideoDimensions(width, height);
+            this.frameRate = f;
+            this.bitrate = b;
+            this.minBitrate = (int)BITRATE.DEFAULT_MIN_BITRATE;
+            this.orientationMode = m;
+            this.degradationPreference = DEGRADATION_PREFERENCE.MAINTAIN_QUALITY;
+            this.mirrorMode = mirror;
+            this.advanceOptions = new AdvanceOptions(ENCODING_PREFERENCE.PREFER_AUTO, COMPRESSION_PREFERENCE.PREFER_LOW_LATENCY);
+        }
+
+        public VideoEncoderConfiguration(VideoEncoderConfiguration config)
+        {
+            this.codecType = config.codecType;
+            this.dimensions = config.dimensions;
+            this.frameRate = config.frameRate;
+            this.bitrate = config.bitrate;
+            this.minBitrate = config.minBitrate;
+            this.orientationMode = config.orientationMode;
+            this.degradationPreference = config.degradationPreference;
+            this.mirrorMode = config.mirrorMode;
+            this.advanceOptions = config.advanceOptions;
+        }
+
+        public VideoEncoderConfiguration()
+        {
+            this.codecType = VIDEO_CODEC_TYPE.VIDEO_CODEC_NONE;
+            this.dimensions = new VideoDimensions((int)FRAME_WIDTH.FRAME_WIDTH_960, (int)FRAME_HEIGHT.FRAME_HEIGHT_540);
+            this.frameRate = (int)FRAME_RATE.FRAME_RATE_FPS_15;
+            this.bitrate = (int)BITRATE.STANDARD_BITRATE;
+            this.minBitrate = (int)BITRATE.DEFAULT_MIN_BITRATE;
+            this.orientationMode = ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE;
+            this.degradationPreference = DEGRADATION_PREFERENCE.MAINTAIN_QUALITY;
+            this.mirrorMode = VIDEO_MIRROR_MODE_TYPE.VIDEO_MIRROR_MODE_DISABLED;
+            this.advanceOptions = new AdvanceOptions(ENCODING_PREFERENCE.PREFER_AUTO, COMPRESSION_PREFERENCE.PREFER_LOW_LATENCY);
+        }
+
+        public VideoEncoderConfiguration(VIDEO_CODEC_TYPE codecType, VideoDimensions dimensions, int frameRate, int bitrate, int minBitrate, ORIENTATION_MODE orientationMode, DEGRADATION_PREFERENCE degradationPreference, VIDEO_MIRROR_MODE_TYPE mirrorMode, AdvanceOptions advanceOptions)
+        {
+            this.codecType = codecType;
+            this.dimensions = dimensions;
+            this.frameRate = frameRate;
+            this.bitrate = bitrate;
+            this.minBitrate = minBitrate;
+            this.orientationMode = orientationMode;
+            this.degradationPreference = degradationPreference;
+            this.mirrorMode = mirrorMode;
+            this.advanceOptions = advanceOptions;
+        }
+    }
+```
+
+<a id="class_videoencoderconfiguration__parameters"></a>
+
+## 属性
+
+### `dimensions`
+
+视频编码的分辨率 (px)，详见 [VideoDimensions](/zh-CN/api-reference/rtc/unity/class-videodimensions)。该参数用于衡量编码质量，以长 × 宽表示，默认值为 960 × 540。用户可以自行设置分辨率。
+
+### `codecType`
+
+视频编码类型，详见 [VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc/unity/enum-videocodectype)。
+
+### `frameRate`
+
+视频编码的帧率(fps)，默认值为 15。详见 [FRAME_RATE](/zh-CN/api-reference/rtc/unity/enum-framerate)。
+
+### `bitrate`
+
+视频编码码率，单位为 Kbps。详见 [BITRATE](/zh-CN/api-reference/rtc/unity/enum-bitrate)。该参数无需设置，保留默认值 STANDARD_BITRATE 即可，SDK 会根据你设定的视频分辨率和帧率自动匹配最合适的码率。有关视频分辨率和帧率的对应关系，详见[视频属性](https://doc.shengwang.cn/doc/rtc/unity/basic-features/video-profile#%E8%A7%86%E9%A2%91%E5%B1%9E%E6%80%A7%E5%8F%82%E8%80%83)。
+
+### `minBitrate`
+
+最低编码码率，单位为 Kbps。 SDK 会根据网络状况自动调整视频编码码率。将参数设为高于默认值可强制视频编码器输出高质量图片，但在网络状况不佳情况下可能导致网络丢包并影响视频播放的流畅度造成卡顿。因此如非对画质有特殊需求，声网建议不要修改该参数的值。
+
+:::info[注]
+该参数仅适用于直播场景。
+:::
+
+### `orientationMode`
+
+视频编码的方向模式，详见 [ORIENTATION_MODE](/zh-CN/api-reference/rtc/unity/enum-orientationmode)。
+
+### `degradationPreference`
+
+带宽受限时，视频编码降级偏好。详见 [DEGRADATION_PREFERENCE](/zh-CN/api-reference/rtc/unity/enum-degradationpreference)。
+
+:::info[注]
+当该参数设置为 MAINTAIN_FRAMERATE (1) 或者 MAINTAIN_BALANCED (2) 时，需要同时将 `orientationMode` 设置为 ORIENTATION_MODE_ADAPTIVE (0)，否则设置不生效。
+:::
+
+### `mirrorMode`
+
+发送编码视频时是否开启镜像模式，只影响远端用户看到的视频画面。详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/unity/enum-videomirrormodetype)。
+
+:::info[注]
+默认关闭镜像模式。
+:::
+
+### `advanceOptions`
+
+视频编码的高级选项。详见 [AdvanceOptions](/zh-CN/api-reference/rtc/unity/class-advanceoptions)。

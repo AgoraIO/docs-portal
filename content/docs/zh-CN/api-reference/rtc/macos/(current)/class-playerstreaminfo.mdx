@@ -1,0 +1,74 @@
+---
+title: "AgoraRtcMediaStreamInfo"
+description: "媒体流的详细信息。"
+---
+<a id="class_playerstreaminfo__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraRtcMediaStreamInfo : NSObject
+@property(nonatomic, assign) NSInteger streamIndex;
+@property(nonatomic, assign) AgoraMediaStreamType streamType;
+@property(nonatomic, copy) NSString *_Nonnull codecName;
+@property(nonatomic, copy) NSString *_Nullable language;
+@property(nonatomic, assign) NSInteger videoFrameRate;
+@property(nonatomic, assign) NSInteger videoBitRate;
+@property(nonatomic, assign) NSInteger videoWidth;
+@property(nonatomic, assign) NSInteger videoHeight;
+@property(nonatomic, assign) NSInteger audioSampleRate;
+@property(nonatomic, assign) NSInteger audioChannels;
+@property(nonatomic, assign) NSInteger duration;
+@property(nonatomic, assign) NSInteger rotation;
+@end
+```
+
+<a id="class_playerstreaminfo__parameters"></a>
+
+## 属性
+
+### `streamIndex`
+
+媒体流的索引。
+
+### `streamType`
+
+媒体流的类型。详见 [AgoraMediaStreamType](/zh-CN/api-reference/rtc/macos/enum-mediastreamtype)。
+
+### `codecName`
+
+媒体流使用的编解码器名称。
+
+### `language`
+
+媒体流的语言。
+
+### `videoFrameRate`
+
+仅对视频流生效，表示视频帧率（fps）。
+
+### `videoBitRate`
+
+仅对视频流生效，表示视频码率（bps）。
+
+### `videoWidth`
+
+仅对视频流生效，表示视频宽度（像素）。
+
+### `videoHeight`
+
+仅对视频流生效，表示视频高度（像素）。
+
+### `audioSampleRate`
+
+仅对音频流生效，表示音频采样率（Hz）。
+
+### `audioChannels`
+
+仅对音频流生效，表示音频声道数。
+
+### `duration`
+
+媒体流的总时长（毫秒）。
+
+### `rotation`
+
+仅对视频流生效，表示视频的旋转角度。

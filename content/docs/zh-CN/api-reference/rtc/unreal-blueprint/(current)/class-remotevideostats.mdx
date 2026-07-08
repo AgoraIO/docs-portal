@@ -1,0 +1,173 @@
+---
+title: "FRemoteVideoStats"
+description: "远端视频流的统计信息。"
+---
+<a id="class_remotevideostats__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FRemoteVideoStats {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int64 uid = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int delay = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int e2eDelay = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int width = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int height = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int receivedBitrate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int decoderOutputFrameRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int rendererOutputFrameRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int frameLossRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int packetLossRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	EVIDEO_STREAM_TYPE rxStreamType = EVIDEO_STREAM_TYPE::VIDEO_STREAM_HIGH;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int totalFrozenTime = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int frozenRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int avSyncTimeMs = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int totalActiveTime = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int publishDuration = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int mosValue = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteVideoStats")
+	int64 rxVideoBytes = 0;
+
+	FRemoteVideoStats(){}
+	FRemoteVideoStats(const agora::rtc::RemoteVideoStats & AgoraData){
+		uid = AgoraData.uid;
+		delay = AgoraData.delay;
+		e2eDelay = AgoraData.e2eDelay;
+		width = AgoraData.width;
+		height = AgoraData.height;
+		receivedBitrate = AgoraData.receivedBitrate;
+		decoderOutputFrameRate = AgoraData.decoderOutputFrameRate;
+		rendererOutputFrameRate = AgoraData.rendererOutputFrameRate;
+		frameLossRate = AgoraData.frameLossRate;
+		packetLossRate = AgoraData.packetLossRate;
+		rxStreamType = static_cast<EVIDEO_STREAM_TYPE>(AgoraData.rxStreamType);
+		totalFrozenTime = AgoraData.totalFrozenTime;
+		frozenRate = AgoraData.frozenRate;
+		avSyncTimeMs = AgoraData.avSyncTimeMs;
+		totalActiveTime = AgoraData.totalActiveTime;
+		publishDuration = AgoraData.publishDuration;
+		mosValue = AgoraData.mosValue;
+		rxVideoBytes = AgoraData.rxVideoBytes;
+	}
+	agora::rtc::RemoteVideoStats CreateAgoraData() const {
+		agora::rtc::RemoteVideoStats AgoraData;
+		AgoraData.uid = uid;
+		AgoraData.delay = delay;
+		AgoraData.e2eDelay = e2eDelay;
+		AgoraData.width = width;
+		AgoraData.height = height;
+		AgoraData.receivedBitrate = receivedBitrate;
+		AgoraData.decoderOutputFrameRate = decoderOutputFrameRate;
+		AgoraData.rendererOutputFrameRate = rendererOutputFrameRate;
+		AgoraData.frameLossRate = frameLossRate;
+		AgoraData.packetLossRate = packetLossRate;
+		AgoraData.rxStreamType = static_cast<agora::rtc::VIDEO_STREAM_TYPE>(rxStreamType);
+		AgoraData.totalFrozenTime = totalFrozenTime;
+		AgoraData.frozenRate = frozenRate;
+		AgoraData.avSyncTimeMs = avSyncTimeMs;
+		AgoraData.totalActiveTime = totalActiveTime;
+		AgoraData.publishDuration = publishDuration;
+		AgoraData.mosValue = mosValue;
+		AgoraData.rxVideoBytes = rxVideoBytes;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::RemoteVideoStats & AgoraData) const {
+	}
+};
+```
+
+<a id="class_remotevideostats__parameters"></a>
+
+## 属性
+
+### `uid`
+
+用户 ID，指定是哪个用户的视频流。
+
+### `delay`
+
+##### `弃用：`
+
+在有音画同步机制的音视频场景中，你可以参考 [FRemoteAudioStats](/zh-CN/api-reference/rtc/unreal-blueprint/class-remoteaudiostats) 里的 networkTransportDelay 和 jitterBufferDelay 成员的值，了解视频的延迟数据。
+
+延时（毫秒）。
+
+### `e2eDelay`
+
+端到端视频延时（毫秒）。即，自远端用户视频采集起，至本地用户接收并渲染视频的总时长。
+
+### `width`
+
+视频流宽（像素）。
+
+### `height`
+
+视频流高（像素）。
+
+### `receivedBitrate`
+
+（上次统计后）接收到的码率(Kbps)。
+
+### `decoderOutputFrameRate`
+
+远端视频解码器的输出帧率，单位为 fps。
+
+### `rendererOutputFrameRate`
+
+远端视频渲染器的输出帧率，单位为 fps。
+
+### `frameLossRate`
+
+远端视频丢包率(%)。
+
+### `packetLossRate`
+
+远端视频在使用抗丢包技术之后的丢包率(%)。
+
+### `rxStreamType`
+
+视频流类型，大流或小流。 详见 [EVIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videostreamtype)。
+
+### `totalFrozenTime`
+
+远端用户在加入频道后发生视频卡顿的累计时长（ms）。通话过程中，视频帧率设置不低于 5 fps 时，连续渲染的两帧视频之间间隔超过 500 ms，则记为一次视频卡顿。
+
+### `frozenRate`
+
+远端用户在加入频道后发生视频卡顿的累计时长占视频总有效时长的百分比 (%)。视频有效时长是指远端用户加入频道后视频未被停止发送或禁用的时长。
+
+### `totalActiveTime`
+
+视频有效时长（毫秒）。
+
+视频总有效时长是远端用户或主播加入频道后，既没有停止发送视频流，也没有禁用视频模块的通话时长。
+
+### `publishDuration`
+
+远端视频流的累计发布时长（毫秒）。
+
+### `avSyncTimeMs`
+
+音频超前视频的时间 (ms)。
+
+:::warning[注意]
+如果为负值，则代表音频落后于视频。
+:::

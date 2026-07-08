@@ -1,0 +1,478 @@
+---
+title: "自定义音频采集和渲染"
+description: "自定义音频采集和渲染 API reference."
+---
+<a id="toc_audio_custom_capturenrendering"></a>
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume"></a>
+
+## adjustCustomAudioPlayoutVolume
+
+调节自定义音频采集轨道在本地播放的音量。
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume__prototype"></a>
+
+```cpp
+virtual int adjustCustomAudioPlayoutVolume(track_id_t trackId, int volume) = 0;
+```
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume__detailed_desc"></a>
+
+### 详情
+
+:::warning[注意]
+在调用该方法前，请确保你已经调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
+:::
+
+调用该方法设置音频在本地播放的音量后，如果你想重新调整音量，你可以再次调用该方法。
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume__parameters"></a>
+
+### 参数
+
+#### `trackId`
+
+音频轨道 ID。将该参数设置为调用 createCustomAudioTrack 方法返回的自定义音频轨道 ID。
+
+#### `volume`
+
+自定义采集音频的播放音量，取值范围为 [0,100]。0 表示静音，100 表示原始音量。
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume"></a>
+
+## adjustCustomAudioPublishVolume
+
+调节自定义音频采集轨道在远端播放的音量。
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume__prototype"></a>
+
+```cpp
+virtual int adjustCustomAudioPublishVolume(track_id_t trackId, int volume) = 0;
+```
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume__detailed_desc"></a>
+
+### 详情
+
+:::warning[注意]
+在调用该方法前，请确保你已经调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
+:::
+
+调用该方法设置音频在远端播放的音量后，如果你想重新调整音量，你可以再次调用该方法。
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume__parameters"></a>
+
+### 参数
+
+#### `trackId`
+
+音频轨道 ID。将该参数设置为调用 createCustomAudioTrack 方法返回的自定义音频轨道 ID。
+
+#### `volume`
+
+自定义采集音频的播放音量，取值范围为 [0,100]。0 表示静音，100 表示原始音量。
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediaengine_createcustomaudiotrack"></a>
+
+## createCustomAudioTrack
+
+创建一个自定义音频采集轨道。
+
+<a id="api_imediaengine_createcustomaudiotrack__prototype"></a>
+
+```cpp
+virtual rtc::track_id_t createCustomAudioTrack(rtc::AUDIO_TRACK_TYPE trackType, const rtc::AudioTrackConfig& config) = 0;
+```
+
+<a id="api_imediaengine_createcustomaudiotrack__detailed_desc"></a>
+
+### 详情
+
+:::warning[注意]
+该方法需要在加入频道前调用。
+:::
+
+如需在频道中发布自定义采集音频，可参考以下步骤：
+
+1. 调用该方法创建音频轨道并获得音频轨道 ID。
+2. 调用 joinChannel [2/2] 加入频道时，将 ChannelMediaOptions 中的 publishCustomAudioTrackId 设置为你想要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 true。
+3. 调用 pushAudioFrame 将 trackId 指定为步骤 2 中指定的音频轨道 ID，即可实现在频道内发布对应的自定义音频源。
+
+<a id="api_imediaengine_createcustomaudiotrack__parameters"></a>
+
+### 参数
+
+#### `trackType`
+
+自定义音频轨道类型。详见 [AUDIO_TRACK_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-audiotracktype)。
+
+:::warning[注意]
+如指定 AUDIO_TRACK_DIRECT，则必须在调用 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设为 `false`，否则加入频道失败并返回错误码 -2。
+:::
+
+#### `config`
+
+自定义音频轨道配置。详见 [AudioTrackConfig](/zh-CN/api-reference/rtc/unreal-cpp/class-audiotrackconfig)。
+
+<a id="api_imediaengine_createcustomaudiotrack__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回音频轨道 ID 作为该音频轨道的唯一标识。
+- 方法调用失败，返回 0xffffffff。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IMediaEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaengine)
+
+<a id="api_imediaengine_destroycustomaudiotrack"></a>
+
+## destroyCustomAudioTrack
+
+销毁指定的音频轨道。
+
+<a id="api_imediaengine_destroycustomaudiotrack__prototype"></a>
+
+```cpp
+virtual int destroyCustomAudioTrack(rtc::track_id_t trackId) = 0;
+```
+
+<a id="api_imediaengine_destroycustomaudiotrack__detailed_desc"></a>
+
+### 详情
+
+<a id="api_imediaengine_destroycustomaudiotrack__parameters"></a>
+
+### 参数
+
+#### `trackId`
+
+调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
+
+<a id="api_imediaengine_destroycustomaudiotrack__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IMediaEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaengine)
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback"></a>
+
+## enableCustomAudioLocalPlayback
+
+设置是否在本地播放外部音频源。
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback__prototype"></a>
+
+```cpp
+virtual int enableCustomAudioLocalPlayback(track_id_t trackId, bool enabled) = 0;
+```
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback__detailed_desc"></a>
+
+### 详情
+
+:::warning[注意]
+在调用该方法前，请确保你已经调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
+:::
+
+调用该方法设置在本地播放外部采集的音频源后，如需停止本地播放，可以再次调用该方法并设置 enabled 为 `false`。
+
+你可以调用 [adjustCustomAudioPlayoutVolume](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudioplayoutvolume) 调节自定义音频采集轨道在本地播放的音量。
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback__parameters"></a>
+
+### 参数
+
+#### `trackId`
+
+音频轨道 ID。将该参数设置为调用 createCustomAudioTrack 方法返回的自定义音频轨道 ID。
+
+#### `enabled`
+
+是否在本地播放外部音频源：
+
+- true：在本地播放。
+- false：（默认）不在本地播放。
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediaengine_setexternalaudiosource2"></a>
+
+## setExternalAudioSource
+
+设置外部音频采集参数。
+
+<a id="api_imediaengine_setexternalaudiosource2__prototype"></a>
+
+```cpp
+virtual int setExternalAudioSource(bool enabled,
+                                   int sampleRate,
+                                   int channels,
+                                   bool localPlayback = false,
+                                   bool publish = true) = 0;
+```
+
+<a id="api_imediaengine_setexternalaudiosource2__detailed_desc"></a>
+
+#### `弃用：`
+
+该方法已废弃，请改用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack)。
+
+<a id="api_imediaengine_setexternalaudiosource2__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_imediaengine_setexternalaudiosource2__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_imediaengine_setexternalaudiosource2__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否开启使用外部音频源的功能：
+
+- true：开启外部音频源。
+- false：（默认）关闭外部音频源。
+
+#### `sampleRate`
+
+外部音频源的采样率 (Hz)，可设置为 `8000`， `16000`， `32000`， `44100` 或 `48000`。
+
+#### `channels`
+
+外部音频源的声道数，可设置为 `1` （单声道）或 `2` （双声道）。
+
+#### `localPlayback`
+
+是否在本地播放外部音频源：
+
+- true：在本地播放。
+- false：（默认）不在本地播放。
+
+#### `publish`
+
+是否将音频发布到远端：
+
+- true：（默认）发布到远端。
+- false：不发布到远端。
+
+<a id="api_imediaengine_setexternalaudiosource2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IMediaEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaengine)
+
+<a id="api_imediaengine_pullaudioframe"></a>
+
+## pullAudioFrame
+
+拉取远端音频数据。
+
+<a id="api_imediaengine_pullaudioframe__prototype"></a>
+
+```cpp
+virtual int pullAudioFrame(IAudioFrameObserver::AudioFrame* frame) = 0;
+```
+
+<a id="api_imediaengine_pullaudioframe__detailed_desc"></a>
+
+调用该方法后，App 会采取主动拉取的方式获取远端已解码和混音后的音频数据，用于音频播放。
+
+<a id="api_imediaengine_pullaudioframe__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+调用该方法前，你需要调用 [setExternalAudioSink](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_setexternalaudiosink) `(enabled: true)` 开启并设置外部渲染。
+
+<a id="api_imediaengine_pullaudioframe__restriction"></a>
+
+### 调用限制
+
+该方法和 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调均可用于获取远端混音后的音频播放数据。在调用 setExternalAudioSink 开启外部音频渲染后，App 将无法从 onPlaybackAudioFrame 回调中获得数据。因此，请根据实际的业务需求在该方法和 onPlaybackAudioFrame 回调之间进行选择。二者的处理机制不同，具体区别如下：
+
+- 调用该方法后，App 会主动拉取音频数据。通过设置音频数据，SDK 可以调整缓存，帮助 App 处理延时，从而有效避免音频播放抖动。
+- 注册 onPlaybackAudioFrame 回调后，SDK 通过该回调将音频数据传输给 App。App 在处理音频帧的延迟时，可能会导致音频播放抖动。
+
+该方法仅用于拉取远端混音后的音频播放数据，如需获取采集的原始音频数据、混音前每条拉流单独的原始音频播放数据等，可以通过调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册相应的回调。
+
+<a id="api_imediaengine_pullaudioframe__parameters"></a>
+
+### 参数
+
+#### `frame`
+
+指向 [AudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/class-audioframe) 的指针。
+
+<a id="api_imediaengine_pullaudioframe__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IMediaEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaengine)
+
+<a id="api_imediaengine_pushaudioframe0"></a>
+
+## pushAudioFrame
+
+推送外部音频帧。
+
+<a id="api_imediaengine_pushaudioframe0__prototype"></a>
+
+```cpp
+virtual int pushAudioFrame(IAudioFrameObserver::AudioFrame* frame, rtc::track_id_t trackId = 0) = 0;
+```
+
+<a id="api_imediaengine_pushaudioframe0__detailed_desc"></a>
+
+调用该方法通过音频轨道推送外部音频帧。
+
+<a id="api_imediaengine_pushaudioframe0__timing"></a>
+
+### 调用时机
+
+调用该方法推送外部音频数据前，请先进行以下操作：
+
+1. 调用 createCustomAudioTrack 创建音频轨道并获得音频轨道 ID。
+2. 调用 joinChannel [2/2] 加入频道时，将 ChannelMediaOptions 中的 publishCustomAudioTrackId 设置为你想要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 true。
+
+<a id="api_imediaengine_pushaudioframe0__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_imediaengine_pushaudioframe0__parameters"></a>
+
+### 参数
+
+#### `frame`
+
+外部音频帧。详见 [AudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/class-audioframe)。
+
+#### `trackId`
+
+音频轨道 ID。如果你要发布自定义的外部音频源，则将该参数设置为你想要发布的自定义音频轨道 ID。
+
+<a id="api_imediaengine_pushaudioframe0__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IMediaEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaengine)
+
+<a id="api_imediaengine_setexternalaudiosink"></a>
+
+## setExternalAudioSink
+
+设置外部音频渲染。
+
+<a id="api_imediaengine_setexternalaudiosink__prototype"></a>
+
+```cpp
+virtual int setExternalAudioSink(bool enabled, int sampleRate, int channels) = 0;
+```
+
+<a id="api_imediaengine_setexternalaudiosink__detailed_desc"></a>
+
+调用该方法开启外部音频渲染后，你可以调用 [pullAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_pullaudioframe) 拉取远端音频数据。App 可以对拉取到的原始音频数据进行处理后再渲染，获取想要的音频效果。
+
+<a id="api_imediaengine_setexternalaudiosink__scenario"></a>
+
+### 适用场景
+
+该方法适用于需要自行渲染音频的场景。
+
+<a id="api_imediaengine_setexternalaudiosink__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_imediaengine_setexternalaudiosink__restriction"></a>
+
+### 调用限制
+
+调用该方法开启外部音频渲染后，App 将无法从 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调中获得数据。
+
+<a id="api_imediaengine_setexternalaudiosink__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+设置是否开启外部音频渲染：
+
+- true：开启外部音频渲染。
+- false：（默认）关闭外部音频渲染。
+
+#### `sampleRate`
+
+外部音频渲染的采样率 (Hz)，可设置为 16000，32000，44100 或 48000。
+
+#### `channels`
+
+外部音频渲染的声道数:
+
+- 1: 单声道
+- 2: 双声道
+
+<a id="api_imediaengine_setexternalaudiosink__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+- [IMediaEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaengine)

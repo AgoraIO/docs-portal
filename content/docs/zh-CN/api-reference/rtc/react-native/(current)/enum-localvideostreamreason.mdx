@@ -1,0 +1,58 @@
+---
+title: "LocalVideoStreamReason"
+description: "本地视频状态改变原因。"
+---
+<a id="enum_localvideostreamreason__parameters"></a>
+
+## 枚举值
+
+### `LocalVideoStreamReasonOk`
+
+0：本地视频状态正常。
+
+### `LocalVideoStreamReasonFailure`
+
+1：出错原因不明确。
+
+### `LocalVideoStreamReasonDeviceNoPermission`
+
+2：没有权限启动本地视频采集设备。请提示用户开启设备权限后再重新加入频道。
+
+:::info[注]
+弃用：该枚举已废弃。请改用 [onPermissionError](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onpermissionerror) 回调中的 `Camera`。
+:::
+
+### `LocalVideoStreamReasonDeviceBusy`
+
+3：本地视频采集设备正在使用中。请提示用户检查摄像头是否被其他 App 占用，或者尝试重新加入频道。
+
+### `LocalVideoStreamReasonCaptureFailure`
+
+4：本地视频采集失败。请提示用户检查视频采集设备是否正常工作，检查摄像头是否被其他 App 占用，或者尝试重新加入频道。
+
+### `LocalVideoStreamReasonCodecNotSupport`
+
+5：本地视频编码失败。
+
+### `LocalVideoStreamReasonCaptureInbackground`
+
+6：（仅适用于 iOS）App 处于后台。请提示用户 App 处于后台时，无法正常进行视频采集。
+
+### `LocalVideoStreamReasonCaptureMultipleForegroundApps`
+
+7：（仅适用于 iOS）当前 App 窗口处于侧拉、分屏、画中画模式，且其他 App 正占用摄像头。请提示用户当 App 窗口处于侧拉、分屏、画中画模式，且其他 App 正占用摄像头时，无法正常进行视频采集。
+
+### `LocalVideoStreamReasonDeviceNotFound`
+
+8：找不到本地视频采集设备。需检查摄像头是否与设备正常连接、摄像头是否正常工作，或者尝试重新加入频道。
+
+### `LocalVideoStreamReasonDeviceInterrupt`
+
+14:（仅适用于 Android）视频采集中断。可能的原因是：
+
+- 摄像头被其他 App 占用。请提示用户检查摄像头是否被其他 App 占用。
+- 当前 App 已被切换到后台。可以使用前台服务通知操作系统，确保 App 在切换到后台时仍可采集视频。详见[为什么部分 Android 版本应用锁屏或切后台后采集音视频无效？](https://doc.shengwang.cn/faq/quality-issues/android-background)。
+
+### `LocalVideoStreamReasonDeviceFatalError`
+
+15:（仅适用于 Android）视频采集设备出错。请提示用户关闭并重新启动摄像头以恢复功能，如果该操作不能解决问题，请检查摄像头是否出现硬件故障。

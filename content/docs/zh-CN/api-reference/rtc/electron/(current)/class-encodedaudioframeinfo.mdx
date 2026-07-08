@@ -1,0 +1,50 @@
+---
+title: "EncodedAudioFrameInfo"
+description: "编码后音频的信息。"
+---
+<a id="class_encodedaudioframeinfo__prototype"></a>
+
+```typescript
+export class EncodedAudioFrameInfo {
+  
+  codec?: AudioCodecType;
+  
+  sampleRateHz?: number;
+  
+  samplesPerChannel?: number;
+  
+  numberOfChannels?: number;
+  
+  advancedSettings?: EncodedAudioFrameAdvancedSettings;
+  
+  captureTimeMs?: number;
+}
+```
+
+<a id="class_encodedaudioframeinfo__parameters"></a>
+
+## 属性
+
+### `codec`
+
+音频编码规格: [AudioCodecType](/zh-CN/api-reference/rtc/electron/enum-audiocodectype)。
+
+### `sampleRateHz`
+
+音频采样率 (Hz)。
+
+### `samplesPerChannel`
+
+每个声道的音频采样数。
+
+### `numberOfChannels`
+
+声道数。
+
+### `advancedSettings`
+
+该功能暂不支持。
+
+### `captureTimeMs`
+
+采集外部编码视频帧的 Unix 时间戳 (ms)。

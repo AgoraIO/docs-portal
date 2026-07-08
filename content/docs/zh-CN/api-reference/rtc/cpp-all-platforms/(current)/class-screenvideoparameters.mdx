@@ -1,0 +1,34 @@
+---
+title: "ScreenVideoParameters"
+description: "用于设置共享屏幕的视频参数。"
+---
+<a id="class_screenvideoparameters__prototype"></a>
+
+```cpp
+struct ScreenVideoParameters {
+  VideoDimensions dimensions;
+  int frameRate = 15;
+  int bitrate;
+  VIDEO_CONTENT_HINT contentHint = VIDEO_CONTENT_HINT::CONTENT_HINT_MOTION;
+};
+```
+
+<a id="class_screenvideoparameters__parameters"></a>
+
+## 属性
+
+### `dimensions`
+
+视频编码分辨率。默认值为 1280 × 720。详见 [VideoDimensions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videodimensions)。
+
+### `frameRate`
+
+视频编码帧率（fps）。默认值为 15。
+
+### `bitrate`
+
+视频编码码率（Kbps）。
+
+### `contentHint`
+
+屏幕共享的内容提示。详见 [VIDEO_CONTENT_HINT](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videocontenthint)。
