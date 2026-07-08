@@ -2669,6 +2669,43 @@ Web body
     });
   });
 
+  it('redirects merged platform suffix pages to the canonical page with platform selection', async () => {
+    mockedGetPage.mockImplementation((slugs: string[], locale = 'en') => {
+      if (
+        locale === 'zh-CN' &&
+        slugs.join('/') ===
+          'api-reference/conversational-ai/client-toolkit/overview'
+      ) {
+        return {
+          ...createPage(),
+          path: 'zh-CN/api-reference/conversational-ai/client-toolkit/overview.mdx',
+          slugs: [
+            'zh-CN',
+            'api-reference',
+            'conversational-ai',
+            'client-toolkit',
+            'overview',
+          ],
+          url: '/zh-CN/api-reference/conversational-ai/client-toolkit/overview',
+        };
+      }
+
+      return undefined;
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'conversational-ai',
+        'client-toolkit',
+        'overview.go',
+      ]),
+    ).resolves.toEqual({
+      preserveSearch: false,
+      redirectUrl:
+        '/zh-CN/api-reference/conversational-ai/client-toolkit/overview?platform=go',
+    });
+  });
+
   it('redirects legacy docs.agora.io sitemap URLs to article-level targets when available', async () => {
     await expect(
       loadDocsPagePayload(

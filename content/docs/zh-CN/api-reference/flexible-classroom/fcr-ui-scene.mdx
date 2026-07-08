@@ -84,10 +84,10 @@ export type LaunchOptions = {
 | `roomType` | （必填）课堂类型，详见 [`EduRoomTypeEnum`](#eduroomtypeenum)。 |
 | `startTime` | （选填）课堂开始时间（毫秒），以第一个进入课堂的用户传入的参数为准。 |
 | `duration` | （必填）课堂持续时间（秒），以第一个进入课堂的用户传入的参数为准。最大值为 86,400 秒，建议根据课堂实际时长设置。 |
-| `devicePretest` | （必填）是否开启课前设备检测：<li>`true`: 开启课前设备检测。开启后，在加入课堂前会弹出设备检测页面，测试终端用户的摄像头、麦克风和扬声器是否能正常工作。</li><li>`false`: 不开启课前设备检测。</li> |
+| `devicePretest` | <Slot name="fcr-ui-scene-slot-1-14-1" /> |
 | `coursewareList` | （选填）教育机构指派的课件配置，客户端无法编辑。详见 [`CoursewareList`](#coursewarelist)。配置后，SDK 会在启动课堂时将相应的课件从声网云盘组件中下载至本地。 |
 | `userFlexProperties` | （选填）由开发者自定义的用户属性。详见[如何设置自定义用户属性？](/faq/integration-issues/class-properties) |
-| `latencyLevel` | （选填）观众端延时级别。只对非连麦用户有效。<li>`1`: 低延时。发流端与观众端的延时为 1500 ms - 2000 ms。</li><li>`2`:（默认）超低延时。发流端与观众端的延时为 400 ms - 800 ms。</li> |
+| `latencyLevel` | <Slot name="fcr-ui-scene-slot-1-17-1" /> |
 | `recordUrl` | （选填）待录制 URL 地址，开发者需传入自己部署的网页地址，用于页面录制，例如 `https://cn.bing.com/recordUrl`。 |
 | `recordRetryTimeout` | （选填）录制页面启动超时失败时间（秒）。当启动录制在一定时间内未成功进入教室，则重启录制。默认60秒。 |
 | `virtualBackgroundImages` | （选填）视频虚拟背景墙图片链接，资源所在域名应与你部署灵动课堂的域名相同。支持 PNG、JPG 格式图片。 |
@@ -97,6 +97,24 @@ export type LaunchOptions = {
 | `widgets` | （选填）扩展插件集合，扩展教室能力，详见[自定义插件](/zh-CN/solutions/flexible-classroom/advanced-features/widget)。 |
 | `rtcCloudProxyType` | （选填）云代理模式。详见 [`AgoraCloudProxyType`](#cloudproxytype)。 |
 | `rtmCloudProxyEnabled` | (选填) 开启 RTM 云代理。 |
+
+<Slot for="fcr-ui-scene-slot-1-14-1">
+
+（必填）是否开启课前设备检测：
+
+- `true`: 开启课前设备检测。开启后，在加入课堂前会弹出设备检测页面，测试终端用户的摄像头、麦克风和扬声器是否能正常工作。
+- `false`: 不开启课前设备检测。
+
+</Slot>
+
+<Slot for="fcr-ui-scene-slot-1-17-1">
+
+（选填）观众端延时级别。只对非连麦用户有效。
+
+- `1`: 低延时。发流端与观众端的延时为 1500 ms - 2000 ms。
+- `2`:（默认）超低延时。发流端与观众端的延时为 400 ms - 800 ms。
+
+</Slot>
 
 <Slot for="fcr-ui-scene-javascript-electron-markdown-1-2-1">
 
@@ -180,6 +198,7 @@ export type LaunchMediaOptions = {
 | `screenShareEncoderConfiguration` | 屏幕共享视频流编码参数配置，详见 [`EduVideoEncoderConfiguration`](#eduvideoencoderconfiguration)。 |
 | `encryptionConfig` | 媒体流加密配置，详见 [`MediaEncryptionConfig`](#mediaencryptionconfig)。 |
 | `web` | <Slot name="fcr-ui-scene-javascript-electron-markdown-2-4-1" /> |
+
 
 <Slot for="fcr-ui-scene-javascript-electron-markdown-2-4-1">
 

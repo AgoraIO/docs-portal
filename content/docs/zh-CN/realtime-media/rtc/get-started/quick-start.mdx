@@ -148,14 +148,14 @@ title: "实现音视频互动"
 
 2. 打开解压文件，将以下文件或子文件夹复制到你的项目路径中。
 
-    | 文件或子文件夹                         | 项目路径                 |
+    | 文件或子文件夹 | 项目路径 |
     | :--------------------------------- | :----------------------- |
-    | `agora-rtc-sdk.jar` 文件             | `/app/libs/`             |
-    | `arm64-v8a` 文件夹                    | `/app/src/main/jniLibs/` |
-    | `armeabi-v7a` 文件夹                  | `/app/src/main/jniLibs/` |
-    | `x86` 文件夹                          | `/app/src/main/jniLibs/` |
-    | `x86_64` 文件夹                       | `/app/src/main/jniLibs/` |
-    | `high_level_api` 中的`include` 文件夹  | `/app/src/main/jniLibs/`  |
+    | `agora-rtc-sdk.jar` 文件 | `/app/libs/` |
+    | `arm64-v8a` 文件夹 | `/app/src/main/jniLibs/` |
+    | `armeabi-v7a` 文件夹 | `/app/src/main/jniLibs/` |
+    | `x86` 文件夹 | `/app/src/main/jniLibs/` |
+    | `x86_64` 文件夹 | `/app/src/main/jniLibs/` |
+    | `high_level_api` 中的`include` 文件夹 | `/app/src/main/jniLibs/` |
 
    :::warning[注意]
    自 4.5.0 起，RTC SDK 和 RTM SDK (2.2.0 及以上版本) 都包含 `libaosl.so` 库。如果你通过 CDN 手动集成 RTC SDK 且同时集成了 RTM SDK，为避免冲突，请手动删除版本较低的 `libaosl.so` 库。4.6.0 RTC SDK `libaosl.so` 库版本为 1.3.0。
@@ -790,10 +790,10 @@ protected void onCreate(Bundle savedInstanceState) {
         - 更多注意事项，可以参考 [Preparing Your App for Distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution)。
     :::
 
-    | Key                                    | Type   | Value                                                        |
+    | Key | Type | Value |
     | -------------------------------------- | ------ | ------------------------------------------------------------ |
     | Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
-    | Privacy - Camera Usage Description       | String | 使用摄像头的目的，例如：for a call or live interactive streaming。 |
+    | Privacy - Camera Usage Description | String | 使用摄像头的目的，例如：for a call or live interactive streaming。 |
 
 ## 集成 SDK
 
@@ -1291,25 +1291,47 @@ override func viewDidLoad() {
 
 4. 添加项目的设备权限。
 
-    在项目导航栏中打开 `info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加以下属性：
-    :::warning[注意]
-    - 下表中列出的权限均为可选权限。但如果不添加所列权限，你将无法使用麦克风和摄像头进行实时音视频互动。
-            - 如果你的项目中需要添加第三方插件或库（例如第三方摄像头），且该插件或库的签名与项目的签名不一致，你还需勾选 **Hardened Runtime** > **Runtime Exceptions** 中的 **Disable Library Validation**。
-            - 更多注意事项，可以参考 [Preparing Your App for Distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution)。
-    :::
+在项目导航栏中打开 `info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加以下属性：
 
-    | Key                                    | Type   | Value                                                        |
-    | -------------------------------------- | ------ | ------------------------------------------------------------ |
-    | Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
-    | Privacy - Camera Usage Description       | String | 使用摄像头的目的，例如：for a call or live interactive streaming。 |
+:::warning[注意]
+- 下表中列出的权限均为可选权限。但如果不添加所列权限，你将无法使用麦克风和摄像头进行实时音视频互动。
+  - 如果你的项目中需要添加第三方插件或库（例如第三方摄像头），且该插件或库的签名与项目的签名不一致，你还需勾选 **Hardened Runtime** > **Runtime Exceptions** 中的 **Disable Library Validation**。
+  - 更多注意事项，可以参考 [Preparing Your App for Distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution)。
+:::
 
-    进入 **TARGETS > Project Name > Signing & Capabilities**，在 **App Sandbox** 和 **Hardened Runtime** 中添加如下权限：
+| Key | Type | Value |
+| -------------------------------------- | ------ | ------------------------------------------------------------ |
+| Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
+| Privacy - Camera Usage Description | String | 使用摄像头的目的，例如：for a call or live interactive streaming。 |
 
-    | Capability | Category | Permission |
-    | --- | --- | --- |
-    | App Sandbox | Network | Incoming Connections (Server)<br />Outgoing Connections (Client) |
-    | App Sandbox | Hardware | Camera<br />Audio Input |
-    | Hardened Runtime | Resource Access | Camera<br />Audio Input |
+进入 **TARGETS > Project Name > Signing & Capabilities**，在 **App Sandbox** 和 **Hardened Runtime** 中添加如下权限：
+
+| Capability | Category | Permission |
+| --- | --- | --- |
+| App Sandbox | Network | <Slot name="quick-start-1308-2-2" /> |
+| App Sandbox | Hardware | <Slot name="quick-start-1308-3-2" /> |
+| Hardened Runtime | Resource Access | <Slot name="quick-start-1308-4-2" /> |
+
+<Slot for="quick-start-1308-2-2">
+
+- Incoming Connections (Server)
+- Outgoing Connections (Client)
+
+</Slot>
+
+<Slot for="quick-start-1308-3-2">
+
+- Camera
+- Audio Input
+
+</Slot>
+
+<Slot for="quick-start-1308-4-2">
+
+- Camera
+- Audio Input
+
+</Slot>
 
 
 ## 集成 SDK
@@ -1894,6 +1916,10 @@ yarn dev
 :::info[信息]
 上图以 `React-ts` 框架打开的界面为例。根据你所选择的前端框架模板，浏览器打开的界面可能有所不同。
 :::
+
+</TabsContent>
+
+<TabsContent value="npm">
 
 #### 获取 SDK 后手动集成
 
@@ -5242,7 +5268,7 @@ rtcEngine.release();
 
 - 不同开发平台的操作系统与编译器需满足下列版本要求：
 
-  | 开发平台 | 操作系统版本 | 编译器版本 |
+| 开发平台 | 操作系统版本 | 编译器版本 |
 | --- | --- | --- |
 | Android | Android 4.1 或以上 | Android Studio 3.0 或以上 |
 | iOS | iOS 9.0 或以上 | Xcode 9.0 或以上 |
@@ -5916,18 +5942,51 @@ void OnApplicationQuit()
 - Flutter 2.10.5 或更高版本。
 - Dart 2.14.0 或更高版本。
 - 根据你的目标平台，准备对应的开发和运行环境：
-    | 目标平台 | 环境要求 |
-    | --- | --- |
-    | iOS | macOS 10.15 或更高版本<br />最新版本的 Xcode<br />两台 iOS 设备 |
-    | Android | macOS 10.15 或更高版本<br />Windows 10 或更高版本<br />最新版本的 Android Studio<br />两台 Android 设备 |
-    | macOS | macOS 10.15 或更高版本<br />最新版本的 Xcode<br />两台 macOS 设备 |
-    | Windows | Windows 10 或更高版本<br />最新版本的 Visual Studio<br />两台 Windows 设备 |
 
+| 目标平台 | 环境要求 |
+| --- | --- |
+| iOS | <Slot name="quick-start-5923-2-1" /> |
+| Android | <Slot name="quick-start-5923-3-1" /> |
+| macOS | <Slot name="quick-start-5923-4-1" /> |
+| Windows | <Slot name="quick-start-5923-5-1" /> |
 
-    :::info[信息]
-    - 更多环境要求细节，详见 [Install Flutter](https://docs.flutter.dev/get-started/install)。
-    - 你可以运行 `flutter doctor` 命令检查开发和运行环境是否达到要求。
-    :::
+<Slot for="quick-start-5923-2-1">
+
+- macOS 10.15 或更高版本
+- 最新版本的 Xcode
+- 两台 iOS 设备
+
+</Slot>
+
+<Slot for="quick-start-5923-3-1">
+
+- macOS 10.15 或更高版本
+- Windows 10 或更高版本
+- 最新版本的 Android Studio
+- 两台 Android 设备
+
+</Slot>
+
+<Slot for="quick-start-5923-4-1">
+
+- macOS 10.15 或更高版本
+- 最新版本的 Xcode
+- 两台 macOS 设备
+
+</Slot>
+
+<Slot for="quick-start-5923-5-1">
+
+- Windows 10 或更高版本
+- 最新版本的 Visual Studio
+- 两台 Windows 设备
+
+</Slot>
+
+:::info[信息]
+- 更多环境要求细节，详见 [Install Flutter](https://docs.flutter.dev/get-started/install)。
+- 你可以运行 `flutter doctor` 命令检查开发和运行环境是否达到要求。
+:::
 
 - 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
 - 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
@@ -7034,10 +7093,10 @@ const getPermission = async () => {
 
 在 Xcode 中，打开 `info.plist` 文件。在右侧列表中添加如下内容，获取相应的设备权限：
 
-| Key                                    | Type   | Value                                                        |
+| Key | Type | Value |
 | :------------------------------------- | :----- | :----------------------------------------------------------- |
 | Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
-| Privacy - Camera Usage Description     | String | 使用摄像头的目的，例如：for a call or live interactive streaming。 |
+| Privacy - Camera Usage Description | String | 使用摄像头的目的，例如：for a call or live interactive streaming。 |
 
 </TabsContent>
 </Tabs>
@@ -7257,11 +7316,11 @@ agoraEngineRef.current?.release();
 
 - [Unreal Engine](https://www.unrealengine.com/zh-CN/download) 4.27 及以上版本
 - 两台设备，不可使用虚拟机。参考下方列出的 Unreal Engine 官方文档，根据你的目标平台和引擎版本准备开发环境：
-  | 开发平台 | 参考文档  | 备注    |
+  | 开发平台 | 参考文档 | 备注 |
   | :--- | :------ | :------------------------------ |
-  | Android  | [Android 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/android-development-requirements?application_version=4.27) | 无    |
-  | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。  |
-  | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | Android | [Android 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/android-development-requirements?application_version=4.27) | 无 |
+  | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。 |
+  | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。 |
   | Windows | [Windows 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 32 位 Windows 仅支持 Unreal Engine 4 及以下版本，你需要在 `AgoraPluginLibrary.Build.cs` 文件中将 Windows 32 相关的代码取消注释。 |
 - 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
 - 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
@@ -8018,11 +8077,11 @@ void UAgoraWidget::NativeDestruct()
 
 - [Unreal Engine](https://www.unrealengine.com/zh-CN/download) 4.27 及以上版本
 - 两台设备，不可使用虚拟机。参考下方列出的 Unreal Engine 官方文档，根据你的目标平台和引擎版本准备开发环境：
-  | 开发平台 | 参考文档  | 备注    |
+  | 开发平台 | 参考文档 | 备注 |
   | :--- | :------ | :------------------------------ |
-  | Android  | [Android 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/android-development-requirements?application_version=4.27) | 无    |
-  | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。  |
-  | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | Android | [Android 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/android-development-requirements?application_version=4.27) | 无 |
+  | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。 |
+  | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。 |
   | Windows | [Windows 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 32 位 Windows 仅支持 Unreal Engine 4 及以下版本，你需要在 `AgoraPluginLibrary.Build.cs` 文件中将 Windows 32 相关的代码取消注释。 |
 - 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
 - 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
@@ -8114,15 +8173,50 @@ void UAgoraWidget::NativeDestruct()
 
 | 序号 | 节点 | 类型 | 描述 |
 | --- | --- | --- | --- |
-| 1 | **Set Show Mouse Cursor** | 原生* | (可选) 设置是否显示鼠标光标，勾选代表显示。<br />该节点仅适用于 Windows 和 macOS。<br />如果在创建时检索不到该节点，可以取消勾选 **Context Sensitive**。<br />![](https://web-cdn.agora.io/docs-files/1689863102745) |
+| 1 | **Set Show Mouse Cursor** | 原生* | <Slot name="quick-start-8119-2-3" /> |
 | 2 | **Load Agora Config** | 自定义** | 加载声网配置。用于后续在创建和加入频道时验证用户身份。 |
-| 3 | **Create BP Video Widget Widget** | 原生 | 创建用户界面。步骤如下：<br />1. 创建 **Create Widget** 节点。<br />2. 选择该节点的 **Class** 为 **BP_VideoWidget**，将该节点关联至已经创建好的用户界面。 |
-| 4 | **Set Basic Video Call Widget** | 自定义 | 设置用户界面。步骤如下：<br />1. 创建 **BasicVideoCallWidget** 变量，选择变量的 **Variable Type** 为 **BP_VideoWidget**，即已经创建好的用户界面，用于在蓝图中存储对用户界面的引用。<br />2. 拖拽创建好的变量到 **EventGraph** 后，会出现 **Set BasicVideoCallWidget** 和 **Get BasicVideoCallWidget** 两个选项，选择 **Set BasicVideoCallWidget** 创建节点，用于访问并设置用户界面。 |
+| 3 | **Create BP Video Widget Widget** | 原生 | <Slot name="quick-start-8119-4-3" /> |
+| 4 | **Set Basic Video Call Widget** | 自定义 | <Slot name="quick-start-8119-5-3" /> |
 | 5 | **Bind UIEvent** | 自定义 | 绑定 UI 事件，用于处理点击 **JoinChannel** 和 **LeaveChannel** 按钮后的事件逻辑。 |
 | 6 | **Add to Viewport** | 原生 | 将用户界面添加到视口。 |
-| 7 | **Check Permission** | 自定义 | (可选) 检查是否已获取实时音视频互动所需的系统权限，如访问摄像头和麦克风等。<br />如果你的目标平台是 Android，需要创建该节点用于检查系统权限。 |
+| 7 | **Check Permission** | 自定义 | <Slot name="quick-start-8119-8-3" /> |
 | 8 | **Init Rtc Engine** | 自定义 | 创建并初始化 RTC 引擎。 |
 | 9 | **Un Init Rtc Engine** | 自定义 | 离开频道并释放资源。 |
+
+<Slot for="quick-start-8119-2-3">
+
+- (可选) 设置是否显示鼠标光标，勾选代表显示。
+- 该节点仅适用于 Windows 和 macOS。
+- 如果在创建时检索不到该节点，可以取消勾选 **Context Sensitive**。
+
+![](https://web-cdn.agora.io/docs-files/1689863102745)
+
+</Slot>
+
+<Slot for="quick-start-8119-4-3">
+
+创建用户界面。步骤如下：
+
+1. 创建 **Create Widget** 节点。
+2. 选择该节点的 **Class** 为 **BP_VideoWidget**，将该节点关联至已经创建好的用户界面。
+
+</Slot>
+
+<Slot for="quick-start-8119-5-3">
+
+设置用户界面。步骤如下：
+
+1. 创建 **BasicVideoCallWidget** 变量，选择变量的 **Variable Type** 为 **BP_VideoWidget**，即已经创建好的用户界面，用于在蓝图中存储对用户界面的引用。
+2. 拖拽创建好的变量到 **EventGraph** 后，会出现 **Set BasicVideoCallWidget** 和 **Get BasicVideoCallWidget** 两个选项，选择 **Set BasicVideoCallWidget** 创建节点，用于访问并设置用户界面。
+
+</Slot>
+
+<Slot for="quick-start-8119-8-3">
+
+- (可选) 检查是否已获取实时音视频互动所需的系统权限，如访问摄像头和麦克风等。
+- 如果你的目标平台是 Android，需要创建该节点用于检查系统权限。
+
+</Slot>
 
 
 *原生节点为蓝图自带的节点，可以直接添加调用。
@@ -8161,17 +8255,39 @@ void UAgoraWidget::NativeDestruct()
          2. 添加两个 **Construct Object From Class** 节点，将 **Class** 分别设置为 **Agora Rtc Engine** 和 **IRtc Engine Event Handler**，并分别连接 **Set Rtc Engine** 和 **Set Event Handler**。
 
       2. 绑定 `IRtcEngineEventHandler` 类相关的回调函数。
-         1. 创建 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调函数。参考下表配置回调的输入参数：
 
-            | 回调函数 | 描述 | 输入参数 |
+创建 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调函数。参考下表配置回调的输入参数：
+
+| 回调函数 | 描述 | 输入参数 |
 | --- | --- | --- |
-| `FOnJoinChannelSuccess` | 成功加入频道回调。 | `channel`: (String) 频道名。<br />`uid`: (Integer64) 加入频道的用户 ID。<br />`elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。 |
+| `FOnJoinChannelSuccess` | 成功加入频道回调。 | <Slot name="quick-start-8170-2-2" /> |
 | `FOnLeaveChannel` | 离开频道回调。 | `stats`: 通话的统计数据。详见 [`FRtcStats`](/api-ref/rtc/unreal-blueprint/API/class_rtcstats)。 |
-| `FOnUserJoined` | 远端观众或主播加入当前频道回调。 | `uid`: (Integer64) 新加入频道的远端观众或主播的用户 ID。<br />`elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。 |
-| `FOnUserOffline` | 远端观众或主播离开当前频道回调。 | `uid`: (Integer64) 离线观众或主播的用户 ID。<br />`reason`: 离线原因。详见 [`EUSER_OFFLINE_REASON_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_userofflinereasontype)。 |
+| `FOnUserJoined` | 远端观众或主播加入当前频道回调。 | <Slot name="quick-start-8170-4-2" /> |
+| `FOnUserOffline` | 远端观众或主播离开当前频道回调。 | <Slot name="quick-start-8170-5-2" /> |
 
+<Slot for="quick-start-8170-2-2">
 
-         2. 创建 **Bind Event** 函数，在该函数中，添加 **Sequence** 节点，然后分别绑定 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调事件。
+- `channel`: (String) 频道名。
+- `uid`: (Integer64) 加入频道的用户 ID。
+- `elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。
+
+</Slot>
+
+<Slot for="quick-start-8170-4-2">
+
+- `uid`: (Integer64) 新加入频道的远端观众或主播的用户 ID。
+- `elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。
+
+</Slot>
+
+<Slot for="quick-start-8170-5-2">
+
+- `uid`: (Integer64) 离线观众或主播的用户 ID。
+- `reason`: 离线原因。详见 [`EUSER_OFFLINE_REASON_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_userofflinereasontype)。
+
+</Slot>
+
+创建 **Bind Event** 函数，在该函数中，添加 **Sequence** 节点，然后分别绑定 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调事件。
 
 ![](https://web-cdn.agora.io/docs-files/1689863944284)
 

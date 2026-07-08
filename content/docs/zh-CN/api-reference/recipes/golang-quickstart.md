@@ -1,5 +1,5 @@
 ---
-title: Golang 快速开始
+title: Go 快速开始
 description: 使用 Go 构建一个基础的 Agora Conversational AI 智能体。
 ---
 

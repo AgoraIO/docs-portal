@@ -164,7 +164,7 @@ title: "发版说明"
 为反馈更新 Token 操作的结果，该版本新增错误码 <code>RENEW_TOKEN_TIMEOUT</code> (10026)。
 
 
-#### Presence 事件通知优化
+#### 在线状态事件通知优化
 
 
 当频道数据无法正常同步时，SDK 会重新触发一次 <code>SNAPSHOT</code> 事件。收到该事件后，用户可以更新自己 App 的本地缓存。
@@ -734,7 +734,7 @@ Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Chann
 Topic 特性只在 Stream Channel 中有效，Message Channel 中不存在此特性。
 :::
 
-#### Presence
+#### 在线状态
 
 Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
 
@@ -753,7 +753,7 @@ Presence 提供监控用户在线状态及临时状态变化的能力。通过 P
 
 Presence 在提供上述功能的同时，也提供了 `onPresenceEvent` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
 
-#### Storage
+#### 存储
 
 RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
 
@@ -791,7 +791,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 - `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
 - `majorRevision` 或  `revision` 为 Uint64 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 
-#### Lock
+#### 锁
 
 临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
 
@@ -980,7 +980,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 为反馈更新 Token 操作的结果，该版本新增错误码 <code>AgoraRtmErrorRenewTokenTimeout</code> (10026)。
 
 
-#### Presence 事件通知优化
+#### 在线状态事件通知优化
 
 
 当频道数据无法正常同步时，SDK 会重新触发一次 <code>AgoraRtmPresenceEventTypeSnapshot</code> 事件。收到该事件后，用户可以更新自己 App 的本地缓存。
@@ -1504,7 +1504,7 @@ Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Chann
 Topic 特性只在 Stream Channel 中有效，Message Channel 中不存在此特性。
 :::
 
-#### Presence
+#### 在线状态
 
 Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
 
@@ -1523,7 +1523,7 @@ Presence 提供监控用户在线状态及临时状态变化的能力。通过 P
 
 Presence 在提供上述功能的同时，也提供了 `onPresenceEvent` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
 
-#### Storage
+#### 存储
 
 RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
 
@@ -1561,7 +1561,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 - `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
 - `majorRevision` 或  `revision` 为 Uint64 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 
-#### Lock
+#### 锁
 
 临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
 
@@ -1661,7 +1661,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 为反馈更新 Token 操作的结果，该版本新增错误码 `RTM_ERROR_RENEW_TOKEN_TIMEOUT` (-10026)。
 
-#### Presence 事件通知优化
+#### 在线状态事件通知优化
 
 当频道数据无法正常同步时，SDK 会重新触发一次 `SNAPSHOT` 事件。收到该事件后，用户可以更新自己 App 的本地缓存。
 
@@ -1955,7 +1955,7 @@ try {
 
 ### 改进
 
-#### Presence 服务
+#### 在线状态服务
 
 该版本优化了 Presence 服务未就绪时调用 Presence 模块 API 的行为。加入 Stream Channel 或订阅 Message Channel 后，如果 Presence 服务未就绪，SDK 会把你对 Presence 模块的调用操作存在本地，待 Presence 服务就绪后发送出去。
 
@@ -2140,7 +2140,7 @@ Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Chann
 Topic 特性只在 Stream Channel 中有效，Message Channel 中不存在此特性。
 :::
 
-#### Presence
+#### 在线状态
 
 Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
 
@@ -2159,7 +2159,7 @@ Presence 提供监控用户在线状态及临时状态变化的能力。通过 P
 
 Presence 在提供上述功能的同时，也提供了 `presence` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
 
-#### Storage
+#### 存储
 
 RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
 
@@ -2197,7 +2197,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 - `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
 - `majorRevision` 或  `revision` 为 Uint64 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 
-#### Lock
+#### 锁
 
 临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
 
@@ -2310,7 +2310,7 @@ Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Chann
 Topic 特性只在 Stream Channel 中有效，Message Channel 或 User Channel 中不存在此特性。
 :::
 
-#### Presence
+#### 在线状态
 
 Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
 
@@ -2329,7 +2329,7 @@ Presence 提供监控用户在线状态及临时状态变化的能力。通过 P
 
 Presence 在提供上述功能的同时，也提供了 `presence` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
 
-#### Storage
+#### 存储
 
 RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
 
@@ -2367,7 +2367,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 - `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
 - `majorRevision` 或  `revision` 为正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 
-#### Lock
+#### 锁
 
 临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
 
@@ -2411,7 +2411,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 该版本新增了 `INVALID_CHANNEL_TYPE`、`INVALID_ENCRYPTION_PARAMETER` 和 `OPERATION_RATE_EXCEED_LIMITATION` 错误码。错误码描述及解决方法见[错误排查](/zh-CN/realtime-media/rtm/reference/error-codes)。
 
-#### Presence 模块
+#### 在线状态模块
 
 该版本优化了在断线重连时对过期用户状态数据的处理逻辑，并提升了在 `JoinChannelOptions` 中设置 Presence 事件通知的性能。
 
@@ -2567,7 +2567,7 @@ Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Chann
 Topic 特性只在 Stream Channel 中有效，Message Channel 中不存在此特性。
 :::
 
-#### Presence
+#### 在线状态
 
 Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
 
@@ -2586,7 +2586,7 @@ Presence 提供监控用户在线状态及临时状态变化的能力。通过 P
 
 Presence 在提供上述功能的同时，也提供了 `OnPresenceEvent` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
 
-#### Storage
+#### 存储
 
 RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
 
@@ -2624,7 +2624,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 - `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
 - `majorRevision` 或  `revision` 为 Int64 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 
-#### Lock
+#### 锁
 
 临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
 
@@ -2695,7 +2695,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 为反馈更新 Token 操作的结果，该版本新增错误码 `renewTokenTimeout` (-10026)。
 
-#### Presence 事件通知优化
+#### 在线状态事件通知优化
 
 当频道数据无法正常同步时，SDK 会重新触发一次 `Snapshot` 事件。收到该事件后，用户可以更新自己 App 的本地缓存。
 
@@ -2817,7 +2817,7 @@ Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Chann
 Topic 特性只在 Stream Channel 中有效，Message Channel 或 User Channel 中不存在此特性。
 :::
 
-#### Presence
+#### 在线状态
 
 Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
 
@@ -2836,7 +2836,7 @@ Presence 提供监控用户在线状态及临时状态变化的能力。通过 P
 
 Presence 在提供上述功能的同时，也提供了 `presence` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
 
-#### Storage
+#### 存储
 
 RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
 
@@ -2874,7 +2874,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 - `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
 - `majorRevision` 或  `revision` 为 int 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 
-#### Lock
+#### 锁
 
 临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
 
@@ -2975,7 +2975,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 为反馈更新 Token 操作的结果，该版本新增错误码 `RTM_ERROR_RENEW_TOKEN_TIMEOUT` (10026)。
 
-#### Presence 事件通知优化
+#### 在线状态事件通知优化
 
 当频道数据无法正常同步时，SDK 会重新触发一次 `RTM_PRESENCE_EVENT_TYPE_SNAPSHOT` 事件。收到该事件后，用户可以更新自己 App 的本地缓存。
 
@@ -3320,7 +3320,7 @@ Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Chann
 Topic 特性只在 Stream Channel 中有效，Message Channel 中不存在此特性。
 :::
 
-#### Presence
+#### 在线状态
 
 Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
 
@@ -3339,7 +3339,7 @@ Presence 提供监控用户在线状态及临时状态变化的能力。通过 P
 
 Presence 在提供上述功能的同时，也提供了 `onPresenceEvent` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
 
-#### Storage
+#### 存储
 
 RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。调用 `createMetadata` 创建 `Metadata` 后，你可以根据实际需求对 Channel Metadata 和 User Metadata 进行操作。
 
@@ -3377,7 +3377,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 - `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
 - `revision` 为 Uint64 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 
-#### Lock
+#### 锁
 
 临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
 
@@ -3528,7 +3528,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 为反馈更新 Token 操作的结果，该版本新增错误码 `renewTokenTimeout` (10026)。
 
-#### Presence 事件通知优化
+#### 在线状态事件通知优化
 
 当频道数据无法正常同步时，SDK 会重新触发一次 `snapshot` 事件。收到该事件后，用户可以更新自己 App 的本地缓存。
 
@@ -3620,7 +3620,7 @@ Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Chann
 Topic 特性只在 Stream Channel 中有效，Message Channel 中不存在此特性。
 :::
 
-#### Presence
+#### 在线状态
 
 Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
 
@@ -3639,7 +3639,7 @@ Presence 提供监控用户在线状态及临时状态变化的能力。通过 P
 
 Presence 在提供上述功能的同时，也提供了 `onPresenceEvent` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
 
-#### Storage
+#### 存储
 
 RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
 
@@ -3677,7 +3677,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 - `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
 - `majorRevision` 或  `revision` 为 Uint64 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 
-#### Lock
+#### 锁
 
 临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
 

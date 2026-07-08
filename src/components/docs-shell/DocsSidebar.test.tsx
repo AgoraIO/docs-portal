@@ -45,6 +45,7 @@ function renderDocsSidebar({
     <SidebarProvider>
       <DocsSidebar
         activePath={activePath}
+        locale="en"
         nodes={nodes}
         onSelectPath={() => {}}
         resetKey={resetKey}
@@ -59,6 +60,7 @@ function renderDocsSidebar({
         <SidebarProvider>
           <DocsSidebar
             activePath={nextProps.activePath ?? activePath}
+            locale="en"
             nodes={nodes}
             onSelectPath={() => {}}
             resetKey={nextProps.resetKey ?? resetKey}
