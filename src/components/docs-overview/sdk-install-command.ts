@@ -104,6 +104,43 @@ export function deriveInstallCommand(
       return { tool: 'Go', command: `go get ${modulePath}` };
     }
     default:
+      break;
+  }
+
+  switch (url.protocol) {
+    case 'gradle:': {
+      if (url.hostname && segments.length >= 2) {
+        const [artifact, gradleVersion] = segments;
+        return {
+          tool: 'Gradle',
+          command: `implementation '${url.hostname}:${artifact}:${gradleVersion}'`,
+        };
+      }
+      return null;
+    }
+    case 'cocoapods:': {
+      const pod = url.hostname;
+      const version = url.searchParams.get('version');
+      if (!pod) {
+        return null;
+      }
+      return {
+        tool: 'CocoaPods',
+        command: version ? `pod '${pod}', '${version}'` : `pod '${pod}'`,
+      };
+    }
+    case 'npm:': {
+      const name = url.hostname;
+      const version = url.searchParams.get('version');
+      if (!name) {
+        return null;
+      }
+      return {
+        tool: 'npm',
+        command: version ? `npm i ${name}@${version}` : `npm i ${name}`,
+      };
+    }
+    default:
       return null;
   }
 }

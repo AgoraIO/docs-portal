@@ -113,6 +113,33 @@ describe('deriveInstallCommand', () => {
     });
   });
 
+  it('derives a Gradle command from a custom gradle protocol URL', () => {
+    expect(
+      deriveInstallCommand(v('gradle://io.github.agora-apaas/AgoraClassSDK/2.8.101')),
+    ).toEqual({
+      tool: 'Gradle',
+      command: "implementation 'io.github.agora-apaas:AgoraClassSDK:2.8.101'",
+    });
+  });
+
+  it('derives a CocoaPods command from a custom cocoapods protocol URL', () => {
+    expect(
+      deriveInstallCommand(v('cocoapods://FcrUIScene?version=3.1.0')),
+    ).toEqual({
+      tool: 'CocoaPods',
+      command: "pod 'FcrUIScene', '3.1.0'",
+    });
+  });
+
+  it('derives an npm command from a custom npm protocol URL', () => {
+    expect(
+      deriveInstallCommand(v('npm://fcr-ui-scene?version=3.1.0')),
+    ).toEqual({
+      tool: 'npm',
+      command: 'npm i fcr-ui-scene@3.1.0',
+    });
+  });
+
   it('derives an unpinned Go command from a bare pkg.go.dev URL', () => {
     expect(
       deriveInstallCommand(

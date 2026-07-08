@@ -1,0 +1,52 @@
+## 通过 CocoaPods 集成 SDK
+
+如果你使用灵动课堂的默认 UI，声网推荐通过 CocoaPods 添加远程依赖进行集成。不同模块介绍和详细集成步骤参考[集成灵动课堂](/zh-CN/solutions/flexible-classroom/get-started/integrate)。
+
+```ruby tab="集成教育模块" tabGroup="sdk-types"
+# third-party libs
+pod 'SwifterSwift',   '5.2.0'
+pod 'Masonry',        '1.1.0'
+pod 'SDWebImage',     '5.12.0'
+pod 'AgoraRtcEngine_Special_iOS', '3.7.2.133'
+pod 'Whiteboard',     :git => 'https://github.com/netless-io/Whiteboard-iOS', :branch => 'effect-mixing'
+# open-source libs
+pod 'AgoraClassroomSDK_iOS', '2.8.111'
+pod 'AgoraWidgets',          '2.8.111'
+```
+
+```ruby tab="集成监考模块" tabGroup="sdk-types"
+# third-party libs
+pod 'SwifterSwift',     '5.2.0'
+pod 'Masonry',          '1.1.0'
+pod 'SDWebImage',       '5.12.0'
+pod 'AgoraRtcEngine_Special_iOS', '3.7.2.133'
+# open-source libs
+pod 'AgoraProctorSDK',  '1.0.2'
+```
+
+## 下载 SDK
+
+如果你希望自定义课堂 UI，可以通过下载并导入 SDK 实现。本节提供最新版本 SDK 的下载链接。
+
+:::info[信息]
+- 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/solutions/flexible-classroom/reference/release-notes)。
+- 如何使用 SDK 实现各种实时互动课堂功能请参考[集成灵动课堂](/zh-CN/solutions/flexible-classroom/get-started/integrate)。
+:::
+
+灵动课堂 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时互动课堂场景。
+
+- SDK 名称：灵动课堂 SDK
+- 开发者：上海声网科技有限公司
+- 灵动课堂 SDK 合规使用说明请参考[灵动课堂 SDK 合规使用说明](/basics/security/flexible-classroom-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+<SdksCatalog locale="zh-CN" product="flexible-classroom" platform="ios" />
+
+## 获取 Demo
+
+扫码或下载体验多种在线教学场景的**学生端**功能。如想体验教师端和学生端的完整功能，可以前往 Web 或 Electron 平台下载 Demo。
+
+## 获取示例项目
+
+<Cards>
+  <Card title="flexible-classroom-ios" href="https://github.com/AgoraIO-Community/flexible-classroom-ios" />
+</Cards>

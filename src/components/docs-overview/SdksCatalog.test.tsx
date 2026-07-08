@@ -279,6 +279,129 @@ describe('SdksCatalog', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('renders the zh-CN catalog with localized links and filters', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/api-reference/sdks?product=signaling&platform=harmonyos',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    expect(screen.getByText('正在显示 Signaling SDK')).toBeVisible();
+    expect(screen.getByRole('link', { name: '查看全部 SDK' })).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/sdks',
+    );
+
+    const signalingCard = screen.getByRole('article', {
+      name: 'Signaling SDK',
+    });
+    expect(
+      within(signalingCard).getByRole('tab', { name: 'HarmonyOS' }),
+    ).toHaveAttribute('aria-selected', 'true');
+    expect(
+      within(signalingCard).getByRole('link', { name: '下载 SDK' }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.2.8.zip',
+    );
+  });
+
+  it('uses prop filters for zh-CN product download pages', () => {
+    render(<SdksCatalog locale="zh-CN" platform="linux" product="signaling" />);
+
+    expect(screen.getByText('正在显示 Signaling SDK')).toBeVisible();
+    expect(
+      screen.queryByRole('article', { name: '视频 SDK' }),
+    ).not.toBeInTheDocument();
+
+    const signalingCard = screen.getByRole('article', {
+      name: 'Signaling SDK',
+    });
+    expect(
+      within(signalingCard).getByRole('tab', { name: 'Linux' }),
+    ).toHaveAttribute('aria-selected', 'true');
+    expect(
+      within(signalingCard).getByRole('link', { name: '下载 SDK' }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.2.8.zip',
+    );
+    expect(
+      within(signalingCard).getByText('f88b55a96cd975494d9592ba3ffe08d8'),
+    ).toBeVisible();
+  });
+
+  it('renders flexible classroom solution SDKs in the zh-CN catalog', () => {
+    render(
+      <SdksCatalog locale="zh-CN" platform="android" product="flexible-classroom" />,
+    );
+
+    expect(screen.getByText('正在显示 灵动课堂 SDK')).toBeVisible();
+    expect(
+      screen.getByRole('article', { name: '灵动课堂 SDK' }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole('article', { name: '云课堂 SDK' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('article', { name: '灵动监考 SDK' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders meeting SDKs in the zh-CN catalog', () => {
+    render(<SdksCatalog locale="zh-CN" platform="electron" product="meeting" />);
+
+    expect(screen.getByText('正在显示 灵动会议 SDK')).toBeVisible();
+    const meetingCard = screen.getByRole('article', { name: '灵动会议 SDK' });
+    expect(
+      within(meetingCard).getByText('npm i fcr-ui-scene@3.1.0'),
+    ).toBeVisible();
+  });
+
+  it('orders zh-CN sdk groups as ai, realtime-media, then solutions', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const headings = screen
+      .getAllByRole('heading', { level: 3 })
+      .map((node) => node.textContent?.trim())
+      .filter(Boolean);
+
+    expect(headings.indexOf('Agora Agents SDK')).toBeLessThan(
+      headings.indexOf('语音 SDK'),
+    );
+    expect(headings.indexOf('语音 SDK')).toBeLessThan(
+      headings.indexOf('灵动会议 SDK'),
+    );
+    expect(headings.indexOf('灵动会议 SDK')).toBeLessThan(
+      headings.indexOf('灵动课堂 SDK'),
+    );
+  });
+
+  it('derives zh-CN Android install commands from confirmed package versions', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/api-reference/sdks?product=video&platform=android',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const videoCard = screen.getByRole('article', { name: '视频 SDK' });
+    expect(
+      within(videoCard).getByText(
+        "implementation 'cn.shengwang.rtc:full-sdk:4.6.3'",
+      ),
+    ).toBeVisible();
+    expect(
+      within(videoCard).getByRole('link', { name: '直接下载' }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_FULL.zip',
+    );
+  });
+
   it('ignores invalid product and platform query values', () => {
     window.history.replaceState(
       null,

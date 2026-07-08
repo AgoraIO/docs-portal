@@ -1,0 +1,75 @@
+## 通过 CocoaPods 集成 SDK
+
+```ruby tab="视频 SDK" tabGroup="ios-integrate-sdk"
+platform :ios, '9.0'
+target 'Your App' do
+    pod 'ShengwangRtcEngine_iOS', '4.6.2'
+    pod 'ShengwangRtcEngine_iOS', '4.6.2', :subspecs => ['RtcBasic', 'AINS', 'ClearVision']
+    pod 'ShengwangLite_iOS', '4.6.2'
+end
+```
+
+```ruby tab="音频 SDK" tabGroup="ios-integrate-sdk"
+platform :ios, '9.0'
+target 'Your App' do
+    pod 'ShengwangAudio_iOS', '4.6.2'
+    pod 'ShengwangAudio_iOS', '4.6.2', :subspecs => ['RtcBasic', 'AINS', 'AudioBeauty']
+end
+```
+
+## 通过 SPM 集成 SDK
+
+```text tab="视频 SDK" tabGroup="ios-spm-sdk"
+github:git@github.com:Shengwang-Lab/ShengwangRtcEngine_iOS.git | tag:4.6.2
+github:git@github.com:Shengwang-Lab/ShengwangLite_iOS.git | tag:4.6.2
+```
+
+```text tab="音频 SDK" tabGroup="ios-spm-sdk"
+github:git@github.com:Shengwang-Lab/ShengwangAudio_iOS.git | tag:4.6.2
+```
+
+## 下载 SDK
+
+<Tabs defaultValue="video" groupId="ios-download-sdk" persist>
+<TabsList>
+  <TabsTrigger value="video">视频 SDK</TabsTrigger>
+  <TabsTrigger value="audio">音频 SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="video">
+
+视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+- SDK 名称：视频 SDK
+- 开发者：上海声网科技有限公司
+- 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+<SdksCatalog locale="zh-CN" product="video" platform="ios" />
+
+</TabsContent>
+
+<TabsContent value="audio">
+
+音频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建纯语音互动场景。
+
+- SDK 名称：音频 SDK
+- 开发者：上海声网科技有限公司
+- 音频 SDK 合规使用说明请参考[音频 SDK 合规使用说明](/basics/security/voice-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+<SdksCatalog locale="zh-CN" product="voice" platform="ios" />
+
+</TabsContent>
+</Tabs>
+
+## 获取 Demo
+
+<Cards>
+  <Card title="声网实验室 iOS Demo" href="https://doc.shengwang.cn/codebox/detail?demo=24&platform=1" />
+</Cards>
+
+## 获取示例项目
+
+<Cards>
+  <Card title="API-Examples (Gitee)" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS" />
+  <Card title="API-Examples (GitHub)" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS" />
+</Cards>
