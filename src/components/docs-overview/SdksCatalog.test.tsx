@@ -310,6 +310,52 @@ describe('SdksCatalog', () => {
     ).toBeVisible();
   });
 
+  it('renders flexible classroom solution SDKs in the zh-CN catalog', () => {
+    render(
+      <SdksCatalog locale="zh-CN" platform="android" product="flexible-classroom" />,
+    );
+
+    expect(screen.getByText('正在显示 灵动课堂 SDK')).toBeVisible();
+    expect(
+      screen.getByRole('article', { name: '灵动课堂 SDK' }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole('article', { name: '云课堂 SDK' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('article', { name: '灵动监考 SDK' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders meeting SDKs in the zh-CN catalog', () => {
+    render(<SdksCatalog locale="zh-CN" platform="electron" product="meeting" />);
+
+    expect(screen.getByText('正在显示 灵动会议 SDK')).toBeVisible();
+    const meetingCard = screen.getByRole('article', { name: '灵动会议 SDK' });
+    expect(
+      within(meetingCard).getByText('npm i fcr-ui-scene@3.1.0'),
+    ).toBeVisible();
+  });
+
+  it('orders zh-CN sdk groups as ai, realtime-media, then solutions', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const headings = screen
+      .getAllByRole('heading', { level: 3 })
+      .map((node) => node.textContent?.trim())
+      .filter(Boolean);
+
+    expect(headings.indexOf('Agora Agents SDK')).toBeLessThan(
+      headings.indexOf('语音 SDK'),
+    );
+    expect(headings.indexOf('语音 SDK')).toBeLessThan(
+      headings.indexOf('灵动会议 SDK'),
+    );
+    expect(headings.indexOf('灵动会议 SDK')).toBeLessThan(
+      headings.indexOf('灵动课堂 SDK'),
+    );
+  });
+
   it('derives zh-CN Android install commands from confirmed package versions', () => {
     window.history.replaceState(
       null,

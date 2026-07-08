@@ -1,9 +1,13 @@
 ---
 title: "下载"
 description: "获取互动白板 SDK 的下载链接、版本信息和 Demo。"
+layout: platform-group
+platforms:
+  - android
+  - ios
+  - web
+defaultPlatform: android
 ---
-
-本文提供互动白板 SDK 的下载和集成入口。下载数据与全局 [SDK 下载](/zh-CN/api-reference/sdks?product=whiteboard-sdk)页共用同一来源。
 
 :::info[SDK 合规信息公示]
 **功能介绍：** 为开发者提供互动白板房间、实时同步书写、课件展示和协作能力。
@@ -12,32 +16,3 @@ description: "获取互动白板 SDK 的下载链接、版本信息和 Demo。"
 
 **使用说明：** 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/release-notes-wb)，加入白板房间请参考[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)，个人信息处理规则请参考 [SDK 隐私政策](https://www.shengwang.cn/SDK-privacy-policy/)。
 :::
-
-<SdksCatalog locale="zh-CN" product="whiteboard-sdk" />
-
-## 集成方式
-
-```bash tab="Web" tabGroup="whiteboard-install"
-npm install white-web-sdk
-```
-
-```groovy tab="Android" tabGroup="whiteboard-install"
-dependencies {
-    implementation 'com.github.netless-io:whiteboard-android:2.16.100'
-}
-```
-
-```ruby tab="iOS" tabGroup="whiteboard-install"
-platform :ios, '10.0'
-target 'Whiteboard' do
-    pod 'Whiteboard'
-end
-```
-
-## 获取 Demo
-
-本节提供 Web Demo，你可以下载体验互动白板的最新功能。
-
-<Cards>
-  <Card title="Web Demo" href="https://demo.whiteboard.agora.io/" />
-</Cards>

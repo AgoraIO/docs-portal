@@ -1,0 +1,27 @@
+## 通过 Go Module 集成 SDK
+
+1. 在终端中运行以下命令下载 SDK。
+
+   ```bash
+   git clone https://github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK.git go_rtc_sdk
+   ```
+
+2. 进入 SDK 目录并执行编译。
+
+   ```bash
+   cd go_rtc_sdk
+   make build
+   ```
+
+3. 在项目的 `go.mod` 文件中添加以下配置。
+
+   ```bash
+   replace github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK/v2 => /path/to/go_rtc_sdk
+   require github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK/v2 version_number
+   ```
+
+## 获取示例项目
+
+<Cards>
+  <Card title="Agora-Golang-Server-SDK" href="https://github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK/tree/release/2.2.8" />
+</Cards>

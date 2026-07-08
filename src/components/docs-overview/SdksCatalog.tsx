@@ -33,6 +33,23 @@ const platformGroups = [
 ] as const;
 
 const PLATFORM_ORDER = platformGroups.flatMap((group) => group.platformIds);
+const PRODUCT_GROUP_ORDER = [
+  'agents',
+  'voice',
+  'video',
+  'signaling',
+  'chat',
+  'iot',
+  'whiteboard',
+  'fastboard',
+  'mediaplayer-kit',
+  'server-gateway',
+  'on-premise-recording',
+  'meeting',
+  'flexible-classroom',
+  'cloud-scene',
+  'proctor',
+] as const;
 const LOCATION_CHANGE_EVENT = 'docs-portal-location-change';
 
 const sdkDownloadDatasets = {
@@ -107,6 +124,24 @@ const productFilters = {
     aliases: ['chat', 'im'],
     productIds: ['chat'],
   },
+  'flexible-classroom': {
+    label: 'Flexible Classroom SDK',
+    zhLabel: '灵动课堂 SDK',
+    aliases: ['flexible-classroom', 'classroom'],
+    productIds: ['flexible-classroom'],
+  },
+  'cloud-scene': {
+    label: 'Cloud Scene SDK',
+    zhLabel: '云课堂 SDK',
+    aliases: ['cloud-scene', 'fcruiscene'],
+    productIds: ['cloud-scene'],
+  },
+  proctor: {
+    label: 'Proctor SDK',
+    zhLabel: '灵动监考 SDK',
+    aliases: ['proctor', 'proctor-sdk'],
+    productIds: ['proctor'],
+  },
   fastboard: {
     label: 'Interactive Whiteboard Fastboard',
     zhLabel: 'Fastboard SDK',
@@ -118,6 +153,18 @@ const productFilters = {
     zhLabel: 'IoT SDK',
     aliases: ['iot'],
     productIds: ['iot'],
+  },
+  'mediaplayer-kit': {
+    label: 'Mediaplayer Kit SDK',
+    zhLabel: 'Mediaplayer Kit SDK',
+    aliases: ['mediaplayer-kit', 'mediaplayer'],
+    productIds: ['mediaplayer-kit'],
+  },
+  meeting: {
+    label: 'Meeting SDK',
+    zhLabel: '灵动会议 SDK',
+    aliases: ['meeting', 'meeting-sdk'],
+    productIds: ['meeting'],
   },
   'on-premise-recording': {
     label: 'Agora On-Premise Recording SDK',
@@ -188,6 +235,13 @@ function platformRank(platformId: string) {
   return index === -1 ? PLATFORM_ORDER.length : index;
 }
 
+function productGroupRank(productId: string) {
+  const index = (PRODUCT_GROUP_ORDER as readonly string[]).indexOf(
+    productId as (typeof PRODUCT_GROUP_ORDER)[number],
+  );
+  return index === -1 ? PRODUCT_GROUP_ORDER.length : index;
+}
+
 type ProductPlatformEntry = {
   platformId: string;
   platformLabel: string;
@@ -219,6 +273,34 @@ function buildProductGroups(
           labelsByProductId.set(productId, product.label);
           order.push(productId);
         }
+        const existingEntry = entries.find(
+          (entry) => entry.platformId === platform.id,
+        );
+
+        if (existingEntry) {
+          const seenVersionKeys = new Set(
+            existingEntry.product.versions.map((version) =>
+              getVersionKey(platform.id, version),
+            ),
+          );
+          const mergedVersions = [...existingEntry.product.versions];
+
+          for (const version of product.versions) {
+            const versionKey = getVersionKey(platform.id, version);
+            if (seenVersionKeys.has(versionKey)) {
+              continue;
+            }
+            mergedVersions.push(version);
+            seenVersionKeys.add(versionKey);
+          }
+
+          existingEntry.product = {
+            ...existingEntry.product,
+            versions: mergedVersions,
+          };
+          continue;
+        }
+
         entries.push({
           platformId: platform.id,
           platformLabel: platform.label,
@@ -228,28 +310,32 @@ function buildProductGroups(
     }
   }
 
-  return order.map((productId) => {
-    const platforms = (entriesByProductId.get(productId) ?? [])
-      .slice()
-      .sort((a, b) => platformRank(a.platformId) - platformRank(b.platformId));
+  return order
+    .map((productId) => {
+      const platforms = (entriesByProductId.get(productId) ?? [])
+        .slice()
+        .sort((a, b) => platformRank(a.platformId) - platformRank(b.platformId));
 
-    return {
-      label: labelsByProductId.get(productId) ?? platforms[0].product.label,
-      productId,
-      defaultProduct: platforms[0].product,
-      platforms,
-    };
-  });
+      return {
+        label: labelsByProductId.get(productId) ?? platforms[0].product.label,
+        productId,
+        defaultProduct: platforms[0].product,
+        platforms,
+      };
+    })
+    .sort((a, b) => productGroupRank(a.productId) - productGroupRank(b.productId));
 }
 
 export function SdksCatalog({
   locale = 'en',
   platform,
   product,
+  versionIdPrefixes,
 }: {
   locale?: SdkCatalogLocale;
   platform?: string;
   product?: string;
+  versionIdPrefixes?: string[];
 }) {
   const platforms = sdkDownloadDatasets[locale];
   const copy = catalogCopy[locale];
@@ -271,13 +357,54 @@ export function SdksCatalog({
     ? productGroups.filter((group) =>
         productFilterProductIds?.has(group.productId),
       )
-    : queryFilters.platformId
-      ? productGroups.filter((group) =>
-          group.platforms.some(
-            (entry) => entry.platformId === queryFilters.platformId,
-          ),
+      : queryFilters.platformId
+        ? productGroups.filter((group) =>
+            group.platforms.some(
+              (entry) => entry.platformId === queryFilters.platformId,
+            ),
         )
       : productGroups;
+  const visibleProductGroupsWithVersionFilter = useMemo(() => {
+    if (!versionIdPrefixes || versionIdPrefixes.length === 0) {
+      return visibleProductGroups;
+    }
+
+    const filteredGroups: ProductGroup[] = [];
+
+    for (const group of visibleProductGroups) {
+      const filteredPlatforms: ProductPlatformEntry[] = [];
+
+      for (const entry of group.platforms) {
+        const filteredVersions = entry.product.versions.filter((version) =>
+          versionIdPrefixes.some((prefix) => version.id.includes(prefix)),
+        );
+
+        if (filteredVersions.length === 0) {
+          continue;
+        }
+
+        filteredPlatforms.push({
+          ...entry,
+          product: {
+            ...entry.product,
+            versions: filteredVersions,
+          },
+        });
+      }
+
+      if (filteredPlatforms.length === 0) {
+        continue;
+      }
+
+      filteredGroups.push({
+        ...group,
+        defaultProduct: filteredPlatforms[0].product,
+        platforms: filteredPlatforms,
+      });
+    }
+
+    return filteredGroups;
+  }, [versionIdPrefixes, visibleProductGroups]);
   const platformLabel = queryFilters.platformId
     ? platforms.find((platform) => platform.id === queryFilters.platformId)
         ?.label
@@ -301,7 +428,7 @@ export function SdksCatalog({
           </a>
         </div>
       ) : null}
-      {visibleProductGroups.map((group) => (
+      {visibleProductGroupsWithVersionFilter.map((group) => (
         <ProductCard
           copy={copy}
           group={group}
@@ -591,6 +718,24 @@ function getProductCatalogId(product: SdkDownloadProduct) {
   if (normalizedId.includes('chat-sdk')) {
     return 'chat';
   }
+  if (normalizedId.includes('meeting-sdk')) {
+    return 'meeting';
+  }
+  if (normalizedId.includes('mediaplayer-kit')) {
+    return 'mediaplayer-kit';
+  }
+  if (normalizedId.includes('proctor-sdk')) {
+    return 'proctor';
+  }
+  if (normalizedId.includes('cloud-scene-sdk')) {
+    return 'cloud-scene';
+  }
+  if (
+    normalizedId.includes('flexible-classroom-sdk') ||
+    normalizedId.includes('classroom-sdk')
+  ) {
+    return 'flexible-classroom';
+  }
   if (normalizedId.includes('iot-sdk')) {
     return 'iot';
   }
@@ -775,8 +920,18 @@ function productIconKind(
   if (normalized.includes('chat')) {
     return 'chat';
   }
+  if (
+    normalized.includes('classroom') ||
+    normalized.includes('proctor') ||
+    normalized.includes('cloud scene')
+  ) {
+    return 'classroom';
+  }
   if (normalized.includes('iot')) {
     return 'iot';
+  }
+  if (normalized.includes('meeting')) {
+    return 'meeting';
   }
   if (normalized.includes('whiteboard') || normalized.includes('fastboard')) {
     return 'whiteboard';
