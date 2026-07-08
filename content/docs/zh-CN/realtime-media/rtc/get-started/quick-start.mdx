@@ -1291,46 +1291,47 @@ override func viewDidLoad() {
 
 4. 添加项目的设备权限。
 
-    在项目导航栏中打开 `info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加以下属性：
-    :::warning[注意]
-    - 下表中列出的权限均为可选权限。但如果不添加所列权限，你将无法使用麦克风和摄像头进行实时音视频互动。
-            - 如果你的项目中需要添加第三方插件或库（例如第三方摄像头），且该插件或库的签名与项目的签名不一致，你还需勾选 **Hardened Runtime** > **Runtime Exceptions** 中的 **Disable Library Validation**。
-            - 更多注意事项，可以参考 [Preparing Your App for Distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution)。
-    :::
+在项目导航栏中打开 `info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加以下属性：
 
-    | Key | Type | Value |
-    | -------------------------------------- | ------ | ------------------------------------------------------------ |
-    | Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
-    | Privacy - Camera Usage Description | String | 使用摄像头的目的，例如：for a call or live interactive streaming。 |
+:::warning[注意]
+- 下表中列出的权限均为可选权限。但如果不添加所列权限，你将无法使用麦克风和摄像头进行实时音视频互动。
+  - 如果你的项目中需要添加第三方插件或库（例如第三方摄像头），且该插件或库的签名与项目的签名不一致，你还需勾选 **Hardened Runtime** > **Runtime Exceptions** 中的 **Disable Library Validation**。
+  - 更多注意事项，可以参考 [Preparing Your App for Distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution)。
+:::
 
-    进入 **TARGETS > Project Name > Signing & Capabilities**，在 **App Sandbox** 和 **Hardened Runtime** 中添加如下权限：
+| Key | Type | Value |
+| -------------------------------------- | ------ | ------------------------------------------------------------ |
+| Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
+| Privacy - Camera Usage Description | String | 使用摄像头的目的，例如：for a call or live interactive streaming。 |
 
-    | Capability | Category | Permission |
-    | --- | --- | --- |
-    | App Sandbox | Network | <Slot name="quick-start-1308-2-2" /> |
-    | App Sandbox | Hardware | <Slot name="quick-start-1308-3-2" /> |
-    | Hardened Runtime | Resource Access | <Slot name="quick-start-1308-4-2" /> |
+进入 **TARGETS > Project Name > Signing & Capabilities**，在 **App Sandbox** 和 **Hardened Runtime** 中添加如下权限：
 
-    <Slot for="quick-start-1308-2-2">
+| Capability | Category | Permission |
+| --- | --- | --- |
+| App Sandbox | Network | <Slot name="quick-start-1308-2-2" /> |
+| App Sandbox | Hardware | <Slot name="quick-start-1308-3-2" /> |
+| Hardened Runtime | Resource Access | <Slot name="quick-start-1308-4-2" /> |
 
-    - Incoming Connections (Server)
-    - Outgoing Connections (Client)
+<Slot for="quick-start-1308-2-2">
 
-    </Slot>
+- Incoming Connections (Server)
+- Outgoing Connections (Client)
 
-    <Slot for="quick-start-1308-3-2">
+</Slot>
 
-    - Camera
-    - Audio Input
+<Slot for="quick-start-1308-3-2">
 
-    </Slot>
+- Camera
+- Audio Input
 
-    <Slot for="quick-start-1308-4-2">
+</Slot>
 
-    - Camera
-    - Audio Input
+<Slot for="quick-start-1308-4-2">
 
-    </Slot>
+- Camera
+- Audio Input
+
+</Slot>
 
 
 ## 集成 SDK
@@ -5267,7 +5268,7 @@ rtcEngine.release();
 
 - 不同开发平台的操作系统与编译器需满足下列版本要求：
 
-  | 开发平台 | 操作系统版本 | 编译器版本 |
+| 开发平台 | 操作系统版本 | 编译器版本 |
 | --- | --- | --- |
 | Android | Android 4.1 或以上 | Android Studio 3.0 或以上 |
 | iOS | iOS 9.0 或以上 | Xcode 9.0 或以上 |
@@ -5941,51 +5942,51 @@ void OnApplicationQuit()
 - Flutter 2.10.5 或更高版本。
 - Dart 2.14.0 或更高版本。
 - 根据你的目标平台，准备对应的开发和运行环境：
-    | 目标平台 | 环境要求 |
-    | --- | --- |
-    | iOS | <Slot name="quick-start-5923-2-1" /> |
-    | Android | <Slot name="quick-start-5923-3-1" /> |
-    | macOS | <Slot name="quick-start-5923-4-1" /> |
-    | Windows | <Slot name="quick-start-5923-5-1" /> |
 
-    <Slot for="quick-start-5923-2-1">
+| 目标平台 | 环境要求 |
+| --- | --- |
+| iOS | <Slot name="quick-start-5923-2-1" /> |
+| Android | <Slot name="quick-start-5923-3-1" /> |
+| macOS | <Slot name="quick-start-5923-4-1" /> |
+| Windows | <Slot name="quick-start-5923-5-1" /> |
 
-    - macOS 10.15 或更高版本
-    - 最新版本的 Xcode
-    - 两台 iOS 设备
+<Slot for="quick-start-5923-2-1">
 
-    </Slot>
+- macOS 10.15 或更高版本
+- 最新版本的 Xcode
+- 两台 iOS 设备
 
-    <Slot for="quick-start-5923-3-1">
+</Slot>
 
-    - macOS 10.15 或更高版本
-    - Windows 10 或更高版本
-    - 最新版本的 Android Studio
-    - 两台 Android 设备
+<Slot for="quick-start-5923-3-1">
 
-    </Slot>
+- macOS 10.15 或更高版本
+- Windows 10 或更高版本
+- 最新版本的 Android Studio
+- 两台 Android 设备
 
-    <Slot for="quick-start-5923-4-1">
+</Slot>
 
-    - macOS 10.15 或更高版本
-    - 最新版本的 Xcode
-    - 两台 macOS 设备
+<Slot for="quick-start-5923-4-1">
 
-    </Slot>
+- macOS 10.15 或更高版本
+- 最新版本的 Xcode
+- 两台 macOS 设备
 
-    <Slot for="quick-start-5923-5-1">
+</Slot>
 
-    - Windows 10 或更高版本
-    - 最新版本的 Visual Studio
-    - 两台 Windows 设备
+<Slot for="quick-start-5923-5-1">
 
-    </Slot>
+- Windows 10 或更高版本
+- 最新版本的 Visual Studio
+- 两台 Windows 设备
 
+</Slot>
 
-    :::info[信息]
-    - 更多环境要求细节，详见 [Install Flutter](https://docs.flutter.dev/get-started/install)。
-    - 你可以运行 `flutter doctor` 命令检查开发和运行环境是否达到要求。
-    :::
+:::info[信息]
+- 更多环境要求细节，详见 [Install Flutter](https://docs.flutter.dev/get-started/install)。
+- 你可以运行 `flutter doctor` 命令检查开发和运行环境是否达到要求。
+:::
 
 - 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
 - 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
@@ -8254,9 +8255,10 @@ void UAgoraWidget::NativeDestruct()
          2. 添加两个 **Construct Object From Class** 节点，将 **Class** 分别设置为 **Agora Rtc Engine** 和 **IRtc Engine Event Handler**，并分别连接 **Set Rtc Engine** 和 **Set Event Handler**。
 
       2. 绑定 `IRtcEngineEventHandler` 类相关的回调函数。
-         1. 创建 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调函数。参考下表配置回调的输入参数：
 
-            | 回调函数 | 描述 | 输入参数 |
+创建 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调函数。参考下表配置回调的输入参数：
+
+| 回调函数 | 描述 | 输入参数 |
 | --- | --- | --- |
 | `FOnJoinChannelSuccess` | 成功加入频道回调。 | <Slot name="quick-start-8170-2-2" /> |
 | `FOnLeaveChannel` | 离开频道回调。 | `stats`: 通话的统计数据。详见 [`FRtcStats`](/api-ref/rtc/unreal-blueprint/API/class_rtcstats)。 |
@@ -8285,8 +8287,7 @@ void UAgoraWidget::NativeDestruct()
 
 </Slot>
 
-
-         2. 创建 **Bind Event** 函数，在该函数中，添加 **Sequence** 节点，然后分别绑定 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调事件。
+创建 **Bind Event** 函数，在该函数中，添加 **Sequence** 节点，然后分别绑定 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调事件。
 
 ![](https://web-cdn.agora.io/docs-files/1689863944284)
 
