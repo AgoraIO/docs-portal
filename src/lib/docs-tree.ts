@@ -420,9 +420,9 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
   // An index-only folder whose index is exposed as its single page child (Fumadocs
   // does this for `pages: ["index"]`) collapses to one leaf link carrying the
   // folder's title — e.g. an FAQ category folder becomes a flat "Integration" link.
-  // The child is the folder's own index (not a deeper sub-page) only when its last
-  // URL segment matches the folder slug, so a folder holding a single unrelated
-  // sub-page is left as a section.
+  // The child is the folder's own index (not a deeper sub-page) when its last URL
+  // segment matches the folder slug, or when localized titles hide the canonical
+  // URL slug but the child title still matches the folder title.
   const nonSeparatorChildren = visibleChildren.filter(
     (child) => child.type !== 'separator',
   );
@@ -431,7 +431,7 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     !node.index &&
     nonSeparatorChildren.length === 1 &&
     onlyChild.type === 'page' &&
-    lastUrlSegment(onlyChild.url) === folderSlug(node.name)
+    isExposedFolderIndexChild(onlyChild, node.name)
   ) {
     return [
       pageTreeItemToSidebarPageNode(onlyChild, undefined, {
@@ -826,14 +826,16 @@ const KNOWN_ROOT_TAB_IDS = [
   'ai',
 ] as const;
 
-const ROOT_TAB_IDS_BY_TITLE: Record<string, (typeof KNOWN_ROOT_TAB_IDS)[number]> =
-  {
-    'API 参考': 'api-reference',
-    AI: 'ai',
-    介绍: 'introduction',
-    实时与媒体: 'realtime-media',
-    解决方案: 'solutions',
-  };
+const ROOT_TAB_IDS_BY_TITLE: Record<
+  string,
+  (typeof KNOWN_ROOT_TAB_IDS)[number]
+> = {
+  'API 参考': 'api-reference',
+  AI: 'ai',
+  介绍: 'introduction',
+  实时与媒体: 'realtime-media',
+  解决方案: 'solutions',
+};
 
 function getTabIdFromNode(node: Node) {
   const item = getTabIndex(node);
@@ -909,6 +911,16 @@ function lastUrlSegment(url: string): string {
 
 function folderSlug(name: ReactNode): string {
   return normalizeLabel(name, '').toLowerCase().replace(/\s+/g, '-');
+}
+
+function isExposedFolderIndexChild(child: Item, folderName: ReactNode) {
+  const childTitle = normalizeLabel(child.name, child.url);
+  const normalizedFolderName = normalizeLabel(folderName, childTitle);
+
+  return (
+    lastUrlSegment(child.url) === folderSlug(folderName) ||
+    childTitle === normalizedFolderName
+  );
 }
 
 export function getConfiguredIconName(node: Node, fallback?: Item) {
