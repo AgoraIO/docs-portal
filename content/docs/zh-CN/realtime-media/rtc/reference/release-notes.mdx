@@ -509,7 +509,7 @@ title: "发版说明"
    - Lite SDK 支持手动集成或三方仓库集成，详见[下载](/zh-CN/realtime-media/rtc/reference/downloads)和[集成 SDK](/zh-CN/realtime-media/rtc/get-started/quick-start#集成-sdk)。
    - Lite SDK 包含的动态库信息详见[减小 App 体积](/zh-CN/realtime-media/rtc/build/quality-and-operations/reduce-app-size)。
    - Lite SDK 支持的 API 清单详见 [Lite SDK API 列表](/api-ref/rtc/android/API/rtc_lite_api)。
-   - 使用 Lite SDK 播放媒体文件时的限制和注意事项详见 [RTC SDK 支持播放哪些格式的音频文件？](/faq/general-product-inquiry/audio-format)
+   - 使用 Lite SDK 播放媒体文件时的限制和注意事项详见 [RTC SDK 支持播放哪些格式的音频文件？](/zh-CN/api-reference/faq/product/audio_format)
 
    :::warning[注意]
    Lite SDK 默认无法与 [RTC 小程序 SDK](/zh-CN/realtime-media/rtc) 互通。如果需要与小程序互通，请[联系技术支持](https://tickets.shengwang.cn)。
@@ -1969,7 +1969,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 从 v4.6.2 起，SDK 适配 iOS 的相机多任务采集能力，支持在多任务场景下持续进行音视频采集。在实时音视频互动场景中，启用该能力后，可支持例如视频通话过程中同时查阅资料、互动教学中分屏展示课件、直播过程中同时管理商品后台等业务场景。
 
-在实际集成过程中，你需要先为 App 开启相机多任务采集能力，才能在多任务场景下正常使用相关功能。具体配置步骤请参考[如何开启 iOS 多任务相机采集](/faq/integration-issues/multitasking)。
+在实际集成过程中，你需要先为 App 开启相机多任务采集能力，才能在多任务场景下正常使用相关功能。具体配置步骤请参考[如何开启 iOS 多任务相机采集](/zh-CN/api-reference/faq/integration/multitasking)。
 
 经声网实验室测试，该功能支持的机型和系统版本如下：
 
@@ -2377,7 +2377,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    - Lite SDK 支持手动集成或三方仓库集成，详见[下载](/zh-CN/realtime-media/rtc/reference/downloads)和[集成 SDK](/zh-CN/realtime-media/rtc/get-started/quick-start#集成-sdk)。
    - Lite SDK 包含的动态库信息详见[减小 App 体积](/zh-CN/realtime-media/rtc/build/quality-and-operations/reduce-app-size)。
    - Lite SDK 支持的 API 清单详见 [Lite SDK API 列表](/api-ref/rtc/ios/API/rtc_lite_api)。
-   - 使用 Lite SDK 播放媒体文件时的限制和注意事项详见 [RTC SDK 支持播放哪些格式的音频文件？](/faq/general-product-inquiry/audio-format)
+   - 使用 Lite SDK 播放媒体文件时的限制和注意事项详见 [RTC SDK 支持播放哪些格式的音频文件？](/zh-CN/api-reference/faq/product/audio_format)
 
    :::warning[注意]
    Lite SDK 默认无法与 [RTC 小程序 SDK](/zh-CN/realtime-media/rtc) 互通。如果需要与小程序互通，请[联系技术支持](https://tickets.shengwang.cn)。
@@ -2473,7 +2473,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    为满足 Apple 对于 App 发布的安全合规要求，SDK 自该版本起新增隐私清单文件 `PrivacyInfo.xcprivacy`，其中包含 SDK 中需要访问或使用用户数据的 API 调用说明和 SDK 采集的数据类型说明。
 
    :::info[信息]
-   如果你需要将集成 v4.3.1 之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](https://doc.shengwang.cn/faq/other-issues/privacyinfo)
+   如果你需要将集成 v4.3.1 之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](/zh-CN/api-reference/faq/other/ios_privacy_manifest)
    :::
 
 #### 人像锁定
@@ -3808,7 +3808,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 **macOS 15 Sequoia Beta 系统问题**
 
-当 App 路径（以及 App 名称）中包含中文字符时，编译后的 `Metal shader library` 中可能不包含任何方法，导致 App 无法正常运行。解决方案可参考[如何解决 macOS 15 Beta 不支持路径中包含中文字符的 App 问题？](/faq/other-issues/macos15-beta-issue)
+当 App 路径（以及 App 名称）中包含中文字符时，编译后的 `Metal shader library` 中可能不包含任何方法，导致 App 无法正常运行。解决方案可参考[如何解决 macOS 15 Beta 不支持路径中包含中文字符的 App 问题？](/zh-CN/api-reference/faq/other/macos_15_beta)
 
 ## v4.6.2
 
@@ -6874,7 +6874,7 @@ v4.6.0 新增 `localTrack.setMuted` 方法用于暂停发送本地轨道的媒�
 - 调用 `localVideoTrack.setEnabled(false)` 停止发送视频后，SDK 会立刻关闭摄像头并停止采集视频，摄像头的指示灯会关闭。而 `localVideoTrack.setMuted` 不影响视频采集状态。
 - 调用` setEnabled(true)` 恢复发送较慢，调用 `setMuted(false)` 恢复发送较快。
 
-更多信息，参见 [setEnabled 和 setMuted 有什么区别？](/faq/integration-issues/diff-setenabled-setmuted)
+更多信息，参见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/api-reference/faq/integration/set_enabled_set_muted)
 
 ### 改进
 
@@ -9375,7 +9375,7 @@ SDK 新增支持如下集成方式：
 
 该版本新增支持 String 型的用户 ID，方便用户使用 App 账号直接加入声网频道。
 
-为保证通信质量，频道内所有用户需使用同一数据类型的用户 ID，即频道内的所有用户 ID 应同为 Int 型或同为 String 型。详见[如何使用 String 型用户 ID](/faq/integration-issues/string-uid)。
+为保证通信质量，频道内所有用户需使用同一数据类型的用户 ID，即频道内的所有用户 ID 应同为 Int 型或同为 String 型。详见[如何使用 String 型用户 ID](/zh-CN/api-reference/faq/integration/string_uid)。
 
 #### 支持 G711 编码格式音频
 
@@ -11870,7 +11870,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/electron/API/clas
 
    为满足 Apple 对于 App 发布的安全合规要求，SDK 自该版本起新增隐私清单文件 `PrivacyInfo.xcprivacy`，其中包含 SDK 中需要访问或使用用户数据的 API 调用说明和 SDK 采集的数据类型说明。
 
-   **注：** 如果你需要将集成 v4.3.1 之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](https://doc.shengwang.cn/faq/other-issues/privacyinfo)
+   **注：** 如果你需要将集成 v4.3.1 之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](/zh-CN/api-reference/faq/other/ios_privacy_manifest)
 
 #### 人像锁定 (iOS, macOS)
 
@@ -13932,7 +13932,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/unity/API/class_v
    为满足 Apple 对于 App 发布的安全合规要求，SDK 自该版本起新增隐私清单文件 `PrivacyInfo.xcprivacy`，其中包含 SDK 中需要访问或使用用户数据的 API 调用说明和 SDK 采集的数据类型说明。
 
    :::warning[注意]
-   如果你需要将集成 v4.3.1 之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](/faq/other-issues/privacyinfo)
+   如果你需要将集成 v4.3.1 之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](/zh-CN/api-reference/faq/other/ios_privacy_manifest)
    :::
 
 #### 人像锁定 (iOS, macOS)
@@ -15960,7 +15960,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/flutter/API/class
 
    为满足 Apple 对于 App 发布的安全合规要求，SDK 自该版本起新增隐私清单文件 `PrivacyInfo.xcprivacy`，其中包含 SDK 中需要访问或使用用户数据的 API 调用说明和 SDK 采集的数据类型说明。
 
-   **注：** 如果你需要将集成 v4.3.1 之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](https://doc.shengwang.cn/faq/other-issues/privacyinfo)
+   **注：** 如果你需要将集成 v4.3.1 之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](/zh-CN/api-reference/faq/other/ios_privacy_manifest)
 
 #### 人像锁定 (iOS)
 
@@ -17430,7 +17430,7 @@ AudioMixerModuleName=
    为满足 Apple 对于 App 发布的安全合规要求，SDK 自该版本起新增隐私清单文件 `PrivacyInfo.xcprivacy`，其中包含 SDK 中需要访问或使用用户数据的 API 调用说明和 SDK 采集的数据类型说明。
 
    :::warning[注意]
-   如果你需要将集成该版本之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](/faq/other-issues/privacyinfo)
+   如果你需要将集成该版本之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](/zh-CN/api-reference/faq/other/ios_privacy_manifest)
    :::
 
 #### 摄像头多路采集 (Android)
@@ -17732,7 +17732,7 @@ AudioMixerModuleName=
    为满足 Apple 对于 App 发布的安全合规要求，SDK 自该版本起新增隐私清单文件 `PrivacyInfo.xcprivacy`，其中包含 SDK 中需要访问或使用用户数据的 API 调用说明和 SDK 采集的数据类型说明。
 
    :::warning[注意]
-   如果你需要将集成该版本之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](/faq/other-issues/privacyinfo)
+   如果你需要将集成该版本之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](/zh-CN/api-reference/faq/other/ios_privacy_manifest)
    :::
 
 #### 摄像头多路采集 (Android)

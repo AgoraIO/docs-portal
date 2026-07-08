@@ -1,0 +1,25 @@
+---
+title: "setEnabled 和 setMuted 有什么区别？"
+---
+Web SDK 4.x 和 3.x 均提供 API 用于控制本地音视频的采集和发送，这些 API 的区别详见下表。
+
+| API | 采集 | 发送 | 恢复时间 |
+| --- | --- | --- | --- |
+| <Slot name="diff-setenabled-setmuted-html-0-1-0" /> | Mute 后 SDK 不会停止音视频采集。摄像头的指示灯不会关闭。 | Mute 视频后 SDK 发送黑帧。Mute 音频后 SDK 发送静音包。被 Mute 的用户也会被算为发流用户，单个频道内最多 32 位用户同时发流。 | Mute 后再 Unmute，恢复时间较快。 |
+| (4.x) `LocalTrack.setEnabled` | 调用 `setEnabled` 禁用轨道后 SDK 会停止音频或视频采集。摄像头的指示灯会关闭。 | 调用 `setEnabled` 禁用轨道后 SDK 不发送任何数据。轨道被禁用的用户不会被算为发流用户。 | 禁用轨道后再启用，音视频恢复时间较慢。 |
+| (4.x) `LocalTrack.setMuted` | 调用 `setMuted` Mute 轨道后，SDK 不会停止音视频采集。摄像头的指示灯不会关闭。 | 调用 `setMuted` Mute 轨道后 SDK 不发送任何数据。被 Mute 的用户不会被算为发流用户。 | Mute 轨道后再 Unmute，恢复时间较快。 |
+
+<Slot for="diff-setenabled-setmuted-html-0-1-0">
+
+(3.x) Mute 相关方法：
+
+        - `Stream.muteAudio`
+        - `Stream.unmuteAudio`
+        - `Stream.muteVideo`
+        - `Stream.unmuteVideo`
+
+</Slot>
+
+:::warning[注意]
+`setEnabled` 和 `setMuted` 不能同时调用。
+:::

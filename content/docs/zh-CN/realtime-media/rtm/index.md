@@ -168,5 +168,5 @@ RTM 为不同业务阶段的用户提供了 **体验版**、**自助版**、**�
 
 通过访问以下页面，你可以查看声网整理的常见问题文档，并找到你感兴趣的内容。如果你在使用 RTM 产品的过程中遇到了任何问题或疑问，也可以随时联系声网 RTM 团队（rtm-support@agora.io），他们将会尽快为你提供帮助。
 <Cards>
-  <Card title="常见问题" href="/faq/list?category=integration-issues&platform=all&product=rtm2" />
+  <Card title="常见问题" href="/zh-CN/api-reference/faq/integration" />
 </Cards>

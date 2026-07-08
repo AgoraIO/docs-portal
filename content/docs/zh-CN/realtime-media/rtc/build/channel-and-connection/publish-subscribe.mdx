@@ -35,7 +35,7 @@ await client.publish([localAudioTrack, localVideoTrack]);
 - `CAN_NOT_PUBLISH_MULTIPLE_VIDEO_TRACKS`: 不允许同时发布多个视频轨道。
 - `NOT_SUPPORTED`: 发布了多个音频轨道，但是浏览器不支持混音。
 - `UNEXPECTED_RESPONSE`: 收到了声网服务器异常的返回，发布轨道失败。建议保留日志，联系声网[技术支持](https://ticket.shengwang.cn/)。
-- `NO_ICE_CANDIDATE`: 找不到本地网络出口，可能是网络防火墙或者启用了禁止 WebRTC 的浏览器插件。详见[如何处理常见的 Web 浏览器控制台报错](/faq/integration-issues/console-error)。
+- `NO_ICE_CANDIDATE`: 找不到本地网络出口，可能是网络防火墙或者启用了禁止 WebRTC 的浏览器插件。详见[如何处理常见的 Web 浏览器控制台报错](/zh-CN/api-reference/faq/integration/console_error_web)。
 
 ## 取消发布音视频
 
@@ -94,7 +94,7 @@ client.on("user-published", async (user, mediaType) => {
 - `REMOTE_USER_IS_NOT_PUBLISHED`: 传入的远端用户没有发布 `subscribe` 方法中传入的媒体类型。
 - `UNEXPECTED_RESPONSE`: 收到了声网服务器异常的返回，订阅失败。建议保留日志，联系声网[技术支持](https://ticket.shengwang.cn/)。
 - `OPERATION_ABORTED`: 操作中止，可能在订阅成功之前就调用 `leave` 离开了频道。
-- `NO_ICE_CANDIDATE`: 找不到本地网络出口，可能是网络防火墙或者启用了禁止 WebRTC 的浏览器插件。详见[如何处理常见的 Web 浏览器控制台报错](/faq/integration-issues/console-error#none-ice-candidate-not-alloweda-namecandidatea)。
+- `NO_ICE_CANDIDATE`: 找不到本地网络出口，可能是网络防火墙或者启用了禁止 WebRTC 的浏览器插件。详见[如何处理常见的 Web 浏览器控制台报错](/zh-CN/api-reference/faq/integration/console_error_web#none-ice-candidate-not-alloweda-namecandidatea)。
 
 ## 取消订阅音视频
 
