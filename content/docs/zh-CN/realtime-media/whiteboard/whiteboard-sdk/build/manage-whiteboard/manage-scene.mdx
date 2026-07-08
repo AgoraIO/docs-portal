@@ -2,7 +2,7 @@
 title: "管理场景"
 ---
 
-在[基本概念](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/concepts#场景)中了解场景的结构、标识和增删改规则后，你可以调用互动白板 SDK 的 API 管理场景，并根据业务需要构建多场景的白板应用。
+在[基本概念](/zh-CN/realtime-media/whiteboard/reference/concepts#场景)中了解场景的结构、标识和增删改规则后，你可以调用互动白板 SDK 的 API 管理场景，并根据业务需要构建多场景的白板应用。
 
 本页面介绍如何调用互动白板 SDK 提供的 API 获取场景信息，插入新场景，切换、移动、删除场景，以及清除场景内容。
 
@@ -74,7 +74,7 @@ scene index: 0
 
 调用 `putScenes` 时你需要传入以下参数：
 
-- `path`：场景目录的路径，必须以 `/` 开头，不能为场景的路径。详见[场景标识](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/concepts#场景标识)。
+- `path`：场景目录的路径，必须以 `/` 开头，不能为场景的路径。详见[场景标识](/zh-CN/realtime-media/whiteboard/reference/concepts#场景标识)。
 - `scenes`：由多个场景构成的数组。单个场景包含以下字段：
   - `name`：场景名称。
   - `ppt`：（可选）在场景中展示的图片或网页。每个场景中可以展示一张图片或网页。你可以通过 [`PptDescription`](/api-ref/whiteboard/javascript/globals#pptdescription) 设置待插入图片或网页的宽、高、资源路径或预览图等。

@@ -5,7 +5,7 @@ title: "手动控制说话开始和结束"
 
 :::info[信息]
 - 手动 SoS/EoS 依赖 RTM。使用前必须同时开启 `advanced_features.enable_rtm = true`，并将 `parameters.data_channel` 设为 `rtm`。
-- `manual` 模式只控制用户回合边界，不等同于“打断智能体说话”。如果你要中断智能体当前播报，请参考[打断智能体](/zh-CN/ai/user-guides/interrupt-agent)。
+- `manual` 模式只控制用户回合边界，不等同于“打断智能体说话”。如果你要中断智能体当前播报，请参考[打断智能体](/zh-CN/ai/build/shape-the-conversation/interrupt-agent)。
 - 公开接口不支持 `manual_config`。`manual` 模式下无需传入额外配置。
 :::
 
@@ -64,7 +64,7 @@ title: "手动控制说话开始和结束"
 
 ### 创建智能体时开启手动轮次控制
 
-调用 [POST 创建对话式智能体](/doc/convoai/restful/convoai/operations/start-agent) 接口时，开启 RTM，并根据业务场景将 `start_of_speech.mode` 和 `end_of_speech.mode` 设为 `manual`。
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join) 接口时，开启 RTM，并根据业务场景将 `start_of_speech.mode` 和 `end_of_speech.mode` 设为 `manual`。
 
 如果你只需要手动控制结束说话，可以保留自动 SoS，仅将 `end_of_speech.mode` 设为 `manual`：
 
@@ -289,7 +289,7 @@ conversationalAIAPI.subscribeMessage(channelName)
 
 创建智能体后，让智能体加入与你的用户相同的频道：
 
-调用 [POST 创建对话式智能体](../convoai/operations/start-agent)接口，并完成以下参数设置：
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口，并完成以下参数设置：
 
 - `advanced_features.enable_rtm: true` —— （必选）启动 RTM 服务
 - `parameters.data_channel: "rtm"` —— （必选）开启 RTM 数据传输通道
@@ -473,10 +473,10 @@ await conversationalAIAPI.manualEOS(agentUserId, {
 
 ## 相关信息
 
-- [打断智能体](/zh-CN/ai/user-guides/interrupt-agent)
-- [监听智能体事件](/zh-CN/ai/user-guides/listen-agent-events)
-- [获取智能体状态](/zh-CN/ai/best-practice/get-agent-state-through-rtm-message)
-- [POST 创建对话式智能体](/doc/convoai/restful/convoai/operations/start-agent)
+- [打断智能体](/zh-CN/ai/build/shape-the-conversation/interrupt-agent)
+- [监听智能体事件](/zh-CN/ai/build/handle-runtime-events/event-notifications)
+- [获取智能体状态](/zh-CN/ai/best-practices/get-agent-state)
+- [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)
 
 ## 销毁组件实例
 

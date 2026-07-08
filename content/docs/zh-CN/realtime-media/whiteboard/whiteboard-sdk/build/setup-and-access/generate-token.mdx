@@ -1,10 +1,9 @@
 ---
 title: "生成 Token"
 ---
-
 本文介绍互动白板 Token 的生成和使用方式。
 
-互动白板 Token，包括不同权限的 SDK Token、Room Token 和 Task Token，是互动白板服务对用户采用的一种鉴权方式。详见[互动白板 Token 类型和权限](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/concepts#token)。
+互动白板 Token，包括不同权限的 SDK Token、Room Token 和 Task Token，是互动白板服务对用户采用的一种鉴权方式。详见[互动白板 Token 类型和权限](/zh-CN/realtime-media/whiteboard/reference/concepts#token)。
 
 ## 生成 Token
 
@@ -44,7 +43,7 @@ title: "生成 Token"
 
 ### 设置 Token 的角色
 
-声网支持对 Token 设置 `admin`、`writer` 或 `reader` 角色，每种角色的 Token 具有的权限详见[互动白板 Token 类型和权限](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/concepts#token)。
+声网支持对 Token 设置 `admin`、`writer` 或 `reader` 角色，每种角色的 Token 具有的权限详见[互动白板 Token 类型和权限](/zh-CN/realtime-media/whiteboard/reference/concepts#token)。
 
 :::warning[注意]
 为提高业务安全，声网建议：
@@ -1139,8 +1138,8 @@ curl --request POST \
 
 | 权限                         | admin（管理员） | writer（读写） | reader（只读） |
 | :--------------------------- | :-------------- | :------------- | :------------- |
-| 以[互动模式](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/concepts#互动模式)加入特定房间       |  ✔               |  ✔             |✘               |
-| 以[订阅模式](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/concepts#订阅模式)加入特定房间       | ✘                | ✘              |  ✔              |
+| 以[互动模式](/zh-CN/realtime-media/whiteboard/reference/concepts#互动模式)加入特定房间       |  ✔               |  ✔             |✘               |
+| 以[订阅模式](/zh-CN/realtime-media/whiteboard/reference/concepts#订阅模式)加入特定房间       | ✘                | ✘              |  ✔              |
 | 获取特定房间信息             |  ✔             |  ✔              | ✘               |
 | 封禁特定房间                 |  ✔              | ✘               | ✘               |
 | 对指定场景进行截图           |  ✔           |  ✔              | ✘               |
