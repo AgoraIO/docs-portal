@@ -1,0 +1,572 @@
+---
+title: "音视频观测器"
+description: "音视频观测器 API reference."
+---
+<a id="toc_mediaplayer_observer"></a>
+
+<a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer"></a>
+
+## registerAudioFrameObserver
+
+注册音频帧观测器对象。
+
+<a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__prototype"></a>
+
+```java
+int registerAudioFrameObserver(IMediaPlayerAudioFrameObserver audioFrameObserver, int mode);
+```
+
+<a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__detailed_desc"></a>
+
+<a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__parameters"></a>
+
+### 参数
+
+#### `audioFrameObserver`
+
+音频帧观测器对象，用于接收每一帧音频数据。详见 [IMediaPlayerAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayeraudioframeobserver)。
+
+#### `mode`
+
+音频帧的使用模式：
+
+- RAW_AUDIO_FRAME_OP_MODE_READ_ONLY （0）：（默认）只读模式。例如，你通过声网 SDK 获取音频数据后，再推送 RTMP 或 RTMPS 流。
+- RAW_AUDIO_FRAME_OP_MODE_READ_WRITE （2）：读写模式。你可以从 AudioFrame 中读取音频数据，修改后再播放。例如，你有自己的音频特效处理模块，并进行语音预处理，如变声。
+
+<a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_registerplayersourceobserver"></a>
+
+## registerPlayerObserver
+
+注册媒体播放器观察器。
+
+<a id="api_imediaplayer_registerplayersourceobserver__prototype"></a>
+
+```java
+int registerPlayerObserver(IMediaPlayerObserver playerObserver);
+```
+
+<a id="api_imediaplayer_registerplayersourceobserver__detailed_desc"></a>
+
+用于监听媒体播放器播放过程中的事件。
+
+<a id="api_imediaplayer_registerplayersourceobserver__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或加入频道后调用。
+
+<a id="api_imediaplayer_registerplayersourceobserver__parameters"></a>
+
+### 参数
+
+#### `playerObserver`
+
+媒体播放器观察器，详见 [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)。
+
+<a id="api_imediaplayer_registerplayersourceobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_registervideoframeobserver_imediaplayer"></a>
+
+## registerVideoFrameObserver
+
+注册视频帧观察者对象。
+
+<a id="api_imediaplayer_registervideoframeobserver_imediaplayer__prototype"></a>
+
+```java
+int registerVideoFrameObserver(IMediaPlayerVideoFrameObserver videoFrameObserver);
+```
+
+<a id="api_imediaplayer_registervideoframeobserver_imediaplayer__detailed_desc"></a>
+
+你需要实现 [IMediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayervideoframeobserver) 类，并注册回调。成功注册后，SDK 每次接收到视频帧时都会触发已注册的回调。
+
+<a id="api_imediaplayer_registervideoframeobserver_imediaplayer__parameters"></a>
+
+### 参数
+
+#### `videoFrameObserver`
+
+用于上报每一帧视频的接收情况。详见 [IMediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayervideoframeobserver)。
+
+<a id="api_imediaplayer_registervideoframeobserver_imediaplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_unregisterplayersourceobserver"></a>
+
+## unRegisterPlayerObserver
+
+释放媒体播放器观察者。
+
+<a id="api_imediaplayer_unregisterplayersourceobserver__prototype"></a>
+
+```java
+int unRegisterPlayerObserver(IMediaPlayerObserver playerObserver);
+```
+
+<a id="api_imediaplayer_unregisterplayersourceobserver__detailed_desc"></a>
+
+<a id="api_imediaplayer_unregisterplayersourceobserver__parameters"></a>
+
+### 参数
+
+#### `playerObserver`
+
+用于监听播放过程中的事件的媒体播放器观察者。详见 [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)。
+
+<a id="api_imediaplayer_unregisterplayersourceobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
+
+<a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver"></a>
+
+## onAudioVolumeIndication
+
+报告媒体播放器音量的回调。
+
+<a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__prototype"></a>
+
+```java
+@CalledByNative void onAudioVolumeIndication(int volume);
+```
+
+<a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__detailed_desc"></a>
+
+该回调每 200 毫秒触发一次。
+
+<a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__timing"></a>
+
+### 触发时机
+
+该回调每 200 毫秒触发一次，用于报告媒体播放器的当前音量。
+
+<a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+媒体播放器的音量，取值范围为 0 到 255。
+
+### 所属接口类
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayeraudioframeobserver_onframe_imediaplayeraudioframeobserver"></a>
+
+## onFrame
+
+播放器接收到音频帧时触发的回调。
+
+<a id="callback_imediaplayeraudioframeobserver_onframe_imediaplayeraudioframeobserver__prototype"></a>
+
+```java
+@CalledByNative AudioFrame onFrame(AudioFrame frame);
+```
+
+<a id="callback_imediaplayeraudioframeobserver_onframe_imediaplayeraudioframeobserver__detailed_desc"></a>
+
+注册音频帧观察器后，该回调会在播放器每次接收到音频帧时触发。
+
+<a id="callback_imediaplayeraudioframeobserver_onframe_imediaplayeraudioframeobserver__timing"></a>
+
+### 触发时机
+
+该回调在播放器接收到音频帧时被触发。
+
+<a id="callback_imediaplayeraudioframeobserver_onframe_imediaplayeraudioframeobserver__parameters"></a>
+
+### 参数
+
+#### `frame`
+
+音频帧信息，详见 [AudioFrame](/zh-CN/api-reference/rtc/android/class-audioframe)。
+
+<a id="callback_imediaplayeraudioframeobserver_onframe_imediaplayeraudioframeobserver__return_values"></a>
+
+### 返回值
+
+在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 并设置 `mode` 参数后传入的音频数据，用于处理音频数据。
+
+### 所属接口类
+- [IMediaPlayerAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayeraudioframeobserver)
+
+<a id="callback_imediaplayervideoframeobserver_onframe_imediaplayervideoframeobserver"></a>
+
+## onFrame
+
+播放器接收到视频帧时触发的回调。
+
+<a id="callback_imediaplayervideoframeobserver_onframe_imediaplayervideoframeobserver__prototype"></a>
+
+```java
+@CalledByNative void onFrame(VideoFrame frame);
+```
+
+<a id="callback_imediaplayervideoframeobserver_onframe_imediaplayervideoframeobserver__detailed_desc"></a>
+
+注册视频帧观察器后，该回调在播放器接收到视频帧时被触发。
+
+<a id="callback_imediaplayervideoframeobserver_onframe_imediaplayervideoframeobserver__timing"></a>
+
+### 触发时机
+
+该回调在播放器接收到视频帧时被触发。
+
+<a id="callback_imediaplayervideoframeobserver_onframe_imediaplayervideoframeobserver__parameters"></a>
+
+### 参数
+
+#### `frame`
+
+视频帧信息。
+
+### 所属接口类
+- [IMediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayervideoframeobserver)
+
+<a id="callback_imediaplayersourceobserver_onmetadata"></a>
+
+## onMetaData
+
+接收到媒体元数据时触发的回调。
+
+<a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
+
+```java
+void onMetaData(Constants.MediaPlayerMetadataType type, byte[] data)
+```
+
+<a id="callback_imediaplayersourceobserver_onmetadata__detailed_desc"></a>
+
+该回调在播放器接收到媒体元数据时被触发。
+
+<a id="callback_imediaplayersourceobserver_onmetadata__timing"></a>
+
+### 触发时机
+
+该回调在播放器接收到媒体元数据时被触发。
+
+<a id="callback_imediaplayersourceobserver_onmetadata__parameters"></a>
+
+### 参数
+
+#### `type`
+
+媒体元数据的类型，详见 [MediaPlayerMetadataType](/zh-CN/api-reference/rtc/android/enum-mediaplayermetadatatype)。
+
+#### `data`
+
+媒体元数据的详细内容。
+
+### 所属接口类
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onplaybufferupdated"></a>
+
+## onPlayBufferUpdated
+
+onPlayBufferUpdated 回调：报告缓冲数据可支持的播放时长。
+
+<a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
+
+```java
+void onPlayBufferUpdated(long playCachedBuffer)
+```
+
+<a id="callback_imediaplayersourceobserver_onplaybufferupdated__detailed_desc"></a>
+
+该回调在播放在线媒体资源时每两秒触发一次。
+
+- 当缓冲数据可支持的播放时长小于阈值（默认值为 0）时，SDK 返回 PLAYER_EVENT_BUFFER_LOW （6）。
+- 当缓冲数据可支持的播放时长大于阈值（默认值为 0）时，SDK 返回 PLAYER_EVENT_BUFFER_RECOVER （7）。
+
+<a id="callback_imediaplayersourceobserver_onplaybufferupdated__timing"></a>
+
+### 触发时机
+
+该回调在播放在线媒体资源时每两秒被触发。
+
+<a id="callback_imediaplayersourceobserver_onplaybufferupdated__parameters"></a>
+
+### 参数
+
+#### `playCachedBuffer`
+
+缓冲数据可支持的播放时长，单位为毫秒。
+
+### 所属接口类
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onplayerevent"></a>
+
+## onPlayerEvent
+
+播放器事件回调。
+
+<a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
+
+```java
+void onPlayerEvent(Constants.MediaPlayerEvent eventCode, long elapsedTime, String message)
+```
+
+<a id="callback_imediaplayersourceobserver_onplayerevent__detailed_desc"></a>
+
+调用 [seek](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_seek) 方法后，SDK 会触发该回调报告操作结果。
+
+<a id="callback_imediaplayersourceobserver_onplayerevent__parameters"></a>
+
+### 参数
+
+#### `eventCode`
+
+播放器事件，详见 [MediaPlayerEvent](/zh-CN/api-reference/rtc/android/enum-mediaplayerevent)。
+
+#### `elapsedTime`
+
+事件发生的时间，单位为毫秒。
+
+#### `message`
+
+关于该事件的补充信息。
+
+### 所属接口类
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onplayerinfoupdated"></a>
+
+## onPlayerInfoUpdated
+
+媒体播放器相关信息发生变化时的回调。
+
+<a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
+
+```java
+@CalledByNative void onPlayerInfoUpdated(PlayerUpdatedInfo info);
+```
+
+<a id="callback_imediaplayersourceobserver_onplayerinfoupdated__detailed_desc"></a>
+
+你可以使用该回调进行故障排查。
+
+<a id="callback_imediaplayersourceobserver_onplayerinfoupdated__timing"></a>
+
+### 触发时机
+
+该回调在媒体播放器相关信息发生变化时被触发。
+
+<a id="callback_imediaplayersourceobserver_onplayerinfoupdated__parameters"></a>
+
+### 参数
+
+#### `info`
+
+媒体播放器相关信息。详见 [PlayerUpdatedInfo](/zh-CN/api-reference/rtc/android/class-playerupdatedinfo)。
+
+### 所属接口类
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onplayersourcestatechanged"></a>
+
+## onPlayerStateChanged
+
+播放状态发生改变回调。
+
+<a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
+
+```java
+void onPlayerStateChanged(Constants.MediaPlayerState state, Constants.MediaPlayerReason reason);
+```
+
+<a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__detailed_desc"></a>
+
+当媒体播放器的状态发生变化时，SDK 会触发该回调。
+
+<a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__parameters"></a>
+
+### 参数
+
+#### `state`
+
+播放状态，详见 [MediaPlayerState](/zh-CN/api-reference/rtc/android/enum-mediaplayerstate)。
+
+#### `reason`
+
+播放状态变化的原因，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
+
+### 所属接口类
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onplayersrcinfochanged"></a>
+
+## onPlayerSrcInfoChanged
+
+媒体资源视频码率发生变化回调。
+
+<a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
+
+```java
+void onPlayerSrcInfoChanged(SrcInfo from, SrcInfo to)
+```
+
+<a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__detailed_desc"></a>
+
+<a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__timing"></a>
+
+### 触发时机
+
+该回调在媒体资源的视频码率发生变化时被触发。
+
+<a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__parameters"></a>
+
+### 参数
+
+#### `from`
+
+正在播放的媒体资源的视频码率信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/android/class-srcinfo)。
+
+#### `to`
+
+变更后的视频码率信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/android/class-srcinfo)。
+
+### 所属接口类
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onpositionchanged"></a>
+
+## onPositionChanged
+
+播放进度回调。
+
+<a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
+
+```java
+void onPositionChanged(long positionMs, long timestampMs)
+```
+
+<a id="callback_imediaplayersourceobserver_onpositionchanged__detailed_desc"></a>
+
+该回调用于报告媒体文件的播放进度。
+
+<a id="callback_imediaplayersourceobserver_onpositionchanged__timing"></a>
+
+### 触发时机
+
+该回调在播放媒体文件时每两秒被触发。
+
+<a id="callback_imediaplayersourceobserver_onpositionchanged__parameters"></a>
+
+### 参数
+
+#### `positionMs`
+
+媒体文件的播放位置，单位为毫秒。
+
+#### `timestampMs`
+
+当前播放进度对应的 NTP 时间戳，单位为毫秒。
+
+:::info[注]
+该参数仅在频道内生效。
+:::
+
+### 所属接口类
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onpreloadevent"></a>
+
+## onPreloadEvent
+
+预加载媒体资源事件回调。
+
+<a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
+
+```java
+void onPreloadEvent(String src, Constants.MediaPlayerPreloadEvent event)
+```
+
+<a id="callback_imediaplayersourceobserver_onpreloadevent__detailed_desc"></a>
+
+该回调用于上报预加载媒体资源过程中发生的事件。
+
+<a id="callback_imediaplayersourceobserver_onpreloadevent__parameters"></a>
+
+### 参数
+
+#### `src`
+
+媒体资源的 URL。
+
+#### `event`
+
+预加载媒体资源时发生的事件。详见 [MediaPlayerPreloadEvent](/zh-CN/api-reference/rtc/android/enum-playerpreloadevent)。
+
+### 所属接口类
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayercustomdataprovider_onreaddata"></a>
+
+## onReadData
+
+SDK 读取媒体资源数据时触发的回调。
+
+<a id="callback_imediaplayercustomdataprovider_onreaddata__prototype"></a>
+
+```java
+@CalledByNative int onReadData(ByteBuffer buffer, int bufferSize);
+```
+
+<a id="callback_imediaplayercustomdataprovider_onreaddata__detailed_desc"></a>
+
+当你调用 [openWithMediaSource](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法打开媒体资源时，SDK 会触发该回调，并请求你传入媒体资源数据的缓冲区。
+
+<a id="callback_imediaplayercustomdataprovider_onreaddata__parameters"></a>
+
+### 参数
+
+#### `buffer`
+
+数据缓冲区。你需要将 SDK 请求的 `bufferSize` 字节数据写入该缓冲区。详见 `ByteBuffer`。
+
+#### `bufferSize`
+
+数据缓冲区的长度，单位为字节。
+
+<a id="callback_imediaplayercustomdataprovider_onreaddata__return_values"></a>
+
+### 返回值
+
+- 数据读取成功时，返回实际读取的数据长度（字节）。
+- 数据读取失败时，返回 0。
+
+### 所属接口类
+- [IMediaPlayerCustomDataProvider](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercustomdataprovider)

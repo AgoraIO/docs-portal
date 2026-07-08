@@ -1,0 +1,79 @@
+---
+title: "VideoLayout"
+description: "某一路合图子视频流的布局信息。"
+---
+<a id="class_videolayout__prototype"></a>
+
+```dart
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class VideoLayout {
+  const VideoLayout(
+      {this.channelId,
+      this.uid,
+      this.strUid,
+      this.x,
+      this.y,
+      this.width,
+      this.height,
+      this.videoState});
+  @JsonKey(name: 'channelId')
+  final String? channelId;
+  @JsonKey(name: 'uid')
+  final int? uid;
+  @JsonKey(name: 'strUid')
+  final String? strUid;
+  @JsonKey(name: 'x')
+  final int? x;
+  @JsonKey(name: 'y')
+  final int? y;
+  @JsonKey(name: 'width')
+  final int? width;
+  @JsonKey(name: 'height')
+  final int? height;
+  @JsonKey(name: 'videoState')
+  final int? videoState;
+  factory VideoLayout.fromJson(Map<String, dynamic> json) =>
+      _$VideoLayoutFromJson(json);
+  Map<String, dynamic> toJson() => _$VideoLayoutToJson(this);
+}
+```
+
+<a id="class_videolayout__parameters"></a>
+
+## 属性
+
+### `channelId`
+
+合图子视频流所属的频道名。
+
+### `uid`
+
+发布该合图子视频流的用户 ID。
+
+### `strUid`
+
+预留参数。
+
+### `x`
+
+合图子视频在合图画布上的 x 坐标 (px)。即合图子视频的左上角相对于合图画布左上角（原点）的横向位移。
+
+### `y`
+
+合图子视频在合图画布上的 y 坐标 (px)。即合图子视频的左上角相对于合图画布左上角（原点）的纵向位移。
+
+### `width`
+
+合图子视频流的宽度 (px)。
+
+### `height`
+
+合图子视频流的高度 (px)
+
+### `videoState`
+
+合图子视频流在合图画布上的状态。
+
+- 0：正常。该视频流已被渲染到合图画布。
+- 1：占位图。该视频流无视频画面，在合图画布中显示为占位符。
+- 2：黑色图片。该视频流被黑色图片替代。

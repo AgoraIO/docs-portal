@@ -1,0 +1,299 @@
+---
+title: "播放信息获取"
+description: "播放信息获取 API reference."
+---
+<a id="toc_mediaplayer_info"></a>
+
+<a id="api_imediaplayer_getduration"></a>
+
+## getDuration
+
+获取媒体资源的时长。
+
+<a id="api_imediaplayer_getduration__prototype"></a>
+
+```objectivec
+- (NSInteger)getDuration NS_SWIFT_NAME(getDuration());
+```
+
+<a id="api_imediaplayer_getduration__detailed_desc"></a>
+
+<a id="api_imediaplayer_getduration__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getmediaplayerid"></a>
+
+## getMediaPlayerId
+
+获取媒体播放器的 ID。
+
+<a id="api_imediaplayer_getmediaplayerid__prototype"></a>
+
+```objectivec
+- (int)getMediaPlayerId NS_SWIFT_NAME(getMediaPlayerId());
+```
+
+<a id="api_imediaplayer_getmediaplayerid__detailed_desc"></a>
+
+<a id="api_imediaplayer_getmediaplayerid__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功，返回媒体播放器的 ID。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getmute"></a>
+
+## getMute
+
+报告媒体资源是否被静音。
+
+<a id="api_imediaplayer_getmute__prototype"></a>
+
+```objectivec
+- (BOOL)getMute NS_SWIFT_NAME(getMute());
+```
+
+<a id="api_imediaplayer_getmute__detailed_desc"></a>
+
+<a id="api_imediaplayer_getmute__return_values"></a>
+
+### 返回值
+
+- YES：媒体资源已静音。
+- NO：媒体资源未静音。
+
+### 所属接口类
+- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getplayoutvolume"></a>
+
+## getPlayoutVolume
+
+获取本地播放音量。
+
+<a id="api_imediaplayer_getplayoutvolume__prototype"></a>
+
+```objectivec
+- (int)getPlayoutVolume NS_SWIFT_NAME(getPlayoutVolume());
+```
+
+<a id="api_imediaplayer_getplayoutvolume__detailed_desc"></a>
+
+你可以通过该方法获取本地播放音量，取值范围为 0 到 100。
+
+<a id="api_imediaplayer_getplayoutvolume__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回本地播放音量，取值范围为 0 到 100。 0 表示静音，100（默认）表示原始音量。
+
+### 所属接口类
+- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getplayposition"></a>
+
+## getPosition
+
+获取当前本地播放进度。
+
+<a id="api_imediaplayer_getplayposition__prototype"></a>
+
+```objectivec
+- (NSInteger)getPosition NS_SWIFT_NAME(getPosition());
+```
+
+<a id="api_imediaplayer_getplayposition__detailed_desc"></a>
+
+<a id="api_imediaplayer_getplayposition__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 AgoraMediaPlayerReason。
+
+### 所属接口类
+- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getplaysrc_imediaplayer"></a>
+
+## getPlaySrc
+
+获取正在播放的媒体资源路径。
+
+<a id="api_imediaplayer_getplaysrc_imediaplayer__prototype"></a>
+
+```objectivec
+- (NSString *)getPlaySrc NS_SWIFT_NAME(getPlaySrc());
+```
+
+<a id="api_imediaplayer_getplaysrc_imediaplayer__detailed_desc"></a>
+
+<a id="api_imediaplayer_getplaysrc_imediaplayer__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回正在播放的媒体资源路径。 方法调用失败时，返回空字符串。
+
+### 所属接口类
+- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getpublishsignalvolume"></a>
+
+## getPublishSignalVolume
+
+获取用于发布的媒体文件音量。
+
+<a id="api_imediaplayer_getpublishsignalvolume__prototype"></a>
+
+```objectivec
+- (int)getPublishSignalVolume NS_SWIFT_NAME(getPublishSignalVolume());
+```
+
+<a id="api_imediaplayer_getpublishsignalvolume__detailed_desc"></a>
+
+<a id="api_imediaplayer_getpublishsignalvolume__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getstate"></a>
+
+## getPlayerState
+
+获取当前播放状态。
+
+<a id="api_imediaplayer_getstate__prototype"></a>
+
+```objectivec
+- (AgoraMediaPlayerState)getPlayerState NS_SWIFT_NAME(getPlayerState());
+```
+
+<a id="api_imediaplayer_getstate__detailed_desc"></a>
+
+<a id="api_imediaplayer_getstate__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回当前播放状态，详见 [AgoraMediaPlayerState](/zh-CN/api-reference/rtc/macos/enum-mediaplayerstate)。
+
+### 所属接口类
+- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getstreamcount"></a>
+
+## getStreamCount
+
+获取媒体资源中的流的数量。
+
+<a id="api_imediaplayer_getstreamcount__prototype"></a>
+
+```objectivec
+- (NSInteger)getStreamCount NS_SWIFT_NAME(getStreamCount());
+```
+
+<a id="api_imediaplayer_getstreamcount__detailed_desc"></a>
+
+:::info[注]
+在调用该方法前，请先调用 [open:startPos:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法，并等待 `didChangedToState:reason:` 回调报告 `AgoraMediaPlayerStateOpenCompleted` 状态。
+:::
+
+<a id="api_imediaplayer_getstreamcount__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 AgoraMediaPlayerReason。
+
+### 所属接口类
+- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getstreaminfo"></a>
+
+## getStreamByIndex:
+
+获取媒体流的详细信息。
+
+<a id="api_imediaplayer_getstreaminfo__prototype"></a>
+
+```objectivec
+- (AgoraRtcMediaStreamInfo *_Nullable)getStreamByIndex:(int)index NS_SWIFT_NAME(getStreamBy(_:));
+```
+
+<a id="api_imediaplayer_getstreaminfo__detailed_desc"></a>
+
+调用该方法可获取指定索引的媒体流的详细信息。
+
+<a id="api_imediaplayer_getstreaminfo__timing"></a>
+
+### 调用时机
+
+在调用 [getStreamCount](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreamcount) 方法之后调用该方法。
+
+<a id="api_imediaplayer_getstreaminfo__parameters"></a>
+
+### 参数
+
+#### `index`
+
+媒体流的索引。该参数必须小于 [getStreamCount](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreamcount) 的返回值。
+
+<a id="api_imediaplayer_getstreaminfo__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回一个 AgoraRtcMediaStreamInfo 对象，详见 AgoraRtcMediaStreamInfo。
+- 方法调用失败，返回 nil。
+
+### 所属接口类
+- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+
+<a id="callback_imediaplayersourceobserver_onplayerplaybackstats"></a>
+
+## AgoraRtcMediaPlayer:playbackStats:
+
+播放媒体文件的统计信息回调。
+
+<a id="callback_imediaplayersourceobserver_onplayerplaybackstats__prototype"></a>
+
+```objectivec
+- (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit playbackStats:(AgoraMediaPlayerPlaybackStats *_Nonnull)info NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:playbackStats:));
+```
+
+<a id="callback_imediaplayersourceobserver_onplayerplaybackstats__detailed_desc"></a>
+
+<a id="callback_imediaplayersourceobserver_onplayerplaybackstats__timing"></a>
+
+### 触发时机
+
+该回调每秒触发一次，用于报告正在播放的媒体文件的统计信息。
+
+<a id="callback_imediaplayersourceobserver_onplayerplaybackstats__parameters"></a>
+
+### 参数
+
+#### `playerKit`
+
+播放器实例。详见 [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)。
+
+#### `info`
+
+媒体文件的统计信息。详见 [AgoraMediaPlayerPlaybackStats](/zh-CN/api-reference/rtc/macos/class-playerplaybackstats)。
+
+### 所属接口类
+- [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayersourceobserver)

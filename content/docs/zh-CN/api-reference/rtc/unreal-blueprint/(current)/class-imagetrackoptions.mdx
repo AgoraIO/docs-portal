@@ -1,0 +1,48 @@
+---
+title: "FImageTrackOptions"
+description: "垫片图片的设置选项。"
+---
+<a id="class_imagetrackoptions__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FImageTrackOptions
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|ImageTrackOptions")
+	FString imageUrl = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|ImageTrackOptions")
+	int fps = 1;
+	FImageTrackOptions(){}
+	FImageTrackOptions(const agora::rtc::ImageTrackOptions & AgoraData){
+		imageUrl = UTF8_TO_TCHAR(AgoraData.imageUrl);
+		fps = AgoraData.fps;
+	}
+	agora::rtc::ImageTrackOptions CreateAgoraData() const {
+		agora::rtc::ImageTrackOptions AgoraData;
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.imageUrl,this->imageUrl)
+		AgoraData.fps = fps;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::ImageTrackOptions & AgoraData) const {
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.imageUrl)
+	}
+};
+```
+
+<a id="class_imagetrackoptions__parameters"></a>
+
+## 属性
+
+### `imageUrl`
+
+垫片图片的 URL，目前支持 JPEG、JPG、PNG、GIF 格式的图片。支持从本地绝对路径或相对路径添加垫片图片。
+
+:::info[注]
+在 Android 平台上，不支持从 `/assets/` 中添加垫片图片。
+:::
+
+### `fps`
+
+视频帧率，取值范围为 [1,30]。默认值为 1。

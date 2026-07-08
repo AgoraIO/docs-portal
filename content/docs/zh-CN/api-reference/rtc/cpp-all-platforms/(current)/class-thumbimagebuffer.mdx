@@ -1,0 +1,42 @@
+---
+title: "ThumbImageBuffer"
+description: "用于设置缩略图或图标的图像内容。"
+---
+<a id="class_thumbimagebuffer__prototype"></a>
+
+```cpp
+struct ThumbImageBuffer {
+  const char* buffer;
+  unsigned int length;
+  unsigned int width;
+  unsigned int height;
+};
+```
+
+<a id="class_thumbimagebuffer__detailed_desc"></a>
+
+可在 [ScreenCaptureSourceInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencapturesourceinfo) 中设置。
+
+:::info[注]
+默认图像格式为 ARGB。如果需要使用其他格式，你需要自行转换图像。
+:::
+
+<a id="class_thumbimagebuffer__parameters"></a>
+
+## 属性
+
+### `buffer`
+
+缩略图或图标的图像缓冲区。
+
+### `length`
+
+图像缓冲区的长度，单位为字节。
+
+### `width`
+
+缩略图或图标的实际宽度（单位：像素）。
+
+### `height`
+
+缩略图或图标的实际高度（单位：像素）。

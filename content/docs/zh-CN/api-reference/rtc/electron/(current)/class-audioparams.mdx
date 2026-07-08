@@ -1,0 +1,61 @@
+---
+title: "AudioParams"
+description: "音频数据格式。"
+---
+<a id="class_audioparams__prototype"></a>
+
+```typescript
+export class AudioParams {
+  
+  sample_rate?: number;
+  
+  channels?: number;
+  
+  mode?: RawAudioFrameOpModeType;
+  
+  samples_per_call?: number;
+}
+```
+
+<a id="class_audioparams__detailed_desc"></a>
+
+SDK 会根据 [AudioParams](/zh-CN/api-reference/rtc/electron/class-audioparams) 设置以下回调中的音频数据格式：
+
+- onRecordAudioFrame
+- onPlaybackAudioFrame
+- onMixedAudioFrame
+
+:::info[注]
+- SDK 会通过 AudioParams 中的 samplesPerCall、 sampleRate 和 channel 参数计算采样间隔，并根据该采样间隔触发 onRecordAudioFrame、 onPlaybackAudioFrame、 onMixedAudioFrame 和 onEarMonitoringAudioFrame 回调。
+- 采样间隔 = samplesPerCall /(sampleRate × channel)。
+- 请确保采样间隔不得小于 0.01 (s)。
+:::
+
+<a id="class_audioparams__parameters"></a>
+
+## 属性
+
+### `sample_rate`
+
+数据的采样率，单位为 Hz，取值如下：
+
+- 8000
+- 16000（默认值）
+- 32000
+- 44100
+- 48000
+
+### `channels`
+
+数据的声道数，取值如下：
+
+- 1：单声道（默认值）
+- 2：双声道
+
+### `mode`
+
+数据的使用模式。详见 [RawAudioFrameOpModeType](/zh-CN/api-reference/rtc/electron/enum-rawaudioframeopmodetype)。
+
+### `samples_per_call`
+
+数据的采样点数，如旁路推流应用中通常为 1024。

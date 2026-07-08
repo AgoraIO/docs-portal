@@ -1,0 +1,25 @@
+---
+title: "setSrcChannelInfo"
+description: "设置源频道信息。"
+---
+<a id="api_channelmediarelayconfiguration_setsrcchannelinfo__prototype"></a>
+
+```arkts
+public setSrcChannelInfo(srcInfo: ChannelMediaInfo) {
+  this.srcInfo = srcInfo;
+}
+```
+
+<a id="api_channelmediarelayconfiguration_setsrcchannelinfo__parameters"></a>
+
+## 参数
+
+### `srcInfo`
+
+源频道信息 [ChannelMediaInfo](/zh-CN/api-reference/rtc/harmonyos/class-channelmediainfo)，包含如下成员：
+
+- channelName：源频道名。默认值为 NULL，表示 SDK 填充当前的频道名。
+- token：能加入源频道的 token。由你在 srcInfo 中设置的 channelName 和 uid 生成。
+  - 如未启用 App Certificate，可直接将该参数设为默认值 NULL，表示 SDK 填充 App ID。
+  - 如已启用 App Certificate，则务必填入使用 channelName 和 uid 生成的 token，且其中的 uid 必须为 0。
+- uid：标识源频道中的转发媒体流的 UID。默认值为 0，请勿修改。

@@ -1,0 +1,51 @@
+---
+title: "AgoraMixedAudioStream"
+description: "表示本地混音的音频流来源。"
+---
+<a id="class_mixedaudiostream__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraMixedAudioStream: NSObject
+@property (assign, nonatomic) AgoraAudioSourceType sourceType;
+@property (assign, nonatomic) NSUInteger remoteUserUid;
+@property (copy, nonatomic) NSString * _Nullable channelId;
+@property (assign, nonatomic) NSUInteger trackId;
+@end
+```
+
+<a id="class_mixedaudiostream__parameters"></a>
+
+## 属性
+
+### `sourceType`
+
+音频源的类型，详见 [AgoraAudioSourceType](/zh-CN/api-reference/rtc/macos/enum-audiosourcetype)。
+
+### `remoteUserUid`
+
+远端用户 ID。
+
+:::info[注]
+当本地混音的音频源类型为 `AgoraAudioSourceRemoteUser` 时，需设置该参数。
+:::
+
+### `channelId`
+
+:::info[注]
+当本地混音的音频源类型为 `AgoraAudioSourceRemoteChannel` 或 `AgoraAudioSourceRemoteUser` 时，需设置该参数。
+:::
+
+频道名。字符串长度不得超过 64 字节。支持的字符（共 89 个）：
+
+- 所有小写英文字母：a 到 z。
+- 所有大写英文字母：A 到 Z。
+- 所有数字字符：0 到 9。
+- 特殊字符："!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "|", "~", ","
+
+### `trackId`
+
+音频轨道 ID。
+
+:::info[注]
+当本地混音的音频源类型为 `AgoraAudioSourceCustom` 时，需设置该参数。
+:::

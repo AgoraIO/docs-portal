@@ -1,0 +1,126 @@
+---
+title: "Music"
+description: "音乐资源的详细信息。"
+---
+<a id="class_music__prototype"></a>
+
+```dart
+class Music {
+  const Music(
+      {this.songCode,
+      this.name,
+      this.singer,
+      this.poster,
+      this.releaseTime,
+      this.durationS,
+      this.type,
+      this.pitchType,
+      this.lyricCount,
+      this.lyricList,
+      this.climaxSegmentCount,
+      this.climaxSegmentList});
+
+  @JsonKey(name: 'songCode')
+  final int? songCode;
+
+  @JsonKey(name: 'name')
+  final String? name;
+
+  @JsonKey(name: 'singer')
+  final String? singer;
+
+  @JsonKey(name: 'poster')
+  final String? poster;
+
+  @JsonKey(name: 'releaseTime')
+  final String? releaseTime;
+
+  @JsonKey(name: 'durationS')
+  final int? durationS;
+
+  @JsonKey(name: 'type')
+  final int? type;
+
+  @JsonKey(name: 'pitchType')
+  final int? pitchType;
+
+  @JsonKey(name: 'lyricCount')
+  final int? lyricCount;
+
+  @JsonKey(name: 'lyricList')
+  final List<int>? lyricList;
+
+  @JsonKey(name: 'climaxSegmentCount')
+  final int? climaxSegmentCount;
+
+  @JsonKey(name: 'climaxSegmentList')
+  final List<ClimaxSegment>? climaxSegmentList;
+
+  factory Music.fromJson(Map<String, dynamic> json) => _$MusicFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MusicToJson(this);
+}
+```
+
+<a id="class_music__parameters"></a>
+
+## 属性
+
+### `songCode`
+
+音乐资源的编号，用于标识一个音乐资源。
+
+### `name`
+
+音乐资源名称。
+
+### `singer`
+
+歌手名。
+
+### `poster`
+
+音乐资源海报的下载地址。
+
+### `releaseTime`
+
+音乐资源发布的时间。
+
+### `type`
+
+音乐资源类型：
+
+- 1：左声道伴奏，右声道原唱的单音轨音源。
+- 2：只有伴唱的单音轨音源。
+- 3：只有原唱的单音轨音源。
+- 4：多音轨音源。
+
+### `pitchType`
+
+歌曲是否支持演唱评分功能：
+
+- 1：歌曲支持演唱评分功能。
+- 2：歌曲不支持演唱评分功能。
+
+### `durationS`
+
+音乐资源总时长 （秒）。
+
+### `lyricList`
+
+支持的歌词类型：
+
+- 0：xml 格式。
+- 1：lrc 格式。
+
+### `climaxSegmentList`
+
+音乐高潮片段列表，详见 [ClimaxSegment](/zh-CN/api-reference/rtc/flutter/class-climaxsegment)。
+
+### `lyricCount`
+
+歌曲的歌词数量。
+
+### `climaxSegmentCount`
+
+高潮片段的数量。

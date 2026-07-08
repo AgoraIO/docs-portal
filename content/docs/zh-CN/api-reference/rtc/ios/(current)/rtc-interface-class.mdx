@@ -1,0 +1,1020 @@
+---
+title: "Full SDK API 列表"
+description: "本页列出 iOS 所有的接口类以及其中包含的 API。"
+---
+<a id="rtc_interface_class"></a>
+
+本页列出 iOS 所有的接口类以及其中包含的 API。
+
+<a id="class_agoramediafilterextensiondelegate"></a>
+
+## AgoraMediaFilterExtensionDelegate
+
+实现扩展插件的委托方法，用于管理媒体插件。
+
+<a id="class_agoramediametadatadatasource"></a>
+
+## AgoraMediaMetadataDataSource
+
+AgoraMediaMetadataDataSource 协议用于提供媒体元数据的数据源。
+
+<a id="class_agoramediametadatadatasource__detailed_desc"></a>
+
+:::info[注]
+请在关键线程中实现该协议中的所有回调。建议避免在关键线程中执行任何耗时操作。
+:::
+
+### 相关参考
+- [metadataMaxSize](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_metadatamaxsize)
+- [readyToSendMetadataAtTimestamp:sourceType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_readytosendmetadataattimestamp)
+
+<a id="class_agorartcmediaplayervideoframedelegate"></a>
+
+## AgoraRtcMediaPlayerVideoFrameDelegate
+
+用于接收媒体播放器的视频帧回调。
+
+### 相关参考
+- [AgoraRtcMediaPlayerGetVideoPixelFormat](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#api_agorartcmediaplayervideoframedelegate_agorartcmediaplayergetvideopixelformat)
+- [AgoraRtcMediaPlayer:didReceivePixelBuffer:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#api_agorartcmediaplayervideoframedelegate_didreceivepixelbuffer)
+- [AgoraRtcMediaPlayer:didReceiveVideoFrame:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#api_agorartcmediaplayervideoframedelegate_didreceivevideoframe)
+
+<a id="class_canvas"></a>
+
+## AgoraRteCanvas
+
+用于设置视频渲染视图。
+
+<a id="class_canvas__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+### 相关参考
+- [addView:config:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_addview)
+- [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_canvas_canvas)
+- [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas)
+- [removeView:config:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_removeview)
+- [setConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_setconfigs_canvas)
+
+<a id="class_canvasconfig"></a>
+
+## AgoraRteCanvasConfig
+
+AgoraRteCanvasConfig 用于配置播放器的视频渲染。
+
+<a id="class_canvasconfig__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+### 相关参考
+- [videoMirrorMode:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvasconfig_getmirrormode)
+- [videoRenderMode:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvasconfig_getrendermode)
+- [setVideoMirrorMode:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvasconfig_setmirrormode)
+- [setVideoRenderMode:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvasconfig_setrendermode_canvasconfig)
+
+<a id="class_error"></a>
+
+## AgoraRteError
+
+用于获取错误码和错误信息。
+
+<a id="class_error__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+### 相关参考
+- [code](/zh-CN/api-reference/rtc/ios/play/rte-player#api_error_code)
+- [message](/zh-CN/api-reference/rtc/ios/play/rte-player#api_error_message)
+
+<a id="class_iaudioencodedframeobserver"></a>
+
+## AgoraAudioEncodedFrameDelegate
+
+编码后音频帧事件的代理。
+
+<a id="class_iaudioencodedframeobserver__detailed_desc"></a>
+
+该接口用于接收编码后的音频帧事件回调。
+
+### 相关参考
+- [onMixedEncodedAudioFrame:info:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#callback_iaudioencodedframeobserver_onmixedaudioencodedframe)
+- [onPlaybackEncodedAudioFrame:info:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#callback_iaudioencodedframeobserver_onplaybackaudioencodedframe)
+- [onRecordEncodedAudioFrame:info:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#callback_iaudioencodedframeobserver_onrecordaudioencodedframe)
+
+<a id="class_iaudioframeobserver"></a>
+
+## AgoraAudioFrameDelegate
+
+启用音频帧回调事件通知。
+
+<a id="class_iaudioframeobserver__detailed_desc"></a>
+
+将音频帧数据传递给你的应用程序。
+
+### 相关参考
+- [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getearmonitoringaudioparams)
+- [getMixedAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getmixedaudioparams)
+- [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition)
+- [getPlaybackAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getplaybackaudioparams)
+- [getRecordAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getrecordaudioparams)
+- [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe)
+- [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe)
+- [onPlaybackAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe)
+- [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing)
+- [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe)
+
+<a id="class_iaudiopcmframesink"></a>
+
+## AgoraRtcMediaPlayerAudioFrameDelegate
+
+用于处理媒体播放器音频帧的代理协议。
+
+<a id="class_iaudiopcmframesink__detailed_desc"></a>
+
+该协议用于接收和处理来自媒体播放器的音频帧数据回调。
+
+### 相关参考
+- [AgoraRtcMediaPlayer:didReceiveAudioFrame:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_iaudiopcmframesink_onframe_iaudiopcmframesink)
+
+<a id="class_iaudiospectrumobserver"></a>
+
+## AgoraAudioSpectrumDelegate
+
+处理音频频谱事件的代理。
+
+### 相关参考
+- [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum)
+- [onRemoteAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum)
+
+<a id="class_ibasespatialaudioengine"></a>
+
+## AgoraSpatialAudioKitBase
+
+空间音效功能的基础类。
+
+### 相关参考
+- [clearRemotePositions:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_clearremotepositions)
+- [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine)
+- [muteLocalAudioStream:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine)
+- [muteRemoteAudioStream:mute:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine)
+- [setAudioRecvRange:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setaudiorecvrange)
+- [setDistanceUnit:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setdistanceunit)
+- [setMaxAudioRecvCount:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setmaxaudiorecvcount)
+- [setPlayerAttenuation:playerId:forceSet:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation)
+- [setZones:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setzones)
+- [updatePlayerPositionInfo:positionInfo:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateplayerpositioninfo)
+- [updateSelfPosition:axisForward:axisRight:axisUp:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselfposition)
+- [updateSelfTransform:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselftransform)
+
+<a id="class_ilocalspatialaudioengine"></a>
+
+## AgoraLocalSpatialAudioKit
+
+用于实现本地空间音效功能的引擎类。
+
+### 相关参考
+- [sharedLocalSpatialAudioWithConfig:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine)
+- [destroy](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_release_ilocalspatialaudioengine)
+- [removeRemotePosition:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_removeremoteposition)
+- [setRemoteAudioAttenuation:uid:forceSet:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation)
+- [updateRemotePosition:positionInfo:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition)
+
+<a id="class_imediaextensionobserver"></a>
+
+## AgoraMediaFilterEventDelegate
+
+媒体滤镜事件代理协议。
+
+<a id="class_imediaplayer"></a>
+
+## AgoraRtcMediaPlayerProtocol
+
+媒体播放器的代理协议。
+
+### 相关参考
+- [adjustPlayoutVolume:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustplayoutvolume)
+- [adjustPublishSignalVolume:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustpublishsignalvolume)
+- [getAudioBufferDelay](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getaudiobufferdelay)
+- [getDuration](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getduration)
+- [getMediaPlayerId](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid)
+- [getMute](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmute)
+- [getPlayoutVolume](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getplayoutvolume)
+- [getPosition](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getplayposition)
+- [getPlaySrc](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getplaysrc_imediaplayer)
+- [getPublishSignalVolume](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getpublishsignalvolume)
+- [getPlayerState](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstate)
+- [getStreamCount](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreamcount)
+- [getStreamByIndex:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo)
+- [mute:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_mute)
+- [open:startPos:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_open)
+- [openWithMediaSource:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource)
+- [pause](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_pause)
+- [play](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_play)
+- [playPreloadedSrc:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_playpreloadedsrc)
+- [preloadSrc:startPos:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc)
+- [resume](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_resume)
+- [seekToPosition:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek)
+- [selectAudioTrack:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_selectaudiotrack_imediaplayer)
+- [selectMultiAudioTrack:publishTrackIndex:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_imediaplayer_selectmultiaudiotrack)
+- [setAudioDualMonoMode:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setaudiodualmonomode)
+- [setAudioPitch:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setaudiopitch)
+- [setLoopCount:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setloopcount)
+- [setPlaybackSpeed:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplaybackspeed)
+- [setPlayerOption:value:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption)
+- [setPlayerOptionString:value:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption2)
+- [setRenderMode:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_imediaplayer_setrendermode)
+- [setSpatialAudioParams:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_imediaplayer_setspatialaudioparams)
+- [setVideoFrameDelegate:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-initialize#api_imediaplayer_setvideoframedelegate)
+- [setView:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setview)
+- [stop:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_stop)
+- [switchSrc:syncPts:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_switchsrc)
+- [unloadSrc:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_unloadsrc)
+
+<a id="class_imediaplayercachemanager"></a>
+
+## AgoraRtcMediaPlayerCacheManagerProtocol
+
+用于管理媒体播放器缓存文件的协议。
+
+<a id="class_imediaplayercachemanager__detailed_desc"></a>
+
+你可以使用该协议提供的方法设置缓存参数、删除缓存文件以及获取缓存信息。
+
+### 相关参考
+- [enableAutoRemoveCache:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_enableautoremovecache)
+- [cacheDir](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getcachedir)
+- [cacheFileCount](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getcachefilecount)
+- [maxCacheFileCount](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getmaxcachefilecount)
+- [maxCacheFileSize](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getmaxcachefilesize)
+- [createMediaPlayerCacheManager](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-initialize#api_imediaplayercachemanager_getmediaplayercachemanager)
+- [removeAllCaches](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removeallcaches)
+- [removeCacheByUri:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removecachebyuri)
+- [removeOldCache](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removeoldcache)
+- [setCacheDir:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_setcachedir)
+- [setMaxCacheFileCount:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilecount)
+- [setMaxCacheFileSize:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilesize)
+- [sharedInstance](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_sharedinstance)
+
+<a id="class_imediaplayersourceobserver"></a>
+
+## AgoraRtcMediaPlayerDelegate
+
+AgoraRtcMediaPlayerDelegate 协议，用于接收媒体播放器的回调事件。
+
+<a id="class_imediaplayersourceobserver__detailed_desc"></a>
+
+你可以通过实现 [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver) 协议中的方法，处理媒体播放过程中的相关事件。
+
+### 相关参考
+- [AgoraRtcMediaPlayer:volumeIndicationDidReceive:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver)
+- [AgoraRtcMediaPlayer:didReceiveData:length:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onmetadata)
+- [AgoraRtcMediaPlayer:didPlayBufferUpdated:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplaybufferupdated)
+- [AgoraRtcMediaPlayer:cacheStats:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#callback_imediaplayersourceobserver_onplayercachestats)
+- [AgoraRtcMediaPlayer:didOccurEvent:elapsedTime:message:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent)
+- [AgoraRtcMediaPlayer:infoUpdated:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerinfoupdated)
+- [AgoraRtcMediaPlayer:playbackStats:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#callback_imediaplayersourceobserver_onplayerplaybackstats)
+- [AgoraRtcMediaPlayer:didChangedToState:reason:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged)
+- [AgoraRtcMediaPlayer:playerSrcInfoDidChange:from:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersrcinfochanged)
+- [AgoraRtcMediaPlayer:didChangedToPosition:atTimestamp:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpositionchanged)
+- [AgoraRtcMediaPlayer:didPreloadEvent:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpreloadevent)
+
+<a id="class_imediarecorder"></a>
+
+## AgoraMediaRecorder
+
+AgoraMediaRecorder 类用于音视频流录制。
+
+<a id="class_imediarecorder__detailed_desc"></a>
+
+你可以使用 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder) 开始和停止录制、设置录制配置，并注册录制观察者以监听录制相关的回调。
+
+### 相关参考
+- [enableMainQueueDispatch:](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_enablemainqueuedispatch_imediarecorder)
+- [setMediaRecorderDelegate:](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_setmediarecorderobserver)
+- [startRecording:](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_startrecording)
+- [stopRecording](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_stoprecording)
+
+<a id="class_imediarecorderobserver"></a>
+
+## AgoraMediaRecorderDelegate
+
+音视频录制的回调协议。
+
+<a id="class_imediarecorderobserver__detailed_desc"></a>
+
+你可以通过实现该协议，在音频或视频录制过程中接收录制状态更新和相关信息。
+
+### 相关参考
+- [mediaRecorder:informationDidUpdated:uid:info:](/zh-CN/api-reference/rtc/ios/recording#callback_imediarecorderobserver_onrecorderinfoupdated)
+- [mediaRecorder:stateDidChanged:uid:state:reason:](/zh-CN/api-reference/rtc/ios/recording#callback_imediarecorderobserver_onrecorderstatechanged)
+
+<a id="class_imetadataobserver"></a>
+
+## AgoraMediaMetadataDelegate
+
+AgoraMediaMetadataDelegate 协议，用于在关键线程中处理回调。
+
+<a id="class_imetadataobserver__detailed_desc"></a>
+
+建议避免在关键线程中执行耗时操作。
+
+### 相关参考
+- [didMetadataReceived:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#callback_imetadataobserver_onmetadatareceived)
+
+<a id="class_imusiccontentcenter"></a>
+
+## AgoraMusicContentCenter
+
+管理音乐内容的中心类。
+
+<a id="class_imusiccontentcenter__detailed_desc"></a>
+
+该类用于管理声网提供的音乐内容资源，支持音乐内容的搜索、加载、播放等功能。
+
+### 相关参考
+- [createMusicPlayerWithDelegate:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_createmusicplayer)
+- [destroy](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter)
+- [destroyMusicPlayer:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroymusicplayer)
+- [enableMainQueueDispatch:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_enablemainqueuedispatch_imusiccontentcenter)
+- [getCaches](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getcaches)
+- [getInternalSongCode:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getinternalsongcode)
+- [getLyricWithSongCode:lyricType:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getlyric)
+- [getMusicCharts](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccharts)
+- [getMusicCollectionWithMusicChartId:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid)
+- [getSongSimpleInfoWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getsongsimpleinfo)
+- [sharedContentCenterWithConfig:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_initialize_imusiccontentcenter)
+- [isPreloadedWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_ispreloaded)
+- [preloadWithSongCode:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload)
+- [preloadWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload2)
+- [registerEventDelegate:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_registereventhandler_imusiccontentcenter)
+- [removeCacheWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_removecache)
+- [renewToken:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_renewtoken_imusiccontentcenter)
+- [searchMusicWithKeyWord:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic)
+
+<a id="class_imusiccontentcentereventhandler"></a>
+
+## AgoraMusicContentCenterEventDelegate
+
+音乐内容中心事件代理。
+
+### 相关参考
+- [onLyricResult:songCode:lyricUrl:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onlyricresult)
+- [onMusicChartsResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult)
+- [onMusicCollectionResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult)
+- [onPreLoadEvent:songCode:percent:lyricUrl:state:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler)
+- [onSongSimpleInfoResult:songCode:simpleInfo:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult)
+
+<a id="class_imusicplayer"></a>
+
+## AgoraMusicPlayerProtocol
+
+音乐播放器协议。
+
+### 相关参考
+- [openMediaWithSongCode:startPos:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusicplayer_open_imusicplayer)
+- [setPlayMode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusicplayer_setplaymode)
+
+<a id="class_irtcengine"></a>
+
+## AgoraRtcEngineKit
+
+提供所有可供应用调用的方法。
+
+<a id="class_irtcengine__detailed_desc"></a>
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 是声网 Native SDK 的基础类。你可以通过创建 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象并调用其方法，使用声网提供的实时音视频通信功能。声网通过专为实时 Web 和移动端应用优化的虚拟全球网络，保障全球范围内基于互联网的音视频通信体验质量（QoE）。
+
+### 相关参考
+- [addVideoWatermark:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_addvideowatermark1)
+- [addVideoWatermark:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_addvideowatermark2)
+- [addVideoWatermarkWithConfig:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_addvideowatermark3)
+- [adjustAudioMixingPlayoutVolume:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [adjustAudioMixingPublishVolume:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_adjustaudiomixingpublishvolume)
+- [adjustAudioMixingVolume:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_adjustaudiomixingvolume)
+- [adjustCustomAudioPlayoutVolume:volume:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudioplayoutvolume)
+- [adjustCustomAudioPublishVolume:volume:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudiopublishvolume)
+- [adjustPlaybackSignalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_adjustplaybacksignalvolume)
+- [adjustRecordingSignalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_adjustrecordingsignalvolume)
+- [adjustUserPlaybackSignalVolume:volume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [clearVideoWatermarks](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_clearvideowatermarks)
+- [complain:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_complain)
+- [configRhythmPlayer:](/zh-CN/api-reference/rtc/ios/play/rhythmplayer#api_irtcengine_configrhythmplayer)
+- [sharedEngineWithAppId:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_create)
+- [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack)
+- [createCustomVideoTrack](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack)
+- [createDataStream:reliable:ordered:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_createdatastream1)
+- [createDataStream:config:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_createdatastream2)
+- [createMediaPlayerWithDelegate:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-initialize#api_irtcengine_createmediaplayer)
+- [createMediaRecorder:](/zh-CN/api-reference/rtc/ios/recording#api_irtcengine_createmediarecorder)
+- [createVideoEffectObjectWithBundlePath:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_createvideoeffectobject)
+- [delegate](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_delegate)
+- [destroy:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_destroy1)
+- [destroyCustomAudioTrack:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_destroycustomaudiotrack)
+- [destroyCustomVideoTrack:](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack)
+- [destroyMediaPlayer:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-initialize#api_irtcengine_destroymediaplayer)
+- [destroyMediaRecorder:](/zh-CN/api-reference/rtc/ios/recording#api_irtcengine_destroymediarecorder)
+- [destroyVideoEffectObject:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_destroyvideoeffectobject)
+- [disableAudio](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_disableaudio)
+- [disableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_disableaudiospectrummonitor)
+- [disableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_disablevideo)
+- [enableAudio](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_enableaudio)
+- [enableAudioSpectrumMonitor:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor)
+- [enableAudioVolumeIndication:smooth:reportVad:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_enableaudiovolumeindication)
+- [enableCameraCenterStage:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/center-stage#api_irtcengine_enablecameracenterstage)
+- [enableContentInspect:config:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_enablecontentinspect)
+- [enableCustomAudioLocalPlayback:enabled:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_enablecustomaudiolocalplayback)
+- [enableDualStreamMode:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_enabledualstreammode)
+- [enableDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_enabledualstreammode3)
+- [enableEncryption:encryptionConfig:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_enableencryption)
+- [enableExtensionWithVendor:extension:enabled:sourceType:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_enableextension)
+- [enableFaceDetection:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/face-detection#api_irtcengine_enablefacedetection)
+- [enableInEarMonitoring:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_enableinearmonitoring)
+- [enableInEarMonitoring:includeAudioFilters:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_enableinearmonitoring2)
+- [enableInstantMediaRendering](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_enableinstantmediarendering)
+- [enableLocalAudio:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_enablelocalaudio)
+- [enableLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablelocalvideo)
+- [enableMainQueueDispatch:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_enablemainqueuedispatch)
+- [enableMultiCamera:config:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_enablemulticamera)
+- [enableSoundPositionIndication:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/sound-position#api_irtcengine_enablesoundpositionindication)
+- [enableSpatialAudio:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_irtcengine_enablespatialaudio)
+- [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo)
+- [enableVideoImageSource:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/image-source#api_irtcengine_enablevideoimagesource)
+- [enableVirtualBackground:backData:segData:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground)
+- [enableVirtualBackground:backData:segData:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground2)
+- [enableVoiceAITuner:type:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_enablevoiceaituner)
+- [enableWebSdkInteroperability:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_enablewebsdkinteroperability)
+- [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_getaudiomixingcurrentposition)
+- [getAudioMixingDuration](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_getaudiomixingduration)
+- [getAudioMixingPlayoutVolume](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_getaudiomixingplayoutvolume)
+- [getAudioMixingPublishVolume](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_getaudiomixingpublishvolume)
+- [getAudioTrackCount](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_getaudiotrackcount)
+- [getCallId](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getcallid)
+- [cameraMaxZoomFactor](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_getcameramaxzoomfactor)
+- [getConnectionState](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getconnectionstate)
+- [getCurrentMonotonicTimeInMs](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getcurrentmonotonictimeinms)
+- [getEffectCurrentPosition:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_geteffectcurrentposition)
+- [getEffectDuration:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_geteffectduration)
+- [getEffectsVolume](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_geteffectsvolume)
+- [getErrorDescription:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_geterrordescription)
+- [getExtensionPropertyWithVendor:extension:key:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_getextensionproperty)
+- [getExtensionPropertyWithVendor:extension:key:sourceType:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_getextensionproperty2)
+- [getFaceShapeAreaOptions:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_getfaceshapeareaoptions)
+- [getFaceShapeAreaOptions:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_getfaceshapeareaoptions2)
+- [getFaceShapeBeautyOptions:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_getfaceshapebeautyoptions)
+- [getFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_getfaceshapebeautyoptions2)
+- [getNativeHandle](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getnativehandle)
+- [getNetworkType](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getnetworktype)
+- [getNtpWallTimeInMs](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getntpwalltimeinms)
+- [getUserInfoByUid:withError:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_getuserinfobyuid)
+- [getUserInfoByUserAccount:withError:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_getuserinfobyuseraccount)
+- [getSdkVersion](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getversion)
+- [getVolumeOfEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_getvolumeofeffect)
+- [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize)
+- [isCameraAutoExposureFaceModeSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscameraautoexposurefacemodesupported)
+- [isCameraAutoFocusFaceModeSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscameraautofocusfacemodesupported)
+- [isCameraCenterStageSupported](/zh-CN/api-reference/rtc/ios/video/video-prenpro/center-stage#api_irtcengine_iscameracenterstagesupported)
+- [isCameraExposurePositionSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscameraexposurepositionsupported)
+- [isCameraExposureSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscameraexposuresupported)
+- [isCameraFocusPositionInPreviewSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscamerafocussupported)
+- [isCameraTorchSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscameratorchsupported)
+- [isCameraZoomSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscamerazoomsupported)
+- [isFeatureAvailableOnDevice:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_isfeatureavailableondevice)
+- [isSpeakerphoneEnabled](/zh-CN/api-reference/rtc/ios/device-management/audio-route#api_irtcengine_isspeakerphoneenabled)
+- [joinChannelByToken:channelId:info:uid:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel1)
+- [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2)
+- [joinChannelByToken:channelId:userAccount:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannelwithuseraccount1)
+- [joinChannelByToken:channelId:userAccount:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannelwithuseraccount2)
+- [leaveChannel:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel)
+- [leaveChannel:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel2)
+- [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)
+- [muteAllRemoteVideoStreams:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_muteallremotevideostreams)
+- [muteLocalAudioStream:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_mutelocalaudiostream)
+- [muteLocalVideoStream:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_mutelocalvideostream)
+- [muteRecordingSignal:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_muterecordingsignal)
+- [muteRemoteAudioStream:mute:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_muteremoteaudiostream)
+- [muteRemoteVideoStream:mute:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_muteremotevideostream)
+- [pauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay)
+- [pauseAllEffects](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_pausealleffects)
+- [pauseAudioMixing](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_pauseaudiomixing)
+- [pauseEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_pauseeffect)
+- [playAllEffectsWithLoopCount:pitch:pan:gain:publish:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playalleffects)
+- [playEffect:filePath:loopCount:pitch:pan:gain:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect1)
+- [playEffect:filePath:loopCount:pitch:pan:gain:publish:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect2)
+- [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect3)
+- [preloadChannelByToken:channelId:uid:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_preloadchannel)
+- [preloadChannelByTokenWithUserAccount:channelId:userAccount:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_preloadchannelwithuseraccount)
+- [preloadEffect:filePath:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_preloadeffect)
+- [preloadEffect:filePath:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_preloadeffect2)
+- [pullPlaybackAudioFrameRawData:lengthInByte:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_pullaudioframe)
+- [pullPlaybackAudioFrameSampleBufferByLengthInByte:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_pullplaybackaudioframesamplebufferbylengthinbyte)
+- [pushExternalAudioFrameRawData:samples:sampleRate:channels:trackId:timestamp:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_pushaudioframe2)
+- [pushExternalAudioFrameSampleBuffer:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_pushexternalaudioframesamplebuffer1)
+- [pushExternalAudioFrameSampleBuffer:sampleRate:channels:trackId:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_pushexternalaudioframesamplebuffer2)
+- [pushExternalVideoFrame:videoTrackId:](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe)
+- [pushExternalVideoFrame:](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe2)
+- [queryCameraFocalLengthCapability](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_querycamerafocallengthcapability)
+- [queryCodecCapability](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_querycodeccapability)
+- [queryDeviceScore](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_querydevicescore)
+- [queryScreenCaptureCapability](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_queryscreencapturecapability)
+- [rate:rating:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_rate)
+- [setAudioEncodedFrameDelegate:config:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver)
+- [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver)
+- [registerAudioSpectrumDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver)
+- [registerExtensionWithVendor:extension:sourceType:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_registerextension)
+- [registerLocalUserAccount:appId:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_registerlocaluseraccount)
+- [setMediaMetadataDelegate:withType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_irtcengine_registermediametadataobserver)
+- [setEncodedVideoFrameDelegate:](/zh-CN/api-reference/rtc/ios/video/video-encoded#api_irtcengine_registervideoencodedframeobserver)
+- [setVideoFrameDelegate:](/zh-CN/api-reference/rtc/ios/video/video-raw#api_irtcengine_registervideoframeobserver)
+- [destroy](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_release)
+- [removeVideoWatermark:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_removevideowatermark)
+- [renewToken:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_renewtoken)
+- [resumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay)
+- [resumeAllEffects](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_resumealleffects)
+- [resumeAudioMixing](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_resumeaudiomixing)
+- [resumeEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_resumeeffect)
+- [selectAudioTrack:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_selectaudiotrack)
+- [sendCustomReportMessage:category:event:label:value:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_sendcustomreportmessage)
+- [sendStreamMessage:data:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_sendstreammessage)
+- [setAdvancedAudioOptions:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions)
+- [setAINSMode:mode:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setainsmode)
+- [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+- [setAudioEffectPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+- [setAudioMixingDualMonoMode:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_setaudiomixingdualmonomode)
+- [setAudioMixingPitch:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_setaudiomixingpitch)
+- [setAudioMixingPlaybackSpeed:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_setaudiomixingplaybackspeed)
+- [setAudioMixingPosition:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_setaudiomixingposition)
+- [setAudioProfile:scenario:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioprofile)
+- [setAudioProfile:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioprofile2)
+- [setAudioScenario:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioscenario)
+- [setAudioSessionOperationRestriction:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudiosessionoperationrestriction)
+- [setAVSyncSource:uid:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setavsyncsource)
+- [setBeautyEffectOptions:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setbeautyeffectoptions)
+- [setBeautyEffectOptions:options:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setbeautyeffectoptions2)
+- [setCameraAutoExposureFaceModeEnabled:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameraautoexposurefacemodeenabled)
+- [setCameraAutoFocusFaceModeEnabled:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameraautofocusfacemodeenabled)
+- [setCameraCapturerConfiguration:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameracapturerconfiguration)
+- [setCameraExposureFactor:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameraexposurefactor)
+- [setCameraExposurePosition:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameraexposureposition)
+- [setCameraFocusPositionInPreview:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcamerafocuspositioninpreview)
+- [setCameraStabilizationMode:](/zh-CN/api-reference/rtc/ios/video/camera-capture#api_irtcengine_setcamerastabilizationmode)
+- [setCameraTorchOn:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameratorchon)
+- [setCameraZoomFactor:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcamerazoomfactor)
+- [setChannelProfile:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_setchannelprofile)
+- [setClientRole:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_setclientrole1)
+- [setClientRole:options:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_setclientrole2)
+- [setCloudProxy:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setcloudproxy)
+- [setColorEnhanceOptions:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setcolorenhanceoptions)
+- [setColorEnhanceOptions:options:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setcolorenhanceoptions2)
+- [setDefaultAudioRouteToSpeakerphone:](/zh-CN/api-reference/rtc/ios/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone)
+- [setDualStreamMode:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setdualstreammode)
+- [setDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setdualstreammode2)
+- [setEarMonitoringAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters)
+- [setEffectPosition:pos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_seteffectposition)
+- [setEffectsVolume:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_seteffectsvolume)
+- [setEnableSpeakerphone:](/zh-CN/api-reference/rtc/ios/device-management/audio-route#api_irtcengine_setenablespeakerphone)
+- [setExtensionPropertyWithVendor:extension:key:value:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_setextensionproperty)
+- [setExtensionProviderPropertyWithVendor:key:value:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_setextensionproviderproperty)
+- [enableExternalAudioSink:sampleRate:channels:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink)
+- [setExternalAudioSource:sampleRate:channels:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosource)
+- [setExternalAudioSource:sampleRate:channels:localPlayback:publish:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosource2)
+- [setExternalVideoSource:useTexture:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource)
+- [setFaceShapeAreaOptions:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapeareaoptions)
+- [setFaceShapeAreaOptions:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapeareaoptions2)
+- [setFaceShapeBeautyOptions:options:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions)
+- [setFaceShapeBeautyOptions:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions2)
+- [setFilterEffectOptions:options:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setfiltereffectoptions)
+- [setFilterEffectOptions:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setfiltereffectoptions2)
+- [setHeadphoneEQParameters:highGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqparameters)
+- [setHeadphoneEQPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqpreset)
+- [setInEarMonitoringVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_setinearmonitoringvolume)
+- [setLocalAccessPoint:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setlocalaccesspoint)
+- [setLocalRenderMode:mode:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setlocalrendermode1)
+- [setLocalRenderMode:mirror:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setlocalrendermode2)
+- [setLocalRenderTargetFps:targetFps:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setlocalrendertargetfps)
+- [setLocalVideoMirrorMode:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setlocalvideomirrormode)
+- [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+- [setLocalVoiceFormant:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceformant)
+- [setLocalVoicePitch:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+- [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+- [setLogFile:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setlogfile)
+- [setLogFileSize:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setlogfilesize)
+- [setLogFilter:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setlogfilter)
+- [setLogLevel:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setloglevel)
+- [setLowlightEnhanceOptions:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setlowlightenhanceoptions)
+- [setLowlightEnhanceOptions:options:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setlowlightenhanceoptions2)
+- [setMediaMetadataDataSource:withType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_irtcengine_setmediametadatadatasource)
+- [setMixedAudioFrameParametersWithSampleRate:channel:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setmixedaudioframeparameters)
+- [setParameters:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setparameters)
+- [setPlaybackAudioFrameBeforeMixingParametersWithSampleRate:channel:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setplaybackaudioframebeforemixingparameters)
+- [setPlaybackAudioFrameBeforeMixingParametersWithSampleRate:channel:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setplaybackaudioframebeforemixingparameters1)
+- [setPlaybackAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters)
+- [setRecordingAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters)
+- [setRemoteDefaultVideoStreamType:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype)
+- [setRemoteRenderMode:mode:mirror:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setremoterendermode2)
+- [setRemoteRenderTargetFps:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setremoterendertargetfps)
+- [setRemoteSubscribeFallbackOption:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setremotesubscribefallbackoption)
+- [setRemoteUserSpatialAudioParams:params:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams)
+- [setRemoteVideoStream:type:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setremotevideostreamtype)
+- [setRemoteVideoSubscriptionOptions:options:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setremotevideosubscriptionoptions)
+- [setRemoteVoicePosition:pan:gain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/sound-position#api_irtcengine_setremotevoiceposition)
+- [setScreenCaptureScenario:](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_setscreencapturescenario)
+- [setSubscribeAudioAllowlist:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist)
+- [setSubscribeAudioBlocklist:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist)
+- [setSubscribeVideoAllowlist:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist)
+- [setSubscribeVideoBlocklist:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist)
+- [setupLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setuplocalvideo)
+- [setupRemoteVideo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setupremotevideo)
+- [setVideoDenoiserOptions:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setvideodenoiseroptions)
+- [setVideoDenoiserOptions:options:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setvideodenoiseroptions2)
+- [setVideoEncoderConfiguration:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_setvideoencoderconfiguration)
+- [setVideoResolution:andFrameRate:bitrate:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_setvideoprofile2)
+- [setVideoScenario:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_setvideoscenario)
+- [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+- [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+- [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+- [setVolumeOfEffect:withVolume:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_setvolumeofeffect)
+- [startAudioMixing:loopback:cycle:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_startaudiomixing)
+- [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_startaudiomixing2)
+- [startAudioRecording:quality:](/zh-CN/api-reference/rtc/ios/recording#api_irtcengine_startaudiorecording1)
+- [startAudioRecordingWithConfig:](/zh-CN/api-reference/rtc/ios/recording#api_irtcengine_startaudiorecording3)
+- [startCameraCapture:config:](/zh-CN/api-reference/rtc/ios/video/camera-capture#api_irtcengine_startcameracapture)
+- [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_startechotest3)
+- [startLastmileProbeTest:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_startlastmileprobetest)
+- [startLocalAudioMixer:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audiomixer#api_irtcengine_startlocalaudiomixer)
+- [startLocalVideoTranscoder:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder)
+- [startMediaRenderingTracing](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_startmediarenderingtracing)
+- [startOrUpdateChannelMediaRelay:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay)
+- [startPlaybackDeviceTest:](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_startplaybackdevicetest)
+- [startPreview](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_startpreview)
+- [startPreview:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_startpreview2)
+- [startRecordingDeviceTest:](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_startrecordingdevicetest)
+- [startRhythmPlayer:sound2:config:](/zh-CN/api-reference/rtc/ios/play/rhythmplayer#api_irtcengine_startrhythmplayer)
+- [startRtmpStreamWithoutTranscoding:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithouttranscoding)
+- [startRtmpStreamWithTranscoding:transcoding:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding)
+- [startScreenCapture:](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_startscreencapture)
+- [stopAllEffects](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_stopalleffects)
+- [stopAudioMixing](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_stopaudiomixing)
+- [stopAudioRecording](/zh-CN/api-reference/rtc/ios/recording#api_irtcengine_stopaudiorecording)
+- [stopCameraCapture:](/zh-CN/api-reference/rtc/ios/video/camera-capture#api_irtcengine_stopcameracapture)
+- [stopChannelMediaRelay](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay)
+- [stopEchoTest](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_stopechotest)
+- [stopEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_stopeffect)
+- [stopLastmileProbeTest](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_stoplastmileprobetest)
+- [stopLocalAudioMixer](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audiomixer#api_irtcengine_stoplocalaudiomixer)
+- [stopLocalVideoTranscoder](/zh-CN/api-reference/rtc/ios/video/video-prenpro/local-transcoder#api_irtcengine_stoplocalvideotranscoder)
+- [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_stopplaybackdevicetest)
+- [stopPreview](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_stoppreview)
+- [stopPreview:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_stoppreview2)
+- [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_stoprecordingdevicetest)
+- [stopRhythmPlayer](/zh-CN/api-reference/rtc/ios/play/rhythmplayer#api_irtcengine_stoprhythmplayer)
+- [stopRtmpStream:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream)
+- [stopScreenCapture](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_stopscreencapture)
+- [switchCamera](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_switchcamera)
+- [takeSnapshot:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot)
+- [takeSnapshotWithConfig:config:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot2)
+- [unloadEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_unloadeffect)
+- [unregisterAudioSpectrumDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_unregisteraudiospectrumobserver)
+- [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_updatechannelmediaoptions)
+- [updateLocalAudioMixerConfiguration:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audiomixer#api_irtcengine_updatelocalaudiomixerconfiguration)
+- [updateLocalTranscoderConfiguration:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration)
+- [updatePreloadChannelToken:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_updatepreloadchanneltoken)
+- [updateRtmpTranscoding:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengine_updatertmptranscoding)
+- [updateScreenCapture:](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_updatescreencapture)
+
+<a id="class_irtcengineeventhandler"></a>
+
+## AgoraRtcEngineDelegate
+
+启用应用程序的回调事件通知。
+
+<a id="class_irtcengineeventhandler__detailed_desc"></a>
+
+#### `自从`
+
+自 v1.1 版本新增。
+
+SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler) 协议中的代理回调向应用报告运行时事件。从 v1.1 版本起，SDK 中部分 block 回调被代理回调替代。旧的 block 回调虽已废弃，但当前版本仍支持使用。声网建议你将 block 回调替换为代理回调。如果同时定义了 block 和代理回调，SDK 将优先调用 block 回调。
+
+### 相关参考
+- [rtcEngine:activeSpeaker:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onactivespeaker)
+- [rtcEngineDidAudioEffectFinish:soundId:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished)
+- [rtcEngineLocalAudioMixingDidFinish:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingfinished)
+- [rtcEngine:audioMixingPositionChanged:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingpositionchanged)
+- [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)
+- [rtcEngine:didAudioPublishStateChange:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged)
+- [audioQualityBlock:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudioquality)
+- [rtcEngine:didAudioRouteChanged:](/zh-CN/api-reference/rtc/ios/device-management/audio-route#callback_irtcengineeventhandler_onaudioroutingchanged)
+- [rtcEngine:didAudioSubscribeStateChange:uid:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#callback_irtcengineeventhandler_onaudiosubscribestatechanged)
+- [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication)
+- [rtcEngine:cameraExposureDidChangedToRect:](/zh-CN/api-reference/rtc/ios/device-management/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged)
+- [rtcEngine:cameraFocusDidChangedToRect:](/zh-CN/api-reference/rtc/ios/device-management/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged)
+- [rtcEngineCameraDidReady:](/zh-CN/api-reference/rtc/ios/device-management/video-device#callback_irtcengineeventhandler_oncameraready)
+- [rtcEngine:channelMediaRelayStateDidChange:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
+- [rtcEngine:didClientRoleChanged:newRole:newRoleOptions:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onclientrolechanged)
+- [rtcEngine:didClientRoleChangeFailed:currentRole:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onclientrolechangefailed)
+- [rtcEngineConnectionDidBanned:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionbanned)
+- [rtcEngineConnectionDidInterrupted:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectioninterrupted)
+- [rtcEngineConnectionDidLost:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionlost)
+- [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [rtcEngine:didOccurEncryptionError:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onencryptionerror)
+- [rtcEngine:didOccurError:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onerror)
+- [onExtensionErrorWithContext:error:message:](/zh-CN/api-reference/rtc/ios/extension#callback_irtcengineeventhandler_onextensionerrorwithcontext)
+- [onEventWithContext:key:value:](/zh-CN/api-reference/rtc/ios/extension#callback_irtcengineeventhandler_onextensioneventwithcontext)
+- [onExtensionStartedWithContext:](/zh-CN/api-reference/rtc/ios/extension#callback_irtcengineeventhandler_onextensionstartedwithcontext)
+- [onExtensionStoppedWithContext:](/zh-CN/api-reference/rtc/ios/extension#callback_irtcengineeventhandler_onextensionstoppedwithcontext)
+- [rtcEngine:facePositionDidChangeWidth:previewHeight:faces:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/face-detection#callback_irtcengineeventhandler_onfacepositionchanged)
+- [rtcEngine:firstLocalAudioFramePublished:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onfirstlocalaudioframepublished)
+- [rtcEngine:firstLocalVideoFrameWithSize:elapsed:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onfirstlocalvideoframe)
+- [rtcEngine:firstLocalVideoFramePublishedWithElapsed:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onfirstlocalvideoframepublished)
+- [rtcEngine:firstRemoteAudioFrameDecodedOfUid:elapsed:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onfirstremoteaudiodecoded)
+- [rtcEngine:firstRemoteAudioFrameOfUid:elapsed:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onfirstremoteaudioframe)
+- [rtcEngine:firstRemoteVideoDecodedOfUid:size:elapsed:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded)
+- [rtcEngine:firstRemoteVideoFrameOfUid:size:elapsed:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideoframe)
+- [rtcEngine:didJoinChannel:withUid:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)
+- [rtcEngine:lastmileProbeTestResult:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onlastmileproberesult)
+- [rtcEngine:lastmileQuality:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onlastmilequality)
+- [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel)
+- [rtcEngine:localAudioStateChanged:reason:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+- [rtcEngine:localAudioStats:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostats)
+- [rtcEngine:didLocalUserRegisteredWithUserId:userAccount:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onlocaluserregistered)
+- [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged)
+- [rtcEngine:localVideoStats:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats)
+- [rtcEngine:didLocalVideoTranscoderErrorWithStream:errorCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror)
+- [rtcEngine:multiPathStats:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onmultipathstats)
+- [rtcEngine:networkQuality:txQuality:rxQuality:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onnetworkquality)
+- [rtcEngine:networkTypeChanged:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onnetworktypechanged)
+- [rtcEngine:permissionError:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onpermissionerror)
+- [rtcEngine:didProxyConnected:withUid:proxyType:localProxyIp:elapsed:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onproxyconnected)
+- [rtcEngine:didRejoinChannel:withUid:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess)
+- [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+- [rtcEngine:remoteAudioStats:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)
+- [rtcEngine:audioTransportStatsOfUid:delay:lost:rxKBitRate:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiotransportstats)
+- [rtcEngine:didRemoteSubscribeFallbackToAudioOnly:byUid:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly)
+- [rtcEngine:remoteVideoStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged)
+- [rtcEngine:remoteVideoStats:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onremotevideostats)
+- [rtcEngine:videoTransportStatsOfUid:delay:lost:rxKBitRate:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onremotevideotransportstats)
+- [rtcEngine:renewTokenResult:code:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onrenewtokenresult)
+- [rtcEngineRequestToken:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onrequesttoken)
+- [rtcEngine:didRhythmPlayerStateChanged:reason:](/zh-CN/api-reference/rtc/ios/play/rhythmplayer#callback_irtcengineeventhandler_onrhythmplayerstatechanged)
+- [rtcEngine:reportRtcStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onrtcstats)
+- [rtcEngine:rtmpStreamingEventWithUrl:eventCode:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingevent)
+- [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged)
+- [rtcEngine:snapshotTaken:filePath:width:height:errCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken)
+- [rtcEngine:receiveStreamMessageFromUid:streamId:data:](/zh-CN/api-reference/rtc/ios/metadata/datastream#callback_irtcengineeventhandler_onstreammessage)
+- [rtcEngine:didOccurStreamMessageErrorFromUid:streamId:error:missed:cached:](/zh-CN/api-reference/rtc/ios/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror)
+- [rtcEngine:tokenPrivilegeWillExpire:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
+- [rtcEngine:didTranscodedStreamLayoutInfoUpdatedWithUserId:videoLayoutInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo)
+- [rtcEngineTranscodingUpdated:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated)
+- [rtcEngine:uplinkNetworkInfoUpdate:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onuplinknetworkinfoupdated)
+- [rtcEngine:didLocalVideoEnabled:byUid:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onuserenablelocalvideo)
+- [rtcEngine:didVideoEnabled:byUid:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onuserenablevideo)
+- [rtcEngine:didUserInfoUpdatedWithUserId:userInfo:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onuserinfoupdated)
+- [rtcEngine:didJoinedOfUid:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onuserjoined)
+- [rtcEngine:didAudioMuted:byUid:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio)
+- [rtcEngine:didVideoMuted:byUid:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onusermutevideo)
+- [rtcEngine:didOfflineOfUid:reason:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onuseroffline)
+- [rtcEngine:didVideoPublishStateChange:sourceType:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged)
+- [rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
+- [rtcEngine:videoSizeChangedOfSourceType:uid:size:rotation:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged)
+- [rtcEngineVideoDidStop:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onvideostopped)
+- [rtcEngine:didVideoSubscribeStateChange:uid:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#callback_irtcengineeventhandler_onvideosubscribestatechanged)
+
+<a id="class_irtcengineex"></a>
+
+## AgoraRtcEngineKit(Ex)
+
+AgoraRtcEngineKitEx 接口，扩展了 AgoraRtcEngineKit 的功能。
+
+<a id="class_irtcengineex__detailed_desc"></a>
+
+扩展了 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的功能。
+
+### 相关参考
+- [addVideoWatermarkEx:options:connection:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengineex_addvideowatermarkex)
+- [addVideoWatermarkEx:connection:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengineex_addvideowatermarkex1)
+- [adjustUserPlaybackSignalVolumeEx:volume:connection:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengineex_adjustuserplaybacksignalvolumeex)
+- [clearVideoWatermarkEx:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengineex_clearvideowatermarkex)
+- [createDataStreamEx:reliable:ordered:connection:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengineex_createdatastreamex1)
+- [createDataStreamEx:config:connection:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengineex_createdatastreamex2)
+- [enableAudioVolumeIndicationEx:smooth:reportVad:connection:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengineex_enableaudiovolumeindicationex)
+- [enableContentInspectEx:config:connection:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengineex_enablecontentinspectex)
+- [enableDualStreamModeEx:streamConfig:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_enabledualstreammodeex)
+- [enableEncryptionEx:encryptionConfig:connection:](/zh-CN/api-reference/rtc/ios/network#api_irtcengineex_enableencryptionex)
+- [getCallIdEx:](/zh-CN/api-reference/rtc/ios/network#api_irtcengineex_getcallidex)
+- [getConnectionStateEx:](/zh-CN/api-reference/rtc/ios/network#api_irtcengineex_getconnectionstateex)
+- [getUserInfoByUidEx:connection:withError:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_getuserinfobyuidex)
+- [getUserInfoByUserAccountEx:connection:withError:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_getuserinfobyuseraccountex)
+- [joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex)
+- [joinChannelExByToken:channelId:userAccount:delegate:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelwithuseraccountex)
+- [leaveChannelEx:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_leavechannelex)
+- [leaveChannelEx:options:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_leavechannelex2)
+- [muteAllRemoteAudioStreamsEx:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_muteallremoteaudiostreamsex)
+- [muteAllRemoteVideoStreamsEx:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_muteallremotevideostreamsex)
+- [muteLocalAudioStreamEx:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_mutelocalaudiostreamex)
+- [muteLocalVideoStreamEx:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_mutelocalvideostreamex)
+- [muteRemoteAudioStreamEx:mute:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_muteremoteaudiostreamex)
+- [muteRemoteVideoStreamEx:mute:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_muteremotevideostreamex)
+- [pauseAllChannelMediaRelayEx:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengineex_pauseallchannelmediarelayex)
+- [playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengineex_playeffectex)
+- [playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:publish:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengineex_playeffectex2)
+- [playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengineex_playeffectex3)
+- [playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengineex_playeffectex4)
+- [preloadEffectEx:soundId:filePath:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengineex_preloadeffectex)
+- [preloadEffectEx:soundId:filePath:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengineex_preloadeffectex2)
+- [removeVideoWatermarkEx:connection:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengineex_removevideowatermarkex)
+- [resumeAllChannelMediaRelayEx:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengineex_resumeallchannelmediarelayex)
+- [sendCustomReportMessageEx:category:event:label:value:connection:](/zh-CN/api-reference/rtc/ios/network#api_irtcengineex_sendcustomreportmessageex)
+- [setDualStreamModeEx:streamConfig:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setdualstreammodeex)
+- [setRemoteRenderModeEx:mode:mirror:connection:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_setremoterendermodeex)
+- [setRemoteVideoStreamEx:type:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setremotevideostreamtypeex)
+- [setRemoteVideoSubscriptionOptionsEx:options:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setremotevideosubscriptionoptionsex)
+- [setRemoteVoicePositionEx:pan:gain:connection:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/sound-position#api_irtcengineex_setremotevoicepositionex)
+- [setSubscribeAudioAllowlistEx:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setsubscribeaudioallowlistex)
+- [setSubscribeAudioBlocklistEx:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setsubscribeaudioblocklistex)
+- [setSubscribeVideoAllowlistEx:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setsubscribevideoallowlistex)
+- [setSubscribeVideoBlocklistEx:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setsubscribevideoblocklistex)
+- [setupRemoteVideoEx:connection:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_setupremotevideoex)
+- [setVideoEncoderConfigurationEx:connection:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengineex_setvideoencoderconfigurationex)
+- [startMediaRenderingTracingEx:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_startmediarenderingtracingex)
+- [startOrUpdateChannelMediaRelayEx:connection:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengineex_startorupdatechannelmediarelayex)
+- [startRtmpStreamWithoutTranscodingEx:connection:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengineex_startrtmpstreamwithouttranscodingex)
+- [startRtmpStreamWithTranscodingEx:transcoding:connection:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengineex_startrtmpstreamwithtranscodingex)
+- [stopChannelMediaRelayEx:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengineex_stopchannelmediarelayex)
+- [stopRtmpStreamEx:connection:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengineex_stoprtmpstreamex)
+- [takeSnapshotEx:uid:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengineex_takesnapshotex)
+- [takeSnapshotExWithConfig:uid:config:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengineex_takesnapshotex2)
+- [updateChannelExWithMediaOptions:connection:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_updatechannelmediaoptionsex)
+- [updateRtmpTranscodingEx:connection:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengineex_updatertmptranscodingex)
+
+<a id="class_ivideoeffectobject"></a>
+
+## AgoraVideoEffectObject
+
+用于视频特效操作的协议。
+
+<a id="class_ivideoeffectobject__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+### 相关参考
+- [addOrUpdateVideoEffectWithNodeId:templateName:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_addorupdatevideoeffect)
+- [getVideoEffectBoolParamWithOption:key:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectboolparam)
+- [getVideoEffectFloatParamWithOption:key:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectfloatparam)
+- [getVideoEffectIntParamWithOption:key:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectintparam)
+- [performVideoEffectActionWithNodeId:actionId:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_performvideoeffectaction)
+- [removeVideoEffectWithNodeId:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_removevideoeffect)
+- [setVideoEffectBoolParamWithOption:key:boolValue:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectboolparam)
+- [setVideoEffectFloatParamWithOption:key:floatValue:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectfloatparam)
+- [setVideoEffectIntParamWithOption:key:intValue:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectintparam)
+
+<a id="class_ivideoencodedframeobserver"></a>
+
+## AgoraEncodedVideoFrameDelegate
+
+用于接收远端编码后视频帧的回调协议。
+
+<a id="class_ivideoencodedframeobserver__detailed_desc"></a>
+
+你可以实现该协议中的方法以按需处理接收到的编码后视频帧。
+
+### 相关参考
+- [onEncodedVideoFrameReceived:length:info:channelId:uid:](/zh-CN/api-reference/rtc/ios/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived)
+
+<a id="class_ivideoframeobserver"></a>
+
+## AgoraVideoFrameDelegate
+
+处理视频帧的回调协议。
+
+<a id="class_ivideoframeobserver__detailed_desc"></a>
+
+你可以通过实现该协议中的方法，接收并处理本地设备采集或远端用户发送的视频帧。
+
+### 相关参考
+- [getMirrorApplied](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getmirrorapplied)
+- [getObservedFramePosition](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getobservedframeposition)
+- [getRotationApplied](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getrotationapplied)
+- [getVideoFormatPreference](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getvideoformatpreference)
+- [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getvideoframeprocessmode)
+- [onCaptureVideoFrame:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)
+- [onPreEncodeVideoFrame:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe)
+- [onRenderVideoFrame:uid:channelId:](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onrendervideoframe)
+
+<a id="class_player"></a>
+
+## AgoraRtePlayer
+
+AgoraRtePlayer 类用于播放 URL 资源。
+
+<a id="class_player__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+### 相关参考
+- [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_getconfigs_player)
+- [getInfo:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_getinfo)
+- [getPosition:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_getposition)
+- [getStats:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_getstats)
+- [muteAudio:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_muteaudio)
+- [muteVideo:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_mutevideo)
+- [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl)
+- [pause:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_pause_player)
+- [play:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_play_player)
+- [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player)
+- [preloadWithUrl:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_preloadwithurl)
+- [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player)
+- [seek:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_seek)
+- [setCanvas:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_setcanvas)
+- [setConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_setconfigs_player)
+- [stop:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_stop_player)
+- [switchWithUrl:syncPts:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_switchwithurl)
+- [unregisterObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_unregisterobserver_player)
+
+<a id="class_playerconfig"></a>
+
+## AgoraRtePlayerConfig
+
+提供媒体播放器选项相关的方法。
+
+<a id="class_playerconfig__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+### 相关参考
+- [abrFallbackLayer:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_getabrfallbacklayer)
+- [abrSubscriptionLayer:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_getabrsubscriptionlayer)
+- [autoPlay:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_getautoplay)
+- [loopCount:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_getloopcount)
+- [playbackSpeed:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_getplaybackspeed)
+- [playoutVolume:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_getplayoutvolume)
+- [setAbrFallbackLayer:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_setabrfallbacklayer)
+- [setAbrSubscriptionLayer:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_setabrsubscriptionlayer)
+- [setAutoPlay:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_setautoplay)
+- [setLoopCount:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_setloopcount)
+- [setPlaybackSpeed:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_setplaybackspeed)
+- [setPlayoutVolume:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_setplayoutvolume)
+
+<a id="class_playerobserver"></a>
+
+## AgoraRtePlayerObserver
+
+接收播放器事件回调的接口。
+
+<a id="class_playerobserver__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+### 相关参考
+- [onAudioVolumeIndication:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onaudiovolumeindication_playerobserver)
+- [onEvent:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onevent)
+- [onMetadata:data:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onmetadata_playerobserver)
+- [onPlayerInfoUpdated:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onplayerinfoupdated_playerobserver)
+- [onPositionChanged:utcTime:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onpositionchanged_playerobserver)
+- [onResolutionChanged:height:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onresolutionchanged)
+- [onStateChanged:newState:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onstatechanged)
+
+<a id="class_rte"></a>
+
+## AgoraRte
+
+AgoraRte 是声网实时互动 SDK 的基础接口。
+
+<a id="class_rte__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。
+
+### 相关参考
+- [destroy:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_destroy_rte)
+- [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_getconfigs_rte)
+- [getFromBridge:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_getfrombridge)
+- [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine)
+- [initWithInitialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_rte_rte)
+- [setConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_setconfigs_rte)
+
+<a id="class_rteplayerinfo"></a>
+
+## AgoraRtePlayerInfo
+
+播放器和媒体流的信息。
+
+<a id="class_rteplayerinfo__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.4.0 版本新增。

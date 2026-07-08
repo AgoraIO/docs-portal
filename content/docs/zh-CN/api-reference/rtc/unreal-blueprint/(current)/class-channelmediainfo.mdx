@@ -1,0 +1,52 @@
+---
+title: "FChannelMediaInfo"
+description: "频道媒体信息。"
+---
+<a id="class_channelmediainfo__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FChannelMediaInfo {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|UserInfo")
+	int64 uid = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|UserInfo")
+	FString channelName = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|UserInfo")
+	FString token = "";
+	FChannelMediaInfo(){}
+	FChannelMediaInfo(const agora::rtc::ChannelMediaInfo & AgoraData){
+		channelName = UTF8_TO_TCHAR(AgoraData.channelName);
+		token = UTF8_TO_TCHAR(AgoraData.token);
+		uid = AgoraData.uid;
+	}
+	agora::rtc::ChannelMediaInfo CreateAgoraData() const {
+		agora::rtc::ChannelMediaInfo AgoraData;
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.channelName,this->channelName)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.token,this->token)
+		AgoraData.uid = uid;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::ChannelMediaInfo & AgoraData) const {
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.channelName)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.token)
+	}
+};
+```
+
+<a id="class_channelmediainfo__parameters"></a>
+
+## 属性
+
+### `channelName`
+
+频道名。
+
+### `token`
+
+能加入频道的 Token。
+
+### `uid`
+
+用户 ID。

@@ -1,0 +1,154 @@
+---
+title: "LiveTranscoding"
+description: "用于配置媒体推流的转码参数。"
+---
+<a id="class_livetranscoding__prototype"></a>
+
+```cpp
+struct LiveTranscoding {
+  int width;
+  int height;
+  int videoBitrate;
+  int videoFramerate;
+  bool lowLatency;
+  int videoGop;
+  VIDEO_CODEC_PROFILE_TYPE videoCodecProfile;
+  unsigned int backgroundColor;
+  VIDEO_CODEC_TYPE_FOR_STREAM videoCodecType;
+  unsigned int userCount;
+  TranscodingUser* transcodingUsers;
+  const char* transcodingExtraInfo;
+  const char* metadata;
+  RtcImage* watermark;
+  unsigned int watermarkCount;
+  RtcImage* backgroundImage;
+  unsigned int backgroundImageCount;
+  AUDIO_SAMPLE_RATE_TYPE audioSampleRate;
+  int audioBitrate;
+  int audioChannels;
+  AUDIO_CODEC_PROFILE_TYPE audioCodecProfile;
+  LiveStreamAdvancedFeature* advancedFeatures;
+  unsigned int advancedFeatureCount;
+};
+```
+
+<a id="class_livetranscoding__parameters"></a>
+
+## 属性
+
+### `width`
+
+视频宽度，单位为像素。默认值为 360。
+
+- 当向 CDN 推送视频流时， width 的取值范围为 [64,1920]。如果小于 64，声网服务器会自动调整为 64；如果大于 1920，会自动调整为 1920。
+- 当向 CDN 推送音频流时，请将 width 和 height 设置为 0。
+
+### `height`
+
+视频高度，单位为像素。默认值为 640。
+
+- 当向 CDN 推送视频流时， height 的取值范围为 [64,1080]。如果小于 64，声网服务器会自动调整为 64；如果大于 1080，会自动调整为 1080。
+- 当向 CDN 推送音频流时，请将 width 和 height 设置为 0。
+
+### `videoBitrate`
+
+视频编码码率（Kbps）。无需设置该参数，保持默认值 STANDARD_BITRATE 即可。SDK 会根据设置的视频分辨率和帧率自动匹配最合适的码率。有关视频分辨率与帧率的对应关系，详见 `Video profile`。
+
+### `videoFramerate`
+
+媒体推流输出视频流的帧率（fps）。默认值为 15，取值范围为 (0,30]。
+
+:::info[注]
+声网服务器会将超过 30 的值自动调整为 30。
+:::
+
+### `lowLatency`
+
+已废弃。 延迟模式：
+
+- true：低延迟但画质不保证。
+- false：（默认）高延迟但画质有保证。
+
+### `videoGop`
+
+媒体推流视频帧的 GOP（图像组）帧率，单位为 fps。默认值为 30。
+
+### `videoCodecProfile`
+
+媒体推流的视频编码器配置文件类型。可设置为 66、77 或 100（默认）。详见 [VIDEO_CODEC_PROFILE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videocodecprofiletype)。
+
+:::info[注]
+如果设置为其他值，声网会自动调整为默认值。
+:::
+
+### `backgroundColor`
+
+背景颜色的 RGB 十六进制值，仅值，不包含前缀 #。例如，0xFFB6C1 表示浅粉色。默认值为 0x000000（黑色）。
+
+### `videoCodecType`
+
+媒体推流使用的视频编码器类型。详见 [VIDEO_CODEC_TYPE_FOR_STREAM](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videocodectypeforstream)。
+
+### `userCount`
+
+媒体推流中的用户数量。取值范围为 [0,17]。
+
+### `transcodingUsers`
+
+媒体推流中的用户布局配置。最多支持添加 17 个转码用户。详见 [TranscodingUser](/zh-CN/api-reference/rtc/cpp-all-platforms/class-transcodinguser)。
+
+### `transcodingExtraInfo`
+
+保留参数。用于向 CDN 客户端发送 H.264/H.265 视频流 SEI 中的用户自定义信息。最大长度为 4096 字节。
+
+### `metadata`
+
+已废弃。不推荐使用。发送给 CDN 客户端的元数据。
+
+### `watermark`
+
+直播视频中的水印。图片格式需为 PNG。你可以添加一个水印，或使用数组添加多个水印。该参数与 `watermarkCount` 配合使用。详见 [RtcImage](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcimage)。
+
+### `watermarkCount`
+
+直播视频中的水印数量。水印和背景图像的总数范围为 0 到 10。该参数与 `watermark` 配合使用。
+
+### `backgroundImage`
+
+直播视频中的背景图像。图片格式需为 PNG。你可以添加一个背景图像，或使用数组添加多个背景图像。该参数与 `backgroundImageCount` 配合使用。详见 [RtcImage](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcimage)。
+
+### `backgroundImageCount`
+
+直播视频中的背景图像数量。水印和背景图像的总数范围为 0 到 10。该参数与 `backgroundImage` 配合使用。
+
+### `audioSampleRate`
+
+输出媒体流的音频采样率（Hz）。详见 [AUDIO_SAMPLE_RATE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiosampleratetype)。
+
+### `audioBitrate`
+
+媒体推流的音频输出码率（Kbps）。默认值为 48，最大值为 128。
+
+### `audioChannels`
+
+媒体推流的音频声道数。
+
+- 1：（默认）单声道。
+- 2：立体声。
+- 3：三声道。
+- 4：四声道。
+- 5：五声道。
+
+声网推荐选择 1 或 2。如果选择 3、4 或 5，需要特殊播放器支持。
+
+### `audioCodecProfile`
+
+媒体推流的音频编码器配置文件类型。详见 [AUDIO_CODEC_PROFILE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiocodecprofiletype)。
+
+### `advancedFeatures`
+
+带转码的媒体推流的高级功能。详见 [LiveStreamAdvancedFeature](/zh-CN/api-reference/rtc/cpp-all-platforms/class-livestreamadvancedfeature)。
+
+### `advancedFeatureCount`
+
+启用的高级功能数量。默认值为 0。

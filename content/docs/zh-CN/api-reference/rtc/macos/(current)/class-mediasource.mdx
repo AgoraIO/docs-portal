@@ -1,0 +1,111 @@
+---
+title: "AgoraMediaSource"
+description: "配置要播放的媒体文件及播放场景。"
+---
+<a id="class_mediasource__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraMediaSource : NSObject
+@property(copy, nonatomic) NSString *_Nullable url;
+@property(copy, nonatomic) NSString *_Nullable uri;
+@property(assign, nonatomic) NSUInteger startPos;
+@property(assign, nonatomic) BOOL autoPlay;
+@property(assign, nonatomic) BOOL enableCache;
+@property(assign, nonatomic) BOOL enableMultiAudioTrack;
+@property(assign, nonatomic) BOOL isAgoraSource;
+@property(assign, nonatomic) BOOL isLiveSource;
+@property(copy, nonatomic) AgoraRtcMediaPlayerCustomSourceOnReadCallback _Nonnull playerOnReadCallback;
+@property(copy, nonatomic) AgoraRtcMediaPlayerCustomSourceOnSeekCallback _Nonnull playerOnSeekCallback;
+@end
+```
+
+<a id="class_mediasource__parameters"></a>
+
+## 属性
+
+### `url`
+
+要播放的媒体文件的 URL。
+
+:::info[注]
+如果打开的是普通媒体资源，请传入 `url`。如果打开的是自定义媒体资源，请传入 `playerOnReadCallback` 和 `playerOnSeekCallback`。声网建议不要在一次调用中同时传入这些参数，否则该调用可能失败。
+:::
+
+### `uri`
+
+媒体文件的 URI（统一资源标识符）。
+
+### `startPos`
+
+播放的起始位置，单位为毫秒。默认值为 0。
+
+### `autoPlay`
+
+:::info[注]
+如果禁用了自动播放，需要在打开媒体文件后调用 [play](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放。
+:::
+
+打开媒体文件后是否自动播放：
+
+- YES：（默认）自动播放。
+- NO：不自动播放。
+
+### `enableCache`
+
+:::info[注]
+声网仅支持对非 HLS 协议传输的点播音视频流进行缓存。如果需要启用缓存，请传入 `uri`，否则缓存基于媒体文件的 `url`。启用该功能后，媒体播放器会将播放中的部分媒体文件缓存在本地设备上，即使在无网络连接的情况下也可播放缓存的媒体文件。缓存的媒体文件统计信息会在播放后每秒更新一次。详见 [AgoraMediaPlayerCacheStatistics](/zh-CN/api-reference/rtc/macos/class-cachestatistics)。
+:::
+
+播放媒体文件时是否启用缓存：
+
+- YES：启用缓存。
+- NO：（默认）不启用缓存。
+
+### `enableMultiAudioTrack`
+
+:::info[注]
+如果需要为本地播放和发布到频道设置不同的音轨，需将该参数设置为 YES，然后调用 [selectMultiAudioTrack:publishTrackIndex:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_imediaplayer_selectmultiaudiotrack) 方法选择音轨。
+:::
+
+播放该媒体文件时是否允许选择不同的音轨：
+
+- YES：允许选择不同音轨。
+- NO：（默认）不允许选择不同音轨。
+
+### `isAgoraSource`
+
+:::info[注]
+如果需要打开通过 Broadcast Streaming 服务分发的直播或点播视频，请将媒体资源的 URL 传入 `url`，并将 `isAgoraSource` 设置为 YES；否则无需设置该参数。
+:::
+
+要打开的媒体资源是否为通过媒体广播服务分发的直播或点播视频：
+
+- YES：是。
+- NO：（默认）否。
+
+### `isLiveSource`
+
+:::info[注]
+如果要打开的媒体资源是直播流，声网建议将该参数设置为 YES，以加快直播流的加载速度。如果打开的媒体资源不是直播流，但将 `isLiveSource` 设置为 YES，则不会加快加载速度。
+:::
+
+要打开的媒体资源是否为直播流：
+
+- YES：是直播流。
+- NO：（默认）不是直播流。
+
+### `playerOnReadCallback`
+
+当 SDK 读取媒体资源数据时触发。详见 `AgoraRtcMediaPlayerCustomSourceOnReadCallback`。
+
+:::info[注]
+如果打开的是普通媒体资源，请传入 `url`。如果打开的是自定义媒体资源，请传入 `playerOnReadCallback` 和 `playerOnSeekCallback`。声网建议不要在一次调用中同时传入这些参数，否则该调用可能失败。
+:::
+
+### `playerOnSeekCallback`
+
+当 SDK 定位媒体资源数据时触发。详见 `AgoraRtcMediaPlayerCustomSourceOnSeekCallback`。
+
+:::info[注]
+如果打开的是普通媒体资源，请传入 `url`。如果打开的是自定义媒体资源，请传入 `playerOnReadCallback` 和 `playerOnSeekCallback`。声网建议不要在一次调用中同时传入这些参数，否则该调用可能失败。
+:::

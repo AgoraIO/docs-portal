@@ -1,0 +1,41 @@
+---
+title: "AgoraRteErrorCode"
+description: "RTE 相关的状态码和错误码。"
+---
+<a id="enum_rteerrorcode__detailed_desc"></a>
+
+### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="enum_rteerrorcode__parameters"></a>
+
+## 枚举值
+
+### `AgoraRteOk`
+
+（0）：操作成功。
+
+### `AgoraRteErrorDefault`
+
+（1）：通用错误，错误原因未明确分类。
+
+### `AgoraRteErrorInvalidArgument`
+
+（2）：方法中设置了无效参数，例如参数包含非法字符，或传入的对象为 null。
+
+### `AgoraRteErrorInvalidOperation`
+
+（3）：当前状态不支持该操作，例如对象已被销毁或无效。
+
+### `AgoraRteErrorNetworkError`
+
+（4）：网络错误，请检查网络连接。
+
+### `AgoraRteErrorAuthenticationFailed`
+
+（5）：Token 鉴权失败，可能原因包括 Token 无效或已过期。
+
+### `AgoraRteErrorStreamNotFound`
+
+（6）：未找到媒体流，例如加入频道后超过 10 秒未从主播接收到媒体流。

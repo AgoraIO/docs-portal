@@ -1,0 +1,25 @@
+---
+title: "QueryDeviceScore"
+description: "查询设备评分等级。"
+---
+<a id="api_irtcengine_querydevicescore__prototype"></a>
+
+```csharp
+public abstract int QueryDeviceScore();
+```
+
+<a id="api_irtcengine_querydevicescore__detailed_desc"></a>
+
+## 详情
+
+<a id="api_irtcengine_querydevicescore__scenario"></a>
+
+## 适用场景
+
+在高清或超高清视频场景下，可以先调用该方法查询设备的等级评分。如果返回的评分较低（比如低于 60），则需要适当调低视频分辨率，以避免影响视频体验。不同业务场景要求的最低设备评分等级不同，具体评分推荐请 [联系技术支持](https://ticket.shengwang.cn/)。
+
+<a id="api_irtcengine_querydevicescore__return_values"></a>
+
+## 返回值
+
+- &lt; 0: 方法调用失败。

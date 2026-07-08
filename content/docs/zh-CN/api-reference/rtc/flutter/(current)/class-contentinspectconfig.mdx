@@ -1,0 +1,54 @@
+---
+title: "ContentInspectConfig"
+description: "本地截图上传配置。"
+---
+<a id="class_contentinspectconfig__prototype"></a>
+
+```dart
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class ContentInspectConfig {
+  const ContentInspectConfig(
+      {this.extraInfo, this.serverConfig, this.modules, this.moduleCount});
+
+  @JsonKey(name: 'extraInfo')
+  final String? extraInfo;
+
+  @JsonKey(name: 'serverConfig')
+  final String? serverConfig;
+
+  @JsonKey(name: 'modules')
+  final List<ContentInspectModule>? modules;
+
+  @JsonKey(name: 'moduleCount')
+  final int? moduleCount;
+
+  factory ContentInspectConfig.fromJson(Map<String, dynamic> json) =>
+      _$ContentInspectConfigFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ContentInspectConfigToJson(this);
+}
+```
+
+<a id="class_contentinspectconfig__parameters"></a>
+
+## 属性
+
+### `extraInfo`
+
+附加信息，最大长度为 1024 字节。 SDK 会将附加信息和截图一起上传至声网服务器；截图完成后，声网服务器会将附加信息随回调通知一起发送给你的服务器。
+
+### `serverConfig`
+
+（可选）云市场视频审核相关服务端配置，该参数仅在 [ContentInspectModule](/zh-CN/api-reference/rtc/flutter/class-contentinspectmodule) 中的 `type` 设置为 `contentInspectImageModeration` 时生效。如需使用，请[联系技术支持](https://ticket.shengwang.cn/)。
+
+### `modules`
+
+功能模块。详见 [ContentInspectModule](/zh-CN/api-reference/rtc/flutter/class-contentinspectmodule)。 最多支持配置 32 个 [ContentInspectModule](/zh-CN/api-reference/rtc/flutter/class-contentinspectmodule) 实例， `MAX_CONTENT_INSPECT_MODULE_COUNT` 的取值范围为 [1,32] 中的整数。
+
+:::info[注]
+一个功能模块最多只能配置一个实例。目前仅支持截图上传功能。
+:::
+
+### `moduleCount`
+
+功能模块数，即配置的 [ContentInspectModule](/zh-CN/api-reference/rtc/flutter/class-contentinspectmodule) 实例的数量，必须与 `modules` 中配置的实例个数一致。最大值为 32。

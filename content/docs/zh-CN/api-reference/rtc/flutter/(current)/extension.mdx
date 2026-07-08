@@ -1,0 +1,487 @@
+---
+title: "插件"
+description: "插件 API reference."
+---
+<a id="toc_extension"></a>
+
+<a id="api_irtcengine_enableextension"></a>
+
+## enableExtension
+
+启用/禁用插件。
+
+<a id="api_irtcengine_enableextension__prototype"></a>
+
+```dart
+Future<void> enableExtension(
+    {required String provider,
+    required String extension,
+    bool enable = true,
+    MediaSourceType type = MediaSourceType.unknownMediaSource});
+```
+
+<a id="api_irtcengine_enableextension__detailed_desc"></a>
+
+:::info[注]
+- 如果要开启多个插件，需要多次调用该方法。
+- 该方法调用成功后，无法再加载其他插件。
+:::
+
+<a id="api_irtcengine_enableextension__timing"></a>
+
+### 调用时机
+
+建议你在加入频道后调用该方法。
+
+<a id="api_irtcengine_enableextension__related"></a>
+
+### 相关回调
+
+频道内调用该方法成功时会触发插件启用回调 [onExtensionStartedWithContext](/zh-CN/api-reference/rtc/flutter/extension#callback_irtcengineeventhandler_onextensionstartedwithcontext) 或插件禁用回调 [onExtensionStoppedWithContext](/zh-CN/api-reference/rtc/flutter/extension#callback_irtcengineeventhandler_onextensionstoppedwithcontext)。
+
+<a id="api_irtcengine_enableextension__parameters"></a>
+
+### 参数
+
+#### `provider`
+
+提供插件的服务商名称。
+
+#### `extension`
+
+插件的名称。
+
+#### `enable`
+
+是否启用插件：
+
+- true: 启用插件。
+- false: 禁用插件。
+
+#### `type`
+
+插件的媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/flutter/enum-mediasourcetype)。
+
+<a id="api_irtcengine_enableextension__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getextensionproperty2"></a>
+
+## getExtensionProperty
+
+获取插件的详细信息。
+
+<a id="api_irtcengine_getextensionproperty2__prototype"></a>
+
+```dart
+Future<String> getExtensionProperty(
+      {required String provider,
+      required String extension,
+      required String key,
+      required int bufLen,
+      MediaSourceType type = MediaSourceType.unknownMediaSource});
+```
+
+<a id="api_irtcengine_getextensionproperty2__detailed_desc"></a>
+
+<a id="api_irtcengine_getextensionproperty2__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_getextensionproperty2__parameters"></a>
+
+### 参数
+
+#### `provider`
+
+提供插件的服务商名称。
+
+#### `extension`
+
+插件的名称。
+
+#### `key`
+
+插件属性的 Key。
+
+#### `type`
+
+插件的媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/flutter/enum-mediasourcetype)。
+
+#### `bufLen`
+
+插件属性 JSON 字符串的最大长度。最大值为 512 字节。
+
+<a id="api_irtcengine_getextensionproperty2__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，则返回插件信息。
+- 方法调用失败，则返回空字符串。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_loadextensionprovider"></a>
+
+## loadExtensionProvider
+
+加载插件。
+
+<a id="api_irtcengine_loadextensionprovider__prototype"></a>
+
+```dart
+Future<void> loadExtensionProvider(
+      {required String path, bool unloadAfterUse = false});
+```
+
+<a id="api_irtcengine_loadextensionprovider__detailed_desc"></a>
+
+该方法用于将 SDK 外部插件（例如云市场插件和 SDK 拓展插件）添加到 SDK 中。
+
+:::info[注]
+如果要加载多个插件，需要多次调用该方法。 该方法仅适用于 Windows 和 Android。
+:::
+
+<a id="api_irtcengine_loadextensionprovider__timing"></a>
+
+### 调用时机
+
+请在初始化 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 后立即调用该方法。
+
+<a id="api_irtcengine_loadextensionprovider__parameters"></a>
+
+### 参数
+
+#### `path`
+
+插件的动态库路径和名称。例如： `/library/libagora_segmentation_extension.dll`。
+
+#### `unloadAfterUse`
+
+是否在插件使用完毕后自动卸载：
+
+- true: 当 RtcEngine 销毁时自动卸载插件。
+- false: 不自动卸载插件，直到进程退出（推荐）。
+
+<a id="api_irtcengine_loadextensionprovider__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_registerextension"></a>
+
+## registerExtension
+
+注册插件。
+
+<a id="api_irtcengine_registerextension__prototype"></a>
+
+```dart
+Future<void> registerExtension(
+      {required String provider,
+      required String extension,
+      MediaSourceType type = MediaSourceType.unknownMediaSource});
+```
+
+<a id="api_irtcengine_registerextension__detailed_desc"></a>
+
+对于 SDK 外部的插件（例如云市场插件和 SDK 拓展插件），加载插件后，你需要调用该方法注册插件。SDK 内部插件（包含在 SDK 包中的插件）在初始化 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 后会自动加载并注册，无需调用该方法。
+
+:::info[注]
+- 如果要注册多个插件，需要多次调用该方法。
+- 不同插件在 SDK 中处理数据的顺序由插件的注册顺序决定。即先注册的插件会先处理数据。
+:::
+
+<a id="api_irtcengine_registerextension__timing"></a>
+
+### 调用时机
+
+- 建议你在初始化 RtcEngine 后、加入频道前调用该方法。
+- 对于视频相关插件（例如美颜插件），需要在启用视频模块（enableVideo / enableLocalVideo ）之前调用该方法。
+- 调用该方法前，需要先调用 loadExtensionProvider 加载插件。
+
+<a id="api_irtcengine_registerextension__parameters"></a>
+
+### 参数
+
+#### `provider`
+
+提供插件的服务商名称。
+
+#### `extension`
+
+插件的名称。
+
+#### `type`
+
+插件的媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/flutter/enum-mediasourcetype)。
+
+<a id="api_irtcengine_registerextension__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setextensionproperty"></a>
+
+## setExtensionProperty
+
+设置插件的属性。
+
+<a id="api_irtcengine_setextensionproperty__prototype"></a>
+
+```dart
+Future<void> setExtensionProperty(
+    {required String provider,
+    required String extension,
+    required String key,
+    required String value,
+    MediaSourceType type = MediaSourceType.unknownMediaSource});
+```
+
+<a id="api_irtcengine_setextensionproperty__detailed_desc"></a>
+
+开启插件后，你可以调用该方法设置插件的属性。
+
+:::info[注]
+如果要设置多个插件的属性，需要多次调用该方法。
+:::
+
+<a id="api_irtcengine_setextensionproperty__timing"></a>
+
+### 调用时机
+
+请在调用 [enableExtension](/zh-CN/api-reference/rtc/flutter/extension#api_irtcengine_enableextension) 开启插件后调用该方法。
+
+<a id="api_irtcengine_setextensionproperty__related"></a>
+
+### 相关回调
+
+调用该方法后，可能会触发插件事件回调 [onExtensionEventWithContext](/zh-CN/api-reference/rtc/flutter/extension#callback_irtcengineeventhandler_onextensioneventwithcontext)，具体触发逻辑与插件本身相关。
+
+<a id="api_irtcengine_setextensionproperty__parameters"></a>
+
+### 参数
+
+#### `provider`
+
+提供插件的服务商名称。
+
+#### `extension`
+
+插件的名称。
+
+#### `key`
+
+插件属性的 Key。
+
+#### `value`
+
+插件属性 Key 对应的值。
+
+#### `type`
+
+插件的媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/flutter/enum-mediasourcetype)。
+
+<a id="api_irtcengine_setextensionproperty__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setextensionproviderproperty"></a>
+
+## setExtensionProviderProperty
+
+设置插件服务商的属性。
+
+<a id="api_irtcengine_setextensionproviderproperty__prototype"></a>
+
+```dart
+Future<void> setExtensionProviderProperty(
+    {required String provider, required String key, required String value});
+```
+
+<a id="api_irtcengine_setextensionproviderproperty__detailed_desc"></a>
+
+你可以调用该方法设置插件服务商的属性，并根据服务商的类型初始化相关参数。
+
+:::info[注]
+如果要设置多个插件服务商的属性，需要多次调用该方法。
+:::
+
+<a id="api_irtcengine_setextensionproviderproperty__timing"></a>
+
+### 调用时机
+
+请在调用 [registerExtension](/zh-CN/api-reference/rtc/flutter/extension#api_irtcengine_registerextension) 之后、 [enableExtension](/zh-CN/api-reference/rtc/flutter/extension#api_irtcengine_enableextension) 之前调用该方法。
+
+<a id="api_irtcengine_setextensionproviderproperty__parameters"></a>
+
+### 参数
+
+#### `provider`
+
+提供插件的服务商名称。
+
+#### `key`
+
+插件属性的 Key。
+
+#### `value`
+
+插件属性 Key 对应的值。
+
+<a id="api_irtcengine_setextensionproviderproperty__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext"></a>
+
+## onExtensionErrorWithContext
+
+插件出错回调。
+
+<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__prototype"></a>
+
+```dart
+final void Function(ExtensionContext context, int error, String message)?
+    onExtensionErrorWithContext;
+```
+
+<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__detailed_desc"></a>
+
+启用插件失败或者插件运行出错时，插件会触发该回调并报告错误码和错误原因。
+
+<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__parameters"></a>
+
+### 参数
+
+#### `context`
+
+插件上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/flutter/class-extensioncontext)。
+
+#### `error`
+
+错误码。详见插件服务商提供的插件文档。
+
+#### `message`
+
+错误原因。详见插件服务商提供的插件文档。
+
+### 所属接口类
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onextensioneventwithcontext"></a>
+
+## onExtensionEventWithContext
+
+插件事件回调。
+
+<a id="callback_irtcengineeventhandler_onextensioneventwithcontext__prototype"></a>
+
+```dart
+final void Function(ExtensionContext context, String key, String value)?
+    onExtensionEventWithContext;
+```
+
+<a id="callback_irtcengineeventhandler_onextensioneventwithcontext__detailed_desc"></a>
+
+为监听插件事件，你需要注册该回调。
+
+<a id="callback_irtcengineeventhandler_onextensioneventwithcontext__parameters"></a>
+
+### 参数
+
+#### `context`
+
+插件上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/flutter/class-extensioncontext)。
+
+#### `key`
+
+插件属性的 Key。
+
+#### `value`
+
+插件属性 Key 对应的值。
+
+### 所属接口类
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onextensionstartedwithcontext"></a>
+
+## onExtensionStartedWithContext
+
+插件已启用成功回调。
+
+<a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__prototype"></a>
+
+```dart
+final void Function(ExtensionContext context)? onExtensionStartedWithContext;
+```
+
+<a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__detailed_desc"></a>
+
+成功启用插件后会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__parameters"></a>
+
+### 参数
+
+#### `context`
+
+插件上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/flutter/class-extensioncontext)。
+
+### 所属接口类
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext"></a>
+
+## onExtensionStoppedWithContext
+
+插件已禁用回调。
+
+<a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__prototype"></a>
+
+```dart
+final void Function(ExtensionContext context)? onExtensionStoppedWithContext;
+```
+
+<a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__detailed_desc"></a>
+
+成功禁用插件后会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__parameters"></a>
+
+### 参数
+
+#### `context`
+
+插件上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/flutter/class-extensioncontext)。
+
+### 所属接口类
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)

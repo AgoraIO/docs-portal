@@ -1,0 +1,97 @@
+---
+title: "TranscodingVideoStream"
+description: "参与本地合图的视频流。"
+---
+<a id="class_transcodingvideostream__prototype"></a>
+
+```arkts
+export class TranscodingVideoStream {
+
+  public remoteUserUid:number;
+
+  public  sourceType:Constants.VideoSourceType;
+
+  public imageUrl:string;
+
+  public mediaPlayerId:number;
+
+  public x:number;
+
+  public y:number;
+
+  public width:number;
+
+  public height:number;
+
+  public zOrder:number;
+
+  public alpha:number;
+
+  public mirror:boolean;
+  public constructor() {
+    this.remoteUserUid = 0;
+    this.sourceType = Constants.VideoSourceType.CAMERA_PRIMARY;
+    this.imageUrl = "";
+    this.mediaPlayerId = -1;
+    this.x = 0;
+    this.y = 0;
+    this.width = 0;
+    this.height = 0;
+    this.zOrder = 0;
+    this.alpha = 1.0;
+    this.mirror = false;
+  }
+}
+```
+
+<a id="class_transcodingvideostream__parameters"></a>
+
+### `sourceType`
+
+参与本地合图的视频源类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
+
+### `remoteUserUid`
+
+远端用户 ID。
+
+:::warning[注意]
+请仅在参与本地合图的视频源类型为 REMOTE 时，使用该参数。
+:::
+
+### `imageUrl`
+
+本地图片的路径。
+
+:::warning[注意]
+请仅在参与本地合图的视频源类型为图片时，使用该参数。
+:::
+
+示例路径：
+
+- HarmonyOS：/data/storage/el2/base/haps/ApiExample/files/1080P.png
+
+### `mediaPlayerId`
+
+（可选）媒体播放器 ID。当你将 sourceType 设置为 MEDIA_PLAYER 时，需要设置该参数。
+
+### `zOrder`
+
+参与本地合图的视频所属的图层的编号。取值范围为 [0,100]。
+
+- 0:（默认值）图层在最下层。
+- 100: 图层在最上层。
+
+### `alpha`
+
+参与本地合图的视频的透明度。取值范围为 [0.0,1.0]。 0.0 表示透明度为完全透明，1.0 表示透明度为完全不透明。
+
+### `mirror`
+
+是否对参与本地合图的的视频进行镜像：
+
+- true: 将参与本地合图的视频进行镜像。
+- false: （默认值）不将参与本地合图的视频进行镜像。
+
+:::warning[注意]
+该参数仅对视频源类型为摄像头的视频生效。
+:::

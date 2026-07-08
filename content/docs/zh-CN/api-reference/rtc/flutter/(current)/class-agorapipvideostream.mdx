@@ -1,0 +1,33 @@
+---
+title: "AgoraPipVideoStream"
+description: "画中画模式的视频流配置。"
+---
+<a id="class_agorapipvideostream__prototype"></a>
+
+```dart
+class AgoraPipVideoStream {
+  final RtcConnection connection;
+  final VideoCanvas canvas;
+  const AgoraPipVideoStream({required this.connection, required this.canvas});
+}
+```
+
+<a id="class_agorapipvideostream__detailed_desc"></a>
+
+### `自从`
+
+自 v6.6.2 版本新增。
+
+该类保存显示画中画窗口内视频流所需的连接和画布设置。
+
+<a id="class_agorapipvideostream__parameters"></a>
+
+## 属性
+
+### `connection`
+
+与此视频流关联的 RTC 连接。
+
+### `canvas`
+
+用于渲染此视频流的画布配置，详见 [VideoCanvas](/zh-CN/api-reference/rtc/flutter/class-videocanvas)。

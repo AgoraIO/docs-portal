@@ -1,0 +1,34 @@
+---
+title: "FUABT_FaceShapeAreaOptions"
+description: "滤镜效果选项。"
+---
+<a id="class_faceshapeareaoptions__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FUABT_FaceShapeAreaOptions {
+
+	GENERATED_BODY()
+
+public:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	EUABT_FACE_SHAPE_AREA shapeArea = EUABT_FACE_SHAPE_AREA::FACE_SHAPE_AREA_NONE;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	int shapeIntensity = 0;
+
+};
+```
+
+<a id="class_faceshapeareaoptions__parameters"></a>
+
+## 属性
+
+### `shapeArea`
+
+美型部位，详见 [EUABT_FACE_SHAPE_AREA](/zh-CN/api-reference/rtc/unreal-blueprint/enum-faceshapearea)。
+
+### `shapeIntensity`
+
+修饰力度。各部位的修饰力度定义（包括修饰的方向、范围、预设值等）有所不同， 详见 [EUABT_FACE_SHAPE_AREA](/zh-CN/api-reference/rtc/unreal-blueprint/enum-faceshapearea)。

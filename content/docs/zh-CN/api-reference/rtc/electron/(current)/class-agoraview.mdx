@@ -1,0 +1,51 @@
+---
+title: "AgoraView"
+description: "自定义标签的属性。"
+---
+<a id="class_agoraview__prototype"></a>
+
+```typescript
+interface AgoraView {
+  "video-source-type": VideoSourceType;
+  uid: number;
+  "channel-id": string;
+  "renderer-content-mode": RenderModeType;
+  "renderer-mirror": boolean;
+  style: any;
+}
+```
+
+<a id="class_agoraview__detailed_desc"></a>
+
+该自定义标签的使用方式如下：
+
+```typescript
+<agora-view video-source-type="{VideoSourceType.VideoSourceCamera}" channel-id="" uid="{0}"></agora-view>
+```
+
+<a id="class_agoraview__parameters"></a>
+
+## 属性
+
+### `video-source-type`
+
+视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/electron/enum-videosourcetype)。
+
+### `uid`
+
+远端用户 ID。
+
+### `renderer-content-mode`
+
+视频渲染模式，详见 [RenderModeType](/zh-CN/api-reference/rtc/electron/enum-rendermodetype)。
+
+### `renderer-mirror`
+
+渲染视频时，是否开启视频镜像:
+
+- true: 开启镜像。
+- false: 不开启镜像。
+
+### `style`
+
+元素的行内样式。详见 `style-attribute`。

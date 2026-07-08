@@ -1,0 +1,35 @@
+---
+title: "AgoraProxyType"
+description: "云代理类型。"
+---
+<a id="enum_proxytype__parameters"></a>
+
+## 枚举值
+
+### `AgoraNoneProxyType`
+
+（0）：预留用于未来扩展。
+
+### `AgoraUdpProxyType`
+
+（1）：UDP 协议云代理，即强制使用 UDP 云代理模式。在该模式下，SDK 始终通过 UDP 传输数据。
+
+### `AgoraTcpProxyType`
+
+（2）：TCP（加密）协议云代理，即强制使用 TCP 云代理模式。在该模式下，SDK 始终通过 TCP/TLS 443 传输数据。
+
+### `AgoraLocalProxyType`
+
+（3）：预留用于未来扩展。
+
+### `AgoraTcpProxyAutoFallbackType`
+
+（4）：自动模式。在该模式下，SDK 会尝试直接连接 SD-RTN™，若连接失败则自动切换为 TCP/TLS 443。
+
+### `AgoraHttpProxyType`
+
+（5）：HTTP 代理。
+
+### `AgoraHttpsProxyType`
+
+（6）：HTTPS 代理。

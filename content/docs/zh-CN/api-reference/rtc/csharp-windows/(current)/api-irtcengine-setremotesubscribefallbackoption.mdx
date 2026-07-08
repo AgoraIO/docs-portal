@@ -1,0 +1,32 @@
+---
+title: "SetRemoteSubscribeFallbackOption"
+description: "设置弱网环境下订阅的音视频流回退选项。"
+---
+<a id="api_irtcengine_setremotesubscribefallbackoption__prototype"></a>
+
+```csharp
+public abstract int SetRemoteSubscribeFallbackOption(STREAM_FALLBACK_OPTIONS option);
+```
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__detailed_desc"></a>
+
+## 详情
+
+网络不理想的环境下，实时通信音视频的质量会下降。你可以调用该方法并将 option 设置为 STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW 或 STREAM_FALLBACK_OPTION_AUDIO_ONLY，SDK 会在下行弱网且音视频质量严重受影响时，将视频流切换为小流或关闭视频流，从而保证音频质量。同时，SDK 会持续监控网络质量，并在网络质量改善时恢复订阅音视频流。
+
+当订阅流回退为音频流或由音频流恢复为音视频流时，SDK 会触发 [OnRemoteSubscribeFallbackToAudioOnly](/zh-CN/api-reference/rtc/csharp-windows/network#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly) 回调。
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__parameters"></a>
+
+## 参数
+
+### `option`
+
+订阅流的回退选项。 详见 [STREAM_FALLBACK_OPTIONS](/zh-CN/api-reference/rtc/csharp-windows/enum-streamfallbackoptions)。
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__return_values"></a>
+
+## 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。

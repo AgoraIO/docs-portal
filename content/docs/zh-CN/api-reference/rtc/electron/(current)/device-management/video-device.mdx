@@ -1,0 +1,353 @@
+---
+title: "视频设备管理"
+description: "视频设备管理 API reference."
+---
+<a id="toc_video_device"></a>
+
+<a id="api_ivideodevicemanager_enumeratevideodevices"></a>
+
+## enumerateVideoDevices
+
+获取系统中所有的视频设备列表。
+
+<a id="api_ivideodevicemanager_enumeratevideodevices__prototype"></a>
+
+```typescript
+abstract enumerateVideoDevices(): VideoDeviceInfo[];
+```
+
+<a id="api_ivideodevicemanager_enumeratevideodevices__detailed_desc"></a>
+
+<a id="api_ivideodevicemanager_enumeratevideodevices__return_values"></a>
+
+### 返回值
+
+- 方法调用成功：返回一个 VideoDeviceInfo 数组，其中包含系统中所有视频设备。
+- 方法调用失败: 返回空列表。
+
+### 所属接口类
+- [IVideoDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideodevicemanager)
+
+<a id="api_ivideodevicemanager_getcapability"></a>
+
+## getCapability
+
+获取视频采集设备在指定的视频格式下的详细视频帧信息。
+
+<a id="api_ivideodevicemanager_getcapability__prototype"></a>
+
+```typescript
+abstract getCapability(
+    deviceIdUTF8: string,
+    deviceCapabilityNumber: number
+  ): VideoFormat;
+```
+
+<a id="api_ivideodevicemanager_getcapability__detailed_desc"></a>
+
+在调用 [numberOfCapabilities](/zh-CN/api-reference/rtc/electron/device-management/video-device#api_ivideodevicemanager_numberofcapabilities) 获取视频采集设备支持的视频格式数量后，你可以调用该方法获取指定索引号支持的具体视频帧信息。
+
+<a id="api_ivideodevicemanager_getcapability__parameters"></a>
+
+### 参数
+
+#### `deviceIdUTF8`
+
+视频采集设备的 ID。
+
+#### `deviceCapabilityNumber`
+
+视频格式的索引号。如果 [numberOfCapabilities](/zh-CN/api-reference/rtc/electron/device-management/video-device#api_ivideodevicemanager_numberofcapabilities) 的返回值为 i，则该参数取值范围为[0,i)。
+
+<a id="api_ivideodevicemanager_getcapability__return_values"></a>
+
+### 返回值
+
+指定视频格式的具体信息，包括宽度（px），高度（px）和帧率（fps）。详见 [VideoFormat](/zh-CN/api-reference/rtc/electron/class-videoformat)。
+
+### 所属接口类
+- [IVideoDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideodevicemanager)
+
+<a id="api_ivideodevicemanager_getdevice_ivideodevicemanager"></a>
+
+## getDevice
+
+获取当前使用的视频采集设备。
+
+<a id="api_ivideodevicemanager_getdevice_ivideodevicemanager__prototype"></a>
+
+```typescript
+abstract getDevice(): string;
+```
+
+<a id="api_ivideodevicemanager_getdevice_ivideodevicemanager__detailed_desc"></a>
+
+<a id="api_ivideodevicemanager_getdevice_ivideodevicemanager__return_values"></a>
+
+### 返回值
+
+视频采集设备。
+
+### 所属接口类
+- [IVideoDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideodevicemanager)
+
+<a id="api_irtcengine_getvideodevicemanager"></a>
+
+## getVideoDeviceManager
+
+获取 IVideoDeviceManager 对象，以管理视频设备。
+
+<a id="api_irtcengine_getvideodevicemanager__prototype"></a>
+
+```typescript
+abstract getVideoDeviceManager(): IVideoDeviceManager;
+```
+
+<a id="api_irtcengine_getvideodevicemanager__detailed_desc"></a>
+
+<a id="api_irtcengine_getvideodevicemanager__return_values"></a>
+
+### 返回值
+
+一个 [IVideoDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideodevicemanager) 对象。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
+<a id="api_ivideodevicemanager_numberofcapabilities"></a>
+
+## numberOfCapabilities
+
+获取指定视频采集设备支持的视频格式数量。
+
+<a id="api_ivideodevicemanager_numberofcapabilities__prototype"></a>
+
+```typescript
+abstract numberOfCapabilities(deviceIdUTF8: string): number;
+```
+
+<a id="api_ivideodevicemanager_numberofcapabilities__detailed_desc"></a>
+
+视频采集设备可能支持多种视频格式，每一种格式都支持不同的视频帧宽度、视频帧高度、帧率组合。 你可以通过调用该方法，获取指定的视频采集设备可支持多少种视频格式，然后调用 [getCapability](/zh-CN/api-reference/rtc/electron/device-management/video-device#api_ivideodevicemanager_getcapability) 获取指定视频格式下的具体视频帧信息。
+
+<a id="api_ivideodevicemanager_numberofcapabilities__parameters"></a>
+
+### 参数
+
+#### `deviceIdUTF8`
+
+视频采集设备的 ID。
+
+<a id="api_ivideodevicemanager_numberofcapabilities__return_values"></a>
+
+### 返回值
+
+- &gt; 0: 方法调用成功。返回该设备支持的视频格式数量。例如：如果指定的摄像头支持 10 种不同的视频格式，则返回值为 10。
+- ≤ 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IVideoDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideodevicemanager)
+
+<a id="api_irtcengine_querycodeccapability"></a>
+
+## queryCodecCapability
+
+查询 SDK 支持的视频编解码能力。
+
+<a id="api_irtcengine_querycodeccapability__prototype"></a>
+
+```typescript
+abstract queryCodecCapability(): { codecInfo: CodecCapInfo[]; size: number };
+```
+
+<a id="api_irtcengine_querycodeccapability__detailed_desc"></a>
+
+<a id="api_irtcengine_querycodeccapability__return_values"></a>
+
+### 返回值
+
+- 如果调用成功，则返回一个包含以下属性的对象：
+  - codecInfo： CodecCapInfo 数组，表示 SDK 的视频编码能力。
+  - size： CodecCapInfo 数组的大小。
+- 如果调用超时，请修改调用逻辑，不要在主线程中调用该方法。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setcameracapturerconfiguration"></a>
+
+## setCameraCapturerConfiguration
+
+设置摄像头采集配置。
+
+<a id="api_irtcengine_setcameracapturerconfiguration__prototype"></a>
+
+```typescript
+abstract setCameraCapturerConfiguration(
+    config: CameraCapturerConfiguration
+  ): number;
+```
+
+<a id="api_irtcengine_setcameracapturerconfiguration__detailed_desc"></a>
+
+<a id="api_irtcengine_setcameracapturerconfiguration__timing"></a>
+
+### 调用时机
+
+该方法必须在开启本地摄像头采集前调用，如 [startPreview](/zh-CN/api-reference/rtc/electron/video/video-basic#api_irtcengine_startpreview2) 和 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 前调用。
+
+<a id="api_irtcengine_setcameracapturerconfiguration__parameters"></a>
+
+### 参数
+
+#### `config`
+
+摄像头采集配置，详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/electron/class-cameracapturerconfiguration)。
+
+<a id="api_irtcengine_setcameracapturerconfiguration__return_values"></a>
+
+### 返回值
+
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setcameradeviceorientation"></a>
+
+## setCameraDeviceOrientation
+
+设置采集视频的旋转角度。
+
+<a id="api_irtcengine_setcameradeviceorientation__prototype"></a>
+
+```typescript
+abstract setCameraDeviceOrientation(
+    type: VideoSourceType,
+    orientation: VideoOrientation
+  ): number;
+```
+
+<a id="api_irtcengine_setcameradeviceorientation__detailed_desc"></a>
+
+:::info[注]
+- 该方法仅适用于 Windows。
+- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 LocalVideoStreamStateCapturing (1) 后。
+- 当视频采集设备不带重力感应功能时，你可以调用该方法手动调整采集到的视频画面的旋转角度。
+:::
+
+<a id="api_irtcengine_setcameradeviceorientation__parameters"></a>
+
+### 参数
+
+#### `type`
+
+视频源类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/electron/enum-videosourcetype)。
+
+<a id="api_irtcengine_setcameradeviceorientation__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
+<a id="api_ivideodevicemanager_setdevice_ivideodevicemanager"></a>
+
+## setDevice
+
+通过设备 ID 指定视频采集设备。
+
+<a id="api_ivideodevicemanager_setdevice_ivideodevicemanager__prototype"></a>
+
+```typescript
+abstract setDevice(deviceIdUTF8: string): number;
+```
+
+<a id="api_ivideodevicemanager_setdevice_ivideodevicemanager__detailed_desc"></a>
+
+:::info[注]
+- 插拔设备不会改变设备 ID。
+:::
+
+<a id="api_ivideodevicemanager_setdevice_ivideodevicemanager__parameters"></a>
+
+### 参数
+
+#### `deviceIdUTF8`
+
+设备 ID。可通过调用 [enumerateVideoDevices](/zh-CN/api-reference/rtc/electron/device-management/video-device#api_ivideodevicemanager_enumeratevideodevices) 方法获取。 最大长度为 [MaxDeviceIdLengthType](/zh-CN/api-reference/rtc/electron/enum-maxdeviceidlengthtype)。
+
+<a id="api_ivideodevicemanager_setdevice_ivideodevicemanager__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IVideoDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideodevicemanager)
+
+<a id="callback_irtcengineeventhandler_oncameraready"></a>
+
+## onCameraReady
+
+摄像头就绪回调。
+
+<a id="callback_irtcengineeventhandler_oncameraready__prototype"></a>
+
+```typescript
+onCameraReady?(): void;
+```
+
+<a id="callback_irtcengineeventhandler_oncameraready__detailed_desc"></a>
+
+#### `废弃`
+
+弃用: 请改用 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/electron/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 中的 LocalVideoStreamStateCapturing(1)。
+
+该回调提示已成功打开摄像头，可以开始捕获视频。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onvideodevicestatechanged"></a>
+
+## onVideoDeviceStateChanged
+
+视频设备变化回调。
+
+<a id="callback_irtcengineeventhandler_onvideodevicestatechanged__prototype"></a>
+
+```typescript
+onVideoDeviceStateChanged?(
+    deviceId: string,
+    deviceType: MediaDeviceType,
+    deviceState: number
+  ): void;
+```
+
+<a id="callback_irtcengineeventhandler_onvideodevicestatechanged__detailed_desc"></a>
+
+该回调提示系统视频设备状态发生改变，比如被拔出或移除。如果设备已使用外接摄像头采集，外接摄像头被拔开后，视频会中断。
+
+<a id="callback_irtcengineeventhandler_onvideodevicestatechanged__parameters"></a>
+
+### 参数
+
+#### `deviceId`
+
+设备 ID。
+
+#### `deviceType`
+
+设备类型。详见 [MediaDeviceType](/zh-CN/api-reference/rtc/electron/enum-mediadevicetype)。
+
+#### `deviceState`
+
+设备状态。详见 [MediaDeviceStateType](/zh-CN/api-reference/rtc/electron/enum-mediadevicestatetype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)

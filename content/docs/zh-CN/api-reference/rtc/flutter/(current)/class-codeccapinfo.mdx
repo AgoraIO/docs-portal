@@ -1,0 +1,42 @@
+---
+title: "CodecCapInfo"
+description: "SDK 支持的编解码能力信息。"
+---
+<a id="class_codeccapinfo__prototype"></a>
+
+```dart
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class CodecCapInfo {
+  const CodecCapInfo({this.codecType, this.codecCapMask, this.codecLevels});
+
+  @JsonKey(name: 'codecType')
+  final VideoCodecType? codecType;
+
+  @JsonKey(name: 'codecCapMask')
+  final int? codecCapMask;
+
+  @JsonKey(name: 'codecLevels')
+  final CodecCapLevels? codecLevels;
+
+  factory CodecCapInfo.fromJson(Map<String, dynamic> json) =>
+      _$CodecCapInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CodecCapInfoToJson(this);
+}
+```
+
+<a id="class_codeccapinfo__parameters"></a>
+
+## 属性
+
+### `codecType`
+
+视频编解码类型。详见 [VideoCodecType](/zh-CN/api-reference/rtc/flutter/enum-videocodectype)。
+
+### `codecCapMask`
+
+SDK 编解码类型的 bit mask。详见 [CodecCapMask](/zh-CN/api-reference/rtc/flutter/enum-codeccapmask)。
+
+### `codecLevels`
+
+SDK 支持的编解码能力等级。详见 [CodecCapLevels](/zh-CN/api-reference/rtc/flutter/class-codeccaplevels)。

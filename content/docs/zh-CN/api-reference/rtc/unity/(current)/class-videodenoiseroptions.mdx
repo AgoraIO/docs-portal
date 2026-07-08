@@ -1,0 +1,37 @@
+---
+title: "VideoDenoiserOptions"
+description: "视频降噪选项。"
+---
+<a id="class_videodenoiseroptions__prototype"></a>
+
+```csharp
+public class VideoDenoiserOptions
+    {
+        public VIDEO_DENOISER_MODE mode { set; get; }
+        public VIDEO_DENOISER_LEVEL level { set; get; }
+
+        public VideoDenoiserOptions(VIDEO_DENOISER_MODE denoiserMode, VIDEO_DENOISER_LEVEL denoiserLevel)
+        {
+            mode = denoiserMode;
+            level = denoiserLevel;
+        }
+
+        public VideoDenoiserOptions()
+        {
+            mode = VIDEO_DENOISER_MODE.VIDEO_DENOISER_AUTO;
+            level = VIDEO_DENOISER_LEVEL.VIDEO_DENOISER_LEVEL_HIGH_QUALITY;
+        }
+    };
+```
+
+<a id="class_videodenoiseroptions__parameters"></a>
+
+## 属性
+
+### `level`
+
+视频降噪等级。
+
+### `mode`
+
+视频降噪模式。

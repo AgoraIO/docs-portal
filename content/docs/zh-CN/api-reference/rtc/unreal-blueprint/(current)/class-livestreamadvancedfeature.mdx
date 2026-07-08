@@ -1,0 +1,50 @@
+---
+title: "FLiveStreamAdvancedFeature"
+description: "转码推流的高级功能配置。"
+---
+<a id="class_livestreamadvancedfeature__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FLiveStreamAdvancedFeature {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LiveStreamAdvancedFeature")
+	FString featureName = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LiveStreamAdvancedFeature")
+	bool opened = false;
+	FLiveStreamAdvancedFeature(){}
+	FLiveStreamAdvancedFeature(const agora::rtc::LiveStreamAdvancedFeature & AgoraData){
+		featureName = UTF8_TO_TCHAR(AgoraData.featureName);
+		opened = AgoraData.opened;
+	}
+	agora::rtc::LiveStreamAdvancedFeature CreateAgoraData() const {
+		agora::rtc::LiveStreamAdvancedFeature AgoraData;
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.featureName, this->featureName)
+		AgoraData.opened = opened;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::LiveStreamAdvancedFeature& AgoraData) const {
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.featureName)
+	}
+};
+```
+
+<a id="class_livestreamadvancedfeature__detailed_desc"></a>
+
+如需使用转码推流高级功能，请 [联系销售](https://www.shengwang.cn/contact-sales/)。
+
+<a id="class_livestreamadvancedfeature__parameters"></a>
+
+## 属性
+
+### `featureName`
+
+转码推流高级功能的名称，包含 LBHQ（低码率的高清视频功能） 和 VEO（优化的视频编码器功能）。
+
+### `opened`
+
+是否启用转码推流的高级功能：
+
+- true：开启转码推流的高级功能。
+- false：（默认）关闭转码推流的高级功能。

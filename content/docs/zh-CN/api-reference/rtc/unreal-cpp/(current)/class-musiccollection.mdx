@@ -1,0 +1,44 @@
+---
+title: "MusicCollection"
+description: "音乐资源列表的详细信息。"
+---
+<a id="class_musiccollection__prototype"></a>
+
+```cpp
+class MusicCollection : public RefCountInterface {
+public:
+    virtual int getCount() = 0;
+    virtual int getTotal() = 0;
+    virtual int getPage() = 0;
+    virtual int getPageSize() = 0;
+    virtual Music* getMusic(int32_t index) = 0;
+protected:
+    virtual ~MusicCollection() = default;
+};
+```
+
+<a id="class_musiccollection__detailed_desc"></a>
+
+<a id="class_musiccollection__sub-method"></a>
+
+## 方法
+
+### `getCount`
+
+获取本次请求的音乐资源数量，详见 [getCount [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_musiccollection_getcount)。
+
+### `getTotal`
+
+获取列表内音乐资源的总数量，详见 [getTotal](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_musiccollection_gettotal)。
+
+### `getPage`
+
+获取音乐资源列表当前页的页码，详见 [getPage](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_musiccollection_getpage)。
+
+### `getPageSize`
+
+获取 SDK 实际返回的音乐资源数量，详见 [getPageSize](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_musiccollection_getpagesize)。
+
+### `getMusic`
+
+获取当前页面列表中音乐资源的详细信息，详见 [getMusic](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_musiccollection_getmusic)。

@@ -1,0 +1,32 @@
+---
+title: "STREAM_SUBSCRIBE_STATE"
+description: "订阅状态。"
+---
+<a id="enum_streamsubscribestate__parameters"></a>
+
+## 枚举值
+
+### `SUB_STATE_IDLE`
+
+0: 加入频道后的初始订阅状态。
+
+### `SUB_STATE_NO_SUBSCRIBED`
+
+1: 订阅失败。可能是因为：
+
+- 远端用户：
+  - 调用 MuteLocalAudioStream (true) 或 MuteLocalVideoStream (true) 停止发送本地媒体流。
+  - 调用 DisableAudio 或 DisableVideo 关闭本地音频或视频模块。
+  - 调用 EnableLocalAudio (false) 或 EnableLocalVideo (false) 关闭本地音频或视频采集。
+  - 用户角色为观众。
+- 本地用户调用以下方法停止接收远端媒体流：
+  - 调用 MuteRemoteAudioStream (true)、 MuteAllRemoteAudioStreams (true) 停止接收远端音频流。
+  - 调用 MuteRemoteVideoStream (true)、 MuteAllRemoteVideoStreams (true) 停止接收远端视频流。
+
+### `SUB_STATE_SUBSCRIBING`
+
+2: 正在订阅。
+
+### `SUB_STATE_SUBSCRIBED`
+
+3: 收到了远端流，订阅成功。

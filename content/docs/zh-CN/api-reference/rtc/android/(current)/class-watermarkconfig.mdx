@@ -1,0 +1,58 @@
+---
+title: "WatermarkConfig"
+description: "用于配置水印相关信息。"
+---
+<a id="class_watermarkconfig__prototype"></a>
+
+```java
+public class WatermarkConfig {
+  public static final int WATERMARK_TYPE_IMAGE = 0;
+  public static final int WATERMARK_TYPE_BUFFER = 1;
+  public String id;
+  public int type;
+  public WatermarkBuffer buffer = new WatermarkBuffer();
+  public String imageUrl;
+  public WatermarkOptions options = new WatermarkOptions();
+}
+```
+
+<a id="class_watermarkconfig__detailed_desc"></a>
+
+### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="class_watermarkconfig__parameters"></a>
+
+## 属性
+
+### `WATERMARK_TYPE_IMAGE`
+
+指定水印类型为图片。
+
+### `WATERMARK_TYPE_BUFFER`
+
+指定水印类型为内存缓冲区。
+
+### `id`
+
+水印的唯一标识符，通常使用 UUID 生成。
+
+### `type`
+
+水印类型：
+
+- WATERMARK_TYPE_IMAGE：图片类型。
+- WATERMARK_TYPE_BUFFER：缓冲区类型。
+
+### `buffer`
+
+包含水印图像数据的缓冲区。详见 [WatermarkBuffer](/zh-CN/api-reference/rtc/android/class-watermarkbuffer)。
+
+### `imageUrl`
+
+用于加载水印图片的 URL 地址。
+
+### `options`
+
+定义水印位置和大小的选项。详见 [WatermarkOptions](/zh-CN/api-reference/rtc/android/class-watermarkoptions)。

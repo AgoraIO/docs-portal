@@ -1,0 +1,37 @@
+---
+title: "LocalTranscoderConfiguration"
+description: "用于配置本地客户端的视频合图功能。"
+---
+<a id="class_localtranscoderconfiguration__prototype"></a>
+
+```cpp
+struct LocalTranscoderConfiguration {
+  unsigned int streamCount;
+  TranscodingVideoStream* videoInputStreams;
+  VideoEncoderConfiguration videoOutputConfiguration;
+  bool syncWithPrimaryCamera;
+};
+```
+
+<a id="class_localtranscoderconfiguration__parameters"></a>
+
+## 属性
+
+### `streamCount`
+
+本地客户端进行视频合图的视频流数量。
+
+### `videoInputStreams`
+
+用于本地视频合图的视频流。详见 [TranscodingVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/class-transcodingvideostream)。
+
+### `videoOutputConfiguration`
+
+合图后合图视频的编码配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoencoderconfiguration)。
+
+### `syncWithPrimaryCamera`
+
+是否使用主摄像头采集的视频帧的时间戳作为合图视频的时间戳。
+
+- true：（默认）使用采集的视频帧的时间戳作为合图视频帧的时间戳。
+- false：不使用采集的视频帧的时间戳作为合图视频的时间戳，而是使用构建视频合图时的时间戳。

@@ -1,0 +1,33 @@
+---
+title: "RecorderStreamInfo"
+description: "需录制的音视频流的相关信息。"
+---
+<a id="class_recorderstreaminfo__prototype"></a>
+
+```arkts
+export class RecorderStreamInfo {
+  
+  public uid: number = 0;
+  
+  public channelId: string;
+  public constructor() {
+    this.uid = 0;
+    this.channelId = "";
+  }
+  public toString(): string {
+    return "channelId=" + this.channelId;
+  }
+}
+```
+
+<a id="class_recorderstreaminfo__detailed_desc"></a>
+
+<a id="class_recorderstreaminfo__parameters"></a>
+
+### `channelId`
+
+需录制的频道名称。
+
+### `uid`
+
+需录制的用户 ID。

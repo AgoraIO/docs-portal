@@ -1,0 +1,40 @@
+---
+title: "FAdvancedAudioOptions"
+description: "音频的高级选项。"
+---
+<a id="class_advancedaudiooptions__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FAdvancedAudioOptions
+{
+	GENERATED_BODY()
+public:
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|AdvancedAudioOptions")
+	bool audioProcessingChannels_SetValue = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|AdvancedAudioOptions")
+	int audioProcessingChannels = 0;
+	FAdvancedAudioOptions(){}
+	FAdvancedAudioOptions(const agora::rtc::AdvancedAudioOptions & AgoraData){
+		SET_UEBP_OPTIONAL_VAL_DIR_ASSIGN(this->audioProcessingChannels, AgoraData.audioProcessingChannels)
+	}
+	agora::rtc::AdvancedAudioOptions CreateAgoraData() const {
+		agora::rtc::AdvancedAudioOptions AgoraData;
+		SET_AGORA_OPTIONAL_VAL_DIR_ASSIGN(AgoraData.audioProcessingChannels, this->audioProcessingChannels)
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::AdvancedAudioOptions & AgoraData) const {
+	}
+};
+```
+
+<a id="class_advancedaudiooptions__parameters"></a>
+
+## 属性
+
+### `audioProcessingChannels`
+
+音频前处理的声道数：
+
+- AUDIO_PROCESSING_MONO (1)：（默认）单声道。
+- AUDIO_PROCESSING_STEREO (2)：双声道。

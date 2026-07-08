@@ -1,0 +1,54 @@
+---
+title: "RteAbrFallbackLayer"
+description: "视频流的回退质量层级。"
+---
+<a id="enum_rteabrfallbacklayer__detailed_desc"></a>
+
+### `自从`
+
+自 v4.4.0 版本新增。
+
+:::info[注]
+- 若要使用 kRteAbrFallbackLayer1 到 kRteAbrFallbackLayer6，你必须[联系技术支持](https://ticket.shengwang.cn/)以启用 ABR 功能。启用后，你可以自定义每一层的分辨率，并选择任意一层作为视频回退的最低分辨率。当网络状况较差时，SDK 会在该范围内动态调整分辨率，并以所选层为下限。
+- 自定义分辨率时，请确保将视频质量层按分辨率从高到低排序。如果分辨率相同，则按帧率从高到低排序。
+:::
+
+<a id="enum_rteabrfallbacklayer__parameters"></a>
+
+## 枚举值
+
+### `kRteAbrFallbackDisabled`
+
+（0）：不进行音视频流回退，但不保证质量。
+
+### `kRteAbrFallbackLow`
+
+（1）：（默认）回退至最低质量的视频流，该层具有最低分辨率。
+
+### `kRteAbrFallbackAudioOnly`
+
+（2）：优先接收最低质量的视频流；若网络差到无法显示视频，则回退为仅接收已订阅的音频流。
+
+### `kRteAbrFallbackLayer1`
+
+（3）：回退至视频质量层级 1，该层的分辨率和码率略低于最高订阅的视频质量。
+
+### `kRteAbrFallbackLayer2`
+
+（4）：回退至视频质量层级 2，该层的分辨率略低于层级 1。
+
+### `kRteAbrFallbackLayer3`
+
+（5）：回退至视频质量层级 3，该层的分辨率略低于层级 2。
+
+### `kRteAbrFallbackLayer4`
+
+（6）：回退至视频质量层级 4，该层的分辨率略低于层级 3。
+
+### `kRteAbrFallbackLayer5`
+
+（7）：回退至视频质量层级 5，该层的分辨率略低于层级 4。
+
+### `kRteAbrFallbackLayer6`
+
+（8）：回退至视频质量层级 6，该层的分辨率略低于层级 5。
