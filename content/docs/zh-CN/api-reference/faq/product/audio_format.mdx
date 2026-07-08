@@ -1,0 +1,61 @@
+---
+title: "RTC SDK 支持播放哪些格式的音频文件？"
+---
+RTC SDK 提供一系列对音频文件进行管理的方法，各方法对单音轨或多音轨文件的支持情况如下：
+
+- `startAudioMixing`: 支持单音轨或多音轨文件。
+- `getAudioTrackCount`: 支持单音轨或多音轨文件。
+- `selectAudioTrack`: 支持单音轨或多音轨文件。
+- `playEffect`: 仅支持单音轨文件。
+- `preloadEffect`: 仅支持单音轨文件。
+- `getEffectDuration`: 仅支持单音轨文件。
+- `startRhythmPlayer`: 仅支持单音轨文件。
+- `getAudioFileInfo`: 支持单音轨或多音轨文件。
+
+默认情况下，RTC SDK 支持的音频文件格式详见[基础音频文件格式](#basic)。音频文件的容器格式（包括后缀名）必须与音频编解码器格式一致。
+
+RTC SDK 提供全格式音频解码插件，支持更多格式的音频文件，详见[扩展音频文件格式](#advanced)。该插件目前仅适用于调用 `startAudioMixing` 播放音频文件的场景。
+
+<a id="basic"></a>
+## 基础音频文件格式
+
+### 单音轨文件格式
+
+RTC SDK 支持如下格式的单音轨文件：
+
+- 在 Android 上，支持 Ogg、3GP、ASF、AVI、TS、MKV、MP4、WMA、WAV、M4A、MP3、AAC、ADTS 格式的本地和在线文件。
+- 在 iOS 和 macOS 上，支持 WAV、M4A、MP3、MP4、AAC、ADTS 格式的本地和在线文件。对于 MP4 和 M4A 格式的在线文件，媒体信息（moov）必须在媒体数据（mdat）之前。
+- 在 Windows 上，支持 MP4、TS、WMA、AAC 格式的本地和在线文件。
+
+### 多音轨文件格式
+
+RTC SDK 支持如下格式的多音轨文件：
+
+- 在 Android 上，支持 M4A、MP4、MKV 格式的本地和在线文件。播放 MP4 格式的多音轨文件时，支持切换至第二音轨。
+
+  :::warning[注意]
+  如果你使用的是 RTC Lite SDK，播放 MP4 格式的多音轨文件时，**不支持**切换至第二音轨。
+  :::
+
+- 在 iOS 和 macOS 上，支持 M4A 和 MP4 格式的本地文件和在线文件。对于在线文件，媒体信息（moov）必须在媒体数据（mdat）之前。
+- 在 Windows 上，支持 M4A 格式的本地和在线文件。
+
+<a id="advanced"></a>
+## 扩展音频文件格式
+
+如果你集成了全格式音频解码插件，在调用 `startAudioMixing` 播放音频文件时，支持的文件类型如下：
+
+| 平台                                                       |   文件来源                   | 文件音轨                       | 文件容器格式                                                 | 音频编解码器格式                              |
+| ---------------------------------------------------------- | -------------------------- | ------------------------------ | ------------------------------------------------------------ | --------------------------------------------- |
+| Android、iOS、macOS、Windows | 本地、在线 | 单音轨、多音轨 | 3GP、AAC、AMR、ASF、AVI、FLAC、M4A、M4V、MOV、MP3、MP4、TS、Ogg、WAV、WMA | AAC、ARM、FALC、MP2、MP3、PCM、Vorbis、 WMAV2、OPUS |
+
+:::info[信息]
+该插件在各平台对应的动态库名称，详见[减少 App 体积](/doc/rtc/android/best-practice/reduce-app-size)。
+:::
+
+## 注意事项
+
+- 对于 iOS 平台，RTC Lite SDK 不支持播放无后缀的音频文件。
+- 对于 Android 平台，RTC Lite SDK 不支持播放 Android 系统本身不支持的音频文件。
+- 部分 Android 设备（如小米）因系统兼容问题，在使用 `playEffect` 或 `preloadEffect` 读取 3GP 格式的文件时可能会出现问题。
+- 因为部分 Android 设备不支持 WMA 格式，所以在这些设备上使用声网的 API 播放 WMA 文件时会失败。

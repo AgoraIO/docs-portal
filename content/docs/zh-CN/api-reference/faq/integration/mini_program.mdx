@@ -1,0 +1,114 @@
+---
+title: "如何处理 RTC 小程序 SDK 常见问题？"
+---
+本文汇总 RTC 小程序 SDK 常见问题和解决方法。
+
+## 功能类问题处理
+
+### 推流/拉流处理
+
+推流/拉流处理可以参考或直接使用 [GitHub 上开源代码](https://github.com/AgoraIO/Agora-Miniapp-Tutorial)。
+
+### 退后台处理
+
+可以通过设置小程序的 live-pusher 组件中的 waiting-image 属性来处理。设置后，推流端退到后台时，可以推送静态图片来维持推流，其他端会收到本端预设的 waiting-image 图片来代替视频流。 除非通过一些方式 (例如后台播放背景音乐)，小程序会在某些场景下断开 websocket 或者 rtmp 连接，例如点击右上角按钮将程序退到后台。这种情况下，若回到前台后收到 error code 904 或 501，则应使用 SDK 进行重连，具体方法请参考 重新加入频道 rejoin 中的描述。
+
+### 只启用音频
+
+如需只启用小程序的音频功能，不需要发送视频，你直接使用微信小程序的接口处理即可。在小程序的 live-pusher 组件中，通过设置 enable-camera 来实现开启/关闭摄像头。详见 [小程序 live-pusher 组件文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。
+
+### 播放背景音乐
+
+在某些社交娱乐场景中，小程序会需要播放背景音乐。微信小程序的背景音频需要用微信小程序的原生 API 来集成实现，声网微信小程序 SDK 无法建立音频播放器。
+
+你可以通过 [`wx.getBackgroundAudioManager()`](https://developers.weixin.qq.com/miniprogram/dev/api/media/background-audio/wx.getBackgroundAudioManager.html) 接口获取全局唯一的背景音频管理器，并调用 [`BackgroundAudioManager`](https://developers.weixin.qq.com/miniprogram/dev/api/media/background-audio/BackgroundAudioManager.html) 类提供的接口来管理背景音频。
+
+### 采样率
+
+小程序 SDK 只支持 48 kHz 采样率。集成时，请在 live-pusher 组件中将音质设为高音质，以表示采样率为 48 kHz：
+
+```javascript
+audio-quality = "high"
+```
+
+如果设置其他采样率，远端用户可能无法听到小程序用户的声音。
+
+### 日志
+
+集成小程序 SDK 时，你可以调用如下 API 实现上传，保存和打开日志：
+
+* 上传日志：
+如果你使用 v2.6.0 或更高版本的小程序 SDK，无需自己保存日志，可通过 [`uploadLogs`](/api-ref/rtc/mini-program/interfaces/log#uploadlogs) API 上传日志。
+
+* 保存日志：
+如果想要获取日志，需要将 text 保存在一个文件中。如果需要排查问题，可以将出现问题时间段的日志提供给声网支持人员。
+
+```javascript
+// text 为字符串形式。
+AgoraMiniappSDK.LOG.onLog = (text) => {
+  Utils.log(text);
+};
+```
+
+* 打开日志：
+
+```javascript
+AgoraMiniappSDK.LOG.setLogLevel(-1);
+```
+
+### 与 Native 互通
+
+频道中有小程序 SDK 和 Native SDK 时，可以选择如下一种方式实现互通：
+
+- Native 端在直播模式下，将用户角色设置为 `AgoraClientRoleBroadcaster` = 1：主播，实现互通
+- Native 端在直播模式下，不设置用户角色为主播，也可以接收到小程序端的流，实现互通
+
+小程序和 Native 互通时，Native 端视频画面可能出现上下颠倒。该问题可能是由于 Native SDK 中的 `setVideoEncoderConfiguration` 设置的方向模式 `orientationMode` 为 `ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE` 导致的。解决方法是，将方向模式改成 `ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT` 就可以解决问题。
+
+### 与 Web 互通
+
+小程序和 Web 互通时，可能出现 Web 端可以看到小程序的视频，但小程序看不到 Web 端的视频。该问题可能是由于编解码格式不被支持导致的。
+
+Web 与小程序互通时，小程序端只支持 H264 模式的编码，不支持 VP8。将 Web SDK 的 `index.html` 文件修改为如下设置即可：
+
+```javascript
+client = AgoraRtc.createClient({mode: "live", codec: "h264"});
+```
+
+### live-pusher 中的 src
+
+客户端调用 client.publish 方法后，会回调一个以 rtmp 开头的临时地址，这个地址就分别是 live-player 和 live-pusher 组件中的 rtmp 播放地址 和 rtmp 推流地址。你可以将其填入 src 字段。
+
+### WebView 中调用接口
+
+微信小程序可以在 WebView 网页中调用声网 Web SDK 4.x 的接口，详见 [Web SDK 4.x API 文档](/api-ref/rtc/javascript/overview)。
+
+### view 标签
+
+你可以使用小程序的 `cover-view` 标签覆盖在用于实时音视频播放和录制的 `live-player` 和 `live-pusher` 的组件。详见[微信小程序官方文档](https://developers.weixin.qq.com/miniprogram/dev/component/cover-view.html)。
+
+## 通用类问题排查
+
+### 闪退
+
+这个问题可能是因为启用了其它 Websocket，但没有开启验证 Https 引起的。如需启用其它的 Websocket，请查看**本地设置**，不要勾选“不校验合法域名、web-view（业务域名）、TLS 版本以及 HTTPS 证书”。
+
+### 初始化失败
+
+通常，客户端初始化失败，会伴随着错误码 901 或 903，处理方法如下：
+
+- 901：出现错误码 901 绝大部分原因是没开小程序的服务权限，或没有配置域名，或 uid 参数格式不正确（uid 必须为整型）。请参考快速开始中的[准备开发环境](/doc/rtc/mini-program/get-started/quick-start#准备开发环境)完成设置后再尝试；
+- 903：这个错误通常是网络原因引起的；也可能是因为鉴权失败，如没有填 Token，或 Token 无效导致的。请检查并填入有效的 Token 进行尝试。
+
+### 错误码排查
+
+小程序 SDK 在调用 API 或运行时，可能会返回一个错误码对象，也可能会返回一个错误码。详细可以参考[错误码和警告码](/doc/rtc/mini-program/error-code) 进行排查。
+
+### 编译报错
+
+编译小程序时，出现如下图所示的 `MiniProgramError: @babel` 相关报错。
+
+![小程序编译报错](https://web-cdn.agora.io/docs-files/1675663879303)
+
+问题原因：小程序使用了符合 ES6+ 语法标准的代码，但低版本手机系统只能编译符合 ES5 语法标准的代码，所以在低版本手机系统中编译小程序时会出现该问题。需要将代码编译成 ES5 才能真机调试。
+解决方案：你可以尝试在微信开发者工具中开启[将 JS 代码编译成 ES5](https://developers.weixin.qq.com/miniprogram/dev/devtools/codecompile.html)功能，再重新编译程序。

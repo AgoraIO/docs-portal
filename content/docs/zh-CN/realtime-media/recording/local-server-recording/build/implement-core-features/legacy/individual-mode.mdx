@@ -13,7 +13,7 @@ title: "单流录制"
 开始前请确保：
 
 - 你已经完成录制 SDK 的环境准备和集成工作并且了解如何使用命令行开始录制，详见[集成客户端](/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/integrate-sdk)和[命令行录制](/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/record-by-cmd)。
-- 单流或合流模式的设置必须在开始录制的时候完成，不支持在录制开始后切换模式。请参阅[单流录制模式和合流录制模式的区别](/faq/integration-issues/recording-mode)来决定应使用哪种模式。
+- 单流或合流模式的设置必须在开始录制的时候完成，不支持在录制开始后切换模式。请参阅[单流录制模式和合流录制模式的区别](/zh-CN/api-reference/faq/integration/recording_mode)来决定应使用哪种模式。
 
 ## 实现方法
 
@@ -66,5 +66,5 @@ title: "单流录制"
 录制过程中，你可以参考如下文档：
 
 - 单流模式下每个用户 ID 的音频和视频均分开录制，如需合成每个用户 ID 的音视频，需要通过 `video_convert.py` 脚本进行转码，详见[合并音视频文件](/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/merge-files)。
-- 单流模式下，如果用户中途离开频道后重新加入频道或者停止发送数据一段时间后恢复发送，均可能导致录制文件切片。具体情况详见[录制文件切片](/faq/quality-issues/recording-split)。
+- 单流模式下，如果用户中途离开频道后重新加入频道或者停止发送数据一段时间后恢复发送，均可能导致录制文件切片。具体情况详见[录制文件切片](/zh-CN/api-reference/faq/quality/record_split)。
 - 如果录制内容选择“仅录制视频”或“同时录制音视频”，但是 Web 端的用户没有发送视频，也会生成视频录制文件，录制黑屏。

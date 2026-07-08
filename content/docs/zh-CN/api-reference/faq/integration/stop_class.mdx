@@ -1,0 +1,35 @@
+---
+title: "如何结束灵动课堂？"
+---
+灵动课堂中老师端点击离开教室只是暂时离开教室，老师离开后房间状态不会变化。如果想要结束课堂，可参考如下步骤：
+
+1. 老师端调用 `leaveClassroom` 离开教室，示例代码如下：
+
+   ```javascript
+   this.classroomStore.connectionStore.leaveClassroom(LeaveReason.leave)
+   ```
+
+   此时，教室状态包含如下：
+
+   ```javascript
+   ClassState {
+       beforeClass = 0,  // Class is not started
+       ongoing = 1,      // Class is on going
+       afterClass = 2,   // Class is over, but Classroom stil exists
+       close = 3         // Classroom closed
+   }
+   ```
+
+2. 如果想要主动结束房间，需要调用更新房间状态接口 `RoomStore:updateClassState`，示例代码如下：
+
+   ```javascript
+   // 结束房间
+   this.classroomStore.roomStore.updateClassState(ClassState.close);
+   ```
+
+3. 如果想要后台结束课程，请调用灵动课堂后端 RESTful 接口[设置课堂状态](/doc/flexible-classroom/restful/api/api-classroom#设置课堂状态)，然后将课堂状态设置为以下值：
+
+   - `0`：未开始。
+   - `1`：开始。
+   - `2`：结束。课堂时间结束，但在拖堂时间内，用户可以加入课堂和在课堂内逗留。
+   - `3`：关闭。拖堂时间结束，课堂关闭，所有用户被踢出并无法再进入。

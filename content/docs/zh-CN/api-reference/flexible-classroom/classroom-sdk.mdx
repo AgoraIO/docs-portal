@@ -163,7 +163,7 @@ class AgoraEduLaunchConfig(val userName: String,
 | `mediaOptions` | 媒体流相关设置，包含媒体流加密，详见 [`AgoraEduMediaOptions`](#agoraedumediaoptions)。 |
 | `streamState` | 用于控制学生上台后是否发音视频流，详见 [`AgoraEduStreamState`](#agoraedustreamstate)。 |
 | `latencyLevel` | 观众端延时级别，详见 [`AgoraEduLatencyLevel`](#agoraedulatencylevel)。 |
-| `userProperties` | 由开发者自定义的用户属性。详见[如何设置自定义用户属性？](/faq/integration-issues/class-properties)。 |
+| `userProperties` | 由开发者自定义的用户属性。详见[如何设置自定义用户属性？](/zh-CN/api-reference/faq/integration/agora_class_custom_properties)。 |
 | `uiMode` | （非必填）课堂界面模式，详见 [`AgoraEduUIMode`](#agoraeduuimode)。 |
 
 
@@ -500,7 +500,7 @@ Classroom SDK 退出回调。
 | `duration` | 课堂持续时间，单位为秒，以第一个进入课堂的用户传入的参数为准。 |
 | `region` | 区域。建议设置为靠近你的课件或录制文件对象存储服务所在的区域，因为跨区域传输较大的静态资源会造成比较大的延迟。举例来说，如果你的 S3 服务在北美，则建议将 `region` 也设为北美区域。所有灵动课堂客户端必须设置相同的区域，否则无法互通。支持的区域详见 [`AgoraEduRegion`](#agoraeduregion)。 |
 | `mediaOptions` | 媒体流相关设置，包含媒体流加密，详见 [`AgoraEduMediaOptions`](#agoraedumediaoptions)。 |
-| `userProperties` | 由开发者自定义的用户属性，`Map<String, Any>`。详见[如何设置自定义用户属性？](/faq/integration-issues/class-properties)。 |
+| `userProperties` | 由开发者自定义的用户属性，`Map<String, Any>`。详见[如何设置自定义用户属性？](/zh-CN/api-reference/faq/integration/agora_class_custom_properties)。 |
 | `widgets` | `Map<String, AgoraWidgetConfig>`，传入 Widget ID 和 Widget Config。 |
 | `extApps` | `Map<String, AgoraExtAppConfig>`，传入 ExtApp ID 和 ExtApp Config。 |
 
@@ -825,7 +825,7 @@ export type LaunchOption = {
 | `recordUrl` | （选填）待录制 URL 地址，开发者需传入自己部署的网页地址，用于页面录制，例如 `https://cn.bing.com/recordUrl`。 |
 | `widgets` | （选填）扩展插件集合，扩展教室能力，详见[自定义插件](/zh-CN/solutions/flexible-classroom/advanced-features/widget)。 |
 | `courseWareList` | （选填）教育机构指派的课件配置，客户端无法编辑。详见 [`CourseWareList`](#coursewarelist)。配置后，SDK 会在启动课堂时将相应的课件从声网云盘组件中下载至本地。 |
-| `userFlexProperties` | （选填）由开发者自定义的用户属性。详见[如何设置自定义用户属性？](/faq/integration-issues/class-properties)。 |
+| `userFlexProperties` | （选填）由开发者自定义的用户属性。详见[如何设置自定义用户属性？](/zh-CN/api-reference/faq/integration/agora_class_custom_properties)。 |
 | `mediaOptions` | （选填）媒体流相关设置，包含媒体流加密、摄像头视频流编码参数配置和屏幕共享视频流编码参数配置，详见 `MediaOptions`。 |
 | `latencyLevel` | <Slot name="classroom-sdk-slot-37-20-1" /> |
 | `platform` | （选填）适用平台，可设为 `PC` 和 `H5`。 |
@@ -1428,7 +1428,7 @@ export type LaunchOption = {
 | `recordUrl` | （选填）待录制 URL 地址，开发者需传入自己部署的网页地址，用于页面录制，例如 `https://cn.bing.com/recordUrl`。 |
 | `widgets` | （选填）扩展插件集合，扩展教室能力，详见[自定义插件](/zh-CN/solutions/flexible-classroom/advanced-features/widget)。 |
 | `courseWareList` | （选填）教育机构指派的课件配置，客户端无法编辑。详见 [`CourseWareList`](#coursewarelist)。配置后，SDK 会在启动课堂时将相应的课件从声网云盘组件中下载至本地。 |
-| `userFlexProperties` | （选填）由开发者自定义的用户属性。详见[如何设置自定义用户属性？](/faq/integration-issues/class-properties)。 |
+| `userFlexProperties` | （选填）由开发者自定义的用户属性。详见[如何设置自定义用户属性？](/zh-CN/api-reference/faq/integration/agora_class_custom_properties)。 |
 | `mediaOptions` | （选填）媒体流相关设置，包含媒体流加密、摄像头视频流编码参数配置和屏幕共享视频流编码参数配置，详见 `MediaOptions`。 |
 | `latencyLevel` | <Slot name="classroom-sdk-slot-54-20-1" /> |
 | `platform` | （选填）适用平台，可设为 `PC` 和 `H5`。 |
