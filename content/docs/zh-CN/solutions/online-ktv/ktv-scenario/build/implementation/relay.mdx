@@ -1,0 +1,80 @@
+---
+title: "接唱"
+---
+
+<PlatformStructured platform="android">
+
+本文介绍如何实现歌曲接唱。在此之前，请确保你已参考[实现文档](/zh-CN/solutions/online-ktv/ktv-scenario/get-started/integrate-ktvapi)集成 KTV API。
+
+## 方案介绍
+
+接唱是一种音乐游戏玩法，玩家在每轮游戏中通过接唱歌曲来保持音乐的连贯性。游戏开始时播放歌曲，房间内参与游戏的人轮流接力演唱歌曲，其余玩家作为听众。接唱强调玩家间音乐的流畅连接，是一种富有娱乐性的音乐互动体验。
+
+默认情况下，由房主或指定的用户播放歌曲并发起演唱，其他参与游戏的人轮流进行接唱，不参与游戏的人为听众。
+
+接唱场景下存在三种角色：
+
+- **主唱**：默认为房主，也可以是指定的用户，负责播放音乐并发起演唱，实现逻辑等同于**合唱场景中的主唱**：主唱需要加入主频道，加载并播放歌曲，发布麦克风采集的音频流。此外，主唱还需要加入合唱子频道将人声同步给其他伴唱。
+- **伴唱**：房间内其他参与接唱游戏的人。实现逻辑等同于**合唱场景中的伴唱**：伴唱需要加入合唱子频道，加载并播放歌曲，发布麦克风采集的音频流。
+- **听众**：房间内不参与接唱游戏的人为听众。听众需要加入主频道，加载歌词。KTV API 模块内部控制听众订阅独唱者的人声和音乐的音频合流，同步独唱者的音乐播放进度，让歌词组件进入歌词滚动状态等逻辑。如果听众需要上麦聊天，可以更新媒体选项。
+
+下图为接唱方案的技术原理图：
+
+![接唱](/img/online-ktv/relay.png)
+
+## 接唱实现
+
+与[合唱方案](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/chorus)相比，接唱方案中仅需在 `KTVApiConfig` 中将 `KTVType` 设为 `SingRelay`（接唱场景），因此，你可以参考合唱方案来实现主唱和听众的逻辑。当轮到某位伴唱演唱时，该伴唱调用 `muteMic(false)` 打开麦克风进行演唱，其他伴唱调用 `muteMic(true)` 关闭麦克风即可。
+
+## API 参考
+
+本文集成步骤中使用如下 API：
+
+- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
+- [实时互动 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/rtc-api)
+
+## 相关文档
+
+- [快速实现](/zh-CN/solutions/online-ktv/ktv-scenario/get-started/integrate-ktvapi)
+- [合唱方案](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/chorus)
+- [歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文介绍如何实现歌曲接唱。在此之前，请确保你已参考[实现文档](/zh-CN/solutions/online-ktv/ktv-scenario/get-started/integrate-ktvapi)集成 KTV API。
+
+## 方案介绍
+
+接唱是一种音乐游戏玩法，玩家在每轮游戏中通过接唱歌曲来保持音乐的连贯性。游戏开始时播放歌曲，房间内参与游戏的人轮流接力演唱歌曲，其余玩家作为听众。接唱强调玩家间音乐的流畅连接，是一种富有娱乐性的音乐互动体验。
+
+默认情况下，由房主或指定的用户播放歌曲并发起演唱，其他参与游戏的人轮流进行接唱，不参与游戏的人为听众。
+
+接唱场景下存在三种角色：
+
+- **主唱**：默认为房主，也可以是指定的用户，负责播放音乐并发起演唱，实现逻辑等同于**合唱场景中的主唱**：主唱需要加入主频道，加载并播放歌曲，发布麦克风采集的音频流。此外，主唱还需要加入合唱子频道将人声同步给其他伴唱。
+- **伴唱**：房间内其他参与接唱游戏的人。实现逻辑等同于**合唱场景中的伴唱**：伴唱需要加入合唱子频道，加载并播放歌曲，发布麦克风采集的音频流。
+- **听众**：房间内不参与接唱游戏的人为听众。听众需要加入主频道，加载歌词。KTV API 模块内部控制听众订阅独唱者的人声和音乐的音频合流，同步独唱者的音乐播放进度，让歌词组件进入歌词滚动状态等逻辑。如果听众需要上麦聊天，可以更新媒体选项。
+
+下图为接唱方案的技术原理图：
+
+![接唱](/img/online-ktv/relay.png)
+
+## 接唱实现
+
+与[合唱方案](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/chorus)相比，接唱方案中仅需在 `KTVApiConfig` 中将 `KTVType` 设为 `SingRelay`（接唱场景），因此，你可以参考合唱方案来实现主唱和听众的逻辑。当轮到某位伴唱演唱时，该伴唱调用 `muteMic(false)` 打开麦克风进行演唱，其他伴唱调用 `muteMic(true)` 关闭麦克风即可。
+
+## API 参考
+
+本文集成步骤中使用如下 API：
+
+- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
+
+## 相关文档
+
+- [快速实现](/zh-CN/solutions/online-ktv/ktv-scenario/get-started/integrate-ktvapi)
+- [合唱方案](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/chorus)
+- [歌词打分组件](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)
+
+</PlatformStructured>

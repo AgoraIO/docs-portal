@@ -1,0 +1,852 @@
+---
+title: "服务端 API"
+---
+本文介绍获取声网内容中心的版权音乐所需的 RESTful API。
+
+获取版权音乐的具体步骤可参考[获取版权音乐](/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/get-music)。
+
+## 调用说明
+
+本节介绍调用 API 时的配额限制、数据格式及公共参数。
+
+:::warning[注意]
+声网 RESTful API 仅支持 HTTP 1.1 和 HTTP 2.0 协议。如果使用 HTTPS 连接，请确保使用 TLS 1.0、1.1 或 1.2 版本进行加密通信。使用其他协议版本可能导致连接失败。
+:::
+
+### 配额限制
+
+声网音乐内容中心服务 QPS（每秒请求数）默认限制为 700，歌曲检索 QPS 默认限制为 100。如需提升 QPS，请联系[技术支持](https://ticket.shengwang.cn)。
+
+### 数据格式
+
+所有的请求都发送给域名：`api.sd-rtn.com`。
+
+- 请求：请求的格式详见下面各个 API 中的示例
+- 响应：响应内容的格式为 JSON
+
+:::info[信息]
+所有的请求 URL 和请求包体内容都区分大小写。
+:::
+
+<a id="param"></a>
+### 公共参数
+
+内容中心 RESTful API 的公共参数及描述如下：
+
+#### 请求参数
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `appid` | （必填）String | 你的项目使用的 [App ID](https://doc.shengwang.cn/doc/rtc/android/get-started/enable-service#%E8%8E%B7%E5%8F%96-app-id)，该 App ID 需要已开通内容中心权限。 |
+| `requestId` | （必填）String | <Slot name="music-content-center-markdown-1-2-2" /> |
+
+<Slot for="music-content-center-markdown-1-2-2">
+
+本次请求的唯一标识。
+
+- 必须设置为 32 位字符串，支持大写字母、小写字母、数字、"_"（下划线）、"-"（中划线），不区分大小写。
+- 一个项目下 `requestId` 唯一。
+
+</Slot>
+
+#### 响应参数
+| 参数        | 类型   | 描述                                            |
+| :---------- | :----- | :---------------------------------------------- |
+| `code`      | Int64  | 响应状态码，`0` 表示请求成功。                  |
+| `msg`       | String | 返回消息名称，`ok` 表示请求成功。               |
+| `requestId` | String | 请求唯一标识，与请求包体中的 `requestId` 一致。 |
+| `ext`       | String | 预留字段。                                        |
+
+<a id="get"></a>
+## 功能
+### 获取曲库所有歌曲列表
+
+你可以调用该方法获取曲库中所有歌曲的列表。
+
+#### HTTP 请求
+
+- 方法：GET
+- 接入点：`cn/v1.0/projects/{appid}/ktv-service/api/serv/songs`
+
+**路径参数**
+
+`appid` ：详见[公共参数](#param)。
+
+**查询参数**
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | （必填）String | 本次请求的唯一标识。详见[公共参数](#param)。 |
+| `pageType` | （可选）Int64 | <Slot name="music-content-center-markdown-2-2-2" /> |
+| `pageCode` | （可选） Int64 | <Slot name="music-content-center-markdown-2-3-2" /> |
+| `size` | （可选）Int64 | 每页歌曲显示的最大数量。默认为 `10`，取值范围为 [1, 1000]。 |
+| `status` | （可选） Int64 | <Slot name="music-content-center-markdown-2-5-2" /> |
+| `vendorId` | （可选） Int64 | 歌曲版权使用区域：`5`：中国大陆 |
+| `highPartType` | （可选） Int64 | <Slot name="music-content-center-markdown-2-7-2" /> |
+| `option` | （可选）String | 扩展字段，JSON 字符串。目前支持通过 `tag` 参数筛选某一类别的歌曲。示例：`option={"tag":"1"}`。你可以通过[获取歌曲标签](#获取歌曲标签)来获取所有的歌曲标签类别。 |
+
+<Slot for="music-content-center-markdown-2-2-2">
+
+翻页方式：
+
+- `0`：（默认）下一页
+- `1`：上一页
+
+</Slot>
+
+<Slot for="music-content-center-markdown-2-3-2">
+
+作为翻页锚点的歌曲编号。
+
+- 第一次获取曲库无需设置该参数。
+- 默认为当前页歌曲列表第一首歌曲的编号。
+
+</Slot>
+
+<Slot for="music-content-center-markdown-2-5-2">
+
+歌曲状态：
+
+- `1`：（默认）已上架
+- `0`：已下架
+- `-1`：已删除
+- `9`：全部状态
+
+</Slot>
+
+<Slot for="music-content-center-markdown-2-7-2">
+
+副歌片段类型：
+
+- `0`：（默认）机器及人工校验的副歌片段
+- `1`：不需要副歌片段
+- `2`：机器校验的副歌片段
+- `3`：人工校验的副歌片段（推荐）
+
+</Slot>
+
+#### HTTP 响应
+
+如果响应状态码为 `0`，表示请求成功，响应包体中包含以下字段：
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `data` | JSON | 信息详情。 |
+| `msg` | String | 本次请求返回的消息。`ok` 表示请求成功。 |
+| `requestId` | String | 请求 ID。本次请求的唯一标识。 |
+| `ext` | String | 预留字段 |
+| `data.pageType` | Int64 | <Slot name="music-content-center-markdown-3-5-2" /> |
+| `data.pageCode` | Int64 | 翻页锚点的歌曲编号。 |
+| `data.size` | Int | 每页歌曲显示的最大数量。 |
+| `data.count` | Int | 本次请求返回的歌曲数量。 |
+| `data.list` | JSON Array | 当前曲库中所有的歌曲列表。 |
+| `data.list.songCode` | Int64 | 歌曲编号。 |
+| `data.list.name` | String | 歌曲名称。 |
+| `data.list.singer` | String | 歌手名称。 |
+| `data.list.poster` | String | 歌曲封面图片 URL。 |
+| `data.list.lyricType` | Number Array | <Slot name="music-content-center-markdown-3-14-2" /> |
+| `data.list.type` | Int64 | <Slot name="music-content-center-markdown-3-15-2" /> |
+| `data.list.duration` | Int64 | 歌曲时长（秒）。 |
+| `data.list.status` | Int64 | <Slot name="music-content-center-markdown-3-17-2" /> |
+| `data.list.updateTime` | Int64 | 歌曲更新的 Unix 时间戳（秒）。 |
+| `data.list.releaseTime` | String | 歌曲发布时间。 |
+| `data.list.vendorId` | Int64 | <Slot name="music-content-center-markdown-3-20-2" /> |
+| `data.list.pitchType` | Int64 | <Slot name="music-content-center-markdown-3-21-2" /> |
+| `data.list.highPartType` | Int64 | <Slot name="music-content-center-markdown-3-22-2" /> |
+| `data.list.highPart` | Array | 歌曲高潮片段。 |
+| `data.list.highPart.highStartTime` | Int64 | 歌曲高潮片段的开始时间点，单位毫秒。 |
+| `data.list.highPart.highEndTime` | Int64 | 歌曲高潮片段的结束时间点，单位毫秒。 |
+| `data.list.highPart.preludeDuration` | Int64 | 歌曲前奏的时长，单位毫秒。 |
+| `data.list.highPart.postludeDuration` | Int64 | 歌曲尾奏的时长，单位毫秒。 |
+| `data.list.qualityLevel` | Array | <Slot name="music-content-center-markdown-3-28-2" /> |
+| `data.list.tagIds` | Array | 歌曲标签类别对应的 ID。 |
+
+<Slot for="music-content-center-markdown-3-5-2">
+
+翻页方式：
+
+- `0`：下一页
+- `1`：上一页
+
+</Slot>
+
+<Slot for="music-content-center-markdown-3-14-2">
+
+歌词格式类型：
+
+- `0`：xml 格式
+- `1`：lrc 格式如果为空则表示没有歌词。
+
+</Slot>
+
+<Slot for="music-content-center-markdown-3-15-2">
+
+歌曲资源类型：
+
+- `1`：左声道伴奏，右声道原唱的单音轨歌曲。
+- `2`：只有伴唱的单音轨歌曲。
+- `3`：只有原唱的单音轨歌曲。
+- `4`：多音轨歌曲。
+
+</Slot>
+
+<Slot for="music-content-center-markdown-3-17-2">
+
+歌曲状态：
+
+- `1`：已上架
+- `0`：已下架
+- `-1`：已删除
+
+</Slot>
+
+<Slot for="music-content-center-markdown-3-20-2">
+
+歌曲版权使用区域：
+
+- `5`：中国大陆
+
+</Slot>
+
+<Slot for="music-content-center-markdown-3-21-2">
+
+歌曲是否支持演唱评分功能：
+
+- `1`：歌曲支持演唱评分功能
+- `2`：歌曲不支持演唱评分功能
+
+</Slot>
+
+<Slot for="music-content-center-markdown-3-22-2">
+
+副歌片段类型：
+
+- `0`：（默认）机器及人工校验的副歌片段
+- `1`：无副歌片段
+- `2`：机器校验的副歌片段
+- `3`：人工校验的副歌片段
+
+</Slot>
+
+<Slot for="music-content-center-markdown-3-28-2">
+
+码率：
+
+- 1：标清
+- 2：高清
+- 3：超高清（默认）
+
+</Slot>
+
+其他响应字段及说明详见[公共参数](#param)。如果返回的 HTTP 状态码非 `0`，表示请求失败。你可以参考[响应状态码汇总表](#code)了解可能的原因。
+
+#### 请求示例
+
+```shell
+curl 'https://api.agora.io/cn/v1.0/projects/{appid}/ktv-service/api/serv/songs?requestId=lzTZsruXVL3VUi2UVHHDTPE0PRvF8P4V&pageType=0&pageCode=6246262727281830&size=2&option={"tag":"1"}' \
+-H 'Authorization: {AuthorizationHeader}'
+```
+
+#### 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "requestId": "lzTZsruXVL3VUi2UVHHDTPE0PRvF8P4V",
+  "ext": "",
+  "data": {
+    "pageType": 0,
+    "size": 2,
+    "pageCode": 6246262727281830,
+    "count": 2,
+    "list": [
+      {
+        "songCode": 624626272728XXXX,
+        "name": "龙拳",
+        "singer": "周杰伦",
+        "poster": "https://accpic.sd-rtn.com/pic/release/jpg/1/7a8941/ChmFZ1S0immAVtSDAAODVRzMNHg454.jpg",
+        "duration": 274,
+        "type": 1,
+        "releaseTime": "2014/11/27 9:32",
+        "status": 1,
+        "updateTime": 1638141088,
+        "vendorId": 5,
+        "pitchType": 1,
+        "lyricType": [
+          0,
+          1
+        ],
+        "highPartType":3,
+        "highPart": [{
+          "highStartTime": 121122,
+          "highEndTime": 134213,
+          "preludeDuration": 5000,
+          "postludeDuration": 3000
+        }, {
+          "highStartTime": 154534,
+          "highEndTime": 162134,
+          "preludeDuration": 5000,
+          "postludeDuration": 3000
+        }],
+        "qualityLevel": [
+          1,
+          2,
+          3
+        ],
+        "tagIds":[
+          1,
+          3,
+          4
+        ],
+      },
+      {
+        "songCode": 624626272728XXXX,
+        "name": "最长的电影",
+        "singer": "周杰伦",
+        "poster": "https://accpic.sd-rtn.com/pic/release/jpg/1/7a8941/ChmFZ1S0immAVtSDAAODVRzMNHg454.jpg",
+        "duration": 230,
+        "lyricType": null,
+        "type": 1,
+        "releaseTime": "2014/11/27 9:32",
+        "status": 1,
+        "vendorId": 5,
+        "pitchType": 1,
+        "updateTime": 1635229782,
+        "highPartType":3,
+        "highPart": [{
+          "highStartTime": 121221,
+          "highEndTime": 132132,
+          "preludeDuration": 5000,
+          "postludeDuration": 3000
+        }, {
+          "highStartTime": 154534,
+          "highEndTime": 162134,
+          "preludeDuration": 5000,
+          "postludeDuration": 3000
+        }],
+        "qualityLevel": [
+          3,
+        ],
+        "tagIds": [],
+      }
+    ]
+  }
+}
+```
+
+### 获取增量歌曲列表
+你可以调用该方法定期查询曲库中增量的歌曲。建议每隔 1 小时查询一次。
+
+#### HTTP 请求
+
+- 方法：GET
+- 接入点：`cn/v1.0/projects/{appid}/ktv-service/api/serv/songs-incr`
+
+**路径参数**
+
+`appid` ：详见[公共参数](#param)。
+
+**查询参数**
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | （必填）String | 本次请求的唯一标识。详见[公共参数](#param)。 |
+| `lastUpdateTime` | （必填） Int64 | 最近一次更新曲库的 Unix 时间戳（秒）。 |
+| `page` | （可选） Int64 | 目标页编号。默认为 `1`。取值范围为 [1, (232-1)]。 |
+| `size` | （可选） Int64 | 目标页歌曲显示的最大数量。默认为 10，取值范围为 [1, 1000]。 |
+| `status` | （可选）Int | <Slot name="music-content-center-markdown-4-5-2" /> |
+| `vendorId` | （可选） Int64 | <Slot name="music-content-center-markdown-4-6-2" /> |
+| `highPartType` | （可选） Int64 | <Slot name="music-content-center-markdown-4-7-2" /> |
+| `option` | （可选）String | 扩展字段，JSON 字符串。目前支持通过 `tag` 参数筛选某一类别的歌曲。示例：`option={"tag":"1"}`。你可以通过[获取歌曲标签](#获取歌曲标签)来获取所有的歌曲标签类别。 |
+
+<Slot for="music-content-center-markdown-4-5-2">
+
+歌曲状态：
+
+- `1`：（默认）已上架
+- `0`：已下架
+- `-1`：已删除
+- `9`：全部状态
+
+</Slot>
+
+<Slot for="music-content-center-markdown-4-6-2">
+
+歌曲版权使用区域：
+
+- `5`：中国大陆
+
+</Slot>
+
+<Slot for="music-content-center-markdown-4-7-2">
+
+副歌片段类型：
+
+- `0`：（默认）机器及人工校验的副歌片段
+- `1`：不需要副歌片段
+- `2`：机器校验的副歌片段
+- `3`：人工校验的副歌片段（推荐）
+
+</Slot>
+
+**注意**
+
+- 调用该方法，你会得到指定页更新时间大于 `lastUpdateTime` 的歌曲列表。
+- 如果你是第一次调用该方法，声网建议你将 `lastUpdateTime` 设置为 `0`，即获取曲库全部歌曲列表；如果不是第一次调用该方法，声网建议你将 `lastUpdateTime` 设置为前一次调用该方法获得的响应字段中 `updateTime` 的最大值。
+- 你需要将每个 `page` 的 `lastUpdateTime` 设置为一致，否则会遗漏增量歌曲。
+
+#### HTTP 响应
+如果响应状态码为 `0`，表示请求成功，响应包体中包含以下字段：
+
+| 字段 | 类型 | 字段说明 |
+| --- | --- | --- |
+| `data` | JSON | 信息详情。 |
+| `msg` | String | 本次请求返回的消息，`ok` 表示请求成功。 |
+| `requestId` | String | 请求 ID。本次请求的唯一标识。 |
+| `ext` | String | 预留字段。 |
+| `data.page` | Int64 | 当前页编号。 |
+| `data.size` | Int64 | 当前页歌曲显示的最大数量。 |
+| `data.count` | Int64 | 本次请求返回的歌曲数量。 |
+| `data.list` | JSON Array | 本次请求的歌曲列表。 |
+| `data.list.songCode` | Int64 | 歌曲编号。 |
+| `data.list.name` | String | 歌曲名称。 |
+| `data.list.singer` | String | 歌手名称。 |
+| `data.list.poster` | String | 歌曲封面图片 URL。 |
+| `data.list.lyricType` | Number Array | <Slot name="music-content-center-markdown-5-13-2" /> |
+| `data.list.type` | Int | <Slot name="music-content-center-markdown-5-14-2" /> |
+| `data.list.duration` | Int64 | 歌曲时长（秒）。 |
+| `data.list.status` | Int | <Slot name="music-content-center-markdown-5-16-2" /> |
+| `data.list.updateTime` | Int64 | 歌曲更新的 Unix 时间戳（秒）。 |
+| `data.list.releaseTime` | String | 歌曲发布时间。 |
+| `data.list.vendorId` | Int64 | <Slot name="music-content-center-markdown-5-19-2" /> |
+| `data.list.highPartType` | Int64 | <Slot name="music-content-center-markdown-5-20-2" /> |
+| `data.list.pitchType` | Int64 | <Slot name="music-content-center-markdown-5-21-2" /> |
+| `data.list.highPart` | Array | 歌曲高潮片段。 |
+| `data.list.highPart.highStartTime` | Int64 | 歌曲高潮片段的开始时间点，单位毫秒。 |
+| `data.list.highPart.highEndTime` | Int64 | 歌曲高潮片段的结束时间点，单位毫秒。 |
+| `data.list.highPart.preludeDuration` | Int64 | 歌曲前奏的时长，单位毫秒。 |
+| `data.list.highPart.postludeDuration` | Int64 | 歌曲尾奏的时长，单位毫秒。 |
+| `data.list.qualityLevel` | Array | <Slot name="music-content-center-markdown-5-27-2" /> |
+| `data.list.tagIds` | Array | 歌曲标签类别对应的 ID。 |
+
+<Slot for="music-content-center-markdown-5-13-2">
+
+歌词格式类型：
+
+- `0`：xml 格式
+- `1`：lrc 格式如果为空则表示没有歌词。
+
+</Slot>
+
+<Slot for="music-content-center-markdown-5-14-2">
+
+歌曲资源类型：
+
+- `1`：左声道伴奏，右声道原唱的单音轨歌曲。
+- `2`：只有伴唱的单音轨歌曲。
+- `3`：只有原唱的单音轨歌曲。
+- `4`：多音轨歌曲。
+
+</Slot>
+
+<Slot for="music-content-center-markdown-5-16-2">
+
+歌曲状态：
+
+- `1`：已上架
+- `0`：已下架
+- `-1`：已删除
+
+</Slot>
+
+<Slot for="music-content-center-markdown-5-19-2">
+
+歌曲版权使用区域：
+
+- `5`：中国大陆
+
+</Slot>
+
+<Slot for="music-content-center-markdown-5-20-2">
+
+副歌片段类型：
+
+- `0`：（默认）机器及人工校验的副歌片段
+- `1`：无副歌片段
+- `2`：机器校验的副歌片段
+- `3`：人工校验的副歌片段
+
+</Slot>
+
+<Slot for="music-content-center-markdown-5-21-2">
+
+歌曲是否支持演唱评分功能：
+
+- `1`：歌曲支持演唱评分功能
+- `2`：歌曲不支持演唱评分功能
+
+</Slot>
+
+<Slot for="music-content-center-markdown-5-27-2">
+
+码率：
+
+- 1：标清
+- 2：高清
+- 3：超高清（默认）
+
+</Slot>
+
+其他响应字段及说明详见[公共参数](#param)。
+如果返回的 HTTP 状态码非 `0`，表示请求失败。你可以参考[响应状态码汇总表](#code)了解可能的原因。
+
+#### 请求示例
+
+```shell
+curl 'https://api.agora.io/cn/v1.0/projects/{appid}/ktv-service/api/serv/songs-incr?requestId=lzTZsruXVL3VUi2UVHHDTPE0PRvF8P4V&pageType=0&lastUpdateTime=1635229837&page=1&size=2&option={"tag":"1"}' \
+-H 'Authorization: {AuthorizationHeader}'
+```
+
+#### 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "requestId": "lzTZsruXVL3VUi2UVHHDTPE0PRvF8P4V",
+  "ext": "",
+  "data": {
+    "size": 2,
+    "page": 1,
+    "count": 2,
+    "list": [{
+      "songCode": 624626272729XXXX,
+      "name": "没有目的地爱了",
+      "singer": "杨千嬅",
+      "poster": "https://accpic.sd-rtn.com/pic/release/jpg/1/a35420/ChmFaVS9H2uARX7BAAFV0nstAAM724.jpg",
+      "duration": 267,
+      "lyricType": null,
+      "type": 2,
+      "releaseTime": "2014/12/15 22:13",
+      "vendorId": 5,
+      "pitchType": 1,
+      "tagIds":[
+        1,
+        3,
+        4
+      ],
+      "status": 1,
+      "updateTime": 1635229838,
+      "highPartType":3,
+      "highPart": [{
+        "highStartTime": 121221,
+        "highEndTime": 132132,
+        "preludeDuration": 5000,
+        "postludeDuration": 3000
+      }, {
+        "highStartTime": 154534,
+        "highEndTime": 162134,
+        "preludeDuration": 5000,
+        "postludeDuration": 3000
+      }],
+    }, {
+      "songCode": 624626272729XXXX,
+      "name": "热血青年",
+      "singer": "杨千嬅",
+      "poster": "https://accpic.sd-rtn.com/pic/release/jpg/1/a35420/ChmFaVS9H2uARX7BAAFV0nstAAM724.jpg",
+      "duration": 411,
+      "lyricType": [
+        0
+      ],
+      "type": 1,
+      "releaseTime": "2015/1/12 11:00",
+      "vendorId": 5,
+      "pitchType": 1,
+      "tagIds": [],
+      "status": 1,
+      "updateTime": 1635229838,
+      "highPartType":3,
+      "highPart": [{
+        "highStartTime": 121221,
+        "highEndTime": 132132,
+        "preludeDuration": 5000,
+        "postludeDuration": 3000
+      }, {
+        "highStartTime": 154534,
+        "highEndTime": 162134,
+        "preludeDuration": 5000,
+        "postludeDuration": 3000
+      }],
+    }]
+  }
+}
+```
+
+### 获取热歌榜单类型
+
+你可以调用该方法获取热歌榜单名称和类型。
+
+#### HTTP 请求
+
+- 方法：GET
+- 接入点：`/cn/v1.0/projects/{appid}/ktv-service/api/serv/hot-type`
+
+**路径参数**
+
+`appid` ：详见[公共参数](#param)。
+
+**查询参数**
+
+| 参数        | 类型           | 描述                                         |
+| :---------- | :------------- | :------------------------------------------- |
+| `requestId` | （必填）String | 本次请求的唯一标识。详见[公共参数](#param)。 |
+
+#### HTTP 响应
+
+如果响应状态码为 `0`，表示请求成功，响应包体中包含以下字段：
+
+| 字段                | 类型       | 字段说明                                        |
+| :------------------ | :--------- | :---------------------------------------------- |
+| `code`              | Int64      | 响应状态码，`0` 表示请求成功。                  |
+| `msg`               | String     | 返回消息名称，`ok` 表示请求成功。               |
+| `requestId`         | String     | 请求唯一标识，与请求包体中的 `requestId` 一致。 |
+| `ext`               | String     | 预留字段。                                      |
+| `data`              | JSON       | 信息详情。                                      |
+| `data.list`         | JSON Array | 热歌榜单信息列表。                              |
+| `data.list.hotName` | String     | 热歌榜单名称。                                  |
+| `data.list.hotType` | Int64      | 热歌榜单类型。                                  |
+
+其他响应字段及说明详见[公共参数](#param)。
+如果返回的 HTTP 状态码非 `0`，表示请求失败。你可以参考[状态码汇总表](#code)了解可能的原因。
+
+#### 请求示例
+
+```shell
+curl 'https://api.sd-rtn.com/cn/v1.0/projects/{appid}/ktv-service/api/serv/hot-type?requestId=lzTZsruXVL3VUi2UVHHDTPE0PRvF8P4V' \
+-H 'Authorization: {AuthorizationHeader}'
+```
+
+#### 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "requestId": "lzTZsruXVL3VUi2UVHHDTPE0PRvF8P4V",
+  "ext": "",
+  "data": {
+    "list":[{
+      "hotName": "声网榜单",
+      "hotType": 1
+    }, {
+      "hotName": "新歌榜",
+      "hotType": 2
+    }]
+  }
+}
+```
+
+### 获取歌曲标签类别
+
+你可以通过调用该方法获取所有歌曲标签的类别，然后根据标签类别来筛选同类型的歌曲。
+
+#### HTTP 请求
+
+- 方法：GET
+- 接入点：`/cn/v1.0/projects/{appid}/ktv-service/api/serv/tag-category`
+
+**路径参数**
+
+`appid` ：详见[公共参数](#param)。
+
+**查询参数**
+
+| 参数        | 类型           | 描述                                                         |
+| :---------- | :------------- | :----------------------------------------------------------- |
+| `requestId` | （必填）String | 本次请求的唯一标识。详见[公共参数](#param)。                 |
+
+#### HTTP 响应
+
+如果响应状态码为 `0`，表示请求成功，响应包体中包含以下字段：
+
+| 字段                               | 类型       | 字段说明                                                     |
+| :--------------------------------- | :--------- | :----------------------------------------------------------- |
+| `data`                             | JSON       | 信息详情。                                                   |
+| `msg`                              | String     | 返回消息名称，`ok` 表示请求成功。                            |
+| `requestId`                        | String     | 请求唯一标识，与请求包体中的 `requestId` 一致。              |
+| `ext`       | String | 预留字段。                                        |
+| `data.list`                        | JSON Array | 当前曲库中所有的歌曲列表。                                   |
+|`data.list.tagCategoryId`|Int64|歌曲标签类别对应的 ID。|
+|`data.list.tagCategoryName`|String|歌曲标签类别，目前所有类别包括：情绪、曲风、场景、语言、年代。|
+
+其他响应字段及说明详见[公共参数](#param)。
+如果返回的 HTTP 状态码非 `0`，表示请求失败。你可以参考[状态码汇总表](#code)了解可能的原因。
+
+#### 请求示例
+
+```shell
+curl 'https://api.agora.io/cn/v1.0/projects/{appid}/ktv-service/api/serv/tag-category?requestId=lzTZsruXVL3VUi2UVHHDTPE0PRvF8P4V' \
+-H 'Authorization: {AuthorizationHeader}'
+```
+
+#### 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "requestId": "lzTZsruXVL3VUi2UVHHDTPE0PRvF8P4V",
+  "ext": "",
+  "data": {
+    "list": [{
+      "tagCategoryId": 1,
+      "tagCategoryName": "情绪"
+    }, {
+      "tagCategoryId": 2,
+      "tagCategoryName": "曲风"
+    }, {
+      "tagCategoryId": 3,
+      "tagCategoryName": "场景"
+    }, {
+      "tagCategoryId": 4,
+      "tagCategoryName": "语言"
+    }, {
+      "tagCategoryId": 5,
+      "tagCategoryName": "年代"
+    }]
+  }
+}
+```
+
+### 获取指定标签类别下详细分类
+调用[获取歌曲标签类别](#获取歌曲标签类别)方法获取歌曲类别对应的 ID 后，你可以通过此方法来获取某一类别下的详细分类。
+
+#### HTTP 请求
+
+- 方法：GET
+- 接入点：`/cn/v1.0/projects/{appid}/ktv-service/api/serv/tag`
+
+**路径参数**
+
+`appid` ：详见[公共参数](#param)。
+
+**查询参数**
+
+| 参数        | 类型           | 描述                                                         |
+| :---------- | :------------- | :----------------------------------------------------------- |
+| `requestId` | （必填）String | 本次请求的唯一标识。详见[公共参数](#param)。                 |
+|`tagCategoryId`|（必填）Int64|歌曲标签类别对应的 ID，可通过[获取歌曲标签类别](#获取歌曲标签类别)方法得知。|
+
+#### HTTP 响应
+
+如果响应状态码为 `0`，表示请求成功，响应包体中包含以下字段：
+
+| 字段                               | 类型       | 字段说明                                                     |
+| :--------------------------------- | :--------- | :----------------------------------------------------------- |
+| `data`                             | JSON       | 信息详情。                                                   |
+| `msg`                              | String     | 返回消息名称，`ok` 表示请求成功。                            |
+| `requestId`                        | String     | 请求唯一标识，与请求包体中的 `requestId` 一致。              |
+| `ext`       | String | 预留字段。                                        |
+| `data.list`                        | JSON Array | 当前曲库中所有的歌曲列表。                                   |
+|`data.list.tagId`|Int64|歌曲标签类别对应的 ID。|
+|`data.list.tagName`|String|歌曲标签类别下的详细分类。|
+
+#### 请求示例
+
+```shell
+curl 'https://api.agora.io/cn/v1.0/projects/{appid}/ktv-service/api/serv/tags?requestId=lzTZsruXVL3VUi2UVHHDTPE0PRvF8P4V&tagCategoryId=2' \
+-H 'Authorization: {AuthorizationHeader}'
+```
+
+#### 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "requestId": "lzTZsruXVL3VUi2UVHHDTPE0PRvF8P4V",
+  "ext": "",
+  "data": {
+    "list": [{
+      "tagId": 1,
+      "tagName": "动感"
+    }, {
+      "tagId": 1,
+      "tagName": "悲伤"
+    }, {
+      "tagId": 1,
+      "tagName": "宁静"
+    }, {
+      "tagId": 1,
+      "tagName": "甜蜜"
+    }]
+  }
+}
+```
+
+其他响应字段及说明详见[公共参数](#param)。
+如果返回的 HTTP 状态码非 `0`，表示请求失败。你可以参考[状态码汇总表](#code)了解可能的原因。
+
+## 保障 REST 服务高可用
+
+为保障 REST 服务的高可用，避免因区域网络故障造成的服务不可用，声网提供切换域名的方案。
+
+### 切换域名操作
+
+1. 根据你的业务服务器所在地设置主域名：
+    - 业务服务器 DNS 地址位于中国大陆时，设置主域名为 api.sd-rtn.com。
+    - 业务服务器 DNS 地址位于中国大陆以外的国家或地区时，设置主域名为 api.agora.io。
+2. 当使用主域名发起 RESTful API 请求失败时，使用该域名重试一次。
+3. 如果步骤 2 的重试依然失败，使用备用的主域名重试：
+    - 如果当前设置的主域名为 api.sd-rtn.com，备用的主域名指 api.agora.io。
+    - 如果当前设置的主域名为 api.agora.io，备用的主域名指 api.sd-rtn.com。
+4. 如果步骤 3 的重试依然失败，使用与当前解析区域相邻的区域域名重试。
+    举例说明：假设你的业务服务器位于欧洲，你设置主域名为 api.agora.io，而且业务服务器解析主域名解析到德国。德国位于欧洲中部 api-eu-central-1.agora.io，查域名信息表可知，相邻区域为欧洲西部 api-eu-west-1.agora.io 或 api-eu-west-1.sd-rtn.com。因此，出现网络故障且步骤 2、3 的重试失败时，请使用 api-eu-west-1.agora.io 或 api-eu-west-1.sd-rtn.com 域名重试。
+
+### 注意事项
+
+- 为避免重试请求过于频繁，超过声网服务所规定的 QPS，声网建议你使用退避策略。例如，第一次等待 1 秒后重试、第二次等待 3 秒后重试、第三次等待 6 秒后重试。
+- 如果是网络问题而非 DNS 解析域名问题导致的请求失败，声网建议你跳过步骤 3，直接进行步骤 4。
+- 切换至区域域名前，请确保你使用的业务（例如，云端录制、云信令、频道管理等 REST 服务）在该区域有部署服务。
+
+### 域名信息
+
+| 主域名 | 区域域名 | 地理区域 |
+| --- | --- | --- |
+| api.sd-rtn.com | api-us-west-1.sd-rtn.com | 美国西部 |
+|  | api-us-east-1.sd-rtn.com | 美国东部 |
+|  | api-ap-southeast-1.sd-rtn.com | 亚太东南 |
+|  | api-ap-northeast-1.sd-rtn.com | 亚太东北 |
+|  | api-eu-west-1.sd-rtn.com | 欧洲西部 |
+|  | api-eu-central-1.sd-rtn.com | 欧洲中部 |
+|  | api-cn-east-1.sd-rtn.com | 中国华东 |
+|  | api-cn-north-1.sd-rtn.com | 中国华北 |
+| api.agora.io | api-us-west-1.agora.io | 美国西部 |
+|  | api-us-east-1.agora.io | 美国东部 |
+|  | api-ap-southeast-1.agora.io | 亚太东南 |
+|  | api-ap-northeast-1.agora.io | 亚太东北 |
+|  | api-eu-west-1.agora.io | 欧洲西部 |
+|  | api-eu-central-1.agora.io | 欧洲中部 |
+|  | api-cn-east-1.agora.io | 中国华东 |
+|  | api-cn-north-1.agora.io | 中国华北 |
+
+## 参考信息
+
+本节介绍其他相关信息。
+
+<a id="code"></a>
+### 状态码汇总表
+
+HTTP 请求成功后，你还需要对照响应包体里的 `code` 字段查看实际响应状态。详细说明见下表。
+
+| code   | 说明                                                         | 建议措施                                                 |
+| :----- | :----------------------------------------------------------- | -------------------------------------------------------- |
+| `0 `   | 正常。                                                       | \                                                        |
+| `1000` | 查询数据结果为空。                                           | \                                                        |
+| `1001` | 操作异常。                                                   | 请稍后重试。                                             |
+| `1002` | [App ID](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service#%E8%8E%B7%E5%8F%96-app-id) 异常，如过期、关闭，该 App ID  未开通内容中心等，或白名单中的 IP 地址不合法。 | 请检查你的 IP 地址并确保你的 App ID 已开通内容中心权限。 |
+| `1003` | 系统异常。                                                   | 请[联系技术支持](https://ticket.shengwang.cn)。          |
+| `1004` | 系统繁忙。                                                   | 请稍后再试。                                             |
+| `1005` | 参数错误。                                                   | 请检查你的参数设置并重试。                               |
+| `1008` | 没有该歌曲资源权限。                                         | 请[联系技术支持](https://ticket.shengwang.cn)开通权限。  |
+| `1009` | 该歌曲资源已下架。                                           | 请定期检查歌曲资源状态。                                 |

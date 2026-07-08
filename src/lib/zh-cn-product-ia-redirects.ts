@@ -69,11 +69,11 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/marketplace/integrate-extensions/faceunity-ar':
     '/zh-CN/realtime-media/marketplace/build/integrate-extensions/faceunity-ar',
   'realtime-media/marketplace/integrate-extensions/faceunity-ar-api':
-    '/zh-CN/realtime-media/marketplace/build/integrate-extensions/faceunity-ar-api',
+    '/zh-CN/realtime-media/marketplace/reference/faceunity-ar-api',
   'realtime-media/marketplace/integrate-extensions/iflytek-asr':
     '/zh-CN/realtime-media/marketplace/build/integrate-extensions/iflytek-asr',
   'realtime-media/marketplace/integrate-extensions/iflytek-asr-api':
-    '/zh-CN/realtime-media/marketplace/build/integrate-extensions/iflytek-asr-api',
+    '/zh-CN/realtime-media/marketplace/reference/iflytek-asr-api',
   'realtime-media/marketplace/integrate-extensions/kivisense-beautify':
     '/zh-CN/realtime-media/marketplace/build/integrate-extensions/kivisense-beautify',
   'realtime-media/marketplace/integrate-extensions/netease-yidun-video-moderation':
@@ -83,7 +83,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/marketplace/integrate-extensions/sensetime-ar':
     '/zh-CN/realtime-media/marketplace/build/integrate-extensions/sensetime-ar',
   'realtime-media/marketplace/integrate-extensions/sensetime-ar-api':
-    '/zh-CN/realtime-media/marketplace/build/integrate-extensions/sensetime-ar-api',
+    '/zh-CN/realtime-media/marketplace/reference/sensetime-ar-api',
   'realtime-media/marketplace/integrate-extensions/shengwang-ai-meeting-notes':
     '/zh-CN/realtime-media/marketplace/build/integrate-extensions/shengwang-ai-meeting-notes',
   'realtime-media/marketplace/integrate-extensions/shengwang-ai-meeting-notes-api':
@@ -101,7 +101,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/media-pull/best-practices/rest-availability':
     '/zh-CN/realtime-media/media-pull/build/optimize-and-operate/rest-availability',
   'realtime-media/media-pull/get-started/call-api':
-    '/zh-CN/realtime-media/media-pull/reference/call-api',
+    '/zh-CN/realtime-media/media-pull/build/setup-and-access/call-api',
   'realtime-media/media-pull/get-started/enable-service':
     '/zh-CN/realtime-media/media-pull/build/setup-and-access/enable-service',
   'realtime-media/media-pull/overview/billing':
@@ -131,7 +131,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/media-push/best-practices/rest-availability':
     '/zh-CN/realtime-media/media-push/build/optimize-and-operate/rest-availability',
   'realtime-media/media-push/get-started/call-api':
-    '/zh-CN/realtime-media/media-push/reference/call-api',
+    '/zh-CN/realtime-media/media-push/build/setup-and-access/call-api',
   'realtime-media/media-push/get-started/enable-service':
     '/zh-CN/realtime-media/media-push/build/setup-and-access/enable-service',
   'realtime-media/media-push/overview/billing':
@@ -163,83 +163,83 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/media-push/webhook/ncs-events':
     '/zh-CN/realtime-media/media-push/reference/ncs-events',
   'realtime-media/online-ktv/auikaraoke/advanced-features/lyrics-scoring':
-    '/zh-CN/realtime-media/online-ktv/auikaraoke/build/extend-karaoke/lyrics-scoring',
+    '/zh-CN/solutions/online-ktv/auikaraoke/build/extend-karaoke/lyrics-scoring',
   'realtime-media/online-ktv/auikaraoke/advanced-features/lyrics-syncing':
-    '/zh-CN/realtime-media/online-ktv/auikaraoke/build/extend-karaoke/lyrics-syncing',
+    '/zh-CN/solutions/online-ktv/auikaraoke/build/extend-karaoke/lyrics-syncing',
   'realtime-media/online-ktv/auikaraoke/api/auikaraoke-api':
-    '/zh-CN/realtime-media/online-ktv/auikaraoke/reference/auikaraoke-api',
+    '/zh-CN/solutions/online-ktv/auikaraoke/reference/auikaraoke-api',
   'realtime-media/online-ktv/auikaraoke/api/lyrics-api':
-    '/zh-CN/realtime-media/online-ktv/auikaraoke/reference/lyrics-api',
+    '/zh-CN/solutions/online-ktv/auikaraoke/reference/lyrics-api',
   'realtime-media/online-ktv/auikaraoke/get-started/enable-service':
-    '/zh-CN/realtime-media/online-ktv/auikaraoke/build/setup-and-access/enable-service',
+    '/zh-CN/solutions/online-ktv/auikaraoke/build/setup-and-access/enable-service',
   'realtime-media/online-ktv/auikaraoke/get-started/run-github-project-backend':
-    '/zh-CN/realtime-media/online-ktv/auikaraoke/build/manage-karaoke/run-github-project-backend',
+    '/zh-CN/solutions/online-ktv/auikaraoke/build/manage-karaoke/run-github-project-backend',
   'realtime-media/online-ktv/auikaraoke/overview/billing':
-    '/zh-CN/realtime-media/online-ktv/auikaraoke/reference/billing',
+    '/zh-CN/solutions/online-ktv/auikaraoke/reference/billing',
   'realtime-media/online-ktv/auikaraoke/overview/introduction':
-    '/zh-CN/realtime-media/online-ktv/auikaraoke',
+    '/zh-CN/solutions/online-ktv/auikaraoke',
   'realtime-media/online-ktv/auikaraoke/overview/solution-compare':
-    '/zh-CN/realtime-media/online-ktv/auikaraoke/reference/solution-compare',
+    '/zh-CN/solutions/online-ktv/auikaraoke/reference/solution-compare',
   'realtime-media/online-ktv/auikaraoke/overview/uikitkaraoke':
-    '/zh-CN/realtime-media/online-ktv/auikaraoke/build/manage-karaoke/uikitkaraoke',
+    '/zh-CN/solutions/online-ktv/auikaraoke/build/manage-karaoke/uikitkaraoke',
   'realtime-media/online-ktv/auikaraoke/resources':
-    '/zh-CN/realtime-media/online-ktv/auikaraoke/reference/downloads',
+    '/zh-CN/solutions/online-ktv/auikaraoke/reference/downloads',
   'realtime-media/online-ktv/ktv-scenario/advanced-features/get-music':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/get-music',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/get-music',
   'realtime-media/online-ktv/ktv-scenario/advanced-features/lyrics-scoring':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring',
   'realtime-media/online-ktv/ktv-scenario/advanced-features/lyrics-syncing':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-syncing',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-syncing',
   'realtime-media/online-ktv/ktv-scenario/api/ktv-api':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api',
   'realtime-media/online-ktv/ktv-scenario/api/lyrics-api':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/lyrics-api',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/reference/lyrics-api',
   'realtime-media/online-ktv/ktv-scenario/api/music-content-center':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/music-content-center',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center',
   'realtime-media/online-ktv/ktv-scenario/api/rtc-api':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/rtc-api',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/reference/rtc-api',
   'realtime-media/online-ktv/ktv-scenario/get-started/enable-service':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/build/setup-and-access/enable-service',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/build/setup-and-access/enable-service',
   'realtime-media/online-ktv/ktv-scenario/implementation/chorus':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/chorus',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/chorus',
   'realtime-media/online-ktv/ktv-scenario/implementation/gaming':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/gaming',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/gaming',
   'realtime-media/online-ktv/ktv-scenario/implementation/grand-chorus':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/grand-chorus',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/grand-chorus',
   'realtime-media/online-ktv/ktv-scenario/implementation/relay':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/relay',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/relay',
   'realtime-media/online-ktv/ktv-scenario/implementation/solo':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/solo',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/solo',
   'realtime-media/online-ktv/ktv-scenario/overview/billing':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/billing',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/reference/billing',
   'realtime-media/online-ktv/ktv-scenario/overview/introduction':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario',
+    '/zh-CN/solutions/online-ktv/ktv-scenario',
   'realtime-media/online-ktv/ktv-scenario/overview/solution-compare':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/solution-compare',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/reference/solution-compare',
   'realtime-media/online-ktv/ktv-scenario/resources':
-    '/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/downloads',
+    '/zh-CN/solutions/online-ktv/ktv-scenario/reference/downloads',
   'realtime-media/online-ktv/online-ktv-sdk/advanced-features/get-music':
-    '/zh-CN/realtime-media/online-ktv/online-ktv-sdk/build/extend-karaoke/get-music',
+    '/zh-CN/solutions/online-ktv/online-ktv-sdk/build/extend-karaoke/get-music',
   'realtime-media/online-ktv/online-ktv-sdk/advanced-features/lyrics-scoring':
-    '/zh-CN/realtime-media/online-ktv/online-ktv-sdk/build/extend-karaoke/lyrics-scoring',
+    '/zh-CN/solutions/online-ktv/online-ktv-sdk/build/extend-karaoke/lyrics-scoring',
   'realtime-media/online-ktv/online-ktv-sdk/advanced-features/lyrics-syncing':
-    '/zh-CN/realtime-media/online-ktv/online-ktv-sdk/build/extend-karaoke/lyrics-syncing',
+    '/zh-CN/solutions/online-ktv/online-ktv-sdk/build/extend-karaoke/lyrics-syncing',
   'realtime-media/online-ktv/online-ktv-sdk/api/lyrics-api':
-    '/zh-CN/realtime-media/online-ktv/online-ktv-sdk/reference/lyrics-api',
+    '/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/lyrics-api',
   'realtime-media/online-ktv/online-ktv-sdk/api/music-content-center':
-    '/zh-CN/realtime-media/online-ktv/online-ktv-sdk/reference/music-content-center',
+    '/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/music-content-center',
   'realtime-media/online-ktv/online-ktv-sdk/api/rtc-api':
-    '/zh-CN/realtime-media/online-ktv/online-ktv-sdk/reference/rtc-api',
+    '/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/rtc-api',
   'realtime-media/online-ktv/online-ktv-sdk/get-started/enable-service':
-    '/zh-CN/realtime-media/online-ktv/online-ktv-sdk/build/setup-and-access/enable-service',
+    '/zh-CN/solutions/online-ktv/online-ktv-sdk/build/setup-and-access/enable-service',
   'realtime-media/online-ktv/online-ktv-sdk/overview/billing':
-    '/zh-CN/realtime-media/online-ktv/online-ktv-sdk/reference/billing',
+    '/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/billing',
   'realtime-media/online-ktv/online-ktv-sdk/overview/introduction':
-    '/zh-CN/realtime-media/online-ktv/online-ktv-sdk',
+    '/zh-CN/solutions/online-ktv/online-ktv-sdk',
   'realtime-media/online-ktv/online-ktv-sdk/overview/solution-compare':
-    '/zh-CN/realtime-media/online-ktv/online-ktv-sdk/reference/solution-compare',
+    '/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/solution-compare',
   'realtime-media/online-ktv/online-ktv-sdk/resources':
-    '/zh-CN/realtime-media/online-ktv/online-ktv-sdk/reference/downloads',
+    '/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/downloads',
   'realtime-media/recording/cloud-recording/api/reference':
     '/zh-CN/realtime-media/recording/cloud-recording/reference/api-reference',
   'realtime-media/recording/cloud-recording/best-practices/checklist':
@@ -327,7 +327,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording/local-server-recording/legacy/raw-data':
     '/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/raw-data',
   'realtime-media/recording/local-server-recording/legacy/record-by-api':
-    '/zh-CN/realtime-media/recording/local-server-recording/reference/record-by-api',
+    '/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/record-by-api',
   'realtime-media/recording/local-server-recording/legacy/record-by-cmd':
     '/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/record-by-cmd',
   'realtime-media/recording/local-server-recording/legacy/restore-files':
@@ -551,7 +551,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtc/experimental-features/high-quality-video':
     '/zh-CN/realtime-media/rtc/build/video/experimental-features/high-quality-video',
   'realtime-media/rtc/get-started/call-api':
-    '/zh-CN/realtime-media/rtc/reference/call-api',
+    '/zh-CN/realtime-media/rtc/build/setup-and-access/call-api',
   'realtime-media/rtc/get-started/enable-service':
     '/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service',
   'realtime-media/rtc/overview/billing':
@@ -600,7 +600,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/realtime-media/rtm/reference/release-notes',
   'realtime-media/rtm/resources':
     '/zh-CN/realtime-media/rtm/reference/downloads',
-  'realtime-media/rtm/security': '/zh-CN/realtime-media/rtm/reference/security',
+  'realtime-media/rtm/security': '/zh-CN/introduction/security/rtm-sdk',
   'realtime-media/rtm/sunset-policy':
     '/zh-CN/realtime-media/rtm/reference/sunset-policy',
   'realtime-media/rtm/user-guide/channel/channel-basic':
@@ -626,7 +626,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtm/user-guide/message/serialized':
     '/zh-CN/realtime-media/rtm/build/manage-messages/serialized',
   'realtime-media/rtm/user-guide/presence/event':
-    '/zh-CN/realtime-media/rtm/build/manage-presence/event',
+    '/zh-CN/realtime-media/rtm/reference/presence-events',
   'realtime-media/rtm/user-guide/presence/presence-basic':
     '/zh-CN/realtime-media/rtm/build/manage-presence/presence-basic',
   'realtime-media/rtm/user-guide/presence/temporary-user-state':
@@ -648,7 +648,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtm/user-guide/storage/channel-metadata':
     '/zh-CN/realtime-media/rtm/build/manage-metadata/channel-metadata',
   'realtime-media/rtm/user-guide/storage/event':
-    '/zh-CN/realtime-media/rtm/build/manage-metadata/event',
+    '/zh-CN/realtime-media/rtm/reference/metadata-events',
   'realtime-media/rtm/user-guide/storage/user-metadata':
     '/zh-CN/realtime-media/rtm/build/manage-metadata/user-metadata',
   'realtime-media/rtm/user-guide/token/token-generation':
@@ -656,7 +656,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtm/user-guide/token/user-authentication':
     '/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication',
   'realtime-media/rtm/user-guide/topic/event':
-    '/zh-CN/realtime-media/rtm/build/manage-topics/event',
+    '/zh-CN/realtime-media/rtm/reference/topic-events',
   'realtime-media/rtm/user-guide/topic/topic-basic':
     '/zh-CN/realtime-media/rtm/build/manage-topics/topic-basic',
   'realtime-media/rtm/user-guide/topic/usage':
@@ -670,7 +670,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtmp-gateway/best-practices/rtmp-domain-switch':
     '/zh-CN/realtime-media/rtmp-gateway/build/manage-media-streams/rtmp-domain-switch',
   'realtime-media/rtmp-gateway/get-started/call-api':
-    '/zh-CN/realtime-media/rtmp-gateway/reference/call-api',
+    '/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/call-api',
   'realtime-media/rtmp-gateway/get-started/enable-service':
     '/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/enable-service',
   'realtime-media/rtmp-gateway/overview/billing':
@@ -761,7 +761,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/transcoding/best-practices/rest-availability':
     '/zh-CN/realtime-media/transcoding/build/optimize-and-operate/rest-availability',
   'realtime-media/transcoding/get-started/call-api':
-    '/zh-CN/realtime-media/transcoding/reference/call-api',
+    '/zh-CN/realtime-media/transcoding/build/setup-and-access/call-api',
   'realtime-media/transcoding/get-started/enable-service':
     '/zh-CN/realtime-media/transcoding/build/setup-and-access/enable-service',
   'realtime-media/transcoding/overview/billing':
@@ -831,9 +831,9 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/whiteboard/fastboard-sdk/basic-features/present-files-fb':
     '/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/present-files-fb',
   'realtime-media/whiteboard/fastboard-sdk/conversion-webhook':
-    '/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/conversion-webhook',
+    '/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/conversion-webhook',
   'realtime-media/whiteboard/fastboard-sdk/get-started/call-api':
-    '/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/call-api',
+    '/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/call-api',
   'realtime-media/whiteboard/fastboard-sdk/get-started/enable-service':
     '/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service',
   'realtime-media/whiteboard/fastboard-sdk/get-started/migrate-from-netless':
@@ -841,7 +841,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/whiteboard/fastboard-sdk/overview/billing':
     '/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/billing',
   'realtime-media/whiteboard/fastboard-sdk/overview/concepts':
-    '/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/concepts',
+    '/zh-CN/realtime-media/whiteboard/reference/concepts',
   'realtime-media/whiteboard/fastboard-sdk/overview/convert-ppt':
     '/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/convert-ppt',
   'realtime-media/whiteboard/fastboard-sdk/overview/product-overview':
@@ -855,7 +855,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/whiteboard/fastboard-sdk/response-code':
     '/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code',
   'realtime-media/whiteboard/fastboard-sdk/solution-compare':
-    '/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/solution-compare',
+    '/zh-CN/realtime-media/whiteboard#如何选择互动白板-sdk-和-fastboard-sdk',
   'realtime-media/whiteboard/whiteboard-sdk/advanced-features/convert-files':
     '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files',
   'realtime-media/whiteboard/whiteboard-sdk/advanced-features/custom-event':
@@ -877,9 +877,9 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/whiteboard/whiteboard-sdk/basic-features/use-tools-wb':
     '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/use-tools-wb',
   'realtime-media/whiteboard/whiteboard-sdk/conversion-webhook':
-    '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/conversion-webhook',
+    '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/conversion-webhook',
   'realtime-media/whiteboard/whiteboard-sdk/get-started/call-api':
-    '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/call-api',
+    '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/call-api',
   'realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service':
     '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service',
   'realtime-media/whiteboard/whiteboard-sdk/get-started/migrate-from-netless':
@@ -887,7 +887,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/whiteboard/whiteboard-sdk/overview/billing':
     '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/billing',
   'realtime-media/whiteboard/whiteboard-sdk/overview/concepts':
-    '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/concepts',
+    '/zh-CN/realtime-media/whiteboard/reference/concepts',
   'realtime-media/whiteboard/whiteboard-sdk/overview/convert-ppt':
     '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/convert-ppt',
   'realtime-media/whiteboard/whiteboard-sdk/overview/product-overview':
@@ -901,7 +901,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/whiteboard/whiteboard-sdk/response-code':
     '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/response-code',
   'realtime-media/whiteboard/whiteboard-sdk/solution-compare':
-    '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/solution-compare',
+    '/zh-CN/realtime-media/whiteboard#如何选择互动白板-sdk-和-fastboard-sdk',
   'solutions/art-class/advanced-features/brightness-correction':
     '/zh-CN/solutions/art-class/build/customize-and-extend/brightness-correction',
   'solutions/art-class/advanced-features/trapezoid-correction':

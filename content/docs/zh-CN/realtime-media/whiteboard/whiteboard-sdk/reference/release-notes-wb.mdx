@@ -86,7 +86,7 @@ title: "发版说明"
 
 #### 小窗应用管理
 
-在[多窗口模式](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/concepts#多窗口模式)下，SDK 支持以新建窗口的方式插入 PPT 或白板插件等，它们统称为[小窗应用](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/concepts#小窗应用)。该版本起，`Room` 对象新增以下方法用于在多窗口模式下管理小窗应用：
+在[多窗口模式](/zh-CN/realtime-media/whiteboard/reference/concepts#多窗口模式)下，SDK 支持以新建窗口的方式插入 PPT 或白板插件等，它们统称为[小窗应用](/zh-CN/realtime-media/whiteboard/reference/concepts#小窗应用)。该版本起，`Room` 对象新增以下方法用于在多窗口模式下管理小窗应用：
 
 - `addApp`：插入小窗应用，并返回应用 ID。
 - `closeApp`：关闭指定小窗应用的窗口。
@@ -944,7 +944,7 @@ dependencies {
 
 #### 小窗应用管理
 
-在[多窗口模式](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/concepts#多窗口模式)下，SDK 支持以新建窗口的方式插入 PPT 或白板插件等，它们统称为[小窗应用](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/concepts#小窗应用)。该版本起，`WhiteRoom` 类新增以下方法用于在多窗口模式下管理小窗应用：
+在[多窗口模式](/zh-CN/realtime-media/whiteboard/reference/concepts#多窗口模式)下，SDK 支持以新建窗口的方式插入 PPT 或白板插件等，它们统称为[小窗应用](/zh-CN/realtime-media/whiteboard/reference/concepts#小窗应用)。该版本起，`WhiteRoom` 类新增以下方法用于在多窗口模式下管理小窗应用：
 
 - `addApp`：插入小窗应用，并返回应用 ID。
 - `closeApp`：关闭指定小窗应用的窗口。
@@ -1114,7 +1114,7 @@ PPT 渲染配置项 `WhiteSlideAppParams` 新增了以下属性：
 
 该版本进行了以下改进：
 
-- 现在因 Web 内存不足导致白板崩溃后，SDK 会自动尝试恢复。之前如果设置过 `navigationDelegate`，需要先取消设置才能启用该优化。此外，该版本新增 `startRecoveringFromMemoryIssues` 和 `endRecoveringFromMemoryIssues` 回调，分别用于在内存不足时，报告 SDK 即将开始恢复白板 SDK 和 白板 SDK 恢复完毕。
+- 现在因 Web 内存不足导致白板崩溃后，SDK 会自动尝试恢复。之前如果设置过 `navigationDelegate`，需要先取消设置才能启用该优化。此外，该版本新增 `startRecoveringFromMemoryIssues` 和 `endRecoveringFromMemoryIssues` 回调，分别用于在内存不足时，报告 SDK 即将开始恢复互动白板 SDK 和 互动白板 SDK 恢复完毕。
 - 现在可以通过调用 `WhiteAudioMixerBridge` 下新增的 `pauseAudioMixing` 和 `resumeAudioMixing` 方法，实现暂停和恢复播放动态 PPT 中的音频和混音。
 
 ### 问题修复
@@ -1923,7 +1923,7 @@ PPT 渲染配置项 `WhiteSlideAppParams` 新增了以下属性：
 
 你可以使用上述 API 自定义文本输入框和编辑工具栏。
 
-同时，该版本在 `MemberState` 中新增 `textColor`、`bold`、`italic`、`underline` 和 `lineThrough` 属性，提供更加丰富的文本编辑选项。当你使用白板 SDK 提供的 `text` 工具，但想自定义文本编辑工具栏时，你可以将 `JoinRoomParams` 中的 `floatBar` 属性设为 `false`，并通过 `MemberState` 中新增的属性编辑文本。
+同时，该版本在 `MemberState` 中新增 `textColor`、`bold`、`italic`、`underline` 和 `lineThrough` 属性，提供更加丰富的文本编辑选项。当你使用互动白板 SDK 提供的 `text` 工具，但想自定义文本编辑工具栏时，你可以将 `JoinRoomParams` 中的 `floatBar` 属性设为 `false`，并通过 `MemberState` 中新增的属性编辑文本。
 
 此外，该版本删除了 `updateTextFontSize` 方法，你可以使用 `updateSelectedText` 或 `MemberState` 中的 `textSize` 代替。
 

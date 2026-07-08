@@ -1,7 +1,9 @@
 ---
 title: "视觉理解能力"
 ---
-声网对话式 AI 引擎支持视觉理解能力。开启后，智能体可以在推理时结合用户当前画面或用户上传的图片理解问题，并基于图像内容生成回复。
+声网对话式 AI 引擎支持视觉理解能力。
+
+开启后，智能体可以在推理时结合用户当前画面或用户上传的图片理解问题，并基于图像内容生成回复。
 
 :::info[信息]
 当前对话式 AI 引擎支持以下两种视觉输入来源：
@@ -26,14 +28,14 @@ title: "视觉理解能力"
 开始前，请确保你已经：
 
 - 参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现了与 AI 智能体对话互动的基本逻辑。
-- 如果需要让用户上传图片，已阅读[发送图片消息](/zh-CN/ai/user-guides/send-multimodal-message)并完成 RTM 侧的收发消息集成。
+- 如果需要让用户上传图片，已阅读[发送图片消息](/zh-CN/ai/build/send-multimodal-messages)并完成 RTM 侧的收发消息集成。
 - 确保你接入的大模型支持视觉输入，并兼容 OpenAI Chat Completions 协议。
 
 ## 实现方式
 
 ### 开启视觉输入
 
-调用 [POST 创建对话式智能体](../convoai/operations/start-agent) 接口时，在 `properties.llm.input_modalities` 中包含 `"image"` 即可开启视觉能力。
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join) 接口时，在 `properties.llm.input_modalities` 中包含 `"image"` 即可开启视觉能力。
 
 | 取值 | 是否开启视觉 | 说明 |
 | :--- | :--- | :--- |
@@ -84,9 +86,9 @@ title: "视觉理解能力"
 
 典型流程如下：
 
-1. 调用 [POST 创建对话式智能体](../convoai/operations/start-agent)，将 `llm.input_modalities` 配置为 `["text", "image"]`。
+1. 调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)，将 `llm.input_modalities` 配置为 `["text", "image"]`。
 2. 客户端加入 RTC 频道并发布视频流。
-3. 用户发起语音提问，或业务侧调用 [POST 发送自定义指令](../convoai/operations/agent-think)。
+3. 用户发起语音提问，或业务侧调用 [POST 发送自定义指令](/zh-CN/api-reference/api-ref/conversational-ai/think)。
 4. 智能体调用大模型时自动带上当前最新画面。
 
 ### 使用图片消息作为视觉输入
@@ -96,8 +98,8 @@ title: "视觉理解能力"
 典型流程如下：
 
 1. 创建智能体时同样将 `llm.input_modalities` 配置为 `["text", "image"]`。
-2. 客户端通过 RTM 发送图片消息上传图片，详见[发送图片消息](/zh-CN/ai/user-guides/send-multimodal-message)。
-3. 用户发起语音提问，或业务侧调用 [POST 发送自定义指令](../convoai/operations/agent-think)。
+2. 客户端通过 RTM 发送图片消息上传图片，详见[发送图片消息](/zh-CN/ai/build/send-multimodal-messages)。
+3. 用户发起语音提问，或业务侧调用 [POST 发送自定义指令](/zh-CN/api-reference/api-ref/conversational-ai/think)。
 4. 智能体调用大模型时优先使用刚上传的图片进行理解。
 
 ## 最佳实践
@@ -143,10 +145,10 @@ title: "视觉理解能力"
 | 交互 | 是否会触发大模型推理 | 是否可能带图 |
 | :--- | :--- | :--- |
 | 用户语音说话 | 是 | 是 |
-| [POST 发送自定义指令](../convoai/operations/agent-think) | 是 | 是 |
+| [POST 发送自定义指令](/zh-CN/api-reference/api-ref/conversational-ai/think) | 是 | 是 |
 | 静默超时后触发模型思考 | 是 | 是 |
 | 智能体问候语 | 否 | 否 |
-| [POST 播报自定义消息](../convoai/operations/agent-speak) | 否 | 否 |
+| [POST 播报自定义消息](/zh-CN/api-reference/api-ref/conversational-ai/speak) | 否 | 否 |
 
 #### 其他
 
@@ -161,11 +163,11 @@ title: "视觉理解能力"
 | :--- | :--- | :--- |
 | 智能体没有引用画面内容 | `input_modalities` 未包含 `image`；客户端未发布视频；所选模型不支持视觉 | 检查创建智能体请求体，确认已配置 `["text", "image"]`；确认客户端已正常发布视频；检查模型是否支持视觉输入 |
 | 智能体看到的画面与用户当前画面不一致 | 用户提问时画面刚发生变化 | 建议让用户保持画面稳定片刻后再提问，或改用上传图片方式 |
-| 上传图片后智能体仍未使用图片回答 | 图片未发送成功；图片消息格式不符合要求；图片过大 | 对照[发送图片消息](/zh-CN/ai/user-guides/send-multimodal-message)检查消息发送流程；确认图片可正常访问且大小不超过 5 MB |
-| 智能体问候语没有结合画面内容 | 问候语不会触发大模型推理 | 如需首次开场就结合画面，可在问候语后由用户提问，或调用 [POST 发送自定义指令](../convoai/operations/agent-think) 触发一次推理 |
+| 上传图片后智能体仍未使用图片回答 | 图片未发送成功；图片消息格式不符合要求；图片过大 | 对照[发送图片消息](/zh-CN/ai/build/send-multimodal-messages)检查消息发送流程；确认图片可正常访问且大小不超过 5 MB |
+| 智能体问候语没有结合画面内容 | 问候语不会触发大模型推理 | 如需首次开场就结合画面，可在问候语后由用户提问，或调用 [POST 发送自定义指令](/zh-CN/api-reference/api-ref/conversational-ai/think) 触发一次推理 |
 
 ### 相关文档
 
-- [发送图片消息](/zh-CN/ai/user-guides/send-multimodal-message)
-- [自定义大模型](/zh-CN/ai/user-guides/custom-llm)
-- [使用音频模态输出](/zh-CN/ai/user-guides/audio-modality)
+- [发送图片消息](/zh-CN/ai/build/send-multimodal-messages)
+- [自定义大模型](/zh-CN/ai/build/custom-model-integration/custom-llm)
+- [使用音频模态输出](/zh-CN/ai/build/custom-model-integration/audio-output)

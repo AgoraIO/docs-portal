@@ -15,7 +15,7 @@ title: "配置录音开场白"
 
 ## 工作原理
 
-调用 [POST 创建对话式智能体](../convoai/operations/start-agent) 接口时，你可以在 `llm` 下配置 `greeting_audio_url`。配置该字段时，必须同时配置 `greeting_message`。系统收到请求后，会优先下载该录音文件并在适当时机播报：
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join) 接口时，你可以在 `llm` 下配置 `greeting_audio_url`。配置该字段时，必须同时配置 `greeting_message`。系统收到请求后，会优先下载该录音文件并在适当时机播报：
 
 1. 下载录音文件。
 2. 解码音频并转换为与 `tts.params.sample_rate` 一致的采样率。
@@ -165,7 +165,7 @@ title: "配置录音开场白"
 ## 参考信息
 
 - [使用 RESTful API 实现对话式 AI 引擎](/zh-CN/ai/get-started/quick-start)
-- [打断智能体](/zh-CN/ai/user-guides/interrupt-agent)
-- [监听智能体事件](/zh-CN/ai/user-guides/listen-agent-events)
-- [事件类型](/zh-CN/ai/webhook/ncs-events#110)
-- [发版说明](/zh-CN/ai/overview/release-notes)
+- [打断智能体](/zh-CN/ai/build/shape-the-conversation/interrupt-agent)
+- [监听智能体事件](/zh-CN/ai/build/handle-runtime-events/event-notifications)
+- [事件类型](/zh-CN/ai/reference/event-types#110)
+- [发版说明](/zh-CN/ai/release-notes)
