@@ -148,10 +148,16 @@ title: "实时监控"
 | 输入在线媒体流任务数 | 每次调用 `Create` 方法创建一个云端播放器即创建一个输入媒体流任务，仅开启输入在线媒体流时展示，详见[输入在线媒体流](https://docs.agora.io/cn/media-pull/inject_stream_restful_overview)。 |
 | 旁路推流任务数 | <Slot name="monitor-markdown-0-5-1" /> |
 
+
 <Slot for="monitor-markdown-0-5-1">
 
 仅开启旁路推流时展示，详见[旁路推流](https://docs.agora.io/cn/media-push/streaming_product)。
-提供三种推流模式的数据：<li>`SDK API_Raw mode`: 非转码推流模式，即调用 `startRtmpStreamWithoutTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl`  中的 `transcodingEnabled` 设置为 `false`。</li><li>`SDK API_Mix mode`: 转码推流模式，即调用 `startRtmpStreamWithTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl`  中的 `transcodingEnabled` 设置为 `true`。</li><li>`RESTful API`: 使用 RESTful API 开启旁路推流的模式，详见[旁路推流 RESTful API](https://docs.agora.io/cn/media-push/streaming_restful)。</li>
+
+提供三种推流模式的数据：
+
+- `SDK API_Raw mode`: 非转码推流模式，即调用 `startRtmpStreamWithoutTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl` 中的 `transcodingEnabled` 设置为 `false`。
+- `SDK API_Mix mode`: 转码推流模式，即调用 `startRtmpStreamWithTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl` 中的 `transcodingEnabled` 设置为 `true`。
+- `RESTful API`: 使用 RESTful API 开启旁路推流的模式，详见[旁路推流 RESTful API](https://docs.agora.io/cn/media-push/streaming_restful)。
 
 </Slot>
 
@@ -161,8 +167,17 @@ title: "实时监控"
 | --- | --- |
 | 平均用户登录频道时间 | 用户加入频道所需时间的平均值。 |
 | 音频卡顿率 | <Slot name="monitor-markdown-1-2-1" /> |
-| 视频卡顿率 | 视频发生卡顿的时长 / 总视频时长 × 100%。视频卡顿时长的定义如下：<li>Native：视频卡顿超过 600 ms 即被计入卡顿时长。</li><li>Web RTC：视频卡顿超过 500 ms 即被计入卡顿时长。</li> |
+| 视频卡顿率 | <Slot name="monitor-slot-1-4-1" /> |
 | 网络延迟率 | 端到端网络延时的时长 / 音频和视频总时长 × 100%。端到端网络延迟超过 400 ms 即被计入延时时长。 |
+
+<Slot for="monitor-slot-1-4-1">
+
+视频发生卡顿的时长 / 总视频时长 × 100%。视频卡顿时长的定义如下：
+
+- Native：视频卡顿超过 600 ms 即被计入卡顿时长。
+- Web RTC：视频卡顿超过 500 ms 即被计入卡顿时长。
+
+</Slot>
 
 <Slot for="monitor-markdown-1-2-1">
 

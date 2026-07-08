@@ -1,5 +1,5 @@
 ---
-title: Wellness Coach
+title: 健康教练
 description: 构建一个高级的健康陪伴语音 AI 示例。
 ---
 

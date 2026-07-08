@@ -66,3 +66,95 @@ title: "API 概览"
 |[`onTranscriptUpdated`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapieventhandler#ontranscriptupdated) | 转写内容更新回调。|
 
 </PlatformStructured>
+
+<PlatformStructured platform="java">
+
+## ConvoAIClient
+
+| API | 描述 |
+|---|---|
+|[`create`](/zh-CN/api-reference/conversational-ai/client-toolkit/convoaiclient.java#create) | 使用指定配置创建 [`ConvoAIClient`](/zh-CN/api-reference/conversational-ai/client-toolkit/convoaiclient.java) 实例。 |
+|[`join`](/zh-CN/api-reference/conversational-ai/client-toolkit/convoaiclient.java#join) | 创建一个智能体实例并加入指定的 RTC 频道。 |
+|[`leave`](/zh-CN/api-reference/conversational-ai/client-toolkit/convoaiclient.java#leave) | 停止指定的智能体实例并离开 RTC 频道。 |
+|[`list`](/zh-CN/api-reference/conversational-ai/client-toolkit/convoaiclient.java#list) | 获取符合指定条件的智能体列表。 |
+|[`query`](/zh-CN/api-reference/conversational-ai/client-toolkit/convoaiclient.java#query) | 查询指定智能体实例的当前状态。 |
+|[`update`](/zh-CN/api-reference/conversational-ai/client-toolkit/convoaiclient.java#update) | 在运行时调整智能体的参数。 |
+|[`interrupt`](/zh-CN/api-reference/conversational-ai/client-toolkit/convoaiclient.java#interrupt) | 中断指定的智能体实例。 |
+|[`speak`](/zh-CN/api-reference/conversational-ai/client-toolkit/convoaiclient.java#speak) | 为指定的智能体实例播报自定义消息。 |
+
+## BasicAuthCredential
+
+| API | 描述 |
+|---|---|
+|[`BasicAuthCredential`](/zh-CN/api-reference/conversational-ai/client-toolkit/basicauthcredential?platform=java#basicauthcredential) | 使用从控制台获取的客户 ID 和客户密钥初始化 [`BasicAuthCredential`](/zh-CN/api-reference/conversational-ai/client-toolkit/basicauthcredential?platform=java)。 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="go">
+
+## BaseResponse
+
+| API | 描述 |
+|---|---|
+|[`GetRequestID`](/zh-CN/api-reference/conversational-ai/client-toolkit/baseresponse.go#getrequestid) | 从响应中获取请求 ID。 |
+
+## BasicAuthCredential
+
+| API | 描述 |
+|---|---|
+|[`NewBasicAuthCredential`](/zh-CN/api-reference/conversational-ai/client-toolkit/basicauthcredential?platform=go#newbasicauthcredential) | 创建一个新的 [`BasicAuthCredential`](/zh-CN/api-reference/conversational-ai/client-toolkit/basicauthcredential?platform=go) 实例。 |
+
+## SampleLogger
+
+| API | 描述 |
+|---|---|
+|[`NewDefaultLogger`](/zh-CN/api-reference/conversational-ai/client-toolkit/samplelogger.go#newdefaultlogger) | 创建一个具有指定日志级别的默认日志记录器。 |
+
+## Client
+
+| API | 描述 |
+|---|---|
+|[`NewClient`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#newclient) | 使用指定配置创建一个对话式 AI 引擎 REST Client。 |
+|[`Join`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#join) | 创建智能体实例并加入指定的 RTC 频道。 |
+|[`Leave`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#leave) | 停止指定的智能体实例并离开 RTC 频道。 |
+|[`Query`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#query) | 查询指定智能体实例的当前状态。 |
+|[`List`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#list) | 获取符合指定条件的智能体列表。 |
+|[`Update`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#update) | 在运行时调整智能体的参数。 |
+|[`Interrupt`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#interrupt) | 中断指定的智能体实例。 |
+|[`GetHistory`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#gethistory) | 获取指定智能体实例的短期记忆。 |
+|[`Speak`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#speak) | 让指定智能体说出自定义消息。 |
+
+## ListOptions
+
+| API | 描述 |
+|---|---|
+|[`WithLimit`](/zh-CN/api-reference/conversational-ai/client-toolkit/listoptions.go#withlimit) | 设置每页返回的条目数量。 |
+|[`WithState`](/zh-CN/api-reference/conversational-ai/client-toolkit/listoptions.go#withstate) | 设置智能体的状态。 |
+|[`WithFromTime`](/zh-CN/api-reference/conversational-ai/client-toolkit/listoptions.go#withfromtime) | 设置起始时间戳。 |
+|[`WithToTime`](/zh-CN/api-reference/conversational-ai/client-toolkit/listoptions.go#withtotime) | 设置结束时间戳。 |
+|[`WithCursor`](/zh-CN/api-reference/conversational-ai/client-toolkit/listoptions.go#withcursor) | 设置分页起始位置的游标。 |
+|[`WithChannel`](/zh-CN/api-reference/conversational-ai/client-toolkit/listoptions.go#withchannel) | 设置频道名。 |
+
+## Response
+
+| API | 描述 |
+|---|---|
+|[`IsSuccess`](/zh-CN/api-reference/conversational-ai/client-toolkit/response.go#issuccess) | 判断 [`Response`](/zh-CN/api-reference/conversational-ai/client-toolkit/response.go) 是否表示对话式 AI 引擎 API 的成功响应。 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="typescript">
+
+## ConversationalAIAPI
+
+| API | 描述 |
+|---|---|
+|[`chat`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi?platform=typescript#chat) | 向对话式智能体发送聊天消息。 |
+|[`getInstance`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi?platform=typescript#getinstance) | 获取 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi?platform=typescript) 的单例实例。 |
+|[`init`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi?platform=typescript#init) | 初始化 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi?platform=typescript) 单例实例。 |
+|[`subscribeMessage`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi?platform=typescript#subscribemessage) | 订阅消息频道以获取实时更新。 |
+|[`unsubscribe`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi?platform=typescript#unsubscribe) | 取消订阅消息频道并清理资源。 |
+|[`destroy`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi?platform=typescript#destroy) | 销毁 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi?platform=typescript) 实例并清理资源。 |
+|[`interrupt`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi?platform=typescript#interrupt) | 向指定的智能体发送中断消息。 |
+
+</PlatformStructured>

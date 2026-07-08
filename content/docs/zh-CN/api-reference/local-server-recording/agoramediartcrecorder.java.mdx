@@ -154,7 +154,7 @@ public int enableEncryption(boolean enabled, EncryptionConfig config)
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `enabled` | `boolean` | <Slot name="agoramediartcrecorder-java-html-4-1-2" /> |
-| `config` | `EncryptionConfig` | 加密配置参数。详见 [`EncryptionConfig`](/zh-CN/api-reference/local-server-recording/struct.java#encryptionconfig)。 |
+| `config` | `EncryptionConfig` | 加密配置参数。详见 [`EncryptionConfig`](/zh-CN/api-reference/local-server-recording/struct?platform=java#encryptionconfig)。 |
 
 <Slot for="agoramediartcrecorder-java-html-4-1-2">
 
@@ -201,7 +201,7 @@ public int subscribeAllVideo(VideoSubscriptionOptions options)
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `options` | `VideoSubscriptionOptions` | 视频订阅选项。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/local-server-recording/struct.java#videosubscriptionoptions)。 |
+| `options` | `VideoSubscriptionOptions` | 视频订阅选项。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/local-server-recording/struct?platform=java#videosubscriptionoptions)。 |
 
 #### 返回值
 
@@ -296,7 +296,7 @@ public int subscribeVideo(String userId, VideoSubscriptionOptions options)
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `userId` | `String` | 要订阅视频的远端用户 ID。 |
-| `options` | `VideoSubscriptionOptions` | 视频订阅选项。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/local-server-recording/struct.java#videosubscriptionoptions)。 |
+| `options` | `VideoSubscriptionOptions` | 视频订阅选项。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/local-server-recording/struct?platform=java#videosubscriptionoptions)。 |
 
 #### 返回值
 
@@ -332,7 +332,7 @@ public int unsubscribeVideo(String userId)
 public int setAudioVolumeIndicationParameters(int intervalInMs)
 ```
 
-设置 [`onAudioVolumeIndication`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.java#onaudiovolumeindication) 回调的时间间隔。
+设置 [`onAudioVolumeIndication`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler?platform=java#onaudiovolumeindication) 回调的时间间隔。
 
 #### 参数
 
@@ -369,7 +369,7 @@ public int setVideoMixingLayout(VideoMixingLayout layout)
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `layout` | `VideoMixingLayout` | 视频合流布局的配置。详见 [`VideoMixingLayout`](/zh-CN/api-reference/local-server-recording/struct.java#videomixinglayout)。 |
+| `layout` | `VideoMixingLayout` | 视频合流布局的配置。详见 [`VideoMixingLayout`](/zh-CN/api-reference/local-server-recording/struct?platform=java#videomixinglayout)。 |
 
 #### 返回值
 
@@ -391,7 +391,7 @@ public int setRecorderConfig(MediaRecorderConfiguration config)
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `config` | `MediaRecorderConfiguration` | 录制器的配置参数。详见 [`MediaRecorderConfiguration`](/zh-CN/api-reference/local-server-recording/struct.java#mediarecorderconfiguration)。 |
+| `config` | `MediaRecorderConfiguration` | 录制器的配置参数。详见 [`MediaRecorderConfiguration`](/zh-CN/api-reference/local-server-recording/struct?platform=java#mediarecorderconfiguration)。 |
 
 #### 返回值
 
@@ -411,7 +411,7 @@ public int setRecorderConfigByUid(MediaRecorderConfiguration config, String user
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `config` | `MediaRecorderConfiguration` | 录制器实例的配置参数。详见 [`MediaRecorderConfiguration`](/zh-CN/api-reference/local-server-recording/struct.java#mediarecorderconfiguration)。 |
+| `config` | `MediaRecorderConfiguration` | 录制器实例的配置参数。详见 [`MediaRecorderConfiguration`](/zh-CN/api-reference/local-server-recording/struct?platform=java#mediarecorderconfiguration)。 |
 | `userId` | `String` | 你想要配置其录制设置的用户 ID。 |
 
 #### 返回值
@@ -504,7 +504,7 @@ public int registerRecorderEventHandler(IAgoraMediaRtcRecorderEventHandler handl
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `handler` | `IAgoraMediaRtcRecorderEventHandler` | 事件处理器。详见 [`IAgoraMediaRtcRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.java)。 |
+| `handler` | `IAgoraMediaRtcRecorderEventHandler` | 事件处理器。详见 [`IAgoraMediaRtcRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler?platform=java)。 |
 
 #### 返回值
 
@@ -524,7 +524,7 @@ public int unregisterRecorderEventHandler(IAgoraMediaRtcRecorderEventHandler han
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `handler` | `IAgoraMediaRtcRecorderEventHandler` | 要取消注册的事件处理器。详见 [`IAgoraMediaRtcRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.java)。 |
+| `handler` | `IAgoraMediaRtcRecorderEventHandler` | 要取消注册的事件处理器。详见 [`IAgoraMediaRtcRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler?platform=java)。 |
 
 #### 返回值
 
@@ -544,7 +544,7 @@ public int enableAndUpdateVideoWatermarks(WatermarkConfig[] watermarkConfigs)
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `watermarkConfigs` | `WatermarkConfig[]` | 水印配置。详见 [`WatermarkConfig`](/zh-CN/api-reference/local-server-recording/struct.java#watermarkconfig)。 |
+| `watermarkConfigs` | `WatermarkConfig[]` | 水印配置。详见 [`WatermarkConfig`](/zh-CN/api-reference/local-server-recording/struct?platform=java#watermarkconfig)。 |
 
 #### 返回值
 
@@ -580,7 +580,7 @@ public int enableAndUpdateVideoWatermarksByUid(WatermarkConfig[] watermarkConfig
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `watermarkConfigs` | `WatermarkConfig[]` | 水印配置。详见 [`WatermarkConfig`](/zh-CN/api-reference/local-server-recording/struct.java#watermarkconfig)。 |
+| `watermarkConfigs` | `WatermarkConfig[]` | 水印配置。详见 [`WatermarkConfig`](/zh-CN/api-reference/local-server-recording/struct?platform=java#watermarkconfig)。 |
 | `userId` | `String` | 你希望添加水印的视频流所属用户的用户 ID。 |
 
 #### 返回值
@@ -617,7 +617,7 @@ public int renewToken(String token)
 
 为当前会话更新 Token。
 
-当触发 [`onError`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.java#onerror) 回调并报告错误码 `ERR_TOKEN_EXPIRED (109)`，或触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.java#ontokenprivilegewillexpire) 或 [`onTokenPrivilegeDidExpire`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.java#ontokenprivilegedidexpire) 回调时，你必须在服务器上生成新的 Token，并调用 [`renewToken`](/zh-CN/api-reference/local-server-recording/agoramediartcrecorder.java#renewtoken) 进行更新。否则，SDK 将从声网频道断开连接。
+当触发 [`onError`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler?platform=java#onerror) 回调并报告错误码 `ERR_TOKEN_EXPIRED (109)`，或触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler?platform=java#ontokenprivilegewillexpire) 或 [`onTokenPrivilegeDidExpire`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler?platform=java#ontokenprivilegedidexpire) 回调时，你必须在服务器上生成新的 Token，并调用 [`renewToken`](/zh-CN/api-reference/local-server-recording/agoramediartcrecorder.java#renewtoken) 进行更新。否则，SDK 将从声网频道断开连接。
 
 #### 参数
 
@@ -639,21 +639,21 @@ public int enableRecorderVideoFrameCapture(boolean enable, RecorderVideoFrameCap
 
 启用或关闭录制器实例的视频帧采集功能。
 
-启用该功能后，视频帧会根据配置的 [`VideoFrameCaptureType`](/zh-CN/api-reference/local-server-recording/enum.java#videoframecapturetype) 类型传递给观察者：
+启用该功能后，视频帧会根据配置的 [`VideoFrameCaptureType`](/zh-CN/api-reference/local-server-recording/enum?platform=java#videoframecapturetype) 类型传递给观察者：
 
 - `VIDEO_FORMAT_ENCODED_FRAME_TYPE`
 - `VIDEO_FORMAT_YUV_FRAME_TYPE`
 - `VIDEO_FORMAT_JPG_FRAME_TYPE`
 - `VIDEO_FORMAT_JPG_FILE_TYPE`
 
-当使用 `VIDEO_FORMAT_JPG_FILE_TYPE` 类型时，必须在 [`RecorderVideoFrameCaptureConfig`](/zh-CN/api-reference/local-server-recording/struct.java#recordervideoframecaptureconfig) 中设置 `jpgFileStorePath` 和 `jpgCaptureIntervalInSec`。
+当使用 `VIDEO_FORMAT_JPG_FILE_TYPE` 类型时，必须在 [`RecorderVideoFrameCaptureConfig`](/zh-CN/api-reference/local-server-recording/struct?platform=java#recordervideoframecaptureconfig) 中设置 `jpgFileStorePath` 和 `jpgCaptureIntervalInSec`。
 
 #### 参数
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `enable` | `boolean` | <Slot name="agoramediartcrecorder-java-html-22-1-2" /> |
-| `config` | `RecorderVideoFrameCaptureConfig` | 视频帧采集的配置参数。详见 [`RecorderVideoFrameCaptureConfig`](/zh-CN/api-reference/local-server-recording/struct.java#recordervideoframecaptureconfig)。 |
+| `config` | `RecorderVideoFrameCaptureConfig` | 视频帧采集的配置参数。详见 [`RecorderVideoFrameCaptureConfig`](/zh-CN/api-reference/local-server-recording/struct?platform=java#recordervideoframecaptureconfig)。 |
 
 <Slot for="agoramediartcrecorder-java-html-22-1-2">
 

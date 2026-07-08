@@ -157,7 +157,10 @@ export async function loadDocsPagePayload(
   const movedDocsRedirect = resolveMovedDocsRedirect(locale, tab, slugSegments);
   if (movedDocsRedirect) {
     return {
-      redirectUrl: movedDocsRedirect,
+      redirectUrl: canonicalizeZhCnProductIaRedirectUrl(
+        locale,
+        movedDocsRedirect,
+      ),
     };
   }
 
@@ -307,6 +310,19 @@ export async function loadDocsPagePayload(
     }),
     locale,
   );
+
+  if (!page) {
+    const mergedPlatformSuffixRedirect = resolveMergedPlatformSuffixRedirect({
+      locale,
+      slugSegments,
+      source,
+      tab,
+    });
+
+    if (mergedPlatformSuffixRedirect) {
+      return mergedPlatformSuffixRedirect;
+    }
+  }
 
   let requestedPlatform: PlatformKey | undefined;
   let platformResolvedProcessedText: string | undefined;
@@ -526,6 +542,33 @@ export async function loadDocsPagePayload(
     title: page.data.title,
     toc,
   };
+}
+
+function canonicalizeZhCnProductIaRedirectUrl(
+  locale: string,
+  redirectUrl: string,
+) {
+  if (locale !== 'zh-CN') {
+    return redirectUrl;
+  }
+
+  const [pathname, suffix = ''] = redirectUrl.split(/([?#].*)/, 2);
+  const localePrefix = `/${locale}/`;
+
+  if (!pathname.startsWith(localePrefix)) {
+    return redirectUrl;
+  }
+
+  const [targetTab, ...targetSlugSegments] = pathname
+    .slice(localePrefix.length)
+    .split('/');
+  const canonicalRedirect = resolveZhCnProductIaRedirect(
+    locale,
+    targetTab,
+    targetSlugSegments,
+  );
+
+  return canonicalRedirect ? `${canonicalRedirect}${suffix}` : redirectUrl;
 }
 
 export async function loadDocsSearchIndex(locale: string) {
@@ -1098,6 +1141,56 @@ function resolveSolutionsApiReferenceRedirect(
   };
 
   return redirects[slugSegments.join('/')] ?? null;
+}
+
+const MERGED_PLATFORM_SUFFIXES: Record<string, PlatformKey> = {
+  cpp: 'cpp',
+  csharp: 'csharp',
+  cscrip: 'csharp',
+  cscript: 'csharp',
+  go: 'go',
+  java: 'java',
+  swift: 'swift',
+  typescript: 'typescript',
+};
+
+function resolveMergedPlatformSuffixRedirect({
+  locale,
+  slugSegments,
+  source,
+  tab,
+}: {
+  locale: string;
+  slugSegments: string[];
+  source: typeof docsSource;
+  tab: string;
+}) {
+  const requestedSlug = slugSegments.at(-1);
+  const platformSeparatorIndex = requestedSlug?.lastIndexOf('.') ?? -1;
+
+  if (!requestedSlug || platformSeparatorIndex <= 0) {
+    return null;
+  }
+
+  const baseSlug = requestedSlug.slice(0, platformSeparatorIndex);
+  const suffix = requestedSlug.slice(platformSeparatorIndex + 1);
+  const platform = MERGED_PLATFORM_SUFFIXES[suffix];
+
+  if (!platform) {
+    return null;
+  }
+
+  const targetSegments = [...slugSegments.slice(0, -1), baseSlug];
+  const targetUrl = `/${[locale, tab, ...targetSegments].join('/')}`;
+
+  if (!hasDocsPageForUrl(source, targetUrl)) {
+    return null;
+  }
+
+  return {
+    preserveSearch: false,
+    redirectUrl: `${targetUrl}?platform=${platform}`,
+  };
 }
 
 function hasDocsPageForUrl(source: typeof docsSource, url: string) {
