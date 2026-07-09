@@ -365,7 +365,10 @@ async function detectSourceStructure(sourceDir) {
     [lowerDetectionText.includes('appledoc'), 'appledoc page marker'],
     [lowerDetectionText.includes('jazzy'), 'Jazzy page marker'],
   ]);
-  if (iosDocGeneratorMarkers.length > 0) {
+  const hasStrongIosDocGeneratorMarker = iosDocGeneratorMarkers.some(
+    (marker) => marker !== 'hierarchy.html',
+  );
+  if (hasStrongIosDocGeneratorMarker) {
     return supportedGeneratedHtmlStructure(
       sourceDir,
       SOURCE_TYPES.IOS_DOC_GENERATOR,
@@ -1591,6 +1594,17 @@ function renderPage({
     });
     if (doxygenPage) return doxygenPage;
   }
+  if (lane?.id === SOURCE_TYPES.IOS_DOC_GENERATOR.id) {
+    const iosPage = renderIosDocGeneratorPage({
+      $,
+      currentSource,
+      pageDescriptionBySource,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    });
+    if (iosPage) return iosPage;
+  }
 
   const previousCurrentSource = sourceToRoute.currentSource;
   sourceToRoute.currentSource = currentSource;
@@ -1999,6 +2013,430 @@ function renderDoxygenEnumTable(
     );
   }
   return lines.join('\n');
+}
+
+function renderIosDocGeneratorPage({
+  $,
+  currentSource,
+  pageTitleBySource,
+  pageDescriptionBySource,
+  sourceToRoute,
+  targetBasePath,
+}) {
+  const main = $('main[role="main"], main').first();
+  if (main.length === 0) return null;
+  const hasMemberSections =
+    main.find(
+      '.section-tasks, .section-methods, .method-declaration, .parameter-def, h3.method-title',
+    ).length > 0;
+  const hasOverviewPageContent =
+    main.children('.section-overview, .index-container, p, ul, ol, table')
+      .length > 0;
+  if (!hasMemberSections && !hasOverviewPageContent) {
+    return null;
+  }
+
+  const previousCurrentSource = sourceToRoute.currentSource;
+  sourceToRoute.currentSource = currentSource;
+
+  const pageTitle =
+    pageTitleBySource.get(currentSource) ?? stripHtml(currentSource);
+  const description = pageDescriptionBySource.get(currentSource);
+  const sections = [];
+
+  if (hasMemberSections) {
+    const overview = renderIosOverview(
+      $,
+      main,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (overview) sections.push(overview);
+
+    const constants = renderIosConstants(
+      $,
+      main,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (constants) sections.push(constants);
+
+    const block = renderIosBlock(
+      $,
+      main,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (block) sections.push(block);
+
+    for (const taskSection of main.find('> .section-tasks').toArray()) {
+      const renderedTasks = renderIosTaskSection(
+        $,
+        $(taskSection),
+        pageTitleBySource,
+        sourceToRoute,
+        targetBasePath,
+      );
+      if (renderedTasks) sections.push(renderedTasks);
+    }
+  } else {
+    const overviewPage = renderChildren(
+      $,
+      main,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (overviewPage) sections.push(overviewPage);
+  }
+
+  sourceToRoute.currentSource = previousCurrentSource;
+  if (sections.length === 0) return null;
+
+  return [
+    '---',
+    `title: ${escapeYaml(pageTitle)}`,
+    description
+      ? `description: ${escapeYaml(description)}`
+      : `description: ${escapeYaml(`${pageTitle} API reference.`)}`,
+    '---',
+    '',
+    `${sections.join('\n\n')}\n`,
+  ].join('\n');
+}
+
+function renderIosOverview(
+  $,
+  main,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const overview = main.children('.section-overview').first().clone();
+  if (overview.length === 0) return '';
+  overview.find('h2.subtitle').remove();
+  return renderChildren(
+    $,
+    overview,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+}
+
+function renderIosTaskSection(
+  $,
+  taskSection,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const parts = [];
+  const taskTitles = taskSection.children('h2.task-title').toArray();
+  const taskLists = taskSection.children('.task-list').toArray();
+
+  for (let index = 0; index < taskLists.length; index += 1) {
+    const title = inlineText($(taskTitles[index])) || 'Methods';
+    const sectionParts = [`## ${title}`];
+    for (const method of $(taskLists[index])
+      .find('> .section-method')
+      .toArray()) {
+      const renderedMethod = renderIosMethod(
+        $,
+        $(method),
+        pageTitleBySource,
+        sourceToRoute,
+        targetBasePath,
+      );
+      if (renderedMethod) sectionParts.push(renderedMethod);
+    }
+    if (sectionParts.length > 1) parts.push(sectionParts.join('\n\n'));
+  }
+
+  return parts.join('\n\n');
+}
+
+function renderIosMethod(
+  $,
+  method,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const titleNode = method.find('h3.method-title').first();
+  const title = normalizeIosMethodTitle(titleNode.text());
+  if (!title) return '';
+
+  const anchor = method.children('a[name]').first();
+  const anchorName = anchor.attr('name');
+  const parts = [];
+  if (anchorName) parts.push(`<a id="${anchorName}"></a>`);
+  parts.push(`### ${escapeInlineText(title)}`);
+
+  const signature = normalizeText(
+    method.find('.method-declaration code').first().text(),
+  );
+  if (signature) parts.push(`\`\`\`objc\n${signature}\n\`\`\``);
+
+  const brief = method.find('.brief-description').first();
+  if (brief.length > 0) {
+    const renderedBrief = renderChildren(
+      $,
+      brief,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      4,
+    );
+    if (renderedBrief) parts.push(renderedBrief);
+  }
+
+  const parameters = renderIosParameters(
+    $,
+    method.find('.parameters .parameter-def').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (parameters) parts.push(parameters);
+
+  const returns = renderIosReturns(
+    $,
+    method.find('.return').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (returns) parts.push(returns);
+
+  const discussion = renderIosSubsection(
+    $,
+    method.find('.discussion-section').first(),
+    'Discussion',
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (discussion) parts.push(discussion);
+
+  const availability = renderIosSubsection(
+    $,
+    method.find('.availability').first(),
+    'Availability',
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (availability) parts.push(availability);
+
+  return parts.join('\n\n');
+}
+
+function normalizeIosMethodTitle(value) {
+  return normalizeText(value)
+    .replace(/^[+–-]\s*/, '')
+    .replace(/^\+\s*/, '')
+    .replace(/^&nbsp;\s*/, '')
+    .trim();
+}
+
+function renderIosInlineTableCell(
+  $,
+  cell,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!cell || cell.length === 0) return '';
+  const clone = cell.clone();
+  clone.find('h1, h2, h3, h4, h5, h6').remove();
+  const preText = normalizeText(clone.find('pre code, pre').first().text());
+  clone.find('pre').remove();
+  const rendered =
+    preText ||
+    (clone.is('code')
+      ? renderInlineElement(
+          $,
+          clone,
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath,
+        )
+      : inlineChildren(
+          $,
+          clone,
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath,
+        ));
+  return normalizeInlineFlow(rendered).replace(/\|/g, '\\|');
+}
+
+function renderIosParameters(
+  $,
+  table,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!table || table.length === 0) return '';
+  const rows = [];
+  for (const row of table.find('tr').toArray()) {
+    const name = renderIosInlineTableCell(
+      $,
+      $(row).find('th code, th').first(),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    const description = renderIosInlineTableCell(
+      $,
+      $(row).find('td').first(),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (name || description) rows.push([name, description]);
+  }
+  if (rows.length === 0) return '';
+  const lines = [
+    '#### Parameters',
+    '',
+    '| Name | Description |',
+    '| --- | --- |',
+  ];
+  for (const [name, description] of rows) {
+    lines.push(`| ${name} | ${description} |`);
+  }
+  return lines.join('\n');
+}
+
+function renderIosReturns(
+  $,
+  returns,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  return renderIosSubsection(
+    $,
+    returns,
+    'Returns',
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+}
+
+function renderIosSubsection(
+  $,
+  subsection,
+  title,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!subsection || subsection.length === 0) return '';
+  const clone = subsection.clone();
+  clone.find('h4.method-subtitle').first().remove();
+  const rendered = renderChildren(
+    $,
+    clone,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+    4,
+  );
+  return rendered ? [`#### ${title}`, rendered].join('\n\n') : '';
+}
+
+function renderIosConstants(
+  $,
+  main,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const constantList = main.find('> .section-methods dl.termdef').first();
+  if (constantList.length === 0) return '';
+
+  const enumTitle = inlineText(main.find('h3.method-title').first());
+  const parts = enumTitle ? [`## ${enumTitle}`] : ['## Constants'];
+
+  const definition = normalizeText(
+    main.find('> .section > code').first().text(),
+  );
+  if (definition) parts.push(`\`\`\`objc\n${definition}\n\`\`\``);
+
+  const rows = [];
+  const terms = constantList.children('dt').toArray();
+  const descriptions = constantList.children('dd').toArray();
+  for (let index = 0; index < terms.length; index += 1) {
+    const descriptionNode = $(descriptions[index] ?? '').clone();
+    descriptionNode
+      .find('p')
+      .filter((_, paragraph) =>
+        normalizeText($(paragraph).text()).includes('Declared In'),
+      )
+      .remove();
+    const name = renderIosInlineTableCell(
+      $,
+      $(terms[index]).find('code').first(),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    const description = renderIosInlineTableCell(
+      $,
+      descriptionNode,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (name || description) rows.push([name, description]);
+  }
+
+  if (rows.length > 0) {
+    const lines = ['| Name | Description |', '| --- | --- |'];
+    for (const [name, description] of rows) {
+      lines.push(`| ${name} | ${description} |`);
+    }
+    parts.push(lines.join('\n'));
+  }
+
+  return parts.join('\n\n');
+}
+
+function renderIosBlock(
+  $,
+  main,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (main.find('> .section-tasks, > .section-methods').length > 0) return '';
+  const blockTitle = inlineText(main.find('h3.method-title').first());
+  const declaration = normalizeText(main.children('code').first().text());
+  if (!blockTitle && !declaration) return '';
+
+  const parts = blockTitle ? [`## ${blockTitle}`] : ['## Block Definition'];
+  const brief = main.find('.brief-description').first();
+  if (brief.length > 0) {
+    const renderedBrief = renderChildren(
+      $,
+      brief,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      4,
+    );
+    if (renderedBrief) parts.push(renderedBrief);
+  }
+  if (declaration) parts.push(`\`\`\`objc\n${declaration}\n\`\`\``);
+  return parts.join('\n\n');
 }
 
 function renderTypeDocPage({
@@ -2896,8 +3334,12 @@ async function main() {
   }
 
   // Write meta.json
+  const rootTitle = sourceStructure.rootIndexSource
+    ? (pageTitleBySource.get(sourceStructure.rootIndexSource) ??
+      `${opts.platform.toUpperCase()} API Reference`)
+    : `${opts.platform.toUpperCase()} API Reference`;
   await writeJson(path.join(targetRoot, 'meta.json'), {
-    title: `${opts.platform.toUpperCase()} API Reference`,
+    title: rootTitle,
     pages: ['index', ...tocNodes.map((node) => node.slug)],
   });
 

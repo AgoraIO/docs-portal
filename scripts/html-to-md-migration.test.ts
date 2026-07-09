@@ -442,6 +442,7 @@ async function writeIosFixture(sourceDir: string) {
       <a href="Classes/index.html">Classes</a>
       <a href="Classes/AgoraRtcEngineKit.html">AgoraRtcEngineKit</a>
       <a href="Protocols/AgoraRtcEngineDelegate.html#events">Delegate</a>
+      <a href="docs/headers/AgoraRtcEngineKit-Overview.html">Overview guide</a>
     </main>
   </body>
 </html>`,
@@ -468,13 +469,50 @@ async function writeIosFixture(sourceDir: string) {
     `<!doctype html>
 <html>
   <body>
-    <article class="main-content">
-      <h1>AgoraRtcEngineKit</h1>
-      <p>Engine class with <a href="../Protocols/AgoraRtcEngineDelegate.html#events">delegate callbacks</a>.</p>
-      <p>Back to the <a href="index.html">classes overview</a>.</p>
-      <h2><a name="sharedengine"></a>sharedEngine</h2>
-      <p>Creates an engine instance.</p>
-    </article>
+    <main role="main">
+      <h1 class="title">AgoraRtcEngineKit Class Reference</h1>
+      <div class="section section-overview">
+        <a title="Overview" name="overview"></a>
+        <h2 class="subtitle subtitle-overview">Overview</h2>
+        <p>Engine class with <a href="../Protocols/AgoraRtcEngineDelegate.html#events">delegate callbacks</a>.</p>
+        <p>Back to the <a href="index.html">classes overview</a>.</p>
+      </div>
+      <div class="section section-tasks">
+        <h2 class="task-title">Engine Methods</h2>
+        <div class="task-list">
+          <div class="section-method">
+            <a name="//api/name/sharedEngineWithAppId:delegate:" title="sharedEngineWithAppId:delegate:"></a>
+            <h3 class="method-title"><code><a href="#//api/name/sharedEngineWithAppId:delegate:">+&nbsp;sharedEngineWithAppId:delegate:</a></code></h3>
+            <div class="method-info">
+              <div class="method-info-container">
+                <div class="method-subsection brief-description">
+                  <p>Creates an engine instance.</p>
+                </div>
+                <div class="method-subsection method-declaration"><code>+ (instancetype)sharedEngineWithAppId:(NSString *)<em>appId</em> delegate:(id&lt;AgoraRtcEngineDelegate&gt;)<em>delegate</em></code></div>
+                <div class="method-subsection parameters">
+                  <table class="argument-def parameter-def">
+                    <tr><th><code>appId</code></th><td><p>Agora application ID.</p></td></tr>
+                    <tr><th><code>delegate</code></th><td><p>Receives callbacks.</p></td></tr>
+                  </table>
+                </div>
+                <div class="method-subsection return">
+                  <h4 class="method-subtitle">Return Value</h4>
+                  <p>An engine instance.</p>
+                </div>
+                <div class="method-subsection discussion-section">
+                  <h4 class="method-subtitle">Discussion</h4>
+                  <p>Call this before joining a channel.</p>
+                </div>
+                <div class="method-subsection availability">
+                  <h4 class="method-subtitle">Availability</h4>
+                  <p>Available in v1.0.0 and later.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
   </body>
 </html>`,
   );
@@ -483,11 +521,99 @@ async function writeIosFixture(sourceDir: string) {
     `<!doctype html>
 <html>
   <body>
-    <article class="main-content">
-      <h1>AgoraRtcEngineDelegate</h1>
-      <a id="events"></a>
-      <p>Receives event callbacks.</p>
-    </article>
+    <main role="main">
+      <h1 class="title">AgoraRtcEngineDelegate Protocol Reference</h1>
+      <div class="section section-overview">
+        <a title="Overview" name="events"></a>
+        <h2 class="subtitle subtitle-overview">Overview</h2>
+        <p>Receives event callbacks.</p>
+      </div>
+      <div class="section section-tasks">
+        <h2 class="task-title">Delegate Methods</h2>
+        <div class="task-list">
+          <div class="section-method">
+            <a name="//api/name/rtcEngine:didJoinChannel:" title="rtcEngine:didJoinChannel:"></a>
+            <h3 class="method-title"><code><a href="#//api/name/rtcEngine:didJoinChannel:">&ndash;&nbsp;rtcEngine:didJoinChannel:</a></code></h3>
+            <div class="method-info">
+              <div class="method-info-container">
+                <div class="method-subsection brief-description">
+                  <p>Occurs when joining succeeds.</p>
+                </div>
+                <div class="method-subsection method-declaration"><code>- (void)rtcEngine:(AgoraRtcEngineKit *)<em>engine</em> didJoinChannel:(NSString *)<em>channel</em></code></div>
+                <div class="method-subsection parameters">
+                  <table class="argument-def parameter-def">
+                    <tr><th><code>engine</code></th><td><p>The engine instance.</p></td></tr>
+                    <tr><th><code>channel</code></th><td><p>The channel name.</p></td></tr>
+                  </table>
+                </div>
+                <div class="method-subsection discussion-section">
+                  <h4 class="method-subtitle">Discussion</h4>
+                  <p>Use this callback to update UI state.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'Constants', 'AgoraConnectionState.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <main role="main">
+      <h1 class="title">AgoraConnectionState Constants Reference</h1>
+      <h3 class="subsubtitle method-title">AgoraConnectionState</h3>
+      <div class="section section-overview"><p>Connection state.</p></div>
+      <div class="section">
+        <h4 class="method-subtitle">Definition</h4>
+        <code>typedef NS_ENUM(NSInteger, AgoraConnectionState) { AgoraConnectionStateConnected };</code>
+      </div>
+      <div class="section section-methods">
+        <h4 class="method-subtitle">Constants</h4>
+        <dl class="termdef">
+          <dt><code>AgoraConnectionStateConnected</code></dt>
+          <dd><p>Connected.</p></dd>
+        </dl>
+      </div>
+    </main>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'Blocks', 'AgoraResultBlock.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <main role="main">
+      <h1 class="title">AgoraResultBlock Block Reference</h1>
+      <h4 class="method-subtitle parameter-title">Block Definition</h4>
+      <h3 class="subsubtitle method-title">AgoraResultBlock</h3>
+      <div class="method-subsection brief-description"><p>Receives an async result.</p></div>
+      <code>typedef void (^AgoraResultBlock) (NSError *error)</code>
+    </main>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'docs', 'headers', 'AgoraRtcEngineKit-Overview.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <main role="main">
+      <h1 class="title">AgoraRtcEngineKit Overview Document</h1>
+      <p>Use <a href="../../Classes/AgoraRtcEngineKit.html">AgoraRtcEngineKit</a> to manage RTC features.</p>
+      <h3>Core APIs</h3>
+      <table>
+        <thead><tr><th>API</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><a href="../../Classes/AgoraRtcEngineKit.html#//api/name/sharedEngineWithAppId:delegate:">sharedEngineWithAppId</a></td><td>Create an engine.</td></tr>
+        </tbody>
+      </table>
+    </main>
   </body>
 </html>`,
   );
@@ -741,6 +867,34 @@ describe('html-to-md-migration', () => {
     });
   });
 
+  it('does not classify a Doxygen hierarchy page as iOS doc-generator output', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'doxygen-source');
+    const outputDir = path.join(rootDir, 'dry-output');
+    await writeDoxygenFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'hierarchy.html'),
+      '<!doctype html><html><body><div class="contents"><h1>Doxygen Hierarchy</h1></div></body></html>',
+    );
+
+    const output = runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'cpp',
+      '--dry-run',
+    ]);
+
+    expect(output).toContain(
+      'Detected source type: Doxygen/Javadoc HTML reference',
+    );
+    expect(output).not.toContain('Detected source type: iOS-doc-generator');
+  });
+
   it('migrates iOS doc-generator output with dry-run planning and rewritten links', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'ios-source');
@@ -749,7 +903,15 @@ describe('html-to-md-migration', () => {
 
     await expectLaneDryRunAndMigration({
       detected: 'iOS-doc-generator HTML reference',
-      expectedMetaPages: ['index', 'classes', 'protocols', 'hierarchy'],
+      expectedMetaPages: [
+        'index',
+        'classes',
+        'protocols',
+        'docs',
+        'blocks',
+        'constants',
+        'hierarchy',
+      ],
       expectedPageContents: {
         'classes/index.mdx': [
           'title: "Classes"',
@@ -757,16 +919,56 @@ describe('html-to-md-migration', () => {
           '[Engine class](/api-reference/rtc/ios/classes/agora-rtc-engine-kit)',
         ],
         'classes/agora-rtc-engine-kit.mdx': [
-          'title: "AgoraRtcEngineKit"',
+          'title: "AgoraRtcEngineKit Class Reference"',
+          '<a id="overview"></a>',
           '[delegate callbacks](/api-reference/rtc/ios/protocols/agora-rtc-engine-delegate#events)',
           '[classes overview](/api-reference/rtc/ios/classes)',
-          '<a id="sharedengine"></a>',
+          '<a id="//api/name/sharedEngineWithAppId:delegate:"></a>',
+          '## Engine Methods',
+          '### sharedEngineWithAppId:delegate:',
+          '```objc\n+ (instancetype)sharedEngineWithAppId:(NSString *)appId delegate:(id<AgoraRtcEngineDelegate>)delegate\n```',
           'Creates an engine instance.',
+          '#### Parameters',
+          '| `appId` | Agora application ID. |',
+          '| `delegate` | Receives callbacks. |',
+          '#### Returns',
+          'An engine instance.',
+          '#### Discussion',
+          'Call this before joining a channel.',
+          '#### Availability',
+          'Available in v1.0.0 and later.',
         ],
         'protocols/agora-rtc-engine-delegate.mdx': [
-          'title: "AgoraRtcEngineDelegate"',
+          'title: "AgoraRtcEngineDelegate Protocol Reference"',
           '<a id="events"></a>',
           'Receives event callbacks.',
+          '<a id="//api/name/rtcEngine:didJoinChannel:"></a>',
+          '## Delegate Methods',
+          '### rtcEngine:didJoinChannel:',
+          '```objc\n- (void)rtcEngine:(AgoraRtcEngineKit *)engine didJoinChannel:(NSString *)channel\n```',
+          'Occurs when joining succeeds.',
+          '| `engine` | The engine instance. |',
+          '| `channel` | The channel name. |',
+          'Use this callback to update UI state.',
+        ],
+        'constants/agora-connection-state.mdx': [
+          'title: "AgoraConnectionState Constants Reference"',
+          '## AgoraConnectionState',
+          '```objc\ntypedef NS_ENUM(NSInteger, AgoraConnectionState) { AgoraConnectionStateConnected };\n```',
+          '| `AgoraConnectionStateConnected` | Connected. |',
+        ],
+        'blocks/agora-result-block.mdx': [
+          'title: "AgoraResultBlock Block Reference"',
+          '## AgoraResultBlock',
+          'Receives an async result.',
+          '```objc\ntypedef void (^AgoraResultBlock) (NSError *error)\n```',
+        ],
+        'docs/headers/agora-rtc-engine-kit-overview.mdx': [
+          'title: "AgoraRtcEngineKit Overview Document"',
+          '[AgoraRtcEngineKit](/api-reference/rtc/ios/classes/agora-rtc-engine-kit)',
+          '### Core APIs',
+          '| API | Description |',
+          '[sharedEngineWithAppId](/api-reference/rtc/ios/classes/agora-rtc-engine-kit#//api/name/sharedEngineWithAppId:delegate:)',
         ],
       },
       outputDir,
@@ -774,6 +976,9 @@ describe('html-to-md-migration', () => {
       product: 'rtc',
       sourceDir,
     });
+
+    const meta = await readJson(path.join(outputDir, 'meta.json'));
+    expect(meta.title).toBe('Jazzy API');
   });
 
   it('migrates Dartdoc output with dry-run planning and rewritten links', async () => {
