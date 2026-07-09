@@ -213,15 +213,41 @@ async function writeTypeDocFixture(sourceDir: string) {
     `<!doctype html>
 <html>
   <body>
-    <main>
-      <h1>Client</h1>
-      <p>Controls a realtime session.</p>
-      <section id="connect">
-        <h2>connect</h2>
-        <p>Call <code>connect</code> before publishing.</p>
-        <pre class="language-ts">client.connect(appId);</pre>
+    <header>
+      <div class="tsd-page-title"><h1>Class Client</h1></div>
+    </header>
+    <div class="col-content">
+      <section class="tsd-panel tsd-comment">
+        <div class="tsd-comment tsd-typography">
+          <p>Controls a realtime session.</p>
+        </div>
       </section>
-    </main>
+      <section class="tsd-panel-group tsd-member-group">
+        <h2>Methods</h2>
+        <section class="tsd-panel tsd-member tsd-kind-method">
+          <a id="connect" class="tsd-anchor"></a>
+          <h3>connect</h3>
+          <ul class="tsd-signatures">
+            <li class="tsd-signature tsd-kind-icon">connect(appId: <span class="tsd-signature-type">string</span>): <span class="tsd-signature-type">Promise</span>&lt;void&gt;</li>
+          </ul>
+          <ul class="tsd-descriptions">
+            <li class="tsd-description">
+              <div class="tsd-comment tsd-typography">
+                <p>Call <code>connect</code> before publishing.</p>
+              </div>
+              <h4 class="tsd-parameters-title">Parameters</h4>
+              <ul class="tsd-parameters">
+                <li>
+                  <h5>appId: <span class="tsd-signature-type">string</span></h5>
+                  <div class="tsd-comment tsd-typography"><p>Agora application ID.</p></div>
+                </li>
+              </ul>
+              <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span>&lt;void&gt;</h4>
+            </li>
+          </ul>
+        </section>
+      </section>
+    </div>
   </body>
 </html>`,
   );
@@ -469,8 +495,14 @@ describe('html-to-md-migration', () => {
         'classes/client.mdx': [
           'title: "Client"',
           '<a id="connect"></a>',
+          '## Methods',
+          '### connect',
+          '```ts\nconnect(appId: string): Promise<void>\n```',
           'Call `connect` before publishing.',
-          '```ts\nclient.connect(appId);\n```',
+          '#### Parameters',
+          '| appId: string | Agora application ID. |',
+          '#### Returns',
+          'Returns Promise &lt;void&gt;',
         ],
         'modules.mdx': [
           '[Client class](/api-reference/web/typescript/classes/client#connect)',

@@ -35,6 +35,10 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import * as cheerio from 'cheerio';
+import {
+  getSourceLane,
+  SOURCE_LANE_IDS,
+} from './html-migration/lanes/index.mjs';
 
 // ============================================================================
 // CLI Argument Parsing
@@ -245,19 +249,19 @@ function headingDepth(level) {
 
 const SOURCE_TYPES = {
   DARTDOC: {
-    id: 'dartdoc',
+    id: SOURCE_LANE_IDS.DARTDOC,
     label: 'Dartdoc HTML reference',
   },
   DITA_OT_API: {
-    id: 'dita-ot-api',
+    id: SOURCE_LANE_IDS.DITA_OT_API,
     label: 'DITA-OT/Oxygen API reference (API/ directory)',
   },
   DOXYGEN_JAVADOC: {
-    id: 'doxygen-javadoc',
+    id: SOURCE_LANE_IDS.DOXYGEN_JAVADOC,
     label: 'Doxygen/Javadoc HTML reference',
   },
   IOS_DOC_GENERATOR: {
-    id: 'ios-doc-generator',
+    id: SOURCE_LANE_IDS.IOS_DOC_GENERATOR,
     label: 'iOS-doc-generator HTML reference',
   },
   RESTFUL_OR_OTHER: {
@@ -266,7 +270,7 @@ const SOURCE_TYPES = {
     label: 'RESTful/OpenAPI or other unsupported source layout',
   },
   TYPEDOC: {
-    id: 'typedoc',
+    id: SOURCE_LANE_IDS.TYPEDOC,
     label: 'TypeDoc HTML reference',
   },
 };
@@ -678,25 +682,43 @@ function isSameOrParent(parentPath, childPath) {
 // ============================================================================
 
 function readTitle($) {
-  const title = $(
-    [
-      'main > article > h1',
-      'main > article article > h1',
-      'main > article article > h2',
-      '.tsd-page-title h1',
-      '.page-title h1',
-      'main h1',
-      'article h1',
-      '.contents > .title',
-      '.header .title',
-      '.title',
-      'h1',
-      'title',
-    ].join(', '),
-  )
-    .first()
-    .text();
-  return normalizeText(title);
+  const selectors = [
+    'main > article > h1',
+    'main > article article > h1',
+    'main > article article > h2',
+    '.tsd-page-title h1',
+    '.page-title h1',
+    'main h1',
+    'article h1',
+    '.contents > .title',
+    '.header .title',
+    '.title',
+    'h1',
+    'title',
+  ];
+
+  for (const selector of selectors) {
+    const title = normalizeText($(selector).first().text());
+    if (title) return title;
+  }
+
+  return '';
+}
+
+function readCanonicalTitle($, sourceTypeId) {
+  const title = readTitle($);
+  if (sourceTypeId !== SOURCE_TYPES.TYPEDOC.id) return title;
+  return normalizeTypeDocTitle(title);
+}
+
+function normalizeTypeDocTitle(title) {
+  return title
+    .replace(
+      /^(Class|Interface|Enumeration|Enum|Namespace|Module|Function|Variable|Type Alias)\s+/i,
+      '',
+    )
+    .replace(/^"(.+)"$/, '$1')
+    .trim();
 }
 
 function readDescription($) {
@@ -1461,11 +1483,24 @@ function renderRelatedLinks(
 function renderPage({
   $,
   currentSource,
+  lane,
   pageTitleBySource,
   pageDescriptionBySource,
   sourceToRoute,
   targetBasePath,
 }) {
+  if (lane?.id === SOURCE_TYPES.TYPEDOC.id) {
+    const typedocPage = renderTypeDocPage({
+      $,
+      currentSource,
+      pageDescriptionBySource,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    });
+    if (typedocPage) return typedocPage;
+  }
+
   const previousCurrentSource = sourceToRoute.currentSource;
   sourceToRoute.currentSource = currentSource;
 
@@ -1532,6 +1567,321 @@ function renderPage({
   const rendered = `${frontmatter.join('\n')}${sections.filter(Boolean).join('\n\n')}\n`;
   sourceToRoute.currentSource = previousCurrentSource;
   return rendered;
+}
+
+function renderTypeDocPage({
+  $,
+  currentSource,
+  pageTitleBySource,
+  pageDescriptionBySource,
+  sourceToRoute,
+  targetBasePath,
+}) {
+  const body = selectContentRoot($);
+  if (
+    body.find('.tsd-member-group, .tsd-signature, .tsd-comment').length === 0
+  ) {
+    return null;
+  }
+
+  const previousCurrentSource = sourceToRoute.currentSource;
+  sourceToRoute.currentSource = currentSource;
+
+  const pageTitle =
+    pageTitleBySource.get(currentSource) ??
+    normalizeTypeDocTitle(readTitle($)) ??
+    stripHtml(currentSource);
+  const description = pageDescriptionBySource.get(currentSource);
+  const sections = [];
+
+  const intro = renderTypeDocIntro(
+    $,
+    body,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (intro) sections.push(intro);
+
+  const hierarchy = body.find('> .tsd-hierarchy').first();
+  if (hierarchy.length > 0) {
+    const renderedHierarchy = renderTypeDocPanel(
+      $,
+      hierarchy,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (renderedHierarchy) sections.push(renderedHierarchy);
+  }
+
+  for (const group of body.find('> .tsd-member-group').toArray()) {
+    const renderedGroup = renderTypeDocMemberGroup(
+      $,
+      $(group),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (renderedGroup) sections.push(renderedGroup);
+  }
+
+  sourceToRoute.currentSource = previousCurrentSource;
+  if (sections.length === 0) return null;
+
+  return [
+    '---',
+    `title: ${escapeYaml(pageTitle)}`,
+    description
+      ? `description: ${escapeYaml(description)}`
+      : `description: ${escapeYaml(`${pageTitle} API reference.`)}`,
+    '---',
+    '',
+    `${sections.join('\n\n')}\n`,
+  ].join('\n');
+}
+
+function renderTypeDocIntro(
+  $,
+  body,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const panel = body.find('> .tsd-panel.tsd-comment').first();
+  if (panel.length === 0) return '';
+  return renderTypeDocPanel(
+    $,
+    panel,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+}
+
+function renderTypeDocPanel(
+  $,
+  panel,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const clone = panel.clone();
+  clone.find('script, style, .tsd-anchor').remove();
+  return renderChildren(
+    $,
+    clone,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+}
+
+function renderTypeDocMemberGroup(
+  $,
+  group,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const title = inlineText(group.children('h2').first());
+  const parts = title ? [`## ${title}`] : [];
+
+  for (const member of group.children('section.tsd-member').toArray()) {
+    const renderedMember = renderTypeDocMember(
+      $,
+      $(member),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (renderedMember) parts.push(renderedMember);
+  }
+
+  return parts.join('\n\n');
+}
+
+function renderTypeDocMember(
+  $,
+  member,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const heading = member.children('h3').first();
+  const title = inlineText(heading);
+  if (!title) return '';
+
+  const anchor = member.children('a.tsd-anchor[id], a[id], a[name]').first();
+  const id = anchor.attr('id') ?? anchor.attr('name');
+  const parts = [];
+  if (id) parts.push(`<a id="${id}"></a>`);
+  parts.push(`### ${title}`);
+
+  const signature = renderTypeDocSignatures($, member);
+  if (signature) parts.push(signature);
+
+  const comment = member.children('.tsd-comment.tsd-typography').first();
+  if (comment.length > 0) {
+    const renderedComment = renderChildren(
+      $,
+      comment,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      4,
+    );
+    if (renderedComment) parts.push(renderedComment);
+  }
+
+  const descriptions = member
+    .children('.tsd-descriptions')
+    .children('.tsd-description');
+  for (const description of descriptions.toArray()) {
+    const renderedDescription = renderTypeDocDescription(
+      $,
+      $(description),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (renderedDescription) parts.push(renderedDescription);
+  }
+
+  return parts.join('\n\n');
+}
+
+function renderTypeDocSignatures($, member) {
+  const signatures = member
+    .children('.tsd-signature, .tsd-signatures')
+    .find('.tsd-signature')
+    .addBack('.tsd-signature')
+    .toArray()
+    .map((signature) => normalizeText($(signature).text()))
+    .filter(Boolean);
+
+  if (signatures.length === 0) return '';
+  return signatures
+    .map((signature) => `\`\`\`ts\n${signature}\n\`\`\``)
+    .join('\n\n');
+}
+
+function renderTypeDocDescription(
+  $,
+  description,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const parts = [];
+  const comment = description.children('.tsd-comment.tsd-typography').first();
+  if (comment.length > 0) {
+    const renderedComment = renderChildren(
+      $,
+      comment,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      4,
+    );
+    if (renderedComment) parts.push(renderedComment);
+  }
+
+  const parameters = renderTypeDocParameters(
+    $,
+    description.children('.tsd-parameters').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (parameters) parts.push(parameters);
+
+  const returns = renderTypeDocReturns(
+    $,
+    description,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (returns) parts.push(returns);
+
+  return parts.join('\n\n');
+}
+
+function renderTypeDocParameters(
+  $,
+  parameters,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!parameters || parameters.length === 0) return '';
+  const rows = [];
+  for (const parameter of parameters.children('li').toArray()) {
+    const item = $(parameter);
+    const heading = item.children('h5').first();
+    const name = inlineText(heading);
+    const comment = item.children('.tsd-comment.tsd-typography').first();
+    const description = comment.length
+      ? renderChildren(
+          $,
+          comment,
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath,
+          4,
+        )
+      : '';
+    if (name) rows.push([name, description.replace(/\n+/g, '<br />')]);
+  }
+  if (rows.length === 0) return '';
+
+  const lines = [
+    '#### Parameters',
+    '',
+    '| Name | Description |',
+    '| --- | --- |',
+  ];
+  for (const [name, description] of rows) {
+    lines.push(
+      `| ${name.replace(/\|/g, '\\|')} | ${description.replace(/\|/g, '\\|')} |`,
+    );
+  }
+  return lines.join('\n');
+}
+
+function renderTypeDocReturns(
+  $,
+  description,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const returnsTitle = description.children('.tsd-returns-title').first();
+  if (returnsTitle.length === 0) return '';
+
+  const title = inlineChildren(
+    $,
+    returnsTitle,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  const clone = description.clone();
+  clone
+    .children()
+    .slice(0, description.children().index(returnsTitle) + 1)
+    .remove();
+  const details = renderChildren(
+    $,
+    clone,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+    4,
+  );
+
+  return ['#### Returns', title, details].filter(Boolean).join('\n\n');
 }
 
 // ============================================================================
@@ -1602,7 +1952,7 @@ function setRouteForSource(sourceToRoute, sourceName, routeSegments) {
   }
 }
 
-async function buildTocNodes(sourceStructure) {
+async function buildTocNodes(sourceStructure, pageTitleBySource = new Map()) {
   if (sourceStructure.id === SOURCE_TYPES.DITA_OT_API.id) {
     try {
       const tocHtml = await fs.readFile(
@@ -1627,7 +1977,11 @@ async function buildTocNodes(sourceStructure) {
   }
 
   const orderedSourceNames = await collectIndexedSourceOrder(sourceStructure);
-  return buildTreeFromSourceNames(orderedSourceNames);
+  return buildTreeFromSourceNames(
+    orderedSourceNames,
+    sourceStructure.id,
+    pageTitleBySource,
+  );
 }
 
 async function collectIndexedSourceOrder(sourceStructure) {
@@ -1677,14 +2031,22 @@ function resolveLinkedSourceName(href, currentDir = '.') {
   return normalized.startsWith('../') ? null : normalizeSourcePath(normalized);
 }
 
-function buildTreeFromSourceNames(sourceNames) {
+function buildTreeFromSourceNames(
+  sourceNames,
+  sourceTypeId,
+  pageTitleBySource = new Map(),
+) {
   const rootNodes = [];
   const folderNodesByPath = new Map();
   const folderKeys = new Set();
   const usedPageKeys = new Set();
 
   for (const sourceName of sourceNames) {
-    const routeSegments = routeSegmentsForSourceName(sourceName);
+    const routeSegments = routeSegmentsForSourceName(
+      sourceName,
+      sourceTypeId,
+      pageTitleBySource,
+    );
     for (let index = 1; index < routeSegments.length; index++) {
       folderKeys.add(routeSegments.slice(0, index).join('/'));
     }
@@ -1718,7 +2080,11 @@ function buildTreeFromSourceNames(sourceNames) {
   };
 
   for (const sourceName of sourceNames) {
-    const routeSegments = routeSegmentsForSourceName(sourceName);
+    const routeSegments = routeSegmentsForSourceName(
+      sourceName,
+      sourceTypeId,
+      pageTitleBySource,
+    );
     if (routeSegments.length === 0) continue;
 
     const routeKey = routeSegments.join('/');
@@ -1757,13 +2123,35 @@ function buildTreeFromSourceNames(sourceNames) {
   return rootNodes;
 }
 
-function routeSegmentsForSourceName(sourceName) {
+function routeSegmentsForSourceName(
+  sourceName,
+  sourceTypeId,
+  pageTitleBySource = new Map(),
+) {
+  if (sourceTypeId === SOURCE_TYPES.TYPEDOC.id) {
+    const typedocSegments = typedocRouteSegmentsForSourceName(
+      sourceName,
+      pageTitleBySource,
+    );
+    if (typedocSegments) return typedocSegments;
+  }
+
   const stripped = stripHtml(sourceName);
   const segments = stripped
     .split('/')
     .map((segment) => toKebab(segment))
     .filter(Boolean);
   return segments.at(-1) === 'index' ? segments.slice(0, -1) : segments;
+}
+
+function typedocRouteSegmentsForSourceName(sourceName, pageTitleBySource) {
+  const segments = stripHtml(sourceName).split('/');
+  const folder = segments[0];
+  if (!['classes', 'interfaces', 'enums'].includes(folder)) return null;
+
+  const title = normalizeTypeDocTitle(pageTitleBySource.get(sourceName) ?? '');
+  if (!title) return null;
+  return [folder, toKebab(title)];
 }
 
 function titleFromSlug(slug) {
@@ -1815,6 +2203,7 @@ function collectPlannedOutputPaths(targetRoot, tocNodes) {
 
 async function writeNode(
   output,
+  lane,
   node,
   pageTitleBySource,
   pageDescriptionBySource,
@@ -1841,6 +2230,7 @@ async function writeNode(
             ),
           ),
           currentSource: node.sourceName,
+          lane,
           pageDescriptionBySource,
           pageTitleBySource,
           sourceToRoute,
@@ -1857,6 +2247,7 @@ async function writeNode(
     for (const child of node.children) {
       await writeNode(
         output,
+        lane,
         child,
         pageTitleBySource,
         pageDescriptionBySource,
@@ -1878,6 +2269,7 @@ async function writeNode(
         await fs.readFile(path.join(output.sourceDir, node.sourceName), 'utf8'),
       ),
       currentSource: node.sourceName,
+      lane,
       pageDescriptionBySource,
       pageTitleBySource,
       sourceToRoute,
@@ -1912,6 +2304,7 @@ async function main() {
   if (!sourceStructure.supported) {
     throw new SourceStructureError(sourceStructure);
   }
+  const lane = getSourceLane(sourceStructure);
 
   console.log(`\n📄 HTML to Markdown Migration Tool`);
   console.log(`${'─'.repeat(50)}`);
@@ -1932,19 +2325,10 @@ async function main() {
     : assertSafeOutputPath(opts.output, opts, sourceStructure);
   const targetBasePath = `${opts.routeBasePath}/${opts.product}/${opts.platform}`;
 
-  const fileNames = sourceStructure.fileNames;
-  const tocNodes = await buildTocNodes(sourceStructure);
-
-  // Assign routes
-  const sourceToRoute = new Map();
-  assignRoutes(tocNodes, [], sourceToRoute);
-  if (sourceStructure.rootIndexSource) {
-    setRouteForSource(sourceToRoute, sourceStructure.rootIndexSource, []);
-  }
-
   // Read page titles and descriptions
   const pageTitleBySource = new Map();
   const pageDescriptionBySource = new Map();
+  const fileNames = sourceStructure.fileNames;
 
   const titleSourceNames = sourceStructure.rootIndexSource
     ? [sourceStructure.rootIndexSource, ...fileNames]
@@ -1952,10 +2336,19 @@ async function main() {
   for (const name of titleSourceNames) {
     const html = await fs.readFile(path.join(apiSourceDir, name), 'utf8');
     const $ = cheerio.load(html);
-    const title = readTitle($) || stripHtml(name);
+    const title = readCanonicalTitle($, sourceStructure.id) || stripHtml(name);
     const description = readDescription($);
     pageTitleBySource.set(name, title);
     if (description) pageDescriptionBySource.set(name, description);
+  }
+
+  const tocNodes = await buildTocNodes(sourceStructure, pageTitleBySource);
+
+  // Assign routes
+  const sourceToRoute = new Map();
+  assignRoutes(tocNodes, [], sourceToRoute);
+  if (sourceStructure.rootIndexSource) {
+    setRouteForSource(sourceToRoute, sourceStructure.rootIndexSource, []);
   }
 
   if (opts.dryRun) {
@@ -1998,6 +2391,7 @@ async function main() {
           ),
         ),
         currentSource: sourceStructure.rootIndexSource,
+        lane,
         pageDescriptionBySource,
         pageTitleBySource,
         sourceToRoute,
@@ -2025,6 +2419,7 @@ async function main() {
   for (const node of tocNodes) {
     await writeNode(
       output,
+      lane,
       node,
       pageTitleBySource,
       pageDescriptionBySource,
