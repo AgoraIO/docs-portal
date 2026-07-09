@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 /**
- * DITA-OT HTML-to-Markdown Migration Tool
+ * HTML-to-Markdown API Reference Migration Tool
  *
- * Converts DITA-OT (Oxygen XML) generated HTML API reference docs
- * to pure markdown files suitable for the docs-portal project.
+ * Converts generated HTML API reference docs to pure markdown files suitable
+ * for the docs-portal project.
  *
- * This is not a generic HTML converter. The supported input is a product or
- * platform source directory that contains a DITA-OT API/ subdirectory.
+ * This is not an arbitrary website scraper. The supported inputs are common
+ * generated API reference structures with stable index files and symbol pages.
  *
  * Usage:
  *   node scripts/html-to-md-migration.mjs --source <dir> --output <dir> --product <name> --platform <name> [options]
@@ -112,18 +112,18 @@ function parseArgs() {
 
 function printHelp() {
   console.log(`
-DITA-OT HTML-to-Markdown Migration Tool
+HTML-to-Markdown API Reference Migration Tool
 
-This is not a generic HTML converter. It only supports DITA-OT/Oxygen
-generated API reference HTML where --source contains an API/ directory with
-HTML files. It detects TypeDoc, Doxygen/Javadoc, iOS-doc-generator, Dartdoc,
-and RESTful/OpenAPI or other source layouts and exits with migration guidance.
+This is not a generic HTML converter. It supports generated API reference HTML
+from DITA-OT/Oxygen, TypeDoc, Doxygen/Javadoc, iOS doc-generator/Jazzy/appledoc,
+and Dartdoc. RESTful/OpenAPI or other source layouts still exit with migration
+guidance.
 
 Usage:
   node scripts/html-to-md-migration.mjs --source <dir> --output <dir> --product <name> --platform <name> [options]
 
 Required:
-  --source, -s      Source directory containing DITA-OT API/ HTML docs
+  --source, -s      Source directory containing generated HTML API docs
   --output, -o      Output directory for markdown files
   --product, -p     Product name (e.g., rtc, signaling, cloud-recording)
   --platform, -P    Platform name (e.g., android, ios, web, RESTful)
@@ -136,14 +136,14 @@ Options:
   --verbose, -v         Show detailed processing information
   --help, -h            Show this help message
 
-Supported lane:
+Supported lanes:
   - DITA-OT/Oxygen HTML API reference: <source>/API/*.html
+  - TypeDoc HTML API reference
+  - Doxygen/Javadoc HTML API reference
+  - iOS doc-generator/Jazzy/appledoc HTML API reference
+  - Dartdoc HTML API reference
 
 Unsupported lanes detected with actionable errors:
-  - TypeDoc
-  - Doxygen/Javadoc
-  - iOS-doc-generator
-  - Dartdoc
   - RESTful/OpenAPI or other source layouts
   `);
 }
@@ -181,6 +181,10 @@ function stripHtml(name) {
   return name.replace(/\.html$/, '');
 }
 
+function normalizeSourcePath(value) {
+  return value.split(path.sep).join('/').replace(/^\.\//, '');
+}
+
 function toKebab(value) {
   return value
     .replace(/_/g, '-')
@@ -194,6 +198,14 @@ function toKebab(value) {
 function isInlineElement(element) {
   return element.is(
     'a, span, code, strong, b, em, i, br, sub, sup, small, mark, s, u',
+  );
+}
+
+function isExternalHref(href) {
+  return (
+    href.startsWith('//') ||
+    /^[a-z][a-z0-9+.-]*:/i.test(href) ||
+    href.startsWith('/')
   );
 }
 
@@ -233,21 +245,19 @@ function headingDepth(level) {
 
 const SOURCE_TYPES = {
   DARTDOC: {
-    action:
-      'Use or add a Dartdoc-specific migration lane; this DITA-OT converter cannot preserve Dart library navigation.',
+    id: 'dartdoc',
     label: 'Dartdoc HTML reference',
   },
   DITA_OT_API: {
+    id: 'dita-ot-api',
     label: 'DITA-OT/Oxygen API reference (API/ directory)',
   },
   DOXYGEN_JAVADOC: {
-    action:
-      'Use or add a Doxygen/Javadoc-specific migration lane; this DITA-OT converter cannot preserve generated class/package indexes.',
+    id: 'doxygen-javadoc',
     label: 'Doxygen/Javadoc HTML reference',
   },
   IOS_DOC_GENERATOR: {
-    action:
-      'Use or add an iOS-doc-generator-specific migration lane; this DITA-OT converter cannot preserve Objective-C/Swift symbol navigation.',
+    id: 'ios-doc-generator',
     label: 'iOS-doc-generator HTML reference',
   },
   RESTFUL_OR_OTHER: {
@@ -256,8 +266,7 @@ const SOURCE_TYPES = {
     label: 'RESTful/OpenAPI or other unsupported source layout',
   },
   TYPEDOC: {
-    action:
-      'Use or add a TypeDoc-specific migration lane; this DITA-OT converter cannot preserve TypeScript symbol navigation.',
+    id: 'typedoc',
     label: 'TypeDoc HTML reference',
   },
 };
@@ -294,8 +303,10 @@ async function detectSourceStructure(sourceDir) {
       return {
         fileNames,
         id: 'dita-ot-api',
+        indexSourceNames: ['../index.html'],
         label: SOURCE_TYPES.DITA_OT_API.label,
         markers: ['API/', `${fileNames.length} API/*.html files`],
+        rootIndexSource: null,
         sourceDir: apiDir,
         supported: true,
       };
@@ -315,6 +326,24 @@ async function detectSourceStructure(sourceDir) {
   const detectionText = await readDetectionText(sourceDir, rootHtmlFiles);
   const lowerDetectionText = detectionText.toLowerCase();
 
+  const explicitRestMarkers = collectMarkers([
+    [hasFile('openapi.json'), 'openapi.json'],
+    [hasFile('openapi.yaml'), 'openapi.yaml'],
+    [hasFile('openapi.yml'), 'openapi.yml'],
+    [hasFile('swagger.json'), 'swagger.json'],
+    [hasFile('swagger.yaml'), 'swagger.yaml'],
+    [hasFile('swagger.yml'), 'swagger.yml'],
+    [hasDir('endpoint'), 'endpoint/'],
+    [hasDir('endpoints'), 'endpoints/'],
+  ]);
+  if (explicitRestMarkers.length > 0) {
+    return unsupportedSourceStructure(
+      sourceDir,
+      SOURCE_TYPES.RESTFUL_OR_OTHER,
+      explicitRestMarkers,
+    );
+  }
+
   const iosDocGeneratorMarkers = collectMarkers([
     [hasDir('Classes'), 'Classes/'],
     [hasDir('Protocols'), 'Protocols/'],
@@ -333,10 +362,11 @@ async function detectSourceStructure(sourceDir) {
     [lowerDetectionText.includes('jazzy'), 'Jazzy page marker'],
   ]);
   if (iosDocGeneratorMarkers.length > 0) {
-    return unsupportedSourceStructure(
+    return supportedGeneratedHtmlStructure(
       sourceDir,
       SOURCE_TYPES.IOS_DOC_GENERATOR,
       iosDocGeneratorMarkers,
+      ['index.html', 'hierarchy.html', 'Classes.html', 'Protocols.html'],
     );
   }
 
@@ -355,10 +385,11 @@ async function detectSourceStructure(sourceDir) {
     ],
   ]);
   if (typedocMarkers.length > 0) {
-    return unsupportedSourceStructure(
+    return supportedGeneratedHtmlStructure(
       sourceDir,
       SOURCE_TYPES.TYPEDOC,
       typedocMarkers,
+      ['index.html', 'modules.html'],
     );
   }
 
@@ -383,10 +414,18 @@ async function detectSourceStructure(sourceDir) {
     [lowerDetectionText.includes('javadoc'), 'Javadoc page marker'],
   ]);
   if (doxygenJavadocMarkers.length > 0) {
-    return unsupportedSourceStructure(
+    return supportedGeneratedHtmlStructure(
       sourceDir,
       SOURCE_TYPES.DOXYGEN_JAVADOC,
       doxygenJavadocMarkers,
+      [
+        'index.html',
+        'annotated.html',
+        'classes.html',
+        'allclasses-index.html',
+        'allpackages-index.html',
+        'package-summary.html',
+      ],
     );
   }
 
@@ -398,22 +437,15 @@ async function detectSourceStructure(sourceDir) {
     [lowerDetectionText.includes('dartdoc'), 'Dartdoc page marker'],
   ]);
   if (dartdocMarkers.length > 0) {
-    return unsupportedSourceStructure(
+    return supportedGeneratedHtmlStructure(
       sourceDir,
       SOURCE_TYPES.DARTDOC,
       dartdocMarkers,
+      ['index.html', 'library-index.html'],
     );
   }
 
   const restOrOtherMarkers = collectMarkers([
-    [hasFile('openapi.json'), 'openapi.json'],
-    [hasFile('openapi.yaml'), 'openapi.yaml'],
-    [hasFile('openapi.yml'), 'openapi.yml'],
-    [hasFile('swagger.json'), 'swagger.json'],
-    [hasFile('swagger.yaml'), 'swagger.yaml'],
-    [hasFile('swagger.yml'), 'swagger.yml'],
-    [hasDir('endpoint'), 'endpoint/'],
-    [hasDir('endpoints'), 'endpoints/'],
     [
       rootHtmlFiles.length > 0,
       `${rootHtmlFiles.length} root-level HTML file(s), but no API/`,
@@ -429,6 +461,68 @@ async function detectSourceStructure(sourceDir) {
     SOURCE_TYPES.RESTFUL_OR_OTHER,
     restOrOtherMarkers,
   );
+}
+
+async function supportedGeneratedHtmlStructure(
+  sourceDir,
+  sourceType,
+  markers,
+  indexSourceNames,
+) {
+  const allHtmlFileNames = await collectHtmlFileNames(sourceDir);
+  const fileNames = allHtmlFileNames.filter((name) => name !== 'index.html');
+  const rootIndexSource = allHtmlFileNames.includes('index.html')
+    ? 'index.html'
+    : null;
+
+  if (fileNames.length === 0) {
+    return unsupportedSourceStructure(sourceDir, SOURCE_TYPES.RESTFUL_OR_OTHER, [
+      ...markers,
+      'detected generator markers but no migratable .html pages',
+    ]);
+  }
+
+  return {
+    fileNames,
+    id: sourceType.id,
+    indexSourceNames,
+    label: sourceType.label,
+    markers,
+    rootIndexSource,
+    sourceDir,
+    supported: true,
+  };
+}
+
+async function collectHtmlFileNames(sourceDir) {
+  const fileNames = [];
+  const skipDirs = new Set([
+    '.git',
+    'assets',
+    'fonts',
+    'images',
+    'img',
+    'scripts',
+    'search',
+    'static-assets',
+    'styles',
+  ]);
+
+  async function visit(dir) {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const absolutePath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (!skipDirs.has(entry.name)) await visit(absolutePath);
+        continue;
+      }
+      if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
+      fileNames.push(normalizeSourcePath(path.relative(sourceDir, absolutePath)));
+    }
+  }
+
+  await visit(sourceDir);
+  return fileNames.sort((a, b) => a.localeCompare(b));
 }
 
 async function fileExists(filePath) {
@@ -485,9 +579,9 @@ function formatUnsupportedSourceError(structure) {
     markers,
     '',
     'This script is not a generic HTML-to-Markdown converter.',
-    'Supported lane: DITA-OT/Oxygen HTML API reference with <source>/API/*.html.',
+    'Supported lanes: DITA-OT/Oxygen, TypeDoc, Doxygen/Javadoc, iOS doc-generator/Jazzy/appledoc, and Dartdoc generated HTML API references.',
     `Action: ${structure.action}`,
-    'Expected source shape: point --source at the product/platform directory that contains API/.',
+    'Expected source shape: point --source at the product/platform directory that contains generated HTML API reference files.',
   ].join('\n');
 }
 
@@ -501,12 +595,26 @@ function assertSafeOutputPath(targetRoot, opts, sourceStructure) {
     resolvedCwd,
     path.resolve(resolvedCwd, 'content'),
     path.resolve(resolvedCwd, 'content/docs'),
+    path.resolve('/tmp'),
+    path.resolve('/private/tmp'),
     resolvedSource,
     resolvedApiSource,
   ];
   const homeDir = process.env.HOME ? path.resolve(process.env.HOME) : null;
   if (homeDir) {
     protectedPaths.push(homeDir);
+    const relativeToHome = path.relative(homeDir, resolvedTarget);
+    if (
+      relativeToHome &&
+      !relativeToHome.startsWith('..') &&
+      !path.isAbsolute(relativeToHome) &&
+      relativeToHome.split(path.sep).filter(Boolean).length === 1
+    ) {
+      throw new OutputPathError(
+        `Refusing to delete broad home-directory child path: ${resolvedTarget}. ` +
+          'Choose a dedicated product/platform output directory, preferably under /tmp or content/docs/<locale>/<tab>/<product>/<platform>.',
+      );
+    }
   }
 
   const matchingProtectedPath = protectedPaths.find(
@@ -567,20 +675,86 @@ function isSameOrParent(parentPath, childPath) {
 // ============================================================================
 
 function readTitle($) {
-  return normalizeText(
-    $(
-      'main > article > h1, main > article article > h1, main > article article > h2',
-    )
-      .first()
-      .text(),
-  );
+  const title = $(
+    [
+      'main > article > h1',
+      'main > article article > h1',
+      'main > article article > h2',
+      '.tsd-page-title h1',
+      '.page-title h1',
+      'main h1',
+      'article h1',
+      '.contents > .title',
+      '.header .title',
+      '.title',
+      'h1',
+      'title',
+    ].join(', '),
+  )
+    .first()
+    .text();
+  return normalizeText(title);
 }
 
 function readDescription($) {
   const desc = $('main > article > .body > .shortdesc').first().text().trim();
   if (desc) return normalizeText(desc);
   const metaDesc = $('meta[name="description"]').attr('content');
-  return metaDesc ? normalizeText(metaDesc) : '';
+  if (metaDesc) return normalizeText(metaDesc);
+  const fallbackDesc = $(
+    [
+      '.shortdesc',
+      '.brief',
+      '.abstract',
+      '.docblock > p',
+      '.description > p',
+      'main p',
+      'article p',
+      '.contents p',
+    ].join(', '),
+  )
+    .first()
+    .text();
+  return fallbackDesc ? normalizeText(fallbackDesc) : '';
+}
+
+function selectContentRoot($) {
+  $('script, style, link, iframe, form, nav:not(.related-links), header, footer, aside').remove();
+  const selectors = [
+    'main > article',
+    'main article',
+    'article',
+    'main',
+    '.col-content',
+    '.main-content',
+    '.contents',
+    '.content',
+    '#content',
+    'body',
+  ];
+
+  for (const selector of selectors) {
+    const root = $(selector).first();
+    if (root.length > 0 && normalizeText(root.text())) return root;
+  }
+
+  return $('body').first();
+}
+
+function headingElementDepth(heading, fallbackDepth = 2) {
+  const match = heading.get(0)?.tagName?.match(/^h([1-6])$/i);
+  return match ? Number(match[1]) : fallbackDepth;
+}
+
+function renderHeading($, heading) {
+  const title = inlineText(heading);
+  if (!title) return '';
+  const parts = [];
+  const anchor = heading.find('a[id], a[name]').first();
+  const id = heading.attr('id') ?? anchor.attr('id') ?? anchor.attr('name');
+  if (id) parts.push(`<a id="${id}"></a>`);
+  parts.push(`${'#'.repeat(headingElementDepth(heading))} ${title}`);
+  return parts.join('\n\n');
 }
 
 function renderCodeBlock(pre) {
@@ -832,23 +1006,54 @@ function renderAnchor(
   targetBasePath,
 ) {
   const href = anchor.attr('href')?.trim() ?? '';
+  const id = anchor.attr('id') ?? anchor.attr('name');
   const label = inlineText(anchor) || href;
+  if (!href && id) return `<a id="${id}"></a>`;
   if (!href) return label;
 
-  if (href.startsWith('http://') || href.startsWith('https://')) {
+  if (isExternalHref(href)) {
     return `[${label}](${href})`;
   }
 
-  const [filePart, hashPart] = href.split('#');
+  const hashIndex = href.indexOf('#');
+  const filePart = hashIndex === -1 ? href : href.slice(0, hashIndex);
+  const hashPart = hashIndex === -1 ? '' : href.slice(hashIndex + 1);
   if (!filePart) return `[${label}](#${hashPart})`;
 
-  const sourceName = path.basename(filePart);
-  const routeSegments = sourceToRoute.get(sourceName);
+  const routeSegments = resolveRouteForHref(
+    filePart,
+    sourceToRoute.currentSource,
+    sourceToRoute,
+  );
   if (!routeSegments) return `[${label}](${href})`;
 
   return `[${label}](${routeSegmentsToDocPath(routeSegments, targetBasePath)}${
     hashPart ? `#${hashPart}` : ''
   })`;
+}
+
+function resolveRouteForHref(filePart, currentSource, sourceToRoute) {
+  const withoutQuery = filePart.split('?')[0];
+  if (!withoutQuery.endsWith('.html')) return null;
+
+  const candidates = [];
+  if (currentSource) {
+    candidates.push(
+      normalizeSourcePath(
+        path.posix.normalize(
+          path.posix.join(path.posix.dirname(currentSource), withoutQuery),
+        ),
+      ),
+    );
+  }
+  candidates.push(normalizeSourcePath(withoutQuery));
+  candidates.push(path.posix.basename(withoutQuery));
+
+  for (const candidate of candidates) {
+    const routeSegments = sourceToRoute.get(candidate);
+    if (routeSegments) return routeSegments;
+  }
+  return null;
 }
 
 function routeSegmentsToDocPath(routeSegments, targetBasePath) {
@@ -953,8 +1158,9 @@ function renderElement(
     return renderCodeBlock(element.find('pre').first());
   if (
     element.is('div, dd') &&
-    element.find('> ul, > ol, > table, > dl, > pre, > div.note, > section')
-      .length > 0
+    element.find(
+      '> h1, > h2, > h3, > h4, > h5, > h6, > ul, > ol, > table, > dl, > pre, > div.note, > section',
+    ).length > 0
   ) {
     return renderChildren(
       $,
@@ -965,6 +1171,11 @@ function renderElement(
       depth,
     );
   }
+  if (element.is('a') && !element.attr('href')) {
+    const id = element.attr('id') ?? element.attr('name');
+    return id ? `<a id="${id}"></a>` : '';
+  }
+  if (element.is('h1, h2, h3, h4, h5, h6')) return renderHeading($, element);
   if (element.is('p'))
     return inlineChildren(
       $,
@@ -992,8 +1203,8 @@ function renderElement(
       true,
     );
   if (element.is('section')) {
-    const heading = element.find('> h2, > h3, > h4').first();
-    const childDepth = heading.is('h4') ? 4 : heading.is('h3') ? 3 : 2;
+    const heading = element.find('> h1, > h2, > h3, > h4, > h5, > h6').first();
+    const childDepth = headingElementDepth(heading);
     return renderSection(
       $,
       element,
@@ -1073,10 +1284,13 @@ function renderChildren(
     }
 
     const element = $(node);
+    if (element.is('.shortdesc') || element.is('nav.related-links')) continue;
+    if (element.is('h1')) continue;
     if (
-      element.is('h1, h2, h3, h4, h5, h6') ||
-      element.is('.shortdesc') ||
-      element.is('nav.related-links')
+      parent.is('section') &&
+      element.is('h2, h3, h4, h5, h6') &&
+      parent.find('> h2, > h3, > h4, > h5, > h6').first().get(0) ===
+        element.get(0)
     )
       continue;
 
@@ -1117,12 +1331,13 @@ function renderSection(
   depth = 2,
 ) {
   const id = section.attr('id');
-  const heading = section.find('> h2, > h3, > h4').first();
+  const heading = section.find('> h1, > h2, > h3, > h4, > h5, > h6').first();
   const title = inlineText(heading);
   const parts = [];
 
   if (id) parts.push(`<a id="${id}"></a>`);
-  if (title) parts.push(`${'#'.repeat(depth)} ${title}`);
+  if (title)
+    parts.push(`${'#'.repeat(Math.max(depth, headingElementDepth(heading)))} ${title}`);
 
   const directList = section.find('> ul').first();
   if (
@@ -1164,8 +1379,8 @@ function renderNestedArticle(
   targetBasePath,
 ) {
   const id = article.attr('id');
-  const heading = article.find('> h2, > h3, > h4').first();
-  const level = heading.is('h2') ? '##' : heading.is('h3') ? '###' : '####';
+  const heading = article.find('> h1, > h2, > h3, > h4, > h5, > h6').first();
+  const level = '#'.repeat(Math.max(2, headingElementDepth(heading)));
   const title = inlineText(heading);
   const content = [];
 
@@ -1244,10 +1459,13 @@ function renderPage({
   sourceToRoute,
   targetBasePath,
 }) {
+  const previousCurrentSource = sourceToRoute.currentSource;
+  sourceToRoute.currentSource = currentSource;
+
   const pageTitle =
     pageTitleBySource.get(currentSource) ?? stripHtml(currentSource);
   const description = pageDescriptionBySource.get(currentSource);
-  const body = $('main > article');
+  const body = selectContentRoot($);
   const topTitle = body.find('> h1').first();
   const sections = [];
 
@@ -1279,9 +1497,10 @@ function renderPage({
   }
 
   if (sections.length === 0) {
+    const fallbackRoot = body.find('> .body').first();
     const fallback = renderChildren(
       $,
-      body.find('> .body').first(),
+      fallbackRoot.length > 0 ? fallbackRoot : body,
       pageTitleBySource,
       sourceToRoute,
       targetBasePath,
@@ -1303,7 +1522,9 @@ function renderPage({
     sections.unshift(`<a id="${topTitle.attr('id')}"></a>`);
   }
 
-  return `${frontmatter.join('\n')}${sections.filter(Boolean).join('\n\n')}\n`;
+  const rendered = `${frontmatter.join('\n')}${sections.filter(Boolean).join('\n\n')}\n`;
+  sourceToRoute.currentSource = previousCurrentSource;
+  return rendered;
 }
 
 // ============================================================================
@@ -1340,17 +1561,208 @@ function parseItem($, item) {
 function assignRoutes(nodes, parentSegments, sourceToRoute) {
   for (const node of nodes) {
     const isFolder = node.children.length > 0;
-    const slug = toKebab(stripHtml(node.sourceName).replace(/^toc_/, ''));
+    const sourceSlug = node.sourceName
+      ? toKebab(stripHtml(path.posix.basename(node.sourceName)).replace(/^toc_/, ''))
+      : '';
+    const slug = node.slug ?? sourceSlug;
 
     node.slug = slug;
-    node.routeSegments = isFolder
+    node.routeSegments ??= isFolder
       ? [...parentSegments, slug, 'index']
       : [...parentSegments, slug];
 
-    if (node.sourceName) sourceToRoute.set(node.sourceName, node.routeSegments);
+    if (node.sourceName)
+      setRouteForSource(sourceToRoute, node.sourceName, node.routeSegments);
     if (isFolder)
       assignRoutes(node.children, [...parentSegments, slug], sourceToRoute);
   }
+}
+
+function setRouteForSource(sourceToRoute, sourceName, routeSegments) {
+  const normalized = normalizeSourcePath(sourceName);
+  sourceToRoute.set(normalized, routeSegments);
+
+  const basename = path.posix.basename(normalized);
+  if (!sourceToRoute.has(basename)) {
+    sourceToRoute.set(basename, routeSegments);
+    return;
+  }
+  const existing = sourceToRoute.get(basename);
+  if (existing && existing.join('/') !== routeSegments.join('/')) {
+    sourceToRoute.set(basename, null);
+  }
+}
+
+async function buildTocNodes(sourceStructure) {
+  if (sourceStructure.id === SOURCE_TYPES.DITA_OT_API.id) {
+    try {
+      const tocHtml = await fs.readFile(
+        path.join(sourceStructure.sourceDir, '..', 'index.html'),
+        'utf8',
+      );
+      const toc$ = cheerio.load(tocHtml);
+      const tocNodes = parseTocTree(toc$);
+      if (tocNodes.length > 0) return tocNodes;
+    } catch {
+      console.log(
+        `⚠️  No index.html found, will process all HTML files in directory`,
+      );
+    }
+
+    return sourceStructure.fileNames.map((name) => ({
+      children: [],
+      sourceName: name,
+      title: stripHtml(name),
+      type: 'page',
+    }));
+  }
+
+  const orderedSourceNames = await collectIndexedSourceOrder(sourceStructure);
+  return buildTreeFromSourceNames(orderedSourceNames);
+}
+
+async function collectIndexedSourceOrder(sourceStructure) {
+  const knownSources = new Set(sourceStructure.fileNames);
+  const ordered = [];
+  const seen = new Set();
+
+  const push = (sourceName) => {
+    if (!knownSources.has(sourceName) || seen.has(sourceName)) return;
+    seen.add(sourceName);
+    ordered.push(sourceName);
+  };
+
+  for (const indexSourceName of sourceStructure.indexSourceNames ?? []) {
+    const sourcePath = path.join(sourceStructure.sourceDir, indexSourceName);
+    let html = '';
+    try {
+      html = await fs.readFile(sourcePath, 'utf8');
+    } catch {
+      continue;
+    }
+
+    const indexDir = normalizeSourcePath(path.posix.dirname(indexSourceName));
+    const $ = cheerio.load(html);
+    $('a[href]').each((_, anchor) => {
+      const href = $(anchor).attr('href')?.trim();
+      const linkedSource = resolveLinkedSourceName(href, indexDir);
+      if (linkedSource) push(linkedSource);
+    });
+  }
+
+  for (const sourceName of sourceStructure.fileNames) push(sourceName);
+  return ordered;
+}
+
+function resolveLinkedSourceName(href, currentDir = '.') {
+  if (!href || isExternalHref(href)) return null;
+
+  const hashIndex = href.indexOf('#');
+  const withoutHash = hashIndex === -1 ? href : href.slice(0, hashIndex);
+  const withoutQuery = withoutHash.split('?')[0];
+  if (!withoutQuery.endsWith('.html')) return null;
+
+  const normalized = path.posix.normalize(
+    path.posix.join(currentDir === '.' ? '' : currentDir, withoutQuery),
+  );
+  return normalized.startsWith('../') ? null : normalizeSourcePath(normalized);
+}
+
+function buildTreeFromSourceNames(sourceNames) {
+  const rootNodes = [];
+  const folderNodesByPath = new Map();
+  const folderKeys = new Set();
+  const usedPageKeys = new Set();
+
+  for (const sourceName of sourceNames) {
+    const routeSegments = routeSegmentsForSourceName(sourceName);
+    for (let index = 1; index < routeSegments.length; index++) {
+      folderKeys.add(routeSegments.slice(0, index).join('/'));
+    }
+  }
+
+  const ensureFolder = (segments) => {
+    let siblings = rootNodes;
+    const parentSegments = [];
+    let folder = null;
+
+    for (const segment of segments) {
+      parentSegments.push(segment);
+      const folderKey = parentSegments.join('/');
+      folder = folderNodesByPath.get(folderKey);
+      if (!folder) {
+        folder = {
+          children: [],
+          routeSegments: [...parentSegments, 'index'],
+          slug: segment,
+          sourceName: null,
+          title: titleFromSlug(segment),
+          type: 'folder',
+        };
+        folderNodesByPath.set(folderKey, folder);
+        siblings.push(folder);
+      }
+      siblings = folder.children;
+    }
+
+    return folder;
+  };
+
+  for (const sourceName of sourceNames) {
+    const routeSegments = routeSegmentsForSourceName(sourceName);
+    if (routeSegments.length === 0) continue;
+
+    const routeKey = routeSegments.join('/');
+    if (folderKeys.has(routeKey)) {
+      const folder = ensureFolder(routeSegments);
+      if (!folder.sourceName) {
+        folder.sourceName = sourceName;
+        folder.title = stripHtml(path.posix.basename(sourceName));
+      }
+      continue;
+    }
+
+    const parentRouteSegments = routeSegments.slice(0, -1);
+    const parentFolder = ensureFolder(parentRouteSegments);
+    const siblings = parentFolder ? parentFolder.children : rootNodes;
+    let slug = routeSegments.at(-1);
+    let pageKey = [...parentRouteSegments, slug].join('/');
+    let suffix = 2;
+    while (usedPageKeys.has(pageKey) || folderKeys.has(pageKey)) {
+      slug = `${routeSegments.at(-1)}-${suffix}`;
+      pageKey = [...parentRouteSegments, slug].join('/');
+      suffix += 1;
+    }
+    usedPageKeys.add(pageKey);
+
+    siblings.push({
+      children: [],
+      routeSegments: [...parentRouteSegments, slug],
+      slug,
+      sourceName,
+      title: stripHtml(path.posix.basename(sourceName)),
+      type: 'page',
+    });
+  }
+
+  return rootNodes;
+}
+
+function routeSegmentsForSourceName(sourceName) {
+  const stripped = stripHtml(sourceName);
+  const segments = stripped
+    .split('/')
+    .map((segment) => toKebab(segment))
+    .filter(Boolean);
+  return segments.at(-1) === 'index' ? segments.slice(0, -1) : segments;
+}
+
+function titleFromSlug(slug) {
+  return slug
+    .split('-')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
 }
 
 // ============================================================================
@@ -1409,22 +1821,29 @@ async function writeNode(
       title: pageTitleBySource.get(node.sourceName) ?? node.title,
       pages: ['index', ...node.children.map((child) => child.slug)],
     });
-    await writeFile(
-      path.join(dir, 'index.mdx'),
-      renderPage({
-        $: cheerio.load(
-          await fs.readFile(
-            path.join(output.sourceDir, node.sourceName),
-            'utf8',
+    if (node.sourceName) {
+      await writeFile(
+        path.join(dir, 'index.mdx'),
+        renderPage({
+          $: cheerio.load(
+            await fs.readFile(
+              path.join(output.sourceDir, node.sourceName),
+              'utf8',
+            ),
           ),
-        ),
-        currentSource: node.sourceName,
-        pageDescriptionBySource,
-        pageTitleBySource,
-        sourceToRoute,
-        targetBasePath: output.targetBasePath,
-      }),
-    );
+          currentSource: node.sourceName,
+          pageDescriptionBySource,
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath: output.targetBasePath,
+        }),
+      );
+    } else {
+      await writeFile(
+        path.join(dir, 'index.mdx'),
+        renderSyntheticIndex(node.title, `${node.title} API reference.`),
+      );
+    }
 
     for (const child of node.children) {
       await writeNode(
@@ -1458,6 +1877,16 @@ async function writeNode(
   );
 }
 
+function renderSyntheticIndex(title, description) {
+  return `---
+title: ${escapeYaml(title)}
+description: ${escapeYaml(description)}
+---
+
+This section contains migrated API reference pages.
+`;
+}
+
 async function main() {
   globalThis.File ??= class File {};
   const opts = parseArgs();
@@ -1488,48 +1917,30 @@ async function main() {
   console.log(`Dry run:   ${opts.dryRun ? 'yes' : 'no'}`);
   console.log(`${'─'.repeat(50)}\n`);
 
-  const sourceDir = opts.source;
   const apiSourceDir = sourceStructure.sourceDir;
   const targetRoot = opts.dryRun
     ? path.resolve(opts.output)
     : assertSafeOutputPath(opts.output, opts, sourceStructure);
   const targetBasePath = `${opts.routeBasePath}/${opts.product}/${opts.platform}`;
 
-  // Read TOC
-  const tocPath = path.join(sourceDir, 'index.html');
-  let tocNodes = [];
-  try {
-    const tocHtml = await fs.readFile(tocPath, 'utf8');
-    const toc$ = cheerio.load(tocHtml);
-    tocNodes = parseTocTree(toc$);
-  } catch {
-    console.log(
-      `⚠️  No index.html found, will process all HTML files in directory`,
-    );
-  }
-
-  // Get all HTML files
   const fileNames = sourceStructure.fileNames;
-
-  // If no TOC, create a flat structure
-  if (tocNodes.length === 0) {
-    tocNodes = fileNames.map((name) => ({
-      children: [],
-      sourceName: name,
-      title: stripHtml(name),
-      type: 'page',
-    }));
-  }
+  const tocNodes = await buildTocNodes(sourceStructure);
 
   // Assign routes
   const sourceToRoute = new Map();
   assignRoutes(tocNodes, [], sourceToRoute);
+  if (sourceStructure.rootIndexSource) {
+    setRouteForSource(sourceToRoute, sourceStructure.rootIndexSource, []);
+  }
 
   // Read page titles and descriptions
   const pageTitleBySource = new Map();
   const pageDescriptionBySource = new Map();
 
-  for (const name of fileNames) {
+  const titleSourceNames = sourceStructure.rootIndexSource
+    ? [sourceStructure.rootIndexSource, ...fileNames]
+    : fileNames;
+  for (const name of titleSourceNames) {
     const html = await fs.readFile(path.join(apiSourceDir, name), 'utf8');
     const $ = cheerio.load(html);
     const title = readTitle($) || stripHtml(name);
@@ -1567,15 +1978,32 @@ async function main() {
   await fs.mkdir(targetRoot, { recursive: true });
 
   // Write index
-  await writeFile(
-    path.join(targetRoot, 'index.mdx'),
-    `---
-title: ${escapeYaml(`${opts.platform.toUpperCase()} API Reference`)}
-description: ${escapeYaml(`${opts.product} ${opts.platform} API reference.`)}
----
-
-This directory contains the migrated ${opts.product} ${opts.platform} API reference.`,
-  );
+  if (sourceStructure.rootIndexSource) {
+    await writeFile(
+      path.join(targetRoot, 'index.mdx'),
+      renderPage({
+        $: cheerio.load(
+          await fs.readFile(
+            path.join(apiSourceDir, sourceStructure.rootIndexSource),
+            'utf8',
+          ),
+        ),
+        currentSource: sourceStructure.rootIndexSource,
+        pageDescriptionBySource,
+        pageTitleBySource,
+        sourceToRoute,
+        targetBasePath,
+      }),
+    );
+  } else {
+    await writeFile(
+      path.join(targetRoot, 'index.mdx'),
+      renderSyntheticIndex(
+        `${opts.platform.toUpperCase()} API Reference`,
+        `${opts.product} ${opts.platform} API reference.`,
+      ),
+    );
+  }
 
   // Write meta.json
   await writeJson(path.join(targetRoot, 'meta.json'), {

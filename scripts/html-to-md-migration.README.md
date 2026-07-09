@@ -1,14 +1,14 @@
-# DITA-OT HTML-to-Markdown Migration Tool
+# HTML-to-Markdown API Reference Migration Tool
 
-A focused script for converting DITA-OT (Oxygen XML) generated HTML API reference docs to pure markdown files suitable for the docs-portal project.
+A focused script for converting generated HTML API reference docs to pure markdown/MDX files suitable for the docs-portal project.
 
-This is not a generic HTML-to-Markdown converter. It only supports source directories that contain a DITA-OT `API/` subdirectory with HTML files. Other generated API reference structures are detected early and rejected with an actionable error.
+This is not a generic website scraper. It supports the generated API-reference layouts that have stable index files and symbol pages, and it still rejects RESTful/OpenAPI or arbitrary HTML exports with an actionable error.
 
 ## Overview
 
-The old Chinese documentation site (`shengwang-doc-source`) used DITA-OT/Oxygen XML to generate some HTML API references. This tool converts that DITA-OT `API/` output to clean markdown that can be used in the new docs-portal.
+The old Chinese documentation site (`shengwang-doc-source`) contains several generated HTML API reference formats. This tool detects the source structure, selects the matching migration lane, and writes Fumadocs-compatible `.mdx` pages plus `meta.json` navigation.
 
-Do not use this script for TypeDoc, Doxygen/Javadoc, iOS-doc-generator, Dartdoc, RESTful/OpenAPI, or arbitrary HTML exports. Those structures need their own migration lanes because their navigation, symbols, and generated anchors differ from the DITA-OT `API/` layout.
+Supported lanes currently include DITA-OT/Oxygen `API/` exports, TypeDoc, Doxygen/Javadoc, iOS doc-generator/Jazzy/appledoc, and Dartdoc. RESTful/OpenAPI remains out of scope for this script and should use the existing OpenAPI/Fumadocs lane.
 
 ## Usage
 
@@ -25,7 +25,7 @@ node scripts/html-to-md-migration.mjs \
 
 | Argument | Description | Example |
 |----------|-------------|---------|
-| `--source, -s` | Source directory containing DITA-OT `API/*.html` docs | `/path/to/html-docs/rtc/Android` |
+| `--source, -s` | Source directory containing generated HTML API docs | `/path/to/html-docs/rtc/Android` |
 | `--output, -o` | Output directory for markdown files | `content/docs/zh-CN/api-reference/rtc/android` |
 | `--product, -p` | Product name | `rtc`, `signaling`, `cloud-recording` |
 | `--platform, -P` | Platform name | `android`, `ios`, `web`, `RESTful` |
@@ -47,18 +47,18 @@ node scripts/html-to-md-migration.mjs \
 | Lane | Expected source shape | Behavior |
 |------|-----------------------|----------|
 | DITA-OT/Oxygen API reference | `<source>/API/*.html`, with optional `<source>/index.html` TOC | Converts HTML pages to `.mdx`, preserves DITA-OT TOC order when present, and writes `meta.json` files. |
+| TypeDoc | `index.html`, `modules.html`, `classes/`, `interfaces/`, `enums/`, `assets/` | Converts module, class, interface, enum, and related pages; preserves index-link order where available and rewrites internal `.html` links. |
+| Doxygen/Javadoc | `annotated.html`, `classes.html`, `doxygen.css`, generated `class*.html` / `interface*.html`, `search/`, or Javadoc indexes | Converts index and symbol pages; preserves common index-link order and rewrites internal `.html` links. |
+| iOS doc-generator/Jazzy/appledoc | `Classes/`, `Protocols/`, `Constants/`, `Blocks/`, `Categories/`, `hierarchy.html` | Converts Objective-C/Swift index and symbol pages while preserving stable anchors and folder navigation. |
+| Dartdoc | `index.html`, `index.json`, `categories.json`, `library-index.html`, `static-assets/` | Converts library and API pages while preserving folder navigation and internal `.html` links. |
 
 ### Unsupported
 
-The script detects these layouts and fails before reading `API/`:
+The script still rejects these layouts before writing output:
 
 | Detected lane | Common markers | Required action |
 |---------------|----------------|-----------------|
-| TypeDoc | `modules.html`, `classes/`, `interfaces/`, `enums/`, TypeDoc page text | Use or build a TypeDoc-specific migration lane. |
-| Doxygen/Javadoc | `annotated.html`, `classes.html`, `doxygen.css`, `allclasses-index.html`, `package-summary.html`, Javadoc page text | Use or build a Doxygen/Javadoc-specific migration lane. |
-| iOS-doc-generator | `Classes/`, `Protocols/`, `Constants/`, `Blocks/`, `hierarchy.html`, appledoc/Jazzy/iOS-doc-generator markers | Use or build an iOS-doc-generator-specific migration lane. |
-| Dartdoc | `index.json`, `categories.json`, `library-index.html`, `static-assets/`, Dartdoc page text | Use or build a Dartdoc-specific migration lane. |
-| RESTful/OpenAPI or other layouts | `openapi.yaml`, `openapi.json`, `swagger.yaml`, endpoint folders, root HTML without `API/` | Use the OpenAPI/Fumadocs REST API lane or add a source-specific converter. |
+| RESTful/OpenAPI or other layouts | `openapi.yaml`, `openapi.json`, `swagger.yaml`, endpoint folders, unrelated root HTML without supported generator markers | Use the OpenAPI/Fumadocs REST API lane or add a source-specific converter. |
 
 ## Examples
 
@@ -164,9 +164,9 @@ public class VideoCanvas {
 | `migrate-video-calling.mjs` | Video calling docs | ✅ Already migrated |
 | `migrate-cloud-recording.mjs` | Cloud recording | ✅ Already migrated |
 | `migrate-on-premise-recording.mjs` | On-premise recording | ✅ Already migrated |
-| **`html-to-md-migration.mjs`** | **Reusable only for DITA-OT `API/` exports** | **New** |
+| **`html-to-md-migration.mjs`** | **Reusable generated HTML API reference migration for DITA-OT, TypeDoc, Doxygen/Javadoc, iOS doc-generator/Jazzy/appledoc, and Dartdoc** | **Supported lanes implemented; REST/OpenAPI remains separate** |
 
-This script can help with future DITA-OT `API/` exports. It does not replace product-specific scripts for non-DITA source structures.
+This script can help with future generated HTML API reference migrations. It does not replace the REST/OpenAPI migration lane, and it is still intended for API-reference generator output rather than arbitrary website pages.
 
 ## Technical Details
 
