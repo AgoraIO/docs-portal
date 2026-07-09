@@ -1115,14 +1115,24 @@ function renderAnchor(
     sourceToRoute,
   );
   if (!routeSegments) {
-    return filePart.split('?')[0].endsWith('.html')
-      ? label
-      : `[${label}](${href})`;
+    const sourceName = filePart.split('?')[0];
+    if (isFilteredHelperHtmlSource(sourceName)) return '';
+    return sourceName.endsWith('.html') ? label : `[${label}](${href})`;
   }
 
   return `[${label}](${routeSegmentsToDocPath(routeSegments, targetBasePath)}${
     hashPart ? `#${hashPart}` : ''
   })`;
+}
+
+function isFilteredHelperHtmlSource(sourceName) {
+  const basename = sourceName.split('/').at(-1) ?? sourceName;
+  if (basename.endsWith('-members.html')) return true;
+  if (basename.endsWith('_source.html')) return true;
+  if (/^functions(?:[_-].*)?\.html$/i.test(basename)) return true;
+  if (/^namespacemembers(?:[_-].*)?\.html$/i.test(basename)) return true;
+  if (/^globals(?:[_-].*)?\.html$/i.test(basename)) return true;
+  return false;
 }
 
 function resolveRouteForHref(filePart, currentSource, sourceToRoute) {
