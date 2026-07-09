@@ -1,0 +1,355 @@
+---
+title: "MessagesStore"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+`MessagesStore` 类用于处理各种聊天消息及IM信令控制。
+
+- EduStoreBase
+  - MessagesStore
+
+## Accessors
+
+<a id="chatConvasationMessageId"></a>
+
+### chatConvasationMessageId
+
+```ts
+get chatConvasationMessageId(): Map<string, MessageItem>
+```
+
+#### Returns
+
+Returns Map &lt; string, [MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/message-item) &gt;
+
+<a id="chatConvasationUserUuid"></a>
+
+### chatConvasationUserUuid
+
+```ts
+get chatConvasationUserUuid(): Map<string, Conversation>
+```
+
+#### Returns
+
+Returns Map &lt; string, [Conversation](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/conversation) &gt;
+
+<a id="chatMuted"></a>
+
+### chatMuted
+
+```ts
+get chatMuted(): boolean
+```
+
+是否禁止聊天
+
+#### Returns
+
+Returns boolean
+
+<a id="newMessageFlag"></a>
+
+### newMessageFlag
+
+```ts
+get newMessageFlag(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="roomChatConversations"></a>
+
+### roomChatConversations
+
+```ts
+get roomChatConversations(): Conversation[]
+```
+
+会话列表
+
+#### Returns
+
+Returns [Conversation](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/conversation) []
+
+<a id="roomChatMessages"></a>
+
+### roomChatMessages
+
+```ts
+get roomChatMessages(): MessageItem[]
+```
+
+历史消息列表
+
+#### Returns
+
+Returns [MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/message-item) []
+
+<a id="roomChatMessagesMessageId"></a>
+
+### roomChatMessagesMessageId
+
+```ts
+get roomChatMessagesMessageId(): Map<string, MessageItem>
+```
+
+#### Returns
+
+Returns Map &lt; string, [MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/message-item) &gt;
+
+<a id="unreadMessageCount"></a>
+
+### unreadMessageCount
+
+```ts
+get unreadMessageCount(): number
+```
+
+未读消息数量
+
+#### Returns
+
+Returns number
+
+## Methods
+
+<a id="addChatMessage"></a>
+
+### addChatMessage
+
+```ts
+addChatMessage(args: MessageItem): void
+```
+
+增加一条消息到消息列表
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| args: MessageItem |  |
+
+#### Returns
+
+Returns void
+
+<a id="addConversationChatMessage"></a>
+
+### addConversationChatMessage
+
+```ts
+addConversationChatMessage(args: MessageItem, conversation: Conversation): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| args: MessageItem |  |
+| conversation: Conversation |  |
+
+#### Returns
+
+Returns void
+
+<a id="addRoomChatConversation"></a>
+
+### addRoomChatConversation
+
+```ts
+addRoomChatConversation(conversation: Conversation): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| conversation: Conversation |  |
+
+#### Returns
+
+Returns void
+
+<a id="getConversationHistoryChatMessage"></a>
+
+### getConversationHistoryChatMessage
+
+```ts
+getConversationHistoryChatMessage(data: { nextId: string; sort: number; studentUuid: string }): Promise<void>
+```
+
+根据学生 ID 获取学生的提问消息
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| data: \{ nextId: string; sort: number; studentUuid: string \} |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="getConversationList"></a>
+
+### getConversationList
+
+```ts
+getConversationList(data: { nextId: string; sort: number }): Promise<any>
+```
+
+获取 提问列表用户信息
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| data: \{ nextId: string; sort: number \} |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="getHistoryChatMessage"></a>
+
+### getHistoryChatMessage
+
+```ts
+getHistoryChatMessage(data: { nextId: string; sort: number }): Promise<any>
+```
+
+获取房间历史的聊天消息
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| data: \{ nextId: string; sort: number \} |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="incrementUnreadMessageCount"></a>
+
+### incrementUnreadMessageCount
+
+```ts
+incrementUnreadMessageCount(): void
+```
+
+增加未读消息总数
+
+#### Returns
+
+Returns void
+
+<a id="muteChat"></a>
+
+### muteChat
+
+```ts
+muteChat(): Promise<void>
+```
+
+禁止聊天
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="onDestroy"></a>
+
+### onDestroy
+
+```ts
+onDestroy(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="onInstall"></a>
+
+### onInstall
+
+```ts
+onInstall(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="resetUnreadMessageCount"></a>
+
+### resetUnreadMessageCount
+
+```ts
+resetUnreadMessageCount(): void
+```
+
+重置未读消息数
+
+#### Returns
+
+Returns void
+
+<a id="sendMessage"></a>
+
+### sendMessage
+
+```ts
+sendMessage(message: string): Promise<void>
+```
+
+发送消息
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| message: string |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="sendMessageToConversation"></a>
+
+### sendMessageToConversation
+
+```ts
+sendMessageToConversation(message: string, conversation: Conversation): Promise<void>
+```
+
+发送会话消息
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| message: string |  |
+| conversation: Conversation |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="unmuteChat"></a>
+
+### unmuteChat
+
+```ts
+unmuteChat(): Promise<void>
+```
+
+解除禁止聊天
+
+#### Returns
+
+Returns Promise &lt; void &gt;

@@ -1,0 +1,83 @@
+---
+title: "com.herewhite.sdk.domain.WindowDocsEvent类 参考"
+description: "WindowDocsEvent 类，用于定义文档操作事件。"
+---
+
+`WindowDocsEvent` 类，用于定义文档操作事件。
+
+## 构造及析构函数说明
+
+<a id="ae1621e8775231eddb45bc4fd32c611ae"></a>
+
+### WindowDocsEvent()
+
+```cpp
+com.herewhite.sdk.domain.WindowDocsEvent.WindowDocsEvent(String event, Options options)
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event | 文档事件。包括以下几种：<br />- prevPage: 上一页。<br />- nextPage: 下一页。<br />- prevStep: 上一步。<br />- nextStep: 下一步。<br />- jumpToPage: 跳转至页码。 |
+| options | 事件参数。仅当 `event` 为 `jumpToPage` 时需要传入，用于指定期望跳转的页码。 |
+
+## 成员函数说明
+
+<a id="a9102805f760173eede329af8078eee10"></a>
+
+### JumpToPage()
+
+```cpp
+static WindowDocsEvent com.herewhite.sdk.domain.WindowDocsEvent.JumpToPage(Integer page) static
+```
+
+跳转至页码。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| page | 期望跳转的页码。 |
+
+## 类成员变量说明
+
+<a id="ad5785268175d048f620944af33fd972e"></a>
+
+### PrevPage
+
+```cpp
+WindowDocsEvent com.herewhite.sdk.domain.WindowDocsEvent.PrevPage = new WindowDocsEvent("prevPage") static
+```
+
+上一页。
+
+<a id="aedf821539faafb8218917eae89a7c368"></a>
+
+### NextPage
+
+```cpp
+WindowDocsEvent com.herewhite.sdk.domain.WindowDocsEvent.NextPage = new WindowDocsEvent("nextPage") static
+```
+
+下一页。
+
+<a id="a022821139a3d40ddb23761a4a0bd8197"></a>
+
+### PrevStep
+
+```cpp
+WindowDocsEvent com.herewhite.sdk.domain.WindowDocsEvent.PrevStep = new WindowDocsEvent("prevStep") static
+```
+
+上一步。
+
+<a id="aed61a32e60215c44667794affe622815"></a>
+
+### NextStep
+
+```cpp
+WindowDocsEvent com.herewhite.sdk.domain.WindowDocsEvent.NextStep = new WindowDocsEvent("nextStep") static
+```
+
+下一步。

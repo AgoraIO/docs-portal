@@ -1,0 +1,65 @@
+---
+title: "WhiteScene Class Reference"
+description: "白板场景信息。"
+---
+
+<a id="overview"></a>
+
+白板场景信息。
+
+## Methods
+
+<a id="//api/name/init"></a>
+
+### init
+
+```objc
+- (instancetype)init
+```
+
+初始化 `WhiteScene` 对象。
+
+#### Returns
+
+初始化的 `WhiteScene` 对象。
+
+<a id="//api/name/initWithName:ppt:"></a>
+
+### initWithName:ppt:
+
+```objc
+- (instancetype)initWithName:(nullable NSString *)name ppt:(nullable WhitePptPage *)ppt
+```
+
+传入场景名称和待插入场景的图片或动态 PPT 并初始化一个 `WhiteScene` 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `name` | 场景名称。 |
+| `ppt` | 图片或动态 PPT。详见 [WhitePptPage](/zh-CN/api-reference/whiteboard/ios/classes/white-ppt-page)。 |
+
+#### Returns
+
+初始化的 `WhiteScene` 对象。
+
+<a id="//api/name/name"></a>
+
+### name
+
+```objc
+@property (nonatomic, copy, readonly) NSString *name
+```
+
+场景名称。
+
+<a id="//api/name/ppt"></a>
+
+### ppt
+
+```objc
+@property (nonatomic, strong, readonly, nullable) WhitePptPage *ppt
+```
+
+待插入场景的图片或动态 PPT。详见 [WhitePptPage](/zh-CN/api-reference/whiteboard/ios/classes/white-ppt-page)。

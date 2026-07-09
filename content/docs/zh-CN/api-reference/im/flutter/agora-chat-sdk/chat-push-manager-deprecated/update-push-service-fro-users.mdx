@@ -1,0 +1,37 @@
+---
+title: "updatePushServiceFroUsers method"
+description: "API docs for the updatePushServiceFroUsers method from the ChatPushManagerDeprecated extension, for the Dart programming language."
+---
+
+Sets whether to turn on or turn off the push notification for the the specified users.
+
+`userIds` The list of users to be set.
+
+`enablePush` enable push notification. `true`: Turns on the notification; `false`: Turns off the notification;
+
+**Throws** A description of the issue that caused this exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error)
+
+```dart
+@Deprecated('Use ChatPushManager#setConversationSilentMode to instead')Future<void> updatePushServiceFroUsers({required List<String> userIds, required bool enablePush})@Deprecated('Use ChatPushManager#setConversationSilentMode to instead')
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@Deprecated('Use ChatPushManager#setConversationSilentMode to instead')
+Future<void> updatePushServiceFroUsers({
+  required List<String> userIds,
+  required bool enablePush,
+}) async {
+  Map req = {'noPush': !enablePush, 'user_ids': userIds};
+  Map result = await PushChannel.invokeMethod(
+      ChatMethodKeys.updateUserPushService, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

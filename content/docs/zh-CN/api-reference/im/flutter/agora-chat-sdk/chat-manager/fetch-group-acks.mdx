@@ -1,0 +1,58 @@
+---
+title: "fetchGroupAcks method"
+description: "API docs for the fetchGroupAcks method from the ChatManager class, for the Dart programming language."
+---
+
+Gets read receipts for group messages from the server with pagination.
+
+See also: For how to send read receipts for group messages, see [sendConversationReadAck](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/send-conversation-read-ack).
+
+**Return** The list of obtained read receipts and the cursor for next query.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `msgId` | The message ID. |
+| `startAckId` | The starting read receipt ID for query. If you set it as null, the SDK retrieves the read receipts in the in reverse chronological order. |
+| `pageSize` | The number of read receipts per page. |
+
+```dart
+Future<ChatCursorResult<ChatGroupMessageAck>> fetchGroupAcks(String msgId, String groupId, {String? startAckId, int pageSize = 0})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<ChatCursorResult<ChatGroupMessageAck>> fetchGroupAcks(
+  String msgId,
+  String groupId, {
+  String? startAckId,
+  int pageSize = 0,
+}) async {
+  Map req = {"msg_id": msgId, "group_id": groupId};
+  req["pageSize"] = pageSize;
+  req.setValueWithOutNull("ack_id", startAckId);
+
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.asyncFetchGroupAcks, req);
+
+  try {
+    ChatError.hasErrorFromResult(result);
+    ChatCursorResult<ChatGroupMessageAck> cursorResult = ChatCursorResult.fromJson(
+      result[ChatMethodKeys.asyncFetchGroupAcks],
+      dataItemCallback: (map) {
+        return ChatGroupMessageAck.fromJson(map);
+      },
+    );
+
+    return cursorResult;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

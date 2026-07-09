@@ -1,0 +1,69 @@
+---
+title: "io.agora.rtc.AgoraRtcService.CryptoOption类 参考"
+description: "媒体流加密选项。"
+---
+
+媒体流加密选项。
+
+## 构造及析构函数说明
+
+<a id="afeafc886d045709a1140fbb020d26672"></a>
+
+### CryptoOption()
+
+```cpp
+io.agora.rtc.AgoraRtcService.CryptoOption.CryptoOption()
+```
+
+## 类成员变量说明
+
+<a id="a9cb56a2c9cd1900e4198f35c85d1921b"></a>
+
+### enable
+
+```cpp
+boolean io.agora.rtc.AgoraRtcService.CryptoOption.enable
+```
+
+是否开启媒体流加密：
+
+- true: 开启加密。
+- false: 关闭加密。
+
+<a id="a2b9206ac3585099064db0e36b5885f3d"></a>
+
+### key
+
+```cpp
+String io.agora.rtc.AgoraRtcService.CryptoOption.key
+```
+
+媒体流加密密钥，字符串类型，长度至多为 128 字节。建议使用 32 字节的密钥。
+
+##### `注解`
+
+如果未指定该参数或将该参数设置为 `NULL`，则无法启用媒体流加密，且 SDK 会返回错误码 -2。
+
+<a id="aa9624cb8ddb5c853ea59d92b09c548a2"></a>
+
+### mode
+
+```cpp
+int io.agora.rtc.AgoraRtcService.CryptoOption.mode
+```
+
+媒体流加密模式。详见 [CryptoMode](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-crypto-mode)。建议使用 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式。这两种模式支持使用盐，安全性更高。
+
+<a id="a94a15e4b680c849187b6f64e5214ce4f"></a>
+
+### salt
+
+```cpp
+byte [] io.agora.rtc.AgoraRtcService.CryptoOption.salt
+```
+
+盐，长度为 32 字节。建议你在服务端使用 OpenSSL 生成盐。详见《媒体流和信令加密》。
+
+##### `注解`
+
+只有在 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式下，该参数才生效。此时，需确保填入该参数的值不全为 `0`。

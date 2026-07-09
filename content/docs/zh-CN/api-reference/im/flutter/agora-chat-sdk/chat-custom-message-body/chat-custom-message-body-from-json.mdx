@@ -1,0 +1,20 @@
+---
+title: "ChatCustomMessageBody.fromJson constructor"
+description: "API docs for the ChatCustomMessageBody.fromJson constructor from Class ChatCustomMessageBody from the agora_chat_sdk library, for the Dart programming language."
+---
+
+```dart
+ChatCustomMessageBody.fromJson({required Map map})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ChatCustomMessageBody.fromJson({required Map map})
+    : super.fromJson(map: map, type: MessageType.CUSTOM) {
+  this.event = map["event"];
+  this.params = map["params"]?.cast<String, String>();
+}
+```

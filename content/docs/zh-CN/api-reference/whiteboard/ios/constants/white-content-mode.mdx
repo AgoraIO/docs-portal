@@ -1,0 +1,21 @@
+---
+title: "WhiteContentMode Constants Reference"
+description: "白板视角边界的缩放模式和缩放比例。"
+---
+
+白板视角边界的缩放模式和缩放比例。
+
+## WhiteContentMode
+
+```objc
+typedef NS_ENUM(NSUInteger, WhiteContentMode ) { WhiteContentModeScale, WhiteContentModeAspectFit, WhiteContentModeAspectFitScale, WhiteContentModeAspectFitSpace, WhiteContentModeAspectFill, WhiteContentModeAspectFillScale, };
+```
+
+| Name | Description |
+| --- | --- |
+| `WhiteContentModeScale` | （默认）基于设置的 `scale` 缩放视角边界。 |
+| `WhiteContentModeAspectFit` | 等比例缩放视角边界，使视角边界的长边正好顶住与其垂直的屏幕的两边，以保证在屏幕上完整展示视角边界。 |
+| `WhiteContentModeAspectFitScale` | 等比例缩放视角边界，使视角边界的长边正好顶住与其垂直的屏幕的两边，以保证在屏幕上完整展示视角边界；在此基础上，再将视角边界缩放指定的倍数。 |
+| `WhiteContentModeAspectFitSpace` | 等比例缩放视角边界，使视角边界的长边正好顶住与其垂直的屏幕的两边；在此基础上，在视角边界的四周填充指定的空白空间。 |
+| `WhiteContentModeAspectFill` | 等比例缩放视角边界，使视角边界的短边正好顶住与其垂直的屏幕的两边，以保证视角边界铺满屏幕。 |
+| `WhiteContentModeAspectFillScale` | 等比例缩放视角边界，使视角边界的短边正好顶住与其垂直的屏幕的两边，以保证视角边界铺满屏幕；在此基础上再将视角边界缩放指定的倍数。 |

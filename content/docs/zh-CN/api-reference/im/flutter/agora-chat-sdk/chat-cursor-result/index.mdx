@@ -1,0 +1,119 @@
+---
+title: "ChatCursorResult<T> class"
+description: "API docs for the ChatCursorResult class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The ChatCursorResult class, which specifies the cursor from which to query results. When querying using this class, the SDK returns the queried instance and the cursor.
+
+```dart
+    String? cursor;
+    ChatCursorResult<ChatGroup> result = await ChatClient.getInstance.groupManager.fetchPublicGroupsFromServer(pageSize: 10, cursor: cursor);
+    List<ChatGroup>? group = result.data;
+    cursor = result.cursor;
+```
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="cursor"></a>
+
+### [cursor](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-cursor-result/cursor)
+
+```dart
+cursor -> String?
+```
+
+Gets the cursor.
+
+_final._
+
+<a id="data"></a>
+
+### [data](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-cursor-result/data)
+
+```dart
+data -> List<T>
+```
+
+Gets the data list.
+
+_final._
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

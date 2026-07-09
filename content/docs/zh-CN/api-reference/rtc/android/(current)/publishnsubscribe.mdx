@@ -1,8 +1,10 @@
 ---
 title: "发布和订阅"
-description: "发布和订阅 API reference."
+description: "在发送端启用或禁用双流模式。"
 ---
 <a id="toc_publishnsubscribe"></a>
+
+## 发布和订阅
 
 <a id="api_irtcengine_enabledualstreammode"></a>
 
@@ -49,7 +51,7 @@ public abstract int enableDualStreamMode(boolean enabled)
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -109,7 +111,7 @@ public abstract int enableDualStreamMode(boolean enabled, SimulcastStreamConfig 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -177,7 +179,7 @@ public abstract int enableDualStreamModeEx(boolean enabled, SimulcastStreamConfi
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -199,7 +201,7 @@ public abstract int muteAllRemoteAudioStreams(boolean muted);
 请在加入频道后调用该方法。本地用户将停止或恢复订阅所有远端用户的音频流，包括之后加入频道的用户。
 
 :::info[注]
-如果你调用该方法后又调用了 [enableAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_enableaudio) 或 [disableAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_disableaudio)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的音频流。你可以在调用 `joinChannel` 加入频道时将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置为 false，以取消加入频道时对所有用户音频流的订阅。
+如果你调用该方法后又调用了 [enableAudio](/zh-CN/api-reference/rtc/android/audio-basic#api_irtcengine_enableaudio) 或 [disableAudio](/zh-CN/api-reference/rtc/android/audio-basic#api_irtcengine_disableaudio)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的音频流。你可以在调用 `joinChannel` 加入频道时将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置为 false，以取消加入频道时对所有用户音频流的订阅。
 :::
 
 <a id="api_irtcengine_muteallremoteaudiostreams__timing"></a>
@@ -224,7 +226,7 @@ public abstract int muteAllRemoteAudioStreams(boolean muted);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -276,7 +278,7 @@ public abstract int muteAllRemoteAudioStreamsEx(boolean muted, RtcConnection con
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -298,7 +300,7 @@ public abstract int muteAllRemoteVideoStreams(boolean muted);
 请在加入频道后调用该方法。调用该方法后，本地用户将停止或恢复订阅所有远端用户的视频流，包括之后加入频道的用户。
 
 :::info[注]
-如果你调用该方法后又调用了 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_disablevideo)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的视频流。你可以在调用 `joinChannel` 加入频道时将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `autoSubscribeVideo` 设置为 false，以取消加入频道时对所有用户的视频流订阅。
+如果你调用该方法后又调用了 [enableVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_disablevideo)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的视频流。你可以在调用 `joinChannel` 加入频道时将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `autoSubscribeVideo` 设置为 false，以取消加入频道时对所有用户的视频流订阅。
 :::
 
 <a id="api_irtcengine_muteallremotevideostreams__timing"></a>
@@ -325,7 +327,7 @@ public abstract int muteAllRemoteVideoStreams(boolean muted);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -372,7 +374,7 @@ public abstract int muteAllRemoteVideoStreamsEx(boolean muted, RtcConnection con
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -403,7 +405,7 @@ public abstract int muteLocalAudioStream(boolean muted);
 
 ### 相关回调
 
-调用该方法成功后，本地会触发回调 [onAudioPublishStateChanged](/zh-CN/api-reference/rtc/android/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged)；远端会触发回调 [onUserMuteAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
+调用该方法成功后，本地会触发回调 [onAudioPublishStateChanged](/zh-CN/api-reference/rtc/android/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged)；远端会触发回调 [onUserMuteAudio](/zh-CN/api-reference/rtc/android/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/android/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
 
 <a id="api_irtcengine_mutelocalaudiostream__parameters"></a>
 
@@ -421,7 +423,7 @@ public abstract int muteLocalAudioStream(boolean muted);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -440,7 +442,7 @@ public abstract int muteLocalAudioStreamEx(boolean muted, RtcConnection connecti
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__detailed_desc"></a>
 
-成功调用该方法后，远端客户端会收到 [onUserMuteAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+成功调用该方法后，远端客户端会收到 [onUserMuteAudio](/zh-CN/api-reference/rtc/android/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/android/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 
 :::info[注]
 该方法不会影响任何正在进行的音频录制，因为它不会禁用音频采集设备。
@@ -472,7 +474,7 @@ public abstract int muteLocalAudioStreamEx(boolean muted, RtcConnection connecti
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -491,7 +493,7 @@ public abstract int muteLocalVideoStream(boolean muted);
 
 <a id="api_irtcengine_mutelocalvideostream__detailed_desc"></a>
 
-该方法用于控制是否发布本地采集的视频流。调用该方法停止发布本地视频流时，视频采集设备仍会继续工作，不受影响。相比通过将 [enableLocalVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablelocalvideo) 设为 false 来关闭本地视频采集从而取消发布视频流，该方法响应更快。
+该方法用于控制是否发布本地采集的视频流。调用该方法停止发布本地视频流时，视频采集设备仍会继续工作，不受影响。相比通过将 [enableLocalVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_enablelocalvideo) 设为 false 来关闭本地视频采集从而取消发布视频流，该方法响应更快。
 
 <a id="api_irtcengine_mutelocalvideostream__timing"></a>
 
@@ -503,7 +505,7 @@ public abstract int muteLocalVideoStream(boolean muted);
 
 ### 相关回调
 
-调用该方法成功后，本地会触发回调 [onVideoPublishStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged)；远端会触发回调 [onUserMuteVideo](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 和 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged)。
+调用该方法成功后，本地会触发回调 [onVideoPublishStateChanged](/zh-CN/api-reference/rtc/android/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged)；远端会触发回调 [onUserMuteVideo](/zh-CN/api-reference/rtc/android/video-basic#callback_irtcengineeventhandler_onusermutevideo) 和 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/android/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged)。
 
 <a id="api_irtcengine_mutelocalvideostream__parameters"></a>
 
@@ -521,7 +523,7 @@ public abstract int muteLocalVideoStream(boolean muted);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -540,7 +542,7 @@ public abstract int muteLocalVideoStreamEx(boolean muted, RtcConnection connecti
 
 <a id="api_irtcengineex_mutelocalvideostreamex__detailed_desc"></a>
 
-成功调用该方法后，远端客户端会触发 [onUserMuteVideo](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
+成功调用该方法后，远端客户端会触发 [onUserMuteVideo](/zh-CN/api-reference/rtc/android/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
 
 :::info[注]
 该方法不会影响正在进行的视频录制，因为它不会关闭摄像头。
@@ -572,7 +574,7 @@ public abstract int muteLocalVideoStreamEx(boolean muted, RtcConnection connecti
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -623,7 +625,7 @@ public abstract int muteRemoteAudioStream(int uid, boolean muted);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -674,7 +676,7 @@ public abstract int muteRemoteAudioStreamEx(int uid, boolean muted, RtcConnectio
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -725,7 +727,7 @@ public abstract int muteRemoteVideoStream(int uid, boolean muted);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -776,7 +778,7 @@ public abstract int muteRemoteVideoStreamEx(int uid, boolean muted, RtcConnectio
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -821,7 +823,7 @@ public abstract int setDualStreamMode(Constants.SimulcastStreamMode mode);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -874,7 +876,7 @@ SDK 默认在发送端开启视频小流自适应模式（`AUTO_SIMULCAST_STREAM
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -937,7 +939,7 @@ SDK 默认在发送端开启视频小流自适应模式（`AUTO_SIMULCAST_STREAM
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -987,7 +989,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1044,7 +1046,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1093,7 +1095,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1149,7 +1151,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1207,7 +1209,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -1272,7 +1274,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -1316,7 +1318,7 @@ public abstract int setRemoteVideoSubscriptionOptions(int uid, VideoSubscription
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1364,7 +1366,7 @@ public abstract int setRemoteVideoSubscriptionOptionsEx(int uid, VideoSubscripti
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -1403,7 +1405,7 @@ public abstract int setSubscribeAudioAllowlist(int[] uidList);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1452,7 +1454,7 @@ public abstract int setSubscribeAudioAllowlistEx(int[] uidList, RtcConnection co
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -1493,7 +1495,7 @@ public abstract int setSubscribeAudioBlocklist(int[] uidList);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1549,7 +1551,7 @@ public abstract int setSubscribeAudioBlocklistEx(int[] uidList, RtcConnection co
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -1591,7 +1593,7 @@ public abstract int setSubscribeVideoAllowlist(int[] uidList);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1643,7 +1645,7 @@ public abstract int setSubscribeVideoAllowlistEx(int[] uidList, RtcConnection co
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -1685,7 +1687,7 @@ public abstract int setSubscribeVideoBlocklist(int[] uidList);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1734,7 +1736,7 @@ public abstract int setSubscribeVideoBlocklistEx(int[] uidList, RtcConnection co
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)

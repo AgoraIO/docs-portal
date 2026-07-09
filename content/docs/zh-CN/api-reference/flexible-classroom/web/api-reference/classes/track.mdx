@@ -1,0 +1,301 @@
+---
+title: "Track"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- Track
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new Track(context: TrackContext, _posOnly?: boolean): Track
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| context: TrackContext |  |
+| Optional _posOnly: boolean |  |
+
+#### Returns
+
+Returns [Track](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/track)
+
+## Accessors
+
+<a id="isCovered"></a>
+
+### isCovered
+
+```ts
+get isCovered(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="needTransition"></a>
+
+### needTransition
+
+```ts
+get needTransition(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="ratioVal"></a>
+
+### ratioVal
+
+```ts
+get ratioVal(): { ratioDimensions: { height: number; width: number }; ratioPosition: { x: number; y: number } }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| ratioDimensions: \{ height: number; width: number \} |  |
+| ratioPosition: \{ x: number; y: number \} |  |
+
+#### Returns
+
+Returns \{ratioDimensions: \{height: number; width: number \}; ratioPosition: \{x: number; y: number \} \}
+
+- ##### ratioDimensions: \{height: number; width: number \}
+  - ##### height: number
+  - ##### width: number
+- ##### ratioPosition: \{x: number; y: number \}
+  - ##### x: number
+  - ##### y: number
+
+<a id="realVal"></a>
+
+### realVal
+
+```ts
+get realVal(): { dimensions: { height: number; width: number }; position: { x: number; y: number } }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| dimensions: \{ height: number; width: number \} |  |
+| position: \{ x: number; y: number \} |  |
+
+#### Returns
+
+Returns \{dimensions: \{height: number; width: number \}; position: \{x: number; y: number \} \}
+
+- ##### dimensions: \{height: number; width: number \}
+  - ##### height: number
+  - ##### width: number
+- ##### position: \{x: number; y: number \}
+  - ##### x: number
+  - ##### y: number
+
+<a id="trackContext"></a>
+
+### trackContext
+
+```ts
+get trackContext(): TrackContext
+```
+
+#### Returns
+
+Returns [TrackContext](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)
+
+<a id="visible"></a>
+
+### visible
+
+```ts
+get visible(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+## Methods
+
+<a id="reposition"></a>
+
+### reposition
+
+```ts
+reposition(needTransition?: boolean): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional needTransition: boolean |  |
+
+#### Returns
+
+Returns void
+
+<a id="setRatio"></a>
+
+### setRatio
+
+```ts
+setRatio(position: Point, dimensions: Dimensions, needTransition?: boolean): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| position: Point |  |
+| dimensions: Dimensions |  |
+| Optional needTransition: boolean |  |
+
+#### Returns
+
+Returns void
+
+<a id="setRatioDimensions"></a>
+
+### setRatioDimensions
+
+```ts
+setRatioDimensions(ratioDimensions: Dimensions, needTransition?: boolean): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| ratioDimensions: Dimensions |  |
+| Optional needTransition: boolean |  |
+
+#### Returns
+
+Returns void
+
+<a id="setRatioPos"></a>
+
+### setRatioPos
+
+```ts
+setRatioPos(ratioPos: Point, needTransition?: boolean): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| ratioPos: Point |  |
+| Optional needTransition: boolean |  |
+
+#### Returns
+
+Returns void
+
+<a id="setReal"></a>
+
+### setReal
+
+```ts
+setReal(position: Point, dimensions: Dimensions, needTransition?: boolean): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| position: Point |  |
+| dimensions: Dimensions |  |
+| Optional needTransition: boolean |  |
+
+#### Returns
+
+Returns void
+
+<a id="setRealDimensions"></a>
+
+### setRealDimensions
+
+```ts
+setRealDimensions(dimensions: Dimensions, needTransition?: boolean): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| dimensions: Dimensions |  |
+| Optional needTransition: boolean |  |
+
+#### Returns
+
+Returns void
+
+<a id="setRealPos"></a>
+
+### setRealPos
+
+```ts
+setRealPos(position: Point, needTransition?: boolean): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| position: Point |  |
+| Optional needTransition: boolean |  |
+
+#### Returns
+
+Returns void
+
+<a id="setVisibility"></a>
+
+### setVisibility
+
+```ts
+setVisibility(visible: boolean): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| visible: boolean |  |
+
+#### Returns
+
+Returns void
+
+<a id="updateContext"></a>
+
+### updateContext
+
+```ts
+updateContext(context: Partial<TrackContext>): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| context: Partial&lt;TrackContext&gt; |  |
+
+#### Returns
+
+Returns void

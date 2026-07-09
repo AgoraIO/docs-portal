@@ -1,0 +1,115 @@
+---
+title: "com.herewhite.sdk.domain.ContentModeConfig类 参考"
+description: "ContentModeConfig 类，设置视角边界的缩放模式和缩放比例。"
+---
+
+`ContentModeConfig` 类，设置视角边界的缩放模式和缩放比例。
+
+### `自从`
+
+2.5.0
+
+## 成员函数说明
+
+<a id="a06a5b98e8790b3d89e93b1fca90361d1"></a>
+
+### getScale()
+
+```cpp
+Double com.herewhite.sdk.domain.ContentModeConfig.getScale()
+```
+
+获取视角边界的缩放比例。
+
+#### Returns
+
+视角边界的缩放比例。
+
+<a id="a9465b7e1e65f043146cb834af99dd0e3"></a>
+
+### setScale()
+
+```cpp
+void com.herewhite.sdk.domain.ContentModeConfig.setScale(Double scale)
+```
+
+设置视角边界的缩放比例。
+
+##### `注解`
+
+该方法仅在以下缩放模式下生效：
+
+- CENTER
+- CENTER_INSIDE
+- CENTER_INSIDE_SCALE
+- CENTER_CROP_SPACE
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| scale | 视角边界的缩放比例，默认值为 1.0，即保持视角边界的原始大小。 |
+
+<a id="a5c8449496208748dbe39f7132eb93936"></a>
+
+### getSpace()
+
+```cpp
+Double com.herewhite.sdk.domain.ContentModeConfig.getSpace()
+```
+
+获取在视角边界的四周填充的空白空间。
+
+#### Returns
+
+在视角边界的四周填充的空白空间，单位为像素。
+
+<a id="a1a40c12618243fb6605afb4e86670765"></a>
+
+### setSpace()
+
+```cpp
+void com.herewhite.sdk.domain.ContentModeConfig.setSpace(Double space)
+```
+
+设置在视角边界的四周填充的空白空间。
+
+##### `注解`
+
+该方法仅在 `CENTER_INSIDE_SPACE` 缩放模式下生效。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| space | 在视角边界的四周填充的空白空间，单位为像素，默认值为 0。 |
+
+<a id="a038271ec668a826a30ba1f426f7063e0"></a>
+
+### getMode()
+
+```cpp
+ScaleMode com.herewhite.sdk.domain.ContentModeConfig.getMode()
+```
+
+获取视角边界的缩放模式。
+
+#### Returns
+
+视角边界的缩放模式，详见 `ScaleMode`。
+
+<a id="a77321e99d4d493c623ccd06473fba532"></a>
+
+### setMode()
+
+```cpp
+void com.herewhite.sdk.domain.ContentModeConfig.setMode(ScaleMode mode)
+```
+
+设置视角边界的缩放模式。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mode | 视角边界的缩放模式，详见 `ScaleMode`。 |

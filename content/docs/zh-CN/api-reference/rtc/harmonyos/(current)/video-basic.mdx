@@ -1,0 +1,733 @@
+---
+title: "视频基础功能"
+description: "视频基础功能 API reference."
+---
+<a id="toc_video_basic"></a>
+
+## 视频基础功能
+
+<a id="api_irtcengine_disablevideo"></a>
+
+## disableVideo
+
+关闭视频模块。
+
+<a id="api_irtcengine_disablevideo__prototype"></a>
+
+```arkts
+public abstract disableVideo(): number;
+```
+
+<a id="api_irtcengine_disablevideo__detailed_desc"></a>
+
+该方法用于关闭视频模块。
+
+<a id="api_irtcengine_disablevideo__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用：
+
+- 如果在加入频道前调用，则开启纯音频模式。
+- 如果在加入频道后调用，则由视频模式切换为纯音频模式，然后再调用 enableVideo 方法可开启视频模式。
+
+<a id="api_irtcengine_disablevideo__restriction"></a>
+
+### 调用限制
+
+- 该方法设置的是内部引擎为禁用状态，在离开频道后仍然有效。
+- 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制视频模块的某一项功能：
+  - enableLocalVideo: 是否启动摄像头采集并创建本地视频流。
+  - muteLocalVideoStream: 是否发布本地视频流。
+  - muteRemoteVideoStream: 是否接收并播放远端视频流。
+  - muteAllRemoteVideoStreams: 是否接收并播放所有远端视频流。
+
+<a id="api_irtcengine_disablevideo__related"></a>
+
+### 相关回调
+
+成功调用该方法后，远端会触发 [onUserEnableVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#callback_irtcengineeventhandler_onuserenablevideo) (`false`) 回调。
+
+<a id="api_irtcengine_disablevideo__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enablelocalvideo"></a>
+
+## enableLocalVideo
+
+开关本地视频采集。
+
+<a id="api_irtcengine_enablelocalvideo__prototype"></a>
+
+```arkts
+public abstract enableLocalVideo(enabled: boolean): number;
+```
+
+<a id="api_irtcengine_enablelocalvideo__detailed_desc"></a>
+
+### 详情
+
+该方法禁用或重新启用本地视频采集，不影响接收远端视频。
+
+调用 [enableVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_enablevideo) 后，本地视频采集即默认开启。
+
+如果你在频道内调用 [enableLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_enablelocalvideo) (`false`) 关闭本地视频采集，也会同时停止在频道内发布视频流。如果想要重新开启，则可调用 enableLocalVideo (`true`)，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_updatechannelmediaoptions) 并设置 options 参数，将本地采集的视频流发布到频道中。
+
+成功禁用或启用本地视频采集后，远端会触发 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
+
+:::warning[注意]
+- 该方法在加入频道前后都能调用。
+- 该方法设置内部引擎为启用状态，在离开频道后仍然有效。
+:::
+
+<a id="api_irtcengine_enablelocalvideo__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否开启本地视频采集。
+
+- true:（默认）开启本地视频采集。
+- false: 关闭本地视频采集。关闭后，远端用户会接收不到本地用户的视频流；但本地用户依然可以接收远端用户的视频流。设置为 false 时，该方法不需要本地有摄像头。
+
+<a id="api_irtcengine_enablelocalvideo__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enablevideo"></a>
+
+## enableVideo
+
+启用视频模块。
+
+<a id="api_irtcengine_enablevideo__prototype"></a>
+
+```arkts
+public abstract enableVideo(): number;
+```
+
+<a id="api_irtcengine_enablevideo__detailed_desc"></a>
+
+视频模块默认为关闭状态，需要调用该方法启用。如果后续需要关闭视频模块，需调用 [disableVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_disablevideo) 方法。
+
+<a id="api_irtcengine_enablevideo__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或者频道内调用：
+
+- 如果在加入频道前调用，则开启视频模块。
+- 如果在纯音频通话中调用，则音频通话将自动切换为视频通话。
+
+<a id="api_irtcengine_enablevideo__restriction"></a>
+
+### 调用限制
+
+- 该方法设置的是内部引擎为启用状态，在离开频道后仍然有效。
+- 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制视频模块的某一项功能：
+  - enableLocalVideo: 是否启动摄像头采集并创建本地视频流。
+  - muteLocalVideoStream: 是否发布本地视频流。
+  - muteRemoteVideoStream: 是否接收并播放远端视频流。
+  - muteAllRemoteVideoStreams: 是否接收并播放所有远端视频流。
+- 在频道内调用该方法时，会重置 enableLocalVideo、 muteRemoteVideoStream 和 muteAllRemoteVideoStreams 的设置，需谨慎使用。
+
+<a id="api_irtcengine_enablevideo__related"></a>
+
+### 相关回调
+
+成功调用该方法后，远端会触发 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
+
+<a id="api_irtcengine_enablevideo__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setvideoencoderconfiguration"></a>
+
+## setVideoEncoderConfiguration
+
+设置视频编码属性。
+
+<a id="api_irtcengine_setvideoencoderconfiguration__prototype"></a>
+
+```arkts
+public abstract setVideoEncoderConfiguration(configuration: VideoEncoderConfiguration): number;
+```
+
+<a id="api_irtcengine_setvideoencoderconfiguration__detailed_desc"></a>
+
+设置本地视频的编码属性。每一种视频编码属性对应一系列视频相关参数设置，包含分辨率、帧率和码率。
+
+<a id="api_irtcengine_setvideoencoderconfiguration__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后都能调用。如果用户在加入频道后不需要重新设置视频编码属性，则建议在 [enableVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_enablevideo) 前调用该方法，可以加快首帧出图的时间。
+
+<a id="api_irtcengine_setvideoencoderconfiguration__restriction"></a>
+
+### 调用限制
+
+- 该方法的 config 参数设置是在理想网络状态下能达到的最大值。如果网络状态不好，视频引擎便不能使用该 config 渲染本地视频，它会自动降低到一个合适的视频参数设置。
+
+<a id="api_irtcengine_setvideoencoderconfiguration__parameters"></a>
+
+### 参数
+
+#### `config`
+
+视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-videoencoderconfiguration)。
+
+<a id="api_irtcengine_setvideoencoderconfiguration__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex"></a>
+
+## setVideoEncoderConfigurationEx
+
+设置视频编码属性。
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__prototype"></a>
+
+```arkts
+public abstract setVideoEncoderConfigurationEx(configuration: VideoEncoderConfiguration, connection: RtcConnection): number;
+```
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__detailed_desc"></a>
+
+设置本地视频的编码属性。每一种视频编码属性对应一系列视频相关参数设置，包含分辨率、帧率和码率。
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__timing"></a>
+
+### 调用时机
+
+该方法需要在 [joinChannelEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_joinchannelex) 之后调用。
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__restriction"></a>
+
+### 调用限制
+
+该方法的 config 参数设置是在理想网络状态下能达到的最大值。如果网络状态不好，视频引擎便不能使用该 config 渲染本地视频，它会自动降低到一个合适的视频参数设置。
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__parameters"></a>
+
+### 参数
+
+#### `config`
+
+视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-videoencoderconfiguration)。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_startpreview2"></a>
+
+## startPreview
+
+开启视频预览并指定预览的视频源。
+
+<a id="api_irtcengine_startpreview2__prototype"></a>
+
+```arkts
+public abstract startPreview(sourceType?: Constants.VideoSourceType): number;
+```
+
+<a id="api_irtcengine_startpreview2__detailed_desc"></a>
+
+该方法用于启动本地视频预览，并指定出现在预览画面中的视频源。
+
+<a id="api_irtcengine_startpreview2__timing"></a>
+
+### 调用时机
+
+该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_enablevideo) 和 [setupLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video-rendering#api_irtcengine_setuplocalvideo) 之后调用。
+
+<a id="api_irtcengine_startpreview2__restriction"></a>
+
+### 调用限制
+
+- 本地预览默认开启镜像功能。
+- 在离开频道后，本地预览依然处于开启状态。你需要调用 [stopPreview](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_stoppreview2) 关闭本地预览。
+
+<a id="api_irtcengine_startpreview2__parameters"></a>
+
+### 参数
+
+#### `sourceType`
+
+视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
+
+<a id="api_irtcengine_startpreview2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoppreview2"></a>
+
+## stopPreview
+
+停止视频预览。
+
+<a id="api_irtcengine_stoppreview2__prototype"></a>
+
+```arkts
+public abstract stopPreview(sourceType?: Constants.VideoSourceType): number;
+```
+
+<a id="api_irtcengine_stoppreview2__detailed_desc"></a>
+
+<a id="api_irtcengine_stoppreview2__scenario"></a>
+
+### 适用场景
+
+调用 [startPreview](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_startpreview2) 开启预览后，如果你想关闭本地视频预览，请调用该方法。
+
+<a id="api_irtcengine_stoppreview2__timing"></a>
+
+### 调用时机
+
+请在加入频道前或离开频道后调用该方法。
+
+<a id="api_irtcengine_stoppreview2__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_stoppreview2__parameters"></a>
+
+### 参数
+
+#### `sourceType`
+
+视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
+
+<a id="api_irtcengine_stoppreview2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe"></a>
+
+## onFirstLocalVideoFrame
+
+已显示本地视频首帧回调。
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__prototype"></a>
+
+```arkts
+onFirstLocalVideoFrame?:(source:Constants.VideoSourceType,width:number,height:number,elapsed:number) =>void;
+```
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__detailed_desc"></a>
+
+本地视频首帧显示在本地视图上时，SDK 会触发此回调。
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__parameters"></a>
+
+### 参数
+
+#### `source`
+
+视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
+
+#### `width`
+
+本地渲染视频的宽 (px)。
+
+#### `height`
+
+本地渲染视频的高 (px)。
+
+#### `elapsed`
+
+从调用 [joinChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel) 或 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时到发生此事件过去的时间（毫秒）。如果在加入频道前调用了 [startPreview](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_startpreview2)，则该参数表示从调用 startPreview 开启本地视频预览到发生此事件过去的时间。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideoframe"></a>
+
+## onFirstRemoteVideoFrame
+
+渲染器已接收首帧远端视频回调。
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideoframe__prototype"></a>
+
+```arkts
+onFirstRemoteVideoFrame?:(uid:number,width:number,height:number,elapsed:number) =>void;
+```
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideoframe__detailed_desc"></a>
+
+:::warning[注意]
+该回调只在 SDK 渲染时才会触发；如果用户采用自定义视频渲染则不会触发，客户需要通过 SDK 以外的方法自行实现。
+:::
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideoframe__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+用户 ID，指定是哪个用户的视频流。
+
+#### `width`
+
+视频流宽（px）。
+
+#### `height`
+
+视频流高（px）。
+
+#### `elapsed`
+
+从本地调用 joinChannel 或 joinChannelWithOptions 到发生此事件过去的时间（毫秒）。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged"></a>
+
+## onLocalVideoStateChanged
+
+本地视频状态发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__prototype"></a>
+
+```arkts
+onLocalVideoStateChanged?:(source: Constants.VideoSourceType, state:Constants.LocalVideoStreamState,reason:Constants.LocalVideoStreamReason) => void
+```
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__detailed_desc"></a>
+
+本地视频的状态发生改变时，SDK 会触发该回调，报告当前的本地视频状态以及状态改变的原因。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__scenario"></a>
+
+### 适用场景
+
+你可以通过该回调及时了解本地视频流的状态变化，并根据状态改变的原因采取相应的措施，更好地管理和调试视频流相关的问题。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__timing"></a>
+
+### 触发时机
+
+- SDK 会在如下情况触发该回调，且 state 为 FAILED， reason 为 CAPTURE_FAILURE：
+  - 摄像头正常启动，但连续 4 秒都没有输出采集的视频。
+- 当摄像头输出采集的视频帧时，如果 SDK 检测到连续 15 个重复的视频帧，会触发该回调，且 state 为 CAPTURING， reason 为 CAPTURE_FAILURE。:::info [注]
+- 帧重复检测仅针对分辨率大于 200 × 200、帧率大于等于 10 fps、码率小于 20 Kbps 的视频帧。
+- 如果视频采集出现异常，正常情况下可以通过该回调的 reason 参数来排查问题。但在部分设备上，采集出现问题时（如卡死） Android 系统不会抛出任何错误回调，因此 SDK 无法报告本地视频状态改变的原因，此时你可以通过下列方式来判断采集是否无帧：该回调报告 state 为 CAPTURING 或 ENCODING，且 onLocalVideoStats 回调的 captureFrameRate 为 0。:::
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__parameters"></a>
+
+### 参数
+
+#### `source`
+
+视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
+
+#### `state`
+
+本地视频状态，详见 [LocalVideoStreamState](/zh-CN/api-reference/rtc/harmonyos/enum-localvideostreamstate)。
+
+#### `reason`
+
+本地视频状态改变原因，详见 [LocalVideoStreamReason](/zh-CN/api-reference/rtc/harmonyos/enum-localvideostreamreason)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats"></a>
+
+## onLocalVideoStats
+
+本地视频流统计信息回调。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats__prototype"></a>
+
+```arkts
+onLocalVideoStats?:(source:Constants.VideoSourceType , stats:LocalVideoStats ) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats__detailed_desc"></a>
+
+该回调描述本地设备发送视频流的统计信息，每 2 秒触发一次。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats__parameters"></a>
+
+### 参数
+
+#### `source`
+
+视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
+
+#### `stats`
+
+本地视频流统计信息。详见 [LocalVideoStats](/zh-CN/api-reference/rtc/harmonyos/class-localvideostats)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged"></a>
+
+## onRemoteVideoStateChanged
+
+远端视频状态发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged__prototype"></a>
+
+```arkts
+onRemoteVideoStateChanged ? : (uid:number, state: Constants.RemoteVideoStreamState, reason: Constants.RemoteVideoStreamReason, elapsed:number) => void
+```
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged__detailed_desc"></a>
+
+:::warning[注意]
+频道内的用户（通信场景）或主播（直播场景）人数超过 32 人时，该回调可能不准确。
+:::
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+发生视频状态改变的远端用户 ID。
+
+#### `state`
+
+远端视频流状态，详见 [RemoteVideoStreamState](/zh-CN/api-reference/rtc/harmonyos/enum-remotevideostate)。
+
+#### `reason`
+
+远端视频流状态改变的具体原因，详见 [RemoteVideoStreamReason](/zh-CN/api-reference/rtc/harmonyos/enum-remotevideostatereason)。
+
+#### `elapsed`
+
+从本地用户调用 joinChannelWithOptions 方法到发生本事件经历的时间，单位为毫秒。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onremotevideostats"></a>
+
+## onRemoteVideoStats
+
+通话中远端视频流的统计信息回调。
+
+<a id="callback_irtcengineeventhandler_onremotevideostats__prototype"></a>
+
+```arkts
+onRemoteVideoStats?:(stats:RemoteVideoStats) =>void;
+```
+
+<a id="callback_irtcengineeventhandler_onremotevideostats__detailed_desc"></a>
+
+该回调描述远端用户在通话中端到端的视频流统计信息， 针对每个远端用户/主播每 2 秒触发一次。如果远端同时存在多个用户/主播， 该回调每 2 秒会被触发多次。
+
+<a id="callback_irtcengineeventhandler_onremotevideostats__parameters"></a>
+
+### 参数
+
+#### `stats`
+
+远端视频统计数据。详见 [RemoteVideoStats](/zh-CN/api-reference/rtc/harmonyos/class-remotevideostats)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo"></a>
+
+## onUserEnableVideo
+
+远端用户开/关视频模块回调。
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo__prototype"></a>
+
+```arkts
+onUserEnableVideo?:(uid:number, enabled:boolean) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo__detailed_desc"></a>
+
+关闭视频功能是指该用户只能进行语音通话，不能显示、发送自己的视频，也不能接收、显示别人的视频。
+
+该回调是由远端用户调用 [enableVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_disablevideo) 方法开启或关闭视频模块触发的。
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+用户 ID，提示是哪个用户的视频流。
+
+#### `enabled`
+
+- true: 该用户已启用视频功能。
+- false: 该用户已关闭视频功能。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onusermutevideo"></a>
+
+## onUserMuteVideo
+
+远端用户取消或恢复发布视频流回调。
+
+<a id="callback_irtcengineeventhandler_onusermutevideo__prototype"></a>
+
+```arkts
+onUserMuteVideo?:(uid:number,muted:boolean) =>void;
+```
+
+<a id="callback_irtcengineeventhandler_onusermutevideo__detailed_desc"></a>
+
+当远端用户调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalvideostream) 取消或恢复发布视频流时，SDK 会触发该回调向本地用户报告远端用户的发流状况。
+
+:::warning[注意]
+当频道内的用户（通信场景）或主播（直播场景）的人数超过 32 人时，该回调可能不准确。
+:::
+
+<a id="callback_irtcengineeventhandler_onusermutevideo__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+远端用户 ID。
+
+#### `muted`
+
+远端用户是否取消发布视频流：
+
+- true: 取消发布视频流。
+- false: 发布视频流。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onvideopublishstatechanged"></a>
+
+## onVideoPublishStateChanged
+
+视频发布状态改变回调。
+
+<a id="callback_irtcengineeventhandler_onvideopublishstatechanged__prototype"></a>
+
+```arkts
+onVideoPublishStateChanged?:(source:Constants.VideoSourceType, channel:string, oldState:Constants.StreamPublishState, newState:Constants.StreamPublishState, elapseSinceLastState:number) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onvideopublishstatechanged__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onvideopublishstatechanged__parameters"></a>
+
+### 参数
+
+频道名。
+
+视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
+
+#### `oldState`
+
+之前的发布状态，详见 [StreamPublishState](/zh-CN/api-reference/rtc/harmonyos/enum-streampublishstate)。
+
+#### `newState`
+
+当前的发布状态，详见 StreamPublishState。
+
+#### `elapseSinceLastState`
+
+两次状态变化时间间隔（毫秒）。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onvideosizechanged"></a>
+
+## onVideoSizeChanged
+
+本地或远端视频大小和旋转信息发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onvideosizechanged__prototype"></a>
+
+```arkts
+onVideoSizeChanged?:(source:Constants.VideoSourceType, uid:number, width:number, height:number, rotation:number) => void
+```
+
+<a id="callback_irtcengineeventhandler_onvideosizechanged__parameters"></a>
+
+### 参数
+
+#### `source`
+
+视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
+
+#### `uid`
+
+图像尺寸和旋转信息发生变化的用户 ID（本地用户的 uid 为 0。此时视频为本地用户的视频预览）。
+
+#### `width`
+
+视频流的宽度（像素）。
+
+#### `height`
+
+视频流的高度（像素）。
+
+#### `rotation`
+
+旋转信息，取值范围 [0,360)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

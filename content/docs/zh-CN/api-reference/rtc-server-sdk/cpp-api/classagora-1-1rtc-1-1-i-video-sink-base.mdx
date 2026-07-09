@@ -1,0 +1,100 @@
+---
+title: "agora::rtc::IVideoSinkBase类 参考abstract"
+description: "继承自 agora::RefCountInterface ."
+---
+
+`IVideoSinkBase` 类是自定义视频接收端的基类。
+
+## 成员函数说明
+
+<a id="aec09504aff2e94f275431d538ab53c36"></a>
+
+### setProperty()
+
+```cpp
+virtual int agora::rtc::IVideoSinkBase::setProperty(const char* key, const void* buf, int buf_size) inlinevirtual
+```
+
+设置私有属性。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| key | 属性名。 |
+| buf | 属性缓冲区。 |
+| buf_size | 属性缓冲区大小。 |
+
+#### Returns
+
+- 私有属性的实际缓冲区大小： 方法调用成功。
+- -1：方法调用失败。
+
+<a id="a1a7933272cc9af497aa724db5087ceda"></a>
+
+### getProperty()
+
+```cpp
+virtual int agora::rtc::IVideoSinkBase::getProperty(const char* key, void* buf, int buf_size) inlinevirtual
+```
+
+获取私有属性。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| key | 属性名。 |
+| buf | 属性缓冲区。 |
+| buf_size | 属性缓冲区大小。 |
+
+#### Returns
+
+- 私有属性的实际缓冲区大小：方法调用成功。
+- -1：方法调用失败。
+
+<a id="a12a4f7d2fd8bf581f81a56e937c2a322"></a>
+
+### onFrame()
+
+```cpp
+virtual int agora::rtc::IVideoSinkBase::onFrame(const media::base::VideoFrame& videoFrame) pure virtual
+```
+
+在 `IVideoSinkBase` 对象收到视频帧时触发。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| videoFrame | VideoFrame 对象的引用。 |
+
+<a id="acf2bb41f83e69489a68ddb6b10bdc56c"></a>
+
+### applyMirror()
+
+```cpp
+virtual bool agora::rtc::IVideoSinkBase::applyMirror() inlinevirtual
+```
+
+是否将视频帧转为镜像。
+
+#### Returns
+
+- true: 将视频帧转为镜像。
+- false: 不将视频帧转为镜像。
+
+<a id="a4141b805ee0086239b3a5402070c4a54"></a>
+
+### applyRotation()
+
+```cpp
+virtual bool agora::rtc::IVideoSinkBase::applyRotation() inlinevirtual
+```
+
+是否旋转视频帧。
+
+#### Returns
+
+- true: 旋转视频帧。
+- false: 不旋转视频帧。

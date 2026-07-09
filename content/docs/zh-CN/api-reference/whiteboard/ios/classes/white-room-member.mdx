@@ -1,0 +1,70 @@
+---
+title: "WhiteRoomMember Class Reference"
+description: "实时房间内互动模式（具有读写权限）用户信息。"
+---
+
+<a id="overview"></a>
+
+实时房间内互动模式（具有读写权限）用户信息。
+
+## Methods
+
+<a id="//api/name/memberId"></a>
+
+### memberId
+
+```objc
+@property (nonatomic, assign, readonly) NSInteger memberId
+```
+
+用户 ID。
+
+#### Discussion
+
+在用户加入互动白板实时房间时，会自动分配用户 ID，用于标识房间内的用户。同一房间中的每个用户具有唯一的用户 ID。
+
+<a id="//api/name/memberState"></a>
+
+### memberState
+
+```objc
+@property (nonatomic, strong, readonly) WhiteReadonlyMemberState *memberState
+```
+
+用户当前使用的工具。详见 [WhiteReadonlyMemberState](/zh-CN/api-reference/whiteboard/ios/classes/white-readonly-member-state)。
+
+<a id="//api/name/information"></a>
+
+### information
+
+```objc
+@property (nonatomic, strong, readonly, nullable) WhiteMemberInformation *information
+```
+
+已废弃。请使用 [payload](#//api/name/payload)。
+
+#### Discussion
+
+用户加入房间时携带的用户信息。
+
+<a id="//api/name/payload"></a>
+
+### payload
+
+```objc
+@property (nonatomic, strong, readonly, nullable) id payload
+```
+
+用户加入房间时携带的自定义用户信息。
+
+#### Discussion
+
+允许转换为 JSON，字符串或数字。
+
+#### Availability
+
+2.1.0
+
+**Note:**
+
+如果想要使用 SDK 默认头像显示，请使用 `avatar` 字段设置用户头像。

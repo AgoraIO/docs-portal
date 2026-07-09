@@ -1,0 +1,37 @@
+---
+title: "ChatGroupOptions constructor"
+description: "API docs for the ChatGroupOptions constructor from Class ChatGroupOptions from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Sets the group options.
+
+- If inviteNeedConfirm is set to false, you can add the invitee directly to the chat group, regardless of the settings of ChatOptions.autoAcceptGroupInvitation.
+- If inviteNeedConfirm is set to true, whether the invitee automatically joins the chat group or not depends on the settings of ChatOptions.autoAcceptGroupInvitation on the invitee's client.
+- If autoAcceptGroupInvitation is set to true, the invitee automatically joins the chat group.
+- If autoAcceptGroupInvitation is set to false, the invitee does not join the chat group until this invitee approves the group invitation.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| [style](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-options/style) | The group style: \{ChatGroupStyle\}. |
+| [maxCount](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-options/max-count) | The maximum number of members in a group. The default value is 200. |
+| [inviteNeedConfirm](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-options/invite-need-confirm) | Whether you can automatically add a user to the chat group depends on the settings of [inviteNeedConfirm](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-options/invite-need-confirm) and [ChatOptions.autoAcceptGroupInvitation](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/auto-accept-group-invitation). |
+| [ext](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-options/ext) | Group detail extensions which can be in the JSON format to contain more group information. |
+
+```dart
+ChatGroupOptions({ChatGroupStyle style = ChatGroupStyle.PrivateOnlyOwnerInvite, int maxCount = 200, bool inviteNeedConfirm = false, String? ext})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ChatGroupOptions({
+  this.style = ChatGroupStyle.PrivateOnlyOwnerInvite,
+  this.maxCount = 200,
+  this.inviteNeedConfirm = false,
+  this.ext,
+});
+```

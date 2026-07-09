@@ -1,0 +1,32 @@
+---
+title: "addChatRoomManagerListener method"
+description: "API docs for the addChatRoomManagerListener method from the ChatRoomManagerDeprecated extension, for the Dart programming language."
+---
+
+Registers a chat room manager listener.
+
+After registering the chat room manager listener, you can listen for events in [ChatRoomManagerListener](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager-listener), for example, users joining and exiting the chat room, adding the specified member to the chat group mute list, updating the chat room allow list, and destroying the chat room.
+
+To stop listening for chat room manager, call [removeChatRoomManagerListener](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager-deprecated/remove-chat-room-manager-listener).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | A chat room listener. See [ChatRoomManagerListener](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager-listener). |
+
+```dart
+@Deprecated("Use ChatRoomManager#addEventHandler to instead")void addChatRoomManagerListener(ChatRoomManagerListener listener)@Deprecated("Use ChatRoomManager#addEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@Deprecated("Use ChatRoomManager#addEventHandler to instead")
+void addChatRoomManagerListener(ChatRoomManagerListener listener) {
+  _listeners.remove(listener);
+  _listeners.add(listener);
+}
+```

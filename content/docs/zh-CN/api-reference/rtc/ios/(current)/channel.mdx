@@ -1,8 +1,10 @@
 ---
 title: "频道相关"
-description: "频道相关 API reference."
+description: "设置并获取 AgoraRtcEngineDelegate。"
 ---
 <a id="toc_channel"></a>
+
+## 频道相关
 
 <a id="api_irtcengine_delegate"></a>
 
@@ -288,7 +290,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
   - -2：参数无效。例如，Token 无效， uid 参数未设置为整数，或 AgoraRtcChannelMediaOptions 中的成员值无效。请传入有效参数并重新加入频道。
   - -3：初始化 AgoraRtcEngineKit 对象失败。请重新初始化该对象。
   - -7： AgoraRtcEngineKit 对象尚未初始化。请先初始化该对象再调用本方法。
@@ -568,7 +570,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
   - -2：参数无效。例如，Token 无效， uid 参数未设置为整数，或 AgoraRtcChannelMediaOptions 中的成员值无效。你需要传入有效参数并重新加入频道。
   - -3：初始化 AgoraRtcEngineKit 对象失败。你需要重新初始化该对象。
   - -7： AgoraRtcEngineKit 对象尚未初始化。你需要先初始化该对象再调用该方法。
@@ -837,7 +839,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-c
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
   - -1：发生一般性错误（无明确原因）。
   - -2：参数无效。
   - -7：SDK 未初始化。
@@ -898,7 +900,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
@@ -921,7 +923,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 调用该方法后，SDK 会终止音视频互动，离开当前频道，并释放与会话相关的所有资源。调用 `joinChannelExByToken` 加入频道后，必须调用该方法或 [leaveChannelEx:options:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_leavechannelex2) 结束通话，否则无法开始下一次通话。
 
 :::info[注]
-如果在调用该方法后立即调用 [destroy](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter)，SDK 不会触发 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
+如果在调用该方法后立即调用 [destroy](/zh-CN/api-reference/rtc/ios/drm#api_imusiccontentcenter_destroy_imusiccontentcenter)，SDK 不会触发 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
 
 - 此方法为异步调用。当该方法返回时，并不代表你已离开频道。
 - 如果调用 leaveChannel: 或 leaveChannel:leaveChannelBlock:，你将离开通过 joinChannelByToken、 joinChannelByToken 或 joinChannelExByToken 加入的所有频道。
@@ -965,7 +967,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
@@ -993,7 +995,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 调用该方法后，SDK 会终止音视频互动，离开当前频道，并释放与会话相关的所有资源。调用 `joinChannelExByToken` 加入频道后，必须调用该方法或 [leaveChannelEx:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_leavechannelex) 结束通话，否则无法开始下一次通话。
 
 :::info[注]
-如果在调用该方法后立即调用 [destroy](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter)，SDK 不会触发 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
+如果在调用该方法后立即调用 [destroy](/zh-CN/api-reference/rtc/ios/drm#api_imusiccontentcenter_destroy_imusiccontentcenter)，SDK 不会触发 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
 
 - 此方法为异步调用。当该方法返回时，并不代表你已离开频道。
 - 如果调用 leaveChannel: 或 leaveChannel:leaveChannelBlock:，你将离开通过 joinChannelByToken、 joinChannelByToken 或 joinChannelExByToken 加入的所有频道。
@@ -1101,7 +1103,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
   - -7： AgoraRtcEngineKit 对象尚未初始化。你需要先初始化该对象再调用此方法。
   - -102：频道名无效。你需要传入有效的频道名并重新加入频道。
 
@@ -1176,7 +1178,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
   - -2：参数无效，例如用户 User Account 为空。你需要传入有效参数并重新加入频道。
   - -7： AgoraRtcEngineKit 对象尚未初始化。你需要在调用该方法前初始化该对象。
   - -102：频道名无效。你需要传入有效的频道名并重新加入频道。
@@ -1240,7 +1242,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
@@ -1277,7 +1279,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
   - -2：参数无效。例如， token 为空。
   - -7： AgoraRtcEngineKit 对象尚未初始化。请在调用该方法前先初始化 AgoraRtcEngineKit 对象。
   - 110： token 无效。请确保以下几点：
@@ -1384,7 +1386,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -7：SDK 未初始化。
@@ -1406,7 +1408,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="api_irtcengine_setclientrole2__detailed_desc"></a>
 
-你可以调用该方法设置用户角色为主播或观众。用户角色（`role` ）决定了你在 SDK 层的权限，例如是否可以在频道中发布音视频流。 该方法相比 [setClientRole:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_setclientrole1)，支持设置 `audienceLatencyLevel`。你需要将 `audienceLatencyLevel` 与 `role` 搭配使用，以决定你在权限范围内可享受的服务等级。例如，观众可以选择接收低延迟或超低延迟的远端流。 如果你在加入频道前调用该方法将用户角色设置为主播，并通过 [setupLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setuplocalvideo) 方法设置本地视频属性，则加入频道时会自动开启本地视频预览。 如果你在加入频道后调用该方法设置用户角色，SDK 会自动调用 [muteLocalAudioStream:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [muteLocalVideoStream:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_mutelocalvideostream) 方法来改变音视频流的发布状态。
+你可以调用该方法设置用户角色为主播或观众。用户角色（`role` ）决定了你在 SDK 层的权限，例如是否可以在频道中发布音视频流。 该方法相比 [setClientRole:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_setclientrole1)，支持设置 `audienceLatencyLevel`。你需要将 `audienceLatencyLevel` 与 `role` 搭配使用，以决定你在权限范围内可享受的服务等级。例如，观众可以选择接收低延迟或超低延迟的远端流。 如果你在加入频道前调用该方法将用户角色设置为主播，并通过 [setupLocalVideo:](/zh-CN/api-reference/rtc/ios/video-rendering#api_irtcengine_setuplocalvideo) 方法设置本地视频属性，则加入频道时会自动开启本地视频预览。 如果你在加入频道后调用该方法设置用户角色，SDK 会自动调用 [muteLocalAudioStream:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [muteLocalVideoStream:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_mutelocalvideostream) 方法来改变音视频流的发布状态。
 
 :::info[注]
 当用户角色设置为主播时，观众延迟等级只能设置为 `AgoraAudienceLatencyLevelUltraLowLatency`。
@@ -1491,7 +1493,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
   - -2： AgoraRtcChannelMediaOptions 中某个成员的值无效，例如 token 或用户 ID 无效。你需要填写有效的参数。
   - -7： AgoraRtcEngineKit 对象尚未初始化。你需要先初始化 AgoraRtcEngineKit 对象再调用该方法。
   - -8： AgoraRtcEngineKit 对象的内部状态错误。可能的原因是你尚未加入频道。声网建议你通过 rtcEngine:connectionChangedToState:reason: 回调判断是否已加入频道。如果你收到 AgoraConnectionStateDisconnected （1）或 AgoraConnectionStateFailed （5）状态，说明你未加入频道。你需要先调用 joinChannelByToken:channelId:uid:mediaOptions:joinSuccess: 加入频道，再调用该方法。
@@ -1537,7 +1539,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
   - -2： AgoraRtcChannelMediaOptions 中的成员值无效，例如 token 或用户 ID 无效。你需要填写有效的参数。
   - -7： AgoraRtcEngineKit 对象尚未初始化。你需要先初始化 AgoraRtcEngineKit 对象再调用该方法。
   - -8： AgoraRtcEngineKit 对象的内部状态错误，可能的原因是你尚未加入频道。声网建议你通过 rtcEngine:connectionChangedToState:reason: 回调判断是否已加入频道。如果你收到 AgoraConnectionStateDisconnected （1）或 AgoraConnectionStateFailed （5）状态，说明你尚未加入频道。你需要先调用 joinChannelByToken:channelId:uid:mediaOptions:joinSuccess: 加入频道，再调用该方法。
@@ -1580,7 +1582,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
   - -2：参数无效，例如 Token 无效。你需要传入有效的参数并重新加入频道。
   - -7： AgoraRtcEngineKit 对象尚未初始化。你需要先初始化 AgoraRtcEngineKit 对象再调用此方法。
 

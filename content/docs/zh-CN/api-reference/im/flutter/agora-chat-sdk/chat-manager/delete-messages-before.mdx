@@ -1,0 +1,34 @@
+---
+title: "deleteMessagesBefore method"
+description: "API docs for the deleteMessagesBefore method from the ChatManager class, for the Dart programming language."
+---
+
+Deletes messages with timestamp that is before the specified one.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `timestamp` | The specified Unix timestamp(milliseconds). |
+
+```dart
+Future<void> deleteMessagesBefore(int timestamp)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> deleteMessagesBefore(int timestamp) async {
+  Map result = await ChatChannel.invokeMethod(
+      ChatMethodKeys.deleteMessagesBeforeTimestamp, {"timestamp": timestamp});
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

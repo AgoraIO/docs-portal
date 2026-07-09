@@ -1,0 +1,433 @@
+#!/usr/bin/env node
+
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+const repoRoot = process.cwd();
+const defaultSourceRoot =
+  '/Users/czhen/Documents/GitHub/AgoraIO/shengwang-doc-source/html-docs';
+const defaultOutputRoot = '/tmp/html-migration-matrix';
+const defaultReportPath =
+  'docs/agents/reports/2026-07-09-html-api-migration-validation-matrix.md';
+
+const matrix = [
+  {
+    id: 'dita-rtc-android',
+    lane: 'DITA/Oxygen',
+    platform: 'android',
+    product: 'rtc',
+    sampleFiles: ['class-videocanvas.mdx', 'api-livetranscoding-adduser.mdx'],
+    source: 'rtc/Android',
+  },
+  {
+    id: 'typedoc-flex-web',
+    lane: 'TypeDoc',
+    platform: 'web',
+    product: 'flexible-classroom',
+    sampleFiles: [
+      'classes/agora-rte-engine-config.mdx',
+      'classes/agora-rte-engine.mdx',
+    ],
+    source: 'flexible-classroom/Web',
+  },
+  {
+    id: 'doxygen-recording-cpp',
+    lane: 'Doxygen/Javadoc',
+    platform: 'cpp',
+    product: 'recording',
+    sampleFiles: ['classagora-1-1recording-1-1-i-recording-engine.mdx'],
+    source: 'recording/cpp',
+  },
+  {
+    id: 'ios-whiteboard',
+    lane: 'iOS doc-generator/appledoc',
+    platform: 'ios',
+    product: 'whiteboard',
+    sampleFiles: [
+      'classes/white-sdk.mdx',
+      'protocols/white-common-callback-delegate.mdx',
+    ],
+    source: 'whiteboard/iOS',
+  },
+  {
+    id: 'dartdoc-agora-chat-flutter',
+    lane: 'Dartdoc',
+    platform: 'flutter',
+    product: 'agora-chat',
+    sampleFiles: [
+      'agora-chat-sdk/chat-client/index.mdx',
+      'agora-chat-sdk/chat-client/add-connection-event-handler.mdx',
+      'agora-chat-sdk/chat-type/index.mdx',
+    ],
+    source: 'agora-chat/Flutter',
+  },
+];
+
+function parseArgs() {
+  const opts = {
+    compile: true,
+    outputRoot: defaultOutputRoot,
+    reportPath: defaultReportPath,
+    routeBasePath: '/zh-CN/api-reference',
+    sourceRoot: defaultSourceRoot,
+  };
+
+  const args = process.argv.slice(2);
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (arg === '--source-root') opts.sourceRoot = args[++index];
+    else if (arg === '--output-root') opts.outputRoot = args[++index];
+    else if (arg === '--report') opts.reportPath = args[++index];
+    else if (arg === '--route-base-path') opts.routeBasePath = args[++index];
+    else if (arg === '--no-compile') opts.compile = false;
+    else if (arg === '--help' || arg === '-h') {
+      printHelp();
+      process.exit(0);
+    } else {
+      throw new Error(`Unknown argument: ${arg}`);
+    }
+  }
+
+  return opts;
+}
+
+function printHelp() {
+  console.log(`Validate generated HTML API migration lanes.
+
+Usage:
+  node scripts/validate-html-api-migration.mjs [options]
+
+Options:
+  --source-root <dir>       Legacy html-docs root
+  --output-root <dir>       Temporary output root
+  --report <file>           Markdown report path
+  --route-base-path <path>  Route base used for generated links
+  --no-compile              Skip temporary docs copy and types:check
+`);
+}
+
+function run(command, args, options = {}) {
+  const result = spawnSync(command, args, {
+    cwd: repoRoot,
+    encoding: 'utf8',
+    maxBuffer: 1024 * 1024 * 20,
+    ...options,
+  });
+  return {
+    command: [command, ...args].join(' '),
+    output: `${result.stdout ?? ''}${result.stderr ?? ''}`,
+    status: result.status ?? 1,
+  };
+}
+
+function migrationArgs(entry, sourceDir, outputDir, opts, dryRun) {
+  return [
+    'scripts/html-to-md-migration.mjs',
+    '--source',
+    sourceDir,
+    '--output',
+    outputDir,
+    '--product',
+    entry.product,
+    '--platform',
+    entry.platform,
+    '--route-base-path',
+    opts.routeBasePath,
+    ...(dryRun ? ['--dry-run'] : []),
+  ];
+}
+
+function parseDryRun(output) {
+  return {
+    detected:
+      output.match(/Detected source type:\s*(.+)/)?.[1]?.trim() ??
+      output.match(/Detected:\s*(.+)/)?.[1]?.trim() ??
+      '',
+    fileCount: Number(output.match(/File count:\s*(\d+)/)?.[1] ?? 0),
+    plannedOutputs: Number(
+      output.match(/Planned output paths \((\d+)\)/)?.[1] ?? 0,
+    ),
+  };
+}
+
+async function countGeneratedFiles(outputDir) {
+  const counts = { mdx: 0, meta: 0 };
+
+  async function visit(dir) {
+    let entries = [];
+    try {
+      entries = await fs.readdir(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+
+    for (const entry of entries) {
+      const filePath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        await visit(filePath);
+      } else if (entry.name.endsWith('.mdx')) {
+        counts.mdx += 1;
+      } else if (entry.name === 'meta.json') {
+        counts.meta += 1;
+      }
+    }
+  }
+
+  await visit(outputDir);
+  return counts;
+}
+
+async function readTextIfExists(filePath) {
+  try {
+    return await fs.readFile(filePath, 'utf8');
+  } catch {
+    return null;
+  }
+}
+
+async function scanGeneratedOutput(outputDir, sampleFiles) {
+  const issues = {
+    helperPollution: [],
+    internalHtmlLinks: [],
+    missingFiles: [],
+  };
+
+  for (const required of ['index.mdx', 'meta.json', ...sampleFiles]) {
+    const text = await readTextIfExists(path.join(outputDir, required));
+    if (text === null) issues.missingFiles.push(required);
+  }
+
+  const helperPattern =
+    /(__404error|flutter_main_page|library-index|functions(?:[_-].*)?\.html|globals(?:[_-].*)?\.html|[_-]source\.html|[-_]members\.html)/i;
+  const markdownHtmlLinkPattern = /\[[^\]]+\]\(([^)]*\.html(?:#[^)]*)?)\)/g;
+
+  async function visit(dir) {
+    let entries = [];
+    try {
+      entries = await fs.readdir(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+
+    for (const entry of entries) {
+      const filePath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        await visit(filePath);
+        continue;
+      }
+      if (!entry.name.endsWith('.mdx') && entry.name !== 'meta.json') continue;
+
+      const text = await fs.readFile(filePath, 'utf8');
+      const relative = path.relative(outputDir, filePath);
+      if (helperPattern.test(text)) issues.helperPollution.push(relative);
+
+      for (const match of text.matchAll(markdownHtmlLinkPattern)) {
+        const href = match[1];
+        if (/^(?:https?:)?\/\//.test(href) || href.startsWith('/')) continue;
+        issues.internalHtmlLinks.push(`${relative}: ${href}`);
+      }
+    }
+  }
+
+  await visit(outputDir);
+  return issues;
+}
+
+async function copyOutputsForCompile(results, validationRoot) {
+  await fs.rm(validationRoot, { force: true, recursive: true });
+  await fs.mkdir(validationRoot, { recursive: true });
+  for (const result of results) {
+    await fs.cp(result.outputDir, path.join(validationRoot, result.id), {
+      recursive: true,
+    });
+  }
+}
+
+function assertCommandPassed(result, label) {
+  if (result.status !== 0) {
+    throw new Error(
+      `${label} failed with status ${result.status}\n${result.output}`,
+    );
+  }
+}
+
+function markdownList(items) {
+  if (items.length === 0) return '- None';
+  return items.map((item) => `- ${item}`).join('\n');
+}
+
+function renderReport({ compileResult, opts, restResult, results }) {
+  const lines = [
+    '# Generated HTML API Migration Validation Matrix',
+    '',
+    'Date: 2026-07-09',
+    '',
+    'This report validates the generated HTML API migration lanes against representative real legacy sources from `shengwang-doc-source`.',
+    '',
+    '## Matrix',
+    '',
+    '| Lane | Source | Detection | Input files | Planned outputs | Full output |',
+    '| --- | --- | --- | ---: | ---: | ---: |',
+  ];
+
+  for (const result of results) {
+    lines.push(
+      `| ${result.lane} | \`${result.source}\` | \`${result.detected}\` | ${result.fileCount} | ${result.plannedOutputs} | ${result.counts.mdx} MDX + ${result.counts.meta} meta |`,
+    );
+  }
+
+  lines.push(
+    '',
+    '## Commands',
+    '',
+    `Source root: \`${opts.sourceRoot}\``,
+    '',
+    'Each lane was run once with `--dry-run` and once as a full generation into the output root.',
+    '',
+    '```bash',
+  );
+  for (const result of results)
+    lines.push(result.dryCommand, result.fullCommand);
+  lines.push('```', '');
+
+  lines.push('## Output Audits', '');
+  for (const result of results) {
+    lines.push(
+      `### ${result.lane}`,
+      '',
+      `- Output: \`${result.outputDir}\``,
+      `- Sample files checked: ${result.sampleFiles.map((file) => `\`${file}\``).join(', ')}`,
+      `- Missing required files: ${result.issues.missingFiles.length}`,
+      `- Internal relative .html links: ${result.issues.internalHtmlLinks.length}`,
+      `- Helper-page pollution matches: ${result.issues.helperPollution.length}`,
+      '',
+    );
+    if (result.issues.missingFiles.length > 0) {
+      lines.push(
+        'Missing files:',
+        markdownList(result.issues.missingFiles),
+        '',
+      );
+    }
+    if (result.issues.internalHtmlLinks.length > 0) {
+      lines.push(
+        'Internal .html links:',
+        markdownList(result.issues.internalHtmlLinks.slice(0, 20)),
+        '',
+      );
+    }
+    if (result.issues.helperPollution.length > 0) {
+      lines.push(
+        'Helper pollution matches:',
+        markdownList(result.issues.helperPollution.slice(0, 20)),
+        '',
+      );
+    }
+  }
+
+  lines.push(
+    '## Fumadocs Compile Check',
+    '',
+    opts.compile
+      ? `Temporary validation subtree: \`content/docs/zh-CN/api-reference/__html-migration-validation/\`\n\nResult: \`${compileResult.status === 0 ? 'passed' : `failed (${compileResult.status})`}\``
+      : 'Skipped with `--no-compile`.',
+    '',
+    '## REST/OpenAPI Out Of Scope',
+    '',
+    `Command status: \`${restResult.status}\``,
+    '',
+    restResult.status === 0
+      ? 'Unexpected: REST/OpenAPI source succeeded.'
+      : 'Expected: REST/OpenAPI source exits nonzero with unsupported-source guidance.',
+    '',
+    '## Known Gaps',
+    '',
+    '- This matrix validates representative real sources, not every product/platform folder under `html-docs`.',
+    '- REST/OpenAPI remains intentionally out of scope for this HTML migration CLI.',
+    '- Generated content still needs human spot review before being committed as product documentation.',
+    '',
+  );
+
+  return `${lines.join('\n')}\n`;
+}
+
+async function main() {
+  const opts = parseArgs();
+  await fs.rm(opts.outputRoot, { force: true, recursive: true });
+  await fs.mkdir(opts.outputRoot, { recursive: true });
+
+  const results = [];
+  for (const entry of matrix) {
+    const sourceDir = path.join(opts.sourceRoot, entry.source);
+    const dryOutputDir = path.join(opts.outputRoot, `${entry.id}-dry`);
+    const outputDir = path.join(opts.outputRoot, entry.id);
+    const dry = run(
+      'node',
+      migrationArgs(entry, sourceDir, dryOutputDir, opts, true),
+    );
+    assertCommandPassed(dry, `${entry.id} dry-run`);
+
+    const full = run(
+      'node',
+      migrationArgs(entry, sourceDir, outputDir, opts, false),
+    );
+    assertCommandPassed(full, `${entry.id} full generation`);
+
+    const dryRun = parseDryRun(dry.output);
+    const counts = await countGeneratedFiles(outputDir);
+    const issues = await scanGeneratedOutput(outputDir, entry.sampleFiles);
+
+    results.push({
+      ...entry,
+      counts,
+      detected: dryRun.detected,
+      dryCommand: dry.command,
+      fileCount: dryRun.fileCount,
+      fullCommand: full.command,
+      issues,
+      outputDir,
+      plannedOutputs: dryRun.plannedOutputs,
+    });
+  }
+
+  const restResult = run('node', [
+    'scripts/html-to-md-migration.mjs',
+    '--source',
+    path.join(opts.sourceRoot, 'whiteboard/RESTful'),
+    '--output',
+    path.join(opts.outputRoot, 'rest-whiteboard'),
+    '--product',
+    'whiteboard',
+    '--platform',
+    'restful',
+    '--route-base-path',
+    opts.routeBasePath,
+  ]);
+
+  let compileResult = { output: '', status: 0 };
+  const validationRoot = path.join(
+    repoRoot,
+    'content/docs/zh-CN/api-reference/__html-migration-validation',
+  );
+  if (opts.compile) {
+    try {
+      await copyOutputsForCompile(results, validationRoot);
+      compileResult = run('bun', ['run', 'types:check']);
+      assertCommandPassed(compileResult, 'types:check');
+    } finally {
+      await fs.rm(validationRoot, { force: true, recursive: true });
+    }
+  }
+
+  const report = renderReport({ compileResult, opts, restResult, results });
+  const reportPath = path.resolve(repoRoot, opts.reportPath);
+  await fs.mkdir(path.dirname(reportPath), { recursive: true });
+  await fs.writeFile(reportPath, report, 'utf8');
+  console.log(`Validation report written to ${opts.reportPath}`);
+}
+
+main().catch((error) => {
+  console.error(error.message);
+  process.exit(1);
+});

@@ -1,0 +1,320 @@
+---
+title: "AgoraRteSyncDataStore"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- AgoraRteSyncDataStore
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new AgoraRteSyncDataStore(): AgoraRteSyncDataStore
+```
+
+#### Returns
+
+Returns [AgoraRteSyncDataStore](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-sync-data-store)
+
+## Accessors
+
+<a id="messages"></a>
+
+### messages
+
+```ts
+get messages(): List<AgoraChatMessage>
+```
+
+#### Returns
+
+Returns List &lt; [AgoraChatMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-chat-message) &gt;
+
+<a id="roomInfo"></a>
+
+### roomInfo
+
+```ts
+get roomInfo(): Map<unknown, unknown>
+```
+
+#### Returns
+
+Returns Map &lt; unknown, unknown &gt;
+
+<a id="roomProperties"></a>
+
+### roomProperties
+
+```ts
+get roomProperties(): Map<string, unknown>
+```
+
+#### Returns
+
+Returns Map &lt; string, unknown &gt;
+
+<a id="streams"></a>
+
+### streams
+
+```ts
+get streams(): Map<string, AgoraStream>
+```
+
+#### Returns
+
+Returns Map &lt; string, [AgoraStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-stream) &gt;
+
+<a id="users"></a>
+
+### users
+
+```ts
+get users(): Map<string, AgoraUser>
+```
+
+#### Returns
+
+Returns Map &lt; string, [AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-user) &gt;
+
+## Methods
+
+<a id="addMessage"></a>
+
+### addMessage
+
+```ts
+addMessage(message: AgoraChatMessage): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| message: AgoraChatMessage |  |
+
+#### Returns
+
+Returns void
+
+<a id="deleteStream"></a>
+
+### deleteStream
+
+```ts
+deleteStream(key: string): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| key: string |  |
+
+#### Returns
+
+Returns void
+
+<a id="deleteStreams"></a>
+
+### deleteStreams
+
+```ts
+deleteStreams(keys: string[]): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| keys: string[] |  |
+
+#### Returns
+
+Returns void
+
+<a id="deleteUser"></a>
+
+### deleteUser
+
+```ts
+deleteUser(key: string): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| key: string |  |
+
+#### Returns
+
+Returns void
+
+<a id="findStream"></a>
+
+### findStream
+
+```ts
+findStream(streamUuid: string): undefined | AgoraStream
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+
+#### Returns
+
+Returns undefined | [AgoraStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-stream)
+
+<a id="findUser"></a>
+
+### findUser
+
+```ts
+findUser(userUuid: string): undefined | AgoraUser
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userUuid: string |  |
+
+#### Returns
+
+Returns undefined | [AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-user)
+
+<a id="findUserStreams"></a>
+
+### findUserStreams
+
+```ts
+findUserStreams(userUuid: string): AgoraStream[]
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userUuid: string |  |
+
+#### Returns
+
+Returns [AgoraStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-stream) []
+
+<a id="setRoomInfo"></a>
+
+### setRoomInfo
+
+```ts
+setRoomInfo(roomInfo: AgoraRoom): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomInfo: AgoraRoom |  |
+
+#### Returns
+
+Returns void
+
+<a id="setRoomProperties"></a>
+
+### setRoomProperties
+
+```ts
+setRoomProperties(roomProperties: any): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomProperties: any |  |
+
+#### Returns
+
+Returns void
+
+<a id="setStream"></a>
+
+### setStream
+
+```ts
+setStream(key: string, stream: AgoraStream): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| key: string |  |
+| stream: AgoraStream |  |
+
+#### Returns
+
+Returns void
+
+<a id="setStreams"></a>
+
+### setStreams
+
+```ts
+setStreams(streams: Map<string, AgoraStream>): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streams: Map&lt;string, AgoraStream&gt; |  |
+
+#### Returns
+
+Returns void
+
+<a id="setUser"></a>
+
+### setUser
+
+```ts
+setUser(key: string, user: AgoraUser): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| key: string |  |
+| user: AgoraUser |  |
+
+#### Returns
+
+Returns void
+
+<a id="setUsers"></a>
+
+### setUsers
+
+```ts
+setUsers(users: Map<string, AgoraUser>): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| users: Map&lt;string, AgoraUser&gt; |  |
+
+#### Returns
+
+Returns void

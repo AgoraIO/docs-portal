@@ -1,0 +1,36 @@
+---
+title: "joinChatRoom method"
+description: "API docs for the joinChatRoom method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Joins the chat room.
+
+To exit the chat room, call [leaveChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/leave-chat-room).
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The ID of the chat room to join. |
+
+```dart
+Future<void> joinChatRoom(String roomId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> joinChatRoom(String roomId) async {
+  Map result = await _channel
+      .invokeMethod(ChatMethodKeys.joinChatRoom, {"roomId": roomId});
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

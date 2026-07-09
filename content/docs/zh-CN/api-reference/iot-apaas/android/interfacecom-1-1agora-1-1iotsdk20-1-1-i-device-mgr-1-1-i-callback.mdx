@@ -1,0 +1,418 @@
+---
+title: "com.agora.iotsdk20.IDeviceMgr.ICallback接口 参考"
+description: "设备管理回调接口。"
+---
+
+设备管理回调接口。
+
+## 成员函数说明
+
+<a id="a1ad61484d405c59ce5a14e952b3247bb"></a>
+
+### onAcceptDeviceDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onAcceptDeviceDone(int errCode, final String deviceName, final String order)
+```
+
+接收来自其他账号的设备分享回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| deviceName | 设备名称。 |
+| order | 分享口令。 |
+
+<a id="a469f14a0f4649c55fbe10f751a155044"></a>
+
+### onAllDevicesQueryDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onAllDevicesQueryDone(int errCode, List<IotDevice > deviceList)
+```
+
+查询所有设备完成回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| deviceList | 查询到的设备列表，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+
+<a id="ac33224be1e4185a258acc8b6e9dccf39"></a>
+
+### onDeleteShareMsgDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onDeleteShareMsgDone(int errCode, long messageId)
+```
+
+删除单个分享消息回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| messageId | 删除的分享消息 ID。 |
+
+<a id="a5ae0e924475e3de8a6a85b2c856b36c4"></a>
+
+### onDeshareDeviceDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onDeshareDeviceDone(int errCode, final IotOutSharer outSharer)
+```
+
+取消设备分享完成回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| outSharer | 要取消的分享，详见 [IotOutSharer](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-out-sharer)。 |
+
+<a id="aff36b2686aabd824e479fad774450ed1"></a>
+
+### onDeviceAddDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onDeviceAddDone(int errCode, IotDevice addDevice, List<IotDevice > bindDevList)
+```
+
+添加设备完成回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，0 表示添加成功。详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| addDevice | 新增加的设备信息，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+| bindDevList | 当前最新的绑定设备列表，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+
+<a id="a58ccf43210867a15ce881b8bf69c730e"></a>
+
+### onDeviceOnOffLine()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onDeviceOnOffLine(IotDevice iotDevice, boolean online, List<IotDevice > bindedDevList)
+```
+
+设备上下线回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| iotDevice | 相应的设备信息，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+| online | 设备上线状态：<br />- true: 上线<br />- false: 下线 |
+| bindedDevList | 更新状态后的当前绑定设备列表，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+
+<a id="aaa97cef8793fd7739aa47abdfda25c0b"></a>
+
+### onDevicePropertyUpdate()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onDevicePropertyUpdate(IotDevice iotDevice, Map<String, Object > properties)
+```
+
+设备属性更新回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| iotDevice | 相应的设备信息，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+| properties | 属性列表。 |
+
+<a id="a21ab8f0e2aeb1a76a6a83410885402bc"></a>
+
+### onDeviceRemoveDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onDeviceRemoveDone(int errCode, IotDevice delDevice, List<IotDevice > bindDevList)
+```
+
+移除设备完成回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，0 表示移除成功。详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| delDevice | 移除的设备信息，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+| bindDevList | 当前最新的绑定设备列表，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+
+<a id="a8e79a63a61e1b3c0d7e3f843a8fa2574"></a>
+
+### onDeviceRenameDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onDeviceRenameDone(int errCode, IotDevice iotDevice, String newName)
+```
+
+重命名设备完成回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，0 表示重命名成功。详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| iotDevice | 要重命名的设备，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+| newName | 新名字。 |
+
+<a id="abfca0d241f69f9a1fe22a652f7879e9e"></a>
+
+### onGetMcuVerInfoDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onGetMcuVerInfoDone(int errCode, final IotDevice device, final McuVersionInfo mcuVerInfo)
+```
+
+设备端固件版本获取完成。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| device | 相应的设备信息。 |
+| mcuVerInfo | 固件版本信息。 |
+
+<a id="a6b940dda610203b0b8d044e423c9faa3"></a>
+
+### onGetPropertyDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onGetPropertyDone(int errCode, IotDevice device)
+```
+
+设备端属性值获取完成回调。
+
+获取到的属性值之后会通过 `onReceivedDeviceProperty` 回调上来。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| device | 相应的设备信息，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+
+<a id="af155727b07bceb955ca3f7021b38882f"></a>
+
+### onQueryAllPropertyDescDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onQueryAllPropertyDescDone(int errCode, final String deviceID, final String productNumber, final List<IotPropertyDesc > propDescList)
+```
+
+完成查询属性描述符列表。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| deviceID | 设备 ID。 |
+| productNumber | 产品唯一标识。 |
+| propDescList | 属性描述符列表。详见 [IotPropertyDesc](/zh-CN/api-reference/iot-apaas/android/classio-1-1agora-1-1iotlink-1-1-iot-property-desc)。 |
+
+<a id="adc84b4ef06c7adc6785da838cfa77f58"></a>
+
+### onQueryInSharedDevList()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onQueryInSharedDevList(int errCode, final List<IotDevice > deviceList)
+```
+
+完成查询来自其他账号分享的设备列表回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| deviceList | 查询到的分享进来的设备列表，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+
+<a id="aa416f2b1775b9321f2beaf1991ba11aa"></a>
+
+### onQueryOutSharerListDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onQueryOutSharerListDone(int errCode, final String devcieID, final List<IotOutSharer > outSharerList)
+```
+
+完成查询已分享的账号信息回调。
+
+成功调用 [queryOutSharerList](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-device-mgr#ae3ec9acf3061d53a43a9b2b5ae1f0c04) 后，SDK 会触发该回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| devcieID | 设备 ID。 |
+| outSharerList | 分享出去的账号信息，详见 [IotOutSharer](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-out-sharer)。 |
+
+<a id="af940da9ff05628df9e067b785e71a631"></a>
+
+### onQueryProductDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onQueryProductDone(ProductQueryResult queryResult)
+```
+
+查询产品完成回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| queryResult | 查询结果，详见 [ProductQueryResult](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-i-device-mgr-1-1-product-query-result)。 |
+
+<a id="a8bfda3eb8d1b2eb82c2b324386c8c1c5"></a>
+
+### onQuerySharableDevListDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onQuerySharableDevListDone(int errCode, final List<IotDevice > deviceList)
+```
+
+完成查询可分享的设备列表回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| deviceList | 查询到的可分享设备列表，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+
+<a id="a091aed40d3c65c8b90dc6380b3fd226c"></a>
+
+### onQueryShareMsgDetailDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onQueryShareMsgDetailDone(int errCode, final IotShareMessage shareMessage)
+```
+
+查询单个分享消息详情回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| shareMessage | 当查询成功时，输出的消息详情，详见 [IotShareMessage](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-share-message)。 |
+
+<a id="a586f0b6c1012f2c8d4460aa9e4854e20"></a>
+
+### onQueryShareMsgPageDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onQueryShareMsgPageDone(int errCode, final IotShareMsgPage shareMsgPage)
+```
+
+分页查询设备分享消息回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| shareMsgPage | 分页的分享消息，详见 [IotShareMsgPage](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-share-msg-page)。 |
+
+<a id="a3ad70c83000a0da2e96ef421fa1994f4"></a>
+
+### onReceivedDeviceProperty()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onReceivedDeviceProperty(IotDevice device, Map<String, Object > properties)
+```
+
+设备端属性值更新回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| device | 相应的设备信息，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)，其中 `device.mProperty` 字段包含了设置的属性值。 |
+| properties | 要设置的属性值。 |
+
+<a id="a13a1e1be0f2cd2cf1b6156eb1ad0bed1"></a>
+
+### onSetPropertyDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onSetPropertyDone(int errCode, IotDevice iotDevice, Map<String, Object > properties)
+```
+
+设备端属性值设置完成回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| iotDevice | 相应的设备信息，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+| properties | 要设置的属性值。 |
+
+<a id="a343bd91bd33f1b592bbc117c3570b878"></a>
+
+### onShareDeviceDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onShareDeviceDone(int errCode, boolean force, final IotDevice iotDevice, final String sharingAccount, int permission)
+```
+
+设备分享完成回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| force | 是否强制分享：<br />- true: 是<br />- false: 否 |
+| iotDevice | 将要分享出去的设备，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+| sharingAccount | 分享的目标账号。 |
+| permission | 分享的权限：<br />- 2: 可以传导分享<br />- 3: 不能传导分享 |
+
+<a id="ac8ef34a1cbbf6e057ae747beec721f01"></a>
+
+### onUpgradeMcuVerDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onUpgradeMcuVerDone(int errCode, final IotDevice device, long upgradeId, int decide)
+```
+
+设备端固件版本升级完成。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| device | : 相应的设备信息。 |
+| upgradeId | : 升级的 ID 号。 |
+| decide | : 升级方式。 |
+
+<a id="a379dfea94c139c768a9e6a185e3ad311"></a>
+
+### onUpgradeStatusDone()
+
+```cpp
+default void com.agora.iotsdk20.IDeviceMgr.ICallback.onUpgradeStatusDone(int errCode, final IotDevice device, final McuUpgradeStatus status)
+```
+
+获取到固件版本升级状态
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| device | : 相应的设备信息 |
+| status | : 升级的状态 |

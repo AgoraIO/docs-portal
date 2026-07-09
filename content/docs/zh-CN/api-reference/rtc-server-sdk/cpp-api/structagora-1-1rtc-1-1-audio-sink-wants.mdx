@@ -1,0 +1,50 @@
+---
+title: "agora::rtc::AudioSinkWants结构体 参考"
+description: "音频接收模块预期的音频帧属性。"
+---
+
+音频接收模块预期的音频帧属性。
+
+### `注解`
+
+发送模块通过多种因素确定发送给接收模块的音频帧属性，例如其他接收模块或发送模块的能力。
+
+## 构造及析构函数说明
+
+<a id="a3e19302b44e5d7b6d83f7c080e34981c"></a>
+
+### AudioSinkWants() [1/2]
+
+```cpp
+agora::rtc::AudioSinkWants::AudioSinkWants() inline
+```
+
+<a id="a51035b91a861d22c6bddb3ae807395ce"></a>
+
+### AudioSinkWants() [2/2]
+
+```cpp
+agora::rtc::AudioSinkWants::AudioSinkWants(int sampleRate, size_t chs) inline
+```
+
+## 类成员变量说明
+
+<a id="a9f5fa2981bbd206433fac756d5448873"></a>
+
+### samplesPerSec
+
+```cpp
+int agora::rtc::AudioSinkWants::samplesPerSec
+```
+
+采样率。
+
+<a id="aaf3b1a0d02880ce6e50326d58b471130"></a>
+
+### channels
+
+```cpp
+size_t agora::rtc::AudioSinkWants::channels
+```
+
+声道数。

@@ -1,0 +1,25 @@
+---
+title: "isMemberAllowToInvite property"
+description: "API docs for the isMemberAllowToInvite property from the ChatGroup class, for the Dart programming language."
+---
+
+Checks whether a group member is allowed to invite other users to join the group.
+
+**Note** To get the correct value, ensure that you call [ChatGroupManager.fetchGroupInfoFromServer](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-manager/fetch-group-info-from-server) before calling this method.
+
+**Return**
+
+- true: Yes;
+- false: No. Only the group owner or admin can invite others to join the group.
+
+```dart
+bool? isMemberAllowToInvite final
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+final bool? isMemberAllowToInvite;
+```

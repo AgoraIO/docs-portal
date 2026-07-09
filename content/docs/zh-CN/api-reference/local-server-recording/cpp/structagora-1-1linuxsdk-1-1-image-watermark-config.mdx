@@ -1,0 +1,64 @@
+---
+title: "agora::linuxsdk::ImageWatermarkConfig结构体 参考"
+description: "定义图片水印设置。"
+---
+
+定义图片水印设置。
+
+## 类成员变量说明
+
+<a id="af8fa8efa8256e0c839de4b696b3dbdcd"></a>
+
+### image_path
+
+```cpp
+const char* agora::linuxsdk::ImageWatermarkConfig::image_path
+```
+
+指定图片文件路径。
+
+##### `注解`
+
+- 只支持本地 PNG 格式的图片。
+- 建议图片分辨率不超过 480p。
+- 如果图片小于水印框，图片居中显示，不拉伸；如果图片大于水印框，图片等比缩小至合适水平，再居中显示。
+
+<a id="a917b82fb41cfb57d4904c69ceb22e007"></a>
+
+### offset_x
+
+```cpp
+uint32_t agora::linuxsdk::ImageWatermarkConfig::offset_x
+```
+
+水印框左上角与视频画布左上角的水平距离。单位为像素（pixel），默认值为 0。
+
+<a id="a246cd0ebae1f88cc1c73c5a7ada39e6b"></a>
+
+### offset_y
+
+```cpp
+uint32_t agora::linuxsdk::ImageWatermarkConfig::offset_y
+```
+
+水印框左上角与视频画布左上角的垂直距离。单位为像素（pixel），默认值为 0。
+
+<a id="a5179eb584783bac44b70b6fd3cdcca83"></a>
+
+### wm_width
+
+```cpp
+uint32_t agora::linuxsdk::ImageWatermarkConfig::wm_width
+```
+
+水印框的宽度。单位为像素（pixel），默认值为 0。
+
+<a id="a96b5c41b934aa4ac173a0a17f5433e47"></a>
+
+### wm_height
+
+```cpp
+uint32_t agora::linuxsdk::ImageWatermarkConfig::wm_height
+```
+
+水印框的高度。单位为像素（pixel），默认值为 0。

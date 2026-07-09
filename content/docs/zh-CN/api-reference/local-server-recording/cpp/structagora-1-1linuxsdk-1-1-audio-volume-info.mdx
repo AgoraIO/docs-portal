@@ -1,0 +1,38 @@
+---
+title: "agora::linuxsdk::AudioVolumeInfo结构体 参考"
+description: "以数组的形式返回每个说话者的用户 ID 和音量。"
+---
+
+以数组的形式返回每个说话者的用户 ID 和音量。
+
+## 构造及析构函数说明
+
+<a id="a2bb1e6294fc407ef26a55e2f144afc40"></a>
+
+### AudioVolumeInfo()
+
+```cpp
+agora::linuxsdk::AudioVolumeInfo::AudioVolumeInfo() inline
+```
+
+## 类成员变量说明
+
+<a id="aade6389b353c148a26435eb9c0c0befb"></a>
+
+### uid
+
+```cpp
+uid_t agora::linuxsdk::AudioVolumeInfo::uid
+```
+
+说话者的用户 ID。
+
+<a id="a937b055f9adc50e3d3f50e13c7c5fad0"></a>
+
+### volume
+
+```cpp
+uint32_t agora::linuxsdk::AudioVolumeInfo::volume
+```
+
+说话者的音量，取值范围为 [0,255]。

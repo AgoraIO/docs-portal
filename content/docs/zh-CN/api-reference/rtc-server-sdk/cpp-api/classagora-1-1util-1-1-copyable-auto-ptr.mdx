@@ -1,0 +1,50 @@
+---
+title: "agora::util::CopyableAutoPtr< T > 模板类 参考"
+description: "继承自 agora::util::AutoPtr< T > ."
+---
+
+## 成员类型定义说明
+
+<a id="ae54a16f521cafc084c65c32be260a8fd"></a>
+
+### pointer_type
+
+```cpp
+template<class T > typedef AutoPtr<T>::pointer_type agora::util::CopyableAutoPtr<T >::pointer_type private
+```
+
+## 构造及析构函数说明
+
+<a id="adf212f14a3be0a1701725069a3032628"></a>
+
+### CopyableAutoPtr() [1/2]
+
+```cpp
+template<class T > agora::util::CopyableAutoPtr<T >::CopyableAutoPtr(pointer_type p = 0) inlineexplicit
+```
+
+<a id="a2475f3ff6209da94a7843f32c5c91a29"></a>
+
+### CopyableAutoPtr() [2/2]
+
+```cpp
+template<class T > agora::util::CopyableAutoPtr<T >::CopyableAutoPtr(const CopyableAutoPtr<T >& rhs) inlineexplicit
+```
+
+## 成员函数说明
+
+<a id="acdc013dd6d214e394e24489ad5f29617"></a>
+
+### operator=()
+
+```cpp
+template<class T > CopyableAutoPtr& agora::util::CopyableAutoPtr<T >::operator=(const CopyableAutoPtr<T >& rhs) inline
+```
+
+<a id="a7f7f10295fc036f6aa43fd9a667cd027"></a>
+
+### clone()
+
+```cpp
+template<class T > pointer_type agora::util::CopyableAutoPtr<T >::clone() const inline
+```

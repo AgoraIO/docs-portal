@@ -1,0 +1,51 @@
+---
+title: "io.agora.rtc.AgoraAudioEncodedFrameSender类 参考"
+description: "AgoraAudioEncodedFrameSender 类。"
+---
+
+AgoraAudioEncodedFrameSender 类。 在涉及自定义音频源的场景中，你可以使用该类直接向音频轨道发送编码后的音频数据。如果音频轨道未启用， 发送的音频数据会自动被丢弃。
+
+## 构造及析构函数说明
+
+<a id="a38d7ad3f92a5aa2fb72df3eb28e62c8b"></a>
+
+### AgoraAudioEncodedFrameSender()
+
+```cpp
+io.agora.rtc.AgoraAudioEncodedFrameSender.AgoraAudioEncodedFrameSender(long cptr)
+```
+
+构造函数。
+
+## 成员函数说明
+
+<a id="ac2421acabcd44bdb1c779004ea3b4f91"></a>
+
+### destroy()
+
+```cpp
+synchronized void io.agora.rtc.AgoraAudioEncodedFrameSender.destroy()
+```
+
+销毁编码后的音频数据发送器。
+
+<a id="a96ab51c07987dcf9adf7c1bc1a05c1e2"></a>
+
+### sendEncodedAudioFrame()
+
+```cpp
+int io.agora.rtc.AgoraAudioEncodedFrameSender.sendEncodedAudioFrame(byte[] payloadData, EncodedAudioFrameInfo info)
+```
+
+将编码后的音频数据发至服务器。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| payloadData | 编码后的音频数据。 |
+| info | 编码后的音频数据信息： [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-encoded-audio-frame-info)。 |
+
+#### Returns
+
+发送编码后的音频数据的结果。

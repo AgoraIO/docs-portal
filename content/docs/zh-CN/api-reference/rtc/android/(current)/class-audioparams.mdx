@@ -23,7 +23,7 @@ public class AudioParams {
 - getEarMonitoringAudioParams：设置 onEarMonitoringAudioFrame 回调的数据格式。
 
 :::info[注]
-SDK 会通过 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams) 中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔，并按该间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe)、 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe)、 [onMixedAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 和 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。 采样间隔（秒） = `samplesPerCall` /（`sampleRate` × `channel` ）。 确保采样间隔 ≥ 0.01 秒。
+SDK 会通过 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams) 中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔，并按该间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onrecordaudioframe)、 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe)、 [onMixedAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 和 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。 采样间隔（秒） = `samplesPerCall` /（`sampleRate` × `channel` ）。 确保采样间隔 ≥ 0.01 秒。
 :::
 
 <a id="class_audioparams__parameters"></a>

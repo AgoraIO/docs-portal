@@ -1,0 +1,168 @@
+---
+title: "AgoraEduRoomHandler"
+description: "AgoraEduRoomHandler 类包含房间相关的事件回调。"
+---
+<a id="class_roomhandler"></a>
+
+## AgoraEduRoomHandler
+
+<a id="api_onroomjoinedsuccess"></a>
+
+## onRoomJoinedSuccess
+
+本地成功加入房间回调。
+
+<a id="api_onroomjoinedsuccess__prototype"></a>
+
+```swift
+void onRoomJoinedSuccess(roomInfo: AgoraEduContextRoomInfo)
+```
+
+<a id="api_onroomjoinedsuccess__parameters"></a>
+
+### 参数
+
+#### `roomInfo`
+
+房间信息 [AgoraEduContextRoomInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_roominfo)。
+
+<a id="api_onroomjoinedfail"></a>
+
+## onRoomJoinedFail
+
+本地加入房间失败回调。
+
+<a id="api_onroomjoinedfail__prototype"></a>
+
+```swift
+void onRoomJoinedFail(roomInfo: AgoraEduContextRoomInfo,
+                      error: AgoraEduContextError)
+```
+
+<a id="api_onroomjoinedfail__parameters"></a>
+
+### 参数
+
+#### `roomInfo`
+
+房间信息 [AgoraEduContextRoomInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_roominfo)。
+
+#### `error`
+
+错误原因 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+
+<a id="api_onroompropertiesupdated"></a>
+
+## onRoomPropertiesUpdated
+
+自定义房间属性更新回调。
+
+<a id="api_onroompropertiesupdated__prototype"></a>
+
+```swift
+void onRoomPropertiesUpdated(Map<String, Any> changedProperties,
+                             Map<String, Any> cause,
+                             AgoraEduContextUserInfo operator)
+```
+
+<a id="api_onroompropertiesupdated__parameters"></a>
+
+### 参数
+
+#### `changedProperties`
+
+已更新的房间属性。
+
+#### `cause`
+
+更新原因。
+
+#### `operator`
+
+操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)，可为空。
+
+<a id="api_onroompropertiesdeleted"></a>
+
+## onRoomPropertiesDeleted
+
+自定义房间属性删除回调。
+
+<a id="api_onroompropertiesdeleted__prototype"></a>
+
+```swift
+void onRoomPropertiesDeleted(Array<String> keyPaths,
+                             Map<String, Any> cause,
+                             AgoraEduContextUserInfo operator)
+```
+
+<a id="api_onroompropertiesdeleted__parameters"></a>
+
+### 参数
+
+#### `keyPaths`
+
+被删除的属性的 keyPath 数组。
+
+#### `cause`
+
+删除原因。
+
+#### `operator`
+
+操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)，可为空。
+
+<a id="api_onroomclosed"></a>
+
+## onRoomClosed
+
+房间关闭回调。
+
+<a id="api_onroomclosed__prototype"></a>
+
+```swift
+void onRoomClosed()
+```
+
+<a id="api_onroomclosed__detailed_desc"></a>
+
+房间关闭，房间里的用户会立即被踢出房间，其它用户无法也再加入该房间。
+
+<a id="api_onclassstateupdated"></a>
+
+## onClassStateUpdated
+
+课堂状态更新回调。
+
+<a id="api_onclassstateupdated__prototype"></a>
+
+```swift
+void onClassStateUpdated(AgoraEduContextClassState state)
+```
+
+<a id="api_onclassstateupdated__parameters"></a>
+
+### 参数
+
+#### `state`
+
+当前的课堂状态 [AgoraEduContextClassState](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#enum_classstate)。
+
+<a id="api_onrecordingstateupdated"></a>
+
+## onRecordingStateUpdated
+
+录制状态更新回调。
+
+<a id="api_onrecordingstateupdated__prototype"></a>
+
+```swift
+void onRecordingStateUpdated(FcrRecordingState state)
+```
+
+<a id="api_onrecordingstateupdated__parameters"></a>
+
+### 参数
+
+#### `state`
+
+当前的录制状态 [FcrRecordingState](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#enum_fcrrecordingstate)。

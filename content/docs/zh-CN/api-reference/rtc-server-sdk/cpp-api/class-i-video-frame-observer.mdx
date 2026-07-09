@@ -1,0 +1,91 @@
+---
+title: "IVideoFrameObserver类 参考abstract"
+description: "视频 observer。"
+---
+
+视频 observer。
+
+## 成员类型定义说明
+
+<a id="af51dfbf9b64421e2cc0209cec4eded52"></a>
+
+### VideoFrame
+
+```cpp
+typedef media::base::VideoFrame IVideoFrameObserver::VideoFrame
+```
+
+## 成员枚举类型说明
+
+<a id="a6fa9f9e55acb5fa3ca17ffee0927e1bd"></a>
+
+### VIDEO_FRAME_PROCESS_MODE
+
+```cpp
+enum IVideoFrameObserver::VIDEO_FRAME_PROCESS_MODE
+```
+
+视频帧处理模式。
+
+#### Values
+
+| Name | Description |
+| --- | --- |
+| <a id="a6fa9f9e55acb5fa3ca17ffee0927e1bda26df3afc0a346820fed5d849871b975e"></a> PROCESS_MODE_READ_ONLY | 0：仅接收视频帧用于渲染。 |
+| <a id="a6fa9f9e55acb5fa3ca17ffee0927e1bda0d783a0dcac23c7533fc72caafc6bfac"></a> PROCESS_MODE_READ_WRITE | 1：接收视频帧用于处理和渲染。 |
+
+## 构造及析构函数说明
+
+<a id="aca5ea8884598aa79ccd7faea6d7a9afb"></a>
+
+### ~IVideoFrameObserver()
+
+```cpp
+virtual IVideoFrameObserver::~IVideoFrameObserver() inlinevirtual
+```
+
+## 成员函数说明
+
+<a id="aa284483cf3c2ded23bb3cfc3b1f67b96"></a>
+
+### onPreEncodeVideoFrame()
+
+```cpp
+virtual bool IVideoFrameObserver::onPreEncodeVideoFrame(VideoFrame& videoFrame) pure virtual
+```
+
+获取本地视频编码前的视频数据。
+
+成功注册视频数据 observer后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取编码前的视频数据，然后根据场景需要，对视频数据进行处理。
+
+完成处理后，你可以在该回调中，传入处理后的视频数据将其发送回 SDK。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| videoFrame | 视频帧数据。 |
+
+#### Returns
+
+如果视频前处理失败，是否忽略该帧视频：
+
+- true: 不忽略。
+- false: 忽略，则该帧数据不再发送回 SDK。
+
+<a id="ab1c99e45df2b74871479d54eca49564d"></a>
+
+### getMirrorApplied()
+
+```cpp
+virtual bool IVideoFrameObserver::getMirrorApplied() inlinevirtual
+```
+
+设置视频数据镜像。
+
+#### Returns
+
+设置 SDK 输出视频数据时是否作镜像处理：
+
+- true: 镜像。
+- false: （默认）不镜像。

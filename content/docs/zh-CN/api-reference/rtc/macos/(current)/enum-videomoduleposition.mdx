@@ -8,15 +8,15 @@ description: "视频观察器中视频帧的位置。"
 
 ### `AgoraVideoModulePositionPostCapture`
 
-（1）：本地采集的视频数据在预处理之后的位置，对应 [onCaptureVideoFrame:sourceType:](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调。此位置的视频已应用美颜特效、虚拟背景或水印等预处理效果。
+（1）：本地采集的视频数据在预处理之后的位置，对应 [onCaptureVideoFrame:sourceType:](/zh-CN/api-reference/rtc/macos/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调。此位置的视频已应用美颜特效、虚拟背景或水印等预处理效果。
 
 ### `AgoraVideoModulePositionPreRenderer`
 
-（2）：渲染器之前的位置，对应 [onRenderVideoFrame:uid:channelId:](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调。此位置的视频用于渲染前的处理。
+（2）：渲染器之前的位置，对应 [onRenderVideoFrame:uid:channelId:](/zh-CN/api-reference/rtc/macos/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调。此位置的视频用于渲染前的处理。
 
 ### `AgoraVideoModulePositionPreEncoder`
 
-（4）：编码器之前的位置，对应 [onPreEncodeVideoFrame:sourceType:](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调。此位置的视频已应用预处理和编码前处理效果。
+（4）：编码器之前的位置，对应 [onPreEncodeVideoFrame:sourceType:](/zh-CN/api-reference/rtc/macos/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调。此位置的视频已应用预处理和编码前处理效果。
 
 - 若需验证预处理效果，可启用美颜特效、虚拟背景或水印。
 - 若需验证编码前处理效果，可设置较低帧率（如 5 fps）。

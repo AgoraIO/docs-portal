@@ -1,0 +1,88 @@
+---
+title: "VideoFrame"
+description: "用于封装要推送或处理的视频帧。"
+---
+<a id="class_videoframe__prototype"></a>
+
+```java
+public class VideoFrame implements RefCounted {
+  public interface Buffer extends RefCounted {
+    int getWidth();
+    int getHeight();
+    I420Buffer toI420();
+    I010Buffer toI010();
+    Buffer cropAndScale(
+        int cropX, int cropY, int cropWidth, int cropHeight, int scaleWidth, int scaleHeight);
+    Buffer mirror(int frameRotation);
+    Buffer rotate(int frameRotation);
+    Buffer transform(int cropX, int cropY, int cropWidth, int cropHeight, int scaleWidth,
+        int scaleHeight, int frameRotation);
+  }
+
+  public interface TextureBuffer extends Buffer {
+    enum Type {
+      OES,
+      RGB
+    }
+
+    Type getType();
+    int getTextureId();
+    Matrix getTransformMatrix();
+    EglBase.Context getEglBaseContext();
+    float[] getTransformMatrixArray();
+    long getFenceObject();
+  }
+
+  public VideoFrame(Buffer buffer, int rotation, long timestampNs);
+  public Buffer getBuffer();
+  public int getRotation();
+  public long getTimestampNs();
+  public int getRotatedWidth();
+  public int getRotatedHeight();
+  public ColorSpace getColorSpace();
+}
+```
+
+<a id="class_videoframe__detailed_desc"></a>
+
+在 Android 自采集场景中，声网推荐优先使用 `io.agora.base.VideoFrame` 配合 `pushExternalVideoFrameById(VideoFrame frame, int videoTrackId)` 推送视频帧。该类型通过统一的 `Buffer` 抽象封装不同的视频缓冲区，适合封装 `I420`、 `NV21`、 `NV12` 以及 Texture 等数据。
+
+:::info[注]
+[VideoFrame](/zh-CN/api-reference/rtc/android/class-videoframe) 的时间戳字段为 `timestampNs`，单位为纳秒；若你使用 [getCurrentMonotonicTimeInMs](/zh-CN/api-reference/rtc/android/network#api_irtcengine_getcurrentmonotonictimeinms) 获取 SDK 当前单调时间，需要先将毫秒转换为纳秒再传入。 如果你的现有实现已经基于 [AgoraVideoFrame](/zh-CN/api-reference/rtc/android/class-externalvideoframe) 封装，仍可继续使用；但对于 Android 新接入场景，推荐优先使用 [VideoFrame](/zh-CN/api-reference/rtc/android/class-videoframe)，因为它支持 Texture 数据，也能通过统一的 `Buffer` 抽象承载更多格式。
+:::
+
+<a id="class_videoframe__parameters"></a>
+
+## 属性
+
+### `type`
+
+像素格式。详见 `VIDEO_PIXEL_FORMAT`。
+
+### `buffer`
+
+视频帧缓冲区。构造 [VideoFrame](/zh-CN/api-reference/rtc/android/class-videoframe) 时需要传入实现了 `VideoFrame.Buffer` 的对象。常见实现包括 `JavaI420Buffer`、 `NV21Buffer`、 `NV12Buffer` 和 `TextureBuffer`。
+
+:::info[注]
+该参数不可为空，否则会发生异常。相关方法包括 `getRotatedWidth`、 `getRotatedHeight`、 `replaceBuffer`、 `retain` 和 `release`。
+:::
+
+### `TextureBuffer`
+
+Texture 类型的视频缓冲区抽象。可获取纹理类型 `Type`、纹理 ID、transform matrix、EGL context 和 fence object。若你需要推送 Texture 数据，推荐使用 [VideoFrame](/zh-CN/api-reference/rtc/android/class-videoframe) 而非 [AgoraVideoFrame](/zh-CN/api-reference/rtc/android/class-externalvideoframe)。
+
+### `rotation`
+
+视频帧在渲染前的顺时针旋转角度。支持 0、90、180 和 270 度。
+
+### `timestampNs`
+
+视频帧的时间戳，单位为纳秒。
+
+### `colorSpace`
+
+视频帧的色彩空间属性，默认采用 Full Range 和 BT.709 标准配置。你可以根据自定义采集或自定义渲染的业务需求进行设置。
+
+:::info[注]
+相关方法包括 `getColorSpace` 和 `setColorSpace`。
+:::

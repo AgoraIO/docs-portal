@@ -1,0 +1,30 @@
+---
+title: "addMultiDeviceEventHandler method"
+description: "API docs for the addMultiDeviceEventHandler method from the ChatClient class, for the Dart programming language."
+---
+
+Adds the multi-device event handler. After calling this method, you can handle for new room event when they arrive.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `identifier` | The custom handler identifier, is used to find the corresponding handler. |
+| `handler` | The handler multi-device event. See [ChatMultiDeviceEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-multi-device-event-handler). |
+
+```dart
+void addMultiDeviceEventHandler(String identifier, ChatMultiDeviceEventHandler handler)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+void addMultiDeviceEventHandler(
+  String identifier,
+  ChatMultiDeviceEventHandler handler,
+) {
+  _multiDeviceEventHandler[identifier] = handler;
+}
+```

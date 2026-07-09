@@ -1,0 +1,42 @@
+---
+title: "kickDevice method"
+description: "API docs for the kickDevice method from the ChatClient class, for the Dart programming language."
+---
+
+Forces the specified account to log out from the specified device.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `userId` | The account you want to force logout. |
+| `password` | The account's password. |
+| `resource` | The device ID. For how to fetch the device ID, See [ChatDeviceInfo.resource](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-device-info/resource). |
+
+```dart
+Future<bool> kickDevice({required String userId, required String password, required String resource})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<bool> kickDevice(
+    {required String userId,
+    required String password,
+    required String resource}) async {
+  EMLog.v('kickDevice: $userId, "******"');
+  Map req = {'username': userId, 'password': password, 'resource': resource};
+  Map result =
+      await ClientChannel.invokeMethod(ChatMethodKeys.kickDevice, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result.boolValue(ChatMethodKeys.kickDevice);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,0 +1,239 @@
+---
+title: "AgoraRteWebClientBase"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- AGEventEmitter
+  - AgoraRteWebClientBase
+    - AgoraRteWebClientMain
+    - AgoraRteWebClientSub
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new AgoraRteWebClientBase(channelName: string, configs: RtcAdapterWebConfig, base: RtcAdapterBase, connectionType: AGRtcConnectionType, audioRawDataDispatcher: AGAudioRawDataDispatcher): AgoraRteWebClientBase
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelName: string |  |
+| configs: RtcAdapterWebConfig |  |
+| base: RtcAdapterBase |  |
+| connectionType: AGRtcConnectionType |  |
+| audioRawDataDispatcher: AGAudioRawDataDispatcher |  |
+
+#### Returns
+
+Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-web-client-base)
+
+## Properties
+
+<a id="logger"></a>
+
+### logger
+
+```ts
+logger: "agora-rte-sdk/src/core/logger/type".Logger
+```
+
+## Accessors
+
+<a id="base"></a>
+
+### base
+
+```ts
+get base(): RtcAdapterWeb
+```
+
+#### Returns
+
+Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/rtc-adapter-web)
+
+<a id="ready"></a>
+
+### ready
+
+```ts
+get ready(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+## Methods
+
+<a id="emit"></a>
+
+### emit
+
+```ts
+emit(evt: string, ...args: any[]): AgoraRteWebClientBase
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| Rest ...args: any[] |  |
+
+#### Returns
+
+Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-web-client-base)
+
+<a id="getClientSessionId"></a>
+
+### getClientSessionId
+
+```ts
+getClientSessionId(): any
+```
+
+#### Returns
+
+Returns any
+
+<a id="join"></a>
+
+### join
+
+```ts
+join(appId: string, token: string, streamUuid: string): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| appId: string |  |
+| token: string |  |
+| streamUuid: string |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="leave"></a>
+
+### leave
+
+```ts
+leave(): Promise<void>
+```
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="off"></a>
+
+### off
+
+```ts
+off(evt: string, cb: CallableFunction): AgoraRteWebClientBase
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-web-client-base)
+
+<a id="on"></a>
+
+### on
+
+```ts
+on(evt: string, cb: CallableFunction): AgoraRteWebClientBase
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-web-client-base)
+
+<a id="once"></a>
+
+### once
+
+```ts
+once(evt: string, cb: CallableFunction): AgoraRteWebClientBase
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-web-client-base)
+
+<a id="removeAllEventListeners"></a>
+
+### removeAllEventListeners
+
+```ts
+removeAllEventListeners(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="setCloudProxy"></a>
+
+### setCloudProxy
+
+```ts
+setCloudProxy(proxyType: AgoraCloudProxyType): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| proxyType: AgoraCloudProxyType |  |
+
+#### Returns
+
+Returns void
+
+<a id="setLatencyLevel"></a>
+
+### setLatencyLevel
+
+```ts
+setLatencyLevel(level: AgoraLatencyLevel): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| level: AgoraLatencyLevel |  |
+
+#### Returns
+
+Returns void

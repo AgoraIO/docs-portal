@@ -1,0 +1,45 @@
+---
+title: "declineJoinApplication method"
+description: "API docs for the declineJoinApplication method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Declines a group request.
+
+Only the group owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `username` | The username of the user who sends a request to join the group. |
+| `reason` | The reason of declining. |
+
+```dart
+Future<void> declineJoinApplication(String groupId, String username, {String? reason})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> declineJoinApplication(
+  String groupId,
+  String username, {
+  String? reason,
+}) async {
+  Map req = {'groupId': groupId, 'username': username};
+  req.setValueWithOutNull('reason', reason);
+
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.declineJoinApplication, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

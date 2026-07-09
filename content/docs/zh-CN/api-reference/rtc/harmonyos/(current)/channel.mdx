@@ -4,6 +4,8 @@ description: "频道相关 API reference."
 ---
 <a id="toc_channel"></a>
 
+## 频道相关
+
 <a id="api_irtcengine_joinchannel"></a>
 
 ## joinChannel
@@ -81,7 +83,7 @@ public abstract joinChannel(key: string, channel: string, optionalInfo: string, 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
   - -2：传入的参数无效。例如，使用了不合法的 Token， uid 参数未设置为整型，或 ChannelMediaOptions 成员值不合法。你需要填入有效的参数，重新加入频道。
   - -3： RtcEngine 对象初始化失败。你需要重新初始化 RtcEngine 对象。
   - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
@@ -170,7 +172,7 @@ public abstract joinChannelWithOptions(token: string, channelId: string, uid: nu
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
   - -2：传入的参数无效。例如，使用了不合法的 Token， uid 参数未设置为整型，或 ChannelMediaOptions 成员值不合法。你需要填入有效的参数，重新加入频道。
   - -3： RtcEngine 对象初始化失败。你需要重新初始化 RtcEngine 对象。
   - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
@@ -210,7 +212,7 @@ public abstract joinChannelEx(token: string, connection: RtcConnection, options:
 
 该方法需要在 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 之后调用。
 
-在多摄像头采集场景下，你需要在调用该方法之后调用 [startPreview](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_startpreview2) 方法设置 sourceType 为 CAMERA_SECONDARY，以确保第二个摄像头采集正常。
+在多摄像头采集场景下，你需要在调用该方法之后调用 [startPreview](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_startpreview2) 方法设置 sourceType 为 CAMERA_SECONDARY，以确保第二个摄像头采集正常。
 
 <a id="api_irtcengineex_joinchannelex__restriction"></a>
 
@@ -262,7 +264,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
   - -2：传入的参数无效。例如，使用了不合法的 Token， uid 参数未设置为整型，或 ChannelMediaOptions 成员值不合法。你需要填入有效的参数，重新加入频道。
   - -3： RtcEngine 对象初始化失败。你需要重新初始化 RtcEngine 对象。
   - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
@@ -330,7 +332,7 @@ public abstract leaveChannel(options?: LeaveChannelOptions): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
@@ -406,7 +408,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
@@ -456,7 +458,7 @@ public abstract renewToken(token: string): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
   - -2：传入的参数无效。例如，Token 为空。
   - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
   - -110：Token 无效。请确保：
@@ -516,7 +518,7 @@ public abstract setChannelProfile(profile: number): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
   - -2: 参数无效。
   - -7: SDK 尚未初始化。
 
@@ -545,7 +547,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 该方法在加入频道前后均可调用。
 
-如果你在加入频道前调用该方法设置用户角色为主播、并且通过 [setupLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setuplocalvideo) 方法设置了本地视频属性，则用户加入频道时会自动开启本地视频预览。
+如果你在加入频道前调用该方法设置用户角色为主播、并且通过 [setupLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video-rendering#api_irtcengine_setuplocalvideo) 方法设置了本地视频属性，则用户加入频道时会自动开启本地视频预览。
 
 如果你在加入频道后调用该方法切换用户角色，调用成功后，SDK 会自动调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [muteLocalVideoStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalvideostream) 修改发布音视频流的状态。
 
@@ -593,7 +595,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -5: 调用被拒绝。
@@ -627,7 +629,7 @@ public abstract updateChannelMediaOptions(options: ChannelMediaOptions): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
   - -2： ChannelMediaOptions 成员值设置无效。例如，使用了不合法的 Token，设置了无效的用户角色。你需要填入有效的参数。
   - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
   - -8： RtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 onConnectionStateChanged 回调判断用户是否在频道中。如果收到 DISCONNECTED (1) 或 FAILED (5)，则表示用户不在频道中。你需要在调用该方法前调用 joinChannelWithOptions 加入频道。
@@ -664,7 +666,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
   - -2： ChannelMediaOptions 成员值设置无效。例如，使用了不合法的 Token，设置了无效的用户角色。你需要填入有效的参数。
   - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
   - -8： RtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 onConnectionStateChanged 回调判断用户是否在频道中。如果收到 DISCONNECTED (1) 或 FAILED (5)，则表示用户不在频道中。你需要在调用该方法前调用 joinChannelWithOptions 加入频道。

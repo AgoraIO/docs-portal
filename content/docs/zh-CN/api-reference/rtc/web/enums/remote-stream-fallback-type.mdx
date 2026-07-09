@@ -1,0 +1,88 @@
+---
+title: "RemoteStreamFallbackType"
+description: "RemoteStreamFallbackType API reference."
+---
+
+媒体流的回退策略选项，用于 [setStreamFallbackOption](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#setstreamfallbackoption)。
+
+## Enumeration members
+
+<a id="audio_only"></a>
+
+### AUDIO_ONLY
+
+```ts
+AUDIO_ONLY: = 2
+```
+
+2: 网络较弱时，先尝试订阅视频小流。如果网络环境无法显示视频，则再回退到订阅纯音频流。
+
+<a id="disable"></a>
+
+### DISABLE
+
+```ts
+DISABLE: = 0
+```
+
+0: 关闭回退策略，弱网时不对音视频流作回退处理。
+
+<a id="high_stream_layer1"></a>
+
+### HIGH_STREAM_LAYER1
+
+```ts
+HIGH_STREAM_LAYER1: = 3
+```
+
+ABR 拓展, 暂时不对外，以实际客户为主
+
+<a id="high_stream_layer2"></a>
+
+### HIGH_STREAM_LAYER2
+
+```ts
+HIGH_STREAM_LAYER2: = 4
+```
+
+<a id="high_stream_layer3"></a>
+
+### HIGH_STREAM_LAYER3
+
+```ts
+HIGH_STREAM_LAYER3: = 5
+```
+
+<a id="high_stream_layer4"></a>
+
+### HIGH_STREAM_LAYER4
+
+```ts
+HIGH_STREAM_LAYER4: = 6
+```
+
+<a id="high_stream_layer5"></a>
+
+### HIGH_STREAM_LAYER5
+
+```ts
+HIGH_STREAM_LAYER5: = 7
+```
+
+<a id="high_stream_layer6"></a>
+
+### HIGH_STREAM_LAYER6
+
+```ts
+HIGH_STREAM_LAYER6: = 8
+```
+
+<a id="low_stream"></a>
+
+### LOW_STREAM
+
+```ts
+LOW_STREAM: = 1
+```
+
+1: 在网络条件较差的情况下，自动订阅视频小流。

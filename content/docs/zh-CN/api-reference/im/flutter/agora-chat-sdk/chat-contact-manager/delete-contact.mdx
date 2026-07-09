@@ -1,0 +1,41 @@
+---
+title: "deleteContact method"
+description: "API docs for the deleteContact method from the ChatContactManager class, for the Dart programming language."
+---
+
+Deletes a contact and all the related conversations.
+
+- true: Yes.
+- false: (default) No.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `username` | The contact to be deleted. |
+| `keepConversation` | Whether to retain conversations of the deleted contact. |
+
+```dart
+Future<void> deleteContact(String username, {bool keepConversation = false})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> deleteContact(
+  String username, {
+  bool keepConversation = false,
+}) async {
+  Map req = {'username': username, 'keepConversation': keepConversation};
+  Map result = await _channel.invokeMethod(ChatMethodKeys.deleteContact, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

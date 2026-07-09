@@ -1,0 +1,85 @@
+---
+title: "io.agora.recording.common.Common.VideoMixingLayout.Region类 参考"
+description: "设置每个用户画面的具体参数。"
+---
+
+设置每个用户画面的具体参数。
+
+## 类成员变量说明
+
+<a id="affea5ceadd98f896682755cb10af3fa7"></a>
+
+### uid
+
+```cpp
+long io.agora.recording.common.Common.VideoMixingLayout.Region.uid = 0
+```
+
+待显示在该区域的用户（通信模式）/主播（直播模式）的 UID。
+
+<a id="aebef4f7b380aced050d6ea087582e76f"></a>
+
+### x
+
+```cpp
+double io.agora.recording.common.Common.VideoMixingLayout.Region.x = 0
+```
+
+屏幕里该画面左上角的横坐标的相对值，取值范围是 [0.0,1.0]。
+
+<a id="a9f23bab3c02d1b1d2be6f48fc1ddd36e"></a>
+
+### y
+
+```cpp
+double io.agora.recording.common.Common.VideoMixingLayout.Region.y = 0
+```
+
+屏幕里该画面左上角的纵坐标的相对值，取值范围是 [0.0,1.0]。
+
+<a id="a7e7b167a7b83892c4edf09c3119a0e32"></a>
+
+### width
+
+```cpp
+double io.agora.recording.common.Common.VideoMixingLayout.Region.width = 0
+```
+
+该画面宽度的相对值，取值范围是 [0.0,1.0]。
+
+<a id="a7ecb6db3dabd85e84caad94876e12fa5"></a>
+
+### height
+
+```cpp
+double io.agora.recording.common.Common.VideoMixingLayout.Region.height = 0
+```
+
+该画面高度的相对值，取值范围是 [0.0,1.0]。
+
+<a id="afc0a3e9c1db78715822d13ebe8102f15"></a>
+
+### alpha
+
+```cpp
+double io.agora.recording.common.Common.VideoMixingLayout.Region.alpha = 1.0
+```
+
+图像的透明度。取值范围是 [0.0,1.0]。0.0 表示图像为透明的，1.0 表示图像为完全不透明的。
+
+##### `注解`
+
+该参数是预留参数，暂不支持此功能。
+
+<a id="a36470c87a9cca746799e4a3a0c1da1fe"></a>
+
+### renderMode
+
+```cpp
+int io.agora.recording.common.Common.VideoMixingLayout.Region.renderMode = 0
+```
+
+画面显示模式:
+
+- RENDER_MODE_HIDDEN(0):（默认）裁剪模式。优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。 如果视频长宽与显示窗口不同，则视频流会按照显示视窗的比例进行周边裁剪或图像拉伸后填满视窗。
+- RENDER_MODE_FIT(1): 缩放模式。优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。 如果视频尺寸与显示视窗尺寸不一致，在保持长宽比的前提下，将视频进行缩放后填满视窗，缩放后的视频四周会有一圈黑边。

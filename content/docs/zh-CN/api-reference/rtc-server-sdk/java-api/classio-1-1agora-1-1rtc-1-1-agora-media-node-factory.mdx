@@ -1,0 +1,94 @@
+---
+title: "io.agora.rtc.AgoraMediaNodeFactory类 参考"
+description: "AgoraMediaNodeFactory 类。"
+---
+
+AgoraMediaNodeFactory 类。
+
+## 构造及析构函数说明
+
+<a id="a748ab2334b2724052dfedd7376bea48f"></a>
+
+### AgoraMediaNodeFactory()
+
+```cpp
+io.agora.rtc.AgoraMediaNodeFactory.AgoraMediaNodeFactory(long cptr)
+```
+
+构造函数。
+
+## 成员函数说明
+
+<a id="a689962b295e93afd94c59d0a0ea65eec"></a>
+
+### createAudioEncodedFrameSender()
+
+```cpp
+native AgoraAudioEncodedFrameSender io.agora.rtc.AgoraMediaNodeFactory.createAudioEncodedFrameSender()
+```
+
+创建一个编码后的音频数据发送模块。
+
+该方法创建一个 AgoraAudioEncodedFrameSender 对象。成功创建后，你可以调用 createCustomAudioTrackEncoded 发送编码后的音频数据。
+
+#### Returns
+
+AgoraAudioEncodedFrameSender 对象。
+
+<a id="ac0986112da4ef355ed09a6a48905c327"></a>
+
+### createAudioPcmDataSender()
+
+```cpp
+native AgoraAudioPcmDataSender io.agora.rtc.AgoraMediaNodeFactory.createAudioPcmDataSender()
+```
+
+创建一个 PCM 音频数据发送模块。
+
+该方法创建一个 AgoraAudioPcmDataSender 对象。成功创建后，你可以调用 createCustomAudioTrackPcm 发送 PCM 音频数据。
+
+#### Returns
+
+AgoraAudioPcmDataSender 对象。
+
+<a id="adfe952f993b26c131a6037153eccd9bd"></a>
+
+### createVideoEncodedImageSender()
+
+```cpp
+native AgoraVideoEncodedImageSender io.agora.rtc.AgoraMediaNodeFactory.createVideoEncodedImageSender()
+```
+
+创建一个编码后的视频数据发送模块。
+
+该方法创建一个 AgoraVideoEncodedImageSender 对象。成功创建后，你可以调用 createCustomVideoTrackEncoded 发送编码后的视频数据。
+
+#### Returns
+
+AgoraVideoEncodedImageSender 对象。
+
+<a id="a937de3a320ffcb3ab45995d104615de5"></a>
+
+### createVideoFrameSender()
+
+```cpp
+native AgoraVideoFrameSender io.agora.rtc.AgoraMediaNodeFactory.createVideoFrameSender()
+```
+
+创建一个 YUV 视频数据发送模块。
+
+该方法创建一个 AgoraVideoFrameSender 对象。成功创建后，你可以调用 createCustomVideoTrackFrame 发送自定义的视频数据。
+
+#### Returns
+
+AgoraVideoFrameSender 对象。
+
+<a id="a643aaaaeecff10fdabd3657dea314106"></a>
+
+### destroy()
+
+```cpp
+void io.agora.rtc.AgoraMediaNodeFactory.destroy()
+```
+
+析构函数。

@@ -1,0 +1,38 @@
+---
+title: "kickAllDevices method"
+description: "API docs for the kickAllDevices method from the ChatClient class, for the Dart programming language."
+---
+
+Kicks out all the devices logged in under the specified account.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `userId` | The account you want to log out from all the devices. |
+| `password` | The password. |
+
+```dart
+Future<void> kickAllDevices({required String userId, required String password})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> kickAllDevices(
+    {required String userId, required String password}) async {
+  EMLog.v('kickAllDevices: $userId, "******"');
+  Map req = {'username': userId, 'password': password};
+  Map result =
+      await ClientChannel.invokeMethod(ChatMethodKeys.kickAllDevices, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

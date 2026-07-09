@@ -1,0 +1,29 @@
+---
+title: "removeGroupManagerListener method"
+description: "API docs for the removeGroupManagerListener method from the ChatGroupManagerDeprecated extension, for the Dart programming language."
+---
+
+Removes a group manager listener.
+
+This method removes a group manager listener registered with [addGroupManagerListener](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-manager-deprecated/add-group-manager-listener).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The group manager listener to be removed. |
+
+```dart
+@Deprecated("Use #removeEventHandler to instead")void removeGroupManagerListener(ChatGroupManagerListener listener)@Deprecated("Use #removeEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@Deprecated("Use #removeEventHandler to instead")
+void removeGroupManagerListener(ChatGroupManagerListener listener) {
+  _listeners.remove(listener);
+}
+```

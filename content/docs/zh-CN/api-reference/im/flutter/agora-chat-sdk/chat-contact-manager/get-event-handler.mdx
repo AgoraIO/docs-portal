@@ -1,0 +1,28 @@
+---
+title: "getEventHandler method"
+description: "API docs for the getEventHandler method from the ChatContactManager class, for the Dart programming language."
+---
+
+Get the contact event handler.
+
+**Return** The contact event handler.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `identifier` | The custom handler identifier. |
+
+```dart
+ContactEventHandler? getEventHandler(String identifier)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ContactEventHandler? getEventHandler(String identifier) {
+  return _eventHandlesMap[identifier];
+}
+```

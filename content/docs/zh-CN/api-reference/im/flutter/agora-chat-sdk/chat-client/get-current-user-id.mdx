@@ -1,0 +1,35 @@
+---
+title: "getCurrentUserId method"
+description: "API docs for the getCurrentUserId method from the ChatClient class, for the Dart programming language."
+---
+
+Gets the current login user ID.
+
+**Return** The current login user ID.
+
+```dart
+Future<String?> getCurrentUserId()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<String?> getCurrentUserId() async {
+  Map result =
+      await ClientChannel.invokeMethod(ChatMethodKeys.getCurrentUser);
+  try {
+    ChatError.hasErrorFromResult(result);
+    _currentUserId = result[ChatMethodKeys.getCurrentUser];
+    if (_currentUserId != null) {
+      if (_currentUserId!.length == 0) {
+        _currentUserId = null;
+      }
+    }
+    return _currentUserId;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

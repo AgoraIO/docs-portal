@@ -1,0 +1,101 @@
+---
+title: "StatisticsStore"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+`StatisticsStore` 类提供网络相关数据。
+
+- EduStoreBase
+  - StatisticsStore
+
+## Accessors
+
+<a id="cpu"></a>
+
+### cpu
+
+```ts
+get cpu(): number
+```
+
+应用 CPU 用量，范围：0 ~ 1 仅可在 Electron 环境下使用
+
+#### Returns
+
+Returns number
+
+<a id="cpuTotal"></a>
+
+### cpuTotal
+
+```ts
+get cpuTotal(): number
+```
+
+系统 CPU 用量，范围：0 ~ 1 仅可在 Electron 环境下使用
+
+#### Returns
+
+Returns number
+
+<a id="delay"></a>
+
+### delay
+
+```ts
+get delay(): number
+```
+
+网络延迟，单位：毫秒
+
+#### Returns
+
+Returns number
+
+<a id="downlinkNetworkQuality"></a>
+
+### downlinkNetworkQuality
+
+```ts
+get downlinkNetworkQuality(): AGNetworkQuality
+```
+
+下行网络质量
+
+#### Returns
+
+Returns [AGNetworkQuality](/zh-CN/api-reference/flexible-classroom/electron/api-reference/enums/agnetwork-quality)
+
+<a id="packetLoss"></a>
+
+### packetLoss
+
+```ts
+get packetLoss(): number
+```
+
+丢包率，范围：0 ~ 1
+
+/**
+
+##### `en`
+
+The packet loss rate, range by: 0 ~ 1
+
+#### Returns
+
+Returns number
+
+<a id="uplinkNetworkQuality"></a>
+
+### uplinkNetworkQuality
+
+```ts
+get uplinkNetworkQuality(): AGNetworkQuality
+```
+
+上行网络质量
+
+#### Returns
+
+Returns [AGNetworkQuality](/zh-CN/api-reference/flexible-classroom/electron/api-reference/enums/agnetwork-quality)

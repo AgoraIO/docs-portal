@@ -1,0 +1,68 @@
+---
+title: "io.agora.rtc.AgoraRtcService.LicenseValidationErrorReason类 参考"
+description: "设备 License 验证失败的错误码。"
+---
+
+设备 License 验证失败的错误码。
+
+## 类成员变量说明
+
+<a id="a5b9daeba2be94d38a4e3510833f2a95b"></a>
+
+### ERR_LICENSE_DIFF_DEVICES
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.LicenseValidationErrorReason.ERR_LICENSE_DIFF_DEVICES = 5 static
+```
+
+5: License 已在其他设备中使用。你需要重新调用 [init](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#aab47fc030b290004c6d29a0a306db032) 并在 [RtcServiceOptions](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-rtc-service-options) 的 `licenseValue` 参数中填入一个新的 License。
+
+<a id="aa66834ca38f6c3332c20174ca244365f"></a>
+
+### ERR_LICENSE_EXPIRE
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.LicenseValidationErrorReason.ERR_LICENSE_EXPIRE = 2 static
+```
+
+2: License 过期。你需要联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](#) 进行续费。
+
+<a id="a025067efbafd86d88333a5b5522598ca"></a>
+
+### ERR_LICENSE_INTERNAL
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.LicenseValidationErrorReason.ERR_LICENSE_INTERNAL = 99 static
+```
+
+99: 内部原因。
+
+<a id="a8406b7aecb84909aed7cfdfdde630656"></a>
+
+### ERR_LICENSE_INVALID
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.LicenseValidationErrorReason.ERR_LICENSE_INVALID = 1 static
+```
+
+1: 无效 License。你需要重新调用 [init](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#aab47fc030b290004c6d29a0a306db032) 并在 [RtcServiceOptions](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-rtc-service-options) 的 `licenseValue` 参数中填入正确的 License。
+
+<a id="a33e7b4961fa215c02e954526a3b8798e"></a>
+
+### ERR_LICENSE_LIMITED_PERIOD
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.LicenseValidationErrorReason.ERR_LICENSE_LIMITED_PERIOD = 4 static
+```
+
+4: 当前时间段受 License 限制，不能进行通话。你需要换一个 License 允许的时间段进行通话， 或联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](#) 购买通话时间段更长的 License。
+
+<a id="ac10043a641e4e99eb89145e82b72506d"></a>
+
+### ERR_LICENSE_MINUTES_EXCEED
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.LicenseValidationErrorReason.ERR_LICENSE_MINUTES_EXCEED = 3 static
+```
+
+3: License 包含的通话时长已用完。你需要联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](#) 购买通话时长更长的 License。

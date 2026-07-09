@@ -1,0 +1,137 @@
+---
+title: "io.agora.iotlink.IRtcPlayer接口 参考"
+description: "音视频播放器。"
+---
+
+音视频播放器。
+
+## 成员函数说明
+
+<a id="a93409e1dc1c813c1e7b03644e1aedaf8"></a>
+
+### getStateMachine()
+
+```cpp
+int io.agora.iotlink.IRtcPlayer.getStateMachine()
+```
+
+获取当前 `IRtcPlayer` 的状态。
+
+#### Returns
+
+当前 `IRtcPlayer` 的状态。
+
+- RTCPLAYER_STATE_STOPPED(0x0001): 停止播放音视频。
+- RTCPLAYER_STATE_PREPARING(0x0002): 正在准备播放音视频。
+- RTCPLAYER_STATE_PLAYING(0x0003): 正在播放音视频。
+
+<a id="adbff99b7ca2c8b22aa264183dfa58152"></a>
+
+### registerListener()
+
+```cpp
+int io.agora.iotlink.IRtcPlayer.registerListener(IRtcPlayer.ICallback callback)
+```
+
+注册 `IRtcPlayer` 的回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| callback | `IRtcPlayer` 的回调。详见 [ICallback](/zh-CN/api-reference/iot-apaas/android/interfaceio-1-1agora-1-1iotlink-1-1-i-rtc-player-1-1-i-callback) |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="a58c823daf1c8e2b3d6b56345ca6d0aef"></a>
+
+### start()
+
+```cpp
+int io.agora.iotlink.IRtcPlayer.start(final String channelName, final SurfaceView displayView)
+```
+
+开始播放音视频。 成功调用该方法后，SDK 会触发 [onPrepareDone](/zh-CN/api-reference/iot-apaas/android/interfaceio-1-1agora-1-1iotlink-1-1-i-rtc-player-1-1-i-callback#a2a3359ffcbd55dcdf0aea8687d31edb1) 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelName | 频道名。 |
+| displayView | 设备的视频显示窗口，详见 `SurfaceView`。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="aba2e7799615b76e0f75bde1d71e21c73"></a>
+
+### stop()
+
+```cpp
+int io.agora.iotlink.IRtcPlayer.stop()
+```
+
+停止播放音视频。
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="a80e5acd4756393034a96b68cff635da6"></a>
+
+### unregisterListener()
+
+```cpp
+int io.agora.iotlink.IRtcPlayer.unregisterListener(IRtcPlayer.ICallback callback)
+```
+
+注销 `IRtcPlayer` 的回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| callback | `IRtcPlayer` 的回调。详见 ICallback。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+## 类成员变量说明
+
+<a id="a1cd2a72e96dcd82ce934c4a2fd71ea2a"></a>
+
+### RTCPLAYER_STATE_PLAYING
+
+```cpp
+final int io.agora.iotlink.IRtcPlayer.RTCPLAYER_STATE_PLAYING = 0x0003 static
+```
+
+0x0003：正在播放音视频。
+
+<a id="a417ba3c3f72016f2a8c3882208830ae1"></a>
+
+### RTCPLAYER_STATE_PREPARING
+
+```cpp
+final int io.agora.iotlink.IRtcPlayer.RTCPLAYER_STATE_PREPARING = 0x0002 static
+```
+
+0x0002：正在准备播放音视频。
+
+<a id="a50ccee82424c8cc58cd122eef028cccc"></a>
+
+### RTCPLAYER_STATE_STOPPED
+
+```cpp
+final int io.agora.iotlink.IRtcPlayer.RTCPLAYER_STATE_STOPPED = 0x0001 static
+```
+
+0x0001：停止播放音视频。

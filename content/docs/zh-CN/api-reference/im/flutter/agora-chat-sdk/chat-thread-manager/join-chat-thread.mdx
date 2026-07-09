@@ -1,0 +1,46 @@
+---
+title: "joinChatThread method"
+description: "API docs for the joinChatThread method from the ChatThreadManager class, for the Dart programming language."
+---
+
+Join Chat Thread.
+
+Group members have permission. Join successfully, return the Chat Thread details `ChatThread`, the details do not include the number of members. Repeated addition will throw an ChatError. After joining chat thread, the multiple devices will receive the notification event. You can set [ChatMultiDeviceEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-multi-device-event-handler) to listen on the event. The event callback function is [ChatMultiDeviceEventHandler.onChatThreadEvent](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-multi-device-event-handler/on-chat-thread-event), where the first parameter is the event, and chat thread join event is [ChatMultiDevicesEvent.CHAT_THREAD_JOIN](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-multi-devices-event).
+
+**Return** The joined chat thread object;
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `chatThreadId` | Chat Thread ID. |
+
+```dart
+Future<ChatThread> joinChatThread({required String chatThreadId})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<ChatThread> joinChatThread({
+  required String chatThreadId,
+}) async {
+  Map req = {
+    "threadId": chatThreadId,
+  };
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.joinChatThread,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatThread.fromJson(result[ChatMethodKeys.joinChatThread]);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

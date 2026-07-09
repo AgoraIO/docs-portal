@@ -1,0 +1,30 @@
+---
+title: "getNoPushUsersFromCache method"
+description: "API docs for the getNoPushUsersFromCache method from the ChatPushManager class, for the Dart programming language."
+---
+
+Gets the list of users which have blocked the push notification.
+
+**return** The list of user that blocked the push notification.
+
+**Throws** A description of the issue that caused this exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error)
+
+```dart
+@Deprecated('')Future<List<String>> getNoPushUsersFromCache()@Deprecated('')
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@Deprecated('')
+Future<List<String>> getNoPushUsersFromCache() async {
+  Map result = await PushChannel.invokeMethod(ChatMethodKeys.getNoPushUsers);
+  List<String> list = [];
+  if (result.containsKey(ChatMethodKeys.getNoPushUsers)) {
+    list = result[ChatMethodKeys.getNoPushUsers]?.cast<String>();
+  }
+  return list;
+}
+```

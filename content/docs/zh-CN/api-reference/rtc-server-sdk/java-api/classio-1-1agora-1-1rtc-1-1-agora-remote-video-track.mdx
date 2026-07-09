@@ -1,0 +1,162 @@
+---
+title: "io.agora.rtc.AgoraRemoteVideoTrack类 参考"
+description: "查询本地视频流的状态。"
+---
+
+## 构造及析构函数说明
+
+<a id="a4b49366d89fe5cd3b65021cf8df2260d"></a>
+
+### AgoraRemoteVideoTrack()
+
+```cpp
+io.agora.rtc.AgoraRemoteVideoTrack.AgoraRemoteVideoTrack(long cptr)
+```
+
+## 成员函数说明
+
+<a id="afa58ff452908a74f98e167f0bfb9728a"></a>
+
+### destroyStatistics()
+
+```cpp
+native void io.agora.rtc.AgoraRemoteVideoTrack.destroyStatistics(RemoteVideoTrackStats stats)
+```
+
+<a id="a07344f339a9704bc17252dc2f85235c7"></a>
+
+### destroyTrackInfo()
+
+```cpp
+native void io.agora.rtc.AgoraRemoteVideoTrack.destroyTrackInfo(VideoTrackInfo info)
+```
+
+<a id="a84c8afb61f2433f25913269fb81f9464"></a>
+
+### getState()
+
+```cpp
+native int io.agora.rtc.AgoraRemoteVideoTrack.getState()
+```
+
+查询本地视频流的状态。
+
+#### Returns
+
+本地视频流的状态。
+
+<a id="ac487ad9e89e8d62945e14a7eca9bdadb"></a>
+
+### getStatistics()
+
+```cpp
+native RemoteVideoTrackStats io.agora.rtc.AgoraRemoteVideoTrack.getStatistics()
+```
+
+获取本地视频轨道的视频数据。
+
+#### Returns
+
+本地视频轨道的数据。
+
+<a id="a4ac6534b02c86febf6deb0ee2ad7ae29"></a>
+
+### getTrackInfo()
+
+```cpp
+native VideoTrackInfo io.agora.rtc.AgoraRemoteVideoTrack.getTrackInfo()
+```
+
+获取远端视频轨道的信息。
+
+#### Returns
+
+远端视频轨道的信息。
+
+<a id="a411569d9ba8b0679b763b54879116d8a"></a>
+
+### registerMediaPacketReceiver()
+
+```cpp
+native int io.agora.rtc.AgoraRemoteVideoTrack.registerMediaPacketReceiver(IMediaPacketReceiver agora_media_packet_receiver)
+```
+
+注册一个 IMediaPacketReceiver 对象。
+
+你需要在该方法中实现一个 IMediaPacketReceiver 类。成功注册后，SDK 会在接收到视频包时， 触发 onMediaPacketReceived 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_media_packet_receiver | IMediaPacketReceiver 对象。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aeca94c3c65e79fd9a7f3e8f4042b0993"></a>
+
+### registerVideoEncodedImageReceiver()
+
+```cpp
+native int io.agora.rtc.AgoraRemoteVideoTrack.registerVideoEncodedImageReceiver(AgoraVideoEncodedImageReceiver agora_video_encoded_image_receiver)
+```
+
+注册一个 AgoraVideoEncodedImageReceiver 对象。
+
+你需要在该方法中实现一个 AgoraVideoEncodedImageReceiver 类。成功注册后，SDK 会在接收到 编码后的视频数据时，触发 onEncodedVideoImageReceived 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_video_encoded_image_receiver | AgoraVideoEncodedImageReceiver 对象。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a460ad0b73cd9b01bcf1f003e73456608"></a>
+
+### unregisterMediaPacketReceiver()
+
+```cpp
+native int io.agora.rtc.AgoraRemoteVideoTrack.unregisterMediaPacketReceiver(IMediaPacketReceiver agora_media_packet_receiver)
+```
+
+释放 IMediaPacketReceiver 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_media_packet_receiver | IMediaPacketReceiver 对象。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a86065e61dbd365024600e60d405dc754"></a>
+
+### unregisterVideoEncodedImageReceiver()
+
+```cpp
+native int io.agora.rtc.AgoraRemoteVideoTrack.unregisterVideoEncodedImageReceiver(AgoraVideoEncodedImageReceiver agora_video_encoded_image_receiver)
+```
+
+释放 AgoraVideoEncodedImageReceiver 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_video_encoded_image_receiver | AgoraVideoEncodedImageReceiver 对象。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

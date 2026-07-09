@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 /**
- * DITA-OT HTML-to-Markdown Migration Tool
+ * HTML-to-Markdown API Reference Migration Tool
  *
- * Converts DITA-OT (Oxygen XML) generated HTML API reference docs
- * to pure markdown files suitable for the docs-portal project.
+ * Converts generated HTML API reference docs to pure markdown files suitable
+ * for the docs-portal project.
  *
- * This is not a generic HTML converter. The supported input is a product or
- * platform source directory that contains a DITA-OT API/ subdirectory.
+ * This is not an arbitrary website scraper. The supported inputs are common
+ * generated API reference structures with stable index files and symbol pages.
  *
  * Usage:
  *   node scripts/html-to-md-migration.mjs --source <dir> --output <dir> --product <name> --platform <name> [options]
@@ -35,6 +35,10 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import * as cheerio from 'cheerio';
+import {
+  getSourceLane,
+  SOURCE_LANE_IDS,
+} from './html-migration/lanes/index.mjs';
 
 // ============================================================================
 // CLI Argument Parsing
@@ -112,18 +116,18 @@ function parseArgs() {
 
 function printHelp() {
   console.log(`
-DITA-OT HTML-to-Markdown Migration Tool
+HTML-to-Markdown API Reference Migration Tool
 
-This is not a generic HTML converter. It only supports DITA-OT/Oxygen
-generated API reference HTML where --source contains an API/ directory with
-HTML files. It detects TypeDoc, Doxygen/Javadoc, iOS-doc-generator, Dartdoc,
-and RESTful/OpenAPI or other source layouts and exits with migration guidance.
+This is not a generic HTML converter. It supports generated API reference HTML
+from DITA-OT/Oxygen, TypeDoc, Doxygen/Javadoc, iOS doc-generator/Jazzy/appledoc,
+and Dartdoc. RESTful/OpenAPI or other source layouts still exit with migration
+guidance.
 
 Usage:
   node scripts/html-to-md-migration.mjs --source <dir> --output <dir> --product <name> --platform <name> [options]
 
 Required:
-  --source, -s      Source directory containing DITA-OT API/ HTML docs
+  --source, -s      Source directory containing generated HTML API docs
   --output, -o      Output directory for markdown files
   --product, -p     Product name (e.g., rtc, signaling, cloud-recording)
   --platform, -P    Platform name (e.g., android, ios, web, RESTful)
@@ -136,14 +140,14 @@ Options:
   --verbose, -v         Show detailed processing information
   --help, -h            Show this help message
 
-Supported lane:
+Supported lanes:
   - DITA-OT/Oxygen HTML API reference: <source>/API/*.html
+  - TypeDoc HTML API reference
+  - Doxygen/Javadoc HTML API reference
+  - iOS doc-generator/Jazzy/appledoc HTML API reference
+  - Dartdoc HTML API reference
 
 Unsupported lanes detected with actionable errors:
-  - TypeDoc
-  - Doxygen/Javadoc
-  - iOS-doc-generator
-  - Dartdoc
   - RESTful/OpenAPI or other source layouts
   `);
 }
@@ -181,6 +185,10 @@ function stripHtml(name) {
   return name.replace(/\.html$/, '');
 }
 
+function normalizeSourcePath(value) {
+  return value.split(path.sep).join('/').replace(/^\.\//, '');
+}
+
 function toKebab(value) {
   return value
     .replace(/_/g, '-')
@@ -194,6 +202,14 @@ function toKebab(value) {
 function isInlineElement(element) {
   return element.is(
     'a, span, code, strong, b, em, i, br, sub, sup, small, mark, s, u',
+  );
+}
+
+function isExternalHref(href) {
+  return (
+    href.startsWith('//') ||
+    /^[a-z][a-z0-9+.-]*:/i.test(href) ||
+    href.startsWith('/')
   );
 }
 
@@ -233,21 +249,19 @@ function headingDepth(level) {
 
 const SOURCE_TYPES = {
   DARTDOC: {
-    action:
-      'Use or add a Dartdoc-specific migration lane; this DITA-OT converter cannot preserve Dart library navigation.',
+    id: SOURCE_LANE_IDS.DARTDOC,
     label: 'Dartdoc HTML reference',
   },
   DITA_OT_API: {
+    id: SOURCE_LANE_IDS.DITA_OT_API,
     label: 'DITA-OT/Oxygen API reference (API/ directory)',
   },
   DOXYGEN_JAVADOC: {
-    action:
-      'Use or add a Doxygen/Javadoc-specific migration lane; this DITA-OT converter cannot preserve generated class/package indexes.',
+    id: SOURCE_LANE_IDS.DOXYGEN_JAVADOC,
     label: 'Doxygen/Javadoc HTML reference',
   },
   IOS_DOC_GENERATOR: {
-    action:
-      'Use or add an iOS-doc-generator-specific migration lane; this DITA-OT converter cannot preserve Objective-C/Swift symbol navigation.',
+    id: SOURCE_LANE_IDS.IOS_DOC_GENERATOR,
     label: 'iOS-doc-generator HTML reference',
   },
   RESTFUL_OR_OTHER: {
@@ -256,8 +270,7 @@ const SOURCE_TYPES = {
     label: 'RESTful/OpenAPI or other unsupported source layout',
   },
   TYPEDOC: {
-    action:
-      'Use or add a TypeDoc-specific migration lane; this DITA-OT converter cannot preserve TypeScript symbol navigation.',
+    id: SOURCE_LANE_IDS.TYPEDOC,
     label: 'TypeDoc HTML reference',
   },
 };
@@ -294,8 +307,10 @@ async function detectSourceStructure(sourceDir) {
       return {
         fileNames,
         id: 'dita-ot-api',
+        indexSourceNames: ['../index.html'],
         label: SOURCE_TYPES.DITA_OT_API.label,
         markers: ['API/', `${fileNames.length} API/*.html files`],
+        rootIndexSource: null,
         sourceDir: apiDir,
         supported: true,
       };
@@ -315,6 +330,24 @@ async function detectSourceStructure(sourceDir) {
   const detectionText = await readDetectionText(sourceDir, rootHtmlFiles);
   const lowerDetectionText = detectionText.toLowerCase();
 
+  const explicitRestMarkers = collectMarkers([
+    [hasFile('openapi.json'), 'openapi.json'],
+    [hasFile('openapi.yaml'), 'openapi.yaml'],
+    [hasFile('openapi.yml'), 'openapi.yml'],
+    [hasFile('swagger.json'), 'swagger.json'],
+    [hasFile('swagger.yaml'), 'swagger.yaml'],
+    [hasFile('swagger.yml'), 'swagger.yml'],
+    [hasDir('endpoint'), 'endpoint/'],
+    [hasDir('endpoints'), 'endpoints/'],
+  ]);
+  if (explicitRestMarkers.length > 0) {
+    return unsupportedSourceStructure(
+      sourceDir,
+      SOURCE_TYPES.RESTFUL_OR_OTHER,
+      explicitRestMarkers,
+    );
+  }
+
   const iosDocGeneratorMarkers = collectMarkers([
     [hasDir('Classes'), 'Classes/'],
     [hasDir('Protocols'), 'Protocols/'],
@@ -332,33 +365,15 @@ async function detectSourceStructure(sourceDir) {
     [lowerDetectionText.includes('appledoc'), 'appledoc page marker'],
     [lowerDetectionText.includes('jazzy'), 'Jazzy page marker'],
   ]);
-  if (iosDocGeneratorMarkers.length > 0) {
-    return unsupportedSourceStructure(
+  const hasStrongIosDocGeneratorMarker = iosDocGeneratorMarkers.some(
+    (marker) => marker !== 'hierarchy.html',
+  );
+  if (hasStrongIosDocGeneratorMarker) {
+    return supportedGeneratedHtmlStructure(
       sourceDir,
       SOURCE_TYPES.IOS_DOC_GENERATOR,
       iosDocGeneratorMarkers,
-    );
-  }
-
-  const typedocMarkers = collectMarkers([
-    [hasFile('modules.html'), 'modules.html'],
-    [hasDir('classes'), 'classes/'],
-    [hasDir('interfaces'), 'interfaces/'],
-    [hasDir('enums'), 'enums/'],
-    [
-      hasDir('assets') && lowerDetectionText.includes('typedoc'),
-      'assets/ with TypeDoc page marker',
-    ],
-    [
-      lowerDetectionText.includes('generated by typedoc'),
-      'Generated by TypeDoc page text',
-    ],
-  ]);
-  if (typedocMarkers.length > 0) {
-    return unsupportedSourceStructure(
-      sourceDir,
-      SOURCE_TYPES.TYPEDOC,
-      typedocMarkers,
+      ['index.html', 'hierarchy.html', 'Classes.html', 'Protocols.html'],
     );
   }
 
@@ -383,10 +398,41 @@ async function detectSourceStructure(sourceDir) {
     [lowerDetectionText.includes('javadoc'), 'Javadoc page marker'],
   ]);
   if (doxygenJavadocMarkers.length > 0) {
-    return unsupportedSourceStructure(
+    return supportedGeneratedHtmlStructure(
       sourceDir,
       SOURCE_TYPES.DOXYGEN_JAVADOC,
       doxygenJavadocMarkers,
+      [
+        'index.html',
+        'annotated.html',
+        'classes.html',
+        'allclasses-index.html',
+        'allpackages-index.html',
+        'package-summary.html',
+      ],
+    );
+  }
+
+  const typedocMarkers = collectMarkers([
+    [hasFile('modules.html'), 'modules.html'],
+    [hasDir('classes'), 'classes/'],
+    [hasDir('interfaces'), 'interfaces/'],
+    [hasDir('enums'), 'enums/'],
+    [
+      hasDir('assets') && lowerDetectionText.includes('typedoc'),
+      'assets/ with TypeDoc page marker',
+    ],
+    [
+      lowerDetectionText.includes('generated by typedoc'),
+      'Generated by TypeDoc page text',
+    ],
+  ]);
+  if (typedocMarkers.length > 0) {
+    return supportedGeneratedHtmlStructure(
+      sourceDir,
+      SOURCE_TYPES.TYPEDOC,
+      typedocMarkers,
+      ['index.html', 'modules.html'],
     );
   }
 
@@ -398,22 +444,15 @@ async function detectSourceStructure(sourceDir) {
     [lowerDetectionText.includes('dartdoc'), 'Dartdoc page marker'],
   ]);
   if (dartdocMarkers.length > 0) {
-    return unsupportedSourceStructure(
+    return supportedGeneratedHtmlStructure(
       sourceDir,
       SOURCE_TYPES.DARTDOC,
       dartdocMarkers,
+      ['index.html', 'library-index.html'],
     );
   }
 
   const restOrOtherMarkers = collectMarkers([
-    [hasFile('openapi.json'), 'openapi.json'],
-    [hasFile('openapi.yaml'), 'openapi.yaml'],
-    [hasFile('openapi.yml'), 'openapi.yml'],
-    [hasFile('swagger.json'), 'swagger.json'],
-    [hasFile('swagger.yaml'), 'swagger.yaml'],
-    [hasFile('swagger.yml'), 'swagger.yml'],
-    [hasDir('endpoint'), 'endpoint/'],
-    [hasDir('endpoints'), 'endpoints/'],
     [
       rootHtmlFiles.length > 0,
       `${rootHtmlFiles.length} root-level HTML file(s), but no API/`,
@@ -429,6 +468,71 @@ async function detectSourceStructure(sourceDir) {
     SOURCE_TYPES.RESTFUL_OR_OTHER,
     restOrOtherMarkers,
   );
+}
+
+async function supportedGeneratedHtmlStructure(
+  sourceDir,
+  sourceType,
+  markers,
+  indexSourceNames,
+) {
+  const allHtmlFileNames = await collectHtmlFileNames(sourceDir);
+  const fileNames = allHtmlFileNames.filter((name) => name !== 'index.html');
+  const rootIndexSource = allHtmlFileNames.includes('index.html')
+    ? 'index.html'
+    : null;
+
+  if (fileNames.length === 0) {
+    return unsupportedSourceStructure(
+      sourceDir,
+      SOURCE_TYPES.RESTFUL_OR_OTHER,
+      [...markers, 'detected generator markers but no migratable .html pages'],
+    );
+  }
+
+  return {
+    fileNames,
+    id: sourceType.id,
+    indexSourceNames,
+    label: sourceType.label,
+    markers,
+    rootIndexSource,
+    sourceDir,
+    supported: true,
+  };
+}
+
+async function collectHtmlFileNames(sourceDir) {
+  const fileNames = [];
+  const skipDirs = new Set([
+    '.git',
+    'assets',
+    'fonts',
+    'images',
+    'img',
+    'scripts',
+    'search',
+    'static-assets',
+    'styles',
+  ]);
+
+  async function visit(dir) {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const absolutePath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (!skipDirs.has(entry.name)) await visit(absolutePath);
+        continue;
+      }
+      if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
+      fileNames.push(
+        normalizeSourcePath(path.relative(sourceDir, absolutePath)),
+      );
+    }
+  }
+
+  await visit(sourceDir);
+  return fileNames.sort((a, b) => a.localeCompare(b));
 }
 
 async function fileExists(filePath) {
@@ -485,9 +589,9 @@ function formatUnsupportedSourceError(structure) {
     markers,
     '',
     'This script is not a generic HTML-to-Markdown converter.',
-    'Supported lane: DITA-OT/Oxygen HTML API reference with <source>/API/*.html.',
+    'Supported lanes: DITA-OT/Oxygen, TypeDoc, Doxygen/Javadoc, iOS doc-generator/Jazzy/appledoc, and Dartdoc generated HTML API references.',
     `Action: ${structure.action}`,
-    'Expected source shape: point --source at the product/platform directory that contains API/.',
+    'Expected source shape: point --source at the product/platform directory that contains generated HTML API reference files.',
   ].join('\n');
 }
 
@@ -501,12 +605,26 @@ function assertSafeOutputPath(targetRoot, opts, sourceStructure) {
     resolvedCwd,
     path.resolve(resolvedCwd, 'content'),
     path.resolve(resolvedCwd, 'content/docs'),
+    path.resolve('/tmp'),
+    path.resolve('/private/tmp'),
     resolvedSource,
     resolvedApiSource,
   ];
   const homeDir = process.env.HOME ? path.resolve(process.env.HOME) : null;
   if (homeDir) {
     protectedPaths.push(homeDir);
+    const relativeToHome = path.relative(homeDir, resolvedTarget);
+    if (
+      relativeToHome &&
+      !relativeToHome.startsWith('..') &&
+      !path.isAbsolute(relativeToHome) &&
+      relativeToHome.split(path.sep).filter(Boolean).length === 1
+    ) {
+      throw new OutputPathError(
+        `Refusing to delete broad home-directory child path: ${resolvedTarget}. ` +
+          'Choose a dedicated product/platform output directory, preferably under /tmp or content/docs/<locale>/<tab>/<product>/<platform>.',
+      );
+    }
   }
 
   const matchingProtectedPath = protectedPaths.find(
@@ -567,20 +685,106 @@ function isSameOrParent(parentPath, childPath) {
 // ============================================================================
 
 function readTitle($) {
-  return normalizeText(
-    $(
-      'main > article > h1, main > article article > h1, main > article article > h2',
+  const selectors = [
+    'main > article > h1',
+    'main > article article > h1',
+    'main > article article > h2',
+    '.tsd-page-title h1',
+    '.page-title h1',
+    'main h1',
+    'article h1',
+    '.contents > .title',
+    '.header .title',
+    '.title',
+    'h1',
+    'title',
+  ];
+
+  for (const selector of selectors) {
+    const title = normalizeText($(selector).first().text());
+    if (title) return title;
+  }
+
+  return '';
+}
+
+function readCanonicalTitle($, sourceTypeId) {
+  const title = readTitle($);
+  if (sourceTypeId !== SOURCE_TYPES.TYPEDOC.id) return title;
+  return normalizeTypeDocTitle(title);
+}
+
+function normalizeTypeDocTitle(title) {
+  return title
+    .replace(
+      /^(Class|Interface|Enumeration|Enum|Namespace|Module|Function|Variable|Type Alias)\s+/i,
+      '',
     )
-      .first()
-      .text(),
-  );
+    .replace(/^"(.+)"$/, '$1')
+    .trim();
 }
 
 function readDescription($) {
   const desc = $('main > article > .body > .shortdesc').first().text().trim();
   if (desc) return normalizeText(desc);
   const metaDesc = $('meta[name="description"]').attr('content');
-  return metaDesc ? normalizeText(metaDesc) : '';
+  if (metaDesc) return normalizeText(metaDesc);
+  const fallbackDesc = $(
+    [
+      '.shortdesc',
+      '.brief',
+      '.abstract',
+      '.docblock > p',
+      '.description > p',
+      'main p',
+      'article p',
+      '.contents p',
+    ].join(', '),
+  )
+    .first()
+    .text();
+  return fallbackDesc ? normalizeText(fallbackDesc) : '';
+}
+
+function selectContentRoot($) {
+  $(
+    'script, style, link, iframe, form, nav:not(.related-links), header, footer, aside',
+  ).remove();
+  const selectors = [
+    'main > article',
+    'main article',
+    'article',
+    'main',
+    '.col-content',
+    '.main-content',
+    '.contents',
+    '.content',
+    '#content',
+    'body',
+  ];
+
+  for (const selector of selectors) {
+    const root = $(selector).first();
+    if (root.length > 0 && normalizeText(root.text())) return root;
+  }
+
+  return $('body').first();
+}
+
+function headingElementDepth(heading, fallbackDepth = 2) {
+  const match = heading.get(0)?.tagName?.match(/^h([1-6])$/i);
+  return match ? Number(match[1]) : fallbackDepth;
+}
+
+function renderHeading(_$, heading) {
+  const title = inlineText(heading);
+  if (!title) return '';
+  const parts = [];
+  const anchor = heading.find('a[id], a[name]').first();
+  const id = heading.attr('id') ?? anchor.attr('id') ?? anchor.attr('name');
+  if (id) parts.push(`<a id="${id}"></a>`);
+  parts.push(`${'#'.repeat(headingElementDepth(heading))} ${title}`);
+  return parts.join('\n\n');
 }
 
 function renderCodeBlock(pre) {
@@ -832,23 +1036,68 @@ function renderAnchor(
   targetBasePath,
 ) {
   const href = anchor.attr('href')?.trim() ?? '';
+  const id = anchor.attr('id') ?? anchor.attr('name');
   const label = inlineText(anchor) || href;
+  if (!href && id) return `<a id="${id}"></a>`;
   if (!href) return label;
 
-  if (href.startsWith('http://') || href.startsWith('https://')) {
+  if (isExternalHref(href)) {
     return `[${label}](${href})`;
   }
 
-  const [filePart, hashPart] = href.split('#');
+  const hashIndex = href.indexOf('#');
+  const filePart = hashIndex === -1 ? href : href.slice(0, hashIndex);
+  const hashPart = hashIndex === -1 ? '' : href.slice(hashIndex + 1);
   if (!filePart) return `[${label}](#${hashPart})`;
 
-  const sourceName = path.basename(filePart);
-  const routeSegments = sourceToRoute.get(sourceName);
-  if (!routeSegments) return `[${label}](${href})`;
+  const routeSegments = resolveRouteForHref(
+    filePart,
+    sourceToRoute.currentSource,
+    sourceToRoute,
+  );
+  if (!routeSegments) {
+    const sourceName = filePart.split('?')[0];
+    if (isFilteredHelperHtmlSource(sourceName)) return '';
+    return sourceName.endsWith('.html') ? label : `[${label}](${href})`;
+  }
 
   return `[${label}](${routeSegmentsToDocPath(routeSegments, targetBasePath)}${
     hashPart ? `#${hashPart}` : ''
   })`;
+}
+
+function isFilteredHelperHtmlSource(sourceName) {
+  const basename = sourceName.split('/').at(-1) ?? sourceName;
+  if (basename.endsWith('-members.html')) return true;
+  if (basename.endsWith('_source.html')) return true;
+  if (/^functions(?:[_-].*)?\.html$/i.test(basename)) return true;
+  if (/^namespacemembers(?:[_-].*)?\.html$/i.test(basename)) return true;
+  if (/^globals(?:[_-].*)?\.html$/i.test(basename)) return true;
+  return false;
+}
+
+function resolveRouteForHref(filePart, currentSource, sourceToRoute) {
+  const withoutQuery = filePart.split('?')[0];
+  if (!withoutQuery.endsWith('.html')) return null;
+
+  const candidates = [];
+  if (currentSource) {
+    candidates.push(
+      normalizeSourcePath(
+        path.posix.normalize(
+          path.posix.join(path.posix.dirname(currentSource), withoutQuery),
+        ),
+      ),
+    );
+  }
+  candidates.push(normalizeSourcePath(withoutQuery));
+  candidates.push(path.posix.basename(withoutQuery));
+
+  for (const candidate of candidates) {
+    const routeSegments = sourceToRoute.get(candidate);
+    if (routeSegments) return routeSegments;
+  }
+  return null;
 }
 
 function routeSegmentsToDocPath(routeSegments, targetBasePath) {
@@ -953,8 +1202,9 @@ function renderElement(
     return renderCodeBlock(element.find('pre').first());
   if (
     element.is('div, dd') &&
-    element.find('> ul, > ol, > table, > dl, > pre, > div.note, > section')
-      .length > 0
+    element.find(
+      '> h1, > h2, > h3, > h4, > h5, > h6, > ul, > ol, > table, > dl, > pre, > div.note, > section',
+    ).length > 0
   ) {
     return renderChildren(
       $,
@@ -965,6 +1215,11 @@ function renderElement(
       depth,
     );
   }
+  if (element.is('a') && !element.attr('href')) {
+    const id = element.attr('id') ?? element.attr('name');
+    return id ? `<a id="${id}"></a>` : '';
+  }
+  if (element.is('h1, h2, h3, h4, h5, h6')) return renderHeading($, element);
   if (element.is('p'))
     return inlineChildren(
       $,
@@ -992,8 +1247,8 @@ function renderElement(
       true,
     );
   if (element.is('section')) {
-    const heading = element.find('> h2, > h3, > h4').first();
-    const childDepth = heading.is('h4') ? 4 : heading.is('h3') ? 3 : 2;
+    const heading = element.find('> h1, > h2, > h3, > h4, > h5, > h6').first();
+    const childDepth = headingElementDepth(heading);
     return renderSection(
       $,
       element,
@@ -1073,10 +1328,13 @@ function renderChildren(
     }
 
     const element = $(node);
+    if (element.is('.shortdesc') || element.is('nav.related-links')) continue;
+    if (element.is('h1')) continue;
     if (
-      element.is('h1, h2, h3, h4, h5, h6') ||
-      element.is('.shortdesc') ||
-      element.is('nav.related-links')
+      parent.is('section') &&
+      element.is('h2, h3, h4, h5, h6') &&
+      parent.find('> h2, > h3, > h4, > h5, > h6').first().get(0) ===
+        element.get(0)
     )
       continue;
 
@@ -1117,12 +1375,15 @@ function renderSection(
   depth = 2,
 ) {
   const id = section.attr('id');
-  const heading = section.find('> h2, > h3, > h4').first();
+  const heading = section.find('> h1, > h2, > h3, > h4, > h5, > h6').first();
   const title = inlineText(heading);
   const parts = [];
 
   if (id) parts.push(`<a id="${id}"></a>`);
-  if (title) parts.push(`${'#'.repeat(depth)} ${title}`);
+  if (title)
+    parts.push(
+      `${'#'.repeat(Math.max(depth, headingElementDepth(heading)))} ${title}`,
+    );
 
   const directList = section.find('> ul').first();
   if (
@@ -1164,8 +1425,8 @@ function renderNestedArticle(
   targetBasePath,
 ) {
   const id = article.attr('id');
-  const heading = article.find('> h2, > h3, > h4').first();
-  const level = heading.is('h2') ? '##' : heading.is('h3') ? '###' : '####';
+  const heading = article.find('> h1, > h2, > h3, > h4, > h5, > h6').first();
+  const level = '#'.repeat(Math.max(2, headingElementDepth(heading)));
   const title = inlineText(heading);
   const content = [];
 
@@ -1239,15 +1500,64 @@ function renderRelatedLinks(
 function renderPage({
   $,
   currentSource,
+  lane,
   pageTitleBySource,
   pageDescriptionBySource,
   sourceToRoute,
   targetBasePath,
 }) {
+  if (lane?.id === SOURCE_TYPES.TYPEDOC.id) {
+    const typedocPage = renderTypeDocPage({
+      $,
+      currentSource,
+      pageDescriptionBySource,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    });
+    if (typedocPage) return typedocPage;
+  }
+  if (lane?.id === SOURCE_TYPES.DOXYGEN_JAVADOC.id) {
+    const doxygenPage = renderDoxygenPage({
+      $,
+      currentSource,
+      pageDescriptionBySource,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    });
+    if (doxygenPage) return doxygenPage;
+  }
+  if (lane?.id === SOURCE_TYPES.IOS_DOC_GENERATOR.id) {
+    const iosPage = renderIosDocGeneratorPage({
+      $,
+      currentSource,
+      pageDescriptionBySource,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    });
+    if (iosPage) return iosPage;
+  }
+  if (lane?.id === SOURCE_TYPES.DARTDOC.id) {
+    const dartdocPage = renderDartdocPage({
+      $,
+      currentSource,
+      pageDescriptionBySource,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    });
+    if (dartdocPage) return dartdocPage;
+  }
+
+  const previousCurrentSource = sourceToRoute.currentSource;
+  sourceToRoute.currentSource = currentSource;
+
   const pageTitle =
     pageTitleBySource.get(currentSource) ?? stripHtml(currentSource);
   const description = pageDescriptionBySource.get(currentSource);
-  const body = $('main > article');
+  const body = selectContentRoot($);
   const topTitle = body.find('> h1').first();
   const sections = [];
 
@@ -1279,9 +1589,10 @@ function renderPage({
   }
 
   if (sections.length === 0) {
+    const fallbackRoot = body.find('> .body').first();
     const fallback = renderChildren(
       $,
-      body.find('> .body').first(),
+      fallbackRoot.length > 0 ? fallbackRoot : body,
       pageTitleBySource,
       sourceToRoute,
       targetBasePath,
@@ -1303,7 +1614,1434 @@ function renderPage({
     sections.unshift(`<a id="${topTitle.attr('id')}"></a>`);
   }
 
-  return `${frontmatter.join('\n')}${sections.filter(Boolean).join('\n\n')}\n`;
+  const rendered = `${frontmatter.join('\n')}${sections.filter(Boolean).join('\n\n')}\n`;
+  sourceToRoute.currentSource = previousCurrentSource;
+  return rendered;
+}
+
+function renderDoxygenPage({
+  $,
+  currentSource,
+  pageTitleBySource,
+  pageDescriptionBySource,
+  sourceToRoute,
+  targetBasePath,
+}) {
+  const contents = $('.contents').first();
+  if (
+    contents.length === 0 ||
+    contents.find('h2.memtitle, .memitem .memproto, table.memberdecls')
+      .length === 0
+  ) {
+    return null;
+  }
+
+  const previousCurrentSource = sourceToRoute.currentSource;
+  sourceToRoute.currentSource = currentSource;
+
+  const pageTitle =
+    pageTitleBySource.get(currentSource) ?? stripHtml(currentSource);
+  const description = pageDescriptionBySource.get(currentSource);
+  const sections = [];
+
+  const details = renderDoxygenDetails(
+    $,
+    contents,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (details) sections.push(details);
+
+  for (const group of collectDoxygenMemberGroups($, contents)) {
+    const renderedGroup = renderDoxygenMemberGroup(
+      $,
+      group,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (renderedGroup) sections.push(renderedGroup);
+  }
+
+  sourceToRoute.currentSource = previousCurrentSource;
+  if (sections.length === 0) return null;
+
+  return [
+    '---',
+    `title: ${escapeYaml(pageTitle)}`,
+    description
+      ? `description: ${escapeYaml(description)}`
+      : `description: ${escapeYaml(`${pageTitle} API reference.`)}`,
+    '---',
+    '',
+    `${sections.join('\n\n')}\n`,
+  ].join('\n');
+}
+
+function renderDoxygenDetails(
+  $,
+  contents,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const detailsHeader = contents
+    .children('h2.groupheader')
+    .filter((_, header) =>
+      /详细描述|Detailed Description/i.test(normalizeText($(header).text())),
+    )
+    .first();
+  if (detailsHeader.length === 0) return '';
+
+  const parts = [];
+  let cursor = detailsHeader.next();
+  while (cursor.length > 0 && !cursor.is('h2.groupheader, h2.memtitle')) {
+    if (cursor.is('.textblock, p, div, dl, table, ul, ol')) {
+      const rendered = renderElement(
+        $,
+        cursor,
+        pageTitleBySource,
+        sourceToRoute,
+        targetBasePath,
+        2,
+      );
+      if (rendered) parts.push(rendered);
+    }
+    cursor = cursor.next();
+  }
+  return parts.join('\n\n');
+}
+
+function collectDoxygenMemberGroups($, contents) {
+  const groups = [];
+  let currentGroup = null;
+
+  for (const child of contents.children().toArray()) {
+    const node = $(child);
+    if (node.is('h2.groupheader')) {
+      const title = normalizeText(node.text());
+      if (title && !/详细描述|Detailed Description/i.test(title)) {
+        currentGroup = { members: [], title };
+        groups.push(currentGroup);
+      } else {
+        currentGroup = null;
+      }
+      continue;
+    }
+
+    if (!node.is('h2.memtitle')) continue;
+    const item = node.nextAll('.memitem').first();
+    if (item.length === 0) continue;
+    if (!currentGroup) {
+      currentGroup = { members: [], title: 'Members' };
+      groups.push(currentGroup);
+    }
+    currentGroup.members.push({ item, titleNode: node });
+  }
+
+  return groups.filter((group) => group.members.length > 0);
+}
+
+function renderDoxygenMemberGroup(
+  $,
+  group,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const parts = [`## ${escapeInlineText(group.title)}`];
+  for (const member of group.members) {
+    const rendered = renderDoxygenMember(
+      $,
+      member,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (rendered) parts.push(rendered);
+  }
+  return parts.join('\n\n');
+}
+
+function renderDoxygenMember(
+  $,
+  member,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const title = normalizeDoxygenMemberTitle(member.titleNode.text());
+  if (!title) return '';
+
+  const id =
+    member.titleNode.prev('a[id], a[name]').attr('id') ??
+    member.titleNode.prev('a[id], a[name]').attr('name');
+  const parts = [];
+  if (id) parts.push(`<a id="${id}"></a>`);
+  parts.push(`### ${escapeInlineText(title)}`);
+
+  const signature = normalizeDoxygenSignature(
+    member.item.find('.memproto').first().text(),
+  );
+  if (signature) parts.push(`\`\`\`cpp\n${signature}\n\`\`\``);
+
+  const memdoc = member.item.find('.memdoc').first().clone();
+  const parameters = renderDoxygenParameters(
+    $,
+    memdoc.find('dl.params').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  const returns = renderDoxygenReturns(
+    $,
+    memdoc.find('dl.return, dl.section.return').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  const enumTable = renderDoxygenEnumTable(
+    $,
+    memdoc.find('table.fieldtable').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  memdoc
+    .find('dl.params, dl.return, dl.section.return, table.fieldtable')
+    .remove();
+
+  const description = renderChildren(
+    $,
+    memdoc,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+    4,
+  );
+  if (description) parts.push(description);
+  if (parameters) parts.push(parameters);
+  if (returns) parts.push(returns);
+  if (enumTable) parts.push(enumTable);
+
+  return parts.join('\n\n');
+}
+
+function normalizeDoxygenMemberTitle(value) {
+  return normalizeText(value)
+    .replace(/^◆\s*/, '')
+    .replace(/\s*◆\s*/g, '');
+}
+
+function normalizeDoxygenSignature(value) {
+  return decodeHtml(value)
+    .replace(/\u00a0/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/\s+([(),;])/g, '$1')
+    .replace(/\s+([*&])/g, '$1')
+    .replace(/([(<])\s+/g, '$1')
+    .trim();
+}
+
+function renderDoxygenParameters(
+  $,
+  params,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!params || params.length === 0) return '';
+
+  const rows = [];
+  for (const row of params.find('table.params tr').toArray()) {
+    const cells = $(row).children('td');
+    const name = normalizeInlineFlow(
+      [
+        inlineChildren(
+          $,
+          cells.filter('.paramdir').first(),
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath,
+        ),
+        inlineChildren(
+          $,
+          cells.filter('.paramname').first(),
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath,
+        ),
+      ]
+        .filter(Boolean)
+        .join(' '),
+    );
+    const descCell = cells.not('.paramdir, .paramname').last();
+    const description = renderChildren(
+      $,
+      descCell,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      4,
+    ).replace(/\n+/g, '<br />');
+    if (name || description) rows.push([name, description]);
+  }
+
+  if (rows.length === 0) return '';
+  const lines = [
+    '#### Parameters',
+    '',
+    '| Name | Description |',
+    '| --- | --- |',
+  ];
+  for (const [name, description] of rows) {
+    lines.push(
+      `| ${name.replace(/\|/g, '\\|')} | ${description.replace(/\|/g, '\\|')} |`,
+    );
+  }
+  return lines.join('\n');
+}
+
+function renderDoxygenReturns(
+  $,
+  returns,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!returns || returns.length === 0) return '';
+  const rendered = renderChildren(
+    $,
+    returns.children('dd').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+    4,
+  );
+  return rendered ? ['#### Returns', rendered].join('\n\n') : '';
+}
+
+function renderDoxygenEnumTable(
+  $,
+  table,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!table || table.length === 0) return '';
+  const rows = [];
+  for (const row of table.find('tr').toArray()) {
+    const name = inlineChildren(
+      $,
+      $(row).find('td.fieldname').first(),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    const description = renderChildren(
+      $,
+      $(row).find('td.fielddoc').first(),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      4,
+    ).replace(/\n+/g, '<br />');
+    if (name || description) rows.push([name, description]);
+  }
+  if (rows.length === 0) return '';
+
+  const lines = ['#### Values', '', '| Name | Description |', '| --- | --- |'];
+  for (const [name, description] of rows) {
+    lines.push(
+      `| ${name.replace(/\|/g, '\\|')} | ${description.replace(/\|/g, '\\|')} |`,
+    );
+  }
+  return lines.join('\n');
+}
+
+function renderIosDocGeneratorPage({
+  $,
+  currentSource,
+  pageTitleBySource,
+  pageDescriptionBySource,
+  sourceToRoute,
+  targetBasePath,
+}) {
+  const main = $('main[role="main"], main').first();
+  if (main.length === 0) return null;
+  const hasMemberSections =
+    main.find(
+      '.section-tasks, .section-methods, .method-declaration, .parameter-def, h3.method-title',
+    ).length > 0;
+  const hasOverviewPageContent =
+    main.children('.section-overview, .index-container, p, ul, ol, table')
+      .length > 0;
+  if (!hasMemberSections && !hasOverviewPageContent) {
+    return null;
+  }
+
+  const previousCurrentSource = sourceToRoute.currentSource;
+  sourceToRoute.currentSource = currentSource;
+
+  const pageTitle =
+    pageTitleBySource.get(currentSource) ?? stripHtml(currentSource);
+  const description = pageDescriptionBySource.get(currentSource);
+  const sections = [];
+
+  if (hasMemberSections) {
+    const overview = renderIosOverview(
+      $,
+      main,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (overview) sections.push(overview);
+
+    const constants = renderIosConstants(
+      $,
+      main,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (constants) sections.push(constants);
+
+    const block = renderIosBlock(
+      $,
+      main,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (block) sections.push(block);
+
+    for (const taskSection of main.find('> .section-tasks').toArray()) {
+      const renderedTasks = renderIosTaskSection(
+        $,
+        $(taskSection),
+        pageTitleBySource,
+        sourceToRoute,
+        targetBasePath,
+      );
+      if (renderedTasks) sections.push(renderedTasks);
+    }
+  } else {
+    const overviewPage = renderChildren(
+      $,
+      main,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (overviewPage) sections.push(overviewPage);
+  }
+
+  sourceToRoute.currentSource = previousCurrentSource;
+  if (sections.length === 0) return null;
+
+  return [
+    '---',
+    `title: ${escapeYaml(pageTitle)}`,
+    description
+      ? `description: ${escapeYaml(description)}`
+      : `description: ${escapeYaml(`${pageTitle} API reference.`)}`,
+    '---',
+    '',
+    `${sections.join('\n\n')}\n`,
+  ].join('\n');
+}
+
+function renderIosOverview(
+  $,
+  main,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const overview = main.children('.section-overview').first().clone();
+  if (overview.length === 0) return '';
+  overview.find('h2.subtitle').remove();
+  return renderChildren(
+    $,
+    overview,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+}
+
+function renderIosTaskSection(
+  $,
+  taskSection,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const parts = [];
+  const taskTitles = taskSection.children('h2.task-title').toArray();
+  const taskLists = taskSection.children('.task-list').toArray();
+
+  for (let index = 0; index < taskLists.length; index += 1) {
+    const title = inlineText($(taskTitles[index])) || 'Methods';
+    const sectionParts = [`## ${title}`];
+    for (const method of $(taskLists[index])
+      .find('> .section-method')
+      .toArray()) {
+      const renderedMethod = renderIosMethod(
+        $,
+        $(method),
+        pageTitleBySource,
+        sourceToRoute,
+        targetBasePath,
+      );
+      if (renderedMethod) sectionParts.push(renderedMethod);
+    }
+    if (sectionParts.length > 1) parts.push(sectionParts.join('\n\n'));
+  }
+
+  return parts.join('\n\n');
+}
+
+function renderIosMethod(
+  $,
+  method,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const titleNode = method.find('h3.method-title').first();
+  const title = normalizeIosMethodTitle(titleNode.text());
+  if (!title) return '';
+
+  const anchor = method.children('a[name]').first();
+  const anchorName = anchor.attr('name');
+  const parts = [];
+  if (anchorName) parts.push(`<a id="${anchorName}"></a>`);
+  parts.push(`### ${escapeInlineText(title)}`);
+
+  const signature = normalizeText(
+    method.find('.method-declaration code').first().text(),
+  );
+  if (signature) parts.push(`\`\`\`objc\n${signature}\n\`\`\``);
+
+  const brief = method.find('.brief-description').first();
+  if (brief.length > 0) {
+    const renderedBrief = renderChildren(
+      $,
+      brief,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      4,
+    );
+    if (renderedBrief) parts.push(renderedBrief);
+  }
+
+  const parameters = renderIosParameters(
+    $,
+    method.find('.parameters .parameter-def').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (parameters) parts.push(parameters);
+
+  const returns = renderIosReturns(
+    $,
+    method.find('.return').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (returns) parts.push(returns);
+
+  const discussion = renderIosSubsection(
+    $,
+    method.find('.discussion-section').first(),
+    'Discussion',
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (discussion) parts.push(discussion);
+
+  const availability = renderIosSubsection(
+    $,
+    method.find('.availability').first(),
+    'Availability',
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (availability) parts.push(availability);
+
+  return parts.join('\n\n');
+}
+
+function normalizeIosMethodTitle(value) {
+  return normalizeText(value)
+    .replace(/^[+–-]\s*/, '')
+    .replace(/^\+\s*/, '')
+    .replace(/^&nbsp;\s*/, '')
+    .trim();
+}
+
+function renderIosInlineTableCell(
+  $,
+  cell,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!cell || cell.length === 0) return '';
+  const clone = cell.clone();
+  clone.find('h1, h2, h3, h4, h5, h6').remove();
+  const preText = normalizeText(clone.find('pre code, pre').first().text());
+  clone.find('pre').remove();
+  const rendered =
+    preText ||
+    (clone.is('code')
+      ? renderInlineElement(
+          $,
+          clone,
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath,
+        )
+      : inlineChildren(
+          $,
+          clone,
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath,
+        ));
+  return normalizeInlineFlow(rendered).replace(/\|/g, '\\|');
+}
+
+function renderIosParameters(
+  $,
+  table,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!table || table.length === 0) return '';
+  const rows = [];
+  for (const row of table.find('tr').toArray()) {
+    const name = renderIosInlineTableCell(
+      $,
+      $(row).find('th code, th').first(),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    const description = renderIosInlineTableCell(
+      $,
+      $(row).find('td').first(),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (name || description) rows.push([name, description]);
+  }
+  if (rows.length === 0) return '';
+  const lines = [
+    '#### Parameters',
+    '',
+    '| Name | Description |',
+    '| --- | --- |',
+  ];
+  for (const [name, description] of rows) {
+    lines.push(`| ${name} | ${description} |`);
+  }
+  return lines.join('\n');
+}
+
+function renderIosReturns(
+  $,
+  returns,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  return renderIosSubsection(
+    $,
+    returns,
+    'Returns',
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+}
+
+function renderIosSubsection(
+  $,
+  subsection,
+  title,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!subsection || subsection.length === 0) return '';
+  const clone = subsection.clone();
+  clone.find('h4.method-subtitle').first().remove();
+  const rendered = renderChildren(
+    $,
+    clone,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+    4,
+  );
+  return rendered ? [`#### ${title}`, rendered].join('\n\n') : '';
+}
+
+function renderIosConstants(
+  $,
+  main,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const constantList = main.find('> .section-methods dl.termdef').first();
+  if (constantList.length === 0) return '';
+
+  const enumTitle = inlineText(main.find('h3.method-title').first());
+  const parts = enumTitle ? [`## ${enumTitle}`] : ['## Constants'];
+
+  const definition = normalizeText(
+    main.find('> .section > code').first().text(),
+  );
+  if (definition) parts.push(`\`\`\`objc\n${definition}\n\`\`\``);
+
+  const rows = [];
+  const terms = constantList.children('dt').toArray();
+  const descriptions = constantList.children('dd').toArray();
+  for (let index = 0; index < terms.length; index += 1) {
+    const descriptionNode = $(descriptions[index] ?? '').clone();
+    descriptionNode
+      .find('p')
+      .filter((_, paragraph) =>
+        normalizeText($(paragraph).text()).includes('Declared In'),
+      )
+      .remove();
+    const name = renderIosInlineTableCell(
+      $,
+      $(terms[index]).find('code').first(),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    const description = renderIosInlineTableCell(
+      $,
+      descriptionNode,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (name || description) rows.push([name, description]);
+  }
+
+  if (rows.length > 0) {
+    const lines = ['| Name | Description |', '| --- | --- |'];
+    for (const [name, description] of rows) {
+      lines.push(`| ${name} | ${description} |`);
+    }
+    parts.push(lines.join('\n'));
+  }
+
+  return parts.join('\n\n');
+}
+
+function renderIosBlock(
+  $,
+  main,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (main.find('> .section-tasks, > .section-methods').length > 0) return '';
+  const blockTitle = inlineText(main.find('h3.method-title').first());
+  const declaration = normalizeText(main.children('code').first().text());
+  if (!blockTitle && !declaration) return '';
+
+  const parts = blockTitle ? [`## ${blockTitle}`] : ['## Block Definition'];
+  const brief = main.find('.brief-description').first();
+  if (brief.length > 0) {
+    const renderedBrief = renderChildren(
+      $,
+      brief,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      4,
+    );
+    if (renderedBrief) parts.push(renderedBrief);
+  }
+  if (declaration) parts.push(`\`\`\`objc\n${declaration}\n\`\`\``);
+  return parts.join('\n\n');
+}
+
+function renderDartdocPage({
+  $,
+  currentSource,
+  pageTitleBySource,
+  pageDescriptionBySource,
+  sourceToRoute,
+  targetBasePath,
+}) {
+  const main = $('#dartdoc-main-content').first();
+  if (main.length === 0) return null;
+
+  const previousCurrentSource = sourceToRoute.currentSource;
+  sourceToRoute.currentSource = currentSource;
+
+  const pageTitle = normalizeDartdocTitle(
+    pageTitleBySource.get(currentSource) ?? stripHtml(currentSource),
+  );
+  const description = pageDescriptionBySource.get(currentSource);
+  const sections = [];
+
+  const desc = renderDartdocDescription(
+    $,
+    main.children('section.desc').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (desc) sections.push(desc);
+
+  const details = renderDartdocRelationshipDetails(
+    $,
+    main.children('section').not('.summary, .desc, .source-code').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (details) sections.push(details);
+
+  const memberSignature = renderDartdocMemberSignature(
+    main.children('section.multi-line-signature').first(),
+  );
+  if (memberSignature) sections.push(memberSignature);
+
+  for (const section of main
+    .children('section.summary')
+    .not('.source-code')
+    .toArray()) {
+    const renderedSection = renderDartdocSummarySection(
+      $,
+      $(section),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (renderedSection) sections.push(renderedSection);
+  }
+
+  const source = renderDartdocSourceSection(
+    main.children('section.source-code').first(),
+  );
+  if (source) sections.push(source);
+
+  sourceToRoute.currentSource = previousCurrentSource;
+  if (sections.length === 0) return null;
+
+  return [
+    '---',
+    `title: ${escapeYaml(pageTitle)}`,
+    description
+      ? `description: ${escapeYaml(description)}`
+      : `description: ${escapeYaml(`${pageTitle} API reference.`)}`,
+    '---',
+    '',
+    `${sections.join('\n\n')}\n`,
+  ].join('\n');
+}
+
+function normalizeDartdocTitle(title) {
+  return normalizeText(title)
+    .replace(/\s+-\s+Dart API$/i, '')
+    .replace(/\s+Null safety$/i, '')
+    .trim();
+}
+
+function renderDartdocRelationshipDetails(
+  $,
+  section,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!section || section.length === 0) return '';
+  const rows = [];
+  const terms = section.find('dl.dl-horizontal > dt').toArray();
+  const descriptions = section.find('dl.dl-horizontal > dd').toArray();
+  for (let index = 0; index < terms.length; index += 1) {
+    const title = inlineText($(terms[index]));
+    const value = renderChildren(
+      $,
+      $(descriptions[index] ?? ''),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (title && value) rows.push(`### ${title}\n\n${value}`);
+  }
+  return rows.join('\n\n');
+}
+
+function renderDartdocMemberSignature(signatureSection) {
+  if (!signatureSection || signatureSection.length === 0) return '';
+  const signature = normalizeDartdocSignature(signatureSection.text());
+  return signature ? `\`\`\`dart\n${signature}\n\`\`\`` : '';
+}
+
+function renderDartdocDescription(
+  $,
+  desc,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!desc || desc.length === 0) return '';
+
+  const parts = [];
+  const parameterRows = [];
+  if (
+    desc.find(
+      '> p, > h1, > h2, > h3, > h4, > h5, > h6, > ul, > ol, > table, > dl, > pre, > section',
+    ).length === 0
+  ) {
+    const rendered = inlineChildren(
+      $,
+      desc,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    const parsedParams = parseDartdocParameterText(rendered);
+    if (parsedParams.rows.length > 0) {
+      if (parsedParams.before) parts.push(parsedParams.before);
+      parameterRows.push(...parsedParams.rows);
+      if (parsedParams.after) parts.push(parsedParams.after);
+    } else if (rendered) {
+      parts.push(rendered);
+    }
+    return renderDartdocDescriptionParts(parts, parameterRows);
+  }
+
+  for (const child of desc.contents().toArray()) {
+    const element = $(child);
+    if (child.type === 'text' || element.is('p')) {
+      const rendered =
+        child.type === 'text'
+          ? escapeInlineText(normalizeText($(child).text()))
+          : inlineChildren(
+              $,
+              element,
+              pageTitleBySource,
+              sourceToRoute,
+              targetBasePath,
+            );
+      const parsedParams = parseDartdocParameterText(rendered);
+      if (parsedParams.rows.length > 0) {
+        if (parsedParams.before) parts.push(parsedParams.before);
+        parameterRows.push(...parsedParams.rows);
+        if (parsedParams.after) parts.push(parsedParams.after);
+        continue;
+      }
+      if (rendered) parts.push(rendered);
+      continue;
+    }
+
+    const rendered = renderElement(
+      $,
+      element,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (rendered) parts.push(rendered);
+  }
+
+  return renderDartdocDescriptionParts(parts, parameterRows);
+}
+
+function renderDartdocDescriptionParts(parts, parameterRows) {
+  if (parameterRows.length > 0) {
+    parts.push(
+      [
+        '## Parameters',
+        '',
+        '| Name | Description |',
+        '| --- | --- |',
+        ...parameterRows,
+      ].join('\n'),
+    );
+  }
+
+  return parts.join('\n\n');
+}
+
+function parseDartdocParameterText(text) {
+  const parameterPattern =
+    /\bParam\s+(`[^`]+`|\[[^\]]+\]\([^)]+\)|[A-Za-z_][\w]*)\s+/g;
+  const matches = [...text.matchAll(parameterPattern)];
+  if (matches.length === 0) return { after: '', before: '', rows: [] };
+
+  const before = text.slice(0, matches[0].index).trim();
+  const afterParts = [];
+  const rows = [];
+
+  for (let index = 0; index < matches.length; index += 1) {
+    const match = matches[index];
+    const descriptionStart = (match.index ?? 0) + match[0].length;
+    const descriptionEnd =
+      index + 1 < matches.length
+        ? (matches[index + 1].index ?? text.length)
+        : text.length;
+    let description = text.slice(descriptionStart, descriptionEnd).trim();
+    const trailingBlockMatch = description.match(
+      /\s+(\*\*(?:Return|Returns|Throws?)\*\*.+)$/i,
+    );
+    if (trailingBlockMatch) {
+      description = description.slice(0, trailingBlockMatch.index).trim();
+      afterParts.push(trailingBlockMatch[1].trim());
+    }
+    if (!description) continue;
+    rows.push(
+      `| ${formatDartdocParameterName(match[1])} | ${description.replace(/\|/g, '\\|')} |`,
+    );
+  }
+
+  return { after: afterParts.join(' '), before, rows };
+}
+
+function formatDartdocParameterName(value) {
+  if (value.startsWith('`') || value.startsWith('[')) return value;
+  return `\`${value}\``;
+}
+
+function renderDartdocSummarySection(
+  $,
+  section,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const title = inlineText(section.children('h2').first());
+  if (!title) return '';
+
+  const parts = [];
+  const id = section.attr('id');
+  if (id) parts.push(`<a id="${id}"></a>`);
+  parts.push(`## ${title}`);
+
+  for (const term of section.find('> dl > dt').toArray()) {
+    const item = renderDartdocDefinitionItem(
+      $,
+      $(term),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (item) parts.push(item);
+  }
+
+  return parts.length > 1 ? parts.join('\n\n') : '';
+}
+
+function renderDartdocDefinitionItem(
+  $,
+  term,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const id = term.attr('id');
+  const nameNode = term.find('.name').first();
+  const name = inlineText(nameNode) || inlineText(term);
+  if (!name) return '';
+
+  const description = term.next('dd').first();
+  const parts = [];
+  if (id) parts.push(`<a id="${id}"></a>`);
+  const nameLink = nameNode.find('a[href]').first();
+  const headingLabel =
+    nameLink.length > 0
+      ? renderAnchor(nameLink, pageTitleBySource, sourceToRoute, targetBasePath)
+      : escapeInlineText(name);
+  parts.push(`### ${headingLabel}`);
+
+  const signature = normalizeDartdocSignature(
+    term.clone().find('.features').remove().end().text(),
+  );
+  if (signature && signature !== name) {
+    parts.push(`\`\`\`dart\n${signature}\n\`\`\``);
+  }
+
+  const renderedDescription = renderDartdocDescription(
+    $,
+    description.clone().find('.features').remove().end(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (renderedDescription) parts.push(renderedDescription);
+
+  const features = normalizeText(description.find('.features').text());
+  if (features) parts.push(`_${escapeInlineText(features)}._`);
+  if (
+    term.hasClass('inherited') ||
+    description.hasClass('inherited') ||
+    features.toLowerCase().includes('inherited')
+  ) {
+    parts.push('_Inherited._');
+  }
+
+  return parts.join('\n\n');
+}
+
+function renderDartdocSourceSection(sourceSection) {
+  if (!sourceSection || sourceSection.length === 0) return '';
+  const code = sourceSection.find('pre code').first().text().trimEnd();
+  return code
+    ? [
+        '<a id="source"></a>',
+        '## Implementation',
+        `\`\`\`dart\n${code}\n\`\`\``,
+      ].join('\n\n')
+    : '';
+}
+
+function normalizeDartdocSignature(value) {
+  return normalizeText(value)
+    .replace(/\s*→\s*/g, ' -> ')
+    .replace(/\s*↔\s*/g, ' <-> ')
+    .replace(/\s*\(\s*/g, '(')
+    .replace(/\s*\)\s*/g, ')')
+    .replace(/\)\s*->\s*/g, ') -> ')
+    .replace(/\)\s*<->\s*/g, ') <-> ')
+    .replace(/\s*,\s*/g, ', ')
+    .trim();
+}
+
+function renderTypeDocPage({
+  $,
+  currentSource,
+  pageTitleBySource,
+  pageDescriptionBySource,
+  sourceToRoute,
+  targetBasePath,
+}) {
+  const body = selectContentRoot($);
+  if (
+    body.find('.tsd-member-group, .tsd-signature, .tsd-comment').length === 0
+  ) {
+    return null;
+  }
+
+  const previousCurrentSource = sourceToRoute.currentSource;
+  sourceToRoute.currentSource = currentSource;
+
+  const pageTitle =
+    pageTitleBySource.get(currentSource) ??
+    normalizeTypeDocTitle(readTitle($)) ??
+    stripHtml(currentSource);
+  const description = pageDescriptionBySource.get(currentSource);
+  const sections = [];
+
+  const intro = renderTypeDocIntro(
+    $,
+    body,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (intro) sections.push(intro);
+
+  const hierarchy = body.find('> .tsd-hierarchy').first();
+  if (hierarchy.length > 0) {
+    const renderedHierarchy = renderTypeDocPanel(
+      $,
+      hierarchy,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (renderedHierarchy) sections.push(renderedHierarchy);
+  }
+
+  for (const group of body.find('> .tsd-member-group').toArray()) {
+    const renderedGroup = renderTypeDocMemberGroup(
+      $,
+      $(group),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (renderedGroup) sections.push(renderedGroup);
+  }
+
+  sourceToRoute.currentSource = previousCurrentSource;
+  if (sections.length === 0) return null;
+
+  return [
+    '---',
+    `title: ${escapeYaml(pageTitle)}`,
+    description
+      ? `description: ${escapeYaml(description)}`
+      : `description: ${escapeYaml(`${pageTitle} API reference.`)}`,
+    '---',
+    '',
+    `${sections.join('\n\n')}\n`,
+  ].join('\n');
+}
+
+function renderTypeDocIntro(
+  $,
+  body,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const panel = body.find('> .tsd-panel.tsd-comment').first();
+  if (panel.length === 0) return '';
+  return renderTypeDocPanel(
+    $,
+    panel,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+}
+
+function renderTypeDocPanel(
+  $,
+  panel,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const clone = panel.clone();
+  clone.find('script, style, .tsd-anchor').remove();
+  return renderChildren(
+    $,
+    clone,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+}
+
+function renderTypeDocMemberGroup(
+  $,
+  group,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const title = inlineText(group.children('h2').first());
+  const parts = title ? [`## ${title}`] : [];
+
+  for (const member of group.children('section.tsd-member').toArray()) {
+    const renderedMember = renderTypeDocMember(
+      $,
+      $(member),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (renderedMember) parts.push(renderedMember);
+  }
+
+  return parts.join('\n\n');
+}
+
+function renderTypeDocMember(
+  $,
+  member,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const heading = member.children('h3').first();
+  const title = inlineText(heading);
+  if (!title) return '';
+
+  const anchor = member.children('a.tsd-anchor[id], a[id], a[name]').first();
+  const id = anchor.attr('id') ?? anchor.attr('name');
+  const parts = [];
+  if (id) parts.push(`<a id="${id}"></a>`);
+  parts.push(`### ${title}`);
+
+  const signature = renderTypeDocSignatures($, member);
+  if (signature) parts.push(signature);
+
+  const comment = member.children('.tsd-comment.tsd-typography').first();
+  if (comment.length > 0) {
+    const renderedComment = renderChildren(
+      $,
+      comment,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      4,
+    );
+    if (renderedComment) parts.push(renderedComment);
+  }
+
+  const descriptions = member
+    .children('.tsd-descriptions')
+    .children('.tsd-description');
+  for (const description of descriptions.toArray()) {
+    const renderedDescription = renderTypeDocDescription(
+      $,
+      $(description),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (renderedDescription) parts.push(renderedDescription);
+  }
+
+  return parts.join('\n\n');
+}
+
+function renderTypeDocSignatures($, member) {
+  const signatures = member
+    .children('.tsd-signature, .tsd-signatures')
+    .find('.tsd-signature')
+    .addBack('.tsd-signature')
+    .toArray()
+    .map((signature) => normalizeText($(signature).text()))
+    .filter(Boolean);
+
+  if (signatures.length === 0) return '';
+  return signatures
+    .map((signature) => `\`\`\`ts\n${signature}\n\`\`\``)
+    .join('\n\n');
+}
+
+function renderTypeDocDescription(
+  $,
+  description,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const parts = [];
+  const comment = description.children('.tsd-comment.tsd-typography').first();
+  if (comment.length > 0) {
+    const renderedComment = renderChildren(
+      $,
+      comment,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      4,
+    );
+    if (renderedComment) parts.push(renderedComment);
+  }
+
+  const parameters = renderTypeDocParameters(
+    $,
+    description.children('.tsd-parameters').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (parameters) parts.push(parameters);
+
+  const returns = renderTypeDocReturns(
+    $,
+    description,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (returns) parts.push(returns);
+
+  return parts.join('\n\n');
+}
+
+function renderTypeDocParameters(
+  $,
+  parameters,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!parameters || parameters.length === 0) return '';
+  const rows = [];
+  for (const parameter of parameters.children('li').toArray()) {
+    const item = $(parameter);
+    const heading = item.children('h5').first();
+    const name = inlineText(heading);
+    const comment = item.children('.tsd-comment.tsd-typography').first();
+    const description = comment.length
+      ? renderChildren(
+          $,
+          comment,
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath,
+          4,
+        )
+      : '';
+    if (name) rows.push([name, description.replace(/\n+/g, '<br />')]);
+  }
+  if (rows.length === 0) return '';
+
+  const lines = [
+    '#### Parameters',
+    '',
+    '| Name | Description |',
+    '| --- | --- |',
+  ];
+  for (const [name, description] of rows) {
+    lines.push(
+      `| ${name.replace(/\|/g, '\\|')} | ${description.replace(/\|/g, '\\|')} |`,
+    );
+  }
+  return lines.join('\n');
+}
+
+function renderTypeDocReturns(
+  $,
+  description,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const returnsTitle = description.children('.tsd-returns-title').first();
+  if (returnsTitle.length === 0) return '';
+
+  const title = inlineChildren(
+    $,
+    returnsTitle,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  const clone = description.clone();
+  clone
+    .children()
+    .slice(0, description.children().index(returnsTitle) + 1)
+    .remove();
+  const details = renderChildren(
+    $,
+    clone,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+    4,
+  );
+
+  return ['#### Returns', title, details].filter(Boolean).join('\n\n');
 }
 
 // ============================================================================
@@ -1340,17 +3078,408 @@ function parseItem($, item) {
 function assignRoutes(nodes, parentSegments, sourceToRoute) {
   for (const node of nodes) {
     const isFolder = node.children.length > 0;
-    const slug = toKebab(stripHtml(node.sourceName).replace(/^toc_/, ''));
+    const sourceSlug = node.sourceName
+      ? toKebab(
+          stripHtml(path.posix.basename(node.sourceName)).replace(/^toc_/, ''),
+        )
+      : '';
+    const slug = node.slug ?? sourceSlug;
 
     node.slug = slug;
-    node.routeSegments = isFolder
+    node.routeSegments ??= isFolder
       ? [...parentSegments, slug, 'index']
       : [...parentSegments, slug];
 
-    if (node.sourceName) sourceToRoute.set(node.sourceName, node.routeSegments);
+    if (node.sourceName)
+      setRouteForSource(sourceToRoute, node.sourceName, node.routeSegments);
     if (isFolder)
       assignRoutes(node.children, [...parentSegments, slug], sourceToRoute);
   }
+}
+
+function setRouteForSource(sourceToRoute, sourceName, routeSegments) {
+  const normalized = normalizeSourcePath(sourceName);
+  sourceToRoute.set(normalized, routeSegments);
+
+  const basename = path.posix.basename(normalized);
+  if (!sourceToRoute.has(basename)) {
+    sourceToRoute.set(basename, routeSegments);
+    return;
+  }
+  const existing = sourceToRoute.get(basename);
+  if (existing && existing.join('/') !== routeSegments.join('/')) {
+    sourceToRoute.set(basename, null);
+  }
+}
+
+async function buildTocNodes(sourceStructure, pageTitleBySource = new Map()) {
+  if (sourceStructure.id === SOURCE_TYPES.DITA_OT_API.id) {
+    try {
+      const tocHtml = await fs.readFile(
+        path.join(sourceStructure.sourceDir, '..', 'index.html'),
+        'utf8',
+      );
+      const toc$ = cheerio.load(tocHtml);
+      const tocNodes = parseTocTree(toc$);
+      if (tocNodes.length > 0) return tocNodes;
+    } catch {
+      console.log(
+        `⚠️  No index.html found, will process all HTML files in directory`,
+      );
+    }
+
+    return sourceStructure.fileNames.map((name) => ({
+      children: [],
+      sourceName: name,
+      title: stripHtml(name),
+      type: 'page',
+    }));
+  }
+
+  if (sourceStructure.id === SOURCE_TYPES.DARTDOC.id) {
+    const dartdocNodes = await buildDartdocTocNodes(
+      sourceStructure,
+      pageTitleBySource,
+    );
+    if (dartdocNodes.length > 0) return dartdocNodes;
+  }
+
+  const orderedSourceNames = await collectIndexedSourceOrder(sourceStructure);
+  return buildTreeFromSourceNames(
+    orderedSourceNames,
+    sourceStructure.id,
+    pageTitleBySource,
+  );
+}
+
+async function buildDartdocTocNodes(sourceStructure, pageTitleBySource) {
+  let entries = [];
+  try {
+    entries = JSON.parse(
+      await fs.readFile(
+        path.join(sourceStructure.sourceDir, 'index.json'),
+        'utf8',
+      ),
+    );
+  } catch {
+    return [];
+  }
+  if (!Array.isArray(entries) || entries.length === 0) return [];
+
+  const knownSources = new Set(sourceStructure.fileNames);
+  const entriesByQualifiedName = new Map();
+  const nodesByQualifiedName = new Map();
+  const rootNodes = [];
+
+  for (const entry of entries) {
+    if (
+      !entry?.href ||
+      !entry?.qualifiedName ||
+      !knownSources.has(entry.href)
+    ) {
+      continue;
+    }
+    entriesByQualifiedName.set(entry.qualifiedName, entry);
+  }
+
+  const findOwnerEntry = (entry) => {
+    const ownerName = entry.enclosedBy?.name;
+    if (!ownerName) return null;
+    const ownerQualifiedName = `${entry.packageName}.${ownerName}`;
+    return entriesByQualifiedName.get(ownerQualifiedName) ?? null;
+  };
+
+  const createNode = (entry, hidden = false) => {
+    const segments = dartdocRouteSegmentsForEntry(entry, findOwnerEntry(entry));
+    return {
+      children: [],
+      hidden,
+      routeSegments: hidden ? segments : [...segments, 'index'],
+      slug: segments.at(-1),
+      sourceName: entry.href,
+      title: pageTitleBySource.get(entry.href) ?? entry.name,
+      type: entry.type,
+    };
+  };
+
+  for (const entry of entries) {
+    if (!entriesByQualifiedName.has(entry.qualifiedName)) continue;
+    if (entry.type !== 'library') continue;
+    const node = createNode(entry, false);
+    nodesByQualifiedName.set(entry.qualifiedName, node);
+    rootNodes.push(node);
+  }
+
+  for (const entry of entries) {
+    if (!entriesByQualifiedName.has(entry.qualifiedName)) continue;
+    if (entry.type === 'library') continue;
+    if (isDartdocPrimaryEntry(entry)) {
+      const libraryNode = nodesByQualifiedName.get(entry.packageName);
+      const node = createNode(entry, false);
+      nodesByQualifiedName.set(entry.qualifiedName, node);
+      if (libraryNode) libraryNode.children.push(node);
+      else rootNodes.push(node);
+      continue;
+    }
+
+    if (!isDartdocMemberEntry(entry)) continue;
+
+    const ownerEntry = findOwnerEntry(entry);
+    const ownerNode = ownerEntry
+      ? nodesByQualifiedName.get(ownerEntry.qualifiedName)
+      : null;
+    if (!ownerNode) continue;
+    ownerNode.children.push(createNode(entry, true));
+  }
+
+  return rootNodes;
+}
+
+function isDartdocPrimaryEntry(entry) {
+  if (entry.type === 'library') return true;
+  const ownerType = entry.enclosedBy?.type;
+  return (
+    ownerType === 'library' &&
+    [
+      'class',
+      'enum',
+      'extension',
+      'mixin',
+      'typedef',
+      'function',
+      'constant',
+    ].includes(entry.type)
+  );
+}
+
+function isDartdocMemberEntry(entry) {
+  return [
+    'constructor',
+    'constant',
+    'function',
+    'method',
+    'operator',
+    'property',
+  ].includes(entry.type);
+}
+
+function dartdocRouteSegmentsForEntry(entry, ownerEntry) {
+  const library = toKebab(
+    entry.packageName || entry.qualifiedName.split('.')[0],
+  );
+  if (entry.type === 'library') return [library];
+  if (!ownerEntry || ownerEntry.type === 'library') {
+    return [
+      library,
+      toKebab(
+        removeDartdocFileSuffix(stripHtml(path.posix.basename(entry.href))),
+      ),
+    ];
+  }
+  const ownerSlug = toKebab(
+    removeDartdocFileSuffix(stripHtml(path.posix.basename(ownerEntry.href))),
+  );
+  return [
+    library,
+    ownerSlug,
+    toKebab(stripHtml(path.posix.basename(entry.href))),
+  ];
+}
+
+function removeDartdocFileSuffix(value) {
+  return value
+    .replace(/-class$/i, '')
+    .replace(/-enum$/i, '')
+    .replace(/-extension$/i, '')
+    .replace(/-mixin$/i, '')
+    .replace(/-typedef$/i, '')
+    .replace(/-library$/i, '');
+}
+
+async function collectIndexedSourceOrder(sourceStructure) {
+  const knownSources = new Set(sourceStructure.fileNames);
+  const ordered = [];
+  const seen = new Set();
+
+  const push = (sourceName) => {
+    if (!knownSources.has(sourceName) || seen.has(sourceName)) return;
+    seen.add(sourceName);
+    ordered.push(sourceName);
+  };
+
+  for (const indexSourceName of sourceStructure.indexSourceNames ?? []) {
+    const sourcePath = path.join(sourceStructure.sourceDir, indexSourceName);
+    let html = '';
+    try {
+      html = await fs.readFile(sourcePath, 'utf8');
+    } catch {
+      continue;
+    }
+
+    const indexDir = normalizeSourcePath(path.posix.dirname(indexSourceName));
+    const $ = cheerio.load(html);
+    $('a[href]').each((_, anchor) => {
+      const href = $(anchor).attr('href')?.trim();
+      const linkedSource = resolveLinkedSourceName(href, indexDir);
+      if (linkedSource) push(linkedSource);
+    });
+  }
+
+  for (const sourceName of sourceStructure.fileNames) push(sourceName);
+  return ordered;
+}
+
+function resolveLinkedSourceName(href, currentDir = '.') {
+  if (!href || isExternalHref(href)) return null;
+
+  const hashIndex = href.indexOf('#');
+  const withoutHash = hashIndex === -1 ? href : href.slice(0, hashIndex);
+  const withoutQuery = withoutHash.split('?')[0];
+  if (!withoutQuery.endsWith('.html')) return null;
+
+  const normalized = path.posix.normalize(
+    path.posix.join(currentDir === '.' ? '' : currentDir, withoutQuery),
+  );
+  return normalized.startsWith('../') ? null : normalizeSourcePath(normalized);
+}
+
+function buildTreeFromSourceNames(
+  sourceNames,
+  sourceTypeId,
+  pageTitleBySource = new Map(),
+) {
+  const rootNodes = [];
+  const folderNodesByPath = new Map();
+  const folderKeys = new Set();
+  const usedPageKeys = new Set();
+
+  for (const sourceName of sourceNames) {
+    const routeSegments = routeSegmentsForSourceName(
+      sourceName,
+      sourceTypeId,
+      pageTitleBySource,
+    );
+    for (let index = 1; index < routeSegments.length; index++) {
+      folderKeys.add(routeSegments.slice(0, index).join('/'));
+    }
+  }
+
+  const ensureFolder = (segments) => {
+    let siblings = rootNodes;
+    const parentSegments = [];
+    let folder = null;
+
+    for (const segment of segments) {
+      parentSegments.push(segment);
+      const folderKey = parentSegments.join('/');
+      folder = folderNodesByPath.get(folderKey);
+      if (!folder) {
+        folder = {
+          children: [],
+          routeSegments: [...parentSegments, 'index'],
+          slug: segment,
+          sourceName: null,
+          title: titleFromSlug(segment),
+          type: 'folder',
+        };
+        folderNodesByPath.set(folderKey, folder);
+        siblings.push(folder);
+      }
+      siblings = folder.children;
+    }
+
+    return folder;
+  };
+
+  for (const sourceName of sourceNames) {
+    const routeSegments = routeSegmentsForSourceName(
+      sourceName,
+      sourceTypeId,
+      pageTitleBySource,
+    );
+    if (routeSegments.length === 0) continue;
+
+    const routeKey = routeSegments.join('/');
+    if (folderKeys.has(routeKey)) {
+      const folder = ensureFolder(routeSegments);
+      if (!folder.sourceName) {
+        folder.sourceName = sourceName;
+        folder.title = stripHtml(path.posix.basename(sourceName));
+      }
+      continue;
+    }
+
+    const parentRouteSegments = routeSegments.slice(0, -1);
+    const parentFolder = ensureFolder(parentRouteSegments);
+    const siblings = parentFolder ? parentFolder.children : rootNodes;
+    let slug = routeSegments.at(-1);
+    let pageKey = [...parentRouteSegments, slug].join('/');
+    let suffix = 2;
+    while (usedPageKeys.has(pageKey) || folderKeys.has(pageKey)) {
+      slug = `${routeSegments.at(-1)}-${suffix}`;
+      pageKey = [...parentRouteSegments, slug].join('/');
+      suffix += 1;
+    }
+    usedPageKeys.add(pageKey);
+
+    siblings.push({
+      children: [],
+      routeSegments: [...parentRouteSegments, slug],
+      slug,
+      sourceName,
+      title: stripHtml(path.posix.basename(sourceName)),
+      type: 'page',
+    });
+  }
+
+  return rootNodes;
+}
+
+function routeSegmentsForSourceName(
+  sourceName,
+  sourceTypeId,
+  pageTitleBySource = new Map(),
+) {
+  if (sourceTypeId === SOURCE_TYPES.TYPEDOC.id) {
+    const typedocSegments = typedocRouteSegmentsForSourceName(
+      sourceName,
+      pageTitleBySource,
+    );
+    if (typedocSegments) return typedocSegments;
+  }
+  if (sourceTypeId === SOURCE_TYPES.DARTDOC.id) {
+    const stripped = stripHtml(sourceName);
+    const segments = stripped
+      .split('/')
+      .map((segment) => removeDartdocFileSuffix(toKebab(segment)))
+      .filter(Boolean);
+    return segments.at(-1) === 'index' ? segments.slice(0, -1) : segments;
+  }
+
+  const stripped = stripHtml(sourceName);
+  const segments = stripped
+    .split('/')
+    .map((segment) => toKebab(segment))
+    .filter(Boolean);
+  return segments.at(-1) === 'index' ? segments.slice(0, -1) : segments;
+}
+
+function typedocRouteSegmentsForSourceName(sourceName, pageTitleBySource) {
+  const segments = stripHtml(sourceName).split('/');
+  const folder = segments[0];
+  if (!['classes', 'interfaces', 'enums'].includes(folder)) return null;
+
+  const title = normalizeTypeDocTitle(pageTitleBySource.get(sourceName) ?? '');
+  if (!title) return null;
+  return [folder, toKebab(title)];
+}
+
+function titleFromSlug(slug) {
+  return slug
+    .split('-')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
 }
 
 // ============================================================================
@@ -1394,6 +3523,7 @@ function collectPlannedOutputPaths(targetRoot, tocNodes) {
 
 async function writeNode(
   output,
+  lane,
   node,
   pageTitleBySource,
   pageDescriptionBySource,
@@ -1405,30 +3535,40 @@ async function writeNode(
       output.targetRoot,
       ...node.routeSegments.slice(0, -1),
     );
+    const visibleChildren = node.children.filter((child) => !child.hidden);
     await writeJson(path.join(dir, 'meta.json'), {
       title: pageTitleBySource.get(node.sourceName) ?? node.title,
-      pages: ['index', ...node.children.map((child) => child.slug)],
+      pages: ['index', ...visibleChildren.map((child) => child.slug)],
     });
-    await writeFile(
-      path.join(dir, 'index.mdx'),
-      renderPage({
-        $: cheerio.load(
-          await fs.readFile(
-            path.join(output.sourceDir, node.sourceName),
-            'utf8',
+    if (node.sourceName) {
+      await writeFile(
+        path.join(dir, 'index.mdx'),
+        renderPage({
+          $: cheerio.load(
+            await fs.readFile(
+              path.join(output.sourceDir, node.sourceName),
+              'utf8',
+            ),
           ),
-        ),
-        currentSource: node.sourceName,
-        pageDescriptionBySource,
-        pageTitleBySource,
-        sourceToRoute,
-        targetBasePath: output.targetBasePath,
-      }),
-    );
+          currentSource: node.sourceName,
+          lane,
+          pageDescriptionBySource,
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath: output.targetBasePath,
+        }),
+      );
+    } else {
+      await writeFile(
+        path.join(dir, 'index.mdx'),
+        renderSyntheticIndex(node.title, `${node.title} API reference.`),
+      );
+    }
 
     for (const child of node.children) {
       await writeNode(
         output,
+        lane,
         child,
         pageTitleBySource,
         pageDescriptionBySource,
@@ -1450,12 +3590,23 @@ async function writeNode(
         await fs.readFile(path.join(output.sourceDir, node.sourceName), 'utf8'),
       ),
       currentSource: node.sourceName,
+      lane,
       pageDescriptionBySource,
       pageTitleBySource,
       sourceToRoute,
       targetBasePath: output.targetBasePath,
     }),
   );
+}
+
+function renderSyntheticIndex(title, description) {
+  return `---
+title: ${escapeYaml(title)}
+description: ${escapeYaml(description)}
+---
+
+This section contains migrated API reference pages.
+`;
 }
 
 async function main() {
@@ -1474,6 +3625,13 @@ async function main() {
   if (!sourceStructure.supported) {
     throw new SourceStructureError(sourceStructure);
   }
+  const lane = getSourceLane(sourceStructure);
+  if (lane.filterSourceNames) {
+    sourceStructure.fileNames = lane.filterSourceNames(
+      sourceStructure.fileNames,
+      sourceStructure,
+    );
+  }
 
   console.log(`\n📄 HTML to Markdown Migration Tool`);
   console.log(`${'─'.repeat(50)}`);
@@ -1488,54 +3646,36 @@ async function main() {
   console.log(`Dry run:   ${opts.dryRun ? 'yes' : 'no'}`);
   console.log(`${'─'.repeat(50)}\n`);
 
-  const sourceDir = opts.source;
   const apiSourceDir = sourceStructure.sourceDir;
   const targetRoot = opts.dryRun
     ? path.resolve(opts.output)
     : assertSafeOutputPath(opts.output, opts, sourceStructure);
   const targetBasePath = `${opts.routeBasePath}/${opts.product}/${opts.platform}`;
 
-  // Read TOC
-  const tocPath = path.join(sourceDir, 'index.html');
-  let tocNodes = [];
-  try {
-    const tocHtml = await fs.readFile(tocPath, 'utf8');
-    const toc$ = cheerio.load(tocHtml);
-    tocNodes = parseTocTree(toc$);
-  } catch {
-    console.log(
-      `⚠️  No index.html found, will process all HTML files in directory`,
-    );
-  }
-
-  // Get all HTML files
+  // Read page titles and descriptions
+  const pageTitleBySource = new Map();
+  const pageDescriptionBySource = new Map();
   const fileNames = sourceStructure.fileNames;
 
-  // If no TOC, create a flat structure
-  if (tocNodes.length === 0) {
-    tocNodes = fileNames.map((name) => ({
-      children: [],
-      sourceName: name,
-      title: stripHtml(name),
-      type: 'page',
-    }));
+  const titleSourceNames = sourceStructure.rootIndexSource
+    ? [sourceStructure.rootIndexSource, ...fileNames]
+    : fileNames;
+  for (const name of titleSourceNames) {
+    const html = await fs.readFile(path.join(apiSourceDir, name), 'utf8');
+    const $ = cheerio.load(html);
+    const title = readCanonicalTitle($, sourceStructure.id) || stripHtml(name);
+    const description = readDescription($);
+    pageTitleBySource.set(name, title);
+    if (description) pageDescriptionBySource.set(name, description);
   }
+
+  const tocNodes = await buildTocNodes(sourceStructure, pageTitleBySource);
 
   // Assign routes
   const sourceToRoute = new Map();
   assignRoutes(tocNodes, [], sourceToRoute);
-
-  // Read page titles and descriptions
-  const pageTitleBySource = new Map();
-  const pageDescriptionBySource = new Map();
-
-  for (const name of fileNames) {
-    const html = await fs.readFile(path.join(apiSourceDir, name), 'utf8');
-    const $ = cheerio.load(html);
-    const title = readTitle($) || stripHtml(name);
-    const description = readDescription($);
-    pageTitleBySource.set(name, title);
-    if (description) pageDescriptionBySource.set(name, description);
+  if (sourceStructure.rootIndexSource) {
+    setRouteForSource(sourceToRoute, sourceStructure.rootIndexSource, []);
   }
 
   if (opts.dryRun) {
@@ -1567,19 +3707,41 @@ async function main() {
   await fs.mkdir(targetRoot, { recursive: true });
 
   // Write index
-  await writeFile(
-    path.join(targetRoot, 'index.mdx'),
-    `---
-title: ${escapeYaml(`${opts.platform.toUpperCase()} API Reference`)}
-description: ${escapeYaml(`${opts.product} ${opts.platform} API reference.`)}
----
-
-This directory contains the migrated ${opts.product} ${opts.platform} API reference.`,
-  );
+  if (sourceStructure.rootIndexSource) {
+    await writeFile(
+      path.join(targetRoot, 'index.mdx'),
+      renderPage({
+        $: cheerio.load(
+          await fs.readFile(
+            path.join(apiSourceDir, sourceStructure.rootIndexSource),
+            'utf8',
+          ),
+        ),
+        currentSource: sourceStructure.rootIndexSource,
+        lane,
+        pageDescriptionBySource,
+        pageTitleBySource,
+        sourceToRoute,
+        targetBasePath,
+      }),
+    );
+  } else {
+    await writeFile(
+      path.join(targetRoot, 'index.mdx'),
+      renderSyntheticIndex(
+        `${opts.platform.toUpperCase()} API Reference`,
+        `${opts.product} ${opts.platform} API reference.`,
+      ),
+    );
+  }
 
   // Write meta.json
+  const rootTitle = sourceStructure.rootIndexSource
+    ? (pageTitleBySource.get(sourceStructure.rootIndexSource) ??
+      `${opts.platform.toUpperCase()} API Reference`)
+    : `${opts.platform.toUpperCase()} API Reference`;
   await writeJson(path.join(targetRoot, 'meta.json'), {
-    title: `${opts.platform.toUpperCase()} API Reference`,
+    title: rootTitle,
     pages: ['index', ...tocNodes.map((node) => node.slug)],
   });
 
@@ -1588,6 +3750,7 @@ This directory contains the migrated ${opts.product} ${opts.platform} API refere
   for (const node of tocNodes) {
     await writeNode(
       output,
+      lane,
       node,
       pageTitleBySource,
       pageDescriptionBySource,

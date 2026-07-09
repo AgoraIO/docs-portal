@@ -1,0 +1,216 @@
+---
+title: "RemoteVideoTrackStats"
+description: "RemoteVideoTrackStats API reference."
+---
+
+远端视频轨道的统计数据，包括连接、传输等基本信息，可以通过 [AgoraRTCClient.getRemoteVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#getremotevideostats) 获取。
+
+- RemoteVideoTrackStats
+
+## Properties
+
+<a id="codectype"></a>
+
+### Optional codecType
+
+```ts
+codecType: "H264" | "H265" | "VP8" | "VP9" | "AV1X" | "AV1"
+```
+
+视频编码格式。
+
+- "H264": 视频编码格式为 H.264。
+- "VP8": 视频编码格式为 VP8。
+- "VP9": 视频编码格式为 VP9。
+- "AV1X": 视频编码格式为 AV1，在 Chrome M96 版本之前。
+- "AV1": 视频编码格式为 AV1。
+
+Firefox 上无法获取该值。
+
+<a id="currentpacketlossrate"></a>
+
+### currentPacketLossRate
+
+```ts
+currentPacketLossRate: number
+```
+
+接收的视频在 400ms 内的丢包率。
+
+<a id="decodeframerate"></a>
+
+### Optional decodeFrameRate
+
+```ts
+decodeFrameRate: number
+```
+
+视频解码帧率（fps）。
+
+<a id="end2enddelay"></a>
+
+### end2EndDelay
+
+```ts
+end2EndDelay: number
+```
+
+视频端到端延迟（ms）。
+
+从远端采集视频到本地播放视频的延迟。该延迟不包括发送端编码和接收端解码的时间。
+
+<a id="freezerate"></a>
+
+### freezeRate
+
+```ts
+freezeRate: number
+```
+
+最近一秒接收视频的卡顿率。取值范围为 [0.0,1.0]，代表最近一秒内视频卡顿百分比。
+
+<a id="packetlossrate"></a>
+
+### packetLossRate
+
+```ts
+packetLossRate: number
+```
+
+接收的视频总丢包率。
+
+<a id="publishduration"></a>
+
+### publishDuration
+
+```ts
+publishDuration: number
+```
+
+远端发布视频时长 如果为 -1，说明暂时还无法获取发布时长
+
+<a id="receivebitrate"></a>
+
+### receiveBitrate
+
+```ts
+receiveBitrate: number
+```
+
+接收的视频码率（bps）。
+
+<a id="receivebytes"></a>
+
+### receiveBytes
+
+```ts
+receiveBytes: number
+```
+
+接收的视频总字节数。
+
+<a id="receivedelay"></a>
+
+### receiveDelay
+
+```ts
+receiveDelay: number
+```
+
+接收视频延迟 (ms)。
+
+从发送到接收端播放视频的延迟时间。
+
+Safari 和 Firefox 上该字段不准确。
+
+<a id="receiveframerate"></a>
+
+### Optional receiveFrameRate
+
+```ts
+receiveFrameRate: number
+```
+
+视频接收帧率（fps）。
+
+<a id="receivepackets"></a>
+
+### receivePackets
+
+```ts
+receivePackets: number
+```
+
+接收的视频总包数。
+
+<a id="receivepacketslost"></a>
+
+### receivePacketsLost
+
+```ts
+receivePacketsLost: number
+```
+
+接收的视频总丢包数。
+
+<a id="receiveresolutionheight"></a>
+
+### receiveResolutionHeight
+
+```ts
+receiveResolutionHeight: number
+```
+
+接收的视频分辨率高度。
+
+<a id="receiveresolutionwidth"></a>
+
+### receiveResolutionWidth
+
+```ts
+receiveResolutionWidth: number
+```
+
+接收的视频分辨率宽度。
+
+<a id="renderframerate"></a>
+
+### Optional renderFrameRate
+
+```ts
+renderFrameRate: number
+```
+
+视频渲染帧率（fps）。
+
+<a id="totalduration"></a>
+
+### totalDuration
+
+```ts
+totalDuration: number
+```
+
+接收的视频总时长，单位为秒。
+
+<a id="totalfreezetime"></a>
+
+### totalFreezeTime
+
+```ts
+totalFreezeTime: number
+```
+
+接收的视频总卡顿时长，单位为秒。
+
+<a id="transportdelay"></a>
+
+### transportDelay
+
+```ts
+transportDelay: number
+```
+
+传输延迟（ms)。
+
+从远端发送视频到本地接收视频的延迟。

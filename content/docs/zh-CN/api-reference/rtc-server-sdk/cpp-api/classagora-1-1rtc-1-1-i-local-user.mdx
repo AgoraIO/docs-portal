@@ -1,0 +1,663 @@
+---
+title: "agora::rtc::ILocalUser类 参考abstract"
+description: "ILocalUser 类。 定义了本地用户的行为和状态。"
+---
+
+`ILocalUser` 类。 定义了本地用户的行为和状态。 每个 RTC 连接都有自己的用户。你可以通过 [IRtcConnection::getLocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtc-connection#a1cf54986a330713047da51c1503ec86c) 获取本地 user。 每个用户有两种角色: 主播 (能发送和接收音视频流) 和 观众 (只能接收音视频流)。
+
+## 构造及析构函数说明
+
+<a id="aa9bf33306fc7ef7948f89052b514ba39"></a>
+
+### ~ILocalUser()
+
+```cpp
+virtual agora::rtc::ILocalUser::~ILocalUser() inlinevirtual
+```
+
+## 成员函数说明
+
+<a id="a32e991142fe41e893f9b3414f928413f"></a>
+
+### setUserRole()
+
+```cpp
+virtual void agora::rtc::ILocalUser::setUserRole(rtc::CLIENT_ROLE_TYPE role, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+设置用户角色。
+
+你可以在用户连接频道前或连接频道后调用该方法。 [onChangeRoleSuccess](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtc-connection-observer#a25f2c3352be19aef2e56b4a6e78f3e2a) 回调和 [onChangeRoleFailure](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtc-connection-observer#aeaeead0ee0314b89e3bd5158c4d41648) 回调会报告该方法的结果。
+
+##### `注解`
+
+如果 [connect](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtc-connection#a035389095b76329b60b539ca43f24f17) 中的 `token` 与 `role` 参数设置的角色不同，连接会失败，SDK 会返回 [onConnectionFailure](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtc-connection-observer#a33d46c9db2a0cbff4a24aa790a69eec3) 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| role | 用户角色 [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080)。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+<a id="a910b5120b7db6570999611cc70625d06"></a>
+
+### getUserRole()
+
+```cpp
+virtual CLIENT_ROLE_TYPE agora::rtc::ILocalUser::getUserRole() pure virtual
+```
+
+获取用户角色。
+
+#### Returns
+
+用户角色： [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080)。
+
+<a id="a465fe5080eff89a2defaa7727163c8de"></a>
+
+### setAudioEncoderConfiguration()
+
+```cpp
+virtual int agora::rtc::ILocalUser::setAudioEncoderConfiguration(const rtc::AudioEncoderConfiguration& config, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+设置音频编码。
+
+SDK 会将配置应用于全部发送的音频轨道。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| config | 音频编码配置：AgoraEncoderConfiguration。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a5e5cc962971f99f07a692d82ac02ff1d"></a>
+
+### publishAudio()
+
+```cpp
+virtual int agora::rtc::ILocalUser::publishAudio(agora_refptr<ILocalAudioTrack > audioTrack, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+将本地音频轨道发送到频道。
+
+默认情况下，所有发布的音频轨道都会进行混音。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| audioTrack | 需要发布的本地音频轨道。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+  - -5(ERR_REFUSED)：如果本地用户的角色不是主播，会返回此错误。
+
+<a id="ab9bae681db866df89983dece3cd85581"></a>
+
+### unpublishAudio()
+
+```cpp
+virtual int agora::rtc::ILocalUser::unpublishAudio(agora_refptr<ILocalAudioTrack > audioTrack, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+停止将本地音频轨道发送到频道。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| audioTrack | 需要停止发布的本地音频轨道。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a40690b61671aa9e6ceef1e7347fd3e38"></a>
+
+### publishVideo()
+
+```cpp
+virtual int agora::rtc::ILocalUser::publishVideo(agora_refptr<ILocalVideoTrack > videoTrack, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+将本地视频轨道发送到频道。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| videoTrack | 需要发布的本地视频轨道。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ab29368f2ad167b5572e8b1ead5893559"></a>
+
+### unpublishVideo()
+
+```cpp
+virtual int agora::rtc::ILocalUser::unpublishVideo(agora_refptr<ILocalVideoTrack > videoTrack, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+停止将本地视频轨道发送到频道。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| videoTrack | 需要停止发布的本地视频轨道。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aa62220796c34b2f809cb07c615a898f0"></a>
+
+### subscribeAudio()
+
+```cpp
+virtual int agora::rtc::ILocalUser::subscribeAudio(user_id_t userId, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+订阅频道中特定的远端用户发送的音频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userId | 远端用户的 ID。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+  - -2(ERR_INVALID_ARGUMENT)：如果用户不存在或 userId 无效时会返回该错误。
+
+<a id="a894d4efd0746016c8e190cee839a798d"></a>
+
+### subscribeAllAudio()
+
+```cpp
+virtual int agora::rtc::ILocalUser::subscribeAllAudio(aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+订阅频道中全部远端用户发送的音频流。
+
+该方法会自动订阅频道中后续加入的用户发送的音频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a29cdc42aafc7f1037e05da8e4e177fba"></a>
+
+### unsubscribeAudio()
+
+```cpp
+virtual int agora::rtc::ILocalUser::unsubscribeAudio(user_id_t userId, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+停止订阅频道中特定的远端用户发送的音频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userId | 远端用户的 ID。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+  - -2(ERR_INVALID_ARGUMENT)：如果用户不存在或 userId 无效时会返回该错误。
+
+<a id="a1b177c676190940a0789876fb87a48b9"></a>
+
+### unsubscribeAllAudio()
+
+```cpp
+virtual int agora::rtc::ILocalUser::unsubscribeAllAudio(aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+停止订阅频道中全部远端用户发送的音频流。
+
+该方法会自动取消订阅频道中后续加入的用户发送的音频流。你必须调用 [subscribeAudio](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-user#aa62220796c34b2f809cb07c615a898f0) 或 [subscribeAllAudio](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-user#a894d4efd0746016c8e190cee839a798d) 才能恢复订阅音频。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a1018b62761d598e61e739e332ea9bbc6"></a>
+
+### setPlaybackAudioFrameParameters()
+
+```cpp
+virtual int agora::rtc::ILocalUser::setPlaybackAudioFrameParameters(size_t numberOfChannels, uint32_t sampleRateHz, RAW_AUDIO_FRAME_OP_MODE_TYPE mode = RAW_AUDIO_FRAME_OP_MODE_READ_ONLY, int samplesPerCall = 0, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+设置播放的音频格式。
+
+该方法设置 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp-api/class-i-audio-frame-observer-base#a9956d1aa3b4e18089ef02ee3d782d667) 回调数据的格式。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| numberOfChannels | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
+| sampleRateHz | `onPlaybackAudioFrame` 中返回数据的采样率，可设置为 8000、 16000、 32000、44100 或 48000。 |
+| mode | 音频帧的使用模式，详见: [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bb)。 |
+| samplesPerCall | `onPlaybackAudioFrame` 中返回数据的采样点数，如直推 CDN 应用中通常为 1024。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="abbdeab22d2c6ecd027b093a05f178e9a"></a>
+
+### setRecordingAudioFrameParameters()
+
+```cpp
+virtual int agora::rtc::ILocalUser::setRecordingAudioFrameParameters(size_t numberOfChannels, uint32_t sampleRateHz, RAW_AUDIO_FRAME_OP_MODE_TYPE mode = RAW_AUDIO_FRAME_OP_MODE_READ_ONLY, int samplesPerCall = 0, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+设置采集的原始音频数据格式。
+
+该方法设置 [IAudioFrameObserverBase::onRecordAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp-api/class-i-audio-frame-observer-base#a607f7a30a058bf7fe2b7ec2492fe9610) 回调的采集音频格式。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| numberOfChannels | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
+| sampleRateHz | `onRecordAudioFrame` 中返回数据的采样率，可设置为 8000、 16000、 32000、44100 或 48000。 |
+| mode | 音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#ae5df06fc9c5b15135e22047c01e565bb)。 |
+| samplesPerCall | `onRecordAudioFrame` 中返回数据的采样点数。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ad9e7738d1deba8a7c2b9519a6d37edb6"></a>
+
+### setMixedAudioFrameParameters()
+
+```cpp
+virtual int agora::rtc::ILocalUser::setMixedAudioFrameParameters(size_t numberOfChannels, uint32_t sampleRateHz, int samplesPerCall = 0, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+设置 [onMixedAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp-api/class-i-audio-frame-observer-base#a6b3f76a4245bf27b6a7c5cbc44f1c1dd) 报告的音频数据格式。
+
+##### `注解`
+
+SDK 会根据该方法设置的采样间隔（秒）定期触发 `onMixedAudioFrame` 回调。 采样间隔 = samplesPerCall/(sampleRate x channel)。请确保你的取值能满足采样间隔大于或等于 0.01 秒。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| numberOfChannels | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
+| sampleRateHz | 音频数据采样率 (Hz)，可设置为 8000、 16000、32000、 44100 或 48000。 |
+| samplesPerCall | 指定 `onMixedAudioFrame` 中返回数据的采样点数，如 RTMP/RTMPS 推流应用中通常为 1024。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a9417b0610817c1acfe28babaf9611c61"></a>
+
+### setPlaybackAudioFrameBeforeMixingParameters()
+
+```cpp
+virtual int agora::rtc::ILocalUser::setPlaybackAudioFrameBeforeMixingParameters(size_t numberOfChannels, uint32_t sampleRateHz, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc-server-sdk/cpp-api/class-i-audio-frame-observer#a12ad526eb7356640f67137f2cdb6c128) 报告的音频数据格式。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| numberOfChannels | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
+| sampleRateHz | 音频数据采样率 (Hz)，可设置为 8000、 16000、32000、 44100 或 48000。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aabe80c2dc8f056b9eac78d9c35a32887"></a>
+
+### registerAudioFrameObserver()
+
+```cpp
+virtual int agora::rtc::ILocalUser::registerAudioFrameObserver(agora::media::IAudioFrameObserverBase* observer, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+注册音频帧 observer。
+
+你必须实现 `IAudioFrameObserverBase` 类并根据需求注册以下回调：
+
+- onRecordAudioFrame
+- onPlaybackAudioFrame
+- onPlaybackAudioFrameBeforeMixing
+- onMixedAudioFrame
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | 音频帧 observer的指针： IAudioFrameObserverBase。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aab2c70c722e492385a719dd9ab457406"></a>
+
+### unregisterAudioFrameObserver()
+
+```cpp
+virtual int agora::rtc::ILocalUser::unregisterAudioFrameObserver(agora::media::IAudioFrameObserverBase* observer) pure virtual
+```
+
+销毁音频帧 observer。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | 音频帧 observer的指针： [IAudioFrameObserverBase](/zh-CN/api-reference/rtc-server-sdk/cpp-api/class-i-audio-frame-observer-base)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ab69d29c5cdb5798476c84e36e8cb3b49"></a>
+
+### registerVideoEncodedFrameObserver()
+
+```cpp
+virtual int agora::rtc::ILocalUser::registerVideoEncodedFrameObserver(agora::media::IVideoEncodedFrameObserver* observer, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+为编码后的视频图像注册视频帧接收 observer。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | 视频帧接收 observer，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/cpp-api/class-i-video-encoded-frame-observer)。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="abefbf3506f0cdbbc6d914ecba3eb71c3"></a>
+
+### unregisterVideoEncodedFrameObserver()
+
+```cpp
+virtual int agora::rtc::ILocalUser::unregisterVideoEncodedFrameObserver(agora::media::IVideoEncodedFrameObserver* observer) pure virtual
+```
+
+销毁视频帧接收 observer。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | 视频帧接收 observer，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/cpp-api/class-i-video-encoded-frame-observer)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ae532d19421c595e8d69949ed00418f77"></a>
+
+### registerVideoFrameObserver()
+
+```cpp
+virtual int agora::rtc::ILocalUser::registerVideoFrameObserver(IVideoFrameObserver2* observer, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+注册 [IVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-video-frame-observer2) 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | `IVideoFrameObserver2` 对象的指针。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ab243950d6f4b63d94380139ae1dfda9d"></a>
+
+### unregisterVideoFrameObserver()
+
+```cpp
+virtual int agora::rtc::ILocalUser::unregisterVideoFrameObserver(IVideoFrameObserver2* observer) pure virtual
+```
+
+销毁 [IVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-video-frame-observer2) 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | `IVideoFrameObserver2` 对象的指针。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a9c8a3fcf49db6800e3b7ce955126c45d"></a>
+
+### subscribeVideo()
+
+```cpp
+virtual int agora::rtc::ILocalUser::subscribeVideo(user_id_t userId, const VideoSubscriptionOptions& subscriptionOptions, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+订阅频道中指定远端用户发送的视频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userId | 用户 ID。 |
+| subscriptionOptions | 订阅选项： [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-video-subscription-options)。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+  - -2(ERR_INVALID_ARGUMENT)：如果用户不存在或 userId 无效时会返回该错误。
+
+<a id="a77ee018bedf45f21aa198d697c3774a4"></a>
+
+### subscribeAllVideo()
+
+```cpp
+virtual int agora::rtc::ILocalUser::subscribeAllVideo(const VideoSubscriptionOptions& subscriptionOptions, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+订阅频道中全部远端用户发送的视频流。
+
+该方法会自动订阅频道中后续加入的用户发送的视频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| subscriptionOptions | 订阅选项： [VideoSubscriptionOptions](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-video-subscription-options)。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a6ffe44ce817cadd084638b9eff22dc33"></a>
+
+### unsubscribeVideo()
+
+```cpp
+virtual int agora::rtc::ILocalUser::unsubscribeVideo(user_id_t userId, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+停止订阅频道中指定远端用户发送的视频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userId | 用户 ID。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+  - -2(ERR_INVALID_ARGUMENT)：如果用户不存在或 userId 无效时会返回该错误。
+
+<a id="ad7abc9f9acdef90c819a137f45a72f88"></a>
+
+### unsubscribeAllVideo()
+
+```cpp
+virtual int agora::rtc::ILocalUser::unsubscribeAllVideo(aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+停止订阅频道中全部远端用户发送的视频流。
+
+该方法会自动取消订阅频道中后续加入的用户发送的音频流。你必须调用 [subscribeVideo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-user#a9c8a3fcf49db6800e3b7ce955126c45d) 或 [subscribeAllVideo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-user#a77ee018bedf45f21aa198d697c3774a4) 才能恢复订阅。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a35af2e423873d04ea6df3097af4f9f5f"></a>
+
+### registerLocalUserObserver()
+
+```cpp
+virtual int agora::rtc::ILocalUser::registerLocalUserObserver(ILocalUserObserver* observer, void(*)(ILocalUserObserver*) safeDeleter = NULL, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+注册本地用户 observer。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | 本地用户 observer 对象： [ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-user-observer)。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aa1dd761f67f1dfe30142b92be902a274"></a>
+
+### unregisterLocalUserObserver()
+
+```cpp
+virtual int agora::rtc::ILocalUser::unregisterLocalUserObserver(ILocalUserObserver* observer) pure virtual
+```
+
+销毁本地用户 observer。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | 本地用户 observer 对象： [ILocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-user-observer)。 |
+
+#### Returns
+
+- 0: Success.
+- &lt; 0: Failure.
+
+<a id="a23f44536a8d37ae93374e18a99e8e461"></a>
+
+### sendIntraRequest()
+
+```cpp
+virtual int agora::rtc::ILocalUser::sendIntraRequest(user_id_t userId, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+向指定主播用户发送关键帧请求。
+
+你成功发送请求后，主播会收到 [onIntraRequestReceived](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-user-observer#abe52ed35277c6c6efc50125b05895859) 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userId | 主播的用户 ID。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

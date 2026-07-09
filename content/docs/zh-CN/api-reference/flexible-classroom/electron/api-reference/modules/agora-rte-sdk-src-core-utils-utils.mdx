@@ -1,0 +1,173 @@
+---
+title: "agora-rte-sdk/src/core/utils/utils"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+## Type aliases
+
+<a id="AbortCallback"></a>
+
+### AbortCallback
+
+```ts
+AbortCallback: (e: Error) => Promise<void> | void
+```
+
+<a id="AnyFunction"></a>
+
+### AnyFunction
+
+```ts
+AnyFunction: (...args: any[]) => unknown
+```
+
+<a id="AttemptFailCallback"></a>
+
+### AttemptFailCallback
+
+```ts
+AttemptFailCallback: (args: RetryAttemptArgs & { timeFn: any }) => Promise<boolean> | boolean
+```
+
+<a id="RetryAttemptArgs"></a>
+
+### RetryAttemptArgs
+
+```ts
+RetryAttemptArgs: { currentRetry: number; error: Error; exponential: number; factor: number; interval: number; jitter: number; maxBackoff: number; retriesMax: number }
+```
+
+<a id="RetryOptions"></a>
+
+### RetryOptions
+
+```ts
+RetryOptions: { exponential?: boolean; factor?: number; interval?: number; isCb?: boolean; jitter?: number; maxBackoff?: number; retriesMax?: number }
+```
+
+## Functions
+
+<a id="arr2Map"></a>
+
+### Const arr2Map
+
+```ts
+arr2Map<T>(arr: T[], fnKey: (ele: T) => string): Map<string, T>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| arr: T[] |  |
+| fnKey: (ele: T) =&gt; string |  |
+
+#### Returns
+
+Returns Map &lt; string, T &gt;
+
+<a id="arr2map"></a>
+
+### Const arr2map
+
+```ts
+arr2map<T>(arr: T[], fnKey: (ele: T) => string): Record<string, T>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| arr: T[] |  |
+| fnKey: (ele: T) =&gt; string |  |
+
+#### Returns
+
+Returns Record &lt; string, T &gt;
+
+<a id="isElectron"></a>
+
+### Const isElectron
+
+```ts
+isElectron(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="jsonstring"></a>
+
+### Const jsonstring
+
+```ts
+jsonstring(json: unknown): string
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| json: unknown |  |
+
+#### Returns
+
+Returns string
+
+<a id="printarr"></a>
+
+### Const printarr
+
+```ts
+printarr(arr: unknown[], keyFn?: (i: unknown) => string): string
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| arr: unknown[] |  |
+| Optional keyFn: (i: unknown) =&gt; string |  |
+
+#### Returns
+
+Returns string
+
+<a id="retryAttempt"></a>
+
+### Const retryAttempt
+
+```ts
+retryAttempt(fn: "agora-rte-sdk/src/core/utils/utils".AnyFunction, args: unknown[], opts?: RetryOptions): Retry
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| fn: "agora-rte-sdk/src/core/utils/utils".AnyFunction |  |
+| args: unknown[] |  |
+| Optional opts: RetryOptions |  |
+
+#### Returns
+
+Returns [Retry](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/retry)
+
+<a id="sleep"></a>
+
+### Const sleep
+
+```ts
+sleep(ms: number): Promise<unknown>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| ms: number |  |
+
+#### Returns
+
+Returns Promise &lt; unknown &gt;

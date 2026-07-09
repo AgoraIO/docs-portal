@@ -1,0 +1,335 @@
+---
+title: "io.agora.rtc.EncodedVideoFrameInfo类 参考"
+description: "EncodedVideoFrameInfo 类。"
+---
+
+EncodedVideoFrameInfo 类。
+
+## 构造及析构函数说明
+
+<a id="a30f50e423d894735544fee3b2d6a82fa"></a>
+
+### EncodedVideoFrameInfo() [1/2]
+
+```cpp
+io.agora.rtc.EncodedVideoFrameInfo.EncodedVideoFrameInfo()
+```
+
+<a id="ad12b51415ba7991bc35d395108354908"></a>
+
+### EncodedVideoFrameInfo() [2/2]
+
+```cpp
+io.agora.rtc.EncodedVideoFrameInfo.EncodedVideoFrameInfo(int codecType, int width, int height, int framesPerSecond, int frameType, int rotation, int trackId, long captureTimeMs, long renderTimeMs, long internalSendTs, int uid, int streamType)
+```
+
+构造函数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| codecType | 视频编码类型<br />- 0：无。<br />- 1：VP8。<br />- 2：H.264。<br />- 3：H.265。<br />- 5：VP9。<br />- 6：Generic。<br />- 7：Generic H264。<br />- 12：AV1。<br />- 20：JPEG。 |
+| width | 视频宽度（像素）。 |
+| height | 视频高度（像素）。 |
+| framesPerSecond | 每秒的视频帧数量。用于计算编码视频帧的时间戳。 |
+| frameType | 已编码视频帧类型。<br />- 0：空白帧。<br />- 3：关键帧。对于 H.264 编码格式，SDK 把带有 sps 和 pps 信息的 I 帧归类为关键帧。<br />- 4：Delta 帧。对于 H.264 编码格式，SDK 把 P 帧和不带 sps 和 pps 信息的 I 帧都归类为 Delta 帧。<br />- 5：B 帧。<br />- 6：丢弃帧。<br />- 7：未知。 |
+| rotation | 已编码视频帧旋转信息。<br />- 0：顺时针旋转 0 度。<br />- 90：顺时针旋转 90 度。<br />- 180：顺时针旋转 180 度。<br />- 270：顺时针旋转 270 度。 |
+| trackId | 视频帧的轨道 ID。 |
+| captureTimeMs | 视频采集时间戳（毫秒）。 |
+| renderTimeMs | 视频渲染时间戳（毫秒）。 |
+| internalSendTs | 该时间戳用于音视频同步。你可以通过 [onEncodedVideoImageReceived](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-video-encoded-image-receiver#a5cdf9fc01442f7799c9b8034b808438d) 回调获取。 encodedFrameOnly 需要设为 0。 |
+| uid | 用户 ID。 |
+| streamType | 视频流类型。<br />- VIDEO_STREAM_HIGH (0): 视频大流，即高分辨率、高码率视频流。<br />- VIDEO_STREAM_LOW (1): 视频小流，即低分辨率、低码率视频流。 |
+
+## 成员函数说明
+
+<a id="a65907a753cd88a8fa6f0910ebc59a6d4"></a>
+
+### getCaptureTimeMs()
+
+```cpp
+long io.agora.rtc.EncodedVideoFrameInfo.getCaptureTimeMs()
+```
+
+<a id="aca2ac50d499376addc94069b5dc0b5ca"></a>
+
+### getCodecType()
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.getCodecType()
+```
+
+<a id="a709d2242629c62a2868d3871aaa8c86e"></a>
+
+### getDecodeTimeMs()
+
+```cpp
+long io.agora.rtc.EncodedVideoFrameInfo.getDecodeTimeMs()
+```
+
+<a id="af5efe7fe993708012e715769392555c3"></a>
+
+### getFramesPerSecond()
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.getFramesPerSecond()
+```
+
+<a id="a7874134c29de187c1a976e90d47d3a89"></a>
+
+### getFrameType()
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.getFrameType()
+```
+
+<a id="aeb4c942f3d064f8343baafee52734385"></a>
+
+### getHeight()
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.getHeight()
+```
+
+<a id="a64a822afdee9507b5e98fdc1d6086bcd"></a>
+
+### getInternalSendTs()
+
+```cpp
+long io.agora.rtc.EncodedVideoFrameInfo.getInternalSendTs()
+```
+
+<a id="ab786a43a2afbf406892a12915639915d"></a>
+
+### getRotation()
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.getRotation()
+```
+
+<a id="a008cfc9bb9e70b72331298a2817abbe9"></a>
+
+### getStreamType()
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.getStreamType()
+```
+
+<a id="a33088e1dd0c8f293510ca264e2a1e5b5"></a>
+
+### getTrackId()
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.getTrackId()
+```
+
+<a id="a9b0a3d78407fde80caf379ec5a45c680"></a>
+
+### getUid()
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.getUid()
+```
+
+<a id="af37c0f4dca7071fd2bc1a85687503cd8"></a>
+
+### getWidth()
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.getWidth()
+```
+
+<a id="a4d5821d0285ebb0b492c1157ea7e1a5e"></a>
+
+### setCaptureTimeMs()
+
+```cpp
+void io.agora.rtc.EncodedVideoFrameInfo.setCaptureTimeMs(long captureTimeMs)
+```
+
+<a id="ade532d2f34fe47f6fb18a081533d228f"></a>
+
+### setCodecType()
+
+```cpp
+void io.agora.rtc.EncodedVideoFrameInfo.setCodecType(int codecType)
+```
+
+<a id="a60111e3f236485ad6dd631d6b7ae1d46"></a>
+
+### setDecodeTimeMs()
+
+```cpp
+void io.agora.rtc.EncodedVideoFrameInfo.setDecodeTimeMs(long decodeTimeMs)
+```
+
+<a id="aee4ca4acd3e168d02098fa25d8f1420a"></a>
+
+### setFramesPerSecond()
+
+```cpp
+void io.agora.rtc.EncodedVideoFrameInfo.setFramesPerSecond(int framesPerSecond)
+```
+
+<a id="a3514f9210bbe39f1eb3b89a03adf5c73"></a>
+
+### setFrameType()
+
+```cpp
+void io.agora.rtc.EncodedVideoFrameInfo.setFrameType(int frameType)
+```
+
+<a id="a770bcfa403ccc91e859e05f7250148d3"></a>
+
+### setHeight()
+
+```cpp
+void io.agora.rtc.EncodedVideoFrameInfo.setHeight(int height)
+```
+
+<a id="aff74a27edfd254348c75db57035ca577"></a>
+
+### setInternalSendTs()
+
+```cpp
+void io.agora.rtc.EncodedVideoFrameInfo.setInternalSendTs(long internalSendTs)
+```
+
+<a id="a8da9ffb6e1fdd09ca03c2d3a1d61e2f9"></a>
+
+### setRotation()
+
+```cpp
+void io.agora.rtc.EncodedVideoFrameInfo.setRotation(int rotation)
+```
+
+<a id="a3f16c613098079b39b428209c6ac8a96"></a>
+
+### setStreamType()
+
+```cpp
+void io.agora.rtc.EncodedVideoFrameInfo.setStreamType(int streamType)
+```
+
+<a id="acc041c5215aa3d22f08696c84b8cf4fe"></a>
+
+### setTrackId()
+
+```cpp
+void io.agora.rtc.EncodedVideoFrameInfo.setTrackId(int trackId)
+```
+
+<a id="acf79fa45ed2584f35e0843e092470cf5"></a>
+
+### setUid()
+
+```cpp
+void io.agora.rtc.EncodedVideoFrameInfo.setUid(int uid)
+```
+
+<a id="a4be41c569b82968e90b4d447d9e741f1"></a>
+
+### setWidth()
+
+```cpp
+void io.agora.rtc.EncodedVideoFrameInfo.setWidth(int width)
+```
+
+## 类成员变量说明
+
+<a id="a8a29dc42e73e562dcde137dbd92bf6ec"></a>
+
+### captureTimeMs
+
+```cpp
+long io.agora.rtc.EncodedVideoFrameInfo.captureTimeMs private
+```
+
+<a id="a3c89f3e5b778d487c28e16bca9a71080"></a>
+
+### codecType
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.codecType private
+```
+
+<a id="a5873b6540cadd25678485e8a5dac10b3"></a>
+
+### decodeTimeMs
+
+```cpp
+long io.agora.rtc.EncodedVideoFrameInfo.decodeTimeMs private
+```
+
+<a id="a9461b9537d5864e2cd69bef16fb7070c"></a>
+
+### framesPerSecond
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.framesPerSecond private
+```
+
+<a id="a4957bef6c45af0d761429cd804d64a21"></a>
+
+### frameType
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.frameType private
+```
+
+<a id="a2b508b8c906654edc8e0727c3c8966c8"></a>
+
+### height
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.height private
+```
+
+<a id="a0c162f040cf9f76450ac5270c73d7c59"></a>
+
+### internalSendTs
+
+```cpp
+long io.agora.rtc.EncodedVideoFrameInfo.internalSendTs private
+```
+
+<a id="abcfb772c092fc2c9600f452c009b64b5"></a>
+
+### rotation
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.rotation private
+```
+
+<a id="aa27bb01b0d99ac5ec76ea5ce501890d1"></a>
+
+### streamType
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.streamType private
+```
+
+<a id="aeb7738fb0d61c5cb236f3c2aa8d2a3f0"></a>
+
+### trackId
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.trackId private
+```
+
+<a id="a0feb233add9802e8cb49b3b5aceac5e6"></a>
+
+### uid
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.uid private
+```
+
+<a id="a72306b268be9a1847308d359a91c40d7"></a>
+
+### width
+
+```cpp
+int io.agora.rtc.EncodedVideoFrameInfo.width private
+```

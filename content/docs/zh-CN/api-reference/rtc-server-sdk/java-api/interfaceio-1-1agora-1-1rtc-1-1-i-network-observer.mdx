@@ -1,0 +1,46 @@
+---
+title: "io.agora.rtc.INetworkObserver接口 参考"
+description: "INetworkObserver 接口。"
+---
+
+INetworkObserver 接口。
+
+## 成员函数说明
+
+<a id="af0d9876c0127fed7d217b81e632f4ff8"></a>
+
+### onDownlinkNetworkInfoUpdated()
+
+```cpp
+void io.agora.rtc.INetworkObserver.onDownlinkNetworkInfoUpdated(AgoraRtcConn agora_rtc_conn, DownlinkNetworkInfo info)
+```
+
+下行网络信息更新时触发。
+
+该回调用于提醒用户根据需要切换大小流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| info | 下行网络信息集合。 |
+
+<a id="af8fe286a5a737aacc13448bc251786c4"></a>
+
+### onUplinkNetworkInfoUpdated()
+
+```cpp
+void io.agora.rtc.INetworkObserver.onUplinkNetworkInfoUpdated(AgoraRtcConn agora_rtc_conn, UplinkNetworkInfo info)
+```
+
+上行网络信息更新时触发。
+
+该回调用于提醒用户基于目标码率调整发送节奏。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| info | 上行网络信息集合。 |

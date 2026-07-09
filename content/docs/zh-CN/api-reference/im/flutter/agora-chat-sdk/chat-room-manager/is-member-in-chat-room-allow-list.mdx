@@ -1,0 +1,41 @@
+---
+title: "isMemberInChatRoomAllowList method"
+description: "API docs for the isMemberInChatRoomAllowList method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Checks whether the member is on the allow list.
+
+**Return** Whether the member is on the allow list.
+
+- true: Yes;
+- false: No. Throws A description of the exception. See ChatError.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+
+```dart
+Future<bool> isMemberInChatRoomAllowList(String roomId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<bool> isMemberInChatRoomAllowList(String roomId) async {
+  Map req = {"roomId": roomId};
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.isMemberInChatRoomWhiteListFromServer, req);
+
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result
+        .boolValue(ChatMethodKeys.isMemberInChatRoomWhiteListFromServer);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

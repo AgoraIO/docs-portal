@@ -1,0 +1,69 @@
+---
+title: "agora::commons 命名空间参考"
+description: "日志过滤等级。"
+---
+
+## 枚举类型说明
+
+<a id="ae089652ab7c76a97e26ff5b2c8cd17d9"></a>
+
+### LOG_FILTER_TYPE
+
+```cpp
+enum agora::commons::LOG_FILTER_TYPE
+```
+
+日志过滤等级。
+
+#### Values
+
+| Name | Description |
+| --- | --- |
+| <a id="ae089652ab7c76a97e26ff5b2c8cd17d9adad95be32ec579bd91312b8a3e1b510a"></a> LOG_FILTER_OFF | 0: 不输出日志信息。 |
+| <a id="ae089652ab7c76a97e26ff5b2c8cd17d9a1f4984df0a18394245308c112cfecf12"></a> LOG_FILTER_DEBUG | 0x080f: 输出所有 API 日志信息。 如果你想获取最完整的日志，可以将日志级别设为该等级。 |
+| <a id="ae089652ab7c76a97e26ff5b2c8cd17d9ab63851db60d2a08cffd1f0761dfcc74d"></a> LOG_FILTER_INFO | 0x000f: 输出 CRITICAL、ERROR、WARNING 和 INFO 级别的日志信息。 我们推荐你将日志级别设为该等级。 |
+| <a id="ae089652ab7c76a97e26ff5b2c8cd17d9a93f2bc5c4c35a66f0f2c6eda87902374"></a> LOG_FILTER_WARN | 0x000e: 输出 CRITICAL、ERROR 和 WARNING 级别的日志信息。 |
+| <a id="ae089652ab7c76a97e26ff5b2c8cd17d9acd59b5656824fbc75e2bb910cb148ee0"></a> LOG_FILTER_ERROR | 0x000c: 输出 CRITICAL 和 ERROR 级别的日志信息。 |
+| <a id="ae089652ab7c76a97e26ff5b2c8cd17d9a0809ee056d4deeda1856528c96144ff5"></a> LOG_FILTER_CRITICAL | 0x0008: 输出 CRITICAL 级别的日志信息。 |
+
+## 变量说明
+
+<a id="a2c1e113a78229ede5a30423e9b10021b"></a>
+
+### LOG_LEVEL
+
+```cpp
+OPTIONAL_ENUM_CLASS agora::commons::LOG_LEVEL
+```
+
+**初始值:**
+
+\{LOG_LEVEL_NONE = 0x0000, LOG_LEVEL_INFO = 0x0001, LOG_LEVEL_WARN = 0x0002, LOG_LEVEL_ERROR = 0x0004, LOG_LEVEL_FATAL = 0x0008, \}
+
+日志输出级别。
+
+<a id="a0f48b18d2b9dcab1b39f4c02f6034eb5"></a>
+
+### MAX_LOG_SIZE
+
+```cpp
+const uint32_t agora::commons::MAX_LOG_SIZE = 20* 1024* 1024
+```
+
+<a id="a68b9b35ec1e8ae7e260f277adf75a78f"></a>
+
+### MIN_LOG_SIZE
+
+```cpp
+const uint32_t agora::commons::MIN_LOG_SIZE = 128* 1024
+```
+
+<a id="a84cc048bca8d5313027da3cac9c99241"></a>
+
+### DEFAULT_LOG_SIZE_IN_KB
+
+```cpp
+const uint32_t agora::commons::DEFAULT_LOG_SIZE_IN_KB = 1024
+```
+
+The default log size in kb

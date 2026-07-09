@@ -1,0 +1,59 @@
+---
+title: "fetchMemberListFromServer method"
+description: "API docs for the fetchMemberListFromServer method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Gets the member list of the group with pagination.
+
+For example:
+
+```dart
+    ChatCursorResult<String> result = await ChatClient.getInstance.groupManager.fetchMemberListFromServer(groupId); // search 1
+    result = await ChatClient.getInstance.groupManager.fetchMemberListFromServer(groupId, cursor: result.cursor); // search 2
+```
+
+**Return** The result of `ChatCursorResult`, including the cursor for getting data next time and the group member list. If [ChatCursorResult.cursor](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-cursor-result/cursor) is an empty string (""), all data is fetched.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `pageSize` | The number of group members per page. |
+| `cursor` | The cursor position from which to start to get data next time. Sets the parameter as null for the first time. |
+
+```dart
+Future<ChatCursorResult<String>> fetchMemberListFromServer(String groupId, {int pageSize = 200, String? cursor})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<ChatCursorResult<String>> fetchMemberListFromServer(
+  String groupId, {
+  int pageSize = 200,
+  String? cursor,
+}) async {
+  Map req = {
+    'groupId': groupId,
+    'pageSize': pageSize,
+  };
+  req.setValueWithOutNull("cursor", cursor);
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.getGroupMemberListFromServer,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatCursorResult<String>.fromJson(
+        result[ChatMethodKeys.getGroupMemberListFromServer],
+        dataItemCallback: (value) => value);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

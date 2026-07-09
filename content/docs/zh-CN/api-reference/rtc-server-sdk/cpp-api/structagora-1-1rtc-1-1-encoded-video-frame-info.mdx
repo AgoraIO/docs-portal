@@ -1,0 +1,146 @@
+---
+title: "agora::rtc::EncodedVideoFrameInfo结构体 参考"
+description: "EncodedVideoFrameInfo 结构体。"
+---
+
+[EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-encoded-video-frame-info) 结构体。
+
+## 构造及析构函数说明
+
+<a id="ae691d0ce4d69d0a7a8c5cab73bd9152e"></a>
+
+### EncodedVideoFrameInfo() [1/2]
+
+```cpp
+agora::rtc::EncodedVideoFrameInfo::EncodedVideoFrameInfo() inline
+```
+
+<a id="a9583fb39f98b0f1285439be75ff92f7d"></a>
+
+### EncodedVideoFrameInfo() [2/2]
+
+```cpp
+agora::rtc::EncodedVideoFrameInfo::EncodedVideoFrameInfo(const EncodedVideoFrameInfo& rhs) inline
+```
+
+## 成员函数说明
+
+<a id="a3154ede69988957867466a76d8e216bd"></a>
+
+### operator=()
+
+```cpp
+EncodedVideoFrameInfo& agora::rtc::EncodedVideoFrameInfo::operator=(const EncodedVideoFrameInfo& rhs) inline
+```
+
+## 类成员变量说明
+
+<a id="a4eb7b3986f3d0b65a6fffd2fe4946673"></a>
+
+### codecType
+
+```cpp
+VIDEO_CODEC_TYPE agora::rtc::EncodedVideoFrameInfo::codecType
+```
+
+视频编码类型： [VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215)。
+
+<a id="ad66b4bfe47dd098cf8530aacfbc25df5"></a>
+
+### width
+
+```cpp
+int agora::rtc::EncodedVideoFrameInfo::width
+```
+
+视频帧宽度（像素）。
+
+<a id="a283a698788c70399a53c44db259b7f93"></a>
+
+### height
+
+```cpp
+int agora::rtc::EncodedVideoFrameInfo::height
+```
+
+视频帧高度（像素）。
+
+<a id="a5b44c28679f7e936f63e8818991fb2e0"></a>
+
+### framesPerSecond
+
+```cpp
+int agora::rtc::EncodedVideoFrameInfo::framesPerSecond
+```
+
+每秒的视频帧数量。用于计算编码视频帧的时间戳。如果设为 0，SDK 会使用真实的时间戳。
+
+<a id="a9e4b90e603028f9758a0c9a16bb03aa9"></a>
+
+### frameType
+
+```cpp
+VIDEO_FRAME_TYPE agora::rtc::EncodedVideoFrameInfo::frameType
+```
+
+已编码视频帧类型： [VIDEO_FRAME_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#aecdd48fd8c80e68e723e4bea97cb4281)。
+
+<a id="af94aed894c8c7465ce5f3c714e111ac2"></a>
+
+### rotation
+
+```cpp
+VIDEO_ORIENTATION agora::rtc::EncodedVideoFrameInfo::rotation
+```
+
+已编码视频帧旋转信息： [VIDEO_ORIENTATION](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#aedbc3d09c641940779abc983aa3ee3bc)。
+
+<a id="a5941584a44884a8a4c65316356cd299c"></a>
+
+### trackId
+
+```cpp
+int agora::rtc::EncodedVideoFrameInfo::trackId
+```
+
+视频帧的轨道 ID。
+
+<a id="a3c9728f3b7eba1242da2fb8ed7fac50f"></a>
+
+### captureTimeMs
+
+```cpp
+int64_t agora::rtc::EncodedVideoFrameInfo::captureTimeMs
+```
+
+采集外部编码视频帧的 Unix 时间戳（毫秒）。
+
+<a id="a8bb46dad9f2979eaf4d9133d66ff28fc"></a>
+
+### decodeTimeMs
+
+```cpp
+int64_t agora::rtc::EncodedVideoFrameInfo::decodeTimeMs
+```
+
+将外部编码视频帧进行解码的时间戳（毫秒）。
+
+<a id="a6288d2b19e91db86a760a92e0b3505d4"></a>
+
+### uid
+
+```cpp
+uid_t agora::rtc::EncodedVideoFrameInfo::uid
+```
+
+用户 ID。
+
+<a id="a27705c5d4a668a2aa6f8ef2162f2088e"></a>
+
+### streamType
+
+```cpp
+VIDEO_STREAM_TYPE agora::rtc::EncodedVideoFrameInfo::streamType
+```
+
+视频帧的流类型： [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#a5f78a8dc3552e4ec308270198dd49b55)。

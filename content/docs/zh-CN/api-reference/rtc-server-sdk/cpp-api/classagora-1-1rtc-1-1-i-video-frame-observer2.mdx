@@ -1,0 +1,36 @@
+---
+title: "agora::rtc::IVideoFrameObserver2类 参考abstract"
+description: "IVideoFrameObserver2 类。"
+---
+
+[IVideoFrameObserver2](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-video-frame-observer2) 类。
+
+## 构造及析构函数说明
+
+<a id="a6003f5e6bd07e387a7dd5611201f4eb1"></a>
+
+### ~IVideoFrameObserver2()
+
+```cpp
+virtual agora::rtc::IVideoFrameObserver2::~IVideoFrameObserver2() inlinevirtual
+```
+
+## 成员函数说明
+
+<a id="a8b6fa921185f59ad5d3b5dbbbf180058"></a>
+
+### onFrame()
+
+```cpp
+virtual void agora::rtc::IVideoFrameObserver2::onFrame(const char* channelId, user_id_t remoteUid, const media::base::VideoFrame* frame) pure virtual
+```
+
+每次收到视频帧时触发。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelId | 频道名。 |
+| remoteUid | 远端用户的用户名。 |
+| frame | 视频帧详细信息。 |

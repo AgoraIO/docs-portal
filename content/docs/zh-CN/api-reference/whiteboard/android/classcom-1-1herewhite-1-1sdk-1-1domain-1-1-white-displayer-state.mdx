@@ -1,0 +1,95 @@
+---
+title: "com.herewhite.sdk.domain.WhiteDisplayerState类 参考"
+description: "WhiteDisplayerState 类，为互动白板实时房间和回放房间共有的状态类。"
+---
+
+`WhiteDisplayerState` 类，为互动白板实时房间和回放房间共有的状态类。
+
+### `自从`
+
+2.4.8
+
+## 成员函数说明
+
+<a id="aaa54cefb8939135f2e47985dca839d85"></a>
+
+### setCustomGlobalStateClass()
+
+```cpp
+static<T extends GlobalState > void com.herewhite.sdk.domain.WhiteDisplayerState.setCustomGlobalStateClass(Class<T > classOfT) static
+```
+
+设置自定义 `GlobalState` 类。
+
+##### `自从`
+
+2.4.8
+
+设置后，所有 `GlobalState` 都会转换为该类的实例。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| &lt;T&gt; | 类型约束，自定义的 `GlobalState` 类必须继承 `GlobalState` 类。 |
+| classOfT | 自定义的 `GlobalState` 类。 |
+
+<a id="aefd2ee071864d04fc4d0409a144a03e5"></a>
+
+### getGlobalState()
+
+```cpp
+GlobalState com.herewhite.sdk.domain.WhiteDisplayerState.getGlobalState()
+```
+
+获取房间的全局状态。
+
+#### Returns
+
+房间的全局状态。
+
+<a id="a13126dbfb0259fab1b1bde9b998528f7"></a>
+
+### getRoomMembers()
+
+```cpp
+RoomMember[] com.herewhite.sdk.domain.WhiteDisplayerState.getRoomMembers()
+```
+
+获取房间的用户列表。
+
+##### `注解`
+
+房间的用户列表仅包含互动模式（具有读写权限）的用户，不包含订阅模式（只读权限）的用户。
+
+#### Returns
+
+用户列表，详见 `RoomMember`。
+
+<a id="a35ef6f3c1faf8935eab1af9215cbb317"></a>
+
+### getSceneState()
+
+```cpp
+SceneState com.herewhite.sdk.domain.WhiteDisplayerState.getSceneState()
+```
+
+获取当前场景目录下的场景状态。
+
+#### Returns
+
+当前场景目录下的场景状态，详见 `SceneState`。
+
+<a id="ad5ba0eaf21bb41fc21d582b7eacd59e7"></a>
+
+### getCameraState()
+
+```cpp
+CameraState com.herewhite.sdk.domain.WhiteDisplayerState.getCameraState()
+```
+
+获取视角状态。
+
+#### Returns
+
+视角状态，详见 `CameraState`。

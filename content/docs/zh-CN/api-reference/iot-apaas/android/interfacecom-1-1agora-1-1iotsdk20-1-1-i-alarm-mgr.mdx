@@ -1,0 +1,222 @@
+---
+title: "com.agora.iotsdk20.IAlarmMgr接口 参考"
+description: "告警信息管理接口。"
+---
+
+告警信息管理接口。
+
+## 成员函数说明
+
+<a id="a0cbe370e1e47d7ece0cb3866d3e7b4b5"></a>
+
+### delete()
+
+```cpp
+int com.agora.iotsdk20.IAlarmMgr.delete(List<Long > alarmIdList)
+```
+
+删除多个告警信息，触发 onAlarmDeleteDone() 回调
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| alarmIdList | : 要删除的告警信息Id列表 |
+
+#### Returns
+
+错误码
+
+<a id="aa39f54b8528af5e2791ed0ef16cce157"></a>
+
+### getStateMachine()
+
+```cpp
+int com.agora.iotsdk20.IAlarmMgr.getStateMachine()
+```
+
+获取当前账号管理状态机
+
+#### Returns
+
+返回状态机
+
+<a id="a2801f8867586770dacbf23f4da5d6e5b"></a>
+
+### mark()
+
+```cpp
+int com.agora.iotsdk20.IAlarmMgr.mark(List<Long > alarmIdList)
+```
+
+标记多个告警信息为已读，触发 onAlarmMarkDone() 回调
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| alarmIdList | : 要标记已读的告警信息Id列表 |
+
+#### Returns
+
+错误码
+
+<a id="acb55e0e02545aa801e91c98f9b3582b6"></a>
+
+### queryById()
+
+```cpp
+int com.agora.iotsdk20.IAlarmMgr.queryById(long alarmId)
+```
+
+根据告警Id查询详细的告警信息，触发 onAlarmInfoQueryDone() 回调
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| alarmId | : 要查询的告警信息Id列表 |
+
+#### Returns
+
+错误码
+
+<a id="aec3a21ba945f40d49dc29b29ebada510"></a>
+
+### queryByPage()
+
+```cpp
+int com.agora.iotsdk20.IAlarmMgr.queryByPage(QueryParam queryParam)
+```
+
+查询指定页面的设备列表，触发 onAlarmPageQueryDone() 回调
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| queryParam | : 相应的查询参数 |
+
+#### Returns
+
+错误码
+
+<a id="ae1621e3952387d1c01b5aecf781f2b2d"></a>
+
+### queryImageById()
+
+```cpp
+int com.agora.iotsdk20.IAlarmMgr.queryImageById(final String imageId)
+```
+
+根据图片 ID 查询告警图片信息。
+
+完成查询后，SDK 会触发 [onAlarmImageQueryDone](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-alarm-mgr-1-1-i-callback#adef64a7a9f455c3eb2d67847e2feabc6) 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| imageId | 告警图片 ID。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="ad31651c3ec4a6390b85356ddfccd21be"></a>
+
+### queryNumber()
+
+```cpp
+int com.agora.iotsdk20.IAlarmMgr.queryNumber(QueryParam queryParam)
+```
+
+根据条件查询所有告警数量，触发 onAlarmNumberQueryDone() 回调
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| queryParam | : 相应的查询参数，忽略 mPageIndex；mPageSize；mAscSort；三个字段 |
+
+#### Returns
+
+错误码
+
+<a id="a667a5a58c137ee41626e4964458be7c9"></a>
+
+### queryVideoByTimestamp()
+
+```cpp
+int com.agora.iotsdk20.IAlarmMgr.queryVideoByTimestamp(final String deviceID, final String ownerUserId, final long timestamp)
+```
+
+根据告警时间戳查询告警视频信息。
+
+完成查询后，SDK 会触发 [onAlarmVideoQueryDone](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-alarm-mgr-1-1-i-callback#a36b85563f67ca591ed606f89e39aa454) 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| deviceID | 待查询设备的设备 ID。 |
+| ownerUserId | 设备所属用户的账号 ID。 `null` 表示当前用户的账号 ID。 |
+| timestamp | 查询告警的时间戳。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="a97a3a8c9c7784d2d21d7c2995af482d9"></a>
+
+### registerListener()
+
+```cpp
+int com.agora.iotsdk20.IAlarmMgr.registerListener(IAlarmMgr.ICallback callback)
+```
+
+注册回调接口
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| callback | : 回调接口 |
+
+#### Returns
+
+错误码
+
+<a id="a5eb897cf2a53b8f28456debda06cf097"></a>
+
+### unregisterListener()
+
+```cpp
+int com.agora.iotsdk20.IAlarmMgr.unregisterListener(IAlarmMgr.ICallback callback)
+```
+
+注销回调接口
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| callback | : 回调接口 |
+
+#### Returns
+
+错误码
+
+## 类成员变量说明
+
+<a id="a79dee119f4d6e9ce29198e53fe09612b"></a>
+
+### ALARMMGR_STATE_IDLE
+
+```cpp
+final int com.agora.iotsdk20.IAlarmMgr.ALARMMGR_STATE_IDLE = 0x0001 static
+```
+
+0x0001: 告警管理系统当前为空闲状态。

@@ -1,0 +1,39 @@
+---
+title: "agora::rtc::IVideoFrameSender类 参考abstract"
+description: "继承自 agora::RefCountInterface ."
+---
+
+`IVideoFrameSender` 类。
+
+## 构造及析构函数说明
+
+<a id="a8ad95e08df3d3bbf3339c3eb5af9ff13"></a>
+
+### ~IVideoFrameSender()
+
+```cpp
+agora::rtc::IVideoFrameSender::~IVideoFrameSender() inlineprotected
+```
+
+## 成员函数说明
+
+<a id="ac4fc87083ed3501dd93e8052a787f050"></a>
+
+### sendVideoFrame()
+
+```cpp
+virtual int agora::rtc::IVideoFrameSender::sendVideoFrame(const media::base::ExternalVideoFrame& videoFrame) pure virtual
+```
+
+将 YUV 格式的视频帧发送到视频轨道。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| videoFrame | 需要发送的视频帧： [ExternalVideoFrame](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1-external-video-frame)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

@@ -1,0 +1,188 @@
+---
+title: "com.herewhite.sdk.domain.PptPage类 参考"
+description: "PptPage 类，用于配置待插入场景的图片或动态 PPT 页的参数。"
+---
+
+`PptPage` 类，用于配置待插入场景的图片或动态 PPT 页的参数。
+
+你可以在场景初始化时传入 `PptPage` 实例，以在白板上展示图片或动态 PPT。
+
+场景中可插入的图片或动态 PPT 包括：
+
+- PNG、JPG/JPEG、WEBP 格式的图片，或由 PPT、PPTX、DOC、DOCX、PDF 格式的文件转换成 PNG、JPG/JPEG、WEBP 格式的图片。
+- 使用旧版文档转换功能转换过的 PPTX 文件。
+
+## 构造及析构函数说明
+
+<a id="a577251d4956da9eb8dd216023c5cb3b7"></a>
+
+### PptPage() [1/2]
+
+```cpp
+com.herewhite.sdk.domain.PptPage.PptPage(String src, Double width, Double height)
+```
+
+`PptPage` 构造方法，用于创建待插入场景的图片或动态 PPT 实例。
+
+##### `注解`
+
+- 该方法只能在场景初始化的时候调用。
+- 该方法只能展示使用旧版文档转换功能转换过的动态 PPT。
+- 每个场景中只能插入一张图片和一页动态 PPT。
+- 场景中展示的图片或动态 PPT 中心点默认为白板内部坐标系得原点且无法移动，即无法改变图片或动态 PPT 在白板内部的位置。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| src | 图片或动态 PPT 页的地址，支持的格式如下：<br />- 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过文档转换功能生成的 URL 地址，例如， "https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg"。<br />- 动态 PPT 页：通过文档转换功能生成的 URI 地址，例如， "pptx://cover.herewhite.com/dynamicConvert/6a212c90fa5311ea8b9c074232aaccd4/1.slide"，即查询转换任务的进度中 conversionFileUrl 字段的值。 |
+| width | 图片或动态 PPT 在白板中的宽度，单位为像素。 |
+| height | 图片或动态 PPT 在白板中的高度，单位为像素。 |
+
+<a id="aec14d76824a99642fc4e5364ccbff420"></a>
+
+### PptPage() [2/2]
+
+```cpp
+com.herewhite.sdk.domain.PptPage.PptPage(String src, Double width, Double height, String preview)
+```
+
+`PptPage` 构造方法，用于创建待插入场景的图片或动态 PPT 实例。
+
+##### `注解`
+
+- 该方法只能在场景初始化的时候调用。
+- 该方法只能展示使用旧版文档转换功能转换过的动态 PPT。
+- 每个场景中只能插入一张图片或一页动态 PPT。
+- 场景中展示的图片或动态 PPT 中心点默认为白板内部坐标系得原点且无法移动，即无法改变图片或动态 PPT 在白板内部的位置。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| src | 图片或动态 PPT 页的地址，支持的格式如下：<br />- 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过文档转换功能生成的 URL 地址，例如， "https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg"。<br />- 动态 PPT 页：通过文档转换功能生成的 URI 地址，例如， "pptx://cover.herewhite.com/dynamicConvert/6a212c90fa5311ea8b9c074232aaccd4/1.slide"，即查询转换任务的进度中 conversionFileUrl 字段的值。 |
+| width | 图片或动态 PPT 在白板中的宽度，单位为像素。 |
+| height | 图片或动态 PPT 在白板中的高度，单位为像素。 |
+| preview | 图片或动态 PPT 预览图的 URL 地址。动态 PPT 预览图的 URL 地址可以从查询转换任务的进度中的 `preview` 字段获取，例如，"https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/2fdxxxxx67e/preview/1.png"。 |
+
+## 成员函数说明
+
+<a id="ae1e1691f95694c2da54bcb390c01fad0"></a>
+
+### getSrc()
+
+```cpp
+String com.herewhite.sdk.domain.PptPage.getSrc()
+```
+
+获取场景图片或动态 PPT 的地址。
+
+#### Returns
+
+图片的 URL 地址或动态 PPT 的 URI 地址。
+
+<a id="a32eaf6b4c7be1415670ad4a1103a856f"></a>
+
+### setSrc()
+
+```cpp
+void com.herewhite.sdk.domain.PptPage.setSrc(String src)
+```
+
+指定待插入场景的图片或动态 PPT。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| src | 图片或动态 PPT 页的地址，支持的格式如下：<br />- 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过文档转换功能生成的 URL 地址，例如， "https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg"。<br />- 动态 PPT 页：通过文档转换功能生成的 URI 地址，例如， "pptx://cover.herewhite.com/dynamicConvert/6a212c90fa5311ea8b9c074232aaccd4/1.slide"，即查询转换任务的进度中 conversionFileUrl 字段的值。 |
+
+<a id="a2334c7c47094700b08df2533a4ab7a90"></a>
+
+### getWidth()
+
+```cpp
+double com.herewhite.sdk.domain.PptPage.getWidth()
+```
+
+获取图片或动态 PPT 在白板中的宽度。
+
+#### Returns
+
+图片或动态 PPT 在白板中的宽度，单位为像素。
+
+<a id="a3cceb044435f264e9362aaf17e0fd1c1"></a>
+
+### setWidth()
+
+```cpp
+void com.herewhite.sdk.domain.PptPage.setWidth(double width)
+```
+
+设置图片或动态 PPT 在白板中的宽度。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| width | 图片或动态 PPT 在白板中的宽度，单位为像素。 |
+
+<a id="a81eccdf6bc1367cac66349afc1779181"></a>
+
+### getHeight()
+
+```cpp
+double com.herewhite.sdk.domain.PptPage.getHeight()
+```
+
+获取图片或动态 PPT 在白板中的高度。
+
+#### Returns
+
+图片或动态 PPT 在白板中的高度，单位为像素。
+
+<a id="a2c803e867417dee09d4d553130060c2e"></a>
+
+### setHeight()
+
+```cpp
+void com.herewhite.sdk.domain.PptPage.setHeight(double height)
+```
+
+设置图片或动态 PPT 在白板中的高度。
+
+#### Returns
+
+图片或动态 PPT 在白板中的高度，单位为像素。
+
+<a id="ab5bdd263b6454635b1546f412f65f718"></a>
+
+### getPreview()
+
+```cpp
+String com.herewhite.sdk.domain.PptPage.getPreview()
+```
+
+获取图片或动态 PPT 预览图的 URL 地址。
+
+#### Returns
+
+图片的或动态 PPT 预览图的 URL 地址。
+
+<a id="a6b0289593399d9264cc634effcb9a472"></a>
+
+### setPreview()
+
+```cpp
+void com.herewhite.sdk.domain.PptPage.setPreview(String preview)
+```
+
+指定图片或 PPT 预览图。
+
+通过该方法指定的预览图会展示在白板右侧的页面预览中。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| preview | 图片或动态 PPT 预览图的 URL 地址。动态 PPT 预览图的 URL 地址可以从查询转换任务的进度中的 `preview` 字段获取，例如，"https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/2fdxxxxx67e/preview/1.png"。 |

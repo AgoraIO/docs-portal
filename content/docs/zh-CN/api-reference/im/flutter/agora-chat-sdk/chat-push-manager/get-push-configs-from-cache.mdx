@@ -1,0 +1,25 @@
+---
+title: "getPushConfigsFromCache method"
+description: "API docs for the getPushConfigsFromCache method from the ChatPushManager class, for the Dart programming language."
+---
+
+```dart
+@deprecated Future<ChatPushConfigs?> getPushConfigsFromCache()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@deprecated
+Future<ChatPushConfigs?> getPushConfigsFromCache() async {
+  Map result = await PushChannel.invokeMethod(ChatMethodKeys.getImPushConfig);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatPushConfigs.fromJson(result[ChatMethodKeys.getImPushConfig]);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

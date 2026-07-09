@@ -1,0 +1,110 @@
+---
+title: "agora::AudioPcmFrame结构体 参考"
+description: "PCM 格式的音频帧信息。"
+---
+
+PCM 格式的音频帧信息。
+
+## 构造及析构函数说明
+
+<a id="a0e936e8da2ebd349b9698cb9bbb39336"></a>
+
+### AudioPcmFrame() [1/2]
+
+```cpp
+agora::AudioPcmFrame::AudioPcmFrame() inline
+```
+
+<a id="a6c8446c6dd8af49febee24b6c7d45798"></a>
+
+### AudioPcmFrame() [2/2]
+
+```cpp
+agora::AudioPcmFrame::AudioPcmFrame(const AudioPcmFrame& src) inline
+```
+
+## 成员函数说明
+
+<a id="a325ba14c60cdf12761d0fad5045c3d35"></a>
+
+### operator=()
+
+```cpp
+AudioPcmFrame& agora::AudioPcmFrame::operator=(const AudioPcmFrame& src) inline
+```
+
+## 类成员变量说明
+
+<a id="a2be25a660fbdb2d3a08a1d78b65abc97"></a>
+
+### OPTIONAL_ENUM_SIZE_T
+
+```cpp
+agora::AudioPcmFrame::OPTIONAL_ENUM_SIZE_T
+```
+
+**初始值:**
+
+\{kMaxDataSizeSamples = 3840, kMaxDataSizeBytes = kMaxDataSizeSamples * sizeof (int16_t), \}
+
+PCM 格式音频帧缓冲大小。
+
+<a id="a26182c8ed032368b158a846665fb0123"></a>
+
+### capture_timestamp
+
+```cpp
+uint32_t agora::AudioPcmFrame::capture_timestamp
+```
+
+时间戳（毫秒）。
+
+<a id="a88a1860c6273cc850cbbb8276ae03da2"></a>
+
+### samples_per_channel_
+
+```cpp
+size_t agora::AudioPcmFrame::samples_per_channel_
+```
+
+每个声道的采样点数。
+
+<a id="a532b341474b3a7f66d4e8ec873240fb6"></a>
+
+### sample_rate_hz_
+
+```cpp
+int agora::AudioPcmFrame::sample_rate_hz_
+```
+
+采样率（Hz）。
+
+<a id="a28ca394e013a0ffbe0a00523284203ad"></a>
+
+### num_channels_
+
+```cpp
+size_t agora::AudioPcmFrame::num_channels_
+```
+
+声道数。
+
+<a id="a7036d843931d9d6ad5939c7ad066fe12"></a>
+
+### bytes_per_sample
+
+```cpp
+rtc::BYTES_PER_SAMPLE agora::AudioPcmFrame::bytes_per_sample
+```
+
+每个样本的字节数。
+
+<a id="a47eee0325c982a98b03a29007b357e3b"></a>
+
+### data_
+
+```cpp
+int16_t agora::AudioPcmFrame::data_[kMaxDataSizeSamples]
+```
+
+音频帧数据。

@@ -1,0 +1,217 @@
+---
+title: "io.agora.rtc.AgoraLocalAudioTrack类 参考"
+description: "构造函数。"
+---
+
+## 构造及析构函数说明
+
+<a id="a5fa547ba6297820eb9b002c8856724e1"></a>
+
+### AgoraLocalAudioTrack()
+
+```cpp
+io.agora.rtc.AgoraLocalAudioTrack.AgoraLocalAudioTrack(long cptr)
+```
+
+构造函数。
+
+## 成员函数说明
+
+<a id="ae861b5a19271bf80fedf6c70bd68aa56"></a>
+
+### adjustPublishVolume()
+
+```cpp
+native int io.agora.rtc.AgoraLocalAudioTrack.adjustPublishVolume(int volume)
+```
+
+调整音频在远端播放的音量。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| volume | 音频的远端播放音量。取值范围为 [1,100]，其中默认值为 100，表示原始音量。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a90054e0f30419b0ee2eea512db67f535"></a>
+
+### clearSenderBuffer()
+
+```cpp
+native int io.agora.rtc.AgoraLocalAudioTrack.clearSenderBuffer()
+```
+
+清除当前音频发送缓冲区。
+
+##### `自从`
+
+4.4.30
+
+如果你不再需要当前音频发送缓冲区中的数据，可以调用该方法清除缓冲区。例如，用户给 AI 提了个问题，AI 正在通过 SDK 传输音频给用户解答，此时 SDK 的音频发送缓冲区中不断有数据进出。当用户打断 AI 的回复并提出另一个问题时，你可以调用该方法，让 SDK 清除当前未发送出去的缓冲数据，以便快速缓冲 AI 对新话题的回答。
+
+#### Returns
+
+- ≥ 0: 方法调用成功，返回被清除的音频帧数量。
+- &lt; 0: 方法调用失败。
+
+<a id="af9838e41efd92fdb4b2fa73a6707c720"></a>
+
+### destroy()
+
+```cpp
+void io.agora.rtc.AgoraLocalAudioTrack.destroy()
+```
+
+析构函数。
+
+<a id="a89fdd0058a0cda13d791cd8059cbd5a5"></a>
+
+### destroyStats()
+
+```cpp
+native void io.agora.rtc.AgoraLocalAudioTrack.destroyStats(LocalAudioTrackStats stats)
+```
+
+<a id="ad634490661633d72c8152b98d06625c7"></a>
+
+### getPublishVolume()
+
+```cpp
+native int io.agora.rtc.AgoraLocalAudioTrack.getPublishVolume(Out volume)
+```
+
+获取当前音频在远端播放的音量。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| volume | 音频在远端的播放音量。 |
+
+#### Returns
+
+- ≥ 0: 方法调用成功，并返回当前音频在远端播放的音量。
+- &lt; 0: 方法调用失败。
+
+<a id="af1f3a53b0f9a084232aa213f144f836d"></a>
+
+### getState()
+
+```cpp
+native int io.agora.rtc.AgoraLocalAudioTrack.getState()
+```
+
+查询本地音频状态。
+
+#### Returns
+
+本地音频状态。
+
+<a id="a4a625fa92fac4f5219344c7d5d5d900f"></a>
+
+### getStats()
+
+```cpp
+native LocalAudioTrackStats io.agora.rtc.AgoraLocalAudioTrack.getStats()
+```
+
+获取本地音频质量数据。
+
+#### Returns
+
+本地音频质量数据。
+
+<a id="aea84507e372a22f0827827af36d94a0a"></a>
+
+### isEnabled()
+
+```cpp
+native int io.agora.rtc.AgoraLocalAudioTrack.isEnabled()
+```
+
+查询本地音频轨道是否已启用。
+
+#### Returns
+
+本地音频轨道是否已启用：
+
+- true: 是
+- false: 否
+
+<a id="abc3c49e80e3a02771cd7cbd3c9041e27"></a>
+
+### setEnabled()
+
+```cpp
+native void io.agora.rtc.AgoraLocalAudioTrack.setEnabled(int enable)
+```
+
+启用或禁用本地音频轨道。
+
+启用本地音频轨道后，SDK 会允许本地音频采集、处理和编码。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable | 是否启用本地音频轨道：<br />- true: 是<br />- false: 否 |
+
+<a id="a3e4526e6402becdd5f25573513ce6a36"></a>
+
+### setMaxBufferedAudioFrameNumber()
+
+```cpp
+native void io.agora.rtc.AgoraLocalAudioTrack.setMaxBufferedAudioFrameNumber(int number)
+```
+
+设置音频发送缓冲区的最大容量。
+
+##### `自从`
+
+4.4.30
+
+在 AI 交互等应用场景中，发送端发送音频帧的频率可能不均匀，例如有时每 20 ms 发送 1 帧数据、有时每 20 ms 发送 3 帧数据。如果 SDK 按照实际的发送频率去发送给声网服务器，则接收端可能会有卡顿、丢帧等不良体验。为优化音频传输性能，SDK 设置了音频发送缓冲区，不论发送端实际发送音频帧的频率是多少，SDK 都会将数据存放在音频发送缓冲区。待音频发送缓冲区中的数据达到允许发送的最小时长后，SDK 再开始按照 10 ms 每帧的频率发送数据给接收端。
+
+SDK 默认的音频发送缓冲区最大容量是 6000，表示支持存放最多 6000 帧数据，即 60 s 的数据。如果你需要更大的缓冲区容量，你可以调用该方法进行调整。如果你还需要设置音频发送缓冲区允许发送的最小数据时长，调用 [setSendDelayMs](#ac16dee95915656c401981f1107183370) 方法。
+
+##### `注解`
+
+该方法需要在 [publishAudio](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a30711bbe175b24277d4cd977cb544d4e) 方法之前调用。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| number | 缓冲区存放的最大音频帧数。例如，填入 6000 则表示 6000 帧音频数据。 |
+
+<a id="ac16dee95915656c401981f1107183370"></a>
+
+### setSendDelayMs()
+
+```cpp
+native void io.agora.rtc.AgoraLocalAudioTrack.setSendDelayMs(int delayMs)
+```
+
+设置音频发送缓冲区允许发送的最小数据时长。
+
+##### `自从`
+
+4.4.30
+
+SDK 默认允许发送的最小数据时长为 160 ms，即 SDK 会等音频发送缓冲区存满 160 ms 的数据后将数据发送给接收端，这会带来如下影响：
+
+- 如果发送端一次发送的数据大于或等于 160 ms，例如 800 ms，则 SDK 会立即按照每帧 10 ms 的频率发送数据给接收端。
+- 如果发送端一次发送的数据小于 160 ms，例如 100 ms，则 SDK 会等缓冲区数据达到 160 ms 后，再按照 10 ms 每帧的频率发送数据给接收端。这就会造成至多 60 ms 的延迟。
+
+你可以根据实际业务需求，调用该方法调整缓冲区允许发送的最小数据时长。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| delayMs | 缓冲区允许发送的最小数据时长（ms）。该参数需要设置为 10 的倍数，取值范围为大于 0 且小于 [setMaxBufferedAudioFrameNumber](#a3e4526e6402becdd5f25573513ce6a36) 方法中 number 参数值的 10 倍。 |

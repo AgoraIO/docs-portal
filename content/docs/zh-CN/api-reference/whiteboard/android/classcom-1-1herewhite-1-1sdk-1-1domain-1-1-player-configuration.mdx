@@ -1,0 +1,256 @@
+---
+title: "com.herewhite.sdk.domain.PlayerConfiguration类 参考"
+description: "PlayerConfiguration 类，用于配置白板回放房间实例。"
+---
+
+`PlayerConfiguration` 类，用于配置白板回放房间实例。
+
+## 构造及析构函数说明
+
+<a id="ae4917641a1b574ca9890df07a63be9dd"></a>
+
+### PlayerConfiguration()
+
+```cpp
+com.herewhite.sdk.domain.PlayerConfiguration.PlayerConfiguration(String room, String roomToken)
+```
+
+回放房间的构造方法，用于初始化回放房间实例。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| room | 房间 UUID，即房间唯一标识符，必须和加入互动白板房间实例时设置的房间 UUID 一致。 |
+| roomToken | 用于鉴权的 [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token，必须是使用上面传入的房间 UUID 生成的 [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。 |
+
+## 成员函数说明
+
+<a id="a3c294a0ef621000505c13935f9ffd905"></a>
+
+### getRegion()
+
+```cpp
+Region com.herewhite.sdk.domain.PlayerConfiguration.getRegion()
+```
+
+获取 `Player` 实例的数据中心。
+
+#### Returns
+
+`Player` 实例的数据中心。详见 \{[Region](/zh-CN/api-reference/whiteboard/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) [Region](/zh-CN/api-reference/whiteboard/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) \}。
+
+<a id="a4eca0814cce92b714359d5e4be1470d9"></a>
+
+### setRegion()
+
+```cpp
+void com.herewhite.sdk.domain.PlayerConfiguration.setRegion(Region region)
+```
+
+设置 `Player` 实例的数据中心。
+
+如果你不调用该方法，SDK 默认使用 \{[com.herewhite.sdk.WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration) [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration) \} 中设置的数据中心。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| region | `Player` 实例的数据中心。详见 \{[Region](/zh-CN/api-reference/whiteboard/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) [Region](/zh-CN/api-reference/whiteboard/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) \}。 |
+
+<a id="a87cb77037b45b245e55b09be0da7b0c7"></a>
+
+### getCameraBound()
+
+```cpp
+CameraBound com.herewhite.sdk.domain.PlayerConfiguration.getCameraBound()
+```
+
+获取本地用户的视角边界。
+
+#### Returns
+
+视角边界，详见 \{[CameraBound](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) [CameraBound](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) \}。
+
+<a id="ae80328445e5c166209c21b96a40ac056"></a>
+
+### setCameraBound()
+
+```cpp
+void com.herewhite.sdk.domain.PlayerConfiguration.setCameraBound(CameraBound cameraBound)
+```
+
+设置本地用户的视角边界。
+
+该方法设置的视角边界必须和 \{[com.herewhite.sdk.RoomParams::setCameraBound(CameraBound)](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a068607b4928ceef7265db739fa4e3cb8) \} 中设置视角边界一致。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cameraBound | 视角边界，详见 \{[CameraBound](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) [CameraBound](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) \}。 |
+
+<a id="a1319a38a90ada34208465e12ce33aebb"></a>
+
+### setStep()
+
+```cpp
+void com.herewhite.sdk.domain.PlayerConfiguration.setStep(Long duration, TimeUnit timeUnit)
+```
+
+设置 SDK 回调播放进度的频率。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| duration | 间隔时长，默认为每隔 0.5 秒回调一次播放进度。 |
+| timeUnit | 时长单位，默认值为毫秒 （`MILLISECONDS` ），取值详见 [TimeUnit](https://www.android-doc.com/reference/java/util/concurrent/TimeUnit.html)。 |
+
+<a id="a3fcd9ad7418984031bf1f32fb743946b"></a>
+
+### getRoom()
+
+```cpp
+String com.herewhite.sdk.domain.PlayerConfiguration.getRoom()
+```
+
+获取待回放的互动白板房间的 UUID。
+
+#### Returns
+
+待回放的互动白板房间的 UUID。
+
+<a id="ad9bc2ea3cf0f4feac6eb8b7c3eef1cee"></a>
+
+### setRoom()
+
+```cpp
+void com.herewhite.sdk.domain.PlayerConfiguration.setRoom(String room)
+```
+
+设置待回放的互动白板房间的 UUID。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| room | 房间 UUID，即房间唯一标识符，必须和初始化互动白板房间实例时设置的房间 UUID 一致。 |
+
+<a id="aa7d71bcaa254a7699b6d6e7a4675c7bd"></a>
+
+### getRoomToken()
+
+```cpp
+String com.herewhite.sdk.domain.PlayerConfiguration.getRoomToken()
+```
+
+获取待回放的互动白板房间的 [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。
+
+#### Returns
+
+互动白板房间的 [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。
+
+<a id="aa6648f3b40e1e09689e78ccc17ae4669"></a>
+
+### setRoomToken()
+
+```cpp
+void com.herewhite.sdk.domain.PlayerConfiguration.setRoomToken(String roomToken)
+```
+
+设置待回放的互动白板房间的 [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token。
+
+#### Returns
+
+用于鉴权的 [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token，必须和初始化互动白板房间实例时设置的 [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room) Token 一致。
+
+<a id="a10f9800f5e3beb8e5d2cfb305599e68b"></a>
+
+### getBeginTimestamp()
+
+```cpp
+Long com.herewhite.sdk.domain.PlayerConfiguration.getBeginTimestamp()
+```
+
+获取白板回放的起始时间。
+
+#### Returns
+
+Unix 时间戳（毫秒），表示回放的起始 UTC 时间。
+
+<a id="abaf6dd344696e305d439723d92cee269"></a>
+
+### setBeginTimestamp()
+
+```cpp
+void com.herewhite.sdk.domain.PlayerConfiguration.setBeginTimestamp(Long beginTimestamp)
+```
+
+设置白板回放的起始时间。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| beginTimestamp | Unix 时间戳（毫秒），表示回放的起始 UTC 时间。例如，如果要将回放的起始时间设为 2021-03-10 18:03:34 GMT+0800，你需要传入 `1615370614269`。 |
+
+<a id="a4073facc38a9e9c709b76518f8a008b6"></a>
+
+### getDuration()
+
+```cpp
+Long com.herewhite.sdk.domain.PlayerConfiguration.getDuration()
+```
+
+获取回放的持续时长。
+
+#### Returns
+
+回放的持续时长，单位为毫秒。
+
+<a id="aa512f2424bb5b02b0095a928d5a91ee8"></a>
+
+### setDuration()
+
+```cpp
+void com.herewhite.sdk.domain.PlayerConfiguration.setDuration(Long duration)
+```
+
+设置回放的持续时长。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| duration | 回放的持续时长，单位为毫秒。 |
+
+<a id="a1ef9584bd58a5591070d0e96e8ead143"></a>
+
+### getModulesOrigin()
+
+```cpp
+String com.herewhite.sdk.domain.PlayerConfiguration.getModulesOrigin()
+```
+
+获取白板请求 modules 数据的地址。
+
+#### Returns
+
+方法调用成功时返回 modules 地址。
+
+<a id="ae5fa5e208242734a40f6ab90b055b252"></a>
+
+### setModulesOrigin()
+
+```cpp
+void com.herewhite.sdk.domain.PlayerConfiguration.setModulesOrigin(String modulesOrigin)
+```
+
+设置白板请求 modules 数据的地址。 配置后不会请求白板默认地址。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| modulesOrigin | modules 地址。示例 [https://modules.example.com。](https://modules.example.com。) |

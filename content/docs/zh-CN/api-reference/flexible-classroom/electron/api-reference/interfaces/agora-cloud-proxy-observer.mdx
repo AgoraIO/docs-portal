@@ -1,0 +1,51 @@
+---
+title: "AgoraCloudProxyObserver"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+云代理观察者
+
+- AgoraCloudProxyObserver
+
+## Methods
+
+<a id="onConnectedThroughCloudProxy"></a>
+
+### onConnectedThroughCloudProxy
+
+```ts
+onConnectedThroughCloudProxy(connectionType: AGRtcConnectionType): void
+```
+
+Callback when the rtc channel connected through the cloud proxy server. only fired in electron environment.
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connectionType: AGRtcConnectionType |  |
+
+#### Returns
+
+Returns void
+
+<a id="onPublishedThroughCloudProxy"></a>
+
+### onPublishedThroughCloudProxy
+
+```ts
+onPublishedThroughCloudProxy(connectionType: AGRtcConnectionType, isUsingCloudProxy: boolean): void
+```
+
+Callback when any streams published through the cloud proxy server, only fired in web browser environment.
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connectionType: AGRtcConnectionType |  |
+| isUsingCloudProxy: boolean |  |
+
+#### Returns
+
+Returns void

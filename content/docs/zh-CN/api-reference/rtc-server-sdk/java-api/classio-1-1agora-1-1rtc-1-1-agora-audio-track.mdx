@@ -1,0 +1,73 @@
+---
+title: "io.agora.rtc.AgoraAudioTrack类 参考"
+description: "AgoraAudioTrack 类。"
+---
+
+AgoraAudioTrack 类。
+
+## 构造及析构函数说明
+
+<a id="a2cac8c114877ba449cddf0f7a7d40318"></a>
+
+### AgoraAudioTrack()
+
+```cpp
+io.agora.rtc.AgoraAudioTrack.AgoraAudioTrack(long cptr)
+```
+
+构造函数。
+
+## 成员函数说明
+
+<a id="aa61d6e895c8d51d6c4d8dd026d677964"></a>
+
+### addAudioSink()
+
+```cpp
+native int io.agora.rtc.AgoraAudioTrack.addAudioSink(AgoraAudioSink agora_audio_sink, AudioSinkWants wants)
+```
+
+添加一个音频接收模块，用以接收音频轨道中的 PCM 数据。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_audio_sink | 音频接收模块。 |
+| wants | 音频帧发送至接收模块时，应带有的属性。 |
+
+#### Returns
+
+- true: 方法调用成功
+- false: 方法调用失败
+
+<a id="ad005b0c3e1d290a6c930b4c35974aa69"></a>
+
+### removeAudioSink()
+
+```cpp
+native int io.agora.rtc.AgoraAudioTrack.removeAudioSink(AgoraAudioSink agora_audio_sink)
+```
+
+移除音频接收模块。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_audio_sink | 待移除的音频接收模块。 |
+
+#### Returns
+
+- true: 方法调用成功
+- false: 放大调用失败
+
+## 类成员变量说明
+
+<a id="ae0c3775e70db760463623429c30cc244"></a>
+
+### cptr
+
+```cpp
+long io.agora.rtc.AgoraAudioTrack.cptr private
+```

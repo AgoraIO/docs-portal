@@ -1,0 +1,38 @@
+---
+title: "io.agora.rtc.AgoraRtcService.UserOfflineReason类 参考"
+description: "远端用户下线的原因。"
+---
+
+远端用户下线的原因。
+
+## 类成员变量说明
+
+<a id="aadcae48dea596346d131e6f530555218"></a>
+
+### USER_OFFLINE_BECOME_AUDIENCE
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.UserOfflineReason.USER_OFFLINE_BECOME_AUDIENCE = 2 static
+```
+
+2: 远端用户的角色从主播切换为观众。
+
+<a id="ac9fedd405b79ebfa846e44774a9c65fd"></a>
+
+### USER_OFFLINE_DROPPED
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.UserOfflineReason.USER_OFFLINE_DROPPED = 1 static
+```
+
+1: 因过长时间收不到远端用户的数据包，SDK 判定该远端用户超时掉线。注意：在网络连接不稳定时，该判定可能会有误。建议使用云信令 SDK 来做可靠的掉线检测。
+
+<a id="a80d3964d437f754488e1bdce07443009"></a>
+
+### USER_OFFLINE_QUIT
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.UserOfflineReason.USER_OFFLINE_QUIT = 0 static
+```
+
+0: 远端用户主动离开频道。

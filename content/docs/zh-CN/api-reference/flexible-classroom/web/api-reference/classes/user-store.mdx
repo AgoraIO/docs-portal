@@ -1,0 +1,175 @@
+---
+title: "UserStore"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+`UserStore` 类用于管理用户。
+
+- EduStoreBase
+  - UserStore
+
+## Accessors
+
+<a id="assistantList"></a>
+
+### assistantList
+
+```ts
+get assistantList(): Map<string, EduUserStruct>
+```
+
+助教列表
+
+#### Returns
+
+Returns Map &lt; string, [EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct) &gt;
+
+<a id="localUser"></a>
+
+### localUser
+
+```ts
+get localUser(): undefined | EduUserStruct
+```
+
+本地用户
+
+#### Returns
+
+Returns undefined | [EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct)
+
+<a id="rewards"></a>
+
+### rewards
+
+```ts
+get rewards(): Map<string, number>
+```
+
+奖励信息字典 key: 用户UUID value: 用户获得的奖励数
+
+#### Returns
+
+Returns Map &lt; string, number &gt;
+
+<a id="studentList"></a>
+
+### studentList
+
+```ts
+get studentList(): Map<string, EduUserStruct>
+```
+
+学生列表
+
+#### Returns
+
+Returns Map &lt; string, [EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct) &gt;
+
+<a id="teacherList"></a>
+
+### teacherList
+
+```ts
+get teacherList(): Map<string, EduUserStruct>
+```
+
+老师列表
+
+#### Returns
+
+Returns Map &lt; string, [EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct) &gt;
+
+<a id="userCount"></a>
+
+### userCount
+
+```ts
+get userCount(): number
+```
+
+房间内用户数
+
+#### Returns
+
+Returns number
+
+<a id="users"></a>
+
+### users
+
+```ts
+get users(): Map<string, EduUserStruct>
+```
+
+房间内所有用户
+
+#### Returns
+
+Returns Map &lt; string, [EduUserStruct](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-edu-core-src-stores-domain-common-user-struct#EduUserStruct) &gt;
+
+## Methods
+
+<a id="fetchUserList"></a>
+
+### fetchUserList
+
+```ts
+fetchUserList(params: FetchUserParam): Promise<{ count: any; list: any; nextId: any; total: any }>
+```
+
+获取用户列表
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| params: FetchUserParam | 查询条件 |
+
+#### Returns
+
+Returns Promise &lt; \{count: any; list: any; nextId: any; total: any \} &gt;
+
+用户列表
+
+<a id="kickOutOnceOrBan"></a>
+
+### kickOutOnceOrBan
+
+```ts
+kickOutOnceOrBan(userUuid: string, isBan: boolean): Promise<undefined>
+```
+
+将用户踢出房间
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userUuid: string | 用户 ID |
+| isBan: boolean | 是否永久封禁该用户 |
+
+#### Returns
+
+Returns Promise &lt; undefined &gt;
+
+<a id="updateUserProperties"></a>
+
+### updateUserProperties
+
+```ts
+updateUserProperties(users: { cause?: any; properties: any; userUuid: string }[], fromScene?: AgoraRteScene): Promise<void>
+```
+
+更新用户自定属性
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| users: \{ cause?: any; properties: any; userUuid: string \}[] | 要更新的用户属性信息 |
+| Optional fromScene: AgoraRteScene | 要更新的用户所在的房间对象，不传默认为当前房间 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;

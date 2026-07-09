@@ -1,0 +1,37 @@
+---
+title: "getConversationsFromServer method"
+description: "API docs for the getConversationsFromServer method from the ChatManager class, for the Dart programming language."
+---
+
+Gets the conversation list from the server.
+
+To use this function, you need to contact our business manager to activate it. After this function is activated, users can pull 10 conversations within 7 days by default (each conversation contains the latest historical message). If you want to adjust the number of conversations or time limit, please contact our business manager.
+
+**Return** The conversation list of the current user.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+```dart
+Future<List<ChatConversation>> getConversationsFromServer()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<List<ChatConversation>> getConversationsFromServer() async {
+  Map result = await ChatChannel.invokeMethod(
+      ChatMethodKeys.getConversationsFromServer);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatConversation> conversationList = [];
+    result[ChatMethodKeys.getConversationsFromServer]?.forEach((element) {
+      conversationList.add(ChatConversation.fromJson(element));
+    });
+    return conversationList;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

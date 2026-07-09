@@ -1,0 +1,28 @@
+---
+title: "getEventHandler method"
+description: "API docs for the getEventHandler method from the ChatThreadManager class, for the Dart programming language."
+---
+
+Get the chat thread event handler.
+
+**Return** The chat thread event handler.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `identifier` | The custom handler identifier. |
+
+```dart
+ChatThreadEventHandler? getEventHandler(String identifier)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ChatThreadEventHandler? getEventHandler(String identifier) {
+  return _eventHandlesMap[identifier];
+}
+```

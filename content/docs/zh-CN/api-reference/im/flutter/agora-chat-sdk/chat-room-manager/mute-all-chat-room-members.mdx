@@ -1,0 +1,41 @@
+---
+title: "muteAllChatRoomMembers method"
+description: "API docs for the muteAllChatRoomMembers method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Mutes all members.
+
+Only the chat room owner or admin can call this method.
+
+This method does not work for the chat room owner, admin, and members added to the allow list.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+
+```dart
+Future<void> muteAllChatRoomMembers(String roomId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> muteAllChatRoomMembers(String roomId) async {
+  Map req = {"roomId": roomId};
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.muteAllChatRoomMembers,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

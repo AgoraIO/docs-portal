@@ -1,0 +1,242 @@
+---
+title: "音频路由"
+description: "检查扬声器是否启用。"
+---
+<a id="toc_audio_route"></a>
+
+## 音频路由
+
+<a id="api_irtcengine_isspeakerphoneenabled"></a>
+
+## isSpeakerphoneEnabled
+
+检查扬声器是否启用。
+
+<a id="api_irtcengine_isspeakerphoneenabled__prototype"></a>
+
+```cpp
+virtual bool isSpeakerphoneEnabled() = 0;
+```
+
+<a id="api_irtcengine_isspeakerphoneenabled__detailed_desc"></a>
+
+:::info[注]
+该方法仅适用于 Android 和 iOS 平台。
+:::
+
+<a id="api_irtcengine_isspeakerphoneenabled__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或加入频道后调用该方法。
+
+<a id="api_irtcengine_isspeakerphoneenabled__return_values"></a>
+
+### 返回值
+
+- true：扬声器已启用，音频将从扬声器播放。
+- false：扬声器未启用，音频将从其他设备播放，例如耳机或听筒。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone"></a>
+
+## setDefaultAudioRouteToSpeakerphone
+
+设置默认音频播放路由。
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__prototype"></a>
+
+```cpp
+virtual int setDefaultAudioRouteToSpeakerphone(bool defaultToSpeaker) = 0;
+```
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__detailed_desc"></a>
+
+大多数手机有两个音频路由：顶部的听筒和底部的扬声器。听筒音量较低，扬声器音量较高。你可以通过该方法设置在未连接外部音频设备时，默认使用听筒或扬声器播放音频。 不同场景下系统的默认音频路由如下：
+
+- 语音通话：听筒。
+- 音频直播：扬声器。
+- 视频通话：扬声器。
+- 视频直播：扬声器。
+
+:::info[注]
+该方法仅适用于 Android 和 iOS 平台。
+:::
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__timing"></a>
+
+### 调用时机
+
+在加入频道前调用此方法。如果需要在加入频道后更改音频路由，请调用 [setEnableSpeakerphone](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-route#api_irtcengine_setenablespeakerphone)。
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onAudioRoutingChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-route#callback_irtcengineeventhandler_onaudioroutingchanged) 回调报告当前的音频路由。
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__parameters"></a>
+
+### 参数
+
+#### `defaultToSpeaker`
+
+是否将扬声器设置为默认音频路由：
+
+- true：将扬声器设置为默认音频路由。
+- false：将听筒设置为默认音频路由。
+
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setenablespeakerphone"></a>
+
+## setEnableSpeakerphone
+
+设置是否将音频路由切换为扬声器。
+
+<a id="api_irtcengine_setenablespeakerphone__prototype"></a>
+
+```cpp
+virtual int setEnableSpeakerphone(bool speakerOn) = 0;
+```
+
+<a id="api_irtcengine_setenablespeakerphone__detailed_desc"></a>
+
+:::info[注]
+[setEnableSpeakerphone](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-route#api_irtcengine_setenablespeakerphone) 仅设置当前频道中的音频路由，不影响默认音频路由。如果用户离开当前频道并加入另一个频道，将使用默认音频路由。 如果用户使用蓝牙或有线耳机等外部音频播放设备，该方法不生效，SDK 会通过外部设备播放音频。当用户连接多个外部设备时，SDK 会通过最后连接的设备播放音频。 该方法仅适用于 Android 和 iOS 平台。
+:::
+
+<a id="api_irtcengine_setenablespeakerphone__scenario"></a>
+
+### 适用场景
+
+如果 SDK 的默认音频路由或 [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) 的设置无法满足你的需求，可以调用该方法切换当前音频路由。
+
+<a id="api_irtcengine_setenablespeakerphone__timing"></a>
+
+### 调用时机
+
+请在加入频道后调用该方法。
+
+<a id="api_irtcengine_setenablespeakerphone__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onAudioRoutingChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-route#callback_irtcengineeventhandler_onaudioroutingchanged) 回调报告当前音频路由。
+
+<a id="api_irtcengine_setenablespeakerphone__parameters"></a>
+
+### 参数
+
+#### `speakerOn`
+
+是否启用扬声器：
+
+- true：启用设备状态监测，音频路由为扬声器。
+- false：禁用设备状态监测，音频路由为听筒。
+
+<a id="api_irtcengine_setenablespeakerphone__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setrouteincommunicationmode"></a>
+
+## setRouteInCommunicationMode
+
+设置通信音频模式下的音频播放路由。
+
+<a id="api_irtcengine_setrouteincommunicationmode__prototype"></a>
+
+```cpp
+virtual int setRouteInCommunicationMode(int route) = 0;
+```
+
+<a id="api_irtcengine_setrouteincommunicationmode__detailed_desc"></a>
+
+:::info[注]
+同时使用该方法和 [setEnableSpeakerphone](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-route#api_irtcengine_setenablespeakerphone) 方法可能会导致冲突。建议你仅使用 [setRouteInCommunicationMode](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-route#api_irtcengine_setrouteincommunicationmode) 方法。该方法仅适用于 Android 平台。
+:::
+
+<a id="api_irtcengine_setrouteincommunicationmode__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_setrouteincommunicationmode__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onAudioRoutingChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-route#callback_irtcengineeventhandler_onaudioroutingchanged) 回调报告当前的音频路由。
+
+<a id="api_irtcengine_setrouteincommunicationmode__parameters"></a>
+
+### 参数
+
+#### `route`
+
+你希望使用的音频播放路由：
+
+- -1：默认音频路由。
+- 0：带麦克风的耳机。
+- 1：听筒。
+- 2：不带麦克风的耳机。
+- 3：设备内置扬声器。
+- 4：（尚不支持）外部扬声器。
+- 5：蓝牙耳机。
+- 6：USB 设备。
+
+<a id="api_irtcengine_setrouteincommunicationmode__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onaudioroutingchanged"></a>
+
+## onAudioRoutingChanged
+
+本地音频路由发生变化时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onaudioroutingchanged__prototype"></a>
+
+```cpp
+virtual void onAudioRoutingChanged(int routing) { (void)routing; }
+```
+
+<a id="callback_irtcengineeventhandler_onaudioroutingchanged__detailed_desc"></a>
+
+:::info[注]
+该回调仅适用于 Android、iOS 和 macOS 平台。
+:::
+
+<a id="callback_irtcengineeventhandler_onaudioroutingchanged__parameters"></a>
+
+### 参数
+
+#### `routing`
+
+当前的音频路由，详见 [AudioRoute](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioroute)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

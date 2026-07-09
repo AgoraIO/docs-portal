@@ -1,0 +1,384 @@
+---
+title: "io.agora.rtc.IRtcConnObserver接口 参考"
+description: "IRtcConnObserver 接口。"
+---
+
+IRtcConnObserver 接口。
+
+## 成员函数说明
+
+<a id="a17f8c09993fcbb8a1e1fb627598a70dc"></a>
+
+### onChangeRoleFailure()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onChangeRoleFailure(AgoraRtcConn agora_rtc_conn)
+```
+
+本地用户角色切换失败时触发。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+
+<a id="a75c5f2d534ad966a96571ea7f088e8ec"></a>
+
+### onChangeRoleSuccess()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onChangeRoleSuccess(AgoraRtcConn agora_rtc_conn, int old_role, int new_role)
+```
+
+本地用户角色变更时触发。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| old_role | 本地用户变更前的角色：<br />- 1：主播。主播可以同时发送和接收媒体流。<br />- 2：观众。观众只能接收媒体流。 |
+| new_role | 本地用户变更后的角色：<br />- 1：主播。主播可以同时发送和接收媒体流。<br />- 2：观众。观众只能接收媒体流。 |
+
+<a id="a4077abc157aa8be3c0060c97f394f48a"></a>
+
+### onConnected()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onConnected(AgoraRtcConn agora_rtc_conn, RtcConnInfo conn_info, int reason)
+```
+
+SDK 与频道的连接状态变更为 CONNECTION_STATE_CONNECTED(3) 时触发。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| conn_info | 连接信息。 |
+| reason | 连接状态变更原因：<br />- 0：建立网络连接中。<br />- 1：成功加入频道。<br />- 2：网络连接中断。<br />- 3：网络连接被服务器禁止。<br />- 4：无法加入频道超过 20 分钟，停止连接。<br />- 5：离开频道。<br />- 6：不是有效的 APP ID，连接失败。<br />- 7：不是有效的频道名，连接失败。<br />- 8：生成的 Token 无效，连接失败。<br />- 9：生成的 Token 过期，连接失败。<br />- 10：此用户被服务器禁止。<br />- 11：由于设置了代理服务器，SDK 尝试重连。<br />- 12：更新 Token 引起网络连接状态改变。<br />- 13：客户端 IP 地址变更，可能是由于网络类型，或网络运营商的 IP 或端口发生改变引起。<br />- 14：SDK 和服务器连接保活超时，进入自动重连状态。<br />- 15：重新加入频道成功。<br />- 16：SDK 和服务器失去连接。<br />- 17：连接状态变化由回声测试引起。<br />- 18：用户更改了本地 IP 地址。 |
+
+<a id="ac6ef9c272168210b778e9fd70791b0fc"></a>
+
+### onConnecting()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onConnecting(AgoraRtcConn agora_rtc_conn, RtcConnInfo conn_info, int reason)
+```
+
+SDK 与频道的连接状态变更为 CONNECTION_STATE_CONNECTING(2) 时触发。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| conn_info | 连接信息。 |
+| reason | 连接状态变更原因。 |
+
+<a id="a27c2faad49c53f80dc36b3b26676393f"></a>
+
+### onConnectionFailure()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onConnectionFailure(AgoraRtcConn agora_rtc_conn, RtcConnInfo conn_info, int reason)
+```
+
+SDK 与频道的连接状态变更为 CONNECTION_STATE_FAILED(5) 时触发。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| conn_info | 连接信息。 |
+| reason | 连接状态变更原因。 |
+
+<a id="ad7193347c1c2287ed83e792d4cb69f1c"></a>
+
+### onConnectionLost()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onConnectionLost(AgoraRtcConn agora_rtc_conn, RtcConnInfo conn_info)
+```
+
+SDK 失去与频道的连接时触发。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| conn_info | 连接信息。 |
+
+<a id="a356b9549fdb5034082a2847b668648c1"></a>
+
+### onDisconnected()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onDisconnected(AgoraRtcConn agora_rtc_conn, RtcConnInfo conn_info, int reason)
+```
+
+SDK 与频道的连接状态变更为 CONNECTION_STATE_DISCONNECTED(1) 时触发。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| conn_info | 连接信息。 |
+| reason | 连接状态变更原因。 |
+
+<a id="a6f48938089ae1f84f929cc245779263f"></a>
+
+### onEncryptionError()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onEncryptionError(AgoraRtcConn agora_rtc_conn, int error_type)
+```
+
+加密出错回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| error_type | 加密错误类型。 |
+
+<a id="a2b22a2cc1455588328adf616af2b8964"></a>
+
+### onError()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onError(AgoraRtcConn agora_rtc_conn, int error, String msg)
+```
+
+发生错误回调。
+
+该回调方法表示 SDK 运行时出现了网络或媒体相关的错误。通常情况下，SDK 上报的错误意味着 SDK 无法自动恢复，需要 App 干预或提示用户。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| error | 错误码。 |
+| msg | 错误描述。 |
+
+<a id="ad174cd3a03ae31bf36b97eab3e82fe12"></a>
+
+### onLastmileProbeResult()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onLastmileProbeResult(AgoraRtcConn agora_rtc_conn, LastmileProbeResult result)
+```
+
+通话前网络上下行 Last mile 质量探测报告回调。
+
+调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#ac79983e9fbfa370c273e9e3c926f7634) 方法 30 秒之后触发该回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| result | 上下行 Last mile 质量探测结果： [LastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-lastmile-probe-result)。 |
+
+<a id="a879a97e08a9c3ad444a394ec2eca9c4a"></a>
+
+### onLastmileQuality()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onLastmileQuality(AgoraRtcConn agora_rtc_conn, int quality)
+```
+
+报告 last-mile 网络质量。
+
+SDK 在调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#ac79983e9fbfa370c273e9e3c926f7634) 两秒后触发该回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| quality | Last-mile 网络质量。<br />- 0：质量未知。<br />- 1：质量极好。<br />- 2：用户主观感觉和极好差不多，但码率可能略低于极好。<br />- 3：用户主观感受有瑕疵但不影响沟通。<br />- 4：勉强能沟通但不顺畅。<br />- 5：网络质量非常差，基本不能沟通。<br />- 6：网络连接断开，完全无法沟通。 |
+
+<a id="a808e8d156fd0c9cbc92b804e48d3450a"></a>
+
+### onNetworkTypeChanged()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onNetworkTypeChanged(AgoraRtcConn agora_rtc_conn, int type)
+```
+
+本地网络类型发生改变回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| type | 当前网络连接类型：<br />- -1：网络连接类型未知。<br />- 0：网络连接已断开。<br />- 1：网络类型为 LAN。<br />- 2：网络类型为 Wi-Fi（包含热点）。<br />- 3：网络类型为 2G 移动网络。<br />- 4：网络类型为 3G 移动网络。<br />- 5：网络类型为 4G 移动网络。 |
+
+<a id="a696ada34c92c6854c52a4056645abb57"></a>
+
+### onReconnecting()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onReconnecting(AgoraRtcConn agora_rtc_conn, RtcConnInfo conn_info, int reason)
+```
+
+SDK 与频道的连接状态变更为 CONNECTION_STATE_RECONNECTING(4) 时触发。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| conn_info | 连接信息。 |
+| reason | 连接状态变更原因。 |
+
+<a id="a0d7041532b86e399cc018562fd8a8eca"></a>
+
+### onStreamMessageError()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onStreamMessageError(AgoraRtcConn agora_rtc_conn, String user_id, int stream_id, int code, int missed, int cached)
+```
+
+接收数据流消息发生错误的回调。该回调表示本地用户未收到远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a79f7b350516319c880cba474d98d4844) 方法发送的流消息。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | RTC 连接对象。 |
+| user_id | 发送消息的用户 ID。 |
+| stream_id | 接收到的消息的 Stream ID。 |
+| code | 发生错误的错误码。 |
+| missed | 丢失的消息数量。 |
+| cached | 数据流中断时，后面缓存的消息数量。 |
+
+<a id="a1a58efc510b461c20c29b41607622d2c"></a>
+
+### onTokenPrivilegeDidExpire()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onTokenPrivilegeDidExpire(AgoraRtcConn agora_rtc_conn)
+```
+
+Token 已过期时触发。 当收到该回调时，你需要重新在服务端生成新的 Token，然后重新连接频道。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+
+<a id="a2e51cc9d7a69266ed6efdd2709b8bd26"></a>
+
+### onTokenPrivilegeWillExpire()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onTokenPrivilegeWillExpire(AgoraRtcConn agora_rtc_conn, String token)
+```
+
+Token 将在 30s 内过期时触发。
+
+在通话过程中如果 Token 即将失效，SDK 会提前 30 秒触发该回调，提醒 app 更新 Token。 当收到该回调时，你需要重新在服务端生成新的 Token，然后调用 [renewToken](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a7a892b8f954dad6d16b730418e84296b) 将新生成的 Token 传给 SDK。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| token | 将在30 秒内过期的 Token。 |
+
+<a id="aa828df0e65064592438a2c60f1ae8aea"></a>
+
+### onTransportStats()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onTransportStats(AgoraRtcConn agora_rtc_conn, RtcStats stats)
+```
+
+报告连接的传输统计信息。
+
+当连接状态为 CONNECTION_STATE_CONNECTED(3) 时，SDK 每两秒触发一次回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| stats | 连接统计信息。 |
+
+<a id="abb011d22902dfdf3de0acd06ec860884"></a>
+
+### onUploadLogResult()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onUploadLogResult(AgoraRtcConn agora_rtc_conn, String request_id, int success, int reason)
+```
+
+<a id="a868be93b5f0663aad464ef17a799ea37"></a>
+
+### onUserJoined()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onUserJoined(AgoraRtcConn agora_rtc_conn, String user_id)
+```
+
+远端用户加入频道时触发。
+
+你可以在该回调中获取远端用户 ID。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| user_id | 加入频道的远端用户的 ID。 |
+
+<a id="a5262bb0e4f42060f97d739cf5fb3b31f"></a>
+
+### onUserLeft()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onUserLeft(AgoraRtcConn agora_rtc_conn, String user_id, int reason)
+```
+
+远端用户离开频道时触发。
+
+你可以通过 reason 参数获取该用户离开频道的原因。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| user_id | 离开频道的远端用户 ID。 |
+| reason | 离开频道原因。 |
+
+<a id="a3e391cbf2a400e434297b5a7a7655fba"></a>
+
+### onUserNetworkQuality()
+
+```cpp
+void io.agora.rtc.IRtcConnObserver.onUserNetworkQuality(AgoraRtcConn agora_rtc_conn, String user_id, int tx_quality, int rx_quality)
+```
+
+通话中每个用户的网络上下行 last mile 质量报告回调。
+
+该回调每 2 秒触发一次，报告频道内每个用户（包括本地用户）的上下行网络状态。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| agora_rtc_conn | 一个 AgoraRtcConn 对象。 |
+| user_id | 用户 ID。如该参数为空，表示该回调报告的是本地用户的网络质量。 |
+| tx_quality | 该用户的上行网络质量。 |
+| rx_quality | 该用户的下行网络质量。 |

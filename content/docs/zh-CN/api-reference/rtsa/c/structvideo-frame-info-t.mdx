@@ -1,0 +1,58 @@
+---
+title: "video_frame_info_t结构体 参考"
+description: "#include <agora_rtc_api.h>"
+---
+
+视频帧配置。
+
+## 结构体成员变量说明
+
+<a id="ade572e514ccb04f9997cfdadb3b343a9"></a>
+
+### data_type
+
+```cpp
+video_data_type_e data_type
+```
+
+视频编码格式，详见 [video_data_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1ccdeb97ac0c919ca5de750fad95c222)。
+
+<a id="aa4d96621006e7cfda402579907ef4014"></a>
+
+### frame_rate
+
+```cpp
+video_frame_rate_e frame_rate
+```
+
+视频帧率，单位为 fps，取值范围为 [1,60]。 SDK 用该值计算视频帧的时间戳。
+
+<a id="a8d9e17f26223aa957cc87b6f046db4da"></a>
+
+### frame_type
+
+```cpp
+video_frame_type_e frame_type
+```
+
+视频帧类型，详见 [video_frame_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6072f9d97582869362eaa8c81b028c22)。
+
+<a id="ae6b0516563a16a80e5e4693b12632a95"></a>
+
+### rotation
+
+```cpp
+video_orientation_e rotation
+```
+
+已编码视频帧的旋转角度，详见 [video_orientation_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab962f73944a73baa69882e4256aebad7)。
+
+<a id="aa9ededcad361b68bc0aa571f38dcc84f"></a>
+
+### stream_type
+
+```cpp
+video_stream_type_e stream_type
+```
+
+视频流类型，详见 [video_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278ed)。

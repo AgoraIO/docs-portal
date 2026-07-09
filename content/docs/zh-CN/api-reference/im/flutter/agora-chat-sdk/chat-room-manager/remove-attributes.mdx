@@ -1,0 +1,50 @@
+---
+title: "removeAttributes method"
+description: "API docs for the removeAttributes method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Removes custom chat room attributes.
+
+**Return** `failureKeys map` is returned in key-value format, where the key is the attribute key and the value is the reason for the failure. **Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `keys` | The keys of the custom chat room attributes to remove. |
+| `force` | Whether to remove the attributes with same key set by others. |
+
+```dart
+Future<Map<String, int>?> removeAttributes(String roomId, {required List<String> keys, bool force = false})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<Map<String, int>?> removeAttributes(
+  String roomId, {
+  required List<String> keys,
+  bool force = false,
+}) async {
+  Map req = {
+    "roomId": roomId,
+    "keys": keys,
+    "forced": force,
+  };
+
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.removeChatRoomAttributes,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result[ChatMethodKeys.removeChatRoomAttributes]
+        ?.cast<String, int>();
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

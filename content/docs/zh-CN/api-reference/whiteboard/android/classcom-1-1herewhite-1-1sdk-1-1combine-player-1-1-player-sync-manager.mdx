@@ -1,0 +1,138 @@
+---
+title: "com.herewhite.sdk.combinePlayer.PlayerSyncManager类 参考"
+description: "PlayerSyncManager 类，用于同步 NativePlayer 和 Player 的状态。"
+---
+
+`PlayerSyncManager` 类，用于同步 `NativePlayer` 和 `Player` 的状态。
+
+### `自从`
+
+2.4.23
+
+## 构造及析构函数说明
+
+<a id="aa235a8b4a8c16258dbb4f3607e35c164"></a>
+
+### PlayerSyncManager() [1/2]
+
+```cpp
+com.herewhite.sdk.combinePlayer.PlayerSyncManager.PlayerSyncManager(Player whitePlayer, NativePlayer nativePlayer, Callbacks callbacks)
+```
+
+`PlayerSyncManager` 构造方法，用于初始化 `PlayerSyncManager` 实例。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| whitePlayer | 白板回放播放器，详见 `Player`。 |
+| nativePlayer | 本地视频播放器，详见 `NativePlayer`。 |
+| callbacks | 播放器事件回调，详见 `Callbacks`。 |
+
+<a id="a0069294b4f899ffd59ff46f491dc1211"></a>
+
+### PlayerSyncManager() [2/2]
+
+```cpp
+com.herewhite.sdk.combinePlayer.PlayerSyncManager.PlayerSyncManager(NativePlayer nativePlayer, Callbacks callbacks)
+```
+
+`PlayerSyncManager` 构造方法，用于初始化 `PlayerSyncManager` 实例。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| nativePlayer | 本地视频播放器，详见 `NativePlayer`。 |
+| callbacks | 播放器事件回调，详见 `Callbacks`。 |
+
+## 成员函数说明
+
+<a id="a2aecd36a2fce296e81ce50f493b244ed"></a>
+
+### setWhitePlayer()
+
+```cpp
+void com.herewhite.sdk.combinePlayer.PlayerSyncManager.setWhitePlayer(Player whitePlayer)
+```
+
+设置白板回放播放器。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| whitePlayer | 白板回放播放器，详见 `Player`。 |
+
+<a id="a9b798473d7a37b0aac0a1d445bab65cd"></a>
+
+### play()
+
+```cpp
+void com.herewhite.sdk.combinePlayer.PlayerSyncManager.play()
+```
+
+播放视频。
+
+<a id="ac46511935697a2742f31ed7c7758bf13"></a>
+
+### pause()
+
+```cpp
+void com.herewhite.sdk.combinePlayer.PlayerSyncManager.pause()
+```
+
+暂停播放视频。
+
+<a id="a2bd026253d79bf39b9b53e9d6484d13b"></a>
+
+### seek()
+
+```cpp
+void com.herewhite.sdk.combinePlayer.PlayerSyncManager.seek(long time, TimeUnit timeUnit)
+```
+
+调整白板回放的播放进度。
+
+调整本地视频播放的进度后，你需要调用该方法，将白板回放的播放进度调整到对应位置。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| time | 白板回放的播放进度。 |
+| timeUnit | 时长单位，默认值为毫秒 （`MILLISECONDS` ），取值详见 [TimeUnit](https://www.android-doc.com/reference/java/util/concurrent/TimeUnit.html)。 |
+
+<a id="ac2ea76af2259154e736d0dd627eead16"></a>
+
+### updateNativePhase()
+
+```cpp
+void com.herewhite.sdk.combinePlayer.PlayerSyncManager.updateNativePhase(NativePlayer.NativePlayerPhase phase)
+```
+
+向 `PlayerSyncManager` 同步 `NativePlayer` 的状态。
+
+`PlayerSyncManager` 接收到 `NativePlayer` 的状态后会同步给 `Player`，以确保 `Player` 和 `NativePlayer` 的状态同步。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| phase | `NativePlayer` 的播放状态，详见 `NativePlayerPhase`。 |
+
+<a id="a3ad39a9ca62edb45f5ab1a472a7a602a"></a>
+
+### updateWhitePlayerPhase()
+
+```cpp
+void com.herewhite.sdk.combinePlayer.PlayerSyncManager.updateWhitePlayerPhase(PlayerPhase phase)
+```
+
+更新白板回放播放器的播放状态。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| phase | 白板回放播放器的播放状态，详见 `PlayerPhase`。 |

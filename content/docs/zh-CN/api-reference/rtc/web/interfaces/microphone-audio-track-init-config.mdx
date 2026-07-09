@@ -1,0 +1,76 @@
+---
+title: "MicrophoneAudioTrackInitConfig"
+description: "MicrophoneAudioTrackInitConfig API reference."
+---
+
+创建麦克风音频流时的配置对象，用于 [AgoraRTC.createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createmicrophoneaudiotrack)。
+
+- AudioTrackInitConfig
+  - MicrophoneAudioTrackInitConfig
+
+## Properties
+
+<a id="aec"></a>
+
+### Optional AEC
+
+```ts
+AEC: boolean
+```
+
+是否开启回声消除：
+
+- true: 开启回声消除。
+- false: 不开启回声消除。
+
+<a id="agc"></a>
+
+### Optional AGC
+
+```ts
+AGC: boolean
+```
+
+是否开启自动增益：
+
+- true: 开启自动增益。
+- false: 不开启自动增益。
+
+<a id="ans"></a>
+
+### Optional ANS
+
+```ts
+ANS: boolean
+```
+
+是否开启噪声抑制：
+
+- true: 开启噪声抑制。
+- false: 不开启噪声抑制。
+
+<a id="encoderconfig"></a>
+
+### Optional encoderConfig
+
+```ts
+encoderConfig: AudioEncoderConfiguration | AudioEncoderConfigurationPreset
+```
+
+控制音频的编码配置。
+
+你可以通过 [AudioEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#audioencoderconfigurationpreset) 传入 SDK 内置的编码配置；也可以通过传入一个 [AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audio-encoder-configuration) 来自定义音频编码配置。
+
+Firefox 不支持设置音频编码码率。
+
+<a id="microphoneid"></a>
+
+### Optional microphoneId
+
+```ts
+microphoneId: string
+```
+
+指定麦克风的设备 ID。
+
+你可以通过 [AgoraRTC.getMicrophones](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#getmicrophones) 来获取当前的麦克风设备列表。

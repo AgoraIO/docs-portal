@@ -1,0 +1,47 @@
+---
+title: "agora::base::IAgoraParameter类 参考abstract"
+description: "通过 JSON 配置 SDK 提供技术预览或特别定制功能。"
+---
+
+## 构造及析构函数说明
+
+<a id="a8fbae7c88a67667e005d9be7aaf0541c"></a>
+
+### ~IAgoraParameter()
+
+```cpp
+virtual agora::base::IAgoraParameter::~IAgoraParameter() inlinevirtual
+```
+
+## 成员函数说明
+
+<a id="a29bec1ab93c40253b098483e039bd702"></a>
+
+### setParameters()
+
+```cpp
+virtual int agora::base::IAgoraParameter::setParameters(const char* parameters) pure virtual
+```
+
+通过 JSON 配置 SDK 提供技术预览或特别定制功能。
+
+JSON 选项默认不公开。声网工程师正在努力寻求以标准化方式公开 JSON 选项。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] parameters | JSON 字符串形式的参数 |
+
+#### Returns
+
+- 0：方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a9ee6f44dd449f69b3b53dd57639a60a5"></a>
+
+### convertPath()
+
+```cpp
+virtual int agora::base::IAgoraParameter::convertPath(const char* filePath, agora::util::AString& value) pure virtual
+```

@@ -1,0 +1,111 @@
+---
+title: "agora-edu-core/src/utils/index"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+## Functions
+
+<a id="CustomBtoa"></a>
+
+### Const CustomBtoa
+
+```ts
+CustomBtoa(input: any): string
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| input: any |  |
+
+#### Returns
+
+Returns string
+
+<a id="EduRole2RteRole"></a>
+
+### Const EduRole2RteRole
+
+```ts
+EduRole2RteRole(roomType: EduRoomTypeEnum, roleType: EduRoleTypeEnum): "audience" | "host" | "assistant" | "broadcaster" | "invisible" | "observer"
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomType: EduRoomTypeEnum |  |
+| roleType: EduRoleTypeEnum |  |
+
+#### Returns
+
+Returns "audience" | "host" | "assistant" | "broadcaster" | "invisible" | "observer"
+
+<a id="RteRole2EduRole"></a>
+
+### Const RteRole2EduRole
+
+```ts
+RteRole2EduRole(roomType: EduRoomTypeEnum, role: string): EduRoleTypeEnum
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomType: EduRoomTypeEnum |  |
+| role: string |  |
+
+#### Returns
+
+Returns [EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/web/api-reference/enums/edu-role-type-enum)
+
+<a id="getImageSize"></a>
+
+### getImageSize
+
+```ts
+getImageSize(file: File): Promise<{ height: number; width: number }>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| file: File |  |
+
+#### Returns
+
+Returns Promise &lt; \{height: number; width: number \} &gt;
+
+<a id="getPlatform"></a>
+
+### Const getPlatform
+
+```ts
+getPlatform(): WEB | MACOS | WINDOWS | H5
+```
+
+#### Returns
+
+Returns [WEB](/zh-CN/api-reference/flexible-classroom/web/api-reference/enums/device-platform#WEB) | [MACOS](/zh-CN/api-reference/flexible-classroom/web/api-reference/enums/device-platform#MACOS) | [WINDOWS](/zh-CN/api-reference/flexible-classroom/web/api-reference/enums/device-platform#WINDOWS) | [H5](/zh-CN/api-reference/flexible-classroom/web/api-reference/enums/device-platform#H5)
+
+<a id="number2Percent"></a>
+
+### Const number2Percent
+
+```ts
+number2Percent(v: number, fixed?: number): string
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| v: number |  |
+| Optional fixed: number |  |
+
+#### Returns
+
+Returns string

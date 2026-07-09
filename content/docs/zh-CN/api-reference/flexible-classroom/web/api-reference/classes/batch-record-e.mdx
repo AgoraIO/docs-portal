@@ -1,0 +1,135 @@
+---
+title: "BatchRecord<E>"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+此类主要处理将多个数据包中的同一批变更合并到一起，合并完成后执行callback
+
+- BatchRecord
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new BatchRecord<E>(_batchId: number, _total?: number, _current?: number, _cb?: (dataChunk: E[]) => void): BatchRecord<E>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| _batchId: number |  |
+| Optional _total: number |  |
+| Optional _current: number |  |
+| Optional _cb: (dataChunk: E[]) =&gt; void |  |
+
+#### Returns
+
+Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/batch-record-e) &lt; E &gt;
+
+## Methods
+
+<a id="addChunk"></a>
+
+### addChunk
+
+```ts
+addChunk(data: E): BatchRecord<E>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| data: E |  |
+
+#### Returns
+
+Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/batch-record-e) &lt; E &gt;
+
+<a id="execute"></a>
+
+### execute
+
+```ts
+execute(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="setCallback"></a>
+
+### setCallback
+
+```ts
+setCallback(cb: (dataChunk: E[]) => void): BatchRecord<E>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: (dataChunk: E[]) =&gt; void |  |
+
+#### Returns
+
+Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/batch-record-e) &lt; E &gt;
+
+<a id="setCurrent"></a>
+
+### setCurrent
+
+```ts
+setCurrent(current: number): BatchRecord<E>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| current: number |  |
+
+#### Returns
+
+Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/batch-record-e) &lt; E &gt;
+
+<a id="setTotal"></a>
+
+### setTotal
+
+```ts
+setTotal(total: number): BatchRecord<E>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| total: number |  |
+
+#### Returns
+
+Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/batch-record-e) &lt; E &gt;
+
+<a id="getBatchRecord"></a>
+
+### Static getBatchRecord
+
+```ts
+getBatchRecord<T>(batchId: number): BatchRecord<T>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| batchId: number |  |
+
+#### Returns
+
+Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/batch-record-e) &lt; T &gt;

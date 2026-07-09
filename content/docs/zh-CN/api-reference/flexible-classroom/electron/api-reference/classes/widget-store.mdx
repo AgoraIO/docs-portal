@@ -1,0 +1,240 @@
+---
+title: "WidgetStore"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+`WidgetStore` 提供活跃插件的数据和状态的访问；提供 WidgetController 实例的直接访问；提供插件相关 API，用于激活、停用和更新插件的状态。
+
+- EduStoreBase
+  - WidgetStore
+
+## Accessors
+
+<a id="widgetController"></a>
+
+### widgetController
+
+```ts
+get widgetController(): undefined | AgoraWidgetController
+```
+
+#### Returns
+
+Returns undefined | [AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-widget-controller)
+
+## Methods
+
+<a id="addWidgetStateListener"></a>
+
+### addWidgetStateListener
+
+```ts
+addWidgetStateListener(listener: AgoraWidgetStateListener): void
+```
+
+##### `deprecated`
+
+since v2.9.0, please use AgoraWidgetController.addWidgetStateListener 添加一个组件状态监听器
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| listener: AgoraWidgetStateListener |  |
+
+#### Returns
+
+Returns void
+
+<a id="deleteWidget"></a>
+
+### deleteWidget
+
+```ts
+deleteWidget(widgetId: string): undefined | Promise<{ data: any }>
+```
+
+删除当前房间中的此组件实例
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| widgetId: string | widget ID |
+
+#### Returns
+
+Returns undefined | Promise &lt; \{data: any \} &gt;
+
+<a id="onDestroy"></a>
+
+### onDestroy
+
+```ts
+onDestroy(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="onInstall"></a>
+
+### onInstall
+
+```ts
+onInstall(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="removeWidgetExtra"></a>
+
+### removeWidgetExtra
+
+```ts
+removeWidgetExtra(widgetId: string, keys?: string[]): undefined | Promise<{ data: any }>
+```
+
+删除组件扩展属性
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| widgetId: string |  |
+| Optional keys: string[] |  |
+
+#### Returns
+
+Returns undefined | Promise &lt; \{data: any \} &gt;
+
+<a id="removeWidgetStateListener"></a>
+
+### removeWidgetStateListener
+
+```ts
+removeWidgetStateListener(listener: AgoraWidgetStateListener): void
+```
+
+##### `deprecated`
+
+since v2.9.0, please use AgoraWidgetController.removeWidgetStateListener 移除一个组件状态监听器
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| listener: AgoraWidgetStateListener |  |
+
+#### Returns
+
+Returns void
+
+<a id="removeWidgetUserProperties"></a>
+
+### removeWidgetUserProperties
+
+```ts
+removeWidgetUserProperties(widgetId: string, keys?: string[]): undefined | Promise<{ data: any }>
+```
+
+删除组件用户属性
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| widgetId: string |  |
+| Optional keys: string[] |  |
+
+#### Returns
+
+Returns undefined | Promise &lt; \{data: any \} &gt;
+
+<a id="setActive"></a>
+
+### setActive
+
+```ts
+setActive(widgetId: string, widgetProps?: any, ownerUserUuid?: string): void
+```
+
+设置组件为可用状态
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| widgetId: string | widget ID |
+| Optional widgetProps: any | widget 属性 |
+| Optional ownerUserUuid: string |  |
+
+#### Returns
+
+Returns void
+
+<a id="setInactive"></a>
+
+### setInactive
+
+```ts
+setInactive(widgetId: string, widgetProps?: any): void
+```
+
+设置组件为不可用状态
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| widgetId: string | widget ID |
+| Optional widgetProps: any | widget 属性 |
+
+#### Returns
+
+Returns void
+
+<a id="updateWidgetProperties"></a>
+
+### updateWidgetProperties
+
+```ts
+updateWidgetProperties(widgetId: string, widgetProps?: any): undefined | Promise<{ data: any }>
+```
+
+更新组件全局属性，属性更新将同步至该组件在所有客户端上的实例
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| widgetId: string |  |
+| Optional widgetProps: any |  |
+
+#### Returns
+
+Returns undefined | Promise &lt; \{data: any \} &gt;
+
+<a id="updateWidgetUserProperties"></a>
+
+### updateWidgetUserProperties
+
+```ts
+updateWidgetUserProperties(widgetId: string, widgetProps?: any): undefined | void
+```
+
+更新组件用户属性，属性更新将同步至当前用户私有属性中
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| widgetId: string |  |
+| Optional widgetProps: any |  |
+
+#### Returns
+
+Returns undefined | void

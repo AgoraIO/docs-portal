@@ -1,0 +1,59 @@
+---
+title: "searchMsgFromDB method"
+description: "API docs for the searchMsgFromDB method from the ChatManager class, for the Dart programming language."
+---
+
+Retrieves messages from the database according to the parameters.
+
+**Note** Pay attention to the memory usage when the maxCount is large. Currently, a maximum of 400 historical messages can be retrieved each time.
+
+**Return** The list of messages.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `keywords` | The keywords in message. |
+| `timeStamp` | The Unix timestamp for search, in milliseconds. |
+| `maxCount` | The maximum number of messages to retrieve each time. |
+| `from` | A username or group ID at which the retrieval is targeted. Usually, it is the conversation ID. |
+
+```dart
+Future<List<ChatMessage>> searchMsgFromDB(String keywords, {int timeStamp = -1, int maxCount = 20, String from = '', ChatSearchDirection direction = ChatSearchDirection.Up})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<List<ChatMessage>> searchMsgFromDB(
+  String keywords, {
+  int timeStamp = -1,
+  int maxCount = 20,
+  String from = '',
+  ChatSearchDirection direction = ChatSearchDirection.Up,
+}) async {
+  Map req = Map();
+  req['keywords'] = keywords;
+  req['timeStamp'] = timeStamp;
+  req['maxCount'] = maxCount;
+  req['from'] = from;
+  req['direction'] = direction == ChatSearchDirection.Up ? "up" : "down";
+
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.searchChatMsgFromDB, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatMessage> list = [];
+    result[ChatMethodKeys.searchChatMsgFromDB]?.forEach((element) {
+      list.add(ChatMessage.fromJson(element));
+    });
+    return list;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

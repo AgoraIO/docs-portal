@@ -1,0 +1,28 @@
+---
+title: "isConnected method"
+description: "API docs for the isConnected method from the ChatClient class, for the Dart programming language."
+---
+
+Checks whether the SDK is connected to the chat server.
+
+**Return** the result whether the SDK is connected to the chat server. `true`: means that the SDK is connected to the chat server. `false`: means not.
+
+```dart
+Future<bool> isConnected()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<bool> isConnected() async {
+  Map result = await ClientChannel.invokeMethod(ChatMethodKeys.isConnected);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result.boolValue(ChatMethodKeys.isConnected);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

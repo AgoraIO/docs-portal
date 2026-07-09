@@ -1,0 +1,36 @@
+---
+title: "agora::rtc::SimulcastConfigInternal结构体 参考"
+description: "定义多路 YUV 视频流的配置数组。"
+---
+
+定义多路 YUV 视频流的配置数组。
+
+## 成员函数说明
+
+<a id="a071635f92a26eb8abb66f6ca153bea87"></a>
+
+### reset()
+
+```cpp
+void agora::rtc::SimulcastConfigInternal::reset() inline
+```
+
+<a id="a584608c3f563bde3eca46b6eb5311a60"></a>
+
+### operator==()
+
+```cpp
+bool agora::rtc::SimulcastConfigInternal::operator==(const SimulcastConfigInternal& rhs) const inline
+```
+
+## 类成员变量说明
+
+<a id="af7a9fc0e6c0275ebbfad99149d823c95"></a>
+
+### simulcastlayerConfigs
+
+```cpp
+StreamLayerConfigInternal agora::rtc::SimulcastConfigInternal::simulcastlayerConfigs[STREAM_LAYER_COUNT_MAX]
+```
+
+配置数组，最多包含 `STREAM_LAYER_COUNT_MAX` 个 `StreamLayerConfigInternal` 对象。你可以分别对多路视频流进行不同的配置。

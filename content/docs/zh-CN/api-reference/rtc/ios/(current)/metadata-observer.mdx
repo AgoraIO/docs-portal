@@ -1,0 +1,199 @@
+---
+title: "媒体流附属信息分发"
+description: "当 SDK 请求元数据的最大大小时触发。"
+---
+<a id="toc_metadata_observer"></a>
+
+## 媒体流附属信息分发
+
+<a id="api_agoramediametadatadatasource_metadatamaxsize"></a>
+
+## metadataMaxSize
+
+当 SDK 请求元数据的最大大小时触发。
+
+<a id="api_agoramediametadatadatasource_metadatamaxsize__prototype"></a>
+
+```objectivec
+- (NSInteger)metadataMaxSize NS_SWIFT_NAME(metadataMaxSize());
+```
+
+<a id="api_agoramediametadatadatasource_metadatamaxsize__detailed_desc"></a>
+
+调用 [setMediaMetadataDelegate:withType:](/zh-CN/api-reference/rtc/ios/metadata-observer#api_irtcengine_registermediametadataobserver) 方法成功注册后，SDK 每发送一帧视频时会触发该回调。你需要在该回调的返回值中指定元数据的最大大小。
+
+<a id="api_agoramediametadatadatasource_metadatamaxsize__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回你希望使用的元数据缓冲区的最大大小，单位为字节。最大值为 1024 字节。
+
+### 所属接口类
+- [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource)
+
+<a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp"></a>
+
+## readyToSendMetadataAtTimestamp:sourceType:
+
+当 SDK 准备好发送元数据时触发回调。
+
+<a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp__prototype"></a>
+
+```objectivec
+- (NSData * _Nullable)readyToSendMetadataAtTimestamp:(NSTimeInterval)timestamp sourceType:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(readyToSendMetadata(atTimestamp:sourceType:));
+```
+
+<a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp__detailed_desc"></a>
+
+该回调在 SDK 准备好发送元数据时触发。
+
+:::info[注]
+请确保元数据的大小不超过 [metadataMaxSize](/zh-CN/api-reference/rtc/ios/metadata-observer#api_agoramediametadatadatasource_metadatamaxsize) 回调中设置的值。
+:::
+
+<a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp__timing"></a>
+
+### 调用时机
+
+当 SDK 准备好发送元数据时触发。
+
+<a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp__parameters"></a>
+
+### 参数
+
+#### `timestamp`
+
+时间戳。
+
+#### `sourceType`
+
+视频数据类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/ios/enum-videosourcetype)。
+
+<a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp__return_values"></a>
+
+### 返回值
+
+你希望发送的元数据，格式为 `NSData`，包含以下参数：
+
+- uid：发送元数据的远端用户 ID。
+- size：元数据的大小。
+- buffer：元数据内容。
+- timeStampMs：发送元数据时的 NTP 时间戳（毫秒）。
+
+### 所属接口类
+- [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource)
+
+<a id="api_irtcengine_registermediametadataobserver"></a>
+
+## setMediaMetadataDelegate:withType:
+
+注册元数据观察者。
+
+<a id="api_irtcengine_registermediametadataobserver__prototype"></a>
+
+```objectivec
+- (BOOL)setMediaMetadataDelegate:(id<AgoraMediaMetadataDelegate> _Nullable)metadataDelegate withType:(AgoraMetadataType)type NS_SWIFT_NAME(setMediaMetadataDelegate(_:with:));
+```
+
+<a id="api_irtcengine_registermediametadataobserver__detailed_desc"></a>
+
+你需要实现 [AgoraMediaMetadataDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imetadataobserver) 协议，并在该方法中指定元数据类型。该方法使你能够在视频流中添加同步的元数据，以实现更丰富的直播互动场景，例如发送购物链接、数字优惠券和在线问答。
+
+:::info[注]
+请在调用 `joinChannelByToken` 之前调用该方法。
+:::
+
+<a id="api_irtcengine_registermediametadataobserver__parameters"></a>
+
+### 参数
+
+#### `metadataDelegate`
+
+元数据观察者，详见 [AgoraMediaMetadataDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imetadataobserver)。
+
+#### `type`
+
+元数据类型，详见 [AgoraMetadataType](/zh-CN/api-reference/rtc/ios/enum-metadatatype)。当前 SDK 仅支持 `AgoraMetadataTypeVideo`。
+
+<a id="api_irtcengine_registermediametadataobserver__return_values"></a>
+
+### 返回值
+
+- YES：方法调用成功。
+- NO：方法调用失败。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setmediametadatadatasource"></a>
+
+## setMediaMetadataDataSource:withType:
+
+设置元数据的数据源。
+
+<a id="api_irtcengine_setmediametadatadatasource__prototype"></a>
+
+```objectivec
+- (BOOL)setMediaMetadataDataSource:(id<AgoraMediaMetadataDataSource> _Nullable)metadataDataSource withType:(AgoraMetadataType)type NS_SWIFT_NAME(setMediaMetadataDataSource(_:with:));
+```
+
+<a id="api_irtcengine_setmediametadatadatasource__detailed_desc"></a>
+
+你需要在该方法中实现 [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource) 协议，并指定元数据的数据格式。成功调用该方法后，SDK 会触发 [metadataMaxSize](/zh-CN/api-reference/rtc/ios/metadata-observer#api_agoramediametadatadatasource_metadatamaxsize) 回调。你可以结合 [setMediaMetadataDelegate:withType:](/zh-CN/api-reference/rtc/ios/metadata-observer#api_irtcengine_registermediametadataobserver) 方法，在视频流中添加同步的元数据，实现更丰富的直播互动，例如发送购物链接、数字优惠券和在线问答。
+
+:::info[注]
+该方法需要在加入频道前调用。
+:::
+
+<a id="api_irtcengine_setmediametadatadatasource__parameters"></a>
+
+### 参数
+
+#### `metadataDataSource`
+
+元数据的数据源，需实现 [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource) 协议。详见 [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource)。
+
+#### `type`
+
+元数据的类型，详见 [AgoraMetadataType](/zh-CN/api-reference/rtc/ios/enum-metadatatype)。SDK 当前仅支持 `AgoraMetadataTypeVideo`。
+
+<a id="api_irtcengine_setmediametadatadatasource__return_values"></a>
+
+### 返回值
+
+- YES：方法调用成功。
+- NO：方法调用失败。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="callback_imetadataobserver_onmetadatareceived"></a>
+
+## didMetadataReceived:
+
+当本地用户接收到元数据时触发。
+
+<a id="callback_imetadataobserver_onmetadatareceived__prototype"></a>
+
+```objectivec
+- (void)didMetadataReceived:(AgoraMetadata * _Nonnull)metadata NS_SWIFT_NAME(didMetadataReceived(_:));
+```
+
+<a id="callback_imetadataobserver_onmetadatareceived__detailed_desc"></a>
+
+<a id="callback_imetadataobserver_onmetadatareceived__timing"></a>
+
+### 触发时机
+
+该回调在本地用户接收到元数据时被触发。
+
+<a id="callback_imetadataobserver_onmetadatareceived__parameters"></a>
+
+### 参数
+
+#### `metadata`
+
+接收到的元数据。详见 [AgoraMetadata](/zh-CN/api-reference/rtc/ios/class-metadata)。
+
+### 所属接口类
+- [AgoraMediaMetadataDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imetadataobserver)

@@ -1,0 +1,438 @@
+---
+title: "AgoraRteService"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- ApiBase
+  - AgoraRteService
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new AgoraRteService(): AgoraRteService
+```
+
+#### Returns
+
+Returns [AgoraRteService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-service)
+
+## Properties
+
+<a id="fallbackRequestHandler"></a>
+
+### fallbackRequestHandler
+
+```ts
+fallbackRequestHandler: FallbackRequestHandler
+```
+
+<a id="headers"></a>
+
+### Optional headers
+
+```ts
+headers?: Record<string, unknown>
+```
+
+<a id="host"></a>
+
+### Optional host
+
+```ts
+host?: string
+```
+
+<a id="logger"></a>
+
+### logger
+
+```ts
+logger: "agora-rte-sdk/src/core/logger/type".Logger
+```
+
+<a id="pathPrefix"></a>
+
+### Optional pathPrefix
+
+```ts
+pathPrefix?: string
+```
+
+<a id="domainHolder"></a>
+
+### Static domainHolder
+
+```ts
+domainHolder: DomainHolder
+```
+
+## Methods
+
+<a id="deleteBatchUserProperties"></a>
+
+### deleteBatchUserProperties
+
+```ts
+deleteBatchUserProperties(__namedParameters: { data: { cause?: any; properties: string[]; userUuid: string }[]; roomUuid: string }): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| __namedParameters: \{ data: \{ cause?: any; properties: string[]; userUuid: string \}[]; roomUuid: string \} |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="deleteRoomProperties"></a>
+
+### deleteRoomProperties
+
+```ts
+deleteRoomProperties(__namedParameters: { cause?: unknown; properties: string[]; roomUuid: string }): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| __namedParameters: \{ cause?: unknown; properties: string[]; roomUuid: string \} |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="deleteStream"></a>
+
+### deleteStream
+
+```ts
+deleteStream(roomUuid: string, userUuid: string, streamUuid: string): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomUuid: string |  |
+| userUuid: string |  |
+| streamUuid: string |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="deleteUserProperties"></a>
+
+### deleteUserProperties
+
+```ts
+deleteUserProperties(__namedParameters: { cause?: any; properties: string[]; roomUuid: string; userUuid: string }): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| __namedParameters: \{ cause?: any; properties: string[]; roomUuid: string; userUuid: string \} |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="entryRoom"></a>
+
+### entryRoom
+
+```ts
+entryRoom(params: EntryRequestParams): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| params: EntryRequestParams |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="fetch"></a>
+
+### fetch
+
+```ts
+fetch(params: AgoraFetchParams): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| params: AgoraFetchParams |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="publishStreamToCdn"></a>
+
+### publishStreamToCdn
+
+```ts
+publishStreamToCdn(roomUuid: string, userUuid: string, streamUuid: string, params: PublishCdnParams): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomUuid: string |  |
+| userUuid: string |  |
+| streamUuid: string |  |
+| params: PublishCdnParams |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="sendCustomChannelMessage"></a>
+
+### sendCustomChannelMessage
+
+```ts
+sendCustomChannelMessage(roomUuid: string, payload: { cmd: string; data: any }, sync?: boolean): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomUuid: string |  |
+| payload: \{ cmd: string; data: any \} |  |
+| Optional sync: boolean |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="sendCustomPeerMessage"></a>
+
+### sendCustomPeerMessage
+
+```ts
+sendCustomPeerMessage(roomUuid: string, payload: { cmd: string; data: any }, toUserUuid: string, waitForAck?: boolean): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomUuid: string |  |
+| payload: \{ cmd: string; data: any \} |  |
+| toUserUuid: string |  |
+| Optional waitForAck: boolean |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="sendRoomChatMessage"></a>
+
+### sendRoomChatMessage
+
+```ts
+sendRoomChatMessage(message: string, roomUuid: string): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| message: string |  |
+| roomUuid: string |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="syncPeerSequence"></a>
+
+### syncPeerSequence
+
+```ts
+syncPeerSequence(roomUuid: string, userUuid: string, seqId: number, count: number): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomUuid: string |  |
+| userUuid: string |  |
+| seqId: number |  |
+| count: number |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="syncSequence"></a>
+
+### syncSequence
+
+```ts
+syncSequence(roomUuid: string, seqId: number, count: number): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomUuid: string |  |
+| seqId: number |  |
+| count: number |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="updateBatchUserProperties"></a>
+
+### updateBatchUserProperties
+
+```ts
+updateBatchUserProperties(__namedParameters: { data: { cause?: any; properties: unknown; userUuid: string }[]; roomUuid: string }): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| __namedParameters: \{ data: \{ cause?: any; properties: unknown; userUuid: string \}[]; roomUuid: string \} |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="updateDeviceState"></a>
+
+### updateDeviceState
+
+```ts
+updateDeviceState(roomUuid: string, userUuid: string, streamUuid: string, __namedParameters: { audioSourceState?: AgoraRteMediaSourceState; videoSourceState?: AgoraRteMediaSourceState }): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomUuid: string |  |
+| userUuid: string |  |
+| streamUuid: string |  |
+| __namedParameters: \{ audioSourceState?: AgoraRteMediaSourceState; videoSourceState?: AgoraRteMediaSourceState \} |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="updateOnlineState"></a>
+
+### updateOnlineState
+
+```ts
+updateOnlineState(__namedParameters: { roomUuid: string; userUuid: string }): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| __namedParameters: \{ roomUuid: string; userUuid: string \} |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="updateRoomProperties"></a>
+
+### updateRoomProperties
+
+```ts
+updateRoomProperties(__namedParameters: { cause?: unknown; properties: unknown; roomUuid: string }): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| __namedParameters: \{ cause?: unknown; properties: unknown; roomUuid: string \} |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="updateUserProperties"></a>
+
+### updateUserProperties
+
+```ts
+updateUserProperties(__namedParameters: { cause?: any; properties: unknown; roomUuid: string; userUuid: string }): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| __namedParameters: \{ cause?: any; properties: unknown; roomUuid: string; userUuid: string \} |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="upsertStream"></a>
+
+### upsertStream
+
+```ts
+upsertStream(roomUuid: string, userUuid: string, streamUuid: string, __namedParameters: { audioSourceType?: AgoraRteAudioSourceType; publishAudio?: AgoraRteMediaPublishState; publishVideo?: AgoraRteMediaPublishState; videoSourceType?: AgoraRteVideoSourceType }): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomUuid: string |  |
+| userUuid: string |  |
+| streamUuid: string |  |
+| __namedParameters: \{ audioSourceType?: AgoraRteAudioSourceType; publishAudio?: AgoraRteMediaPublishState; publishVideo?: AgoraRteMediaPublishState; videoSourceType?: AgoraRteVideoSourceType \} |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="upsertStreamBatch"></a>
+
+### upsertStreamBatch
+
+```ts
+upsertStreamBatch(roomUuid: string, streams: { audioSourceType?: AgoraRteAudioSourceType; audioState?: AgoraRteMediaPublishState; streamUuid: string; userUuid: string; videoSourceType?: AgoraRteVideoSourceType; videoState?: AgoraRteMediaPublishState }[]): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomUuid: string |  |
+| streams: \{ audioSourceType?: AgoraRteAudioSourceType; audioState?: AgoraRteMediaPublishState; streamUuid: string; userUuid: string; videoSourceType?: AgoraRteVideoSourceType; videoState?: AgoraRteMediaPublishState \}[] |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;

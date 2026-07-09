@@ -1,0 +1,104 @@
+---
+title: "agora::rtc::VideoTrackInfo结构体 参考"
+description: "VideoTrackInfo 结构体。"
+---
+
+[VideoTrackInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-video-track-info) 结构体。
+
+## 构造及析构函数说明
+
+<a id="a7aaca37980368886d9411bca3d42b5df"></a>
+
+### VideoTrackInfo()
+
+```cpp
+agora::rtc::VideoTrackInfo::VideoTrackInfo() inline
+```
+
+## 类成员变量说明
+
+<a id="a59f2f209b3b42a119f72d34299b2a551"></a>
+
+### isLocal
+
+```cpp
+bool agora::rtc::VideoTrackInfo::isLocal
+```
+
+视频轨道来自本地还是远端。
+
+- true: 视频轨道来自本地。
+- false: 视频轨道来自远端。
+
+<a id="a2c08de53f8efaf73d13dba7058e32f55"></a>
+
+### ownerUid
+
+```cpp
+uid_t agora::rtc::VideoTrackInfo::ownerUid
+```
+
+发布视频轨道的用户 ID。
+
+<a id="a2f06595fbc3fbe1a29bf2fe9841349fa"></a>
+
+### trackId
+
+```cpp
+track_id_t agora::rtc::VideoTrackInfo::trackId
+```
+
+视频轨道 ID。
+
+<a id="ac399791587116f2ebff4a5f9080669c8"></a>
+
+### channelId
+
+```cpp
+const char* agora::rtc::VideoTrackInfo::channelId
+```
+
+视频轨道的频道 ID。
+
+<a id="ae00d033e753a953922ca2ea355847c96"></a>
+
+### streamType
+
+```cpp
+VIDEO_STREAM_TYPE agora::rtc::VideoTrackInfo::streamType
+```
+
+视频流类型： [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#a5f78a8dc3552e4ec308270198dd49b55)。
+
+<a id="a135f10aedbb66f80a72814e4b996eb70"></a>
+
+### codecType
+
+```cpp
+VIDEO_CODEC_TYPE agora::rtc::VideoTrackInfo::codecType
+```
+
+视频编码类型： [VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#a79ccac2a3f394deae680761453d15215)。
+
+<a id="a66f05524ec26137a86b4f262cc87742a"></a>
+
+### encodedFrameOnly
+
+```cpp
+bool agora::rtc::VideoTrackInfo::encodedFrameOnly
+```
+
+视频轨道是否仅包含已编码的视频帧。
+
+- true: 视频轨道仅包含已编码的视频帧。
+- false: 视频轨道仅包含已解码的视频帧。
+
+<a id="a3bb83cdf3b66d7f3bcfe94fd6cefda5d"></a>
+
+### sourceType
+
+```cpp
+VIDEO_SOURCE_TYPE agora::rtc::VideoTrackInfo::sourceType
+```
+
+视频源类型： [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751)。

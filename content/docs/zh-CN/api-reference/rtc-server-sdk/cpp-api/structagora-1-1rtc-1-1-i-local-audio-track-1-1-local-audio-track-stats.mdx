@@ -1,0 +1,120 @@
+---
+title: "agora::rtc::ILocalAudioTrack::LocalAudioTrackStats结构体 参考"
+description: "本地音频轨道统计信息。"
+---
+
+本地音频轨道统计信息。
+
+## 构造及析构函数说明
+
+<a id="a6d5ab1019792f3df506d2046850a8013"></a>
+
+### LocalAudioTrackStats()
+
+```cpp
+agora::rtc::ILocalAudioTrack::LocalAudioTrackStats::LocalAudioTrackStats() inline
+```
+
+## 类成员变量说明
+
+<a id="a7c77ac68db0f232440a9a9b3121fb479"></a>
+
+### source_id
+
+```cpp
+uint32_t agora::rtc::ILocalAudioTrack::LocalAudioTrackStats::source_id
+```
+
+本地音频轨道的 source ID。
+
+<a id="a546174a829a99b6128a0ff90c29b2fb3"></a>
+
+### buffered_pcm_data_list_size
+
+```cpp
+uint32_t agora::rtc::ILocalAudioTrack::LocalAudioTrackStats::buffered_pcm_data_list_size
+```
+
+缓冲区中的音频帧数量。
+
+发送 PCM 数据时，数据首先暂存在缓冲区， SDK 会启动一个线程发送缓冲区的音频帧。
+
+<a id="a24864796d083bb3c05b11c89930c7b7c"></a>
+
+### missed_audio_frames
+
+```cpp
+uint32_t agora::rtc::ILocalAudioTrack::LocalAudioTrackStats::missed_audio_frames
+```
+
+线程在发送缓冲区的音频帧时丢失的音频帧数量。
+
+<a id="a1b886e3e91d02c0c956678c9e2ede1ec"></a>
+
+### sent_audio_frames
+
+```cpp
+uint32_t agora::rtc::ILocalAudioTrack::LocalAudioTrackStats::sent_audio_frames
+```
+
+线程从缓冲区发送的音频帧数量。
+
+<a id="acf208f36fa7c7bc1f29160b88ab00794"></a>
+
+### pushed_audio_frames
+
+```cpp
+uint32_t agora::rtc::ILocalAudioTrack::LocalAudioTrackStats::pushed_audio_frames
+```
+
+用户发送的音频帧数量。
+
+<a id="a7729be9e0e5cff9bd6d2422b0b46a423"></a>
+
+### dropped_audio_frames
+
+```cpp
+uint32_t agora::rtc::ILocalAudioTrack::LocalAudioTrackStats::dropped_audio_frames
+```
+
+由于缓冲区容量不足放弃的音频帧数量。
+
+<a id="a64d3681d7ae58c251100f433019a0a95"></a>
+
+### playout_audio_frames
+
+```cpp
+uint32_t agora::rtc::ILocalAudioTrack::LocalAudioTrackStats::playout_audio_frames
+```
+
+播放音频帧的数量。
+
+<a id="ada2d156938823b90140b097466618edb"></a>
+
+### effect_type
+
+```cpp
+uint32_t agora::rtc::ILocalAudioTrack::LocalAudioTrackStats::effect_type
+```
+
+音频效果类型。
+
+<a id="ab3703e20558b5111553862a9301c07ff"></a>
+
+### enabled
+
+```cpp
+bool agora::rtc::ILocalAudioTrack::LocalAudioTrackStats::enabled
+```
+
+是否允许本地音频轨道。
+
+<a id="a1b724993353768979e8465fe7d54efe7"></a>
+
+### audio_volume
+
+```cpp
+uint32_t agora::rtc::ILocalAudioTrack::LocalAudioTrackStats::audio_volume
+```
+
+音量大小，取值范围为 0 ~ 255.

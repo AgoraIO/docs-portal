@@ -1,0 +1,186 @@
+---
+title: "io.agora.iotlink.IRtmMgr接口 参考"
+description: "RTM 消息管理模块。"
+---
+
+RTM 消息管理模块。
+
+## 成员函数说明
+
+<a id="a68bb71ebca4ff1b9f04f9af747eb0b62"></a>
+
+### connect()
+
+```cpp
+int io.agora.iotlink.IRtmMgr.connect(final IotDevice iotDevice)
+```
+
+连接设备。
+
+成功连接后，SDK 会触发 [onConnectDone](/zh-CN/api-reference/iot-apaas/android/interfaceio-1-1agora-1-1iotlink-1-1-i-rtm-mgr-1-1-i-callback#ad1b920e164d4b4ffdab1e8fe04e37b95) 回调。你可以通过 RTM 控制该设备。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| iotDevice | 设备信息。详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="afc1f78dcdfb6f82f8505bfbd38957f19"></a>
+
+### disconnect()
+
+```cpp
+int io.agora.iotlink.IRtmMgr.disconnect()
+```
+
+断开设备连接。
+
+断开连接后，你不能通过 RTM 控制该设备。
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="a28b0f11eb68c355fab61c6a6e921a3ce"></a>
+
+### getStateMachine()
+
+```cpp
+int io.agora.iotlink.IRtmMgr.getStateMachine()
+```
+
+获取当前 `RtmMgr` 的状态。
+
+#### Returns
+
+当前 `RtmMgr` 的状态：
+
+- RTMMGR_STATE_DISCONNECTED(0x0001): 与 RTM 系统未连接。
+- RTMMGR_STATE_CONNECTING(0x0002): 正在连接 RTM 系统。
+- RTMMGR_STATE_CONNECTED(0x0003): 已连接 RTM 系统。
+- RTMMGR_STATE_RECONNECTING(0x0004): 正在重新连接 RTM 系统。可能原因是网络有问题。
+- RTMMGR_STATE_ABORTED(0x0005): 一般性错误。
+
+<a id="a1b4f5659485e079617a0065a4205e75b"></a>
+
+### registerListener()
+
+```cpp
+int io.agora.iotlink.IRtmMgr.registerListener(IRtmMgr.ICallback callback)
+```
+
+注册 `IRtmMgr` 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| callback | `IRtmMgr` 回调。详见 [ICallback](/zh-CN/api-reference/iot-apaas/android/interfaceio-1-1agora-1-1iotlink-1-1-i-rtm-mgr-1-1-i-callback)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="ae5da3b318f83bcb0710dc40cbc685f04"></a>
+
+### sendMessage()
+
+```cpp
+int io.agora.iotlink.IRtmMgr.sendMessage(byte[] messageData, final ISendCallback sendCallback)
+```
+
+向设备发送控制消息。
+
+发送完成后，SDK 会触发 [onSendDone](/zh-CN/api-reference/iot-apaas/android/interfaceio-1-1agora-1-1iotlink-1-1-i-rtm-mgr-1-1-i-send-callback#af6647b9fefe3082b03cc56154518d978) 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| messageData | 待发送的 RTM 消息数据。声网推荐发送小于 4 KB 的数据。 |
+| sendCallback | RTM 消息发送完成回调。详见 [ISendCallback](/zh-CN/api-reference/iot-apaas/android/interfaceio-1-1agora-1-1iotlink-1-1-i-rtm-mgr-1-1-i-send-callback)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="adc247fecfe7d374dc6c729e5b8fd8407"></a>
+
+### unregisterListener()
+
+```cpp
+int io.agora.iotlink.IRtmMgr.unregisterListener(IRtmMgr.ICallback callback)
+```
+
+注销 `IRtmMgr` 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| callback | `IRtmMgr` 回调。详见 [ICallback](/zh-CN/api-reference/iot-apaas/android/interfaceio-1-1agora-1-1iotlink-1-1-i-rtm-mgr-1-1-i-callback)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+## 类成员变量说明
+
+<a id="a64c9c00930e3c24b49402b6986c52ea2"></a>
+
+### RTMMGR_STATE_ABORTED
+
+```cpp
+final int io.agora.iotlink.IRtmMgr.RTMMGR_STATE_ABORTED = 0x0005 static
+```
+
+0x0005：一般性错误。
+
+<a id="a2ee8aa2c7bc3634908cf1ba319f5667f"></a>
+
+### RTMMGR_STATE_CONNECTED
+
+```cpp
+final int io.agora.iotlink.IRtmMgr.RTMMGR_STATE_CONNECTED = 0x0003 static
+```
+
+0x0003：已连接 RTM 系统。
+
+<a id="a175fd444d6934468894b7a0ce8b50caa"></a>
+
+### RTMMGR_STATE_CONNECTING
+
+```cpp
+final int io.agora.iotlink.IRtmMgr.RTMMGR_STATE_CONNECTING = 0x0002 static
+```
+
+0x0002：正在连接 RTM 系统。
+
+<a id="a9f4231e534b7c6afee874ce56e68c17c"></a>
+
+### RTMMGR_STATE_DISCONNECTED
+
+```cpp
+final int io.agora.iotlink.IRtmMgr.RTMMGR_STATE_DISCONNECTED = 0x0001 static
+```
+
+0x0001：与 RTM 系统未连接。
+
+<a id="a585b49678e63638e800ba12fca79cdd2"></a>
+
+### RTMMGR_STATE_RECONNECTING
+
+```cpp
+final int io.agora.iotlink.IRtmMgr.RTMMGR_STATE_RECONNECTING = 0x0004 static
+```
+
+0x0004：正在重新连接 RTM 系统。可能原因是网络有问题。

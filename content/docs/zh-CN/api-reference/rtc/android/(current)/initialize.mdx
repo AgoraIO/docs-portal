@@ -1,8 +1,10 @@
 ---
 title: "初始化相关"
-description: "初始化相关 API reference."
+description: "添加事件处理器。"
 ---
 <a id="toc_initialize"></a>
+
+## 初始化相关
 
 <a id="api_irtcengine_addhandler"></a>
 
@@ -18,7 +20,7 @@ public void addHandler(IRtcEngineEventHandler handler)
 
 <a id="api_irtcengine_addhandler__detailed_desc"></a>
 
-SDK 使用 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler) 将回调发送到 App。你可以继承该类中的方法以接收回调。该类中的所有方法都有默认（空）实现，因此你只需根据实际场景继承所需的回调方法。 在回调中应避免执行耗时操作或调用可能阻塞线程的 API，例如 [sendStreamMessage](/zh-CN/api-reference/rtc/android/metadata/datastream#api_irtcengine_sendstreammessage)，否则可能导致 SDK 无法正常工作。
+SDK 使用 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler) 将回调发送到 App。你可以继承该类中的方法以接收回调。该类中的所有方法都有默认（空）实现，因此你只需根据实际场景继承所需的回调方法。 在回调中应避免执行耗时操作或调用可能阻塞线程的 API，例如 [sendStreamMessage](/zh-CN/api-reference/rtc/android/datastream#api_irtcengine_sendstreammessage)，否则可能导致 SDK 无法正常工作。
 
 <a id="api_irtcengine_addhandler__parameters"></a>
 

@@ -1,0 +1,487 @@
+---
+title: "StreamStore"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+`StreamStore` 类用于管理媒体流。
+
+- EduStoreBase
+  - StreamStore
+
+## Accessors
+
+<a id="localCameraStreamUuid"></a>
+
+### localCameraStreamUuid
+
+```ts
+get localCameraStreamUuid(): undefined | string
+```
+
+本地摄像头视频流 UUID
+
+#### Returns
+
+Returns undefined | string
+
+<a id="localMicStreamUuid"></a>
+
+### localMicStreamUuid
+
+```ts
+get localMicStreamUuid(): undefined | string
+```
+
+本地麦克风音频流 UUID
+
+#### Returns
+
+Returns undefined | string
+
+<a id="localShareStreamUuid"></a>
+
+### localShareStreamUuid
+
+```ts
+get localShareStreamUuid(): undefined | string
+```
+
+本地屏幕共享视频流 UUID
+
+#### Returns
+
+Returns undefined | string
+
+<a id="shareStreamToken"></a>
+
+### shareStreamToken
+
+```ts
+get shareStreamToken(): undefined | string
+```
+
+本地屏幕共享 Token
+
+#### Returns
+
+Returns undefined | string
+
+<a id="shareStreamTokens"></a>
+
+### shareStreamTokens
+
+```ts
+get shareStreamTokens(): Map<string, string>
+```
+
+屏幕共享 Tokens key: 流 UUID value: RTC Token
+
+#### Returns
+
+Returns Map &lt; string, string &gt;
+
+<a id="streamByStreamUuid"></a>
+
+### streamByStreamUuid
+
+```ts
+get streamByStreamUuid(): Map<string, EduStream>
+```
+
+房间内流信息列表 key: 流 UUID value: 流对象
+
+#### Returns
+
+Returns Map &lt; string, [EduStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/edu-stream) &gt;
+
+<a id="streamByUserUuid"></a>
+
+### streamByUserUuid
+
+```ts
+get streamByUserUuid(): Map<string, Set<string>>
+```
+
+房间内用户流信息列表 key: 用户 UUID value: 流 UUID 集合
+
+#### Returns
+
+Returns Map &lt; string, Set &lt; string &gt; &gt;
+
+<a id="streamVolumes"></a>
+
+### streamVolumes
+
+```ts
+get streamVolumes(): Map<string, number>
+```
+
+音量列表 key: 流 UUID value: 音量值，范围：0 ~ 1
+
+#### Returns
+
+Returns Map &lt; string, number &gt;
+
+## Methods
+
+<a id="destroyScreenShareStream"></a>
+
+### destroyScreenShareStream
+
+```ts
+destroyScreenShareStream(scene: AgoraRteScene): void
+```
+
+销毁屏幕共享流
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| scene: AgoraRteScene | 房间对象 |
+
+#### Returns
+
+Returns void
+
+<a id="initializeScreenShareStream"></a>
+
+### initializeScreenShareStream
+
+```ts
+initializeScreenShareStream(scene: AgoraRteScene, streamUuid: string, rtcToken: string): void
+```
+
+初始化屏幕共享流
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| scene: AgoraRteScene | 房间对象 |
+| streamUuid: string | 流 UUID |
+| rtcToken: string | RTC Token |
+
+#### Returns
+
+Returns void
+
+<a id="muteRemoteAudioStream"></a>
+
+### muteRemoteAudioStream
+
+```ts
+muteRemoteAudioStream(stream: EduStream, muted: boolean, fromScene?: AgoraRteScene): void
+```
+
+订阅/取消远端音频流
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| stream: EduStream | 流对象 |
+| muted: boolean | 是否订阅 |
+| Optional fromScene: AgoraRteScene | 流所在的房间对象，不传默认为当前房间 |
+
+#### Returns
+
+Returns void
+
+<a id="muteRemoteVideoStream"></a>
+
+### muteRemoteVideoStream
+
+```ts
+muteRemoteVideoStream(stream: EduStream, muted: boolean, fromScene?: AgoraRteScene): void
+```
+
+订阅/取消远端视频流
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| stream: EduStream | 流对象 |
+| muted: boolean | 是否订阅 |
+| Optional fromScene: AgoraRteScene | 流所在的房间对象，不传默认为当前房间 |
+
+#### Returns
+
+Returns void
+
+<a id="muteRemoteVideoStreamMass"></a>
+
+### muteRemoteVideoStreamMass
+
+```ts
+muteRemoteVideoStreamMass(streams: EduStream[], muted: boolean, fromScene?: AgoraRteScene): undefined | Promise<string[]>
+```
+
+批量订阅
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streams: EduStream[] | 流对象列表 |
+| muted: boolean | 是否订阅 |
+| Optional fromScene: AgoraRteScene | 流所在的房间对象，不传默认为当前房间 |
+
+#### Returns
+
+Returns undefined | Promise &lt; string [] &gt;
+
+<a id="publishScreenShare"></a>
+
+### publishScreenShare
+
+```ts
+publishScreenShare(fromScene?: AgoraRteScene, streamOptions?: Partial<AgoraStreamStates>): Promise<any>
+```
+
+为本地用户创建一条屏幕共享流，返回已创建的流ID与Token。 此方法只允许房间内创建一路屏幕共享流，若房间内需要同时存在多路屏幕流，请使用 publishScreenShareStateless
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional fromScene: AgoraRteScene | 流所在的房间对象，不传默认为当前房间 |
+| Optional streamOptions: Partial&lt;AgoraStreamStates&gt; | 发流选项 |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="publishScreenShareStateless"></a>
+
+### publishScreenShareStateless
+
+```ts
+publishScreenShareStateless(fromScene?: AgoraRteScene): Promise<any>
+```
+
+为本地用户创建一条屏幕共享流，返回已创建的流ID与Token。 此方法允许房间内创建多路屏幕共享流
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional fromScene: AgoraRteScene | 流所在的房间对象，不传默认为当前房间 |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="publishStreamToCdn"></a>
+
+### publishStreamToCdn
+
+```ts
+publishStreamToCdn(fromScene?: AgoraRteScene): Promise<void>
+```
+
+旁路推流，将当前已发布的流推送到CDN
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional fromScene: AgoraRteScene | 流所在的房间对象，不传默认为当前房间 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="setLatencyLevel"></a>
+
+### setLatencyLevel
+
+```ts
+setLatencyLevel(level: AgoraLatencyLevel, fromScene?: AgoraRteScene): Promise<void>
+```
+
+设置延时等级（仅可在当前端没有发布音视频流的情况下使用）
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| level: AgoraLatencyLevel | 流的延时等级 |
+| Optional fromScene: AgoraRteScene | 流所在的房间对象，不传默认为当前房间 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="setRemoteVideoStreamType"></a>
+
+### setRemoteVideoStreamType
+
+```ts
+setRemoteVideoStreamType(streamUuid: string, remoteVideoStreamType: AGRemoteVideoStreamType, fromScene?: AgoraRteScene): Promise<void>
+```
+
+设置远端视频质量
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string | 要设置的流的 UUID |
+| remoteVideoStreamType: AGRemoteVideoStreamType | 要设置的流类型 |
+| Optional fromScene: AgoraRteScene | 流所在的房间对象，不传默认为当前房间 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="setupRemoteVideo"></a>
+
+### setupRemoteVideo
+
+```ts
+setupRemoteVideo(stream: EduStream, dom: HTMLElement, mirror: boolean, renderMode?: AGRenderMode, fromScene?: AgoraRteScene): void
+```
+
+渲染远端视频
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| stream: EduStream | 流对象 |
+| dom: HTMLElement | 渲染节点 |
+| mirror: boolean | 是否镜像 |
+| Optional renderMode: AGRenderMode | 填充方式 |
+| Optional fromScene: AgoraRteScene | 流所在的房间对象，不传默认为当前房间 |
+
+#### Returns
+
+Returns void
+
+<a id="unpublishScreenShare"></a>
+
+### unpublishScreenShare
+
+```ts
+unpublishScreenShare(fromScene?: AgoraRteScene): Promise<void>
+```
+
+取消发布屏幕共享流
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional fromScene: AgoraRteScene | 流所在的房间对象，不传默认为当前房间 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="unpublishScreenShareStateless"></a>
+
+### unpublishScreenShareStateless
+
+```ts
+unpublishScreenShareStateless(fromScene?: AgoraRteScene): Promise<void>
+```
+
+取消发布屏幕共享流
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional fromScene: AgoraRteScene | 流所在的房间对象，不传默认为当前房间 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="updateExpandedScopeAndStreams"></a>
+
+### updateExpandedScopeAndStreams
+
+```ts
+updateExpandedScopeAndStreams(state: 0 | 1, data: { userUuids: string[] }): Promise<void>
+```
+
+更新视频墙开关状态和发流用户列表
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| state: 0 \| 1 | 1 开启视频墙 0 关闭视频墙 |
+| data: \{ userUuids: string[] \} | userUuids 发流用户列表 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="updateLocalPublishState"></a>
+
+### updateLocalPublishState
+
+```ts
+updateLocalPublishState(state: { audioState?: AgoraRteMediaPublishState; videoState?: AgoraRteMediaPublishState }, fromScene?: AgoraRteScene): Promise<void>
+```
+
+更新本地音频和视频发布状态
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| state: \{ audioState?: AgoraRteMediaPublishState; videoState?: AgoraRteMediaPublishState \} | 音频和视频发布状态 |
+| Optional fromScene: AgoraRteScene | 流所在的房间对象，不传默认为当前房间 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="updateRemotePublishState"></a>
+
+### updateRemotePublishState
+
+```ts
+updateRemotePublishState(userUuid: string, streamUuid: string, state: { audioState?: AgoraRteMediaPublishState; videoState?: AgoraRteMediaPublishState }, fromScene?: AgoraRteScene): Promise<void>
+```
+
+更新远端音频和视频发布状态
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userUuid: string | 用户 ID |
+| streamUuid: string | 流 ID |
+| state: \{ audioState?: AgoraRteMediaPublishState; videoState?: AgoraRteMediaPublishState \} | 音频和视频发布状态 |
+| Optional fromScene: AgoraRteScene | 流所在的房间对象，不传默认为当前房间 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="updateRemotePublishStateBatch"></a>
+
+### updateRemotePublishStateBatch
+
+```ts
+updateRemotePublishStateBatch(streams: { audioSourceType?: AgoraRteAudioSourceType; audioState?: AgoraRteMediaPublishState; streamUuid: string; userUuid: string; videoSourceType?: AgoraRteVideoSourceType; videoState?: AgoraRteMediaPublishState }[], fromScene?: AgoraRteScene): Promise<void>
+```
+
+批量更新远端音频和视频发布状态
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streams: \{ audioSourceType?: AgoraRteAudioSourceType; audioState?: AgoraRteMediaPublishState; streamUuid: string; userUuid: string; videoSourceType?: AgoraRteVideoSourceType; videoState?: AgoraRteMediaPublishState \}[] | 流列表 |
+| Optional fromScene: AgoraRteScene |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;

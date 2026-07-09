@@ -1,0 +1,592 @@
+---
+title: "AGAudioRawDataDispatcher"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- AGAudioRawDataDispatcher
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new AGAudioRawDataDispatcher(): AGAudioRawDataDispatcher
+```
+
+#### Returns
+
+Returns [AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agaudio-raw-data-dispatcher)
+
+## Properties
+
+<a id="logger"></a>
+
+### logger
+
+```ts
+logger: "agora-rte-sdk/src/core/logger/type".Logger
+```
+
+## Accessors
+
+<a id="audioTrackRawDataConfig"></a>
+
+### audioTrackRawDataConfig
+
+```ts
+get audioTrackRawDataConfig(): AgoraRteAudioRawDataConfig
+```
+
+#### Returns
+
+Returns [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/interfaces/agora-rte-audio-raw-data-config)
+
+<a id="hasAudioTrackRawDataObservers"></a>
+
+### hasAudioTrackRawDataObservers
+
+```ts
+get hasAudioTrackRawDataObservers(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="hasMicrophoneRawDataObservers"></a>
+
+### hasMicrophoneRawDataObservers
+
+```ts
+get hasMicrophoneRawDataObservers(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="isStarted"></a>
+
+### isStarted
+
+```ts
+get isStarted(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="microphoneTrackRawDataConfig"></a>
+
+### microphoneTrackRawDataConfig
+
+```ts
+get microphoneTrackRawDataConfig(): AgoraRteAudioRawDataConfig
+```
+
+#### Returns
+
+Returns [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/interfaces/agora-rte-audio-raw-data-config)
+
+## Methods
+
+<a id="addAudioRawDataObserver"></a>
+
+### addAudioRawDataObserver
+
+```ts
+addAudioRawDataObserver(observer: AgoraRteAudioRawDataObserver, position: AgoraRteAudioRawDataPosition): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraRteAudioRawDataObserver |  |
+| position: AgoraRteAudioRawDataPosition |  |
+
+#### Returns
+
+Returns void
+
+<a id="dispatch"></a>
+
+### dispatch
+
+```ts
+dispatch(event: "AudioRawDataRecored", ...params: [rawData: AgoraRteAudioRawData]): void
+```
+
+```ts
+dispatch(event: "AudioRawDataBeforeMixed", ...params: [rawData: AgoraRteAudioRawData, streamUuid: string, channelName: string]): void
+```
+
+```ts
+dispatch(event: "ObserverChanged", ...params: [position: AgoraRteAudioRawDataPosition]): void
+```
+
+```ts
+dispatch(event: "MicrophoneTrackCreated", ...params: [track: ILocalAudioTrack]): void
+```
+
+```ts
+dispatch(event: "AudioTrackSubscribed", ...params: [track: IRemoteAudioTrack, streamUuid: string, channelName: string]): void
+```
+
+```ts
+dispatch(event: "MicrophoneTrackDestroyed", ...params: []): void
+```
+
+```ts
+dispatch(event: "AudioTrackUnsubscribed", ...params: [streamUuid: string, channelName: string]): void
+```
+
+```ts
+dispatch(event: "Start", ...params: []): void
+```
+
+```ts
+dispatch(event: "Stop", ...params: []): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "AudioRawDataRecored" |  |
+| Rest ...params: [rawData: AgoraRteAudioRawData] |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "AudioRawDataBeforeMixed" |  |
+| Rest ...params: [rawData: AgoraRteAudioRawData, streamUuid: string, channelName: string] |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "ObserverChanged" |  |
+| Rest ...params: [position: AgoraRteAudioRawDataPosition] |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "MicrophoneTrackCreated" |  |
+| Rest ...params: [track: ILocalAudioTrack] |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "AudioTrackSubscribed" |  |
+| Rest ...params: [track: IRemoteAudioTrack, streamUuid: string, channelName: string] |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "MicrophoneTrackDestroyed" |  |
+| Rest ...params: [] |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "AudioTrackUnsubscribed" |  |
+| Rest ...params: [streamUuid: string, channelName: string] |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "Start" |  |
+| Rest ...params: [] |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "Stop" |  |
+| Rest ...params: [] |  |
+
+#### Returns
+
+Returns void
+
+<a id="register"></a>
+
+### register
+
+```ts
+register(event: "AudioRawDataRecored", callback: CallbackRawDataRecorded): void
+```
+
+```ts
+register(event: "AudioRawDataBeforeMixed", callback: CallbackRawDataBeforeMixed): void
+```
+
+```ts
+register(event: "ObserverChanged", callback: CallbackObserverChanged): void
+```
+
+```ts
+register(event: "MicrophoneTrackCreated", callback: CallbackMicrophoneTrackCreated): void
+```
+
+```ts
+register(event: "AudioTrackSubscribed", callback: CallbackAudioTrackSubscribed): void
+```
+
+```ts
+register(event: "MicrophoneTrackDestroyed", callback: CallbackMicrophoneTrackDestroyed): void
+```
+
+```ts
+register(event: "AudioTrackUnsubscribed", callback: CallbackAudioTrackUnsubscribed): void
+```
+
+```ts
+register(event: "Start", callback: CallbackStart): void
+```
+
+```ts
+register(event: "Stop", callback: CallbackStop): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "AudioRawDataRecored" |  |
+| callback: CallbackRawDataRecorded |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "AudioRawDataBeforeMixed" |  |
+| callback: CallbackRawDataBeforeMixed |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "ObserverChanged" |  |
+| callback: CallbackObserverChanged |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "MicrophoneTrackCreated" |  |
+| callback: CallbackMicrophoneTrackCreated |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "AudioTrackSubscribed" |  |
+| callback: CallbackAudioTrackSubscribed |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "MicrophoneTrackDestroyed" |  |
+| callback: CallbackMicrophoneTrackDestroyed |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "AudioTrackUnsubscribed" |  |
+| callback: CallbackAudioTrackUnsubscribed |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "Start" |  |
+| callback: CallbackStart |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "Stop" |  |
+| callback: CallbackStop |  |
+
+#### Returns
+
+Returns void
+
+<a id="removeAudioRawDataObserver"></a>
+
+### removeAudioRawDataObserver
+
+```ts
+removeAudioRawDataObserver(observer: AgoraRteAudioRawDataObserver, position: AgoraRteAudioRawDataPosition): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraRteAudioRawDataObserver |  |
+| position: AgoraRteAudioRawDataPosition |  |
+
+#### Returns
+
+Returns void
+
+<a id="setConfig"></a>
+
+### setConfig
+
+```ts
+setConfig(config: AgoraRteAudioRawDataConfig, position: AgoraRteAudioRawDataPosition): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| config: AgoraRteAudioRawDataConfig |  |
+| position: AgoraRteAudioRawDataPosition |  |
+
+#### Returns
+
+Returns void
+
+<a id="start"></a>
+
+### start
+
+```ts
+start(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="stop"></a>
+
+### stop
+
+```ts
+stop(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="unregister"></a>
+
+### unregister
+
+```ts
+unregister(event: "AudioRawDataRecored", callback: CallbackRawDataRecorded): void
+```
+
+```ts
+unregister(event: "AudioRawDataBeforeMixed", callback: CallbackRawDataBeforeMixed): void
+```
+
+```ts
+unregister(event: "ObserverChanged", callback: CallbackObserverChanged): void
+```
+
+```ts
+unregister(event: "MicrophoneTrackCreated", callback: CallbackMicrophoneTrackCreated): void
+```
+
+```ts
+unregister(event: "AudioTrackSubscribed", callback: CallbackAudioTrackSubscribed): void
+```
+
+```ts
+unregister(event: "MicrophoneTrackDestroyed", callback: CallbackMicrophoneTrackDestroyed): void
+```
+
+```ts
+unregister(event: "AudioTrackUnsubscribed", callback: CallbackAudioTrackUnsubscribed): void
+```
+
+```ts
+unregister(event: "Start", callback: CallbackStart): void
+```
+
+```ts
+unregister(event: "Stop", callback: CallbackStop): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "AudioRawDataRecored" |  |
+| callback: CallbackRawDataRecorded |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "AudioRawDataBeforeMixed" |  |
+| callback: CallbackRawDataBeforeMixed |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "ObserverChanged" |  |
+| callback: CallbackObserverChanged |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "MicrophoneTrackCreated" |  |
+| callback: CallbackMicrophoneTrackCreated |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "AudioTrackSubscribed" |  |
+| callback: CallbackAudioTrackSubscribed |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "MicrophoneTrackDestroyed" |  |
+| callback: CallbackMicrophoneTrackDestroyed |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "AudioTrackUnsubscribed" |  |
+| callback: CallbackAudioTrackUnsubscribed |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "Start" |  |
+| callback: CallbackStart |  |
+
+#### Returns
+
+Returns void
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: "Stop" |  |
+| callback: CallbackStop |  |
+
+#### Returns
+
+Returns void

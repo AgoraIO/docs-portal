@@ -1,0 +1,124 @@
+---
+title: "agora::util::AutoPtr< T > 模板类 参考"
+description: "被 agora::util::CopyableAutoPtr< T > 继承."
+---
+
+## 成员类型定义说明
+
+<a id="a49c5430118aa8f491afe93012b8573ff"></a>
+
+### value_type
+
+```cpp
+template<class T > typedef T agora::util::AutoPtr<T >::value_type protected
+```
+
+<a id="ad173e3764e303895329caf204900f67f"></a>
+
+### pointer_type
+
+```cpp
+template<class T > typedef T* agora::util::AutoPtr<T >::pointer_type protected
+```
+
+## 构造及析构函数说明
+
+<a id="a97f379823e861d0880095de272f6213f"></a>
+
+### AutoPtr() [1/2]
+
+```cpp
+template<class T > agora::util::AutoPtr<T >::AutoPtr(pointer_type p = NULL) inlineexplicit
+```
+
+<a id="a43baa947bb96567c44b0b6107fc6b9d7"></a>
+
+### ~AutoPtr()
+
+```cpp
+template<class T > agora::util::AutoPtr<T >::~AutoPtr() inline
+```
+
+<a id="a426e890b3b156ce1342d2c4339d7c9a9"></a>
+
+### AutoPtr() [2/2]
+
+```cpp
+template<class T > agora::util::AutoPtr<T >::AutoPtr(const AutoPtr<T >&) private
+```
+
+## 成员函数说明
+
+<a id="a2e26bf8c5f76b7c44e4edc13acf95ea0"></a>
+
+### operator bool()
+
+```cpp
+template<class T > agora::util::AutoPtr<T >::operator bool() const inline
+```
+
+<a id="acae1fcbd3e1cc1dd43251d34cceb145f"></a>
+
+### operator*()
+
+```cpp
+template<class T > value_type& agora::util::AutoPtr<T >::operator*() const inline
+```
+
+<a id="a72c6067d1da007fddd647485b679c933"></a>
+
+### operator-&gt;()
+
+```cpp
+template<class T > pointer_type agora::util::AutoPtr<T >::operator->() const inline
+```
+
+<a id="a385fb698e748d0ff60e77676cc3875ca"></a>
+
+### get()
+
+```cpp
+template<class T > pointer_type agora::util::AutoPtr<T >::get() const inline
+```
+
+<a id="a5d33168c40e7394b16e3413b187498cc"></a>
+
+### release()
+
+```cpp
+template<class T > pointer_type agora::util::AutoPtr<T >::release() inline
+```
+
+<a id="a0b2ae6c54a1de7a9c4c2bb1bd1f40294"></a>
+
+### reset()
+
+```cpp
+template<class T > void agora::util::AutoPtr<T >::reset(pointer_type ptr = NULL) inline
+```
+
+<a id="a264095d02f29ca4f1dfe5a0fa6a9d77b"></a>
+
+### queryInterface()
+
+```cpp
+template<class T > template<class C1, class C2 > bool agora::util::AutoPtr<T >::queryInterface(C1* c, C2 iid) inline
+```
+
+<a id="aea4cbf6221eef35820ec17879074274b"></a>
+
+### operator=()
+
+```cpp
+template<class T > AutoPtr& agora::util::AutoPtr<T >::operator=(const AutoPtr<T >&) private
+```
+
+## 类成员变量说明
+
+<a id="a74d3177909d0321cb264bb3364bfa8d6"></a>
+
+### ptr_
+
+```cpp
+template<class T > pointer_type agora::util::AutoPtr<T >::ptr_ private
+```

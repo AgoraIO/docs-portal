@@ -1,0 +1,41 @@
+---
+title: "changeOwner method"
+description: "API docs for the changeOwner method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Transfers the group ownership.
+
+Only the group owner can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `newOwner` | The new owner ID. |
+
+```dart
+Future<void> changeOwner(String groupId, String newOwner)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> changeOwner(
+  String groupId,
+  String newOwner,
+) async {
+  Map req = {'groupId': groupId, 'owner': newOwner};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.updateGroupOwner, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

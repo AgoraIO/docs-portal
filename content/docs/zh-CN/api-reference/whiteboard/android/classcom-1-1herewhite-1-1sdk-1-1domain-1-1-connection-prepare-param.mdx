@@ -1,0 +1,77 @@
+---
+title: "com.herewhite.sdk.domain.ConnectionPrepareParam类 参考"
+description: "白板预连接参数。"
+---
+
+白板预连接参数。
+
+## 构造及析构函数说明
+
+<a id="a16d112ac06b5ad7e66fd98a47cebf6db"></a>
+
+### ConnectionPrepareParam() [1/2]
+
+```cpp
+com.herewhite.sdk.domain.ConnectionPrepareParam.ConnectionPrepareParam(String appId, Region region)
+```
+
+创建一个 `ConnectionPrepareParam` 实例。
+
+默认在 12 小时内不再次检查连接。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| appId | 白板项目的唯一标识，可在控制台获取，详见 [获取白板项目的 App Identifier](/doc/whiteboard/ios/whiteboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。 |
+| region | 用户的 App 所在的区域，详见 `Region`。 |
+
+<a id="a36e35af7cb029a506b3fc87d9807a08e"></a>
+
+### ConnectionPrepareParam() [2/2]
+
+```cpp
+com.herewhite.sdk.domain.ConnectionPrepareParam.ConnectionPrepareParam(String appId, Region region, Long expire)
+```
+
+创建一个 `ConnectionPrepareParam` 实例。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| appId | 白板项目的唯一标识，可在控制台获取，详见 [获取白板项目的 App Identifier](/doc/whiteboard/ios/whiteboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。 |
+| region | 用户的 App 所在的区域，详见 `Region`。 |
+| expire | 过期时间, 在该时间内不再次检查连接。默认为 12 小时。 |
+
+## 成员函数说明
+
+<a id="a84cad03748a4c62378da1ff4c34cc1c5"></a>
+
+### getAppId()
+
+```cpp
+String com.herewhite.sdk.domain.ConnectionPrepareParam.getAppId()
+```
+
+获取白板项目的唯一标识。
+
+<a id="a2e2d042dd9f114429cbc328723bbf518"></a>
+
+### getRegion()
+
+```cpp
+Region com.herewhite.sdk.domain.ConnectionPrepareParam.getRegion()
+```
+
+获取用户的 App 所在的区域。
+
+<a id="a9d3436c5130cb3b50776645103b90b11"></a>
+
+### getExpire()
+
+```cpp
+Long com.herewhite.sdk.domain.ConnectionPrepareParam.getExpire()
+```
+
+获取过期时间。

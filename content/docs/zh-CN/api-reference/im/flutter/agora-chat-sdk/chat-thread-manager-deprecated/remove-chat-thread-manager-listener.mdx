@@ -1,0 +1,29 @@
+---
+title: "removeChatThreadManagerListener method"
+description: "API docs for the removeChatThreadManagerListener method from the ChatThreadManagerDeprecated extension, for the Dart programming language."
+---
+
+Removes the chat thread listener.
+
+After adding a chat thread manager listener, you can remove this listener if you do not want to listen for it.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The chat thread listener to be removed. See [ChatThreadManagerListener](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-thread-manager-listener). |
+
+```dart
+@Deprecated("Use #removeEventHandler to instead")void removeChatThreadManagerListener(ChatThreadManagerListener listener)@Deprecated("Use #removeEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@Deprecated("Use #removeEventHandler to instead")
+void removeChatThreadManagerListener(ChatThreadManagerListener listener) {
+  _listeners.remove(listener);
+}
+```

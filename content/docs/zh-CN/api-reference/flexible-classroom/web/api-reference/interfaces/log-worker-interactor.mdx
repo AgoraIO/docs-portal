@@ -1,0 +1,82 @@
+---
+title: "LogWorkerInteractor"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- LogWorkerInteractor
+
+## Methods
+
+<a id="collectLogs"></a>
+
+### collectLogs
+
+```ts
+collectLogs(labels: string[]): Promise<{ file: File; lastId: number }>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| labels: string[] |  |
+
+#### Returns
+
+Returns Promise &lt; \{file: File; lastId: number \} &gt;
+
+<a id="deleteLogs"></a>
+
+### deleteLogs
+
+```ts
+deleteLogs(labels: string[], lastId: number): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| labels: string[] |  |
+| lastId: number |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="sendLog"></a>
+
+### sendLog
+
+```ts
+sendLog(message: string, label: string): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| message: string |  |
+| label: string |  |
+
+#### Returns
+
+Returns void
+
+<a id="setMaxRecords"></a>
+
+### setMaxRecords
+
+```ts
+setMaxRecords(maxRecords: number): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| maxRecords: number |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;

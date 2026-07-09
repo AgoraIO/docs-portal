@@ -1,0 +1,31 @@
+---
+title: "isLoginBefore method"
+description: "API docs for the isLoginBefore method from the ChatClient class, for the Dart programming language."
+---
+
+Checks whether the user has logged in before and did not log out.
+
+Reference: If you need to check whether the SDK is connected to the server, please use [isConnected](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-client/is-connected).
+
+**Return** The result of whether the user has logged in before. `true`: means that the user has logged in before, `false`: means that the user has not login before or has called [logout](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-client/logout) method.
+
+```dart
+Future<bool> isLoginBefore()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<bool> isLoginBefore() async {
+  Map result =
+      await ClientChannel.invokeMethod(ChatMethodKeys.isLoggedInBefore);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result.boolValue(ChatMethodKeys.isLoggedInBefore);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

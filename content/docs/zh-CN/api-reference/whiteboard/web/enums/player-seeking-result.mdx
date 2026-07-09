@@ -1,0 +1,52 @@
+---
+title: "PlayerSeekingResult"
+description: "PlayerSeekingResult API reference."
+---
+
+调用 [seekToProgressTime](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks#seektoprogresstime) 定位回放的结果。
+
+### `since`
+
+v2.15.0
+
+## Enumeration members
+
+<a id="override"></a>
+
+### Override
+
+```ts
+Override: = "override"
+```
+
+跳转操作被另一个跳转操作覆盖，因此被取消。
+
+<a id="stopped"></a>
+
+### Stopped
+
+```ts
+Stopped: = "stopped"
+```
+
+跳转操作因播放器停止而终止。
+
+<a id="success"></a>
+
+### Success
+
+```ts
+Success: = "success"
+```
+
+成功跳转至指定播放位置。
+
+<a id="successbutunnecessary"></a>
+
+### SuccessButUnnecessary
+
+```ts
+SuccessButUnnecessary: = "successButUnnecessary"
+```
+
+当前播放位置已经是指定播放位置，无需跳转。

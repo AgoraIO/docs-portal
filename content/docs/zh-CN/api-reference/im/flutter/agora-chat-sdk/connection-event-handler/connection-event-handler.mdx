@@ -1,0 +1,46 @@
+---
+title: "ConnectionEventHandler constructor"
+description: "API docs for the ConnectionEventHandler constructor from Class ConnectionEventHandler from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The chat connection listener callback.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| [onConnected](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-connected) | The SDK connects to the chat server successfully callback. |
+| [onDisconnected](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-disconnected) | The SDK disconnect from the chat server callback. |
+| [onUserDidLoginFromOtherDevice](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-did-login-from-other-device) | Current user account is logged in to another device callback. |
+| [onUserDidRemoveFromServer](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-did-remove-from-server) | Current chat user is removed from the server callback. |
+| [onUserDidForbidByServer](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-did-forbid-by-server) | Current chat user is forbid from the server callback. |
+| [onUserDidChangePassword](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-did-change-password) | Current chat user is changed password callback. |
+| [onUserDidLoginTooManyDevice](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-did-login-too-many-device) | Current chat user logged to many devices callback. |
+| [onUserKickedByOtherDevice](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-kicked-by-other-device) | Current chat user kicked by other device callback. |
+| [onUserAuthenticationFailed](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-authentication-failed) | Current chat user authentication failed callback. |
+| [onTokenWillExpire](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-token-will-expire) | The token is about to expire callback. |
+| [onTokenDidExpire](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-token-did-expire) | The token has expired callback. |
+
+```dart
+ConnectionEventHandler({VoidCallback? onConnected, VoidCallback? onDisconnected, VoidCallback? onUserDidLoginFromOtherDevice, VoidCallback? onUserDidRemoveFromServer, VoidCallback? onUserDidForbidByServer, VoidCallback? onUserDidChangePassword, VoidCallback? onUserDidLoginTooManyDevice, VoidCallback? onUserKickedByOtherDevice, VoidCallback? onUserAuthenticationFailed, VoidCallback? onTokenWillExpire, VoidCallback? onTokenDidExpire})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ConnectionEventHandler({
+  this.onConnected,
+  this.onDisconnected,
+  this.onUserDidLoginFromOtherDevice,
+  this.onUserDidRemoveFromServer,
+  this.onUserDidForbidByServer,
+  this.onUserDidChangePassword,
+  this.onUserDidLoginTooManyDevice,
+  this.onUserKickedByOtherDevice,
+  this.onUserAuthenticationFailed,
+  this.onTokenWillExpire,
+  this.onTokenDidExpire,
+});
+```

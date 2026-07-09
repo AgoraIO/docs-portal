@@ -1,0 +1,171 @@
+---
+title: "agora 命名空间参考"
+description: "频道使用场景。"
+---
+
+## 类型定义说明
+
+<a id="a53ad2a97475c0fe887004d50085a99b8"></a>
+
+### any_document_t
+
+```cpp
+typedef commons::cjson::JsonWrapper agora::any_document_t
+```
+
+<a id="a67aa7eac4d2b30c5c02951f1303bcc48"></a>
+
+### user_id_t
+
+```cpp
+typedef const char* agora::user_id_t
+```
+
+<a id="a17bc4c41f9ee9f5f1c1f593fcc98fb16"></a>
+
+### view_t
+
+```cpp
+typedef void* agora::view_t
+```
+
+<a id="a46a0d0064b7c6713de256d37dc24b9ad"></a>
+
+### UserList
+
+```cpp
+typedef util::AList<UserInfo> agora::UserList
+```
+
+## 枚举类型说明
+
+<a id="abc5eb7ac0efb18032c8383e528c490a2"></a>
+
+### CHANNEL_PROFILE_TYPE
+
+```cpp
+enum agora::CHANNEL_PROFILE_TYPE
+```
+
+频道使用场景。
+
+#### Values
+
+| Name | Description |
+| --- | --- |
+| <a id="abc5eb7ac0efb18032c8383e528c490a2a850a75a5cefb8754a6e95bb9c0ac6a79"></a> CHANNEL_PROFILE_COMMUNICATION | 0: 通信场景。当频道中只有两个用户时，建议使用该场景。 |
+| <a id="abc5eb7ac0efb18032c8383e528c490a2aaeadbf9ad465462101362d7af62927b8"></a> CHANNEL_PROFILE_LIVE_BROADCASTING | 1: 直播场景。该场景有主播和观众两种用户角色，可以通过 setClientRole 设置。主播可以发布和接收音视频流，观众直接接收流。适用于语聊房、视频直播、互动大班课等应用场景。 |
+| <a id="abc5eb7ac0efb18032c8383e528c490a2a68b518311fa97b9908d878934052b278"></a> __deprecated | 2: 游戏语音场景。该场景默认使用低功耗低码率的编解码器，且频道内任何用户都可以自由发言，适用于游戏场景。<br />3: 互动场景。该场景对延时进行了优化。如果你的场景中有用户需要频道互动，建议使用该场景。 |
+| <a id="abc5eb7ac0efb18032c8383e528c490a2a68b518311fa97b9908d878934052b278"></a> __deprecated | 2: 游戏语音场景。该场景默认使用低功耗低码率的编解码器，且频道内任何用户都可以自由发言，适用于游戏场景。<br />3: 互动场景。该场景对延时进行了优化。如果你的场景中有用户需要频道互动，建议使用该场景。 |
+
+<a id="a2c4d7294b18a6b4c3169f7199d390a10"></a>
+
+### LOCAL_PROXY_MODE
+
+```cpp
+enum agora::LOCAL_PROXY_MODE
+```
+
+与声网私有媒体服务器的连接模式。
+
+#### Values
+
+| Name | Description |
+| --- | --- |
+| <a id="a2c4d7294b18a6b4c3169f7199d390a10aec772b2be54424d0c7eaf06bed028fc7"></a> ConnectivityFirst | 0：SDK 优先尝试连接指定的声网私有媒体服务器；如果无法连接到指定的声网私有媒体服务器，则连接声网 SD-RTN™。 |
+| <a id="a2c4d7294b18a6b4c3169f7199d390a10a34e4ccffde4dd673ea5a34c20e5980cf"></a> LocalOnly | 1：SDK 只尝试连接指定的声网私有媒体服务器。 |
+
+<a id="a08597f4fe6a0ef1ad7b53538fd27d119"></a>
+
+### VIDEO_PIXEL_FORMAT
+
+```cpp
+enum agora::VIDEO_PIXEL_FORMAT
+```
+
+视频像素格式。
+
+#### Values
+
+| Name | Description |
+| --- | --- |
+| <a id="a08597f4fe6a0ef1ad7b53538fd27d119a3f7d3b67b593a82b964976325a778ce9"></a> VIDEO_PIXEL_UNKNOWN | 0: 未知格式 |
+| <a id="a08597f4fe6a0ef1ad7b53538fd27d119a55951b3a967c1c85164db7a79c57142d"></a> VIDEO_PIXEL_I420 | 1: I420 |
+| <a id="a08597f4fe6a0ef1ad7b53538fd27d119a05f86dc1dd18b729ea4a21bd33300727"></a> VIDEO_PIXEL_BGRA | 2: BGRA |
+| <a id="a08597f4fe6a0ef1ad7b53538fd27d119a47fdf1a732e99e89956679cddc75288e"></a> VIDEO_PIXEL_NV21 | 3: NV21 |
+| <a id="a08597f4fe6a0ef1ad7b53538fd27d119aa0567499d5572d7126efcef0b0ee8c68"></a> VIDEO_PIXEL_RGBA | 4: RGBA |
+| <a id="a08597f4fe6a0ef1ad7b53538fd27d119abe4c794f857d6a4feafa9bf94829eff9"></a> VIDEO_PIXEL_NV12 | 8: NV12 |
+| <a id="a08597f4fe6a0ef1ad7b53538fd27d119a6c816ae8b1b3801e0c943cb74a15e602"></a> VIDEO_TEXTURE_2D | 10: GL_TEXTURE_2D |
+| <a id="a08597f4fe6a0ef1ad7b53538fd27d119a6e258b00ce17a5f5fdac0792c0ae6082"></a> VIDEO_TEXTURE_OES | 11: GL_TEXTURE_OES |
+| <a id="a08597f4fe6a0ef1ad7b53538fd27d119aeceebebedd48e638d0a0468b1cb07c0e"></a> VIDEO_PIXEL_I422 | 16: I422 |
+
+<a id="a92645db30ed80a3009fb4e346665f29c"></a>
+
+### VIDEO_MODULE_POSITION
+
+```cpp
+enum agora::VIDEO_MODULE_POSITION
+```
+
+视频模块位置。
+
+#### Values
+
+| Name | Description |
+| --- | --- |
+| <a id="a92645db30ed80a3009fb4e346665f29ca8ab21b2c672dd08a5b02f2c10d17c079"></a> POSITION_POST_CAPTURER | 位于 SDK 的视频采集模块之后。 |
+| <a id="a92645db30ed80a3009fb4e346665f29ca91268490395bf6c351f7f30e1ec1aa01"></a> POSITION_PRE_RENDERER | 位于 SDK 的视频渲染模块之前。 |
+| <a id="a92645db30ed80a3009fb4e346665f29ca3e84b648b04c9adfef98cb211a2a5077"></a> POSITION_PRE_ENCODER | 位于 SDK 的视频编码模块之前。 |
+| <a id="a92645db30ed80a3009fb4e346665f29cab6484036194a5a5084e5365c857a3470"></a> POSITION_POST_FILTERS | 位于 SDK 的过滤器模块之后。 |
+
+## 函数说明
+
+<a id="adba8480af8b8c0a9a331e1a21b888e58"></a>
+
+### nullopt()
+
+```cpp
+const nullopt_t agora::nullopt(0)
+```
+
+<a id="a601776c867e91314b749d3157cd46a89"></a>
+
+### make_refptr() [1/3]
+
+```cpp
+template<typename T, typename... types> agora_refptr<T> agora::make_refptr(types&&... args) inline
+```
+
+<a id="a066ee24de8654834c7bd95dc2d6871af"></a>
+
+### make_refptr() [2/3]
+
+```cpp
+template<typename T > agora_refptr<T> agora::make_refptr() inline
+```
+
+<a id="a019e8190966e79cca979f2e3b3c64361"></a>
+
+### make_refptr() [3/3]
+
+```cpp
+template<typename T, typename P0 > agora_refptr<T> agora::make_refptr(const P0& p0) inline
+```
+
+## 变量说明
+
+<a id="a23dc78d8fca1c545bfb533237fcca4af"></a>
+
+### in_place
+
+```cpp
+const in_place_t agora::in_place = {}
+```
+
+<a id="ad7412d9f3ea9df5f452273bf6e9226ef"></a>
+
+### RefCountReleaseStatus
+
+```cpp
+OPTIONAL_ENUM_CLASS agora::RefCountReleaseStatus { kDroppedLastRef, kOtherRefsRemained }
+```

@@ -1,0 +1,211 @@
+---
+title: "HandUpStore"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+`HandUpStore` 类提供举手上台功能相关能力。
+
+- EduStoreBase
+  - HandUpStore
+
+## Methods
+
+<a id="allowHandsUp"></a>
+
+### allowHandsUp
+
+```ts
+allowHandsUp(state: 0 | 1, autoStage: boolean): void
+```
+
+配置允许学生举手
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| state: 0 \| 1 | 是否允许举手，0 不允许，1 允许 |
+| autoStage: boolean | 是否开启自动上台 |
+
+#### Returns
+
+Returns void
+
+<a id="cancelHandUp"></a>
+
+### cancelHandUp
+
+```ts
+cancelHandUp(userUuid?: string): Promise<void>
+```
+
+取消举手
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional userUuid: string | 用户 ID |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="cancelWaveArm"></a>
+
+### cancelWaveArm
+
+```ts
+cancelWaveArm(userUuid?: string): Promise<void>
+```
+
+取消挥手
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional userUuid: string |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="confirmInvited"></a>
+
+### confirmInvited
+
+```ts
+confirmInvited(): Promise<void>
+```
+
+##### `deprecated`
+
+使用 onPodium 替代 确认接受上台邀请
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="invitePodium"></a>
+
+### invitePodium
+
+```ts
+invitePodium(userUuid: string, duration: number, payload?: unknown): Promise<void>
+```
+
+##### `deprecated`
+
+使用 handUp 替代 邀请学生上台互动
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userUuid: string | 学生ID |
+| duration: number | 超时时长 |
+| Optional payload: unknown | 扩展信息 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="offPodium"></a>
+
+### offPodium
+
+```ts
+offPodium(userUuid: string): Promise<void>
+```
+
+让指定学生下讲台
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userUuid: string | 用户 ID |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="offPodiumAll"></a>
+
+### offPodiumAll
+
+```ts
+offPodiumAll(): Promise<void>
+```
+
+让全部学生下讲台
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="onPodium"></a>
+
+### onPodium
+
+```ts
+onPodium(userUuid: string, source?: PodiumSrouce): Promise<void>
+```
+
+同意学生上讲台
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userUuid: string | 用户 ID |
+| Optional source: PodiumSrouce | 邀请来源：<br />- 老师从花名册邀请学生上讲台<br />- 学生举手老师同意上讲台 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="rejectHandUp"></a>
+
+### rejectHandUp
+
+```ts
+rejectHandUp(userUuid: string): Promise<void>
+```
+
+##### `deprecated`
+
+使用 cancelHandUp 代替 拒绝举手上台请求
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userUuid: string | 用户 ID |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="waveArm"></a>
+
+### waveArm
+
+```ts
+waveArm(teacherUuid: string, duration: number, payload?: unknown): Promise<void>
+```
+
+学生挥手
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| teacherUuid: string | 老师 ID |
+| duration: number | 超时时长 |
+| Optional payload: unknown | 扩展信息 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;

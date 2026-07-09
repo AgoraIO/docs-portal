@@ -1,0 +1,64 @@
+---
+title: "Agora RTSA Java API Reference for Linux"
+description: "Agora RTSA Java API Reference for Linux API reference."
+---
+<a id="md_mainpage"></a>
+
+- AgoraRtcService 类包含应用程序调用的所有方法。
+- AgoraRtcEvents 类和 AgoraRtmEvents 类用于 SDK 向 App 发送回调事件通知。
+
+| 方法 | 描述 |
+| --- | --- |
+| [getVersion](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a21c6c424fc5f8767ac4b85cb7dee5fa4) | 获取 SDK 版本。 |
+| [errToStr](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#ae3726d7ee4fbec4195da27cec77e3801) | 将错误码转为静态字符串。 |
+| [init](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#aab47fc030b290004c6d29a0a306db032) | 初始化 SDK。 |
+| [setLogLevel](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a18ac2015b97a079793ec57c7ac14f337) | 设置 SDK 的日志等级。 |
+| [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) | 创建 Connection。 |
+| [destroyConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a427f76570108b23da9d456fdd55b9251) | 销毁 Connection。 |
+| [configLog](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a7e951d0431bfb567b42eef639cee5313) | 配置 SDK 的日志文件。 |
+| [joinChannel](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a3dd72e07c6799725a7dcce4b137028e2) | 加入频道。 |
+| [renewToken](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#ae3308277b86fd9f7b2814b89856a6ed5) | 更新指定频道或全部频道的 Token。 |
+| [sendAudioData](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a81683ebe7ac7ecd950fe21d6cea0a70b) | 向加入的频道发送音频帧。 |
+| [sendVideoData](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a7ca97e6efca40fb7d42386b1a8a8123e) | 向加入的频道发送视频帧。 |
+| [muteLocalAudio](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#af006e362e612bdb98adc95bdc08eefd9) | 暂停/恢复发送本地音频流。 |
+| [muteRemoteAudio](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a47a7f426c467d93e03f3f51291fe85b4) | 暂停/恢复接收指定频道内指定远端用户的音频流。 |
+| [muteLocalVideo](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#aabcc6ac3658ef50df7e947607c51e2f2) | 暂停/恢复发送本地视频流。 |
+| [muteRemoteVideo](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a2a7361457f57b9673d217afa1f2d3fcc) | 暂停/恢复接收指定频道内指定远端用户的视频流。 |
+| [requestVideoKeyFrame](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a55dd74d7f6a86ee7c03f9d7a1c97ddad) | 请求指定远端用户尽快为指定远端视频流生成关键帧。 |
+| [setBweParam](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#aaef5ac6c2de342b7999686b9c61ded44) | 设置 bandwidth estimation (BWE) 参数。 |
+| [sendAudioData](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a81683ebe7ac7ecd950fe21d6cea0a70b) | 向加入的频道发送音频帧。 |
+| [sendVideoData](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a7ca97e6efca40fb7d42386b1a8a8123e) | 向加入的频道发送视频帧。 |
+| [leaveChannel](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a588efd08277fc89440d9f4b6eb524f56) | 退出频道。 |
+| [fini](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a47fdbd78e30cef7fa3d75db65933416e) | 释放所有资源。 |
+| [loginRtm](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a4f4f1a958399ee05bdbdde1d155bbf5e) | 登录云信令 (原 RTM) 服务。 |
+| [logoutRtm](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a8a4b5206365497da3fef8ce2da9cc09f) | 登出云信令 (原 RTM) 服务。 |
+| [sendRtm](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a8edd069332b33a33c22a06eb67eb142c) | 通过云信令 (原 RTM) 服务发送消息。 |
+| [setParams](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a0fb86ff4db8c4e9ec7080503ac479cad) | 通过 JSON 配置 SDK 提供技术预览或特别定制功能。 |
+| [sendRdtMsg](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#ad5ae8f354d07ee1e2c6f0bd3cfdd9265) | 发送 RDT 消息。 |
+| [getRdtStatusInfo](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#ad5ca517c82b93d15b985edf396c10853) | 获取 RDT 通道的信息。 |
+
+用于向应用程序发送回调通知。
+
+| 回调 | 描述 |
+| --- | --- |
+| [onJoinChannelSuccess](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a5bb92673e6f711d90a38f80eaeeac68b) | 成功加入频道回调。 |
+| [onConnectionLost](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a374b442b331423bdc026b8c8bb3c5992) | 连接丢失回调。 |
+| [onReconnecting](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a7acf192aa14b40b48724e80eab3a7946) | 正在重新连接回调。 |
+| [onRejoinChannelSuccess](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#afe1708a775ef98c4e1c6c026a7621513) | 重新成功加入频道回调。 |
+| [onError](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#aa4da82349b590c47e1871cf6d8ef7378) | 发生错误回调。 |
+| [onLicenseValidationFailure](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a8c749481c0832b6ab31dc5a9847a0289) | 设备 License 验证失败回调。 |
+| [onUserJoined](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#ab106ab849c26bf2474a7a973f1bc8610) | 远端用户加入频道回调。 |
+| [onUserOffline](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a63a180e6bbcb7e80f3a79f6b56271a55) | 远端用户离开频道回调。 |
+| [onUserMuteAudio](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#acb31baf6018383eeedb6bb8c9aecc315) | 频道内远端用户暂停/恢复发送音频流回调。 |
+| [onUserMuteVideo](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a78a9ff37d58c5cc59c7becd01bacc71d) | 频道内远端用户暂停/恢复发送视频流回调。 |
+| [onKeyFrameGenReq](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#ad76d77b295c65bc694734d0294926a92) | 频道内远端用户请求关键帧回调。 |
+| [onAudioData](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a7610d1e6adc9bddc2639a617253b683d) | 收到频道内远端用户的音频帧回调。 |
+| [onVideoData](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a41c96a8fb436b9cb03b58b26cc93d57e) | 收到频道内远端用户的视频帧回调。 |
+| [onMixedAudioData](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#ac4b3654913a464adb2ddef9b3ab39420) | 收到频道内本地用户和远端用户的混音数据回调。 |
+| [onTargetBitrateChanged](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a1e4b25b017cdb624f1083d9a1d7a9f47) | 建议应用程序调整码率。 |
+| [onTokenPrivilegeWillExpire](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a625c36a7b434fc60e1b5970a73fe4e88) | Token 服务即将过期回调。 |
+| [onRtmData](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtm-events#ac20a70fb7aabe2cbec71dddab154cd2a) | 云信令 (原 RTM) 消息回调。 |
+| [onRtmEvent](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtm-events#a739d4f3797cb76f88e80eeb7d0e57b8c) | 云信令 (原 RTM) 事件回调。 |
+| [onSendRtmDataResult](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtm-events#a892902f769ee0cbe64dbb73ab41b83af) | `sendRtm` 方法调用结果回调。 |
+| [onRdtState](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a60b0269fb3b5926411a4a5730735a5ab) | RDT 通道的连接状态已改变回调。 |
+| [onRdtMsg](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a6edb4f4ab6a30fc1d7e74314f50fdb21) | 收到 RDT 消息回调。 |

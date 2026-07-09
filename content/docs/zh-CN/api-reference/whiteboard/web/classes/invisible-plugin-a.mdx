@@ -1,0 +1,190 @@
+---
+title: "InvisiblePlugin<A>"
+description: "InvisiblePlugin<A> API reference."
+---
+
+不可见插件的描述。
+
+### `since`
+
+2.10.0
+
+Agora 支持的自定义插件包括组件插件和不可见插件。二者的主要区别有：
+
+- 不可见插件全局唯一，只能建立一个对象。
+- 不可见插件不会显示在白板界面上，但它的 attributes 状态会在全房间自动同步。
+
+- InvisiblePlugin
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new InvisiblePlugin(context: InvisiblePluginContext): InvisiblePlugin
+```
+
+不可见插件的构造函数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| context: InvisiblePluginContext | 不可见插件的上下文。 |
+
+#### Returns
+
+Returns [InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin-a)
+
+## Properties
+
+<a id="attributes"></a>
+
+### attributes
+
+```ts
+attributes: A
+```
+
+不可见插件的属性。
+
+<a id="callbacks"></a>
+
+### callbacks
+
+```ts
+callbacks: Callbacks<InvisibleCallbacks<A>>
+```
+
+不可见插件的事件回调。
+
+<a id="displayer"></a>
+
+### displayer
+
+```ts
+displayer: Displayer
+```
+
+不可见插件的 `Displayer` 对象。
+
+## Methods
+
+<a id="destroy"></a>
+
+### destroy
+
+```ts
+destroy(): void
+```
+
+删除不可见插件。
+
+#### Returns
+
+Returns void
+
+<a id="getattributesvalue"></a>
+
+### getAttributesValue
+
+```ts
+getAttributesValue(key: string[] | string): any
+```
+
+获取不可见插件属性的值。
+
+##### `since`
+
+2.13.7
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| key: string[] \| string | 属性对应的 key。 |
+
+#### Returns
+
+Returns any
+
+<a id="onattributesupdate"></a>
+
+### onAttributesUpdate
+
+```ts
+onAttributesUpdate(attributes: A): void
+```
+
+不可见插件属性更新的回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| attributes: A | 更新的 attributes。 |
+
+#### Returns
+
+Returns void
+
+<a id="ondestroy"></a>
+
+### onDestroy
+
+```ts
+onDestroy(): void
+```
+
+不可见插件删除的回调。
+
+#### Returns
+
+Returns void
+
+<a id="setattributes"></a>
+
+### setAttributes
+
+```ts
+setAttributes(modifyAttributes: Partial<A>): void
+```
+
+设置不可见插件的属性。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| modifyAttributes: Partial&lt;A&gt; | 不可见插件的属性。 |
+
+#### Returns
+
+Returns void
+
+<a id="updateattributes"></a>
+
+### updateAttributes
+
+```ts
+updateAttributes(keys: string | string[], value: any): void
+```
+
+更新不可见插件的属性。
+
+##### `since`
+
+2.13.7
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| keys: string \| string[] | 单个或多个属性对应的 key。 |
+| value: any | 属性的值。 |
+
+#### Returns
+
+Returns void

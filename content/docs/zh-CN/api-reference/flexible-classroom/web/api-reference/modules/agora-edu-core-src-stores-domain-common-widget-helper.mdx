@@ -1,0 +1,239 @@
+---
+title: "agora-edu-core/src/stores/domain/common/widget/helper"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+## Functions
+
+<a id="convertLocalDimensionsToRatio"></a>
+
+### Const convertLocalDimensionsToRatio
+
+```ts
+convertLocalDimensionsToRatio(dimensions: Dimensions, outerSize: Dimensions): { ratioDimensions: { height: number; width: number } }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| dimensions: Dimensions |  |
+| outerSize: Dimensions |  |
+
+#### Returns
+
+Returns \{ratioDimensions: \{height: number; width: number \} \}
+
+- ##### ratioDimensions: \{height: number; width: number \}
+  - ##### height: number
+  - ##### width: number
+
+<a id="convertLocalPositionToRatio"></a>
+
+### Const convertLocalPositionToRatio
+
+```ts
+convertLocalPositionToRatio(position: Point, medX: number, medY: number): { ratioPosition: { x: number; y: number } }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| position: Point |  |
+| medX: number |  |
+| medY: number |  |
+
+#### Returns
+
+Returns \{ratioPosition: \{x: number; y: number \} \}
+
+- ##### ratioPosition: \{x: number; y: number \}
+  - ##### x: number
+  - ##### y: number
+
+<a id="convertLocalToRatio"></a>
+
+### Const convertLocalToRatio
+
+```ts
+convertLocalToRatio(position: Point, dimensions: Dimensions, medX: number, medY: number, outerSize: Dimensions): { ratioDimensions: { height: number; width: number }; ratioPosition: { x: number; y: number } }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| position: Point |  |
+| dimensions: Dimensions |  |
+| medX: number |  |
+| medY: number |  |
+| outerSize: Dimensions |  |
+
+#### Returns
+
+Returns \{ratioDimensions: \{height: number; width: number \}; ratioPosition: \{x: number; y: number \} \}
+
+- ##### ratioDimensions: \{height: number; width: number \}
+  - ##### height: number
+  - ##### width: number
+- ##### ratioPosition: \{x: number; y: number \}
+  - ##### x: number
+  - ##### y: number
+
+<a id="convertRatioToLocal"></a>
+
+### Const convertRatioToLocal
+
+```ts
+convertRatioToLocal(diffRatio: { ratioX: number; ratioY: number }, sizeRatio: { ratioHeight: number; ratioWidth: number }, outerSize: { height: number; width: number }, resizeBounds: ResizeBounds): { dimensions: { height: number; width: number }; position: { x: number; y: number } }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| diffRatio: \{ ratioX: number; ratioY: number \} |  |
+| sizeRatio: \{ ratioHeight: number; ratioWidth: number \} |  |
+| outerSize: \{ height: number; width: number \} |  |
+| resizeBounds: ResizeBounds |  |
+
+#### Returns
+
+Returns \{dimensions: \{height: number; width: number \}; position: \{x: number; y: number \} \}
+
+- ##### dimensions: \{height: number; width: number \}
+  - ##### height: number
+  - ##### width: number
+- ##### position: \{x: number; y: number \}
+  - ##### x: number
+  - ##### y: number
+
+<a id="convertRatioToLocalDimensions"></a>
+
+### Const convertRatioToLocalDimensions
+
+```ts
+convertRatioToLocalDimensions(sizeRatio: { ratioHeight: number; ratioWidth: number }, outerSize: { height: number; width: number }, resizeBounds: ResizeBounds): { dimensions: { height: number; width: number } }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| sizeRatio: \{ ratioHeight: number; ratioWidth: number \} |  |
+| outerSize: \{ height: number; width: number \} |  |
+| resizeBounds: ResizeBounds |  |
+
+#### Returns
+
+Returns \{dimensions: \{height: number; width: number \} \}
+
+- ##### dimensions: \{height: number; width: number \}
+  - ##### height: number
+  - ##### width: number
+
+<a id="convertRatioToLocalPosition"></a>
+
+### Const convertRatioToLocalPosition
+
+```ts
+convertRatioToLocalPosition(diffRatio: { ratioX: number; ratioY: number }, sizeRatio: { ratioHeight: number; ratioWidth: number }, outerSize: { height: number; width: number }, resizeBounds: ResizeBounds): { position: { x: number; y: number } }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| diffRatio: \{ ratioX: number; ratioY: number \} |  |
+| sizeRatio: \{ ratioHeight: number; ratioWidth: number \} |  |
+| outerSize: \{ height: number; width: number \} |  |
+| resizeBounds: ResizeBounds |  |
+
+#### Returns
+
+Returns \{position: \{x: number; y: number \} \}
+
+- ##### position: \{x: number; y: number \}
+  - ##### x: number
+  - ##### y: number
+
+<a id="convertRatioToLocalPositionWithFixedDimensions"></a>
+
+### Const convertRatioToLocalPositionWithFixedDimensions
+
+```ts
+convertRatioToLocalPositionWithFixedDimensions(diffRatio: { ratioX: number; ratioY: number }, dimensions: Dimensions, outerSize: { height: number; width: number }, resizeBounds: ResizeBounds): { position: { x: number; y: number } }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| diffRatio: \{ ratioX: number; ratioY: number \} |  |
+| dimensions: Dimensions |  |
+| outerSize: \{ height: number; width: number \} |  |
+| resizeBounds: ResizeBounds |  |
+
+#### Returns
+
+Returns \{position: \{x: number; y: number \} \}
+
+- ##### position: \{x: number; y: number \}
+  - ##### x: number
+  - ##### y: number
+
+<a id="convertRatioToLocalWithFixedDimensions"></a>
+
+### Const convertRatioToLocalWithFixedDimensions
+
+```ts
+convertRatioToLocalWithFixedDimensions(diffRatio: { ratioX: number; ratioY: number }, dimensions: Dimensions, outerSize: { height: number; width: number }, resizeBounds: ResizeBounds): { dimensions: Dimensions; position: { x: number; y: number } }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| diffRatio: \{ ratioX: number; ratioY: number \} |  |
+| dimensions: Dimensions |  |
+| outerSize: \{ height: number; width: number \} |  |
+| resizeBounds: ResizeBounds |  |
+
+#### Returns
+
+Returns \{dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions); position: \{x: number; y: number \} \}
+
+- ##### dimensions: Dimensions
+- ##### position: \{x: number; y: number \}
+  - ##### x: number
+  - ##### y: number
+
+<a id="createClosure"></a>
+
+### Const createClosure
+
+```ts
+createClosure(): { next: any; prev: any }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| next:function |  |
+| prev:function |  |
+
+#### Returns
+
+Returns \{next: any; prev: any \}
+
+- ##### next:function
+  - next (key: string, value: any): void
+  - #### Parameters #### Returns void
+    - ##### key: string
+    - ##### value: any
+- ##### prev:function
+  - prev (key: string): any
+  - #### Parameters #### Returns any
+    - ##### key: string

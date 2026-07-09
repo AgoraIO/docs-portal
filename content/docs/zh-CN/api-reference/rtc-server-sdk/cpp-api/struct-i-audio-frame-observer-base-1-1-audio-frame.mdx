@@ -1,0 +1,96 @@
+---
+title: "IAudioFrameObserverBase::AudioFrame结构体 参考"
+description: "AudioFrame 定义。"
+---
+
+[AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp-api/struct-i-audio-frame-observer-base-1-1-audio-frame) 定义。
+
+## 构造及析构函数说明
+
+<a id="af4dec7f86562efb3b69e43b5c9d74209"></a>
+
+### AudioFrame()
+
+```cpp
+IAudioFrameObserverBase::AudioFrame::AudioFrame() inline
+```
+
+## 类成员变量说明
+
+<a id="a1cc6ee4af9171914ef31e1377c57c2d8"></a>
+
+### type
+
+```cpp
+AUDIO_FRAME_TYPE IAudioFrameObserverBase::AudioFrame::type
+```
+
+音频帧类型。
+
+<a id="a134793a5fdf9bc3dd9d8d786fff0d91b"></a>
+
+### samplesPerChannel
+
+```cpp
+int IAudioFrameObserverBase::AudioFrame::samplesPerChannel
+```
+
+每个声道的采样点数。
+
+<a id="a123c2eaf58c2a614a85d4e312bad88f1"></a>
+
+### bytesPerSample
+
+```cpp
+agora::rtc::BYTES_PER_SAMPLE IAudioFrameObserverBase::AudioFrame::bytesPerSample
+```
+
+每个采样点的字节数: 对于 PCM 来说，一般使用 16 bit，即两个字节。
+
+<a id="aafecd24b5b77363a361a6b62e759301d"></a>
+
+### channels
+
+```cpp
+int IAudioFrameObserverBase::AudioFrame::channels
+```
+
+声道数量(如果是立体声，数据是交叉的)。
+
+<a id="a2c8283d9c208084a0a14bd9076dd3287"></a>
+
+### samplesPerSec
+
+```cpp
+int IAudioFrameObserverBase::AudioFrame::samplesPerSec
+```
+
+每声道每秒的采样点数。
+
+<a id="a15f276b110d0cd091feef88ed0075ca2"></a>
+
+### buffer
+
+```cpp
+void* IAudioFrameObserverBase::AudioFrame::buffer
+```
+
+声音数据缓冲区（如果是立体声，数据是交叉存储的）。 缓冲区数据大小 buffer = samples × channels × bytesPerSample。
+
+<a id="aa1fe277862b62979a78401f7c7184b99"></a>
+
+### renderTimeMs
+
+```cpp
+int64_t IAudioFrameObserverBase::AudioFrame::renderTimeMs
+```
+
+外部音频帧的渲染时间戳。 你可以使用该时间戳还原音频帧顺序；在有视频的场景中（包含使用外部视频源的场景），该参数可以用于实现音视频同步。
+
+<a id="a3534a6702c540af48b1a6bb4108549c7"></a>
+
+### avsync_type
+
+```cpp
+int IAudioFrameObserverBase::AudioFrame::avsync_type
+```

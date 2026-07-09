@@ -1,0 +1,74 @@
+---
+title: "io.agora.recording.common.Common.WARN_CODE_TYPE 枚举类型参考"
+description: "警告代码。"
+---
+
+警告代码。
+
+### `注解`
+
+使用录制 SDK 的过程中，也可能收到 Native SDK 的警告代码，请参考 [Agora Native SDK 警告代码](/doc/rtc/android/error-code)。
+
+## 成员函数说明
+
+<a id="a0d954a4db6b320c7a017fcaa5f706e2d"></a>
+
+### WARN_RECOVERY_CORE_SERVICE_FAILURE()
+
+```cpp
+io.agora.recording.common.Common.WARN_CODE_TYPE.WARN_RECOVERY_CORE_SERVICE_FAILURE(108)
+```
+
+108：录制程序出现了异常错误（例如崩溃），录制 SDK 会重新恢复录制。
+
+## 类成员变量说明
+
+<a id="a5bca953a516d4be03bc2c9ad774af83a"></a>
+
+### WARN_NO_AVAILABLE_CHANNEL
+
+```cpp
+io.agora.recording.common.Common.WARN_CODE_TYPE.WARN_NO_AVAILABLE_CHANNEL =(103)
+```
+
+103： 没有可用的频道资源。可能是因为服务端没法分配频道资源。
+
+<a id="a09b7b77a8a78bda6669851bbce08bd00"></a>
+
+### WARN_LOOKUP_CHANNEL_TIMEOUT
+
+```cpp
+io.agora.recording.common.Common.WARN_CODE_TYPE.WARN_LOOKUP_CHANNEL_TIMEOUT =(104)
+```
+
+104：查找频道超时。在加入频道时 SDK 先要查找指定的频道，出现该警告一般是因为网络太差，连接不到服务器。
+
+<a id="a4ebf962b096c9c114b0cc1548af852b4"></a>
+
+### WARN_LOOKUP_CHANNEL_REJECTED
+
+```cpp
+io.agora.recording.common.Common.WARN_CODE_TYPE.WARN_LOOKUP_CHANNEL_REJECTED =(105)
+```
+
+105：查找频道请求被服务器拒绝。服务器可能没有办法处理这个请求或请求是非法的。
+
+<a id="ae2cf38533daa8f97bdb04d1b3bdd2344"></a>
+
+### WARN_OPEN_CHANNEL_TIMEOUT
+
+```cpp
+io.agora.recording.common.Common.WARN_CODE_TYPE.WARN_OPEN_CHANNEL_TIMEOUT =(106)
+```
+
+106：打开频道超时。查找到指定频道后，SDK 接着打开该频道，超时一般是因为网络太差，连接不到服务器。
+
+<a id="a1b0f3bac9e80a3885e9632e62d72ee06"></a>
+
+### WARN_OPEN_CHANNEL_REJECTED
+
+```cpp
+io.agora.recording.common.Common.WARN_CODE_TYPE.WARN_OPEN_CHANNEL_REJECTED =(107)
+```
+
+107：打开频道请求被服务器拒绝。服务器可能没有办法处理该请求或该请求是非法的。

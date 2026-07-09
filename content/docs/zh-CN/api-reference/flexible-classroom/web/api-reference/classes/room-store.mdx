@@ -1,0 +1,432 @@
+---
+title: "RoomStore"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+`RoomStore` 类用于初始化教室和监听教室数据。
+
+- EduStoreBase
+  - RoomStore
+
+## Properties
+
+<a id="classroomSchedule"></a>
+
+### classroomSchedule
+
+```ts
+classroomSchedule: ClassroomSchedule
+```
+
+教室日程信息
+
+## Accessors
+
+<a id="acceptedList"></a>
+
+### acceptedList
+
+```ts
+get acceptedList(): HandUpProgress[]
+```
+
+台上用户列表
+
+#### Returns
+
+Returns [HandUpProgress](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-edu-core-src-stores-domain-common-room-type#HandUpProgress) []
+
+<a id="carousel"></a>
+
+### carousel
+
+```ts
+get carousel(): CarouselSetting
+```
+
+轮播设置
+
+#### Returns
+
+Returns [CarouselSetting](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-edu-core-src-stores-domain-common-room-type#CarouselSetting)
+
+<a id="clientServerTimeShift"></a>
+
+### clientServerTimeShift
+
+```ts
+get clientServerTimeShift(): number
+```
+
+服务器和本地时间的差（非可观察属性），单位：毫秒
+
+#### Returns
+
+Returns number
+
+<a id="clockTime"></a>
+
+### clockTime
+
+```ts
+get clockTime(): number
+```
+
+房间时钟
+
+#### Returns
+
+Returns number
+
+<a id="expandedScope"></a>
+
+### expandedScope
+
+```ts
+get expandedScope(): undefined | ExpandedScope
+```
+
+视频墙状态
+
+#### Returns
+
+Returns undefined | [ExpandedScope](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-edu-core-src-stores-domain-common-room-type#ExpandedScope)
+
+<a id="flexProps"></a>
+
+### flexProps
+
+```ts
+get flexProps(): Record<string, any>
+```
+
+自定义房间属性
+
+#### Returns
+
+Returns Record &lt; string, any &gt;
+
+<a id="inviteList"></a>
+
+### inviteList
+
+```ts
+get inviteList(): HandUpProgress[]
+```
+
+被邀请上台中的用户列表
+
+#### Returns
+
+Returns [HandUpProgress](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-edu-core-src-stores-domain-common-room-type#HandUpProgress) []
+
+<a id="isOnPodium"></a>
+
+### isOnPodium
+
+```ts
+get isOnPodium(): boolean
+```
+
+当前用户是否在台上
+
+#### Returns
+
+Returns boolean
+
+<a id="isScreenSharing"></a>
+
+### isScreenSharing
+
+```ts
+get isScreenSharing(): boolean
+```
+
+当前是否在分享屏幕
+
+#### Returns
+
+Returns boolean
+
+<a id="recordOnHold"></a>
+
+### recordOnHold
+
+```ts
+get recordOnHold(): boolean
+```
+
+录制是否在暂停
+
+#### Returns
+
+Returns boolean
+
+<a id="recordReady"></a>
+
+### recordReady
+
+```ts
+get recordReady(): boolean
+```
+
+录制是否已经准备好
+
+#### Returns
+
+Returns boolean
+
+<a id="recordStatus"></a>
+
+### recordStatus
+
+```ts
+get recordStatus(): RecordStatus
+```
+
+录制状态
+
+#### Returns
+
+Returns [RecordStatus](/zh-CN/api-reference/flexible-classroom/web/api-reference/enums/record-status)
+
+<a id="recordStreamingUrl"></a>
+
+### recordStreamingUrl
+
+```ts
+get recordStreamingUrl(): undefined | RecordStreamingUrl
+```
+
+录制生成的视频流地址
+
+#### Returns
+
+Returns undefined | [RecordStreamingUrl](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-edu-core-src-stores-domain-common-room-type#RecordStreamingUrl)
+
+<a id="screenShareStreamUuid"></a>
+
+### screenShareStreamUuid
+
+```ts
+get screenShareStreamUuid(): undefined | string
+```
+
+当前教室内正在进行的屏幕共享的流 UUID
+
+##### `en`
+
+The stream UUID for screen sharing currently taking place in the classroom
+
+#### Returns
+
+Returns undefined | string
+
+<a id="screenShareUserUuid"></a>
+
+### screenShareUserUuid
+
+```ts
+get screenShareUserUuid(): undefined | string
+```
+
+当前教室内正在进行的屏幕共享的流所属的用户 UUID
+
+##### `en`
+
+The user UUID to which the stream of the screen sharing currently taking place in the classroom belongs
+
+#### Returns
+
+Returns undefined | string
+
+<a id="waveArmList"></a>
+
+### waveArmList
+
+```ts
+get waveArmList(): HandUpProgress[]
+```
+
+挥手的用户列表
+
+#### Returns
+
+Returns [HandUpProgress](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-edu-core-src-stores-domain-common-room-type#HandUpProgress) []
+
+## Methods
+
+<a id="addCustomMessageObserver"></a>
+
+### addCustomMessageObserver
+
+```ts
+addCustomMessageObserver(observer: AgoraRteCustomMessageObserver): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraRteCustomMessageObserver |  |
+
+#### Returns
+
+Returns void
+
+<a id="removeCustomMessageObserver"></a>
+
+### removeCustomMessageObserver
+
+```ts
+removeCustomMessageObserver(observer: AgoraRteCustomMessageObserver): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraRteCustomMessageObserver |  |
+
+#### Returns
+
+Returns void
+
+<a id="sendCustomChannelMessage"></a>
+
+### sendCustomChannelMessage
+
+```ts
+sendCustomChannelMessage(data: Record<string, any>, needSync?: boolean): Promise<void>
+```
+
+发送自定义频道消息
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| data: Record&lt;string, any&gt; |  |
+| Optional needSync: boolean |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="sendCustomPeerMessage"></a>
+
+### sendCustomPeerMessage
+
+```ts
+sendCustomPeerMessage(data: Record<string, any>, toUserUuid: string, needAck?: boolean): Promise<void>
+```
+
+发送自定义点对点消息
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| data: Record&lt;string, any&gt; |  |
+| toUserUuid: string |  |
+| Optional needAck: boolean |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="sendRewards"></a>
+
+### sendRewards
+
+```ts
+sendRewards(rewards: { changeReward: number; userUuid: string }[], isBatch?: boolean): Promise<void>
+```
+
+授予学生奖励
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| rewards: \{ changeReward: number; userUuid: string \}[] | userUuid: 被奖励用户 UUID， changeRecord: 奖励数量 |
+| Optional isBatch: boolean | 是否批量发奖励 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="startCarousel"></a>
+
+### startCarousel
+
+```ts
+startCarousel(params: Pick<CarouselSetting, "range" | "type" | "interval">): Promise<void>
+```
+
+开始视频轮播
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| params: Pick&lt;CarouselSetting, "range" \| "type" \| "interval"&gt; | 轮播设置 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="stopCarousel"></a>
+
+### stopCarousel
+
+```ts
+stopCarousel(): Promise<void>
+```
+
+停止视频轮播
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="updateClassState"></a>
+
+### updateClassState
+
+```ts
+updateClassState(state: ClassState): Promise<void>
+```
+
+更新课堂状态
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| state: ClassState | 课堂状态 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="updateFlexProperties"></a>
+
+### updateFlexProperties
+
+```ts
+updateFlexProperties(properties: any, cause: any): Promise<void>
+```
+
+更新房间自定义属性
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| properties: any |  |
+| cause: any |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;

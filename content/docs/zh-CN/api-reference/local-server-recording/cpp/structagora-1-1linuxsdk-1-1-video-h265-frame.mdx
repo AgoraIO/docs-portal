@@ -1,0 +1,66 @@
+---
+title: "agora::linuxsdk::VideoH265Frame结构体 参考"
+description: "H.265 格式原始视频数据的具体参数。"
+---
+
+H.265 格式原始视频数据的具体参数。
+
+## 构造及析构函数说明
+
+<a id="a2cf809723888f02415b13e6ae50eeb49"></a>
+
+### VideoH265Frame()
+
+```cpp
+agora::linuxsdk::VideoH265Frame::VideoH265Frame() inline
+```
+
+<a id="abdc66351fcec45052df2c1607a18c181"></a>
+
+### ~VideoH265Frame()
+
+```cpp
+agora::linuxsdk::VideoH265Frame::~VideoH265Frame() inline
+```
+
+## 类成员变量说明
+
+<a id="af209a249f293513c4be0decdb3c46a9e"></a>
+
+### frame_ms_
+
+```cpp
+u64_t agora::linuxsdk::VideoH265Frame::frame_ms_
+```
+
+该帧的时间戳（毫秒）。
+
+<a id="ae4606839d94c167aac3bfb1d60b90784"></a>
+
+### frame_num_
+
+```cpp
+uint_t agora::linuxsdk::VideoH265Frame::frame_num_
+```
+
+该帧的序号。
+
+<a id="ad2493607553f13592c41952291fcb2a9"></a>
+
+### buf_
+
+```cpp
+const uchar_t* agora::linuxsdk::VideoH265Frame::buf_
+```
+
+视频帧缓冲区。
+
+<a id="ad92c0e81e03928308cd42dd830a0c4a9"></a>
+
+### bufSize_
+
+```cpp
+uint_t agora::linuxsdk::VideoH265Frame::bufSize_
+```
+
+视频帧缓冲区的大小。

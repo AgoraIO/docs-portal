@@ -1,0 +1,71 @@
+---
+title: "io.agora.rtc.AgoraMediaPacketSender类 参考"
+description: "AgoraMediaPacketSender 类。"
+---
+
+AgoraMediaPacketSender 类。 你可以使用 AgoraMediaPacketSender 类创建换一个 LocalVideoTrack 或 LocalAudioTrack，然后 将媒体包直接发送至轨道。媒体包是包含的包体数据的 RTP/UDP 包。如果轨道被禁用，则数据包会被自动丢弃。
+
+## 构造及析构函数说明
+
+<a id="a2959e5467ab5613e7032f0d81ac1513a"></a>
+
+### AgoraMediaPacketSender()
+
+```cpp
+io.agora.rtc.AgoraMediaPacketSender.AgoraMediaPacketSender(long cptr)
+```
+
+构造函数。
+
+## 成员函数说明
+
+<a id="a440eb2103390649e5d38a7f5685eba3e"></a>
+
+### destroy()
+
+```cpp
+void io.agora.rtc.AgoraMediaPacketSender.destroy()
+```
+
+析构函数。
+
+<a id="a8795574f152afb257f11f2c512f5949f"></a>
+
+### ndestroy()
+
+```cpp
+native void io.agora.rtc.AgoraMediaPacketSender.ndestroy() private
+```
+
+<a id="af5d457675d7f0841260eb9a0224e3ad5"></a>
+
+### send()
+
+```cpp
+native int io.agora.rtc.AgoraMediaPacketSender.send(byte[] packet, int length, PacketOptions options)
+```
+
+将数据包发送至本地轨道。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| packet | 数据包。 |
+| length | 数据大小。 |
+| options | 数据包信息。 |
+
+#### Returns
+
+- true: 方法调用成功。
+- false: 方法调用失败。
+
+## 类成员变量说明
+
+<a id="ae1acb13f8fed99f5905b349a17d5f6f6"></a>
+
+### cptr
+
+```cpp
+long io.agora.rtc.AgoraMediaPacketSender.cptr private
+```

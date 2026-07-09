@@ -1,0 +1,33 @@
+---
+title: "io.agora.rtc.IVideoEncodedImageReceiver接口 参考"
+description: "IVideoEncodedImageReceiver 类。"
+---
+
+IVideoEncodedImageReceiver 类。
+
+## 成员函数说明
+
+<a id="a5cdf9fc01442f7799c9b8034b808438d"></a>
+
+### onEncodedVideoImageReceived()
+
+```cpp
+int io.agora.rtc.IVideoEncodedImageReceiver.onEncodedVideoImageReceived(AgoraVideoEncodedImageReceiver receiver, ByteBuffer buffer, EncodedVideoFrameInfo info)
+```
+
+SDK 每次收到已编码视频帧时触发。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| receiver | 一个 [AgoraVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-image-receiver) 对象。 |
+| buffer | 视频帧缓冲区。 |
+| info | 已编码视频帧的信息： [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-encoded-video-frame-info)。 |
+
+#### Returns
+
+是否接受已编码视频帧。
+
+- 0：接受已编码视频帧。
+- 1：不接受已编码视频帧。

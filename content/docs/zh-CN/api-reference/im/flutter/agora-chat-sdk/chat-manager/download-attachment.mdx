@@ -1,0 +1,36 @@
+---
+title: "downloadAttachment method"
+description: "API docs for the downloadAttachment method from the ChatManager class, for the Dart programming language."
+---
+
+Downloads the attachment files from the server.
+
+You can call the method again if the attachment download fails.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `message` | The message with the attachment that is to be downloaded. |
+
+```dart
+Future<void> downloadAttachment(ChatMessage message)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> downloadAttachment(ChatMessage message) async {
+  Map result = await ChatChannel.invokeMethod(
+      ChatMethodKeys.downloadAttachment, {"message": message.toJson()});
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

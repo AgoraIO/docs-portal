@@ -1,0 +1,145 @@
+---
+title: "com.herewhite.sdk.AbstractRoomCallbacks类 参考abstract"
+description: "RoomCallbacks 接口的缺省（空）实现。"
+---
+
+`RoomCallbacks` 接口的缺省（空）实现。
+
+### `**[弃用:](/zh-CN/api-reference/whiteboard/android/deprecated#_deprecated000003)**`
+
+已废弃。
+
+## 成员函数说明
+
+<a id="a99cd28c3beb26991d82667046ba580c4"></a>
+
+### onPhaseChanged()
+
+```cpp
+void com.herewhite.sdk.AbstractRoomCallbacks.onPhaseChanged(RoomPhase phase)
+```
+
+房间连接状态变化回调。
+
+实现了 [com.herewhite.sdk.RoomListener](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#a435c4e0371cf97bb4f60af1bb950a354).
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| phase | 房间的连接状态，详见 `RoomPhase`。 |
+
+<a id="a7e9b52c6a9b5ed4f2be40002f519e99d"></a>
+
+### onDisconnectWithError()
+
+```cpp
+void com.herewhite.sdk.AbstractRoomCallbacks.onDisconnectWithError(Exception e)
+```
+
+白板 SDK 与白板服务器连接中断回调。
+
+实现了 [com.herewhite.sdk.RoomListener](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#a27be03d9afa099e6fea594cf459fb5ad).
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| e | 错误信息。 |
+
+<a id="af133346a411515cc0dd52b07765a7f48"></a>
+
+### onKickedWithReason()
+
+```cpp
+void com.herewhite.sdk.AbstractRoomCallbacks.onKickedWithReason(String reason)
+```
+
+用户被服务器移出房间回调。
+
+实现了 [com.herewhite.sdk.RoomListener](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#a7671d2258528ecaaadb5718854cd8964).
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| reason | 用户被移除房间的原因。 |
+
+<a id="a250e6883fbe05965dbe72c0d9b1a2bf9"></a>
+
+### onRoomStateChanged()
+
+```cpp
+void com.herewhite.sdk.AbstractRoomCallbacks.onRoomStateChanged(RoomState modifyState)
+```
+
+房间状态属性发生变化回调。
+
+该回调仅返回发生变化的房间状态属性，未发生变化的房间状态字段，均未空。
+
+实现了 [com.herewhite.sdk.RoomListener](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#a48ebcd9188489a05226fe00c963f857b).
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| modifyState | 发生变化的房间状态属性，详见 `RoomState`。 |
+
+<a id="aae420ad231b354677f4516d67e67d52c"></a>
+
+### onCanUndoStepsUpdate()
+
+```cpp
+void com.herewhite.sdk.AbstractRoomCallbacks.onCanUndoStepsUpdate(long canUndoSteps)
+```
+
+可撤销次数发生变化回调。
+
+当本地用户调用 `undo` 撤销上一步操作时，会触发该回调，报告剩余的可撤销次数。
+
+实现了 [com.herewhite.sdk.RoomListener](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#a45494cc4c33779d052d8662424e7690c).
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| canUndoSteps | 剩余的可撤销次数。 |
+
+<a id="a176bd3ba52faf404434191aa0e54e5fb"></a>
+
+### onCanRedoStepsUpdate()
+
+```cpp
+void com.herewhite.sdk.AbstractRoomCallbacks.onCanRedoStepsUpdate(long canRedoSteps)
+```
+
+可重做次数发生变化回调。
+
+当本地用户调用 `redo` 重做上一步操作时，会触发该回调，报告剩余的可重做次数。
+
+实现了 [com.herewhite.sdk.RoomListener](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#adaa02e554b0b5c3bce169122e5dcc18a).
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| canRedoSteps | 剩余的可重做次数。 |
+
+<a id="a9ed51525a523c043a2b955622d8f3c02"></a>
+
+### onCatchErrorWhenAppendFrame()
+
+```cpp
+void com.herewhite.sdk.AbstractRoomCallbacks.onCatchErrorWhenAppendFrame(long userId, Exception error)
+```
+
+同步用户操作发生错误回调。
+
+实现了 [com.herewhite.sdk.RoomListener](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-room-listener#a8fa461f4b6c4891481fa11c8c0392368).
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userId | 用户 ID，表明在同步哪个用户的操作时发生了错误。 |
+| error | 错误原因。 |

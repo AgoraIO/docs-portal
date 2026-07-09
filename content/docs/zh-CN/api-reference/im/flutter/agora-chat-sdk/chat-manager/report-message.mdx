@@ -1,0 +1,41 @@
+---
+title: "reportMessage method"
+description: "API docs for the reportMessage method from the ChatManager class, for the Dart programming language."
+---
+
+Report violation message
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `messageId` | Violation Message ID |
+| `tag` | The report type (For example: involving pornography and terrorism). |
+| `reason` | The reason for reporting. |
+
+```dart
+Future<void> reportMessage({required String messageId, required String tag, required String reason})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> reportMessage({
+  required String messageId,
+  required String tag,
+  required String reason,
+}) async {
+  Map req = {"msgId": messageId, "tag": tag, "reason": reason};
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.reportMessage, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

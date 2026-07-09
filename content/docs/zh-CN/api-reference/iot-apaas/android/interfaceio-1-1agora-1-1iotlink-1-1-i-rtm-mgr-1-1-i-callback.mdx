@@ -1,0 +1,57 @@
+---
+title: "io.agora.iotlink.IRtmMgr.ICallback接口 参考"
+description: "RTM 消息管理回调。"
+---
+
+RTM 消息管理回调。
+
+## 成员函数说明
+
+<a id="ad1b920e164d4b4ffdab1e8fe04e37b95"></a>
+
+### onConnectDone()
+
+```cpp
+default void io.agora.iotlink.IRtmMgr.ICallback.onConnectDone(int errCode, final IotDevice iotDevice)
+```
+
+设备连接完成回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码。 |
+| iotDevice | 设备信息。详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+
+<a id="ac1c224488a6e57236bd2fc53c8513aaf"></a>
+
+### onConnectionStateChanged()
+
+```cpp
+default void io.agora.iotlink.IRtmMgr.ICallback.onConnectionStateChanged(int state)
+```
+
+设备连接状态改变回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| state | 设备连接状态。<br />- RTMMGR_STATE_DISCONNECTED(0x0001): 与 RTM 系统未连接。<br />- RTMMGR_STATE_CONNECTING(0x0002): 正在连接 RTM 系统。<br />- RTMMGR_STATE_CONNECTED(0x0003): 已连接 RTM 系统。<br />- RTMMGR_STATE_RECONNECTING(0x0004): 正在重新连接 RTM 系统。可能原因是网络有问题。<br />- RTMMGR_STATE_ABORTED(0x0005): 一般性错误。 |
+
+<a id="a4fffb317381d731a2b172467a961d66f"></a>
+
+### onMessageReceived()
+
+```cpp
+default void io.agora.iotlink.IRtmMgr.ICallback.onMessageReceived(byte[] messageData)
+```
+
+接收到设备端数据事件。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| messageData | 接收到的数据。 |

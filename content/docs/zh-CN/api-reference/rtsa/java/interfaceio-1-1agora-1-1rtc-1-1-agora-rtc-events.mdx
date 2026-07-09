@@ -1,0 +1,368 @@
+---
+title: "io.agora.rtc.AgoraRtcEvents接口 参考"
+description: "AgoraRtcEvents 接口类用于 SDK 向 App 发送回调事件通知，App 通过继承该接口类的方法获取 SDK 的事件通知。"
+---
+
+[AgoraRtcEvents](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events) 接口类用于 SDK 向 App 发送回调事件通知，App 通过继承该接口类的方法获取 SDK 的事件通知。
+
+## 成员函数说明
+
+<a id="a7610d1e6adc9bddc2639a617253b683d"></a>
+
+### onAudioData()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onAudioData(int connId, int uid, int sent_ts, byte[] data, AudioFrameInfo info)
+```
+
+收到频道内远端用户的音频帧回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| uid | 发送音频帧的远端用户的用户 ID。 |
+| sent_ts | Unix 时间戳（ms），标识发送音频帧的远端用户调用 [sendAudioData](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a81683ebe7ac7ecd950fe21d6cea0a70b) 方法的时间。 |
+| data | 音频包数据。 |
+| info | 音频帧信息。 |
+
+<a id="a374b442b331423bdc026b8c8bb3c5992"></a>
+
+### onConnectionLost()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onConnectionLost(int connId)
+```
+
+连接丢失回调。
+
+当 SDK 与服务器断开连接超过 10 秒时，SDK 会触发该回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+
+<a id="aa4da82349b590c47e1871cf6d8ef7378"></a>
+
+### onError()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onError(int connId, int code, String msg)
+```
+
+发生警告回调。
+
+该回调方法表示 SDK 运行时出现了（网络或媒体相关的）警告。通常情况下，SDK 上报的警告信息 App 可以忽略，SDK 会自动恢复。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| code | 警告码。 |
+| msg | 警告描述。 |
+
+<a id="a5bb92673e6f711d90a38f80eaeeac68b"></a>
+
+### onJoinChannelSuccess()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onJoinChannelSuccess(int connId, int uid, int elapsed_ms)
+```
+
+成功加入频道回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| uid | 用户名。 |
+| elapsed_ms | 从频道成功创建开始到发生此回调过去的时间（毫秒）。 |
+
+<a id="ad76d77b295c65bc694734d0294926a92"></a>
+
+### onKeyFrameGenReq()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onKeyFrameGenReq(int connId, int requestedUid, int streamType)
+```
+
+频道内远端用户请求关键帧回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| requestedUid | 远端用户的用户 ID。 |
+| streamType | 需要生成关键帧的视频流类型。详见 [VideoStreamType](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-video-stream-type)。 |
+
+<a id="a8c749481c0832b6ab31dc5a9847a0289"></a>
+
+### onLicenseValidationFailure()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onLicenseValidationFailure(int connId, int error)
+```
+
+设备 License 验证失败回调。
+
+加入频道时，声网服务器会验证你在 [init](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#aab47fc030b290004c6d29a0a306db032) 中传入的 License。如果 License 验证失败，则 SDK 会触发该回调，你可以根据收到的错误码处理问题。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| error | 错误码。详见 [LicenseValidationErrorReason](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-license-validation-error-reason)。 |
+
+<a id="ac4b3654913a464adb2ddef9b3ab39420"></a>
+
+### onMixedAudioData()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onMixedAudioData(int connId, byte[] data, AudioFrameInfo info)
+```
+
+收到频道内本地用户和远端用户的混音数据回调。此回调每 20 ms 触发一次。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| data | 音频包数据。 |
+| info | 音频帧信息。 |
+
+<a id="a6edb4f4ab6a30fc1d7e74314f50fdb21"></a>
+
+### onRdtMsg()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onRdtMsg(int connId, int uid, int type, byte[] msg)
+```
+
+收到 RDT 消息回调。
+
+##### `自从`
+
+v1.9.2
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| uid | 远端用户的用户 ID。 |
+| type | RDT 消息类型。详见 [RdtStreamType](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-rdt-stream-type)。 |
+| msg | RDT 消息负载。 |
+
+<a id="a60b0269fb3b5926411a4a5730735a5ab"></a>
+
+### onRdtState()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onRdtState(int connId, int uid, int state)
+```
+
+RDT 通道的连接状态已改变回调。
+
+##### `自从`
+
+v1.9.2
+
+当 RDT 通道的连接状态发生变化时，SDK 会触发该回调并报告当前的连接状态。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| uid | 远端用户的用户 ID。 |
+| state | 连接状态。详见 [RdtState](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-rdt-state)。 |
+
+<a id="a7acf192aa14b40b48724e80eab3a7946"></a>
+
+### onReconnecting()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onReconnecting(int connId)
+```
+
+正在重新连接回调。
+
+SDK 会在如下场景中触发该回调：
+
+- SDK 与服务器断开连接超过 4 秒。
+- 网络断开。
+- 用户切换网络类型，例如 4G 网络切换成 Wi-Fi 网络。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+
+<a id="afe1708a775ef98c4e1c6c026a7621513"></a>
+
+### onRejoinChannelSuccess()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onRejoinChannelSuccess(int connId, int uid, int elapsed_ms)
+```
+
+重新成功加入频道回调。
+
+有时候由于网络原因，客户端可能会和服务器失去连接，SDK 会进行自动重连，自动重连成功后触发此回调方法。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| uid | 用户名。 |
+| elapsed_ms | 从开始重连到重连成功的时间（毫秒）。 |
+
+<a id="a1e4b25b017cdb624f1083d9a1d7a9f47"></a>
+
+### onTargetBitrateChanged()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onTargetBitrateChanged(int connId, int target_bps)
+```
+
+编码器码率更新通知回调。你可以使用此回调提醒 App 更新编码器码率。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| target_bps | 码率需要更新到的目标值，单位为 bps。 |
+
+<a id="a625c36a7b434fc60e1b5970a73fe4e88"></a>
+
+### onTokenPrivilegeWillExpire()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onTokenPrivilegeWillExpire(int connId, String token)
+```
+
+Token 服务即将过期回调。
+
+在调用 [joinChannel](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a3dd72e07c6799725a7dcce4b137028e2) 时如果指定了 Token，由于 Token 具有一定的时效，在通话过程中如果 Token 即将失效，SDK 会提前 30 秒触发该回调，提醒应用程序更新 Token。 当收到该回调时，用户需要重新在服务端生成新的 Token，然后调用 [renewToken](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#ae3308277b86fd9f7b2814b89856a6ed5) 将新生成的 Token 传给 SDK。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| token | 即将服务失效的 Token。 |
+
+<a id="ab106ab849c26bf2474a7a973f1bc8610"></a>
+
+### onUserJoined()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onUserJoined(int connId, int uid, int elapsed_ms)
+```
+
+远端用户加入频道回调。
+
+该回调提示有远端用户加入了频道。如果加入之前，已经有其他用户在频道中了，新加入的用户也会收到这些已有用户加入频道的回调。
+
+该回调在如下情况下会被触发：
+
+- 远端用户加入频道。
+- 远端用户网络中断后重新加入频道。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| uid | 用户 ID。 |
+| elapsed_ms | 从频道成功创建开始到发生此回调过去的时间（毫秒）。 |
+
+<a id="acb31baf6018383eeedb6bb8c9aecc315"></a>
+
+### onUserMuteAudio()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onUserMuteAudio(int connId, int uid, boolean muted)
+```
+
+频道内远端用户暂停/恢复发送音频流回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| uid | 远端用户的用户 ID。 |
+| muted | 远端用户是否发送音频流：<br />- true: 该用户暂停发送音频流；<br />- false: 该用户恢复发送音频流。 |
+
+<a id="a78a9ff37d58c5cc59c7becd01bacc71d"></a>
+
+### onUserMuteVideo()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onUserMuteVideo(int connId, int uid, boolean muted)
+```
+
+频道内远端用户暂停/恢复发送视频流回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| uid | 远端用户的用户 ID。 |
+| muted | 远端用户是否发送视频流：<br />- true: 该用户暂停发送视频流；<br />- false: 该用户恢复发送视频流。 |
+
+<a id="a63a180e6bbcb7e80f3a79f6b56271a55"></a>
+
+### onUserOffline()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onUserOffline(int connId, int uid, int reason)
+```
+
+远端用户离开频道回调。
+
+SDK 会在如下场景触发该回调：
+
+- 正常离开：远端用户会发送类似“再见”的消息。接收此消息后，判断用户离开频道。
+- 超时掉线：如果本地用户在 20 秒内没有收到远端用户的任何数据包，则判定为对方掉线。在网络较差的情况下，有可能会误报。建议使用云信令 SDK 来做可靠的掉线检测。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| uid | 离开频道的用户 ID。 |
+| reason | 用户离开频道原因：<br />- USER_OFFLINE_QUIT (0): 远端用户主动下线。<br />- USER_OFFLINE_DROPPED (1): 远端用户超时掉线。 |
+
+<a id="a41c96a8fb436b9cb03b58b26cc93d57e"></a>
+
+### onVideoData()
+
+```cpp
+void io.agora.rtc.AgoraRtcEvents.onVideoData(int connId, int uid, int sent_ts, byte[] data, VideoFrameInfo info)
+```
+
+收到频道内远端用户的视频帧回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| uid | 发送视频帧的远端用户的用户 ID。 |
+| sent_ts | Unix 时间戳（ms）。标识发送视频帧的远端用户调用 [sendVideoData](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a7ca97e6efca40fb7d42386b1a8a8123e) 方法的时间。 |
+| data | 视频包数据。 |
+| info | 视频帧信息。 |

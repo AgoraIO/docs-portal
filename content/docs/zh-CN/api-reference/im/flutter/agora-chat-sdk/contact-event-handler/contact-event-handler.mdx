@@ -1,0 +1,34 @@
+---
+title: "ContactEventHandler constructor"
+description: "API docs for the ContactEventHandler constructor from Class ContactEventHandler from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The contact updates listener callback.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| [onContactAdded](/zh-CN/api-reference/im/flutter/agora-chat-sdk/contact-event-handler/on-contact-added) | Current user is added as a contact by another user callback. |
+| [onContactDeleted](/zh-CN/api-reference/im/flutter/agora-chat-sdk/contact-event-handler/on-contact-deleted) | Current user is removed from the contact list by another user callback. |
+| [onContactInvited](/zh-CN/api-reference/im/flutter/agora-chat-sdk/contact-event-handler/on-contact-invited) | Current user receives a friend request callback. |
+| [onFriendRequestAccepted](/zh-CN/api-reference/im/flutter/agora-chat-sdk/contact-event-handler/on-friend-request-accepted) | A friend request is approved callback. |
+| [onFriendRequestDeclined](/zh-CN/api-reference/im/flutter/agora-chat-sdk/contact-event-handler/on-friend-request-declined) | A friend request is declined callback. |
+
+```dart
+ContactEventHandler({void onContactAdded(String userId)?, void onContactDeleted(String userId)?, void onContactInvited(String userId, String? reason)?, void onFriendRequestAccepted(String userId)?, void onFriendRequestDeclined(String userId)?})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ContactEventHandler({
+  this.onContactAdded,
+  this.onContactDeleted,
+  this.onContactInvited,
+  this.onFriendRequestAccepted,
+  this.onFriendRequestDeclined,
+});
+```

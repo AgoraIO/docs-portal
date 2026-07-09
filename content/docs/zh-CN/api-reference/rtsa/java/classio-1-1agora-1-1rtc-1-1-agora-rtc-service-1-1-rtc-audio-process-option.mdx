@@ -1,0 +1,132 @@
+---
+title: "io.agora.rtc.AgoraRtcService.RtcAudioProcessOption类 参考"
+description: "音频处理选项。"
+---
+
+音频处理选项。
+
+该类中， `enableAudioProcess` 为音频处理选项的总开关。 只有 `enableAudioProcess` 为 `true`，其他参数的设置才会生效。
+
+你可以根据实际业务场景选择如下音频处理效果：
+
+- 回声消除和降噪：设置 enableAudioProcess、 enableAec / enableDownlinkAec、 refDataFromSdk、 enableNs 为 true。
+- 仅回声消除：设置 enableAudioProcess、 enableAec / enableDownlinkAec、 refDataFromSdk 为 true， enableNs 为 false。
+
+### `注解`
+
+如需使用该功能，你需要联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](#)。
+
+## 构造及析构函数说明
+
+<a id="abe093c7881218070d581578c0870e966"></a>
+
+### RtcAudioProcessOption()
+
+```cpp
+io.agora.rtc.AgoraRtcService.RtcAudioProcessOption.RtcAudioProcessOption()
+```
+
+## 类成员变量说明
+
+<a id="a9ee64f9ab132a947fd8e3496c4d3e47d"></a>
+
+### enableAec
+
+```cpp
+boolean io.agora.rtc.AgoraRtcService.RtcAudioProcessOption.enableAec
+```
+
+是否开启上行回声消除：
+
+- true: 开启。
+- false: （默认）不开启。
+
+##### `注解`
+
+- 该参数在 enableAudioProcess 为 true 时生效。
+- 开启回声消除后，SDK 也会自动开启 `ChannelOptions` 中的 enableAudioJitterBuffer。
+
+<a id="a6a27b45ae0b357a25344b0415045d43e"></a>
+
+### enableAudioProcess
+
+```cpp
+boolean io.agora.rtc.AgoraRtcService.RtcAudioProcessOption.enableAudioProcess
+```
+
+是否开启音频处理：
+
+- true: 开启。
+- false: （默认）不开启。
+
+<a id="a31b2121ef59b927656d4971488764e41"></a>
+
+### enableDownlinkAec
+
+```cpp
+boolean io.agora.rtc.AgoraRtcService.RtcAudioProcessOption.enableDownlinkAec
+```
+
+是否开启下行回声消除：
+
+- true: 开启。
+- false: （默认）不开启。
+
+在要求低功耗的场景中，声网推荐你使用下行回声消除 (`enableDownlinkAec`) 替代上行回声消除 (`enableAec`)。
+
+##### `注解`
+
+- 该参数在 enableAudioProcess 为 true 时生效。
+- 开启回声消除后，SDK 也会自动开启 `ChannelOptions` 中的 enableAudioJitterBuffer。
+
+<a id="a64cb541e14d288e36cef3dc1fe57222f"></a>
+
+### enableDumpData
+
+```cpp
+boolean io.agora.rtc.AgoraRtcService.RtcAudioProcessOption.enableDumpData
+```
+
+是否开启从音频处理器中转储数据：
+
+- true: 开启。开启后，你可以获取音频处理前后的音频数据，便于调试。
+- false: （默认）不开启。
+
+##### `注解`
+
+该参数在 `enableAudioProcess` 为 `true` 时生效。
+
+<a id="a355f96b9802489632d1612d79ba8ae54"></a>
+
+### enableNs
+
+```cpp
+boolean io.agora.rtc.AgoraRtcService.RtcAudioProcessOption.enableNs
+```
+
+是否开启降噪：
+
+- true: 开启。
+- false: （默认）不开启。
+
+##### `注解`
+
+该参数在 `enableAudioProcess` 和 `enableAec` 为 `true` 时生效。
+
+<a id="a59f405b6b7a38ac19cfacdda4ac151d0"></a>
+
+### refDataFromSdk
+
+```cpp
+boolean io.agora.rtc.AgoraRtcService.RtcAudioProcessOption.refDataFromSdk
+```
+
+是否使用 SDK 接收到的音频信号作为回声消除的参考信号：
+
+- true: （默认）使用。
+- false: 不使用。
+
+##### `注解`
+
+- 该参数在 enableAudioProcess 和 enableAec 为 true 时生效。
+- 声网推荐将该参数设置为 true。如需将该参数设为 false，联系 sales.nosp@m. @she.nosp@m. ngwan.nosp@m. g.cn。

@@ -1,0 +1,476 @@
+---
+title: "ChatRoomManager class"
+description: "API docs for the ChatRoomManager class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The chat room manager class, which manages user joining and exiting the chat room, retrieving the chat room list, and managing member privileges. The sample code for joining a chat room:
+
+```dart
+    try {
+        await ChatClient.getInstance.chatRoomManager.joinChatRoom(chatRoomId);
+    } on ChatError catch (e) {
+        debugPrint(e.toString());
+    }
+```
+
+### Available Extensions
+
+- ChatRoomManagerDeprecated
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="addAttributes"></a>
+
+### [addAttributes](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/add-attributes)
+
+```dart
+addAttributes(String roomId, {required Map<String, String> attributes, bool deleteWhenLeft = false, bool overwrite = false}) -> Future<Map<String, int>?>
+```
+
+Sets custom chat room attributes.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `attributes` | The chat room attributes to add. The attributes are in key-value format. Note: In a key-value pair, the key is the attribute name that can contain 128 characters at most; the value is the attribute value that cannot exceed 4096 characters. A chat room can have a maximum of 100 custom attributes and the total length of custom chat room attributes cannot exceed 10 GB for each app. Attribute keys support the following character sets: |
+
+<a id="addChatRoomAdmin"></a>
+
+### [addChatRoomAdmin](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/add-chat-room-admin)
+
+```dart
+addChatRoomAdmin(String roomId, String admin) -> Future<void>
+```
+
+Adds a chat room admin.
+
+<a id="addEventHandler"></a>
+
+### [addEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/add-event-handler)
+
+```dart
+addEventHandler(String identifier, ChatRoomEventHandler handler) -> void
+```
+
+Adds the room event handler. After calling this method, you can handle for new room event when they arrive.
+
+<a id="addMembersToChatRoomAllowList"></a>
+
+### [addMembersToChatRoomAllowList](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/add-members-to-chat-room-allow-list)
+
+```dart
+addMembersToChatRoomAllowList(String roomId, List<String> members) -> Future<void>
+```
+
+Adds members to the allowlist.
+
+<a id="blockChatRoomMembers"></a>
+
+### [blockChatRoomMembers](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/block-chat-room-members)
+
+```dart
+blockChatRoomMembers(String roomId, List members) -> Future<void>
+```
+
+Adds the specified members to the block list of the chat room.
+
+<a id="changeChatRoomDescription"></a>
+
+### [changeChatRoomDescription](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/change-chat-room-description)
+
+```dart
+changeChatRoomDescription(String roomId, String description) -> Future<void>
+```
+
+Modifies the chat room description.
+
+<a id="changeChatRoomName"></a>
+
+### [changeChatRoomName](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/change-chat-room-name)
+
+```dart
+changeChatRoomName(String roomId, String name) -> Future<void>
+```
+
+Changes the chat room name.
+
+<a id="changeOwner"></a>
+
+### [changeOwner](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/change-owner)
+
+```dart
+changeOwner(String roomId, String newOwner) -> Future<void>
+```
+
+Transfers the chat room ownership.
+
+<a id="clearEventHandlers"></a>
+
+### [clearEventHandlers](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/clear-event-handlers)
+
+```dart
+clearEventHandlers() -> void
+```
+
+Clear all room event handlers.
+
+<a id="createChatRoom"></a>
+
+### [createChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/create-chat-room)
+
+```dart
+createChatRoom(String name, {String? desc, String? welcomeMsg, int maxUserCount = 300, List<String>? members}) -> Future<ChatRoom>
+```
+
+Creates a chat room.
+
+<a id="destroyChatRoom"></a>
+
+### [destroyChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/destroy-chat-room)
+
+```dart
+destroyChatRoom(String roomId) -> Future<void>
+```
+
+Destroys a chat room.
+
+<a id="fetchChatRoomAllowListFromServer"></a>
+
+### [fetchChatRoomAllowListFromServer](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/fetch-chat-room-allow-list-from-server)
+
+```dart
+fetchChatRoomAllowListFromServer(String roomId) -> Future<List<String>>
+```
+
+Gets the allow list from the server.
+
+<a id="fetchChatRoomAnnouncement"></a>
+
+### [fetchChatRoomAnnouncement](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/fetch-chat-room-announcement)
+
+```dart
+fetchChatRoomAnnouncement(String roomId) -> Future<String?>
+```
+
+Gets the chat room announcement from the server.
+
+<a id="fetchChatRoomAttributes"></a>
+
+### [fetchChatRoomAttributes](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/fetch-chat-room-attributes)
+
+```dart
+fetchChatRoomAttributes(String roomId, List<String>? keys) -> Future<Map<String, String>?>
+```
+
+Gets the list of custom chat room attributes based on the attribute key list.
+
+**Return** The chat room attributes in key-value pairs. **Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `keys` | The key list of attributes to get. If you set it as `null` or leave it empty, this method retrieves all custom attributes. |
+
+<a id="fetchChatRoomBlockList"></a>
+
+### [fetchChatRoomBlockList](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/fetch-chat-room-block-list)
+
+```dart
+fetchChatRoomBlockList(String roomId, {int pageNum = 1, int pageSize = 200}) -> Future<List<String>>
+```
+
+Gets the chat room block list with pagination.
+
+<a id="fetchChatRoomInfoFromServer"></a>
+
+### [fetchChatRoomInfoFromServer](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/fetch-chat-room-info-from-server)
+
+```dart
+fetchChatRoomInfoFromServer(String roomId, {bool fetchMembers = false}) -> Future<ChatRoom>
+```
+
+Gets the details of the chat room from the server. By default, the details do not include the chat room member list.
+
+<a id="fetchChatRoomMembers"></a>
+
+### [fetchChatRoomMembers](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/fetch-chat-room-members)
+
+```dart
+fetchChatRoomMembers(String roomId, {String? cursor, int pageSize = 200}) -> Future<ChatCursorResult<String>>
+```
+
+Gets the chat room member list.
+
+<a id="fetchChatRoomMuteList"></a>
+
+### [fetchChatRoomMuteList](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/fetch-chat-room-mute-list)
+
+```dart
+fetchChatRoomMuteList(String roomId, {int pageNum = 1, int pageSize = 200}) -> Future<List<String>>
+```
+
+Gets the list of members who are muted in the chat room from the server.
+
+<a id="fetchPublicChatRoomsFromServer"></a>
+
+### [fetchPublicChatRoomsFromServer](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/fetch-public-chat-rooms-from-server)
+
+```dart
+fetchPublicChatRoomsFromServer({int pageNum = 1, int pageSize = 200}) -> Future<ChatPageResult<ChatRoom>>
+```
+
+Gets chat room data from the server with pagination.
+
+<a id="getChatRoomWithId"></a>
+
+### [getChatRoomWithId](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/get-chat-room-with-id)
+
+```dart
+getChatRoomWithId(String roomId) -> Future<ChatRoom?>
+```
+
+Gets the chat room in the cache.
+
+<a id="getEventHandler"></a>
+
+### [getEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/get-event-handler)
+
+```dart
+getEventHandler(String identifier) -> ChatRoomEventHandler?
+```
+
+Get the room event handler.
+
+<a id="isMemberInChatRoomAllowList"></a>
+
+### [isMemberInChatRoomAllowList](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/is-member-in-chat-room-allow-list)
+
+```dart
+isMemberInChatRoomAllowList(String roomId) -> Future<bool>
+```
+
+Checks whether the member is on the allow list.
+
+<a id="joinChatRoom"></a>
+
+### [joinChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/join-chat-room)
+
+```dart
+joinChatRoom(String roomId) -> Future<void>
+```
+
+Joins the chat room.
+
+<a id="leaveChatRoom"></a>
+
+### [leaveChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/leave-chat-room)
+
+```dart
+leaveChatRoom(String roomId) -> Future<void>
+```
+
+Leaves the chat room.
+
+<a id="muteAllChatRoomMembers"></a>
+
+### [muteAllChatRoomMembers](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/mute-all-chat-room-members)
+
+```dart
+muteAllChatRoomMembers(String roomId) -> Future<void>
+```
+
+Mutes all members.
+
+<a id="muteChatRoomMembers"></a>
+
+### [muteChatRoomMembers](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/mute-chat-room-members)
+
+```dart
+muteChatRoomMembers(String roomId, List<String> muteMembers, {int duration = -1}) -> Future<void>
+```
+
+Mutes the specified members in a chat room.
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="removeAttributes"></a>
+
+### [removeAttributes](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/remove-attributes)
+
+```dart
+removeAttributes(String roomId, {required List<String> keys, bool force = false}) -> Future<Map<String, int>?>
+```
+
+Removes custom chat room attributes.
+
+**Return** `failureKeys map` is returned in key-value format, where the key is the attribute key and the value is the reason for the failure. **Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `keys` | The keys of the custom chat room attributes to remove. |
+| `force` | Whether to remove the attributes with same key set by others. |
+
+<a id="removeChatRoomAdmin"></a>
+
+### [removeChatRoomAdmin](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/remove-chat-room-admin)
+
+```dart
+removeChatRoomAdmin(String roomId, String admin) -> Future<void>
+```
+
+Removes privileges of a chat room admin.
+
+<a id="removeChatRoomMembers"></a>
+
+### [removeChatRoomMembers](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/remove-chat-room-members)
+
+```dart
+removeChatRoomMembers(String roomId, List<String> members) -> Future<void>
+```
+
+Removes the specified members from a chat room.
+
+<a id="removeEventHandler"></a>
+
+### [removeEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/remove-event-handler)
+
+```dart
+removeEventHandler(String identifier) -> void
+```
+
+Remove the room event handler.
+
+<a id="removeMembersFromChatRoomAllowList"></a>
+
+### [removeMembersFromChatRoomAllowList](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/remove-members-from-chat-room-allow-list)
+
+```dart
+removeMembersFromChatRoomAllowList(String roomId, List<String> members) -> Future<void>
+```
+
+Removes members from the allow list.
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="unBlockChatRoomMembers"></a>
+
+### [unBlockChatRoomMembers](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/un-block-chat-room-members)
+
+```dart
+unBlockChatRoomMembers(String roomId, List members) -> Future<void>
+```
+
+Removes the specified members from the block list of the chat room.
+
+<a id="unMuteAllChatRoomMembers"></a>
+
+### [unMuteAllChatRoomMembers](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/un-mute-all-chat-room-members)
+
+```dart
+unMuteAllChatRoomMembers(String roomId) -> Future<void>
+```
+
+Unmutes all members.
+
+<a id="unMuteChatRoomMembers"></a>
+
+### [unMuteChatRoomMembers](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/un-mute-chat-room-members)
+
+```dart
+unMuteChatRoomMembers(String roomId, List<String> unMuteMembers) -> Future<void>
+```
+
+Unmutes the specified members in a chat room.
+
+<a id="updateChatRoomAnnouncement"></a>
+
+### [updateChatRoomAnnouncement](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager/update-chat-room-announcement)
+
+```dart
+updateChatRoomAnnouncement(String roomId, String announcement) -> Future<void>
+```
+
+Updates the chat room announcement.
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

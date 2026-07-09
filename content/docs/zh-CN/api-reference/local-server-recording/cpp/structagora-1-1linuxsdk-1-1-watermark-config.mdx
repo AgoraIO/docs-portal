@@ -1,0 +1,28 @@
+---
+title: "agora::linuxsdk::WatermarkConfig结构体 参考"
+description: "单个水印的设置。"
+---
+
+单个水印的设置。
+
+## 类成员变量说明
+
+<a id="a3a20653ba384c03bb79cf5d49cf70b18"></a>
+
+### type
+
+```cpp
+WatermarkType agora::linuxsdk::WatermarkConfig::type
+```
+
+选择水印类型，详见 [WatermarkType](/zh-CN/api-reference/local-server-recording/cpp/namespaceagora-1-1linuxsdk#a5568d9f61bbfb066f28ba609987a2852)。
+
+<a id="a9688af0601391e0bdfb6f52cab8b66c0"></a>
+
+### config
+
+```cpp
+WatermarkConfigUnion agora::linuxsdk::WatermarkConfig::config
+```
+
+根据 type 参数中选择的水印类型，定义该类型水印的具体设置，详见 [WatermarkConfigUnion](/zh-CN/api-reference/local-server-recording/cpp/unionagora-1-1linuxsdk-1-1-watermark-config-1-1-watermark-config-union)。

@@ -1,0 +1,119 @@
+---
+title: "agora::rtc::IRemoteVideoTrack类 参考abstract"
+description: "继承自 agora::rtc::IVideoTrack ."
+---
+
+[IRemoteVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-remote-video-track) 类。
+
+## 构造及析构函数说明
+
+<a id="a83206958fae1976ea8b63acaeec7f7ac"></a>
+
+### ~IRemoteVideoTrack()
+
+```cpp
+agora::rtc::IRemoteVideoTrack::~IRemoteVideoTrack() inlineprotected
+```
+
+## 成员函数说明
+
+<a id="aea7a83b6554e74c363969eb80495ecb9"></a>
+
+### getStatistics()
+
+```cpp
+virtual bool agora::rtc::IRemoteVideoTrack::getStatistics(RemoteVideoTrackStats& stats) pure virtual
+```
+
+获取远端视频轨道的统计信息。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [out] stats | 远端视频轨道的统计信息： [RemoteVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-remote-video-track-stats)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a9198277c30a29b82237876d7bd63fb63"></a>
+
+### getState()
+
+```cpp
+virtual REMOTE_VIDEO_STATE agora::rtc::IRemoteVideoTrack::getState() pure virtual
+```
+
+获取远端视频轨道的状态。
+
+#### Returns
+
+远端视频轨道的状态： [REMOTE_VIDEO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8)。
+
+<a id="aae079a7139538bc5e9980b1259534c2e"></a>
+
+### getTrackInfo()
+
+```cpp
+virtual bool agora::rtc::IRemoteVideoTrack::getTrackInfo(VideoTrackInfo& info) pure virtual
+```
+
+获取远端视频轨道的信息。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [out] info | 远端视频轨道的信息: [VideoTrackInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-video-track-info)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a450b18c898cedacc369267fdd3b73725"></a>
+
+### registerVideoEncodedImageReceiver()
+
+```cpp
+virtual int agora::rtc::IRemoteVideoTrack::registerVideoEncodedImageReceiver(IVideoEncodedImageReceiver* videoReceiver, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+注册 [IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。
+
+注册成功之后， SDK 在收到已编码视频帧时触发 [OnEncodedVideoImageReceived](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-video-encoded-image-receiver#ad4e316784b48ac30cd3208a34e840254) 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| videoReceiver | `IVideoEncodedImageReceiver` 对象。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a2542a5a5622488bc1aefe76348393fc2"></a>
+
+### unregisterVideoEncodedImageReceiver()
+
+```cpp
+virtual int agora::rtc::IRemoteVideoTrack::unregisterVideoEncodedImageReceiver(IVideoEncodedImageReceiver* videoReceiver) pure virtual
+```
+
+销毁 [IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| videoReceiver | `IVideoEncodedImageReceiver` 对象。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

@@ -1,0 +1,132 @@
+---
+title: "AgoraEduMediaHandler"
+description: "AgoraEduMediaHandler 类包含媒体控制相关的事件回调。"
+---
+<a id="class_media_handler"></a>
+
+## AgoraEduMediaHandler
+
+<a id="api_onvolumeupdated"></a>
+
+## onVolumeUpdated
+
+音量变化回调。
+
+<a id="api_onvolumeupdated__prototype"></a>
+
+```swift
+void onVolumeUpdated(Int volume,
+                     String streamUuid)
+```
+
+<a id="api_onvolumeupdated__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+音量范围。
+
+#### `streamUuid`
+
+流 ID。
+
+<a id="api_onlocaldevicestateupdated"></a>
+
+## onLocalDeviceStateUpdated
+
+本地设备状态变化回调。
+
+<a id="api_onlocaldevicestateupdated__prototype"></a>
+
+```swift
+void onLocalDeviceStateUpdated(AgoraEduContextDeviceInfo device,
+                               AgoraEduContextDeviceState state)
+```
+
+<a id="api_onlocaldevicestateupdated__parameters"></a>
+
+### 参数
+
+#### `device`
+
+设备信息，详见 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_deviceinfo)。
+
+#### `state`
+
+设备状态，详见 [AgoraEduContextDeviceState](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#enum_devicestate)。
+
+<a id="api_onlocaldeviceconnected"></a>
+
+## onLocalDeviceConnected
+
+本地设备已连接回调。
+
+<a id="api_onlocaldeviceconnected__prototype"></a>
+
+```swift
+void onLocalDeviceConnected(AgoraEduContextDeviceInfo device,
+                            AgoraEduContextDeviceState state)
+```
+
+<a id="api_onlocaldeviceconnected__parameters"></a>
+
+### 参数
+
+#### `device`
+
+设备信息，详见 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_deviceinfo)。
+
+#### `state`
+
+设备状态，详见 [AgoraEduContextDeviceState](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#enum_devicestate)。
+
+<a id="api_onlocaldevicedisconnected"></a>
+
+## onLocalDeviceDisconnected
+
+本地设备连接断开回调。
+
+<a id="api_onlocaldevicedisconnected__prototype"></a>
+
+```swift
+void onLocalDeviceDisconnected(AgoraEduContextDeviceInfo device,
+                               AgoraEduContextDeviceState state)
+```
+
+<a id="api_onlocaldevicedisconnected__parameters"></a>
+
+### 参数
+
+#### `device`
+
+设备信息，详见 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_deviceinfo)。
+
+#### `state`
+
+设备状态，详见 [AgoraEduContextDeviceState](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#enum_devicestate)。
+
+<a id="api_onaudiomixingstatechanged"></a>
+
+## onAudioMixingStateChanged
+
+混音状态变化回调。
+
+<a id="api_onaudiomixingstatechanged__prototype"></a>
+
+```swift
+void onAudioMixingStateChanged(Int stateCode,
+                               Int errorCode)
+```
+
+<a id="api_onaudiomixingstatechanged__parameters"></a>
+
+### 参数
+
+#### `stateCode`
+
+混音状态码。
+
+#### `errorCode`
+
+混音错误码。

@@ -1,0 +1,900 @@
+---
+title: "RtcAdapterBase"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- AGEventEmitter
+  - RtcAdapterBase
+    - RtcAdapterElectron
+    - RtcAdapterWeb
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new RtcAdapterBase(): RtcAdapterBase
+```
+
+#### Returns
+
+Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-base)
+
+## Methods
+
+<a id="addAudioRawDataObserver"></a>
+
+### Abstract addAudioRawDataObserver
+
+```ts
+addAudioRawDataObserver(observer: AgoraRteAudioRawDataObserver, position: AgoraRteAudioRawDataPosition): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraRteAudioRawDataObserver |  |
+| position: AgoraRteAudioRawDataPosition |  |
+
+#### Returns
+
+Returns number
+
+<a id="addCameraProcessors"></a>
+
+### Abstract addCameraProcessors
+
+```ts
+addCameraProcessors(processor: IBaseProcessor[]): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| processor: IBaseProcessor[] |  |
+
+#### Returns
+
+Returns number
+
+<a id="addMicrophoneProcessors"></a>
+
+### Abstract addMicrophoneProcessors
+
+```ts
+addMicrophoneProcessors(processor: IBaseProcessor[]): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| processor: IBaseProcessor[] |  |
+
+#### Returns
+
+Returns number
+
+<a id="addPreviewCameraProcessors"></a>
+
+### Abstract addPreviewCameraProcessors
+
+```ts
+addPreviewCameraProcessors(processor: IBaseProcessor[]): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| processor: IBaseProcessor[] |  |
+
+#### Returns
+
+Returns number
+
+<a id="addPreviewMicrophoneProcessors"></a>
+
+### Abstract addPreviewMicrophoneProcessors
+
+```ts
+addPreviewMicrophoneProcessors(processor: IBaseProcessor[]): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| processor: IBaseProcessor[] |  |
+
+#### Returns
+
+Returns number
+
+<a id="adjustLoopbackSignalVolume"></a>
+
+### Abstract adjustLoopbackSignalVolume
+
+```ts
+adjustLoopbackSignalVolume(volume: number, connType?: AGRtcConnectionType): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| volume: number |  |
+| Optional connType: AGRtcConnectionType |  |
+
+#### Returns
+
+Returns number
+
+<a id="createRtcChannel"></a>
+
+### Abstract createRtcChannel
+
+```ts
+createRtcChannel(channelName: string, base: RtcAdapterBase): RtcChannelAdapterBase
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelName: string |  |
+| base: RtcAdapterBase |  |
+
+#### Returns
+
+Returns [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-channel-adapter-base)
+
+<a id="destroy"></a>
+
+### Abstract destroy
+
+```ts
+destroy(): number
+```
+
+#### Returns
+
+Returns number
+
+<a id="emit"></a>
+
+### emit
+
+```ts
+emit(evt: string, ...args: any[]): RtcAdapterBase
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| Rest ...args: any[] |  |
+
+#### Returns
+
+Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-base)
+
+<a id="enableLocalAudio"></a>
+
+### Abstract enableLocalAudio
+
+```ts
+enableLocalAudio(enable: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="enableLocalVideo"></a>
+
+### Abstract enableLocalVideo
+
+```ts
+enableLocalVideo(enable: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="enableLoopbackRecording"></a>
+
+### Abstract enableLoopbackRecording
+
+```ts
+enableLoopbackRecording(enable: boolean, device?: string, connType?: AGRtcConnectionType): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable: boolean |  |
+| Optional device: string |  |
+| Optional connType: AGRtcConnectionType |  |
+
+#### Returns
+
+Returns number
+
+<a id="enablePreviewLocalAudio"></a>
+
+### Abstract enablePreviewLocalAudio
+
+```ts
+enablePreviewLocalAudio(enable: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="enablePreviewLocalVideo"></a>
+
+### Abstract enablePreviewLocalVideo
+
+```ts
+enablePreviewLocalVideo(enable: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="getAudioDeviceManager"></a>
+
+### Abstract getAudioDeviceManager
+
+```ts
+getAudioDeviceManager(): RtcAudioDeviceManagerBase
+```
+
+#### Returns
+
+Returns [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-audio-device-manager-base)
+
+<a id="getCurrentFrameData"></a>
+
+### Abstract getCurrentFrameData
+
+```ts
+getCurrentFrameData(channelName: string, streamUuid: string, isLocal: boolean): ImageData
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelName: string |  |
+| streamUuid: string |  |
+| isLocal: boolean |  |
+
+#### Returns
+
+Returns ImageData
+
+<a id="getDiaplayDevices"></a>
+
+### Abstract getDiaplayDevices
+
+```ts
+getDiaplayDevices(): Promise<AGScreenShareDevice[]>
+```
+
+#### Returns
+
+Returns Promise &lt; [AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agscreen-share-device) [] &gt;
+
+<a id="getVideoDeviceManager"></a>
+
+### Abstract getVideoDeviceManager
+
+```ts
+getVideoDeviceManager(): RtcVideoDeviceManagerBase
+```
+
+#### Returns
+
+Returns [RtcVideoDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-video-device-manager-base)
+
+<a id="getWindowDevices"></a>
+
+### Abstract getWindowDevices
+
+```ts
+getWindowDevices(): Promise<AGScreenShareDevice[]>
+```
+
+#### Returns
+
+Returns Promise &lt; [AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agscreen-share-device) [] &gt;
+
+<a id="hasScreenSharePermission"></a>
+
+### Abstract hasScreenSharePermission
+
+```ts
+hasScreenSharePermission(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="isScreenDeviceEnumerateSupported"></a>
+
+### Abstract isScreenDeviceEnumerateSupported
+
+```ts
+isScreenDeviceEnumerateSupported(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="off"></a>
+
+### off
+
+```ts
+off(evt: string, cb: CallableFunction): RtcAdapterBase
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-base)
+
+<a id="on"></a>
+
+### on
+
+```ts
+on(evt: string, cb: CallableFunction): RtcAdapterBase
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-base)
+
+<a id="onAutoplayFailed"></a>
+
+### Abstract onAutoplayFailed
+
+```ts
+onAutoplayFailed(cb: () => void): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: () =&gt; void |  |
+
+#### Returns
+
+Returns number
+
+<a id="onLocalAudioPlaybackTestVolumeChanged"></a>
+
+### Abstract onLocalAudioPlaybackTestVolumeChanged
+
+```ts
+onLocalAudioPlaybackTestVolumeChanged(cb: LocalAudioPlaybackVolumeIndicatorEvent): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: LocalAudioPlaybackVolumeIndicatorEvent |  |
+
+#### Returns
+
+Returns number
+
+<a id="onLocalAudioTrackStateChanged"></a>
+
+### Abstract onLocalAudioTrackStateChanged
+
+```ts
+onLocalAudioTrackStateChanged(cb: LocalAudioTrackStateEvent): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: LocalAudioTrackStateEvent |  |
+
+#### Returns
+
+Returns number
+
+<a id="onLocalAudioVolume"></a>
+
+### Abstract onLocalAudioVolume
+
+```ts
+onLocalAudioVolume(cb: (volume: number) => void): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: (volume: number) =&gt; void |  |
+
+#### Returns
+
+Returns number
+
+<a id="onLocalLoopbackDeviceStateChanged"></a>
+
+### Abstract onLocalLoopbackDeviceStateChanged
+
+```ts
+onLocalLoopbackDeviceStateChanged(cb: LocalLoopbackDeviceStateEvent): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: LocalLoopbackDeviceStateEvent |  |
+
+#### Returns
+
+Returns number
+
+<a id="onLocalScreenShareTrackStateChanged"></a>
+
+### Abstract onLocalScreenShareTrackStateChanged
+
+```ts
+onLocalScreenShareTrackStateChanged(cb: LocalVideoTrackStateEvent): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: LocalVideoTrackStateEvent |  |
+
+#### Returns
+
+Returns number
+
+<a id="onLocalVideoTrackStateChanged"></a>
+
+### Abstract onLocalVideoTrackStateChanged
+
+```ts
+onLocalVideoTrackStateChanged(cb: LocalVideoTrackStateEvent): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: LocalVideoTrackStateEvent |  |
+
+#### Returns
+
+Returns number
+
+<a id="once"></a>
+
+### once
+
+```ts
+once(evt: string, cb: CallableFunction): RtcAdapterBase
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-base)
+
+<a id="removeAllEventListeners"></a>
+
+### removeAllEventListeners
+
+```ts
+removeAllEventListeners(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="removeAudioRawDataObserver"></a>
+
+### Abstract removeAudioRawDataObserver
+
+```ts
+removeAudioRawDataObserver(observer: AgoraRteAudioRawDataObserver, position: AgoraRteAudioRawDataPosition): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraRteAudioRawDataObserver |  |
+| position: AgoraRteAudioRawDataPosition |  |
+
+#### Returns
+
+Returns number
+
+<a id="removeCameraProcessors"></a>
+
+### Abstract removeCameraProcessors
+
+```ts
+removeCameraProcessors(): number
+```
+
+#### Returns
+
+Returns number
+
+<a id="removeMicrophoneProcessors"></a>
+
+### Abstract removeMicrophoneProcessors
+
+```ts
+removeMicrophoneProcessors(): number
+```
+
+#### Returns
+
+Returns number
+
+<a id="removePreviewCameraProcessors"></a>
+
+### Abstract removePreviewCameraProcessors
+
+```ts
+removePreviewCameraProcessors(): number
+```
+
+#### Returns
+
+Returns number
+
+<a id="removePreviewMicrophoneProcessors"></a>
+
+### Abstract removePreviewMicrophoneProcessors
+
+```ts
+removePreviewMicrophoneProcessors(): number
+```
+
+#### Returns
+
+Returns number
+
+<a id="setAudioPlaybackDevice"></a>
+
+### Abstract setAudioPlaybackDevice
+
+```ts
+setAudioPlaybackDevice(deviceId: string): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| deviceId: string |  |
+
+#### Returns
+
+Returns number
+
+<a id="setAudioRawDataConfig"></a>
+
+### Abstract setAudioRawDataConfig
+
+```ts
+setAudioRawDataConfig(config: AgoraRteAudioRawDataConfig, position: AgoraRteAudioRawDataPosition): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| config: AgoraRteAudioRawDataConfig |  |
+| position: AgoraRteAudioRawDataPosition |  |
+
+#### Returns
+
+Returns number
+
+<a id="setAudioRecordingDevice"></a>
+
+### Abstract setAudioRecordingDevice
+
+```ts
+setAudioRecordingDevice(deviceId: string): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| deviceId: string |  |
+
+#### Returns
+
+Returns number
+
+<a id="setBeautyEffectOptions"></a>
+
+### Abstract setBeautyEffectOptions
+
+```ts
+setBeautyEffectOptions(enable: boolean, options: AGBeautyEffect): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable: boolean |  |
+| options: AGBeautyEffect |  |
+
+#### Returns
+
+Returns number
+
+<a id="setVideoCameraDevice"></a>
+
+### Abstract setVideoCameraDevice
+
+```ts
+setVideoCameraDevice(deviceId: string): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| deviceId: string |  |
+
+#### Returns
+
+Returns number
+
+<a id="setupLocalVideo"></a>
+
+### Abstract setupLocalVideo
+
+```ts
+setupLocalVideo(canvas: AgoraRtcVideoCanvas, videoSourceType: AgoraRteVideoSourceType): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| canvas: AgoraRtcVideoCanvas |  |
+| videoSourceType: AgoraRteVideoSourceType |  |
+
+#### Returns
+
+Returns number
+
+<a id="setupPreviewLocalVideo"></a>
+
+### Abstract setupPreviewLocalVideo
+
+```ts
+setupPreviewLocalVideo(canvas: AgoraRtcVideoCanvas): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| canvas: AgoraRtcVideoCanvas |  |
+
+#### Returns
+
+Returns number
+
+<a id="setupRemoteVideo"></a>
+
+### Abstract setupRemoteVideo
+
+```ts
+setupRemoteVideo(canvas: AgoraRtcVideoCanvas): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| canvas: AgoraRtcVideoCanvas |  |
+
+#### Returns
+
+Returns number
+
+<a id="startAudioPlaybackDeviceTest"></a>
+
+### Abstract startAudioPlaybackDeviceTest
+
+```ts
+startAudioPlaybackDeviceTest(url: string): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| url: string |  |
+
+#### Returns
+
+Returns number
+
+<a id="startAudioRecordingDeviceTest"></a>
+
+### Abstract startAudioRecordingDeviceTest
+
+```ts
+startAudioRecordingDeviceTest(indicateInterval: number): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| indicateInterval: number |  |
+
+#### Returns
+
+Returns number
+
+<a id="startScreenCapture"></a>
+
+### Abstract startScreenCapture
+
+```ts
+startScreenCapture(params?: { audioDeviceName?: string; id?: string; type?: AGScreenShareType; withAudio?: boolean }): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional params: \{ audioDeviceName?: string; id?: string; type?: AGScreenShareType; withAudio?: boolean \} |  |
+
+#### Returns
+
+Returns number
+
+<a id="stopAudioPlaybackDeviceTest"></a>
+
+### Abstract stopAudioPlaybackDeviceTest
+
+```ts
+stopAudioPlaybackDeviceTest(): number
+```
+
+#### Returns
+
+Returns number
+
+<a id="stopAudioRecordingDeviceTest"></a>
+
+### Abstract stopAudioRecordingDeviceTest
+
+```ts
+stopAudioRecordingDeviceTest(): number
+```
+
+#### Returns
+
+Returns number
+
+<a id="stopScreenCapture"></a>
+
+### Abstract stopScreenCapture
+
+```ts
+stopScreenCapture(): number
+```
+
+#### Returns
+
+Returns number
+
+<a id="takeSnapshot"></a>
+
+### Abstract takeSnapshot
+
+```ts
+takeSnapshot(channelName: string, streamUuid: number, filePath: string): Promise<void | AGSnapshotInfo>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelName: string |  |
+| streamUuid: number |  |
+| filePath: string |  |
+
+#### Returns
+
+Returns Promise &lt; void | [AGSnapshotInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agsnapshot-info) &gt;
+
+<a id="getRtcVersion"></a>
+
+### Static getRtcVersion
+
+```ts
+getRtcVersion(): string
+```
+
+#### Returns
+
+Returns string

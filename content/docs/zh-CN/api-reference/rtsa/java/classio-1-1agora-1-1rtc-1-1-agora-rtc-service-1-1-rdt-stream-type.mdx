@@ -1,0 +1,38 @@
+---
+title: "io.agora.rtc.AgoraRtcService.RdtStreamType类 参考"
+description: "RDT 消息类型。"
+---
+
+RDT 消息类型。
+
+## 类成员变量说明
+
+<a id="a2bcb58bb4f0a342e8a0d5d02d191bd99"></a>
+
+### RDT_STREAM_CMD
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.RdtStreamType.RDT_STREAM_CMD = 0 static
+```
+
+`0`: 控制消息。发送优先级高，不受拥塞控制策略影响，不会阻塞发送。每秒至多发送 100 个消息包，每个消息包的长度至多为 256 B。
+
+<a id="a46c1b60285bcfc6cc688ef8cca9f8832"></a>
+
+### RDT_STREAM_COUNT
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.RdtStreamType.RDT_STREAM_COUNT = 2 static
+```
+
+枚举值边界。
+
+<a id="a7579289f034fef29a5f99091f15f74ec"></a>
+
+### RDT_STREAM_DATA
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.RdtStreamType.RDT_STREAM_DATA = 1 static
+```
+
+`1`: 数据消息。发送优先级低，受拥塞控制策略影响，如果缓冲区满了，则消息会发送失败。不限制发送的消息包数量，每个消息包的长度至多为 128 KB。

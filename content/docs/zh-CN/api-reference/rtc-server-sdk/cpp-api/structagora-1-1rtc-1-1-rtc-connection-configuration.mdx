@@ -1,0 +1,127 @@
+---
+title: "agora::rtc::RtcConnectionConfiguration结构体 参考"
+description: "RTC 连接配置。"
+---
+
+RTC 连接配置。 你需要在调用 [createRtcConnection](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1base-1-1-i-agora-service#a326cda8c926bcb6da5f3a2c512a9ae90) 时配置下列参数。
+
+## 构造及析构函数说明
+
+<a id="a1dc000ab1c7689e3648864e4f3eeeafc"></a>
+
+### RtcConnectionConfiguration()
+
+```cpp
+agora::rtc::RtcConnectionConfiguration::RtcConnectionConfiguration() inline
+```
+
+## 类成员变量说明
+
+<a id="a097a93f5e347da5d75fba637a8b7bc22"></a>
+
+### autoSubscribeAudio
+
+```cpp
+bool agora::rtc::RtcConnectionConfiguration::autoSubscribeAudio
+```
+
+是否自动订阅所有音频轨道。
+
+- true: (Default) 自动订阅所有音频轨道。
+- false: 不自动订阅所有音频轨道。
+
+<a id="af51576e1597295e78ddb3c5791bc77f9"></a>
+
+### autoSubscribeVideo
+
+```cpp
+bool agora::rtc::RtcConnectionConfiguration::autoSubscribeVideo
+```
+
+是否自动订阅所有视频轨道。
+
+- true: (Default) 自动订阅所有视频轨道。
+- false: 不自动订阅所有视频轨道。
+
+<a id="aa3ea2c4b174467cf59ece15135b5d2e3"></a>
+
+### enableAudioRecordingOrPlayout
+
+```cpp
+bool agora::rtc::RtcConnectionConfiguration::enableAudioRecordingOrPlayout
+```
+
+是否开启音频录制或播放。
+
+- true: 开启音频录制或播放。
+- false: 关闭音频录制或播放。
+
+<a id="a59ee9f28f2de2760d7283deb92cb07f0"></a>
+
+### maxSendBitrate
+
+```cpp
+int agora::rtc::RtcConnectionConfiguration::maxSendBitrate
+```
+
+最大发送码率。
+
+<a id="a93b797bf53509466231ea7b2c0e23bcb"></a>
+
+### minPort
+
+```cpp
+int agora::rtc::RtcConnectionConfiguration::minPort
+```
+
+最小端口。
+
+<a id="a75a493336fafec9a3c6154849b902266"></a>
+
+### maxPort
+
+```cpp
+int agora::rtc::RtcConnectionConfiguration::maxPort
+```
+
+最大端口。
+
+<a id="a28cf5adb666a392acb11d41c27fec89e"></a>
+
+### clientRoleType
+
+```cpp
+CLIENT_ROLE_TYPE agora::rtc::RtcConnectionConfiguration::clientRoleType
+```
+
+用户角色： [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080)。默认为 `CLIENT_ROLE_AUDIENCE`。
+
+<a id="a85190e23f6513b6cea508a002628f6ca"></a>
+
+### channelProfile
+
+```cpp
+CHANNEL_PROFILE_TYPE agora::rtc::RtcConnectionConfiguration::channelProfile
+```
+
+频道场景。详见 [CHANNEL_PROFILE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora#abc5eb7ac0efb18032c8383e528c490a2)。默认为 `CHANNEL_PROFILE_LIVE_BROADCASTING`。
+
+<a id="a14c241c934ef847fa65249153eb7bbab"></a>
+
+### audioRecvMediaPacket
+
+```cpp
+bool agora::rtc::RtcConnectionConfiguration::audioRecvMediaPacket
+```
+
+是否接收音频媒体包。出于体验、互通性、易用性等考虑，该参数仅支持设置为 `false`。
+
+<a id="a963c085c9dc971179fd0100e4e299182"></a>
+
+### videoRecvMediaPacket
+
+```cpp
+bool agora::rtc::RtcConnectionConfiguration::videoRecvMediaPacket
+```
+
+是否接收视频媒体包。出于体验、互通性、易用性等考虑，该参数仅支持设置为 `false`。

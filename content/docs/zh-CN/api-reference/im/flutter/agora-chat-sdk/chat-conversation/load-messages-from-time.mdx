@@ -1,0 +1,55 @@
+---
+title: "loadMessagesFromTime method"
+description: "API docs for the loadMessagesFromTime method from the ChatConversation class, for the Dart programming language."
+---
+
+Loads messages from the local database according the following parameters: start timestamp, end timestamp, count.
+
+**Note** Pay attention to the memory usage when the maxCount is large.
+
+**Returns** The list of searched messages.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `startTime` | The starting Unix timestamp for search. |
+| `endTime` | The ending Unix timestamp for search. |
+| `count` | The maximum number of message to retrieve. |
+
+```dart
+Future<List<ChatMessage>> loadMessagesFromTime({required int startTime, required int endTime, int count = 20})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<List<ChatMessage>> loadMessagesFromTime({
+  required int startTime,
+  required int endTime,
+  int count = 20,
+}) async {
+  Map req = this._toJson();
+  req["startTime"] = startTime;
+  req['endTime'] = endTime;
+  req['count'] = count;
+
+  Map<String, dynamic> result = await _emConversationChannel.invokeMethod(
+      ChatMethodKeys.loadMsgWithTime, req);
+
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatMessage> msgList = [];
+    result[ChatMethodKeys.loadMsgWithTime]?.forEach((element) {
+      msgList.add(ChatMessage.fromJson(element));
+    });
+    return msgList;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

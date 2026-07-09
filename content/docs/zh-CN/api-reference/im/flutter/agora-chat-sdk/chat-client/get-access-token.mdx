@@ -1,0 +1,26 @@
+---
+title: "getAccessToken method"
+description: "API docs for the getAccessToken method from the ChatClient class, for the Dart programming language."
+---
+
+Gets the token of the current logged-in user.
+
+```dart
+Future<String> getAccessToken()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<String> getAccessToken() async {
+  Map result = await ClientChannel.invokeMethod(ChatMethodKeys.getToken);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result[ChatMethodKeys.getToken];
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

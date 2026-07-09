@@ -1,0 +1,27 @@
+---
+title: "onAutoAcceptInvitationFromGroup method"
+description: "API docs for the onAutoAcceptInvitationFromGroup method from the ChatGroupManagerListener class, for the Dart programming language."
+---
+
+Occurs when the group invitation is accepted automatically. For settings, see [ChatOptions.autoAcceptGroupInvitation](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/auto-accept-group-invitation). The SDK will join the group before notifying the app of the acceptance of the group invitation.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `inviter` | The inviter ID. |
+| `inviteMessage` | The invitation message. |
+
+```dart
+void onAutoAcceptInvitationFromGroup(String groupId, String inviter, String? inviteMessage)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+void onAutoAcceptInvitationFromGroup(
+    String groupId, String inviter, String? inviteMessage);
+```

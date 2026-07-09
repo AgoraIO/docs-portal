@@ -1,0 +1,237 @@
+---
+title: "AgoraEduGroupHandler"
+description: "AgoraEduGroupHandler 类包含子房间管理相关事件回调。"
+---
+<a id="class_grouphandler"></a>
+
+## AgoraEduGroupHandler
+
+<a id="api_ongroupinfoupdated"></a>
+
+## onGroupInfoUpdated
+
+分组信息更新回调。
+
+<a id="api_ongroupinfoupdated__prototype"></a>
+
+```swift
+void onGroupInfoUpdated(AgoraEduContextGroupInfo groupInfo)
+```
+
+<a id="api_ongroupinfoupdated__parameters"></a>
+
+### 参数
+
+#### `groupInfo`
+
+分组信息对象 [AgoraEduContextGroupInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_groupinfo)。
+
+<a id="api_onsubroomlistadded"></a>
+
+## onSubRoomListAdded
+
+新增子房间回调。
+
+<a id="api_onsubroomlistadded__prototype"></a>
+
+```swift
+void onSubRoomListAdded(Array<AgoraEduContextSubRoomInfo> subRoomList)
+```
+
+<a id="api_onsubroomlistadded__parameters"></a>
+
+### 参数
+
+#### `subRoomList`
+
+子房间信息 [AgoraEduContextSubRoomInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_subroominfo) 列表。
+
+<a id="api_onsubroomlistremoved"></a>
+
+## onSubRoomListRemoved
+
+移除子房间回调。
+
+<a id="api_onsubroomlistremoved__prototype"></a>
+
+```swift
+void onSubRoomListRemoved(Array<AgoraEduContextSubRoomInfo> subRoomList)
+```
+
+<a id="api_onsubroomlistremoved__parameters"></a>
+
+### 参数
+
+#### `subRoomList`
+
+子房间信息 [AgoraEduContextSubRoomInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_subroominfo) 列表。
+
+<a id="api_onsubroomlistupdated"></a>
+
+## onSubRoomListUpdated
+
+子房间列表更新回调。
+
+<a id="api_onsubroomlistupdated__prototype"></a>
+
+```swift
+void onSubRoomListUpdated(Array<AgoraEduContextSubRoomInfo> subRoomList)
+```
+
+<a id="api_onsubroomlistupdated__parameters"></a>
+
+### 参数
+
+#### `subRoomList`
+
+子房间信息 [AgoraEduContextSubRoomInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_subroominfo) 列表。
+
+<a id="api_onuserlistinvitedtosubroom"></a>
+
+## onUserListInvitedToSubRoom
+
+提示用户收到加入子房间的邀请。
+
+<a id="api_onuserlistinvitedtosubroom__prototype"></a>
+
+```swift
+void onUserListInvitedToSubRoom(Array<String> userList,
+                                String subRoomUuid,
+                                AgoraEduContextUserInfo operator)
+```
+
+<a id="api_onuserlistinvitedtosubroom__parameters"></a>
+
+### 参数
+
+#### `userList`
+
+用户 ID 列表。
+
+#### `subRoomUuid`
+
+子房间 ID。
+
+#### `operator`
+
+操作人，可为空。
+
+<a id="api_onuserlistrejectedtosubroom"></a>
+
+## onUserListRejectedToSubRoom
+
+提示用户拒绝加入子房间的邀请。
+
+<a id="api_onuserlistrejectedtosubroom__prototype"></a>
+
+```swift
+void onUserListRejectedToSubRoom(Array<String> userList,
+                                 String subRoomUuid,
+                                 AgoraEduContextUserInfo operator)
+```
+
+<a id="api_onuserlistrejectedtosubroom__parameters"></a>
+
+### 参数
+
+#### `userList`
+
+用户 ID 列表。
+
+#### `subRoomUuid`
+
+子房间 ID。
+
+#### `operator`
+
+操作人，可为空。
+
+<a id="api_onuserlistaddedtosubroom"></a>
+
+## onUserListAddedToSubRoom
+
+提示用户被加入子房间。
+
+<a id="api_onuserlistaddedtosubroom__prototype"></a>
+
+```swift
+void onUserListAddedToSubRoom(Array<String> userList,
+                              String subRoomUuid,
+                              AgoraEduContextUserInfo operator)
+```
+
+<a id="api_onuserlistaddedtosubroom__parameters"></a>
+
+### 参数
+
+#### `userList`
+
+用户 ID 列表。
+
+#### `subRoomUuid`
+
+子房间 ID。
+
+#### `operator`
+
+操作人，可为空。
+
+<a id="api_onusermovedtosubroom"></a>
+
+## onUserMovedToSubRoom
+
+用户从一个子房间被移动至另一个子房间。
+
+<a id="api_onusermovedtosubroom__prototype"></a>
+
+```swift
+void onUserMovedToSubRoom(String userUuid,
+                          String fromSubRoomUuid,
+                          String toSubRoomUuid,
+                          AgoraEduContextUserInfo operator)
+```
+
+<a id="api_onusermovedtosubroom__parameters"></a>
+
+### 参数
+
+#### `userList`
+
+用户 ID 列表。
+
+#### `fromSubRoomUuid`
+
+源子房间 ID。
+
+#### `toSubRoomUuid`
+
+目标子房间 ID。
+
+#### `operator`
+
+操作人，可为空。
+
+<a id="api_onuserlistremovedfromsubroom"></a>
+
+## onUserListRemovedFromSubRoom
+
+提示用户被移出子房间。
+
+<a id="api_onuserlistremovedfromsubroom__prototype"></a>
+
+```swift
+void onUserListRemovedFromSubRoom(Array<AgoraEduContextSubRoomRemovedUserEvent> userList,
+                                  String subRoomUuid)
+```
+
+<a id="api_onuserlistremovedfromsubroom__parameters"></a>
+
+### 参数
+
+#### `userList`
+
+用户 ID 列表。
+
+#### `subRoomUuid`
+
+子房间 ID。

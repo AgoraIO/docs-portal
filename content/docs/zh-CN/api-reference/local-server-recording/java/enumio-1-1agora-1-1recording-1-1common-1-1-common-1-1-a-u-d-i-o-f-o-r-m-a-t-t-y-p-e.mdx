@@ -1,0 +1,48 @@
+---
+title: "io.agora.recording.common.Common.AUDIO_FORMAT_TYPE 枚举类型参考"
+description: "音频解码格式。"
+---
+
+音频解码格式。
+
+## 类成员变量说明
+
+<a id="a26764f01313b6999a00db95b43631849"></a>
+
+### AUDIO_FORMAT_DEFAULT_TYPE
+
+```cpp
+io.agora.recording.common.Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE =(0)
+```
+
+0：默认音频格式，即 AAC 格式。
+
+<a id="aeef4f692cbf925174533d3877ebf1a45"></a>
+
+### AUDIO_FORMAT_AAC_FRAME_TYPE
+
+```cpp
+io.agora.recording.common.Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_AAC_FRAME_TYPE =(1)
+```
+
+1：原始音频数据 AAC 格式。如设置该格式，你可通过 [audioFrameReceived](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a9a99eb2936c493fc7bb5626d5da27fdc) 回调接收原始音频数据。
+
+<a id="a924f52bc882869f8d1bbb1818f98eea7"></a>
+
+### AUDIO_FORMAT_PCM_FRAME_TYPE
+
+```cpp
+io.agora.recording.common.Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_PCM_FRAME_TYPE =(2)
+```
+
+2：原始音频数据 PCM 格式。如设置该格式，你可通过 [audioFrameReceived](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a9a99eb2936c493fc7bb5626d5da27fdc) 回调接收原始音频数据。
+
+<a id="a777324ea611fd31a4f4f50ea161119c6"></a>
+
+### AUDIO_FORMAT_MIXED_PCM_FRAME_TYPE
+
+```cpp
+io.agora.recording.common.Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_MIXED_PCM_FRAME_TYPE =(3)
+```
+
+3：原始音频数据 PCM 混音格式。如设置该格式，你可通过 [audioFrameReceived](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a9a99eb2936c493fc7bb5626d5da27fdc) 回调接收原始音频数据。

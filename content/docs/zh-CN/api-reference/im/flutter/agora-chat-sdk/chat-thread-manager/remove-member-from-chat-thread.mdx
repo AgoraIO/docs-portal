@@ -1,0 +1,44 @@
+---
+title: "removeMemberFromChatThread method"
+description: "API docs for the removeMemberFromChatThread method from the ChatThreadManager class, for the Dart programming language."
+---
+
+Remove member from Chat Thread.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `memberId` | The ID of the member that was removed from Chat Thread. |
+| `chatThreadId` | Chat Thread ID. |
+
+```dart
+Future<void> removeMemberFromChatThread({required String memberId, required String chatThreadId})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> removeMemberFromChatThread({
+  required String memberId,
+  required String chatThreadId,
+}) async {
+  Map req = {
+    "memberId": memberId,
+    "threadId": chatThreadId,
+  };
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.removeMemberFromChatThread,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

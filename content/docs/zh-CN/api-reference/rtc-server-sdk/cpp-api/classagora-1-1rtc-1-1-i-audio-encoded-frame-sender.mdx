@@ -1,0 +1,41 @@
+---
+title: "agora::rtc::IAudioEncodedFrameSender类 参考abstract"
+description: "继承自 agora::RefCountInterface ."
+---
+
+`IAudioEncodedFrameSender` 类。
+
+## 构造及析构函数说明
+
+<a id="a4002c6dc29c4dc93ea173ac4cd5bf3fe"></a>
+
+### ~IAudioEncodedFrameSender()
+
+```cpp
+agora::rtc::IAudioEncodedFrameSender::~IAudioEncodedFrameSender() inlineprotected
+```
+
+## 成员函数说明
+
+<a id="ad2f3121c77b2d0095ec9030e9fa68c4c"></a>
+
+### sendEncodedAudioFrame()
+
+```cpp
+virtual bool agora::rtc::IAudioEncodedFrameSender::sendEncodedAudioFrame(const uint8_t* payload_data, size_t payload_size, const EncodedAudioFrameInfo& audioFrameInfo) pure virtual
+```
+
+将已编码的音频帧发送到本地音频轨道。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| payload_data | 要发送的编码音频数据。 |
+| payload_size | 数据大小（字节）。 |
+| audioFrameInfo | 音频帧信息： [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-encoded-audio-frame-info)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

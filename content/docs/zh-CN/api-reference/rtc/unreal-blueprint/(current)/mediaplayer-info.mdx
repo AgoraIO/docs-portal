@@ -1,0 +1,353 @@
+---
+title: "播放信息获取"
+description: "播放信息获取 API reference."
+---
+<a id="toc_mediaplayer_info"></a>
+
+## 播放信息获取
+
+<a id="api_imediaplayer_getduration"></a>
+
+## GetDuration
+
+获取媒体文件总时长。
+
+<a id="api_imediaplayer_getduration__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
+	int GetDuration(int64& duration);
+```
+
+<a id="api_imediaplayer_getduration__parameters"></a>
+
+### 参数
+
+#### `duration`
+
+输出参数。媒体文件总时长（毫秒）。
+
+<a id="api_imediaplayer_getduration__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getmediaplayerid"></a>
+
+## GetMediaPlayerId
+
+获取播放器 ID。
+
+<a id="api_imediaplayer_getmediaplayerid__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
+	int GetMediaPlayerId();
+```
+
+<a id="api_imediaplayer_getmediaplayerid__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回播放器 ID。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getmute"></a>
+
+## GetMute
+
+获取当前播放的媒体文件是否静音。
+
+<a id="api_imediaplayer_getmute__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
+	int GetMute(bool & muted);
+```
+
+<a id="api_imediaplayer_getmute__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+输出参数。静音状态：
+
+- true: 媒体文件已静音。
+- false: 媒体文件未静音。
+
+<a id="api_imediaplayer_getmute__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getplayoutvolume"></a>
+
+## GetPlayoutVolume
+
+获取当前本地播放音量。
+
+<a id="api_imediaplayer_getplayoutvolume__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
+	int GetPlayoutVolume(int & volume);
+```
+
+<a id="api_imediaplayer_getplayoutvolume__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+输出参数。本地播放音量，取值范围从 0 到 100：
+
+- 0: 无声。
+- 100: （默认）媒体文件的原始播放音量。
+
+<a id="api_imediaplayer_getplayoutvolume__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getplayposition"></a>
+
+## GetPlayPosition
+
+获取当前播放进度。
+
+<a id="api_imediaplayer_getplayposition__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
+	int GetPlayPosition(int64& pos);
+```
+
+<a id="api_imediaplayer_getplayposition__parameters"></a>
+
+### 参数
+
+#### `pos`
+
+媒体资源文件当前的播放位置，单位为毫秒。
+
+<a id="api_imediaplayer_getplayposition__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回当前播放进度（毫秒）。
+- &lt; 0: 方法调用失败，详见 [FENUMWRAP_MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediaplayerreason)。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getplaysrc"></a>
+
+## GetPlaySrc
+
+获取播放的媒体资源的路径。
+
+<a id="api_imediaplayer_getplaysrc__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
+	FString GetPlaySrc();
+```
+
+<a id="api_imediaplayer_getplaysrc__return_values"></a>
+
+### 返回值
+
+播放的媒体资源的路径。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getpublishsignalvolume"></a>
+
+## GetPublishSignalVolume
+
+获取远端用户听到的音量。
+
+<a id="api_imediaplayer_getpublishsignalvolume__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
+	int GetPublishSignalVolume(int & volume);
+```
+
+<a id="api_imediaplayer_getpublishsignalvolume__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+输出参数。播放文件的远端播放音量。
+
+<a id="api_imediaplayer_getpublishsignalvolume__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getstate"></a>
+
+## GetState
+
+获取播放器当前状态。
+
+<a id="api_imediaplayer_getstate__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
+	EMEDIA_PLAYER_STATE GetState();
+```
+
+<a id="api_imediaplayer_getstate__return_values"></a>
+
+### 返回值
+
+播放器当前状态，详见 [EMEDIA_PLAYER_STATE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediaplayerstate)。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getstreamcount"></a>
+
+## GetStreamCount
+
+获取当前媒体文件中媒体流的数量。
+
+<a id="api_imediaplayer_getstreamcount__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
+	int GetStreamCount(int64& count);
+```
+
+<a id="api_imediaplayer_getstreamcount__detailed_desc"></a>
+
+### 详情
+
+:::warning[注意]
+请在 [Open](/zh-CN/api-reference/rtc/unreal-blueprint/mediaplayer-open#api_imediaplayer_open) 后并收到 [OnPlayerSourceStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 PLAYER_STATE_OPEN_COMPLETED 后再调用该方法。
+:::
+
+<a id="api_imediaplayer_getstreamcount__parameters"></a>
+
+### 参数
+
+#### `count`
+
+输出参数。当前媒体文件中媒体流的数量。
+
+<a id="api_imediaplayer_getstreamcount__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败，详见 [FENUMWRAP_MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediaplayerreason)。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getstreaminfo"></a>
+
+## GetStreamInfo
+
+通过媒体流的索引值获取媒体流信息。
+
+<a id="api_imediaplayer_getstreaminfo__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
+	int GetStreamInfo(int64 index, FPlayerStreamInfo& info);
+```
+
+<a id="api_imediaplayer_getstreaminfo__detailed_desc"></a>
+
+<a id="api_imediaplayer_getstreaminfo__timing"></a>
+
+### 调用时机
+
+你需要在 [GetStreamCount](/zh-CN/api-reference/rtc/unreal-blueprint/mediaplayer-info#api_imediaplayer_getstreamcount) 后调用该方法。
+
+<a id="api_imediaplayer_getstreaminfo__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_imediaplayer_getstreaminfo__parameters"></a>
+
+### 参数
+
+#### `index`
+
+媒体流索引值。该参数需小于 [GetStreamCount](/zh-CN/api-reference/rtc/unreal-blueprint/mediaplayer-info#api_imediaplayer_getstreamcount) 的 count 参数。
+
+#### `info`
+
+输出参数。媒体流的所有信息，详见 [FPlayerStreamInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-playerstreaminfo)。
+
+<a id="api_imediaplayer_getstreaminfo__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayer)
+
+<a id="callback_imediaplayersourceobserver_onplayerplaybackstats"></a>
+
+## OnPlayerPlaybackStats
+
+报告当前播放的媒体资源的相关信息。
+
+<a id="callback_imediaplayersourceobserver_onplayerplaybackstats__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnPlayerPlaybackStats(const FPlayerPlaybackStats& stats);
+```
+
+<a id="callback_imediaplayersourceobserver_onplayerplaybackstats__detailed_desc"></a>
+
+### 详情
+
+当媒体资源开始播放后，SDK 会每秒触发一次该回调，报告媒体资源的相关信息。
+
+<a id="callback_imediaplayersourceobserver_onplayerplaybackstats__parameters"></a>
+
+### 参数
+
+#### `stats`
+
+媒体资源的相关信息，详见 [FPlayerPlaybackStats](/zh-CN/api-reference/rtc/unreal-blueprint/class-playerplaybackstats)。
+
+### 所属接口类
+- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayersourceobserver)

@@ -1,0 +1,53 @@
+---
+title: "ChatThreadEvent.fromJson constructor"
+description: "API docs for the ChatThreadEvent.fromJson constructor from Class ChatThreadEvent from the agora_chat_sdk library, for the Dart programming language."
+---
+
+```dart
+ChatThreadEvent.fromJson(Map map)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+factory ChatThreadEvent.fromJson(Map map) {
+  String from = map["from"];
+  int iType = map["type"];
+  ChatThreadOperation type = ChatThreadOperation.UnKnown;
+  switch (iType) {
+    case 0:
+      type = ChatThreadOperation.UnKnown;
+      break;
+    case 1:
+      type = ChatThreadOperation.Create;
+      break;
+    case 2:
+      type = ChatThreadOperation.Update;
+      break;
+    case 3:
+      type = ChatThreadOperation.Delete;
+      break;
+    case 4:
+      type = ChatThreadOperation.Update_Msg;
+      break;
+  }
+
+  ChatThread? chatThread = map.getValueWithKey<ChatThread>(
+    "thread",
+    callback: (map) {
+      if (map == null) {
+        return null;
+      }
+      return ChatThread.fromJson(map);
+    },
+  );
+
+  return ChatThreadEvent._private(
+    type: type,
+    from: from,
+    chatThread: chatThread,
+  );
+}
+```

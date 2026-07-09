@@ -1,0 +1,55 @@
+---
+title: "getConversation method"
+description: "API docs for the getConversation method from the ChatManager class, for the Dart programming language."
+---
+
+Gets the conversation by conversation ID and conversation type.
+
+- true: Yes.
+- false: No.
+
+**Return** The conversation object found according to the ID and type. Returns null if the conversation is not found.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `conversationId` | The conversation ID. |
+| `type` | The conversation type: [ChatConversationType](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-conversation-type). |
+| `createIfNeed` | Whether to create a conversation is the specified conversation is not found: |
+
+```dart
+Future<ChatConversation?> getConversation(String conversationId, {ChatConversationType type = ChatConversationType.Chat, bool createIfNeed = true})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<ChatConversation?> getConversation(
+  String conversationId, {
+  ChatConversationType type = ChatConversationType.Chat,
+  bool createIfNeed = true,
+}) async {
+  Map req = {
+    "con_id": conversationId,
+    "type": conversationTypeToInt(type),
+    "createIfNeed": createIfNeed
+  };
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.getConversation, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    ChatConversation? ret;
+    if (result[ChatMethodKeys.getConversation] != null) {
+      ret = ChatConversation.fromJson(result[ChatMethodKeys.getConversation]);
+    }
+    return ret;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

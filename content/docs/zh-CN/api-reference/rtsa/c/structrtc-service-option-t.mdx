@@ -1,0 +1,87 @@
+---
+title: "rtc_service_option_t结构体 参考"
+description: "#include <agora_rtc_api.h>"
+---
+
+RTSA 服务配置选项。
+
+## 结构体成员变量说明
+
+<a id="a04d7b1c6994ae0fd3aef923bcbf4f039"></a>
+
+### area_code
+
+```cpp
+uint32_t area_code
+```
+
+服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。 支持的区域详见 [area_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1a483a5b4b02019fa68b46a979ac1d1d)。 区域码支持位操作。指定访问区域后，SDK 会连接指定区域内的声网服务器。
+
+<a id="a08348d0b8dc724dd8c4c448e32529651"></a>
+
+### domain_limit
+
+```cpp
+bool domain_limit
+```
+
+是否开启域名限制：
+
+- true: 开启。SDK 只能访问指定域名的网络。
+- false: （默认）不开启。SDK 可以访问任意域名的网络。
+
+##### `注解`
+
+- 该参数仅对使用定向物联网卡的场景有效。为保证使用定向物联网卡的设备与其他设备互通， 你需要将该参数设置为 true。
+- 开启域名限制前，你需要先联系物联网卡运营商将泛域名 *.agora.io 和 *.agoraio.cn 添加到白名单中，再联系 sales.nosp@m. @she.nosp@m. ngwan.nosp@m. g.cn 进行设置。
+
+<a id="a22f2aa6ab4a573a6d897293765a8b6f7"></a>
+
+### license_value
+
+```cpp
+char license_value[AGORA_LICENSE_VALUE_LEN+1]
+```
+
+License 激活之后返回的 License 字符串。
+
+##### `注解`
+
+SDK 通过 License 计费。为保证你的业务不受影响，你需要联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](#) 了解并购买 License。
+
+<a id="a466d542376b0c53d41525a1e138d4f5b"></a>
+
+### log_cfg
+
+```cpp
+log_config_t log_cfg
+```
+
+SDK 日志文件配置。详见 [log_config_t](/zh-CN/api-reference/rtsa/c/structlog-config-t)。
+
+<a id="a5b083e8c11932263a8ddababf4501da0"></a>
+
+### product_id
+
+```cpp
+char product_id[AGORA_RTC_PRODUCT_ID_MAX_LEN+1]
+```
+
+产品 ID。长度不得超过 63 个字符。
+
+<a id="a62210a8ee40f31d8b3d6aff4145303c5"></a>
+
+### use_string_uid
+
+```cpp
+bool use_string_uid
+```
+
+##### `自从`
+
+v1.9.5
+
+是否启用 String 型用户 ID 功能。
+
+- true: 是。启用后，请确保所有客户端都都使用 String 型用户 ID 加入 RTC 频道。
+- false: （默认）否，不启用。

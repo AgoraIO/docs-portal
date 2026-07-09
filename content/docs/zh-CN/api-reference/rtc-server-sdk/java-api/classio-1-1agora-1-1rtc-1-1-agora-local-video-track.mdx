@@ -1,0 +1,121 @@
+---
+title: "io.agora.rtc.AgoraLocalVideoTrack类 参考"
+description: "构造函数。"
+---
+
+## 构造及析构函数说明
+
+<a id="ab7c00feaaf9f2d465fdbb42a48c0c64e"></a>
+
+### AgoraLocalVideoTrack()
+
+```cpp
+io.agora.rtc.AgoraLocalVideoTrack.AgoraLocalVideoTrack(long cptr)
+```
+
+构造函数。
+
+## 成员函数说明
+
+<a id="aa1e2f083df08f0f4b962676d0fca73d4"></a>
+
+### destroy()
+
+```cpp
+void io.agora.rtc.AgoraLocalVideoTrack.destroy()
+```
+
+析构函数。
+
+<a id="acae2e10be2a7e51bb68613b6da4342cc"></a>
+
+### enableSimulcastStream()
+
+```cpp
+native int io.agora.rtc.AgoraLocalVideoTrack.enableSimulcastStream(int enabled, SimulcastStreamConfig config)
+```
+
+启用/禁用视频多流模式。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enabled | 是否启用视频多流模式：<br />- true: 是<br />- false: 否 |
+| config | 多流模式配置，SimulcastStreamConfig。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a538047d008eaeaffe0186a3368eb18da"></a>
+
+### getState()
+
+```cpp
+native int io.agora.rtc.AgoraLocalVideoTrack.getState()
+```
+
+查询本地视频流的状态。
+
+#### Returns
+
+本地视频流状态。
+
+<a id="a8140767b17e261507fc65033029d25b9"></a>
+
+### getStatistics()
+
+```cpp
+native LocalVideoTrackStats io.agora.rtc.AgoraLocalVideoTrack.getStatistics()
+```
+
+获取本地视频的质量数据。
+
+#### Returns
+
+本地视频的质量数据。
+
+<a id="a66065a64360dec77fec958daebbf69c1"></a>
+
+### setEnabled()
+
+```cpp
+native void io.agora.rtc.AgoraLocalVideoTrack.setEnabled(int enable)
+```
+
+启用或禁用本地视频轨道。
+
+启用本地视频轨道后，SDK 会允许本地视频录制、处理和编码。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable | 是否启用本地视频轨道:<br />- true: 是<br />- false: 否 |
+
+<a id="a0b7181834aa7210c14e4ae52fd857a03"></a>
+
+### setVideoEncoderConfig()
+
+```cpp
+native int io.agora.rtc.AgoraLocalVideoTrack.setVideoEncoderConfig(VideoEncoderConfig config)
+```
+
+设置视频编码属性。
+
+视频编码属性对应一套视频参数，包括分辨率、帧率、码率和方向属性。
+
+该方法中指定的属性是理想网络条件下的最大值。如果视频引擎因网络等问题无法按指定参数渲染视频，SDK 会取最接近最大值的那个值。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| config | 视频编码属性：VideoEncoderConfig。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

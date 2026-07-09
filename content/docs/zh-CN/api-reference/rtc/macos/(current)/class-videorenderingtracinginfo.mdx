@@ -22,11 +22,11 @@ NS_SWIFT_NAME(AgoraVideoRenderingTracingInfo) __attribute__((visibility("default
 
 ### `elapsedTime`
 
-从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到 SDK 触发 [rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:](/zh-CN/api-reference/rtc/macos/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调的时间间隔（毫秒）。
+从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video-rendering#api_irtcengine_startmediarenderingtracing) 到 SDK 触发 [rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:](/zh-CN/api-reference/rtc/macos/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调的时间间隔（毫秒）。
 
 ### `start2JoinChannel`
 
-从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到调用 `joinChannelByToken` 的时间间隔（毫秒）。如果该值为负数，表示在调用加入频道方法之后才调用了 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing)。
+从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video-rendering#api_irtcengine_startmediarenderingtracing) 到调用 `joinChannelByToken` 的时间间隔（毫秒）。如果该值为负数，表示在调用加入频道方法之后才调用了 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video-rendering#api_irtcengine_startmediarenderingtracing)。
 
 ### `join2JoinSuccess`
 
@@ -34,7 +34,7 @@ NS_SWIFT_NAME(AgoraVideoRenderingTracingInfo) __attribute__((visibility("default
 
 ### `joinSuccess2RemoteJoined`
 
-该值表示从本地用户成功加入频道到远端用户加入频道的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到远端用户加入频道的时间间隔，取决于调用时机。
+该值表示从本地用户成功加入频道到远端用户加入频道的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video-rendering#api_irtcengine_startmediarenderingtracing) 到远端用户加入频道的时间间隔，取决于调用时机。
 
 :::info[注]
 - 如果本地用户在远端用户加入频道后才调用 startMediaRenderingTracing，该值为 0，且无意义。
@@ -43,7 +43,7 @@ NS_SWIFT_NAME(AgoraVideoRenderingTracingInfo) __attribute__((visibility("default
 
 ### `remoteJoined2SetView`
 
-该值表示从远端用户加入频道到本地用户设置远端视图的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到设置远端视图的时间间隔，取决于调用时机。
+该值表示从远端用户加入频道到本地用户设置远端视图的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video-rendering#api_irtcengine_startmediarenderingtracing) 到设置远端视图的时间间隔，取决于调用时机。
 
 :::info[注]
 - 如果本地用户在设置远端视图后才调用 startMediaRenderingTracing，该值为 0，且无效。
@@ -52,7 +52,7 @@ NS_SWIFT_NAME(AgoraVideoRenderingTracingInfo) __attribute__((visibility("default
 
 ### `remoteJoined2UnmuteVideo`
 
-该值表示从远端用户加入频道到本地用户订阅远端视频流的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到订阅远端视频流的时间间隔，取决于调用时机。
+该值表示从远端用户加入频道到本地用户订阅远端视频流的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video-rendering#api_irtcengine_startmediarenderingtracing) 到订阅远端视频流的时间间隔，取决于调用时机。
 
 :::info[注]
 - 如果本地用户在订阅远端视频流后才调用 startMediaRenderingTracing，该值为 0，且无效。
@@ -61,7 +61,7 @@ NS_SWIFT_NAME(AgoraVideoRenderingTracingInfo) __attribute__((visibility("default
 
 ### `remoteJoined2PacketReceived`
 
-该值表示从远端用户加入频道到本地用户接收到远端视频流的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到接收远端视频流的时间间隔，取决于调用时机。
+该值表示从远端用户加入频道到本地用户接收到远端视频流的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video-rendering#api_irtcengine_startmediarenderingtracing) 到接收远端视频流的时间间隔，取决于调用时机。
 
 :::info[注]
 - 如果本地用户在接收远端视频流后才调用 startMediaRenderingTracing，该值为 0，且无效。

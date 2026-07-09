@@ -1,0 +1,183 @@
+---
+title: "com.herewhite.sdk.domain.LoggerOptions类 参考"
+description: "输出日志选项。"
+---
+
+输出日志选项。
+
+## 成员函数说明
+
+<a id="af09e1868436ced86f5ddc6d5ba8b60aa"></a>
+
+### getDisableReportLog()
+
+```cpp
+Boolean com.herewhite.sdk.domain.LoggerOptions.getDisableReportLog()
+```
+
+获取是否关闭日志上报。
+
+#### Returns
+
+是否关闭日志上报：
+
+- true：关闭。
+- false：开启。
+
+<a id="a4a9491c143ef2892dbe257e84db17d34"></a>
+
+### setDisableReportLog()
+
+```cpp
+void com.herewhite.sdk.domain.LoggerOptions.setDisableReportLog(Boolean disableReportLog)
+```
+
+开启/关闭日志上报。
+
+##### `**[弃用:](/zh-CN/api-reference/whiteboard/android/deprecated#_deprecated000007)**`
+
+该方法已废弃。请使用 `getReportDebugLogMode`、 `getReportQualityMode` 和 `getReportLevelMask`。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| disableReportLog | 是否关闭日志上报；<br />- true：关闭。<br />- false：（默认）开启日志上报。 |
+
+<a id="a0ed013795410c184ac5cdd3742493bfa"></a>
+
+### getPrintLevelMask()
+
+```cpp
+Level com.herewhite.sdk.domain.LoggerOptions.getPrintLevelMask()
+```
+
+获取日志打印等级。
+
+#### Returns
+
+日志打印等级。详见 `Level`。
+
+<a id="a803997680fcec6a36ac3f75d2f668f90"></a>
+
+### setPrintLevelMask()
+
+```cpp
+void com.herewhite.sdk.domain.LoggerOptions.setPrintLevelMask(Level printLevelMask)
+```
+
+设置日志打印等级。
+
+##### `自从`
+
+2.11.10
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| printLevelMask | 日志打印等级，详见 `Level`。默认等级为 `info`。 |
+
+<a id="a91862659e1634e21adb0a07734378f28"></a>
+
+### getReportLevelMask()
+
+```cpp
+Level com.herewhite.sdk.domain.LoggerOptions.getReportLevelMask()
+```
+
+获取 SDK 的日志上报等级。
+
+#### Returns
+
+日志上报等级，详见 `Level`。
+
+<a id="aa6ded549dfb125f4d2c80c83df3e2470"></a>
+
+### setReportLevelMask()
+
+```cpp
+void com.herewhite.sdk.domain.LoggerOptions.setReportLevelMask(Level reportLevelMask)
+```
+
+设置 SDK 上报的日志等级。
+
+##### `自从`
+
+2.11.10
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| reportLevelMask | 日志上报等级，详见 `Level`。默认等级为 `info`。 |
+
+<a id="a143b6ad44528e0b5b31e37aa1882871d"></a>
+
+### getReportDebugLogMode()
+
+```cpp
+ReportMode com.herewhite.sdk.domain.LoggerOptions.getReportDebugLogMode()
+```
+
+获取 SDK 上报日志信息的模式。
+
+#### Returns
+
+上报模式，详见 `ReportMode`。
+
+<a id="aeeb793170e811419825f334721fd6ec5"></a>
+
+### setReportDebugLogMode()
+
+```cpp
+void com.herewhite.sdk.domain.LoggerOptions.setReportDebugLogMode(ReportMode reportDebugLogMode)
+```
+
+设置 SDK 上报 `debug` 等级日志的模式。
+
+##### `自从`
+
+2.11.10
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| reportDebugLogMode | 上报模式，详见 `ReportMode`。默认为总是上报。 |
+
+<a id="a659d34d959e73afd931c0580e9c5a149"></a>
+
+### getReportQualityMode()
+
+```cpp
+ReportMode com.herewhite.sdk.domain.LoggerOptions.getReportQualityMode()
+```
+
+获取 SDK 上报连接质量数据的模式。
+
+#### Returns
+
+SDK 上报连接质量数据的模式。
+
+<a id="abadf1a242ae59a08b4ef3ad2fa16e381"></a>
+
+### setReportQualityMode()
+
+```cpp
+void com.herewhite.sdk.domain.LoggerOptions.setReportQualityMode(ReportMode reportQualityMode)
+```
+
+设置 SDK 上报连接质量数据的模式。
+
+##### `自从`
+
+2.11.10
+
+连接质量数据包括连接时长和连接稳定性等。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| reportQualityMode | 上报模式，详见 `ReportMode`。默认为总是上报。 |

@@ -1,0 +1,58 @@
+---
+title: "agora::rtc::LastmileProbeResult结构体 参考"
+description: "上下行 Last mile 网络质量探测结果。"
+---
+
+上下行 Last mile 网络质量探测结果。
+
+## 构造及析构函数说明
+
+<a id="a9c70e79d25a3c54978e763792236be97"></a>
+
+### LastmileProbeResult()
+
+```cpp
+agora::rtc::LastmileProbeResult::LastmileProbeResult() inline
+```
+
+## 类成员变量说明
+
+<a id="ac935a7295bee8fbb8601c2264bc6c501"></a>
+
+### state
+
+```cpp
+LASTMILE_PROBE_RESULT_STATE agora::rtc::LastmileProbeResult::state
+```
+
+Last mile 质量探测结果的状态。详见 [LASTMILE_PROBE_RESULT_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#aa6c9106e765c0ebb15be1b3e4e384f65)。
+
+<a id="a8f7a1bf3e42a6d0ae7c8a8bf672846b3"></a>
+
+### uplinkReport
+
+```cpp
+LastmileProbeOneWayResult agora::rtc::LastmileProbeResult::uplinkReport
+```
+
+上行网络质量报告。详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-lastmile-probe-one-way-result)。
+
+<a id="a08c34180e6bfaf39080529cb2a03dd4c"></a>
+
+### downlinkReport
+
+```cpp
+LastmileProbeOneWayResult agora::rtc::LastmileProbeResult::downlinkReport
+```
+
+下行网络质量报告。详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-lastmile-probe-one-way-result)。
+
+<a id="a58330343f725399919dea2e493b8f5a0"></a>
+
+### rtt
+
+```cpp
+unsigned int agora::rtc::LastmileProbeResult::rtt
+```
+
+往返时延（毫秒）。

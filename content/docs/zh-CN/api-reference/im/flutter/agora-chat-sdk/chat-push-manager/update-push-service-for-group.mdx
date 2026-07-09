@@ -1,0 +1,37 @@
+---
+title: "updatePushServiceForGroup method"
+description: "API docs for the updatePushServiceForGroup method from the ChatPushManager class, for the Dart programming language."
+---
+
+Sets whether to turn on or turn off the push notification for the the specified groups.
+
+`groupIds` The list of groups to be set.
+
+`enablePush` enable push notification. `true`: Turns on the notification; `false`: Turns off the notification;
+
+**Throws** A description of the issue that caused this exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error)
+
+```dart
+@deprecated Future<void> updatePushServiceForGroup({required List<String> groupIds, required bool enablePush})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@deprecated
+Future<void> updatePushServiceForGroup({
+  required List<String> groupIds,
+  required bool enablePush,
+}) async {
+  Map req = {'noPush': !enablePush, 'group_ids': groupIds};
+  Map result = await PushChannel.invokeMethod(
+      ChatMethodKeys.updateGroupPushService, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,0 +1,58 @@
+---
+title: "WhiteMemberInformation Class Reference"
+description: "用于自定义用户信息。"
+---
+
+<a id="overview"></a>
+
+用于自定义用户信息。
+
+## Methods
+
+<a id="//api/name/initWithUserId:name:avatar:"></a>
+
+### initWithUserId:name:avatar:
+
+```objc
+- (instancetype)initWithUserId:(NSString *)userId name:(NSString *)nickName avatar:(NSString *)avatarUrl
+```
+
+`MemberInformation` 构造方法，用于初始化用户信息对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `userId` | 用户 ID |
+| `nickName` | 用户昵称 |
+| `avatarUrl` | 用户头像图片地址 |
+
+<a id="//api/name/nickName"></a>
+
+### nickName
+
+```objc
+@property (nonatomic, copy, readonly) NSString *nickName
+```
+
+用户昵称
+
+<a id="//api/name/avatar"></a>
+
+### avatar
+
+```objc
+@property (nonatomic, copy, readonly, nullable) NSString *avatar
+```
+
+头像图片地址
+
+<a id="//api/name/userId"></a>
+
+### userId
+
+```objc
+@property (nonatomic, copy, readonly, nullable) NSString *userId
+```
+
+用户 ID。请保证用户 ID 的唯一性。

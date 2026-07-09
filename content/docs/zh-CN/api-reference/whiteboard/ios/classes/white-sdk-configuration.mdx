@@ -1,0 +1,304 @@
+---
+title: "WhiteSdkConfiguration Class Reference"
+description: "用于配置 WhiteSDK 对象。"
+---
+
+<a id="overview"></a>
+
+用于配置 [WhiteSDK](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk) 对象。
+
+## Methods
+
+<a id="//api/name/initWithApp:"></a>
+
+### initWithApp:
+
+```objc
+- (instancetype)initWithApp:(NSString *)appIdentifier
+```
+
+初始化 `WhiteSdkConfiguration` 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `appIdentifier` | 白板项目的唯一标识。详见 [获取白板项目的 App Identifier](/doc/whiteboard/ios/whiteboard-sdk/get-started/enable-service#%E8%8E%B7%E5%8F%96%E4%BA%92%E5%8A%A8%E7%99%BD%E6%9D%BF%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%89%E5%85%A8%E5%AF%86%E9%92%A5)。 |
+
+#### Returns
+
+初始化的 `WhiteSdkConfiguration` 对象。
+
+<a id="//api/name/appIdentifier"></a>
+
+### appIdentifier
+
+```objc
+@property (nonatomic, copy) NSString *appIdentifier
+```
+
+白板项目的唯一标识。
+
+#### Availability
+
+2.8.0
+
+<a id="//api/name/enableImgErrorCallback"></a>
+
+### enableImgErrorCallback
+
+```objc
+@property (nonatomic, assign) BOOL enableImgErrorCallback
+```
+
+是否监听图片加载失败事件。
+
+#### Discussion
+
+- YES：开启监听。
+- NO：（默认）关闭。
+
+#### Availability
+
+2.12.0
+
+<a id="//api/name/enableIFramePlugin"></a>
+
+### enableIFramePlugin
+
+```objc
+@property (nonatomic, assign) BOOL enableIFramePlugin
+```
+
+是否启用 iframe 插件。
+
+#### Discussion
+
+- YES：开启。
+- NO：未启用。
+
+2.10.0 默认打开，后续版本默认关闭。
+
+<a id="//api/name/region"></a>
+
+### region
+
+```objc
+@property (nonatomic, strong, nullable) WhiteRegionKey region
+```
+
+互动白板房间所在的数据中心。
+
+#### Discussion
+
+数据中心包括：
+
+- WhiteRegionCN：中国杭州。该数据中心为其他数据中心服务区未覆盖的地区提供服务。
+- WhiteRegionUS：美国硅谷。该数据中心为北美洲、南美洲地区提供服务。
+- WhiteRegionIN：印度孟买。该数据中心为印度地区提供服务。
+- WhiteRegionSG：新加坡。该数据中心为新加坡、东亚、东南亚地区提供服务。
+- WhiteRegionEU：欧洲（法兰克福）。该数据中心为欧洲地区提供服务。
+
+**Note:**
+
+SDK 初始化时设置的 `region` 必须和 [创建房间](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-rooms) 时指定的 `region` 一致；否则，SDK 无法连接到房间。
+
+#### Availability
+
+2.11.0
+
+<a id="//api/name/renderEngine"></a>
+
+### renderEngine
+
+```objc
+@property (nonatomic, copy) WhiteSdkRenderEngineKey renderEngine
+```
+
+画笔教具的渲染引擎模式。可选择以下两种模式： - `WhiteSdkRenderEngineSvg`：SVG 渲染模式。2.8.0 及之前版本默认使用渲染模式，该模式兼容性较好，但性能较差。 - `WhiteSdkRenderEngineCanvas`：Canvas 渲染模式。2.8.0 版本起新增 `canvas` 渲染模式，该模式性能较好，但兼容性较差。2.9.0 及之后版本的 `WhiteSdk` 默认使用 `canvas` 渲染模式。
+
+#### Availability
+
+2.8.0
+
+2.8.0 版本新增 `canvas` 渲染引擎。从 2.9.0 版本开始，默认值为 `WhiteSdkRenderEngineCanvas`。
+
+<a id="//api/name/userCursor"></a>
+
+### userCursor
+
+```objc
+@property (nonatomic, assign) BOOL userCursor
+```
+
+是否显示用户头像。
+
+#### Discussion
+
+要显示用户头像，请确保你在 [initWithUuid](/zh-CN/api-reference/whiteboard/ios/classes/white-room-config#//api/name/initWithUUID:roomToken:uid:userPayload:) 时，在 `userPayload` 对象中传入了头像的键值对。
+
+- YES：显示。
+- NO：（默认）不显示。
+
+<a id="//api/name/fonts"></a>
+
+### fonts
+
+```objc
+@property (nonatomic, copy, nullable) NSDictionary *fonts
+```
+
+自定义字体名称和地址。
+
+<a id="//api/name/preloadDynamicPPT"></a>
+
+### preloadDynamicPPT
+
+```objc
+@property (nonatomic, assign) BOOL preloadDynamicPPT
+```
+
+是否在加载动态 PPT 首页时，一次性加载动态 PPT 中的所有图片资源。
+
+#### Discussion
+
+**Note：**
+
+声网不推荐设置 setPreloadDynamicPPT(true)，这样会使 PPT 显示缓慢。
+
+- YES：开启。
+- NO: （默认）未开启。
+
+<a id="//api/name/enableInterrupterAPI"></a>
+
+### enableInterrupterAPI
+
+```objc
+@property (nonatomic, assign) BOOL enableInterrupterAPI
+```
+
+是否开启图片拦截和替换功能。
+
+#### Discussion
+
+- YES：开启。
+- NO：关闭。
+
+<a id="//api/name/log"></a>
+
+### log
+
+```objc
+@property (nonatomic, assign) BOOL log
+```
+
+是否开启调试日志回调。
+
+#### Discussion
+
+- YES：开启。
+- NO：（默认）关闭。
+
+<a id="//api/name/loggerOptions"></a>
+
+### loggerOptions
+
+```objc
+@property (nonatomic, copy) NSDictionary *loggerOptions
+```
+
+日志等级。
+
+#### Discussion
+
+日志级别顺序依次为 `error`、 `warn`、 `info`、和 `debug`。选择一个级别，你就可以看到在该级别之前所有级别的日志信息。
+
+例如，你选择 `info` 级别，就可以看到在 `error`、 `warn`、 `info` 级别上的所有日志信息。
+
+<a id="//api/name/)"></a>
+
+### )
+
+```objc
+@property (nonatomic, strong) WhitePptParams *__deprecated_msg ( "use WhiteSlideAppParams instead" )
+```
+
+该属性已废弃。请使用 [WhiteSlideAppParams](/zh-CN/api-reference/whiteboard/ios/classes/white-slide-app-params) (**Deprecated:** 该属性已废弃。请使用 WhiteSlideAppParams)
+
+<a id="//api/name/whiteSlideAppParams"></a>
+
+### whiteSlideAppParams
+
+```objc
+@property (nonatomic, strong) WhiteSlideAppParams *whiteSlideAppParams
+```
+
+PPT 渲染显示相关参数。详见 [WhiteSlideAppParams](/zh-CN/api-reference/whiteboard/ios/classes/white-slide-app-params)。
+
+<a id="//api/name/enableSlideInterrupterAPI"></a>
+
+### enableSlideInterrupterAPI
+
+```objc
+@property (nonatomic, assign) BOOL enableSlideInterrupterAPI
+```
+
+是否开启 PPT 资源 URL 拦截替换功能。 开启之后，你需要通过 `` WhiteSDK `.setSlideDelegate` 设置多窗口 PPT 回调事件，并在 `slideUrlInterrupter` 回调中添加 URL 的替换处理逻辑。
+
+#### Discussion
+
+- YES：开启。
+- NO：（默认）关闭。
+
+<a id="//api/name/disableNewPencilStroke"></a>
+
+### disableNewPencilStroke
+
+```objc
+@property (nonatomic, assign) BOOL disableNewPencilStroke
+```
+
+是否关闭新铅笔工具（`AppliancePencil` ）的笔锋效果。
+
+#### Discussion
+
+- YES：关闭笔锋效果。
+- NO：（默认）开启笔锋效果。
+
+该属性仅在 `disableNewPencil` 设为 `NO` 时生效。
+
+<a id="//api/name/enableAppliancePlugin"></a>
+
+### enableAppliancePlugin
+
+```objc
+@property (nonatomic, assign) BOOL enableAppliancePlugin
+```
+
+启用。 启用后，原基础教具将被替换。请确保同一房间的所有终端使用相同配置。 默认为 NO。
+
+<a id="//api/name/apiHosts"></a>
+
+### apiHosts
+
+```objc
+@property (nonatomic, copy, nullable) NSArray<NSString*> *apiHosts
+```
+
+配置白板的 API 服务器域名列表，可以用于服务器代理。配置后，白板不再使用 SDK 自带配置。 @example [api.example.com]
+
+<a id="//api/name/useWebKeyboardInjection"></a>
+
+### useWebKeyboardInjection
+
+```objc
+@property (nonatomic, assign) BOOL useWebKeyboardInjection
+```
+
+是否允许 WKWebview 自动获得输入焦点： - `YES`：（默认）允许。 - `NO`：不允许。
+
+#### Discussion
+
+:::info
+**Note:** 由于在一个 App 中，同一时间只能有一个控件获得焦点，该属性可能会影响 App 中其他 WKWebView 实例，如果不需要自动聚焦功能可以选择关闭。
+:::

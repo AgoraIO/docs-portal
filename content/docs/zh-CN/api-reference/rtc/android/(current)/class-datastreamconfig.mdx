@@ -17,7 +17,7 @@ public class DataStreamConfig {
 
 | `syncWithAudio` | `ordered` | SDK 行为 |
 | --- | --- | --- |
-| false | false | 接收端接收到数据包后，SDK 会立即触发 [onStreamMessage](/zh-CN/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调。 |
+| false | false | 接收端接收到数据包后，SDK 会立即触发 [onStreamMessage](/zh-CN/api-reference/rtc/android/datastream#callback_irtcengineeventhandler_onstreammessage) 回调。 |
 | true | false | 如果数据包延迟在音频延迟范围内，SDK 会在同步的音频播放时触发回调；否则立即触发回调。 |
 | false | true | 如果数据包延迟小于 5 秒，SDK 会纠正其顺序；否则丢弃该数据包。 |
 | true | true | 如果数据包延迟在音频延迟范围内，SDK 会纠正其顺序；否则丢弃该数据包。 |

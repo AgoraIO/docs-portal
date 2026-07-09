@@ -1,0 +1,29 @@
+---
+title: "removeChatManagerListener method"
+description: "API docs for the removeChatManagerListener method from the ChatManagerDeprecated extension, for the Dart programming language."
+---
+
+Removes the chat manager listener.
+
+After adding a chat manager listener, you can remove this listener if you do not want to listen for it.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The chat manager listener to be removed. See [ChatManagerListener](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager-listener). |
+
+```dart
+@Deprecated("Use #removeEventHandler to instead")void removeChatManagerListener(ChatManagerListener listener)@Deprecated("Use #removeEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@Deprecated("Use #removeEventHandler to instead")
+void removeChatManagerListener(ChatManagerListener listener) {
+  _listeners.remove(listener);
+}
+```

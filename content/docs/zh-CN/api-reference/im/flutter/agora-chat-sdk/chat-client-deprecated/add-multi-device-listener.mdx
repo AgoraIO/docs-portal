@@ -1,0 +1,27 @@
+---
+title: "addMultiDeviceListener method"
+description: "API docs for the addMultiDeviceListener method from the ChatClientDeprecated extension, for the Dart programming language."
+---
+
+Adds the multi-device listener.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The listener to be added: \{ChatMultiDeviceListener\}. |
+
+```dart
+@Deprecated("Use #addMultiDeviceEventHandler to instead")void addMultiDeviceListener(ChatMultiDeviceListener listener)@Deprecated("Use #addMultiDeviceEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@Deprecated("Use #addMultiDeviceEventHandler to instead")
+void addMultiDeviceListener(ChatMultiDeviceListener listener) {
+  _multiDeviceListeners.add(listener);
+}
+```

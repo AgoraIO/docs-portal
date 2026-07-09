@@ -1,0 +1,45 @@
+---
+title: "getLoggedInDevicesFromServer method"
+description: "API docs for the getLoggedInDevicesFromServer method from the ChatClient class, for the Dart programming language."
+---
+
+Gets all the information about the logged in devices under the specified account.
+
+**Return** TThe list of the logged-in devices.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `userId` | The username you want to get the device information. |
+| `password` | The password. |
+
+```dart
+Future<List<ChatDeviceInfo>> getLoggedInDevicesFromServer({required String userId, required String password})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<List<ChatDeviceInfo>> getLoggedInDevicesFromServer(
+    {required String userId, required String password}) async {
+  EMLog.v('getLoggedInDevicesFromServer: $userId, "******"');
+  Map req = {'username': userId, 'password': password};
+  Map result = await ClientChannel.invokeMethod(
+      ChatMethodKeys.getLoggedInDevicesFromServer, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatDeviceInfo> list = [];
+    result[ChatMethodKeys.getLoggedInDevicesFromServer]?.forEach((info) {
+      list.add(ChatDeviceInfo.fromJson(info));
+    });
+    return list;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

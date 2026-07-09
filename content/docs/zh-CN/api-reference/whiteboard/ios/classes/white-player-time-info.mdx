@@ -1,0 +1,56 @@
+---
+title: "WhitePlayerTimeInfo Class Reference"
+description: "白板回放的播放时间信息。"
+---
+
+<a id="overview"></a>
+
+白板回放的播放时间信息。
+
+## Methods
+
+<a id="//api/name/scheduleTime"></a>
+
+### scheduleTime
+
+```objc
+@property (nonatomic, assign, readonly) NSTimeInterval scheduleTime
+```
+
+当前的回放进度（秒）。
+
+<a id="//api/name/timeDuration"></a>
+
+### timeDuration
+
+```objc
+@property (nonatomic, assign, readonly) NSTimeInterval timeDuration
+```
+
+回放的总时长（秒）。
+
+<a id="//api/name/framesCount"></a>
+
+### framesCount
+
+```objc
+@property (nonatomic, assign, readonly) NSInteger framesCount
+```
+
+回放的总 frame 数。
+
+<a id="//api/name/beginTimestamp"></a>
+
+### beginTimestamp
+
+```objc
+@property (nonatomic, assign, readonly) NSTimeInterval beginTimestamp
+```
+
+回放的起始时间。
+
+#### Discussion
+
+UTC 时间戳（秒），你需要自行转换为 UTC 时间。
+
+例如，如果返回 `1615370614269`，表示的 UTC 时间为 2021-03-10 18:03:34 GMT+0800。

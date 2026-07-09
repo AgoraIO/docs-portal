@@ -1,0 +1,190 @@
+---
+title: "Agora Interactive Whiteboard Java API Reference"
+description: "声网通过全球部署的虚拟网络，提供可以灵活搭配的 API 组合，提供稳定可靠、功能丰富的实时互动白板。"
+---
+<a id="md_sdk_mainpage"></a> 声网通过全球部署的虚拟网络，提供可以灵活搭配的 API 组合，提供稳定可靠、功能丰富的实时互动白板。
+
+- [WhiteSdk](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk) 类提供初始化互动白板 SDK、加入互动白板实时房间、创建白板回放的主要方法。
+- [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room) 类提供管理互动白板实时房间的方法。
+- [Player](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-player) 类提供控制白板回放的方法。
+- [Displayer](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-displayer) 类为 [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room) 类和 [Player](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-player) 类的父类。 [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room) 和 [Player](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-player) 实例都可以调用该类中的方法。
+
+<a id="autotoc_md0"></a>
+
+### SDK 初始化
+
+| 方法 | 描述 |
+| --- | --- |
+| `WhiteSdk` [1/4] | 初始化 `WhiteSdk` 实例 |
+| `WhiteSdk` [2/4] | 初始化 `WhiteSdk` 实例（设置回调） |
+| `WhiteSdk` [4/4] | 初始化 `WhiteSdk` 实例（设置回调和混音） |
+| `setCommonCallbacks` | 设置通用事件回调 |
+| `joinRoom` [1/2] | 加入互动白板实时房间 |
+| `joinRoom` [2/2] | 加入互动白板实时房间并设置房间事件回调 |
+| `createPlayer` [1/2] | 创建互动白板回放房间 |
+| `createPlayer` [2/2] | 创建互动白板回放房间并设置回放事件回调 |
+| `isPlayable` | 查看房间是否有回放数据 |
+| `setupFontFaces` | 声明在本地白板中可用的字体 |
+| `loadFontFaces` | 声明并预加载在本地白板中可用的字体 |
+| `updateTextFont` | 设置在本地白板中输入文字时使用的字体 |
+| `releaseRoom` [2/2] | 释放互动白板实时房间实例并删除 `RoomListener` 回调。 |
+| `releasePlayer` [1/2] | 释放回放房间实例并删除 `PlayerListener` 回调。 |
+| `Version` | 查询 SDK 版本号 |
+
+<a id="autotoc_md1"></a>
+
+### 通用事件
+
+| 事件 | 描述 |
+| --- | --- |
+| `throwError` | 出现未捕获的全局错误回调 |
+| `urlInterrupter` | 拦截图片 URL 回调 |
+| `onPPTMediaPlay` | 动态 PPT 中的音视频开始播放回调 |
+| `onPPTMediaPause` | 动态 PPT 中的音视频暂停播放回调 |
+| `onMessage` | 接收到网页发送的消息回调 |
+| `sdkSetupFail` | SDK 初始化失败回调 |
+
+<a id="autotoc_md2"></a>
+
+### 实时房间管理
+
+| 方法 | 描述 |
+| --- | --- |
+| `getObserverId` | 获取用户 ID |
+| `setWritable` | 设置用户是否为互动模式 |
+| `disableOperations` | 允许/禁止白板响应用户任何操作 |
+| `disconnect` | 断开连接 |
+| `setGlobalState` | 修改房间的全局状态 |
+| `getDisconnectedBySelf` | 获取用户是否主动断开连接 |
+| `getWritable` | 获取用户是否为互动模式 |
+| `getGlobalState` [1/2] | 获取房间的全局状态（同步方法） |
+| `getGlobalState` [2/2] | 获取房间的全局状态（异步方法） |
+| `getRoomMembers` [1/2] | 获取房间的用户列表（同步方法） |
+| `getRoomMembers` [2/2] | 获取房间的用户列表（异步方法） |
+| `getRoomPhase` [1/2] | 获取房间的连接状态（同步方法） |
+| `getRoomPhase` [2/2] | 获取房间的连接状态（异步方法） |
+| `getRoomState` [1/2] | 获取房间的所有状态（同步方法） |
+| `getRoomState` [2/2] | 获取房间的所有状态（异步方法） |
+
+<a id="autotoc_md3"></a>
+
+### 白板工具设置
+
+| 方法 | 描述 |
+| --- | --- |
+| `setMemberState` | 修改房间的白板工具状态 |
+| `getMemberState` [1/2] | 获取白板工具状态（同步方法） |
+| `getMemberState` [2/2] | 获取白板工具状态（异步方法） |
+| `copy` | 复制选中内容 |
+| `paste` | 粘贴复制的内容 |
+| `duplicate` | 复制并粘贴选中的内容 |
+| `deleteOperation` | 删除选中的内容 |
+| `disableSerialization` | 开启/禁止本地序列化 |
+| `redo` | 重做 |
+| `undo` | 撤销上一步操作 |
+| `disableEraseImage` | 关闭/开启橡皮擦擦除图片功能 |
+| `disableDeviceInputs` | 禁止/允许用户操作白板工具 |
+
+<a id="autotoc_md4"></a>
+
+### 视角操作
+
+| 方法 | 描述 |
+| --- | --- |
+| `setViewMode` | 切换视角模式 |
+| `setCameraBound` | 设置视角边界 |
+| `disableCameraTransform` | 禁止/允许用户调整视角 |
+| `moveCamera` | 调整视角 |
+| `moveCameraToContainer` | 调整视角以完整显示视觉矩形中的内容 |
+| `scalePptToFit` | 调整视角以完整显示 PPT 的内容（渐变模式） |
+| `scalePptToFit` | 调整视角以完整显示 PPT 的内容（指定动画模式） |
+| `scaleIframeToFit` | 调整视角以完整显示 H5 课件的内容 |
+| `disableCameraTransform` | 禁止/允许用户调整（移动或缩放）视角 |
+| `getBroadcastState` [1/2] | 获取用户的视角状态（同步方法） |
+| `getBroadcastState` [2/2] | 获取用户的视角状态（异步方法） |
+
+<a id="autotoc_md5"></a>
+
+### 场景管理
+
+| 方法 | 描述 |
+| --- | --- |
+| `insertImage` [1/2] | 插入图片占位符 |
+| `completeImageUpload` | 展示图片 |
+| `insertImage` [2/2] | 插入并展示图片 |
+| `insertText` | 在指定位置插入文字 |
+| `getScene` | 获取指定场景的信息 |
+| `getSceneState` [1/2] | 获取当前场景目录下的场景状态（同步方法） |
+| `getSceneState` [2/2] | 获取当前场景目录下的场景状态（异步方法） |
+| `getScenes` [1/2] | 获取当前场景目录下的场景列表（同步方法） |
+| `getScenes` [2/2] | 获取当前场景目录下的场景列表（异步方法） |
+| `setScenePath` [1/2] | 切换至指定的场景（同步方法） |
+| `setScenePath` [2/2] | 切换至指定的场景（异步方法） |
+| `setSceneIndex` [1/2] | 切换至当前场景目录下的指定场景 |
+| `putScenes` | 在指定场景目录下插入多个场景 |
+| `moveScene` | 移动场景 |
+| `removeScenes` | 删除场景或者场景目录 |
+| `cleanScene` | 清除当前场景的所有内容 |
+| `pptNextStep` | 播放动态 PPT 下一页 |
+| `pptPreviousStep` | 返回动态 PPT 上一页 |
+| `getScenePathType` | 查询场景路径类型 |
+| `getEntireScenes` | 获取当前房间内所有场景的信息 |
+| `getScenePreviewImage` | 获取指定场景的预览图 |
+| `getSceneSnapshotImage` | 获取指定场景的截图 |
+
+<a id="autotoc_md6"></a>
+
+### 回放管理
+
+| 方法 | 描述 |
+| --- | --- |
+| `setPlaybackSpeed` | 设置白板回放的倍速 |
+| `play` | 开始白板回放 |
+| `pause` | 暂停白板回放 |
+| `stop` | 停止白板回放 |
+| `seekToScheduleTime` | 设置白板回放的播放位置 |
+| `setObserverMode` | 设置白板回放的查看模式 |
+| `getPlaybackSpeed` | 获取白板回放的倍速（同步方法） |
+| `getPlaybackSpeed` | 获取白板回放的倍速（异步方法） |
+| `getPlayerPhase` | 获取白板回放的阶段（同步方法） |
+| `getPhase` | 获取白板回放的阶段（异步方法） |
+| `getPlayerState` | 获取白板回放的状态（同步方法） |
+| `getPlayerState` | 获取白板回放的状态（异步方法） |
+| `getPlayerTimeInfo` | 获取白板回放的时间信息（同步方法） |
+| `getPlayerTimeInfo` | 获取白板回放的时间信息（异步方法） |
+| `addPlayerListener` | 添加白板回放的回调 |
+| `removePlayerListener` | 删除白板回放的回调 |
+
+<a id="autotoc_md7"></a>
+
+### 自定义事件
+
+| 方法 | 描述 |
+| --- | --- |
+| `dispatchMagixEvent` | 发送自定义事件 |
+| `addMagixEventListener` | 注册自定义事件监听 |
+| `addHighFrequencyEventListener` | 注册高频自定义事件监听 |
+| `removeMagixEventListener` | 移除自定义事件监听 |
+| `dispatchDocsEvent` | 发送文档操作事件 |
+
+<a id="autotoc_md8"></a>
+
+### iframe 插件交互
+
+| 方法 | 描述 |
+| --- | --- |
+| `postIframeMessage` | 向 iframe 插件发送字符串信息 |
+| `postIframeMessage` | 向 iframe 插件发送 key-value 格式的信息 |
+
+<a id="autotoc_md9"></a>
+
+### 其他方法
+
+| 方法 | 描述 |
+| --- | --- |
+| `debugInfo` | 获取调试日志信息 |
+| `setTimeDelay` | 设置白板同步延时 |
+| `getTimeDelay` | 获取白板同步延时 |
+| `convertToPointInWorld` | 转换白板上点的坐标 |
+| `refreshViewSize` | 刷新白板的界面 |
+| `prepareWhiteConnection` | 提前选择线路以加快首次加入白板房间时的连接速度。 |

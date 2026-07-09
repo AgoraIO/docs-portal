@@ -1,0 +1,184 @@
+---
+title: "WhiteCommonCallbackDelegate Protocol Reference"
+description: "白板通用回调。"
+---
+
+<a id="overview"></a>
+
+白板通用回调。
+
+## Methods
+
+<a id="//api/name/throwError:"></a>
+
+### throwError:
+
+```objc
+- (void)throwError:(NSError *)error
+```
+
+SDK 出现未捕获的全局错误回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `error` | 错误信息。 |
+
+<a id="//api/name/urlInterrupter:"></a>
+
+### urlInterrupter:
+
+```objc
+- (NSString *)urlInterrupter:(NSString *)url
+```
+
+图片拦截回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `url` | 图片原地址。 |
+
+#### Returns
+
+替换后的图片地址。
+
+#### Discussion
+
+**Note:**
+
+- 要触发该回调，必须在初始化白板 SDK 时，设置 enableInterrupterAPI(YES) 开启图片拦截替换功能。详见 WhiteSdkConfiguration。
+- 开启图片拦截替换功能后，在白板中插入图片或场景时，会触发该回调。
+
+<a id="//api/name/pptMediaPlay"></a>
+
+### pptMediaPlay
+
+```objc
+- (void)pptMediaPlay
+```
+
+播放动态 PPT 中的音视频回调。
+
+<a id="//api/name/pptMediaPause"></a>
+
+### pptMediaPause
+
+```objc
+- (void)pptMediaPause
+```
+
+暂停播放动态 PPT 中的音视频回调。
+
+<a id="//api/name/sdkSetupFail:"></a>
+
+### sdkSetupFail:
+
+```objc
+- (void)sdkSetupFail:(NSError *)error
+```
+
+SDK 初始化失败回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `error` | 错误信息。 |
+
+#### Availability
+
+2.9.13
+
+如果 SDK 初始化失败，调用加入实时房间或回放房间时会处于一直无响应状态，需要重新初始化 SDK。
+
+SDK 初始化失败可能由以下原因导致：
+
+- 初始化 SDK 时候，网络异常，导致获取配置信息失败。
+- 传入了不合法的 App Identifier。
+
+<a id="//api/name/customMessage:"></a>
+
+### customMessage:
+
+```objc
+- (void)customMessage:(NSDictionary *)dict
+```
+
+接收到网页发送的消息回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `dict` | 字典格式的消息。只有当消息为字典格式时，本地用户才能收到。 |
+
+#### Discussion
+
+消息回调包括：
+
+- 字典格式的 iframe 数据
+- 图片加载失败信息
+- ppt 播放/暂停回调信息
+
+当本地用户收到了网页（如 iframe 插件、动态 PPT）发送的消息时会触发该回调。
+
+<a id="//api/name/logger:"></a>
+
+### logger:
+
+```objc
+- (void)logger:(NSDictionary *)dict
+```
+
+获取 SDK 输出的本地调试日志。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `dict` | 字典结构的日志消息，每条日志消息包含以下 key： `funName`：功能名称。 `params`：具体的参数设置。 例如， `{"funName": "joinRoom", "params": {"isWritable": 1, "region": "cn-hz"}}`。 |
+
+#### Availability
+
+v2.13.19
+
+将 [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk-configuration) 类中 `log` 设为 `YES` 后，SDK 会触发该回调，返回 SDK 输出的本地调试日志。
+
+如果你需要关闭该回调，可以将 `log` 设为 `NO`。
+
+<a id="//api/name/startRecoveringFromMemoryIssues"></a>
+
+### startRecoveringFromMemoryIssues
+
+```objc
+- (void)startRecoveringFromMemoryIssues
+```
+
+白板 SDK 即将开始恢复回调。
+
+#### Discussion
+
+当白板 SDK 因内存不足而崩溃时会触发该回调。 目前只有实时房间会触发该回调。该回调最多会触发三次，超过三次会收到 -500 错误码。
+
+<a id="//api/name/endRecoveringFromMemoryIssues:"></a>
+
+### endRecoveringFromMemoryIssues:
+
+```objc
+- (void)endRecoveringFromMemoryIssues:(BOOL)success
+```
+
+白板 SDK 完成了一次恢复回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `success` | 本次恢复是否成功。 |
+
+#### Discussion
+
+当白板 SDK 因内存不足而崩溃后，SDK 完成了一次恢复操作后会触发该回调。 如果恢复失败，SDK 不会主动继续重连。

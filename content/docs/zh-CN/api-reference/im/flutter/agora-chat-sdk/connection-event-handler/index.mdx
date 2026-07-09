@@ -1,0 +1,250 @@
+---
+title: "ConnectionEventHandler class"
+description: "API docs for the ConnectionEventHandler class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The connection event handler.
+
+For the occasion of onDisconnected during unstable network condition, you don't need to reconnect manually, the chat SDK will handle it automatically.
+
+Note: We recommend not to update UI based on those methods, because this method is called on worker thread. If you update UI in those methods, other UI errors might be invoked. Also do not insert heavy computation work here, which might invoke other listeners to handle this connection event.
+
+Adds connection event handler:
+
+```dart
+  ChatClient.getInstance.addConnectionEventHandler(UNIQUE_HANDLER_ID, ConnectionEventHandler());
+```
+
+Remove a connection event handler:
+
+```dart
+  ChatClient.getInstance.removeConnectionEventHandler(UNIQUE_HANDLER_ID);
+```
+
+<a id="constructors"></a>
+
+## Constructors
+
+<a id="ConnectionEventHandler"></a>
+
+### [ConnectionEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/connection-event-handler)
+
+```dart
+ConnectionEventHandler({VoidCallback? onConnected, VoidCallback? onDisconnected, VoidCallback? onUserDidLoginFromOtherDevice, VoidCallback? onUserDidRemoveFromServer, VoidCallback? onUserDidForbidByServer, VoidCallback? onUserDidChangePassword, VoidCallback? onUserDidLoginTooManyDevice, VoidCallback? onUserKickedByOtherDevice, VoidCallback? onUserAuthenticationFailed, VoidCallback? onTokenWillExpire, VoidCallback? onTokenDidExpire})
+```
+
+The chat connection listener callback.
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="onConnected"></a>
+
+### [onConnected](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-connected)
+
+```dart
+onConnected -> VoidCallback?
+```
+
+Occurs when the SDK connects to the chat server successfully.
+
+_final._
+
+<a id="onDisconnected"></a>
+
+### [onDisconnected](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-disconnected)
+
+```dart
+onDisconnected -> VoidCallback?
+```
+
+Occurs when the SDK disconnect from the chat server.
+
+_final._
+
+<a id="onTokenDidExpire"></a>
+
+### [onTokenDidExpire](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-token-did-expire)
+
+```dart
+onTokenDidExpire -> VoidCallback?
+```
+
+Occurs when the token has expired.
+
+_final._
+
+<a id="onTokenWillExpire"></a>
+
+### [onTokenWillExpire](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-token-will-expire)
+
+```dart
+onTokenWillExpire -> VoidCallback?
+```
+
+Occurs when the token is about to expire.
+
+_final._
+
+<a id="onUserAuthenticationFailed"></a>
+
+### [onUserAuthenticationFailed](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-authentication-failed)
+
+```dart
+onUserAuthenticationFailed -> VoidCallback?
+```
+
+Occurs when the current chat user authentication failed.
+
+_final._
+
+<a id="onUserDidChangePassword"></a>
+
+### [onUserDidChangePassword](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-did-change-password)
+
+```dart
+onUserDidChangePassword -> VoidCallback?
+```
+
+Occurs when the current chat user is changed password.
+
+_final._
+
+<a id="onUserDidForbidByServer"></a>
+
+### [onUserDidForbidByServer](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-did-forbid-by-server)
+
+```dart
+onUserDidForbidByServer -> VoidCallback?
+```
+
+Occurs when the current chat user is forbid from the server.
+
+_final._
+
+<a id="onUserDidLoginFromOtherDevice"></a>
+
+### [onUserDidLoginFromOtherDevice](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-did-login-from-other-device)
+
+```dart
+onUserDidLoginFromOtherDevice -> VoidCallback?
+```
+
+Occurs when the current user account is logged in to another device.
+
+_final._
+
+<a id="onUserDidLoginTooManyDevice"></a>
+
+### [onUserDidLoginTooManyDevice](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-did-login-too-many-device)
+
+```dart
+onUserDidLoginTooManyDevice -> VoidCallback?
+```
+
+Occurs when the current chat user logged to many devices.
+
+_final._
+
+<a id="onUserDidRemoveFromServer"></a>
+
+### [onUserDidRemoveFromServer](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-did-remove-from-server)
+
+```dart
+onUserDidRemoveFromServer -> VoidCallback?
+```
+
+Occurs when the current chat user is removed from the server.
+
+_final._
+
+<a id="onUserKickedByOtherDevice"></a>
+
+### [onUserKickedByOtherDevice](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler/on-user-kicked-by-other-device)
+
+```dart
+onUserKickedByOtherDevice -> VoidCallback?
+```
+
+Occurs when the current chat user kicked by other device.
+
+_final._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

@@ -1,0 +1,28 @@
+---
+title: "getEventHandler method"
+description: "API docs for the getEventHandler method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Get the group event handler.
+
+**Return** The group event handler.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `identifier` | The custom handler identifier. |
+
+```dart
+ChatGroupEventHandler? getEventHandler(String identifier)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ChatGroupEventHandler? getEventHandler(String identifier) {
+  return _eventHandlesMap[identifier];
+}
+```

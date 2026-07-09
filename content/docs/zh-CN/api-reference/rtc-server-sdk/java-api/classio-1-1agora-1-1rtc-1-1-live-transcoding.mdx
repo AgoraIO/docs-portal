@@ -1,0 +1,535 @@
+---
+title: "io.agora.rtc.LiveTranscoding类 参考"
+description: "LiveTranscoding 类。"
+---
+
+LiveTranscoding 类。
+
+## 构造及析构函数说明
+
+<a id="a9f26453995d7f3de45f408518a43eaa3"></a>
+
+### LiveTranscoding() [1/2]
+
+```cpp
+io.agora.rtc.LiveTranscoding.LiveTranscoding()
+```
+
+<a id="a0b1353542b29b9456d623e6b2b29742b"></a>
+
+### LiveTranscoding() [2/2]
+
+```cpp
+io.agora.rtc.LiveTranscoding.LiveTranscoding(int width, int height, int videoBitrate, int videoFrameRate, int lowLatency, int videoGop, int videoCodecProfile, int backgroundColor, int userCount, TranscodingUser transcodingUsers, java.lang.String transcodingExtraInfo, java.lang.String metadata, RtcImage watermark, int watermarkCount, RtcImage backgroundImage, int backgroundImageCount, int audioSampleRate, int audioBitrate, int audioChannels, int audioCodecProfile)
+```
+
+构造函数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| width | 推流视频的总宽度，默认值 360，单位为像素。<br />- 如果推视频流，width 不得低于 64；否则，声网服务器会自动调整为 64。<br />- 如果推音频流，width 和 height 需设为 0。 |
+| height | 推流视频的总高度，默认值 640，单位为像素。<br />- 如果推视频流，height 不得低于 64；否则，声网服务器会自动调整为 64。<br />- 如果推音频流，width 和 height 需设为 0。 |
+| videoBitrate | 推流视频的码率，单位为 Kbps，默认值为 400 Kbps。请参考 VideoEncoderConfiguration 中 bitrate 设置 videoBitrate。如果设置的码率超出合理范围，声网服务器会在合理区间内自动调整码率值。 |
+| videoFrameRate | 推流视频的帧率，单位为 fps，取值范围为 (0, 30]，默认值为 15 fps。服务器会将高于 30 的帧率设置改为 30。 |
+| lowLatency | 是否启用低延时模式：<br />- true: 低延时，不保证画质<br />- false: （默认值）高延时，保证画质 |
+| videoGop | 用于旁路直播的输出视频的 GOP，单位为帧。默认值为 30 帧。 |
+| videoCodecProfile | 用于旁路直播的输出视频的编解码规格<br />- 66: Baseline 级别的视频编码规格，一般用于视频通话、手机视频等。<br />- 77: Main 级别的视频编码规格，一般用于主流消费类电子产品，如 mp4、便携的视频播放器、PSP 和 iPad 等。<br />- 100: （默认）High 级别的视频编码规格，一般用于广播及视频碟片存储，高清电视。 |
+| backgroundColor | 用于旁路直播的输出视频的背景色，格式为 RGB 定义下的 Hex 值，不要带 # 号，如 0xFFB6C1 表示浅粉色。默认0x000000，黑色。 |
+| userCount | 旁路直播中的主播人数。 |
+| transcodingUsers | 参与旁路直播的视频转码合图的主播布局。 |
+| transcodingExtraInfo | 预留参数。 用户自定义的发送到旁路推流客户端的信息，用于填充 H264/H265 视频中 SEI 帧内容。 |
+| metadata | 发送给 CDN 客户端的 metadata。 |
+| watermark | 直播视频上的水印。必须为 PNG 格式。添加后所有旁路直播的观众都可以看到水印。 |
+| watermarkCount | 水印数量。该参数需与 watermark 一起使用。 |
+| backgroundImage | 直播视频上的背景图。必须为 PNG 格式。添加后所有旁路直播的观众都可以看到背景图片。 |
+| backgroundImageCount | 背景图数量。水印和背景图的总数量需大于等于 0 且小于等于 10。该参数需与 backgroundImage 一起使用。 |
+| audioSampleRate | 用于旁路直播的输出音频的采样率：<br />- 32000: 32 KHz<br />- 44100: 44.1 KHz<br />- 48000: 48 KHz |
+| audioBitrate | The bitrate (Kbps) of the audio output stream set for CDN live. The default value is 48 and the highest value is 128. |
+| audioChannels | 用于旁路直播的输出音频的声道数，取值范围为 [1, 5] 中的整型，默认值为 1。建议取 1 或 2，其余三个选项需要特殊播放器支持。 |
+| audioCodecProfile | 用于旁路直播的输出音频的编解码规格：<br />- 0: （默认）LC-AAC 规格。<br />- 1: HE-AAC 规格。 |
+
+## 成员函数说明
+
+<a id="aed131b86af8fac4a4a876517995a9391"></a>
+
+### getAudioBitrate()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getAudioBitrate()
+```
+
+<a id="a31049dd241a75c946d7057655885d2f8"></a>
+
+### getAudioChannels()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getAudioChannels()
+```
+
+<a id="a191eaf0eb8d1d062f4d87eb7974f0bf8"></a>
+
+### getAudioCodecProfile()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getAudioCodecProfile()
+```
+
+<a id="ae95c1a73637e9fa8a97f31f61d7d122d"></a>
+
+### getAudioSampleRate()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getAudioSampleRate()
+```
+
+<a id="a2896c6ae94b10d94b040e26814d5c94c"></a>
+
+### getBackgroundColor()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getBackgroundColor()
+```
+
+<a id="a3ecf9b4edbf733d3be099a3d05a43faa"></a>
+
+### getBackgroundImage()
+
+```cpp
+RtcImage io.agora.rtc.LiveTranscoding.getBackgroundImage()
+```
+
+<a id="a2b184eb198e3ee65baa5deee41ad5bda"></a>
+
+### getBackgroundImageCount()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getBackgroundImageCount()
+```
+
+<a id="a301f4da161b918f3eb0a06f19beef709"></a>
+
+### getHeight()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getHeight()
+```
+
+<a id="a29644a5f1d81a32d32266d6db4d9d395"></a>
+
+### getLowLatency()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getLowLatency()
+```
+
+<a id="a891e11e0e49f2e8c82d3371dd02bef80"></a>
+
+### getMetadata()
+
+```cpp
+java.lang.String io.agora.rtc.LiveTranscoding.getMetadata()
+```
+
+<a id="a4914e1af25f668ad76f791587e230fb3"></a>
+
+### getTranscodingExtraInfo()
+
+```cpp
+java.lang.String io.agora.rtc.LiveTranscoding.getTranscodingExtraInfo()
+```
+
+<a id="a11142646b4620681421e42914b77c930"></a>
+
+### getTranscodingUsers()
+
+```cpp
+TranscodingUser io.agora.rtc.LiveTranscoding.getTranscodingUsers()
+```
+
+<a id="a1ce58d1bd5813a2c6672d0cd916b8f1b"></a>
+
+### getUserCount()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getUserCount()
+```
+
+<a id="af511673a36f3bcb644a6e9d8b7ff0bc9"></a>
+
+### getVideoBitrate()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getVideoBitrate()
+```
+
+<a id="a378e819e0b39abd7778aa3631206cd23"></a>
+
+### getVideoCodecProfile()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getVideoCodecProfile()
+```
+
+<a id="a56dc7a26b6b2215d5c6cbd04f61d48b2"></a>
+
+### getVideoFrameRate()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getVideoFrameRate()
+```
+
+<a id="a4f80d9ad46d8a177ceec23d59b0e1fbc"></a>
+
+### getVideoGop()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getVideoGop()
+```
+
+<a id="a43b8c18ba04a67269d95e9d19076fda2"></a>
+
+### getWatermark()
+
+```cpp
+RtcImage io.agora.rtc.LiveTranscoding.getWatermark()
+```
+
+<a id="a2289d79c9b88c36044739fa0ce382b86"></a>
+
+### getWatermarkCount()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getWatermarkCount()
+```
+
+<a id="a131db84749bdc0e072ab0eefa010dad0"></a>
+
+### getWidth()
+
+```cpp
+int io.agora.rtc.LiveTranscoding.getWidth()
+```
+
+<a id="adc5e396b872b8a850193031fed992ca6"></a>
+
+### setAudioBitrate()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setAudioBitrate(int audioBitrate)
+```
+
+<a id="a8abc0da6c151fb172aa6317892fd3db5"></a>
+
+### setAudioChannels()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setAudioChannels(int audioChannels)
+```
+
+<a id="ae578fae6cf88abfbb180b15e7bdb5a54"></a>
+
+### setAudioCodecProfile()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setAudioCodecProfile(int audioCodecProfile)
+```
+
+<a id="a11dc3b752f8f0c479c754189c44dbb6a"></a>
+
+### setAudioSampleRate()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setAudioSampleRate(int audioSampleRate)
+```
+
+<a id="a0e7023ae46a3d29d14dfc93f1ddcdd86"></a>
+
+### setBackgroundColor()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setBackgroundColor(int backgroundColor)
+```
+
+<a id="a1b72780fae21b6a5cc14280c97a67924"></a>
+
+### setBackgroundImage()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setBackgroundImage(RtcImage backgroundImage)
+```
+
+<a id="a409ee40dea7008b7b511cbc2890b1767"></a>
+
+### setBackgroundImageCount()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setBackgroundImageCount(int backgroundImageCount)
+```
+
+<a id="aaa52deb0d114bd3c02413cd4dc40be12"></a>
+
+### setHeight()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setHeight(int height)
+```
+
+<a id="a2a68ad03477225bb6d9c7ac73586306e"></a>
+
+### setLowLatency()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setLowLatency(int lowLatency)
+```
+
+<a id="a593b8333d06f7726ea20788ff567defa"></a>
+
+### setMetadata()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setMetadata(java.lang.String metadata)
+```
+
+<a id="a245e10c7a49792f80d51b51b3128b588"></a>
+
+### setTranscodingExtraInfo()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setTranscodingExtraInfo(java.lang.String transcodingExtraInfo)
+```
+
+<a id="aa3d8fdce0bb0ecac8dc0483b5b1abdf3"></a>
+
+### setTranscodingUsers()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setTranscodingUsers(TranscodingUser transcodingUsers)
+```
+
+<a id="a75c82d48ad892973c698e3bc3bdb79a0"></a>
+
+### setUserCount()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setUserCount(int userCount)
+```
+
+<a id="ab850264b83df5369393b50fb66e43c18"></a>
+
+### setVideoBitrate()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setVideoBitrate(int videoBitrate)
+```
+
+<a id="afbe227b51d4523e4d22e2cd01f1be9d1"></a>
+
+### setVideoCodecProfile()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setVideoCodecProfile(int videoCodecProfile)
+```
+
+<a id="a5e1700500958da7bad9c4600b1150c64"></a>
+
+### setVideoFrameRate()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setVideoFrameRate(int videoFrameRate)
+```
+
+<a id="ad6bf52f60339a6dedca65a0f1390ad18"></a>
+
+### setVideoGop()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setVideoGop(int videoGop)
+```
+
+<a id="aa42058fc0411821703e0ed860f980d5d"></a>
+
+### setWatermark()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setWatermark(RtcImage watermark)
+```
+
+<a id="af517a944469d0b7e61fc6bbf93e92bae"></a>
+
+### setWatermarkCount()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setWatermarkCount(int watermarkCount)
+```
+
+<a id="a85475258156f7c2f19f662df3ee86955"></a>
+
+### setWidth()
+
+```cpp
+void io.agora.rtc.LiveTranscoding.setWidth(int width)
+```
+
+## 类成员变量说明
+
+<a id="a0fd3772844077672bb623ba9c034f6b8"></a>
+
+### audioBitrate
+
+```cpp
+int io.agora.rtc.LiveTranscoding.audioBitrate private
+```
+
+<a id="ae12688e39ca19a731e8826f6f792c1ae"></a>
+
+### audioChannels
+
+```cpp
+int io.agora.rtc.LiveTranscoding.audioChannels private
+```
+
+<a id="a2936b3585ecab4446e3951d0a13d85d0"></a>
+
+### audioCodecProfile
+
+```cpp
+int io.agora.rtc.LiveTranscoding.audioCodecProfile private
+```
+
+<a id="aed6fe65de00d62f901a2582285f2152e"></a>
+
+### audioSampleRate
+
+```cpp
+int io.agora.rtc.LiveTranscoding.audioSampleRate private
+```
+
+<a id="a08ca6f6700a5075d0dd6566fedbcfc7e"></a>
+
+### backgroundColor
+
+```cpp
+int io.agora.rtc.LiveTranscoding.backgroundColor private
+```
+
+<a id="a681ecfc96611af66fe243ee1c3db64fe"></a>
+
+### backgroundImage
+
+```cpp
+RtcImage io.agora.rtc.LiveTranscoding.backgroundImage private
+```
+
+<a id="abd0e6f62112acce65491ece6a84e0994"></a>
+
+### backgroundImageCount
+
+```cpp
+int io.agora.rtc.LiveTranscoding.backgroundImageCount private
+```
+
+<a id="a5fa22034bcb27037a6dc1b4c328ba5ac"></a>
+
+### height
+
+```cpp
+int io.agora.rtc.LiveTranscoding.height private
+```
+
+<a id="a013a74098e71548fc9a133d2916b2ac8"></a>
+
+### lowLatency
+
+```cpp
+int io.agora.rtc.LiveTranscoding.lowLatency private
+```
+
+<a id="a9b37440c29e68211bb763f82aa21db25"></a>
+
+### metadata
+
+```cpp
+java.lang.String io.agora.rtc.LiveTranscoding.metadata private
+```
+
+<a id="a003efcad3dc89460a3328b00624b03b8"></a>
+
+### transcodingExtraInfo
+
+```cpp
+java.lang.String io.agora.rtc.LiveTranscoding.transcodingExtraInfo private
+```
+
+<a id="a4eea94220e6086010b23d80ec11356c6"></a>
+
+### transcodingUsers
+
+```cpp
+TranscodingUser io.agora.rtc.LiveTranscoding.transcodingUsers private
+```
+
+<a id="a7671c3a0fa8b231cc5e54ab991ab1b43"></a>
+
+### userCount
+
+```cpp
+int io.agora.rtc.LiveTranscoding.userCount private
+```
+
+<a id="a8b83e0524c899d19d97a60dba4eecd62"></a>
+
+### videoBitrate
+
+```cpp
+int io.agora.rtc.LiveTranscoding.videoBitrate private
+```
+
+<a id="a64f0a04b5a1149ceb57d5f273ef01deb"></a>
+
+### videoCodecProfile
+
+```cpp
+int io.agora.rtc.LiveTranscoding.videoCodecProfile private
+```
+
+<a id="acb336aa26e4d656b620b1e685c05cd37"></a>
+
+### videoFrameRate
+
+```cpp
+int io.agora.rtc.LiveTranscoding.videoFrameRate private
+```
+
+<a id="a4043e77fba045b51b1ccdf7aca1805ec"></a>
+
+### videoGop
+
+```cpp
+int io.agora.rtc.LiveTranscoding.videoGop private
+```
+
+<a id="aafc30fa9aa0767519c2c11a731819fae"></a>
+
+### watermark
+
+```cpp
+RtcImage io.agora.rtc.LiveTranscoding.watermark private
+```
+
+<a id="aa8e59acac227279e301fbf62a852993b"></a>
+
+### watermarkCount
+
+```cpp
+int io.agora.rtc.LiveTranscoding.watermarkCount private
+```
+
+<a id="a7110354932b18ce84b1e5480c3bab494"></a>
+
+### width
+
+```cpp
+int io.agora.rtc.LiveTranscoding.width private
+```

@@ -1,0 +1,125 @@
+---
+title: "IAudioFrameObserverBase类 参考abstract"
+description: "被 IAudioFrameObserver 继承."
+---
+
+语音 observer。
+
+## 成员枚举类型说明
+
+<a id="a81b4df45c544e8a7e8df3116d9bd8f7f"></a>
+
+### AUDIO_FRAME_TYPE
+
+```cpp
+enum IAudioFrameObserverBase::AUDIO_FRAME_TYPE
+```
+
+音频帧类型。
+
+#### Values
+
+| Name | Description |
+| --- | --- |
+| <a id="a81b4df45c544e8a7e8df3116d9bd8f7fa801a7bb9b2438287a7279df047ea4cc6"></a> FRAME_TYPE_PCM16 | 0: PCM 16 |
+
+## 构造及析构函数说明
+
+<a id="a12e352fbb9219c789e4d5067b3fbf0b5"></a>
+
+### ~IAudioFrameObserverBase()
+
+```cpp
+virtual IAudioFrameObserverBase::~IAudioFrameObserverBase() inlinevirtual
+```
+
+## 成员函数说明
+
+<a id="a607f7a30a058bf7fe2b7ec2492fe9610"></a>
+
+### onRecordAudioFrame()
+
+```cpp
+virtual bool IAudioFrameObserverBase::onRecordAudioFrame(const char* channelId, AudioFrame& audioFrame) pure virtual
+```
+
+获得录制的声音。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelId | 频道名。 |
+| audioFrame | 音频原始数据。 |
+
+#### Returns
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。
+
+<a id="a9956d1aa3b4e18089ef02ee3d782d667"></a>
+
+### onPlaybackAudioFrame()
+
+```cpp
+virtual bool IAudioFrameObserverBase::onPlaybackAudioFrame(const char* channelId, AudioFrame& audioFrame) pure virtual
+```
+
+获得播放的声音。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelId | 频道名。 |
+| audioFrame | 音频原始数据。 |
+
+#### Returns
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。
+
+<a id="a6b3f76a4245bf27b6a7c5cbc44f1c1dd"></a>
+
+### onMixedAudioFrame()
+
+```cpp
+virtual bool IAudioFrameObserverBase::onMixedAudioFrame(const char* channelId, AudioFrame& audioFrame) pure virtual
+```
+
+获取采集和播放声音混音后的数据。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelId | 频道名。 |
+| audioFrame | 音频原始数据。 |
+
+#### Returns
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。
+
+<a id="a045b317352faf9d64a97b0274a5529ec"></a>
+
+### onPlaybackAudioFrameBeforeMixing()
+
+```cpp
+virtual bool IAudioFrameObserverBase::onPlaybackAudioFrameBeforeMixing(const char* channelId, base::user_id_t userId, AudioFrame& audioFrame) inlinevirtual
+```
+
+获得播放声音混音前的数据。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelId | 空指针。 |
+| userId | 远端用户的用户名。 |
+| audioFrame | 音频原始数据。 |
+
+#### Returns
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。

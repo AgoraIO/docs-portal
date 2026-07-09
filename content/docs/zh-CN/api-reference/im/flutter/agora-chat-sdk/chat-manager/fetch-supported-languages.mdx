@@ -1,0 +1,35 @@
+---
+title: "fetchSupportedLanguages method"
+description: "API docs for the fetchSupportedLanguages method from the ChatManager class, for the Dart programming language."
+---
+
+Fetch all languages what the translate service support
+
+**Return** Supported languages
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+```dart
+Future<List<ChatTranslateLanguage>> fetchSupportedLanguages()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<List<ChatTranslateLanguage>> fetchSupportedLanguages() async {
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.fetchSupportLanguages);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatTranslateLanguage> list = [];
+    result[ChatMethodKeys.fetchSupportLanguages]?.forEach((element) {
+      list.add(ChatTranslateLanguage.fromJson(element));
+    });
+    return list;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

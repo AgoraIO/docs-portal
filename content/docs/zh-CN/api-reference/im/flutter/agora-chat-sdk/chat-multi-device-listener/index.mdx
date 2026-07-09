@@ -1,0 +1,146 @@
+---
+title: "ChatMultiDeviceListener class"
+description: "API docs for the ChatMultiDeviceListener class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The multi-device event listener. Listens for callback for the current user's actions on other devices, including contact changes and group changes.
+
+Registers a multi-device event listener:
+
+```dart
+  ChatClient.getInstance.addMultiDeviceListener(mMultiDeviceListener);
+```
+
+Removes a multi-device event listener:
+
+```dart
+  ChatClient.getInstance.removeMultiDeviceListener(mMultiDeviceListener);
+```
+
+### Annotations
+
+- @ Deprecated ("Use ChatMultiDeviceEventHandler to instead")
+
+<a id="constructors"></a>
+
+## Constructors
+
+<a id="ChatMultiDeviceListener"></a>
+
+### [ChatMultiDeviceListener](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-multi-device-listener/chat-multi-device-listener)
+
+```dart
+ChatMultiDeviceListener()
+```
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="onChatThreadEvent"></a>
+
+### [onChatThreadEvent](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-multi-device-listener/on-chat-thread-event)
+
+```dart
+onChatThreadEvent(ChatMultiDevicesEvent event, String chatThreadId, List<String> usernames) -> void
+```
+
+The multi-device event callback of thread.
+
+<a id="onContactEvent"></a>
+
+### [onContactEvent](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-multi-device-listener/on-contact-event)
+
+```dart
+onContactEvent(ChatMultiDevicesEvent event, String username, String? ext) -> void
+```
+
+The multi-device event callback of contact.
+
+<a id="onGroupEvent"></a>
+
+### [onGroupEvent](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-multi-device-listener/on-group-event)
+
+```dart
+onGroupEvent(ChatMultiDevicesEvent event, String groupId, List<String>? usernames) -> void
+```
+
+The multi-device event callback of group.
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

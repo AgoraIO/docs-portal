@@ -1,0 +1,178 @@
+---
+title: "com.agora.iotsdk20.ICallkitMgr.ICallback接口 参考"
+description: "账号管理回调接口。"
+---
+
+账号管理回调接口。
+
+## 成员函数说明
+
+<a id="a5b19d79f156e3fc0f2ef769a12227654"></a>
+
+### onCallkitError()
+
+```cpp
+default void com.agora.iotsdk20.ICallkitMgr.ICallback.onCallkitError(int errCode)
+```
+
+报告错误事件。
+
+当呼叫系统中遇到错误或异常事，SDK 会触发该回调。触发后，呼叫过程会被自动清除。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+
+<a id="a93765c49bf2943e0c3272029cae8386d"></a>
+
+### onDialDone()
+
+```cpp
+default void com.agora.iotsdk20.ICallkitMgr.ICallback.onDialDone(int errCode, IotDevice iotDevice)
+```
+
+开始正常拨号呼叫回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| iotDevice | 要呼叫的设备，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+
+<a id="a31111d35657698de1c7126f55a6a88cc"></a>
+
+### onPeerAnswer()
+
+```cpp
+default void com.agora.iotsdk20.ICallkitMgr.ICallback.onPeerAnswer(IotDevice iotDevice)
+```
+
+对端设备接听呼叫回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| iotDevice | 对端设备，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+
+<a id="abf8eeb0821eb8530eec5f5b4f1525bad"></a>
+
+### onPeerFirstVideo()
+
+```cpp
+default void com.agora.iotsdk20.ICallkitMgr.ICallback.onPeerFirstVideo(IotDevice iotDevice, int videoWidth, int videoHeight)
+```
+
+对端首帧出图回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| iotDevice | 对端设备，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+| videoWidth | 首帧视频宽度。 |
+| videoHeight | 首帧视频高度。 |
+
+<a id="a1c35634e3f3e05c037f825e0b6b72875"></a>
+
+### onPeerHangup()
+
+```cpp
+default void com.agora.iotsdk20.ICallkitMgr.ICallback.onPeerHangup(IotDevice iotDevice)
+```
+
+对端设备挂断呼叫或通话回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| iotDevice | 对端设备，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+
+<a id="a01651069c376288ca307b6424ddd8d70"></a>
+
+### onPeerIncoming()
+
+```cpp
+default void com.agora.iotsdk20.ICallkitMgr.ICallback.onPeerIncoming(IotDevice iotDevice, String attachMsg)
+```
+
+对端设备来电回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| iotDevice | 来电的设备，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+| attachMsg | 来电时的附带信息。 |
+
+<a id="a578fedaaf74cd67564d1c82fd4e6df1d"></a>
+
+### onPeerTimeout()
+
+```cpp
+default void com.agora.iotsdk20.ICallkitMgr.ICallback.onPeerTimeout(IotDevice iotDevice)
+```
+
+对端设备超时无人接听回调
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| iotDevice | 对端设备，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+
+<a id="a451f792b6b4e7bdc226f8c20d8102561"></a>
+
+### onRecordingError()
+
+```cpp
+default void com.agora.iotsdk20.ICallkitMgr.ICallback.onRecordingError(int errCode)
+```
+
+录制错误事件。
+
+当你在本地录制音视频流的过程中遇到问题时，SDK 会触发该回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。比较常见的是编码导致的问题，对应错误码以 `XERR_CODEC` 为前缀，你可以结合你的业务逻辑进行处理。 |
+
+<a id="ad86bc19dbe269c68e335bdb74eb4b2cb"></a>
+
+### onUserOffline()
+
+```cpp
+default void com.agora.iotsdk20.ICallkitMgr.ICallback.onUserOffline(int uid, int onlineUserCount)
+```
+
+其他用户退出通话回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| uid | 退出通话者的用户 ID。 |
+| onlineUserCount | 当前通话中的用户总数，包含自己。 |
+
+<a id="a48f9ab5b2c022d219f1c5c538ff680be"></a>
+
+### onUserOnline()
+
+```cpp
+default void com.agora.iotsdk20.ICallkitMgr.ICallback.onUserOnline(int uid, int onlineUserCount)
+```
+
+其他用户加入通话回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| uid | 加入通话者的用户 ID。 |
+| onlineUserCount | 当前通话中的用户总数，包含自己。 |

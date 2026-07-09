@@ -1,0 +1,37 @@
+---
+title: "publishPresence method"
+description: "API docs for the publishPresence method from the ChatPresenceManager class, for the Dart programming language."
+---
+
+Publishes a custom presence state.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `description` | The extension information of the presence state. It can be set as nil. |
+
+```dart
+Future<void> publishPresence(String description)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> publishPresence(
+  String description,
+) async {
+  Map req = {'desc': description};
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.presenceWithDescription, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

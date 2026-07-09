@@ -1,0 +1,161 @@
+---
+title: "ScenesCallbacksNode"
+description: "ScenesCallbacksNode API reference."
+---
+
+场景目录的信息。
+
+- Callbacks &lt; ScenesCallbacks &gt;
+  - ScenesCallbacksNode
+
+## Properties
+
+<a id="path"></a>
+
+### path
+
+```ts
+path: string
+```
+
+场景目录的路径。
+
+<a id="scenegroups"></a>
+
+### sceneGroups
+
+```ts
+sceneGroups: ReadonlyArray<string>
+```
+
+场景目录下所有子场景目录的名称。
+
+<a id="scenegroupscount"></a>
+
+### sceneGroupsCount
+
+```ts
+sceneGroupsCount: number
+```
+
+场景目录下子场景目录的数量。
+
+<a id="scenes"></a>
+
+### scenes
+
+```ts
+scenes: ReadonlyArray<string>
+```
+
+场景目录下所有场景的名称。
+
+<a id="scenescount"></a>
+
+### scenesCount
+
+```ts
+scenesCount: number
+```
+
+场景目录下场景的数量。
+
+## Methods
+
+<a id="dispose"></a>
+
+### dispose
+
+```ts
+dispose(): void
+```
+
+释放监听器对象。
+
+#### Returns
+
+Returns void
+
+<a id="forwardto"></a>
+
+### forwardTo
+
+```ts
+forwardTo<NAME>(name: NAME, toCallbacks: Callbacks<ScenesCallbacks>): any
+```
+
+将注册的回调转到另一个 `Callbacks` 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| name: NAME | 注册回调的名称。 |
+| toCallbacks: Callbacks&lt;ScenesCallbacks&gt; | 转到的 `Callbacks` 对象。 |
+
+#### Returns
+
+Returns any
+
+<a id="off"></a>
+
+### off
+
+```ts
+off<NAME>(name?: NAME, listener?: any): void
+```
+
+注销回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional name: NAME | 回调名。 |
+| Optional listener: any | 回调函数。 |
+
+#### Returns
+
+Returns void
+
+<a id="on"></a>
+
+### on
+
+```ts
+on<NAME>(name: NAME, listener: any): void
+```
+
+注册一个回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| name: NAME | 回调名。 |
+| listener: any | 回调函数。 |
+
+#### Returns
+
+Returns void
+
+<a id="once"></a>
+
+### once
+
+```ts
+once<NAME>(name: NAME, listener: any): void
+```
+
+注册只使用一次的回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| name: NAME | 回调名。 |
+| listener: any | 回调函数。 |
+
+#### Returns
+
+Returns void

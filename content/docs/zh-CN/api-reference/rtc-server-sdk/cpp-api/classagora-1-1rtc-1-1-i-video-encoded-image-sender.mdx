@@ -1,0 +1,41 @@
+---
+title: "agora::rtc::IVideoEncodedImageSender类 参考abstract"
+description: "继承自 agora::RefCountInterface ."
+---
+
+`IVideoEncodedImageSender` 类。
+
+## 构造及析构函数说明
+
+<a id="a4d805af61155f864722a53372188329e"></a>
+
+### ~IVideoEncodedImageSender()
+
+```cpp
+agora::rtc::IVideoEncodedImageSender::~IVideoEncodedImageSender() inlineprotected
+```
+
+## 成员函数说明
+
+<a id="ab3e92d1574bdb798c1f10d431bf3fd8f"></a>
+
+### sendEncodedVideoImage()
+
+```cpp
+virtual bool agora::rtc::IVideoEncodedImageSender::sendEncodedVideoImage(const uint8_t* imageBuffer, size_t length, const EncodedVideoFrameInfo& videoEncodedFrameInfo) pure virtual
+```
+
+将已编码的视频帧发送到视频轨道。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| imageBuffer | 视频缓冲区。 |
+| length | 视频数据长度（字节）。 |
+| videoEncodedFrameInfo | 已编码视频帧信息： [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-encoded-video-frame-info)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

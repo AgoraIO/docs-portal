@@ -1,0 +1,29 @@
+---
+title: "removeChatRoomManagerListener method"
+description: "API docs for the removeChatRoomManagerListener method from the ChatRoomManagerDeprecated extension, for the Dart programming language."
+---
+
+Removes a chat room manager listener. This method removes the chat room manager listener registered with [addChatRoomManagerListener](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-manager-deprecated/add-chat-room-manager-listener).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The chat room manager listener to be removed. |
+
+```dart
+@Deprecated("Use ChatRoomManager#removeEventHandler to instead")void removeChatRoomManagerListener(ChatRoomManagerListener listener)@Deprecated("Use ChatRoomManager#removeEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@Deprecated("Use ChatRoomManager#removeEventHandler to instead")
+void removeChatRoomManagerListener(ChatRoomManagerListener listener) {
+  if (_listeners.contains(listener)) {
+    _listeners.remove(listener);
+  }
+}
+```

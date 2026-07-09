@@ -1,0 +1,51 @@
+---
+title: "io.agora.rtc.AgoraVideoEncodedImageSender类 参考"
+description: "AgoraVideoEncodedImageSender 类。"
+---
+
+AgoraVideoEncodedImageSender 类。 如果你需要发送自定义视频源，你可以通过该类下的方法来将已编码的视频数据直接发送到视频轨道。如果视频轨道被禁用，视频帧将会被自动丢弃。
+
+## 构造及析构函数说明
+
+<a id="a4a0ed593c9985a8171d0fc556ee692bf"></a>
+
+### AgoraVideoEncodedImageSender()
+
+```cpp
+io.agora.rtc.AgoraVideoEncodedImageSender.AgoraVideoEncodedImageSender(long cptr)
+```
+
+构造函数。
+
+## 成员函数说明
+
+<a id="ad95f159119dff842bde36da461638a83"></a>
+
+### destroy()
+
+```cpp
+synchronized void io.agora.rtc.AgoraVideoEncodedImageSender.destroy()
+```
+
+销毁编码后的视频数据发送器。
+
+<a id="ab9073bfd03dab3922d1594ce4bc507c8"></a>
+
+### sendEncodedVideoImage()
+
+```cpp
+int io.agora.rtc.AgoraVideoEncodedImageSender.sendEncodedVideoImage(byte[] imageBuffer, EncodedVideoFrameInfo info)
+```
+
+将编码后的视频数据发送至服务器。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| imageBuffer | 编码后的视频数据。 |
+| info | 编码后的视频数据信息： [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-encoded-video-frame-info)。 |
+
+#### Returns
+
+发送编码后的视频数据的结果。

@@ -1,0 +1,156 @@
+---
+title: "agora::util::AList< T > 模板类 参考"
+description: "agora::util::AList< T > 模板类 参考 API reference."
+---
+
+## 成员类型定义说明
+
+<a id="ab3687fb54a4f875afb5d396a87b1c35a"></a>
+
+### value_type
+
+```cpp
+template<class T > typedef T agora::util::AList<T >::value_type
+```
+
+<a id="a79d2bffadae572eb396ebf31e0ebd75c"></a>
+
+### reference
+
+```cpp
+template<class T > typedef value_type& agora::util::AList<T >::reference
+```
+
+<a id="afb0958f5ec77f7433cc23bc16ed597e4"></a>
+
+### const_reference
+
+```cpp
+template<class T > typedef const value_type& agora::util::AList<T >::const_reference
+```
+
+<a id="a29dad44bdadfa61b0aaab63b1769cf36"></a>
+
+### pointer
+
+```cpp
+template<class T > typedef value_type* agora::util::AList<T >::pointer
+```
+
+<a id="acbb058cb0e58274da38969184e1a4e29"></a>
+
+### const_pointer
+
+```cpp
+template<class T > typedef const value_type* agora::util::AList<T >::const_pointer
+```
+
+<a id="ae259777c7a30c4e69132e873b90ecf13"></a>
+
+### size_type
+
+```cpp
+template<class T > typedef size_t agora::util::AList<T >::size_type
+```
+
+<a id="a30874c7224774687cb6d64522334f4d3"></a>
+
+### iterator
+
+```cpp
+template<class T > typedef AOutputIterator<value_type> agora::util::AList<T >::iterator
+```
+
+<a id="a27f1068ad14661cc13437abef7865de1"></a>
+
+### const_iterator
+
+```cpp
+template<class T > typedef const AOutputIterator<value_type> agora::util::AList<T >::const_iterator
+```
+
+## 构造及析构函数说明
+
+<a id="aad84d6ac22b47599d0ad89a5e6ccac1c"></a>
+
+### AList() [1/2]
+
+```cpp
+template<class T > agora::util::AList<T >::AList() inline
+```
+
+<a id="a111e3f898626d0608d1e9f2b32fe88e7"></a>
+
+### AList() [2/2]
+
+```cpp
+template<class T > agora::util::AList<T >::AList(IContainer* c, bool take_ownership) inline
+```
+
+<a id="a205cc2f4008b46e27def2ed3800329fa"></a>
+
+### ~AList()
+
+```cpp
+template<class T > agora::util::AList<T >::~AList() inline
+```
+
+## 成员函数说明
+
+<a id="a308175d08ac108021f913e4ed618d873"></a>
+
+### reset()
+
+```cpp
+template<class T > void agora::util::AList<T >::reset(IContainer* c = NULL, bool take_ownership = false) inline
+```
+
+<a id="a0b328999f15a515e8e693d06c3c6a2ba"></a>
+
+### begin()
+
+```cpp
+template<class T > iterator agora::util::AList<T >::begin() inline
+```
+
+<a id="a5544da98e6e333f111b85c0c97da976d"></a>
+
+### end()
+
+```cpp
+template<class T > iterator agora::util::AList<T >::end() inline
+```
+
+<a id="aedb0be5a53d34449cdb9c7f20f9237fd"></a>
+
+### size()
+
+```cpp
+template<class T > size_type agora::util::AList<T >::size() const inline
+```
+
+<a id="ac8121e3cbeee02e7612889b2df4aa5b2"></a>
+
+### empty()
+
+```cpp
+template<class T > bool agora::util::AList<T >::empty() const inline
+```
+
+## 类成员变量说明
+
+<a id="aba070c17186dce6be5dca70cb0c1316e"></a>
+
+### container
+
+```cpp
+template<class T > IContainer* agora::util::AList<T >::container private
+```
+
+<a id="a039b5c1b1125e32f4887598506910f62"></a>
+
+### owner
+
+```cpp
+template<class T > bool agora::util::AList<T >::owner private
+```

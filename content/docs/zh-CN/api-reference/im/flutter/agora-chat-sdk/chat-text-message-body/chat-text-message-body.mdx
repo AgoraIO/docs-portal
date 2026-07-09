@@ -1,0 +1,27 @@
+---
+title: "ChatTextMessageBody constructor"
+description: "API docs for the ChatTextMessageBody constructor from Class ChatTextMessageBody from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Creates a text message.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| [content](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-text-message-body/content) | The text content. |
+
+```dart
+ChatTextMessageBody({required String content, List<String>? targetLanguages})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ChatTextMessageBody({
+  required this.content,
+  this.targetLanguages,
+}) : super(type: MessageType.TXT);
+```

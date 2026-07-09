@@ -1,0 +1,300 @@
+---
+title: "ConnectionStore"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+`ConnectionStore` 类用于管理连接状态。
+
+- EduStoreBase
+  - ConnectionStore
+
+## Properties
+
+<a id="classroomState"></a>
+
+### classroomState
+
+```ts
+classroomState: ClassroomState
+```
+
+房间连接状态
+
+<a id="engine"></a>
+
+### Optional engine
+
+```ts
+engine?: AgoraRteEngine
+```
+
+RTE 引擎
+
+<a id="rtcState"></a>
+
+### rtcState
+
+```ts
+rtcState: AGRtcState
+```
+
+RTC 连接状态
+
+## Accessors
+
+<a id="scene"></a>
+
+### scene
+
+```ts
+get scene(): undefined | AgoraRteScene
+```
+
+当前场景对象
+
+#### Returns
+
+Returns undefined | [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-scene)
+
+<a id="sceneId"></a>
+
+### sceneId
+
+```ts
+get sceneId(): string
+```
+
+当前场景 ID
+
+#### Returns
+
+Returns string
+
+## Methods
+
+<a id="addCloudProxyObserver"></a>
+
+### addCloudProxyObserver
+
+```ts
+addCloudProxyObserver(observer: AgoraCloudProxyObserver): void
+```
+
+添加一个云代理观察者，joinClassroom 成功调用后才能调用此方法
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraCloudProxyObserver |  |
+
+#### Returns
+
+Returns void
+
+<a id="checkIn"></a>
+
+### checkIn
+
+```ts
+checkIn(sessionInfo: EduSessionInfo, sceneType: SceneType, mode: "check-in" | "entry"): Promise<void>
+```
+
+进入房间预检，进入房间前请先调用此方法
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| sessionInfo: EduSessionInfo | 当前房间数据 |
+| sceneType: SceneType | scene 类型 |
+| mode: "check-in" \| "entry" |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="getEngine"></a>
+
+### getEngine
+
+```ts
+getEngine(): AgoraRteEngine
+```
+
+获取当前 RteEngine，调用此方法获取实例前需要先调用 connectionStore.initialize， 否则将抛出异常
+
+#### Returns
+
+Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-engine)
+
+RTE engine
+
+<a id="getRtcState"></a>
+
+### getRtcState
+
+```ts
+getRtcState(connectionType: AGRtcConnectionType): AGRtcState
+```
+
+获取房间 RTC 状态
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connectionType: AGRtcConnectionType |  |
+
+#### Returns
+
+Returns [AGRtcState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/enums/agrtc-state)
+
+<a id="initialize"></a>
+
+### initialize
+
+```ts
+initialize(): void
+```
+
+初始化 RTE engine
+
+#### Returns
+
+Returns void
+
+<a id="joinClassroom"></a>
+
+### joinClassroom
+
+```ts
+joinClassroom(options?: { mode: "check-in" | "entry" }): Promise<undefined>
+```
+
+加入房间
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional options: \{ mode: "check-in" \| "entry" \} |  |
+
+#### Returns
+
+Returns Promise &lt; undefined &gt;
+
+<a id="joinRTC"></a>
+
+### joinRTC
+
+```ts
+joinRTC(options?: AgoraRteSceneJoinRTCOptions): Promise<void>
+```
+
+加入 RTC 频道
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional options: AgoraRteSceneJoinRTCOptions | RTC 配置 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="joinSubRoom"></a>
+
+### joinSubRoom
+
+```ts
+joinSubRoom(roomUuid: string): Promise<void>
+```
+
+加入子房间
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomUuid: string | 子房间 ID |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="leaveClassroom"></a>
+
+### leaveClassroom
+
+```ts
+leaveClassroom(reason: LeaveReason, promise?: Promise<void>): Promise<void>
+```
+
+离开房间
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| reason: LeaveReason | 原因 |
+| Optional promise: Promise&lt;void&gt; |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="leaveRTC"></a>
+
+### leaveRTC
+
+```ts
+leaveRTC(connectionType?: AGRtcConnectionType): Promise<void>
+```
+
+离开 RTC 频道
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional connectionType: AGRtcConnectionType | 大小 scene |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="leaveSubRoom"></a>
+
+### leaveSubRoom
+
+```ts
+leaveSubRoom(): Promise<void>
+```
+
+离开子房间
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="removeCloudProxyObserver"></a>
+
+### removeCloudProxyObserver
+
+```ts
+removeCloudProxyObserver(observer: AgoraCloudProxyObserver): void
+```
+
+移除一个云代理观察者，joinClassroom 成功调用后才能调用此方法
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraCloudProxyObserver |  |
+
+#### Returns
+
+Returns void

@@ -1,0 +1,29 @@
+---
+title: "enableOppoPush method"
+description: "API docs for the enableOppoPush method from the ChatOptions class, for the Dart programming language."
+---
+
+Enable OPPO PUSH on OPPO devices.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `appKey` | The app id for OPPO PUSH. |
+| `secret` | The app secret for OPPO PUSH. |
+
+```dart
+void enableOppoPush(String appKey, String secret)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+void enableOppoPush(String appKey, String secret) {
+  _pushConfig.enableOppoPush = true;
+  _pushConfig.oppoAppKey = appKey;
+  _pushConfig.oppoAppSecret = secret;
+}
+```

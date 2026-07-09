@@ -1,0 +1,20 @@
+---
+title: "userList property"
+description: "API docs for the userList property from the ChatMessageReaction class, for the Dart programming language."
+---
+
+The list of users that added this Reaction
+
+**Note** To get the entire list of users adding this Reaction, you can call [ChatManager.fetchReactionDetail](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/fetch-reaction-detail) which returns the user list with pagination. Other methods like [ChatMessage.reactionList](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-message/reaction-list), [ChatManager.fetchReactionList](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/fetch-reaction-list) or [ChatEventHandler.onMessageReactionDidChange](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-event-handler/on-message-reaction-did-change) can get the first three users.
+
+```dart
+List<String> userList final
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+final List<String> userList;
+```

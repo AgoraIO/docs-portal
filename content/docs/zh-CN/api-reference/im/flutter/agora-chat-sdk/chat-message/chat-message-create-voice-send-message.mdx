@@ -1,0 +1,48 @@
+---
+title: "ChatMessage.createVoiceSendMessage constructor"
+description: "API docs for the ChatMessage.createVoiceSendMessage constructor from Class ChatMessage from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Creates a voice message for sending.
+
+- For a one-to-one chat, it is the username of the peer user.
+- For a group chat, it is the group ID.
+- For a chat room, it is the chat room ID.
+
+**Return** The message instance.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `targetId` | The ID of the message recipient. |
+| `filePath` | The path of the voice file. |
+| `duration` | The voice duration in seconds. |
+| `fileSize` | The size of the voice file, in bytes. |
+| `displayName` | The name of the voice file which ends with a suffix that indicates the format of the file. For example "voice.mp3". |
+
+```dart
+ChatMessage.createVoiceSendMessage({required String targetId, required String filePath, int duration = 0, int? fileSize, String? displayName, ChatType chatType = ChatType.Chat})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ChatMessage.createVoiceSendMessage({
+  required String targetId,
+  required String filePath,
+  int duration = 0,
+  int? fileSize,
+  String? displayName,
+  ChatType chatType = ChatType.Chat,
+}) : this.createSendMessage(
+          chatType: chatType,
+          to: targetId,
+          body: ChatVoiceMessageBody(
+              localPath: filePath,
+              duration: duration,
+              fileSize: fileSize,
+              displayName: displayName));
+```

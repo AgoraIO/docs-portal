@@ -1,0 +1,71 @@
+---
+title: "com.herewhite.sdk.combinePlayer.NativePlayer接口 参考"
+description: "NativePlayer 接口。"
+---
+
+`NativePlayer` 接口。
+
+### `自从`
+
+2.4.23
+
+## 成员函数说明
+
+<a id="ae0819cbd3b0aee50564f900af12bedfc"></a>
+
+### play()
+
+```cpp
+void com.herewhite.sdk.combinePlayer.NativePlayer.play()
+```
+
+播放视频。
+
+##### `注解`
+
+该方法需要由 `PlayerSyncManager` 调用，请勿主动调用。
+
+<a id="a4006f4a15e14fe8d1b742c5c5bd4b7a8"></a>
+
+### pause()
+
+```cpp
+void com.herewhite.sdk.combinePlayer.NativePlayer.pause()
+```
+
+暂停播放视频。
+
+##### `注解`
+
+该方法需要由 `PlayerSyncManager` 调用，请勿主动调用。
+
+<a id="aa2e8218f7d009448ccbf55ca5773453c"></a>
+
+### hasEnoughBuffer()
+
+```cpp
+boolean com.herewhite.sdk.combinePlayer.NativePlayer.hasEnoughBuffer()
+```
+
+获取是否能够不经过缓冲，直接播放视频。
+
+#### Returns
+
+是否能够不经过缓冲，直接播放视频：
+
+- true：可以不经过缓冲，直接播放视频。
+- false：需要经过缓冲才能播放视频。
+
+<a id="ae493efedbea69b5e72a2f43e8ae252f8"></a>
+
+### getPhase()
+
+```cpp
+NativePlayerPhase com.herewhite.sdk.combinePlayer.NativePlayer.getPhase()
+```
+
+获取视频播放阶段。
+
+#### Returns
+
+视频播放阶段，详见 `NativePlayerPhase`。

@@ -1,0 +1,18 @@
+---
+title: "WhiteViewMode Constants Reference"
+description: "视角模式"
+---
+
+视角模式
+
+## WhiteViewMode
+
+```objc
+typedef NS_ENUM(NSInteger, WhiteViewMode ) { WhiteViewModeFreedom, WhiteViewModeFollower, WhiteViewModeBroadcaster, };
+```
+
+| Name | Description |
+| --- | --- |
+| `WhiteViewModeFreedom` | （默认）自由模式。 该模式下用户可以主动调整视角，不受其他用户视角模式设置的影响，也不会影响其他用户的视角模式设置。 Note：当房间内不存在视角为主播模式的用户时，所有用户的视角都默认为自由模式。 |
+| `WhiteViewModeFollower` | 跟随模式。 该模式下用户的视角会跟随主播的视角。 |
+| `WhiteViewModeBroadcaster` | 主播模式。 该模式下用户可以主动调整视角，并将自己的视角同步给房间内所有其他用户。 |

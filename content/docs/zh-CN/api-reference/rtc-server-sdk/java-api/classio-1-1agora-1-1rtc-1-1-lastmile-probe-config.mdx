@@ -1,0 +1,135 @@
+---
+title: "io.agora.rtc.LastmileProbeConfig类 参考"
+description: "LastmileProbeConfig 类。"
+---
+
+LastmileProbeConfig 类。
+
+## 构造及析构函数说明
+
+<a id="abc09b5640ef0dff2dbce2f0496ae2cac"></a>
+
+### LastmileProbeConfig() [1/2]
+
+```cpp
+io.agora.rtc.LastmileProbeConfig.LastmileProbeConfig()
+```
+
+<a id="afba2d9d3738b52acfbc22bd49a935e47"></a>
+
+### LastmileProbeConfig() [2/2]
+
+```cpp
+io.agora.rtc.LastmileProbeConfig.LastmileProbeConfig(int probeUplink, int probeDownlink, int expectedUplinkBitrate, int expectedDownlinkBitrate)
+```
+
+构造函数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| probeUplink | 是否探测上行网络。有些用户，如直播频道中的普通观众，不需要进行网络探测：<br />- 0: 探测<br />- 1: 不探测 |
+| probeDownlink | 是否探测下行网络：<br />- 0: 探测<br />- 1: 不探测 |
+| expectedUplinkBitrate | 用户期望的最高发送码率，单位为 bps，范围为 [100000, 5000000]。声网推荐参考 setVideoEncoderConfiguration 中的码率值设置该参数的值。 |
+| expectedDownlinkBitrate | 用户期望的最高接收码率，单位为 bps，范围为 [100000, 5000000]。 |
+
+## 成员函数说明
+
+<a id="a0060c80c098961f40f19e33dff4d101c"></a>
+
+### getExpectedDownlinkBitrate()
+
+```cpp
+int io.agora.rtc.LastmileProbeConfig.getExpectedDownlinkBitrate()
+```
+
+<a id="a7b4b3a36b9c5039da2ce66dc548615c5"></a>
+
+### getExpectedUplinkBitrate()
+
+```cpp
+int io.agora.rtc.LastmileProbeConfig.getExpectedUplinkBitrate()
+```
+
+<a id="ab851dbf2c439e51364eaaadaa90db6f8"></a>
+
+### getProbeDownlink()
+
+```cpp
+int io.agora.rtc.LastmileProbeConfig.getProbeDownlink()
+```
+
+<a id="a81653c926fc4d9a230f2b91f0cbcd8ab"></a>
+
+### getProbeUplink()
+
+```cpp
+int io.agora.rtc.LastmileProbeConfig.getProbeUplink()
+```
+
+<a id="a5ccada4dba7632296b4fd838b150870c"></a>
+
+### setExpectedDownlinkBitrate()
+
+```cpp
+void io.agora.rtc.LastmileProbeConfig.setExpectedDownlinkBitrate(int expectedDownlinkBitrate)
+```
+
+<a id="a266cc72358c469776e5c94772b812514"></a>
+
+### setExpectedUplinkBitrate()
+
+```cpp
+void io.agora.rtc.LastmileProbeConfig.setExpectedUplinkBitrate(int expectedUplinkBitrate)
+```
+
+<a id="a77c74e3119b41766be46442fd3015d08"></a>
+
+### setProbeDownlink()
+
+```cpp
+void io.agora.rtc.LastmileProbeConfig.setProbeDownlink(int probeDownlink)
+```
+
+<a id="a1c9ec37a78773d153a73cd3dd73c0ba0"></a>
+
+### setProbeUplink()
+
+```cpp
+void io.agora.rtc.LastmileProbeConfig.setProbeUplink(int probeUplink)
+```
+
+## 类成员变量说明
+
+<a id="a1fda1ede53c89a1a5967d8a9c56ff84d"></a>
+
+### expectedDownlinkBitrate
+
+```cpp
+int io.agora.rtc.LastmileProbeConfig.expectedDownlinkBitrate private
+```
+
+<a id="a2fe7a65b6f32aeb8858764616afc1d0c"></a>
+
+### expectedUplinkBitrate
+
+```cpp
+int io.agora.rtc.LastmileProbeConfig.expectedUplinkBitrate private
+```
+
+<a id="a65d2bfd69ffc973445d681fd52b8df16"></a>
+
+### probeDownlink
+
+```cpp
+int io.agora.rtc.LastmileProbeConfig.probeDownlink private
+```
+
+<a id="abb889a8c5da814a6cf5abee0689ef486"></a>
+
+### probeUplink
+
+```cpp
+int io.agora.rtc.LastmileProbeConfig.probeUplink private
+```

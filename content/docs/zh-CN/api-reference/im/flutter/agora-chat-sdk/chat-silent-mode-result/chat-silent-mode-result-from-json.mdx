@@ -1,0 +1,34 @@
+---
+title: "ChatSilentModeResult.fromJson constructor"
+description: "API docs for the ChatSilentModeResult.fromJson constructor from Class ChatSilentModeResult from the agora_chat_sdk library, for the Dart programming language."
+---
+
+```dart
+ChatSilentModeResult.fromJson(Map map)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+factory ChatSilentModeResult.fromJson(Map map) {
+  int expireTimestamp = map["expireTs"];
+  ChatSilentModeTime startTime =
+      ChatSilentModeTime.fromJson(map["startTime"]);
+  ChatSilentModeTime endTime = ChatSilentModeTime.fromJson(map["endTime"]);
+  ChatPushRemindType remindType =
+      chatPushRemindTypeFromInt(map["remindType"]);
+  String conversationId = map["conversationId"];
+  ChatConversationType conversationType =
+      conversationTypeFromInt(map["conversationType"]);
+  return ChatSilentModeResult(
+    expireTimestamp,
+    conversationType,
+    conversationId,
+    remindType,
+    startTime,
+    endTime,
+  );
+}
+```

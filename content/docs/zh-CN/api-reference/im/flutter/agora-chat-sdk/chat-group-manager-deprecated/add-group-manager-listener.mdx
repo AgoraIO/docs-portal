@@ -1,0 +1,30 @@
+---
+title: "addGroupManagerListener method"
+description: "API docs for the addGroupManagerListener method from the ChatGroupManagerDeprecated extension, for the Dart programming language."
+---
+
+Registers a group manager listener.
+
+The registered listener needs to be used together with [removeGroupManagerListener](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-manager-deprecated/remove-group-manager-listener).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The group manager listener to be registered. |
+
+```dart
+@Deprecated("Use addEventHandler to instead")void addGroupManagerListener(ChatGroupManagerListener listener)@Deprecated("Use addEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@Deprecated("Use addEventHandler to instead")
+void addGroupManagerListener(ChatGroupManagerListener listener) {
+  _listeners.remove(listener);
+  _listeners.add(listener);
+}
+```

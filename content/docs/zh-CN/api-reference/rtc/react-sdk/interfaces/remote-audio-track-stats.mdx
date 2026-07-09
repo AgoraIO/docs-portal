@@ -1,0 +1,188 @@
+---
+title: "RemoteAudioTrackStats"
+description: "RemoteAudioTrackStats API reference."
+---
+
+远端音频轨道的统计数据，包括连接、传输等基本信息，可以通过 [AgoraRTCClient.getRemoteAudioStats](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#getremoteaudiostats) 获取。
+
+- RemoteAudioTrackStats
+
+## Properties
+
+<a id="codectype"></a>
+
+### Optional codecType
+
+```ts
+codecType: "opus" | "aac" | "PCMU" | "PCMA" | "G722"
+```
+
+音频的编码格式。
+
+- "opus": 音频编码格式为 OPUS。
+- "aac": 音频编码格式为 AAC。
+- "pcmu": 预留参数，暂不支持。
+- "pcma": 预留参数，暂不支持。
+- "g722": 预留参数，暂不支持。
+
+Firefox 上无法获取该值。
+
+<a id="currentpacketlossrate"></a>
+
+### currentPacketLossRate
+
+```ts
+currentPacketLossRate: number
+```
+
+接收的音频400ms内的丢包率。
+
+<a id="end2enddelay"></a>
+
+### end2EndDelay
+
+```ts
+end2EndDelay: number
+```
+
+音频端到端延迟（ms）。
+
+从远端采集音频到本地播放音频的延迟。该延迟不包括发送端编码和接收端解码的时间。
+
+<a id="freezerate"></a>
+
+### freezeRate
+
+```ts
+freezeRate: number
+```
+
+接收的音频卡顿率。
+
+<a id="packetlossrate"></a>
+
+### packetLossRate
+
+```ts
+packetLossRate: number
+```
+
+接收的音频总丢包率。
+
+<a id="publishduration"></a>
+
+### publishDuration
+
+```ts
+publishDuration: number
+```
+
+远端发布音频时长 如果为 -1，说明暂时还无法获取发布时长
+
+<a id="receivebitrate"></a>
+
+### receiveBitrate
+
+```ts
+receiveBitrate: number
+```
+
+接收的音频码率（bps）。
+
+<a id="receivebytes"></a>
+
+### receiveBytes
+
+```ts
+receiveBytes: number
+```
+
+接收的音频总字节数。
+
+<a id="receivedelay"></a>
+
+### receiveDelay
+
+```ts
+receiveDelay: number
+```
+
+接收音频延迟 (ms)。
+
+从发送到接收端播放音频的延迟时间。
+
+Safari 和 Firefox 上该字段不准确。
+
+<a id="receivelevel"></a>
+
+### receiveLevel
+
+```ts
+receiveLevel: number
+```
+
+接收的音频音量等级，范围为 [0,32767]。
+
+该值通过 WebRTC-Stats 获取，不能确保实时性。如果你想获取当前实时的音量等级，调用 [RemoteAudioTrack.getVolumeLevel](/zh-CN/api-reference/rtc/react-sdk/interfaces/iremote-audio-track#getvolumelevel)。
+
+<a id="receivepackets"></a>
+
+### receivePackets
+
+```ts
+receivePackets: number
+```
+
+接收的音频总包数。
+
+<a id="receivepacketsdiscarded"></a>
+
+### receivePacketsDiscarded
+
+```ts
+receivePacketsDiscarded: number
+```
+
+因过早或过晚到达抖动缓冲器而被丢弃的数据包数量。
+
+<a id="receivepacketslost"></a>
+
+### receivePacketsLost
+
+```ts
+receivePacketsLost: number
+```
+
+接收的音频总丢包数。
+
+<a id="totalduration"></a>
+
+### totalDuration
+
+```ts
+totalDuration: number
+```
+
+接收的音频总时长，单位为秒。
+
+<a id="totalfreezetime"></a>
+
+### totalFreezeTime
+
+```ts
+totalFreezeTime: number
+```
+
+接收的音频总卡顿时长，单位为秒。
+
+<a id="transportdelay"></a>
+
+### transportDelay
+
+```ts
+transportDelay: number
+```
+
+传输延迟（ms)。
+
+从远端发送音频到本地接收音频的延迟。

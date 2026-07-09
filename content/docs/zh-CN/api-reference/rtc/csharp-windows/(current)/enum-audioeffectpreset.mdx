@@ -4,7 +4,7 @@ description: "预设的音效选项。"
 ---
 <a id="enum_audioeffectpreset__detailed_desc"></a>
 
-为获取更好的音效，建议在使用预设音效前，调用 [SetAudioProfile [1/2]](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_setaudioprofile) 并按照如下推荐设置 profile 参数。
+为获取更好的音效，建议在使用预设音效前，调用 [SetAudioProfile [1/2]](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_setaudioprofile) 并按照如下推荐设置 profile 参数。
 
 | 预设音效 | profile |
 | --- | --- |
@@ -61,7 +61,7 @@ KTV。
 
 ### `ROOM_ACOUSTICS_3D_VOICE`
 
-3D 人声，即 SDK 将音频渲染出在用户周围环绕的效果。环绕周期默认为 10 秒。设置该音效后，你还可以调用 [SetAudioEffectParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 修改环绕周期。
+3D 人声，即 SDK 将音频渲染出在用户周围环绕的效果。环绕周期默认为 10 秒。设置该音效后，你还可以调用 [SetAudioEffectParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setaudioeffectparameters) 修改环绕周期。
 
 :::warning[注意]
 启用 3D 人声后，用户需要使用支持双声道的音频播放设备才能听到预期效果。
@@ -125,4 +125,4 @@ R&B。
 
 ### `PITCH_CORRECTION`
 
-电音，即 SDK 以主音音高为 C 的自然大调为基础修正音频的实际音高。设置该音效后，你还可以调用 [SetAudioEffectParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 调整修音的基础调式和主音音高。
+电音，即 SDK 以主音音高为 C 的自然大调为基础修正音频的实际音高。设置该音效后，你还可以调用 [SetAudioEffectParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setaudioeffectparameters) 调整修音的基础调式和主音音高。

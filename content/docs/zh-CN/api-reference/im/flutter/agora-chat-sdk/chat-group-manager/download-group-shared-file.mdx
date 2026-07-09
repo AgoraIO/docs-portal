@@ -1,0 +1,43 @@
+---
+title: "downloadGroupSharedFile method"
+description: "API docs for the downloadGroupSharedFile method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Downloads the shared file of the group.
+
+Note: The callback is only used for progress callback.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `fileId` | The ID of the shared file. |
+| `savePath` | The local path of the shared file. |
+
+```dart
+Future<void> downloadGroupSharedFile({required String groupId, required String fileId, required String savePath})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> downloadGroupSharedFile({
+  required String groupId,
+  required String fileId,
+  required String savePath,
+}) async {
+  Map req = {'groupId': groupId, 'fileId': fileId, 'savePath': savePath};
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.downloadGroupSharedFile, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

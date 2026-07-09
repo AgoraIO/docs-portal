@@ -1,0 +1,132 @@
+---
+title: "agora::util::AOutputIterator< T > 模板类 参考"
+description: "agora::util::AOutputIterator< T > 模板类 参考 API reference."
+---
+
+## 成员类型定义说明
+
+<a id="a517f17f5574ceb64f0e13d3d56e88d7f"></a>
+
+### value_type
+
+```cpp
+template<class T > typedef T agora::util::AOutputIterator<T >::value_type
+```
+
+<a id="a1d1a3a7c57472dd8f59043eadd68dcb3"></a>
+
+### reference
+
+```cpp
+template<class T > typedef value_type& agora::util::AOutputIterator<T >::reference
+```
+
+<a id="a7475dd2a0b35bbb345c4c12ac988bd65"></a>
+
+### const_reference
+
+```cpp
+template<class T > typedef const value_type& agora::util::AOutputIterator<T >::const_reference
+```
+
+<a id="a6ca8f117e26ba18e913e1415a87cf0d2"></a>
+
+### pointer
+
+```cpp
+template<class T > typedef value_type* agora::util::AOutputIterator<T >::pointer
+```
+
+<a id="a89b59ac81dfa8aa5ae428d2fbd44cb49"></a>
+
+### const_pointer
+
+```cpp
+template<class T > typedef const value_type* agora::util::AOutputIterator<T >::const_pointer
+```
+
+## 构造及析构函数说明
+
+<a id="aa0814a9d5db695b5168d0b2cedc9d8fc"></a>
+
+### AOutputIterator() [1/2]
+
+```cpp
+template<class T > agora::util::AOutputIterator<T >::AOutputIterator(IIterator* it = NULL) inlineexplicit
+```
+
+<a id="a43ab67ec125913ec9104d17039b36152"></a>
+
+### ~AOutputIterator()
+
+```cpp
+template<class T > agora::util::AOutputIterator<T >::~AOutputIterator() inline
+```
+
+<a id="a3b32723e2b3175dae78df0e7749d5157"></a>
+
+### AOutputIterator() [2/2]
+
+```cpp
+template<class T > agora::util::AOutputIterator<T >::AOutputIterator(const AOutputIterator<T >& rhs) inline
+```
+
+## 成员函数说明
+
+<a id="a7b6b5e601d029815c371e85e2cdb19b1"></a>
+
+### operator++()
+
+```cpp
+template<class T > AOutputIterator& agora::util::AOutputIterator<T >::operator++() inline
+```
+
+<a id="a4c127289714c34af3e2680e69152a513"></a>
+
+### operator==()
+
+```cpp
+template<class T > bool agora::util::AOutputIterator<T >::operator==(const AOutputIterator<T >& rhs) const inline
+```
+
+<a id="a27f84c07a5ecad9bbb66c9c094e76a68"></a>
+
+### operator!=()
+
+```cpp
+template<class T > bool agora::util::AOutputIterator<T >::operator!=(const AOutputIterator<T >& rhs) const inline
+```
+
+<a id="a3a61b728d84aead4b9aeff86af68d347"></a>
+
+### operator*() [1/2]
+
+```cpp
+template<class T > reference agora::util::AOutputIterator<T >::operator*() inline
+```
+
+<a id="a90ef2db2540a393f59bd41b69c0bcc48"></a>
+
+### operator*() [2/2]
+
+```cpp
+template<class T > const_reference agora::util::AOutputIterator<T >::operator*() const inline
+```
+
+<a id="ae476ca2eee7cec2b02d55dfe273a78b1"></a>
+
+### valid()
+
+```cpp
+template<class T > bool agora::util::AOutputIterator<T >::valid() const inline
+```
+
+## 类成员变量说明
+
+<a id="a1fd7549a58d6565c623affe20259e99a"></a>
+
+### p
+
+```cpp
+template<class T > IIterator* agora::util::AOutputIterator<T >::p private
+```

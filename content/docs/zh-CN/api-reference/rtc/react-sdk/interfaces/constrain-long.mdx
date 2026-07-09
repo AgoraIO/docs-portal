@@ -1,0 +1,50 @@
+---
+title: "ConstrainLong"
+description: "ConstrainLong API reference."
+---
+
+约束对象，一般用于在 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/interfaces/video-encoder-configuration) 中指定采集分辨率/帧率的范围。
+
+- ConstrainLong
+
+## Properties
+
+<a id="exact"></a>
+
+### Optional exact
+
+```ts
+exact: number
+```
+
+严格指定采集设备最终输出的值，如果设备不支持指定的值，采集会失败。
+
+<a id="ideal"></a>
+
+### Optional ideal
+
+```ts
+ideal: number
+```
+
+期望采集设备最终输出的值，如果设备不支持指定的值，会尽量输出一个最靠近的值。
+
+<a id="max"></a>
+
+### Optional max
+
+```ts
+max: number
+```
+
+采集设备最终输出的值上限。
+
+<a id="min"></a>
+
+### Optional min
+
+```ts
+min: number
+```
+
+采集设备最终输出的值下限。

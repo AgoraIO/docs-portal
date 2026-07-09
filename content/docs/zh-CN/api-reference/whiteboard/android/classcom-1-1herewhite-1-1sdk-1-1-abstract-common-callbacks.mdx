@@ -1,0 +1,145 @@
+---
+title: "com.herewhite.sdk.AbstractCommonCallbacks类 参考"
+description: "CommonCallbacks 接口的缺省（空）实现。详见 CommonCallbacks。"
+---
+
+`CommonCallbacks` 接口的缺省（空）实现。详见 `CommonCallbacks`。
+
+### `**[弃用:](/zh-CN/api-reference/whiteboard/android/deprecated#_deprecated000001)**`
+
+已废弃。空实现类由用户应用处理
+
+## 成员函数说明
+
+<a id="aaceb1faaeaa59ec93dce1c88bcd8e7f6"></a>
+
+### throwError()
+
+```cpp
+void com.herewhite.sdk.AbstractCommonCallbacks.throwError(Object args)
+```
+
+SDK 出现未捕获的全局错误回调。
+
+实现了 [com.herewhite.sdk.CommonCallback](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a721b4489c52b2740f233a1742f555916).
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| args | 错误信息。 |
+
+<a id="a1a80dee592bc7f609526d317506bc563"></a>
+
+### urlInterrupter()
+
+```cpp
+String com.herewhite.sdk.AbstractCommonCallbacks.urlInterrupter(String sourceUrl)
+```
+
+图片 URL 拦截回调。
+
+##### `自从`
+
+2.9.14
+
+该回调默认禁用。你可以在初始化白板 SDK 时，通过 `setEnableInterrupterAPI` (true) 方法开启。
+
+开启后，在白板中插入图片时，SDK 会触发该回调，报告图片的原 URL 地址。你可以在该回调中将原 URL 地址替换成指定的 URL 地址。
+
+##### `注解`
+
+开启后，SDK 会频繁触发该回调，因此 Agora 不推荐开启该回调；在 Android 平台，你可以使用 WebView 的拦截功能进行 URL 拦截。
+
+实现了 [com.herewhite.sdk.CommonCallback](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a28839222c6e4b44a001da833300991d4).
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| sourceUrl | 原 URL 地址。 |
+
+#### Returns
+
+替换后的 URL 地址。请确保在返回值中进行传参。
+
+<a id="a21ecfcd612e98811d2a9adfc20c6564b"></a>
+
+### onPPTMediaPlay()
+
+```cpp
+void com.herewhite.sdk.AbstractCommonCallbacks.onPPTMediaPlay()
+```
+
+播放动态 PPT 中的音视频回调。
+
+##### `自从`
+
+2.9.13
+
+实现了 [com.herewhite.sdk.CommonCallback](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a695dc7abd40851cd0ffe0e573566e8f1).
+
+<a id="a104dc982d2a8267f3d7f63e1692bc8c9"></a>
+
+### onPPTMediaPause()
+
+```cpp
+void com.herewhite.sdk.AbstractCommonCallbacks.onPPTMediaPause()
+```
+
+暂停播放动态 PPT 中的音视频回调。
+
+##### `自从`
+
+2.9.13
+
+实现了 [com.herewhite.sdk.CommonCallback](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a9967d9cd3eb16c0db3024f7a6a8c7d64).
+
+<a id="a569de82a2548a7fb84c80845cae67767"></a>
+
+### onMessage()
+
+```cpp
+void com.herewhite.sdk.AbstractCommonCallbacks.onMessage(JSONObject message)
+```
+
+接收到网页发送的消息回调。
+
+##### `自从`
+
+2.11.4
+
+当本地用户收到了网页（如 iframe 插件、动态 PPT）发送的消息时会触发该回调。
+
+##### `注解`
+
+不保证所有用户都能接收到该回调。
+
+实现了 [com.herewhite.sdk.CommonCallback](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a2a843f00164c64d248143d2194beecae).
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| message | JSON 格式的消息。只有当消息为 JSON 格式时，本地用户才能收到。 |
+
+<a id="abbcf9b3946c0bf5ff20f1d3ba9cebdce"></a>
+
+### sdkSetupFail()
+
+```cpp
+void com.herewhite.sdk.AbstractCommonCallbacks.sdkSetupFail(SDKError error)
+```
+
+SDK 初始化失败回调。
+
+##### `自从`
+
+2.9.14
+
+如果 SDK 初始化失败，调用加入实时房间或回放房间时会处于一直无响应状态，需要重新初始化 SDK。 SDK 初始化失败可能由以下原因导致：
+
+- 初始化 SDK 时候，网络异常，导致获取配置信息失败。
+- 传入了不合法的 App Identifier。
+
+实现了 [com.herewhite.sdk.CommonCallback](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a0a988489c8559923f178eef3ba322704).

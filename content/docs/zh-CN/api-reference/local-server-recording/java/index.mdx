@@ -1,0 +1,55 @@
+---
+title: "Agora Recording Java API Reference 文档"
+description: "Agora Recording Java API Reference 文档 API reference."
+---
+<a id="md_mainpage"></a>
+
+Java 的 API 是对 C++ 的 sample code 通过 jni 做的二次封装，因此和 C++ 提供的录制 API 在结构上稍有差异：Agora SDK （C++ 和 java 共有的 sample code）实现 C++ 录制 API 的接口，以及对 Callback 的处理，然后 jni 层封装 Agora SDK，最后通过 jni proxy 层提供 Native 的 Java 接口和类。
+
+- RecordingSDK 接口类包含应用程序调用的主要方法。
+- RecordingEventHandler 接口类用于向应用程序发送回调通知。
+
+| 方法 | 描述 |
+| --- | --- |
+| [createChannel](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ae55bfee56ef78d93993e0d04d7b1402b) | 创建并加入频道。 |
+| [createChannelWithUserAccount](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a38dc626a437d251be0d47a546c4cd29f) | 通过 User Account 创建并加入频道。 |
+| [getUidByUserAccount](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#aa8ae6f43af622778973a662b6fb8c53f) | 通过 User Account 获取 UID。 |
+| [getUserAccountByUid](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a487eb008c5d17a7a1ff9f4204d5b4a53) | 通过 UID 获取 User Account。 |
+| [setVideoMixingLayout](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a5834d23933d66ff7a5555b0de22c4313) | 设置视频合流布局。 |
+| [updateWatermarkConfigs](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a88eb63ddbae307480770c4376444d473) | 添加、更新或删除水印设置。 |
+| [updateSubscribeVideoUids](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ad666136ad88d9720adf9c4756edd7764) | 只录制指定 UID 的视频。 |
+| [updateSubscribeAudioUids](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a8da971dafb0058d6bafdc6449608c503) | 只录制指定 UID 的音频。 |
+| [leaveChannel](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a498f6797e2d90999110e04af9c5ea5e1) | 退出频道。 |
+| [getProperties](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a10322f19fa23c3a9d83b656e99220cb0) | 获取录制属性。 |
+| [startService](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#adf5f07d0092f3532de708c45c1ee813a) | 手动模式下开始录制。 |
+| [stopService](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a2008d6e1c37bc969669ffdc6575b2ba8) | 手动模式下暂停录制。 |
+| [setUserBackground](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#ae82325935aca8da456dbe2969c7a5cb8) | 设置指定 UID 用户的背景图片。 |
+| [setLogLevel](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a68badbea723a48c7ea40162d03243e8e) | 设置 log 过滤等级。 |
+
+| 回调 | 描述 |
+| --- | --- |
+| [onWarning](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a7a563e37bcdffdc0a611e89da218836f) | 发生警告回调。 |
+| [onError](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ab6562c4957b4db231fb538aa2f43b9d6) | 发生错误回调。 |
+| [onConnectionLost](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a7ce0f7b40d2a6dded70ef323751910ca) | 网络连接丢失回调。 |
+| [onConnectionInterrupted](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a31d0cfee3f57d8851457276b70ae5b63) | 网络连接中断回调。 |
+| [onConnectionStateChanged](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ab673b3a08e3134631af1c3e7209000e3) | 网络连接状态已改变回调。 |
+| [onJoinChannelSuccess](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a493b31ae39de3060a852f5e93b260eb4) | 录制端加入频道回调。 |
+| [onLocalUserRegistered](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a508670ebca9c30b673a962a23137a6a6) | 本地用户成功注册 User Account 回调。 |
+| [onUserInfoUpdated](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a218c435fe91344c143bf109afb844e3d) | 用户信息已更新回调。 |
+| [onRejoinChannelSuccess](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ad1e4e6b15ebb5a4fcd4ad2044fd2123d) | 重新加入频道回调。 |
+| [onLeaveChannel](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a197e834c8147b89415c0d34ad2630615) | 录制端离开频道回调。 |
+| [onUserJoined](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a873e9e611135f0db276d67a3d3f8b8c6) | 其他用户加入当前频道回调。 |
+| [onUserOffline](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a6df6225e70e38920ae6072cedcdc60b6) | 其他用户离开当前频道回调。 |
+| [audioFrameReceived](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a9a99eb2936c493fc7bb5626d5da27fdc) | 收到原始音频数据回调。 |
+| [videoFrameReceived](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ae2e1e70d70f12bddf1ff01e255c0d800) | 收到视频数据回调。 |
+| [onAudioVolumeIndication](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a5c27a357d938c5d72482a80612574b1b) | 提示频道内谁正在说话及说话者音量回调。 |
+| [onActiveSpeaker](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#af8e43e2c55a53bb09b0137e800132c0f) | 监测到活跃用户回调。 |
+| [onFirstRemoteAudioFrame](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a9fc38c0068b5d10abc9acadea36c6f7b) | 已接收远端音频首帧回调。 |
+| [onFirstRemoteVideoDecoded](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a8e52cde6096aa5dcfe527aa9eb3f8ced) | 已完成远端视频首帧解码回调。 |
+| [onReceivingStreamStatusChanged](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a82809f42c9a3acafe93471be82a70d35) | 流状态变化回调。 |
+| [onRemoteAudioStreamStateChanged](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ad0a0dde5cad8c9bad7d5896cf242c188) | 远端用户音频流状态改变回调。 |
+| [onRemoteVideoStreamStateChanged](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ab37521764aa117678792b2059cd9b572) | 远端用户视频流状态改变回调。 |
+| [onRemoteVideoStats](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a08e74df3eb8e50d6eea1dc184bd89891) | 远端视频流统计信息回调。 |
+| [onRemoteAudioStats](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a23b6982a342835a273731663db6fb6b7) | 远端音频流统计信息回调。 |
+| [onRecordingStats](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a85d77169268158aa440da2bbf7ed9660) | 录制统计信息回调。 |
+| [recordingPathCallBack](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#ad02e649b29b195bfb52a5862b6d460f2) | 获取录制文件所在目录回调。 |
