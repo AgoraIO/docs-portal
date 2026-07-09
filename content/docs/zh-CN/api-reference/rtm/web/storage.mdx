@@ -1,0 +1,938 @@
+---
+title: "存储"
+---
+
+RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据。
+
+## setChannelMetadata
+
+### 接口描述
+
+`setChannelMetadata` 方法可以为频道（Message Channel 或 Stream Channel）设置 Channel Metadata。一个频道只能有一组 Metadata，但每组 Metadata 可以有一个或多个 Metadata Item。如果多次调用该方法，SDK 会依次检索 Metadata Item 的 `key` 值，并按如下规则处理：
+
+- 如果设置的 Metadata Item `key` 值不同，则会根据调用顺序依次增加。
+- 如果设置的 Metadata Item `key` 值相同，则最后一次设置的 Metadata Item 的 `value` 会覆盖之前的值。
+
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
+
+Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `options` 中的 `majorRevision` 属性开启整组 Channel Metadata 的版本号校验。
+- 通过 `data` 中单个 Metadata Item 的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+设置 Channel Metadata 或 Metadata Item 时，配合版本属性可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则该值会被最新值覆盖；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会创建该值。
+- 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；否则 SDK 会返回错误码。
+
+### 接口方法
+
+你可以通过以下方式调用 `setChannelMetadata` 方法：
+
+```javascript
+rtm.storage.setChannelMetadata(
+    channelName: string,
+    channelType: string,
+    data: Array<object>,
+    options?: object
+): Promise<SetChannelMetadataResponse>;
+```
+
+|     参数      |      类型       | 是否必填 | 默认值 | 描述                     |
+| ---------- | ------------ | ----- | --- | -------------- |
+| `channelName` |     string      |   必填   |   -    | 频道名称。               |
+| `channelType` |     string      |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/web/enumv#channeltype)。     |
+|    `data`     | Array\<object\> |   必填   |   -    | Metadata Item 数组。Metadata Item 是一个 JSON Object，包含预定义属性。该 object 中不支持设置预定义之外的属性。 |
+|   `options`   |     object      |   选填   |   -    | Channel Metadata 配置选项。           |
+
+`data`  包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | string | 必填 | - | Metadata Item 的 `key`。 |
+| `value` | string | 选填 | 空字符串 `''` | Metadata Item 的 `value`。 |
+| `revision` | number | 选填 | `-1` | <Slot name="storage-javascript-html-0-3-4" /> |
+
+<Slot for="storage-javascript-html-0-3-4">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      - `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`options` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `majorRevision` | number | 选填 | `-1` | <Slot name="storage-javascript-html-1-1-4" /> |
+| `lockName` | string | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
+| `addTimeStamp` | boolean | 选填 | `false` | 是否记录编辑的时间戳。 |
+| `addUserId` | boolean | 选填 | `false` | 是否记录编辑者的用户 ID。 |
+
+<Slot for="storage-javascript-html-1-1-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+### 接口方法
+
+```javascript
+const data = [
+    {
+        key : "Apple",
+        value : "100"
+        revision : 174298200
+    },
+    {
+        key : "Banana",
+        value : "200",
+        revision : 174298100
+    }
+];
+const options = {
+    majorRevision : 174298270,
+    lockName: "lockName",
+    addTimeStamp : true,
+    addUserId : true
+};
+try {
+    const result = await rtm.storage.setChannelMetadata( "channel_name", "MESSAGE", data, options );
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `SetChannelMetadataResponse` 类型数据：
+
+```javascript
+type SetChannelMetadataResponse = {
+    timestamp: number,              // 预留字段
+    channelName : string,           // 频道名称
+    channelType : string,           // 频道类型
+    totalCount : number              // Metadata Item 个数
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## getChannelMetadata
+
+### 接口描述
+
+`getChannelMetadata` 方法可以获取指定频道的 Metadata。
+
+### 接口方法
+
+你可以通过以下方式调用 `getChannelMetadata` 方法：
+
+```javascript
+rtm.storage.getChannelMetadata(
+    channelName: string,
+    channelType: string
+): Promise<GetChannelMetadataResponse>;
+```
+
+|     参数      |  类型  | 是否必填 | 默认值 | 描述        |
+| ---------- | --- | ----- | --- | ----- |
+| `channelName` | string |   必填   |   -    | 频道名称。  |
+| `channelType` | string |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/web/enumv#channeltype)。 |
+
+### 接口方法
+
+```javascript
+try {
+    const result = await rtm.storage.getChannelMetadata("channel_name", "MESSAGE");
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `GetChannelMetadataResponse` 类型数据：
+
+```javascript
+type GetChannelMetadataResponse = {
+    timestamp: number,       // 预留字段
+    channelName : string,    // 频道名称
+    channelType : string,    // 频道类型
+    totalCount : number,     // Metadata Item 个数
+    majorRevision : number,  // 版本号
+    metadata : Record<string, MetaDataDetail>       // 包含 Metadata Item 数据的 JSON Object
+}
+```
+
+其中  `MetaDataDetail` 包含以下属性：
+
+```javascript
+type MetaDataDetail = {
+    value: string,           // Metadata Item 的值
+    revision : number,       // Metadata Item 的版本号
+    updated : string,        // 最后一次更新时间戳
+    authorUid : string,      // 最后一次编辑者的用户 ID
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## removeChannelMetadata
+
+### 接口描述
+
+`removeChannelMetadata` 方法可以删除 Channel Metadata 或 Channel Metadata Item 数组。
+
+删除时，配合版本属性可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会删除该值；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+- 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后删除对应值；否则 SDK 会返回错误码。
+
+成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeChannelMetadata` 方法：
+
+```javascript
+rtm.storage.removeChannelMetadata(
+    channelName: string,
+    channelType: string,
+    options?: object
+): Promise<RemoveChannelMetadataResponse>;
+```
+
+|     参数      |  类型  | 是否必填 | 默认值 | 描述        |
+| ---------- | --- | ----- | --- | ----- |
+| `channelName` | string |   必填   |   -    | 频道名称。  |
+| `channelType` | string |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/web/enumv#channeltype)。 |
+|   `options`   | object |   选填   |   -    | Channel Metadata 配置选项。       |
+
+`options` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `data` | Array\<object\> | 必填 | - | Metadata Item 数组。Metadata Item 是一个 JSON 格式的 object，包含预定义属性。该 object 中不支持设置预定义之外的属性。 |
+| `majorRevision` | number | 选填 | `-1` | <Slot name="storage-javascript-html-2-2-4" /> |
+| `lockName` | string | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
+| `addTimeStamp` | boolean | 选填 | `false` | 是否记录编辑的时间戳。 |
+| `addUserId` | boolean | 选填 | `false` | 是否记录编辑者的用户 ID。 |
+
+<Slot for="storage-javascript-html-2-2-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`data` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | string | 必填 | - | 名称。 |
+| `value` | string | 选填 | 空字符串 `''` | 值。 |
+| `revision` | number | 选填 | `-1` | <Slot name="storage-javascript-html-3-3-4" /> |
+
+<Slot for="storage-javascript-html-3-3-4">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      - `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+### 接口方法
+
+```javascript
+const data = [
+    {
+        key : "Apple",
+        revision : 174298200
+    }
+];
+const options = {
+    data : data,
+    majorRevision : 174298270,
+};
+try {
+    const result = await rtm.storage.removeChannelMetadata("channel_name", "MESSAGE", options);
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `RemoveChannelMetadataResponse` 类型数据：
+
+```javascript
+type RemoveChannelMetadataResponse = {
+    timestamp: number,              // 预留字段
+    channelName : string,           // 频道名称
+    channelType : string,           // 频道类型
+    totalCount : number              // Metadata Item 个数
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## updateChannelMetadata
+
+### 接口描述
+
+`updateChannelMetadata` 方法可以更新已有的 Channel Metadata。每次调用该方法，你可以更新一个 Channel Metadata，也可以更新一个或多个 Channel Metadata Item 数组。
+
+成功更新后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
+
+:::info[信息]
+该方法不能对不存在的 Metadata Item 进行操作。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `updateChannelMetadata` 方法：
+
+```javascript
+rtm.storage.updateChannelMetadata(
+    channelName: string,
+    channelType: string,
+    data: Array<object>,
+    options?: object
+): Promise<UpdateChannelMetadataResponse>;
+```
+
+|     参数      |      类型       | 是否必填 | 默认值 | 描述                     |
+| ---------- | ------------ | ----- | --- | -------------- |
+| `channelName` |     string      |   必填   |   -    | 频道名称。               |
+| `channelType` |     string      |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/web/enumv#channeltype)。     |
+|    `data`     | Array\<object\> |   必填   |   -    | Metadata Item 数组。Metadata Item 是一个 JSON 格式的 object，包含预定义属性。该 object 中不支持设置预定义之外的属性。 |
+|   `options`   |     object      |   选填   |   -    | Channel Metadata 配置选项。           |
+
+`data` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | string | 必填 | - | Metadata Item 的 `key`。 |
+| `value` | string | 选填 | 空字符串 `''` | Metadata Item 的 `value`。 |
+| `revision` | number | 选填 | `-1` | <Slot name="storage-javascript-html-4-3-4" /> |
+
+<Slot for="storage-javascript-html-4-3-4">
+
+- `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`options` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `majorRevision` | number | 选填 | `-1` | <Slot name="storage-javascript-html-5-1-4" /> |
+| `lockName` | string | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
+| `addTimeStamp` | boolean | 选填 | `false` | 是否记录编辑的时间戳。 |
+| `addUserId` | boolean | 选填 | `false` | 是否记录编辑者的用户 ID。 |
+
+<Slot for="storage-javascript-html-5-1-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+### 基本用法
+
+```javascript
+const data = [
+    {
+        key : "Apple",
+        value : "120",
+        revision : 174298200
+    },
+    {
+        key : "Banana",
+        value : "220",
+        revision : 174298100
+    }
+];
+const options = {
+    majorRevision : 174298270,
+    addTimeStamp : true,
+    addUserId : true
+};
+try {
+    const result = await rtm.storage.updateChannelMetadata("channel_name", "MESSAGE", data, options);
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `UpdateChannelMetadataResponse` 类型数据：
+
+```javascript
+type UpdateChannelMetadataResponse = {
+    timestamp: number,              // 预留字段
+    channelName : string,           // 频道名称
+    channelType : string,           // 频道类型
+    totalCount : number              // Metadata Item 个数
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## setUserMetadata
+
+### 接口描述
+
+`setUserMetadata` 方法可以设置 User Metadata。如果多次调用该方法时，SDK 会依次检索 User Metadata Item 的 `key` 值，并按如下规则处理：
+
+- 如果设置的 Metadata Item key 值不同，则会根据调用顺序依次增加。
+- 如果设置的 Metadata Item key 值相同，则最后一次设置的 Metadata 的 value 会覆盖之前的值。
+
+成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
+
+User Metadata 同时也引进了版本控制逻辑 CAS，该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `options` 中的 `majorRevision` 属性开启整组 User Metadata 的版本号校验。
+- 通过 `data` 中的 `revision` 属性开启每个 Metadata Item 数组的版本号校验。
+
+设置 User Metadata 时，配合版本属性可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本属性默认为 `-1` 时，本次调用不开启 CAS 验证。如果 User Metadata 或 Metadata Item 已存在，则该值会被最新值覆盖；如果 User Metadata 或 Metadata Item 不存在，则会创建该值。
+- 版本属性为正整数时，本次调用开启 CAS 验证。如果 User Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；否则 SDK 会返回错误码。
+
+### 接口方法
+
+你可以通过以下方式调用 `setUserMetadata` 方法：
+
+```javascript
+rtm.storage.setUserMetadata(
+    data: Array<object>,
+    options?: object
+): Promise<SetUserMetadataResponse>;
+```
+
+|   参数    |      类型       | 是否必填 | 默认值 | 描述      |
+| ------ | ------------ | ----- | --- | ----- |
+|  `data`   | Array\<object\> |   必填   |   -    | Metadata Item 数组。Metadata Item 是一个 JSON 格式的 object，包含预定义属性。该 object 中不支持设置预定义之外的属性。 |
+| `options` |     object      |   选填   |   -    |  Metadata 配置选项。      |
+
+`data` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | string | 必填 | - | Metadata Item 的 `key`。 |
+| `value` | string | 选填 | 空字符串 `''` | Metadata Item 的 `value`。 |
+| `revision` | number | 选填 | `-1` | <Slot name="storage-javascript-html-6-3-4" /> |
+
+<Slot for="storage-javascript-html-6-3-4">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      - `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`options` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | string | 选填 | 当前用户的 `userId` | 用户 ID。 |
+| `majorRevision` | number | 选填 | `-1` | <Slot name="storage-javascript-html-7-2-4" /> |
+| `lockName` | string | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
+| `addTimeStamp` | boolean | 选填 | `false` | 是否记录编辑的时间戳。 |
+| `addUserId` | boolean | 选填 | `false` | 是否记录编辑者的用户 ID。 |
+
+<Slot for="storage-javascript-html-7-2-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+### 基本用法
+
+```javascript
+const data = [
+    {
+        key : "Name",
+        value : "Tony"
+        revision : 174298200
+    },
+    {
+        key : "Mute",
+        value : "true",
+        revision : 174298100
+    }
+];
+const options = {
+    userId : "Tony",
+    majorRevision : 174298270,
+    addTimeStamp : true,
+    addUserId : true
+};
+try {
+    const result = await rtm.storage.setUserMetadata(data, options);
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `SetUserMetadataResponse` 类型数据：
+
+```javascript
+type SetUserMetadataResponse = {
+    timestamp: number,              // 预留字段
+    userId : string,                // 用户 ID
+    totalCount : number              // Metadata Item 个数
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## getUserMetadata
+
+### 接口描述
+
+`getUserMetadata` 方法可以获取指定用户的 Metadata 和 User Metadata Item。
+
+### 接口方法
+
+你可以通过以下方式调用 `getUserMetadata` 方法：
+
+```javascript
+rtm.storage.getUserMetadata(options?: object): Promise<GetUserMetadataResponse>;
+```
+
+|   参数    |      类型       | 是否必填 | 默认值 | 描述      |
+| ------ | ------------ | ----- | --- | ----- |
+| `options` |     object      |   选填   |   -    |  Metadata 配置选项。      |
+
+`options` 包含以下属性：
+
+|   属性   |  类型  | 是否必填 |       默认值        | 描述    |
+| ----- | --- | ----- | ---------------- | ------- |
+| `userId` | string |   选填   | 当前用户的 `userId` | 用户 ID。 |
+
+### 基本用法
+
+```javascript
+try {
+    const result = await rtm.storage.getUserMetadata({ userId: "Tony" });
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `GetUserMetadataResponse` 类型数据：
+
+```javascript
+type GetUserMetadataResponse = {
+    timestamp: number,       // 预留字段
+    userId : string,         // 用户 ID
+    totalCount : number,     // Metadata Item 个数
+    majorRevision : number,  // 版本号
+    metadata : Record<string, MetaDataDetail>       // 包含 Metadata Item 数据的 JSON Object
+}
+```
+
+其中  `MetaDataDetail` 包含以下属性：
+
+```javascript
+type MetaDataDetail = {
+    value: string,           // Metadata Item 的值
+    revision : number,       // Metadata Item 的版本号
+    updated : string,        // 最后一次更新时间戳
+    authorUid : string,      // 最后一次编辑者的用户 ID
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## removeUserMetadata
+
+### 接口描述
+
+`removeUserMetadata` 方法可以删除 User Metadata 或某几个 User Metadata Item。
+
+成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeUserMetadata` 方法：
+
+```javascript
+rtm.storage.removeUserMetadata(
+    options?: object
+): Promise<RemoveUserMetadataResponse>;
+```
+
+|   参数    |  类型  | 是否必填 | 默认值 | 描述         |
+| ------ | --- | ----- | --- | ---------- |
+| `options` | object |   选填   |   -    |  Metadata 配置选项。如果不填写该参数，则删除当前用户的所有用户属性。|
+
+`options` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | string | 选填 | 当前用户的 `userId` | 用户 ID。 |
+| `data` | Array\<object\> | 选填 | - | Metadata Item 数组。Metadata Item 是一个 JSON 格式的 object，包含预定义属性。该 object 中不支持设置预定义之外的属性。如果不填写该参数，则删除全部 Metadata。 |
+| `majorRevision` | number | 选填 | `-1` | <Slot name="storage-javascript-html-8-3-4" /> |
+| `lockName` | string | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
+| `addTimeStamp` | boolean | 选填 | `false` | 是否记录编辑的时间戳。 |
+| `addUserId` | boolean | 选填 | `false` | 是否记录编辑者的用户 ID。 |
+
+<Slot for="storage-javascript-html-8-3-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`data` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | string | 必填 | - | Metadata Item 的 `key`。 |
+| `value` | string | 选填 | 空字符串 `''` | Metadata Item 的 `value`。 |
+| `revision` | number | 选填 | `-1` | <Slot name="storage-javascript-html-9-3-4" /> |
+
+<Slot for="storage-javascript-html-9-3-4">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      - `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+### 基本用法
+
+```javascript
+const data = [
+    {
+        key : "Mute",
+        revision : 174298100
+    }
+];
+const options = {
+    userId: "Tony",
+    data : data,
+    majorRevision : 174298270
+};
+try {
+    const result = await rtm.storage.removeUserMetadata(options);
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `RemoveUserMetadataResponse` 类型数据：
+
+```javascript
+type RemoveUserMetadataResponse = {
+    timestamp: number,              // 预留字段
+    userId : string,                // 用户 ID
+    totalCount : number              // Metadata Item 个数
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## updateUserMetadata
+
+### 接口描述
+
+`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
+
+:::info[信息]
+该方法不能对不存在的 Metadata Item 进行操作。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `updateUserMetadata` 方法：
+
+```javascript
+rtm.storage.updateUserMetadata(
+    data: Array<object>,
+    options?: object
+): Promise<UpdateUserMetadataResponse>;
+```
+
+|   参数    |      类型       | 是否必填 | 默认值 | 描述      |
+| ------ | ------------ | ----- | --- | ---- |
+|  `data`   | Array\<object\> |   必填   |   -    |  Metadata Item 数组。Metadata Item 是一个 JSON 格式的 object，包含预定义属性。该 object 中不支持设置预定义之外的属性。 |
+| `options` |     object      |   选填   |   -    |  Metadata 配置选项。      |
+
+`data` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | string | 必填 | - | 名称。 |
+| `value` | string | 选填 | - | 值。 |
+| `revision` | number | 选填 | `-1` | <Slot name="storage-javascript-html-10-3-4" /> |
+
+<Slot for="storage-javascript-html-10-3-4">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      - `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`options` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | string | 选填 | 当前用户的 `userId` | 用户 ID。 |
+| `majorRevision` | number | 选填 | `-1` | <Slot name="storage-javascript-html-11-2-4" /> |
+| `lockName` | string | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
+| `addTimeStamp` | boolean | 选填 | `false` | 是否记录编辑的时间戳。 |
+| `addUserId` | boolean | 选填 | `false` | 是否记录编辑者的用户 ID。 |
+
+<Slot for="storage-javascript-html-11-2-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+### 基本用法
+
+```javascript
+const data = [
+    {
+        key : "Mute",
+        value : "false",
+        revision : 174298100
+    }
+];
+const options = {
+    userId : "Tony",
+    majorRevision : 174298270,
+    addTimeStamp : true,
+    addUserId : true
+};
+try {
+    const result = await rtm.storage.updateUserMetadata(data, options);
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `UpdateUserMetadataResponse` 类型数据：
+
+```javascript
+type UpdateUserMetadataResponse = {
+    timestamp: number,              // 预留字段
+    userId : string,                // 用户 ID
+    totalCount : number              // Metadata Item 个数
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## subscribeUserMetadata
+
+### 接口描述
+
+`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `subscribeUserMetadata` 方法：
+
+```javascript
+rtm.storage.subscribeUserMetadata(userId: string): Promise<SubscribeUserMetaResponse>;
+```
+
+|   参数   |  类型  | 是否必填 | 默认值 | 描述      |
+| ----- | --- | ----- | --- | --------- |
+| `userId` | string |   必填   |   -    | 用户 ID。 |
+
+### 基本用法
+
+```javascript
+try {
+    const result = await rtm.storage.subscribeUserMetadata("Tony");
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `SubscribeUserMetaResponse` 类型数据：
+
+```javascript
+type SubscribeUserMetaResponse = {
+    timestamp: number,              // 预留字段
+    userId : string,                // 用户 ID
+}
+```
+
+## unsubscribeUserMetadata
+
+### 接口描述
+
+如果你不需要接收某个用户 User Metadata 的变更通知，调用 `unsubscribeUserMetadata` 方法取消订阅。
+
+### 接口方法
+
+你可以通过以下方式调用 `unsubscribeUserMetadata` 方法：
+
+```javascript
+rtm.storage.unsubscribeUserMetadata(userId: string): Promise<UnsubscribeUserMetaResponse>;
+```
+
+|   参数   |  类型  | 是否必填 | 默认值 | 描述      |
+| ----- | --- | ----- | --- | --------- |
+| `userId` | string |   必填   |   -    | 用户 ID。 |
+
+### 基本用法
+
+```javascript
+try {
+    const result = await rtm.storage.unsubscribeUserMetadata("Tony");
+    console.log("result");
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `UnsubscribeUserMetaResponse` 类型数据：
+
+```javascript
+type UnsubscribeUserMetaResponse = {
+    timestamp: number,              // 预留字段
+    userId : string,                // 用户 ID
+}
+```

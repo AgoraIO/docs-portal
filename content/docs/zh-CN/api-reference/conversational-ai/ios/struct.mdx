@@ -1,0 +1,326 @@
+---
+title: "结构体"
+---
+
+<a id="chatmessage"></a>
+## ChatMessage
+
+```swift
+@objc public protocol ChatMessage {
+    var messageType: ChatMessageType { get }
+}
+```
+
+定义不同类型聊天消息的通用接口。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `messageType` | `ChatMessageType` | 消息类型。详见 [`ChatMessageType`](/zh-CN/api-reference/conversational-ai/ios/enum#chatmessagetype)。 |
+
+<a id="imagemessage"></a>
+## ImageMessage
+
+```swift
+@objc public class ImageMessage: NSObject, ChatMessage {
+@objc public let messageType: ChatMessageType = .image
+@objc public let uuid: String
+@objc public let url: String?
+}
+```
+
+用于向智能体发送图像内容的消息。
+
+图片采用 URL 形式，即指向图像文件的 HTTP/HTTPS 链接（推荐用于大图）。使用示例：`ImageMessage(uuid = "img_123", url = "https://example.com/image.jpg")`。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `messageType` | `ChatMessageType` | 消息类型。详见 [`ChatMessageType`](/zh-CN/api-reference/conversational-ai/ios/enum#chatmessagetype)。 |
+| `uuid` | `String` | 图像消息的唯一标识符，代理将使用该 `uuid` 来识别图像。 |
+| `url` | `String?` | 指向图像文件的 HTTP/HTTPS 链接，代理将使用该链接下载并识别图像。 |
+
+<a id="messagereceipt"></a>
+## MessageReceipt
+
+```swift
+@objc public class MessageReceipt: NSObject {
+    @objc public let moduleType: ModuleType
+    @objc public let messageType: ChatMessageType
+    @objc public let message: String
+    @objc public let turnId: Int
+}
+```
+
+用于追踪消息处理状态和元数据的 [`MessageReceipt`](/zh-CN/api-reference/conversational-ai/ios/struct#messagereceipt) 模型。
+
+包含模块类型、消息类型、图像信息和会话轮次 ID。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `moduleType` | `ModuleType` | 模块类型。详见 [`ModuleType`](/zh-CN/api-reference/conversational-ai/ios/enum#moduletype)。 |
+| `messageType` | `ChatMessageType` | 消息类型。详见 [`ChatMessageType`](/zh-CN/api-reference/conversational-ai/ios/enum#chatmessagetype)。 |
+| `message` | `String` | 图像信息。 |
+| `turnId` | `Int` | 会话轮次 ID，用于标识特定的会话轮次。 |
+
+<a id="messageerror"></a>
+## MessageError
+
+```swift
+@objc public class MessageError: NSObject {
+@objc public let type: ChatMessageType
+@objc public let code: Int
+@objc public let message: String
+@objc public let timestamp: TimeInterval
+@objc public init(type: ChatMessageType, code: Int, message: String, timestamp: TimeInterval)
+}
+```
+
+处理和上报消息错误信息的数据类。
+
+包含错误类型、错误码、错误描述和时间戳。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `type` | `ChatMessageType` | 消息错误类型。详见 [`ChatMessageType`](/zh-CN/api-reference/conversational-ai/ios/enum#chatmessagetype)。 |
+| `code` | `Int` | 用于标识特定错误条件的错误码。 |
+| `message` | `String` | 错误描述信息，提供详细错误说明，通常为包含资源信息的 JSON 字符串。 |
+| `timestamp` | `TimeInterval` | 错误发生的时间戳（自 1970 年 1 月 1 日 UTC 起的毫秒数）。 |
+
+<a id="textmessage"></a>
+## TextMessage
+
+```swift
+@objc public class TextMessage: NSObject, ChatMessage {
+    @objc public let messageType: ChatMessageType = .text
+    @objc public let priority: Priority
+    @objc public let responseInterruptable: Bool
+    @objc public let text: String?
+}
+```
+
+用于向 智能体代理发送自然语言文本内容的 [`TextMessage`](/zh-CN/api-reference/conversational-ai/ios/struct#textmessage) 对象。
+
+支持优先级控制和响应可中断设置，实现对 AI 如何处理和响应文本输入的精细化控制。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `messageType` | `ChatMessageType` | 消息类型。详见 [`ChatMessageType`](/zh-CN/api-reference/conversational-ai/ios/enum#chatmessagetype)。 |
+| `priority` | `Priority` | 消息处理优先级，详见 [`Priority`](/zh-CN/api-reference/conversational-ai/ios/enum#priority)。 |
+| `responseInterruptable` | `Bool` | <Slot name="struct-ios-html-4-3-2" /> |
+| `text` | `String?` | 消息的文本内容。 |
+
+<Slot for="struct-ios-html-4-3-2">
+
+该消息的响应是否可以被更高优先级的消息中断：
+
+    - `YES`：（默认）响应可被更高优先级的消息中断。
+    - `NO`：响应不可被中断。
+
+</Slot>
+
+<a id="statechangeevent"></a>
+## StateChangeEvent
+
+```swift
+@objc public class StateChangeEvent: NSObject {
+@objc public let state: AgentState
+@objc public let turnId: Int
+@objc public let timestamp: TimeInterval
+@objc public let reason: String
+@objc public init(state: AgentState, turnId: Int, timestamp: TimeInterval, reason: String)
+public override var description: String {
+return "StateChangeEvent(state: \(state), turnId: \(turnId), timestamp: \(timestamp), reason: \(reason))"
+}
+}
+```
+
+[`StateChangeEvent`](/zh-CN/api-reference/conversational-ai/ios/struct#statechangeevent) 表示智能体状态变化事件，包含完整状态信息和时间戳。
+
+用于追踪会话流程并更新用户界面状态指示器。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `state` | `AgentState` | 当前智能体状态。详见 [`AgentState`](/zh-CN/api-reference/conversational-ai/ios/enum#agentstate)。 |
+| `turnId` | `Int` | 会话轮次 ID，用于标识特定的会话轮次。 |
+| `timestamp` | `TimeInterval` | 事件发生的时间戳（自 1970 年 1 月 1 日 UTC 起的毫秒数）。 |
+| `reason` | `String` | 状态变化的原因。 |
+
+<a id="interruptevent"></a>
+## InterruptEvent
+
+```swift
+@objc public class InterruptEvent: NSObject {
+@objc public let turnId: Int
+@objc public let timestamp: TimeInterval
+@objc public init(turnId: Int, timestamp: TimeInterval)
+public override var description: String {
+return "InterruptEvent(turnId: \(turnId), timestamp: \(timestamp))"
+}
+}
+```
+
+表示 [`InterruptEvent`](/zh-CN/api-reference/conversational-ai/ios/struct#interruptevent) 会话中断事件。
+
+通常在用户主动打断 AI 发言或系统检测到高优先级消息时触发，用于记录中断行为并执行相应处理。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `turnId` | `Int` | 被中断的会话轮次 ID。 |
+| `timestamp` | `TimeInterval` | 中断事件发生的时间戳（自 1970 年 1 月 1 日 UTC 起的毫秒数）。 |
+
+<a id="metric"></a>
+## Metric
+
+```swift
+@objc public class Metric: NSObject {
+    @objc public let type: ModuleType
+    @objc public let name: String
+    @objc public let value: Double
+    @objc public let timestamp: TimeInterval
+    @objc public init(type: ModuleType, name: String, value: Double, timestamp: TimeInterval)
+    public override var description: String {
+        return "Metric(type: \(type.stringValue), name: \(name), value: \(value), timestamp: \(timestamp))"
+    }
+}
+```
+
+[`Metric`](/zh-CN/api-reference/conversational-ai/ios/struct#metric) 用于记录和传输系统性能数据。
+
+例如 LLM 推理延迟、TTS 合成延迟等。该数据可用于性能监控、系统优化和用户体验改进。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `type` | `ModuleType` | 指标类型。详见 [`ModuleType`](/zh-CN/api-reference/conversational-ai/ios/enum#moduletype)。 |
+| `name` | `String` | 具体性能项的指标名称。 |
+| `value` | `Double` | 指标值，通常为延迟时间（毫秒）或其他定量指标。 |
+| `timestamp` | `TimeInterval` | 指标记录的时间戳（自 1970 年 1 月 1 日 UTC 起的毫秒数）。 |
+
+<a id="moduleerror"></a>
+## ModuleError
+
+```swift
+@objc public class ModuleError: NSObject {
+@objc public let type: ModuleType
+@objc public let code: Int
+@objc public let message: String
+@objc public let timestamp: TimeInterval
+@objc public init(type: ModuleType, code: Int, message: String, timestamp: TimeInterval)
+public override var description: String {
+return "ModuleError(type: \(type.stringValue), code: \(code), message: \(message), timestamp: \(timestamp))"
+}
+}
+```
+
+[`ModuleError`](/zh-CN/api-reference/conversational-ai/ios/struct#moduleerror) 用于处理和上报 AI 模块相关错误信息。
+
+包含错误类型、错误码、错误描述和时间戳，便于错误监控、日志记录和故障排查。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `type` | `ModuleType` | 错误类型。详见 [`ModuleType`](/zh-CN/api-reference/conversational-ai/ios/enum#moduletype)。 |
+| `code` | `Int` | 用于标识特定错误条件的错误码。 |
+| `message` | `String` | 提供详细错误说明的错误描述信息。 |
+| `timestamp` | `TimeInterval` | 错误发生的时间戳（自 1970 年 1 月 1 日 UTC 起的毫秒数）。 |
+
+<a id="transcript"></a>
+## Transcript
+
+```swift
+@objc public class Transcript: NSObject {
+@objc public let turnId: Int
+@objc public let userId: String
+@objc public let text: String
+@objc public var status: TranscriptStatus
+@objc public var type: TranscriptType
+}
+```
+
+[`Transcript`](/zh-CN/api-reference/conversational-ai/ios/struct#transcript) 用于表示用户可见的转录消息。
+
+用于在用户界面层渲染转录内容的完整数据类。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `turnId` | `Int` | 会话轮次的唯一标识符。 |
+| `userId` | `String` | 与该转录关联的用户标识符。 |
+| `text` | `String` | 实际的转录文本内容。 |
+| `status` | `TranscriptStatus` | 转录的当前状态。详见 [`TranscriptStatus`](/zh-CN/api-reference/conversational-ai/ios/enum#transcriptstatus)。 |
+| `type` | `TranscriptType` | 转录的当前类型（代理或用户）。详见 [`TranscriptType`](/zh-CN/api-reference/conversational-ai/ios/enum#transcripttype)。 |
+
+<a id="conversationalaiapierror"></a>
+## ConversationalAIAPIError
+
+```swift
+@objc public class ConversationalAIAPIError: NSObject {
+@objc public let type: ConversationalAIAPIErrorType
+@objc public let code: Int
+@objc public let message: String
+@objc public init(type: ConversationalAIAPIErrorType, code: Int, message: String)
+public override var description: String {
+return "ConversationalAIAPIError(type: \(type), code: \(code), message: \(message))"
+}
+}
+```
+
+用于记录和传递错误信息的类。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `type` | `ConversationalAIAPIErrorType` | 错误类型。详见 [`ConversationalAIAPIErrorType`](/zh-CN/api-reference/conversational-ai/ios/enum#conversationalaiapierrortype)。 |
+| `code` | `Int` | 用于标识特定错误条件的错误码。 |
+| `message` | `String` | 提供详细错误说明的错误描述信息。 |
+
+<a id="conversationalaiapiconfig"></a>
+## ConversationalAIAPIConfig
+
+```swift
+@objc public class ConversationalAIAPIConfig: NSObject {
+@objc public weak var rtcEngine: AgoraRtcEngineKit?
+@objc public weak var rtmEngine: AgoraRtmClientKit?
+@objc public var renderMode: TranscriptRenderMode
+@objc public var enableLog: Bool
+}
+```
+
+`Conversational AI API` 的初始化配置类。
+
+包含初始化 `Conversational AI API` 所需的配置参数，包括用于音视频通信的 `rtcEngine`、用于消息通信的 `rtmEngine`，以及转写渲染模式设置。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `rtcEngine` | `AgoraRtcEngineKit?` | 用于音视频通信的引擎实例。详见 `AgoraRtcEngineKit`。 |
+| `rtmEngine` | `AgoraRtmClientKit?` | 用于实时消息通信的客户端实例。详见 `AgoraRtmClientKit`。 |
+| `renderMode` | `TranscriptRenderMode` | 转写渲染模式。详见 [`TranscriptRenderMode`](/zh-CN/api-reference/conversational-ai/ios/enum#transcriptrendermode)。 |
+| `enableLog` | `Bool` | <Slot name="struct-ios-html-11-4-2" /> |
+
+<Slot for="struct-ios-html-11-4-2">
+
+是否启用详细日志记录：
+
+    - `YES`：启用详细日志记录。
+    - `NO`：不启用日志记录（默认）。
+
+</Slot>
