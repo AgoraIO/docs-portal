@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { createStaticSeoManifest, injectStaticSeoHead } from './static-seo';
+import {
+  createStaticSeoHead,
+  createStaticSeoManifest,
+  getDocsOgImageUrl,
+  injectStaticSeoHead,
+} from './static-seo';
 
 describe('static SEO metadata', () => {
   it('creates page-specific crawler metadata from docs pages', () => {
@@ -23,7 +28,8 @@ describe('static SEO metadata', () => {
       {
         canonicalUrl: 'https://docs.example.com/en/introduction',
         description: 'Build with Agora.',
-        imageUrl: 'https://assets-docs.agora.io/og/docs.png',
+        imageUrl:
+          'https://assets-docs.agora.io/og/agora-docs-og-introduction.png',
         title: 'Introduction | Agora Docs',
         url: '/en/introduction',
       },
@@ -64,9 +70,48 @@ describe('static SEO metadata', () => {
       '<meta name="twitter:card" content="summary_large_image">',
     );
     expect(result).toContain(
-      '<meta property="og:image" content="https://assets-docs.agora.io/og/docs.png">',
+      '<meta property="og:image" content="https://assets-docs.agora.io/og/agora-docs-og-realtime-media.png">',
     );
     expect(result).not.toContain('Global description');
+  });
+
+  it('selects OG images by docs category with a fallback', () => {
+    expect(getDocsOgImageUrl('/en/ai/get-started/quickstart')).toBe(
+      'https://assets-docs.agora.io/og/agora-docs-og-voice-agent.png',
+    );
+    expect(getDocsOgImageUrl('/zh-CN/realtime-media/rtc/android')).toBe(
+      'https://assets-docs.agora.io/og/agora-docs-og-realtime-media.png',
+    );
+    expect(
+      getDocsOgImageUrl('/en/api-reference/api-ref/server-sdk/python'),
+    ).toBe('https://assets-docs.agora.io/og/agora-docs-og-reference.png');
+    expect(getDocsOgImageUrl('/en/unknown-section/page')).toBe(
+      'https://assets-docs.agora.io/og/agora-docs-og-overview.png',
+    );
+  });
+
+  it('uses the same category image for Open Graph and Twitter cards', () => {
+    const head = createStaticSeoHead({
+      title: 'Video calling',
+      url: '/en/realtime-media/video',
+    });
+    const ogImage = head.meta.find(
+      (entry) => 'property' in entry && entry.property === 'og:image',
+    );
+    const twitterImage = head.meta.find(
+      (entry) => 'name' in entry && entry.name === 'twitter:image',
+    );
+
+    expect(ogImage).toEqual({
+      property: 'og:image',
+      content:
+        'https://assets-docs.agora.io/og/agora-docs-og-realtime-media.png',
+    });
+    expect(twitterImage).toEqual({
+      name: 'twitter:image',
+      content:
+        'https://assets-docs.agora.io/og/agora-docs-og-realtime-media.png',
+    });
   });
 
   it('injects public docs URLs when no site URL env is configured', () => {
