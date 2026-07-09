@@ -18,6 +18,7 @@
     "types:check": "fumadocs-mdx && tsc --noEmit",
     "postinstall": "fumadocs-mdx",
     "openapi:sync": "node scripts/sync-openapi-assets.mjs",
+    "assets:upload": "node scripts/upload-doc-assets.mjs",
     "search:sync": "bun scripts/sync-algolia-search.mjs",
     "docs:links": "node scripts/audit-doc-links.mjs",
     "docs:links:strict": "node scripts/audit-doc-links.mjs --fail-on-invalid",
@@ -29,6 +30,7 @@
     "docs:lint:english": "node scripts/audit-english-doc-low-errors.mjs",
     "docs:migration-parity": "node scripts/audit-migration-parity.mjs",
     "docs:rendering-audit": "node scripts/audit-doc-rendering-patterns.mjs --out=docs/agents/reports/2026-06-25-legacy-rendering-pattern-audit",
+    "og:generate": "node scripts/generate-og-images.mjs",
     "lint": "biome check biome.json package.json source.config.ts tsconfig.json vite.config.ts src",
     "format": "biome format --write"
   },
