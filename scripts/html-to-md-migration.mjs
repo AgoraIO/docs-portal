@@ -1114,7 +1114,11 @@ function renderAnchor(
     sourceToRoute.currentSource,
     sourceToRoute,
   );
-  if (!routeSegments) return `[${label}](${href})`;
+  if (!routeSegments) {
+    return filePart.split('?')[0].endsWith('.html')
+      ? label
+      : `[${label}](${href})`;
+  }
 
   return `[${label}](${routeSegmentsToDocPath(routeSegments, targetBasePath)}${
     hashPart ? `#${hashPart}` : ''
