@@ -50,9 +50,9 @@ export function DocsSiteFooter({
 
           <div className="grid grid-cols-1 gap-7 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-4">
             <div className="flex flex-col gap-3">
-              <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--ink-1)]">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--ink-1)]">
                 {docsFooterContent.contact.title}
-              </h2>
+              </p>
               <p className="text-sm font-medium text-[color:var(--ink-2)]">
                 {docsFooterContent.contact.phone}
               </p>
@@ -71,9 +71,9 @@ export function DocsSiteFooter({
                 className="flex flex-col gap-3"
                 key={group.title}
               >
-                <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--ink-1)]">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--ink-1)]">
                   {group.title}
-                </h2>
+                </p>
                 <ul className="flex flex-col gap-2">
                   {group.links.map((link) => (
                     <li key={link.label}>
