@@ -1566,6 +1566,17 @@ function renderPage({
     });
     if (typedocPage) return typedocPage;
   }
+  if (lane?.id === SOURCE_TYPES.DOXYGEN_JAVADOC.id) {
+    const doxygenPage = renderDoxygenPage({
+      $,
+      currentSource,
+      pageDescriptionBySource,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    });
+    if (doxygenPage) return doxygenPage;
+  }
 
   const previousCurrentSource = sourceToRoute.currentSource;
   sourceToRoute.currentSource = currentSource;
@@ -1633,6 +1644,347 @@ function renderPage({
   const rendered = `${frontmatter.join('\n')}${sections.filter(Boolean).join('\n\n')}\n`;
   sourceToRoute.currentSource = previousCurrentSource;
   return rendered;
+}
+
+function renderDoxygenPage({
+  $,
+  currentSource,
+  pageTitleBySource,
+  pageDescriptionBySource,
+  sourceToRoute,
+  targetBasePath,
+}) {
+  const contents = $('.contents').first();
+  if (
+    contents.length === 0 ||
+    contents.find('h2.memtitle, .memitem .memproto, table.memberdecls')
+      .length === 0
+  ) {
+    return null;
+  }
+
+  const previousCurrentSource = sourceToRoute.currentSource;
+  sourceToRoute.currentSource = currentSource;
+
+  const pageTitle =
+    pageTitleBySource.get(currentSource) ?? stripHtml(currentSource);
+  const description = pageDescriptionBySource.get(currentSource);
+  const sections = [];
+
+  const details = renderDoxygenDetails(
+    $,
+    contents,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (details) sections.push(details);
+
+  for (const group of collectDoxygenMemberGroups($, contents)) {
+    const renderedGroup = renderDoxygenMemberGroup(
+      $,
+      group,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (renderedGroup) sections.push(renderedGroup);
+  }
+
+  sourceToRoute.currentSource = previousCurrentSource;
+  if (sections.length === 0) return null;
+
+  return [
+    '---',
+    `title: ${escapeYaml(pageTitle)}`,
+    description
+      ? `description: ${escapeYaml(description)}`
+      : `description: ${escapeYaml(`${pageTitle} API reference.`)}`,
+    '---',
+    '',
+    `${sections.join('\n\n')}\n`,
+  ].join('\n');
+}
+
+function renderDoxygenDetails(
+  $,
+  contents,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const detailsHeader = contents
+    .children('h2.groupheader')
+    .filter((_, header) =>
+      /详细描述|Detailed Description/i.test(normalizeText($(header).text())),
+    )
+    .first();
+  if (detailsHeader.length === 0) return '';
+
+  const parts = [];
+  let cursor = detailsHeader.next();
+  while (cursor.length > 0 && !cursor.is('h2.groupheader, h2.memtitle')) {
+    if (cursor.is('.textblock, p, div, dl, table, ul, ol')) {
+      const rendered = renderElement(
+        $,
+        cursor,
+        pageTitleBySource,
+        sourceToRoute,
+        targetBasePath,
+        2,
+      );
+      if (rendered) parts.push(rendered);
+    }
+    cursor = cursor.next();
+  }
+  return parts.join('\n\n');
+}
+
+function collectDoxygenMemberGroups($, contents) {
+  const groups = [];
+  let currentGroup = null;
+
+  for (const child of contents.children().toArray()) {
+    const node = $(child);
+    if (node.is('h2.groupheader')) {
+      const title = normalizeText(node.text());
+      if (title && !/详细描述|Detailed Description/i.test(title)) {
+        currentGroup = { members: [], title };
+        groups.push(currentGroup);
+      } else {
+        currentGroup = null;
+      }
+      continue;
+    }
+
+    if (!node.is('h2.memtitle')) continue;
+    const item = node.nextAll('.memitem').first();
+    if (item.length === 0) continue;
+    if (!currentGroup) {
+      currentGroup = { members: [], title: 'Members' };
+      groups.push(currentGroup);
+    }
+    currentGroup.members.push({ item, titleNode: node });
+  }
+
+  return groups.filter((group) => group.members.length > 0);
+}
+
+function renderDoxygenMemberGroup(
+  $,
+  group,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const parts = [`## ${escapeInlineText(group.title)}`];
+  for (const member of group.members) {
+    const rendered = renderDoxygenMember(
+      $,
+      member,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (rendered) parts.push(rendered);
+  }
+  return parts.join('\n\n');
+}
+
+function renderDoxygenMember(
+  $,
+  member,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const title = normalizeDoxygenMemberTitle(member.titleNode.text());
+  if (!title) return '';
+
+  const id =
+    member.titleNode.prev('a[id], a[name]').attr('id') ??
+    member.titleNode.prev('a[id], a[name]').attr('name');
+  const parts = [];
+  if (id) parts.push(`<a id="${id}"></a>`);
+  parts.push(`### ${escapeInlineText(title)}`);
+
+  const signature = normalizeDoxygenSignature(
+    member.item.find('.memproto').first().text(),
+  );
+  if (signature) parts.push(`\`\`\`cpp\n${signature}\n\`\`\``);
+
+  const memdoc = member.item.find('.memdoc').first().clone();
+  const parameters = renderDoxygenParameters(
+    $,
+    memdoc.find('dl.params').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  const returns = renderDoxygenReturns(
+    $,
+    memdoc.find('dl.return, dl.section.return').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  const enumTable = renderDoxygenEnumTable(
+    $,
+    memdoc.find('table.fieldtable').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  memdoc
+    .find('dl.params, dl.return, dl.section.return, table.fieldtable')
+    .remove();
+
+  const description = renderChildren(
+    $,
+    memdoc,
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+    4,
+  );
+  if (description) parts.push(description);
+  if (parameters) parts.push(parameters);
+  if (returns) parts.push(returns);
+  if (enumTable) parts.push(enumTable);
+
+  return parts.join('\n\n');
+}
+
+function normalizeDoxygenMemberTitle(value) {
+  return normalizeText(value)
+    .replace(/^◆\s*/, '')
+    .replace(/\s*◆\s*/g, '');
+}
+
+function normalizeDoxygenSignature(value) {
+  return decodeHtml(value)
+    .replace(/\u00a0/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/\s+([(),;])/g, '$1')
+    .replace(/\s+([*&])/g, '$1')
+    .replace(/([(<])\s+/g, '$1')
+    .trim();
+}
+
+function renderDoxygenParameters(
+  $,
+  params,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!params || params.length === 0) return '';
+
+  const rows = [];
+  for (const row of params.find('table.params tr').toArray()) {
+    const cells = $(row).children('td');
+    const name = normalizeInlineFlow(
+      [
+        inlineChildren(
+          $,
+          cells.filter('.paramdir').first(),
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath,
+        ),
+        inlineChildren(
+          $,
+          cells.filter('.paramname').first(),
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath,
+        ),
+      ]
+        .filter(Boolean)
+        .join(' '),
+    );
+    const descCell = cells.not('.paramdir, .paramname').last();
+    const description = renderChildren(
+      $,
+      descCell,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      4,
+    ).replace(/\n+/g, '<br />');
+    if (name || description) rows.push([name, description]);
+  }
+
+  if (rows.length === 0) return '';
+  const lines = [
+    '#### Parameters',
+    '',
+    '| Name | Description |',
+    '| --- | --- |',
+  ];
+  for (const [name, description] of rows) {
+    lines.push(
+      `| ${name.replace(/\|/g, '\\|')} | ${description.replace(/\|/g, '\\|')} |`,
+    );
+  }
+  return lines.join('\n');
+}
+
+function renderDoxygenReturns(
+  $,
+  returns,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!returns || returns.length === 0) return '';
+  const rendered = renderChildren(
+    $,
+    returns.children('dd').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+    4,
+  );
+  return rendered ? ['#### Returns', rendered].join('\n\n') : '';
+}
+
+function renderDoxygenEnumTable(
+  $,
+  table,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!table || table.length === 0) return '';
+  const rows = [];
+  for (const row of table.find('tr').toArray()) {
+    const name = inlineChildren(
+      $,
+      $(row).find('td.fieldname').first(),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    const description = renderChildren(
+      $,
+      $(row).find('td.fielddoc').first(),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      4,
+    ).replace(/\n+/g, '<br />');
+    if (name || description) rows.push([name, description]);
+  }
+  if (rows.length === 0) return '';
+
+  const lines = ['#### Values', '', '| Name | Description |', '| --- | --- |'];
+  for (const [name, description] of rows) {
+    lines.push(
+      `| ${name.replace(/\|/g, '\\|')} | ${description.replace(/\|/g, '\\|')} |`,
+    );
+  }
+  return lines.join('\n');
 }
 
 function renderTypeDocPage({
@@ -2420,6 +2772,12 @@ async function main() {
     throw new SourceStructureError(sourceStructure);
   }
   const lane = getSourceLane(sourceStructure);
+  if (lane.filterSourceNames) {
+    sourceStructure.fileNames = lane.filterSourceNames(
+      sourceStructure.fileNames,
+      sourceStructure,
+    );
+  }
 
   console.log(`\n📄 HTML to Markdown Migration Tool`);
   console.log(`${'─'.repeat(50)}`);
