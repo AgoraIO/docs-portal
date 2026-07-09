@@ -1296,7 +1296,11 @@ function renderHref(label, href, sourceToRoute, targetBasePath) {
     sourceToRoute.currentSource,
     sourceToRoute,
   );
-  if (!routeTarget) return `[${label}](${href})`;
+  if (!routeTarget) {
+    return filePart.split('?')[0].endsWith('.html')
+      ? label
+      : `[${label}](${href})`;
+  }
   if (
     sourceToRoute.sourceTypeId === SOURCE_TYPES.DITA_OT_API.id &&
     hashPart &&

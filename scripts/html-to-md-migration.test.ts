@@ -120,6 +120,7 @@ async function expectLaneDryRunAndMigration({
   platform,
   product,
   sourceDir,
+  unexpectedPageContents = {},
   unexpectedDryRunPaths = [],
 }: {
   detected: string;
@@ -129,6 +130,7 @@ async function expectLaneDryRunAndMigration({
   platform: string;
   product: string;
   sourceDir: string;
+  unexpectedPageContents?: Record<string, string[]>;
   unexpectedDryRunPaths?: string[];
 }) {
   const dryOutputDir = `${outputDir}-dry`;
@@ -180,6 +182,15 @@ async function expectLaneDryRunAndMigration({
       'utf8',
     );
     for (const snippet of snippets) expect(contents).toContain(snippet);
+  }
+  for (const [relativePath, snippets] of Object.entries(
+    unexpectedPageContents,
+  )) {
+    const contents = await fs.readFile(
+      path.join(outputDir, relativePath),
+      'utf8',
+    );
+    for (const snippet of snippets) expect(contents).not.toContain(snippet);
   }
 }
 
@@ -366,7 +377,12 @@ async function writeDoxygenFixture(sourceDir: string) {
     <div class="contents">
       <a name="details" id="details"></a>
       <h2 class="groupheader">Detailed Description</h2>
-      <div class="textblock"><p>Back to <a href="annotated.html">all classes</a>.</p></div>
+      <div class="textblock">
+        <p>Back to <a href="annotated.html">all classes</a>.</p>
+        <p>See <a href="class_agora_1_1rtc_1_1_client-members.html">All members</a>.</p>
+        <p>Open <a href="class_agora_1_1rtc_1_1_client_source.html">Source view</a>.</p>
+        <p>Browse the <a href="functions.html">Function index</a>.</p>
+      </div>
       <h2 class="groupheader">Member Function Documentation</h2>
       <a id="join"></a>
       <h2 class="memtitle"><span class="permalink"><a href="#join">◆</a></span>join()</h2>
@@ -1085,12 +1101,22 @@ describe('html-to-md-migration', () => {
           '| channel | Channel name |',
           '#### Returns',
           'Zero on success.',
+          'All members',
+          'Source view',
+          'Function index',
         ],
       },
       outputDir,
       platform: 'cpp',
       product: 'rtc',
       sourceDir,
+      unexpectedPageContents: {
+        'class-agora-1-1rtc-1-1-client.mdx': [
+          'class_agora_1_1rtc_1_1_client-members.html',
+          'class_agora_1_1rtc_1_1_client_source.html',
+          'functions.html',
+        ],
+      },
       unexpectedDryRunPaths: [
         'class-agora-1-1rtc-1-1-client-members.mdx',
         'class-agora-1-1rtc-1-1-client-source.mdx',
