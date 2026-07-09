@@ -88,7 +88,7 @@ export function resolveDocsNavScope({
     return null;
   }
 
-  const parentScope = scopedAncestors.at(-2);
+  const parentScope = findNearestVisibleParentScope(scopedAncestors);
   const activeVersion = resolveActiveVersion({
     activePath,
     scope: scope.node,
@@ -256,6 +256,19 @@ function hasNavScopeDescendant(
     (child) =>
       child.type === 'folder' && hasNavScopeDescendant(child, getNodeMeta),
   );
+}
+
+function findNearestVisibleParentScope(
+  ancestors: Array<FolderAncestor & { meta: DocsMeta }>,
+) {
+  for (let index = ancestors.length - 2; index >= 0; index -= 1) {
+    const ancestor = ancestors[index];
+    if (!ancestor.meta.sidebarHidden) {
+      return ancestor;
+    }
+  }
+
+  return undefined;
 }
 
 function flattenParentNavScopeSidebarNodes(

@@ -1,6 +1,7 @@
 import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import { existsSync } from 'node:fs';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import { resolveMovedDocsRedirect } from './docs-moved-redirects';
@@ -110,6 +111,263 @@ const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
   'release-notes': {
     'zh-CN': '/zh-CN/ai/release-notes',
   },
+};
+
+const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
+  'conversational-ai/client-toolkit':
+    '/zh-CN/api-reference/conversational-ai/android/overview',
+  'conversational-ai/client-toolkit/basicauthcredential':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/basicauthcredential',
+  'conversational-ai/client-toolkit/baseresponse.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/baseresponse.go',
+  'conversational-ai/client-toolkit/client.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/client.go',
+  'conversational-ai/client-toolkit/conversationalaiapi':
+    '/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi',
+  'conversational-ai/client-toolkit/conversationalaiapieventhandler':
+    '/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler',
+  'conversational-ai/client-toolkit/convoaiclient.java':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/convoaiclient.java',
+  'conversational-ai/client-toolkit/enum':
+    '/zh-CN/api-reference/conversational-ai/android/enum',
+  'conversational-ai/client-toolkit/iconversationalaiapi':
+    '/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi',
+  'conversational-ai/client-toolkit/iconversationalaiapieventhandler':
+    '/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler',
+  'conversational-ai/client-toolkit/listoptions.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/listoptions.go',
+  'conversational-ai/client-toolkit/overview':
+    '/zh-CN/api-reference/conversational-ai/android/overview',
+  'conversational-ai/client-toolkit/overview.agent-go':
+    '/zh-CN/api-reference/conversational-ai/agent-go',
+  'conversational-ai/client-toolkit/overview.agent-python':
+    '/zh-CN/api-reference/conversational-ai/agent-python',
+  'conversational-ai/client-toolkit/overview.agent-typescript':
+    '/zh-CN/api-reference/conversational-ai/agent-typescript',
+  'conversational-ai/agent-go/overview':
+    '/zh-CN/api-reference/conversational-ai/agent-go',
+  'conversational-ai/agent-python/overview':
+    '/zh-CN/api-reference/conversational-ai/agent-python',
+  'conversational-ai/agent-typescript/overview':
+    '/zh-CN/api-reference/conversational-ai/agent-typescript',
+  'conversational-ai/client-toolkit/response.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/response.go',
+  'conversational-ai/client-toolkit/samplelogger.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/samplelogger.go',
+  'conversational-ai/client-toolkit/struct':
+    '/zh-CN/api-reference/conversational-ai/android/struct',
+  'conversational-ai/go-api/baseresponse.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/baseresponse.go',
+  'conversational-ai/go-api/basicauthcredential':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/basicauthcredential',
+  'conversational-ai/go-api/client.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/client.go',
+  'conversational-ai/go-api/enum':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/enum',
+  'conversational-ai/go-api/listoptions.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/listoptions.go',
+  'conversational-ai/go-api/overview.go':
+    '/zh-CN/api-reference/conversational-ai/agent-go',
+  'conversational-ai/go-api/response.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/response.go',
+  'conversational-ai/go-api/samplelogger.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/samplelogger.go',
+  'conversational-ai/go-api/struct':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/struct',
+  'conversational-ai/java':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/overview',
+  'conversational-ai/java/basicauthcredential':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/basicauthcredential',
+  'conversational-ai/java/convoaiclient.java':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/convoaiclient.java',
+  'conversational-ai/java/enum':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/enum',
+  'conversational-ai/java/overview':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/overview',
+  'conversational-ai/java/struct':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/struct',
+  'conversational-ai/python-api/overview.python':
+    '/zh-CN/api-reference/conversational-ai/agent-python',
+  'conversational-ai/typescript-api/conversationalaiapi':
+    '/zh-CN/api-reference/conversational-ai/web/conversationalaiapi',
+  'conversational-ai/typescript-api/enum':
+    '/zh-CN/api-reference/conversational-ai/web/enum',
+  'conversational-ai/typescript-api/overview.typescript':
+    '/zh-CN/api-reference/conversational-ai/agent-typescript',
+  'conversational-ai/typescript-api/struct':
+    '/zh-CN/api-reference/conversational-ai/web/struct',
+  'local-server-recording/agoramediartcrecorder.java':
+    '/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java',
+  'local-server-recording/agoraservice.java':
+    '/zh-CN/api-reference/local-server-recording/java/agoraservice.java',
+  'local-server-recording/api-overview':
+    '/zh-CN/api-reference/local-server-recording/java/api-overview',
+  'local-server-recording/enum':
+    '/zh-CN/api-reference/local-server-recording/java/enum',
+  'local-server-recording/iagoramediacomponentfactory.cpp':
+    '/zh-CN/api-reference/local-server-recording/cpp/iagoramediacomponentfactory.cpp',
+  'local-server-recording/iagoramediartcrecorder.cpp':
+    '/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp',
+  'local-server-recording/iagoramediartcrecordereventhandler':
+    '/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler',
+  'local-server-recording/iagoraservice.cpp':
+    '/zh-CN/api-reference/local-server-recording/cpp/iagoraservice.cpp',
+  'local-server-recording/irecordervideoframeobserver':
+    '/zh-CN/api-reference/local-server-recording/java/irecordervideoframeobserver',
+  'local-server-recording/struct':
+    '/zh-CN/api-reference/local-server-recording/java/struct',
+  'meeting/client-api': '/zh-CN/api-reference/meeting/android',
+  'api-ref/meeting/android/client-api': '/zh-CN/api-reference/meeting/android',
+  'api-ref/meeting/ios/client-api': '/zh-CN/api-reference/meeting/ios',
+  'api-ref/meeting/electron/client-api':
+    '/zh-CN/api-reference/meeting/electron',
+  'private-room/call-api': '/zh-CN/api-reference/private-room/android',
+  'api-ref/private-room/android/call-api':
+    '/zh-CN/api-reference/private-room/android',
+  'api-ref/private-room/ios/call-api':
+    '/zh-CN/api-reference/private-room/ios',
+  rtm: '/zh-CN/api-reference/rtm/android/configuration',
+  'rtm/components-hooks':
+    '/zh-CN/api-reference/rtm/react-native/components-hooks',
+  'rtm/enumv': '/zh-CN/api-reference/rtm/android/enumv',
+  'rtm/error-codes': '/zh-CN/realtime-media/rtm/build/troubleshooting',
+  'rtm/react-native/error-codes':
+    '/zh-CN/realtime-media/rtm/build/troubleshooting',
+  'rtm/toc-channel/channel': '/zh-CN/api-reference/rtm/android/channel',
+  'rtm/toc-configuration/configuration':
+    '/zh-CN/api-reference/rtm/android/configuration',
+  'rtm/toc-lock/lock': '/zh-CN/api-reference/rtm/android/lock',
+  'rtm/toc-message/message': '/zh-CN/api-reference/rtm/android/message',
+  'rtm/toc-message/publish':
+    '/zh-CN/api-reference/api-ref/signaling/publish',
+  'rtm/toc-message/receive':
+    '/zh-CN/api-reference/api-ref/signaling/receive',
+  'rtm/toc-message/response-code':
+    '/zh-CN/realtime-media/rtm/reference/response-code',
+  'rtm/toc-presence/presence': '/zh-CN/api-reference/rtm/android/presence',
+  'rtm/toc-storage/storage': '/zh-CN/api-reference/rtm/android/storage',
+  'rtm/toc-token/token': '/zh-CN/api-reference/rtm/android/token',
+  'rtm/toc-topic/topic': '/zh-CN/api-reference/rtm/android/topic',
+  'api-ref/signaling': '/zh-CN/api-reference/api-ref/signaling/publish',
+  'api-ref/signaling/index': '/zh-CN/api-reference/api-ref/signaling/publish',
+  'api-ref/signaling/restful':
+    '/zh-CN/api-reference/api-ref/signaling/publish',
+  'api-ref/signaling/response-code':
+    '/zh-CN/realtime-media/rtm/reference/response-code',
+  'api-ref/ppt-conversion-service/status-codes':
+    '/zh-CN/solutions/ppt-transcoding/reference/response-code',
+  'api-ref/whiteboard':
+    '/zh-CN/api-reference/api-ref/whiteboard/restful',
+  'api-ref/fastboard/android/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/android',
+  'api-ref/fastboard/ios/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/ios',
+  'api-ref/fastboard/javascript/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/web',
+  'api-ref/whiteboard/android/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/android',
+  'api-ref/whiteboard/ios/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/ios',
+  'whiteboard/fastboard':
+    '/zh-CN/api-reference/whiteboard/fastboard/android',
+  'whiteboard/fastboard/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/android',
+  'flexible-classroom/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk',
+  'flexible-classroom/proctor-sdk':
+    '/zh-CN/api-reference/flexible-classroom/ios/api-reference/proctor-sdk',
+  'flexible-classroom/fcr-ui-scene':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene',
+  'flexible-classroom/android':
+    '/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk',
+  'flexible-classroom/ios':
+    '/zh-CN/api-reference/flexible-classroom/ios/api-reference/classroom-sdk',
+  'flexible-classroom/web':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk',
+  'flexible-classroom/electron':
+    '/zh-CN/api-reference/flexible-classroom/electron/api-reference/classroom-sdk',
+  'flexible-classroom/restful-api':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  'api-ref/flexible-classroom/android/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk',
+  'api-ref/flexible-classroom/ios/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/ios/api-reference/classroom-sdk',
+  'api-ref/flexible-classroom/javascript/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk',
+  'api-ref/flexible-classroom/electron/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/electron/api-reference/classroom-sdk',
+  'api-ref/flexible-classroom/ios/proctor-sdk':
+    '/zh-CN/api-reference/flexible-classroom/ios/api-reference/proctor-sdk',
+  'api-ref/flexible-classroom/javascript/proctor-sdk':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/proctor-sdk',
+  'api-ref/flexible-classroom/electron/proctor-sdk':
+    '/zh-CN/api-reference/flexible-classroom/electron/api-reference/proctor-sdk',
+  'api-ref/flexible-classroom/javascript/fcr-ui-scene':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene',
+  'api-ref/flexible-classroom/electron/fcr-ui-scene':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene',
+  'api-ref/flexible-classroom/javascript/overview':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store',
+  'api-ref/flexible-classroom/electron/overview':
+    '/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store',
+  'api-ref/flexible-classroom/classroom-rest-api':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  'api-ref/flexible-classroom/restful-api':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  'flexible-classroom/restful/api/api-classroom':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  'flexible-classroom/restful/api/api-recording':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-recording',
+  'flexible-classroom/restful/api/api-sync':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-sync',
+  'flexible-classroom/restful/api/api-user':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-user',
+  'flexible-classroom/restful/api/api-widget':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-widget',
+  'rtc/error-code': '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/android/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/ios/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/macos/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/windows/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/electron/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/flutter/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/react-native/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/unity/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/unreal/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/mini-program/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/web/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'rtc-server-sdk/error-code':
+    '/zh-CN/realtime-media/rtc-server-sdk/reference/error-code',
+  'api-ref/rtc-server-sdk/go/error-code':
+    '/zh-CN/realtime-media/rtc-server-sdk/reference/error-code',
+  'api-ref/rtc-server-sdk/python/error-code':
+    '/zh-CN/realtime-media/rtc-server-sdk/reference/error-code',
+  'rtc/android': '/zh-CN/api-reference/rtc/android/rtc-api-overview',
+  'rtc/cpp-all-platforms':
+    '/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-api-overview',
+  'rtc/csharp-windows':
+    '/zh-CN/api-reference/rtc/csharp-windows/rtc-api-overview',
+  'rtc/electron': '/zh-CN/api-reference/rtc/electron/rtc-api-overview',
+  'rtc/flutter': '/zh-CN/api-reference/rtc/flutter/rtc-api-overview',
+  'rtc/harmonyos': '/zh-CN/api-reference/rtc/harmonyos/rtc-api-overview',
+  'rtc/ios': '/zh-CN/api-reference/rtc/ios/rtc-api-overview',
+  'rtc/macos': '/zh-CN/api-reference/rtc/macos/rtc-api-overview',
+  'rtc/react-native': '/zh-CN/api-reference/rtc/react-native/rtc-api-overview',
+  'rtc/unity': '/zh-CN/api-reference/rtc/unity/rtc-api-overview',
+  'rtc/unreal-blueprint':
+    '/zh-CN/api-reference/rtc/unreal-blueprint/rtc-api-overview',
+  'rtc/unreal-cpp': '/zh-CN/api-reference/rtc/unreal-cpp/rtc-api-overview',
 };
 
 export async function loadDocsTabIndex(locale: string, tab: string) {
@@ -399,6 +657,14 @@ export async function loadDocsPagePayload(
 
   const pageTree = getCanonicalPageTree(source, locale);
   const supportedLocale = toSupportedLocale(locale);
+  const sourcePageUrls =
+    locale === 'zh-CN' && tab === OPENAPI_TAB
+      ? new Set(
+          localePages
+            .filter((item) => hasExistingDocsSourceFile(item, locale))
+            .map((item) => item.url),
+        )
+      : null;
   const openApiPage = isOpenApiPageWithProps(page) ? page : null;
   const isOpenApiPage = openApiPage !== null;
   const openApiRoute =
@@ -552,7 +818,11 @@ export async function loadDocsPagePayload(
             supportedLocale,
             openApiRoute.operationId,
           )
-        : getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
+        : getPrevNextLinksFromNode(
+            navScope?.sidebarRoot ?? pageTree,
+            page.url,
+            sourcePageUrls ? (url) => sourcePageUrls.has(url) : undefined,
+          ),
     productScopes: getProductScopes(pageTree),
     sidebar,
     sidebarHeader,
@@ -718,7 +988,7 @@ function resolveDeviceKitRedirect(
     'device-kit/get-started/run-the-demo': `/${locale}/ai/device-kit/build/run-the-r1-demo`,
     'device-kit/overview': `/${locale}/ai/device-kit/build/architecture-overview`,
     'device-kit/overview/architecture': `/${locale}/ai/device-kit/build/architecture-overview`,
-    'device-kit/reference': `/${locale}/ai/device-kit/build/device-controls`,
+    'device-kit/reference': `/${locale}/ai/device-kit/reference/enable-services`,
     'device-kit/reference/device-controls': `/${locale}/ai/device-kit/build/device-controls`,
     'device-kit/overview/pricing': `/${locale}/ai/device-kit/reference/pricing`,
     'device-kit/overview/release-notes': `/${locale}/ai/device-kit/reference/release-notes`,
@@ -776,6 +1046,12 @@ function resolveApiReferenceRedirect(
     return legacyConversationalAiRestRedirect;
   }
 
+  const legacyFlexibleClassroomApiRedirect =
+    resolveLegacyFlexibleClassroomApiRedirect(locale, normalizedPath);
+  if (legacyFlexibleClassroomApiRedirect) {
+    return legacyFlexibleClassroomApiRedirect;
+  }
+
   if (normalizedPath === RECIPES_PATH_ENTRY_SLUG) {
     return `/${locale}/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}`;
   }
@@ -800,6 +1076,24 @@ function resolveApiReferenceRedirect(
     return '/en/api-reference/api-ref/rtc';
   }
 
+  if (locale === 'zh-CN' && normalizedPath === 'rtc') {
+    return '/zh-CN/api-reference/api-ref/rtc';
+  }
+
+  if (locale === 'zh-CN') {
+    const placeholderRedirect =
+      ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS[normalizedPath];
+    if (placeholderRedirect) {
+      return placeholderRedirect;
+    }
+
+    const flexibleClassroomRedirect =
+      resolveFlexibleClassroomPlatformRedirect(normalizedPath);
+    if (flexibleClassroomRedirect) {
+      return flexibleClassroomRedirect;
+    }
+  }
+
   if (
     locale === 'en' &&
     isLegacyEnglishApiReferenceProductPath(normalizedPath)
@@ -809,6 +1103,43 @@ function resolveApiReferenceRedirect(
     }
 
     return `/en/${getApiReferenceProductRoot(locale)}/${normalizedPath}`;
+  }
+
+  return null;
+}
+
+function resolveFlexibleClassroomPlatformRedirect(normalizedPath: string) {
+  const match = normalizedPath.match(
+    /^flexible-classroom\/(android|ios|web|electron)\/(.+)$/,
+  );
+  if (!match) {
+    return null;
+  }
+
+  const [, platform, slug] = match;
+
+  if (slug.startsWith('api-reference/')) {
+    return null;
+  }
+
+  if (platform === 'android' || platform === 'ios') {
+    if (slug === 'classroom-sdk' || slug === 'proctor-sdk') {
+      return `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference/${slug}`;
+    }
+
+    return `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference/edu-context/${slug}`;
+  }
+
+  if (
+    slug === 'classroom-sdk' ||
+    slug === 'proctor-sdk' ||
+    slug === 'edu-store'
+  ) {
+    return `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference/${slug}`;
+  }
+
+  if (platform === 'web' && slug === 'fcr-ui-scene') {
+    return '/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene';
   }
 
   return null;
@@ -902,7 +1233,7 @@ function resolveLegacyConversationalAiRestRedirect(
   if (normalizedPath === `${prefix}/status-codes`) {
     return locale === 'en'
       ? `/${locale}/api-reference/api-ref/conversational-ai/status-codes`
-      : `/${locale}/api-reference/response-code`;
+      : `/${locale}/ai/api/response-code`;
   }
 
   if (!normalizedPath.startsWith(`${prefix}/agent/`)) {
@@ -946,6 +1277,27 @@ function resolveAiDocsRedirect(
   };
 
   return redirects[normalizedPath] ?? null;
+}
+
+function resolveLegacyFlexibleClassroomApiRedirect(
+  locale: string,
+  normalizedPath: string,
+) {
+  if (locale !== 'zh-CN') {
+    return null;
+  }
+
+  const match = normalizedPath.match(
+    /^api-ref\/flexible-classroom\/(android|ios)\/API\/([^/]+)$/,
+  );
+  if (!match) {
+    return null;
+  }
+
+  const [, platform, legacySlug] = match;
+  const slug = legacySlug.replaceAll('_', '-').toLowerCase();
+
+  return `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference/edu-context/${slug}`;
 }
 
 function resolveLegacyProductRedirect(
@@ -1162,7 +1514,30 @@ function resolveSolutionsApiReferenceRedirect(
   tab: string,
   slugSegments: string[],
 ) {
-  if (locale !== 'en' || tab !== 'solutions') {
+  if (tab !== 'solutions') {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+
+  if (locale === 'zh-CN') {
+    const redirects: Record<string, string> = {
+      'flexible-classroom/reference/api-classroom':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+      'flexible-classroom/reference/api-recording':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-recording',
+      'flexible-classroom/reference/api-sync':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-sync',
+      'flexible-classroom/reference/api-user':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-user',
+      'flexible-classroom/reference/api-widget':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-widget',
+    };
+
+    return redirects[normalizedPath] ?? null;
+  }
+
+  if (locale !== 'en') {
     return null;
   }
 
@@ -1187,7 +1562,7 @@ function resolveSolutionsApiReferenceRedirect(
       '/en/api-reference/api-ref/iot-channel-management-rest-api',
   };
 
-  return redirects[slugSegments.join('/')] ?? null;
+  return redirects[normalizedPath] ?? null;
 }
 
 const MERGED_PLATFORM_SUFFIXES: Record<string, PlatformKey> = {
@@ -1448,11 +1823,18 @@ async function getDocsSidebarNodes({
         root: pageTree,
         tab,
       });
+  const sourcePageUrls =
+    locale === 'zh-CN' && tab === OPENAPI_TAB
+      ? getLocaleSourcePageUrls(source, locale)
+      : null;
+  const sidebarWithSourcePagesOnly = sourcePageUrls
+    ? filterSourceBackedSidebarNodes(sidebar, sourcePageUrls)
+    : sidebar;
   const scopedReferenceProductSidebar =
     Boolean(navScope) && isReferenceProductSidebarPath(activePath ?? pageUrl);
   const sidebarWithoutReferenceProductIcons = scopedReferenceProductSidebar
-    ? stripSidebarSectionIcons(sidebar)
-    : sidebar;
+    ? stripSidebarSectionIcons(sidebarWithSourcePagesOnly)
+    : sidebarWithSourcePagesOnly;
 
   const sidebarWithRealtimeMediaApiReference =
     addRealtimeMediaApiReferenceSidebarItem(
@@ -1475,6 +1857,80 @@ async function getDocsSidebarNodes({
   }
 
   return openApiSidebar;
+}
+
+function getLocaleSourcePageUrls(source: typeof docsSource, locale: AppLocale) {
+  return new Set(
+    source
+      .getPages(locale)
+      .filter((page) => hasExistingDocsSourceFile(page, locale))
+      .map((page) => page.url),
+  );
+}
+
+function hasExistingDocsSourceFile(page: PageWithSource, locale: AppLocale) {
+  if (!('info' in page.data)) {
+    return true;
+  }
+
+  if (!page.path.startsWith(`${locale}/`)) {
+    return false;
+  }
+
+  const fullPath = page.data.info.fullPath;
+
+  if (fullPath.startsWith('/virtual/')) {
+    return true;
+  }
+
+  return existsSync(fullPath) || existsSync(`content/docs/${page.path}`);
+}
+
+function filterSourceBackedSidebarNodes(
+  nodes: DocsSidebarNode[],
+  sourcePageUrls: Set<string>,
+): DocsSidebarNode[] {
+  const filtered: DocsSidebarNode[] = [];
+
+  for (const node of nodes) {
+    if (node.type === 'page') {
+      if (
+        node.external ||
+        node.href ||
+        sourcePageUrls.has(node.url) ||
+        isOpenApiTabUrl(node.url)
+      ) {
+        filtered.push(node);
+      }
+      continue;
+    }
+
+    const children = filterSourceBackedSidebarNodes(
+      node.children,
+      sourcePageUrls,
+    );
+
+    if (children.length === 0) {
+      continue;
+    }
+
+    const filteredSection: DocsSidebarNode = {
+      ...node,
+      children,
+    };
+
+    if (node.url && !sourcePageUrls.has(node.url)) {
+      delete filteredSection.url;
+    }
+
+    filtered.push(filteredSection);
+  }
+
+  return filtered;
+}
+
+function isOpenApiTabUrl(url: string) {
+  return url.includes('/api-reference/openapi/');
 }
 
 const REALTIME_MEDIA_API_REFERENCE_LINKS = [

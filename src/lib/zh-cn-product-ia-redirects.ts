@@ -537,13 +537,21 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtc/billing/billing-strategy':
     '/zh-CN/realtime-media/rtc/reference/billing-strategy',
   'realtime-media/rtc/billing/old/billing-faq-old':
-    '/zh-CN/realtime-media/rtc/reference/billing-faq-old',
+    '/zh-CN/realtime-media/rtc/reference/legacy-billing/billing-faq-old',
   'realtime-media/rtc/billing/old/billing-samples-old':
-    '/zh-CN/realtime-media/rtc/reference/billing-samples-old',
+    '/zh-CN/realtime-media/rtc/reference/legacy-billing/billing-samples-old',
   'realtime-media/rtc/billing/old/billing-strategy-old':
-    '/zh-CN/realtime-media/rtc/reference/billing-strategy-old',
+    '/zh-CN/realtime-media/rtc/reference/legacy-billing/billing-strategy-old',
   'realtime-media/rtc/billing/old/payment-old':
-    '/zh-CN/realtime-media/rtc/reference/payment-old',
+    '/zh-CN/realtime-media/rtc/reference/legacy-billing/payment-old',
+  'realtime-media/rtc/reference/billing-faq-old':
+    '/zh-CN/realtime-media/rtc/reference/legacy-billing/billing-faq-old',
+  'realtime-media/rtc/reference/billing-samples-old':
+    '/zh-CN/realtime-media/rtc/reference/legacy-billing/billing-samples-old',
+  'realtime-media/rtc/reference/billing-strategy-old':
+    '/zh-CN/realtime-media/rtc/reference/legacy-billing/billing-strategy-old',
+  'realtime-media/rtc/reference/payment-old':
+    '/zh-CN/realtime-media/rtc/reference/legacy-billing/payment-old',
   'realtime-media/rtc/billing/payment':
     '/zh-CN/realtime-media/rtc/reference/payment',
   'realtime-media/rtc/error-code':
@@ -583,7 +591,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtc/webhook/receive_webhook':
     '/zh-CN/realtime-media/rtc/build/monitor-events/receive_webhook',
   'realtime-media/rtm/error-codes':
-    '/zh-CN/realtime-media/rtm/reference/error-codes',
+    '/zh-CN/realtime-media/rtm/build/troubleshooting',
   'realtime-media/rtm/get-started/enable-service':
     '/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service',
   'realtime-media/rtm/overview/billing/billing-rules':
@@ -600,6 +608,16 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/realtime-media/rtm/reference/release-notes',
   'realtime-media/rtm/resources':
     '/zh-CN/realtime-media/rtm/reference/downloads',
+  'realtime-media/rtm/reference/error-codes':
+    '/zh-CN/realtime-media/rtm/build/troubleshooting',
+  'realtime-media/rtm/reference/link-state':
+    '/zh-CN/realtime-media/rtm/build/manage-connections/link-state',
+  'realtime-media/rtm/reference/metadata-events':
+    '/zh-CN/realtime-media/rtm/build/manage-metadata/metadata-events',
+  'realtime-media/rtm/reference/presence-events':
+    '/zh-CN/realtime-media/rtm/build/manage-presence/presence-events',
+  'realtime-media/rtm/reference/topic-events':
+    '/zh-CN/realtime-media/rtm/build/manage-topics/topic-events',
   'realtime-media/rtm/security': '/zh-CN/introduction/security/rtm-sdk',
   'realtime-media/rtm/sunset-policy':
     '/zh-CN/realtime-media/rtm/reference/sunset-policy',
@@ -614,7 +632,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtm/user-guide/link/link-basic':
     '/zh-CN/realtime-media/rtm/build/manage-connections/link-basic',
   'realtime-media/rtm/user-guide/link/link-state':
-    '/zh-CN/realtime-media/rtm/reference/link-state',
+    '/zh-CN/realtime-media/rtm/build/manage-connections/link-state',
   'realtime-media/rtm/user-guide/message/add-event-listener':
     '/zh-CN/realtime-media/rtm/build/manage-messages/add-event-listener',
   'realtime-media/rtm/user-guide/message/constructed':
@@ -626,7 +644,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtm/user-guide/message/serialized':
     '/zh-CN/realtime-media/rtm/build/manage-messages/serialized',
   'realtime-media/rtm/user-guide/presence/event':
-    '/zh-CN/realtime-media/rtm/reference/presence-events',
+    '/zh-CN/realtime-media/rtm/build/manage-presence/presence-events',
   'realtime-media/rtm/user-guide/presence/presence-basic':
     '/zh-CN/realtime-media/rtm/build/manage-presence/presence-basic',
   'realtime-media/rtm/user-guide/presence/temporary-user-state':
@@ -648,7 +666,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtm/user-guide/storage/channel-metadata':
     '/zh-CN/realtime-media/rtm/build/manage-metadata/channel-metadata',
   'realtime-media/rtm/user-guide/storage/event':
-    '/zh-CN/realtime-media/rtm/reference/metadata-events',
+    '/zh-CN/realtime-media/rtm/build/manage-metadata/metadata-events',
   'realtime-media/rtm/user-guide/storage/user-metadata':
     '/zh-CN/realtime-media/rtm/build/manage-metadata/user-metadata',
   'realtime-media/rtm/user-guide/token/token-generation':
@@ -656,7 +674,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtm/user-guide/token/user-authentication':
     '/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication',
   'realtime-media/rtm/user-guide/topic/event':
-    '/zh-CN/realtime-media/rtm/reference/topic-events',
+    '/zh-CN/realtime-media/rtm/build/manage-topics/topic-events',
   'realtime-media/rtm/user-guide/topic/topic-basic':
     '/zh-CN/realtime-media/rtm/build/manage-topics/topic-basic',
   'realtime-media/rtm/user-guide/topic/usage':
@@ -834,6 +852,8 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/conversion-webhook',
   'realtime-media/whiteboard/fastboard-sdk/get-started/call-api':
     '/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/call-api',
+  'realtime-media/whiteboard/fastboard-sdk/get-started':
+    '/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb',
   'realtime-media/whiteboard/fastboard-sdk/get-started/enable-service':
     '/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service',
   'realtime-media/whiteboard/fastboard-sdk/get-started/migrate-from-netless':
@@ -856,6 +876,8 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code',
   'realtime-media/whiteboard/fastboard-sdk/solution-compare':
     '/zh-CN/realtime-media/whiteboard#如何选择互动白板-sdk-和-fastboard-sdk',
+  'realtime-media/whiteboard/reference':
+    '/zh-CN/realtime-media/whiteboard/reference/concepts',
   'realtime-media/whiteboard/whiteboard-sdk/advanced-features/convert-files':
     '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files',
   'realtime-media/whiteboard/whiteboard-sdk/advanced-features/custom-event':
@@ -880,6 +902,8 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/conversion-webhook',
   'realtime-media/whiteboard/whiteboard-sdk/get-started/call-api':
     '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/call-api',
+  'realtime-media/whiteboard/whiteboard-sdk/get-started':
+    '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb',
   'realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service':
     '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service',
   'realtime-media/whiteboard/whiteboard-sdk/get-started/migrate-from-netless':
@@ -975,15 +999,15 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/flexible-classroom/advanced-features/widget-tech':
     '/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget-tech',
   'solutions/flexible-classroom/api/api-classroom':
-    '/zh-CN/solutions/flexible-classroom/reference/api-classroom',
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
   'solutions/flexible-classroom/api/api-recording':
-    '/zh-CN/solutions/flexible-classroom/reference/api-recording',
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-recording',
   'solutions/flexible-classroom/api/api-sync':
-    '/zh-CN/solutions/flexible-classroom/reference/api-sync',
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-sync',
   'solutions/flexible-classroom/api/api-user':
-    '/zh-CN/solutions/flexible-classroom/reference/api-user',
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-user',
   'solutions/flexible-classroom/api/api-widget':
-    '/zh-CN/solutions/flexible-classroom/reference/api-widget',
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-widget',
   'solutions/flexible-classroom/basic-features/generate-token':
     '/zh-CN/solutions/flexible-classroom/build/setup-and-access/generate-token',
   'solutions/flexible-classroom/basic-features/http-token-auth':

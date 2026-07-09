@@ -153,7 +153,7 @@ virtual ScreenCaptureSourceInfo getSourceInfo(unsigned int index) = 0;
 ### 返回值
 
 - 方法调用成功时，返回设备支持的最高帧率。 详见 SCREEN_CAPTURE_FRAMERATE_CAPABILITY。
-- &lt;0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+- &lt;0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
@@ -239,7 +239,7 @@ virtual int setExternalMediaProjection(void* mediaProjection) = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
 
 <a id="api_irtcengine_setscreencapturecontenthint"></a>
 
@@ -276,7 +276,7 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 stopScreenCapture [1/2] 停止当前共享，再重新开始共享屏幕。
 
@@ -318,7 +318,7 @@ virtual int setScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario) = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
@@ -391,7 +391,7 @@ virtual int setScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario) = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
   - -2 (iOS 平台): 参数为空。
   - -2 (Anroid 平台): 系统版本过低，请确保 Android API 级别不低于 21。
   - -3 (Anroid 平台): 无法采集系统音频，请确保 Android API 级别不低于 29。
@@ -466,7 +466,7 @@ SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别�
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
@@ -544,7 +544,7 @@ virtual int startScreenCaptureByDisplayId(int64_t displayId, const Rectangle& re
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 stopScreenCapture [1/2] 停止当前共享，再重新开始共享屏幕。
 
@@ -605,7 +605,7 @@ virtual int startScreenCaptureByScreenRect(const Rectangle& screenRect,
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 stopScreenCapture [1/2] 停止当前共享，再重新开始共享屏幕。
 
@@ -705,7 +705,7 @@ SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Gr
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 stopScreenCapture [1/2] 停止当前共享，再重新开始共享屏幕。
 
@@ -751,7 +751,7 @@ SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Gr
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
@@ -805,7 +805,7 @@ virtual int stopScreenCapture(VIDEO_SOURCE_TYPE sourceType) = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
@@ -894,7 +894,7 @@ virtual int updateScreenCaptureParameters(const ScreenCaptureParameters& capture
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 stopScreenCapture [1/2] 停止当前共享，再重新开始共享屏幕。
 
@@ -934,7 +934,7 @@ virtual int updateScreenCaptureRegion(const Rectangle& regionRect) = 0;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
   - -2：传入的参数无效。
   - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 stopScreenCapture [1/2] 停止当前共享，再重新开始共享屏幕。
 

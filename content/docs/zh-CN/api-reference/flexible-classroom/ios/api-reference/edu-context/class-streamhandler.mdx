@@ -1,0 +1,88 @@
+---
+title: "AgoraEduStreamHandler"
+description: "AgoraEduStreamHandler 类包含流相关的事件回调。"
+---
+<a id="class_streamhandler"></a>
+
+<a id="api_onstreamupdated"></a>
+
+## onStreamUpdated
+
+流更新回调。
+
+<a id="api_onstreamupdated__prototype"></a>
+
+```swift
+void onStreamUpdate(AgoraEduContextStreamInfo stream,
+                    AgoraEduContextUserInfo operator)
+```
+
+<a id="api_onstreamupdated__parameters"></a>
+
+### 参数
+
+#### `stream`
+
+流信息，详见 [AgoraEduContextStreamInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_streaminfo)。
+
+#### `operator`
+
+操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_userinfo)，可为空。
+
+<a id="api_onstreamjoined"></a>
+
+## onStreamJoined
+
+流新增回调。
+
+<a id="api_onstreamjoined__prototype"></a>
+
+```swift
+void onStreamJoined(AgoraEduContextStreamInfo stream,
+                    AgoraEduContextUserInfo operator)
+```
+
+<a id="api_onstreamjoined__detailed_desc"></a>
+
+房间内新增一路流时，SDK 会触发此回调。
+
+<a id="api_onstreamjoined__parameters"></a>
+
+### 参数
+
+#### `stream`
+
+流信息，详见 [AgoraEduContextStreamInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_streaminfo)。
+
+#### `operator`
+
+操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_userinfo)，可为空。
+
+<a id="api_onstreamleft"></a>
+
+## onStreamLeft
+
+流移除回调。
+
+<a id="api_onstreamleft__prototype"></a>
+
+```swift
+void onStreamLeft(AgoraEduContextStreamInfo stream,
+                  AgoraEduContextUserInfo operator)
+```
+
+<a id="api_onstreamleft__detailed_desc"></a>
+
+一路流从房间内移除时，SDK 会触发此回调。
+
+<a id="api_onstreamleft__parameters"></a>
+
+### 参数
+
+#### `stream`
+
+流信息，详见 [AgoraEduContextStreamInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_streaminfo)。
+
+#### `operator`
+
+操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_userinfo)，可为空。

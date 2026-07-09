@@ -1,0 +1,179 @@
+---
+title: "AgoraService 类"
+---
+提供声网服务初始化和管理的核心功能。
+
+该类是使用声网录制功能的主要入口。
+
+<a id="agoraservice"></a>
+## AgoraService
+
+```java
+public AgoraService()
+```
+
+构造一个 [`AgoraService`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java) 实例并初始化原生组件。
+
+一次只能初始化一个 [`AgoraService`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java) 实例。
+
+<a id="release"></a>
+## release
+
+```java
+public int release()
+```
+
+释放 [`AgoraService`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java) 对象及其相关资源。
+
+调用该方法后，该实例将失效，无法再使用。
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="initialize"></a>
+## initialize
+
+```java
+public int initialize(AgoraServiceConfiguration config)
+```
+
+使用指定的配置初始化 [`AgoraService`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java) 对象。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `config` | `AgoraServiceConfiguration` | 初始化参数配置对象。详见 [`AgoraServiceConfiguration`](/zh-CN/api-reference/local-server-recording/java/struct#agoraserviceconfiguration)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+  - `ERR_INVALID_ARGUMENT`：在 Android 平台未提供 [`AgoraServiceConfiguration`](/zh-CN/api-reference/local-server-recording/java/struct#agoraserviceconfiguration) 中的 context 时返回该错误。
+  - `ERR_INIT_NET_ENGINE`：无法初始化网络引擎时返回该错误。在 Windows 平台，该错误通常是由于本地端口连接被防火墙阻止导致的。尝试关闭并重新打开防火墙以解决此问题。
+
+<a id="createmediartcrecorder"></a>
+## createMediaRtcRecorder
+
+```java
+public AgoraMediaRtcRecorder createMediaRtcRecorder()
+```
+
+创建一个新的 [`AgoraMediaRtcRecorder`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java) 实例。
+
+#### 返回值
+
+方法调用成功，返回 [`AgoraMediaRtcRecorder`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java) 实例。
+
+<a id="getagoraparameter"></a>
+## getAgoraParameter
+
+```java
+public AgoraParameter getAgoraParameter()
+```
+
+创建并返回用于参数管理的 `AgoraParameter` 对象。
+
+#### 返回值
+
+方法调用成功，返回 `AgoraParameter` 实例。
+方法调用失败，返回 `null`。
+
+<a id="getsdkversion"></a>
+## getSdkVersion
+
+```java
+public static String getSdkVersion()
+```
+
+获取 SDK 的版本信息。
+
+#### 返回值
+
+方法调用成功时，返回 SDK 的版本信息。
+方法调用失败，返回空字符串。
+
+<a id="setlogfile"></a>
+## setLogFile
+
+```java
+public int setLogFile(String filePath, int fileSize)
+```
+
+设置 SDK 日志文件的路径和大小。
+
+SDK 在运行期间会将所有日志数据记录在两个日志文件中，每个文件的默认大小为 512 KB。如果将 `fileSize` 设置为 1024 KB，SDK 会输出最大为 2 MB 的日志文件。如果日志文件的总大小超过设置值，新的日志内容将覆盖旧的内容。
+
+:::warning[注意]
+为确保日志输出的完整性，请在调用 [`initialize`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java#initialize) 后立即调用此方法。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `filePath` | `String` | 日志文件的路径。请确保该路径对应的目录具有写权限。 |
+| `fileSize` | `int` | 每个日志文件的大小（字节）。例如，设置为 1024 * 1024 表示每个日志文件大小为 1 MB。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setloglevel"></a>
+## setLogLevel
+
+```java
+public int setLogLevel(Constants.LogLevel level)
+```
+
+设置 SDK 的日志输出等级。
+
+你可以选择一个日志等级，SDK 会输出该等级及以上等级的日志。例如，将日志等级设置为 `WARNING` 时，SDK 会输出 `CRITICAL`、`ERROR` 和 `WARNING` 等级的日志。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `level` | `Constants.LogLevel` | <Slot name="agoraservice-java-html-2-1-2" /> |
+
+<Slot for="agoraservice-java-html-2-1-2">
+
+日志输出等级。
+
+    - `LOG_LEVEL_NONE (0x0000)`：不输出任何日志文件。
+    - `LOG_LEVEL_INFO (0x0001)`：（推荐）输出 INFO 等级的日志文件。
+    - `LOG_LEVEL_WARN (0x0002)`：输出 WARN 等级的日志文件。
+    - `LOG_LEVEL_ERROR (0x0004)`：输出 ERROR 等级的日志文件。
+    - `LOG_LEVEL_FATAL (0x0008)`：输出 FATAL 等级的日志文件。详见 `Constants.LogLevel`。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setgloballocalaccesspoint"></a>
+## setGlobalLocalAccessPoint
+
+```java
+public int setGlobalLocalAccessPoint(LocalAccessPointConfiguration config)
+```
+
+在本地 AP 模式下设置全局本地接入点地址。
+
+你必须在调用 [`initialize`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java#initialize) 方法之前调用该方法。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `config` | `LocalAccessPointConfiguration` | 本地接入点配置对象，详见 [`LocalAccessPointConfiguration`](/zh-CN/api-reference/local-server-recording/java/struct#localaccesspointconfiguration)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
