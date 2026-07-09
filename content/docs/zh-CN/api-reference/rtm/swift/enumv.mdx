@@ -1,0 +1,347 @@
+---
+title: "枚举类"
+---
+
+<a id="areacode"></a>
+## AgoraRtmAreaCode
+
+访问区域，即 SDK 连接的服务器所在的区域。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `CN`    |       `0x00000001`: 中国大陆。    |
+|   `NA`    |       `0x00000002`: 北美区域。    |
+|   `EU`    |       `0x00000004`: 欧洲区域。    |
+|   `AS`    |       `0x00000008`: 除中国大陆以外的亚洲区域。       |
+|   `JP`    |       `0x00000010`: 日本。    |
+|   `IN`    |       `0x00000020`: 印度。    |
+|   `GLOB`  |         `0xFFFFFFFF`: 全球。  |
+
+<a id="channeltype"></a>
+## AgoraRtmChannelType
+
+频道类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `message`  | `1`: Message Channel         |
+|    `stream`  | `2`: Stream Channel       |
+| `user` | `3`: User Channel |
+
+<a id="connectionreason"></a>
+## AgoraRtmClientConnectionChangeReason
+
+SDK 连接状态改变的原因。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `connecting`  | `0`: 建立网络连接中。         |
+|    `joinSuccess`  | `1`: 成功加入频道。         |
+|    `interrupted`  | `2`: 网络连接中断。        |
+|    `bannedByServer`  | `3`: 网络连接被服务器禁止。                    |
+|    `joinFailed`  | `4`: SDK 连续 20 分钟无法加入频道，停止重连频道。        |
+|    `leaveChannel`  | `5`: 离开频道。            |
+|    `invalidAppId`  | `6`: 不是有效的 App ID，无法加入频道。   |
+|    `invalidChannelName`  | `7`: 不是有效的频道名，无法加入频道。     |
+|    `invalidToken`  | `8`: Token 无效，无法加入频道。   |
+|    `tokenExpired`  | `9`: Token 过期，无法加入频道。  |
+|    `rejectedByServer`  | `10`: 被服务器禁止连接。    |
+|    `settingProxyServer`  | `11`: 由于设置了代理服务器，SDK 尝试重连。    |
+|    `renewToken`  | `12`: 更新 Token 引起网络连接状态改变。        |
+|    `clientIpAddressChanged`  | `13`: 由于网络类型，或网络运营商的 IP 或端口发生改变，客户端 IP 地址变更，SDK 尝试重连。  |
+|    `keepAliveTimeout`  | `14`: SDK 和服务器连接保活超时，进入自动重连状态。  |
+|    `rejoinSuccess`  | `15`: 重新加入频道成功。  |
+|    `changedLost`  | `16`: SDK 丢失与服务器的连接。      |
+|    `echoTest`  | `17`: 通话回声测试引起连接状态改变。       |
+|    `clientIpAddressChangedByUser`  | `18`: 用户变更客户端 IP 地址，SDK 尝试重连。     |
+|    `sameUidLogin`  | `19`: 使用相同的用户 ID 从不同的设备加入同一频道。     |
+|    `tooManyBroadcasters`  | `20`: 频道内主播人数已达上限。    |
+|    `licenseValidationFailure`  | `21`: License 校验失败。    |
+|    `certificationVerifyFailure`  | `22`: 服务器证书校验失败。    |
+|    `streamChannelNotAvailable`  | `23`: Stream Channel 不存在。    |
+|    `inconsistentAppId`  | `24`: App ID 与 Token 不匹配。    |
+|    `loginSuccess`  | `10001`: SDK 登录 RTM 系统成功。    |
+|    `logout`  | `10002`: SDK 已退出 RTM 系统。    |
+|    `presenceNotReady`  | `10003`: Presence 服务未就绪。你需要重新调用 `login` 方法登录 RTM 系统并重新执行对 SDK 的所有操作。    |
+
+<a id="connectionstate"></a>
+## AgoraRtmClientConnectionState
+
+SDK 连接状态。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `disconnected`  | `1`: SDK 已和服务器断开连接。         |
+|    `connecting`  | `2`: SDK 正在连接服务器。         |
+|    `connected`  | `3`: SDK 已连上服务器。         |
+|    `reconnecting`  | `4`: SDK 和服务器断开连接，正在重新连接服务器。                     |
+|    `failed`  | `5`: SDK 无法连接服务器。           |
+
+<a id="encryptionmode"></a>
+## AgoraRtmEncryptionMode
+
+加密方式。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `none`  |         `0`: 不加密。                    |
+|   `AES128GCM`    |      `1`: 128 位 AES 加密，GCM 模式。      |
+|   `AES256GCM`    |      `2`: 256 位 AES 加密，GCM 模式。       |
+
+<a id="joinchannelfeature"></a>
+## AgoraRtmJoinChannelFeature
+
+加入频道时设置的事件通知类型，你可以通过位操作同时设置多种事件通知。
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `presence` | `1`: 设置 Presence 事件通知。 |
+| `metadata` | `1 << 1`: 设置 Storage 事件通知。 |
+| `lock` | `1 << 2`: 设置 Lock 事件通知。 |
+| `beQuiet` | <Slot name="enumv-android-ios-cpp-flutter-swift-harmonyos-html-0-4-1" /> |
+
+<Slot for="enumv-android-ios-cpp-flutter-swift-harmonyos-html-0-4-1">
+
+`1 << 3`: 设置静默模式。该模式的行为如下：
+
+    - 不影响你接收频道内其他用户的事件通知。
+    - 频道内其他用户不会收到你加入/离开频道、设置/获取/删除临时状态的事件通知。
+    - 调用 `whoNow` 方法查询不到自己。
+    - 调用 `whereNow` 方法查询不到自己静默加入的频道。
+
+</Slot>
+
+<a id="locktype"></a>
+## AgoraRtmLockEventType
+
+Lock 事件类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `snapshot`  |        `1`: 加入频道时 Lock 的快照信息。        |
+|   `lockSet`    |      `2`: 已设置 Lock。 |
+|   `lockRemoved`  |        `3`: 已删除 Lock。       |
+|   `lockAcquired`    |      `4`: 已获取 Lock。 |
+|   `lockReleased`  |        `5`: 已释放 Lock。        |
+|   `lockExpired`    |      `6`: Lock 已过期。 |
+
+<a id="loglevel"></a>
+## AgoraRtmLogLevel
+
+日志信息的输出等级。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `none`  |         `0x0000`: 不输出任何日志。                     |
+|   `info`    |       `0x0001`: 输出 `fatal`、`error`、`warn`、`info` 级别的日志。我们推荐你将日志级别设为该等级。      |
+|   `warn`    |       `0x0002`: 仅输出 `fatal`、`error`、`warn` 级别的日志。        |
+|   `error`    |      `0x0004`: 仅输出 `fatal`、`error` 级别的日志。      |
+|   `fatal`    |      `0x0008`: 仅输出 `fatal` 级别的日志。      |
+
+<a id="messagepriority"></a>
+## AgoraRtmMessagePriority
+
+消息优先级。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `highest` | `0`: 优先级最高。          |
+|    `high`  | `1`: 优先级高。        |
+|    `normal`  | `4`: 优先级正常。          |
+|    `low`  | `8`: 优先级低。        |
+
+<a id="messageqos"></a>
+## AgoraRtmMessageQos
+
+发送 Topic 消息时的 QoS 保障。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `unordered`  | `0`: 消息数据到达时不保序。          |
+|    `ordered`  | `1`: 消息数据到达时保序。          |
+
+<a id="presencetype"></a>
+## AgoraRtmPresenceEventType
+
+Presence 事件类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `snapshot`  |        `1`: 加入频道时 Presence 的快照信息。                   |
+|   `interval`    |      `2`: 当频道内人数达到设定值后，频道内的事件通知将由实时通知转为定时通知。      |
+|   `remoteJoinChannel`    |      `3`: 远端用户加入频道。      |
+|   `remoteLeaveChannel`  |        `4`: 远端用户离开频道。                   |
+|   `remoteConnectionTimeout`    |      `5`: 远端用户连接超时。      |
+|   `remoteStateChanged`    |    `6`: 远端用户的临时用户状态改变。      |
+|   `errorOutOfService`    |    `7`: 用户加入频道时未启用 Presence。      |
+
+<a id="linkoperation"></a>
+## AgoraRtmLinkOperation
+
+操作类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `login`  |        `0`: 登录。                  |
+|   `logout`    |      `1`: 登出。      |
+|   `join`    |      `2`: 加入 Stream Channel。      |
+|   `leave`    |      `3`: 离开 Stream Channel。      |
+|   `serverReject`    |      `4`: 服务器拒绝。      |
+|   `autoReconnect`    |      `5`: 自动重连。      |
+|   `reconnected`    |      `6`: 已重连。      |
+|   `heartbeatTimeout`    |      `7`: 超时未收到心跳包。      |
+|   `serverTimeout`    |      `8`: 服务器超时。      |
+|   `networkChange`    |      `9`: 网络发生变化。      |
+
+<a id="linkstate"></a>
+## AgoraRtmLinkState
+
+连接状态类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `idle`  |        `0`: 初始状态。                  |
+|   `connecting`    |      `1`: 正在连接。      |
+|   `connected`    |      `2`: 已连接。      |
+|   `disconnected`    |      `3`: 已断开连接。      |
+|   `suspended`    |      `4`: 挂起状态。     |
+|   `failed`    |      `5`: 连接失败。      |
+
+<a id="linkstatechangereason"></a>
+## AgoraRtmLinkStateChangeReason
+
+连接状态改变的原因。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `unknown`  |        `0`: 未知原因。                  |
+|   `login`    |      `1`: 正在登录。      |
+|   `loginSuccess`    |      `2`: 登录成功。      |
+|   `loginTimeout`    |      `3`: 登录超时。      |
+|   `loginNotAuthorized`    |      `4`: 登录未授权。      |
+|   `loginRejected`    |      `5`: 登录被拒绝。      |
+|   `relogin`    |      `6`: 重新登录。      |
+|   `logout`    |      `7`: 登出。      |
+|   `autoReconnect`    |      `8`: 自动重连。      |
+|   `reconnectTimeout`    |      `9`: 重连超时。      |
+|   `reconnectSuccess`    |      `10`: 重连成功。      |
+|   `join`    |      `11`: 正在加入频道。      |
+|   `joinSuccess`    |      `12`: 加入频道成功。      |
+|   `joinFailed`    |      `13`: 加入频道失败。      |
+|   `rejoin`    |      `14`: 重新加入频道。      |
+|   `leave`    |      `15`: 离开频道。      |
+|   `invalidToken`    |      `16`: Token 无效。      |
+|   `tokenExpired`    |      `17`: Token 过期。      |
+|   `inconsistentAppId`    |      `18`: App ID 不一致。      |
+|   `invalidChannelName`    |      `19`: 频道名无效。      |
+|   `invalidUserId`    |      `20`: 用户 ID 无效。      |
+|   `notInitialized`    |      `21`: SDK 未初始化。      |
+|   `rtmServiceNotConnected`    |      `22`: RTM 服务未连接。      |
+|   `channelInstanceExceedLimitation`    |      `23`: 频道实例超出限制。      |
+|   `operationRateExceedLimitation`    |      `24`: 操作频率超出限制。      |
+|   `channelInErrorState`    |      `25`: 频道处于错误状态。      |
+|   `presenceNotConnected`    |      `26`: Presence 服务未连接。      |
+|   `sameUidLogin`    |      `27`: 使用相同用户 ID 登录。      |
+|   `kickedOutByServer`    |      `28`: 被服务器踢出。      |
+|   `keepAliveTimeout`    |      `29`: 心跳超时。      |
+|   `connectionError`    |      `30`: 连接错误。      |
+|   `presenceNotReady`    |      `31`: Presence 服务未就绪。      |
+|   `networkChange`    |      `32`: 网络发生变化。      |
+|   `serviceNotSupported`    |      `33`: 服务不支持。      |
+|   `streamChannelNotAvailable`    |      `34`: Stream Channel 不存在。      |
+|   `storageNotAvailable`    |      `35`: Storage 服务不可用。      |
+|   `lockNotAvailable`    |      `36`: Lock 服务不可用。      |
+|   `loginTooFrequent`  | `37`: 登录操作太频繁。|
+
+<a id="protocoltype"></a>
+## AgoraRtmProtocolType
+
+消息传输协议类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `tcpUdp`  |        `0`: TCP 和 UDP 协议。                  |
+|   `tcpOnly`    |      `1`: 仅 TCP 协议，即双环境都是 TCP 协议。      |
+
+<a id="rtmservicetype"></a>
+## AgoraRtmServiceType
+
+服务类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `message`  |          基础服务，包含 Message Channel、User Channel、Presence、Storage 和 Lock 服务。                    |
+|   `stream`    |       Stream Channel 服务。      |
+
+:::info[信息]
+如需使用 RTM 的全部服务，你可以使用位操作同时设置两种服务类型。
+:::
+
+<a id="proxytype"></a>
+## AgoraRtmProxyType
+
+代理类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `none`  |         `0`: 不开启 Proxy。                    |
+|   `http`    |       `1`: 开启 HTTP 协议的 Proxy。      |
+|   `cloudTcp`    |       `2`: 开启 TCP 协议的 Cloud Proxy。      |
+
+<a id="storageeventtype"></a>
+## AgoraRtmStorageEventType
+
+Storage 事件类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+| `snapshot` | `1`: 用户第一次订阅 Channl Metadata 或 User Metadata，或加入频道时触发，本地用户会收到此类事件通知。 |
+|   `set`    | `2`: 当调用 `setChannelMetadata` 或者 `setUserMetadata` 时触发。该事件仅在增量数据更新模式下返回。 |
+|  `update`  | `3`: 当调用设置、更新或删除 Channel Metadata 或 User Metadata 的方法时会返回该类型事件。|
+|  `remove`  | `4`: 当调用 `removeChannelMetadata` 或者 `removeUserMetadata` 时触发。该事件仅在增量数据更新模式下返回。  |
+
+<a id="storagetype"></a>
+## AgoraRtmStorageType
+
+Storage 类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `user`  |        `1`: User Metadata 事件。         |
+|   `channel`    |      `2`: Channel Metadata 事件。 |
+
+<a id="subscribechannelfeature"></a>
+## AgoraRtmSubscribeChannelFeature
+
+订阅频道时设置的事件通知类型，你可以通过位操作同时设置多种事件通知。
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `` | `0`: 不设置事件通知。 |
+| `presence` | `1`: 设置 Presence 事件通知。 |
+| `metadata` | `1 << 1`: 设置 Storage 事件通知。 |
+| `message` | `1 << 2`: 设置消息事件通知。 |
+| `lock` | `1 << 3`: 设置 Lock 事件通知。 |
+| `beQuiet` | <Slot name="enumv-android-ios-cpp-flutter-swift-harmonyos-html-1-6-1" /> |
+
+<Slot for="enumv-android-ios-cpp-flutter-swift-harmonyos-html-1-6-1">
+
+`1 << 4`: 设置静默模式。该模式的行为如下：
+
+    - 不影响你接收频道内其他用户的事件通知。
+    - 频道内其他用户不会收到你订阅/取消订阅频道、设置/获取/删除临时状态的事件通知。
+    - 调用 `whoNow` 方法查询不到自己。
+    - 调用 `whereNow` 方法查询不到自己静默订阅的频道。
+
+</Slot>
+
+<a id="topictype"></a>
+## AgoraRtmTopicEventType
+
+Topic 事件类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `snapshot`  |   `1`: 加入频道时 Topic 的快照信息。                  |
+|   `remoteJoinTopic`    | `2`: 远端用户加入 Topic。      |
+|   `remoteLeaveTopic`    |  `3`: 远端用户离开 Topic。      |

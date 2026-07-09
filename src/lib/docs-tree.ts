@@ -519,20 +519,40 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
   ];
 }
 
-export function getPrevNextLinks(root: Root, currentUrl: string) {
-  const neighbours = findNeighbour(root, currentUrl);
+type PageUrlPredicate = (url: string) => boolean;
+
+export function getPrevNextLinks(
+  root: Root,
+  currentUrl: string,
+  isValidPageUrl?: PageUrlPredicate,
+) {
+  if (!isValidPageUrl) {
+    const neighbours = findNeighbour(root, currentUrl);
+
+    return {
+      next: neighbours.next ? mapPageLink(neighbours.next) : undefined,
+      previous: neighbours.previous
+        ? mapPageLink(neighbours.previous)
+        : undefined,
+    };
+  }
+
+  const pages = collectPageTreeItems(root, isValidPageUrl);
+  const index = pages.findIndex((item) => item.url === currentUrl);
+
+  const next = index >= 0 ? pages[index + 1] : undefined;
+  const previous = index >= 0 ? pages[index - 1] : undefined;
 
   return {
-    next: neighbours.next ? mapPageLink(neighbours.next) : undefined,
-    previous: neighbours.previous
-      ? mapPageLink(neighbours.previous)
-      : undefined,
+    next: next ? mapPageLink(next) : undefined,
+    previous: previous ? mapPageLink(previous) : undefined,
   };
 }
 
 export function getPrevNextLinksFromNode(
   node: Folder | Root,
   currentUrl: string,
+  isValidPageUrl?: PageUrlPredicate,
 ) {
   if (node.type === 'folder') {
     return getPrevNextLinks(
@@ -541,10 +561,36 @@ export function getPrevNextLinksFromNode(
         name: 'Scoped root',
       },
       currentUrl,
+      isValidPageUrl,
     );
   }
 
-  return getPrevNextLinks(node, currentUrl);
+  return getPrevNextLinks(node, currentUrl, isValidPageUrl);
+}
+
+function collectPageTreeItems(
+  node: Node | Root,
+  isValidPageUrl: PageUrlPredicate,
+): Item[] {
+  if ('type' in node && node.type === 'page') {
+    return isValidPageUrl(node.url) ? [node] : [];
+  }
+
+  if ('type' in node && node.type !== 'folder') {
+    return [];
+  }
+
+  const items: Item[] = [];
+
+  if ('index' in node && node.index && isValidPageUrl(node.index.url)) {
+    items.push(node.index);
+  }
+
+  for (const child of node.children) {
+    items.push(...collectPageTreeItems(child, isValidPageUrl));
+  }
+
+  return items;
 }
 
 export function getSidebarBreadcrumb(

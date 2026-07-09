@@ -1,0 +1,308 @@
+---
+title: "锁"
+---
+
+临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。
+
+:::info[信息]
+客户端 SDK 具备设置、删除、撤销锁的能力，我们建议你根据实际业务需求控制端侧对锁的操作权限。
+:::
+
+## setLock
+
+### 接口描述
+
+你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `AgoraRtmLockEventTypeLockSet` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `setLock` 方法：
+
+```objc
+-(void) setLock: (NSString * _Nonnull) channelName
+    channelType: (AgoraRtmChannelType) channelType
+       lockName: (NSString * _Nonnull) lockName
+            ttl: (int) ttl
+     completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
+| `lockName` | NSString | 必填 | - | 锁的名称。 |
+| `ttl` | int | 选填 | `10` | 设置锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `didReceiveLockEvent` 事件通知的用户会收到 `AgoraRtmLockEventTypeLockReleased` 事件。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-ios-html-0-5-4" /> |
+
+<Slot for="lock-ios-html-0-5-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```objc
+long ttl = 30;
+[[rtm getLock] setLock:@"my_channel" channelType:AgoraRtmChannelTypeStream lockName:@"my_lock" ttl:ttl completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"setLock success!!");
+    } else {
+        NSLog(@"setLock failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## acquireLock
+
+### 接口描述
+
+成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `AgoraRtmLockEventTypeLockAcquired` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `acquireLock` 方法：
+
+```objc
+-(void) acquireLock: (NSString * _Nonnull) channelName
+        channelType: (AgoraRtmChannelType)channelType
+           lockName: (NSString * _Nonnull) lockName
+              retry: (BOOL) retry
+         completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
+| `lockName` | NSString | 必填 | - | 锁的名称。 |
+| `retry` | BOOL | 必填 | - | 设置在获取锁失败后是否继续尝试，直到成功获取或退出频道为止。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-ios-html-1-5-4" /> |
+
+<Slot for="lock-ios-html-1-5-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```objc
+BOOL retry = false;
+[[rtm getLock] acquireLock:@"my_channel" channelType:AgoraRtmChannelTypeStream lockName:@"my_lock" retry:retry completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"acquireLock success!!");
+    } else {
+        NSLog(@"acquireLock failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## releaseLock
+
+### 接口描述
+
+当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `AgoraRtmLockEventTypeLockReleased` 类型的 `didReceiveLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
+
+此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
+
+### 接口方法
+
+你可以通过以下方式调用 `releaseLock` 方法：
+
+```objc
+-(void) releaseLock: (NSString * _Nonnull) channelName
+        channelType: (AgoraRtmChannelType)channelType
+           lockName: (NSString * _Nonnull) lockName
+         completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
+| `lockName` | NSString | 必填 | - | 锁的名称。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-ios-html-2-4-4" /> |
+
+<Slot for="lock-ios-html-2-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```objc
+[[rtm getLock] releaseLock:@"my_channel" channelType:AgoraRtmChannelTypeStream lockName:@"my_lock" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"releaseLock success!!");
+    } else {
+        NSLog(@"releaseLock failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## revokeLock
+
+### 接口描述
+
+当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `AgoraRtmLockEventTypeLockReleased` 类型的 `didReceiveLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
+
+此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
+
+### 接口方法
+
+你可以通过以下方式调用 `revokeLock` 方法：
+
+```objc
+-(void) revokeLock: (NSString * _Nonnull) channelName
+       channelType: (AgoraRtmChannelType)channelType
+          lockName: (NSString * _Nonnull) lockName
+            userId: (NSString * _Nonnull) userId
+        completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
+| `lockName` | NSString | 必填 | - | 锁的名称。 |
+| `userId` | NSString | 必填 | - | 拥有锁的用户 ID。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-ios-html-3-5-4" /> |
+
+<Slot for="lock-ios-html-3-5-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```objc
+[[rtm getLock] revokeLock:@"my_channel" channelType:AgoraRtmChannelTypeStream lockName:@"my_lock" userId:@"lock_owner" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"revokeLock success!!");
+    } else {
+        NSLog(@"revokeLock failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## getLocks
+
+### 接口描述
+
+如果你需要查询频道中锁的数量、名称、使用者、过期时间等信息，在客户端调用 `getLocks` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getLocks` 方法：
+
+```objc
+-(void) getLocks: (NSString * _Nonnull) channelName
+     channelType: (AgoraRtmChannelType)channelType
+      completion: (AgoraRtmGetLocksBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
+| `completion` | `AgoraRtmGetLocksBlock` | 选填 | - | <Slot name="lock-ios-html-4-3-4" /> |
+
+<Slot for="lock-ios-html-4-3-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmGetLocksResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmGetLocksResponse` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `lockDetailList`         |         `NSArray<AgoraRtmLockDetail *>`         | 锁详情数组。               |
+
+`AgoraRtmLockDetail` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `LockName`         |         NSString         | Lock 的名称。               |
+| `owner`    | NSString  | 拥有锁的用户 ID。   |
+| `ttl`    | int | 锁的过期时间。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `didReceiveLockEvent` 事件通知的用户会收到 `AgoraRtmLockEventTypeLockReleased` 事件。      |
+
+### 基本用法
+
+```objc
+[[rtm getLock] getLocks:@"my_channel" channelType:AgoraRtmChannelTypeStream completion:^(AgoraRtmGetLocksResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"revokeLock success!!");
+        NSArray<AgoraRtmLockDetail *> * lock_infos = response.lockDetailList;
+        for (int i = 0 ; i < lock_infos.count; i++) {
+            NSLog(@"lock name: %@, lock owner:%@, ttl: %d", lock_infos[i].lockName, lock_infos[i].owner, lock_infos[i].ttl);
+        }
+
+    } else {
+        NSLog(@"revokeLock failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## removeLock
+
+### 接口描述
+
+如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `AgoraRtmLockEventTypeLockRemoved` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeLock` 方法：
+
+```objc
+-(void) removeLock: (NSString * _Nonnull) channelName
+       channelType: (AgoraRtmChannelType)channelType
+          lockName: (NSString * _Nonnull) lockName
+        completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
+| `lockName` | NSString | 必填 | - | 锁的名称。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-ios-html-5-4-4" /> |
+
+<Slot for="lock-ios-html-5-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```objc
+[[rtm getLock] removeLock:@"my_channel" channelType:AgoraRtmChannelTypeStream lockName:@"my_lock" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"removeLock success!!");
+    } else {
+        NSLog(@"removeLock failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
