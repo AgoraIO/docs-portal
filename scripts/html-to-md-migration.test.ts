@@ -120,6 +120,7 @@ async function expectLaneDryRunAndMigration({
   platform,
   product,
   sourceDir,
+  unexpectedDryRunPaths = [],
 }: {
   detected: string;
   expectedMetaPages: string[];
@@ -128,6 +129,7 @@ async function expectLaneDryRunAndMigration({
   platform: string;
   product: string;
   sourceDir: string;
+  unexpectedDryRunPaths?: string[];
 }) {
   const dryOutputDir = `${outputDir}-dry`;
   const dryOutput = runMigration([
@@ -148,6 +150,9 @@ async function expectLaneDryRunAndMigration({
   expect(dryOutput).toContain(path.join(dryOutputDir, 'meta.json'));
   for (const relativePath of Object.keys(expectedPageContents)) {
     expect(dryOutput).toContain(path.join(dryOutputDir, relativePath));
+  }
+  for (const relativePath of unexpectedDryRunPaths) {
+    expect(dryOutput).not.toContain(path.join(dryOutputDir, relativePath));
   }
   await expect(pathExists(dryOutputDir)).resolves.toBe(false);
 
@@ -355,18 +360,53 @@ async function writeDoxygenFixture(sourceDir: string) {
     `<!doctype html>
 <html>
   <body>
+    <div class="header">
+      <div class="headertitle"><div class="title">Client Class Reference</div></div>
+    </div>
     <div class="contents">
-      <div class="title">Client Class Reference</div>
-      <p>Back to <a href="annotated.html">all classes</a>.</p>
+      <a name="details" id="details"></a>
+      <h2 class="groupheader">Detailed Description</h2>
+      <div class="textblock"><p>Back to <a href="annotated.html">all classes</a>.</p></div>
+      <h2 class="groupheader">Member Function Documentation</h2>
       <a id="join"></a>
-      <h2>join</h2>
-      <table>
-        <tr><th>Parameter</th><th>Description</th></tr>
-        <tr><td>channel</td><td>Channel name</td></tr>
-      </table>
+      <h2 class="memtitle"><span class="permalink"><a href="#join">◆</a></span>join()</h2>
+      <div class="memitem">
+        <div class="memproto">
+          <table class="memname">
+            <tr>
+              <td class="memname">int agora::rtc::Client::join </td>
+              <td>(</td>
+              <td class="paramtype">const char * </td>
+              <td class="paramname"><em>channel</em></td>
+              <td>)</td>
+            </tr>
+          </table>
+        </div>
+        <div class="memdoc">
+          <p>Joins a channel.</p>
+          <dl class="params"><dt>Parameters</dt><dd>
+            <table class="params">
+              <tr><td class="paramname">channel</td><td>Channel name</td></tr>
+            </table>
+          </dd></dl>
+          <dl class="section return"><dt>Returns</dt><dd>Zero on success.</dd></dl>
+        </div>
+      </div>
     </div>
   </body>
 </html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'class_agora_1_1rtc_1_1_client-members.html'),
+    '<!doctype html><html><body><h1>All members</h1></body></html>',
+  );
+  await writeFixture(
+    path.join(sourceDir, 'class_agora_1_1rtc_1_1_client_source.html'),
+    '<!doctype html><html><body><h1>Source</h1></body></html>',
+  );
+  await writeFixture(
+    path.join(sourceDir, 'functions.html'),
+    '<!doctype html><html><body><h1>Functions</h1></body></html>',
   );
 }
 
@@ -1037,14 +1077,25 @@ describe('html-to-md-migration', () => {
           'title: "Client Class Reference"',
           '[all classes](/api-reference/rtc/cpp/annotated)',
           '<a id="join"></a>',
-          '| Parameter | Description |',
+          '## Member Function Documentation',
+          '### join()',
+          '```cpp\nint agora::rtc::Client::join(const char* channel)\n```',
+          'Joins a channel.',
+          '#### Parameters',
           '| channel | Channel name |',
+          '#### Returns',
+          'Zero on success.',
         ],
       },
       outputDir,
       platform: 'cpp',
       product: 'rtc',
       sourceDir,
+      unexpectedDryRunPaths: [
+        'class-agora-1-1rtc-1-1-client-members.mdx',
+        'class-agora-1-1rtc-1-1-client-source.mdx',
+        'functions.mdx',
+      ],
     });
   });
 
