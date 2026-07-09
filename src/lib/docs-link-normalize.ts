@@ -183,7 +183,7 @@ function getLegacyConversationalAiRestPath(segments: string[]) {
 
   if (group === 'authentication' || group === 'status-codes') {
     return group === 'status-codes' && locale === 'zh-CN'
-      ? `/${locale}/api-reference/response-code`
+      ? `/${locale}/ai/api/response-code`
       : `/${locale}/api-reference/api-ref/conversational-ai/${group}`;
   }
 

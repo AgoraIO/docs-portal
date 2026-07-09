@@ -1,0 +1,1039 @@
+---
+title: "存储"
+---
+
+**Storage** 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据。
+
+## SetChannelMetadataAsync
+
+### 接口描述
+
+`SetChannelMetadataAsync` 方法可以为频道（Message 或 Stream）设置 Channel Metadata。一个频道只能有一组 Metadata，但每组 Metadata 可以有一个或多个 Metadata Item。如果多次调用该方法，SDK 会依次检索 Metadata Item 的 `key` 值，并按如下规则处理：
+
+- 如果设置的 Metadata Item `key` 值不同，则会根据调用顺序依次增加。
+- 如果设置的 Metadata Item `key` 值相同，则最后一次设置的 Metadata Item 的 `value` 会覆盖之前的值。
+
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
+
+Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `data` 中的 `majorRevision` 属性开启整组 Channel Metadata 的版本号校验。
+- 通过 `data` 中单个 Metadata Item 的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+设置 Channel Metadata 或 Metadata Item 时，配合版本属性可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则该值会被最新值覆盖；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会创建该值。
+- 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；否则 SDK 会返回错误码.
+
+### 接口方法
+
+你可以通过以下方式调用 `SetChannelMetadataAsync` 方法：
+
+```csharp
+RtmResult<SetChannelMetadataResult> rtmClient.GetStorage().SetChannelMetadataAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    RtmMetadata data,
+    MetadataOptions options,
+    string lockName
+    );
+```
+
+|     参数      |        类型         | 是否必填 | 默认值 | 描述              |
+| ---------- | ---- | ----- | --- | ------- |
+| `channelName` |       string        |   必填   |   -    | 频道名称。        |
+| `channelType` |                       `RTM_CHANNEL_TYPE`  |   必填   |   -    | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#channeltype)。               |
+|    `data`     |    `RtmMetadata`     |   必填   |   -    | Channel Metadata Item 数组。   |
+|   `options`   | `MetadataOptions` |   选填   |   -    | Channel Metadata 配置选项。    |
+|  `lockName`   |       string        |   选填   |   -    | Lock 的名称。设置后，只有调用 `AcquireLockAsync` 方法获取该锁的用户才有权限修改 Channel Metadata。 |
+
+`RtmMetadata` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `majorRevision` | Int64 | 选填 | `-1` | <Slot name="storage-unity-html-0-1-4" /> |
+| `metadataItems` | `MetadataItem[]` | 必填 | - | Channel Metadata Item 数组。 |
+| `metadataItemsSize` | UInt64 | 必填 | - | `MetadataItem[]` 数组的长度。 |
+
+<Slot for="storage-unity-html-0-1-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`MetadataItem`  包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | string | 必填 | - | 键。 |
+| `value` | string | 必填 | - | 值。 |
+| `authorUserId` | string | 必填 | - | 编辑者的用户 ID。该值为只读，不支持写入。 |
+| `revision` | Int64 | 选填 | `-1` | <Slot name="storage-unity-html-1-4-4" /> |
+| `updateTs` | Int64 | 选填 | `0` | 更新时间戳。该值为只读，不支持写入。 |
+
+<Slot for="storage-unity-html-1-4-4">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      - `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才执行操作。
+
+</Slot>
+
+`MetadataOptions` 包含以下属性：
+
+|      属性      | 类型 | 是否必填 | 默认值  | 描述                      |
+| ----------- | - | ----- | ---- | ----------- |
+|   `recordTs`   | Bool |   选填   | `false` | 是否记录编辑的时间戳。    |
+| `recordUserId` | Bool |   选填   | `false` | 是否记录编辑者的用户 ID。 |
+
+### 基本用法
+
+```csharp
+var metadata = new RtmMetadata();
+metadata.majorRevision = 174298270;
+var apple = new MetadataItem()
+            {
+                key = "Apple",
+                value = "100",
+                revision = 174298200,
+            };
+var banana = new MetadataItem()
+            {
+                key = "Banana",
+                value = "200",
+                revision = 174298100,
+            };
+metadata.metadataItems = new MetadataItem[] { apple, banana };
+metadata.metadataItemsSize = 2;
+var metadataOptions = new MetadataOptions()
+            {
+                recordUserId = true,
+                recordTs = true
+            };
+var lockName = "lockName";
+
+var (status,respones) = await rtmClient.GetStorage().SetChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, metadata, metadataOptions, lockName);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Set Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+### 返回值
+
+`SetChannelMetadataAsync` 操作返回一个 `RtmResult<SetChannelMetadataResult>` 类型数据结构的返回值，其中包含：
+
+|    属性    |     类型     | 描述        |
+| ------- | -------------- | ----------- |
+|  `Status`  | `RtmStatus` | 无论操作是否成功，都返回一个 `RtmStatus` 类型的数据结构，其中包含本次操作的状态。 |
+| `Response` |                `SetChannelMetadataResult`                | 操作成功后，返回一个 `SetChannelMetadataResult` 类型的数据结构，其中包含本次操作的执行结果。             |
+
+`RtmStatus` 包含以下属性：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+`SetChannelMetadataResult` 包含以下属性：
+
+|     属性      |        类型        | 描述     |
+| ---------- | --------------- | ------ |
+| `ChannelName` |       string       | 频道名称。                   |
+| `ChannelType` | `RTM_CHANNEL_TYPE` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#channeltype)。 |
+
+## GetChannelMetadataAsync
+
+### 接口描述
+
+`GetChannelMetadataAsync` 方法可以获取指定频道的 Metadata。
+
+### 接口方法
+
+你可以通过以下方式调用 `GetChannelMetadataAsync` 方法：
+
+```cs
+RtmResult<GetChannelMetadataResult> rtmClient.GetStorage().GetChannelMetadataAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType
+    );
+```
+
+|     参数      |        类型        | 是否必填 | 默认值 | 描述     |
+| ---------- | --------------- | ----- | --- | ------- |
+| `channelName` |       string       |   必填   |   -    | 频道名称。                   |
+| `channelType` | `RTM_CHANNEL_TYPE` |   必填   |   -    | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#channeltype)。 |
+
+### 基本用法
+
+```csharp
+var (status,respones) = await rtmClient.GetStorage().GetChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Get Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+    var data =  response.data;
+    if (data.metadataItemsSize != 0)
+    {
+        Debug.Log(string.Format("Channel Metadata Major Revision is :{0} ! ", data.majorRevision));
+        for ( int i =0; i < data.metadataItemsSize; i++)
+        {
+            Debug.Log(string.Format("The {0}'th iterms Key is:{1}, Value is {2} ! ", i, data.metadataItems[i].key, data.metadataItems[i].value));
+        }
+    }
+}
+```
+
+### 返回值
+
+`GetChannelMetadataAsync` 操作返回一个 `RtmResult<GetChannelMetadataResult>` 类型数据结构的返回值，其中包含：
+
+|    属性    |     类型     | 描述        |
+| ------- | -------------- | ----------- |
+|  `Status`  | `RtmStatus` | 无论操作是否成功，都返回一个 `RtmStatus` 类型的数据结构，其中包含本次操作的状态。 |
+| `Response` |                `GetChannelMetadataResult`                | 操作成功后，返回一个 `GetChannelMetadataResult` 类型的数据结构，其中包含本次操作的执行结果。             |
+
+`RtmStatus` 包含以下属性：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+`GetChannelMetadataResult` 包含以下属性：
+
+|     属性      |     类型     | 描述     |
+| ---------- | -------------- | ------ |
+| `ChannelName` |    string    | 频道名称。                   |
+| `ChannelType` |                    `RTM_CHANNEL_TYPE`                    | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#channeltype)。 |
+|    `Data`     | `RtmMetadata` | Channel Metadata Item 数组。              |
+
+`RtmMetadata` 包含以下属性：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `majorRevision` | Int64 | <Slot name="storage-unity-html-2-1-2" /> |
+| `metadataItems` | `MetadataItem[]` | Channel Metadata Item 数组。 |
+| `metadataItemsSize` | UInt64 | `MetadataItem[]` 数组的长度。 |
+
+<Slot for="storage-unity-html-2-1-2">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`MetadataItem` 包含以下属性：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `key` | string | 键。 |
+| `value` | string | 值。 |
+| `authorUserId` | string | 编辑者的用户 ID。该值为只读，不支持写入。 |
+| `revision` | Int64 | <Slot name="storage-unity-html-3-4-2" /> |
+| `updateTs` | Int64 | 更新时间戳。该值为只读，不支持写入。 |
+
+<Slot for="storage-unity-html-3-4-2">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      - `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才执行操作。
+
+</Slot>
+
+`MetadataOptions` 包含以下属性：
+
+|      属性      | 类型 | 描述                      |
+| ----------- | - | ----------- |
+|   `recordTs`   | Bool | 是否记录编辑的时间戳。    |
+| `recordUserId` | Bool | 是否记录编辑者的用户 ID。 |
+
+## RemoveChannelMetadataAsync
+
+### 接口描述
+
+`RemoveChannelMetadataAsync` 方法可以删除 Channel Metadata 或 Channel Metadata Item 数组。
+
+删除 Channel Metadata 时，配合版本参数可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本参数为 `-1` 时，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Channel Metadata Item 已存在，则 SDK 会删除该值；如果 Channel Metadata 或 Channel Metadata Item 不存在，则 SDK 会返回错误码。
+- 版本参数为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Channel Metadata Item 已存在，则 SDK 会在版本号验证成功后删除对应值；如果 Channel Metadata 或 Channel Metadata Item 不存在，则 SDK 会返回错误码。
+
+成功删除 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `RemoveChannelMetadataAsync` 方法：
+
+```cs
+RtmResult<RemoveChannelMetadataResult> rtmClient.GetStorage().RemoveChannelMetadataAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    RtmMetadata data,
+    MetadataOptions options,
+    string lockName
+    );
+```
+
+|     参数      |        类型         | 是否必填 | 默认值 | 描述              |
+| ---------- | ---- | ----- | --- | ------- |
+| `channelName` |       string        |   必填   |   -    | 频道名称。        |
+| `channelType` |                       `RTM_CHANNEL_TYPE`  |   必填   |   -    | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#channeltype)。               |
+|    `data`     |    `RtmMetadata`     |   必填   |   -    | Channel Metadata Item 数组。   |
+|   `options`   | `MetadataOptions` |   选填   |   -    | Channel Metadata 配置选项。    |
+|  `lockName`   |       string        |   选填   |   -    | Lock 的名称。设置后，只有调用 `AcquireLockAsync` 方法获取该锁的用户才有权限修改 Channel Metadata。 |
+
+`RtmMetadata` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `majorRevision` | Int64 | 选填 | `-1` | <Slot name="storage-unity-html-4-1-4" /> |
+| `metadataItems` | `MetadataItem[]` | 必填 | - | Channel Metadata Item 数组。 |
+| `metadataItemsSize` | UInt64 | 必填 | - | `MetadataItem[]` 数组的长度。 |
+
+<Slot for="storage-unity-html-4-1-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`MetadataItem`  包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | string | 必填 | - | 键。 |
+| `value` | string | 必填 | - | 值。 |
+| `authorUserId` | string | 必填 | - | 编辑者的用户 ID。该值为只读，不支持写入。 |
+| `revision` | Int64 | 选填 | `-1` | <Slot name="storage-unity-html-5-4-4" /> |
+| `updateTs` | Int64 | 选填 | `0` | 更新时间戳。该值为只读，不支持写入。 |
+
+<Slot for="storage-unity-html-5-4-4">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      - `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才执行操作。
+
+</Slot>
+
+`MetadataOptions` 包含以下属性：
+
+|      属性      | 类型 | 是否必填 | 默认值  | 描述                      |
+| ----------- | - | ----- | ---- | ----------- |
+|   `recordTs`   | Bool |   选填   | `false` | 是否记录编辑的时间戳。    |
+| `recordUserId` | Bool |   选填   | `false` | 是否记录编辑者的用户 ID。 |
+
+### 接口方法
+
+```csharp
+var metadata = new RtmMetadata();
+metadata.majorRevision = 174298270;
+var metadataItem = new MetadataItem()
+            {
+                key = "Apple",
+                revision = 174298200,
+            };
+metadata.metadataItems = new MetadataItem[] { metadataItem };
+metadata.metadataItemsSize = 1;
+var options = new MetadataOptions() { };
+
+var (status,response) = await rtmClient.GetStorage().RemoveChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, oOptions,"");
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+### 返回值
+
+`RemoveChannelMetadataAsync` 操作返回一个 `RtmResult<RemoveChannelMetadataResult>` 类型数据结构的返回值，其中包含：
+
+|    属性    |     类型     | 描述        |
+| ------- | -------------- | ----------- |
+|  `Status`  | `RtmStatus` | 无论操作是否成功，都返回一个 `RtmStatus` 类型的数据结构，其中包含本次操作的状态。 |
+| `Response` |              `RemoveChannelMetadataResult`               | 操作成功后，返回一个 `RemoveChannelMetadataResult` 类型的数据结构，其中包含本次操作的执行结果。          |
+
+`RtmStatus` 包含以下属性：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+`RemoveChannelMetadataResult` 包含以下属性：
+
+|     属性      |        类型        | 描述     |
+| ---------- | --------------- | ------ |
+| `ChannelName` |       string       | 频道名称。                   |
+| `ChannelType` | `RTM_CHANNEL_TYPE` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#channeltype)。 |
+
+## UpdateChannelMetadataAsync
+
+### 接口描述
+
+`UpdateChannelMetadataAsync` 方法可以更新已有的 Channel Metadata。每次调用该方法，你可以更新一个 Channel Metadata，也可以更新一个或多个 Channel Metadata Item 数组。
+
+成功更新 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
+
+:::info[信息]
+该方法不能对不存在的 Channel Metadata 进行操作。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `UpdateChannelMetadataAsync` 方法：
+
+```cs
+RtmResult<UpdateChannelMetadataResult> rtmClient.GetStorage().UpdateChannelMetadataAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    RtmMetadata data,
+    MetadataOptions options,
+    string lockName
+    );
+```
+
+|     参数      |        类型         | 是否必填 | 默认值 | 描述              |
+| ---------- | ---- | ----- | --- | ------- |
+| `channelName` |       string        |   必填   |   -    | 频道名称。        |
+| `channelType` |                       `RTM_CHANNEL_TYPE`  |   必填   |   -    | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#channeltype)。               |
+|    `data`     |    `RtmMetadata`     |   必填   |   -    | Channel Metadata Item 数组。   |
+|   `options`   | `MetadataOptions` |   选填   |   -    | Channel Metadata 配置选项。    |
+|  `lockName`   |       string        |   选填   |   -    | Lock 的名称。设置后，只有调用 `AcquireLockAsync` 方法获取该锁的用户才有权限修改 Channel Metadata。 |
+
+`RtmMetadata` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `majorRevision` | Int64 | 选填 | `-1` | <Slot name="storage-unity-html-6-1-4" /> |
+| `metadataItems` | `MetadataItem[]` | 必填 | - | Channel Metadata Item 数据。 |
+| `metadataItemsSize` | UInt64 | 必填 | - | `MetadataItem[]` 数组的长度。 |
+
+<Slot for="storage-unity-html-6-1-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`MetadataItem`  包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | string | 必填 | - | 键。 |
+| `value` | string | 必填 | - | 值。 |
+| `authorUserId` | string | 必填 | - | 编辑者的用户 ID。该值为只读，不支持写入。 |
+| `revision` | Int64 | 选填 | `-1` | <Slot name="storage-unity-html-7-4-4" /> |
+| `updateTs` | Int64 | 选填 | `0` | 更新时间戳。该值为只读，不支持写入。 |
+
+<Slot for="storage-unity-html-7-4-4">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      - `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才执行操作。
+
+</Slot>
+
+`MetadataOptions` 包含以下属性：
+
+|      属性      | 类型 | 是否必填 | 默认值  | 描述                      |
+| ----------- | - | ----- | ---- | ----------- |
+|   `recordTs`   | Bool |   选填   | `false` | 是否记录编辑的时间戳。    |
+| `recordUserId` | Bool |   选填   | `false` | 是否记录编辑者的用户 ID。 |
+
+### 基本用法
+
+```csharp
+var metadata = new RtmMetadata();
+metadata.majorRevision = 174298270 ;
+var apple = new MetadataItem()
+            {
+                key = "Apple",
+                value = "120",
+                revision = 174298200,
+            };
+var banana = new MetadataItem()
+            {
+                key = "Banana",
+                value = "220",
+                revision = 174298100,
+            };
+metadata.metadataItems = new MetadataItem[] { apple, banana };
+metadata.metadataItemsSize = 2;
+var options = new MetadataOptions()
+            {
+                recordUserId = true,
+                recordTs = true
+            };
+
+var lockName = "lockName";
+
+var (status,response) = await rtmClient.GetStorage().UpdateChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, data, options, lockName);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+### 返回值
+
+`UpdateChannelMetadataAsync` 操作返回一个 `RtmResult<UpdateChannelMetadataResult>` 类型数据结构的返回值，其中包含：
+
+|    属性    |     类型     | 描述        |
+| ------- | -------------- | ----------- |
+|  `Status`  | `RtmStatus` | 无论操作是否成功，都返回一个 `RtmStatus` 类型的数据结构，其中包含本次操作的状态。 |
+| `Response` |              `UpdateChannelMetadataResult`               | 操作成功后，返回一个 `UpdateChannelMetadataResult` 类型的数据结构，其中包含本次操作的执行结果。          |
+
+`RtmStatus` 包含以下属性：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+`UpdateChannelMetadataResult` 包含以下属性：
+
+|     属性      |        类型        | 描述     |
+| ---------- | --------------- | ------ |
+| `ChannelName` |       string       | 频道名称。                   |
+| `ChannelType` | `RTM_CHANNEL_TYPE` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#channeltype)。 |
+
+## SetUserMetadataAsync
+
+### 接口描述
+
+`SetUserMetadataAsync` 方法可以设置 User Metadata。多次调用该方法时，SDK 会依次检索 User Metadata 的名称，并按如下规则处理：
+
+- 如果多次设置的 User Metadata 名称不同，则设置的 User Metadata 会根据调用顺序依次增加。
+- 如果多次设置的 User Metadata 名称相同，则最后一次设置的 User Metadata 会覆盖之前的设置。
+
+成功设置 User Metadata 后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
+
+User Metadata 同时也引进了版本控制逻辑 CAS，该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `RtmMetadata` 中的 `majorRevision` 属性开启整组 User Metadata 的版本号校验。
+- 通过 `RtmMetadata` 中 `MetadataItem` 类的 `revision` 属性开启每个 User Metadata Item 数组的版本号校验。
+
+设置 User Metadata 时，配合版本参数可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本参数默认为 `-1` ，本次调用不开启 CAS 验证。如果 User Metadata 或 User Metadata Item 已存在，则该值会被最新值覆盖；如果 User Metadata 或 User Metadata Item 不存在，则会创建该值。
+- 版本参数为正整数时，本次调用开启 CAS 验证。如果 User Metadata 或 User Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；否则 SDK 会返回错误码。
+
+### 接口方法
+
+你可以通过以下方式调用 `SetUserMetadataAsync` 方法：
+
+```cs
+RtmResult<SetUserMetadataResult> rtmClient.GetStorage().SetUserMetadataAsync(
+    string userId,
+    RtmMetadata data,
+    MetadataOptions options
+    );
+```
+
+|   参数    |        类型         | 是否必填 |       默认值        | 描述                      |
+| ------ | ---- | ----- | ---------------- | ----------- |
+| `userId`  |       string        |   选填   | 当前用户的 `userId` | 用户 ID。                 |
+|  `data`   |    `RtmMetadata`     |   必填   |          -          | User Metadata Item 数组。 |
+| `options` | `MetadataOptions` |   选填   |          -          | User Metadata 配置选项。  |
+
+`RtmMetadata` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `majorRevision` | Int64 | 选填 | `-1` | <Slot name="storage-unity-html-8-1-4" /> |
+| `metadataItems` | `MetadataItem[]` | 必填 | - | User Metadata Item 数组。 |
+| `metadataItemsSize` | UInt64 | 必填 | - | `MetadataItem[]` 数组的长度。 |
+
+<Slot for="storage-unity-html-8-1-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`MetadataItem`  包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | string | 必填 | - | 键。 |
+| `value` | string | 必填 | - | 值。 |
+| `authorUserId` | string | 必填 | - | 编辑者的用户 ID。该值为只读，不支持写入。 |
+| `revision` | Int64 | 选填 | `-1` | <Slot name="storage-unity-html-9-4-4" /> |
+| `updateTs` | Int64 | 选填 | `0` | 更新时间戳。该值为只读，不支持写入。 |
+
+<Slot for="storage-unity-html-9-4-4">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      - `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才执行操作。
+
+</Slot>
+
+`MetadataOptions` 包含以下属性：
+
+|      属性      | 类型 | 是否必填 | 默认值  | 描述                      |
+| ----------- | - | ----- | ---- | ----------- |
+|   `recordTs`   | Bool |   选填   | `false` | 是否记录编辑的时间戳。    |
+| `recordUserId` | Bool |   选填   | `false` | 是否记录编辑者的用户 ID。 |
+
+### 基本用法
+
+```csharp
+var metadata = new RtmMetadata();
+metadata.majorRevision = 174298270;
+var name = new MetadataItem()
+            {
+                key = "Name",
+                value = "Tony",
+                revision = 174298200,
+            };
+var mute = new MetadataItem()
+            {
+                key = "Mute",
+                value = "true",
+                revision = 174298100,
+            };
+metadata.metadataItems = new MetadataItem[] { name, mute };
+metadata.metadataItemsSize = 2;
+var options = new MetadataOptions()
+            {
+                recordUserId = true,
+                recordTs = true
+            };
+
+var (status,response) = await rtmClient.GetStorage().SetUserMetadataAsync("Tony",  rtmMetadata, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Set user :{0} metadata success! ", response.UserId));
+}
+```
+
+### 返回值
+
+`SetUserMetadataAsync` 操作返回一个 `RtmResult<SetUserMetadataResult>` 类型数据结构的返回值，其中包含：
+
+|    属性    |     类型     | 描述        |
+| ------- | -------------- | ----------- |
+|  `Status`  | `RtmStatus` | 无论操作是否成功，都返回一个 `RtmStatus` 类型的数据结构，其中包含本次操作的状态。 |
+| `Response` |                 `SetUserMetadataResult`                  | 操作成功后，返回一个 `SetUserMetadataResult` 类型的数据结构，其中包含本次操作的执行结果。   |
+
+`RtmStatus` 包含以下属性：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+`SetUserMetadataResult` 包含以下属性：
+
+|   属性   |  类型  | 描述      |
+| ----- | --- | -------- |
+| `UserId` | string | 用户 ID。 |
+
+## GetUserMetadataAsync
+
+### 接口描述
+
+`GetUserMetadataAsync` 方法可以获取指定用户的 User Metadata 和 User Metadata Item。
+
+### 接口方法
+
+你可以通过以下方式调用 `GetUserMetadataAsync` 方法：
+
+```cs
+RtmResult<GetUserMetadataResult> GetUserMetadataAsync(string userId);
+```
+
+|     参数    |  类型  |  是否必填  |  默认值  | 描述              |
+| -------------- | ----------- | ----- | -------- | ---------- |
+|    `userId`   |     string     |  选填  |  当前用户的 `userId`       |  用户 ID                    |
+
+### 基本用法
+
+```cs
+var result = await rtmClient.GetStorage().GetUserMetadataAsync("Tony");
+if (result.Status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, The error code is {1}, because of: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Get User :{0} metadata success!  ", result.Response.UserId));
+    var data =  result.Response.data;
+    if (data.metadataItemsSize != 0)
+    {
+        Debug.Log(string.Format("Channel Metadata Major Revision is :{0} ! ", data.majorRevision));
+        for ( int i =0; i < data.metadataItemsSize; i++)
+        {
+            Debug.Log(string.Format("The {0}'th iterms Key is:{1}, Value is {2} ! ", i, data.metadataItems[i].key, data.metadataItems[i].value));
+        }
+    }
+}
+```
+
+### 返回值
+
+`GetUserMetadataAsync` 操作返回一个 `RtmResult<GetUserMetadataResult>` 类型数据结构的返回值，其中包含：
+
+|  属性  |  类型  | 描述               |
+| ------------ | -------------- | ------ |
+| `Status`      |     `RtmStatus`     | 无论操作是否成功，都返回一个 `RtmStatus` 类型的数据结构，其中包含本次操作的状态。 |
+| `Response`      | `GetUserMetadataResult` | 操作成功后，返回一个 `GetUserMetadataResult` 类型的数据结构，其中包含本次操作的执行结果。 |
+
+`RtmStatus` 包含以下属性：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+`GetUserMetadataResult` 包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `UserId`         |         string         | 用户 ID。               |
+|     `Data`     |      `RtmMetadata`     |      User Metadata Item 数组。              |
+
+`RtmMetadata` 包含以下属性：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `majorRevision` | Int64 | <Slot name="storage-unity-html-10-1-2" /> |
+| `metadataItems` | `MetadataItem[]` | User Metadata Item 数组。 |
+| `metadataItemsSize` | UInt64 | `MetadataItem[]` 数组的长度。 |
+
+<Slot for="storage-unity-html-10-1-2">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`MetadataItem`  包含以下属性：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `key` | string | 键。 |
+| `value` | string | 值。 |
+| `authorUserId` | string | 编辑者的用户 ID。该值为只读，不支持写入。 |
+| `revision` | Int64 | <Slot name="storage-unity-html-11-4-2" /> |
+| `updateTs` | Int64 | 更新时间戳。该值为只读，不支持写入。 |
+
+<Slot for="storage-unity-html-11-4-2">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      - `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才执行操作。
+
+</Slot>
+
+`MetadataOptions` 包含以下属性：
+
+|  属性  |  类型  | 描述             |
+| --------- | ----------- | ----- |
+|   `recordTs`   |     Bool     | 是否记录编辑的时间戳。 |
+|   `recordUserId`   |     Bool     |  是否记录编辑者的用户 ID。      |
+
+## RemoveUserMetadataAsync
+
+### 接口描述
+
+`RemoveUserMetadataAsync` 方法可以删除 User Metadata 或 User Metadata Item 数组。
+
+成功删除 User Metadata 后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `RemoveUserMetadataAsync` 方法：
+
+```cs
+RtmResult<RemoveUserMetadataResult>rtmClient.GetStorage().RemoveUserMetadataAsync(string userId, RtmMetadata data, MetadataOptions options);
+```
+
+|   参数    |        类型         | 是否必填 |       默认值        | 描述                      |
+| ------ | ---- | ----- | ---------------- | ----------- |
+| `userId`  |       string        |   选填   | 当前用户的 `userId` | 用户 ID。                 |
+|  `data`   |    `RtmMetadata`     |   必填   |          -          | User Metadata Item 数组。 |
+| `options` | `MetadataOptions` |   选填   |          -          | User Metadata 配置选项。  |
+
+`RtmMetadata` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `majorRevision` | Int64 | 选填 | `-1` | <Slot name="storage-unity-html-12-1-4" /> |
+| `metadataItems` | `MetadataItem[]` | 必填 | - | User Metadata Item 数组。 |
+| `metadataItemsSize` | UInt64 | 必填 | - | `MetadataItem[]` 数组的长度。 |
+
+<Slot for="storage-unity-html-12-1-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`MetadataItem`  包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | string | 必填 | - | 键。 |
+| `value` | string | 必填 | - | 值。 |
+| `authorUserId` | string | 必填 | - | 编辑者的用户 ID。该值为只读，不支持写入。 |
+| `revision` | Int64 | 选填 | `-1` | <Slot name="storage-unity-html-13-4-4" /> |
+| `updateTs` | Int64 | 选填 | `0` | 更新时间戳。该值为只读，不支持写入。 |
+
+<Slot for="storage-unity-html-13-4-4">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      - `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才执行操作。
+
+</Slot>
+
+`MetadataOptions` 包含以下属性：
+
+|      属性      | 类型 | 是否必填 | 默认值  | 描述                      |
+| ----------- | - | ----- | ---- | ----------- |
+|   `recordTs`   | Bool |   选填   | `false` | 是否记录编辑的时间戳。    |
+| `recordUserId` | Bool |   选填   | `false` | 是否记录编辑者的用户 ID。 |
+
+### 基本用法
+
+```csharp
+var metadata = new RtmMetadata();
+metadata.majorRevision = 174298270;
+var metadataItem = new MetadataItem()
+            {
+                key = "Mute",
+                revision = 174298100,
+            };
+var options = new MetadataOptions() {};
+
+var (status,response) = await rtmClient.GetStorage().RemoveUserMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+### 返回值
+
+`RemoveUserMetadataAsync` 操作返回一个 `RtmResult<RemoveUserMetadataResult>` 类型数据结构的返回值，其中包含：
+
+|    属性    |     类型     | 描述        |
+| ------- | -------------- | ----------- |
+|  `Status`  | `RtmStatus` | 无论操作是否成功，都返回一个 `RtmStatus` 类型的数据结构，其中包含本次操作的状态。 |
+| `Response` |                `RemoveUserMetadataResult`                | 操作成功后，返回一个 `RemoveUserMetadataResult` 类型的数据结构，其中包含本次操作的执行结果。             |
+
+`RtmStatus` 包含以下属性：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+`RemoveUserMetadataResult` 包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `UserId`         |         string         | 用户 ID。               |
+
+## UpdateUserMetadataAsync
+
+### 接口描述
+
+`UpdateUserMetadataAsync` 方法可以更新已有的 User Metadata 或 User Metadata Item。成功更新 User Metadata 后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
+
+:::info[信息]
+该方法不能对不存在的 User Metadata 进行操作。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `UpdateUserMetadataAsync` 方法：
+
+```cs
+RtmResult<UpdateUserMetadataResult> rtmClient.GetStorage().UpdateUserMetadataAsync(
+    string userId,
+    RtmMetadata data,
+    MetadataOptions options
+    );
+```
+
+|   参数    |        类型         | 是否必填 |       默认值        | 描述                      |
+| ------ | ---- | ----- | ---------------- | ----------- |
+| `userId`  |       string        |   选填   | 当前用户的 `userId` | 用户 ID。                 |
+|  `data`   |    `RtmMetadata`     |   必填   |          -          | User Metadata Item 数组。 |
+| `options` | `MetadataOptions` |   选填   |          -          | User Metadata 配置选项。  |
+
+`RtmMetadata` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `majorRevision` | Int64 | 选填 | `-1` | <Slot name="storage-unity-html-14-1-4" /> |
+| `metadataItems` | `MetadataItem[]` | 必填 | - | User Metadata Item 数组。 |
+| `metadataItemsSize` | UInt64 | 必填 | - | `MetadataItem[]` 数组的长度。 |
+
+<Slot for="storage-unity-html-14-1-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`MetadataItem` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | string | 必填 | - | 键。 |
+| `value` | string | 必填 | - | 值。 |
+| `authorUserId` | string | 必填 | - | 编辑者的用户 ID。该值为只读，不支持写入。 |
+| `revision` | Int64 | 选填 | `-1` | <Slot name="storage-unity-html-15-4-4" /> |
+| `updateTs` | Int64 | 选填 | `0` | 更新时间戳。该值为只读，不支持写入。 |
+
+<Slot for="storage-unity-html-15-4-4">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      - `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才执行操作。
+
+</Slot>
+
+`MetadataOptions` 包含以下属性：
+
+|  属性  |  类型  |  是否必填  |  默认值  | 描述             |
+| --------- | ----------- | ----- | ---- | ----- |
+|   `recordTs`   |     Bool     |  选填  |    `false`   | 是否记录编辑的时间戳。 |
+|   `recordUserId`   |     Bool     |  选填  |  `false`       | 是否记录编辑者的用户 ID。      |
+
+### 基本用法
+
+```csharp
+var metadata = new RtmMetadata();
+metadata.majorRevision = 174298270;
+var metadataItem = new MetadataItem()
+            {
+                key = "Mute",
+                value = "false",
+                revision = 174298100,
+            };
+metadata.metadataItems = new MetadataItem[] { metadataItem };
+metadata.metadataItemsSize = 1;
+var options = new MetadataOptions()
+            {
+                recordUserId = true,
+                recordTs = true
+            };
+
+var (status,response) = await rtmClient.GetStorage().UpdateUserMetadataAsync("Tony", data, metadataOptions);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Update User :{0} metadata success! ", response.UserId));
+}
+```
+
+### 返回值
+
+`UpdateUserMetadataAsync` 操作返回一个 `RtmResult<UpdateUserMetadataResult>` 类型数据结构的返回值，其中包含：
+
+|    属性    |     类型     | 描述        |
+| ------- | -------------- | ----------- |
+|  `Status`  | `RtmStatus` | 无论操作是否成功，都返回一个 `RtmStatus` 类型的数据结构，其中包含本次操作的状态。 |
+| `Response` |                `UpdateUserMetadataResult`                | 操作成功后，返回一个 `UpdateUserMetadataResult` 类型的数据结构，其中包含本次操作的执行结果。             |
+
+`RtmStatus` 包含以下属性：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+`UpdateUserMetadataResult` 包含以下属性：
+
+|   属性   |  类型  | 描述      |
+| ----- | --- | -------- |
+| `UserId` | string | 用户 ID。 |

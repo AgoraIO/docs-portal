@@ -3,8 +3,16 @@ title: 对话式 AI API
 description: 选择适合你集成层级的对话式 AI API。
 ---
 
-对话式 AI API 覆盖 REST API、服务端 SDK 和客户端工具包等集成入口。
+对话式 AI API 覆盖 REST API、Agent SDK、Android/iOS/Web 工具包和 REST Client 等集成入口。
 
 ## 页面
 
 - [REST API](rest-api/index.md)
+- [agent-go](agent-go/overview.mdx)
+- [agent-python](agent-python/overview.mdx)
+- [agent-typescript](agent-typescript/overview.mdx)
+- [Android](android/overview.mdx)
+- [iOS](ios/overview.mdx)
+- [Web](web/overview.mdx)
+- [restclient-go](restclient-go/overview.mdx)
+- [restclient-java](restclient-java/overview.mdx)

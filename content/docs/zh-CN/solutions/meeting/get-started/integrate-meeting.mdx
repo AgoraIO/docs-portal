@@ -76,7 +76,7 @@ title: "集成灵动会议"
     FcrSDKInitUtils.initSDK(this)
     ```
 
-2. 调用 [`init`](/api-ref/meeting/android/client-api#init) 和 [`launch`](/api-ref/meeting/android/client-api#launch) 初始化和启动灵动会议。
+2. 调用 [`init`](/zh-CN/api-reference/meeting/android#init) 和 [`launch`](/zh-CN/api-reference/meeting/android#launch) 初始化和启动灵动会议。
 
     ```kotlin
     val creatorConfig = FcrUISceneCreatorConfig(appId, userId)
@@ -86,7 +86,7 @@ title: "集成灵动会议"
     FcrUISceneCreator.launch(activity, sceneConfig)
     ```
 
-    填写参数时可参考 [`FcrUISceneCreatorConfig`](/api-ref/meeting/android/client-api#fcruiscenecreatorconfig) 和 [`FcrUISceneConfig`](/api-ref/meeting/android/client-api#fcruisceneconfig) 的 API 文档。需关注的核心参数如下：
+    填写参数时可参考 [`FcrUISceneCreatorConfig`](/zh-CN/api-reference/meeting/android#fcruiscenecreatorconfig) 和 [`FcrUISceneConfig`](/zh-CN/api-reference/meeting/android#fcruisceneconfig) 的 API 文档。需关注的核心参数如下：
 
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
@@ -113,7 +113,7 @@ title: "集成灵动会议"
 
 </Slot>
 
-3. （可选）如需主动退出会议，调用 [`exit`](/api-ref/meeting/android/client-api#exit) 退出灵动会议。
+3. （可选）如需主动退出会议，调用 [`exit`](/zh-CN/api-reference/meeting/android#exit) 退出灵动会议。
 
     ```kotlin
     FcrUISceneCreator.exit()
@@ -215,7 +215,7 @@ title: "集成灵动会议"
 
 本节介绍如何调用客户端 API 启动灵动会议。开始前，请确保已通过[服务端 RESTful API](/zh-CN/solutions/meeting/reference/create-room) 创建了房间。
 
-1. 创建一个 `FcrUISceneCreator` 对象，并调用 [`launch`](/api-ref/meeting/ios/client-api#launch) 启动灵动会议。
+1. 创建一个 `FcrUISceneCreator` 对象，并调用 [`launch`](/zh-CN/api-reference/meeting/ios#launch) 启动灵动会议。
 
 ```swift tab="Swift" tabGroup="language"
 import FcrUIScene
@@ -267,7 +267,7 @@ FcrUISceneConfig *sceneConfig = [[FcrUISceneConfig alloc] initWithRoomId:roomId
                    } parent:viewController];
 ```
 
-    填写参数时可参考 [`FcrUISceneCreatorConfig`](/api-ref/meeting/ios/client-api#fcruiscenecreatorconfig) 和 [`FcrUISceneConfig`](/api-ref/meeting/ios/client-api#fcruisceneconfig) 的 API 文档。需关注的核心参数如下：
+    填写参数时可参考 [`FcrUISceneCreatorConfig`](/zh-CN/api-reference/meeting/ios#fcruiscenecreatorconfig) 和 [`FcrUISceneConfig`](/zh-CN/api-reference/meeting/ios#fcruisceneconfig) 的 API 文档。需关注的核心参数如下：
 
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
@@ -294,7 +294,7 @@ FcrUISceneConfig *sceneConfig = [[FcrUISceneConfig alloc] initWithRoomId:roomId
 
 </Slot>
 
-2. （可选）如需主动退出会议，调用 [`exit`](/api-ref/meeting/ios/client-api#exit) 退出灵动会议。
+2. （可选）如需主动退出会议，调用 [`exit`](/zh-CN/api-reference/meeting/ios#exit) 退出灵动会议。
 
 ```swift tab="Swift" tabGroup="language"
 // 退出会议
@@ -527,7 +527,7 @@ node --version
     });
     ```
 
-2. 在渲染进程代码中引入 `fcr-ui-scene` 模块，创建一个 `FcrUISceneCreator` 对象，并调用 [`launch`](/api-ref/meeting/electron/client-api#launch) 启动灵动会议。
+2. 在渲染进程代码中引入 `fcr-ui-scene` 模块，创建一个 `FcrUISceneCreator` 对象，并调用 [`launch`](/zh-CN/api-reference/meeting/electron#launch) 启动灵动会议。
 
     ```javascript
     const { FcrUISceneCreator } = require('fcr-ui-scene');
@@ -558,7 +558,7 @@ node --version
     );
     ```
 
-    填写参数时可参考 [`FcrUISceneCreatorConfig`](/api-ref/meeting/electron/client-api#fcruiscenecreatorconfig) 和 [`FcrUISceneConfig`](/api-ref/meeting/electron/client-api#fcruisceneconfig) 的 API 文档。需关注的核心参数如下：
+    填写参数时可参考 [`FcrUISceneCreatorConfig`](/zh-CN/api-reference/meeting/electron#fcruiscenecreatorconfig) 和 [`FcrUISceneConfig`](/zh-CN/api-reference/meeting/electron#fcruisceneconfig) 的 API 文档。需关注的核心参数如下：
 
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
@@ -585,7 +585,7 @@ node --version
 
 </Slot>
 
-3. （可选）如需主动退出会议，调用 [`exit`](/api-ref/meeting/electron/client-api#exit) 退出灵动会议。
+3. （可选）如需主动退出会议，调用 [`exit`](/zh-CN/api-reference/meeting/electron#exit) 退出灵动会议。
 
     ```javascript
     scene.exit();

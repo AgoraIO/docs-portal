@@ -60,7 +60,7 @@ v2 的 SDK 包名为 `agora-rtm`，而 v1 的 SDK 包名为 `rtm-sdk`。
 
 ## 初始化实例
 
-相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/api-ref/rtm2/android/toc-configuration/configuration#create)。此外，v2 还丰富了接口调用的错误信息，你可以通过 `ErrorInfo` 数据结构获取错误码、错误原因及 API 操作名称，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/reference/error-codes)文档，你也可以快速找到解决方法。
+相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/api-ref/rtm2/android/toc-configuration/configuration#create)。此外，v2 还丰富了接口调用的错误信息，你可以通过 `ErrorInfo` 数据结构获取错误码、错误原因及 API 操作名称，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)文档，你也可以快速找到解决方法。
 
 :::info[信息]
 RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic#合法字符)。
@@ -522,7 +522,7 @@ rtmClient.subscribe("channelName", options, new ResultCallback<Void>() {
 });
 ```
 
-v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/reference/presence-events#事件通知模式)。
+v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/build/manage-presence/presence-events#事件通知模式)。
 
 ## 用户属性与频道属性
 
@@ -677,7 +677,7 @@ v2 和 v1 的 SDK 包名不同，你需要注意区分。不变的是，二者�
 
 ## 初始化实例
 
-相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/api-ref/rtm2/ios/toc-configuration/configuration#create)。此外，v2 还丰富了接口调用的错误信息，你可以通过 `AgoraRtmErrorInfo` 数据结构获取错误码、错误原因及 API 操作名称，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/reference/error-codes)文档，你也可以快速找到解决方法。
+相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/api-ref/rtm2/ios/toc-configuration/configuration#create)。此外，v2 还丰富了接口调用的错误信息，你可以通过 `AgoraRtmErrorInfo` 数据结构获取错误码、错误原因及 API 操作名称，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)文档，你也可以快速找到解决方法。
 
 :::info[信息]
 RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic#合法字符)。
@@ -1067,7 +1067,7 @@ option.features = AgoraRtmSubscribeChannelFeaturePresence;
 }];
 ```
 
-v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/reference/presence-events#事件通知模式)。
+v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/build/manage-presence/presence-events#事件通知模式)。
 
 ## 用户属性与频道属性
 
@@ -1248,7 +1248,7 @@ v2 的 SDK 包名为 `agora-rtm`，而 v1 的 SDK 包名为 `agora-rtm-sdk`。
 
 ## 初始化实例
 
-相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/api-ref/rtm2/javascript/toc-configuration/configuration#Init)。此外，v2 还对 `try{...}catch{...}` 编程模式中捕获的错误信息进行了优化：将可能出现的错误进行了分类，并通过 `ErrorInfo` 数据结构回调，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/reference/error-codes)文档，你也可以快速找到解决方法。
+相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/api-ref/rtm2/javascript/toc-configuration/configuration#Init)。此外，v2 还对 `try{...}catch{...}` 编程模式中捕获的错误信息进行了优化：将可能出现的错误进行了分类，并通过 `ErrorInfo` 数据结构回调，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)文档，你也可以快速找到解决方法。
 
 :::info[信息]
 RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic#合法字符)。
@@ -1620,7 +1620,7 @@ try {
 }
 ```
 
-v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/reference/presence-events#事件通知模式)。
+v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/build/manage-presence/presence-events#事件通知模式)。
 
 ## 用户属性与频道属性
 
@@ -1729,7 +1729,7 @@ v2 和 v1 的 SDK 包名、集成方式都不变。详见[项目配置](/zh-CN/r
 
 ## 初始化实例
 
-相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/api-ref/rtm2/cpp/toc-configuration/configuration#create)。此外，v2 还丰富了接口调用的错误信息，你可以通过 `RTM_ERROR_CODE` 数据类型获取错误码，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/reference/error-codes)文档，你也可以快速找到解决方法。
+相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/api-ref/rtm2/cpp/toc-configuration/configuration#create)。此外，v2 还丰富了接口调用的错误信息，你可以通过 `RTM_ERROR_CODE` 数据类型获取错误码，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)文档，你也可以快速找到解决方法。
 
 :::info[信息]
 RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic#合法字符)。
@@ -2156,7 +2156,7 @@ uint64_t requestId;
 rtmClient->subscribe("channelName", options, requestId);
 ```
 
-v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/reference/presence-events#事件通知模式)。
+v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/build/manage-presence/presence-events#事件通知模式)。
 
 ## 用户属性与频道属性
 

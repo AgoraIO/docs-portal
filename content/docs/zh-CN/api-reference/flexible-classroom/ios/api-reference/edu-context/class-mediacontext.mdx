@@ -1,0 +1,713 @@
+---
+title: "AgoraEduMediaContext"
+description: "AgoraEduMediaContext 类。"
+---
+<a id="class_media_context"></a>
+
+AgoraEduMediaContext 类。
+
+<a id="class_media_context__detailed_desc"></a>
+
+AgoraEduMediaContext 类提供的方法用于：
+
+- 管理本地音视频设备。
+- 播放本地音频。
+- 渲染本地视频。
+
+<a id="api_getlocaldevices"></a>
+
+## getLocalDevices
+
+获取本地设备。
+
+<a id="api_getlocaldevices__prototype"></a>
+
+```swift
+Array<AgoraEduContextDeviceInfo> getLocalDevices(deviceType AgoraEduContextDeviceType)
+```
+
+<a id="api_getlocaldevices__parameters"></a>
+
+### 参数
+
+#### `deviceType`
+
+设备类型。详见 [AgoraEduContextDeviceType](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_devicetype)。
+
+<a id="api_getlocaldevices__return_values"></a>
+
+### 返回值
+
+由 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_deviceinfo) 组成的设备列表。
+
+<a id="api_openlocaldevice"></a>
+
+## openLocalDevice
+
+开启指定本地设备。
+
+<a id="api_openlocaldevice__prototype"></a>
+
+```swift
+AgoraEduContextError openLocalDevice(AgoraEduContextDeviceInfo device)
+```
+
+<a id="api_openlocaldevice__parameters"></a>
+
+### 参数
+
+#### `device`
+
+设备信息，详见 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_deviceinfo)。
+
+<a id="api_openlocaldevice__return_values"></a>
+
+### 返回值
+
+如果传入的 deviceId 不存在，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_openlocaldevice2"></a>
+
+## openLocalDevice
+
+开启指定本地设备。
+
+<a id="api_openlocaldevice2__prototype"></a>
+
+```swift
+AgoraEduContextError openLocalDevice(AgoraEduContextSystemDevice device)
+```
+
+<a id="api_openlocaldevice2__parameters"></a>
+
+### 参数
+
+#### `device`
+
+系统设备枚举，详见 [AgoraEduContextSystemDevice](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_systemdevice)。
+
+<a id="api_openlocaldevice2__return_values"></a>
+
+### 返回值
+
+<a id="api_closelocaldevice"></a>
+
+## closeLocalDevice
+
+关闭本地设备。
+
+<a id="api_closelocaldevice__prototype"></a>
+
+```swift
+AgoraEduContextError closeLocalDevice(AgoraEduContextDeviceInfo device)
+```
+
+<a id="api_closelocaldevice__parameters"></a>
+
+### 参数
+
+#### `device`
+
+设备信息，详见 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_deviceinfo)。
+
+<a id="api_closelocaldevice__return_values"></a>
+
+### 返回值
+
+如果传入的 deviceId 不存在，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_closelocaldevice2"></a>
+
+## closeLocalDevice
+
+关闭本地设备。
+
+<a id="api_closelocaldevice2__prototype"></a>
+
+```swift
+AgoraEduContextError closeLocalDevice(AgoraEduContextSystemDevice device)
+```
+
+<a id="api_closelocaldevice2__parameters"></a>
+
+### 参数
+
+#### `device`
+
+系统设备枚举，详见 [AgoraEduContextSystemDevice](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_systemdevice)。
+
+<a id="api_closelocaldevice2__return_values"></a>
+
+### 返回值
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_getlocaldevicestate"></a>
+
+## getLocalDeviceState
+
+获取本地设备状态。
+
+<a id="api_getlocaldevicestate__prototype"></a>
+
+```swift
+void getLocalDeviceState(AgoraEduContextDeviceInfo device,
+                         Callback<AgoraEduContextDeviceState> success,
+                         Callback<AgoraEduContextError> fail)
+```
+
+<a id="api_getlocaldevicestate__parameters"></a>
+
+### 参数
+
+#### `device`
+
+设备信息，详见 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_deviceinfo)。
+
+#### `success`
+
+调用成功，则返回设备状态 [AgoraEduContextDeviceState](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_devicestate)。
+
+#### `fail`
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_startrendervideo"></a>
+
+## startRenderVideo
+
+开始渲染视频流。
+
+<a id="api_startrendervideo__prototype"></a>
+
+```swift
+AgoraEduContextError startRenderVideo(View view,
+                                      AgoraEduContextRenderConfig config,
+                                      String streamUuid)
+```
+
+<a id="api_startrendervideo__detailed_desc"></a>
+
+该方法在加入房间前后均可调用。 如果你想要在加入房间前预览摄像头采集的视频流，可将 streamUuid 设为 0。
+
+<a id="api_startrendervideo__parameters"></a>
+
+### 参数
+
+#### `config`
+
+视频渲染配置，详见 [AgoraEduContextRenderConfig](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_renderconfig)。
+
+#### `view`
+
+渲染的 View。
+
+#### `streamUuid`
+
+待渲染的流 ID。
+
+<a id="api_startrendervideo__return_values"></a>
+
+### 返回值
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_startrendervideo2"></a>
+
+## startRenderVideo
+
+开始渲染视频流。
+
+<a id="api_startrendervideo2__prototype"></a>
+
+```swift
+AgoraEduContextError startRenderVideo(String roomUuid,
+                                      View view,
+                                      AgoraEduContextRenderConfig config,
+                                      String streamUuid)
+```
+
+<a id="api_startrendervideo2__detailed_desc"></a>
+
+该方法只能在加入房间后调用。
+
+<a id="api_startrendervideo2__parameters"></a>
+
+### 参数
+
+#### `roomUuid`
+
+房间 ID。
+
+#### `config`
+
+视频渲染配置，详见 [AgoraEduContextRenderConfig](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_renderconfig)。
+
+#### `view`
+
+渲染的 View。
+
+#### `streamUuid`
+
+待渲染的流 ID。
+
+<a id="api_startrendervideo2__return_values"></a>
+
+### 返回值
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_startrendervideofromcdn"></a>
+
+## startRenderVideoFromCdn
+
+开始渲染 CDN 视频流。
+
+<a id="api_startrendervideofromcdn__prototype"></a>
+
+```swift
+AgoraEduContextError startRenderVideoFromCdn(View view,
+                                             AgoraEduContextVideoRenderMode mode, 
+				                 String streamUrl)
+```
+
+<a id="api_startrendervideofromcdn__parameters"></a>
+
+### 参数
+
+#### `view`
+
+渲染的 View。
+
+#### `mode`
+
+渲染模式，详见 [AgoraEduContextVideoRenderMode](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_videorendermode)。
+
+#### `streamUrl`
+
+CDN 流地址。
+
+<a id="api_startrendervideofromcdn__return_values"></a>
+
+### 返回值
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_stoprendervideo"></a>
+
+## stopRenderVideo
+
+停止渲染视频流。
+
+<a id="api_stoprendervideo__prototype"></a>
+
+```swift
+AgoraEduContextError stopRenderLocalVideo(String streamUuid)
+```
+
+<a id="api_stoprendervideo__detailed_desc"></a>
+
+该方法在加入房间前后均可调用。
+
+<a id="api_stoprendervideo__parameters"></a>
+
+### 参数
+
+#### `streamUuid`
+
+流 ID。如果你想要在加入房间前停止预览摄像头采集的视频流，可将 streamUuid 设为 0。
+
+<a id="api_stoprendervideo__return_values"></a>
+
+### 返回值
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_stoprendervideo2"></a>
+
+## stopRenderVideo
+
+停止渲染视频流。
+
+<a id="api_stoprendervideo2__prototype"></a>
+
+```swift
+AgoraEduContextError stopRenderVideo(String roomUuid,
+                                     String streamUuid)
+```
+
+<a id="api_stoprendervideo2__detailed_desc"></a>
+
+该方法只能在加入房间后调用。
+
+<a id="api_stoprendervideo2__parameters"></a>
+
+### 参数
+
+#### `roomUuid`
+
+房间 ID。
+
+#### `streamUuid`
+
+流 ID。如果你想要在加入房间前停止预览摄像头采集的视频流，可将 streamUuid 设为 0。
+
+<a id="api_stoprendervideo2__return_values"></a>
+
+### 返回值
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_stoprendervideofromcdn"></a>
+
+## stopRenderVideoFromCdn
+
+停止渲染 CDN 视频流。
+
+<a id="api_stoprendervideofromcdn__prototype"></a>
+
+```swift
+AgoraEduContextError stopRenderVideoFromCdn(String streamUrl)
+```
+
+<a id="api_stoprendervideofromcdn__parameters"></a>
+
+### 参数
+
+#### `streamUrl`
+
+CDN 流地址。
+
+<a id="api_stoprendervideofromcdn__return_values"></a>
+
+### 返回值
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_startaudiomixing"></a>
+
+## startAudioMixing
+
+开始混音。
+
+<a id="api_startaudiomixing__prototype"></a>
+
+```swift
+AgoraEduContextError startAudioMixing(String filePath,
+                                      Boolean loopback,
+                                      Boolean replace,
+                                      Int cycle)
+```
+
+<a id="api_startaudiomixing__detailed_desc"></a>
+
+将麦克风采集的音频流与本地客户端的音乐文件中的音频混合，以便远端用户能更为清晰地听到该音乐文件。
+
+<a id="api_startaudiomixing__parameters"></a>
+
+### 参数
+
+#### `filePath`
+
+需要进行混音的音乐文件路径。
+
+#### `loopback`
+
+是否只在本地客户端播放音乐文件。
+
+#### `replace`
+
+是否将麦克风采集的音频替换为音乐文件。
+
+#### `cycle`
+
+音乐文件的播放次数。设为 -1 表示循环播放。
+
+<a id="api_startaudiomixing__return_values"></a>
+
+### 返回值
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_stopaudiomixing"></a>
+
+## stopAudioMixing
+
+停止混音。
+
+<a id="api_stopaudiomixing__prototype"></a>
+
+```swift
+AgoraEduContextError stopAudioMixing()
+```
+
+<a id="api_stopaudiomixing__return_values"></a>
+
+### 返回值
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_startplayaudio"></a>
+
+## startPlayAudio
+
+开始播放音频流。
+
+<a id="api_startplayaudio__prototype"></a>
+
+```swift
+AgoraEduContextError startPlayAudio(String roomUuid,
+                                    String streamUuid)
+```
+
+<a id="api_startplayaudio__parameters"></a>
+
+### 参数
+
+#### `roomUuid`
+
+房间 ID。
+
+#### `streamUuid`
+
+流 ID。
+
+<a id="api_startplayaudio__return_values"></a>
+
+### 返回值
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_startplayaudiofromcdn"></a>
+
+## startPlayAudioFromCdn
+
+开始播放 CDN 音频流。
+
+<a id="api_startplayaudiofromcdn__prototype"></a>
+
+```swift
+AgoraEduContextError startPlayAudioFromCdn(String streamUrl)
+```
+
+<a id="api_startplayaudiofromcdn__parameters"></a>
+
+### 参数
+
+#### `streamUuid`
+
+CDN 流地址。
+
+#### `startPos`
+
+开始播放的位置。
+
+<a id="api_startplayaudiofromcdn__return_values"></a>
+
+### 返回值
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_stopplayaudio"></a>
+
+## stopPlayAudio
+
+停止播放音频流。
+
+<a id="api_stopplayaudio__prototype"></a>
+
+```swift
+AgoraEduContextError stopPlayAudio(String roomUuid,
+                                   String streamUuid)
+```
+
+<a id="api_stopplayaudio__parameters"></a>
+
+### 参数
+
+#### `roomUuid`
+
+房间 ID。
+
+#### `streamUuid`
+
+流 ID。
+
+<a id="api_stopplayaudio__return_values"></a>
+
+### 返回值
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_stopplayaudiofromcdn"></a>
+
+## stopPlayAudioFromCdn
+
+停止播放 CDN 音频流。
+
+<a id="api_stopplayaudiofromcdn__prototype"></a>
+
+```swift
+AgoraEduContextError stopPlayAudioFromCdn(String streamUrl)
+```
+
+<a id="api_stopplayaudiofromcdn__parameters"></a>
+
+### 参数
+
+#### `streamUrl`
+
+CDN 流地址。
+
+<a id="api_setaudiomixingposition"></a>
+
+## setAudioMixingPosition
+
+设置用于混音的音乐文件的起始播放位置。
+
+<a id="api_setaudiomixingposition__prototype"></a>
+
+```swift
+AgoraEduContextError setAudioMixingPosition(Int position)
+```
+
+<a id="api_setaudiomixingposition__parameters"></a>
+
+### 参数
+
+#### `position`
+
+音乐文件的起始播放位置（毫秒）。
+
+<a id="api_setaudiomixingposition__return_values"></a>
+
+### 返回值
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_getsnapshot"></a>
+
+## getSnapshot
+
+视频流截图。
+
+<a id="api_getsnapshot__prototype"></a>
+
+```swift
+void getSnapshot(String roomUuid,
+                 String streamUuid,
+                 String filePath,
+                 Callback<FcrSnapshotInfo> success,
+                 Callback<AgoraEduContextError> failure)
+```
+
+<a id="api_getsnapshot__detailed_desc"></a>
+
+从视频流中截图，生成 JPG 文件。每次调用此 API 需间隔至少一秒。
+
+<a id="api_getsnapshot__parameters"></a>
+
+### 参数
+
+#### `roomUuid`
+
+房间 ID。
+
+#### `streamUuid`
+
+流 ID
+
+#### `filePath`
+
+保存截图的本地绝对路径。需完整写出文件名，例如 xxx/xxx/example.jpg。
+
+#### `success`
+
+调用成功，则返回截图信息 [FcrSnapshotInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_fcrsnapshotinfo)。
+
+#### `fail`
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_setaudiorawdataconfig"></a>
+
+## setAudioRawDataConfig
+
+设置音频管道中每个环节的输出配置。
+
+<a id="api_setaudiorawdataconfig__prototype"></a>
+
+```swift
+FcrError setAudioRawDataConfig(FcrAudioRawDataConfig config,
+                               FcrAudioRawDataPosition position)
+```
+
+<a id="api_setaudiorawdataconfig__detailed_desc"></a>
+
+可添加多个观察者，以最后一次设置为准。
+
+<a id="api_setaudiorawdataconfig__parameters"></a>
+
+### 参数
+
+#### `config`
+
+观察者，详见 [FcrAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_audiorawdataconfig)。
+
+#### `position`
+
+音频管道的输出位置，详见 [FcrAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_audiorawdataposition)。
+
+<a id="api_addaudiorawdataobserver"></a>
+
+## addAudioRawDataObserver
+
+注册音频管道某个环节的原始数据监听。
+
+<a id="api_addaudiorawdataobserver__prototype"></a>
+
+```swift
+FcrError addAudioRawDataObserver(FcrAudioRawDataObserver observer,
+                                 FcrAudioRawDataPosition position)
+```
+
+<a id="api_addaudiorawdataobserver__detailed_desc"></a>
+
+该方法只能在加入频道前调用。可添加多个观察者。
+
+<a id="api_addaudiorawdataobserver__parameters"></a>
+
+### 参数
+
+#### `observer`
+
+观察者，详见 [FcrAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/class-audiorawdataobserver#class_audiorawdataobserver)。
+
+#### `position`
+
+音频管道的输出位置，详见 [FcrAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_audiorawdataposition)。
+
+<a id="api_removeaudiorawdataobserver"></a>
+
+## removeAudioRawDataObserver
+
+移除音频管道某个环节的原始音频数据监听。
+
+<a id="api_removeaudiorawdataobserver__prototype"></a>
+
+```swift
+FcrError removeAudioRawDataObserver(FcrAudioRawDataObserver observer,
+                                    FcrAudioRawDataPosition position)
+```
+
+<a id="api_removeaudiorawdataobserver__parameters"></a>
+
+### 参数
+
+#### `observer`
+
+观察者，详见 [FcrAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/class-audiorawdataobserver#class_audiorawdataobserver)。
+
+#### `position`
+
+音频管道的输出位置，详见 [FcrAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_audiorawdataposition)。

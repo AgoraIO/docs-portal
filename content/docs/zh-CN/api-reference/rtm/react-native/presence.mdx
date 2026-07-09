@@ -1,0 +1,347 @@
+---
+title: "在线状态"
+---
+
+Presence 提供监控用户上线、下线及用户历史状态变更通知的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开指定频道的实时事件通知
+- 自定义临时用户状态及其变更实时事件通知
+- 查询指定用户加入或订阅了哪些频道
+- 查询指定频道有哪些用户加入及其用户临时状态数据
+
+:::info[信息]
+Presence 能力适用于 Message Channel 和 Stream Channel。
+:::
+
+<a id="whonow"></a>
+## whoNow
+
+### 接口描述
+
+调用 `whoNow` 方法，你可以实时查询指定频道的在线用户数量、在线用户列表及在线用户的临时状态等信息。
+
+### 接口方法
+
+你可以通过以下方式调用 `whoNow` 方法：
+
+```typescript
+whoNow(
+    channelName: string,
+    channelType: RtmChannelType,
+    options?: PresenceOptions
+): Promise<WhoNowResponse>;
+```
+
+|     参数      |  类型  | 是否必填 | 默认值 | 描述        |
+| ---------- | --- | ----- | --- | ---- |
+| `channelName` | string |   必填   |   -    | 频道名称。  |
+| `channelType` | RtmChannelType |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/react-native/enumv#channeltype)。 |
+|   `options`   | object |   选填   |   -    | 查询附加选项。                    |
+
+`options` 包含以下属性：
+
+|       属性       |  类型   | 是否必填 | 默认值  | 描述  |
+| ------------- | ---- | ----- | ---- | --------------- |
+| `includedUserId` | boolean |   选填   | `true`  | 返回结果中是否包含在线成员的用户 ID。              |
+| `includedState`  | boolean |   选填   | `false` | 返回结果中是否包含在线用户的临时状态数据。         |
+|      `page`      | string  |   选填   |    -    | 页码书签。如果不填写，则 SDK 默认返回第一页结果。你可以在返回值中查看是否还有下一页。 |
+
+### 基本用法
+
+```typescript
+const options = {
+    includedUserId : true,
+    includedState : true,
+    page : "yourBookMark"
+}
+try {
+    const result = await rtm.presence.whoNow( "chat_room", "MESSAGE", options);
+    console.log(result);
+} catch(status){
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `WhoNowResponse` 类型数据：
+
+```typescript
+type WhoNowResponse = {
+    timestamp: number,              // 预留字段
+    totalOccupancy: number,         // 频道当前总在线人数
+    occupants: [{
+        states: StateItem[{}],
+        userId: string,
+        statesCount: number
+    }],                             // 频道在线用户及其临时状态信息列表
+    nextPage: string                // 下一页的页码书签
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```typescript
+type ErrorInfo = {
+    error: boolean;        // 本次操作是否出错
+    reason: string;        // 本次操作的 API 名称
+    operation: string;     // 错误码
+    errorCode: number;     // 错误描述
+};
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+<a id="whereNow"></a>
+## whereNow
+
+### 接口描述
+
+在数据统计、App 调试等场景中，你可能需要了解指定用户订阅或加入的所有频道。调用 `whereNow` 方法，你可以实时获取指定用户所在频道的列表。
+
+### 接口方法
+
+你可以通过以下方式调用 `whereNow` 方法：
+
+```typescript
+whereNow(userId: string): Promise<WhereNowResponse>;
+```
+
+|   参数   |  类型  | 是否必填 |       默认值        | 描述      |
+| ----- | --- | ----- | ---------------- | -------- |
+| `userId` | string |   必填   | - | 用户 ID。如果设为空字符串 `""`，则使用本地用户的 `userId` 进行查询。 |
+
+### 基本用法
+
+```typescript
+try {
+    const result = await rtm.presence.whereNow("Tony");
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `WhereNowResponse` 类型数据：
+
+```typescript
+type WhereNowResponse = {
+    timestamp: number,                // 预留字段
+    totalChannel: number,             // 用户所在频道的个数
+    channels: [{
+        channelName: string,          // 用户所在频道的名称
+        channelType: RtmChannelType   // 用户所在频道的类型
+    }]
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```typescript
+type ErrorInfo = {
+    error: boolean;        // 本次操作是否出错
+    reason: string;        // 本次操作的 API 名称
+    operation: string;     // 错误码
+    errorCode: number;     // 错误描述
+};
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+<a id="setstate"></a>
+## setState
+
+### 接口描述
+
+为满足不同业务场景对用户状态的设置需求，RTM 提供 `setState` 方法自定义临时用户状态。用户可以为自己添加分数、游戏状态、位置、心情、连麦状态等自定义状态。
+
+设置成功后，只要用户保持订阅频道并一直在线，自定义状态就会在频道中持续存在。`setState` 方法设置的是临时用户状态，当用户离开频道或断开与 RTM 的连接时，状态会消失。如果需要在重新加入频道或者重新连接时恢复用户状态，你需要实时在本地缓存该数据。如果你希望永久保存用户状态数据，声网推荐改用 Storage 功能的 `setUserMetadata` 方法。
+
+如果用户修改了临时用户状态，RTM 会实时触发 `remoteStateChanged` 类型的 `presence` 事件通知。你可以通过订阅频道并配置对应属性来接收该事件。
+
+### 接口方法
+
+你可以通过以下方式调用 `setState` 方法：
+
+```typescript
+setState(
+    channelName: string,
+    channelType: RtmChannelType,
+    state: StateItem
+): Promise<SetStateResponse>;
+```
+
+|     参数      |  类型  | 是否必填 | 默认值 | 描述  |
+| ---------- | --- | ----- | --- | -------------- |
+| `channelName` | string |   必填   |   -    | 频道名称                  |
+| `channelType` | RtmChannelType |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/react-native/enumv#channeltype)。 |
+|    `state`    | object |   必填   |   -    | 键值对格式的 JSON 对象，其中键值必须为 string 类型。       |
+
+### 基本用法
+
+```typescript
+var newState = { "mood": "pumped", "isTyping": false };
+
+try {
+    const result = await rtm.Presence.setState("chat_room", "MESSAGE", newState);
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `SetStateResponse` 类型数据：
+
+```typescript
+type SetStateResponse = {
+    timestamp: number              // 预留字段
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```typescript
+type ErrorInfo = {
+    error: boolean;        // 本次操作是否出错
+    reason: string;        // 本次操作的 API 名称
+    operation: string;     // 错误码
+    errorCode: number;     // 错误描述
+};
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+<a id="getstate"></a>
+## getState
+
+### 接口描述
+
+如需获取指定频道中指定用户的临时用户状态，你可以调用 `getState` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getState` 方法：
+
+```typescript
+getState(
+    userId: string,
+    channelName: string,
+    channelType: RtmChannelType
+): Promise<GetStateResponse>;
+```
+
+|     参数      |  类型  | 是否必填 | 默认值 | 描述                     |
+| ---------- | --- | ----- | --- | ------------- |
+|   `userId`    | string |   必填   |   -    | 用户 ID。                |
+| `channelName` | string |   必填   |   -    | 频道名称。               |
+| `channelType` | RtmChannelType |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/react-native/enumv#channeltype)。 |
+
+### 基本用法
+
+```typescript
+try {
+    const result = await rtm.presence.getState("Tony", "chat_room", "MESSAGE");
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `GetStateResponse` 类型数据：
+
+```typescript
+type GetStateResponse = {
+    timestamp: number,              // 预留字段
+    userId: string,                 // 用户 ID
+    states: object,                 // 返回用户状态键值对
+    statesCount: number             // 用户状态个数
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```typescript
+type ErrorInfo = {
+    error: boolean;        // 本次操作是否出错
+    reason: string;        // 本次操作的 API 名称
+    operation: string;     // 错误码
+    errorCode: number;     // 错误描述
+};
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+<a id="removestate"></a>
+## removeState
+
+### 接口描述
+
+当不再需要某个临时用户状态时，你可以调用 `removeState` 方法删除自己的一个或多个临时状态。成功删除用户状态后，订阅该频道且开启 Presence 事件监听的用户会收到 `remoteStateChanged` 类型的 `presence` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/react-native/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeState` 方法：
+
+```typescript
+removeState(
+    channelName: string,
+    channelType: RtmChannelType,
+    // 传入 state key, 不传代表全部删除
+    options?: RemoveStateOptions
+): Promise<RemoveStateResponse>;
+```
+
+|     参数      |  类型  | 是否必填 | 默认值 | 描述                     |
+| ---------- | --- | ----- | --- | ------------- |
+| `channelName` | string |   必填   |   -    | 频道名称                 |
+| `channelType` | RtmChannelType |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/react-native/enumv#channeltype)。 |
+|   `options`   | object |   选填   |   -    | 删除临时用户状态的选项。如果不填写，则 SDK 会默认删除全部状态。  |
+
+`options` 包含以下属性：
+
+|  属性   |  类型   | 是否必填 | 默认值  |       描述       |
+| ---- | ---- | ----- | ---- | ----- |
+| `states` | string[] |   选填   | - | 需要删除状态的 `key` 列表。如果不填写或设为空数组，则 SDK 会默认删除全部状态。 |
+
+### 基本用法
+
+```typescript
+const options = {
+    states: ["mode", "Typing"]
+}
+try {
+    const result = await rtm.Presence.removeState("chat_room", "MESSAGE", options);
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `RemoveStateResponse` 类型数据：
+
+```typescript
+type RemoveStateResponse = {
+    timestamp: number              // 预留字段
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```typescript
+type ErrorInfo = {
+    error: boolean;        // 本次操作是否出错
+    reason: string;        // 本次操作的 API 名称
+    operation: string;     // 错误码
+    errorCode: number;     // 错误描述
+};
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
