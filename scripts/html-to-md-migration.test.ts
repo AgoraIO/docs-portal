@@ -169,7 +169,10 @@ async function expectLaneDryRunAndMigration({
   expect(meta.pages).toEqual(expectedMetaPages);
 
   for (const [relativePath, snippets] of Object.entries(expectedPageContents)) {
-    const contents = await fs.readFile(path.join(outputDir, relativePath), 'utf8');
+    const contents = await fs.readFile(
+      path.join(outputDir, relativePath),
+      'utf8',
+    );
     for (const snippet of snippets) expect(contents).toContain(snippet);
   }
 }
