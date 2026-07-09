@@ -1,0 +1,29 @@
+---
+title: "init method"
+description: "API docs for the init method from the ChatClient class, for the Dart programming language."
+---
+
+Initializes the SDK.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `options` | The configurations: [ChatOptions](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options). Ensure that you set this parameter. |
+
+```dart
+Future<void> init(ChatOptions options)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> init(ChatOptions options) async {
+  _options = options;
+  EMLog.v('init: $options');
+  await ClientChannel.invokeMethod(ChatMethodKeys.init, options.toJson());
+  _currentUserId = await getCurrentUsername();
+}
+```

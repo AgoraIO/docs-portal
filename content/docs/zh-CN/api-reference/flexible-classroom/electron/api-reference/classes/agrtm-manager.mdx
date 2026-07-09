@@ -1,0 +1,229 @@
+---
+title: "AGRtmManager"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- EventEmitter
+  - AGRtmManager
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new AGRtmManager(): AGRtmManager
+```
+
+#### Returns
+
+Returns [AGRtmManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agrtm-manager)
+
+## Accessors
+
+<a id="client"></a>
+
+### client
+
+```ts
+get client(): RtmClient
+```
+
+#### Returns
+
+Returns RtmClient
+
+<a id="connectionState"></a>
+
+### connectionState
+
+```ts
+get connectionState(): AgoraRtmConnectionState
+```
+
+#### Returns
+
+Returns [AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/enums/agora-rtm-connection-state)
+
+<a id="logFilter"></a>
+
+### logFilter
+
+```ts
+get logFilter(): { debug: boolean; error: boolean; info: boolean; track: boolean; warn: boolean }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| debug: boolean |  |
+| error: boolean |  |
+| info: boolean |  |
+| track: boolean |  |
+| warn: boolean |  |
+
+#### Returns
+
+Returns \{debug: boolean; error: boolean; info: boolean; track: boolean; warn: boolean \}
+
+- ##### debug: boolean
+- ##### error: boolean
+- ##### info: boolean
+- ##### track: boolean
+- ##### warn: boolean
+
+<a id="sessionId"></a>
+
+### sessionId
+
+```ts
+get sessionId(): string
+```
+
+#### Returns
+
+Returns string
+
+## Methods
+
+<a id="createObserverChannel"></a>
+
+### createObserverChannel
+
+```ts
+createObserverChannel(channelName: string): [RtmChannel, EventEmitter]
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelName: string |  |
+
+#### Returns
+
+Returns [RtmChannel, EventEmitter]
+
+<a id="destroyRtm"></a>
+
+### destroyRtm
+
+```ts
+destroyRtm(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="join"></a>
+
+### join
+
+```ts
+join(channel: RtmChannel, bus: EventEmitter, channelName: string): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channel: RtmChannel |  |
+| bus: EventEmitter |  |
+| channelName: string |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="leave"></a>
+
+### leave
+
+```ts
+leave(channelName: string): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelName: string |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="login"></a>
+
+### login
+
+```ts
+login(token: string, uid: string, configs: AGRtmManagerInitConfig): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| token: string |  |
+| uid: string |  |
+| configs: AGRtmManagerInitConfig |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="reset"></a>
+
+### reset
+
+```ts
+reset(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="sendChannelMessage"></a>
+
+### sendChannelMessage
+
+```ts
+sendChannelMessage(channelName: string, message: any, options: any): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelName: string |  |
+| message: any |  |
+| options: any |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="sendPeerMessage"></a>
+
+### sendPeerMessage
+
+```ts
+sendPeerMessage(peerId: string, message: any, options: any): Promise<boolean>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| peerId: string |  |
+| message: any |  |
+| options: any |  |
+
+#### Returns
+
+Returns Promise &lt; boolean &gt;

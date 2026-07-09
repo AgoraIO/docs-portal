@@ -1,0 +1,43 @@
+---
+title: "agora::rtc::IRemoteAudioTrack类 参考abstract"
+description: "继承自 agora::rtc::IAudioTrack ."
+---
+
+[IRemoteAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-remote-audio-track) 类。
+
+## 成员函数说明
+
+<a id="a7fa3cd504b1fdc3c06e133d358ab04e1"></a>
+
+### getStatistics()
+
+```cpp
+virtual bool agora::rtc::IRemoteAudioTrack::getStatistics(RemoteAudioTrackStats& stats) pure virtual
+```
+
+获取远端音频轨道的统计信息。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| stats | 远端音频轨道的统计信息。 |
+
+#### Returns
+
+- true: 方法调用成功。
+- false: 方法调用失败。
+
+<a id="abcf5b94e335602c43a25ac8e6c479bc5"></a>
+
+### getState()
+
+```cpp
+virtual REMOTE_AUDIO_STATE agora::rtc::IRemoteAudioTrack::getState() pure virtual
+```
+
+获取远端音频状态。
+
+#### Returns
+
+远端音频状态。

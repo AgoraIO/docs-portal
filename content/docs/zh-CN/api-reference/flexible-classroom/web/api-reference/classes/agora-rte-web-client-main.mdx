@@ -1,0 +1,470 @@
+---
+title: "AgoraRteWebClientMain"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- AgoraRteWebClientBase
+  - AgoraRteWebClientMain
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new AgoraRteWebClientMain(channelName: string, configs: RtcAdapterWebConfig, base: RtcAdapterBase, connectionType: AGRtcConnectionType, audioRawDataDispatcher: AGAudioRawDataDispatcher): AgoraRteWebClientMain
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelName: string |  |
+| configs: RtcAdapterWebConfig |  |
+| base: RtcAdapterBase |  |
+| connectionType: AGRtcConnectionType |  |
+| audioRawDataDispatcher: AGAudioRawDataDispatcher |  |
+
+#### Returns
+
+Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
+
+## Properties
+
+<a id="logger"></a>
+
+### logger
+
+```ts
+logger: "agora-rte-sdk/src/core/logger/type".Logger
+```
+
+## Accessors
+
+<a id="base"></a>
+
+### base
+
+```ts
+get base(): RtcAdapterWeb
+```
+
+#### Returns
+
+Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-web)
+
+<a id="ready"></a>
+
+### ready
+
+```ts
+get ready(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="remoteRtcUsers"></a>
+
+### remoteRtcUsers
+
+```ts
+get remoteRtcUsers(): Map<string, IAgoraRTCRemoteUser>
+```
+
+#### Returns
+
+Returns Map &lt; string, IAgoraRTCRemoteUser &gt;
+
+## Methods
+
+<a id="emit"></a>
+
+### emit
+
+```ts
+emit(evt: string, ...args: any[]): AgoraRteWebClientMain
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| Rest ...args: any[] |  |
+
+#### Returns
+
+Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
+
+<a id="enableDualStream"></a>
+
+### enableDualStream
+
+```ts
+enableDualStream(enable: boolean): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable: boolean |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="getClientSessionId"></a>
+
+### getClientSessionId
+
+```ts
+getClientSessionId(): any
+```
+
+#### Returns
+
+Returns any
+
+<a id="join"></a>
+
+### join
+
+```ts
+join(appId: string, token: string, streamUuid: string): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| appId: string |  |
+| token: string |  |
+| streamUuid: string |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="leave"></a>
+
+### leave
+
+```ts
+leave(): Promise<void>
+```
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="muteLocalAudio"></a>
+
+### muteLocalAudio
+
+```ts
+muteLocalAudio(mute: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mute: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteLocalScreenShare"></a>
+
+### muteLocalScreenShare
+
+```ts
+muteLocalScreenShare(mute: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mute: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteLocalVideo"></a>
+
+### muteLocalVideo
+
+```ts
+muteLocalVideo(mute: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mute: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteRemoteAudio"></a>
+
+### muteRemoteAudio
+
+```ts
+muteRemoteAudio(streamUuid: string, mute: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+| mute: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteRemoteVideo"></a>
+
+### muteRemoteVideo
+
+```ts
+muteRemoteVideo(streamUuid: string, mute: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+| mute: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteRemoteVideoMass"></a>
+
+### muteRemoteVideoMass
+
+```ts
+muteRemoteVideoMass(streamUuids: string[], mute: boolean): Promise<string[]>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuids: string[] |  |
+| mute: boolean |  |
+
+#### Returns
+
+Returns Promise &lt; string [] &gt;
+
+<a id="notifyAudioPlaybackUpdate"></a>
+
+### notifyAudioPlaybackUpdate
+
+```ts
+notifyAudioPlaybackUpdate(deviceId: string): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| deviceId: string |  |
+
+#### Returns
+
+Returns void
+
+<a id="off"></a>
+
+### off
+
+```ts
+off(evt: string, cb: CallableFunction): AgoraRteWebClientMain
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
+
+<a id="on"></a>
+
+### on
+
+```ts
+on(evt: string, cb: CallableFunction): AgoraRteWebClientMain
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
+
+<a id="once"></a>
+
+### once
+
+```ts
+once(evt: string, cb: CallableFunction): AgoraRteWebClientMain
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
+
+<a id="removeAllEventListeners"></a>
+
+### removeAllEventListeners
+
+```ts
+removeAllEventListeners(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="setCloudProxy"></a>
+
+### setCloudProxy
+
+```ts
+setCloudProxy(proxyType: AgoraCloudProxyType): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| proxyType: AgoraCloudProxyType |  |
+
+#### Returns
+
+Returns void
+
+<a id="setLatencyLevel"></a>
+
+### setLatencyLevel
+
+```ts
+setLatencyLevel(level: AgoraLatencyLevel): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| level: AgoraLatencyLevel |  |
+
+#### Returns
+
+Returns void
+
+<a id="setLowStreamParameter"></a>
+
+### setLowStreamParameter
+
+```ts
+setLowStreamParameter(streamParameter: AGLowStreamParameter): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamParameter: AGLowStreamParameter |  |
+
+#### Returns
+
+Returns number
+
+<a id="setRemoteTrackVolume"></a>
+
+### setRemoteTrackVolume
+
+```ts
+setRemoteTrackVolume(streamUuid: string, volume: number): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+| volume: number |  |
+
+#### Returns
+
+Returns void
+
+<a id="setRemoteVideoStreamType"></a>
+
+### setRemoteVideoStreamType
+
+```ts
+setRemoteVideoStreamType(streamUuid: string, streamType: AGRemoteVideoStreamType): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+| streamType: AGRemoteVideoStreamType |  |
+
+#### Returns
+
+Returns number
+
+<a id="videoSubscribeThread"></a>
+
+### videoSubscribeThread
+
+```ts
+videoSubscribeThread(streamUuid: string): undefined | AgoraRteSubscribeThread
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+
+#### Returns
+
+Returns undefined | [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-subscribe-thread)

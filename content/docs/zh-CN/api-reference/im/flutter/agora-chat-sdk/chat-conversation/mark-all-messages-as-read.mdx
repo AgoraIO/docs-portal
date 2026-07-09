@@ -1,0 +1,26 @@
+---
+title: "markAllMessagesAsRead method"
+description: "API docs for the markAllMessagesAsRead method from the ChatConversation class, for the Dart programming language."
+---
+
+Marks all messages as read.
+
+```dart
+Future<void> markAllMessagesAsRead()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> markAllMessagesAsRead() async {
+  Map result = await _emConversationChannel.invokeMethod(
+      ChatMethodKeys.markAllMessagesAsRead, this._toJson());
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

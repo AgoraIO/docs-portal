@@ -1,0 +1,44 @@
+---
+title: "ChatThread.fromJson constructor"
+description: "API docs for the ChatThread.fromJson constructor from Class ChatThread from the agora_chat_sdk library, for the Dart programming language."
+---
+
+```dart
+ChatThread.fromJson(Map map)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+factory ChatThread.fromJson(Map map) {
+  String threadId = map["threadId"];
+  String owner = map["owner"];
+  String messageId = map["msgId"];
+  String parentId = map["parentId"];
+  int memberCount = map["memberCount"] as int;
+  int messageCount = map["messageCount"] as int;
+  int createAt = map["createAt"] as int;
+  ChatMessage? msg;
+  if (map.containsKey("lastMessage")) {
+    msg = ChatMessage.fromJson(map["lastMessage"]);
+  }
+  String? threadName;
+  if (map.containsKey("threadName")) {
+    threadName = map["threadName"];
+  }
+
+  return ChatThread._private(
+    threadId: threadId,
+    owner: owner,
+    messageId: messageId,
+    parentId: parentId,
+    membersCount: memberCount,
+    messageCount: messageCount,
+    createAt: createAt,
+    lastMessage: msg,
+    threadName: threadName,
+  );
+}
+```

@@ -1,0 +1,362 @@
+---
+title: "io.agora.rtc.AudioFrame类 参考"
+description: "AudioFrame 类。"
+---
+
+AudioFrame 类。
+
+## 构造及析构函数说明
+
+<a id="a3cc70ca3bbd70a2f876ea8afc1a2b8f1"></a>
+
+### AudioFrame() [1/2]
+
+```cpp
+io.agora.rtc.AudioFrame.AudioFrame()
+```
+
+构造函数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| type | 音频帧类型。<br />- 0: PCM（16 bit）。 |
+| samplesPerChannel | 每个声道的采样点数。 |
+| bytesPerSample | 每个采样点的字节数: 对于 PCM 来说，一般使用 16 bit，即两个字节。 |
+| channels | 声道数量(如果是立体声，数据是交叉的)。 |
+| samplesPerSec | 每声道每秒的采样点数。 |
+| buffer | 声音数据缓冲区。 |
+| renderTimeMs | 外部音频帧的渲染时间戳，你可以使用该时间戳还原音频帧顺序。你可以将其设为 0。 |
+
+<a id="a06507a7869fc7b93a23ee5f4ec466622"></a>
+
+### AudioFrame() [2/2]
+
+```cpp
+io.agora.rtc.AudioFrame.AudioFrame(int type, int samplesPerChannel, int bytesPerSample, int channels, int samplesPerSec, java.nio.ByteBuffer buffer, long renderTimeMs, int avsyncType, int farFiledFlag, int rms, int voiceProb, int musicProb, int pitch)
+```
+
+## 成员函数说明
+
+<a id="a2706fe6d40ca9ffe03c0714013cc0616"></a>
+
+### getAvsyncType()
+
+```cpp
+int io.agora.rtc.AudioFrame.getAvsyncType()
+```
+
+<a id="aaf073b6cca9e27c03ae089c53555d549"></a>
+
+### getBuffer()
+
+```cpp
+java.nio.ByteBuffer io.agora.rtc.AudioFrame.getBuffer()
+```
+
+<a id="a36198535e1259d344468b8ed6d91b379"></a>
+
+### getBytesPerSample()
+
+```cpp
+int io.agora.rtc.AudioFrame.getBytesPerSample()
+```
+
+<a id="a5146a18b3af51c199aa5d3bfa088ef20"></a>
+
+### getChannels()
+
+```cpp
+int io.agora.rtc.AudioFrame.getChannels()
+```
+
+<a id="a8ae8e7df928b0ee480cadef536d528de"></a>
+
+### getFarFiledFlag()
+
+```cpp
+int io.agora.rtc.AudioFrame.getFarFiledFlag()
+```
+
+<a id="affaa222592e2a31d6ef1823711543b96"></a>
+
+### getMusicProb()
+
+```cpp
+int io.agora.rtc.AudioFrame.getMusicProb()
+```
+
+<a id="a400d472b7eb796cf019b143c1f5df26f"></a>
+
+### getPitch()
+
+```cpp
+int io.agora.rtc.AudioFrame.getPitch()
+```
+
+<a id="afa0b9ed4a85a56310c7377b33f807aa4"></a>
+
+### getRenderTimeMs()
+
+```cpp
+long io.agora.rtc.AudioFrame.getRenderTimeMs()
+```
+
+<a id="a56cfa73b8bf1189c5f9282327f2be176"></a>
+
+### getRms()
+
+```cpp
+int io.agora.rtc.AudioFrame.getRms()
+```
+
+<a id="a647793126c0fcb5eb6472dbe5debd327"></a>
+
+### getSamplesPerChannel()
+
+```cpp
+int io.agora.rtc.AudioFrame.getSamplesPerChannel()
+```
+
+<a id="a0e1527b751070bbe0625d6abf892208c"></a>
+
+### getSamplesPerSec()
+
+```cpp
+int io.agora.rtc.AudioFrame.getSamplesPerSec()
+```
+
+<a id="ab49a8def3cff161ea06520d588e32851"></a>
+
+### getType()
+
+```cpp
+int io.agora.rtc.AudioFrame.getType()
+```
+
+<a id="a21a0ad73204e2adc50444712b5f287d5"></a>
+
+### getVoiceProb()
+
+```cpp
+int io.agora.rtc.AudioFrame.getVoiceProb()
+```
+
+<a id="a7d55a0a60b17fbbbbd89fd0a5aa7a44f"></a>
+
+### setAvsyncType()
+
+```cpp
+void io.agora.rtc.AudioFrame.setAvsyncType(int avsyncType)
+```
+
+<a id="a7f5726b7fc67def02c19d275f3089810"></a>
+
+### setBuffer()
+
+```cpp
+void io.agora.rtc.AudioFrame.setBuffer(java.nio.ByteBuffer buffer)
+```
+
+<a id="a48a133021dda5681775709117a56f8f6"></a>
+
+### setBytesPerSample()
+
+```cpp
+void io.agora.rtc.AudioFrame.setBytesPerSample(int bytesPerSample)
+```
+
+<a id="a6bb80d50bb6f23d2eadcb3d7be1600aa"></a>
+
+### setChannels()
+
+```cpp
+void io.agora.rtc.AudioFrame.setChannels(int channels)
+```
+
+<a id="ab0228c0f3fe41da2360e9f6b3870eb46"></a>
+
+### setFarFiledFlag()
+
+```cpp
+void io.agora.rtc.AudioFrame.setFarFiledFlag(int farFiledFlag)
+```
+
+<a id="a922276b3e46d6d5909cf90cc3dd84e4a"></a>
+
+### setMusicProb()
+
+```cpp
+void io.agora.rtc.AudioFrame.setMusicProb(int musicProb)
+```
+
+<a id="a1a9053cd4d3513c791e011cac248fdfd"></a>
+
+### setPitch()
+
+```cpp
+void io.agora.rtc.AudioFrame.setPitch(int pitch)
+```
+
+<a id="a445f3ed997bb2d12e8295a07c76722f2"></a>
+
+### setRenderTimeMs()
+
+```cpp
+void io.agora.rtc.AudioFrame.setRenderTimeMs(long renderTimeMs)
+```
+
+<a id="ae5ade17891879b6dfdf8dd5df4a50590"></a>
+
+### setRms()
+
+```cpp
+void io.agora.rtc.AudioFrame.setRms(int rms)
+```
+
+<a id="a74256be364217ef64fbf3321986973ce"></a>
+
+### setSamplesPerChannel()
+
+```cpp
+void io.agora.rtc.AudioFrame.setSamplesPerChannel(int samplesPerChannel)
+```
+
+<a id="aee402bfdfc0225673011d71af9bb11e3"></a>
+
+### setSamplesPerSec()
+
+```cpp
+void io.agora.rtc.AudioFrame.setSamplesPerSec(int samplesPerSec)
+```
+
+<a id="ace2894e30f455af26cd11b5b8b39c30e"></a>
+
+### setType()
+
+```cpp
+void io.agora.rtc.AudioFrame.setType(int type)
+```
+
+<a id="a5f2eaec2afddd25eb7021c23bed9050a"></a>
+
+### setVoiceProb()
+
+```cpp
+void io.agora.rtc.AudioFrame.setVoiceProb(int voiceProb)
+```
+
+<a id="a9a4360350beaf5d184a82ad0e33eeace"></a>
+
+### toString()
+
+```cpp
+String io.agora.rtc.AudioFrame.toString()
+```
+
+## 类成员变量说明
+
+<a id="afd9b1e28918930b66194c1e825a32c6a"></a>
+
+### avsyncType
+
+```cpp
+int io.agora.rtc.AudioFrame.avsyncType private
+```
+
+<a id="af66e1dd995f4e7a6858a8b54fb5436c9"></a>
+
+### buffer
+
+```cpp
+java.nio.ByteBuffer io.agora.rtc.AudioFrame.buffer private
+```
+
+<a id="aebc3d5c558fd9397ff1724c96bd86eaf"></a>
+
+### bytesPerSample
+
+```cpp
+int io.agora.rtc.AudioFrame.bytesPerSample private
+```
+
+<a id="a96bbd894861b47ccf66d75f1569f6c16"></a>
+
+### channels
+
+```cpp
+int io.agora.rtc.AudioFrame.channels private
+```
+
+<a id="a3f595435b2f53c375e2bcd6d40e18cb6"></a>
+
+### farFiledFlag
+
+```cpp
+int io.agora.rtc.AudioFrame.farFiledFlag private
+```
+
+<a id="ae11138f1a09c1c1ea8259aeba121bd80"></a>
+
+### musicProb
+
+```cpp
+int io.agora.rtc.AudioFrame.musicProb private
+```
+
+<a id="ab6356867a2d1280ac9b26ff95c6cee05"></a>
+
+### pitch
+
+```cpp
+int io.agora.rtc.AudioFrame.pitch private
+```
+
+<a id="a7dff672a05954d51e2714c9f2827c666"></a>
+
+### renderTimeMs
+
+```cpp
+long io.agora.rtc.AudioFrame.renderTimeMs private
+```
+
+<a id="aa281965fafa92df24a5ac0ed9c96bba6"></a>
+
+### rms
+
+```cpp
+int io.agora.rtc.AudioFrame.rms private
+```
+
+<a id="aa6888ddfc3cdf572a0824b21d8c60954"></a>
+
+### samplesPerChannel
+
+```cpp
+int io.agora.rtc.AudioFrame.samplesPerChannel private
+```
+
+<a id="a1e38010bff1ad60c4c642a6eb4d39219"></a>
+
+### samplesPerSec
+
+```cpp
+int io.agora.rtc.AudioFrame.samplesPerSec private
+```
+
+<a id="a4ea996d2f70135eb1ce93de7b5c77f71"></a>
+
+### type
+
+```cpp
+int io.agora.rtc.AudioFrame.type private
+```
+
+<a id="a37e0176d18b000007bccecbe84320c14"></a>
+
+### voiceProb
+
+```cpp
+int io.agora.rtc.AudioFrame.voiceProb private
+```

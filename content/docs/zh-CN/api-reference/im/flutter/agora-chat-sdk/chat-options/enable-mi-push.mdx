@@ -1,0 +1,29 @@
+---
+title: "enableMiPush method"
+description: "API docs for the enableMiPush method from the ChatOptions class, for the Dart programming language."
+---
+
+Enable Mi Push on Mi devices.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `appId` | The app ID for Mi Push. |
+| `appKey` | The app key for Mi Push. |
+
+```dart
+void enableMiPush(String appId, String appKey)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+void enableMiPush(String appId, String appKey) {
+  _pushConfig.enableMiPush = true;
+  _pushConfig.miAppId = appId;
+  _pushConfig.miAppKey = appKey;
+}
+```

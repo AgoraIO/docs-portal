@@ -1,0 +1,243 @@
+---
+title: "com.herewhite.sdk.domain.CameraBound类 参考"
+description: "CameraBound 类，用于设置视角边界。"
+---
+
+`CameraBound` 类，用于设置视角边界。
+
+视角边界指白板场景内，用户可以移动视角的范围。当视角超出视角边界时，视角会被拉回。
+
+### `自从`
+
+2.5.0
+
+## 构造及析构函数说明
+
+<a id="ab3be3d1c15ab69dcf067dcba4d5cea00"></a>
+
+### CameraBound()
+
+```cpp
+com.herewhite.sdk.domain.CameraBound.CameraBound(Double miniScale, Double maxScale)
+```
+
+初始化视角边界。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| miniScale | 视角边界的最小缩放比例。 |
+| maxScale | 视角边界的最大缩放比例。 |
+
+## 成员函数说明
+
+<a id="af10a016ee2828d33beb9f63012d4f5d6"></a>
+
+### getCenterX()
+
+```cpp
+Double com.herewhite.sdk.domain.CameraBound.getCenterX()
+```
+
+获取视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+#### Returns
+
+视角边界的中心点在世界坐标系中的 X 轴坐标。
+
+<a id="a55381452b418bd007dace0e3ab42e2a9"></a>
+
+### setCenterX()
+
+```cpp
+void com.herewhite.sdk.domain.CameraBound.setCenterX(Double centerX)
+```
+
+设置视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| centerX | 视角边界的中心点在世界坐标系的 X 轴坐标。默认值为 0.0。 |
+
+<a id="a07258c5ab55fa52c2e358f78e1fdfa0c"></a>
+
+### getCenterY()
+
+```cpp
+Double com.herewhite.sdk.domain.CameraBound.getCenterY()
+```
+
+获取视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+#### Returns
+
+视角边界的中心点在世界坐标系中的 Y 轴坐标。
+
+<a id="aeb79b8c1d7c9471dc8e8e683d27bfc9c"></a>
+
+### setCenterY()
+
+```cpp
+void com.herewhite.sdk.domain.CameraBound.setCenterY(Double centerY)
+```
+
+设置视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| centerY | 视角边界的中心点在世界坐标系中的 Y 轴坐标。默认值为 0.0。 |
+
+<a id="a2959924ced012f75c8f7af2e2385ab8a"></a>
+
+### getWidth()
+
+```cpp
+Double com.herewhite.sdk.domain.CameraBound.getWidth()
+```
+
+获取视角边界的宽度。
+
+#### Returns
+
+视角边界的宽度，单位为像素。
+
+<a id="a9d516aef8b71282fcfe9bf0512767373"></a>
+
+### setWidth()
+
+```cpp
+void com.herewhite.sdk.domain.CameraBound.setWidth(Double width)
+```
+
+设置视角边界的宽度。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| width | 视角边界的宽度，单位为像素。如果不填，则表示无限制。 |
+
+<a id="ac9f6023ff209476e7dad1421f32e6099"></a>
+
+### getHeight()
+
+```cpp
+Double com.herewhite.sdk.domain.CameraBound.getHeight()
+```
+
+获取视角边界的宽度。
+
+#### Returns
+
+视角边界的宽度，单位为像素。
+
+<a id="a9359ae034e2dc924d686604d4d1a42a3"></a>
+
+### setHeight()
+
+```cpp
+void com.herewhite.sdk.domain.CameraBound.setHeight(Double height)
+```
+
+设置视角边界的高度。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| height | 视角边界的高度，单位为像素。如果不填，则表示无限制。 |
+
+<a id="a3f86f60880e9462b8a64775972aa6cdf"></a>
+
+### getMaxContentMode()
+
+```cpp
+ContentModeConfig com.herewhite.sdk.domain.CameraBound.getMaxContentMode()
+```
+
+获取视角边界的缩放模式和最大缩放比例。
+
+#### Returns
+
+视角边界的缩放模式和最大缩放比例，详见 `ContentModeConfig`。
+
+<a id="ab00400e0704e141608d676e058c7806b"></a>
+
+### setMaxContentMode()
+
+```cpp
+void com.herewhite.sdk.domain.CameraBound.setMaxContentMode(ContentModeConfig maxContentMode)
+```
+
+设置视角边界的缩放模式和最大缩放比例。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| maxContentMode | 视角边界的最大缩放比例，详见 `ContentModeConfig`。 |
+
+<a id="aa40a670d489a70de4b9e903d69e3c465"></a>
+
+### getMinContentMode()
+
+```cpp
+ContentModeConfig com.herewhite.sdk.domain.CameraBound.getMinContentMode()
+```
+
+获取视角边界的缩放模式和最小缩放比例。
+
+#### Returns
+
+视角边界的缩放模式和最小缩放比例，详见 `ContentModeConfig`。
+
+<a id="a4237cf9e50393447e59a23b54e352735"></a>
+
+### setMinContentMode()
+
+```cpp
+void com.herewhite.sdk.domain.CameraBound.setMinContentMode(ContentModeConfig minContentMode)
+```
+
+设置视角边界的缩放模式和最小缩放比例。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| minContentMode | 视角边界的缩放模式和最小缩放比例，详见 `ContentModeConfig`。 |
+
+<a id="a68edcda93e00c71ead62c96fb908a507"></a>
+
+### getDamping()
+
+```cpp
+Double com.herewhite.sdk.domain.CameraBound.getDamping()
+```
+
+获取用户将视角移出视角边界时感受到的阻力。
+
+#### Returns
+
+用户将视角移出视角边界时感受到的阻力。返回值范围为 [0.0,1.0]。数值越大，用户感受到的阻力越大。
+
+<a id="ac387fa1a63ff3df2a70276c8d1f52353"></a>
+
+### setDamping()
+
+```cpp
+void com.herewhite.sdk.domain.CameraBound.setDamping(Double damping)
+```
+
+设置用户将视角移出视角边界时感受到的阻力。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| damping | 阻力大小，取值范围为 [0.0,1.0]。取值越大，用户感受到的阻力越大。<br />- 0.0: 用户将视角移出视角边界时，完全感受不到阻力，但当其手指离开屏幕时，视角会恢复到原位。<br />- 1.0: 用户完全无法将视角移出视角边界。 |

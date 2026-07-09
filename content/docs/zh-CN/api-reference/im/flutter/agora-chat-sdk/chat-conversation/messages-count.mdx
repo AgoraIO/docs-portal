@@ -1,0 +1,32 @@
+---
+title: "messagesCount method"
+description: "API docs for the messagesCount method from the ChatConversation class, for the Dart programming language."
+---
+
+Message count
+
+```dart
+Future<int> messagesCount()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<int> messagesCount() async {
+  Map req = this._toJson();
+  Map<String, dynamic> result = await _emConversationChannel.invokeMethod(
+    ChatMethodKeys.messageCount,
+    req,
+  );
+
+  try {
+    ChatError.hasErrorFromResult(result);
+    int count = result[ChatMethodKeys.messageCount];
+    return count;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

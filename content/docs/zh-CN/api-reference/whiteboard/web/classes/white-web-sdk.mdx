@@ -1,0 +1,203 @@
+---
+title: "WhiteWebSdk"
+description: "WhiteWebSdk API reference."
+---
+
+`WhiteWebSdk` 类用于初始化 `WhiteWebSdk` 对象。
+
+- WhiteWebSdk
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new WhiteWebSdk(params: WhiteWebSdkConfiguration): WhiteWebSdk
+```
+
+`WhiteWebSdk` 的构造函数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| params: WhiteWebSdkConfiguration | 构造参数。 |
+
+#### Returns
+
+Returns [WhiteWebSdk](/zh-CN/api-reference/whiteboard/web/classes/white-web-sdk)
+
+构造的 `WhiteWebSdk` 对象。
+
+## Properties
+
+<a id="devicetype"></a>
+
+### deviceType
+
+```ts
+deviceType: DeviceType
+```
+
+该客户端的设备类型，决定 SDK 如何处理鼠标事件和触碰事件。
+
+<a id="region"></a>
+
+### region
+
+```ts
+region: string
+```
+
+连接的数据中心。支持传入以下值：
+
+| `region` | 数据中心 | 服务区 |
+| --- | --- | --- |
+| `us-sv` | 美国硅谷 | 北美洲、南美洲 |
+| `sg` | 新加坡 | 新加坡、东亚、东南亚 |
+| `in-mum` | 印度孟买 | 印度 |
+| `eu` | 欧洲（法兰克福） | 欧洲 |
+| `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
+
+**Note**
+
+该方法设置的数据中心必须与 [创建房间](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-rooms) 时设置的数据中心一致；否则，SDK 将无法连接到房间。
+
+<a id="renderengine"></a>
+
+### renderEngine
+
+```ts
+renderEngine: RenderEngine
+```
+
+渲染模式，详见 [RenderEngine](/zh-CN/api-reference/whiteboard/web/enums/render-engine)。
+
+<a id="screentype"></a>
+
+### screenType
+
+```ts
+screenType: ScreenType
+```
+
+用户的屏幕类型，用于调整手势识别参数。
+
+<a id="version"></a>
+
+### version
+
+```ts
+version: string
+```
+
+当前 SDK 的版本。
+
+##### `since`
+
+2.13.14
+
+## Methods
+
+<a id="isplayable"></a>
+
+### isPlayable
+
+```ts
+isPlayable(params: PlayableCheckingParams): Promise<boolean>
+```
+
+查看房间是否有回放数据。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| params: PlayableCheckingParams | 检查白板房间是否可以回放的参数配置，详见 [PlayableCheckingParams](/zh-CN/api-reference/whiteboard/web/globals#playablecheckingparams)。 |
+
+#### Returns
+
+Returns Promise &lt; boolean &gt;
+
+- 如果方法调用成功，则返回 true。
+- 如果方法调用失败，则返回 false。
+
+<a id="joinroom"></a>
+
+### joinRoom
+
+```ts
+joinRoom(params: JoinRoomParams, callbacks?: Partial<RoomCallbacks>): Promise<Room>
+```
+
+加入互动白板实时房间。
+
+##### `example`
+
+```text
+const joinRoomParams = {...};
+const roomCallbacks = {...};
+
+whiteWebSdk.joinRoom(joinRoomParams, roomCallbacks)
+           .then(function (room) {
+               // 加入房间成功，拿到 room 对象
+           })
+           .catch(function (error) {
+               // 加入房间失败，拿到 error 对象
+           });
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| params: JoinRoomParams | 互动白板实时房间的参数配置，详见 [JoinRoomParams](/zh-CN/api-reference/whiteboard/web/globals#joinroomparams)。 |
+| Optional callbacks: Partial&lt;RoomCallbacks&gt; | 实时房间的事件回调。 |
+
+#### Returns
+
+Returns Promise &lt; [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) &gt;
+
+- 如果方法调用成功，则返回房间对象，详见 Room。
+- 如果方法调用失败，则返回错误信息。
+
+<a id="replayroom"></a>
+
+### replayRoom
+
+```ts
+replayRoom(params: ReplayRoomParams, callbacks?: Partial<PlayerCallbacks>): Promise<Player>
+```
+
+创建 `Player` 对象，用于互动白板实时房间的回放。
+
+##### `example`
+
+```text
+const replayRoomParams = {...};
+const replayCallbacks = {...};
+
+whiteWebSdk.replayRoom(replayRoomParams, replayCallbacks)
+           .then(function (player) {
+               // 回放成功，拿到 player 对象
+           })
+           .catch(function (error) {
+               // 回放失败，拿到 error 对象
+           });
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| params: ReplayRoomParams | `Player` 对象的参数配置，详见 [ReplayRoomParams](/zh-CN/api-reference/whiteboard/web/globals#replayroomparams)。 |
+| Optional callbacks: Partial&lt;PlayerCallbacks&gt; | `Player` 对象的事件回调。 |
+
+#### Returns
+
+Returns Promise &lt; [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks) &gt;
+
+- 如果方法调用成功，则返回房间对象，详见 Player。
+- 如果方法调用失败，则返回错误信息。

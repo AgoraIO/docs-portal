@@ -1,8 +1,10 @@
 ---
 title: "网络及其他"
-description: "网络及其他 API reference."
+description: "投诉通话质量。"
 ---
 <a id="toc_network"></a>
+
+## 网络及其他
 
 <a id="api_irtcengine_complain"></a>
 
@@ -37,7 +39,7 @@ abstract complain(callId: string, description: string): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -7: IRtcEngine 尚未初始化就调用方法。
@@ -167,7 +169,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
@@ -208,7 +210,7 @@ abstract enableWebSdkInteroperability(enabled: boolean): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -371,7 +373,7 @@ Monotonic Time 是指一个单调递增的时间序列，它的值会随着时�
 ### 返回值
 
 - ≥ 0: 方法调用成功，返回 SDK 当前的 Monotonic Time（毫秒）。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -627,7 +629,7 @@ abstract rate(callId: string, rating: number, description: string): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
 
@@ -722,7 +724,7 @@ abstract setAVSyncSource(channelId: string, uid: number): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -762,7 +764,7 @@ abstract setCloudProxy(proxyType: CloudProxyType): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
   - -2: 传入的参数无效。
   - -7: SDK 尚未初始化。
 
@@ -801,14 +803,14 @@ abstract setLocalAccessPoint(config: LocalAccessPointConfiguration): number;
 
 #### `config`
 
-Local Access Point 配置。详见 [LocalAccessPointConfiguration](class_localaccesspointconfiguration.html)。
+Local Access Point 配置。详见 [LocalAccessPointConfiguration](/zh-CN/api-reference/rtc/electron/class-localaccesspointconfiguration)。
 
 <a id="api_irtcengine_setlocalaccesspoint__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -856,7 +858,7 @@ App 必须保证指定的目录存在而且可写。
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -910,7 +912,7 @@ abstract setLogFileSize(fileSizeInKBytes: number): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -948,7 +950,7 @@ abstract setLogFilter(filter: LogFilterType): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -986,7 +988,7 @@ abstract setLogLevel(level: LogLevel): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -1018,7 +1020,7 @@ JSON 字符串形式的参数。
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -1054,7 +1056,7 @@ abstract setRemoteSubscribeFallbackOption(
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -1100,7 +1102,7 @@ abstract startEchoTest(config: EchoTestConfiguration): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -1149,7 +1151,7 @@ Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -1175,7 +1177,7 @@ abstract stopEchoTest(): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
   - -5(ERR_REFUSED): 停止测试失败，可能是测试不在运行中。
 
 ### 所属接口类
@@ -1200,7 +1202,7 @@ abstract stopLastmileProbeTest(): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -1637,7 +1639,7 @@ onRemoteSubscribeFallbackToAudioOnly?(
 - 下行网络环境改善，订阅音频流恢复为音视频流
 
 :::info[注]
-订阅流因弱网环境而回退为视频小流时，你可以通过 [onRemoteVideoStats](/zh-CN/api-reference/rtc/electron/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调来监控远端视频大小流的切换。
+订阅流因弱网环境而回退为视频小流时，你可以通过 [onRemoteVideoStats](/zh-CN/api-reference/rtc/electron/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调来监控远端视频大小流的切换。
 :::
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__parameters"></a>

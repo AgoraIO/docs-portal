@@ -1,0 +1,881 @@
+---
+title: "音乐文件播放"
+description: "调节本地播放的混音音量。"
+---
+<a id="toc_audio_mixing"></a>
+
+## 音乐文件播放
+
+<a id="api_irtcengine_adjustaudiomixingplayoutvolume"></a>
+
+## adjustAudioMixingPlayoutVolume
+
+调节本地播放的混音音量。
+
+<a id="api_irtcengine_adjustaudiomixingplayoutvolume__prototype"></a>
+
+```cpp
+virtual int adjustAudioMixingPlayoutVolume(int volume) = 0;
+```
+
+<a id="api_irtcengine_adjustaudiomixingplayoutvolume__detailed_desc"></a>
+
+<a id="api_irtcengine_adjustaudiomixingplayoutvolume__timing"></a>
+
+### 调用时机
+
+你需要在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用该方法。
+
+<a id="api_irtcengine_adjustaudiomixingplayoutvolume__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+本地播放的混音音量，取值范围为 0 到 100。（默认）为 100，表示原始音量。
+
+<a id="api_irtcengine_adjustaudiomixingplayoutvolume__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_adjustaudiomixingpublishvolume"></a>
+
+## adjustAudioMixingPublishVolume
+
+调节用于发布的混音音量。
+
+<a id="api_irtcengine_adjustaudiomixingpublishvolume__prototype"></a>
+
+```cpp
+virtual int adjustAudioMixingPublishVolume(int volume) = 0;
+```
+
+<a id="api_irtcengine_adjustaudiomixingpublishvolume__detailed_desc"></a>
+
+<a id="api_irtcengine_adjustaudiomixingpublishvolume__timing"></a>
+
+### 调用时机
+
+请在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用该方法。
+
+<a id="api_irtcengine_adjustaudiomixingpublishvolume__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+用于发布的混音音量。取值范围为 0 到 100，默认值为 100，表示原始音量。
+
+<a id="api_irtcengine_adjustaudiomixingpublishvolume__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_adjustaudiomixingvolume"></a>
+
+## adjustAudioMixingVolume
+
+调节本地和远端的混音音量。
+
+<a id="api_irtcengine_adjustaudiomixingvolume__prototype"></a>
+
+```cpp
+virtual int adjustAudioMixingVolume(int volume) = 0;
+```
+
+<a id="api_irtcengine_adjustaudiomixingvolume__detailed_desc"></a>
+
+:::info[注]
+[adjustAudioMixingVolume](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#api_irtcengine_adjustaudiomixingvolume) 方法不会影响通过 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 方法设置的音频文件的音量。
+:::
+
+<a id="api_irtcengine_adjustaudiomixingvolume__timing"></a>
+
+### 调用时机
+
+请在调用 `startAudioMixing` 方法之后调用该方法。
+
+<a id="api_irtcengine_adjustaudiomixingvolume__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+混音音量。取值范围为 0 到 100。（默认）100 表示原始音量。
+
+<a id="api_irtcengine_adjustaudiomixingvolume__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getaudiomixingcurrentposition"></a>
+
+## getAudioMixingCurrentPosition
+
+获取当前混音的播放进度（毫秒）。
+
+<a id="api_irtcengine_getaudiomixingcurrentposition__prototype"></a>
+
+```cpp
+virtual int getAudioMixingCurrentPosition() = 0;
+```
+
+<a id="api_irtcengine_getaudiomixingcurrentposition__detailed_desc"></a>
+
+:::info[注]
+- 你需要在调用 startAudioMixing 并收到 onAudioMixingStateChanged （AUDIO_MIXING_STATE_PLAYING ）回调后调用此方法。
+- 如果需要多次调用 getAudioMixingCurrentPosition，请确保两次调用之间的时间间隔大于 500 毫秒。
+:::
+
+<a id="api_irtcengine_getaudiomixingcurrentposition__return_values"></a>
+
+### 返回值
+
+- ≥ 0：方法调用成功，返回当前混音的播放进度（毫秒）。返回 0 表示当前音乐文件尚未开始播放。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getaudiomixingduration"></a>
+
+## getAudioMixingDuration
+
+获取混音文件的总时长（毫秒）。
+
+<a id="api_irtcengine_getaudiomixingduration__prototype"></a>
+
+```cpp
+virtual int getAudioMixingDuration() = 0;
+```
+
+<a id="api_irtcengine_getaudiomixingduration__detailed_desc"></a>
+
+<a id="api_irtcengine_getaudiomixingduration__timing"></a>
+
+### 调用时机
+
+请在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用该方法。
+
+<a id="api_irtcengine_getaudiomixingduration__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回混音文件的总时长（毫秒）。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getaudiomixingplayoutvolume"></a>
+
+## getAudioMixingPlayoutVolume
+
+获取本地播放的混音音量。
+
+<a id="api_irtcengine_getaudiomixingplayoutvolume__prototype"></a>
+
+```cpp
+virtual int getAudioMixingPlayoutVolume() = 0;
+```
+
+<a id="api_irtcengine_getaudiomixingplayoutvolume__detailed_desc"></a>
+
+你可以调用该方法获取混音音频文件的本地播放音量，有助于排查与音量相关的问题。
+
+<a id="api_irtcengine_getaudiomixingplayoutvolume__timing"></a>
+
+### 调用时机
+
+请在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用此方法。
+
+<a id="api_irtcengine_getaudiomixingplayoutvolume__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回混音音量，取值范围为 [0, 100]。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getaudiomixingpublishvolume"></a>
+
+## getAudioMixingPublishVolume
+
+获取用于发布的混音音量。
+
+<a id="api_irtcengine_getaudiomixingpublishvolume__prototype"></a>
+
+```cpp
+virtual int getAudioMixingPublishVolume() = 0;
+```
+
+<a id="api_irtcengine_getaudiomixingpublishvolume__detailed_desc"></a>
+
+:::info[注]
+你需要在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用该方法。
+:::
+
+<a id="api_irtcengine_getaudiomixingpublishvolume__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功，返回混音音量，取值范围为 [0,100]。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getaudiotrackcount"></a>
+
+## getAudioTrackCount
+
+获取当前音乐文件的音轨索引。
+
+<a id="api_irtcengine_getaudiotrackcount__prototype"></a>
+
+```cpp
+virtual int getAudioTrackCount() = 0;
+```
+
+<a id="api_irtcengine_getaudiotrackcount__detailed_desc"></a>
+
+:::info[注]
+你需要在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用此方法。
+:::
+
+<a id="api_irtcengine_getaudiotrackcount__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_pauseaudiomixing"></a>
+
+## pauseAudioMixing
+
+暂停播放和混音的音乐文件。
+
+<a id="api_irtcengine_pauseaudiomixing__prototype"></a>
+
+```cpp
+virtual int pauseAudioMixing() = 0;
+```
+
+<a id="api_irtcengine_pauseaudiomixing__detailed_desc"></a>
+
+调用 `startAudioMixing` 播放音乐文件后，可以调用该方法暂停播放。若需停止播放，请调用 [stopAudioMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#api_irtcengine_stopaudiomixing)。
+
+<a id="api_irtcengine_pauseaudiomixing__timing"></a>
+
+### 调用时机
+
+请在加入频道后调用该方法。
+
+<a id="api_irtcengine_pauseaudiomixing__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_resumeaudiomixing"></a>
+
+## resumeAudioMixing
+
+恢复播放并混音音乐文件。
+
+<a id="api_irtcengine_resumeaudiomixing__prototype"></a>
+
+```cpp
+virtual int resumeAudioMixing() = 0;
+```
+
+<a id="api_irtcengine_resumeaudiomixing__detailed_desc"></a>
+
+调用 [pauseAudioMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放后，可以调用 [resumeAudioMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#api_irtcengine_resumeaudiomixing) 恢复播放。
+
+<a id="api_irtcengine_resumeaudiomixing__timing"></a>
+
+### 调用时机
+
+请在加入频道后调用该方法。
+
+<a id="api_irtcengine_resumeaudiomixing__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_selectaudiotrack"></a>
+
+## selectAudioTrack [1/2]
+
+选择播放过程中使用的音轨。
+
+<a id="api_irtcengine_selectaudiotrack__prototype"></a>
+
+```cpp
+virtual int selectAudioTrack(int index) = 0;
+```
+
+<a id="api_irtcengine_selectaudiotrack__detailed_desc"></a>
+
+获取音频文件的音轨索引后，可以调用该方法指定任意音轨进行播放。例如，如果一个多音轨文件的不同音轨存储了不同语言的歌曲，可以调用该方法设置播放语言。
+
+:::info[注]
+- 支持的音频文件格式请参见 [音频文件扩展格式](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。
+- 你需要在调用 startAudioMixing 并收到 onAudioMixingStateChanged （AUDIO_MIXING_STATE_PLAYING ）回调后调用该方法。
+:::
+
+<a id="api_irtcengine_selectaudiotrack__parameters"></a>
+
+### 参数
+
+#### `index`
+
+指定的音轨索引。该值应大于 0 且小于 [getAudioTrackCount](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#api_irtcengine_getaudiotrackcount) 返回的值。
+
+<a id="api_irtcengine_selectaudiotrack__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediaplayer_selectmultiaudiotrack"></a>
+
+## selectMultiAudioTrack
+
+选择用于本地播放和发布到频道的音轨。
+
+<a id="api_imediaplayer_selectmultiaudiotrack__prototype"></a>
+
+```cpp
+virtual int selectMultiAudioTrack(int playoutTrackIndex, int publishTrackIndex) = 0;
+```
+
+<a id="api_imediaplayer_selectmultiaudiotrack__detailed_desc"></a>
+
+调用该方法前，需要使用 [openWithMediaSource](/zh-CN/api-reference/rtc/cpp-all-platforms/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体文件，并在 [MediaSource](/zh-CN/api-reference/rtc/cpp-all-platforms/class-mediasource) 中将 `enableMultiAudioTrack` 设置为 true。
+
+<a id="api_imediaplayer_selectmultiaudiotrack__scenario"></a>
+
+### 适用场景
+
+该方法适用于例如 KTV 场景：主持人可以选择在本地播放原唱音轨，同时将伴奏音轨发布到频道。
+
+<a id="api_imediaplayer_selectmultiaudiotrack__parameters"></a>
+
+### 参数
+
+#### `playoutTrackIndex`
+
+用于本地播放的音轨索引。可通过 [getStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取。
+
+#### `publishTrackIndex`
+
+要发布到频道的音轨索引。可通过 [getStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取。
+
+<a id="api_imediaplayer_selectmultiaudiotrack__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+
+<a id="api_irtcengine_setaudiomixingdualmonomode"></a>
+
+## setAudioMixingDualMonoMode
+
+设置当前音频文件的声道模式。
+
+<a id="api_irtcengine_setaudiomixingdualmonomode__prototype"></a>
+
+```cpp
+virtual int setAudioMixingDualMonoMode(media::AUDIO_MIXING_DUAL_MONO_MODE mode) = 0;
+```
+
+<a id="api_irtcengine_setaudiomixingdualmonomode__detailed_desc"></a>
+
+在立体声音乐文件中，左右声道可以存储不同的音频数据。你可以根据需要将声道模式设置为原始模式、左声道模式、右声道模式或混合声道模式。
+
+:::info[注]
+该方法仅适用于立体声音频文件。
+:::
+
+<a id="api_irtcengine_setaudiomixingdualmonomode__scenario"></a>
+
+### 适用场景
+
+在 KTV 场景中，音乐文件的左声道存储伴奏，右声道存储原唱人声。你可以根据实际需求进行设置：
+
+- 如果你只想听到伴奏，调用该方法将声道模式设置为左声道模式。
+- 如果你需要同时听到伴奏和原唱人声，调用该方法将声道模式设置为混合模式。
+
+<a id="api_irtcengine_setaudiomixingdualmonomode__timing"></a>
+
+### 调用时机
+
+在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用该方法。
+
+<a id="api_irtcengine_setaudiomixingdualmonomode__parameters"></a>
+
+### 参数
+
+#### `mode`
+
+声道模式。详见 [AUDIO_MIXING_DUAL_MONO_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiomixingdualmonomode)。
+
+<a id="api_irtcengine_setaudiomixingdualmonomode__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setaudiomixingpitch"></a>
+
+## setAudioMixingPitch
+
+设置本地音乐文件的音调。
+
+<a id="api_irtcengine_setaudiomixingpitch__prototype"></a>
+
+```cpp
+virtual int setAudioMixingPitch(int pitch) = 0;
+```
+
+<a id="api_irtcengine_setaudiomixingpitch__detailed_desc"></a>
+
+调用该方法可在本地音乐文件与本地人声混音时，单独调整本地音乐文件的音调。
+
+<a id="api_irtcengine_setaudiomixingpitch__timing"></a>
+
+### 调用时机
+
+你需要在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用该方法。
+
+<a id="api_irtcengine_setaudiomixingpitch__parameters"></a>
+
+### 参数
+
+#### `pitch`
+
+按半音音阶设置本地音乐文件的音调。默认值为 0，表示保持原始音调。取值范围为 -12 到 12，相邻两个值之间的音调差为一个半音。该参数的绝对值越大，音调变化越明显。
+
+<a id="api_irtcengine_setaudiomixingpitch__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setaudiomixingplaybackspeed"></a>
+
+## setAudioMixingPlaybackSpeed
+
+设置当前音频文件的播放速度。
+
+<a id="api_irtcengine_setaudiomixingplaybackspeed__prototype"></a>
+
+```cpp
+virtual int setAudioMixingPlaybackSpeed(int speed) = 0;
+```
+
+<a id="api_irtcengine_setaudiomixingplaybackspeed__detailed_desc"></a>
+
+请确保在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) 回调报告状态为 `AUDIO_MIXING_STATE_PLAYING` 后再调用此方法。
+
+<a id="api_irtcengine_setaudiomixingplaybackspeed__parameters"></a>
+
+### 参数
+
+#### `speed`
+
+播放速度。建议设置为 50 到 400 之间的值，定义如下：
+
+- 50：原始速度的一半。
+- 100：原始速度。
+- 400：原始速度的 4 倍。
+
+<a id="api_irtcengine_setaudiomixingplaybackspeed__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setaudiomixingposition"></a>
+
+## setAudioMixingPosition
+
+设置混音文件的播放起始位置。
+
+<a id="api_irtcengine_setaudiomixingposition__prototype"></a>
+
+```cpp
+virtual int setAudioMixingPosition(int pos /*in ms*/) = 0;
+```
+
+<a id="api_irtcengine_setaudiomixingposition__detailed_desc"></a>
+
+调用该方法可将音乐文件的播放位置设置为指定的起始位置，默认从头开始播放。
+
+<a id="api_irtcengine_setaudiomixingposition__timing"></a>
+
+### 调用时机
+
+请在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用此方法。
+
+<a id="api_irtcengine_setaudiomixingposition__parameters"></a>
+
+### 参数
+
+#### `pos`
+
+播放位置，单位为毫秒。
+
+<a id="api_irtcengine_setaudiomixingposition__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startaudiomixing"></a>
+
+## startAudioMixing [1/2]
+
+开始播放音乐文件。
+
+<a id="api_irtcengine_startaudiomixing__prototype"></a>
+
+```cpp
+virtual int startAudioMixing(const char* filePath, bool loopback, int cycle) = 0;
+```
+
+<a id="api_irtcengine_startaudiomixing__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃，请改用 `startAudioMixing(const char* filePath, bool loopback, int cycle, int startPos)`。
+
+如果本地音乐文件不存在、SDK 不支持该文件格式，或无法访问音乐文件的 URL，SDK 会返回 `AUDIO_MIXING_REASON_CAN_NOT_OPEN`。
+
+:::info[注]
+- 如果你调用该方法播放短音效文件，可能会遇到播放失败的情况。建议使用 playEffect 播放此类文件。
+- 如果你需要多次调用该方法，确保每次调用之间的时间间隔大于 500 毫秒。
+- 在 Android 上，有以下注意事项：
+  - 使用该方法前，请确保 Android 设备版本为 v4.2 或更高，API 版本为 v16 或更高。
+  - 如果你需要播放在线音乐文件，不建议使用重定向的 URL 地址。部分 Android 设备可能无法打开重定向的 URL 地址。
+  - 如果你在模拟器上调用该方法，请确保音乐文件位于 /sdcard/ 目录下，且格式为 MP3。
+:::
+
+<a id="api_irtcengine_startaudiomixing__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或后调用该方法。
+
+<a id="api_irtcengine_startaudiomixing__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调。当音频混音文件播放结束时，SDK 会在本地客户端触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_STOPPED` ）回调。
+
+<a id="api_irtcengine_startaudiomixing__parameters"></a>
+
+### 参数
+
+#### `filePath`
+
+文件路径。支持 URL 和本地文件的绝对路径，路径需精确到文件名及扩展名。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV 和 3GP。
+
+:::info[注]
+如果你已通过调用 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_preloadeffect) 将音效文件预加载到内存中，请确保该参数的值与 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_preloadeffect) 中的 `filePath` 参数一致。
+:::
+
+#### `loopback`
+
+是否仅在本地客户端播放音乐文件：
+
+- true：仅在本地播放，只有本地用户能听到音乐。
+- false：将音乐发布到远端，远端和本地用户都能听到音乐。
+
+#### `cycle`
+
+音乐文件的播放次数：
+
+- &gt;0：播放指定次数，例如 1 表示播放 1 次。
+- -1：无限循环播放。
+
+<a id="api_irtcengine_startaudiomixing__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+  - -1：发生通用错误（无明确原因）。
+  - -2：参数无效。
+  - -3：SDK 未就绪：
+    - 音频模块未启用。
+    - 程序未完成。
+    - IRtcEngine 初始化失败。请重新初始化 IRtcEngine。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startaudiomixing2"></a>
+
+## startAudioMixing [2/2]
+
+开始播放音乐文件。
+
+<a id="api_irtcengine_startaudiomixing2__prototype"></a>
+
+```cpp
+virtual int startAudioMixing(const char* filePath, bool loopback, int cycle, int startPos) = 0;
+```
+
+<a id="api_irtcengine_startaudiomixing2__detailed_desc"></a>
+
+如果本地音乐文件不存在、SDK 不支持该文件格式，或无法访问音乐文件的 URL，SDK 会返回 `AUDIO_MIXING_REASON_CAN_NOT_OPEN`。
+
+:::info[注]
+- 如果调用该方法播放短音效文件，可能会播放失败。声网建议使用 playEffect 播放此类文件。
+- 如果需要多次调用该方法，确保两次调用之间的时间间隔大于 500 毫秒。
+- 在 Android 平台上，有以下注意事项：
+  - 使用该方法时，需确保 Android 设备版本为 v4.2 或更高，API 版本为 v16 或更高。
+  - 如果需要播放在线音乐文件，声网不建议使用重定向的 URL 地址。部分 Android 设备可能无法打开重定向的 URL。
+  - 如果在模拟器上调用该方法，需确保音乐文件位于 /sdcard/ 目录下，且格式为 MP3。
+:::
+
+<a id="api_irtcengine_startaudiomixing2__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或加入频道后调用该方法。
+
+<a id="api_irtcengine_startaudiomixing2__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调。当音频混音文件播放结束时，SDK 会在本地客户端触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_STOPPED` ）回调。
+
+<a id="api_irtcengine_startaudiomixing2__parameters"></a>
+
+### 参数
+
+#### `filePath`
+
+文件路径：
+
+- Android：路径需精确到文件名和后缀名。支持 URL 地址、绝对路径或以 /assets/ 开头的路径。使用绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址，例如： content://com.android.providers.media.documents/document/audio%3A14441。
+- Windows：音效文件的绝对路径或 URL 地址（包括文件名后缀），例如： C:\\music\\audio.mp4。
+
+#### `loopback`
+
+是否仅在本地客户端播放音乐文件：
+
+- true：仅本地播放，只有本地用户能听到音乐。
+- false：将音乐发布到远端，远端用户也能听到音乐。
+
+#### `cycle`
+
+音乐文件的播放次数：
+
+- &gt;0：播放指定次数，例如 1 表示播放 1 次。
+- -1：无限循环播放。
+
+#### `startPos`
+
+音乐文件的播放起始位置（单位：毫秒）。
+
+<a id="api_irtcengine_startaudiomixing2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+  - -1：发生通用错误（无明确原因）。
+  - -2：参数无效。
+  - -3：SDK 未就绪：
+    - 音频模块被禁用。
+    - 程序未完成。
+    - IRtcEngine 初始化失败。请重新初始化 IRtcEngine。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopaudiomixing"></a>
+
+## stopAudioMixing
+
+停止播放音乐文件。
+
+<a id="api_irtcengine_stopaudiomixing__prototype"></a>
+
+```cpp
+virtual int stopAudioMixing() = 0;
+```
+
+<a id="api_irtcengine_stopaudiomixing__detailed_desc"></a>
+
+调用 `startAudioMixing` 播放音乐文件后，可以调用该方法停止播放。如果只需要暂停播放，请调用 [pauseAudioMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#api_irtcengine_pauseaudiomixing)。
+
+<a id="api_irtcengine_stopaudiomixing__timing"></a>
+
+### 调用时机
+
+请在加入频道后调用该方法。
+
+<a id="api_irtcengine_stopaudiomixing__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onaudiomixingfinished"></a>
+
+## onAudioMixingFinished
+
+本地音乐文件播放结束时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onaudiomixingfinished__prototype"></a>
+
+```cpp
+virtual void onAudioMixingFinished() __deprecated {}
+```
+
+<a id="callback_irtcengineeventhandler_onaudiomixingfinished__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃，请改用 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)。
+
+调用 `startAudioMixing` 播放本地音乐文件后，当播放结束时会触发该回调。如果调用 `startAudioMixing` 失败，会返回错误码 `WARN_AUDIO_MIXING_OPEN_ERROR`。
+
+<a id="callback_irtcengineeventhandler_onaudiomixingfinished__timing"></a>
+
+### 触发时机
+
+调用 `startAudioMixing` 播放本地音乐文件后，当播放结束时触发。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged"></a>
+
+## onAudioMixingPositionChanged
+
+报告音乐文件播放进度的回调。
+
+<a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__prototype"></a>
+
+```cpp
+virtual void onAudioMixingPositionChanged(int64_t position) {}
+```
+
+<a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__detailed_desc"></a>
+
+调用 `startAudioMixing` 播放音乐文件后，SDK 每两秒触发一次该回调，报告音乐文件的播放进度。
+
+<a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__parameters"></a>
+
+### 参数
+
+#### `position`
+
+播放进度，单位为毫秒。
+
+<a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onaudiomixingstatechanged"></a>
+
+## onAudioMixingStateChanged
+
+音乐文件播放状态变化回调。
+
+<a id="callback_irtcengineeventhandler_onaudiomixingstatechanged__prototype"></a>
+
+```cpp
+virtual void onAudioMixingStateChanged(AUDIO_MIXING_STATE_TYPE state, AUDIO_MIXING_REASON_TYPE reason)
+```
+
+<a id="callback_irtcengineeventhandler_onaudiomixingstatechanged__detailed_desc"></a>
+
+该回调在音乐文件的播放状态发生变化时触发，并报告当前的播放状态和错误码。
+
+<a id="callback_irtcengineeventhandler_onaudiomixingstatechanged__parameters"></a>
+
+### 参数
+
+#### `state`
+
+音乐文件的播放状态。详见 [AUDIO_MIXING_STATE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiomixingstatetype)。
+
+#### `reason`
+
+播放状态变化的原因或错误码。详见 [AUDIO_MIXING_REASON_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiomixingreasontype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

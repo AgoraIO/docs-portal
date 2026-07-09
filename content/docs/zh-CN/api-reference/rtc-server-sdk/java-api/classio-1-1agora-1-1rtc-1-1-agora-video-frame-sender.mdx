@@ -1,0 +1,50 @@
+---
+title: "io.agora.rtc.AgoraVideoFrameSender类 参考"
+description: "AgoraVideoFrameSender 类。"
+---
+
+AgoraVideoFrameSender 类。 如果你需要发送自定义视频源，你可以通过该类下的方法来将已编码的视频数据直接发送到视频轨道。如果视频轨道被禁用，视频帧将会被自动丢弃。
+
+## 构造及析构函数说明
+
+<a id="a948a1a276f968258119cb709b3e79734"></a>
+
+### AgoraVideoFrameSender()
+
+```cpp
+io.agora.rtc.AgoraVideoFrameSender.AgoraVideoFrameSender(long cptr)
+```
+
+构造函数。
+
+## 成员函数说明
+
+<a id="af3ffccee42a3c33fdc42e3b52f261f8c"></a>
+
+### destroy()
+
+```cpp
+synchronized void io.agora.rtc.AgoraVideoFrameSender.destroy()
+```
+
+销毁视频数据发送器。
+
+<a id="a6cff413f3767180045f5bf3c9b2d1a04"></a>
+
+### sendVideoFrame()
+
+```cpp
+int io.agora.rtc.AgoraVideoFrameSender.sendVideoFrame(ExternalVideoFrame frame)
+```
+
+将视频帧发送至服务器。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| frame | 待发送的视频数据： [ExternalVideoFrame](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-external-video-frame)。 |
+
+#### Returns
+
+发送视频数据的结果。

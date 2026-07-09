@@ -1,0 +1,30 @@
+---
+title: "addConnectionEventHandler method"
+description: "API docs for the addConnectionEventHandler method from the ChatClient class, for the Dart programming language."
+---
+
+Adds the connection event handler. After calling this method, you can handle for new room event when they arrive.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `identifier` | The custom handler identifier, is used to find the corresponding handler. |
+| `handler` | The handler for connection event. See [ConnectionEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/connection-event-handler). |
+
+```dart
+void addConnectionEventHandler(String identifier, ConnectionEventHandler handler)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+void addConnectionEventHandler(
+  String identifier,
+  ConnectionEventHandler handler,
+) {
+  _connectionEventHandler[identifier] = handler;
+}
+```

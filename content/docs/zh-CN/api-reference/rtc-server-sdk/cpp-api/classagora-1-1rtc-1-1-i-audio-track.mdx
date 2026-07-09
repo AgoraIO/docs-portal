@@ -1,0 +1,77 @@
+---
+title: "agora::rtc::IAudioTrack类 参考abstract"
+description: "继承自 agora::RefCountInterface ."
+---
+
+[IAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-audio-track) 类。
+
+## 成员枚举类型说明
+
+<a id="aaf4feb1ff0066f122c9f0e87e0543ef9"></a>
+
+### AudioFilterPosition
+
+```cpp
+enum agora::rtc::IAudioTrack::AudioFilterPosition
+```
+
+音频过滤器的作用阶段。
+
+#### Values
+
+| Name | Description |
+| --- | --- |
+| <a id="aaf4feb1ff0066f122c9f0e87e0543ef9a90801e89a9254918196742a0cca532b7"></a> RecordingLocalPlayback | 本地播放。 |
+| <a id="aaf4feb1ff0066f122c9f0e87e0543ef9a5c80ae40f5aab963f748f4274d5730e6"></a> PostAudioProcessing | 音频后处理。 |
+| <a id="aaf4feb1ff0066f122c9f0e87e0543ef9a7f3f487c91932086f551c1056cca58ab"></a> RemoteUserPlayback | 混音前的远端用户音频。 |
+| <a id="aaf4feb1ff0066f122c9f0e87e0543ef9a54917ef3578795c7b70fd6bbea9e1f6e"></a> PcmSource | PCM 音频源。 |
+| <a id="aaf4feb1ff0066f122c9f0e87e0543ef9a7612217f13f3f44602e72b2dd063d064"></a> PcmSourceSending | PCM 音频发送。 |
+| <a id="aaf4feb1ff0066f122c9f0e87e0543ef9ad7fd9c0051f186442624fc7485a26b60"></a> PcmSourceLocalPlayback | PCM 本地播放。 |
+| <a id="aaf4feb1ff0066f122c9f0e87e0543ef9a76f5476e71134352386e8e14476ea6c4"></a> RemoteMixedPlayback | 混音后的远端用户音频。 |
+
+## 成员函数说明
+
+<a id="a6d8f8dc69565006f073e28474eb7541c"></a>
+
+### addAudioSink()
+
+```cpp
+virtual bool agora::rtc::IAudioTrack::addAudioSink(agora_refptr<IAudioSinkBase > sink, const AudioSinkWants& wants, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+添加音频接收模块，用于从音频轨道获取 PCM 数据。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| sink | 音频接收模块： [IAudioSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-audio-sink-base)。 |
+| wants | 音频帧发送到接收模块时需要具备的属性。详见 [AudioSinkWants](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-audio-sink-wants)。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a2cd09a744aaf2dcefb9fc9797308937a"></a>
+
+### removeAudioSink()
+
+```cpp
+virtual bool agora::rtc::IAudioTrack::removeAudioSink(agora_refptr<IAudioSinkBase > sink, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+删除音频接收模块。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| sink | 音频接收模块： [IAudioSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-audio-sink-base)。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

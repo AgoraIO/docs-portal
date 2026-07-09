@@ -1,0 +1,62 @@
+---
+title: "agora::RefCounter类 参考"
+description: "Returns true if this was the last reference, and the resource protected by the reference counter can be deleted."
+---
+
+## 构造及析构函数说明
+
+<a id="a45598efe612c80f43a97072d4d20c731"></a>
+
+### RefCounter() [1/2]
+
+```cpp
+agora::RefCounter::RefCounter(int ref_count) inlineexplicit
+```
+
+<a id="ae16089b3aac490bb14409d15b76eb218"></a>
+
+### RefCounter() [2/2]
+
+```cpp
+agora::RefCounter::RefCounter() private
+```
+
+## 成员函数说明
+
+<a id="a80f999c3f247daa581dca37ab3ad265a"></a>
+
+### IncRef()
+
+```cpp
+void agora::RefCounter::IncRef() inline
+```
+
+<a id="ae962f18ad07b877079402918756f99bf"></a>
+
+### DecRef()
+
+```cpp
+agora::RefCountReleaseStatus agora::RefCounter::DecRef() inline
+```
+
+Returns true if this was the last reference, and the resource protected by the reference counter can be deleted.
+
+<a id="ad4d043d868cc1c21f4024a677acd7fad"></a>
+
+### HasOneRef()
+
+```cpp
+bool agora::RefCounter::HasOneRef() const inline
+```
+
+Return whether the reference count is one. If the reference count is used in the conventional way, a reference count of 1 implies that the current thread owns the reference and no other thread shares it. This call performs the test for a reference count of one, and performs the memory barrier needed for the owning thread to act on the resource protected by the reference counter, knowing that it has exclusive access.
+
+## 类成员变量说明
+
+<a id="a5bef6864c4d2c57088ffbf43a2045536"></a>
+
+### ref_count_
+
+```cpp
+volatile int agora::RefCounter::ref_count_ private
+```

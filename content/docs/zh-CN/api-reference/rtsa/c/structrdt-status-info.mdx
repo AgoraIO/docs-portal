@@ -1,0 +1,58 @@
+---
+title: "rdt_status_info结构体 参考"
+description: "#include <agora_rtc_api.h>"
+---
+
+RDT 通道的信息。
+
+## 结构体成员变量说明
+
+<a id="a6a2360b5e3a81e573e61edd71e84fbf5"></a>
+
+### conn_id
+
+```cpp
+uint32_t conn_id
+```
+
+Connection ID。
+
+<a id="a55e9a7a78df6c5052de3213b8569a6e4"></a>
+
+### peer_uid
+
+```cpp
+uint32_t peer_uid
+```
+
+远端用户的用户 ID。
+
+<a id="a153ae501698e83bc8f7577ae7ee2872c"></a>
+
+### recv_queue_size
+
+```cpp
+int recv_queue_size[RDT_STREAM_COUNT]
+```
+
+接收缓冲区长度。
+
+<a id="add9f0115496ac8393109eb519cff4fc8"></a>
+
+### send_queue_size
+
+```cpp
+int send_queue_size[RDT_STREAM_COUNT]
+```
+
+发送缓冲区长度。如果该参数为 0，则表示远端用户已接收完 RDT 消息。
+
+<a id="aa2762e927f6643e77480b605566f2a00"></a>
+
+### state
+
+```cpp
+rdt_state_e state
+```
+
+RDT 通道的连接状态。详见 [rdt_state](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84)。

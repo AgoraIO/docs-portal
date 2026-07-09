@@ -1,0 +1,38 @@
+---
+title: "io.agora.recording.common.Common.USER_OFFLINE_REASON_TYPE 枚举类型参考"
+description: "用户离开当前频道或掉线的原因。"
+---
+
+用户离开当前频道或掉线的原因。
+
+## 类成员变量说明
+
+<a id="ab408df63b008ac746fd47e9c21f00816"></a>
+
+### USER_OFFLINE_QUIT
+
+```cpp
+io.agora.recording.common.Common.USER_OFFLINE_REASON_TYPE.USER_OFFLINE_QUIT =(0)
+```
+
+0：用户主动离开。
+
+<a id="a2b3467df759053fef618758cb84457d6"></a>
+
+### USER_OFFLINE_DROPPED
+
+```cpp
+io.agora.recording.common.Common.USER_OFFLINE_REASON_TYPE.USER_OFFLINE_DROPPED =(1)
+```
+
+1：因过长时间收不到对方数据包，超时掉线。注意：可能有误判。
+
+<a id="ac50f169054f1d387b8585200ca84df89"></a>
+
+### USER_OFFLINE_BECOME_AUDIENCE
+
+```cpp
+io.agora.recording.common.Common.USER_OFFLINE_REASON_TYPE.USER_OFFLINE_BECOME_AUDIENCE =(2)
+```
+
+2：用户身份从主播切换为观众时触发。该选项仅适用于当你在调用 joinChannel 时将频道模式设置为直播的场景。

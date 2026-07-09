@@ -1,0 +1,146 @@
+---
+title: "Cursor"
+description: "Cursor API reference."
+---
+
+光标。
+
+- Cursor
+
+## Properties
+
+<a id="cursormember"></a>
+
+### cursorMember
+
+```ts
+cursorMember: CursorMember
+```
+
+光标所属用户的信息。
+
+<a id="divelement"></a>
+
+### divElement
+
+```ts
+divElement: HTMLDivElement
+```
+
+光标的容器，在创建之初为空。 你可以通过如下代码向容器中添加 HTML 元素，以改变光标的外观。
+
+##### `example`
+
+```text
+const icon = document.createElement("img");
+icon.src = "https://my-resources.com/icon.png";
+cursor.divElement.append(icon);
+```
+
+<a id="height"></a>
+
+### height
+
+```ts
+height: number
+```
+
+光标图形的高度。
+
+<a id="memberid"></a>
+
+### memberId
+
+```ts
+memberId: number
+```
+
+光标所属用户的 ID。
+
+<a id="oncursormemberchanged"></a>
+
+### onCursorMemberChanged
+
+```ts
+onCursorMemberChanged: (cursorMember: CursorMember) => void
+```
+
+<a id="width"></a>
+
+### width
+
+```ts
+width: number
+```
+
+光标图形的宽度。
+
+<a id="x"></a>
+
+### x
+
+```ts
+x: number
+```
+
+光标指示区域中心的 X 轴坐标（以白板左上角为原点）。
+
+<a id="y"></a>
+
+### y
+
+```ts
+y: number
+```
+
+光标指示区域中心的 Y 轴坐标（以白板左上角为原点）。
+
+## Methods
+
+<a id="setcursordescription"></a>
+
+### setCursorDescription
+
+```ts
+setCursorDescription(description: Partial<CursorDescription>): void
+```
+
+修改光标的描述。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| description: Partial&lt;CursorDescription&gt; | 光标的描述。 |
+
+#### Returns
+
+Returns void
+
+<a id="setreactnode"></a>
+
+### setReactNode
+
+```ts
+setReactNode(reactNode: any): void
+```
+
+通过注入 JSX 结构来改变光标的外观。
+
+##### `example`
+
+```text
+cursor.setReactNode(
+    <img src="https://my-resources.com/icon.png"/>
+);
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| reactNode: any | 描述光标外观的 JSX。 |
+
+#### Returns
+
+Returns void

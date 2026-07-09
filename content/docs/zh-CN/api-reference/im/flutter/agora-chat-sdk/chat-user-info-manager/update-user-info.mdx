@@ -1,0 +1,69 @@
+---
+title: "updateUserInfo method"
+description: "API docs for the updateUserInfo method from the ChatUserInfoManager class, for the Dart programming language."
+---
+
+Modifies the user attributes of the current user.
+
+- 0: (Default) Unknown;
+- 1: Male;
+- 2: Female. Param sign The signature of the user.
+
+**Return** The user info.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `nickname` | The nickname of the user. |
+| `avatarUrl` | The avatar URL of the user. |
+| `mail` | The email address of the user. |
+| `phone` | The phone number of the user. |
+| `gender` | The gender of the user. The value can only be `0`, `1`, or `2`. Other values are invalid. |
+| `birth` | The birthday of the user. |
+| `ext` | The custom extension information of the user. You can set it to an empty string or type custom information and encapsulate them as a JSON string. |
+
+```dart
+Future<ChatUserInfo> updateUserInfo({String? nickname, String? avatarUrl, String? mail, String? phone, int? gender, String? sign, String? birth, String? ext})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<ChatUserInfo> updateUserInfo({
+  String? nickname,
+  String? avatarUrl,
+  String? mail,
+  String? phone,
+  int? gender,
+  String? sign,
+  String? birth,
+  String? ext,
+}) async {
+  Map req = {};
+  req.setValueWithOutNull("nickName", nickname);
+  req.setValueWithOutNull("avatarUrl", avatarUrl);
+  req.setValueWithOutNull("mail", mail);
+  req.setValueWithOutNull("phone", phone);
+  req.setValueWithOutNull("gender", gender);
+  req.setValueWithOutNull("sign", sign);
+  req.setValueWithOutNull("birth", birth);
+  req.setValueWithOutNull("ext", ext);
+
+  try {
+    Map result =
+        await _channel.invokeMethod(ChatMethodKeys.updateOwnUserInfo, req);
+    ChatError.hasErrorFromResult(result);
+    ChatUserInfo info =
+        ChatUserInfo.fromJson(result[ChatMethodKeys.updateOwnUserInfo]);
+    _effectiveUserInfoMap[info.userId] = info;
+    return info;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

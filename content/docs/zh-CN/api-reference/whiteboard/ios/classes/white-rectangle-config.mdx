@@ -1,0 +1,174 @@
+---
+title: "WhiteRectangleConfig Class Reference"
+description: "配置白板的视觉矩形。"
+---
+
+<a id="overview"></a>
+
+配置白板的视觉矩形。
+
+视觉矩形是用户的视角必须容纳的区域。设置好视觉矩形后，视角会自动调整到刚好可以完整展示视觉矩形所表示的范围。
+
+该方法可用于保证同样的内容在不同的设备上都可以显示完整。
+
+## Methods
+
+<a id="//api/name/initWithInitialPosition:height:"></a>
+
+### initWithInitialPosition:height:
+
+```objc
+- (instancetype)initWithInitialPosition:(CGFloat)width height:(CGFloat)height
+```
+
+初始化一个 `WhiteRectangleConfig` 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `width` | 白板视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
+| `height` | 白板视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
+
+#### Returns
+
+初始化的 `WhiteRectangleConfig` 对象
+
+#### Discussion
+
+在该函数中，你需要传入 [width](#//api/name/width) 和 [height](#//api/name/height)。SDK 会根据你传入 [width](#//api/name/width) 和 [height](#//api/name/height) 计算视觉矩形左上角原点 在世界坐标系中的位置 [originX](#//api/name/originX) 和 [originY](#//api/name/originY), 即 `` originX `= -` width `/ 2.0d`， `` originY `= -` height `/ 2.0d`。
+
+该方法适用于需要快速显示完整 PPT 内容的场景。
+
+<a id="//api/name/initWithInitialPosition:height:animation:"></a>
+
+### initWithInitialPosition:height:animation:
+
+```objc
+- (instancetype)initWithInitialPosition:(CGFloat)width height:(CGFloat)height animation:(WhiteAnimationMode)mode
+```
+
+设置视觉矩形的动画模式初始化一个 `WhiteRectangleConfig` 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `width` | 白板视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
+| `height` | 白板视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
+| `mode` | 视觉矩形的动画模式，详见 [WhiteAnimationMode](/zh-CN/api-reference/whiteboard/ios/constants/white-animation-mode)。 |
+
+#### Returns
+
+初始化的 `WhiteRectangleConfig` 对象
+
+#### Discussion
+
+在该函数中，你需要传入 [width](#//api/name/width)， [height](#//api/name/height) 和 `mode`。SDK 会根据你传入 [width](#//api/name/width) 和 [height](#//api/name/height) 计算视觉矩形左上角原点 在世界坐标系中的位置 [originX](#//api/name/originX) 和 [originY](#//api/name/originY), 即 `` originX `= -` width `/ 2.0d`， `` originY `= -` height `/ 2.0d`。
+
+该方法适用于需要快速显示完整 PPT 内容的场景。
+
+<a id="//api/name/initWithOriginX:originY:width:height:"></a>
+
+### initWithOriginX:originY:width:height:
+
+```objc
+- (instancetype)initWithOriginX:(CGFloat)originX originY:(CGFloat)originY width:(CGFloat)width height:(CGFloat)height
+```
+
+设置视觉矩形的坐标并初始化一个 `WhiteRectangleConfig` 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `originX` | 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。 |
+| `originY` | 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。 |
+| `width` | 视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
+| `height` | 视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
+
+#### Returns
+
+初始化的 `WhiteRectangleConfig` 对象
+
+#### Discussion
+
+在该函数中，你需要传入 [originX](#//api/name/originX)、 [originY](#//api/name/originY)、 [width](#//api/name/width)、 [height](#//api/name/height) 和 `mode`。 SDK 会根据你传入的 [originX](#//api/name/originX)、 [originY](#//api/name/originY)、 [width](#//api/name/width) 和 [height](#//api/name/height) 确定视觉矩形在白板坐标系（即世界坐标系）中的位置、大小和动画模式。
+
+<a id="//api/name/initWithOriginX:originY:width:height:animation:"></a>
+
+### initWithOriginX:originY:width:height:animation:
+
+```objc
+- (instancetype)initWithOriginX:(CGFloat)originX originY:(CGFloat)originY width:(CGFloat)width height:(CGFloat)height animation:(WhiteAnimationMode)mode
+```
+
+设置视觉矩形的坐标和动画模式并初始化一个 `WhiteRectangleConfig` 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `originX` | 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。 |
+| `originY` | 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。 |
+| `width` | 视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
+| `height` | 视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。 |
+| `mode` | 视觉矩形的动画模式，详见 [WhiteAnimationMode](/zh-CN/api-reference/whiteboard/ios/constants/white-animation-mode)。 |
+
+#### Returns
+
+初始化的 `WhiteRectangleConfig` 对象
+
+#### Discussion
+
+在该函数中，你需要传入 [originX](#//api/name/originX)、 [originY](#//api/name/originY)、 [width](#//api/name/width)、 [height](#//api/name/height) 和 `mode`。 SDK 会根据你传入的 [originX](#//api/name/originX)、 [originY](#//api/name/originY)、 [width](#//api/name/width)、 [height](#//api/name/height) 和 `mode` 确定视觉矩形在白板坐标系（即世界坐标系）中的位置、大小和动画模式。
+
+<a id="//api/name/originX"></a>
+
+### originX
+
+```objc
+@property (nonatomic, assign) CGFloat originX
+```
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+<a id="//api/name/originY"></a>
+
+### originY
+
+```objc
+@property (nonatomic, assign) CGFloat originY
+```
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+<a id="//api/name/width"></a>
+
+### width
+
+```objc
+@property (nonatomic, assign) CGFloat width
+```
+
+视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+<a id="//api/name/height"></a>
+
+### height
+
+```objc
+@property (nonatomic, assign) CGFloat height
+```
+
+视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+<a id="//api/name/animationMode"></a>
+
+### animationMode
+
+```objc
+@property (nonatomic, assign) WhiteAnimationMode animationMode
+```
+
+视觉矩形的动画模式，详见 [WhiteAnimationMode](/zh-CN/api-reference/whiteboard/ios/constants/white-animation-mode)。

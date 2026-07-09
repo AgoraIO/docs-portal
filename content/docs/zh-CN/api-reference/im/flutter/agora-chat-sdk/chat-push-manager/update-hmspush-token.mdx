@@ -1,0 +1,37 @@
+---
+title: "updateHMSPushToken method"
+description: "API docs for the updateHMSPushToken method from the ChatPushManager class, for the Dart programming language."
+---
+
+Updates the HMS push token.
+
+**Throws** A description of the issue that caused this exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error)
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `token` | The HMS push token. |
+
+```dart
+Future<void> updateHMSPushToken(String token)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> updateHMSPushToken(String token) async {
+  if (Platform.isAndroid) {
+    Map req = {'token': token};
+    Map result = await PushChannel.invokeMethod(
+        ChatMethodKeys.updateHMSPushToken, req);
+    try {
+      ChatError.hasErrorFromResult(result);
+    } on ChatError catch (e) {
+      throw e;
+    }
+  }
+}
+```

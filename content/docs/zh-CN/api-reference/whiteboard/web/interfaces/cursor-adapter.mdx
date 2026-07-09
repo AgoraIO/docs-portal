@@ -1,0 +1,84 @@
+---
+title: "CursorAdapter"
+description: "CursorAdapter API reference."
+---
+
+设置鼠标的光标适配器。
+
+- CursorAdapter
+
+## Properties
+
+<a id="onaddedcursor"></a>
+
+### onAddedCursor
+
+```ts
+onAddedCursor: ((cursor: Cursor) => void) | undefined
+```
+
+光标出现在白板上的回调。
+
+##### `param`
+
+光标对象。
+
+<a id="onmovingcursor"></a>
+
+### onMovingCursor
+
+```ts
+onMovingCursor: ((cursor: Cursor, positionX: number, positionY: number) => void) | undefined
+```
+
+光标在白板上移动的回调。
+
+##### `param`
+
+光标对象。
+
+##### `param`
+
+光标指示区域中心的 X 轴坐标（以白板左上角为原点）。
+
+##### `param`
+
+光标指示区域中心的 Y 轴坐标（以白板左上角为原点）。
+
+<a id="onremovedcursor"></a>
+
+### onRemovedCursor
+
+```ts
+onRemovedCursor: ((cursor: Cursor) => void) | undefined
+```
+
+光标从白板上消失的回调。
+
+##### `param`
+
+光标对象。
+
+## Methods
+
+<a id="createcursor"></a>
+
+### createCursor
+
+```ts
+createCursor(memberId: number): CursorDescription & { reactNode?: any }
+```
+
+创建光标的描述。该方法在用户光标首次出现之前会被调用。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| memberId: number | 用户 ID。 |
+
+#### Returns
+
+Returns [CursorDescription](/zh-CN/api-reference/whiteboard/web/globals#cursordescription) & \{reactNode?: any \}
+
+用户光标的描述。

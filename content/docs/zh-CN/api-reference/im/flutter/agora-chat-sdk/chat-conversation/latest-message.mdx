@@ -1,0 +1,38 @@
+---
+title: "latestMessage method"
+description: "API docs for the latestMessage method from the ChatConversation class, for the Dart programming language."
+---
+
+Gets the last message from the conversation.
+
+The operation does not change the unread message count.
+
+The SDK gets the latest message from the local memory first. If no message is found, the SDK loads the message from the local database and then puts it in the memory.
+
+**Return** The message instance.
+
+```dart
+Future<ChatMessage?> latestMessage()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<ChatMessage?> latestMessage() async {
+  Map req = this._toJson();
+  Map result = await _emConversationChannel.invokeMethod(
+      ChatMethodKeys.getLatestMessage, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    if (result.containsKey(ChatMethodKeys.getLatestMessage)) {
+      return ChatMessage.fromJson(result[ChatMethodKeys.getLatestMessage]);
+    } else {
+      return null;
+    }
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,0 +1,223 @@
+---
+title: "直推 CDN"
+description: "直推 CDN API reference."
+---
+<a id="toc_cdn_streaming"></a>
+
+## 直推 CDN
+
+<a id="api_irtcengine_setdirectcdnstreamingaudioconfiguration"></a>
+
+## setDirectCdnStreamingAudioConfiguration
+
+设置主播端直接向 CDN 推流时的音频编码属性。
+
+<a id="api_irtcengine_setdirectcdnstreamingaudioconfiguration__prototype"></a>
+
+```cpp
+virtual int setDirectCdnStreamingAudioConfiguration(AUDIO_PROFILE_TYPE profile) = 0;
+```
+
+<a id="api_irtcengine_setdirectcdnstreamingaudioconfiguration__detailed_desc"></a>
+
+该方法仅对麦克风采集或自采集的音频有效，即对在 [DirectCdnStreamingMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-directcdnstreamingmediaoptions) 中设置 publishMicrophoneTrack 或 publishCustomAudioTrack 为 `true` 时所采集的音频有效。
+
+<a id="api_irtcengine_setdirectcdnstreamingaudioconfiguration__parameters"></a>
+
+### 参数
+
+#### `profile`
+
+音频编码属性，包含采样率、码率、编码模式和声道数。 详见 [AUDIO_PROFILE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-audioprofiletype)。
+
+<a id="api_irtcengine_setdirectcdnstreamingaudioconfiguration__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setdirectcdnstreamingvideoconfiguration"></a>
+
+## setDirectCdnStreamingVideoConfiguration
+
+设置主播端直接向 CDN 推流时的视频编码属性。
+
+<a id="api_irtcengine_setdirectcdnstreamingvideoconfiguration__prototype"></a>
+
+```cpp
+virtual
+            int setDirectCdnStreamingVideoConfiguration(const VideoEncoderConfiguration& config)
+            = 0;
+```
+
+<a id="api_irtcengine_setdirectcdnstreamingvideoconfiguration__detailed_desc"></a>
+
+### 详情
+
+该方法仅对摄像头采集、屏幕共享或自采集的视频有效。 即对在 [DirectCdnStreamingMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-directcdnstreamingmediaoptions) 中设置 publishCameraTrack 或 publishCustomVideoTrack 为 `true` 时所采集的视频有效。
+
+如果你设置的视频分辨率超出你的摄像头设备支持的范围，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流。你可以通过 [onDirectCdnStreamingStats](/zh-CN/api-reference/rtc/unreal-cpp/cdn-streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats) 回调了解推送的视频流的实际分辨率。
+
+<a id="api_irtcengine_setdirectcdnstreamingvideoconfiguration__parameters"></a>
+
+### 参数
+
+#### `config`
+
+视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/class-videoencoderconfiguration)。
+
+:::info[注]
+在直接向 CDN 推流时，SDK 目前仅支持将 ORIENTATION_MODE 设为横屏模式（ORIENTATION_MODE_FIXED_LANDSCAPE ）或竖屏模式（ORIENTATION_MODE_FIXED_PORTRAIT ）。
+:::
+
+<a id="api_irtcengine_setdirectcdnstreamingvideoconfiguration__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startdirectcdnstreaming"></a>
+
+## startDirectCdnStreaming
+
+设置主播端开始直接向 CDN 推流。
+
+<a id="api_irtcengine_startdirectcdnstreaming__prototype"></a>
+
+```cpp
+virtual int startDirectCdnStreaming(IDirectCdnStreamingEventHandler* eventHandler,
+            const char* publishUrl, const DirectCdnStreamingMediaOptions& options) = 0;
+```
+
+<a id="api_irtcengine_startdirectcdnstreaming__detailed_desc"></a>
+
+### 详情
+
+- publishCustomAudioTrack 设为 true 并调用 [pushAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-custom-capturenrendering#api_imediaengine_pushaudioframe0)
+- publishCustomVideoTrack 设为 true 并调用 [pushVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video-custom-capturenrendering#api_imediaengine_pushvideoframe)
+- 确保 publishCameraTrack 为 false (默认值)
+- 确保 publishMicrophoneTrack 为 false (默认值)
+
+<a id="api_irtcengine_startdirectcdnstreaming__parameters"></a>
+
+### 参数
+
+#### `eventHandler`
+
+详见 [onDirectCdnStreamingStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/cdn-streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) 及 [onDirectCdnStreamingStats](/zh-CN/api-reference/rtc/unreal-cpp/cdn-streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats)。
+
+#### `publishUrl`
+
+CDN 推流 URL。
+
+#### `options`
+
+主播端的媒体选项。详见 [DirectCdnStreamingMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-directcdnstreamingmediaoptions)。
+
+<a id="api_irtcengine_startdirectcdnstreaming__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopdirectcdnstreaming"></a>
+
+## stopDirectCdnStreaming
+
+设置主播端停止直接向 CDN 推流。
+
+<a id="api_irtcengine_stopdirectcdnstreaming__prototype"></a>
+
+```cpp
+virtual int stopDirectCdnStreaming() = 0;
+```
+
+<a id="api_irtcengine_stopdirectcdnstreaming__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged"></a>
+
+## onDirectCdnStreamingStateChanged
+
+CDN 推流状态改变回调。
+
+<a id="callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged__prototype"></a>
+
+```cpp
+virtual void onDirectCdnStreamingStateChanged(DIRECT_CDN_STREAMING_STATE state, DIRECT_CDN_STREAMING_REASON reason, const char* message)  {
+  (void)state;
+  (void)reason;
+  (void)message;
+};
+```
+
+<a id="callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged__detailed_desc"></a>
+
+主播端直接向 CDN 推流后，当推流状态改变时，SDK 会触发该回调向你报告新的状态、错误码和信息。你可以据此排查问题。
+
+<a id="callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged__parameters"></a>
+
+### 参数
+
+#### `state`
+
+当前推流状态。详见 [DIRECT_CDN_STREAMING_STATE](/zh-CN/api-reference/rtc/unreal-cpp/enum-directcdnstreamingstate)。
+
+#### `reason`
+
+推流状态改变的原因。详见 [DIRECT_CDN_STREAMING_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-directcdnstreamingreason)。
+
+#### `message`
+
+状态改变对应的信息。
+
+### 所属接口类
+- [IDirectCdnStreamingEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_idirectcdnstreamingeventhandler)
+
+<a id="callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats"></a>
+
+## onDirectCdnStreamingStats
+
+CDN 推流统计数据回调。
+
+<a id="callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats__prototype"></a>
+
+```cpp
+virtual void onDirectCdnStreamingStats(const DirectCdnStreamStats& stats)  {
+  (void)stats;
+};
+```
+
+<a id="callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats__detailed_desc"></a>
+
+在主播直接向 CDN 推流的过程中，SDK 每隔 1 秒触发一次该回调。
+
+<a id="callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats__parameters"></a>
+
+### 参数
+
+#### `stats`
+
+当前推流的统计数据。详见 [DirectCdnStreamingStats](/zh-CN/api-reference/rtc/unreal-cpp/class-directcdnstreamingstats)。
+
+### 所属接口类
+- [IDirectCdnStreamingEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_idirectcdnstreamingeventhandler)

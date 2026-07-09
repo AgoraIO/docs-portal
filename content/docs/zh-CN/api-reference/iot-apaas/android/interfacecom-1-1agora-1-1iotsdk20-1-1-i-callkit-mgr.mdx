@@ -1,0 +1,492 @@
+---
+title: "com.agora.iotsdk20.ICallkitMgr接口 参考"
+description: "呼叫系统接口。"
+---
+
+呼叫系统接口。
+
+## 成员函数说明
+
+<a id="a3a72bcdd74213df2fc6bdfdfddc7452b"></a>
+
+### callAnswer()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.callAnswer()
+```
+
+接听当前来电。
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="ae8c7c1071b259823c49f42d7733834e3"></a>
+
+### callDial()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.callDial(IotDevice iotDevice, String attachMsg)
+```
+
+呼叫设备。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| iotDevice | 要呼叫的设备，详见 [IotDevice](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-device)。 |
+| attachMsg | 呼叫时附带的信息。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a37ee6d29856ca87c9982dd5527375a7e"></a>
+
+### callHangup()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.callHangup()
+```
+
+挂断当前通话。
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="aeae799ff38431ca1dea1e8911d2a1bcf"></a>
+
+### capturePeerVideoFrame()
+
+```cpp
+Bitmap com.agora.iotsdk20.ICallkitMgr.capturePeerVideoFrame()
+```
+
+截屏对端视频帧图像。
+
+#### Returns
+
+抓取到的视频帧图像。
+
+<a id="a71fb0a97d5cc8345592d950b03e99a16"></a>
+
+### getAudioEffect()
+
+```cpp
+AudioEffectId com.agora.iotsdk20.ICallkitMgr.getAudioEffect()
+```
+
+获取当前通话中设置的音效。
+
+#### Returns
+
+当前通话中设置的音效： [AudioEffectId](/zh-CN/api-reference/iot-apaas/android/enumcom-1-1agora-1-1iotsdk20-1-1-i-callkit-mgr-1-1-audio-effect-id)。
+
+<a id="a3906a9a57bc020686d95dce11dd46c36"></a>
+
+### getNetworkStatus()
+
+```cpp
+RtcNetworkStatus com.agora.iotsdk20.ICallkitMgr.getNetworkStatus()
+```
+
+获取当前网络状态。
+
+#### Returns
+
+RTC网络状态信息，详见 [RtcNetworkStatus](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-i-callkit-mgr-1-1-rtc-network-status)。
+
+<a id="a168ae9ad761a5c31dfa445cc797e7906"></a>
+
+### getOnlineUserCount()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.getOnlineUserCount()
+```
+
+获取当前通话中的用户数。
+
+#### Returns
+
+当前通话中的用户数。该数值包含用户自己，但不包含设备端用户。
+
+<a id="ada660e96d68e7a29685fce2e0f52c459"></a>
+
+### getStateMachine()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.getStateMachine()
+```
+
+获取当前设备管理状态机。
+
+#### Returns
+
+设置管理状态状态机。
+
+<a id="a1349f9d85cda8dc85ebac3667d563806"></a>
+
+### isTalkingRecording()
+
+```cpp
+boolean com.agora.iotsdk20.ICallkitMgr.isTalkingRecording()
+```
+
+获取是否正在录制当前通话。
+
+#### Returns
+
+- true: 录制
+- false: 未录制
+
+<a id="a2ee84bc630deb5fdc1e830433ca10c2d"></a>
+
+### muteLocalAudio()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.muteLocalAudio(boolean mute)
+```
+
+停止/恢复发布本地音频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mute | 是否停止发布本地音频流：<br />- true: 是<br />- false: 否 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a3c05222eec77b40f2627bdac51a9f4f5"></a>
+
+### muteLocalVideo()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.muteLocalVideo(boolean mute)
+```
+
+停止/恢复发布本地视频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mute | 是否停止发布本地视频流：<br />- true: 是<br />- false: 否 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="addfc205e81f063ea283cff5bedfbe72a"></a>
+
+### mutePeerAudio()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.mutePeerAudio(boolean mute)
+```
+
+停止/恢复订阅远端音频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mute | 是否停止订阅远端音频流：<br />- true: 是<br />- false: 否 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a9f50a452f2e6ac1d4e3ecfb76edf0247"></a>
+
+### mutePeerVideo()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.mutePeerVideo(boolean mute)
+```
+
+停止/恢复订阅远端视频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mute | 是否停止订阅远端视频流：<br />- true: 是<br />- false: 否 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a71b6043346b1726426ba3a9658ddbf48"></a>
+
+### registerListener()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.registerListener(ICallkitMgr.ICallback callback)
+```
+
+注册回调接口。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| callback | 回调接口，详见 [ICallback](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-callkit-mgr-1-1-i-callback)。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a8ce676eda7b5cea891d5ce97691666f4"></a>
+
+### setAudioEffect()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.setAudioEffect(AudioEffectId effectId)
+```
+
+设置音效效果（通常是变声等音效）。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| effectId | 音效类型，详见 [AudioEffectId](/zh-CN/api-reference/iot-apaas/android/enumcom-1-1agora-1-1iotsdk20-1-1-i-callkit-mgr-1-1-audio-effect-id)。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a8708484ef4c5d6e5b0b930833b382c63"></a>
+
+### setLocalVideoView()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.setLocalVideoView(SurfaceView localView)
+```
+
+设置本地视频显示控件，如果不设置则不显示本地视频。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| localView | 本地视频显示控件。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a19230123b35b01e2ab210e149feae97b"></a>
+
+### setPeerVideoView()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.setPeerVideoView(SurfaceView peerView)
+```
+
+设置对端视频显示控件，如果不设置则不显示对端视频。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| peerView | 对端视频显示控件。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a8e6351ec2903787979d7bbb7cbfac10e"></a>
+
+### setRtcPrivateParam()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.setRtcPrivateParam(String privateParam)
+```
+
+设置 RTC 私有参数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| privateParam | 要设置的私参。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a8576836d164fed261e645c3fce5b39a1"></a>
+
+### setVolume()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.setVolume(int volumeLevel)
+```
+
+设置音频播放的音量。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| volumeLevel | 音量级别，取值范围为 [0,100]。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a4dfa86d90876603976f159694036989b"></a>
+
+### talkingRecordStart()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.talkingRecordStart(final String outFilePath)
+```
+
+开始录制当前通话（包括音视频流），仅在通话状态下才能调用。
+
+##### `注解`
+
+请确保你指定的路径存在并且可写。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| outFilePath | 录制文件在本地保存的绝对路径，需精确到文件名及格式。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a786d411cbdd0ccb534040e8a8dd29fab"></a>
+
+### talkingRecordStop()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.talkingRecordStop()
+```
+
+停止录制当前通话，仅在通话状态下才能调用。
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="ab09b47b7b47509b7f2ba5a63be084b25"></a>
+
+### unregisterListener()
+
+```cpp
+int com.agora.iotsdk20.ICallkitMgr.unregisterListener(ICallkitMgr.ICallback callback)
+```
+
+注销回调接口。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| callback | 回调接口，详见 [ICallback](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-callkit-mgr-1-1-i-callback)。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+## 类成员变量说明
+
+<a id="a3b25a67f06dabeac2bd54e808b6eca36"></a>
+
+### CALLKIT_STATE_ANSWER_REQING
+
+```cpp
+final int com.agora.iotsdk20.ICallkitMgr.CALLKIT_STATE_ANSWER_REQING = 0x0007 static
+```
+
+0x0007: 正在发送接听请求中。
+
+<a id="ad0b69df65cd0b4df1e3b654591ec1c79"></a>
+
+### CALLKIT_STATE_ANSWER_RSPING
+
+```cpp
+final int com.agora.iotsdk20.ICallkitMgr.CALLKIT_STATE_ANSWER_RSPING = 0x0008 static
+```
+
+0x0008: 正在等待接听响应中。
+
+<a id="abc710182e597f07a0920e239831bf46f"></a>
+
+### CALLKIT_STATE_DIAL_REQING
+
+```cpp
+final int com.agora.iotsdk20.ICallkitMgr.CALLKIT_STATE_DIAL_REQING = 0x0005 static
+```
+
+0x0005: 正在发送主叫请求中。
+
+<a id="a30a1ab13d669729d0a3d8d67ba482522"></a>
+
+### CALLKIT_STATE_DIAL_RSPING
+
+```cpp
+final int com.agora.iotsdk20.ICallkitMgr.CALLKIT_STATE_DIAL_RSPING = 0x0006 static
+```
+
+0x0006: 正在等待主叫响应中。
+
+<a id="a8165eae2d13e67ff56dcd6680342afb7"></a>
+
+### CALLKIT_STATE_DIALING
+
+```cpp
+final int com.agora.iotsdk20.ICallkitMgr.CALLKIT_STATE_DIALING = 0x0002 static
+```
+
+0x0002: 正在呼叫设备中。
+
+<a id="ad66874cabc6eeefb794c1ef33b3d8cce"></a>
+
+### CALLKIT_STATE_HANGUP_REQING
+
+```cpp
+final int com.agora.iotsdk20.ICallkitMgr.CALLKIT_STATE_HANGUP_REQING = 0x0009 static
+```
+
+0x0009: 正在发送挂断请求中。
+
+<a id="a2e22027c56bbaf12f12a254130ef3285"></a>
+
+### CALLKIT_STATE_IDLE
+
+```cpp
+final int com.agora.iotsdk20.ICallkitMgr.CALLKIT_STATE_IDLE = 0x0001 static
+```
+
+0x0001: 呼叫系统当前为空闲状态。
+
+<a id="a896fee6f88baafcefe405487c0480fbd"></a>
+
+### CALLKIT_STATE_INCOMING
+
+```cpp
+final int com.agora.iotsdk20.ICallkitMgr.CALLKIT_STATE_INCOMING = 0x0003 static
+```
+
+0x0003: 正在有来电中。
+
+<a id="a04a9d9d50cabbd5969dd7e19bf0fe998"></a>
+
+### CALLKIT_STATE_TALKING
+
+```cpp
+final int com.agora.iotsdk20.ICallkitMgr.CALLKIT_STATE_TALKING = 0x0004 static
+```
+
+0x0004: 正在通话中。

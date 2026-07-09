@@ -1,0 +1,55 @@
+---
+title: "audio_codec_option_t结构体 参考"
+description: "#include <agora_rtc_api.h>"
+---
+
+SDK 内置音频编解码器设置。
+
+## 结构体成员变量说明
+
+<a id="afd318f37217231ab026fc2bd66c7f635"></a>
+
+### audio_codec_type
+
+```cpp
+audio_codec_type_e audio_codec_type
+```
+
+SDK 内置音频编解码器配置。详见 [audio_codec_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a307c5bae03eb9a318e247a97e6fb5d88)。
+
+<a id="a89a322ac4b6b7921775b576c557958f7"></a>
+
+### pcm_channel_num
+
+```cpp
+int pcm_channel_num
+```
+
+内置音频编解码器的 PCM 声道数。此参数为必选参数，可以设为以下值：
+
+- 1: 单声道。
+- 2: 双声音。
+
+<a id="a3e3700acda2ff0d8ed34bfa3264277d5"></a>
+
+### pcm_duration
+
+```cpp
+int pcm_duration
+```
+
+音频时长，单位为毫秒。取值范围为 [20,100]，取值需为 10 的倍数。该设置对所有格式的音频数据都有效。
+
+<a id="ab242b3cbbecd058315c7282415d36827"></a>
+
+### pcm_sample_rate
+
+```cpp
+int pcm_sample_rate
+```
+
+内置音频编解码器的 PCM 采样频率 (Hz)。此参数为必选参数，可以设为以下值：
+
+- 8000: 8 kHz。
+- 16000: 16 kHz。
+- 48000: 48 kHz。

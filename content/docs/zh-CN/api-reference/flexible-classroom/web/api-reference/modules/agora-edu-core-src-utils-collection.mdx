@@ -1,0 +1,50 @@
+---
+title: "agora-edu-core/src/utils/collection"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+## Functions
+
+<a id="iterateMap"></a>
+
+### Const iterateMap
+
+```ts
+iterateMap<K, V, T, E>(map: Map<K, V>, processors?: { onFilter?: (key: K, item: V) => boolean; onMap?: (key: K, item: V) => T; onReduce?: (prev: E, key: K, item: V) => E }): { list: T[]; prev: E }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| map: Map&lt;K, V&gt; |  |
+| Optional processors: \{ onFilter?: (key: K, item: V) =&gt; boolean; onMap?: (key: K, item: V) =&gt; T; onReduce?: (prev: E, key: K, item: V) =&gt; E \} |  |
+
+#### Returns
+
+Returns \{list: T []; prev: E \}
+
+- ##### list: T []
+- ##### prev: E
+
+<a id="iterateSet"></a>
+
+### Const iterateSet
+
+```ts
+iterateSet<V, T, E>(map: Set<V>, processors?: { onFilter?: (item: V) => boolean; onMap?: (item: V) => T; onReduce?: (prev: E, item: V) => E }): { list: T[]; prev: E }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| map: Set&lt;V&gt; |  |
+| Optional processors: \{ onFilter?: (item: V) =&gt; boolean; onMap?: (item: V) =&gt; T; onReduce?: (prev: E, item: V) =&gt; E \} |  |
+
+#### Returns
+
+Returns \{list: T []; prev: E \}
+
+- ##### list: T []
+- ##### prev: E

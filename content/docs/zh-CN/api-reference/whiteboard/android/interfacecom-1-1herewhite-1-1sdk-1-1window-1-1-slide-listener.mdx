@@ -1,0 +1,58 @@
+---
+title: "com.herewhite.sdk.window.SlideListener接口 参考"
+description: "拦截 PPT 资源 URL 回调。"
+---
+
+## 成员函数说明
+
+<a id="aa7b55dbd3cb671d2ba2ae5b69973baed"></a>
+
+### slideUrlInterrupter()
+
+```cpp
+void com.herewhite.sdk.window.SlideListener.slideUrlInterrupter(String sourceUrl, ResultCaller<String > resultCaller)
+```
+
+拦截 PPT 资源 URL 回调。
+
+##### `自从`
+
+2.16.59
+
+该回调默认禁用。你可以在初始化白板 SDK 时，通过 `WhiteSdkConfiguration#setEnableSlideInterrupterAPI` setEnableSlideInterrupterAPI\}(true) 方法开启。
+
+开启后，在 PPT 资源加载时，SDK 会触发该回调，报告资源的原 URL 地址。你需要将替换后的 URL 通过 `resultCaller` 回调到 SDK。
+
+##### `注解`
+
+不要在此方法中作过多耗时操作。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| sourceUrl | 原 URL 地址。 |
+| resultCaller | 回调替换后的 URL。 |
+
+<a id="afb9deb51a77275c18ebc66369ba98ea9"></a>
+
+### onSlideError()
+
+```cpp
+default void com.herewhite.sdk.window.SlideListener.onSlideError(SlideErrorType errorType, String errorMsg, String slideId, int slideIndex)
+```
+
+PPT 加载错误回调，用于监听 PPT 渲染错误事件。
+
+##### `自从`
+
+2.16.93
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errorType | 错误类型。 |
+| errorMsg | 错误信息。 |
+| slideId | PPT ID。 |
+| slideIndex | PPT 索引。 |

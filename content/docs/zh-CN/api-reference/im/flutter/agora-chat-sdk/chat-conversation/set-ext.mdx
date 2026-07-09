@@ -1,0 +1,27 @@
+---
+title: "setExt method"
+description: "API docs for the setExt method from the ChatConversation class, for the Dart programming language."
+---
+
+```dart
+Future<void> setExt(Map<String, String>? ext)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> setExt(Map<String, String>? ext) async {
+  Map req = this._toJson();
+  req.setValueWithOutNull("ext", ext);
+  Map result = await _emConversationChannel.invokeMethod(
+      ChatMethodKeys.syncConversationExt, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    _ext = ext;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

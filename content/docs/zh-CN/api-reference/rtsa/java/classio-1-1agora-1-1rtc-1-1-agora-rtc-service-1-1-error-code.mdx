@@ -1,0 +1,204 @@
+---
+title: "io.agora.rtc.AgoraRtcService.ErrorCode类 参考"
+description: "错误码。"
+---
+
+错误码。
+
+## 类成员变量说明
+
+<a id="a95169191ec0082eec77fa740dcee17a7"></a>
+
+### ERR_AUDIO_DECODER_NOT_MATCH_AUDIO_FRAME
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_AUDIO_DECODER_NOT_MATCH_AUDIO_FRAME = 201 static
+```
+
+201: 设置的编码类型与实际编码类型不符导致 SDK 解码失败。你需要确认 SDK 设置的编码类型是否与实际传输的编码类型一致。
+
+<a id="ad6383fbf28acaab3c1e44a79ee5deff7"></a>
+
+### ERR_CLIENT_IS_BANNED_BY_SERVER
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_CLIENT_IS_BANNED_BY_SERVER = 123 static
+```
+
+123: 该客户端被服务器禁用。你需要检查该用户是否被踢。
+
+<a id="a4f98b43edfdb180420da49cd00a00c51"></a>
+
+### ERR_DECRYPTION_FAILED
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_DECRYPTION_FAILED = 120 static
+```
+
+Decryption fails. The user may have used a different encryption password to join the channel. Check your settings or try rejoining the channel.
+
+<a id="acd1aae46758717d3f5facb18f0193875"></a>
+
+### ERR_FAILED
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_FAILED = 1 static
+```
+
+1: 通用错误。你可以根据日志文件排查问题。
+
+<a id="a68bbc2de888f14c05ac91d82b8321795"></a>
+
+### ERR_INVALID_APP_ID
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_INVALID_APP_ID = 101 static
+```
+
+101: App ID 无效。你需要检查 App ID 是否符合要求。
+
+<a id="a9db94141139439c54b1ccda667088118"></a>
+
+### ERR_INVALID_CHANNEL_NAME
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_INVALID_CHANNEL_NAME = 102 static
+```
+
+102: 频道名无效。你需要检查频道名是否符合要求。
+
+<a id="a508c43294c9465a5e6260fc8f47ad3df"></a>
+
+### ERR_INVALID_TOKEN
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_INVALID_TOKEN = 110 static
+```
+
+110: Token 无效，可能有以下原因：
+
+- 你在声网控制台开启了 App 证书，但仍旧在代码里仅使用了 App ID。 当启用了 App Certificate，必须使用 Token。
+- 生成 token 使用的 uid 必须和加入频道时使用的 uid 保持一致。
+
+<a id="a5794944e9d4a9dcc69df517fc70b692a"></a>
+
+### ERR_JOIN_CHANNEL_REJECTED
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_JOIN_CHANNEL_REJECTED = 17 static
+```
+
+17: 加入频道请求被拒绝，可能是因为本地用户已在频道内。你需要调整代码逻辑，避免用户加入同一频道。
+
+<a id="ab496d0a88bd9a55e9c314a1e88443999"></a>
+
+### ERR_LOOKUP_CHANNEL_REJECTED
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_LOOKUP_CHANNEL_REJECTED = 105 static
+```
+
+103: 在当前的区域限制码条件下无可用服务器资源。
+
+<a id="a8e209e5d8a89bd9c96125f786381fb8a"></a>
+
+### ERR_NET_DOWN
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_NET_DOWN = 14 static
+```
+
+14: 网络不可用。你需要检查系统网络连接状态。
+
+<a id="a9afeec9fe16cb91ff62f4d0b6446a7b3"></a>
+
+### ERR_NO_AUDIO_DECODER_TO_HANDLE_AUDIO_FRAME
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_NO_AUDIO_DECODER_TO_HANDLE_AUDIO_FRAME = 202 static
+```
+
+202: SDK 解码失败。SDK 内置的解码器仅支持 Opus、G722 和 PCMU 编码的音频帧。你需要确认对端发送的音频码流是否为 Opus、G722 或 PCMU 编码格式。
+
+<a id="afadf69ac99351060a29446bcd1bdc614"></a>
+
+### ERR_NO_SERVER_RESOURCES
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_NO_SERVER_RESOURCES = 103 static
+```
+
+103：指定区域没有服务器资源。
+
+<a id="a77d37446c39ceab8760f10f7305531a4"></a>
+
+### ERR_OKAY
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_OKAY = 0 static
+```
+
+0: 无错误。
+
+<a id="a89e62adc5d1dc8bbf0b17323934f4dbb"></a>
+
+### ERR_OPEN_CHANNEL_INVALID_TICKET
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_OPEN_CHANNEL_INVALID_TICKET = 121 static
+```
+
+121: 打开频道的信令错误。请尝试重新加入频道。
+
+<a id="aa9a0e8da771c3ce1516e638eb09b9c4e"></a>
+
+### ERR_OPEN_CHANNEL_REJECTED
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_OPEN_CHANNEL_REJECTED = 107 static
+```
+
+105: 声网服务器拒绝了查询频道的请求。你需要检查 Token 是否有效。
+
+<a id="ab16fabd4a272253bb4fbdbfab8706565"></a>
+
+### ERR_OPEN_CHANNEL_TRY_NEXT_VOS
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_OPEN_CHANNEL_TRY_NEXT_VOS = 122 static
+```
+
+122: 系统在尝试切换服务器。通常不需要额外处理，系统会自动尝试切换服务器以打开频道。
+
+<a id="a1d0f72039d67f03995a030f4ef0891a4"></a>
+
+### ERR_SEND_VIDEO_OVER_BANDWIDTH_LIMIT
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_SEND_VIDEO_OVER_BANDWIDTH_LIMIT = 200 static
+```
+
+200: 视频帧发送速率超过带宽限制。可能会造成丢包。你可以通过 targetBitrateChanged 回调带宽参数调整码率。
+
+<a id="a361bdbf8dce16027da69fb8e77c8f7b5"></a>
+
+### ERR_SET_CLIENT_ROLE_NOT_AUTHORIZED
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_SET_CLIENT_ROLE_NOT_AUTHORIZED = 119 static
+```
+
+119: 切换用户角色失败，请尝试重新加入频道。
+
+<a id="a88a21d7cca9c0fbb507bb4170f3bbffe"></a>
+
+### ERR_TOKEN_EXPIRED
+
+```cpp
+final int io.agora.rtc.AgoraRtcService.ErrorCode.ERR_TOKEN_EXPIRED = 109 static
+```
+
+109: 当前使用的 Token 过期，不再有效。一般有以下原因：
+
+- Token 授权时间戳无效：Token 授权时间戳为 Token 生成时的时间戳， 自 1970 年 1 月 1 日开始到当前时间的描述。 授权该 Token 在生成后的 24 小时内可以访问 声网服务。如果 24 小时内没有访问，则该 Token 无法再使用。需要重新在服务端申请生成 Token。
+- Token 服务到期时间戳已过期：用户设置的服务到期时间戳小于当前时间戳， 无法继续使用声网服务（比如正在进行的通话会被强制终止）； 设置服务到期时间并不意味着 Token 失效，而仅仅用于限制用户 使用当前服务的时间。需要重新在服务端申请生成 Token。

@@ -1,0 +1,22 @@
+---
+title: "agora::internal::swappable_impl::IsSwappableImpl结构体 参考"
+description: "agora::internal::swappable_impl::IsSwappableImpl结构体 参考 API reference."
+---
+
+## 成员函数说明
+
+<a id="ac8847bb806cf0d043c2db6734c3e98d8"></a>
+
+### Check() [1/2]
+
+```cpp
+template<typename T > static auto agora::internal::swappable_impl::IsSwappableImpl::Check(int) -> decltype(swap(std::declval<T >(), std::declval<T >()), std::true_type()) static
+```
+
+<a id="a4dbaad4330a183837e65867e27a6df38"></a>
+
+### Check() [2/2]
+
+```cpp
+template<typename T > static std::false_type agora::internal::swappable_impl::IsSwappableImpl::Check(...) static
+```

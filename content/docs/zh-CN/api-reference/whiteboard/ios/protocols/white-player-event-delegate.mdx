@@ -1,0 +1,148 @@
+---
+title: "WhitePlayerEventDelegate Protocol Reference"
+description: "白板回放的回调。"
+---
+
+<a id="overview"></a>
+
+白板回放的回调。
+
+## Methods
+
+<a id="//api/name/phaseChanged:"></a>
+
+### phaseChanged:
+
+```objc
+- (void)phaseChanged:(WhitePlayerPhase)phase
+```
+
+播放状态切换回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `phase` | 白板回放的播放状态。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/ios/classes/white-player)。 |
+
+<a id="//api/name/loadFirstFrame"></a>
+
+### loadFirstFrame
+
+```objc
+- (void)loadFirstFrame
+```
+
+首帧加载回调。
+
+<a id="//api/name/playerStateChanged:"></a>
+
+### playerStateChanged:
+
+```objc
+- (void)playerStateChanged:(WhitePlayerState *)modifyState
+```
+
+回放状态发生变化的回调，只会包含实际发生改变的属性。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `modifyState` | 白板回放已经改变的的状态。详见 [WhitePlayerState](/zh-CN/api-reference/whiteboard/ios/classes/white-player-state)。 |
+
+<a id="//api/name/stoppedWithError:"></a>
+
+### stoppedWithError:
+
+```objc
+- (void)stoppedWithError:(NSError *)error
+```
+
+出错导致回放暂停的回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `error` | 错误信息。 |
+
+<a id="//api/name/scheduleTimeChanged:"></a>
+
+### scheduleTimeChanged:
+
+```objc
+- (void)scheduleTimeChanged:(NSTimeInterval)time
+```
+
+回放进度发生变化回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `time` | 回放进度（s）。 |
+
+<a id="//api/name/errorWhenAppendFrame:"></a>
+
+### errorWhenAppendFrame:
+
+```objc
+- (void)errorWhenAppendFrame:(NSError *)error
+```
+
+添加帧出错的回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `error` | 错误信息。 |
+
+<a id="//api/name/errorWhenRender:"></a>
+
+### errorWhenRender:
+
+```objc
+- (void)errorWhenRender:(NSError *)error
+```
+
+渲染时出错的回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `error` | 错误信息。 |
+
+<a id="//api/name/fireMagixEvent:"></a>
+
+### fireMagixEvent:
+
+```objc
+- (void)fireMagixEvent:(WhiteEvent *)event
+```
+
+白板自定义事件回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `event` | 白板自定义事件。详见 [WhiteEvent](/zh-CN/api-reference/whiteboard/ios/classes/white-event)。 |
+
+<a id="//api/name/fireHighFrequencyEvent:"></a>
+
+### fireHighFrequencyEvent:
+
+```objc
+- (void)fireHighFrequencyEvent:(NSArray<WhiteEvent*> *)events
+```
+
+高频自定义事件一次性回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `events` | 高频自定义事件。详见 [WhiteEvent](/zh-CN/api-reference/whiteboard/ios/classes/white-event)。 |

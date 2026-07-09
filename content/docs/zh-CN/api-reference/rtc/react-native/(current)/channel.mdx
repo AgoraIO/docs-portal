@@ -1,8 +1,10 @@
 ---
 title: "频道相关"
-description: "频道相关 API reference."
+description: "通过 UID 获取用户信息。"
 ---
 <a id="toc_channel"></a>
+
+## 频道相关
 
 <a id="api_irtcengine_getuserinfobyuid"></a>
 
@@ -176,7 +178,7 @@ abstract joinChannel(
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
   - -2：传入的参数无效。例如，使用了不合法的 Token， uid 参数未设置为整型，或 ChannelMediaOptions 成员值不合法。你需要填入有效的参数，重新加入频道。
   - -3： IRtcEngine 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
@@ -222,7 +224,7 @@ abstract joinChannelEx(
 
 ### 调用时机
 
-该方法需要在 [initialize](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_initialize) 之后调用。 在多摄像头采集场景下，你需要在调用该方法之后调用 [startPreview](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview2) 方法设置 `sourceType` 为 `VideoSourceCameraSecondary`，以确保第二个摄像头采集正常。
+该方法需要在 [initialize](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_initialize) 之后调用。 在多摄像头采集场景下，你需要在调用该方法之后调用 [startPreview](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_startpreview2) 方法设置 `sourceType` 为 `VideoSourceCameraSecondary`，以确保第二个摄像头采集正常。
 
 <a id="api_irtcengineex_joinchannelex__related"></a>
 
@@ -262,7 +264,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
   - -2：传入的参数无效。例如，使用了不合法的 Token， uid 参数未设置为整型，或 ChannelMediaOptions 成员值不合法。你需要填入有效的参数，重新加入频道。
   - -3： IRtcEngine 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
@@ -351,7 +353,7 @@ abstract joinChannelWithUserAccount(
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
   - -2：传入的参数无效。例如，使用了不合法的 Token， uid 参数未设置为整型，或 ChannelMediaOptions 成员值不合法。你需要填入有效的参数，重新加入频道。
   - -3： IRtcEngine 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
@@ -440,7 +442,7 @@ abstract joinChannelWithUserAccountEx(
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
   - -2：传入的参数无效。例如，使用了不合法的 Token， uid 参数未设置为整型，或 ChannelMediaOptions 成员值不合法。你需要填入有效的参数，重新加入频道。
   - -3： IRtcEngine 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
@@ -500,7 +502,7 @@ abstract leaveChannel(options?: LeaveChannelOptions): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
@@ -573,7 +575,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
@@ -643,7 +645,7 @@ abstract preloadChannel(
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
 
@@ -721,7 +723,7 @@ abstract preloadChannelWithUserAccount(
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
   - -2：传入的参数无效。例如，User Account 为空。你需要填入有效的参数，重新加入频道。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
@@ -782,7 +784,7 @@ abstract registerLocalUserAccount(appId: string, userAccount: string): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
@@ -825,7 +827,7 @@ abstract renewToken(token: string): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
   - -2：传入的参数无效。例如，Token 为空。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -110：Token 无效。请确保：
@@ -852,7 +854,7 @@ abstract setChannelProfile(profile: ChannelProfileType): number;
 你可以调用该方法设置频道的使用场景。SDK 会针对不同的使用场景采用不同的优化策略，如直播场景优先保证画质。SDK 初始化后默认的频道场景为直播场景。
 
 :::info[注]
-不同的频道场景下，SDK 的默认音频路由是不同的，详见 [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/react-native/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) 中的说明。 为保证实时音视频质量，相同频道内的用户必须使用同一种频道场景。
+不同的频道场景下，SDK 的默认音频路由是不同的，详见 [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/react-native/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) 中的说明。 为保证实时音视频质量，相同频道内的用户必须使用同一种频道场景。
 :::
 
 <a id="api_irtcengine_setchannelprofile__timing"></a>
@@ -874,7 +876,7 @@ abstract setChannelProfile(profile: ChannelProfileType): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
   - -2: 参数无效。
   - -7: SDK 尚未初始化。
 
@@ -942,7 +944,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -5: 调用被拒绝。
@@ -978,7 +980,7 @@ abstract updateChannelMediaOptions(options: ChannelMediaOptions): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
   - -2： ChannelMediaOptions 成员值设置无效。例如，使用了不合法的 Token，设置了无效的用户角色。你需要填入有效的参数。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -8： IRtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 onConnectionStateChanged 回调判断用户是否在频道中。如果收到 ConnectionStateDisconnected (1) 或 ConnectionStateFailed (5)，则表示用户不在频道中。你需要在调用该方法前调用 joinChannel 加入频道。
@@ -1020,7 +1022,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
   - -2： ChannelMediaOptions 成员值设置无效。例如，使用了不合法的 Token，设置了无效的用户角色。你需要填入有效的参数。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -8： IRtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 onConnectionStateChanged 回调判断用户是否在频道中。如果收到 ConnectionStateDisconnected (1) 或 ConnectionStateFailed (5)，则表示用户不在频道中。你需要在调用该方法前调用 joinChannel 加入频道。
@@ -1063,7 +1065,7 @@ abstract updatePreloadChannelToken(token: string): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
   - -2：传入的参数无效。例如，使用了不合法的 Token。你需要填入有效的参数，重新加入频道。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
 

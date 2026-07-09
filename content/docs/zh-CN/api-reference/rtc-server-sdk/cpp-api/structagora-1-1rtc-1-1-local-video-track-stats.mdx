@@ -1,0 +1,238 @@
+---
+title: "agora::rtc::LocalVideoTrackStats结构体 参考"
+description: "本地视频轨道的统计信息。"
+---
+
+本地视频轨道的统计信息。
+
+## 构造及析构函数说明
+
+<a id="ae36ab0277230075818426f3162bef32c"></a>
+
+### LocalVideoTrackStats()
+
+```cpp
+agora::rtc::LocalVideoTrackStats::LocalVideoTrackStats() inline
+```
+
+## 类成员变量说明
+
+<a id="a5ce410bfa5c3386d54757233d66628b4"></a>
+
+### number_of_streams
+
+```cpp
+uint64_t agora::rtc::LocalVideoTrackStats::number_of_streams
+```
+
+流的数量。
+
+<a id="a4fed74c88824b51382065c70ea745aa4"></a>
+
+### bytes_major_stream
+
+```cpp
+uint64_t agora::rtc::LocalVideoTrackStats::bytes_major_stream
+```
+
+视频大流的字节数。
+
+<a id="a8925a2c1f61fb5a5060bdfc2d675858d"></a>
+
+### bytes_minor_stream
+
+```cpp
+uint64_t agora::rtc::LocalVideoTrackStats::bytes_minor_stream
+```
+
+视频小流的字节数。
+
+<a id="a1277744e0f7aa4bea5197154250dfd10"></a>
+
+### frames_encoded
+
+```cpp
+uint32_t agora::rtc::LocalVideoTrackStats::frames_encoded
+```
+
+已编码视频帧的数量。
+
+<a id="ae4267b6c0220e40a2c7886952649e1f7"></a>
+
+### ssrc_major_stream
+
+```cpp
+uint32_t agora::rtc::LocalVideoTrackStats::ssrc_major_stream
+```
+
+视频大流的 SSRC (synchronization source)。
+
+<a id="a1aec33dc65496e5f40fee555d515889a"></a>
+
+### ssrc_minor_stream
+
+```cpp
+uint32_t agora::rtc::LocalVideoTrackStats::ssrc_minor_stream
+```
+
+视频小流的 SSRC (synchronization source)。
+
+<a id="aeb56e4faa6f8b76273b6aab658d767c7"></a>
+
+### capture_frame_rate
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::capture_frame_rate
+```
+
+视频的采集帧率。
+
+<a id="a58feb21130d00b37959b22b65444ad2b"></a>
+
+### regulated_capture_frame_rate
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::regulated_capture_frame_rate
+```
+
+根据视频编码器配置调整的视频采集帧率。
+
+<a id="a8060b6b1a22a649d81400430a66b5080"></a>
+
+### input_frame_rate
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::input_frame_rate
+```
+
+编码器的输入帧率。
+
+<a id="a942f9f8633425c6e946e77cf277f2c67"></a>
+
+### encode_frame_rate
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::encode_frame_rate
+```
+
+编码器的输出帧率。
+
+<a id="ad95c11018cd90e66945a5ac90872603d"></a>
+
+### render_frame_rate
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::render_frame_rate
+```
+
+渲染帧率。
+
+<a id="a9fb3ac2ce1abb4454816c6b63f3c3d8a"></a>
+
+### target_media_bitrate_bps
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::target_media_bitrate_bps
+```
+
+目标码率（bps）。
+
+<a id="ac284ecac15225193478ea86846110d3c"></a>
+
+### media_bitrate_bps
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::media_bitrate_bps
+```
+
+码率（不包含 FEC）。
+
+<a id="a25523ee7a17df745d4583c06e99ed273"></a>
+
+### total_bitrate_bps
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::total_bitrate_bps
+```
+
+码率（包含 FEC）。
+
+<a id="aa4bafd7e779f2fa91ddc82e83e478f23"></a>
+
+### capture_width
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::capture_width
+```
+
+采集视频帧的宽度（像素）。
+
+<a id="aee7b552c48dd3f07f11f2468c8757d5c"></a>
+
+### capture_height
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::capture_height
+```
+
+采集视频帧的高度（像素）。
+
+<a id="af5366905b61d51185532e504281a053b"></a>
+
+### regulated_capture_width
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::regulated_capture_width
+```
+
+根据视频编码器配置调整的视频帧宽度。
+
+<a id="a0b8b658c645a9cbf2124275841948bc3"></a>
+
+### regulated_capture_height
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::regulated_capture_height
+```
+
+根据视频编码器配置调整的视频帧高度。
+
+<a id="a6af257c910b98f2a9d9b4ae4d35ad05a"></a>
+
+### width
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::width
+```
+
+视频帧的宽度（像素）。
+
+<a id="a24c503a1c493e78cdc2aa0bf202f7590"></a>
+
+### height
+
+```cpp
+int agora::rtc::LocalVideoTrackStats::height
+```
+
+视频帧的高度（像素）。
+
+<a id="acde57fa126be7e9dbeec10596dab9de5"></a>
+
+### uplink_cost_time_ms
+
+```cpp
+uint32_t agora::rtc::LocalVideoTrackStats::uplink_cost_time_ms
+```
+
+从视频帧采集到视频帧编码的平均时差（毫秒）。
+
+<a id="a8883f7355db36f22fce5567297833c62"></a>
+
+### quality_adapt_indication
+
+```cpp
+QUALITY_ADAPT_INDICATION agora::rtc::LocalVideoTrackStats::quality_adapt_indication
+```
+
+基于目标帧率和目标码率的本地视频质量改变。详见 [QUALITY_ADAPT_INDICATION](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#ab8ebad21ea6a6b579c03f05c4533a071)。

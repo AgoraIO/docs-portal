@@ -1,0 +1,338 @@
+---
+title: "ReportService"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- ApiBase
+  - ReportService
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new ReportService(): ReportService
+```
+
+#### Returns
+
+Returns [ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/report-service)
+
+## Properties
+
+<a id="fallbackRequestHandler"></a>
+
+### fallbackRequestHandler
+
+```ts
+fallbackRequestHandler: FallbackRequestHandler
+```
+
+<a id="headers"></a>
+
+### Optional headers
+
+```ts
+headers?: Record<string, unknown>
+```
+
+<a id="host"></a>
+
+### Optional host
+
+```ts
+host?: string
+```
+
+<a id="logger"></a>
+
+### logger
+
+```ts
+logger: "agora-rte-sdk/src/core/logger/type".Logger
+```
+
+<a id="pathPrefix"></a>
+
+### Optional pathPrefix
+
+```ts
+pathPrefix?: string
+```
+
+<a id="domainHolder"></a>
+
+### Static domainHolder
+
+```ts
+domainHolder: DomainHolder
+```
+
+<a id="shared"></a>
+
+### Static shared
+
+```ts
+shared: ReportService
+```
+
+## Accessors
+
+<a id="platform"></a>
+
+### platform
+
+```ts
+get platform(): "electron" | "web"
+```
+
+#### Returns
+
+Returns "electron" | "web"
+
+## Methods
+
+<a id="buildBaseParams"></a>
+
+### buildBaseParams
+
+```ts
+buildBaseParams(ctype: string, src: string, m: string, metric: ReportPointMetricParams, optional: ReportPointOptionalParams, event?: string, category?: string): "agora-rte-sdk/src/core/services/report".ReportParams
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| ctype: string |  |
+| src: string |  |
+| m: string |  |
+| metric: ReportPointMetricParams |  |
+| optional: ReportPointOptionalParams |  |
+| Optional event: string |  |
+| Optional category: string |  |
+
+#### Returns
+
+Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-services-report). [ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-services-report#ReportParams)
+
+<a id="buildEventParams"></a>
+
+### buildEventParams
+
+```ts
+buildEventParams(event: string, category: string, metric: ReportPointMetricParams, optional: ReportPointOptionalParams): "agora-rte-sdk/src/core/services/report".ReportParams
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: string |  |
+| category: string |  |
+| metric: ReportPointMetricParams |  |
+| optional: ReportPointOptionalParams |  |
+
+#### Returns
+
+Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-services-report). [ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-services-report#ReportParams)
+
+<a id="buildHBParams"></a>
+
+### buildHBParams
+
+```ts
+buildHBParams(): "agora-rte-sdk/src/core/services/report".ReportParams
+```
+
+#### Returns
+
+Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-services-report). [ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-services-report#ReportParams)
+
+<a id="fetch"></a>
+
+### fetch
+
+```ts
+fetch(params: AgoraFetchParams): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| params: AgoraFetchParams |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="getElapse"></a>
+
+### getElapse
+
+```ts
+getElapse(event: string, category: string, api?: string): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: string |  |
+| category: string |  |
+| Optional api: string |  |
+
+#### Returns
+
+Returns number
+
+<a id="guardParams"></a>
+
+### guardParams
+
+```ts
+guardParams(): undefined | true
+```
+
+#### Returns
+
+Returns undefined | true
+
+<a id="report"></a>
+
+### report
+
+```ts
+report(event: string, category: string, metric: ReportPointMetricParams, optional?: ReportPointOptionalParams): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: string |  |
+| category: string |  |
+| metric: ReportPointMetricParams |  |
+| Optional optional: ReportPointOptionalParams |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="reportEC"></a>
+
+### reportEC
+
+```ts
+reportEC(event: string, category: string, optional?: ReportPointOptionalParams): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: string |  |
+| category: string |  |
+| Optional optional: ReportPointOptionalParams |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="reportElapse"></a>
+
+### reportElapse
+
+```ts
+reportElapse(event: string, category: string, optional?: ReportPointOptionalParams): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: string |  |
+| category: string |  |
+| Optional optional: ReportPointOptionalParams |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="reportHB"></a>
+
+### reportHB
+
+```ts
+reportHB(): Promise<any>
+```
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="reportHttp"></a>
+
+### reportHttp
+
+```ts
+reportHttp(event: string, category: string, api: string, httpCode: number, result: boolean, errCode: string): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: string |  |
+| category: string |  |
+| api: string |  |
+| httpCode: number |  |
+| result: boolean |  |
+| errCode: string |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;
+
+<a id="startTick"></a>
+
+### startTick
+
+```ts
+startTick(event: string, category: string, api?: string): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: string |  |
+| category: string |  |
+| Optional api: string |  |
+
+#### Returns
+
+Returns void
+
+<a id="tickerKey"></a>
+
+### tickerKey
+
+```ts
+tickerKey(event: string, category: string, api?: string): string
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event: string |  |
+| category: string |  |
+| Optional api: string |  |
+
+#### Returns
+
+Returns string

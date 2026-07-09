@@ -1,0 +1,193 @@
+---
+title: "WhiteCombinePlayer Class Reference"
+description: "同步本地视频播放器与白板回放播放器的播放状态。某一个进入缓冲状态，另一个则暂停等待。"
+---
+
+<a id="overview"></a>
+
+同步本地视频播放器与白板回放播放器的播放状态。某一个进入缓冲状态，另一个则暂停等待。
+
+## Methods
+
+<a id="//api/name/whitePlayer"></a>
+
+### whitePlayer
+
+```objc
+@property (nonatomic, strong, nullable, readwrite) WhitePlayer *whitePlayer
+```
+
+白板回放播放器。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/ios/classes/white-player)。
+
+<a id="//api/name/delegate"></a>
+
+### delegate
+
+```objc
+@property (nonatomic, weak, nullable) id<WhiteCombineDelegate> delegate
+```
+
+白板回放回调。详见 [WhiteCombineDelegate](/zh-CN/api-reference/whiteboard/ios/protocols/white-combine-delegate)。
+
+<a id="//api/name/playbackSpeed"></a>
+
+### playbackSpeed
+
+```objc
+@property (nonatomic, assign) CGFloat playbackSpeed
+```
+
+白板回放的播放速率。即使暂停回放，该值也不会变为 0。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/ios/classes/white-player)。
+
+<a id="//api/name/initWithNativePlayer:whitePlayer:"></a>
+
+### initWithNativePlayer:whitePlayer:
+
+```objc
+- (instancetype)initWithNativePlayer:(AVPlayer *)nativePlayer whitePlayer:(WhitePlayer *)replayer
+```
+
+初始化一个同时持有本地音视频播放器与白板回放播放器的混合播放器对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `nativePlayer` | 本地视频播放器。 |
+| `replayer` | 白板回放播放器。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/ios/classes/white-player)。 |
+
+#### Returns
+
+初始化的 `WhiteCombinePlayer` 对象。
+
+<a id="//api/name/initWithMediaUrl:whitePlayer:"></a>
+
+### initWithMediaUrl:whitePlayer:
+
+```objc
+- (instancetype)initWithMediaUrl:(NSURL *)mediaUrl whitePlayer:(WhitePlayer *)replayer
+```
+
+指定媒体资源地址并初始化混合播放器。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `mediaUrl` | 媒体资源地址。 |
+| `replayer` | 白板回放播放器。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/ios/classes/white-player)。 |
+
+#### Returns
+
+初始化的 `WhiteCombinePlayer` 对象。
+
+<a id="//api/name/initWithMediaUrl:"></a>
+
+### initWithMediaUrl:
+
+```objc
+- (instancetype)initWithMediaUrl:(NSURL *)mediaUrl
+```
+
+指定媒体资源地址并初始化本地播放器（AV Player），需要在生成后，自行设置白板播放器属性。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `mediaUrl` | 媒体资源地址。 |
+
+#### Returns
+
+初始化的 `WhiteCombinePlayer` 对象。
+
+<a id="//api/name/initWithNativePlayer:"></a>
+
+### initWithNativePlayer:
+
+```objc
+- (instancetype)initWithNativePlayer:(AVPlayer *)nativePlayer
+```
+
+初始化本地视频播放器（AV Player），需要在生成后，自行设置白板播放器属性。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `nativePlayer` | 本地视频播放器。 |
+
+#### Returns
+
+初始化的 `WhiteCombinePlayer` 对象。
+
+<a id="//api/name/videoDuration"></a>
+
+### videoDuration
+
+```objc
+- (NSTimeInterval)videoDuration
+```
+
+视频回放的持续时长。
+
+<a id="//api/name/play"></a>
+
+### play
+
+```objc
+- (void)play
+```
+
+播放视频。
+
+<a id="//api/name/pause"></a>
+
+### pause
+
+```objc
+- (void)pause
+```
+
+暂停播放视频。
+
+<a id="//api/name/seekToTime:completionHandler:"></a>
+
+### seekToTime:completionHandler:
+
+```objc
+- (void)seekToTime:(CMTime)time completionHandler:(void ( ^ ) ( BOOL finished ))completionHandler
+```
+
+定位到视频指定位置。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `time` | 时间长度（s)。 |
+| `completionHandler` | 方法调用结果： `YES`：调用已经完成。 `No`：调用未完成。 |
+
+#### Discussion
+
+定位到本地视频播放器的指定位置后，你可以调用该方法，将白板回放播放器调整到对应位置。
+
+<a id="//api/name/updateWhitePlayerPhase:"></a>
+
+### updateWhitePlayerPhase:
+
+```objc
+- (void)updateWhitePlayerPhase:(WhitePlayerPhase)phase
+```
+
+更新白板回放播放器的播放状态。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `phase` | [WhitePlayer](/zh-CN/api-reference/whiteboard/ios/classes/white-player) 的播放状态。 **Note:** 在该回调中，需要主动调用 [WhitePlayerPhase](/zh-CN/api-reference/whiteboard/ios/constants/white-player-phase) 方法，将状态同步给 [WhitePlayer](/zh-CN/api-reference/whiteboard/ios/classes/white-player)。 |
+
+#### Discussion
+
+当白板回放播放器的播放状态发生变化时，White Player 会触发该回调，向你报告板回放播放器的播放状态。

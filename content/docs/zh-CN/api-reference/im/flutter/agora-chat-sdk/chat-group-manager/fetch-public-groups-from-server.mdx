@@ -1,0 +1,47 @@
+---
+title: "fetchPublicGroupsFromServer method"
+description: "API docs for the fetchPublicGroupsFromServer method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Gets public groups from the server with pagination.
+
+**Return** The result of `ChatCursorResult`, including the cursor for getting data next time and the group list. If [ChatCursorResult.cursor](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-cursor-result/cursor) is an empty string (""), all data is fetched.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `pageSize` | The number of public groups per page. |
+| `cursor` | The cursor position from which to start to get data next time. Sets the parameter as null for the first time. |
+
+```dart
+Future<ChatCursorResult<ChatGroupInfo>> fetchPublicGroupsFromServer({int pageSize = 200, String? cursor})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<ChatCursorResult<ChatGroupInfo>> fetchPublicGroupsFromServer({
+  int pageSize = 200,
+  String? cursor,
+}) async {
+  Map req = {'pageSize': pageSize};
+  req.setValueWithOutNull("cursor", cursor);
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.getPublicGroupsFromServer, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatCursorResult<ChatGroupInfo>.fromJson(
+        result[ChatMethodKeys.getPublicGroupsFromServer],
+        dataItemCallback: (value) {
+      return ChatGroupInfo.fromJson(value);
+    });
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

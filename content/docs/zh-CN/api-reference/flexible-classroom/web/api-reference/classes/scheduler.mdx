@@ -1,0 +1,83 @@
+---
+title: "Scheduler"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- Scheduler
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new Scheduler(): Scheduler
+```
+
+#### Returns
+
+Returns [Scheduler](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/scheduler)
+
+## Methods
+
+<a id="addDelayTask"></a>
+
+### addDelayTask
+
+```ts
+addDelayTask(runnable: () => void, delayInMs: number): Task
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| runnable: () =&gt; void |  |
+| delayInMs: number |  |
+
+#### Returns
+
+Returns [Task](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
+
+<a id="addIntervalTask"></a>
+
+### addIntervalTask
+
+```ts
+addIntervalTask(runnable: () => void, intervalInMs: number, immediate?: boolean, onFail?: () => ActionWhenTaskFail): Task
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| runnable: () =&gt; void |  |
+| intervalInMs: number |  |
+| Optional immediate: boolean |  |
+| Optional onFail: () =&gt; ActionWhenTaskFail |  |
+
+#### Returns
+
+Returns [Task](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
+
+<a id="addPollingTask"></a>
+
+### addPollingTask
+
+```ts
+addPollingTask(runnable: () => void, intervalInMs: number, immediate?: boolean, onFail?: () => ActionWhenTaskFail): Task
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| runnable: () =&gt; void |  |
+| intervalInMs: number |  |
+| Optional immediate: boolean |  |
+| Optional onFail: () =&gt; ActionWhenTaskFail |  |
+
+#### Returns
+
+Returns [Task](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)

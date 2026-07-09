@@ -1,0 +1,37 @@
+---
+title: "getBlockListFromServer method"
+description: "API docs for the getBlockListFromServer method from the ChatContactManager class, for the Dart programming language."
+---
+
+Gets the block list from the server.
+
+**Return** The block list obtained from the server.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+```dart
+Future<List<String>> getBlockListFromServer()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<List<String>> getBlockListFromServer() async {
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.getBlockListFromServer);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<String> list = [];
+    result[ChatMethodKeys.getBlockListFromServer]?.forEach((element) {
+      if (element is String) {
+        list.add(element);
+      }
+    });
+    return list;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

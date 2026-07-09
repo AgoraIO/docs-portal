@@ -1,0 +1,59 @@
+---
+title: "fetchReactionList method"
+description: "API docs for the fetchReactionList method from the ChatManager class, for the Dart programming language."
+---
+
+Gets the list of Reactions.
+
+**Return** The Reaction list under the specified message ID（[ChatMessageReaction.userList](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-message-reaction/user-list) is the summary data, which only contains the information of the first three users）.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `messageIds` | The message IDs. |
+| `chatType` | The chat type. Only one-to-one chat [ChatType.Chat](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-type) and group chat [ChatType.GroupChat](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-type) are allowed. |
+| `groupId` | which is invalid only when the chat type is group chat. |
+
+```dart
+Future<Map<String, List<ChatMessageReaction>>> fetchReactionList({required List<String> messageIds, required ChatType chatType, String? groupId})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<Map<String, List<ChatMessageReaction>>> fetchReactionList({
+  required List<String> messageIds,
+  required ChatType chatType,
+  String? groupId,
+}) async {
+  Map req = {
+    "msgIds": messageIds,
+    "chatType": chatTypeToInt(chatType),
+  };
+  req.setValueWithOutNull("groupId", groupId);
+  Map result = await ChatChannel.invokeMethod(
+    ChatMethodKeys.fetchReactionList,
+    req,
+  );
+
+  try {
+    ChatError.hasErrorFromResult(result);
+    Map<String, List<ChatMessageReaction>> ret = {};
+    for (var info in result[ChatMethodKeys.fetchReactionList].entries) {
+      List<ChatMessageReaction> reactions = [];
+      for (var item in info.value) {
+        reactions.add(ChatMessageReaction.fromJson(item));
+      }
+      ret[info.key] = reactions;
+    }
+    return ret;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

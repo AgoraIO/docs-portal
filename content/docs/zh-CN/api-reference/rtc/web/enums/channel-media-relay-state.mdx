@@ -1,0 +1,48 @@
+---
+title: "ChannelMediaRelayState"
+description: "ChannelMediaRelayState API reference."
+---
+
+跨直播媒体流转发服务的状态码，可以通过 [AgoraRTCClient.on("channel-media-relay-state")](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_channel_media_relay_state) 事件获取。
+
+## Enumeration members
+
+<a id="relay_state_connecting"></a>
+
+### RELAY_STATE_CONNECTING
+
+```ts
+RELAY_STATE_CONNECTING: = "RELAY_STATE_CONNECTING"
+```
+
+SDK 正在连接到跨频道媒体流转发服务。
+
+<a id="relay_state_failure"></a>
+
+### RELAY_STATE_FAILURE
+
+```ts
+RELAY_STATE_FAILURE: = "RELAY_STATE_FAILURE"
+```
+
+跨频道媒体流转发出现错误，错误代码可以参考 [ChannelMediaRelayError](/zh-CN/api-reference/rtc/web/enums/channel-media-relay-error)。
+
+<a id="relay_state_idle"></a>
+
+### RELAY_STATE_IDLE
+
+```ts
+RELAY_STATE_IDLE: = "RELAY_STATE_IDLE"
+```
+
+SDK 已经初始化，但是还没有开启跨频道媒体流转发服务。
+
+<a id="relay_state_running"></a>
+
+### RELAY_STATE_RUNNING
+
+```ts
+RELAY_STATE_RUNNING: = "RELAY_STATE_RUNNING"
+```
+
+跨频道媒体流转发成功。

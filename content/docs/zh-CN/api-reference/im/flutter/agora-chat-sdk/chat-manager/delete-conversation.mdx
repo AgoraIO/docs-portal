@@ -1,0 +1,50 @@
+---
+title: "deleteConversation method"
+description: "API docs for the deleteConversation method from the ChatManager class, for the Dart programming language."
+---
+
+Deletes a conversation and its related messages from the local database.
+
+If you set `deleteMessages` to `true`, the local historical messages are deleted when the conversation is deleted.
+
+- true: (default) Yes.
+- false: No.
+
+**Return** Whether the conversation is successfully deleted.
+
+- true: Yes;
+- false: No.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `conversationId` | The conversation ID. |
+| `deleteMessages` | Whether to delete the historical messages when deleting the conversation. |
+
+```dart
+Future<bool> deleteConversation(String conversationId, {bool deleteMessages = true})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<bool> deleteConversation(
+  String conversationId, {
+  bool deleteMessages = true,
+}) async {
+  Map req = {"con_id": conversationId, "deleteMessages": deleteMessages};
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.deleteConversation, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result.boolValue(ChatMethodKeys.deleteConversation);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

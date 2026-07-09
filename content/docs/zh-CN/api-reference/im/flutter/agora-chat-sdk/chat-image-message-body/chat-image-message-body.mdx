@@ -1,0 +1,43 @@
+---
+title: "ChatImageMessageBody constructor"
+description: "API docs for the ChatImageMessageBody constructor from Class ChatImageMessageBody from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Creates an image message body with an image file.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `localPath` | The local path of the image file. |
+| `displayName` | The image name. |
+| [thumbnailLocalPath](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-image-message-body/thumbnail-local-path) | The local path of the image thumbnail. |
+| [sendOriginalImage](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-image-message-body/send-original-image) | The original image included in the image message to be sent. |
+| `fileSize` | The size of the image file in bytes. |
+| [width](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-image-message-body/width) | The image width in pixels. |
+| [height](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-image-message-body/height) | The image height in pixels. |
+
+```dart
+ChatImageMessageBody({required String localPath, String? displayName, String? thumbnailLocalPath, bool sendOriginalImage = false, int? fileSize, double? width, double? height})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ChatImageMessageBody({
+  required String localPath,
+  String? displayName,
+  this.thumbnailLocalPath,
+  this.sendOriginalImage = false,
+  int? fileSize,
+  this.width,
+  this.height,
+}) : super(
+        localPath: localPath,
+        displayName: displayName,
+        fileSize: fileSize,
+        type: MessageType.IMAGE,
+      );
+```

@@ -1,0 +1,210 @@
+---
+title: "io.agora.rtc.LocalAudioTrackStats类 参考"
+description: "本地音频轨道统计信息。"
+---
+
+本地音频轨道统计信息。
+
+## 构造及析构函数说明
+
+<a id="ac766da943ffd73c7968a7efee47bbe1c"></a>
+
+### LocalAudioTrackStats() [1/2]
+
+```cpp
+io.agora.rtc.LocalAudioTrackStats.LocalAudioTrackStats()
+```
+
+<a id="aca5213723bd7b1429f2c83deb570c175"></a>
+
+### LocalAudioTrackStats() [2/2]
+
+```cpp
+io.agora.rtc.LocalAudioTrackStats.LocalAudioTrackStats(int sourceId, int bufferedPcmDataListSize, int missedAudioFrames, int sentAudioFrames, int pushedAudioFrames, int droppedAudioFrames, int enabled)
+```
+
+构造函数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| sourceId | 本地音频轨道的 source ID。 |
+| bufferedPcmDataListSize | 缓冲区中的音频帧数量。发送 PCM 数据时，数据首先暂存在缓冲区， SDK 会启动一个线程发送缓冲区的音频帧。 |
+| missedAudioFrames | 线程在发送缓冲区的音频帧时丢失的音频帧数量。 |
+| sentAudioFrames | 线程从缓冲区发送的音频帧数量。 |
+| pushedAudioFrames | 用户发送的音频帧数量。 |
+| droppedAudioFrames | 由于缓冲区容量不足放弃的音频帧数量。 |
+| enabled | 是否允许本地音频轨道。 |
+
+## 成员函数说明
+
+<a id="a182c0a03e70df730972de9624b360c2c"></a>
+
+### getBufferedPcmDataListSize()
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.getBufferedPcmDataListSize()
+```
+
+<a id="a3dbd2172736f333f7d8003cc54074178"></a>
+
+### getDroppedAudioFrames()
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.getDroppedAudioFrames()
+```
+
+<a id="ab632f32253459df79b2d67f248ca927d"></a>
+
+### getEnabled()
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.getEnabled()
+```
+
+<a id="ad8beb2c12624e0aa4439e000b8ce3219"></a>
+
+### getMissedAudioFrames()
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.getMissedAudioFrames()
+```
+
+<a id="a01d4e5ba5eed7e43b249ae5d11468df9"></a>
+
+### getPushedAudioFrames()
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.getPushedAudioFrames()
+```
+
+<a id="a8f65044f43043d86abf3d79ecae63d4a"></a>
+
+### getSentAudioFrames()
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.getSentAudioFrames()
+```
+
+<a id="acd8ac6b089bb08029f665fde58a8e781"></a>
+
+### getSourceId()
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.getSourceId()
+```
+
+<a id="a1e346a5dcb8cc30f983bc7c3312e4577"></a>
+
+### setBufferedPcmDataListSize()
+
+```cpp
+void io.agora.rtc.LocalAudioTrackStats.setBufferedPcmDataListSize(int bufferedPcmDataListSize)
+```
+
+<a id="aa3ac74b60493a1134ebe68e99ffcf696"></a>
+
+### setDroppedAudioFrames()
+
+```cpp
+void io.agora.rtc.LocalAudioTrackStats.setDroppedAudioFrames(int droppedAudioFrames)
+```
+
+<a id="ae44492c74dd7609682b059306be1d1b6"></a>
+
+### setEnabled()
+
+```cpp
+void io.agora.rtc.LocalAudioTrackStats.setEnabled(int enabled)
+```
+
+<a id="afb2876ab9b89445828db63d29bd37650"></a>
+
+### setMissedAudioFrames()
+
+```cpp
+void io.agora.rtc.LocalAudioTrackStats.setMissedAudioFrames(int missedAudioFrames)
+```
+
+<a id="a543d626606ece82a33d1217cd19a5f2e"></a>
+
+### setPushedAudioFrames()
+
+```cpp
+void io.agora.rtc.LocalAudioTrackStats.setPushedAudioFrames(int pushedAudioFrames)
+```
+
+<a id="a25c7a410cf2b69807266389d9bfc7a49"></a>
+
+### setSentAudioFrames()
+
+```cpp
+void io.agora.rtc.LocalAudioTrackStats.setSentAudioFrames(int sentAudioFrames)
+```
+
+<a id="a5a6a7e6fe4cbd9aebf301cb0715eae2f"></a>
+
+### setSourceId()
+
+```cpp
+void io.agora.rtc.LocalAudioTrackStats.setSourceId(int sourceId)
+```
+
+## 类成员变量说明
+
+<a id="a6acba195a8513495f1589d1da185cf94"></a>
+
+### bufferedPcmDataListSize
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.bufferedPcmDataListSize private
+```
+
+<a id="a9af6fae81ecc7ca1554c957d4b75b0b7"></a>
+
+### droppedAudioFrames
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.droppedAudioFrames private
+```
+
+<a id="a6784b162c1768ff3ac7a2c216f499229"></a>
+
+### enabled
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.enabled private
+```
+
+<a id="ab430f390b2005f4dbd63f017eb600d5e"></a>
+
+### missedAudioFrames
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.missedAudioFrames private
+```
+
+<a id="a87df9e4828d8ff1e2e7f5ecfaeecd3cf"></a>
+
+### pushedAudioFrames
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.pushedAudioFrames private
+```
+
+<a id="a4ded8bfe79f06d7bd1386457af5f0bc4"></a>
+
+### sentAudioFrames
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.sentAudioFrames private
+```
+
+<a id="ac168b2674a0ae069b8694e108aa333bf"></a>
+
+### sourceId
+
+```cpp
+int io.agora.rtc.LocalAudioTrackStats.sourceId private
+```

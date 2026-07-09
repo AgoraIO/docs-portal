@@ -1,0 +1,37 @@
+---
+title: "unMuteAllMembers method"
+description: "API docs for the unMuteAllMembers method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Unmutes all members.
+
+Only the group owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+
+```dart
+Future<void> unMuteAllMembers(String groupId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> unMuteAllMembers(String groupId) async {
+  Map req = {'groupId': groupId};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.unMuteAllMembers, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

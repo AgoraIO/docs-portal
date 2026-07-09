@@ -1,0 +1,30 @@
+---
+title: "addEventHandler method"
+description: "API docs for the addEventHandler method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Adds the room event handler. After calling this method, you can handle for new room event when they arrive.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `identifier` | The custom handler identifier, is used to find the corresponding handler. |
+| `handler` | The handle for room event. See [ChatRoomEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler). |
+
+```dart
+void addEventHandler(String identifier, ChatRoomEventHandler handler)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+void addEventHandler(
+  String identifier,
+  ChatRoomEventHandler handler,
+) {
+  _eventHandlesMap[identifier] = handler;
+}
+```

@@ -1,0 +1,37 @@
+---
+title: "媒体播放器缓存"
+description: "媒体播放器缓存 API reference."
+---
+<a id="toc_mediaplayer_cache"></a>
+
+## 媒体播放器缓存
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats"></a>
+
+## OnPlayerCacheStats
+
+报告当前缓存中的媒体资源的相关信息。
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnPlayerCacheStats(const FCacheStatistics& stats);
+```
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats__detailed_desc"></a>
+
+### 详情
+
+调用 [OpenWithMediaSource](/zh-CN/api-reference/rtc/unreal-blueprint/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法且设置 enableCache 成员为 `true` 后，SDK 会在媒体文件打开后每秒触发一次该回调，报告当前缓存的媒体文件的统计数据。
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats__parameters"></a>
+
+### 参数
+
+#### `stats`
+
+缓存中的媒体资源的相关信息，详见 [FCacheStatistics](/zh-CN/api-reference/rtc/unreal-blueprint/class-cachestatistics)。
+
+### 所属接口类
+- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayersourceobserver)

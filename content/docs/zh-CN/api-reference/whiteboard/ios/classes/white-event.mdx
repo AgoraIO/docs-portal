@@ -1,0 +1,81 @@
+---
+title: "WhiteEvent Class Reference"
+description: "SDK 可以触发的自定义事件回调。"
+---
+
+<a id="overview"></a>
+
+SDK 可以触发的自定义事件回调。
+
+## Methods
+
+<a id="//api/name/initWithName:payload:"></a>
+
+### initWithName:payload:
+
+```objc
+- (instancetype)initWithName:(NSString *)eventName payload:(id)payload
+```
+
+指定回调事件名称和内容并初始化一个 `WhiteEvent` 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `eventName` | 回调事件名称。 |
+| `payload` | 回调事件内容。 |
+
+#### Returns
+
+初始化的 `WhiteEvent` 对象。
+
+<a id="//api/name/eventName"></a>
+
+### eventName
+
+```objc
+@property (nonatomic, strong) NSString *eventName
+```
+
+回调事件名称。
+
+<a id="//api/name/payload"></a>
+
+### payload
+
+```objc
+@property (nonatomic, strong, nullable) id payload
+```
+
+回调事件内容。
+
+<a id="//api/name/uuid"></a>
+
+### uuid
+
+```objc
+@property (nonatomic, strong, readonly) NSString *uuid
+```
+
+白板房间号。
+
+<a id="//api/name/scope"></a>
+
+### scope
+
+```objc
+@property (nonatomic, strong, readonly) NSString *scope
+```
+
+发送事件的用户角色。包括 `system`， `app`， `custom`， `magix`，自定义事件为 `custom`。
+
+<a id="//api/name/authorId"></a>
+
+### authorId
+
+```objc
+@property (nonatomic, strong, readonly) NSString *authorId
+```
+
+发送事件的用户。

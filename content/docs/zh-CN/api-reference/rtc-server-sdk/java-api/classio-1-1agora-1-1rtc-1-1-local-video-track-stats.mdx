@@ -1,0 +1,610 @@
+---
+title: "io.agora.rtc.LocalVideoTrackStats类 参考"
+description: "本地视频轨道的统计信息。"
+---
+
+本地视频轨道的统计信息。
+
+## 构造及析构函数说明
+
+<a id="a8928c1fe1cf071735f961ebf4e720319"></a>
+
+### LocalVideoTrackStats() [1/2]
+
+```cpp
+io.agora.rtc.LocalVideoTrackStats.LocalVideoTrackStats()
+```
+
+<a id="ad44400ad1e5b27058cafba1d50e8e0f1"></a>
+
+### LocalVideoTrackStats() [2/2]
+
+```cpp
+io.agora.rtc.LocalVideoTrackStats.LocalVideoTrackStats(long numberOfStreams, long bytesMajorStream, long bytesMinorStream, int framesEncoded, int ssrcMajorStream, int ssrcMinorStream, int captureFrameRate, int regulatedCaptureFrameRate, int inputFrameRate, int encodeFrameRate, int renderFrameRate, int targetMediaBitrateBps, int mediaBitrateBps, int totalBitrateBps, int captureWidth, int captureHeight, int regulatedCaptureWidth, int regulatedCaptureHeight, int width, int height, int encoderType, int uplinkCostTimeMs, int qualityAdaptIndication)
+```
+
+构造函数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| numberOfStreams | 流的数量。 |
+| bytesMajorStream | 视频大流的字节数。 |
+| bytesMinorStream | 视频小流的字节数。 |
+| framesEncoded | 已编码视频帧的数量。 |
+| ssrcMajorStream | 视频大流的 SSRC (synchronization source)。 |
+| ssrcMinorStream | 视频小流的 SSRC (synchronization source)。 |
+| captureFrameRate | 视频的采集帧率。 |
+| regulatedCaptureFrameRate | 根据视频编码器配置调整的视频采集帧率。 |
+| inputFrameRate | 编码器的输入帧率。 |
+| encodeFrameRate | 编码器的输出帧率。 |
+| renderFrameRate | 渲染帧率。 |
+| targetMediaBitrateBps | 目标码率（bps）。 |
+| mediaBitrateBps | 码率（不包含 FEC）。 |
+| totalBitrateBps | 目标码率（bps）。 |
+| captureWidth | 采集视频帧的宽度（像素）。 |
+| captureHeight | 采集视频帧的高度（像素）。 |
+| regulatedCaptureWidth | 根据视频编码器配置调整的视频帧宽度。 |
+| regulatedCaptureHeight | 根据视频编码器配置调整的视频帧高度。 |
+| width | 视频帧的宽度（像素）。 |
+| height | 视频帧的高度（像素）。 |
+| encoderType | 视频编码类型。 |
+| uplinkCostTimeMs | 从视频帧采集到视频帧编码的平均时差（毫秒）。 |
+| qualityAdaptIndication | 基于目标帧率和目标码率的本地视频质量改变：<br />- 0: 本地视频质量不变。<br />- 1: 由于网络带宽增加导致质量提升。<br />- 2: 由于网络带宽降低导致质量下降。 |
+
+## 成员函数说明
+
+<a id="aeef10119519beb653d5e151d282b0461"></a>
+
+### getBytesMajorStream()
+
+```cpp
+long io.agora.rtc.LocalVideoTrackStats.getBytesMajorStream()
+```
+
+<a id="a09e1d83fde86ff4c7cee43663630ac16"></a>
+
+### getBytesMinorStream()
+
+```cpp
+long io.agora.rtc.LocalVideoTrackStats.getBytesMinorStream()
+```
+
+<a id="a8eb93e3543bed30c11428af63ec68ee0"></a>
+
+### getCaptureFrameRate()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getCaptureFrameRate()
+```
+
+<a id="ae39acc22fb83f075415a1052c79d21db"></a>
+
+### getCaptureHeight()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getCaptureHeight()
+```
+
+<a id="a5cd51affa8a23462faaefba6af286e23"></a>
+
+### getCaptureWidth()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getCaptureWidth()
+```
+
+<a id="a29c94cf84ef6732b594f1c42f1821b19"></a>
+
+### getEncodeFrameRate()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getEncodeFrameRate()
+```
+
+<a id="a9e21943df5a31826a5db4e4c9f490ea5"></a>
+
+### getEncoderType()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getEncoderType()
+```
+
+<a id="ac010b2ce079fbc7a28791f52ef62c604"></a>
+
+### getFramesEncoded()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getFramesEncoded()
+```
+
+<a id="af9e510ad6a6396d83ca6d0cf330636c7"></a>
+
+### getHeight()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getHeight()
+```
+
+<a id="a2a4350b519d3b3b71014568f69071452"></a>
+
+### getInputFrameRate()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getInputFrameRate()
+```
+
+<a id="af480a7f3927044fe92f080a0fd54ac52"></a>
+
+### getMediaBitrateBps()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getMediaBitrateBps()
+```
+
+<a id="a1f9fb9b034c2884d6dbdeae4866ee2ef"></a>
+
+### getNumberOfStreams()
+
+```cpp
+long io.agora.rtc.LocalVideoTrackStats.getNumberOfStreams()
+```
+
+<a id="ae694a0bc8d4d70dbd0f4d443b95a95fd"></a>
+
+### getQualityAdaptIndication()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getQualityAdaptIndication()
+```
+
+<a id="a35a4b8f3c4824d2db4c386e6b5302f19"></a>
+
+### getRegulatedCaptureFrameRate()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getRegulatedCaptureFrameRate()
+```
+
+<a id="ac8f2f8f1d913a98fb583db61fa5acd0c"></a>
+
+### getRegulatedCaptureHeight()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getRegulatedCaptureHeight()
+```
+
+<a id="aaf751f755bc504ec16c3fe85dc31bcc5"></a>
+
+### getRegulatedCaptureWidth()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getRegulatedCaptureWidth()
+```
+
+<a id="abd62618e0e3d61dc5efefb228c908fe8"></a>
+
+### getRenderFrameRate()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getRenderFrameRate()
+```
+
+<a id="a421036ce09bafc8a201f539b74f5e3d2"></a>
+
+### getSsrcMajorStream()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getSsrcMajorStream()
+```
+
+<a id="ac442fbfa7a44896e38a04d463e84569e"></a>
+
+### getSsrcMinorStream()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getSsrcMinorStream()
+```
+
+<a id="abbd8dd45a365423a45d3f810ff4664ff"></a>
+
+### getTargetMediaBitrateBps()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getTargetMediaBitrateBps()
+```
+
+<a id="a67e9dbcdc7b9fa776e4dbcab0402c81f"></a>
+
+### getTotalBitrateBps()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getTotalBitrateBps()
+```
+
+<a id="a37a5d1816077bf23e7c904e607105f99"></a>
+
+### getUplinkCostTimeMs()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getUplinkCostTimeMs()
+```
+
+<a id="ad2b998af5f44a03d661e0f30491dbf22"></a>
+
+### getWidth()
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.getWidth()
+```
+
+<a id="a586268e03e4d893ea34580c9dc77dbd4"></a>
+
+### setBytesMajorStream()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setBytesMajorStream(long bytesMajorStream)
+```
+
+<a id="adbbf50c4c411611451ee0869705f9c9d"></a>
+
+### setBytesMinorStream()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setBytesMinorStream(long bytesMinorStream)
+```
+
+<a id="a0180e87545415e9136ef09a650a30a68"></a>
+
+### setCaptureFrameRate()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setCaptureFrameRate(int captureFrameRate)
+```
+
+<a id="a5c872e002d4fce6be38f69a9bd82733a"></a>
+
+### setCaptureHeight()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setCaptureHeight(int captureHeight)
+```
+
+<a id="a2fa18c4d8170a52ce46b02e0309e051b"></a>
+
+### setCaptureWidth()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setCaptureWidth(int captureWidth)
+```
+
+<a id="ac7fb1f1e2164e52194bf05560e1a3215"></a>
+
+### setEncodeFrameRate()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setEncodeFrameRate(int encodeFrameRate)
+```
+
+<a id="a2bf70ad747d6a3a057b7cec236fbb3f2"></a>
+
+### setEncoderType()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setEncoderType(int encoderType)
+```
+
+<a id="a9723ffb1f12bd9bd1bcfdcee09273f81"></a>
+
+### setFramesEncoded()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setFramesEncoded(int framesEncoded)
+```
+
+<a id="a012f99ecfbcfd6c27ddb0b49d1495c7e"></a>
+
+### setHeight()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setHeight(int height)
+```
+
+<a id="a6a5c3e697fb4a73a2072d619144f1ed6"></a>
+
+### setInputFrameRate()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setInputFrameRate(int inputFrameRate)
+```
+
+<a id="a785ffe6c578d9c6774b6132f3287aa7d"></a>
+
+### setMediaBitrateBps()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setMediaBitrateBps(int mediaBitrateBps)
+```
+
+<a id="ae6a64b7228f2f78d23c1a18020c1d474"></a>
+
+### setNumberOfStreams()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setNumberOfStreams(long numberOfStreams)
+```
+
+<a id="ad840a62a574ea6056d9663538e1f381a"></a>
+
+### setQualityAdaptIndication()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setQualityAdaptIndication(int qualityAdaptIndication)
+```
+
+<a id="adc5a379099b6cd95b2f9e9c57710e144"></a>
+
+### setRegulatedCaptureFrameRate()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setRegulatedCaptureFrameRate(int regulatedCaptureFrameRate)
+```
+
+<a id="a8976df7c75d61e4cbb586897f74fe0a6"></a>
+
+### setRegulatedCaptureHeight()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setRegulatedCaptureHeight(int regulatedCaptureHeight)
+```
+
+<a id="aafa9f5558b56112efc7872a1ce9cfda7"></a>
+
+### setRegulatedCaptureWidth()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setRegulatedCaptureWidth(int regulatedCaptureWidth)
+```
+
+<a id="a070de151c4d0c6959bc95e69b6f17563"></a>
+
+### setRenderFrameRate()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setRenderFrameRate(int renderFrameRate)
+```
+
+<a id="a8b41fb6b064d18de20904871b6d6297a"></a>
+
+### setSsrcMajorStream()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setSsrcMajorStream(int ssrcMajorStream)
+```
+
+<a id="a816584ed9557c3871e951dd735e6769c"></a>
+
+### setSsrcMinorStream()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setSsrcMinorStream(int ssrcMinorStream)
+```
+
+<a id="a6dbfdff2a73c2e09fa9cb41f5dd9fac3"></a>
+
+### setTargetMediaBitrateBps()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setTargetMediaBitrateBps(int targetMediaBitrateBps)
+```
+
+<a id="aa81a564e09ffab052a048d2c1428e363"></a>
+
+### setTotalBitrateBps()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setTotalBitrateBps(int totalBitrateBps)
+```
+
+<a id="aa2fc119921771dedbb0a396a9793601b"></a>
+
+### setUplinkCostTimeMs()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setUplinkCostTimeMs(int uplinkCostTimeMs)
+```
+
+<a id="a17b84496fd7ad192091c297cf735982d"></a>
+
+### setWidth()
+
+```cpp
+void io.agora.rtc.LocalVideoTrackStats.setWidth(int width)
+```
+
+## 类成员变量说明
+
+<a id="a6c696a44b9e28993dc2bde373f140bfd"></a>
+
+### bytesMajorStream
+
+```cpp
+long io.agora.rtc.LocalVideoTrackStats.bytesMajorStream private
+```
+
+<a id="a437866db2142eebe5c686a5f23670f65"></a>
+
+### bytesMinorStream
+
+```cpp
+long io.agora.rtc.LocalVideoTrackStats.bytesMinorStream private
+```
+
+<a id="a4170dd18e6215e187b89ba0182d36746"></a>
+
+### captureFrameRate
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.captureFrameRate private
+```
+
+<a id="a0ee7e7d17f16ba0535ef39c8d1d007e6"></a>
+
+### captureHeight
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.captureHeight private
+```
+
+<a id="a6c27d5a448957124a8d2515cfd911447"></a>
+
+### captureWidth
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.captureWidth private
+```
+
+<a id="ad53cb18526d38b106e078e2d345b565e"></a>
+
+### encodeFrameRate
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.encodeFrameRate private
+```
+
+<a id="ab5f79e89da73ac39220d8b32eda6630d"></a>
+
+### encoderType
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.encoderType private
+```
+
+<a id="af109b17ddd201fe2f8910eba4c20b441"></a>
+
+### framesEncoded
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.framesEncoded private
+```
+
+<a id="ae8d4b5abe1f3d2e2f1e6d3faf89587c4"></a>
+
+### height
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.height private
+```
+
+<a id="a6316b8094befa8ca5bb6c975416a9736"></a>
+
+### inputFrameRate
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.inputFrameRate private
+```
+
+<a id="a334b525db5f3534594da9e65314fec2f"></a>
+
+### mediaBitrateBps
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.mediaBitrateBps private
+```
+
+<a id="afc03cdf2c954c2d0975fdd853df31c5b"></a>
+
+### numberOfStreams
+
+```cpp
+long io.agora.rtc.LocalVideoTrackStats.numberOfStreams private
+```
+
+<a id="af95be038bff01175b16d7b2c7520bd4c"></a>
+
+### qualityAdaptIndication
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.qualityAdaptIndication private
+```
+
+<a id="a339dd5ad98da6e818b93cf679ba0eab4"></a>
+
+### regulatedCaptureFrameRate
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.regulatedCaptureFrameRate private
+```
+
+<a id="a060aae0687ceee8777eaae02fe8bbf0d"></a>
+
+### regulatedCaptureHeight
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.regulatedCaptureHeight private
+```
+
+<a id="aff6aa01c35d69c88e4eaa4928fc55f09"></a>
+
+### regulatedCaptureWidth
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.regulatedCaptureWidth private
+```
+
+<a id="a3cdb650b8bc5b595cc4c35e19956ce09"></a>
+
+### renderFrameRate
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.renderFrameRate private
+```
+
+<a id="a0917815280599efb9c6f707b166a7b7d"></a>
+
+### ssrcMajorStream
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.ssrcMajorStream private
+```
+
+<a id="a1764ca940240f9a5b247c509a36d3a33"></a>
+
+### ssrcMinorStream
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.ssrcMinorStream private
+```
+
+<a id="ac727951a7749406f089a65f31577cfa3"></a>
+
+### targetMediaBitrateBps
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.targetMediaBitrateBps private
+```
+
+<a id="a759b0facae048d6b86a17d5acdbf2cdd"></a>
+
+### totalBitrateBps
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.totalBitrateBps private
+```
+
+<a id="ac3ba0b011a3ddc492098d369bdc7dd8c"></a>
+
+### uplinkCostTimeMs
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.uplinkCostTimeMs private
+```
+
+<a id="ae0282c119adf4734af561b3aeb0e2f2d"></a>
+
+### width
+
+```cpp
+int io.agora.rtc.LocalVideoTrackStats.width private
+```

@@ -1,0 +1,54 @@
+---
+title: "DeviceInfo"
+description: "DeviceInfo API reference."
+---
+
+音视频采集设备的信息。
+
+- 音频采集设备信息可通过 onMicrophoneChanged 获取。
+- 视频采集设备信息可通过 onCameraChanged 获取。
+- 音频播放设备信息可通过 onPlaybackDeviceChanged 获取。
+
+- DeviceInfo
+
+## Properties
+
+<a id="device"></a>
+
+### device
+
+```ts
+device: MediaDeviceInfo
+```
+
+采集设备的设备信息，详见 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo)。
+
+<a id="initat"></a>
+
+### initAt
+
+```ts
+initAt: number
+```
+
+SDK 首次检测到采集设备的时间，UNIX 时间戳，单位为 ms。
+
+<a id="state"></a>
+
+### state
+
+```ts
+state: DeviceState
+```
+
+采集设备当前的插拔状态。
+
+<a id="updateat"></a>
+
+### updateAt
+
+```ts
+updateAt: number
+```
+
+采集设备的插拔状态更新时间，UNIX 时间戳，单位为 ms。

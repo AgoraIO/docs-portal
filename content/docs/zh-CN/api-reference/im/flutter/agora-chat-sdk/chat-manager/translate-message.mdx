@@ -1,0 +1,44 @@
+---
+title: "translateMessage method"
+description: "API docs for the translateMessage method from the ChatManager class, for the Dart programming language."
+---
+
+Translate a message.
+
+**Return** Translated Message
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `msg` | The message object |
+| `languages` | The target languages to translate |
+
+```dart
+Future<ChatMessage> translateMessage({required ChatMessage msg, required List<String> languages})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<ChatMessage> translateMessage({
+  required ChatMessage msg,
+  required List<String> languages,
+}) async {
+  Map req = {};
+  req["message"] = msg.toJson();
+  req["languages"] = languages;
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.translateMessage, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatMessage.fromJson(result[ChatMethodKeys.translateMessage]);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

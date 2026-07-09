@@ -1,0 +1,41 @@
+---
+title: "getChatRoomWithId method"
+description: "API docs for the getChatRoomWithId method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Gets the chat room in the cache.
+
+**Return** The chat room instance. Returns null if the chat room is not found in the cache.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+
+```dart
+Future<ChatRoom?> getChatRoomWithId(String roomId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<ChatRoom?> getChatRoomWithId(String roomId) async {
+  Map result = await _channel
+      .invokeMethod(ChatMethodKeys.getChatRoom, {"roomId": roomId});
+  try {
+    ChatError.hasErrorFromResult(result);
+    if (result.containsKey(ChatMethodKeys.getChatRoom)) {
+      return ChatRoom.fromJson(result[ChatMethodKeys.getChatRoom]);
+    } else {
+      return null;
+    }
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

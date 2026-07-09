@@ -1,0 +1,885 @@
+---
+title: "io.agora.rtc.RtcStats类 参考"
+description: "RtcStats 类。"
+---
+
+RtcStats 类。
+
+## 构造及析构函数说明
+
+<a id="ab7302a55686765c9d55dd6c49475d861"></a>
+
+### RtcStats() [1/2]
+
+```cpp
+io.agora.rtc.RtcStats.RtcStats()
+```
+
+<a id="a3ef8b15c0721415be1fa955e93eb060e"></a>
+
+### RtcStats() [2/2]
+
+```cpp
+io.agora.rtc.RtcStats.RtcStats(int connectionId, int duration, int txBytes, int rxBytes, int txAudioBytes, int txVideoBytes, int rxAudioBytes, int rxVideoBytes, short txKBitRate, short rxKBitRate, short rxAudioKBitRate, short txAudioKBitRate, short rxVideoKBitRate, short txVideoKBitRate, short lastmileDelay, int userCount, double cpuAppUsage, double cpuTotalUsage, int gatewayRtt, double memoryAppUsageRatio, double memoryTotalUsageRatio, int memoryAppUsageInKbytes, int connectTimeMs, int firstAudioPacketDuration, int firstVideoPacketDuration, int firstVideoKeyFramePacketDuration, int packetsBeforeFirstKeyFramePacket, int firstAudioPacketDurationAfterUnmute, int firstVideoPacketDurationAfterUnmute, int firstVideoKeyFramePacketDurationAfterUnmute, int firstVideoKeyFrameDecodedDurationAfterUnmute, int firstVideoKeyFrameRenderedDurationAfterUnmute, int txPacketLossRate, int rxPacketLossRate)
+```
+
+构造函数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connectionId | 连接 ID。 |
+| duration | 本地用户的通话时长，单位为秒，累计值。 |
+| txBytes | 发送字节数（bytes），累计值。 |
+| rxBytes | 接收字节数（bytes），累计值。 |
+| txAudioBytes | 发送音频字节数（bytes），累计值。 |
+| txVideoBytes | 发送视频字节数（bytes），累计值。 |
+| rxAudioBytes | 接收音频字节数（bytes），累计值。 |
+| rxVideoBytes | 接收视频字节数（bytes），累计值。 |
+| txKBitRate | 发送码率（Kbps），瞬时值。 |
+| rxKBitRate | 接收码率（Kbps），瞬时值。 |
+| rxAudioKBitRate | 音频接收码率（Kbps），瞬时值。 |
+| txAudioKBitRate | 音频包的发送码率（Kbps），瞬时值。 |
+| rxVideoKBitRate | 视频接收码率（Kbps），瞬时值。 |
+| txVideoKBitRate | 视频发送码率（Kbps），瞬时值。 |
+| lastmileDelay | 客户端到服务器的延迟（毫秒）。 |
+| userCount | 当前频道内的人数。 |
+| cpuAppUsage | 当前 App 的 CPU 使用率 (%)。 |
+| cpuTotalUsage | 当前系统的 CPU 使用率 (%)。 |
+| gatewayRtt | 客户端到本地路由器的往返时延 (ms)。 |
+| memoryAppUsageRatio | 当前 App 的内存占比 (%)。 |
+| memoryTotalUsageRatio | 当前系统的内存占比 (%)。 |
+| memoryAppUsageInKbytes | 当前 App 的内存大小 (KB)。 |
+| connectTimeMs | 从开始建立连接到成功连接的时间（毫秒）。如报告 0，则表示无效。 |
+| firstAudioPacketDuration | 从 SDK 开始连接 RTC 频道到接收到第一个音频包的时间（毫秒）。 |
+| firstVideoPacketDuration | 从 SDK 开始连接 RTC 频道到接收到第一个视频包的时间（毫秒）。 |
+| firstVideoKeyFramePacketDuration | 从 SDK 开始连接 RTC 频道到接收到第一个视频关键帧的时间（毫秒）。 |
+| packetsBeforeFirstKeyFramePacket | 在收到第一个视频关键帧之前收到的视频包数量。 |
+| firstAudioPacketDurationAfterUnmute | 从最后一次恢复发送音频到接收到第一个音频包的时间（毫秒）。 |
+| firstVideoPacketDurationAfterUnmute | 从最后一次恢复发送视频到接收到第一个视频包的时间（毫秒）。 |
+| firstVideoKeyFramePacketDurationAfterUnmute | 从最后一次恢复发送视频到接收到第一个视频关键帧的时间（毫秒）。 |
+| firstVideoKeyFrameDecodedDurationAfterUnmute | 从最后一次恢复发送视频到接收到第一个视频关键帧解码的时间（毫秒）。 |
+| firstVideoKeyFrameRenderedDurationAfterUnmute | 从最后一次恢复发送视频到接收到第一个视频帧关键帧渲染的时间（毫秒）。 |
+| txPacketLossRate | 发送端的丢包率。 |
+| rxPacketLossRate | 接收端的丢包率。 |
+
+## 成员函数说明
+
+<a id="a061d1714c76e0617802142f693d91a92"></a>
+
+### getConnectionId()
+
+```cpp
+int io.agora.rtc.RtcStats.getConnectionId()
+```
+
+<a id="a26ba0ebb051d04a0140d998e241e4b36"></a>
+
+### getConnectTimeMs()
+
+```cpp
+int io.agora.rtc.RtcStats.getConnectTimeMs()
+```
+
+<a id="aaa41a064987e5d47ce73bceb2144c8c7"></a>
+
+### getCpuAppUsage()
+
+```cpp
+double io.agora.rtc.RtcStats.getCpuAppUsage()
+```
+
+<a id="a76f74cbafebd55a722a0040fc59af6fd"></a>
+
+### getCpuTotalUsage()
+
+```cpp
+double io.agora.rtc.RtcStats.getCpuTotalUsage()
+```
+
+<a id="aaa448b7ec45f6aeba5c08b6b4701eec4"></a>
+
+### getDuration()
+
+```cpp
+int io.agora.rtc.RtcStats.getDuration()
+```
+
+<a id="a8a4efb65c6876b6d43003c81199fb721"></a>
+
+### getFirstAudioPacketDuration()
+
+```cpp
+int io.agora.rtc.RtcStats.getFirstAudioPacketDuration()
+```
+
+<a id="a9e65db1a0a781056129c4eed929ab168"></a>
+
+### getFirstAudioPacketDurationAfterUnmute()
+
+```cpp
+int io.agora.rtc.RtcStats.getFirstAudioPacketDurationAfterUnmute()
+```
+
+<a id="a41687f0b3525942d35455da659443eda"></a>
+
+### getFirstVideoKeyFrameDecodedDurationAfterUnmute()
+
+```cpp
+int io.agora.rtc.RtcStats.getFirstVideoKeyFrameDecodedDurationAfterUnmute()
+```
+
+<a id="a7dbfc25cc1133b82236aea0cd2ebf7c7"></a>
+
+### getFirstVideoKeyFramePacketDuration()
+
+```cpp
+int io.agora.rtc.RtcStats.getFirstVideoKeyFramePacketDuration()
+```
+
+<a id="add2584e073c1d58c04b2b33ad575e9bd"></a>
+
+### getFirstVideoKeyFramePacketDurationAfterUnmute()
+
+```cpp
+int io.agora.rtc.RtcStats.getFirstVideoKeyFramePacketDurationAfterUnmute()
+```
+
+<a id="adacc62896ac273238885ceae8c8c606a"></a>
+
+### getFirstVideoKeyFrameRenderedDurationAfterUnmute()
+
+```cpp
+int io.agora.rtc.RtcStats.getFirstVideoKeyFrameRenderedDurationAfterUnmute()
+```
+
+<a id="a521f832b72c920c70379ff8bca9c6568"></a>
+
+### getFirstVideoPacketDuration()
+
+```cpp
+int io.agora.rtc.RtcStats.getFirstVideoPacketDuration()
+```
+
+<a id="a1a7c57f78dea92d913205994d67050ad"></a>
+
+### getFirstVideoPacketDurationAfterUnmute()
+
+```cpp
+int io.agora.rtc.RtcStats.getFirstVideoPacketDurationAfterUnmute()
+```
+
+<a id="ab947ee9fa10081447e69789c8a9e1f2e"></a>
+
+### getGatewayRtt()
+
+```cpp
+int io.agora.rtc.RtcStats.getGatewayRtt()
+```
+
+<a id="ac52b1f4bfdbab015d351f58416c739f1"></a>
+
+### getLastmileDelay()
+
+```cpp
+short io.agora.rtc.RtcStats.getLastmileDelay()
+```
+
+<a id="ab8ba260c1bed4259282de16dcb80ab20"></a>
+
+### getMemoryAppUsageInKbytes()
+
+```cpp
+int io.agora.rtc.RtcStats.getMemoryAppUsageInKbytes()
+```
+
+<a id="aaebae26a0c8ef01dd239b3f0f2e468a1"></a>
+
+### getMemoryAppUsageRatio()
+
+```cpp
+double io.agora.rtc.RtcStats.getMemoryAppUsageRatio()
+```
+
+<a id="a39c355e4e1cc9d81920243e2c9d97cea"></a>
+
+### getMemoryTotalUsageRatio()
+
+```cpp
+double io.agora.rtc.RtcStats.getMemoryTotalUsageRatio()
+```
+
+<a id="a43db929dbe2ab7f00aa197e01efa258f"></a>
+
+### getPacketsBeforeFirstKeyFramePacket()
+
+```cpp
+int io.agora.rtc.RtcStats.getPacketsBeforeFirstKeyFramePacket()
+```
+
+<a id="ac45912ad00b765f335fdebf26a00c9e1"></a>
+
+### getRxAudioBytes()
+
+```cpp
+int io.agora.rtc.RtcStats.getRxAudioBytes()
+```
+
+<a id="ae283c9eb85eb0ad0cd4731e1e2b87868"></a>
+
+### getRxAudioKBitRate()
+
+```cpp
+short io.agora.rtc.RtcStats.getRxAudioKBitRate()
+```
+
+<a id="a5901a1c79303d6cfee78fa419d806426"></a>
+
+### getRxBytes()
+
+```cpp
+int io.agora.rtc.RtcStats.getRxBytes()
+```
+
+<a id="aefb0eb8b2f98f9a5443243ac7ede6d84"></a>
+
+### getRxKBitRate()
+
+```cpp
+short io.agora.rtc.RtcStats.getRxKBitRate()
+```
+
+<a id="a243be1440773aa53fc40ea8271ba4ae3"></a>
+
+### getRxPacketLossRate()
+
+```cpp
+int io.agora.rtc.RtcStats.getRxPacketLossRate()
+```
+
+<a id="a30265219394fdde0fae12be6392c87c2"></a>
+
+### getRxVideoBytes()
+
+```cpp
+int io.agora.rtc.RtcStats.getRxVideoBytes()
+```
+
+<a id="a0f1728dafc81516129b1eecddbc6cae9"></a>
+
+### getRxVideoKBitRate()
+
+```cpp
+short io.agora.rtc.RtcStats.getRxVideoKBitRate()
+```
+
+<a id="a552dd3843f0a52bfac0f79cf6a46c8ac"></a>
+
+### getTxAudioBytes()
+
+```cpp
+int io.agora.rtc.RtcStats.getTxAudioBytes()
+```
+
+<a id="aa706e8ef05f9f3e55b3f2cc61207dbcd"></a>
+
+### getTxAudioKBitRate()
+
+```cpp
+short io.agora.rtc.RtcStats.getTxAudioKBitRate()
+```
+
+<a id="a6d681d2f2c8d20c7dc68fcaafc0571ac"></a>
+
+### getTxBytes()
+
+```cpp
+int io.agora.rtc.RtcStats.getTxBytes()
+```
+
+<a id="a556112aed8b3d2b822aa3c079012dbf2"></a>
+
+### getTxKBitRate()
+
+```cpp
+short io.agora.rtc.RtcStats.getTxKBitRate()
+```
+
+<a id="a4123909d2ac05488b65df0fd1f7850c6"></a>
+
+### getTxPacketLossRate()
+
+```cpp
+int io.agora.rtc.RtcStats.getTxPacketLossRate()
+```
+
+<a id="a157d4c64850359907ef97305ef8b0324"></a>
+
+### getTxVideoBytes()
+
+```cpp
+int io.agora.rtc.RtcStats.getTxVideoBytes()
+```
+
+<a id="a7c823f521781d5279e13e80d75e3319d"></a>
+
+### getTxVideoKBitRate()
+
+```cpp
+short io.agora.rtc.RtcStats.getTxVideoKBitRate()
+```
+
+<a id="a911d46096c5503babd552e37c9bb70fb"></a>
+
+### getUserCount()
+
+```cpp
+int io.agora.rtc.RtcStats.getUserCount()
+```
+
+<a id="a9507e4aca0d30b346b7e790fd6ae156f"></a>
+
+### setConnectionId()
+
+```cpp
+void io.agora.rtc.RtcStats.setConnectionId(int connectionId)
+```
+
+<a id="a1d0d201a89b8ffe6b31bb293399af746"></a>
+
+### setConnectTimeMs()
+
+```cpp
+void io.agora.rtc.RtcStats.setConnectTimeMs(int connectTimeMs)
+```
+
+<a id="a0a595c0a549a0293e133da7396f07620"></a>
+
+### setCpuAppUsage()
+
+```cpp
+void io.agora.rtc.RtcStats.setCpuAppUsage(double cpuAppUsage)
+```
+
+<a id="a5bd4d6669741a206ad8530624864bde9"></a>
+
+### setCpuTotalUsage()
+
+```cpp
+void io.agora.rtc.RtcStats.setCpuTotalUsage(double cpuTotalUsage)
+```
+
+<a id="ad15c68653859878e22aca287aeb9eb54"></a>
+
+### setDuration()
+
+```cpp
+void io.agora.rtc.RtcStats.setDuration(int duration)
+```
+
+<a id="aa8aee3ecfe5abe117c8a55dc878516d0"></a>
+
+### setFirstAudioPacketDuration()
+
+```cpp
+void io.agora.rtc.RtcStats.setFirstAudioPacketDuration(int firstAudioPacketDuration)
+```
+
+<a id="a0e25ed538ff207f1fa87d94a054bf000"></a>
+
+### setFirstAudioPacketDurationAfterUnmute()
+
+```cpp
+void io.agora.rtc.RtcStats.setFirstAudioPacketDurationAfterUnmute(int firstAudioPacketDurationAfterUnmute)
+```
+
+<a id="a0f38fb1da6ee275adf800ccdb3f18f6e"></a>
+
+### setFirstVideoKeyFrameDecodedDurationAfterUnmute()
+
+```cpp
+void io.agora.rtc.RtcStats.setFirstVideoKeyFrameDecodedDurationAfterUnmute(int firstVideoKeyFrameDecodedDurationAfterUnmute)
+```
+
+<a id="a12189d4f7d72fca5007f94b073fd69d9"></a>
+
+### setFirstVideoKeyFramePacketDuration()
+
+```cpp
+void io.agora.rtc.RtcStats.setFirstVideoKeyFramePacketDuration(int firstVideoKeyFramePacketDuration)
+```
+
+<a id="a47a58a72d03eb113391ef7885567c91d"></a>
+
+### setFirstVideoKeyFramePacketDurationAfterUnmute()
+
+```cpp
+void io.agora.rtc.RtcStats.setFirstVideoKeyFramePacketDurationAfterUnmute(int firstVideoKeyFramePacketDurationAfterUnmute)
+```
+
+<a id="a1f6f53fe921c9b8548aa24ba33c142b5"></a>
+
+### setFirstVideoKeyFrameRenderedDurationAfterUnmute()
+
+```cpp
+void io.agora.rtc.RtcStats.setFirstVideoKeyFrameRenderedDurationAfterUnmute(int firstVideoKeyFrameRenderedDurationAfterUnmute)
+```
+
+<a id="ad5e23bfb588007d192245e7238d508ee"></a>
+
+### setFirstVideoPacketDuration()
+
+```cpp
+void io.agora.rtc.RtcStats.setFirstVideoPacketDuration(int firstVideoPacketDuration)
+```
+
+<a id="a5d9d98ffc4faf450444d9239f8ec7e34"></a>
+
+### setFirstVideoPacketDurationAfterUnmute()
+
+```cpp
+void io.agora.rtc.RtcStats.setFirstVideoPacketDurationAfterUnmute(int firstVideoPacketDurationAfterUnmute)
+```
+
+<a id="a1296fddcf67462eb3bd60bbe6f8d6f31"></a>
+
+### setGatewayRtt()
+
+```cpp
+void io.agora.rtc.RtcStats.setGatewayRtt(int gatewayRtt)
+```
+
+<a id="a9cf6c095c6bcc49dceac1b8a26412c7c"></a>
+
+### setLastmileDelay()
+
+```cpp
+void io.agora.rtc.RtcStats.setLastmileDelay(short lastmileDelay)
+```
+
+<a id="ab6de1aea5b280f3936d257e9bc0c7a47"></a>
+
+### setMemoryAppUsageInKbytes()
+
+```cpp
+void io.agora.rtc.RtcStats.setMemoryAppUsageInKbytes(int memoryAppUsageInKbytes)
+```
+
+<a id="a35c52d6fc81d65470a5e00acb22c7841"></a>
+
+### setMemoryAppUsageRatio()
+
+```cpp
+void io.agora.rtc.RtcStats.setMemoryAppUsageRatio(double memoryAppUsageRatio)
+```
+
+<a id="a16fb8bd8bf20ad8c7ffefdcb14559121"></a>
+
+### setMemoryTotalUsageRatio()
+
+```cpp
+void io.agora.rtc.RtcStats.setMemoryTotalUsageRatio(double memoryTotalUsageRatio)
+```
+
+<a id="ae36d8be5cd67b2eae7d35686aae06d4b"></a>
+
+### setPacketsBeforeFirstKeyFramePacket()
+
+```cpp
+void io.agora.rtc.RtcStats.setPacketsBeforeFirstKeyFramePacket(int packetsBeforeFirstKeyFramePacket)
+```
+
+<a id="ad1a94b4c80f3509ed35c58533f46b32e"></a>
+
+### setRxAudioBytes()
+
+```cpp
+void io.agora.rtc.RtcStats.setRxAudioBytes(int rxAudioBytes)
+```
+
+<a id="abb6b1b4c48d20d9f50db782ce05954e0"></a>
+
+### setRxAudioKBitRate()
+
+```cpp
+void io.agora.rtc.RtcStats.setRxAudioKBitRate(short rxAudioKBitRate)
+```
+
+<a id="a6277fef7155a156665d10d739a88c29c"></a>
+
+### setRxBytes()
+
+```cpp
+void io.agora.rtc.RtcStats.setRxBytes(int rxBytes)
+```
+
+<a id="ada180e34370b2cb485c3c80ca1d816e4"></a>
+
+### setRxKBitRate()
+
+```cpp
+void io.agora.rtc.RtcStats.setRxKBitRate(short rxKBitRate)
+```
+
+<a id="ae06222ca83e68711fe20b3967a8ff6a1"></a>
+
+### setRxPacketLossRate()
+
+```cpp
+void io.agora.rtc.RtcStats.setRxPacketLossRate(int rxPacketLossRate)
+```
+
+<a id="a316395975f4bbeef7f32a634f620522a"></a>
+
+### setRxVideoBytes()
+
+```cpp
+void io.agora.rtc.RtcStats.setRxVideoBytes(int rxVideoBytes)
+```
+
+<a id="aa5fce276876d7fa15e547f94355aadcc"></a>
+
+### setRxVideoKBitRate()
+
+```cpp
+void io.agora.rtc.RtcStats.setRxVideoKBitRate(short rxVideoKBitRate)
+```
+
+<a id="a37024d490ed2675890208c4eeb5b0f25"></a>
+
+### setTxAudioBytes()
+
+```cpp
+void io.agora.rtc.RtcStats.setTxAudioBytes(int txAudioBytes)
+```
+
+<a id="a4ed8fd5030b10c8b6f498b24d86201ef"></a>
+
+### setTxAudioKBitRate()
+
+```cpp
+void io.agora.rtc.RtcStats.setTxAudioKBitRate(short txAudioKBitRate)
+```
+
+<a id="ac9e7dad6caabd28a409bca82afb9bc74"></a>
+
+### setTxBytes()
+
+```cpp
+void io.agora.rtc.RtcStats.setTxBytes(int txBytes)
+```
+
+<a id="a5fada454b045b1ad02e5b6a1a7fc4148"></a>
+
+### setTxKBitRate()
+
+```cpp
+void io.agora.rtc.RtcStats.setTxKBitRate(short txKBitRate)
+```
+
+<a id="ae82bd5045acaa54c6b9924743b871a2a"></a>
+
+### setTxPacketLossRate()
+
+```cpp
+void io.agora.rtc.RtcStats.setTxPacketLossRate(int txPacketLossRate)
+```
+
+<a id="a60288f7c4fda7c201613c35318448f7f"></a>
+
+### setTxVideoBytes()
+
+```cpp
+void io.agora.rtc.RtcStats.setTxVideoBytes(int txVideoBytes)
+```
+
+<a id="a1c35671a2ae8a38533c2feecc9648198"></a>
+
+### setTxVideoKBitRate()
+
+```cpp
+void io.agora.rtc.RtcStats.setTxVideoKBitRate(short txVideoKBitRate)
+```
+
+<a id="a0b3514180abf607ec8789f76a056f4dd"></a>
+
+### setUserCount()
+
+```cpp
+void io.agora.rtc.RtcStats.setUserCount(int userCount)
+```
+
+## 类成员变量说明
+
+<a id="ab70800b7fde591cfe42066ab47a8b035"></a>
+
+### connectionId
+
+```cpp
+int io.agora.rtc.RtcStats.connectionId private
+```
+
+<a id="a27eeb1fcc590538cc94d74299b4d46be"></a>
+
+### connectTimeMs
+
+```cpp
+int io.agora.rtc.RtcStats.connectTimeMs private
+```
+
+<a id="ab8df21e1c04fb224573532482b728037"></a>
+
+### cpuAppUsage
+
+```cpp
+double io.agora.rtc.RtcStats.cpuAppUsage private
+```
+
+<a id="ad8df59db1c47c3ffe9456c3c5fc3fccd"></a>
+
+### cpuTotalUsage
+
+```cpp
+double io.agora.rtc.RtcStats.cpuTotalUsage private
+```
+
+<a id="ae45c99411394f5f917bc105a904aa41d"></a>
+
+### duration
+
+```cpp
+int io.agora.rtc.RtcStats.duration private
+```
+
+<a id="a33ad138d841504bc9f2e6284bf2c4e96"></a>
+
+### firstAudioPacketDuration
+
+```cpp
+int io.agora.rtc.RtcStats.firstAudioPacketDuration private
+```
+
+<a id="ac60180c08158df38b07cbc19a7bf3f96"></a>
+
+### firstAudioPacketDurationAfterUnmute
+
+```cpp
+int io.agora.rtc.RtcStats.firstAudioPacketDurationAfterUnmute private
+```
+
+<a id="a6b564ffc0d47215d62123d8447116313"></a>
+
+### firstVideoKeyFrameDecodedDurationAfterUnmute
+
+```cpp
+int io.agora.rtc.RtcStats.firstVideoKeyFrameDecodedDurationAfterUnmute private
+```
+
+<a id="ace2a2cca47fed0d4f1ae635d0c2b9693"></a>
+
+### firstVideoKeyFramePacketDuration
+
+```cpp
+int io.agora.rtc.RtcStats.firstVideoKeyFramePacketDuration private
+```
+
+<a id="aae12e4512ad13362653489e2bccdbead"></a>
+
+### firstVideoKeyFramePacketDurationAfterUnmute
+
+```cpp
+int io.agora.rtc.RtcStats.firstVideoKeyFramePacketDurationAfterUnmute private
+```
+
+<a id="afd88fb2b76ec1b047f489b758f9f5f85"></a>
+
+### firstVideoKeyFrameRenderedDurationAfterUnmute
+
+```cpp
+int io.agora.rtc.RtcStats.firstVideoKeyFrameRenderedDurationAfterUnmute private
+```
+
+<a id="a7f4314b0ba7364822dc154715393998f"></a>
+
+### firstVideoPacketDuration
+
+```cpp
+int io.agora.rtc.RtcStats.firstVideoPacketDuration private
+```
+
+<a id="a4adc1534800b86a1ac0574f0c7b72c2d"></a>
+
+### firstVideoPacketDurationAfterUnmute
+
+```cpp
+int io.agora.rtc.RtcStats.firstVideoPacketDurationAfterUnmute private
+```
+
+<a id="a441efd9fcca9550d903a810b5b7f20b9"></a>
+
+### gatewayRtt
+
+```cpp
+int io.agora.rtc.RtcStats.gatewayRtt private
+```
+
+<a id="ac622da6449661e871203dff138fd62cd"></a>
+
+### lastmileDelay
+
+```cpp
+short io.agora.rtc.RtcStats.lastmileDelay private
+```
+
+<a id="a1be9e4daba1f9d2efba8838ffcf21281"></a>
+
+### memoryAppUsageInKbytes
+
+```cpp
+int io.agora.rtc.RtcStats.memoryAppUsageInKbytes private
+```
+
+<a id="a3f928c590442043df526c21ac321539a"></a>
+
+### memoryAppUsageRatio
+
+```cpp
+double io.agora.rtc.RtcStats.memoryAppUsageRatio private
+```
+
+<a id="a4887ce6c3b0488e8a30ac8c2c06a5f65"></a>
+
+### memoryTotalUsageRatio
+
+```cpp
+double io.agora.rtc.RtcStats.memoryTotalUsageRatio private
+```
+
+<a id="adc94059e35b8ec02439308760a66ff7c"></a>
+
+### packetsBeforeFirstKeyFramePacket
+
+```cpp
+int io.agora.rtc.RtcStats.packetsBeforeFirstKeyFramePacket private
+```
+
+<a id="a3d14b9c01db4b0a510e4eaf8dfb1afbb"></a>
+
+### rxAudioBytes
+
+```cpp
+int io.agora.rtc.RtcStats.rxAudioBytes private
+```
+
+<a id="a89af89baa5ea8c82e88f9c3d73fc66e6"></a>
+
+### rxAudioKBitRate
+
+```cpp
+short io.agora.rtc.RtcStats.rxAudioKBitRate private
+```
+
+<a id="ab1cc365863cd62bad5a7c71ab6f68ecc"></a>
+
+### rxBytes
+
+```cpp
+int io.agora.rtc.RtcStats.rxBytes private
+```
+
+<a id="a7cc69ace160d1fb6a25b3f951e49c45b"></a>
+
+### rxKBitRate
+
+```cpp
+short io.agora.rtc.RtcStats.rxKBitRate private
+```
+
+<a id="aa9d82e56906d7a17e2cb2573cece4080"></a>
+
+### rxPacketLossRate
+
+```cpp
+int io.agora.rtc.RtcStats.rxPacketLossRate private
+```
+
+<a id="a35ef61ab189985594c95c415edc00571"></a>
+
+### rxVideoBytes
+
+```cpp
+int io.agora.rtc.RtcStats.rxVideoBytes private
+```
+
+<a id="a9421af5a758c304bdfd84f7160d9f5fc"></a>
+
+### rxVideoKBitRate
+
+```cpp
+short io.agora.rtc.RtcStats.rxVideoKBitRate private
+```
+
+<a id="a0fe68720e6a08f0fade1f1a87afae36f"></a>
+
+### txAudioBytes
+
+```cpp
+int io.agora.rtc.RtcStats.txAudioBytes private
+```
+
+<a id="a196b72fc9dfce8787f06ac1bc6fe6e9a"></a>
+
+### txAudioKBitRate
+
+```cpp
+short io.agora.rtc.RtcStats.txAudioKBitRate private
+```
+
+<a id="a79b0e80f93745552d5c0e7689795c695"></a>
+
+### txBytes
+
+```cpp
+int io.agora.rtc.RtcStats.txBytes private
+```
+
+<a id="ad1179b6352ca0f36e71d723ee5b4196c"></a>
+
+### txKBitRate
+
+```cpp
+short io.agora.rtc.RtcStats.txKBitRate private
+```
+
+<a id="a32ee640c92e5b315f0264abd8c85feab"></a>
+
+### txPacketLossRate
+
+```cpp
+int io.agora.rtc.RtcStats.txPacketLossRate private
+```
+
+<a id="a0cedf362c6610e7473d5c43c4a702b9f"></a>
+
+### txVideoBytes
+
+```cpp
+int io.agora.rtc.RtcStats.txVideoBytes private
+```
+
+<a id="a0b4a8d9129b13b47346c364b1819bd35"></a>
+
+### txVideoKBitRate
+
+```cpp
+short io.agora.rtc.RtcStats.txVideoKBitRate private
+```
+
+<a id="ae6d12c57049f8f461ab897644933d60f"></a>
+
+### userCount
+
+```cpp
+int io.agora.rtc.RtcStats.userCount private
+```

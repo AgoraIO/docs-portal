@@ -1,0 +1,61 @@
+---
+title: "loadMessagesWithKeyword method"
+description: "API docs for the loadMessagesWithKeyword method from the ChatConversation class, for the Dart programming language."
+---
+
+Loads messages from the local database by the following parameters: keywords, timestamp, max count, sender, search direction.
+
+**Note** Pay attention to the memory usage when the maxCount is large.
+
+**Returns** The list of retrieved messages.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `keywords` | The keywords in message. |
+| `sender` | The message sender. The param can also be used to search in group chat. |
+| `timestamp` | The timestamp for search. |
+| `count` | The maximum number of messages to search. |
+| `direction` | The direction in which the message is loaded: ChatSearchDirection. `ChatSearchDirection.Up`: Gets the messages loaded before the timestamp of the specified message ID. `ChatSearchDirection.Down`: Gets the messages loaded after the timestamp of the specified message ID. |
+
+```dart
+Future<List<ChatMessage>> loadMessagesWithKeyword(String keywords, {String? sender, int timestamp = -1, int count = 20, ChatSearchDirection direction = ChatSearchDirection.Up})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<List<ChatMessage>> loadMessagesWithKeyword(
+  String keywords, {
+  String? sender,
+  int timestamp = -1,
+  int count = 20,
+  ChatSearchDirection direction = ChatSearchDirection.Up,
+}) async {
+  Map req = this._toJson();
+  req["keywords"] = keywords;
+  req['count'] = count;
+  req['timestamp'] = timestamp;
+  req['direction'] = direction == ChatSearchDirection.Up ? "up" : "down";
+  req.setValueWithOutNull("sender", sender);
+
+  Map<String, dynamic> result = await _emConversationChannel.invokeMethod(
+      ChatMethodKeys.loadMsgWithKeywords, req);
+
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatMessage> msgList = [];
+    result[ChatMethodKeys.loadMsgWithKeywords]?.forEach((element) {
+      msgList.add(ChatMessage.fromJson(element));
+    });
+    return msgList;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

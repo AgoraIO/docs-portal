@@ -1,0 +1,65 @@
+---
+title: "io.agora.rtc.AgoraRtcService.AudioCodecOption类 参考"
+description: "SDK 内置的音频编解码器选项。"
+---
+
+SDK 内置的音频编解码器选项。
+
+## 构造及析构函数说明
+
+<a id="a50fa079327e5deb9cb814bbf70728734"></a>
+
+### AudioCodecOption()
+
+```cpp
+io.agora.rtc.AgoraRtcService.AudioCodecOption.AudioCodecOption()
+```
+
+## 类成员变量说明
+
+<a id="a3be27e5c30d91d2e671f35e52fc43f5f"></a>
+
+### audioCodecType
+
+```cpp
+int io.agora.rtc.AgoraRtcService.AudioCodecOption.audioCodecType
+```
+
+SDK 内置的音频编解码器 [AudioCodecType](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-audio-codec-type)。
+
+<a id="a091df743f88aef405655fcd98a479880"></a>
+
+### pcmChannelNum
+
+```cpp
+int io.agora.rtc.AgoraRtcService.AudioCodecOption.pcmChannelNum
+```
+
+内置音频编解码器的 PCM 通道数。此参数为必选参数，可以设为以下值：
+
+- 1: 单通道。
+- 2: 双通道。
+
+<a id="a38a83aad76d3f1ae88d76491af08ede5"></a>
+
+### pcmDuration
+
+```cpp
+int io.agora.rtc.AgoraRtcService.AudioCodecOption.pcmDuration
+```
+
+音频时长，单位为毫秒。取值范围为 [20,100]，取值需为 10 的倍数。该设置对所有格式的音频数据都有效。
+
+<a id="a4118342b37061fa9bc0903ba46f28397"></a>
+
+### pcmSampleRate
+
+```cpp
+int io.agora.rtc.AgoraRtcService.AudioCodecOption.pcmSampleRate
+```
+
+内置音频编解码器的 PCM 采样频率 (Hz)。此参数为必选参数，可以设为以下值：
+
+- 8000: 8 kHz。
+- 16000: 16 kHz。
+- 48000: 48 kHz。

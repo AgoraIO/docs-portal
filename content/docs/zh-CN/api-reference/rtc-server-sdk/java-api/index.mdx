@@ -1,0 +1,251 @@
+---
+title: "服务端网关 SDK Java API 参考"
+description: "服务端网关 SDK 部署在服务端，可与集成了 RTC SDK 的客户端通过 SD-RTN™ 进行实时通信，实现向客户端发送音视频流和从客户端接收接收音视频流的功能。"
+---
+<a id="md_mainpage"></a> 服务端网关 SDK 部署在服务端，可与集成了 RTC SDK 的客户端通过 SD-RTN™ 进行实时通信，实现向客户端发送音视频流和从客户端接收接收音视频流的功能。
+
+<a id="agoraservice"></a>
+
+<a id="autotoc_md0"></a>
+
+## AgoraService 入口
+
+[AgoraService](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service) 类是服务端网关 SDK 的入口。
+
+| 方法 | 描述 |
+| --- | --- |
+| [AgoraService](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service) | 创建 AgoraService 对象。 |
+| [initialize](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service#a822287e735267b7c8f1c9aee77cbb1c9) | 初始化 AgoraService 对象。 |
+| [destroy](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service#af446263ecbb2c2271eb9dabbc1cc47db) | 销毁 AgoraService 对象。 |
+| [agoraRtcConnCreate](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service#aad72c38a7d89447c1fc2353e88878c51) | 创建一个 RtcConnection 对象。 |
+| [createCustomAudioTrackPcm](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service#a6ca7662a6cb13379706d99ab341edabb) | 创建本地音频轨道对象，包含一个发送 PCM 音频数据的音频源。 |
+| [createCustomAudioTrackEncoded](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service#aa21f03e6f0e8d86b3d5c69820fedd2e5) | 创建本地音频轨道对象，包含一个发送编码音频数据的音频源。 |
+| [createMediaNodeFactory](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service#a6e74465cf8cacb54a652e57b560c7fe8) | 创建一个媒体节点工厂对象。 |
+| [createCustomVideoTrackFrame](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service#a89ffc0bf7877f0fdc92b9e6167193019) | 创建本地视频轨道对象，包含一个发送 YUV 格式视频数据的视频源。 |
+| [createCustomVideoTrackEncoded](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service#a97cff6166962847dd05f3dafcce7c55c) | 创建本地视频轨道对象，包含一个发送编码视频数据的视频源。 |
+| [getAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service#af776ee9767ecb895b3e7aec2e38d1c0c) | 获取 SDK 全局的 AgoraParameter 对象。 |
+
+<a id="rtcconnection"></a>
+
+<a id="autotoc_md1"></a>
+
+## 频道连接
+
+你可以通过 AgoraRtcConn 类与 RTC 频道建立连接。app 需要提供 App ID、token 及频道名才能加入频道。
+
+| 方法 | 描述 |
+| --- | --- |
+| [connect](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a636c5a1d4a1d9581295628f3ca664ca8) | 连接 RTC 频道。 |
+| [disconnect](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a1f16d5f0070b67c62a063c7879eafd75) | 与 RTC 频道断开连接。 |
+| [startLastmileProbeTest](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#ac79983e9fbfa370c273e9e3c926f7634) | 开始通话前网络质量探测。 |
+| [stopLastmileProbeTest](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#ad341b99e60e5040add21907603fcd57f) | 停止通话前网络质量探测。 |
+| [renewToken](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a7a892b8f954dad6d16b730418e84296b) | 更新 Token。 |
+| [getConnInfo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a8a503e74e759a2064a3f7837bcef564a) | 获取连接信息。 |
+| [getLocalUser](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#ab3bc18e6635aa0acece8f782ff7c8a38) | 获取本地用户信息。 |
+| [getUserInfo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#ac6e4af5cfe118a7dd6681ca8e6cbdc7f) | 获取频道中指定用户的信息。 |
+| [registerObserver](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a12845e92047ef8e155645f812915ad60) | 注册 RTC 连接 Observer IRtcConnObserver。 |
+| [unregisterObserver](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a484a8c8fb741b8883c998d49d8ace962) | 销毁 RTC 连接 Observer IRtcConnObserver。 |
+| [getConnId](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a82ca6b31b1df392a9bbf95c1d32b9203) | 获取连接 ID。 |
+| [enableEncryption](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a7dcb882f89f79656c7120036922f193d) | 启用/禁用内置加密。 |
+| [getTransportStats](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a93c9243d6f6f155a526ce60945fd60d9) | 获取 RTC 连接的传输状态。 |
+| [getAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a4887841b3c2232730440ad6ca3d74570) | 获取某个 Connection 中的 AgoraParameter 对象。 |
+| [createDataStream](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a9af79d071be59940c37dd2338fcdb67b) | 创建数据流。 |
+| [sendStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a1286a74a33789cc9777bf58a04f777c0) | 发送数据流消息。 |
+
+与 RTC 频道的连接是异步操作。SDK 可以通过 RTC 连接监听器监听本地和远端用户的连接状态。
+
+| 事件 | 描述 |
+| --- | --- |
+| [onConnected](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a4077abc157aa8be3c0060c97f394f48a) | SDK 与频道的连接状态变更为 STATE_CONNECTED 时触发。 |
+| [onDisconnected](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a356b9549fdb5034082a2847b668648c1) | SDK 与频道的连接状态变更为 STATE_DISCONNECTED 时触发。 |
+| [onReconnecting](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a696ada34c92c6854c52a4056645abb57) | SDK 与频道的连接状态变更为 STATE_RECONNECTING 时触发。 |
+| [onConnectionLost](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#ad7193347c1c2287ed83e792d4cb69f1c) | SDK 与频道断开连接时触发。 |
+| [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a879a97e08a9c3ad444a394ec2eca9c4a) | 报告 last-mile 网络质量。 |
+| [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#ad174cd3a03ae31bf36b97eab3e82fe12) | 通话前网络上下行 last-mile 质量探测报告回调。 |
+| [onTokenPrivilegeWillExpire](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a2e51cc9d7a69266ed6efdd2709b8bd26) | Token 服务将在 30 秒内过期回调。 |
+| [onTokenPrivilegeDidExpire](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a1a58efc510b461c20c29b41607622d2c) | Token 已过期回调。 |
+| [onConnectionFailure](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a27c2faad49c53f80dc36b3b26676393f) | SDK 与频道的连接状态变更为 STATE_FAILED 时触发。 |
+| [onUserJoined](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a868be93b5f0663aad464ef17a799ea37) | 远端用户加入频道时触发。 |
+| [onUserLeft](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a5262bb0e4f42060f97d739cf5fb3b31f) | 远端用户离开频道时触发。 |
+| [onTransportStats](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#aa828df0e65064592438a2c60f1ae8aea) | 报告连接的传输统计信息。 |
+| [onChangeRoleSuccess](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a75c5f2d534ad966a96571ea7f088e8ec) | 本地用户角色变更时触发。 |
+| [onChangeRoleFailure](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a17f8c09993fcbb8a1e1fb627598a70dc) | 本地用户角色切换失败时触发。 |
+| [onUserNetworkQuality](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a3e391cbf2a400e434297b5a7a7655fba) | 通话中每个用户的网络上下行 last-mile 质量报告回调。 |
+| [onError](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a2b22a2cc1455588328adf616af2b8964) | 发生错误回调。 |
+| [onStreamMessageError](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a0d7041532b86e399cc018562fd8a8eca) | 接收数据流消息发生错误的回调。 |
+
+<a id="localuser"></a>
+
+<a id="autotoc_md2"></a>
+
+## 本地用户
+
+与 RTC 频道连接之后，每个 RTC 连接都有自己对应的用户。你可以通过 [getLocalUser](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#ab3bc18e6635aa0acece8f782ff7c8a38) 方法获取本地用户对象。
+
+每个本地用户有两个用户角色：主播（可以发送和接收媒体流）和观众（只能接收媒体流）。
+
+| 方法 | 描述 |
+| --- | --- |
+| [setUserRole](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a9823de9ef839d7b0bbb539e6cd2e421d) | 设置用户角色。 |
+| [getUserRole](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a5c0110035e9bfc86148b42c4cae477cf) | 获取用户角色。 |
+| [setAudioEncoderConfig](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a67fa8f0240b495372d19c6a90797a771) | 设置音频编码。 |
+| [publishAudio](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a30711bbe175b24277d4cd977cb544d4e) | 将本地音频轨道发送到频道。 |
+| [unpublishAudio](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a5b71c32a5c3745fdaeaf0ecff2ae72ce) | 停止将本地音频轨道发送到频道。 |
+| [publishVideo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#aa8026a2b75cddf74b45149861b87d053) | 将本地视频轨道发送到频道。 |
+| [unpublishVideo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a47b505af76394396c9147ed39c20705c) | 停止将本地视频轨道发送到频道。 |
+| [subscribeAudio](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a71ea766dd8c040e441966876b697f4ca) | 订阅频道中特定的远端用户发送的音频流。 |
+| [subscribeAllAudio](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a71ea766dd8c040e441966876b697f4ca) | 订阅频道中全部远端用户发送的音频流。 |
+| [unsubscribeAudio](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a3998f47126bec01158624c5a1fb653c2) | 停止订阅频道中特定的远端用户发送的音频流。 |
+| [unsubscribeAllAudio](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a4579cfc4ed9ac4dd1364a5507d36efcf) | 停止订阅频道中全部远端用户发送的音频流。 |
+| [setPlaybackAudioFrameBeforeMixingParameters](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a406b17f8d5980b33b1de83b7cba75e07) | 设置 onPlaybackAudioFrameBeforeMixing 报告的音频数据格式。 |
+| [registerAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a2a5bbc8ddf23a83d925bed041d63f863) | 注册音频帧 Observer。 |
+| [unregisterAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a7ddd8df414d9c882ad8c4fe0281b2706) | 取消注册音频帧 Observer。 |
+| [registerVideoFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a6eef21da3d76b799df5a744df5eeb203) | 注册视频帧 Observer。 |
+| [unregisterVideoFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a1e179eb9254799a28db26cc7fe0b9afd) | 取消注册视频帧 Observer。 |
+| [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#aef2cc197030fcd418c10d35a692fd5a6) | 注册编码后的音频帧 Observer。 |
+| [unregisterAudioEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#aeea5846103bd39335265cb14ed9762a7) | 取消注册编码后的音频帧 Observer。 |
+| [registerVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a7142bb9deff1ad53bffa69e55e3a0f82) | 注册编码后的视频帧 Observer。 |
+| [unregisterVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a0278904ee137da7b88ad35cd480edcdc) | 取消注册编码后的视频帧 Observer。 |
+| [subscribeVideo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#ac5ead6debff1931d16d1371411e59b76) | 订阅频道中指定远端用户发送的视频流。 |
+| [subscribeAllVideo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#ab39d52767fe4087f3a4f11671c9f8c2d) | 订阅频道中全部远端用户发送的视频流。 |
+| [unsubscribeVideo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#ac072f965b0fba3eda31ead169dd0d2d1) | 停止订阅频道中特定的远端用户发送的音频流。 |
+| [unsubscribeAllVideo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a02d76624cc5cbb59d08259a2a954b76e) | 停止订阅频道中全部远端用户发送的视频流。 |
+| [registerObserver](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a838efeb7b169fef9d535e135d1f0891a) | 注册本地用户 Observer。 |
+| [unregisterObserver](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#aab98c8feb30627d403bf30ed6da5276c) | 销毁本地用户 Observer。 |
+| [sendAudioMetaData](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a10bb7ca5b7d12999f0e3f4bb6b3e9d61) | 发送音频 Metadata 数据。 |
+
+| 事件 | 描述 |
+| --- | --- |
+| [onAudioTrackPublishSuccess](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#aaca31a6556391e1a4398345ddc9a3522) | 在第一个本地音频包发送时触发，表明本地音频轨道已成功发布。 |
+| [onLocalAudioTrackStateChanged](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a57aebc7dc03f1620719916f2a9d93cdd) | 在本地音频轨道状态变化时触发。 |
+| [onLocalAudioTrackStatistics](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a9f06a67f5a276d67b438c70974699ed8) | 报告本地音频轨道状态。 |
+| [onRemoteAudioTrackStatistics](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#af7099c322002d5c4cd1811a1cc12380b) | 报告远端音频轨道状态。 |
+| [onUserAudioTrackSubscribed](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a4bb144ed08f545f360900288f48401e9) | 成功订阅远端用户发送的音频流时触发。 |
+| [onUserAudioTrackStateChanged](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a47bb8d6d1fb6ea8f466dad982b60d916) | 在远端音频轨道状态变化时触发。 |
+| [onVideoTrackPublishSuccess](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a4517b2811a2e5cae167aed670a78b5d4) | 对远端用户视频订阅状态变更时触发。 |
+| [onLocalVideoTrackStateChanged](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a73405b75fce5cfdfe6955cf9d6f1c17c) | 本地视频轨道状态改变时触发。 |
+| [onLocalVideoTrackStatistics](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#ad8777160e3fd299da517393d196ad871) | 报告本地视频轨道的统计信息。 |
+| [onUserVideoTrackSubscribed](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#acbbc068c086c073d17323d585cc87a6d) | 成功订阅远端用户发送的视频流时触发。 |
+| [onUserVideoTrackStateChanged](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#ac5812e331e7427a1821130cae146e876) | 在远端视频轨道状态变更时触发。 |
+| [onRemoteVideoTrackStatistics](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#aae992265777934baf63946523ea18ee6) | 报告远端视频轨道的统计信息。 |
+| [onStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a24d008cf23fa8d07ff8d1600a14ccc53) | 接收到数据流消息的回调。 |
+| [onAudioMetaDataReceived](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a84c4706b0f30c43b6274b480ceaa9638) | 接收到对方音频 Metadata 数据的回调。 |
+
+<a id="localaudiotrack"></a>
+
+<a id="autotoc_md3"></a>
+
+## 本地音频轨道
+
+你可以通过 [createCustomAudioTrackPcm](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service#a6ca7662a6cb13379706d99ab341edabb) 或 [createCustomAudioTrackEncoded](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service#aa21f03e6f0e8d86b3d5c69820fedd2e5) 方法创建本地音频轨道。
+
+创建完成之后，你可以通过 [publishAudio](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#a30711bbe175b24277d4cd977cb544d4e) 发布一个或多个本地音频轨道。
+
+| 方法 | 描述 |
+| --- | --- |
+| [setEnabled](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#abc3c49e80e3a02771cd7cbd3c9041e27) | 开启或关闭本地音频轨道。 |
+| [isEnabled](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#aea84507e372a22f0827827af36d94a0a) | 获取本地音频轨道的统计信息。 |
+| [getState](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#af1f3a53b0f9a084232aa213f144f836d) | 获取本地音频状态。 |
+| [getStats](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#a4a625fa92fac4f5219344c7d5d5d900f) | 获取本地音频轨道的统计信息。 |
+| [adjustPublishVolume](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#ae861b5a19271bf80fedf6c70bd68aa56) | 调整音频发布音量。 |
+| [getPublishVolume](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#ad634490661633d72c8152b98d06625c7) | 获取音频发布音量。 |
+| [setMaxBufferedAudioFrameNumber](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#a3e4526e6402becdd5f25573513ce6a36) | 设置音频发送缓冲区的最大容量。 |
+| [clearSenderBuffer](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#a90054e0f30419b0ee2eea512db67f535) | 清除当前音频发送缓冲区。 |
+| [setSendDelayMs](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#ac16dee95915656c401981f1107183370) | 设置音频发送缓冲区允许发送的最小数据时长。 |
+
+<a id="remoteaudiotrack"></a>
+
+<a id="autotoc_md4"></a>
+
+## 远端音频轨道
+
+| 方法 | 描述 |
+| --- | --- |
+| [getStatistics](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-remote-audio-track#a064f35164f384ea1bdd07f266f7bae5d) | 获取远端音频统计信息。 |
+| [getState](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-remote-audio-track#a3b5fa7e21d860becfe1a8b5325b4db2b) | 获取远端音频状态。 |
+
+<a id="localvideotrack"></a>
+
+<a id="autotoc_md5"></a>
+
+## 本地视频轨道
+
+你可以通过 [createCustomVideoTrackFrame](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service#a89ffc0bf7877f0fdc92b9e6167193019) 或 [createCustomVideoTrackEncoded](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-service#a97cff6166962847dd05f3dafcce7c55c) 创建本地视频轨道。
+
+你可以通过 [AgoraLocalUser.publishVideo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user#aa8026a2b75cddf74b45149861b87d053) 发送一个或多个视频轨道。每个视频轨道都对应一条视频流。你也可以同时发送多条视频流。
+
+| 方法 | 描述 |
+| --- | --- |
+| [setEnabled](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-video-track#a66065a64360dec77fec958daebbf69c1) | 开启或关闭本地视频轨道。 |
+| [setVideoEncoderConfig](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-video-track#a0b7181834aa7210c14e4ae52fd857a03) | 设置视频编码属性。 |
+| [getState](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-video-track#a538047d008eaeaffe0186a3368eb18da) | 获取本地视频流状态。 |
+| [getStatistics](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-video-track#a8140767b17e261507fc65033029d25b9) | 获取本地视频统计数据。 |
+
+<a id="remotevideotrack"></a>
+
+<a id="autotoc_md6"></a>
+
+## 远端视频轨道
+
+| 方法 | 描述 |
+| --- | --- |
+| [getState](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-remote-video-track#a84c8afb61f2433f25913269fb81f9464) | 获取远端视频轨道的状态。 |
+| [getTrackInfo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-remote-video-track#a4ac6534b02c86febf6deb0ee2ad7ae29) | 获取远端视频轨道的信息。 |
+
+<a id="medianodefactory"></a>
+
+<a id="autotoc_md7"></a>
+
+## 媒体节点工厂
+
+使用媒体节点工厂对象为音频和视频轨道创建音频或视频处理节点，例如音视频发送模块、接收模块等。
+
+| 方法 | 描述 |
+| --- | --- |
+| [createAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-media-node-factory#ac0986112da4ef355ed09a6a48905c327) | 创建一个 PCM 数据发送模块。 |
+| [createAudioEncodedFrameSender](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-media-node-factory#a689962b295e93afd94c59d0a0ea65eec) | 创建一个已编码音频数据发送模块。 |
+| [createVideoFrameSender](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-media-node-factory#a937de3a320ffcb3ab45995d104615de5) | 创建一个 YUV 视频帧发送模块。 |
+| [createVideoEncodedImageSender](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-media-node-factory#adfe952f993b26c131a6037153eccd9bd) | 创建一个已编码视频发送模块。 |
+
+<a id="audiodatasender"></a>
+
+<a id="autotoc_md8"></a>
+
+## 音频发送模块
+
+| 方法 | 描述 |
+| --- | --- |
+| [sendAudioPcmData](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-audio-pcm-data-sender#a1a109d7059fdffdfebfa9dc476957ab4) | 将 PCM 格式的音频数据发送到本地音频轨道。 |
+| [sendEncodedAudioFrame](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-audio-encoded-frame-sender#a96ab51c07987dcf9adf7c1bc1a05c1e2) | 将已编码的音频帧发送到本地音频轨道。 |
+
+<a id="autotoc_md9"></a>
+
+## 音频接收模块
+
+| 方法 | 描述 |
+| --- | --- |
+| [onRecordAudioFrame](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer#a7f3f5bb14bde99ca5b260631e04925ef) | 获得录制的声音。 |
+| [onPlaybackAudioFrame](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer#a133bfa2a853cb29655eb5f0269f8068e) | 获得播放的声音。 |
+| [onMixedAudioFrame](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer#afb91cbee8f830b196dbc462f76f6f773) | 获取采集和播放声音混音后的数据。 |
+| [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer#a8a44837f2c54f22fe35aeaaf5d4f50f8) | 获得播放声音混音前的数据。 |
+| [onEncodedAudioFrameReceived](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer#a15dd0f01400dc3b630df2820dba6715b) | 接收到远端用户编码后的音频数据回调。 |
+
+<a id="videodatasender"></a>
+
+<a id="autotoc_md10"></a>
+
+## 视频发送模块
+
+| 方法 | 描述 |
+| --- | --- |
+| [sendVideoFrame](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-video-frame-sender#a6cff413f3767180045f5bf3c9b2d1a04) | 将 YUV 格式的视频帧发送到视频轨道。 |
+| [sendEncodedVideoImage](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-image-sender#ab9073bfd03dab3922d1594ce4bc507c8) | 将已编码的视频帧发送到视频轨道。 |
+
+<a id="autotoc_md11"></a>
+
+## 视频接收模块
+
+| 方法 | 描述 |
+| --- | --- |
+| [onFrame](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-video-frame-observer2#ad8aa294e614c849ef5d175be5731185c) | 接收到视频数据时触发。 |
+| [onEncodedVideoFrame](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-video-encoded-frame-observer#a3d928b1f361edf1bb91387898ff5ef2a) | 接收到远端用户编码后的视频数据回调。 |

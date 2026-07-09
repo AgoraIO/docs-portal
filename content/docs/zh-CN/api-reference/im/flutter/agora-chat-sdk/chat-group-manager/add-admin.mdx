@@ -1,0 +1,40 @@
+---
+title: "addAdmin method"
+description: "API docs for the addAdmin method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Adds a group admin.
+
+Only the group owner can call this method and group admins cannot.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `memberId` | The username of the admin to add. |
+
+```dart
+Future<void> addAdmin(String groupId, String memberId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> addAdmin(
+  String groupId,
+  String memberId,
+) async {
+  Map req = {'groupId': groupId, 'admin': memberId};
+  Map result = await _channel.invokeMethod(ChatMethodKeys.addAdmin, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

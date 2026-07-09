@@ -1,0 +1,61 @@
+---
+title: "io.agora.rtc.AgoraRtmEvents接口 参考"
+description: "云信令 (原 RTM) 事件。"
+---
+
+云信令 (原 RTM) 事件。
+
+## 成员函数说明
+
+<a id="ac20a70fb7aabe2cbec71dddab154cd2a"></a>
+
+### onRtmData()
+
+```cpp
+void io.agora.rtc.AgoraRtmEvents.onRtmData(String rtm_uid, byte[] data)
+```
+
+云信令 (原 RTM) 消息回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| rtm_uid | 发送消息的云信令 (原 RTM) 用户 ID。 |
+| data | 收到的消息内容。 |
+
+<a id="a739d4f3797cb76f88e80eeb7d0e57b8c"></a>
+
+### onRtmEvent()
+
+```cpp
+void io.agora.rtc.AgoraRtmEvents.onRtmEvent(String rtm_uid, int event_type, int err_code)
+```
+
+云信令 (原 RTM) 事件回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| rtm_uid | 云信令 (原 RTM) 用户 ID。 |
+| event_type | 事件类型。详见 [AgoraRtmEvents](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtm-events)。 |
+| err_code | 错误码。详见 [RtmErrCode](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-rtm-err-code)。 |
+
+<a id="a892902f769ee0cbe64dbb73ab41b83af"></a>
+
+### onSendRtmDataResult()
+
+```cpp
+void io.agora.rtc.AgoraRtmEvents.onSendRtmDataResult(String rtm_uid, int messageId, int state)
+```
+
+[sendRtm](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a8edd069332b33a33c22a06eb67eb142c) 方法调用结果回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| rtm_uid | RTM 用户 ID。 |
+| messageId | 消息 ID。 |
+| state | RTM 消息的发送状态。详见 [RtmMsgState](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtm-events-1-1-rtm-msg-state)。 |

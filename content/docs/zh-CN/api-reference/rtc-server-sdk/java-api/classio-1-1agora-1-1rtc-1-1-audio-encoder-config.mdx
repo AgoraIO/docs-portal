@@ -1,0 +1,60 @@
+---
+title: "io.agora.rtc.AudioEncoderConfig类 参考"
+description: "音频编码设置。"
+---
+
+音频编码设置。
+
+## 构造及析构函数说明
+
+<a id="af60b2cf78bf98c290842d59cb03acd26"></a>
+
+### AudioEncoderConfig() [1/2]
+
+```cpp
+io.agora.rtc.AudioEncoderConfig.AudioEncoderConfig()
+```
+
+<a id="ad67b31ce25a5bcf6e3d1cdf75ca83a04"></a>
+
+### AudioEncoderConfig() [2/2]
+
+```cpp
+io.agora.rtc.AudioEncoderConfig.AudioEncoderConfig(int audioProfile)
+```
+
+构造函数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| audioProfile | 音频场景：<br />- 0: 默认音频场景。在通信场景下，16 KHz 采样率，语音编码，单声道，编码码率最大值为 16 Kbps。在直播场景下，48 KHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。<br />- 1: 指定 32 KHz 采样率，语音编码，单声道，编码码率最大值为 18 Kbps。<br />- 2: 指定 48 KHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。<br />- 3: 指定 48 KHz 采样率，音乐编码，双声道，编码码率最大值为 80 Kbps。<br />- 4: 指定 48 KHz 采样率，音乐编码，单声道，编码码率最大值为 96 Kbps。<br />- 5: 指定 48 KHz 采样率，音乐编码，双声道，编码码率最大值为 128 Kbps。<br />- 6: 指定 16 kHz 采样率，语音编码，单声道，编码码率最大值为 64 Kbps。 |
+
+## 成员函数说明
+
+<a id="a00717805030ab4c585ae0a18e2a48ed7"></a>
+
+### getAudioProfile()
+
+```cpp
+int io.agora.rtc.AudioEncoderConfig.getAudioProfile()
+```
+
+<a id="a4a20f7459000a9038cf5b7a36089a841"></a>
+
+### setAudioProfile()
+
+```cpp
+void io.agora.rtc.AudioEncoderConfig.setAudioProfile(int audioProfile)
+```
+
+## 类成员变量说明
+
+<a id="af39b62a15c8dafac9922de6ca1e85b20"></a>
+
+### audioProfile
+
+```cpp
+int io.agora.rtc.AudioEncoderConfig.audioProfile private
+```

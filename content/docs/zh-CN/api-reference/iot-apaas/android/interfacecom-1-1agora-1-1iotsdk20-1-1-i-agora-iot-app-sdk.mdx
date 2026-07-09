@@ -1,0 +1,202 @@
+---
+title: "com.agora.iotsdk20.IAgoraIotAppSdk接口 参考"
+description: "IAgoraIotAppSdk 接口类。该类提供总的 IoT 服务入口。"
+---
+
+[IAgoraIotAppSdk](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-agora-iot-app-sdk) 接口类。该类提供总的 IoT 服务入口。
+
+## 成员函数说明
+
+<a id="a6574311973aa1a31249a2ccb0ac0f924"></a>
+
+### getAccountMgr()
+
+```cpp
+IAccountMgr com.agora.iotsdk20.IAgoraIotAppSdk.getAccountMgr()
+```
+
+获取账号管理接口。
+
+#### Returns
+
+账号管理接口: [IAccountMgr](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-account-mgr)。
+
+<a id="a192821890c1be6c55613c4d81d714b3e"></a>
+
+### getAlarmMgr()
+
+```cpp
+IAlarmMgr com.agora.iotsdk20.IAgoraIotAppSdk.getAlarmMgr()
+```
+
+获取告警信息管理接口。
+
+#### Returns
+
+告警信息管理接口: [IAlarmMgr](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-alarm-mgr)。
+
+<a id="a364c93341e8b535ea619a6a646c04649"></a>
+
+### getCallkitMgr()
+
+```cpp
+ICallkitMgr com.agora.iotsdk20.IAgoraIotAppSdk.getCallkitMgr()
+```
+
+获取呼叫系统接口。
+
+#### Returns
+
+呼叫系统接口: [ICallkitMgr](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-callkit-mgr)。
+
+<a id="a7270d81128637f3320f4e1913dd4fcf6"></a>
+
+### getDeviceMgr()
+
+```cpp
+IDeviceMgr com.agora.iotsdk20.IAgoraIotAppSdk.getDeviceMgr()
+```
+
+获取设备管理接口。
+
+#### Returns
+
+设备管理接口: [IDeviceMgr](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-device-mgr)。
+
+<a id="a5f5f5bfd4a76e1452ebb1c88e345a034"></a>
+
+### getDevMessageMgr()
+
+```cpp
+IDevMessageMgr com.agora.iotsdk20.IAgoraIotAppSdk.getDevMessageMgr()
+```
+
+获取设备消息管理接口。
+
+#### Returns
+
+设备消息管理接口: [IDevMessageMgr](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-dev-message-mgr)。
+
+<a id="ac9f49f95a60e0a57bd6482dfeb5bcca4"></a>
+
+### getRtcPlayer()
+
+```cpp
+IRtcPlayer com.agora.iotsdk20.IAgoraIotAppSdk.getRtcPlayer()
+```
+
+获取播放器接口。
+
+#### Returns
+
+播放器接口： [IRtcPlayer](/zh-CN/api-reference/iot-apaas/android/interfaceio-1-1agora-1-1iotlink-1-1-i-rtc-player)。
+
+<a id="a6062a76757c05d4c1ec74ec175cfff03"></a>
+
+### getRtmMgr()
+
+```cpp
+IRtmMgr com.agora.iotsdk20.IAgoraIotAppSdk.getRtmMgr()
+```
+
+获取 RTM 管理接口。
+
+#### Returns
+
+RTM 管理接口： [IRtmMgr](/zh-CN/api-reference/iot-apaas/android/interfaceio-1-1agora-1-1iotlink-1-1-i-rtm-mgr)。
+
+<a id="adb03910d84a92a027f5a9ee413cb9c9f"></a>
+
+### getStateMachine()
+
+```cpp
+int com.agora.iotsdk20.IAgoraIotAppSdk.getStateMachine()
+```
+
+获取当前状态机。
+
+#### Returns
+
+SDK 当前状态。
+
+<a id="ab0e15c7c2f58815fb12489cbc2ad61d5"></a>
+
+### initialize()
+
+```cpp
+int com.agora.iotsdk20.IAgoraIotAppSdk.initialize(InitParam initParam)
+```
+
+初始化 SDK。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| initParam | SDK 初始化参数，详见 [InitParam](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-i-agora-iot-app-sdk-1-1-init-param)。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a9e7529ba28a512bf1a6067071aaf376f"></a>
+
+### release()
+
+```cpp
+void com.agora.iotsdk20.IAgoraIotAppSdk.release()
+```
+
+释放 SDK 所有资源。
+
+## 类成员变量说明
+
+<a id="aae30dc467e5b3024bfe80609a6832945"></a>
+
+### SDK_STATE_INVALID
+
+```cpp
+final int com.agora.iotsdk20.IAgoraIotAppSdk.SDK_STATE_INVALID = 0x0000 static
+```
+
+0x0000: SDK 未初始化。
+
+<a id="a90a9ed12d30bbe129adf18eb292a95bb"></a>
+
+### SDK_STATE_LOGINING
+
+```cpp
+final int com.agora.iotsdk20.IAgoraIotAppSdk.SDK_STATE_LOGINING = 0x0004 static
+```
+
+0x0004: SDK 正在登录用户账号。
+
+<a id="a5937f6ae819fa51260d78fa8202ca34a"></a>
+
+### SDK_STATE_LOGOUTING
+
+```cpp
+final int com.agora.iotsdk20.IAgoraIotAppSdk.SDK_STATE_LOGOUTING = 0x0005 static
+```
+
+0x0005: SDK 正在登出用户账号。
+
+<a id="a57050f5651b6ea3b3270588f45252fe9"></a>
+
+### SDK_STATE_READY
+
+```cpp
+final int com.agora.iotsdk20.IAgoraIotAppSdk.SDK_STATE_READY = 0x0001 static
+```
+
+0x0001: SDK 已初始化，但账号未登录。
+
+<a id="a4d172a08b3320be05788d65ff7adf814"></a>
+
+### SDK_STATE_RUNNING
+
+```cpp
+final int com.agora.iotsdk20.IAgoraIotAppSdk.SDK_STATE_RUNNING = 0x000C static
+```
+
+0x000C: SDK 已登录用户账号，可以正常操作。

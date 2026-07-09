@@ -1,0 +1,440 @@
+---
+title: "ChatManager class"
+description: "API docs for the ChatManager class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The chat manager class, responsible for sending and receiving messages, loading and deleting conversations, and downloading attachments.
+
+The sample code for sending a text message:
+
+```dart
+   ChatMessage msg = ChatMessage.createTxtSendMessage(
+       username: toChatUsername, content: content);
+   await ChatClient.getInstance.chatManager.sendMessage(msg);
+```
+
+### Available Extensions
+
+- ChatManagerDeprecated
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="addEventHandler"></a>
+
+### [addEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/add-event-handler)
+
+```dart
+addEventHandler(String identifier, ChatEventHandler handler) -> void
+```
+
+Adds the chat event handler. After calling this method, you can handle for chat event when they arrive.
+
+<a id="addReaction"></a>
+
+### [addReaction](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/add-reaction)
+
+```dart
+addReaction({required String messageId, required String reaction}) -> Future<void>
+```
+
+Adds a reaction.
+
+<a id="clearEventHandlers"></a>
+
+### [clearEventHandlers](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/clear-event-handlers)
+
+```dart
+clearEventHandlers() -> void
+```
+
+Clear all chat event handlers.
+
+<a id="deleteConversation"></a>
+
+### [deleteConversation](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/delete-conversation)
+
+```dart
+deleteConversation(String conversationId, {bool deleteMessages = true}) -> Future<bool>
+```
+
+Deletes a conversation and its related messages from the local database.
+
+<a id="deleteMessagesBefore"></a>
+
+### [deleteMessagesBefore](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/delete-messages-before)
+
+```dart
+deleteMessagesBefore(int timestamp) -> Future<void>
+```
+
+Deletes messages with timestamp that is before the specified one.
+
+<a id="deleteRemoteConversation"></a>
+
+### [deleteRemoteConversation](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/delete-remote-conversation)
+
+```dart
+deleteRemoteConversation(String conversationId, {ChatConversationType conversationType = ChatConversationType.Chat, bool isDeleteMessage = true}) -> Future<void>
+```
+
+Deletes the specified conversation and the related historical messages from the server.
+
+<a id="downloadAttachment"></a>
+
+### [downloadAttachment](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/download-attachment)
+
+```dart
+downloadAttachment(ChatMessage message) -> Future<void>
+```
+
+Downloads the attachment files from the server.
+
+<a id="downloadThumbnail"></a>
+
+### [downloadThumbnail](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/download-thumbnail)
+
+```dart
+downloadThumbnail(ChatMessage message) -> Future<void>
+```
+
+Downloads the thumbnail if the message has not been downloaded before or if the download fails.
+
+<a id="fetchGroupAcks"></a>
+
+### [fetchGroupAcks](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/fetch-group-acks)
+
+```dart
+fetchGroupAcks(String msgId, String groupId, {String? startAckId, int pageSize = 0}) -> Future<ChatCursorResult<ChatGroupMessageAck>>
+```
+
+Gets read receipts for group messages from the server with pagination.
+
+<a id="fetchHistoryMessages"></a>
+
+### [fetchHistoryMessages](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/fetch-history-messages)
+
+```dart
+fetchHistoryMessages({required String conversationId, ChatConversationType type = ChatConversationType.Chat, int pageSize = 20, String startMsgId = ''}) -> Future<ChatCursorResult<ChatMessage>>
+```
+
+Gets historical messages of the conversation from the server with pagination.
+
+<a id="fetchReactionDetail"></a>
+
+### [fetchReactionDetail](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/fetch-reaction-detail)
+
+```dart
+fetchReactionDetail({required String messageId, required String reaction, String? cursor, int pageSize = 20}) -> Future<ChatCursorResult<ChatMessageReaction>>
+```
+
+Gets the reaction details.
+
+<a id="fetchReactionList"></a>
+
+### [fetchReactionList](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/fetch-reaction-list)
+
+```dart
+fetchReactionList({required List<String> messageIds, required ChatType chatType, String? groupId}) -> Future<Map<String, List<ChatMessageReaction>>>
+```
+
+Gets the list of Reactions.
+
+<a id="fetchSupportedLanguages"></a>
+
+### [fetchSupportedLanguages](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/fetch-supported-languages)
+
+```dart
+fetchSupportedLanguages() -> Future<List<ChatTranslateLanguage>>
+```
+
+Fetch all languages what the translate service support
+
+<a id="getConversation"></a>
+
+### [getConversation](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/get-conversation)
+
+```dart
+getConversation(String conversationId, {ChatConversationType type = ChatConversationType.Chat, bool createIfNeed = true}) -> Future<ChatConversation?>
+```
+
+Gets the conversation by conversation ID and conversation type.
+
+<a id="getConversationsFromServer"></a>
+
+### [getConversationsFromServer](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/get-conversations-from-server)
+
+```dart
+getConversationsFromServer() -> Future<List<ChatConversation>>
+```
+
+Gets the conversation list from the server.
+
+<a id="getEventHandler"></a>
+
+### [getEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/get-event-handler)
+
+```dart
+getEventHandler(String identifier) -> ChatEventHandler?
+```
+
+Get the chat event handler.
+
+<a id="getThreadConversation"></a>
+
+### [getThreadConversation](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/get-thread-conversation)
+
+```dart
+getThreadConversation(String threadId) -> Future<ChatConversation>
+```
+
+Gets the thread conversation by thread ID.
+
+<a id="getUnreadMessageCount"></a>
+
+### [getUnreadMessageCount](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/get-unread-message-count)
+
+```dart
+getUnreadMessageCount() -> Future<int>
+```
+
+Gets the count of the unread messages.
+
+<a id="importMessages"></a>
+
+### [importMessages](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/import-messages)
+
+```dart
+importMessages(List<ChatMessage> messages) -> Future<void>
+```
+
+Imports messages to the local database.
+
+<a id="loadAllConversations"></a>
+
+### [loadAllConversations](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/load-all-conversations)
+
+```dart
+loadAllConversations() -> Future<List<ChatConversation>>
+```
+
+Gets all conversations from the local database.
+
+<a id="loadMessage"></a>
+
+### [loadMessage](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/load-message)
+
+```dart
+loadMessage(String messageId) -> Future<ChatMessage?>
+```
+
+Loads a message from the local database by message ID.
+
+<a id="markAllConversationsAsRead"></a>
+
+### [markAllConversationsAsRead](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/mark-all-conversations-as-read)
+
+```dart
+markAllConversationsAsRead() -> Future<void>
+```
+
+Marks all messages as read.
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="recallMessage"></a>
+
+### [recallMessage](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/recall-message)
+
+```dart
+recallMessage(String messageId) -> Future<void>
+```
+
+Recalls the sent message.
+
+<a id="removeEventHandler"></a>
+
+### [removeEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/remove-event-handler)
+
+```dart
+removeEventHandler(String identifier) -> void
+```
+
+Remove the chat event handler.
+
+<a id="removeReaction"></a>
+
+### [removeReaction](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/remove-reaction)
+
+```dart
+removeReaction({required String messageId, required String reaction}) -> Future<void>
+```
+
+Deletes a reaction.
+
+<a id="reportMessage"></a>
+
+### [reportMessage](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/report-message)
+
+```dart
+reportMessage({required String messageId, required String tag, required String reason}) -> Future<void>
+```
+
+Report violation message
+
+<a id="resendMessage"></a>
+
+### [resendMessage](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/resend-message)
+
+```dart
+resendMessage(ChatMessage message) -> Future<ChatMessage>
+```
+
+Resend a message.
+
+<a id="searchMsgFromDB"></a>
+
+### [searchMsgFromDB](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/search-msg-from-db)
+
+```dart
+searchMsgFromDB(String keywords, {int timeStamp = -1, int maxCount = 20, String from = '', ChatSearchDirection direction = ChatSearchDirection.Up}) -> Future<List<ChatMessage>>
+```
+
+Retrieves messages from the database according to the parameters.
+
+<a id="sendConversationReadAck"></a>
+
+### [sendConversationReadAck](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/send-conversation-read-ack)
+
+```dart
+sendConversationReadAck(String conversationId) -> Future<bool>
+```
+
+Sends the conversation read receipt to the server. This method is only for one-to-one chat conversations.
+
+<a id="sendGroupMessageReadAck"></a>
+
+### [sendGroupMessageReadAck](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/send-group-message-read-ack)
+
+```dart
+sendGroupMessageReadAck(String msgId, String groupId, {String? content}) -> Future<bool>
+```
+
+Sends the group message receipt to the server.
+
+<a id="sendMessage"></a>
+
+### [sendMessage](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/send-message)
+
+```dart
+sendMessage(ChatMessage message) -> Future<ChatMessage>
+```
+
+Sends a message.
+
+<a id="sendMessageReadAck"></a>
+
+### [sendMessageReadAck](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/send-message-read-ack)
+
+```dart
+sendMessageReadAck(ChatMessage message) -> Future<bool>
+```
+
+Sends the read receipt to the server.
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="translateMessage"></a>
+
+### [translateMessage](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/translate-message)
+
+```dart
+translateMessage({required ChatMessage msg, required List<String> languages}) -> Future<ChatMessage>
+```
+
+Translate a message.
+
+<a id="updateMessage"></a>
+
+### [updateMessage](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/update-message)
+
+```dart
+updateMessage(ChatMessage message) -> Future<void>
+```
+
+Updates the local message.
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

@@ -1,0 +1,56 @@
+---
+title: "fetchLatestMessageWithChatThreads method"
+description: "API docs for the fetchLatestMessageWithChatThreads method from the ChatThreadManager class, for the Dart programming language."
+---
+
+Get the latest news of the specified Chat Thread list from the server.
+
+**Return** returns a Map collection, the key is the chat thread ID, and the value is the latest message object of the chat thread.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `chatThreadIds` | Chat Thread id list. The list length is not greater than 20. |
+
+```dart
+Future<Map<String, ChatMessage>> fetchLatestMessageWithChatThreads({required List<String> chatThreadIds})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<Map<String, ChatMessage>> fetchLatestMessageWithChatThreads({
+  required List<String> chatThreadIds,
+}) async {
+  Map req = {
+    "threadIds": chatThreadIds,
+  };
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.fetchLastMessageWithChatThreads,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+    Map? map = result.getMapValue(
+      ChatMethodKeys.fetchLastMessageWithChatThreads,
+    );
+    Map<String, ChatMessage> ret = {};
+    if (map == null) {
+      return ret;
+    }
+
+    for (var key in map.keys) {
+      Map<String, Object> msgMap = map[key].cast<Map<String, Object>>();
+      ret[key] = ChatMessage.fromJson(msgMap);
+    }
+    return ret;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

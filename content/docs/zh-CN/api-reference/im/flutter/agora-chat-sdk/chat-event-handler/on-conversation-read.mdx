@@ -1,0 +1,20 @@
+---
+title: "onConversationRead property"
+description: "API docs for the onConversationRead property from the ChatEventHandler class, for the Dart programming language."
+---
+
+Occurs when a conversation read receipt is received.
+
+Occurs in the following scenarios: (1) The message is read by the receiver (The conversation receipt is sent). Upon receiving this event, the SDK sets the [ChatMessage.hasReadAck](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-message/has-read-ack) property of the message in the conversation to `true` in the local database. (2) In the multi-device login scenario, when one device sends a Conversation receipt, the server will set the number of unread messages to 0, and the callback occurs on the other devices. and sets the [ChatMessage.hasReadAck](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-message/has-read-ack) property of the message in the conversation to `true` in the local database.
+
+```dart
+(void Function?(String from, String to)?)onConversationRead final
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+final void Function(String from, String to)? onConversationRead;
+```

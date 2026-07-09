@@ -1,0 +1,37 @@
+---
+title: "ChatVoiceMessageBody constructor"
+description: "API docs for the ChatVoiceMessageBody constructor from Class ChatVoiceMessageBody from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Creates a voice message.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `localPath` | The local path of the voice file. |
+| `displayName` | The name of the voice file. |
+| `fileSize` | The size of the voice file in bytes. |
+| [duration](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-voice-message-body/duration) | The voice duration in seconds. |
+
+```dart
+ChatVoiceMessageBody({dynamic localPath, int duration = 0, String? displayName, int? fileSize})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ChatVoiceMessageBody({
+  localPath,
+  this.duration = 0,
+  String? displayName,
+  int? fileSize,
+}) : super(
+        localPath: localPath,
+        displayName: displayName,
+        fileSize: fileSize,
+        type: MessageType.VOICE,
+      );
+```

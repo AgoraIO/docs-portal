@@ -1,0 +1,40 @@
+---
+title: "ChatMessage.createCustomSendMessage constructor"
+description: "API docs for the ChatMessage.createCustomSendMessage constructor from Class ChatMessage from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Creates a custom message for sending.
+
+- For a one-to-one chat, it is the username of the peer user.
+- For a group chat, it is the group ID.
+- For a chat room, it is the chat room ID.
+
+**Return** The message instance.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `targetId` | The ID of the message recipient. |
+| `event` | The event. |
+| `params` | The params map. |
+
+```dart
+ChatMessage.createCustomSendMessage({required String targetId, required dynamic event, Map<String, String>? params, ChatType chatType = ChatType.Chat})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ChatMessage.createCustomSendMessage({
+  required String targetId,
+  required event,
+  Map<String, String>? params,
+  ChatType chatType = ChatType.Chat,
+}) : this.createSendMessage(
+          chatType: chatType,
+          to: targetId,
+          body: ChatCustomMessageBody(event: event, params: params));
+```

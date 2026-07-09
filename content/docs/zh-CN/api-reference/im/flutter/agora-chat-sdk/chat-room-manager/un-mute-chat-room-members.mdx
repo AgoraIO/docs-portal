@@ -1,0 +1,41 @@
+---
+title: "unMuteChatRoomMembers method"
+description: "API docs for the unMuteChatRoomMembers method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Unmutes the specified members in a chat room.
+
+Only the chat room owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `unMuteMembers` | The list of members to be unmuted. |
+
+```dart
+Future<void> unMuteChatRoomMembers(String roomId, List<String> unMuteMembers)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> unMuteChatRoomMembers(
+  String roomId,
+  List<String> unMuteMembers,
+) async {
+  Map req = {"roomId": roomId, "unMuteMembers": unMuteMembers};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.unMuteChatRoomMembers, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

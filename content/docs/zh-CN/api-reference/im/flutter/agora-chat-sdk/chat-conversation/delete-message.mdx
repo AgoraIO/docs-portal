@@ -1,0 +1,38 @@
+---
+title: "deleteMessage method"
+description: "API docs for the deleteMessage method from the ChatConversation class, for the Dart programming language."
+---
+
+Deletes a message in the local database.
+
+**Note** After this method is called, the message is only deleted both from the memory and the local database.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `messageId` | The ID of message to be deleted. |
+
+```dart
+Future<void> deleteMessage(String messageId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> deleteMessage(String messageId) async {
+  Map req = this._toJson();
+  req['msg_id'] = messageId;
+  Map result = await _emConversationChannel.invokeMethod(
+      ChatMethodKeys.removeMessage, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

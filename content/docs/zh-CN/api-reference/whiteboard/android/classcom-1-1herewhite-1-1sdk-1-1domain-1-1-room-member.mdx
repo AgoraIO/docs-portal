@@ -1,0 +1,100 @@
+---
+title: "com.herewhite.sdk.domain.RoomMember类 参考"
+description: "RoomMember 类，用于获取实时房间内互动模式（具有读写权限）用户信息。"
+---
+
+`RoomMember` 类，用于获取实时房间内互动模式（具有读写权限）用户信息。
+
+### `注解`
+
+该类仅适用于互动模式的用户。订阅模式的用户不属于房间成员。
+
+## 成员函数说明
+
+<a id="a934d1e14e95dadb807bddc0eb149612b"></a>
+
+### getMemberState()
+
+```cpp
+MemberState com.herewhite.sdk.domain.RoomMember.getMemberState()
+```
+
+获取互动模式用户的所有白板工具信息。
+
+##### `自从`
+
+2.4.8
+
+#### Returns
+
+白板工具信息，详见 `MemberState`。
+
+<a id="adc3e8b99d3bb703c19122ebd2430a876"></a>
+
+### getPayload()
+
+```cpp
+Object com.herewhite.sdk.domain.RoomMember.getPayload()
+```
+
+获取用户加入房间时携带的自定义用户信息。
+
+##### `自从`
+
+2.4.8
+
+<a id="a14f4887ee69cc739385bb870d29e38ec"></a>
+
+### getMemberId()
+
+```cpp
+Long com.herewhite.sdk.domain.RoomMember.getMemberId()
+```
+
+获取用户 ID。
+
+在用户加入互动白板实时房间时，会自动分配用户 ID，用于标识房间内的用户。同一房间中的每个用户具有唯一的用户 ID。
+
+#### Returns
+
+用户 ID。
+
+<a id="ac20b71be02834d8a625c739803c1ed81"></a>
+
+### getCurrentApplianceName()
+
+```cpp
+String com.herewhite.sdk.domain.RoomMember.getCurrentApplianceName()
+```
+
+获取用户当前使用的白板工具。
+
+##### `自从`
+
+2.4.8
+
+##### `**[弃用:](/zh-CN/api-reference/whiteboard/android/deprecated#_deprecated000009)**`
+
+该方法已废弃。请改用 `getMemberState` 获取详细的白板工具信息。
+
+#### Returns
+
+白板工具名称。
+
+<a id="af258eda0f8afd216bbb0e459877a6881"></a>
+
+### getInformation()
+
+```cpp
+MemberInformation com.herewhite.sdk.domain.RoomMember.getInformation()
+```
+
+获取用户加入房间时携带的用户信息。
+
+##### `**[弃用:](/zh-CN/api-reference/whiteboard/android/deprecated#_deprecated000010)**`
+
+该方法已经废弃。请改用 `getPayload` 获取用户信息。
+
+#### Returns
+
+用户信息。

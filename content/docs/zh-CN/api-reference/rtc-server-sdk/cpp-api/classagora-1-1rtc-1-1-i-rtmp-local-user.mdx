@@ -1,0 +1,393 @@
+---
+title: "agora::rtc::IRtmpLocalUser类 参考abstract"
+description: "IRtmpLocalUser 类。定义了 CDN 推流用户的行为和状态。"
+---
+
+`IRtmpLocalUser` 类。定义了 CDN 推流用户的行为和状态。 每个 CDN 连接都有自己的用户。你可以通过 [getRtmpLocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-connection#a87b6eedbf3b26da33c0f65135826349b) 获取本地用户对象的指针。
+
+## 成员枚举类型说明
+
+<a id="a692c5ab59e1da5664535c3f4df4789b6"></a>
+
+### VideoBitrateAdjustType
+
+```cpp
+enum agora::rtc::IRtmpLocalUser::VideoBitrateAdjustType
+```
+
+视频编码码率的调节类型。
+
+#### Values
+
+| Name | Description |
+| --- | --- |
+| <a id="a692c5ab59e1da5664535c3f4df4789b6ada1eb20a5aca64378518617f22367623"></a> None | 0: 不调节。 |
+| <a id="a692c5ab59e1da5664535c3f4df4789b6a44c4304a2772bab41a48e987a78e53a0"></a> Increasing | 1: 增加。每次使用该枚举时，视频编码码率会增加 50 kbps。 |
+| <a id="a692c5ab59e1da5664535c3f4df4789b6a0c3a3b20ce3f00c3ca33153dd351f84b"></a> Decreasing | 2: 减少。每次使用该枚举时，视频编码码率会减少 100 kbps。 |
+
+## 构造及析构函数说明
+
+<a id="a81b75038cb35ba1c8d9e2c6b4b3777c7"></a>
+
+### ~IRtmpLocalUser()
+
+```cpp
+virtual agora::rtc::IRtmpLocalUser::~IRtmpLocalUser() inlinevirtual
+```
+
+## 成员函数说明
+
+<a id="a4821c3e6479de60dc31bad663cd23139"></a>
+
+### setAudioStreamConfiguration()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::setAudioStreamConfiguration(const RtmpStreamingAudioConfiguration& config) pure virtual
+```
+
+设置主播端直接向 CDN 推流时的音频编码属性。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| config | CDN 推流的音频编码属性，详见 [RtmpStreamingAudioConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-rtmp-streaming-audio-configuration)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a8d48a5a98fb165747beebe17ee4398c3"></a>
+
+### setVideoStreamConfiguration()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::setVideoStreamConfiguration(const RtmpStreamingVideoConfiguration& config) pure virtual
+```
+
+设置主播端直接向 CDN 推流时的视频编码属性。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| config | CDN 推流的视频编码属性，详见 [RtmpStreamingVideoConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-rtmp-streaming-video-configuration)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a3038768b1754345b60148d76899b421f"></a>
+
+### adjustRecordingSignalVolume()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::adjustRecordingSignalVolume(int volume) pure virtual
+```
+
+调节主播端直接向 CDN 推流时的音频采集信号音量。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| volume | 音量，取值范围为 [0,100]。其中：<br />- 0: 静音。<br />- 100：（默认）原始音量。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aeeb9d07adb39f08b4edb6215308d7c67"></a>
+
+### getRecordingSignalVolume()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::getRecordingSignalVolume(int32_t* volume) pure virtual
+```
+
+获取主播端直接向 CDN 推流时的音频采集信号音量。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| volume | 音量指针。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a51dc863b4b0d7083ff2cf4efe7065946"></a>
+
+### setAudioEnabled()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::setAudioEnabled(bool enabled) pure virtual
+```
+
+在 CDN 推流中开启或关闭本地音频。
+
+你需要在开始直接向 CDN 推流前调用该方法。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enabled | 是否开启本地音频：<br />- true：开启<br />- false：关闭 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a3fbf8989cae4f2001ea00603c2e61014"></a>
+
+### adjustVideoBitrate()
+
+```cpp
+virtual void agora::rtc::IRtmpLocalUser::adjustVideoBitrate(VideoBitrateAdjustType type) pure virtual
+```
+
+调节主播端直接向 CDN 推流时的视频编码码率。
+
+如果多次调用该方法，调节效果会叠加。以当前视频编码码率为 200 kbps 为例：
+
+1. 调用该方法并设置 type 为 Increasing，则视频编码码率会增加 50 kbps，当前视频编码码率变为 250 kbps。
+2. 再次调用该方法并设置 type 为 Decreasing，则视频编码码率会减少 100 kbps，当前视频编码码率变为 150 kbps。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| type | 视频编码码率的调节类型，详见 [VideoBitrateAdjustType](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-local-user#a692c5ab59e1da5664535c3f4df4789b6)。 |
+
+<a id="a49b3bf6f3790d6a3ee13356d4a3ed411"></a>
+
+### setVideoEnabled()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::setVideoEnabled(bool enabled) pure virtual
+```
+
+在 CDN 推流中开启或关闭本地视频。
+
+你需要在开始直接向 CDN 推流前调用该方法。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enabled | 是否开启本地视频：<br />- true：开启<br />- false：关闭 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a0be9b40060601e90bfd3c074fdf386f1"></a>
+
+### publishAudio()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::publishAudio(agora_refptr<rtc::ILocalAudioTrack > audioTrack) pure virtual
+```
+
+向 CDN 推送本地音频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| audioTrack | 本地音频轨道，详见 [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-audio-track)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a96a5f14455e3d13ebf1bf67db4854116"></a>
+
+### unpublishAudio()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::unpublishAudio(agora_refptr<rtc::ILocalAudioTrack > audioTrack) pure virtual
+```
+
+停止向 CDN 推送本地音频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| audioTrack | 本地音频轨道，详见 [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-audio-track)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a155b7e268e8b5ba9922f066b84a8365e"></a>
+
+### publishVideo()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::publishVideo(agora_refptr<rtc::ILocalVideoTrack > videoTrack) pure virtual
+```
+
+向 CDN 推送本地视频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| videoTrack | 本地视频轨道，详见 [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-video-track)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ae87c22229919fcc96905129b67f56ab9"></a>
+
+### unpublishVideo()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::unpublishVideo(agora_refptr<rtc::ILocalVideoTrack > videoTrack) pure virtual
+```
+
+停止向 CDN 推送本地视频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| videoTrack | 本地视频轨道，详见 [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-video-track)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ab945495e13c65ab654ea0e5adcf8a7f0"></a>
+
+### registerRtmpUserObserver()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::registerRtmpUserObserver(IRtmpLocalUserObserver* observer, void(*)(IRtmpLocalUserObserver*) safeDeleter = NULL) pure virtual
+```
+
+注册 CDN 推流用户观测器。
+
+成功注册后，你会收到 `IRtmpLocalUserObserver` 类中的相关回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | [IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) 对象的指针。 你需要在该方法中实现 `IRtmpLocalUserObserver` 类。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a15f7fa80b21c4acf8b96448d4668df2c"></a>
+
+### unregisteRtmpUserObserver()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::unregisteRtmpUserObserver(IRtmpLocalUserObserver* observer) pure virtual
+```
+
+注销 CDN 推流用户观测器。
+
+成功注销后，你将不再收到 `IRtmpLocalUserObserver` 类中的相关回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | [IRtmpLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-local-user-observer) 对象的指针。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a17f4ed230d4df237ed344849f69ad0db"></a>
+
+### registerAudioFrameObserver()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::registerAudioFrameObserver(media::base::IAudioFrameObserver* observer) pure virtual
+```
+
+注册音频观测器。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | IAudioFrameObserver 对象的指针。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ac972e8d3b94e7e5f1b9b9d89f22c4802"></a>
+
+### unregisterAudioFrameObserver()
+
+```cpp
+virtual void agora::rtc::IRtmpLocalUser::unregisterAudioFrameObserver(media::base::IAudioFrameObserver* observer) pure virtual
+```
+
+注销音频观测器。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | IAudioFrameObserver 对象的指针。 |
+
+<a id="a4491e15cf5655d32142135bba29d37e4"></a>
+
+### registerVideoFrameObserver()
+
+```cpp
+virtual int agora::rtc::IRtmpLocalUser::registerVideoFrameObserver(media::base::IVideoFrameObserver* observer) pure virtual
+```
+
+注册视频观测器。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | IVideoFrameObserver 对象的指针。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ab4d2975a3a5e58650521e50df2302783"></a>
+
+### unregisterVideoFrameObserver()
+
+```cpp
+virtual void agora::rtc::IRtmpLocalUser::unregisterVideoFrameObserver(media::base::IVideoFrameObserver* observer) pure virtual
+```
+
+注销视频观测器。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer | IVideoFrameObserver 对象的指针。 |

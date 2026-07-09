@@ -1,0 +1,89 @@
+---
+title: "io.agora.rtc.AudioSinkWants类 参考"
+description: "音频接收模块预期的音频帧属性。"
+---
+
+音频接收模块预期的音频帧属性。
+
+### `注解`
+
+发送模块通过多种因素确定发送给接收模块的音频帧属性，例如其他接收模块或发送模块的能力。
+
+## 构造及析构函数说明
+
+<a id="acbdec8d909b99fbc0e212659207c4656"></a>
+
+### AudioSinkWants() [1/2]
+
+```cpp
+io.agora.rtc.AudioSinkWants.AudioSinkWants()
+```
+
+<a id="abe9fa8fec8cebd712d956120066c0dec"></a>
+
+### AudioSinkWants() [2/2]
+
+```cpp
+io.agora.rtc.AudioSinkWants.AudioSinkWants(int samplesPerSec, int channels)
+```
+
+构造函数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| samplesPerSec | 采样率。 |
+| channels | 声道数。 |
+
+## 成员函数说明
+
+<a id="a2f9db0ec794092038ceb52c9cdf66696"></a>
+
+### getChannels()
+
+```cpp
+int io.agora.rtc.AudioSinkWants.getChannels()
+```
+
+<a id="a9def47149744321d62ca6c1a7a3cd1c6"></a>
+
+### getSamplesPerSec()
+
+```cpp
+int io.agora.rtc.AudioSinkWants.getSamplesPerSec()
+```
+
+<a id="a261c4ee6a51d04ec7f8e2d339a696e44"></a>
+
+### setChannels()
+
+```cpp
+void io.agora.rtc.AudioSinkWants.setChannels(int channels)
+```
+
+<a id="a2cb53590f926a0ef95044024044aa6fc"></a>
+
+### setSamplesPerSec()
+
+```cpp
+void io.agora.rtc.AudioSinkWants.setSamplesPerSec(int samplesPerSec)
+```
+
+## 类成员变量说明
+
+<a id="ae3e6dec55ba62fe724f3c53fbd60cce5"></a>
+
+### channels
+
+```cpp
+int io.agora.rtc.AudioSinkWants.channels private
+```
+
+<a id="ac44b2aa2f90a5f9e1bb628a63fbdbbc2"></a>
+
+### samplesPerSec
+
+```cpp
+int io.agora.rtc.AudioSinkWants.samplesPerSec private
+```

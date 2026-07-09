@@ -1,0 +1,327 @@
+---
+title: "EduClassroomConfig"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- EduClassroomConfig
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new EduClassroomConfig(appId: string, sessionInfo: EduSessionInfo, recordUrl: string, rteOpts?: AgoraRteOptions, platform?: Platform, options?: { openCameraDeviceAfterLaunch?: boolean; openRecordingDeviceAfterLaunch?: boolean; recordRetryTimeout?: number }): EduClassroomConfig
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| appId: string |  |
+| sessionInfo: EduSessionInfo |  |
+| recordUrl: string |  |
+| Optional rteOpts: AgoraRteOptions |  |
+| Optional platform: Platform |  |
+| Optional options: \{ openCameraDeviceAfterLaunch?: boolean; openRecordingDeviceAfterLaunch?: boolean; recordRetryTimeout?: number \} |  |
+
+#### Returns
+
+Returns [EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/edu-classroom-config)
+
+## Properties
+
+<a id="appId"></a>
+
+### Readonly appId
+
+```ts
+appId: string
+```
+
+<a id="boardDefaults"></a>
+
+### boardDefaults
+
+```ts
+boardDefaults: WhiteboardDefaults
+```
+
+<a id="platform"></a>
+
+### Readonly platform
+
+```ts
+platform: Platform
+```
+
+<a id="recordUrl"></a>
+
+### Readonly recordUrl
+
+```ts
+recordUrl: string
+```
+
+## Accessors
+
+<a id="headers"></a>
+
+### headers
+
+```ts
+get headers(): Record<string, string | number>
+```
+
+#### Returns
+
+Returns Record &lt; string, string | number &gt;
+
+<a id="host"></a>
+
+### host
+
+```ts
+get host(): undefined | string
+```
+
+```ts
+set host(host: undefined | string): void
+```
+
+#### Returns
+
+Returns undefined | string
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| host: undefined \| string |  |
+
+#### Returns
+
+Returns void
+
+<a id="ignoreUrlRegionPrefix"></a>
+
+### ignoreUrlRegionPrefix
+
+```ts
+get ignoreUrlRegionPrefix(): boolean
+```
+
+```ts
+set ignoreUrlRegionPrefix(ignoreUrlRegionPrefix: boolean): void
+```
+
+#### Returns
+
+Returns boolean
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| ignoreUrlRegionPrefix: boolean |  |
+
+#### Returns
+
+Returns void
+
+<a id="isLowAPIVersionCompatibleRequired"></a>
+
+### isLowAPIVersionCompatibleRequired
+
+```ts
+get isLowAPIVersionCompatibleRequired(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="openCameraDeviceAfterLaunch"></a>
+
+### openCameraDeviceAfterLaunch
+
+```ts
+get openCameraDeviceAfterLaunch(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="openRecordingDeviceAfterLaunch"></a>
+
+### openRecordingDeviceAfterLaunch
+
+```ts
+get openRecordingDeviceAfterLaunch(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="recordRetryTimeout"></a>
+
+### recordRetryTimeout
+
+```ts
+get recordRetryTimeout(): number
+```
+
+#### Returns
+
+Returns number
+
+<a id="rteEngineConfig"></a>
+
+### rteEngineConfig
+
+```ts
+get rteEngineConfig(): AgoraRteEngineConfig
+```
+
+#### Returns
+
+Returns [AgoraRteEngineConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-engine-config)
+
+<a id="sessionInfo"></a>
+
+### sessionInfo
+
+```ts
+get sessionInfo(): EduSessionInfo
+```
+
+#### Returns
+
+Returns [EduSessionInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/interfaces/edu-session-info)
+
+<a id="shared"></a>
+
+### Static shared
+
+```ts
+get shared(): EduClassroomConfig
+```
+
+#### Returns
+
+Returns [EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/edu-classroom-config)
+
+## Methods
+
+<a id="setCompatibleVersions"></a>
+
+### setCompatibleVersions
+
+```ts
+setCompatibleVersions(compatibleVersions: string[]): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| compatibleVersions: string[] |  |
+
+#### Returns
+
+Returns void
+
+<a id="defaultLowStreamParameter"></a>
+
+### Static defaultLowStreamParameter
+
+```ts
+defaultLowStreamParameter(): { bitrate: number; frameRate: number; height: number; width: number }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| bitrate: number |  |
+| frameRate: number |  |
+| height: number |  |
+| width: number |  |
+
+#### Returns
+
+Returns \{bitrate: number; frameRate: number; height: number; width: number \}
+
+- ##### bitrate: number
+- ##### frameRate: number
+- ##### height: number
+- ##### width: number
+
+<a id="defaultMediaOptions"></a>
+
+### Static defaultMediaOptions
+
+```ts
+defaultMediaOptions(roomType: EduRoomTypeEnum, userRole: EduRoleTypeEnum): { bitrate: number; frameRate: number; height: number; width: number }
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomType: EduRoomTypeEnum |  |
+| userRole: EduRoleTypeEnum |  |
+
+#### Returns
+
+Returns \{bitrate: number; frameRate: number; height: number; width: number \}
+
+- ##### bitrate: number
+- ##### frameRate: number
+- ##### height: number
+- ##### width: number
+
+<a id="getRtcVersion"></a>
+
+### Static getRtcVersion
+
+```ts
+getRtcVersion(): string
+```
+
+#### Returns
+
+Returns string
+
+<a id="getVersion"></a>
+
+### Static getVersion
+
+```ts
+getVersion(): string
+```
+
+#### Returns
+
+Returns string
+
+<a id="setConfig"></a>
+
+### Static setConfig
+
+```ts
+setConfig(config: EduClassroomConfig): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| config: EduClassroomConfig |  |
+
+#### Returns
+
+Returns void

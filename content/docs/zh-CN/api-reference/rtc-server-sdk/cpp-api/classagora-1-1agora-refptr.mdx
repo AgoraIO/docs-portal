@@ -1,0 +1,194 @@
+---
+title: "agora::agora_refptr< T > 模板类 参考"
+description: "agora::agora_refptr< T > 模板类 参考 API reference."
+---
+
+## 构造及析构函数说明
+
+<a id="a59969afbc25994c63dd03de99557dcd0"></a>
+
+### agora_refptr() [1/7]
+
+```cpp
+template<class T > agora::agora_refptr<T >::agora_refptr() inline
+```
+
+<a id="ad28a294f11fafe6c16b59bcdff9ec851"></a>
+
+### agora_refptr() [2/7]
+
+```cpp
+template<class T > agora::agora_refptr<T >::agora_refptr(T* p) inline
+```
+
+<a id="af506852b7111d0b383397bfe3d3c7c5d"></a>
+
+### agora_refptr() [3/7]
+
+```cpp
+template<class T > template<typename U > agora::agora_refptr<T >::agora_refptr(U* p) inline
+```
+
+<a id="aecc7f6d5d3a8288ea294747c6be5e01c"></a>
+
+### agora_refptr() [4/7]
+
+```cpp
+template<class T > agora::agora_refptr<T >::agora_refptr(const agora_refptr<T >& r) inline
+```
+
+<a id="ac0700897c352ea1caf849df9f40cb7cb"></a>
+
+### agora_refptr() [5/7]
+
+```cpp
+template<class T > template<typename U > agora::agora_refptr<T >::agora_refptr(const agora_refptr<U >& r) inline
+```
+
+<a id="a711f9551b2e6d6aa63f6dbcc84a036ec"></a>
+
+### agora_refptr() [6/7]
+
+```cpp
+template<class T > agora::agora_refptr<T >::agora_refptr(agora_refptr<T >&& r) inline
+```
+
+<a id="a92256cdfd7e1d5dc8158800b75068fcd"></a>
+
+### agora_refptr() [7/7]
+
+```cpp
+template<class T > template<typename U > agora::agora_refptr<T >::agora_refptr(agora_refptr<U >&& r) inline
+```
+
+<a id="ac886cc9521ce3e93de83b0943911adb7"></a>
+
+### ~agora_refptr()
+
+```cpp
+template<class T > agora::agora_refptr<T >::~agora_refptr() inline
+```
+
+## 成员函数说明
+
+<a id="aba1767daee9f1ba032351f1697fcf76c"></a>
+
+### get()
+
+```cpp
+template<class T > T* agora::agora_refptr<T >::get() const inline
+```
+
+<a id="a67d874bc42d007ac5e142e82af65c00a"></a>
+
+### operator bool()
+
+```cpp
+template<class T > agora::agora_refptr<T >::operator bool() const inline
+```
+
+<a id="ae3c4ac1dfeb84a402150cd29f4e151f3"></a>
+
+### operator-&gt;()
+
+```cpp
+template<class T > T* agora::agora_refptr<T >::operator->() const inline
+```
+
+<a id="a0b65ab7c6f121ffe8ed2f06ade63b10a"></a>
+
+### operator*()
+
+```cpp
+template<class T > T& agora::agora_refptr<T >::operator*() const inline
+```
+
+<a id="a21dd7952de925de1f1c19a4bd8f2e0bb"></a>
+
+### move()
+
+```cpp
+template<class T > T* agora::agora_refptr<T >::move() inline
+```
+
+<a id="aefbf2ce03bfbee67f9a999187d697dfe"></a>
+
+### operator=() [1/4]
+
+```cpp
+template<class T > agora_refptr<T>& agora::agora_refptr<T >::operator=(T* p) inline
+```
+
+<a id="ace99ebdf03cf63d45aa5023a3220cde3"></a>
+
+### operator=() [2/4]
+
+```cpp
+template<class T > agora_refptr<T>& agora::agora_refptr<T >::operator=(const agora_refptr<T >& r) inline
+```
+
+<a id="a3f7d8c17a84c7c031def55493e50ec71"></a>
+
+### operator=() [3/4]
+
+```cpp
+template<class T > agora_refptr<T>& agora::agora_refptr<T >::operator=(agora_refptr<T >&& r) inline
+```
+
+<a id="a60ca968dccfdffc334ca035826174bbc"></a>
+
+### operator=() [4/4]
+
+```cpp
+template<class T > template<typename U > agora_refptr<T>& agora::agora_refptr<T >::operator=(agora_refptr<U >&& r) inline
+```
+
+<a id="a465bdb028fb602d1b5468e68f8148c70"></a>
+
+### operator==()
+
+```cpp
+template<class T > bool agora::agora_refptr<T >::operator==(const agora_refptr<T >& r) const inline
+```
+
+<a id="a2225eb1d06d51850b3819b4ba2da0d61"></a>
+
+### operator&lt;()
+
+```cpp
+template<class T > bool agora::agora_refptr<T >::operator<(const agora_refptr<T >& r) const inline
+```
+
+<a id="ae78fb0732cc693c6b21af018ef27707e"></a>
+
+### swap() [1/2]
+
+```cpp
+template<class T > void agora::agora_refptr<T >::swap(T** pp) inline
+```
+
+<a id="a53c783d77461ebf02c38c73b8f0cd226"></a>
+
+### swap() [2/2]
+
+```cpp
+template<class T > void agora::agora_refptr<T >::swap(agora_refptr<T >& r) inline
+```
+
+<a id="a0ab592e345d59a3661dd65aaeae142e9"></a>
+
+### reset()
+
+```cpp
+template<class T > void agora::agora_refptr<T >::reset() inline
+```
+
+## 类成员变量说明
+
+<a id="a5e4a5e28edcdebaadc568cd1de947c0a"></a>
+
+### ptr_
+
+```cpp
+template<class T > T* agora::agora_refptr<T >::ptr_ protected
+```

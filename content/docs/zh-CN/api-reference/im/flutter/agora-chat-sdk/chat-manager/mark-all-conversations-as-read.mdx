@@ -1,0 +1,30 @@
+---
+title: "markAllConversationsAsRead method"
+description: "API docs for the markAllConversationsAsRead method from the ChatManager class, for the Dart programming language."
+---
+
+Marks all messages as read.
+
+This method is for the local conversations only.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+```dart
+Future<void> markAllConversationsAsRead()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> markAllConversationsAsRead() async {
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.markAllChatMsgAsRead);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

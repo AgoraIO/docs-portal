@@ -1,0 +1,55 @@
+---
+title: "createChatThread method"
+description: "API docs for the createChatThread method from the ChatThreadManager class, for the Dart programming language."
+---
+
+Create Chat Thread.
+
+Group members have permission. After chat thread is created, the following notices will appear:
+
+1. Members of the organization (group) to which chat thread belongs will receive the created notification event, and can listen to related events by setting ChatThreadEventHandler. The event callback function is ChatThreadEventHandler.onChatThreadCreate.
+2. Multiple devices will receive the notification event and you can set ChatMultiDeviceEventHandler to listen on the event. The event callback function is ChatMultiDeviceEventHandler.onChatThreadEvent, where the first parameter is the event, for example, ChatMultiDevicesEvent.CHAT_THREAD_CREATE for the chat thread creation event.
+
+**Return** ChatThread object
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `name` | Chat Thread name. No more than 64 characters in length. |
+| `messageId` | Parent message ID, generally refers to group message ID. |
+| `parentId` | Parent ID, generally refers to group ID. |
+
+```dart
+Future<ChatThread> createChatThread({required String name, required String messageId, required String parentId})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<ChatThread> createChatThread({
+  required String name,
+  required String messageId,
+  required String parentId,
+}) async {
+  Map req = {
+    "name": name,
+    "messageId": messageId,
+    "parentId": parentId,
+  };
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.createChatThread,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatThread.fromJson(result[ChatMethodKeys.createChatThread]);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

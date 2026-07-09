@@ -1,0 +1,84 @@
+---
+title: "Retry"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- Retry
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new Retry(fn: "agora-rte-sdk/src/core/utils/utils".AnyFunction, args: unknown[], opts?: RetryOptions): Retry
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| fn: "agora-rte-sdk/src/core/utils/utils".AnyFunction | target function |
+| args: unknown[] | arguments the target function to be called with |
+| Optional opts: RetryOptions | options |
+
+#### Returns
+
+Returns [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/retry)
+
+## Methods
+
+<a id="abort"></a>
+
+### abort
+
+```ts
+abort(fn: AbortCallback): Retry
+```
+
+Registers a callback to be called when the target function and all retries fail
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| fn: AbortCallback | callback function to be called |
+
+#### Returns
+
+Returns [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/retry)
+
+<a id="exec"></a>
+
+### exec
+
+```ts
+exec(): Promise<void>
+```
+
+Starts executes the target function retriesMax would be 3 and maxBackoff would be 10000(10 sceonds) by default
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="fail"></a>
+
+### fail
+
+```ts
+fail(fn: AttemptFailCallback): Retry
+```
+
+Registers a callback to be called when the target function fails This callback function can be used to manage, by yourself, the retry system. It's called when an error occurred and before to retry. This method can have three behaviors: you can throw an error if it returns truthy value then normal retry system continues if it returns falsy value then the retry system stop
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| fn: AttemptFailCallback | callback function to be called |
+
+#### Returns
+
+Returns [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/retry)

@@ -1,0 +1,105 @@
+---
+title: "agora::RefCountedObject< T > 模板类 参考"
+description: "继承自 T ."
+---
+
+### template&lt;class T&gt;
+class agora::RefCountedObject&lt; T &gt;
+
+Agora sample code for wrapping a class that needs to inherit from [RefCountInterface](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1-ref-count-interface) in order to be held by [agora::agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1agora-refptr) Usage: agora::agora_refptr&lt;TypeName&gt; ptr = new RefCountedObject&lt;TypeName&gt;(Arg1, Arg2,...);
+
+## 构造及析构函数说明
+
+<a id="ae86cce2ce5e3ee91fdacaf31102696fc"></a>
+
+### RefCountedObject() [1/5]
+
+```cpp
+template<class T > agora::RefCountedObject<T >::RefCountedObject() inline
+```
+
+<a id="a774b2610498b31ba97ecc789493dd0ab"></a>
+
+### RefCountedObject() [2/5]
+
+```cpp
+template<class T > template<class P0 > agora::RefCountedObject<T >::RefCountedObject(P0&& p0) inlineexplicit
+```
+
+<a id="ad7a4ea2fb05eb84a467c48f244ee8241"></a>
+
+### RefCountedObject() [3/5]
+
+```cpp
+template<class T > agora::RefCountedObject<T >::RefCountedObject(const P0& p0) inlineexplicit
+```
+
+<a id="a214335e773743d766553e9d84b28acec"></a>
+
+### RefCountedObject() [4/5]
+
+```cpp
+template<class T > template<class P0, class P1, class... Args> agora::RefCountedObject<T >::RefCountedObject(P0&& p0, P1&& p1, Args&&... args) inline
+```
+
+<a id="ab708aaf1d887b3bb957922c91328cf84"></a>
+
+### ~RefCountedObject()
+
+```cpp
+template<class T > virtual agora::RefCountedObject<T >::~RefCountedObject() inlineprotectedvirtual
+```
+
+<a id="af6291a3e6b36c50615932583f907370d"></a>
+
+### RefCountedObject() [5/5]
+
+```cpp
+template<class T > agora::RefCountedObject<T >::RefCountedObject(const RefCountedObject<T >&) private
+```
+
+## 成员函数说明
+
+<a id="ac205ebee715ff1f336b7d033b617cd20"></a>
+
+### AddRef()
+
+```cpp
+template<class T > virtual void agora::RefCountedObject<T >::AddRef() const inlinevirtual
+```
+
+<a id="a100b06b7816bc7eb49840072a93a51ed"></a>
+
+### Release()
+
+```cpp
+template<class T > virtual agora::RefCountReleaseStatus agora::RefCountedObject<T >::Release() const inlinevirtual
+```
+
+<a id="a438e247329bc1313678d9373ac1fbeef"></a>
+
+### HasOneRef()
+
+```cpp
+template<class T > virtual bool agora::RefCountedObject<T >::HasOneRef() const inlinevirtual
+```
+
+Return whether the reference count is one. If the reference count is used in the conventional way, a reference count of 1 implies that the current thread owns the reference and no other thread shares it. This call performs the test for a reference count of one, and performs the memory barrier needed for the owning thread to act on the object, knowing that it has exclusive access to the object.
+
+<a id="a20280c4aee4701c28edccbabd3557db8"></a>
+
+### operator=()
+
+```cpp
+template<class T > RefCountedObject& agora::RefCountedObject<T >::operator=(const RefCountedObject<T >&) private
+```
+
+## 类成员变量说明
+
+<a id="a4608324af37a715ffcaac8220b5dfc5d"></a>
+
+### ref_count_
+
+```cpp
+template<class T > agora::RefCounter agora::RefCountedObject<T >::ref_count_ mutableprotected
+```

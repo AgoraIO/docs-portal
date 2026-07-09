@@ -1,0 +1,305 @@
+---
+title: "RtcAudioDeviceManagerElectron"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- RtcAudioDeviceManagerBase
+  - RtcAudioDeviceManagerElectron
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new RtcAudioDeviceManagerElectron(adapter: RtcAdapterElectron): RtcAudioDeviceManagerElectron
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| adapter: RtcAdapterElectron |  |
+
+#### Returns
+
+Returns [RtcAudioDeviceManagerElectron](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-audio-device-manager-electron)
+
+## Accessors
+
+<a id="microphoneList"></a>
+
+### microphoneList
+
+```ts
+get microphoneList(): AGRtcDeviceInfo[]
+```
+
+#### Returns
+
+Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agrtc-device-info) []
+
+<a id="speakerList"></a>
+
+### speakerList
+
+```ts
+get speakerList(): AGRtcDeviceInfo[]
+```
+
+#### Returns
+
+Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agrtc-device-info) []
+
+## Methods
+
+<a id="_initializeDeviceList"></a>
+
+### _initializeDeviceList
+
+```ts
+_initializeDeviceList(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="emit"></a>
+
+### emit
+
+```ts
+emit(evt: string, ...args: any[]): RtcAudioDeviceManagerElectron
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| Rest ...args: any[] |  |
+
+#### Returns
+
+Returns [RtcAudioDeviceManagerElectron](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-audio-device-manager-electron)
+
+<a id="getAudioPlaybackDevices"></a>
+
+### getAudioPlaybackDevices
+
+```ts
+getAudioPlaybackDevices(): AGRtcDeviceInfo[]
+```
+
+#### Returns
+
+Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agrtc-device-info) []
+
+<a id="getAudioRecordingDevices"></a>
+
+### getAudioRecordingDevices
+
+```ts
+getAudioRecordingDevices(): AGRtcDeviceInfo[]
+```
+
+#### Returns
+
+Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agrtc-device-info) []
+
+<a id="off"></a>
+
+### off
+
+```ts
+off(evt: string, cb: CallableFunction): RtcAudioDeviceManagerElectron
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [RtcAudioDeviceManagerElectron](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-audio-device-manager-electron)
+
+<a id="on"></a>
+
+### on
+
+```ts
+on(evt: string, cb: CallableFunction): RtcAudioDeviceManagerElectron
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [RtcAudioDeviceManagerElectron](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-audio-device-manager-electron)
+
+<a id="onLocalAudioPlaybackTestVolumeChanged"></a>
+
+### onLocalAudioPlaybackTestVolumeChanged
+
+```ts
+onLocalAudioPlaybackTestVolumeChanged(cb: LocalAudioPlaybackVolumeIndicatorEvent): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: LocalAudioPlaybackVolumeIndicatorEvent |  |
+
+#### Returns
+
+Returns number
+
+<a id="onLocalAudioTrackStateChanged"></a>
+
+### onLocalAudioTrackStateChanged
+
+```ts
+onLocalAudioTrackStateChanged(cb: LocalAudioTrackStateEvent): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: LocalAudioTrackStateEvent |  |
+
+#### Returns
+
+Returns number
+
+<a id="onLocalAudioVolume"></a>
+
+### onLocalAudioVolume
+
+```ts
+onLocalAudioVolume(cb: (volume: number) => void): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: (volume: number) =&gt; void |  |
+
+#### Returns
+
+Returns number
+
+<a id="onLocalPlaybackDeviceListChanged"></a>
+
+### onLocalPlaybackDeviceListChanged
+
+```ts
+onLocalPlaybackDeviceListChanged(cb: LocalPlaybackDeviceListEvent): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: LocalPlaybackDeviceListEvent |  |
+
+#### Returns
+
+Returns number
+
+<a id="onLocalPreviewAudioTrackStateChanged"></a>
+
+### onLocalPreviewAudioTrackStateChanged
+
+```ts
+onLocalPreviewAudioTrackStateChanged(cb: LocalAudioTrackStateEvent): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: LocalAudioTrackStateEvent |  |
+
+#### Returns
+
+Returns number
+
+<a id="onLocalPreviewAudioVolume"></a>
+
+### onLocalPreviewAudioVolume
+
+```ts
+onLocalPreviewAudioVolume(cb: (volume: number) => void): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: (volume: number) =&gt; void |  |
+
+#### Returns
+
+Returns number
+
+<a id="onLocalRecordingDeviceListChanged"></a>
+
+### onLocalRecordingDeviceListChanged
+
+```ts
+onLocalRecordingDeviceListChanged(cb: LocalRecordingDeviceListEvent): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: LocalRecordingDeviceListEvent |  |
+
+#### Returns
+
+Returns number
+
+<a id="once"></a>
+
+### once
+
+```ts
+once(evt: string, cb: CallableFunction): RtcAudioDeviceManagerElectron
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [RtcAudioDeviceManagerElectron](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-audio-device-manager-electron)
+
+<a id="removeAllEventListeners"></a>
+
+### removeAllEventListeners
+
+```ts
+removeAllEventListeners(): void
+```
+
+#### Returns
+
+Returns void

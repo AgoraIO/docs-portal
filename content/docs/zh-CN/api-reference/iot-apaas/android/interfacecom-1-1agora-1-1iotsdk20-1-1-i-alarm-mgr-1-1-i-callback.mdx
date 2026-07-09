@@ -1,0 +1,165 @@
+---
+title: "com.agora.iotsdk20.IAlarmMgr.ICallback接口 参考"
+description: "告警信息回调接口。"
+---
+
+告警信息回调接口。
+
+## 成员函数说明
+
+<a id="ad4845ae6afc7ff87c57529c5b76d230c"></a>
+
+### onAlarmAddDone()
+
+```cpp
+default void com.agora.iotsdk20.IAlarmMgr.ICallback.onAlarmAddDone(int errCode, InsertParam insertParam)
+```
+
+插入告警完成回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 结果错误码，0 表示成功，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| insertParam | 插入的告警参数，详见 [InsertParam](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-i-alarm-mgr-1-1-insert-param)。 |
+
+<a id="aef59bfa9b436614a3722099ab30fc3c4"></a>
+
+### onAlarmDeleteDone()
+
+```cpp
+default void com.agora.iotsdk20.IAlarmMgr.ICallback.onAlarmDeleteDone(int errCode, List<Long > deletedIdList)
+```
+
+告警删除完成回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 结果错误码，0 表示成功，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| deletedIdList | 删除的告警信息 ID 列表。 |
+
+<a id="adef64a7a9f455c3eb2d67847e2feabc6"></a>
+
+### onAlarmImageQueryDone()
+
+```cpp
+default void com.agora.iotsdk20.IAlarmMgr.ICallback.onAlarmImageQueryDone(int errCode, final String imageId, final IotAlarmImage alarmImage)
+```
+
+报告告警图片已完成查询。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码。其中，0 表示成功。 |
+| imageId | 告警图片 ID。 |
+| alarmImage | 告警图片信息。详见 [IotAlarmImage](/zh-CN/api-reference/iot-apaas/android/classio-1-1agora-1-1iotlink-1-1-iot-alarm-image)。 |
+
+<a id="a706098d4b42e5877c1c328b5fde01212"></a>
+
+### onAlarmInfoQueryDone()
+
+```cpp
+default void com.agora.iotsdk20.IAlarmMgr.ICallback.onAlarmInfoQueryDone(int errCode, final IotAlarm iotAlarm)
+```
+
+根据 ID 查询到告警信息回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 结果错误码，0 表示成功，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| iotAlarm | 查询到的告警信息，详见 [IotAlarm](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-alarm)。 |
+
+<a id="a6ac211aecdb0ad79f323aed604eae503"></a>
+
+### onAlarmMarkDone()
+
+```cpp
+default void com.agora.iotsdk20.IAlarmMgr.ICallback.onAlarmMarkDone(int errCode, List<Long > markedIdList)
+```
+
+告警标记完成回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 结果错误码，0 表示成功，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| markedIdList | 标记的告警信息 ID 列表。 |
+
+<a id="a6cca78a4ff80823e4df872fc5013394e"></a>
+
+### onAlarmNumberQueryDone()
+
+```cpp
+default void com.agora.iotsdk20.IAlarmMgr.ICallback.onAlarmNumberQueryDone(int errCode, final QueryParam queryParam, long alarmNumber)
+```
+
+报告分页查询到的告警信息数量。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 结果错误码，0 表示成功，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| queryParam | 查询参数，详见 [QueryParam](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-i-alarm-mgr-1-1-query-param)。 |
+| alarmNumber | 查询到的告警消息数量。 |
+
+<a id="aae72ced6b2b05d2775f50af4e90c2c9e"></a>
+
+### onAlarmPageQueryDone()
+
+```cpp
+default void com.agora.iotsdk20.IAlarmMgr.ICallback.onAlarmPageQueryDone(int errCode, final QueryParam queryParam, final IotAlarmPage alarmPage)
+```
+
+报告分页查询到的告警信息。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 结果错误码，0 表示成功，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| queryParam | 查询参数，详见 [QueryParam](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-i-alarm-mgr-1-1-query-param)。 |
+| alarmPage | 查询到的告警信息页面，详见 [IotAlarmPage](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-alarm-page)。 |
+
+<a id="a36b85563f67ca591ed606f89e39aa454"></a>
+
+### onAlarmVideoQueryDone()
+
+```cpp
+default void com.agora.iotsdk20.IAlarmMgr.ICallback.onAlarmVideoQueryDone(int errCode, final String deviceID, long timestamp, final IotAlarmVideo alarmVideo)
+```
+
+报告告警视频已完成查询。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码。其中，0 表示成功。 |
+| deviceID | 设备 ID。 |
+| timestamp | 查询告警的时间戳。 |
+| alarmVideo | 告警视频信息。详见 [IotAlarmVideo](/zh-CN/api-reference/iot-apaas/android/classio-1-1agora-1-1iotlink-1-1-iot-alarm-video)。 |
+
+<a id="a84e7f9e0a03e54a82bb95b671f4211ff"></a>
+
+### onReceivedAlarm()
+
+```cpp
+default void com.agora.iotsdk20.IAlarmMgr.ICallback.onReceivedAlarm(IotAlarm alarm)
+```
+
+接收到一个新的告警回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| alarm | 告警消息，详见 [IotAlarm](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-alarm)。 |

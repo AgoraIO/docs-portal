@@ -1,0 +1,54 @@
+---
+title: "IAudioFrameObserver类 参考abstract"
+description: "继承自 IAudioFrameObserverBase ."
+---
+
+[IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/cpp-api/class-i-audio-frame-observer) 类。
+
+## 成员函数说明
+
+<a id="a12ad526eb7356640f67137f2cdb6c128"></a>
+
+### onPlaybackAudioFrameBeforeMixing() [1/2]
+
+```cpp
+virtual bool IAudioFrameObserver::onPlaybackAudioFrameBeforeMixing(const char* channelId, rtc::uid_t uid, AudioFrame& audioFrame) pure virtual
+```
+
+获得播放声音混音前的数据。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelId | 空指针。 |
+| uid | 远端用户的用户名。 |
+| audioFrame | 音频原始数据。 |
+
+#### Returns
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。
+
+<a id="a045b317352faf9d64a97b0274a5529ec"></a>
+
+### onPlaybackAudioFrameBeforeMixing() [2/2]
+
+```cpp
+virtual bool IAudioFrameObserverBase::onPlaybackAudioFrameBeforeMixing inline
+```
+
+获得播放声音混音前的数据。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelId | 空指针。 |
+| userId | 远端用户的用户名。 |
+| audioFrame | 音频原始数据。 |
+
+#### Returns
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。

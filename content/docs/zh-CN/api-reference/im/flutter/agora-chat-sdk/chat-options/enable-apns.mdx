@@ -1,0 +1,27 @@
+---
+title: "enableAPNs method"
+description: "API docs for the enableAPNs method from the ChatOptions class, for the Dart programming language."
+---
+
+Enables Apple Push Notification service (APNs) on iOS devices.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `certName` | The APNs certificate name. |
+
+```dart
+void enableAPNs(String certName)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+void enableAPNs(String certName) {
+  _pushConfig.enableAPNS = true;
+  _pushConfig.apnsCertName = certName;
+}
+```

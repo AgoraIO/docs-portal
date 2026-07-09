@@ -1,0 +1,72 @@
+---
+title: "LastmileProbeResult"
+description: "LastmileProbeResult API reference."
+---
+
+通话前网络质量探测结果。该探测结果反应的是上、下行网络的综合质量。
+
+### `自从`
+
+<br /> *4.24.1* <br />
+
+- LastmileProbeResult
+
+## Properties
+
+<a id="jitter"></a>
+
+### Optional jitter
+
+```ts
+jitter: number
+```
+
+网络抖动 (ms)。
+
+<a id="networkquality"></a>
+
+### Optional networkQuality
+
+```ts
+networkQuality: number
+```
+
+网络质量：
+
+- 1: 很好。
+- 2: 一般。
+- 3: 较差。
+- 4: 很差。
+
+<a id="packetlossrate"></a>
+
+### Optional packetLossRate
+
+```ts
+packetLossRate: number
+```
+
+丢包率。
+
+<a id="rtt"></a>
+
+### Optional rtt
+
+```ts
+rtt: number
+```
+
+往返时延 (ms)。
+
+<a id="state"></a>
+
+### state
+
+```ts
+state: "complete" | "unavailable"
+```
+
+网络质量探测状态：
+
+- complete：表示本次网络质量探测是完整的。
+- unavailable：表示未进行网络质量探测。一个可能的原因是网络连接中断。

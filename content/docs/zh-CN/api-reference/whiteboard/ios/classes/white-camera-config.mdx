@@ -1,0 +1,50 @@
+---
+title: "WhiteCameraConfig Class Reference"
+description: "用于配置白板视角参数。"
+---
+
+<a id="overview"></a>
+
+用于配置白板视角参数。
+
+## Methods
+
+<a id="//api/name/centerX"></a>
+
+### centerX
+
+```objc
+@property (nonatomic, strong, nullable) NSNumber *centerX
+```
+
+视角的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。不填则默认为 `0`。
+
+<a id="//api/name/centerY"></a>
+
+### centerY
+
+```objc
+@property (nonatomic, strong, nullable) NSNumber *centerY
+```
+
+视角的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。不填则默认为 `0`。
+
+<a id="//api/name/scale"></a>
+
+### scale
+
+```objc
+@property (nonatomic, strong, nullable) NSNumber *scale
+```
+
+视角的缩放比例。
+
+<a id="//api/name/animationMode"></a>
+
+### animationMode
+
+```objc
+@property (nonatomic, assign) WhiteAnimationMode animationMode
+```
+
+视角调整时的动画模式，默认值为 `WhiteAnimationModeContinuous`。详见 [WhiteAnimationMode](/zh-CN/api-reference/whiteboard/ios/constants/white-animation-mode)。

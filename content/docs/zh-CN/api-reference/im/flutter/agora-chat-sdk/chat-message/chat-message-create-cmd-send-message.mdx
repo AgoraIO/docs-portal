@@ -1,0 +1,40 @@
+---
+title: "ChatMessage.createCmdSendMessage constructor"
+description: "API docs for the ChatMessage.createCmdSendMessage constructor from Class ChatMessage from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Creates a command message for sending.
+
+- For a one-to-one chat, it is the username of the peer user.
+- For a group chat, it is the group ID.
+- For a chat room, it is the chat room ID.
+
+**Return** The message instance.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `targetId` | The ID of the message recipient. |
+| `action` | The command action. |
+
+```dart
+ChatMessage.createCmdSendMessage({required String targetId, required dynamic action, bool deliverOnlineOnly = false, ChatType chatType = ChatType.Chat})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ChatMessage.createCmdSendMessage({
+  required String targetId,
+  required action,
+  bool deliverOnlineOnly = false,
+  ChatType chatType = ChatType.Chat,
+}) : this.createSendMessage(
+          chatType: chatType,
+          to: targetId,
+          body: ChatCmdMessageBody(
+              action: action, deliverOnlineOnly: deliverOnlineOnly));
+```

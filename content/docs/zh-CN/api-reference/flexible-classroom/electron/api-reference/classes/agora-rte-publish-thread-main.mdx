@@ -1,0 +1,357 @@
+---
+title: "AgoraRtePublishThreadMain"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- AgoraRteThread
+  - AgoraRtePublishThreadMain
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new AgoraRtePublishThreadMain(client: IAgoraRTCClient, _config: RtcAdapterWebConfig): AgoraRtePublishThreadMain
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| client: IAgoraRTCClient |  |
+| _config: RtcAdapterWebConfig |  |
+
+#### Returns
+
+Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-publish-thread-main)
+
+## Properties
+
+<a id="muteLocalAudio"></a>
+
+### muteLocalAudio
+
+```ts
+muteLocalAudio: boolean
+```
+
+<a id="muteLocalVideo"></a>
+
+### muteLocalVideo
+
+```ts
+muteLocalVideo: boolean
+```
+
+<a id="runnable"></a>
+
+### runnable
+
+```ts
+runnable: boolean
+```
+
+## Accessors
+
+<a id="latencyLevel"></a>
+
+### latencyLevel
+
+```ts
+get latencyLevel(): AudienceLatencyLevelType
+```
+
+#### Returns
+
+Returns AudienceLatencyLevelType
+
+<a id="localAudioTrack"></a>
+
+### localAudioTrack
+
+```ts
+get localAudioTrack(): undefined | AGMediaBaseTrack
+```
+
+#### Returns
+
+Returns undefined | [AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-rtc-type#AGMediaBaseTrack)
+
+<a id="localVideoTrack"></a>
+
+### localVideoTrack
+
+```ts
+get localVideoTrack(): undefined | AGMediaBaseTrack
+```
+
+#### Returns
+
+Returns undefined | [AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-rtc-type#AGMediaBaseTrack)
+
+## Methods
+
+<a id="checkAllTracksPublishState"></a>
+
+### checkAllTracksPublishState
+
+```ts
+checkAllTracksPublishState(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="checkDuplicateTypeTracks"></a>
+
+### checkDuplicateTypeTracks
+
+```ts
+checkDuplicateTypeTracks(tracks: ILocalTrack[]): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| tracks: ILocalTrack[] |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="emit"></a>
+
+### emit
+
+```ts
+emit(evt: string, ...args: any[]): AgoraRtePublishThreadMain
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| Rest ...args: any[] |  |
+
+#### Returns
+
+Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-publish-thread-main)
+
+<a id="handleTrackDestroy"></a>
+
+### handleTrackDestroy
+
+```ts
+handleTrackDestroy(track: ILocalTrack): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| track: ILocalTrack |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="handleTrackStateChanged"></a>
+
+### handleTrackStateChanged
+
+```ts
+handleTrackStateChanged(state: AgoraRteMediaSourceState): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| state: AgoraRteMediaSourceState |  |
+
+#### Returns
+
+Returns void
+
+<a id="isTrackPublished"></a>
+
+### isTrackPublished
+
+```ts
+isTrackPublished(track?: ILocalTrack): boolean
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional track: ILocalTrack |  |
+
+#### Returns
+
+Returns boolean
+
+<a id="off"></a>
+
+### off
+
+```ts
+off(evt: string, cb: CallableFunction): AgoraRtePublishThreadMain
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-publish-thread-main)
+
+<a id="on"></a>
+
+### on
+
+```ts
+on(evt: string, cb: CallableFunction): AgoraRtePublishThreadMain
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-publish-thread-main)
+
+<a id="onExecution"></a>
+
+### onExecution
+
+```ts
+onExecution(): Promise<void>
+```
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="once"></a>
+
+### once
+
+```ts
+once(evt: string, cb: CallableFunction): AgoraRtePublishThreadMain
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-publish-thread-main)
+
+<a id="publishTracks"></a>
+
+### publishTracks
+
+```ts
+publishTracks(tracks: ILocalTrack[]): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| tracks: ILocalTrack[] |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="removeAllEventListeners"></a>
+
+### removeAllEventListeners
+
+```ts
+removeAllEventListeners(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="run"></a>
+
+### run
+
+```ts
+run(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="setTrackThread"></a>
+
+### setTrackThread
+
+```ts
+setTrackThread(type: "audio" | "video", trackThread: AgoraRteMediaTrackThread): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| type: "audio" \| "video" |  |
+| trackThread: AgoraRteMediaTrackThread |  |
+
+#### Returns
+
+Returns void
+
+<a id="stop"></a>
+
+### stop
+
+```ts
+stop(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="unpublishTracks"></a>
+
+### unpublishTracks
+
+```ts
+unpublishTracks(tracks: ILocalTrack[]): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| tracks: ILocalTrack[] |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;

@@ -1,0 +1,119 @@
+---
+title: "com.herewhite.sdk.domain.FontFace类 参考"
+description: "字体配置文件，与 CSS 中的 FontFace 属性对应。"
+---
+
+字体配置文件，与 CSS 中的 [FontFace](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-font-face) 属性对应。
+
+### `自从`
+
+2.11.2
+
+## 构造及析构函数说明
+
+<a id="a48ed64a608bba4db25828caa3dbff8f0"></a>
+
+### FontFace()
+
+```cpp
+com.herewhite.sdk.domain.FontFace.FontFace(String name, String src)
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| name | 字体名称，需要和 CSS 中 `font-family` 字段的值对应。 |
+| src | 字体文件的地址，需要和 CSS 中 `src` 字段的值对应。支持的格式为 `url()`，表示指向远程字体文件位置，例如， `url("https://white-pan.oss-cn-shanghai.aliyuncs.com/Pacifico-Regular.ttf")`。 |
+
+## 成员函数说明
+
+<a id="a37ca89dae1d4e960d0f6e9a65579c3fa"></a>
+
+### getFontStyle()
+
+```cpp
+String com.herewhite.sdk.domain.FontFace.getFontStyle()
+```
+
+获取字体样式。
+
+#### Returns
+
+字体样式。
+
+<a id="a41293fe1125f886054e0e1c56f1b991a"></a>
+
+### setFontStyle()
+
+```cpp
+void com.herewhite.sdk.domain.FontFace.setFontStyle(String fontStyle)
+```
+
+设置字体样式。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| fontStyle | 字体样式，需要和 CSS 中 `font-style` 字段的值对应，取值包括：<br />- normal：（默认）常规。<br />- italic：斜体。 |
+
+<a id="a55327d829a14b4f69b6738d919e327a2"></a>
+
+### getFontWeight()
+
+```cpp
+String com.herewhite.sdk.domain.FontFace.getFontWeight()
+```
+
+获取字体粗细。
+
+#### Returns
+
+字体粗细。
+
+<a id="a403eb10a186b43d00822fa20e00557f0"></a>
+
+### setFontWeight()
+
+```cpp
+void com.herewhite.sdk.domain.FontFace.setFontWeight(String fontWeight)
+```
+
+设置字体粗细。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| fontWeight | 字体粗细，需要和 CSS 中 `font-weight` 字段的值对应。 |
+
+<a id="a200e0a6bccafb002d3d4dcad79a8fd81"></a>
+
+### getUnicodeRange()
+
+```cpp
+String com.herewhite.sdk.domain.FontFace.getUnicodeRange()
+```
+
+获取字体的字符编码范围。
+
+#### Returns
+
+字体的字符编码范围
+
+<a id="a033cd9a8448c1d12378834c84074a35b"></a>
+
+### setUnicodeRange()
+
+```cpp
+void com.herewhite.sdk.domain.FontFace.setUnicodeRange(String unicodeRange)
+```
+
+设置字体的字符编码范围。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| unicodeRange | 字体的字符编码范围，需要和 CSS 中 `unicode-range` 字段的值对应。 |

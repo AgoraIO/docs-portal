@@ -1,0 +1,76 @@
+---
+title: "agora::rtc::DownlinkNetworkInfo::PeerDownlinkInfo结构体 参考"
+description: "PeerDownlinkInfo 结构体。"
+---
+
+[PeerDownlinkInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-downlink-network-info-1-1-peer-downlink-info) 结构体。
+
+## 构造及析构函数说明
+
+<a id="a4d925758738804c460bf66d5d94cf8ee"></a>
+
+### PeerDownlinkInfo()
+
+```cpp
+agora::rtc::DownlinkNetworkInfo::PeerDownlinkInfo::PeerDownlinkInfo() inline
+```
+
+<a id="a355b16b0848df9a323a8fb58444220e7"></a>
+
+### ~PeerDownlinkInfo()
+
+```cpp
+agora::rtc::DownlinkNetworkInfo::PeerDownlinkInfo::~PeerDownlinkInfo() inline
+```
+
+## 成员函数说明
+
+<a id="a8d8f81627edc012556e0387272d46108"></a>
+
+### operator=()
+
+```cpp
+PeerDownlinkInfo& agora::rtc::DownlinkNetworkInfo::PeerDownlinkInfo::operator=(const PeerDownlinkInfo& rhs) inline
+```
+
+## 类成员变量说明
+
+<a id="aa8fe50388c0151b0496d4caeb12b7bc6"></a>
+
+### uid
+
+```cpp
+const char* agora::rtc::DownlinkNetworkInfo::PeerDownlinkInfo::uid
+```
+
+远端视频流的用户 ID。
+
+<a id="ab3ebc4a5ae6d65dbd5f9472242e22e41"></a>
+
+### stream_type
+
+```cpp
+VIDEO_STREAM_TYPE agora::rtc::DownlinkNetworkInfo::PeerDownlinkInfo::stream_type
+```
+
+远端视频流类型： [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#a5f78a8dc3552e4ec308270198dd49b55)。
+
+<a id="a59c9a8493ceff9719596fdb1995532fd"></a>
+
+### current_downscale_level
+
+```cpp
+REMOTE_VIDEO_DOWNSCALE_LEVEL agora::rtc::DownlinkNetworkInfo::PeerDownlinkInfo::current_downscale_level
+```
+
+远端视频缩小程度: [REMOTE_VIDEO_DOWNSCALE_LEVEL](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#a986ba95b84f37af9ae5790dd90765baa)。
+
+<a id="a70c261fb957081875784cd57b6ee8449"></a>
+
+### expected_bitrate_bps
+
+```cpp
+int agora::rtc::DownlinkNetworkInfo::PeerDownlinkInfo::expected_bitrate_bps
+```
+
+用户期待的码率（bps）。

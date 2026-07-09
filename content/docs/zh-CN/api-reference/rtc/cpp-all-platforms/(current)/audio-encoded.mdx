@@ -1,0 +1,152 @@
+---
+title: "已编码音频数据"
+description: "注册编码音频数据的观察器。"
+---
+<a id="toc_audio_encoded"></a>
+
+## 已编码音频数据
+
+<a id="api_irtcengine_registeraudioencodedframeobserver"></a>
+
+## registerAudioEncodedFrameObserver
+
+注册编码音频数据的观察器。
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__prototype"></a>
+
+```cpp
+virtual int registerAudioEncodedFrameObserver(const AudioEncodedFrameObserverConfig& config,  IAudioEncodedFrameObserver *observer) = 0;
+```
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__detailed_desc"></a>
+
+:::info[注]
+你需要在加入频道后调用该方法。你可以调用该方法或 `startAudioRecording` 来设置音频文件的录制类型和质量，但声网不建议同时使用这两个方法。只有后调用的方法会生效。
+:::
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__parameters"></a>
+
+### 参数
+
+#### `config`
+
+编码音频的观察器配置。详见 [AudioEncodedFrameObserverConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioencodedframeobserverconfig)。
+
+#### `observer`
+
+编码音频数据的观察器。详见 [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioencodedframeobserver)。
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe"></a>
+
+## onMixedAudioEncodedFrame
+
+本地和所有远端用户的混音编码音频数据回调。
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__prototype"></a>
+
+```cpp
+virtual void onMixedAudioEncodedFrame(const uint8_t* frameBuffer, int length, const EncodedAudioFrameInfo& audioEncodedFrameInfo) = 0;
+```
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__detailed_desc"></a>
+
+调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频配置设置为 `AUDIO_ENCODED_FRAME_OBSERVER_POSITION_MIXED` 后，可以通过该回调获取本地和所有远端用户的混音编码音频数据。
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__parameters"></a>
+
+### 参数
+
+#### `frameBuffer`
+
+音频数据缓冲区。
+
+#### `length`
+
+音频数据的字节长度。
+
+#### `audioEncodedFrameInfo`
+
+编码后的音频帧信息。详见 [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-encodedaudioframeinfo)。
+
+### 所属接口类
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioencodedframeobserver)
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe"></a>
+
+## onPlaybackAudioEncodedFrame
+
+获取所有远端用户编码音频数据的回调。
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__prototype"></a>
+
+```cpp
+virtual void onPlaybackAudioEncodedFrame(const uint8_t* frameBuffer, int length, const EncodedAudioFrameInfo& audioEncodedFrameInfo) = 0;
+```
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__detailed_desc"></a>
+
+调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将编码音频位置设置为 `AUDIO_ENCODED_FRAME_OBSERVER_POSITION_PLAYBACK` 后，可以通过该回调获取所有远端用户的编码音频数据。
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__parameters"></a>
+
+### 参数
+
+#### `frameBuffer`
+
+音频数据缓冲区。
+
+#### `length`
+
+音频数据的长度，单位为字节。
+
+#### `audioEncodedFrameInfo`
+
+编码后的音频帧信息。详见 [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-encodedaudioframeinfo)。
+
+### 所属接口类
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioencodedframeobserver)
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe"></a>
+
+## onRecordAudioEncodedFrame
+
+本地用户编码后音频数据回调。
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__prototype"></a>
+
+```cpp
+virtual void onRecordAudioEncodedFrame(const uint8_t* frameBuffer, int length, const EncodedAudioFrameInfo& audioEncodedFrameInfo) = 0;
+```
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__detailed_desc"></a>
+
+调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将编码后音频位置设置为 `AUDIO_ENCODED_FRAME_OBSERVER_POSITION_RECORD` 后，可以通过该回调获取本地用户的编码后音频数据。
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__parameters"></a>
+
+### 参数
+
+#### `frameBuffer`
+
+音频数据缓冲区。
+
+#### `length`
+
+音频数据的字节长度。
+
+#### `audioEncodedFrameInfo`
+
+编码后的音频帧信息。详见 [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-encodedaudioframeinfo)。
+
+### 所属接口类
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioencodedframeobserver)

@@ -1,0 +1,48 @@
+---
+title: "agora::commons::LogConfig结构体 参考"
+description: "LogConfig 结构体。默认情况下，SDK 会生成 agorasdk.log、agorasdk_1.log、agorasdk_2.log、agorasdk_3.log、agorasdk_4.log 这 5 个日志文件。 每个文件的默认大小为 1024 KB。日志文件为 UTF-8 编码。最新的日志永远写在 agorasdk.log 中。agorasdk.log 写满后，SDK 会从 1-4 中删除修改时间最早的一个文件，然后将 agorasdk.log 重命名为该文件，并建立新的 agorasdk.log 写入最新的日志。"
+---
+
+[LogConfig](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1commons-1-1-log-config) 结构体。默认情况下，SDK 会生成 agorasdk.log、agorasdk_1.log、agorasdk_2.log、agorasdk_3.log、agorasdk_4.log 这 5 个日志文件。 每个文件的默认大小为 1024 KB。日志文件为 UTF-8 编码。最新的日志永远写在 agorasdk.log 中。agorasdk.log 写满后，SDK 会从 1-4 中删除修改时间最早的一个文件，然后将 agorasdk.log 重命名为该文件，并建立新的 agorasdk.log 写入最新的日志。
+
+## 构造及析构函数说明
+
+<a id="a19d754a351fa85514446f4adb1682a38"></a>
+
+### LogConfig()
+
+```cpp
+agora::commons::LogConfig::LogConfig() inline
+```
+
+## 类成员变量说明
+
+<a id="a9a4573301a5e20719af957bd49cf13b5"></a>
+
+### filePath
+
+```cpp
+const char* agora::commons::LogConfig::filePath
+```
+
+日志文件的完整路径。如果 log_path 设为 NULL，则日志位于当前应用程序的 pwd 目录。
+
+<a id="a5935ed4ffccd4f7cb346c089a5bc6b4d"></a>
+
+### fileSizeInKB
+
+```cpp
+uint32_t agora::commons::LogConfig::fileSizeInKB
+```
+
+单个日志文件的大小，单位为 KB。默认值为 1024 KB。如果你将 fileSizeInKB 设为 1024 KB，SDK 会最多输出总计 5 MB 的日志文件。 如果你将 fileSizeInKB 设为小于 1024 KB，设置不生效，单个日志文件最大仍为 1024 KB。
+
+<a id="a4aa20ef9dfad96c11a6445abb74fc5ab"></a>
+
+### level
+
+```cpp
+LOG_LEVEL agora::commons::LogConfig::level
+```
+
+SDK 的日志输出等级，详见 [LOG_LEVEL](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1commons#a2c1e113a78229ede5a30423e9b10021b)。例如，如果你选择 WARN 级别，就可以看到 FATAL、ERROR 和 WARN 级别的所有日志信息。

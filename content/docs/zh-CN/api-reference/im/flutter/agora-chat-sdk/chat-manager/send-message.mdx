@@ -1,0 +1,44 @@
+---
+title: "sendMessage method"
+description: "API docs for the sendMessage method from the ChatManager class, for the Dart programming language."
+---
+
+Sends a message.
+
+**Note** For attachment messages such as voice, image, or video messages, the SDK automatically uploads the attachment. You can set whether to upload the attachment to the chat sever using [ChatOptions.serverTransfer](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/server-transfer).
+
+To listen for the status of sending messages, call [ChatMessage.setMessageStatusCallBack](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-message/set-message-status-call-back).
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `message` | The message object to be sent: `ChatMessage`. |
+
+```dart
+Future<ChatMessage> sendMessage(ChatMessage message)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<ChatMessage> sendMessage(ChatMessage message) async {
+  message.status = MessageStatus.PROGRESS;
+  Map result = await ChatChannel.invokeMethod(
+      ChatMethodKeys.sendMessage, message.toJson());
+  try {
+    ChatError.hasErrorFromResult(result);
+    ChatMessage msg = ChatMessage.fromJson(result[ChatMethodKeys.sendMessage]);
+    message.from = msg.from;
+    message.to = msg.to;
+    message.status = msg.status;
+    return message;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

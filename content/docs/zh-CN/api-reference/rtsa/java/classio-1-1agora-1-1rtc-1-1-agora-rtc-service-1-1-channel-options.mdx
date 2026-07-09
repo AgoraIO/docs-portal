@@ -1,0 +1,123 @@
+---
+title: "io.agora.rtc.AgoraRtcService.ChannelOptions类 参考"
+description: "频道设置选项。"
+---
+
+频道设置选项。
+
+## 构造及析构函数说明
+
+<a id="ac5c160cb062e5f21f3bffe5b44225999"></a>
+
+### ChannelOptions()
+
+```cpp
+io.agora.rtc.AgoraRtcService.ChannelOptions.ChannelOptions()
+```
+
+## 类成员变量说明
+
+<a id="a11d2c740f0260a065659165453c8b416"></a>
+
+### audioCodecOpt
+
+```cpp
+AudioCodecOption io.agora.rtc.AgoraRtcService.ChannelOptions.audioCodecOpt
+```
+
+SDK 内置的音频编解码器选项。详见 [AudioCodecOption](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-audio-codec-option)。
+
+<a id="aebdb57d29ad2c3d6bf9415d2f303a67b"></a>
+
+### audioProcessOpt
+
+```cpp
+RtcAudioProcessOption io.agora.rtc.AgoraRtcService.ChannelOptions.audioProcessOpt
+```
+
+（选填）音频处理选项。详见 [RtcAudioProcessOption](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-rtc-audio-process-option)。
+
+##### `注解`
+
+如需使用该功能，你需要联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](#)。
+
+<a id="ad45ab4462ef8923ba3ce9d7bdf03808a"></a>
+
+### autoConnectRdt
+
+```cpp
+boolean io.agora.rtc.AgoraRtcService.ChannelOptions.autoConnectRdt
+```
+
+是否主动与远端用户建立 RDT 连接。
+
+- true: 主动建立连接。
+- false: 不主动建立连接。
+
+例如，用户 A 设置该参数为 `true`，用户 B 和 C 设置该参数为 `false`，那么加入频道后用户 A 会与 B 和 C 分别建立连接，用户 B 和 C 不会建立连接。
+
+<a id="a5d63c235d9a4a3c873f40c0d272beea3"></a>
+
+### autoSubscribeAudio
+
+```cpp
+boolean io.agora.rtc.AgoraRtcService.ChannelOptions.autoSubscribeAudio
+```
+
+是否订阅音频。
+
+- true: 订阅。
+- false: (默认) 不订阅。
+
+<a id="aa557583f3fec562054be2cc3b8521bc9"></a>
+
+### autoSubscribeVideo
+
+```cpp
+boolean io.agora.rtc.AgoraRtcService.ChannelOptions.autoSubscribeVideo
+```
+
+是否订阅音频。
+
+- true: 订阅。
+- false: (默认) 不订阅。
+
+<a id="a5f9ec2d52e6bf24909f0a2e2f18929a5"></a>
+
+### cryptoOpt
+
+```cpp
+CryptoOption io.agora.rtc.AgoraRtcService.ChannelOptions.cryptoOpt
+```
+
+媒体流加密选项。详见 [CryptoOption](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-crypto-option)。
+
+<a id="a7ce5ab6bd9eec932093fa6af148b7a5d"></a>
+
+### enableAudioJitterBuffer
+
+```cpp
+boolean io.agora.rtc.AgoraRtcService.ChannelOptions.enableAudioJitterBuffer
+```
+
+是否开启音频抖动缓冲。
+
+- true: 开启。
+- false: 不开启。
+
+<a id="af4005ff576f2cb6c69a1d0b9de251dbf"></a>
+
+### enableAudioMixer
+
+```cpp
+boolean io.agora.rtc.AgoraRtcService.ChannelOptions.enableAudioMixer
+```
+
+是否开启混音。
+
+- true: 开启。
+- false: 不开启。
+
+##### `注解`
+
+开启混音后，SDK 也会自动开启 `enableAudioJitterBuffer`。

@@ -1,0 +1,211 @@
+---
+title: "AgoraRteSynchronizer"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- AgoraRteSynchronizer
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new AgoraRteSynchronizer(__namedParameters: { messageHandle: AgoraRteMessageHandle; scene: AgoraRteScene; sequenceType: AgoraRteSequenceType }): AgoraRteSynchronizer
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| __namedParameters: \{ messageHandle: AgoraRteMessageHandle; scene: AgoraRteScene; sequenceType: AgoraRteSequenceType \} |  |
+
+#### Returns
+
+Returns [AgoraRteSynchronizer](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-synchronizer)
+
+## Properties
+
+<a id="logger"></a>
+
+### logger
+
+```ts
+logger: "agora-rte-sdk/src/core/logger/type".Logger
+```
+
+<a id="runNextTask"></a>
+
+### runNextTask
+
+```ts
+runNextTask: () => void
+```
+
+## Accessors
+
+<a id="handle"></a>
+
+### handle
+
+```ts
+get handle(): AgoraRteMessageHandle
+```
+
+#### Returns
+
+Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-message-handle)
+
+<a id="sequenceTypeLabel"></a>
+
+### sequenceTypeLabel
+
+```ts
+get sequenceTypeLabel(): "ChannelSequence" | "PeerSequence"
+```
+
+#### Returns
+
+Returns "ChannelSequence" | "PeerSequence"
+
+## Methods
+
+<a id="addTasks"></a>
+
+### addTasks
+
+```ts
+addTasks(tasks: AgoraRteSequenceMessage[]): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| tasks: AgoraRteSequenceMessage[] |  |
+
+#### Returns
+
+Returns void
+
+<a id="dequeueTask"></a>
+
+### dequeueTask
+
+```ts
+dequeueTask(): undefined | null | AgoraRteSequenceMessage
+```
+
+#### Returns
+
+Returns undefined | null | [AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agora-rte-sequence-message)
+
+<a id="findSequenceGap"></a>
+
+### findSequenceGap
+
+```ts
+findSequenceGap(): null | { count: number; queueHeadSeq: number; seq: number }
+```
+
+#### Returns
+
+Returns null | \{count: number; queueHeadSeq: number; seq: number \}
+
+<a id="notifyTaskQueueUpdate"></a>
+
+### notifyTaskQueueUpdate
+
+```ts
+notifyTaskQueueUpdate(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="prependTasks"></a>
+
+### prependTasks
+
+```ts
+prependTasks(tasks: AgoraRteSequenceMessage[]): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| tasks: AgoraRteSequenceMessage[] |  |
+
+#### Returns
+
+Returns void
+
+<a id="processTask"></a>
+
+### processTask
+
+```ts
+processTask(task: AgoraRteSequenceMessage): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| task: AgoraRteSequenceMessage |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="sortTasks"></a>
+
+### sortTasks
+
+```ts
+sortTasks(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="syncSequenceUntilSuccess"></a>
+
+### syncSequenceUntilSuccess
+
+```ts
+syncSequenceUntilSuccess(lastSeq: number, count: number): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| lastSeq: number |  |
+| count: number |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="syncSnapshot"></a>
+
+### syncSnapshot
+
+```ts
+syncSnapshot(snapshot: AgoraRteSyncSnapshotData): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| snapshot: AgoraRteSyncSnapshotData |  |
+
+#### Returns
+
+Returns void

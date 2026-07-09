@@ -1,0 +1,164 @@
+---
+title: "agora::ExternalVideoFrame结构体 参考"
+description: "ExternalVideoFrame 结构体。"
+---
+
+[ExternalVideoFrame](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1-external-video-frame) 结构体。
+
+## 成员枚举类型说明
+
+<a id="a0d5010576e24646b2135d50e3e07dda7"></a>
+
+### VIDEO_BUFFER_TYPE
+
+```cpp
+enum agora::ExternalVideoFrame::VIDEO_BUFFER_TYPE
+```
+
+视频类型。
+
+#### Values
+
+| Name | Description |
+| --- | --- |
+| <a id="a0d5010576e24646b2135d50e3e07dda7af17fe2ce9c6309aad2a11165b51e9015"></a> VIDEO_BUFFER_RAW_DATA | 1: 原始数据。 |
+| <a id="a0d5010576e24646b2135d50e3e07dda7a2cbb795a061adfc252e63970d2ea00aa"></a> VIDEO_BUFFER_ARRAY | 2: 与 VIDEO_BUFFER_RAW_DATA 相同。 |
+| <a id="a0d5010576e24646b2135d50e3e07dda7ae33ce14966f81b36d7e0d0b65f93dc1f"></a> VIDEO_BUFFER_TEXTURE | 3: Texture 格式的视频缓冲。 |
+
+## 构造及析构函数说明
+
+<a id="a2bade8187cfff907e2bdeefc1eaa6d1e"></a>
+
+### ExternalVideoFrame()
+
+```cpp
+agora::ExternalVideoFrame::ExternalVideoFrame() inline
+```
+
+## 类成员变量说明
+
+<a id="acdb2d983ea9ad1cf180cc1f878d4f112"></a>
+
+### type
+
+```cpp
+VIDEO_BUFFER_TYPE agora::ExternalVideoFrame::type
+```
+
+视频类型： [VIDEO_BUFFER_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1-external-video-frame#a0d5010576e24646b2135d50e3e07dda7)。
+
+<a id="ae8243400419f55ada79f47383d700475"></a>
+
+### format
+
+```cpp
+VIDEO_PIXEL_FORMAT agora::ExternalVideoFrame::format
+```
+
+像素格式： [VIDEO_PIXEL_FORMAT](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora#a08597f4fe6a0ef1ad7b53538fd27d119)。
+
+<a id="a07f7d3548d5f6de308b124788fbd4798"></a>
+
+### buffer
+
+```cpp
+void* agora::ExternalVideoFrame::buffer
+```
+
+视频缓冲区。
+
+<a id="a86937fa94550b52b565edc1db79966ec"></a>
+
+### stride
+
+```cpp
+int agora::ExternalVideoFrame::stride
+```
+
+传入视频帧的行间距，单位为像素而不是字节。对于 Texture，该值指的是 Texture 的宽度。
+
+<a id="a670e6fbd9da8fcbd7ee7380951a74b9f"></a>
+
+### height
+
+```cpp
+int agora::ExternalVideoFrame::height
+```
+
+传入视频帧的高度。
+
+<a id="a4d632a747e87046b9ec0d47776ca5731"></a>
+
+### cropLeft
+
+```cpp
+int agora::ExternalVideoFrame::cropLeft
+```
+
+[原始数据相关字段] 指定左边裁剪掉的像素数量。默认为 0。
+
+<a id="af058f369d53c4274c5d2111f73ac4bb5"></a>
+
+### cropTop
+
+```cpp
+int agora::ExternalVideoFrame::cropTop
+```
+
+[原始数据相关字段] 指定顶边裁剪掉的像素数量。默认为 0。
+
+<a id="aa6d2d338d2f073696184c8beb56c5c7d"></a>
+
+### cropRight
+
+```cpp
+int agora::ExternalVideoFrame::cropRight
+```
+
+[原始数据相关字段] 指定右边裁剪掉的像素数量。默认为 0。
+
+<a id="a5e425630f43b1e41f86ecc247011c9e5"></a>
+
+### cropBottom
+
+```cpp
+int agora::ExternalVideoFrame::cropBottom
+```
+
+[原始数据相关字段] 指定底边裁剪掉的像素数量。默认为 0。
+
+<a id="a2ebddf78030984e9aea8cc5628d38651"></a>
+
+### rotation
+
+```cpp
+int agora::ExternalVideoFrame::rotation
+```
+
+[原始数据相关字段] 指定是否对传入的视频组做顺时针旋转操作，可选值为 0， 90， 180， 270。默认为 0。
+
+<a id="aab08f81b7a4d1c51a33c5fb282e9371d"></a>
+
+### timestamp
+
+```cpp
+long long agora::ExternalVideoFrame::timestamp
+```
+
+传入的视频帧的时间戳，以毫秒为单位。不正确的时间戳会导致丢帧或者音视频不同步。
+
+<a id="a115db9735fee826b1d921d824fe58f47"></a>
+
+### alphaBuffer
+
+```cpp
+uint8_t* agora::ExternalVideoFrame::alphaBuffer
+```
+
+表示人像分割算法的输出数据，跟视频帧的尺寸一致。每个像素点的取值范围为 [0,255]，其中 0 表示背景；255 代表前景（人像）。
+
+在用户自定义视频渲染场景下，该参数可帮助实现将视频背景自渲染为各种效果，例如：透明、纯色、图片、视频等等。
+
+##### `注解`
+
+该参数需要 [联系技术支持](https://agora-ticket.agora.io/) 开通。

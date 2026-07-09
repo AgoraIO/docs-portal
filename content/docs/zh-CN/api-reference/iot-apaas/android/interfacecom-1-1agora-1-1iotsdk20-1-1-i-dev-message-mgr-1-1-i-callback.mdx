@@ -1,0 +1,94 @@
+---
+title: "com.agora.iotsdk20.IDevMessageMgr.ICallback接口 参考"
+description: "设备消息回调接口。"
+---
+
+设备消息回调接口。
+
+## 成员函数说明
+
+<a id="ab6fc666169bba0ab2eba8c5c31d5b24c"></a>
+
+### onDevMessageInfoQueryDone()
+
+```cpp
+default void com.agora.iotsdk20.IDevMessageMgr.ICallback.onDevMessageInfoQueryDone(int errCode, final IotDevMessage devMessage)
+```
+
+报告根据 ID 查询到的设备消息。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，0 表示成功，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| devMessage | 查询到的设备消息，详见 [IotDevMessage](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-dev-message)。 |
+
+<a id="a422626392ee7933df829a8b6824c09bc"></a>
+
+### onDevMessageMarkDone()
+
+```cpp
+default void com.agora.iotsdk20.IDevMessageMgr.ICallback.onDevMessageMarkDone(int errCode, List<Long > markedIdList)
+```
+
+设备消息标记完成回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，0 表示成功，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| markedIdList | 标记的设备消息 ID 列表。 |
+
+<a id="a2a9bbb7f418e87ba4c304b9288ece839"></a>
+
+### onDevMessageNumberQueryDone()
+
+```cpp
+default void com.agora.iotsdk20.IDevMessageMgr.ICallback.onDevMessageNumberQueryDone(int errCode, final QueryParam queryParam, long devMsgNumber)
+```
+
+报告查询到的设备消息数量。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，0 表示成功，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| queryParam | 查询参数，详见 [QueryParam](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-i-dev-message-mgr-1-1-query-param)。 |
+| devMsgNumber | 查询到的消息数量。 |
+
+<a id="af3ee0a8ab08691e035aca8e797a3e78a"></a>
+
+### onDevMessagePageQueryDone()
+
+```cpp
+default void com.agora.iotsdk20.IDevMessageMgr.ICallback.onDevMessagePageQueryDone(int errCode, final QueryParam queryParam, final IotDevMsgPage devMsgPage)
+```
+
+报告分页查询到的设备消息。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，0 表示成功，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| queryParam | 查询参数，详见 [QueryParam](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-i-dev-message-mgr-1-1-query-param)。 |
+| devMsgPage | 查询到的设备消息页面，详见 [IotDevMsgPage](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-dev-msg-page)。 |
+
+<a id="a142727e79fede186a8243014d1d46325"></a>
+
+### onDevMessageReceived()
+
+```cpp
+default void com.agora.iotsdk20.IDevMessageMgr.ICallback.onDevMessageReceived(IotDevMessage devMessage)
+```
+
+接收到一个新的设备消息回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| devMessage | 设备消息，详见 [IotDevMessage](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-iot-dev-message)。 |

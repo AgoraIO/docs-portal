@@ -1,0 +1,56 @@
+---
+title: "ChatRoomEventHandler constructor"
+description: "API docs for the ChatRoomEventHandler constructor from Class ChatRoomEventHandler from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The chat room manager listener callback.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| [onAdminAddedFromChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-admin-added-from-chat-room) | A member has been changed to an admin callback. |
+| [onAdminRemovedFromChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-admin-removed-from-chat-room) | An admin is been removed callback callback. |
+| [onAllChatRoomMemberMuteStateChanged](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-all-chat-room-member-mute-state-changed) | All members in the chat room are muted or unmuted callback. |
+| [onAllowListAddedFromChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-allow-list-added-from-chat-room) | The chat room member(s) is added to the allowlist callback. |
+| [onAllowListRemovedFromChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-allow-list-removed-from-chat-room) | The chat room member(s) is removed from the allowlist callback. |
+| [onAnnouncementChangedFromChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-announcement-changed-from-chat-room) | The announcement changed callback. |
+| [onChatRoomDestroyed](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-chat-room-destroyed) | The chat room is destroyed callback. |
+| [onMemberExitedFromChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-member-exited-from-chat-room) | A member leaves the chatroom callback. |
+| [onMemberJoinedFromChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-member-joined-from-chat-room) | A member join the chatroom callback. |
+| [onMuteListAddedFromChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-mute-list-added-from-chat-room) | The chat room member(s) muted (added to mute list) callback. |
+| [onMuteListRemovedFromChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-mute-list-removed-from-chat-room) | The chat room member(s) unmuted (removed from mute list) callback. |
+| [onOwnerChangedFromChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-owner-changed-from-chat-room) | The chat room ownership has been transferred callback. |
+| [onRemovedFromChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-removed-from-chat-room) | The chat room member(s) is removed from the allowlist callback. |
+| [onSpecificationChanged](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-specification-changed) | The chat room specification changed callback. |
+| [onAttributesUpdated](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-attributes-updated) | The chat room attributes updated callback. |
+| [onAttributesRemoved](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler/on-attributes-removed) | The chat room attributes removed callback. |
+
+```dart
+ChatRoomEventHandler({void onAdminAddedFromChatRoom(String roomId, String admin)?, void onAdminRemovedFromChatRoom(String roomId, String admin)?, void onAllChatRoomMemberMuteStateChanged(String roomId, bool isAllMuted)?, void onAllowListAddedFromChatRoom(String roomId, List<String> members)?, void onAllowListRemovedFromChatRoom(String roomId, List<String> members)?, void onAnnouncementChangedFromChatRoom(String roomId, String announcement)?, void onChatRoomDestroyed(String roomId, String? roomName)?, void onMemberExitedFromChatRoom(String roomId, String? roomName, String participant)?, void onMemberJoinedFromChatRoom(String roomId, String participant)?, void onMuteListAddedFromChatRoom(String roomId, List<String> mutes, String? expireTime)?, void onMuteListRemovedFromChatRoom(String roomId, List<String> mutes)?, void onOwnerChangedFromChatRoom(String roomId, String newOwner, String oldOwner)?, void onRemovedFromChatRoom(String roomId, String? roomName, String? participant)?, void onSpecificationChanged(ChatRoom room)?, void onAttributesUpdated(String roomId, Map<String, String> attributes, String from)?, void onAttributesRemoved(String roomId, List<String> removedKeys, String from)?})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ChatRoomEventHandler({
+  this.onAdminAddedFromChatRoom,
+  this.onAdminRemovedFromChatRoom,
+  this.onAllChatRoomMemberMuteStateChanged,
+  this.onAllowListAddedFromChatRoom,
+  this.onAllowListRemovedFromChatRoom,
+  this.onAnnouncementChangedFromChatRoom,
+  this.onChatRoomDestroyed,
+  this.onMemberExitedFromChatRoom,
+  this.onMemberJoinedFromChatRoom,
+  this.onMuteListAddedFromChatRoom,
+  this.onMuteListRemovedFromChatRoom,
+  this.onOwnerChangedFromChatRoom,
+  this.onRemovedFromChatRoom,
+  this.onSpecificationChanged,
+  this.onAttributesUpdated,
+  this.onAttributesRemoved,
+});
+```

@@ -1,0 +1,40 @@
+---
+title: "removeAdmin method"
+description: "API docs for the removeAdmin method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Removes a group admin.
+
+Only the group owner can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `adminId` | The username of the admin to remove. |
+
+```dart
+Future<void> removeAdmin(String groupId, String adminId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> removeAdmin(
+  String groupId,
+  String adminId,
+) async {
+  Map req = {'groupId': groupId, 'admin': adminId};
+  Map result = await _channel.invokeMethod(ChatMethodKeys.removeAdmin, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

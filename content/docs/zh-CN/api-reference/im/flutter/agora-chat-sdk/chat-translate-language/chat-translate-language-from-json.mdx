@@ -1,0 +1,25 @@
+---
+title: "ChatTranslateLanguage.fromJson constructor"
+description: "API docs for the ChatTranslateLanguage.fromJson constructor from Class ChatTranslateLanguage from the agora_chat_sdk library, for the Dart programming language."
+---
+
+```dart
+ChatTranslateLanguage.fromJson(Map map)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+factory ChatTranslateLanguage.fromJson(Map map) {
+  String code = map["code"];
+  String name = map["name"];
+  String nativeName = map["nativeName"];
+  return ChatTranslateLanguage._private(
+    languageCode: code,
+    languageName: name,
+    languageNativeName: nativeName,
+  );
+}
+```

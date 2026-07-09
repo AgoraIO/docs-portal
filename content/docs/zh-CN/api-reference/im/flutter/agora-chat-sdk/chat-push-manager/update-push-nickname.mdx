@@ -1,0 +1,37 @@
+---
+title: "updatePushNickname method"
+description: "API docs for the updatePushNickname method from the ChatPushManager class, for the Dart programming language."
+---
+
+Updates the push display nickname of the current user.
+
+This method can be used to set a push display nickname, the push display nickname will be used to show for offline push notification. When the app user changes the nickname in the user profile use [ChatUserInfoManager.updateUserInfo](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-user-info-manager/update-user-info) be sure to also call this method to update to prevent the display differences.
+
+**Throws** A description of the issue that caused this exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error)
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `nickname` | The push display nickname, which is different from the nickname in the user profile. |
+
+```dart
+Future<void> updatePushNickname(String nickname)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> updatePushNickname(String nickname) async {
+  Map req = {'nickname': nickname};
+  Map result =
+      await PushChannel.invokeMethod(ChatMethodKeys.updatePushNickname, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

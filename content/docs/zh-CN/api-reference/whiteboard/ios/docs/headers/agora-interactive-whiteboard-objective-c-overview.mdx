@@ -1,0 +1,161 @@
+---
+title: "Agora Interactive Whiteboard Objective-C Overview Document"
+description: "声网通过全球部署的虚拟网络，提供可以灵活搭配的 API 组合，提供稳定可靠、功能丰富的实时互动白板。"
+---
+
+声网通过全球部署的虚拟网络，提供可以灵活搭配的 API 组合，提供稳定可靠、功能丰富的实时互动白板。
+
+- WhiteSDK 类提供初始化互动白板 SDK、加入互动白板实时房间、创建白板回放的主要方法。
+- WhiteRoom 类提供管理互动白板实时房间的方法。
+- WhitePlayer 类提供控制白板回放的方法。
+- WhiteDisplayer 类为 WhitePlayer 类和 WhiteRoom 类的父类。 WhitePlayer 和 WhiteRoom 的对象都可以调用该类中的方法。
+
+### SDK 初始化
+
+| 方法 | 描述 |
+| --- | --- |
+| [initWithWhiteBoardView](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk#//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:) | 初始化白板界面（设置回调） |
+| [initWithWhiteBoardView](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk#//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:audioMixerBridgeDelegate:) | 初始化白板界面（设置回调和混音） |
+| [WhiteCommonCallbackDelegate](/zh-CN/api-reference/whiteboard/ios/protocols/white-common-callback-delegate) | 设置通用事件回调 |
+| [joinRoomWithConfig](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk#//api/name/joinRoomWithConfig:callbacks:completionHandler:) | 设置房间参数和房间事件回调并加入互动白板实时房间 |
+| [createReplayerWithConfig](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk#//api/name/createReplayerWithConfig:callbacks:completionHandler:) | 创建互动白板回放房间 |
+| [isPlayable](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk#//api/name/isPlayable:result:) | 查看房间是否有回放数据 |
+| [setupFontFaces](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk#//api/name/setupFontFaces:) | 声明在本地白板中可用的字体 |
+| [loadFontFaces](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk#//api/name/loadFontFaces:completionHandler:) | 声明并预加载在本地白板中可用的字体 |
+| [updateTextFont](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk#//api/name/updateTextFont:) | 设置在本地白板中输入文字时使用的字体 |
+
+### 通用事件
+
+| 事件 | 描述 |
+| --- | --- |
+| [throwError](/zh-CN/api-reference/whiteboard/ios/protocols/white-common-callback-delegate#//api/name/throwError:) | 出现未捕获的全局错误回调 |
+| [urlInterrupter](/zh-CN/api-reference/whiteboard/ios/protocols/white-common-callback-delegate#//api/name/urlInterrupter:) | 拦截图片 URL 回调 |
+| [pptMediaPlay](/zh-CN/api-reference/whiteboard/ios/protocols/white-common-callback-delegate#//api/name/pptMediaPlay) | 动态 PPT 中的音视频开始播放回调 |
+| [pptMediaPause](/zh-CN/api-reference/whiteboard/ios/protocols/white-common-callback-delegate#//api/name/pptMediaPause) | 动态 PPT 中的音视频赞同播放回调 |
+| [customMessage](/zh-CN/api-reference/whiteboard/ios/protocols/white-common-callback-delegate#//api/name/customMessage:) | 接收到网页发送的消息回调 |
+| [sdkSetupFail](/zh-CN/api-reference/whiteboard/ios/protocols/white-common-callback-delegate#//api/name/sdkSetupFail:) | SDK 初始化失败回调 |
+
+### 实时房间管理
+
+| 方法 | 描述 |
+| --- | --- |
+| [observerId](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/observerId) | 获取用户 ID |
+| [setWritable](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/setWritable:completionHandler:) | 设置用户是否为互动模式 |
+| [disableDeviceInputs](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/disableDeviceInputs:) | 禁止/允许用户操作工具 |
+| [disconnect](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/disconnect:) | 断开连接 |
+| [setGlobalState](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/globalState) | 修改房间的全局状态 |
+| [disconnectedBySelf](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/disconnectedBySelf) | 获取用户是否主动断开连接 |
+| [writable](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/writable) | 获取用户是否为互动模式 |
+| [globalState](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/globalState) | 获取房间的全局状态（同步方法） |
+| [getGlobalStateWithResult](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/getGlobalStateWithResult:) | 获取房间的全局状态（异步方法） |
+| [roomMembers](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/roomMembers) | 获取房间的用户列表（同步方法） |
+| [getRoomMembersWithResult](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/getRoomMembersWithResult:) | 获取房间的用户列表（异步方法） |
+| [phase](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/phase) | 获取房间的连接状态（同步方法） |
+| [getRoomPhaseWithResult](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/getRoomPhaseWithResult:) | 获取房间的连接状态（异步方法） |
+| [state](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/state) | 获取房间的所有状态（同步方法） |
+| [getRoomStateWithResult](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/getRoomStateWithResult:) | 获取房间的所有状态（异步方法） |
+
+### 白板工具设置
+
+| 方法 | 描述 |
+| --- | --- |
+| [setMemberState](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/memberState) | 修改房间的白板工具状态 |
+| [memberState](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/memberState) | 获取白板工具状态（同步方法） |
+| [getMemberStateWithResult](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/getMemberStateWithResult:) | 获取白板工具状态（异步方法） |
+| [copy](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/copy) | 复制选中内容 |
+| [paste](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/paste) | 粘贴复制的内容 |
+| [duplicate](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/duplicate) | 复制并粘贴选中的内容 |
+| [deleteOpertion](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/deleteOperation) | 删除选中的内容 |
+| [disableSerialization](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/disableSerialization:) | 开启/禁止本地序列化 |
+| [redo](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/redo) | 重做 |
+| [undo](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/undo) | 撤销上一步操作 |
+| [disableEraseImage](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/disableEraseImage:) | 关闭/开启橡皮擦擦除图片功能 |
+| [disableDeviceInputs](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/disableDeviceInputs:) | 禁止/允许用户操作白板工具 |
+
+### 视角操作
+
+| 方法 | 描述 |
+| --- | --- |
+| [setViewMode](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/setViewMode:) | 切换视角模式 |
+| [setCameraBound](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/setCameraBound:) | 设置视角边界 |
+| [disableCameraTransform](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/disableCameraTransform:) | 禁止/允许用户调整视角 |
+| [moveCamera](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/moveCamera:) | 调整视角 |
+| [moveCameraToContainer](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/moveCameraToContainer:) | 调整视角以完整显示视觉矩形中的内容 |
+| [scalePptToFit](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/scalePptToFit:) | 调整视角以完整显示 PPT 的内容 |
+| [disableCameraTransform](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/disableCameraTransform:) | 禁止/允许用户调整（移动或缩放）视角 |
+| [broadcastState](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/broadcastState) | 获取用户的视角状态（同步方法） |
+| [getBroadcastStateWithResult](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/getBroadcastStateWithResult:) | 获取用户的视角状态（异步方法） |
+
+### 场景管理
+
+| 方法 | 描述 |
+| --- | --- |
+| [insertImage](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/insertImage:) 1 | 插入图片显示区域 |
+| [completeImageUploadWithUuid](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/completeImageUploadWithUuid:src:) | 展示图片 |
+| [insertImage](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/insertImage:src:) 2 | 插入并展示图片 |
+| [insertText](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/insertText:y:textContent:completionHandler:) | 在指定位置插入文字 |
+| [sceneState](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/sceneState) | 获取当前场景目录下的场景状态（同步方法） |
+| [getSceneFromScenePath](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/getSceneFromScenePath:result:) | 获取指定场景的信息 |
+| [getSceneStateWithResult](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/getSceneStateWithResult:) | 获取当前场景目录下的场景状态（异步方法） |
+| [getScenesWithResult](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/getScenesWithResult:) | 获取当前场景目录下的场景列表 |
+| [setScenePath](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/setScenePath:) | 切换至指定的场景（同步方法） |
+| [setScenePath](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/setScenePath:completionHandler:) | 切换至指定的场景（异步方法） |
+| [setSceneIndex](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/setSceneIndex:completionHandler:) | 切换至当前场景目录下的指定场景 |
+| [putScenes](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/putScenes:scenes:index:) | 在指定场景目录下插入多个场景 |
+| [moveScene](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/moveScene:target:) | 移动场景 |
+| [removeScenes](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/removeScenes:) | 删除场景或者场景目录 |
+| [cleanScene](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/cleanScene:) | 清除当前场景的所有内容 |
+| [pptNextStep](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/pptNextStep) | 播放动态 PPT 下一页 |
+| [pptPreviousStep](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/pptPreviousStep) | 返回动态 PPT 上一页 |
+| [getScenePathType](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/getScenePathType:result:) | 查询场景路径类型 |
+| [getEntireScenes](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/getEntireScenes:) | 获取当前房间内所有场景的信息 |
+| [getScenePreviewImage](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/getScenePreviewImage:completion:) | 获取指定场景的预览图 |
+| [getSceneSnapshotImage](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/getSceneSnapshotImage:completion:) | 获取指定场景的截图 |
+| [getLocalSnapShotWithCompletion](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/getLocalSnapShotWithCompletion:) | 获取指定场景的截图 |
+
+### 回放管理
+
+| 方法 | 描述 |
+| --- | --- |
+| [play](/zh-CN/api-reference/whiteboard/ios/classes/white-player#//api/name/play) | 开始白板回放 |
+| [pause](/zh-CN/api-reference/whiteboard/ios/classes/white-player#//api/name/pause) | 暂停白板回放 |
+| [stop](/zh-CN/api-reference/whiteboard/ios/classes/white-player#//api/name/stop) | 停止白板回放 |
+| [seekToScheduleTime](/zh-CN/api-reference/whiteboard/ios/classes/white-player#//api/name/seekToScheduleTime:) | 设置白板回放的播放位置 |
+| [setObserverMode](/zh-CN/api-reference/whiteboard/ios/classes/white-player#//api/name/setObserverMode:) | 设置白板回放的查看模式 |
+| [playbackSpeed](/zh-CN/api-reference/whiteboard/ios/classes/white-player#//api/name/playbackSpeed) | 获取白板回放的倍速（同步方法） |
+| [getPlaybackSpeed](/zh-CN/api-reference/whiteboard/ios/classes/white-player#//api/name/getPlaybackSpeed:) | 获取白板回放的倍速（异步方法） |
+| [phase](/zh-CN/api-reference/whiteboard/ios/classes/white-player#//api/name/phase) | 获取白板回放的阶段（同步方法） |
+| [getPhaseWithResult](/zh-CN/api-reference/whiteboard/ios/classes/white-player#//api/name/getPhaseWithResult:) | 获取白板回放的阶段（异步方法） |
+| [state](/zh-CN/api-reference/whiteboard/ios/classes/white-player#//api/name/state) | 获取白板回放的状态（同步方法） |
+| [getPlayerStateWithResult](/zh-CN/api-reference/whiteboard/ios/classes/white-player#//api/name/getPlayerStateWithResult:) | 获取白板回放的状态（异步方法） |
+| [timeInfo](/zh-CN/api-reference/whiteboard/ios/classes/white-player#//api/name/timeInfo) | 获取白板回放的时间信息（同步方法） |
+| [getPlayerTimeInfoWithResult](/zh-CN/api-reference/whiteboard/ios/classes/white-player#//api/name/getPlayerTimeInfoWithResult:) | 获取白板回放的时间信息（异步方法） |
+
+### 自定义事件
+
+| 事件 | 描述 |
+| --- | --- |
+| [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/dispatchMagixEvent:payload:) | 发送自定义事件 |
+| [addMagixEventListener](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/addMagixEventListener:) | 注册自定义事件监听 |
+| [addHighFrequencyEventListener](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/addHighFrequencyEventListener:fireInterval:) | 注册高频自定义事件监听 |
+| [removeMagixEventListener](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/removeMagixEventListener:) | 移除自定义事件监听 |
+
+### iframe 插件交互
+
+| 方法 | 描述 |
+| --- | --- |
+| [postIframeMessage](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/postIframeMessage:) | 向 iframe 插件发送 key-value 格式的信息 |
+
+### 其他方法
+
+| 方法 | 描述 |
+| --- | --- |
+| [debugInfo](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/debugInfo:) | 获取调试日志信息 |
+| [requestSlideLogToFilePath](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk#//api/name/requestSlideLogToFilePath:result:) | 获取调试日志信息 |
+| [setTimeDelay](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/setTimeDelay:) | 设置远端白板画面同步延时。 |
+| [convertToPointInWorld](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/convertToPointInWorld:result:) | 转换白板上点的坐标 |
+| [refreshViewSize](/zh-CN/api-reference/whiteboard/ios/classes/white-displayer#//api/name/refreshViewSize) | 刷新白板的界面 |
+| [nativeWebSocket](/zh-CN/api-reference/whiteboard/ios/classes/white-room-config#//api/name/nativeWebSocket) | 开启/关闭全链路加速 |
+| [setDrawOnlyApplePencil](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/setDrawOnlyApplePencil:) | （仅适用于 iPad）设置是否只允许用户使用 Apple Pencil 在白板上绘制和书写 |
+
+Copyright © 2025 Agora. All rights reserved. Updated: 2025-04-07 Generated by [appledoc 2.2.1 (build 1334)](http://appledoc.gentlebytes.com).

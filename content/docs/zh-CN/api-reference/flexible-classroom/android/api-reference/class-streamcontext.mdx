@@ -1,0 +1,115 @@
+---
+title: "StreamContext"
+description: "StreamContext 类。"
+---
+<a id="class_streamcontext"></a>
+
+## StreamContext
+
+StreamContext 类。
+
+<a id="class_streamcontext__detailed_desc"></a>
+
+StreamContext 类提供的方法用于：
+
+- 发布和订阅流。
+- 流编码。
+- 更新流的信息和属性。
+
+<a id="api_getstreamlist"></a>
+
+## getStreamInfo
+
+获取指定用户的所有流。
+
+<a id="api_getstreamlist__prototype"></a>
+
+```kotlin
+abstract fun getStreamInfo(userUuid: String): List<AgoraEduContextStreamInfo>
+```
+
+<a id="api_getstreamlist__parameters"></a>
+
+### 参数
+
+#### `userUuid`
+
+用户 ID。
+
+<a id="api_getstreamlist__return_values"></a>
+
+### 返回值
+
+调用成功，则返回 [AgoraEduContextStreamInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_streaminfo) 数组。
+
+<a id="api_getallstreamList"></a>
+
+## getAllStreamInfo
+
+获取所有流。
+
+<a id="api_getallstreamList__prototype"></a>
+
+```kotlin
+abstract fun getAllStreamInfo(): List<AgoraEduContextStreamInfo>
+```
+
+<a id="api_getallstreamList__return_values"></a>
+
+### 返回值
+
+调用成功，则返回 [AgoraEduContextStreamInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_streaminfo) 数组。
+
+<a id="api_setlocalvideoconfig"></a>
+
+## setLocalVideoConfig
+
+设置本地视频流的编码配置。
+
+<a id="api_setlocalvideoconfig__prototype"></a>
+
+```kotlin
+abstract fun setLocalVideoConfig(streamUuid: String,
+                                 configAgora: AgoraEduContextLocalStreamConfig) : EduContextError
+```
+
+<a id="api_setlocalvideoconfig__parameters"></a>
+
+### 参数
+
+#### `streamUuid`
+
+流 ID。
+
+#### `config`
+
+视频编码配置，详见 [AgoraEduContextLocalStreamConfig](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_videostreamconfig)。
+
+<a id="api_setremotevideostreamsubscribelevel"></a>
+
+## setRemoteVideoStreamSubscribeLevel
+
+订阅高分辨率或低分辨率的远端流。
+
+<a id="api_setremotevideostreamsubscribelevel__prototype"></a>
+
+```kotlin
+abstract fun setRemoteVideoStreamSubscribeLevel(streamUuid: String,
+                                                level: AgoraEduContextVideoSubscribeLevel): EduContextError
+```
+
+<a id="api_setremotevideostreamsubscribelevel__detailed_desc"></a>
+
+当远端发送双流时，可调用此方法来选择订阅高分辨率还是低分辨率的远端流。
+
+<a id="api_setremotevideostreamsubscribelevel__parameters"></a>
+
+### 参数
+
+#### `streamUuid`
+
+流 ID。
+
+#### `level`
+
+视频流的分辨率高低，详见 [AgoraEduContextVideoStreamSubscribeLevel](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#api_videostreamsubscribelevel)。

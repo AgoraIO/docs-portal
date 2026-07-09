@@ -1,0 +1,27 @@
+---
+title: "IJoinOptions"
+description: "IJoinOptions API reference."
+---
+
+加入频道选项。 **自从** <br /> *4.24.0*
+
+- IJoinOptions
+
+## Properties
+
+<a id="autosubscribe"></a>
+
+### Optional autoSubscribe
+
+```ts
+autoSubscribe: boolean
+```
+
+是否自动订阅主播的媒体流。
+
+- true：是
+- false：（默认）否
+
+在一对一或一对多实时互动场景中，设置该参数为 `true` 可以减少等待主播视频首桢渲染出图的时间。详见 [频道秒开](https://doc.shengwang.cn/doc/rtc/javascript/best-practice/preload)。
+
+注意：如果设置自动订阅主播的媒体流，声网后台会在用户加入频道时就开始下发媒体流，并开始计费。

@@ -1,0 +1,66 @@
+---
+title: "agora::linuxsdk::AudioFrame结构体 参考"
+description: "原始音频数据格式。"
+---
+
+原始音频数据格式。
+
+## 构造及析构函数说明
+
+<a id="aad626bea15823539e673576123bc7b00"></a>
+
+### AudioFrame()
+
+```cpp
+agora::linuxsdk::AudioFrame::AudioFrame()
+```
+
+<a id="adac23d351be5d075a62b683f558f77e5"></a>
+
+### ~AudioFrame()
+
+```cpp
+agora::linuxsdk::AudioFrame::~AudioFrame()
+```
+
+## 类成员变量说明
+
+<a id="a49628a954836656a3ed5847b9171c26a"></a>
+
+### type
+
+```cpp
+AUDIO_FRAME_TYPE agora::linuxsdk::AudioFrame::type
+```
+
+原始音频数据格式，PCM 或 AAC。
+
+<a id="a1369464e59c9b58aea839f149a78225c"></a>
+
+### pcm
+
+```cpp
+AudioPcmFrame* agora::linuxsdk::AudioFrame::pcm
+```
+
+PCM 格式，详见 [AudioPcmFrame](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1linuxsdk-1-1-audio-pcm-frame)。
+
+<a id="a6c1115275eddf02008579cad84179cf7"></a>
+
+### aac
+
+```cpp
+AudioAacFrame* agora::linuxsdk::AudioFrame::aac
+```
+
+AAC 格式，详见 [AudioAacFrame](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1linuxsdk-1-1-audio-aac-frame)。
+
+<a id="a204e969d0552e483a80e59c495033d8e"></a>
+
+### mType
+
+```cpp
+MEMORY_TYPE agora::linuxsdk::AudioFrame::mType
+```
+
+存储方式，详见 [MEMORY_TYPE](/zh-CN/api-reference/local-server-recording/cpp/namespaceagora-1-1linuxsdk#a9c599c551b7b9f9577a1cc6e0f240e05)。

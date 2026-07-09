@@ -1,8 +1,10 @@
 ---
 title: "频道相关"
-description: "频道相关 API reference."
+description: "通过传入用户 ID 获取用户信息。"
 ---
 <a id="toc_channel"></a>
+
+## 频道相关
 
 <a id="api_irtcengine_getuserinfobyuid"></a>
 
@@ -43,7 +45,7 @@ virtual int getUserInfoByUid(uid_t uid, rtc::UserInfo* userInfo) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
@@ -91,7 +93,7 @@ virtual int getUserInfoByUidEx(uid_t uid, rtc::UserInfo* userInfo, const RtcConn
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
@@ -135,7 +137,7 @@ virtual int getUserInfoByUserAccount(const char* userAccount, rtc::UserInfo* use
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
@@ -183,7 +185,7 @@ virtual int getUserInfoByUserAccountEx(const char* userAccount, rtc::UserInfo* u
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
@@ -263,7 +265,7 @@ virtual int joinChannel(const char* token, const char* channelId, const char* in
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -2：参数无效。例如，Token 无效， uid 参数未设置为整数，或 ChannelMediaOptions 中的成员值无效。你需要传入有效参数并重新加入频道。
   - -3： IRtcEngine 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
   - -7： IRtcEngine 对象尚未初始化。你需要先初始化 IRtcEngine 对象再调用该方法。
@@ -350,7 +352,7 @@ virtual int joinChannel(const char* token, const char* channelId, uid_t uid, con
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -2：参数无效。例如，Token 无效， uid 参数未设置为整数，或 ChannelMediaOptions 中的成员值无效。你需要传入有效参数并重新加入频道。
   - -3： IRtcEngine 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
   - -7： IRtcEngine 对象尚未初始化。你需要先初始化 IRtcEngine 对象再调用该方法。
@@ -436,7 +438,7 @@ virtual int joinChannelEx(const char* token, const RtcConnection& connection, co
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -2：参数无效。例如，Token 无效， uid 参数未设置为整数，或 ChannelMediaOptions 中的成员值无效。你需要传入有效参数并重新加入频道。
   - -3： IRtcEngine 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
   - -7： IRtcEngine 对象尚未初始化。你需要先初始化 IRtcEngine 对象再调用该方法。
@@ -524,7 +526,7 @@ virtual int joinChannelWithUserAccount(const char* token, const char* channelId,
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -2：参数无效。例如，Token 无效， uid 参数未设置为整数，或 ChannelMediaOptions 中某成员的值无效。请传入有效参数并重新加入频道。
   - -3： IRtcEngine 对象初始化失败。请重新初始化 IRtcEngine 对象。
   - -7： IRtcEngine 对象尚未初始化。请先初始化 IRtcEngine 对象再调用该方法。
@@ -613,7 +615,7 @@ virtual int joinChannelWithUserAccount(const char* token, const char* channelId,
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -2：参数无效。例如，Token 无效， uid 参数未设置为整数，或 ChannelMediaOptions 中某成员的值无效。你需要传入有效参数并重新加入频道。
   - -3： IRtcEngine 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
   - -7： IRtcEngine 对象尚未初始化。你需要先初始化 IRtcEngine 对象再调用该方法。
@@ -715,7 +717,7 @@ virtual int joinChannelWithUserAccountEx(const char* token, const char* channelI
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -2：参数无效。例如，Token 无效， uid 参数未设置为整数，或 ChannelMediaOptions 中的成员值无效。你需要传入有效参数并重新加入频道。
   - -3： IRtcEngine 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
   - -7： IRtcEngine 对象尚未初始化。你需要先初始化 IRtcEngine 对象再调用该方法。
@@ -769,7 +771,7 @@ virtual int leaveChannel() = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -7：SDK 未初始化。
@@ -825,7 +827,7 @@ virtual int leaveChannel(const LeaveChannelOptions& options) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
@@ -884,7 +886,7 @@ virtual int leaveChannelEx(const RtcConnection& connection) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
@@ -957,7 +959,7 @@ virtual int leaveChannelEx(const RtcConnection& connection, const LeaveChannelOp
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
@@ -1022,7 +1024,7 @@ virtual int preloadChannel(const char* token, const char* channelId, uid_t uid) 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -7： IRtcEngine 对象尚未初始化。请先初始化 IRtcEngine 对象后再调用该方法。
   - -102：频道名无效。请传入有效的频道名并重新加入频道。
 
@@ -1095,7 +1097,7 @@ virtual int preloadChannelWithUserAccount(const char* token, const char* channel
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -2：参数无效，例如用户 User Account 为空。请传入有效参数后重新加入频道。
   - -7： IRtcEngine 对象尚未初始化。请先初始化 IRtcEngine 对象后再调用该方法。
   - -102：频道名无效。请传入有效的频道名后重新加入频道。
@@ -1153,7 +1155,7 @@ virtual int registerLocalUserAccount(const char* appId, const char* userAccount)
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
@@ -1190,7 +1192,7 @@ virtual int renewToken(const char* token) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -2：参数无效，例如传入的 Token 为空。
   - -7： IRtcEngine 对象尚未初始化。请先初始化 IRtcEngine 对象再调用该方法。
   - 110：Token 无效。请确保以下两点：
@@ -1217,7 +1219,7 @@ virtual int setChannelProfile(CHANNEL_PROFILE_TYPE profile) = 0;
 SDK 会根据不同的频道场景采用不同的优化策略。例如，在直播场景中，SDK 会优先保证视频质量。初始化 SDK 后，默认频道场景为直播。
 
 :::info[注]
-为保证实时通信质量，声网建议频道内所有用户使用相同的频道场景。在不同的频道场景中，SDK 的默认音频路由也不同。详见 [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone)。
+为保证实时通信质量，声网建议频道内所有用户使用相同的频道场景。在不同的频道场景中，SDK 的默认音频路由也不同。详见 [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone)。
 :::
 
 <a id="api_irtcengine_setchannelprofile__timing"></a>
@@ -1239,7 +1241,7 @@ SDK 会根据不同的频道场景采用不同的优化策略。例如，在直�
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -2：参数无效。
   - -7：SDK 未初始化。
 
@@ -1304,7 +1306,7 @@ virtual int setClientRole(CLIENT_ROLE_TYPE role) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -7：SDK 未初始化。
@@ -1373,7 +1375,7 @@ virtual int setClientRole(CLIENT_ROLE_TYPE role, const ClientRoleOptions& option
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -5：请求被拒绝。
@@ -1409,7 +1411,7 @@ virtual int updateChannelMediaOptions(const ChannelMediaOptions& options) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -2： ChannelMediaOptions 中某个成员的值无效，例如 token 或用户 ID 无效。你需要填写有效的参数。
   - -7： IRtcEngine 对象尚未初始化。你需要先初始化 IRtcEngine 对象再调用该方法。
   - -8： IRtcEngine 对象的内部状态错误，可能是用户尚未加入频道。建议你通过 onConnectionStateChanged 回调判断用户是否在频道中。如果你收到 CONNECTION_STATE_DISCONNECTED （1）或 CONNECTION_STATE_FAILED （5）状态，说明用户不在频道中。你需要先调用 joinChannel 加入频道，再调用该方法。
@@ -1454,7 +1456,7 @@ virtual int updateChannelMediaOptionsEx(const ChannelMediaOptions& options, cons
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -2： ChannelMediaOptions 中的成员值无效，例如 token 或用户 ID 无效。你需要填写有效的参数。
   - -7： IRtcEngine 对象尚未初始化。你需要先初始化 IRtcEngine 对象再调用该方法。
   - -8： IRtcEngine 对象的内部状态错误，可能的原因是用户未加入频道。声网建议你通过 onConnectionStateChanged 回调判断用户是否在频道中。如果你收到 CONNECTION_STATE_DISCONNECTED （1）或 CONNECTION_STATE_FAILED （5）状态，说明用户不在频道中。你需要先调用 joinChannel 加入频道，再调用该方法。
@@ -1497,7 +1499,7 @@ virtual int updatePreloadChannelToken(const char* token) = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
   - -2：参数无效，例如传入的 Token 无效。请传入有效参数并重新加入频道。
   - -7： IRtcEngine 对象尚未初始化。请先初始化 IRtcEngine 对象后再调用该方法。
 

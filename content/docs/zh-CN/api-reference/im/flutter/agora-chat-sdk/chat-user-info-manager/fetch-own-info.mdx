@@ -1,0 +1,43 @@
+---
+title: "fetchOwnInfo method"
+description: "API docs for the fetchOwnInfo method from the ChatUserInfoManager class, for the Dart programming language."
+---
+
+Gets the current user's attributes from the server.
+
+**Return** The user properties that are obtained. See `ChatUserInfo`.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `expireTime` | The time period(seconds) when the user attributes in the cache expire. If the interval between two callers is less than or equal to the value you set in the parameter, user attributes are obtained directly from the local cache; otherwise, they are obtained from the server. For example, if you set this parameter to 120(2 minutes), once this method is called again within 2 minutes, the SDK returns the attributes obtained last time. |
+
+```dart
+Future<ChatUserInfo?> fetchOwnInfo({int expireTime = 0})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<ChatUserInfo?> fetchOwnInfo({int expireTime = 0}) async {
+  String? currentUser = await ChatClient.getInstance.getCurrentUsername();
+  if (currentUser != null) {
+    try {
+      Map<String, ChatUserInfo> ret = await fetchUserInfoById(
+        [currentUser],
+        expireTime: expireTime,
+      );
+      _effectiveUserInfoMap[ret.values.first.userId] = ret.values.first;
+      return ret.values.first;
+    } on ChatError catch (e) {
+      throw e;
+    }
+  }
+  return null;
+}
+```

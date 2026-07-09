@@ -1,0 +1,419 @@
+---
+title: "ChatOptions class"
+description: "API docs for the ChatOptions class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The ChatOptions class, which contains the settings of the Chat SDK.
+
+For example, whether to encrypt the messages before sending and whether to automatically accept the friend invitations.
+
+<a id="constructors"></a>
+
+## Constructors
+
+<a id="ChatOptions"></a>
+
+### [ChatOptions](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/chat-options)
+
+```dart
+ChatOptions({required String appKey, bool autoLogin = true, bool debugModel = false, bool acceptInvitationAlways = false, bool autoAcceptGroupInvitation = false, bool requireAck = true, bool requireDeliveryAck = false, bool deleteMessagesAsExitGroup = true, bool deleteMessagesAsExitChatRoom = true, bool isChatRoomOwnerLeaveAllowed = true, bool sortMessageByServerTime = true, bool usingHttpsOnly = true, bool serverTransfer = true, bool isAutoDownloadThumbnail = true, bool enableDNSConfig = true, String? dnsUrl, String? restServer, int? imPort, String? imServer, int areaCode = AreaCode.GLOB})
+```
+
+Sets the app options.
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="acceptInvitationAlways"></a>
+
+### [acceptInvitationAlways](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/accept-invitation-always)
+
+```dart
+acceptInvitationAlways -> bool
+```
+
+Whether to accept friend invitations from other users automatically.
+
+_final._
+
+<a id="appKey"></a>
+
+### [appKey](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/app-key)
+
+```dart
+appKey <-> String
+```
+
+The app key that you get from the console when creating the app.
+
+_late, final._
+
+<a id="areaCode"></a>
+
+### [areaCode](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/area-code)
+
+```dart
+areaCode -> int
+```
+
+The area code. This attribute is used to restrict the scope of accessible edge nodes. The default value is `AreaCodeGLOB`. This attribute can be set only when you call [ChatClient.init](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-client/init). The attribute setting cannot be changed during the app runtime.
+
+_final._
+
+<a id="autoAcceptGroupInvitation"></a>
+
+### [autoAcceptGroupInvitation](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/auto-accept-group-invitation)
+
+```dart
+autoAcceptGroupInvitation -> bool
+```
+
+Whether to accept group invitations automatically.
+
+_final._
+
+<a id="autoLogin"></a>
+
+### [autoLogin](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/auto-login)
+
+```dart
+autoLogin -> bool
+```
+
+Whether to enable automatic login.
+
+_final._
+
+<a id="debugModel"></a>
+
+### [debugModel](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/debug-model)
+
+```dart
+debugModel -> bool
+```
+
+Whether to output the debug information. Make sure to call the method after initializing the ChatClient using [ChatClient.init](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-client/init).
+
+_final._
+
+<a id="deleteMessagesAsExitChatRoom"></a>
+
+### [deleteMessagesAsExitChatRoom](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/delete-messages-as-exit-chat-room)
+
+```dart
+deleteMessagesAsExitChatRoom -> bool
+```
+
+Whether to delete the chat room messages when leaving the chat room.
+
+_final._
+
+<a id="deleteMessagesAsExitGroup"></a>
+
+### [deleteMessagesAsExitGroup](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/delete-messages-as-exit-group)
+
+```dart
+deleteMessagesAsExitGroup -> bool
+```
+
+Whether to delete the group messages when leaving a group.
+
+_final._
+
+<a id="dnsUrl"></a>
+
+### [dnsUrl](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/dns-url)
+
+```dart
+dnsUrl -> String?
+```
+
+The DNS URL.
+
+_final._
+
+<a id="enableDNSConfig"></a>
+
+### [enableDNSConfig](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/enable-dnsconfig)
+
+```dart
+enableDNSConfig -> bool
+```
+
+Whether to enable DNS.
+
+_final._
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="imPort"></a>
+
+### [imPort](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/im-port)
+
+```dart
+imPort -> int?
+```
+
+The custom IM server port.
+
+_final._
+
+<a id="imServer"></a>
+
+### [imServer](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/im-server)
+
+```dart
+imServer -> String?
+```
+
+The custom IM message server url.
+
+_final._
+
+<a id="isAutoDownloadThumbnail"></a>
+
+### [isAutoDownloadThumbnail](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/is-auto-download-thumbnail)
+
+```dart
+isAutoDownloadThumbnail -> bool
+```
+
+Whether to automatically download the thumbnail.
+
+_final._
+
+<a id="isChatRoomOwnerLeaveAllowed"></a>
+
+### [isChatRoomOwnerLeaveAllowed](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/is-chat-room-owner-leave-allowed)
+
+```dart
+isChatRoomOwnerLeaveAllowed -> bool
+```
+
+Whether to allow the chat room owner to leave the chat room.
+
+_final._
+
+<a id="requireAck"></a>
+
+### [requireAck](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/require-ack)
+
+```dart
+requireAck -> bool
+```
+
+Whether to require read receipt after sending a message.
+
+_final._
+
+<a id="requireDeliveryAck"></a>
+
+### [requireDeliveryAck](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/require-delivery-ack)
+
+```dart
+requireDeliveryAck -> bool
+```
+
+Whether to require the delivery receipt after sending a message.
+
+_final._
+
+<a id="restServer"></a>
+
+### [restServer](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/rest-server)
+
+```dart
+restServer -> String?
+```
+
+The custom REST server.
+
+_final._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="serverTransfer"></a>
+
+### [serverTransfer](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/server-transfer)
+
+```dart
+serverTransfer -> bool
+```
+
+Whether to upload the message attachments automatically to the chat server.
+
+_final._
+
+<a id="sortMessageByServerTime"></a>
+
+### [sortMessageByServerTime](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/sort-message-by-server-time)
+
+```dart
+sortMessageByServerTime -> bool
+```
+
+Whether to sort the messages by the time when the messages are received by the server.
+
+_final._
+
+<a id="usingHttpsOnly"></a>
+
+### [usingHttpsOnly](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/using-https-only)
+
+```dart
+usingHttpsOnly -> bool
+```
+
+Whether only HTTPS is used for REST operations.
+
+_final._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="enableAPNs"></a>
+
+### [enableAPNs](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/enable-apns)
+
+```dart
+enableAPNs(String certName) -> void
+```
+
+Enables Apple Push Notification service (APNs) on iOS devices.
+
+<a id="enableFCM"></a>
+
+### [enableFCM](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/enable-fcm)
+
+```dart
+enableFCM(String appId) -> void
+```
+
+Enable Firebase Cloud Messaging (FCM) push on devices that support Google Play.
+
+<a id="enableHWPush"></a>
+
+### [enableHWPush](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/enable-hwpush)
+
+```dart
+enableHWPush() -> void
+```
+
+Enable Huawei Push on Huawei devices.
+
+<a id="enableMeiZuPush"></a>
+
+### [enableMeiZuPush](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/enable-mei-zu-push)
+
+```dart
+enableMeiZuPush(String appId, String appKey) -> void
+```
+
+Enable MeiZu Push on MeiZu devices.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `appId` | The app ID for MeiZu Push. |
+| `appKey` | The app key for MeiZu Push. |
+
+<a id="enableMiPush"></a>
+
+### [enableMiPush](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/enable-mi-push)
+
+```dart
+enableMiPush(String appId, String appKey) -> void
+```
+
+Enable Mi Push on Mi devices.
+
+<a id="enableOppoPush"></a>
+
+### [enableOppoPush](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/enable-oppo-push)
+
+```dart
+enableOppoPush(String appKey, String secret) -> void
+```
+
+Enable OPPO PUSH on OPPO devices.
+
+<a id="enableVivoPush"></a>
+
+### [enableVivoPush](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/enable-vivo-push)
+
+```dart
+enableVivoPush() -> void
+```
+
+Enable vivo Push on vivo devices.
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="toString"></a>
+
+### [toString](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/to-string)
+
+```dart
+toString() -> String
+```
+
+A string representation of this object.
+
+_override._
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

@@ -1,0 +1,28 @@
+---
+title: "getConnectionEventHandler method"
+description: "API docs for the getConnectionEventHandler method from the ChatClient class, for the Dart programming language."
+---
+
+Get the connection event handler.
+
+**Return** The connection event handler.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `identifier` | The custom handler identifier. |
+
+```dart
+ConnectionEventHandler? getConnectionEventHandler(String identifier)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ConnectionEventHandler? getConnectionEventHandler(String identifier) {
+  return _connectionEventHandler[identifier];
+}
+```

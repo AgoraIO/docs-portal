@@ -1,0 +1,62 @@
+---
+title: "loadMessagesWithMsgType method"
+description: "API docs for the loadMessagesWithMsgType method from the ChatConversation class, for the Dart programming language."
+---
+
+Retrieves messages from the database according to the following parameters: the message type, the Unix timestamp, max count, sender.
+
+**Note** Be cautious about the memory usage when the maxCount is large.
+
+- ChatSearchDirection.Up: Messages are retrieved in the reverse chronological order of when the server received messages.
+- ChatSearchDirection.Down: Messages are retrieved in the chronological order of when the server received messages.
+
+**Return** The message list.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `type` | The message type, including TXT, VOICE, IMAGE, and so on. |
+| `timestamp` | The Unix timestamp for the search. |
+| `count` | The max number of messages to search. |
+| `sender` | The sender of the message. The param can also be used to search in group chat or chat room. |
+| `direction` | The direction in which the message is loaded: [ChatSearchDirection](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-search-direction). |
+
+```dart
+Future<List<ChatMessage>> loadMessagesWithMsgType({required MessageType type, int timestamp = -1, int count = 20, String? sender, ChatSearchDirection direction = ChatSearchDirection.Up})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<List<ChatMessage>> loadMessagesWithMsgType({
+  required MessageType type,
+  int timestamp = -1,
+  int count = 20,
+  String? sender,
+  ChatSearchDirection direction = ChatSearchDirection.Up,
+}) async {
+  Map req = this._toJson();
+  req['msgType'] = messageTypeToTypeStr(type);
+  req['timestamp'] = timestamp;
+  req['count'] = count;
+  req['direction'] = direction == ChatSearchDirection.Up ? "up" : "down";
+  req.setValueWithOutNull("sender", sender);
+  Map result = await _emConversationChannel.invokeMethod(
+      ChatMethodKeys.loadMsgWithMsgType, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatMessage> list = [];
+    result[ChatMethodKeys.loadMsgWithMsgType]?.forEach((element) {
+      list.add(ChatMessage.fromJson(element));
+    });
+    return list;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

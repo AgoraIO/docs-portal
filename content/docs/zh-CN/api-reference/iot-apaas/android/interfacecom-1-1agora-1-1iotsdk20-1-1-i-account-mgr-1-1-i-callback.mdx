@@ -1,0 +1,125 @@
+---
+title: "com.agora.iotsdk20.IAccountMgr.ICallback接口 参考"
+description: "账号管理回调接口。"
+---
+
+账号管理回调接口。
+
+## 成员函数说明
+
+<a id="aaf3873bddc0c8c7fe30f849d19ae5cd0"></a>
+
+### onLoginDone()
+
+```cpp
+default void com.agora.iotsdk20.IAccountMgr.ICallback.onLoginDone(int errCode, String account)
+```
+
+账号登录回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| account | 当前账号。 |
+
+<a id="a8a1bd429c88ea4ddaf3cc68b53edf0c6"></a>
+
+### onLoginOtherDevice()
+
+```cpp
+default void com.agora.iotsdk20.IAccountMgr.ICallback.onLoginOtherDevice(String account)
+```
+
+账号在其他设备上登录回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| account | 当前账号。 |
+
+<a id="a69f6570c5e52800cb724f3fce7eb1499"></a>
+
+### onLogoutDone()
+
+```cpp
+default void com.agora.iotsdk20.IAccountMgr.ICallback.onLogoutDone(int errCode, String account)
+```
+
+账号登出回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| account | 当前账号。 |
+
+<a id="acef2d75530ca9703df515a87a61e3647"></a>
+
+### onMqttError()
+
+```cpp
+default void com.agora.iotsdk20.IAccountMgr.ICallback.onMqttError(final String errMessage)
+```
+
+MQTT 客户端出错回调。
+
+当 MQTT 客户端出错时，SDK 会触发该回调报告错误信息。你需要调用 [login](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-account-mgr#ae1655fb00e5d6fcb0f2505598dda2d65) 重新登录用户账号。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errMessage | 错误信息。 `XERR_MQTT_DISCONNECT(-10021)`: MQTT 未连接。 |
+
+<a id="ab00cc16597d74dc72f595dad66a42461"></a>
+
+### onMqttStateChanged()
+
+```cpp
+default void com.agora.iotsdk20.IAccountMgr.ICallback.onMqttStateChanged(int mqttState)
+```
+
+MQTT 客户端状态回调。
+
+当 MQTT 客户端状态发生改变时，SDK 会触发该回调报告当前 MQTT 客户端的状态。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mqttState | MQTT 客户端状态：<br />- MQTT_STATE_DISCONNECTED(0x0000): MQTT 客户端未连接。<br />- MQTT_STATE_CONNECTING(0x0001): MQTT 客户端正在连接中。<br />- MQTT_STATE_CONNECTED(0x0002): MQTT 客户端已连接。 |
+
+<a id="a323a302f0858f0892701e50572087d34"></a>
+
+### onSetPublicKeyDone()
+
+```cpp
+default void com.agora.iotsdk20.IAccountMgr.ICallback.onSetPublicKeyDone(int errCode, final String lsAccessToken, final String inventDeviceName, final String publicKey)
+```
+
+云存储视频加密公钥设置结果的回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| errCode | 设置结果，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。 |
+| lsAccessToken | 灵隼平台账号的 Token。 |
+| inventDeviceName | 账号的虚拟名称。 |
+| publicKey | 公钥。 |
+
+<a id="a614249925264247bac0e91f9466a1921"></a>
+
+### onTokenInvalid()
+
+```cpp
+default void com.agora.iotsdk20.IAccountMgr.ICallback.onTokenInvalid()
+```
+
+Token 过期的回调。
+
+收到该回调后，你需要进行重新登录处理。

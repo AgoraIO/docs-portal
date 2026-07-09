@@ -1,0 +1,27 @@
+---
+title: "addConnectionListener method"
+description: "API docs for the addConnectionListener method from the ChatClientDeprecated extension, for the Dart programming language."
+---
+
+Adds the connection listener of chat server.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The chat server connection listener to be added. |
+
+```dart
+@Deprecated("Use #addConnectionEventHandler to instead")void addConnectionListener(ChatConnectionListener listener)@Deprecated("Use #addConnectionEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@Deprecated("Use #addConnectionEventHandler to instead")
+void addConnectionListener(ChatConnectionListener listener) {
+  _connectionListeners.add(listener);
+}
+```

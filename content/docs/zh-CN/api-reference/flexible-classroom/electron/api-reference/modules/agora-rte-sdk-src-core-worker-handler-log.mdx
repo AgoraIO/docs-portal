@@ -1,0 +1,97 @@
+---
+title: "agora-rte-sdk/src/core/worker/handler/log"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+## Type aliases
+
+<a id="Log"></a>
+
+### Log
+
+```ts
+Log: { content: string; created_at: number; label: string; timestamp: string }
+```
+
+## Functions
+
+<a id="collectLogs"></a>
+
+### Const collectLogs
+
+```ts
+collectLogs(self: WorkerContext, callId: number, labels: string[]): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| self: WorkerContext |  |
+| callId: number |  |
+| labels: string[] |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="deleteLogs"></a>
+
+### Const deleteLogs
+
+```ts
+deleteLogs(self: WorkerContext, callId: number, labels: string[], lastId: number): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| self: WorkerContext |  |
+| callId: number |  |
+| labels: string[] |  |
+| lastId: number |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="setMaxRecords"></a>
+
+### Const setMaxRecords
+
+```ts
+setMaxRecords(self: WorkerContext, callId: number, max: number): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| self: WorkerContext |  |
+| callId: number |  |
+| max: number |  |
+
+#### Returns
+
+Returns void
+
+<a id="writeLog"></a>
+
+### Const writeLog
+
+```ts
+writeLog(self: WorkerContext, callId: number, log: "agora-rte-sdk/src/core/worker/handler/log".Log): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| self: WorkerContext |  |
+| callId: number |  |
+| log: "agora-rte-sdk/src/core/worker/handler/log".Log |  |
+
+#### Returns
+
+Returns void

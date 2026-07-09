@@ -1,0 +1,372 @@
+---
+title: "媒体播放器缓存"
+description: "设置是否自动删除缓存的媒体文件。"
+---
+<a id="toc_mediaplayer_cache"></a>
+
+## 媒体播放器缓存
+
+<a id="api_imediaplayercachemanager_enableautoremovecache"></a>
+
+## enableAutoRemoveCache
+
+设置是否自动删除缓存的媒体文件。
+
+<a id="api_imediaplayercachemanager_enableautoremovecache__prototype"></a>
+
+```java
+int enableAutoRemoveCache(boolean enable);
+```
+
+<a id="api_imediaplayercachemanager_enableautoremovecache__detailed_desc"></a>
+
+当缓存的媒体文件数量或大小超过设置的限制时，启用该功能后，SDK 会自动删除最近最少使用的缓存文件。
+
+<a id="api_imediaplayercachemanager_enableautoremovecache__parameters"></a>
+
+### 参数
+
+#### `enable`
+
+是否启用 SDK 自动删除缓存的媒体文件：
+
+- true：自动删除缓存的媒体文件。
+- false：（默认）不自动删除缓存的媒体文件。
+
+<a id="api_imediaplayercachemanager_enableautoremovecache__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+
+### 所属接口类
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_getcachedir"></a>
+
+## getCacheDir
+
+获取缓存媒体文件的存储路径。
+
+<a id="api_imediaplayercachemanager_getcachedir__prototype"></a>
+
+```java
+String getCacheDir();
+```
+
+<a id="api_imediaplayercachemanager_getcachedir__detailed_desc"></a>
+
+如果在调用该方法之前未调用 [setCacheDir](/zh-CN/api-reference/rtc/android/mediaplayer-cache#api_imediaplayercachemanager_setcachedir) 设置缓存媒体文件的存储路径，则该方法返回 SDK 默认使用的存储路径。
+
+<a id="api_imediaplayercachemanager_getcachedir__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回缓存媒体文件的存储路径。 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_getcachefilecount"></a>
+
+## getCacheFileCount
+
+获取已缓存的媒体文件数量。
+
+<a id="api_imediaplayercachemanager_getcachefilecount__prototype"></a>
+
+```java
+int getCacheFileCount();
+```
+
+<a id="api_imediaplayercachemanager_getcachefilecount__detailed_desc"></a>
+
+<a id="api_imediaplayercachemanager_getcachefilecount__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功，返回已缓存的媒体文件数量。
+- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+
+### 所属接口类
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_getmaxcachefilecount"></a>
+
+## getMaxCacheFileCount
+
+获取可缓存的媒体文件的最大数量。
+
+<a id="api_imediaplayercachemanager_getmaxcachefilecount__prototype"></a>
+
+```java
+int getMaxCacheFileCount();
+```
+
+<a id="api_imediaplayercachemanager_getmaxcachefilecount__detailed_desc"></a>
+
+默认情况下，可缓存的媒体文件最大数量为 1000。
+
+<a id="api_imediaplayercachemanager_getmaxcachefilecount__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功，返回获取可缓存的媒体文件的最大数量。
+- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+
+### 所属接口类
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_getmaxcachefilesize"></a>
+
+## getMaxCacheFileSize
+
+获取缓存媒体文件聚合存储空间的最大大小。
+
+<a id="api_imediaplayercachemanager_getmaxcachefilesize__prototype"></a>
+
+```java
+long getMaxCacheFileSize();
+```
+
+<a id="api_imediaplayercachemanager_getmaxcachefilesize__detailed_desc"></a>
+
+你可以调用 [setMaxCacheFileSize](/zh-CN/api-reference/rtc/android/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilesize) 方法根据实际场景设置缓存媒体文件聚合存储空间的最大大小。
+
+<a id="api_imediaplayercachemanager_getmaxcachefilesize__return_values"></a>
+
+### 返回值
+
+- &gt; 0：方法调用成功，返回缓存媒体文件聚合存储空间的最大大小（单位为字节）。
+- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+
+### 所属接口类
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_removeallcaches"></a>
+
+## removeAllCaches
+
+删除媒体播放器中所有缓存的媒体文件。
+
+<a id="api_imediaplayercachemanager_removeallcaches__prototype"></a>
+
+```java
+int removeAllCaches();
+```
+
+<a id="api_imediaplayercachemanager_removeallcaches__detailed_desc"></a>
+
+:::info[注]
+当前正在播放的缓存媒体文件不会被删除。
+:::
+
+<a id="api_imediaplayercachemanager_removeallcaches__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+
+### 所属接口类
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_removecachebyuri"></a>
+
+## removeCacheByUri
+
+删除缓存的媒体文件。
+
+<a id="api_imediaplayercachemanager_removecachebyuri__prototype"></a>
+
+```java
+int removeCacheByUri(String uri);
+```
+
+<a id="api_imediaplayercachemanager_removecachebyuri__detailed_desc"></a>
+
+:::info[注]
+当前正在播放的缓存媒体文件不会被删除。
+:::
+
+<a id="api_imediaplayercachemanager_removecachebyuri__parameters"></a>
+
+### 参数
+
+#### `uri`
+
+要删除的媒体文件的 URI（统一资源标识符）。
+
+<a id="api_imediaplayercachemanager_removecachebyuri__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+
+### 所属接口类
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_removeoldcache"></a>
+
+## removeOldCache
+
+删除最少使用的缓存媒体文件。
+
+<a id="api_imediaplayercachemanager_removeoldcache__prototype"></a>
+
+```java
+int removeOldCache();
+```
+
+<a id="api_imediaplayercachemanager_removeoldcache__detailed_desc"></a>
+
+你可以在缓存文件的存储空间即将达到上限时调用该方法。调用该方法后，SDK 会删除最少使用的缓存媒体文件。
+
+:::info[注]
+[removeOldCache](/zh-CN/api-reference/rtc/android/mediaplayer-cache#api_imediaplayercachemanager_removeoldcache) 不会删除当前正在播放的缓存媒体文件。
+:::
+
+<a id="api_imediaplayercachemanager_removeoldcache__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+
+### 所属接口类
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_setcachedir"></a>
+
+## setCacheDir
+
+设置要缓存的媒体文件的存储路径。
+
+<a id="api_imediaplayercachemanager_setcachedir__prototype"></a>
+
+```java
+int setCacheDir(String path);
+```
+
+<a id="api_imediaplayercachemanager_setcachedir__detailed_desc"></a>
+
+:::info[注]
+请确保在调用该方法前已初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)。
+:::
+
+<a id="api_imediaplayercachemanager_setcachedir__parameters"></a>
+
+### 参数
+
+#### `path`
+
+要缓存的媒体文件的绝对路径。确保该目录已存在且可写。
+
+<a id="api_imediaplayercachemanager_setcachedir__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+
+### 所属接口类
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_setmaxcachefilecount"></a>
+
+## setMaxCacheFileCount
+
+设置可缓存的媒体文件数量上限。
+
+<a id="api_imediaplayercachemanager_setmaxcachefilecount__prototype"></a>
+
+```java
+int setMaxCacheFileCount(int count);
+```
+
+<a id="api_imediaplayercachemanager_setmaxcachefilecount__detailed_desc"></a>
+
+<a id="api_imediaplayercachemanager_setmaxcachefilecount__parameters"></a>
+
+### 参数
+
+#### `count`
+
+可缓存的媒体文件数量上限（默认值为 1000）。
+
+<a id="api_imediaplayercachemanager_setmaxcachefilecount__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+
+### 所属接口类
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_setmaxcachefilesize"></a>
+
+## setMaxCacheFileSize
+
+设置缓存媒体文件的聚合存储空间的最大大小。
+
+<a id="api_imediaplayercachemanager_setmaxcachefilesize__prototype"></a>
+
+```java
+int setMaxCacheFileSize(long cacheSize);
+```
+
+<a id="api_imediaplayercachemanager_setmaxcachefilesize__detailed_desc"></a>
+
+<a id="api_imediaplayercachemanager_setmaxcachefilesize__parameters"></a>
+
+### 参数
+
+#### `cacheSize`
+
+缓存媒体文件的聚合存储空间的最大大小，单位为字节。（默认值为 1 GB。）
+
+<a id="api_imediaplayercachemanager_setmaxcachefilesize__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+
+### 所属接口类
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats"></a>
+
+## onPlayerCacheStats
+
+报告正在缓存的媒体文件的统计信息回调。
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats__prototype"></a>
+
+```java
+void onPlayerCacheStats(CacheStatistics stats)
+```
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats__detailed_desc"></a>
+
+调用 [openWithMediaSource](/zh-CN/api-reference/rtc/android/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法并将 `enableCache` 设置为 true 后，SDK 每秒触发一次该回调。
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats__timing"></a>
+
+### 触发时机
+
+该回调在调用 [openWithMediaSource](/zh-CN/api-reference/rtc/android/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法并将 `enableCache` 设置为 true 后，每秒触发一次。
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats__parameters"></a>
+
+### 参数
+
+#### `stats`
+
+正在缓存的媒体文件的统计信息。详见 [CacheStatistics](/zh-CN/api-reference/rtc/android/class-cachestatistics)。
+
+### 所属接口类
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)

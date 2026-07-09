@@ -1,0 +1,43 @@
+---
+title: "loginWithAgoraToken method"
+description: "API docs for the loginWithAgoraToken method from the ChatClient class, for the Dart programming language."
+---
+
+An app user logs in to the chat server by username and Agora token. This method supports automatic login.
+
+See also: Another method to login to chat server is to login with user ID and token, See [login](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-client/login).
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `userId` | The userId. |
+| `agoraToken` | The Agora token. |
+
+```dart
+Future<void> loginWithAgoraToken(String userId, String agoraToken)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> loginWithAgoraToken(String userId, String agoraToken) async {
+  Map req = {
+    "username": userId,
+    "agora_token": agoraToken,
+  };
+
+  Map result = await ClientChannel.invokeMethod(
+      ChatMethodKeys.loginWithAgoraToken, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    _currentUserId = userId;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,0 +1,88 @@
+---
+title: "agora::LocalAccessPointConfiguration结构体 参考"
+description: "Local Access Point 配置。"
+---
+
+Local Access Point 配置。
+
+## 构造及析构函数说明
+
+<a id="a62fcd4f32ef2f39879062cdc4908670b"></a>
+
+### LocalAccessPointConfiguration()
+
+```cpp
+agora::LocalAccessPointConfiguration::LocalAccessPointConfiguration() inline
+```
+
+## 类成员变量说明
+
+<a id="ac2983ddbe55127c868adb1a0bda09149"></a>
+
+### ipList
+
+```cpp
+const char** agora::LocalAccessPointConfiguration::ipList
+```
+
+Local Access Point 的对内 IP 地址列表。 `ipList` 和 `domainList` 必须至少填一个。
+
+<a id="a1033410fe66bac86b1d581aad42319c3"></a>
+
+### ipListSize
+
+```cpp
+int agora::LocalAccessPointConfiguration::ipListSize
+```
+
+Local Access Point 对内 IP 地址的数量。该参数的值必须和你填入的 IP 地址的数量一致。
+
+<a id="a78e7f6fd61666b9a3f3ada98cf02f6b6"></a>
+
+### domainList
+
+```cpp
+const char** agora::LocalAccessPointConfiguration::domainList
+```
+
+Local Access Point 的域名列表。SDK 会根据你填入的域名解析出 Local Access Point 的 IP 地址。域名解析的超时时间为 10 秒。 `ipList` 和 `domainList` 必须至少填一个。如果你同时指定 IP 地址和域名，SDK 会将根据域名解析出来的 IP 地址和你指定的 IP 地址合并、去重，然后随机连接一个 IP 来实现负载均衡。
+
+<a id="a5f3a51bf5103daf7ef552bece7d4fcca"></a>
+
+### domainListSize
+
+```cpp
+int agora::LocalAccessPointConfiguration::domainListSize
+```
+
+Local Access Point 域名的数量。该参数的值必须和你填入的域名的数量一致。
+
+<a id="a4ef8d15422ba34b54fdb0dbd58fe4f7e"></a>
+
+### verifyDomainName
+
+```cpp
+const char* agora::LocalAccessPointConfiguration::verifyDomainName
+```
+
+内网证书验证域名。如果传值为空，则用 SDK 默认的证书验证域名 `secure-edge.local`。
+
+<a id="a13520356a3d6182568c638001ae3c594"></a>
+
+### mode
+
+```cpp
+LOCAL_PROXY_MODE agora::LocalAccessPointConfiguration::mode
+```
+
+连接模式。详见 [LOCAL_PROXY_MODE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora#a2c4d7294b18a6b4c3169f7199d390a10)。
+
+<a id="a1ef8ba4021df81f35bfb0867218dd7d7"></a>
+
+### advancedConfig
+
+```cpp
+AdvancedConfigInfo agora::LocalAccessPointConfiguration::advancedConfig
+```
+
+Local Access Point 的高级选项。详见 [AdvancedConfigInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1-advanced-config-info)。

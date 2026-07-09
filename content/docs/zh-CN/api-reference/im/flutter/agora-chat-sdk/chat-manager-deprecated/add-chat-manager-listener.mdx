@@ -1,0 +1,28 @@
+---
+title: "addChatManagerListener method"
+description: "API docs for the addChatManagerListener method from the ChatManagerDeprecated extension, for the Dart programming language."
+---
+
+Adds the chat manager listener. After calling this method, you can listen for new messages when they arrive.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The chat manager listener that listens for new messages. See [ChatManagerListener](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager-listener). |
+
+```dart
+@Deprecated("Use addEventHandler to instead")void addChatManagerListener(ChatManagerListener listener)@Deprecated("Use addEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@Deprecated("Use addEventHandler to instead")
+void addChatManagerListener(ChatManagerListener listener) {
+  _listeners.remove(listener);
+  _listeners.add(listener);
+}
+```

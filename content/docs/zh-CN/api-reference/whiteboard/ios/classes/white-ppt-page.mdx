@@ -1,0 +1,110 @@
+---
+title: "WhitePptPage Class Reference"
+description: "用于配置待插入场景的图片或动态 PPT 页的参数。场景中可插入的图片或动态 PPT 包括："
+---
+
+<a id="overview"></a>
+
+用于配置待插入场景的图片或动态 PPT 页的参数。场景中可插入的图片或动态 PPT 包括：
+
+- PNG、JPG/JPEG、WEBP 格式的图片，或由 PPT、PPTX、DOC、DOCX、PDF 格式的文件转换成 PNG、JPG/JPEG、WEBP 格式的图片。
+- 使用 文档转换服务 转换过的 PPTX 文件。
+
+## Methods
+
+<a id="//api/name/initWithSrc:size:"></a>
+
+### initWithSrc:size:
+
+```objc
+- (instancetype)initWithSrc:(NSString *)src size:(CGSize)size
+```
+
+创建待插入场景的图片或动态 PPT 并初始化一个 `WhitePptPage` 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `src` | [src](#//api/name/src) 图片或动态 PPT 页的地址，支持的格式如下： 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过文档转换功能生成的 URL 地址，例如， `"` https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg `"`。 动态 PPT 页：通过文档转换功能生成的 URI 地址，例如， `"pptx://cover.herewhite.com/dynamicConvert/6a212c90fa5311ea8b9c074232aaccd4/1.slide"`，即 [动态文档转换任务的查询结果](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 中 `conversionFileUrl` 字段的值。 |
+| `size` | 图片或动态 PPT 在白板中的尺寸，单位为像素。 |
+
+#### Returns
+
+初始化的 `WhitePptPage` 对象。
+
+#### Discussion
+
+**Note：**
+
+- 每个场景中只能插入一张图片和一页动态 PPT。
+- 场景中展示的图片或动态 PPT 中心点默认为白板内部坐标系得原点且无法移动，即无法改变图片或动态 PPT 在白板内部的位置。
+
+<a id="//api/name/initWithSrc:preview:size:"></a>
+
+### initWithSrc:preview:size:
+
+```objc
+- (instancetype)initWithSrc:(NSString *)src preview:(NSString *)url size:(CGSize)size
+```
+
+创建待插入场景的图片或动态 PPT 的预览图并初始化一个 `WhitePptPage` 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| `src` | [src](#//api/name/src) 图片或动态 PPT 页的地址，支持的格式如下： 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过文档转换功能生成的 URL 地址，例如， `"` https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg `"`。 动态 PPT 页：通过文档转换功能生成的 URI 地址，例如， `"pptx://cover.herewhite.com/dynamicConvert/6a212c90fa5311ea8b9c074232aaccd4/1.slide"`，即 [动态文档转换任务的查询结果](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 中 `conversionFileUrl` 字段的值。 |
+| `url` | 图片或动态 PPT 预览图的 URL 地址。动态 PPT 预览图的 URL 地址可以从 [文档转换任务的查询结果](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 中的 `preview` 字段获取，例如，" [https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/2fdxxxxx67e/preview/1.png](https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/2fdxxxxx67e/preview/1.png) “。 |
+| `size` | 图片或动态 PPT 在白板中的尺寸，单位为像素。 |
+
+#### Returns
+
+初始化的 `WhitePptPage` 对象。
+
+#### Discussion
+
+**Note：**
+
+- 每个场景中只能插入一张图片和一页动态 PPT。
+- 场景中展示的图片或动态 PPT 中心点默认为白板内部坐标系得原点且无法移动，即无法改变图片或动态 PPT 在白板内部的位置。
+
+<a id="//api/name/src"></a>
+
+### src
+
+```objc
+@property (nonatomic, copy) NSString *src
+```
+
+场景图片或动态 PPT 的地址。
+
+<a id="//api/name/width"></a>
+
+### width
+
+```objc
+@property (nonatomic, assign) CGFloat width
+```
+
+图片或动态 PPT 在白板中的宽度，单位为像素。
+
+<a id="//api/name/height"></a>
+
+### height
+
+```objc
+@property (nonatomic, assign) CGFloat height
+```
+
+图片或动态 PPT 在白板中的高度，单位为像素。
+
+<a id="//api/name/previewURL"></a>
+
+### previewURL
+
+```objc
+@property (nonatomic, copy, readonly) NSString *previewURL
+```
+
+图片的或动态 PPT 预览图的 URL 地址。

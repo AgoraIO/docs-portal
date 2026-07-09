@@ -1,0 +1,597 @@
+---
+title: "RtcChannelAdapterElectron"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- RtcChannelAdapterBase
+  - RtcChannelAdapterElectron
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new RtcChannelAdapterElectron(channelName: string, configs: RtcAdapterElectronConfig, base: RtcAdapterBase): RtcChannelAdapterElectron
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelName: string |  |
+| configs: RtcAdapterElectronConfig |  |
+| base: RtcAdapterBase |  |
+
+#### Returns
+
+Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-channel-adapter-electron)
+
+## Properties
+
+<a id="base"></a>
+
+### base
+
+```ts
+base: RtcAdapterElectron
+```
+
+<a id="channelName"></a>
+
+### channelName
+
+```ts
+channelName: string
+```
+
+<a id="logger"></a>
+
+### logger
+
+```ts
+logger: "agora-rte-sdk/src/core/logger/type".Logger
+```
+
+<a id="uid"></a>
+
+### Optional uid
+
+```ts
+uid?: number
+```
+
+## Accessors
+
+<a id="isLocalAudioMuted"></a>
+
+### isLocalAudioMuted
+
+```ts
+get isLocalAudioMuted(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="isLocalVideoMuted"></a>
+
+### isLocalVideoMuted
+
+```ts
+get isLocalVideoMuted(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+## Methods
+
+<a id="emit"></a>
+
+### emit
+
+```ts
+emit(evt: string, ...args: any[]): RtcChannelAdapterElectron
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| Rest ...args: any[] |  |
+
+#### Returns
+
+Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-channel-adapter-electron)
+
+<a id="enableDualStream"></a>
+
+### enableDualStream
+
+```ts
+enableDualStream(enable: boolean): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable: boolean |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="getCurrentFrameData"></a>
+
+### getCurrentFrameData
+
+```ts
+getCurrentFrameData(_streamUuid: string): ImageData
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| _streamUuid: string |  |
+
+#### Returns
+
+Returns ImageData
+
+<a id="getSessionId"></a>
+
+### getSessionId
+
+```ts
+getSessionId(): string
+```
+
+#### Returns
+
+Returns string
+
+<a id="join"></a>
+
+### join
+
+```ts
+join(token: string, streamUuid: string, connectionType: AGRtcConnectionType): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| token: string |  |
+| streamUuid: string |  |
+| connectionType: AGRtcConnectionType |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="leave"></a>
+
+### leave
+
+```ts
+leave(connectionType?: AGRtcConnectionType): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional connectionType: AGRtcConnectionType |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="muteLocalAudio"></a>
+
+### muteLocalAudio
+
+```ts
+muteLocalAudio(mute: boolean, connectionType: AGRtcConnectionType): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mute: boolean |  |
+| connectionType: AGRtcConnectionType |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteLocalAudioStream"></a>
+
+### muteLocalAudioStream
+
+```ts
+muteLocalAudioStream(mute: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mute: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteLocalScreenShare"></a>
+
+### muteLocalScreenShare
+
+```ts
+muteLocalScreenShare(mute: boolean, connectionType: AGRtcConnectionType): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mute: boolean |  |
+| connectionType: AGRtcConnectionType |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteLocalVideo"></a>
+
+### muteLocalVideo
+
+```ts
+muteLocalVideo(mute: boolean, connectionType: AGRtcConnectionType): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mute: boolean |  |
+| connectionType: AGRtcConnectionType |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteLocalVideoStream"></a>
+
+### muteLocalVideoStream
+
+```ts
+muteLocalVideoStream(mute: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| mute: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteRemoteAudio"></a>
+
+### muteRemoteAudio
+
+```ts
+muteRemoteAudio(streamUuid: string, mute: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+| mute: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteRemoteVideo"></a>
+
+### muteRemoteVideo
+
+```ts
+muteRemoteVideo(streamUuid: string, mute: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+| mute: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteRemoteVideoMass"></a>
+
+### muteRemoteVideoMass
+
+```ts
+muteRemoteVideoMass(streamUuids: string[], mute: boolean): Promise<string[]>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuids: string[] |  |
+| mute: boolean |  |
+
+#### Returns
+
+Returns Promise &lt; string [] &gt;
+
+<a id="off"></a>
+
+### off
+
+```ts
+off(evt: string, cb: CallableFunction): RtcChannelAdapterElectron
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-channel-adapter-electron)
+
+<a id="on"></a>
+
+### on
+
+```ts
+on(evt: string, cb: CallableFunction): RtcChannelAdapterElectron
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-channel-adapter-electron)
+
+<a id="onAudioVolumeIndication"></a>
+
+### onAudioVolumeIndication
+
+```ts
+onAudioVolumeIndication(cb: (volumes: Map<string, number>) => void): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: (volumes: Map&lt;string, number&gt;) =&gt; void |  |
+
+#### Returns
+
+Returns number
+
+<a id="onConnectedThroughCloudProxy"></a>
+
+### onConnectedThroughCloudProxy
+
+```ts
+onConnectedThroughCloudProxy(cb: (connectionType: AGRtcConnectionType) => void): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: (connectionType: AGRtcConnectionType) =&gt; void |  |
+
+#### Returns
+
+Returns number
+
+<a id="onConnectionStateChanged"></a>
+
+### onConnectionStateChanged
+
+```ts
+onConnectionStateChanged(cb: (state: AGRtcState, connectionType: AGRtcConnectionType) => void): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: (state: AGRtcState, connectionType: AGRtcConnectionType) =&gt; void |  |
+
+#### Returns
+
+Returns number
+
+<a id="onNetworkStats"></a>
+
+### onNetworkStats
+
+```ts
+onNetworkStats(cb: (stats: AGNetworkStats) => void): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: (stats: AGNetworkStats) =&gt; void |  |
+
+#### Returns
+
+Returns number
+
+<a id="onPublishedThroughCloudProxy"></a>
+
+### onPublishedThroughCloudProxy
+
+```ts
+onPublishedThroughCloudProxy(cb: (connectionType: AGRtcConnectionType, isUsingCloudProxy: boolean) => void): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: (connectionType: AGRtcConnectionType, isUsingCloudProxy: boolean) =&gt; void |  |
+
+#### Returns
+
+Returns number
+
+<a id="once"></a>
+
+### once
+
+```ts
+once(evt: string, cb: CallableFunction): RtcChannelAdapterElectron
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-channel-adapter-electron)
+
+<a id="removeAllEventListeners"></a>
+
+### removeAllEventListeners
+
+```ts
+removeAllEventListeners(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="setCloudProxy"></a>
+
+### setCloudProxy
+
+```ts
+setCloudProxy(proxyType: AgoraCloudProxyType): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| proxyType: AgoraCloudProxyType |  |
+
+#### Returns
+
+Returns number
+
+<a id="setLatencyLevel"></a>
+
+### setLatencyLevel
+
+```ts
+setLatencyLevel(level: AgoraLatencyLevel): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| level: AgoraLatencyLevel |  |
+
+#### Returns
+
+Returns void
+
+<a id="setLowStreamParameter"></a>
+
+### setLowStreamParameter
+
+```ts
+setLowStreamParameter(streamParameter: AGLowStreamParameter): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamParameter: AGLowStreamParameter |  |
+
+#### Returns
+
+Returns number
+
+<a id="setRemoteTrackVolume"></a>
+
+### setRemoteTrackVolume
+
+```ts
+setRemoteTrackVolume(streamUuid: string, volume: number): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+| volume: number |  |
+
+#### Returns
+
+Returns number
+
+<a id="setRemoteVideoStreamType"></a>
+
+### setRemoteVideoStreamType
+
+```ts
+setRemoteVideoStreamType(streamUuid: string, streamType: AGRemoteVideoStreamType): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+| streamType: AGRemoteVideoStreamType |  |
+
+#### Returns
+
+Returns number

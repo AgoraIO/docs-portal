@@ -1,0 +1,86 @@
+---
+title: "agora::rtc::IMediaNodeFactory类 参考abstract"
+description: "继承自 agora::RefCountInterface ."
+---
+
+`IMediaNodeFactory` 类。
+
+## 构造及析构函数说明
+
+<a id="afb30af61026e2ef3f6559f8942d688a8"></a>
+
+### ~IMediaNodeFactory()
+
+```cpp
+agora::rtc::IMediaNodeFactory::~IMediaNodeFactory() inlineprotected
+```
+
+## 成员函数说明
+
+<a id="aa6b8aa23b839f89801ca90d5228d712d"></a>
+
+### createAudioPcmDataSender()
+
+```cpp
+virtual agora_refptr<IAudioPcmDataSender> agora::rtc::IMediaNodeFactory::createAudioPcmDataSender() pure virtual
+```
+
+创建一个 PCM 数据发送模块。
+
+该方法创建一个 `IAudioPcmDataSender` 对象, 可用于 [createCustomAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1base-1-1-i-agora-service#ab267caa07c4614e8bf27da38527150de) 方法。
+
+#### Returns
+
+- IAudioPcmDataSender 对象：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="a8723328a619ac7786ff9f96a644d5db5"></a>
+
+### createAudioEncodedFrameSender()
+
+```cpp
+virtual agora_refptr<IAudioEncodedFrameSender> agora::rtc::IMediaNodeFactory::createAudioEncodedFrameSender() pure virtual
+```
+
+创建一个已编码音频数据发送模块。
+
+该方法创建一个 `IAudioEncodedFrameSender` 对象, 可用于 createCustomAudioTrack 方法。
+
+#### Returns
+
+- IAudioEncodedFrameSender 对象: 方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="ae5c627b7b2671942a75f577dc64a22f7"></a>
+
+### createVideoFrameSender()
+
+```cpp
+virtual agora_refptr<IVideoFrameSender> agora::rtc::IMediaNodeFactory::createVideoFrameSender() pure virtual
+```
+
+创建一个 YUV 格式的视频帧发送模块。
+
+该方法创建 `IVideoFrameSender` 对象，可用于 [createCustomVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1base-1-1-i-agora-service#aaefc87859c82a4266947f0a4ebd07c51) 1 方法。
+
+#### Returns
+
+- IVideoFrameSender 对象：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="a5313c5f02951817b9a7f41c156db0338"></a>
+
+### createVideoEncodedImageSender()
+
+```cpp
+virtual agora_refptr<IVideoEncodedImageSender> agora::rtc::IMediaNodeFactory::createVideoEncodedImageSender() pure virtual
+```
+
+创建一个已编码视频发送模块。
+
+该方法创建 `IVideoEncodedImageSender` 对象，可用于 [createCustomVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1base-1-1-i-agora-service#a5cbbb4b5bebe8a90953389bb249a2d4d) 2 方法。
+
+#### Returns
+
+- IVideoEncodedImageSender 对象：方法调用成功。
+- 空指针：方法调用失败。

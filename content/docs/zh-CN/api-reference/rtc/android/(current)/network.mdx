@@ -1,8 +1,10 @@
 ---
 title: "网络及其他"
-description: "网络及其他 API reference."
+description: "允许你在通话结束后投诉通话质量。"
 ---
 <a id="toc_network"></a>
+
+## 网络及其他
 
 <a id="api_irtcengine_complain"></a>
 
@@ -37,7 +39,7 @@ public abstract int complain(String callId, String description);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -7：在 RtcEngine 初始化之前调用该方法。
@@ -98,7 +100,7 @@ public abstract int enableEncryption(boolean enabled, EncryptionConfig config);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
   - -2：参数无效。请传入有效参数。
   - -4：内置加密模式错误或 SDK 加载外部加密库失败。请检查枚举值或重新加载外部加密库。
   - -7：SDK 未初始化。请先初始化 RtcEngine 实例后再调用该方法。
@@ -163,7 +165,7 @@ public abstract int enableEncryptionEx(boolean enabled, EncryptionConfig config,
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -204,7 +206,7 @@ public abstract int enableWebSdkInteroperability(boolean enabled);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -354,7 +356,7 @@ public abstract int getConnectionStateEx(RtcConnection connection);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -373,7 +375,7 @@ public abstract long getCurrentMonotonicTimeInMs();
 
 <a id="api_irtcengine_getcurrentmonotonictimeinms__detailed_desc"></a>
 
-在自定义视频采集和自定义音频采集场景中，为确保音视频同步，声网建议调用该方法获取 SDK 当前的单调时间，并将该值传入采集的视频帧 (`VideoFrame`) 和音频帧 ([AudioFrame](/zh-CN/api-reference/rtc/android/class-audioframe)) 的时间戳参数中。单调时间是指一个随时间单调递增的时间序列，单位为毫秒。
+在自定义视频采集和自定义音频采集场景中，为确保音视频同步，声网建议调用该方法获取 SDK 当前的单调时间，并将该值传入采集的视频帧 ([VideoFrame](/zh-CN/api-reference/rtc/android/class-videoframe)) 和音频帧 ([AudioFrame](/zh-CN/api-reference/rtc/android/class-audioframe)) 的时间戳参数中。单调时间是指一个随时间单调递增的时间序列，单位为毫秒。
 
 <a id="api_irtcengine_getcurrentmonotonictimeinms__timing"></a>
 
@@ -386,7 +388,7 @@ public abstract long getCurrentMonotonicTimeInMs();
 ### 返回值
 
 - 方法调用成功，返回 SDK 当前的单调时间（单位为毫秒）。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -595,7 +597,7 @@ public abstract int queryDeviceScore();
 ### 返回值
 
 - &gt; 0：方法调用成功，返回当前设备评分，范围为 [0, 100]，数值越大表示设备性能越强。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -639,7 +641,7 @@ public abstract int rate(String callId, int rating, String description);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
   - -1：发生通用错误。
   - -2：参数无效。
 
@@ -691,7 +693,7 @@ public abstract int sendCustomReportMessage(String id, String category, String e
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -751,7 +753,7 @@ public abstract int sendCustomReportMessageEx(String id, String category, String
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
@@ -793,7 +795,7 @@ public abstract int setAVSyncSource(String channelId, int uid);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -837,7 +839,7 @@ public abstract int setCloudProxy(int proxyType);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
   - -2：参数无效。
   - -7：SDK 未初始化。
 
@@ -876,14 +878,14 @@ public abstract int setLocalAccessPoint(LocalAccessPointConfiguration config);
 
 #### `config`
 
-本地接入点配置。详见 [LocalAccessPointConfiguration](class_localaccesspointconfiguration.html)。
+本地接入点配置。详见 [LocalAccessPointConfiguration](/zh-CN/api-reference/rtc/android/class-localaccesspointconfiguration)。
 
 <a id="api_irtcengine_setlocalaccesspoint__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -916,7 +918,7 @@ public abstract int setLogFile(String filePath);
 
 ### 调用时机
 
-该方法需在调用 [create](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_create_ilocalspatialaudioengine) 后立即调用，否则输出日志可能不完整。
+该方法需在调用 [create](/zh-CN/api-reference/rtc/android/spatial-audio#api_ilocalspatialaudioengine_create_ilocalspatialaudioengine) 后立即调用，否则输出日志可能不完整。
 
 <a id="api_irtcengine_setlogfile__parameters"></a>
 
@@ -931,7 +933,7 @@ public abstract int setLogFile(String filePath);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -988,7 +990,7 @@ public abstract int setLogFileSize(long fileSizeInKBytes);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1033,7 +1035,7 @@ SDK 的日志输出等级。
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1071,7 +1073,7 @@ public abstract int setLogLevel(int level);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1103,7 +1105,7 @@ public abstract int setParameters(String parameters);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1141,7 +1143,7 @@ public abstract int setRemoteSubscribeFallbackOption(Constants.StreamFallbackOpt
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1187,7 +1189,7 @@ public abstract int setRemoteSubscribeFallbackOption(int option)
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1233,7 +1235,7 @@ public abstract int startEchoTest(EchoTestConfiguration config);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1274,7 +1276,7 @@ Last-mile 网络探测测试的配置。详见 [LastmileProbeConfig](/zh-CN/api-
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1300,7 +1302,7 @@ public abstract int stopEchoTest();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
   - -5：停止回声测试失败，可能未在运行回声测试。
 
 ### 所属接口类
@@ -1325,7 +1327,7 @@ public abstract int stopLastmileProbeTest();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -1896,7 +1898,7 @@ public void onRemoteSubscribeFallbackToAudioOnly(int uid, boolean isFallbackOrRe
 - 下行网络条件改善，已订阅的流恢复为视频流。
 
 :::info[注]
-你可以在 [onRemoteVideoStats](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调中监控高质量与视频小流之间的切换。
+你可以在 [onRemoteVideoStats](/zh-CN/api-reference/rtc/android/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调中监控高质量与视频小流之间的切换。
 :::
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__timing"></a>

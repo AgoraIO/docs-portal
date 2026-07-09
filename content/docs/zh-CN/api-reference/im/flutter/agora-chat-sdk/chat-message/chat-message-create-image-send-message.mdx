@@ -1,0 +1,60 @@
+---
+title: "ChatMessage.createImageSendMessage constructor"
+description: "API docs for the ChatMessage.createImageSendMessage constructor from Class ChatMessage from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Creates an image message for sending.
+
+- For a one-to-one chat, it is the username of the peer user.
+- For a group chat, it is the group ID.
+- For a chat room, it is the chat room ID.
+
+- true: Yes.
+- false: (default) No. For an image greater than 100 KB, the SDK will compress it and send the thumbnail.
+
+**Return** The message instance.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `targetId` | The ID of the message recipient. |
+| `filePath` | The image path. |
+| `displayName` | The image name. |
+| `thumbnailLocalPath` | The local path of the image thumbnail. |
+| `sendOriginalImage` | Whether to send the original image. |
+| `fileSize` | The image file size in bytes. |
+| `width` | The image width in pixels. |
+| `height` | The image height in pixels. |
+
+```dart
+ChatMessage.createImageSendMessage({required String targetId, required String filePath, String? displayName, String? thumbnailLocalPath, bool sendOriginalImage = false, int? fileSize, double? width, double? height, ChatType chatType = ChatType.Chat})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+ChatMessage.createImageSendMessage({
+  required String targetId,
+  required String filePath,
+  String? displayName,
+  String? thumbnailLocalPath,
+  bool sendOriginalImage = false,
+  int? fileSize,
+  double? width,
+  double? height,
+  ChatType chatType = ChatType.Chat,
+}) : this.createSendMessage(
+          chatType: chatType,
+          to: targetId,
+          body: ChatImageMessageBody(
+            localPath: filePath,
+            displayName: displayName,
+            thumbnailLocalPath: thumbnailLocalPath,
+            sendOriginalImage: sendOriginalImage,
+            width: width,
+            height: height,
+          ));
+```

@@ -1,0 +1,29 @@
+---
+title: "onMuteListAddedFromGroup method"
+description: "API docs for the onMuteListAddedFromGroup method from the ChatGroupManagerListener class, for the Dart programming language."
+---
+
+Occurs when one or more group members are muted.
+
+Note: The mute function is different from a block list. A user, when muted, can still see group messages, but cannot send messages in the group. However, a user on the block list can neither see nor send group messages.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `mutes` | The member(s) added to the mute list. |
+| `muteExpire` | The mute duration in milliseconds. |
+
+```dart
+void onMuteListAddedFromGroup(String groupId, List<String> mutes, int? muteExpire)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+void onMuteListAddedFromGroup(
+    String groupId, List<String> mutes, int? muteExpire);
+```

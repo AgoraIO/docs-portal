@@ -1,0 +1,531 @@
+---
+title: "agora_rtc_event_handler_t结构体 参考"
+description: "#include <agora_rtc_api.h>"
+---
+
+包含事件处理回调的结构体。
+
+## 结构体成员变量说明
+
+<a id="a6c7a08a918ea7ced6cbd5b41b18533c6"></a>
+
+### on_audio_data
+
+```cpp
+void(* on_audio_data)(connection_id_t conn_id, uint32_t uid, uint16_t sent_ts, const void*data_ptr, size_t data_len, const audio_frame_info_t*info_ptr)
+```
+
+收到频道内远端用户的音频帧回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] uid | 远端用户的用户 ID。 |
+| [in] sent_ts | Unix 时间戳（ms）。标识远端用户调用 [agora_rtc_send_audio_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a0a00045d34a87e7a3798c6c906f9e197) 的时间。 |
+| [in] data_ptr | 音频包数据。 |
+| [in] data_len | 音频包数据长度（字节）。 |
+| [in] info_ptr | 音频帧信息。详见 [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t)。 |
+
+<a id="ac571090198206c2fa3bc68fb8cee42d0"></a>
+
+### on_connection_lost
+
+```cpp
+void(* on_connection_lost)(connection_id_t conn_id)
+```
+
+连接丢失回调。
+
+当 SDK 与服务器断开连接超过 10 秒时，SDK 会触发该回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+
+<a id="a57ad737a0443bb604e11ae6c6b37fd5d"></a>
+
+### on_error
+
+```cpp
+void(* on_error)(connection_id_t conn_id, int code, const char*msg)
+```
+
+发生错误回调。
+
+该回调方法表示 SDK 运行时出现了（网络或媒体相关的）错误。 通常情况下，SDK 上报的错误意味着 SDK 无法自动恢复，需要 App 干预或提示用户。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] code | 错误码，详见 [agora_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abf)。 |
+| [in] msg | 错误描述。 |
+
+<a id="a3006c067f8a7deb521580c5044f27ff8"></a>
+
+### on_join_channel_success
+
+```cpp
+void(* on_join_channel_success)(connection_id_t conn_id, uint32_t uid, int elapsed_ms)
+```
+
+加入频道成功回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] uid | 本地用户 ID。 |
+| [in] elapsed_ms | 从频道成功创建开始到发生此回调过去的时间（毫秒）。 |
+
+<a id="ab698db32db28c348552915a3a1337bf8"></a>
+
+### on_key_frame_gen_req
+
+```cpp
+void(* on_key_frame_gen_req)(connection_id_t conn_id, uint32_t uid, video_stream_type_e stream_type)
+```
+
+频道内远端用户请求关键帧回调。
+
+收到此回调后，发送端需生成一个新的关键帧。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] uid | 远端用户的用户 ID。 |
+| [in] stream_type | 需要生成关键帧的视频流类型，详见 [video_stream_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a662fba13746193012793896faeb278ed)。 |
+
+<a id="aa05b9b9e42a2018a913ac18bf0022919"></a>
+
+### on_license_validation_failure
+
+```cpp
+void(* on_license_validation_failure)(connection_id_t conn_id, int error)
+```
+
+设备 License 验证失败回调。
+
+加入频道时，声网服务器会验证你在 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 中传入的 License。如果 License 验证失败，则 SDK 会触发该回调，你可以根据收到的错误码处理问题。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] error | 错误码。详见 [license_err_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863d233cf869b03dd5f99fc04b19b)。 |
+
+<a id="a96f899b78b34a3ef989bc094cd6327e9"></a>
+
+### on_local_user_registered
+
+```cpp
+void(* on_local_user_registered)(const char*uname, uint32_t uid)
+```
+
+本地用户注册回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] uname | 使用 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 方法初始化时设置的 String 型用户名，该参数为必填，最大不超过 255 字节，不可设为 NULL。请确保用户名的唯一性。以下为支持的字符集范围（共 89 个字符）：<br />- 26 个小写英文字母 a-z<br />- 26 个大写英文字母 A-Z<br />- 10 个数字 0-9<br />- 空格<br />- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "\|", "~", "," |
+| [in] uid | 使用 agora_rtc_init 方法初始化时设置的用户 ID（32 位整型）。建议设置范围：1 到 (2 32 -1)，并保证唯一性。 0 是无效的 uid。如果将 uid 设为 0，系统将自动分配一个 UID。 |
+
+<a id="ab0a6462ac391a960f767d2cf6ce8078a"></a>
+
+### on_media_ctrl_msg
+
+```cpp
+void(* on_media_ctrl_msg)(connection_id_t conn_id, uint32_t uid, const void*payload, size_t length)
+```
+
+收到远端用户发来的消息回调。
+
+##### `自从`
+
+v1.9.5
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID。 |
+| [in] uid | 发送消息的用户 ID。 |
+| [in] payload | 消息 Payload。 |
+| [in] length | 消息 Payload 长度。 |
+
+<a id="ad3cf11417984d7a70c9eedc739ce9452"></a>
+
+### on_mixed_audio_data
+
+```cpp
+void(* on_mixed_audio_data)(connection_id_t conn_id, const void*data_ptr, size_t data_len, const audio_frame_info_t*info_ptr)
+```
+
+收到频道内本地用户和远端用户的混音数据回调。此回调每 20 ms 触发一次。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] data_ptr | 音频包数据。 |
+| [in] data_len | 音频包数据长度（字节）。 |
+| [in] info_ptr | 音频帧信息。详见 [audio_frame_info_t](/zh-CN/api-reference/rtsa/c/structaudio-frame-info-t)。 |
+
+<a id="a80dfcd1cd72a006a7b2daae4d7f80eea"></a>
+
+### on_rdt_msg
+
+```cpp
+void(* on_rdt_msg)(connection_id_t conn_id, uint32_t uid, rdt_stream_type_e type, const void*msg, size_t len)
+```
+
+收到 RDT 消息回调。
+
+##### `自从`
+
+v1.9.2
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] uid | 远端用户的用户 ID。 |
+| [in] type | RDT 消息类型。详见 [rdt_stream_type](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955)。 |
+| [in] msg | RDT 消息负载。 |
+| [in] len | RDT 消息长度。 |
+
+<a id="afa921fa31ea49ef1c97a17949119e386"></a>
+
+### on_rdt_state
+
+```cpp
+void(* on_rdt_state)(connection_id_t conn_id, uint32_t uid, rdt_state_e state)
+```
+
+RDT 通道的连接状态已改变回调。
+
+##### `自从`
+
+v1.9.2
+
+当 RDT 通道的连接状态发生变化时，SDK 会触发该回调并报告当前的连接状态。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] uid | 远端用户的用户 ID。 |
+| [in] state | 连接状态。详见 [rdt_state](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84)。 |
+
+<a id="acadee60a0d36eec3939e769a40e43cad"></a>
+
+### on_reconnecting
+
+```cpp
+void(* on_reconnecting)(connection_id_t conn_id)
+```
+
+正在重新连接回调。
+
+SDK 会在如下场景中触发该回调：
+
+- SDK 与服务器断开连接超过 4 秒。
+- 网络断开。
+- 用户切换网络类型，例如 4G 网络切换成 Wi-Fi 网络。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+
+<a id="af1aad04da5b59bb0ae4575c1121eaa59"></a>
+
+### on_rejoin_channel_success
+
+```cpp
+void(* on_rejoin_channel_success)(connection_id_t conn_id, uint32_t uid, int elapsed_ms)
+```
+
+重新加入频道成功回调。
+
+有时候由于网络原因，客户端可能会和服务器失去连接，SDK 会进行自动重连，自动重连成功后触发此回调方法。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] uid | 本地用户 ID。 |
+| [in] elapsed_ms | 从开始重连到重连成功的时间（毫秒）。 |
+
+<a id="a631f8f2d7c71a54bbb1825dc5b386eba"></a>
+
+### on_remote_user_registered
+
+```cpp
+void(* on_remote_user_registered)(const char*uname, uint32_t uid)
+```
+
+远端用户注册回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] uname | 使用 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 方法初始化时设置的 String 型用户名，该参数为必填，最大不超过 255 字节，不可设为 NULL。请确保用户名的唯一性。以下为支持的字符集范围（共 89 个字符）：<br />- 26 个小写英文字母 a-z<br />- 26 个大写英文字母 A-Z<br />- 10 个数字 0-9<br />- 空格<br />  - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "\|", "~", "," |
+| [in] uid | 使用 agora_rtc_init 方法初始化时设置的用户 ID（32 位整型）。建议设置范围：1 到 (2 32 -1)，并保证唯一性。 0 是无效的 uid。如果将 uid 设为 0，系统将自动分配一个 UID。 |
+
+<a id="a7c73b2bb0558e2b695d8838ee542c87a"></a>
+
+### on_stream_message
+
+```cpp
+void(* on_stream_message)(connection_id_t conn_id, uint32_t uid, int stream_id, const char*data, size_t length, uint64_t sent_ts)
+```
+
+接收到远端用户数据流消息的回调。
+
+该回调表示本地用户收到了远端用户调用 [agora_rtc_send_stream_message](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aee89fa14447b4529d45275afe5b5a86f) 方法发送的流消息。
+
+##### `自从`
+
+v1.9.5
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] uid | 发送消息的用户 ID。 |
+| [in] stream_id | 接收到的消息的 Stream ID。 |
+| [in] data | 接收到的数据。 |
+| [in] length | 数据流大小。 |
+| [in] sent_ts | 数据流发送的时间戳。 |
+
+<a id="af3ef06a16cd4cf3aa585dd6ad13ada0b"></a>
+
+### on_target_bitrate_changed
+
+```cpp
+void(* on_target_bitrate_changed)(connection_id_t conn_id, uint32_t target_bps)
+```
+
+编码器码率更新通知回调。你可以使用此回调提醒 App 更新编码器码率。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] target_bps | 码率需要更新到的目标值，单位为 bps。 |
+
+<a id="aef1aa16dd5b32baa1aa03887f40f6ee9"></a>
+
+### on_token_privilege_will_expire
+
+```cpp
+void(* on_token_privilege_will_expire)(connection_id_t conn_id, const char*token)
+```
+
+Token 服务即将过期回调。
+
+在调用 [agora_rtc_join_channel](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6c29ff27f04623526a164cf6e5dcd738) 时如果指定了 Token，由于 Token 具有一定的时效，在通话过程中如果 Token 即将失效，SDK 会提前 30 秒触发该回调，提醒应用程序更新 Token。当收到该回调时，用户需要重新在服务端生成新的 Token，然后调用 [agora_rtc_renew_token](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a87c94a2d518278926807e24592b41336) 将新生成的 Token 传给 SDK。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] token | 即将服务失效的 Token。 |
+
+<a id="a4c8f017cc2fa8aaa6e91c966b97a8aee"></a>
+
+### on_user_info_updated
+
+```cpp
+void(* on_user_info_updated)(connection_id_t conn_id, const user_info_t*user)
+```
+
+远端用户信息更新回调。
+
+##### `自从`
+
+v1.9.5
+
+远端用户加入频道后，SDK 会获取到该远端用户的用户 ID 和 User account，然后缓存一个包含了远端用户 ID 和 User account 的映射表，并在本地触发该回调。
+
+##### `注解`
+
+收到该回调后，请确保根据新的映射关系更新相关的订阅逻辑。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] user | 远端用户的信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de)。 |
+
+<a id="ada682c16b9d0e53404beb76c9c3a02a2"></a>
+
+### on_user_joined
+
+```cpp
+void(* on_user_joined)(connection_id_t conn_id, uint32_t uid, int elapsed_ms)
+```
+
+远端用户加入频道回调。
+
+该回调提示有远端用户加入了频道。如果加入之前，已经有其他用户在频道中了，新加入的用户也会收到这些已有用户加入频道的回调。
+
+该回调在如下情况下会被触发：
+
+- 远端用户加入频道。
+- 远端用户网络中断后重新加入频道。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] uid | 用户 ID。 |
+| [in] elapsed_ms | 从频道成功创建开始到发生此回调过去的时间（毫秒）。 |
+
+<a id="aa57af03ef9f26ab68917fa7a30f703bd"></a>
+
+### on_user_joined_with_user_account
+
+```cpp
+void(* on_user_joined_with_user_account)(connection_id_t conn_id, const user_info_t*user, int elapsed_ms)
+```
+
+远端用户使用 User Account 加入频道回调。
+
+##### `自从`
+
+v1.9.5
+
+远端用户调用 [agora_rtc_join_channel_with_user_account](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a64a24029bfaa5408e987122261385013) 方法成功加入频道后，会在本地触发该回调。
+
+##### `注解`
+
+调用该方法前，请确保 [rtc_service_option_t](/zh-CN/api-reference/rtsa/c/structrtc-service-option-t) 中的 use_string_uid 设为 true。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] user | 加入频道的远端用户的信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de)。 |
+| [in] elapsed_ms | 从频道成功创建开始到发生此回调过去的时间（毫秒）。 |
+
+<a id="ab749491e46ce8d06aa69507ebb630bf9"></a>
+
+### on_user_mute_audio
+
+```cpp
+void(* on_user_mute_audio)(connection_id_t conn_id, uint32_t uid, bool muted)
+```
+
+频道内远端用户暂停/恢复发送音频流回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] uid | 远端用户的用户 ID。 |
+| [in] muted | 远端用户是否发送音频流：<br />- 0: 该用户恢复发送音频流；<br />- 其他值: 该用户暂停发送音频流。 |
+
+<a id="a7ba3bed4e4d97a4e39096f07d2333311"></a>
+
+### on_user_mute_video
+
+```cpp
+void(* on_user_mute_video)(connection_id_t conn_id, uint32_t uid, bool muted)
+```
+
+频道内远端用户暂停/恢复发送视频流回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] uid | 远端用户的用户 ID。 |
+| [in] muted | 远端用户是否发送视频流：<br />- 0: 该用户恢复发送视频流；<br />- 其他值: 该用户暂停发送视频流。 |
+
+<a id="aa20dd2bc2ee7389257e7d03dd28a3dd4"></a>
+
+### on_user_offline
+
+```cpp
+void(* on_user_offline)(connection_id_t conn_id, uint32_t uid, int reason)
+```
+
+远端用户离开频道回调。
+
+SDK 会在如下场景触发该回调：
+
+- 正常离开：远端用户会发送类似“再见”的消息。接收此消息后，判断用户离开频道。
+- 超时掉线：如果本地用户在 20 秒内没有收到远端用户的任何数据包，则判定为对方掉线。在网络较差的情况下，有可能会误报。建议使用云信令 SDK 来做可靠的掉线检测。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] uid | 离开频道的用户 ID。 |
+| [in] reason | 用户离开频道原因，详见 [user_offline_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aaa6c469f77d32b9c4e6d4c1676308cd5)。 |
+
+<a id="af3a7f207010bafca7aa99fdba5a9b1ab"></a>
+
+### on_user_offline_with_user_account
+
+```cpp
+void(* on_user_offline_with_user_account)(connection_id_t conn_id, const user_info_t*user, int reason)
+```
+
+使用 User Account 场景下，远端用户离开频道回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] user | 离开频道的远端用户的信息，详见 [user_info_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a045013221683ad1abf079c2749c3de)。 |
+| [in] reason | 用户离开频道原因，详见 [user_offline_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aaa6c469f77d32b9c4e6d4c1676308cd5)。 |
+
+<a id="ab6c026de857cff2283f7f5287af0551a"></a>
+
+### on_video_data
+
+```cpp
+void(* on_video_data)(connection_id_t conn_id, uint32_t uid, uint16_t sent_ts, const void*data_ptr, size_t data_len, const video_frame_info_t*info_ptr)
+```
+
+收到频道内远端用户的视频帧回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| [in] conn_id | Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad7f88cfbc57654bf3b391c3be0e8444c)。 |
+| [in] uid | 发送视频帧的远端用户的用户 ID。 |
+| [in] sent_ts | Unix 时间戳（ms）。标识远端用户调用 [agora_rtc_send_video_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a05973c4f32a5eb480e52b4f566601bf5) 的时间。 |
+| [in] data_ptr | 视频包数据。 |
+| [in] data_len | 视频包数据长度（字节）。 |
+| [in] info_ptr | 视频帧信息。详见 [video_frame_info_t](/zh-CN/api-reference/rtsa/c/structvideo-frame-info-t)。 |

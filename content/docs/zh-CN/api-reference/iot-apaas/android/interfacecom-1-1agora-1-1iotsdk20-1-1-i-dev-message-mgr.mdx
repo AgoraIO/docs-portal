@@ -1,0 +1,182 @@
+---
+title: "com.agora.iotsdk20.IDevMessageMgr接口 参考"
+description: "设备消息管理接口。"
+---
+
+设备消息管理接口。
+
+## 成员函数说明
+
+<a id="a14409d89d7d9328307e4218eb8c946f5"></a>
+
+### getStateMachine()
+
+```cpp
+int com.agora.iotsdk20.IDevMessageMgr.getStateMachine()
+```
+
+获取当前账号管理状态机。
+
+#### Returns
+
+当前管理在状态。
+
+<a id="ae802e5a42836f0be5baec008fefc697e"></a>
+
+### mark()
+
+```cpp
+int com.agora.iotsdk20.IDevMessageMgr.mark(List<Long > devMsgIdList)
+```
+
+标记多个设备消息为已读。
+
+成功标记后，SDK 会触发 [onDevMessageMarkDone](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-dev-message-mgr-1-1-i-callback#a422626392ee7933df829a8b6824c09bc) 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| devMsgIdList | 要标记已读的设备消息 ID 列表。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="ae0be9d392e04c02c8d117abd544fca4a"></a>
+
+### queryById()
+
+```cpp
+int com.agora.iotsdk20.IDevMessageMgr.queryById(long devMsgId)
+```
+
+根据消息 ID 查询详细的设备消息。
+
+成功查询后，SDK 会触发 [onDevMessgeInfoQueryDone](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-dev-message-mgr-1-1-i-callback#ab6fc666169bba0ab2eba8c5c31d5b24c) 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| devMsgId | 要查询的设备消息 ID。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="aa46c89e88aa08248eaf881c70c5950af"></a>
+
+### queryByPage()
+
+```cpp
+int com.agora.iotsdk20.IDevMessageMgr.queryByPage(QueryParam queryParam)
+```
+
+查询指定页面的设备列表。
+
+成功查询后，SDK 会触发 [onDevMessagePageQueryDone](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-dev-message-mgr-1-1-i-callback#af3ee0a8ab08691e035aca8e797a3e78a) 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| queryParam | 查询参数，详见 [QueryParam](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-i-dev-message-mgr-1-1-query-param)。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a43f1e80aa972b0eeb0a382f56949eabe"></a>
+
+### queryNumber()
+
+```cpp
+int com.agora.iotsdk20.IDevMessageMgr.queryNumber(QueryParam queryParam)
+```
+
+根据条件查询所有设备消息。
+
+成功查询后，SDK 会触发 [onDevMessageNumberQueryDone](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-dev-message-mgr-1-1-i-callback#a2a9bbb7f418e87ba4c304b9288ece839) 回调。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| queryParam | 查询参数，详见 [QueryParam](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-i-dev-message-mgr-1-1-query-param)。需要忽略 `mPageIndex`、 `mPageSize` 和 `mAscSort` 字段。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="acd3b248398132997d226661acb53a24d"></a>
+
+### registerListener()
+
+```cpp
+int com.agora.iotsdk20.IDevMessageMgr.registerListener(IDevMessageMgr.ICallback callback)
+```
+
+注册回调接口。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| callback | 回调接口，详见 [ICallback](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-dev-message-mgr-1-1-i-callback)。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="ab48cb33eb19771ddc27ddce3cfd61e9a"></a>
+
+### unregisterListener()
+
+```cpp
+int com.agora.iotsdk20.IDevMessageMgr.unregisterListener(IDevMessageMgr.ICallback callback)
+```
+
+注销回调接口。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| callback | 回调接口，详见 [ICallback](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-dev-message-mgr-1-1-i-callback)。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+## 类成员变量说明
+
+<a id="a4fa5900722353829697b5eab189f91f9"></a>
+
+### DEVMSGMGR_STATE_IDLE
+
+```cpp
+final int com.agora.iotsdk20.IDevMessageMgr.DEVMSGMGR_STATE_IDLE = 0x0001 static
+```
+
+0x0001: 空闲状态。
+
+<a id="a69bedd79de01b31f5c3dae383635810d"></a>
+
+### DEVMSGMGR_STATE_MARKING
+
+```cpp
+final int com.agora.iotsdk20.IDevMessageMgr.DEVMSGMGR_STATE_MARKING = 0x0001 static
+```
+
+0x0001: 正在标记设备消息已读。
+
+<a id="a6d6cbe4898e0d7d83f753ee02147cb06"></a>
+
+### DEVMSGMGR_STATE_QUERYING
+
+```cpp
+final int com.agora.iotsdk20.IDevMessageMgr.DEVMSGMGR_STATE_QUERYING = 0x0002 static
+```
+
+0x0002: 正在查询中。

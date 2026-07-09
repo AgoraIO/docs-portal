@@ -1,0 +1,29 @@
+---
+title: "removeCustomListener method"
+description: "API docs for the removeCustomListener method from the ChatClientDeprecated extension, for the Dart programming language."
+---
+
+Removes the custom listener.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The custom native listener. |
+
+```dart
+@deprecated void removeCustomListener(ChatCustomListener listener)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+@deprecated
+void removeCustomListener(ChatCustomListener listener) {
+  if (_customListeners.contains(listener)) {
+    _customListeners.remove(listener);
+  }
+}
+```

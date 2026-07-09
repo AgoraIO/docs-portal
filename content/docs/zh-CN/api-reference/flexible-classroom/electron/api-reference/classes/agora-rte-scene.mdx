@@ -1,0 +1,457 @@
+---
+title: "AgoraRteScene"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- EventEmitter
+  - AgoraRteScene
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new AgoraRteScene(sceneId: string, options: SceneObjects): AgoraRteScene
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| sceneId: string |  |
+| options: SceneObjects |  |
+
+#### Returns
+
+Returns [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-scene)
+
+## Properties
+
+<a id="createTs"></a>
+
+### Optional createTs
+
+```ts
+createTs?: number
+```
+
+<a id="dataStore"></a>
+
+### Readonly dataStore
+
+```ts
+dataStore: AgoraRteSyncDataStore
+```
+
+<a id="logger"></a>
+
+### logger
+
+```ts
+logger: LoggerFacade
+```
+
+<a id="sceneId"></a>
+
+### Readonly sceneId
+
+```ts
+sceneId: string
+```
+
+## Accessors
+
+<a id="engine"></a>
+
+### engine
+
+```ts
+get engine(): AgoraRteEngine
+```
+
+#### Returns
+
+Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-engine)
+
+<a id="localUser"></a>
+
+### localUser
+
+```ts
+get localUser(): undefined | AgoraRteLocalUser
+```
+
+#### Returns
+
+Returns undefined | [AgoraRteLocalUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-local-user)
+
+<a id="rtcChannel"></a>
+
+### rtcChannel
+
+```ts
+get rtcChannel(): AGRtcChannel
+```
+
+#### Returns
+
+Returns [AGRtcChannel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agrtc-channel)
+
+<a id="rtcSid"></a>
+
+### rtcSid
+
+```ts
+get rtcSid(): string
+```
+
+#### Returns
+
+Returns string
+
+<a id="rtmSid"></a>
+
+### rtmSid
+
+```ts
+get rtmSid(): string
+```
+
+#### Returns
+
+Returns string
+
+<a id="timestampServerLocalGap"></a>
+
+### timestampServerLocalGap
+
+```ts
+get timestampServerLocalGap(): number
+```
+
+#### Returns
+
+Returns number
+
+## Methods
+
+<a id="addCloudProxyObserver"></a>
+
+### addCloudProxyObserver
+
+```ts
+addCloudProxyObserver(observer: AgoraCloudProxyObserver): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraCloudProxyObserver |  |
+
+#### Returns
+
+Returns void
+
+<a id="addCustomMessageObserver"></a>
+
+### addCustomMessageObserver
+
+```ts
+addCustomMessageObserver(observer: AgoraRteCustomMessageObserver): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraRteCustomMessageObserver |  |
+
+#### Returns
+
+Returns void
+
+<a id="enableDualStream"></a>
+
+### enableDualStream
+
+```ts
+enableDualStream(enable: boolean, connectionType?: AGRtcConnectionType): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable: boolean |  |
+| Optional connectionType: AGRtcConnectionType |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="getApiService"></a>
+
+### getApiService
+
+```ts
+getApiService(): AgoraRteService
+```
+
+#### Returns
+
+Returns [AgoraRteService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-service)
+
+<a id="joinRTC"></a>
+
+### joinRTC
+
+```ts
+joinRTC(options?: AgoraRteSceneJoinRTCOptions): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional options: AgoraRteSceneJoinRTCOptions |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="joinScene"></a>
+
+### joinScene
+
+```ts
+joinScene(options: AgoraRteSceneJoinOptions): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| options: AgoraRteSceneJoinOptions |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="leaveRTC"></a>
+
+### leaveRTC
+
+```ts
+leaveRTC(connectionType?: AGRtcConnectionType): Promise<void>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional connectionType: AGRtcConnectionType |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="leaveScene"></a>
+
+### leaveScene
+
+```ts
+leaveScene(): Promise<void>
+```
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="muteRemoteAudioStream"></a>
+
+### muteRemoteAudioStream
+
+```ts
+muteRemoteAudioStream(streamUuid: string, muted: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+| muted: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteRemoteVideoStream"></a>
+
+### muteRemoteVideoStream
+
+```ts
+muteRemoteVideoStream(streamUuid: string, muted: boolean): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+| muted: boolean |  |
+
+#### Returns
+
+Returns number
+
+<a id="muteRemoteVideoStreamMass"></a>
+
+### muteRemoteVideoStreamMass
+
+```ts
+muteRemoteVideoStreamMass(streamUuids: string[], muted: boolean): Promise<string[]>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuids: string[] |  |
+| muted: boolean |  |
+
+#### Returns
+
+Returns Promise &lt; string [] &gt;
+
+<a id="removeCloudProxyObserver"></a>
+
+### removeCloudProxyObserver
+
+```ts
+removeCloudProxyObserver(observer: AgoraCloudProxyObserver): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraCloudProxyObserver |  |
+
+#### Returns
+
+Returns void
+
+<a id="removeCustomMessageObserver"></a>
+
+### removeCustomMessageObserver
+
+```ts
+removeCustomMessageObserver(observer: AgoraRteCustomMessageObserver): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraRteCustomMessageObserver |  |
+
+#### Returns
+
+Returns void
+
+<a id="setAllRemoteTracksVolume"></a>
+
+### setAllRemoteTracksVolume
+
+```ts
+setAllRemoteTracksVolume(volume: number): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| volume: number |  |
+
+#### Returns
+
+Returns void
+
+<a id="setLowStreamParameter"></a>
+
+### setLowStreamParameter
+
+```ts
+setLowStreamParameter(streamParameter: AGLowStreamParameter, connectionType?: AGRtcConnectionType): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamParameter: AGLowStreamParameter |  |
+| Optional connectionType: AGRtcConnectionType |  |
+
+#### Returns
+
+Returns number
+
+<a id="setRemoteTrackVolume"></a>
+
+### setRemoteTrackVolume
+
+```ts
+setRemoteTrackVolume(streamUuid: string, volume: number): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+| volume: number |  |
+
+#### Returns
+
+Returns void
+
+<a id="setRemoteVideoStreamType"></a>
+
+### setRemoteVideoStreamType
+
+```ts
+setRemoteVideoStreamType(streamUuid: string, streamType: AGRemoteVideoStreamType): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUuid: string |  |
+| streamType: AGRemoteVideoStreamType |  |
+
+#### Returns
+
+Returns number
+
+<a id="updateRemoteMediaStreamBatch"></a>
+
+### updateRemoteMediaStreamBatch
+
+```ts
+updateRemoteMediaStreamBatch(streams: { audioSourceType?: AgoraRteAudioSourceType; audioState?: AgoraRteMediaPublishState; streamUuid: string; userUuid: string; videoSourceType?: AgoraRteVideoSourceType; videoState?: AgoraRteMediaPublishState }[]): Promise<any>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streams: \{ audioSourceType?: AgoraRteAudioSourceType; audioState?: AgoraRteMediaPublishState; streamUuid: string; userUuid: string; videoSourceType?: AgoraRteVideoSourceType; videoState?: AgoraRteMediaPublishState \}[] |  |
+
+#### Returns
+
+Returns Promise &lt; any &gt;

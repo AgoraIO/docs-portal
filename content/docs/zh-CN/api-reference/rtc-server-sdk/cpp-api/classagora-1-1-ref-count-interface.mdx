@@ -1,0 +1,40 @@
+---
+title: "agora::RefCountInterface类 参考abstract"
+description: "被 agora::rtc::IAudioEncodedFrameSender, agora::rtc::IAudioPcmDataSender, agora::rtc::IAudioSinkBase, agora::rtc::IAudioTrack, agora::rtc::IConfigCenter, agora::rtc::IMediaNodeFactory, agora::rtc::IRtcConnection, agora::rtc::IRtmpConnection, agora::rtc::IVideoEncodedImageSender, agora::rtc::IVideoFrameSender, agora::rtc::IVideoMixerSource, agora::rtc::IVideoSinkBase , 以及 agora::rtc::IVideoTrack 继承."
+---
+
+## 构造及析构函数说明
+
+<a id="ad92e0293cd52148b58a788fa79187e1f"></a>
+
+### ~RefCountInterface()
+
+```cpp
+virtual agora::RefCountInterface::~RefCountInterface() inlineprotectedvirtual
+```
+
+## 成员函数说明
+
+<a id="ab2a8ac8b61c8025cd686c76b68c0ffc2"></a>
+
+### AddRef()
+
+```cpp
+virtual void agora::RefCountInterface::AddRef() const pure virtual
+```
+
+<a id="ac738be75e041ba80ad54946233a15533"></a>
+
+### Release()
+
+```cpp
+virtual RefCountReleaseStatus agora::RefCountInterface::Release() const pure virtual
+```
+
+<a id="a56f31c466689a10049f1c37020cb1bfc"></a>
+
+### HasOneRef()
+
+```cpp
+virtual bool agora::RefCountInterface::HasOneRef() const pure virtual
+```

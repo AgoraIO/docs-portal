@@ -1,0 +1,206 @@
+---
+title: "AgoraRteMessageHandle"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- AGEventEmitter
+  - AgoraRteMessageHandle
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new AgoraRteMessageHandle(dataStore: AgoraRteSyncDataStore, __namedParameters: { sceneId: string; streamUuid: string; userUuid: string }): AgoraRteMessageHandle
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| dataStore: AgoraRteSyncDataStore |  |
+| __namedParameters: \{ sceneId: string; streamUuid: string; userUuid: string \} |  |
+
+#### Returns
+
+Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-message-handle)
+
+## Properties
+
+<a id="logger"></a>
+
+### Readonly logger
+
+```ts
+logger: "agora-rte-sdk/src/core/logger/type".Logger
+```
+
+<a id="sceneId"></a>
+
+### sceneId
+
+```ts
+sceneId: string
+```
+
+<a id="streamUuid"></a>
+
+### streamUuid
+
+```ts
+streamUuid: string
+```
+
+<a id="userUuid"></a>
+
+### userUuid
+
+```ts
+userUuid: string
+```
+
+## Methods
+
+<a id="emit"></a>
+
+### emit
+
+```ts
+emit(evt: string, ...args: any[]): AgoraRteMessageHandle
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| Rest ...args: any[] |  |
+
+#### Returns
+
+Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-message-handle)
+
+<a id="handleNonSeqMessage"></a>
+
+### handleNonSeqMessage
+
+```ts
+handleNonSeqMessage(message: AgoraRteNonSequenceMessage): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| message: AgoraRteNonSequenceMessage |  |
+
+#### Returns
+
+Returns void
+
+<a id="handleSeqMessage"></a>
+
+### handleSeqMessage
+
+```ts
+handleSeqMessage(message: AgoraRteSequenceMessage): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| message: AgoraRteSequenceMessage |  |
+
+#### Returns
+
+Returns void
+
+<a id="handleSnapshot"></a>
+
+### handleSnapshot
+
+```ts
+handleSnapshot(snapshot: AgoraRteSyncSnapshotData): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| snapshot: AgoraRteSyncSnapshotData |  |
+
+#### Returns
+
+Returns void
+
+<a id="off"></a>
+
+### off
+
+```ts
+off(evt: string, cb: CallableFunction): AgoraRteMessageHandle
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-message-handle)
+
+<a id="on"></a>
+
+### on
+
+```ts
+on(evt: string, cb: CallableFunction): AgoraRteMessageHandle
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-message-handle)
+
+<a id="once"></a>
+
+### once
+
+```ts
+once(evt: string, cb: CallableFunction): AgoraRteMessageHandle
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-message-handle)
+
+<a id="removeAllEventListeners"></a>
+
+### removeAllEventListeners
+
+```ts
+removeAllEventListeners(): void
+```
+
+#### Returns
+
+Returns void

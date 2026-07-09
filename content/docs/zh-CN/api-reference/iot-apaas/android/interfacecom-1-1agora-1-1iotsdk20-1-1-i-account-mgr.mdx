@@ -1,0 +1,252 @@
+---
+title: "com.agora.iotsdk20.IAccountMgr接口 参考"
+description: "账号管理接口。"
+---
+
+账号管理接口。
+
+## 成员函数说明
+
+<a id="a0c13049eb725b19b389c4a2dbd06f8a7"></a>
+
+### getLoggedAccount()
+
+```cpp
+String com.agora.iotsdk20.IAccountMgr.getLoggedAccount()
+```
+
+获取当前已经登录的账号。
+
+#### Returns
+
+当前已经登录的账号。如果当前账号未登录，则返回 `null`。
+
+<a id="a8b3e46c248550bf35e9407e8d773617f"></a>
+
+### getMqttState()
+
+```cpp
+int com.agora.iotsdk20.IAccountMgr.getMqttState()
+```
+
+获取当前 MQTT 客户端状态。
+
+成功调用该方法后，SDK 会触发 [onMqttStateChanged](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-account-mgr-1-1-i-callback#ab00cc16597d74dc72f595dad66a42461) 回调报告当前 MQTT 客户端的状态。
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="a1a915310806374338cafb45c5713326b"></a>
+
+### getQRCodeUserId()
+
+```cpp
+String com.agora.iotsdk20.IAccountMgr.getQRCodeUserId()
+```
+
+获取用于登录的二维码字符串。
+
+app 需要通过获取到的字符串生成一个二维码，当用户使用摄像头扫描该二维码时，即可在新设备上登录其账号。
+
+#### Returns
+
+用于登录的二维码字符串。如果当前账号未登录，则返回一个空的字符串。
+
+<a id="a8d64bb252ce8836b80b2f75673f8fcbb"></a>
+
+### getStateMachine()
+
+```cpp
+int com.agora.iotsdk20.IAccountMgr.getStateMachine()
+```
+
+获取当前账号管理状态机。
+
+#### Returns
+
+当前账号管理状态。
+
+<a id="ae1655fb00e5d6fcb0f2505598dda2d65"></a>
+
+### login()
+
+```cpp
+int com.agora.iotsdk20.IAccountMgr.login(final LoginParam loginParam)
+```
+
+通过第三方账号的登陆参数登陆用户账号。
+
+该方法适用于用户已经自行实现第三方账号管理系统的情况。用户可以直接通过该方法登陆灵隼物联网平台。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| loginParam | 第三方登陆参数。详见 [LoginParam](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-i-account-mgr-1-1-login-param)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="ac3dd07b762223bf04139134e2e65bc67"></a>
+
+### logout()
+
+```cpp
+int com.agora.iotsdk20.IAccountMgr.logout()
+```
+
+登出当前账号。
+
+成功登出账号后，SDK 会触发 [onLogoutDone](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-account-mgr-1-1-i-callback#a69f6570c5e52800cb724f3fce7eb1499) 回调。
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a8175e7a78d20a437b89e0b5355569ca5"></a>
+
+### registerListener()
+
+```cpp
+int com.agora.iotsdk20.IAccountMgr.registerListener(IAccountMgr.ICallback callback)
+```
+
+注册回调接口。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| callback | 回调接口，详见 [ICallback](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-account-mgr-1-1-i-callback)。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+<a id="a7bc4a272aa4e9279301c9c7bda8f3611"></a>
+
+### setPublicKey()
+
+```cpp
+int com.agora.iotsdk20.IAccountMgr.setPublicKey(final String lsAccessToken, final String inventDeviceName, final String publickKey)
+```
+
+设置云存储视频加密的公钥。
+
+为加强云存储视频加密的安全性，你可以在应用层自行生成公钥、私钥，再通过该方法将公钥传入 SDK。例如，只有 SDK 的公钥和你 app 的私钥都正确，用户才能查看加密视频。
+
+成功调用该方法后，SDK 会触发 [onSetPublicKeyDone](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-account-mgr-1-1-i-callback#a323a302f0858f0892701e50572087d34) 回调并报告设置结果及公钥信息。
+
+##### `注解`
+
+- 请确保该方法中设置的 lsAccessToken 和 inventDeviceName 参数值分别与 LoginParam 中的 mLsAccessToken 和 mInventDeviceName 参数值一致。
+- 声网不会保存你传入的公钥，你需要自行保存并管理。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| lsAccessToken | 灵隼平台账号的 Token。 |
+| inventDeviceName | 账号的虚拟名称。 |
+| publickKey | 待设置的公钥。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="ae3035f9dc8c78b3f8244379730ae0c31"></a>
+
+### unregisterListener()
+
+```cpp
+int com.agora.iotsdk20.IAccountMgr.unregisterListener(IAccountMgr.ICallback callback)
+```
+
+注销回调接口。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| callback | 回调接口，详见 [ICallback](/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-account-mgr-1-1-i-callback)。 |
+
+#### Returns
+
+错误码，详见 [ErrCode](/zh-CN/api-reference/iot-apaas/android/classcom-1-1agora-1-1iotsdk20-1-1-err-code)。
+
+## 类成员变量说明
+
+<a id="a06e21c73778905bfcdf762b6a917da68"></a>
+
+### ACCOUNT_STATE_IDLE
+
+```cpp
+final int com.agora.iotsdk20.IAccountMgr.ACCOUNT_STATE_IDLE = 0x0000 static
+```
+
+0x0000: 账号未登录。
+
+<a id="a6d1c4432ad66a8e5cafa6940784919d0"></a>
+
+### ACCOUNT_STATE_LOGINING
+
+```cpp
+final int com.agora.iotsdk20.IAccountMgr.ACCOUNT_STATE_LOGINING = 0x0001 static
+```
+
+0x0003: 正在登录用户账号。
+
+<a id="ae994e5fdaee485f0ca15fc75961ecf52"></a>
+
+### ACCOUNT_STATE_LOGOUTING
+
+```cpp
+final int com.agora.iotsdk20.IAccountMgr.ACCOUNT_STATE_LOGOUTING = 0x0002 static
+```
+
+0x0004: 正在登出用户账号。
+
+<a id="a8e107f537b9956c8f7846b43430d922f"></a>
+
+### ACCOUNT_STATE_RUNNING
+
+```cpp
+final int com.agora.iotsdk20.IAccountMgr.ACCOUNT_STATE_RUNNING = 0x0003 static
+```
+
+0x000B: 该账号已登录。
+
+<a id="afd87790937341fb8e61e08eedf8626f5"></a>
+
+### MQTT_STATE_CONNECTED
+
+```cpp
+final int com.agora.iotsdk20.IAccountMgr.MQTT_STATE_CONNECTED = 0x0002 static
+```
+
+MQTT 客户端已连接。
+
+<a id="a0280236f9ecb13beb39900a41457e2df"></a>
+
+### MQTT_STATE_CONNECTING
+
+```cpp
+final int com.agora.iotsdk20.IAccountMgr.MQTT_STATE_CONNECTING = 0x0001 static
+```
+
+MQTT 客户端正在连接中。
+
+<a id="addb00966a9c7573e200686b26c37f3a9"></a>
+
+### MQTT_STATE_DISCONNECTED
+
+```cpp
+final int com.agora.iotsdk20.IAccountMgr.MQTT_STATE_DISCONNECTED = 0x0000 static
+```
+
+MQTT 客户端未连接。

@@ -1,0 +1,318 @@
+---
+title: "AgoraRteSubscribeThread"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- AgoraRteThread
+  - AgoraRteSubscribeThread
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new AgoraRteSubscribeThread(client: IAgoraRTCClient, user: IAgoraRTCRemoteUser, __namedParameters: { audioPlaybackDeviceId?: string; canvasMap?: Map<string, AgoraRtcVideoCanvas>; channelName: string; mediaType: "audio" | "video"; muteMap: Map<string, boolean>; volumeMap: Map<string, number> }, rawDataDispatcher: AGAudioRawDataDispatcher): AgoraRteSubscribeThread
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| client: IAgoraRTCClient |  |
+| user: IAgoraRTCRemoteUser |  |
+| __namedParameters: \{ audioPlaybackDeviceId?: string; canvasMap?: Map&lt;string, AgoraRtcVideoCanvas&gt;; channelName: string; mediaType: "audio" \| "video"; muteMap: Map&lt;string, boolean&gt;; volumeMap: Map&lt;string, number&gt; \} |  |
+| rawDataDispatcher: AGAudioRawDataDispatcher |  |
+
+#### Returns
+
+Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-subscribe-thread)
+
+## Properties
+
+<a id="_canvasMap"></a>
+
+### Optional Readonly _canvasMap
+
+```ts
+_canvasMap?: Map<string, AgoraRtcVideoCanvas>
+```
+
+<a id="_muteMap"></a>
+
+### Readonly _muteMap
+
+```ts
+_muteMap: Map<string, boolean>
+```
+
+<a id="_volumeMap"></a>
+
+### Readonly _volumeMap
+
+```ts
+_volumeMap: Map<string, number>
+```
+
+<a id="runnable"></a>
+
+### runnable
+
+```ts
+runnable: boolean
+```
+
+## Accessors
+
+<a id="canvas"></a>
+
+### canvas
+
+```ts
+get canvas(): undefined | AgoraRtcVideoCanvas
+```
+
+#### Returns
+
+Returns undefined | [AgoraRtcVideoCanvas](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rtc-video-canvas)
+
+<a id="mute"></a>
+
+### mute
+
+```ts
+get mute(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="streamUuid"></a>
+
+### streamUuid
+
+```ts
+get streamUuid(): string
+```
+
+#### Returns
+
+Returns string
+
+<a id="track"></a>
+
+### track
+
+```ts
+get track(): undefined | IRemoteAudioTrack | IRemoteVideoTrack
+```
+
+#### Returns
+
+Returns undefined | IRemoteAudioTrack | IRemoteVideoTrack
+
+## Methods
+
+<a id="emit"></a>
+
+### emit
+
+```ts
+emit(evt: string, ...args: any[]): AgoraRteSubscribeThread
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| Rest ...args: any[] |  |
+
+#### Returns
+
+Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-subscribe-thread)
+
+<a id="isTrackSubscribed"></a>
+
+### isTrackSubscribed
+
+```ts
+isTrackSubscribed(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="off"></a>
+
+### off
+
+```ts
+off(evt: string, cb: CallableFunction): AgoraRteSubscribeThread
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-subscribe-thread)
+
+<a id="on"></a>
+
+### on
+
+```ts
+on(evt: string, cb: CallableFunction): AgoraRteSubscribeThread
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-subscribe-thread)
+
+<a id="onExecution"></a>
+
+### onExecution
+
+```ts
+onExecution(): Promise<void>
+```
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="once"></a>
+
+### once
+
+```ts
+once(evt: string, cb: CallableFunction): AgoraRteSubscribeThread
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-subscribe-thread)
+
+<a id="play"></a>
+
+### play
+
+```ts
+play(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="preparePcmCallback"></a>
+
+### preparePcmCallback
+
+```ts
+preparePcmCallback(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="removeAllEventListeners"></a>
+
+### removeAllEventListeners
+
+```ts
+removeAllEventListeners(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="run"></a>
+
+### run
+
+```ts
+run(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="setAudioFrameCallback"></a>
+
+### setAudioFrameCallback
+
+```ts
+setAudioFrameCallback(): Promise<void>
+```
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="setAudioPlaybackDevice"></a>
+
+### setAudioPlaybackDevice
+
+```ts
+setAudioPlaybackDevice(deviceId: string): void
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| deviceId: string |  |
+
+#### Returns
+
+Returns void
+
+<a id="stop"></a>
+
+### stop
+
+```ts
+stop(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="stopAudioFrameCallback"></a>
+
+### stopAudioFrameCallback
+
+```ts
+stopAudioFrameCallback(): void
+```
+
+#### Returns
+
+Returns void

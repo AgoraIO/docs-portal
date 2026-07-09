@@ -1,0 +1,352 @@
+---
+title: "GroupStore"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+`GroupStore` 类提供分组讨论功能相关的能力。
+
+- EduStoreBase
+  - GroupStore
+
+## Properties
+
+<a id="groupDetails"></a>
+
+### groupDetails
+
+```ts
+groupDetails: Map<string, GroupDetail>
+```
+
+分组详情
+
+<a id="state"></a>
+
+### state
+
+```ts
+state: GroupState
+```
+
+分组状态
+
+## Accessors
+
+<a id="currentSubRoom"></a>
+
+### currentSubRoom
+
+```ts
+get currentSubRoom(): undefined | string
+```
+
+当前所在小组
+
+#### Returns
+
+Returns undefined | string
+
+<a id="groupUuidByUserUuid"></a>
+
+### groupUuidByUserUuid
+
+```ts
+get groupUuidByUserUuid(): Map<string, string>
+```
+
+用户所在组 ID 映射关系
+
+#### Returns
+
+Returns Map &lt; string, string &gt;
+
+<a id="userByUuid"></a>
+
+### userByUuid
+
+```ts
+get userByUuid(): Map<string, GroupUser>
+```
+
+返回 userUuid 组成的 map 数据
+
+#### Returns
+
+Returns Map &lt; string, [GroupUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/group-user) &gt;
+
+## Methods
+
+<a id="acceptGroupInvite"></a>
+
+### acceptGroupInvite
+
+```ts
+acceptGroupInvite(groupUuid: string): Promise<void>
+```
+
+接受加入小组的邀请
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| groupUuid: string | 组 ID |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="addGroups"></a>
+
+### addGroups
+
+```ts
+addGroups(groupDetails: (GroupDetail & { groupUuid?: string })[], inProgress?: boolean): Promise<void>
+```
+
+新建小组
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| groupDetails: (GroupDetail & \{ groupUuid?: string \})[] |  |
+| Optional inProgress: boolean |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="broadcastMessage"></a>
+
+### broadcastMessage
+
+```ts
+broadcastMessage(messageText: string): void
+```
+
+发送全体消息
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| messageText: string | 消息 |
+
+#### Returns
+
+Returns void
+
+<a id="joinSubRoom"></a>
+
+### joinSubRoom
+
+```ts
+joinSubRoom(groupUuid: string): void
+```
+
+进入子房间
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| groupUuid: string | 组 ID |
+
+#### Returns
+
+Returns void
+
+<a id="leaveSubRoom"></a>
+
+### leaveSubRoom
+
+```ts
+leaveSubRoom(): void
+```
+
+离开小组
+
+#### Returns
+
+Returns void
+
+<a id="moveIntoSubRoom"></a>
+
+### moveIntoSubRoom
+
+```ts
+moveIntoSubRoom(fromGroupUuid: string, toGroupUuid: string): void
+```
+
+用户主动从某房间移动至另一房间
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| fromGroupUuid: string | 原组 ID |
+| toGroupUuid: string | 目标组 ID |
+
+#### Returns
+
+Returns void
+
+<a id="moveUsersToGroup"></a>
+
+### moveUsersToGroup
+
+```ts
+moveUsersToGroup(fromGroupUuid: string, toGroupUuid: string, users: string[]): Promise<void>
+```
+
+将用户从某小组移入另一小组
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| fromGroupUuid: string | 原组 ID |
+| toGroupUuid: string | 目标组 ID |
+| users: string[] | 用户 ID 列表 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="rejectGroupInvite"></a>
+
+### rejectGroupInvite
+
+```ts
+rejectGroupInvite(groupUuid: string): Promise<void>
+```
+
+拒绝加入小组的邀请
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| groupUuid: string | 组 ID |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="removeGroupUsers"></a>
+
+### removeGroupUsers
+
+```ts
+removeGroupUsers(fromGroupUuid: string, users: string[]): Promise<void>
+```
+
+将用户从小组中移除
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| fromGroupUuid: string | 组 ID |
+| users: string[] | 用户 ID 列表 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="removeGroups"></a>
+
+### removeGroups
+
+```ts
+removeGroups(groups: string[]): Promise<void>
+```
+
+移除小组
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| groups: string[] | 小组 ID 列表 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="startGroup"></a>
+
+### startGroup
+
+```ts
+startGroup(groupDetails: GroupDetail[], syncBoardScenes?: boolean): Promise<void>
+```
+
+开启分组讨论
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| groupDetails: GroupDetail[] | 分组配置数组 |
+| Optional syncBoardScenes: boolean |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="stopGroup"></a>
+
+### stopGroup
+
+```ts
+stopGroup(): Promise<void>
+```
+
+结束分组讨论
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="updateGroupInfo"></a>
+
+### updateGroupInfo
+
+```ts
+updateGroupInfo(groups: PatchGroup[]): Promise<void>
+```
+
+更新分组配置
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| groups: PatchGroup[] | 分组配置数组 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="updateGroupUsers"></a>
+
+### updateGroupUsers
+
+```ts
+updateGroupUsers(patches: PatchGroup[], sendInvitation?: boolean): Promise<void>
+```
+
+更新小组成员列表
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| patches: PatchGroup[] | 更新配置 |
+| Optional sendInvitation: boolean | 是否发送邀请 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;

@@ -1,0 +1,37 @@
+---
+title: "createAccount method"
+description: "API docs for the createAccount method from the ChatClient class, for the Dart programming language."
+---
+
+Register a new user.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `userId` | The userId. The maximum length is 64 characters. Ensure that you set this parameter. Supported characters include the 26 English letters (a-z), the ten numbers (0-9), the underscore (_), the hyphen (-), and the English period (.). This parameter is case insensitive, and upper-case letters are automatically changed to low-case ones. If you want to set this parameter as a regular expression, set it as ^ `a-zA-Z0-9_-` +$. |
+| `password` | The password. The maximum length is 64 characters. Ensure that you set this parameter. |
+
+```dart
+Future<void> createAccount(String userId, String password)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> createAccount(String userId, String password) async {
+  EMLog.v('create account: $userId : $password');
+  Map req = {'username': userId, 'password': password};
+  Map result =
+      await ClientChannel.invokeMethod(ChatMethodKeys.createAccount, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

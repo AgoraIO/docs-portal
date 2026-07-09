@@ -1,0 +1,496 @@
+---
+title: "com.herewhite.sdk.WhiteSdk类 参考"
+description: "WhiteSdk 类。"
+---
+
+`WhiteSdk` 类。
+
+## 构造及析构函数说明
+
+<a id="a73aa1e911a6a08ff7de4b605f7b0b32c"></a>
+
+### WhiteSdk() [1/4]
+
+```cpp
+com.herewhite.sdk.WhiteSdk.WhiteSdk(JsBridgeInterface bridge, Context context, WhiteSdkConfiguration whiteSdkConfiguration)
+```
+
+初始化白板 SDK 实例。
+
+请确保在调用其他 API 前先调用 `WhiteSdk` 创建并初始化白板 SDK 实例。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| bridge | 白板界面，详见 `WhiteboardView`。 |
+| context | 安卓活动 (Android Activity) 的上下文。 |
+| whiteSdkConfiguration | SDK 实例的配置，详见 `WhiteSdkConfiguration`。 |
+
+<a id="a7694b8a246b356de3d432da2b8eb4c0a"></a>
+
+### WhiteSdk() [2/4]
+
+```cpp
+com.herewhite.sdk.WhiteSdk.WhiteSdk(JsBridgeInterface bridge, Context context, WhiteSdkConfiguration whiteSdkConfiguration, @Nullable CommonCallback commonCallback)
+```
+
+初始化白板 SDK 实例。
+
+请确保在调用其他 API 前先调用 `WhiteSdk` 创建并初始化白板 SDK 实例。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| bridge | 白板界面，详见 `WhiteboardView`。 |
+| context | 安卓活动 (Android Activity) 的上下文。 |
+| whiteSdkConfiguration | SDK 实例的配置，详见 `WhiteSdkConfiguration`。 |
+| commonCallback | 通用事件回调，详见 `CommonCallback`。 |
+
+<a id="a335e2c96662783c39395af6093e1aa70"></a>
+
+### WhiteSdk() [3/4]
+
+```cpp
+com.herewhite.sdk.WhiteSdk.WhiteSdk(JsBridgeInterface bridge, Context context, WhiteSdkConfiguration whiteSdkConfiguration, UrlInterrupter urlInterrupter)
+```
+
+初始化白板 SDK 实例。
+
+请确保在调用其他 API 前先调用 `WhiteSdk` 创建并初始化白板 SDK 实例。
+
+##### `**[弃用:](/zh-CN/api-reference/whiteboard/android/deprecated#_deprecated000024)**`
+
+该参数已废弃。请改用 `CommonCallbacks` 接口中的 `urlInterrupter` 方法。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| bridge | 白板界面，详见 `WhiteboardView`。 |
+| context | 安卓活动 (Android Activity) 的上下文。 |
+| whiteSdkConfiguration | SDK 实例的配置，详见 `WhiteSdkConfiguration`。 |
+| urlInterrupter | 图片 URL 拦截设置，详见 `UrlInterrupter`。 |
+
+<a id="ad090a47a1e654bce4e8c4e81ce1ad7e3"></a>
+
+### WhiteSdk() [4/4]
+
+```cpp
+com.herewhite.sdk.WhiteSdk.WhiteSdk(JsBridgeInterface bridge, Context context, WhiteSdkConfiguration whiteSdkConfiguration, @Nullable CommonCallback commonCallback, @Nullable AudioMixerBridge audioMixerBridge)
+```
+
+初始化白板 SDK 实例。
+
+请确保在调用其他 API 前先调用 `WhiteSdk` 创建并初始化白板 SDK 实例。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| bridge | 白板界面，详见 `WhiteboardView`。 |
+| context | 安卓活动 (Android Activity) 的上下文。 |
+| whiteSdkConfiguration | SDK 实例的配置，详见 `WhiteSdkConfiguration`。 |
+| commonCallback | 通用事件回调，详见 `CommonCallback`。 |
+| audioMixerBridge | 混音设置，详见 `AudioMixerBridge`。当你同时使用 Agora RTC SDK 和互动白板 SDK, 且白板中展示的动态 PPT 中包含音频文件时，你可以调用 `AudioMixerBridge` 接口，将动态 PPT 中的所有音频交给 Agora RTC SDK 进行混音播放。 |
+
+## 成员函数说明
+
+<a id="a7a6c33cf1d72b129c992e634f3e81a2f"></a>
+
+### setCommonCallbacks()
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.setCommonCallbacks(CommonCallback commonCallback)
+```
+
+设置通用事件回调。
+
+SDK 通过 `CommonCallback` 类向 app 报告 SDK 运行时的各项事件。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| commonCallback | 通用回调事件，详见 `CommonCallback` |
+
+<a id="af5317b1d059982b20c6f3c48912fdf61"></a>
+
+### getAudioMixerImplement()
+
+```cpp
+AudioMixerImplement com.herewhite.sdk.WhiteSdk.getAudioMixerImplement()
+```
+
+获取 `AudioMixerImplement` 实例。
+
+#### Returns
+
+`AudioMixerImplement` 实例。
+
+<a id="a3e1a37b99f7f9dfc2bf9e191a9142868"></a>
+
+### Version()
+
+```cpp
+static String com.herewhite.sdk.WhiteSdk.Version() static
+```
+
+查询 SDK 版本号。
+
+#### Returns
+
+当前的 SDK 版本号，格式为字符串，如 `"2.12.28"`。
+
+<a id="a2f336e8d806643f508cd6c7c1cb0ad3b"></a>
+
+### joinRoom() [1/2]
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.joinRoom(final RoomParams roomParams, final Promise<Room > roomPromise)
+```
+
+加入互动白板实时房间。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomParams | 互动白板实时房间的参数配置，详见 `RoomParams`。 |
+| roomPromise | `Promise<Room>` 接口实例，详见 `Promise`。你可以通过该接口获取 `joinRoom` 的调用结果：<br />- 如果方法调用成功，将返回房间对象，详见 [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room)。<br />- 如果方法调用失败，将返回错误信息。 |
+
+<a id="a307c801d0203f3010797c449fd6b7f49"></a>
+
+### joinRoom() [2/2]
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.joinRoom(final RoomParams roomParams, final RoomListener roomListener, final Promise<Room > roomPromise)
+```
+
+加入互动白板实时房间。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| roomParams | 互动白板实时房间的参数配置，详见 `RoomParams`。 |
+| roomListener | 房间事件回调，详见 `RoomListener`。在重连时，如果不传 `roomListener` 参数，则会使用上一次设置的 `roomListener`。如果要释放 `roomListener`，可以调用 `releaseRoom`。 |
+| roomPromise | `Promise<Room>` 接口实例，详见 `Promise`。你可以通过该接口获取 `joinRoom` 的调用结果：<br />- 如果方法调用成功，则返回房间对象，详见 [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room)。<br />- 如果方法调用失败，则返回错误信息。 |
+
+<a id="a685ef819eb970df4ab0ea6e513b4a6d1"></a>
+
+### createPlayer() [1/2]
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.createPlayer(final PlayerConfiguration playerConfiguration, final Promise<Player > playerPromise)
+```
+
+创建互动白板回放房间。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| playerConfiguration | 白板回放的参数配置，详见 `PlayerConfiguration`。 |
+| playerPromise | `Promise<Player>` 接口实例，详见 `Promise`。你可以通过该接口获取 `createPlayer` 的调用结果：<br />- 如果方法调用成功，将返回新创建的回放房间对象，详见 [Player](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-player)。<br />- 如果方法调用失败，将返回错误信息。 |
+
+<a id="a52f15c160d689ebb1f74801820d05607"></a>
+
+### createPlayer() [2/2]
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.createPlayer(final PlayerConfiguration playerConfiguration, final PlayerListener listener, final Promise<Player > playerPromise)
+```
+
+创建互动白板回放房间。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| playerConfiguration | 白板回放的参数配置，详见 `PlayerConfiguration`。 |
+| listener | 白板回放事件的回调，详见 `PlayerListener`。 |
+| playerPromise | `Promise<Player>` 接口实例，详见 `Promise`。你可以通过该接口获取 `createPlayer` 的调用结果：<br />- 如果方法调用成功，将返回新创建的回放房间对象，详见 [Player](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-player)。<br />- 如果方法调用失败，将返回错误信息。 |
+
+<a id="a76a9f524257626f12bc0f6f0ddd4f3a6"></a>
+
+### isPlayable()
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.isPlayable(final PlayerConfiguration playerConfiguration, final Promise<Boolean > playablePromise)
+```
+
+查看房间是否有回放数据。
+
+##### `自从`
+
+2.11.0
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| playerConfiguration | 白板回放的参数配置，详见 `PlayerConfiguration`。 |
+| playablePromise | `Promise<Boolean>` 接口实例，详见 `Promise`。你可以通过该接口获取 `isPlayable` 的调用结果：<br />- 如果方法调用成功，则返回 true。<br />- 如果方法调用失败，则返回 false。 |
+
+<a id="a52e56f75148bb1527efd370a9ecee1a0"></a>
+
+### setupFontFaces()
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.setupFontFaces(FontFace[] fontFaces)
+```
+
+声明在本地白板中可用的字体。
+
+##### `自从`
+
+2.11.2
+
+调用该方法声明的字体可用于显示 PPT 中的文字和白板工具输入的文字。
+
+该方法和 `loadFontFaces` 都可以声明在本地白板中可用的字体，区别是 `setupFontFaces` 没有回调，因为无法判断字体声明是否正确； `loadFontFaces` 会触发回调，报告每一种的预加载结果。
+
+##### `注解`
+
+- 该方法只对本地白板生效，不影响远端白板的字体显示。
+
+- 通过该方法声明的字体，只有当被使用时，才会触发下载。
+- 不同的字体在不同设备上的渲染可能不同，例如，在某些设备上，要等字体加载完成后，才会渲染文字；而在另外一些设备上，会先使用默认的字体渲染文字，等指定的字体加载完毕后，再整体刷新。
+- 每次调用该方法都会覆盖原来的字体声明。
+- 请勿同时调用该方法和 loadFontFaces 方法。否则，无法预期行为。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| fontFaces | `FontFace` 实例，详见 `FontFace`。 |
+
+<a id="a27f75d293d58992a1c9f3d6ae25ae9d9"></a>
+
+### loadFontFaces()
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.loadFontFaces(FontFace[] fontFaces, final Promise<JSONObject > loadPromise)
+```
+
+声明并预加载在本地白板中可用的字体。
+
+##### `自从`
+
+2.11.2
+
+调用该方法预加载的字体可以用于显示 PPT 中的文字和白板工具输入的文字。
+
+该方法和 `setupFontFaces` 都可以声明在本地白板中可用的字体，区别是 `setupFontFaces` 没有回调，因为无法判断字体声明是否正确； `loadFontFaces` 会触发回调，报告每一种的预加载结果。
+
+##### `注解`
+
+- 该方法只对本地白板生效，不影响远端白板的字体显示。
+- 使用该方法预加载的字体，只有当该字体被使用时，才会触发下载。
+- 不同的字体在不同设备上的渲染可能不同，例如，在某些设备上，要等字体加载完成后，才会渲染文字；而在另外一些设备上，会先使用默认的字体渲染文字，等指定的字体加载完毕后，再整体刷新。
+- 通过该方法预加载的字体无法删除，每次调用都会在原来的基础上新增。
+- 请勿同时调用该方法和 setupFontFaces 方法。否则，无法预期行为。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| fontFaces | 指定的字体，详见 `FontFace`。 |
+| loadPromise | `Promise<JSONObject>` 接口实例，详见 `Promise`。你可以通过该接口获取 `loadFontFaces` 的调用结果：<br />- 如果方法调用成功，则返回 FontFace 对象。<br />- 如果方法调用失败，则返回错误信息。 |
+
+<a id="a0d82c56c6e406fc8b96a6b47ecced374"></a>
+
+### updateTextFont()
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.updateTextFont(String[] names)
+```
+
+设置文字白板工具在本地白板中使用的字体。
+
+##### `自从`
+
+2.11.2
+
+##### `注解`
+
+- 该方法只对本地白板生效，不影响远端白板的字体显示。
+- 该方法只能设置文字白板工具使用的字体，不能用于 PPT 中的文字显示。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| names | 字体名称。如果用户系统中不存在该字体，则文字白板工具无法使用该字体。请确保你已经调用 `setupFontFaces` 或 `loadFontFaces` 将指定字体加载到本地白板中。 |
+
+<a id="a14df05dcc0e6681aae7983538c66a93b"></a>
+
+### releaseRoom() [1/2]
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.releaseRoom()
+```
+
+释放互动白板实时房间实例并删除 `RoomListener` 回调。
+
+##### `自从`
+
+2.4.12
+
+<a id="a743253d09f13f40560e845944f357d93"></a>
+
+### releaseRoom() [2/2]
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.releaseRoom(String uuid)
+```
+
+释放互动白板实时房间实例并删除 `RoomListener` 回调。
+
+##### `**[弃用:](/zh-CN/api-reference/whiteboard/android/deprecated#_deprecated000025)**`
+
+该方法已废弃。请改用 `releaseRoom`。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| uuid | 房间 UUID。该参数无实际意义，因为一个 `WhiteSdk` 实例只能对应一个实时房间，不需要使用 UUID 指定房间。 |
+
+<a id="aeceb0e6867b96866585cd284d3340ef3"></a>
+
+### releasePlayer() [1/2]
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.releasePlayer()
+```
+
+释放回放房间实例并删除 `PlayerListener` 回调。
+
+##### `自从`
+
+2.4.12
+
+<a id="ad1e4ff5b0da99533b334b277b15b6d38"></a>
+
+### releasePlayer() [2/2]
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.releasePlayer(String uuid)
+```
+
+释放回放房间实例并删除 `PlayerEventListener` 回调。
+
+##### `**[弃用:](/zh-CN/api-reference/whiteboard/android/deprecated#_deprecated000026)**`
+
+该方法已废弃。请改用 `releasePlayer`。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| uuid | 回放房间的 UUID。该参数无实际意义，由于一个 `WhiteSdk` 实例只能对应一个回放房间，不需要使用 UUID 指定回放房间。 |
+
+<a id="adcb9ec225769170f2f48b0a7ddc32109"></a>
+
+### requestSlideLog()
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.requestSlideLog(File logFile, final Promise<Boolean > promise)
+```
+
+请求 Slide 的日志。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| logFile | 用于存储 Slide 日志的日志文件。 |
+| promise | 请求调用回调结果。 |
+
+<a id="a9c86735f67c57fd523d0d871b914451c"></a>
+
+### updateSlideVolume()
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.updateSlideVolume(float volume)
+```
+
+更新当前 PPT 的音量。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| volume | 音量值，取值范围为 (0,1]。 |
+
+<a id="a25896f064b76f67c2f700209d9819622"></a>
+
+### getSlideVolume()
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.getSlideVolume(Promise<Double > promise)
+```
+
+获取当前 PPT 的音量。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| promise | 方法调用结果，包含 `volume` 和 `error` 两个字段：<br />- 调用成功： volume 返回值为 (0,1] 之间的值，代表当前 PPT 的音量， error 返回值为 nil。<br />- 调用失败： volume 返回值为 0， error 返回值为错误消息。 |
+
+<a id="a9394cbd9f55e04b7430cf90bd12f54bb"></a>
+
+### setSlideListener()
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.setSlideListener(SlideListener slideListener)
+```
+
+设置 SlideApp 回调。 SlideApp 通过 `SlideListener` 类向 app 报告内部运行时的各项事件。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| slideListener | 通用回调事件，详见 `SlideListener`。 |
+
+<a id="aefc7b22c66a78692a6411dbcace66564"></a>
+
+### recoverSlide()
+
+```cpp
+void com.herewhite.sdk.WhiteSdk.recoverSlide(String slideId)
+```
+
+恢复指定 PPT 的渲染状态。
+
+如果 PPT 渲染失败，你可以调用该方法恢复 PPT 的渲染状态。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| slideId | PPT ID。 |
+
+<a id="a21f1a893a0c7eb75a81e8b4d0a75a046"></a>
+
+### prepareWhiteConnection()
+
+```cpp
+static void com.herewhite.sdk.WhiteSdk.prepareWhiteConnection(Context context, ConnectionPrepareParam param) static
+```
+
+提前选择线路以加快首次加入白板房间时的连接速度。
+
+声网建议在加入白板房间前调用该方法，例如设备检测页、白板房间列表页等，有助于提升加入白板房间的连接速度。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| context | 安卓活动 (Android Activity) 的上下文。 |
+| param | 白板预连接参数，详见 `ConnectionPrepareParam`。 |

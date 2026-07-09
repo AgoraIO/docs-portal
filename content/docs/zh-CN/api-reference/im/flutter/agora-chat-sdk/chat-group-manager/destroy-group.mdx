@@ -1,0 +1,36 @@
+---
+title: "destroyGroup method"
+description: "API docs for the destroyGroup method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Destroys the group instance.
+
+Only the group owner can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+
+```dart
+Future<void> destroyGroup(String groupId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> destroyGroup(String groupId) async {
+  Map req = {'groupId': groupId};
+  Map result = await _channel.invokeMethod(ChatMethodKeys.destroyGroup, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

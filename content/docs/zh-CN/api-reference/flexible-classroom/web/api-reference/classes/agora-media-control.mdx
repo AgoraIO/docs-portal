@@ -1,0 +1,442 @@
+---
+title: "AgoraMediaControl"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+- AGEventEmitter
+  - AgoraMediaControl
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts
+new AgoraMediaControl(rtc: AGRtcManager): AgoraMediaControl
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| rtc: AGRtcManager |  |
+
+#### Returns
+
+Returns [AgoraMediaControl](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-media-control)
+
+## Accessors
+
+<a id="camera"></a>
+
+### camera
+
+```ts
+get camera(): undefined | AgoraRteCameraVideoTrack
+```
+
+#### Returns
+
+Returns undefined | [AgoraRteCameraVideoTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-camera-video-track)
+
+<a id="microphone"></a>
+
+### microphone
+
+```ts
+get microphone(): undefined | AgoraRteMicrophoneAudioTrack
+```
+
+#### Returns
+
+Returns undefined | [AgoraRteMicrophoneAudioTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-microphone-audio-track)
+
+<a id="player"></a>
+
+### player
+
+```ts
+get player(): undefined | AgoraRteStreamPlayer
+```
+
+#### Returns
+
+Returns undefined | [AgoraRteStreamPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-stream-player)
+
+<a id="screen"></a>
+
+### screen
+
+```ts
+get screen(): undefined | AgoraRteScreenShareTrack
+```
+
+#### Returns
+
+Returns undefined | [AgoraRteScreenShareTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-screen-share-track)
+
+## Methods
+
+<a id="createCameraVideoTrack"></a>
+
+### createCameraVideoTrack
+
+```ts
+createCameraVideoTrack(): AgoraRteCameraVideoTrack
+```
+
+#### Returns
+
+Returns [AgoraRteCameraVideoTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-camera-video-track)
+
+<a id="createLoopbackDevice"></a>
+
+### createLoopbackDevice
+
+```ts
+createLoopbackDevice(): AgoraRteLoopbackDevice
+```
+
+#### Returns
+
+Returns [AgoraRteLoopbackDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-loopback-device)
+
+<a id="createMicrophoneAudioTrack"></a>
+
+### createMicrophoneAudioTrack
+
+```ts
+createMicrophoneAudioTrack(): AgoraRteMicrophoneAudioTrack
+```
+
+#### Returns
+
+Returns [AgoraRteMicrophoneAudioTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-microphone-audio-track)
+
+<a id="createScreenShareTrack"></a>
+
+### createScreenShareTrack
+
+```ts
+createScreenShareTrack(): AgoraRteScreenShareTrack
+```
+
+#### Returns
+
+Returns [AgoraRteScreenShareTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-screen-share-track)
+
+<a id="createStreamMediaTrack"></a>
+
+### createStreamMediaTrack
+
+```ts
+createStreamMediaTrack(): AgoraRteStreamMediaTrack
+```
+
+#### Returns
+
+Returns [AgoraRteStreamMediaTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-stream-media-track)
+
+<a id="createStreamPlayer"></a>
+
+### createStreamPlayer
+
+```ts
+createStreamPlayer(): AgoraRteStreamPlayer
+```
+
+#### Returns
+
+Returns [AgoraRteStreamPlayer](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-stream-player)
+
+<a id="emit"></a>
+
+### emit
+
+```ts
+emit(evt: string, ...args: any[]): AgoraMediaControl
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| Rest ...args: any[] |  |
+
+#### Returns
+
+Returns [AgoraMediaControl](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-media-control)
+
+<a id="getAudioPlaybackList"></a>
+
+### getAudioPlaybackList
+
+```ts
+getAudioPlaybackList(): AGRtcDeviceInfo[]
+```
+
+#### Returns
+
+Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agrtc-device-info) []
+
+<a id="getAudioRecordingList"></a>
+
+### getAudioRecordingList
+
+```ts
+getAudioRecordingList(): AGRtcDeviceInfo[]
+```
+
+#### Returns
+
+Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agrtc-device-info) []
+
+<a id="getCurrentFrameData"></a>
+
+### getCurrentFrameData
+
+```ts
+getCurrentFrameData(channelName: string, streamUuid: string, isLocal: boolean): ImageData
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelName: string |  |
+| streamUuid: string |  |
+| isLocal: boolean |  |
+
+#### Returns
+
+Returns ImageData
+
+<a id="getDisplayDevices"></a>
+
+### getDisplayDevices
+
+```ts
+getDisplayDevices(): Promise<AGScreenShareDevice[]>
+```
+
+#### Returns
+
+Returns Promise &lt; [AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agscreen-share-device) [] &gt;
+
+<a id="getVideoCameraList"></a>
+
+### getVideoCameraList
+
+```ts
+getVideoCameraList(): AGRtcDeviceInfo[]
+```
+
+#### Returns
+
+Returns [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agrtc-device-info) []
+
+<a id="getWindowDevices"></a>
+
+### getWindowDevices
+
+```ts
+getWindowDevices(): Promise<AGScreenShareDevice[]>
+```
+
+#### Returns
+
+Returns Promise &lt; [AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agscreen-share-device) [] &gt;
+
+<a id="hasScreenSharePermission"></a>
+
+### hasScreenSharePermission
+
+```ts
+hasScreenSharePermission(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="isScreenDeviceEnumerateSupported"></a>
+
+### isScreenDeviceEnumerateSupported
+
+```ts
+isScreenDeviceEnumerateSupported(): boolean
+```
+
+#### Returns
+
+Returns boolean
+
+<a id="off"></a>
+
+### off
+
+```ts
+off(evt: string, cb: CallableFunction): AgoraMediaControl
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraMediaControl](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-media-control)
+
+<a id="on"></a>
+
+### on
+
+```ts
+on(evt: string, cb: CallableFunction): AgoraMediaControl
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraMediaControl](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-media-control)
+
+<a id="once"></a>
+
+### once
+
+```ts
+once(evt: string, cb: CallableFunction): AgoraMediaControl
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| evt: string |  |
+| cb: CallableFunction |  |
+
+#### Returns
+
+Returns [AgoraMediaControl](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-media-control)
+
+<a id="removeAllEventListeners"></a>
+
+### removeAllEventListeners
+
+```ts
+removeAllEventListeners(): void
+```
+
+#### Returns
+
+Returns void
+
+<a id="setBeautyEffectOptions"></a>
+
+### setBeautyEffectOptions
+
+```ts
+setBeautyEffectOptions(enable: boolean, options: AGBeautyEffect): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable: boolean |  |
+| options: AGBeautyEffect |  |
+
+#### Returns
+
+Returns number
+
+<a id="startAudioPlaybackDeviceTest"></a>
+
+### startAudioPlaybackDeviceTest
+
+```ts
+startAudioPlaybackDeviceTest(url: string): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| url: string |  |
+
+#### Returns
+
+Returns number
+
+<a id="startAudioRecordingDeviceTest"></a>
+
+### startAudioRecordingDeviceTest
+
+```ts
+startAudioRecordingDeviceTest(indicateInterval: number): number
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| indicateInterval: number |  |
+
+#### Returns
+
+Returns number
+
+<a id="stopAudioPlaybackDeviceTest"></a>
+
+### stopAudioPlaybackDeviceTest
+
+```ts
+stopAudioPlaybackDeviceTest(): number
+```
+
+#### Returns
+
+Returns number
+
+<a id="stopAudioRecordingDeviceTest"></a>
+
+### stopAudioRecordingDeviceTest
+
+```ts
+stopAudioRecordingDeviceTest(): number
+```
+
+#### Returns
+
+Returns number
+
+<a id="takeSnapshot"></a>
+
+### takeSnapshot
+
+```ts
+takeSnapshot(channel: string, streamUuid: number, filePath: string): Promise<void | AGSnapshotInfo>
+```
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channel: string |  |
+| streamUuid: number |  |
+| filePath: string |  |
+
+#### Returns
+
+Returns Promise &lt; void | AGSnapshotInfo &gt;

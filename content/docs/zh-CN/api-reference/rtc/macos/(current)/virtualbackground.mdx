@@ -1,0 +1,148 @@
+---
+title: "虚拟背景"
+description: "启用或关闭虚拟背景功能。"
+---
+<a id="toc_virtualbackground"></a>
+
+## 虚拟背景
+
+<a id="api_irtcengine_enablevirtualbackground"></a>
+
+## enableVirtualBackground:backData:segData:
+
+启用或关闭虚拟背景功能。
+
+<a id="api_irtcengine_enablevirtualbackground__prototype"></a>
+
+```objectivec
+- (int)enableVirtualBackground:(BOOL)enable backData:(AgoraVirtualBackgroundSource* _Nullable)backData segData:(AgoraSegmentationProperty* _Nullable)segData NS_SWIFT_NAME(enableVirtualBackground(_:backData:segData:));
+```
+
+<a id="api_irtcengine_enablevirtualbackground__detailed_desc"></a>
+
+#### `自从`
+
+自 v3.7.200 版本新增。
+
+虚拟背景功能支持你将原始背景替换为静态图片、动态视频、模糊背景或人像背景分割，以实现画中画效果。启用该功能后，频道内的所有用户都可以看到你设置的自定义背景。请在调用 [enableVideo](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_enablevideo) 或 [startPreview:](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_startpreview2) 方法后调用此方法。
+
+:::info[注]
+- 使用视频作为虚拟背景会导致内存持续增长，可能引发应用崩溃。因此，建议你降低视频的分辨率和帧率。
+- 该功能对设备性能要求较高。调用该方法时，SDK 会自动检测当前设备的性能。声网建议你在以下设备上使用该功能：
+  - iOS：配备 A9 芯片及以上的设备，包括：
+    - iPhone 6S 及以上机型。
+    - iPad Air 第三代及以上机型。
+    - iPad 第五代及以上机型。
+    - iPad Pro 第一代及以上机型。
+    - iPad mini 第五代及以上机型。
+  - macOS：配备 i5 及以上处理器的设备。
+- 声网建议你在以下场景中使用该功能：
+  - 使用高清摄像头设备，且环境光线均匀。
+  - 拍摄画面中物体较少，人像为半身像且无遮挡。
+  - 背景颜色为纯色，且与用户服装颜色有明显区别。
+- 此方法依赖虚拟背景动态库 AgoraVideoSegmentationExtension.xcframework （iOS）或 AgoraVideoSegmentationExtension.framework （macOS）。若该动态库被删除，则无法正常启用该功能。
+:::
+
+<a id="api_irtcengine_enablevirtualbackground__parameters"></a>
+
+### 参数
+
+#### `enable`
+
+是否启用虚拟背景：
+
+- YES：启用虚拟背景。
+- NO：关闭虚拟背景。
+
+#### `backData`
+
+自定义背景。为适配 SDK 采集的视频分辨率，SDK 会对自定义背景图像进行缩放和裁剪，确保图像内容不失真。详见 [AgoraVirtualBackgroundSource](/zh-CN/api-reference/rtc/macos/class-virtualbackgroundsource)。
+
+#### `segData`
+
+背景图像的处理属性，详见 [AgoraSegmentationProperty](/zh-CN/api-reference/rtc/macos/class-segmentationproperty)。
+
+<a id="api_irtcengine_enablevirtualbackground__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+  - -4：设备性能不满足虚拟背景功能的要求。声网建议你在性能更高的设备上尝试使用该功能。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enablevirtualbackground2"></a>
+
+## enableVirtualBackground:backData:segData:sourceType:
+
+启用虚拟背景并指定媒体源，或关闭虚拟背景。
+
+<a id="api_irtcengine_enablevirtualbackground2__prototype"></a>
+
+```objectivec
+- (int)enableVirtualBackground:(BOOL)enable backData:(AgoraVirtualBackgroundSource* _Nullable)backData segData:(AgoraSegmentationProperty* _Nullable)segData sourceType:(AgoraMediaSourceType)sourceType NS_SWIFT_NAME(enableVirtualBackground(_:backData:segData:sourceType:));
+```
+
+<a id="api_irtcengine_enablevirtualbackground2__detailed_desc"></a>
+
+#### `自从`
+
+自 v3.7.200 版本新增。
+
+虚拟背景功能支持你将原始背景替换为静态图片、动态视频、模糊背景或人像背景分割，以实现画中画效果。启用该功能后，频道内的所有用户都可以看到自定义背景。该方法与 [enableVirtualBackground:backData:segData:](/zh-CN/api-reference/rtc/macos/virtualbackground#api_irtcengine_enablevirtualbackground) 方法均可用于启用或关闭虚拟背景，但该方法允许你指定应用虚拟背景的媒体源类型。请在调用 [enableVideo](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_enablevideo) 或 [startPreview:](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_startpreview2) 方法后调用本方法。
+
+:::info[注]
+- 使用视频作为虚拟背景会导致内存持续增长，可能引发应用崩溃等问题。因此，建议降低视频的分辨率和帧率。
+- 该功能对设备性能要求较高。调用该方法时，SDK 会自动检测当前设备的性能。声网建议你在以下设备上使用该功能：
+  - iOS：配备 A9 芯片及以上的设备，包括：
+    - iPhone 6S 及以上机型。
+    - iPad Air 第三代及以上机型。
+    - iPad 第五代及以上机型。
+    - iPad Pro 第一代及以上机型。
+    - iPad mini 第五代及以上机型。
+  - macOS：配备 i5 及以上处理器的设备。
+- 声网建议你在以下场景中使用该功能：
+  - 使用高清摄像头，且环境光线均匀。
+  - 拍摄画面中物体较少，人像为半身像且无遮挡。
+  - 背景颜色应为纯色，且与用户服装颜色有明显区别。
+- 本方法依赖虚拟背景动态库 AgoraVideoSegmentationExtension.xcframework （iOS）或 AgoraVideoSegmentationExtension.framework （macOS）。若该动态库被删除，则无法正常启用该功能。
+:::
+
+<a id="api_irtcengine_enablevirtualbackground2__parameters"></a>
+
+### 参数
+
+#### `enable`
+
+是否启用虚拟背景：
+
+- YES：启用虚拟背景。
+- NO：关闭虚拟背景。
+
+#### `backData`
+
+自定义背景。SDK 会对背景图像进行缩放和裁剪，以适配采集视频的分辨率，并确保图像内容不被拉伸变形。详见 [AgoraVirtualBackgroundSource](/zh-CN/api-reference/rtc/macos/class-virtualbackgroundsource)。
+
+#### `segData`
+
+背景图像的处理属性。详见 [AgoraSegmentationProperty](/zh-CN/api-reference/rtc/macos/class-segmentationproperty)。
+
+#### `sourceType`
+
+媒体源类型。详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/macos/enum-mediasourcetype)。
+
+- 默认值为 AgoraMediaSourceTypePrimaryCamera。
+- 若使用自定义视频源，请设置为 AgoraMediaSourceTypeCustomVideo。
+
+<a id="api_irtcengine_enablevirtualbackground2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+  - -4：设备性能不满足虚拟背景功能的要求。声网建议你在性能更高的设备上尝试。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)

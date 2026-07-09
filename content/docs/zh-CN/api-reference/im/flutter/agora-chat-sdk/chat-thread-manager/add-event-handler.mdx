@@ -1,0 +1,30 @@
+---
+title: "addEventHandler method"
+description: "API docs for the addEventHandler method from the ChatThreadManager class, for the Dart programming language."
+---
+
+Adds the chat thread event handler. After calling this method, you can handle for chat thread event when they arrive.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `identifier` | The custom handler identifier, is used to find the corresponding handler. |
+| `handler` | The handle for chat thread event. See [ChatThreadEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-thread-event-handler). |
+
+```dart
+void addEventHandler(String identifier, ChatThreadEventHandler handler)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+void addEventHandler(
+  String identifier,
+  ChatThreadEventHandler handler,
+) {
+  _eventHandlesMap[identifier] = handler;
+}
+```

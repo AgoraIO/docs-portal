@@ -1,0 +1,43 @@
+---
+title: "fetchChatThread method"
+description: "API docs for the fetchChatThread method from the ChatThreadManager class, for the Dart programming language."
+---
+
+Get Chat Thread details from server.
+
+**Return** The chat thread object.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `chatThreadId` | Chat Thread ID. |
+
+```dart
+Future<ChatThread?> fetchChatThread({required String chatThreadId})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<ChatThread?> fetchChatThread({
+  required String chatThreadId,
+}) async {
+  Map req = {"threadId": chatThreadId};
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.fetchChatThreadDetail,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatThread.fromJson(
+        result[ChatMethodKeys.fetchChatThreadDetail]);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

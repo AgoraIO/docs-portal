@@ -1,0 +1,202 @@
+---
+title: "agora::rtc::ILocalAudioTrack类 参考abstract"
+description: "继承自 agora::rtc::IAudioTrack ."
+---
+
+`ILocalAudioTrack` 类是本地音频轨道的基类。
+
+## 构造及析构函数说明
+
+<a id="a9f5d966835a740779c918dd8d75bd3bd"></a>
+
+### ~ILocalAudioTrack()
+
+```cpp
+agora::rtc::ILocalAudioTrack::~ILocalAudioTrack() inlineprotected
+```
+
+## 成员函数说明
+
+<a id="a7cb8991ce79496696ae61754212d93be"></a>
+
+### setEnabled()
+
+```cpp
+virtual void agora::rtc::ILocalAudioTrack::setEnabled(bool enable, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+开启或关闭本地音频轨道。
+
+本地音频轨道开启之后，SDK 可以采集、处理和编码本地音频。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable | 是否开启音频轨道：<br />- true: 开启音频轨道。<br />- false: 关闭音频轨道。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+<a id="a103aa5dd48b949e735101e0c2825376a"></a>
+
+### isEnabled()
+
+```cpp
+virtual bool agora::rtc::ILocalAudioTrack::isEnabled() const pure virtual
+```
+
+获取本地音频轨道的开启状态。
+
+#### Returns
+
+本地音频轨道的开启状态：
+
+- true: 本地音频轨道已开启。
+- false: 本地音频轨道已关闭。
+
+<a id="aca03d4f431b5318472e2b1769cb09c17"></a>
+
+### getState()
+
+```cpp
+virtual LOCAL_AUDIO_STREAM_STATE agora::rtc::ILocalAudioTrack::getState() pure virtual
+```
+
+获取本地音频状态。
+
+#### Returns
+
+本地音频状态: [LOCAL_AUDIO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp-api/namespaceagora-1-1rtc#a19311f858629420654fcc0da9d043332)。
+
+<a id="aeb53201b4e4648dd714db4b1d4c66696"></a>
+
+### GetStats()
+
+```cpp
+virtual LocalAudioTrackStats agora::rtc::ILocalAudioTrack::GetStats() pure virtual
+```
+
+获取本地音频轨道的统计信息。
+
+#### Returns
+
+本地音频轨道的统计信息: [LocalAudioTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-i-local-audio-track-1-1-local-audio-track-stats)。
+
+<a id="a1068bd00b29242e1071e6905fa1ed509"></a>
+
+### adjustPublishVolume()
+
+```cpp
+virtual int agora::rtc::ILocalAudioTrack::adjustPublishVolume(int volume, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+调整音频发布音量。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| volume | 音频发布音量。 取值范围 0 ~ 100 (默认)。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a0ef5208b317ed83239dd35e03ed050ad"></a>
+
+### getPublishVolume()
+
+```cpp
+virtual int agora::rtc::ILocalAudioTrack::getPublishVolume(int* volume) pure virtual
+```
+
+获取音频发布音量。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| volume | 音频发布音量。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a0f1adbf17ef048ba5c10d5dbbb4f8631"></a>
+
+### setMaxBufferedAudioFrameNumber()
+
+```cpp
+virtual void agora::rtc::ILocalAudioTrack::setMaxBufferedAudioFrameNumber(int number, aosl_ref_t ares = AOSL_REF_INVALID) pure virtual
+```
+
+设置音频发送缓冲区的最大容量。
+
+##### `自从`
+
+4.4.30
+
+在 AI 交互等应用场景中，发送端发送音频帧的频率可能不均匀，例如有时每 20 ms 发送 1 帧数据、有时每 20 ms 发送 3 帧数据。如果 SDK 按照实际的发送频率去发送给声网服务器，则接收端可能会有卡顿、丢帧等不良体验。为优化音频传输性能，SDK 设置了音频发送缓冲区，不论发送端实际发送音频帧的频率是多少，SDK 都会将数据存放在音频发送缓冲区。待音频发送缓冲区中的数据达到允许发送的最小时长后，SDK 再开始按照 10 ms 每帧的频率发送数据给接收端。
+
+SDK 默认的音频发送缓冲区最大容量是 6000，表示支持存放最多 6000 帧数据，即 60 s 的数据。如果你需要更大的缓冲区容量，你可以调用该方法进行调整。如果你还需要设置音频发送缓冲区允许发送的最小数据时长，调用 [setAudioFrameSendDelayMs](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-audio-track#a6f315590feb863960f7959ec7946890d) 方法。
+
+##### `注解`
+
+该方法需要在 [publishAudio](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-user#a5e5cc962971f99f07a692d82ac02ff1d) 方法之前调用。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| number | 缓冲区存放的最大音频帧数。例如，填入 `6000` 则表示 6000 帧音频数据。 |
+| ares | 用于 SDK 的生命周期保护，填写默认值即可。 |
+
+<a id="a8e1c4f96b49e21c972e15344642453ec"></a>
+
+### ClearSenderBuffer()
+
+```cpp
+virtual int agora::rtc::ILocalAudioTrack::ClearSenderBuffer() pure virtual
+```
+
+清除当前音频发送缓冲区。
+
+##### `自从`
+
+4.4.30
+
+如果你不再需要当前音频发送缓冲区中的数据，可以调用该方法清除缓冲区。例如，用户给 AI 提了个问题，AI 正在通过 SDK 传输音频给用户解答，此时 SDK 的音频发送缓冲区中不断有数据进出。当用户打断 AI 的回复并提出另一个问题时，你可以调用该方法，让 SDK 清除当前未发送出去的缓冲数据，以便快速缓冲 AI 对新话题的回答。
+
+#### Returns
+
+- ≥ 0: 方法调用成功，返回被清除的音频帧数量。
+- &lt; 0: 方法调用失败。
+
+<a id="a6f315590feb863960f7959ec7946890d"></a>
+
+### setAudioFrameSendDelayMs()
+
+```cpp
+virtual void agora::rtc::ILocalAudioTrack::setAudioFrameSendDelayMs(int32_t delay_ms) pure virtual
+```
+
+设置音频发送缓冲区允许发送的最小数据时长。
+
+##### `自从`
+
+4.4.30
+
+SDK 默认允许发送的最小数据时长为 160 ms，即 SDK 会等音频发送缓冲区存满 160 ms 的数据后将数据发送给接收端，这会带来如下影响：
+
+- 如果发送端一次发送的数据大于或等于 160 ms，例如 800 ms，则 SDK 会立即按照每帧 10 ms 的频率发送数据给接收端。
+- 如果发送端一次发送的数据小于 160 ms，例如 100 ms，则 SDK 会等缓冲区数据达到 160 ms 后，再按照 10 ms 每帧的频率发送数据给接收端。这就会造成至多 60 ms 的延迟。
+
+你可以根据实际业务需求，调用该方法调整缓冲区允许发送的最小数据时长。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| delay_ms | 缓冲区允许发送的最小数据时长（ms）。该参数需要设置为 10 的倍数，取值范围为大于 0 且小于 [setMaxBufferedAudioFrameNumber](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-audio-track#a0f1adbf17ef048ba5c10d5dbbb4f8631) 方法中 `number` 参数值的 10 倍。 |

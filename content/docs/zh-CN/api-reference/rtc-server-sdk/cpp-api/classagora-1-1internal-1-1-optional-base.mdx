@@ -1,0 +1,148 @@
+---
+title: "agora::internal::OptionalBase< T > 模板类 参考"
+description: "agora::internal::OptionalBase< T > 模板类 参考 API reference."
+---
+
+## 构造及析构函数说明
+
+<a id="aab5d2c594c9d9562571d5ccd2bdf61b9"></a>
+
+### OptionalBase() [1/7]
+
+```cpp
+template<typename T > CONSTEXPR agora::internal::OptionalBase<T >::OptionalBase() inlineprotected
+```
+
+<a id="a8c374eb2c52db7eff2d9e2ac2d157659"></a>
+
+### OptionalBase() [2/7]
+
+```cpp
+template<typename T > CONSTEXPR agora::internal::OptionalBase<T >::OptionalBase(const OptionalBase<T >& other) inlineprotected
+```
+
+<a id="ac10d07b02596156455314da44592e13a"></a>
+
+### OptionalBase() [3/7]
+
+```cpp
+template<typename T > CONSTEXPR agora::internal::OptionalBase<T >::OptionalBase(OptionalBase<T >&& other) inlineprotected
+```
+
+<a id="abe2e79ea3c889b3b4bbd043bd5b21055"></a>
+
+### OptionalBase() [4/7]
+
+```cpp
+template<typename T > template<class... Args> CONSTEXPR agora::internal::OptionalBase<T >::OptionalBase(in_place_t, Args&&... args) inlineexplicitprotected
+```
+
+<a id="a0cb0bcb7e7491aebfea69cd5932a5563"></a>
+
+### OptionalBase() [5/7]
+
+```cpp
+template<typename T > CONSTEXPR agora::internal::OptionalBase<T >::OptionalBase(in_place_t, const T& _value) inlineexplicitprotected
+```
+
+<a id="a42f9fb3578cb9b0a0a22fc6dc7d2cf1f"></a>
+
+### OptionalBase() [6/7]
+
+```cpp
+template<typename T > template<typename U > agora::internal::OptionalBase<T >::OptionalBase(const OptionalBase<U >& other) inlineexplicitprotected
+```
+
+<a id="af52397646dc9ff8f8b12bd91297049ae"></a>
+
+### OptionalBase() [7/7]
+
+```cpp
+template<typename T > template<typename U > agora::internal::OptionalBase<T >::OptionalBase(OptionalBase<U >&& other) inlineexplicitprotected
+```
+
+<a id="ae1388f0e42b6dd60af789b8576aab27a"></a>
+
+### ~OptionalBase()
+
+```cpp
+template<typename T > agora::internal::OptionalBase<T >::~OptionalBase() inlineprotected
+```
+
+## 成员函数说明
+
+<a id="a225ef78055e720ef1a970d22600f9085"></a>
+
+### operator=() [1/2]
+
+```cpp
+template<typename T > OptionalBase& agora::internal::OptionalBase<T >::operator=(const OptionalBase<T >& other) inlineprotected
+```
+
+<a id="a234d57719bba818e5740d8a75dd74372"></a>
+
+### operator=() [2/2]
+
+```cpp
+template<typename T > OptionalBase& agora::internal::OptionalBase<T >::operator=(OptionalBase<T >&& other) inlineprotected
+```
+
+<a id="ad30bbee50b6bb026ffd03bcfad711d9a"></a>
+
+### CopyAssign()
+
+```cpp
+template<typename T > template<typename U > void agora::internal::OptionalBase<T >::CopyAssign(const OptionalBase<U >& other) inlineprotected
+```
+
+<a id="aa39af6624d36c7b6c3a0ff000d8e1a98"></a>
+
+### MoveAssign()
+
+```cpp
+template<typename T > template<typename U > void agora::internal::OptionalBase<T >::MoveAssign(OptionalBase<U >&& other) inlineprotected
+```
+
+<a id="ad4dc0d2dbbf46d8a73de9d6f8312be56"></a>
+
+### InitOrAssign() [1/2]
+
+```cpp
+template<typename T > template<typename U > void agora::internal::OptionalBase<T >::InitOrAssign(U&& value) inlineprotected
+```
+
+<a id="aae16b7d8023722d858532024ac759550"></a>
+
+### InitOrAssign() [2/2]
+
+```cpp
+template<typename T > void agora::internal::OptionalBase<T >::InitOrAssign(const U& value) inlineprotected
+```
+
+<a id="a3e9337cdb2bf14d0085db7bf79332937"></a>
+
+### FreeIfNeeded()
+
+```cpp
+template<typename T > void agora::internal::OptionalBase<T >::FreeIfNeeded() inlineprotected
+```
+
+## 友元及相关函数文档
+
+<a id="ad0a2d544a7adc9646c13843053119e26"></a>
+
+### OptionalBase
+
+```cpp
+template<typename T > template<typename U > friend class OptionalBase friend
+```
+
+## 类成员变量说明
+
+<a id="a0a8fe5ba99d74ba9ce912837a71e78ca"></a>
+
+### storage_
+
+```cpp
+template<typename T > OptionalStorage<T> agora::internal::OptionalBase<T >::storage_ protected
+```

@@ -1,0 +1,129 @@
+---
+title: "IMonitorHandler"
+description: "IMonitorHandler 类包含 SDK 监控相关的事件回调。"
+---
+<a id="class_monitorhandler"></a>
+
+## IMonitorHandler
+
+<a id="api_onlocalnetworkqualityupdated"></a>
+
+## onLocalNetworkQualityUpdated
+
+本地网络质量变化回调。
+
+<a id="api_onlocalnetworkqualityupdated__prototype"></a>
+
+```kotlin
+fun onLocalNetworkQualityUpdated(quality: EduContextNetworkQuality)
+```
+
+<a id="api_onlocalnetworkqualityupdated__parameters"></a>
+
+### 参数
+
+#### `quality`
+
+本地网络质量，详见 [EduContextNetworkQuality](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#enum_networkquality)。
+
+<a id="api_onlocalconnectionupdated"></a>
+
+## onLocalConnectionUpdated
+
+本地与声网服务器连接状态变化回调。
+
+<a id="api_onlocalconnectionupdated__prototype"></a>
+
+```kotlin
+fun onLocalConnectionUpdated(state: EduContextConnectionState)
+```
+
+<a id="api_onlocalconnectionupdated__parameters"></a>
+
+### 参数
+
+#### `state`
+
+本地与声网服务器的连接状态，详见 [EduContextConnectionState](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#enum_connectionstate)。
+
+<a id="api_onmediapacketstatsupdated"></a>
+
+## onMediaPacketStatsUpdated
+
+报告媒体包信息。
+
+<a id="api_onmediapacketstatsupdated__prototype"></a>
+
+```kotlin
+fun onMediaPacketStatsUpdated(roomUuid: String, stats: FcrMediaPacketStats)
+```
+
+<a id="api_onmediapacketstatsupdated__detailed_desc"></a>
+
+#### `自从`
+
+v2.8.60
+
+<a id="api_onmediapacketstatsupdated__parameters"></a>
+
+### 参数
+
+#### `roomUuid`
+
+房间 ID。
+
+#### `stats`
+
+媒体包信息统计数据，详见 [FcrMediaPacketStats](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_fcrmediapacketstats)。
+
+<a id="api_onperformanceupdated"></a>
+
+## onPerformanceUpdated
+
+性能信息更新回调。
+
+<a id="api_onperformanceupdated__prototype"></a>
+
+```kotlin
+fun onPerformanceUpdated(info: FcrPerformanceInfo)
+```
+
+<a id="api_onperformanceupdated__detailed_desc"></a>
+
+#### `自从`
+
+v2.8.60
+
+<a id="api_onperformanceupdated__parameters"></a>
+
+### 参数
+
+#### `info`
+
+性能信息。详见 [FcrPerformanceInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_fcrperformanceinfo)。
+
+<a id="api_onmediaerroroccurred"></a>
+
+## onMediaErrorOccurred
+
+发生媒体错误回调。
+
+<a id="api_onmediaerroroccurred__prototype"></a>
+
+```kotlin
+fun onMediaErrorOccurred(errorCode: Int)
+```
+
+<a id="api_onmediaerroroccurred__detailed_desc"></a>
+
+#### `自从`
+
+v2.8.60
+
+<a id="api_onmediaerroroccurred__parameters"></a>
+
+### 参数
+
+#### `errorCode`
+
+错误码。

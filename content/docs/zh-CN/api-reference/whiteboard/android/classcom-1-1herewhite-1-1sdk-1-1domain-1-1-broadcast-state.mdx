@@ -1,0 +1,52 @@
+---
+title: "com.herewhite.sdk.domain.BroadcastState类 参考"
+description: "视角状态，包含视角为主播模式的用户信息。"
+---
+
+视角状态，包含视角为主播模式的用户信息。
+
+## 成员函数说明
+
+<a id="ab14fce0e852bff5e0649b4c7fbf96759"></a>
+
+### getMode()
+
+```cpp
+ViewMode com.herewhite.sdk.domain.BroadcastState.getMode()
+```
+
+获取用户的视角模式。
+
+#### Returns
+
+用户的视角模式。
+
+<a id="a4afd9153c77ee5734daae0506eada3d6"></a>
+
+### getBroadcasterId()
+
+```cpp
+Long com.herewhite.sdk.domain.BroadcastState.getBroadcasterId()
+```
+
+获取主播模式用户在房间中的用户 ID。
+
+2.4.8 版本前，当房间中没有主播时，错误地返回了 0。 2.4.8 版本修复了该问题。修复后，当房间内没有主播时，返回值为 null。
+
+#### Returns
+
+主播模式用户的用户 ID。
+
+<a id="a5653cc0358539917a83e02d8068afa63"></a>
+
+### getBroadcasterInformation()
+
+```cpp
+RoomMember com.herewhite.sdk.domain.BroadcastState.getBroadcasterInformation()
+```
+
+获取主播模式用户的用户信息。
+
+#### Returns
+
+用户信息。详见 `RoomMember`。

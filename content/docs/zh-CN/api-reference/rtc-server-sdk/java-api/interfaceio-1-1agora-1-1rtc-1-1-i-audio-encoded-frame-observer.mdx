@@ -1,0 +1,34 @@
+---
+title: "io.agora.rtc.IAudioEncodedFrameObserver接口 参考"
+description: "IAudioEncodedFrameObserver 类。"
+---
+
+IAudioEncodedFrameObserver 类。
+
+## 成员函数说明
+
+<a id="a15dd0f01400dc3b630df2820dba6715b"></a>
+
+### onEncodedAudioFrameReceived()
+
+```cpp
+default int io.agora.rtc.IAudioEncodedFrameObserver.onEncodedAudioFrameReceived(String remoteUserId, ByteBuffer buffer, EncodedAudioFrameReceiverInfo info)
+```
+
+接收到远端用户编码后的音频数据回调。
+
+##### `注解`
+
+为保证数据传输效率，音频数据缓存使用 DirectByteBuffer 类型。请确保同步提取回调中的 Byte 数组的值，然后将其发送到非同步线程进行处理。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| remoteUserId | 远端用户 ID。 |
+| buffer | 编码后的音频数据缓存。 |
+| info | 编码后的音频数据信息： [EncodedAudioFrameReceiverInfo](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-encoded-audio-frame-receiver-info)。 |
+
+#### Returns
+
+返回 0 或 1。返回值当前没有实际意义。

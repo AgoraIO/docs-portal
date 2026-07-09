@@ -1,0 +1,168 @@
+---
+title: "ChatContactManagerListener class"
+description: "API docs for the ChatContactManagerListener class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The contact updates listener.
+
+Occurs when the contact changes, including requests to add friends, notifications to delete friends, requests to accept friends, and requests to reject friends.
+
+Register the listener:
+
+```dart
+  ChatClient.getInstance.contactManager.addContactManagerListener(contactListener);
+```
+
+Unregister the listener:
+
+```dart
+  ChatClient.getInstance.contactManager.removeContactManagerListener(contactListener);
+```
+
+### Annotations
+
+- @ Deprecated ("Use ContactEventHandler to instead")
+
+<a id="constructors"></a>
+
+## Constructors
+
+<a id="ChatContactManagerListener"></a>
+
+### [ChatContactManagerListener](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-contact-manager-listener/chat-contact-manager-listener)
+
+```dart
+ChatContactManagerListener()
+```
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="onContactAdded"></a>
+
+### [onContactAdded](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-contact-manager-listener/on-contact-added)
+
+```dart
+onContactAdded(String userName) -> void
+```
+
+Occurs when user is added as a contact by another user.
+
+<a id="onContactDeleted"></a>
+
+### [onContactDeleted](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-contact-manager-listener/on-contact-deleted)
+
+```dart
+onContactDeleted(String userName) -> void
+```
+
+Occurs when a user is removed from the contact list by another user.
+
+<a id="onContactInvited"></a>
+
+### [onContactInvited](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-contact-manager-listener/on-contact-invited)
+
+```dart
+onContactInvited(String userName, String? reason) -> void
+```
+
+Occurs when a user receives a friend request.
+
+<a id="onFriendRequestAccepted"></a>
+
+### [onFriendRequestAccepted](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-contact-manager-listener/on-friend-request-accepted)
+
+```dart
+onFriendRequestAccepted(String userName) -> void
+```
+
+Occurs when a friend request is approved.
+
+<a id="onFriendRequestDeclined"></a>
+
+### [onFriendRequestDeclined](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-contact-manager-listener/on-friend-request-declined)
+
+```dart
+onFriendRequestDeclined(String userName) -> void
+```
+
+Occurs when a friend request is declined.
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

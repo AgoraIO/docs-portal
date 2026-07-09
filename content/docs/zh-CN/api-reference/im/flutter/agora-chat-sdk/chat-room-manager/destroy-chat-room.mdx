@@ -1,0 +1,39 @@
+---
+title: "destroyChatRoom method"
+description: "API docs for the destroyChatRoom method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Destroys a chat room.
+
+Only the chat room owner can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+
+```dart
+Future<void> destroyChatRoom(String roomId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> destroyChatRoom(
+  String roomId,
+) async {
+  Map req = {"roomId": roomId};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.destroyChatRoom, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

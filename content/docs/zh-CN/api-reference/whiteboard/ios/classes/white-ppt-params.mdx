@@ -1,0 +1,45 @@
+---
+title: "WhitePptParams Class Reference"
+description: "设置动态 PPT 参数。"
+---
+
+<a id="overview"></a>
+
+设置动态 PPT 参数。
+
+## Methods
+
+<a id="//api/name/)"></a>
+
+### )
+
+```objc
+@property (nonatomic, copy, nullable) NSString *API_AVAILABLE ( ios ( 11.0 )
+```
+
+`scheme`：更改动态 ppt 请求时的请求协议，可以将 [https://www.exmaple.com/1.pptx](https://www.exmaple.com/1.pptx) 更改成 scheme://www.example.com/1.pptx
+
+#### Discussion
+
+该属性配合 iOS 11 WebKit 中 `WKWebViewConfiguration` 类的 `setURLSchemeHandler:forURLScheme:` 方法，可以对 PPT 的资源进行拦截，选择使用本地资源。
+
+<a id="//api/name/useServerWrap"></a>
+
+### useServerWrap
+
+```objc
+@property (nonatomic, assign) BOOL useServerWrap
+```
+
+动态 PPT 服务端排版功能的开启状态。
+
+#### Availability
+
+2.12.25
+
+- YES：（默认）开启。
+- NO：关闭。
+
+**Note：**
+
+2021-02-10 之后转换的动态 PPT 支持服务端排版功能，可以确保不同平台排版一致。

@@ -1,0 +1,739 @@
+---
+title: "io.agora.rtc.AgoraRtcService类 参考"
+description: "AgoraRtcService 类包含应用程序调用的所有方法。"
+---
+
+[AgoraRtcService](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service) 类包含应用程序调用的所有方法。
+
+## 成员函数说明
+
+<a id="a7e951d0431bfb567b42eef639cee5313"></a>
+
+### configLog()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.configLog(int sizePerFile, int maxFileCount)
+```
+
+配置 SDK 的日志文件。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| sizePerFile | 每份日志文件的大小（字节）。取值范围为 [10000, 1000000]。 |
+| maxFileCount | 日志文件数。取值范围为 [1, 100]。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a558085193ea80b9bbf8ffd257262ed74"></a>
+
+### createConnection()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.createConnection()
+```
+
+创建 Connection。
+
+你需要在加入频道前调用该方法创建 Connection。如需使用同一个用户 ID 加入不同频道，或者使用不同用户 ID 加入同一个频道，则你需要多次调用该方法创建多个 Connection，然后再使用对应的 Connection ID 加入频道。
+
+#### Returns
+
+Connection ID。
+
+<a id="a427f76570108b23da9d456fdd55b9251"></a>
+
+### destroyConnection()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.destroyConnection(int connId)
+```
+
+销毁 Connection。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="ae3726d7ee4fbec4195da27cec77e3801"></a>
+
+### errToStr()
+
+```cpp
+native String io.agora.rtc.AgoraRtcService.errToStr(int err)
+```
+
+将错误码转换为静态字符串。
+
+##### `注解`
+
+使用之后需要释放该字符串。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| err | 错误码。 |
+
+#### Returns
+
+描述错误码的字符串。
+
+<a id="a47fdbd78e30cef7fa3d75db65933416e"></a>
+
+### fini()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.fini()
+```
+
+释放所有由 [init](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#aab47fc030b290004c6d29a0a306db032) 方法分配给 SDK 的资源。
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a829c861b89d9c2c45738a8b029887559"></a>
+
+### getConnectionInfo()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.getConnectionInfo(int connId, ConnectionInfo connInfo)
+```
+
+获取 Connection 信息。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
+| connInfo | 连接信息。详见 [ConnectionInfo](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-connection-info)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="ad5ca517c82b93d15b985edf396c10853"></a>
+
+### getRdtStatusInfo()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.getRdtStatusInfo(int connId, int remoteUid, RdtStatusInfo info)
+```
+
+获取 RDT 通道的信息。
+
+##### `自从`
+
+v1.9.2
+
+该方法可以获取当前 RDT 通道的连接状态和缓冲区长度，从而判断远端用户是否成功接收 RDT 消息、本地用户是否可以继续发送 RDT 消息。例如，发送缓冲区长度 (`sendQueueSize`) 为 0 表示远端用户已接收完 RDT 消息。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| remoteUid | 远端用户的用户 ID。 |
+| info | RDT 通道的信息。详见 [RdtStatusInfo](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-rdt-status-info)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="a21c6c424fc5f8767ac4b85cb7dee5fa4"></a>
+
+### getVersion()
+
+```cpp
+native String io.agora.rtc.AgoraRtcService.getVersion()
+```
+
+获取 SDK 版本。
+
+#### Returns
+
+包含 SDK 版本信息的静态字符串。
+
+<a id="aab47fc030b290004c6d29a0a306db032"></a>
+
+### init()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.init(String appId, AgoraRtcEvents events, RtcServiceOptions options)
+```
+
+初始化 SDK。
+
+##### `注解`
+
+每条进程只能初始化一次。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| appId | 声网为 App 开发者签发的 APP ID。 |
+| events | 用于处理 SDK 事件的一系列回调。 |
+| options | 服务配置选项，如果不需要设置则请置空。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a3dd72e07c6799725a7dcce4b137028e2"></a>
+
+### joinChannel()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.joinChannel(int connId, String channelName, int uid, String token, ChannelOptions options)
+```
+
+加入频道。
+
+该方法让用户加入指定频道。同一个频道内使用相同 App ID 的用户可以互相传输数据。
+
+##### `注解`
+
+- 你可以同时加入多个频道，所有你加入的频道都能接收到你发送的音视频数据。
+- 如需使用同一个用户 ID 加入不同频道，或者使用不同用户 ID 加入同一个频道，则你需要创建不同的 Connection 并在调用 joinChannel 方法时填入对应的 Connection ID。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
+| channelName | 频道名，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）：<br />- 26 个小写英文字母 a-z<br />- 26 个大写英文字母 A-Z<br />- 10 个数字 0-9<br />- 空格<br />- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "\|", "~", "," |
+| uid | 用户 ID。 |
+| token | 用于鉴权的 Token。<br />- 如果用户启用的是 App ID，可以将该值设为 NULL。<br />- 如果用户想使用 Token，声网还会给开发者分发一个 App Certificate，并结合 Token 的算法在 App 的服务器端生成 Token。 与 App ID 相比，Token 适用于安全要求较高的开发环境。 |
+| options | 频道设置选项。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a588efd08277fc89440d9f4b6eb524f56"></a>
+
+### leaveChannel()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.leaveChannel(int connId)
+```
+
+退出频道。
+
+停止在某频道传输数据后需要离开该频道。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="af565eea42a3e51807b5c4b4346ee0799"></a>
+
+### licenseGenCredential()
+
+```cpp
+native String io.agora.rtc.AgoraRtcService.licenseGenCredential()
+```
+
+##### `**[弃用:](/zh-CN/api-reference/rtsa/java/deprecated#_deprecated000001)**`
+
+自 v1.9.0 废弃。
+
+生成设备唯一标识 Credential。
+
+##### `注解`
+
+该方法仅用于 [声网 License 机制](https://doc.shengwang.cn/doc/rtsa/java/basic-features/license)。如不使用 License，可忽略该方法。
+
+#### Returns
+
+Credential 字符串。方法调用失败则返回 null。
+
+<a id="a85bc5fdb2b074a4cc4040abba8f75ebe"></a>
+
+### licenseVerify()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.licenseVerify(String certificate, String credential)
+```
+
+##### `**[弃用:](/zh-CN/api-reference/rtsa/java/deprecated#_deprecated000002)**`
+
+自 v1.9.0 废弃。改用 [onLicenseValidationFailure](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a8c749481c0832b6ab31dc5a9847a0289) 回调获取 License 校验失败的错误码。
+
+认证 SDK。
+
+##### `注解`
+
+启用了 [声网 License 机制](https://doc.shengwang.cn/doc/rtsa/java/basic-features/license) 后，安装了 SDK 的设备只有通过 Certificate 验证 才能加入声网频道、使用数据传输功能。
+
+- 该方法仅用于声网 License 机制。如不使用 License，可忽略该方法。
+- 该方法必须在 init 前调用。认证通过后，你才能有效调用 RTSA SDK 的其他 API。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| certificate | 许可证 Certificate。 |
+| credential | 凭证 Credential。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="a4f4f1a958399ee05bdbdde1d155bbf5e"></a>
+
+### loginRtm()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.loginRtm(String rtmUid, String rtmToken, AgoraRtmEvents events)
+```
+
+登录云信令 (原 RTM) 服务。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| rtmUid | 云信令 (原 RTM) 用户 ID。该字符串不可超过 64 字节。不可设为空、 `NULL` 或 `"NULL"`。以下为支持的字符集范围:<br />- 26 个小写英文字母 a-z<br />- 26 个大写英文字母 A-Z<br />- 10 个数字 0-9<br />- 空格<br />- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "\|", "~", "," |
+| rtmToken | 用于登录云信令 (原 RTM) 系统的动态密钥。详见《校验用户权限》。如果你没有开启 Token 鉴权，此参数可设为 `NULL`。 |
+| events | 云信令 (原 RTM) 回调。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a8a4b5206365497da3fef8ce2da9cc09f"></a>
+
+### logoutRtm()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.logoutRtm()
+```
+
+登出云信令 (原 RTM) 服务。
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+
+<a id="af006e362e612bdb98adc95bdc08eefd9"></a>
+
+### muteLocalAudio()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.muteLocalAudio(int connId, boolean mute)
+```
+
+暂停/恢复发送本地音频流。
+
+可以先暂停向所有频道发送音频流，然后恢复向指定频道发送音频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
+| mute | 设置是否暂停/恢复发送本地音频流：<br />- true: 暂停发送；<br />- false: （默认）恢复发送。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aabcc6ac3658ef50df7e947607c51e2f2"></a>
+
+### muteLocalVideo()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.muteLocalVideo(int connId, boolean mute)
+```
+
+暂停/恢复发送本地视频流。
+
+可以先暂停向所有频道发送视频流，然后恢复向指定频道发送视频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
+| mute | 设置是否暂停/恢复发送本地视频流：<br />- true: 暂停发送；<br />- false: （默认）恢复发送。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a47a7f426c467d93e03f3f51291fe85b4"></a>
+
+### muteRemoteAudio()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.muteRemoteAudio(int connId, int remoteUid, boolean mute)
+```
+
+暂停/恢复接收指定频道内指定远端用户的音频流。
+
+可以先暂停接收所有频道的音频流，然后恢复接收某个指定频道的音频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
+| remoteUid | 指定用户的用户 ID。设为 0 则停止接收频道内所有用户的音频流。 |
+| mute | 设置是否暂停/恢复接收远端音频流：<br />- true: 暂停接收；<br />- false: （默认）恢复接收。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a2a7361457f57b9673d217afa1f2d3fcc"></a>
+
+### muteRemoteVideo()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.muteRemoteVideo(int connId, int uid, boolean mute)
+```
+
+暂停/恢复接收指定频道内指定远端用户的视频流。
+
+可以先暂停接收所有频道的视频流，然后恢复接收指定频道的视频流。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
+| uid | 指定用户的用户 ID。设为 0 则停止接收频道内所有用户的视频流。 |
+| mute | 设置是否暂停/恢复接收远端视频流：<br />- true: 暂停接收；<br />- false: （默认）恢复接收。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a4cbb0985b745411d40a082c55a572d85"></a>
+
+### notifyNetworkEvent()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.notifyNetworkEvent(int event)
+```
+
+向 SDK 报告网络状态。
+
+对于 Android 11 或更高版本，SDK 无法自动处理网络事件变更。你可以通过该方法向 SDK 报告网络状态。 SDK 会根据网络事件进行相应操作，例如尝试重新加入 RTC 频道和登录 RTM 系统。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| event | 网络事件，详见 [NetworkEventType](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-network-event-type)。<br />- 0: 方法调用成功。<br />- &lt; 0: 方法调用失败。 |
+
+<a id="ae3308277b86fd9f7b2814b89856a6ed5"></a>
+
+### renewToken()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.renewToken(int connId, String token)
+```
+
+更新指定频道或全部频道的 Token。
+
+##### `注解`
+
+Token 的使用可以提高生产环境下应用程序的安全性。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
+| token | 新生成的 Token。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a55dd74d7f6a86ee7c03f9d7a1c97ddad"></a>
+
+### requestVideoKeyFrame()
+
+```cpp
+*native int io.agora.rtc.AgoraRtcService.requestVideoKeyFrame(int connId, int remoteUid, int streamType)
+```
+
+请求指定远端用户尽快为指定远端视频流生成关键帧。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
+| remoteUid | 需要生成关键帧的用户 ID。如果为频道内的所有用户，则设为 0。 |
+| streamType | 需要生成关键帧的视频流类型。详见 [VideoStreamType](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-video-stream-type)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a81683ebe7ac7ecd950fe21d6cea0a70b"></a>
+
+### sendAudioData()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.sendAudioData(int connId, byte[] data, AudioFrameInfo info)
+```
+
+向加入的频道发送音频帧。
+
+频道内所有用户都能收到你发出的音频帧。
+
+##### `注解`
+
+你加入的所有频道都会收到你发送的音频帧，除非你暂停向指定频道发送音频帧。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
+| data | 音频包数据。 |
+| info | 音频帧信息。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ad5ae8f354d07ee1e2c6f0bd3cfdd9265"></a>
+
+### sendRdtMsg()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.sendRdtMsg(int connId, int remoteUid, int type, byte[] msg)
+```
+
+发送 RDT（Reliable Data Transmission，可靠数据传输）消息。
+
+##### `自从`
+
+v1.9.2
+
+在文件传输、文件下载等需要可靠传输的场景中，你可以参考如下步骤发送 RDT 消息：
+
+1. 在 RDT 通道中建立连接：在加入频道时，将 `ChannelOptions` 中的 autoConnectRdt 参数设置为 true，主动与频道内其他用户建立连接。
+2. 获取 RDT 通道的连接状态：监听 `onRdtState` 回调。当在 RDT 通道中成功建立连接时，连接状态会变为 RDT_STATE_OPENED，此时才可进行下一步。
+3. 调用 sendRdtMsg 方法发送 RDT 消息：你可以根据需要发送控制消息 (RDT_STREAM_CMD) 或数据消息 (RDT_STREAM_DATA)，二者区别如下：
+
+- 控制消息。发送优先级高，不受拥塞控制策略影响，不会阻塞发送。每秒至多发送 100 个消息包，每个消息包的长度至多为 256 B。
+- 数据消息。发送优先级低，受拥塞控制策略影响，如果缓冲区满了，则消息会发送失败。不限制发送的消息包数量，每个消息包的长度至多为 128 KB。
+
+成功发送 RDT 消息后，远端用户会收到 [onRdtMsg](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a6edb4f4ab6a30fc1d7e74314f50fdb21) 回调。你可以调用 [getRdtStatusInfo](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#ad5ca517c82b93d15b985edf396c10853) 方法获取远端用户是否接收完消息等信息。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。 |
+| remoteUid | 远端用户的用户 ID。 |
+| type | RDT 消息类型。详见 [RdtStreamType](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-rdt-stream-type)。 |
+| msg | RDT 消息负载。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+  - RTC_ERR_RDT_USER_NOT_EXIST (-8): 频道内不存在该远端用户。
+  - RTC_ERR_RDT_USER_NOT_READY (-9): 未成功与远端用户建立连接。你需要等 RDT 通道的连接状态变为 RDT_STATE_OPENED 后重新调用该方法。
+  - RTC_ERR_RDT_DATA_BLOCKED (-10): 发送缓冲区已满。你需要等 RDT 通道的连接状态变为 RDT_STATE_OPENED 后重新调用该方法。
+  - RTC_ERR_RDT_CMD_EXCEED_LIMIT (-11): 控制消息的数量超过限制。每秒发送的控制消息包不能超过 100 个。
+
+<a id="a8edd069332b33a33c22a06eb67eb142c"></a>
+
+### sendRtm()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.sendRtm(String rtmUid, byte[] message, int[] messageId)
+```
+
+通过云信令 (原 RTM) 服务发送消息。
+
+RTM 默认开启基于 TLS 加密的传输层安全保护且不可关闭。
+
+##### `注解`
+
+成功登录云信令 (原 RTM) 服务并收到 `onRtmEvent` 回调时才可以发送消息。发送频率不能超过每 3 秒 180 条。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| rtmUid | 云信令 (原 RTM) 用户 ID。 |
+| message | 消息内容。仅支持 UTF-8 编码。消息长度至多为 31 KB。 |
+| messageId | 消息 ID。 |
+
+#### Returns
+
+:
+
+- 0: 方法调用成功。
+- &lt;0: 方法调用失败。
+  - RTM_ERR_NOT_LOGINED (-1001): 未登录 RTM 系统
+  - RTM_ERR_SEND_TO_SELF (-1002): 在 rtmUid 参数中误填了自己的用户 ID。
+  - RTM_ERR_EXCEED_MSG_SIZE (-1003): RTM 消息长度超出限制。消息长度至多为 31 KB。
+  - RTM_ERR_EXCEED_MSG_CNT (-1004): 发送频率超出限制。每秒至多发送 60 条消息。
+  - RTM_ERR_EXCEED_TCP_SKB (-1005): 消息通道已满。等待一秒后重新发送。
+
+<a id="a7ca97e6efca40fb7d42386b1a8a8123e"></a>
+
+### sendVideoData()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.sendVideoData(int connId, byte[] data, VideoFrameInfo info)
+```
+
+向加入的频道发送视频帧。
+
+频道内所有用户都能收到你发出的视频帧。
+
+##### `注解`
+
+你加入的所有频道都会接收到你发送的视频帧，除非你暂停向指定频道发送视频帧。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
+| data | 视频包数据。 |
+| info | 视频帧信息。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aaef5ac6c2de342b7999686b9c61ded44"></a>
+
+### setBweParam()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.setBweParam(int connId, int miniBps, int maxBps, int startBps)
+```
+
+设置 bandwidth estimation (BWE) 参数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
+| miniBps | 最小码率，单位为 bps。 |
+| maxBps | 最大码率，单位为 bps。 |
+| startBps | 起始码率，单位为 bps。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ae400849aa3fa80940ca70d5729e6c80c"></a>
+
+### setCloudProxy()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.setCloudProxy(int type)
+```
+
+设置声网云代理服务。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| type | 云代理类型。<br />- 0：不开启云代理。<br />- 1：开启 UDP 协议的云代理。<br />- 3：开启 TCP 协议的云代理。<br />- 100：自动模式。在该模式下，SDK 优先连接 SD-RTN™，如果连接失败，自动切换到 TCP 协议的云代理。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a18ac2015b97a079793ec57c7ac14f337"></a>
+
+### setLogLevel()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.setLogLevel(int level)
+```
+
+设置 SDK 的日志等级。
+
+设置一个级别后，你可以看到该级别及之前所有级别的日志信息。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| level | 日志等级，详见 [LogLevel](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-log-level)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a0fb86ff4db8c4e9ec7080503ac479cad"></a>
+
+### setParams()
+
+```cpp
+native int io.agora.rtc.AgoraRtcService.setParams(String params)
+```
+
+通过 JSON 配置 SDK 提供技术预览或特别定制功能。
+
+JSON 选项默认不公开。声网工程师正在努力寻求以标准化方式公开 JSON 选项。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| params | JSON 字符串形式的参数。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

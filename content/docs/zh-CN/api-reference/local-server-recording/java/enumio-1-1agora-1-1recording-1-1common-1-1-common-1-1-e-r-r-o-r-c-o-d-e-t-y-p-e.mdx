@@ -1,0 +1,56 @@
+---
+title: "io.agora.recording.common.Common.ERROR_CODE_TYPE 枚举类型参考"
+description: "错误代码。"
+---
+
+错误代码。
+
+### `注解`
+
+使用录制 SDK 的过程中，也可能收到 Native SDK 的错误代码，请参考 [Agora Native SDK 错误代码](doc/rtc/android/error-code)。
+
+## 类成员变量说明
+
+<a id="adbe334e578f373a34221f43426e98a87"></a>
+
+### ERR_OK
+
+```cpp
+io.agora.recording.common.Common.ERROR_CODE_TYPE.ERR_OK =(0)
+```
+
+0：没有错误。
+
+<a id="ab36738e5d0b4a0de1e00f4ee62d01a90"></a>
+
+### ERR_FAILED
+
+```cpp
+io.agora.recording.common.Common.ERROR_CODE_TYPE.ERR_FAILED =(1)
+```
+
+1：一般性的错误（没有明确归类的错误原因）。
+
+<a id="a41888d2c0de7bb451fb542eba08034e2"></a>
+
+### ERR_INVALID_ARGUMENT
+
+```cpp
+io.agora.recording.common.Common.ERROR_CODE_TYPE.ERR_INVALID_ARGUMENT =(2)
+```
+
+2：API 调用了无效的参数。例如指定的频道名含有非法字符。
+
+<a id="a44392bd572015502f88284682c310d1b"></a>
+
+### ERR_INTERNAL_FAILED
+
+```cpp
+io.agora.recording.common.Common.ERROR_CODE_TYPE.ERR_INTERNAL_FAILED =(3)
+```
+
+3：SDK 内部启动失败。推荐以下解决方法：
+
+- 检查音频设备。
+- 检查 App 的完整性。.
+- 重新初始化 SDK。

@@ -1,0 +1,185 @@
+---
+title: "io.agora.rtc.EncodedAudioFrameInfo类 参考"
+description: "EncodedAudioFrameInfo 类。"
+---
+
+EncodedAudioFrameInfo 类。
+
+## 构造及析构函数说明
+
+<a id="a96382894915c27f665173f4fd1a23a3e"></a>
+
+### EncodedAudioFrameInfo() [1/2]
+
+```cpp
+io.agora.rtc.EncodedAudioFrameInfo.EncodedAudioFrameInfo()
+```
+
+<a id="a12165bc1fd7a48de528a149446ce5e97"></a>
+
+### EncodedAudioFrameInfo() [2/2]
+
+```cpp
+io.agora.rtc.EncodedAudioFrameInfo.EncodedAudioFrameInfo(int codec, int sampleRateHz, int samplesPerChannel, int numberOfChannels, EncodedAudioFrameAdvancedSettings advancedSettings, long captureTimeMs)
+```
+
+构造函数。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| codec | 音频编码类型。<br />- 1：OPUS。<br />- 3：PCMA。<br />- 4：PCMU。<br />- 5：G722。<br />- 8：AAC LC。<br />- 9：HE AAC。<br />- 11：HEAAC2。 |
+| sampleRateHz | 音频帧采样率（Hz）。 |
+| samplesPerChannel | 每个声道的样本数。对于 aac 编码格式，默认为 1024；对于 Opus 编码格式，默认为 960。 |
+| numberOfChannels | 音频帧的声道数。 |
+| advancedSettings | 音频帧高级设置。 |
+| captureTimeMs | 音频采集时间戳（毫秒）。 |
+
+## 成员函数说明
+
+<a id="a658eafd21d6fbb94cda635c92d4821fa"></a>
+
+### getAdvancedSettings()
+
+```cpp
+EncodedAudioFrameAdvancedSettings io.agora.rtc.EncodedAudioFrameInfo.getAdvancedSettings()
+```
+
+<a id="a06297aa2225c576613fd207ae89db27e"></a>
+
+### getCaptureTimeMs()
+
+```cpp
+long io.agora.rtc.EncodedAudioFrameInfo.getCaptureTimeMs()
+```
+
+<a id="a229fa1906085b94c1784d3c1560e1d6b"></a>
+
+### getCodec()
+
+```cpp
+int io.agora.rtc.EncodedAudioFrameInfo.getCodec()
+```
+
+<a id="afae3ac0b681587563db1ebc822f9fe32"></a>
+
+### getNumberOfChannels()
+
+```cpp
+int io.agora.rtc.EncodedAudioFrameInfo.getNumberOfChannels()
+```
+
+<a id="a37845d7d00e872585d3ec477172d7ed6"></a>
+
+### getSampleRateHz()
+
+```cpp
+int io.agora.rtc.EncodedAudioFrameInfo.getSampleRateHz()
+```
+
+<a id="aabcd2948b20ea82c86dc4d3280c6b0fd"></a>
+
+### getSamplesPerChannel()
+
+```cpp
+int io.agora.rtc.EncodedAudioFrameInfo.getSamplesPerChannel()
+```
+
+<a id="ac67eea4f5a8495107f2e931bb092fc9a"></a>
+
+### setAdvancedSettings()
+
+```cpp
+void io.agora.rtc.EncodedAudioFrameInfo.setAdvancedSettings(EncodedAudioFrameAdvancedSettings advancedSettings)
+```
+
+<a id="a8e0e2fd45e91dec15abe7a7323d487b9"></a>
+
+### setCaptureTimeMs()
+
+```cpp
+void io.agora.rtc.EncodedAudioFrameInfo.setCaptureTimeMs(long captureTimeMs)
+```
+
+<a id="a9d93ef88056ef5afe71e604838c96442"></a>
+
+### setCodec()
+
+```cpp
+void io.agora.rtc.EncodedAudioFrameInfo.setCodec(int codec)
+```
+
+<a id="a648f29d298760c21e2b2cfc7d409635d"></a>
+
+### setNumberOfChannels()
+
+```cpp
+void io.agora.rtc.EncodedAudioFrameInfo.setNumberOfChannels(int numberOfChannels)
+```
+
+<a id="a1cd5b6dc24518df30ddb398d70614103"></a>
+
+### setSampleRateHz()
+
+```cpp
+void io.agora.rtc.EncodedAudioFrameInfo.setSampleRateHz(int sampleRateHz)
+```
+
+<a id="ad9482b86031297280a91ace4abbda744"></a>
+
+### setSamplesPerChannel()
+
+```cpp
+void io.agora.rtc.EncodedAudioFrameInfo.setSamplesPerChannel(int samplesPerChannel)
+```
+
+## 类成员变量说明
+
+<a id="a0c1a0a02d507bb7c1e10d1f3f796e811"></a>
+
+### advancedSettings
+
+```cpp
+EncodedAudioFrameAdvancedSettings io.agora.rtc.EncodedAudioFrameInfo.advancedSettings private
+```
+
+<a id="ac7661c764ac6709a71a155b84da74e86"></a>
+
+### captureTimeMs
+
+```cpp
+long io.agora.rtc.EncodedAudioFrameInfo.captureTimeMs private
+```
+
+<a id="abcac0c66352fbf742781d72dfccb9d00"></a>
+
+### codec
+
+```cpp
+int io.agora.rtc.EncodedAudioFrameInfo.codec private
+```
+
+<a id="a601a179493e37b8ac97ff7899936bc36"></a>
+
+### numberOfChannels
+
+```cpp
+int io.agora.rtc.EncodedAudioFrameInfo.numberOfChannels private
+```
+
+<a id="a5c4cc4eaa356ea0e5f25be39aab270da"></a>
+
+### sampleRateHz
+
+```cpp
+int io.agora.rtc.EncodedAudioFrameInfo.sampleRateHz private
+```
+
+<a id="ab77dcd0286074a086387b13a82ea4ed3"></a>
+
+### samplesPerChannel
+
+```cpp
+int io.agora.rtc.EncodedAudioFrameInfo.samplesPerChannel private
+```

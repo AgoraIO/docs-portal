@@ -1,0 +1,95 @@
+---
+title: "agora::rtc::StreamLayerConfigInternal结构体 参考"
+description: "YUV 视频流的配置参数。"
+---
+
+YUV 视频流的配置参数。
+
+## 构造及析构函数说明
+
+<a id="ae1fac0ebf2e6435857e9fa6b1fc2c2b3"></a>
+
+### StreamLayerConfigInternal() [1/2]
+
+```cpp
+agora::rtc::StreamLayerConfigInternal::StreamLayerConfigInternal() inline
+```
+
+<a id="a467136d94c1a451e59df7d1828a947a1"></a>
+
+### StreamLayerConfigInternal() [2/2]
+
+```cpp
+agora::rtc::StreamLayerConfigInternal::StreamLayerConfigInternal(const StreamLayerConfigInternal& other) inline
+```
+
+## 成员函数说明
+
+<a id="a3e28c684b1fee1d4d298eaf37d9d0620"></a>
+
+### operator==()
+
+```cpp
+bool agora::rtc::StreamLayerConfigInternal::operator==(const StreamLayerConfigInternal& rhs) const inline
+```
+
+<a id="a219ad27e67936956135e121afa8a12a3"></a>
+
+### operator=()
+
+```cpp
+StreamLayerConfigInternal& agora::rtc::StreamLayerConfigInternal::operator=(const SimulcastConfig::StreamLayerConfig& slc) inline
+```
+
+<a id="ac08c8443b7553ba29303494328db1f19"></a>
+
+### reset()
+
+```cpp
+void agora::rtc::StreamLayerConfigInternal::reset() inline
+```
+
+## 类成员变量说明
+
+<a id="a7d8e8ea66ab38505b15c4a30ba0d09b2"></a>
+
+### dimensions
+
+```cpp
+VideoDimensions agora::rtc::StreamLayerConfigInternal::dimensions
+```
+
+视频尺寸，详见 [VideoDimensions](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-video-dimensions)。默认值为 160 × 120。
+
+<a id="a310173caf0d20bd242dd6131a263e411"></a>
+
+### framerate
+
+```cpp
+int agora::rtc::StreamLayerConfigInternal::framerate
+```
+
+视频帧率 (fps)。默认值为 5。
+
+<a id="ac4c7894df7d22d66bf9e418ab9f78687"></a>
+
+### bitrate_kbps
+
+```cpp
+int agora::rtc::StreamLayerConfigInternal::bitrate_kbps
+```
+
+视频码率 (bps)。默认值为 65。
+
+<a id="a1e0b803eef0589a7fa5836fe27f16ff5"></a>
+
+### enable
+
+```cpp
+bool agora::rtc::StreamLayerConfigInternal::enable
+```
+
+是否启用该路流：
+
+- true: 启用
+- false: 禁用

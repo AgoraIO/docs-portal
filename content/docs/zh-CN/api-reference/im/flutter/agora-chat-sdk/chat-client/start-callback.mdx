@@ -1,0 +1,27 @@
+---
+title: "startCallback method"
+description: "API docs for the startCallback method from the ChatClient class, for the Dart programming language."
+---
+
+Start contact and group, chatroom callback.
+
+Reference: Call this method when you ui is ready, then will receive [ChatRoomEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-room-event-handler), [ContactEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/contact-event-handler), [ChatGroupEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-event-handler) event.
+
+```dart
+Future<void> startCallback()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<void> startCallback() async {
+  Map result = await ClientChannel.invokeMethod(ChatMethodKeys.startCallback);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

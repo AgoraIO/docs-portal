@@ -1,0 +1,398 @@
+---
+title: "agora::recording::IRecordingEngine类 参考abstract"
+description: "该类包含应用程序调用的主要方法。"
+---
+
+该类包含应用程序调用的主要方法。
+
+## 构造及析构函数说明
+
+<a id="aafbc0f351753238f3437622483ac9763"></a>
+
+### ~IRecordingEngine()
+
+```cpp
+virtual agora::recording::IRecordingEngine::~IRecordingEngine() inlinevirtual
+```
+
+## 成员函数说明
+
+<a id="a683b055963f285fa0ca63aaab7af27d6"></a>
+
+### createAgoraRecordingEngine()
+
+```cpp
+static IRecordingEngine* agora::recording::IRecordingEngine::createAgoraRecordingEngine(const char* appId, IRecordingEngineEventHandler* eventHandler) static
+```
+
+该方法创建 [IRecordingEngine](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine) 实例。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| appId | 希望录制的音视频通话中使用的 App ID，详见 [获取 App ID](https://docs.agora.io/cn/Recording/token?platform=All%20Platforms#app-id)。 |
+| eventHandler | 录制 SDK 所触发的事件通过 [IRecordingEngineEventHandler](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler) 类回调通知应用程序。 |
+
+#### Returns
+
+[IRecordingEngine](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine) 实例。
+
+<a id="a011ff5c4a47816050be60b26ba0fb431"></a>
+
+### joinChannel()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::joinChannel(const char* channelKey, const char* channelId, uid_t uid, const RecordingConfig& config) pure virtual
+```
+
+该方法让录制端加入频道，并开始录制。
+
+##### `注解`
+
+- 由于录制端暂时未开放 requestToken 和 renewToken 接口，在获取 Token 时，请务必将服务到期时间 privilegeExpiredTs 设置为 0，表示权限一旦生成，永不过期。
+- 同一个频道里不能出现两个相同的 UID，否则会产生未定义行为。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channelKey | 用于鉴权的动态密钥。录制端的 `channelKey` 与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见 [校验用户权限](https://docs.agora.io/cn/Recording/token?platform=All%20Platforms)。 |
+| channelId | 希望录制的音视频通话的频道名称。 |
+| uid | 录制使用的 UID。有两种设置方法：<br />- 设置为 0，系统将自动分配一个 UID；<br />- 设置一个唯一的 UID，不能与现在频道内的任何 UID 重复。取值范围：1 到 (2 32 -1)。 |
+| config | 录制的详细设置，详见 [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config)。 |
+
+#### Returns
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+<a id="a1567ba5fbd049cbbbcdf99613cfbc661"></a>
+
+### joinChannelWithUserAccount()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::joinChannelWithUserAccount(const char* token, const char* channelId, const char* userAccount, const RecordingConfig& config) pure virtual
+```
+
+该方法允许录制端使用 User Account 加入频道。
+
+录制端成功加入频道后，会在本地触发 [onLocalUserRegistered](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#aef3b0afc5469c74686775d13fe1b58be) 和 [onJoinChannelSuccess](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#ac08c2b0774684e1b5ce667d68c3a946d) 回调。
+
+##### `注解`
+
+为保证通信质量，我们建议一个频道内使用同一类型的数据标识用户身份，因此录制端的用户标识数据类型要与 Native/Web SDK 的保持一致。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| token | 用于鉴权的动态密钥。录制端的动态密钥必须与 Native/Web SDK 保持一致。如果 Native/Web SDK 用了 token，该参数必须设为 token。详见 [校验用户权限](https://docs.agora.io/cn/Recording/token?platform=All%20Platforms)。 |
+| channelId | 待录制频道的频道名。 |
+| userAccount | 用户的 User Account。该参数为必填，最大不超过 255 字节，不可填 null。请确保加入频道的 User Account 的唯一性。以下为支持的字符集范围（共 89 个字符）:<br />- 26 个小写英文字母 a-z<br />- 26 个大写英文字母 A-Z<br />- 10 个数字 0-9<br />- 空格<br />- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "\|", "~", "," |
+| config | 录制的详细设置，详见 [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config)。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aed829b02ef59dc95be2dddf7cb6eb5a2"></a>
+
+### getUserInfoByUserAccount()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::getUserInfoByUserAccount(const char* userAccount, agora::linuxsdk::UserInfo* userinfo) pure virtual
+```
+
+该方法通过 User Account 获取远端用户信息。
+
+远端用户加入频道后，SDK 会获取到该远端用户的 UID 和 User Account，然后缓存一个包含了远端用户 UID 和 User Account 的 Mapping 表，并在本地触发 [onUserInfoUpdated](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#a6e87e98275ee9324c185fe62fee30d41) 回调。
+
+收到 [onUserInfoUpdated](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#a6e87e98275ee9324c185fe62fee30d41) 回调后，你可以调用 `getUserInfoByUserAccount` 方法，通过传入 User Account 获取包含了指定用户 UID 的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-user-info) 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| userAccount | 用户 User Account，必填。 |
+| userinfo | [in/out] 标识用户信息的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-user-info) 对象。<br />- 输入值：一个 UserInfo 对象。<br />- 输出值：一个包含了用户 User Account 和 UID 的 UserInfo 对象。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a367b4cd8e3e458e60932ed6f1deebc44"></a>
+
+### getUserInfoByUid()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::getUserInfoByUid(uid_t uid, agora::linuxsdk::UserInfo* userInfo) pure virtual
+```
+
+该方法通过 UID 获取远端用户信息。
+
+远端用户加入频道后， SDK 会获取到该远端用户的 UID 和 User Account，然后缓存一个包含了远端用户 UID 和 User Account 的 Mapping 表，并在本地触发 [onUserInfoUpdated](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#a6e87e98275ee9324c185fe62fee30d41) 回调。
+
+收到 [onUserInfoUpdated](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#a6e87e98275ee9324c185fe62fee30d41) 回调后，你可以调用 `getUserInfoByUid` 方法，通过传入 UID 获取包含了指定用户 User Account 的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-user-info) 对象。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| uid | 用户 UID，必填。 |
+| userInfo | [in/out] 标识用户信息的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-user-info) 对象。<br />- 输入值：一个 UserInfo 对象。<br />- 输出值：一个包含了用户 User Account 和 UID 的 UserInfo 对象。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a4ac28b9e2342729c1b54400a5abb1d90"></a>
+
+### setVideoMixingLayout()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::setVideoMixingLayout(const agora::linuxsdk::VideoMixingLayout& layout) pure virtual
+```
+
+该方法设置视频合流布局。
+
+合流模式下如果有视频，必须调用该方法设置布局。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| layout | 视频合流布局的设定，详见 [VideoMixingLayout](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-video-mixing-layout)。 |
+
+#### Returns
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+<a id="a7ac0adb4d78e1e6b6c7b4d95c219a111"></a>
+
+### stoppedOnError()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::stoppedOnError() pure virtual
+```
+
+该方法在 [onError](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#a13a99381c25a280873bdfca3b6af7d34) 中调用。当遇到无法解决的错误时，手动停止 [onError](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#a13a99381c25a280873bdfca3b6af7d34) 回调。
+
+#### Returns
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+<a id="adafb45815ad0f02dc1c8b3cadb7cd2e3"></a>
+
+### leaveChannel()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::leaveChannel() pure virtual
+```
+
+该方法让录制端退出频道，并释放占用的线程资源。
+
+#### Returns
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+<a id="af4d33159ed8ed249991470e6833d0fd5"></a>
+
+### release()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::release() pure virtual
+```
+
+该方法销毁 [IRecordingEngine](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine) 实例。
+
+#### Returns
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+<a id="abf1bcd2dd5a38262ca26e50b3b182f4b"></a>
+
+### getProperties()
+
+```cpp
+virtual const RecordingEngineProperties* agora::recording::IRecordingEngine::getProperties() pure virtual
+```
+
+该方法获取录制属性。
+
+##### `注解`
+
+- 目前仅支持获取录制的媒体文件和 log 的存放路径。
+- 该方法与 onUserJoined 都能获取录制文件存放路径，两者的区别在于， onUserJoined 只能在录制端加入频道后有其他用户进入频道时触发。
+
+#### Returns
+
+返回 [RecordingEngineProperties](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-engine-properties)。
+
+<a id="a2d4e78e4164993e64fb0286b9108d478"></a>
+
+### startService()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::startService() pure virtual
+```
+
+该方法手动启动录制。
+
+仅在 [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config) 中的 [triggerMode](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#ad3427cfda0f4dc3055da823f00a1cdb7) 参数为 manually（手动模式）时有效。
+
+#### Returns
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+<a id="a302a83737a67b2693ede181484af862a"></a>
+
+### stopService()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::stopService() pure virtual
+```
+
+该方法手动暂停录制。
+
+仅在 [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config) 中的 [triggerMode](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#ad3427cfda0f4dc3055da823f00a1cdb7) 参数为 manually（手动模式）时有效。
+
+#### Returns
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+<a id="a01e1523e52b601498558dcd5f3fefa24"></a>
+
+### setUserBackground()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::setUserBackground(uid_t uid, const char* img_path) pure virtual
+```
+
+该方法设置指定 UID 用户的背景图片。当指定 UID 用户在线且没有发送视频流时，会显示该背景图片。
+
+##### `注解`
+
+该设置对 Agora Web SDK 的用户无效。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| uid | 该用户的 UID。 |
+| img_path | 背景图片路径。仅支持本地 JPEG 文件。 |
+
+#### Returns
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+<a id="acbe7dc8e550f843e5ff275e9d3a8a524"></a>
+
+### setLogLevel()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::setLogLevel(agora::linuxsdk::agora_log_level level) pure virtual
+```
+
+该方法设置 log 过滤等级。设置完成后，只有等级低于和等于所设 level 的 log 才会被生成。默认值为 5。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| level | 详见 [agora_log_level](/zh-CN/api-reference/local-server-recording/cpp/namespaceagora-1-1linuxsdk#a08e209290d684d21a48648bd755d0334)。 |
+
+#### Returns
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+<a id="a0871cc2800f68bbaa928a62604e75f08"></a>
+
+### updateSubscribeVideoUids()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::updateSubscribeVideoUids(uid_t* uids, uint32_t num) pure virtual
+```
+
+该方法允许录制 SDK 只录制指定 UID 的视频。
+
+##### `注解`
+
+该方法仅在 [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config) 中的 [autoSubscribe](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#afc2322e9bf7424f4e692d99967a50f6e) 为 false 时有效。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| uids | UID 数组，为用逗号隔开的字符串，例如 "1","2","3"。 |
+| num | UID 的个数。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a831e2528cad4cd77c1a64d960bf466a4"></a>
+
+### updateSubscribeAudioUids()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::updateSubscribeAudioUids(uid_t* uids, uint32_t num) pure virtual
+```
+
+该方法允许录制 SDK 只录制指定 UID 的音频。
+
+##### `注解`
+
+该方法仅在 [RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config) 中的 [autoSubscribe](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#afc2322e9bf7424f4e692d99967a50f6e) 为 false 时有效。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| uids | UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。 |
+| num | UID 的个数。 |
+
+#### Returns
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ac9431f0003db4f1d123dab8b4cc39202"></a>
+
+### updateWatermarkConfigs()
+
+```cpp
+virtual int agora::recording::IRecordingEngine::updateWatermarkConfigs(uint32_t wm_num, linuxsdk::WatermarkConfig* config) pure virtual
+```
+
+该方法添加、更新或删除水印设置。
+
+录制 SDK 支持三种水印：文字水印、时间戳水印和图片水印。
+
+有以下情况：
+
+- 如果你在调用 setVideoMixingLayout 方法时没有设置 wm_num 和 wm_configs 参数，你可直接调用 updateWatermarkConfigs 方法添加水印。
+- 如果你在调用 setVideoMixingLayout 方法时已设置 wm_num 和 wm_configs 参数添加了水印，你可调用 updateWatermarkConfigs 方法修改水印个数和具体设置，从而增加、更新或删除水印；传值为空则删除全部已添加的水印。
+
+##### `注解`
+
+水印仅适用于合流录制模式（[RecordingConfig](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config) 中的 [isMixingEnabled](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#a1ee4fc94e7de4c810a5ad0f4f4327299) 参数为 true）。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| wm_num | 水印的个数。录制 SDK 最多支持 15 个水印，其中文字水印最多 10 个，时间戳水印最多 1 个，图片水印最多 4 个。 |
+| config | 水印的具体设置。 [WatermarkConfig](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-watermark-config) 组成的数组。一个水印对应一个 [WatermarkConfig](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-watermark-config)。 |

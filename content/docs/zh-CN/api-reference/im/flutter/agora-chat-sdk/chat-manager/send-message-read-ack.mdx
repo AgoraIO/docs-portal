@@ -1,0 +1,44 @@
+---
+title: "sendMessageReadAck method"
+description: "API docs for the sendMessageReadAck method from the ChatManager class, for the Dart programming language."
+---
+
+Sends the read receipt to the server.
+
+This method applies to one-to-one chats only.
+
+**Warning** This method only takes effect if you set [ChatOptions.requireAck](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/require-ack) as `true`.
+
+**Note** To send the group message read receipt, call [sendGroupMessageReadAck](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/send-group-message-read-ack).
+
+We recommend that you call [sendConversationReadAck](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-manager/send-conversation-read-ack) when entering a chat page, and call this method to reduce the number of method calls.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `message` | The message body: [ChatMessage](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-message). |
+
+```dart
+Future<bool> sendMessageReadAck(ChatMessage message)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart
+Future<bool> sendMessageReadAck(ChatMessage message) async {
+  Map req = {"to": message.from, "msg_id": message.msgId};
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.ackMessageRead, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result.boolValue(ChatMethodKeys.ackMessageRead);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

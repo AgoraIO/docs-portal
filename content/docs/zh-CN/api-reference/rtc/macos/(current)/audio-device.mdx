@@ -1,0 +1,328 @@
+---
+title: "音频设备管理"
+description: "设置 SDK 使用的音频播放设备是否跟随系统默认音频播放设备。"
+---
+<a id="toc_audio_device"></a>
+
+## 音频设备管理
+
+<a id="api_irtcengine_followsystemplaybackdevice_irtcengine"></a>
+
+## followSystemPlaybackDevice:
+
+设置 SDK 使用的音频播放设备是否跟随系统默认音频播放设备。
+
+<a id="api_irtcengine_followsystemplaybackdevice_irtcengine__prototype"></a>
+
+```objectivec
+- (int)followSystemPlaybackDevice:(BOOL)enable NS_SWIFT_NAME(followSystemPlaybackDevice(_:));
+```
+
+<a id="api_irtcengine_followsystemplaybackdevice_irtcengine__detailed_desc"></a>
+
+当系统默认音频播放设备发生变化时，SDK 会根据你的设置自动切换音频播放设备。
+
+<a id="api_irtcengine_followsystemplaybackdevice_irtcengine__parameters"></a>
+
+### 参数
+
+#### `enable`
+
+是否跟随系统默认音频播放设备：
+
+- YES：跟随系统默认音频播放设备。当系统默认音频播放设备发生变化时，SDK 会立即切换音频播放设备。
+- NO：不跟随系统默认音频播放设备。仅当当前使用的音频播放设备断开连接时，SDK 才会切换到系统默认音频播放设备。
+
+<a id="api_irtcengine_followsystemplaybackdevice_irtcengine__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_followsystemrecordingdevice_irtcengine"></a>
+
+## followSystemRecordingDevice:
+
+设置你使用的 SDK 音频录制设备是否跟随系统默认音频录制设备。
+
+<a id="api_irtcengine_followsystemrecordingdevice_irtcengine__prototype"></a>
+
+```objectivec
+- (int)followSystemRecordingDevice:(BOOL)enable NS_SWIFT_NAME(followSystemRecordingDevice(_:));
+```
+
+<a id="api_irtcengine_followsystemrecordingdevice_irtcengine__detailed_desc"></a>
+
+<a id="api_irtcengine_followsystemrecordingdevice_irtcengine__parameters"></a>
+
+### 参数
+
+#### `enable`
+
+是否跟随系统默认音频录制设备：
+
+- YES：跟随系统默认音频录制设备。当系统默认音频录制设备发生变化时，SDK 会立即切换音频录制设备。
+- NO：不跟随系统默认音频录制设备。仅当当前使用的音频录制设备断开连接时，SDK 才会切换到系统默认音频录制设备。
+
+<a id="api_irtcengine_followsystemrecordingdevice_irtcengine__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getdefaultaudiodevice"></a>
+
+## getDefaultAudioDevice:
+
+获取系统的默认音频设备。
+
+<a id="api_irtcengine_getdefaultaudiodevice__prototype"></a>
+
+```objectivec
+- (AgoraRtcDeviceInfo* _Nullable)getDefaultAudioDevice:(AgoraMediaDeviceType)type NS_SWIFT_NAME(getDefaultAudioDevice(_:));
+```
+
+<a id="api_irtcengine_getdefaultaudiodevice__detailed_desc"></a>
+
+<a id="api_irtcengine_getdefaultaudiodevice__parameters"></a>
+
+### 参数
+
+#### `type`
+
+设备类型，详见 [AgoraMediaDeviceType](/zh-CN/api-reference/rtc/macos/enum-mediadevicetype)。
+
+<a id="api_irtcengine_getdefaultaudiodevice__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回一个 AgoraRtcDeviceInfo 对象，详见 AgoraRtcDeviceInfo。
+- 方法调用失败时，返回 nil。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startaudiodeviceloopbacktest_irtcengine"></a>
+
+## startAudioDeviceLoopbackTest:
+
+开始音频设备回路测试。
+
+<a id="api_irtcengine_startaudiodeviceloopbacktest_irtcengine__prototype"></a>
+
+```objectivec
+- (int)startAudioDeviceLoopbackTest:(int)indicationInterval NS_SWIFT_NAME(startAudioDeviceLoopbackTest(_:));
+```
+
+<a id="api_irtcengine_startaudiodeviceloopbacktest_irtcengine__detailed_desc"></a>
+
+该方法用于测试本地音频采集设备和播放设备是否正常工作。调用该方法后，音频采集设备会采集本地音频，音频播放设备会播放采集到的音频。
+
+:::info[注]
+- 可以在加入频道前或加入频道后调用该方法。
+- 该方法仅在主播角色下生效。
+- 该方法仅测试本地音频设备，不涉及网络状况。
+- 测试完成后，请调用 stopAudioDeviceLoopbackTest 停止音频设备回路测试。
+:::
+
+<a id="api_irtcengine_startaudiodeviceloopbacktest_irtcengine__parameters"></a>
+
+### 参数
+
+#### `indicationInterval`
+
+SDK 触发 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔（毫秒）。声网建议设置大于 200 毫秒的值。该值不能小于 10 毫秒，否则你将无法收到 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
+
+<a id="api_irtcengine_startaudiodeviceloopbacktest_irtcengine__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startplaybackdevicetest"></a>
+
+## startPlaybackDeviceTest:
+
+启动本地音频播放设备测试。
+
+<a id="api_irtcengine_startplaybackdevicetest__prototype"></a>
+
+```objectivec
+- (int)startPlaybackDeviceTest:(NSString * _Nonnull)audioFileName NS_SWIFT_NAME(startPlaybackDeviceTest(_:));
+```
+
+<a id="api_irtcengine_startplaybackdevicetest__detailed_desc"></a>
+
+该方法用于测试本地音频播放设备是否正常工作。调用该方法后，SDK 会播放你指定的音频文件。如果你能听到声音，说明播放设备工作正常。
+
+:::info[注]
+请在加入频道前调用该方法。测试完成后，在加入频道前调用 [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/macos/audio-device#api_irtcengine_stopplaybackdevicetest) 停止测试。
+:::
+
+<a id="api_irtcengine_startplaybackdevicetest__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会每 100 毫秒触发一次 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` 为 1 的播放设备音量信息。
+
+<a id="api_irtcengine_startplaybackdevicetest__parameters"></a>
+
+### 参数
+
+#### `audioFileName`
+
+音频文件的路径。数据格式为 UTF-8 编码的字符串。
+
+- 支持的文件格式：wav、mp3、m4a 和 aac。
+- 支持的采样率：8000、16000、32000、44100 和 48000 Hz。
+
+<a id="api_irtcengine_startplaybackdevicetest__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startrecordingdevicetest"></a>
+
+## startRecordingDeviceTest:
+
+启动音频采集设备测试。
+
+<a id="api_irtcengine_startrecordingdevicetest__prototype"></a>
+
+```objectivec
+- (int)startRecordingDeviceTest:(int)indicationInterval NS_SWIFT_NAME(startRecordingDeviceTest(_:));
+```
+
+<a id="api_irtcengine_startrecordingdevicetest__detailed_desc"></a>
+
+该方法用于测试音频采集设备是否正常工作。调用该方法后，SDK 会按照设置的时间间隔触发 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` 为 0 的本地采集设备的音量信息。该方法与 [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_startechotest3) 方法的区别在于， [startRecordingDeviceTest:](/zh-CN/api-reference/rtc/macos/audio-device#api_irtcengine_startrecordingdevicetest) 仅检测本地音频采集设备是否正常工作，而 [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_startechotest3) 可以检测音视频设备和网络状况。
+
+:::info[注]
+请在加入频道前调用该方法。测试完成后，在加入频道前调用 [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/macos/audio-device#api_irtcengine_stoprecordingdevicetest) 停止测试。
+:::
+
+<a id="api_irtcengine_startrecordingdevicetest__parameters"></a>
+
+### 参数
+
+#### `indicationInterval`
+
+触发 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔（毫秒）。该值应大于 10，否则你将无法收到 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，且 SDK 返回错误码 -2。声网建议设置为 100。
+
+<a id="api_irtcengine_startrecordingdevicetest__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+  - -2：参数无效。请检查参数设置。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopaudiodeviceloopbacktest_irtcengine"></a>
+
+## stopAudioDeviceLoopbackTest
+
+停止音频设备回路测试。
+
+<a id="api_irtcengine_stopaudiodeviceloopbacktest_irtcengine__prototype"></a>
+
+```objectivec
+- (int)stopAudioDeviceLoopbackTest NS_SWIFT_NAME(stopAudioDeviceLoopbackTest());
+```
+
+<a id="api_irtcengine_stopaudiodeviceloopbacktest_irtcengine__detailed_desc"></a>
+
+:::info[注]
+- 你可以在加入频道前或后调用此方法。
+- 此方法仅在主播角色下生效。
+- 调用 startAudioDeviceLoopbackTest: 方法开始回路测试后，请确保调用此方法停止测试。
+:::
+
+<a id="api_irtcengine_stopaudiodeviceloopbacktest_irtcengine__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopplaybackdevicetest"></a>
+
+## stopPlaybackDeviceTest
+
+停止音频播放设备测试。
+
+<a id="api_irtcengine_stopplaybackdevicetest__prototype"></a>
+
+```objectivec
+- (int)stopPlaybackDeviceTest NS_SWIFT_NAME(stopPlaybackDeviceTest());
+```
+
+<a id="api_irtcengine_stopplaybackdevicetest__detailed_desc"></a>
+
+调用 [startPlaybackDeviceTest:](/zh-CN/api-reference/rtc/macos/audio-device#api_irtcengine_startplaybackdevicetest) 方法开始测试后，必须调用此方法停止测试。
+
+:::info[注]
+请在加入频道前调用此方法。
+:::
+
+<a id="api_irtcengine_stopplaybackdevicetest__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoprecordingdevicetest"></a>
+
+## stopRecordingDeviceTest
+
+停止音频采集设备测试。
+
+<a id="api_irtcengine_stoprecordingdevicetest__prototype"></a>
+
+```objectivec
+- (int)stopRecordingDeviceTest NS_SWIFT_NAME(stopRecordingDeviceTest());
+```
+
+<a id="api_irtcengine_stoprecordingdevicetest__detailed_desc"></a>
+
+该方法用于停止音频采集设备测试。你必须在调用 `startRecordingDeviceTest` 方法后调用此方法以停止测试。
+
+:::info[注]
+请在加入频道前调用此方法。
+:::
+
+<a id="api_irtcengine_stoprecordingdevicetest__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)

@@ -1,0 +1,1007 @@
+---
+title: "MediaStore"
+description: "Documentation for Edu Store Typescript API Reference for Web"
+---
+
+`MediaStore` 类用于媒体数据处理。
+
+- EduStoreBase
+  - MediaStore
+
+## Properties
+
+<a id="audioPlaybackDevices"></a>
+
+### audioPlaybackDevices
+
+```ts
+audioPlaybackDevices: AGRtcDeviceInfo[]
+```
+
+音频播放设备
+
+<a id="audioRecordingDevices"></a>
+
+### audioRecordingDevices
+
+```ts
+audioRecordingDevices: AGRtcDeviceInfo[]
+```
+
+音频采集设备
+
+<a id="cameraDeviceId"></a>
+
+### Optional cameraDeviceId
+
+```ts
+cameraDeviceId?: string
+```
+
+当前视频采集设备 ID
+
+<a id="currentScreenShareDevice"></a>
+
+### Optional currentScreenShareDevice
+
+```ts
+currentScreenShareDevice?: AGScreenShareDevice
+```
+
+当前采集屏幕设备
+
+<a id="isMirror"></a>
+
+### isMirror
+
+```ts
+isMirror: boolean
+```
+
+视频是否镜像
+
+<a id="localCameraTrackState"></a>
+
+### localCameraTrackState
+
+```ts
+localCameraTrackState: AgoraRteMediaSourceState
+```
+
+本地视频采集设备状态
+
+<a id="localLoopbackDeviceState"></a>
+
+### localLoopbackDeviceState
+
+```ts
+localLoopbackDeviceState: AgoraRteMediaSourceState
+```
+
+本地声卡采集设备状态
+
+<a id="localMicAudioVolume"></a>
+
+### localMicAudioVolume
+
+```ts
+localMicAudioVolume: number
+```
+
+本地音频设备音量 Range from [0,1]
+
+<a id="localMicTrackState"></a>
+
+### localMicTrackState
+
+```ts
+localMicTrackState: AgoraRteMediaSourceState
+```
+
+本地音频采集设备状态
+
+<a id="localPlaybackTestVolume"></a>
+
+### localPlaybackTestVolume
+
+```ts
+localPlaybackTestVolume: number
+```
+
+本地扬声器音量 Range from [0,1]
+
+<a id="localPreviewCameraTrackState"></a>
+
+### localPreviewCameraTrackState
+
+```ts
+localPreviewCameraTrackState: AgoraRteMediaSourceState
+```
+
+本地预览视频采集设备状态
+
+<a id="localPreviewMicAudioVolume"></a>
+
+### localPreviewMicAudioVolume
+
+```ts
+localPreviewMicAudioVolume: number
+```
+
+本地预览音频设备音量 range from [0,1]
+
+<a id="localPreviewMicTrackState"></a>
+
+### localPreviewMicTrackState
+
+```ts
+localPreviewMicTrackState: AgoraRteMediaSourceState
+```
+
+本地预览音频采集设备状态
+
+<a id="localScreenShareAudioTrackState"></a>
+
+### localScreenShareAudioTrackState
+
+```ts
+localScreenShareAudioTrackState: AgoraRteMediaSourceState
+```
+
+屏幕共享声音采集设备状态
+
+<a id="localScreenShareTrackState"></a>
+
+### localScreenShareTrackState
+
+```ts
+localScreenShareTrackState: AgoraRteMediaSourceState
+```
+
+本地屏幕采集设备状态
+
+<a id="playbackDeviceId"></a>
+
+### Optional playbackDeviceId
+
+```ts
+playbackDeviceId?: string
+```
+
+当前视频播放设备 ID
+
+<a id="recordingDeviceId"></a>
+
+### Optional recordingDeviceId
+
+```ts
+recordingDeviceId?: string
+```
+
+当前音频采集设备 ID
+
+<a id="videoCameraDevices"></a>
+
+### videoCameraDevices
+
+```ts
+videoCameraDevices: AGRtcDeviceInfo[]
+```
+
+视频采集设备
+
+## Methods
+
+<a id="addAudioRawDataObserver"></a>
+
+### addAudioRawDataObserver
+
+```ts
+addAudioRawDataObserver(observer: AgoraRteAudioRawDataObserver, position: AgoraRteAudioRawDataPosition): void
+```
+
+增加一个音频裸数据观察者
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraRteAudioRawDataObserver |  |
+| position: AgoraRteAudioRawDataPosition |  |
+
+#### Returns
+
+Returns void
+
+<a id="addCameraProcessors"></a>
+
+### addCameraProcessors
+
+```ts
+addCameraProcessors(processors: IBaseProcessor[]): void
+```
+
+增加摄像头视频流前处理器
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| processors: IBaseProcessor[] | 视频采集前处理器 |
+
+#### Returns
+
+Returns void
+
+<a id="addMicrophoneProcessors"></a>
+
+### addMicrophoneProcessors
+
+```ts
+addMicrophoneProcessors(processors: IBaseProcessor[]): void
+```
+
+增加麦克风音频流前处理器
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| processors: IBaseProcessor[] | 音频采集前处理器 |
+
+#### Returns
+
+Returns void
+
+<a id="addPreviewCameraProcessors"></a>
+
+### addPreviewCameraProcessors
+
+```ts
+addPreviewCameraProcessors(processors: IBaseProcessor[]): void
+```
+
+增加摄像头视频流前处理器(预览)
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| processors: IBaseProcessor[] |  |
+
+#### Returns
+
+Returns void
+
+<a id="addPreviewMicrophoneProcessors"></a>
+
+### addPreviewMicrophoneProcessors
+
+```ts
+addPreviewMicrophoneProcessors(processors: IBaseProcessor[]): void
+```
+
+增加麦克风音频流前处理器(预览)
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| processors: IBaseProcessor[] |  |
+
+#### Returns
+
+Returns void
+
+<a id="addRawDataListener"></a>
+
+### addRawDataListener
+
+```ts
+addRawDataListener(cb: (buffer: AudioBuffer) => void): void
+```
+
+##### `deprecated`
+
+增加一个本地音频裸数据观察者，使用 addAudioRawDataObserver 替代此方法
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: (buffer: AudioBuffer) =&gt; void | 订阅者 |
+
+#### Returns
+
+Returns void
+
+<a id="enableDualStream"></a>
+
+### enableDualStream
+
+```ts
+enableDualStream(enable: boolean, connectionType?: AGRtcConnectionType, fromScene?: AgoraRteScene): Promise<void>
+```
+
+开启双流
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| enable: boolean | 是否开启 |
+| Optional connectionType: AGRtcConnectionType | RTC 连接 |
+| Optional fromScene: AgoraRteScene |  |
+
+#### Returns
+
+Returns Promise &lt; void &gt;
+
+<a id="enableLocalAudio"></a>
+
+### enableLocalAudio
+
+```ts
+enableLocalAudio(value: boolean): void
+```
+
+开启或关闭本地音频
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| value: boolean | boolean |
+
+#### Returns
+
+Returns void
+
+<a id="enableLocalPlayback"></a>
+
+### enableLocalPlayback
+
+```ts
+enableLocalPlayback(value: boolean): void
+```
+
+开启或关闭本地所有音频播放
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| value: boolean |  |
+
+#### Returns
+
+Returns void
+
+<a id="enableLocalVideo"></a>
+
+### enableLocalVideo
+
+```ts
+enableLocalVideo(value: boolean): void
+```
+
+开启或关闭本地视频
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| value: boolean | boolean |
+
+#### Returns
+
+Returns void
+
+<a id="getDisplayDevices"></a>
+
+### getDisplayDevices
+
+```ts
+getDisplayDevices(): Promise<AGScreenShareDevice[]>
+```
+
+获取可采集的屏幕列表
+
+#### Returns
+
+Returns Promise &lt; [AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/electron/api-reference/interfaces/agscreen-share-device) [] &gt;
+
+屏幕列表
+
+<a id="getMediaTrackPlayer"></a>
+
+### getMediaTrackPlayer
+
+```ts
+getMediaTrackPlayer(streamUrl: string): undefined | StreamMediaPlayer
+```
+
+通过 URL 获取流媒体播放器
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUrl: string | 要播放的视频流地址 |
+
+#### Returns
+
+Returns undefined | StreamMediaPlayer
+
+视频播放器对象，用于控制音视频播放
+
+<a id="getSnapshot"></a>
+
+### getSnapshot
+
+```ts
+getSnapshot(channel: string, streamUuid: number, filePath: string): Promise<void | AGSnapshotInfo>
+```
+
+视频截图（此接口仅 Electron 支持）。 截取指定房间内的指定视频流，生成 JPG 图片保存到本地。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channel: string | RTC 频道名称，使用 roomUuid。 |
+| streamUuid: number | 流 ID。 |
+| filePath: string | 保存图片的本地绝对路径。 |
+
+#### Returns
+
+Returns Promise &lt; void | AGSnapshotInfo &gt;
+
+截图信息
+
+<a id="getSnapshotRgba"></a>
+
+### getSnapshotRgba
+
+```ts
+getSnapshotRgba(channel: string, streamUuid: number): undefined | ImageData
+```
+
+视频截图（此接口仅 Web 支持）。 截取指定房间内的指定视频流。此方法返回携带 RGBA 信息的 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData) 数据。
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| channel: string | RTC 频道名称，可使用 roomUuid。 |
+| streamUuid: number | 流 ID。 |
+
+#### Returns
+
+Returns undefined | ImageData
+
+截图信息
+
+<a id="getWindowDevices"></a>
+
+### getWindowDevices
+
+```ts
+getWindowDevices(): Promise<AGScreenShareDevice[]>
+```
+
+获取可采集应用窗口列表
+
+#### Returns
+
+Returns Promise &lt; [AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/electron/api-reference/interfaces/agscreen-share-device) [] &gt;
+
+应用窗口列表
+
+<a id="hasScreenSharePermission"></a>
+
+### hasScreenSharePermission
+
+```ts
+hasScreenSharePermission(): boolean
+```
+
+检测是否有屏幕采集权限
+
+#### Returns
+
+Returns boolean
+
+是否有屏幕采集的权限
+
+<a id="isScreenDeviceEnumerateSupported"></a>
+
+### isScreenDeviceEnumerateSupported
+
+```ts
+isScreenDeviceEnumerateSupported(): boolean
+```
+
+检测是否可以获取到屏幕采集设备列表
+
+#### Returns
+
+Returns boolean
+
+是否可获取到屏幕采集设备列表
+
+<a id="removeAudioRawDataObserver"></a>
+
+### removeAudioRawDataObserver
+
+```ts
+removeAudioRawDataObserver(observer: AgoraRteAudioRawDataObserver, position: AgoraRteAudioRawDataPosition): void
+```
+
+删除音频裸数据数据观察者
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| observer: AgoraRteAudioRawDataObserver |  |
+| position: AgoraRteAudioRawDataPosition |  |
+
+#### Returns
+
+Returns void
+
+<a id="removeCameraProcessors"></a>
+
+### removeCameraProcessors
+
+```ts
+removeCameraProcessors(): void
+```
+
+移除摄像头视频流处理器
+
+#### Returns
+
+Returns void
+
+<a id="removeMicrophoneProcessors"></a>
+
+### removeMicrophoneProcessors
+
+```ts
+removeMicrophoneProcessors(): void
+```
+
+移除麦克风音频流处理器
+
+#### Returns
+
+Returns void
+
+<a id="removePreviewCameraProcessors"></a>
+
+### removePreviewCameraProcessors
+
+```ts
+removePreviewCameraProcessors(): void
+```
+
+移除摄像头视频流处理器(预览)
+
+#### Returns
+
+Returns void
+
+<a id="removePreviewMicrophoneProcessors"></a>
+
+### removePreviewMicrophoneProcessors
+
+```ts
+removePreviewMicrophoneProcessors(): void
+```
+
+移除麦克风音频流处理器(预览)
+
+#### Returns
+
+Returns void
+
+<a id="removeRawDataListener"></a>
+
+### removeRawDataListener
+
+```ts
+removeRawDataListener(cb: (buffer: AudioBuffer) => void): void
+```
+
+##### `deprecated`
+
+删除一个本地音频裸数据数据观察者，使用 removeAudioRawDataObserver 替代此方法
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| cb: (buffer: AudioBuffer) =&gt; void |  |
+
+#### Returns
+
+Returns void
+
+<a id="setAudioRawDataConfig"></a>
+
+### setAudioRawDataConfig
+
+```ts
+setAudioRawDataConfig(config: AgoraRteAudioRawDataConfig, position: AgoraRteAudioRawDataPosition): void
+```
+
+设置音频裸数据回调参数 需要在加入教室前调用
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| config: AgoraRteAudioRawDataConfig | 配置 |
+| position: AgoraRteAudioRawDataPosition |  |
+
+#### Returns
+
+Returns void
+
+<a id="setCameraDevice"></a>
+
+### setCameraDevice
+
+```ts
+setCameraDevice(id: string): void
+```
+
+设置视频设备 ID
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| id: string | 设备 ID |
+
+#### Returns
+
+Returns void
+
+<a id="setCurrentScreenShareDevice"></a>
+
+### setCurrentScreenShareDevice
+
+```ts
+setCurrentScreenShareDevice(device: AGScreenShareDevice): void
+```
+
+设置当前正在屏幕共享的设备
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| device: AGScreenShareDevice |  |
+
+#### Returns
+
+Returns void
+
+<a id="setLowStreamParameter"></a>
+
+### setLowStreamParameter
+
+```ts
+setLowStreamParameter(setLowStreamParameter: AGLowStreamParameter, connectionType?: AGRtcConnectionType, fromScene?: AgoraRteScene): void
+```
+
+设置小流分辨率及码率
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| setLowStreamParameter: AGLowStreamParameter | 要设置的小流参数 |
+| Optional connectionType: AGRtcConnectionType | RTC 连接 |
+| Optional fromScene: AgoraRteScene |  |
+
+#### Returns
+
+Returns void
+
+<a id="setMirror"></a>
+
+### setMirror
+
+```ts
+setMirror(v: boolean): void
+```
+
+镜像开关
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| v: boolean | 开启或关闭 |
+
+#### Returns
+
+Returns void
+
+<a id="setPlaybackDevice"></a>
+
+### setPlaybackDevice
+
+```ts
+setPlaybackDevice(id: string): void
+```
+
+设置扬声器设备 ID
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| id: string | 设备 ID |
+
+#### Returns
+
+Returns void
+
+<a id="setRecordingDevice"></a>
+
+### setRecordingDevice
+
+```ts
+setRecordingDevice(id: string): void
+```
+
+设置音频设备 ID
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| id: string | 设备 ID |
+
+#### Returns
+
+Returns void
+
+<a id="setupLocalScreenShare"></a>
+
+### setupLocalScreenShare
+
+```ts
+setupLocalScreenShare(dom: HTMLElement): void
+```
+
+为屏幕共享设置显示区域
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| dom: HTMLElement | 渲染节点 |
+
+#### Returns
+
+Returns void
+
+<a id="setupLocalVideo"></a>
+
+### setupLocalVideo
+
+```ts
+setupLocalVideo(dom: HTMLElement, mirror: boolean, renderMode?: AGRenderMode): void
+```
+
+为视频设置显示区域
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| dom: HTMLElement | 渲染节点 |
+| mirror: boolean | 是否开启镜像 |
+| Optional renderMode: AGRenderMode |  |
+
+#### Returns
+
+Returns void
+
+<a id="setupMediaStream"></a>
+
+### setupMediaStream
+
+```ts
+setupMediaStream(streamUrl: string, dom: HTMLElement, mirror: boolean, playVideo: boolean, playAudio: boolean): void
+```
+
+播放流媒体
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| streamUrl: string | hls url |
+| dom: HTMLElement |  |
+| mirror: boolean |  |
+| playVideo: boolean |  |
+| playAudio: boolean |  |
+
+#### Returns
+
+Returns void
+
+<a id="startLoopbackRecording"></a>
+
+### startLoopbackRecording
+
+```ts
+startLoopbackRecording(params?: { audioDeviceName?: string; connType?: AGRtcConnectionType }): void
+```
+
+启动声卡采集
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional params: \{ audioDeviceName?: string; connType?: AGRtcConnectionType \} | 可选参数对象，包括音频设备名称和连接类型 |
+
+#### Returns
+
+Returns void
+
+<a id="startPlaybackDeviceTest"></a>
+
+### startPlaybackDeviceTest
+
+```ts
+startPlaybackDeviceTest(url: string): void
+```
+
+开启扬声器测试 Electron 端不支持 Base64 格式的音频数据
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| url: string | 资源地址 |
+
+#### Returns
+
+Returns void
+
+<a id="startRecordingDeviceTest"></a>
+
+### startRecordingDeviceTest
+
+```ts
+startRecordingDeviceTest(indicateInterval: number): void
+```
+
+开启音频设备测试
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| indicateInterval: number | 探测频率（毫秒） |
+
+#### Returns
+
+Returns void
+
+<a id="startScreenShareCapture"></a>
+
+### startScreenShareCapture
+
+```ts
+startScreenShareCapture(params?: { audioDeviceName?: string; id?: string; type?: AGScreenShareType; withAudio?: boolean }): void
+```
+
+开始屏幕共享
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional params: \{ audioDeviceName?: string; id?: string; type?: AGScreenShareType; withAudio?: boolean \} |  |
+
+#### Returns
+
+Returns void
+
+<a id="stopLoopbackRecording"></a>
+
+### stopLoopbackRecording
+
+```ts
+stopLoopbackRecording(params?: { connType?: AGRtcConnectionType }): void
+```
+
+停止声卡采集
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional params: \{ connType?: AGRtcConnectionType \} | 可选参数对象，包括连接类型 |
+
+#### Returns
+
+Returns void
+
+<a id="stopPlaybackDeviceTest"></a>
+
+### stopPlaybackDeviceTest
+
+```ts
+stopPlaybackDeviceTest(): void
+```
+
+停止扬声器测试
+
+#### Returns
+
+Returns void
+
+<a id="stopRecordingDeviceTest"></a>
+
+### stopRecordingDeviceTest
+
+```ts
+stopRecordingDeviceTest(): void
+```
+
+停止音频设备测试
+
+#### Returns
+
+Returns void
+
+<a id="stopScreenShareCapture"></a>
+
+### stopScreenShareCapture
+
+```ts
+stopScreenShareCapture(params?: { withAudio?: boolean }): void
+```
+
+停止屏幕共享 withAudio: 是否同时关闭声卡采集，默认: True
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| Optional params: \{ withAudio?: boolean \} |  |
+
+#### Returns
+
+Returns void
+
+<a id="updateLocalMediaState"></a>
+
+### updateLocalMediaState
+
+```ts
+updateLocalMediaState(param0: { audioSourceState?: AgoraRteMediaSourceState; videoSourceState?: AgoraRteMediaSourceState }): Promise<void>
+```
+
+更新本地媒体状态
+
+#### Parameters
+
+| Name | Description |
+| --- | --- |
+| param0: \{ audioSourceState?: AgoraRteMediaSourceState; videoSourceState?: AgoraRteMediaSourceState \} | 视频状态和音频状态 |
+
+#### Returns
+
+Returns Promise &lt; void &gt;

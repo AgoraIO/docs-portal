@@ -74,11 +74,11 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [SetSubscribeVideoBlocklistEx](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengineex_setsubscribevideoblocklistex) | 设置视频订阅黑名单。 |
 | [SetSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) | 设置视频订阅白名单。 |
 | [SetSubscribeVideoAllowlistEx](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengineex_setsubscribevideoallowlistex) | 设置视频订阅白名单。 |
-| [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setremotevideostreamtype) | 设置订阅的视频流类型。 |
-| [SetRemoteVideoStreamTypeEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengineex_setremotevideostreamtypeex) | 设置订阅的视频流类型。 |
-| [SetRemoteDefaultVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setremotedefaultvideostreamtype) | 设置默认订阅的视频流类型。 |
-| [SetDualStreamMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setdualstreammode2) | 在发送端设置双流模式并设置视频小流。 |
-| [SetDualStreamModeEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengineex_setdualstreammodeex) | 在发送端设置双流模式。 |
+| [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setremotevideostreamtype) | 设置订阅的视频流类型。 |
+| [SetRemoteVideoStreamTypeEx](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengineex_setremotevideostreamtypeex) | 设置订阅的视频流类型。 |
+| [SetRemoteDefaultVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setremotedefaultvideostreamtype) | 设置默认订阅的视频流类型。 |
+| [SetDualStreamMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setdualstreammode2) | 在发送端设置双流模式并设置视频小流。 |
+| [SetDualStreamModeEx](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengineex_setdualstreammodeex) | 在发送端设置双流模式。 |
 | [OnAudioPublishStateChanged](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged) | 音频发布状态改变回调。 |
 | [OnAudioSubscribeStateChanged](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#callback_irtcengineeventhandler_onaudiosubscribestatechanged) | 音频订阅状态发生改变回调。 |
 | [OnVideoSubscribeStateChanged](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#callback_irtcengineeventhandler_onvideosubscribestatechanged) | 视频订阅状态发生改变回调。 |
@@ -89,23 +89,23 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [AdjustUserPlaybackSignalVolume](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_adjustuserplaybacksignalvolume) | 调节本地播放的指定远端用户信号音量。 |
-| [AdjustUserPlaybackSignalVolumeEx](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengineex_adjustuserplaybacksignalvolumeex) | 调节本地播放的指定远端用户信号音量。 |
-| [AdjustPlaybackSignalVolume](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_adjustplaybacksignalvolume) | 调节本地播放的所有远端用户信号音量。 |
-| [EnableAudio](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_enableaudio) | 启用音频模块。 |
-| [DisableAudio](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_disableaudio) | 关闭音频模块。 |
-| [EnableAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) | 启用用户音量提示。 |
-| [EnableAudioVolumeIndicationEx](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengineex_enableaudiovolumeindicationex) | 启用用户音量提示。 |
-| [SetAudioScenario](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_setaudioscenario) | 设置音频场景。 |
-| [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) | 用户音量提示回调。 |
-| [OnActiveSpeaker](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onactivespeaker) | 监测到远端最活跃用户回调。 |
-| [OnLocalAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | 本地音频状态发生改变回调。 |
-| [OnFirstLocalAudioFramePublished](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onfirstlocalaudioframepublished) | 已发布本地音频首帧回调。 |
-| [OnFirstRemoteAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onfirstremoteaudioframe) | 已接收远端音频首帧回调。 |
-| [OnUserMuteAudio](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) | 远端用户（通信场景）/主播（直播场景）停止或恢复发送音频流回调。 |
-| [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) | 远端音频流状态发生改变回调。 |
-| [OnLocalAudioStats](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostats) | 通话中本地音频流的统计信息回调。 |
-| [OnRemoteAudioStats](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats) | 通话中远端音频流的统计信息回调。 |
+| [AdjustUserPlaybackSignalVolume](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_adjustuserplaybacksignalvolume) | 调节本地播放的指定远端用户信号音量。 |
+| [AdjustUserPlaybackSignalVolumeEx](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengineex_adjustuserplaybacksignalvolumeex) | 调节本地播放的指定远端用户信号音量。 |
+| [AdjustPlaybackSignalVolume](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_adjustplaybacksignalvolume) | 调节本地播放的所有远端用户信号音量。 |
+| [EnableAudio](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_enableaudio) | 启用音频模块。 |
+| [DisableAudio](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_disableaudio) | 关闭音频模块。 |
+| [EnableAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_enableaudiovolumeindication) | 启用用户音量提示。 |
+| [EnableAudioVolumeIndicationEx](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengineex_enableaudiovolumeindicationex) | 启用用户音量提示。 |
+| [SetAudioScenario](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_setaudioscenario) | 设置音频场景。 |
+| [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) | 用户音量提示回调。 |
+| [OnActiveSpeaker](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onactivespeaker) | 监测到远端最活跃用户回调。 |
+| [OnLocalAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | 本地音频状态发生改变回调。 |
+| [OnFirstLocalAudioFramePublished](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onfirstlocalaudioframepublished) | 已发布本地音频首帧回调。 |
+| [OnFirstRemoteAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onfirstremoteaudioframe) | 已接收远端音频首帧回调。 |
+| [OnUserMuteAudio](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) | 远端用户（通信场景）/主播（直播场景）停止或恢复发送音频流回调。 |
+| [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) | 远端音频流状态发生改变回调。 |
+| [OnLocalAudioStats](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onlocalaudiostats) | 通话中本地音频流的统计信息回调。 |
+| [OnRemoteAudioStats](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats) | 通话中远端音频流的统计信息回调。 |
 
 <a id="rtc_api_overview__audio_capture"></a>
 
@@ -113,13 +113,13 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [EnableLocalAudio](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-capture#api_irtcengine_enablelocalaudio) | 开启或关闭本地音频采集。 |
-| [EnableLoopbackRecording](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-capture#api_irtcengine_enableloopbackrecording) | 开启声卡采集。 |
-| [EnableLoopbackRecordingEx](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-capture#api_irtcengineex_enableloopbackrecordingex) | 开启声卡采集。 |
-| [AdjustRecordingSignalVolume](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-capture#api_irtcengine_adjustrecordingsignalvolume) | 调节音频采集信号音量。 |
-| [MuteRecordingSignal](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-capture#api_irtcengine_muterecordingsignal) | 是否将录音信号静音。 |
-| [EnableInEarMonitoring](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-capture#api_irtcengine_enableinearmonitoring2) | 开启耳返功能。 |
-| [SetInEarMonitoringVolume](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-capture#api_irtcengine_setinearmonitoringvolume) | 设置耳返音量。 |
+| [EnableLocalAudio](/zh-CN/api-reference/rtc/csharp-windows/audio-capture#api_irtcengine_enablelocalaudio) | 开启或关闭本地音频采集。 |
+| [EnableLoopbackRecording](/zh-CN/api-reference/rtc/csharp-windows/audio-capture#api_irtcengine_enableloopbackrecording) | 开启声卡采集。 |
+| [EnableLoopbackRecordingEx](/zh-CN/api-reference/rtc/csharp-windows/audio-capture#api_irtcengineex_enableloopbackrecordingex) | 开启声卡采集。 |
+| [AdjustRecordingSignalVolume](/zh-CN/api-reference/rtc/csharp-windows/audio-capture#api_irtcengine_adjustrecordingsignalvolume) | 调节音频采集信号音量。 |
+| [MuteRecordingSignal](/zh-CN/api-reference/rtc/csharp-windows/audio-capture#api_irtcengine_muterecordingsignal) | 是否将录音信号静音。 |
+| [EnableInEarMonitoring](/zh-CN/api-reference/rtc/csharp-windows/audio-capture#api_irtcengine_enableinearmonitoring2) | 开启耳返功能。 |
+| [SetInEarMonitoringVolume](/zh-CN/api-reference/rtc/csharp-windows/audio-capture#api_irtcengine_setinearmonitoringvolume) | 设置耳返音量。 |
 
 <a id="rtc_api_overview__audio_prenpost"></a>
 
@@ -128,29 +128,29 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | 方法/回调 | 描述 |
 | --- | --- |
 | [EnableVoiceAITuner](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-enablevoiceaituner) | 开启或关闭 AI 调音器功能。 |
-| [SetAdvancedAudioOptions](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions) | 设置音频的高级选项。 |
-| [SetAINSMode](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setainsmode) | 设置是否开启 AI 降噪功能并设置降噪模式。 |
-| [SetLocalVoiceEqualization](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization) | 设置本地语音音效均衡。 |
-| [SetLocalVoicePitch](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch) | 设置本地语音音调。 |
-| [SetLocalVoiceReverb](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb) | 设置本地音效混响。 |
-| [SetVoiceBeautifierPreset](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) | 设置预设的美声效果。 |
-| [SetVoiceBeautifierParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters) | 设置预设美声效果的参数。 |
-| [SetAudioEffectPreset](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) | 设置 SDK 预设的人声音效。 |
-| [SetAudioEffectParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) | 设置 SDK 预设人声音效的参数。 |
-| [SetVoiceConversionPreset](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) | 设置预设的变声效果。 |
-| [SetLocalVoiceFormant](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceformant) | 设置共振峰比率以改变语音的音色。 |
-| [EnableSoundPositionIndication](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/sound-position#api_irtcengine_enablesoundpositionindication) | 开启/关闭远端用户的语音立体声。 |
-| [SetRemoteVoicePosition](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/sound-position#api_irtcengine_setremotevoiceposition) | 设置远端用户声音的 2D 位置，即水平面位置。 |
-| [SetRemoteVoicePositionEx](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/sound-position#api_irtcengineex_setremotevoicepositionex) | 设置远端用户声音的 2D 位置，即水平面位置。 |
-| [GetLocalSpatialAudioEngine](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_irtcengine_getlocalspatialaudioengine) | 获取 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ilocalspatialaudioengine) 对象。 |
-| [Initialize](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_initialize) | 初始化 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ilocalspatialaudioengine)。 |
-| [Dispose](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_release) | 销毁 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ilocalspatialaudioengine)。 |
-| [UpdateSelfPosition](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselfposition) | 更新本地用户的空间位置。 |
-| [UpdateRemotePosition](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) | 更新远端用户的空间位置信息。 |
-| [RemoveRemotePosition](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_removeremoteposition) | 删除指定远端用户的空间位置信息。 |
-| [ClearRemotePositions](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_clearremotepositions) | 删除所有远端用户的空间位置信息。 |
-| [SetHeadphoneEQParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqparameters) | 设置耳机均衡器的低频和高频参数。 |
-| [SetHeadphoneEQPreset](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqpreset) | 设置预设的耳机均衡效果。 |
+| [SetAdvancedAudioOptions](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setadvancedaudiooptions) | 设置音频的高级选项。 |
+| [SetAINSMode](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setainsmode) | 设置是否开启 AI 降噪功能并设置降噪模式。 |
+| [SetLocalVoiceEqualization](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoiceequalization) | 设置本地语音音效均衡。 |
+| [SetLocalVoicePitch](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoicepitch) | 设置本地语音音调。 |
+| [SetLocalVoiceReverb](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoicereverb) | 设置本地音效混响。 |
+| [SetVoiceBeautifierPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setvoicebeautifierpreset) | 设置预设的美声效果。 |
+| [SetVoiceBeautifierParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setvoicebeautifierparameters) | 设置预设美声效果的参数。 |
+| [SetAudioEffectPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setaudioeffectpreset) | 设置 SDK 预设的人声音效。 |
+| [SetAudioEffectParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setaudioeffectparameters) | 设置 SDK 预设人声音效的参数。 |
+| [SetVoiceConversionPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setvoiceconversionpreset) | 设置预设的变声效果。 |
+| [SetLocalVoiceFormant](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoiceformant) | 设置共振峰比率以改变语音的音色。 |
+| [EnableSoundPositionIndication](/zh-CN/api-reference/rtc/csharp-windows/sound-position#api_irtcengine_enablesoundpositionindication) | 开启/关闭远端用户的语音立体声。 |
+| [SetRemoteVoicePosition](/zh-CN/api-reference/rtc/csharp-windows/sound-position#api_irtcengine_setremotevoiceposition) | 设置远端用户声音的 2D 位置，即水平面位置。 |
+| [SetRemoteVoicePositionEx](/zh-CN/api-reference/rtc/csharp-windows/sound-position#api_irtcengineex_setremotevoicepositionex) | 设置远端用户声音的 2D 位置，即水平面位置。 |
+| [GetLocalSpatialAudioEngine](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_irtcengine_getlocalspatialaudioengine) | 获取 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ilocalspatialaudioengine) 对象。 |
+| [Initialize](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_ilocalspatialaudioengine_initialize) | 初始化 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ilocalspatialaudioengine)。 |
+| [Dispose](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_ilocalspatialaudioengine_release) | 销毁 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ilocalspatialaudioengine)。 |
+| [UpdateSelfPosition](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_ibasespatialaudioengine_updateselfposition) | 更新本地用户的空间位置。 |
+| [UpdateRemotePosition](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) | 更新远端用户的空间位置信息。 |
+| [RemoveRemotePosition](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_ilocalspatialaudioengine_removeremoteposition) | 删除指定远端用户的空间位置信息。 |
+| [ClearRemotePositions](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_ilocalspatialaudioengine_clearremotepositions) | 删除所有远端用户的空间位置信息。 |
+| [SetHeadphoneEQParameters](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_irtcengine_setheadphoneeqparameters) | 设置耳机均衡器的低频和高频参数。 |
+| [SetHeadphoneEQPreset](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_irtcengine_setheadphoneeqpreset) | 设置预设的耳机均衡效果。 |
 | [StartLocalAudioMixer](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-startlocalaudiomixer) | 开启本地音频合流。 |
 | [UpdateLocalAudioMixerConfiguration](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-updatelocalaudiomixerconfiguration) | 更新本地音频合流的配置。 |
 | [StopLocalAudioMixer](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-stoplocalaudiomixer) | 停止本地音频合流。 |
@@ -161,18 +161,18 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) | 注册音频观测器对象。 |
-| [UnRegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_irtcengine_unregisteraudioframeobserver) | 取消注册音频帧观测器。 |
-| [SetEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) | 设置耳返的音频数据格式。 |
-| [SetRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) | 设置采集的原始音频数据格式。 |
-| [SetPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) | 设置播放的原始音频数据格式。 |
-| [SetMixedAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_irtcengine_setmixedaudioframeparameters) | 设置采集和播放音频混音后的原始音频数据格式。 |
-| [SetPlaybackAudioFrameBeforeMixingParameters](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_irtcengine_setplaybackaudioframebeforemixingparameters) | 设置混音前的原始音频播放数据格式。 |
-| [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) | 获得耳返的原始音频数据。 |
-| [OnRecordAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) | 获得采集的原始音频数据。 |
-| [OnPlaybackAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) | 获得播放的原始音频数据。 |
-| [OnPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) | 获取所订阅的远端用户混音前的声音。 |
-| [OnMixedAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) | 获取采集和播放音频混音后的数据。 |
+| [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_imediaengine_registeraudioframeobserver) | 注册音频观测器对象。 |
+| [UnRegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_irtcengine_unregisteraudioframeobserver) | 取消注册音频帧观测器。 |
+| [SetEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) | 设置耳返的音频数据格式。 |
+| [SetRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_irtcengine_setrecordingaudioframeparameters) | 设置采集的原始音频数据格式。 |
+| [SetPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_irtcengine_setplaybackaudioframeparameters) | 设置播放的原始音频数据格式。 |
+| [SetMixedAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_irtcengine_setmixedaudioframeparameters) | 设置采集和播放音频混音后的原始音频数据格式。 |
+| [SetPlaybackAudioFrameBeforeMixingParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_irtcengine_setplaybackaudioframebeforemixingparameters) | 设置混音前的原始音频播放数据格式。 |
+| [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) | 获得耳返的原始音频数据。 |
+| [OnRecordAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) | 获得采集的原始音频数据。 |
+| [OnPlaybackAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) | 获得播放的原始音频数据。 |
+| [OnPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) | 获取所订阅的远端用户混音前的声音。 |
+| [OnMixedAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) | 获取采集和播放音频混音后的数据。 |
 
 <a id="rtc_api_overview__audio_encoded"></a>
 
@@ -180,11 +180,11 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [RegisterAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) | 注册音频编码数据观测器。 |
-| [UnRegisterAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-encoded#api_irtcengine_unregisteraudioencodedframeobserver) | 取消注册音频编码数据观测器。 |
-| [OnRecordAudioEncodedFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-encoded#callback_iaudioencodedframeobserver_onrecordaudioencodedframe) | 获取本地用户的音频编码数据。 |
-| [OnPlaybackAudioEncodedFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-encoded#callback_iaudioencodedframeobserver_onplaybackaudioencodedframe) | 获取所有远端用户的音频编码数据。 |
-| [OnMixedAudioEncodedFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-encoded#callback_iaudioencodedframeobserver_onmixedaudioencodedframe) | 获取本地和所有远端用户混音后的音频编码数据。 |
+| [RegisterAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) | 注册音频编码数据观测器。 |
+| [UnRegisterAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-encoded#api_irtcengine_unregisteraudioencodedframeobserver) | 取消注册音频编码数据观测器。 |
+| [OnRecordAudioEncodedFrame](/zh-CN/api-reference/rtc/csharp-windows/audio-encoded#callback_iaudioencodedframeobserver_onrecordaudioencodedframe) | 获取本地用户的音频编码数据。 |
+| [OnPlaybackAudioEncodedFrame](/zh-CN/api-reference/rtc/csharp-windows/audio-encoded#callback_iaudioencodedframeobserver_onplaybackaudioencodedframe) | 获取所有远端用户的音频编码数据。 |
+| [OnMixedAudioEncodedFrame](/zh-CN/api-reference/rtc/csharp-windows/audio-encoded#callback_iaudioencodedframeobserver_onmixedaudioencodedframe) | 获取本地和所有远端用户混音后的音频编码数据。 |
 
 <a id="rtc_api_overview__audio_custom_capturenrendering"></a>
 
@@ -192,13 +192,13 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [CreateCustomAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) | 创建一个自定义音频采集轨道。 |
-| [DestroyCustomAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_destroycustomaudiotrack) | 销毁指定的音频轨道。 |
-| [SetExternalAudioSink](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_setexternalaudiosink) | 设置外部音频渲染。 |
-| [PullAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_pullaudioframe) | 拉取远端音频数据。 |
-| [PushAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe0) | 推送外部音频帧。 |
-| [AdjustCustomAudioPlayoutVolume](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudioplayoutvolume) | 调节自定义音频采集轨道在本地播放的音量。 |
-| [AdjustCustomAudioPublishVolume](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudiopublishvolume) | 调节自定义音频采集轨道在远端播放的音量。 |
+| [CreateCustomAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) | 创建一个自定义音频采集轨道。 |
+| [DestroyCustomAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/audio-custom-capturenrendering#api_imediaengine_destroycustomaudiotrack) | 销毁指定的音频轨道。 |
+| [SetExternalAudioSink](/zh-CN/api-reference/rtc/csharp-windows/audio-custom-capturenrendering#api_imediaengine_setexternalaudiosink) | 设置外部音频渲染。 |
+| [PullAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio-custom-capturenrendering#api_imediaengine_pullaudioframe) | 拉取远端音频数据。 |
+| [PushAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio-custom-capturenrendering#api_imediaengine_pushaudioframe0) | 推送外部音频帧。 |
+| [AdjustCustomAudioPlayoutVolume](/zh-CN/api-reference/rtc/csharp-windows/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudioplayoutvolume) | 调节自定义音频采集轨道在本地播放的音量。 |
+| [AdjustCustomAudioPublishVolume](/zh-CN/api-reference/rtc/csharp-windows/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudiopublishvolume) | 调节自定义音频采集轨道在远端播放的音量。 |
 | [EnableCustomAudioLocalPlayback](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-enablecustomaudiolocalplayback) | 设置是否在本地播放外部音频源。 |
 
 <a id="rtc_api_overview__audio_spectrum"></a>
@@ -207,12 +207,12 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [RegisterAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) | 注册音频频谱观测器。 |
-| [EnableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) | 开启音频频谱监测。 |
-| [DisableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_disableaudiospectrummonitor) | 关闭音频频谱监测。 |
-| [UnregisterAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_unregisteraudiospectrumobserver) | 取消注册音频频谱观测器。 |
-| [OnLocalAudioSpectrum](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) | 获取本地音频频谱。 |
-| [OnRemoteAudioSpectrum](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) | 获取远端音频频谱。 |
+| [RegisterAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) | 注册音频频谱观测器。 |
+| [EnableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/csharp-windows/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) | 开启音频频谱监测。 |
+| [DisableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/csharp-windows/audio-spectrum#api_irtcengine_disableaudiospectrummonitor) | 关闭音频频谱监测。 |
+| [UnregisterAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-spectrum#api_irtcengine_unregisteraudiospectrumobserver) | 取消注册音频频谱观测器。 |
+| [OnLocalAudioSpectrum](/zh-CN/api-reference/rtc/csharp-windows/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) | 获取本地音频频谱。 |
+| [OnRemoteAudioSpectrum](/zh-CN/api-reference/rtc/csharp-windows/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) | 获取远端音频频谱。 |
 
 <a id="rtc_api_overview__video_basic"></a>
 
@@ -220,25 +220,25 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [EnableVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_enablevideo) | 启用视频模块。 |
-| [DisableVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_disablevideo) | 关闭视频模块。 |
-| [SetVideoScenario](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_setvideoscenario) | 设置视频业务场景。 |
-| [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_setvideoencoderconfiguration) | 设置视频编码属性。 |
-| [SetVideoEncoderConfigurationEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengineex_setvideoencoderconfigurationex) | 设置视频编码属性。 |
-| [StartPreview [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_startpreview2) | 开启视频预览并指定预览的视频源。 |
-| [StopPreview [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_stoppreview2) | 停止视频预览。 |
-| [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) | 本地视频状态发生改变回调。 |
-| [OnLocalVideoStats](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats) | 本地视频流统计信息回调。 |
-| [OnFirstLocalVideoFramePublished](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onfirstlocalvideoframepublished) | 已发布本地视频首帧回调。 |
-| [OnVideoPublishStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) | 视频发布状态改变回调。 |
-| [OnVideoSizeChanged](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged) | 本地或远端视频大小和旋转信息发生改变回调。 |
-| [OnRemoteVideoStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) | 远端视频状态发生改变回调。 |
-| [OnRemoteVideoStats](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) | 通话中远端视频流的统计信息回调。 |
-| [OnFirstLocalVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onfirstlocalvideoframe) | 已显示本地视频首帧回调。 |
-| [OnFirstRemoteVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideoframe) | 渲染器已接收首帧远端视频回调。 |
-| [OnFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) | 已接收到远端视频并完成解码回调。 |
-| [OnUserMuteVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) | 远端用户取消或恢复发布视频流回调。 |
-| [OnUserEnableVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onuserenablevideo) | 远端用户开/关视频模块回调。 |
+| [EnableVideo](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_enablevideo) | 启用视频模块。 |
+| [DisableVideo](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_disablevideo) | 关闭视频模块。 |
+| [SetVideoScenario](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_setvideoscenario) | 设置视频业务场景。 |
+| [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_setvideoencoderconfiguration) | 设置视频编码属性。 |
+| [SetVideoEncoderConfigurationEx](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengineex_setvideoencoderconfigurationex) | 设置视频编码属性。 |
+| [StartPreview [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_startpreview2) | 开启视频预览并指定预览的视频源。 |
+| [StopPreview [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_stoppreview2) | 停止视频预览。 |
+| [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) | 本地视频状态发生改变回调。 |
+| [OnLocalVideoStats](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onlocalvideostats) | 本地视频流统计信息回调。 |
+| [OnFirstLocalVideoFramePublished](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onfirstlocalvideoframepublished) | 已发布本地视频首帧回调。 |
+| [OnVideoPublishStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) | 视频发布状态改变回调。 |
+| [OnVideoSizeChanged](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onvideosizechanged) | 本地或远端视频大小和旋转信息发生改变回调。 |
+| [OnRemoteVideoStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) | 远端视频状态发生改变回调。 |
+| [OnRemoteVideoStats](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onremotevideostats) | 通话中远端视频流的统计信息回调。 |
+| [OnFirstLocalVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onfirstlocalvideoframe) | 已显示本地视频首帧回调。 |
+| [OnFirstRemoteVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onfirstremotevideoframe) | 渲染器已接收首帧远端视频回调。 |
+| [OnFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) | 已接收到远端视频并完成解码回调。 |
+| [OnUserMuteVideo](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onusermutevideo) | 远端用户取消或恢复发布视频流回调。 |
+| [OnUserEnableVideo](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onuserenablevideo) | 远端用户开/关视频模块回调。 |
 
 <a id="rtc_api_overview__video_capturing"></a>
 
@@ -246,9 +246,9 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [EnableLocalVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_enablelocalvideo) | 开关本地视频采集。 |
-| [StartCameraCapture](/zh-CN/api-reference/rtc/csharp-windows/video/camera-capture#api_irtcengine_startcameracapture) | 开始通过摄像头采集视频。 |
-| [StopCameraCapture](/zh-CN/api-reference/rtc/csharp-windows/video/camera-capture#api_irtcengine_stopcameracapture) | 停止通过摄像头采集视频。 |
+| [EnableLocalVideo](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_enablelocalvideo) | 开关本地视频采集。 |
+| [StartCameraCapture](/zh-CN/api-reference/rtc/csharp-windows/camera-capture#api_irtcengine_startcameracapture) | 开始通过摄像头采集视频。 |
+| [StopCameraCapture](/zh-CN/api-reference/rtc/csharp-windows/camera-capture#api_irtcengine_stopcameracapture) | 停止通过摄像头采集视频。 |
 
 <a id="rtc_api_overview__screen_share"></a>
 
@@ -256,16 +256,16 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [GetScreenCaptureSources](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_getscreencapturesources) | 获取可共享的屏幕和窗口对象列表。 |
-| [StartScreenCaptureByWindowId](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapturebywindowid) | 开始采集指定窗口的视频流。 |
-| [StartScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapturebydisplayid) | 开始采集指定屏幕的视频流。 |
-| [SetScreenCaptureContentHint](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_setscreencapturecontenthint) | 设置屏幕共享内容类型。 |
-| [UpdateScreenCaptureRegion](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_updatescreencaptureregion) | 更新屏幕采集的区域。 |
-| [StartScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapture2) | 开始屏幕采集并指定视频源。 |
-| [UpdateScreenCaptureParameters](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_updatescreencaptureparameters) | 更新屏幕采集的参数配置。 |
-| [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_stopscreencapture) | 停止屏幕采集。 |
-| [StopScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_stopscreencapture2) | 停止对指定的视频源进行屏幕采集。 |
-| [SetScreenCaptureScenario](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_setscreencapturescenario) | 设置屏幕共享的场景。 |
+| [GetScreenCaptureSources](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_getscreencapturesources) | 获取可共享的屏幕和窗口对象列表。 |
+| [StartScreenCaptureByWindowId](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapturebywindowid) | 开始采集指定窗口的视频流。 |
+| [StartScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapturebydisplayid) | 开始采集指定屏幕的视频流。 |
+| [SetScreenCaptureContentHint](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_setscreencapturecontenthint) | 设置屏幕共享内容类型。 |
+| [UpdateScreenCaptureRegion](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_updatescreencaptureregion) | 更新屏幕采集的区域。 |
+| [StartScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapture2) | 开始屏幕采集并指定视频源。 |
+| [UpdateScreenCaptureParameters](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_updatescreencaptureparameters) | 更新屏幕采集的参数配置。 |
+| [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_stopscreencapture) | 停止屏幕采集。 |
+| [StopScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_stopscreencapture2) | 停止对指定的视频源进行屏幕采集。 |
+| [SetScreenCaptureScenario](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_setscreencapturescenario) | 设置屏幕共享的场景。 |
 
 <a id="rtc_api_overview__video_prenpost"></a>
 
@@ -273,35 +273,35 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [EnableContentInspect](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/snapshot#api_irtcengine_enablecontentinspect) | 开启/关闭本地截图上传。 |
-| [TakeSnapshot [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) | 对视频截图。 |
+| [EnableContentInspect](/zh-CN/api-reference/rtc/csharp-windows/snapshot#api_irtcengine_enablecontentinspect) | 开启/关闭本地截图上传。 |
+| [TakeSnapshot [1/2]](/zh-CN/api-reference/rtc/csharp-windows/snapshot#api_irtcengine_takesnapshot) | 对视频截图。 |
 | [TakeSnapshot [2/2]](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-takesnapshot2) | 在指定观测位置进行视频截图。 |
-| [TakeSnapshotEx [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/snapshot#api_irtcengineex_takesnapshotex) | 使用连接 ID 获取视频截图。 |
+| [TakeSnapshotEx [1/2]](/zh-CN/api-reference/rtc/csharp-windows/snapshot#api_irtcengineex_takesnapshotex) | 使用连接 ID 获取视频截图。 |
 | [TakeSnapshotEx [2/2]](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengineex-takesnapshotex2) | 使用连接 ID 获取指定观测位置的视频截图。 |
-| [EnableVirtualBackground](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground) | 开启/关闭虚拟背景。 |
-| [StartLocalVideoTranscoder](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/local-transcoder#api_irtcengine_startlocalvideotranscoder) | 开启本地合图。 |
-| [StopLocalVideoTranscoder](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/local-transcoder#api_irtcengine_stoplocalvideotranscoder) | 停止本地合图。 |
-| [UpdateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) | 更新本地合图配置。 |
-| [OnLocalVideoTranscoderError](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) | 本地合图发生错误回调。 |
-| [EnableVideoImageSource](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/image-source#api_irtcengine_enablevideoimagesource) | 设置是否开启垫片推流功能。 |
-| [SetBeautyEffectOptions](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/video-enhance-option#api_irtcengine_setbeautyeffectoptions) | 设置美颜效果选项。 |
-| [SetColorEnhanceOptions](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/video-enhance-option#api_irtcengine_setcolorenhanceoptions) | 设置色彩增强功能。 |
-| [SetLowlightEnhanceOptions](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/video-enhance-option#api_irtcengine_setlowlightenhanceoptions) | 设置暗光增强功能。 |
-| [SetVideoDenoiserOptions](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/video-enhance-option#api_irtcengine_setvideodenoiseroptions) | 设置视频降噪功能。 |
+| [EnableVirtualBackground](/zh-CN/api-reference/rtc/csharp-windows/virtualbackground#api_irtcengine_enablevirtualbackground) | 开启/关闭虚拟背景。 |
+| [StartLocalVideoTranscoder](/zh-CN/api-reference/rtc/csharp-windows/local-transcoder#api_irtcengine_startlocalvideotranscoder) | 开启本地合图。 |
+| [StopLocalVideoTranscoder](/zh-CN/api-reference/rtc/csharp-windows/local-transcoder#api_irtcengine_stoplocalvideotranscoder) | 停止本地合图。 |
+| [UpdateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) | 更新本地合图配置。 |
+| [OnLocalVideoTranscoderError](/zh-CN/api-reference/rtc/csharp-windows/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) | 本地合图发生错误回调。 |
+| [EnableVideoImageSource](/zh-CN/api-reference/rtc/csharp-windows/image-source#api_irtcengine_enablevideoimagesource) | 设置是否开启垫片推流功能。 |
+| [SetBeautyEffectOptions](/zh-CN/api-reference/rtc/csharp-windows/video-enhance-option#api_irtcengine_setbeautyeffectoptions) | 设置美颜效果选项。 |
+| [SetColorEnhanceOptions](/zh-CN/api-reference/rtc/csharp-windows/video-enhance-option#api_irtcengine_setcolorenhanceoptions) | 设置色彩增强功能。 |
+| [SetLowlightEnhanceOptions](/zh-CN/api-reference/rtc/csharp-windows/video-enhance-option#api_irtcengine_setlowlightenhanceoptions) | 设置暗光增强功能。 |
+| [SetVideoDenoiserOptions](/zh-CN/api-reference/rtc/csharp-windows/video-enhance-option#api_irtcengine_setvideodenoiseroptions) | 设置视频降噪功能。 |
 | [SetFilterEffectOptions](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-setfiltereffectoptions) | 设置滤镜效果选项并指定媒体源。 |
 | [SetFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-setfaceshapebeautyoptions) | 设置美型效果选项并指定媒体源。 |
 | [SetFaceShapeAreaOptions](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-setfaceshapeareaoptions) | 设置美型部位选项并指定媒体源。 |
 | [GetFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-getfaceshapebeautyoptions) | 获取美型效果选项。 |
 | [GetFaceShapeAreaOptions](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-getfaceshapeareaoptions) | 获取美型部位选项。 |
-| [EnableFaceDetection](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/face-detection#api_irtcengine_enablefacedetection) | 开启/关闭本地人脸检测。 |
-| [OnFacePositionChanged](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/face-detection#callback_irtcengineeventhandler_onfacepositionchanged) | 报告本地人脸检测结果。 |
+| [EnableFaceDetection](/zh-CN/api-reference/rtc/csharp-windows/face-detection#api_irtcengine_enablefacedetection) | 开启/关闭本地人脸检测。 |
+| [OnFacePositionChanged](/zh-CN/api-reference/rtc/csharp-windows/face-detection#callback_irtcengineeventhandler_onfacepositionchanged) | 报告本地人脸检测结果。 |
 | [IsCameraCenterStageSupported](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-iscameracenterstagesupported) | 查询摄像头是否支持人像锁定。 |
 | [EnableCameraCenterStage](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-enablecameracenterstage) | 开启或关闭人像锁定功能。 |
-| [OnSnapshotTaken](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) | 视频截图结果回调。 |
-| [AddVideoWatermark [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/watermark#api_irtcengine_addvideowatermark2) | 添加本地视频水印。 |
-| [AddVideoWatermarkEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/watermark#api_irtcengineex_addvideowatermarkex) | 添加本地视频水印。 |
-| [ClearVideoWatermarks](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/watermark#api_irtcengine_clearvideowatermarks) | 删除已添加的视频水印。 |
-| [ClearVideoWatermarkEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/watermark#api_irtcengineex_clearvideowatermarkex) | 删除已添加的视频水印。 |
+| [OnSnapshotTaken](/zh-CN/api-reference/rtc/csharp-windows/snapshot#callback_irtcengineeventhandler_onsnapshottaken) | 视频截图结果回调。 |
+| [AddVideoWatermark [2/2]](/zh-CN/api-reference/rtc/csharp-windows/watermark#api_irtcengine_addvideowatermark2) | 添加本地视频水印。 |
+| [AddVideoWatermarkEx](/zh-CN/api-reference/rtc/csharp-windows/watermark#api_irtcengineex_addvideowatermarkex) | 添加本地视频水印。 |
+| [ClearVideoWatermarks](/zh-CN/api-reference/rtc/csharp-windows/watermark#api_irtcengine_clearvideowatermarks) | 删除已添加的视频水印。 |
+| [ClearVideoWatermarkEx](/zh-CN/api-reference/rtc/csharp-windows/watermark#api_irtcengineex_clearvideowatermarkex) | 删除已添加的视频水印。 |
 
 <a id="rtc_api_overview__video_rendering"></a>
 
@@ -309,16 +309,16 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [SetRenderMode](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_imediaplayer_setrendermode) | 设置播放器视图的渲染模式。 |
-| [SetLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengine_setlocalrendermode2) | 更新本地视图显示模式。 |
-| [SetRemoteRenderMode](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengine_setremoterendermode2) | 更新远端视图显示模式。 |
+| [SetRenderMode](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_imediaplayer_setrendermode) | 设置播放器视图的渲染模式。 |
+| [SetLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_irtcengine_setlocalrendermode2) | 更新本地视图显示模式。 |
+| [SetRemoteRenderMode](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_irtcengine_setremoterendermode2) | 更新远端视图显示模式。 |
 | [SetLocalRenderTargetFps](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-setlocalrendertargetfps) | 设置本地视频渲染的最大帧率。 |
 | [SetRemoteRenderTargetFps](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-setremoterendertargetfps) | 设置视频在远端渲染的最大帧率。 |
-| [SetView](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setview) | 设置播放器渲染视图。 |
-| [EnableInstantMediaRendering](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengine_enableinstantmediarendering) | 开启音视频帧加速渲染。 |
-| [StartMediaRenderingTracing](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengine_startmediarenderingtracing) | 开启视频帧渲染数据打点。 |
-| [StartMediaRenderingTracingEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengineex_startmediarenderingtracingex) | 开启视频帧渲染数据打点。 |
-| [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) | 视频帧渲染事件回调。 |
+| [SetView](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-playnrender#api_imediaplayer_setview) | 设置播放器渲染视图。 |
+| [EnableInstantMediaRendering](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_irtcengine_enableinstantmediarendering) | 开启音视频帧加速渲染。 |
+| [StartMediaRenderingTracing](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_irtcengine_startmediarenderingtracing) | 开启视频帧渲染数据打点。 |
+| [StartMediaRenderingTracingEx](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_irtcengineex_startmediarenderingtracingex) | 开启视频帧渲染数据打点。 |
+| [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) | 视频帧渲染事件回调。 |
 
 <a id="rtc_api_overview__raw_video_data"></a>
 
@@ -326,10 +326,10 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [RegisterVideoFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#api_imediaengine_registervideoframeobserver) | 注册原始视频观测器对象。 |
-| [OnCaptureVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) | 获取本地设备采集到的视频数据。 |
-| [OnPreEncodeVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) | 获取本地视频编码前的视频数据。 |
-| [OnRenderVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) | 获取远端发送的视频数据。 |
+| [RegisterVideoFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/video-raw#api_imediaengine_registervideoframeobserver) | 注册原始视频观测器对象。 |
+| [OnCaptureVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video-raw#callback_ivideoframeobserver_oncapturevideoframe) | 获取本地设备采集到的视频数据。 |
+| [OnPreEncodeVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) | 获取本地视频编码前的视频数据。 |
+| [OnRenderVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video-raw#callback_ivideoframeobserver_onrendervideoframe) | 获取远端发送的视频数据。 |
 
 <a id="rtc_api_overview__encode_video_data"></a>
 
@@ -337,9 +337,9 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [RegisterVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/video/video-encoded#api_imediaengine_registervideoencodedframeobserver) | 为编码后的视频图像注册视频帧接收观测器。 |
-| [UnregisterVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/video/video-raw#api_imediaengine_unregistervideoencodedframeobserver) | 为编码后的视频图像取消注册视频帧接收观测器。 |
-| [OnEncodedVideoFrameReceived](/zh-CN/api-reference/rtc/csharp-windows/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) | 报告接收端已收到远端发送的待解码视频帧。 |
+| [RegisterVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/video-encoded#api_imediaengine_registervideoencodedframeobserver) | 为编码后的视频图像注册视频帧接收观测器。 |
+| [UnregisterVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/video-raw#api_imediaengine_unregistervideoencodedframeobserver) | 为编码后的视频图像取消注册视频帧接收观测器。 |
+| [OnEncodedVideoFrameReceived](/zh-CN/api-reference/rtc/csharp-windows/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) | 报告接收端已收到远端发送的待解码视频帧。 |
 
 <a id="rtc_api_overview__video_custom_capturenrendering"></a>
 
@@ -347,10 +347,10 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [CreateCustomVideoTrack](/zh-CN/api-reference/rtc/csharp-windows/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) | 创建一个自定义的视频轨道。 |
-| [DestroyCustomVideoTrack](/zh-CN/api-reference/rtc/csharp-windows/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) | 销毁指定的视频轨道。 |
-| [SetExternalVideoSource](/zh-CN/api-reference/rtc/csharp-windows/video/video-custom-capturenrendering#api_imediaengine_setexternalvideosource) | 设置外部视频源。 |
-| [PushVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe) | 将外部原始视频帧通过自定义视频轨道发布到频道中。 |
+| [CreateCustomVideoTrack](/zh-CN/api-reference/rtc/csharp-windows/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) | 创建一个自定义的视频轨道。 |
+| [DestroyCustomVideoTrack](/zh-CN/api-reference/rtc/csharp-windows/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) | 销毁指定的视频轨道。 |
+| [SetExternalVideoSource](/zh-CN/api-reference/rtc/csharp-windows/video-custom-capturenrendering#api_imediaengine_setexternalvideosource) | 设置外部视频源。 |
+| [PushVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video-custom-capturenrendering#api_imediaengine_pushvideoframe) | 将外部原始视频帧通过自定义视频轨道发布到频道中。 |
 
 <a id="rtc_api_overview__audio_file_playback"></a>
 
@@ -358,26 +358,26 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_startaudiomixing2) | 开始播放音乐文件。 |
-| [StopAudioMixing](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_stopaudiomixing) | 停止播放音乐文件。 |
-| [PauseAudioMixing](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_pauseaudiomixing) | 暂停播放音乐文件。 |
-| [ResumeAudioMixing](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_resumeaudiomixing) | 恢复播放音乐文件。 |
-| [AdjustAudioMixingVolume](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_adjustaudiomixingvolume) | 调节音乐文件的播放音量。 |
-| [AdjustAudioMixingPlayoutVolume](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_adjustaudiomixingplayoutvolume) | 调节音乐文件在本地播放的音量。 |
-| [AdjustAudioMixingPublishVolume](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_adjustaudiomixingpublishvolume) | 调节音乐文件远端播放音量。 |
-| [GetAudioMixingPlayoutVolume](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_getaudiomixingplayoutvolume) | 获取音乐文件的本地播放音量。 |
-| [GetAudioMixingPublishVolume](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_getaudiomixingpublishvolume) | 获取音乐文件的远端播放音量。 |
+| [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_startaudiomixing2) | 开始播放音乐文件。 |
+| [StopAudioMixing](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_stopaudiomixing) | 停止播放音乐文件。 |
+| [PauseAudioMixing](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_pauseaudiomixing) | 暂停播放音乐文件。 |
+| [ResumeAudioMixing](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_resumeaudiomixing) | 恢复播放音乐文件。 |
+| [AdjustAudioMixingVolume](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_adjustaudiomixingvolume) | 调节音乐文件的播放音量。 |
+| [AdjustAudioMixingPlayoutVolume](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_adjustaudiomixingplayoutvolume) | 调节音乐文件在本地播放的音量。 |
+| [AdjustAudioMixingPublishVolume](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_adjustaudiomixingpublishvolume) | 调节音乐文件远端播放音量。 |
+| [GetAudioMixingPlayoutVolume](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_getaudiomixingplayoutvolume) | 获取音乐文件的本地播放音量。 |
+| [GetAudioMixingPublishVolume](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_getaudiomixingpublishvolume) | 获取音乐文件的远端播放音量。 |
 | [SetAudioMixingPlaybackSpeed](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-setaudiomixingplaybackspeed) | 设置当前音乐文件的播放速度。 |
-| [GetAudioMixingDuration](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_getaudiomixingduration) | 获取音乐文件总时长。 |
-| [GetAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_getaudiomixingcurrentposition) | 获取音乐文件的播放进度。 |
-| [SetAudioMixingPitch](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_setaudiomixingpitch) | 调整本地播放的音乐文件的音调。 |
-| [SetAudioMixingPosition](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_setaudiomixingposition) | 设置音乐文件的播放位置。 |
-| [SetAudioMixingDualMonoMode](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_setaudiomixingdualmonomode) | 设置当前音频文件的声道模式。 |
-| [GetAudioTrackCount](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_getaudiotrackcount) | 获取当前音乐文件的音轨索引。 |
-| [SelectAudioTrack [1/2]](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#api_irtcengine_selectaudiotrack) | 指定当前音乐文件的播放音轨。 |
+| [GetAudioMixingDuration](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_getaudiomixingduration) | 获取音乐文件总时长。 |
+| [GetAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_getaudiomixingcurrentposition) | 获取音乐文件的播放进度。 |
+| [SetAudioMixingPitch](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_setaudiomixingpitch) | 调整本地播放的音乐文件的音调。 |
+| [SetAudioMixingPosition](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_setaudiomixingposition) | 设置音乐文件的播放位置。 |
+| [SetAudioMixingDualMonoMode](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_setaudiomixingdualmonomode) | 设置当前音频文件的声道模式。 |
+| [GetAudioTrackCount](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_getaudiotrackcount) | 获取当前音乐文件的音轨索引。 |
+| [SelectAudioTrack [1/2]](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_selectaudiotrack) | 指定当前音乐文件的播放音轨。 |
 | [SelectMultiAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/api-imediaplayer-selectmultiaudiotrack) | 选择本地播放和发送至远端的音轨。 |
-| [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) | 音乐文件的播放状态已改变回调。 |
-| [OnAudioMixingPositionChanged](/zh-CN/api-reference/rtc/csharp-windows/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingpositionchanged) | 音乐文件播放进度回调。 |
+| [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) | 音乐文件的播放状态已改变回调。 |
+| [OnAudioMixingPositionChanged](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#callback_irtcengineeventhandler_onaudiomixingpositionchanged) | 音乐文件播放进度回调。 |
 
 <a id="rtc_api_overview__audio_effect_playback"></a>
 
@@ -385,25 +385,25 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [GetEffectsVolume](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_geteffectsvolume) | 获取音效文件的播放音量。 |
-| [SetEffectsVolume](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_seteffectsvolume) | 设置音效文件的播放音量。 |
-| [GetVolumeOfEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_getvolumeofeffect) | 获取指定音效文件的播放音量。 |
-| [SetVolumeOfEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_setvolumeofeffect) | 设置指定音效文件的播放音量。 |
-| [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_preloadeffect) | 将音效文件加载至内存。 |
-| [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_playeffect3) | 播放指定的本地或在线音效文件。 |
-| [PlayAllEffects](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_playalleffects) | 播放所有音效文件。 |
-| [PauseEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_pauseeffect) | 暂停音效文件播放。 |
-| [PauseAllEffects](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_pausealleffects) | 暂停所有音效文件播放。 |
-| [ResumeEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_resumeeffect) | 恢复播放指定音效文件。 |
-| [ResumeAllEffects](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_resumealleffects) | 恢复播放所有音效文件。 |
-| [StopEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_stopeffect) | 停止播放指定音效文件。 |
-| [StopAllEffects](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_stopalleffects) | 停止播放所有音效文件。 |
-| [UnloadEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_unloadeffect) | 从内存释放某个预加载的音效文件。 |
-| [UnloadAllEffects](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_unloadalleffects) | 从内存释放所有预加载音效文件。 |
-| [GetEffectDuration](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_geteffectduration) | 获取指定音效文件总时长。 |
-| [GetEffectCurrentPosition](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_geteffectcurrentposition) | 获取指定音效文件的播放进度。 |
-| [SetEffectPosition](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_seteffectposition) | 设置指定音效文件的播放位置。 |
-| [OnAudioEffectFinished](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) | 本地音效文件播放已结束回调。 |
+| [GetEffectsVolume](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_geteffectsvolume) | 获取音效文件的播放音量。 |
+| [SetEffectsVolume](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_seteffectsvolume) | 设置音效文件的播放音量。 |
+| [GetVolumeOfEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_getvolumeofeffect) | 获取指定音效文件的播放音量。 |
+| [SetVolumeOfEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_setvolumeofeffect) | 设置指定音效文件的播放音量。 |
+| [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_preloadeffect) | 将音效文件加载至内存。 |
+| [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_playeffect3) | 播放指定的本地或在线音效文件。 |
+| [PlayAllEffects](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_playalleffects) | 播放所有音效文件。 |
+| [PauseEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_pauseeffect) | 暂停音效文件播放。 |
+| [PauseAllEffects](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_pausealleffects) | 暂停所有音效文件播放。 |
+| [ResumeEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_resumeeffect) | 恢复播放指定音效文件。 |
+| [ResumeAllEffects](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_resumealleffects) | 恢复播放所有音效文件。 |
+| [StopEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_stopeffect) | 停止播放指定音效文件。 |
+| [StopAllEffects](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_stopalleffects) | 停止播放所有音效文件。 |
+| [UnloadEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_unloadeffect) | 从内存释放某个预加载的音效文件。 |
+| [UnloadAllEffects](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_unloadalleffects) | 从内存释放所有预加载音效文件。 |
+| [GetEffectDuration](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_geteffectduration) | 获取指定音效文件总时长。 |
+| [GetEffectCurrentPosition](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_geteffectcurrentposition) | 获取指定音效文件的播放进度。 |
+| [SetEffectPosition](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_seteffectposition) | 设置指定音效文件的播放位置。 |
+| [OnAudioEffectFinished](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) | 本地音效文件播放已结束回调。 |
 
 <a id="rtc_api_overview__rhythm_player"></a>
 
@@ -411,21 +411,21 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [StartRhythmPlayer](/zh-CN/api-reference/rtc/csharp-windows/play/rhythmplayer#api_irtcengine_startrhythmplayer) | 开启虚拟节拍器。 |
-| [StopRhythmPlayer](/zh-CN/api-reference/rtc/csharp-windows/play/rhythmplayer#api_irtcengine_stoprhythmplayer) | 关闭虚拟节拍器。 |
-| [ConfigRhythmPlayer](/zh-CN/api-reference/rtc/csharp-windows/play/rhythmplayer#api_irtcengine_configrhythmplayer) | 配置虚拟节拍器。 |
-| [OnRhythmPlayerStateChanged](/zh-CN/api-reference/rtc/csharp-windows/play/rhythmplayer#callback_irtcengineeventhandler_onrhythmplayerstatechanged) | 虚拟节拍器状态发生改变回调。 |
+| [StartRhythmPlayer](/zh-CN/api-reference/rtc/csharp-windows/rhythmplayer#api_irtcengine_startrhythmplayer) | 开启虚拟节拍器。 |
+| [StopRhythmPlayer](/zh-CN/api-reference/rtc/csharp-windows/rhythmplayer#api_irtcengine_stoprhythmplayer) | 关闭虚拟节拍器。 |
+| [ConfigRhythmPlayer](/zh-CN/api-reference/rtc/csharp-windows/rhythmplayer#api_irtcengine_configrhythmplayer) | 配置虚拟节拍器。 |
+| [OnRhythmPlayerStateChanged](/zh-CN/api-reference/rtc/csharp-windows/rhythmplayer#callback_irtcengineeventhandler_onrhythmplayerstatechanged) | 虚拟节拍器状态发生改变回调。 |
 
 <a id="rtc_api_overview__media_player"></a>
 
 ## 媒体播放器
 
-更多有关媒体播放器的方法，详见 [内置媒体播放器](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-initialize)。
+更多有关媒体播放器的方法，详见 [内置媒体播放器](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-initialize)。
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [CreateMediaPlayer](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-initialize#api_irtcengine_createmediaplayer) | 创建媒体播放器对象。 |
-| [GetMediaPlayerCacheManager](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-initialize#api_getmediaplayercachemanager) | 获取 [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayercachemanager) 实例。 |
+| [CreateMediaPlayer](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-initialize#api_irtcengine_createmediaplayer) | 创建媒体播放器对象。 |
+| [GetMediaPlayerCacheManager](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-initialize#api_getmediaplayercachemanager) | 获取 [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayercachemanager) 实例。 |
 | [IMediaPlayer](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayer) | 提供媒体播放器功能的类，支持多实例。 |
 | [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayercachemanager) | 该类提供管理媒体播放器中缓存媒体文件的方法。 |
 | [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayersourceobserver) | 提供媒体播放器的回调。 |
@@ -436,17 +436,17 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [EnableAutoRemoveCache](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_enableautoremovecache) | 设置是否开启自动清除缓存文件功能。 |
-| [RemoveAllCaches](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_removeallcaches) | 删除媒体播放器中所有已缓存的媒体文件。 |
-| [RemoveCacheByUri](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_removecachebyuri) | 删除指定的已缓存媒体文件。 |
-| [RemoveOldCache](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_removeoldcache) | 删除媒体播放器中近期最少使用的一个缓存媒体文件。 |
-| [SetCacheDir](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_setcachedir) | 设置待缓存的媒体文件的储存路径。 |
-| [SetMaxCacheFileCount](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilecount) | 设置缓存媒体文件数量的上限。 |
-| [SetMaxCacheFileSize](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilesize) | 设置缓存媒体文件的总缓存大小的上限。 |
-| [GetCacheDir](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_getcachedir) | 获取缓存文件的储存路径。 |
-| [GetCacheFileCount](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_getcachefilecount) | 获取当前已缓存的媒体文件的总数量。 |
-| [GetMaxCacheFileCount](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_getmaxcachefilecount) | 获取所设置的缓存文件数量上限。 |
-| [GetMaxCacheFileSize](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer-cache#api_imediaplayercachemanager_getmaxcachefilesize) | 获取所设置的缓存文件总缓存的上限。 |
+| [EnableAutoRemoveCache](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-cache#api_imediaplayercachemanager_enableautoremovecache) | 设置是否开启自动清除缓存文件功能。 |
+| [RemoveAllCaches](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-cache#api_imediaplayercachemanager_removeallcaches) | 删除媒体播放器中所有已缓存的媒体文件。 |
+| [RemoveCacheByUri](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-cache#api_imediaplayercachemanager_removecachebyuri) | 删除指定的已缓存媒体文件。 |
+| [RemoveOldCache](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-cache#api_imediaplayercachemanager_removeoldcache) | 删除媒体播放器中近期最少使用的一个缓存媒体文件。 |
+| [SetCacheDir](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-cache#api_imediaplayercachemanager_setcachedir) | 设置待缓存的媒体文件的储存路径。 |
+| [SetMaxCacheFileCount](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilecount) | 设置缓存媒体文件数量的上限。 |
+| [SetMaxCacheFileSize](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilesize) | 设置缓存媒体文件的总缓存大小的上限。 |
+| [GetCacheDir](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-cache#api_imediaplayercachemanager_getcachedir) | 获取缓存文件的储存路径。 |
+| [GetCacheFileCount](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-cache#api_imediaplayercachemanager_getcachefilecount) | 获取当前已缓存的媒体文件的总数量。 |
+| [GetMaxCacheFileCount](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-cache#api_imediaplayercachemanager_getmaxcachefilecount) | 获取所设置的缓存文件数量上限。 |
+| [GetMaxCacheFileSize](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-cache#api_imediaplayercachemanager_getmaxcachefilesize) | 获取所设置的缓存文件总缓存的上限。 |
 | [OnPlayerCacheStats](/zh-CN/api-reference/rtc/csharp-windows/callback-imediaplayersourceobserver-onplayercachestats) | 报告当前缓存中的媒体资源的相关信息。 |
 
 <a id="rtc_api_overview__media_recorder"></a>
@@ -473,15 +473,15 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [StartOrUpdateChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) | 开始或更新跨频道媒体流转发。 |
-| [StartOrUpdateChannelMediaRelayEx](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengineex_startorupdatechannelmediarelayex) | 开始或更新跨频道媒体流转发。 |
-| [StopChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay) | 停止跨频道媒体流转发。一旦停止，主播会退出所有目标频道。 |
-| [StopChannelMediaRelayEx](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengineex_stopchannelmediarelayex) | 停止跨频道媒体流转发。一旦停止，主播会退出所有目标频道。 |
-| [PauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) | 暂停向所有目标频道转发媒体流。 |
-| [PauseAllChannelMediaRelayEx](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengineex_pauseallchannelmediarelayex) | 暂停向所有目标频道转发媒体流。 |
-| [ResumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay) | 恢复向所有目标频道转发媒体流。 |
-| [ResumeAllChannelMediaRelayEx](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengineex_resumeallchannelmediarelayex) | 恢复向所有目标频道转发媒体流。 |
-| [OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) | 跨频道媒体流转发状态发生改变回调。 |
+| [StartOrUpdateChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) | 开始或更新跨频道媒体流转发。 |
+| [StartOrUpdateChannelMediaRelayEx](/zh-CN/api-reference/rtc/csharp-windows/channel-media-relay#api_irtcengineex_startorupdatechannelmediarelayex) | 开始或更新跨频道媒体流转发。 |
+| [StopChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/channel-media-relay#api_irtcengine_stopchannelmediarelay) | 停止跨频道媒体流转发。一旦停止，主播会退出所有目标频道。 |
+| [StopChannelMediaRelayEx](/zh-CN/api-reference/rtc/csharp-windows/channel-media-relay#api_irtcengineex_stopchannelmediarelayex) | 停止跨频道媒体流转发。一旦停止，主播会退出所有目标频道。 |
+| [PauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) | 暂停向所有目标频道转发媒体流。 |
+| [PauseAllChannelMediaRelayEx](/zh-CN/api-reference/rtc/csharp-windows/channel-media-relay#api_irtcengineex_pauseallchannelmediarelayex) | 暂停向所有目标频道转发媒体流。 |
+| [ResumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/channel-media-relay#api_irtcengine_resumeallchannelmediarelay) | 恢复向所有目标频道转发媒体流。 |
+| [ResumeAllChannelMediaRelayEx](/zh-CN/api-reference/rtc/csharp-windows/channel-media-relay#api_irtcengineex_resumeallchannelmediarelayex) | 恢复向所有目标频道转发媒体流。 |
+| [OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/csharp-windows/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) | 跨频道媒体流转发状态发生改变回调。 |
 
 <a id="rtc_api_overview__media_push"></a>
 
@@ -489,17 +489,17 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [StartRtmpStreamWithoutTranscoding](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithouttranscoding) | 开始非转码推流。 |
-| [StartRtmpStreamWithoutTranscodingEx](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/media-push#api_irtcengineex_startrtmpstreamwithouttranscodingex) | 开始非转码推流。 |
-| [StartRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) | 开始旁路推流并设置转码属性。 |
-| [StartRtmpStreamWithTranscodingEx](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/media-push#api_irtcengineex_startrtmpstreamwithtranscodingex) | 开始旁路推流并设置转码属性。 |
-| [UpdateRtmpTranscoding](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/media-push#api_irtcengine_updatertmptranscoding) | 更新旁路推流转码属性。 |
-| [UpdateRtmpTranscodingEx](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/media-push#api_irtcengineex_updatertmptranscodingex) | 更新旁路推流转码属性。 |
-| [StopRtmpStream](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) | 结束旁路推流。 |
-| [StopRtmpStreamEx](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/media-push#api_irtcengineex_stoprtmpstreamex) | 结束旁路推流。 |
-| [OnRtmpStreamingEvent](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingevent) | 旁路推流事件回调。 |
-| [OnRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) | 旁路推流状态发生改变回调。 |
-| [OnTranscodingUpdated](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) | 旁路推流转码设置已被更新回调。 |
+| [StartRtmpStreamWithoutTranscoding](/zh-CN/api-reference/rtc/csharp-windows/media-push#api_irtcengine_startrtmpstreamwithouttranscoding) | 开始非转码推流。 |
+| [StartRtmpStreamWithoutTranscodingEx](/zh-CN/api-reference/rtc/csharp-windows/media-push#api_irtcengineex_startrtmpstreamwithouttranscodingex) | 开始非转码推流。 |
+| [StartRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/csharp-windows/media-push#api_irtcengine_startrtmpstreamwithtranscoding) | 开始旁路推流并设置转码属性。 |
+| [StartRtmpStreamWithTranscodingEx](/zh-CN/api-reference/rtc/csharp-windows/media-push#api_irtcengineex_startrtmpstreamwithtranscodingex) | 开始旁路推流并设置转码属性。 |
+| [UpdateRtmpTranscoding](/zh-CN/api-reference/rtc/csharp-windows/media-push#api_irtcengine_updatertmptranscoding) | 更新旁路推流转码属性。 |
+| [UpdateRtmpTranscodingEx](/zh-CN/api-reference/rtc/csharp-windows/media-push#api_irtcengineex_updatertmptranscodingex) | 更新旁路推流转码属性。 |
+| [StopRtmpStream](/zh-CN/api-reference/rtc/csharp-windows/media-push#api_irtcengine_stoprtmpstream) | 结束旁路推流。 |
+| [StopRtmpStreamEx](/zh-CN/api-reference/rtc/csharp-windows/media-push#api_irtcengineex_stoprtmpstreamex) | 结束旁路推流。 |
+| [OnRtmpStreamingEvent](/zh-CN/api-reference/rtc/csharp-windows/media-push#callback_irtcengineeventhandler_onrtmpstreamingevent) | 旁路推流事件回调。 |
+| [OnRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) | 旁路推流状态发生改变回调。 |
+| [OnTranscodingUpdated](/zh-CN/api-reference/rtc/csharp-windows/media-push#callback_irtcengineeventhandler_ontranscodingupdated) | 旁路推流转码设置已被更新回调。 |
 
 <a id="rtc_api_overview__direct_cdn"></a>
 
@@ -507,12 +507,12 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [StartDirectCdnStreaming](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/cdn-streaming#api_irtcengine_startdirectcdnstreaming) | 设置主播端开始直接向 CDN 推流。 |
-| [StopDirectCdnStreaming](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/cdn-streaming#api_irtcengine_stopdirectcdnstreaming) | 设置主播端停止直接向 CDN 推流。 |
-| [SetDirectCdnStreamingAudioConfiguration](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/cdn-streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration) | 设置主播端直接向 CDN 推流时的音频编码属性。 |
-| [SetDirectCdnStreamingVideoConfiguration](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/cdn-streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration) | 设置主播端直接向 CDN 推流时的视频编码属性。 |
-| [OnDirectCdnStreamingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/cdn-streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) | CDN 推流状态改变回调。 |
-| [OnDirectCdnStreamingStats](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/cdn-streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats) | CDN 推流统计数据回调。 |
+| [StartDirectCdnStreaming](/zh-CN/api-reference/rtc/csharp-windows/cdn-streaming#api_irtcengine_startdirectcdnstreaming) | 设置主播端开始直接向 CDN 推流。 |
+| [StopDirectCdnStreaming](/zh-CN/api-reference/rtc/csharp-windows/cdn-streaming#api_irtcengine_stopdirectcdnstreaming) | 设置主播端停止直接向 CDN 推流。 |
+| [SetDirectCdnStreamingAudioConfiguration](/zh-CN/api-reference/rtc/csharp-windows/cdn-streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration) | 设置主播端直接向 CDN 推流时的音频编码属性。 |
+| [SetDirectCdnStreamingVideoConfiguration](/zh-CN/api-reference/rtc/csharp-windows/cdn-streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration) | 设置主播端直接向 CDN 推流时的视频编码属性。 |
+| [OnDirectCdnStreamingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/cdn-streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) | CDN 推流状态改变回调。 |
+| [OnDirectCdnStreamingStats](/zh-CN/api-reference/rtc/csharp-windows/cdn-streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats) | CDN 推流统计数据回调。 |
 
 <a id="rtc_api_overview__stream_message"></a>
 
@@ -520,12 +520,12 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [CreateDataStream [1/2]](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#api_irtcengine_createdatastream) | 创建数据流。 |
-| [CreateDataStream [2/2]](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#api_irtcengine_createdatastream2) | 创建数据流。 |
-| [CreateDataStreamEx [2/2]](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#api_irtcengineex_createdatastreamex2) | 创建数据流。 |
-| [SendStreamMessage](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#api_irtcengine_sendstreammessage) | 发送数据流。 |
-| [OnStreamMessage](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) | 接收到对方数据流消息的回调。 |
-| [OnStreamMessageError](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) | 接收对方数据流消息发生错误的回调。 |
+| [CreateDataStream [1/2]](/zh-CN/api-reference/rtc/csharp-windows/datastream#api_irtcengine_createdatastream) | 创建数据流。 |
+| [CreateDataStream [2/2]](/zh-CN/api-reference/rtc/csharp-windows/datastream#api_irtcengine_createdatastream2) | 创建数据流。 |
+| [CreateDataStreamEx [2/2]](/zh-CN/api-reference/rtc/csharp-windows/datastream#api_irtcengineex_createdatastreamex2) | 创建数据流。 |
+| [SendStreamMessage](/zh-CN/api-reference/rtc/csharp-windows/datastream#api_irtcengine_sendstreammessage) | 发送数据流。 |
+| [OnStreamMessage](/zh-CN/api-reference/rtc/csharp-windows/datastream#callback_irtcengineeventhandler_onstreammessage) | 接收到对方数据流消息的回调。 |
+| [OnStreamMessageError](/zh-CN/api-reference/rtc/csharp-windows/datastream#callback_irtcengineeventhandler_onstreammessageerror) | 接收对方数据流消息发生错误的回调。 |
 
 <a id="rtc_api_overview__media_metadata"></a>
 
@@ -533,10 +533,10 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 | 方法/回调 | 描述 |
 | --- | --- |
-| [RegisterMediaMetadataObserver](/zh-CN/api-reference/rtc/csharp-windows/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) | 注册媒体 metadata 观测器用于接收或发送 metadata。 |
-| [UnregisterMediaMetadataObserver](/zh-CN/api-reference/rtc/csharp-windows/metadata/metadata-observer#api_irtcengine_unregistermediametadataobserver) | 取消注册媒体 metadata 观测器。 |
-| [OnMetaData](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onmetadata) | 报告已获取媒体附属信息。 |
-| [OnMetadataReceived](/zh-CN/api-reference/rtc/csharp-windows/metadata/metadata-observer#callback_imetadataobserver_onmetadatareceived) | 接收端已收到 metadata。 |
+| [RegisterMediaMetadataObserver](/zh-CN/api-reference/rtc/csharp-windows/metadata-observer#api_irtcengine_registermediametadataobserver) | 注册媒体 metadata 观测器用于接收或发送 metadata。 |
+| [UnregisterMediaMetadataObserver](/zh-CN/api-reference/rtc/csharp-windows/metadata-observer#api_irtcengine_unregistermediametadataobserver) | 取消注册媒体 metadata 观测器。 |
+| [OnMetaData](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-observer#callback_imediaplayersourceobserver_onmetadata) | 报告已获取媒体附属信息。 |
+| [OnMetadataReceived](/zh-CN/api-reference/rtc/csharp-windows/metadata-observer#callback_imetadataobserver_onmetadatareceived) | 接收端已收到 metadata。 |
 
 <a id="rtc_api_overview__extension"></a>
 
