@@ -104,7 +104,7 @@ implementation "io.agora.rtc:full-screen-sharing:${agora_sdk_version}"
 
 本节介绍如何使用 Android SDK 实现屏幕共享，API 调用时序如下图所示。
 
-![流程图](/img/rtc/screen-share/screen-share-process-mobile.svg)
+![流程图](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-mobile.svg)
 
 开启屏幕共享有如下两种方案，你可以根据实际场景进行选择：
 
@@ -362,7 +362,7 @@ engine.stopScreenCapture();
 
 由于 Apple 不支持在 App 主进程采集屏幕，因此你需要为屏幕共享流单独创建一个 Extension，并在 Extension 中使用 iOS 原生的 ReplayKit 框架实现录制屏幕，然后将屏幕共享流发送给主进程、实现屏幕共享。
 
-![屏幕共享原理](/img/rtc/screensharing-ios-tech.png)
+![屏幕共享原理](https://web-cdn.agora.io/docs-portal/img/rtc/screensharing-ios-tech.png)
 
 根据实际业务场景的不同，你可以选择以下任一方式调用 API 实现屏幕共享：
 
@@ -493,7 +493,7 @@ end
 
 本节介绍如何在你的项目中实现屏幕共享，API 调用时序如下图所示。
 
-![流程图](/img/rtc/screen-share/screen-share-process-mobile.svg)
+![流程图](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-mobile.svg)
 
 ### 设置音频场景
 
@@ -747,7 +747,7 @@ agoraKit.updateChannel(with: option)
 
 本节介绍如何在你的项目中实现屏幕共享，API 调用时序如下图所示。
 
-![流程图](/img/rtc/screen-share/screen-share-process-pc.svg)
+![流程图](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-pc.svg)
 
 开启屏幕共享有如下两种方案，你可以根据实际场景进行选择：
 
@@ -1302,7 +1302,7 @@ Promise.all([startScreenCall(), startVideoCall()]).then(() => { /** ... **/ });
 
 本节介绍如何在你的项目中实现屏幕共享，API 调用时序如下图所示。
 
-![流程图](/img/rtc/screen-share/screen-share-process-pc.svg)
+![流程图](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-pc.svg)
 
 开启屏幕共享有如下两种方案，你可以根据实际场景进行选择：
 
@@ -1610,7 +1610,7 @@ ret = m_rtcEngine->stopScreenCapture();
 
 本节介绍如何使用 HarmonyOS SDK 实现屏幕共享，API 调用时序如下图所示。
 
-![流程图](/img/rtc/screen-share/screen-share-process-mobile.svg)
+![流程图](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-mobile.svg)
 
 开启屏幕共享有如下两种方案，你可以根据实际场景进行选择：
 
@@ -3157,7 +3157,7 @@ await _engine.stopScreenCapture();
 
 本节介绍如何在你的项目中实现屏幕共享，API 调用时序如下图所示。
 
-![流程图](/img/rtc/screen-share/screen-share-process-pc.svg)
+![流程图](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-pc.svg)
 
 开启屏幕共享有如下两种方案，你可以根据实际场景进行选择：
 
@@ -3499,7 +3499,7 @@ API 的调用时序如下图所示：
 
 创建两个 **Button** (按钮) 控件，分别命名为 **Btn_StartScreenCapture** 和 **Btn_StopScreenCapture**，用户可以通过这两个按钮开始或停止屏幕共享。如下图所示：
 
-![](/img/rtc/screen-share-mobile-umg.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-mobile-umg.png)
 
 ### 加入频道并发布屏幕共享流
 
@@ -3507,7 +3507,7 @@ API 的调用时序如下图所示：
 
 1. 在 **Bind UIEvent** 中，绑定点击开始屏幕共享按钮的 UI 事件。创建 **Bind Event to On Clicked** 节点，分别连接 **Btn_StartScreenShare** 按钮控件和 **OnStartScreenShareClicked** 回调函数。当用户点击开始屏幕共享按钮时，会触发该回调。如下图所示：
 
-![](/img/rtc/screen-share-bind-ui-start.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-bind-ui-start.png)
 
 2. 创建并实现 **OnStartScreenShareClicked** 回调。当点击按钮触发该回调时，会执行以下流程：
 
@@ -3523,7 +3523,7 @@ API 的调用时序如下图所示：
         - 勾选 **Channel Profile Set Value** 并设置 **Channel Profile** 为 **CHANNEL_PROFILE_LIVE_BROADCASTING**，设置频道场景为直播场景。
     如下图所示：
 
-![](/img/rtc/screen-share-mobile-start.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-mobile-start.png)
 
 ### 停止屏幕共享
 
@@ -3531,11 +3531,11 @@ API 的调用时序如下图所示：
 
 1. 在 **Bind UIEvent** 中，绑定点击停止屏幕共享按钮的 UI 事件。创建 **Bind Event to On Clicked** 节点，分别连接 **Btn_StopScreenShare** 按钮控件和 **OnStopScreenShareClicked** 回调函数。当用户点击停止屏幕共享按钮时，会触发该回调。如下图所示：
 
-![](/img/rtc/screen-share-bind-ui-stop.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-bind-ui-stop.png)
 
 2. 创建并实现 **OnStopScreenShareClicked** 回调。当点击按钮触发该回调时，会调用 **Stop Screen Capture** 停止屏幕共享。如下图所示：
 
-![](/img/rtc/screen-share-stop.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-stop.png)
 
 </TabsContent>
 
@@ -3551,13 +3551,13 @@ API 的调用时序如下图所示：
 
 2. 创建两个 **Button** (按钮) 控件，分别命名为 **Btn_StartScreenCapture** 和 **Btn_StopScreenCapture**，用户可以通过这两个按钮开始或停止屏幕共享。如下图所示：
 
-![](/img/rtc/screen-share-pc-umg.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-pc-umg.png)
 
 ### 添加基础流程
 
 在 **EventGraph** (事件图表) 中，基于实时音视频互动的基础流程，添加并连接屏幕共享所需的事件节点，增加屏幕共享的逻辑和交互。如下图所示：
 
-![](/img/rtc/screen-share-pc-event-graph.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-pc-event-graph.png)
 
 其中主要节点如下：
 
@@ -3574,19 +3574,19 @@ API 的调用时序如下图所示：
 
     1. 调用 **Get Screen Capture Sources** 方法，返回可共享的屏幕和窗口信息列表，并调用 **Get Count** 获取可共享的屏幕和窗口的个数。如下图所示：
 
-![](/img/rtc/screen-share-pc-get-01.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-pc-get-01.png)
 
     2. 遍历该列表，调用 **Get Source Info** 获取指定的屏幕或窗口的信息，将屏幕或窗口的名称 (**Source Name**) 逐一添加到下拉列表的选项中，供用户在开始共享前指定要共享的屏幕或窗口。获取完成后，调用 **Release** 释放可共享的屏幕和窗口信息列表。如下图所示：
 
-![](/img/rtc/screen-share-pc-get-02.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-pc-get-02.png)
 
 2. 在 **Bind UIEvent** 中，绑定下拉列表选项变更的 UI 事件。创建 **Bind Event to On Selection Changed** 节点，分别连接 **CBS_DisplayID** 下拉列表控件和 **OnCBDisplayIDSelectionChanged** 回调函数。当用户在下拉列表中选择指定的屏幕或窗口时，会触发该回调。如下图所示：
 
-![](/img/rtc/screen-share-pc-bind-ui-select.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-pc-bind-ui-select.png)
 
 3. 创建并实现 **OnCBDisplayIDSelectionChanged** 回调。当选项变更触发该回调时，会查找该选项的索引并通过索引设置选项。如下图所示：
 
-![](/img/rtc/screen-share-pc-select.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-pc-select.png)
 
 ### 配置屏幕共享参数
 
@@ -3597,20 +3597,20 @@ API 的调用时序如下图所示：
 
 保存该配置供后续开始屏幕采集时使用。如下图所示：
 
-![](/img/rtc/screen-share-pc-config.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-pc-config.png)
 
 ### 加入频道并发布屏幕共享流
 
 1. 在 **Bind UIEvent** 中，绑定点击开始屏幕共享按钮的 UI 事件。创建 **Bind Event to On Clicked** 节点，分别连接 **Btn_StartScreenShare** 按钮控件和 **OnStartScreenShareClicked** 回调函数。当用户点击开始屏幕共享按钮时，会触发该回调。如下图所示：
 
-![](/img/rtc/screen-share-bind-ui-start.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-bind-ui-start.png)
 
 2. 创建并实现 **OnStartScreenShareClicked** 回调。当点击按钮触发该回调时，会执行以下流程：
 
     1. 调用 **Stop Screen Capture** 方法停止正在进行的屏幕共享进程。
     2. 根据[先前步骤](#获取可用的屏幕和窗口)中保存的可用屏幕及窗口列表，找到选项对应的元素，并通过元素中的 **Type** (共享目标的类型) 来判断选项是 **ScreenCaptureSourceType_Screen** (屏幕) 还是 **ScreenCaptureSourceType_Window** (窗口)。
 
-![](/img/rtc/screen-share-pc-start-01.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-pc-start-01.png)
 
     3. 如果共享目标是一个屏幕，则调用 **Start Screen Capture by Display Id** 传入屏幕 ID 和[先前步骤](#配置屏幕共享参数)中保存的参数配置，开始采集指定屏幕的视频流；如果共享目标是一个窗口，则调用 **Start Screen Capture by Window Id** 传入窗口 ID 和参数配置，开始采集指定窗口的视频流。
     如需**共享屏幕或窗口的指定区域**，你可以将 **Region Rect** 参数设置为你想要共享的区域相对于整个屏幕或窗口的位置。
@@ -3623,17 +3623,17 @@ API 的调用时序如下图所示：
         - 勾选 **Client Role Type Set Value** 并设置 **Client Role Type** 为 **CLIENT_ROLE_BROADCASTER** 或 **CLIENT_ROLE_AUDIENCE**，设置用户角色为主播或观众。
         - 勾选 **Channel Profile Set Value** 并设置 **Channel Profile** 为 **CHANNEL_PROFILE_LIVE_BROADCASTING**，设置频道场景为直播场景。
 
-![](/img/rtc/screen-share-pc-start-02.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-pc-start-02.png)
 
 ### 停止屏幕共享并离开频道
 
 1. 在 **Bind UIEvent** 中，绑定点击停止屏幕共享按钮的 UI 事件。创建 **Bind Event to On Clicked** 节点，分别连接 **Btn_StopScreenShare** 按钮控件和 **OnStopScreenShareClicked** 回调函数。当用户点击停止屏幕共享按钮时，会触发该回调。如下图所示：
 
-![](/img/rtc/screen-share-bind-ui-stop.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-bind-ui-stop.png)
 
 2. 创建并实现 **OnStopScreenShareClicked** 回调。当点击按钮触发该回调时，会调用 **Stop Screen Capture** 停止屏幕共享。如下图所示：
 
-![](/img/rtc/screen-share-stop.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share-stop.png)
 
 </TabsContent>
 </Tabs>

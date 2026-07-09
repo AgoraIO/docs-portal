@@ -181,7 +181,7 @@ Status Bar 与屏幕的相对方向保持一致，与手机重力感应无关（
 
 - 采集端竖屏时：
 
-![UI 不锁定且采集端竖屏](/img/rtc/videoprofile/rotation_adaptive_uiunlock_portrait.png)
+![UI 不锁定且采集端竖屏](https://web-cdn.agora.io/docs-portal/img/rtc/videoprofile/rotation_adaptive_uiunlock_portrait.png)
 
 **ORIENTATION_MODE_FIXED_LANDSCAPE**
 
@@ -391,7 +391,7 @@ Status Bar 与屏幕的相对方向保持一致，与手机重力感应无关（
 
 - 采集端竖屏时：
 
-![UI 不锁定且采集端竖屏](/img/rtc/videoprofile/rotation_adaptive_uiunlock_portrait.png)
+![UI 不锁定且采集端竖屏](https://web-cdn.agora.io/docs-portal/img/rtc/videoprofile/rotation_adaptive_uiunlock_portrait.png)
 
 **FixedLandscape**
 
@@ -1100,7 +1100,7 @@ Status Bar 与屏幕的相对方向保持一致，与手机重力感应无关（
 
 - 采集端竖屏时：
 
-![UI 不锁定且采集端竖屏](/img/rtc/videoprofile/rotation_adaptive_uiunlock_portrait.png)
+![UI 不锁定且采集端竖屏](https://web-cdn.agora.io/docs-portal/img/rtc/videoprofile/rotation_adaptive_uiunlock_portrait.png)
 
 **ORIENTATION_MODE_FIXED_LANDSCAPE**
 
@@ -2020,7 +2020,7 @@ rtcEngine->setVideoEncoderConfiguration(videoConfig);
 
 设置好的 UI 界面如下图所示：
 
-![Video Encoder Configuration 区域界面示意图](/img/rtc/bp-videoprofile-ui.png)
+![Video Encoder Configuration 区域界面示意图](https://web-cdn.agora.io/docs-portal/img/rtc/bp-videoprofile-ui.png)
 
 ### 绑定事件
 
@@ -2028,11 +2028,11 @@ rtcEngine->setVideoEncoderConfiguration(videoConfig);
 
 1. 在 **Bind UIEvent** 节点中，绑定 **OnVideoConfigConfirmClicked** UI 回调，当用户在 **Video Encoder Confguration** 中设置了视频编码参数时，会触发该回调。如下图所示：
 
-![绑定 OnVideoConfigConfirmClicked 回调的节点示意图](/img/rtc/bp-bind-onvideoconfigconfirmclicked.png)
+![绑定 OnVideoConfigConfirmClicked 回调的节点示意图](https://web-cdn.agora.io/docs-portal/img/rtc/bp-bind-onvideoconfigconfirmclicked.png)
 
 2. 在 **Bind Event** 节点中，绑定 **OnVideoSizeChanged** 回调，当视频大小和旋转信息发生改变时触发该回调。如下图所示：
 
-![绑定 OnVideoSizeChanged 回调的节点示意图](/img/rtc/bp-bind-onvideosizechanged.png)
+![绑定 OnVideoSizeChanged 回调的节点示意图](https://web-cdn.agora.io/docs-portal/img/rtc/bp-bind-onvideosizechanged.png)
 
 ### 实现回调函数
 
@@ -2043,7 +2043,7 @@ rtcEngine->setVideoEncoderConfiguration(videoConfig);
 1. 在关卡蓝图的 **My Blueprint** 面板中，创建 **OnVideoConfigConfirmClicked** UI 事件节点。
 2. 将已创建好的 UI 元素连接至 **Make VideoEncoderConfiguration**，将用户输入的编码参数传入 `VideoEncoderConfiguration`。 如下图所示：
 
-![配置 VideoEncoderConfiguration 参数的蓝图片段示意图](/img/rtc/bp-videoconfig-value.png)
+![配置 VideoEncoderConfiguration 参数的蓝图片段示意图](https://web-cdn.agora.io/docs-portal/img/rtc/bp-videoconfig-value.png)
 
 3. 调用 **Set Video Encoder Configuration** 方法，并根据实际需求在 **Make VideoEncoderConfiguration** 中设置以下参数：
     - **Orientation Mode**：视频的旋转方向。
@@ -2053,7 +2053,7 @@ rtcEngine->setVideoEncoderConfiguration(videoConfig);
 
     设置好的界面如下图所示：
 
-![调用 Set Video Encoder Configuration 的蓝图片段示意图](/img/rtc/bp-setvideoencoderconfiguration.png)
+![调用 Set Video Encoder Configuration 的蓝图片段示意图](https://web-cdn.agora.io/docs-portal/img/rtc/bp-setvideoencoderconfiguration.png)
 
 #### 实现 **OnVideoSizeChanged** 回调函数
 
@@ -2062,7 +2062,7 @@ rtcEngine->setVideoEncoderConfiguration(videoConfig);
 1. 在关卡蓝图的 **My Blueprint** 面板中，创建 **OnVideoSizeChanged** 事件节点。
 2. 从 **OnVideoSizeChanged** 中获取视频变化信息关键参数：`sourceType`、`uid`、`width`、`height`、`rotation`，然后将这些参数传入 **Make FVideoViewIdentity**，分别调整本地视图和远端视图，如下图所示。
 
-![处理 OnVideoSizeChanged 回调并调整视图的蓝图片段示意图](/img/rtc/bp-onvideosizechanged.png)
+![处理 OnVideoSizeChanged 回调并调整视图的蓝图片段示意图](https://web-cdn.agora.io/docs-portal/img/rtc/bp-onvideosizechanged.png)
 
 ## 开发注意事项
 

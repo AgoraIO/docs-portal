@@ -17701,11 +17701,11 @@ AudioMixerModuleName=
 
 该版本无需手动维护实例的变量。你可以在蓝图中的任意位置，通过 `Get` 节点直接获取所需的类，并连接相应的函数节点来完成调用。这一改进使得在蓝图中调用方法更加便捷，简化了开发流程。
 
-![Get 函数](/img/rtc/ue-bp-release440-01.png)
+![Get 函数](https://web-cdn.agora.io/docs-portal/img/rtc/ue-bp-release440-01.png)
 
 下图演示通过 [`GetAgoraRtcEngine`](/api-ref/rtc/unreal-blueprint/API/toc_initialize#api_createagorartcengine) 创建 [`IRtcEngine`](/api-ref/rtc/unreal-blueprint/API/rtc_interface_class#class_irtcengine) 实例，并连接 [`Initialize`]((/api-ref/rtc/unreal-blueprint/API/toc_initialize#api_irtcengine_initialize)) 节点进行初始化操作。
 
-![Get 示例](/img/rtc/ue-bp-release440-02.png)
+![Get 示例](https://web-cdn.agora.io/docs-portal/img/rtc/ue-bp-release440-02.png)
 
 #### 回调实现
 
@@ -17715,11 +17715,11 @@ AudioMixerModuleName=
 - 提升安全性，绑定即可执行回调，销毁也不会导致崩溃。
 - 易于复用和代码管理。
 
-![CBExecutor 函数](/img/rtc/ue-bp-release440-03.png)
+![CBExecutor 函数](https://web-cdn.agora.io/docs-portal/img/rtc/ue-bp-release440-03.png)
 
 下图演示通过 [`GetEventHandler`](/api-ref/rtc/unreal-blueprint/API/toc_initialize#api_irtcengine_geteventhandler) 节点获取 `EventHandler`，并连接 [`AddBlueprintCallbackExecutor`](/api-ref/rtc/unreal-blueprint/API/toc_initialize#api_irtcengine_addblueprintcallbackexecutor) 节点绑定指定的 `CallbackExecutor`，从而执行 [`IRtcEngineEventHandler`](/api-ref/rtc/unreal-blueprint/API/rtc_interface_class#class_irtcengineeventhandler) 接口类下的相关回调。
 
-![CBExecutor 示例](/img/rtc/ue-bp-release440-04.png)
+![CBExecutor 示例](https://web-cdn.agora.io/docs-portal/img/rtc/ue-bp-release440-04.png)
 
 ### 新增特性
 
@@ -17794,7 +17794,7 @@ AudioMixerModuleName=
 
 使用 UImage 控件时，可以通过设置 Brush 的属性来控制图像显示的大小。自该版本起，支持启用 **Size To Content** 选项，让 UImage 自动适配远端传入的视频帧大小，此项改进提升了图像渲染的易用性。
 
-![CBExecutor 示例](/img/rtc/ue-bp-release440-05.png)
+![CBExecutor 示例](https://web-cdn.agora.io/docs-portal/img/rtc/ue-bp-release440-05.png)
 
 #### 跨频道连麦优化
 

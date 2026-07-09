@@ -1286,13 +1286,13 @@ SDK 默认使用 `AUDIO_PROFILE_DEFAULT` 编码属性和 `AUDIO_SCENARIO_DEFAULT
 
 创建一个 **ComboBoxString**（下拉列表框）控件，命名为 **CBS_Audio_Profile**，你可以在下拉列表中按需选择音频编码属性，其中默认选项为 **AUDIO_PROFILE_DEFAULT**，其他选项详见 [`EAUDIO_PROFILE_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_audioprofiletype)。如下图所示：
 
-![音频编码属性下拉列表框控件示意图](/img/rtc/audio-profile-umg-profile.png)
+![音频编码属性下拉列表框控件示意图](https://web-cdn.agora.io/docs-portal/img/rtc/audio-profile-umg-profile.png)
 
 #### 2. 绑定 UI 事件
 
 创建 **Bind Event to On Selection Changed** 节点，分别连接 **CBS_Audio_Profile** 控件和 **OnSetAudioProfile** 回调。当你在 **CBS_Audio_Profile** 下拉列表框中选择不同的音频编码属性时，会触发 **OnSetAudioProfile** 回调。如下图所示：
 
-![绑定音频编码属性选择事件的蓝图节点示意图](/img/rtc/audio-profile-bind-profile.png)
+![绑定音频编码属性选择事件的蓝图节点示意图](https://web-cdn.agora.io/docs-portal/img/rtc/audio-profile-bind-profile.png)
 
 #### 3. 实现回调函数
 
@@ -1305,7 +1305,7 @@ SDK 默认使用 `AUDIO_PROFILE_DEFAULT` 编码属性和 `AUDIO_SCENARIO_DEFAULT
 
 触发该回调后，你选择的音频编码属性会传入 **Set Audio Profile** 的 **Profile** 参数，并调用 **Set Audio Profile** 方法完成设置。如下图所示：
 
-![设置音频编码属性回调函数蓝图示意图](/img/rtc/audio-profile-callback-profile.png)
+![设置音频编码属性回调函数蓝图示意图](https://web-cdn.agora.io/docs-portal/img/rtc/audio-profile-callback-profile.png)
 
 ### 设置音频应用场景
 
@@ -1315,13 +1315,13 @@ SDK 默认使用 `AUDIO_PROFILE_DEFAULT` 编码属性和 `AUDIO_SCENARIO_DEFAULT
 
 创建一个 **ComboBoxString**（下拉列表框）控件，命名为 **CBS_Audio_Scenario**，你可以在下拉列表中按需选择音频应用场景，其中默认选项为 **AUDIO_SCENARIO_DEFAULT**，其他选项详见 [`EAUDIO_SCENARIO_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_audioscenariotype)。如下图所示：
 
-![音频应用场景下拉列表框控件示意图](/img/rtc/audio-profile-umg-scenario.png)
+![音频应用场景下拉列表框控件示意图](https://web-cdn.agora.io/docs-portal/img/rtc/audio-profile-umg-scenario.png)
 
 #### 2. 绑定 UI 事件
 
 创建 **Bind Event to On Selection Changed** 节点，分别连接 **CBS_Audio_Scenario** 控件和 **OnSetAudioScenario** 回调。当你在 **CBS_Audio_Scenario** 下拉列表框中选择不同的音频应用场景时，会触发 **OnSetAudioScenario** 回调。如下图所示：
 
-![绑定音频应用场景选择事件的蓝图节点示意图](/img/rtc/audio-profile-bind-scenario.png)
+![绑定音频应用场景选择事件的蓝图节点示意图](https://web-cdn.agora.io/docs-portal/img/rtc/audio-profile-bind-scenario.png)
 
 #### 3. 实现回调函数
 
@@ -1334,7 +1334,7 @@ SDK 默认使用 `AUDIO_PROFILE_DEFAULT` 编码属性和 `AUDIO_SCENARIO_DEFAULT
 
 触发该回调后，你选择的音频应用场景会传入 **Set Audio Scenario** 的 **Scenario** 参数，并调用 **Set Audio Scenario** 方法完成设置。如下图所示：
 
-![设置音频应用场景回调函数蓝图示意图](/img/rtc/audio-profile-callback-scenario.png)
+![设置音频应用场景回调函数蓝图示意图](https://web-cdn.agora.io/docs-portal/img/rtc/audio-profile-callback-scenario.png)
 
 ### 推荐设置
 
