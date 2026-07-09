@@ -60,10 +60,9 @@ val ktvApiProtocol =
 ```
 
 :::info[信息]
-当用于音乐内容中心鉴权的的 RTM Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/api-ref/online-ktv/android/ktvapi#ontokenprivilegewillexpire) 回调。你需要调用 `KTVApi` 下的 [renewToken](/api-ref/online-ktv/android/ktvapi#renewtoken) 来更新 Token。
+当用于音乐内容中心鉴权的的 RTM Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#ontokenprivilegewillexpire) 回调。你需要调用 `KTVApi` 下的 [renewToken](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#renewtoken) 来更新 Token。
 :::
 
-<a id="步骤2"></a>
 ### 2. 获取歌曲列表
 
 你可以调用 `searchSong` 来通过关键词搜索歌曲，也可以调用 `fetchMusicCharts` 来获取音乐榜单，然后再调用 `searchMusicByMusicChartId` 来通过歌曲榜单的 ID 获取指定榜单的歌曲资源列表。
@@ -108,7 +107,7 @@ fun searchSongWithRankingChartId(type: Int, page: Int) {
 ```
 
 :::warning[注意]
-你可以通过 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见 [searchMusicByKeyword](/api-ref/online-ktv/android/ktvapi#searchmusicbykeyword) 及 [searchMusicByMusicChartId](/api-ref/online-ktv/android/ktvapi#searchmusicbymusicchartid) 的 API 文档。
+你可以通过 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见 [searchMusicByKeyword](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#searchmusicbykeyword) 及 [searchMusicByMusicChartId](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#searchmusicbymusicchartid) 的 API 文档。
 :::
 
 ### 3. 加载及播放版权音乐
@@ -166,8 +165,8 @@ ktvApiProtocol.removeMusic(songCode)
 
 本文集成步骤中使用如下 API：
 
-- [K 歌房场景化 API](/api-ref/online-ktv/android/ktvapi)
-- [实时互动 API](/api-ref/rtc/android/API/rtc_api_overview)
+- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
+- [实时互动 API](/zh-CN/api-reference/rtc/android/rtc-api-overview)
 
 ## 相关文档
 
@@ -231,10 +230,9 @@ KTVApiConfig *apiConfig = [[KTVApiConfig alloc]initWithAppId:[[AppContext shared
 ```
 
 :::info[信息]
-当用于音乐内容中心鉴权的的 RTM Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/api-ref/online-ktv/ios/ktvapi#ontokenprivilegewillexpire) 回调。你需要调用 `KTVApi` 下的 [renewToken](/api-ref/online-ktv/ios/ktvapi#renewtoken) 来更新 Token。
+当用于音乐内容中心鉴权的的 RTM Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#ontokenprivilegewillexpire) 回调。你需要调用 `KTVApi` 下的 [renewToken](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#renewtoken) 来更新 Token。
 :::
 
-<a id="步骤2"></a>
 ### 2. 获取歌曲列表
 
 你可以调用 `searchMusic`[2/2] 来通过关键词搜索歌曲，也可以调用 `fetchMusicCharts` 来获取音乐榜单，然后再调用 `searchMusic`[1/2] 来通过歌曲榜单的 ID 获取指定榜单的歌曲资源列表。
@@ -289,7 +287,7 @@ KTVApiConfig *apiConfig = [[KTVApiConfig alloc]initWithAppId:[[AppContext shared
 ```
 
 :::warning[注意]
-你可以通过 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见 [searchMusic[1/2]](/api-ref/online-ktv/ios/ktvapi#searchmusic) 及 [searchMusic[2/2]](/api-ref/online-ktv/ios/ktvapi#searchmusic2) 的 API 文档。
+你可以通过 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见 [searchMusic[1/2]](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#searchmusic) 及 [searchMusic[2/2]](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api#searchmusic2) 的 API 文档。
 :::
 
 ### 3. 加载及播放版权音乐
@@ -358,8 +356,8 @@ songConfig.mainSingerUid = mainSingerUid;
 
 本文集成步骤中使用如下 API：
 
-- [K 歌房场景化 API](/api-ref/online-ktv/android/ktvapi)
-- [实时互动 API](/api-ref/rtc/android/API/rtc_api_overview)
+- [K 歌房场景化 API](/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api)
+- [实时互动 API](/zh-CN/api-reference/rtc/android/rtc-api-overview)
 
 ## 相关文档
 
