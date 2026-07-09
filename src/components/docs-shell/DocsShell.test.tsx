@@ -715,9 +715,9 @@ describe('DocsShell', () => {
       within(mainColumn).getByRole('link', { name: /Previous Previous Page/i }),
     ).toBeInTheDocument();
     expect(within(pageFooter).getByTestId('docs-feedback')).toBeInTheDocument();
-    expect(
-      within(mainColumn).queryByTestId('docs-site-footer'),
-    ).not.toBeInTheDocument();
+    const mobileSiteFooter = within(mainColumn).getByTestId('docs-site-footer');
+    expect(mobileSiteFooter).toHaveClass('lg:hidden');
+    expect(pageFooter).not.toContainElement(mobileSiteFooter);
   });
 
   it('renders the Agora site footer as a shell-level full-width footer on desktop', async () => {
@@ -905,7 +905,7 @@ describe('DocsShell', () => {
     );
     expect(mainColumn).toHaveClass('min-w-0', 'bg-background');
     expect(mainColumn).not.toHaveClass('h-full', 'min-h-0', 'overflow-hidden');
-    expect(desktopContent).toHaveClass('hidden', 'lg:block');
+    expect(desktopContent).not.toHaveClass('hidden', 'lg:block');
     expect(desktopContent).not.toHaveClass(
       'docs-scrollbar',
       'h-full',

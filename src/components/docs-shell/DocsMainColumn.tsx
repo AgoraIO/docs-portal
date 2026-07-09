@@ -37,27 +37,14 @@ export function DocsMainColumn({
       data-testid="docs-main-column"
     >
       <div
-        className="px-4 py-8 sm:px-6 lg:hidden lg:px-10"
-        data-testid="docs-main-mobile-flow"
-      >
-        <div className="min-w-0">{children}</div>
-        <DocsPageFooter
-          contentFillsWidth={contentFillsWidth}
-          includeFeedback
-          layoutMode={layoutMode}
-          locale={locale}
-          next={next}
-          previous={previous}
-        />
-        <DocsSiteFooter className="relative left-1/2 w-screen -translate-x-1/2 lg:hidden" />
-      </div>
-      <div
-        className="hidden lg:block"
         data-scroll-restoration-id={DOCS_MAIN_SCROLL_RESTORATION_ID}
         data-testid="docs-main-desktop-scroll"
         data-reset-key={resetKey}
       >
-        <div className="flex flex-col px-4 py-8 sm:px-6 lg:px-10">
+        <div
+          className="flex flex-col px-4 py-8 sm:px-6 lg:px-10"
+          data-testid="docs-main-mobile-flow"
+        >
           <div className="min-w-0">{children}</div>
           <DocsPageFooter
             contentFillsWidth={contentFillsWidth}
@@ -67,6 +54,7 @@ export function DocsMainColumn({
             next={next}
             previous={previous}
           />
+          <DocsSiteFooter className="relative left-1/2 w-screen -translate-x-1/2 lg:hidden" />
         </div>
       </div>
     </main>
