@@ -225,6 +225,74 @@ describe('DocsContent', () => {
     expect(within(breadcrumb).getByText('About Agora')).toBeInTheDocument();
   });
 
+  it('renders English last updated metadata below the page title', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/about-agora.md"
+        lastUpdated={{
+          formatted: '2026/07/06 13:32:13',
+          iso: '2026-07-06T13:32:13.000Z',
+          source: 'git',
+        }}
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    const title = await screen.findByRole('heading', { name: 'About Agora' });
+    const lastUpdated = screen.getByTestId('docs-last-updated');
+    const timestamp = within(lastUpdated).getByText('2026/07/06 13:32:13');
+
+    expect(lastUpdated).toHaveTextContent('Updated 2026/07/06 13:32:13');
+    expect(
+      within(lastUpdated).getByTestId('docs-last-updated-icon'),
+    ).toBeInTheDocument();
+    expect(timestamp).toHaveAttribute('datetime', '2026-07-06T13:32:13.000Z');
+    expect(
+      title.compareDocumentPosition(lastUpdated) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it('renders Chinese last updated metadata with the localized label', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="zh-CN/introduction/about-agora.md"
+        lastUpdated={{
+          formatted: '2026/07/06 13:32:13',
+          iso: '2026-07-06T13:32:13.000Z',
+          source: 'git',
+        }}
+        locale="zh-CN"
+        slug="about-agora"
+        title="关于 Agora"
+        toc={[]}
+      />,
+      '/zh-CN/introduction/about-agora',
+    );
+
+    expect(await screen.findByTestId('docs-last-updated')).toHaveTextContent(
+      '更新时间 2026/07/06 13:32:13',
+    );
+  });
+
+  it('renders a neutral fallback when payload metadata is missing', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/about-agora.md"
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    const lastUpdated = await screen.findByTestId('docs-last-updated');
+
+    expect(lastUpdated).toHaveTextContent('Last update unavailable');
+    expect(within(lastUpdated).queryByText('1970/01/01 00:00:00')).toBeNull();
+  });
+
   it('does not render the copy page action when the locale has no public markdown content', async () => {
     renderWithRouter(
       <DocsContent

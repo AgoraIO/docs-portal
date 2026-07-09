@@ -7,6 +7,10 @@ const REDIRECTS_PATH = 'src/lib/legacy-sitemap/redirects.json';
 const REVIEW_REPORT_PATH = 'src/lib/legacy-sitemap/review-report.json';
 const SNAPSHOT_DOWNLOADED_AT = '2026-06-29';
 
+const MANUAL_LEGACY_URLS = [
+  'https://docs.agora.io/en/cloud-recording/get-started/getstarted',
+];
+
 const PRODUCT_MAPPINGS = {
   'agora-analytics': {
     base: '/en/realtime-media/agora-analytics',
@@ -182,6 +186,8 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'overview/product-overview': '/en/realtime-media/marketplace',
   },
   'cloud-recording': {
+    'get-started/getstarted':
+      '/en/realtime-media/cloud-recording/rest-quickstart',
     'rest-api/acquire': '/en/api-reference/api-ref/cloud-recording',
     'rest-api/ncs-ip':
       '/en/realtime-media/cloud-recording/build/handle-events/receive-notifications',
@@ -677,8 +683,10 @@ function normalizePlatform(platform) {
 function buildRedirects(routes) {
   const xml = fs.readFileSync(SITEMAP_PATH, 'utf8');
   const legacyUrls = Array.from(
-    xml.matchAll(/<loc>([^<]+)<\/loc>/g),
-    (match) => match[1],
+    new Set([
+      ...Array.from(xml.matchAll(/<loc>([^<]+)<\/loc>/g), (match) => match[1]),
+      ...MANUAL_LEGACY_URLS,
+    ]),
   );
   const routeSet = getRouteSet(routes);
   const summary = {

@@ -1,6 +1,7 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
+import { ensureDocsLastUpdatedMetadata } from '@/lib/docs-last-updated';
 import { getDocsPagePayload } from '@/lib/docs-page';
 import type {
   DocsPagePayload,
@@ -131,9 +132,7 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 
     await preloadDocsPageContent(payload);
 
-    return {
-      ...payload,
-    };
+    return normalizeDocsPagePayload(payload);
   },
   head: ({ loaderData }) =>
     loaderData ? createDocsRouteSeoHead(loaderData) : {},
@@ -147,6 +146,7 @@ function Page() {
     breadcrumb,
     contentPath,
     description,
+    lastUpdated,
     layoutMode,
     hideToc,
     markdownUrl,
@@ -175,6 +175,7 @@ function Page() {
       breadcrumb={breadcrumb}
       contentPath={contentPath}
       description={description}
+      lastUpdated={lastUpdated}
       layoutMode={layoutMode}
       hideToc={hideToc}
       locale={params.locale}
@@ -197,6 +198,13 @@ function preserveRedirectSearch(
   }
 
   return `${href}${preserveSearch ? (location.searchStr ?? '') : ''}${location.hash ?? ''}`;
+}
+
+function normalizeDocsPagePayload(payload: DocsPagePayload): DocsPagePayload {
+  return {
+    ...payload,
+    lastUpdated: ensureDocsLastUpdatedMetadata(payload.lastUpdated),
+  };
 }
 
 export function getKnownPlatformSearchParam(searchStr?: string) {

@@ -66,6 +66,8 @@ const OPENAPI_GENERATED_BODY_HEADING_CLASSES = [
   '[&_h2#response-body]:font-semibold',
   '[&_h2#response-body]:text-2xl',
 ] as const;
+const OPENAPI_SCHEMA_ROW_BASE_PADDING_INLINE_START = '1rem';
+const OPENAPI_SCHEMA_ROW_DEPTH_INDENT_PX = 24;
 const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   Authorization: '鉴权',
   'Collapse all': '折叠全部',
@@ -1606,6 +1608,7 @@ function OpenApiSchemaRowItem({
   renderMarkdown: (markdown: string) => ReactNode;
   row: OpenApiSchemaRow;
 }) {
+  const paddingInlineStart = getOpenApiSchemaRowPaddingInlineStart(row.depth);
   const chevronClass = cn(
     'select-none text-fd-muted-foreground text-xs transition-transform',
     expanded && 'rotate-90',
@@ -1625,7 +1628,7 @@ function OpenApiSchemaRowItem({
     <div
       className="scroll-mt-24 border-fd-border border-t py-3 pr-4 text-sm first:border-t-0"
       id={anchorId}
-      style={{ paddingInlineStart: `${1 + row.depth * 1.25}rem` }}
+      style={{ paddingInlineStart }}
     >
       <div className="openapi-schema-property-heading flex min-w-0 flex-wrap items-center gap-2">
         <span
@@ -1670,6 +1673,16 @@ function OpenApiSchemaRowItem({
       <OpenApiSchemaMeta row={row} />
     </div>
   );
+}
+
+function getOpenApiSchemaRowPaddingInlineStart(depth: number) {
+  if (depth === 0) {
+    return OPENAPI_SCHEMA_ROW_BASE_PADDING_INLINE_START;
+  }
+
+  return `calc(${OPENAPI_SCHEMA_ROW_BASE_PADDING_INLINE_START} + ${
+    depth * OPENAPI_SCHEMA_ROW_DEPTH_INDENT_PX
+  }px)`;
 }
 
 function getOpenApiSchemaGroupLabel(anchorPrefix: string, locale?: string) {

@@ -1,10 +1,14 @@
-# HTML-to-Markdown Migration Tool
+# DITA-OT HTML-to-Markdown Migration Tool
 
-A unified script for converting DITA-OT (Oxygen XML) generated HTML API reference docs to pure markdown files suitable for the docs-portal project.
+A focused script for converting DITA-OT (Oxygen XML) generated HTML API reference docs to pure markdown files suitable for the docs-portal project.
+
+This is not a generic HTML-to-Markdown converter. It only supports source directories that contain a DITA-OT `API/` subdirectory with HTML files. Other generated API reference structures are detected early and rejected with an actionable error.
 
 ## Overview
 
-The old Chinese documentation site (`shengwang-doc-source`) used DITA-OT/Oxygen XML to generate HTML API references. This tool converts those HTML files to clean markdown that can be used in the new docs-portal.
+The old Chinese documentation site (`shengwang-doc-source`) used DITA-OT/Oxygen XML to generate some HTML API references. This tool converts that DITA-OT `API/` output to clean markdown that can be used in the new docs-portal.
+
+Do not use this script for TypeDoc, Doxygen/Javadoc, iOS-doc-generator, Dartdoc, RESTful/OpenAPI, or arbitrary HTML exports. Those structures need their own migration lanes because their navigation, symbols, and generated anchors differ from the DITA-OT `API/` layout.
 
 ## Usage
 
@@ -21,7 +25,7 @@ node scripts/html-to-md-migration.mjs \
 
 | Argument | Description | Example |
 |----------|-------------|---------|
-| `--source, -s` | Source directory containing HTML docs | `/path/to/html-docs/rtc/Android` |
+| `--source, -s` | Source directory containing DITA-OT `API/*.html` docs | `/path/to/html-docs/rtc/Android` |
 | `--output, -o` | Output directory for markdown files | `content/docs/zh-CN/api-reference/rtc/android` |
 | `--product, -p` | Product name | `rtc`, `signaling`, `cloud-recording` |
 | `--platform, -P` | Platform name | `android`, `ios`, `web`, `RESTful` |
@@ -33,8 +37,28 @@ node scripts/html-to-md-migration.mjs \
 | `--locale, -l` | Locale for output | `zh-CN` |
 | `--route-base-path, -r` | Base path for links | `/api-reference` |
 | `--version-dir, -V` | Version directory name | - |
-| `--dry-run, -d` | Preview without writing files | `false` |
+| `--dry-run, -d` | Preview detected source type, file count, and planned output paths without writing files | `false` |
 | `--verbose, -v` | Show detailed output | `false` |
+
+## Supported and Unsupported Source Structures
+
+### Supported
+
+| Lane | Expected source shape | Behavior |
+|------|-----------------------|----------|
+| DITA-OT/Oxygen API reference | `<source>/API/*.html`, with optional `<source>/index.html` TOC | Converts HTML pages to `.mdx`, preserves DITA-OT TOC order when present, and writes `meta.json` files. |
+
+### Unsupported
+
+The script detects these layouts and fails before reading `API/`:
+
+| Detected lane | Common markers | Required action |
+|---------------|----------------|-----------------|
+| TypeDoc | `modules.html`, `classes/`, `interfaces/`, `enums/`, TypeDoc page text | Use or build a TypeDoc-specific migration lane. |
+| Doxygen/Javadoc | `annotated.html`, `classes.html`, `doxygen.css`, `allclasses-index.html`, `package-summary.html`, Javadoc page text | Use or build a Doxygen/Javadoc-specific migration lane. |
+| iOS-doc-generator | `Classes/`, `Protocols/`, `Constants/`, `Blocks/`, `hierarchy.html`, appledoc/Jazzy/iOS-doc-generator markers | Use or build an iOS-doc-generator-specific migration lane. |
+| Dartdoc | `index.json`, `categories.json`, `library-index.html`, `static-assets/`, Dartdoc page text | Use or build a Dartdoc-specific migration lane. |
+| RESTful/OpenAPI or other layouts | `openapi.yaml`, `openapi.json`, `swagger.yaml`, endpoint folders, root HTML without `API/` | Use the OpenAPI/Fumadocs REST API lane or add a source-specific converter. |
 
 ## Examples
 
@@ -42,7 +66,7 @@ node scripts/html-to-md-migration.mjs \
 
 ```bash
 node scripts/html-to-md-migration.mjs \
-  --source /Users/czhen/Documents/GitHub/AgoraIO/shengwang-doc-source/html-docs/rtc/Android \
+  --source /path/to/shengwang-doc-source/html-docs/rtc/Android \
   --output content/docs/zh-CN/api-reference/rtc/android \
   --product rtc \
   --platform android
@@ -52,11 +76,19 @@ node scripts/html-to-md-migration.mjs \
 
 ```bash
 node scripts/html-to-md-migration.mjs \
-  --source /Users/czhen/Documents/GitHub/AgoraIO/shengwang-doc-source/html-docs/signaling/iOS \
+  --source /path/to/shengwang-doc-source/html-docs/signaling/iOS \
   --output content/docs/zh-CN/api-reference/signaling/ios \
   --product signaling \
   --platform ios
 ```
+
+Dry-run output includes:
+
+- Detected source type
+- Source HTML file count
+- Target route
+- Every planned output path
+- The first input files and resolved page titles
 
 ### Dry Run (Preview)
 
@@ -69,7 +101,7 @@ node scripts/html-to-md-migration.mjs \
   --dry-run
 ```
 
-## Supported HTML File Types
+## Supported DITA-OT HTML File Patterns
 
 The tool handles these DITA-OT HTML file patterns:
 
@@ -124,18 +156,6 @@ public class VideoCanvas {
 :::
 ```
 
-## Available Products and Platforms
-
-Run the following to see all available products and platforms:
-
-```bash
-find /Users/czhen/Documents/GitHub/AgoraIO/shengwang-doc-source/html-docs/ -mindepth 1 -maxdepth 1 -type d | while read dir; do
-  product=$(basename "$dir")
-  platforms=$(find "$dir" -mindepth 1 -maxdepth 1 -type d | while read p; do basename "$p"; done | tr '\n' ', ')
-  echo "$product: $platforms"
-done
-```
-
 ## Comparison with Existing Migration Scripts
 
 | Script | Scope | Status |
@@ -144,9 +164,9 @@ done
 | `migrate-video-calling.mjs` | Video calling docs | ✅ Already migrated |
 | `migrate-cloud-recording.mjs` | Cloud recording | ✅ Already migrated |
 | `migrate-on-premise-recording.mjs` | On-premise recording | ✅ Already migrated |
-| **`html-to-md-migration.mjs`** | **Unified, all products** | **🆕 New** |
+| **`html-to-md-migration.mjs`** | **Reusable only for DITA-OT `API/` exports** | **New** |
 
-The new unified script can replace the product-specific scripts for future migrations.
+This script can help with future DITA-OT `API/` exports. It does not replace product-specific scripts for non-DITA source structures.
 
 ## Technical Details
 
@@ -170,6 +190,10 @@ The tool uses:
 ### No index.html found
 
 If the source directory has no `index.html`, the tool will process all HTML files in the `API/` subdirectory as a flat structure.
+
+### Unsupported source structure
+
+If the source directory does not contain `API/*.html`, the tool exits before conversion and prints the detected lane, markers, supported source shape, and suggested migration lane. Point `--source` at the directory that contains `API/`, or use a converter for the detected generator.
 
 ### Links not resolving
 

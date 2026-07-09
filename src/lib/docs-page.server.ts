@@ -1,6 +1,7 @@
 import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
+import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import { resolveMovedDocsRedirect } from './docs-moved-redirects';
 import {
@@ -480,6 +481,19 @@ export async function loadDocsPagePayload(
         pageProps: await openApiPage.data.getClientAPIPageProps(),
       }
     : mdxBody;
+  const lastUpdated = await resolveDocsLastUpdatedMetadata(
+    Array.from(
+      new Set([
+        `content/docs/${page.path}`,
+        ...(openApiRoute && supportedLocale
+          ? [openApiRoute.lane.sourcePath[supportedLocale]]
+          : []),
+        ...(openApiLaneRoute && supportedLocale
+          ? [openApiLaneRoute.sourcePath[supportedLocale]]
+          : []),
+      ]),
+    ),
+  );
 
   return {
     activePath: page.url,
@@ -505,6 +519,7 @@ export async function loadDocsPagePayload(
     contentPath: page.path,
     description: page.data.description,
     markdownUrl: getPageMarkdownUrl(page, artifactPlatform).url,
+    lastUpdated,
     layoutMode,
     hideToc: ('hideToc' in page.data ? page.data.hideToc : undefined) ?? false,
     localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {

@@ -124,6 +124,11 @@ function createPayload(
     contentPath: 'docs/en/about.mdx',
     description: undefined,
     hideToc: false,
+    lastUpdated: {
+      formatted: '2026/07/06 13:32:13',
+      iso: '2026-07-06T13:32:13.000Z',
+      source: 'git',
+    },
     layoutMode: overrides.body.kind === 'openapi' ? 'openapi' : 'docs',
     localeLinks: [],
     markdownUrl: '/en/introduction/about.md',

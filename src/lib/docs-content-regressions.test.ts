@@ -1528,8 +1528,9 @@ describe('docs content regressions', () => {
       'utf8',
     );
 
+    expect(source).toContain('### Complete sample code');
     expect(source).toContain(
-      '### Complete sample code for real-time Video Calling',
+      '<Accordion title="Complete sample code for real-time Video Calling">',
     );
     expect(source).toContain('### Display the local video');
     expect(source).toContain('### Create a basic UI');

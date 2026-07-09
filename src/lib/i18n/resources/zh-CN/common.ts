@@ -43,6 +43,8 @@ const zhCnCommon = {
     versionMenuLabel: '文档版本',
     toc: '本页目录',
     tocEmpty: '当前页面没有标题。',
+    lastUpdated: '更新时间',
+    lastUpdatedUnavailable: '更新时间不可用',
     returnToSource: '返回 {{title}}',
     next: '下一页',
     previous: '上一页',

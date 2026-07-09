@@ -135,12 +135,8 @@ async def create_chat_completion(request: ChatCompletionRequest):
             try:
                 async for chunk in response:
                     logger.debug(f"Received chunk: {chunk}")
-                    yield f"data: {json.dumps(chunk.to_dict())}\
-\
-"
-                yield "data: [DONE]\
-\
-"
+                    yield f"data: {json.dumps(chunk.to_dict())}\n\n"
+                yield "data: [DONE]\n\n"
             except asyncio.CancelledError:
                 logger.info("Request was cancelled")
                 raise
@@ -440,31 +436,22 @@ app.post('/chat/completions', async (req, res) => {
     // Stream the response
     for await (const chunk of completion) {
       logger.debug('Received chunk: ' + JSON.stringify(chunk));
-      res.write('data: ' + JSON.stringify(chunk) + '\
-\
-');
+      res.write('data: ' + JSON.stringify(chunk) + '\n\n');
     }
 
     // End the stream
-    res.write('data: [DONE]\
-\
-');
+    res.write('data: [DONE]\n\n');
     res.end();
   } catch (error) {
     logger.error('Chat completion error:', error);
 
     if (!res.headersSent) {
-      const errorDetail = error.message + '\
-' + (error.stack || '');
+      const errorDetail = error.message + '\n' + (error.stack || '');
       return res.status(500).json({ detail: errorDetail });
     }
 
-    res.write('data: ' + JSON.stringify({ error: error.message }) + '\
-\
-');
-    res.write('data: [DONE]\
-\
-');
+    res.write('data: ' + JSON.stringify({ error: error.message }) + '\n\n');
+    res.write('data: [DONE]\n\n');
     res.end();
   }
 });
@@ -653,9 +640,7 @@ async def create_rag_chat_completion(request: ChatCompletionRequest):
                     }
                 ],
             }
-            yield f"data: {json.dumps(waiting_message)}\
-\
-"
+            yield f"data: {json.dumps(waiting_message)}\n\n"
 
             # Perform RAG retrieval.
             retrieved_context = await perform_rag_retrieval(request.messages)
@@ -684,12 +669,8 @@ async def create_rag_chat_completion(request: ChatCompletionRequest):
             try:
                 async for chunk in response:
                     logger.debug(f"Received RAG chunk: {chunk}")
-                    yield f"data: {json.dumps(chunk.to_dict())}\
-\
-"
-                yield "data: [DONE]\
-\
-"
+                    yield f"data: {json.dumps(chunk.to_dict())}\n\n"
+                yield "data: [DONE]\n\n"
             except asyncio.CancelledError:
                 logger.info("RAG stream was cancelled")
                 raise
@@ -897,9 +878,7 @@ app.post('/rag/chat/completions', async (req, res) => {
       ],
     };
 
-    res.write('data: ' + JSON.stringify(waitingMessage) + '\
-\
-');
+    res.write('data: ' + JSON.stringify(waitingMessage) + '\n\n');
 
     // Perform RAG retrieval
     const retrievedContext = await performRagRetrieval(messages);
@@ -923,31 +902,22 @@ app.post('/rag/chat/completions', async (req, res) => {
     // Stream the response
     for await (const chunk of completion) {
       logger.debug('Received RAG chunk: ' + JSON.stringify(chunk));
-      res.write('data: ' + JSON.stringify(chunk) + '\
-\
-');
+      res.write('data: ' + JSON.stringify(chunk) + '\n\n');
     }
 
     // End the stream
-    res.write('data: [DONE]\
-\
-');
+    res.write('data: [DONE]\n\n');
     res.end();
   } catch (error) {
     logger.error('RAG chat completion error:', error);
 
     if (!res.headersSent) {
-      const errorDetail = error.message + '\
-' + (error.stack || '');
+      const errorDetail = error.message + '\n' + (error.stack || '');
       return res.status(500).json({ detail: errorDetail });
     }
 
-    res.write('data: ' + JSON.stringify({ error: error.message }) + '\
-\
-');
-    res.write('data: [DONE]\
-\
-');
+    res.write('data: ' + JSON.stringify({ error: error.message }) + '\n\n');
+    res.write('data: [DONE]\n\n');
     res.end();
   }
 });
@@ -1060,9 +1030,7 @@ async def create_audio_chat_completion(request: ChatCompletionRequest):
                         }
                     ],
                 }
-                yield f"data: {json.dumps(text_message)}\
-\
-"
+                yield f"data: {json.dumps(text_message)}\n\n"
                 # Send audio chunks
                 for chunk in audio_chunks:
                     audio_message = {
@@ -1080,13 +1048,9 @@ async def create_audio_chat_completion(request: ChatCompletionRequest):
                             }
                         ],
                     }
-                    yield f"data: {json.dumps(audio_message)}\
-\
-"
+                    yield f"data: {json.dumps(audio_message)}\n\n"
 
-                yield "data: [DONE]\
-\
-"
+                yield "data: [DONE]\n\n"
 
             except asyncio.CancelledError:
                 logger.info("Audio stream was cancelled")
@@ -1321,9 +1285,7 @@ app.post('/audio/chat/completions', async (req, res) => {
       ],
     };
 
-    res.write('data: ' + JSON.stringify(textMessage) + '\
-\
-');
+    res.write('data: ' + JSON.stringify(textMessage) + '\n\n');
 
     // Send audio chunks
     for (const chunk of audioChunks) {
@@ -1343,30 +1305,21 @@ app.post('/audio/chat/completions', async (req, res) => {
         ],
       };
 
-      res.write('data: ' + JSON.stringify(audioMessage) + '\
-\
-');
+      res.write('data: ' + JSON.stringify(audioMessage) + '\n\n');
     }
 
-    res.write('data: [DONE]\
-\
-');
+    res.write('data: [DONE]\n\n');
     res.end();
   } catch (error) {
     logger.error('Audio chat completion error:', error);
 
     if (!res.headersSent) {
-      const errorDetail = error.message + '\
-' + (error.stack || '');
+      const errorDetail = error.message + '\n' + (error.stack || '');
       return res.status(500).json({ detail: errorDetail });
     }
 
-    res.write('data: ' + JSON.stringify({ error: error.message }) + '\
-\
-');
-    res.write('data: [DONE]\
-\
-');
+    res.write('data: ' + JSON.stringify({ error: error.message }) + '\n\n');
+    res.write('data: [DONE]\n\n');
     res.end();
   }
 });

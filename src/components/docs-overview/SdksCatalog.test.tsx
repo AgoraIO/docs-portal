@@ -55,6 +55,14 @@ describe('SdksCatalog', () => {
       'aria-selected',
       'true',
     );
+
+    const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
+
+    fireEvent.click(within(voiceCard).getByRole('tab', { name: 'Web' }));
+
+    expect(
+      within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.5'),
+    ).toBeVisible();
   });
 
   it('updates the command when the version changes', () => {

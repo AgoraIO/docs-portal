@@ -138,9 +138,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-**Quick start sequence**
-
-![image](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps and use the code in your `MainActivity` file.
 
@@ -222,7 +224,7 @@ private fun initializeRtcEngine() {
     }
     mRtcEngine = RtcEngine.create(config)
   } catch (e: Exception) {
-    throw RuntimeException("Error initializing RTC engine: ${e.message\}")
+    throw RuntimeException("Error initializing RTC engine: ${e.message}")
   }
 }
 ```
@@ -670,8 +672,8 @@ When a user launches your app, start real-time interaction. When a user closes t
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the following lines into the `MainActivity` file in your project. Then, replace `<projectname>` in package `com.example.<projectname>` with your project's name.
 
-**Complete sample code for real-time Interactive Live Streaming**
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Interactive Live Streaming">
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
   <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
@@ -1046,6 +1048,8 @@ class MainActivity : AppCompatActivity() {
 </CodeBlockTab>
 
 </CodeBlockTabs>
+</Accordion>
+</Accordions>
 :::note
 For the `myAppId` and `token` variables, replace the placeholders with the values you obtained from Agora Console. Ensure you enter the same `channelName` you used when generating the temporary token.
 :::
@@ -1279,9 +1283,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-**Quick start sequence**
-
-![image](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -1480,8 +1486,8 @@ After destroying the engine, you can no longer use SDK methods and callbacks. To
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. Copy the following code into your `ViewController.swift` file:
 
-**Complete sample code for real-time Interactive Live Streaming**
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Interactive Live Streaming">
 ```swift
 // ViewController.swift
 import UIKit
@@ -1608,6 +1614,8 @@ extension ViewController: AgoraRtcEngineDelegate {
   }
 }
 ```
+</Accordion>
+</Accordions>
 
 ### Create a user interface
 
@@ -1898,9 +1906,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-**Quick start sequence**
-
-![image](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence-macos.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence-macos.svg)
+</Accordion>
+</Accordions>
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -2128,8 +2138,8 @@ After destroying the engine, you can no longer use SDK methods and callbacks. To
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. Copy the following code into your `ViewController.swift` file:
 
-**Complete sample code for Interactive Live Streaming**
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Interactive Live Streaming">
 ```swift
 // ViewController.swift
 import Cocoa
@@ -2252,6 +2262,8 @@ extension ViewController: AgoraRtcEngineDelegate {
   }
 }
 ```
+</Accordion>
+</Accordions>
 
 ### Create a user interface
 
@@ -2629,8 +2641,8 @@ async function leaveChannel() {
 
 A complete code sample demonstrating the basic process of real-time interaction is provided here for your reference. To use the sample, copy the following code to the JavaScript file in the project's `src` folder.
 
-**Complete sample code for Interactive Live Streaming**
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Interactive Live Streaming">
 ```js
 import AgoraRTC from "agora-rtc-sdk-ng";
 
@@ -2721,7 +2733,7 @@ async function publishLocalTracks() {
 function displayRemoteVideo(user) {
   const remotePlayerContainer = document.createElement("div");
   remotePlayerContainer.id = user.uid.toString();
-  remotePlayerContainer.textContent = `Remote user ${user.uid\}`;
+  remotePlayerContainer.textContent = `Remote user ${user.uid}`;
   remotePlayerContainer.style.width = "640px";
   remotePlayerContainer.style.height = "480px";
   document.body.append(remotePlayerContainer);
@@ -2775,6 +2787,8 @@ function startBasicLiveStreaming() {
 }
 startBasicLiveStreaming();
 ```
+</Accordion>
+</Accordions>
 
 ### Create a user interface
 
@@ -3042,9 +3056,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-**Quick start sequence**
-
-![image](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -3309,6 +3325,8 @@ A complete code sample that implements the basic process of real-time interactio
 
 **AgoraQuickStartDlg.h**
 
+<Accordions>
+<Accordion title="Complete sample code for real-time Interactive Live Streaming">
 ```cpp
 #pragma once
 #include
@@ -3653,6 +3671,8 @@ LRESULT CAgoraQuickStartDlg::OnEIDUserOffline(WPARAM wParam, LPARAM lParam) {
   return 0;
 }
 ```
+</Accordion>
+</Accordions>
 
 ### Create a user interface
 
@@ -3875,9 +3895,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-**Quick start sequence**
-
-![image](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -4186,6 +4208,8 @@ A complete code sample demonstrating the basic process of real-time interaction 
 
 **`main.js`**
 
+<Accordions>
+<Accordion title="Complete sample code for real-time Interactive Live Streaming">
 ```js
 const { app, BrowserWindow, systemPreferences } = require("electron");
 const path = require("path");
@@ -4363,6 +4387,8 @@ window.onload = () => {
   });
 };
 ```
+</Accordion>
+</Accordions>
 :::note
 - In `renderer.js`, replace the values for `APPID`, `token`, and `channel` with your App ID, the temporary token from Agora Console, and the channel name you used to generate the token.
 - If you're targeting macOS v10.14 or later, add the device permission code to `main.js`. For more details, see [Get device permissions](#get-device-permissions).
@@ -4557,9 +4583,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-**Quick start sequence**
-
-![image](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -4757,8 +4785,8 @@ After you call `release`, you no longer have access to the methods and callbacks
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the following code to replace the entire contents of the `.dart` file in your project.
 
-**Complete sample code for Interactive Live Streaming**
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Interactive Live Streaming">
 ```dart
 import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
@@ -4940,6 +4968,8 @@ class _MainScreenScreenState extends State<_MainScreen> {
  }
 }
 ```
+</Accordion>
+</Accordions>
 :::note
 In the `appId` and `token` fields, enter the corresponding values you obtained from Agora Console. Use the same `channel` name you filled in when generating the temporary token.
 :::
@@ -5149,9 +5179,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-**Quick start sequence**
-
-![image](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps and use the code in your `App.tsx` file.
 
@@ -5387,8 +5419,8 @@ After calling `release,` methods and callbacks of the SDK are no longer availabl
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the code into `ProjectName/App.tsx` to quickly implement the basic functionality.
 
-**Complete sample code for real-time Interactive Live Streaming**
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Interactive Live Streaming">
 ```tsx
 // Import React Hooks
 import React, { useRef, useState, useEffect } from 'react';
@@ -5626,6 +5658,8 @@ const getPermission = async () => {
 
 export default App;
 ```
+</Accordion>
+</Accordions>
 
 ### Create a user interface
 
@@ -5921,6 +5955,7 @@ import {
 } from "agora-rtc-react";
 import AgoraRTC, { AgoraRTCProvider } from "agora-rtc-react";
 import { useState } from "react";
+import AgoraRTC, { AgoraRTCProvider } from "agora-rtc-react";
 ````
 
 ### Initialize the client
@@ -6033,8 +6068,8 @@ To leave a channel, destroy the component, close the browser window, or refresh 
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the complete sample, add the following to your `src/App.tsx` file.
 
-**Complete sample code for real-time Interactive Live Streaming**
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Interactive Live Streaming">
 ```tsx
 import {
  LocalUser,
@@ -6149,6 +6184,8 @@ const Basics = () => {
 
 export default InteractiveLiveStreaming;
 ```
+</Accordion>
+</Accordions>
 
 ## Test the sample code
 
@@ -6276,9 +6313,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-**Quick start sequence**
-
-![image](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -6559,6 +6598,8 @@ A complete code sample demonstrating the basic process of real-time interaction 
 
 **Sample code to implement Interactive Live Streaming in your game**
 
+<Accordions>
+<Accordion title="Complete sample code for real-time Interactive Live Streaming">
 ```csharp
 using System.Collections;
 using System.Collections.Generic;
@@ -6739,6 +6780,8 @@ public class JoinChannelVideo : MonoBehaviour
   }
 }
 ```
+</Accordion>
+</Accordions>
 
 ### Create a user interface
 
@@ -6973,9 +7016,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-**Quick start sequence**
-
-![image](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -7338,6 +7383,8 @@ A complete code sample demonstrating the basic process of real-time interaction 
 
 **`Project/Source/Project/AgoraWidget.h`**
 
+<Accordions>
+<Accordion title="Complete sample code for real-time Interactive Live Streaming">
 ```cpp
 #pragma once
 
@@ -7557,6 +7604,8 @@ public class UnrealLearning : ModuleRules
   }
 }
 ```
+</Accordion>
+</Accordions>
 
 ### Create a user interface
 

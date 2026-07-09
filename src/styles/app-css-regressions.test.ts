@@ -156,6 +156,12 @@ describe('app prose CSS regressions', () => {
           :where(.not-prose, .not-prose *)
         )`,
     );
+    const cellFirstChild = getRuleBody(
+      '.prose :where(td > :first-child):not(:where(.not-prose, .not-prose *))',
+    );
+    const cellLastChild = getRuleBody(
+      '.prose :where(td > :last-child):not(:where(.not-prose, .not-prose *))',
+    );
 
     expect(table.rule.nodes).toContainEqual(
       expect.objectContaining({
@@ -286,6 +292,13 @@ describe('app prose CSS regressions', () => {
     expect(tableOverflowOverride.sourceStart).toBeLessThan(
       wrappedTableOverflowOverride.sourceStart,
     );
+    const cellFirstChildOverride = getRuleBody(
+      ':where(html) .prose :where(td > :first-child):not(:where(.not-prose, .not-prose *))',
+    );
+    const cellLastChildOverride = getRuleBody(
+      ':where(html) .prose :where(td > :last-child):not(:where(.not-prose, .not-prose *))',
+    );
+
     expect(cells.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'min-width',
@@ -315,6 +328,36 @@ describe('app prose CSS regressions', () => {
         prop: 'min-width',
         value: '9.5rem',
       }),
+    );
+    expect(cellFirstChild.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'margin-top',
+        value: '0',
+      }),
+    );
+    expect(cellLastChild.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'margin-bottom',
+        value: '0',
+      }),
+    );
+    expect(cellFirstChildOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'margin-top',
+        value: '0',
+      }),
+    );
+    expect(cellLastChildOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'margin-bottom',
+        value: '0',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.sourceStart).toBeLessThan(
+      cellFirstChildOverride.sourceStart,
+    );
+    expect(cellFirstChildOverride.sourceStart).toBeLessThan(
+      cellLastChildOverride.sourceStart,
     );
   });
 

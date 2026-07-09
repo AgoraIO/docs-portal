@@ -380,28 +380,36 @@ To use Agora Cloud Proxy, your end users must first configure their firewalls to
 <PlatformStructured platform="web">
 ### Firewall whitelist
 
-Alternatively, you can whitelist the following domains and ports to ensure seamless communication with Agora's services
+Alternatively, you can whitelist the following domains and ports to ensure seamless communication with Agora's services. For the complete and current Web SDK allowlist, see [Firewall requirements](/en/realtime-media/video/reference/firewall).
 
-* **v4.4.0 and above**
+```text tab="v4.24.5 and above" tabGroup="web-sdk-version"
+*.agora.io
+*.edge.agora.io
+*.sd-rtn.com
+*.edge.sd-rtn.com
+*.rtnsvc.com
+*.edge.rtnsvc.com
+*.rtesvc.com
+*.edge.rtesvc.com
+```
 
-    ```text
-    .agora.io
-    .edge.agora.io
-    .sd-rtn.com
-    .edge.sd-rtn.com
-    .ap.sd-rtn.com
-    .statscollector.sd-rtn.com
-    .webrtc-cloud-proxy.sd-rtn.com
-    ```
+```text tab="v4.4.0 - v4.24.4" tabGroup="web-sdk-version"
+*.agora.io
+*.edge.agora.io
+*.sd-rtn.com
+*.edge.sd-rtn.com
+```
 
-* **v4.0.0 - v4.4.0**
+```text tab="v4.0.0 - v4.4.0" tabGroup="web-sdk-version"
+*.agora.io
+*.edge.agora.io
+*.agoraio.cn
+*.edge.agoraio.cn
+```
 
-    ```text
-    .agora.io
-    .edge.agora.io
-    .agoraio.cn
-    .edge.agoraio.cn
-    ```
+:::info
+To improve connectivity over public networks, we recommend adding the domains listed above to your firewall allowlist.
+:::
 
 | Target Ports | Protocol | Action |
 |:-------------|----------|---------|
