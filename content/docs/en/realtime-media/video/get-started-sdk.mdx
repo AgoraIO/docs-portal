@@ -191,10 +191,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-### Quick start sequence
-
-
-![](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps and use the code in your `MainActivity` file.
@@ -841,9 +842,9 @@ private fun cleanupAgoraEngine() {
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the following lines into the `MainActivity` file in your project. Then, replace `<projectname>` in package `com.example.<projectname>` with your project's name.
 
-### Complete sample code for real-time Video Calling
 
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Video Calling">
 <Tabs defaultValue="java">
 <TabsList>
   <TabsTrigger value="java">Java</TabsTrigger>
@@ -1209,6 +1210,8 @@ class MainActivity : AppCompatActivity() {
 
 </TabsContent>
 </Tabs>
+</Accordion>
+</Accordions>
 
 
 :::info
@@ -1488,10 +1491,11 @@ This section guides you through the implementation of basic real-time audio and 
 The following figure illustrates the essential steps:
 
 
-### Quick start sequence
-
-
-![](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
@@ -1702,9 +1706,9 @@ After destroying the engine, you can no longer use SDK methods and callbacks. To
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. Copy the following code into your `ViewController.swift` file:
 
 
-### Complete sample code for real-time Video Calling
 
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Video Calling">
 ```swift
 import UIKit
 import AgoraRtcKit
@@ -1826,6 +1830,8 @@ extension ViewController: AgoraRtcEngineDelegate {
     }
 }
 ```
+</Accordion>
+</Accordions>
 
 
 ### Create a user interface
@@ -1841,6 +1847,7 @@ Alternatively, use the following sample code to generate a basic user interface.
 
 ```swift
 // ViewController.swift
+import UIKit
 
 class ViewController: UIViewController {
 
@@ -2139,10 +2146,11 @@ This section guides you through the implementation of basic real-time audio and 
 The following figure illustrates the essential steps:
 
 
-### Quick start sequence
-
-
-![](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence-macos.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence-macos.svg)
+</Accordion>
+</Accordions>
 
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
@@ -2383,9 +2391,9 @@ After destroying the engine, you can no longer use SDK methods and callbacks. To
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. Copy the following code into your `ViewController.swift` file:
 
 
-### Complete sample code for Video Calling
 
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Video Calling">
 ```swift
 import Cocoa
 import AgoraRtcKit
@@ -2513,6 +2521,8 @@ extension ViewController: AgoraRtcEngineDelegate {
     }
 }
 ```
+</Accordion>
+</Accordions>
 
 
 ### Create a user interface
@@ -2728,10 +2738,11 @@ npm install agora-rtc-sdk-ng
 This section guides you through the implementation of basic real-time audio and video interaction in your app.
 
 The following figure illustrates the essential steps:
-### Quick start sequence
-
-
-![](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence-web.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence-web.svg)
+</Accordion>
+</Accordions>
 
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
@@ -2926,9 +2937,9 @@ async function leaveChannel() {
 A complete code sample demonstrating the basic process of real-time interaction is provided here for your reference. To use the sample, copy the following code to the JavaScript file in the project's `src` folder.
 
 
-### Complete sample code for real-time Video Calling
 
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Video Calling">
 ```javascript
 import AgoraRTC from "agora-rtc-sdk-ng";
 
@@ -2996,7 +3007,7 @@ async function publishLocalTracks() {
 function displayLocalVideo() {
     const localPlayerContainer = document.createElement("div");
     localPlayerContainer.id = uid;
-    localPlayerContainer.textContent = `Local user ${uid\}`;
+    localPlayerContainer.textContent = `Local user ${uid}`;
     localPlayerContainer.style.width = "640px";
     localPlayerContainer.style.height = "480px";
     document.body.append(localPlayerContainer);
@@ -3008,7 +3019,7 @@ function displayRemoteVideo(user) {
     const remoteVideoTrack = user.videoTrack;
     const remotePlayerContainer = document.createElement("div");
     remotePlayerContainer.id = user.uid.toString();
-    remotePlayerContainer.textContent = `Remote user ${user.uid\}`;
+    remotePlayerContainer.textContent = `Remote user ${user.uid}`;
     remotePlayerContainer.style.width = "640px";
     remotePlayerContainer.style.height = "480px";
     document.body.append(remotePlayerContainer);
@@ -3049,6 +3060,8 @@ function startBasicCall() {
 
 startBasicCall();
 ```
+</Accordion>
+</Accordions>
 
 
 
@@ -3222,15 +3235,15 @@ In addition to using `npm` to install the Web SDK, you can also use the followin
 
 * In the project HTML file, add the following tag to obtain the SDK from CDN:
 
-    ```html
-    <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.5.js"></script>
-    ```
+  ```html
+  <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.6.js"></script>
+  ```
 
 * Download the Video SDK package locally, save the `.js` files in the SDK package to the project directory, and then add the following tag to the project HTML file:
 
-    ```html
-    <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.5.js"></script>
-    ```
+  ```html
+  <script src="./AgoraRTC_N-4.24.6.js"></script>
+  ```
 
 Visit the [Download](/en/api-reference/sdks?platform=web) page to obtain the link for the latest SDK version.
 
@@ -3361,10 +3374,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-### Quick start sequence
-
-
-![](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
@@ -3649,6 +3663,8 @@ A complete code sample that implements the basic process of real-time interactio
 ### AgoraQuickStartDlg.h
 
 
+<Accordions>
+<Accordion title="Complete sample code for real-time Video Calling">
 ```cpp
 #pragma once
 #include
@@ -4015,6 +4031,8 @@ LRESULT CAgoraQuickStartDlg::OnEIDUserOffline(WPARAM wParam, LPARAM lParam) {
     return 0;
 }
 ```
+</Accordion>
+</Accordions>
 
 
 ### Create a user interface
@@ -4271,10 +4289,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-### Quick start sequence
-
-
-![](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
@@ -4609,6 +4628,8 @@ A complete code sample demonstrating the basic process of real-time interaction 
 ### `main.js`
 
 
+<Accordions>
+<Accordion title="Complete sample code for real-time Video Calling">
 ```javascript
 const { app, BrowserWindow, systemPreferences } = require("electron");
 const path = require("path");
@@ -4785,6 +4806,8 @@ window.onload = () => {
     });
 };
 ```
+</Accordion>
+</Accordions>
 
 
 :::info[Information]
@@ -5007,10 +5030,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-### Quick start sequence
-
-
-![](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
@@ -5231,9 +5255,9 @@ After you call `release`, you no longer have access to the methods and callbacks
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the following code to replace the entire contents of the `.dart` file in your project.
 
-### Complete sample code for Video Calling
 
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Video Calling">
 ```dart
 import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
@@ -5414,6 +5438,8 @@ class _MainScreenScreenState extends State<MainScreen> {
   }
 }
 ```
+</Accordion>
+</Accordions>
 
 
 :::info[Information]
@@ -5625,10 +5651,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-### Quick start sequence
-
-
-![](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps and use the code in your `App.tsx` file.
@@ -5639,6 +5666,7 @@ Add the required Agora dependencies to your app.
 
 
 ```tsx
+import {
     createAgoraRtcEngine,
     ChannelProfileType,
     ClientRoleType,
@@ -5892,9 +5920,9 @@ After calling `release,` methods and callbacks of the SDK are no longer availabl
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the code into `ProjectName/App.tsx` to quickly implement the basic functionality.
 
-### Complete sample code for real-time Video Calling
 
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Video Calling">
 ```tsx
 // Import React Hooks
 import React, { useRef, useState, useEffect } from 'react';
@@ -6134,6 +6162,8 @@ const getPermission = async () => {
 
 export default App;
 ```
+</Accordion>
+</Accordions>
 
 
 ### Create a user interface
@@ -6256,35 +6286,29 @@ Take the following steps to test the sample code:
 </TabsList>
 <TabsContent value="android">
 
+To run the client on an Android device:
 
-        To run the client on an Android device:
+1. Turn on the developer options of the Android device and connect the Android device to the computer through a USB cable.
 
-            1. Turn on the developer options of the Android device and connect the Android device to the computer through a USB cable.
-
-            1. In the project root directory, execute `npx react-native run-android`.
-
-
+1. In the project root directory, execute `npx react-native run-android`.
 
 </TabsContent>
 <TabsContent value="ios">
 
+To run the client on an iOS device:
 
-        To run on the client on an iOS device:
+1. Open the `ProjectName/ios/ProjectName.xcworkspace` folder using Xcode.
 
-            1. Open the `ProjectName/ios/ProjectName.xcworkspace` folder using Xcode.
+1. Connect the iOS device to your computer through a USB cable.
 
-            1. Connect the iOS device to your computer through a USB cable.
-
-            1. In Xcode, click the **Build and Run** button.
-
-
+1. In Xcode, click the **Build and Run** button.
 
 </TabsContent>
 </Tabs>
 
-    :::info[Information]
-    For detailed steps on running the app on a real Android or iOS device, please refer to [Running On Device](https://reactnative.dev/docs/running-on-device).
-    :::
+:::info[Information]
+For detailed steps on running the app on a real Android or iOS device, refer to [Running On Device](https://reactnative.dev/docs/running-on-device).
+:::
 
 
 1. Launch the app and click the **Join channel** button to join a channel.
@@ -6453,12 +6477,14 @@ import {
   usePublish, // Publish the local tracks
   useRemoteUsers, // Retrieve the list of remote users
 } from "agora-rtc-react";
+import AgoraRTC, { AgoraRTCProvider } from "agora-rtc-react";
+import { useState } from "react";
 ```
 
 
 ### Initialize the client
 
-Use the `createClient` method provided by the SDK to create a client object for the `` component. Wrap the `` component with `` to enable state management and access operation-related hooks.
+Use the `createClient` method provided by the SDK to create a client object for the `<AgoraRTCProvider />` component. Wrap the `<Basics />` component with `<AgoraRTCProvider />` to enable state management and access operation-related hooks.
 
 
 For Video Calling, set the `mode` property of `ClientConfig` to `"rtc"`.
@@ -6571,9 +6597,9 @@ To leave a channel, destroy the component, close the browser window, or refresh 
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the complete sample, add the following to your `src/App.tsx` file.
 
-### Complete sample code for real-time Video Calling
 
-
+<Accordions>
+<Accordion title="Complete sample code for real-time Video Calling">
 ```jsx
 import {
   LocalUser,
@@ -6689,6 +6715,8 @@ const Basics = () => {
 
 export default VideoCalling;
 ```
+</Accordion>
+</Accordions>
 
 
 ## Test the sample code
@@ -6837,10 +6865,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-### Quick start sequence
-
-
-![](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
@@ -7168,6 +7197,8 @@ A complete code sample demonstrating the basic process of real-time interaction 
 ### Sample code to implement Video Calling in your client
 
 
+<Accordions>
+<Accordion title="Complete sample code for real-time Video Calling">
 ```csharp
 using System.Collections;
 using System.Collections.Generic;
@@ -7348,6 +7379,8 @@ public class JoinChannelVideo : MonoBehaviour
     }
 }
 ```
+</Accordion>
+</Accordions>
 
 
 ### Create a user interface
@@ -7608,10 +7641,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-### Quick start sequence
-
-
-![](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+<Accordions>
+<Accordion title="Quick start sequence">
+![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
 
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
@@ -8014,6 +8048,8 @@ A complete code sample demonstrating the basic process of real-time interaction 
 ### `Project/Source/Project/AgoraWidget.h`
 
 
+<Accordions>
+<Accordion title="Complete sample code for real-time Video Calling">
 ```cpp
 #pragma once
 
@@ -8240,6 +8276,8 @@ public class UnrealLearning : ModuleRules
     }
 }
 ```
+</Accordion>
+</Accordions>
 
 
 
@@ -8249,6 +8287,66 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
 
 ### Create a basic UI
 
+1. Create a **Widget Blueprint**.
+
+    In Unreal Editor, click **Content Drawer > Content**, right-click and select **User Interface > Widget Blueprint**. Name the new Widget Blueprint **AgoraWidget** and double-click it to open.
+
+    ![Create a Widget Blueprint](https://assets-docs.agora.io/images/video-sdk/unreal-setup-ui-1.png)
+
+1. Create a view canvas.
+
+    Select **Palette > PANEL > Canvas Panel** and drag it to **AgoraWidget**.
+
+    ![Add a Canvas Panel to the widget](https://assets-docs.agora.io/images/video-sdk/unreal-setup-ui-2.png)
+
+1. Create join and leave channel buttons in Widget Blueprint.
+
+    1. In **AgoraWidget**, select **COMMON > Button**, drag it to the **Canvas Panel**, and rename it to **JoinBtn**. Adjust the button's size and position on the canvas or use the following sample settings:
+
+        - **Position X**: `300`
+        - **Position Y**: `700`
+        - **Size X**: `240`
+        - **Size Y**: `120`
+
+    1. Select **COMMON > Text** and drag it to **JoinBtn**. Select the **Text** control of **JoinBtn**, and change the text content of **Text** to **Join** in the **Details** panel.
+
+    1. Repeat the above steps to create a **LeaveBtn**. Adjust the button size and position according to your layout design.
+
+1. Create local and remote views in the Widget Blueprint.
+
+    1. Select **COMMON > Image**, drag it to the **Canvas Panel**, and rename it **LocalVideo**. Adjust its position and size on the canvas. Use the following values, or specify as per your own layout design:
+
+        - **Position X**: `350`
+        - **Position Y**: `150`
+        - **Size X**: `450`
+        - **Size Y**: `450`
+
+    1. Repeat the above steps to create a remote view and name it **RemoteVideo**. Adjust its position and size on the canvas. Use the following values, or specify as per your own layout design:
+
+        - **Position X**: `1200`
+        - **Position Y**: `150`
+        - **Size X**: `450`
+        - **Size Y**: `450`
+
+1. Save the changes. Your user interface in **Widget Blueprint** looks similar to the following:
+
+    ![Widget Blueprint UI layout](https://assets-docs.agora.io/images/video-sdk/unreal-setup-ui-3.png)
+
+1. Create a **Level Blueprint** and associate it with the created **Widget Blueprint**.
+
+    1. In **Unreal Editor**, click **Content Drawer**, right-click to select **Level**, and name it **agoraLevel**.
+
+    1. Double-click to open **agoraLevel** and click **Open Level Blueprint**.
+
+        ![Open the Level Blueprint](https://assets-docs.agora.io/images/video-sdk/unreal-setup-ui-4.png)
+
+    1. Right-click and enter **Create Widget** in the search box. Select the created **AgoraWidget**, then create **Event BeginPlay** and **Add to Viewport** in the same way. Connect them as follows:
+
+        ![Connect the Create Widget, Event BeginPlay, and Add to Viewport nodes](https://assets-docs.agora.io/images/video-sdk/unreal-setup-ui-5.png)
+
+    1. Save your changes and run the project. The UI you have created looks similar to the following:
+
+        ![The running app user interface](https://assets-docs.agora.io/images/video-sdk/unreal-setup-ui-6.png)
 
 ## Test the sample code
 

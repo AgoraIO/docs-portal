@@ -36,6 +36,7 @@ import {
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
+import { createOramaDocsClient } from '@/lib/search/orama-client';
 
 // Delay before an Algolia query fires after the last keystroke. The skeleton
 // "busy" bridge below runs slightly longer so it always outlasts this window.
@@ -91,8 +92,9 @@ export function DocsSearchDialog({
   // Recently-viewed pages shown (before any query) as a starting point. Loaded
   // from localStorage each time the dialog opens.
   const [recentPages, setRecentPages] = useState<RecentPage[]>([]);
-  const scopeFilter =
-    productScopes.find((scope) => scope.id === scopeId)?.filter ?? undefined;
+  const searchScope = productScopes.find(
+    (scope) => scope.id === scopeId,
+  )?.scope;
   const [pagesState, setPagesState] = useState<PagesState | null>(null);
   const pagesPromiseRef = useRef<{
     locale: AppLocale;
@@ -119,10 +121,14 @@ export function DocsSearchDialog({
             indexName: algoliaIndexName,
             locale: searchLocale,
             platform: platformFilter ?? undefined,
-            scopeFilter,
+            scope: searchScope,
             searchApiKey: algoliaSearchApiKey,
           })
-        : createLocalDocsClient(pages);
+        : createOramaDocsClient({
+            pages,
+            platform: platformFilter ?? undefined,
+            scope: searchScope,
+          });
     return {
       ...base,
       async search(query: string) {
@@ -140,7 +146,7 @@ export function DocsSearchDialog({
     algoliaSearchApiKey,
     pages,
     platformFilter,
-    scopeFilter,
+    searchScope,
     searchLocale,
   ]);
   const searchDeps = useMemo(
@@ -152,7 +158,7 @@ export function DocsSearchDialog({
             algoliaSearchApiKey,
             searchLocale,
             platformFilter,
-            scopeFilter,
+            searchScope,
           ]
         : [pages, searchLocale],
     [
@@ -161,7 +167,7 @@ export function DocsSearchDialog({
       algoliaSearchApiKey,
       pages,
       platformFilter,
-      scopeFilter,
+      searchScope,
       searchLocale,
     ],
   );
@@ -750,31 +756,4 @@ function groupProductScopes(scopes: ProductScope[]) {
   }
 
   return groups;
-}
-
-function createLocalDocsClient(pages: SearchEntry[]) {
-  return {
-    deps: [pages],
-    search(query: string) {
-      const normalizedQuery = query.trim().toLowerCase();
-
-      if (!normalizedQuery) {
-        return [];
-      }
-
-      return pages
-        .filter((page) =>
-          `${page.title}\n${page.description ?? ''}\n${page.url}`
-            .toLowerCase()
-            .includes(normalizedQuery),
-        )
-        .slice(0, 12)
-        .map((page) => ({
-          content: page.title,
-          id: page.url,
-          type: 'page' as const,
-          url: page.url,
-        }));
-    },
-  };
 }

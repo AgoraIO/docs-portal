@@ -69,6 +69,14 @@ describe('FumadocsOpenApiContent', () => {
       await screen.findByRole('tab', { name: 'cURL' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'JavaScript' })).toBeInTheDocument();
+    expect(
+      screen
+        .getByRole('tab', { name: 'cURL' })
+        .closest('.openapi-request-examples'),
+    ).not.toHaveAttribute('data-markdown-ignore');
+    expect(
+      screen.getByText('Response example').closest('.openapi-response-example'),
+    ).not.toHaveAttribute('data-markdown-ignore');
   });
 
   it('uses explicit x-codeSamples without adding default generated language tabs', async () => {
@@ -143,6 +151,7 @@ describe('FumadocsOpenApiContent', () => {
     const curlTab = await screen.findByRole('tab', { name: 'curl' });
     const requestExamples = curlTab.closest('.openapi-request-examples');
     expect(requestExamples).not.toBeNull();
+    expect(requestExamples).toHaveAttribute('data-markdown-ignore');
     const examplesScope = within(requestExamples as HTMLElement);
     expect(
       examplesScope.getByRole('tab', { name: 'curl' }),
@@ -2474,6 +2483,93 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
   });
 
+  it('applies 24px depth increments to nested response schema rows', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'get',
+              path: '/v1/projects/{appId}/agents/{agentId}',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v1/projects/{appId}/agents/{agentId}': {
+                  get: {
+                    operationId: 'get-agent',
+                    responses: {
+                      '200': {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: {
+                                data: {
+                                  properties: {
+                                    agent: {
+                                      properties: {
+                                        voice: {
+                                          type: 'string',
+                                        },
+                                      },
+                                      type: 'object',
+                                    },
+                                  },
+                                  type: 'object',
+                                },
+                              },
+                              type: 'object',
+                            },
+                          },
+                        },
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Get agent',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: 'Response schema' });
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'Expand all Response schema fields',
+      }),
+    );
+
+    const expectResponseSchemaRowPadding = (
+      anchorId: string,
+      paddingInlineStart: string,
+    ) => {
+      const row = document.getElementById(anchorId);
+
+      expect(row).toBeInstanceOf(HTMLElement);
+      expect((row as HTMLElement).style.paddingInlineStart).toBe(
+        paddingInlineStart,
+      );
+    };
+
+    expectResponseSchemaRowPadding('responses-200-data', '1rem');
+    expectResponseSchemaRowPadding(
+      'responses-200-data-agent',
+      'calc(1rem + 24px)',
+    );
+    expectResponseSchemaRowPadding(
+      'responses-200-data-agent-voice',
+      'calc(1rem + 48px)',
+    );
+  });
+
   it('adds stable deep-link anchors to parameters and schema fields', async () => {
     render(
       <FumadocsOpenApiContent
@@ -2721,6 +2817,7 @@ describe('FumadocsOpenApiContent', () => {
     const [gutter, nameColumn] = Array.from(nameHeading.children);
 
     expect(nameHeading.textContent).not.toContain('\u00a0');
+    expect(nameHeading).not.toHaveAttribute('data-markdown-ignore');
     expect(gutter).toHaveClass('openapi-schema-property-control-gutter');
     expect(gutter.textContent).toBe('');
     expect(gutter.querySelector('button')).toBeNull();

@@ -4,6 +4,7 @@ import {
   getContentPathSegments,
   getSourceSlugs,
   getSourceSlugsFromContentPath,
+  isPublishedDocLocale,
   isSupportedDocLocale,
   parseSourceSlugs,
   replaceDocLocale,
@@ -95,6 +96,13 @@ describe('docs routing helpers', () => {
     expect(isSupportedDocLocale('zh-CN')).toBe(true);
     expect(isSupportedDocLocale('docs')).toBe(false);
     expect(isSupportedDocLocale('zh')).toBe(false);
+  });
+
+  it('limits public locale routes to the configured deployment region', () => {
+    expect(isPublishedDocLocale('en', 'global')).toBe(true);
+    expect(isPublishedDocLocale('zh-CN', 'global')).toBe(false);
+    expect(isPublishedDocLocale('en', 'cn')).toBe(false);
+    expect(isPublishedDocLocale('zh-CN', 'cn')).toBe(true);
   });
 
   it('parses source slugs back into route parts', () => {

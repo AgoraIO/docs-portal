@@ -120,8 +120,8 @@
 @layer base {
   :root {
     --bg: #fbfaf7;
-    --bg-card: #ffffff;
-    --bg-elev: #ffffff;
+    --bg-card: #fefcf8;
+    --bg-elev: #fefcf8;
     --bg-sunken: #f4f2ec;
     --ink-1: #0e0f12;
     --ink-2: #2a2c33;
@@ -204,7 +204,7 @@
     --surface-muted: var(--bg-sunken);
     --docs-header-h: 52px;
     --docs-tabs-h: 40px;
-    --content-max: 720px;
+    --content-max: 800px;
   }
 
   .dark {
@@ -400,11 +400,28 @@
     max-width: var(--content-max);
     --docs-prose-inline-code-bg: var(--bg-sunken);
     --docs-prose-inline-code-border: var(--line);
-    --docs-prose-code-block-bg: #2d3240;
-    --docs-prose-code-block-border: transparent;
-    --docs-prose-code-block-border-width: 0;
-    --docs-prose-code-block-color: rgb(241 245 249);
-    --docs-prose-code-block-shadow: 0 22px 40px rgb(15 23 42 / 0.16);
+    --docs-prose-code-block-bg: #f1efe7;
+    --docs-prose-code-block-border: var(--line-strong);
+    --docs-prose-code-block-border-width: 1px;
+    --docs-prose-code-block-color: var(--ink-1);
+    --docs-prose-code-block-line-number: color-mix(
+      in srgb,
+      var(--ink-3) 72%,
+      transparent
+    );
+    --docs-prose-code-block-copy-bg: color-mix(
+      in srgb,
+      var(--bg-card) 88%,
+      transparent
+    );
+    --docs-prose-code-block-copy-color: var(--ink-3);
+    --docs-prose-code-block-copy-border: var(--line-strong);
+    --docs-prose-code-block-copy-hover-bg: var(--bg-card);
+    --docs-prose-code-block-copy-hover-color: var(--ink-1);
+    --docs-prose-code-block-token-mix: 100%;
+    --docs-prose-code-block-token-boost: black;
+    --docs-prose-code-block-shadow: 0 18px 36px
+      color-mix(in srgb, var(--ink-1) 12%, transparent);
     --docs-prose-table-border: var(--line);
     --docs-prose-table-head-bg: color-mix(
       in srgb,
@@ -429,11 +446,19 @@
       var(--line-strong) 72%,
       var(--accent-brand) 28%
     );
-    --docs-prose-code-block-bg: #121826;
-    --docs-prose-code-block-border: rgb(255 255 255 / 0.12);
+    --docs-prose-code-block-bg: #0b1120;
+    --docs-prose-code-block-border: rgb(148 163 184 / 0.24);
     --docs-prose-code-block-border-width: 1px;
-    --docs-prose-code-block-color: #e8eef8;
-    --docs-prose-code-block-shadow: 0 18px 34px rgb(0 0 0 / 0.38);
+    --docs-prose-code-block-color: #f8fafc;
+    --docs-prose-code-block-line-number: rgb(203 213 225 / 0.62);
+    --docs-prose-code-block-copy-bg: rgb(15 23 42 / 0.86);
+    --docs-prose-code-block-copy-color: #e2e8f0;
+    --docs-prose-code-block-copy-border: rgb(148 163 184 / 0.28);
+    --docs-prose-code-block-copy-hover-bg: rgb(30 41 59 / 0.94);
+    --docs-prose-code-block-copy-hover-color: #ffffff;
+    --docs-prose-code-block-token-mix: 88%;
+    --docs-prose-code-block-token-boost: white;
+    --docs-prose-code-block-shadow: 0 20px 38px rgb(0 0 0 / 0.46);
     --docs-prose-table-border: rgb(255 255 255 / 0.14);
     --docs-prose-table-head-bg: color-mix(
       in srgb,
@@ -1295,6 +1320,20 @@
   overflow: visible;
 }
 
+/* Fumadocs emits paragraph/list margins outside Tailwind layers.
+   Keep table-cell edges tight while preserving spacing between block children. */
+:where(html)
+  .prose
+  :where(td > :first-child):not(:where(.not-prose, .not-prose *)) {
+  margin-top: 0;
+}
+
+:where(html)
+  .prose
+  :where(td > :last-child):not(:where(.not-prose, .not-prose *)) {
+  margin-bottom: 0;
+}
+
 /* Fumadocs emits unlayered prose link styles after Tailwind layers.
    Keep the product decision for body links here so the rendered underline
    matches the foreground text instead of the brand accent. */
@@ -1334,16 +1373,77 @@
 }
 
 :where(html.dark) .prose :where(pre):not(:where(.not-prose, .not-prose *)),
-:where(html.dark) .prose figure.shiki.not-prose {
+:where(html.dark) .prose figure.shiki.not-prose,
+:where(html.dark) .openapi-operation figure.shiki.not-prose {
   border-color: var(--docs-prose-code-block-border);
   background: var(--docs-prose-code-block-bg);
   color: var(--docs-prose-code-block-color);
   box-shadow: var(--docs-prose-code-block-shadow);
 }
 
+:where(html.dark) .prose figure.shiki.not-prose .fd-scroll-container,
+:where(html.dark) .prose figure.shiki.not-prose figcaption,
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  .fd-scroll-container,
+:where(html.dark) .openapi-operation figure.shiki.not-prose figcaption {
+  color: var(--docs-prose-code-block-color);
+}
+
+:where(html.dark) .prose figure.shiki.not-prose code span,
+:where(html.dark) .openapi-operation figure.shiki.not-prose code span {
+  color: color-mix(
+    in srgb,
+    var(--shiki-dark, var(--docs-prose-code-block-color))
+      var(--docs-prose-code-block-token-mix),
+    var(--docs-prose-code-block-token-boost)
+  );
+}
+
+:where(html.dark) .prose figure.shiki.not-prose[data-line-numbers] .line::after,
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose[data-line-numbers]
+  .line::after {
+  color: var(--docs-prose-code-block-line-number);
+}
+
+:where(html.dark) .prose figure.shiki.not-prose button[aria-label],
+:where(html.dark) .openapi-operation figure.shiki.not-prose button[aria-label] {
+  border: 1px solid var(--docs-prose-code-block-copy-border);
+  background: var(--docs-prose-code-block-copy-bg);
+  color: var(--docs-prose-code-block-copy-color);
+}
+
+:where(html.dark) .prose figure.shiki.not-prose button[aria-label]:hover,
+:where(html.dark)
+  .prose
+  figure.shiki.not-prose
+  button[aria-label]:focus-visible,
+:where(html.dark)
+  .prose
+  figure.shiki.not-prose
+  button[aria-label][data-checked],
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  button[aria-label]:hover,
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  button[aria-label]:focus-visible,
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  button[aria-label][data-checked] {
+  background: var(--docs-prose-code-block-copy-hover-bg);
+  color: var(--docs-prose-code-block-copy-hover-color);
+}
+
 :where(html.dark) .prose [role="tabpanel"] > figure.shiki.not-prose,
 :where(html.dark) .prose [role="tabpanel"] > figure.shiki.not-prose:only-child {
-  background: var(--color-fd-card);
+  background: var(--docs-prose-code-block-bg);
   box-shadow: none;
 }
 

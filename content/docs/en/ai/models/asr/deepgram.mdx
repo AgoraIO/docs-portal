@@ -10,7 +10,7 @@ Deepgram provides fast, accurate automatic speech recognition with advanced AI m
 
 The following example shows how to configure Deepgram ASR when starting a conversational AI agent.
 
-<Tabs>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
@@ -99,7 +99,7 @@ agent := agentkit.NewAgent(client).WithStt(
       "vendor": "deepgram",
       "params": {
         "url": "wss://api.deepgram.com/v1/listen",
-        "key": "<deepgram_key>",
+        "api_key": "<deepgram_key>",
         "model": "nova-3",
         "language": "en",
         "keyterm": "term1%20term2"
@@ -116,7 +116,7 @@ agent := agentkit.NewAgent(client).WithStt(
  <Parameter name="url" type="string" required={false}>
  The WebSocket URL for Deepgram's streaming API.
  </Parameter>
- <Parameter name="key" type="string" required={false}>
+ <Parameter name="api_key" type="string" required={false}>
  The API key used for authentication. Required when using your own API key (BYOK). Get your API key from the [Deepgram Console](https://console.deepgram.com/).
  </Parameter>
  <Parameter name="model" type="string" required={false}>

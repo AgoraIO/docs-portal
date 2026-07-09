@@ -4,8 +4,19 @@ on:
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - ".github/workflows/**"
+    paths:
+      - "src/**"
+      - "scripts/**"
+      - "content/**"
+      - "public/**"
+      - "package.json"
+      - "bun.lock"
+      - "source.config.ts"
+      - "tsconfig.json"
+      - "vite.config.ts"
+      - "vercel.json"
+      - "vercel.base.json"
+      - "vercel-legacy-redirects.json"
     types:
       - opened
       - synchronize
@@ -14,8 +25,19 @@ on:
   push:
     branches:
       - "**"
-    paths-ignore:
-      - ".github/workflows/**"
+    paths:
+      - "src/**"
+      - "scripts/**"
+      - "content/**"
+      - "public/**"
+      - "package.json"
+      - "bun.lock"
+      - "source.config.ts"
+      - "tsconfig.json"
+      - "vite.config.ts"
+      - "vercel.json"
+      - "vercel.base.json"
+      - "vercel-legacy-redirects.json"
   workflow_dispatch:
     inputs:
       deploy_target:
@@ -47,9 +69,12 @@ jobs:
   deploy-preview:
     name: Deploy Preview to Vercel
     if: |
-      github.event_name == 'pull_request' ||
-      (github.event_name == 'push' && github.ref_name != 'release/prod') ||
-      (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'preview')
+      github.repository == 'AgoraIO/docs-portal' &&
+      (
+        github.event_name == 'pull_request' ||
+        (github.event_name == 'push' && github.ref_name != 'release/prod') ||
+        (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'preview')
+      )
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -148,6 +173,7 @@ jobs:
       - name: Build with Vercel
         if: steps.preview-context.outputs.should_deploy == 'true'
         env:
+          VITE_DOCS_REGION: global
           VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
           VITE_POSTHOG_KEY: ${{ secrets.VITE_POSTHOG_KEY }}
           VERCEL_GIT_PROVIDER: github
@@ -252,8 +278,11 @@ jobs:
   deploy-production:
     name: Deploy Production to Vercel
     if: |
-      (github.event_name == 'push' && github.ref_name == 'release/prod') ||
-      (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'production')
+      github.repository == 'AgoraIO/docs-portal' &&
+      (
+        (github.event_name == 'push' && github.ref_name == 'release/prod') ||
+        (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'production')
+      )
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -308,6 +337,7 @@ jobs:
 
       - name: Build with Vercel
         env:
+          VITE_DOCS_REGION: global
           VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
           VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
           VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
@@ -324,6 +354,7 @@ jobs:
           (github.event_name == 'push' && github.ref_name == 'release/prod') ||
           (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'production' && steps.release-ref.outputs.verified == 'true')
         env:
+          VITE_DOCS_REGION: global
           VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
           ALGOLIA_ADMIN_API_KEY: ${{ secrets.ALGOLIA_ADMIN_API_KEY }}
           ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}

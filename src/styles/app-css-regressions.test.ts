@@ -156,6 +156,12 @@ describe('app prose CSS regressions', () => {
           :where(.not-prose, .not-prose *)
         )`,
     );
+    const cellFirstChild = getRuleBody(
+      '.prose :where(td > :first-child):not(:where(.not-prose, .not-prose *))',
+    );
+    const cellLastChild = getRuleBody(
+      '.prose :where(td > :last-child):not(:where(.not-prose, .not-prose *))',
+    );
 
     expect(table.rule.nodes).toContainEqual(
       expect.objectContaining({
@@ -286,6 +292,13 @@ describe('app prose CSS regressions', () => {
     expect(tableOverflowOverride.sourceStart).toBeLessThan(
       wrappedTableOverflowOverride.sourceStart,
     );
+    const cellFirstChildOverride = getRuleBody(
+      ':where(html) .prose :where(td > :first-child):not(:where(.not-prose, .not-prose *))',
+    );
+    const cellLastChildOverride = getRuleBody(
+      ':where(html) .prose :where(td > :last-child):not(:where(.not-prose, .not-prose *))',
+    );
+
     expect(cells.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'min-width',
@@ -315,6 +328,36 @@ describe('app prose CSS regressions', () => {
         prop: 'min-width',
         value: '9.5rem',
       }),
+    );
+    expect(cellFirstChild.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'margin-top',
+        value: '0',
+      }),
+    );
+    expect(cellLastChild.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'margin-bottom',
+        value: '0',
+      }),
+    );
+    expect(cellFirstChildOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'margin-top',
+        value: '0',
+      }),
+    );
+    expect(cellLastChildOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'margin-bottom',
+        value: '0',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.sourceStart).toBeLessThan(
+      cellFirstChildOverride.sourceStart,
+    );
+    expect(cellFirstChildOverride.sourceStart).toBeLessThan(
+      cellLastChildOverride.sourceStart,
     );
   });
 
@@ -488,6 +531,122 @@ describe('app prose CSS regressions', () => {
     expect(linkHoverOverride.sourceStart).toBeLessThan(
       darkCodeOverride.sourceStart,
     );
+  });
+
+  it('defines high-contrast dark code block tokens and chrome variables', () => {
+    const darkProse = getRuleBody('.dark .prose');
+
+    expect(darkProse.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: '--docs-prose-code-block-bg',
+        value: '#0b1120',
+      }),
+    );
+    expect(darkProse.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: '--docs-prose-code-block-color',
+        value: '#f8fafc',
+      }),
+    );
+    expect(darkProse.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: '--docs-prose-code-block-line-number',
+        value: 'rgb(203 213 225 / 0.62)',
+      }),
+    );
+    expect(darkProse.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: '--docs-prose-code-block-copy-bg',
+        value: 'rgb(15 23 42 / 0.86)',
+      }),
+    );
+    expect(darkProse.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: '--docs-prose-code-block-token-mix',
+        value: '88%',
+      }),
+    );
+  });
+
+  it('keeps dark Fumadocs code blocks, tabs, and copy controls readable after imported styles', () => {
+    const codeBlock = getRuleBodyContaining(
+      ':where(html.dark) .prose :where(pre):not(:where(.not-prose, .not-prose *))',
+    );
+    const tokenRule = getRuleBodyContaining(
+      ':where(html.dark) .prose figure.shiki.not-prose code span',
+    );
+    const lineNumberRule = getRuleBodyContaining(
+      ':where(html.dark) .prose figure.shiki.not-prose[data-line-numbers]',
+    );
+    const copyButtonRule = getRuleBodyContaining(
+      ':where(html.dark) .prose figure.shiki.not-prose button[aria-label]',
+    );
+    const copyButtonHoverRule = getRuleBodyContaining(
+      ':where(html.dark) .prose figure.shiki.not-prose button[aria-label]:hover',
+    );
+    const tabPanelRule = getRuleBody(
+      `:where(html.dark) .prose [role="tabpanel"] > figure.shiki.not-prose,
+        :where(html.dark) .prose [role="tabpanel"] > figure.shiki.not-prose:only-child`,
+    );
+    const darkCodeOverride = getRuleBodyContaining(
+      ':where(html.dark) .prose :where(:not(pre) > code)',
+    );
+
+    expect(codeBlock.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'background',
+        value: 'var(--docs-prose-code-block-bg)',
+      }),
+    );
+    expect(codeBlock.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'color',
+        value: 'var(--docs-prose-code-block-color)',
+      }),
+    );
+    expectDeclaration(
+      tokenRule.rule,
+      'color',
+      `color-mix(
+        in srgb,
+        var(--shiki-dark, var(--docs-prose-code-block-color))
+          var(--docs-prose-code-block-token-mix),
+        var(--docs-prose-code-block-token-boost)
+      )`,
+    );
+    expect(lineNumberRule.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'color',
+        value: 'var(--docs-prose-code-block-line-number)',
+      }),
+    );
+    expect(copyButtonRule.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'background',
+        value: 'var(--docs-prose-code-block-copy-bg)',
+      }),
+    );
+    expect(copyButtonRule.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'color',
+        value: 'var(--docs-prose-code-block-copy-color)',
+      }),
+    );
+    expect(copyButtonHoverRule.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'background',
+        value: 'var(--docs-prose-code-block-copy-hover-bg)',
+      }),
+    );
+    expect(tabPanelRule.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'background',
+        value: 'var(--docs-prose-code-block-bg)',
+      }),
+    );
+    expect(darkCodeOverride.sourceStart).toBeLessThan(codeBlock.sourceStart);
+    expect(codeBlock.sourceStart).toBeLessThan(tokenRule.sourceStart);
+    expect(tokenRule.sourceStart).toBeLessThan(tabPanelRule.sourceStart);
   });
 
   it('adds a mobile scroll affordance to wide OpenAPI code examples', () => {

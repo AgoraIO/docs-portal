@@ -19,21 +19,22 @@ To get the API call for your agent:
 
 Use this as the starting point for integrating the agent into your backend service. For full API reference, see [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join).
 
-> **Authentication**
-> This endpoint requires [Basic Auth](/en/api-reference/api-ref/conversational-ai/authentication). Generate a Base64-encoded credential with your Customer ID and Customer Secret. The generated code snippet includes an RTC token under `properties` which is valid for 24 hours.
+:::info[Authentication]
+This endpoint requires [Basic Auth](/en/api-reference/api-ref/conversational-ai/authentication). Generate a Base64-encoded credential with your Customer ID and Customer Secret. The generated code snippet includes an RTC token under `properties` which is valid for 24 hours.
+:::
 
 ## Sample code
 
 The following examples show how to start an agent call using your embed credentials. Replace `<base64Credentials>` with your Base64-encoded Agora Customer ID and Customer secret.
 
-<Tabs>
+<Tabs defaultValue="rest-api" groupId="ai-rest-sample-language" persist>
 <TabsList>
-  <TabsTrigger value="curl">REST API</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python</TabsTrigger>
   <TabsTrigger value="nodejs">Node.js</TabsTrigger>
 </TabsList>
 
-<TabsContent value="curl">
+<TabsContent value="rest-api">
 
 ```bash
 curl --request POST \
@@ -57,6 +58,7 @@ curl --request POST \
 <TabsContent value="python">
 
 ```python
+import requests
 
 url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/<appid>/join"
 
@@ -109,12 +111,13 @@ fetch('https://api.agora.io/api/conversational-ai-agent/v2/projects/<appid>/join
     .catch(err => console.error(err));
 ```
 
-> **About pipeline_id**
-> The `pipeline_id` in the embed code is the internal identifier for your published agent configuration. It is automatically populated when you copy the embed code from the **Embed Agent** option in Studio.
+</TabsContent>
+</Tabs>
+
+:::info[About pipeline_id]
+The `pipeline_id` in the embed code is the internal identifier for your published agent configuration. It is automatically populated when you copy the embed code from the **Embed Agent** option in Studio.
+:::
 
 ## See also
 
 - [Webhooks](../../build/handle-runtime-events/webhooks)
-
-</TabsContent>
-</Tabs>

@@ -1,10 +1,17 @@
 import { algoliasearch } from 'algoliasearch';
 import { sync } from 'fumadocs-core/search/algolia';
 import { getAlgoliaDocsRecords } from '../src/lib/search/algolia-records.server.ts';
+import { shouldSyncAlgoliaSearch } from '../src/lib/search/search-provider.ts';
+import { DOCS_REGION } from '../src/lib/site-region.ts';
 
 const appId = process.env.VITE_ALGOLIA_APP_ID;
 const adminApiKey = process.env.ALGOLIA_ADMIN_API_KEY;
 const indexName = process.env.ALGOLIA_INDEX_NAME ?? 'docs_portal_en';
+
+if (!shouldSyncAlgoliaSearch(DOCS_REGION)) {
+  console.log(`Skipping Algolia search sync for docs region: ${DOCS_REGION}.`);
+  process.exit(0);
+}
 
 if (process.env.ALGOLIA_SYNC_DISABLED === 'true') {
   console.log('Skipping Algolia search sync: ALGOLIA_SYNC_DISABLED=true.');

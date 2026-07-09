@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { createStaticSeoManifest, injectStaticSeoHead } from './static-seo';
+import {
+  createStaticSeoHead,
+  createStaticSeoManifest,
+  getDocsOgImageUrl,
+  injectStaticSeoHead,
+} from './static-seo';
 
 describe('static SEO metadata', () => {
   it('creates page-specific crawler metadata from docs pages', () => {
@@ -23,7 +28,9 @@ describe('static SEO metadata', () => {
       {
         canonicalUrl: 'https://docs.example.com/en/introduction',
         description: 'Build with Agora.',
-        imageUrl: 'https://assets-docs.agora.io/og/docs.png',
+        imageUrl:
+          'https://assets-docs.agora.io/og/agora-docs-og-introduction.png',
+        markdownUrl: 'https://docs.example.com/en/introduction.md',
         title: 'Introduction | Agora Docs',
         url: '/en/introduction',
       },
@@ -37,6 +44,7 @@ describe('static SEO metadata', () => {
       '<title>Agora Docs</title>',
       '<meta name="description" content="Global description">',
       '<meta property="og:title" content="Global">',
+      '<link type="text/markdown" rel="alternate" href="https://old.example.com/page.md">',
       '</head>',
       '<body></body>',
       '</html>',
@@ -58,15 +66,58 @@ describe('static SEO metadata', () => {
       '<link rel="canonical" href="https://docs.agora.io/en/realtime-media/video">',
     );
     expect(result).toContain(
+      '<link rel="alternate" type="text/markdown" href="https://docs.agora.io/en/realtime-media/video.md">',
+    );
+    expect(result.match(/type="text\/markdown"/g)).toHaveLength(1);
+    expect(result).toContain(
       '<meta property="og:url" content="https://docs.agora.io/en/realtime-media/video">',
     );
     expect(result).toContain(
       '<meta name="twitter:card" content="summary_large_image">',
     );
     expect(result).toContain(
-      '<meta property="og:image" content="https://assets-docs.agora.io/og/docs.png">',
+      '<meta property="og:image" content="https://assets-docs.agora.io/og/agora-docs-og-realtime-media.png">',
     );
     expect(result).not.toContain('Global description');
+  });
+
+  it('selects OG images by docs category with a fallback', () => {
+    expect(getDocsOgImageUrl('/en/ai/get-started/quickstart')).toBe(
+      'https://assets-docs.agora.io/og/agora-docs-og-voice-agent.png',
+    );
+    expect(getDocsOgImageUrl('/zh-CN/realtime-media/rtc/android')).toBe(
+      'https://assets-docs.agora.io/og/agora-docs-og-realtime-media.png',
+    );
+    expect(
+      getDocsOgImageUrl('/en/api-reference/api-ref/server-sdk/python'),
+    ).toBe('https://assets-docs.agora.io/og/agora-docs-og-reference.png');
+    expect(getDocsOgImageUrl('/en/unknown-section/page')).toBe(
+      'https://assets-docs.agora.io/og/agora-docs-og-overview.png',
+    );
+  });
+
+  it('uses the same category image for Open Graph and Twitter cards', () => {
+    const head = createStaticSeoHead({
+      title: 'Video calling',
+      url: '/en/realtime-media/video',
+    });
+    const ogImage = head.meta.find(
+      (entry) => 'property' in entry && entry.property === 'og:image',
+    );
+    const twitterImage = head.meta.find(
+      (entry) => 'name' in entry && entry.name === 'twitter:image',
+    );
+
+    expect(ogImage).toEqual({
+      property: 'og:image',
+      content:
+        'https://assets-docs.agora.io/og/agora-docs-og-realtime-media.png',
+    });
+    expect(twitterImage).toEqual({
+      name: 'twitter:image',
+      content:
+        'https://assets-docs.agora.io/og/agora-docs-og-realtime-media.png',
+    });
   });
 
   it('injects public docs URLs when no site URL env is configured', () => {
@@ -116,6 +167,42 @@ describe('static SEO metadata', () => {
 
     expect(result).toContain('<title>Introduction | Agora Docs</title>');
     expect(result).not.toContain('Introduction | Agora Docs | Agora Docs');
+  });
+
+  it('keeps platform views canonical to the parent and links platform markdown', () => {
+    const [page] = createStaticSeoManifest({
+      baseUrl: 'https://docs.example.com',
+      pages: [
+        {
+          canonicalPath: '/en/api-reference/api-ref/uikit-sdk',
+          markdownPath: '/en/api-reference/api-ref/uikit-sdk/ios.md',
+          title: 'Fastboard API',
+          url: '/en/api-reference/api-ref/uikit-sdk/ios',
+        },
+      ],
+    });
+
+    expect(page).toMatchObject({
+      canonicalUrl:
+        'https://docs.example.com/en/api-reference/api-ref/uikit-sdk',
+      markdownUrl:
+        'https://docs.example.com/en/api-reference/api-ref/uikit-sdk/ios.md',
+      url: '/en/api-reference/api-ref/uikit-sdk/ios',
+    });
+    if (!page) {
+      throw new Error('Expected platform SEO metadata');
+    }
+
+    const head = createStaticSeoHead(page);
+    expect(head.links).toContainEqual({
+      href: 'https://docs.example.com/en/api-reference/api-ref/uikit-sdk',
+      rel: 'canonical',
+    });
+    expect(head.links).toContainEqual({
+      href: 'https://docs.example.com/en/api-reference/api-ref/uikit-sdk/ios.md',
+      rel: 'alternate',
+      type: 'text/markdown',
+    });
   });
 });
 

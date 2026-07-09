@@ -1,5 +1,14 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const { resolveDocsLastUpdatedMetadataMock } = vi.hoisted(() => ({
+  resolveDocsLastUpdatedMetadataMock: vi.fn(),
+}));
+
+vi.mock('./docs-last-updated.server', () => ({
+  resolveDocsLastUpdatedMetadata: resolveDocsLastUpdatedMetadataMock,
+}));
+
 import {
   loadDocsPagePayload,
   loadDocsSearchIndex,
@@ -1316,24 +1325,42 @@ describe('loadDocsSearchIndex', () => {
   });
 
   it('returns locale page entries and generated OpenAPI endpoints for the static docs search index', async () => {
+    const page = createPage();
+
+    mockedGetPages.mockReturnValue([page]);
+
     await expect(loadDocsSearchIndex('en')).resolves.toEqual(
       expect.arrayContaining([
-        {
+        expect.objectContaining({
+          content: expect.stringContaining('Why teams use it.'),
           description:
             'Build a working mental model of Agora by understanding what it is.',
+          objectType: 'docs',
+          product: 'about-agora',
+          tab: 'introduction',
           title: 'About Agora',
           url: '/en/introduction/about-agora',
-        },
-        {
+        }),
+        expect.objectContaining({
+          content: expect.stringContaining('/v2/projects/{appid}/join'),
+          objectType: 'openapi',
+          tab: 'api-reference',
           title: 'Start a conversational AI agent',
           url: '/en/api-reference/api-ref/conversational-ai/join',
-        },
+        }),
       ]),
+    );
+    expect('getText' in page.data && page.data.getText).toHaveBeenCalledWith(
+      'raw',
     );
   });
 
   it('returns an empty index for unsupported locales', async () => {
     await expect(loadDocsSearchIndex('fr')).resolves.toEqual([]);
+  });
+
+  it('returns an empty index for locales outside the deployment region', async () => {
+    await expect(loadDocsSearchIndex('zh-CN')).resolves.toEqual([]);
   });
 
   it('excludes split-file platform panel pages from search entries', async () => {
@@ -1345,12 +1372,12 @@ describe('loadDocsSearchIndex', () => {
 
     await expect(loadDocsSearchIndex('en')).resolves.toEqual(
       expect.arrayContaining([
-        {
+        expect.objectContaining({
           description:
             'Build a working mental model of Agora by understanding what it is.',
           title: 'Split platform page',
           url: '/en/ai/get-started/platform-split',
-        },
+        }),
       ]),
     );
     const pages = await loadDocsSearchIndex('en');
@@ -1368,6 +1395,12 @@ describe('loadDocsPagePayload', () => {
   beforeEach(() => {
     const page = createPage();
 
+    resolveDocsLastUpdatedMetadataMock.mockReset();
+    resolveDocsLastUpdatedMetadataMock.mockResolvedValue({
+      formatted: '2026/07/06 13:32:13',
+      iso: '2026-07-06T13:32:13.000Z',
+      source: 'git',
+    });
     mockedGetPage.mockImplementation((_slugs, locale) =>
       locale === 'zh-CN' ? undefined : page,
     );
@@ -1402,12 +1435,12 @@ describe('loadDocsPagePayload', () => {
           isActive: true,
           locale: 'en',
         },
-        {
-          href: '/zh-CN/introduction',
-          isActive: false,
-          locale: 'zh-CN',
-        },
       ],
+      lastUpdated: {
+        formatted: '2026/07/06 13:32:13',
+        iso: '2026-07-06T13:32:13.000Z',
+        source: 'git',
+      },
       markdownUrl: '/en/introduction/about-agora.md',
       slug: 'about-agora',
       title: 'About Agora',
@@ -1424,6 +1457,9 @@ describe('loadDocsPagePayload', () => {
         },
       ],
     });
+    expect(resolveDocsLastUpdatedMetadataMock).toHaveBeenCalledWith([
+      'content/docs/en/introduction/about-agora.md',
+    ]);
   });
 
   it('generates TOC from shared content plus canonical platform headings only', async () => {
@@ -1871,11 +1907,6 @@ Web body
           isActive: true,
           locale: 'en',
         },
-        {
-          href: '/zh-CN/api-reference/api-ref/conversational-ai/join',
-          isActive: false,
-          locale: 'zh-CN',
-        },
       ],
       markdownUrl: '/en/api-reference/api-ref/conversational-ai/join.md',
       tabs: [
@@ -1894,6 +1925,10 @@ Web body
         },
       ],
     });
+    expect(resolveDocsLastUpdatedMetadataMock).toHaveBeenCalledWith([
+      'content/docs/en/api-reference/api-ref/conversational-ai/join.mdx',
+      'content/openapi/conversational-ai/rest-api.en.yaml',
+    ]);
 
     if (!payload || 'redirectUrl' in payload) {
       throw new Error('expected an OpenAPI docs page payload');
@@ -2561,7 +2596,7 @@ Web body
     });
   });
 
-  it('falls back locale links to the target tab entry when the same slug is missing', async () => {
+  it('does not expose locale links outside the deployment region', async () => {
     const page = createPage();
     const zhPageTree: Root = {
       children: [
@@ -2614,11 +2649,6 @@ Web body
           href: '/en/ai/get-started/quickstart',
           isActive: true,
           locale: 'en',
-        },
-        {
-          href: '/zh-CN/ai/quick-start',
-          isActive: false,
-          locale: 'zh-CN',
         },
       ],
     });

@@ -43,8 +43,9 @@ From the Agents page, you can:
 - Duplicate an agent
 - [Embed an agent](connect-agent)
 
-> **Caution**
-> Pausing or deleting an agent immediately stops it from serving requests in the associated projects. Ensure no active integrations or services depend on this agent.
+:::caution[Caution]
+Pausing or deleting an agent immediately stops it from serving requests in the associated projects. Ensure no active integrations or services depend on this agent.
+:::
 
 ## Update a deployed agent
 

@@ -23,8 +23,7 @@ The following table lists common request and response parameters of the Chat RES
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Required |
 | :--------- | :----- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
 | `chatroom_id` | String | The chat room ID. The unique chat room identifier assigned to each chat room by the Chat. You can get the chat room ID from the response body in [Retrieve the basic information of all chat rooms](manage-chatrooms#retrieving-basic-information-of-all-chat-rooms).                                                                                                                                    | Yes |
 
@@ -37,7 +36,7 @@ The unique login account of the user. The user ID must be 64 characters or less 
 - "\_", "-", "."
 
 :::info
-Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same app is unique.
+Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same App ID is unique.
 :::
 
 </Slot>
@@ -47,9 +46,9 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | Parameter | Type | Description |
 | :------------------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `action` | String | The request method. |
-| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. |
 | `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
-| `applicationName` | String | The unique identifier assigned to each app by the Chat service . This is the same as `app_name`. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service . |
 | `uri` | String | The request URI. |
 | `path` | String | The request path, which is part of the request URL. You can safely ignore this parameter. |
 | `entities ` | JSON | The response entity. |
@@ -68,7 +67,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/chatrooms/{chatroomid}/users/{username}
+POST https://{host}/app-id/{app_id}/chatrooms/{chatroomid}/users/{username}
 ```
 
 #### Path parameter
@@ -106,7 +105,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```json
 # Replace  with the app token generated in your server.
-curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/users/XXXX'
+curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatrooms/XXXX/users/XXXX'
 ```
 
 #### Response example
@@ -115,7 +114,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 {
     "action": "post",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
-    "uri": "http://XXXX/XXXX/XXXX/chatrooms/XXXX/users/XXXX",
+    "uri": "http://XXXX/app-id/XXXX/chatrooms/XXXX/users/XXXX",
     "entities": [],
     "data": {
         "result": true,
@@ -139,7 +138,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/chatrooms/{chatroomid}/users
+POST https://{host}/app-id/{app_id}/chatrooms/{chatroomid}/users
 ```
 
 #### Path parameter
@@ -192,7 +191,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
    "usernames": [
      "user": "user2"
    ]
- }' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/users'
+ }' 'http://XXXX/app-id/XXXX/chatrooms/XXXX/users'
 ```
 
 #### Response example
@@ -201,7 +200,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 {
     "action": "post",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
-    "uri": "http://XXXX/XXXX/XXXX/chatrooms/XXXX/users",
+    "uri": "http://XXXX/app-id/XXXX/chatrooms/XXXX/users",
     "entities": [],
     "data": {
         "newmembers": ["user1", "user2"],
@@ -224,7 +223,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/users?pagenum={N}&pagesize={N}
+GET https://{host}/app-id/{app_id}/chatrooms/{chatroom_id}/users?pagenum={N}&pagesize={N}
 ```
 
 #### Path parameter
@@ -267,7 +266,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```json
 # Replace  with the app token generated in your server.
-curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/users?pagenum=2&pagesize=2'
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatrooms/XXXX/users?pagenum=2&pagesize=2'
 ```
 
 #### Response example
@@ -280,7 +279,7 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XX
         "pagesize": ["2"],
         "pagenum": ["2"]
     },
-    "uri": "http://XXXX/XXXX/XXXX/chatrooms/XXXX/users",
+    "uri": "http://XXXX/app-id/XXXX/chatrooms/XXXX/users",
     "entities": [],
     "data": [
         {
@@ -307,7 +306,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-DELETE https://{host}/{org_name}/{app_name}/chatrooms/{chatroomid}/users/{username}
+DELETE https://{host}/app-id/{app_id}/chatrooms/{chatroomid}/users/{username}
 ```
 
 #### Path parameter
@@ -342,7 +341,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```json
 # Replace  with the app token generated in your server.
-curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/users/XXXX'
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatrooms/XXXX/users/XXXX'
 ```
 
 #### Response example
@@ -351,7 +350,7 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 {
     "action": "delete",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
-    "uri": "http://XXXX/XXXX/XXXX/chatrooms/XXXX/users/XXXX",
+    "uri": "http://XXXX/app-id/XXXX/chatrooms/XXXX/users/XXXX",
     "entities": [],
     "data": {
         "result": true,
@@ -375,7 +374,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-DELETE https://{host} /{org_name}/{app_name}/chatrooms/{chatroomid}/users/{usernames}
+DELETE https://{host} /app-id/{app_id}/chatrooms/{chatroomid}/users/{usernames}
 ```
 
 ### HTTP request
@@ -417,7 +416,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```json
 # Replace  with the app token generated in your server.
-curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/users/user1%2Cuser2'
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatrooms/XXXX/users/user1%2Cuser2'
 ```
 
 #### Response example
@@ -426,7 +425,7 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 {
     "action": "delete",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
-    "uri": "http://XXXX/XXXX/XXXX/chatrooms/XXXX/users/user1%2Cuser2",
+    "uri": "http://XXXX/app-id/XXXX/chatrooms/XXXX/users/user1%2Cuser2",
     "entities": [],
     "data": [
         {
@@ -459,7 +458,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/admin
+POST https://{host}/app-id/{app_id}/chatrooms/{chatroom_id}/admin
 ```
 
 #### Path parameter
@@ -503,7 +502,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 ```json
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{
    "newadmin": "user1"
- }' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/admin'
+ }' 'http://XXXX/app-id/XXXX/chatrooms/XXXX/admin'
 ```
 
 #### Response example
@@ -521,7 +520,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
     "entities": [],
     "organization": "XXXX",
     "timestamp": 1642486989028,
-    "uri": "http://XXXX/XXXX/XXXX/chatrooms/XXXX/admin"
+    "uri": "http://XXXX/app-id/XXXX/chatrooms/XXXX/admin"
 }
 ```
 
@@ -534,7 +533,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/admin
+GET https://{host}/app-id/{app_id}/chatrooms/{chatroom_id}/admin
 ```
 
 #### Path parameter
@@ -568,7 +567,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```json
 # Replace  with the app token generated in your server.
-curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/admin'
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatrooms/XXXX/admin'
 ```
 
 #### Response example
@@ -577,7 +576,7 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XX
 {
     "action": "get",
     "application": "527cd7e0-XXXX-XXXX-9f59-ef10ecd81ff0",
-    "uri": "http://XXXX/XXXX/XXXX/chatrooms/XXXX/admin",
+    "uri": "http://XXXX/app-id/XXXX/chatrooms/XXXX/admin",
     "entities": [],
     "data": ["XXXX"],
     "timestamp": 1489073361210,
@@ -597,7 +596,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-DELETE https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/admin/{oldadmin}
+DELETE https://{host}/app-id/{app_id}/chatrooms/{chatroom_id}/admin/{oldadmin}
 ```
 
 #### Path parameter
@@ -636,7 +635,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```json
 # Replace  with the app token generated in your server.
-curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/admin/XXXX'
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatrooms/XXXX/admin/XXXX'
 ```
 
 #### Response example
@@ -645,7 +644,7 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 {
     "action": "delete",
     "application": "527cd7e0-XXXX-XXXX-9f59-ef10ecd81ff0",
-    "uri": "http://XXXX/XXXX/XXXX/chatrooms/XXXX/admin/XXXX",
+    "uri": "http://XXXX/app-id/XXXX/chatrooms/XXXX/admin/XXXX",
     "entities": [],
     "data": {
         "result": "success",

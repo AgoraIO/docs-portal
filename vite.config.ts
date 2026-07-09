@@ -7,19 +7,32 @@ import { defineConfig } from 'vitest/config';
 import { getOpenApiPrerenderPaths } from './src/lib/openapi/lanes';
 import { getContentDocsPrerenderPaths } from './src/lib/prerender-content-routes';
 import { shouldPrerenderPage } from './src/lib/prerender-filter';
-import { createDocsPrerenderPaths } from './src/lib/prerender-pages';
+import {
+  createDocsPrerenderPaths,
+  selectStaticDocsPrerenderPaths,
+} from './src/lib/prerender-pages';
+import { readPublishedDocsRoutes } from './src/lib/published-docs-routes.server';
 
 const isTest = process.env.VITEST === 'true';
-const isSpaStaticExperiment = process.env.TSS_SPA_STATIC_EXPERIMENT === 'true';
+const isStaticDeployment =
+  process.env.TSS_STATIC_PRERENDER === 'true' ||
+  process.env.TSS_SPA_STATIC_EXPERIMENT === 'true';
+const selectedPrerenderPaths = process.env.TSS_PRERENDER_PATHS?.split(',')
+  .map((path) => path.trim())
+  .filter(Boolean);
 const docsPrerenderPaths = isTest
   ? []
-  : createDocsPrerenderPaths({
-      openApiPaths: getOpenApiPrerenderPaths(),
-      pages: getContentDocsPrerenderPaths().map((url) => ({ url })),
-    });
-const prerenderPages = docsPrerenderPaths.map((path) => ({
-  path,
-}));
+  : isStaticDeployment
+    ? readPublishedDocsRoutes().map((route) => route.url)
+    : createDocsPrerenderPaths({
+        openApiPaths: getOpenApiPrerenderPaths(),
+        pages: getContentDocsPrerenderPaths().map((url) => ({ url })),
+      });
+const prerenderPages = (
+  isStaticDeployment
+    ? selectStaticDocsPrerenderPaths(docsPrerenderPaths, selectedPrerenderPaths)
+    : docsPrerenderPaths
+).map((path) => ({ path }));
 
 export default defineConfig({
   server: {
@@ -45,17 +58,13 @@ export default defineConfig({
       ? [react()]
       : [
           tanstackStart({
-            pages: isSpaStaticExperiment ? [] : prerenderPages,
-            ...(isSpaStaticExperiment
-              ? {}
-              : {
-                  prerender: {
-                    crawlLinks: false,
-                    enabled: true,
-                    filter: shouldPrerenderPage,
-                  },
-                }),
-            ...(isSpaStaticExperiment
+            pages: prerenderPages,
+            prerender: {
+              crawlLinks: false,
+              enabled: true,
+              filter: shouldPrerenderPage,
+            },
+            ...(isStaticDeployment
               ? {
                   spa: {
                     enabled: true,
@@ -69,7 +78,7 @@ export default defineConfig({
           }),
           react(),
           // please see https://tanstack.com/start/latest/docs/framework/react/guide/hosting#nitro for guides on hosting
-          ...(isSpaStaticExperiment
+          ...(isStaticDeployment
             ? []
             : [
                 nitro({

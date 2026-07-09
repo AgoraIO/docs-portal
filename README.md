@@ -78,6 +78,10 @@ Docs content should follow the repo Markdown and MDX contract in
 Use standard Markdown first, and use only the documented MDX primitives for
 callouts, tabs, platform variants, images, tables, and list continuations.
 
+For docs-owned screenshots and other static assets, upload to S3 with
+`bun run assets:upload`. Follow the security and bucket-prefix rules in
+[docs/agents/static-asset-upload.md](docs/agents/static-asset-upload.md).
+
 ## Contributing
 
 Start with [CONTRIBUTING.md](CONTRIBUTING.md). It explains how to report docs

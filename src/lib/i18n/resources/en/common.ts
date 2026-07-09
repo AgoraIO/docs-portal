@@ -43,6 +43,8 @@ const enCommon = {
     versionMenuLabel: 'Documentation versions',
     toc: 'On this page',
     tocEmpty: 'No headings on this page.',
+    lastUpdated: 'Updated',
+    lastUpdatedUnavailable: 'Last update unavailable',
     returnToSource: 'Back to {{title}}',
     next: 'Next',
     previous: 'Previous',
@@ -203,7 +205,7 @@ const enCommon = {
         },
         full: {
           title: 'llms-full.txt',
-          body: 'A larger aggregated context export for richer agent pulls.',
+          body: 'A bulk export for offline indexing, not default interactive context.',
         },
         search: {
           title: 'Search endpoint',
@@ -211,7 +213,7 @@ const enCommon = {
         },
         markdown: {
           title: 'Raw markdown',
-          body: 'Read published canonical markdown directly from the docs tree.',
+          body: 'Append .md to a docs URL to read its published Markdown directly.',
         },
       },
     },

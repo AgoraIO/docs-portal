@@ -5,6 +5,7 @@ import type { DocumentRecord } from 'fumadocs-core/search/algolia';
 import yaml from 'js-yaml';
 import remarkDirective from 'remark-directive';
 import { buildDocPath } from '../docs-routing';
+import { getSearchEntryMetadata } from '../docs-search';
 import type { AppLocale } from '../i18n/i18n-config';
 import {
   getOpenApiEndpointUrl,
@@ -14,6 +15,7 @@ import {
 } from '../openapi/lanes';
 import { buildOpenApiSchemaTree } from '../openapi/schema-tree';
 import { getOpenApiOperations } from '../openapi/source.server';
+import { getPublishedDocsLocales } from '../site-region';
 
 // Search-ranking category. Glossary pages cross-reference every term so they
 // match almost any query; legacy/deprecated pages are rarely the intent. Both
@@ -36,7 +38,7 @@ export type AlgoliaDocsRecord = DocumentRecord & {
 };
 
 const MAX_CHUNK_LENGTH = 4500;
-const INDEXED_LOCALES: readonly AppLocale[] = ['en'];
+const INDEXED_LOCALES: readonly AppLocale[] = getPublishedDocsLocales('global');
 
 // Classify a doc by its URL for search ranking. No taxonomy exists in
 // frontmatter, so this derives it once, at index time, from path conventions:
@@ -87,6 +89,7 @@ async function getContentDocsRecords() {
 
     const title = page.title ?? route.slugSegments.at(-1) ?? page.url;
     const { contents, headings } = extractDocSearchContent(page.content);
+    const metadata = getSearchEntryMetadata(page.url, page.content);
 
     if (contents.length === 0 && page.description) {
       contents.push({ content: page.description, heading: undefined });
@@ -100,10 +103,7 @@ async function getContentDocsRecords() {
         extra_data: {
           category: classifySearchCategory(page.url),
           locale: route.locale,
-          objectType: 'docs',
-          platform: inferPlatforms(page.url, page.content),
-          product: inferProduct(route),
-          tab: route.tab,
+          ...metadata,
         },
         structured: {
           contents,
@@ -302,6 +302,7 @@ async function getOpenApiRecords() {
         .filter(Boolean)
         .map((part) => toPlainText(String(part)))
         .join('\n');
+      const metadata = getSearchEntryMetadata(url, content, 'openapi');
 
       return [
         {
@@ -310,8 +311,7 @@ async function getOpenApiRecords() {
           extra_data: {
             category: classifySearchCategory(url),
             locale,
-            objectType: 'openapi',
-            platform: inferPlatforms(url, content),
+            ...metadata,
             product: lane.id,
             tab: lane.tab,
           },
@@ -378,28 +378,6 @@ function parseDocsUrl(url: string) {
     slugSegments,
     tab,
   };
-}
-
-function inferProduct(route: { slugSegments: string[]; tab: string }) {
-  return route.slugSegments[0] ?? route.tab;
-}
-
-function inferPlatforms(url: string, content: string) {
-  const sourceText = `${url}\n${content}`.toLowerCase();
-  const platforms = [
-    'android',
-    'ios',
-    'web',
-    'windows',
-    'macos',
-    'unity',
-    'flutter',
-    'react-native',
-    'electron',
-    'unreal',
-  ];
-
-  return platforms.filter((platform) => sourceText.includes(platform));
 }
 
 function schemaFieldPaths(schema: unknown) {

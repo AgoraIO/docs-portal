@@ -49,12 +49,20 @@ describe('SdksCatalog', () => {
     fireEvent.click(within(videoCard).getByRole('tab', { name: 'Web' }));
 
     expect(
-      within(videoCard).getByText('npm i agora-rtc-sdk-ng@4.24.5'),
+      within(videoCard).getByText('npm i agora-rtc-sdk-ng@4.24.6'),
     ).toBeVisible();
     expect(within(videoCard).getByRole('tab', { name: 'Web' })).toHaveAttribute(
       'aria-selected',
       'true',
     );
+
+    const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
+
+    fireEvent.click(within(voiceCard).getByRole('tab', { name: 'Web' }));
+
+    expect(
+      within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.6'),
+    ).toBeVisible();
   });
 
   it('updates the command when the version changes', () => {
@@ -74,6 +82,21 @@ describe('SdksCatalog', () => {
     ).toBeVisible();
   });
 
+  it('does not append Previous to older SDK version options', () => {
+    render(<SdksCatalog />);
+
+    const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
+    const select = within(voiceCard).getByRole('combobox', {
+      name: 'Voice SDK version',
+    }) as HTMLSelectElement;
+    const optionLabels = Array.from(select.options).map(
+      (option) => option.textContent,
+    );
+
+    expect(optionLabels).toContain('v4.6.2');
+    expect(optionLabels).not.toContain('v4.6.2 - Previous');
+  });
+
   it('falls back to a download button when the platform has no derivable command', () => {
     render(<SdksCatalog />);
 
@@ -88,7 +111,7 @@ describe('SdksCatalog', () => {
       within(chatCard).getByRole('link', { name: /download sdk/i }),
     ).toHaveAttribute(
       'href',
-      'https://download.agora.io/sdk/release/AgoraChat1_3_1.xcframework.zip',
+      'https://download.agora.io/sdk/release/AgoraChat1_4_0.zip',
     );
   });
 

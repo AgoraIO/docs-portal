@@ -10,7 +10,7 @@ Speechmatics provides real-time automatic speech recognition (ASR) with flexible
 
 The following example shows how to configure Speechmatics ASR when starting a conversational AI agent.
 
-<Tabs>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
@@ -82,7 +82,7 @@ Use the following `asr` configuration in your request:
   "vendor": "speechmatics",
   "language": "en-US",
   "params": {
-    "api_key": "<speechmatics_key>",
+    "key": "<speechmatics_key>",
     "language": "en",
     "uri": "wss://eu2.rt.speechmatics.com/v2"
   }
@@ -99,7 +99,7 @@ The parameters listed on this page are validated for use with Conversational AI 
 ### Key parameters
 
 <ParameterList title="params" required={true}>
-  <Parameter name="api_key" type="string" required={true}>
+  <Parameter name="key" type="string" required={true}>
     The Speechmatics API key used to authenticate requests. You must provide a valid key for the service to function.
   </Parameter>
   <Parameter name="language" type="string" required={true}>

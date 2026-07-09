@@ -6,6 +6,7 @@ import {
   ChevronDownIcon,
   Edit3Icon,
   ExternalLinkIcon,
+  HistoryIcon,
 } from 'lucide-react';
 import {
   type MouseEvent,
@@ -13,6 +14,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +26,10 @@ import {
   scrollDocsHashTarget,
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
+import {
+  type DocsLastUpdatedMetadata,
+  ensureDocsLastUpdatedMetadata,
+} from '@/lib/docs-last-updated';
 import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
@@ -73,6 +79,7 @@ export function DocsContent({
   markdownUrl,
   layoutMode = 'docs',
   hideToc = false,
+  lastUpdated,
   sidebarHeader,
   slug,
   title,
@@ -85,6 +92,7 @@ export function DocsContent({
   locale?: AppLocale | string;
   layoutMode?: DocsLayoutMode;
   hideToc?: boolean;
+  lastUpdated?: DocsLastUpdatedMetadata;
   markdownUrl?: string;
   sidebarHeader?: DocsSidebarHeader;
   slug?: string;
@@ -96,6 +104,7 @@ export function DocsContent({
   const canCopyMarkdownContent = isMachineReadableLocale(currentLocale);
   const t = i18n.getFixedT(currentLocale, 'common');
   const displayTitle = title ?? slug;
+  const lastUpdatedMetadata = ensureDocsLastUpdatedMetadata(lastUpdated);
   const sourceTitle = displayTitle ?? t('app.name');
   const currentPageKey = getCurrentDocsPageKey();
   const articleReturnLink = useDocsArticleReturnLink(currentPageKey);
@@ -154,14 +163,14 @@ export function DocsContent({
     <article
       className={cn(
         'flex min-w-0 flex-col',
-        'gap-6',
+        'gap-4',
         contentFillsWidth ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
       <header
         className={cn(
           'flex flex-col gap-4 border-b border-[color:var(--line-soft)]',
-          platformTabs ? 'pb-0' : 'pb-5',
+          platformTabs ? 'pb-0' : 'pb-4',
         )}
       >
         {articleReturnLink ? (
@@ -228,6 +237,26 @@ export function DocsContent({
             <h1 className="max-w-4xl text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
               {displayTitle}
             </h1>
+            <p
+              className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"
+              data-testid="docs-last-updated"
+            >
+              <HistoryIcon
+                aria-hidden="true"
+                className="size-3.5 shrink-0"
+                data-testid="docs-last-updated-icon"
+              />
+              {lastUpdatedMetadata.source === 'fallback' ? (
+                <span>{t('docs.lastUpdatedUnavailable')}</span>
+              ) : (
+                <>
+                  <span>{t('docs.lastUpdated')} </span>
+                  <time dateTime={lastUpdatedMetadata.iso}>
+                    {lastUpdatedMetadata.formatted}
+                  </time>
+                </>
+              )}
+            </p>
             {description ? (
               <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)]">
                 {description}
@@ -269,6 +298,7 @@ export function DocsContent({
         <div
           className="prose prose-neutral dark:prose-invert max-w-none"
           data-platform-header-tabs={platformTabs ? 'true' : undefined}
+          data-static-docs-body
           onClickCapture={handleArticleBodyLinkClick}
         >
           {resolvedBody?.kind === 'mdx' ? (
@@ -914,6 +944,38 @@ function TocLinks({
   variant: 'mobile' | 'rail';
   visibleUrls: Set<string>;
 }) {
+  const activeRailLinkRef = useRef<HTMLAnchorElement | null>(null);
+  const scrollActiveLinkIntoView = useCallback(() => {
+    if (variant !== 'rail') {
+      return;
+    }
+
+    activeRailLinkRef.current?.scrollIntoView?.({
+      block: 'nearest',
+      inline: 'nearest',
+    });
+  }, [variant]);
+  const setActiveRailLinkRef = useCallback(
+    (node: HTMLAnchorElement | null) => {
+      activeRailLinkRef.current = node;
+      scrollActiveLinkIntoView();
+    },
+    [scrollActiveLinkIntoView],
+  );
+
+  useEffect(() => {
+    if (variant !== 'rail' || !primaryActiveUrl) {
+      return;
+    }
+
+    scrollActiveLinkIntoView();
+    window.addEventListener('resize', scrollActiveLinkIntoView);
+
+    return () => {
+      window.removeEventListener('resize', scrollActiveLinkIntoView);
+    };
+  }, [primaryActiveUrl, scrollActiveLinkIntoView, variant]);
+
   return (
     <nav
       className={cn(
@@ -929,16 +991,16 @@ function TocLinks({
           <a
             aria-current={isPrimary ? 'location' : undefined}
             className={cn(
-              'text-sm leading-5 text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]',
+              'leading-5 transition-colors hover:bg-[color:var(--docs-soft-fill)]',
               variant === 'rail'
-                ? '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5'
-                : 'rounded-md px-2 py-2',
+                ? '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5 text-[12.5px] text-[color:var(--ink-4)] hover:text-[color:var(--ink-2)]'
+                : 'rounded-md px-2 py-2 text-sm text-[color:var(--ink-3)] hover:text-[color:var(--ink-1)]',
               isVisible &&
                 variant === 'rail' &&
-                'border-[color:var(--line-strong)] text-[color:var(--ink-2)]',
+                'border-[color:var(--line-strong)] text-[color:var(--ink-3)]',
               isPrimary &&
                 variant === 'rail' &&
-                'border-[color:var(--accent-brand)] text-[color:var(--ink-1)]',
+                'border-[color:var(--line-strong)] font-medium text-[color:var(--ink-2)]',
               isPrimary &&
                 variant === 'mobile' &&
                 'bg-[color:var(--docs-soft-fill)] text-[color:var(--ink-1)]',
@@ -957,6 +1019,9 @@ function TocLinks({
               event.preventDefault();
               onHeadingClick(item.url);
             }}
+            ref={
+              isPrimary && variant === 'rail' ? setActiveRailLinkRef : undefined
+            }
           >
             {item.title}
           </a>

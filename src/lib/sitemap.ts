@@ -1,4 +1,5 @@
 import { MACHINE_READABLE_LOCALE } from './machine-readable-docs';
+import { DOCS_REGION, type DocsRegion } from './site-region';
 
 type SitemapPage = {
   url: string;
@@ -10,14 +11,25 @@ const URLSET_OPEN =
 const URLSET_CLOSE = '</urlset>';
 const PUBLIC_DOCS_BASE_URL = 'https://docs.agora.io';
 
-export function getSitemapBaseUrl() {
+export function getSitemapBaseUrl(region: DocsRegion = DOCS_REGION) {
+  const viteEnv = (
+    import.meta as ImportMeta & {
+      env?: Record<string, string | undefined>;
+    }
+  ).env;
   const configured =
     process.env.SITE_URL ??
+    viteEnv?.VITE_SITE_URL ??
     process.env.VITE_SITE_URL ??
-    process.env.PUBLIC_SITE_URL ??
-    PUBLIC_DOCS_BASE_URL;
+    process.env.PUBLIC_SITE_URL;
 
-  return configured.replace(/\/+$/, '').replace(/\/en$/, '');
+  if (!configured && region === 'cn') {
+    throw new Error('SITE_URL is required when VITE_DOCS_REGION=cn.');
+  }
+
+  const baseUrl = configured ?? PUBLIC_DOCS_BASE_URL;
+
+  return baseUrl.replace(/\/+$/, '').replace(/\/en$/, '');
 }
 
 export function getSitemapUrls({

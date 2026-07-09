@@ -240,7 +240,16 @@ describe('openapi schema tree', () => {
           default: 'auto',
           enum: ['auto', 'manual'],
           format: 'text',
+          maxLength: 24,
+          minLength: 3,
+          pattern: '^[a-z]+$',
           type: 'string',
+        },
+        tags: {
+          items: { type: 'string' },
+          maxItems: 8,
+          minItems: 1,
+          type: 'array',
         },
         count: {
           maximum: 10,
@@ -262,7 +271,15 @@ describe('openapi schema tree', () => {
           defaultValue: 'auto',
           enumValues: ['auto', 'manual'],
           format: 'text',
+          maxLength: 24,
+          minLength: 3,
           path: 'mode',
+          pattern: '^[a-z]+$',
+        }),
+        expect.objectContaining({
+          maxItems: 8,
+          minItems: 1,
+          path: 'tags',
         }),
         expect.objectContaining({
           maximum: 10,

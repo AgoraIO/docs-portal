@@ -20,6 +20,24 @@ describe('sitemap', () => {
     }
   });
 
+  it('uses the Vite-exposed site URL for cn deployments during hydration', () => {
+    const previousSiteUrl = process.env.SITE_URL;
+    const previousViteSiteUrl = process.env.VITE_SITE_URL;
+    const previousPublicSiteUrl = process.env.PUBLIC_SITE_URL;
+
+    delete process.env.SITE_URL;
+    process.env.VITE_SITE_URL = 'https://vite-alias.example.com';
+    process.env.PUBLIC_SITE_URL = 'https://public-alias.example.com';
+
+    try {
+      expect(getSitemapBaseUrl('cn')).toBe('https://vite-alias.example.com');
+    } finally {
+      restoreEnvValue('SITE_URL', previousSiteUrl);
+      restoreEnvValue('VITE_SITE_URL', previousViteSiteUrl);
+      restoreEnvValue('PUBLIC_SITE_URL', previousPublicSiteUrl);
+    }
+  });
+
   it('normalizes configured English docs hosts to the canonical root', () => {
     const previousSiteUrl = process.env.SITE_URL;
 

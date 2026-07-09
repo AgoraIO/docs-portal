@@ -525,7 +525,7 @@ async function setBackgroundImage() {
   1. Add the following code to the html file:
 
      ```html
-     <script src="../agora-extension-virtual-background.js"></script>
+     <script src="./agora-extension-virtual-background.js"></script>
      ```
 
 ### Create and register the extension instance
@@ -1159,6 +1159,7 @@ Virtual Background offers the following options:
 | Blurred background and image background  |  ![image](https://assets-docs.agora.io/images/extensions-marketplace/blurred-background.jpg)  |
 | Video/Animated background  |  <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" height="auto">Your browser does not support the `video` element.</video>  |
 | Portrait-in-picture  | ![portrait-in-picture](https://assets-docs.agora.io/images/extensions-marketplace/portrait-in-picture.jpg) Allows the presenter to use slides as the virtual background while superimposing their video. The effect is similar to a weather news cast on television, preventing interruptions during a layout toggle.  |
+| Together Mode | ![together-mode](https://assets-docs.agora.io/images/video-sdk/together-mode.png) Allows the presenter to segment the portrait in the remote video, transmit it locally, and customize the display. |
 
 Want to test Virtual Background? Try the <a href="https://webdemo.agora.io/virtualBackground/index.html">online demo</a>.
 
@@ -1216,7 +1217,7 @@ func colorBackground() {
 
 ### Set an image background
 
-To set a custom image as the virtual background, include an image such as `background_ss.jpg` in your app bundle and use the following code:
+To set a custom image as the virtual background, specify the absolute path to the image file.
 
 ```swift
 func imageBackground() {
@@ -1403,6 +1404,40 @@ const checkCompatibility = () => {
 }
 ```
 
+### Configure the virtual background extension
+
+Initializes and configures the virtual background processor, ensuring compatibility and handling initialization errors.
+
+```typescript
+useEffect(() => {
+  const initializeVirtualBackgroundProcessor = async () => {
+    AgoraRTC.registerExtensions([extension.current]);
+    checkCompatibility();
+    console.log("Initializing virtual background processor...");
+    try {
+      processor.current = extension.current.createProcessor();
+      await processor.current.init(wasm);
+      localCameraTrack.pipe(processor.current).pipe(agoraContext.localCameraTrack.processorDestination);
+      processor.current.setOptions({ type: "color", color: "#00ff00" });
+      await processor.current.enable();
+    } catch (error) {
+      console.error("Error initializing virtual background:", error);
+    }
+  };
+
+  void initializeVirtualBackgroundProcessor();
+
+  return () => {
+    const disableVirtualBackground = async () => {
+      processor.current?.unpipe();
+      localCameraTrack?.unpipe();
+      await processor.current?.disable();
+    };
+    void disableVirtualBackground();
+  };
+}, [localCameraTrack]);
+```
+
 ### Set a blurred background
 
 To blur the video background, use the following code:
@@ -1435,32 +1470,6 @@ const imageBackground = () => {
   };
   image.src = demoImage;
 };
-```
-
-### Reset the background
-
-To disable the virtual background and revert to the original video state, use the following code:
-
-```typescript
-function VirtualBackgroundComponent() {
-  const [isVirtualBackground, setVirtualBackground] = useState(false);
-  const connectionState = useConnectionState();
-
-  return (
-    <div>
-      {isVirtualBackground ? (
-        <div>
-          <button onClick={() => setVirtualBackground(false)}>Disable virtual background</button>
-          <AgoraExtensionComponent />
-        </div>
-      ) : (
-        <button onClick={() => setVirtualBackground(true)} disabled={connectionState !== "CONNECTED"}>
-          Enable virtual background
-        </button>
-      )}
-    </div>
-  );
-}
 ```
 
 ## Reference
@@ -1650,10 +1659,8 @@ void UMyUserWidget::SetBackgroundBlur(VirtualBackgroundSource& virtualBackground
     segmentationProperty.modelType = SegmentationProperty::SEG_MODEL_AI;
     segmentationProperty.greenCapacity = 0.5F;
 
-    // Disable virtual background
-    agoraEngine->enableVirtualBackground(false, virtualBackgroundSource, segmentationProperty);
-    UE_LOG(LogTemp, Log, TEXT("Color background enabled"));
-
+    // Enable virtual background
+    agoraEngine->enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty);
     UE_LOG(LogTemp, Log, TEXT("Blur background enabled"));
 }
 ```
@@ -1728,6 +1735,7 @@ void UMyUserWidget::ResetVirtualBackground()
     agoraEngine->enableVirtualBackground(false, virtualBackgroundSource, segmentationProperty);
 }
 ```
+
 ## Reference
 
 This section contains content that completes the information in this page, or points you to documentation that explains other aspects of this product.

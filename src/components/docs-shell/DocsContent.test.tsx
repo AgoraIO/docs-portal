@@ -225,6 +225,74 @@ describe('DocsContent', () => {
     expect(within(breadcrumb).getByText('About Agora')).toBeInTheDocument();
   });
 
+  it('renders English last updated metadata below the page title', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/about-agora.md"
+        lastUpdated={{
+          formatted: '2026/07/06 13:32:13',
+          iso: '2026-07-06T13:32:13.000Z',
+          source: 'git',
+        }}
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    const title = await screen.findByRole('heading', { name: 'About Agora' });
+    const lastUpdated = screen.getByTestId('docs-last-updated');
+    const timestamp = within(lastUpdated).getByText('2026/07/06 13:32:13');
+
+    expect(lastUpdated).toHaveTextContent('Updated 2026/07/06 13:32:13');
+    expect(
+      within(lastUpdated).getByTestId('docs-last-updated-icon'),
+    ).toBeInTheDocument();
+    expect(timestamp).toHaveAttribute('datetime', '2026-07-06T13:32:13.000Z');
+    expect(
+      title.compareDocumentPosition(lastUpdated) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it('renders Chinese last updated metadata with the localized label', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="zh-CN/introduction/about-agora.md"
+        lastUpdated={{
+          formatted: '2026/07/06 13:32:13',
+          iso: '2026-07-06T13:32:13.000Z',
+          source: 'git',
+        }}
+        locale="zh-CN"
+        slug="about-agora"
+        title="关于 Agora"
+        toc={[]}
+      />,
+      '/zh-CN/introduction/about-agora',
+    );
+
+    expect(await screen.findByTestId('docs-last-updated')).toHaveTextContent(
+      '更新时间 2026/07/06 13:32:13',
+    );
+  });
+
+  it('renders a neutral fallback when payload metadata is missing', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/about-agora.md"
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    const lastUpdated = await screen.findByTestId('docs-last-updated');
+
+    expect(lastUpdated).toHaveTextContent('Last update unavailable');
+    expect(within(lastUpdated).queryByText('1970/01/01 00:00:00')).toBeNull();
+  });
+
   it('does not render the copy page action when the locale has no public markdown content', async () => {
     renderWithRouter(
       <DocsContent
@@ -260,6 +328,7 @@ describe('DocsContent', () => {
 
     expect(html).toContain('data-testid="docs-content-body"');
     expect(html).toContain('en/introduction/about-agora.md');
+    expect(html).not.toContain('data-agent-docs-directive="true"');
     expect(html).not.toContain('data-testid="docs-content-skeleton"');
   });
 
@@ -369,11 +438,11 @@ describe('DocsContent', () => {
     );
 
     const article = await screen.findByRole('article');
-    expect(article).toHaveClass('gap-6');
+    expect(article).toHaveClass('gap-4');
     expect(article).not.toHaveClass('gap-9');
 
     const header = article.querySelector('header');
-    expect(header).toHaveClass('pb-5');
+    expect(header).toHaveClass('pb-4');
     expect(header).not.toHaveClass('pb-7');
   });
 
@@ -1268,6 +1337,93 @@ describe('DocsTableOfContents', () => {
     ).toHaveAttribute('data-primary', 'true');
   });
 
+  it('keeps the active rail item visible inside long table of contents lists', async () => {
+    const longToc = Array.from({ length: 24 }, (_, index) => ({
+      depth: index % 4 === 0 ? 3 : 2,
+      title: `Heading ${index + 1}`,
+      url: `#heading-${index + 1}`,
+    }));
+
+    render(
+      <AppProviders>
+        <div
+          data-testid="docs-main-desktop-scroll"
+          style={{ height: 400, overflow: 'auto' }}
+        >
+          {longToc.map((item) => (
+            <h2 id={item.url.slice(1)} key={item.url}>
+              {item.title}
+            </h2>
+          ))}
+        </div>
+        <div style={{ height: 240, overflow: 'auto' }}>
+          <DocsTableOfContents toc={longToc} />
+        </div>
+      </AppProviders>,
+    );
+
+    const scrollContainer = screen.getByTestId('docs-main-desktop-scroll');
+    const scrollIntoView = vi.fn();
+    const activeHeading = document.getElementById('heading-24');
+    const activeLink = screen.getByRole('link', { name: 'Heading 24' });
+
+    expect(activeHeading).toBeInstanceOf(HTMLElement);
+    expect(screen.getAllByRole('link')).toHaveLength(24);
+    Object.defineProperty(activeLink, 'scrollIntoView', {
+      configurable: true,
+      value: scrollIntoView,
+    });
+    vi.spyOn(scrollContainer, 'getBoundingClientRect').mockReturnValue({
+      bottom: 500,
+      height: 400,
+      left: 0,
+      right: 800,
+      top: 100,
+      width: 800,
+      x: 0,
+      y: 100,
+      toJSON: () => ({}),
+    });
+
+    for (const item of longToc) {
+      const heading = document.getElementById(item.url.slice(1));
+      expect(heading).toBeInstanceOf(HTMLElement);
+      vi.spyOn(heading as HTMLElement, 'getBoundingClientRect').mockReturnValue(
+        {
+          bottom: item.url === '#heading-24' ? 180 : 80,
+          height: 28,
+          left: 0,
+          right: 800,
+          top: item.url === '#heading-24' ? 150 : 50,
+          width: 800,
+          x: 0,
+          y: item.url === '#heading-24' ? 150 : 50,
+          toJSON: () => ({}),
+        },
+      );
+    }
+
+    fireEvent.scroll(scrollContainer);
+
+    await waitFor(() => {
+      expect(activeLink).toHaveAttribute('aria-current', 'location');
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        block: 'nearest',
+        inline: 'nearest',
+      });
+    });
+
+    scrollIntoView.mockClear();
+    fireEvent.resize(window);
+
+    await waitFor(() => {
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        block: 'nearest',
+        inline: 'nearest',
+      });
+    });
+  });
+
   it('marks every visible content section while keeping one primary aria-current item', async () => {
     render(
       <AppProviders>
@@ -1531,7 +1687,7 @@ describe('DocsMainColumn', () => {
 
     expect(mainColumn).toHaveClass('min-w-0', 'bg-background');
     expect(mainColumn).not.toHaveClass('h-full', 'min-h-0', 'overflow-hidden');
-    expect(desktopContent).toHaveClass('hidden', 'lg:block');
+    expect(desktopContent).not.toHaveClass('hidden', 'lg:block');
     expect(desktopContent).not.toHaveClass(
       'docs-scrollbar',
       'h-full',
@@ -1637,21 +1793,28 @@ describe('DocsMainColumn', () => {
     expect(pager).toHaveClass('grid-cols-1', 'sm:grid-cols-2');
   });
 
-  it('keeps the mobile site footer outside the page footer semantics', async () => {
+  it('keeps one canonical article and footer in the docs main column', async () => {
     renderWithRouter(
       <DocsMainColumn>
-        <article>Body</article>
+        <article>
+          <h1 id="overview">Overview</h1>
+          <h2 id="setup">Setup</h2>
+        </article>
       </DocsMainColumn>,
     );
 
     const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
-    const pageFooter = within(desktopScroll).getByTestId('docs-page-footer');
     const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
+    const pageFooter = within(desktopScroll).getByTestId('docs-page-footer');
     const siteFooter = within(mobileFlow).getByTestId('docs-site-footer');
+    const ids = Array.from(document.querySelectorAll<HTMLElement>('[id]'))
+      .map((element) => element.id)
+      .filter(Boolean);
 
-    expect(
-      within(desktopScroll).queryByTestId('docs-site-footer'),
-    ).not.toBeInTheDocument();
+    expect(desktopScroll).toContainElement(mobileFlow);
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
+    expect(ids.filter((id, index) => ids.indexOf(id) !== index)).toEqual([]);
+    expect(screen.getAllByTestId('docs-page-footer')).toHaveLength(1);
     expect(pageFooter).not.toContainElement(siteFooter);
   });
 

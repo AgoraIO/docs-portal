@@ -100,7 +100,7 @@ describe('API reference overview links', () => {
       'media-pull': 'Media Pull Overview',
       'media-push': 'Media Push Overview',
       'on-premise-recording': 'On-Premise Recording Overview',
-      rtc: 'Voice & Video Calling Overview',
+      rtc: 'Voice & Video Calling Management Overview',
       'rtmp-gateway': 'Media Gateway Overview',
       signaling: 'Signaling Overview',
       'speech-to-text': 'Speech-to-Text Overview',

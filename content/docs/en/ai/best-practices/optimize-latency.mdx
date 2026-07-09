@@ -97,7 +97,7 @@ The Conversational AI engine provides two ways to monitor latency metrics for ea
 
 If you use client components (Android, iOS, or Web), you can listen to agent performance metrics in real time by registering the `onAgentMetrics` callback.
 
-<Tabs>
+<Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
 <TabsList>
   <TabsTrigger value="android">Android</TabsTrigger>
   <TabsTrigger value="ios">iOS</TabsTrigger>
@@ -169,10 +169,11 @@ conversationalAIAPI.on(
 );
 ```
 
-For detailed integration steps and API reference, see [Webhooks](../build/handle-runtime-events/webhooks).
-
 </TabsContent>
 </Tabs>
+
+For detailed integration steps and API reference, see [Webhooks](../build/handle-runtime-events/webhooks).
+
 ### Use Message Notification Service
 
 If you have enabled Agora's Message Notification Service, you can obtain agent performance metrics by receiving the `agent metrics` event where `eventType` is `111`.
@@ -304,7 +305,7 @@ Agora RTC SDK 4.5.1 and later supports the AI conversation scenario (`AUDIO_SCEN
 * Lower audio capture and playback latency
 * Audio processing tailored to AI voice characteristics
 
-<Tabs>
+<Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
 <TabsList>
   <TabsTrigger value="android">Android</TabsTrigger>
   <TabsTrigger value="ios">iOS</TabsTrigger>
@@ -334,8 +335,6 @@ config.mAudioScenario = Constants.AUDIO_SCENARIO_AI_CLIENT
 rtcEngine = RtcEngine.create(config)
 ```
 
-For detailed audio setting optimization, see [Optimize audio](audio-setup).
-
 </TabsContent>
 
 <TabsContent value="ios">
@@ -362,6 +361,9 @@ config.audioScenario = .aiClient
 rtcEngine = AgoraRtcEngineKit.sharedEngine(with: config, delegate: delegate)
 ```
 
+</TabsContent>
+</Tabs>
+
 For detailed audio setting optimization, see [Optimize audio](audio-setup).
 
 {/* ## Optimize MLLM architecture latency
@@ -374,9 +376,6 @@ MLLM vendors vary in real-time performance. The Conversational AI engine current
 * Google Gemini Live: Supports multimodal real-time interaction
 
 For detailed MLLM integration guides, see the MLLM provider pages under `AI > Models > MLLM`. */}
-
-</TabsContent>
-</Tabs>
 
 ## Latency optimization checklist
 

@@ -1,6 +1,6 @@
 ---
 title: Set up service and credentials
-description: Before entering any specific realtime or media capability, prepare Console access, project setup, and credential strategy.
+description: Before entering any specific real-time or media capability, prepare Console access, project setup, and credential strategy.
 ---
 
 ## Why this always comes first

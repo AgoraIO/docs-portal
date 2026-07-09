@@ -639,8 +639,16 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Chat',
         versions: [
           {
+            id: '1.4.0-chat-sdk-android',
+            label: 'Version 1.4.0 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_CHAT_SDK_for_Android_v1_4_0.zip',
+            packageManager:
+              'https://search.maven.org/artifact/io.agora.rtc/chat-sdk/1.4.0/aar',
+          },
+          {
             id: '1.3.2-chat-sdk-android',
-            label: 'Version 1.3.2 (Latest)',
+            label: 'Version 1.3.2',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_CHAT_SDK_for_Android_v1_3_2.zip',
             packageManager:
@@ -1281,8 +1289,15 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Chat',
         versions: [
           {
+            id: '1.4.0-chat-sdk-ios',
+            label: 'Version 1.4.0 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/AgoraChat1_4_0.zip',
+            packageManager: 'https://github.com/AgoraIO/AgoraChat_iOS.git',
+          },
+          {
             id: '1.3.1-chat-sdk-ios',
-            label: 'Version 1.3.1 (Latest)',
+            label: 'Version 1.3.1',
             downloadLink:
               'https://download.agora.io/sdk/release/AgoraChat1_3_1.xcframework.zip',
             packageManager: 'https://github.com/AgoraIO/AgoraChat_iOS.git',
@@ -1419,8 +1434,32 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
         versions: [
           {
+            id: '4.24.6-voice-sdk-web',
+            label: 'Version 4.24.6 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip',
+            packageManager:
+              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6',
+          },
+          {
+            id: '4.24.5-voice-sdk-web',
+            label: 'Version 4.24.5',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_5_FULL.zip',
+            packageManager:
+              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.5',
+          },
+          {
+            id: '4.24.4-voice-sdk-web',
+            label: 'Version 4.24.4',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_4_FULL.zip',
+            packageManager:
+              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.4',
+          },
+          {
             id: '4.24.3-voice-sdk-web',
-            label: 'Version 4.24.3 (Latest)',
+            label: 'Version 4.24.3',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_3_FULL.zip',
             packageManager:
@@ -1667,8 +1706,16 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
+            id: '4.24.6-video-sdk-web',
+            label: 'Version 4.24.6 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip',
+            packageManager:
+              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6',
+          },
+          {
             id: '4.24.5-video-sdk-web',
-            label: 'Version 4.24.5 (Latest)',
+            label: 'Version 4.24.5',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_5_FULL.zip',
             packageManager:
@@ -1708,7 +1755,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '4.24.0-video-sdk-web',
-            label: 'Version 4.24.0 (Latest)',
+            label: 'Version 4.24.0',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_0_FULL.zip',
             packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
@@ -2017,8 +2064,15 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Chat',
         versions: [
           {
+            id: '1.4.0-chat-sdk-web',
+            label: 'Version 1.4.0 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/agora-chat-1.4.0.zip',
+            packageManager: 'https://www.npmjs.com/package/agora-chat',
+          },
+          {
             id: '1.3.1-chat-sdk-web',
-            label: 'Version 1.3.1 (Latest)',
+            label: 'Version 1.3.1',
             downloadLink:
               'https://download.agora.io/sdk/release/agora-chat-1.3.1.zip',
             packageManager: 'https://www.npmjs.com/package/agora-chat',
@@ -2704,8 +2758,14 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Chat',
         versions: [
           {
+            id: '1.4.0-chat-sdk-react-native',
+            label: 'Version 1.4.0 (Latest)',
+            packageManager:
+              'https://www.npmjs.com/package/react-native-agora-chat/v/1.4.0',
+          },
+          {
             id: '1.3.6-chat-sdk-react-native',
-            label: 'Version 1.3.6 (Latest)',
+            label: 'Version 1.3.6',
             packageManager:
               'https://www.npmjs.com/package/react-native-agora-chat/v/1.3.6',
           },
@@ -3221,8 +3281,14 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Chat',
         versions: [
           {
+            id: '1.4.0-chat-sdk-windows',
+            label: 'Version 1.4.0 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/agora_chat_sdk.1.4.0.nupkg',
+          },
+          {
             id: '1.3.1-chat-sdk-windows',
-            label: 'Version 1.3.1 (Latest)',
+            label: 'Version 1.3.1',
             downloadLink:
               'https://download.agora.io/sdk/release/agora_chat_sdk.1.3.1.nupkg',
           },
@@ -3498,8 +3564,13 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Chat',
         versions: [
           {
+            id: '1.4.0-chat-sdk-flutter',
+            label: 'Version 1.4.0 (Latest)',
+            packageManager: 'https://pub.dev/packages/agora_chat_sdk',
+          },
+          {
             id: '1.3.3-chat-sdk-flutter',
-            label: 'Version 1.3.3 (Latest)',
+            label: 'Version 1.3.3',
             packageManager: 'https://pub.dev/packages/agora_chat_sdk',
           },
           {
@@ -4013,8 +4084,14 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Chat',
         versions: [
           {
+            id: '1.4.0-chat-sdk-unity',
+            label: 'Version 1.4.0 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/agora_chat_unity_sdk1.4.0.unitypackage',
+          },
+          {
             id: '1.3.1-chat-sdk-unity',
-            label: 'Version 1.3.1 (Latest)',
+            label: 'Version 1.3.1',
             downloadLink:
               'https://download.agora.io/sdk/release/agora_chat_unity_sdk1.3.1.unitypackage',
           },

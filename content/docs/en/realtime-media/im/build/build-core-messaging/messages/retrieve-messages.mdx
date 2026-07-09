@@ -97,14 +97,22 @@ To ensure data reliability, we recommend retrieving less than 50 historical mess
 
 We recommend that you retrieve 20 messages each time, with a maximum of 50. During paginated query, if the total number of messages that meet the query conditions is greater than the number of `pageSize`, the number of messages of `pageSize` will be returned. If it is less than the number of `pageSize`, the actual number will be returned. When the message query is completed, the number of returned messages is less than the number of `pageSize`.
 
+Since SDK v1.4.0, for a single group conversation you can retrieve messages sent by specific members (rather than all members) by setting the sender list with `FetchMessageOption#setFromIds`.
+
 Refer to the following code sample:
 
 ```java
 String conversationId=" ";
 Conversation.ConversationType type=Conversation.ConversationType.Chat;
 FetchMessageOption option=new FetchMessageOption();
-//for example
+//For example, save the retrieved messages to the local database.
 //option.setIsSave(true);
+//Since v1.4.0, for a group conversation you can retrieve messages sent by specific members.
+//For example, retrieve messages sent by two specific user IDs in the group.
+//List<String> fromIds = new ArrayList<String>();
+//fromIds.add("user1");
+//fromIds.add("user2");
+//option.setFromIds(fromIds);
 int pageSize = 40;
 String cursor = "";
 List messages = new ArrayList<>();
@@ -136,6 +144,86 @@ private void doAsyncFetchHistoryMessages(String conversationId,
         }
     });
 }
+```
+
+### Search local messages sent by specific members
+
+Since SDK v1.4.0, for a single conversation you can search the local database for messages that contain a keyword and are sent by specific members. You can specify up to 10 senders; to search messages from all senders, pass `null` or an empty list.
+
+```java
+String conversationId = "user_or_group_id";
+Conversation conversation = ChatClient.getInstance()
+        .chatManager()
+        .getConversation(conversationId);
+if (conversation != null) {
+    String keywords = "hello";
+    long timeStamp = -1; // A value less than 0 means the search starts from the current time.
+    int maxCount = 20;
+    // Limit the senders to a maximum of 10. To not limit the senders, pass null or an empty list.
+    List<String> senders = Arrays.asList("user1", "user2");
+    conversation.asyncSearchMsgFromDB(
+            keywords,
+            timeStamp,
+            maxCount,
+            senders,
+            Conversation.SearchDirection.UP,
+            Conversation.ChatMessageSearchScope.CONTENT,
+            new ValueCallBack<List<ChatMessage>>() {
+                @Override
+                public void onSuccess(List<ChatMessage> messages) {
+                    for (ChatMessage message : messages) {
+                        String msgId = message.getMsgId();
+                        String from = message.getFrom();
+                        long msgTime = message.getMsgTime();
+                        // TODO: handle the search results
+                    }
+                }
+
+                @Override
+                public void onError(int code, String error) {
+                    // TODO: handle the error
+                }
+            }
+    );
+}
+```
+
+### Search local conversations by keyword
+
+Since SDK v1.4.0, you can search across all local conversations for messages that contain a keyword. The SDK returns a map of conversation IDs to the lists of matching message IDs. Each message ID list is ordered by message timestamp, in ascending or descending order according to the `direction` parameter.
+
+```java
+String keyword = "Time";
+ChatClient.getInstance().chatManager().asyncLoadConversationMessagesWithKeyword(keyword, -1, null, Conversation.SearchDirection.UP, Conversation.ChatMessageSearchScope.CONTENT, new ValueCallBack<Map<String, List<String>>>() {
+    @Override
+    public void onSuccess(Map<String, List<String>> value) {
+        EMLog.e(TAG, "asyncLoadConversationMessagesWithKeyword onSuccess value:" + value);
+    }
+
+    @Override
+    public void onError(int error, String errorMsg) {
+        EMLog.e(TAG, "asyncLoadConversationMessagesWithKeyword onError error:" + error + " errorMsg:" + errorMsg);
+    }
+});
+```
+
+### Retrieve local messages by message ID
+
+Since SDK v1.4.0, you can pass one or more message IDs to retrieve messages from a single local conversation. You can pass a maximum of 20 message IDs at a time.
+
+```java
+// messageIds: the list of message IDs. You can pass a maximum of 20 message IDs at a time.
+ChatClient.getInstance().chatManager().asyncLoadMessages(messageIds, conversationId, new ValueCallBack<List<ChatMessage>>() {
+    @Override
+    public void onSuccess(List<ChatMessage> value) {
+        EMLog.e(TAG, "asyncLoadMessages onSuccess value:" + value);
+    }
+
+    @Override
+    public void onError(int error, String errorMsg) {
+        EMLog.e(TAG, "asyncLoadMessages onError error:" + error + " errorMsg:" + errorMsg);
+    }
+});
 ```
 
 ### Pin a conversation
@@ -517,13 +605,57 @@ For users to receive more offline messages, use the client API or a webhook to s
 
 To ensure data reliability, we recommend retrieving less than 50 historical messages for each method call. To retrieve more than 50 historical messages, call this method multiple times. Once the messages are retrieved, the SDK automatically updates these messages in the local database.
 
+Since SDK v1.4.0, for a single group conversation you can retrieve messages sent by specific members (rather than all members) by setting the `fromIds` list in `AgoraChatFetchServerMessagesOption`.
+
 Refer to the following code sample:
 
 ```objc
 AgoraChatFetchServerMessagesOption* option = [[AgoraChatFetchServerMessagesOption alloc] init];
+    // Since SDK v1.4.0, for a group conversation you can retrieve messages sent by specific members.
+    option.fromIds = @[@"user1", @"user2"];
     [AgoraChatClient.sharedClient.chatManager fetchMessagesFromServerBy:@"conversationId" conversationType:AgoraChatConversationTypeGroupChat cursor:@"" pageSize:20 option:option completion:^(AgoraChatCursorResult * _Nullable result, AgoraChatError * _Nullable aError) {
 
     }];
+```
+
+### Search local messages sent by specific members
+
+Since SDK v1.4.0, for a single conversation you can search the local database for messages that contain a keyword and are sent by specific members.
+
+```objc
+AgoraChatConversation *conversation = [AgoraChatClient.sharedClient.chatManager getConversationWithConvId:@"conversationId"];
+if (conversation) {
+    [conversation loadMessagesWithKeyword:nil timestamp:-1 count:20 fromUsers:@[@"user1", @"user2"] searchDirection:AgoraChatMessageSearchDirectionUp scope:AgoraChatMessageSearchScopeAll completion:^(NSArray<AgoraChatMessage *> * _Nullable aMessages, AgoraChatError * _Nullable aError) {
+        if (aError == nil) {
+            // Loaded successfully.
+        }
+    }];
+}
+```
+
+### Search local conversations by keyword
+
+Since SDK v1.4.0, you can search across all local conversations for messages that contain a keyword. The SDK returns a dictionary of conversation IDs to the lists of matching message IDs. Each message ID list is ordered by message timestamp, in ascending or descending order according to the `aDirection` parameter.
+
+```objc
+[AgoraChatClient.sharedClient.chatManager loadConversationMessagesWithKeyword:@"keyword" timestamp:-1 fromUser:@"" searchDirection:AgoraChatMessageSearchDirectionUp scope:AgoraChatMessageSearchScopeAll completion:^(NSDictionary<NSString *,NSArray<NSString *> *> * _Nullable aConversationMessages, AgoraChatError * _Nullable aError) {
+    if (aError == nil) {
+        // aConversationMessages contains the matching conversation IDs and message IDs.
+    }
+}];
+```
+
+### Retrieve local messages by message ID
+
+Since SDK v1.4.0, you can pass one or more message IDs to retrieve messages from a single local conversation. You can pass a maximum of 20 message IDs at a time.
+
+```objc
+// You can pass a maximum of 20 message IDs at a time.
+[AgoraChatClient.sharedClient.chatManager getMessages:@[@"messageId1", @"messageId2"] withConversationId:@"conversationId" completion:^(NSArray<AgoraChatMessage *> * _Nullable aMessages, AgoraChatError * _Nullable aError) {
+    if (aError == nil) {
+        // aMessages contains the retrieved messages.
+    }
+}];
 ```
 
 ### Pin a conversation
@@ -696,6 +828,8 @@ For users to receive more offline messages, use the client API or a webhook to s
 To ensure data reliability, we recommend retrieving less than 50 historical messages for each method call. To retrieve more than 50 historical messages, call this method multiple times. Once the messages are retrieved, the SDK automatically updates these messages in the local database.
 
 We recommend that you retrieve 20 messages each time, with a maximum of 50. During paginated query, if the total number of messages that meet the query conditions is greater than the number of `pageSize`, the number of messages of `pageSize` will be returned. If it is less than the number of `pageSize`, the actual number will be returned. When the message query is completed, the number of returned messages is less than the number of `pageSize`.
+
+Since SDK v1.4.0, for a single group conversation you can retrieve messages sent by a specific member by setting `from` in `searchOptions`.
 
 Refer to the following code sample:
 
@@ -1033,6 +1167,8 @@ Refer to the following code sample:
 ChatConversationType conversationType = ChatConversationType.Chat;
 FetchMessageOptions options = FetchMessageOptions(
   from: senderId,
+  // Since SDK v1.4.0, for a group conversation you can retrieve messages sent by specific members.
+  senders: ['senderA', 'senderB'],
   direction: ChatSearchDirection.Up,
   startTs: 1695720454000,
   endTs: 1695720554000,
@@ -1046,6 +1182,45 @@ ChatCursorResult result =
   options: options,
   cursor: cursor,
   pageSize: pageSize,
+);
+```
+
+### Search local messages sent by specific members
+
+Since SDK v1.4.0, for a single conversation you can search the local database for messages that contain a keyword and are sent by specific members.
+
+```dart
+List<ChatMessage> list = await conversation.loadMessagesWithKeyword(
+  keywords,
+  senders: ['senderA', 'senderB'],
+);
+```
+
+### Search local conversations by keyword
+
+Since SDK v1.4.0, you can search across all local conversations for messages that contain a keyword. The SDK returns a map of conversation IDs to the lists of matching message IDs. Each message ID list is ordered by message timestamp, in ascending or descending order according to the `direction` parameter.
+
+```dart
+Map<String, List<String>> result =
+    await ChatClient.getInstance.chatManager.loadConversationMessagesWithKeyword(
+  keyword: 'hello',
+  timestamp: -1,
+  sender: null,
+  direction: ChatSearchDirection.Up,
+  scope: MessageSearchScope.All,
+);
+```
+
+### Retrieve local messages by message ID
+
+Since SDK v1.4.0, you can pass one or more message IDs to retrieve messages from a single local conversation. You can pass a maximum of 20 message IDs at a time.
+
+```dart
+// messageIdList: the list of message IDs. You can pass a maximum of 20 message IDs at a time.
+List<ChatMessage> messages =
+    await ChatClient.getInstance.chatManager.loadMessagesWithIds(
+  messageIdList,
+  conversationId,
 );
 ```
 
@@ -1364,6 +1539,8 @@ To ensure data reliability, we recommend retrieving less than 50 historical mess
 
 We recommend that you retrieve 20 messages each time, with a maximum of 50. During paginated query, if the total number of messages that meet the query conditions is greater than the number of `pageSize`, the number of messages of `pageSize` will be returned. If it is less than the number of `pageSize`, the actual number will be returned. When the message query is completed, the number of returned messages is less than the number of `pageSize`.
 
+Since SDK v1.4.0, for a single group conversation you can retrieve messages sent by specific members (rather than all members) by setting the `senders` array in `ChatFetchMessageOptions`.
+
 Refer to the following code sample:
 
 ```typescript
@@ -1379,6 +1556,57 @@ ChatClient.getInstance()
   .catch((reason) => {
     console.log("get history message fail.", reason);
   });
+```
+
+### Search local messages sent by specific members
+
+Since SDK v1.4.0, for a single conversation you can load messages from the local database that are sent by specific members, using `getConvMsgsWithKeyword`.
+
+```typescript
+const conversationId = '<YOUR_CONVERSATION_ID>';
+const conversationType = ChatConversationType.GroupChat;
+const senders = ['user1', 'user2'];
+ChatClient.getInstance()
+  .chatManager.getConvMsgsWithKeyword({
+    convId: conversationId,
+    convType: conversationType,
+    senders: senders,
+    keywords: '',
+  })
+  .then((messages) => console.log('Messages:', messages))
+  .catch((error) => console.error('Error:', error));
+```
+
+### Search local conversations by keyword
+
+Since SDK v1.4.0, you can call `getConvsMsgsWithKeyword` to search across all local conversations for messages that contain a keyword. The SDK returns the matching conversation IDs and message IDs, ordered by message timestamp in ascending or descending order according to the `direction` parameter.
+
+```typescript
+ChatClient.getInstance()
+  .chatManager.getConvsMsgsWithKeyword({
+    keywords: 'hello',
+    timestamp: -1,
+    from: '<MESSAGE_SENDER_ID>',
+    direction: ChatSearchDirection.UP,
+    searchScope: ChatMessageSearchScope.All,
+  })
+  .then((result) => console.log('Result:', result))
+  .catch((error) => console.error('Error:', error));
+```
+
+### Retrieve local messages by message ID
+
+Since SDK v1.4.0, you can call `getMessagesWithIds` to retrieve one or more messages from a single local conversation by message ID.
+
+```typescript
+ChatClient.getInstance()
+  .chatManager.getMessagesWithIds({
+    convId: '<YOUR_CONVERSATION_ID>',
+    convType: ChatConversationType.GroupChat,
+    msgIds: ['<MSG_ID_1>', '<MSG_ID_2>'],
+  })
+  .then((messages) => console.log('Messages:', messages))
+  .catch((error) => console.error('Error:', error));
 ```
 
 ### Pin a conversation
@@ -1596,13 +1824,16 @@ To ensure data reliability, we recommend retrieving less than 50 historical mess
 
 We recommend that you retrieve 20 messages each time, with a maximum of 50. During paginated query, if the total number of messages that meet the query conditions is greater than the number of `pageSize`, the number of messages of `pageSize` will be returned. If it is less than the number of `pageSize`, the actual number will be returned. When the message query is completed, the number of returned messages is less than the number of `pageSize`.
 
+Since SDK v1.4.0, for a single group conversation you can retrieve messages sent by specific members (rather than all members) by setting the `FromIds` list in `FetchServerMessagesOption`. `FromIds` replaces the deprecated `From` attribute.
+
 Refer to the following code sample:
 
 ```csharp
 FetchServerMessagesOption option = new FetchServerMessagesOption();
 option.IsSave = false;
 option.Direction = MessageSearchDirection.UP;
-option.From = "user";
+// Since SDK v1.4.0, for a group conversation, set FromIds to retrieve messages sent by specific members.
+option.FromIds = new List<string> { "id1", "id2" };
 option.MsgTypes = new List();
 option.MsgTypes.Add(MessageBodyType.TXT);
 option.MsgTypes.Add(MessageBodyType.VIDEO);
@@ -1618,6 +1849,41 @@ SDKClient.Instance.ChatManager.FetchHistoryMessagesFromServerBy(conversationId, 
     {
 
     }
+));
+```
+
+### Search local messages sent by specific members
+
+Since SDK v1.4.0, for a single conversation you can load messages from the local database that are sent by specific members.
+
+```csharp
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversationId, convType);
+conv.LoadMessagesWithScopeAndFromIds(keyword, timestamp, maxCount, fromIds, direction, scope, new ValueCallBack<List<Message>>(
+    onSuccess: (list) => { },
+    onError: (code, desc) => { }
+));
+```
+
+### Search local conversations by keyword
+
+Since SDK v1.4.0, you can call `LoadConversationMessagesWithKeyword` to search across all local conversations for messages that contain a keyword. The SDK returns the matching conversation IDs and message IDs, ordered by message timestamp in ascending or descending order according to the `direction` parameter.
+
+```csharp
+SDKClient.Instance.ChatManager.LoadConversationMessagesWithKeyword(keywords, timestamp, from, direction, scope, new ValueCallBack<Dictionary<string, List<string>>>(
+    onSuccess: (result) => { },
+    onError: (code, desc) => { }
+));
+```
+
+### Retrieve local messages by message ID
+
+Since SDK v1.4.0, you can call `LoadMessages` to retrieve one or more messages from a single local conversation by message ID. To retrieve a single message, call `LoadMessage`.
+
+```csharp
+List<string> messageIdList = new List<string> { "msgId1", "msgId2" };
+SDKClient.Instance.ChatManager.LoadMessages(messageIdList, conversationId, new ValueCallBack<List<Message>>(
+    onSuccess: (messages) => { },
+    onError: (code, desc) => { }
 ));
 ```
 
@@ -1891,13 +2157,16 @@ To ensure data reliability, we recommend retrieving less than 50 historical mess
 
 We recommend that you retrieve 20 messages each time, with a maximum of 50. During paginated query, if the total number of messages that meet the query conditions is greater than the number of `pageSize`, the number of messages of `pageSize` will be returned. If it is less than the number of `pageSize`, the actual number will be returned. When the message query is completed, the number of returned messages is less than the number of `pageSize`.
 
+Since SDK v1.4.0, for a single group conversation you can retrieve messages sent by specific members (rather than all members) by setting the `FromIds` list in `FetchServerMessagesOption`. `FromIds` replaces the deprecated `From` attribute.
+
 Refer to the following code sample:
 
 ```csharp
 FetchServerMessagesOption option = new FetchServerMessagesOption();
 option.IsSave = false;
 option.Direction = MessageSearchDirection.UP;
-option.From = "user";
+// Since SDK v1.4.0, for a group conversation, set FromIds to retrieve messages sent by specific members.
+option.FromIds = new List<string> { "id1", "id2" };
 option.MsgTypes = new List();
 option.MsgTypes.Add(MessageBodyType.TXT);
 option.MsgTypes.Add(MessageBodyType.VIDEO);
@@ -1914,6 +2183,41 @@ SDKClient.Instance.ChatManager.FetchHistoryMessagesFromServerBy(conversationId, 
    {
    }
  )) ;
+```
+
+### Search local messages sent by specific members
+
+Since SDK v1.4.0, for a single conversation you can load messages from the local database that are sent by specific members.
+
+```csharp
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversationId, convType);
+conv.LoadMessagesWithScopeAndFromIds(keyword, timestamp, maxCount, fromIds, direction, scope, new ValueCallBack<List<Message>>(
+    onSuccess: (list) => { },
+    onError: (code, desc) => { }
+));
+```
+
+### Search local conversations by keyword
+
+Since SDK v1.4.0, you can call `LoadConversationMessagesWithKeyword` to search across all local conversations for messages that contain a keyword. The SDK returns the matching conversation IDs and message IDs, ordered by message timestamp in ascending or descending order according to the `direction` parameter.
+
+```csharp
+SDKClient.Instance.ChatManager.LoadConversationMessagesWithKeyword(keywords, timestamp, from, direction, scope, new ValueCallBack<Dictionary<string, List<string>>>(
+    onSuccess: (result) => { },
+    onError: (code, desc) => { }
+));
+```
+
+### Retrieve local messages by message ID
+
+Since SDK v1.4.0, you can call `LoadMessages` to retrieve one or more messages from a single local conversation by message ID. To retrieve a single message, call `LoadMessage`.
+
+```csharp
+List<string> messageIdList = new List<string> { "msgId1", "msgId2" };
+SDKClient.Instance.ChatManager.LoadMessages(messageIdList, conversationId, new ValueCallBack<List<Message>>(
+    onSuccess: (messages) => { },
+    onError: (code, desc) => { }
+));
 ```
 
 ### Pin a conversation

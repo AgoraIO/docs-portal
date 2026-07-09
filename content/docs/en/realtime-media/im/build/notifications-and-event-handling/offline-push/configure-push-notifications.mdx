@@ -5,7 +5,7 @@ description: "Configure push translations"
 
 <PlatformStructured platform="android">
 
-You can use extension fields to implement customized push settings. This page uses force push and sending silent messages as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](..//en/api-reference/api-ref/im/offline-push/offline-push-extension).
+You can use extension fields to implement customized push settings. This page uses force push and sending silent messages as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](/en/api-reference/api-ref/im/offline-push/offline-push-extension).
 
 ## Set custom push fields
 
@@ -72,55 +72,11 @@ ChatMessage message = ChatMessage.createSendMessage(ChatMessage.Type.TXT);
 message.setAttribute("em_ignore_notification", true);
 ```
 
-## Implement rich text push
-
-If your target platform is iOS 10.0 or above, you can refer to the following code to implement the rich text push function of [`UNNotificationServiceExtension`](https://developer.apple.com/documentation/usernotifications/unnotificationserviceextension?language=objc).
-
-```objective-c
-AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"test"];
-AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:conversationId from:AgoraChatClient.sharedClient.currentUsername to:conversationId body:body ext:nil];
-// em_apns_ext: message extension field
-message.ext = @{@"em_apns_ext":@{@"em_push_mutable_content":@YES}};
-message.chatType = AgoraChatTypeChat;
-[AgoraChatClient.sharedClient.chatManager sendMessage:message progress:nil completion:nil];
-```
-
-| Parameters | Description |
-| :------------------------ | :----------------------------- |
-| `body` | The push message content. |
-| `conversationId` | The conversation ID to which the message belongs. |
-| `from` | The user ID of the sender of the message. |
-| `to` | The user ID of the message recipient. |
-| `em_apns_ext` | The built-in message extension fields. |
-| `em_push_mutable_content` | Whether to use rich text push notification (`em_apns_ext`): `YES`: Rich text push notification; (Default)`NO`: Regular push notification. This field is a built-in field and its name cannot be modified. |
-
-When the receiver gets a rich text push, the `didReceiveNotificationRequest:withContentHandler:` callback is triggered. The sample code is as follows:
-
-```objective-c
-- (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler {
-    // Push extension fields
-    NSDictionary *userInfo = request.content.userInfo;
-    // Notification content
-    UNNotificationContent *content = [request.content mutableCopy];
-    contentHandler(content);
-}
-```
-
-| Parameters               | Description                                                |
-| :---------------- | :------------------------------------------------- |
-|  `body` |            The push message content.                                     . |
-|  `badge`            | The square badge number.                                            |
-|  `sound`            | The recipient will hear a ringtone when receiving the message.                            |
-|  `mutable-content`  | Set to `1` to activate `UNNotificationServiceExtension` . |
-|  `f`                | The user ID of the message sender.                                  |
-|  `t`                | The user ID of the message recipient.                                  |
-|  `m` |                The message ID.                                           |
-
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
 
-You can use extension fields to implement customized push settings. This page uses force push, sending silent messages, and rich text push as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](..//en/api-reference/api-ref/im/offline-push/offline-push-extension).
+You can use extension fields to implement customized push settings. This page uses force push, sending silent messages, and rich text push as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](/en/api-reference/api-ref/im/offline-push/offline-push-extension).
 
 ## Set custom push fields
 
@@ -255,51 +211,7 @@ When the receiver gets a rich text push, the `didReceiveNotificationRequest:with
 
 <PlatformStructured platform="web">
 
-## Implement rich text push
-
-If your target platform is iOS 10.0 or above, you can refer to the following code to implement the rich text push function of [`UNNotificationServiceExtension`](https://developer.apple.com/documentation/usernotifications/unnotificationserviceextension?language=objc).
-
-```objective-c
-AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"test"];
-AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:conversationId from:AgoraChatClient.sharedClient.currentUsername to:conversationId body:body ext:nil];
-// em_apns_ext: message extension field
-message.ext = @{@"em_apns_ext":@{@"em_push_mutable_content":@YES}};
-message.chatType = AgoraChatTypeChat;
-[AgoraChatClient.sharedClient.chatManager sendMessage:message progress:nil completion:nil];
-```
-
-| Parameters | Description |
-| :------------------------ | :----------------------------- |
-| `body` | The push message content. |
-| `conversationId` | The conversation ID to which the message belongs. |
-| `from` | The user ID of the sender of the message. |
-| `to` | The user ID of the message recipient. |
-| `em_apns_ext` | The built-in message extension fields. |
-| `em_push_mutable_content` | Whether to use rich text push notification (`em_apns_ext`): `YES`: Rich text push notification; (Default)`NO`: Regular push notification. This field is a built-in field and its name cannot be modified. |
-
-When the receiver gets a rich text push, the `didReceiveNotificationRequest:withContentHandler:` callback is triggered. The sample code is as follows:
-
-```objective-c
-- (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler {
-    // Push extension fields
-    NSDictionary *userInfo = request.content.userInfo;
-    // Notification content
-    UNNotificationContent *content = [request.content mutableCopy];
-    contentHandler(content);
-}
-```
-
-| Parameters               | Description                                                |
-| :---------------- | :------------------------------------------------- |
-|  `body` |            The push message content.                                     . |
-|  `badge`            | The square badge number.                                            |
-|  `sound`            | The recipient will hear a ringtone when receiving the message.                            |
-|  `mutable-content`  | Set to `1` to activate `UNNotificationServiceExtension` . |
-|  `f`                | The user ID of the message sender.                                  |
-|  `t`                | The user ID of the message recipient.                                  |
-|  `m` |                The message ID.                                           |
-
-You can use extension fields to implement force push and send silent messages. For more information, see [Offline push notification extension](..//en/api-reference/api-ref/im/offline-push/offline-push-extension).
+You can use extension fields to implement force push and send silent messages. For more information, see [Offline push notification extension](/en/api-reference/api-ref/im/offline-push/offline-push-extension).
 
 ### Force push
 
@@ -351,51 +263,7 @@ const sendTextMsg = () => {
 
 <PlatformStructured platform="flutter">
 
-## Implement rich text push
-
-If your target platform is iOS 10.0 or above, you can refer to the following code to implement the rich text push function of [`UNNotificationServiceExtension`](https://developer.apple.com/documentation/usernotifications/unnotificationserviceextension?language=objc).
-
-```objective-c
-AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"test"];
-AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:conversationId from:AgoraChatClient.sharedClient.currentUsername to:conversationId body:body ext:nil];
-// em_apns_ext: message extension field
-message.ext = @{@"em_apns_ext":@{@"em_push_mutable_content":@YES}};
-message.chatType = AgoraChatTypeChat;
-[AgoraChatClient.sharedClient.chatManager sendMessage:message progress:nil completion:nil];
-```
-
-| Parameters | Description |
-| :------------------------ | :----------------------------- |
-| `body` | The push message content. |
-| `conversationId` | The conversation ID to which the message belongs. |
-| `from` | The user ID of the sender of the message. |
-| `to` | The user ID of the message recipient. |
-| `em_apns_ext` | The built-in message extension fields. |
-| `em_push_mutable_content` | Whether to use rich text push notification (`em_apns_ext`): `YES`: Rich text push notification; (Default)`NO`: Regular push notification. This field is a built-in field and its name cannot be modified. |
-
-When the receiver gets a rich text push, the `didReceiveNotificationRequest:withContentHandler:` callback is triggered. The sample code is as follows:
-
-```objective-c
-- (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler {
-    // Push extension fields
-    NSDictionary *userInfo = request.content.userInfo;
-    // Notification content
-    UNNotificationContent *content = [request.content mutableCopy];
-    contentHandler(content);
-}
-```
-
-| Parameters               | Description                                                |
-| :---------------- | :------------------------------------------------- |
-|  `body` |            The push message content.                                     . |
-|  `badge`            | The square badge number.                                            |
-|  `sound`            | The recipient will hear a ringtone when receiving the message.                            |
-|  `mutable-content`  | Set to `1` to activate `UNNotificationServiceExtension` . |
-|  `f`                | The user ID of the message sender.                                  |
-|  `t`                | The user ID of the message recipient.                                  |
-|  `m` |                The message ID.                                           |
-
-You can use extension fields to implement customized push settings. This page uses force push and sending silent messages as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](..//en/api-reference/api-ref/im/offline-push/offline-push-extension).
+You can use extension fields to implement customized push settings. This page uses force push and sending silent messages as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](/en/api-reference/api-ref/im/offline-push/offline-push-extension).
 
 ## Set custom push fields
 
@@ -482,51 +350,7 @@ try {
 
 <PlatformStructured platform="react-native">
 
-## Implement rich text push
-
-If your target platform is iOS 10.0 or above, you can refer to the following code to implement the rich text push function of [`UNNotificationServiceExtension`](https://developer.apple.com/documentation/usernotifications/unnotificationserviceextension?language=objc).
-
-```objective-c
-AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"test"];
-AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:conversationId from:AgoraChatClient.sharedClient.currentUsername to:conversationId body:body ext:nil];
-// em_apns_ext: message extension field
-message.ext = @{@"em_apns_ext":@{@"em_push_mutable_content":@YES}};
-message.chatType = AgoraChatTypeChat;
-[AgoraChatClient.sharedClient.chatManager sendMessage:message progress:nil completion:nil];
-```
-
-| Parameters | Description |
-| :------------------------ | :----------------------------- |
-| `body` | The push message content. |
-| `conversationId` | The conversation ID to which the message belongs. |
-| `from` | The user ID of the sender of the message. |
-| `to` | The user ID of the message recipient. |
-| `em_apns_ext` | The built-in message extension fields. |
-| `em_push_mutable_content` | Whether to use rich text push notification (`em_apns_ext`): `YES`: Rich text push notification; (Default)`NO`: Regular push notification. This field is a built-in field and its name cannot be modified. |
-
-When the receiver gets a rich text push, the `didReceiveNotificationRequest:withContentHandler:` callback is triggered. The sample code is as follows:
-
-```objective-c
-- (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler {
-    // Push extension fields
-    NSDictionary *userInfo = request.content.userInfo;
-    // Notification content
-    UNNotificationContent *content = [request.content mutableCopy];
-    contentHandler(content);
-}
-```
-
-| Parameters               | Description                                                |
-| :---------------- | :------------------------------------------------- |
-|  `body` |            The push message content.                                     . |
-|  `badge`            | The square badge number.                                            |
-|  `sound`            | The recipient will hear a ringtone when receiving the message.                            |
-|  `mutable-content`  | Set to `1` to activate `UNNotificationServiceExtension` . |
-|  `f`                | The user ID of the message sender.                                  |
-|  `t`                | The user ID of the message recipient.                                  |
-|  `m` |                The message ID.                                           |
-
-You can use extension fields to implement customized push settings. This page uses force push and sending silent messages as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](..//en/api-reference/api-ref/im/offline-push/offline-push-extension).
+You can use extension fields to implement customized push settings. This page uses force push and sending silent messages as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](/en/api-reference/api-ref/im/offline-push/offline-push-extension).
 
 ## Set custom push fields
 
@@ -588,105 +412,5 @@ msg.attributes = {
   em_ignore_notification: true,
 };
 ```
-
-</PlatformStructured>
-
-<PlatformStructured platform="windows">
-
-## Implement rich text push
-
-If your target platform is iOS 10.0 or above, you can refer to the following code to implement the rich text push function of [`UNNotificationServiceExtension`](https://developer.apple.com/documentation/usernotifications/unnotificationserviceextension?language=objc).
-
-```objective-c
-AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"test"];
-AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:conversationId from:AgoraChatClient.sharedClient.currentUsername to:conversationId body:body ext:nil];
-// em_apns_ext: message extension field
-message.ext = @{@"em_apns_ext":@{@"em_push_mutable_content":@YES}};
-message.chatType = AgoraChatTypeChat;
-[AgoraChatClient.sharedClient.chatManager sendMessage:message progress:nil completion:nil];
-```
-
-| Parameters | Description |
-| :------------------------ | :----------------------------- |
-| `body` | The push message content. |
-| `conversationId` | The conversation ID to which the message belongs. |
-| `from` | The user ID of the sender of the message. |
-| `to` | The user ID of the message recipient. |
-| `em_apns_ext` | The built-in message extension fields. |
-| `em_push_mutable_content` | Whether to use rich text push notification (`em_apns_ext`): `YES`: Rich text push notification; (Default)`NO`: Regular push notification. This field is a built-in field and its name cannot be modified. |
-
-When the receiver gets a rich text push, the `didReceiveNotificationRequest:withContentHandler:` callback is triggered. The sample code is as follows:
-
-```objective-c
-- (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler {
-    // Push extension fields
-    NSDictionary *userInfo = request.content.userInfo;
-    // Notification content
-    UNNotificationContent *content = [request.content mutableCopy];
-    contentHandler(content);
-}
-```
-
-| Parameters               | Description                                                |
-| :---------------- | :------------------------------------------------- |
-|  `body` |            The push message content.                                     . |
-|  `badge`            | The square badge number.                                            |
-|  `sound`            | The recipient will hear a ringtone when receiving the message.                            |
-|  `mutable-content`  | Set to `1` to activate `UNNotificationServiceExtension` . |
-|  `f`                | The user ID of the message sender.                                  |
-|  `t`                | The user ID of the message recipient.                                  |
-|  `m` |                The message ID.                                           |
-
-**This feature is not supported for this platform.**
-
-</PlatformStructured>
-
-<PlatformStructured platform="unity">
-
-## Implement rich text push
-
-If your target platform is iOS 10.0 or above, you can refer to the following code to implement the rich text push function of [`UNNotificationServiceExtension`](https://developer.apple.com/documentation/usernotifications/unnotificationserviceextension?language=objc).
-
-```objective-c
-AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"test"];
-AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:conversationId from:AgoraChatClient.sharedClient.currentUsername to:conversationId body:body ext:nil];
-// em_apns_ext: message extension field
-message.ext = @{@"em_apns_ext":@{@"em_push_mutable_content":@YES}};
-message.chatType = AgoraChatTypeChat;
-[AgoraChatClient.sharedClient.chatManager sendMessage:message progress:nil completion:nil];
-```
-
-| Parameters | Description |
-| :------------------------ | :----------------------------- |
-| `body` | The push message content. |
-| `conversationId` | The conversation ID to which the message belongs. |
-| `from` | The user ID of the sender of the message. |
-| `to` | The user ID of the message recipient. |
-| `em_apns_ext` | The built-in message extension fields. |
-| `em_push_mutable_content` | Whether to use rich text push notification (`em_apns_ext`): `YES`: Rich text push notification; (Default)`NO`: Regular push notification. This field is a built-in field and its name cannot be modified. |
-
-When the receiver gets a rich text push, the `didReceiveNotificationRequest:withContentHandler:` callback is triggered. The sample code is as follows:
-
-```objective-c
-- (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler {
-    // Push extension fields
-    NSDictionary *userInfo = request.content.userInfo;
-    // Notification content
-    UNNotificationContent *content = [request.content mutableCopy];
-    contentHandler(content);
-}
-```
-
-| Parameters               | Description                                                |
-| :---------------- | :------------------------------------------------- |
-|  `body` |            The push message content.                                     . |
-|  `badge`            | The square badge number.                                            |
-|  `sound`            | The recipient will hear a ringtone when receiving the message.                            |
-|  `mutable-content`  | Set to `1` to activate `UNNotificationServiceExtension` . |
-|  `f`                | The user ID of the message sender.                                  |
-|  `t`                | The user ID of the message recipient.                                  |
-|  `m` |                The message ID.                                           |
-
-**This feature is not supported for this platform.**
 
 </PlatformStructured>

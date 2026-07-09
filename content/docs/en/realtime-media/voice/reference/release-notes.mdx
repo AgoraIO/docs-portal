@@ -3306,333 +3306,377 @@ See [Supported platforms](supported-platforms.md).
 
 The list of known issues page is continuously updated as the systems evolve. Agora suggests you regularly upgrade to the latest version of the SDK, which includes new features, bug fixes and improvements.
 
-- **Desktop**
+#### Desktop
 
-  ****Chrome****
-
-
-
-  - Starting from Chrome 117, the `getStats()` method is no longer supported in the SDK v4.9.3 and earlier versions. Calling this method will return all values as `0`. This caused by the fact that the old version of the `getStats()` WebRTC API will be removed from Chrome 117, as stated in the [Chrome official documentation](https://developer.chrome.com/blog/getstats-migration).
-  **Solution:** Upgrade to a higher version of the SDK.
-  - On all AMD-based and some Intel-based devices with the Windows operating system, if Chrome uses the H.264 codec, the video transmission bitrate may be lower than the set value.
-    **Solution:** To resolve this issue, you can set the browser to use the VP9 codec or try to disable hardware acceleration.
-  - Chrome 84 on macOS has a known issue: When using the H.264 codec, WebRTC can experience a sudden drop in the frame rate. For details, see the official Google bug reports: [Issue 1088650](https://bugs.chromium.org/p/chromium/issues/detail?id=1203206&can=2&q=webrtc%20drop%20component%3ABlink%3EWebRTC%3EVideo) and [Issue 12704](https://bugs.chromium.org/p/webrtc/issues/detail?id=12704#c3).
-    **Solution:** Agora recommends using VP9 instead of H.264 for Chrome 84 and later versions on macOS.
-  - Acoustic Echo Cancellation(AEC) fails to work on Chrome in certain use-cases.
-    **Cause:** If you apply extra processing (for example, spatial audio) to the received remote audio stream, AEC fails to get the AEC Reference signal. For details, see the Chrome [Issue 687574](https://bugs.chromium.org/p/chromium/issues/detail?id=687574).
-  **Solution:** Agora recommends that all users wear headphones instead of using speakers. To use speakers in this use-case, contact [support@agora.io](mailto:support@agora.io).
-  - Chrome plans to deprecate and remove the Plan B dialect in WebRTC. For details, see the [Chrome feature description](https://www.chromestatus.com/feature/5823036655665152). If you use any of the following versions of Voice Calling, best practice is to upgrade to the latest version:
-
-    | Version  | Impact |
-    |---|---|
-    | v4.0.0-4.0.1 | The `publish` and `subscribe` methods do not have any effect. |
-
-  ****Safari****
+<Accordions>
+<Accordion title="Chrome">
 
 
+- Starting from Chrome 117, the `getStats()` method is no longer supported in the SDK v4.9.3 and earlier versions. Calling this method will return all values as `0`. This caused by the fact that the old version of the `getStats()` WebRTC API will be removed from Chrome 117, as stated in the [Chrome official documentation](https://developer.chrome.com/blog/getstats-migration).
+**Solution:** Upgrade to a higher version of the SDK.
+- On all AMD-based and some Intel-based devices with the Windows operating system, if Chrome uses the H.264 codec, the video transmission bitrate may be lower than the set value.
+  **Solution:** To resolve this issue, you can set the browser to use the VP9 codec or try to disable hardware acceleration.
+- Chrome 84 on macOS has a known issue: When using the H.264 codec, WebRTC can experience a sudden drop in the frame rate. For details, see the official Google bug reports: [Issue 1088650](https://bugs.chromium.org/p/chromium/issues/detail?id=1203206&can=2&q=webrtc%20drop%20component%3ABlink%3EWebRTC%3EVideo) and [Issue 12704](https://bugs.chromium.org/p/webrtc/issues/detail?id=12704#c3).
+  **Solution:** Agora recommends using VP9 instead of H.264 for Chrome 84 and later versions on macOS.
+- Acoustic Echo Cancellation(AEC) fails to work on Chrome in certain use-cases.
+  **Cause:** If you apply extra processing (for example, spatial audio) to the received remote audio stream, AEC fails to get the AEC Reference signal. For details, see the Chrome [Issue 687574](https://bugs.chromium.org/p/chromium/issues/detail?id=687574).
+**Solution:** Agora recommends that all users wear headphones instead of using speakers. To use speakers in this use-case, contact [support@agora.io](mailto:support@agora.io).
+- Chrome plans to deprecate and remove the Plan B dialect in WebRTC. For details, see the [Chrome feature description](https://www.chromestatus.com/feature/5823036655665152). If you use any of the following versions of Voice Calling, best practice is to upgrade to the latest version:
 
-  - On Safari 17.2, the SDK cannot switch to the small stream properly.
-  - On Safari browsers of some Mac devices with Intel chips, calling `enableDualStream` to enable H.264-encoded dual-stream mode may result in system lag when the ratio of the small stream to the large stream resolution is below 1/4.
+  | Version  | Impact |
+  |---|---|
+  | v4.0.0-4.0.1 | The `publish` and `subscribe` methods do not have any effect. |
 
-  - On Safari 15.4, if you set the sample rate of the local audio track as 32,000 Hz, the local audio track ends (triggering the `AgoraRTCClient.on('track-ended'` event).
-  - If you use H.264 on Safari 15.1, setting [MediaStreamTrack.enabled](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/enabled) as `false` crashes the web tab.
-  - On Safari 14.0.1, the audio can experience stuttering.
-  - Safari 13 users may not be able to hear other users.
-  - Safari 12.1 or earlier only supports the H.264 codec.
-  - Safari 11 only supports video resolutions of 480P and higher.
-  - Safari does not support getting the output device information, so it does not support the `getPlayoutDevices` and `setAudioOutput` methods.
-  - On Safari, when calling APIs to get quality statistics, the values of some properties are 0. For example, when calling `getLocalAudioStats` to get the quality statistics of the local audio track, the value of `sendPacketsLost` is 0.
-  - If **Auto-Play** is not enabled on Safari (as the following figure shows), the stream playback has no audio. You have to call the `navigator.mediaDevices.getUserMedia` method to get the device permissions before playing a stream.
-    ![img](https://assets-docs.agora.io/images/video-sdk/safari-auto-play.png)
-
-  ****Firefox****
-
-
-  **Firefox**
-
-  - Black screen issue on the receiver's side with Firefox version 138
-
-    **Issue description**: When users interact using real-time audio and video on Firefox version 138, the receiver may see a black screen instead of video.
-
-    **Root cause**: This issue is caused by a rollback in the Firefox browser. Version 138 introduced a temporary change that causes video stream decoding to fail. This is a compatibility issue introduced by the browser vendor. For details, see [Bugzilla 1965831](https://bugzilla.mozilla.org/show_bug.cgi?id=1965831).
-
-    **Workaround**: Agora has implemented a temporary fix through configuration delivery. In incognito or private browsing mode, this configuration may not take effect, and integration changes may be required. Contact [technical support](mailto:support@agora.io) for assistance.
-
-  - The default setting for the minimum video bitrate in Web SDK does not take effect on Firefox.
-  - Sending SEI data in H.264 video streams is not supported on Firefox.
-  - On Firefox 98, when sending H.264 video from Windows devices, the keyframes cannot be received immediately after the video is subscribed, thus slowing down the rendering of the first video frame.
-  - When the Web SDK on Firefox communicates with the SDK on some devices, the video on Firefox is rotated.
-  - Firefox does not support changing the frame rate (30 fps by default).
-  - Firefox does not support setting the audio encoding rate.
-  - Setting the video profile on Firefox does not take effect on the following devices:
-    - MacBook Pro (13-inch, 2016, Two Thunderbolt 3 ports)
-    - Windows 10 (MI)
-  - On Macs with the Apple M1 chip, Firefox does not support H.264. For details, see the [Firefox documentation](https://bugzilla.mozilla.org/show_bug.cgi?id=1686470).
-  - Firefox does not support getting `CodecType`, `sendFrameRate` and `captureFrameRate`.
-
-  **Other restrictions on desktop**
-
-  - On Chrome 81 or later, Safari, and Firefox, device IDs are only available after the user has granted permission to use the media device. This restriction affects the `getMicrophones`, `getCameras`, and `getPlaybackDevices` methods.
-  - The `setPlaybackDevice` method is only supported on Chrome. Calling this method on other browsers throws the `NOT_SUPPORTED` error.
-  - The `setOptimizationMode` method and the `optimizationMode` parameter in `CameraVideoTrackInitConfig`, `ScreenVideoTrackInitConfig`, and `CustomVideoTrackInitConfig` are only supported on Chrome.
-
-- **Mobile**
-
-  ****iOS****
-
-**iOS known issues**
+</Accordion>
+<Accordion title="Safari">
 
 
-  iOS 16.0: The video is stretched after the screen changes to a certain orientation
 
-  **Impact**: All browsers and apps that use WKWebView on iOS 16.0, such as Safari and Chrome.
+- On Safari 17.2, the SDK cannot switch to the small stream properly.
+- On Safari browsers of some Mac devices with Intel chips, calling `enableDualStream` to enable H.264-encoded dual-stream mode may result in system lag when the ratio of the small stream to the large stream resolution is below 1/4.
 
-  **Reason**: Due to the regression of the WebRTC module of WebKit on iOS 16.0, RTP streaming with coordination of video orientation (CVO) does not work properly, which causes the video to be stretched after rotation.
+- On Safari 15.4, if you set the sample rate of the local audio track as 32,000 Hz, the local audio track ends (triggering the `AgoraRTCClient.on('track-ended'` event).
+- If you use H.264 on Safari 15.1, setting [MediaStreamTrack.enabled](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/enabled) as `false` crashes the web tab.
+- On Safari 14.0.1, the audio can experience stuttering.
+- Safari 13 users may not be able to hear other users.
+- Safari 12.1 or earlier only supports the H.264 codec.
+- Safari 11 only supports video resolutions of 480P and higher.
+- Safari does not support getting the output device information, so it does not support the `getPlayoutDevices` and `setAudioOutput` methods.
+- On Safari, when calling APIs to get quality statistics, the values of some properties are 0. For example, when calling `getLocalAudioStats` to get the quality statistics of the local audio track, the value of `sendPacketsLost` is 0.
+- If **Auto-Play** is not enabled on Safari (as the following figure shows), the stream playback has no audio. You have to call the `navigator.mediaDevices.getUserMedia` method to get the device permissions before playing a stream.
+  ![img](https://assets-docs.agora.io/images/video-sdk/safari-auto-play.png)
 
-  **Workaround**: Agora recommends that you add a prompt to remind users of this issue.
+</Accordion>
+<Accordion title="Firefox">
 
-  **iOS 15.1.x: The browser crashes when sending the H.264 video stream**
+- Black screen issue on the receiver's side with Firefox version 138
+
+  **Issue description**: When users interact using real-time audio and video on Firefox version 138, the receiver may see a black screen instead of video.
+
+  **Root cause**: This issue is caused by a rollback in the Firefox browser. Version 138 introduced a temporary change that causes video stream decoding to fail. This is a compatibility issue introduced by the browser vendor. For details, see [Bugzilla 1965831](https://bugzilla.mozilla.org/show_bug.cgi?id=1965831).
+
+  **Workaround**: Agora has implemented a temporary fix through configuration delivery. In incognito or private browsing mode, this configuration may not take effect, and integration changes may be required. Contact [technical support](mailto:support@agora.io) for assistance.
+
+- The default setting for the minimum video bitrate in Web SDK does not take effect on Firefox.
+- Sending SEI data in H.264 video streams is not supported on Firefox.
+- On Firefox 98, when sending H.264 video from Windows devices, the keyframes cannot be received immediately after the video is subscribed, thus slowing down the rendering of the first video frame.
+- When the Web SDK on Firefox communicates with the SDK on some devices, the video on Firefox is rotated.
+- Firefox does not support changing the frame rate (30 fps by default).
+- Firefox does not support setting the audio encoding rate.
+- Setting the video profile on Firefox does not take effect on the following devices:
+  - MacBook Pro (13-inch, 2016, Two Thunderbolt 3 ports)
+  - Windows 10 (MI)
+- On Macs with the Apple M1 chip, Firefox does not support H.264. For details, see the [Firefox documentation](https://bugzilla.mozilla.org/show_bug.cgi?id=1686470).
+- Firefox does not support getting `CodecType`, `sendFrameRate` and `captureFrameRate`.
+
+**Other restrictions on desktop**
+
+- On Chrome 81 or later, Safari, and Firefox, device IDs are only available after the user has granted permission to use the media device. This restriction affects the `getMicrophones`, `getCameras`, and `getPlaybackDevices` methods.
+- The `setPlaybackDevice` method is only supported on Chrome. Calling this method on other browsers throws the `NOT_SUPPORTED` error.
+- The `setOptimizationMode` method and the `optimizationMode` parameter in `CameraVideoTrackInitConfig`, `ScreenVideoTrackInitConfig`, and `CustomVideoTrackInitConfig` are only supported on Chrome.
+
+</Accordion>
+</Accordions>
+
+#### Mobile
+
+<Accordions>
+<Accordion title="iOS">
+
+##### iOS known issues
+
+<Accordions type="multiple">
+<Accordion title="iOS 16.0: The video is stretched after the screen changes to a certain orientation">
+
+**Impact**: All browsers and apps that use WKWebView on iOS 16.0, such as Safari and Chrome.
+
+**Reason**: Due to the regression of the WebRTC module of WebKit on iOS 16.0, RTP streaming with coordination of video orientation (CVO) does not work properly, which causes the video to be stretched after rotation.
+
+**Workaround**: Agora recommends that you add a prompt to remind users of this issue.
+
+</Accordion>
+<Accordion title="iOS 15.1.x: The browser crashes when sending the H.264 video stream">
 
 **Impact**: All browsers and apps that use WKWebView on iOS 15.1.x, such as Safari and Chrome.
 
-  **Details**: If you set `codec` as `'h264'` when calling `createClient`, the browsers on iOS 15.1.x crash after you send the video stream.
+**Details**: If you set `codec` as `'h264'` when calling `createClient`, the browsers on iOS 15.1.x crash after you send the video stream.
 
-  **Reason**: This issue happens due to the regression of the WebKit video encoder on iOS 15.1.x. For details, see [WebKit Bug 231505](https://bugs.webkit.org/show_bug.cgi?id=231505).
+**Reason**: This issue happens due to the regression of the WebKit video encoder on iOS 15.1.x. For details, see [WebKit Bug 231505](https://bugs.webkit.org/show_bug.cgi?id=231505).
 
-  **Workaround**: Use the VP9 codec for video encoding.
+**Workaround**: Use the VP9 codec for video encoding.
+
+```javascript
+createClient({codec:'vp9', mode})
+```
+
+</Accordion>
+<Accordion title="iOS 15.x: The actual bitrate of sending the H.264 video stream is lower than expected">
+
+**Impact**: Safari on iOS 15.x
+
+**Reason**: The issue occurs because **WebRTC H264 LowLatency encoder** is enabled by default for Safari on iOS 15.x. For details, see [Webkit bug 238366](https://bugs.webkit.org/show_bug.cgi?id=238366).
+
+**Workaround**: The following workarounds are available:
+- Use the VP9 codec for video encoding. The sample code is as follows:
 
   ```javascript
   createClient({codec:'vp9', mode})
   ```
+- On the iOS device, go to **Settings** > **Safari** > **Advanced** > **Experimental Features**, and disable **WebRTC H264 LowLatency encoder**.
 
-  **iOS 15.x: The actual bitrate of sending the H.264 video stream is lower than expected**
-
-**Impact**: Safari on iOS 15.x
-
-  **Reason**: The issue occurs because **WebRTC H264 LowLatency encoder** is enabled by default for Safari on iOS 15.x. For details, see [Webkit bug 238366](https://bugs.webkit.org/show_bug.cgi?id=238366).
-
-  **Workaround**: The following workarounds are available:
-  - Use the VP9 codec for video encoding. The sample code is as follows:
-
-    ```javascript
-    createClient({codec:'vp9', mode})
-    ```
-  - On the iOS device, go to **Settings** > **Safari** > **Advanced** > **Experimental Features**, and disable **WebRTC H264 LowLatency encoder**.
-
-  **iOS 15.0 to 15.3: Low audio volume**
+</Accordion>
+<Accordion title="iOS 15.0 to 15.3: Low audio volume">
 
 **Impact**: All browsers and apps that use WKWebView on iOS 15.0 to 15.3, such as Safari and Chrome.
 
-  **Details**: On iOS 15.0 to 15.3, after the local user subscribes to the `RemoteAudioTrack` and plays it, sometimes the audio is routed to the earpiece instead of the speaker, and the volume that the local user hear may be very low.
+**Details**: On iOS 15.0 to 15.3, after the local user subscribes to the `RemoteAudioTrack` and plays it, sometimes the audio is routed to the earpiece instead of the speaker, and the volume that the local user hear may be very low.
 
-  **Reason**: This issue happens due to the regression of the WebKit audio module on iOS 15.0 to 15.3. For details, see [ WebKit Bug 230902](https://bugs.webkit.org/show_bug.cgi?id=230902).
+**Reason**: This issue happens due to the regression of the WebKit audio module on iOS 15.0 to 15.3. For details, see [ WebKit Bug 230902](https://bugs.webkit.org/show_bug.cgi?id=230902).
 
-  **Workaround**: On iOS 15.0 to 15.3, use `WebAudio` to play the audio, and use `GainNode` to increase the audio volume level. Use the following workaround:
-  1. Upgrade to the Web SDK 4.9.0 or later versions.
-  2. Set the SDK private parameter `REMOTE_AUDIO_TRACK_USES_WEB_AUDIO` as `true`. The SDK uses `WebAudio` to play the remote audio stream. Sample code:
-     ```javascript
-     function isIOS15(ua){
-       // Use UA to judge whether the iOS version is 15
-     }
+**Workaround**: On iOS 15.0 to 15.3, use `WebAudio` to play the audio, and use `GainNode` to increase the audio volume level. Use the following workaround:
+1. Upgrade to the Web SDK 4.9.0 or later versions.
+2. Set the SDK private parameter `REMOTE_AUDIO_TRACK_USES_WEB_AUDIO` as `true`. The SDK uses `WebAudio` to play the remote audio stream. Sample code:
+   ```javascript
+   function isIOS15(ua){
+     // Use UA to judge whether the iOS version is 15
+   }
 
-     if(isIOS15(navigator.userAgent)){
-       // If you are using Typescript, add the "@ts-ignore" tag before calling setParameter
-       // @ts-ignore
-       AgoraRTC.setParameter("REMOTE_AUDIO_TRACK_USES_WEB_AUDIO", true);
-     }
-     ```
+   if(isIOS15(navigator.userAgent)){
+     // If you are using Typescript, add the "@ts-ignore" tag before calling setParameter
+     // @ts-ignore
+     AgoraRTC.setParameter("REMOTE_AUDIO_TRACK_USES_WEB_AUDIO", true);
+   }
+   ```
 
-  **iOS 15.x: The video playback goes black**
-
-**Impact**: All browsers and apps that use WKWebView on iOS 15.x, such as Safari and Chrome.
-
-  **Details**: On iOS 15.x, if you play the video in DOM node and add some CSS properties (such as `transform` and `animation`) to the` video` element or its parent element, or if you change the CSS properties to redraw the video rendering area, sometimes the video goes black.
-
-  **Reason**: This issue happens due to the regression of the WebKit video renderer on iOS 15.x. For details, see [WebKit Bug 230902](https://bugs.webkit.org/show_bug.cgi?id=230902).
-
-  **Workaround**: Upgrade to the Web SDK v4.7.3 or later and minimize changes to the CSS properties of the `video` element and its parent elements.
-
-  **iOS 15.x: If a user wears a Bluetooth headset, the audio may be significantly distorted**
+</Accordion>
+<Accordion title="iOS 15.x: The video playback goes black">
 
 **Impact**: All browsers and apps that use WKWebView on iOS 15.x, such as Safari and Chrome.
 
-  **Reason**: This issue happens due to the regression of the WebKit audio playback module on iOS 15.x. For details, see [WebKit Bug 231422](https://bugs.webkit.org/show_bug.cgi?id=231422).
+**Details**: On iOS 15.x, if you play the video in DOM node and add some CSS properties (such as `transform` and `animation`) to the` video` element or its parent element, or if you change the CSS properties to redraw the video rendering area, sometimes the video goes black.
 
-  **Workaround**: Agora recommends that you add a prompt to remind users of possible audio distortion issues when they use a Bluetooth headset.
+**Reason**: This issue happens due to the regression of the WebKit video renderer on iOS 15.x. For details, see [WebKit Bug 230902](https://bugs.webkit.org/show_bug.cgi?id=230902).
 
-  **Backgrounding the browser or app causes the audio streaming to be cut off.**
+**Workaround**: Upgrade to the Web SDK v4.7.3 or later and minimize changes to the CSS properties of the `video` element and its parent elements.
 
-
-
-  **Impact**:
-  - Safari on iOS 15.x.
-  - Browsers and apps that use WKWebView (such as Chrome) on iOS 14.4 to iOS 15.x.
-
-
-
-  **Reason**:
-  - For Safari: This happens primarily due to this WebKit [bug](https://bugs.webkit.org/show_bug.cgi?id=231105). After the browser switches to the background, the `AudioContext` of `WebAudio` stops processing audio.
-  - For browsers and apps using WKWebView: This happens because iOS `WKWebView` prohibits microphone usage while in the background. For details, see [Microphone gets muted in background](https://developer.apple.com/forums/thread/689182).
-
-
-
-  **Workaround**: Currently there is no workaround for browsers and apps using WKWebView. For Safari on iOS 15.x, you can follow these steps to avoid this issue:
-  1. Upgrade to the Web SDK v4.7.3 or later versions.
-  2. When calling `createMicrophoneAudioTrack`, set `bypassWebAudio` as `true`. The Web SDK directly publishes the local audio stream without processing it through `WebAudio`.
-
-     ```javascript
-     const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({bypassWebAudio: true});
-     ```
-
-    > Note that this workaround has a side effect. After applying this workaround, the audio mixing function (`MixingAudioTrack`) in the SDK fails.
-
-
-  **iOS 15.x: Audio and video playback might not resume automatically after being interrupted by a system phone call, another real-time interaction app, Siri, or an alarm.**
+</Accordion>
+<Accordion title="iOS 15.x: If a user wears a Bluetooth headset, the audio may be significantly distorted">
 
 **Impact**: All browsers and apps that use WKWebView on iOS 15.x, such as Safari and Chrome.
 
-  **Reason**: Such interruptions can cause the state of the `video` and `audio` elements to be `paused`. After the interruption finishes, the state cannot be automatically switched back to `playing`, and even calling `HTMLMediaElement.play` cannot resume the media playback. See the WebKit bug [232599](https://bugs.webkit.org/show_bug.cgi?id=232599) and [226698](https://bugs.webkit.org/show_bug.cgi?id=226698) for more details.
-  **Workaround**: Upgrade to the Web SDK v4.7.3 or later versions. The SDK attempts to resume media playback after the interruption. Agora recommends that you add a prompt that instructs users to refresh the page.
+**Reason**: This issue happens due to the regression of the WebKit audio playback module on iOS 15.x. For details, see [WebKit Bug 231422](https://bugs.webkit.org/show_bug.cgi?id=231422).
 
-  **iOS 15.x and 16.x: Certain iPad and iPhone models may experience noise issues after entering a channel.**
+**Workaround**: Agora recommends that you add a prompt to remind users of possible audio distortion issues when they use a Bluetooth headset.
+
+</Accordion>
+<Accordion title="Backgrounding the browser or app causes the audio streaming to be cut off">
+
+
+
+**Impact**:
+- Safari on iOS 15.x.
+- Browsers and apps that use WKWebView (such as Chrome) on iOS 14.4 to iOS 15.x.
+
+
+
+**Reason**:
+- For Safari: This happens primarily due to this WebKit [bug](https://bugs.webkit.org/show_bug.cgi?id=231105). After the browser switches to the background, the `AudioContext` of `WebAudio` stops processing audio.
+- For browsers and apps using WKWebView: This happens because iOS `WKWebView` prohibits microphone usage while in the background. For details, see [Microphone gets muted in background](https://developer.apple.com/forums/thread/689182).
+
+
+
+**Workaround**: Currently there is no workaround for browsers and apps using WKWebView. For Safari on iOS 15.x, you can follow these steps to avoid this issue:
+1. Upgrade to the Web SDK v4.7.3 or later versions.
+2. When calling `createMicrophoneAudioTrack`, set `bypassWebAudio` as `true`. The Web SDK directly publishes the local audio stream without processing it through `WebAudio`.
+
+   ```javascript
+   const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({bypassWebAudio: true});
+   ```
+
+  > Note that this workaround has a side effect. After applying this workaround, the audio mixing function (`MixingAudioTrack`) in the SDK fails.
+
+
+</Accordion>
+<Accordion title="iOS 15.x: Audio and video playback might not resume automatically after a system interruption">
+
+**Impact**: All browsers and apps that use WKWebView on iOS 15.x, such as Safari and Chrome.
+
+**Reason**: Such interruptions can cause the state of the `video` and `audio` elements to be `paused`. After the interruption finishes, the state cannot be automatically switched back to `playing`, and even calling `HTMLMediaElement.play` cannot resume the media playback. See the WebKit bug [232599](https://bugs.webkit.org/show_bug.cgi?id=232599) and [226698](https://bugs.webkit.org/show_bug.cgi?id=226698) for more details.
+**Workaround**: Upgrade to the Web SDK v4.7.3 or later versions. The SDK attempts to resume media playback after the interruption. Agora recommends that you add a prompt that instructs users to refresh the page.
+
+</Accordion>
+<Accordion title="iOS 15.x and 16.x: Certain iPad and iPhone models may experience noise issues after entering a channel">
 
 **Impact**: Chrome and Safari browsers on specific iPad and iPhone models with iOS 15.x and 16.x. Specific models include:
-    - iPad (5th Gen)
-    - iPad (6th Gen)
-    - iPad (7th Gen)
-    - iPad Pro (1st Gen)
-    - iPhone SE (1st Gen)
+  - iPad (5th Gen)
+  - iPad (6th Gen)
+  - iPad (7th Gen)
+  - iPad Pro (1st Gen)
+  - iPhone SE (1st Gen)
 
-    **Workaround**: Update to the latest iOS version.
+  **Workaround**: Update to the latest iOS version.
 
-  **Other known issues**
+</Accordion>
+<Accordion title="Other iOS known issues">
 
 - The volume of a remote user can change randomly on iOS 13 and 14.
-  - Switching between the front and rear cameras can momentarily rotate the video.
-  - The audio routing can change randomly. Sometimes, the audio is routed to the speakerphone when a headset is connected or to the earpiece when no headset is connected.
-  - If you call `getUserMedia` twice to get two tracks of the same media type, the first track goes muted or black.
-  - After a user switches to another app that uses the microphone or camera (such as Siri or Skype) and then switches back, the audio sampling or video capture fails.
+- Switching between the front and rear cameras can momentarily rotate the video.
+- The audio routing can change randomly. Sometimes, the audio is routed to the speakerphone when a headset is connected or to the earpiece when no headset is connected.
+- If you call `getUserMedia` twice to get two tracks of the same media type, the first track goes muted or black.
+- After a user switches to another app that uses the microphone or camera (such as Siri or Skype) and then switches back, the audio sampling or video capture fails.
 
-  **iOS known limitations**
+</Accordion>
+</Accordions>
 
-  **The `createScreenVideoTrack` method is not supported**
+##### iOS known limitations
+
+<Accordions type="multiple">
+<Accordion title="The createScreenVideoTrack method is not supported">
 
 Reason: iOS Safari and WKWebView do not support the `mediaDevices.getDisplayMedia` method.
 
-  **The `setBeautyEffect` method is not supported**
+</Accordion>
+<Accordion title="The setBeautyEffect method is not supported">
 
 Reason: WebGL is not well supported on iOS Safari and WKWebView, and the image enhancement algorithm can reduce the system performance below acceptable levels.
 
-  **`The IBufferSourceAudioTrack.seekAudioBuffer` method is not supported**
+</Accordion>
+<Accordion title="The IBufferSourceAudioTrack.seekAudioBuffer method is not supported">
 
 Reason: `WebAudio` on iOS does not support this method.
 
-  **Cannot send H.264 video streams with a resolution of 1080p or higher**
+</Accordion>
+<Accordion title="Cannot send H.264 video streams with a resolution of 1080p or higher">
 
 Reason: The Web SDK uses the H.264 Baseline Profile for negotiation, so encoding and sending a video stream with a resolution of 1080p or higher is not supported on iOS.
 
-  **When sending a low-quality stream on iOS Safari, you cannot set `LowStreamParameter.bitrate`, and the resolution of the low-quality stream must be proportional to the resolution of the high-quality stream.**
+</Accordion>
+<Accordion title="Low-quality stream bitrate and resolution are restricted">
 
 Reason: iOS Safari and WkWebView do not support setting the frame rate with the `RTCRTPSender.setParameters` method. After compressing the resolution with the `scaleResolutionDownBy` property, the resolution of the low-quality stream stays proportional to the resolution of the high-quality stream.
 
-  **The `encodeDelay` property is not supported**
+</Accordion>
+<Accordion title="The encodeDelay property is not supported">
 
 Reason: The `encodeDelay` property cannot be calculated through the `getStats` method of WebRTC on iOS.
 
-  **Backgrounding the browser or app causes the user's video to display as a black screen**
+</Accordion>
+<Accordion title="Backgrounding the browser or app causes the user's video to display as a black screen">
 
 Reason: iOS `AVCaptureSession` prohibits camera usage while in the background. For details, see [AVCaptureSessionInterruptionReason](https://developer.apple.com/documentation/avfoundation/avcapturesessioninterruptionreason/avcapturesessioninterruptionreasonvideodevicenotavailableinbackground?preferredLanguage=occ) or [Chromium issue 4294](https://bugs.chromium.org/p/webrtc/issues/detail?id=4294).
 
-  **Calling `RemoteAudioTrack.setVolume` has no effect on the playback volume of the remote audio**
+</Accordion>
+<Accordion title="Calling RemoteAudioTrack.setVolume has no effect on remote audio playback volume">
 
 Reason: iOS and iOS WebView do not support setting the volume of a media object through the `HTMLMediaElement.volume` property.
 
+</Accordion>
+</Accordions>
 
-  ****Android****
+</Accordion>
+<Accordion title="Android">
 
-**Android known issues**
+##### Android known issues
 
+<Accordions type="multiple">
+<Accordion title="Android 12: Video distortion on Chrome when hardware acceleration is enabled">
 
-  Android 12: Video distortion on Chrome when hardware acceleration is enabled
+**Impact**: The Chrome browser or Chromium kernel browser 97 or earlier on certain devices with Android 12, such as Pixel 3 and Pixel 4.
 
-  **Impact**: The Chrome browser or Chromium kernel browser 97 or earlier on certain devices with Android 12, such as Pixel 3 and Pixel 4.
+**Details**: If the Chrome browser on Android 12 enables the WebRTC `H264` or `VP9` hardware acceleration by default, video distortion can occur.
 
-  **Details**: If the Chrome browser on Android 12 enables the WebRTC `H264` or `VP9` hardware acceleration by default, video distortion can occur.
+**Reason**: This issue happens due to the regression of the Chromium WebRTC video encoder. For details, see [Chromium issue 1237677](https://bugs.chromium.org/p/chromium/issues/detail?id=1237677).
 
-  **Reason**: This issue happens due to the regression of the Chromium WebRTC video encoder. For details, see [Chromium issue 1237677](https://bugs.chromium.org/p/chromium/issues/detail?id=1237677).
+**Workaround**: Chrome 97 fixed this issue. You can instruct users to upgrade to Chrome 97 or later versions.
 
-  **Workaround**: Chrome 97 fixed this issue. You can instruct users to upgrade to Chrome 97 or later versions.
-
-  **The bitrate when sending video on Android Chrome fails to reach the preset value.**
+</Accordion>
+<Accordion title="The bitrate when sending video on Android Chrome fails to reach the preset value">
 
 **Scope**: Certain Android devices, such as Xiaomi and OnePlus.
 
-  **Reason**: This is a hardware encoder issue. The bitrate fails to reach the preset value at a specific video encoding frame rate.
+**Reason**: This is a hardware encoder issue. The bitrate fails to reach the preset value at a specific video encoding frame rate.
 
-  **Workaround**: In most cases, the bitrate is relatively lower when the frame rate is set as 15 fps. If you set the frame rate as 30 fps, the bitrate increases. So Agora recommends trying to set the frame rate as 30 fps when encountering a bitrate issue. However, setting the frame rate as fps may cause performance issues.
+**Workaround**: In most cases, the bitrate is relatively lower when the frame rate is set as 15 fps. If you set the frame rate as 30 fps, the bitrate increases. So Agora recommends trying to set the frame rate as 30 fps when encountering a bitrate issue. However, setting the frame rate as fps may cause performance issues.
 
-  **The autoplay of inaudible media is blocked on WeChat**
+</Accordion>
+<Accordion title="The autoplay of inaudible media is blocked on WeChat">
 
 **Impact**: The WeChat browser using Chromium 89 kernel
 
-  **Details**: The autoplay of inaudible media is blocked. Even after the user interacts with the webpage to resume the video playback, the autoplay block is still not removed.
+**Details**: The autoplay of inaudible media is blocked. Even after the user interacts with the webpage to resume the video playback, the autoplay block is still not removed.
 
-  **Reason**: This issue happens because the WeChat browser implements a custom autoplay policy.
+**Reason**: This issue happens because the WeChat browser implements a custom autoplay policy.
 
-  **Workaround**: Follow these steps to avoid this issue:
-  1. Upgrade to the Web SDK v4.6.0 or later versions.
-  2. Listen to the `AgoraRTC.onAutoplayFailed` event. Instruct the user to click on the page to resume playback:
+**Workaround**: Follow these steps to avoid this issue:
+1. Upgrade to the Web SDK v4.6.0 or later versions.
+2. Listen to the `AgoraRTC.onAutoplayFailed` event. Instruct the user to click on the page to resume playback:
 
-     ```javascript
-     AgoraRTC.onAutoplayFailed = ()=>{
-       document.alert('Please click the page to resume playback');
-     }
-     ```
+   ```javascript
+   AgoraRTC.onAutoplayFailed = ()=>{
+     document.alert('Please click the page to resume playback');
+   }
+   ```
 
-  **If a local user wears a Bluetooth headset, after they start to send the audio, the remote audio is lost**
+</Accordion>
+<Accordion title="Starting local audio while using a Bluetooth headset can stop remote audio">
 
 **Scope**: Certain Xiaomi and OnePlus devices
 
-  **Details**: If a local user wears a Bluetooth headset, when the Bluetooth headset starts capturing the audio, there is a possibility that the remote audio is lost.
+**Details**: If a local user wears a Bluetooth headset, when the Bluetooth headset starts capturing the audio, there is a possibility that the remote audio is lost.
 
-  **Reason**: It may be due to the audio issue on Chromium regarding the profile switch of the Bluetooth.
+**Reason**: It may be due to the audio issue on Chromium regarding the profile switch of the Bluetooth.
 
-  **Workaround**: Agora recommends that you add a prompt to remind users of possible audio-loss issues when they use a Bluetooth headset.
+**Workaround**: Agora recommends that you add a prompt to remind users of possible audio-loss issues when they use a Bluetooth headset.
 
-  **When a local user is sending audio, switching the audio output device does not take effect**
+</Accordion>
+<Accordion title="Switching the audio output device while sending audio has no effect">
 
 **Scope**: Chromium-based browsers on Android devices
 
-  **Details**: When a local users is sending audio, if the user switches from using the speaker to using a Bluetooth headset, the remote audio still comes from the speaker.
+**Details**: When a local users is sending audio, if the user switches from using the speaker to using a Bluetooth headset, the remote audio still comes from the speaker.
 
-  **Reason**: The audio routing on Android devices is controlled by the Android operating system and cannot be fixed at Chromium's level. For details, see [Chromium issue 1317548](https://bugs.chromium.org/p/chromium/issues/detail?id=1317548&q=bluetooth&can=2).
+**Reason**: The audio routing on Android devices is controlled by the Android operating system and cannot be fixed at Chromium's level. For details, see [Chromium issue 1317548](https://bugs.chromium.org/p/chromium/issues/detail?id=1317548&q=bluetooth&can=2).
 
-  **Issues specific to certain Android devices**
+</Accordion>
+<Accordion title="Issues specific to certain Android devices">
 
 - On devices equipped with **MediaTek chips**, the Web SDK cannot encode and send video streams in H.264.
-  - On devices equipped with Huawei **HiSilicon Kirin** chips, if you use Chrome versions earlier than 88, the Web SDK cannot encode and send video streams in H.264.
-  - When receiving video streams on Chrome on **OnePlus 6**, if the screen turns off, the video can freeze.
-  - **Harmony OS** does not support sending the video stream of 180p.
+- On devices equipped with Huawei **HiSilicon Kirin** chips, if you use Chrome versions earlier than 88, the Web SDK cannot encode and send video streams in H.264.
+- When receiving video streams on Chrome on **OnePlus 6**, if the screen turns off, the video can freeze.
+- **Harmony OS** does not support sending the video stream of 180p.
 
-  **Other known issues**
+</Accordion>
+<Accordion title="Other Android known issues">
 
 - On some Android devices, the device labels might not be available.
-  - On some Android devices, tracks can end if the audio and video streams are interrupted by system phone calls or other audio or video calling apps. To resume the call, the Web SDK needs to re-capture the audio and video.
-  - On Android Chrome, the Web SDK cannot send high-quality and low-quality streams in H.264.
-  - On Android Chrome earlier than 90, the volume obtained by `getVolumeLevel` is 0, but the user can hear the audio.
-  - On Android system Webview versions from 55 to 75, the `decodeFrameRate` property stays 0.
-  - When running Android 11 on certain OPPO models, such as Reno4 and A11, users will experience black screens and no sound due to the lack of WebRTC support.
+- On some Android devices, tracks can end if the audio and video streams are interrupted by system phone calls or other audio or video calling apps. To resume the call, the Web SDK needs to re-capture the audio and video.
+- On Android Chrome, the Web SDK cannot send high-quality and low-quality streams in H.264.
+- On Android Chrome earlier than 90, the volume obtained by `getVolumeLevel` is 0, but the user can hear the audio.
+- On Android system Webview versions from 55 to 75, the `decodeFrameRate` property stays 0.
+- When running Android 11 on certain OPPO models, such as Reno4 and A11, users will experience black screens and no sound due to the lack of WebRTC support.
 
-  **Android known limitations**
+</Accordion>
+</Accordions>
 
-  **The `createScreenVideoTrack` method is not supported**
+##### Android known limitations
+
+<Accordions type="multiple">
+<Accordion title="The createScreenVideoTrack method is not supported">
 
 Reason: The `mediaDevices.getDisplayMedia` method is not implemented on mobile browsers and WkWebView.
 
-  **The `setBeautyEffect` method is not supported**
+</Accordion>
+<Accordion title="The setBeautyEffect method is not supported">
 
 Reason: The image enhancement algorithm can reduce the system performance of mobile devices below acceptable levels.
 
+</Accordion>
+</Accordions>
+
+</Accordion>
+</Accordions>
+
+<include>../../video/reference/release-notes.mdx#web-sdk-v4-24-6</include>
 
 ### v4.24.5
 
@@ -3678,7 +3722,6 @@ This release fixed the following issues:
 - Connection setup could time out in some scenarios.
 - The remote user received duplicate `user-joined` callbacks when a user with a string UID rejoined a channel immediately after leaving.
 - Messages could not be received in some scenarios.
-- The Web client could fail to receive H.265 video and metadata sent from a Native client.
 - On Safari 16.6, the local view could turn black or exit unexpectedly in some scenarios.
 - Remote video could freeze briefly after the first `client.publish(video)` call.
 - TypeScript type definition files were missing and some exported symbols were incorrect in the npm package.
@@ -6965,28 +7008,28 @@ This version includes optimizations to some features, including changes to SDK b
 
     To enhance the user’s video interaction experience, this version optimizes the default preferences for video encoding:
 
-    - In the [`CompressionPreference`]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/enum_compressionpreference.html) enumeration class, a new `PreferCompressionAuto` (-1) enumeration is added, replacing the original `PreferQuality` (1) as the default value. In this mode, the SDK will automatically choose between `PreferLowLatency` and `PreferQuality` based on your video scene settings to achieve the best user experience.
-    - In the [`DegradationPreference`]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/enum_degradationpreference.html) enumeration class, a new `MaintainAuto` (-1) enumeration is added, replacing the original `MaintainQuality` (1) as the default value. In this mode, the SDK will automatically choose between `MaintainFramerate`, `MaintainBalanced`, and `MaintainResolution` based on your video scene settings to achieve the optimal overall quality of experience (QoE).
+    - In the [`CompressionPreference`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_compressionpreference.html) enumeration class, a new `PreferCompressionAuto` (-1) enumeration is added, replacing the original `PreferQuality` (1) as the default value. In this mode, the SDK will automatically choose between `PreferLowLatency` and `PreferQuality` based on your video scene settings to achieve the best user experience.
+    - In the [`DegradationPreference`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_degradationpreference.html) enumeration class, a new `MaintainAuto` (-1) enumeration is added, replacing the original `MaintainQuality` (1) as the default value. In this mode, the SDK will automatically choose between `MaintainFramerate`, `MaintainBalanced`, and `MaintainResolution` based on your video scene settings to achieve the optimal overall quality of experience (QoE).
 
 #### New features
 
 1. **Live show scenario**
 
-    This version adds the `ApplicationScenarioLiveshow`(3) (Live Show) enumeration to [`VideoApplicationScenarioType`]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/enum_videoapplicationscenariotype.html). You can call `setVideoScenario` to set the video business scenario to show room. In this scenario, fast video rendering and high image quality are crucial. The SDK implements several performance optimizations, such as enabling accelerated audio and video frame rendering to minimize first-frame latency (no need to call `enableInstantMediaRendering`) to achieve better image quality and bandwidth efficiency.
+    This version adds the `ApplicationScenarioLiveshow`(3) (Live Show) enumeration to [`VideoApplicationScenarioType`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_videoapplicationscenariotype.html). You can call `setVideoScenario` to set the video business scenario to show room. In this scenario, fast video rendering and high image quality are crucial. The SDK implements several performance optimizations, such as enabling accelerated audio and video frame rendering to minimize first-frame latency (no need to call `enableInstantMediaRendering`) to achieve better image quality and bandwidth efficiency.
 
 1. **Maximum frame rate for video rendering**
 
-    This version adds the [`setLocalRenderTargetFps`]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setlocalrendertargetfps) and [`setRemoteRenderTargetFps`]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setremoterendertargetfps) methods, which support setting the maximum frame rate for video rendering locally and remotely. The actual frame rate for video rendering by the SDK will be as close to this value as possible.
+    This version adds the [`setLocalRenderTargetFps`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setlocalrendertargetfps) and [`setRemoteRenderTargetFps`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setremoterendertargetfps) methods, which support setting the maximum frame rate for video rendering locally and remotely. The actual frame rate for video rendering by the SDK will be as close to this value as possible.
 
     In use-cases where the frame rate requirement for video rendering is not high (for example, screen sharing, online education) or when the remote end uses mid-to-low-end devices, you can use this set of methods to limit the video rendering frame rate, thereby reducing CPU consumption and improving system performance.
 
 1. **Filter effects**
 
-    This version introduces the [`setFilterEffectOptions`]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setfiltereffectoptions) method. You can pass a cube map file (`.cube`) in the `config` parameter to achieve custom filter effects such as whitening, vivid, cool, black and white, etc. Additionally, the SDK provides a built-in `built_in_whiten_filter.cube` file for quickly achieving a whitening filter effect.
+    This version introduces the [`setFilterEffectOptions`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setfiltereffectoptions) method. You can pass a cube map file (`.cube`) in the `config` parameter to achieve custom filter effects such as whitening, vivid, cool, black and white, etc. Additionally, the SDK provides a built-in `built_in_whiten_filter.cube` file for quickly achieving a whitening filter effect.
 
 1. **Local audio mixing**
 
-    This version introduces the local audio mixing feature. You can call the [`startLocalAudioMixer`]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_startlocalaudiomixer) method to mix the audio streams from the local microphone, media player, sound card, and remote audio streams into a single audio stream, which can then be published to the channel. When you no longer need audio mixing, you can call the `stopLocalAudioMixer` method to stop local audio mixing. During the mixing process, you can call the `updateLocalAudioMixerConfiguration` method to update the configuration of the audio streams being mixed.
+    This version introduces the local audio mixing feature. You can call the [`startLocalAudioMixer`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_startlocalaudiomixer) method to mix the audio streams from the local microphone, media player, sound card, and remote audio streams into a single audio stream, which can then be published to the channel. When you no longer need audio mixing, you can call the `stopLocalAudioMixer` method to stop local audio mixing. During the mixing process, you can call the `updateLocalAudioMixerConfiguration` method to update the configuration of the audio streams being mixed.
 
     Example use cases for this feature include:
 
@@ -7000,8 +7043,8 @@ This version includes optimizations to some features, including changes to SDK b
 
 1. **Others**
 
-    - [`onLocalVideoStateChanged`]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged) callback adds the `LocalVideoStreamReasonDeviceDisconnected` enumeration, indicating that the currently used video capture device has been disconnected (e.g., unplugged). (Windows)
-    - [`MediaDeviceStateType`]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/enum_mediadevicestatetype.html) adds the `MediaDeviceStatePluggedIn` enumeration, indicating that the device has been plugged in. (Windows)
+    - [`onLocalVideoStateChanged`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged) callback adds the `LocalVideoStreamReasonDeviceDisconnected` enumeration, indicating that the currently used video capture device has been disconnected (e.g., unplugged). (Windows)
+    - [`MediaDeviceStateType`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_mediadevicestatetype.html) adds the `MediaDeviceStatePluggedIn` enumeration, indicating that the device has been plugged in. (Windows)
 
 #### Improvements
 
@@ -7011,11 +7054,11 @@ This version includes optimizations to some features, including changes to SDK b
 
 1. **Snapshot at specified video observation points**
 
-    This version introduces the [`takeSnapshotWithConfig`]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_takesnapshot2) and [`takeSnapshotWithConfigEx`]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengineex.html#api_irtcengineex_takesnapshotex2) methods. You can use the `config` parameter when calling these methods to take snapshots at specified video observation points, such as before encoding, after encoding, or before rendering, to achieve more flexible snapshot effects.
+    This version introduces the [`takeSnapshotWithConfig`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_takesnapshot2) and [`takeSnapshotWithConfigEx`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengineex.html#api_irtcengineex_takesnapshotex2) methods. You can use the `config` parameter when calling these methods to take snapshots at specified video observation points, such as before encoding, after encoding, or before rendering, to achieve more flexible snapshot effects.
 
 1. **Custom audio capture improvements**
 
-    This version adds the `enableAudioProcessing` member parameter to [`AudioTrackConfig`]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_audiotrackconfig.html), which is used to control whether to enable 3A audio processing for custom audio capture tracks of the `AUDIO_TRACK_DIRECT` type. The default value of this parameter is `false`, meaning that audio processing is not enabled. Users can enable it as needed, enhancing the flexibility of custom audio processing.
+    This version adds the `enableAudioProcessing` member parameter to [`AudioTrackConfig`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_audiotrackconfig.html), which is used to control whether to enable 3A audio processing for custom audio capture tracks of the `AUDIO_TRACK_DIRECT` type. The default value of this parameter is `false`, meaning that audio processing is not enabled. Users can enable it as needed, enhancing the flexibility of custom audio processing.
 
 1. **Other improvements**
 
@@ -7087,7 +7130,7 @@ v4.3.2 was released on June 6, 2024.
 
 #### Improvements
 
-This release enhances the usability of the [setRemoteSubscribeFallbackOption]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setremotesubscribefallbackoption) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
+This release enhances the usability of the [setRemoteSubscribeFallbackOption](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setremotesubscribefallbackoption) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
 
 #### Issues fixed
 
@@ -7104,19 +7147,19 @@ v4.3.1 was released on May 9, 2024.
 
 1. **Data stream encryption**
 
-    This version adds `datastreamEncryptionEnabled` to [EncryptionConfig]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_encryptionconfig.html) for enabling data stream encryption. You can set this when you activate encryption with [enableEncryption]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_enableencryption). If there are issues causing failure in data stream encryption or decryption, these can be identified by the newly added `EncryptionErrorDatastreamDecryptionFailure` and `EncryptionErrorDatastreamEncryptionFailure` enumerations.
+    This version adds `datastreamEncryptionEnabled` to [EncryptionConfig](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_encryptionconfig.html) for enabling data stream encryption. You can set this when you activate encryption with [enableEncryption](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption). If there are issues causing failure in data stream encryption or decryption, these can be identified by the newly added `EncryptionErrorDatastreamDecryptionFailure` and `EncryptionErrorDatastreamEncryptionFailure` enumerations.
 
 1. **Other features**
 
-    - A new method [enableEncryptionEx]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengineex.html#api_irtcengineex_enableencryptionex) is added for enabling media stream or data stream encryption in multi-channel use-cases.
-    - A new method [setAudioMixingPlaybackSpeed]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed) is introduced for setting the playback speed of audio files.
-    - A new method [getCallIdEx]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengineex.html#api_irtcengineex_getcallidex) is introduced for retrieving call IDs in multi-channel use-cases.
+    - A new method [enableEncryptionEx](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengineex.html#api_irtcengineex_enableencryptionex) is added for enabling media stream or data stream encryption in multi-channel use-cases.
+    - A new method [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed) is introduced for setting the playback speed of audio files.
+    - A new method [getCallIdEx](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengineex.html#api_irtcengineex_getcallidex) is introduced for retrieving call IDs in multi-channel use-cases.
 
 #### Improvements
 
 1. **Audio device type detection (macOS)**
 
-    This version adds the `deviceTypeName` in [AudioDeviceInfo]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_audiodeviceinfo.html), used to identify the type of audio devices, such as built-in, USB, HDMI, and so on.
+    This version adds the `deviceTypeName` in [AudioDeviceInfo](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_audiodeviceinfo.html), used to identify the type of audio devices, such as built-in, USB, HDMI, and so on.
 
 1. **CPU consumption reduction of in-ear monitoring**
 
@@ -7126,40 +7169,40 @@ v4.3.1 was released on May 9, 2024.
 
     This version also includes the following improvements:
 
-    - In [AudioEffectPreset]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/enum_audioeffectpreset.html), a new enumeration `RoomAcousticsChorus` (chorus effect) is added, enhancing the spatial presence of vocals in chorus use-cases.
-    - In [RemoteAudioStats]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_remoteaudiostats.html), a new `e2eDelay` field is added to report the delay from when the audio is captured on the sending side to when the audio is played on the receiving side.
+    - In [AudioEffectPreset](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_audioeffectpreset.html), a new enumeration `RoomAcousticsChorus` (chorus effect) is added, enhancing the spatial presence of vocals in chorus use-cases.
+    - In [RemoteAudioStats](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_remoteaudiostats.html), a new `e2eDelay` field is added to report the delay from when the audio is captured on the sending side to when the audio is played on the receiving side.
 
 #### Issues fixed
 
 This version fixed the following issues:
 
-- In audio-video interactions, if a user inserted headphones into the device and manually switched the system audio output to speakers, and later the app called [setPlaybackDevice]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_iaudiodevicemanager.html#api_iaudiodevicemanager_setplaybackdevice) to specify the headphone as the audio playback device, audio output did not switch back to speakers as expected after the headphones were removed (macOS).
+- In audio-video interactions, if a user inserted headphones into the device and manually switched the system audio output to speakers, and later the app called [setPlaybackDevice](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_setplaybackdevice) to specify the headphone as the audio playback device, audio output did not switch back to speakers as expected after the headphones were removed (macOS).
 - During interactions, when a local user set the system default playback device to speakers, there was no sound from the remote end (Windows).
 
 #### API changes
 
 **Added**
 
-- [enableCameraCenterStage]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_enablecameracenterstage) (macOS)
-- [isCameraCenterStageSupported]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_iscameracenterstagesupported) (macOS)
-- [registerFaceInfoObserver]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_imediaengine.html#api_imediaengine_registerfaceinfoobserver)
-- [unregisterFaceInfoObserver]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_imediaengine.html#api_imediaengine_unregisterfaceinfoobserver)
-- [IFaceInfoObserver]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_ifaceinfoobserver.html#class_ifaceinfoobserver)
-- [onFaceInfo]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_ifaceinfoobserver.html#callback_ifaceinfoobserver_onfaceinfo)
-- [MediaSourceType]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/enum_mediasourcetype.html) adds `SpeechDrivenVideoSource`
-- [VideoSourceType]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/enum_videosourcetype.html) adds `VideoSourceSpeechDriven`
-- [EncryptionConfig]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_encryptionconfig.html) adds `datastreamEncryptionEnabled`
-- [EncryptionErrorType]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/enum_encryptionerrortype.html) adds the following enumerations:
+- [enableCameraCenterStage](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enablecameracenterstage) (macOS)
+- [isCameraCenterStageSupported](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_iscameracenterstagesupported) (macOS)
+- [registerFaceInfoObserver](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_imediaengine.html#api_imediaengine_registerfaceinfoobserver)
+- [unregisterFaceInfoObserver](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_imediaengine.html#api_imediaengine_unregisterfaceinfoobserver)
+- [IFaceInfoObserver](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_ifaceinfoobserver.html#class_ifaceinfoobserver)
+- [onFaceInfo](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_ifaceinfoobserver.html#callback_ifaceinfoobserver_onfaceinfo)
+- [MediaSourceType](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_mediasourcetype.html) adds `SpeechDrivenVideoSource`
+- [VideoSourceType](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_videosourcetype.html) adds `VideoSourceSpeechDriven`
+- [EncryptionConfig](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_encryptionconfig.html) adds `datastreamEncryptionEnabled`
+- [EncryptionErrorType](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_encryptionerrortype.html) adds the following enumerations:
   - `EncryptionErrorDatastreamDecryptionFailure`
   - `EncryptionErrorDatastreamEncryptionFailure`
-- [AudioDeviceInfo]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_audiodeviceinfo.html) adds `deviceTypeName` (macOS)
-- [RemoteAudioStats]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_remoteaudiostats.html) adds `e2eDelay`
-- [ErrorCodeType]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/enum_errorcodetype.html) adds `ErrDatastreamDecryptionFailed`
-- [AudioEffectPreset]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/enum_audioeffectpreset.html) adds `RoomAcousticsChorus`, enhancing the spatial presence of vocals in chorus use-cases.
-- [getCallIdEx]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengineex.html#api_irtcengineex_getcallidex)
-- [enableEncryptionEx]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengineex.html#api_irtcengineex_enableencryptionex)
-- [setAudioMixingPlaybackSpeed]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed)
-- [EarMonitoringFilterType]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/enum_earmonitoringfiltertype.html) adds a new enumeration `EarMonitoringFilterBuiltInAudioFilters`
+- [AudioDeviceInfo](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_audiodeviceinfo.html) adds `deviceTypeName` (macOS)
+- [RemoteAudioStats](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_remoteaudiostats.html) adds `e2eDelay`
+- [ErrorCodeType](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_errorcodetype.html) adds `ErrDatastreamDecryptionFailed`
+- [AudioEffectPreset](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_audioeffectpreset.html) adds `RoomAcousticsChorus`, enhancing the spatial presence of vocals in chorus use-cases.
+- [getCallIdEx](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengineex.html#api_irtcengineex_getcallidex)
+- [enableEncryptionEx](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengineex.html#api_irtcengineex_enableencryptionex)
+- [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed)
+- [EarMonitoringFilterType](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_earmonitoringfiltertype.html) adds a new enumeration `EarMonitoringFilterBuiltInAudioFilters`
 
 ### v4.3.0
 
@@ -7211,27 +7254,27 @@ This release has optimized the implementation of some functions, involving renam
 
 1. **Audio loopback capturing**
 
-    - Before v4.3.0, if you call the [disableAudio]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_disableaudio) method to disable the audio module, audio loopback capturing will not be disabled.
-    - As of v4.3.0, if you call the [disableAudio]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_disableaudio) method to disable the audio module, audio loopback capturing will be disabled as well. If you need to enable audio loopback capturing, you need to enable the audio module by calling the [enableAudio]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_enableaudio) method and then call [enableLoopbackRecording]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_enableloopbackrecording).
+    - Before v4.3.0, if you call the [disableAudio](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_disableaudio) method to disable the audio module, audio loopback capturing will not be disabled.
+    - As of v4.3.0, if you call the [disableAudio](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_disableaudio) method to disable the audio module, audio loopback capturing will be disabled as well. If you need to enable audio loopback capturing, you need to enable the audio module by calling the [enableAudio](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enableaudio) method and then call [enableLoopbackRecording](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enableloopbackrecording).
 
 #### New features
 
 1. **Query Device Score**
 
-    This release adds the [queryDeviceScore]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_querydevicescore) method to query the device's score level to ensure that the user-set parameters do not exceed the device's capabilities. For example, in HD or UHD video use-cases, you can first call this method to query the device's score. If the returned score is low (for example, below 60), you need to lower the video resolution to avoid affecting the video experience. The minimum device score required for different business use-cases is varied. For specific score recommendations, please contact [technical support](mailto:support@agora.io).
+    This release adds the [queryDeviceScore](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_querydevicescore) method to query the device's score level to ensure that the user-set parameters do not exceed the device's capabilities. For example, in HD or UHD video use-cases, you can first call this method to query the device's score. If the returned score is low (for example, below 60), you need to lower the video resolution to avoid affecting the video experience. The minimum device score required for different business use-cases is varied. For specific score recommendations, please contact [technical support](mailto:support@agora.io).
 
 1. **Select different audio tracks for local playback and streaming**
 
-    This release introduces the [selectMultiAudioTrack]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_Imediaplayer_selectmultiaudiotrack) method that allows you to select different audio tracks for local playback and streaming to remote users. For example, in use-cases like online karaoke, the host can choose to play the original sound locally and publish the accompaniment in the channel. Before using this function, you need to open the media file through the [openWithMediaSource]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_imediaplayer.html#api_imediaplayer_openwithmediasource) method and enable this function by setting the `enableMultiAudioTrack` parameter in [MediaSource]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_mediasource.html).
+    This release introduces the [selectMultiAudioTrack](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_Imediaplayer_selectmultiaudiotrack) method that allows you to select different audio tracks for local playback and streaming to remote users. For example, in use-cases like online karaoke, the host can choose to play the original sound locally and publish the accompaniment in the channel. Before using this function, you need to open the media file through the [openWithMediaSource](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_imediaplayer.html#api_imediaplayer_openwithmediasource) method and enable this function by setting the `enableMultiAudioTrack` parameter in [MediaSource](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_mediasource.html).
 
 1. **Others**
 
     This release has passed the test verification of the following APIs and can be applied to the entire series of RTC 4.x SDK.
 
-    - [setPlaybackDeviceVolume]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_iaudiodevicemanager.html#api_iaudiodevicemanager_setplaybackdevicevolume): Sets the volume of the audio playback device.
-    - [getRecordingDeviceVolume]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_iaudiodevicemanager.html#api_iaudiodevicemanager_getrecordingdevicevolume): Sets the volume of the audio capturing device.
-    - [setPlayerOptionInInt]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_imediaplayer.html#api_imediaplayer_setplayeroption) and [setPlayerOptionInString]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_imediaplayer.html#api_imediaplayer_setplayeroption2): Sets media player options for providing technical previews or special customization features.
-    - [enableCustomAudioLocalPlayback]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_enablecustomaudiolocalplayback): Sets whether to enable the local playback of external audio source.
+    - [setPlaybackDeviceVolume](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_setplaybackdevicevolume): Sets the volume of the audio playback device.
+    - [getRecordingDeviceVolume](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_getrecordingdevicevolume): Sets the volume of the audio capturing device.
+    - [setPlayerOptionInInt](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_imediaplayer.html#api_imediaplayer_setplayeroption) and [setPlayerOptionInString](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_imediaplayer.html#api_imediaplayer_setplayeroption2): Sets media player options for providing technical previews or special customization features.
+    - [enableCustomAudioLocalPlayback](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enablecustomaudiolocalplayback): Sets whether to enable the local playback of external audio source.
 
 #### Improvements
 
@@ -7246,21 +7289,21 @@ This release has optimized the implementation of some functions, involving renam
 
 1. **In-ear monitoring volume boost**
 
-    This release provides users with more flexible in-ear monitoring audio adjustment options, supporting the ability to set the in-ear monitoring volume to four times the original volume by calling [setInEarMonitoringVolume]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setinearmonitoringvolume).
+    This release provides users with more flexible in-ear monitoring audio adjustment options, supporting the ability to set the in-ear monitoring volume to four times the original volume by calling [setInEarMonitoringVolume](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setinearmonitoringvolume).
 
 1. **Spatial audio effects usability improvement**
 
-    - This release optimizes the design of the [setZones]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_ibasespatialaudioengine.html#api_ibasespatialaudioengine_setzones) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
-    - As of this release, it is no longer necessary to unsubscribe from the audio streams of all remote users within the channel before calling the [ILocalSpatialAudioEngine]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_ilocalspatialaudioengine.html#class_ilocalspatialaudioengine) method.
+    - This release optimizes the design of the [setZones](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_ibasespatialaudioengine.html#api_ibasespatialaudioengine_setzones) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
+    - As of this release, it is no longer necessary to unsubscribe from the audio streams of all remote users within the channel before calling the [ILocalSpatialAudioEngine](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_ilocalspatialaudioengine.html#class_ilocalspatialaudioengine) method.
 
 1. **Other Improvements**
 
     This release also includes the following improvements:
 
     - This release optimizes the SDK's domain name resolution strategy, improving the stability of calling to resolve domain names in complex network environments.
-    - This release adds the `earMonitorDelay` and `aecEstimatedDelay` members in [LocalAudioStats]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_localaudiostats.html) to report ear monitor delay and acoustic echo cancellation (AEC) delay, respectively.
-    - The [onPlayerCacheStats]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats) callback is added to report the statistics of the media file being cached. This callback is triggered once per second after file caching is started.
-    - The [onPlayerPlaybackStats]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats) callback is added to report the statistics of the media file being played. This callback is triggered once per second after the media file starts playing. You can obtain information like the audio and video bitrate of the media file through [PlayerPlaybackStats]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_playerplaybackstats.html).
+    - This release adds the `earMonitorDelay` and `aecEstimatedDelay` members in [LocalAudioStats](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_localaudiostats.html) to report ear monitor delay and acoustic echo cancellation (AEC) delay, respectively.
+    - The [onPlayerCacheStats](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats) callback is added to report the statistics of the media file being cached. This callback is triggered once per second after file caching is started.
+    - The [onPlayerPlaybackStats](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats) callback is added to report the statistics of the media file being played. This callback is triggered once per second after the media file starts playing. You can obtain information like the audio and video bitrate of the media file through [PlayerPlaybackStats](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_playerplaybackstats.html).
 
 #### Issues fixed
 
@@ -7272,14 +7315,14 @@ This release fixed the following issue:
 
 **Added**
 
-- [enableCustomAudioLocalPlayback]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_enablecustomaudiolocalplayback)
-- [queryDeviceScore]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_querydevicescore)
-- The `CustomVideoSource` enumeration in [MediaSourceType]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/enum_mediasourcetype.html)
-- The `RouteBluetoothDeviceA2DP` enumeration in [AudioRoute]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/enum_audioroute.html)
-- [selectMultiAudioTrack]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_Imediaplayer_selectmultiaudiotrack)
-- [onPlayerCacheStats]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats)
-- [onPlayerPlaybackStats]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats)
-- [PlayerPlaybackStats]({{Global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_playerplaybackstats.html)
+- [enableCustomAudioLocalPlayback](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enablecustomaudiolocalplayback)
+- [queryDeviceScore](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_querydevicescore)
+- The `CustomVideoSource` enumeration in [MediaSourceType](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_mediasourcetype.html)
+- The `RouteBluetoothDeviceA2DP` enumeration in [AudioRoute](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_audioroute.html)
+- [selectMultiAudioTrack](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_Imediaplayer_selectmultiaudiotrack)
+- [onPlayerCacheStats](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats)
+- [onPlayerPlaybackStats](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats)
+- [PlayerPlaybackStats](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_playerplaybackstats.html)
 
 **Modified**
 
@@ -8021,8 +8064,8 @@ This version includes optimizations to some features, including changes to SDK b
 
     To enhance the user’s video interaction experience, this version optimizes the default preferences for video encoding:
 
-    - In the [`CompressionPreference`]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_compressionpreference.html) enumeration class, a new `preferCompressionAuto` (-1) enumeration is added, replacing the original `preferQuality` (1) as the default value. In this mode, the SDK will automatically choose between `preferLowLatency` and `preferQuality` based on your video scene settings to achieve the best user experience.
-    - In the [`DegradationPreference`]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_degradationpreference.html) enumeration class, a new `maintainAuto` (-1) enumeration is added, replacing the original `maintainQuality` (1) as the default value. In this mode, the SDK will automatically choose between `maintainFramerate`, `maintainBalanced`, and `maintainResolution` based on your video scene settings to achieve the optimal overall quality of experience (QoE).
+    - In the [`CompressionPreference`](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_compressionpreference.html) enumeration class, a new `preferCompressionAuto` (-1) enumeration is added, replacing the original `preferQuality` (1) as the default value. In this mode, the SDK will automatically choose between `preferLowLatency` and `preferQuality` based on your video scene settings to achieve the best user experience.
+    - In the [`DegradationPreference`](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_degradationpreference.html) enumeration class, a new `maintainAuto` (-1) enumeration is added, replacing the original `maintainQuality` (1) as the default value. In this mode, the SDK will automatically choose between `maintainFramerate`, `maintainBalanced`, and `maintainResolution` based on your video scene settings to achieve the optimal overall quality of experience (QoE).
 
 1. **16 KB memory page size**
 
@@ -8041,7 +8084,7 @@ This version includes optimizations to some features, including changes to SDK b
 
 1. **Live show scenario**
 
-    This version adds the `applicationScenarioLiveshow`(3) (Live Show) enumeration to [`VideoApplicationScenarioType`]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_videoapplicationscenariotype.html). You can call `setVideoScenario` to set the video business scenario to show room. To meet the high requirements for first frame rendering time and image quality in this scenario, the SDK has optimized strategies to significantly improve the first frame rendering experience and image quality, while enhancing the image quality in weak network environments and on low-end devices.
+    This version adds the `applicationScenarioLiveshow`(3) (Live Show) enumeration to [`VideoApplicationScenarioType`](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_videoapplicationscenariotype.html). You can call `setVideoScenario` to set the video business scenario to show room. To meet the high requirements for first frame rendering time and image quality in this scenario, the SDK has optimized strategies to significantly improve the first frame rendering experience and image quality, while enhancing the image quality in weak network environments and on low-end devices.
 
 1. **Maximum frame rate for video rendering**
 
@@ -8065,7 +8108,7 @@ This version includes optimizations to some features, including changes to SDK b
 
 1. **External MediaProjection (Android)**
 
-    This version introduces the [`setExternalMediaProjection`]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setexternalmediaprojection) method, which allows you to set an external `MediaProjection` and replace the `MediaProjection` applied by the SDK.
+    This version introduces the [`setExternalMediaProjection`](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setexternalmediaprojection) method, which allows you to set an external `MediaProjection` and replace the `MediaProjection` applied by the SDK.
 
     If you have the capability to apply for `MediaProjection` on your own, you can use this feature to achieve more flexible screen capture.
 
@@ -8083,12 +8126,12 @@ This version includes optimizations to some features, including changes to SDK b
 
 1. **1v1 video call scenario**
 
-    This version adds `applicationScenario1v1` (1v1 video call) in [`VideoApplicationScenarioType`]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_videoapplicationscenariotype.html). You can call `setVideoScenario` to set the video application scenario to 1v1 video call, the SDK optimizes performance to achieve low latency and high video quality, enhancing image quality, first frame rendering, latency on mid-to-low-end devices, and smoothness under poor network conditions.
+    This version adds `applicationScenario1v1` (1v1 video call) in [`VideoApplicationScenarioType`](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_videoapplicationscenariotype.html). You can call `setVideoScenario` to set the video application scenario to 1v1 video call, the SDK optimizes performance to achieve low latency and high video quality, enhancing image quality, first frame rendering, latency on mid-to-low-end devices, and smoothness under poor network conditions.
 
 1. **Other features**
 
-    - [`onLocalVideoStateChanged`]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged) callback adds the `localVideoStreamReasonDeviceDisconnected` enumeration, indicating that the currently used video capture device has been disconnected (for example, unplugged). (Windows)
-    - [`MediaDeviceStateType`]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_mediadevicestatetype.html) adds the `mediaDeviceStatePluggedIn` enumeration, indicating that the device has been plugged in. (Windows)
+    - [`onLocalVideoStateChanged`](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged) callback adds the `localVideoStreamReasonDeviceDisconnected` enumeration, indicating that the currently used video capture device has been disconnected (for example, unplugged). (Windows)
+    - [`MediaDeviceStateType`](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_mediadevicestatetype.html) adds the `mediaDeviceStatePluggedIn` enumeration, indicating that the device has been plugged in. (Windows)
 
 #### Improvements
 
@@ -8098,11 +8141,11 @@ This version includes optimizations to some features, including changes to SDK b
 
 1. **Snapshot at specified video observation points**
 
-    This version introduces the [`takeSnapshotWithConfig`]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_takesnapshot2) and [`takeSnapshotWithConfigEx`]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengineex.html#api_irtcengineex_takesnapshotex2) methods. You can use the `config` parameter when calling these methods to take snapshots at specified video observation points, such as before encoding, after encoding, or before rendering, to achieve more flexible snapshot effects.
+    This version introduces the [`takeSnapshotWithConfig`](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_takesnapshot2) and [`takeSnapshotWithConfigEx`](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengineex.html#api_irtcengineex_takesnapshotex2) methods. You can use the `config` parameter when calling these methods to take snapshots at specified video observation points, such as before encoding, after encoding, or before rendering, to achieve more flexible snapshot effects.
 
 1. **Custom audio capture improvements**
 
-    This version adds the `enableAudioProcessing` member parameter to [`AudioTrackConfig`]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_audiotrackconfig.html), which is used to control whether to enable 3A audio processing for custom audio capture tracks of the `AUDIO_TRACK_DIRECT` type. The default value of this parameter is `false`, meaning that audio processing is not enabled. Users can enable it as needed, enhancing the flexibility of custom audio processing.
+    This version adds the `enableAudioProcessing` member parameter to [`AudioTrackConfig`](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_audiotrackconfig.html), which is used to control whether to enable 3A audio processing for custom audio capture tracks of the `AUDIO_TRACK_DIRECT` type. The default value of this parameter is `false`, meaning that audio processing is not enabled. Users can enable it as needed, enhancing the flexibility of custom audio processing.
 
 1. **Adaptive hardware decoding support (Android, Windows)**
 
@@ -8215,7 +8258,7 @@ v6.3.2 was released on June 6, 2024.
 
 #### Improvements
 
-This release enhances the usability of the [setRemoteSubscribeFallbackOption]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setremotesubscribefallbackoption) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
+This release enhances the usability of the [setRemoteSubscribeFallbackOption](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setremotesubscribefallbackoption) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
 
 #### Issues fixed
 
@@ -8224,8 +8267,8 @@ This version fixed the following issues:
 - Local audio capture failed after joining a channel while answering a system phone call and hanging up, preventing remote users from hearing any sound (Android).
 - During the interaction process on certain devices (for example, Redmi Note8), after answering and hanging up a system call, local media files were played without sound and no sound was heard from the remote end (Android).
 - The app occasionally crashed when remote users left the channel.
-- When playing an audio file finished, the SDK sometimes failed to trigger the [onAudioMixingStateChanged]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`audioMixingStateStopped`, `audioMixingReasonAllLoopsCompleted`) callback that reports that the playing is completed (iOS).
-- When calling the [playEffect]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_playeffect3) method to play sound effect files shorter than 1 second with `loopCount` set to `0`, there was no sound (iOS).
+- When playing an audio file finished, the SDK sometimes failed to trigger the [onAudioMixingStateChanged](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`audioMixingStateStopped`, `audioMixingReasonAllLoopsCompleted`) callback that reports that the playing is completed (iOS).
+- When calling the [playEffect](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_playeffect3) method to play sound effect files shorter than 1 second with `loopCount` set to `0`, there was no sound (iOS).
 
 ### v6.3.1
 
@@ -8243,19 +8286,19 @@ v4.3.1 was released on May 9, 2024.
 
 1. **Data stream encryption**
 
-    This version adds `datastreamEncryptionEnabled` to [EncryptionConfig]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_encryptionconfig.html) for enabling data stream encryption. You can set this when you activate encryption with [enableEncryption]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_enableencryption). If there are issues causing failures in data stream encryption or decryption, these can be identified by the newly added `encryptionErrorDatastreamDecryptionFailure` and `encryptionErrorDatastreamEncryptionFailure` enumerations.
+    This version adds `datastreamEncryptionEnabled` to [EncryptionConfig](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_encryptionconfig.html) for enabling data stream encryption. You can set this when you activate encryption with [enableEncryption](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_enableencryption). If there are issues causing failures in data stream encryption or decryption, these can be identified by the newly added `encryptionErrorDatastreamDecryptionFailure` and `encryptionErrorDatastreamEncryptionFailure` enumerations.
 
 1. **Other features**
 
-    - A new method [enableEncryptionEx]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengineex.html#api_irtcengineex_enableencryptionex) is added for enabling media stream or data stream encryption in multi-channel use-cases.
-    - A new method [setAudioMixingPlaybackSpeed]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed) is introduced for setting the playback speed of audio files.
-    - A new method [getCallIdEx]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengineex.html#api_irtcengineex_getcallidex) is introduced for retrieving call IDs in multi-channel use-cases.
+    - A new method [enableEncryptionEx](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengineex.html#api_irtcengineex_enableencryptionex) is added for enabling media stream or data stream encryption in multi-channel use-cases.
+    - A new method [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed) is introduced for setting the playback speed of audio files.
+    - A new method [getCallIdEx](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengineex.html#api_irtcengineex_getcallidex) is introduced for retrieving call IDs in multi-channel use-cases.
 
 #### Improvements
 
 1. **Audio device type detection (macOS)**
 
-    This version adds the `deviceTypeName` in [AudioDeviceInfo]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_audiodeviceinfo.html), used to identify the type of audio devices, such as built-in, USB, HDMI, and so on.
+    This version adds the `deviceTypeName` in [AudioDeviceInfo](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_audiodeviceinfo.html), used to identify the type of audio devices, such as built-in, USB, HDMI, and so on.
 
 1. **CPU consumption reduction of in-ear monitoring**
 
@@ -8266,8 +8309,8 @@ v4.3.1 was released on May 9, 2024.
     This version also includes the following improvements:
 
     - Enhanced performance and stability of the local compositing feature, reducing its CPU usage (Android).
-    - In [AudioEffectPreset]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_audioeffectpreset.html), a new enumeration `roomAcousticsChorus` (chorus effect) is added, enhancing the spatial presence of vocals in chorus use-cases.
-    - In [RemoteAudioStats]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_remoteaudiostats.html), a new `e2eDelay` field is added to report the delay from when the audio is captured on the sending side to when the audio is played on the receiving side.
+    - In [AudioEffectPreset](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_audioeffectpreset.html), a new enumeration `roomAcousticsChorus` (chorus effect) is added, enhancing the spatial presence of vocals in chorus use-cases.
+    - In [RemoteAudioStats](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_remoteaudiostats.html), a new `e2eDelay` field is added to report the delay from when the audio is captured on the sending side to when the audio is played on the receiving side.
 
 #### Issues fixed
 
@@ -8280,33 +8323,33 @@ This version fixed the following issues:
 
 **Added**
 
-- [enableCameraCenterStage]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_enablecameracenterstage) (iOS, macOS)
-- [isCameraCenterStageSupported]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_iscameracenterstagesupported) (iOS, macOS)
-- [setCameraStabilizationMode]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setcamerastabilizationmode) (iOS)
-- [CameraStabilizationMode]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_camerastabilizationmode.html) (iOS)
-- [registerFaceInfoObserver]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_imediaengine.html#api_imediaengine_registerfaceinfoobserver)
-- [unregisterFaceInfoObserver]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_imediaengine.html#api_imediaengine_unregisterfaceinfoobserver)
-- [FaceInfoObserver]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_ifaceinfoobserver.html#class_ifaceinfoobserver)
-- [onFaceInfo]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_ifaceinfoobserver.html#callback_ifaceinfoobserver_onfaceinfo)
-- [MediaSourceType]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_mediasourcetype.html) adds `speechDrivenVideoSource`
-- [VideoSourceType]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_videosourcetype.html) adds `videoSourceSpeechDriven`
-- [EncryptionConfig]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_encryptionconfig.html) adds `datastreamEncryptionEnabled`
-- [EncryptionErrorType]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_encryptionerrortype.html) adds the following enumerations:
+- [enableCameraCenterStage](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_enablecameracenterstage) (iOS, macOS)
+- [isCameraCenterStageSupported](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_iscameracenterstagesupported) (iOS, macOS)
+- [setCameraStabilizationMode](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setcamerastabilizationmode) (iOS)
+- [CameraStabilizationMode](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_camerastabilizationmode.html) (iOS)
+- [registerFaceInfoObserver](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_imediaengine.html#api_imediaengine_registerfaceinfoobserver)
+- [unregisterFaceInfoObserver](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_imediaengine.html#api_imediaengine_unregisterfaceinfoobserver)
+- [FaceInfoObserver](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_ifaceinfoobserver.html#class_ifaceinfoobserver)
+- [onFaceInfo](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_ifaceinfoobserver.html#callback_ifaceinfoobserver_onfaceinfo)
+- [MediaSourceType](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_mediasourcetype.html) adds `speechDrivenVideoSource`
+- [VideoSourceType](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_videosourcetype.html) adds `videoSourceSpeechDriven`
+- [EncryptionConfig](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_encryptionconfig.html) adds `datastreamEncryptionEnabled`
+- [EncryptionErrorType](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_encryptionerrortype.html) adds the following enumerations:
   - `encryptionErrorDatastreamDecryptionFailure`
   - `encryptionErrorDatastreamEncryptionFailure`
-- [AudioDeviceInfo]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_audiodeviceinfo.html) adds `deviceTypeName` (macOS)
-- [RemoteAudioStats]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_remoteaudiostats.html) adds `e2eDelay`
-- [ErrorCodeType]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_errorcodetype.html) adds `errDatastreamDecryptionFailed`
-- [AudioEffectPreset]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_audioeffectpreset.html) adds `roomAcousticsChorus`, enhancing the spatial presence of vocals in chorus use-cases.
-- [getCallIdEx]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengineex.html#api_irtcengineex_getcallidex)
-- [enableEncryptionEx]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengineex.html#api_irtcengineex_enableencryptionex)
-- [setAudioMixingPlaybackSpeed]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed)
-- [queryCameraFocalLengthCapability]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_querycamerafocallengthcapability) (Android, iOS)
-- [FocalLengthInfo]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_focallengthinfo.html) (Android, iOS)
-- [CameraFocalLengthType]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_camerafocallengthtype.html) (Android, iOS)
-- [CameraCapturerConfiguration]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_cameracapturerconfiguration.html) adds a new member `cameraFocalLengthType` (Android, iOS)
-- [CameraCapturerConfiguration]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_cameracapturerconfiguration.html) adds a new member `cameraId` (Android)
-- [EarMonitoringFilterType]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_earmonitoringfiltertype.html) adds a new enumeration `earMonitoringFilterBuiltInAudioFilters`
+- [AudioDeviceInfo](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_audiodeviceinfo.html) adds `deviceTypeName` (macOS)
+- [RemoteAudioStats](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_remoteaudiostats.html) adds `e2eDelay`
+- [ErrorCodeType](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_errorcodetype.html) adds `errDatastreamDecryptionFailed`
+- [AudioEffectPreset](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_audioeffectpreset.html) adds `roomAcousticsChorus`, enhancing the spatial presence of vocals in chorus use-cases.
+- [getCallIdEx](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengineex.html#api_irtcengineex_getcallidex)
+- [enableEncryptionEx](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengineex.html#api_irtcengineex_enableencryptionex)
+- [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed)
+- [queryCameraFocalLengthCapability](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_querycamerafocallengthcapability) (Android, iOS)
+- [FocalLengthInfo](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_focallengthinfo.html) (Android, iOS)
+- [CameraFocalLengthType](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_camerafocallengthtype.html) (Android, iOS)
+- [CameraCapturerConfiguration](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_cameracapturerconfiguration.html) adds a new member `cameraFocalLengthType` (Android, iOS)
+- [CameraCapturerConfiguration](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_cameracapturerconfiguration.html) adds a new member `cameraId` (Android)
+- [EarMonitoringFilterType](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_earmonitoringfiltertype.html) adds a new enumeration `earMonitoringFilterBuiltInAudioFilters`
 
 ### v6.3.0
 
@@ -8363,7 +8406,7 @@ This release has optimized the implementation of some functions, involving renam
 
 1. **Audio route**
 
-    Starting with this release, `routeBluetooth` in [AudioRoute]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_audioroute.html) is renamed to `routeHeadsetbluetooth`, representing a Bluetooth device using the HFP protocol. `routeBluetoothSpeaker`(10) is added to represent a Bluetooth device using the A2DP protocol.
+    Starting with this release, `routeBluetooth` in [AudioRoute](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_audioroute.html) is renamed to `routeHeadsetbluetooth`, representing a Bluetooth device using the HFP protocol. `routeBluetoothSpeaker`(10) is added to represent a Bluetooth device using the A2DP protocol.
 
 1. **Log encryption behavior changes**
 
@@ -8376,8 +8419,8 @@ This release has optimized the implementation of some functions, involving renam
 
 1. **Audio loopback capturing (Windows, macOS)**
 
-    - Before v6.3.0, if you call the [disableAudio]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_disableaudio) method to disable the audio module, audio loopback capturing will not be disabled.
-    - As of v6.3.0, if you call the [disableAudio]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_disableaudio) method to disable the audio module, audio loopback capturing will be disabled as well. If you need to enable audio loopback capturing, you need to enable the audio module by calling the [enableAudio]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_enableaudio) method and then call [enableLoopbackRecording]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_enableloopbackrecording).
+    - Before v6.3.0, if you call the [disableAudio](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_disableaudio) method to disable the audio module, audio loopback capturing will not be disabled.
+    - As of v6.3.0, if you call the [disableAudio](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_disableaudio) method to disable the audio module, audio loopback capturing will be disabled as well. If you need to enable audio loopback capturing, you need to enable the audio module by calling the [enableAudio](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_enableaudio) method and then call [enableLoopbackRecording](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_enableloopbackrecording).
 
 #### New features
 
@@ -8385,27 +8428,27 @@ This release has optimized the implementation of some functions, involving renam
 
     This release supports local preview with simultaneous display of multiple frames, where the videos shown in the frames are positioned at different observation positions along the video link. Examples of usage are as follows:
 
-    1. Call [setupLocalVideo]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setuplocalvideo) to set the first view: Set the `position` parameter to `positionPostCapturerOrigin` (introduced in this release) in `VideoCanvas`. This corresponds to the position after local video capture and before preprocessing. The video observed here does not have preprocessing effects.
-    1. Call [setupLocalVideo]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setuplocalvideo) to set the second view: Set the `position` parameter to `positionPostCapturer` in `VideoCanvas`, the video observed here has the effect of video preprocessing.
+    1. Call [setupLocalVideo](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setuplocalvideo) to set the first view: Set the `position` parameter to `positionPostCapturerOrigin` (introduced in this release) in `VideoCanvas`. This corresponds to the position after local video capture and before preprocessing. The video observed here does not have preprocessing effects.
+    1. Call [setupLocalVideo](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setuplocalvideo) to set the second view: Set the `position` parameter to `positionPostCapturer` in `VideoCanvas`, the video observed here has the effect of video preprocessing.
     1. Observe the local preview effect: The first view is the original video of a real person; the second view is the virtual portrait after video preprocessing (including image enhancement, virtual background, and local preview of watermarks) effects.
 
 1. **Query device score**
 
-    This release adds the [queryDeviceScore]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_querydevicescore) method to query the device's score level to ensure that the user-set parameters do not exceed the device's capabilities. For example, in HD or UHD video use-cases, you can first call this method to query the device's score. If the returned score is low (for example, below 60), you need to lower the video resolution to avoid affecting the video experience. The minimum device score required for different business use-cases is varied. For specific score recommendations, please contact [technical support](mailto:support@agora.io).
+    This release adds the [queryDeviceScore](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_querydevicescore) method to query the device's score level to ensure that the user-set parameters do not exceed the device's capabilities. For example, in HD or UHD video use-cases, you can first call this method to query the device's score. If the returned score is low (for example, below 60), you need to lower the video resolution to avoid affecting the video experience. The minimum device score required for different business use-cases is varied. For specific score recommendations, please contact [technical support](mailto:support@agora.io).
 
 1. **Select different audio tracks for local playback and streaming**
 
-    This release introduces the [selectMultiAudioTrack]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_Imediaplayer_selectmultiaudiotrack) method that allows you to select different audio tracks for local playback and streaming to remote users. For example, in use-cases like online karaoke, the host can choose to play the original sound locally and publish the accompaniment in the channel. Before using this function, you need to open the media file through the [openWithMediaSource]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_imediaplayer.html#api_imediaplayer_openwithmediasource) method and enable this function by setting the `enableMultiAudioTrack` parameter in [MediaSource]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_mediasource.html).
+    This release introduces the [selectMultiAudioTrack](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_Imediaplayer_selectmultiaudiotrack) method that allows you to select different audio tracks for local playback and streaming to remote users. For example, in use-cases like online karaoke, the host can choose to play the original sound locally and publish the accompaniment in the channel. Before using this function, you need to open the media file through the [openWithMediaSource](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_imediaplayer.html#api_imediaplayer_openwithmediasource) method and enable this function by setting the `enableMultiAudioTrack` parameter in [MediaSource](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_mediasource.html).
 
 1. **Others**
 
     This release has passed the test verification of the following APIs and can be applied to the entire series of RTC 4.x SDK.
 
-    - [onRemoteSubscribeFallbackToAudioOnly]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly): Occurs when the subscribed video stream falls back to audio-only stream due to weak network conditions or switches back to the video stream after the network conditions improve.
-    - [setPlaybackDeviceVolume]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_iaudiodevicemanager.html#api_iaudiodevicemanager_setplaybackdevicevolume) (Windows): Sets the volume of the audio playback device.
-    - [setPlaybackDeviceVolume]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_iaudiodevicemanager.html#api_iaudiodevicemanager_getrecordingdevicevolume): Sets the volume of the audio capturing device.
-    - [setPlayerOptionInInt]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_imediaplayer.html#api_imediaplayer_setplayeroption) and [setPlayerOptionInString]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_imediaplayer.html#api_imediaplayer_setplayeroption2): Sets media player options for providing technical previews or special customization features.
-    - [enableCustomAudioLocalPlayback]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengineex.html#api_irtcengine_enablecustomaudiolocalplayback): Sets whether to enable the local playback of external audio source.
+    - [onRemoteSubscribeFallbackToAudioOnly](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly): Occurs when the subscribed video stream falls back to audio-only stream due to weak network conditions or switches back to the video stream after the network conditions improve.
+    - [setPlaybackDeviceVolume](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_setplaybackdevicevolume) (Windows): Sets the volume of the audio playback device.
+    - [setPlaybackDeviceVolume](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_getrecordingdevicevolume): Sets the volume of the audio capturing device.
+    - [setPlayerOptionInInt](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_imediaplayer.html#api_imediaplayer_setplayeroption) and [setPlayerOptionInString](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_imediaplayer.html#api_imediaplayer_setplayeroption2): Sets media player options for providing technical previews or special customization features.
+    - [enableCustomAudioLocalPlayback](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengineex.html#api_irtcengine_enablecustomaudiolocalplayback): Sets whether to enable the local playback of external audio source.
 
 #### Improvements
 
@@ -8420,21 +8463,21 @@ This release has optimized the implementation of some functions, involving renam
 
 1. **In-ear monitoring volume boost**
 
-    This release provides users with more flexible in-ear monitoring audio adjustment options, supporting the ability to set the in-ear monitoring volume to four times the original volume by calling [setInEarMonitoringVolume]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_setinearmonitoringvolume).
+    This release provides users with more flexible in-ear monitoring audio adjustment options, supporting the ability to set the in-ear monitoring volume to four times the original volume by calling [setInEarMonitoringVolume](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setinearmonitoringvolume).
 
 1. **Spatial audio effects usability improvement**
 
-    - This release optimizes the design of the [setZones]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_ibasespatialaudioengine.html#api_ibasespatialaudioengine_setzones) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
-    - As of this release, it is no longer necessary to unsubscribe from the audio streams of all remote users within the channel before calling the [LocalSpatialAudioEngine]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_ilocalspatialaudioengine.html#class_ilocalspatialaudioengine) method.
+    - This release optimizes the design of the [setZones](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_ibasespatialaudioengine.html#api_ibasespatialaudioengine_setzones) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
+    - As of this release, it is no longer necessary to unsubscribe from the audio streams of all remote users within the channel before calling the [LocalSpatialAudioEngine](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_ilocalspatialaudioengine.html#class_ilocalspatialaudioengine) method.
 
 1. **Other Improvements**
 
     This release also includes the following improvements:
 
-    - The [onPlayerCacheStats]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats) callback is added to reports the statistics of the media file being cached. This callback is triggered once per second after file caching is started.
-    - The [onPlayerPlaybackStats]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats) callback is added to reports the statistics of the media file being played. This callback is triggered once per second after the media file starts playing. You can obtain information like the audio and video bitrate of the media file through [PlayerPlaybackStats]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_playerplaybackstats.html).
+    - The [onPlayerCacheStats](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats) callback is added to reports the statistics of the media file being cached. This callback is triggered once per second after file caching is started.
+    - The [onPlayerPlaybackStats](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats) callback is added to reports the statistics of the media file being played. This callback is triggered once per second after the media file starts playing. You can obtain information like the audio and video bitrate of the media file through [PlayerPlaybackStats](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_playerplaybackstats.html).
     - This release optimizes the SDK's domain name resolution strategy, improving the stability of calling `setLocalAccessPoint` to resolve domain names in complex network environments.
-    - This release adds the `earMonitorDelay` and `aecEstimatedDelay` members in [LocalAudioStats]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_localaudiostats.html) to report ear monitor delay and acoustic echo cancellation (AEC) delay, respectively.
+    - This release adds the `earMonitorDelay` and `aecEstimatedDelay` members in [LocalAudioStats](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_localaudiostats.html) to report ear monitor delay and acoustic echo cancellation (AEC) delay, respectively.
 
 #### Issues fixed
 
@@ -8446,18 +8489,18 @@ This release fixed the following issue:
 
 **Added**
 
-- [onTranscodedStreamLayoutInfo]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo) (Android, iOS)
-- [VideoLayout]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_videolayout.html) (Android, iOS)
-- The `subviewUid` member in [VideoCanvas]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_videocanvas.html)
-- [enableCustomAudioLocalPlayback]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengineex.html#api_irtcengine_enablecustomaudiolocalplayback)
-- [selectMultiAudioTrack]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_Imediaplayer_selectmultiaudiotrack)
-- [onPlayerCacheStats]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats)
-- [onPlayerPlaybackStats]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats)
-- [PlayerPlaybackStats]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_playerplaybackstats.html)
-- The `earMonitorDelay` and `aecEstimatedDelay` members in [LocalAudioStats]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_localaudiostats.html)
-- [queryDeviceScore]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_querydevicescore)
-- [MediaSourceType]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_mediasourcetype.html)
-- The `routeBluetoothSpeaker` enumeration in [AudioRoute]({{Global.API_REF_FLUTTER_ROOT_VOICE_SDK}}/enum_audioroute.html)
+- [onTranscodedStreamLayoutInfo](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo) (Android, iOS)
+- [VideoLayout](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_videolayout.html) (Android, iOS)
+- The `subviewUid` member in [VideoCanvas](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_videocanvas.html)
+- [enableCustomAudioLocalPlayback](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengineex.html#api_irtcengine_enablecustomaudiolocalplayback)
+- [selectMultiAudioTrack](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_Imediaplayer_selectmultiaudiotrack)
+- [onPlayerCacheStats](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats)
+- [onPlayerPlaybackStats](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats)
+- [PlayerPlaybackStats](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_playerplaybackstats.html)
+- The `earMonitorDelay` and `aecEstimatedDelay` members in [LocalAudioStats](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_localaudiostats.html)
+- [queryDeviceScore](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_querydevicescore)
+- [MediaSourceType](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_mediasourcetype.html)
+- The `routeBluetoothSpeaker` enumeration in [AudioRoute](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_audioroute.html)
 
 **Modified**
 
@@ -9240,8 +9283,8 @@ This version includes optimizations to some features, including changes to SDK b
 
     To enhance the user’s video interaction experience, this version optimizes the default preferences for video encoding:
 
-    - In the [`CompressionPreference`]({{Global.API_REF_RN_ROOT_VOICE}}/enum_compressionpreference.html) enumeration class, a new `PreferCompressionAuto` (-1) enumeration is added, replacing the original `PreferQuality` (1) as the default value. In this mode, the SDK will automatically choose between `PreferLowLatency` and `PreferQuality` based on your video scene settings to achieve the best user experience.
-    - In the [`DegradationPreference`]({{Global.API_REF_RN_ROOT_VOICE}}/enum_degradationpreference.html) enumeration class, a new `MaintainAuto` (-1) enumeration is added, replacing the original `MaintainQuality` (1) as the default value. In this mode, the SDK will automatically choose between `MaintainFramerate`, `MaintainBalanced`, and `MaintainResolution` based on your video scene settings to achieve the optimal overall quality experience (QoE).
+    - In the [`CompressionPreference`](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_compressionpreference.html) enumeration class, a new `PreferCompressionAuto` (-1) enumeration is added, replacing the original `PreferQuality` (1) as the default value. In this mode, the SDK will automatically choose between `PreferLowLatency` and `PreferQuality` based on your video scene settings to achieve the best user experience.
+    - In the [`DegradationPreference`](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_degradationpreference.html) enumeration class, a new `MaintainAuto` (-1) enumeration is added, replacing the original `MaintainQuality` (1) as the default value. In this mode, the SDK will automatically choose between `MaintainFramerate`, `MaintainBalanced`, and `MaintainResolution` based on your video scene settings to achieve the optimal overall quality experience (QoE).
 
 1. **16 KB memory page size (Android)**
 
@@ -9251,17 +9294,17 @@ This version includes optimizations to some features, including changes to SDK b
 
 1. **Live show scenario**
 
-    This version adds the `ApplicationScenarioLiveshow`(3) (Live Show) enumeration to [`VideoApplicationScenarioType`]({{Global.API_REF_RN_ROOT_VOICE}}/enum_videoapplicationscenariotype.html). You can call `setVideoScenario` to set the video business scenario to show room. In this scenario, fast video rendering and high image quality are crucial. The SDK implements several performance optimizations, such as enabling accelerated audio and video frame rendering to minimize first-frame latency (no need to call `enableInstantMediaRendering`) to achieve better image quality and bandwidth efficiency.
+    This version adds the `ApplicationScenarioLiveshow`(3) (Live Show) enumeration to [`VideoApplicationScenarioType`](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_videoapplicationscenariotype.html). You can call `setVideoScenario` to set the video business scenario to show room. In this scenario, fast video rendering and high image quality are crucial. The SDK implements several performance optimizations, such as enabling accelerated audio and video frame rendering to minimize first-frame latency (no need to call `enableInstantMediaRendering`) to achieve better image quality and bandwidth efficiency.
 
 1. **Maximum frame rate for video rendering**
 
-    This version adds the [`setLocalRenderTargetFps`]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_setlocalrendertargetfps) and [`setRemoteRenderTargetFps`]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_setremoterendertargetfps) methods, which support setting the maximum frame rate for video rendering locally and remotely. The actual frame rate for video rendering by the SDK will be as close to this value as possible.
+    This version adds the [`setLocalRenderTargetFps`](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setlocalrendertargetfps) and [`setRemoteRenderTargetFps`](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setremoterendertargetfps) methods, which support setting the maximum frame rate for video rendering locally and remotely. The actual frame rate for video rendering by the SDK will be as close to this value as possible.
 
     In use-cases where the frame rate requirement for video rendering is not high (e.g., screen sharing, online education) or when the remote end uses mid-to-low-end devices, you can use this set of methods to limit the video rendering frame rate, thereby reducing CPU consumption and improving system performance.
 
 1. **Filter effects**
 
-    This version introduces the [`setFilterEffectOptions`]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_setfiltereffectoptions) method. You can pass a cube map file (.cube) in the `config` parameter to achieve custom filter effects such as whitening, vivid, cool, black and white, etc. Additionally, the SDK provides a built-in `built_in_whiten_filter.cube` file for quickly achieving a whitening filter effect.
+    This version introduces the [`setFilterEffectOptions`](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setfiltereffectoptions) method. You can pass a cube map file (.cube) in the `config` parameter to achieve custom filter effects such as whitening, vivid, cool, black and white, etc. Additionally, the SDK provides a built-in `built_in_whiten_filter.cube` file for quickly achieving a whitening filter effect.
 
 1. **Local audio mixing**
 
@@ -9275,13 +9318,13 @@ This version includes optimizations to some features, including changes to SDK b
 
 1. **External MediaProjection (Android)**
 
-    This version introduces the [`setExternalMediaProjection`]({{Global.API_REF_RN_ROOT_VOICE}}/class_imediaengine.html#api_irtcengine_setexternalmediaprojection) method, which allows you to set an external `MediaProjection` and replace the `MediaProjection` applied by the SDK.
+    This version introduces the [`setExternalMediaProjection`](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_imediaengine.html#api_irtcengine_setexternalmediaprojection) method, which allows you to set an external `MediaProjection` and replace the `MediaProjection` applied by the SDK.
 
     If you have the capability to apply for `MediaProjection` on your own, you can use this feature to achieve more flexible screen capture.
 
 1. **EGL context (Android)**
 
-    This version introduces the [`setExternalRemoteEglContext`]({{Global.API_REF_RN_ROOT_VOICE}}/class_imediaengine.html#api_irtcengine_setexternalremoteeglcontext) method, which is used to set the EGL context for rendering remote video streams. When using Texture format video data for remote video self-rendering, you can use this method to replace the SDK's default remote EGL context, achieving unified EGL context management.
+    This version introduces the [`setExternalRemoteEglContext`](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_imediaengine.html#api_irtcengine_setexternalremoteeglcontext) method, which is used to set the EGL context for rendering remote video streams. When using Texture format video data for remote video self-rendering, you can use this method to replace the SDK's default remote EGL context, achieving unified EGL context management.
 
 1. **Color space settings**
 
@@ -9295,11 +9338,11 @@ This version includes optimizations to some features, including changes to SDK b
 
 1. **Snapshot at specified video observation points**
 
-    This version introduces the [`takeSnapshotWithConfig`]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_takesnapshot2) and [`takeSnapshotWithConfigEx`]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengineex.html#api_irtcengineex_takesnapshotex2) methods. You can use the `config` parameter when calling these methods to take snapshots at specified video observation points, such as before encoding, after encoding, or before rendering, to achieve more flexible snapshot effects.
+    This version introduces the [`takeSnapshotWithConfig`](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_takesnapshot2) and [`takeSnapshotWithConfigEx`](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengineex.html#api_irtcengineex_takesnapshotex2) methods. You can use the `config` parameter when calling these methods to take snapshots at specified video observation points, such as before encoding, after encoding, or before rendering, to achieve more flexible snapshot effects.
 
 1. **Custom audio capture improvements**
 
-    This version adds the `enableAudioProcessing` member parameter to [`AudioTrackConfig`]({{Global.API_REF_RN_ROOT_VOICE}}/class_audiotrackconfig.html), which is used to control whether to enable 3A audio processing for custom audio capture tracks of the `AUDIO_TRACK_DIRECT` type. The default value of this parameter is `false`, meaning that audio processing is not enabled. Users can enable it as needed, enhancing the flexibility of custom audio processing.
+    This version adds the `enableAudioProcessing` member parameter to [`AudioTrackConfig`](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_audiotrackconfig.html), which is used to control whether to enable 3A audio processing for custom audio capture tracks of the `AUDIO_TRACK_DIRECT` type. The default value of this parameter is `false`, meaning that audio processing is not enabled. Users can enable it as needed, enhancing the flexibility of custom audio processing.
 
 1. **Other improvements**
 
@@ -9375,7 +9418,7 @@ v4.3.2 was released on June 6, 2024.
 
 #### Improvements
 
-This release enhances the usability of the [setRemoteSubscribeFallbackOption]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_setremotesubscribefallbackoption) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
+This release enhances the usability of the [setRemoteSubscribeFallbackOption](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setremotesubscribefallbackoption) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
 
 #### Issues fixed
 
@@ -9384,8 +9427,8 @@ This version fixed the following issues:
 - Local audio capture failed after joining a channel while answering a system phone call and hanging up, preventing remote users from hearing any sound (Android).
 - During the interaction process on certain devices (for example, Redmi Note8), after answering and hanging up a system call, local media files were played without sound and no sound was heard from the remote end (Android).
 - The app occasionally crashed when remote users left the channel.
-- When playing an audio file finished, the SDK sometimes failed to trigger the [onAudioMixingStateChanged]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AudioMixingStateStopped`, `AudioMixingReasonAllLoopsCompleted`) callback that reports that the playing is completed (iOS).
-- When calling the [playEffect]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_playeffect3) method to play sound effect files shorter than 1 second with `loopCount` set to `0`, there was no sound (iOS).
+- When playing an audio file finished, the SDK sometimes failed to trigger the [onAudioMixingStateChanged](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AudioMixingStateStopped`, `AudioMixingReasonAllLoopsCompleted`) callback that reports that the playing is completed (iOS).
+- When calling the [playEffect](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_playeffect3) method to play sound effect files shorter than 1 second with `loopCount` set to `0`, there was no sound (iOS).
 
 ### v4.3.1
 
@@ -9403,13 +9446,13 @@ v4.3.1 was released on May 9, 2024.
 
 1. **Data stream encryption**
 
-    This version adds `datastreamEncryptionEnabled` to [EncryptionConfig]({{Global.API_REF_RN_ROOT_VOICE}}/class_encryptionconfig.html) for enabling data stream encryption. You can set this when you activate encryption with [enableEncryption]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_enableencryption). If there are issues causing failure in data stream encryption or decryption, these can be identified by the newly added `EncryptionErrorDatastreamDecryptionFailure` and `EncryptionErrorDatastreamEncryptionFailure` enumerations.
+    This version adds `datastreamEncryptionEnabled` to [EncryptionConfig](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_encryptionconfig.html) for enabling data stream encryption. You can set this when you activate encryption with [enableEncryption](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption). If there are issues causing failure in data stream encryption or decryption, these can be identified by the newly added `EncryptionErrorDatastreamDecryptionFailure` and `EncryptionErrorDatastreamEncryptionFailure` enumerations.
 
 1. **Other features**
 
-    - A new method [enableEncryptionEx]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengineex.html#api_irtcengineex_enableencryptionex) is added for enabling media stream or data stream encryption in multi-channel use-cases.
-    - A new method [setAudioMixingPlaybackSpeed]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed) is introduced for setting the playback speed of audio files.
-    - A new method [getCallIdEx]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengineex.html#api_irtcengineex_getcallidex) is introduced for retrieving call IDs in multi-channel use-cases.
+    - A new method [enableEncryptionEx](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengineex.html#api_irtcengineex_enableencryptionex) is added for enabling media stream or data stream encryption in multi-channel use-cases.
+    - A new method [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed) is introduced for setting the playback speed of audio files.
+    - A new method [getCallIdEx](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengineex.html#api_irtcengineex_getcallidex) is introduced for retrieving call IDs in multi-channel use-cases.
 
 #### Improvements
 
@@ -9422,8 +9465,8 @@ v4.3.1 was released on May 9, 2024.
     This version also includes the following improvements:
 
     - Enhanced performance and stability of the local compositing feature, reducing its CPU usage (Android).
-    - In [AudioEffectPreset]({{Global.API_REF_RN_ROOT_VOICE}}/enum_audioeffectpreset.html), a new enumeration `RoomAcousticsChorus` (chorus effect) is added, enhancing the spatial presence of vocals in chorus use-cases.
-    - In [RemoteAudioStats]({{Global.API_REF_RN_ROOT_VOICE}}/class_remoteaudiostats.html), a new `e2eDelay` field is added to report the delay from when the audio is captured on the sending side to when the audio is played on the receiving side.
+    - In [AudioEffectPreset](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_audioeffectpreset.html), a new enumeration `RoomAcousticsChorus` (chorus effect) is added, enhancing the spatial presence of vocals in chorus use-cases.
+    - In [RemoteAudioStats](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_remoteaudiostats.html), a new `e2eDelay` field is added to report the delay from when the audio is captured on the sending side to when the audio is played on the receiving side.
 
 #### Issues fixed
 
@@ -9436,32 +9479,32 @@ This version fixed the following issues:
 
 **Added**
 
-- [enableCameraCenterStage]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_enablecameracenterstage) (iOS)
-- [isCameraCenterStageSupported]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_iscameracenterstagesupported) (iOS)
-- [setCameraStabilizationMode]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_setcamerastabilizationmode) (iOS)
-- [CameraStabilizationMode]({{Global.API_REF_RN_ROOT_VOICE}}/enum_camerastabilizationmode.html) (iOS)
-- [registerFaceInfoObserver]({{Global.API_REF_RN_ROOT_VOICE}}/class_imediaengine.html#api_imediaengine_registerfaceinfoobserver)
-- [unregisterFaceInfoObserver]({{Global.API_REF_RN_ROOT_VOICE}}/class_imediaengine.html#api_imediaengine_unregisterfaceinfoobserver)
-- [IFaceInfoObserver]({{Global.API_REF_RN_ROOT_VOICE}}/class_ifaceinfoobserver.html#class_ifaceinfoobserver)
-- [onFaceInfo]({{Global.API_REF_RN_ROOT_VOICE}}/class_ifaceinfoobserver.html#callback_ifaceinfoobserver_onfaceinfo)
-- [MediaSourceType]({{Global.API_REF_RN_ROOT_VOICE}}/enum_mediasourcetype.html) adds `SpeechDrivenVideoSource`
-- [VideoSourceType]({{Global.API_REF_RN_ROOT_VOICE}}/enum_videosourcetype.html) adds `VideoSourceSpeechDriven`
-- [EncryptionConfig]({{Global.API_REF_RN_ROOT_VOICE}}/class_encryptionconfig.html) adds `datastreamEncryptionEnabled`
-- [EncryptionErrorType]({{Global.API_REF_RN_ROOT_VOICE}}/enum_encryptionerrortype.html) adds the following enumerations:
+- [enableCameraCenterStage](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_enablecameracenterstage) (iOS)
+- [isCameraCenterStageSupported](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_iscameracenterstagesupported) (iOS)
+- [setCameraStabilizationMode](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setcamerastabilizationmode) (iOS)
+- [CameraStabilizationMode](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_camerastabilizationmode.html) (iOS)
+- [registerFaceInfoObserver](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_imediaengine.html#api_imediaengine_registerfaceinfoobserver)
+- [unregisterFaceInfoObserver](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_imediaengine.html#api_imediaengine_unregisterfaceinfoobserver)
+- [IFaceInfoObserver](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_ifaceinfoobserver.html#class_ifaceinfoobserver)
+- [onFaceInfo](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_ifaceinfoobserver.html#callback_ifaceinfoobserver_onfaceinfo)
+- [MediaSourceType](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_mediasourcetype.html) adds `SpeechDrivenVideoSource`
+- [VideoSourceType](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_videosourcetype.html) adds `VideoSourceSpeechDriven`
+- [EncryptionConfig](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_encryptionconfig.html) adds `datastreamEncryptionEnabled`
+- [EncryptionErrorType](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_encryptionerrortype.html) adds the following enumerations:
   - `EncryptionErrorDatastreamDecryptionFailure`
   - `EncryptionErrorDatastreamEncryptionFailure`
-- [RemoteAudioStats]({{Global.API_REF_RN_ROOT_VOICE}}/class_remoteaudiostats.html) adds `e2eDelay`
-- [ErrorCodeType]({{Global.API_REF_RN_ROOT_VOICE}}/enum_errorcodetype.html) adds `ErrDatastreamDecryptionFailed`
-- [AudioEffectPreset]({{Global.API_REF_RN_ROOT_VOICE}}/enum_audioeffectpreset.html) adds `RoomAcousticsChorus`, enhancing the spatial presence of vocals in chorus use-cases.
-- [getCallIdEx]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengineex.html#api_irtcengineex_getcallidex)
-- [enableEncryptionEx]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengineex.html#api_irtcengineex_enableencryptionex)
-- [setAudioMixingPlaybackSpeed]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed)
-- [queryCameraFocalLengthCapability]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_querycamerafocallengthcapability) (Android, iOS)
-- [FocalLengthInfo]({{Global.API_REF_RN_ROOT_VOICE}}/class_focallengthinfo.html) (Android, iOS)
-- [CameraFocalLengthType]({{Global.API_REF_RN_ROOT_VOICE}}/enum_camerafocallengthtype.html) (Android, iOS)
-- [CameraCapturerConfiguration]({{Global.API_REF_RN_ROOT_VOICE}}/class_cameracapturerconfiguration.html) adds a new member `cameraFocalLengthType` (Android, iOS)
-- [CameraCapturerConfiguration]({{Global.API_REF_RN_ROOT_VOICE}}/class_cameracapturerconfiguration.html) adds a new member `cameraId` (Android)
-- [EarMonitoringFilterType]({{Global.API_REF_RN_ROOT_VOICE}}/enum_earmonitoringfiltertype.html) adds a new enumeration `EarMonitoringFilterBuiltInAudioFilters`
+- [RemoteAudioStats](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_remoteaudiostats.html) adds `e2eDelay`
+- [ErrorCodeType](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_errorcodetype.html) adds `ErrDatastreamDecryptionFailed`
+- [AudioEffectPreset](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_audioeffectpreset.html) adds `RoomAcousticsChorus`, enhancing the spatial presence of vocals in chorus use-cases.
+- [getCallIdEx](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengineex.html#api_irtcengineex_getcallidex)
+- [enableEncryptionEx](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengineex.html#api_irtcengineex_enableencryptionex)
+- [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed)
+- [queryCameraFocalLengthCapability](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_querycamerafocallengthcapability) (Android, iOS)
+- [FocalLengthInfo](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_focallengthinfo.html) (Android, iOS)
+- [CameraFocalLengthType](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_camerafocallengthtype.html) (Android, iOS)
+- [CameraCapturerConfiguration](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_cameracapturerconfiguration.html) adds a new member `cameraFocalLengthType` (Android, iOS)
+- [CameraCapturerConfiguration](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_cameracapturerconfiguration.html) adds a new member `cameraId` (Android)
+- [EarMonitoringFilterType](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_earmonitoringfiltertype.html) adds a new enumeration `EarMonitoringFilterBuiltInAudioFilters`
 
 ### v4.3.0-build.1
 
@@ -9514,7 +9557,7 @@ This release has optimized the implementation of some functions, involving renam
 
 1. **Audio route**
 
-    Starting with this release, `RouteBluetooth` in [AudioRoute]({{Global.API_REF_RN_ROOT_VOICE}}/enum_audioroute.html) is renamed to `RouteBluetoothDeviceHFP`, representing a Bluetooth device using the HFP protocol. `RouteBluetoothDeviceA2DP`(10) is added to represent a Bluetooth device using the A2DP protocol.
+    Starting with this release, `RouteBluetooth` in [AudioRoute](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_audioroute.html) is renamed to `RouteBluetoothDeviceHFP`, representing a Bluetooth device using the HFP protocol. `RouteBluetoothDeviceA2DP`(10) is added to represent a Bluetooth device using the A2DP protocol.
 
 1. **Log encryption behavior changes**
 
@@ -9529,21 +9572,21 @@ This release has optimized the implementation of some functions, involving renam
 
 1. **Query device score**
 
-    This release adds the [queryDeviceScore]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_querydevicescore)
+    This release adds the [queryDeviceScore](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_querydevicescore)
     method to query the device's score level to ensure that the user-set parameters do not exceed the device's capabilities. For example, in HD or UHD video use-cases, you can first call this method to query the device's score. If the returned score is low (for example, below 60), you need to lower the video resolution to avoid affecting the video experience. The minimum device score required for different business use-cases is varied. For specific score recommendations, please contact [technical support](mailto:support@agora.io).
 
 1. **Select different audio tracks for local playback and streaming**
 
-    This release introduces the [selectMultiAudioTrack]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_Imediaplayer_selectmultiaudiotrack) method that allows you to select different audio tracks for local playback and streaming to remote users. For example, in use-cases like online karaoke, the host can choose to play the original sound locally and publish the accompaniment in the channel. Before using this function, you need to open the media file through the [openWithMediaSource]({{Global.API_REF_RN_ROOT_VOICE}}/class_imediaplayer.html#api_imediaplayer_openwithmediasource) method and enable this function by setting the `enableMultiAudioTrack` parameter in [MediaSource]({{Global.API_REF_RN_ROOT_VOICE}}/class_mediasource.html).
+    This release introduces the [selectMultiAudioTrack](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_Imediaplayer_selectmultiaudiotrack) method that allows you to select different audio tracks for local playback and streaming to remote users. For example, in use-cases like online karaoke, the host can choose to play the original sound locally and publish the accompaniment in the channel. Before using this function, you need to open the media file through the [openWithMediaSource](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_imediaplayer.html#api_imediaplayer_openwithmediasource) method and enable this function by setting the `enableMultiAudioTrack` parameter in [MediaSource](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_mediasource.html).
 
 1. **Others**
 
     This release has passed the test verification of the following APIs and can be applied to the entire series of RTC 4.x SDK.
 
-    - [setRemoteSubscribeFallbackOption]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_setremotesubscribefallbackoption): Sets fallback option for the subscribed video stream in weak network conditions.
-    - [onRemoteSubscribeFallbackToAudioOnly]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly): Occurs when the subscribed video stream falls back to audio-only stream due to weak network conditions or switches back to the video stream after the network conditions improve.
-    - [setPlayerOptionInInt]({{Global.API_REF_RN_ROOT_VOICE}}/class_imediaplayer.html#api_imediaplayer_setplayeroption) and [setPlayerOptionInString]({{Global.API_REF_RN_ROOT_VOICE}}/class_imediaplayer.html#api_imediaplayer_setplayeroption2): Sets media player options for providing technical previews or special customization features.
-    - [enableCustomAudioLocalPlayback]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_enablecustomaudiolocalplayback): Sets whether to enable the local playback of external audio source.
+    - [setRemoteSubscribeFallbackOption](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setremotesubscribefallbackoption): Sets fallback option for the subscribed video stream in weak network conditions.
+    - [onRemoteSubscribeFallbackToAudioOnly](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly): Occurs when the subscribed video stream falls back to audio-only stream due to weak network conditions or switches back to the video stream after the network conditions improve.
+    - [setPlayerOptionInInt](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_imediaplayer.html#api_imediaplayer_setplayeroption) and [setPlayerOptionInString](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_imediaplayer.html#api_imediaplayer_setplayeroption2): Sets media player options for providing technical previews or special customization features.
+    - [enableCustomAudioLocalPlayback](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_enablecustomaudiolocalplayback): Sets whether to enable the local playback of external audio source.
 
 #### Improvements
 
@@ -9558,12 +9601,12 @@ This release has optimized the implementation of some functions, involving renam
 
 1. **In-ear monitoring volume boost**
 
-    This release provides users with more flexible in-ear monitoring audio adjustment options, supporting the ability to set the in-ear monitoring volume to four times the original volume by calling [setInEarMonitoringVolume]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_setinearmonitoringvolume).
+    This release provides users with more flexible in-ear monitoring audio adjustment options, supporting the ability to set the in-ear monitoring volume to four times the original volume by calling [setInEarMonitoringVolume](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setinearmonitoringvolume).
 
 1. **Spatial audio effects usability improvement**
 
-    - This release optimizes the design of the [setZones]({{Global.API_REF_RN_ROOT_VOICE}}/class_ibasespatialaudioengine.html#api_ibasespatialaudioengine_setzones) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
-    - As of this release, it is no longer necessary to unsubscribe from the audio streams of all remote users within the channel before calling the [ILocalSpatialAudioEngine]({{Global.API_REF_RN_ROOT_VOICE}}/class_ilocalspatialaudioengine.html#class_ilocalspatialaudioengine) method.
+    - This release optimizes the design of the [setZones](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_ibasespatialaudioengine.html#api_ibasespatialaudioengine_setzones) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
+    - As of this release, it is no longer necessary to unsubscribe from the audio streams of all remote users within the channel before calling the [ILocalSpatialAudioEngine](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_ilocalspatialaudioengine.html#class_ilocalspatialaudioengine) method.
 
 1. **Other Improvements**
 
@@ -9571,29 +9614,29 @@ This release has optimized the implementation of some functions, involving renam
 
     - This release optimizes the SDK's domain name resolution strategy, improving the stability of calling to resolve domain names in complex network environments.
     - When passing in an image with transparent background as the virtual background image, the transparent background can be filled with customized color.
-    - This release adds the `earMonitorDelay` and `aecEstimatedDelay` members in [LocalAudioStats]({{Global.API_REF_RN_ROOT_VOICE}}/class_localaudiostats.html) to report ear monitor delay and acoustic echo cancellation (AEC) delay, respectively.
-    - The [onPlayerCacheStats]({{Global.API_REF_RN_ROOT_VOICE}}/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats) callback is added to report the statistics of the media file being cached. This callback is triggered once per second after file caching is started.
-    - The [onPlayerPlaybackStats]({{Global.API_REF_RN_ROOT_VOICE}}/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats) callback is added to report the statistics of the media file being played. This callback is triggered once per second after the media file starts playing. You can obtain information like the audio and video bitrate of the media file through [PlayerPlaybackStats]({{Global.API_REF_RN_ROOT_VOICE}}/class_playerplaybackstats.html).
+    - This release adds the `earMonitorDelay` and `aecEstimatedDelay` members in [LocalAudioStats](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_localaudiostats.html) to report ear monitor delay and acoustic echo cancellation (AEC) delay, respectively.
+    - The [onPlayerCacheStats](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats) callback is added to report the statistics of the media file being cached. This callback is triggered once per second after file caching is started.
+    - The [onPlayerPlaybackStats](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats) callback is added to report the statistics of the media file being played. This callback is triggered once per second after the media file starts playing. You can obtain information like the audio and video bitrate of the media file through [PlayerPlaybackStats](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_playerplaybackstats.html).
 
 #### Issues fixed
 
 This release fixed the following issue:
 
-- When sharing two screen sharing video streams simultaneously, the reported `captureFrameRate` in the [onLocalVideoStats]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats) callback is 0, which is not as expected.
+- When sharing two screen sharing video streams simultaneously, the reported `captureFrameRate` in the [onLocalVideoStats](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats) callback is 0, which is not as expected.
 
 #### API changes
 
 **Added**
 
-- [enableCustomAudioLocalPlayback]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_enablecustomaudiolocalplayback)
-- [queryDeviceScore]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_irtcengine_querydevicescore)
-- The `CustomVideoSource` enumeration in [MediaSourceType]({{Global.API_REF_RN_ROOT_VOICE}}/enum_mediasourcetype.html)
-- The `RouteBluetoothDeviceA2DP` enumeration in [AudioRoute]({{Global.API_REF_RN_ROOT_VOICE}}/enum_audioroute.html)
-- [LocalAudioStats]({{Global.API_REF_RN_ROOT_VOICE}}/class_localaudiostats.html): Adds the `earMonitorDelay` and `aecEstimatedDelay`
-- [selectMultiAudioTrack]({{Global.API_REF_RN_ROOT_VOICE}}/class_irtcengine.html#api_Imediaplayer_selectmultiaudiotrack)
-- [onPlayerCacheStats]({{Global.API_REF_RN_ROOT_VOICE}}/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats)
-- [onPlayerPlaybackStats]({{Global.API_REF_RN_ROOT_VOICE}}/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats)
-- [PlayerPlaybackStats]({{Global.API_REF_RN_ROOT_VOICE}}/class_playerplaybackstats.html)
+- [enableCustomAudioLocalPlayback](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_enablecustomaudiolocalplayback)
+- [queryDeviceScore](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_querydevicescore)
+- The `CustomVideoSource` enumeration in [MediaSourceType](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_mediasourcetype.html)
+- The `RouteBluetoothDeviceA2DP` enumeration in [AudioRoute](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_audioroute.html)
+- [LocalAudioStats](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_localaudiostats.html): Adds the `earMonitorDelay` and `aecEstimatedDelay`
+- [selectMultiAudioTrack](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_Imediaplayer_selectmultiaudiotrack)
+- [onPlayerCacheStats](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats)
+- [onPlayerPlaybackStats](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats)
+- [PlayerPlaybackStats](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_playerplaybackstats.html)
 
 **Modified**
 
@@ -10723,7 +10766,7 @@ This release has optimized the implementation of some functions, involving renam
 
 1. **Audio loopback capturing (Windows, macOS)**
 
-    - Before v4.3.0, if you called the [DisableAudio]({{Global.API_REF_UNITY_ROOT_VOICE_SDk}}/class_irtcengine.html#api_irtcengine_disableaudio) method to disable the audio module, audio loopback capturing would not be disabled.
+    - Before v4.3.0, if you called the [DisableAudio](https://api-ref.agora.io/en/voice-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_disableaudio) method to disable the audio module, audio loopback capturing would not be disabled.
     - As of v4.3.0, if you call the [DisableAudio](https://api-ref.agora.io/en/voice-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_disableaudio) method to disable the audio module, audio loopback capturing will be disabled as well. If you need to enable audio loopback capturing, you need to enable the audio module by calling the [EnableAudio](https://api-ref.agora.io/en/voice-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_enableaudio) method and then call [EnableLoopbackRecording](https://api-ref.agora.io/en/voice-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_enableloopbackrecording).
 
 1. **Log encryption behavior changes**

@@ -46,6 +46,7 @@ import { Route as TabIndexRoute } from './$locale/$tab/index';
 import { Route as TabLayoutRoute } from './$locale/$tab/route';
 import { Route as LocaleIndexRoute } from './$locale/index';
 import { Route as LegacyDocRoute } from './doc/$';
+import { Route as LlmsSectionRoute } from './llms/$';
 import { Route as LlmsTextRoute } from './llms[.]txt';
 
 const REAL_DOCS_ROUTE_TIMEOUT = 300_000;
@@ -82,6 +83,11 @@ function createPlatformPayload(platforms: string): DocsPagePayload {
     contentPath: 'en/realtime-media/rtm/build/presence.mdx',
     description: undefined,
     hideToc: false,
+    lastUpdated: {
+      formatted: '2026/07/06 13:32:13',
+      iso: '2026-07-06T13:32:13.000Z',
+      source: 'git',
+    },
     layoutMode: 'docs',
     localeLinks: [],
     markdownUrl: '/en/realtime-media/rtm/build/presence.md',
@@ -114,6 +120,21 @@ describe('docs route locale guards', () => {
     }
 
     throw new Error('expected loader to reject with notFound');
+  });
+
+  it('rejects locales that are not published by the deployment region', async () => {
+    try {
+      await getLoader(LocaleIndexRoute)({
+        params: {
+          locale: 'zh-CN',
+        },
+      } as never);
+    } catch (error) {
+      expect(isNotFound(error)).toBe(true);
+      return;
+    }
+
+    throw new Error('expected global deployment to reject zh-CN');
   });
 
   it('rejects unsupported locale on the tab index route before content lookup', async () => {
@@ -373,11 +394,18 @@ describe('docs route locale guards', () => {
       ),
     } as never)) as Response;
 
-    await expect(response.text()).resolves.toContain(
-      '# Talking while waiting (/en/ai/build/shape-the-conversation/filler-words)',
-    );
-    expect(response.headers.get('Content-Type')).toBe('text/markdown');
-  }, REAL_DOCS_ROUTE_TIMEOUT);
+      const markdown = await response.text();
+
+      expect(markdown).toContain(
+        '# Talking while waiting (/en/ai/build/shape-the-conversation/filler-words)',
+      );
+      expect(markdown).toContain(
+        '> For AI agents: see the complete documentation index at [llms.txt](/llms.txt).',
+      );
+      expect(response.headers.get('Content-Type')).toBe('text/markdown');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
 
   it('does not serve zh-CN direct .md docs page URLs', async () => {
     try {
@@ -404,31 +432,37 @@ describe('docs route locale guards', () => {
     throw new Error('expected zh-CN .md request to reject with notFound');
   });
 
-  it('serves direct platform .md docs page URLs as markdown', async () => {
-    const response = (await getGetHandler(DocPageRoute)({
-      context: {},
-      next: vi.fn(() => {
-        throw new Error('expected platform .md request to be handled directly');
-      }),
-      params: {
-        _splat: 'api-ref/uikit-sdk/android.md',
-        locale: 'en',
-        tab: 'api-reference',
-      },
-      pathname: '/en/api-reference/api-ref/uikit-sdk/android.md',
-      request: new Request(
-        'https://docs.example.com/en/api-reference/api-ref/uikit-sdk/android.md',
-      ),
-    } as never)) as Response;
-    const markdown = await response.text();
+  it(
+    'serves direct platform .md docs page URLs as markdown',
+    async () => {
+      const response = (await getGetHandler(DocPageRoute)({
+        context: {},
+        next: vi.fn(() => {
+          throw new Error(
+            'expected platform .md request to be handled directly',
+          );
+        }),
+        params: {
+          _splat: 'api-ref/uikit-sdk/android.md',
+          locale: 'en',
+          tab: 'api-reference',
+        },
+        pathname: '/en/api-reference/api-ref/uikit-sdk/android.md',
+        request: new Request(
+          'https://docs.example.com/en/api-reference/api-ref/uikit-sdk/android.md',
+        ),
+      } as never)) as Response;
+      const markdown = await response.text();
 
-    expect(response.headers.get('Content-Type')).toBe('text/markdown');
-    expect(markdown).toContain(
-      '# Fastboard API (/en/api-reference/api-ref/uikit-sdk/android)',
-    );
-    expect(markdown).toContain('## FastboardView class');
-    expect(markdown).not.toContain('## createFastboard');
-  }, REAL_DOCS_ROUTE_TIMEOUT);
+      expect(response.headers.get('Content-Type')).toBe('text/markdown');
+      expect(markdown).toContain(
+        '# Fastboard API (/en/api-reference/api-ref/uikit-sdk/android)',
+      );
+      expect(markdown).toContain('## FastboardView class');
+      expect(markdown).not.toContain('## createFastboard');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
 
   it('does not serve zh-CN direct platform .md docs page URLs', async () => {
     try {
@@ -455,14 +489,27 @@ describe('docs route locale guards', () => {
     throw new Error('expected zh-CN platform .md request to reject');
   });
 
-  it('keeps llms index feed English-only', async () => {
-    const indexResponse = (await getGetHandler(LlmsTextRoute)({
-      params: {},
-    } as never)) as Response;
+  it(
+    'keeps llms index feed English-only',
+    async () => {
+      const indexResponse = (await getGetHandler(LlmsTextRoute)({
+        params: {},
+      } as never)) as Response;
 
-    const indexText = await indexResponse.text();
+      const indexText = await indexResponse.text();
+      const sectionPath = indexText.match(/\/llms\/([^)]+\.txt)/)?.[1];
 
-    expect(indexText).toContain('/en/');
-    expect(indexText).not.toContain('/zh-CN/');
-  }, REAL_DOCS_ROUTE_TIMEOUT);
+      expect(sectionPath).toBeTruthy();
+      expect(indexText).not.toContain('/zh-CN/');
+
+      const sectionResponse = (await getGetHandler(LlmsSectionRoute)({
+        params: { _splat: sectionPath },
+      } as never)) as Response;
+      const sectionText = await sectionResponse.text();
+
+      expect(sectionText).toContain('/en/');
+      expect(sectionText).not.toContain('/zh-CN/');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
 });

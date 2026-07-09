@@ -92,24 +92,24 @@ describe('getProductScopes', () => {
 
   it('expands product tabs into per-product scopes with section groups', () => {
     expect(scopes).toContainEqual({
-      filter: 'product:"video"',
       group: 'Realtime Media',
       id: 'product:video',
       label: 'Video Calling',
+      scope: { field: 'product', value: 'video' },
     });
     expect(scopes).toContainEqual({
-      filter: 'product:"voice"',
       group: 'Realtime Media',
       id: 'product:voice',
       label: 'Voice Calling',
+      scope: { field: 'product', value: 'voice' },
     });
   });
 
   it('offers a non-product tab as a single tab-level scope', () => {
     expect(scopes).toContainEqual({
-      filter: 'tab:"ai"',
       id: 'tab:ai',
       label: 'Voice Agent',
+      scope: { field: 'tab', value: 'ai' },
     });
   });
 
@@ -1891,19 +1891,19 @@ describe('getProductScopes descriptions', () => {
   it('carries the product index description onto product-level scopes', () => {
     expect(scopes).toContainEqual({
       description: 'Multi-party video with adaptive quality.',
-      filter: 'product:"video"',
       group: 'Realtime Media',
       id: 'product:video',
       label: 'Video Calling',
+      scope: { field: 'product', value: 'video' },
     });
   });
 
   it('carries the tab index description onto tab-level scopes', () => {
     expect(scopes).toContainEqual({
       description: 'Voice agents with LLM, ASR, and TTS.',
-      filter: 'tab:"ai"',
       id: 'tab:ai',
       label: 'Voice Agent',
+      scope: { field: 'tab', value: 'ai' },
     });
   });
 

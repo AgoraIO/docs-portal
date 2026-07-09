@@ -84,7 +84,14 @@ describe('DocsSidebarTree', () => {
     const sectionLabel = sectionTitle.closest(
       '[data-slot="sidebar-group-label"]',
     );
-    expect(sectionLabel).toHaveClass('mt-3', 'mb-1', 'gap-2', 'items-center');
+    expect(sectionLabel).toHaveClass(
+      'mb-1.5',
+      'gap-2',
+      'items-center',
+      'text-[12px]',
+      'font-bold',
+      'text-[color:var(--ink-2)]',
+    );
     expect(sectionLabel?.querySelector('.docs-side-icon')).toBeNull();
     expect(activeButton?.className).toContain(
       'data-[active=true]:font-semibold',
@@ -379,11 +386,13 @@ describe('DocsSidebarTree', () => {
     const activeButton = activeLink.closest('[data-sidebar="menu-button"]');
 
     expect(labelWrapper).toHaveClass(
-      'mt-3',
-      'mb-1',
+      'mb-1.5',
       'py-0.5',
       'gap-2',
       'items-center',
+      'text-[12px]',
+      'font-bold',
+      'text-[color:var(--ink-2)]',
     );
     expect(labelWrapper?.querySelector('.docs-side-icon')).toBeNull();
     expect(activeButton).toHaveClass('min-h-[28px]', 'py-1');
@@ -419,6 +428,14 @@ describe('DocsSidebarTree', () => {
     const toggle = await screen.findByRole('button', {
       name: /SDK Quickstarts/i,
     });
+    expect(toggle).toHaveClass('font-medium', 'text-[color:var(--ink-3)]');
+    expect(toggle).not.toHaveClass(
+      'font-semibold',
+      'text-[color:var(--ink-2)]',
+    );
+    expect(toggle.closest('[data-sidebar="menu-item"]')).not.toHaveClass(
+      'mt-5',
+    );
 
     expect(
       screen.queryByRole('link', { name: 'Use RESTful API' }),

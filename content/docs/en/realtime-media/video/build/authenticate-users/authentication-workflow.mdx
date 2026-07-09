@@ -954,6 +954,8 @@ For a complete implementation of token authentication, replace the content in `V
 
 ```swift
     import UIKit
+    import AgoraRtcKit
+    import Foundation
 
     public enum TokenError: Error{
         case noData
@@ -2181,7 +2183,7 @@ This section shows you how to integrate token authentication in your app.
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <body>
             <h1>Token demo</h1>
-            <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.5.js"></script>
+            <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.6.js"></script>
             <script src="../agoraLogic.js"></script>
         </body>
     </html>
@@ -2439,29 +2441,29 @@ This section contains content that completes the information on this page, or po
 <PlatformStructured platform="android">
 ### API reference
 
-- [`joinChannel` [2/2]]({{Global.API_REF_ANDROID_ROOT}}/class_irtcengine.html#api_irtcengine_joinchannel2)
+- [`joinChannel` [2/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2)
 
-- [`renewToken`]({{Global.API_REF_ANDROID_ROOT}}/class_irtcengine.html#api_irtcengine_renewtoken)
+- [`renewToken`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken)
 
-- [`onTokenPrivilegeWillExpire`]({{Global.API_REF_ANDROID_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
+- [`onTokenPrivilegeWillExpire`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
 </PlatformStructured>
 <PlatformStructured platform="ios">
 ### API reference
 
-- [`joinChannel`]({{Global.API_REF_IOS_ROOT_RTC_ENGINE_KIT}}/joinchannel(bytoken:channelid:info:uid:joinsuccess:))
+- [`joinChannel`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:info:uid:joinsuccess:))
 
-- [`renewToken`]({{Global.API_REF_IOS_ROOT_RTC_ENGINE_KIT}}/renewtoken(_:))
+- [`renewToken`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/renewtoken(_:))
 
-- [`rtcEngine(_:tokenPrivilegeWillExpire:)`]({{Global.API_REF_IOS_ROOT}}/agorartckit/agorartcenginedelegate/rtcengine(_:tokenprivilegewillexpire:))
+- [`rtcEngine(_:tokenPrivilegeWillExpire:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:tokenprivilegewillexpire:))
 </PlatformStructured>
 <PlatformStructured platform="macos">
 ### API reference
 
-- [`joinChannel`]({{Global.API_REF_MACOS_ROOT_RTC_ENGINE_KIT}}/joinchannel(bytoken:channelid:info:uid:joinsuccess:))
+- [`joinChannel`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:info:uid:joinsuccess:))
 
-- [`renewToken`]({{Global.API_REF_MACOS_ROOT_RTC_ENGINE_KIT}}/renewtoken(_:))
+- [`renewToken`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/renewtoken(_:))
 
-- [`rtcEngine(_:tokenPrivilegeWillExpire:)`]({{Global.API_REF_MACOS_ROOT}}/agorartckit/agorartcenginedelegate/rtcengine(_:tokenprivilegewillexpire:))
+- [`rtcEngine(_:tokenPrivilegeWillExpire:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:tokenprivilegewillexpire:))
 </PlatformStructured>
 <PlatformStructured platform="web">
 - [Reference app](https://github.com/AgoraIO/video-sdk-samples-web/tree/main/Demo/basicVideoCall)
@@ -2469,9 +2471,9 @@ This section contains content that completes the information on this page, or po
 <PlatformStructured platform="react-native">
 ### API reference
 
--   [renewToken]({{global.API_REF_RN_ROOT}}/class_irtcengine.html#api_irtcengine_renewtoken)
--   [onTokenPrivilegeWillExpire]({{global.API_REF_RN_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
--   [onRequestToken]({{global.API_REF_RN_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrequesttoken)
+-   [renewToken](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken)
+-   [onTokenPrivilegeWillExpire](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
+-   [onRequestToken](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrequesttoken)
 </PlatformStructured>
 <PlatformStructured platform="unity">
 
@@ -2479,32 +2481,32 @@ This section contains content that completes the information on this page, or po
 <PlatformStructured platform="electron">
 ### API reference
 
--   [renewToken]({{global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_renewtoken)
--   [onTokenPrivilegeWillExpire]({{global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
--   [onRequestToken]({{global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrequesttoken)
+-   [renewToken](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken)
+-   [onTokenPrivilegeWillExpire](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
+-   [onRequestToken](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrequesttoken)
 </PlatformStructured>
 <PlatformStructured platform="flutter">
 ### API reference
 
-- [renewToken]({{Global.API_REF_FLUTTER_ROOT}}/class_irtcengine.html#api_irtcengine_renewtoken)
+- [renewToken](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_renewtoken)
 
-- [onTokenPrivilegeWillExpire]({{Global.API_REF_FLUTTER_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
+- [onTokenPrivilegeWillExpire](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
 
-- [onConnectionStateChanged]({{Global.API_REF_FLUTTER_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [onConnectionStateChanged](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
 </PlatformStructured>
 <PlatformStructured platform="unreal">
 ### API reference
 
-- [renewToken]({{Global.API_REF_UE_ROOT}}/class_irtcengine.html#api_irtcengine_renewtoken)
+- [renewToken](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken)
 
-- [onTokenPrivilegeWillExpire]({{global.API_REF_UE_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
+- [onTokenPrivilegeWillExpire](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
 </PlatformStructured>
 <PlatformStructured platform="windows">
 ### API Reference
 
-- [joinChannel]({{Global.API_REF_CPP_ROOT}}/class_irtcengine.html#api_irtcengine_joinchannel)
+- [joinChannel](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel)
 
-- [renewToken]({{Global.API_REF_CPP_ROOT}}/class_irtcengine.html#api_irtcengine_renewtoken)
+- [renewToken](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken)
 
-- [onTokenPrivilegeWillExpire]({{Global.API_REF_CPP_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
+- [onTokenPrivilegeWillExpire](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
 </PlatformStructured>

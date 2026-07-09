@@ -1,8 +1,10 @@
-import { appDescription, appName, docsImageRoute } from './shared';
+import { appDescription, appName } from './shared';
 import { getSitemapBaseUrl } from './sitemap';
 
 export type StaticSeoPage = {
+  canonicalPath?: string;
   description?: string;
+  markdownPath?: string;
   title?: string;
   url: string;
 };
@@ -11,6 +13,7 @@ type StaticSeoMetadata = {
   canonicalUrl: string;
   description: string;
   imageUrl: string;
+  markdownUrl?: string;
   title: string;
 };
 
@@ -18,6 +21,7 @@ export type StaticSeoHead = {
   links: Array<{
     href: string;
     rel: string;
+    type?: string;
   }>;
   meta: Array<
     | { title: string }
@@ -29,6 +33,7 @@ export type StaticSeoHead = {
 export type StaticSeoRouteData = {
   activePath: string;
   description?: string;
+  markdownUrl?: string;
   title?: string;
 };
 
@@ -38,6 +43,34 @@ export type StaticSeoManifestPage = StaticSeoMetadata & {
 
 const HEAD_CLOSE = '</head>';
 const META_TITLE_SEPARATOR = ' | ';
+const DOCS_OG_IMAGE_BASE_URL = 'https://assets-docs.agora.io/og/';
+const DOCS_OG_IMAGE_FALLBACK = `${DOCS_OG_IMAGE_BASE_URL}agora-docs-og-overview.png`;
+const DOCS_OG_IMAGE_RULES = [
+  {
+    pathPrefixes: ['/en/ai', '/zh-CN/ai'],
+    imageUrl: `${DOCS_OG_IMAGE_BASE_URL}agora-docs-og-voice-agent.png`,
+  },
+  {
+    pathPrefixes: ['/en/realtime-media', '/zh-CN/realtime-media'],
+    imageUrl: `${DOCS_OG_IMAGE_BASE_URL}agora-docs-og-realtime-media.png`,
+  },
+  {
+    pathPrefixes: ['/en/solutions', '/zh-CN/solutions'],
+    imageUrl: `${DOCS_OG_IMAGE_BASE_URL}agora-docs-og-solutions.png`,
+  },
+  {
+    pathPrefixes: ['/en/api-reference', '/zh-CN/api-reference'],
+    imageUrl: `${DOCS_OG_IMAGE_BASE_URL}agora-docs-og-reference.png`,
+  },
+  {
+    pathPrefixes: ['/en/best-practices', '/zh-CN/best-practices'],
+    imageUrl: `${DOCS_OG_IMAGE_BASE_URL}agora-docs-og-best-practices.png`,
+  },
+  {
+    pathPrefixes: ['/en/introduction', '/zh-CN/introduction'],
+    imageUrl: `${DOCS_OG_IMAGE_BASE_URL}agora-docs-og-introduction.png`,
+  },
+];
 
 export function createStaticSeoManifest({
   baseUrl = getSitemapBaseUrl(),
@@ -86,6 +119,11 @@ export function createStaticSeoHead(
       {
         rel: 'canonical',
         href: metadata.canonicalUrl,
+      },
+      {
+        rel: 'alternate',
+        type: 'text/markdown',
+        href: metadata.markdownUrl ?? `${metadata.canonicalUrl}.md`,
       },
     ],
     meta: [
@@ -143,9 +181,22 @@ export function createStaticSeoHead(
 export function createDocsRouteSeoHead(loaderData: StaticSeoRouteData) {
   return createStaticSeoHead({
     description: loaderData.description,
+    markdownPath: loaderData.markdownUrl,
     title: loaderData.title,
     url: loaderData.activePath,
   });
+}
+
+export function getDocsOgImageUrl(url: string) {
+  const pathname = normalizePathname(url);
+  const matchedRule = DOCS_OG_IMAGE_RULES.find((rule) =>
+    rule.pathPrefixes.some(
+      (pathPrefix) =>
+        pathname === pathPrefix || pathname.startsWith(`${pathPrefix}/`),
+    ),
+  );
+
+  return matchedRule?.imageUrl ?? DOCS_OG_IMAGE_FALLBACK;
 }
 
 function createStaticSeoMetadata(
@@ -154,13 +205,17 @@ function createStaticSeoMetadata(
 ): StaticSeoMetadata {
   const title = normalizeText(page.title) ?? appName;
   const description = normalizeText(page.description) ?? appDescription;
-  const canonicalUrl = `${baseUrl}${normalizePathname(page.url)}`;
-  const imageUrl = createAbsoluteUrl(docsImageRoute, baseUrl);
+  const canonicalUrl = `${baseUrl}${normalizePathname(page.canonicalPath ?? page.url)}`;
+  const markdownUrl = page.markdownPath
+    ? `${baseUrl}${normalizePathname(page.markdownPath)}`
+    : `${canonicalUrl}.md`;
+  const imageUrl = getDocsOgImageUrl(page.url);
 
   return {
     canonicalUrl,
     description,
     imageUrl,
+    markdownUrl,
     title:
       title === appName ? appName : `${title}${META_TITLE_SEPARATOR}${appName}`,
   };
@@ -204,10 +259,11 @@ function createSeoHead(metadata: StaticSeoMetadata) {
 
       return `    <meta name="${escapeHtml(entry.name)}" content="${escapeHtml(entry.content)}">`;
     }),
-    ...head.links.map(
-      (entry) =>
-        `    <link rel="${escapeHtml(entry.rel)}" href="${escapeHtml(entry.href)}">`,
-    ),
+    ...head.links.map((entry) => {
+      const type = entry.type ? ` type="${escapeHtml(entry.type)}"` : '';
+
+      return `    <link rel="${escapeHtml(entry.rel)}"${type} href="${escapeHtml(entry.href)}">`;
+    }),
   ].join('\n');
 }
 
@@ -216,6 +272,10 @@ function stripManagedSeoTags(html: string) {
     .replace(/<title>[\s\S]*?<\/title>\s*/gi, '')
     .replace(/<meta\s+name=["']description["'][^>]*>\s*/gi, '')
     .replace(/<link\s+rel=["']canonical["'][^>]*>\s*/gi, '')
+    .replace(
+      /<link\b(?=[^>]*\brel=["']alternate["'])(?=[^>]*\btype=["']text\/markdown["'])[^>]*>\s*/gi,
+      '',
+    )
     .replace(/<meta\s+property=["']og:[^"']+["'][^>]*>\s*/gi, '')
     .replace(/<meta\s+name=["']twitter:[^"']+["'][^>]*>\s*/gi, '');
 }
@@ -227,10 +287,6 @@ function isDocsPageUrl(url: string) {
 function normalizePathname(url: string) {
   const pathname = url.startsWith('/') ? url : `/${url}`;
   return pathname === '/' ? pathname : pathname.replace(/\/+$/, '');
-}
-
-function createAbsoluteUrl(url: string, baseUrl: string) {
-  return /^https?:\/\//.test(url) ? url : `${baseUrl}${normalizePathname(url)}`;
 }
 
 function normalizeText(value?: string) {

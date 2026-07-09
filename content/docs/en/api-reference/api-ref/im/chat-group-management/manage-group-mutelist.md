@@ -16,8 +16,7 @@ The following table lists common request and response parameters of the Chat RES
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Required |
 | :--------- | :----- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
 
 <Slot for="username">
@@ -28,7 +27,7 @@ The unique login account of the user. The user ID must be 64 characters or less 
 - "\_", "-", "."
 
 :::info
-Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same app is unique.
+Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same App ID is unique.
 :::
 
 </Slot>
@@ -38,9 +37,9 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | Parameter | Type | Description |
 | :---------------- | :----- | :---------------------------------------------------------------- |
 | `action` | String | The request method. |
-| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. |
 | `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
-| `applicationName` | String | The unique identifier assigned to each app by the Chat service. This is the same as `app_name`. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service. |
 | `uri` | String | The request URI. |
 | `path` | String | The request path, which is part of the request URI. You can safely ignore this parameter. |
 | `entities ` | JSON | The response entity. |
@@ -65,7 +64,7 @@ Adds a group member to the group mute list. Once muted, members cannot send mess
 ### HTTP request
 
 ```json
-POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/mute
+POST https://{host}/app-id/{app_id}/chatgroups/{group_id}/mute
 ```
 
 #### Path parameter
@@ -112,7 +111,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X POST -H 'Content-type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{"usernames":["user1"], "mute_duration":86400000}' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/mute'
+curl -X POST -H 'Content-type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{"usernames":["user1"], "mute_duration":86400000}' 'http://XXXX/app-id/XXXX/chatgroups/10130212061185/mute'
 ```
 
 #### Response example
@@ -121,7 +120,7 @@ curl -X POST -H 'Content-type: application/json' -H 'Accept: application/json' -
 {
     "action": "post",
     "application": "527cd7e0-XXXX-XXXX-9f59-ef10ecd81ff0",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/10130212061185/mute",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/10130212061185/mute",
     "entities": [],
     "data": [{
         "result": true,
@@ -142,7 +141,7 @@ Removes the specified user from the group mute list. Once removed from the mute 
 ### HTTP request
 
 ```bash
-DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/mute/{member_id}
+DELETE https://{host}/app-id/{app_id}/chatgroups/{group_id}/mute/{member_id}
 ```
 
 #### Path parameter
@@ -181,7 +180,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/mute/user1'
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatgroups/10130212061185/mute/user1'
 ```
 
 #### Response example
@@ -190,7 +189,7 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 {
     "action": "delete",
     "application": "527cd7e0-XXXX-XXXX-9f59-ef10ecd81ff0",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/10130212061185/mute/user1",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/10130212061185/mute/user1",
     "entities": [],
     "data": [{
         "result": true,
@@ -210,7 +209,7 @@ Retrieves the mute list of the group.
 ### HTTP request
 
 ```bash
-GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/mute
+GET https://{host}/app-id/{app_id}/chatgroups/{group_id}/mute
 ```
 
 #### Path parameter
@@ -248,7 +247,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X GET -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/mute' -H 'Authorization: Bearer '
+curl -X GET -H 'Accept: application/json' 'http://XXXX/app-id/XXXX/chatgroups/10130212061185/mute' -H 'Authorization: Bearer '
 ```
 
 #### Response example
@@ -257,7 +256,7 @@ curl -X GET -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/1013
 {
     "action": "post",
     "application": "527cd7e0-XXXX-XXXX-9f59-ef10ecd81ff0",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/10130212061185/mute",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/10130212061185/mute",
     "entities": [],
     "data": [{
         "expire": 1489158589481,
@@ -277,7 +276,7 @@ This method mutes all the group members. If this method call succeeds, none of t
 ### HTTP request
 
 ```bash
-POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/ban
+POST https://{host}/app-id/{app_id}/chatgroups/{group_id}/ban
 ```
 
 #### Path parameter
@@ -314,7 +313,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {Your app token}' 'http://XXXX/XXXX/XXXX/chatgroups/{The group ID}/ban'
+curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {Your app token}' 'http://XXXX/app-id/XXXX/chatgroups/{The group ID}/ban'
 ```
 
 #### Response example
@@ -323,12 +322,12 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 {
     "action": "put",
     "application": "5cf28979-XXXX-XXXX-b969-60141fb9c75d",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/1208XXXX5169153/ban",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/1208XXXX5169153/ban",
     "entities": [],
     "data": {
         "mute": true
     },
-    "timestamp": org_name94628861058,
+    "timestamp": 1594628861058,
     "duration": 1,
     "organization": "XXXX",
     "applicationName": "XXXX"
@@ -342,7 +341,7 @@ This method unmutes all the group members. Once unmuted, the group members can o
 ### HTTP request
 
 ```bash
-DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/ban
+DELETE https://{host}/app-id/{app_id}/chatgroups/{group_id}/ban
 ```
 
 #### Path parameter
@@ -379,7 +378,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X DELETE -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {Your app token}' 'http://XXXX/XXXX/XXXX/chatgroups/1208XXXX5169153/ban'
+curl -X DELETE -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {Your app token}' 'http://XXXX/app-id/XXXX/chatgroups/1208XXXX5169153/ban'
 ```
 
 #### Response example
@@ -388,7 +387,7 @@ curl -X DELETE -H 'Content-Type: application/json' -H 'Accept: application/json'
 {
     "action": "put",
     "application": "527cd7e0-XXXX-XXXX-9f59-ef10ecd81ff0",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/120824965169153/ban",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/120824965169153/ban",
     "entities": [],
     "data": {
         "mute": false

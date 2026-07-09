@@ -45,8 +45,9 @@ The following steps are required for both inbound and outbound calling:
 
         ![](https://assets-docs.agora.io/images/conversational-ai/twilio/select-sip-trunk.png)
 
-    > **Info**
-    > You can use the same trunk for both inbound and outbound calling or create separate trunks for easier management. Agora recommends using separate trunks if you have different security requirements for inbound and outbound.
+    :::info[Info]
+    You can use the same trunk for both inbound and outbound calling or create separate trunks for easier management. Agora recommends using separate trunks if you have different security requirements for inbound and outbound.
+    :::
 
 3. **Assign the phone number to the Elastic SIP Trunk**
 
@@ -70,8 +71,9 @@ The following steps are required for both inbound and outbound calling:
 
         ![](https://assets-docs.agora.io/images/conversational-ai/twilio/general-settings.png)
 
-> **Caution**
-> The transport setting in Agent Studio must match SIP trunk’s Secure Trunking setting. A mismatch causes calls to fail silently.
+:::caution[Caution]
+The transport setting in Agent Studio must match SIP trunk’s Secure Trunking setting. A mismatch causes calls to fail silently.
+:::
 
 ## Outbound calling setup
 

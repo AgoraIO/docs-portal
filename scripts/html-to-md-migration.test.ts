@@ -1,59 +1,686 @@
-import { execSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { fileURLToPath } from 'node:url';
+import { afterEach, describe, expect, it } from 'vitest';
 
-const SCRIPT = path.resolve(__dirname, 'html-to-md-migration.mjs');
-const SOURCE_DIR =
-  '/Users/czhen/Documents/GitHub/AgoraIO/shengwang-doc-source/html-docs/rtc/Android';
-const hasSource = existsSync(SOURCE_DIR);
+const SCRIPT = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  'html-to-md-migration.mjs',
+);
+
+const tempDirs: string[] = [];
+
+async function makeTempDir() {
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'html-to-md-migration-'));
+  tempDirs.push(dir);
+  return dir;
+}
+
+async function writeFixture(filePath: string, contents: string) {
+  await fs.mkdir(path.dirname(filePath), { recursive: true });
+  await fs.writeFile(filePath, contents, 'utf8');
+}
+
+async function pathExists(filePath: string) {
+  try {
+    await fs.access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function readJson(filePath: string) {
+  return JSON.parse(await fs.readFile(filePath, 'utf8')) as {
+    pages?: string[];
+    title?: string;
+  };
+}
+
+function runMigration(args: string[]) {
+  return execFileSync(process.execPath, [SCRIPT, ...args], {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+}
+
+function runMigrationFailure(args: string[]) {
+  try {
+    runMigration(args);
+  } catch (error) {
+    const execError = error as Error & {
+      stderr?: Buffer | string;
+      stdout?: Buffer | string;
+    };
+    return `${execError.stdout ?? ''}${execError.stderr ?? ''}`;
+  }
+
+  throw new Error('Expected migration command to fail.');
+}
+
+function ditaPage(title: string) {
+  return `<!doctype html>
+<html>
+  <head><meta name="description" content="${title} description."></head>
+  <body>
+    <main>
+      <article>
+        <h1>${title}</h1>
+        <div class="body">
+          <p class="shortdesc">${title} summary.</p>
+          <section id="details">
+            <h2>Details</h2>
+            <p>Call <code>join</code> from this page.</p>
+          </section>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>`;
+}
+
+async function writeDitaFixture(sourceDir: string) {
+  await writeFixture(
+    path.join(sourceDir, 'index.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <nav class="toc">
+      <ul>
+        <li>
+          <span>API Reference</span>
+          <ul>
+            <li><a href="API/overview.html">Overview</a></li>
+            <li><a href="API/class_video_canvas.html">VideoCanvas</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'overview.html'),
+    ditaPage('Overview'),
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'class_video_canvas.html'),
+    ditaPage('VideoCanvas'),
+  );
+}
+
+async function expectLaneDryRunAndMigration({
+  detected,
+  expectedMetaPages,
+  expectedPageContents,
+  outputDir,
+  platform,
+  product,
+  sourceDir,
+}: {
+  detected: string;
+  expectedMetaPages: string[];
+  expectedPageContents: Record<string, string[]>;
+  outputDir: string;
+  platform: string;
+  product: string;
+  sourceDir: string;
+}) {
+  const dryOutputDir = `${outputDir}-dry`;
+  const dryOutput = runMigration([
+    '--source',
+    sourceDir,
+    '--output',
+    dryOutputDir,
+    '--product',
+    product,
+    '--platform',
+    platform,
+    '--dry-run',
+  ]);
+
+  expect(dryOutput).toContain(`Detected source type: ${detected}`);
+  expect(dryOutput).toContain('Planned output paths');
+  expect(dryOutput).toContain(path.join(dryOutputDir, 'index.mdx'));
+  expect(dryOutput).toContain(path.join(dryOutputDir, 'meta.json'));
+  for (const relativePath of Object.keys(expectedPageContents)) {
+    expect(dryOutput).toContain(path.join(dryOutputDir, relativePath));
+  }
+  await expect(pathExists(dryOutputDir)).resolves.toBe(false);
+
+  const output = runMigration([
+    '--source',
+    sourceDir,
+    '--output',
+    outputDir,
+    '--product',
+    product,
+    '--platform',
+    platform,
+  ]);
+
+  expect(output).toContain(`Detected:  ${detected}`);
+  await expect(pathExists(path.join(outputDir, 'index.mdx'))).resolves.toBe(
+    true,
+  );
+  const meta = await readJson(path.join(outputDir, 'meta.json'));
+  expect(meta.pages).toEqual(expectedMetaPages);
+
+  for (const [relativePath, snippets] of Object.entries(expectedPageContents)) {
+    const contents = await fs.readFile(
+      path.join(outputDir, relativePath),
+      'utf8',
+    );
+    for (const snippet of snippets) expect(contents).toContain(snippet);
+  }
+}
+
+async function writeTypeDocFixture(sourceDir: string) {
+  await writeFixture(
+    path.join(sourceDir, 'index.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <main>
+      <h1>TypeDoc API</h1>
+      <p>Generated by TypeDoc.</p>
+      <nav>
+        <a href="modules.html">Modules</a>
+        <a href="classes/Client.html#connect">Client</a>
+      </nav>
+    </main>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'modules.html'),
+    `<!doctype html>
+<html>
+  <head><meta name="description" content="TypeScript module list."></head>
+  <body>
+    <main>
+      <h1>Modules</h1>
+      <p>Open the <a href="classes/Client.html#connect">Client class</a>.</p>
+      <ul><li><code>createClient</code></li></ul>
+    </main>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'classes', 'Client.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <main>
+      <h1>Client</h1>
+      <p>Controls a realtime session.</p>
+      <section id="connect">
+        <h2>connect</h2>
+        <p>Call <code>connect</code> before publishing.</p>
+        <pre class="language-ts">client.connect(appId);</pre>
+      </section>
+    </main>
+  </body>
+</html>`,
+  );
+}
+
+async function writeDoxygenFixture(sourceDir: string) {
+  await writeFixture(path.join(sourceDir, 'doxygen.css'), '/* marker */');
+  await writeFixture(
+    path.join(sourceDir, 'index.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <div class="contents">
+      <h1>Doxygen API</h1>
+      <p>Generated by Doxygen.</p>
+      <a href="annotated.html">Class Index</a>
+      <a href="class_agora_1_1rtc_1_1_client.html#join">Client</a>
+    </div>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'annotated.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <div class="contents">
+      <div class="title">Class Index</div>
+      <p>See <a href="class_agora_1_1rtc_1_1_client.html#join">Client</a>.</p>
+    </div>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'class_agora_1_1rtc_1_1_client.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <div class="contents">
+      <div class="title">Client Class Reference</div>
+      <p>Back to <a href="annotated.html">all classes</a>.</p>
+      <a id="join"></a>
+      <h2>join</h2>
+      <table>
+        <tr><th>Parameter</th><th>Description</th></tr>
+        <tr><td>channel</td><td>Channel name</td></tr>
+      </table>
+    </div>
+  </body>
+</html>`,
+  );
+}
+
+async function writeIosFixture(sourceDir: string) {
+  await writeFixture(
+    path.join(sourceDir, 'index.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <main>
+      <h1>Jazzy API</h1>
+      <p>Generated by jazzy.</p>
+      <a href="Classes/index.html">Classes</a>
+      <a href="Classes/AgoraRtcEngineKit.html">AgoraRtcEngineKit</a>
+      <a href="Protocols/AgoraRtcEngineDelegate.html#events">Delegate</a>
+    </main>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'hierarchy.html'),
+    '<!doctype html><html><body><main><h1>Hierarchy</h1><p>iOS hierarchy.</p></main></body></html>',
+  );
+  await writeFixture(
+    path.join(sourceDir, 'Classes', 'index.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <article class="main-content">
+      <h1>Classes</h1>
+      <p>iOS classes index.</p>
+      <a href="AgoraRtcEngineKit.html">Engine class</a>
+    </article>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'Classes', 'AgoraRtcEngineKit.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <article class="main-content">
+      <h1>AgoraRtcEngineKit</h1>
+      <p>Engine class with <a href="../Protocols/AgoraRtcEngineDelegate.html#events">delegate callbacks</a>.</p>
+      <p>Back to the <a href="index.html">classes overview</a>.</p>
+      <h2><a name="sharedengine"></a>sharedEngine</h2>
+      <p>Creates an engine instance.</p>
+    </article>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'Protocols', 'AgoraRtcEngineDelegate.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <article class="main-content">
+      <h1>AgoraRtcEngineDelegate</h1>
+      <a id="events"></a>
+      <p>Receives event callbacks.</p>
+    </article>
+  </body>
+</html>`,
+  );
+}
+
+async function writeDartdocFixture(sourceDir: string) {
+  await writeFixture(path.join(sourceDir, 'index.json'), '{"marker":true}');
+  await writeFixture(
+    path.join(sourceDir, 'index.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <main>
+      <h1>Dartdoc API</h1>
+      <p>Generated by dartdoc.</p>
+      <a href="library-index.html">Libraries</a>
+      <a href="agora_rtc/agora_rtc-library.html#RtcEngine">agora_rtc</a>
+    </main>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'library-index.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <main>
+      <h1>Libraries</h1>
+      <p>See <a href="agora_rtc/agora_rtc-library.html#RtcEngine">RtcEngine</a>.</p>
+    </main>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'agora_rtc', 'agora_rtc-library.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <main>
+      <h1>agora_rtc library</h1>
+      <section id="RtcEngine">
+        <h2>RtcEngine</h2>
+        <p>Primary Dart RTC engine.</p>
+        <ol><li>Initialize the engine.</li></ol>
+      </section>
+    </main>
+  </body>
+</html>`,
+  );
+}
 
 describe('html-to-md-migration', () => {
-  it('should show help text', () => {
-    const output = execSync(`node ${SCRIPT} --help`, { encoding: 'utf8' });
-    expect(output).toContain('Unified HTML-to-Markdown Migration Tool');
-    expect(output).toContain('--source');
-    expect(output).toContain('--output');
-  });
-
-  it.skipIf(!hasSource)('should perform dry run', async () => {
-    const output = execSync(
-      `node ${SCRIPT} --source ${SOURCE_DIR} --output /tmp/test-migration --product rtc --platform android --dry-run`,
-      { encoding: 'utf8' },
+  afterEach(async () => {
+    await Promise.all(
+      tempDirs
+        .splice(0)
+        .map((dir) => fs.rm(dir, { force: true, recursive: true })),
     );
-    expect(output).toContain('Would process');
-    expect(output).toContain('files:');
   });
 
-  it.skipIf(!hasSource)('should generate markdown files', async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'migration-test-'));
+  it('migrates a supported DITA-OT API directory', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDitaFixture(sourceDir);
 
-    try {
-      execSync(
-        `node ${SCRIPT} --source ${SOURCE_DIR} --output ${tmpDir} --product rtc --platform android`,
-        { encoding: 'utf8' },
-      );
+    const output = runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+    ]);
 
-      // Check that files were created
-      const files = await fs.readdir(tmpDir);
-      expect(files.length).toBeGreaterThan(0);
-      expect(files).toContain('index.mdx');
-      expect(files).toContain('meta.json');
+    expect(output).toContain(
+      'Detected:  DITA-OT/Oxygen API reference (API/ directory)',
+    );
+    expect(output).toContain('Files:     2');
+    await expect(
+      fs.readFile(path.join(outputDir, 'index.mdx'), 'utf8'),
+    ).resolves.toContain('ANDROID API Reference');
+    await expect(
+      fs.readFile(path.join(outputDir, 'meta.json'), 'utf8'),
+    ).resolves.toContain('"overview"');
+    await expect(
+      fs.readFile(path.join(outputDir, 'overview.mdx'), 'utf8'),
+    ).resolves.toContain('title: "Overview"');
+    await expect(
+      fs.readFile(path.join(outputDir, 'class-video-canvas.mdx'), 'utf8'),
+    ).resolves.toContain('Call `join` from this page.');
+  });
 
-      // Check a generated file has proper frontmatter
-      const mdxFiles = files.filter((f) => f.endsWith('.mdx'));
-      if (mdxFiles.length > 0) {
-        const content = await fs.readFile(
-          path.join(tmpDir, mdxFiles[0]),
-          'utf8',
-        );
-        expect(content).toMatch(/^---\n/);
-        expect(content).toContain('title:');
-      }
-    } finally {
-      await fs.rm(tmpDir, { recursive: true, force: true });
-    }
+  it('prints detected source type, file count, and planned paths in dry-run without writing', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const outputDir = path.join(rootDir, 'dry-output');
+    await writeDitaFixture(sourceDir);
+
+    const output = runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+      '--dry-run',
+    ]);
+
+    expect(output).toContain(
+      'Detected source type: DITA-OT/Oxygen API reference (API/ directory)',
+    );
+    expect(output).toContain('File count: 2');
+    expect(output).toContain('Planned output paths');
+    expect(output).toContain(path.join(outputDir, 'index.mdx'));
+    expect(output).toContain(path.join(outputDir, 'overview.mdx'));
+    await expect(pathExists(outputDir)).resolves.toBe(false);
+  });
+
+  it('migrates TypeDoc output with dry-run planning and rewritten links', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'typedoc-source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeTypeDocFixture(sourceDir);
+
+    await expectLaneDryRunAndMigration({
+      detected: 'TypeDoc HTML reference',
+      expectedMetaPages: ['index', 'modules', 'classes'],
+      expectedPageContents: {
+        'classes/client.mdx': [
+          'title: "Client"',
+          '<a id="connect"></a>',
+          'Call `connect` before publishing.',
+          '```ts\nclient.connect(appId);\n```',
+        ],
+        'modules.mdx': [
+          '[Client class](/api-reference/web/typescript/classes/client#connect)',
+        ],
+      },
+      outputDir,
+      platform: 'typescript',
+      product: 'web',
+      sourceDir,
+    });
+  });
+
+  it('migrates Doxygen/Javadoc output with dry-run planning and rewritten links', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'doxygen-source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDoxygenFixture(sourceDir);
+
+    await expectLaneDryRunAndMigration({
+      detected: 'Doxygen/Javadoc HTML reference',
+      expectedMetaPages: [
+        'index',
+        'annotated',
+        'class-agora-1-1rtc-1-1-client',
+      ],
+      expectedPageContents: {
+        'annotated.mdx': [
+          'title: "Class Index"',
+          '[Client](/api-reference/rtc/cpp/class-agora-1-1rtc-1-1-client#join)',
+        ],
+        'class-agora-1-1rtc-1-1-client.mdx': [
+          'title: "Client Class Reference"',
+          '[all classes](/api-reference/rtc/cpp/annotated)',
+          '<a id="join"></a>',
+          '| Parameter | Description |',
+          '| channel | Channel name |',
+        ],
+      },
+      outputDir,
+      platform: 'cpp',
+      product: 'rtc',
+      sourceDir,
+    });
+  });
+
+  it('migrates iOS doc-generator output with dry-run planning and rewritten links', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'ios-source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeIosFixture(sourceDir);
+
+    await expectLaneDryRunAndMigration({
+      detected: 'iOS-doc-generator HTML reference',
+      expectedMetaPages: ['index', 'classes', 'protocols', 'hierarchy'],
+      expectedPageContents: {
+        'classes/index.mdx': [
+          'title: "Classes"',
+          'iOS classes index.',
+          '[Engine class](/api-reference/rtc/ios/classes/agora-rtc-engine-kit)',
+        ],
+        'classes/agora-rtc-engine-kit.mdx': [
+          'title: "AgoraRtcEngineKit"',
+          '[delegate callbacks](/api-reference/rtc/ios/protocols/agora-rtc-engine-delegate#events)',
+          '[classes overview](/api-reference/rtc/ios/classes)',
+          '<a id="sharedengine"></a>',
+          'Creates an engine instance.',
+        ],
+        'protocols/agora-rtc-engine-delegate.mdx': [
+          'title: "AgoraRtcEngineDelegate"',
+          '<a id="events"></a>',
+          'Receives event callbacks.',
+        ],
+      },
+      outputDir,
+      platform: 'ios',
+      product: 'rtc',
+      sourceDir,
+    });
+  });
+
+  it('migrates Dartdoc output with dry-run planning and rewritten links', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'dartdoc-source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDartdocFixture(sourceDir);
+
+    await expectLaneDryRunAndMigration({
+      detected: 'Dartdoc HTML reference',
+      expectedMetaPages: ['index', 'library-index', 'agora-rtc'],
+      expectedPageContents: {
+        'agora-rtc/agora-rtc-library.mdx': [
+          'title: "agora_rtc library"',
+          '<a id="RtcEngine"></a>',
+          'Primary Dart RTC engine.',
+          '1. Initialize the engine.',
+        ],
+        'library-index.mdx': [
+          '[RtcEngine](/api-reference/rtc/dart/agora-rtc/agora-rtc-library#RtcEngine)',
+        ],
+      },
+      outputDir,
+      platform: 'dart',
+      product: 'rtc',
+      sourceDir,
+    });
+  });
+
+  it('fails unsupported sources without API with a clear actionable error', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'unsupported-source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeFixture(
+      path.join(sourceDir, 'index.html'),
+      '<!doctype html><html><body><h1>RESTful API</h1></body></html>',
+    );
+
+    const output = runMigrationFailure([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'cloud-recording',
+      '--platform',
+      'restful',
+    ]);
+
+    expect(output).toContain(
+      'Unsupported source structure: RESTful/OpenAPI or other unsupported source layout.',
+    );
+    expect(output).toContain('root-level HTML file(s), but no API/');
+    expect(output).toContain(
+      'Supported lanes: DITA-OT/Oxygen, TypeDoc, Doxygen/Javadoc, iOS doc-generator/Jazzy/appledoc, and Dartdoc generated HTML API references.',
+    );
+    expect(output).not.toContain('ENOENT');
+  });
+
+  it('refuses dangerous output paths before deleting existing files', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const sentinelPath = path.join(sourceDir, 'keep.txt');
+    await writeDitaFixture(sourceDir);
+    await writeFixture(sentinelPath, 'do not delete');
+
+    const output = runMigrationFailure([
+      '--source',
+      sourceDir,
+      '--output',
+      sourceDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+    ]);
+
+    expect(output).toContain('Refusing to delete protected output path');
+    await expect(fs.readFile(sentinelPath, 'utf8')).resolves.toBe(
+      'do not delete',
+    );
+  });
+
+  it('refuses broad in-repo docs output paths before cleanup', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    await writeDitaFixture(sourceDir);
+
+    const output = runMigrationFailure([
+      '--source',
+      sourceDir,
+      '--output',
+      path.resolve('content/docs/zh-CN/api-reference/rtc'),
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+    ]);
+
+    expect(output).toContain('Refusing to delete broad docs output path');
+    expect(output).toContain('content/docs/zh-CN/api-reference/rtc/android');
+  });
+
+  it('refuses broad temporary and home-child output paths before cleanup', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    await writeDitaFixture(sourceDir);
+
+    const tmpOutput = runMigrationFailure([
+      '--source',
+      sourceDir,
+      '--output',
+      '/tmp',
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+    ]);
+    expect(tmpOutput).toContain('Refusing to delete protected output path');
+
+    const homeChildOutput = runMigrationFailure([
+      '--source',
+      sourceDir,
+      '--output',
+      path.join(os.homedir(), 'Downloads'),
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+    ]);
+    expect(homeChildOutput).toContain(
+      'Refusing to delete broad home-directory child path',
+    );
   });
 });

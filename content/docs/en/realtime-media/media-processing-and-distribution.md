@@ -29,7 +29,7 @@ Pushes interactive channel content into CDN or broadcast-style distribution path
 
 ## Media Pull
 
-Brings external online media streams into an existing realtime scenario.
+Brings external online media streams into an existing real-time scenario.
 
 <div id="rm-cloud-transcoding"></div>
 
@@ -45,7 +45,7 @@ Fits teams that need hosted stream composition and output transformation.
 
 ## RTMP Gateway
 
-Bridges standard live protocol flows with realtime interaction systems.
+Bridges standard live protocol flows with real-time interaction systems.
 
 <div id="rm-fusion-cdn"></div>
 
