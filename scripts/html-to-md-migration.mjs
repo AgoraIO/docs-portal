@@ -476,10 +476,11 @@ async function supportedGeneratedHtmlStructure(
     : null;
 
   if (fileNames.length === 0) {
-    return unsupportedSourceStructure(sourceDir, SOURCE_TYPES.RESTFUL_OR_OTHER, [
-      ...markers,
-      'detected generator markers but no migratable .html pages',
-    ]);
+    return unsupportedSourceStructure(
+      sourceDir,
+      SOURCE_TYPES.RESTFUL_OR_OTHER,
+      [...markers, 'detected generator markers but no migratable .html pages'],
+    );
   }
 
   return {
@@ -517,7 +518,9 @@ async function collectHtmlFileNames(sourceDir) {
         continue;
       }
       if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
-      fileNames.push(normalizeSourcePath(path.relative(sourceDir, absolutePath)));
+      fileNames.push(
+        normalizeSourcePath(path.relative(sourceDir, absolutePath)),
+      );
     }
   }
 
@@ -719,7 +722,9 @@ function readDescription($) {
 }
 
 function selectContentRoot($) {
-  $('script, style, link, iframe, form, nav:not(.related-links), header, footer, aside').remove();
+  $(
+    'script, style, link, iframe, form, nav:not(.related-links), header, footer, aside',
+  ).remove();
   const selectors = [
     'main > article',
     'main article',
@@ -746,7 +751,7 @@ function headingElementDepth(heading, fallbackDepth = 2) {
   return match ? Number(match[1]) : fallbackDepth;
 }
 
-function renderHeading($, heading) {
+function renderHeading(_$, heading) {
   const title = inlineText(heading);
   if (!title) return '';
   const parts = [];
@@ -1337,7 +1342,9 @@ function renderSection(
 
   if (id) parts.push(`<a id="${id}"></a>`);
   if (title)
-    parts.push(`${'#'.repeat(Math.max(depth, headingElementDepth(heading)))} ${title}`);
+    parts.push(
+      `${'#'.repeat(Math.max(depth, headingElementDepth(heading)))} ${title}`,
+    );
 
   const directList = section.find('> ul').first();
   if (
@@ -1562,7 +1569,9 @@ function assignRoutes(nodes, parentSegments, sourceToRoute) {
   for (const node of nodes) {
     const isFolder = node.children.length > 0;
     const sourceSlug = node.sourceName
-      ? toKebab(stripHtml(path.posix.basename(node.sourceName)).replace(/^toc_/, ''))
+      ? toKebab(
+          stripHtml(path.posix.basename(node.sourceName)).replace(/^toc_/, ''),
+        )
       : '';
     const slug = node.slug ?? sourceSlug;
 
