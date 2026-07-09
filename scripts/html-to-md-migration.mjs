@@ -1605,6 +1605,17 @@ function renderPage({
     });
     if (iosPage) return iosPage;
   }
+  if (lane?.id === SOURCE_TYPES.DARTDOC.id) {
+    const dartdocPage = renderDartdocPage({
+      $,
+      currentSource,
+      pageDescriptionBySource,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    });
+    if (dartdocPage) return dartdocPage;
+  }
 
   const previousCurrentSource = sourceToRoute.currentSource;
   sourceToRoute.currentSource = currentSource;
@@ -2439,6 +2450,362 @@ function renderIosBlock(
   return parts.join('\n\n');
 }
 
+function renderDartdocPage({
+  $,
+  currentSource,
+  pageTitleBySource,
+  pageDescriptionBySource,
+  sourceToRoute,
+  targetBasePath,
+}) {
+  const main = $('#dartdoc-main-content').first();
+  if (main.length === 0) return null;
+
+  const previousCurrentSource = sourceToRoute.currentSource;
+  sourceToRoute.currentSource = currentSource;
+
+  const pageTitle = normalizeDartdocTitle(
+    pageTitleBySource.get(currentSource) ?? stripHtml(currentSource),
+  );
+  const description = pageDescriptionBySource.get(currentSource);
+  const sections = [];
+
+  const desc = renderDartdocDescription(
+    $,
+    main.children('section.desc').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (desc) sections.push(desc);
+
+  const details = renderDartdocRelationshipDetails(
+    $,
+    main.children('section').not('.summary, .desc, .source-code').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (details) sections.push(details);
+
+  const memberSignature = renderDartdocMemberSignature(
+    main.children('section.multi-line-signature').first(),
+  );
+  if (memberSignature) sections.push(memberSignature);
+
+  for (const section of main
+    .children('section.summary')
+    .not('.source-code')
+    .toArray()) {
+    const renderedSection = renderDartdocSummarySection(
+      $,
+      $(section),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (renderedSection) sections.push(renderedSection);
+  }
+
+  const source = renderDartdocSourceSection(
+    main.children('section.source-code').first(),
+  );
+  if (source) sections.push(source);
+
+  sourceToRoute.currentSource = previousCurrentSource;
+  if (sections.length === 0) return null;
+
+  return [
+    '---',
+    `title: ${escapeYaml(pageTitle)}`,
+    description
+      ? `description: ${escapeYaml(description)}`
+      : `description: ${escapeYaml(`${pageTitle} API reference.`)}`,
+    '---',
+    '',
+    `${sections.join('\n\n')}\n`,
+  ].join('\n');
+}
+
+function normalizeDartdocTitle(title) {
+  return normalizeText(title)
+    .replace(/\s+-\s+Dart API$/i, '')
+    .replace(/\s+Null safety$/i, '')
+    .trim();
+}
+
+function renderDartdocRelationshipDetails(
+  $,
+  section,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!section || section.length === 0) return '';
+  const rows = [];
+  const terms = section.find('dl.dl-horizontal > dt').toArray();
+  const descriptions = section.find('dl.dl-horizontal > dd').toArray();
+  for (let index = 0; index < terms.length; index += 1) {
+    const title = inlineText($(terms[index]));
+    const value = renderChildren(
+      $,
+      $(descriptions[index] ?? ''),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (title && value) rows.push(`### ${title}\n\n${value}`);
+  }
+  return rows.join('\n\n');
+}
+
+function renderDartdocMemberSignature(signatureSection) {
+  if (!signatureSection || signatureSection.length === 0) return '';
+  const signature = normalizeDartdocSignature(signatureSection.text());
+  return signature ? `\`\`\`dart\n${signature}\n\`\`\`` : '';
+}
+
+function renderDartdocDescription(
+  $,
+  desc,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!desc || desc.length === 0) return '';
+
+  const parts = [];
+  const parameterRows = [];
+  if (
+    desc.find(
+      '> p, > h1, > h2, > h3, > h4, > h5, > h6, > ul, > ol, > table, > dl, > pre, > section',
+    ).length === 0
+  ) {
+    const rendered = inlineChildren(
+      $,
+      desc,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    const parsedParams = parseDartdocParameterText(rendered);
+    if (parsedParams.rows.length > 0) {
+      if (parsedParams.before) parts.push(parsedParams.before);
+      parameterRows.push(...parsedParams.rows);
+      if (parsedParams.after) parts.push(parsedParams.after);
+    } else if (rendered) {
+      parts.push(rendered);
+    }
+    return renderDartdocDescriptionParts(parts, parameterRows);
+  }
+
+  for (const child of desc.contents().toArray()) {
+    const element = $(child);
+    if (child.type === 'text' || element.is('p')) {
+      const rendered =
+        child.type === 'text'
+          ? escapeInlineText(normalizeText($(child).text()))
+          : inlineChildren(
+              $,
+              element,
+              pageTitleBySource,
+              sourceToRoute,
+              targetBasePath,
+            );
+      const parsedParams = parseDartdocParameterText(rendered);
+      if (parsedParams.rows.length > 0) {
+        if (parsedParams.before) parts.push(parsedParams.before);
+        parameterRows.push(...parsedParams.rows);
+        if (parsedParams.after) parts.push(parsedParams.after);
+        continue;
+      }
+      if (rendered) parts.push(rendered);
+      continue;
+    }
+
+    const rendered = renderElement(
+      $,
+      element,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (rendered) parts.push(rendered);
+  }
+
+  return renderDartdocDescriptionParts(parts, parameterRows);
+}
+
+function renderDartdocDescriptionParts(parts, parameterRows) {
+  if (parameterRows.length > 0) {
+    parts.push(
+      [
+        '## Parameters',
+        '',
+        '| Name | Description |',
+        '| --- | --- |',
+        ...parameterRows,
+      ].join('\n'),
+    );
+  }
+
+  return parts.join('\n\n');
+}
+
+function parseDartdocParameterText(text) {
+  const parameterPattern =
+    /\bParam\s+(`[^`]+`|\[[^\]]+\]\([^)]+\)|[A-Za-z_][\w]*)\s+/g;
+  const matches = [...text.matchAll(parameterPattern)];
+  if (matches.length === 0) return { after: '', before: '', rows: [] };
+
+  const before = text.slice(0, matches[0].index).trim();
+  const afterParts = [];
+  const rows = [];
+
+  for (let index = 0; index < matches.length; index += 1) {
+    const match = matches[index];
+    const descriptionStart = (match.index ?? 0) + match[0].length;
+    const descriptionEnd =
+      index + 1 < matches.length
+        ? (matches[index + 1].index ?? text.length)
+        : text.length;
+    let description = text.slice(descriptionStart, descriptionEnd).trim();
+    const trailingBlockMatch = description.match(
+      /\s+(\*\*(?:Return|Returns|Throws?)\*\*.+)$/i,
+    );
+    if (trailingBlockMatch) {
+      description = description.slice(0, trailingBlockMatch.index).trim();
+      afterParts.push(trailingBlockMatch[1].trim());
+    }
+    if (!description) continue;
+    rows.push(
+      `| ${formatDartdocParameterName(match[1])} | ${description.replace(/\|/g, '\\|')} |`,
+    );
+  }
+
+  return { after: afterParts.join(' '), before, rows };
+}
+
+function formatDartdocParameterName(value) {
+  if (value.startsWith('`') || value.startsWith('[')) return value;
+  return `\`${value}\``;
+}
+
+function renderDartdocSummarySection(
+  $,
+  section,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const title = inlineText(section.children('h2').first());
+  if (!title) return '';
+
+  const parts = [];
+  const id = section.attr('id');
+  if (id) parts.push(`<a id="${id}"></a>`);
+  parts.push(`## ${title}`);
+
+  for (const term of section.find('> dl > dt').toArray()) {
+    const item = renderDartdocDefinitionItem(
+      $,
+      $(term),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (item) parts.push(item);
+  }
+
+  for (const child of section.children('p, ul, ol, table, pre').toArray()) {
+    const rendered = renderElement(
+      $,
+      $(child),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (rendered) parts.push(rendered);
+  }
+
+  return parts.length > 1 ? parts.join('\n\n') : '';
+}
+
+function renderDartdocDefinitionItem(
+  $,
+  term,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const id = term.attr('id');
+  const nameNode = term.find('.name').first();
+  const name = inlineText(nameNode) || inlineText(term);
+  if (!name) return '';
+
+  const description = term.next('dd').first();
+  const parts = [];
+  if (id) parts.push(`<a id="${id}"></a>`);
+  const nameLink = nameNode.find('a[href]').first();
+  const headingLabel =
+    nameLink.length > 0
+      ? renderAnchor(nameLink, pageTitleBySource, sourceToRoute, targetBasePath)
+      : escapeInlineText(name);
+  parts.push(`### ${headingLabel}`);
+
+  const signature = normalizeDartdocSignature(
+    term.clone().find('.features').remove().end().text(),
+  );
+  if (signature && signature !== name) {
+    parts.push(`\`\`\`dart\n${signature}\n\`\`\``);
+  }
+
+  const renderedDescription = renderDartdocDescription(
+    $,
+    description.clone().find('.features').remove().end(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (renderedDescription) parts.push(renderedDescription);
+
+  const features = normalizeText(description.find('.features').text());
+  if (features) parts.push(`_${escapeInlineText(features)}._`);
+  if (
+    term.hasClass('inherited') ||
+    description.hasClass('inherited') ||
+    features.toLowerCase().includes('inherited')
+  ) {
+    parts.push('_Inherited._');
+  }
+
+  return parts.join('\n\n');
+}
+
+function renderDartdocSourceSection(sourceSection) {
+  if (!sourceSection || sourceSection.length === 0) return '';
+  const code = sourceSection.find('pre code').first().text().trimEnd();
+  return code
+    ? [
+        '<a id="source"></a>',
+        '## Implementation',
+        `\`\`\`dart\n${code}\n\`\`\``,
+      ].join('\n\n')
+    : '';
+}
+
+function normalizeDartdocSignature(value) {
+  return normalizeText(value)
+    .replace(/\s*→\s*/g, ' -> ')
+    .replace(/\s*↔\s*/g, ' <-> ')
+    .replace(/\s*\(\s*/g, '(')
+    .replace(/\s*\)\s*/g, ')')
+    .replace(/\)\s*->\s*/g, ') -> ')
+    .replace(/\)\s*<->\s*/g, ') <-> ')
+    .replace(/\s*,\s*/g, ', ')
+    .trim();
+}
+
 function renderTypeDocPage({
   $,
   currentSource,
@@ -2895,12 +3262,164 @@ async function buildTocNodes(sourceStructure, pageTitleBySource = new Map()) {
     }));
   }
 
+  if (sourceStructure.id === SOURCE_TYPES.DARTDOC.id) {
+    const dartdocNodes = await buildDartdocTocNodes(
+      sourceStructure,
+      pageTitleBySource,
+    );
+    if (dartdocNodes.length > 0) return dartdocNodes;
+  }
+
   const orderedSourceNames = await collectIndexedSourceOrder(sourceStructure);
   return buildTreeFromSourceNames(
     orderedSourceNames,
     sourceStructure.id,
     pageTitleBySource,
   );
+}
+
+async function buildDartdocTocNodes(sourceStructure, pageTitleBySource) {
+  let entries = [];
+  try {
+    entries = JSON.parse(
+      await fs.readFile(
+        path.join(sourceStructure.sourceDir, 'index.json'),
+        'utf8',
+      ),
+    );
+  } catch {
+    return [];
+  }
+  if (!Array.isArray(entries) || entries.length === 0) return [];
+
+  const knownSources = new Set(sourceStructure.fileNames);
+  const entriesByQualifiedName = new Map();
+  const nodesByQualifiedName = new Map();
+  const rootNodes = [];
+
+  for (const entry of entries) {
+    if (
+      !entry?.href ||
+      !entry?.qualifiedName ||
+      !knownSources.has(entry.href)
+    ) {
+      continue;
+    }
+    entriesByQualifiedName.set(entry.qualifiedName, entry);
+  }
+
+  const findOwnerEntry = (entry) => {
+    const ownerName = entry.enclosedBy?.name;
+    if (!ownerName) return null;
+    const ownerQualifiedName = `${entry.packageName}.${ownerName}`;
+    return entriesByQualifiedName.get(ownerQualifiedName) ?? null;
+  };
+
+  const createNode = (entry, hidden = false) => {
+    const segments = dartdocRouteSegmentsForEntry(entry, findOwnerEntry(entry));
+    return {
+      children: [],
+      hidden,
+      routeSegments: hidden ? segments : [...segments, 'index'],
+      slug: segments.at(-1),
+      sourceName: entry.href,
+      title: pageTitleBySource.get(entry.href) ?? entry.name,
+      type: entry.type,
+    };
+  };
+
+  for (const entry of entries) {
+    if (!entriesByQualifiedName.has(entry.qualifiedName)) continue;
+    if (entry.type !== 'library') continue;
+    const node = createNode(entry, false);
+    nodesByQualifiedName.set(entry.qualifiedName, node);
+    rootNodes.push(node);
+  }
+
+  for (const entry of entries) {
+    if (!entriesByQualifiedName.has(entry.qualifiedName)) continue;
+    if (entry.type === 'library') continue;
+    if (isDartdocPrimaryEntry(entry)) {
+      const libraryNode = nodesByQualifiedName.get(entry.packageName);
+      const node = createNode(entry, false);
+      nodesByQualifiedName.set(entry.qualifiedName, node);
+      if (libraryNode) libraryNode.children.push(node);
+      else rootNodes.push(node);
+      continue;
+    }
+
+    if (!isDartdocMemberEntry(entry)) continue;
+
+    const ownerEntry = findOwnerEntry(entry);
+    const ownerNode = ownerEntry
+      ? nodesByQualifiedName.get(ownerEntry.qualifiedName)
+      : null;
+    if (!ownerNode) continue;
+    ownerNode.children.push(createNode(entry, true));
+  }
+
+  return rootNodes;
+}
+
+function isDartdocPrimaryEntry(entry) {
+  if (entry.type === 'library') return true;
+  const ownerType = entry.enclosedBy?.type;
+  return (
+    ownerType === 'library' &&
+    [
+      'class',
+      'enum',
+      'extension',
+      'mixin',
+      'typedef',
+      'function',
+      'constant',
+    ].includes(entry.type)
+  );
+}
+
+function isDartdocMemberEntry(entry) {
+  return [
+    'constructor',
+    'constant',
+    'function',
+    'method',
+    'operator',
+    'property',
+  ].includes(entry.type);
+}
+
+function dartdocRouteSegmentsForEntry(entry, ownerEntry) {
+  const library = toKebab(
+    entry.packageName || entry.qualifiedName.split('.')[0],
+  );
+  if (entry.type === 'library') return [library];
+  if (!ownerEntry || ownerEntry.type === 'library') {
+    return [
+      library,
+      toKebab(
+        removeDartdocFileSuffix(stripHtml(path.posix.basename(entry.href))),
+      ),
+    ];
+  }
+  const ownerSlug = toKebab(
+    removeDartdocFileSuffix(stripHtml(path.posix.basename(ownerEntry.href))),
+  );
+  return [
+    library,
+    ownerSlug,
+    toKebab(stripHtml(path.posix.basename(entry.href))),
+  ];
+}
+
+function removeDartdocFileSuffix(value) {
+  return value
+    .replace(/-class$/i, '')
+    .replace(/-enum$/i, '')
+    .replace(/-extension$/i, '')
+    .replace(/-mixin$/i, '')
+    .replace(/-typedef$/i, '')
+    .replace(/-library$/i, '');
 }
 
 async function collectIndexedSourceOrder(sourceStructure) {
@@ -3054,6 +3573,14 @@ function routeSegmentsForSourceName(
     );
     if (typedocSegments) return typedocSegments;
   }
+  if (sourceTypeId === SOURCE_TYPES.DARTDOC.id) {
+    const stripped = stripHtml(sourceName);
+    const segments = stripped
+      .split('/')
+      .map((segment) => removeDartdocFileSuffix(toKebab(segment)))
+      .filter(Boolean);
+    return segments.at(-1) === 'index' ? segments.slice(0, -1) : segments;
+  }
 
   const stripped = stripHtml(sourceName);
   const segments = stripped
@@ -3134,9 +3661,10 @@ async function writeNode(
       output.targetRoot,
       ...node.routeSegments.slice(0, -1),
     );
+    const visibleChildren = node.children.filter((child) => !child.hidden);
     await writeJson(path.join(dir, 'meta.json'), {
       title: pageTitleBySource.get(node.sourceName) ?? node.title,
-      pages: ['index', ...node.children.map((child) => child.slug)],
+      pages: ['index', ...visibleChildren.map((child) => child.slug)],
     });
     if (node.sourceName) {
       await writeFile(
