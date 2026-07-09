@@ -424,6 +424,25 @@ async function writeDoxygenFixture(sourceDir: string) {
     path.join(sourceDir, 'functions.html'),
     '<!doctype html><html><body><h1>Functions</h1></body></html>',
   );
+  await writeFixture(
+    path.join(sourceDir, 'files.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <div class="contents">
+      <div class="title">File List</div>
+      <table>
+        <tr>
+          <td>
+            <a href="class_agora_1_1rtc_1_1_client_source.html">class_agora_1_1rtc_1_1_client_source.html</a>
+            <a href="class_agora_1_1rtc_1_1_client.html">Client.h</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>`,
+  );
 }
 
 async function writeIosFixture(sourceDir: string) {
@@ -1083,6 +1102,7 @@ describe('html-to-md-migration', () => {
         'index',
         'annotated',
         'class-agora-1-1rtc-1-1-client',
+        'files',
       ],
       expectedPageContents: {
         'annotated.mdx': [
@@ -1101,9 +1121,10 @@ describe('html-to-md-migration', () => {
           '| channel | Channel name |',
           '#### Returns',
           'Zero on success.',
-          'All members',
-          'Source view',
-          'Function index',
+        ],
+        'files.mdx': [
+          'title: "File List"',
+          '[Client.h](/api-reference/rtc/cpp/class-agora-1-1rtc-1-1-client)',
         ],
       },
       outputDir,
@@ -1112,10 +1133,14 @@ describe('html-to-md-migration', () => {
       sourceDir,
       unexpectedPageContents: {
         'class-agora-1-1rtc-1-1-client.mdx': [
+          'All members',
+          'Source view',
+          'Function index',
           'class_agora_1_1rtc_1_1_client-members.html',
           'class_agora_1_1rtc_1_1_client_source.html',
           'functions.html',
         ],
+        'files.mdx': ['class_agora_1_1rtc_1_1_client_source.html'],
       },
       unexpectedDryRunPaths: [
         'class-agora-1-1rtc-1-1-client-members.mdx',

@@ -1297,9 +1297,9 @@ function renderHref(label, href, sourceToRoute, targetBasePath) {
     sourceToRoute,
   );
   if (!routeTarget) {
-    return filePart.split('?')[0].endsWith('.html')
-      ? label
-      : `[${label}](${href})`;
+    const sourceName = filePart.split('?')[0];
+    if (isFilteredHelperHtmlSource(sourceName)) return '';
+    return sourceName.endsWith('.html') ? label : `[${label}](${href})`;
   }
   if (
     sourceToRoute.sourceTypeId === SOURCE_TYPES.DITA_OT_API.id &&
@@ -1314,6 +1314,16 @@ function renderHref(label, href, sourceToRoute, targetBasePath) {
     routeTarget.routeSegments,
     targetBasePath,
   )}${hashPart ? `#${hashPart}` : ''})`;
+}
+
+function isFilteredHelperHtmlSource(sourceName) {
+  const basename = sourceName.split('/').at(-1) ?? sourceName;
+  if (basename.endsWith('-members.html')) return true;
+  if (basename.endsWith('_source.html')) return true;
+  if (/^functions(?:[_-].*)?\.html$/i.test(basename)) return true;
+  if (/^namespacemembers(?:[_-].*)?\.html$/i.test(basename)) return true;
+  if (/^globals(?:[_-].*)?\.html$/i.test(basename)) return true;
+  return false;
 }
 
 function resolveRouteTargetForHref(filePart, currentSource, sourceToRoute) {
