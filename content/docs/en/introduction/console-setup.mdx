@@ -3,13 +3,176 @@ title: Console Setup
 description: Use Agora Console to activate services, collect credentials, and prepare the project settings your first integration will rely on.
 ---
 
-[Agora Console](https://console.agora.io/v2) is the unified portal for you to configure, purchase, and manage Agora products and services. This page shows you how to use the new **beta** version of Agora Console to manage all aspects of your Agora account.
 
-## Dashboard overview
+Use Agora Console to manage your projects and account settings. Console settings are organized into two groups: 
 
-After logging in to Agora Console, you see the overview dashboard. The dashboard displays a summary of important statistics and provides quick access to projects, billing, documentation, and code samples.
+- **Project settings**: Apply to the currently selected project.
+- **Account settings**: Apply across your entire Agora account. 
 
-![Console dashboard](https://assets-docs.agora.io/images/common/console-dashboard.png)
+## Project settings
+
+When you log in to Agora Console, you land on the project-level view for the selected project. Use the project dropdown at the top of the page to switch between projects. Agora creates a default project for you when you create a new account.
+
+![Project Settings page](/console-tmp/project-settings.png)
+
+### Basics
+
+The **Project Settings** page shows the basic identity and security configuration for the selected project.
+
+- **Project Name**: An editable, human-readable name for the project. Select the pencil icon to rename the project.
+- **App ID**: A unique, non-editable identifier for the project. Select the eye icon to reveal the App ID, or the copy icon to copy it to your clipboard.
+
+### Security
+
+- **Primary Certificate**: The project's primary server-side secret, used to generate authentication tokens. Enabling the primary certificate sets the project's status to **Secure** and requires clients to authenticate with a token. Treat the primary certificate like a database password.
+
+- **Secondary Certificate**: An optional fallback certificate used during certificate rotation. Enable it using the toggle. While enabled, the secondary certificate can't be deleted; disable it first to allow deletion.
+
+Each certificate displays its creation date. Select the eye icon to reveal a certificate, or the copy icon to copy it.
+
+### Rotate certificates
+
+If you suspect your primary certificate has been compromised, rotate it using the secondary certificate. Replacing the primary certificate may impact your live business, so only rotate certificates when necessary.
+
+1. Enable the secondary certificate.
+2. Swap the primary and secondary certificates.
+3. Disable the certificate now in the secondary slot (the original primary certificate).
+4. Once users have switched to the new certificate, delete the disabled certificate.
+
+Once deleted, a certificate can't be restored. Before deleting it, confirm that users have switched to the new certificate. Deleting a certificate immediately invalidates all tokens generated with it, and users already connected can't renew their tokens using it.
+
+## Realtime Services
+
+The **Realtime Services** page lists available Agora products grouped by category and lets you enable, disable, and configure each one.
+
+### Product list
+
+The left panel groups products into the following categories:
+
+- **Core RTC**: Chat, Signaling, Conversational AI Engine, Interactive Whiteboard.
+- **Media Services**: Cloud Recording, Media Push, Media Pull, Media Gateway, Real-Time STT, Video Screenshot Upload, Notifications.
+- **Security & Infrastructure**: Cloud Proxy, Co-Host Authentication.
+- **Vertical Solutions**: Flexible Classroom.
+
+### Product configuration
+
+Select a product to view and configure its settings in the panel on the right. Use the **Active** toggle at the top of the panel to enable or disable the product for the selected project. A checkmark next to a product name indicates it's enabled for the project. Refer to the specific product documentation for available configuration options.
+
+## Analytics
+
+Selecting **Analytics** in the left navigation opens Agora Analytics in a new tab. Use it to track and analyze usage and quality data for RTC and Chat.
+
+
+## Account settings
+
+Click the user name at the bottom of the navigation sidebar to open the account menu popup. Items in this menu apply to your Agora account and not to any single project. From here, you can create and manage your projects, view billing status and invoices, see usage statistics, quotas and breakdown, Open the extensions marketplace, manage your profile and account wide preferences, and manage subscription plans.
+
+## Account settings
+
+Click the username at the bottom of the navigation sidebar to open the account menu popup. Items in this menu apply to your Agora account and not to any single project. From here, you can create and manage your projects, view billing status and invoices, see usage statistics, quotas, and breakdowns, open the Extensions Marketplace, and manage your profile and account-wide preferences and subscription plans.
+
+The menu also gives you access to developer and support resources, including the Developer Hub, Help Hub, and notifications, as well as account-wide actions like switching to Light Mode, reverting to the legacy Console, and logging out.
+
+Selecting any item under Account or Developer & Support opens the account-level view, which has its own persistent left navigation with the same items shown in the popup.
+
+### View all plans
+
+The **View all plans** page shows subscription plan options for Agora products and lets you upgrade or manage your current plan.
+
+For detailed, up-to-date pricing for a specific product, see that product's pricing page.
+
+### Billing
+
+The **Billing** page shows your account balance, invoices, transactions, payment methods, and billing information.
+
+- **Account Balance**: Your available balance, plus options to top up your wallet or withdraw funds once a payment method is on file.
+- **Reserved Balance**: Funds reserved against estimated usage. Select **View Estimate** to see the breakdown.
+- **Your invoices**: Monthly and pre-paid invoices, filterable by date range.
+- **Transactions**: A log of balance movements, filterable by type, plus a separate tab for withdraw requests.
+- **Payment methods**: Saved cards and bank transfer details used for billing.
+- **Billing Information**: The name and address associated with your billing card.
+- **Billing FAQ**: Information about billing, such as schedule, account suspension policy, payment orders, and refunds.
+
+### Usage
+
+The **Usage** page shows your account's usage for the current billing cycle.
+
+- **Total Usage**: A summary of RTC minutes, agent minutes, and Signaling messages used in the current billing cycle.
+- **Detailed Usage**: A breakdown of usage by product, filterable by project and date range. Select **View Breakdown** to chart usage over time, and export the data using the download icon.
+
+For deeper usage insights, use Agora Analytics.
+
+### Extensions Marketplace
+
+Use **Extensions Marketplace** to browse and manage extensions that add features to your app on top of Agora SDKs.
+
+### Preferences
+
+The **Preferences** page lets you manage your profile, notification settings, team members, and SSO integration.
+
+
+#### Profile
+
+Add or edit the following information:
+
+- **Personal Information**: First name, last name, and display language.
+- **Security**: Email, password, and phone number. Verify your phone number to enable it. Toggle **Enable Two-Factor Authentication** for added login security, or **Allow Agora Customer Support to login your Console account** to grant temporary support access for the next 24 hours.
+- **Company Information**: Organisation name and Company ID.
+- **Account Context**: The current account name and company country.
+- **Danger Zone**: Delete your Agora account. This action is irreversible.
+
+#### Notifications
+
+The **Notifications** tab lets you configure Agora alert preferences by notification type and delivery channel.
+
+#### Members & Roles
+
+The **Members & Roles** tab lets you manage who has access to your account.
+
+- **Members**: Lists each member, their role, status, and any remarks. Select **Invite Member** to add a new member.
+- **Roles**: Manage the roles available to assign to members.
+
+#### SSO
+
+The **SSO** tab lets you integrate Agora Console with Okta as your identity provider, so your team can log in using their Okta SSO credentials. This integration manages access using SAML and SCIM, and requires an active Premium or Enterprise Support Plan. Select **Request** to request the integration.
+
+### View all Projects
+
+The **View all Projects** page lists every project in your account, including its App ID, status, and last updated and created dates. Use the **Active** and **Archived** tabs to filter the list, and the search box to find a specific project by name. Select **Create New Project** to create a new project.
+
+Each project shows one of two status values:
+
+- **Secure**: The project has a primary certificate enabled and requires authentication tokens.
+- **Unsecure**: The project doesn't have a primary certificate enabled and doesn't require authentication tokens.
+
+Select the actions menu at the end of a project's row to open, rename, or archive it.
+
+### Developer Hub
+
+The **Developer Hub** page has three tabs: **Overview**, **RESTful API**, and **SDK Toolkit**.
+
+#### Overview
+
+Choose a project from the dropdown to view its credentials and settings.
+
+- **Project credentials**: Copy or download an Agora `.env` file containing the selected project's App ID and App Certificate, ready for local SDK setup.
+- **Security**: View and manage the project's Primary and Secondary Certificates. See Project Settings for details on these certificates.
+- **Project settings**: View and rename the project, and view or copy its App ID.
+
+#### RESTful API
+
+The **RESTful API** tab lists your API keys, used to authenticate with Agora's RESTful API.
+
+Each key consists of a Customer ID and Customer Secret. Select **Add Secret** to generate a new key, and add a note to a key to help identify it. Select the trash icon to delete a key. You can have a maximum of 10 keys per account.
+
+#### SDK Toolkit
+
+The **SDK Toolkit** tab lists downloadable SDKs and sample apps.
+
+- **Download SDKs**: Download or view the repository for each Agora SDK, filterable by platform.
+- **Sample Apps**: Open sample apps demonstrating Agora products, filterable by platform.
+
+
 
 Agora Console provides access to the following:
 
@@ -160,7 +323,7 @@ To switch to a new Certificate, follow these steps:
 6. Follow the on-screen instructions to complete verification. If verified successfully, the **Delete** button disappears, and the current Secondary Certificate (the original Primary Certificate) is deleted.
 
     :::warning
-    Once a certificate is deleted, it cannot be restored. Before deleting the secondary certificate, make sure that most users have switched to the new certificate to avoid the following consequences:
+    Once a certificate is deleted, it cannot be restored. Before deleting the secondary certificate, make sure that users have switched to the new certificate to avoid the following consequences:
 
     - All tokens generated using the deleted certificate become invalid, and users can no longer use these tokens to join channels.
     - Users who have joined the channel cannot specify new tokens through `renewToken`.
