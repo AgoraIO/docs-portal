@@ -219,6 +219,7 @@ async function scanGeneratedOutput(outputDir, sampleFiles, contentChecks = []) {
     contentMismatches: [],
     helperPollution: [],
     internalHtmlLinks: [],
+    invalidHeadings: [],
     missingFiles: [],
   };
 
@@ -276,6 +277,7 @@ async function scanGeneratedOutput(outputDir, sampleFiles, contentChecks = []) {
       const text = await fs.readFile(filePath, 'utf8');
       const relative = path.relative(outputDir, filePath);
       if (helperPattern.test(text)) issues.helperPollution.push(relative);
+      if (/^#{7,}\s/m.test(text)) issues.invalidHeadings.push(relative);
 
       for (const match of text.matchAll(markdownHtmlLinkPattern)) {
         const href = match[1];
