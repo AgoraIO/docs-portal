@@ -910,18 +910,30 @@ function renderList(
   const items = [];
   let index = 1;
   for (const li of list.find('> li').toArray()) {
-    const inlineParts = [];
-    const blockParts = [];
-    for (const child of $(li).contents().toArray()) {
-      const element = $(child);
-      if (child.type === 'text') {
-        const text = escapeInlineText(normalizeText($(child).text()));
-        if (text) inlineParts.push(text);
-        continue;
-      }
-      let rendered = '';
-      if (options.preferInlineOnly && !element.is('ul, ol')) {
-        rendered = element.is('a')
+    if (options.preferInlineOnly) {
+      const inlineParts = [];
+      const nestedParts = [];
+      for (const child of $(li).contents().toArray()) {
+        const element = $(child);
+        if (child.type === 'text') {
+          const text = escapeInlineText(normalizeText($(child).text()));
+          if (text) inlineParts.push(text);
+          continue;
+        }
+        if (element.is('ul, ol')) {
+          const nested = renderList(
+            $,
+            element,
+            pageTitleBySource,
+            sourceToRoute,
+            targetBasePath,
+            element.is('ol'),
+            options,
+          );
+          if (nested) nestedParts.push(nested);
+          continue;
+        }
+        const rendered = element.is('a')
           ? renderAnchor(
               element,
               pageTitleBySource,
@@ -935,49 +947,91 @@ function renderList(
               sourceToRoute,
               targetBasePath,
             );
-      } else {
-        rendered = element.is('ul, ol')
-          ? renderList(
-              $,
-              element,
-              pageTitleBySource,
-              sourceToRoute,
-              targetBasePath,
-              element.is('ol'),
-              options,
-            )
-          : renderElement(
-              $,
-              element,
-              pageTitleBySource,
-              sourceToRoute,
-              targetBasePath,
-            );
+        if (rendered) inlineParts.push(rendered);
       }
-      if (rendered) {
-        if (element.is('ul, ol')) blockParts.push(rendered);
-        else inlineParts.push(rendered);
-      }
-    }
-    const inlineContent = normalizeInlineFlow(inlineParts.join(' '));
-    if (!inlineContent && blockParts.length === 0) continue;
-    const marker = ordered ? `${index}.` : '-';
-    if (blockParts.length === 0) {
-      items.push(`${marker} ${inlineContent}`);
-    } else {
-      const nested = blockParts
-        .map((part) =>
-          part
-            .split('\n')
-            .map((line) => (line ? `  ${line}` : line))
-            .join('\n'),
-        )
+
+      const inlineContent = normalizeInlineFlow(inlineParts.join(' '));
+      if (!inlineContent && nestedParts.length === 0) continue;
+      const marker = ordered ? `${index}.` : '-';
+      const nested = nestedParts
+        .map((part) => indentListContinuation(part, marker))
         .join('\n');
-      items.push([`${marker} ${inlineContent}`.trim(), nested].join('\n'));
+      items.push(
+        [`${marker} ${inlineContent}`.trim(), nested]
+          .filter(Boolean)
+          .join('\n\n'),
+      );
+      index += 1;
+      continue;
     }
+
+    const inlineParts = [];
+    const contentParts = [];
+    const flushInline = () => {
+      if (inlineParts.length === 0) return;
+      contentParts.push(normalizeInlineFlow(inlineParts.join(' ')));
+      inlineParts.length = 0;
+    };
+
+    for (const child of $(li).contents().toArray()) {
+      const element = $(child);
+      if (child.type === 'text') {
+        const text = escapeInlineText(normalizeText($(child).text()));
+        if (text) inlineParts.push(text);
+        continue;
+      }
+      if (isInlineElement(element)) {
+        const rendered = renderInlineElement(
+          $,
+          element,
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath,
+        );
+        if (rendered) inlineParts.push(rendered);
+        continue;
+      }
+
+      flushInline();
+      const rendered = element.is('ul, ol')
+        ? renderList(
+            $,
+            element,
+            pageTitleBySource,
+            sourceToRoute,
+            targetBasePath,
+            element.is('ol'),
+            options,
+          )
+        : renderElement(
+            $,
+            element,
+            pageTitleBySource,
+            sourceToRoute,
+            targetBasePath,
+          );
+      if (rendered) contentParts.push(rendered);
+    }
+    flushInline();
+    if (contentParts.length === 0) continue;
+
+    const marker = ordered ? `${index}.` : '-';
+    const [firstPart, ...remainingParts] = contentParts;
+    const nested = remainingParts.map((part) =>
+      indentListContinuation(part, marker),
+    );
+    items.push([`${marker} ${firstPart}`, ...nested].join('\n\n'));
     index += 1;
   }
   return items.join('\n');
+}
+
+function indentListContinuation(content, marker) {
+  const indentation = ' '.repeat(marker.length + 1);
+  return content
+    .split('\n')
+    .map((line) => (line ? `${indentation}${line}` : line))
+    .join('\n');
 }
 
 function renderDefinitionList(
@@ -1748,7 +1802,56 @@ function renderTypeDocMember(
     if (renderedDescription) parts.push(renderedDescription);
   }
 
+  const typeDeclaration = renderTypeDocTypeDeclaration(
+    $,
+    member.children('.tsd-type-declaration').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (typeDeclaration) parts.push(typeDeclaration);
+
   return parts.join('\n\n');
+}
+
+function renderTypeDocTypeDeclaration(
+  $,
+  declaration,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  if (!declaration || declaration.length === 0) return '';
+
+  const title = inlineText(declaration.children('h4').first());
+  const parts = [`#### ${title || 'Type declaration'}`];
+  const parameters = declaration
+    .children('ul.tsd-parameters')
+    .children('li.tsd-parameter');
+
+  for (const parameter of parameters.toArray()) {
+    const item = $(parameter);
+    const heading = item.children('h5').first().clone();
+    heading.find('.tsd-flag').remove();
+    const name = normalizeText(heading.text());
+    if (!name) continue;
+
+    parts.push(`##### \`${name.replace(/`/g, '\\`')}\``);
+    const comment = item.children('.tsd-comment.tsd-typography').first();
+    if (comment.length === 0) continue;
+
+    const description = renderChildren(
+      $,
+      comment,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      6,
+    );
+    if (description) parts.push(description);
+  }
+
+  return parts.length > 1 ? parts.join('\n\n') : '';
 }
 
 function renderTypeDocSignatures($, member) {

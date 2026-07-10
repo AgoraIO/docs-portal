@@ -246,6 +246,59 @@ async function writeTypeDocFixture(sourceDir: string) {
             </li>
           </ul>
         </section>
+        <section class="tsd-panel tsd-member tsd-kind-type-alias">
+          <a name="joinroomparams" class="tsd-anchor"></a>
+          <h3>Join<wbr>Room<wbr>Params</h3>
+          <div class="tsd-signature tsd-kind-icon">JoinRoomParams: { hotKeys?: Partial&lt;HotKeys&gt;; roomToken: string }</div>
+          <div class="tsd-comment tsd-typography">
+            <p>Options used to join a room.</p>
+            <ul>
+              <li>
+                <p><strong>hotKeys?</strong>: <em>Partial&lt;HotKeys&gt;</em></p>
+                <p>Custom shortcuts. Defaults to:</p>
+                <table>
+                  <thead><tr><th>Key</th><th>Effect</th></tr></thead>
+                  <tbody>
+                    <tr><td>Backspace</td><td>Delete selected objects</td></tr>
+                    <tr><td>Ctrl + Z</td><td>Undo</td></tr>
+                  </tbody>
+                </table>
+                <p>Pass an empty object to disable shortcuts.</p>
+              </li>
+            </ul>
+            <ol>
+              <li>
+                <p>Configure shortcuts in order.</p>
+                <table>
+                  <thead><tr><th>Step</th><th>Action</th></tr></thead>
+                  <tbody><tr><td>1</td><td>Choose a key</td></tr></tbody>
+                </table>
+              </li>
+            </ol>
+          </div>
+          <div class="tsd-type-declaration">
+            <h4>Type declaration</h4>
+            <ul class="tsd-parameters">
+              <li class="tsd-parameter">
+                <h5><span class="tsd-flag ts-flagOptional">Optional</span> hot<wbr>Keys<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial&lt;HotKeys&gt;</span></h5>
+                <div class="tsd-comment tsd-typography">
+                  <p>Overrides the default shortcut map.</p>
+                  <table>
+                    <thead><tr><th>Key</th><th>Default action</th></tr></thead>
+                    <tbody><tr><td>Backspace</td><td>Delete selection</td></tr></tbody>
+                  </table>
+                  <ul>
+                    <li><p>Use platform-native key names.</p></li>
+                  </ul>
+                </div>
+              </li>
+              <li class="tsd-parameter">
+                <h5>room<wbr>Token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+                <div class="tsd-comment tsd-typography"><p>Token used to join the room.</p></div>
+              </li>
+            </ul>
+          </div>
+        </section>
       </section>
     </div>
   </body>
@@ -404,6 +457,15 @@ async function writeDartdocFixture(sourceDir: string) {
         <p>Primary Dart RTC engine.</p>
         <ol><li>Initialize the engine.</li></ol>
       </section>
+      <section id="guides">
+        <h2>Guides</h2>
+        <ul>
+          <li>
+            <a href="#setup">Setup</a>
+            <ul><li><a href="#advanced">Advanced</a></li></ul>
+          </li>
+        </ul>
+      </section>
     </main>
   </body>
 </html>`,
@@ -503,6 +565,25 @@ describe('html-to-md-migration', () => {
           '| appId: string | Agora application ID. |',
           '#### Returns',
           'Returns Promise &lt;void&gt;',
+          '<a id="joinroomparams"></a>',
+          '### JoinRoomParams',
+          '- **hotKeys?**: *Partial&lt;HotKeys&gt;*',
+          '  Custom shortcuts. Defaults to:',
+          '  | Key | Effect |',
+          '  | Backspace | Delete selected objects |',
+          '  | Ctrl + Z | Undo |',
+          '  Pass an empty object to disable shortcuts.',
+          '1. Configure shortcuts in order.',
+          '   | Step | Action |',
+          '   | 1 | Choose a key |',
+          '#### Type declaration',
+          '##### `hotKeys?: Partial<HotKeys>`',
+          'Overrides the default shortcut map.',
+          '| Key | Default action |',
+          '| Backspace | Delete selection |',
+          '- Use platform-native key names.',
+          '##### `roomToken: string`',
+          'Token used to join the room.',
         ],
         'modules.mdx': [
           '[Client class](/api-reference/web/typescript/classes/client#connect)',
@@ -513,6 +594,12 @@ describe('html-to-md-migration', () => {
       product: 'web',
       sourceDir,
     });
+
+    const clientOutput = await fs.readFile(
+      path.join(outputDir, 'classes/client.mdx'),
+      'utf8',
+    );
+    expect(clientOutput).not.toContain('##### `Optional hotKeys');
   });
 
   it('migrates Doxygen/Javadoc output with dry-run planning and rewritten links', async () => {
@@ -598,6 +685,7 @@ describe('html-to-md-migration', () => {
           '<a id="RtcEngine"></a>',
           'Primary Dart RTC engine.',
           '1. Initialize the engine.',
+          '- [Setup](#setup)\n\n  - [Advanced](#advanced)',
         ],
         'library-index.mdx': [
           '[RtcEngine](/api-reference/rtc/dart/agora-rtc/agora-rtc-library#RtcEngine)',
