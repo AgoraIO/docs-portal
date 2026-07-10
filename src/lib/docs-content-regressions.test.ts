@@ -410,10 +410,10 @@ describe('docs content regressions', () => {
 
     expect(referenceMeta.pages.slice(0, 5)).toEqual([
       'pricing',
+      'core-concepts',
       'supported-platforms',
       'release-notes',
       'release-notes-uikit',
-      '!security',
     ]);
   });
 
@@ -1089,7 +1089,7 @@ describe('docs content regressions', () => {
         slugs: ['ai'],
       },
       {
-        expectedTitle: 'Realtime Media overview',
+        expectedTitle: 'RTC overview',
         slugs: ['realtime-media', 'overview'],
       },
       {
