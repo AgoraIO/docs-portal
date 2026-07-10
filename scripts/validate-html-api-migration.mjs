@@ -3,6 +3,7 @@
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const repoRoot = process.cwd();
 const defaultOutputRoot = '/tmp/html-migration-matrix';
@@ -243,6 +244,33 @@ async function readTextIfExists(filePath) {
   }
 }
 
+export function hasInvalidMarkdownHeading(text) {
+  let fence = null;
+
+  for (const line of text.split(/\r?\n/)) {
+    const fenceMatch = line.match(/^\s*(`{3,}|~{3,})(.*)$/);
+    if (fenceMatch) {
+      const marker = fenceMatch[1];
+      if (fence === null) {
+        fence = { character: marker[0], length: marker.length };
+        continue;
+      }
+      if (
+        marker[0] === fence.character &&
+        marker.length >= fence.length &&
+        fenceMatch[2].trim() === ''
+      ) {
+        fence = null;
+        continue;
+      }
+    }
+
+    if (fence === null && /^\s*#{7,}\s/.test(line)) return true;
+  }
+
+  return false;
+}
+
 async function scanGeneratedOutput(outputDir, sampleFiles, contentChecks = []) {
   const issues = {
     contentMismatches: [],
@@ -306,7 +334,8 @@ async function scanGeneratedOutput(outputDir, sampleFiles, contentChecks = []) {
       const text = await fs.readFile(filePath, 'utf8');
       const relative = path.relative(outputDir, filePath);
       if (helperPattern.test(text)) issues.helperPollution.push(relative);
-      if (/^#{7,}\s/m.test(text)) issues.invalidHeadings.push(relative);
+      if (hasInvalidMarkdownHeading(text))
+        issues.invalidHeadings.push(relative);
 
       for (const match of text.matchAll(markdownHtmlLinkPattern)) {
         const href = match[1];
@@ -550,7 +579,9 @@ async function main() {
   console.log(`Validation report written to ${opts.reportPath}`);
 }
 
-main().catch((error) => {
-  console.error(error.message);
-  process.exit(1);
-});
+if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+  main().catch((error) => {
+    console.error(error.message);
+    process.exit(1);
+  });
+}
