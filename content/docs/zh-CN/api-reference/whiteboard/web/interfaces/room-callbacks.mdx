@@ -5,7 +5,8 @@ description: "Room<CALLBACKS> API reference."
 
 `Room` 接口继承了 `Displayer` 接口，并且增加了用于操作互动白板实时房间的属性。
 
-- Displayer
+- [Displayer](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks)
+
   - Room
 
 ## Properties
@@ -94,8 +95,8 @@ disableCameraTransform: boolean
 
 是否禁止用户通过触屏手势或鼠标滚轮调整视角（即移动或缩放视角）：
 
-- true：禁止用户调整视角。
-- false：（默认）允许用户调整视角。
+- `true`：禁止用户调整视角。
+- `false`：（默认）允许用户调整视角。
 
 **Note**
 
@@ -111,8 +112,8 @@ disableDeviceInputs: boolean
 
 是否禁止用户通过鼠标、键盘、触摸屏幕操作白板工具。
 
-- true： 禁止用户操作白板工具。
-- false：允许用户操作白板工具。
+- `true`： 禁止用户操作白板工具。
+- `false`：允许用户操作白板工具。
 
 该方法与 `isWritable` 的区别详见 [《禁止设备操作｜禁止操作》](https://developer.netless.link/javascript-zh/home/disable#%E7%A6%81%E6%AD%A2%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C)。
 
@@ -126,8 +127,8 @@ disableEraseImage: boolean
 
 是否关闭橡皮擦擦除图片功能。
 
-- true： 关闭橡皮擦擦除图片功能。
-- false：启用橡皮擦擦除图片功能。
+- `true`： 关闭橡皮擦擦除图片功能。
+- `false`：启用橡皮擦擦除图片功能。
 
 ##### `since`
 
@@ -147,8 +148,8 @@ disableOthersSelectingBox: boolean
 
 2.12.0
 
-- true：隐藏高亮框。
-- false：（默认）不隐藏高亮框。
+- `true`：隐藏高亮框。
+- `false`：（默认）不隐藏高亮框。
 
 **Note**
 
@@ -164,16 +165,16 @@ disableSerialization: boolean
 
 是否禁止本地序列化。
 
-- true： 禁止本地序列化。
-- false：允许本地序列化。
+- `true`： 禁止本地序列化。
+- `false`：允许本地序列化。
 
 设置 `disableSerialization(true)` 后，以下方法将不生效：
 
-- redo
-- undo
-- duplicate
-- copy
-- paste
+- `redo`
+- `undo`
+- `duplicate`
+- `copy`
+- `paste`
 
 ##### `warning`
 
@@ -197,8 +198,8 @@ enableWriteNow: boolean
 
 2.10.0
 
-- true：有写的权限。
-- false：没有写的权限。
+- `true`：有写的权限。
+- `false`：没有写的权限。
 
 <a id="handtoolactive"></a>
 
@@ -210,8 +211,8 @@ handToolActive: boolean
 
 报告抓手工具是否启用:
 
-- true：启用抓手工具。
-- false：不启用抓手工具。
+- `true`：启用抓手工具。
+- `false`：不启用抓手工具。
 
 <a id="handtoolkey"></a>
 
@@ -233,8 +234,8 @@ isWritable: boolean
 
 用户在当前房间是否为互动模式：
 
-- true： 互动模式，即对白板具有读写权限。
-- false：订阅模式，即对白板具有只读权限。
+- `true`： 互动模式，即对白板具有读写权限。
+- `false`：订阅模式，即对白板具有只读权限。
 
 <a id="observerid"></a>
 
@@ -248,8 +249,9 @@ observerId: number
 
 - 在实时房间中，指本地用户的用户 ID。
 - 在回放房间中:
-  - 当用户的 ObserverMode 为 Directory 时， observerId 为被跟随的用户的用户 ID。
-  - 当用户的 ObserverMode 为 Freedom 时，为 AdminObserverId。
+
+  - 当用户的 `ObserverMode` 为 `Directory` 时， `observerId` 为被跟随的用户的用户 ID。
+  - 当用户的 `ObserverMode` 为 `Freedom` 时，为 `AdminObserverId`。
 
 <a id="phase"></a>
 
@@ -363,8 +365,8 @@ useNativeClipboard: boolean
 
 是否使用原生剪贴板：
 
-- true：使用原生剪贴板。白板快捷键，即 \{@link Hotkeys HotKeys\} 里的复制和粘贴将失效，改为使用原生的 copy 和 paste 事件。
-- false：（默认）不使用原生剪贴板。
+- `true`：使用原生剪贴板。白板快捷键，即 \{@link Hotkeys HotKeys\} 里的复制和粘贴将失效，改为使用原生的 `copy` 和 `paste` 事件。
+- `false`：（默认）不使用原生剪贴板。
 
 ##### `note`
 
@@ -494,7 +496,7 @@ cleanCurrentScene(retainPpt?: boolean): void
 
 | Name | Description |
 | --- | --- |
-| Optional retainPpt: boolean | 是否保留 PPT 页面：<br />- true：（默认）保留 PPT 页面。<br />- false：连 PPT 页面一起清空。 |
+| Optional retainPpt: boolean | 是否保留 PPT 页面：<br />- `true`：（默认）保留 PPT 页面。<br />- `false`：连 PPT 页面一起清空。 |
 
 #### Returns
 
@@ -518,7 +520,7 @@ clearUndoHistory(includeRedo?: boolean): void
 
 | Name | Description |
 | --- | --- |
-| Optional includeRedo: boolean | 是否同时清空重做的记录：<br />- true：（默认）同时清空重做记录。<br />- false：不同时清空重做记录。 |
+| Optional includeRedo: boolean | 是否同时清空重做的记录：<br />- `true`：（默认）同时清空重做记录。<br />- `false`：不同时清空重做记录。 |
 
 #### Returns
 
@@ -575,8 +577,12 @@ Returns \{x: number; y: number \}
 
 点在世界坐标系中的坐标。
 
-- ##### x: number 点在世界坐标系上的 X 轴坐标。
-- ##### y: number 点在世界坐标系上的 Y 轴坐标。
+- ##### x: number
+
+  点在世界坐标系上的 X 轴坐标。
+- ##### y: number
+
+  点在世界坐标系上的 Y 轴坐标。
 
 <a id="copy"></a>
 
@@ -591,7 +597,7 @@ copy(): void
 **Note**
 
 - 该方法会将选中的内容存储到内存中，不会粘贴到白板中。
-- 该方法仅当 disableSerialization 设为 false 时生效。
+- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disableserialization) 设为 `false` 时生效。
 
 ##### `since`
 
@@ -639,7 +645,7 @@ createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): Scenes
 ##### `note`
 
 - 该方法需要在加入白板房间后调用。
-- 对于每个场景目录，仅支持创建一个监听器对象。如果需要创建新的监听器对象，必须先调用 dispose 释放已创建的监听器对象。
+- 对于每个场景目录，仅支持创建一个监听器对象。如果需要创建新的监听器对象，必须先调用 `dispose` 释放已创建的监听器对象。
 
 #### Parameters
 
@@ -652,8 +658,8 @@ createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): Scenes
 
 Returns [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node) | null
 
-- 方法调用成功时，返回 ScenesCallbacksNode 对象。
-- 方法调用失败时，返回 null。方法调用失败可能是因为指定的场景目录不存在。
+- 方法调用成功时，返回 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node) 对象。
+- 方法调用失败时，返回 `null`。方法调用失败可能是因为指定的场景目录不存在。
 
 <a id="delete"></a>
 
@@ -725,7 +731,7 @@ duplicate(): void
 
 **Note**
 
-- 该方法仅当 disableSerialization 设为 false 时生效。
+- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disableserialization) 设为 `false` 时生效。
 - 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中心，可能会出现随机偏移。
 
 ##### `since`
@@ -1040,7 +1046,7 @@ lockImage(uuid: string, locked: boolean): void
 | Name | Description |
 | --- | --- |
 | uuid: string | 指定图片的 UUID。 |
-| locked: boolean | 是否锁定图片：<br />- true: 锁定。<br />- false: 不锁定。 |
+| locked: boolean | 是否锁定图片：<br />- `true`: 锁定。<br />- `false`: 不锁定。 |
 
 #### Returns
 
@@ -1128,7 +1134,7 @@ moveCameraToContain(rectangle: Rectangle & Readonly<{ animationMode?: AnimationM
 
 | Name | Description |
 | --- | --- |
-| rectangle: Rectangle & Readonly&lt;\{ animationMode?: AnimationMode \}&gt; | 视觉矩形的参数设置，详见 [Rectangle](/zh-CN/api-reference/whiteboard/web/enums/cursor-names#rectangle)。 |
+| rectangle: Rectangle & Readonly&lt;\{ animationMode?: AnimationMode \}&gt; | 视觉矩形的参数设置，详见 [Rectangle](/api-ref/whiteboard/javascript/enums/cursornames.html#rectangle)。 |
 
 #### Returns
 
@@ -1151,7 +1157,7 @@ moveScene(originalPath: string, targetPath: string): void
 | Name | Description |
 | --- | --- |
 | originalPath: string | 需要移动的场景的原路径。必须为场景路径，不能是场景目录的路径。 |
-| targetPath: string | 目标场景目录的路径或目标场景的路径：<br />- 当 targetPath 设置为目标场景目录时，表示将指定场景移至其他场景目录中，场景路径会发生改变，但是场景名称不变。<br />- 当 targetPath 设置为目标场景路径时，表示改变指定场景在当前场景目录的位置，场景路径和场景名都会发生改变。 |
+| targetPath: string | 目标场景目录的路径或目标场景的路径：<br />- 当 `targetPath` 设置为目标场景目录时，表示将指定场景移至其他场景目录中，场景路径会发生改变，但是场景名称不变。<br />- 当 `targetPath` 设置为目标场景路径时，表示改变指定场景在当前场景目录的位置，场景路径和场景名都会发生改变。 |
 
 #### Returns
 
@@ -1205,8 +1211,8 @@ paste(): void
 
 **Note**
 
-- 该方法会将 copy 方法复制的内容粘贴到白板上（用户当前视角的中心）。
-- 该方法仅当 disableSerialization 设为 false 时生效。
+- 该方法会将 [copy](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#copy) 方法复制的内容粘贴到白板上（用户当前视角的中心）。
+- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disableserialization) 设为 `false` 时生效。
 - 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中心，可能会出现随机偏移。
 
 ##### `since`
@@ -1364,13 +1370,14 @@ removeScenes(path: string): void
 
 **Note**
 
-- 互动白板实时房间内必须至少有一个场景。当删除所有的场景后，SDK 会自动生成一个路径为 /init 初始场景（房间初始化时的默认场景）。
+- 互动白板实时房间内必须至少有一个场景。当删除所有的场景后，SDK 会自动生成一个路径为 `/init` 初始场景（房间初始化时的默认场景）。
 - 如果删除白板当前所在场景，白板会展示被删除场景所在场景目录的最后一个场景
 - 如果删除的是场景目录，则该场景目录下的所有场景都会被删除。
-- 如果删除的是当前场景所在的场景目录，例如 dirA，SDK 会执行向上递归逻辑选择新的场景作为当前场景，规则如下：
-  1. 如果当前场景目录路径下还有其他场景目录，例如 dirB，排在被删除的场景目录 dirA 后面，则将场景切换至 dirB 中的第一个场景（index 为 0）。
-  2. 如果当前场景目录路径下 dirA 后不存在场景目录，则查看当前场景目录路径下是否存在场景； 如果存在，则将场景切换至当前场景目录路径下的第一个场景（index 为 0）。
-  3. 如果当前场景目录路径下 dirA 后没有场景目录，也不存在任何场景，则查看 dirA 前面是否存在场景目录 dirC；如果存在，则选择 dirC 中的第一个场景（index 为 0）。
+- 如果删除的是当前场景所在的场景目录，例如 `dirA`，SDK 会执行向上递归逻辑选择新的场景作为当前场景，规则如下：
+
+  1. 如果当前场景目录路径下还有其他场景目录，例如 `dirB`，排在被删除的场景目录 `dirA` 后面，则将场景切换至 `dirB` 中的第一个场景（index 为 0）。
+  2. 如果当前场景目录路径下 `dirA` 后不存在场景目录，则查看当前场景目录路径下是否存在场景； 如果存在，则将场景切换至当前场景目录路径下的第一个场景（index 为 0）。
+  3. 如果当前场景目录路径下 `dirA` 后没有场景目录，也不存在任何场景，则查看 `dirA` 前面是否存在场景目录 `dirC`；如果存在，则选择 `dirC` 中的第一个场景（index 为 0）。
   4. 以上都不满足，则继续向上递归执行该逻辑。
 
 #### Parameters
@@ -1491,7 +1498,7 @@ screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, wi
 
 - 该功能处于实验阶段。
 - 如果目标场景的图片无法完成加载，则该函数无法返回屏幕快照，你需要自行处理超时逻辑。
-- 如果你希望生成的屏幕快照不包含图片，请使用 screenshotToCanvas。
+- 如果你希望生成的屏幕快照不包含图片，请使用 [screenshotToCanvas](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#screenshottocanvas)。
 
 #### Parameters
 
@@ -1687,9 +1694,9 @@ setViewMode(viewMode: ViewMode): void
 
 互动白板实时房间支持对用户设置以下视角模式：
 
-- Broadcaster: 主播模式。
-- Follower：跟随模式。
-- Freedom：（默认）自由模式。
+- `Broadcaster`: 主播模式。
+- `Follower`：跟随模式。
+- `Freedom`：（默认）自由模式。
 
 **Note**
 
@@ -1723,7 +1730,7 @@ setWritable(isWritable: boolean): Promise<void>
 
 | Name | Description |
 | --- | --- |
-| isWritable: boolean | 用户在房间中是否为互动模式：<br />- true：互动模式，即具有读写权限。<br />- false：订阅模式，即具有只读权限。 |
+| isWritable: boolean | 用户在房间中是否为互动模式：<br />- `true`：互动模式，即具有读写权限。<br />- `false`：订阅模式，即具有只读权限。 |
 
 #### Returns
 
