@@ -25,7 +25,7 @@ title: "通话前检测"
 
 设备质量检测的基本流程如下：
 
-![设备质量检测流程图](/img/rtc/echotest.svg)
+![设备质量检测流程图](https://web-cdn.agora.io/docs-portal/img/rtc/echotest.svg)
 
 SDK 提供了 `startEchoTest`[3/3] 方法，用于测试网络连接和音视频设备是否正常工作。参考以下步骤实现设备质量检测：
 
@@ -79,7 +79,7 @@ if (v.getId() == R.id.btn_audio) {
 
 网络质量探测的基本流程如下：
 
-![网络质量探测流程图](/img/rtc/lastmile-test.svg)
+![网络质量探测流程图](https://web-cdn.agora.io/docs-portal/img/rtc/lastmile-test.svg)
 
 SDK 提供了 `startLastmileProbeTest` 方法，用于在加入频道之前探测 last mile 网络质量，并返回有关网络质量打分和网络质量统计信息。参考以下步骤进行网络质量探测：
 
@@ -212,7 +212,7 @@ engine.stopLastmileProbeTest();
 
 设备质量检测的基本流程如下：
 
-![设备质量检测流程图](/img/rtc/echotest.svg)
+![设备质量检测流程图](https://web-cdn.agora.io/docs-portal/img/rtc/echotest.svg)
 
 SDK 提供了 `startEchoTestWithConfig` 方法，用于测试网络连接和音视频设备是否正常工作。参考以下步骤实现设备质量检测：
 
@@ -264,7 +264,7 @@ SDK 提供了 `startEchoTestWithConfig` 方法，用于测试网络连接和音�
 
 网络质量探测的基本流程如下：
 
-![网络质量探测流程图](/img/rtc/lastmile-test.svg)
+![网络质量探测流程图](https://web-cdn.agora.io/docs-portal/img/rtc/lastmile-test.svg)
 
 SDK 提供了 `startLastmileProbeTest` 方法，用于在加入频道之前探测 last mile 网络质量，并返回有关网络质量打分和网络质量统计信息。参考以下步骤进行网络质量探测：
 
@@ -411,7 +411,7 @@ agoraKit.stopLastmileProbeTest()
 
 设备质量检测的基本流程如下：
 
-![设备质量检测流程图](/img/rtc/echotest.svg)
+![设备质量检测流程图](https://web-cdn.agora.io/docs-portal/img/rtc/echotest.svg)
 
 SDK 提供了 `startEchoTestWithConfig` 方法，用于测试网络连接和音视频设备是否正常工作。参考以下步骤实现设备质量检测：
 
@@ -463,7 +463,7 @@ SDK 提供了 `startEchoTestWithConfig` 方法，用于测试网络连接和音�
 
 网络质量探测的基本流程如下：
 
-![网络质量探测流程图](/img/rtc/lastmile-test.svg)
+![网络质量探测流程图](https://web-cdn.agora.io/docs-portal/img/rtc/lastmile-test.svg)
 
 SDK 提供了 `startLastmileProbeTest` 方法，用于在加入频道之前探测 last mile 网络质量，并返回有关网络质量打分和网络质量统计信息。参考以下步骤进行网络质量探测：
 
@@ -682,7 +682,7 @@ AgoraRTC.getDevices()
 
 下图展示了网络质量探测的调用时序：
 
-![API 时序](/img/rtc/js-lastmile-quality.svg)
+![API 时序](https://web-cdn.agora.io/docs-portal/img/rtc/js-lastmile-quality.svg)
 
 你可以参考以下示例代码：
 
@@ -756,7 +756,7 @@ console.log("downlink video stats", downlinkVideoStats);
 
 设备质量检测的基本流程如下：
 
-![设备质量检测流程图](/img/rtc/echotest.svg)
+![设备质量检测流程图](https://web-cdn.agora.io/docs-portal/img/rtc/echotest.svg)
 
 SDK 提供了 `startEchoTest`[3/3] 方法，用于测试网络连接和音视频设备是否正常工作。参考以下步骤实现设备质量检测：
 
@@ -808,7 +808,7 @@ void testVideoDevice() {
 
 网络质量探测的基本流程如下：
 
-![网络质量探测流程图](/img/rtc/lastmile-test.svg)
+![网络质量探测流程图](https://web-cdn.agora.io/docs-portal/img/rtc/lastmile-test.svg)
 
 SDK 提供了 `startLastmileProbeTest` 方法，用于在加入频道之前探测 last mile 网络质量，并返回有关网络质量打分和网络质量统计信息。参考以下步骤进行网络质量探测：
 
@@ -1834,12 +1834,12 @@ SDK 提供了 `StartLastmileProbeTest` 方法，用于在加入频道前检测 l
 1. 创建 UMG
 创建一个 **Button** (按钮) 控件，命名为 **Btn_StartEchoTest**，你可以点击按钮开始语音通话回路测试。如下图所示：
 
-![](/img/rtc/lastmile-quality-startechotest-umg.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/lastmile-quality-startechotest-umg.png)
 
 2. 绑定 UI 事件
 创建 **Bind Event to On Clicked** 节点，分别连接 **Btn_StartEchoTest** 控件和 **OnStartEchoTestClicked** 回调。当你按下按钮开始语音通话测试时，触发 **OnStartEchoTestClicked** 回调。如下图所示：
 
-![](/img/rtc/lastmile-quality-startechotest-bind.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/lastmile-quality-startechotest-bind.png)
 
 3. 实现 UI 事件
 创建 **OnStartEchoTestClicked** 回调函数。触发该回调后，调用 **Start Echo Test** 方法开始语音通话检测。当回声测试开始后，引导用户说一句话，如果在设置的时间间隔后回放录音，则表示音频设备和网络连接正常。在本示例中，配置 **Start Echo Test** 的 **Config** 参数如下：
@@ -1849,24 +1849,24 @@ SDK 提供了 `StartLastmileProbeTest` 方法，用于在加入频道前检测 l
     - 传入 **Token** 和 **Channel Id** (频道名)。
     - **Interval In Seconds** 默认设置为 2，即每隔 2 秒上报一次音频通话回路的测试结果。
 
-![](/img/rtc/lastmile-quality-startechotest-callback.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/lastmile-quality-startechotest-callback.png)
 
 ##### 停止语音通话检测
 
 1. 创建 UMG
 创建一个 **Button** (按钮) 控件，命名为 **Btn_StopEchoTest**，你可以点击按钮停止语音通话回路测试。如下图所示：
 
-![](/img/rtc/lastmile-quality-stopechotest-umg.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/lastmile-quality-stopechotest-umg.png)
 
 2. 绑定 UI 事件
 创建 **Bind Event to On Clicked** 节点，分别连接 **Btn_StopEchoTest** 控件和 **OnStopEchoTestClicked** 回调。当你按下按钮停止语音通话测试时，会触发 **OnStopEchoTestClicked** 回调。如下图所示：
 
-![](/img/rtc/lastmile-quality-stopechotest-bind.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/lastmile-quality-stopechotest-bind.png)
 
 3. 实现 UI 事件
 创建 **OnStopEchoTestClicked** 回调函数。获得测试结果后，你可以按下停止按钮触发该回调，调用 **Stop Echo Test** 方法停止语音通话检测。如下图所示：
 
-![](/img/rtc/lastmile-quality-stopechotest-callback.png)
+![](https://web-cdn.agora.io/docs-portal/img/rtc/lastmile-quality-stopechotest-callback.png)
 
 #### 音频录制设备检测
 

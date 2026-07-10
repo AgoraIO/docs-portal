@@ -22,7 +22,7 @@ title: "实现秀场直播"
 
 下图展示房主预览、创建、进入、退出直播的流程。
 
-![秀场创建直播间业务流程](/img/showroom/create-room.png)
+![秀场创建直播间业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/create-room.png)
 
 ### 进入/退出直播间
 
@@ -31,13 +31,13 @@ title: "实现秀场直播"
 - 观众：可以观看房主直播或与主播连麦。
 - 虚假主播：通过声网输入在线媒体流服务在房间内创建的一路视频流，是伪直播。观众和房主可以观看虚假主播，但是不能与其连麦。
 
-![秀场加入离开直播间业务流程](/img/showroom/join-leave-room.png)
+![秀场加入离开直播间业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/join-leave-room.png)
 
 ### 主播 PK 连麦
 
 下图展示主播 PK 连麦的流程。在这个流程中，房主邀请另一个房间的房主开始 PK 连麦。两个房间内的观众都可以看到两个房主 PK 连麦直播的画面。
 
-![秀场 PK 连麦业务流程](/img/showroom/pk-host.png)
+![秀场 PK 连麦业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/pk-host.png)
 
 ### 观众连麦
 
@@ -46,7 +46,7 @@ title: "实现秀场直播"
 - 主播邀请观众连麦。展示在下图左侧的流程中。
 - 观众申请与主播连麦。展示在下图右侧的流程中。
 
-![秀场观众连麦业务流程](/img/showroom/co-host.png)
+![秀场观众连麦业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/co-host.png)
 
 ## 准备开发环境
 
@@ -83,7 +83,7 @@ title: "实现秀场直播"
 
 你需要调用 [`create`](/api-ref/rtc/android/API/toc_initialize#create%20[2/2]) 方法创建 RTC 引擎，并在 `config` 参数中配置上下文 Context、项目的 App ID、注册事件回调。调用 [`enableVideo`](/api-ref/rtc/android/API/toc_video_basic#enableVideo) 开启视频。
 
-![](/img/showroom/integ-and-1.svg)
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and-1.svg)
 
 ```kotlin
 val rtcEngine: RtcEngineEx
@@ -117,7 +117,7 @@ val rtcEngine: RtcEngineEx
 - 主播：可以发送和接收音视频流。直播间的房主即为主播。
 - 观众：只可以接收音视频流。
 
-![](/img/showroom/integ-and-2.svg)
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and-2.svg)
 
 ```kotlin
 private fun joinChannel() {
@@ -192,7 +192,7 @@ mRtcEngine.setupRemoteVideoEx(
 
 本节展示用户加入对方频道和离开对方频道的示例代码，如需查阅 `setupRemoteVideoEx` 方法调用逻辑，请参考 [GitHub 示例项目](#示例项目)。
 
-![](/img/showroom/integ-and-3.svg)
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and-3.svg)
 
 ```kotlin tab="主播加入对方频道的设置"
 // 主播加入对方频道的设置
@@ -242,7 +242,7 @@ rtcEngine.leaveChannelEx(pkRtcConnection)
 
 本节展示观众连麦和结束连麦时更新频道媒体选项的示例代码。通过 [`updateChannelMediaOptionsEx`](/api-ref/rtc/android/API/toc_channel#updateChannelMediaOptionsEx) 方法在观众加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。观众的用户角色为 `CLIENT_ROLE_AUDIENCE`，因此无法在频道内发布音频流。如果观众想与主播连麦，需要将用户角色修改为 `CLIENT_ROLE_BROADCASTER`。
 
-![](/img/showroom/integ-and-4.svg)
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and-4.svg)
 
 ```kotlin
 // 观众上麦时，用户角色从 AUDIENCE 切换成 BROADCASTER
@@ -280,7 +280,7 @@ mRtcEngine.updateChannelMediaOptionsEx(channelMediaOptions, rtcConnection)
 
 本节展示调用 [`destroy`](/api-ref/rtc/android/API/toc_initialize#destroy) 销毁 RTC 引擎的示例代码。
 
-![](/img/showroom/integ-and-5.svg)
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and-5.svg)
 
 ```kotlin
 fun destroy() {
@@ -320,7 +320,7 @@ override fun unloadConnections() {
 
 下图展示实现本文全部流程所需的 API 调用时序。
 
-![](/img/showroom/integ-and.svg)
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and.svg)
 
 ## 开发注意事项
 
@@ -348,7 +348,7 @@ override fun unloadConnections() {
 
 下图展示房主预览、创建、进入、退出直播的流程。
 
-![秀场创建直播间业务流程](/img/showroom/create-room.png)
+![秀场创建直播间业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/create-room.png)
 
 ### 进入/退出直播间
 
@@ -357,13 +357,13 @@ override fun unloadConnections() {
 - 观众：可以观看房主直播或与主播连麦。
 - 虚假主播：通过声网输入在线媒体流服务在房间内创建的一路视频流，是伪直播。观众和房主可以观看虚假主播，但是不能与其连麦。
 
-![秀场加入离开直播间业务流程](/img/showroom/join-leave-room.png)
+![秀场加入离开直播间业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/join-leave-room.png)
 
 ### 主播 PK 连麦
 
 下图展示主播 PK 连麦的流程。在这个流程中，房主邀请另一个房间的房主开始 PK 连麦。两个房间内的观众都可以看到两个房主 PK 连麦直播的画面。
 
-![秀场 PK 连麦业务流程](/img/showroom/pk-host.png)
+![秀场 PK 连麦业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/pk-host.png)
 
 ### 观众连麦
 
@@ -372,7 +372,7 @@ override fun unloadConnections() {
 - 主播邀请观众连麦。展示在下图左侧的流程中。
 - 观众申请与主播连麦。展示在下图右侧的流程中。
 
-![秀场观众连麦业务流程](/img/showroom/co-host.png)
+![秀场观众连麦业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/co-host.png)
 
 ## 准备开发环境
 
@@ -408,7 +408,7 @@ override fun unloadConnections() {
 
 创建直播间时，你需要初始化 RTC 引擎、为主播设置本地视图并进行预览。本节展示调用 [`sharedEngineWithConfig`](/api-ref/rtc/ios/API/toc_initialize#sharedEngineWithConfig) 初始化 RTC 引擎的示例代码。
 
-![](/img/showroom/integ-ios-1.svg)
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-1.svg)
 
 ```swift
 fileprivate(set) lazy var agoraKit: AgoraRtcEngineKit = {
@@ -427,7 +427,7 @@ fileprivate(set) lazy var agoraKit: AgoraRtcEngineKit = {
 - 主播：可以发送和接收音视频流。直播间的房主即为主播。
 - 观众：只可以接收音视频流。
 
-![](/img/showroom/integ-ios-2.svg)
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-2.svg)
 
 ```swift
 private func joinChannel(needUpdateCavans: Bool = true) {
@@ -588,7 +588,7 @@ kShowLogBaseContext)
 
 结束 PK 连麦时，房间内用户都需要调用 [`leaveChannelEx`](/api-ref/rtc/ios/API/toc_channel#leaveChannelEx%20[1/2]) 离开对方频道。
 
-![](/img/showroom/integ-ios-3.svg)
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-3.svg)
 
 ```swift
 // 加入对方频道
@@ -683,7 +683,7 @@ kShowLogBaseContext)
 
 本节展示观众连麦和结束连麦时更新频道媒体选项、设置视图的示例代码。通过 [`updateChannelExWithMediaOptions`](/api-ref/rtc/ios/API/toc_channel#updateChannelExWithMediaOptions) 方法在观众加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。观众的用户角色为 `audience`，因此无法在频道内发布音频流。如果观众想与主播连麦，需要将用户角色修改为 `broadcaster`。
 
-![](/img/showroom/integ-ios-4.svg)
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-4.svg)
 
 ```swift
 agoraKitManager.switchRole(role: role,
@@ -729,7 +729,7 @@ func updateChannelEx(channelId: String, options: AgoraRtcChannelMediaOptions) {
 
 本节展示调用 [`destroy`](/api-ref/rtc/ios/API/toc_initialize#destroy) 销毁 RTC 引擎的示例代码。
 
-![](/img/showroom/integ-ios-5.svg)
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-5.svg)
 
 ```swift
 // ShowAgoraKitManager.swift
@@ -743,7 +743,7 @@ deinit {
 
 下图展示实现本文全部流程所需的 API 调用时序。
 
-![](/img/showroom/integ-ios.svg)
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios.svg)
 
 ## 开发注意事项
 

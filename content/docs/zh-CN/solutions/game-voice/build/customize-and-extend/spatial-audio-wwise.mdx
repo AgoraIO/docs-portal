@@ -35,7 +35,7 @@ title: "使用 Wwise 插件实现空间音频"
 1. 下载 [Audiokinetic Launcher](https://www.audiokinetic.com/zh/download)（也被称为 Wwise Launcher）。
 2. 在 Audiokinetic Launcher 中安装 Wwise 编辑器 2023.1.6.8555。
 
-![安装指定版本的 Wwise](/img/game-voice/wwise-2023.1.6.png)
+![安装指定版本的 Wwise](https://web-cdn.agora.io/docs-portal/img/game-voice/wwise-2023.1.6.png)
 
 ### 下载 SDK 与插件
 
@@ -55,13 +55,13 @@ title: "使用 Wwise 插件实现空间音频"
 2. 解压下载后的 Agora-Wwise-Plugin 插件，将解压后的 Agora-Wwise-Plugin 文件夹拷贝到你的 Unity 项目的 Assets 文件夹下。
 3. 解压下载后的 Wwise 编辑器插件，会得到一个 AG_Plugin_FULL 文件。在 Wwise Launcher 中，点击左侧的 **Plug-ins**，然后点击 **Add from directory**。选中 AG_Plugin_FULL 进行添加。安装完成后，你会在 **Plug-ins** 界面的 INSTALLED PLUG-INS 区域内看到安装完成的 AgoraWwiseRTCSDK：
 
-![安装完成插件](/img/game-voice/installed-plugins.png)
+![安装完成插件](https://web-cdn.agora.io/docs-portal/img/game-voice/installed-plugins.png)
 
 ### 集成 Wwise 插件至 Unity 项目
 
 1. 在 **Wwise Launcher** 中，点击左侧的 **Unity**，你应该能看到你创建的 Unity 项目名称，例如 **My Project**：
 
-![添加我的项目](/img/game-voice/my-project.png)
+![添加我的项目](https://web-cdn.agora.io/docs-portal/img/game-voice/my-project.png)
 
 2. 点击项目名右侧的 **Integrate Wwise in Project**，然后根据屏幕指引，勾选你想要下载包、部署平台，然后点击 **Integrate**，开始集成。
 
@@ -108,31 +108,31 @@ title: "使用 Wwise 插件实现空间音频"
 
 1. 在 Wwise 中打开你的 Unity 项目。你可以直接从 Wwise Launcher 中 Unity 项目右侧的 **Open in Wwise** 按钮打开。
 
-![打开项目](/img/game-voice/open-project.png)
+![打开项目](https://web-cdn.agora.io/docs-portal/img/game-voice/open-project.png)
 
 2. 在 **Actor-Mixer Hierarchy** 下的任意节点单击右键，选择 **New Child** > **AgoraAudioInputSource**，创建一个新的 Sound SFX，用于将本地用户音频数据传输给 Wwise。将其重命名，例如 AudioInputSource。
 
-![在 Wwise 中创建 AgoraAudioInputSource](/img/game-voice/unity-wwise-1.png)
+![在 Wwise 中创建 AgoraAudioInputSource](https://web-cdn.agora.io/docs-portal/img/game-voice/unity-wwise-1.png)
 
 3. 点击刚刚创建好的 AudioInputSource，在 **Effects** 面板上点击 **+** 按钮，新增 **AgoraSendEffect**，用于将用户音频数据发送给声网服务器。
 
-![为 AudioInputSource 添加 AgoraSendEffect](/img/game-voice/unity-wwise-2.png)
+![为 AudioInputSource 添加 AgoraSendEffect](https://web-cdn.agora.io/docs-portal/img/game-voice/unity-wwise-2.png)
 
 4. 在 **Actor-Mixer Hierarchy** 下的任意节点单击右键，选择 **New Child** > **AgoraReceiveSource**，创建一个新的 SoundSFX，用于将远端用户音频数据传输给 Wwise。这里我们可以命名为 AgoraRecevieSource。
 
-![在 Wwise 中创建 AgoraReceiveSource](/img/game-voice/unity-wwise-3.png)
+![在 Wwise 中创建 AgoraReceiveSource](https://web-cdn.agora.io/docs-portal/img/game-voice/unity-wwise-3.png)
 
 5. 在 **Master-Mixer Hierarchy** > **Default Work Unit** > **Master Audio Bus** 的 **Effects** 面板下添加 **AgoraAudioSessionEffect**，用于将本地用户音频数据传输给 Wwise。
 
-![为 Master Audio Bus 添加 AgoraAudioSessionEffect](/img/game-voice/unity-wwise-4.png)
+![为 Master Audio Bus 添加 AgoraAudioSessionEffect](https://web-cdn.agora.io/docs-portal/img/game-voice/unity-wwise-4.png)
 
 6. 为刚刚创建的 AgoraInputSource 和 AgoraReceiveSource 分别添加 **Play** 和 **Stop** 事件。
 
-![为 AgoraAudioInputSource 和 AgoraReceiveSource 添加 Play 和 Stop 事件](/img/game-voice/unity-wwise-5.png)
+![为 AgoraAudioInputSource 和 AgoraReceiveSource 添加 Play 和 Stop 事件](https://web-cdn.agora.io/docs-portal/img/game-voice/unity-wwise-5.png)
 
    所有事件创建完成后，效果如下图：
 
-![Wwise 中已创建完成的事件和对象示例](/img/game-voice/unity-wwise-6.png)
+![Wwise 中已创建完成的事件和对象示例](https://web-cdn.agora.io/docs-portal/img/game-voice/unity-wwise-6.png)
 
 7. 将刚才创建的所有 Event，Sound SFX 和 Master Audio Bus 加入到 SoundBank 中，并 Generate SoundBank。
 
@@ -306,7 +306,7 @@ StaticLib="AgoraWwiseRTCSDKFX"
 
 应该可以在文件内查找到如下两处：
 
-![PluginInfo.xml 中的 StaticLib 配置示例](/img/game-voice/trouble-shoot.png)
+![PluginInfo.xml 中的 StaticLib 配置示例](https://web-cdn.agora.io/docs-portal/img/game-voice/trouble-shoot.png)
 
 将其中的 `StaticLib="AgoraWwiseRTCSDKFX"` 修改为：
 
@@ -316,21 +316,21 @@ StaticLib="AgoraWwiseRTCSDKSource"
 
 修改后如下所示，保存文件：
 
-![将 StaticLib 修改为 AgoraWwiseRTCSDKSource 后的示例](/img/game-voice/trouble-shoot-2.png)
+![将 StaticLib 修改为 AgoraWwiseRTCSDKSource 后的示例](https://web-cdn.agora.io/docs-portal/img/game-voice/trouble-shoot-2.png)
 
 接着，我们在 Unity Editor 里导出 iOS 工程并用 Xcode 打开之后，可以在 `Libraries/Wwise/API/Runtime/Plugins/iOS/iphoneos/DSP` 文件下，看到如下三个文件，和 `include "AgoraWwiseRTCSDKSourceFactory.h"` 这句代码：
 
-![iOS 工程中 AgoraWwiseRTCSDKSource 相关文件示例](/img/game-voice/trouble-shoot-3.png)
+![iOS 工程中 AgoraWwiseRTCSDKSource 相关文件示例](https://web-cdn.agora.io/docs-portal/img/game-voice/trouble-shoot-3.png)
 
 至此，iOS 的 App 构建得以顺利完成。
 
 如果在 Xcode 目录下并没有 `AkiOSPlugins` 文件，请检查 `Data/Raw/Audio/GeneratedSoundBanks/iOS/PluginInfo.xml` 文件中内容是否为被修改后的内容：
 
-![检查 PluginInfo.xml 修改结果的示例](/img/game-voice/trouble-shoot-4.png)
+![检查 PluginInfo.xml 修改结果的示例](https://web-cdn.agora.io/docs-portal/img/game-voice/trouble-shoot-4.png)
 
 如果发现该文件内的内容又恢复到了 `StaticLib="AgoraWwiseRTCSDKFX"`，则说明在构建过程中 SoundBanks 被重新生成了，导致之前的文本修改被重新覆盖。此时可以检查是否在 Unity Editor 里勾选了 **Generate SoundBanks at pre-Build step**：
 
-![Unity Editor 中 Generate SoundBanks at pre-Build step 选项示例](/img/game-voice/trouble-shoot-5.png)
+![Unity Editor 中 Generate SoundBanks at pre-Build step 选项示例](https://web-cdn.agora.io/docs-portal/img/game-voice/trouble-shoot-5.png)
 
 ### 手动拷贝 Wwise 插件文件
 
@@ -572,11 +572,11 @@ Assets/Wwise/API/Runtime/Plugins/iOS
 1. [下载](https://download.agora.io/sdk/release/AgoraAuthoringPlugin_Wwise2021_Win.zip)声网的 Wwise 插件。解压后会出现 `AgoraAuthoringPlugin_Win` 文件夹。
 2. 打开 Audiokinetic Launcher 软件，在 **Plug-ins** 页面，点击 **Add from archive**，选择 `AgoraAuthoringPlugin` 文件夹，点击 **Install** 完成安装。
 
-![安装插件](/img/game-voice/install-plugin.png)
+![安装插件](https://web-cdn.agora.io/docs-portal/img/game-voice/install-plugin.png)
 
 安装完成后，你会在 **Plug-ins** 页面看到 **AgoraWwiseRTCSDK** 插件。
 
-![复制 RTC SDK](/img/game-voice/wwise-copy-sdk.png)
+![复制 RTC SDK](https://web-cdn.agora.io/docs-portal/img/game-voice/wwise-copy-sdk.png)
 
 ## 3. 集成 Wwise 至 UE 项目
 
@@ -587,7 +587,7 @@ Assets/Wwise/API/Runtime/Plugins/iOS
 
 1. 点击 **Integrate Wwise in Project...** 按钮。
 
-![Integrate Wwise in Project](/img/game-voice/add-ue-to-wwise-1.png)
+![Integrate Wwise in Project](https://web-cdn.agora.io/docs-portal/img/game-voice/add-ue-to-wwise-1.png)
 
 2. 设置如下选项，再点击 **Integrate** 按钮：
 
@@ -595,7 +595,7 @@ Assets/Wwise/API/Runtime/Plugins/iOS
     - **Wwise SDK**：选择 SDK（版本号为 2021.1.14.8108）的安装路径。
     - **Wwise Project**：选择 Wwise 项目文件的安装路径。
 
-![Integration Options](/img/game-voice/add-ue-to-wwise-2.png)
+![Integration Options](https://web-cdn.agora.io/docs-portal/img/game-voice/add-ue-to-wwise-2.png)
 
 </Accordion>
 </Accordions>
@@ -608,33 +608,33 @@ Assets/Wwise/API/Runtime/Plugins/iOS
 
 2. 在 **Master Audio Bus** 中添加 AgoraAudioSessionEffect 插件，用于获取参考信号以进行回声消除。
 
-![添加 AgoraAudioSessionEffect 步骤 1](/img/game-voice/add-session-effect-1.png)
+![添加 AgoraAudioSessionEffect 步骤 1](https://web-cdn.agora.io/docs-portal/img/game-voice/add-session-effect-1.png)
 
 3. 在 **Actor-Mixer Hierarchy** 下的 **Default Work Unit** 中添加 AgoraAudioInputSource 插件，用于将本地用户音频数据传输给 Wwise。
 
-![添加 AgoraAudioInputSource 步骤 1](/img/game-voice/add-audio-input-1.png)
+![添加 AgoraAudioInputSource 步骤 1](https://web-cdn.agora.io/docs-portal/img/game-voice/add-audio-input-1.png)
 
     添加后，**Default Work Unit** 下会出现一个名为 **New Sound SFX** 的节点。为方便后续使用，建议节点改名，例如改成 Audio Input Source。
 
 4. 在 **Actor-Mixer Hierarchy** 下的 **Default Work Unit** 中添加 AgoraReceiveSource 插件，用于将远端用户音频数据传输给 Wwise。
 
-![添加 AgoraReceiveSource 步骤 1](/img/game-voice/add-audio-receive-1.png)
+![添加 AgoraReceiveSource 步骤 1](https://web-cdn.agora.io/docs-portal/img/game-voice/add-audio-receive-1.png)
 
     添加后，**Default Work Unit** 下会出现一个名为 **New Sound SFX** 的节点。为方便后续使用，建议节点改名，例如改成 Audio Receive Source。
 
 5. 在第 3 步添加的 **Audio Input Source** 节点中，添加 AgoraSendEffect 插件，用于将用户音频数据发送给声网服务器。
 
-![添加 AgoraSendEffect 步骤 1](/img/game-voice/add-send-effect-1.png)
+![添加 AgoraSendEffect 步骤 1](https://web-cdn.agora.io/docs-portal/img/game-voice/add-send-effect-1.png)
 
 6. 为第 3、4 步添加的 Audio Input Source 和 Audio Receive Source 创建 Event，例如播放（Play）和停止（Stop）事件。
 
 **以创建 Audio Input Source 的播放事件为例**
 
-![Input Source 的播放事件](/img/game-voice/add-play-event-to-input-source.png)
+![Input Source 的播放事件](https://web-cdn.agora.io/docs-portal/img/game-voice/add-play-event-to-input-source.png)
 
     所有事件创建完成后，效果如下图：
 
-![所有事件](/img/game-voice/all-event.png)
+![所有事件](https://web-cdn.agora.io/docs-portal/img/game-voice/all-event.png)
 
 配置插件后，请注意当前插件暂不支持你在 Wwise 软件中进行音频调试播放。
 
@@ -849,7 +849,7 @@ static bool AWPlugin_Receive_ClearReceiveOpenID(const std::string& channelID,
 
 ID 之间的映射关系指将 Unreal SDK 中频道 ID、用户 ID 映射到 Wwise 的 Game Object ID 的关系。开发过程中，你无需管理 Unreal SDK 与 Wwise 之间的 ID 关系，因此不推荐你调用这些方法。你只需要将 SDK 中频道 ID、用户 ID 与 UE 项目中 **Actor** 进行绑定。绑定示例如下：
 
-![绑定 ID](/img/game-voice/id-mapping.png)
+![绑定 ID](https://web-cdn.agora.io/docs-portal/img/game-voice/id-mapping.png)
 
 ## 6. 实现空间音频
 
