@@ -46,6 +46,7 @@ node scripts/html-to-md-migration.mjs --source /Users/czhen/Documents/GitHub/Ago
 - Content assertion mismatches: 0
 - Internal relative .html links: 0
 - Helper-page pollution matches: 0
+- Invalid level-7+ headings: 0
 
 ### TypeDoc (flexible-classroom/Web)
 
@@ -55,6 +56,7 @@ node scripts/html-to-md-migration.mjs --source /Users/czhen/Documents/GitHub/Ago
 - Content assertion mismatches: 0
 - Internal relative .html links: 0
 - Helper-page pollution matches: 0
+- Invalid level-7+ headings: 0
 
 ### TypeDoc (whiteboard/Web)
 
@@ -64,6 +66,7 @@ node scripts/html-to-md-migration.mjs --source /Users/czhen/Documents/GitHub/Ago
 - Content assertion mismatches: 0
 - Internal relative .html links: 0
 - Helper-page pollution matches: 0
+- Invalid level-7+ headings: 0
 
 ### Doxygen/Javadoc (recording/cpp)
 
@@ -73,6 +76,7 @@ node scripts/html-to-md-migration.mjs --source /Users/czhen/Documents/GitHub/Ago
 - Content assertion mismatches: 0
 - Internal relative .html links: 0
 - Helper-page pollution matches: 0
+- Invalid level-7+ headings: 0
 
 ### iOS doc-generator/appledoc (whiteboard/iOS)
 
@@ -82,6 +86,7 @@ node scripts/html-to-md-migration.mjs --source /Users/czhen/Documents/GitHub/Ago
 - Content assertion mismatches: 0
 - Internal relative .html links: 0
 - Helper-page pollution matches: 0
+- Invalid level-7+ headings: 0
 
 ### Dartdoc (agora-chat/Flutter)
 
@@ -91,6 +96,7 @@ node scripts/html-to-md-migration.mjs --source /Users/czhen/Documents/GitHub/Ago
 - Content assertion mismatches: 0
 - Internal relative .html links: 0
 - Helper-page pollution matches: 0
+- Invalid level-7+ headings: 0
 
 ## Fumadocs Compile Check
 

@@ -5,8 +5,6 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const repoRoot = process.cwd();
-const defaultSourceRoot =
-  '/Users/czhen/Documents/GitHub/AgoraIO/shengwang-doc-source/html-docs';
 const defaultOutputRoot = '/tmp/html-migration-matrix';
 const defaultReportPath =
   'docs/agents/reports/2026-07-09-html-api-migration-validation-matrix.md';
@@ -42,6 +40,30 @@ const matrix = [
           '##### `beginTimestamp?: number`',
         ],
         excludes: ['##### `Optional '],
+      },
+      {
+        file: 'globals.mdx',
+        orderedIncludes: [
+          '##### `arrowCompleteToSelector?: boolean`',
+          '是否在画完箭头后自动切到选择工具：',
+          '- `true`：自动切换。',
+          '- `false`：（默认）不自动切换。',
+        ],
+      },
+      {
+        file: 'globals.mdx',
+        orderedIncludes: [
+          '##### `region?: string`',
+          '当前房间所在的数据中心，支持传入以下值：',
+          '| `region` | 数据中心 | 服务区 |',
+          '| `us-sv` | 美国硅谷 | 北美洲、南美洲 |',
+          '##### `room: string`',
+          '房间的 UUID，即房间的唯一标识符。成功创建房间后会返回该值。',
+          '- 如果只传该属性，不传 `beginTimestamp` 和 `duration`，则表明回放该房间的所有录像片段。',
+        ],
+      },
+      {
+        file: 'globals.mdx',
         orderedIncludes: [
           '- **hotKeys?**: *Partial*',
           '  | 键盘按键 | 效果 |',
@@ -98,7 +120,7 @@ function parseArgs() {
     outputRoot: defaultOutputRoot,
     reportPath: defaultReportPath,
     routeBasePath: '/zh-CN/api-reference',
-    sourceRoot: defaultSourceRoot,
+    sourceRoot: process.env.HTML_MIGRATION_SOURCE_ROOT,
   };
 
   const args = process.argv.slice(2);
@@ -117,6 +139,12 @@ function parseArgs() {
     }
   }
 
+  if (!opts.sourceRoot) {
+    throw new Error(
+      'Missing legacy source root. Pass --source-root <dir> or set HTML_MIGRATION_SOURCE_ROOT.',
+    );
+  }
+
   return opts;
 }
 
@@ -128,6 +156,7 @@ Usage:
 
 Options:
   --source-root <dir>       Legacy html-docs root
+                             (or set HTML_MIGRATION_SOURCE_ROOT)
   --output-root <dir>       Temporary output root
   --report <file>           Markdown report path
   --route-base-path <path>  Route base used for generated links
@@ -316,6 +345,21 @@ function assertOutputAuditsPassed(issues, label) {
   }
 }
 
+function assertRestSourceRejected(result) {
+  const expectedGuidance = [
+    'Unsupported source structure: RESTful/OpenAPI',
+    'Use the OpenAPI/Fumadocs REST API lane for RESTful references',
+  ];
+  if (
+    result.status === 0 ||
+    expectedGuidance.some((snippet) => !result.output.includes(snippet))
+  ) {
+    throw new Error(
+      `REST/OpenAPI scope guard failed with status ${result.status}\n${result.output}`,
+    );
+  }
+}
+
 function markdownList(items) {
   if (items.length === 0) return '- None';
   return items.map((item) => `- ${item}`).join('\n');
@@ -366,6 +410,7 @@ function renderReport({ compileResult, opts, restResult, results }) {
       `- Content assertion mismatches: ${result.issues.contentMismatches.length}`,
       `- Internal relative .html links: ${result.issues.internalHtmlLinks.length}`,
       `- Helper-page pollution matches: ${result.issues.helperPollution.length}`,
+      `- Invalid level-7+ headings: ${result.issues.invalidHeadings.length}`,
       '',
     );
     if (result.issues.missingFiles.length > 0) {
@@ -481,6 +526,7 @@ async function main() {
     '--route-base-path',
     opts.routeBasePath,
   ]);
+  assertRestSourceRejected(restResult);
 
   let compileResult = { output: '', status: 0 };
   const validationRoot = path.join(
