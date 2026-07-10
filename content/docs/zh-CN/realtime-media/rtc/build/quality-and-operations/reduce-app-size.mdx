@@ -3977,7 +3977,7 @@ SDK 提供了可选的插件动态库，插件的命名以 `extension` 为后缀
 ### 在集成 SDK 时删除
 在 Unity Editor 中打开 `Assets/Agora-RTC-Plugin/Agora-Unity-RTC-SDK/Plugins` 文件夹。其中分别包含了 iOS、macOS、Windows 和 Android 四个平台的动态库。如下图所示：
 
-![unity editor](/img/rtc/unity-app-size.png)
+![unity editor](https://web-cdn.agora.io/docs-portal/img/rtc/unity-app-size.png)
 
 - **Android**：如果你的目标平台为 Android，可以在 `Android/AgoraRtcEngineKit.plugin/libs` 路径下，根据需求删除 `arm64-v8a`、`armeabi-v7a`、`x86`、`x86_64` 文件夹中的 `_extension.so` 文件。
 - **iOS**：如果你的目标平台为 iOS ，可以根据需求删除 `iOS` 文件夹中无需使用的 `***Extension.framework` 文件。
@@ -4720,7 +4720,7 @@ android {
 
 2. 如下图所示，使用 Xcode 打开项目，在 [**Build Phases**](https://developer.apple.com/documentation/xcode/customizing-the-build-phases-of-a-target) 页签中添加一个 **New Run Script Phase** 用于移除不需要的插件。
 
-![在 Xcode 的 Build Phases 中添加 New Run Script Phase](/img/rtc/reduce-app-size.png)
+![在 Xcode 的 Build Phases 中添加 New Run Script Phase](https://web-cdn.agora.io/docs-portal/img/rtc/reduce-app-size.png)
 
     参考上图进行到第 5 步时，将 **Shell** 指定为 `/usr/bin/ruby`，代码部分替换为以下脚本：
 
@@ -5472,7 +5472,7 @@ android {
 
 2. 如下图所示，使用 Xcode 打开项目，在 [**Build Phases**](https://developer.apple.com/documentation/xcode/customizing-the-build-phases-of-a-target) 页签中添加一个 **New Run Script Phase** 用于移除不需要的插件。
 
-![在 Xcode 的 Build Phases 中添加 New Run Script Phase](/img/rtc/reduce-app-size.png)
+![在 Xcode 的 Build Phases 中添加 New Run Script Phase](https://web-cdn.agora.io/docs-portal/img/rtc/reduce-app-size.png)
 
     参考上图进行到第 5 步时，将 **Shell** 指定为 `/usr/bin/ruby`，代码部分替换为以下脚本：
 

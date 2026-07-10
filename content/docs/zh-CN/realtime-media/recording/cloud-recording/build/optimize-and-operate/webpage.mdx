@@ -63,7 +63,7 @@ title: "保障页面录制可靠性"
 
 如果页面加载完成，则在设定的 `readyTimeout` 时间内调用 `notifyReady` 方法通知浏览器页面加载成功。如下图所示：
 
-![未超时逻辑](/img/cloud-recording/webpage-load.svg)
+![未超时逻辑](https://web-cdn.agora.io/docs-portal/img/cloud-recording/webpage-load.svg)
 
 `notifyReady` 的调用示例如下：
 
@@ -91,7 +91,7 @@ function notifyReady() {
 
 工作原理如下图所示：
 
-![超时逻辑](/img/cloud-recording/webpage-load-timeout.svg)
+![超时逻辑](https://web-cdn.agora.io/docs-portal/img/cloud-recording/webpage-load-timeout.svg)
 
 </TabsContent>
 </Tabs>
@@ -104,16 +104,16 @@ function notifyReady() {
 2. 页面录制服务执行待录制页面 JavaScript 的页面检测逻辑，当页面元素加载符合你的预期时，页面录制服务回调 `sid`（录制周期的唯一标识）通知业务服务端录制服务启动成功。
 3. 待录制页面定期上报状态，通知业务服务端页面内容变化。
 
-![定时检测](/img/cloud-recording/webpage-load-success.svg)
+![定时检测](https://web-cdn.agora.io/docs-portal/img/cloud-recording/webpage-load-success.svg)
 
 ### 待录制页面加载失败的处理措施
 
 在实现待录制页面检测逻辑的前提下，当待录制页面加载失败、业务服务端未收到回调时，声网推荐你重新发起录制请求。
 
-![失败检测](/img/cloud-recording/webpage-load-fail.svg)
+![失败检测](https://web-cdn.agora.io/docs-portal/img/cloud-recording/webpage-load-fail.svg)
 
 ## 录制异常停止的保障
 
 开通消息通知服务并订阅 [`71 web_recorder_stopped`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/webpage#71) 回调事件，当业务服务器收到 `web_recorder_stopped` 回调，且 `code` 不为 `0`，表示页面录制异常停止，声网推荐你重新发起新的录制。
 
-![停止检测](/img/cloud-recording/webpage-load-stop.svg)
+![停止检测](https://web-cdn.agora.io/docs-portal/img/cloud-recording/webpage-load-stop.svg)
