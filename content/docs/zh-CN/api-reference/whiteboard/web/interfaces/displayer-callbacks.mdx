@@ -6,8 +6,9 @@ description: "Displayer<CALLBACKS> API reference."
 `Displayer` 接口是白板房间的基础接口。
 
 - Displayer
-  - Room
-  - Player
+
+  - [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks)
+  - [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks)
 
 ## Properties
 
@@ -61,8 +62,8 @@ disableCameraTransform: boolean
 
 是否禁止用户通过触屏手势或鼠标滚轮调整视角（即移动或缩放视角）：
 
-- true：禁止用户调整视角。
-- false：（默认）允许用户调整视角。
+- `true`：禁止用户调整视角。
+- `false`：（默认）允许用户调整视角。
 
 **Note**
 
@@ -82,8 +83,8 @@ disableOthersSelectingBox: boolean
 
 2.12.0
 
-- true：隐藏高亮框。
-- false：（默认）不隐藏高亮框。
+- `true`：隐藏高亮框。
+- `false`：（默认）不隐藏高亮框。
 
 **Note**
 
@@ -103,8 +104,8 @@ enableWriteNow: boolean
 
 2.10.0
 
-- true：有写的权限。
-- false：没有写的权限。
+- `true`：有写的权限。
+- `false`：没有写的权限。
 
 <a id="handtoolactive"></a>
 
@@ -116,8 +117,8 @@ handToolActive: boolean
 
 报告抓手工具是否启用:
 
-- true：启用抓手工具。
-- false：不启用抓手工具。
+- `true`：启用抓手工具。
+- `false`：不启用抓手工具。
 
 <a id="handtoolkey"></a>
 
@@ -141,8 +142,9 @@ observerId: number
 
 - 在实时房间中，指本地用户的用户 ID。
 - 在回放房间中:
-  - 当用户的 ObserverMode 为 Directory 时， observerId 为被跟随的用户的用户 ID。
-  - 当用户的 ObserverMode 为 Freedom 时，为 AdminObserverId。
+
+  - 当用户的 `ObserverMode` 为 `Directory` 时， `observerId` 为被跟随的用户的用户 ID。
+  - 当用户的 `ObserverMode` 为 `Freedom` 时，为 `AdminObserverId`。
 
 <a id="region"></a>
 
@@ -316,8 +318,12 @@ Returns \{x: number; y: number \}
 
 点在世界坐标系中的坐标。
 
-- ##### x: number 点在世界坐标系上的 X 轴坐标。
-- ##### y: number 点在世界坐标系上的 Y 轴坐标。
+- ##### x: number
+
+  点在世界坐标系上的 X 轴坐标。
+- ##### y: number
+
+  点在世界坐标系上的 Y 轴坐标。
 
 <a id="createscenescallback"></a>
 
@@ -334,7 +340,7 @@ createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): Scenes
 ##### `note`
 
 - 该方法需要在加入白板房间后调用。
-- 对于每个场景目录，仅支持创建一个监听器对象。如果需要创建新的监听器对象，必须先调用 dispose 释放已创建的监听器对象。
+- 对于每个场景目录，仅支持创建一个监听器对象。如果需要创建新的监听器对象，必须先调用 `dispose` 释放已创建的监听器对象。
 
 #### Parameters
 
@@ -347,8 +353,8 @@ createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): Scenes
 
 Returns [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node) | null
 
-- 方法调用成功时，返回 ScenesCallbacksNode 对象。
-- 方法调用失败时，返回 null。方法调用失败可能是因为指定的场景目录不存在。
+- 方法调用成功时，返回 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node) 对象。
+- 方法调用失败时，返回 `null`。方法调用失败可能是因为指定的场景目录不存在。
 
 <a id="entirescenes"></a>
 
@@ -521,7 +527,7 @@ moveCameraToContain(rectangle: Rectangle & Readonly<{ animationMode?: AnimationM
 
 | Name | Description |
 | --- | --- |
-| rectangle: Rectangle & Readonly&lt;\{ animationMode?: AnimationMode \}&gt; | 视觉矩形的参数设置，详见 [Rectangle](/zh-CN/api-reference/whiteboard/web/enums/cursor-names#rectangle)。 |
+| rectangle: Rectangle & Readonly&lt;\{ animationMode?: AnimationMode \}&gt; | 视觉矩形的参数设置，详见 [Rectangle](/api-ref/whiteboard/javascript/enums/cursornames.html#rectangle)。 |
 
 #### Returns
 
@@ -672,7 +678,7 @@ screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, wi
 
 - 该功能处于实验阶段。
 - 如果目标场景的图片无法完成加载，则该函数无法返回屏幕快照，你需要自行处理超时逻辑。
-- 如果你希望生成的屏幕快照不包含图片，请使用 screenshotToCanvas。
+- 如果你希望生成的屏幕快照不包含图片，请使用 [screenshotToCanvas](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#screenshottocanvas)。
 
 #### Parameters
 

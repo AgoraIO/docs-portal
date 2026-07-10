@@ -15,6 +15,16 @@ BroadcastState: { broadcasterId?: number; mode: ViewMode }
 
 视角状态，包含视角为主播模式的用户信息。
 
+#### Type declaration
+
+##### `broadcasterId?: number`
+
+主播模式用户的用户 ID。若没有主播模式的用户，则为 `undefined`。
+
+##### `mode: ViewMode`
+
+用户的视角模式。
+
 <a id="camera"></a>
 
 ### Camera
@@ -24,6 +34,20 @@ Camera: { centerX: number; centerY: number; scale: number }
 ```
 
 视角的描述。
+
+#### Type declaration
+
+##### `centerX: number`
+
+视角的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+##### `centerY: number`
+
+视角的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+##### `scale: number`
+
+视角的缩放比例。
 
 <a id="camerabound"></a>
 
@@ -36,6 +60,39 @@ CameraBound: { centerX?: number; centerY?: number; damping?: number; height?: nu
 `CameraBound` 类型用于设置视角边界。
 
 视角边界是白板上用户可以看见的部分。在视角边界内，用户可以自由移动和缩放视角。视角如果超出了视角边界的范围，会被 SDK 拉回视角边界内。
+
+#### Type declaration
+
+##### `centerX?: number`
+
+视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标，默认值是 0.0。
+
+##### `centerY?: number`
+
+视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标，默认值是 0.0。
+
+##### `damping?: number`
+
+用户将视角移出视角边界时感受到的阻力大小。取值范围为 [0.0,1.0]，默认值为 0.75。取值越大，用户感受到的阻力越大。
+
+- `0.0`: 用户将视角移出视角边界时，完全感受不到阻力，但当其手指离开屏幕时，视角会恢复到原位。
+- `1.0`: 用户完全无法将视角移出视角边界。
+
+##### `height?: number`
+
+视角边界的高度，单位为像素。默认值是 `Infinity`，表示没有限制。
+
+##### `maxContentMode?: ContentMode`
+
+视角边界的最大缩放比例。如果不填，则表示视角缩放没有上限。
+
+##### `minContentMode?: ContentMode`
+
+视角边界的最小缩放比例。如果不填，则表示视角缩放没有下限。
+
+##### `width?: number`
+
+视角边界的宽度，单位为像素。默认值是 `Infinity`，表示没有限制。
 
 <a id="camerastate"></a>
 
@@ -51,8 +108,12 @@ CameraState: Camera & { height: number; width: number }
 
 视角状态。该类型继承 [Camera](/zh-CN/api-reference/whiteboard/web/globals#camera) 且增加以下属性：
 
-- **width**: *number* 视角的宽。
-- **height**: *number* 视角的高。
+- **width**: *number*
+
+  视角的宽。
+- **height**: *number*
+
+  视角的高。
 
 <a id="color"></a>
 
@@ -73,6 +134,69 @@ ConstructRoomParams: { cameraBound?: CameraBound; commandWheelToZoom?: boolean; 
 ```
 
 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 对象和 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 对象共用的参数配置。
+
+#### Type declaration
+
+##### `cameraBound?: CameraBound`
+
+设置视角边界，即用户可以自由移动视角的范围。默认值为 `undefined`，表示视角没有任何限制。
+
+##### `commandWheelToZoom?: boolean`
+
+是否允许按住 `command` 键并滑动鼠标滚轮来放大或缩小白板。
+
+###### `since`
+
+2.16.51
+
+- `true`：允许按住 `command` 键并滚动来放大缩小白板。
+- `false`：(默认)不允许按住 `command` 键并滚动来放大缩小白板。
+
+###### `note`
+
+- 该属性仅使用于 macOS 系统。
+- 该属性不影响 `control` 滚轮的放大缩小行为。
+
+##### `cursorAdapter?: CursorAdapter | false`
+
+设置鼠标的光标适配器，详见 [《鼠标光标适配器》](https://developer.netless.link/javascript-zh/home/cursor-adapter)。 设置为 `false` 将不再显示内部预设光标 (激光笔、橡皮擦等)。
+
+##### `disableAutoResize?: boolean`
+
+是否关闭自动适配尺寸功能。
+
+- `true`：关闭自动适配尺寸功能。关闭后，如果视角的尺寸发生改变，必须主动调用 `refreshViewSize` 来保证适配。
+- `false`：（默认）启用自动适配尺寸功能。
+
+##### `disableCameraTransform?: boolean`
+
+是否禁止用户通过触屏手势或鼠标滚轮移动或缩放调整视角。
+
+- `true`：禁止用户调整视角。
+- `false`：（默认）允许用户调整视角。
+
+该属性不会影响 `setCameraBound`、 `moveCamera`、 `moveCameraToContain` 方法的使用。
+
+##### `disableOthersSelectingBox?: boolean`
+
+是否隐藏其他人的鼠标移动到白板组件上时显示的高亮框。
+
+###### `since`
+
+2.12.0
+
+- `true`：隐藏其他人的高亮框。
+- `false`：显示其他人的高亮框。
+
+该属性不影响自己的高亮框显示。
+
+##### `invisiblePlugins?: ReadonlyArray<InvisiblePluginClass<string, any, any>>`
+
+不可见插件列表。
+
+##### `wrappedComponents?: WrappedComponents`
+
+由 `React.ComponentType` 类型组成的数组，用于自定义包装白板的界面。默认值为 []。
 
 <a id="contentmode"></a>
 
@@ -106,6 +230,24 @@ ConvertedFile: { conversionFileUrl: string; height: number; preview?: string; wi
 
 转换后生成的图片或动态 PPT 页。
 
+#### Type declaration
+
+##### `conversionFileUrl: string`
+
+图片的 URL 地址或动态 PPT 页的 URI 地址。
+
+##### `height: number`
+
+图片或动态 PPT 页在白板中的高度，单位为像素。
+
+##### `preview?: string`
+
+图片或动态 PPT 预览图的 URL 地址。
+
+##### `width: number`
+
+图片或动态 PPT 页在白板中的宽度，单位为像素。
+
 <a id="cursordescription"></a>
 
 ### CursorDescription
@@ -115,6 +257,24 @@ CursorDescription: { height: number; width: number; x: number; y: number }
 ```
 
 光标的描述。
+
+#### Type declaration
+
+##### `height: number`
+
+光标图形的高。
+
+##### `width: number`
+
+光标图形的宽。
+
+##### `x: number`
+
+光标指示区域中心的 X 轴坐标（以光标图形的左上角为原点）。
+
+##### `y: number`
+
+光标指示区域中心的 Y 轴坐标（以光标图形的左上角为原点）。
 
 <a id="displayercallbacks"></a>
 
@@ -126,6 +286,30 @@ DisplayerCallbacks: { onBackgroundError: (url: string) => void; onCatchErrorWhen
 
 `Displayer` 对象的回调。
 
+#### Type declaration
+
+##### `onBackgroundError: (url: string) => void`
+
+加载背景图片失败回调。
+
+##### `onCatchErrorWhenAppendFrame: (userId: number, error: Error) => void`
+
+##### `onCatchErrorWhenRender: (error: Error) => void`
+
+##### `onEnableWriteNowChanged: (enableWriteNow: boolean) => void`
+
+##### `onHandToolActive: (active: boolean) => void`
+
+##### `onPPTMediaPause: (shapeId: string, type: MediaType) => void`
+
+##### `onPPTMediaPlay: (shapeId: string, type: MediaType) => void`
+
+##### `onPPTMediaPlayError: (shapeId: string, type: MediaType, error: Error) => void`
+
+##### `onRenderDuration: (renderDuration: number) => void`
+
+##### `onSliceChanged: (slice: string) => void`
+
 <a id="displayerstate"></a>
 
 ### DisplayerState
@@ -136,6 +320,28 @@ DisplayerState: { cameraState: CameraState; globalState: GlobalState; roomMember
 
 `DisplayerState` 是 `Room` 对象和 `Player` 对象共有的类型。
 
+#### Type declaration
+
+##### `cameraState: CameraState`
+
+当前视角的状态。
+
+###### `since`
+
+2.10.0
+
+##### `globalState: GlobalState`
+
+房间的全局状态。详见 [GlobalState](/zh-CN/api-reference/whiteboard/web/globals#globalstate)。
+
+##### `roomMembers: ReadonlyArray<RoomMember>`
+
+房间内所有互动模式（具有读写权限）用户的状态。
+
+##### `sceneState: SceneState`
+
+当前场景的状态。
+
 <a id="event"></a>
 
 ### Event
@@ -145,6 +351,28 @@ Event: { authorId: number; event: string; payload: any; phase: EventPhase; scope
 ```
 
 自定义事件。
+
+#### Type declaration
+
+##### `authorId: number`
+
+事件触发者的用户 ID，若是系统事件，则为 AdminObserverId。
+
+##### `event: string`
+
+自定义事件的名称。
+
+##### `payload: any`
+
+自定义事件的内容。
+
+##### `phase: EventPhase`
+
+自定义事件的状态。
+
+##### `scope: Scope`
+
+自定义事件的范围。
 
 <a id="eventfilter"></a>
 
@@ -185,6 +413,12 @@ FloatBarOptions: { colors: ReadonlyArray<Readonly<Color>> }
 ```
 
 悬浮条的配置参数。
+
+#### Type declaration
+
+##### `colors: ReadonlyArray<Readonly<Color>>`
+
+悬浮条调色盘的颜色列表。
 
 <a id="globalstate"></a>
 
@@ -230,8 +464,8 @@ HotKeyChecker: (event: HotKeyEvent, kind: KeyboardKind) => boolean
 
 是否为指定的快捷键：
 
-- true：是指定的快捷键。
-- false：不是指定的快捷键。
+- `true`：是指定的快捷键。
+- `false`：不是指定的快捷键。
 
 <a id="hotkeydescription"></a>
 
@@ -243,6 +477,24 @@ HotKeyDescription: { altKey: boolean | null; ctrlKey: boolean | null; key: strin
 
 自定义快捷键的描述。
 
+#### Type declaration
+
+##### `altKey: boolean | null`
+
+是否使用 Alt 键。
+
+##### `ctrlKey: boolean | null`
+
+是否使用 Ctrl 键。 C
+
+##### `key: string`
+
+指定的键。
+
+##### `shiftKey: boolean | null`
+
+是否使用 Shift 键。
+
 <a id="hotkeyevent"></a>
 
 ### HotKeyEvent
@@ -253,6 +505,35 @@ HotKeyEvent: { altKey: boolean; ctrlKey: boolean; key: string; kind: "KeyDown" |
 
 自定义快捷键的事件。
 
+#### Type declaration
+
+##### `altKey: boolean`
+
+是否使用 Alt 键。
+
+##### `ctrlKey: boolean`
+
+是否使用 Ctrl 键。
+
+##### `key: string`
+
+指定的键。
+
+##### `kind: "KeyDown" | "KeyUp"`
+
+快捷键的事件类型。
+
+- `KeyDown`：键被按下。
+- `KeyUp`：键被松开。
+
+##### `nativeEvent?: KeyboardEvent`
+
+浏览器的原生事件。
+
+##### `shiftKey: boolean`
+
+是否使用 Shift 键。
+
 <a id="hotkeys"></a>
 
 ### HotKeys
@@ -262,6 +543,80 @@ HotKeys: { changeToArrow: HotKey; changeToClick: HotKey; changeToEllipse: HotKey
 ```
 
 快捷键对应的效果。
+
+#### Type declaration
+
+##### `changeToArrow: HotKey`
+
+切换到箭头工具（`arrow` ）。
+
+##### `changeToClick: HotKey`
+
+切换到点选工具 (`clicker`)。
+
+##### `changeToEllipse: HotKey`
+
+切换到椭圆工具（`ellipse` ）。
+
+##### `changeToEraser: HotKey`
+
+切换到橡皮工具（`eraser` ）。
+
+##### `changeToHand: HotKey`
+
+切换到抓手工具（`hand` ）。
+
+##### `changeToLaserPointer: HotKey`
+
+切换到激光笔（`laserPointer` ）。
+
+##### `changeToPencil: HotKey`
+
+切换到铅笔工具（`pencil` ）。
+
+##### `changeToRectangle: HotKey`
+
+切换到矩形工具（`rectangle` ）。
+
+##### `changeToSelector: HotKey`
+
+切换到选择工具（`selector` ）。
+
+##### `changeToStraight: HotKey`
+
+切换到直线工具（`straight` ）。
+
+##### `changeToText: HotKey`
+
+切换到文字工具（`text` ）。
+
+##### `copy: HotKey`
+
+复制。
+
+##### `delete: HotKey`
+
+删除。
+
+##### `duplicate: HotKey`
+
+复制并粘贴。
+
+##### `lock: HotKey`
+
+锁定缩放比例。
+
+##### `paste: HotKey`
+
+粘贴。
+
+##### `redo: HotKey`
+
+重做。
+
+##### `undo: HotKey`
+
+撤回。
 
 <a id="identifier"></a>
 
@@ -283,6 +638,57 @@ ImageInformation: { centerX: number; centerY: number; crossOrigin?: boolean | st
 
 图片的描述。
 
+#### Type declaration
+
+##### `centerX: number`
+
+图片的中心在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+##### `centerY: number`
+
+图片的中心在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+##### `crossOrigin?: boolean | string`
+
+是否以跨域方式加载图片。
+
+###### `since`
+
+2.16.48
+
+- `true`: （默认）以跨域方式加载图片。
+- `false`: 不以跨域方式加载图片。
+
+##### `height: number`
+
+图片的高度，单位为像素。如果图片的高度超出视角的边界，用户将看不到超出部分。
+
+##### `locked: boolean`
+
+图片是否被锁定。
+
+- `true`: 图片被锁定。锁定一张图片后，用户无法移动或缩放该图片。
+- `false`: 图片没有被锁定。
+
+##### `uniformScale?: boolean`
+
+图片是否只能等比放缩。
+
+###### `since`
+
+2.12.0
+
+- `true`: 只能等比缩放。
+- `false`: 可以非等比缩放。
+
+##### `uuid: string`
+
+图片的 UUID，即图片在互动白板实时房间中的唯一标识符。
+
+##### `width: number`
+
+图片的宽度，单位为像素。如果图片的宽度超出视角的边界，用户将看不到超出部分。
+
 <a id="international"></a>
 
 ### International
@@ -292,6 +698,56 @@ International: { displayNote?: string; displaySidebar?: string; hideNote?: strin
 ```
 
 `International` 类，用于添加 PPT 预览菜单栏的界面文字。你可以直接传入要展示的文字，例如 “Next”。
+
+#### Type declaration
+
+##### `displayNote?: string`
+
+“显示 PPT 备注”的界面文字。
+
+##### `displaySidebar?: string`
+
+“显示侧边栏”的界面文字。
+
+##### `hideNote?: string`
+
+“隐藏 PPT 备注”的界面文字。
+
+##### `hideSidebar?: string`
+
+“隐藏侧边栏”的界面文字。
+
+##### `jumpTo?: string`
+
+“跳转到”的界面文字。
+
+##### `nextPage?: string`
+
+“下一页”的界面文字。
+
+##### `nextStep?: string`
+
+“下一步”的界面文字。
+
+##### `pageNumber?: string`
+
+“页码”的界面文字。
+
+##### `prePage?: string`
+
+“上一页”的界面文字。
+
+##### `preStep?: string`
+
+“上一步”的界面文字。
+
+##### `resetCurrentPPTAnimation?: string`
+
+“重置当前 PPT 文件的动画”的界面文字。
+
+##### `resetCurrentSlideAnimation?: string`
+
+“重置当前 PPT 页的动画”的界面文字。
 
 <a id="invisiblecallbacks"></a>
 
@@ -303,6 +759,12 @@ InvisibleCallbacks<A>: { onAttributesUpdate: (attributes: A) => void; onDestroy:
 
 不可见插件的回调事件。
 
+#### Type declaration
+
+##### `onAttributesUpdate: (attributes: A) => void`
+
+##### `onDestroy: () => void`
+
 <a id="invisiblepluginclass"></a>
 
 ### InvisiblePluginClass
@@ -312,6 +774,16 @@ InvisiblePluginClass<K, A, P>: { kind: K; onCreate?: (plugin: P) => void; onDest
 ```
 
 不可见插件。
+
+#### Type declaration
+
+##### `kind: K`
+
+插件的类型。
+
+##### `onCreate?: (plugin: P) => void`
+
+##### `onDestroy?: (plugin: P) => void`
 
 <a id="invisibleplugincontext"></a>
 
@@ -323,6 +795,16 @@ InvisiblePluginContext: { displayer: Displayer; kind: string }
 
 不可见插件的上下文。
 
+#### Type declaration
+
+##### `displayer: Displayer`
+
+不可见插件的 `Displayer` 对象。
+
+##### `kind: string`
+
+不可见插件的类型。
+
 <a id="joinroomparams"></a>
 
 ### JoinRoomParams
@@ -333,19 +815,36 @@ JoinRoomParams: ConstructRoomParams & { disableDeviceInputs?: boolean; disableEr
 
 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 对象的参数设置，用于加入互动白板实时房间。该类型继承 [ConstructRoomParams](/zh-CN/api-reference/whiteboard/web/globals#constructroomparams) 且包含以下属性：
 
-- **uuid**: *string* 房间的 UUID，即房间的唯一标识符。成功创建房间后会返回该属性。
-- **uid**: *string* 用户的 UID，即用户的唯一标识符，字符串格式，不能超过 1024 字节。请确保同一房间内每个用户 `uid` 的唯一性。
-- **region?**: *string* 连接的数据中心，支持传入以下值： | `region` | 数据中心 | 服务区 |
-| --- | --- | --- |
-| `us-sv` | 美国硅谷 | 北美洲、南美洲 |
-| `sg` | 新加坡 | 新加坡、东亚、东南亚 |
-| `in-mum` | 印度孟买 | 印度 |
-| `eu` | 欧洲（法兰克福） | 欧洲 |
-| `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 | **Note**
+- **uuid**: *string*
+
+  房间的 UUID，即房间的唯一标识符。成功创建房间后会返回该属性。
+- **uid**: *string*
+
+  用户的 UID，即用户的唯一标识符，字符串格式，不能超过 1024 字节。请确保同一房间内每个用户 `uid` 的唯一性。
+- **region?**: *string*
+
+  连接的数据中心，支持传入以下值：
+
+  | `region` | 数据中心 | 服务区 |
+  | --- | --- | --- |
+  | `us-sv` | 美国硅谷 | 北美洲、南美洲 |
+  | `sg` | 新加坡 | 新加坡、东亚、东南亚 |
+  | `in-mum` | 印度孟买 | 印度 |
+  | `eu` | 欧洲（法兰克福） | 欧洲 |
+  | `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
+
+  **Note**
+
   - 该属性必须与要加入的互动白板实时房间所在数据中心一致，否则无法加入房间。
-  - 该属性与 WhiteWebSdkConfiguration 中的 region 作用相同，二者只需要设置其中一个。如果同时设置，该属性会覆盖 WhiteWebSdkConfiguration 中的 region。
-- **roomToken**: *string* 房间的 Room Token，用于加入房间时的用户鉴权。详见 [互动白板 Token 概述](/doc/whiteboard/javascript/whiteboard-sdk/overview/concepts#token)。
-- **userPayload?**: *\{[key: string]: any;\}* 自定义用户信息。该属性可以是任意类型的数据结构。 房间内其他用户可以通过如下代码读取特定用户在加入房间时设置的 `userPayload`：
+  - 该属性与 [WhiteWebSdkConfiguration](/zh-CN/api-reference/whiteboard/web/globals#whitewebsdkconfiguration) 中的 `region` 作用相同，二者只需要设置其中一个。如果同时设置，该属性会覆盖 `WhiteWebSdkConfiguration` 中的 `region`。
+- **roomToken**: *string*
+
+  房间的 Room Token，用于加入房间时的用户鉴权。详见 [互动白板 Token 概述](/doc/whiteboard/javascript/whiteboard-sdk/overview/concepts#token)。
+- **userPayload?**: *\{[key: string]: any;\}*
+
+  自定义用户信息。该属性可以是任意类型的数据结构。
+
+  房间内其他用户可以通过如下代码读取特定用户在加入房间时设置的 `userPayload`：
 
 ##### `example`
 
@@ -356,42 +855,93 @@ for (var member of room.state.roomMembers) {
 }
 ```
 
-- **isWritable?**: *boolean* 用户在房间中是否为互动模式（具有读写权限）。
+- **isWritable?**: *boolean*
+
+  用户在房间中是否为互动模式（具有读写权限）。
+
   - `true`： （默认）互动模式，即具有读写权限。
-  - `false`：订阅模式，即具有只读权限。 该方法与 `disableDeviceInputs` 的区别详见 [《只读模式｜禁止操作》](https://developer.netless.link/javascript-zh/home/disable#%E5%8F%AA%E8%AF%BB%E6%A8%A1%E5%BC%8F)。
-- **disableDeviceInputs?**: *boolean* 是否禁止用户通过鼠标、键盘、触摸屏幕操作白板工具。
+  - `false`：订阅模式，即具有只读权限。
+
+    该方法与 `disableDeviceInputs` 的区别详见 [《只读模式｜禁止操作》](https://developer.netless.link/javascript-zh/home/disable#%E5%8F%AA%E8%AF%BB%E6%A8%A1%E5%BC%8F)。
+- **disableDeviceInputs?**: *boolean*
+
+  是否禁止用户通过鼠标、键盘、触摸屏幕操作白板工具。
+
   - `true`： 禁止用户操作白板工具。
-  - `false`：（默认）允许用户操作白板工具。 该方法与 `isWritable` 的区别详见 [《禁止设备操作｜禁止操作》](https://developer.netless.link/javascript-zh/home/disable#%E7%A6%81%E6%AD%A2%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C)。
-- **enableDrawPoint?**: *boolean* 是否允许使用铅笔工具（`pencil` ）画点。 **Note** 该属性只有在 `disableNewPencil` 设为 `false` 时生效。
-  - true： 允许。
-  - false：（默认）不允许。此时使用铅笔工具单击白板绘制的点不会保留在屏幕上。
-- **disableNewPencil?**: *boolean* **自从：2.12.5** 关闭/开启新铅笔工具： **Note** 为正常显示笔迹，在开启新铅笔前，请确保该房间内的所有用户使用如下 SDK：
-  - true:（默认）关闭新铅笔工具。
-  - false: 开启新铅笔工具。开启后，SDK 会对铅笔工具（pencil ）应用新版笔迹平滑算法，使书写笔迹更加流畅自然，并带有笔锋效果。
+  - `false`：（默认）允许用户操作白板工具。
+
+    该方法与 `isWritable` 的区别详见 [《禁止设备操作｜禁止操作》](https://developer.netless.link/javascript-zh/home/disable#%E7%A6%81%E6%AD%A2%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C)。
+- **enableDrawPoint?**: *boolean*
+
+  是否允许使用铅笔工具（`pencil` ）画点。
+
+  - `true`： 允许。
+  - `false`：（默认）不允许。此时使用铅笔工具单击白板绘制的点不会保留在屏幕上。
+
+  **Note**
+
+  该属性只有在 `disableNewPencil` 设为 `false` 时生效。
+- **disableNewPencil?**: *boolean*
+
+  **自从：2.12.5**
+
+  关闭/开启新铅笔工具：
+
+  - `true`:（默认）关闭新铅笔工具。
+  - `false`: 开启新铅笔工具。开启后，SDK 会对铅笔工具（`pencil` ）应用新版笔迹平滑算法，使书写笔迹更加流畅自然，并带有笔锋效果。
+
+  **Note**
+
+  为正常显示笔迹，在开启新铅笔前，请确保该房间内的所有用户使用如下 SDK：
+
   - Android SDK 2.12.3 或更高版本
   - iOS SDK 2.12.3 或更高版本
   - Web SDK 2.12.5 或更高版本
-- **disableMagixEventDispatchLimit?**: *boolean* **自从：2.15.0** 是否关闭发送自定义事件的频率限制：
-  - true：关闭频率限制。可能会出现卡顿。
-  - false：（默认）开启频率限制。开启后，SDK 每隔 75 ms 发送一个事件。
-- **disableEraseImage?**: *boolean* 是否禁止橡皮擦除白板上的图片：
-  - true： 禁止擦除。
-  - false：（默认）允许擦除。
-- **disablePencilWrittingLimitFrequency**?: *boolean* **自从：2.15.2** 使用 `pencil` 书写时，是否关闭笔迹同步的频率限制：
-  - true：关闭频率限制。笔迹会立即同步，但是可能会增加 CPU 性能消耗。
-  - false：（默认）开启频率限制。笔迹同步会有轻微延迟，但是可以降低 CPU 性能消耗。
-- **floatBar?**: *boolean | Partial* 当 `currentApplianceName` 设为 `selector` 或 `text` 时，是否出现浮动条：
-  - true： 出现浮动条。
-  - false：（默认）不出现浮动条。
-- **hotKeys?**: *Partial* 添加自定义快捷键。若不传，则使用 **默认快捷键键** 方案，具体如下： | 键盘按键 | 效果 |
-| --- | --- |
-| Backspace 或 Delete | 删除所选对象 |
-| Shift | 锁定放缩长宽比，令其等比放缩 |
-| Ctrl + Z 或 Command + Z | 撤回 |
-| Ctrl + Y 或 Command + Y | 重做 |
-| Ctrl + C 或 Command + C | 复制 |
-| Ctrl + V 或 Command + V | 粘贴 | 如果你想关闭快捷键功能，可以将该属性的其值设为 `{}`。
-- **rejectWhenReadonlyErrorLevel?**: *RoomErrorLevel* 没有可写权限的用户进行写操作时，SDK 的应对方式。
+- **disableMagixEventDispatchLimit?**: *boolean*
+
+  **自从：2.15.0**
+
+  是否关闭发送自定义事件的频率限制：
+
+  - `true`：关闭频率限制。可能会出现卡顿。
+  - `false`：（默认）开启频率限制。开启后，SDK 每隔 75 ms 发送一个事件。
+- **disableEraseImage?**: *boolean*
+
+  是否禁止橡皮擦除白板上的图片：
+
+  - `true`： 禁止擦除。
+  - `false`：（默认）允许擦除。
+- **disablePencilWrittingLimitFrequency**?: *boolean*
+
+  **自从：2.15.2**
+
+  使用 `pencil` 书写时，是否关闭笔迹同步的频率限制：
+
+  - `true`：关闭频率限制。笔迹会立即同步，但是可能会增加 CPU 性能消耗。
+  - `false`：（默认）开启频率限制。笔迹同步会有轻微延迟，但是可以降低 CPU 性能消耗。
+- **floatBar?**: *boolean | Partial*
+
+  当 `currentApplianceName` 设为 `selector` 或 `text` 时，是否出现浮动条：
+
+  - `true`： 出现浮动条。
+  - `false`：（默认）不出现浮动条。
+- **hotKeys?**: *Partial*
+
+  添加自定义快捷键。若不传，则使用 **默认快捷键键** 方案，具体如下：
+
+  | 键盘按键 | 效果 |
+  | --- | --- |
+  | Backspace 或 Delete | 删除所选对象 |
+  | Shift | 锁定放缩长宽比，令其等比放缩 |
+  | Ctrl + Z 或 Command + Z | 撤回 |
+  | Ctrl + Y 或 Command + Y | 重做 |
+  | Ctrl + C 或 Command + C | 复制 |
+  | Ctrl + V 或 Command + V | 粘贴 |
+
+  如果你想关闭快捷键功能，可以将该属性的其值设为 `{}`。
+- **rejectWhenReadonlyErrorLevel?**: *RoomErrorLevel*
+
+  没有可写权限的用户进行写操作时，SDK 的应对方式。
 - **optimizeOptions?**: **OptimizeOptions**
 
 ##### `since`
@@ -416,10 +966,10 @@ Level: "debug" | "info" | "warn" | "error"
 
 日志级别由高到低的排序为 `error`， `warn`， `info`，和 `debug`。选择一个级别，你就可以看到不低于该级别的所有日志信息。 例如，选择 `info` 级别，就可以看到 `error`、 `warn`、 `info` 级别的所有日志信息。
 
-- error：报错日志，表明出现了直接导致 SDK 无法正常运行的错误。
-- warn：警告日志。当传入的参数不符合 SDK 要求时，SDK 会自动调整并发出警告。如果调用废弃 API，SDK 不会发出警告信息。
-- info：信息日志，主要为连接状态。
-- debug：调试日志，最详细的日志，目前内容与 info 一致。
+- `error`：报错日志，表明出现了直接导致 SDK 无法正常运行的错误。
+- `warn`：警告日志。当传入的参数不符合 SDK 要求时，SDK 会自动调整并发出警告。如果调用废弃 API，SDK 不会发出警告信息。
+- `info`：信息日志，主要为连接状态。
+- `debug`：调试日志，最详细的日志，目前内容与 `info` 一致。
 
 <a id="loggeroptions"></a>
 
@@ -430,6 +980,24 @@ LoggerOptions: { printLevelMask?: Level; reportDebugLogMode?: LoggerReportMode; 
 ```
 
 日志的配置参数。
+
+#### Type declaration
+
+##### `printLevelMask?: Level`
+
+日志打印等级，详见 [Level](/zh-CN/api-reference/whiteboard/web/globals#level)。默认等级为 `info`。
+
+##### `reportDebugLogMode?: LoggerReportMode`
+
+SDK 上报 `debug` 等级日志的模式。
+
+##### `reportLevelMask?: Level`
+
+日志上报等级，详见 [Level](/zh-CN/api-reference/whiteboard/web/globals#level)。
+
+##### `reportQualityMode?: LoggerReportMode`
+
+SDK 上报连接质量数据的模式。
 
 <a id="magixeventlisteneroptions"></a>
 
@@ -445,6 +1013,21 @@ MagixEventListenerOptions: { fireInterval?: number; fireSelfEventAfterCommit?: b
 
 v2.15.2
 
+#### Type declaration
+
+##### `fireInterval?: number`
+
+SDK 触发自定义事件回调的间隔，单位为毫秒，默认值为 500。取值必须 ≥ 500。
+
+SDK 会根据该参数的值周期性触发自定义事件回调。
+
+##### `fireSelfEventAfterCommit?: boolean`
+
+设置是否待服务器确认 [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#dispatchmagixevent) 方法调用成功后再发送事件回调：
+
+- true：调用 [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#dispatchmagixevent) 后立即触发事件回调。
+- false：（默认）待服务器确认事件发送成功后再发送事件回调。
+
 <a id="margin"></a>
 
 ### Margin
@@ -454,6 +1037,24 @@ Margin: { bottom: number; left: number; right: number; top: number }
 ```
 
 空白区域的设置。
+
+#### Type declaration
+
+##### `bottom: number`
+
+下方的空白，单位为像素。
+
+##### `left: number`
+
+左边的空白，单位为像素。
+
+##### `right: number`
+
+右边的空白，单位为像素。
+
+##### `top: number`
+
+上方的空白，单位为像素。
 
 <a id="mediatype"></a>
 
@@ -465,8 +1066,8 @@ MediaType: "video" | "audio"
 
 媒体文件的类型。
 
-- video：视频文件。
-- audio：音频文件。
+- `video`：视频文件。
+- `audio`：音频文件。
 
 <a id="memberinformation"></a>
 
@@ -482,6 +1083,14 @@ MemberInformation: { id: number; payload: any; session: string }
 
 已废弃。请改用 [JoinRoomParams](/zh-CN/api-reference/whiteboard/web/globals#joinroomparams) 中的 `userPayload`。
 
+#### Type declaration
+
+##### `id: number`
+
+##### `payload: any`
+
+##### `session: string`
+
 <a id="memberstate"></a>
 
 ### MemberState
@@ -491,6 +1100,124 @@ MemberState: { arrowCompleteToSelector?: boolean; bold?: boolean; currentApplian
 ```
 
 互动白板实时房间的白板工具状态。
+
+#### Type declaration
+
+##### `arrowCompleteToSelector?: boolean`
+
+是否在画完箭头后自动切到选择工具：
+
+- `true`：自动切换。
+- `false`：（默认）不自动切换。
+
+##### `bold?: boolean`
+
+是否加粗：
+
+- `true`：加粗。
+- `false`：（默认）不加粗。
+
+##### `currentApplianceName: ApplianceNames`
+
+当前使用的白板工具名称，详见 [ApplianceNames](/zh-CN/api-reference/whiteboard/web/enums/appliance-names)。
+
+##### `dottedLine?: boolean`
+
+是否支持绘制虚线（仅限铅笔工具）：
+
+- `true`：支持绘制虚线。
+- `false`：（默认）不支持绘制虚线。
+
+##### `ellipseCompleteToSelector?: boolean`
+
+是否在画完圆形后自动切到选择工具：
+
+- `true`：自动切换。
+- `false`：（默认）不自动切换。
+
+##### `fillColor?: Color`
+
+设置图形元素的填充色。仅适用于圆、矩形等封闭图形。
+
+##### `italic?: boolean`
+
+是否使用斜体：
+
+- `true`：使用斜体。
+- `false`：（默认）不使用斜体。
+
+##### `lineThrough?: boolean`
+
+是否加删除线：
+
+- `true`：加删除线。
+- `false`：（默认）不加删除线。
+
+##### `rectangleCompleteToSelector?: boolean`
+
+是否在画完矩形后自动切到选择工具：
+
+- `true`：自动切换。
+- `false`：（默认）不自动切换。
+
+##### `shapeCompleteToSelector?: boolean`
+
+是否在画完三角、气泡等图形后自动切到选择工具：
+
+- `true`：自动切换。
+- `false`：（默认）不自动切换。
+
+##### `shapeType?: ShapeType`
+
+绘制图形的类型。
+
+##### `straightCompleteToSelector?: boolean`
+
+是否在画完直线后自动切到选择工具：
+
+- `true`：自动切换。
+- `false`：（默认）不自动切换。
+
+##### `strokeColor: Color`
+
+绘制线条的颜色，为 RGB 格式，例如 ` [0, 0, 255]` 表示蓝色。
+
+##### `strokeWidth: number`
+
+绘制线条的粗细。
+
+##### `textCanSelectText?: boolean`
+
+是否允许直接选择并编辑文字：
+
+- `true`：允许直接选择并编辑文字。
+- `false`：（默认）不允许直接选择并编辑文字。
+
+##### `textColor?: Color`
+
+字体颜色，为 RGB 格式，例如 ` [0, 0, 255]` 表示蓝色。
+
+##### `textCompleteToSelector?: boolean`
+
+是否在使用文字工具打完字后自动切到选择工具：
+
+- `true`：自动切换。
+- `false`：（默认）不自动切换。
+
+##### `textSize: number`
+
+字体大小，取值必须大于 0。Chrome 浏览器对于小于 12 的字体会自动调整为 12。
+
+##### `textSizeOverride?: number`
+
+设置文本工具的默认字体大小。如果不设置则默认使用 `textSize`，即上一次设置的文字大小。
+
+##### `underline?: boolean`
+
+是否加下划线：
+
+- `true`：加下划线。
+- `false`：（默认）不加下划线。
 
 <a id="nativeevent"></a>
 
@@ -502,10 +1229,10 @@ NativeEvent: MouseEvent | WheelEvent | KeyboardEvent | TouchEvent
 
 浏览器的原生事件。
 
-- MouseEvent：鼠标事件，详见 MouseEvent。
-- WheelEvent：滚轮事件，详见 WheelEvent。
-- KeyboardEvent：键盘事件，详见 KeyboardEvent。
-- TouchEvent：触摸事件，详见 TouchEvent。
+- `MouseEvent`：鼠标事件，详见 [MouseEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/MouseEvent)。
+- `WheelEvent`：滚轮事件，详见 [WheelEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/WheelEvent)。
+- `KeyboardEvent`：键盘事件，详见 [KeyboardEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/KeyboardEvent)。
+- `TouchEvent`：触摸事件，详见 [TouchEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/TouchEvent)。
 
 <a id="playablecheckingparams"></a>
 
@@ -517,6 +1244,52 @@ PlayableCheckingParams: { beginTimestamp?: number; duration?: number; region?: s
 
 检查白板房间是否可以回放的参数配置。
 
+#### Type declaration
+
+##### `beginTimestamp?: number`
+
+回放的起始时间（单位为毫秒的 Unix 时间戳）。
+
+该属性必须和 `room`、 `duration` 一起使用，而且使用时禁止传入 `slice`。
+
+##### `duration?: number`
+
+回放的时长（毫秒）。
+
+该属性必须和 `room`、 `beginTimestamp` 一起使用，而且使用时禁止传入 `slice`。
+
+##### `region?: string`
+
+当前房间所在的数据中心，支持传入以下值：
+
+| `region` | 数据中心 | 服务区 |
+| --- | --- | --- |
+| `us-sv` | 美国硅谷 | 北美洲、南美洲 |
+| `sg` | 新加坡 | 新加坡、东亚、东南亚 |
+| `in-mum` | 印度孟买 | 印度 |
+| `eu` | 欧洲（法兰克福） | 欧洲 |
+| `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
+
+##### `room: string`
+
+房间的 UUID，即房间的唯一标识符。成功创建房间后会返回该值。
+
+- 如果只传该属性，不传 `beginTimestamp` 和 `duration`，则表明回放该房间的所有录像片段。
+- 如果同时传入该属性和 `beginTimestamp`、 `duration`，则表明回放该房间在对应时间范围内的所有录像片段。
+
+##### `roomToken: string`
+
+房间的 Room Token，用于加入房间时的用户鉴权。详见 [互动白板 Token 概述](/doc/whiteboard/javascript/whiteboard-sdk/overview/concepts#token)。
+
+##### `slice?: string`
+
+回放的录像片段的 UUID。你可以在房间录制的时候从 `room.slice` 获取。
+
+**Note**
+
+- 该属性需要和 `room` 同时传入。
+- 传入该属性表明只回放特定片段，因此禁止再传入 `beginTimestamp` 和 `duration`。
+
 <a id="playercallbacks"></a>
 
 ### PlayerCallbacks
@@ -527,35 +1300,47 @@ PlayerCallbacks: DisplayerCallbacks & { onIsPlayableChanged: (isPlayable: boolea
 
 `PlayerCallbacks` 包含白板回放的事件回调。该类型继承 [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/web/globals#displayercallbacks) 且包含以下成员：
 
-- **onIsPlayableChanged**: *(isPlayable: boolean)=&gt;void* `isPlayable` 发生改变的回调。
+- **onIsPlayableChanged**: *(isPlayable: boolean)=&gt;void*
+
+  `isPlayable` 发生改变的回调。
 
 ##### `param`
 
 `isPlayable` 是否能立即播放：
 
-- true：可以立即播放。
-- false：不能立即播放。
+- `true`：可以立即播放。
+- `false`：不能立即播放。
 
-- **onPhaseChanged**: *(phase: PlayerPhase)=&gt;void* 回放阶段发生改变的回调。
+- **onPhaseChanged**: *(phase: PlayerPhase)=&gt;void*
+
+  回放阶段发生改变的回调。
 
 ##### `param`
 
 `phase` 回放阶段。
 
-- **onLoadFirstFrame**: *()=&gt;void* 首帧加载完成的回调。
-- **onPlayerStateChanged**: *(modifyState: Partial)=&gt;void* 回放状态发生改变的回调。
+- **onLoadFirstFrame**: *()=&gt;void*
+
+  首帧加载完成的回调。
+- **onPlayerStateChanged**: *(modifyState: Partial)=&gt;void*
+
+  回放状态发生改变的回调。
 
 ##### `param`
 
 `modifyState` 回放状态。
 
-- **onStoppedWithError**: *(error: Error)=&gt;void* 出错导致回放暂停的回调。
+- **onStoppedWithError**: *(error: Error)=&gt;void*
+
+  出错导致回放暂停的回调。
 
 ##### `param`
 
 `error` 错误信息。
 
-- **onProgressTimeChanged**: *(progressTimestamp: number)=&gt;void* 回放进度发生改变的回调。
+- **onProgressTimeChanged**: *(progressTimestamp: number)=&gt;void*
+
+  回放进度发生改变的回调。
 
 ##### `param`
 
@@ -571,7 +1356,7 @@ PlayerState: DisplayerState & { observerMode: ObserverMode }
 
 `Player` 对象的状态。该类型继承 [DisplayerState](/zh-CN/api-reference/whiteboard/web/globals#displayerstate) 且包含以下成员：
 
-- observerMode: ObserverMode
+- **observerMode**: *ObserverMode*
 
 白板回放的观看模式，详见 [ObserverMode](/zh-CN/api-reference/whiteboard/web/enums/observer-mode)。
 
@@ -585,6 +1370,24 @@ Plugin<C, T>: { defaultAttributes?: T; hitTest?: (plugin: PluginInstance<C, T>, 
 
 组件插件的描述。Agora 支持的自定义插件包括组件插件和不可见插件。
 
+#### Type declaration
+
+##### `defaultAttributes?: T`
+
+属性的默认值。
+
+##### `hitTest?: (plugin: PluginInstance<C, T>, x: number, y: number, selectorRadius: number) => boolean`
+
+##### `kind?: string`
+
+组件插件的类型，即该组件插件的唯一识别符。
+
+##### `render: ComponentType<PluginProps<C, T>>`
+
+组件插件的外观。
+
+##### `willInterruptEvent?: (plugin: PluginInstance<C, T>, event: NativeEvent) => boolean`
+
 <a id="plugindescription"></a>
 
 ### PluginDescription
@@ -594,6 +1397,35 @@ PluginDescription<A>: { attributes?: A; height?: number; originX?: number; origi
 ```
 
 组件插件对象的描述。
+
+#### Type declaration
+
+##### `attributes?: A`
+
+组件插件对象的属性。
+
+##### `height?: number`
+
+组件插件对象的高。
+
+##### `originX?: number`
+
+组件插件对象的左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+##### `originY?: number`
+
+组件插件对象的左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+##### `selectable?: boolean`
+
+能否选中组件插件对象：
+
+- `true`：能选中。
+- `false`：不能选中。
+
+##### `width?: number`
+
+组件插件对象的宽。
 
 <a id="pluginprops"></a>
 
@@ -605,6 +1437,28 @@ PluginProps<C, T>: { margin: Margin; origin: Point; plugin: PluginInstance<C, T>
 
 组件插件的外观设置。
 
+#### Type declaration
+
+##### `margin: Margin`
+
+组件插件图标周围的空白。
+
+##### `origin: Point`
+
+组件插件图标的中心点在世界坐标系中（以白板初始化时的中心点为原点的坐标系）的坐标。
+
+##### `plugin: PluginInstance<C, T>`
+
+组件插件对象。
+
+##### `scale: number`
+
+组件插件图标的缩放比例。
+
+##### `size: Size`
+
+组件插件图标的大小。
+
 <a id="point"></a>
 
 ### Point
@@ -614,6 +1468,16 @@ Point: { x: number; y: number }
 ```
 
 世界坐标系（以白板初始化时的中心点为原点的坐标系）的点坐标。
+
+#### Type declaration
+
+##### `x: number`
+
+点在世界坐标系中的 X 轴坐标。
+
+##### `y: number`
+
+点在世界坐标系中的 Y 轴坐标。
 
 <a id="pptdescription"></a>
 
@@ -630,12 +1494,33 @@ PptDescription: { height: number; previewURL?: string; src: string; width: numbe
 支持的图片或动态 PPT 格式包括：
 
 - PNG、JPG/JPEG、WEBP 格式的图片，或由 PPT、PPTX、DOC、DOCX、PDF 格式的文件转换成 PNG、JPG/JPEG、WEBP 格式的图片。
-- 使用 文档转换功能 转换过的 PPTX 文件。
+- 使用 [文档转换功能](/doc/whiteboard/javascript/whiteboard-sdk/advanced-features/convert-files) 转换过的 PPTX 文件。
 
 **Note**
 
 - 一个场景只能插入一张图片或动态 PPT 页。
 - 插入的图片或动态 PPT 页的中心点坐标默认为世界坐标系的原点。图片或动态 PPT 页插入场景后，你无法改变它在白板上的位置。
+
+#### Type declaration
+
+##### `height: number`
+
+图片或动态 PPT 在白板中的高度，单位为像素。
+
+##### `previewURL?: string`
+
+图片或动态 PPT 预览图的 URL 地址。动态 PPT 预览图的 URL 地址可以从 [查询转换任务进度](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 中的 `previews` 字段获取，例如，" [https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/2fdxxxxx67e/preview/1.png"。](https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/2fdxxxxx67e/preview/1.png"%E3%80%82)
+
+##### `src: string`
+
+图片或动态 PPT 页的地址，支持的格式如下：
+
+- 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过文档转换功能生成的 URL 地址，例如， `"https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg"`。
+- 动态 PPT 页：通过文档转换功能生成的 URI 地址，例如， `"pptx://cover.herewhite.com/dynamicConvert/6a212c90fa5311ea8b9c074232aaccd4/1.slide"`。
+
+##### `width: number`
+
+图片或动态 PPT 在白板中的宽度，单位为像素。
 
 <a id="previewconfig"></a>
 
@@ -647,6 +1532,12 @@ PreviewConfig: { international?: International }
 
 PPT 预览页面的配置。
 
+#### Type declaration
+
+##### `international?: International`
+
+给预览页面的菜单栏添加界面文字。详见 [International](/zh-CN/api-reference/whiteboard/web/globals#international)。
+
 <a id="progress"></a>
 
 ### Progress
@@ -656,6 +1547,28 @@ Progress: { convertedFileList: ConvertedFile[]; convertedPageSize: number; conve
 ```
 
 文档转换任务的进度详情。
+
+#### Type declaration
+
+##### `convertedFileList: ConvertedFile[]`
+
+转换后生成的图片或动态 PPT 页。
+
+##### `convertedPageSize: number`
+
+已转换的页数。
+
+##### `convertedPercentage: number`
+
+转换进度的百分比。
+
+##### `currentStep?: CurrentStep`
+
+转换任务当前的步骤。
+
+##### `totalPageSize: number`
+
+总页数。
 
 <a id="rtcclient"></a>
 
@@ -678,6 +1591,32 @@ RTCClient: { adjustAudioMixingPlayoutVolume?: (volume: number) => number; adjust
 
 目前仅支持 Electron 平台的 Agora RTC SDK.
 
+#### Type declaration
+
+##### `adjustAudioMixingPlayoutVolume?: (volume: number) => number`
+
+##### `adjustAudioMixingPublishVolume?: (volume: number) => number`
+
+##### `adjustAudioMixingVolume?: (volume: number) => number`
+
+##### `getAudioMixingCurrentPosition?: () => number`
+
+##### `getAudioMixingDuration?: () => number`
+
+##### `getAudioMixingPlayoutVolume?: () => number`
+
+##### `getAudioMixingPublishVolume?: () => number`
+
+##### `pauseAudioMixing: () => number`
+
+##### `resumeAudioMixing: () => number`
+
+##### `setAudioMixingPosition: (position: number) => number`
+
+##### `startAudioMixing: (filePath: string, loopback: boolean, replace: boolean, cycle: number, callback?: (state: number, errorCode: number) => void) => number`
+
+##### `stopAudioMixing: (callback?: (state: number, errorCode: number) => void) => number`
+
 <a id="reconnectionoptions"></a>
 
 ### ReconnectionOptions
@@ -687,6 +1626,15 @@ ReconnectionOptions: { disableReconnect: boolean }
 ```
 
 断线重连设置。
+
+#### Type declaration
+
+##### `disableReconnect: boolean`
+
+是否关闭断线重连：
+
+- `true`: 关闭断线重连。
+- `false`: 开启断线重连。
 
 <a id="rectangle"></a>
 
@@ -698,8 +1646,12 @@ Rectangle: Size & { originX: number; originY: number }
 
 视觉矩形的描述。该类继承 [Size](/zh-CN/api-reference/whiteboard/web/globals#size) 且包含以下成员：
 
-- **originX**: *number* 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
-- **originY**: *number* 视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+- **originX**: *number*
+
+  视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+- **originY**: *number*
+
+  视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
 
 <a id="renderplugin"></a>
 
@@ -711,6 +1663,24 @@ RenderPlugin<C, T>: { defaultAttributes?: T; hitTest?: (plugin: PluginInstance<C
 
 组件插件的渲染。
 
+#### Type declaration
+
+##### `defaultAttributes?: T`
+
+组件插件属性的默认值。
+
+##### `hitTest?: (plugin: PluginInstance<C, T>, x: number, y: number, selectorRadius: number) => boolean`
+
+##### `kind: string`
+
+组件插件类型，为该组件插件的唯一识别符。
+
+##### `render: ComponentType<PluginProps<C, T>>`
+
+组件插件的外观。
+
+##### `willInterruptEvent?: (plugin: PluginInstance<C, T>, event: NativeEvent) => boolean`
+
 <a id="replayroomparams"></a>
 
 ### ReplayRoomParams
@@ -721,24 +1691,49 @@ ReplayRoomParams: ConstructRoomParams & { alignmentInterval?: number; alignmentT
 
 `Player` 对象的参数配置，用于白板回放。该类型继承 [ConstructRoomParams](/zh-CN/api-reference/whiteboard/web/globals#constructroomparams) 且增加以下属性：
 
-- **region?**: *string* `Player` 对象所在的数据中心。支持传入以下值： | `region` | 数据中心 | 服务区 |
-| --- | --- | --- |
-| `us-sv` | 美国硅谷 | 北美洲、南美洲 |
-| `sg` | 新加坡 | 新加坡、东亚、东南亚 |
-| `in-mum` | 印度孟买 | 印度 |
-| `eu` | 欧洲（法兰克福） | 欧洲 |
-| `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 | **Note**
-  - 如果你不设置该属性，SDK 会使用 WhiteWebSdkConfiguration 中 region 的值。
-  - 如果在初始化 WhiteWebSdk 对象和创建 Player 对象时都没有设置数据中心，SDK 会报错。
-- **slice?**: *string* 回放的录像片段的 UUID。你可以在房间录制的时候从 `room.slice` 获取。 **Note**
-  - 该属性需要和 room 同时传入。
-  - 传入该属性表明只回放特定片段，因此禁止再传入 beginTimestamp 和 duration。
-- **room**: *string* 回放房间的 UUID，即房间的唯一标识符。成功创建房间后会返回该值。
-  - 如果只传该属性，不传 beginTimestamp 和 duration，则表明回放该房间的所有录像片段。
-  - 如果同时传入该属性和 beginTimestamp 和 duration，则表明回放该房间在对应时间范围内的所有录像片段。
-- **roomToken**: *string* 房间的 Room Token，用于加入房间时的用户鉴权。详见 [互动白板 Token 概述](/doc/whiteboard/javascript/whiteboard-sdk/overview/concepts#token)。
-- **beginTimestamp?**: *number* 白板回放的起始时间（单位为毫秒的 Unix 时间戳）。 该属性必须和 `room`、 `duration` 一起使用，而且使用时禁止传入 `slice`。
-- **duration?**: *number* 白板回放的时长（毫秒）。 该属性必须和 `room`、 `beginTimestamp` 一起使用，而且使用时禁止传入 `slice`。
+- **region?**: *string*
+
+  `Player` 对象所在的数据中心。支持传入以下值：
+
+  | `region` | 数据中心 | 服务区 |
+  | --- | --- | --- |
+  | `us-sv` | 美国硅谷 | 北美洲、南美洲 |
+  | `sg` | 新加坡 | 新加坡、东亚、东南亚 |
+  | `in-mum` | 印度孟买 | 印度 |
+  | `eu` | 欧洲（法兰克福） | 欧洲 |
+  | `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
+
+  **Note**
+
+  - 如果你不设置该属性，SDK 会使用 [WhiteWebSdkConfiguration](/zh-CN/api-reference/whiteboard/web/globals#whitewebsdkconfiguration) 中 `region` 的值。
+  - 如果在初始化 `WhiteWebSdk` 对象和创建 `Player` 对象时都没有设置数据中心，SDK 会报错。
+- **slice?**: *string*
+
+  回放的录像片段的 UUID。你可以在房间录制的时候从 `room.slice` 获取。
+
+  **Note**
+
+  - 该属性需要和 `room` 同时传入。
+  - 传入该属性表明只回放特定片段，因此禁止再传入 `beginTimestamp` 和 `duration`。
+- **room**: *string*
+
+  回放房间的 UUID，即房间的唯一标识符。成功创建房间后会返回该值。
+
+  - 如果只传该属性，不传 `beginTimestamp` 和 `duration`，则表明回放该房间的所有录像片段。
+  - 如果同时传入该属性和 `beginTimestamp` 和 `duration`，则表明回放该房间在对应时间范围内的所有录像片段。
+- **roomToken**: *string*
+
+  房间的 Room Token，用于加入房间时的用户鉴权。详见 [互动白板 Token 概述](/doc/whiteboard/javascript/whiteboard-sdk/overview/concepts#token)。
+- **beginTimestamp?**: *number*
+
+  白板回放的起始时间（单位为毫秒的 Unix 时间戳）。
+
+  该属性必须和 `room`、 `duration` 一起使用，而且使用时禁止传入 `slice`。
+- **duration?**: *number*
+
+  白板回放的时长（毫秒）。
+
+  该属性必须和 `room`、 `beginTimestamp` 一起使用，而且使用时禁止传入 `slice`。
 - **crops?**: *Array*
 
 ##### `since`
@@ -747,7 +1742,7 @@ ReplayRoomParams: ConstructRoomParams & { alignmentInterval?: number; alignmentT
 
 回放录像裁剪区间，包含以下属性： - `from`: number。裁剪区间起点时间戳。 - `to`: number。裁剪区间终点时间戳。
 
-- alignmentThreshold?: number
+- **alignmentThreshold?**: *number*
 
 ##### `since`
 
@@ -755,7 +1750,7 @@ ReplayRoomParams: ConstructRoomParams & { alignmentInterval?: number; alignmentT
 
 回放时间轴对齐阈值, 超过此阈值会对齐回放播放器时间, 单位 ms, 默认值为 600 ms。
 
-- alignmentInterval?: number
+- **alignmentInterval?**: *number*
 
 ##### `since`
 
@@ -773,31 +1768,43 @@ RoomCallbacks: DisplayerCallbacks & { onCanRedoStepsUpdate: (canRedoSteps: numbe
 
 `RoomCallbacks` 包含白板房间的事件回调。该类型继承 [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/web/globals#displayercallbacks) 并增加以下成员：
 
-- **onConnection**: *(duration: number)=&gt;void* 房间连接成功回调，报告已经建立 WebSocket 连接，将要进入初始化阶段。
+- **onConnection**: *(duration: number)=&gt;void*
+
+  房间连接成功回调，报告已经建立 WebSocket 连接，将要进入初始化阶段。
 
 ##### `param`
 
 `duration` 建立连接的时间，单位是毫秒。
 
-- **onPhaseChanged**: *(phase: RoomPhase)=&gt;void* 房间连接状态发生变化的回调。
+- **onPhaseChanged**: *(phase: RoomPhase)=&gt;void*
+
+  房间连接状态发生变化的回调。
 
 ##### `param`
 
 `phase` 房间的连接状态，详见 [RoomPhase](/zh-CN/api-reference/whiteboard/web/enums/room-phase)。你可以阅读 [管理房间连接状态](/doc/whiteboard/javascript/whiteboard-sdk/basic-features/manage-room-phase) 了解更多信息。
 
-- **onRoomStateChanged**: *(modifyState: Partial)=&gt;void* 房间状态属性发生变化回调。 该回调仅返回发生变化的房间状态属性，未发生变化的房间状态字段均为空。
+- **onRoomStateChanged**: *(modifyState: Partial)=&gt;void*
+
+  房间状态属性发生变化回调。
+
+  该回调仅返回发生变化的房间状态属性，未发生变化的房间状态字段均为空。
 
 ##### `param`
 
 `modifyState` 发生变化的房间状态属性，详见 [RoomState](/zh-CN/api-reference/whiteboard/web/globals#roomstate)。
 
-- **onDisconnectWithError**: *(error: Error)=&gt;void* 白板 SDK 与白板服务器连接中断回调。
+- **onDisconnectWithError**: *(error: Error)=&gt;void*
+
+  白板 SDK 与白板服务器连接中断回调。
 
 ##### `param`
 
 `error` 错误信息。
 
-- **onObjectsLimit**: *limit: number, soft: boolean)=&gt;void* 白板中的元素数量超过限制回调。
+- **onObjectsLimit**: *limit: number, soft: boolean)=&gt;void*
+
+  白板中的元素数量超过限制回调。
 
 ##### `param`
 
@@ -807,7 +1814,9 @@ RoomCallbacks: DisplayerCallbacks & { onCanRedoStepsUpdate: (canRedoSteps: numbe
 
 `soft` 是否为软限制： - `true`：软限制。当白板中的元素数量超过限制时，SDK 会发出警告，但仍可以插入白板元素。 - `false`：硬限制。当白板中的元素数量超过限制时，SDK 会发出警告，本次添加元素操作无效，房间状态会被强制回退至操作前，且后端会将进行本次操作的用户踢出频道。
 
-- **onKickedWithReason**: *(reason: string)=&gt;void* 用户被服务器移出房间回调。
+- **onKickedWithReason**: *(reason: string)=&gt;void*
+
+  用户被服务器移出房间回调。
 
 ##### `param`
 
@@ -823,23 +1832,38 @@ RoomCallbacks: DisplayerCallbacks & { onCanRedoStepsUpdate: (canRedoSteps: numbe
 | replaceByOther | 被另一个用户顶替，当前用户被迫下线 |
 | crash | 服务器崩溃 |
 
-- **onCanUndoStepsUpdate**: *(canUndoSteps: number)=&gt;void* 可撤销次数发生变化回调。 当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#undo) 撤销上一步操作时，会触发该回调，报告剩余的可撤销次数。
+- **onCanUndoStepsUpdate**: *(canUndoSteps: number)=&gt;void*
+
+  可撤销次数发生变化回调。
+
+  当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#undo) 撤销上一步操作时，会触发该回调，报告剩余的可撤销次数。
 
 ##### `param`
 
 `canUndoSteps` 剩余的可撤销次数。
 
-- **onCanRedoStepsUpdate**: *(canRedoSteps: number)=&gt;void* 可重做次数发生变化回调。 当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#undo) 重做上一步操作时，会触发该回调，报告剩余的可重做次数。
+- **onCanRedoStepsUpdate**: *(canRedoSteps: number)=&gt;void*
+
+  可重做次数发生变化回调。
+
+  当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#undo) 重做上一步操作时，会触发该回调，报告剩余的可重做次数。
 
 ##### `param`
 
 `canRedoSteps` 剩余的可重做次数。
 
-- **willInterceptKeyboardEvent**: *(event: KeyboardEvent)=&gt;boolean* 是否拦截监听的键盘事件：
-  - true: 拦截。拦截后，该键盘事件不会触发回调。
-  - false: 不拦截。
-- **onKeyDown**: *(event: KeyboardEvent)=&gt;void* 键盘按下事件回调。
-- **onKeyUp**: *(event: KeyboardEvent)=&gt;void* 键盘松开事件回调。
+- **willInterceptKeyboardEvent**: *(event: KeyboardEvent)=&gt;boolean*
+
+  是否拦截监听的键盘事件：
+
+  - `true`: 拦截。拦截后，该键盘事件不会触发回调。
+  - `false`: 不拦截。
+- **onKeyDown**: *(event: KeyboardEvent)=&gt;void*
+
+  键盘按下事件回调。
+- **onKeyUp**: *(event: KeyboardEvent)=&gt;void*
+
+  键盘松开事件回调。
 
 <a id="roommember"></a>
 
@@ -851,6 +1875,30 @@ RoomMember: { memberId: number; memberState: MemberState; payload: UserPayload; 
 
 实时房间内互动模式（具有读写权限）用户的信息。
 
+#### Type declaration
+
+##### `memberId: number`
+
+用户 ID。
+
+在用户加入互动白板实时房间时，会自动分配用户 ID，用于标识房间内的用户。同一房间中的每个用户具有唯一的用户 ID。
+
+##### `memberState: MemberState`
+
+用户所有的白板工具状态，详见 [MemberState](/zh-CN/api-reference/whiteboard/web/globals#memberstate)。
+
+##### `payload: UserPayload`
+
+自定义用户信息，在用户加入房间时传入。详见 [UserPayload](/zh-CN/api-reference/whiteboard/web/globals#userpayload)。
+
+###### `since`
+
+v2.15.0
+
+##### `session: string`
+
+当前的 session ID。
+
 <a id="roomstate"></a>
 
 ### RoomState
@@ -861,8 +1909,12 @@ RoomState: DisplayerState & { broadcastState: Readonly<BroadcastState>; memberSt
 
 互动白板实时房间的所有状态。该类继承 [DisplayerState](/zh-CN/api-reference/whiteboard/web/globals#displayerstate) 且包含以下成员：
 
-- **memberState**: *MemberState* 当前使用的白板工具，详见 [MemberState](/zh-CN/api-reference/whiteboard/web/globals#memberstate)。
-- **broadcastState**: *Readonly* 当前的视角状态。
+- **memberState**: *MemberState*
+
+  当前使用的白板工具，详见 [MemberState](/zh-CN/api-reference/whiteboard/web/globals#memberstate)。
+- **broadcastState**: *Readonly*
+
+  当前的视角状态。
 
 <a id="scenedefinition"></a>
 
@@ -873,6 +1925,16 @@ SceneDefinition: { name?: string; ppt?: PptDescription }
 ```
 
 场景定义。
+
+#### Type declaration
+
+##### `name?: string`
+
+场景名称。
+
+##### `ppt?: PptDescription`
+
+在场景中展示的图片或动态 PPT。每个场景中可以展示一张图片或一页动态 PPT，你可以通过 `PptDescription` 设置待插入图片或动态 PPT 的宽、高、资源地址或预览图等。详见 [PptDescription](/zh-CN/api-reference/whiteboard/web/globals#pptdescription)。
 
 <a id="scenemap"></a>
 
@@ -894,6 +1956,36 @@ SceneState: { contextPath: string; index: number; sceneName: string; scenePath: 
 
 场景状态。
 
+#### Type declaration
+
+##### `contextPath: string`
+
+当前场景所属场景目录的路径。
+
+###### `since`
+
+2.10.3
+
+##### `index: number`
+
+当前场景在所属场景目录中的索引号。
+
+##### `sceneName: string`
+
+当前场景的名称。
+
+###### `since`
+
+2.10.3
+
+##### `scenePath: string`
+
+当前场景的路径。
+
+##### `scenes: ReadonlyArray<WhiteScene>`
+
+当前场景目录下所有场景的列表。
+
 <a id="scenescallbacks"></a>
 
 ### ScenesCallbacks
@@ -903,6 +1995,80 @@ ScenesCallbacks: { onAddScene: (scenesCallbacks: ScenesCallbacksNode, name: stri
 ```
 
 场景回调。
+
+#### Type declaration
+
+##### `onAddScene: (scenesCallbacks: ScenesCallbacksNode, name: string) => void`
+
+新增场景回调。
+
+###### `param`
+
+场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node)。
+
+###### `param`
+
+新增场景的场景名称。
+
+##### `onAddSceneGroup: (scenesCallbacks: ScenesCallbacksNode, name: string) => void`
+
+新增子场景目录回调。
+
+###### `param`
+
+场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node)。
+
+###### `param`
+
+新增的子场景目录的名称。
+
+##### `onRemoveScene: (scenesCallbacks: ScenesCallbacksNode, name: string) => void`
+
+删除场景回调。
+
+###### `param`
+
+场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node)。
+
+###### `param`
+
+被删除场景的场景名称。
+
+##### `onRemoveSceneGroup: (scenesCallbacks: ScenesCallbacksNode, name: string) => void`
+
+删除子场景目录回调。
+
+###### `param`
+
+场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node)。
+
+###### `param`
+
+被删除的子场景目录的名称。
+
+##### `onScenesCountUpdate: (scenesCallbacks: ScenesCallbacksNode, scenesCount: number) => void`
+
+指定场景目录下场景数量发生变化回调。
+
+###### `param`
+
+场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node)。
+
+###### `param`
+
+指定场景目录下当前的场景数量。
+
+##### `onScenesGroupCountUpdate: (scenesCallbacks: ScenesCallbacksNode, sceneGroupsCount: number) => void`
+
+指定场景目录下子场景目录数量发生变化回调。
+
+###### `param`
+
+场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node)。
+
+###### `param`
+
+指定场景目录下当前子场景目录的数量。
 
 <a id="size"></a>
 
@@ -914,6 +2080,16 @@ Size: { height: number; width: number }
 
 尺寸大小。
 
+#### Type declaration
+
+##### `height: number`
+
+高度。
+
+##### `width: number`
+
+宽度。
+
 <a id="textformat"></a>
 
 ### TextFormat
@@ -923,6 +2099,44 @@ TextFormat: { bold?: boolean; color?: Color; fontSize?: number; italic?: boolean
 ```
 
 字体样式。
+
+#### Type declaration
+
+##### `bold?: boolean`
+
+是否加粗：
+
+- `true`：加粗。
+- `false`：（默认）不加粗。
+
+##### `color?: Color`
+
+颜色，RGB 格式。例如， ` [0, 0, 255]` 代表蓝色。
+
+##### `fontSize?: number`
+
+字体大小，取值必须大于 0。
+
+##### `italic?: boolean`
+
+是否使用斜体：
+
+- `true`：使用斜体。
+- `false`：（默认）不使用斜体。
+
+##### `lineThrough?: boolean`
+
+是否加删除线：
+
+- `true`：加删除线。
+- `false`：（默认）不加删除线。
+
+##### `underline?: boolean`
+
+是否加下划线：
+
+- `true`：加下划线。
+- `false`：（默认）不加下划线。
 
 <a id="usercursoricons"></a>
 
@@ -954,8 +2168,14 @@ UserPayload: {} & { uid: string }
 
 自定义用户信息。
 
-- **[key: string]**: *any* key-value 结构的自定义用户信息，例如， `"avatar", "https://example.com/user.png"`。
-- **uid**: *string* 用户标识，字符串格式，不能超过 1024 字节。 请确保同一房间内每个用户 `uid` 的唯一性。
+- **[key: string]**: *any*
+
+  key-value 结构的自定义用户信息，例如， `"avatar", "https://example.com/user.png"`。
+- **uid**: *string*
+
+  用户标识，字符串格式，不能超过 1024 字节。
+
+  请确保同一房间内每个用户 `uid` 的唯一性。
 
 ##### `since`
 
@@ -971,6 +2191,16 @@ WhiteScene: { name: string; ppt?: PptDescription }
 
 白板场景。
 
+#### Type declaration
+
+##### `name: string`
+
+场景名称。
+
+##### `ppt?: PptDescription`
+
+在场景中展示的图片或动态 PPT。每个场景中可以展示一张图片或一页动态 PPT，你可以通过 [PptDescription](/zh-CN/api-reference/whiteboard/web/globals#pptdescription) 设置待插入图片或动态 PPT 的宽、高、资源地址或预览图等。
+
 <a id="whitewebsdkconfiguration"></a>
 
 ### WhiteWebSdkConfiguration
@@ -985,6 +2215,163 @@ WhiteWebSdkConfiguration: { appIdentifier: string; deviceType?: DeviceType; disa
 
 成功初始化 `WhiteWebSdk` 后，无法再调用 `WhiteWebSdkConfiguration` 中的任何方法修改 `WhiteWebSdk` 的配置。
 
+#### Type declaration
+
+##### `appIdentifier: string`
+
+白板项目的唯一标识。详见 [获取互动白板项目的安全密钥](/doc/whiteboard/javascript/whiteboard-sdk/get-started/enable-service#%E8%8E%B7%E5%8F%96%E4%BA%92%E5%8A%A8%E7%99%BD%E6%9D%BF%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%89%E5%85%A8%E5%AF%86%E9%92%A5)。
+
+##### `deviceType?: DeviceType`
+
+该客户端的设备类型，决定 SDK 如何处理鼠标事件和触碰事件。
+
+如果填写错误，会导致 SDK 对设备输入的响应行为不符合预期。如果不填，SDK 会根据内在逻辑自动判断设备的类型。
+
+##### `disableCurveAnimes?: boolean`
+
+是否关闭新铅笔工具（`pencil` ）的补间动画功能：
+
+- `true`：关闭补间动画功能。关闭该功能后，会缩短延时，但远端用户看到的笔迹绘制过程可能出现卡顿。
+- `false`：（默认）开启补间动画功能。开启后，当本地用户使用 `pencil` 在白板上绘制或书写时，SDK 会自动在关键帧之间插入帧，使远端用户看到的书写或绘制过程更加流畅，但会因此增加延时。
+
+###### `note`
+
+该属性仅在 `disableNewPencil` 设为 `fasle` 时生效。
+
+##### `disableNewPencilStroke?: boolean`
+
+是否关闭新铅笔的笔锋效果：
+
+- `true`：关闭笔锋效果。
+- `false`：（默认）开启笔锋效果。
+
+###### `note`
+
+该属性仅在 `disableNewPencil` 设为 `fasle` 时生效。
+
+##### `disableRotation?: boolean`
+
+是否关闭图片旋转：
+
+- `true`：禁止图片旋转。
+- `false`：（默认）开启图片旋转。开启后，可对选中的图片任意旋转。
+
+##### `fontFamily?: string`
+
+文字工具（`currentApplianceName="text"` ）的字体。若不传，SDK 会使用浏览器的默认字体。
+
+##### `fonts?: UserFonts`
+
+自定义字体。
+
+为显示动态 PPT 中的非常规字体，你需要先将字体文件上传到自己的业务服务器或云存储中并生成 URL 地址，然后在初始化 `WhiteWebSdk` 时，将 URL 地址传给 `fonts` 属性。详见 [UserFonts](/zh-CN/api-reference/whiteboard/web/globals#userfonts)。
+
+##### `handToolKey?: string`
+
+抓手工具对应的快捷键。
+
+按下该键时，会自动切换成抓手工具（`currentApplianceName="hand"` ）；松开后，切回原来的工具。如果不传，则关闭该快捷键功能。
+
+##### `invisiblePlugins?: ReadonlyArray<InvisiblePluginClass<string, any, any>>`
+
+不可见插件。
+
+##### `loggerOptions?: LoggerOptions`
+
+SDK 上报日志的选项，详见 [LoggerOptions](/zh-CN/api-reference/whiteboard/web/globals#loggeroptions)。
+
+##### `onWhiteSetupFailed?: (error: Error) => void`
+
+##### `onlyCallbackRemoteStateModify?: boolean`
+
+是否开启仅接收远端用户状态改变回调：
+
+- `true`：（默认）开启。开启该功能后，本地用户仅会接收到远端用户状态改变的回调，自身状态的改变不会触发回调。
+- `false`：关闭。关闭该功能后，本地用户会接收到远端用户状态改变的回调，也会接收到自身状态改变的回调。
+
+##### `plugins?: Plugins`
+
+组件插件。
+
+##### `preloadDynamicPPT?: boolean`
+
+是否在加载动态 PPT 首页时，一次性加载动态 PPT 中的所有图片资源：
+
+- `true`：一次性加载所有动态 PPT。
+- `false`: （默认）不一次性加载所有动态 PPT。
+
+**Note**
+
+Agora 不推荐设置 `preloadDynamicPPT(true)`，这样会使 PPT 显示缓慢。
+
+##### `reconnectionOptions?: Partial<ReconnectionOptions> | false`
+
+断线重连设置。默认开启自动断线重连。
+
+如果要关闭断线重连，你可以将 `reconnectionOptions` 设为 `false` 或将 `disableReconnect` 设为 `true`。 详见 [《实时房间状态管理》](https://developer.netless.link/document-zh/home/room-state-management)。
+
+##### `region?: string`
+
+数据中心，支持传入以下值：
+
+| `region` | 数据中心 | 服务区 |
+| --- | --- | --- |
+| `us-sv` | 美国硅谷 | 北美洲、南美洲 |
+| `sg` | 新加坡 | 新加坡、东亚、东南亚 |
+| `in-mum` | 印度孟买 | 印度 |
+| `eu` | 欧洲（法兰克福） | 欧洲 |
+| `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
+
+**Note**
+
+该方法设置的数据中心必须与 [创建房间](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-rooms) 时设置的数据中心一致；否则，SDK 将无法连接到房间。
+
+##### `renderEngine?: RenderEngine`
+
+白板上绘画的渲染模式。默认为 `Canvas`。
+
+##### `screenType?: ScreenType`
+
+该客户端的屏幕类型，用于调整手势识别参数。默认为 `Desktop`。
+
+##### `urlInterrupter?: (url: string) => string`
+
+##### `useMobXState?: boolean`
+
+是否用 MobX 监听 `displayer.state`：
+
+- `true`：用 MobX 监听 `displayer.state`。此时 `displayer.state` 会变成 MobX observable object，详见 [Creating observable state](https://mobx.js.org/observable-state.html#observable)。
+- `false`：不用 MobX 监听 `displayer.state`。
+
+##### `wrappedComponents?: WrappedComponents`
+
+由 `React.ComponentType` 类型组成的数组，用于包装白板的界面。默认值为 []。
+
+你可以使用如下代码对白板的界面进行自定义包装：
+
+###### `example`
+
+```text
+import React from "react";
+
+class WrappedComponent extends React.Component {
+
+    render() {
+        return (
+            <div>
+                <span>hello world</span>
+                {this.props.children}
+            </div>
+        );
+    }
+}
+
+const whiteWebSdk = new WhiteWebSdk({
+    appIdentifier: "$APP_IDENTIFIER",
+    wrappedComponents: [WrappedComponent],
+});
+```
+
 <a id="worldviewrectangle"></a>
 
 ### WorldViewRectangle
@@ -998,6 +2385,28 @@ WorldViewRectangle: { height: number; originX: number; originY: number; width: n
 视觉矩形是用户的视角必须容纳的区域。设置好视觉矩形后，SDK 会自动将视角会调整到刚好可以完整展示视觉矩形所表示的范围。
 
 你可以根据要展示的 PPT 幻灯片或图像的尺寸设置视觉矩形，以确保相同的内容在不同尺寸的屏幕上都可以完整显示。
+
+#### Type declaration
+
+##### `height: number`
+
+视觉矩形的高度。
+
+视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+##### `originX: number`
+
+视觉矩形左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+##### `originY: number`
+
+视觉矩形左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+##### `width: number`
+
+视觉矩形的宽度。
+
+视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
 
 <a id="wrappedcomponents"></a>
 
@@ -1274,8 +2683,8 @@ Returns boolean
 
 该 `Displayer` 对象是否为 `Player` 对象：
 
-- true：该 Displayer 对象是 Player 对象。
-- false：该 Displayer 对象不是 Player 对象。
+- `true`：该 `Displayer` 对象是 `Player` 对象。
+- `false`：该 `Displayer` 对象不是 `Player` 对象。
 
 <a id="isroom"></a>
 
@@ -1299,8 +2708,8 @@ Returns boolean
 
 `Displayer` 对象是否为 `Room` 对象：
 
-- true：该 Displayer 对象是 Room 对象。
-- false：该 Displayer 对象不是 Room 对象。
+- `true`：该 `Displayer` 对象是 `Room` 对象。
+- `false`：该 `Displayer` 对象不是 `Room` 对象。
 
 <a id="setasyncmoduleloadmode"></a>
 
