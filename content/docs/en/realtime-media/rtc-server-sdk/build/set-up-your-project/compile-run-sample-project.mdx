@@ -1,0 +1,442 @@
+---
+title: "Compile and run the sample project"
+description: "Set up, compile, and run the sample Server Gateway project provided by Agora."
+---
+
+<PlatformStructured platform="linux-cpp">
+
+Agora provides a runnable sample project with the Server Gateway SDK. This page shows you how to run the sample project to send and receive media streams.
+
+## Get the sample project
+
+[Download](/en/api-reference/sdks?product=server-gateway&platform=linux) the latest x86-64 SDK package and decompress the file. If you need the SDK build for other architectures, [submit a ticket](https://agora-ticket.agora.io/) to technical support.
+
+## Compile the sample project
+
+Run the following commands to compile the sample project:
+
+```bash
+# Switch to the sample project folder
+cd agora_rtc_sdk/example
+# Build the sample project
+./build-x86_64.sh
+# Sync and video/audio data needed by the project
+cd out
+../sync-data.sh
+# Export the libraries from the SDK to LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=../../agora_sdk:$LD_LIBRARY_PATH
+```
+
+## Send media streams from the server
+
+This section uses the `sample_send_h264_pcm` project to demonstrate sending media streams from the server.
+
+### Run the sample
+
+Run the following command to execute the `sample_send_h264_pcm` sample project.
+
+```bash
+# Run sample_send_h264_pcm to send video in H.264 format and audio in PCM format
+./sample_send_h264_pcm --token YOUR_RTC_TOKEN --channelId demo_channel --videoFile test_data/send_video.h264 --audioFile test_data/send_audio_16k_1ch.pcm
+```
+
+Replace the parameter value of `--token`, with your Video SDK temporary token. Replace the parameter value of `--channelId` with the value of your Video SDK channel ID.
+
+:::info
+Use the same Video SDK channel ID that you used to generate the temporary token.
+:::
+
+### Use the web demo to receive streams sent from the server
+
+To simulate a client receiving data in a browser, use the Agora Web demo.
+
+1. Use a PC or mobile device to open the [Agora Video SDK Web SDK sample project](https://webdemo.agora.io/basicVideoCall/index.html) and fill in the following fields:
+
+    - **APP ID**：Specify your Agora app ID. The ID must be the same as the one you used for your server.
+    - **Channel Name**：Specify the same channel name you used for the server.
+    - **Token**: Specify a valid Video SDK temporary token.
+
+2. Click **Join** to receive media streams from the server.
+
+    ![Agora Web demo receiving media streams](https://web-cdn.agora.io/docs-files/1650527522676)
+
+## Receive media streams from the client
+
+This section  uses the `sample_receive_h264_pcm` project to demonstrate receiving media streams from the client.
+
+### Run the sample
+
+Run the following command to launch the `sample_receive_h264_pcm` project.
+
+```bash
+# Run sample_receive_h264_pcm to receive video in H.264 format and audio in PCM format
+./sample_receive_h264_pcm --token YOUR_RTC_TOKEN --channelId demo_channel
+```
+
+Replace the parameter value of `--token`, with your Video SDK temporary token. Replace the parameter value of `--channelId` with the value of your Video SDK channel ID.
+
+When the sample project is running, the console outputs the following information:
+
+```text
+[ APP_LOG_INFO ] Subscribe streams from all remote users
+[ APP_LOG_INFO ] Start receiving audio & video data ...
+[ APP_LOG_INFO ] Created file received_audio.pcm to save received PCM samples
+[ APP_LOG_INFO ] onUserAudioTrackStateChanged: userId 4088243221, state 1, reason 0
+[ APP_LOG_INFO ] onUserAudioTrackStateChanged: userId 4088243221, state 2, reason 6
+[ APP_LOG_INFO ] onUserInfoUpdated: userId 4088243221, msg 0, val 0
+[ APP_LOG_INFO ] onUserInfoUpdated: userId 4088243221, msg 4, val 1
+[ APP_LOG_INFO ] onUserInfoUpdated: userId 4088243221, msg 8, val 1
+[ APP_LOG_INFO ] onUserInfoUpdated: userId 4088243221, msg 1, val 1
+```
+
+### Use the web demo to send media streams to the server
+
+1. Use a PC or mobile device to open the [Agora Video SDK Web SDK sample project](https://webdemo.agora.io/basicVideoCall/index.html) and specify the following fields:
+
+    - **APP ID**：Specify your Agora app ID. The ID must be the same as the one you used for your server.
+    - **Channel Name**：Specify the same channel name you used for the server.
+    - **Token**: Specify a valid Video SDK temporary token.
+
+2. Click **Join** to send media streams to the server.
+
+    When the sample server project is running, the console prints the following information:
+
+    ```text
+    [ APP_LOG_INFO ] onUserInfoUpdated: userId 436868190, msg 0, val 1
+    [ APP_LOG_INFO ] onUserInfoUpdated: userId 436868190, msg 4, val 1
+    [ APP_LOG_INFO ] onUserInfoUpdated: userId 436868190, msg 8, val 1
+    [ APP_LOG_INFO ] onUserInfoUpdated: userId 436868190, msg 1, val 1
+    [ APP_LOG_INFO ] onUserInfoUpdated: userId 436868190, msg 0, val 0
+    [ APP_LOG_INFO ] onUserInfoUpdated: userId 436868190, msg 1, val 0
+    [ APP_LOG_INFO ] onUserVideoTrackSubscribed: userId 436868190, codecType 1, encodedFrameOnly 1
+    [ APP_LOG_INFO ] onUserAudioTrackStateChanged: userId 436868190, state 1, reason 0
+    [ APP_LOG_INFO ] onUserAudioTrackStateChanged: userId 436868190, state 2, reason 6
+    [ APP_LOG_INFO ] Created file received_video.h264 to save received H264 frames
+    [ APP_LOG_INFO ] onUserAudioTrackStateChanged: userId 436868190, state 0, reason 7
+    ```
+
+    The received video and audio data is saved to the `received_video.h264` and `received_audio.pcm` files, respectively.
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-java">
+
+This page shows you how to implement a basic Hello World program after integrating Server Gateway SDK.
+
+1. [Create a new maven project](../../quickstart.mdx#create-a-maven-project) and [integrate the SDK](../../quickstart.mdx#integrate-the-sdk).
+
+1. Navigate to `my-app/src` and remove the `test` folder.
+
+    ```bash
+    rm -r test
+    ```
+
+2. Open `my-app/src/main/java/com/mycompany/app/App.java` and enter the following code. Replace `Your Token` and `Your App ID` with a valid Video SDK temporary token and your App ID.
+
+    ```java
+    import io.agora.rtc.SDK;
+    import io.agora.rtc.AgoraRtcConn;
+    import io.agora.rtc.AgoraService;
+    import io.agora.rtc.AgoraServiceConfig;
+    import io.agora.rtc.DefaultRtcConnObserver;
+    import io.agora.rtc.RtcConnInfo;
+
+    public class App {
+        public static class ConnObserver extends DefaultRtcConnObserver {
+            @Override
+            public void onConnected(AgoraRtcConn conn, RtcConnInfo rtcConnInfo, int reason) {
+            System.out.println("join success");
+            }
+        }
+
+        public static void main(String[] args) throws Exception {
+            String token = "Your Token";
+            SDK.load(); // ensure JNI library load
+            AgoraService service = new AgoraService();
+            AgoraServiceConfig config = new AgoraServiceConfig();
+            config.setEnableAudioProcessor(0);
+            config.setEnableAudioDevice(0);
+            config.setEnableVideo(0);
+            config.setContext(0);
+            config.setAppId("Your App ID");
+            service.initialize(config);
+
+            AgoraRtcConn conn = service.agoraRtcConnCreate(null);
+
+            conn.registerObserver(new ConnObserver());
+
+            conn.connect(token, "test_channel", "1");
+
+            Thread.sleep(2000);
+            conn.disconnect();
+            conn.destroy();
+            service.destroy();
+        }
+    }
+    ```
+
+    :::info
+    The channel name you use to connect to the Video SDK channel must be the same as the one you used to generate your Video SDK temporary token. In the following code, the channel name is set to "test_channel". If you use a different channel name to generate your Video SDK temporary token, replace "test_channel" with your own channel name.
+    :::
+
+3. Navigate to `my-app` and create a `lib` folder. Get the `linux-sdk` jar file from maven, and extract the files to the `lib` folder.
+
+    ```bash
+    mkdir lib
+    cd lib
+    wget https://repo1.maven.org/maven2/io/agora/rtc/linux-sdk/4.0.1/linux-sdk-4.0.1.jar
+    jar xvf linux-sdk-4.0.1.jar
+    ```
+
+    :::info
+    The `version` field in `dependencies` is the SDK version number, which needs to be updated according to the SDK version you integrate. For the latest SDK version number, refer to the [release notes](../../reference/release-notes.md).
+    :::
+
+4. Navigate to `my-app` and add the `lib/native/linux/x86_64` folder to the `LD_LIBRARY_PATH`.
+
+    ```bash
+    export LD_LIBRARY_PATH=lib/native/linux/x86_64/:$LD_LIBRARY_PATH
+    ```
+
+5. Build the project.
+
+    ```bash
+    mvn package
+    ```
+
+6. Run the app.
+
+    ```bash
+    java -cp target/agora-rtc-linux-java-1.0-SNAPSHOT.jar App
+    ```
+
+    The console prints the following information.
+
+    ```bash
+    $ java -cp target/agora-rtc-linux-java-1.0-SNAPSHOT.jar App
+    join success
+    ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="python">
+
+Agora provides a runnable sample project on GitHub. This page shows you how to clone and run the project to send and receive media streams.
+
+Execute the following command in the terminal to clone the repository locally:
+
+```bash
+git clone git@github.com:AgoraIO-Extensions/Agora-Python-Server-SDK.git
+```
+
+To find the sample projects, navigate to the `agora_rtc/examples` directory. This article demonstrates running the `example_audio_pcm_send` and `example_audio_pcm_receive` projects.
+
+The complete contents of the `examples` directory are as follows:
+
+```bash
+.
+└── agora_rtc
+    └── examples
+        ├── common  # Common components
+        │   ├── __init__.py
+        │   ├── audio_consumer.py
+        │   ├── example_base.py
+        │   ├── pacer.py
+        │   ├── parse_args.py
+        │   ├── path_utils.py
+        │   ├── push_audio_encoded_file.py
+        │   ├── push_audio_pcm_file.py
+        │   ├── push_video_encoded_file.py
+        │   └── push_video_yuv_file.py
+        ├── example_agora_parameter.py  # Set private parameters
+        ├── example_audio_encoded_receive.py  # Receive encoded audio data
+        ├── example_audio_encoded_send.py  # Send encoded audio data
+        ├── example_audio_pcm_loopback.py  # Loopback test
+        ├── example_audio_pcm_receive.py  # Receive raw audio data
+        ├── example_audio_pcm_receive_and_send.py  # Send and receive raw audio data
+        ├── example_audio_pcm_send.py  # Send raw audio data
+        ├── example_pcm_yuv_receive.py  # Receive raw video and audio data
+        ├── example_pcm_yuv_send.py  # Send raw video and audio data
+        ├── example_pcm_yuv_send_receive.py  # Send and receive raw video and audio data
+        ├── example_stream_message_receive.py  # Receive stream messages
+        ├── example_stream_message_send.py  # Send stream messages
+        ├── example_video_encoded_receive.py  # Receive encoded video data
+        ├── example_video_encoded_send.py  # Send encoded video data
+        ├── example_video_yuv_receive.py  # Receive YUV video data
+        ├── example_video_yuv_send.py  # Send YUV video data
+        └── observer  # Event listeners
+            ├── audio_frame_observer.py
+            ├── connection_observer.py
+            ├── local_user_observer.py
+            ├── video_encoded_frame_observer.py
+            └── video_frame_observer.py
+```
+
+### Run the server streaming sample
+
+To run the `example_audio_pcm_send` sample project, take the following steps:
+
+1. In the terminal, run the following command to execute the `example_audio_pcm_send` project to send PCM audio data. Modify the example parameter values as needed:
+
+    ```bash
+    python agora_rtc/examples/example_audio_pcm_send.py \
+    --appId=0a****************************99 \
+    --channelId=test_example \
+    --userId=6 \
+    --audioFile=./test_data/demo.pcm \
+    --sampleRate=16000 \
+    --numOfChannels=1
+    ```
+
+    Where:
+    - `appId` is the App ID for your Agora project.
+    - `channelId` is the channel name.
+    - `userId` is your user ID.
+    - `audioFile` specifies the storage path of the audio data file. To facilitate testing, Agora provides [test data](https://download.agora.io/demo/test/test_data_202408221437.zip) that you can download and decompress to the `Agora-Python-Server-SDK` directory for use.
+    - `sampleRate` defines the audio sampling rate.
+    - `numOfChannels` specifies the number of channels.
+
+1. When the server successfully connects to the channel, you see the following output in the terminal:
+
+    ```bash
+    INFO:common.parse_args:Parsed arguments:Namespace(appId='0a****************************99', token=None, channelId='test_example', connectionNumber='1', userId='6', audioFile='./test_data/demo.pcm', lowdelay=False, videoFile=None, sampleRate=16000, numOfChannels=1, fps=None, width=None, height=None, bitrate=None, message=None, hours='0', mode=1, value=0)
+    INFO:common.example_base:------channel_id: test_example, uid: 6
+    INFO:common.example_base:connect_and_release: 0, auto_subscribe_audio: 0
+    INFO:observer.connection_observer:on_connecting, agora_rtc_conn=<agora.rtc.rtc_connection.RTCConnection object at 0x103c173d0>, local_user_id=0, state=2, internal_uid=0 ,reason=0
+    INFO:observer.connection_observer:on_connected, agora_rtc_conn=<agora.rtc.rtc_connection.RTCConnection object at 0x103c173d0>, local_user_id=3997884694, state=3, internal_uid=0 ,reason=1
+    ```
+
+1. After successfully sending PCM audio data, the terminal displays the following output:
+
+    ```bash
+    INFO:common.push_audio_pcm_file:send pcm: count,ret=1, 0, 3200, 0.1
+    INFO:common.push_audio_pcm_file:send pcm: count,ret=2, 0, 3200, 0.1
+    ...
+    ```
+
+To simulate a client receiving PCM audio data in a browser, use the Agora real-time interactive Web Demo as follows:
+
+1. [Open the Web Demo](https://webdemo-global.agora.io/index.html) and fill in the initialization settings. The App ID must be the same as the App ID you specified when running the server.
+
+1. Select **Basic Voice Calling**, fill in the `ChannelId` you specified earlier in **Channel**, and click **Create Client** and **Join Channel** in that order.
+
+1. After you successfully join the channel, when there is a streaming user in the channel, Web Demo automatically fills in the user ID of the streaming user in the input box under **Step 4 Subscribe & Play**. Click the **Subscribe & Play** button to subscribe to the streaming user.
+
+    :::warning
+    When running the Demo, join the channel on the Web first, and then run the sample project on the server to connect to the channel. Otherwise, the input box under **Step 4 Subscribe & Play** does not automatically show the user ID, and the Web Demo is not able to successfully subscribe to the server.
+    :::
+
+1. After successfully subscribing, you hear the audio, and see the user ID of the subscribed stream under **Remote Stream:** in the Web Demo.
+
+### Run the server receiving sample
+
+To run the `example_audio_pcm_send` sample project, take the following steps:
+
+1. In the terminal, run the following command to execute the `example_audio_pcm_receive` project to receive PCM audio data. Modify the example parameter values as needed:
+
+    ```bash
+    python agora_rtc/examples/example_audio_pcm_receive.py \
+    --appId=0a****************************99 \
+    --channelId=test_example \
+    --userId=8 \
+    --sampleRate=16000 \
+    --numOfChannels=1
+    ```
+
+    Where:
+    - `appId` is the App ID for your Agora project.
+    - `channelId` is the channel name.
+    - `userId` is your user ID.
+    - `sampleRate` defines the audio sampling rate.
+    - `numOfChannels` specifies the number of channels.
+
+1. When the server successfully connects to the channel, you see the following output in the terminal:
+
+    ```bash
+    INFO:common.parse_args:Parsed arguments:Namespace(appId='0a****************************99', audioFile=None, bitrate=None, channelId='test_example', connectionNumber='1', fps=None, height=None, hours='0', lowdelay=False, message=None, numOfChannels=1, sampleRate=16000, token=None, userId='8', videoFile=None, width=None)
+    INFO:common.example_base:------channel_id: test_example, uid: 8
+    INFO:observer.connection_observer:on_connecting, agora_rtc_conn=<agora.rtc.rtc_connection.RTCConnection object at 0x7f419d81f4a8>, local_user_id=6, state=2, internal_uid=0 ,reason=0
+    # Successfully connected to the channel
+    INFO:observer.connection_observer:on_connected, agora_rtc_conn=<agora.rtc.rtc_connection.RTCConnection object at 0x7f419d81f4a8>, local_user_id=6, state=3, internal_uid=0 ,reason=1
+    ```
+
+1. Use the Agora real-time interactive [Web Demo](https://webdemo-global.agora.io/index.html) to simulate a client sending PCM audio data in the browser. Open the Web Demo and fill in the initialization settings. Use the same App ID you used to run the server example.
+
+1. Select **Basic Voice Calling**, fill in the `ChannelId`, you specified earlier, in **Channel**, and click **Create Client** and **Join Channel** in that order. After successfully joining the channel, you see the following output in the terminal:
+
+    ```bash
+    INFO:observer.connection_observer:on_user_joined, agora_rtc_conn=<agora.rtc.rtc_connection.RTCConnection object at 0x7f419d81f4a8>, user_id=45
+    INFO:observer.local_user_observer:on_user_info_updated, user_id=45, msg=0,val=1
+    INFO:observer.local_user_observer:on_user_info_updated, user_id=45, msg=4,val=1
+    ```
+
+1. In the Web Demo, click **Create Track & Publish** to publish the stream. After the Web client successfully publishes the stream, the server outputs the following content, indicating that the audio data is successfully received:
+
+    ```bash
+    INFO:observer.audio_frame_observer:on_playback_audio_frame_before_mixing, channelId=test_dys1, uid=45, type=0, samples_per_sec=16000, samples_per_channel=160, bytes_per_sample=2, channels=1, len=320
+    INFO:observer.audio_frame_observer:on_playback_audio_frame_before_mixing, file_path=/home/agora/Documents/Agora-Python-Server-SDK-dev-2.0/logs/audio_frame_observer/2024_09_27_17_46_37/test_dys1_45.pcm, len=320
+    ```
+
+    :::warning
+    When running the Demo, complete the channel connection on the server first, and then run the sample project on the Web to join the channel and stream concurrently. Otherwise, the server cannot successfully receive the audio stream from the Web.
+    :::
+
+</PlatformStructured>
+
+<PlatformStructured platform="go">
+
+Agora provides a runnable [sample project](https://github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK) on GitHub. This page shows you how to clone and run the project to send and receive media streams.
+
+To run the sample project, take the following steps:
+
+1. Clone the repository locally:
+
+    ```bash
+    git clone git@github.com:AgoraIO-Extensions/Agora-Golang-Server-SDK.git
+    ```
+
+1. Download the Agora SDK to `agora_sdk` or `agora_sdk_mac` directory:
+
+    ```bash
+    make deps
+    ```
+
+1. Build the SDK:
+
+    ```bash
+    make build
+    ```
+
+1. Download test data for running the examples:
+
+    ```bash
+    curl -o test_data.zip https://download.agora.io/demo/test/server_sdk_test_data_202410252135.zip
+    unzip test_data.zip
+    ```
+
+    You can also use your own data and modify the data path in examples.
+
+1. Build the basic examples:
+
+    ```bash
+    make examples
+    ```
+
+1. Run the basic example:
+
+    ```bash
+    cd ./bin
+    # Get AGORA_APP_ID and AGORA_APP_CERTIFICATE from agora console
+    export AGORA_APP_ID=xxxx
+    # To enable authentication for your project you need the AGORA_APP_CERTIFICATE from Agora console
+    export AGORA_APP_CERTIFICATE=xxx
+    # For linux, use the following command to load agora sdk library
+    export LD_LIBRARY_PATH=../agora_sdk
+    # For mac, use the following command
+    # export DYLD_LIBRARY_PATH=../agora_sdk_mac
+    ./send_recv_pcm
+    ```
+
+Follow the instructions in the [README](https://github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK/blob/main/README.md) to run the advanced examples.
+
+</PlatformStructured>

@@ -1580,7 +1580,7 @@ describe('DocsMainColumn', () => {
 
     expect(mainColumn).toHaveClass('min-w-0', 'bg-background');
     expect(mainColumn).not.toHaveClass('h-full', 'min-h-0', 'overflow-hidden');
-    expect(desktopContent).toHaveClass('hidden', 'lg:block');
+    expect(desktopContent).not.toHaveClass('hidden', 'lg:block');
     expect(desktopContent).not.toHaveClass(
       'docs-scrollbar',
       'h-full',
@@ -1686,21 +1686,28 @@ describe('DocsMainColumn', () => {
     expect(pager).toHaveClass('grid-cols-1', 'sm:grid-cols-2');
   });
 
-  it('keeps the mobile site footer outside the page footer semantics', async () => {
+  it('keeps one canonical article and footer in the docs main column', async () => {
     renderWithRouter(
       <DocsMainColumn>
-        <article>Body</article>
+        <article>
+          <h1 id="overview">Overview</h1>
+          <h2 id="setup">Setup</h2>
+        </article>
       </DocsMainColumn>,
     );
 
     const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
-    const pageFooter = within(desktopScroll).getByTestId('docs-page-footer');
     const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
+    const pageFooter = within(desktopScroll).getByTestId('docs-page-footer');
     const siteFooter = within(mobileFlow).getByTestId('docs-site-footer');
+    const ids = Array.from(document.querySelectorAll<HTMLElement>('[id]'))
+      .map((element) => element.id)
+      .filter(Boolean);
 
-    expect(
-      within(desktopScroll).queryByTestId('docs-site-footer'),
-    ).not.toBeInTheDocument();
+    expect(desktopScroll).toContainElement(mobileFlow);
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
+    expect(ids.filter((id, index) => ids.indexOf(id) !== index)).toEqual([]);
+    expect(screen.getAllByTestId('docs-page-footer')).toHaveLength(1);
     expect(pageFooter).not.toContainElement(siteFooter);
   });
 
