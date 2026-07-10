@@ -3,31 +3,33 @@ title: "Subscription packages"
 description: "Agora subscription package options and management."
 ---
 
-A subscription package is a prepaid billing method. You can purchase a package in the [`Agora Console`](https://console.agora.io/subscriptions/rtc-plans?tab=monthly) to cover usage for the current month.
+A subscription package is a prepaid billing method. You can purchase a package in the [`Agora Console`](https://console.agora.io/) to cover usage for the current month.
 
 This page explains how to purchase, and manage subscription and top-up packages.
 
 ### Purchase and upgrade
 
-By default, a new account is assigned the Free package when the first project is created. You can upgrade at any time to the Starter, Pro, Business, or Business Plus. Higher-tier packages provide greater discounts and lower unit prices. To upgrade:
+By default, a new account may be assigned a Free package when the first eligible project is created. You can upgrade to a paid package at any time. Available package tiers, discounts, and unit prices vary by product. To upgrade:
 
-- Log in to [Agora Console](https://console.agora.io/subscriptions/rtc-plans?tab=monthly).
+- Log in to [Agora Console](https://console.agora.io/).
 - In the sidebar, click **Subscriptions**.
-- Under **All Subscriptions**, click **RTC Prepaid Plans**.
-- Select your package and click **Subscribe**.
+- Under **All Subscriptions**, select the product subscription you want to manage, such as RTC, Signaling, Chat, or Agora Analytics.
+- Select your package and click **Subscribe** or **Upgrade**.
 
-  ![image](https://assets-docs.agora.io/images/video-sdk/prepaid-packages.png)
+  The following screenshot shows an RTC subscription package as an example:
+
+  ![RTC subscription package example](https://assets-docs.agora.io/images/video-sdk/prepaid-packages.png)
 
 :::note
-- For non-contracted customers, all packages, except the Enterprise package can be purchased directly from the Agora Console. To upgrade to the Enterprise package, contact [Agora sales](mailto:sales@agora.io).
-- You can upgrade sequentially or skip levels. For example, you may upgrade from Starter to Business Plus directly.
+- For non-contracted customers, most packages can be purchased directly from the Agora Console. Some enterprise or contracted packages may require contacting [Agora sales](mailto:sales@agora.io).
+- You can upgrade sequentially or skip levels when the product supports it.
 - Package upgrades take effect immediately and apply to the entire calendar month. If you make multiple upgrades on the same day, only the last upgrade is applied.
 - If your account has a negative balance, purchasing a prepaid package first charges your credit card for the outstanding balance, then for the package fee.
 :::
 
 #### Upgrade rules
 
-When you upgrade to a paid package, it becomes effective for the entire calendar month, regardless of the purchase date. You receive the full monthly allocation of included minutes. The cost of the previous package is deducted from the new package price, so you only pay the difference. If you request an upgrade after auto-renewal has triggered, you may upgrade for the next month as well.
+When you upgrade to a paid package, it becomes effective for the entire calendar month, regardless of the purchase date. You receive the full monthly allocation of the included quota. The cost of the previous package is deducted from the new package price, so you only pay the difference. If you request an upgrade after auto-renewal has triggered, you may upgrade for the next month as well.
 
 ### Renewal
 
