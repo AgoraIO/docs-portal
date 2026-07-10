@@ -40,9 +40,9 @@ Token 需要在你的服务端部署生成。不要在客户端生成 Token。
     | -------------- | --------------- |
     | `appID`          | App ID，详见[获取 App ID](/zh-CN/solutions/meeting/build/setup-and-access/enable-service#获取-app-id)。                       |
     | `appCertificate` | App 证书，详见[获取 App 证书](/zh-CN/solutions/meeting/build/setup-and-access/enable-service#获取-app-证书)。                      |
-    | `roomUuid`       | 房间 ID。和[灵动会议 API](/api-ref/meeting/android/client-api#fcruisceneconfig) 中 `roomId` 一致。                                                  |
-    | `userUuid`       | 用户 ID。此处填写的值必须和[启动会议](/api-ref/meeting/android/client-api#fcruiscenecreatorconfig)时传入的 `userId` 一致。 |
-    | `role`           | 房间内用户角色。和[灵动会议 API](/api-ref/meeting/android/client-api#fcruisceneconfig) 中 `userRole` 一致。    |
+    | `roomUuid`       | 房间 ID。和[灵动会议 API](/zh-CN/api-reference/meeting/android#fcruisceneconfig) 中 `roomId` 一致。                                                  |
+    | `userUuid`       | 用户 ID。此处填写的值必须和[启动会议](/zh-CN/api-reference/meeting/android#fcruiscenecreatorconfig)时传入的 `userId` 一致。 |
+    | `role`           | 房间内用户角色。和[灵动会议 API](/zh-CN/api-reference/meeting/android#fcruisceneconfig) 中 `userRole` 一致。    |
     | `expire`         | 设置 Token 的有效期，单位为秒。最长有效期为 24 小时。假设你设值为 600，Token 会在生成后 10 分钟过期。假设你设值超过 24 小时，Token 的有效期依然为 24 小时。假设你设值为 0，Token 一经生成立即过期。   |
 
     ```go

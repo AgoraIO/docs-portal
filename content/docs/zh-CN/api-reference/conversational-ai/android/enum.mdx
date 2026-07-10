@@ -1,0 +1,101 @@
+---
+title: "枚举类"
+---
+
+<a id="moduletype"></a>
+## ModuleType
+
+性能模块类型枚举。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `LLM` | 用于表示 LLM 推理延迟测量。 |
+| `MLLM` | 多模态大模型推理延迟测量。 |
+| `TTS` | 文本转语音合成延迟测量。 |
+| `Context` | 上下文处理延迟测量。 |
+| `UNKNOWN` | 用于表示未知类型。 |
+
+<a id="messagetype"></a>
+## MessageType
+
+用于区分系统中不同类型的消息。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `ASSISTANT` | AI 助理转写消息。 |
+| `USER` | 用户转写消息。 |
+| `ERROR` | 错误消息。 |
+| `METRICS` | 性能指标消息。 |
+| `INTERRUPT` | 中断消息。 |
+| `UNKNOWN` | 未知类型消息。 |
+| `MESSAGE_RECEIPT` | 消息回执。 |
+
+<a id="priority"></a>
+## Priority
+
+控制智能体在交互过程中处理传入消息的优先级。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `INTERRUPT` | 高优先级：立即中断当前交互并处理该消息，适用于紧急或时间敏感的内容。 |
+| `APPEND` | 中等优先级：在当前交互完成后排队处理该消息，适用于后续提问。 |
+| `IGNORE` | 低优先级：仅在智能体空闲时处理该消息，进行中的交互期间将被丢弃，适用于可选内容。 |
+
+<a id="agentstate"></a>
+## AgentState
+
+表示智能体当前的状态。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `SILENT` | 智能体处于静默状态。 |
+| `LISTENING` | 智能体处于监听状态。 |
+| `THINKING` | 智能体处于处理或思考状态。 |
+| `SPEAKING` | 智能体处于说话状态。 |
+| `UNKNOWN` | 智能体处于未知状态。 |
+
+<a id="transcriptrendermode"></a>
+## TranscriptRenderMode
+
+转写渲染模式。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `Word` | 逐词转写渲染。 |
+| `Text` | 全文转写渲染。 |
+
+<a id="transcripttype"></a>
+## TranscriptType
+
+转录来源类型。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `AGENT` | 智能体转录。 |
+| `USER` | 用户转录。 |
+
+<a id="transcriptstatus"></a>
+## TranscriptStatus
+
+表示转录的当前状态。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `IN_PROGRESS` | 转录仍在生成或语音仍在进行中。 |
+| `END` | 转录已正常完成。 |
+| `INTERRUPTED` | 转录在完成前被中断。 |
+| `UNKNOWN` | 未知状态。 |

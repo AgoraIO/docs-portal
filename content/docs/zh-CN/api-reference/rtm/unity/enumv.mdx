@@ -1,0 +1,194 @@
+---
+title: "枚举类"
+---
+
+<a id="areacode"></a>
+## RTM_AREA_CODE
+
+访问区域，即 SDK 连接的服务器所在的区域。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `CN`    |       `0x00000001`: 中国大陆。    |
+|   `NA`    |       `0x00000002`: 北美区域。    |
+|   `EU`    |       `0x00000004`: 欧洲区域。    |
+|   `AS`    |       `0x00000008`: 除中国大陆以外的亚洲区域。       |
+|   `JP`    |       `0x00000010`: 日本。    |
+|   `IN`    |       `0x00000020`: 印度。    |
+|   `GLOB`  |         `0xFFFFFFFF`: 全球。  |
+
+<a id="channeltype"></a>
+## RTM_CHANNEL_TYPE
+
+频道类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `MESSAGE`  | `1`: Message Channel         |
+|    `STREAM`  | `2`: Stream Channel       |
+
+<a id="connectionreason"></a>
+## RTM_CONNECTION_CHANGE_REASON
+
+SDK 连接状态改变的原因。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `CONNECTING`  | `0`: 建立网络连接中。         |
+|    `JOIN_SUCCESS`  | `1`: 成功加入频道。         |
+|    `INTERRUPTED`  | `2`: 网络连接中断。        |
+|    `BANNED_BY_SERVER`  | `3`: 网络连接被服务器禁止。                    |
+|    `JOIN_FAILED`  | `4`: SDK 连续 20 分钟无法加入频道，停止重连频道。        |
+|    `LEAVE_CHANNEL`  | `5`: 离开频道。            |
+|    `INVALID_APP_ID`  | `6`: 不是有效的 App ID，无法加入频道。   |
+|    `INVALID_CHANNEL_NAME`  | `7`: 不是有效的频道名，无法加入频道。     |
+|    `INVALID_TOKEN`  | `8`: Token 无效，无法加入频道。   |
+|    `TOKEN_EXPIRED`  | `9`: Token 过期，无法加入频道。  |
+|    `REJECTED_BY_SERVER`  | `10`: 被服务器禁止连接。    |
+|    `SETTING_PROXY_SERVER`  | `11`: 由于设置了代理服务器，SDK 尝试重连。    |
+|    `RENEW_TOKEN`  | `12`: 更新 Token 引起网络连接状态改变。        |
+|    `CLIENT_IP_ADDRESS_CHANGED`  | `13`: 由于网络类型，或网络运营商的 IP 或端口发生改变，客户端 IP 地址变更，SDK 尝试重连。  |
+|    `KEEP_ALIVE_TIMEOUT`  | `14`: SDK 和服务器连接保活超时，进入自动重连状态。  |
+|    `REJOIN_SUCCESS`  | `15`: 重新加入频道成功。  |
+|    `LOST`  | `16`: SDK 丢失与服务器的连接。      |
+|    `ECHO_TEST`  | `17`: 通话回声测试引起连接状态改变。       |
+|    `CLIENT_IP_ADDRESS_CHANGED_BY_USER`  | `18`: 用户变更客户端 IP 地址，SDK 尝试重连。     |
+|    `SAME_UID_LOGIN`  | `19`: 使用相同的用户 ID 从不同的设备加入同一频道。     |
+|    `TOO_MANY_BROADCASTERS`  | `20`: 频道内主播人数已达上限。    |
+|    `/`  | `21`: License 校验失败。    |
+|    `/`  | `22`: Stream Channel 不存在。    |
+|    `INCONSISTENT_APPID`  | `23`: App ID 与 Token 不匹配。    |
+|    `/`  | `10001`: SDK 登录 RTM 系统成功。    |
+|    `LOGOUT`  | `10002`: SDK 已退出 RTM 系统。    |
+|    `PRESENCE_NOT_READY`  | `10003`: Presence 服务未就绪。你需要重新调用 `LoginAsync` 方法登录 RTM 系统并重新执行对 SDK 的所有操作。    |
+
+<a id="connectionstate"></a>
+## RTM_CONNECTION_STATE
+
+SDK 连接状态。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `DISCONNECTED`  | `1`: SDK 已和服务器断开连接。         |
+|    `CONNECTING`  | `2`: SDK 正在连接服务器。         |
+|    `CONNECTED`  | `3`: SDK 已连上服务器。         |
+|    `RECONNECTING`  | `4`: SDK 和服务器断开连接，正在重新连接服务器。                     |
+|    `FAILED`  | `5`: SDK 无法连接服务器。           |
+
+<a id="encryptionmode"></a>
+## RTM_ENCRYPTION_MODE
+
+加密方式。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `NONE`  |         `0`: 不加密。                    |
+|   `AES_128_GCM`    |      `1`: 128 位 AES 加密，GCM 模式。      |
+|   `AES_256_GCM`    |      `2`: 256 位 AES 加密，GCM 模式。       |
+
+<a id="locktype"></a>
+## RTM_LOCK_EVENT_TYPE
+
+Lock 事件类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `SNAPSHOT`  |        `1`: 加入频道时 Lock 的快照信息。        |
+|   `SET`    |      `2`: 已设置 Lock。 |
+|   `REMOVED`  |        `3`: 已删除 Lock。       |
+|   `ACQUIRED`    |      `4`: 已获取 Lock。 |
+|   `RELEASED`  |        `5`: 已释放 Lock。        |
+|   `EXPIRED`    |      `6`: Lock 已过期。 |
+
+<a id="loglevel"></a>
+## RTM_LOG_LEVEL
+
+日志信息的输出等级。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `NONE`  |         `0x0000`: 不输出任何日志。                     |
+|   `INFO`    |       `0x0001`: 输出 `FATAL`、`ERROR`、`WARN`、`INFO` 级别的日志。我们推荐你将日志级别设为该等级。      |
+|   `WARN`    |       `0x0002`: 仅输出 `FATAL`、`ERROR`、`WARN` 级别的日志。        |
+|   `ERROR`    |      `0x0004`: 仅输出 `FATAL`、`ERROR` 级别的日志。      |
+|   `FATAL`    |      `0x0008`: 仅输出 `FATAL` 级别的日志。      |
+
+<a id="messagepriority"></a>
+## RTM_MESSAGE_PRIORITY
+
+消息优先级。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `HIGHEST` | `0`: 优先级最高。          |
+|    `HIGH`  | `1`: 优先级高。        |
+|    `NORMAL`  | `4`: 优先级正常。          |
+|    `LOW`  | `8`: 优先级低。        |
+
+<a id="messageqos"></a>
+## RTM_MESSAGE_QOS
+
+发送 Topic 消息时的 QoS 保障。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `UNORDERED`  | `0`: 消息数据到达时不保序。          |
+|    `ORDERED`  | `1`: 消息数据到达时保序。          |
+
+<a id="presencetype"></a>
+## RTM_PRESENCE_EVENT_TYPE
+
+Presence 事件类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `SNAPSHOT`  |        `1`: 加入频道时 Presence 的快照信息。                   |
+|   `INTERVAL`    |      `2`: 当频道内人数达到设定值后，频道内的事件通知将由实时通知转为定时通知。      |
+|   `REMOTE_JOIN`    |      `3`: 远端用户加入频道。      |
+|   `REMOTE_LEAVE`  |        `4`: 远端用户离开频道。                   |
+|   `REMOTE_TIMEOUT`    |      `5`: 远端用户连接超时。      |
+|   `REMOTE_STATE_CHANGED`    |    `6`: 远端用户的临时用户状态改变。      |
+|   `ERROR_OUT_OF_SERVICE`    |    `7`: 用户加入频道时未启用 Presence。      |
+
+<a id="proxytype"></a>
+## RTM_PROXY_TYPE
+
+代理类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `NONE`  |         `0`: 不开启 Proxy。                    |
+|   `HTTP`    |       `1`: 开启 HTTP 协议的 Proxy。      |
+
+<a id="storageeventtype"></a>
+## RTM_STORAGE_EVENT_TYPE
+
+Storage 事件类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+| `SNAPSHOT` | `1`: 用户第一次订阅 Channl Metadata 或 User Metadata，或加入频道时触发，本地用户会收到此类事件通知。 |
+|   `SET`    | `2`: 当调用 `SetChannelMetadataAsync` 或者 `SetUserMetadataAsync` 时触发。该事件仅在增量数据更新模式下返回。 |
+|  `UPDATE`  | `3`: 当调用设置、更新或删除 Channel Metadata 或 User Metadata 的方法时会返回该类型事件。|
+|  `REMOVE`  | `4`: 当调用 `RemoveChannelMetadataAsync` 或者 `RemoveUserMetadataAsync` 时触发。该事件仅在增量数据更新模式下返回。  |
+
+<a id="storagetype"></a>
+## RTM_STORAGE_TYPE
+
+Storage 类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `USER`  |        `1`: User Metadata 事件。         |
+|   `CHANNEL`    |      `2`: Channel Metadata 事件。 |
+
+<a id="topictype"></a>
+## RTM_TOPIC_EVENT_TYPE
+
+Topic 事件类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `SNAPSHOT`  |        `1`: 加入频道时 Topic 的快照信息。                  |
+|   `REMOTE_JOIN`    |      `2`: 远端用户加入 Topic。      |
+|   `REMOTE_LEAVE`    |      `3`: 远端用户离开 Topic。      |

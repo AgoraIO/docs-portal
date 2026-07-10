@@ -1,0 +1,382 @@
+---
+title: "IAgoraMediaRtcRecorderEventHandler 类"
+---
+
+<a id="onconnected"></a>
+## onConnected
+
+```cpp
+virtual void onConnected(const char *channelId, user_id_t uid) = 0;
+```
+
+SDK 与声网频道连接状态变为 `CONNECTION_STATE_CONNECTED(3)` 时触发的回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `uid` | `user_id_t` | 用户 ID。 |
+
+<a id="ondisconnected"></a>
+## onDisconnected
+
+```cpp
+virtual void onDisconnected(const char *channelId, user_id_t uid, CONNECTION_CHANGED_REASON_TYPE reason) = 0;
+```
+
+当 SDK 与声网频道的连接状态变为 `CONNECTION_STATE_DISCONNECTED(1)` 时触发的回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `uid` | `user_id_t` | 用户 ID。 |
+| `reason` | `CONNECTION_CHANGED_REASON_TYPE` | 连接状态变化的原因，详见 [`CONNECTION_CHANGED_REASON_TYPE`](/zh-CN/api-reference/local-server-recording/cpp/enum#connection_changed_reason_type)。 |
+
+<a id="onreconnected"></a>
+## onReconnected
+
+```cpp
+virtual void onReconnected(const char *channelId, user_id_t uid, CONNECTION_CHANGED_REASON_TYPE reason) = 0;
+```
+
+连接状态再次变为 `CONNECTION_STATE_CONNECTED(3)` 时触发的回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `uid` | `user_id_t` | 用户 ID。 |
+| `reason` | `CONNECTION_CHANGED_REASON_TYPE` | 连接状态变化的原因，详见 [`CONNECTION_CHANGED_REASON_TYPE`](/zh-CN/api-reference/local-server-recording/cpp/enum#connection_changed_reason_type)。 |
+
+<a id="onconnectionlost"></a>
+## onConnectionLost
+
+```cpp
+virtual void onConnectionLost(const char *channelId, user_id_t uid) = 0;
+```
+
+当 SDK 与声网频道失去连接时触发的回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `uid` | `user_id_t` | 用户 ID。 |
+
+<a id="onuserjoined"></a>
+## onUserJoined
+
+```cpp
+virtual void onUserJoined(const char *channelId, user_id_t uid) = 0;
+```
+
+远端用户成功加入频道回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `uid` | `user_id_t` | 远端用户 ID。 |
+
+<a id="onuserleft"></a>
+## onUserLeft
+
+```cpp
+virtual void onUserLeft(const char *channelId, user_id_t uid, USER_OFFLINE_REASON_TYPE reason) = 0;
+```
+
+远端用户离开频道回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `uid` | `user_id_t` | 远端用户 ID。 |
+| `reason` | `USER_OFFLINE_REASON_TYPE` | 远端用户离开频道的原因，详见 [`USER_OFFLINE_REASON_TYPE`](/zh-CN/api-reference/local-server-recording/cpp/enum#user_offline_reason_type)。 |
+
+<a id="onfirstremotevideodecoded"></a>
+## onFirstRemoteVideoDecoded
+
+```cpp
+virtual void onFirstRemoteVideoDecoded(const char *channelId, user_id_t userId, int width, int height, int elapsed) = 0;
+```
+
+远端视频首帧解码完成回调。
+
+该回调在 SDK 为录制端成功解码远端用户的视频首帧后触发。你可以通过该回调获取远端视频的分辨率以及解码所耗费的时间。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `userId` | `user_id_t` | 远端用户 ID。 |
+| `width` | `int` | 视频流的宽度（单位为像素）。 |
+| `height` | `int` | 视频流的高度（单位为像素）。 |
+| `elapsed` | `int` | 从远端用户加入频道到触发该回调的时间（单位为毫秒）。 |
+
+<a id="onfirstremoteaudiodecoded"></a>
+## onFirstRemoteAudioDecoded
+
+```cpp
+virtual void onFirstRemoteAudioDecoded(const char *channelId, user_id_t userId, int elapsed) = 0;
+```
+
+远端音频首帧解码回调。
+
+该回调在 SDK 为录音设备成功解码首帧远端音频时触发。你可以通过该回调了解远端用户音频流的接收和解码情况。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `userId` | `user_id_t` | 远端用户 ID，即发送音频流的用户。 |
+| `elapsed` | `int` | 从本地用户加入频道到触发该回调的时间（毫秒）。 |
+
+<a id="onaudiovolumeindication"></a>
+## onAudioVolumeIndication
+
+```cpp
+virtual void onAudioVolumeIndication(const char *channelId, const SpeakVolumeInfo* speakers,  unsigned int speakerNumber) = 0;
+```
+
+报告正在说话的用户、各说话者的音量，以及本地用户是否在说话。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `speakers` | `const SpeakVolumeInfo*` | 说话者的用户 ID 和音量信息数组。详见 [`SpeakVolumeInfo`](/zh-CN/api-reference/local-server-recording/cpp/struct#speakvolumeinfo)。 |
+| `speakerNumber` | `unsigned int` | 说话者的总人数。 |
+
+<a id="onactivespeaker"></a>
+## onActiveSpeaker
+
+```cpp
+virtual void onActiveSpeaker(const char *channelId, user_id_t userId) = 0;
+```
+
+检测到活跃发言人时触发的回调。
+
+你可以在 App 中添加相关功能，例如一旦检测到活跃发言人，就放大其头像。
+
+:::warning[注意]
+活跃发言人指在某一时间段内，以最大音量发言的用户，其用户 ID 会作为活跃发言人上报。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `userId` | `user_id_t` | 活跃发言人的用户 ID。为 `0` 表示本地用户。 |
+
+<a id="onuservideostatechanged"></a>
+## onUserVideoStateChanged
+
+```cpp
+virtual void onUserVideoStateChanged(const char *channelId, user_id_t userId, REMOTE_VIDEO_STATE state, REMOTE_VIDEO_STATE_REASON reason,int elapsed) = 0;
+```
+
+远端视频状态发生改变回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `userId` | `user_id_t` | 远端用户 ID，该用户的视频状态发生了变化。 |
+| `state` | `REMOTE_VIDEO_STATE` | 当前视频状态，详见 [`REMOTE_VIDEO_STATE`](/zh-CN/api-reference/local-server-recording/cpp/enum#remote_video_state)。 |
+| `reason` | `REMOTE_VIDEO_STATE_REASON` | 视频状态变化的原因，详见 [`REMOTE_VIDEO_STATE_REASON`](/zh-CN/api-reference/local-server-recording/cpp/enum#remote_video_state_reason)。 |
+| `elapsed` | `int` | 自该用户加入频道以来经过的时间（毫秒）。 |
+
+<a id="onuseraudiostatechanged"></a>
+## onUserAudioStateChanged
+
+```cpp
+virtual void onUserAudioStateChanged(const char *channelId, user_id_t userId, REMOTE_AUDIO_STATE state, REMOTE_AUDIO_STATE_REASON reason,int elapsed) = 0;
+```
+
+远端用户音频状态发生变化回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `userId` | `user_id_t` | 音频状态发生变化的远端用户 ID。 |
+| `state` | `REMOTE_AUDIO_STATE` | 当前的音频状态，详见 [`REMOTE_AUDIO_STATE`](/zh-CN/api-reference/local-server-recording/cpp/enum#remote_audio_state)。 |
+| `reason` | `REMOTE_AUDIO_STATE_REASON` | 音频状态变化的原因，详见 [`REMOTE_AUDIO_STATE_REASON`](/zh-CN/api-reference/local-server-recording/cpp/enum#remote_audio_state_reason)。 |
+| `elapsed` | `int` | 从该用户加入频道到触发该回调的时间（毫秒）。 |
+
+<a id="onremotevideostats"></a>
+## onRemoteVideoStats
+
+```cpp
+virtual void onRemoteVideoStats(const char *channelId, user_id_t userId, const RemoteVideoStatistics& stats) = 0;
+```
+
+报告远端视频统计信息的回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `userId` | `user_id_t` | 远端用户 ID。 |
+| `stats` | `const RemoteVideoStatistics&` | 视频的当前统计信息，详见 [`RemoteVideoStatistics`](/zh-CN/api-reference/local-server-recording/cpp/struct#remotevideostatistics)。 |
+
+<a id="onremoteaudiostats"></a>
+## onRemoteAudioStats
+
+```cpp
+virtual void onRemoteAudioStats(const char *channelId, user_id_t userId, const RemoteAudioStatistics& stats) = 0;
+```
+
+远端音频统计信息回调。
+
+该回调在 SDK 接收到远端用户的音频统计信息时触发。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char *` | 频道 ID。 |
+| `userId` | `user_id_t` | 远端用户 ID。 |
+| `stats` | `const RemoteAudioStatistics&` | 远端音频统计信息。详见 [`RemoteAudioStatistics`](/zh-CN/api-reference/local-server-recording/cpp/struct#remoteaudiostatistics)。 |
+
+<a id="onrecorderstatechanged"></a>
+## onRecorderStateChanged
+
+```cpp
+virtual void onRecorderStateChanged(const char* channelId, user_id_t userId, media::RecorderState state, media::RecorderReasonCode reason, const char* filename) = 0;
+```
+
+本地录制状态发生变化时的回调。
+
+当本地音视频录制状态发生变化时，SDK 会触发该回调，报告当前的录制状态以及状态变化的原因。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char*` | 频道名。 |
+| `userId` | `user_id_t` | 用户 ID。 |
+| `state` | `media::RecorderState` | 当前的录制状态，详见 [`RecorderState`](/zh-CN/api-reference/local-server-recording/cpp/enum#recorderstate)。 |
+| `reason` | `media::RecorderReasonCode` | 状态变化的原因，详见 [`RecorderReasonCode`](/zh-CN/api-reference/local-server-recording/cpp/enum#recorderreasoncode)。 |
+| `filename` | `const char*` | 录制流对应的文件名。 |
+
+<a id="onrecorderinfoupdated"></a>
+## onRecorderInfoUpdated
+
+```cpp
+virtual void onRecorderInfoUpdated(const char* channelId, user_id_t userId,const media::RecorderInfo& info) = 0;
+```
+
+录制信息更新回调。
+
+在你成功注册该回调并启用本地音视频录制后，SDK 会根据设置的 `recorderInfoUpdateInterval` 值定期触发该回调，报告当前录制文件的文件名、时长和大小。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char*` | 频道名。 |
+| `userId` | `user_id_t` | 用户 ID。 |
+| `info` | `const media::RecorderInfo&` | 录制文件的信息，详见 [`RecorderInfo`](/zh-CN/api-reference/local-server-recording/cpp/struct#recorderinfo)。 |
+
+<a id="onencryptionerror"></a>
+## onEncryptionError
+
+```cpp
+virtual void onEncryptionError(const char* channelId, ENCRYPTION_ERROR_TYPE errorType) = 0;
+```
+
+报告加密错误类型的回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char*` | 频道名。 |
+| `errorType` | `ENCRYPTION_ERROR_TYPE` | 加密错误类型，详见 [`ENCRYPTION_ERROR_TYPE`](/zh-CN/api-reference/local-server-recording/cpp/enum#encryption_error_type)。 |
+
+<a id="onerror"></a>
+## onError
+
+```cpp
+virtual void onError(const char* channelId, ERROR_CODE_TYPE error, const char* msg) = 0;
+```
+
+报告错误码和错误信息。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char*` | 频道 ID。 |
+| `error` | `ERROR_CODE_TYPE` | 错误码，详见 [`ERROR_CODE_TYPE`](/zh-CN/api-reference/local-server-recording/cpp/enum#error_code_type)。 |
+| `msg` | `const char*` | 错误信息。 |
+
+<a id="ontokenprivilegewillexpire"></a>
+## onTokenPrivilegeWillExpire
+
+```cpp
+virtual void onTokenPrivilegeWillExpire(const char* channelId, const char* token) = 0;
+```
+
+ Token 在 30 秒后即将过期时触发的回调。
+
+当 Token 在 30 秒后即将过期时，SDK 会触发该回调，用于提醒你在权限过期前更新 Token。收到该回调后，你必须在你的服务器上生成新的 Token，并调用 [`renewToken`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#renewtoken) 方法将其传递给 SDK。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char*` | 频道名称。 |
+| `token` | `const char*` | 将在 30 秒后过期的 Token。 |
+
+<a id="ontokenprivilegedidexpire"></a>
+## onTokenPrivilegeDidExpire
+
+```cpp
+virtual void onTokenPrivilegeDidExpire(const char* channelId) = 0;
+```
+
+ Token 过期回调。
+
+收到该回调后，你需要在你的服务器上生成一个新的 Token，并调用 [`renewToken`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#renewtoken) 方法将新的 Token 传递给 SDK。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char*` | 频道名。 |
+
+<a id="onvideosizechanged"></a>
+## onVideoSizeChanged
+
+```cpp
+virtual void onVideoSizeChanged(const char* channelId, user_id_t userId, int width, int height, int rotation) {}
+```
+
+视频尺寸发生变化回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `const char*` | 频道 ID。 |
+| `userId` | `user_id_t` | 远端用户 ID。 |
+| `width` | `int` | 视频流的宽度。 |
+| `height` | `int` | 视频流的高度。 |
+| `rotation` | `int` | 视频流的旋转角度。 |

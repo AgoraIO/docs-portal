@@ -20,7 +20,7 @@ title: "课堂录制"
 
 4. 灵动课堂服务端开始录制课堂内容。
 
-如果你希望实现自动开始录制，可以在服务端监听[课堂开始事件](/zh-CN/solutions/flexible-classroom/reference/api-sync#查询所有课堂事件)，然后调用[设置录制状态](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)接口开启录制。
+如果你希望实现自动开始录制，可以在服务端监听[课堂开始事件](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#查询所有课堂事件)，然后调用[设置录制状态](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)接口开启录制。
 
 如果你想要自己实现课堂录制，可参考下图。图中标为紫色的步骤为你需要进行的操作。
 
@@ -32,7 +32,7 @@ title: "课堂录制"
 
 ## 启动课堂录制
 
-无论你是在客户端还是服务端启动课堂录制，本质都是调用灵动课堂服务端[设置录制状态接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)。启动录制时，你需要关注以下参数：
+无论你是在客户端还是服务端启动课堂录制，本质都是调用灵动课堂服务端[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)。启动录制时，你需要关注以下参数：
 
 - `mode`: 设为 `web`，启用[页面录制模式](https://docs.agora.io/cn/cloud-recording/cloud_recording_webpage_mode)。
 - `rootUrl`: 待录制页面的根地址。灵动课堂云服务会自动在该 URL 后拼接 `roomUuid`、`roomType` 等参数，而待录制页面需要提取这些信息在调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法时传入。
@@ -99,7 +99,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 ## 获取录制状态
 
-启动录制后，灵动课堂服务端会产生[录制状态变更](/zh-CN/solutions/flexible-classroom/reference/api-sync#录制状态变更)的事件。你可以通过[查询指定类型事件](/zh-CN/solutions/flexible-classroom/reference/api-sync#查询指定类型事件)或[查询所有课堂事件](/zh-CN/solutions/flexible-classroom/reference/api-sync#查询所有课堂事件)来获取录制状态。你需要关注录制状态变更事件中的 `reason` 字段：
+启动录制后，灵动课堂服务端会产生[录制状态变更](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#录制状态变更)的事件。你可以通过[查询指定类型事件](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#查询指定类型事件)或[查询所有课堂事件](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#查询所有课堂事件)来获取录制状态。你需要关注录制状态变更事件中的 `reason` 字段：
 
 - `1`: 正常开始录制。
 - `2`: 正常停止录制。
@@ -115,7 +115,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 由于⻚面录制服务端加载待录制⻚面需要一段时间，但切片会在这之前开始，因此生成的录制文件开头会有一段时间的白屏。如果你想要去除白屏，需进行以下操作：
 
-1. 在课堂开始前就调用灵动课堂服务端[设置录制状态接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)并将 `onhold` 参数设为 `true`。灵动课堂云服务会在启动页面录制任务后立即暂停录制。⻚面录制服务端会打开并渲染待录制页面，但不生成切片文件，而是加载好待录制⻚面后待命。示例包体如下：
+1. 在课堂开始前就调用灵动课堂服务端[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)并将 `onhold` 参数设为 `true`。灵动课堂云服务会在启动页面录制任务后立即暂停录制。⻚面录制服务端会打开并渲染待录制页面，但不生成切片文件，而是加载好待录制⻚面后待命。示例包体如下：
 
    ```json
    {
@@ -127,7 +127,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
    }
    ```
 
-2. 当录制页面调用 `AgoraEduSDK.setRecordReady()` 完成后，即录制页面加载成功后，再调用[更新录制设置接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#更新录制设置)，将 `onhold` 参数设置为 `false` 来正式开始录制，进行录制切片。示例包体如下：
+2. 当录制页面调用 `AgoraEduSDK.setRecordReady()` 完成后，即录制页面加载成功后，再调用[更新录制设置接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#更新录制设置)，将 `onhold` 参数设置为 `false` 来正式开始录制，进行录制切片。示例包体如下：
 
    ```json
    {
@@ -139,7 +139,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 ### 提高屏幕共享清晰度
 
-实际上课中，老师可能会通过屏幕共享来分享课件等内容。如果你对屏幕共享、白板等录制内容的清晰度要求较高，可在调用[设置录制状态接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)时设置以下参数：
+实际上课中，老师可能会通过屏幕共享来分享课件等内容。如果你对屏幕共享、白板等录制内容的清晰度要求较高，可在调用[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)时设置以下参数：
 
 - 将 `videoWidth` 设为 1920。
 - 将 `videoHeight` 设为 1080。
@@ -179,7 +179,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 4. 灵动课堂服务端开始录制课堂内容。
 
-如果你希望实现自动开始录制，可以在服务端监听[课堂开始事件](/zh-CN/solutions/flexible-classroom/reference/api-sync#查询所有课堂事件)，然后调用[设置录制状态](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)接口开启录制。
+如果你希望实现自动开始录制，可以在服务端监听[课堂开始事件](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#查询所有课堂事件)，然后调用[设置录制状态](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)接口开启录制。
 
 如果你想要自己实现课堂录制，可参考下图。图中标为紫色的步骤为你需要进行的操作。
 
@@ -191,7 +191,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 ## 启动课堂录制
 
-无论你是在客户端还是服务端启动课堂录制，本质都是调用灵动课堂服务端[设置录制状态接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)。启动录制时，你需要关注以下参数：
+无论你是在客户端还是服务端启动课堂录制，本质都是调用灵动课堂服务端[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)。启动录制时，你需要关注以下参数：
 
 - `mode`: 设为 `web`，启用[页面录制模式](https://docs.agora.io/cn/cloud-recording/cloud_recording_webpage_mode)。
 - `rootUrl`: 待录制页面的根地址。灵动课堂云服务会自动在该 URL 后拼接 `roomUuid`、`roomType` 等参数，而待录制页面需要提取这些信息在调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法时传入。
@@ -258,7 +258,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 ## 获取录制状态
 
-启动录制后，灵动课堂服务端会产生[录制状态变更](/zh-CN/solutions/flexible-classroom/reference/api-sync#录制状态变更)的事件。你可以通过[查询指定类型事件](/zh-CN/solutions/flexible-classroom/reference/api-sync#查询指定类型事件)或[查询所有课堂事件](/zh-CN/solutions/flexible-classroom/reference/api-sync#查询所有课堂事件)来获取录制状态。你需要关注录制状态变更事件中的 `reason` 字段：
+启动录制后，灵动课堂服务端会产生[录制状态变更](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#录制状态变更)的事件。你可以通过[查询指定类型事件](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#查询指定类型事件)或[查询所有课堂事件](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#查询所有课堂事件)来获取录制状态。你需要关注录制状态变更事件中的 `reason` 字段：
 
 - `1`: 正常开始录制。
 - `2`: 正常停止录制。
@@ -274,7 +274,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 由于⻚面录制服务端加载待录制⻚面需要一段时间，但切片会在这之前开始，因此生成的录制文件开头会有一段时间的白屏。如果你想要去除白屏，需进行以下操作：
 
-1. 在课堂开始前就调用灵动课堂服务端[设置录制状态接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)并将 `onhold` 参数设为 `true`。灵动课堂云服务会在启动页面录制任务后立即暂停录制。⻚面录制服务端会打开并渲染待录制页面，但不生成切片文件，而是加载好待录制⻚面后待命。示例包体如下：
+1. 在课堂开始前就调用灵动课堂服务端[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)并将 `onhold` 参数设为 `true`。灵动课堂云服务会在启动页面录制任务后立即暂停录制。⻚面录制服务端会打开并渲染待录制页面，但不生成切片文件，而是加载好待录制⻚面后待命。示例包体如下：
 
    ```json
    {
@@ -286,7 +286,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
    }
    ```
 
-2. 当录制页面调用 `AgoraEduSDK.setRecordReady()` 完成后，即录制页面加载成功后，再调用[更新录制设置接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#更新录制设置)，将 `onhold` 参数设置为 `false` 来正式开始录制，进行录制切片。示例包体如下：
+2. 当录制页面调用 `AgoraEduSDK.setRecordReady()` 完成后，即录制页面加载成功后，再调用[更新录制设置接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#更新录制设置)，将 `onhold` 参数设置为 `false` 来正式开始录制，进行录制切片。示例包体如下：
 
    ```json
    {
@@ -298,7 +298,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 ### 提高屏幕共享清晰度
 
-实际上课中，老师可能会通过屏幕共享来分享课件等内容。如果你对屏幕共享、白板等录制内容的清晰度要求较高，可在调用[设置录制状态接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)时设置以下参数：
+实际上课中，老师可能会通过屏幕共享来分享课件等内容。如果你对屏幕共享、白板等录制内容的清晰度要求较高，可在调用[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)时设置以下参数：
 
 - 将 `videoWidth` 设为 1920。
 - 将 `videoHeight` 设为 1080。
@@ -338,7 +338,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 4. 灵动课堂服务端开始录制课堂内容。
 
-如果你希望实现自动开始录制，可以在服务端监听[课堂开始事件](/zh-CN/solutions/flexible-classroom/reference/api-sync#查询所有课堂事件)，然后调用[设置录制状态](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)接口开启录制。
+如果你希望实现自动开始录制，可以在服务端监听[课堂开始事件](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#查询所有课堂事件)，然后调用[设置录制状态](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)接口开启录制。
 
 如果你想要自己实现课堂录制，可参考下图。图中标为紫色的步骤为你需要进行的操作。
 
@@ -350,7 +350,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 ## 启动课堂录制
 
-无论你是在客户端还是服务端启动课堂录制，本质都是调用灵动课堂服务端[设置录制状态接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)。启动录制时，你需要关注以下参数：
+无论你是在客户端还是服务端启动课堂录制，本质都是调用灵动课堂服务端[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)。启动录制时，你需要关注以下参数：
 
 - `mode`: 设为 `web`，启用[页面录制模式](https://docs.agora.io/cn/cloud-recording/cloud_recording_webpage_mode)。
 - `rootUrl`: 待录制页面的根地址。灵动课堂云服务会自动在该 URL 后拼接 `roomUuid`、`roomType` 等参数，而待录制页面需要提取这些信息在调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法时传入。
@@ -417,7 +417,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 ## 获取录制状态
 
-启动录制后，灵动课堂服务端会产生[录制状态变更](/zh-CN/solutions/flexible-classroom/reference/api-sync#录制状态变更)的事件。你可以通过[查询指定类型事件](/zh-CN/solutions/flexible-classroom/reference/api-sync#查询指定类型事件)或[查询所有课堂事件](/zh-CN/solutions/flexible-classroom/reference/api-sync#查询所有课堂事件)来获取录制状态。你需要关注录制状态变更事件中的 `reason` 字段：
+启动录制后，灵动课堂服务端会产生[录制状态变更](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#录制状态变更)的事件。你可以通过[查询指定类型事件](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#查询指定类型事件)或[查询所有课堂事件](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#查询所有课堂事件)来获取录制状态。你需要关注录制状态变更事件中的 `reason` 字段：
 
 - `1`: 正常开始录制。
 - `2`: 正常停止录制。
@@ -433,7 +433,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 由于⻚面录制服务端加载待录制⻚面需要一段时间，但切片会在这之前开始，因此生成的录制文件开头会有一段时间的白屏。如果你想要去除白屏，需进行以下操作：
 
-1. 在课堂开始前就调用灵动课堂服务端[设置录制状态接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)并将 `onhold` 参数设为 `true`。灵动课堂云服务会在启动页面录制任务后立即暂停录制。⻚面录制服务端会打开并渲染待录制页面，但不生成切片文件，而是加载好待录制⻚面后待命。示例包体如下：
+1. 在课堂开始前就调用灵动课堂服务端[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)并将 `onhold` 参数设为 `true`。灵动课堂云服务会在启动页面录制任务后立即暂停录制。⻚面录制服务端会打开并渲染待录制页面，但不生成切片文件，而是加载好待录制⻚面后待命。示例包体如下：
 
    ```json
    {
@@ -445,7 +445,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
    }
    ```
 
-2. 当录制页面调用 `AgoraEduSDK.setRecordReady()` 完成后，即录制页面加载成功后，再调用[更新录制设置接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#更新录制设置)，将 `onhold` 参数设置为 `false` 来正式开始录制，进行录制切片。示例包体如下：
+2. 当录制页面调用 `AgoraEduSDK.setRecordReady()` 完成后，即录制页面加载成功后，再调用[更新录制设置接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#更新录制设置)，将 `onhold` 参数设置为 `false` 来正式开始录制，进行录制切片。示例包体如下：
 
    ```json
    {
@@ -457,7 +457,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 ### 提高屏幕共享清晰度
 
-实际上课中，老师可能会通过屏幕共享来分享课件等内容。如果你对屏幕共享、白板等录制内容的清晰度要求较高，可在调用[设置录制状态接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)时设置以下参数：
+实际上课中，老师可能会通过屏幕共享来分享课件等内容。如果你对屏幕共享、白板等录制内容的清晰度要求较高，可在调用[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)时设置以下参数：
 
 - 将 `videoWidth` 设为 1920。
 - 将 `videoHeight` 设为 1080。
@@ -497,7 +497,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 4. 灵动课堂服务端开始录制课堂内容。
 
-如果你希望实现自动开始录制，可以在服务端监听[课堂开始事件](/zh-CN/solutions/flexible-classroom/reference/api-sync#查询所有课堂事件)，然后调用[设置录制状态](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)接口开启录制。
+如果你希望实现自动开始录制，可以在服务端监听[课堂开始事件](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#查询所有课堂事件)，然后调用[设置录制状态](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)接口开启录制。
 
 如果你想要自己实现课堂录制，可参考下图。图中标为紫色的步骤为你需要进行的操作。
 
@@ -509,7 +509,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 ## 启动课堂录制
 
-无论你是在客户端还是服务端启动课堂录制，本质都是调用灵动课堂服务端[设置录制状态接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)。启动录制时，你需要关注以下参数：
+无论你是在客户端还是服务端启动课堂录制，本质都是调用灵动课堂服务端[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)。启动录制时，你需要关注以下参数：
 
 - `mode`: 设为 `web`，启用[页面录制模式](https://docs.agora.io/cn/cloud-recording/cloud_recording_webpage_mode)。
 - `rootUrl`: 待录制页面的根地址。灵动课堂云服务会自动在该 URL 后拼接 `roomUuid`、`roomType` 等参数，而待录制页面需要提取这些信息在调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法时传入。
@@ -576,7 +576,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 ## 获取录制状态
 
-启动录制后，灵动课堂服务端会产生[录制状态变更](/zh-CN/solutions/flexible-classroom/reference/api-sync#录制状态变更)的事件。你可以通过[查询指定类型事件](/zh-CN/solutions/flexible-classroom/reference/api-sync#查询指定类型事件)或[查询所有课堂事件](/zh-CN/solutions/flexible-classroom/reference/api-sync#查询所有课堂事件)来获取录制状态。你需要关注录制状态变更事件中的 `reason` 字段：
+启动录制后，灵动课堂服务端会产生[录制状态变更](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#录制状态变更)的事件。你可以通过[查询指定类型事件](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#查询指定类型事件)或[查询所有课堂事件](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync#查询所有课堂事件)来获取录制状态。你需要关注录制状态变更事件中的 `reason` 字段：
 
 - `1`: 正常开始录制。
 - `2`: 正常停止录制。
@@ -592,7 +592,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 由于⻚面录制服务端加载待录制⻚面需要一段时间，但切片会在这之前开始，因此生成的录制文件开头会有一段时间的白屏。如果你想要去除白屏，需进行以下操作：
 
-1. 在课堂开始前就调用灵动课堂服务端[设置录制状态接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)并将 `onhold` 参数设为 `true`。灵动课堂云服务会在启动页面录制任务后立即暂停录制。⻚面录制服务端会打开并渲染待录制页面，但不生成切片文件，而是加载好待录制⻚面后待命。示例包体如下：
+1. 在课堂开始前就调用灵动课堂服务端[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)并将 `onhold` 参数设为 `true`。灵动课堂云服务会在启动页面录制任务后立即暂停录制。⻚面录制服务端会打开并渲染待录制页面，但不生成切片文件，而是加载好待录制⻚面后待命。示例包体如下：
 
    ```json
    {
@@ -604,7 +604,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
    }
    ```
 
-2. 当录制页面调用 `AgoraEduSDK.setRecordReady()` 完成后，即录制页面加载成功后，再调用[更新录制设置接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#更新录制设置)，将 `onhold` 参数设置为 `false` 来正式开始录制，进行录制切片。示例包体如下：
+2. 当录制页面调用 `AgoraEduSDK.setRecordReady()` 完成后，即录制页面加载成功后，再调用[更新录制设置接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#更新录制设置)，将 `onhold` 参数设置为 `false` 来正式开始录制，进行录制切片。示例包体如下：
 
    ```json
    {
@@ -616,7 +616,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 ### 提高屏幕共享清晰度
 
-实际上课中，老师可能会通过屏幕共享来分享课件等内容。如果你对屏幕共享、白板等录制内容的清晰度要求较高，可在调用[设置录制状态接口](/zh-CN/solutions/flexible-classroom/reference/api-recording#设置录制状态)时设置以下参数：
+实际上课中，老师可能会通过屏幕共享来分享课件等内容。如果你对屏幕共享、白板等录制内容的清晰度要求较高，可在调用[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)时设置以下参数：
 
 - 将 `videoWidth` 设为 1920。
 - 将 `videoHeight` 设为 1080。

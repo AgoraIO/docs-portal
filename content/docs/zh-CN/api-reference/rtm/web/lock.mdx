@@ -1,0 +1,423 @@
+---
+title: "锁"
+---
+
+临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。
+
+:::info[信息]
+客户端 SDK 具备设置、删除、撤销锁的能力，我们建议你根据实际业务需求控制端侧对锁的操作权限。
+:::
+
+## setLock
+
+### 接口描述
+
+你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `SET` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `setLock` 方法：
+
+```javascript
+rtm.lock.setLock(
+    channelName: string,
+    channelType: string,
+    lockName: string,
+    options?: object
+): Promise<SetLockResponse>;
+```
+
+|     参数      |  类型  | 是否必填 | 默认值 | 描述        |
+| ---------- | --- | ----- | --- | ---- |
+| `channelName` | string |   必填   |   -    | 频道名称。  |
+| `channelType` | string |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/web/enumv#channeltype)。 |
+|  `lockName`   | string |   必填   |   -    | 锁的名称。  |
+|   `options`   | object |   选填   |   -    | 配置锁的选项。                    |
+
+`options` 包含以下属性：
+
+| 属性  |  类型  | 是否必填 | 默认值 |                      描述                       |
+| -- | --- | ----- | --- | ------------- |
+| `ttl` | number |   选填   |  `10`  | 设置锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `lock` 事件通知的用户会收到 `RELEASED` 事件。 |
+
+### 基本用法
+
+```javascript
+try{
+    const result = await rtm.Lock.setLock(
+        channel:"my_channel",
+        channelType:"STREAM",
+        lockName: "my_lock",
+        { ttl: 30 }
+    );
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `SetLockResponse` 类型数据：
+
+```javascript
+type SetLockResponse = {
+    timestamp: number,              // 预留字段。
+    channelName : string,           // 频道名称。
+    channelType : string,           // 频道类型。
+    lockName : string                // 锁名称。
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## acquireLock
+
+### 接口描述
+
+成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `ACQUIRED` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `acquireLock` 方法：
+
+```javascript
+rtm.lock.acquireLock(
+    channelName: string,
+    channelType: string,
+    lockName: string,
+    options?: object
+): Promise<AcquireLockResponse>;
+```
+
+|     参数      |  类型  | 是否必填 | 默认值 | 描述        |
+| ---------- | --- | ----- | --- | ---- |
+| `channelName` | string |   必填   |   -    | 频道名称。  |
+| `channelType` | string |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/web/enumv#channeltype)。 |
+|  `lockName`   | string |   必填   |   -    | 锁的名称。  |
+|   `options`   | object |   选填   |   -    | 获取锁的选项。                    |
+
+`options` 包含以下属性：
+
+|  属性   |  类型   | 是否必填 | 默认值  |       描述       |
+| ---- | ---- | ----- | ---- | ----- |
+| `retry` | boolean |   选填   | `false` | 设置在获取锁失败后是否继续尝试，直到成功获取或退出频道为止。 |
+
+### 基本用法
+
+```javascript
+try{
+    const result = await rtm.Lock.acquireLock(
+        "chat_room",
+        "STREAM",
+        "my_lock",
+        {retry:false}
+    );
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `AcquireLockResponse` 类型数据：
+
+```javascript
+type AcquireLockResponse = {
+    timestamp: number,              // 预留字段。
+    channelName : string,           // 频道名称。
+    channelType : string,           // 频道类型。
+    lockName : string                // 锁名称。
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## releaseLock
+
+### 接口描述
+
+当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `RELEASED` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
+
+此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
+
+### 接口方法
+
+你可以通过以下方式调用 `releaseLock` 方法：
+
+```javascript
+rtm.lock.releaseLock(
+    channelName: string,
+    channelType: string,
+    lockName: string
+): Promise<ReleaseLockResponse>;
+```
+
+|     参数      |  类型  | 是否必填 | 默认值 | 描述    |
+| ---------- | --- | ----- | --- | -------- |
+| `channelName` | string |   必填   |   -    | 频道名称。                    |
+| `channelType` | string |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/web/enumv#channeltype)。 |
+|  `lockName`   | string |   必填   |   -    | 锁的名称。                    |
+
+### 基本用法
+
+```javascript
+try{
+    const result = await rtm.lock.releaseLock(
+        "chat_room",
+        "STREAM",
+        "my_lock"
+    );
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `ReleaseLockResponse` 类型数据：
+
+```javascript
+type ReleaseLockResponse = {
+    timestamp: number,              // 预留字段。
+    channelName : string,           // 频道名称。
+    channelType : string,           // 频道类型。
+    lockName : string                // 锁名称。
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## revokeLock
+
+### 接口描述
+
+当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `RELEASED` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
+
+此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
+
+### 接口方法
+
+你可以通过以下方式调用 `revokeLock` 方法：
+
+```javascript
+rtm.lock.revokeLock(
+    channelName: string,
+    channelType: string,
+    lockName: string,
+    owner: string
+): Promise<RevokeLockResponse>;
+```
+
+|     参数      |  类型  | 是否必填 | 默认值 | 描述        |
+| ---------- | --- | ----- | --- | ---- |
+| `channelName` | string |   必填   |   -    | 频道名称。  |
+| `channelType` | string |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/web/enumv#channeltype)。 |
+|  `lockName`   | string |   必填   |   -    | 锁的名称。  |
+|    `owner`    | string |   必填   |   -    | 拥有锁的用户 ID。                 |
+
+### 基本用法
+
+```javascript
+try{
+    const result = await rtm.lock.revokeLockLock(
+        "chat_room",
+        "STREAM",
+        "my_lock",
+        "Tony"
+    );
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `RevokeLockResponse` 类型数据：
+
+```javascript
+type RevokeLockResponse = {
+    timestamp: number,              // 预留字段。
+    channelName : string,           // 频道名称。
+    channelType : string,           // 频道类型。
+    lockName : string                // 锁名称。
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## getLock
+
+### 接口描述
+
+如果你需要查询频道中锁的数量、名称、使用者、过期时间等信息，在客户端调用 `getLock` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getLock` 方法：
+
+```javascript
+rtm.lock.getLock(
+    channelName: string,
+    channelType: string,
+): Promise<GetLockResponse>;
+```
+
+|     参数      |  类型  | 是否必填 | 默认值 | 描述    |
+| ---------- | --- | ----- | --- | -------- |
+| `channelName` | string |   必填   |   -    | 频道名称。                    |
+| `channelType` | string |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/web/enumv#channeltype)。 |
+
+### 基本用法
+
+```javascript
+try{
+    const result = await rtm.lock.getLock("chat_room","STREAM");
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `GetLockResponse` 类型数据：
+
+```javascript
+type GetLockResponse = {
+    timestamp: number,              // 预留字段。
+    channelName : string,           // 频道名称。
+    channelType : string,           // 频道类型。
+    totalLocks : string,            // 锁的数量。
+    lockDetails : [{
+        lockName: string,           // 锁的名称。
+        owner: string,              // 锁的拥有者。
+        ttl: number                 // 锁的过期时间。
+    }]
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## removeLock
+
+### 接口描述
+
+如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `REMOVED` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeLock` 方法：
+
+```javascript
+rtm.lock.removeLock(
+    channelName: string,
+    channelType: string,
+    lockName: string
+): Promise<RemoveLockResponse>;
+```
+
+|     参数      |  类型  | 是否必填 | 默认值 | 描述        |
+| ---------- | --- | ----- | --- | ---- |
+| `channelName` | string |   必填   |   -    | 频道名称。  |
+| `channelType` | string |   必填   |   -    | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/web/enumv#channeltype)。 |
+|  `lockName`   | string |   必填   |   -    | 锁的名称。  |
+
+### 基本用法
+
+```javascript
+try{
+    const result = await rtm.Lock.removeLockLock(
+        "chat_room",
+        "STREAM",
+        "my_lock"
+    );
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `RemoveLockResponse` 类型数据：
+
+```javascript
+type RemoveLockResponse = {
+    timestamp: number,              // 预留字段。
+    channelName : string,           // 频道名称。
+    channelType : string,           // 频道类型。
+    lockName : string,               // 锁的名称。
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。

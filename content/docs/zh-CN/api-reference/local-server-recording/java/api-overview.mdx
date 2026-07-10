@@ -1,0 +1,87 @@
+---
+title: "API 概览"
+---
+
+## AgoraService
+
+| API | 描述 |
+|---|---|
+|[`AgoraService`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java#agoraservice) | 构造一个 [`AgoraService`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java) 实例并初始化原生组件。 |
+|[`release`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java#release) | 释放 [`AgoraService`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java) 对象及其相关资源。 |
+|[`initialize`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java#initialize) | 使用指定的配置初始化 [`AgoraService`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java) 对象。 |
+|[`createMediaRtcRecorder`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java#createmediartcrecorder) | 创建一个新的 [`AgoraMediaRtcRecorder`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java) 实例。 |
+|[`getAgoraParameter`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java#getagoraparameter) | 创建并返回用于参数管理的 `AgoraParameter` 对象。 |
+|[`getSdkVersion`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java#getsdkversion) | 获取 SDK 的版本信息。 |
+|[`setLogFile`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java#setlogfile) | 设置 SDK 日志文件的路径和大小。 |
+|[`setLogLevel`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java#setloglevel) | 设置 SDK 的日志输出等级。 |
+|[`setGlobalLocalAccessPoint`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java#setgloballocalaccesspoint) | 在本地 AP 模式下设置全局本地接入点地址。 |
+
+## AgoraMediaRtcRecorder
+
+| API | 描述 |
+|---|---|
+|[`AgoraMediaRtcRecorder`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#agoramediartcrecorder) | 构造一个 [`AgoraMediaRtcRecorder`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java) 录制器实例。 |
+|[`initialize[1/2]`](agoramediartcrecorder.java#initialize[1/2]) | 初始化录制器实例，设置服务、是否启用合流模式，以及是否仅录制编码视频。 |
+|[`initialize[2/2]`](agoramediartcrecorder.java#initialize[2/2]) | 初始化录制器，并设置服务实例和是否启用合流模式。 |
+|[`joinChannel`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#joinchannel) | 加入一个声网 RTC 频道。 |
+|[`leaveChannel`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#leavechannel) | 离开当前频道。 |
+|[`enableEncryption`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#enableencryption) | 启用或禁用内置加密。 |
+|[`subscribeAllAudio`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#subscribeallaudio) | 订阅频道中所有远端用户的音频流。 |
+|[`subscribeAllVideo`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#subscribeallvideo) | 订阅频道中所有远端用户的视频流。 |
+|[`unsubscribeAllAudio`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#unsubscribeallaudio) | 停止订阅所有远端用户的音频流。 |
+|[`unsubscribeAllVideo`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#unsubscribeallvideo) | 停止订阅所有远端用户的视频流。 |
+|[`subscribeAudio`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#subscribeaudio) | 订阅指定远端用户的音频流。 |
+|[`unsubscribeAudio`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#unsubscribeaudio) | 停止订阅指定远端用户的音频流。 |
+|[`subscribeVideo`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#subscribevideo) | 订阅指定远端用户的视频流。 |
+|[`unsubscribeVideo`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#unsubscribevideo) | 停止订阅指定远端用户的视频流。 |
+|[`setAudioVolumeIndicationParameters`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#setaudiovolumeindicationparameters) | 设置 [`onAudioVolumeIndication`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onaudiovolumeindication) 回调的时间间隔。 |
+|[`setVideoMixingLayout`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#setvideomixinglayout) | 设置视频合流布局。 |
+|[`setRecorderConfig`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#setrecorderconfig) | 配置录制器实例的设置。 |
+|[`setRecorderConfigByUid`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#setrecorderconfigbyuid) | 为指定用户设置录制器实例的配置。 |
+|[`startRecording`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#startrecording) | 启动录制过程。 |
+|[`stopRecording`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#stoprecording) | 停止所有正在进行的录制并保存录制文件。 |
+|[`startSingleRecordingByUid`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#startsinglerecordingbyuid) | 启动指定用户的录制流程。 |
+|[`stopSingleRecordingByUid`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#stopsinglerecordingbyuid) | 停止指定用户的录制进程。 |
+|[`registerRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#registerrecordereventhandler) | 注册用于录制事件的事件处理器。 |
+|[`unregisterRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#unregisterrecordereventhandler) | 取消注册之前注册的事件处理器。 |
+|[`enableAndUpdateVideoWatermarks`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#enableandupdatevideowatermarks) | 为视频流添加水印。 |
+|[`disableVideoWatermarks`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#disablevideowatermarks) | 禁用视频流中的水印。 |
+|[`enableAndUpdateVideoWatermarksByUid`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#enableandupdatevideowatermarksbyuid) | 为指定用户的视频流添加水印。 |
+|[`disableVideoWatermarksByUid`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#disablevideowatermarksbyuid) | 通过用户 ID 禁用其视频流上的水印。 |
+|[`renewToken`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#renewtoken) | 为当前会话更新 Token。 |
+|[`enableRecorderVideoFrameCapture`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#enablerecordervideoframecapture) | 启用或关闭录制器实例的视频帧采集功能。 |
+|[`release`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#release) | 释放与 `Recorder` 实例关联的原生资源。 |
+
+## IAgoraMediaRtcRecorderEventHandler
+
+| API | 描述 |
+|---|---|
+|[`onConnected`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onconnected) | `SDK` 与声网频道连接成功时触发的回调。 |
+|[`onDisconnected`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#ondisconnected) | `CONNECTION_STATE_DISCONNECTED(1)` 状态时触发的回调。 |
+|[`onReconnected`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onreconnected) | `CONNECTION_STATE_CONNECTED(3)` 状态恢复时触发的回调。 |
+|[`onConnectionLost`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onconnectionlost) | SDK 与声网频道失去连接时触发的回调。 |
+|[`onUserJoined`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onuserjoined) | 远端用户加入频道回调。 |
+|[`onUserLeft`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onuserleft) | [`onUserLeft`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onuserleft) 回调：远端用户离开频道时触发。 |
+|[`onFirstRemoteVideoDecoded`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onfirstremotevideodecoded) | 首帧远端视频解码完成回调。 |
+|[`onFirstRemoteAudioDecoded`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onfirstremoteaudiodecoded) | 远端音频首帧解码回调。 |
+|[`onAudioVolumeIndication`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onaudiovolumeindication) | [`onAudioVolumeIndication`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onaudiovolumeindication) 回调：报告哪些用户正在说话、说话者的音量以及本地用户是否在说话。 |
+|[`onActiveSpeaker`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onactivespeaker) | 检测到活跃发言人时触发的回调。 |
+|[`onUserVideoStateChanged`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onuservideostatechanged) | 远端视频状态发生改变回调。 |
+|[`onUserAudioStateChanged`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onuseraudiostatechanged) | 远端用户音频状态发生变化回调。 |
+|[`onRemoteVideoStats`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onremotevideostats) | 远端视频统计信息回调。 |
+|[`onRemoteAudioStats`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onremoteaudiostats) | 远端音频统计信息回调。 |
+|[`onRecorderStateChanged`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onrecorderstatechanged) | 本地音视频录制状态发生变化回调。 |
+|[`onRecorderInfoUpdated`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onrecorderinfoupdated) | 录制信息更新回调。 |
+|[`onEncryptionError`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onencryptionerror) | 加密错误发生时触发的回调。 |
+|[`onError`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onerror) | 错误回调。 |
+|[`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#ontokenprivilegewillexpire) |  Token 权限即将在 30 秒后过期时触发的回调。 |
+|[`onTokenPrivilegeDidExpire`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#ontokenprivilegedidexpire) |  Token 过期回调。 |
+|[`onVideoSizeChanged`](/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler#onvideosizechanged) | 远端视频尺寸发生变化回调。 |
+
+## IRecorderVideoFrameObserver
+
+| API | 描述 |
+|---|---|
+|[`onYuvFrameCaptured`](/zh-CN/api-reference/local-server-recording/java/irecordervideoframeobserver#onyuvframecaptured) | 采集到 YUV 视频帧时触发的回调。 |
+|[`onEncodedFrameReceived`](/zh-CN/api-reference/local-server-recording/java/irecordervideoframeobserver#onencodedframereceived) | 接收到编码帧或 JPG 图像缓冲区时触发的回调。 |
+|[`onJPGFileSaved`](/zh-CN/api-reference/local-server-recording/java/irecordervideoframeobserver#onjpgfilesaved) | JPG 文件保存到磁盘时触发的回调。 |

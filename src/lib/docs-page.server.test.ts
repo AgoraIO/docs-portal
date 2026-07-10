@@ -3242,6 +3242,17 @@ Web body
     });
   });
 
+  it('redirects the Chinese Whiteboard RESTful product root to its API overview', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'whiteboard',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/api-reference/api-ref/whiteboard/restful',
+    });
+  });
+
   it('adds a linked API Reference entry to Realtime Media product sidebars', async () => {
     const page = createPage();
     const broadcastPage = {
@@ -3420,6 +3431,133 @@ Web body
     expect(flattenSidebarPageUrls(rtmPayload.sidebar)).not.toContain(
       '/en/realtime-media/rtm/reference/rest-api',
     );
+  });
+
+  it('removes deleted source-backed API directory indexes from scoped Chinese RESTful navigation', async () => {
+    const basePage = createPage();
+    const publishPage = {
+      ...basePage,
+      data: {
+        ...basePage.data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/zh-CN/api-reference/api-ref/signaling/publish.mdx',
+          path: 'zh-CN/api-reference/api-ref/signaling/publish.mdx',
+        },
+        title: '发送消息',
+      },
+      path: 'zh-CN/api-reference/api-ref/signaling/publish.mdx',
+      slugs: ['zh-CN', 'api-reference', 'api-ref', 'signaling', 'publish'],
+      url: '/zh-CN/api-reference/api-ref/signaling/publish',
+    } as unknown as PageWithSource;
+    const receivePage = {
+      ...publishPage,
+      data: {
+        ...publishPage.data,
+        title: '接收历史消息',
+      },
+      path: 'zh-CN/api-reference/api-ref/signaling/receive.mdx',
+      slugs: ['zh-CN', 'api-reference', 'api-ref', 'signaling', 'receive'],
+      url: '/zh-CN/api-reference/api-ref/signaling/receive',
+    } as unknown as PageWithSource;
+    const zhCnApiReferenceTree: Root = {
+      children: [
+        {
+          $id: 'zh-cn-root',
+          children: [
+            {
+              $id: 'api-reference-folder',
+              children: [
+                {
+                  $id: 'api-reference-api-ref-folder',
+                  children: [
+                    {
+                      $id: 'api-reference-api-ref-signaling-folder',
+                      children: [
+                        {
+                          $id: 'api-reference-api-ref-signaling-publish',
+                          name: '发送消息',
+                          type: 'page',
+                          url: publishPage.url,
+                        },
+                        {
+                          $id: 'api-reference-api-ref-signaling-receive',
+                          name: '接收历史消息',
+                          type: 'page',
+                          url: receivePage.url,
+                        },
+                      ],
+                      index: {
+                        $id: 'api-reference-api-ref-signaling-index',
+                        name: 'Signaling Overview',
+                        type: 'page',
+                        url: '/zh-CN/api-reference/api-ref/signaling',
+                      },
+                      name: '实时消息 RTM',
+                      type: 'folder',
+                    },
+                  ],
+                  name: 'API',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'api-reference-overview',
+                name: '参考概览',
+                type: 'page',
+                url: '/zh-CN/api-reference/overview',
+              },
+              name: '参考中心',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '简体中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+    const pages = [publishPage, receivePage];
+
+    mockedGetPage.mockImplementation((slugs: string[], locale = 'en') => {
+      if (locale !== 'zh-CN') {
+        return undefined;
+      }
+
+      const url = `/zh-CN/${slugs.join('/')}`;
+      return pages.find((page) => page.url === url);
+    });
+    mockedGetPages.mockReturnValue(pages);
+    mockedGetPageTree.mockReturnValue(zhCnApiReferenceTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'api-reference-api-ref-signaling-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: '实时消息 RTM',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = unwrapPayload(
+      await loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'signaling',
+        'publish',
+      ]),
+    );
+
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual([
+      publishPage.url,
+      receivePage.url,
+    ]);
+    expect(payload.navigation.previous).toBeUndefined();
+    expect(payload.navigation.next).toEqual({
+      title: '接收历史消息',
+      url: receivePage.url,
+    });
   });
 
   it('uses the get-started-sdk page as the video quickstart sidebar entry', async () => {

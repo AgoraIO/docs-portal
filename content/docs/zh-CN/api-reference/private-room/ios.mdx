@@ -1,0 +1,750 @@
+---
+title: "CallAPI iOS API 参考"
+---
+声网为 1v1 私密房解决方案提供 `CallAPI`，本文提供相应的 API 参考。
+
+除了 `CallAPI`，你还需要使用 RTC API 来实现初始化等功能。你可以参考 [RTC API](/api-ref/rtc/ios/API/rtc_api_overview)来了解详细的 RTC API 用法。
+
+## 接口概述
+
+`CallAPI` 是声网为 1v1 私密房解决方案提供的场景化 API，包含如下接口：
+
+- `CallApiProtocal`，包含实现一对一私密互动的核心方法。
+- `CallApiListenerProtocol`，包含一对一私密互动的相关事件和状态回调。
+- `ISignalClient`，包含信令系统发送消息等基本操作。
+- `ISignalClientListener`，包含信令接收到消息的回调等操作。
+
+:::warning[注意]
+本文适用于 CallAPI 最新版本 v2.1.0，建议使用最新版本。
+:::
+
+<a id="callapiprotocol"></a>
+<a id="initialize"></a>
+## CallApiProtocol
+### initialize
+
+```swift
+func initialize(config: CallConfig)
+```
+
+初始化 `CallAPI`。
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `config`      | `CallConfig` | 初始化配置对象。详见 [`CallConfig`](#callconfig)。 |
+
+<a id="deinitialize"></a>
+### deinitialize
+
+释放 `CallAPI` 的缓存。
+
+```swift
+func deinitialize(completion: @escaping (()->()))
+```
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `completion`      | Closure | 释放完成回调。 |
+
+<a id="renewtoken"></a>
+### renewToken
+
+更新 RTC 服务的 Token。
+
+```swift
+func renewToken(with rtcToken: String)
+```
+
+在收到 [`tokenPrivilegeWillExpire`](#tokenPrivilegeWillExpire) 回调后，你需要生成新的 Token，然后调用该方法将新的 Token 传给 SDK。
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `rtcToken`      | String | RTC 服务 Token，需要设为使用通配频道名的 Token，即在生成 Token 时将 `channelName` 设为通配符或空字符串。详见[使用通配 Token](/zh-CN/realtime-media/rtc/best-practice/wildcard-token)。 |
+
+<a id="prepareforcall"></a>
+### prepareForCall
+
+准备通话环境。
+
+```swift
+func prepareForCall(prepareConfig: PrepareConfig, completion: ((NSError?)->())?)
+```
+
+调用 `prepareForCall` 成功准备通话环境后，你才能调用 `call` 发起呼叫。该方法可以重复调用，用来更换通话的 RTC 频道。
+
+该方法只有在通话状态不是 `calling`、`connecting`、`connected` 时才能调用。
+
+:::warning[注意]
+主叫发起呼叫后，被叫会获取到主叫在准备通话环境中设置的 `roomId`，从而加入对应的 RTC 频道进行通话。通话结束后，如果主叫不更新 `roomId` 就发起新的呼叫，可能会有一定的安全风险。
+
+以用户 A、B、C 为例，主叫 A 向用户 B 发起呼叫后，B 就获取了 A 的 RTC 频道名（`roomId`）。呼叫结束后，如果 A 不更新 `roomId` 就向用户 C 发起呼叫，用户 B 可以通过技术手段使用之前的 `roomId` 和通配 Token 加入用户 A 的频道进行盗流。
+
+因此为确保通话安全，我们建议在每次发起呼叫前，都调用 `prepareForCall` 方法更新 `roomId`，以保证每次通话使用不同的 RTC 频道，进而确保通话的私密性。
+:::
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `prepareConfig`      | `PrepareConfig` | 通话配置对象，详见 [`PrepareConfig`](#prepareconfig)。 |
+| `completion`      | Closure | 通话准备完成回调。 |
+
+<a id="addlistener"></a>
+### addListener
+
+添加想要监听的事件回调。
+
+```swift
+func addListener(listener: CallApiListenerProtocol)
+```
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `listener`      | `CallApiListenerProtocol` | 需要添加监听的事件回调。详见 [`CallApiListenerProtocol`](#callapilistenerprotocol)。 |
+
+<a id="removelistener"></a>
+### removeListener
+
+移除指定的回调事件。
+
+```swift
+func removeListener(listener: CallApiListenerProtocol)
+```
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `listener`      | `CallApiListenerProtocol` | 需要移除监听的事件回调。详见 [`CallApiListenerProtocol`](#callapilistenerprotocol)。 |
+
+<a id="call"></a>
+### call[1/2]
+
+发起视频通话。
+
+```swift
+func call(remoteUserId: UInt, completion: ((NSError?)->())?)
+```
+
+该方法由主叫调用，通过 [`prepareForCall`](#prepareforcall) 设置的 RTC 频道号，与远端用户建立 RTC 通话连接。
+
+:::warning[注意]
+- 该方法仅在通话状态为 `prepared`，即空闲时调用才生效。
+- 成功发起通话后，只有当如下一种情况发生时，才能重新调用该方法发起通话：
+  - 主叫调用 `cancelCall` 或 `hangup` 取消或挂断当前通话。
+  - 被叫收到呼叫后调用 `reject` 拒绝接听通话。
+- 为了保证通话安全性，建议每次呼叫前调用 [`prepareForCall`](#prepareforcall) 更新 `roomId`，并确保 `PrepareConfig` 中的其他属性均已设置。`prepareForCall` 会对 `PrepareConfig` 进行全量更新。
+:::
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `remoteUserId`      | UInt | 呼叫目标用户的用户 ID。 |
+| `completion`      | Closure | 呼叫完成回调。 |
+
+<a id="call2"></a>
+### call[2/2]
+
+发起视频或音频通话（v2.1.0 开始支持）。
+
+```swift
+func call(remoteUserId: UInt, callType: CallType, callExtension: [String: Any],  completion: ((NSError?)->())?)
+```
+
+该方法由主叫调用，通过 [`prepareForCall`](#prepareforcall) 设置的 RTC 频道号，与远端用户建立 RTC 通话连接。
+
+:::warning[注意]
+- 该方法仅在通话状态为 `prepared`，即空闲时调用才生效。
+- 成功发起通话后，只有当如下一种情况发生时，才能重新调用该方法发起通话：
+  - 主叫调用 `cancelCall` 或 `hangup` 取消或挂断当前通话。
+  - 被叫收到呼叫后调用 `reject` 拒绝接听通话。
+- 为了保证通话安全性，建议每次呼叫前调用 [`prepareForCall`](#prepareforcall) 更新 `roomId`，并确保 `PrepareConfig` 中的其他属性均已设置。`prepareForCall` 会对 `PrepareConfig` 进行全量更新。
+:::
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `remoteUserId`      | UInt | 呼叫目标用户的用户 ID。 |
+| `callType`      | CallType | 呼叫类型，指定是视频呼叫还是音频呼叫。 |
+| `callExtension`      | [String: Any] | 呼叫时想要传递的自定义参数。 |
+| `completion`      | Closure | 呼叫完成回调。 |
+
+<a id="cancelcall"></a>
+### cancelCall
+
+取消正在发起的通话。
+
+```swift
+func cancelCall(completion: ((NSError?)->())?)
+```
+
+该方法由主叫调用。
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `completion`      | Closure | 取消完成回调。 |
+
+<a id="accept"></a>
+### accept
+
+接受呼叫邀请。
+
+```swift
+func accept(remoteUserId: UInt, completion: ((NSError?)->())?)
+```
+
+该方法由被叫调用。
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `remoteUserId`      | UInt | 呼叫目标用户的用户 ID。 |
+| `completion`      | Closure | 接受完成回调。 |
+
+<a id="reject"></a>
+### reject
+
+拒绝呼叫邀请。
+
+```swift
+func reject(remoteUserId: UInt, reason: String?, completion: ((NSError?)->())?)
+```
+
+该方法由被叫调用。拒绝后被叫的通话状态变更为 `prepared`。
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `remoteUserId`      | UInt | 呼叫目标用户的用户 ID。 |
+| `reason`      | String | （选填）拒绝原因。 |
+| `completion`      | Closure | 拒绝完成回调。 |
+
+<a id="hangup"></a>
+### hangup
+
+挂断通话。
+
+```swift
+func hangup(remoteUserId: UInt, reason: String?, completion: ((NSError?)->())?)
+```
+
+该方法主叫和被叫均可调用。挂断后主叫和被叫的通话状态变更为 `prepared`。
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `remoteUserId`      | UInt | 呼叫目标用户的用户 ID。 |
+| `reason`      | String | （选填）挂断原因。 |
+| `completion`      | Closure | 挂断完成回调。 |
+
+<a id="getcallid"></a>
+### getCallId
+
+获取当前通话的通话 ID。
+
+```swift
+func getCallId() -> String
+```
+
+通话 ID，即 `callId`，为当次通话过程中唯一标识。通过该标识，声网后台服务可以查询到当前通话的关键节点耗时，以及状态变迁的时间节点。
+
+#### 返回值
+
+- 一个字符串类型的调用标识符。
+
+<a id="callapilistenerprotocol"></a>
+<a id="oncallstatechanged"></a>
+## CallApiListenerProtocol
+### onCallStateChanged
+
+状态响应回调。
+
+```swift
+func onCallStateChanged(with state: CallStateType,
+                        stateReason: CallStateReason,
+                        eventReason: String,
+                        eventInfo: [String: Any])
+```
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `state`      | CallStateType | 状态类型。详见 [`CallStateType`](#callstatetype)。                             |
+| `stateReason`      | CallStateReason          | 状态变更的原因。详见[`CallStateReason`](#callstatereason)。 |
+| `eventReason` | String     | 事件类型描述。 |
+| `eventInfo`   | [String: Any]       | 扩展信息，不同事件类型参数不同。 |
+
+<a id="oncalleventchanged"></a>
+### onCallEventChanged
+
+内部详细事件变更回调。
+
+```swift
+@objc optional func onCallEventChanged(with event: CallEvent, eventReason: String?)
+```
+
+该回调为可选。你可以根据实际业务场景选择是否监听。
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `event`      | CallEvent | 状态类型。详见 [`CallEvent`](#callevent)。          |
+| `eventReason`      | String | 事件原因。该参数默认为 `nil`。只有当报告特定 [`CallEvent`](#callevent) 时，才会有具体含义。例如，`event` 为 `108` 时，你可以通过这个枚举的描述来查看具体的含义。  |
+
+<a id="oncallerror"></a>
+### onCallError
+
+发生错误回调。
+
+```swift
+@objc optional func onCallError(with errorEvent: CallErrorEvent,
+                                errorType: CallErrorCodeType,
+                                errorCode: Int,
+                                message: String?)
+```
+
+该回调为可选。你可以根据实际业务场景选择是否监听。
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `errorEvent`      | CallErrorEvent | 错误事件。详见 [`CallErrorEvent`](#callerrorevent)。 |
+| `errorType`      | CallErrorCodeType | 错误码类型。详见 [`CallErrorCodeType`](#callerrorcodetype)。 |
+| `errorCode`      | Int | 错误码。|
+| `message`      | String | 错误信息。|
+
+<a id="oncallconnected"></a>
+### onCallConnected
+
+通话开始的回调。
+
+```swift
+@objc optional func onCallConnected(roomId: String,
+                                    callUserId: UInt,
+                                    currentUserId: UInt,
+                                    timestamp: UInt64)
+```
+
+该回调为可选。你可以根据实际业务场景选择是否监听。
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `roomId`      | String | 通话的频道 ID。|
+| `callUserId`      | UInt | 发起呼叫的用户 ID。    |
+| `currentUserId`      | UInt | 当前的用户 ID。    |
+| `timestamp`      | UInt64 | 通话开始的时间戳，指从格林威治时间 1970 年 01 月 01 日 00 时 00 分 00 秒（北京时间 1970 年 01 月 01 日 08 时 00 分 00 秒）起至现在的总毫秒数。    |
+
+<a id="oncalldisconnected"></a>
+### onCallDisconnected
+
+通话结束的回调。
+
+```swift
+@objc optional func onCallDisconnected(roomId: String,
+                                       hangupUserId: UInt,
+                                       currentUserId: UInt,
+                                       timestamp: UInt64,
+                                       duration: UInt64)
+```
+
+该回调为可选。你可以根据实际业务场景选择是否监听。
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `roomId`      | String | 通话的频道 ID。  |
+| `hangupUserId`      | UInt | 挂断的用户 ID。    |
+| `currentUserId`      | UInt | 当前的用户 ID。    |
+| `timestamp`      | UInt64 | 通话开始的时间戳，指从格林威治时间 1970 年 01 月 01 日 00 时 00 分 00 秒（北京时间 1970 年 01 月 01 日 08 时 00 分 00 秒）起至现在的总`毫秒`数。    |
+| `duration`      | UInt64 | 通话时长，单位为毫秒。    |
+
+<a id="canjoinrtconcalling"></a>
+### canJoinRtcOnCalling
+
+设置当收到远端呼叫时是否可以直接加入 RTC 频道。
+
+```swift
+@objc optional func canJoinRtcOnCalling(eventInfo: [String: Any]) -> Bool
+```
+
+该回调为可选。你可以根据实际业务场景选择是否监听。你需要通过该回调的返回值设置收到呼叫时是否可以直接加入 RTC 频道。
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `eventInfo`      | [String: Any]  | 收到呼叫时远端传递过来的扩展信息  |
+
+#### 返回值
+
+- `true`：收到呼叫立即加入 RTC 频道并推送视频流。
+- `false`： 收到呼叫后，需要用户点击接受才加入 RTC 频道并推送视频流。
+
+<a id="tokenprivilegewillexpire"></a>
+### tokenPrivilegeWillExpire
+
+RTC Token 即将要过期。
+
+```swift
+@objc optional func tokenPrivilegeWillExpire()
+```
+
+收到该回调后，你需要重新获取 RTC 服务的 Token，然后调用 [`renewToken`](#renewtoken) 将新的 Token 发送给 SDK。
+
+:::info[信息]
+如果你的信令 Token 与 RTC Token 过期时间一致，收到该回调即意味着信令 Token 也已过期。收到该回调后，你可以同步生成并更新信令 Token。例如，如果你使用的是声网的 RTM SDK 实现的信令通道，则可以重新[生成 RTM Token](/zh-CN/realtime-media/rtm/user-guide/token/token-generation)，然后调用 `AgoraRtmClientKit.revewToken` 方法更新信令 Token。
+:::
+
+该回调为可选。你可以根据实际业务场景选择是否监听。
+
+<a id="calldebuginfo"></a>
+### callDebugInfo
+
+日志已打印。
+
+```swift
+@objc optional func callDebugInfo(message: String, logLevel: CallLogLevel)
+```
+
+| 参数 | 类型 | 含义 |
+| --- | --- | --- |
+| `message` | String | 日志信息。 |
+| `logLevel` | CallLogLevel | 日志等级，详见 [`CallLogLevel`](#callloglevel)。 |
+
+<a id="isignalclient"></a>
+<a id="sendmessage"></a>
+## ISignalClient
+### sendMessage
+
+CallApi 通过该方法使用信令系统向指定用户发送消息。
+
+```swift
+func sendMessage(userId: String,
+                 message: String,
+                 completion: ((NSError?)-> Void)?)
+```
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `userId`      | String  | 目标用户 ID。      |
+| `message`      | String  | 消息对象。 |
+| `completion` | Closure     | 发送完成回调。 |
+
+<a id="addlistener"></a>
+### addListener
+
+向信令系统添加一个信令监听器。
+
+```swift
+func addListener(listener: ISignalClientListener)
+```
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `listener`      | ISignalClientListener  | 信令监听器，用于处理消息接收和日志记录。      |
+
+<a id="removelistener"></a>
+### removeListener
+
+从信令系统移除指定的信令监听器。
+
+```swift
+func removeListener(listener: ISignalClientListener)
+```
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `listener`      | ISignalClientListener  | 待移除的信令监听器。      |
+
+<a id="isignalclientlistener"></a>
+<a id="onmessagereceive"></a>
+## ISignalClientListener
+### onMessageReceive
+
+收到消息的回调。
+
+```swift
+func onMessageReceive(message: String)
+```
+
+| 参数        | 类型     | 含义                 |
+| ---------- | ------- | -------------------- |
+| `message`      | String  | 收到的消息内容。  |
+
+<a id="debuginfo"></a>
+### debugInfo
+
+信令日志回调。
+
+```swift
+@objc optional func debugInfo(message: String, logLevel: Int)
+```
+
+| 参数 | 类型 | 含义 |
+| --- | --- | --- |
+| `message` | String | 日志消息内容。 |
+| `logLevel` | Int | <Slot name="call-api-ios-html-1-2-2" /> |
+
+<Slot for="call-api-ios-html-1-2-2">
+
+日志等级：
+
+      - `0`：正常日志
+      - `1`：告警日志
+      - `2`：错误日志
+
+</Slot>
+
+该回调为可选。你可以根据实际业务场景选择是否监听。
+
+<a id="类型定义"></a>
+<a id="callconfig"></a>
+## 类型定义
+### CallConfig
+
+初始化配置对象，在 [`initialize`](#initialize) 中设置。
+
+```swift
+@objc public class CallConfig: NSObject {
+    public var appId: String = ""     
+    public var userId: UInt = 0     
+    public var rtcEngine: AgoraRtcEngineKit!   
+    public var signalClient: ISignalClient!   
+}
+```
+
+| 参数 | 类型 | 含义 |
+| --- | --- | --- |
+| `appId` | String | 声网 App ID。 |
+| `userId` | UInt | 用户 ID。 |
+| `rtcEngine` | AgoraRtcEngineKit | RTC Engine 实例。 |
+| `signalClient` | ISignalClient | <Slot name="call-api-ios-html-2-4-2" /> |
+
+<Slot for="call-api-ios-html-2-4-2">
+
+信令通道对象实例。
+
+        :::warning[注意]
+        请在该信令对象内自行维护信令的登录状态。
+        :::
+
+</Slot>
+
+<a id="prepareconfig"></a>
+### PrepareConfig
+
+通话配置对象，在 [`prepareForCall`](#prepareforcall) 中设置。
+
+```swift
+@objc public class PrepareConfig: NSObject {
+    public var roomId: String = ""    
+    public var rtcToken: String = ""      
+    public var localView: UIView!    
+    public var remoteView: UIView!    
+    public var autoJoinRTC: Bool = false    
+    public var callTimeoutMillisecond: UInt64 = 15000  
+    public var userExtension: [String: Any]?   
+}
+```
+
+| 参数 | 类型 | 含义 |
+| --- | --- | --- |
+| `roomId` | String | RTC 频道名，用于呼叫对端用户时让对端用户进入加入这个 RTC 频道。 |
+| `rtcToken` | String | <Slot name="call-api-ios-html-3-2-2" /> |
+| `localView` | UIView | 显示本地流的画布。 |
+| `remoteView` | UIView | 显示远端流的画布。 |
+| `autoJoinRTC` | Bool | <Slot name="call-api-ios-html-3-5-2" /> |
+| `callTimeoutMillisecond` | UInt64 | 呼叫超时时间，单位为毫秒，`0` 表示内部不处理超时。 |
+| `userExtension` | [String: Any] | （可选）用户扩展字段，收到对端消息而改变状态（如 `calling`/`connecting`）时，可以通过 `"fromUserExtension"` 字段获取。 |
+
+<Slot for="call-api-ios-html-3-2-2">
+
+RTC Token。
+
+        :::warning[注意]
+        - 你需要使用通配频道名的 Token，即在生成 Token 时将 `channelName` 设为通配符或空字符串。详见[使用通配 Token](/zh-CN/realtime-media/rtc/best-practice/wildcard-token)。
+                - 请确保生成通配 Token 时填的 `uid` 和 [`initialize`](#initialize) 中的 `userId` 一致。
+        :::
+
+</Slot>
+
+<Slot for="call-api-ios-html-3-5-2">
+
+是否在不呼叫的情况下提前加入 RTC 频道，该设置可以加快呼叫的出图速度。
+      :::error[已删除]
+      不再支持提前加入频道。
+      :::
+
+</Slot>
+
+<a id="calltype"></a>
+### CallType
+发起通话的类型
+
+| 枚举名  | 枚举值 | 描述              |
+|------|--------------|-------------|
+| `video` | `0`  | 视频呼叫。         |
+| `audio` | `1`  | 音频呼叫。         |
+
+<a id="callstatetype"></a>
+### CallStateType
+
+通话状态枚举，在 [`onCallStateChanged`](#oncallstatechanged) 回调中报告。
+
+| 枚举名  | 枚举值 | 描述         |
+|------|--------------|----|
+| `idle` | `0`  | 未准备好通话状态。如果想要发起通话，需要先通过 `prepareForCall` 准备通话环境。         |
+| `prepared` | `1`  | 空闲，表示可以进行通话。调用 `prepareForCall`、`cancelCall`、`reject` 或 `hangup` 方法后会进入该状态。        |
+| `calling`  | `2` | 呼叫中，表示发起了呼叫，或者收到对端用户呼叫。      |
+| `connecting` | `3`  | 连接中，表示在呼叫中发起了接受（`accept`）或者收到对端用户接受呼叫。        |
+| `connected` | `4`  | 通话中，表示通话已经建立成功，可以看到对方视频画面。      |
+| `failed` | `10`  | 出现错误。导致出错的原因可能是初始化环境 `prepareForCall` 失败。       |
+
+<a id="callstatereason"></a>
+### CallStateReason
+
+导致状态变更的原因，在 [`onCallStateChanged`](#oncallstatechanged) 回调中报告。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `none` | `0` | 无。 |
+| `joinRTCFailed` | `1` | 加入 RTC 频道失败。 |
+| `rtmSetupFailed` | `2` | <Slot name="call-api-ios-markdown-4-3-2" /> |
+| `rtmSetupSuccessed` | `3` | <Slot name="call-api-ios-markdown-4-4-2" /> |
+| `messageFailed` | `4` | 消息发送失败。 |
+| `localRejected` | `5` | 本地用户拒绝了呼叫邀请。 |
+| `remoteRejected` | `6` | 远端用户拒绝了呼叫邀请。 |
+| `remoteAccepted` | `7` | 远端用户接受了呼叫邀请。 |
+| `localAccepted` | `8` | 本地用户接受了呼叫邀请。 |
+| `localHangup` | `9` | 本地用户挂断。 |
+| `remoteHangup` | `10` | 远端用户挂断。 |
+| `localCancelled` | `11` | 本地用户取消呼叫。 |
+| `remoteCancelled` | `12` | 远端用户取消呼叫。 |
+| `recvRemoteFirstFrame` | `13` | 收到远端视频首帧。 |
+| `callingTimeout` | `14` | 呼叫超时。 |
+| `cancelByCallerRecall` | `15` | 同样的主叫呼叫不同频道导致取消。 |
+| `rtmLost` | `16` | <Slot name="call-api-ios-markdown-4-17-2" /> |
+| `remoteCallBusy` | `17` | 远端用户忙。 |
+| `remoteCallingTimeout` | `18` | 远端呼叫超时。 |
+| `localVideoCall` | `30` | 本地发起视频呼叫（v2.1.0 开始支持）。 |
+| `localAudioCall` | `31` | 本地发起音频呼叫（v2.1.0 开始支持）。 |
+| `remoteVideoCall` | `32` | 远端发起视频呼叫（v2.1.0 开始支持）。 |
+| `remoteAudioCall` | `33` | 远端发起音频呼叫（v2.1.0 开始支持）。 |
+
+<Slot for="call-api-ios-markdown-4-3-2">
+
+:::error[已删除]
+当前如果 `prepareForCall` 失败，会报告 `None`。
+:::
+
+</Slot>
+
+<Slot for="call-api-ios-markdown-4-4-2">
+
+:::error[已删除]
+你需要自行维护信令登录的状态。
+:::
+
+</Slot>
+
+<Slot for="call-api-ios-markdown-4-17-2">
+
+:::error[已删除]
+你可以通过信令管理的实现处理相关的异常。
+:::
+
+</Slot>
+
+<a id="callevent"></a>
+### CallEvent
+
+详细事件，在 [`onCallEventChanged`](#oncalleventchanged) 回调中报告。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `none` | `0` | 无。 |
+| `deinitialize` | `1` | 调用了 `deinitialize`。 |
+| `callingTimeout` | `3` | 呼叫超时。 |
+| `remoteCallingTimeout` | `4` | 远端呼叫超时。 |
+| `joinRTCSuccessed` | `5` | 加入 RTC 频道成功。 |
+| `rtmSetupSuccessed` | `7` | <Slot name="call-api-ios-markdown-5-6-2" /> |
+| `stateMismatch` | `9` | 状态流转异常。 |
+| `joinRTCStart` | `10` | 本地已经加入 RTC 频道，但是还未成功（调用了 [`joinChannelExByToken[1/2]`](/api-ref/rtc/ios/API/toc_channel#joinChannelExByToken%20[1/2]) 或 [`joinChannelExByToken[2/2]`](/api-ref/rtc/ios/API/toc_channel#joinChannelExByToken%20[2/2])，但由于延迟还未收到成功回调（v2.1.0 开始支持）。） |
+| `remoteUserRecvCall` | `99` | 主叫呼叫成功。 |
+| `localRejected` | `100` | 本地用户拒绝呼叫邀请。 |
+| `remoteRejected` | `101` | 远端用户拒绝呼叫邀请。 |
+| `onCalling` | `102` | <Slot name="call-api-ios-markdown-5-12-2" /> |
+| `remoteAccepted` | `103` | 远端用户接收呼叫邀请。 |
+| `localAccepted` | `104` | 本地用户接收呼叫邀请。 |
+| `localHangup` | `105` | 本地用户挂断。 |
+| `remoteHangup` | `106` | 远端用户挂断。 |
+| `remoteJoined` | `107` | 远端用户加入 RTC 频道。 |
+| `remoteLeft` | `108` | 远端用户离开 RTC 频道。`eventReason` 可以参考 [`AgoraUserOfflineReason`](/api-ref/rtc/ios/API/enum_userofflinereasontype)。 |
+| `localCancelled` | `109` | 本地用户取消呼叫。 |
+| `remoteCancelled` | `110` | 远端用户取消呼叫。 |
+| `localJoined` | `111` | 本地用户加入 RTC 频道。 |
+| `localLeft` | `112` | 本地用户离开 RTC 频道。 |
+| `recvRemoteFirstFrame` | `113` | 收到远端视频首帧。 |
+| `rtmLost` | `115` | <Slot name="call-api-ios-markdown-5-24-2" /> |
+| `remoteCallBusy` | `117` | 远端用户忙。 |
+| `captureFirstLocalVideoFrame` | `119` | 采集到首帧视频帧。 |
+| `publishFirstLocalVideoFrame` | `120` | 视频首帧推送成功。 |
+| `publishFirstLocalAudioFrame` | `130` | 音频首帧推送成功（v2.1.0 开始支持）。 |
+| `localVideoCall` | `140` | 本地发起视频呼叫（v2.1.0 开始支持）。 |
+| `localAudioCall` | `141` | 本地发起音频呼叫（v2.1.0 开始支持）。 |
+| `remoteVideoCall` | `142` | 远端发起视频呼叫（v2.1.0 开始支持）。 |
+| `remoteAudioCall` | `143` | 远端发起音频呼叫（v2.1.0 开始支持）。 |
+
+<Slot for="call-api-ios-markdown-5-6-2">
+
+:::error[已删除]
+你需要自行维护信令设置的状态。
+:::
+
+</Slot>
+
+<Slot for="call-api-ios-markdown-5-12-2">
+
+变成呼叫中。
+
+:::error[已删除]
+对应事件变更为：`localVideoCall`/`localAudioCall`/`remoteVideoCall`/`remoteAudioCall`
+:::
+
+</Slot>
+
+<Slot for="call-api-ios-markdown-5-24-2">
+
+:::error[已删除]
+`CallAPI` 2.1 升级了 RTM SDK 至 2.2 后，不再需要考虑该事件。
+:::
+
+</Slot>
+
+<a id="callerrorevent"></a>
+### CallErrorEvent
+
+呼叫错误事件。在 [`onCallError`](#oncallerror) 回调中报告。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `normalError` | `0` | 通用错误。 |
+| `rtcOccurError` | `100` | RTC 服务出现错误。 |
+| `startCaptureFail` | `110` | RTC 开启采集失败。 |
+| `rtmSetupFail` | `200` | <Slot name="call-api-ios-markdown-6-4-2" /> |
+| `sendMessageFail` | `210` | 消息发送失败。 |
+
+<Slot for="call-api-ios-markdown-6-4-2">
+
+:::error[已删除]
+你需要自行维护信令的状态。
+:::
+
+</Slot>
+
+<a id="callerrorcodetype"></a>
+### CallErrorCodeType
+
+呼叫错误事件的错误码类型。在 [`onCallError`](#oncallerror) 回调中报告。
+
+| 枚举名 | 枚举值  | 描述         |
+|------|--------------|---|
+| `normal` | `0` | 业务类型的错误，暂无。         |
+| `rtc` | `100`   | RTC 服务错误，你可以搭配 `onCallError` 中反馈的 `errorCode` 查看 [RTC 错误码文档](/zh-CN/realtime-media/rtc/reference/error-code)了解报错原因和解决办法。      |
+| `message`| `110`  | 信令服务的消息错误。使用如果的默认的信令通道（声网 RTM），可以使用 [`AgoraRtmErrorCode`](/zh-CN/realtime-media/rtm/build/troubleshooting#错误码对照表) 查看报错信息；如果是自定义信令（如环信），则可以参考对应信令服务的错误信息。         |
+
+<a id="callloglevel"></a>
+### CallLogLevel
+
+日志等级，在 [`callDebugInfo`](#calldebuginfo) 回调中报告。
+
+| 枚举名 | 枚举值  | 描述         |
+|------|--------------|---|
+| `normal` | `0` | 正常日志。         |
+| `warning` | `1`   | 告警日志。        |
+| `error` | `2`  | 错误日志（暂无）。         |

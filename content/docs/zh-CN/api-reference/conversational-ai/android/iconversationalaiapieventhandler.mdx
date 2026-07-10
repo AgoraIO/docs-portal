@@ -1,0 +1,190 @@
+---
+title: "IConversationalAIAPIEventHandler 类"
+---
+
+<a id="onmessageerror"></a>
+## onMessageError
+
+```kotlin
+fun onMessageError(agentUserId: String, error: MessageError)
+```
+
+消息处理出错回调。
+
+该回调在消息处理过程中发生错误时触发。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `error` | `MessageError` | 消息错误信息，包含错误类型和错误内容。详见 [`MessageError`](/zh-CN/api-reference/conversational-ai/android/struct#messageerror)。 |
+
+<a id="onmessagereceiptupdated"></a>
+## onMessageReceiptUpdated
+
+```kotlin
+fun onMessageReceiptUpdated(agentUserId: String, receipt: MessageReceipt)
+```
+
+消息回执更新回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `receipt` | `MessageReceipt` | 消息回执信息。详见 [`MessageReceipt`](/zh-CN/api-reference/conversational-ai/android/struct#messagereceipt)。 |
+
+<a id="onagentstatechanged"></a>
+## onAgentStateChanged
+
+```kotlin
+fun onAgentStateChanged(agentUserId: String, event: StateChangeEvent)
+```
+
+智能体状态变化回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `event` | `StateChangeEvent` | 状态变化事件，详见 [`StateChangeEvent`](/zh-CN/api-reference/conversational-ai/android/struct#statechangeevent)。 |
+
+<a id="onagentlisteningchanged"></a>
+## onAgentListeningChanged
+
+```kotlin
+fun onAgentListeningChanged(agentUserId: String, isListening: Boolean)
+```
+
+智能体倾听状态变化回调。
+
+该回调是对 `onAgentStateChanged` 的细粒度补充，用于监听智能体是否正在倾听用户输入。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `isListening` | `Boolean` | 智能体当前是否处于倾听状态。 |
+
+<a id="onagentthinkingchanged"></a>
+## onAgentThinkingChanged
+
+```kotlin
+fun onAgentThinkingChanged(agentUserId: String, isThinking: Boolean)
+```
+
+智能体思考状态变化回调。
+
+该回调是对 `onAgentStateChanged` 的细粒度补充，用于监听智能体是否正在思考或处理请求。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `isThinking` | `Boolean` | 智能体当前是否处于思考状态。 |
+
+<a id="onagentspeakingchanged"></a>
+## onAgentSpeakingChanged
+
+```kotlin
+fun onAgentSpeakingChanged(agentUserId: String, isSpeaking: Boolean)
+```
+
+智能体说话状态变化回调。
+
+该回调是对 `onAgentStateChanged` 的细粒度补充，用于监听智能体是否正在播报语音。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `isSpeaking` | `Boolean` | 智能体当前是否处于说话状态。 |
+
+<a id="onagentinterrupted"></a>
+## onAgentInterrupted
+
+```kotlin
+fun onAgentInterrupted(agentUserId: String, event: InterruptEvent)
+```
+
+中断事件回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `event` | `InterruptEvent` | 中断事件，详见 [`InterruptEvent`](/zh-CN/api-reference/conversational-ai/android/struct#interruptevent)。 |
+
+<a id="onagentmetrics"></a>
+## onAgentMetrics
+
+```kotlin
+fun onAgentMetrics(agentUserId: String, metric: Metric)
+```
+
+性能指标回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `metric` | `Metric` | 性能指标。详见 [`Metric`](/zh-CN/api-reference/conversational-ai/android/struct#metric)。 |
+
+<a id="onagenterror"></a>
+## onAgentError
+
+```kotlin
+fun onAgentError(agentUserId: String, error: ModuleError)
+```
+
+智能体错误回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `error` | `ModuleError` | 错误信息。详见 [`ModuleError`](/zh-CN/api-reference/conversational-ai/android/struct#moduleerror)。 |
+
+<a id="ontranscriptupdated"></a>
+## onTranscriptUpdated
+
+```kotlin
+fun onTranscriptUpdated(agentUserId: String, transcript: Transcript)
+```
+
+转写内容更新回调。
+
+:::warning[注意]
+该回调可能会高频触发。如需去重，请在业务层处理。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `transcript` | `Transcript` | 转写数据。详见 [`Transcript`](/zh-CN/api-reference/conversational-ai/android/struct#transcript)。 |
+
+<a id="ondebuglog"></a>
+## onDebugLog
+
+```kotlin
+fun onDebugLog(log: String)
+```
+
+内部调试日志回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `log` | `String` | 调试日志信息。 |

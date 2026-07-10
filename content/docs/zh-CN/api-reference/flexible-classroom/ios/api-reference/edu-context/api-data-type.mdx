@@ -1,0 +1,953 @@
+---
+title: "类型定义"
+description: "本页列出 iOS API 所有的类型定义。"
+---
+<a id="datatype"></a>
+
+本页列出 iOS API 所有的类型定义。
+
+<a id="enum_roomtype"></a>
+
+## AgoraEduContextRoomType
+
+房间类型。
+
+<a id="enum_roomtype__parameters"></a>
+
+### 枚举值
+
+#### `oneToOne`
+
+一对一互动教学
+
+#### `small`
+
+在线互动小班课
+
+#### `lecture`
+
+互动直播大班课
+
+<a id="enum_videorendermode"></a>
+
+## AgoraEduContextVideoRenderMode
+
+视频渲染模式。
+
+<a id="enum_videorendermode__parameters"></a>
+
+### 枚举值
+
+#### `hidden`
+
+Hidden 模式。优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，多出的视频将被截掉。
+
+#### `fit`
+
+Fit 模式。优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频长宽与显示窗口不同，视窗上未被填满的区域将被涂黑。
+
+<a id="enum_videosourcetype"></a>
+
+## AgoraEduContextVideoSourceType
+
+视频源类型。
+
+<a id="enum_videosourcetype__parameters"></a>
+
+### 枚举值
+
+#### `none`
+
+无视频
+
+#### `camera`
+
+摄像头采集的视频
+
+#### `screen`
+
+屏幕共享的视频
+
+<a id="enum_audiosourcetype"></a>
+
+## AgoraEduContextAudioSourceType
+
+音频源类型。
+
+<a id="enum_audiosourcetype__parameters"></a>
+
+### 枚举值
+
+#### `none`
+
+无音频
+
+#### `camera`
+
+麦克风采集的音频
+
+<a id="enum_mediastreamtype"></a>
+
+## AgoraEduContextMediaStreamType
+
+媒体流类型。
+
+<a id="enum_mediastreamtype__parameters"></a>
+
+### 枚举值
+
+#### `none`
+
+既无音频也无视频
+
+#### `audio`
+
+纯音频流
+
+#### `video`
+
+纯视频流
+
+#### `both`
+
+音视频流
+
+<a id="api_videostreamsubscribelevel"></a>
+
+## AgoraEduContextVideoStreamSubscribeLevel
+
+视频流的分辨率高低。
+
+<a id="api_videostreamsubscribelevel__parameters"></a>
+
+### 枚举值
+
+#### `low`
+
+分辨率低的视频流
+
+#### `high`
+
+分辨率高的视频流
+
+<a id="enum_devicetype"></a>
+
+## AgoraEduContextDeviceType
+
+设备类型。
+
+<a id="enum_devicetype__parameters"></a>
+
+### 枚举值
+
+#### `camera`
+
+摄像头
+
+#### `mic`
+
+麦克风
+
+#### `speaker`
+
+扬声器
+
+<a id="enum_mediasourcestate"></a>
+
+## AgoraEduContextMediaSourceState
+
+媒体源状态。
+
+<a id="enum_mediasourcestate__parameters"></a>
+
+### 枚举值
+
+#### `error`
+
+媒体源错误
+
+#### `close`
+
+媒体源关闭
+
+#### `open`
+
+媒体源开启
+
+<a id="enum_devicestate"></a>
+
+## AgoraEduContextDeviceState
+
+设备状态
+
+<a id="enum_devicestate__parameters"></a>
+
+### 枚举值
+
+#### `error`
+
+设备错误
+
+#### `close`
+
+设备关闭
+
+#### `open`
+
+设备开启
+
+<a id="enum_userleavereason"></a>
+
+## AgoraEduContextUserLeaveReason
+
+用户离开房间原因。
+
+<a id="enum_userleavereason__parameters"></a>
+
+### 枚举值
+
+#### `normal`
+
+用户正常离开房间。
+
+#### `kickOut`
+
+用户被踢出房间。
+
+<a id="enum_classstate"></a>
+
+## AgoraEduContextClassState
+
+课堂状态。
+
+<a id="enum_classstate__parameters"></a>
+
+### 枚举值
+
+#### `before`
+
+课堂还未开始。
+
+#### `during`
+
+课堂进行中。
+
+#### `after`
+
+课堂已结束。
+
+<a id="enum_connectionstate"></a>
+
+## AgoraEduContextConnectionState
+
+本地客户端与声网服务器的连接状态。
+
+<a id="enum_connectionstate__parameters"></a>
+
+### 枚举值
+
+#### `disconnected`
+
+连接已断开。
+
+#### `connecting`
+
+连接中。
+
+#### `connected`
+
+已连接。
+
+#### `reconnecting`
+
+重连中。
+
+#### `aborted`
+
+被踢出。
+
+<a id="enum_userrole"></a>
+
+## AgoraEduContextUserRole
+
+用户角色。
+
+<a id="enum_userrole__parameters"></a>
+
+### 枚举值
+
+#### `teacher`
+
+老师
+
+#### `student`
+
+学生
+
+#### `assistant`
+
+助教
+
+<a id="enum_networkquality"></a>
+
+## AgoraEduContextNetworkQuality
+
+网络质量。
+
+<a id="enum_networkquality__parameters"></a>
+
+### 枚举值
+
+#### `unknown`
+
+未知
+
+#### `good`
+
+良好
+
+#### `medium`
+
+中等
+
+#### `bad`
+
+差
+
+<a id="enum_systemdevice"></a>
+
+## AgoraEduContextSystemDevice
+
+系统设备。
+
+<a id="enum_systemdevice__parameters"></a>
+
+### 枚举值
+
+#### `frontCamera`
+
+前置摄像头
+
+#### `backCamera`
+
+后置摄像头
+
+#### `mic`
+
+麦克风
+
+#### `speaker`
+
+扬声器
+
+<a id="enum_mediarawdataoperationmode"></a>
+
+## FcrMediaRawDataOperationMode
+
+对媒体原始数据的操作权限。
+
+<a id="enum_mediarawdataoperationmode__parameters"></a>
+
+### 枚举值
+
+#### `readOnly`
+
+只读模式
+
+<a id="enum_audiorawdataposition"></a>
+
+## FcrAudioRawDataPosition
+
+音频管线节点。
+
+<a id="enum_audiorawdataposition__parameters"></a>
+
+### 枚举值
+
+#### `record`
+
+2：录制后。
+
+#### `beforeMixed`
+
+8：多条远端音频流被混合成一路音频流前。
+
+#### `mixed`
+
+4：所有远端与本地音频流都混合成一路音频流。
+
+<a id="enum_fcrrecordingstate"></a>
+
+## FcrRecordingState
+
+录制状态。
+
+<a id="enum_fcrrecordingstate__parameters"></a>
+
+### 枚举值
+
+#### `stopped`
+
+不在录制中
+
+#### `starting`
+
+录制启动中
+
+#### `started`
+
+正在录制中
+
+<a id="class_renderconfig"></a>
+
+## AgoraEduContextRenderConfig
+
+视频渲染配置。
+
+<a id="class_renderconfig__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_renderconfig__detailed_desc"></a>
+
+<a id="class_renderconfig__parameters"></a>
+
+### 属性
+
+#### `mode`
+
+视频渲染模式，详见 [AgoraEduContextVideoRenderMode](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_videorendermode)。
+
+#### `isMirror`
+
+是否镜像， Bool 型。
+
+<a id="class_streaminfo"></a>
+
+## AgoraEduContextStreamInfo
+
+流信息。
+
+<a id="class_streaminfo__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_streaminfo__detailed_desc"></a>
+
+<a id="class_streaminfo__parameters"></a>
+
+### 属性
+
+#### `streamUuid`
+
+流 ID， String 型。
+
+#### `streamName`
+
+流名称， String 型。
+
+#### `streamType`
+
+流类型，详见 [AgoraEduContextMediaStreamType](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_mediastreamtype)。
+
+#### `videoSourceType`
+
+视频源类型，详见 [AgoraEduContextVideoSourceType](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_videosourcetype)。
+
+#### `audioSourceType`
+
+音频源类型，详见 [AgoraEduContextAudioSourceType](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_audiosourcetype)。
+
+#### `videoSourceState`
+
+视频源状态，详见 [AgoraEduContextMediaSourceState](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_mediasourcestate)。
+
+#### `audioSourceState`
+
+音频源状态，详见 [AgoraEduContextMediaSourceState](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_mediasourcestate)。
+
+#### `owner`
+
+流所属的用户，详见 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_userinfo)。
+
+<a id="class_userinfo"></a>
+
+## AgoraEduContextUserInfo
+
+用户基础信息。
+
+<a id="class_userinfo__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_userinfo__detailed_desc"></a>
+
+<a id="class_userinfo__parameters"></a>
+
+### 属性
+
+#### `userUuid`
+
+用户 ID， String 型。
+
+#### `userName`
+
+用户名称， String 型。
+
+#### `role`
+
+用户角色，详见 [AgoraEduContextUserRole](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_userrole)。
+
+#### `rewardCount`
+
+收到的奖励次数， Int16 型。
+
+<a id="class_deviceinfo"></a>
+
+## AgoraEduContextDeviceInfo
+
+设备信息。
+
+<a id="class_deviceinfo__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_deviceinfo__detailed_desc"></a>
+
+<a id="class_deviceinfo__parameters"></a>
+
+### 属性
+
+#### `type`
+
+设备类型，详见 [AgoraEduContextDeviceType](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_devicetype)。
+
+#### `deviceId`
+
+设备 ID， String 型。
+
+#### `deviceName`
+
+设备名称， String 型。
+
+<a id="class_roominfo"></a>
+
+## AgoraEduContextRoomInfo
+
+房间信息。
+
+<a id="class_roominfo__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_roominfo__detailed_desc"></a>
+
+<a id="class_roominfo__parameters"></a>
+
+### 属性
+
+#### `roomUuid`
+
+房间 ID， String 型。
+
+#### `roomName`
+
+房间名称， String 型。
+
+#### `roomType`
+
+房间类型，详见 [AgoraEduContextRoomType](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_roomtype)。
+
+<a id="class_classinfo"></a>
+
+## AgoraEduContextClassInfo
+
+课堂信息。
+
+<a id="class_classinfo__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_classinfo__detailed_desc"></a>
+
+<a id="class_classinfo__parameters"></a>
+
+### 属性
+
+#### `state`
+
+课堂状态，详见 [AgoraEduContextClassState](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_classstate)。
+
+#### `startTime`
+
+课堂开始时间， Int64 型。
+
+#### `duration`
+
+课堂时长， Int64 型。
+
+#### `closeDelay`
+
+拖堂时长， Int64 型。
+
+<a id="class_videostreamconfig"></a>
+
+## AgoraEduContextVideoStreamConfig
+
+视频流配置。
+
+<a id="class_videostreamconfig__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_videostreamconfig__detailed_desc"></a>
+
+<a id="class_videostreamconfig__parameters"></a>
+
+### 属性
+
+#### `dimensionWidth`
+
+视频宽， Int 型，单位为 pixel，默认值为 320。
+
+#### `dimensionHeight`
+
+视频高， Int 型，单位为 pixel，默认值为 240。
+
+#### `frameRate`
+
+视频帧率， Int 型，单位为 fps，默认值为 15。
+
+#### `bitRate`
+
+视频码率， Int 型，单位为 Kbps，默认值为 200。
+
+#### `isMirror`
+
+视频是否镜像， Bool 型，默认值为 NO。
+
+<a id="class_error"></a>
+
+## AgoraEduContextError
+
+错误。
+
+<a id="class_error__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_error__detailed_desc"></a>
+
+<a id="class_error__parameters"></a>
+
+### 属性
+
+#### `code`
+
+错误码， Int 型。
+
+#### `message`
+
+错误信息， String 型。
+
+<a id="class_groupinfo"></a>
+
+## AgoraEduContextGroupInfo
+
+分组信息。
+
+<a id="class_groupinfo__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_groupinfo__parameters"></a>
+
+### 属性
+
+#### `state`
+
+是否开启分组讨论。
+
+<a id="class_subroominfo"></a>
+
+## AgoraEduContextSubRoomInfo
+
+子房间信息。
+
+<a id="class_subroominfo__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_subroominfo__parameters"></a>
+
+### 属性
+
+#### `subRoomUuid`
+
+子房间 ID。
+
+#### `subRoomName`
+
+子房间名称。
+
+<a id="class_subroomcreateconfig"></a>
+
+## AgoraEduContextSubRoomCreateConfig
+
+子房间创建配置。
+
+<a id="class_subroomcreateconfig__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_subroomcreateconfig__parameters"></a>
+
+### 属性
+
+#### `subRoomName`
+
+子房间名称。
+
+#### `invitationUserList`
+
+邀请加入子房间的用户 ID 列表。可为空。
+
+#### `subRoomProperties`
+
+子房间自定义属性，可为空。
+
+<a id="class_audiorawdataconfig"></a>
+
+## FcrAudioRawDataConfig
+
+需要回调出的音频数据配置。
+
+<a id="class_audiorawdataconfig__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_audiorawdataconfig__parameters"></a>
+
+### 属性
+
+#### `sampleRate`
+
+采样率，可设为 8000，16000，32000，44100 或 48000。默认值 48000。
+
+#### `samplesPerChannel`
+
+每次回调时每个声道的样本点个数。默认值 1024。
+
+#### `channels`
+
+单声道或双声道。默认值 1。
+
+#### `mode`
+
+对音频数据的操作权限，详见 [FcrMediaRawDataOperationMode](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_mediarawdataoperationmode)。默认值 read only。
+
+<a id="class_FcrAudioRawData"></a>
+
+## FcrAudioRawData
+
+音频数据。
+
+<a id="class_FcrAudioRawData__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_FcrAudioRawData__parameters"></a>
+
+### 属性
+
+#### `samplesPerChannel`
+
+每个声道的采样点数。
+
+#### `bytesPerSample`
+
+每个样本的字节数，2 字节。
+
+#### `channels`
+
+声道数。
+
+#### `sampleRate`
+
+采样率。
+
+#### `buffer`
+
+指向音频数据内存的指针。buffer 的长度（字节） = (samplesPerChannel * channels * bytesPerSample)
+
+#### `timestamp`
+
+时间戳，单位毫秒。
+
+<a id="class_fcrsnapshotinfo"></a>
+
+## FcrSnapshotInfo
+
+截图信息。
+
+<a id="class_fcrsnapshotinfo__prototype"></a>
+
+```swift
+
+```
+
+<a id="class_fcrsnapshotinfo__parameters"></a>
+
+### 参数
+
+#### `roomUuid`
+
+房间 ID。
+
+#### `streamUuid`
+
+流 ID
+
+#### `filePath`
+
+截图保存地址。
+
+#### `width`
+
+图片宽度。
+
+#### `height`
+
+图片高度。
+
+<a id="class_fcrmediapacketstats"></a>
+
+## FcrMediaPacketStats
+
+媒体包信息数据。
+
+<a id="class_fcrmediapacketstats__prototype"></a>
+
+```objectivec
+@objcMembers public class FcrMediaPacketStats: NSObject {
+    public let lastMileDelay: Int
+    public let txPacketLossRate: Int
+    public let rxPacketLossRate: Int
+    
+    public init(lastMileDelay: Int,
+                txPacketLossRate: Int,
+                rxPacketLossRate: Int) {
+        self.lastMileDelay = lastMileDelay
+        self.txPacketLossRate = txPacketLossRate
+        self.rxPacketLossRate = rxPacketLossRate
+    }
+}
+```
+
+<a id="class_fcrmediapacketstats__detailed_desc"></a>
+
+#### `自从`
+
+v2.8.60
+
+<a id="class_fcrmediapacketstats__parameters"></a>
+
+### 属性
+
+#### `lastMileDelay`
+
+客户端-接入服务器延时 (毫秒)。
+
+#### `txPacketLossRate`
+
+客户端上行发送到服务器的丢包率（%）。
+
+#### `rxPacketLossRate`
+
+服务器下行发送到客户端的丢包率（%）。
+
+<a id="class_fcrperformanceinfo"></a>
+
+## FcrPerformanceInfo
+
+设备性能信息。
+
+<a id="class_fcrperformanceinfo__prototype"></a>
+
+```objectivec
+@objcMembers public class FcrPerformanceInfo: NSObject {
+    public let cpuTotalUsage: Double
+    public let cpuAppUsage: Double
+    public let memoryAppUsageRatio: Double
+    public let memoryTotalUsageRatio: Double
+    public let memoryAppUsageInKbytes: Int
+   
+    public init(cpuTotalUsage: Double,
+                cpuAppUsage: Double,
+                memoryAppUsageRatio: Double,
+                memoryTotalUsageRatio: Double,
+                memoryAppUsageInKbytes: Int) {
+        self.cpuTotalUsage = cpuTotalUsage
+        self.cpuAppUsage = cpuAppUsage
+        self.memoryAppUsageRatio = memoryAppUsageRatio
+        self.memoryTotalUsageRatio = memoryTotalUsageRatio
+        self.memoryAppUsageInKbytes = memoryAppUsageInKbytes
+    }
+}
+```
+
+<a id="class_fcrperformanceinfo__detailed_desc"></a>
+
+#### `自从`
+
+v2.8.60
+
+<a id="class_fcrperformanceinfo__parameters"></a>
+
+### 属性
+
+#### `cpuTotalUsage`
+
+当前系统的 CPU 使用率（%）。
+
+#### `cpuAppUsage`
+
+当前 App 的 CPU 使用率（%）。
+
+#### `memoryAppUsageRatio`
+
+当前 App 的内存占比（%）。
+
+#### `memoryTotalUsageRatio`
+
+当前系统的内存占比（%）。
+
+#### `memoryAppUsageInKbytes`
+
+当前 App 的内存大小（KB）。

@@ -9,7 +9,7 @@ title: "如何调用 API"
 
 ## 配置 URL
 
-以[创建课堂 API](/zh-CN/solutions/flexible-classroom/reference/api-classroom#创建课堂) 为例，请求的 URL 示例如下：
+以[创建课堂 API](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom#创建课堂) 为例，请求的 URL 示例如下：
 
 ```text
 https://api.sd-rtn.com/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}
@@ -30,7 +30,7 @@ https://api.sd-rtn.com/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}
 
 请求包括请求 Header 和请求 Body 两部分。在配置完 URL 后，你需要设置请求 Header 和 Body 信息，然后向服务器发送请求。
 
-以下是[创建课堂](/zh-CN/solutions/flexible-classroom/reference/api-classroom#创建课堂)的请求示例：
+以下是[创建课堂](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom#创建课堂)的请求示例：
 
 ```shell
 curl -X POST 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/{roomUuid}' \
@@ -84,9 +84,9 @@ curl -X POST 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/{roo
 
 ### 响应 Body
 
-响应 Body 包含了服务器反馈的数据。例如，[查询课堂](/zh-CN/solutions/flexible-classroom/reference/api-classroom#查询课堂)的响应 Body 包括标识课堂房间的 UUID、课堂名称、创建时间、房间属性等信息。具体以每个 API 的响应为准。
+响应 Body 包含了服务器反馈的数据。例如，[查询课堂](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom#查询课堂)的响应 Body 包括标识课堂房间的 UUID、课堂名称、创建时间、房间属性等信息。具体以每个 API 的响应为准。
 
-以下是[查询课堂](/zh-CN/solutions/flexible-classroom/reference/api-classroom#查询课堂)的响应示例：
+以下是[查询课堂](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom#查询课堂)的响应示例：
 
 ```json
 {
