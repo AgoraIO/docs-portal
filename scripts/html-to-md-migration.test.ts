@@ -715,15 +715,6 @@ async function writeDartdocFixture(sourceDir: string) {
             <dd><p>Channel profile options.</p></dd>
           </dl>
         </section>
-        <section class="summary" id="guides">
-          <h2>Guides</h2>
-          <ul>
-            <li>
-              <a href="#setup">Setup</a>
-              <ul><li><a href="#advanced">Advanced</a></li></ul>
-            </li>
-          </ul>
-        </section>
       </div>
     </main>
   </body>
@@ -1179,7 +1170,6 @@ describe('html-to-md-migration', () => {
           '1. Initialize the engine.',
           '<a id="enums"></a>',
           '[ChannelProfile](/api-reference/rtc/dart/agora-rtc/channel-profile)',
-          '- [Setup](#setup)\n\n  - [Advanced](#advanced)',
         ],
         'agora-rtc/rtc-engine/index.mdx': [
           'title: "RtcEngine class"',
