@@ -1,18 +1,29 @@
 ---
 title: Customize your agent
-description: Customize your agent using advanced configuration options in Agent Studio.
+description: Customize your agent using advanced configuration options in the agent editor.
 ---
 This guide covers the configuration options available in the agent editor. The editor is organized into four tabs: **Prompt**, **Models**, **Advanced**, and **Actions**.
 
+If you need assistance exploring or debugging your project through natural language, see [Concierge](concierge).
+
 ## Prerequisites
 
-Follow the [quickstart](../quickstart) to create your first Agent Studio agent.
+Follow the [Quickstart](../quickstart) or use [Concierge](concierge) to create your first agent.
+
+## Open the agent editor
+
+1. In Agora Console, select your project from the project dropdown at the top of the page.
+2. In the navigation sidebar, select **Agents**.
+3. Select an existing agent, or create a new one.
+4. From the **Action** menu, select **Edit Agent**.
+
+The agent editor provides the following tabs.
 
 ## Prompt
 
-The Prompt tab contains the core instructions that define your agent's identity and behavior.
+Use this tab to specify the core instructions that define your agent's identity and behavior.
 
-![](https://assets-docs.agora.io/images/conversational-ai/studio/agent-editor-prompt.png)
+![Agent editor prompt tab UI](/console-tmp/agent-editor-prompt.png)
 
 - **System Prompt**: Defines how your agent behaves. For example: `You are a helpful customer support assistant.` See [Prompt design](prompt-design) for guidance on writing effective prompts.
 - **Greeting Message**: The first thing your agent says when a session starts. For example: `Hello! How can I help you today?`
@@ -22,52 +33,55 @@ See [Template variables](prompt-design#template-variables) to customize the syst
 
 ## Models
 
-The Models tab is where you select the ASR, LLM, and TTS services your agent uses. The dropdowns list vendor-model combinations that support Agora Managed Key.
+Use this tab to select the ASR, LLM, and TTS services your agent uses. The dropdowns list vendor-model combinations that support Agora Managed Key.
 
-![](https://assets-docs.agora.io/images/conversational-ai/studio/agent-editor-models.png)
+![](/console-tmp/agent-editor-models.png)
 
 ### ASR
 
 - **Automatic Speech Recognition (ASR)**: Select a vendor-model from the dropdown.
 - **Language**: Select the primary language for agent interaction using the BCP-47 language tag.
 
-For advanced ASR settings, click the settings icon next to the ASR dropdown. For supported vendors, see [Supported ASR vendors](supported-vendors#asr-vendors).
+For advanced ASR settings, select the settings icon next to the ASR dropdown. For supported vendors, see [Supported ASR vendors](supported-vendors#asr-vendors).
 
 ### LLM
 
 - **Large Language Model (LLM)**: Select a vendor-model from the dropdown.
 
-For advanced LLM settings, click the settings icon next to the LLM dropdown. For supported vendors, see [Supported LLM vendors](supported-vendors#llm-vendors).
+For advanced LLM settings, select the settings icon next to the LLM dropdown. For supported vendors, see [Supported LLM vendors](supported-vendors#llm-vendors).
 
 ### TTS
 
 - **Text-to-Speech (TTS)**: Select a vendor-model from the dropdown.
 - **Voice**: Select a voice for the selected TTS vendor-model.
 
-For advanced TTS settings, click the settings icon next to the TTS dropdown. For supported vendors, see [Supported TTS vendors](supported-vendors#tts-vendors).
+For advanced TTS settings, select the settings icon next to the TTS dropdown. For supported vendors, see [Supported TTS vendors](supported-vendors#tts-vendors).
 
 ### Bring your own API key (BYOK)
 
-To use your own API key or to select a vendor or model not available under Agora Managed Key, click the settings icon next to the relevant dropdown. This opens a configuration panel where you can select any supported vendor and add your own API credentials. See [Manage integrations](integrations#credentials) for details on adding credentials.
+To use your own API key or to select a vendor or model not available under Agora Managed Key, select the settings icon next to the relevant dropdown. This opens a configuration panel where you can select any supported vendor and add your own API credentials. See [Manage integrations](integrations#credentials) for details on adding credentials.
 
-![](https://assets-docs.agora.io/images/conversational-ai/studio/configure-llm.png)
+![](/console-tmp/configure-llm.png)
 
 ## Advanced
 
-The Advanced tab contains configuration options for turn detection, speech detection, selective attention locking, filler words, and conversation history.
+Use this tab to configure the project, hosting region, turn detection, speech detection, selective attention locking, filler words, voice format, and conversation history.
 
-- **Select Project**: The Agora project this agent is associated with. Billing and usage are tracked under this project.
+### Project
+
+- **Project**: The Agora project used to track your billing and usage.
+- **Hosting Region**: Select the region where your project's data is stored.
 
 ### Turn detection
 
-Turn detection controls how the agent manages conversation flow and turn-taking behavior. Use the **Quick Presets** to get started quickly, or select **Custom** to configure individual parameters.
+Turn detection controls how the agent manages conversation flow and turn-taking behavior. Use one of the **Quick Presets** to get started quickly, or select **Custom** to configure individual parameters.
 
-![](https://assets-docs.agora.io/images/conversational-ai/studio/turn-detection.png)
+![](/console-tmp/turn-detection.png)
 
 **Quick Presets:**
 
-- **Responsive**: Optimized for fast-paced conversations
-- **Balanced**: A middle ground between responsiveness and naturalness. Suitable for most use-cases.
+- **Responsive**: Optimized for fast-paced conversations.
+- **Balanced**: A middle ground between responsiveness and naturalness. Suitable for most use cases.
 - **Patient**: Optimized for slower, more thoughtful conversations.
 - **Custom**: Manually configure individual parameters.
 
@@ -77,7 +91,7 @@ Turn detection controls how the agent manages conversation flow and turn-taking 
 
 Controls how the system detects when the user starts speaking.
 
-![](https://assets-docs.agora.io/images/conversational-ai/studio/start-of-speech.png)
+![](/console-tmp/start-of-speech.png)
 
 - **Detection Mode**: Select one of the following:
   - **Voice Activity Detection (VAD)**: Detects speech based on silence duration.
@@ -92,7 +106,7 @@ Controls how the system detects when the user starts speaking.
 
 Controls how the system decides the user has finished their thought.
 
-![](https://assets-docs.agora.io/images/conversational-ai/studio/end-of-speech.png)
+![](/console-tmp/end-of-speech.png)
 
 - **Detection Mode**: Select one of the following:
   - **Voice Activity Detection (VAD)**: Detects end of speech based on silence duration.
@@ -100,11 +114,11 @@ Controls how the system decides the user has finished their thought.
 
 - **Silence Duration (ms)**: How long the agent waits after you stop talking before it considers you finished. Lower values result in faster responses; higher values give the user more time to complete their thought.
 
-### Selective Attention Locking (SAL)
+### Selective attention locking (SAL)
 
 Helps the agent focus on the right voice while filtering out background conversations and noise.
 
-![](https://assets-docs.agora.io/images/conversational-ai/studio/selective-attention-locking.png)
+![](/console-tmp/selective-attention-locking.png)
 
 - **SAL Mode**: Select one of the following:
   - **Speaker Lock**: Blocks all other background noise and adapts to the detected speaker.
@@ -116,18 +130,30 @@ Helps the agent focus on the right voice while filtering out background conversa
 
 When enabled, the agent uses natural filler phrases while processing a response, reducing awkward silences.
 
-![](https://assets-docs.agora.io/images/conversational-ai/studio/filler-words.png)
+![](/console-tmp/filler-words.png)
 
 - **Filler words / phrases**: Enter up to 100 filler phrases, one per line. For example:
-    ```text
-      sure let me look that up for you
-      uh huh
-      please wait
+
     ```
+    Sure, let me look that up for you
+    uh huh
+    Please wait
+    ```
+
 - **Response Wait Threshold (ms)**: How long the agent waits before it starts using filler words. Lower values trigger fillers sooner; higher values give the LLM more time to respond before fillers are used.
 - **Selection Rule**: Controls how filler phrases are selected:
     - **Shuffle**: Random, no repeats until all phrases are exhausted.
     - **Round Robin**: Played sequentially.
+
+### Voice format
+
+When enabled, the agent normalizes chat completions for speech output, so numbers and other text are read naturally.
+
+![](/console-tmp/voice-format.png)
+
+- **Digit Cutoff**: Numbers larger than this cutoff are normalized for speech output. 
+- **Custom Replacements**: Add up to 5 exact or regex replacements.
+
 
 ### History
 
@@ -135,20 +161,32 @@ When enabled, the agent uses natural filler phrases while processing a response,
 
 ## Actions
 
-The Actions tab is where you connect your agent to external data and services.
+Use this tab to connect your agent to external data and services.
 
-![](https://assets-docs.agora.io/images/conversational-ai/studio/agent-editor-actions.png)
+![](/console-tmp/agent-editor-actions.png)
 
 ### Knowledge base
 
-A knowledge base provides your agent with additional context from reference documents. Click **+ Add Knowledge Base** to select or create a knowledge base. See [Add knowledge base](integrations#knowledge-bases).
+A knowledge base provides your agent with additional context from reference documents. Select **+ Add Knowledge Base** to select or create a knowledge base. See [Add knowledge base](integrations#knowledge-bases).
 
-### MCP Server
+### MCP servers
 
-MCP servers enable your agent to call tools provided by external services. Click **+ Add MCP Server** to select or create an MCP server. See [Add MCP server](integrations#mcp-servers).
+MCP servers enable your agent to call tools provided by external services. Select **+ Add MCP Server** to select or create an MCP server. See [Add MCP server](integrations#mcp-servers).
+
+### Custom Tools
+
+Custom Tools let your agent call reusable HTTP endpoints that you defined in **Integration**. Select **+ Add Custom Tools** to attach one or more tools to this agent. See [Custom Tools](custom-tools).
+
+### Connectors
+
+Connectors let your agent use built-in integrations managed in **Integration**. Attach HubSpot when your agent needs CRM contact or ticket workflows. See [HubSpot Connector](hubspot-connector).
+
 
 ## Next steps
 
 - [Manage integrations](integrations): Manage credentials, MCP servers, and knowledge bases for reuse across agents
+- [Custom Tools](custom-tools): Create reusable HTTP tools and attach them to agents
+- [HubSpot Connector](hubspot-connector): Connect HubSpot for contacts and tickets workflows
+- [Concierge](concierge): Work with your project through natural language
 - [Test your agent](test-agent): Learn more about testing features and troubleshooting agent behavior
 - [Publish your agent](../deploy/deploy-agent): Publish your agent to production

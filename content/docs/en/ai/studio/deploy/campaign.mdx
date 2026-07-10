@@ -2,78 +2,87 @@
 title: Set up a campaign
 description: Create and manage outbound calling campaigns with your deployed agents.
 ---
-Campaigns enable your deployed agents to make outbound calls to a list of contacts. You can use campaigns for sales outreach, customer follow-ups, appointment reminders, surveys, and other automated calling scenarios.
+Campaigns enable your deployed agents to make outbound calls to a list of contacts. Use campaigns for sales outreach, customer follow-ups, appointment reminders, surveys, and other automated calling scenarios.
 
-## Before you begin
+## Plan your campaign
 
 Before creating a campaign, consider the following:
 
-**What is your goal?** Define the purpose of your campaign, such as appointment confirmations, payment reminders, customer satisfaction surveys, or lead qualification. This determines the agent template and prompt you should use.
+**What is your goal?** Define the purpose of your campaign, such as appointment confirmations, payment reminders, customer satisfaction survey, or lead qualification. This determines the agent template and prompt you should use.
 
-**Who are you calling?** Only call contacts who have given consent to be contacted. This includes existing customers with opted-in consent, leads who requested information, or users who have an existing relationship with your business.
+**Who are you calling?** Only call contacts who have given consent to be contacted. This includes existing customers with opt-in consent, leads who requested information, or users who have an existing relationship with your business.
 
 **When should you call?** Call during business hours in your customer's time zone. Avoid meal times and respect do-not-call hour restrictions in your region.
 
 ## How campaigns work
 
-When you create a campaign, you select a deployed agent and provide a contact list. The agent calls each contact in the list using the imported phone number you specify as the caller ID. You can include [template variables](../build/prompt-design#template-variables) in your contact list. The agent references these variables during conversations through the LLM's system prompts and greeting messages.
+To create a campaign, you select a deployed agent and provide a contact list. The agent calls each contact in the list using the imported phone number you specify as the caller ID. You can include [template variables](../build/prompt-design#template-variables) in your contact list. The agent references these variables during conversations through the LLM's system prompts and greeting messages.
 
 ## Prerequisites
 
 - An [imported phone number](import) to use as caller ID. If you are using Twilio, see [Set up SIP trunk](sip-trunk) first.
-- A [deployed agent](deploy-agent) configured for your use case
-- A contact list in CSV [format](#contact-list-format) with required phone numbers
+- A [deployed agent](deploy-agent) configured for your use case.
+- A contact list in CSV [format](#contact-list-format) with required phone numbers.
+
+You can also add a phone number or create an agent directly from the campaign creation screen, so these don't strictly need to exist beforehand.
 
 ## Create a campaign
 
 To create a new campaign:
 
-1. In Agent Studio, select **Campaign** from the sidebar.
+1. In the navigation sidebar, select **Campaign**.
 
-    ![Create a campaign](https://assets-docs.agora.io/images/conversational-ai/studio/campaign.png)
+    ![Create a campaign](/console-tmp/campaign.png)
 
-2. Click **Create Campaign**.
+2. Select **Create Campaign**.
 
-    ![New campaign](https://assets-docs.agora.io/images/conversational-ai/studio/campaign-new.png)
+    ![New campaign](/console-tmp/campaign-new.png)
 
 3. Configure the campaign details:
 
-   - **Campaign Name**: Enter a descriptive name to identify this campaign.
-   - **Phone Number**: Select the imported phone number to use as the outbound caller ID.
-   - **AI Agent**: Select the deployed agent that will handle the calls.
+   - **Campaign Name** (required): Enter a descriptive name to identify this campaign.
+   - **Phone number** (required): Select the imported phone number to use as the outbound caller ID, or select **Add Phone Number** to import one without leaving this screen.
+   - **AI Agent** (required): Select the deployed agent that will handle the calls, or select **Create Agent** to create one without leaving this screen.
 
-4. Upload your contact list in the **Contacts List** panel. Click **Select File** or drag and drop a CSV file into the upload area. See [Contact list format](#contact-list-format) for requirements.
+4. Upload your contact list in the **Contacts List** panel. Select **Select File**, or drag and drop a CSV file into the upload area. See [Contact list format](#contact-list-format) for requirements.
 
-   :::info[Info]
-   Maximum file size: 25 MB. Maximum rows: 50,000.
-   :::
+    :::info[Info]
+    Maximum file size is 25 MB, with a maximum of 50,000 rows.
+    :::
 
 5. Configure launch timing:
 
    - **Launch Campaign Now**: Start calling contacts immediately after creation.
-   - **Schedule for Later**: Set a specific **Campaign Start Time**, **Timezone**, and **Call Window** to control when calls are made.
+   - **Schedule for Later**: Set a specific **Campaign Start Time**, **Timezone**, and **Call Window** to control when your agent makes calls.
 
 6. Configure call settings:
 
-    ![Call Settings](https://assets-docs.agora.io/images/conversational-ai/studio/campaign-new-2.png)
+    ![Call settings](/console-tmp/campaign-call-settings.png)
 
    - **Hang-up Configuration**
 
      - **End of conversation**: Hang up when the conversation naturally ends.
      - **Voicemail Detection**: Allows the agent to detect voicemail systems and hang up the call.
+     - **Fax Detection**: Allows the agent to detect fax tones and hang up the call.
      - **Silence hangup**: End the call after a period of silence.
      - **Silence Timeout** (seconds): Duration of silence before ending the call. Default: 120 seconds.
-     - **Max Call Duration** (seconds): Maximum length for a conversation. Default: 300 seconds.
-     - **Ring Duration** (seconds): Maximum time to wait for call connection. The call stops ringing if not connected within the specified duration. Default: 30 seconds.
+     - **Max Call Duration** (seconds) (required): Maximum length for a conversation. Default: 300 seconds.
+     - **Ring Duration** (seconds) (required): Maximum time to wait for call connection. The call stops ringing if not connected within the specified duration. Default: 30 seconds.
 
-   - **Transfer Call to Human**: Transfers the call to a human agent when needed or requested by the caller. When enabled, configure the following:
+   - **Transfer Call to Human**: Transfers the call to a human agent when needed or requested by the caller.
 
-     - **Transfer Phone Number**: The phone number to transfer the call to, in E.164 format.
-     - **Transfer Criteria**: Describe when the agent should transfer the call to this number.
+      ![Campaign Transfer Call to Human settings](/console-tmp/campaign-transfer-call.png)
+
+      When enabled, configure the following:
+
+      - **Transfer Type**: Choose **Number** or **SIP**.
+      - **Transfer Destination**: Enter the destination phone number or SIP address. For example, a phone number as `550001234`, or in E.164 format as `+15550001234`.
+      - **Transfer Criteria**: Describe when the agent should transfer the call to this number. Select **Show Example** for a sample description.
+      - **SIP Headers**: When **Transfer Type** is **SIP**, you can add constant or dynamic SIP headers to the transfer request.
 
    - **Transcripts & Recording**
 
-     ![Transcripts and Call Analysis](https://assets-docs.agora.io/images/conversational-ai/studio/campaign-new-3.png)
+     ![Transcripts and call analysis](/console-tmp/campaign-transcript-analysis.png)
 
      - **Store Transcripts**: Automatically saves the conversation text for review.
      - **Store Call Recording**: Automatically saves the call audio recording for review.
@@ -82,7 +91,7 @@ To create a new campaign:
 
      - **Post Call Data Extraction**: Automatically extracts structured outputs from calls according to your business needs.
 
-7. Click **Schedule Campaign** to save your campaign.
+7. Select **Schedule Campaign** to launch or schedule your campaign, or select **Save as Draft** to save your progress without launching it.
 
 :::caution[Compliance]
 Outbound calling is subject to legal requirements that vary by region. In the United States, the Telephone Consumer Protection Act (TCPA) requires written consent for marketing calls. Always identify your business name and provide a callback number. Honor do-not-call requests immediately and respect calling hour restrictions (8 AM to 9 PM in the recipient's time zone). Consult your legal team before running large outbound campaigns.
@@ -96,13 +105,13 @@ Your contact list must be a CSV file with the following requirements:
 - Add columns for variables you want to use in your agent's prompts. Column names become variable names available in your **Prompt** configuration.
 - To override agent settings per contact, add columns like `prompt_override`.
 
-You can download a template from the **Contacts List** panel by clicking **Download Template**.
+You can download a template from the **Contacts List** panel by selecting **Download Template**.
 
 ### Sample contact list
 
 The following is an example of a contact list for appointment confirmation:
 
-```text
+```
 phone_number,name,appointment_time,preferred_language
 +19168888860,John Doe,2025-01-15 10:00 AM,English
 +19168888861,Jane Smith,2025-01-15 11:00 AM,Spanish
@@ -114,12 +123,16 @@ In this example, the agent can reference `{{name}}`, `{{appointment_time}}`, and
 
 To view and manage your campaigns:
 
-1. In Agent Studio, select **Campaign** from the sidebar.
+1. In the navigation sidebar, select **Campaign**.
 2. The Campaign page displays all your campaigns with their current status and progress.
 3. Use the **Actions** menu to:
    - **Edit**: Modify scheduled campaigns before they start.
    - **View Results**: Review completed campaign performance.
    - **Delete**: Remove campaigns.
+
+## More transfer options
+
+For SIP transfer setup, valid SIP destination formats, and dynamic SIP header examples, see [Transfer to SIP address and dynamic SIP headers](transfer-to-sip-address-and-dynamic-sip-headers).
 
 ## Next steps
 

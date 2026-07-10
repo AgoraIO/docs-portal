@@ -1,27 +1,27 @@
 ---
 title: Manage integrations
-description: Manage API credentials, knowledge bases and MCPs in Agent Studio.
+description: Manage API credentials, knowledge bases, connectors, custom tools, and MCP servers for your agents.
 ---
-Agent Studio provides centralized management of credentials, MCP servers, and knowledge bases through the **Integration** interface. Store and reuse API keys and configuration settings for your LLM, ASR, and TTS providers across all agents, making it easy to update provider settings in one place.
+
+Use Integrations to centrally manage credentials, knowledge bases, MCP servers, custom tools, and connectors. Store a resource once, then attach it to any agent in the same project.
 
 ## Credentials
 
 To save your credentials for a vendor:
 
-1. From the left sidebar, select **Integration**.
+1. In the navigation sidebar, select **Integrations**.
 2. At the top of the page, select **Credentials**.
-3. Click **`+ Add Credential`**.
-    ![Add credential](https://assets-docs.agora.io/images/conversational-ai/studio/create-credential.png)
-
-4. From the **Type** dropdown, select **ASR**, **LLM**, or **TTS**.
+3. Select **+ Add Credential**.
+    ![Add credential dialog](/console-tmp/create-credential.png)
+4. From the **Type** dropdown, select **ASR/STT**, **LLM**, **TTS**, or **MLLM**.
 5. Select the **Vendor** from the dropdown for which you want to add the credential.
 6. Enter a descriptive name for your credential.
 7. Paste your provider API key and fill in other related parameters, if any.
-8. Click **Save**.
+8. Select **Save**.
 
-After you add a credential, you can select it from the **Credential** dropdown when customizing your ASR, LLM, or TTS configuration for any agent.
+After you add a credential, you can select it from the **Credential** dropdown when customizing your ASR, LLM, TTS, or MLLM configuration for any agent.
 
-You can edit and delete credentials using the **Actions** column in the credential list.
+You can edit and delete credentials using the **Actions** menu in the credential list.
 
 :::caution[Caution]
 Deleting a credential affects all agents that use it. Verify that no active agents depend on the credential before deleting, or update those agents to use a different credential first.
@@ -29,16 +29,16 @@ Deleting a credential affects all agents that use it. Verify that no active agen
 
 ### Credential security
 
-Credentials stored in **Integrations** are:
+Credentials stored in Integrations are:
 
 - Encrypted and securely stored in your Agora account
 - Only accessible to users with access to your Agora project
 - Never exposed in agent configurations or logs
 
 :::tip[Best practices]
-- Use descriptive names to distinguish between development, staging, and production credentials
-- Rotate API keys regularly according to your security policies
-- Delete unused credentials to minimize security exposure
+- Use descriptive names to distinguish between development, staging, and production credentials.
+- Rotate API keys regularly according to your security policies.
+- Delete unused credentials to minimize security exposure.
 :::
 
 ## Knowledge bases
@@ -47,37 +47,63 @@ A knowledge base provides your agent with additional context by supplying refere
 
 To create a knowledge base:
 
-1. From the left sidebar, select **Integration**.
+1. In the navigation sidebar, select **Integrations**.
 2. At the top of the page, select **Knowledge Bases**.
-3. Click **+ Add Knowledge Base**.
-    ![Create knowledge base](https://assets-docs.agora.io/images/conversational-ai/studio/create-knowledge-base.png)
-4. Enter a **Knowledge Base Name**.
-5. Enter a **Description**.
-6. Upload one or more files by clicking **Browse files** or dragging and dropping files into the upload area.
-7. Click **Create**.
+3. Select **+ Create Knowledge Base**.
+    ![Create knowledge base dialog](/console-tmp/create-knowledge-base.png)
+4. Enter a **Knowledge Base Name** and  **Description**.
+5. Upload one or more files by selecting **Browse files** or dragging and dropping files into the upload area.
+6. Select **Create**.
 
 :::info[Info]
 Supported file formats: PDF, DOCX. Maximum file size: 20 MB per file.
 :::
 
-You can delete knowledge bases using the **Actions** column in the knowledge base list.
+You can edit or delete knowledge bases using the **Actions** menu in the knowledge base list.
 
 ## MCP servers
 
-MCP (Model Context Protocol) servers extend your agent's capabilities by enabling it to call tools provided by external services. Once added to **Integrations**, MCP servers can be attached to any agent from the **Actions** panel.
+MCP (Model Context Protocol) servers extend your agent's capabilities by enabling it to call tools provided by external services. Once added to Integrations, MCP servers can be attached to any agent from the **Actions** panel.
 
 To add an MCP server:
 
-1. From the left sidebar, select **Integration**.
+1. In the navigation sidebar, select **Integrations**.
 2. At the top of the page, select **MCPs**.
-3. Click **+ Add Server**.
-    ![Add MCP server](https://assets-docs.agora.io/images/conversational-ai/studio/create-mcp.png)
+3. Select **+ Add Server**.
+    ![Add MCP server dialog](/console-tmp/create-mcp.png)
 4. Enter a descriptive **Name** for the MCP server.
 5. Enter the **Server URL**.
 6. Set the **Timeout (ms)**. If the server does not respond within this duration, the agent stops waiting and continues executing.
 7. Select the **Server Protocol**: **SSE**, **HTTP**, or **Streamable HTTP**.
-8. Add **HTTP Headers** for authentication or additional configuration. (Optional)
-9. Add **Query Parameters** to append to the server URL. (Optional)
-10. Click **Add**.
+8. Add **HTTP Headers** for authentication or additional configuration. Optional.
+9. Add **Query Parameters** to append to the server URL. Optional.
+10. Select **Add**.
 
-You can edit, delete or check the status of an MCP server using the **Actions** column in the MCP server list.
+You can edit, delete, or check the status of an MCP server using the **Actions** menu in the MCP server list.
+
+## Custom Tools
+
+Custom Tools let you define reusable HTTP tools for your agents.
+
+To create a Custom Tool:
+
+1. In the navigation sidebar, select **Integrations**.
+2. At the top of the page, select **Custom Tools**.
+3. Select **Add Custom Tool**.
+    ![Add custom tool dialog](/console-tmp/new-custom-tool.png)
+4. Configure the request, function schema, and optional body template.
+5. Save the tool.
+
+After you create a Custom Tool, attach it to an agent from the agent editor **Actions** tab.
+
+See [Custom Tools](custom-tools) for full setup guidance.
+
+## Connectors
+
+Connectors provide built-in integrations that agents can use without building your own HTTP or MCP layer.
+
+Currently available:
+
+- [HubSpot Connector](hubspot-connector): Connect HubSpot and attach it to agents that need contact and ticket workflows
+
+After you connect a connector here, attach it to an agent from the agent editor **Actions** tab.
