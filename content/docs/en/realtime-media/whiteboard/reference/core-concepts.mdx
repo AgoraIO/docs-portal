@@ -1,0 +1,138 @@
+---
+title: 'Core concepts'
+description: 'Ideas that are central to developing with Agora Interactive Whiteboard.'
+---
+
+Agora Interactive Whiteboard enables you to record video and voice calls or streams in the cloud for storage or on-demand viewing. Interactive Whiteboard works with Voice Calling, Video Calling, Broadcast Streaming and Interactive Live Streaming.
+
+This page introduces the key processes and concepts you need to know to use Interactive Whiteboard.
+
+## Interactive Whiteboard concepts
+
+The following figure shows the basic process of Interactive Whiteboard configuration and joining a whiteboard room:
+
+![Interactive Whiteboard concepts](https://assets-docs.agora.io/images/interactive-whiteboard/whiteboard-concepts.png)
+
+In the project configuration under **Whiteboard > Basic Information**, you can obtain the **AppIdentifier**, **Access Key** (AK), and **Secret Key** (SK), and directly generate the SDK token.
+
+### AppIdentifier
+Also known as the App ID, the `AppIdentifier` is the unique identifier of your project. You use the `AppIdentifier` when initializing the Whiteboard SDK.
+
+### Access key and Secret key
+The access key pair (AK amd SK) is used to generate Interactive Whiteboard tokens.
+
+### SDK token
+The SDK token is a dynamic key used for authentication. For project testing, you can generate a token using the Agora Console. In a production environment, you call the server API or use sample code to generate an SDK token on your app server.
+
+### Types of tokens
+
+Interactive Whiteboard employs the following types of tokens:
+
+#### SDK token
+
+An SDK token is bound to a specific Interactive Whiteboard project and is the highest level token. Users holding an SDK token can operate all rooms and document conversion tasks under the bound project. The permissions of SDK tokens for different roles are as follows:
+
+| Permission                              | `admin` | `writer` | `reader`       |
+|:----------------------------------------|:-------:|:--------:|:--------------:|
+| Create a Room                            | ✔     | ✔      | ✘                  |
+| Join a room in interactive mode          | ✔     | ✔      | ✘                  |
+| Join the room in read-only mode          | ✘     | ✘      | ✔                  |
+| Get room list                            | ✔     | ✔      | ✘                  |
+| Get room information                     | ✔     | ✔      | ✘                  |
+| Ban a Room                              | ✔     | ✘      | ✘                  |
+| Take a screenshot of the specified scene | ✔     | ✔      | ✘                  |
+| Take screenshots of all scenes under the scene group | ✔   | ✔      | ✘        |
+| Get the scene address list of the room   | ✔     | ✔      | ✘                  |
+| Insert a new scene                       | ✔     | ✔      | ✘                  |
+| Scene Jump                               | ✔     | ✔      | ✘                  |
+| Initiate a document conversion task      | ✔     | ✔      | ✘                  |
+| Generate a Room token of an equal or lower role <br />(for example, the SDK token of the `admin` role can generate a Room token of the `admin` `writer` or `reader` role) | ✔     | ✔      |  ✔    |
+| Generate a task token of an equal or lower role <br />(for example, the SDK Token of the `admin` role can generate a task token of the admin `writer` or `reader` role) | ✔     | ✔      | ✔ |
+
+:::warning[Note]
+An SDK token has the highest level of permissions. If leaked, it can compromise your business security. Follow these security best practices:
+
+- Do not expose the SDK token to the client, store it in a database, or write it to a configuration file. Instead, retrieve the SDK token from the business server when needed.
+- Avoid issuing SDK tokens that never expire. Instead, set the validity period based on your business requirements.
+:::
+
+#### Room token
+A Room token is tied to a specific room within a particular Interactive Whiteboard project. Users with a Room token can interact with the associated room. The permissions granted by Room tokens vary depending on the user's role, as follows:
+
+| Permission                                      | `admin` | `writer` | `reader` |
+|:----------------------------------------|:-------:|:--------:|:--------------:|
+| Join a specific room in interactive mode          | ✔     | ✔      | ✘                  |
+| Join a specific room in subscription mode         | ✘     | ✘      | ✔                  |
+| Get specific room information                     | ✔     | ✔      | ✘                  |
+| Block specific rooms                              | ✔     | ✘      | ✘                  |
+| Take a screenshot of the specified scene          | ✔     | ✔      | ✘                  |
+| Take screenshots of all scenes under the scene group | ✔  | ✔      | ✘                  |
+| Get a list of scene addresses for a specific room | ✔     | ✔      | ✘                  |
+| Insert a new scene in a specific room             | ✔     | ✔      | ✘                  |
+| Jump to a specific room                           | ✔     | ✔      | ✘                  |
+
+#### Task token
+A Task token is linked to a specific document conversion task within a project. Users with the Task token can perform actions on the associated document conversion task. The permissions for Task tokens are based on the user's role as follows:
+
+| Permission                                       | `admin` | `writer` | `reader` |
+|:----------------------------------------|:-------:|:--------:|:--------------:|
+| Query the progress of a specific document conversion task  | ✔     | ✔      | ✔       |
+
+### UUIDs
+
+#### Room UUID
+The unique identifier of an interactive whiteboard room. The room UUID is returned after a call to create a room succeeds.
+
+#### Task UUID
+The unique identifier of a document conversion task. It is returned when a call to initiate document conversion is successful.
+
+### Interactive mode
+Users who join a whiteboard room in interactive mode have read and write permissions and can edit the whiteboard. Users holding `admin` or `writer` role Room tokens can join a room in interactive mode.
+
+### Subscription mode
+Users who join the whiteboard room in subscription mode have read-only permissions and can only view the whiteboard content. Users holding a `reader` role Room token can join the room in subscription mode.
+
+:::info[Info]
+Limiting the number of users in interactive mode in rooms with a large audience helps improve the stability of the whiteboard connection and increases the maximum capacity of the room.
+:::
+
+### Document conversion
+Agora interactive whiteboard provides document conversion services, which support converting `PPT`, `PPTX`, `DOC`, `DOCX` and `PDF` files into static images, and converting `PPT` and `PPTX` files into dynamic `HTML` web pages. The converted images or web pages can be displayed as presentation materials in the interactive whiteboard. For details, see [File conversion overview](../build/display-files-and-manage-scenes/file-conversion-overview.md).
+
+#### Static file conversion
+Convert `PPT`, `PPTX`, `DOC`, `DOCX`, `PDF` files to static images in `PNG`, `JPG` or `JPEG` formats. The converted files do not retain the animation effects in the original files.
+
+#### Dynamic file conversion
+Convert `PPT` and `PPTX` files edited with Microsoft Office into `HTML` web pages. The converted files retain the animation effects in the source files.
+
+### Multi-window mode
+Multi-window mode is a Interactive Whiteboard display, which supports displaying multiple windows on a whiteboard page at the same time. These windows float on the main whiteboard page, each showing different content. You can freely drag, maximize, and minimize each window.
+
+The interactive whiteboard Fastboard SDK enables multi-window mode by default; the Whiteboard SDK `window-manger` can implement multi-window mode through integration.
+
+### Small window application
+In multi-window mode, the interactive whiteboard supports inserting `PPT` or whiteboard plug-ins in the form of creating new windows, which are collectively referred to as small window applications.
+
+### Scene
+
+When you enter a whiteboard room, you see a page that extends infinitely in all directions. This page is called a scene. On a scene, you can write, draw, insert an image, and present a dynamic `PPT` slide. In a whiteboard room, you can add multiple scenes, switch between scenes, and move around a scene. For details, see [Scenes overview](../build/display-files-and-manage-scenes/scenes/overview.mdx).
+
+### Agora Console
+
+To use Agora Interactive Whiteboard, create a project in the [Agora Console](https://console.agora.io/) first.
+
+Agora Console provides an intuitive interface for developers to query and manage their Agora account. After registering an Agora account, you use the Agora Console to perform the following tasks:
+
+- Manage your account
+- Create and configure Agora projects and services
+- Get an App ID and the App certificate
+- Generate temporary tokens for development and testing
+- Manage members and roles
+- Check call quality and usage
+- Check bills and make payments
+- Access product resources
+
+See [Agora account management](../build/manage-agora-account.md) for details on how to manage all aspects of your Agora account.
+
+Agora also provides RESTful APIs that you use to implement features such as creating a project and fetching usage numbers programmatically.
+For details, see [Enable Interactive Whiteboard](../build/set-up-and-build-your-first-app/enable-whiteboard.md).

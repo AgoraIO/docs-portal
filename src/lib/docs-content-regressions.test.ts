@@ -397,7 +397,7 @@ describe('docs content regressions', () => {
       'build',
       'reference',
     ]);
-    expect(productMeta.sidebarIndexTitle).toBe('Whiteboard overview');
+    expect(productMeta.sidebarIndexTitle).toBe('Interactive Whiteboard overview');
     expect(productMeta.pages).not.toContain('overview');
     expect(
       existsSync(resolve(docsRoot, 'realtime-media/whiteboard/overview')),

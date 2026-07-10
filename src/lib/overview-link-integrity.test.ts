@@ -189,7 +189,8 @@ describe('overview entry links', () => {
         'Cloud Transcoding overview',
       'en/realtime-media/video/index.mdx': 'Video Calling overview',
       'en/realtime-media/voice/index.mdx': 'Voice Calling overview',
-      'en/realtime-media/whiteboard/index.mdx': 'Whiteboard overview',
+      'en/realtime-media/whiteboard/index.mdx':
+        'Interactive Whiteboard overview',
       'en/realtime-media/agora-analytics/product-overview.mdx':
         'Agora Analytics overview',
       'en/realtime-media/flexible-classroom/product-overview.mdx':
@@ -270,7 +271,8 @@ describe('overview entry links', () => {
       'en/realtime-media/transcoding/meta.json': 'Cloud Transcoding overview',
       'en/realtime-media/video/meta.json': 'Video Calling overview',
       'en/realtime-media/voice/meta.json': 'Voice Calling overview',
-      'en/realtime-media/whiteboard/meta.json': 'Whiteboard overview',
+      'en/realtime-media/whiteboard/meta.json':
+        'Interactive Whiteboard overview',
       'en/realtime-media/agora-analytics/meta.json':
         'Agora Analytics overview',
       'en/realtime-media/flexible-classroom/meta.json':
