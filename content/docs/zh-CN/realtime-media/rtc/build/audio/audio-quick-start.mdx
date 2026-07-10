@@ -1002,47 +1002,48 @@ override func viewDidLoad() {
 
 3. 设置部署你的 App 的[目标设备](https://help.apple.com/xcode/mac/current/#/deve69552ee5)。
 
-4. 添加项目的设备权限。
+完成上述设置后，添加项目的设备权限。
 
-    在项目导航栏中打开 `info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加以下属性：
-     :::warning[注意]
-     - 下表中列出的权限均为可选权限。但如果不添加所列权限，你将无法使用麦克风进行实时音频互动。
-             - 如果你的项目中需要添加第三方插件或库，且该插件或库的签名与项目的签名不一致，你还需勾选 **Hardened Runtime** > **Runtime Exceptions** 中的 **Disable Library Validation**。
-             - 更多注意事项，可以参考 [Preparing Your App for Distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution)。
-     :::
+在项目导航栏中打开 `info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加以下属性：
 
-    | Key | Type | Value |
-    | -------------------------------------- | ------ | ------------------------------------------------------------ |
-    | Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
+:::warning[注意]
+- 下表中列出的权限均为可选权限。但如果不添加所列权限，你将无法使用麦克风进行实时音频互动。
+- 如果你的项目中需要添加第三方插件或库，且该插件或库的签名与项目的签名不一致，你还需勾选 **Hardened Runtime** > **Runtime Exceptions** 中的 **Disable Library Validation**。
+- 更多注意事项，可以参考 [Preparing Your App for Distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution)。
+:::
 
-    进入 **TARGETS > Project Name > Signing & Capabilities**，在 **App Sandbox** 和 **Hardened Runtime** 中添加如下权限：
+| Key | Type | Value |
+| -------------------------------------- | ------ | ------------------------------------------------------------ |
+| Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
 
-    | Capability | Category | Permission |
-    | --- | --- | --- |
-    | App Sandbox | Network | <Slot name="audio-quick-start-1020-2-2" /> |
-    | App Sandbox | Hardware | <Slot name="audio-quick-start-1020-3-2" /> |
-    | Hardened Runtime | Resource Access | <Slot name="audio-quick-start-1020-4-2" /> |
+进入 **TARGETS > Project Name > Signing & Capabilities**，在 **App Sandbox** 和 **Hardened Runtime** 中添加如下权限：
 
-    <Slot for="audio-quick-start-1020-2-2">
+| Capability | Category | Permission |
+| --- | --- | --- |
+| App Sandbox | Network | <Slot name="audio-quick-start-1020-2-2" /> |
+| App Sandbox | Hardware | <Slot name="audio-quick-start-1020-3-2" /> |
+| Hardened Runtime | Resource Access | <Slot name="audio-quick-start-1020-4-2" /> |
 
-    - Incoming Connections (Server)
-    - Outgoing Connections (Client)
+<Slot for="audio-quick-start-1020-2-2">
 
-    </Slot>
+- Incoming Connections (Server)
+- Outgoing Connections (Client)
 
-    <Slot for="audio-quick-start-1020-3-2">
+</Slot>
 
-    - Camera
-    - Audio Input
+<Slot for="audio-quick-start-1020-3-2">
 
-    </Slot>
+- Camera
+- Audio Input
 
-    <Slot for="audio-quick-start-1020-4-2">
+</Slot>
 
-    - Camera
-    - Audio Input
+<Slot for="audio-quick-start-1020-4-2">
 
-    </Slot>
+- Camera
+- Audio Input
+
+</Slot>
 
 ## 集成 SDK
 根据实际情况，在以下集成方式中任选一种，在你的项目中集成 SDK。
@@ -6051,28 +6052,30 @@ void UAgoraWidget::NativeDestruct()
 在初始化 SDK 前，需确保终端用户已经充分了解并同意相关的隐私政策。
 :::
 
-1. (可选) 如果你的目标平台是 Android，在初始化 RTC 引擎前，需要检查是否已获取 Android 系统权限。在 **CheckPermission** 函数中，参照下图创建节点，用于添加 Android 系统中访问麦克风等权限。
+(可选) 如果你的目标平台是 Android，在初始化 RTC 引擎前，需要检查是否已获取 Android 系统权限。在 **CheckPermission** 函数中，参照下图创建节点，用于添加 Android 系统中访问麦克风等权限。
 
 ![](https://web-cdn.agora.io/docs-files/1689862339398)
 
-    :::info[信息]
-    如果你的目标平台是 macOS 或 iOS，请参考[如何为 Unreal Engine 项目添加实时互动所需的权限？](/zh-CN/api-reference/faq/integration/unreal_permissions)
-    :::
+:::info[信息]
+如果你的目标平台是 macOS 或 iOS，请参考[如何为 Unreal Engine 项目添加实时互动所需的权限？](/zh-CN/api-reference/faq/integration/unreal_permissions)
+:::
 
-2. 在 **InitRtcEngine** 函数中，参照下图创建并连接节点以初始化 RTC 引擎。
+在 **InitRtcEngine** 函数中，参照下图创建并连接节点以初始化 RTC 引擎。
 
 ![](https://web-cdn.agora.io/docs-files/1689862357748)
 
-    主要步骤如下：
+主要步骤如下：
 
-    1. 创建 `IRtcEngine` 和 `IRtcEngineEventHandler`。
-        1. 创建 **RtcEngine** 和 **EventHandler** 变量，将 **Variable Type** 分别设置为 **Agora Rtc Engine** 和 **IRtc Engine Event Handler**，即声网 SDK 的基础功能类和事件回调类，用于在蓝图中存储对这两个接口类的引用。
-        2. 添加两个 **Construct Object From Class** 节点，将 **Class** 分别设置为 **Agora Rtc Engine** 和 **IRtc Engine Event Handler**，并分别连接 **Set Rtc Engine** 和 **Set Event Handler**。
+1. 创建 `IRtcEngine` 和 `IRtcEngineEventHandler`。
 
-   2. 绑定 `IRtcEngineEventHandler` 类相关的回调函数。
-        1. 创建 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调函数。参考下表配置回调的输入参数：
+   1. 创建 **RtcEngine** 和 **EventHandler** 变量，将 **Variable Type** 分别设置为 **Agora Rtc Engine** 和 **IRtc Engine Event Handler**，即声网 SDK 的基础功能类和事件回调类，用于在蓝图中存储对这两个接口类的引用。
+   2. 添加两个 **Construct Object From Class** 节点，将 **Class** 分别设置为 **Agora Rtc Engine** 和 **IRtc Engine Event Handler**，并分别连接 **Set Rtc Engine** 和 **Set Event Handler**。
 
-            | 回调函数 | 描述 | 输入参数 |
+2. 绑定 `IRtcEngineEventHandler` 类相关的回调函数。
+
+创建 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调函数。参考下表配置回调的输入参数：
+
+| 回调函数 | 描述 | 输入参数 |
 | --- | --- | --- |
 | `FOnJoinChannelSuccess` | 成功加入频道回调。 | <Slot name="audio-quick-start-6019-2-2" /> |
 | `FOnLeaveChannel` | 离开频道回调。 | `stats`: 通话的统计数据。详见 [`FRtcStats`](/api-ref/rtc/unreal-blueprint/API/class_rtcstats)。 |
@@ -6102,13 +6105,14 @@ void UAgoraWidget::NativeDestruct()
 </Slot>
 
 
-        2. 创建 **Bind Event** 函数，在该函数中，添加 **Sequence** 节点，然后分别绑定 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调事件。
+创建 **Bind Event** 函数，在该函数中，添加 **Sequence** 节点，然后分别绑定 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调事件。
 
 ![](https://web-cdn.agora.io/docs-files/1689862369064)
 
-   3. 初始化 `IRtcEngine`。
-        1. 调用 **Initialize** 初始化 RTC 引擎。
-        2. 连接 **RtcEngineContext** 配置 `IRtcEngine` 实例，注意将 **Channel Profile** 选为 **CHANNEL_PROFILE_LIVE_BROADCASTING** (直播场景)。
+3. 初始化 `IRtcEngine`。
+
+   1. 调用 **Initialize** 初始化 RTC 引擎。
+   2. 连接 **RtcEngineContext** 配置 `IRtcEngine` 实例，注意将 **Channel Profile** 选为 **CHANNEL_PROFILE_LIVE_BROADCASTING** (直播场景)。
 
 ### 绑定 UI 事件
 

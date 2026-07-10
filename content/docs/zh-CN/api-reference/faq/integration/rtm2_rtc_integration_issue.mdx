@@ -559,9 +559,9 @@ exit $FINAL_EXIT_CODE
 
 对于 Flutter 项目，由于 `flutter build ios` 和 `flutter run` 会由 Flutter CLI 自己去调用 `pod install`，不会调用手动执行过的 `./pod.sh`，除了 `pod.sh` 之外，还需要额外添加一个名为 `pod` 的代理脚本。
 
-1. 新建一个名为 `pod` 的文件，将以下代码保存到文件中。
+新建一个名为 `pod` 的文件，将以下代码保存到文件中。
 
-    <Accordions>
+<Accordions>
 <Accordion title="pod 代码">
 
 ```shell
@@ -595,23 +595,23 @@ exec "$SCRIPT_DIR/pod.sh" "$@"
 </Accordion>
 </Accordions>
 
-2. 确保 `pod` 和 `pod.sh` 位于同一目录，并在 macOS 终端中为两个脚本添加执行权限：
+确保 `pod` 和 `pod.sh` 位于同一目录，并在 macOS 终端中为两个脚本添加执行权限：
 
-    ```bash
-    chmod +x pod.sh pod
-    ```
+```bash
+chmod +x pod.sh pod
+```
 
-3. 在执行 Flutter 命令前，将脚本所在目录放到 `PATH` 最前面：
+在执行 Flutter 命令前，将脚本所在目录放到 `PATH` 最前面：
 
-    ```bash
-    PATH="<代理脚本目录>:$PATH" flutter build ios
-    ```
+```bash
+PATH="<代理脚本目录>:$PATH" flutter build ios
+```
 
-    ```bash
-    PATH="<代理脚本目录>:$PATH" flutter run
-    ```
+```bash
+PATH="<代理脚本目录>:$PATH" flutter run
+```
 
-    其中，`<代理脚本目录>` 表示同时存放 `pod` 和 `pod.sh` 的目录，`pod` 这个文件名不能修改。
+其中，`<代理脚本目录>` 表示同时存放 `pod` 和 `pod.sh` 的目录，`pod` 这个文件名不能修改。
 
 </TabsContent>
 </Tabs>
