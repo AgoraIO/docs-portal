@@ -32,6 +32,34 @@ const matrix = [
     source: 'flexible-classroom/Web',
   },
   {
+    contentChecks: [
+      {
+        file: 'globals.mdx',
+        includes: [
+          '### MemberState',
+          '##### `arrowCompleteToSelector?: boolean`',
+          '### PlayableCheckingParams',
+          '##### `beginTimestamp?: number`',
+        ],
+        excludes: ['##### `Optional '],
+        orderedIncludes: [
+          '- **hotKeys?**: *Partial*',
+          '  | 键盘按键 | 效果 |',
+          '  | --- | --- |',
+          '  | Backspace 或 Delete | 删除所选对象 |',
+          '  | Ctrl + V 或 Command + V | 粘贴 |',
+          '  如果你想关闭快捷键功能，可以将该属性的其值设为 `{}`。',
+        ],
+      },
+    ],
+    id: 'typedoc-whiteboard-web',
+    lane: 'TypeDoc',
+    platform: 'web',
+    product: 'whiteboard',
+    sampleFiles: ['globals.mdx'],
+    source: 'whiteboard/Web',
+  },
+  {
     id: 'doxygen-recording-cpp',
     lane: 'Doxygen/Javadoc',
     platform: 'cpp',
@@ -186,8 +214,9 @@ async function readTextIfExists(filePath) {
   }
 }
 
-async function scanGeneratedOutput(outputDir, sampleFiles) {
+async function scanGeneratedOutput(outputDir, sampleFiles, contentChecks = []) {
   const issues = {
+    contentMismatches: [],
     helperPollution: [],
     internalHtmlLinks: [],
     missingFiles: [],
@@ -196,6 +225,32 @@ async function scanGeneratedOutput(outputDir, sampleFiles) {
   for (const required of ['index.mdx', 'meta.json', ...sampleFiles]) {
     const text = await readTextIfExists(path.join(outputDir, required));
     if (text === null) issues.missingFiles.push(required);
+  }
+
+  for (const check of contentChecks) {
+    const text = await readTextIfExists(path.join(outputDir, check.file));
+    if (text === null) continue;
+    for (const snippet of check.includes ?? []) {
+      if (!text.includes(snippet)) {
+        issues.contentMismatches.push(`${check.file}: missing ${snippet}`);
+      }
+    }
+    for (const snippet of check.excludes ?? []) {
+      if (text.includes(snippet)) {
+        issues.contentMismatches.push(`${check.file}: contains ${snippet}`);
+      }
+    }
+    let orderedOffset = 0;
+    for (const snippet of check.orderedIncludes ?? []) {
+      const index = text.indexOf(snippet, orderedOffset);
+      if (index === -1) {
+        issues.contentMismatches.push(
+          `${check.file}: missing or out of order ${snippet}`,
+        );
+        continue;
+      }
+      orderedOffset = index + snippet.length;
+    }
   }
 
   const helperPattern =
@@ -252,6 +307,13 @@ function assertCommandPassed(result, label) {
   }
 }
 
+function assertOutputAuditsPassed(issues, label) {
+  const failures = Object.values(issues).flat();
+  if (failures.length > 0) {
+    throw new Error(`${label} output audit failed\n${failures.join('\n')}`);
+  }
+}
+
 function markdownList(items) {
   if (items.length === 0) return '- None';
   return items.map((item) => `- ${item}`).join('\n');
@@ -294,11 +356,12 @@ function renderReport({ compileResult, opts, restResult, results }) {
   lines.push('## Output Audits', '');
   for (const result of results) {
     lines.push(
-      `### ${result.lane}`,
+      `### ${result.lane} (${result.source})`,
       '',
       `- Output: \`${result.outputDir}\``,
       `- Sample files checked: ${result.sampleFiles.map((file) => `\`${file}\``).join(', ')}`,
       `- Missing required files: ${result.issues.missingFiles.length}`,
+      `- Content assertion mismatches: ${result.issues.contentMismatches.length}`,
       `- Internal relative .html links: ${result.issues.internalHtmlLinks.length}`,
       `- Helper-page pollution matches: ${result.issues.helperPollution.length}`,
       '',
@@ -314,6 +377,13 @@ function renderReport({ compileResult, opts, restResult, results }) {
       lines.push(
         'Internal .html links:',
         markdownList(result.issues.internalHtmlLinks.slice(0, 20)),
+        '',
+      );
+    }
+    if (result.issues.contentMismatches.length > 0) {
+      lines.push(
+        'Content assertion mismatches:',
+        markdownList(result.issues.contentMismatches.slice(0, 20)),
         '',
       );
     }
@@ -376,7 +446,12 @@ async function main() {
 
     const dryRun = parseDryRun(dry.output);
     const counts = await countGeneratedFiles(outputDir);
-    const issues = await scanGeneratedOutput(outputDir, entry.sampleFiles);
+    const issues = await scanGeneratedOutput(
+      outputDir,
+      entry.sampleFiles,
+      entry.contentChecks,
+    );
+    assertOutputAuditsPassed(issues, entry.id);
 
     results.push({
       ...entry,
