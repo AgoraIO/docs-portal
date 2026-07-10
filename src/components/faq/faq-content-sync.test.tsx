@@ -227,17 +227,11 @@ describe('faq content integrity', () => {
     ).toEqual([]);
   });
 
-  it('keeps Chinese FAQ local image references backed by copied public assets', () => {
-    const imageRefs = listFaqImageTargets(zhCnFaqRoot).filter((target) =>
-      target.startsWith('/img/'),
-    );
-
-    expect(imageRefs.length).toBeGreaterThan(0);
-    for (const imageRef of imageRefs) {
-      expect(
-        existsSync(path.join(process.cwd(), 'public', imageRef.slice(1))),
-        imageRef,
-      ).toBe(true);
-    }
+  it('does not leave Chinese FAQ image references pointing at local public assets', () => {
+    expect(
+      listFaqImageTargets(zhCnFaqRoot).filter((target) =>
+        target.startsWith('/img/'),
+      ),
+    ).toEqual([]);
   });
 });
