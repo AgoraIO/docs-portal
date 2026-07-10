@@ -290,6 +290,7 @@ async function writeTypeDocFixture(sourceDir: string) {
                   <ul>
                     <li><p>Use platform-native key names.</p></li>
                   </ul>
+                  <dl><dt>since</dt><dd><p>2.0.0</p></dd></dl>
                 </div>
               </li>
               <li class="tsd-parameter">
@@ -582,6 +583,8 @@ describe('html-to-md-migration', () => {
           '| Key | Default action |',
           '| Backspace | Delete selection |',
           '- Use platform-native key names.',
+          '###### `since`',
+          '2.0.0',
           '##### `roomToken: string`',
           'Token used to join the room.',
         ],
@@ -600,6 +603,7 @@ describe('html-to-md-migration', () => {
       'utf8',
     );
     expect(clientOutput).not.toContain('##### `Optional hotKeys');
+    expect(clientOutput).not.toMatch(/^#{7,}\s/m);
   });
 
   it('migrates Doxygen/Javadoc output with dry-run planning and rewritten links', async () => {

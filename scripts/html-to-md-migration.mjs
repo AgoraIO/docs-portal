@@ -773,6 +773,10 @@ function headingElementDepth(heading, fallbackDepth = 2) {
   return match ? Number(match[1]) : fallbackDepth;
 }
 
+function markdownHeadingDepth(depth) {
+  return Math.min(6, Math.max(1, depth));
+}
+
 function renderHeading(_$, heading) {
   const title = inlineText(heading);
   if (!title) return '';
@@ -780,7 +784,9 @@ function renderHeading(_$, heading) {
   const anchor = heading.find('a[id], a[name]').first();
   const id = heading.attr('id') ?? anchor.attr('id') ?? anchor.attr('name');
   if (id) parts.push(`<a id="${id}"></a>`);
-  parts.push(`${'#'.repeat(headingElementDepth(heading))} ${title}`);
+  parts.push(
+    `${'#'.repeat(markdownHeadingDepth(headingElementDepth(heading)))} ${title}`,
+  );
   return parts.join('\n\n');
 }
 
@@ -1068,7 +1074,9 @@ function renderDefinitionList(
         depth + 1,
       );
       if (currentTerm) {
-        rows.push(`${'#'.repeat(depth)} \`${currentTerm}\``);
+        rows.push(
+          `${'#'.repeat(markdownHeadingDepth(depth))} \`${currentTerm}\``,
+        );
         if (value) rows.push(value);
       } else if (value) {
         rows.push(value);
@@ -1419,7 +1427,9 @@ function renderSection(
   if (id) parts.push(`<a id="${id}"></a>`);
   if (title)
     parts.push(
-      `${'#'.repeat(Math.max(depth, headingElementDepth(heading)))} ${title}`,
+      `${'#'.repeat(
+        markdownHeadingDepth(Math.max(depth, headingElementDepth(heading))),
+      )} ${title}`,
     );
 
   const directList = section.find('> ul').first();
@@ -1463,7 +1473,9 @@ function renderNestedArticle(
 ) {
   const id = article.attr('id');
   const heading = article.find('> h1, > h2, > h3, > h4, > h5, > h6').first();
-  const level = '#'.repeat(Math.max(2, headingElementDepth(heading)));
+  const level = '#'.repeat(
+    markdownHeadingDepth(Math.max(2, headingElementDepth(heading))),
+  );
   const title = inlineText(heading);
   const content = [];
 
