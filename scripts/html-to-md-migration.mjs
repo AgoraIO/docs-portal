@@ -2717,17 +2717,6 @@ function renderDartdocSummarySection(
     if (item) parts.push(item);
   }
 
-  for (const child of section.children('p, ul, ol, table, pre').toArray()) {
-    const rendered = renderElement(
-      $,
-      $(child),
-      pageTitleBySource,
-      sourceToRoute,
-      targetBasePath,
-    );
-    if (rendered) parts.push(rendered);
-  }
-
   return parts.length > 1 ? parts.join('\n\n') : '';
 }
 
