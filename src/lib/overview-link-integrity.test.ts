@@ -165,6 +165,7 @@ describe('overview entry links', () => {
 
   it('uses product-specific titles for product overview pages', () => {
     const expectedTitles = {
+      'en/realtime-media/overview.mdx': 'RTC overview',
       'en/realtime-media/broadcast-streaming/index.mdx':
         'Broadcast Streaming overview',
       'en/realtime-media/broadcast-streaming/product-overview.mdx':
