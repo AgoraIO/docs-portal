@@ -1,0 +1,75 @@
+---
+title: Import a number
+description: Import phone numbers from Elastic SIP Trunk for use in inbound and outbound calls.
+---
+Import phone numbers to use for inbound and outbound calls with your deployed agents.
+
+## What is Elastic SIP Trunk?
+
+Elastic SIP Trunk is the connection layer between traditional phone networks and your deployed agents. When a caller dials your phone number, their carrier routes the call over the public telephone network. Elastic SIP Trunk translates that call into a format your agent can process, and passes it to your configured agent.
+
+The term elastic means the trunk scales automatically with call volume; the same configuration handles one call or thousands without any changes at your end.
+
+## Prerequisites
+
+- An active account with Elastic SIP Trunk configured. See [Set up SIP trunk](sip-trunk).
+- A deployed agent.
+- A phone number configured in your SIP trunk.
+- SIP domain and credentials from your SIP trunk account.
+
+## Import a phone number
+
+To import a phone number from your SIP trunk:
+
+1. In the navigation sidebar, select **Phone Numbers**.
+
+    ![Phone numbers list](/console-tmp/phone-numbers.png)
+
+2. Select **Add Phone Number**.
+
+    ![Import phone number](/console-tmp/add-phone-number.png)
+
+3. Fill in the required information:
+
+   - **Phone Number**: Enter the phone number in E.164 format (for example, `+1234567890`).
+   - **Vendor**: Select `SIP Trunk` (currently the only supported vendor).
+   - **Display Name**: Enter a descriptive name to help you identify this number.
+   - **SIP Trunk Address**: Enter your SIP Trunk domain.
+   - **SIP Trunk Username**: Enter your SIP Trunk username.
+   - **SIP Trunk Password**: Enter your SIP Trunk password.
+   - **Transport Protocol**: Select the protocol for SIP communication. Choose **TLS** if Secure Trunking is enabled in your SIP trunk, otherwise choose **TCP** or **UDP**.
+
+4. Select **Add Phone Number** to import the phone number.
+
+Your imported phone number is now available for use in inbound and outbound calls.
+
+## Manage imported numbers
+
+### Edit a phone number
+
+To update the configuration of an imported phone number:
+
+1. In the navigation sidebar, select **Phone Numbers**.
+2. Locate the phone number you want to edit.
+3. From the **Action** menu, select **Edit**.
+4. Update the phone number details as needed.
+5. Select **Save** to apply your changes.
+
+### Delete a phone number
+
+To remove an imported phone number:
+
+1. In the navigation sidebar, select **Phone Numbers**.
+2. Locate the phone number you want to delete.
+3. From the **Action** menu, select **Delete**.
+4. Confirm the deletion.
+
+:::caution[Caution]
+Deleting a phone number removes it from all agents and campaigns that use it. Ensure no active inbound agents or outbound campaigns depend on this number before deleting.
+:::
+
+## Next steps
+
+- [Set up a campaign](campaign): Use your imported phone numbers to create outbound calling campaigns
+- [Publish your agent](deploy-agent): Publish agents to use in your campaigns
+- [Handle inbound calls](inbound): Associate your number with an agent to answer inbound calls
