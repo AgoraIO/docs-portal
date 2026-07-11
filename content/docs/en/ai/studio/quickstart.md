@@ -1,11 +1,11 @@
 ---
-title: Quickstart
+title: Create your first agent
 description: Create and test your first AI voice agent in minutes using a pre-built template.
 ---
 This page guides you through creating and testing your first AI voice agent. In less than 10 minutes, you will have a working agent that you can speak to in the browser. No telephony setup is required.
 
-:::tip[Another way to get started]
-Prefer natural language? Use [Concierge](build/concierge) to build and test an agent by describing what you want instead of following the steps below.
+:::tip[Prefer natural language?]
+Use [Concierge](build/concierge) to build and test an agent by describing what you want instead of following the steps below.
 :::
 
 ## Create an agent
