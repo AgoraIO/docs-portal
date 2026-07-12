@@ -55,8 +55,8 @@ virtual int enableExtension(const char* provider, const char* extension, bool en
 
 是否启用插件：
 
-- true: 启用插件。
-- false: 禁用插件。
+- `true`: 启用插件。
+- `false`: 禁用插件。
 
 #### `type`
 
@@ -68,6 +68,7 @@ virtual int enableExtension(const char* provider, const char* extension, bool en
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -3: 该插件动态库没有被加载。声网推荐你检查该动态库是否存放在预期的位置，或该动态库名是否正确。
 
 ### 所属接口类
@@ -183,8 +184,8 @@ virtual int loadExtensionProvider(const char* path, bool unload_after_use = fals
 
 是否在插件使用完毕后自动卸载：
 
-- true: 当 IRtcEngine 销毁时自动卸载插件。
-- false: 不自动卸载插件，直到进程退出（推荐）。
+- `true`: 当 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine) 销毁时自动卸载插件。
+- `false`: 不自动卸载插件，直到进程退出（推荐）。
 
 <a id="api_irtcengine_loadextensionprovider__return_values"></a>
 
@@ -250,6 +251,7 @@ virtual int registerExtension(const char* provider, const char* extension,
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -3: 该插件动态库没有被加载。声网推荐你检查该动态库是否存放在预期的位置，或该动态库名是否正确。
 
 ### 所属接口类

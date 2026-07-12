@@ -52,8 +52,8 @@ virtual int createDataStream(int* streamId, bool reliable, bool ordered) = 0;
 
 是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
 
-- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 onStreamMessageError 回调并获得相应报错信息。
-- false: 接收方不保证收到，就算数据丢失也不会报错。
+- `true`: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 onStreamMessageError 回调并获得相应报错信息。
+- `false`: 接收方不保证收到，就算数据丢失也不会报错。
 
 :::warning[注意]
 请确保将 reliable 和 ordered 同时设为 `true` 或同时设为 `false`。
@@ -63,8 +63,8 @@ virtual int createDataStream(int* streamId, bool reliable, bool ordered) = 0;
 
 是否保证数据有序性，即接收方是否需要收到有序的数据：
 
-- true: 接收方会按照发送方发送的顺序收到数据包。
-- false: 接收方不保证按照发送方发送的顺序收到数据包。
+- `true`: 接收方会按照发送方发送的顺序收到数据包。
+- `false`: 接收方不保证按照发送方发送的顺序收到数据包。
 
 <a id="api_irtcengine_createdatastream__return_values"></a>
 
@@ -126,8 +126,8 @@ virtual int createDataStreamEx(int* streamId, bool reliable, bool ordered, const
 
 是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
 
-- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 onStreamMessageError 回调并获得相应报错信息。
-- false: 接收方不保证收到，就算数据丢失也不会报错。
+- `true`: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 onStreamMessageError 回调并获得相应报错信息。
+- `false`: 接收方不保证收到，就算数据丢失也不会报错。
 
 :::warning[注意]
 请确保将 reliable 和 ordered 同时设为 `true` 或同时设为 `false`。
@@ -137,8 +137,8 @@ virtual int createDataStreamEx(int* streamId, bool reliable, bool ordered, const
 
 是否保证数据有序性，即接收方是否需要收到有序的数据：
 
-- true: 接收方会按照发送方发送的顺序收到数据包。
-- false: 接收方不保证按照发送方发送的顺序收到数据包。
+- `true`: 接收方会按照发送方发送的顺序收到数据包。
+- `false`: 接收方不保证按照发送方发送的顺序收到数据包。
 
 #### `connection`
 
@@ -286,7 +286,7 @@ SDK 对该方法的实现进行了如下限制：
 成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/unreal-cpp/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::warning[注意]
-- 该方法需要在加入频道后、且调用 createDataStream [2/2] 创建数据通道之后调用。
+- 该方法需要在加入频道后、且调用 [createDataStream [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
 - 该方法仅适用于主播用户。
 :::
 
@@ -342,7 +342,7 @@ SDK 对该方法的实现进行了如下限制：
 成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/unreal-cpp/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::warning[注意]
-- 该方法需要在 joinChannelEx 后调用。
+- 该方法需要在 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_joinchannelex) 后调用。
 - 请确保在调用该方法前，已调用 createDataStreamEx [2/2] 创建了数据通道。
 :::
 

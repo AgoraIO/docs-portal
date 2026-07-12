@@ -255,7 +255,7 @@ public abstract AgoraFocalLengthInfo[] queryCameraFocalLengthCapability();
 
 ### 返回值
 
-- 方法调用成功，返回 AgoraFocalLengthInfo 对象数组，包含摄像头的方向和焦距类型。
+- 方法调用成功，返回 [AgoraFocalLengthInfo](/zh-CN/api-reference/rtc/android/class-focallengthinfo) 对象数组，包含摄像头的方向和焦距类型。
 - 方法调用失败，返回空数组。
 
 ### 所属接口类
@@ -388,9 +388,9 @@ public abstract int setCameraExposureFactor(int factor);
 自 v4.2.2 版本新增。
 
 :::info[注]
-- 你必须在调用 enableVideo 后再调用此方法。设置结果将在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调并返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING （1）后。
-- 在调用此方法前，声网建议调用 isCameraExposureSupported 检查当前摄像头是否支持调整曝光值。
-- 通过调用此方法，你可以调整当前激活摄像头的曝光值，即调用 setCameraCapturerConfiguration 时指定的摄像头。
+- 你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_enablevideo) 后再调用此方法。设置结果将在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后。
+- 在调用此方法前，声网建议调用 [isCameraExposureSupported](/zh-CN/api-reference/rtc/android/video-device#api_irtcengine_iscameraexposuresupported) 检查当前摄像头是否支持调整曝光值。
+- 通过调用此方法，你可以调整当前激活摄像头的曝光值，即调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/android/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
 :::
 
 <a id="api_irtcengine_setcameraexposurefactor__parameters"></a>
@@ -564,7 +564,7 @@ public abstract int setCameraZoomFactor(float factor);
 
 ### 返回值
 
-- 方法调用成功，返回摄像头缩放因子 factor 的值。
+- 方法调用成功，返回摄像头缩放因子 `factor` 的值。
 - 方法调用失败，返回小于 0 的值。
 
 ### 所属接口类

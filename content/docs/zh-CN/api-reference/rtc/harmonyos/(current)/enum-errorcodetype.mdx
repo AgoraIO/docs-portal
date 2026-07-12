@@ -26,7 +26,7 @@ description: "错误代码。"
 
 3：SDK 尚未准备好。可能的原因有：
 
-- RtcEngine 初始化失败。请重新初始化 RtcEngine。
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 RtcEngine。
 - 调用方法时用户尚未加入频道。请检查方法的调用逻辑。
 - 音频模块未开启。
 - 程序集不完整。
@@ -41,9 +41,9 @@ description: "错误代码。"
 
 5：方法调用被拒绝。可能的原因有：
 
-- RtcEngine 初始化失败。请重新初始化 RtcEngine。
-- 在加入频道时，将频道名设为空字符 ""。请重新设置频道名。
-- 多频道场景下，在调用 joinChannelEx 方法加入频道时，设置的频道名已存在。请重新设置频道名。
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 RtcEngine。
+- 在加入频道时，将频道名设为空字符 `""`。请重新设置频道名。
+- 多频道场景下，在调用 [joinChannelEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_joinchannelex) 方法加入频道时，设置的频道名已存在。请重新设置频道名。
 
 ### `ERR_BUFFER_TOO_SMALL`
 
@@ -65,13 +65,13 @@ description: "错误代码。"
 
 17：加入频道被拒绝。可能的原因有：
 
-- 用户已经在频道中。建议通过 onConnectionStateChanged 回调判断用户是否在频道中。除收到 DISCONNECTED (1) 状态外，不要再次调用该方法加入频道。
+- 用户已经在频道中。建议通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 DISCONNECTED (1) 状态外，不要再次调用该方法加入频道。
 
 ### `ERR_LEAVE_CHANNEL_REJECTED`
 
 18：离开频道失败。可能的原因有：
 
-- 调用 leaveChannel 前，用户已离开频道。停止调用该方法即可。
+- 调用 [leaveChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_leavechannel2) 前，用户已离开频道。停止调用该方法即可。
 - 用户尚未加入频道，就调用 leaveChannel 退出频道。这种情况下无需额外操作。
 
 ### `ERR_ALREADY_IN_USE`
@@ -111,7 +111,7 @@ description: "错误代码。"
 110：Token 无效。一般有以下原因：
 
 - 在控制台中启用了 App 证书，但未使用 App ID + Token 鉴权。当项目启用了 App 证书，就必须使用 Token 鉴权。
-- 生成 Token 时填入的 uid 字段，和用户加入频道时填入的 uid 不匹配。
+- 生成 Token 时填入的 `uid` 字段，和用户加入频道时填入的 uid 不匹配。
 
 ##### `弃用：`
 

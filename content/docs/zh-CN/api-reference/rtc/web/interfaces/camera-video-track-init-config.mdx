@@ -33,9 +33,9 @@ encoderConfig: VideoEncoderConfiguration | VideoEncoderConfigurationPreset
 
 你可以通过以下方式设置该属性：
 
-- 通过 VideoEncoderConfigurationPreset 传入 SDK 内置的编码配置。
-- 通过传入一个 VideoEncoderConfiguration 对象来自定义视频编码配置。
-- 不传或留空，使用 SDK 的默认值 "480p_1" （分辨率 640 × 480、帧率 15 fps、码率 500 Kbps）。
+- 通过 [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset) 传入 SDK 内置的编码配置。
+- 通过传入一个 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/video-encoder-configuration) 对象来自定义视频编码配置。
+- 不传或留空，使用 SDK 的默认值 `"480p_1"` （分辨率 640 × 480、帧率 15 fps、码率 500 Kbps）。
 
 <a id="facingmode"></a>
 
@@ -49,8 +49,8 @@ facingMode: VideoFacingModeEnum
 
 在移动设备上，可以设置该参数选择使用前置或后置摄像头：
 
-- "user": 前置摄像头
-- "environment": 后置摄像头
+- `"user"`: 前置摄像头
+- `"environment"`: 后置摄像头
 
 <a id="optimizationmode"></a>
 
@@ -74,9 +74,11 @@ optimizationMode: OptimizationMode
 
 视频传输优化模式：
 
-- "detail": 清晰优先。
+- `"detail"`: 清晰优先。
+
   - 浏览器会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。
   - 大部分情况下，浏览器不会降低发送分辨率，但是可能会降低帧率。
-- "motion": 自 4.21.0 开始，浏览器默认开启流畅优先模式。
+- `"motion"`: 自 4.21.0 开始，浏览器默认开启流畅优先模式。
+
   - 浏览器不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
   - 大部分情况下，浏览器不会降低帧率，但是可能会降低发送分辨率。

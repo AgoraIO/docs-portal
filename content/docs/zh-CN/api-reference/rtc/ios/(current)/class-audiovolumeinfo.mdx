@@ -25,8 +25,8 @@ __attribute__((visibility("default"))) @interface AgoraRtcAudioVolumeInfo : NSOb
 
 用户 ID。
 
-- 在本地用户的回调中， uid 为 0。
-- 在远端用户的回调中， uid 为音量瞬时值最大的远端用户的用户 ID。
+- 在本地用户的回调中， `uid` 为 0。
+- 在远端用户的回调中， `uid` 为音量瞬时值最大的远端用户的用户 ID。
 
 ### `volume`
 
@@ -35,8 +35,8 @@ __attribute__((visibility("default"))) @interface AgoraRtcAudioVolumeInfo : NSOb
 ### `vad`
 
 :::info[注]
-- vad 参数不会报告远端用户的语音活动状态。在远端用户的回调中，该值始终为 1。
-- 若要使用该参数，调用 enableAudioVolumeIndication 时需将 reportVad 设置为 YES。
+- `vad` 参数不会报告远端用户的语音活动状态。在远端用户的回调中，该值始终为 1。
+- 若要使用该参数，调用 `enableAudioVolumeIndication` 时需将 `reportVad` 设置为 YES。
 :::
 
 本地用户的语音活动状态。

@@ -26,7 +26,7 @@ public abstract IMusicPlayer CreateMusicPlayer();
 
 ### 返回值
 
-- 方法调用成功：返回 IMusicPlayer 对象。
+- 方法调用成功：返回 [IMusicPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusicplayer) 对象。
 - 方法调用失败：返回空指针。
 
 ### 所属接口类
@@ -100,8 +100,8 @@ public abstract int GetCaches(ref MusicCacheInfo[] cacheInfo, ref Int32 cacheInf
 
 输入和输出参数。
 
-- 输入值： cacheInfo 数组的长度，即你所分配的 MusicCacheInfo 结构体的数量。
-- 输出值：方法执行完毕后输出的 MusicCacheInfo 结构体的数量。
+- 输入值： `cacheInfo` 数组的长度，即你所分配的 [MusicCacheInfo](/zh-CN/api-reference/rtc/unity/class-musiccacheinfo) 结构体的数量。
+- 输出值：方法执行完毕后输出的 [MusicCacheInfo](/zh-CN/api-reference/rtc/unity/class-musiccacheinfo) 结构体的数量。
 
 <a id="api_imusiccontentcenter_getcaches__return_values"></a>
 
@@ -149,8 +149,8 @@ public abstract int GetInternalSongCode(Int64 songCode, string jsonOption, ref I
 
 扩展 JSON 字段，默认为 `null`。目前支持传入下列值：
 
-- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例： \{"sceneType":1\}。
-- highPart：副歌片段的索引，从 onMusicCollectionResult 回调中获取，索引从 0 开始。示例： \{"format": \{"highpart": 0\}\}。
+- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例： `{"sceneType":1}`。
+- highPart：副歌片段的索引，从 `onMusicCollectionResult` 回调中获取，索引从 0 开始。示例： `{"format": {"highpart": 0}}`。
 
 #### `internalSongCode`
 
@@ -285,13 +285,15 @@ public abstract int GetMusicCollectionByMusicChartId(ref string requestId, int m
 
 扩展 JSON 字段，默认为 `null`。你可以通过该字段来筛选出你需要的音乐资源，目前支持筛选可打分的音乐资源及音乐资源的副歌片段：
 
-- pitchType：音乐资源是否支持评分。
-  - 1：可评分的音乐资源。
-  - 2：不可评分的音乐资源。
+- `pitchType`：音乐资源是否支持评分。
 
-- needHighPart：是否需要合唱片段资源。
-  - YES：需要合唱片段资源。
-  - NO：不需要合唱片段资源。
+  - `1`：可评分的音乐资源。
+  - `2`：不可评分的音乐资源。
+
+- `needHighPart`：是否需要合唱片段资源。
+
+  - `YES`：需要合唱片段资源。
+  - `NO`：不需要合唱片段资源。
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__return_values"></a>
 
@@ -713,13 +715,15 @@ public abstract int SearchMusic(ref string requestId, string keyWord, int page, 
 
 扩展 JSON 字段，默认为 `null`。你可以通过该字段来筛选出你需要的音乐资源，目前支持筛选可打分的音乐资源及音乐资源的副歌片段：
 
-- pitchType：音乐资源是否支持评分。
-  - 1：可评分的音乐资源。
-  - 2：不可评分的音乐资源。
+- `pitchType`：音乐资源是否支持评分。
 
-- needHighPart：是否需要合唱片段资源。
-  - YES：需要合唱片段资源。
-  - NO：不需要合唱片段资源。
+  - `1`：可评分的音乐资源。
+  - `2`：不可评分的音乐资源。
+
+- `needHighPart`：是否需要合唱片段资源。
+
+  - `YES`：需要合唱片段资源。
+  - `NO`：不需要合唱片段资源。
 
 #### `requestId`
 
@@ -781,6 +785,7 @@ public abstract int SetPlayMode(MusicPlayMode mode);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -2: 参数设置错误，请重新设置参数。
 
 ### 所属接口类

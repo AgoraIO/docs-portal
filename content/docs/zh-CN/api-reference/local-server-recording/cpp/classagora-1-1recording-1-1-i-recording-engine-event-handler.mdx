@@ -313,8 +313,8 @@ SDK 在调用 [joinChannel](/zh-CN/api-reference/local-server-recording/cpp/clas
 
 [onConnectionLost](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#a0cf0383f0b6f841682a3ec3a588a9b18) 与 [onConnectionInterrupted](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#ac6a57d0f9721253294f7d1204084e00c) 的区别是：
 
-- onConnectionInterrupted 回调一定是在加入频道成功后，且 SDK 失去和服务器的连接超过 4 秒时触发。
-- onConnectionLost 回调是无论之前加入频道是否成功，只要 10 秒内和服务器无法建立连接都会触发。
+- [onConnectionInterrupted](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#ac6a57d0f9721253294f7d1204084e00c) 回调一定是在加入频道成功后，且 SDK 失去和服务器的连接超过 4 秒时触发。
+- [onConnectionLost](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#a0cf0383f0b6f841682a3ec3a588a9b18) 回调是无论之前加入频道是否成功，只要 10 秒内和服务器无法建立连接都会触发。
 
 无论是哪种回调，除非应用程序主动调用 [leaveChannel](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine#adafb45815ad0f02dc1c8b3cadb7cd2e3)，不然 SDK 会一直自动重连。
 
@@ -332,8 +332,8 @@ SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触�
 
 [onConnectionLost](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#a0cf0383f0b6f841682a3ec3a588a9b18) 与 [onConnectionInterrupted](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#ac6a57d0f9721253294f7d1204084e00c) 的区别是：
 
-- onConnectionInterrupted 回调一定是在加入频道成功后，且 SDK 失去和服务器的连接超过 4 秒时触发。
-- onConnectionLost 回调是无论之前加入频道是否成功，只要 10 秒内和服务器无法建立连接都会触发。
+- [onConnectionInterrupted](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#ac6a57d0f9721253294f7d1204084e00c) 回调一定是在加入频道成功后，且 SDK 失去和服务器的连接超过 4 秒时触发。
+- [onConnectionLost](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#a0cf0383f0b6f841682a3ec3a588a9b18) 回调是无论之前加入频道是否成功，只要 10 秒内和服务器无法建立连接都会触发。
 
 无论是哪种回调，除非应用程序主动调用 [leaveChannel](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine#adafb45815ad0f02dc1c8b3cadb7cd2e3)，不然 SDK 会一直自动重连。
 

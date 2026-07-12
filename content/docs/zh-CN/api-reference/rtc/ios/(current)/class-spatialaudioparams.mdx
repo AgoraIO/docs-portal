@@ -82,14 +82,14 @@ __attribute__((visibility("default"))) @interface AgoraSpatialAudioParams : NSOb
 
 - 0：广播模式，音量和音色不随距离衰减。
 - (0, 0.5)：弱衰减模式，音量和音色在传播过程中仅有轻微衰减，声音传播距离比真实环境更远。
-- 0.5：（默认）模拟真实环境中的音量衰减，等效于未设置 speaker_attenuation 参数。
+- 0.5：（默认）模拟真实环境中的音量衰减，等效于未设置 `speaker_attenuation` 参数。
 - (0.5, 1]：强衰减模式，音量和音色在传播过程中快速衰减。
 
 ### `enable_doppler`
 
 :::info[注]
 - 该参数适用于声源高速移动的场景（例如赛车游戏）。不推荐在常规音视频互动场景中使用（例如语音聊天、连麦或在线 KTV）。
-- 启用该参数后，建议设置固定周期（如 30 毫秒），并持续调用 updatePlayerPositionInfo、 updateSelfPosition 和 updateRemotePosition 方法更新声源与接收者之间的相对距离。
+- 启用该参数后，建议设置固定周期（如 30 毫秒），并持续调用 `updatePlayerPositionInfo`、 `updateSelfPosition` 和 `updateRemotePosition` 方法更新声源与接收者之间的相对距离。
 - 以下因素可能导致多普勒效应不可预测或声音抖动：更新周期过长、更新周期不规律，或因网络丢包或延迟导致距离信息丢失。
 :::
 

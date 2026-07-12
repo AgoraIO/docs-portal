@@ -44,7 +44,8 @@ public abstract int EnableInstantMediaRendering();
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
-  - -7: IRtcEngine 尚未初始化就调用方法。
+
+  - -7: [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
@@ -182,7 +183,7 @@ public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode, VIDEO_MIRROR
 
 ### 调用时机
 
-- 请在调用 SetupLocalVideo 方法初始化本地视图后，调用该方法。
+- 请在调用 [SetupLocalVideo](/zh-CN/api-reference/rtc/unity/video-rendering#api_irtcengine_setuplocalvideo) 方法初始化本地视图后，调用该方法。
 - 你可以在通话中多次调用该方法，多次更新本地用户视图的显示模式。
 
 <a id="api_irtcengine_setlocalrendermode2__parameters"></a>
@@ -535,9 +536,9 @@ public abstract int SetupLocalVideo(VideoCanvas canvas);
 该方法初始化本地视图并设置本地用户视频显示属性，只影响本地用户看到的视频画面，不影响本地视频的发布。调用该方法绑定本地视频流的显示视窗 (`view`)，并设置本地用户视图的渲染模式和镜像模式。 退出频道后绑定仍然有效。如果需要停止渲染或解除绑定，可以调用该方法将参数 `view` 设为 NULL，以停止渲染并清理渲染缓存。
 
 :::info[注]
-- 在 Flutter 中你不需要主动调用该方法，请使用 AgoraVideoView 渲染本地和远端视图。
-- 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 VideoSurface 类来实现。
-- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 SetLocalRenderMode [2/2] 方法。
+- 在 Flutter 中你不需要主动调用该方法，请使用 `AgoraVideoView` 渲染本地和远端视图。
+- 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 [VideoSurface](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_videosurface) 类来实现。
+- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 [SetLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/unity/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
 :::
 
 <a id="api_irtcengine_setuplocalvideo__scenario"></a>
@@ -587,9 +588,9 @@ public abstract int SetupRemoteVideo(VideoCanvas canvas);
 该方法绑定远端用户和显示视图，并设置远端用户视图在本地显示时的渲染模式和镜像模式，只影响本地用户看到的视频画面。 调用该方法时需要指定远端视频的用户 ID，一般可以在进频道前提前设置好。如果无法在加入频道前得到远端用户的 ID，可以在收到 [OnUserJoined](/zh-CN/api-reference/rtc/unity/channel#callback_irtcengineeventhandler_onuserjoined) 回调时调用该方法。 如需解除某个远端用户的绑定视图，可以调用该方法并将 `view` 设置为空。 离开频道后，SDK 会清除远端用户视图的绑定关系。 在移动端自定义合图布局场景下，你可以调用该方法并针对合图视频流的每一路子视频流设置一个单独的 `view` 进行渲染。
 
 :::info[注]
-- 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 VideoSurface 类来实现。
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 SetRemoteRenderMode 方法。
-- 当使用录制服务时，由于它不会发送视频流，App 无需为它绑定视图。如果 App 无法识别录制服务，可以在收到 OnFirstRemoteVideoDecoded 回调时再绑定远端用户视图。
+- 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 [VideoSurface](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_videosurface) 类来实现。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [SetRemoteRenderMode](/zh-CN/api-reference/rtc/unity/video-rendering#api_irtcengine_setremoterendermode2) 方法。
+- 当使用录制服务时，由于它不会发送视频流，App 无需为它绑定视图。如果 App 无法识别录制服务，可以在收到 [OnFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/unity/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时再绑定远端用户视图。
 :::
 
 <a id="api_irtcengine_setupremotevideo__parameters"></a>
@@ -627,9 +628,9 @@ public abstract int SetupRemoteVideoEx(VideoCanvas canvas, RtcConnection connect
 该方法绑定远端用户和显示视图，并设置远端用户视图在本地显示时的渲染模式和镜像模式，只影响本地用户看到的视频画面。 调用该方法时需要在 [VideoCanvas](/zh-CN/api-reference/rtc/unity/class-videocanvas) 中指定远端视频的用户 ID，一般可以在进频道前提前设置好。 如果无法在加入频道前得到远端用户的 uid，可以在收到 [OnUserJoined](/zh-CN/api-reference/rtc/unity/channel#callback_irtcengineeventhandler_onuserjoined) 回调时调用该方法。如果启用了视频录制功能，视频录制服务会做为一个哑客户端加入频道，因此其他客户端也会收到它的 `onUserJoined` 事件， App 不应给它绑定视图（因为它不会发送视频流）。 如需解除某个远端用户的绑定视图，可以调用该方法并将 `view` 设置为空。 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
 :::info[注]
-- 该方法需要在 JoinChannelEx 之后调用。
-- 在 Flutter 中你不需要主动调用该方法，请使用 AgoraVideoView 渲染本地和远端视图。
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 SetRemoteRenderModeEx 方法。
+- 该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex) 之后调用。
+- 在 Flutter 中你不需要主动调用该方法，请使用 `AgoraVideoView` 渲染本地和远端视图。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [SetRemoteRenderModeEx](/zh-CN/api-reference/rtc/unity/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
 :::
 
 <a id="api_irtcengineex_setupremotevideoex__parameters"></a>
@@ -671,7 +672,7 @@ public abstract int StartMediaRenderingTracing();
 成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/unity/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
 
 :::info[注]
-- 如果你未调用该方法，SDK 默认以调用 JoinChannel [2/2] 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
+- 如果你未调用该方法，SDK 默认以调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
 - 离开当前频道后，SDK 会自动重置该时间点为下一次加入频道的时刻。
 :::
 
@@ -687,7 +688,8 @@ public abstract int StartMediaRenderingTracing();
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
-  - -7: IRtcEngine 尚未初始化就调用方法。
+
+  - -7: [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
@@ -709,7 +711,7 @@ public abstract int StartMediaRenderingTracingEx(RtcConnection connection);
 成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/unity/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
 
 :::info[注]
-- 如果你未调用该方法，SDK 默认以调用 JoinChannel [2/2] 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
+- 如果你未调用该方法，SDK 默认以调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
 - 离开当前频道后，SDK 会自动重置该时间点为下一次加入频道的时刻。
 :::
 

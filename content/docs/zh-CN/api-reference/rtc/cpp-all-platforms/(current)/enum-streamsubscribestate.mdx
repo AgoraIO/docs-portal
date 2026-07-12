@@ -15,13 +15,15 @@ description: "订阅状态。"
 （1）：订阅远端流失败。可能的原因包括：
 
 - 远端用户：
-  - 调用 muteLocalAudioStream(true) 或 muteLocalVideoStream(true) 停止发送本地媒体流。
-  - 调用 disableAudio 或 disableVideo 禁用本地音频或视频模块。
-  - 调用 enableLocalAudio(false) 或 enableLocalVideo(false) 禁用本地音视频采集。
+
+  - 调用 `muteLocalAudioStream(true)` 或 `muteLocalVideoStream(true)` 停止发送本地媒体流。
+  - 调用 [disableAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#api_irtcengine_disableaudio) 或 [disableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_disablevideo) 禁用本地音频或视频模块。
+  - 调用 `enableLocalAudio(false)` 或 `enableLocalVideo(false)` 禁用本地音视频采集。
   - 角色为观众。
 - 本地用户：
-  - 调用 muteRemoteAudioStream(true) 或 muteAllRemoteAudioStreams(true) 停止接收远端音频流。
-  - 调用 muteRemoteVideoStream(true) 或 muteAllRemoteVideoStreams(true) 停止接收远端视频流。
+
+  - 调用 `muteRemoteAudioStream(true)` 或 `muteAllRemoteAudioStreams(true)` 停止接收远端音频流。
+  - 调用 `muteRemoteVideoStream(true)` 或 `muteAllRemoteVideoStreams(true)` 停止接收远端视频流。
 
 ### `SUB_STATE_SUBSCRIBING`
 

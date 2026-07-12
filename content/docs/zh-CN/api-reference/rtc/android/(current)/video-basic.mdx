@@ -23,10 +23,10 @@ public abstract int disableVideo();
 :::info[注]
 [disableVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_disablevideo) 会影响内部引擎，且可在离开频道后调用。调用该方法会重置整个引擎，可能导致响应时间变慢。你可以根据实际需求，使用以下方法分别控制视频模块的具体功能：
 
-- enableLocalVideo：是否启用摄像头以创建本地视频流。
-- muteLocalVideoStream：是否发布本地视频流。
-- muteRemoteVideoStream：是否订阅并播放远端视频流。
-- muteAllRemoteVideoStreams：是否订阅并播放所有远端视频流。
+- [enableLocalVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_enablelocalvideo)：是否启用摄像头以创建本地视频流。
+- [muteLocalVideoStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalvideostream)：是否发布本地视频流。
+- [muteRemoteVideoStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteremotevideostream)：是否订阅并播放远端视频流。
+- [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteallremotevideostreams)：是否订阅并播放所有远端视频流。
 :::
 
 <a id="api_irtcengine_disablevideo__timing"></a>
@@ -36,7 +36,7 @@ public abstract int disableVideo();
 该方法可在加入频道前或加入频道后调用。
 
 - 如果在加入频道前调用，则启用纯语音模式。
-- 如果在加入频道后调用，则从视频模式切换为纯语音模式。之后调用 enableVideo 可再次切换为视频模式。
+- 如果在加入频道后调用，则从视频模式切换为纯语音模式。之后调用 [enableVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_enablevideo) 可再次切换为视频模式。
 
 <a id="api_irtcengine_disablevideo__related"></a>
 
@@ -121,10 +121,10 @@ public abstract int enableVideo();
 :::info[注]
 该方法会启用内部引擎，离开频道后依然有效。调用该方法会重置整个引擎，可能导致响应时间变慢。你可以根据实际需求，使用以下方法独立控制视频模块的特定功能：
 
-- enableLocalVideo：是否启用摄像头以创建本地视频流。
-- muteLocalVideoStream：是否发布本地视频流。
-- muteRemoteVideoStream：是否订阅并播放远端视频流。
-- muteAllRemoteVideoStreams：是否订阅并播放所有远端视频流。
+- [enableLocalVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_enablelocalvideo)：是否启用摄像头以创建本地视频流。
+- [muteLocalVideoStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalvideostream)：是否发布本地视频流。
+- [muteRemoteVideoStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteremotevideostream)：是否订阅并播放远端视频流。
+- [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteallremotevideostreams)：是否订阅并播放所有远端视频流。
 
 成功调用该方法会重置 [enableLocalVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_enablelocalvideo)、 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteremotevideostream) 和 [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 的设置，请谨慎操作。
 :::
@@ -169,8 +169,8 @@ public abstract int setVideoEncoderConfiguration(VideoEncoderConfiguration confi
 <a id="api_irtcengine_setvideoencoderconfiguration__detailed_desc"></a>
 
 :::info[注]
-- 此方法和 getMirrorApplied 方法都支持设置镜像效果。声网建议只使用其中一种方法进行设置，同时使用两种方法会导致镜像效果叠加，镜像设置失效。
-- 此方法中指定的 config 是在理想网络条件下的最大值。如果由于网络条件不稳定，视频引擎无法使用指定的 config 渲染视频，则会依次尝试列表中较低的参数，直到找到可用的配置。
+- 此方法和 [getMirrorApplied](/zh-CN/api-reference/rtc/android/video-raw#api_ivideoframeobserver_getmirrorapplied) 方法都支持设置镜像效果。声网建议只使用其中一种方法进行设置，同时使用两种方法会导致镜像效果叠加，镜像设置失效。
+- 此方法中指定的 `config` 是在理想网络条件下的最大值。如果由于网络条件不稳定，视频引擎无法使用指定的 `config` 渲染视频，则会依次尝试列表中较低的参数，直到找到可用的配置。
 :::
 
 <a id="api_irtcengine_setvideoencoderconfiguration__timing"></a>
@@ -279,25 +279,32 @@ public abstract int setVideoScenario(Constants.VideoScenario scenarioType);
 
 视频应用场景类型。详见 [VideoScenario](/zh-CN/api-reference/rtc/android/enum-videoapplicationscenariotype)。
 
-- APPLICATION_SCENARIO_MEETING （1）：适用于会议场景，SDK 会自动启用以下策略：
+- `APPLICATION_SCENARIO_MEETING` （1）：适用于会议场景，SDK 会自动启用以下策略：
+
   - 当低画质视频流需要较高码率时，SDK 会自动启用多种应对网络拥塞的技术，以增强低画质视频流的性能，确保订阅端的流畅接收。
   - SDK 实时监控高画质视频流的订阅人数，并根据订阅人数动态调整其配置：
+
     - 若无人订阅高画质视频流，SDK 会自动降低其码率和帧率以节省上行带宽。
-    - 若有人订阅高画质视频流，SDK 会将其重置为最近一次调用 setVideoEncoderConfiguration 设置的配置；若用户未设置过配置，则使用以下默认值：
+    - 若有人订阅高画质视频流，SDK 会将其重置为最近一次调用 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置的配置；若用户未设置过配置，则使用以下默认值：
+
       - 分辨率：960 × 540。
       - 帧率：15 fps。
       - 码率：1000 Kbps。
   - SDK 实时监控低画质视频流的订阅人数，并根据订阅人数动态启用或禁用该流：
-    - 若用户调用了 setDualStreamMode 并设置为永不发送低画质视频流（DISABLE_SIMULCAST_STREAM ），则会议场景下低画质流的动态调整将不生效。
+
+    - 若用户调用了 `setDualStreamMode` 并设置为永不发送低画质视频流（`DISABLE_SIMULCAST_STREAM` ），则会议场景下低画质流的动态调整将不生效。
     - 若无人订阅低画质视频流，SDK 会自动禁用该流以节省上行带宽。
-    - 若有人订阅低画质视频流，SDK 会启用该流并重置为最近一次调用 setDualStreamMode 设置的配置；若用户未设置过配置，则使用以下默认值：
+    - 若有人订阅低画质视频流，SDK 会启用该流并重置为最近一次调用 `setDualStreamMode` 设置的配置；若用户未设置过配置，则使用以下默认值：
+
       - 分辨率：480 × 272。
       - 帧率：15 fps。
       - 码率：500 Kbps。
-- APPLICATION_SCENARIO_1V1 （2）：适用于一对一直播场景。为满足低延迟和高画质的需求，SDK 会优化策略，提升视频质量、首帧渲染速度、中低端设备的延迟表现，以及弱网环境下的流畅度。
+- `APPLICATION_SCENARIO_1V1` （2）：适用于一对一直播场景。为满足低延迟和高画质的需求，SDK 会优化策略，提升视频质量、首帧渲染速度、中低端设备的延迟表现，以及弱网环境下的流畅度。
+
   - 注意：该枚举值仅适用于主播对主播的场景。
-- APPLICATION_SCENARIO_LIVESHOW （3）：适用于秀场场景。在该场景中，快速的视频渲染和高画质至关重要。SDK 会进行多项性能优化，包括：
-  - 自动启用音视频帧加速渲染以最小化首帧延迟（无需调用 enableInstantMediaRendering ）。
+- `APPLICATION_SCENARIO_LIVESHOW` （3）：适用于秀场场景。在该场景中，快速的视频渲染和高画质至关重要。SDK 会进行多项性能优化，包括：
+
+  - 自动启用音视频帧加速渲染以最小化首帧延迟（无需调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/android/video-rendering#api_irtcengine_enableinstantmediarendering) ）。
   - 启用 B 帧编码以提升图像质量和带宽效率。
   - 即使在网络较差或低端设备上，也能提供增强的视频质量和流畅的播放体验。
 
@@ -307,9 +314,10 @@ public abstract int setVideoScenario(Constants.VideoScenario scenarioType);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无具体原因）。
   - -4：不支持视频应用场景。可能原因包括使用了语音 SDK 而非视频 SDK。
-  - -7： RtcEngine 对象尚未初始化。请在调用该方法前先初始化 RtcEngine 对象。
+  - -7： [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象尚未初始化。请在调用该方法前先初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -330,7 +338,7 @@ public abstract int startPreview();
 
 :::info[注]
 - 本地预览默认启用镜像模式。
-- 离开频道后，本地预览仍保持开启状态。你需要调用 stopPreview 来关闭本地预览。
+- 离开频道后，本地预览仍保持开启状态。你需要调用 `stopPreview` 来关闭本地预览。
 :::
 
 <a id="api_irtcengine_startpreview__timing"></a>
@@ -365,7 +373,7 @@ public abstract int startPreview(Constants.VideoSourceType sourceType);
 
 :::info[注]
 - 本地预览默认启用镜像模式。
-- 离开频道后，本地预览仍保持开启状态。你需要调用 stopPreview 来关闭本地预览。
+- 离开频道后，本地预览仍保持开启状态。你需要调用 `stopPreview` 来关闭本地预览。
 :::
 
 <a id="api_irtcengine_startpreview2__timing"></a>
@@ -517,10 +525,10 @@ public void onFirstLocalVideoFramePublished(Constants.VideoSourceType source, in
 
 当满足以下任一条件时，SDK 会触发该回调：
 
-- 本地客户端启用视频模块并调用 joinChannel 成功加入频道。
-- 本地客户端依次调用 muteLocalVideoStream(true) 和 muteLocalVideoStream(false)。
-- 本地客户端依次调用 disableVideo 和 enableVideo。
-- 本地客户端调用 pushExternalVideoFrameById 成功向 SDK 推送视频帧。
+- 本地客户端启用视频模块并调用 `joinChannel` 成功加入频道。
+- 本地客户端依次调用 `muteLocalVideoStream(true)` 和 `muteLocalVideoStream(false)`。
+- 本地客户端依次调用 [disableVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_disablevideo) 和 [enableVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_enablevideo)。
+- 本地客户端调用 `pushExternalVideoFrameById` 成功向 SDK 推送视频帧。
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__timing"></a>
 
@@ -565,9 +573,10 @@ SDK 在以下任一情况下会触发该回调：
 
 - 远端用户加入频道并发送视频流。
 - 远端用户停止发送视频流并在 15 秒后重新发送。导致此类中断的原因包括：
+
   - 远端用户离开频道。
   - 远端用户掉线。
-  - 远端用户调用 disableVideo 关闭视频功能。
+  - 远端用户调用 [disableVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_disablevideo) 关闭视频功能。
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__timing"></a>
 
@@ -673,10 +682,10 @@ public void onLocalVideoEvent(Constants.VideoSourceType source, int event)
 
 本地视频事件类型：
 
-- LOCAL_VIDEO_EVENT_TYPE_SCREEN_CAPTURE_WINDOW_HIDDEN：屏幕采集窗口被隐藏。
-- LOCAL_VIDEO_EVENT_TYPE_SCREEN_CAPTURE_WINDOW_RECOVER_FROM_HIDDEN：屏幕采集窗口从隐藏状态恢复。
-- LOCAL_VIDEO_EVENT_TYPE_SCREEN_CAPTURE_STOPPED_BY_USER：屏幕采集被用户停止。
-- LOCAL_VIDEO_EVENT_TYPE_SCREEN_CAPTURE_SYSTEM_INTERNAL_ERROR：屏幕采集过程中发生系统内部错误。
+- `LOCAL_VIDEO_EVENT_TYPE_SCREEN_CAPTURE_WINDOW_HIDDEN`：屏幕采集窗口被隐藏。
+- `LOCAL_VIDEO_EVENT_TYPE_SCREEN_CAPTURE_WINDOW_RECOVER_FROM_HIDDEN`：屏幕采集窗口从隐藏状态恢复。
+- `LOCAL_VIDEO_EVENT_TYPE_SCREEN_CAPTURE_STOPPED_BY_USER`：屏幕采集被用户停止。
+- `LOCAL_VIDEO_EVENT_TYPE_SCREEN_CAPTURE_SYSTEM_INTERNAL_ERROR`：屏幕采集过程中发生系统内部错误。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
@@ -708,9 +717,9 @@ public void onLocalVideoStateChanged(Constants.VideoSourceType source, int state
 该回调在以下情况下被触发，状态为 `LOCAL_VIDEO_STREAM_STATE_FAILED`， `reason` 为 `LOCAL_VIDEO_STREAM_REASON_CAPTURE_FAILURE`：
 
 - Android 9 及以上版本中，应用在后台运行一段时间后，系统会自动收回摄像头权限。
-- Android 6 及以上版本中，摄像头被第三方应用占用一段时间后释放，SDK 会触发该回调并上报 onLocalVideoStateChanged 回调， state 为 LOCAL_VIDEO_STREAM_STATE_CAPTURING， reason 为 LOCAL_VIDEO_STREAM_REASON_OK。
+- Android 6 及以上版本中，摄像头被第三方应用占用一段时间后释放，SDK 会触发该回调并上报 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调， [state](/zh-CN/api-reference/rtc/android/rte-player#api_rteplayerinfo_state) 为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING`， `reason` 为 `LOCAL_VIDEO_STREAM_REASON_OK`。
 - 摄像头正常启动，但连续四秒未输出视频帧。
-- 当摄像头输出采集的视频帧时，若 SDK 检测到连续 15 帧重复帧，会触发该回调， state 为 LOCAL_VIDEO_STREAM_STATE_CAPTURING， reason 为 LOCAL_VIDEO_STREAM_REASON_CAPTURE_FAILURE。
+- 当摄像头输出采集的视频帧时，若 SDK 检测到连续 15 帧重复帧，会触发该回调， [state](/zh-CN/api-reference/rtc/android/rte-player#api_rteplayerinfo_state) 为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING`， `reason` 为 `LOCAL_VIDEO_STREAM_REASON_CAPTURE_FAILURE`。
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__parameters"></a>
 
@@ -722,24 +731,25 @@ public void onLocalVideoStateChanged(Constants.VideoSourceType source, int state
 
 #### `state`
 
-- LOCAL_VIDEO_STREAM_STATE_STOPPED (0)：本地视频处于初始状态。
-- LOCAL_VIDEO_STREAM_STATE_CAPTURING (1)：本地视频采集设备启动成功。
-- LOCAL_VIDEO_STREAM_STATE_ENCODING (2)：首帧视频编码成功。
-- LOCAL_VIDEO_STREAM_STATE_FAILED (3)：本地视频启动失败。
+- `LOCAL_VIDEO_STREAM_STATE_STOPPED` (0)：本地视频处于初始状态。
+- `LOCAL_VIDEO_STREAM_STATE_CAPTURING` (1)：本地视频采集设备启动成功。
+- `LOCAL_VIDEO_STREAM_STATE_ENCODING` (2)：首帧视频编码成功。
+- `LOCAL_VIDEO_STREAM_STATE_FAILED` (3)：本地视频启动失败。
 
 #### `reason`
 
-- LOCAL_VIDEO_STREAM_REASON_OK (0)：本地视频状态正常。
-- LOCAL_VIDEO_STREAM_REASON_FAILURE (1)：本地视频失败，未指定原因。
-- LOCAL_VIDEO_STREAM_REASON_DEVICE_BUSY (3)：本地视频采集设备被占用。提示用户检查摄像头是否被其他应用占用，或尝试重新加入频道。
-- LOCAL_VIDEO_STREAM_REASON_CAPTURE_FAILURE (4)：本地视频采集失败。提示用户检查视频采集设备是否正常工作，摄像头是否被其他应用占用，或尝试重新加入频道。
-- LOCAL_VIDEO_STREAM_REASON_CODEC_NOT_SUPPORT (5)：本地视频编码失败。
-- LOCAL_VIDEO_STREAM_REASON_DEVICE_NOT_FOUND (8)：未找到本地视频采集设备。提示用户检查摄像头是否正确连接或正常工作，然后重新加入频道。
-- LOCAL_VIDEO_STREAM_REASON_DEVICE_INTERRUPT (14)：视频采集中断。可能原因包括：
+- `LOCAL_VIDEO_STREAM_REASON_OK` (0)：本地视频状态正常。
+- `LOCAL_VIDEO_STREAM_REASON_FAILURE` (1)：本地视频失败，未指定原因。
+- `LOCAL_VIDEO_STREAM_REASON_DEVICE_BUSY` (3)：本地视频采集设备被占用。提示用户检查摄像头是否被其他应用占用，或尝试重新加入频道。
+- `LOCAL_VIDEO_STREAM_REASON_CAPTURE_FAILURE` (4)：本地视频采集失败。提示用户检查视频采集设备是否正常工作，摄像头是否被其他应用占用，或尝试重新加入频道。
+- `LOCAL_VIDEO_STREAM_REASON_CODEC_NOT_SUPPORT` (5)：本地视频编码失败。
+- `LOCAL_VIDEO_STREAM_REASON_DEVICE_NOT_FOUND` (8)：未找到本地视频采集设备。提示用户检查摄像头是否正确连接或正常工作，然后重新加入频道。
+- `LOCAL_VIDEO_STREAM_REASON_DEVICE_INTERRUPT` (14)：视频采集中断。可能原因包括：
+
   - 摄像头被其他应用占用。提示用户检查摄像头是否被其他应用占用。
   - 设备被锁屏，或当前应用被切换到后台。你可以使用前台服务通知操作系统，确保应用切换到后台后仍能采集视频。
-- LOCAL_VIDEO_STREAM_REASON_DEVICE_FATAL_ERROR (15)：视频采集设备出现错误。提示用户关闭并重启摄像头以恢复功能。如果该操作无法解决问题，请检查摄像头是否存在硬件故障。
-- LOCAL_VIDEO_STREAM_REASON_SCREEN_CAPTURE_FAILURE (21)：当前采集的窗口无数据。
+- `LOCAL_VIDEO_STREAM_REASON_DEVICE_FATAL_ERROR` (15)：视频采集设备出现错误。提示用户关闭并重启摄像头以恢复功能。如果该操作无法解决问题，请检查摄像头是否存在硬件故障。
+- `LOCAL_VIDEO_STREAM_REASON_SCREEN_CAPTURE_FAILURE` (21)：当前采集的窗口无数据。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
@@ -817,27 +827,27 @@ public void onRemoteVideoStateChanged(int uid, int state, int reason, int elapse
 
 远端视频的状态：
 
-- REMOTE_VIDEO_STATE_STOPPED (0)：远端视频处于初始状态。该状态在 REMOTE_VIDEO_STATE_REASON_LOCAL_MUTED (3)、 REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED (5) 或 REMOTE_VIDEO_STATE_REASON_REMOTE_OFFLINE (7) 的情况下报告。
-- REMOTE_VIDEO_STATE_STARTING (1)：已接收到第一帧远端视频包。
-- REMOTE_VIDEO_STATE_DECODING (2)：远端视频流解码并正常播放。该状态在 REMOTE_VIDEO_STATE_REASON_NETWORK_RECOVERY (2)、 REMOTE_VIDEO_STATE_REASON_LOCAL_UNMUTED (4)、 REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED (6) 或 REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK_RECOVERY (9) 的情况下报告。
-- REMOTE_VIDEO_STATE_FROZEN (3)：远端视频卡顿。该状态在 REMOTE_VIDEO_STATE_REASON_NETWORK_CONGESTION (1) 或 REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK (8) 的情况下报告。
-- REMOTE_VIDEO_STATE_FAILED (4)：远端视频启动失败。该状态在 REMOTE_VIDEO_STATE_REASON_INTERNAL (0) 的情况下由 SDK 报告。
+- `REMOTE_VIDEO_STATE_STOPPED` (0)：远端视频处于初始状态。该状态在 `REMOTE_VIDEO_STATE_REASON_LOCAL_MUTED` (3)、 `REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED` (5) 或 `REMOTE_VIDEO_STATE_REASON_REMOTE_OFFLINE` (7) 的情况下报告。
+- `REMOTE_VIDEO_STATE_STARTING` (1)：已接收到第一帧远端视频包。
+- `REMOTE_VIDEO_STATE_DECODING` (2)：远端视频流解码并正常播放。该状态在 `REMOTE_VIDEO_STATE_REASON_NETWORK_RECOVERY` (2)、 `REMOTE_VIDEO_STATE_REASON_LOCAL_UNMUTED` (4)、 `REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED` (6) 或 `REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK_RECOVERY` (9) 的情况下报告。
+- `REMOTE_VIDEO_STATE_FROZEN` (3)：远端视频卡顿。该状态在 `REMOTE_VIDEO_STATE_REASON_NETWORK_CONGESTION` (1) 或 `REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK` (8) 的情况下报告。
+- `REMOTE_VIDEO_STATE_FAILED` (4)：远端视频启动失败。该状态在 `REMOTE_VIDEO_STATE_REASON_INTERNAL` (0) 的情况下由 SDK 报告。
 
 #### `reason`
 
 远端视频状态变化的原因：
 
-- REMOTE_VIDEO_STATE_REASON_INTERNAL (0)：内部原因。
-- REMOTE_VIDEO_STATE_REASON_NETWORK_CONGESTION (1)：网络拥塞。
-- REMOTE_VIDEO_STATE_REASON_NETWORK_RECOVERY (2)：网络恢复。
-- REMOTE_VIDEO_STATE_REASON_LOCAL_MUTED (3)：本地用户停止接收远端视频流或关闭视频模块。
-- REMOTE_VIDEO_STATE_REASON_LOCAL_UNMUTED (4)：本地用户恢复接收远端视频流或开启视频模块。
-- REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED (5)：远端用户停止发送视频流或关闭视频模块。
-- REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED (6)：远端用户恢复发送视频流或开启视频模块。
-- REMOTE_VIDEO_STATE_REASON_REMOTE_OFFLINE (7)：远端用户离开频道。
-- REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK (8)：由于网络条件差，远端媒体流降级为纯音频流。
-- REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK_RECOVERY (9)：网络条件改善后，远端媒体流从音频流恢复为视频流。
-- REMOTE_VIDEO_STATE_REASON_CODEC_NOT_SUPPORT (13)：本地视频解码器不支持解码远端视频流。
+- `REMOTE_VIDEO_STATE_REASON_INTERNAL` (0)：内部原因。
+- `REMOTE_VIDEO_STATE_REASON_NETWORK_CONGESTION` (1)：网络拥塞。
+- `REMOTE_VIDEO_STATE_REASON_NETWORK_RECOVERY` (2)：网络恢复。
+- `REMOTE_VIDEO_STATE_REASON_LOCAL_MUTED` (3)：本地用户停止接收远端视频流或关闭视频模块。
+- `REMOTE_VIDEO_STATE_REASON_LOCAL_UNMUTED` (4)：本地用户恢复接收远端视频流或开启视频模块。
+- `REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED` (5)：远端用户停止发送视频流或关闭视频模块。
+- `REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED` (6)：远端用户恢复发送视频流或开启视频模块。
+- `REMOTE_VIDEO_STATE_REASON_REMOTE_OFFLINE` (7)：远端用户离开频道。
+- `REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK` (8)：由于网络条件差，远端媒体流降级为纯音频流。
+- `REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK_RECOVERY` (9)：网络条件改善后，远端媒体流从音频流恢复为视频流。
+- `REMOTE_VIDEO_STATE_REASON_CODEC_NOT_SUPPORT` (13)：本地视频解码器不支持解码远端视频流。
 
 #### `elapsed`
 
@@ -946,8 +956,8 @@ public void onUserEnableLocalVideo(int uid, boolean enabled)
 
 该回调已废弃，建议使用 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/android/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调替代，并结合以下参数使用：
 
-- REMOTE_VIDEO_STATE_STOPPED(0) 和 REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED(5)。
-- REMOTE_VIDEO_STATE_DECODING(2) 和 REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED(6)。
+- `REMOTE_VIDEO_STATE_STOPPED(0)` 和 `REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED(5)`。
+- `REMOTE_VIDEO_STATE_DECODING(2)` 和 `REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED(6)`。
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__timing"></a>
 
@@ -1087,19 +1097,19 @@ public void onVideoPublishStateChanged(Constants.VideoSourceType source, String 
 
 之前的视频发布状态：
 
-- PUB_STATE_IDLE （0）：加入频道后的初始发布状态。
-- PUB_STATE_NO_PUBLISHED （1）：发布本地流失败。
-- PUB_STATE_PUBLISHING （2）：正在发布本地流。
-- PUB_STATE_PUBLISHED （3）：成功发布本地流。
+- `PUB_STATE_IDLE` （0）：加入频道后的初始发布状态。
+- `PUB_STATE_NO_PUBLISHED` （1）：发布本地流失败。
+- `PUB_STATE_PUBLISHING` （2）：正在发布本地流。
+- `PUB_STATE_PUBLISHED` （3）：成功发布本地流。
 
 #### `newState`
 
 当前的视频发布状态：
 
-- PUB_STATE_IDLE （0）：加入频道后的初始发布状态。
-- PUB_STATE_NO_PUBLISHED （1）：发布本地流失败。
-- PUB_STATE_PUBLISHING （2）：正在发布本地流。
-- PUB_STATE_PUBLISHED （3）：成功发布本地流。
+- `PUB_STATE_IDLE` （0）：加入频道后的初始发布状态。
+- `PUB_STATE_NO_PUBLISHED` （1）：发布本地流失败。
+- `PUB_STATE_PUBLISHING` （2）：正在发布本地流。
+- `PUB_STATE_PUBLISHED` （3）：成功发布本地流。
 
 #### `elapseSinceLastState`
 

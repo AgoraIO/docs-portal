@@ -147,8 +147,8 @@ description: "调整本地播放的混音音量。"
 获取音频混音的播放位置（毫秒）。
 
 :::info[注]
-- 你需要在调用 startAudioMixing:loopback:cycle:startPos: 并收到 audioMixingStateChanged 回调（AgoraAudioMixingStateTypePlaying ）后调用此方法。
-- 如果你需要多次调用 getAudioMixingCurrentPosition，请确保两次调用之间的时间间隔大于 500 毫秒。
+- 你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/ios/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged` 回调（`AgoraAudioMixingStateTypePlaying` ）后调用此方法。
+- 如果你需要多次调用 [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/ios/audio-mixing#api_irtcengine_getaudiomixingcurrentposition)，请确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
 <a id="api_irtcengine_getaudiomixingcurrentposition__return_values"></a>
@@ -363,7 +363,7 @@ description: "调整本地播放的混音音量。"
 
 :::info[注]
 - 支持的音频文件格式，详见[声网 RTC SDK 支持哪些格式的音频文件](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。
-- 需要在调用 startAudioMixing 并收到 audioMixingStateChanged 回调（状态为 AgoraAudioMixingStateTypePlaying ）后调用该方法。
+- 需要在调用 `startAudioMixing` 并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用该方法。
 :::
 
 <a id="api_irtcengine_selectaudiotrack__parameters"></a>
@@ -621,7 +621,7 @@ description: "调整本地播放的混音音量。"
 关于该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些音频文件格式](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。如果本地音乐文件不存在、SDK 不支持该文件格式，或 SDK 无法访问音乐文件的 URL，SDK 会返回 `AgoraAudioMixingReasonCanNotOpen`。
 
 :::info[注]
-- 如果你调用该方法播放短音效文件，可能会导致播放失败。声网建议使用 playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos: 方法播放此类文件。
+- 如果你调用该方法播放短音效文件，可能会导致播放失败。声网建议使用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/ios/audio-effect-file#api_irtcengine_playeffect3) 方法播放此类文件。
 - 如果你需要多次调用该方法，请确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
@@ -661,12 +661,14 @@ description: "调整本地播放的混音音量。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -3：SDK 尚未就绪。
+
     - 音频模块未启用。
     - 程序未完成。
-    - AgoraRtcEngineKit 初始化失败。请重新初始化 AgoraRtcEngineKit。
+    - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
@@ -691,7 +693,7 @@ description: "调整本地播放的混音音量。"
 关于该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些音频文件格式](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。如果本地音乐文件不存在、SDK 不支持该文件格式，或无法访问音乐文件的 URL，SDK 会返回 `AgoraAudioMixingReasonCanNotOpen`。
 
 :::info[注]
-- 如果你调用该方法播放短音效文件，可能会遇到播放失败的情况。声网建议使用 playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos: 方法播放此类文件。
+- 如果你调用该方法播放短音效文件，可能会遇到播放失败的情况。声网建议使用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/ios/audio-effect-file#api_irtcengine_playeffect3) 方法播放此类文件。
 - 如果需要多次调用该方法，确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
@@ -741,12 +743,14 @@ description: "调整本地播放的混音音量。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -3：SDK 尚未就绪。
+
     - 音频模块未启用。
     - 程序未完整。
-    - AgoraRtcEngineKit 初始化失败。请重新初始化 AgoraRtcEngineKit。
+    - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)

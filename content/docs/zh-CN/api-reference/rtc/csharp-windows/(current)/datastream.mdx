@@ -52,8 +52,8 @@ public abstract int CreateDataStream(ref int streamId, bool reliable, bool order
 
 是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
 
-- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 OnStreamMessageError 回调并获得相应报错信息。
-- false: 接收方不保证收到，就算数据丢失也不会报错。
+- `true`: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 OnStreamMessageError 回调并获得相应报错信息。
+- `false`: 接收方不保证收到，就算数据丢失也不会报错。
 
 :::warning[注意]
 请确保将 reliable 和 ordered 同时设为 `true` 或同时设为 `false`。
@@ -63,8 +63,8 @@ public abstract int CreateDataStream(ref int streamId, bool reliable, bool order
 
 是否保证数据有序性，即接收方是否需要收到有序的数据：
 
-- true: 接收方会按照发送方发送的顺序收到数据包。
-- false: 接收方不保证按照发送方发送的顺序收到数据包。
+- `true`: 接收方会按照发送方发送的顺序收到数据包。
+- `false`: 接收方不保证按照发送方发送的顺序收到数据包。
 
 <a id="api_irtcengine_createdatastream__return_values"></a>
 
@@ -123,8 +123,8 @@ public abstract int CreateDataStreamEx(ref int streamId, bool reliable, bool ord
 
 是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
 
-- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 OnStreamMessageError 回调并获得相应报错信息。
-- false: 接收方不保证收到，就算数据丢失也不会报错。
+- `true`: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 OnStreamMessageError 回调并获得相应报错信息。
+- `false`: 接收方不保证收到，就算数据丢失也不会报错。
 
 :::warning[注意]
 请确保将 reliable 和 ordered 同时设为 `true` 或同时设为 `false`。
@@ -134,8 +134,8 @@ public abstract int CreateDataStreamEx(ref int streamId, bool reliable, bool ord
 
 是否保证数据有序性，即接收方是否需要收到有序的数据：
 
-- true: 接收方会按照发送方发送的顺序收到数据包。
-- false: 接收方不保证按照发送方发送的顺序收到数据包。
+- `true`: 接收方会按照发送方发送的顺序收到数据包。
+- `false`: 接收方不保证按照发送方发送的顺序收到数据包。
 
 #### `connection`
 
@@ -346,7 +346,7 @@ SDK 对该方法的实现进行了如下限制：
 成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/csharp-windows/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/csharp-windows/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::warning[注意]
-- 该方法需要在加入频道后、且调用 CreateDataStream [2/2] 创建数据通道之后调用。
+- 该方法需要在加入频道后、且调用 [CreateDataStream [2/2]](/zh-CN/api-reference/rtc/csharp-windows/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
 - 该方法仅适用于主播用户。
 :::
 
@@ -402,7 +402,7 @@ SDK 对该方法的实现进行了如下限制：
 成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/csharp-windows/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/csharp-windows/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::warning[注意]
-- 该方法需要在 JoinChannelEx 后调用。
+- 该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_joinchannelex) 后调用。
 - 请确保在调用该方法前，已调用 CreateDataStreamEx [2/2] 创建了数据通道。
 :::
 

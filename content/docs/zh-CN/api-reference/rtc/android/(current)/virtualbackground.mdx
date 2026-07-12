@@ -25,12 +25,14 @@ public abstract int enableVirtualBackground(boolean enabled, VirtualBackgroundSo
 :::info[注]
 - 使用视频作为虚拟背景会导致内存持续增长，可能引发应用崩溃等问题。建议降低视频的分辨率和帧率。
 - 此功能对设备性能要求较高。调用该方法时，SDK 会自动检测当前设备的性能。声网建议在以下处理器设备上使用该功能：
+
   - Snapdragon 700 系列 750G 及以上版本。
   - Snapdragon 800 系列 835 及以上版本。
   - Dimensity 700 系列 720 及以上版本。
   - Kirin 800 系列 810 及以上版本。
   - Kirin 900 系列 980 及以上版本。
 - 声网建议在以下场景中使用该功能：
+
   - 使用高清摄像头设备，且环境光线均匀。
   - 拍摄画面中物体较少，人像为半身像且无遮挡。
   - 背景为纯色，且与用户服装颜色有明显区别。
@@ -62,6 +64,7 @@ public abstract int enableVirtualBackground(boolean enabled, VirtualBackgroundSo
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -4：设备性能不满足虚拟背景功能的要求。声网建议在性能更高的设备上尝试。
 
 ### 所属接口类
@@ -86,12 +89,14 @@ public abstract int enableVirtualBackground(boolean enabled, VirtualBackgroundSo
 :::info[注]
 - 使用视频作为虚拟背景会导致内存持续增长，可能引发应用崩溃。建议降低视频的分辨率和帧率。
 - 此功能对设备性能要求较高。调用本方法时，SDK 会自动检测当前设备的能力。声网建议在以下处理器设备上使用该功能：
+
   - Snapdragon 700 系列 750G 及以上版本。
   - Snapdragon 800 系列 835 及以上版本。
   - Dimensity 700 系列 720 及以上版本。
   - Kirin 800 系列 810 及以上版本。
   - Kirin 900 系列 980 及以上版本。
 - 声网建议在以下场景中使用该功能：
+
   - 使用高清摄像头设备，且环境光线均匀。
   - 拍摄画面中物体较少，人像为半身像且无遮挡。
   - 背景为纯色，且与用户服装颜色有明显区别。
@@ -124,8 +129,8 @@ public abstract int enableVirtualBackground(boolean enabled, VirtualBackgroundSo
 :::info[注]
 在本方法中，该参数仅支持以下两种设置：
 
-- 默认值为 PRIMARY_CAMERA_SOURCE。
-- 若使用自定义视频源，请将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 默认值为 `PRIMARY_CAMERA_SOURCE`。
+- 若使用自定义视频源，请将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_enablevirtualbackground2__return_values"></a>
@@ -134,6 +139,7 @@ public abstract int enableVirtualBackground(boolean enabled, VirtualBackgroundSo
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -4：设备能力不满足虚拟背景功能的要求。声网建议在性能更高的设备上尝试使用该功能。
 
 ### 所属接口类

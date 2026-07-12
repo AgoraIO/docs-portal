@@ -40,9 +40,10 @@ public abstract int complain(String callId, String description);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
-  - -7：在 RtcEngine 初始化之前调用该方法。
+  - -7：在 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 初始化之前调用该方法。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -101,9 +102,10 @@ public abstract int enableEncryption(boolean enabled, EncryptionConfig config);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -2：参数无效。请传入有效参数。
   - -4：内置加密模式错误或 SDK 加载外部加密库失败。请检查枚举值或重新加载外部加密库。
-  - -7：SDK 未初始化。请先初始化 RtcEngine 实例后再调用该方法。
+  - -7：SDK 未初始化。请先初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例后再调用该方法。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -237,7 +239,7 @@ public abstract String getCallId();
 
 ### 返回值
 
-- 方法调用成功时，返回当前通话的 callId。
+- 方法调用成功时，返回当前通话的 `callId`。
 - 方法调用失败，返回空字符串。
 
 ### 所属接口类
@@ -474,6 +476,7 @@ public abstract int getNetworkType();
 ### 返回值
 
 - 方法调用成功，返回本地网络连接类型：
+
   - 0：SDK 与网络断开连接。
   - 1：网络类型为 LAN。
   - 2：网络类型为 Wi-Fi（包括热点）。
@@ -482,6 +485,7 @@ public abstract int getNetworkType();
   - 5：网络类型为移动 4G。
   - 6：网络类型为移动 5G。
 - 方法调用失败，返回错误码：
+
   - -1：网络类型未知。
 
 ### 所属接口类
@@ -563,8 +567,8 @@ public abstract boolean isFeatureAvailableOnDevice(int type);
 
 高级功能的类型：
 
-- FEATURE_VIDEO_VIRTUAL_BACKGROUND （1）：虚拟背景。
-- FEATURE_VIDEO_BEAUTY_EFFECT （2）：美颜特效。
+- `FEATURE_VIDEO_VIRTUAL_BACKGROUND` （1）：虚拟背景。
+- `FEATURE_VIDEO_BEAUTY_EFFECT` （2）：美颜特效。
 
 <a id="api_irtcengine_isfeatureavailableondevice__return_values"></a>
 
@@ -642,6 +646,7 @@ public abstract int rate(String callId, int rating, String description);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -1：发生通用错误。
   - -2：参数无效。
 
@@ -819,7 +824,7 @@ public abstract int setCloudProxy(int proxyType);
 :::info[注]
 - 建议在加入频道前调用该方法。
 - 当用户处于防火墙之后并使用强制 UDP 云代理时，媒体推流和跨频道联播服务不可用。
-- 使用强制 TCP 云代理时，调用 startAudioMixing 播放 HTTP 协议的在线音乐文件会报错。媒体推流和跨频道联播服务使用 TCP 协议的云代理。
+- 使用强制 TCP 云代理时，调用 `startAudioMixing` 播放 HTTP 协议的在线音乐文件会报错。媒体推流和跨频道联播服务使用 TCP 协议的云代理。
 :::
 
 <a id="api_irtcengine_setcloudproxy__parameters"></a>
@@ -830,9 +835,9 @@ public abstract int setCloudProxy(int proxyType);
 
 云代理的类型：
 
-- TRANSPORT_TYPE_NONE_PROXY (0)：自动模式。SDK 默认启用该模式。在此模式下，SDK 会尝试直接连接 SD-RTN™，若失败则自动切换至 TCP/TLS 443。
-- TRANSPORT_TYPE_UDP_PROXY (1)：UDP 协议的云代理，即强制 UDP 云代理模式。在此模式下，SDK 始终通过 UDP 传输数据。
-- TRANSPORT_TYPE_TCP_PROXY (2)：TCP（加密）协议的云代理，即强制 TCP 云代理模式。在此模式下，SDK 始终通过 TCP/TLS 443 传输数据。
+- `TRANSPORT_TYPE_NONE_PROXY` (0)：自动模式。SDK 默认启用该模式。在此模式下，SDK 会尝试直接连接 SD-RTN™，若失败则自动切换至 TCP/TLS 443。
+- `TRANSPORT_TYPE_UDP_PROXY` (1)：UDP 协议的云代理，即强制 UDP 云代理模式。在此模式下，SDK 始终通过 UDP 传输数据。
+- `TRANSPORT_TYPE_TCP_PROXY` (2)：TCP（加密）协议的云代理，即强制 TCP 云代理模式。在此模式下，SDK 始终通过 TCP/TLS 443 传输数据。
 
 <a id="api_irtcengine_setcloudproxy__return_values"></a>
 
@@ -840,6 +845,7 @@ public abstract int setCloudProxy(int proxyType);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -2：参数无效。
   - -7：SDK 未初始化。
 
@@ -958,17 +964,18 @@ public abstract int setLogFileSize(long fileSizeInKBytes);
 
 默认情况下，SDK 会生成五个 SDK 日志文件和五个 API 调用日志文件，规则如下：
 
-- SDK 日志文件包括： agorasdk.log、 agorasdk.1.log、 agorasdk.2.log、 agorasdk.3.log 和 agorasdk.4.log。
-- API 调用日志文件包括： agoraapi.log、 agoraapi.1.log、 agoraapi.2.log、 agoraapi.3.log 和 agoraapi.4.log。
+- SDK 日志文件包括： `agorasdk.log`、 `agorasdk.1.log`、 `agorasdk.2.log`、 `agorasdk.3.log` 和 `agorasdk.4.log`。
+- API 调用日志文件包括： `agoraapi.log`、 `agoraapi.1.log`、 `agoraapi.2.log`、 `agoraapi.3.log` 和 `agoraapi.4.log`。
 - 每个日志文件的默认大小为 2,048 KB，采用 UTF-8 编码。
-- SDK 会将最新日志写入 agorasdk.log 或 agoraapi.log 文件。
-- 当 agorasdk.log 写满时，SDK 会按以下顺序处理日志文件：
-  1. 删除 agorasdk.4.log （如果存在）。
-  2. 将 agorasdk.3.log 重命名为 agorasdk.4.log。
-  3. 将 agorasdk.2.log 重命名为 agorasdk.3.log。
-  4. 将 agorasdk.1.log 重命名为 agorasdk.2.log。
-  5. 创建新的 agorasdk.log 文件。
-- agoraapi.log 的覆盖规则与 agorasdk.log 相同。
+- SDK 会将最新日志写入 `agorasdk.log` 或 `agoraapi.log` 文件。
+- 当 `agorasdk.log` 写满时，SDK 会按以下顺序处理日志文件：
+
+  1. 删除 `agorasdk.4.log` （如果存在）。
+  2. 将 `agorasdk.3.log` 重命名为 `agorasdk.4.log`。
+  3. 将 `agorasdk.2.log` 重命名为 `agorasdk.3.log`。
+  4. 将 `agorasdk.1.log` 重命名为 `agorasdk.2.log`。
+  5. 创建新的 `agorasdk.log` 文件。
+- `agoraapi.log` 的覆盖规则与 `agorasdk.log` 相同。
 
 :::info[注]
 [setLogFileSize](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setlogfilesize) 仅用于设置 `agorasdk.log` 文件的大小，不影响 `agoraapi.log` 文件。
@@ -1023,12 +1030,12 @@ public abstract int setLogFilter(int filter);
 
 SDK 的日志输出等级。
 
-- LOG_FILTER_OFF (0)：不输出任何日志信息。
-- LOG_FILTER_DEBUG (0x080f)：输出所有日志信息。如果你希望获取最完整的日志文件，请将日志过滤等级设置为 LOG_FILTER_DEBUG。
-- LOG_FILTER_INFO (0x0f)：输出 LOG_FILTER_CRITICAL、 LOG_FILTER_ERROR、 LOG_FILTER_WARN 和 LOG_FILTER_INFO 等级的日志信息。建议将日志等级设置为该等级。
-- LOG_FILTER_WARN (0x0e)：输出 LOG_FILTER_CRITICAL、 LOG_FILTER_ERROR 和 LOG_FILTER_WARN 等级的日志信息。
-- LOG_FILTER_ERROR (0x0c)：输出 LOG_FILTER_CRITICAL 和 LOG_FILTER_ERROR 等级的日志信息。
-- LOG_FILTER_CRITICAL (0x08)：仅输出 LOG_FILTER_CRITICAL 等级的日志信息。
+- `LOG_FILTER_OFF` (0)：不输出任何日志信息。
+- `LOG_FILTER_DEBUG` (0x080f)：输出所有日志信息。如果你希望获取最完整的日志文件，请将日志过滤等级设置为 `LOG_FILTER_DEBUG`。
+- `LOG_FILTER_INFO` (0x0f)：输出 `LOG_FILTER_CRITICAL`、 `LOG_FILTER_ERROR`、 `LOG_FILTER_WARN` 和 `LOG_FILTER_INFO` 等级的日志信息。建议将日志等级设置为该等级。
+- `LOG_FILTER_WARN` (0x0e)：输出 `LOG_FILTER_CRITICAL`、 `LOG_FILTER_ERROR` 和 `LOG_FILTER_WARN` 等级的日志信息。
+- `LOG_FILTER_ERROR` (0x0c)：输出 `LOG_FILTER_CRITICAL` 和 `LOG_FILTER_ERROR` 等级的日志信息。
+- `LOG_FILTER_CRITICAL` (0x08)：仅输出 `LOG_FILTER_CRITICAL` 等级的日志信息。
 
 <a id="api_irtcengine_setlogfilter__return_values"></a>
 
@@ -1180,9 +1187,9 @@ public abstract int setRemoteSubscribeFallbackOption(int option)
 
 已订阅流的回退选项：
 
-- STREAM_FALLBACK_OPTION_DISABLED （0）：不对音视频流进行回退处理，无法保证音视频质量。
-- STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW （1）：（默认）在下行网络较差时，订阅的远端视频流回退为低质量（低分辨率、低码率）的视频流。
-- STREAM_FALLBACK_OPTION_AUDIO_ONLY （2）：在网络条件较差时，优先尝试接收视频小流；若因网络极差无法显示视频，则回退为仅接收音频流。
+- `STREAM_FALLBACK_OPTION_DISABLED` （0）：不对音视频流进行回退处理，无法保证音视频质量。
+- `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW` （1）：（默认）在下行网络较差时，订阅的远端视频流回退为低质量（低分辨率、低码率）的视频流。
+- `STREAM_FALLBACK_OPTION_AUDIO_ONLY` （2）：在网络条件较差时，优先尝试接收视频小流；若因网络极差无法显示视频，则回退为仅接收音频流。
 
 <a id="api_irtcengine_setremotesubscribefallbackoption2__return_values"></a>
 
@@ -1212,7 +1219,7 @@ public abstract int startEchoTest(EchoTestConfiguration config);
 
 :::info[注]
 - 在频道中调用该方法时，请确保未发布任何音视频流。
-- 调用该方法后需调用 stopEchoTest 结束测试，否则用户无法进行下一次音视频通话回路测试，也无法加入频道。
+- 调用该方法后需调用 [stopEchoTest](/zh-CN/api-reference/rtc/android/network#api_irtcengine_stopechotest) 结束测试，否则用户无法进行下一次音视频通话回路测试，也无法加入频道。
 - 在直播场景中，该方法仅适用于主播。
 :::
 
@@ -1259,8 +1266,8 @@ public abstract int startLastmileProbeTest(LastmileProbeConfig config);
 :::info[注]
 调用时序：在收到 [onLastmileQuality](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onlastmilequality) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onlastmileproberesult) 回调前，请勿调用其他方法，否则可能会中断这些回调。 相关回调：成功调用该方法后，SDK 会依次触发以下两个回调：
 
-- onLastmileQuality：SDK 会在约两秒内根据网络状况触发该回调。该回调用于评估网络质量，与用户体验更相关。
-- onLastmileProbeResult：SDK 会在约 30 秒内根据网络状况触发该回调。该回调返回网络状况的实时统计数据，更加客观。
+- [onLastmileQuality](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onlastmilequality)：SDK 会在约两秒内根据网络状况触发该回调。该回调用于评估网络质量，与用户体验更相关。
+- [onLastmileProbeResult](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onlastmileproberesult)：SDK 会在约 30 秒内根据网络状况触发该回调。该回调返回网络状况的实时统计数据，更加客观。
 :::
 
 <a id="api_irtcengine_startlastmileprobetest__parameters"></a>
@@ -1303,6 +1310,7 @@ public abstract int stopEchoTest();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -5：停止回声测试失败，可能未在运行回声测试。
 
 ### 所属接口类
@@ -1379,8 +1387,8 @@ public void onConnectionInterrupted() {}
 
 该回调在 SDK 建立连接后与服务器断开连接超过四秒时被触发。触发该回调后，SDK 会尝试重新连接服务器。你可以通过该回调实现弹窗提醒功能。 该回调与 [onConnectionLost](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionlost) 的区别如下：
 
-- 当 SDK 成功加入频道后，与服务器断开连接超过四秒时，会触发 onConnectionInterrupted 回调。
-- 无论是否加入频道，当 SDK 与服务器断开连接超过 10 秒时，会触发 onConnectionLost 回调。
+- 当 SDK 成功加入频道后，与服务器断开连接超过四秒时，会触发 [onConnectionInterrupted](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectioninterrupted) 回调。
+- 无论是否加入频道，当 SDK 与服务器断开连接超过 10 秒时，会触发 [onConnectionLost](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionlost) 回调。
 
 如果 SDK 在与声网边缘服务器断开连接后 20 分钟内仍未重新加入频道，则停止重连。
 
@@ -1452,31 +1460,33 @@ SDK 会在网络连接状态发生变化时触发该回调，并报告当前的�
 
 当前的连接状态：
 
-- CONNECTION_STATE_DISCONNECTED (1)：SDK 与声网边缘服务器断开连接。
-- CONNECTION_STATE_CONNECTING (2)：SDK 正在连接声网边缘服务器。
-- CONNECTION_STATE_CONNECTED (3)：SDK 已连接到声网边缘服务器。
-- CONNECTION_STATE_RECONNECTING (4)：SDK 尝试重新连接声网边缘服务器。
-- CONNECTION_STATE_FAILED (5)：SDK 连接声网边缘服务器失败。
+- `CONNECTION_STATE_DISCONNECTED` (1)：SDK 与声网边缘服务器断开连接。
+- `CONNECTION_STATE_CONNECTING` (2)：SDK 正在连接声网边缘服务器。
+- `CONNECTION_STATE_CONNECTED` (3)：SDK 已连接到声网边缘服务器。
+- `CONNECTION_STATE_RECONNECTING` (4)：SDK 尝试重新连接声网边缘服务器。
+- `CONNECTION_STATE_FAILED` (5)：SDK 连接声网边缘服务器失败。
 
 #### `reason`
 
 连接状态变化的原因：
 
-- CONNECTION_CHANGED_CONNECTING (0)：SDK 正在连接声网边缘服务器。
-- CONNECTION_CHANGED_JOIN_SUCCESS (1)：SDK 成功加入频道。
-- CONNECTION_CHANGED_INTERRUPTED (2)：SDK 与声网边缘服务器之间的连接中断。
-- CONNECTION_CHANGED_BANNED_BY_SERVER (3)：连接被声网服务器禁止，例如用户被踢出频道时会返回该错误码。
-- CONNECTION_CHANGED_JOIN_FAILED (4)：SDK 加入频道失败。若超过 20 分钟未能加入频道，SDK 会停止重连并返回该错误码。你需要提示用户尝试切换网络并重新加入频道。
-- CONNECTION_CHANGED_LEAVE_CHANNEL (5)：SDK 已离开频道。
-- CONNECTION_CHANGED_INVALID_APP_ID (6)：无效的 App ID。你需要使用有效的 App ID 重新加入频道，并确保该 App ID 与声网控制台中生成的一致。
-- CONNECTION_CHANGED_INVALID_CHANNEL_NAME (7)：无效的频道名。请使用有效的频道名重新加入频道。有效的频道名为不超过 64 字节的字符串，支持的字符包括：
+- `CONNECTION_CHANGED_CONNECTING` (0)：SDK 正在连接声网边缘服务器。
+- `CONNECTION_CHANGED_JOIN_SUCCESS` (1)：SDK 成功加入频道。
+- `CONNECTION_CHANGED_INTERRUPTED` (2)：SDK 与声网边缘服务器之间的连接中断。
+- `CONNECTION_CHANGED_BANNED_BY_SERVER` (3)：连接被声网服务器禁止，例如用户被踢出频道时会返回该错误码。
+- `CONNECTION_CHANGED_JOIN_FAILED` (4)：SDK 加入频道失败。若超过 20 分钟未能加入频道，SDK 会停止重连并返回该错误码。你需要提示用户尝试切换网络并重新加入频道。
+- `CONNECTION_CHANGED_LEAVE_CHANNEL` (5)：SDK 已离开频道。
+- `CONNECTION_CHANGED_INVALID_APP_ID` (6)：无效的 App ID。你需要使用有效的 App ID 重新加入频道，并确保该 App ID 与声网控制台中生成的一致。
+- `CONNECTION_CHANGED_INVALID_CHANNEL_NAME` (7)：无效的频道名。请使用有效的频道名重新加入频道。有效的频道名为不超过 64 字节的字符串，支持的字符包括：
+
   - 所有小写英文字母：a 到 z。
   - 所有大写英文字母：A 到 Z。
   - 所有数字字符：0 到 9。
-  - 特殊字符：!, #, $, %, &, (,), +, -,:,;, &lt;, =,., &gt;,?, @, [,], ^, _, \{, \}, |, ~,,。
-- CONNECTION_CHANGED_INVALID_TOKEN (8)：无效的 Token。可能原因包括：
+  - 特殊字符： `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, ` [`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`。
+- `CONNECTION_CHANGED_INVALID_TOKEN` (8)：无效的 Token。可能原因包括：
+
   - 项目在声网控制台启用了 App Certificate，但加入频道时未传入 Token。
-  - 调用 joinChannel 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。
+  - 调用 `joinChannel` 加入频道时指定的 `uid` 与生成 Token 时传入的 `uid` 不一致。
   - 使用的 Token 与生成的 Token 不一致。
 
 请确保：
@@ -1485,18 +1495,18 @@ SDK 会在网络连接状态发生变化时触发该回调，并报告当前的�
 - 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致。
 - 使用的 Token 与生成的 Token 一致。
 
-- CONNECTION_CHANGED_TOKEN_EXPIRED (9)：当前使用的 Token 已过期。你需要在服务器上生成新的 Token，并使用新 Token 重新加入频道。
-- CONNECTION_CHANGED_REJECTED_BY_SERVER (10)：用户被服务器禁止。
-- CONNECTION_CHANGED_SETTING_PROXY_SERVER (11)：设置代理服务器后，SDK 尝试重新连接。
-- CONNECTION_CHANGED_RENEW_TOKEN (12)：由于 Token 被更新，连接状态发生变化。
-- CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED (13)：客户端 IP 地址发生变化。如果多次收到该错误码，你需要提示用户切换网络并重新加入频道。
-- CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT (14)：SDK 与声网边缘服务器之间的连接保活超时，SDK 会自动尝试重新连接。
-- CONNECTION_CHANGED_REJOIN_SUCCESS (15)：SDK 成功重新加入频道。
-- CONNECTION_CHANGED_LOST (16)：SDK 与服务器之间的连接丢失。
-- CONNECTION_CHANGED_ECHO_TEST (17)：由于回声测试，连接状态发生变化。
-- CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED_BY_USER (18)：本地 IP 地址被用户更改。
-- CONNECTION_CHANGED_SAME_UID_LOGIN (19)：用户在不同设备上以相同的 uid 加入同一频道。注意：以相同 uid 加入同一 RTC 频道属于未定义行为，声网不保证在相同情况下始终触发该错误码。
-- CONNECTION_CHANGED_TOO_MANY_BROADCASTERS (20)：频道中的主播数量已达上限。
+- `CONNECTION_CHANGED_TOKEN_EXPIRED` (9)：当前使用的 Token 已过期。你需要在服务器上生成新的 Token，并使用新 Token 重新加入频道。
+- `CONNECTION_CHANGED_REJECTED_BY_SERVER` (10)：用户被服务器禁止。
+- `CONNECTION_CHANGED_SETTING_PROXY_SERVER` (11)：设置代理服务器后，SDK 尝试重新连接。
+- `CONNECTION_CHANGED_RENEW_TOKEN` (12)：由于 Token 被更新，连接状态发生变化。
+- `CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED` (13)：客户端 IP 地址发生变化。如果多次收到该错误码，你需要提示用户切换网络并重新加入频道。
+- `CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT` (14)：SDK 与声网边缘服务器之间的连接保活超时，SDK 会自动尝试重新连接。
+- `CONNECTION_CHANGED_REJOIN_SUCCESS` (15)：SDK 成功重新加入频道。
+- `CONNECTION_CHANGED_LOST` (16)：SDK 与服务器之间的连接丢失。
+- `CONNECTION_CHANGED_ECHO_TEST` (17)：由于回声测试，连接状态发生变化。
+- `CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED_BY_USER` (18)：本地 IP 地址被用户更改。
+- `CONNECTION_CHANGED_SAME_UID_LOGIN` (19)：用户在不同设备上以相同的 `uid` 加入同一频道。注意：以相同 `uid` 加入同一 RTC 频道属于未定义行为，声网不保证在相同情况下始终触发该错误码。
+- `CONNECTION_CHANGED_TOO_MANY_BROADCASTERS` (20)：频道中的主播数量已达上限。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
@@ -1531,11 +1541,11 @@ public void onEncryptionError(int errorType)
 
 错误类型：
 
-- ENCRYPTION_ERROR_INTERNAL_FAILURE （0）：内部原因。
-- ENCRYPTION_ERROR_DECRYPTION_FAILURE （1）：媒体流解密错误。请确保接收端和发送端使用相同的加密模式和密钥。
-- ENCRYPTION_ERROR_ENCRYPTION_FAILURE （2）：媒体流加密错误。
-- ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE （3）：数据流解密错误。请确保接收端和发送端使用相同的加密模式和密钥。
-- ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE （4）：数据流加密错误。
+- `ENCRYPTION_ERROR_INTERNAL_FAILURE` （0）：内部原因。
+- `ENCRYPTION_ERROR_DECRYPTION_FAILURE` （1）：媒体流解密错误。请确保接收端和发送端使用相同的加密模式和密钥。
+- `ENCRYPTION_ERROR_ENCRYPTION_FAILURE` （2）：媒体流加密错误。
+- `ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE` （3）：数据流解密错误。请确保接收端和发送端使用相同的加密模式和密钥。
+- `ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE` （4）：数据流加密错误。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
@@ -1603,14 +1613,14 @@ public void onLastmileQuality(int quality)
 
 Last-mile 网络质量：
 
-- QUALITY_UNKNOWN (0)：网络质量未知。
-- QUALITY_EXCELLENT (1)：网络质量极好。
-- QUALITY_GOOD (2)：网络质量较好，但码率可能略低于极好。
-- QUALITY_POOR (3)：通信质量略有下降。
-- QUALITY_BAD (4)：无法流畅通信。
-- QUALITY_VBAD (5)：网络质量极差，几乎无法通信。
-- QUALITY_DOWN (6)：网络连接已断，无法通信。
-- QUALITY_DETECTING (8)：正在进行 Last-mile 探测。
+- `QUALITY_UNKNOWN` (0)：网络质量未知。
+- `QUALITY_EXCELLENT` (1)：网络质量极好。
+- `QUALITY_GOOD` (2)：网络质量较好，但码率可能略低于极好。
+- `QUALITY_POOR` (3)：通信质量略有下降。
+- `QUALITY_BAD` (4)：无法流畅通信。
+- `QUALITY_VBAD` (5)：网络质量极差，几乎无法通信。
+- `QUALITY_DOWN` (6)：网络连接已断，无法通信。
+- `QUALITY_DETECTING` (8)：正在进行 Last-mile 探测。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
@@ -1690,27 +1700,27 @@ public void onNetworkQuality(int uid, int txQuality, int rxQuality)
 
 用户上行网络质量评分，依据传输码率、丢包率、平均往返时延（RTT）和抖动等指标评估。
 
-- QUALITY_UNKNOWN (0)：质量未知。
-- QUALITY_EXCELLENT (1)：质量极佳。
-- QUALITY_GOOD (2)：网络质量看似极佳，但码率略低于极佳。
-- QUALITY_POOR (3)：用户能感受到通信略有卡顿。
-- QUALITY_BAD (4)：用户无法流畅通信。
-- QUALITY_VBAD (5)：质量极差，用户几乎无法通信。
-- QUALITY_DOWN (6)：网络连接已断，用户无法通信。
-- QUALITY_DETECTING (8)：正在进行 Last-mile 探测测试。
+- `QUALITY_UNKNOWN` (0)：质量未知。
+- `QUALITY_EXCELLENT` (1)：质量极佳。
+- `QUALITY_GOOD` (2)：网络质量看似极佳，但码率略低于极佳。
+- `QUALITY_POOR` (3)：用户能感受到通信略有卡顿。
+- `QUALITY_BAD` (4)：用户无法流畅通信。
+- `QUALITY_VBAD` (5)：质量极差，用户几乎无法通信。
+- `QUALITY_DOWN` (6)：网络连接已断，用户无法通信。
+- `QUALITY_DETECTING` (8)：正在进行 Last-mile 探测测试。
 
 #### `rxQuality`
 
 用户下行网络质量评分，依据丢包率、平均往返时延（RTT）和抖动等指标评估。
 
-- QUALITY_UNKNOWN (0)：质量未知。
-- QUALITY_EXCELLENT (1)：质量极佳。
-- QUALITY_GOOD (2)：网络质量看似极佳，但码率略低于极佳。
-- QUALITY_POOR (3)：用户能感受到通信略有卡顿。
-- QUALITY_BAD (4)：用户无法流畅通信。
-- QUALITY_VBAD (5)：质量极差，用户几乎无法通信。
-- QUALITY_DOWN (6)：网络连接已断，用户无法通信。
-- QUALITY_DETECTING (8)：正在进行 Last-mile 探测测试。
+- `QUALITY_UNKNOWN` (0)：质量未知。
+- `QUALITY_EXCELLENT` (1)：质量极佳。
+- `QUALITY_GOOD` (2)：网络质量看似极佳，但码率略低于极佳。
+- `QUALITY_POOR` (3)：用户能感受到通信略有卡顿。
+- `QUALITY_BAD` (4)：用户无法流畅通信。
+- `QUALITY_VBAD` (5)：质量极差，用户几乎无法通信。
+- `QUALITY_DOWN` (6)：网络连接已断，用户无法通信。
+- `QUALITY_DETECTING` (8)：正在进行 Last-mile 探测测试。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
@@ -1745,14 +1755,14 @@ public void onNetworkTypeChanged(int type)
 
 网络类型：
 
-- NETWORK_TYPE_UNKNOWN （-1）：网络类型未知。
-- NETWORK_TYPE_DISCONNECTED （0）：SDK 与网络断开连接。
-- NETWORK_TYPE_LAN （1）：网络类型为 LAN。
-- NETWORK_TYPE_WIFI （2）：网络类型为 Wi-Fi（包括热点）。
-- NETWORK_TYPE_MOBILE_2G （3）：网络类型为移动 2G。
-- NETWORK_TYPE_MOBILE_3G （4）：网络类型为移动 3G。
-- NETWORK_TYPE_MOBILE_4G （5）：网络类型为移动 4G。
-- NETWORK_TYPE_MOBILE_5G （6）：网络类型为移动 5G。
+- `NETWORK_TYPE_UNKNOWN` （-1）：网络类型未知。
+- `NETWORK_TYPE_DISCONNECTED` （0）：SDK 与网络断开连接。
+- `NETWORK_TYPE_LAN` （1）：网络类型为 LAN。
+- `NETWORK_TYPE_WIFI` （2）：网络类型为 Wi-Fi（包括热点）。
+- `NETWORK_TYPE_MOBILE_2G` （3）：网络类型为移动 2G。
+- `NETWORK_TYPE_MOBILE_3G` （4）：网络类型为移动 3G。
+- `NETWORK_TYPE_MOBILE_4G` （5）：网络类型为移动 4G。
+- `NETWORK_TYPE_MOBILE_5G` （6）：网络类型为移动 5G。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
@@ -1787,9 +1797,9 @@ public void onPermissionError(int permission)
 
 设备权限的类型：
 
-- RECORD_AUDIO （0）：音频采集设备的权限。
-- CAMERA （1）：摄像头的权限。
-- SCREEN_CAPTURE （2）：屏幕共享的权限。
+- `RECORD_AUDIO` （0）：音频采集设备的权限。
+- `CAMERA` （1）：摄像头的权限。
+- `SCREEN_CAPTURE` （2）：屏幕共享的权限。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
@@ -1816,9 +1826,9 @@ public void onPermissionGranted(int permission)
 
 权限类型。包括：
 
-- RECORD_AUDIO：录音权限。
-- CAMERA：摄像头权限。
-- SCREEN_CAPTURE：屏幕采集权限。
+- `RECORD_AUDIO`：录音权限。
+- `CAMERA`：摄像头权限。
+- `SCREEN_CAPTURE`：屏幕采集权限。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
@@ -1861,11 +1871,11 @@ public void onProxyConnected(String channel, int uid, int proxyType, String loca
 
 连接的代理类型：
 
-- PROXY_TYPE_NONE_PROXY （0）：预留参数。
-- PROXY_TYPE_UDP_CLOUD_PROXY （1）：UDP 协议的云代理，即强制 UDP 云代理模式。在该模式下，SDK 始终通过 UDP 传输数据。
-- PROXY_TYPE_TCP_CLOUD_PROXY （2）：TCP（加密）协议的云代理，即强制 TCP 云代理模式。在该模式下，SDK 始终通过 TCP/TLS 443 传输数据。
-- PROXY_TYPE_LOCAL_PROXY （3）：预留参数。
-- PROXY_TYPE_TCP_AUTO_FALLBACK （4）：自动模式。在该模式下，SDK 会尝试直接连接 SD-RTN™，如果失败则自动切换到 TCP/TLS 443。
+- `PROXY_TYPE_NONE_PROXY` （0）：预留参数。
+- `PROXY_TYPE_UDP_CLOUD_PROXY` （1）：UDP 协议的云代理，即强制 UDP 云代理模式。在该模式下，SDK 始终通过 UDP 传输数据。
+- `PROXY_TYPE_TCP_CLOUD_PROXY` （2）：TCP（加密）协议的云代理，即强制 TCP 云代理模式。在该模式下，SDK 始终通过 TCP/TLS 443 传输数据。
+- `PROXY_TYPE_LOCAL_PROXY` （3）：预留参数。
+- `PROXY_TYPE_TCP_AUTO_FALLBACK` （4）：自动模式。在该模式下，SDK 会尝试直接连接 SD-RTN™，如果失败则自动切换到 TCP/TLS 443。
 
 #### `localProxyIp`
 

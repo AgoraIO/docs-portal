@@ -140,8 +140,8 @@ public abstract int EnableLocalAudio(bool enabled);
 
 #### `enabled`
 
-- true: 重新开启本地音频功能，即开启本地音频采集（默认）；
-- false: 关闭本地音频功能，即停止本地音频采集。
+- `true`: 重新开启本地音频功能，即开启本地音频采集（默认）；
+- `false`: 关闭本地音频功能，即停止本地音频采集。
 
 <a id="api_irtcengine_enablelocalaudio__return_values"></a>
 
@@ -173,7 +173,7 @@ public abstract int EnableLoopbackRecording(bool enabled, string deviceName = ""
 
 :::warning[注意]
 - 该方法在加入频道前后都能调用。
-- 如果你调用了 DisableAudio 关闭音频模块，声卡采集功能也会被关闭。如果你需要再次启用声卡采集功能，需要调用 EnableAudio 启用音频模块后再次调用 EnableLoopbackRecording。
+- 如果你调用了 [DisableAudio](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_disableaudio) 关闭音频模块，声卡采集功能也会被关闭。如果你需要再次启用声卡采集功能，需要调用 [EnableAudio](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_enableaudio) 启用音频模块后再次调用 EnableLoopbackRecording。
 :::
 
 <a id="api_irtcengine_enableloopbackrecording__parameters"></a>
@@ -184,8 +184,8 @@ public abstract int EnableLoopbackRecording(bool enabled, string deviceName = ""
 
 是否开启声卡采集:
 
-- true: 开启声卡采集；系统 声音 &gt; 输出 界面显示虚拟声卡名称。
-- false:（默认）关闭声卡采集；系统 声音 &gt; 输出 界面不显示虚拟声卡名称。
+- `true`: 开启声卡采集；系统 **声音 &gt; 输出** 界面显示虚拟声卡名称。
+- `false`:（默认）关闭声卡采集；系统 **声音 &gt; 输出** 界面不显示虚拟声卡名称。
 
 #### `deviceName`
 
@@ -232,8 +232,8 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 是否开启声卡采集：
 
-- true: 开启声卡采集。
-- false:（默认）不开启声卡采集。
+- `true`: 开启声卡采集。
+- `false`:（默认）不开启声卡采集。
 
 #### `deviceName`
 
@@ -285,8 +285,8 @@ public abstract int MuteRecordingSignal(bool mute);
 
 #### `mute`
 
-- true: 静音。
-- false:（默认）原始音量。
+- `true`: 静音。
+- `false`:（默认）原始音量。
 
 <a id="api_irtcengine_muterecordingsignal__return_values"></a>
 

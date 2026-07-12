@@ -27,7 +27,7 @@ virtual bool getMirrorApplied() { return false; }
 - 在 Android 平台，该回调支持的视频数据格式包括：I420、RGBA 和 Texture。
 - 在 iOS 平台，该回调支持的视频数据格式包括：I420、RGBA 和 CVPixelBuffer。
 - 在 macOS 平台，该回调支持的视频数据格式包括：I420 和 RGBA。
-- 该方法与 setVideoEncoderConfiguration 方法均支持设置镜像效果。建议你仅使用其中一种方法。若同时使用两种方法，可能导致镜像效果叠加，从而使设置失效。
+- 该方法与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_setvideoencoderconfiguration) 方法均支持设置镜像效果。建议你仅使用其中一种方法。若同时使用两种方法，可能导致镜像效果叠加，从而使设置失效。
 :::
 
 <a id="api_ivideoframeobserver_getmirrorapplied__timing"></a>
@@ -62,15 +62,15 @@ virtual uint32_t getObservedFramePosition()
 
 在成功注册视频数据观察器后，SDK 会通过该回调判断是否在特定的视频帧处理位置触发 [onCaptureVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#callback_ivideoframeobserver_oncapturevideoframe)、 [onRenderVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#callback_ivideoframeobserver_onrendervideoframe) 和 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调，从而让你观察本地采集的视频数据、远端接收的视频数据以及编码前的视频数据。你可以根据实际场景，通过修改返回值设置一个或多个需要观察的位置：
 
-- POSITION_POST_CAPTURER (1 &lt;&lt; 0)：视频采集后的位置，对应 onCaptureVideoFrame 回调。
-- POSITION_PRE_RENDERER (1 &lt;&lt; 1)：远端视频数据在渲染前的位置，对应 onRenderVideoFrame 回调。
-- POSITION_PRE_ENCODER (1 &lt;&lt; 2)：编码前的位置，对应 onPreEncodeVideoFrame 回调。
+- `POSITION_POST_CAPTURER` (1 &lt;&lt; 0)：视频采集后的位置，对应 [onCaptureVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调。
+- `POSITION_PRE_RENDERER` (1 &lt;&lt; 1)：远端视频数据在渲染前的位置，对应 [onRenderVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调。
+- `POSITION_PRE_ENCODER` (1 &lt;&lt; 2)：编码前的位置，对应 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调。
 
 :::info[注]
-- 使用 | （按位或运算符）设置多个观察位置。
-- 默认观察位置为 POSITION_POST_CAPTURER (1 &lt;&lt; 0) 和 POSITION_PRE_RENDERER (1 &lt;&lt; 1)。
+- 使用 `|` （按位或运算符）设置多个观察位置。
+- 默认观察位置为 `POSITION_POST_CAPTURER` (1 &lt;&lt; 0) 和 `POSITION_PRE_RENDERER` (1 &lt;&lt; 1)。
 - 为节省系统资源，建议减少观察的位置数量。
-- 当视频处理模式为 PROCESS_MODE_READ_WRITE 且观察位置为 POSITION_PRE_ENCODER | POSITION_POST_CAPTURER 时， getMirrorApplied 不生效。你需要修改视频处理模式或观察位置。
+- 当视频处理模式为 `PROCESS_MODE_READ_WRITE` 且观察位置为 `POSITION_PRE_ENCODER | POSITION_POST_CAPTURER` 时， [getMirrorApplied](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#api_ivideoframeobserver_getmirrorapplied) 不生效。你需要修改视频处理模式或观察位置。
 :::
 
 <a id="api_ivideoframeobserver_getobservedframeposition__return_values"></a>
@@ -140,11 +140,12 @@ virtual VIDEO_PIXEL_FORMAT getVideoFormatPreference() { return VIDEO_PIXEL_DEFAU
 :::info[注]
 原始视频的默认像素格式（`VIDEO_PIXEL_DEFAULT` ）如下：
 
-- 在 Windows 平台，默认的视频帧类型为 YUV420。
-- 在 Android 平台，默认的视频帧类型可能为 I420Buffer 或 TextureBuffer。 TextureBuffer 类型的纹理格式可能为 OES 或 RGB。如果你调用 getVideoFormatPreference 返回的视频帧类型为 VIDEO_PIXEL_DEFAULT，则在处理视频数据时需要适配 I420Buffer 或 TextureBuffer。视频帧类型固定为 I420Buffer 的情况包括但不限于：
+- 在 Windows 平台，默认的视频帧类型为 `YUV420`。
+- 在 Android 平台，默认的视频帧类型可能为 `I420Buffer` 或 `TextureBuffer`。 `TextureBuffer` 类型的纹理格式可能为 OES 或 RGB。如果你调用 [getVideoFormatPreference](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#api_ivideoframeobserver_getvideoformatpreference) 返回的视频帧类型为 `VIDEO_PIXEL_DEFAULT`，则在处理视频数据时需要适配 `I420Buffer` 或 `TextureBuffer`。视频帧类型固定为 `I420Buffer` 的情况包括但不限于：
+
   - 特定设备，例如：LG G5 SE（H848）、Google Pixel 4a、Samsung Galaxy A7 或小米 Max。
   - 集成了美颜特效扩展并启用了视频降噪或弱光增强功能。
-- 在 iOS 和 macOS 平台，默认的视频帧类型可能为 I420 或 CVPixelBufferRef。
+- 在 iOS 和 macOS 平台，默认的视频帧类型可能为 `I420` 或 `CVPixelBufferRef`。
 :::
 
 <a id="api_ivideoframeobserver_getvideoformatpreference__return_values"></a>
@@ -252,8 +253,8 @@ virtual bool onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Video
 
 :::info[注]
 - 如果获取的视频数据类型为 RGBA，SDK 不支持处理 alpha 通道的数据。
-- 建议确保 videoFrame 中修改后的参数与视频帧缓冲区中的实际数据一致，否则可能导致本地预览或远端显示出现旋转、拉伸等异常。
-- 该回调默认返回的视频格式为 YUV420。如需其他格式，可在 getVideoFormatPreference 回调中设置期望的数据格式。
+- 建议确保 `videoFrame` 中修改后的参数与视频帧缓冲区中的实际数据一致，否则可能导致本地预览或远端显示出现旋转、拉伸等异常。
+- 该回调默认返回的视频格式为 YUV420。如需其他格式，可在 [getVideoFormatPreference](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#api_ivideoframeobserver_getvideoformatpreference) 回调中设置期望的数据格式。
 :::
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__timing"></a>
@@ -287,10 +288,12 @@ virtual bool onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Video
 
 ### 返回值
 
-- 当视频处理模式为 PROCESS_MODE_READ_ONLY 时：
+- 当视频处理模式为 `PROCESS_MODE_READ_ONLY` 时：
+
   - true：保留以供后续使用。
   - false：保留以供后续使用。
-- 当视频处理模式为 PROCESS_MODE_READ_WRITE 时：
+- 当视频处理模式为 `PROCESS_MODE_READ_WRITE` 时：
+
   - true：设置 SDK 接收该视频帧。
   - false：设置 SDK 丢弃该视频帧。
 
@@ -341,10 +344,10 @@ virtual bool onPreEncodeVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Vid
 当你成功注册视频帧观察器后，SDK 每次接收到视频帧时都会触发该回调。在该回调中，你可以获取编码前的视频数据，并根据具体场景进行处理。处理完成后，可以将处理后的视频数据返回给 SDK。
 
 :::info[注]
-- 如果你需要将预处理后的视频数据发送回 SDK，需要先调用 getVideoFrameProcessMode 将视频处理模式设置为读写模式（PROCESS_MODE_READ_WRITE ）。
-- 如果你需要获取从第二路屏幕采集的编码前视频数据，需要通过 getObservedFramePosition 设置帧位置为 POSITION_PRE_ENCODER （1 &lt;&lt; 2）。
+- 如果你需要将预处理后的视频数据发送回 SDK，需要先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) 将视频处理模式设置为读写模式（`PROCESS_MODE_READ_WRITE` ）。
+- 如果你需要获取从第二路屏幕采集的编码前视频数据，需要通过 [getObservedFramePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#api_ivideoframeobserver_getobservedframeposition) 设置帧位置为 `POSITION_PRE_ENCODER` （1 &lt;&lt; 2）。
 - 该回调获取的视频数据已经过预处理，包括裁剪、旋转和美颜特效。
-- 建议你确保 videoFrame 中修改后的参数与视频帧缓冲区中视频帧的实际情况一致，否则可能导致本地预览和远端视频显示中出现旋转异常、图像失真等问题。
+- 建议你确保 `videoFrame` 中修改后的参数与视频帧缓冲区中视频帧的实际情况一致，否则可能导致本地预览和远端视频显示中出现旋转异常、图像失真等问题。
 :::
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__timing"></a>
@@ -378,10 +381,12 @@ virtual bool onPreEncodeVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Vid
 
 ### 返回值
 
-- 当视频处理模式为 PROCESS_MODE_READ_ONLY 时：
+- 当视频处理模式为 `PROCESS_MODE_READ_ONLY` 时：
+
   - true：保留以供后续使用。
   - false：保留以供后续使用。
-- 当视频处理模式为 PROCESS_MODE_READ_WRITE 时：
+- 当视频处理模式为 `PROCESS_MODE_READ_WRITE` 时：
+
   - true：设置 SDK 接收该视频帧。
   - false：设置 SDK 丢弃该视频帧。
 
@@ -405,9 +410,9 @@ virtual bool onRenderVideoFrame(const char* channelId, rtc::uid_t remoteUid, Vid
 当你成功注册视频帧观察器后，SDK 每次接收到远端用户发送的视频帧时会触发该回调。在该回调中，你可以在渲染前获取远端的视频数据，并根据具体场景进行处理。默认返回的视频格式为 `YUV420`。如需其他格式，可在 [getVideoFormatPreference](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#api_ivideoframeobserver_getvideoformatpreference) 中设置期望格式。
 
 :::info[注]
-- 如果你需要将预处理后的视频数据发送回 SDK，需先调用 getVideoFrameProcessMode 将视频处理模式设置为读写模式（PROCESS_MODE_READ_WRITE ）。
-- 如果你获取的视频数据类型为 RGBA，SDK 不支持处理 alpha 通道数据。
-- 建议确保 videoFrame 中修改后的参数与视频帧缓冲区中的实际帧数据一致，否则可能导致本地预览或远端显示出现旋转、拉伸等异常。
+- 如果你需要将预处理后的视频数据发送回 SDK，需先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) 将视频处理模式设置为读写模式（`PROCESS_MODE_READ_WRITE` ）。
+- 如果你获取的视频数据类型为 `RGBA`，SDK 不支持处理 alpha 通道数据。
+- 建议确保 `videoFrame` 中修改后的参数与视频帧缓冲区中的实际帧数据一致，否则可能导致本地预览或远端显示出现旋转、拉伸等异常。
 :::
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__timing"></a>
@@ -445,10 +450,12 @@ virtual bool onRenderVideoFrame(const char* channelId, rtc::uid_t remoteUid, Vid
 
 ### 返回值
 
-- 当视频处理模式为 PROCESS_MODE_READ_ONLY 时：
+- 当视频处理模式为 `PROCESS_MODE_READ_ONLY` 时：
+
   - true：保留以供后续使用。
   - false：保留以供后续使用。
-- 当视频处理模式为 PROCESS_MODE_READ_WRITE 时：
+- 当视频处理模式为 `PROCESS_MODE_READ_WRITE` 时：
+
   - true：设置 SDK 接收该视频帧。
   - false：设置 SDK 丢弃该视频帧。
 

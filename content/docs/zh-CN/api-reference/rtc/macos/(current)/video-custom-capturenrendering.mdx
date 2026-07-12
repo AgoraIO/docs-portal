@@ -23,15 +23,15 @@ description: "创建一个自定义视频轨道。"
 要发布自定义视频源，请按照以下步骤操作：
 
 1. 调用该方法创建一个视频轨道，并获取视频轨道 ID。
-2. 调用 joinChannelByToken 加入频道。在 AgoraRtcChannelMediaOptions 中，将 customVideoTrackId 设置为你想要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 YES。
-3. 调用 pushExternalVideoFrame，并将 videoTrackId 设置为第 2 步中设置的视频轨道 ID，即可在频道中发布对应的自定义视频源。
+2. 调用 `joinChannelByToken` 加入频道。在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中，将 `customVideoTrackId` 设置为你想要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 YES。
+3. 调用 `pushExternalVideoFrame`，并将 `videoTrackId` 设置为第 2 步中设置的视频轨道 ID，即可在频道中发布对应的自定义视频源。
 
 <a id="api_irtcengine_createcustomvideotrack__return_values"></a>
 
 ### 返回值
 
 - 方法调用成功时，返回视频轨道 ID，作为该视频轨道的唯一标识符。
-- 方法调用失败时，返回 0xffffffff。
+- 方法调用失败时，返回 `0xffffffff`。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
@@ -84,9 +84,9 @@ description: "创建一个自定义视频轨道。"
 
 要发布自定义视频源，请按照以下步骤操作：
 
-1. 调用 createCustomVideoTrack 创建视频轨道并获取视频轨道 ID。
-2. 调用 joinChannelByToken 加入频道。在 AgoraRtcChannelMediaOptions 中，将 customVideoTrackId 设置为要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 YES。
-3. 调用 pushExternalVideoFrame:videoTrackId: 方法，并将 videoTrackId 指定为第 2 步中设置的视频轨道 ID，即可在频道中发布相应的自定义视频源。
+1. 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/macos/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 创建视频轨道并获取视频轨道 ID。
+2. 调用 `joinChannelByToken` 加入频道。在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中，将 `customVideoTrackId` 设置为要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 YES。
+3. 调用 [pushExternalVideoFrame:videoTrackId:](/zh-CN/api-reference/rtc/macos/video-custom-capturenrendering#api_irtcengine_pushvideoframe) 方法，并将 `videoTrackId` 指定为第 2 步中设置的视频轨道 ID，即可在频道中发布相应的自定义视频源。
 
 <a id="api_irtcengine_pushvideoframe__parameters"></a>
 

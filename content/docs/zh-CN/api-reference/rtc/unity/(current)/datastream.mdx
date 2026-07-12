@@ -54,7 +54,7 @@ public abstract int CreateDataStream(ref int streamId, bool reliable, bool order
 
 是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
 
-- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 OnStreamMessageError 回调并获得相应报错信息。
+- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 [OnStreamMessageError](/zh-CN/api-reference/rtc/unity/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并获得相应报错信息。
 - false: 接收方不保证收到，就算数据丢失也不会报错。
 
 #### `ordered`
@@ -174,7 +174,7 @@ public abstract int CreateDataStreamEx(ref int streamId, bool reliable, bool ord
 
 是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
 
-- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 OnStreamMessageError 回调并获得相应报错信息。
+- true: 接收方 5 秒内会收到发送方所发送的数据，否则会收到 [OnStreamMessageError](/zh-CN/api-reference/rtc/unity/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并获得相应报错信息。
 - false: 接收方不保证收到，就算数据丢失也不会报错。
 
 #### `ordered`
@@ -274,7 +274,7 @@ public abstract int SendStreamMessage(int streamId, byte[] data, uint length);
 :::info[注]
 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](https://doc.shengwang.cn/doc/rtm2/unity/landing-page)。
 
-- 该方法需要在加入频道后、且调用 CreateDataStream [2/2] 创建数据通道之后调用。
+- 该方法需要在加入频道后、且调用 [CreateDataStream [2/2]](/zh-CN/api-reference/rtc/unity/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
 - 该方法仅适用于主播用户。
 :::
 
@@ -327,8 +327,8 @@ public abstract int SendStreamMessageEx(int streamId, byte[] data, uint length, 
 
 :::info[注]
 - 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](https://doc.shengwang.cn/doc/rtm2/unity/landing-page)。
-- 该方法需要在 JoinChannelEx 后调用。
-- 请确保在调用该方法前，已调用 CreateDataStreamEx [2/2] 创建了数据通道。
+- 该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex) 后调用。
+- 请确保在调用该方法前，已调用 [CreateDataStreamEx [2/2]](/zh-CN/api-reference/rtc/unity/datastream#api_irtcengineex_createdatastreamex2) 创建了数据通道。
 :::
 
 <a id="api_irtcengineex_sendstreammessageex__parameters"></a>

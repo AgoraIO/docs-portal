@@ -80,11 +80,11 @@ SDK 会根据你在返回值中设置的采样间隔触发 [onMixedAudioFrame:ch
 
 成功注册音频数据观察器后，SDK 会在每个特定的音频帧处理节点使用该回调，以判断是否触发以下回调：
 
-- onRecordAudioFrame:channelId:
-- onPlaybackAudioFrame:channelId:
-- onPlaybackAudioFrameBeforeMixing:channelId:uid:
-- onMixedAudioFrame:channelId:
-- onEarMonitoringAudioFrame:
+- [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/macos/audio-raw#callback_iaudioframeobserver_onrecordaudioframe)
+- [onPlaybackAudioFrame:channelId:](/zh-CN/api-reference/rtc/macos/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe)
+- [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/macos/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing)
+- [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/macos/audio-raw#callback_iaudioframeobserver_onmixedaudioframe)
+- [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/macos/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe)
 
 你可以根据场景需求，通过修改 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/macos/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 的返回值设置需要观察的一个或多个位置。 当你需要观察多个位置时，需使用 |（或运算符）。为节省系统资源，建议减少观察位置的数量。
 
@@ -94,11 +94,11 @@ SDK 会根据你在返回值中设置的采样间隔触发 [onMixedAudioFrame:ch
 
 返回一个位掩码，用于设置观察位置，具体取值如下，详见 `AgoraAudioFramePosition`：
 
-- AgoraAudioFramePositionPlayback （0x0001）：该位置可观察所有远端用户混音后的播放音频。对应 onPlaybackAudioFrame: 回调。
-- AgoraAudioFramePositionRecord （0x0002）：该位置可观察本地用户采集的音频。对应 onRecordAudioFrame:channelId: 回调。
-- AgoraAudioFramePositionMixed （0x0004）：该位置可观察本地用户与所有远端用户混音后的播放音频。对应 onMixedAudioFrame:channelId: 回调。
-- AgoraAudioFramePositionBeforeMixing （0x0008）：该位置可观察单个远端用户混音前的音频。对应 onPlaybackAudioFrameBeforeMixing:channelId:uid: 回调。
-- AgoraAudioFramePositionEarMonitoring （0x0010）：该位置可观察本地用户的耳返音频。对应 onEarMonitoringAudioFrame: 回调。
+- `AgoraAudioFramePositionPlayback` （0x0001）：该位置可观察所有远端用户混音后的播放音频。对应 `onPlaybackAudioFrame:` 回调。
+- `AgoraAudioFramePositionRecord` （0x0002）：该位置可观察本地用户采集的音频。对应 [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/macos/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。
+- `AgoraAudioFramePositionMixed` （0x0004）：该位置可观察本地用户与所有远端用户混音后的播放音频。对应 [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/macos/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调。
+- `AgoraAudioFramePositionBeforeMixing` （0x0008）：该位置可观察单个远端用户混音前的音频。对应 [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/macos/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
+- `AgoraAudioFramePositionEarMonitoring` （0x0010）：该位置可观察本地用户的耳返音频。对应 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/macos/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。
 
 ### 所属接口类
 - [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_iaudioframeobserver)
@@ -221,8 +221,8 @@ SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onRecord
 该方法用于设置 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/macos/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调中报告的耳返音频数据格式。
 
 :::info[注]
-- 在调用该方法前，你需要先调用 enableInEarMonitoring 方法，并将 includeAudioFilters 设置为 AgoraEarMonitoringFilterBuiltInAudioFilters 或 AgoraEarMonitoringFilterNoiseSuppression。
-- SDK 会根据该方法中设置的 samplesPerCall、 sampleRate 和 channel 参数计算采样间隔。采样间隔（秒）= samplesPerCall /（sampleRate × channel ）。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 onEarMonitoringAudioFrame: 回调。
+- 在调用该方法前，你需要先调用 `enableInEarMonitoring` 方法，并将 `includeAudioFilters` 设置为 `AgoraEarMonitoringFilterBuiltInAudioFilters` 或 `AgoraEarMonitoringFilterNoiseSuppression`。
+- SDK 会根据该方法中设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（秒）= `samplesPerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/macos/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。
 :::
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__parameters"></a>
@@ -544,8 +544,8 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 为了确保你获取的耳返音频数据符合预期，声网建议你通过以下两种方式之一设置耳返音频数据格式：
 
-- 方法一：调用 setEarMonitoringAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall: 设置音频数据格式，并调用 setAudioFrameDelegate: 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
-- 方法二：调用 setAudioFrameDelegate: 注册音频帧观察者对象，并在 getObservedAudioFramePosition 回调的返回值中设置音频数据格式。SDK 会根据 getEarMonitoringAudioParams 回调的返回值计算采样间隔，并按照采样间隔触发该回调。
+- 方法一：调用 [setEarMonitoringAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 设置音频数据格式，并调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
+- 方法二：调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象，并在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/macos/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 回调的返回值中设置音频数据格式。SDK 会根据 [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/macos/audio-raw#api_iaudioframeobserver_getearmonitoringaudioparams) 回调的返回值计算采样间隔，并按照采样间隔触发该回调。
 
 :::info[注]
 - 方法一的优先级高于方法二。如果使用方法一设置音频数据格式，则方法二的设置无效。
@@ -591,8 +591,8 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 为了确保混合后的采集和播放音频帧的数据格式符合预期，声网建议你通过以下两种方式之一设置音频数据格式：
 
-- 方法一：调用 setMixedAudioFrameParametersWithSampleRate:channel:samplesPerCall: 设置音频数据格式，并调用 setAudioFrameDelegate: 注册音频帧观察者对象。SDK 会根据方法中设置的参数计算采样间隔，并按照采样间隔触发该回调。
-- 方法二：调用 setAudioFrameDelegate: 注册音频帧观察者对象，并在 getObservedAudioFramePosition 的返回值中设置音频数据格式。SDK 会根据 getMixedAudioParams 的返回值计算采样间隔，并按照采样间隔触发该回调。
+- 方法一：调用 [setMixedAudioFrameParametersWithSampleRate:channel:samplesPerCall:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_setmixedaudioframeparameters) 设置音频数据格式，并调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象。SDK 会根据方法中设置的参数计算采样间隔，并按照采样间隔触发该回调。
+- 方法二：调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象，并在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/macos/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 的返回值中设置音频数据格式。SDK 会根据 [getMixedAudioParams](/zh-CN/api-reference/rtc/macos/audio-raw#api_iaudioframeobserver_getmixedaudioparams) 的返回值计算采样间隔，并按照采样间隔触发该回调。
 
 :::info[注]
 - 方法一的优先级高于方法二。如果使用方法一设置音频数据格式，则方法二的设置无效。
@@ -642,8 +642,8 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 为了确保播放音频帧的数据格式符合预期，声网建议你通过以下两种方法之一设置音频数据格式：
 
-- 方法一：调用 setPlaybackAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall: 设置音频数据格式，并调用 setAudioFrameDelegate: 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
-- 方法二：调用 setAudioFrameDelegate: 注册音频帧观察者对象，并在 getObservedAudioFramePosition 的返回值中设置音频数据格式。SDK 会根据 getPlaybackAudioParams 的返回值计算采样间隔，并按照采样间隔触发该回调。
+- 方法一：调用 [setPlaybackAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 设置音频数据格式，并调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
+- 方法二：调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象，并在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/macos/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 的返回值中设置音频数据格式。SDK 会根据 [getPlaybackAudioParams](/zh-CN/api-reference/rtc/macos/audio-raw#api_iaudioframeobserver_getplaybackaudioparams) 的返回值计算采样间隔，并按照采样间隔触发该回调。
 
 :::info[注]
 [setPlaybackAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 的优先级高于 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/macos/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 和 [getPlaybackAudioParams](/zh-CN/api-reference/rtc/macos/audio-raw#api_iaudioframeobserver_getplaybackaudioparams)。如果使用方法一设置音频数据格式，则方法二的设置无效。
@@ -733,8 +733,8 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 你可以通过以下两种方式之一设置音频数据格式，以确保采集到的音频帧格式符合预期：
 
-- 方法一：调用 setRecordingAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall: 设置音频数据格式，并调用 setAudioFrameDelegate: 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
-- 方法二：调用 setAudioFrameDelegate: 注册音频帧观察者对象，并在 getObservedAudioFramePosition 回调的返回值中设置音频数据格式。SDK 会根据 getRecordAudioParams 回调的返回值计算采样间隔，并按照采样间隔触发该回调。
+- 方法一：调用 [setRecordingAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式，并调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
+- 方法二：调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象，并在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/macos/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 回调的返回值中设置音频数据格式。SDK 会根据 [getRecordAudioParams](/zh-CN/api-reference/rtc/macos/audio-raw#api_iaudioframeobserver_getrecordaudioparams) 回调的返回值计算采样间隔，并按照采样间隔触发该回调。
 
 :::info[注]
 [setRecordingAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 的设置优先级高于 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/macos/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 和 [getRecordAudioParams](/zh-CN/api-reference/rtc/macos/audio-raw#api_iaudioframeobserver_getrecordaudioparams) 的设置。如果使用方法一设置音频数据格式，则方法二的设置无效。

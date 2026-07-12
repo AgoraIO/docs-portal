@@ -77,6 +77,7 @@ public:
 
 - 如果你需要最优的画质，建议将编码分辨率设置为与采集分辨率相同。
 - 如果你希望在画质、带宽和系统性能之间达到相对平衡，则：
+
   - 当采集分辨率大于 1920 × 1080 时，建议编码分辨率不低于 1920 × 1080。
   - 当采集分辨率低于 1920 × 1080 时，建议编码分辨率不低于 1280 × 720。
 :::
@@ -93,15 +94,15 @@ public:
 
 是否采集鼠标用于屏幕共享：
 
-- true:（默认）采集鼠标。
-- false: 不采集鼠标。
+- `true`:（默认）采集鼠标。
+- `false`: 不采集鼠标。
 
 ### `windowFocus`
 
 调用 [StartScreenCaptureByWindowId](/zh-CN/api-reference/rtc/unreal-blueprint/screencapture#api_irtcengine_startscreencapturebywindowid) 方法共享窗口时，是否将该窗口前置：
 
-- true: 前置窗口。
-- false:（默认）不前置窗口。
+- `true`: 前置窗口。
+- `false`:（默认）不前置窗口。
 
 :::info[注]
 由于 macOS 系统限制，设置该成员将窗口前置时，如果当前的应用存在多个窗口，只会将主窗口前置。
@@ -115,8 +116,8 @@ public:
 
 (仅适用于 macOS 和 Windows) 是否对共享的窗口或屏幕进行描边：
 
-- true: 描边。
-- false: （默认）不描边。
+- `true`: 描边。
+- `false`: （默认）不描边。
 
 :::info[注]
 当你在共享窗口或屏幕的部分区域时，如果将该参数设置为 `true`，SDK 会对整个窗口或屏幕进行描边。
@@ -127,7 +128,7 @@ public:
 (仅适用于 macOS 和 Windows)
 
 - 在 Windows 平台上，指描边的 ARGB 颜色。默认值为 0xFF8CBF26。
-- 在 macOS 平台上， COLOR_CLASS 指 NSColor。
+- 在 macOS 平台上， `COLOR_CLASS` 指 `NSColor`。
 
 ### `highLightWidth`
 

@@ -7,13 +7,15 @@ description: "ILocalAudioTrack API reference."
 
 可以通过 [AgoraRTC.createCustomAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createcustomaudiotrack) 来获取。
 
-- 通过麦克风采集到的本地音频轨道对象 MicrophoneAudioTrack 继承于此接口，并在本接口的基础上提供了一些麦克风独有的功能。
-- 通过音频文件获取到的本地音频轨道对象 BufferSourceAudioTrack 继承于此接口，并在本接口的基础上提供了一些音频文件独有的功能。
+- 通过麦克风采集到的本地音频轨道对象 [MicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophone-audio-track) 继承于此接口，并在本接口的基础上提供了一些麦克风独有的功能。
+- 通过音频文件获取到的本地音频轨道对象 [BufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffer-source-audio-track) 继承于此接口，并在本接口的基础上提供了一些音频文件独有的功能。
 
-- ILocalTrack
+- [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track)
+
   - ILocalAudioTrack
-    - IBufferSourceAudioTrack
-    - IMicrophoneAudioTrack
+
+    - [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffer-source-audio-track)
+    - [IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophone-audio-track)
 
 ## Properties
 
@@ -37,8 +39,8 @@ isPlaying: boolean
 
 媒体轨道是否正在页面上播放。
 
-- true: 媒体轨道正在页面上播放。
-- false: 媒体轨道没有在页面上播放。
+- `true`: 媒体轨道正在页面上播放。
+- `false`: 媒体轨道没有在页面上播放。
 
 <a id="muted"></a>
 
@@ -74,8 +76,8 @@ trackMediaType: "audio" | "video"
 
 媒体轨道的类型：
 
-- "audio": 音频轨道。
-- "video": 视频轨道。
+- `"audio"`: 音频轨道。
+- `"video"`: 视频轨道。
 
 ## Methods
 
@@ -207,9 +209,9 @@ Returns string
 
 可能返回以下值：
 
-- 如果是通过 createMicrophoneAudioTrack 或 createCameraVideoTrack 创建的轨道，返回 MediaDeviceInfo.label 字段。
-- 如果是通过 createScreenVideoTrack 创建的轨道，返回屏幕共享的 sourceId。
-- 如果是 createCustomAudioTrack 或 createCustomVideoTrack 创建的轨道，返回 MediaStreamTrack.label 字段。
+- 如果是通过 `createMicrophoneAudioTrack` 或 `createCameraVideoTrack` 创建的轨道，返回 [MediaDeviceInfo.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/label) 字段。
+- 如果是通过 `createScreenVideoTrack` 创建的轨道，返回屏幕共享的 `sourceId`。
+- 如果是 `createCustomAudioTrack` 或 `createCustomVideoTrack` 创建的轨道，返回 [MediaStreamTrack.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/label) 字段。
 
 <a id="getvolumelevel"></a>
 
@@ -445,7 +447,7 @@ setEnabled(enabled: boolean): Promise<void>
 
 | Name | Description |
 | --- | --- |
-| enabled: boolean | 是否启用该轨道:<br />- true: 启用该轨道。<br />- false: 禁用该轨道。 |
+| enabled: boolean | 是否启用该轨道:<br />- `true`: 启用该轨道。<br />- `false`: 禁用该轨道。 |
 
 #### Returns
 
@@ -473,7 +475,7 @@ setMuted(muted: boolean): Promise<void>
 
 | Name | Description |
 | --- | --- |
-| muted: boolean | 是否发送该轨道的媒体数据:<br />- true: 暂停发送该轨道的媒体数据。<br />- false: 恢复发送该轨道的媒体数据。 |
+| muted: boolean | 是否发送该轨道的媒体数据:<br />- `true`: 暂停发送该轨道的媒体数据。<br />- `false`: 恢复发送该轨道的媒体数据。 |
 
 #### Returns
 

@@ -230,9 +230,9 @@ description: "获取音效文件的播放位置。"
 
 音效的循环播放次数：
 
-- -1：无限循环播放音效，直到调用 stopEffect 或 stopAllEffects 停止播放。
-- 0：播放音效一次。
-- 1：播放音效两次。
+- `-1`：无限循环播放音效，直到调用 `stopEffect` 或 [stopAllEffects](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_stopalleffects) 停止播放。
+- `0`：播放音效一次。
+- `1`：播放音效两次。
 
 #### `pitch`
 
@@ -242,9 +242,9 @@ description: "获取音效文件的播放位置。"
 
 音效的空间位置。取值范围为 -1.0 到 1.0：
 
-- -1.0：音效定位在左侧。
-- 0.0：音效定位在正前方。
-- 1.0：音效定位在右侧。
+- `-1.0`：音效定位在左侧。
+- `0.0`：音效定位在正前方。
+- `1.0`：音效定位在右侧。
 
 #### `gain`
 
@@ -289,9 +289,9 @@ description: "获取音效文件的播放位置。"
 要同时播放多个音效文件，请使用不同的 `soundId` 和 `filePath` 多次调用该方法。为获得最佳用户体验，声网建议你不要同时播放超过三个音频文件。
 
 :::info[注]
-- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 preloadEffect:filePath: 将其预加载到内存中，然后再调用该方法播放音效。否则，可能因加载超时或失败导致播放失败或无声音。
-- 如果在调用 playEffect 之前调用了 preloadEffect， playEffect 播放后不会关闭文件资源。下次调用 playEffect 时将直接从头开始播放。
-- 如果在调用 playEffect 之前未调用 preloadEffect， playEffect 播放后将销毁资源。下次调用 playEffect 时将尝试重新打开文件并从头开始播放。
+- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_preloadeffect2) 将其预加载到内存中，然后再调用该方法播放音效。否则，可能因加载超时或失败导致播放失败或无声音。
+- 如果在调用 `playEffect` 之前调用了 `preloadEffect`， `playEffect` 播放后不会关闭文件资源。下次调用 `playEffect` 时将直接从头开始播放。
+- 如果在调用 `playEffect` 之前未调用 `preloadEffect`， `playEffect` 播放后将销毁资源。下次调用 `playEffect` 时将尝试重新打开文件并从头开始播放。
 :::
 
 <a id="api_irtcengine_playeffect1__timing"></a>
@@ -368,9 +368,9 @@ description: "获取音效文件的播放位置。"
 要同时播放多个音效文件，请使用不同的 `soundId` 和 `filePath` 多次调用此方法。为获得最佳用户体验，声网建议你不要同时播放超过三个音效文件。
 
 :::info[注]
-- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 preloadEffect:filePath: 将其预加载到内存中，再调用此方法播放音效。否则，可能因加载超时或失败导致播放失败或无声。
-- 如果在调用 playEffect 之前调用了 preloadEffect，则 playEffect 执行后不会关闭文件资源。下次调用 playEffect 时将直接从头开始播放。
-- 如果在调用 playEffect 之前未调用 preloadEffect，则 playEffect 执行后会销毁资源。下次调用 playEffect 时将尝试重新打开文件并从头开始播放。
+- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_preloadeffect2) 将其预加载到内存中，再调用此方法播放音效。否则，可能因加载超时或失败导致播放失败或无声。
+- 如果在调用 `playEffect` 之前调用了 `preloadEffect`，则 `playEffect` 执行后不会关闭文件资源。下次调用 `playEffect` 时将直接从头开始播放。
+- 如果在调用 `playEffect` 之前未调用 `preloadEffect`，则 `playEffect` 执行后会销毁资源。下次调用 `playEffect` 时将尝试重新打开文件并从头开始播放。
 :::
 
 <a id="api_irtcengine_playeffect2__timing"></a>
@@ -468,9 +468,9 @@ description: "获取音效文件的播放位置。"
 要同时播放多个音效文件，请使用不同的 `soundId` 和 `filePath` 多次调用该方法。为获得最佳用户体验，声网建议你不要同时播放超过三个音频文件。
 
 :::info[注]
-- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 preloadEffect:filePath: 将文件预加载到内存中，再调用此方法播放音效。否则，可能因加载超时或失败导致播放失败或无声。
-- 如果在调用 playEffect 之前已调用 preloadEffect，则 playEffect 执行后不会关闭文件资源。下次调用 playEffect 时将直接从头开始播放。
-- 如果在调用 playEffect 之前未调用 preloadEffect，则 playEffect 执行后资源将被销毁。下次调用 playEffect 时将尝试重新打开文件并从头开始播放。
+- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_preloadeffect2) 将文件预加载到内存中，再调用此方法播放音效。否则，可能因加载超时或失败导致播放失败或无声。
+- 如果在调用 `playEffect` 之前已调用 `preloadEffect`，则 `playEffect` 执行后不会关闭文件资源。下次调用 `playEffect` 时将直接从头开始播放。
+- 如果在调用 `playEffect` 之前未调用 `preloadEffect`，则 `playEffect` 执行后资源将被销毁。下次调用 `playEffect` 时将尝试重新打开文件并从头开始播放。
 :::
 
 <a id="api_irtcengine_playeffect3__timing"></a>
@@ -579,9 +579,9 @@ description: "获取音效文件的播放位置。"
 
 :::info[注]
 - 声网建议不要同时播放超过三个音效。
-- 此方法中的音效 ID 和文件路径必须与 preloadEffectEx 方法中的保持一致。
-- 如果在执行 playEffectEx 之前调用了 preloadEffectEx，则 playEffectEx 执行后不会关闭文件资源。下次执行 playEffectEx 时将直接从头开始播放。
-- 如果在执行 playEffectEx 之前未调用 preloadEffectEx，则 playEffectEx 执行后会销毁资源。下次执行 playEffectEx 时将尝试重新打开文件并从头播放。
+- 此方法中的音效 ID 和文件路径必须与 `preloadEffectEx` 方法中的保持一致。
+- 如果在执行 `playEffectEx` 之前调用了 `preloadEffectEx`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时将直接从头开始播放。
+- 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
 :::
 
 <a id="api_irtcengineex_playeffectex__scenario"></a>
@@ -612,7 +612,7 @@ description: "获取音效文件的播放位置。"
 
 - 0：播放一次。
 - 1：播放两次。
-- -1：无限循环，直到调用 stopEffect 或 stopAllEffects。
+- -1：无限循环，直到调用 `stopEffect` 或 [stopAllEffects](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_stopalleffects)。
 
 #### `pitch`
 
@@ -680,9 +680,9 @@ description: "获取音效文件的播放位置。"
 
 :::info[注]
 - 声网建议不要同时播放超过三个音效。
-- 此方法中的 soundId 和 filePath 必须与 preloadEffectEx:filePath: 方法中的保持一致。
-- 如果在执行 playEffectEx 之前调用了 preloadEffectEx，则 playEffectEx 执行后不会关闭文件资源。下次执行 playEffectEx 时将直接从头开始播放。
-- 如果在执行 playEffectEx 之前未调用 preloadEffectEx，则 playEffectEx 执行后资源将被销毁。下次执行 playEffectEx 时将尝试重新打开文件并从头播放。
+- 此方法中的 `soundId` 和 `filePath` 必须与 `preloadEffectEx:filePath:` 方法中的保持一致。
+- 如果在执行 `playEffectEx` 之前调用了 `preloadEffectEx`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时将直接从头开始播放。
+- 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后资源将被销毁。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
 :::
 
 <a id="api_irtcengineex_playeffectex2__scenario"></a>
@@ -713,7 +713,7 @@ description: "获取音效文件的播放位置。"
 
 - 0：播放一次。
 - 1：播放两次。
-- -1：无限循环，直到调用 stopEffect: 或 stopAllEffects。
+- -1：无限循环，直到调用 [stopEffect:](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_stopalleffects)。
 
 #### `pitch`
 
@@ -777,9 +777,9 @@ description: "获取音效文件的播放位置。"
 
 :::info[注]
 - 声网建议你不要同时播放超过三个音效。
-- 此方法中的音效 ID 和文件路径必须与 preloadEffectEx:filePath: 方法中的保持一致。
-- 如果在执行 playEffectEx 之前调用了 preloadEffectEx，则 playEffectEx 执行后不会关闭文件资源。下次执行 playEffectEx 时将直接从头开始播放。
-- 如果在执行 playEffectEx 之前未调用 preloadEffectEx，则 playEffectEx 执行后资源将被销毁。下次执行 playEffectEx 时将尝试重新打开文件并从头播放。
+- 此方法中的音效 ID 和文件路径必须与 `preloadEffectEx:filePath:` 方法中的保持一致。
+- 如果在执行 `playEffectEx` 之前调用了 `preloadEffectEx`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时将直接从头开始播放。
+- 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后资源将被销毁。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
 :::
 
 <a id="api_irtcengineex_playeffectex3__scenario"></a>
@@ -810,7 +810,7 @@ description: "获取音效文件的播放位置。"
 
 - 0：播放一次。
 - 1：播放两次。
-- -1：无限循环，直到调用 stopEffect: 或 stopAllEffects。
+- -1：无限循环，直到调用 [stopEffect:](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_stopalleffects)。
 
 #### `pitch`
 
@@ -870,9 +870,9 @@ description: "获取音效文件的播放位置。"
 
 :::info[注]
 - 声网建议不要同时播放超过三个音效。
-- 此方法中的音效 ID 和文件路径必须与 preloadEffectEx:filePath: 方法中的保持一致。
-- 如果在执行 playEffectEx 之前调用了 preloadEffectEx:filePath:，则 playEffectEx 执行后不会关闭文件资源。下次执行 playEffectEx 时将直接从头开始播放。
-- 如果在执行 playEffectEx 之前未调用 preloadEffectEx:filePath:，则 playEffectEx 执行后会销毁资源。下次执行 playEffectEx 时将尝试重新打开文件并从头播放。
+- 此方法中的音效 ID 和文件路径必须与 `preloadEffectEx:filePath:` 方法中的保持一致。
+- 如果在执行 `playEffectEx` 之前调用了 `preloadEffectEx:filePath:`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时将直接从头开始播放。
+- 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx:filePath:`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
 :::
 
 <a id="api_irtcengineex_playeffectex4__scenario"></a>
@@ -903,7 +903,7 @@ description: "获取音效文件的播放位置。"
 
 - 0：播放一次。
 - 1：播放两次。
-- -1：无限循环，直到调用 stopEffect: 或 stopAllEffects。
+- -1：无限循环，直到调用 [stopEffect:](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_stopalleffects)。
 
 #### `pitch`
 
@@ -951,8 +951,8 @@ description: "获取音效文件的播放位置。"
 
 - 为确保通信顺畅，请限制音效文件的大小。
 - 声网建议你在加入频道前调用此方法。
-- 如果在调用 playEffect 之前调用了 preloadEffect，则 playEffect 执行后不会关闭文件资源。下次调用 playEffect 时将直接从头开始播放。
-- 如果在调用 playEffect 之前未调用 preloadEffect，则 playEffect 执行后会销毁资源。下次调用 playEffect 时会尝试重新打开文件并从头开始播放。
+- 如果在调用 `playEffect` 之前调用了 `preloadEffect`，则 `playEffect` 执行后不会关闭文件资源。下次调用 `playEffect` 时将直接从头开始播放。
+- 如果在调用 `playEffect` 之前未调用 `preloadEffect`，则 `playEffect` 执行后会销毁资源。下次调用 `playEffect` 时会尝试重新打开文件并从头开始播放。
 
 <a id="api_irtcengine_preloadeffect__timing"></a>
 
@@ -1004,8 +1004,8 @@ description: "获取音效文件的播放位置。"
 确保所有预加载文件的总大小不超过限制。关于该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些音频文件格式](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。
 
 :::info[注]
-- 如果你在调用 playEffect 之前调用了 preloadEffect，则在 playEffect 执行后文件资源不会被关闭。下次调用 playEffect 时会直接从头开始播放。
-- 如果你在调用 playEffectEx 之前未调用 preloadEffect，则在 playEffect 执行后资源会被销毁。下次调用 playEffect 时会尝试重新打开文件并从头开始播放。
+- 如果你在调用 `playEffect` 之前调用了 `preloadEffect`，则在 `playEffect` 执行后文件资源不会被关闭。下次调用 `playEffect` 时会直接从头开始播放。
+- 如果你在调用 `playEffectEx` 之前未调用 `preloadEffect`，则在 `playEffect` 执行后资源会被销毁。下次调用 `playEffect` 时会尝试重新打开文件并从头开始播放。
 :::
 
 <a id="api_irtcengine_preloadeffect2__timing"></a>
@@ -1064,8 +1064,8 @@ description: "获取音效文件的播放位置。"
 :::info[注]
 - 为确保使用体验流畅，音效文件的大小不应超过限制。
 - 声网建议在加入频道前调用该方法。
-- 如果在调用 playEffectEx 之前调用了 preloadEffectEx，则 playEffectEx 执行后不会关闭文件资源。下次执行 playEffectEx 时会直接从头开始播放。
-- 如果在调用 playEffectEx 之前未调用 preloadEffectEx，则 playEffectEx 执行后会销毁资源。下次执行 playEffectEx 时会尝试重新打开文件并从头开始播放。
+- 如果在调用 `playEffectEx` 之前调用了 `preloadEffectEx`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时会直接从头开始播放。
+- 如果在调用 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时会尝试重新打开文件并从头开始播放。
 :::
 
 <a id="api_irtcengineex_preloadeffectex__scenario"></a>
@@ -1129,8 +1129,8 @@ description: "获取音效文件的播放位置。"
 :::info[注]
 - 为确保使用体验流畅，音效文件的大小不应超过限制。
 - 声网建议你在加入频道前调用该方法。
-- 如果在调用 playEffectEx 之前调用了 preloadEffectEx，则 playEffectEx 执行后不会关闭文件资源。下次执行 playEffectEx 时会直接从头开始播放。
-- 如果在调用 playEffectEx 之前未调用 preloadEffectEx，则 playEffectEx 执行后会销毁资源。下次执行 playEffectEx 时会尝试重新打开文件并从头开始播放。
+- 如果在调用 `playEffectEx` 之前调用了 `preloadEffectEx`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时会直接从头开始播放。
+- 如果在调用 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时会尝试重新打开文件并从头开始播放。
 :::
 
 <a id="api_irtcengineex_preloadeffectex2__scenario"></a>

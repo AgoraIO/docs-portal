@@ -96,8 +96,8 @@ public abstract int SetAINSMode(bool enabled, AUDIO_AINS_MODE mode);
 
 是否开启 AI 降噪功能：
 
-- true： 开启 AI 降噪功能。
-- false： （默认）关闭 AI 降噪功能。
+- `true`： 开启 AI 降噪功能。
+- `false`： （默认）关闭 AI 降噪功能。
 
 #### `mode`
 
@@ -138,22 +138,23 @@ public abstract int SetAudioEffectParameters(AUDIO_EFFECT_PRESET preset, int par
 
 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 SetAudioScenario 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
-- 调用 SetAudioProfile [2/2] 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
+- 调用 [SetAudioScenario](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
+- 调用 [SetAudioProfile [2/2]](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_setaudioprofile2) 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
 
 :::warning[注意]
 - 该方法在加入频道前后都能调用。
 - 请勿将 SetAudioProfile [2/2] 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD (1) 或 AUDIO_PROFILE_IOT (6)，否则该方法不生效。
 - 该方法对人声的处理效果最佳，不建议调用该方法处理含音乐的音频数据。
 - 调用 SetAudioEffectParameters 后，不建议调用以下方法，否则 SetAudioEffectParameters 设置的效果会被覆盖：
-  - SetAudioEffectPreset
-  - SetVoiceBeautifierPreset
-  - SetLocalVoicePitch
-  - SetLocalVoiceEqualization
-  - SetLocalVoiceReverb
-  - SetVoiceBeautifierParameters
-  - SetVoiceConversionPreset
-- 该方法依赖于美声动态库 libagora_audio_beauty_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+
+  - [SetAudioEffectPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [SetVoiceBeautifierPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [SetLocalVoicePitch](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [SetLocalVoiceEqualization](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [SetLocalVoiceReverb](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [SetVoiceBeautifierParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [SetVoiceConversionPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setvoiceconversionpreset)
+- 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
 
 <a id="api_irtcengine_setaudioeffectparameters__parameters"></a>
@@ -165,6 +166,7 @@ public abstract int SetAudioEffectParameters(AUDIO_EFFECT_PRESET preset, int par
 SDK 预设的音效，支持以下设置：
 
 - ROOM_ACOUSTICS_3D_VOICE，3D 人声音效。
+
   - 你需要在使用该枚举前将 SetAudioProfile [2/2] 的 profile 参数设置 为 AUDIO_PROFILE_MUSIC_STANDARD_STEREO (3) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)，否则该枚举设置无效。
   - 启用 3D 人声后，用户需要使用支持双声道的音频播放设备才能听到预期效果。
 - PITCH_CORRECTION，电音音效。
@@ -173,26 +175,28 @@ SDK 预设的音效，支持以下设置：
 
 - 如果 preset 设为 ROOM_ACOUSTICS_3D_VOICE，则 param1 表示 3D 人声音效的环绕周期。取值范围为 [1,60]，单位为秒。默认值为 10，表示人声会 10 秒环绕 360 度。
 - 如果 preset 设为 PITCH_CORRECTION，则 param1 表示电音音效的基础调式：
-  - 1: （默认）自然大调。
-  - 2: 自然小调。
-  - 3: 和风小调。
+
+  - `1`: （默认）自然大调。
+  - `2`: 自然小调。
+  - `3`: 和风小调。
 
 #### `param2`
 
-- 如果 preset 设为 ROOM_ACOUSTICS_3D_VOICE，你需要将 param2 设置为 0。
+- 如果 preset 设为 ROOM_ACOUSTICS_3D_VOICE，你需要将 param2 设置为 `0`。
 - 如果 preset 设为 PITCH_CORRECTION，则 param2 表示电音音效的主音音高：
-  - 1: A
-  - 2: A#
-  - 3: B
-  - 4: (Default) C
-  - 5: C#
-  - 6: D
-  - 7: D#
-  - 8: E
-  - 9: F
-  - 10: F#
-  - 11: G
-  - 12: G#
+
+  - `1`: A
+  - `2`: A#
+  - `3`: B
+  - `4`: (Default) C
+  - `5`: C#
+  - `6`: D
+  - `7`: D#
+  - `8`: E
+  - `9`: F
+  - `10`: F#
+  - `11`: G
+  - `12`: G#
 
 <a id="api_irtcengine_setaudioeffectparameters__return_values"></a>
 
@@ -228,8 +232,8 @@ public abstract int SetAudioEffectPreset(AUDIO_EFFECT_PRESET preset);
 
 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 SetAudioScenario 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
-- 调用 SetAudioProfile [2/2] 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
+- 调用 [SetAudioScenario](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
+- 调用 [SetAudioProfile [2/2]](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_setaudioprofile2) 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
 
 <a id="api_irtcengine_setaudioeffectpreset__restriction"></a>
 
@@ -238,6 +242,7 @@ public abstract int SetAudioEffectPreset(AUDIO_EFFECT_PRESET preset);
 - 请勿将 SetAudioProfile [2/2] 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD (1) 或 AUDIO_PROFILE_IOT (6)，否则该方法不生效。
 - 如果调用 SetAudioEffectPreset 并设置除 ROOM_ACOUSTICS_3D_VOICE 或 PITCH_CORRECTION 外的枚举，请勿再调用 [SetAudioEffectParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setaudioeffectparameters)，否则 SetAudioEffectPreset 设置的效果会被覆盖。
 - 调用 SetAudioEffectPreset 后，不建议调用以下方法，否则 SetAudioEffectPreset 设置的效果会被覆盖：
+
   - [SetVoiceBeautifierPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setvoicebeautifierpreset)
   - [SetLocalVoicePitch](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoicepitch)
   - [SetLocalVoiceEqualization](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoiceequalization)
@@ -473,22 +478,23 @@ public abstract int SetVoiceBeautifierParameters(VOICE_BEAUTIFIER_PRESET preset,
 
 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 SetAudioScenario 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
-- 调用 SetAudioProfile [2/2] 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
+- 调用 [SetAudioScenario](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
+- 调用 [SetAudioProfile [2/2]](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_setaudioprofile2) 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
 
 :::warning[注意]
 - 该方法在加入频道前后都能调用。
 - 请勿将 SetAudioProfile [2/2] 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD (1) 或 AUDIO_PROFILE_IOT (6)，否则该方法不生效。
 - 该方法对人声的处理效果最佳，不建议调用该方法处理含音乐的音频数据。
 - 调用 SetVoiceBeautifierParameters，不建议调用以下方法，否则 SetVoiceBeautifierParameters 设置的效果会被覆盖：
-  - SetAudioEffectPreset
-  - SetAudioEffectParameters
-  - SetVoiceBeautifierPreset
-  - SetLocalVoicePitch
-  - SetLocalVoiceEqualization
-  - SetLocalVoiceReverb
-  - SetVoiceConversionPreset
-- 该方法依赖于美声动态库 libagora_audio_beauty_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+
+  - [SetAudioEffectPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [SetAudioEffectParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [SetVoiceBeautifierPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [SetLocalVoicePitch](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [SetLocalVoiceEqualization](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [SetLocalVoiceReverb](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [SetVoiceConversionPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setvoiceconversionpreset)
+- 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
 
 <a id="api_irtcengine_setvoicebeautifierparameters__parameters"></a>
@@ -499,22 +505,22 @@ public abstract int SetVoiceBeautifierParameters(VOICE_BEAUTIFIER_PRESET preset,
 
 预设的音效：
 
-- SINGING_BEAUTIFIER: 歌唱美声。
+- `SINGING_BEAUTIFIER`: 歌唱美声。
 
 #### `param1`
 
 歌声的性别特征：
 
-- 1: 男声。
-- 2: 女声。
+- `1`: 男声。
+- `2`: 女声。
 
 #### `param2`
 
 歌声的混响效果：
 
-- 1: 歌声在小房间的混响效果。
-- 2: 歌声在大房间的混响效果。
-- 3: 歌声在大厅的混响效果。
+- `1`: 歌声在小房间的混响效果。
+- `2`: 歌声在大房间的混响效果。
+- `3`: 歌声在大厅的混响效果。
 
 <a id="api_irtcengine_setvoicebeautifierparameters__return_values"></a>
 
@@ -550,8 +556,8 @@ public abstract int SetVoiceBeautifierPreset(VOICE_BEAUTIFIER_PRESET preset);
 
 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 SetAudioScenario 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
-- 调用 SetAudioProfile [2/2] 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
+- 调用 [SetAudioScenario](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
+- 调用 [SetAudioProfile [2/2]](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_setaudioprofile2) 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
 
 <a id="api_irtcengine_setvoicebeautifierpreset__restriction"></a>
 
@@ -560,14 +566,15 @@ public abstract int SetVoiceBeautifierPreset(VOICE_BEAUTIFIER_PRESET preset);
 - 请勿将 SetAudioProfile [2/2] 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD (1) 或 AUDIO_PROFILE_IOT (6)，否则该方法不生效。
 - 该方法对人声的处理效果最佳，不建议调用该方法处理含音乐的音频数据。
 - 调用 SetVoiceBeautifierPreset，不建议调用以下方法，否则 SetVoiceBeautifierPreset 设置的效果会被覆盖：
-  - SetAudioEffectPreset
-  - SetAudioEffectParameters
-  - SetLocalVoicePitch
-  - SetLocalVoiceEqualization
-  - SetLocalVoiceReverb
-  - SetVoiceBeautifierParameters
-  - SetVoiceConversionPreset
-- 该方法依赖于美声动态库 libagora_audio_beauty_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+
+  - [SetAudioEffectPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [SetAudioEffectParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [SetLocalVoicePitch](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [SetLocalVoiceEqualization](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [SetLocalVoiceReverb](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [SetVoiceBeautifierParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [SetVoiceConversionPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setvoiceconversionpreset)
+- 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 
 <a id="api_irtcengine_setvoicebeautifierpreset__parameters"></a>
 
@@ -611,8 +618,8 @@ public abstract int SetVoiceConversionPreset(VOICE_CONVERSION_PRESET preset);
 
 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 SetAudioScenario 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
-- 调用 SetAudioProfile [2/2] 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
+- 调用 [SetAudioScenario](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
+- 调用 [SetAudioProfile [2/2]](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_setaudioprofile2) 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
 
 <a id="api_irtcengine_setvoiceconversionpreset__restriction"></a>
 
@@ -621,15 +628,16 @@ public abstract int SetVoiceConversionPreset(VOICE_CONVERSION_PRESET preset);
 - 请勿将 SetAudioProfile [2/2] 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD (1) 或 AUDIO_PROFILE_IOT (6)，否则该方法不生效。
 - 该方法对人声的处理效果最佳，不建议调用该方法处理含音乐的音频数据。
 - 调用 SetVoiceConversionPreset 后，不建议调用以下方法，否则 SetVoiceConversionPreset 设置的效果会被覆盖：
-  - SetAudioEffectPreset
-  - SetAudioEffectParameters
-  - SetVoiceBeautifierPreset
-  - SetVoiceBeautifierParameters
-  - SetLocalVoicePitch
-  - SetLocalVoiceFormant
-  - SetLocalVoiceEqualization
-  - SetLocalVoiceReverb
-- 该方法依赖于美声动态库 libagora_audio_beauty_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+
+  - [SetAudioEffectPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [SetAudioEffectParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [SetVoiceBeautifierPreset](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [SetVoiceBeautifierParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [SetLocalVoicePitch](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [SetLocalVoiceFormant](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoiceformant)
+  - [SetLocalVoiceEqualization](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [SetLocalVoiceReverb](/zh-CN/api-reference/rtc/csharp-windows/audio-effect#api_irtcengine_setlocalvoicereverb)
+- 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 
 <a id="api_irtcengine_setvoiceconversionpreset__parameters"></a>
 

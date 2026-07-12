@@ -63,7 +63,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 ### 返回值
 
-- 方法调用成功，返回 AgoraUserInfo 对象，详见 AgoraUserInfo。
+- 方法调用成功，返回 [AgoraUserInfo](/zh-CN/api-reference/rtc/macos/class-userinfo) 对象，详见 [AgoraUserInfo](/zh-CN/api-reference/rtc/macos/class-userinfo)。
 - 方法调用失败，返回 nil。
 
 ### 所属接口类
@@ -156,7 +156,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 ### 返回值
 
-- 方法调用成功，返回 AgoraUserInfo 对象，详见 AgoraUserInfo。
+- 方法调用成功，返回 [AgoraUserInfo](/zh-CN/api-reference/rtc/macos/class-userinfo) 对象，详见 [AgoraUserInfo](/zh-CN/api-reference/rtc/macos/class-userinfo)。
 - 方法调用失败，返回 nil。
 
 ### 所属接口类
@@ -247,8 +247,8 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 成功调用该方法后，SDK 会触发以下回调：
 
-- 本地客户端： rtcEngine:didJoinChannel:withUid:elapsed: 和 rtcEngine:connectionChangedToState:reason:。
-- 远端客户端：如果是 COMMUNICATION 频道场景中的用户加入，或 LIVE_BROADCASTING 频道场景中的主播加入频道，会触发 rtcEngine:didJoinedOfUid:elapsed: 回调。
+- 本地客户端： [rtcEngine:didJoinChannel:withUid:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+- 远端客户端：如果是 `COMMUNICATION` 频道场景中的用户加入，或 `LIVE_BROADCASTING` 频道场景中的主播加入频道，会触发 [rtcEngine:didJoinedOfUid:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onuserjoined) 回调。
 
 当本地客户端因网络状况不佳与声网服务器断开连接时，SDK 会尝试重连。当本地客户端成功重回频道时，SDK 会触发 [rtcEngine:didRejoinChannel:withUid:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) 回调。
 
@@ -291,13 +291,14 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
-  - -2：参数无效。例如，Token 无效， uid 参数未设置为整数，或 AgoraRtcChannelMediaOptions 中的成员值无效。请传入有效参数并重新加入频道。
-  - -3：初始化 AgoraRtcEngineKit 对象失败。请重新初始化该对象。
-  - -7： AgoraRtcEngineKit 对象尚未初始化。请先初始化该对象再调用本方法。
-  - -8： AgoraRtcEngineKit 对象的内部状态错误。常见原因是在调用 startEchoTestWithConfig: 开始回声测试后，未调用 stopEchoTest 停止测试就调用本方法加入频道。请先调用 stopEchoTest。
-  - -17：加入频道请求被拒绝。常见原因是用户已在频道中。声网建议使用 rtcEngine:connectionChangedToState:reason: 回调判断用户是否在频道中。仅当收到 AgoraConnectionStateDisconnected （1）状态时再调用本方法。
-  - -102：频道名无效。请在 channelId 中传入有效频道名重新加入。
-  - -121：用户 ID 无效。请在 uid 中传入有效用户 ID 重新加入频道。
+
+  - -2：参数无效。例如，Token 无效， `uid` 参数未设置为整数，或 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的成员值无效。请传入有效参数并重新加入频道。
+  - -3：初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象失败。请重新初始化该对象。
+  - -7： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象尚未初始化。请先初始化该对象再调用本方法。
+  - -8： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象的内部状态错误。常见原因是在调用 [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_startechotest3) 开始回声测试后，未调用 [stopEchoTest](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_stopechotest) 停止测试就调用本方法加入频道。请先调用 [stopEchoTest](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_stopechotest)。
+  - -17：加入频道请求被拒绝。常见原因是用户已在频道中。声网建议使用 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。仅当收到 `AgoraConnectionStateDisconnected` （1）状态时再调用本方法。
+  - -102：频道名无效。请在 `channelId` 中传入有效频道名重新加入。
+  - -121：用户 ID 无效。请在 `uid` 中传入有效用户 ID 重新加入频道。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
@@ -325,7 +326,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 :::info[注]
 - 该方法仅支持用户同时加入一个频道。
 - 不同 App ID 的用户无法互通。
-- 加入频道前，请确保用于生成 Token 的 App ID 与调用 sharedEngineWithConfig:delegate: 方法时传入的 App ID 一致，否则可能导致加入频道失败。
+- 加入频道前，请确保用于生成 Token 的 App ID 与调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 方法时传入的 App ID 一致，否则可能导致加入频道失败。
 :::
 
 <a id="api_irtcengine_joinchannel2__timing"></a>
@@ -340,8 +341,8 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 调用该方法成功后会触发以下回调：
 
-- 本地客户端： rtcEngine:didJoinChannel:withUid:elapsed: 和 rtcEngine:connectionChangedToState:reason: 回调。
-- 远端客户端：如果你在 COMMUNICATION 模式下加入频道，或作为主播在 LIVE_BROADCASTING 模式下加入频道，会触发 rtcEngine:didJoinedOfUid:elapsed: 回调。
+- 本地客户端： [rtcEngine:didJoinChannel:withUid:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+- 远端客户端：如果你在 `COMMUNICATION` 模式下加入频道，或作为主播在 `LIVE_BROADCASTING` 模式下加入频道，会触发 [rtcEngine:didJoinedOfUid:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onuserjoined) 回调。
 
 当由于网络状况不佳导致本地客户端与声网服务器的连接中断时，SDK 会尝试重新连接服务器。当本地客户端成功重回频道时，SDK 会在本地客户端触发 [rtcEngine:didRejoinChannel:withUid:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) 回调。
 
@@ -386,13 +387,13 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 0：方法调用成功。 &lt; 0：方法调用失败。
 
-- -2：参数无效。例如，Token 无效， uid 参数未设置为整数，或 AgoraRtcChannelMediaOptions 中的成员值无效。你需要传入有效参数并重新加入频道。
-- -3：初始化 AgoraRtcEngineKit 对象失败。你需要重新初始化该对象。
-- -7： AgoraRtcEngineKit 对象尚未初始化。你需要先初始化该对象再调用该方法。
-- -8： AgoraRtcEngineKit 对象的内部状态错误。典型原因是调用 startEchoTestWithConfig: 开始通话回路测试后，未调用 stopEchoTest 停止测试就调用该方法加入频道。你需要先调用 stopEchoTest 再调用该方法。
-- -17：加入频道请求被拒绝。典型原因是你已在频道中。声网建议你通过 rtcEngine:connectionChangedToState:reason: 回调判断是否在频道中。只有在收到 AgoraConnectionStateDisconnected （1）状态时才调用该方法加入频道。
-- -102：频道名无效。你需要在 channelId 中传入有效的频道名重新加入频道。
-- -121：用户 ID 无效。你需要在 uid 中传入有效的用户 ID 重新加入频道。
+- -2：参数无效。例如，Token 无效， `uid` 参数未设置为整数，或 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的成员值无效。你需要传入有效参数并重新加入频道。
+- -3：初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象失败。你需要重新初始化该对象。
+- -7： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化该对象再调用该方法。
+- -8： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象的内部状态错误。典型原因是调用 [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_startechotest3) 开始通话回路测试后，未调用 [stopEchoTest](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_stopechotest) 停止测试就调用该方法加入频道。你需要先调用 [stopEchoTest](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_stopechotest) 再调用该方法。
+- -17：加入频道请求被拒绝。典型原因是你已在频道中。声网建议你通过 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断是否在频道中。只有在收到 `AgoraConnectionStateDisconnected` （1）状态时才调用该方法加入频道。
+- -102：频道名无效。你需要在 `channelId` 中传入有效的频道名重新加入频道。
+- -121：用户 ID 无效。你需要在 `uid` 中传入有效的用户 ID 重新加入频道。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
@@ -420,7 +421,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 :::info[注]
 - 该方法仅支持用户同时加入一个频道。
 - 不同 App ID 的用户无法互通。
-- 加入频道前，请确保用于生成 token 的 App ID 与 sharedEngineWithConfig:delegate: 方法中传入的 App ID 一致，否则可能会导致使用该 token 加入频道失败。
+- 加入频道前，请确保用于生成 token 的 App ID 与 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 方法中传入的 App ID 一致，否则可能会导致使用该 token 加入频道失败。
 - 为确保通信顺畅，请使用相同的参数类型标识用户。例如，如果某用户使用 UID 加入频道，则其他用户也应使用 UID。用户 User Account 同理。如果用户使用声网 Web SDK 加入频道，请确保用户 ID 的参数类型一致。
 :::
 
@@ -440,8 +441,8 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 ### 相关回调
 
-- 本地客户端： rtcEngine:didLocalUserRegisteredWithUserId:userAccount:、 rtcEngine:didJoinChannel:withUid:elapsed: 和 rtcEngine:connectionChangedToState:reason: 回调。
-- 远端客户端：当用户在 COMMUNICATION 频道场景中加入频道，或主播在 LIVE_BROADCASTING 频道场景中加入频道时，会触发 rtcEngine:didJoinedOfUid:elapsed: 和 rtcEngine:didUserInfoUpdatedWithUserId:userInfo: 回调。
+- 本地客户端： [rtcEngine:didLocalUserRegisteredWithUserId:userAccount:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onlocaluserregistered)、 [rtcEngine:didJoinChannel:withUid:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+- 远端客户端：当用户在 `COMMUNICATION` 频道场景中加入频道，或主播在 `LIVE_BROADCASTING` 频道场景中加入频道时，会触发 [rtcEngine:didJoinedOfUid:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onuserjoined) 和 [rtcEngine:didUserInfoUpdatedWithUserId:userInfo:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。
 
 <a id="api_irtcengineex_joinchannelex__parameters"></a>
 
@@ -479,13 +480,13 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 0：方法调用成功。 &lt; 0：方法调用失败。
 
-- -2：参数无效。例如，token 无效， uid 参数未设置为整数，或 AgoraRtcChannelMediaOptions 中某成员的值无效。请传入有效参数并重新加入频道。
-- -3：初始化 AgoraRtcEngineKit 对象失败。请重新初始化该对象。
-- -7： AgoraRtcEngineKit 对象尚未初始化。请在调用该方法前初始化该对象。
-- -8： AgoraRtcEngineKit 对象的内部状态错误。常见原因是在调用 startEchoTestWithConfig: 开始回声测试后，未调用 stopEchoTest 停止测试就调用该方法加入频道。请先调用 stopEchoTest。
-- -17：加入频道请求被拒绝。常见原因是用户已在频道中。声网建议通过 rtcEngine:connectionChangedToState:reason: 回调判断用户是否在频道中。仅当收到 AgoraConnectionStateDisconnected （1）状态时再调用该方法。
-- -102：频道名无效。请在 channelId 中传入有效的频道名重新加入频道。
-- -121：用户 ID 无效。请在 uid 中传入有效的用户 ID 重新加入频道。
+- -2：参数无效。例如，token 无效， `uid` 参数未设置为整数，或 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中某成员的值无效。请传入有效参数并重新加入频道。
+- -3：初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象失败。请重新初始化该对象。
+- -7： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象尚未初始化。请在调用该方法前初始化该对象。
+- -8： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象的内部状态错误。常见原因是在调用 [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_startechotest3) 开始回声测试后，未调用 [stopEchoTest](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_stopechotest) 停止测试就调用该方法加入频道。请先调用 [stopEchoTest](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_stopechotest)。
+- -17：加入频道请求被拒绝。常见原因是用户已在频道中。声网建议通过 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。仅当收到 `AgoraConnectionStateDisconnected` （1）状态时再调用该方法。
+- -102：频道名无效。请在 `channelId` 中传入有效的频道名重新加入频道。
+- -121：用户 ID 无效。请在 `uid` 中传入有效的用户 ID 重新加入频道。
 
 ### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
@@ -512,7 +513,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 :::info[注]
 - 该方法仅支持用户同时加入一个频道。
 - 不同 App ID 的用户无法互通。
-- 加入频道前，请确保用于生成 Token 的 App ID 与调用 sharedEngineWithConfig:delegate: 时传入的 App ID 一致，否则可能导致使用该 Token 加入频道失败。
+- 加入频道前，请确保用于生成 Token 的 App ID 与调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 时传入的 App ID 一致，否则可能导致使用该 Token 加入频道失败。
 - 为确保通信顺畅，请统一使用相同的参数类型标识用户。例如，如果某用户使用用户 ID 加入频道，则其他用户也应使用用户 ID。用户 User Account 亦同理。如果用户使用声网 Web SDK 加入频道，请确保用户 ID 的参数类型一致。
 :::
 
@@ -571,13 +572,14 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
-  - -2：参数无效。例如，Token 无效， uid 参数未设置为整数，或 AgoraRtcChannelMediaOptions 中的成员值无效。你需要传入有效参数并重新加入频道。
-  - -3：初始化 AgoraRtcEngineKit 对象失败。你需要重新初始化该对象。
-  - -7： AgoraRtcEngineKit 对象尚未初始化。你需要先初始化该对象再调用该方法。
-  - -8： AgoraRtcEngineKit 对象的内部状态错误。典型原因是调用 startEchoTestWithConfig: 开始回声测试后，未调用 stopEchoTest 停止测试就调用该方法加入频道。你需要先调用 stopEchoTest 再调用该方法。
-  - -17：加入频道请求被拒绝。典型原因是用户已在频道中。声网建议你通过 rtcEngine:connectionChangedToState:reason: 回调判断用户是否在频道中。只有在收到 AgoraConnectionStateDisconnected （1）状态时才调用该方法加入频道。
-  - -102：频道名无效。你需要在 channelId 中传入有效的频道名重新加入频道。
-  - -121：用户 ID 无效。你需要在 uid 中传入有效的用户 ID 重新加入频道。
+
+  - -2：参数无效。例如，Token 无效， `uid` 参数未设置为整数，或 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的成员值无效。你需要传入有效参数并重新加入频道。
+  - -3：初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象失败。你需要重新初始化该对象。
+  - -7： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化该对象再调用该方法。
+  - -8： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象的内部状态错误。典型原因是调用 [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_startechotest3) 开始回声测试后，未调用 [stopEchoTest](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_stopechotest) 停止测试就调用该方法加入频道。你需要先调用 [stopEchoTest](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_stopechotest) 再调用该方法。
+  - -17：加入频道请求被拒绝。典型原因是用户已在频道中。声网建议你通过 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。只有在收到 `AgoraConnectionStateDisconnected` （1）状态时才调用该方法加入频道。
+  - -102：频道名无效。你需要在 `channelId` 中传入有效的频道名重新加入频道。
+  - -121：用户 ID 无效。你需要在 `uid` 中传入有效的用户 ID 重新加入频道。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
@@ -605,7 +607,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 :::info[注]
 - 该方法仅支持用户同时加入一个频道。
 - 不同 App ID 的用户无法互通。
-- 加入频道前，请确保用于生成 Token 的 App ID 与 sharedEngineWithConfig:delegate: 方法中传入的 App ID 一致，否则可能导致使用该 Token 加入频道失败。
+- 加入频道前，请确保用于生成 Token 的 App ID 与 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 方法中传入的 App ID 一致，否则可能导致使用该 Token 加入频道失败。
 - 为确保通信顺畅，请使用相同的参数类型标识用户。例如，如果某用户使用用户 ID 加入频道，则其他用户也应使用用户 ID。用户 User Account 同理。如果用户使用声网 Web SDK 加入频道，请确保用户 ID 的参数类型一致。
 :::
 
@@ -668,13 +670,13 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 0：方法调用成功。 &lt; 0：方法调用失败。
 
-- -2：参数无效。例如，Token 无效， uid 参数未设置为整数，或 AgoraRtcChannelMediaOptions 中某成员的值无效。你需要传入有效参数并重新加入频道。
-- -3：初始化 AgoraRtcEngineKit 对象失败。你需要重新初始化该对象。
-- -7： AgoraRtcEngineKit 对象尚未初始化。你需要先初始化该对象再调用该方法。
-- -8： AgoraRtcEngineKit 对象的内部状态错误。典型原因是调用 startEchoTestWithConfig: 开始回声测试后，未调用 stopEchoTest 停止测试就调用该方法加入频道。你需要先调用 stopEchoTest。
-- -17：加入频道请求被拒绝。典型原因是用户已在频道中。声网建议使用 rtcEngine:connectionChangedToState:reason: 回调判断用户是否在频道中。只有在收到 AgoraConnectionStateDisconnected （1）状态时才调用该方法。
-- -102：频道名无效。你需要传入有效的 channelId 重新加入频道。
-- -121：用户 ID 无效。你需要传入有效的 uid 重新加入频道。
+- -2：参数无效。例如，Token 无效， `uid` 参数未设置为整数，或 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中某成员的值无效。你需要传入有效参数并重新加入频道。
+- -3：初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象失败。你需要重新初始化该对象。
+- -7： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化该对象再调用该方法。
+- -8： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象的内部状态错误。典型原因是调用 [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_startechotest3) 开始回声测试后，未调用 [stopEchoTest](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_stopechotest) 停止测试就调用该方法加入频道。你需要先调用 [stopEchoTest](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_stopechotest)。
+- -17：加入频道请求被拒绝。典型原因是用户已在频道中。声网建议使用 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。只有在收到 `AgoraConnectionStateDisconnected` （1）状态时才调用该方法。
+- -102：频道名无效。你需要传入有效的 `channelId` 重新加入频道。
+- -121：用户 ID 无效。你需要传入有效的 `uid` 重新加入频道。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
@@ -703,8 +705,8 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 :::info[注]
 - 该方法仅支持用户同时加入一个频道。
 - 不同 App ID 的用户无法互通。
-- 加入频道前，请确保用于生成 Token 的 App ID 与 sharedEngineWithConfig:delegate: 方法中传入的 App ID 一致，否则可能会导致使用该 Token 加入频道失败。
-- 为确保通信顺畅，请使用相同的参数类型标识用户。例如，如果某用户使用 uid 加入频道，则其他用户也应使用 uid。用户 User Account 同理。如果用户使用声网 Web SDK 加入频道，请确保用户 ID 的参数类型一致。
+- 加入频道前，请确保用于生成 Token 的 App ID 与 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 方法中传入的 App ID 一致，否则可能会导致使用该 Token 加入频道失败。
+- 为确保通信顺畅，请使用相同的参数类型标识用户。例如，如果某用户使用 `uid` 加入频道，则其他用户也应使用 `uid`。用户 User Account 同理。如果用户使用声网 Web SDK 加入频道，请确保用户 ID 的参数类型一致。
 :::
 
 <a id="api_irtcengineex_joinchannelwithuseraccountex__scenario"></a>
@@ -723,8 +725,8 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 ### 相关回调
 
-- 本地客户端： rtcEngine:didLocalUserRegisteredWithUserId:userAccount:、 rtcEngine:didJoinChannel:withUid:elapsed: 和 rtcEngine:connectionChangedToState:reason: 回调。
-- 远端客户端：当用户在 COMMUNICATION 频道场景中加入频道，或主播在 LIVE_BROADCASTING 频道场景中加入频道时，会触发 rtcEngine:didJoinedOfUid:elapsed: 和 rtcEngine:didUserInfoUpdatedWithUserId:userInfo: 回调。
+- 本地客户端： [rtcEngine:didLocalUserRegisteredWithUserId:userAccount:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onlocaluserregistered)、 [rtcEngine:didJoinChannel:withUid:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+- 远端客户端：当用户在 `COMMUNICATION` 频道场景中加入频道，或主播在 `LIVE_BROADCASTING` 频道场景中加入频道时，会触发 [rtcEngine:didJoinedOfUid:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onuserjoined) 和 [rtcEngine:didUserInfoUpdatedWithUserId:userInfo:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。
 
 <a id="api_irtcengineex_joinchannelwithuseraccountex__parameters"></a>
 
@@ -777,13 +779,13 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 0：方法调用成功。 &lt; 0：方法调用失败。
 
-- -2：参数无效。例如，Token 无效， uid 参数未设置为整数，或 AgoraRtcChannelMediaOptions 中某成员的值无效。请传入有效参数后重新加入频道。
-- -3：初始化 AgoraRtcEngineKit 对象失败。请重新初始化该对象。
-- -7： AgoraRtcEngineKit 对象尚未初始化。请先初始化该对象再调用该方法。
-- -8： AgoraRtcEngineKit 对象的内部状态错误。典型原因是调用 startEchoTestWithConfig: 开始回声测试后，未调用 stopEchoTest 停止测试就调用该方法加入频道。请先调用 stopEchoTest 再调用该方法。
-- -17：加入频道请求被拒绝。典型原因是用户已在频道中。声网建议通过 rtcEngine:connectionChangedToState:reason: 回调判断用户是否在频道中。只有在收到 AgoraConnectionStateDisconnected （1）状态时才调用该方法加入频道。
-- -102：频道名无效。请在 channelId 中传入有效的频道名后重新加入频道。
-- -121：用户 ID 无效。请在 uid 中传入有效的用户 ID 后重新加入频道。
+- -2：参数无效。例如，Token 无效， `uid` 参数未设置为整数，或 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中某成员的值无效。请传入有效参数后重新加入频道。
+- -3：初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象失败。请重新初始化该对象。
+- -7： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象尚未初始化。请先初始化该对象再调用该方法。
+- -8： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象的内部状态错误。典型原因是调用 [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_startechotest3) 开始回声测试后，未调用 [stopEchoTest](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_stopechotest) 停止测试就调用该方法加入频道。请先调用 [stopEchoTest](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_stopechotest) 再调用该方法。
+- -17：加入频道请求被拒绝。典型原因是用户已在频道中。声网建议通过 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。只有在收到 `AgoraConnectionStateDisconnected` （1）状态时才调用该方法加入频道。
+- -102：频道名无效。请在 `channelId` 中传入有效的频道名后重新加入频道。
+- -121：用户 ID 无效。请在 `uid` 中传入有效的用户 ID 后重新加入频道。
 
 ### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
@@ -808,7 +810,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 如果在调用该方法后立即调用 [destroy](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_release)，SDK 不会触发 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
 
 - 该方法为异步调用。当该方法返回时，并不代表你已完全离开频道。
-- 如果你调用了 joinChannelExByToken 加入了多个频道，调用该方法会离开你加入的所有频道。
+- 如果你调用了 `joinChannelExByToken` 加入了多个频道，调用该方法会离开你加入的所有频道。
 :::
 
 <a id="api_irtcengine_leavechannel__timing"></a>
@@ -823,8 +825,8 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 调用该方法成功后会触发以下回调：
 
-- 本地客户端：会触发 rtcEngine:didLeaveChannelWithStats: 回调。
-- 远端客户端：远端主播离开频道后会触发 rtcEngine:didOfflineOfUid:reason: 回调。
+- 本地客户端：会触发 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
+- 远端客户端：远端主播离开频道后会触发 [rtcEngine:didOfflineOfUid:reason:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onuseroffline) 回调。
 
 <a id="api_irtcengine_leavechannel__parameters"></a>
 
@@ -840,6 +842,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -1：发生一般性错误（无明确原因）。
   - -2：参数无效。
   - -7：SDK 未初始化。
@@ -880,8 +883,8 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 调用该方法成功后会触发以下回调：
 
-- 本地客户端：会触发 rtcEngine:didLeaveChannelWithStats: 回调。
-- 远端客户端：远端主播离开频道后会触发 rtcEngine:didOfflineOfUid:reason: 回调。
+- 本地客户端：会触发 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
+- 远端客户端：远端主播离开频道后会触发 [rtcEngine:didOfflineOfUid:reason:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onuseroffline) 回调。
 
 <a id="api_irtcengine_leavechannel2__parameters"></a>
 
@@ -926,7 +929,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 如果在调用该方法后立即调用 [destroy](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_release)，SDK 不会触发 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
 
 - 此方法为异步调用。当该方法返回时，并不代表你已离开频道。
-- 如果调用 leaveChannel: 或 leaveChannel:leaveChannelBlock:，你将离开通过 joinChannelByToken、 joinChannelByToken 或 joinChannelExByToken 加入的所有频道。
+- 如果调用 [leaveChannel:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_leavechannel) 或 [leaveChannel:leaveChannelBlock:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_leavechannel2)，你将离开通过 `joinChannelByToken`、 `joinChannelByToken` 或 `joinChannelExByToken` 加入的所有频道。
 :::
 
 <a id="api_irtcengineex_leavechannelex__scenario"></a>
@@ -947,8 +950,8 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 调用该方法成功后会触发以下回调：
 
-- 本地客户端：触发 rtcEngine:didLeaveChannelWithStats: 回调。
-- 远端客户端：远端主播离开频道后触发 rtcEngine:didOfflineOfUid:reason: 回调。
+- 本地客户端：触发 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
+- 远端客户端：远端主播离开频道后触发 [rtcEngine:didOfflineOfUid:reason:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onuseroffline) 回调。
 
 <a id="api_irtcengineex_leavechannelex__parameters"></a>
 
@@ -998,7 +1001,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 如果在调用该方法后立即调用 [destroy](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_release)，SDK 不会触发 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
 
 - 此方法为异步调用。当该方法返回时，并不代表你已离开频道。
-- 如果调用 leaveChannel: 或 leaveChannel:leaveChannelBlock:，你将离开通过 joinChannelByToken、 joinChannelByToken 或 joinChannelExByToken 加入的所有频道。
+- 如果调用 [leaveChannel:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_leavechannel) 或 [leaveChannel:leaveChannelBlock:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_leavechannel2)，你将离开通过 `joinChannelByToken`、 `joinChannelByToken` 或 `joinChannelExByToken` 加入的所有频道。
 :::
 
 <a id="api_irtcengineex_leavechannelex2__scenario"></a>
@@ -1057,9 +1060,9 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 该方法用于预加载指定频道。当你作为观众需要频繁切换频道时，调用该方法可以缩短加入频道的时间，从而减少你听到和看到主播的延迟。该方法需要在加入频道前调用。如果你加入了一个已预加载的频道，离开后想要重新加入该频道，除非用于预加载的 Token 过期，否则无需再次调用该方法。为提升预加载频道的用户体验，声网建议你在确认频道名和用户信息后尽早调用该方法。
 
 :::info[注]
-- 调用该方法时，请确保将用户角色设置为观众，且未将音频场景设置为 AgoraAudioScenarioChorus，否则该方法不生效。
+- 调用该方法时，请确保将用户角色设置为观众，且未将音频场景设置为 `AgoraAudioScenarioChorus`，否则该方法不生效。
 - 你还需要确保用于预加载的频道名、用户 ID 和 Token 与加入频道时传入的值一致，否则该方法不生效。
-- 一个 AgoraRtcEngineKit 实例最多支持预加载 20 个频道，超出限制时，仅最近的 20 个预加载频道生效。
+- 一个 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 实例最多支持预加载 20 个频道，超出限制时，仅最近的 20 个预加载频道生效。
 - 预加载频道失败并不意味着无法加入频道，也不会增加加入频道所需的时间。
 :::
 
@@ -1079,7 +1082,8 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 - 如果只预加载一个频道，调用该方法传入新的 Token。
 - 如果预加载多个频道：
-  - 如果你为所有预加载频道使用通配符 Token，调用 updatePreloadChannelToken: 更新 Token。
+
+  - 如果你为所有预加载频道使用通配符 Token，调用 [updatePreloadChannelToken:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_updatepreloadchanneltoken) 更新 Token。
 
 注意：生成通配符 Token 时，确保用户 ID 不为 0。
 
@@ -1104,7 +1108,8 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
-  - -7： AgoraRtcEngineKit 对象尚未初始化。你需要先初始化该对象再调用此方法。
+
+  - -7： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化该对象再调用此方法。
   - -102：频道名无效。你需要传入有效的频道名并重新加入频道。
 
 ### 所属接口类
@@ -1129,9 +1134,9 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 当你需要频繁切换不同频道时，调用该方法可以缩短加入频道的时间，从而减少你听到和看到主播的延迟。如果你加入了一个已预加载的频道，离开后想重新加入同一个频道，除非用于预加载频道的 Token 过期，否则无需再次调用该方法。声网建议你在确认频道名和用户信息后尽早调用该方法，以提升预加载频道的用户体验。
 
 :::info[注]
-- 调用该方法时，请确保将用户角色设置为观众，且未将音频场景设置为 AgoraAudioScenarioChorus，否则该方法不生效。
+- 调用该方法时，请确保将用户角色设置为观众，且未将音频场景设置为 `AgoraAudioScenarioChorus`，否则该方法不生效。
 - 你还需要确保用于预加载的用户 User Account、频道名和 Token 与加入频道时传入的值一致，否则该方法不生效。
-- 一个 AgoraRtcEngineKit 实例最多支持预加载 20 个频道。超过该限制时，仅最近的 20 个预加载频道生效。
+- 一个 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 实例最多支持预加载 20 个频道。超过该限制时，仅最近的 20 个预加载频道生效。
 - 预加载频道失败并不意味着你无法加入频道，也不会增加加入频道所需的时间。
 :::
 
@@ -1151,7 +1156,8 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 - 如果只预加载一个频道，调用该方法传入新的 Token。
 - 如果预加载多个频道：
-  - 如果你为所有预加载频道使用通配符 Token，调用 updatePreloadChannelToken: 更新 Token。注意：生成通配符 Token 时，确保用户 ID 不为 0。
+
+  - 如果你为所有预加载频道使用通配符 Token，调用 [updatePreloadChannelToken:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_updatepreloadchanneltoken) 更新 Token。注意：生成通配符 Token 时，确保用户 ID 不为 0。
   - 如果你为不同频道使用不同的 Token，调用该方法传入你的用户 ID、频道名和新的 Token。
 
 #### `channelId`
@@ -1179,8 +1185,9 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -2：参数无效，例如用户 User Account 为空。你需要传入有效参数并重新加入频道。
-  - -7： AgoraRtcEngineKit 对象尚未初始化。你需要在调用该方法前初始化该对象。
+  - -7： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要在调用该方法前初始化该对象。
   - -102：频道名无效。你需要传入有效的频道名并重新加入频道。
 
 ### 所属接口类
@@ -1202,15 +1209,15 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 [registerLocalUserAccount:appId:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_registerlocaluseraccount) 方法用于注册一个 `userAccount`，注册成功后，该 `userAccount` 可用于在加入频道时标识本地用户身份。 该方法为可选方法。如果你希望使用 `userAccount` 加入频道，可以选择以下任一方式：
 
-- 先调用 registerLocalUserAccount:appId: 方法注册一个 userAccount，再调用 joinChannelByToken:channelId:userAccount:joinSuccess: 或 joinChannelByToken:channelId:userAccount:mediaOptions:joinSuccess: 方法加入频道，可缩短进入频道所需时间。
-- 直接调用 joinChannelByToken:channelId:userAccount:joinSuccess: 或 joinChannelByToken:channelId:userAccount:mediaOptions:joinSuccess: 方法加入频道。
+- 先调用 [registerLocalUserAccount:appId:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_registerlocaluseraccount) 方法注册一个 `userAccount`，再调用 [joinChannelByToken:channelId:userAccount:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannelwithuseraccount1) 或 [joinChannelByToken:channelId:userAccount:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannelwithuseraccount2) 方法加入频道，可缩短进入频道所需时间。
+- 直接调用 [joinChannelByToken:channelId:userAccount:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannelwithuseraccount1) 或 [joinChannelByToken:channelId:userAccount:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannelwithuseraccount2) 方法加入频道。
 
 调用该方法成功后，本地会触发 [rtcEngine:didLocalUserRegisteredWithUserId:userAccount:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onlocaluserregistered) 回调，报告本地用户的用户 ID 和 `userAccount`。
 
 :::info[注]
-- 从 v4.6.0 起，SDK 不再自动将 int 类型的用户 ID 映射为注册时使用的 string 类型 userAccount。如果你希望使用注册时的原始 userAccount 加入频道，请调用 joinChannelByToken:channelId:userAccount:mediaOptions:joinSuccess: 方法，而不要调用 joinChannelByToken:channelId:uid:mediaOptions:joinSuccess: 并传入通过该方法获取的 int 类型用户 ID。
-- 请确保 userAccount 在频道中唯一。
-- 为确保通信顺畅，请统一使用相同的参数类型标识用户。例如，如果某用户使用用户 ID 加入频道，则其他用户也应使用用户 ID；若使用 userAccount，则其他用户也应使用 userAccount。如果用户使用声网 Web SDK 加入频道，请确保用户 ID 的参数类型一致。
+- 从 v4.6.0 起，SDK 不再自动将 `int` 类型的用户 ID 映射为注册时使用的 `string` 类型 `userAccount`。如果你希望使用注册时的原始 `userAccount` 加入频道，请调用 [joinChannelByToken:channelId:userAccount:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannelwithuseraccount2) 方法，而不要调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 并传入通过该方法获取的 `int` 类型用户 ID。
+- 请确保 `userAccount` 在频道中唯一。
+- 为确保通信顺畅，请统一使用相同的参数类型标识用户。例如，如果某用户使用用户 ID 加入频道，则其他用户也应使用用户 ID；若使用 `userAccount`，则其他用户也应使用 `userAccount`。如果用户使用声网 Web SDK 加入频道，请确保用户 ID 的参数类型一致。
 :::
 
 <a id="api_irtcengine_registerlocaluseraccount__related"></a>
@@ -1263,8 +1270,8 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 该方法用于更新 Token。调用该方法成功后，SDK 会触发 [rtcEngine:renewTokenResult:code:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onrenewtokenresult) 回调。 在单频道场景下，你可以在以下情况下调用该方法更新 Token：
 
-- 收到 rtcEngine:tokenPrivilegeWillExpire: 回调，提示 Token 即将过期。
-- Token 已过期时，SDK 会触发 rtcEngineRequestToken: 回调，并在 rtcEngine:connectionChangedToState:reason: 回调中将 reason 报告为 AgoraConnectionChangedReasonTokenExpired （9）。
+- 收到 [rtcEngine:tokenPrivilegeWillExpire:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提示 Token 即将过期。
+- Token 已过期时，SDK 会触发 [rtcEngineRequestToken:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onrequesttoken) 回调，并在 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中将 `reason` 报告为 `AgoraConnectionChangedReasonTokenExpired` （9）。
 
 <a id="api_irtcengine_renewtoken__parameters"></a>
 
@@ -1280,11 +1287,13 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
-  - -2：参数无效。例如， token 为空。
-  - -7： AgoraRtcEngineKit 对象尚未初始化。请在调用该方法前先初始化 AgoraRtcEngineKit 对象。
-  - 110： token 无效。请确保以下几点：
-    - 生成 token 时指定的用户 ID 与加入频道时使用的用户 ID 一致。
-    - 生成的 token 与加入频道时传入的 token 一致。
+
+  - -2：参数无效。例如， `token` 为空。
+  - -7： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象尚未初始化。请在调用该方法前先初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。
+  - 110： `token` 无效。请确保以下几点：
+
+    - 生成 `token` 时指定的用户 ID 与加入频道时使用的用户 ID 一致。
+    - 生成的 `token` 与加入频道时传入的 `token` 一致。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
@@ -1307,7 +1316,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 :::info[注]
 - 为保证实时通信质量，声网建议频道内所有用户使用相同的频道场景。
-- 在 iOS 平台，不同频道场景下 SDK 的默认音频路由不同，详见 setDefaultAudioRouteToSpeakerphone:。
+- 在 iOS 平台，不同频道场景下 SDK 的默认音频路由不同，详见 `setDefaultAudioRouteToSpeakerphone:`。
 :::
 
 <a id="api_irtcengine_setchannelprofile__timing"></a>
@@ -1352,14 +1361,15 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 你可以调用该方法设置用户角色。默认情况下，SDK 会将用户角色设置为观众。用户角色决定了你在 SDK 层级的权限，包括是否可以在频道中发布音视频流。 你可以在加入频道前或加入频道后调用该方法：
 
-- 如果你在加入频道前调用该方法将用户角色设置为主播，并通过 setupLocalVideo: 设置本地视频属性，则用户加入频道时会自动开启本地视频预览。
-- 如果你在加入频道后调用该方法设置用户角色，SDK 会自动调用 muteLocalAudioStream: 和 muteLocalVideoStream: 更改音视频流的发布状态。
+- 如果你在加入频道前调用该方法将用户角色设置为主播，并通过 [setupLocalVideo:](/zh-CN/api-reference/rtc/macos/video-rendering#api_irtcengine_setuplocalvideo) 设置本地视频属性，则用户加入频道时会自动开启本地视频预览。
+- 如果你在加入频道后调用该方法设置用户角色，SDK 会自动调用 [muteLocalAudioStream:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [muteLocalVideoStream:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_mutelocalvideostream) 更改音视频流的发布状态。
 
 如果你在加入频道后调用该方法切换用户角色，SDK 会触发以下回调：
 
-- 本地客户端触发 rtcEngine:didClientRoleChanged:newRole:newRoleOptions: 回调。
-  - 注意：在加入频道前调用该方法并将 role 设置为 AUDIENCE 也会触发该回调。
-- 远端客户端触发 rtcEngine:didJoinedOfUid:elapsed: 或 rtcEngine:didOfflineOfUid:reason: 回调。
+- 本地客户端触发 [rtcEngine:didClientRoleChanged:newRole:newRoleOptions:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onclientrolechanged) 回调。
+
+  - 注意：在加入频道前调用该方法并将 `role` 设置为 `AUDIENCE` 也会触发该回调。
+- 远端客户端触发 [rtcEngine:didJoinedOfUid:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onuserjoined) 或 [rtcEngine:didOfflineOfUid:reason:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onuseroffline) 回调。
 
 如果你在加入频道后调用该方法设置用户角色失败，SDK 会触发 [rtcEngine:didClientRoleChangeFailed:currentRole:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onclientrolechangefailed) 回调，报告失败原因和当前角色。
 
@@ -1387,6 +1397,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -7：SDK 未初始化。
@@ -1413,8 +1424,8 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 :::info[注]
 当用户角色设置为主播时，观众延迟等级只能设置为 `AgoraAudienceLatencyLevelUltraLowLatency`。
 
-- 在加入频道前调用此方法并将 role 设置为 BROADCASTER 时，本地客户端不会触发 rtcEngine:didClientRoleChanged:newRole:newRoleOptions: 回调。
-- 在加入频道前调用此方法并将 role 设置为 AUDIENCE 时，会触发该回调。
+- 在加入频道前调用此方法并将 `role` 设置为 `BROADCASTER` 时，本地客户端不会触发 [rtcEngine:didClientRoleChanged:newRole:newRoleOptions:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onclientrolechanged) 回调。
+- 在加入频道前调用此方法并将 `role` 设置为 `AUDIENCE` 时，会触发该回调。
 :::
 
 <a id="api_irtcengine_setclientrole2__timing"></a>
@@ -1429,8 +1440,8 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 如果你在加入频道后调用此方法切换用户角色，SDK 会触发以下回调：
 
-- 在本地客户端触发 rtcEngine:didClientRoleChanged:newRole:newRoleOptions: 回调。
-- 在远端客户端触发 rtcEngine:didJoinedOfUid:elapsed: 或 rtcEngine:didOfflineOfUid:reason: 回调。
+- 在本地客户端触发 [rtcEngine:didClientRoleChanged:newRole:newRoleOptions:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onclientrolechanged) 回调。
+- 在远端客户端触发 [rtcEngine:didJoinedOfUid:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onuserjoined) 或 [rtcEngine:didOfflineOfUid:reason:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onuseroffline) 回调。
 
 如果你在加入频道后调用此方法设置用户角色但失败，SDK 会触发 [rtcEngine:didClientRoleChangeFailed:currentRole:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onclientrolechangefailed) 回调，报告失败原因和当前用户角色。 注意：在加入频道前调用此方法并将 `role` 设置为 `AUDIENCE` 也会触发 [rtcEngine:didClientRoleChanged:newRole:newRoleOptions:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onclientrolechanged) 回调。
 
@@ -1494,9 +1505,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
-  - -2： AgoraRtcChannelMediaOptions 中某个成员的值无效，例如 token 或用户 ID 无效。你需要填写有效的参数。
-  - -7： AgoraRtcEngineKit 对象尚未初始化。你需要先初始化 AgoraRtcEngineKit 对象再调用该方法。
-  - -8： AgoraRtcEngineKit 对象的内部状态错误。可能的原因是你尚未加入频道。声网建议你通过 rtcEngine:connectionChangedToState:reason: 回调判断是否已加入频道。如果你收到 AgoraConnectionStateDisconnected （1）或 AgoraConnectionStateFailed （5）状态，说明你未加入频道。你需要先调用 joinChannelByToken:channelId:uid:mediaOptions:joinSuccess: 加入频道，再调用该方法。
+
+  - -2： [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中某个成员的值无效，例如 token 或用户 ID 无效。你需要填写有效的参数。
+  - -7： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象再调用该方法。
+  - -8： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象的内部状态错误。可能的原因是你尚未加入频道。声网建议你通过 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断是否已加入频道。如果你收到 `AgoraConnectionStateDisconnected` （1）或 `AgoraConnectionStateFailed` （5）状态，说明你未加入频道。你需要先调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 加入频道，再调用该方法。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
@@ -1540,9 +1552,10 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
-  - -2： AgoraRtcChannelMediaOptions 中的成员值无效，例如 token 或用户 ID 无效。你需要填写有效的参数。
-  - -7： AgoraRtcEngineKit 对象尚未初始化。你需要先初始化 AgoraRtcEngineKit 对象再调用该方法。
-  - -8： AgoraRtcEngineKit 对象的内部状态错误，可能的原因是你尚未加入频道。声网建议你通过 rtcEngine:connectionChangedToState:reason: 回调判断是否已加入频道。如果你收到 AgoraConnectionStateDisconnected （1）或 AgoraConnectionStateFailed （5）状态，说明你尚未加入频道。你需要先调用 joinChannelByToken:channelId:uid:mediaOptions:joinSuccess: 加入频道，再调用该方法。
+
+  - -2： [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的成员值无效，例如 `token` 或用户 ID 无效。你需要填写有效的参数。
+  - -7： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象再调用该方法。
+  - -8： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象的内部状态错误，可能的原因是你尚未加入频道。声网建议你通过 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断是否已加入频道。如果你收到 `AgoraConnectionStateDisconnected` （1）或 `AgoraConnectionStateFailed` （5）状态，说明你尚未加入频道。你需要先调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 加入频道，再调用该方法。
 
 ### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
@@ -1583,8 +1596,9 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -2：参数无效，例如 Token 无效。你需要传入有效的参数并重新加入频道。
-  - -7： AgoraRtcEngineKit 对象尚未初始化。你需要先初始化 AgoraRtcEngineKit 对象再调用此方法。
+  - -7： [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象再调用此方法。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
@@ -1613,8 +1627,8 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 该回调会在以下任一情况下触发：
 
-- 在加入频道后调用 setClientRole: 或 setClientRole:options: 设置用户角色或观众延迟等级。
-- 在加入频道前调用 setClientRole: 或 setClientRole:options: 并将用户角色设置为 AUDIENCE。
+- 在加入频道后调用 [setClientRole:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_setclientrole1) 或 [setClientRole:options:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_setclientrole2) 设置用户角色或观众延迟等级。
+- 在加入频道前调用 [setClientRole:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_setclientrole1) 或 [setClientRole:options:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_setclientrole2) 并将用户角色设置为 `AUDIENCE`。
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged__parameters"></a>
 
@@ -1937,9 +1951,10 @@ Token。
 当 Token 过期时，SDK 会触发该回调。收到该回调后，你需要在你的 Token 服务器上生成一个新的 Token，并可以通过以下方式之一更新 Token：
 
 - 单频道场景：
-  - 调用 renewToken: 传入新的 Token。
-  - 或调用 updateChannelWithMediaOptions:，并在 AgoraRtcChannelMediaOptions 的 token 中传入新的 Token。
-- 多频道场景：调用 updateChannelExWithMediaOptions:connection: 传入新的 Token。
+
+  - 调用 [renewToken:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_renewtoken) 传入新的 Token。
+  - 或调用 [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_updatechannelmediaoptions)，并在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 的 `token` 中传入新的 Token。
+- 多频道场景：调用 [updateChannelExWithMediaOptions:connection:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__timing"></a>
 
@@ -2010,9 +2025,10 @@ Token。
 收到该回调时，你需要在你的 Token 服务器上生成一个新的 Token，并可以通过以下方式之一更新 Token：
 
 - 单频道场景：
-  - 调用 renewToken: 传入新的 Token。
-  - 调用 leaveChannel:leaveChannelBlock: 离开当前频道，然后在调用 joinChannelByToken:channelId:uid:mediaOptions:joinSuccess: 加入频道时传入新的 Token。
-- 多频道场景：调用 updateChannelExWithMediaOptions:connection: 传入新的 Token。
+
+  - 调用 [renewToken:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_renewtoken) 传入新的 Token。
+  - 调用 [leaveChannel:leaveChannelBlock:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_leavechannel2) 离开当前频道，然后在调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 加入频道时传入新的 Token。
+- 多频道场景：调用 [updateChannelExWithMediaOptions:connection:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
 
 SDK 会在 Token 过期前 30 秒触发该回调，提醒应用更新 Token。
 

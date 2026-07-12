@@ -104,7 +104,7 @@ description: "设置 SDK 使用的音频播放设备是否跟随系统默认音�
 
 ### 返回值
 
-- 方法调用成功时，返回一个 AgoraRtcDeviceInfo 对象，详见 AgoraRtcDeviceInfo。
+- 方法调用成功时，返回一个 [AgoraRtcDeviceInfo](/zh-CN/api-reference/rtc/macos/class-agorartcdeviceinfo) 对象，详见 [AgoraRtcDeviceInfo](/zh-CN/api-reference/rtc/macos/class-agorartcdeviceinfo)。
 - 方法调用失败时，返回 nil。
 
 ### 所属接口类
@@ -130,7 +130,7 @@ description: "设置 SDK 使用的音频播放设备是否跟随系统默认音�
 - 可以在加入频道前或加入频道后调用该方法。
 - 该方法仅在主播角色下生效。
 - 该方法仅测试本地音频设备，不涉及网络状况。
-- 测试完成后，请调用 stopAudioDeviceLoopbackTest 停止音频设备回路测试。
+- 测试完成后，请调用 [stopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/macos/audio-device#api_irtcengine_stopaudiodeviceloopbacktest_irtcengine) 停止音频设备回路测试。
 :::
 
 <a id="api_irtcengine_startaudiodeviceloopbacktest_irtcengine__parameters"></a>
@@ -232,6 +232,7 @@ SDK 触发 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -2：参数无效。请检查参数设置。
 
 ### 所属接口类
@@ -254,7 +255,7 @@ SDK 触发 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN
 :::info[注]
 - 你可以在加入频道前或后调用此方法。
 - 此方法仅在主播角色下生效。
-- 调用 startAudioDeviceLoopbackTest: 方法开始回路测试后，请确保调用此方法停止测试。
+- 调用 [startAudioDeviceLoopbackTest:](/zh-CN/api-reference/rtc/macos/audio-device#api_irtcengine_startaudiodeviceloopbacktest_irtcengine) 方法开始回路测试后，请确保调用此方法停止测试。
 :::
 
 <a id="api_irtcengine_stopaudiodeviceloopbacktest_irtcengine__return_values"></a>

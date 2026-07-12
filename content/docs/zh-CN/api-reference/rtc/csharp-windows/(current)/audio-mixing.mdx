@@ -354,7 +354,7 @@ public abstract int GetAudioTrackCount();
 ### 详情
 
 :::info[注]
-- 你需要在调用 StartAudioMixing [2/2] 并收到 OnAudioMixingStateChanged (AUDIO_MIXING_STATE_PLAYING) 回调后调用该方法。
+- 你需要在调用 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_getaudiotrackcount__return_values"></a>
@@ -462,8 +462,8 @@ public abstract int SelectAudioTrack(int index);
 获取音乐文件的音轨数量后，你可以调用该方法指定任一音轨进行播放。例如，如果一个多音轨文件的不同音轨存放了不同语言的歌曲，则你可以调用该方法设置音乐文件的播放语言。
 
 :::info[注]
-- 该方法支持的音频文件格式见 RTC SDK 支持播放哪些格式的音频文件？。
-- 你需要在调用 StartAudioMixing [2/2] 并收到 OnAudioMixingStateChanged (AUDIO_MIXING_STATE_PLAYING) 回调后调用该方法。
+- 该方法支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件？](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。
+- 你需要在调用 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_selectaudiotrack__parameters"></a>
@@ -682,8 +682,8 @@ public abstract int SetAudioMixingPosition(int pos);
 
 是否只在本地播放音乐文件：
 
-- true：只在本地播放音乐文件，只有本地用户能听到音乐。
-- false：将本地播放的音乐文件发布至远端，本地用户和远端用户都能听到音乐。
+- `true`：只在本地播放音乐文件，只有本地用户能听到音乐。
+- `false`：将本地播放的音乐文件发布至远端，本地用户和远端用户都能听到音乐。
 
 #### `cycle`
 
@@ -698,12 +698,14 @@ public abstract int SetAudioMixingPosition(int pos);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败：
+
   - -1：一般性的错误（未明确归类）。
   - -2：设置了无效的参数。
   - -3：SDK 尚未准备好：
+
     - 请检查是否已开启音频模块。
     - 请检查程序集完整性。
-    - IRtcEngine 初始化失败。请重新初始化 IRtcEngine。
+    - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 IRtcEngine。
 
 <a id="api_irtcengine_startaudiomixing2"></a>
 
@@ -748,14 +750,14 @@ public abstract int StartAudioMixing(string filePath, bool loopback, int cycle, 
 
 文件路径：
 
-- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 C:\\music\\audio.mp4。
+- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。
 
 #### `loopback`
 
 是否只在本地播放音乐文件：
 
-- true：只在本地播放音乐文件，只有本地用户能听到音乐。
-- false：将本地播放的音乐文件发布至远端，本地用户和远端用户都能听到音乐。
+- `true`：只在本地播放音乐文件，只有本地用户能听到音乐。
+- `false`：将本地播放的音乐文件发布至远端，本地用户和远端用户都能听到音乐。
 
 #### `cycle`
 
@@ -774,12 +776,14 @@ public abstract int StartAudioMixing(string filePath, bool loopback, int cycle, 
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败：
+
   - -1：一般性的错误（未明确归类）。
   - -2：设置了无效的参数。
   - -3：SDK 尚未准备好：
+
     - 请检查是否已开启音频模块。
     - 请检查程序集完整性。
-    - IRtcEngine 初始化失败。请重新初始化 IRtcEngine。
+    - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 IRtcEngine。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)

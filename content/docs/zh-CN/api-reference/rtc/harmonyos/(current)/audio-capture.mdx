@@ -88,8 +88,8 @@ public abstract adjustRecordingSignalVolume(volume: number): number;
 
 开启/关闭耳返功能:
 
-- true: 开启耳返功能。
-- false: （默认）关闭耳返功能。
+- `true`: 开启耳返功能。
+- `false`: （默认）关闭耳返功能。
 
 <a id="api_irtcengine_enableinearmonitoring__return_values"></a>
 
@@ -97,6 +97,7 @@ public abstract adjustRecordingSignalVolume(volume: number): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
   - - 8: 请确保当前的音频路由为蓝牙或耳机。
 
 <a id="api_irtcengine_enableinearmonitoring2"></a>
@@ -135,8 +136,8 @@ public abstract enableInEarMonitoring(enabled: boolean, includeAudioFilters?: Co
 
 开启/关闭耳返功能:
 
-- true: 开启耳返功能。
-- false: （默认）关闭耳返功能。
+- `true`: 开启耳返功能。
+- `false`: （默认）关闭耳返功能。
 
 #### `includeAudioFilters`
 
@@ -148,6 +149,7 @@ public abstract enableInEarMonitoring(enabled: boolean, includeAudioFilters?: Co
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
   - - 8: 请确保当前的音频路由为蓝牙或耳机。
 
 ### 所属接口类
@@ -204,8 +206,8 @@ public abstract enableLocalAudio(enabled: boolean): number;
 
 #### `enabled`
 
-- true: 重新开启本地音频功能，即开启本地音频采集（默认）；
-- false: 关闭本地音频功能，即停止本地音频采集。
+- `true`: 重新开启本地音频功能，即开启本地音频采集（默认）；
+- `false`: 关闭本地音频功能，即停止本地音频采集。
 
 <a id="api_irtcengine_enablelocalaudio__return_values"></a>
 
@@ -261,6 +263,7 @@ public abstract setInEarMonitoringVolume(volume: number): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
   - -2: 参数设置无效，例如耳返音量超出取值范围 (&lt; 0 或 &gt; 400)。
 
 ### 所属接口类

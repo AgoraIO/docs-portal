@@ -22,9 +22,9 @@ description: "设置是否镜像采集的视频。"
 
 如果你希望获取的视频数据是原始视频的镜像图像，在调用 [setVideoFrameDelegate:](/zh-CN/api-reference/rtc/macos/video-raw#api_irtcengine_registervideoframeobserver) 时需要注册该回调。成功注册视频帧观察器后，SDK 每次接收到视频帧时都会触发该回调。你需要在该回调的返回值中设置是否对视频帧进行镜像处理。
 
-- 在 iOS 平台，该回调支持的视频数据格式包括：I420、RGBA 和 CVPixelBuffer。
+- 在 iOS 平台，该回调支持的视频数据格式包括：I420、RGBA 和 `CVPixelBuffer`。
 - 在 macOS 平台，该回调支持的视频数据格式包括：I420 和 RGBA。
-- 此方法和 setVideoEncoderConfiguration: 方法都支持设置镜像效果。声网建议你仅使用其中一种方式进行设置，同时使用两种方式会导致镜像效果叠加，镜像设置失效。
+- 此方法和 [setVideoEncoderConfiguration:](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_setvideoencoderconfiguration) 方法都支持设置镜像效果。声网建议你仅使用其中一种方式进行设置，同时使用两种方式会导致镜像效果叠加，镜像设置失效。
 
 <a id="api_ivideoframeobserver_getmirrorapplied__timing"></a>
 
@@ -60,15 +60,15 @@ description: "设置是否镜像采集的视频。"
 
 在你成功注册视频数据观察器后，SDK 会通过该回调判断是否在特定的视频帧处理位置触发 `onCaptureVideoFrame`、 `onRenderVideoFrame` 和 `onPreEncodeVideoFrame` 回调，从而让你观察本地采集的视频数据、远端发送的视频数据以及编码前的视频数据。你可以根据实际场景，通过修改返回值设置一个或多个需要观察的位置：
 
-- AgoraVideoModulePositionPostCapture (1 &lt;&lt; 0)：视频采集后的位置，对应 onCaptureVideoFrame 回调。
-- AgoraVideoModulePositionPreRenderer (1 &lt;&lt; 1)：接收的远端视频数据在渲染前的位置，对应 onRenderVideoFrame 回调。
-- AgoraVideoModulePositionPreEncoder (1 &lt;&lt; 2)：编码前的视频数据位置，对应 onPreEncodeVideoFrame 回调。
+- `AgoraVideoModulePositionPostCapture` (1 &lt;&lt; 0)：视频采集后的位置，对应 `onCaptureVideoFrame` 回调。
+- `AgoraVideoModulePositionPreRenderer` (1 &lt;&lt; 1)：接收的远端视频数据在渲染前的位置，对应 `onRenderVideoFrame` 回调。
+- `AgoraVideoModulePositionPreEncoder` (1 &lt;&lt; 2)：编码前的视频数据位置，对应 `onPreEncodeVideoFrame` 回调。
 
 :::info[注]
-- 使用 | （按位或运算符）以观察多个帧位置。
-- 默认情况下，该回调观察 AgoraVideoModulePositionPostCapture (1 &lt;&lt; 0) 和 AgoraVideoModulePositionPreRenderer (1 &lt;&lt; 1)。
+- 使用 `|` （按位或运算符）以观察多个帧位置。
+- 默认情况下，该回调观察 `AgoraVideoModulePositionPostCapture` (1 &lt;&lt; 0) 和 `AgoraVideoModulePositionPreRenderer` (1 &lt;&lt; 1)。
 - 为节省系统资源，你可以减少需要观察的帧位置数量。
-- 当视频处理模式为 AgoraVideoFrameProcessModeReadWrite 且观察位置设置为 AgoraVideoModulePositionPreEncoder | AgoraVideoModulePositionPostCapture 时， getMirrorApplied 不生效。你需要修改视频处理模式或观察器的位置。
+- 当视频处理模式为 `AgoraVideoFrameProcessModeReadWrite` 且观察位置设置为 `AgoraVideoModulePositionPreEncoder | AgoraVideoModulePositionPostCapture` 时， [getMirrorApplied](/zh-CN/api-reference/rtc/macos/video-raw#api_ivideoframeobserver_getmirrorapplied) 不生效。你需要修改视频处理模式或观察器的位置。
 :::
 
 <a id="api_ivideoframeobserver_getobservedframeposition__return_values"></a>
@@ -97,7 +97,7 @@ description: "设置是否镜像采集的视频。"
 如果采集设备上的视频已根据 [AgoraOutputVideoFrame](/zh-CN/api-reference/rtc/macos/class-videoframe) 中的 `rotation` 进行了旋转，则你无需调用该方法设置视频旋转。
 
 :::info[注]
-- 在 iOS 上，该回调支持的视频数据格式包括：I420、RGBA 和 CVPixelBuffer。
+- 在 iOS 上，该回调支持的视频数据格式包括：I420、RGBA 和 `CVPixelBuffer`。
 - 在 macOS 上，该回调支持的视频数据格式包括：I420 和 RGBA。
 :::
 
@@ -130,7 +130,7 @@ description: "设置是否镜像采集的视频。"
 :::info[注]
 原始视频的默认像素格式类型（`AgoraVideoFormatDefault` ）如下：
 
-- 默认的视频帧类型可能为 I420 或 CVPixelBufferRef。
+- 默认的视频帧类型可能为 `I420` 或 `CVPixelBufferRef`。
 :::
 
 <a id="api_ivideoframeobserver_getvideoformatpreference__return_values"></a>
@@ -209,7 +209,7 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 
 - YES：注册原始视频帧观察者成功。
 - NO：注册原始视频帧观察者失败。
-- &lt; 0：方法调用失败。
+- `<0`：方法调用失败。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
@@ -232,8 +232,8 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 
 :::info[注]
 - 如果你获取的视频数据类型为 RGBA，SDK 不支持处理 alpha 通道的数据。
-- 建议你确保 videoFrame 中修改后的参数与视频帧缓冲区中视频帧的实际情况一致，否则可能导致本地预览和远端视频显示出现异常旋转、拉伸等问题。
-- 默认通过该回调获取的视频格式为 I420 或 CVPixelBufferRef。如果你需要其他格式，可以在 getVideoFormatPreference 回调中设置期望的数据格式。
+- 建议你确保 `videoFrame` 中修改后的参数与视频帧缓冲区中视频帧的实际情况一致，否则可能导致本地预览和远端视频显示出现异常旋转、拉伸等问题。
+- 默认通过该回调获取的视频格式为 I420 或 `CVPixelBufferRef`。如果你需要其他格式，可以在 [getVideoFormatPreference](/zh-CN/api-reference/rtc/macos/video-raw#api_ivideoframeobserver_getvideoformatpreference) 回调中设置期望的数据格式。
 :::
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__timing"></a>
@@ -250,7 +250,7 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 
 视频帧。注意：通过该回调获取的视频帧数据格式的默认值如下：
 
-- iOS/macOS：I420 或 CVPixelBufferRef。详见 AgoraOutputVideoFrame。
+- iOS/macOS：I420 或 `CVPixelBufferRef`。详见 [AgoraOutputVideoFrame](/zh-CN/api-reference/rtc/macos/class-videoframe)。
 
 #### `sourceType`
 
@@ -260,10 +260,12 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 
 ### 返回值
 
-- 当视频处理模式为 AgoraVideoFrameProcessModeReadOnly 时：
+- 当视频处理模式为 `AgoraVideoFrameProcessModeReadOnly` 时：
+
   - YES：保留以供将来使用。
   - NO：保留以供将来使用。
-- 当视频处理模式为 AgoraVideoFrameProcessModeReadWrite 时：
+- 当视频处理模式为 `AgoraVideoFrameProcessModeReadWrite` 时：
+
   - YES：设置 SDK 接收该视频帧。
   - NO：设置 SDK 丢弃该视频帧。
 
@@ -287,10 +289,10 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 在你成功注册视频帧观察器后，SDK 每次接收到视频帧时都会触发该回调。在该回调中，你可以获取编码前的视频数据，并根据具体场景对其进行处理。处理完成后，你可以将处理后的视频数据返回给 SDK。
 
 :::info[注]
-- 如果你需要将预处理后的视频数据发送回 SDK，你需要先调用 getVideoFrameProcessMode 将视频处理模式设置为读写模式（AgoraVideoFrameProcessModeReadWrite ）。
-- 如果你需要获取从第二屏幕采集的编码前的视频数据，你需要通过 getObservedFramePosition 设置帧位置为 AgoraVideoModulePositionPreEncoder （1 &lt;&lt; 2）。
+- 如果你需要将预处理后的视频数据发送回 SDK，你需要先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/macos/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) 将视频处理模式设置为读写模式（`AgoraVideoFrameProcessModeReadWrite` ）。
+- 如果你需要获取从第二屏幕采集的编码前的视频数据，你需要通过 [getObservedFramePosition](/zh-CN/api-reference/rtc/macos/video-raw#api_ivideoframeobserver_getobservedframeposition) 设置帧位置为 `AgoraVideoModulePositionPreEncoder` （1 &lt;&lt; 2）。
 - 该回调获取的视频数据已被预处理，包括裁剪、旋转和美颜特效。
-- 建议你确保 videoFrame 中修改后的参数与视频帧缓冲区中视频帧的实际情况一致。否则，可能会导致本地预览和远端视频显示出现意外的旋转、变形等问题。
+- 建议你确保 `videoFrame` 中修改后的参数与视频帧缓冲区中视频帧的实际情况一致。否则，可能会导致本地预览和远端视频显示出现意外的旋转、变形等问题。
 :::
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__timing"></a>
@@ -307,7 +309,7 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 
 视频帧。通过该回调获取的视频帧数据格式默认如下：
 
-- iOS/macOS：I420 或 CVPixelBufferRef。详见 AgoraOutputVideoFrame。
+- iOS/macOS：I420 或 `CVPixelBufferRef`。详见 [AgoraOutputVideoFrame](/zh-CN/api-reference/rtc/macos/class-videoframe)。
 
 #### `sourceType`
 
@@ -317,10 +319,12 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 
 ### 返回值
 
-- 当视频处理模式为 AgoraVideoFrameProcessModeReadOnly 时：
+- 当视频处理模式为 `AgoraVideoFrameProcessModeReadOnly` 时：
+
   - YES：保留以供将来使用。
   - NO：保留以供将来使用。
-- 当视频处理模式为 AgoraVideoFrameProcessModeReadWrite 时：
+- 当视频处理模式为 `AgoraVideoFrameProcessModeReadWrite` 时：
+
   - YES：设置 SDK 接收该视频帧。
   - NO：设置 SDK 丢弃该视频帧。
 
@@ -344,9 +348,9 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 在你成功注册视频帧观察器后，SDK 每次接收到视频帧时都会触发该回调。在该回调中，你可以在渲染前获取远端发送的视频数据，并根据具体场景进行处理。通过该回调获取的视频格式默认为 I420 或 `CVPixelBufferRef`。如果你需要其他格式，可以在 [getVideoFormatPreference](/zh-CN/api-reference/rtc/macos/video-raw#api_ivideoframeobserver_getvideoformatpreference) 回调中设置期望的数据格式。
 
 :::info[注]
-- 如果你需要将预处理后的视频数据发送给 SDK，需要先调用 getVideoFrameProcessMode 将视频处理模式设置为读写模式（AgoraVideoFrameProcessModeReadWrite ）。
+- 如果你需要将预处理后的视频数据发送给 SDK，需要先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/macos/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) 将视频处理模式设置为读写模式（`AgoraVideoFrameProcessModeReadWrite` ）。
 - 如果你获取的视频数据类型为 RGBA，SDK 不支持处理 alpha 通道的数据。
-- 建议确保 videoFrame 中修改后的参数与视频帧缓冲区中视频帧的实际情况一致，否则可能导致本地预览和远端视频显示出现异常旋转、拉伸等问题。
+- 建议确保 `videoFrame` 中修改后的参数与视频帧缓冲区中视频帧的实际情况一致，否则可能导致本地预览和远端视频显示出现异常旋转、拉伸等问题。
 :::
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__timing"></a>
@@ -363,7 +367,7 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 
 视频帧。通过该回调获取的视频帧数据格式默认如下：
 
-- iOS/macOS：I420 或 CVPixelBufferRef。详见 AgoraOutputVideoFrame。
+- iOS/macOS：I420 或 `CVPixelBufferRef`。详见 [AgoraOutputVideoFrame](/zh-CN/api-reference/rtc/macos/class-videoframe)。
 
 #### `uid`
 
@@ -377,10 +381,12 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 
 ### 返回值
 
-- 当视频处理模式为 AgoraVideoFrameProcessModeReadOnly 时：
+- 当视频处理模式为 `AgoraVideoFrameProcessModeReadOnly` 时：
+
   - YES：保留以供将来使用。
   - NO：保留以供将来使用。
-- 当视频处理模式为 AgoraVideoFrameProcessModeReadWrite 时：
+- 当视频处理模式为 `AgoraVideoFrameProcessModeReadWrite` 时：
+
   - YES：设置 SDK 接收该视频帧。
   - NO：设置 SDK 丢弃该视频帧。
 

@@ -110,7 +110,7 @@ final void Function(VideoSourceType sourceType, VideoFrame videoFrame)?
 
 :::info[注]
 - 如果你获取到的视频数据类型为 RGBA，SDK 不支持对 Alpha 通道的值进行处理。
-- 建议你在修改 videoFrame 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+- 建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
 - 由于框架的限制，该回调不支持将处理后的视频数据发送回 SDK。
 :::
 
@@ -190,7 +190,7 @@ final void Function(VideoFrame videoFrame)? onPreEncodeVideoFrame;
 :::info[注]
 - 由于框架的限制，该回调不支持将处理后的视频数据发送回 SDK。
 - 此处获取的视频数据已经过前处理，如裁剪、旋转和美颜等。
-- 建议你在修改 videoFrame 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+- 建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
 :::
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__parameters"></a>
@@ -237,7 +237,7 @@ final void Function(String channelId, int remoteUid, VideoFrame videoFrame)?
 :::info[注]
 - 如果你获取到的视频数据类型为 RGBA，SDK 不支持对 Alpha 通道的值进行处理。
 - 由于框架的限制，该回调不支持将处理后的视频数据发送回 SDK。
-- 建议你在修改 videoFrame 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+- 建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
 :::
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__parameters"></a>

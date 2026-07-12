@@ -6,9 +6,11 @@ description: "IRemoteTrack API reference."
 远端轨道对象的基础类，为远端音频轨道 [RemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-audio-track) 和远端视频轨道 [RemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-video-track) 提供一些公共的方法。
 
 - ITrack
+
   - IRemoteTrack
-    - IRemoteAudioTrack
-    - IRemoteVideoTrack
+
+    - [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-audio-track)
+    - [IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-video-track)
 
 ## Events
 
@@ -80,8 +82,8 @@ isPlaying: boolean
 
 媒体轨道是否正在页面上播放。
 
-- true: 媒体轨道正在页面上播放。
-- false: 媒体轨道没有在页面上播放。
+- `true`: 媒体轨道正在页面上播放。
+- `false`: 媒体轨道没有在页面上播放。
 
 <a id="trackmediatype"></a>
 
@@ -93,8 +95,8 @@ trackMediaType: "audio" | "video"
 
 媒体轨道的类型：
 
-- "audio": 音频轨道。
-- "video": 视频轨道。
+- `"audio"`: 音频轨道。
+- `"video"`: 视频轨道。
 
 ## Methods
 
@@ -321,7 +323,7 @@ play(element?: string | HTMLElement): void
 
 | Name | Description |
 | --- | --- |
-| Optional element: string \| HTMLElement | 指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：<br />- string: 指定该 DOM 元素的 ID 值。<br />- HTMLElement: 直接传入一个 DOM 元素对象。 |
+| Optional element: string \| HTMLElement | 指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：<br />- `string`: 指定该 DOM 元素的 ID 值。<br />- `HTMLElement`: 直接传入一个 DOM 元素对象。 |
 
 #### Returns
 

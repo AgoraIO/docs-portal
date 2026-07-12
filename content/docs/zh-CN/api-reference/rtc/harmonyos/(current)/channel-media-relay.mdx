@@ -34,6 +34,7 @@ public abstract pauseAllChannelMediaRelay():number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -67,6 +68,7 @@ public abstract resumeAllChannelMediaRelay():number;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有暂停的跨频道媒体流转发。
 
 ### 所属接口类
@@ -98,7 +100,7 @@ public abstract startOrUpdateChannelMediaRelay(channelMediaRelayConfiguration: C
 :::warning[注意]
 - 请在成功加入频道后调用该方法。
 - 在直播场景中，只有角色为主播的用户才能调用该方法。
-- 跨频道媒体流转发功能需要 联系技术支持 开通。
+- 跨频道媒体流转发功能需要 [联系技术支持](https://ticket.shengwang.cn/) 开通。
 - 该功能不支持 String 型 UID。
 :::
 
@@ -116,6 +118,7 @@ public abstract startOrUpdateChannelMediaRelay(channelMediaRelayConfiguration: C
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -8：内部状态错误。可能因为用户角色不是主播。
@@ -149,7 +152,7 @@ public abstract startOrUpdateChannelMediaRelayEx(channelMediaRelayConfiguration:
 :::warning[注意]
 - 请在成功加入频道后调用该方法。
 - 在直播场景中，只有角色为主播的用户才能调用该方法。
-- 跨频道媒体流转发功能需要 联系技术支持 开通。
+- 跨频道媒体流转发功能需要 [联系技术支持](https://ticket.shengwang.cn/) 开通。
 - 该功能不支持 String 型 UID。
 :::
 
@@ -171,6 +174,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -8：内部状态错误。可能因为用户角色不是主播。
@@ -206,6 +210,7 @@ public abstract stopChannelMediaRelay(): number;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类

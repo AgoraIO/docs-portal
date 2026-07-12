@@ -208,7 +208,7 @@ native AgoraLocalUser io.agora.rtc.AgoraRtcConn.getLocalUser()
 
 #### Returns
 
-- AgoraLocalUser 对象：方法调用成功。
+- [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java-api/classio-1-1agora-1-1rtc-1-1-agora-local-user) 对象：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="a93c9243d6f6f155a526ce60945fd60d9"></a>
@@ -354,7 +354,7 @@ v4.4.32。请改用 [sendStreamMessage(int streamId, byte [] messageData)](#a128
 
 ##### `注解`
 
-- 请确保在调用该方法前，已调用 createDataStream 创建了数据通道。
+- 请确保在调用该方法前，已调用 [createDataStream](#a9af79d071be59940c37dd2338fcdb67b) 创建了数据通道。
 - 直播场景下，该方法仅适用于主播用户。
 
 #### Parameters
@@ -390,7 +390,7 @@ int io.agora.rtc.AgoraRtcConn.sendStreamMessage(int streamId, byte[] messageData
 
 ##### `注解`
 
-- 请确保在调用该方法前，已调用 createDataStream 创建了数据通道。
+- 请确保在调用该方法前，已调用 [createDataStream](#a9af79d071be59940c37dd2338fcdb67b) 创建了数据通道。
 - 直播场景下，该方法仅适用于主播用户。
 
 #### Parameters
@@ -419,12 +419,12 @@ native int io.agora.rtc.AgoraRtcConn.startLastmileProbeTest(LastmileProbeConfig 
 
 启用该方法后，SDK 会依次返回如下 2 个回调：
 
-- onLastmileQuality: 视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
-- onLastmileProbeResult: 视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
+- [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a879a97e08a9c3ad444a394ec2eca9c4a): 视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
+- [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#ad174cd3a03ae31bf36b97eab3e82fe12): 视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
 
 ##### `注解`
 
-- 调用该方法后，在收到 onLastmileQuality 和 onLastmileProbeResult 回调之前请不要调用其他方法，否则可能会由于 API 操作过于频繁导致此方法无法执行。
+- 调用该方法后，在收到 [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a879a97e08a9c3ad444a394ec2eca9c4a) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/java-api/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#ad174cd3a03ae31bf36b97eab3e82fe12) 回调之前请不要调用其他方法，否则可能会由于 API 操作过于频繁导致此方法无法执行。
 - 在直播场景中，如果本地用户为主播，请勿加入频道后调用该方法。
 
 #### Parameters

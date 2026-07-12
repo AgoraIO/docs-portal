@@ -30,7 +30,7 @@ virtual IAudioDeviceCollection *enumeratePlaybackDevices() = 0;
 
 ### 返回值
 
-- 方法调用成功，返回一个 IAudioDeviceCollection 对象，详见 IAudioDeviceCollection。
+- 方法调用成功，返回一个 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection) 对象，详见 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)。
 - 方法调用失败，返回 NULL。
 
 ### 所属接口类
@@ -60,7 +60,7 @@ virtual IAudioDeviceCollection *enumerateRecordingDevices() = 0;
 
 ### 返回值
 
-- 方法调用成功，返回 IAudioDeviceCollection 对象，详见 IAudioDeviceCollection。
+- 方法调用成功，返回 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection) 对象，详见 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)。
 - 方法调用失败，返回 NULL。
 
 ### 所属接口类
@@ -334,7 +334,7 @@ virtual int getDefaultDevice(char deviceName[MAX_DEVICE_ID_LENGTH], char deviceI
 <a id="api_iaudiodevicecollection_getdefaultdevice_iaudiodevicecollection__detailed_desc"></a>
 
 - 该方法仅适用于 Windows 和 macOS 平台。
-- 在调用该方法前，你需要先调用 enumeratePlaybackDevices 或 enumerateRecordingDevices 获取设备列表。
+- 在调用该方法前，你需要先调用 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 或 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取设备列表。
 
 <a id="api_iaudiodevicecollection_getdefaultdevice_iaudiodevicecollection__parameters"></a>
 
@@ -1320,7 +1320,7 @@ virtual int startAudioDeviceLoopbackTest(int indicationInterval) = 0;
 - 可以在加入频道前或加入频道后调用该方法。
 - 该方法仅在主播角色调用时生效。
 - 该方法仅测试本地音频设备，不涉及网络状况。
-- 测试完成后，请调用 stopAudioDeviceLoopbackTest 停止音频设备回路测试。
+- 测试完成后，请调用 [stopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__parameters"></a>
@@ -1413,6 +1413,7 @@ virtual int startRecordingDeviceTest(int indicationInterval) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -2：参数无效，请检查参数设置。
 
 ### 所属接口类

@@ -22,6 +22,7 @@ public abstract startScreenCapture(screenCaptureParameters: ScreenCaptureParamet
 
 :::warning[注意]
 - 屏幕共享流的计费标准以 VideoCaptureParameters 中的 dimensions 值为准：
+
   - 当你未传值时，以 1280 × 720 计费。
   - 当你传值时，以你传入的值计费。
 :::
@@ -38,8 +39,8 @@ public abstract startScreenCapture(screenCaptureParameters: ScreenCaptureParamet
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 joinChannelWithOptions 加入频道，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 updateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道，并设置 publishScreenCaptureVideo 为 `true`，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 publishScreenCaptureVideo 为 `true`，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapture__restriction"></a>
 
@@ -147,5 +148,6 @@ public abstract updateScreenCaptureParameters(screenCaptureParameters: ScreenCap
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 stopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/harmonyos/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。

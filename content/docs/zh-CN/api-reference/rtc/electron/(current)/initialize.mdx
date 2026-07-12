@@ -171,6 +171,7 @@ abstract initialize(context: RtcEngineContext): number;
 
 - 0: 方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 设置了无效的参数。
   - -7: SDK 初始化失败。
@@ -197,8 +198,8 @@ abstract release(sync?: boolean): void;
 该方法释放 SDK 使用的所有资源。有些 App 只在用户需要时才进行实时音视频通信，不需要时则将资源释放出来用于其他操作，该方法适用于此类情况。 调用该方法后，你将无法再使用 SDK 的其它方法和回调。如需再次使用实时音视频通信功能， 你必须依次重新调用 [createAgoraRtcEngine](/zh-CN/api-reference/rtc/electron/initialize#api_irtcengine_createagorartcengine) 和 [initialize](/zh-CN/api-reference/rtc/electron/initialize#api_irtcengine_initialize) 方法创建一个新的 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 对象。
 
 :::info[注]
-- 该方法为同步调用。需要等待 IRtcEngine 资源释放后才能执行其他操作（例如：创建一个新的 IRtcEngine 对象），因此建议在子线程中调用该方法，避免主线程阻塞。
-- 不建议在 SDK 的回调中调用 release，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
+- 该方法为同步调用。需要等待 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 资源释放后才能执行其他操作（例如：创建一个新的 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 对象），因此建议在子线程中调用该方法，避免主线程阻塞。
+- 不建议在 SDK 的回调中调用 [release](/zh-CN/api-reference/rtc/electron/initialize#api_irtcengine_release)，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
 :::
 
 <a id="api_irtcengine_release__parameters"></a>

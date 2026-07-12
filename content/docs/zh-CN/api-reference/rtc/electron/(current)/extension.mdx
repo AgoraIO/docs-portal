@@ -71,6 +71,7 @@ abstract enableExtension(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
   - -3: 该插件动态库没有被加载。声网推荐你检查该动态库是否存放在预期的位置，或该动态库名是否正确。
 
 ### 所属接口类
@@ -177,7 +178,7 @@ abstract loadExtensionProvider(
 
 是否在插件使用完毕后自动卸载：
 
-- true: 当 IRtcEngine 销毁时自动卸载插件。
+- true: 当 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 销毁时自动卸载插件。
 - false: 不自动卸载插件，直到进程退出（推荐）。
 
 <a id="api_irtcengine_loadextensionprovider__return_values"></a>
@@ -219,9 +220,9 @@ abstract registerExtension(
 
 ### 调用时机
 
-- 建议你在初始化 IRtcEngine 后、加入频道前调用该方法。
-- 对于视频相关插件（例如美颜插件），需要在启用视频模块（enableVideo / enableLocalVideo ）之前调用该方法。
-- 调用该方法前，需要先调用 loadExtensionProvider 加载插件。
+- 建议你在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 后、加入频道前调用该方法。
+- 对于视频相关插件（例如美颜插件），需要在启用视频模块（[enableVideo](/zh-CN/api-reference/rtc/electron/video-basic#api_irtcengine_enablevideo) / [enableLocalVideo](/zh-CN/api-reference/rtc/electron/video-basic#api_irtcengine_enablelocalvideo) ）之前调用该方法。
+- 调用该方法前，需要先调用 [loadExtensionProvider](/zh-CN/api-reference/rtc/electron/extension#api_irtcengine_loadextensionprovider) 加载插件。
 
 <a id="api_irtcengine_registerextension__parameters"></a>
 
@@ -245,6 +246,7 @@ abstract registerExtension(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
   - -3: 该插件动态库没有被加载。声网推荐你检查该动态库是否存放在预期的位置，或该动态库名是否正确。
 
 ### 所属接口类

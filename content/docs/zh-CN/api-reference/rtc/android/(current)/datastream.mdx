@@ -48,7 +48,7 @@ public abstract int createDataStream(boolean reliable, boolean ordered);
 
 是否保证接收端在五秒内收到数据流：
 
-- true：接收端会在五秒内收到发送端的数据。如果未收到，SDK 会触发 onStreamMessageError 回调并返回错误码。
+- true：接收端会在五秒内收到发送端的数据。如果未收到，SDK 会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/android/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并返回错误码。
 - false：不保证接收端在五秒内收到数据，延迟或丢失不会触发错误回调。
 
 #### `ordered`
@@ -164,7 +164,7 @@ public abstract int createDataStreamEx(boolean reliable, boolean ordered, RtcCon
 
 是否保证接收端在五秒内接收到数据流：
 
-- true：接收端会在五秒内接收到发送端的数据。如果接收端在五秒内未收到数据，SDK 会触发 onStreamMessageError 回调并返回错误码。
+- true：接收端会在五秒内接收到发送端的数据。如果接收端在五秒内未收到数据，SDK 会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/android/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并返回错误码。
 - false：不保证接收端在五秒内接收到数据流，延迟或丢失数据不会返回错误信息。
 
 #### `ordered`
@@ -263,7 +263,7 @@ public abstract int sendStreamMessage(int streamId, byte[] message);
 
 :::info[注]
 - 如果你需要更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
-- 必须在调用 createDataStream 并加入频道后调用该方法。
+- 必须在调用 `createDataStream` 并加入频道后调用该方法。
 - 该方法仅适用于主播角色。
 :::
 
@@ -316,8 +316,8 @@ public abstract int sendStreamMessageEx(int streamId, byte[] message, RtcConnect
 
 :::info[注]
 - 如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用声网的实时消息。
-- 请在调用 joinChannelEx 后再调用该方法。
-- 请确保在调用该方法前已通过 createDataStreamEx 创建数据通道。
+- 请在调用 [joinChannelEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex) 后再调用该方法。
+- 请确保在调用该方法前已通过 `createDataStreamEx` 创建数据通道。
 :::
 
 <a id="api_irtcengineex_sendstreammessageex__scenario"></a>

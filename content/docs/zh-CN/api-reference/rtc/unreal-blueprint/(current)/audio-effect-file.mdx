@@ -74,8 +74,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 文件路径：
 
-- Android: 文件路径，需精确到文件名及后缀。支持在线文件的 URL 地址，本地文件的 URI 地址、绝对路径或以 /assets/ 开头的路径。通过绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址访问本地文件。例如 content://com.android.providers.media.documents/document/audio%3A14441。
-- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 C:\\music\\audio.mp4。
+- Android: 文件路径，需精确到文件名及后缀。支持在线文件的 URL 地址，本地文件的 URI 地址、绝对路径或以 `/assets/` 开头的路径。通过绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址访问本地文件。例如 `content://com.android.providers.media.documents/document/audio%3A14441`。
+- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。
 
 <a id="api_irtcengine_geteffectduration__return_values"></a>
 
@@ -232,7 +232,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 音效文件循环播放的次数：
 
-- -1: 无限循环播放音效文件，直至调用 StopEffect 或 StopAllEffects 后停止。
+- -1: 无限循环播放音效文件，直至调用 [StopEffect](/zh-CN/api-reference/rtc/unreal-blueprint/audio-effect-file#api_irtcengine_stopeffect) 或 [StopAllEffects](/zh-CN/api-reference/rtc/unreal-blueprint/audio-effect-file#api_irtcengine_stopalleffects) 后停止。
 - 0: 播放音效文件一次。
 - 1: 播放音效文件两次。
 
@@ -256,8 +256,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否将音效发布到远端：
 
-- true: 将音效发布到远端。本地和远端用户都能听到该音效。
-- false: （默认）不将音效发布到远端。只能本地用户能听到该音效。
+- `true`: 将音效发布到远端。本地和远端用户都能听到该音效。
+- `false`: （默认）不将音效发布到远端。只能本地用户能听到该音效。
 
 <a id="api_irtcengine_playalleffects__return_values"></a>
 
@@ -351,8 +351,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否将音效发布至远端：
 
-- true: 将音效发布至远端。本地用户和远端用户都能听到音效。
-- false: 不将音效发布至远端。只有本地用户能听到音效。
+- `true`: 将音效发布至远端。本地用户和远端用户都能听到音效。
+- `false`: 不将音效发布至远端。只有本地用户能听到音效。
 
 #### `startPos`
 
@@ -411,8 +411,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 文件路径：
 
-- Android: 文件路径，需精确到文件名及后缀。支持在线文件的 URL 地址，本地文件的 URI 地址、绝对路径或以 /assets/ 开头的路径。通过绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址访问本地文件。例如 content://com.android.providers.media.documents/document/audio%3A14441。
-- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 C:\\music\\audio.mp4。
+- Android: 文件路径，需精确到文件名及后缀。支持在线文件的 URL 地址，本地文件的 URI 地址、绝对路径或以 `/assets/` 开头的路径。通过绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址访问本地文件。例如 `content://com.android.providers.media.documents/document/audio%3A14441`。
+- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。
 
 <a id="api_irtcengine_preloadeffect__return_values"></a>
 

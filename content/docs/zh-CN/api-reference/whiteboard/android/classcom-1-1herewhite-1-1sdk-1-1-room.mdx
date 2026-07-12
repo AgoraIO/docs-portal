@@ -33,8 +33,8 @@ Boolean com.herewhite.sdk.Room.getWritable()
 
 获取本地用户是否为互动模式：
 
-- true：本地用户在当前互动白板实时房间为互动模式，即可对白板进行读写操作。
-- false: 本地用户在当前互动白板实时房间为订阅模式，即对白板只能进行读取操作。
+- `true`：本地用户在当前互动白板实时房间为互动模式，即可对白板进行读写操作。
+- `false`: 本地用户在当前互动白板实时房间为订阅模式，即对白板只能进行读取操作。
 
 <a id="a43f3b32f18de3cd71c95a449deae6a6c"></a>
 
@@ -128,7 +128,7 @@ void com.herewhite.sdk.Room.paste()
 
 ##### `注解`
 
-- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a7c790db1b2fc9404d39094c5592685e6) 设为 false 时生效。
+- 该方法仅当 `disableSerialization` 设为 `false` 时生效。
 - 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中间，可能会出现随机偏移。
 
 <a id="ab5415f550b394c8b19a121f5d4861426"></a>
@@ -149,7 +149,7 @@ void com.herewhite.sdk.Room.duplicate()
 
 ##### `注解`
 
-- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a7c790db1b2fc9404d39094c5592685e6) 设为 false 时生效。
+- 该方法仅当 `disableSerialization` 设为 `false` 时生效。
 - 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中间，可能会出现随机偏移。
 
 <a id="ab3a428118f9e090b0e62880d566af261"></a>
@@ -182,11 +182,11 @@ void com.herewhite.sdk.Room.disableSerialization(boolean disable)
 
 设置 `disableSerialization(true)` 后，以下方法将不生效：
 
-- redo
-- undo
-- duplicate
-- copy
-- paste
+- `redo`
+- `undo`
+- `duplicate`
+- `copy`
+- `paste`
 
 ##### `警告`
 
@@ -200,7 +200,7 @@ void com.herewhite.sdk.Room.disableSerialization(boolean disable)
 
 | Name | Description |
 | --- | --- |
-| disable | 是否禁止本地序列化：<br />- true：（默认）禁止开启本地序列化；<br />- false： 开启本地序列化，即可以对本地操作进行解析。 |
+| disable | 是否禁止本地序列化：<br />- `true`：（默认）禁止开启本地序列化；<br />- `false`： 开启本地序列化，即可以对本地操作进行解析。 |
 
 <a id="a9ad047897d74af1590316cc5d338408c"></a>
 
@@ -250,15 +250,15 @@ void com.herewhite.sdk.Room.setViewMode(ViewMode viewMode)
 
 互动白板实时房间支持对用户设置以下视角模式：
 
-- Broadcaster: 主播模式。
-- Follower：跟随模式。
-- Freedom：（默认）自由模式。
+- `Broadcaster`: 主播模式。
+- `Follower`：跟随模式。
+- `Freedom`：（默认）自由模式。
 
 该方法的设置会影响房间内所有用户的视角模式：
 
 - 当房间内不存在主播模式的用户时，所有用户的视角都默认为自由模式。
 - 当一个用户的视角设置为主播模式后，房间内其他所有用户（包括新加入房间的用户）的视角会被自动设置为跟随模式。
-- 当跟随模式的用户进行白板操作时，其视角会自动切换为自由模式。你可以调用 [disableOperations](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6b265bdee91f2d961373d172bb969fe0) (true) 禁止跟随模式的用户操作白板，以保证其保持跟随模式。
+- 当跟随模式的用户进行白板操作时，其视角会自动切换为自由模式。你可以调用 `disableOperations` (true) 禁止跟随模式的用户操作白板，以保证其保持跟随模式。
 
 该方法是异步操作。调用该方法后，你可以使用 `getBroadcastState` [2/2] 获取最新设置的视角模式。
 
@@ -420,8 +420,8 @@ GlobalState com.herewhite.sdk.Room.getGlobalState()
 ##### `注解`
 
 - 该方法为同步调用。
-- 对于通过 [setCustomGlobalStateClass](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-displayer-state#aaa54cefb8939135f2e47985dca839d85) 方法设置的自定义 GlobalState，在获取后，可以直接进行强转。
-- 调用 [setGlobalState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a50bf9e950f3cbce8b9ed5b250444ea70) 方法后，可以立刻调用该方法。
+- 对于通过 `setCustomGlobalStateClass` 方法设置的自定义 `GlobalState`，在获取后，可以直接进行强转。
+- 调用 `setGlobalState` 方法后，可以立刻调用该方法。
 
 #### Returns
 
@@ -444,13 +444,13 @@ void com.herewhite.sdk.Room.getGlobalState(final Promise<GlobalState > promise)
 ##### `注解`
 
 - 该方法为异步调用。
-- 对于通过 [setCustomGlobalStateClass](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-displayer-state#aaa54cefb8939135f2e47985dca839d85) 方法设置的自定义 GlobalState，在获取后，可以直接进行强转。
+- 对于通过 `setCustomGlobalStateClass` 方法设置的自定义 `GlobalState`，在获取后，可以直接进行强转。
 
 #### Parameters
 
 | Name | Description |
 | --- | --- |
-| promise | `Promise<GlobalState>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getGlobalState` 的调用结果：<br />- 如果方法调用成功，则返回 GlobalState 对象，详见 [GlobalState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state)。<br />- 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<GlobalState>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getGlobalState` 的调用结果：<br />- 如果方法调用成功，则返回 `GlobalState` 对象，详见 `GlobalState`。<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="adb7d0a6430be84c8ff5ce5ae67aeb5ca"></a>
 
@@ -469,7 +469,7 @@ MemberState com.herewhite.sdk.Room.getMemberState()
 ##### `注解`
 
 - 该方法为同步调用。
-- 调用 [setMemberState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#ab2d72aca8bef76ded5aa3c3ee873902f) 方法后，可以立即调用 [getMemberState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#adb7d0a6430be84c8ff5ce5ae67aeb5ca) 获取最新的白板工具状态。
+- 调用 `setMemberState` 方法后，可以立即调用 `getMemberState` 获取最新的白板工具状态。
 
 #### Returns
 
@@ -493,7 +493,7 @@ void com.herewhite.sdk.Room.getMemberState(final Promise<MemberState > promise)
 
 | Name | Description |
 | --- | --- |
-| promise | `Promise<MemberState>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getMemberState` 的调用结果：<br />- 如果方法调用成功，则返回白板工具状态，详见 [MemberState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。<br />- 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<MemberState>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getMemberState` 的调用结果：<br />- 如果方法调用成功，则返回白板工具状态，详见 `MemberState`。<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="a2388307121c075620ba48f71fa970483"></a>
 
@@ -533,7 +533,7 @@ void com.herewhite.sdk.Room.getRoomMembers(final Promise<RoomMember[]> promise)
 
 | Name | Description |
 | --- | --- |
-| promise | `Promise<RoomMember []>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getRoomMembers` 的调用结果：<br />- 如果方法调用成功，则返回用户列表，详见 [RoomMember](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member)。<br />- 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<RoomMember []>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getRoomMembers` 的调用结果：<br />- 如果方法调用成功，则返回用户列表，详见 `RoomMember`。<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="af6f8d5c76a3d331cd1cd9d6f15565976"></a>
 
@@ -552,7 +552,7 @@ BroadcastState com.herewhite.sdk.Room.getBroadcastState()
 ##### `注解`
 
 - 该方法为同步调用。
-- 调用 [setViewMode](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a62f41d229dee8d67211b3eeaaa46ef6e) 修改用户视角模式后，无法立刻通过 [getBroadcastState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#af6f8d5c76a3d331cd1cd9d6f15565976) [1/2] 获取最新的用户视角状态。 如果需要立即获取最新的用户视角状态，可以调用 [getBroadcastState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#abd40d4f3d60e963105a09eb514ecf29d) [2/2]。
+- 调用 `setViewMode` 修改用户视角模式后，无法立刻通过 `getBroadcastState` [1/2] 获取最新的用户视角状态。 如果需要立即获取最新的用户视角状态，可以调用 `getBroadcastState` [2/2]。
 
 #### Returns
 
@@ -571,13 +571,13 @@ void com.herewhite.sdk.Room.getBroadcastState(final Promise<BroadcastState > pro
 ##### `注解`
 
 - 该方法为异步调用。
-- 调用 [setViewMode](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a62f41d229dee8d67211b3eeaaa46ef6e) 修改用户视角模式后，无法立刻通过 [getBroadcastState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#af6f8d5c76a3d331cd1cd9d6f15565976) [1/2] 获取最新的用户视角状态。如果需要 立即获取最新的用户视角状态，可以调用 [getBroadcastState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#abd40d4f3d60e963105a09eb514ecf29d) [2/2]。
+- 调用 `setViewMode` 修改用户视角模式后，无法立刻通过 `getBroadcastState` [1/2] 获取最新的用户视角状态。如果需要 立即获取最新的用户视角状态，可以调用 `getBroadcastState` [2/2]。
 
 #### Parameters
 
 | Name | Description |
 | --- | --- |
-| promise | `Promise<BroadcastState>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getBroadcastState` 的调用结果：<br />- 如果方法调用成功，则返回用户视角状态，详见 [BroadcastState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-broadcast-state)。<br />- 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<BroadcastState>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getBroadcastState` 的调用结果：<br />- 如果方法调用成功，则返回用户视角状态，详见 `BroadcastState`。<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="a8a708f07fc9914a6a54a6c18e696ce2d"></a>
 
@@ -596,10 +596,11 @@ SceneState com.herewhite.sdk.Room.getSceneState()
 ##### `注解`
 
 - 该方法为同步调用。
-- 调用以下方法修改或新增场景后，无法通过 [getSceneState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a8a708f07fc9914a6a54a6c18e696ce2d) [1/2] 立即获取最新的场景状态。此时，如果需要立即获取最新的场景状态， 可以调用 [getSceneState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a76bd84717f518dddd9396c61f9e2f606) [2/2]。
-  - [setScenePath](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a4dfb1c0aac90cd2678aa773629198b1e) [1/2]
-  - [setScenePath](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#afb89dfcb412caf3377c75522aa3ab6c0) [2/2]
-  - [putScenes(String, Scene [], int)](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae2b7a63167b67f28d6a689d618184e4d)
+- 调用以下方法修改或新增场景后，无法通过 `getSceneState` [1/2] 立即获取最新的场景状态。此时，如果需要立即获取最新的场景状态， 可以调用 `getSceneState` [2/2]。
+
+  - `setScenePath` [1/2]
+  - `setScenePath` [2/2]
+  - `putScenes(String, Scene [], int)`
 
 #### Returns
 
@@ -618,16 +619,17 @@ void com.herewhite.sdk.Room.getSceneState(final Promise<SceneState > promise)
 ##### `注解`
 
 - 该方法为异步调用。
-- 调用以下方法修改或新增场景后，你可以通过 [getSceneState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a76bd84717f518dddd9396c61f9e2f606) 立即获取最新的场景状态。
-  - [setScenePath](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a4dfb1c0aac90cd2678aa773629198b1e) [1/2]
-  - [setScenePath](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#afb89dfcb412caf3377c75522aa3ab6c0) [2/2]
-  - [putScenes(String, Scene [], int)](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae2b7a63167b67f28d6a689d618184e4d)
+- 调用以下方法修改或新增场景后，你可以通过 `getSceneState` 立即获取最新的场景状态。
+
+  - `setScenePath` [1/2]
+  - `setScenePath` [2/2]
+  - `putScenes(String, Scene [], int)`
 
 #### Parameters
 
 | Name | Description |
 | --- | --- |
-| promise | `Promise<SceneState>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getSceneState` 的调用结果：<br />- 如果方法调用成功，则返回场景状态，详见 [SceneState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene-state)。<br />- 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<SceneState>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getSceneState` 的调用结果：<br />- 如果方法调用成功，则返回场景状态，详见 `SceneState`。<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="a5a9590e60683101fc8715c606180cd19"></a>
 
@@ -646,10 +648,11 @@ Scene[] com.herewhite.sdk.Room.getScenes()
 ##### `注解`
 
 - 该方法为同步调用。
-- 调用以下方法修改或新增场景后，无法通过 [getScenes](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a5a9590e60683101fc8715c606180cd19) [1/2] 立即获取最新的场景列表。 此时，如果需要立即获取最新的场景列表，可以调用 [getScenes](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9d9265ad1fb0e698e0c8b281dfbd66f1) [2/2]。
-  - [setScenePath](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a4dfb1c0aac90cd2678aa773629198b1e) [1/2]
-  - [setScenePath](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#afb89dfcb412caf3377c75522aa3ab6c0) [2/2]
-  - [putScenes](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae2b7a63167b67f28d6a689d618184e4d)
+- 调用以下方法修改或新增场景后，无法通过 `getScenes` [1/2] 立即获取最新的场景列表。 此时，如果需要立即获取最新的场景列表，可以调用 `getScenes` [2/2]。
+
+  - `setScenePath` [1/2]
+  - `setScenePath` [2/2]
+  - `putScenes`
 
 #### Returns
 
@@ -668,16 +671,17 @@ void com.herewhite.sdk.Room.getScenes(final Promise<Scene[]> promise)
 ##### `注解`
 
 - 该方法为异步调用。
-- 调用以下方法修改或新增场景后，可以调用 [getScenes](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9d9265ad1fb0e698e0c8b281dfbd66f1)，立即获取最新的场景列表。
-  - [setScenePath](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a4dfb1c0aac90cd2678aa773629198b1e) [1/2]
-  - [setScenePath](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#afb89dfcb412caf3377c75522aa3ab6c0) [2/2]
-  - [putScenes](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae2b7a63167b67f28d6a689d618184e4d)
+- 调用以下方法修改或新增场景后，可以调用 `getScenes`，立即获取最新的场景列表。
+
+  - `setScenePath` [1/2]
+  - `setScenePath` [2/2]
+  - `putScenes`
 
 #### Parameters
 
 | Name | Description |
 | --- | --- |
-| promise | `Promise<Scene []>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getScenes` 的调用结果：<br />- 如果方法调用成功，则返回场景列表，详见 [Scene](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)。<br />- 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<Scene []>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getScenes` 的调用结果：<br />- 如果方法调用成功，则返回场景列表，详见 `Scene`。<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="ac287ed3712b957412281f1330f7df32c"></a>
 
@@ -700,7 +704,7 @@ double com.herewhite.sdk.Room.getZoomScale()
 ##### `注解`
 
 - 该方法为同步调用。
-- 调用 [zoomChange](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a81fddb80f2f65a70f2f5fe1e5652a5d0) 或 [moveCamera](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#aa73a9b1c04e23e0f8b1ecb79099d858a) 调整视角缩放比例后，无法通过 [getZoomScale](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#ac287ed3712b957412281f1330f7df32c) [1/2] 立即获取最新的缩放比例。 此时，如果需要立即获取最新的缩放比例，可以调用 [getZoomScale](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#aff289f9e1bac68426d93fdfd8f7486e7) [2/2]。
+- 调用 `zoomChange` 或 `moveCamera` 调整视角缩放比例后，无法通过 `getZoomScale` [1/2] 立即获取最新的缩放比例。 此时，如果需要立即获取最新的缩放比例，可以调用 `getZoomScale` [2/2]。
 
 #### Returns
 
@@ -723,7 +727,7 @@ void com.herewhite.sdk.Room.getZoomScale(final Promise<Number > promise)
 ##### `注解`
 
 - 该方法为异步调用。
-- 调用 [zoomChange](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a81fddb80f2f65a70f2f5fe1e5652a5d0) 或 [moveCamera](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#aa73a9b1c04e23e0f8b1ecb79099d858a) 调整视角缩放比例后，如果需要立即获取最新的缩放比例，可以调用 [getZoomScale](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#aff289f9e1bac68426d93fdfd8f7486e7) [2/2]。
+- 调用 `zoomChange` 或 `moveCamera` 调整视角缩放比例后，如果需要立即获取最新的缩放比例，可以调用 `getZoomScale` [2/2]。
 
 #### Parameters
 
@@ -748,7 +752,7 @@ RoomPhase com.herewhite.sdk.Room.getRoomPhase()
 ##### `注解`
 
 - 该方法为同步调用。
-- 调用 [disconnect](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#ac10c063697e5224ef05d341bb3987004) [1/2] 或 [disconnect](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#ad8aa1d2ce5b8e6d78094c2a9a3836dfa) [2/2] 断开 SDK 与实时房间的连接后，无法立即通过 [getRoomPhase](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a2c0ef694235dccda2fb92b3ba141880d) [1/2] 获取最新的房间连接状态。 此时，你可以调用 [getRoomPhase](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6759ad742065c0e82592e8a0ed8aabee) [2/2] 立即获取最新的房间连接状态。
+- 调用 `disconnect` [1/2] 或 `disconnect` [2/2] 断开 SDK 与实时房间的连接后，无法立即通过 `getRoomPhase` [1/2] 获取最新的房间连接状态。 此时，你可以调用 `getRoomPhase` [2/2] 立即获取最新的房间连接状态。
 
 #### Returns
 
@@ -767,13 +771,13 @@ void com.herewhite.sdk.Room.getRoomPhase(final Promise<RoomPhase > promise)
 ##### `注解`
 
 - 该方法为异步调用。
-- 调用 [disconnect](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#ac10c063697e5224ef05d341bb3987004) [1/2] 或 [disconnect](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#ad8aa1d2ce5b8e6d78094c2a9a3836dfa) [2/2] 断开 SDK 与实时房间的连接后，无法立即通过 [getRoomPhase](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a2c0ef694235dccda2fb92b3ba141880d) [1/2] 获取最新的房间连接状态。 此时，你可以调用 [getRoomPhase](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6759ad742065c0e82592e8a0ed8aabee) [2/2] 立即获取最新的房间连接状态。
+- 调用 `disconnect` [1/2] 或 `disconnect` [2/2] 断开 SDK 与实时房间的连接后，无法立即通过 `getRoomPhase` [1/2] 获取最新的房间连接状态。 此时，你可以调用 `getRoomPhase` [2/2] 立即获取最新的房间连接状态。
 
 #### Parameters
 
 | Name | Description |
 | --- | --- |
-| promise | `Promise<RoomPhase>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getRoomPhase` 的调用结果：<br />- 如果方法调用成功，则返回房间连接状态，详见 [RoomPhase](/zh-CN/api-reference/whiteboard/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-phase)。<br />- 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<RoomPhase>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getRoomPhase` 的调用结果：<br />- 如果方法调用成功，则返回房间连接状态，详见 `RoomPhase`。<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="a9578a9ae744eb64d8bd939e3af3b68db"></a>
 
@@ -792,7 +796,7 @@ RoomState com.herewhite.sdk.Room.getRoomState()
 ##### `注解`
 
 - 该方法为同步调用。
-- 修改房间的状态属性后，无法立即通过 [getRoomState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9578a9ae744eb64d8bd939e3af3b68db) [1/2] 获取最新的房间状态。 此时，如果需要立即获取最新的房间状态，可以调用 [getRoomState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a7c00f3eb5374d153b594fb772cf7339f) [2/2] 获取。
+- 修改房间的状态属性后，无法立即通过 `getRoomState` [1/2] 获取最新的房间状态。 此时，如果需要立即获取最新的房间状态，可以调用 `getRoomState` [2/2] 获取。
 
 #### Returns
 
@@ -811,13 +815,13 @@ void com.herewhite.sdk.Room.getRoomState(final Promise<RoomState > promise)
 ##### `注解`
 
 - 该方法为异步调用。
-- 修改房间的状态属性后，无法立即通过 [getRoomState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9578a9ae744eb64d8bd939e3af3b68db) 获取最新的房间状态。此时，如果需要立即获取最新的房间状态，可以调用 [getRoomState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#a7c00f3eb5374d153b594fb772cf7339f) [2/2] 获取。
+- 修改房间的状态属性后，无法立即通过 `getRoomState` 获取最新的房间状态。此时，如果需要立即获取最新的房间状态，可以调用 `getRoomState` [2/2] 获取。
 
 #### Parameters
 
 | Name | Description |
 | --- | --- |
-| promise | `Promise<RoomState>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getRoomState` 的调用结果：<br />- 如果方法调用成功，则返回房间所有状态，详见 [RoomState](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-state)。<br />- 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<RoomState>` 接口实例，详见 `Promise`。你可以通过该接口获取 `getRoomState` 的调用结果：<br />- 如果方法调用成功，则返回房间所有状态，详见 `RoomState`。<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="a4dfb1c0aac90cd2678aa773629198b1e"></a>
 
@@ -834,11 +838,11 @@ void com.herewhite.sdk.Room.setScenePath(String path)
 ##### `注解`
 
 - 该方法为同步调用。
-- 如需获取方法调用回调，请使用 [setScenePath](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room#afb89dfcb412caf3377c75522aa3ab6c0) [2/2]。
+- 如需获取方法调用回调，请使用 `setScenePath` [2/2]。
 
 场景切换失败可能有以下原因：
 
-- 路径不合法，请确保场景路径以 / 开头，由场景目录和场景名构成。
+- 路径不合法，请确保场景路径以 `/` 开头，由场景目录和场景名构成。
 - 场景路径对应的场景不存在。
 - 传入的路径是场景目录的路径，而不是场景路径。
 
@@ -875,7 +879,7 @@ void com.herewhite.sdk.Room.setScenePath(String path, final Promise<Boolean > pr
 | Name | Description |
 | --- | --- |
 | path | 想要切换到的场景的场景路径，请确保场景路径以 "/"，由场景目录和场景名构成，例如， `/math/classA`. |
-| promise | `Promise<Boolean>` 接口，详见 `Promise`。你可以通过该接口获取 `setScenePath` 的调用结果：<br />- 如果方法调用成功，则返回 true.<br />- 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<Boolean>` 接口，详见 `Promise`。你可以通过该接口获取 `setScenePath` 的调用结果：<br />- 如果方法调用成功，则返回 `true`.<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="a003fc53c0744799200fbac3ac6128e1a"></a>
 
@@ -894,7 +898,7 @@ void com.herewhite.sdk.Room.setSceneIndex(Integer index, @Nullable final Promise
 | Name | Description |
 | --- | --- |
 | index | 目标场景在当前场景目录下的索引号。 |
-| promise | `Promise<Boolean>` 接口，详见 `Promise`。你可以通过该接口获取 `setSceneIndex` 的调用结果：<br />- 如果方法调用成功，则返回 true。<br />- 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<Boolean>` 接口，详见 `Promise`。你可以通过该接口获取 `setSceneIndex` 的调用结果：<br />- 如果方法调用成功，则返回 `true`。<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="ae2b7a63167b67f28d6a689d618184e4d"></a>
 
@@ -940,7 +944,7 @@ void com.herewhite.sdk.Room.moveScene(String sourcePath, String targetDirOrPath)
 
 ##### `注解`
 
-- 该方法只能移动场景，不能移动场景目录，即 sourcePath 只能是场景路径，不能是场景目录路径。
+- 该方法只能移动场景，不能移动场景目录，即 `sourcePath` 只能是场景路径，不能是场景目录路径。
 - 该方法支持改变指定场景在当前所属场景目录下的位置，也支持将指定场景移至其他场景目录。
 
 #### Parameters
@@ -948,7 +952,7 @@ void com.herewhite.sdk.Room.moveScene(String sourcePath, String targetDirOrPath)
 | Name | Description |
 | --- | --- |
 | sourcePath | 需要移动的场景原路径。必须为场景路径，不能是场景目录的路径。 |
-| targetDirOrPath | 目标场景目录的路径或目标场景的路径：<br />- 当 targetDirOrPath 设置为场景目录时，表示将指定场景移至其他场景目录中，场景路径会发生改变，但是场景名称不变。<br />- 当 targetDirOrPath 设置为场景时，表示改变指定场景在当前场景目录的位置，场景路径和场景名都会发生改变。 |
+| targetDirOrPath | 目标场景目录的路径或目标场景的路径：<br />- 当 `targetDirOrPath` 设置为场景目录时，表示将指定场景移至其他场景目录中，场景路径会发生改变，但是场景名称不变。<br />- 当 `targetDirOrPath` 设置为场景时，表示改变指定场景在当前场景目录的位置，场景路径和场景名都会发生改变。 |
 
 <a id="affd9982f863d1e91168428fa2df1053a"></a>
 
@@ -962,13 +966,14 @@ void com.herewhite.sdk.Room.removeScenes(String dirOrPath)
 
 ##### `注解`
 
-- 互动白板实时房间内必须至少有一个场景。当删除所有的场景后，SDK 会自动生成一个路径为 /init 初始场景（房间初始化时的默认场景）。
+- 互动白板实时房间内必须至少有一个场景。当删除所有的场景后，SDK 会自动生成一个路径为 `/init` 初始场景（房间初始化时的默认场景）。
 - 如果删除白板当前所在场景，白板会展示被删除场景所在场景目录的最后一个场景
 - 如果删除的是场景目录，则该场景目录下的所有场景都会被删除。
-- 如果删除的是当前场景所在的场景目录，例如 dirA，SDK 会执行向上递归逻辑选择新的场景作为当前场景，规则如下：
-  1. 如果当前场景目录路径下还有其他场景目录，例如 dirB，排在被删除的场景目录 dirA 后面，则将场景切换至 dirB 中的第一个场景（index 为 0）。
-  2. 如果当前场景目录路径下 dirA 后不存在场景目录，则查看当前场景目录路径下是否存在场景； 如果存在，则将场景切换至当前场景目录路径下的第一个场景（index 为 0）。
-  3. 如果当前场景目录路径下 dirA 后没有场景目录，也不存在任何场景，则查看 dirA 前面是否存在场景目录 dirC；如果存在，则选择 dirC 中的第一个场景（index 为 0）。 SDK 会继续向上递归执行该逻辑，直到找到新的场景。
+- 如果删除的是当前场景所在的场景目录，例如 `dirA`，SDK 会执行向上递归逻辑选择新的场景作为当前场景，规则如下：
+
+  1. 如果当前场景目录路径下还有其他场景目录，例如 `dirB`，排在被删除的场景目录 `dirA` 后面，则将场景切换至 `dirB` 中的第一个场景（index 为 0）。
+  2. 如果当前场景目录路径下 `dirA` 后不存在场景目录，则查看当前场景目录路径下是否存在场景； 如果存在，则将场景切换至当前场景目录路径下的第一个场景（index 为 0）。
+  3. 如果当前场景目录路径下 `dirA` 后没有场景目录，也不存在任何场景，则查看 `dirA` 前面是否存在场景目录 `dirC`；如果存在，则选择 `dirC` 中的第一个场景（index 为 0）。 SDK 会继续向上递归执行该逻辑，直到找到新的场景。
 
 #### Parameters
 
@@ -990,7 +995,7 @@ void com.herewhite.sdk.Room.cleanScene(boolean retainPpt)
 
 | Name | Description |
 | --- | --- |
-| retainPpt | 是否保留 PPT 内容：<br />- true：保留 PPT。<br />- false：连 PPT 一起清空。 |
+| retainPpt | 是否保留 PPT 内容：<br />- `true`：保留 PPT。<br />- `false`：连 PPT 一起清空。 |
 
 <a id="a2f0b17c6af0f8c2bcaef84ad600e51af"></a>
 
@@ -1110,14 +1115,14 @@ void com.herewhite.sdk.Room.disableOperations(final boolean disableOperations)
 
 该方法设置是否禁止白板响应用户的操作，包括：
 
-- CameraTransform：移动、缩放视角。
-- DeviceInputs：使用白板工具输入。
+- `CameraTransform`：移动、缩放视角。
+- `DeviceInputs`：使用白板工具输入。
 
 #### Parameters
 
 | Name | Description |
 | --- | --- |
-| disableOperations | 允许/禁止白板响应用户任何操作。<br />- true：不响应用户操作。<br />- false：（默认）响应用户操作。 |
+| disableOperations | 允许/禁止白板响应用户任何操作。<br />- `true`：不响应用户操作。<br />- `false`：（默认）响应用户操作。 |
 
 <a id="a1cea527622d0cdf3d6eb0b01835b1370"></a>
 
@@ -1137,7 +1142,7 @@ void com.herewhite.sdk.Room.setWritable(final boolean writable, @Nullable final 
 
 | Name | Description |
 | --- | --- |
-| writable | 用户在房间中是否为互动模式：<br />- true：互动模式，即具有读写权限。<br />- false：订阅模式，即具有只读权限。 |
+| writable | 用户在房间中是否为互动模式：<br />- `true`：互动模式，即具有读写权限。<br />- `false`：订阅模式，即具有只读权限。 |
 | promise | `Promise<Boolean>` 接口实例，详见 `Promise`。你可以通过该接口获取 `setWritable` 的调用结果：<br />- 如果方法调用成功，则返回用户在房间中的读写状态。<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="a4f860e53b4cab0f574b22a2e8fdf235d"></a>
@@ -1158,7 +1163,7 @@ void com.herewhite.sdk.Room.disableEraseImage(boolean disable)
 
 | Name | Description |
 | --- | --- |
-| disable | 是否关闭橡皮擦擦除图片功能：<br />- true：禁止橡皮擦擦除图片。<br />- false：（默认）允许橡皮擦擦除图片。 |
+| disable | 是否关闭橡皮擦擦除图片功能：<br />- `true`：禁止橡皮擦擦除图片。<br />- `false`：（默认）允许橡皮擦擦除图片。 |
 
 <a id="a0cadc59b5eb670a2361f5befedc90f4f"></a>
 
@@ -1178,7 +1183,7 @@ void com.herewhite.sdk.Room.disableCameraTransform(final boolean disableCameraTr
 
 | Name | Description |
 | --- | --- |
-| disableCameraTransform | 是否禁止用户调整视角：<br />- true：禁止用户调整视角。<br />- false：（默认）允许用户调整视角。 |
+| disableCameraTransform | 是否禁止用户调整视角：<br />- `true`：禁止用户调整视角。<br />- `false`：（默认）允许用户调整视角。 |
 
 <a id="a468b0fa46f8cea857e6857b9f2945101"></a>
 
@@ -1198,7 +1203,7 @@ void com.herewhite.sdk.Room.disableDeviceInputs(final boolean disableOperations)
 
 | Name | Description |
 | --- | --- |
-| disableOperations | 是否禁止用户操作白板工具：<br />- true：禁止用户操作白板工具操作。<br />- false：（默认）允许用户操作白板工具输入操作。 |
+| disableOperations | 是否禁止用户操作白板工具：<br />- `true`：禁止用户操作白板工具操作。<br />- `false`：（默认）允许用户操作白板工具输入操作。 |
 
 <a id="ae4fe2b66cc439a1f3822728a1a92ff94"></a>
 
@@ -1350,7 +1355,7 @@ void com.herewhite.sdk.Room.queryApp(String appId, Promise<WindowAppSyncAttrs > 
 
 该方法仅在多窗口下有效。
 
-- 如果方法调用成功，则返回小窗应用相关信息，详见 [WindowAppSyncAttrs](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-app-sync-attrs)。
+- 如果方法调用成功，则返回小窗应用相关信息，详见 `WindowAppSyncAttrs`。
 - 如果方法调用失败，则返回错误信息。
 
 #### Parameters
@@ -1372,7 +1377,7 @@ void com.herewhite.sdk.Room.queryAllApps(Promise<Map<String, WindowAppSyncAttrs 
 
 该方法仅在多窗口下有效。
 
-- 如果方法调用成功，则返回一个以应用 ID 为键，包含所有小窗应用信息的字典。详见 WhiteAppSyncAttributes。
+- 如果方法调用成功，则返回一个以应用 ID 为键，包含所有小窗应用信息的字典。详见 `WhiteAppSyncAttributes`。
 - 如果方法调用失败，则返回错误信息。
 
 #### Parameters
@@ -1396,7 +1401,7 @@ void com.herewhite.sdk.Room.dispatchDocsEvent(WindowDocsEvent docsEvent, Promise
 | Name | Description |
 | --- | --- |
 | docsEvent | 事件内容，详见 `WindowDocsEvent`。 |
-| promise | `Promise<Boolean>` 接口，详见 `Promise`。你可以通过该接口获取 `dispatchDocsEvent` 的调用结果：<br />- 如果方法调用成功，则返回 true.<br />- 如果方法调用失败，则返回错误信息。 |
+| promise | `Promise<Boolean>` 接口，详见 `Promise`。你可以通过该接口获取 `dispatchDocsEvent` 的调用结果：<br />- 如果方法调用成功，则返回 `true`.<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="a6c417c79b6bccd7eb07b88b04ef8c4eb"></a>
 
@@ -1412,7 +1417,7 @@ void com.herewhite.sdk.Room.setSyncMode(boolean useSyncMode)
 
 | Name | Description |
 | --- | --- |
-| useSyncMode | 是否开启同步模式：<br />- true：开启。<br />- false：关闭。 |
+| useSyncMode | 是否开启同步模式：<br />- `true`：开启。<br />- `false`：关闭。 |
 
 <a id="a42157e1f6d64d9676c17b3b94c1c5bbe"></a>
 
@@ -1438,4 +1443,4 @@ void com.herewhite.sdk.Room.setDisableInitialStateCallback(boolean disableInitia
 
 | Name | Description |
 | --- | --- |
-| disableInitialStateCallback | - true：禁止。<br />- false：（默认）不禁止。 |
+| disableInitialStateCallback | - `true`：禁止。<br />- `false`：（默认）不禁止。 |

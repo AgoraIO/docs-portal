@@ -5,15 +5,15 @@ description: "API docs for the isMemberOnly property from the ChatGroup class, f
 
 Checks whether users cannot join a chat group freely:
 
-- true: Yes. Needs the approval from the group owner(admin) or being invited by group members(PrivateOnlyOwnerInvite, PrivateMemberCanInvite, PublicJoinNeedApproval).
-- false: No. Users can join freely ChatGroupStyle.PublicOpenJoin.
+- `true`: Yes. Needs the approval from the group owner(admin) or being invited by group members(PrivateOnlyOwnerInvite, PrivateMemberCanInvite, PublicJoinNeedApproval).
+- `false`: No. Users can join freely [ChatGroupStyle.PublicOpenJoin](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-style).
 
 **Note** There are four types of group properties used to define the style of a group: [ChatGroupStyle](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-style).
 
 **Return** Whether users can join a chat group with only the approval of the group owner(admin):
 
-- true: Yes. Needs the approval from the group owner(admin) or being invited by group members.
-- false: No.
+- `true`: Yes. Needs the approval from the group owner(admin) or being invited by group members.
+- `false`: No.
 
 ```dart
 bool? isMemberOnly final

@@ -182,8 +182,8 @@ description: "调整本地播放音量。"
 
 ### 调用时机
 
-- 在调用 open:startPos: 或 openWithMediaSource: 打开媒体文件，并收到 didChangedToState:reason: 回调报告状态为 AgoraMediaPlayerStateOpenCompleted 后调用该方法。
-- 在调用 seekToPosition: 后调用该方法。
+- 在调用 [open:startPos:](/zh-CN/api-reference/rtc/ios/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource:](/zh-CN/api-reference/rtc/ios/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体文件，并收到 `didChangedToState:reason:` 回调报告状态为 `AgoraMediaPlayerStateOpenCompleted` 后调用该方法。
+- 在调用 [seekToPosition:](/zh-CN/api-reference/rtc/ios/mediaplayer-control#api_imediaplayer_seek) 后调用该方法。
 
 <a id="api_imediaplayer_play__return_values"></a>
 
@@ -212,8 +212,8 @@ description: "调整本地播放音量。"
 调用 [preloadSrc:startPos:](/zh-CN/api-reference/rtc/ios/mediaplayer-open#api_imediaplayer_preloadsrc) 方法将媒体资源预加载到播放列表后，可以调用此方法播放已预加载的媒体资源。如果调用该方法后收到 [AgoraRtcMediaPlayer:didChangedToState:reason:](/zh-CN/api-reference/rtc/ios/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调并报告 `AgoraMediaPlayerStatePlaying` 状态，表示播放成功。
 
 - 如果想更换播放的预加载媒体资源，可以再次调用此方法并指定要预加载的新媒体资源的 URL。
-- 如果想重新播放媒体资源，需要再次调用 preloadSrc:startPos: 方法将媒体资源重新预加载到播放列表中。
-- 如果想清空播放列表，请调用 stop 方法。
+- 如果想重新播放媒体资源，需要再次调用 [preloadSrc:startPos:](/zh-CN/api-reference/rtc/ios/mediaplayer-open#api_imediaplayer_preloadsrc) 方法将媒体资源重新预加载到播放列表中。
+- 如果想清空播放列表，请调用 `stop` 方法。
 
 :::info[注]
 如果在播放暂停时调用此方法，该方法在播放恢复前不会生效。
@@ -275,8 +275,8 @@ description: "调整本地播放音量。"
 
 <a id="api_imediaplayer_seek__detailed_desc"></a>
 
-- 如果你在播放完成后调用该方法（收到回调 didChangedToState:reason:，播放状态为 AgoraMediaPlayerStatePlayBackCompleted 或 AgoraMediaPlayerStatePlayBackAllLoopsCompleted ），SDK 会从指定位置开始播放媒体文件。此时，你会收到回调 didChangedToState:reason:，播放状态为 AgoraMediaPlayerStatePlaying。
-- 如果你在播放暂停时调用该方法，调用成功后，SDK 会跳转到指定位置。要恢复播放，请调用 resume 或 play 方法。
+- 如果你在播放完成后调用该方法（收到回调 `didChangedToState:reason:`，播放状态为 `AgoraMediaPlayerStatePlayBackCompleted` 或 `AgoraMediaPlayerStatePlayBackAllLoopsCompleted` ），SDK 会从指定位置开始播放媒体文件。此时，你会收到回调 `didChangedToState:reason:`，播放状态为 `AgoraMediaPlayerStatePlaying`。
+- 如果你在播放暂停时调用该方法，调用成功后，SDK 会跳转到指定位置。要恢复播放，请调用 [resume](/zh-CN/api-reference/rtc/ios/mediaplayer-control#api_imediaplayer_resume) 或 [play](/zh-CN/api-reference/rtc/ios/mediaplayer-control#api_imediaplayer_play) 方法。
 
 <a id="api_imediaplayer_seek__timing"></a>
 

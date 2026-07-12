@@ -26,7 +26,7 @@ Future<MusicPlayer> createMusicPlayer();
 
 ### 返回值
 
-- 方法调用成功：返回 MusicPlayer 对象。
+- 方法调用成功：返回 [MusicPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imusicplayer) 对象。
 - 方法调用失败：返回空指针。
 
 ### 所属接口类
@@ -130,8 +130,8 @@ Future<List<MusicCacheInfo>> getCaches(int cacheInfoSize);
 
 ### 返回值
 
-- 方法调用成功时，返回 MusicCacheInfo 对象的列表。
-- 方法调用失败时，会抛出 AgoraRtcException 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+- 方法调用成功时，返回 [MusicCacheInfo](/zh-CN/api-reference/rtc/flutter/class-musiccacheinfo) 对象的列表。
+- 方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
 ### 所属接口类
 - [MusicContentCenter](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imusiccontentcenter)
@@ -219,8 +219,8 @@ Future<int> getInternalSongCode(
 
 扩展 JSON 字段，默认为 `null`。目前支持传入下列值：
 
-- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例： \{"sceneType":1\}。
-- highPart：副歌片段的索引，从 onMusicCollectionResult 回调中获取，索引从 0 开始。示例： \{"format": \{"highpart": 0\}\}。
+- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例： `{"sceneType":1}`。
+- highPart：副歌片段的索引，从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/flutter/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取，索引从 0 开始。示例： `{"format": {"highpart": 0}}`。
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
 
@@ -368,13 +368,15 @@ Future<String> getMusicCollectionByMusicChartId(
 
 扩展 JSON 字段，默认为 `null`。你可以通过该字段来筛选出你需要的音乐资源，目前支持筛选可打分的音乐资源及音乐资源的副歌片段：
 
-- pitchType：音乐资源是否支持评分。
-  - 1：可评分的音乐资源。
-  - 2：不可评分的音乐资源。
+- `pitchType`：音乐资源是否支持评分。
 
-- needHighPart：是否需要合唱片段资源。
-  - YES：需要合唱片段资源。
-  - NO：不需要合唱片段资源。
+  - `1`：可评分的音乐资源。
+  - `2`：不可评分的音乐资源。
+
+- `needHighPart`：是否需要合唱片段资源。
+
+  - `YES`：需要合唱片段资源。
+  - `NO`：不需要合唱片段资源。
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__return_values"></a>
 
@@ -571,8 +573,8 @@ Future<bool> isPreloaded(int songCode);
 
 ### 返回值
 
-- true：该音乐资源已被预加载。
-- false：该音乐资源未被预加载。
+- `true`：该音乐资源已被预加载。
+- `false`：该音乐资源未被预加载。
 
 ### 所属接口类
 - [MusicContentCenter](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imusiccontentcenter)
@@ -813,13 +815,15 @@ Future<String> searchMusic(
 
 扩展 JSON 字段，默认为 `null`。你可以通过该字段来筛选出你需要的音乐资源，目前支持筛选可打分的音乐资源及音乐资源的副歌片段：
 
-- pitchType：音乐资源是否支持评分。
-  - 1：可评分的音乐资源。
-  - 2：不可评分的音乐资源。
+- `pitchType`：音乐资源是否支持评分。
 
-- needHighPart：是否需要合唱片段资源。
-  - YES：需要合唱片段资源。
-  - NO：不需要合唱片段资源。
+  - `1`：可评分的音乐资源。
+  - `2`：不可评分的音乐资源。
+
+- `needHighPart`：是否需要合唱片段资源。
+
+  - `YES`：需要合唱片段资源。
+  - `NO`：不需要合唱片段资源。
 
 <a id="api_imusiccontentcenter_searchmusic__return_values"></a>
 

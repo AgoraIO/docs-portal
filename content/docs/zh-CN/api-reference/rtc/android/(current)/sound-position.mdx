@@ -60,7 +60,7 @@ public abstract int setRemoteVoicePosition(int uid, double pan, double gain);
 该方法通过左右声道的声音差异设置远端用户的语音位置和音量，使本地用户可以更容易地识别远端用户的位置，从而营造空间感。该方法适用于大型多人在线游戏，例如大逃杀类游戏。
 
 :::info[注]
-- 要使该方法生效，请在加入频道前调用 enableSoundPositionIndication 方法为远端用户开启立体声声像。
+- 要使该方法生效，请在加入频道前调用 [enableSoundPositionIndication](/zh-CN/api-reference/rtc/android/sound-position#api_irtcengine_enablesoundpositionindication) 方法为远端用户开启立体声声像。
 - 为获得最佳语音定位效果，建议使用有线耳机。
 - 请在加入频道后调用该方法。
 :::

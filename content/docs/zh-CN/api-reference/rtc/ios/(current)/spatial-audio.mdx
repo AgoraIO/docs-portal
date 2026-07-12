@@ -49,7 +49,7 @@ description: "移除所有远端用户的空间位置。"
 你可以在加入频道前或加入频道后调用该方法。启用空间音效后，可以调用 [setRemoteUserSpatialAudioParams:params:](/zh-CN/api-reference/rtc/ios/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音效参数。
 
 :::info[注]
-- 该方法依赖空间音效动态库 AgoraSpatialAudioExtension.xcframework （iOS）或 AgoraSpatialAudioExtension.framework （macOS）。如果该动态库被删除，该功能将无法正常启用。
+- 该方法依赖空间音效动态库 AgoraSpatialAudioExtension.xcframework （iOS）或 `AgoraSpatialAudioExtension.framework` （macOS）。如果该动态库被删除，该功能将无法正常启用。
 :::
 
 <a id="api_irtcengine_enablespatialaudio__parameters"></a>
@@ -90,7 +90,7 @@ description: "移除所有远端用户的空间位置。"
 :::info[注]
 在调用 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ilocalspatialaudioengine) 的其他方法前，你必须先调用 [sharedLocalSpatialAudioWithConfig:](/zh-CN/api-reference/rtc/ios/spatial-audio#api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine) 方法初始化 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
 
-- 每个 App 仅支持创建一个 AgoraLocalSpatialAudioKit 实例。
+- 每个 App 仅支持创建一个 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
 :::
 
 <a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__parameters"></a>
@@ -128,9 +128,9 @@ description: "移除所有远端用户的空间位置。"
 调用该方法后，你将停止或恢复订阅所有远端用户的音频流，包括后续加入频道的用户。
 
 :::info[注]
-- 请在调用 joinChannelByToken 方法后再调用此方法。
-- 使用空间音效时，如需设置是否停止订阅所有远端用户的音频流，声网建议调用此方法，而非 muteAllRemoteAudioStreams: 方法。
-- 调用此方法后，你需要调用 updateSelfPosition 和 updateRemotePosition 方法更新本地用户和远端用户的空间位置，否则该方法的设置不会生效。
+- 请在调用 `joinChannelByToken` 方法后再调用此方法。
+- 使用空间音效时，如需设置是否停止订阅所有远端用户的音频流，声网建议调用此方法，而非 [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/ios/spatial-audio#api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine) 方法。
+- 调用此方法后，你需要调用 `updateSelfPosition` 和 `updateRemotePosition` 方法更新本地用户和远端用户的空间位置，否则该方法的设置不会生效。
 :::
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__parameters"></a>
@@ -405,6 +405,7 @@ description: "移除所有远端用户的空间位置。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无明确原因）。
 
 ### 所属接口类
@@ -444,6 +445,7 @@ description: "移除所有远端用户的空间位置。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无具体原因）。
 
 ### 所属接口类
@@ -507,7 +509,7 @@ description: "移除所有远端用户的空间位置。"
 
 - 0：广播模式，音量和音色不会随距离衰减，听到的音量和音色不会因距离变化而变化。
 - (0, 0.5)：弱衰减模式，音量和音色在传播过程中仅有轻微衰减，声音传播距离比真实环境更远。
-- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 speaker_attenuation 参数。
+- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 `speaker_attenuation` 参数。
 - (0.5, 1]：强衰减模式，音量和音色在传播过程中迅速衰减。
 
 #### `playerId`
@@ -518,10 +520,11 @@ description: "移除所有远端用户的空间位置。"
 
 是否强制设置媒体播放器的声音衰减效果：
 
-- YES：强制使用 attenuation 设置媒体播放器的衰减效果，此时在 AgoraSpatialAudioZone 中通过 audioAttenuation 设置的隔音区衰减系数对媒体播放器无效。
-- NO：不强制使用 attenuation 设置媒体播放器的声音衰减效果，具体如下：
-  - 如果声源和听众分别位于隔音区内外，声音衰减效果由 AgoraSpatialAudioZone 中的 audioAttenuation 决定。
-  - 如果声源和听众位于同一隔音区内，或都在隔音区外，声音衰减效果由本方法中的 attenuation 参数决定。
+- YES：强制使用 `attenuation` 设置媒体播放器的衰减效果，此时在 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/ios/class-spatialaudiozone) 中通过 `audioAttenuation` 设置的隔音区衰减系数对媒体播放器无效。
+- NO：不强制使用 `attenuation` 设置媒体播放器的声音衰减效果，具体如下：
+
+  - 如果声源和听众分别位于隔音区内外，声音衰减效果由 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/ios/class-spatialaudiozone) 中的 `audioAttenuation` 决定。
+  - 如果声源和听众位于同一隔音区内，或都在隔音区外，声音衰减效果由本方法中的 `attenuation` 参数决定。
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation__return_values"></a>
 
@@ -557,7 +560,7 @@ description: "移除所有远端用户的空间位置。"
 
 - 0：广播模式，音量和音色不会随距离衰减，你听到的音量和音色不会因距离变化而变化。
 - (0, 0.5)：弱衰减模式，音量和音色在传播过程中仅有轻微衰减，声音传播距离比真实环境更远。
-- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 speaker_attenuation 参数。
+- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 `speaker_attenuation` 参数。
 - (0.5, 1]：强衰减模式，音量和音色在传播过程中快速衰减。
 
 #### `uid`
@@ -568,10 +571,11 @@ description: "移除所有远端用户的空间位置。"
 
 是否强制设置该用户的声音衰减效果：
 
-- YES：强制使用 attenuation 设置该用户的声音衰减效果，此时 AgoraSpatialAudioZone 中 audioAttenuation 设置的隔音区衰减系数对该用户无效。
-- NO：不强制使用 attenuation 设置该用户的声音衰减效果，具体如下：
-  - 若声源和接收者分别位于隔音区内外，衰减效果由 AgoraSpatialAudioZone 中的 audioAttenuation 决定；
-  - 若声源和接收者位于同一隔音区内或同一隔音区外，衰减效果由本方法中的 attenuation 决定。
+- YES：强制使用 `attenuation` 设置该用户的声音衰减效果，此时 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/ios/class-spatialaudiozone) 中 `audioAttenuation` 设置的隔音区衰减系数对该用户无效。
+- NO：不强制使用 `attenuation` 设置该用户的声音衰减效果，具体如下：
+
+  - 若声源和接收者分别位于隔音区内外，衰减效果由 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/ios/class-spatialaudiozone) 中的 `audioAttenuation` 决定；
+  - 若声源和接收者位于同一隔音区内或同一隔音区外，衰减效果由本方法中的 `attenuation` 决定。
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__return_values"></a>
 
@@ -672,8 +676,8 @@ description: "移除所有远端用户的空间位置。"
 
 在虚拟互动场景中，你可以使用此方法设置隔音区域和声音衰减系数。
 
-- 当声源（可以是用户或媒体播放器）和接收者分别处于隔音区域的内外部时，声音的衰减效果由 AgoraSpatialAudioZone 中的声音衰减系数决定。
-- 如果用户或媒体播放器处于同一个隔音区域内，则不受 AgoraSpatialAudioZone 的影响，声音衰减效果由 setPlayerAttenuation:playerId:forceSet: 或 setRemoteAudioAttenuation:userId:forceSet: 中的 attenuation 参数决定。如果你未调用上述方法，SDK 默认的声音衰减系数为 0.5，用于模拟真实环境中的声音衰减。
+- 当声源（可以是用户或媒体播放器）和接收者分别处于隔音区域的内外部时，声音的衰减效果由 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/ios/class-spatialaudiozone) 中的声音衰减系数决定。
+- 如果用户或媒体播放器处于同一个隔音区域内，则不受 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/ios/class-spatialaudiozone) 的影响，声音衰减效果由 [setPlayerAttenuation:playerId:forceSet:](/zh-CN/api-reference/rtc/ios/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 `setRemoteAudioAttenuation:userId:forceSet:` 中的 `attenuation` 参数决定。如果你未调用上述方法，SDK 默认的声音衰减系数为 0.5，用于模拟真实环境中的声音衰减。
 - 如果声源和接收者分别处于两个不同的隔音区域内，接收者将无法听到声源的声音。
 
 :::info[注]

@@ -22,13 +22,14 @@ public abstract int startLocalVideoTranscoder(LocalTranscoderConfiguration confi
 
 调用该方法后，你可以在本地将多个视频流合并为一个视频流，例如摄像头采集的视频流、屏幕共享、媒体播放器、远端视频、视频文件、图片等，然后将混合后的视频流发布到频道中。以下是实现人像画中画效果的典型用例：
 
-1. 调用 enableVirtualBackground，并将自定义背景图设置为 BACKGROUND_NONE，即将摄像头采集的视频中的人像与背景分离。
-2. 调用 startScreenCapture 开始采集屏幕共享视频流。
-3. 调用 startLocalVideoTranscoder，并将采集人像的视频源设置为参与本地视频合图的视频源之一，即可在视频中实现人像画中画效果。
+1. 调用 `enableVirtualBackground`，并将自定义背景图设置为 `BACKGROUND_NONE`，即将摄像头采集的视频中的人像与背景分离。
+2. 调用 [startScreenCapture](/zh-CN/api-reference/rtc/android/screencapture#api_irtcengine_startscreencapture) 开始采集屏幕共享视频流。
+3. 调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/local-transcoder#api_irtcengine_startlocalvideotranscoder)，并将采集人像的视频源设置为参与本地视频合图的视频源之一，即可在视频中实现人像画中画效果。
 
 :::info[注]
 - 本地视频合图需要更多的 CPU 资源。声网建议在性能较高的设备上启用此功能。
 - 如果需要混合本地采集的视频流，SDK 支持以下采集组合：
+
   - 在 Android 平台上，支持最多 2 路摄像头采集的视频流（设备需支持双摄像头或支持外接摄像头）+ 1 路屏幕共享流。
 - 配置本地视频合图时，需要确保采集人像的视频流的图层编号大于屏幕共享流的图层编号。否则，人像会被屏幕共享遮挡，无法在最终视频合图中显示。
 - 参与本地视频合图的每路视频流的最大分辨率为 4096 × 2160。如果超过该限制，视频合图将不生效。
@@ -45,8 +46,8 @@ public abstract int startLocalVideoTranscoder(LocalTranscoderConfiguration confi
 
 ### 调用时机
 
-- 如果需要混合本地采集的视频流，需要在调用 startCameraCapture 或 startScreenCapture 之后调用该方法。
-- 如果希望将混合后的视频流发布到频道中，需要在调用 joinChannel 或 updateChannelMediaOptions 时，将 ChannelMediaOptions 中的 publishTranscodedVideoTrack 设置为 true。
+- 如果需要混合本地采集的视频流，需要在调用 [startCameraCapture](/zh-CN/api-reference/rtc/android/camera-capture#api_irtcengine_startcameracapture) 或 [startScreenCapture](/zh-CN/api-reference/rtc/android/screencapture#api_irtcengine_startscreencapture) 之后调用该方法。
+- 如果希望将混合后的视频流发布到频道中，需要在调用 `joinChannel` 或 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_updatechannelmediaoptions) 时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `publishTranscodedVideoTrack` 设置为 true。
 
 <a id="api_irtcengine_startlocalvideotranscoder__related"></a>
 

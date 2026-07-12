@@ -173,11 +173,11 @@ virtual int disableAudio() = 0;
 :::info[注]
 该方法会重置内部引擎，并需要一定时间生效。声网建议使用以下 API 分别控制音频模块：
 
-- enableLocalAudio：是否启用麦克风以创建本地音频流。
-- enableLoopbackRecording：是否启用回环音频采集。
-- muteLocalAudioStream：是否发布本地音频流。
-- muteRemoteAudioStream：是否订阅并播放远端音频流。
-- muteAllRemoteAudioStreams：是否订阅并播放所有远端音频流。
+- [enableLocalAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-capture#api_irtcengine_enablelocalaudio)：是否启用麦克风以创建本地音频流。
+- [enableLoopbackRecording](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-capture#api_irtcengine_enableloopbackrecording)：是否启用回环音频采集。
+- [muteLocalAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：是否发布本地音频流。
+- [muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremoteaudiostream)：是否订阅并播放远端音频流。
+- [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)：是否订阅并播放所有远端音频流。
 :::
 
 <a id="api_irtcengine_disableaudio__timing"></a>
@@ -215,10 +215,10 @@ virtual int enableAudio() = 0;
 :::info[注]
 调用该方法会重置整个引擎，可能导致响应时间变慢。你可以根据实际需求，使用以下方法分别控制音频模块的具体功能：
 
-- enableLocalAudio：是否启用麦克风以创建本地音频流。
-- muteLocalAudioStream：是否发布本地音频流。
-- muteRemoteAudioStream：是否订阅并播放远端音频流。
-- muteAllRemoteAudioStreams：是否订阅并播放所有远端音频流。
+- [enableLocalAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-capture#api_irtcengine_enablelocalaudio)：是否启用麦克风以创建本地音频流。
+- [muteLocalAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：是否发布本地音频流。
+- [muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremoteaudiostream)：是否订阅并播放远端音频流。
+- [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)：是否订阅并播放所有远端音频流。
 
 成功调用该方法会重置 [enableLocalAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-capture#api_irtcengine_enablelocalaudio)、 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremoteaudiostream) 和 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 的设置，请谨慎使用。
 :::
@@ -276,7 +276,7 @@ virtual int enableAudioVolumeIndication(int interval, int smooth, bool reportVad
 设置两次音量提示之间的时间间隔（毫秒）：
 
 - ≤ 0：关闭音量提示功能。
-- &gt; 0：两次音量提示之间的时间间隔（单位为毫秒）。该值需大于 10，否则无法收到 onAudioVolumeIndication 回调。建议设置为大于 100。
+- &gt; 0：两次音量提示之间的时间间隔（单位为毫秒）。该值需大于 10，否则无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。建议设置为大于 100。
 
 #### `smooth`
 
@@ -286,8 +286,8 @@ virtual int enableAudioVolumeIndication(int interval, int smooth, bool reportVad
 
 是否启用本地用户的语音活动检测（VAD）：
 
-- true：启用语音活动检测。启用后， onAudioVolumeIndication 回调中的 vad 参数会报告本地用户的语音活动状态。
-- false：（默认）关闭语音活动检测。关闭后， onAudioVolumeIndication 回调中的 vad 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
+- true：启用语音活动检测。启用后， [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
+- false：（默认）关闭语音活动检测。关闭后， [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
 
 <a id="api_irtcengine_enableaudiovolumeindication__return_values"></a>
 
@@ -342,7 +342,7 @@ virtual int enableAudioVolumeIndicationEx(int interval, int smooth, bool reportV
 设置两次音量提示之间的时间间隔（毫秒）：
 
 - ≤ 0：关闭音量提示。
-- &gt; 0：两次音量提示之间的时间间隔（毫秒）。该值需大于 10，否则无法收到 onAudioVolumeIndication 回调。建议设置为大于 100。
+- &gt; 0：两次音量提示之间的时间间隔（毫秒）。该值需大于 10，否则无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。建议设置为大于 100。
 
 #### `smooth`
 
@@ -352,8 +352,8 @@ virtual int enableAudioVolumeIndicationEx(int interval, int smooth, bool reportV
 
 是否启用本地用户的语音活动检测（Voice Activity Detection）：
 
-- true：启用语音活动检测。启用后， onAudioVolumeIndication 回调中的 vad 参数会报告本地用户的语音活动状态。
-- false：（默认）关闭语音活动检测。关闭后， onAudioVolumeIndication 回调中的 vad 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
+- true：启用语音活动检测。启用后， [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
+- false：（默认）关闭语音活动检测。关闭后， [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
 
 #### `connection`
 
@@ -661,15 +661,15 @@ virtual void onAudioVolumeIndication(const AudioVolumeInfo* speakers, unsigned i
 
 用户总数。
 
-- 本地用户的回调中，如果本地用户正在发送音频流， speakerNumber 的值为 1。
-- 远端用户的回调中， speakerNumber 的取值范围为 [0, 3]。如果发送音频流的远端用户数量大于或等于 3， speakerNumber 的值为 3。
+- 本地用户的回调中，如果本地用户正在发送音频流， `speakerNumber` 的值为 1。
+- 远端用户的回调中， `speakerNumber` 的取值范围为 [0, 3]。如果发送音频流的远端用户数量大于或等于 3， `speakerNumber` 的值为 3。
 
 #### `totalVolume`
 
 说话者的音量，取值范围为 [0, 255]。
 
-- 本地用户的回调中， totalVolume 表示本地用户的音量。
-- 远端用户的回调中， totalVolume 表示瞬时音量最高的最多三位远端用户的音量总和。如果调用了 startAudioMixing，则该值为混音后的音量。
+- 本地用户的回调中， `totalVolume` 表示本地用户的音量。
+- 远端用户的回调中， `totalVolume` 表示瞬时音量最高的最多三位远端用户的音量总和。如果调用了 `startAudioMixing`，则该值为混音后的音量。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
@@ -694,10 +694,10 @@ virtual void onFirstLocalAudioFramePublished(int elapsed)
 
 该回调在以下任一情况下由 SDK 触发：
 
-- 本地客户端启用音频模块并成功调用 joinChannel。
-- 本地客户端依次调用 muteLocalAudioStream(true) 和 muteLocalAudioStream(false)。
-- 本地客户端依次调用 disableAudio 和 enableAudio。
-- 本地客户端调用 pushAudioFrame 成功将音频帧推送至 SDK。
+- 本地客户端启用音频模块并成功调用 `joinChannel`。
+- 本地客户端依次调用 `muteLocalAudioStream(true)` 和 `muteLocalAudioStream(false)`。
+- 本地客户端依次调用 [disableAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#api_irtcengine_disableaudio) 和 [enableAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#api_irtcengine_enableaudio)。
+- 本地客户端调用 [pushAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-custom-capturenrendering#api_imediaengine_pushaudioframe) 成功将音频帧推送至 SDK。
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__parameters"></a>
 

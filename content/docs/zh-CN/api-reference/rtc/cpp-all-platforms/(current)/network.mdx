@@ -40,9 +40,10 @@ virtual int complain(const char* callId, const char* description) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
-  - -7：在 IRtcEngine 初始化之前调用该方法。
+  - -7：在 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 初始化之前调用该方法。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
@@ -101,9 +102,10 @@ virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -2：参数无效，请传入有效参数。
   - -4：内置加密模式错误或 SDK 加载外部加密库失败，请检查枚举值或重新加载外部加密库。
-  - -7：SDK 未初始化，请先初始化 IRtcEngine 实例后再调用该方法。
+  - -7：SDK 未初始化，请先初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 实例后再调用该方法。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
@@ -460,6 +462,7 @@ virtual int getNetworkType() = 0;
 ### 返回值
 
 - 0：方法调用成功，返回本地网络连接类型。
+
   - 0：SDK 与网络断开连接。
   - 1：网络类型为 LAN。
   - 2：网络类型为 Wi-Fi（包括热点）。
@@ -468,6 +471,7 @@ virtual int getNetworkType() = 0;
   - 5：网络类型为移动 4G。
   - 6：网络类型为移动 5G。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -1：网络类型未知。
 
 ### 所属接口类
@@ -670,6 +674,7 @@ virtual int rate(const char* callId, int rating, const char* description) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无具体原因）。
   - -2：参数无效。
 
@@ -892,7 +897,7 @@ virtual int setCloudProxy(CLOUD_PROXY_TYPE proxyType) = 0;
 :::info[注]
 - 建议在加入频道前调用该方法。
 - 当用户处于防火墙之后并使用强制 UDP 云代理时，旁路推流和跨频道联播服务不可用。
-- 当使用强制 TCP 云代理时，调用 startAudioMixing 播放 HTTP 协议的在线音乐文件会发生错误。旁路推流和跨频道联播服务使用基于 TCP 协议的云代理。
+- 当使用强制 TCP 云代理时，调用 `startAudioMixing` 播放 HTTP 协议的在线音乐文件会发生错误。旁路推流和跨频道联播服务使用基于 TCP 协议的云代理。
 :::
 
 <a id="api_irtcengine_setcloudproxy__related"></a>
@@ -915,6 +920,7 @@ virtual int setCloudProxy(CLOUD_PROXY_TYPE proxyType) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -2：参数无效。
   - -7：SDK 未初始化。
 
@@ -1033,17 +1039,18 @@ virtual int setLogFileSize(unsigned int fileSizeInKBytes) = 0;
 
 默认情况下，SDK 会生成五个 SDK 日志文件和五个 API 调用日志文件，规则如下：
 
-- SDK 日志文件包括： agorasdk.log、 agorasdk.1.log、 agorasdk.2.log、 agorasdk.3.log 和 agorasdk.4.log。
-- API 调用日志文件包括： agoraapi.log、 agoraapi.1.log、 agoraapi.2.log、 agoraapi.3.log 和 agoraapi.4.log。
+- SDK 日志文件包括： `agorasdk.log`、 `agorasdk.1.log`、 `agorasdk.2.log`、 `agorasdk.3.log` 和 `agorasdk.4.log`。
+- API 调用日志文件包括： `agoraapi.log`、 `agoraapi.1.log`、 `agoraapi.2.log`、 `agoraapi.3.log` 和 `agoraapi.4.log`。
 - 每个日志文件的默认大小为 2,048 KB，采用 UTF-8 编码。
-- SDK 会将最新日志写入 agorasdk.log 或 agoraapi.log 文件。
-- 当 agorasdk.log 写满时，SDK 会按以下顺序处理日志文件：
-  1. 删除 agorasdk.4.log （如果存在）。
-  2. 将 agorasdk.3.log 重命名为 agorasdk.4.log。
-  3. 将 agorasdk.2.log 重命名为 agorasdk.3.log。
-  4. 将 agorasdk.1.log 重命名为 agorasdk.2.log。
-  5. 创建新的 agorasdk.log 文件。
-- agoraapi.log 的覆盖规则与 agorasdk.log 相同。
+- SDK 会将最新日志写入 `agorasdk.log` 或 `agoraapi.log` 文件。
+- 当 `agorasdk.log` 写满时，SDK 会按以下顺序处理日志文件：
+
+  1. 删除 `agorasdk.4.log` （如果存在）。
+  2. 将 `agorasdk.3.log` 重命名为 `agorasdk.4.log`。
+  3. 将 `agorasdk.2.log` 重命名为 `agorasdk.3.log`。
+  4. 将 `agorasdk.1.log` 重命名为 `agorasdk.2.log`。
+  5. 创建新的 `agorasdk.log` 文件。
+- `agoraapi.log` 的覆盖规则与 `agorasdk.log` 相同。
 
 :::info[注]
 该方法仅用于设置 `agorasdk.log` 文件的大小，不影响 `agoraapi.log` 文件。
@@ -1238,7 +1245,7 @@ virtual int startEchoTest(const EchoTestConfiguration& config) = 0;
 
 :::info[注]
 - 在频道中调用该方法时，请确保未发布任何音视频流。
-- 调用该方法后需调用 stopEchoTest 结束测试，否则你将无法进行下一次音视频通话回路测试，也无法加入频道。
+- 调用该方法后需调用 [stopEchoTest](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_stopechotest) 结束测试，否则你将无法进行下一次音视频通话回路测试，也无法加入频道。
 - 在直播场景中，该方法仅适用于主播角色。
 :::
 
@@ -1282,8 +1289,8 @@ virtual int startLastmileProbeTest(const LastmileProbeConfig& config) = 0;
 
 调用时序：在收到 [onLastmileQuality](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onlastmilequality) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onlastmileproberesult) 回调前，不要调用其他方法，否则可能会中断这些回调。 相关回调：成功调用该方法后，SDK 会依次触发以下两个回调：
 
-- onLastmileQuality：SDK 会在约两秒内根据网络状况触发该回调。该回调用于评估网络质量，更贴近用户体验。
-- onLastmileProbeResult：SDK 会在约 30 秒内根据网络状况触发该回调。该回调返回网络状况的实时统计数据，更加客观。
+- [onLastmileQuality](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onlastmilequality)：SDK 会在约两秒内根据网络状况触发该回调。该回调用于评估网络质量，更贴近用户体验。
+- [onLastmileProbeResult](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onlastmileproberesult)：SDK 会在约 30 秒内根据网络状况触发该回调。该回调返回网络状况的实时统计数据，更加客观。
 
 <a id="api_irtcengine_startlastmileprobetest__parameters"></a>
 
@@ -1325,7 +1332,8 @@ virtual int stopEchoTest() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
-  - -5（ERR_REFUSED ）：停止回声测试失败，可能未在运行中。
+
+  - -5（`ERR_REFUSED` ）：停止回声测试失败，可能未在运行中。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
@@ -1398,8 +1406,8 @@ virtual void onConnectionInterrupted() __deprecated {}
 :::info[注]
 [onConnectionInterrupted](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectioninterrupted) 与 [onConnectionLost](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionlost) 的区别如下：
 
-- 当 SDK 成功加入频道后与服务器断开连接超过 4 秒时，会触发 onConnectionInterrupted 回调。
-- 无论是否加入频道，当 SDK 与服务器断开连接超过 10 秒时，会触发 onConnectionLost 回调。
+- 当 SDK 成功加入频道后与服务器断开连接超过 4 秒时，会触发 [onConnectionInterrupted](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectioninterrupted) 回调。
+- 无论是否加入频道，当 SDK 与服务器断开连接超过 10 秒时，会触发 [onConnectionLost](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionlost) 回调。
 
 如果 SDK 在与声网边缘服务器断开连接 20 分钟后仍未重新加入频道，则停止重连。
 :::

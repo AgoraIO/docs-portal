@@ -15,13 +15,15 @@ description: "订阅状态。"
 （1）：订阅远端流失败。可能的原因包括：
 
 - 远端用户：
-  - 调用 muteLocalAudioStream: （YES）或 muteLocalVideoStream: （YES）停止发送本地媒体流。
-  - 调用 disableAudio 或 disableVideo 禁用本地音频或视频模块。
-  - 调用 enableLocalAudio: （NO）或 enableLocalVideo: （NO）禁用本地音频或视频采集。
+
+  - 调用 [muteLocalAudioStream:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_mutelocalaudiostream) （YES）或 [muteLocalVideoStream:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_mutelocalvideostream) （YES）停止发送本地媒体流。
+  - 调用 [disableAudio](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_disableaudio) 或 [disableVideo](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_disablevideo) 禁用本地音频或视频模块。
+  - 调用 [enableLocalAudio:](/zh-CN/api-reference/rtc/macos/audio-capture#api_irtcengine_enablelocalaudio) （NO）或 [enableLocalVideo:](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_enablelocalvideo) （NO）禁用本地音频或视频采集。
   - 角色为观众。
 - 本地用户：
-  - 调用 muteRemoteAudioStream:mute: （YES）或 muteAllRemoteAudioStreams: （YES）停止接收远端音频流。
-  - 调用 muteRemoteVideoStream:mute: （YES）或 muteAllRemoteVideoStreams: （YES）停止接收远端视频流。
+
+  - 调用 [muteRemoteAudioStream:mute:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteremoteaudiostream) （YES）或 [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) （YES）停止接收远端音频流。
+  - 调用 [muteRemoteVideoStream:mute:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteremotevideostream) （YES）或 [muteAllRemoteVideoStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremotevideostreams) （YES）停止接收远端视频流。
 
 ### `AgoraStreamSubscribeStateSubscribing`
 

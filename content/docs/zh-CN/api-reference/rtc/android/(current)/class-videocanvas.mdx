@@ -84,9 +84,9 @@ public class VideoCanvas {
 
 渲染模式：
 
-- RENDER_MODE_HIDDEN (1)：隐藏模式。
-- RENDER_MODE_FIT (2)：适应模式。
-- RENDER_MODE_ADAPTIVE (3)：自适应模式（已废弃，声网不推荐使用）。
+- `RENDER_MODE_HIDDEN` (1)：隐藏模式。
+- `RENDER_MODE_FIT` (2)：适应模式。
+- `RENDER_MODE_ADAPTIVE` (3)：自适应模式（已废弃，声网不推荐使用）。
 
 ### `mirrorMode`
 
@@ -97,9 +97,9 @@ public class VideoCanvas {
 
 镜像模式：
 
-- VIDEO_MIRROR_MODE_AUTO (0)：SDK 自动判断是否开启镜像模式。
-- VIDEO_MIRROR_MODE_ENABLED (1)：开启本地视图镜像模式。
-- VIDEO_MIRROR_MODE_DISABLED (2)：关闭本地视图镜像模式。
+- `VIDEO_MIRROR_MODE_AUTO` (0)：SDK 自动判断是否开启镜像模式。
+- `VIDEO_MIRROR_MODE_ENABLED` (1)：开启本地视图镜像模式。
+- `VIDEO_MIRROR_MODE_DISABLED` (2)：关闭本地视图镜像模式。
 
 ### `setupMode`
 
@@ -109,9 +109,9 @@ public class VideoCanvas {
 
 视图设置模式：
 
-- VIEW_SETUP_MODE_REPLACE (0)：替换视图，默认值。
-- VIEW_SETUP_MODE_ADD (1)：新增视图。
-- VIEW_SETUP_MODE_REMOVE (2)：删除视图。
+- `VIEW_SETUP_MODE_REPLACE` (0)：替换视图，默认值。
+- `VIEW_SETUP_MODE_ADD` (1)：新增视图。
+- `VIEW_SETUP_MODE_REMOVE` (2)：删除视图。
 
 ### `sourceType`
 
@@ -139,7 +139,7 @@ public class VideoCanvas {
 视频画布的背景颜色，RGBA 格式。默认值为 0x00000000，表示黑色。
 
 :::info[注]
-- 如果使用 Kotlin 开发并设置为 0xFFFFFFFF 时出现编译错误，可使用 (0xFFFFFFFF).toInt() 或 android.graphics.Color.parseColor("#FFFFFFFF")。
+- 如果使用 Kotlin 开发并设置为 `0xFFFFFFFF` 时出现编译错误，可使用 `(0xFFFFFFFF).toInt()` 或 `android.graphics.Color.parseColor("#FFFFFFFF")`。
 - 当前使用 RGBA 格式时不支持 Alpha 通道。
 :::
 

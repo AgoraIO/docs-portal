@@ -230,7 +230,7 @@ public Constants.ErrorCode code()
 
 ### 返回值
 
-- 方法调用失败时，返回错误码。详见 ErrorCode。
+- 方法调用失败时，返回错误码。详见 [ErrorCode](/zh-CN/api-reference/rtc/android/enum-rteerrorcode)。
 
 ### 所属接口类
 - [Error](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_error)
@@ -2086,9 +2086,9 @@ public void setLoopCount(int count) throws RteException
 
 媒体文件循环播放的次数：
 
-- 1：播放一次。
-- 2：播放两次。
-- -1：无限循环播放，直到调用 stop 停止播放。
+- `1`：播放一次。
+- `2`：播放两次。
+- `-1`：无限循环播放，直到调用 [stop](/zh-CN/api-reference/rtc/android/rte-player#api_player_stop_player) 停止播放。
 
 <a id="api_playerconfig_setloopcount__exception"></a>
 
@@ -2250,7 +2250,7 @@ public void setVideoRenderMode(Constants.VideoRenderMode mode) throws RteExcepti
 
 [RteException](/zh-CN/api-reference/rtc/android/class-rteexception)： `RteException.errorCode()` 可能返回以下错误码：
 
-- ErrorCode.INVALID_ARGUMENT： mode 参数设置为非法值。
+- `ErrorCode.INVALID_ARGUMENT`： `mode` 参数设置为非法值。
 
 ### 所属接口类
 - [CanvasConfig](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_canvasconfig)

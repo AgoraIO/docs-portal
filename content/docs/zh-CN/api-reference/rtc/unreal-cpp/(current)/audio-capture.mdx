@@ -128,8 +128,8 @@ virtual int enableInEarMonitoring(bool enabled, int includeAudioFilters) = 0;
 
 开启/关闭耳返功能:
 
-- true: 开启耳返功能。
-- false: （默认）关闭耳返功能。
+- `true`: 开启耳返功能。
+- `false`: （默认）关闭耳返功能。
 
 #### `includeAudioFilters`
 
@@ -141,6 +141,7 @@ virtual int enableInEarMonitoring(bool enabled, int includeAudioFilters) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - - 8: 请确保当前的音频路由为蓝牙或耳机。
 
 ### 所属接口类
@@ -197,8 +198,8 @@ virtual int enableLocalAudio(bool enabled) = 0;
 
 #### `enabled`
 
-- true: 重新开启本地音频功能，即开启本地音频采集（默认）；
-- false: 关闭本地音频功能，即停止本地音频采集。
+- `true`: 重新开启本地音频功能，即开启本地音频采集（默认）；
+- `false`: 关闭本地音频功能，即停止本地音频采集。
 
 <a id="api_irtcengine_enablelocalaudio__return_values"></a>
 
@@ -231,7 +232,7 @@ virtual int enableLocalAudio(bool enabled) = 0;
 :::warning[注意]
 - 该方法仅适用于 macOS 和 Windows 平台。
 - 该方法在加入频道前后都能调用。
-- 如果你调用了 disableAudio 关闭音频模块，声卡采集功能也会被关闭。如果你需要再次启用声卡采集功能，需要调用 enableAudio 启用音频模块后再次调用 enableLoopbackRecording。
+- 如果你调用了 [disableAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio-basic#api_irtcengine_disableaudio) 关闭音频模块，声卡采集功能也会被关闭。如果你需要再次启用声卡采集功能，需要调用 [enableAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio-basic#api_irtcengine_enableaudio) 启用音频模块后再次调用 enableLoopbackRecording。
 :::
 
 <a id="api_irtcengine_enableloopbackrecording__parameters"></a>
@@ -242,8 +243,8 @@ virtual int enableLocalAudio(bool enabled) = 0;
 
 是否开启声卡采集:
 
-- true: 开启声卡采集；系统 声音 &gt; 输出 界面显示虚拟声卡名称。
-- false:（默认）关闭声卡采集；系统 声音 &gt; 输出 界面不显示虚拟声卡名称。
+- `true`: 开启声卡采集；系统 **声音 &gt; 输出** 界面显示虚拟声卡名称。
+- `false`:（默认）关闭声卡采集；系统 **声音 &gt; 输出** 界面不显示虚拟声卡名称。
 
 #### `deviceName`
 
@@ -296,8 +297,8 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 是否开启声卡采集：
 
-- true: 开启声卡采集。
-- false:（默认）不开启声卡采集。
+- `true`: 开启声卡采集。
+- `false`:（默认）不开启声卡采集。
 
 #### `deviceName`
 
@@ -353,8 +354,8 @@ virtual int muteRecordingSignal(bool mute) = 0;
 
 #### `mute`
 
-- true: 静音。
-- false:（默认）原始音量。
+- `true`: 静音。
+- `false`:（默认）原始音量。
 
 <a id="api_irtcengine_muterecordingsignal__return_values"></a>
 
@@ -410,6 +411,7 @@ virtual int setInEarMonitoringVolume(int volume) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -2: 参数设置无效，例如耳返音量超出取值范围 (&lt; 0 或 &gt; 400)。
 
 ### 所属接口类

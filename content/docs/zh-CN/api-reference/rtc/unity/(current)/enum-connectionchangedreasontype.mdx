@@ -43,7 +43,7 @@ description: "网络连接状态发生变化的原因。"
 8: Token 无效。一般有以下原因：
 
 - 你的项目启用了 App Certificate，但加入频道未使用 Token。
-- 在调用 JoinChannel [2/2] 加入频道时指定的用户 ID 与生成 Token 时传入的用户 ID 不一致。
+- 在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 加入频道时指定的用户 ID 与生成 Token 时传入的用户 ID 不一致。
 - 生成的 Token 和加入频道使用的 Token 不一致。
 
 请确保：
@@ -60,7 +60,7 @@ description: "网络连接状态发生变化的原因。"
 
 10: 此用户被服务器禁止。一般有以下原因：
 
-- 用户已进入频道，再次调用加入频道的 API，例如 JoinChannel [2/2]，会返回此状态。停止调用该方法即可。
+- 用户已进入频道，再次调用加入频道的 API，例如 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2)，会返回此状态。停止调用该方法即可。
 - 用户在进行通话测试时尝试加入频道。等待通话测试结束后再加入频道即可。
 
 ### `CONNECTION_CHANGED_SETTING_PROXY_SERVER`

@@ -114,9 +114,9 @@ public abstract int initialize(LocalSpatialAudioConfig config);
 <a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__detailed_desc"></a>
 
 :::info[注]
-- 请在调用 create 方法后调用此方法。
-- 在调用 ILocalSpatialAudioEngine 的其他方法前，必须先调用 initialize 初始化 ILocalSpatialAudioEngine。
-- 每个 App 仅支持创建一个 ILocalSpatialAudioEngine 实例。
+- 请在调用 [create](/zh-CN/api-reference/rtc/android/spatial-audio#api_ilocalspatialaudioengine_create_ilocalspatialaudioengine) 方法后调用此方法。
+- 在调用 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine) 的其他方法前，必须先调用 [initialize](/zh-CN/api-reference/rtc/android/spatial-audio#api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine) 初始化 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine)。
+- 每个 App 仅支持创建一个 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
 :::
 
 <a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__parameters"></a>
@@ -154,9 +154,9 @@ public abstract int muteAllRemoteAudioStreams(boolean mute);
 调用该方法后，本地用户将停止或恢复订阅所有远端用户的音频流，包括后续加入频道的用户。
 
 :::info[注]
-- 请在调用 joinChannel 方法后调用本方法。
-- 使用空间音效时，如需设置是否停止订阅所有远端用户的音频流，声网推荐使用本方法，而非 RtcEngine 下的同名方法。
-- 调用本方法后，需要调用 updateSelfPosition 和 updateRemotePosition 方法更新本地用户和远端用户的空间位置，否则本方法的设置不会生效。
+- 请在调用 `joinChannel` 方法后调用本方法。
+- 使用空间音效时，如需设置是否停止订阅所有远端用户的音频流，声网推荐使用本方法，而非 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 下的同名方法。
+- 调用本方法后，需要调用 [updateSelfPosition](/zh-CN/api-reference/rtc/android/spatial-audio#api_ibasespatialaudioengine_updateselfposition) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/android/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 方法更新本地用户和远端用户的空间位置，否则本方法的设置不会生效。
 :::
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__parameters"></a>
@@ -240,8 +240,8 @@ public abstract int muteRemoteAudioStream(int uid, boolean mute);
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__detailed_desc"></a>
 
 :::info[注]
-- 请在调用 joinChannel 方法后调用此方法。
-- 使用空间音效时，如需设置是否停止订阅指定用户的音频流，声网推荐调用此方法，而非 muteRemoteAudioStream 方法。
+- 请在调用 `joinChannel` 方法后调用此方法。
+- 使用空间音效时，如需设置是否停止订阅指定用户的音频流，声网推荐调用此方法，而非 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/android/spatial-audio#api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine) 方法。
 :::
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__parameters"></a>
@@ -428,6 +428,7 @@ public abstract int setHeadphoneEQParameters(int lowGain, int highGain);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -1：发生通用错误。
 
 ### 所属接口类
@@ -461,9 +462,9 @@ public abstract int setHeadphoneEQPreset(int preset);
 
 预设的耳机均衡器效果：
 
-- HEADPHONE_EQUALIZER_OFF：关闭耳机均衡器，听到原始音频。
-- HEADPHONE_EQUALIZER_OVEREAR：为头戴式耳机使用均衡器。
-- HEADPHONE_EQUALIZER_INEAR：为入耳式耳机使用均衡器。
+- `HEADPHONE_EQUALIZER_OFF`：关闭耳机均衡器，听到原始音频。
+- `HEADPHONE_EQUALIZER_OVEREAR`：为头戴式耳机使用均衡器。
+- `HEADPHONE_EQUALIZER_INEAR`：为入耳式耳机使用均衡器。
 
 <a id="api_irtcengine_setheadphoneeqpreset__return_values"></a>
 
@@ -471,6 +472,7 @@ public abstract int setHeadphoneEQPreset(int preset);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无具体原因）。
 
 ### 所属接口类
@@ -538,17 +540,18 @@ public abstract int setPlayerAttenuation(int playerId, double attenuation, boole
 
 - 0：广播模式，音量和音色不随距离衰减，本地用户听到的音量和音色不会因距离变化而变化。
 - (0, 0.5)：弱衰减模式，音量和音色在传播过程中仅有轻微衰减，声音传播距离比真实环境更远。
-- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 speaker_attenuation 参数。
+- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 `speaker_attenuation` 参数。
 - (0.5, 1]：强衰减模式，音量和音色在传播过程中迅速衰减。
 
 #### `forceSet`
 
 是否强制设置媒体播放器的声音衰减效果：
 
-- true：强制使用 attenuation 设置媒体播放器的衰减效果，此时 SpatialAudioZone 中 audioAttenuation 设置的隔音区衰减系数对媒体播放器无效。
-- false：不强制使用 attenuation 设置媒体播放器的声音衰减效果，具体如下：
-  - 如果声源和听众分别位于隔音区内外，声音衰减效果由 SpatialAudioZone 中的 audioAttenuation 决定。
-  - 如果声源和听众位于同一隔音区内或同一隔音区外，声音衰减效果由本方法中的 attenuation 参数决定。
+- true：强制使用 `attenuation` 设置媒体播放器的衰减效果，此时 [SpatialAudioZone](/zh-CN/api-reference/rtc/android/class-spatialaudiozone) 中 `audioAttenuation` 设置的隔音区衰减系数对媒体播放器无效。
+- false：不强制使用 `attenuation` 设置媒体播放器的声音衰减效果，具体如下：
+
+  - 如果声源和听众分别位于隔音区内外，声音衰减效果由 [SpatialAudioZone](/zh-CN/api-reference/rtc/android/class-spatialaudiozone) 中的 `audioAttenuation` 决定。
+  - 如果声源和听众位于同一隔音区内或同一隔音区外，声音衰减效果由本方法中的 `attenuation` 参数决定。
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation__return_values"></a>
 
@@ -588,17 +591,18 @@ public abstract int setRemoteAudioAttenuation(int uid, double attenuation, boole
 
 - 0：广播模式，音量和音色不会随距离衰减，本地用户听到的音量和音色不会因距离变化。
 - (0, 0.5)：弱衰减模式，音量和音色在传播过程中仅有轻微衰减，声音传播距离大于真实环境。
-- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 speaker_attenuation 参数。
+- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 `speaker_attenuation` 参数。
 - (0.5, 1]：强衰减模式，音量和音色在传播过程中快速衰减。
 
 #### `forceSet`
 
 是否强制设置用户的声音衰减效果：
 
-- true：强制使用 attenuation 设置用户的声音衰减效果，此时 SpatialAudioZone 中 audioAttenuation 设置的隔音区衰减系数对该用户无效。
-- false：不强制使用 attenuation 设置用户的声音衰减效果，具体如下：
-  - 若声源和接收者分别位于隔音区内外，衰减效果由 SpatialAudioZone 中的 audioAttenuation 决定；
-  - 若声源和接收者位于同一隔音区或同一隔音区外，衰减效果由本方法中的 attenuation 决定。
+- true：强制使用 `attenuation` 设置用户的声音衰减效果，此时 [SpatialAudioZone](/zh-CN/api-reference/rtc/android/class-spatialaudiozone) 中 `audioAttenuation` 设置的隔音区衰减系数对该用户无效。
+- false：不强制使用 `attenuation` 设置用户的声音衰减效果，具体如下：
+
+  - 若声源和接收者分别位于隔音区内外，衰减效果由 [SpatialAudioZone](/zh-CN/api-reference/rtc/android/class-spatialaudiozone) 中的 `audioAttenuation` 决定；
+  - 若声源和接收者位于同一隔音区或同一隔音区外，衰减效果由本方法中的 `attenuation` 决定。
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__return_values"></a>
 
@@ -698,8 +702,8 @@ public abstract int setZones(SpatialAudioZone[] zones);
 
 在虚拟互动场景中，你可以使用该方法设置隔音区域及声音衰减系数。当声源（可以是用户或媒体播放器）和接收者分别处于隔音区域的内外时，可以体验到类似真实环境中声音遇到建筑隔断时的衰减效果：
 
-- 当声源和接收者分别处于隔音区域的内外时，声音的衰减效果由 SpatialAudioZone 中的声音衰减系数决定。
-- 如果用户或媒体播放器处于同一个隔音区域内，则声音衰减效果由 setPlayerAttenuation 或 setRemoteAudioAttenuation 中的 attenuation 参数决定。如果你未调用 setPlayerAttenuation 或 setRemoteAudioAttenuation，SDK 默认的声音衰减系数为 0.5，用于模拟真实环境中的声音衰减。
+- 当声源和接收者分别处于隔音区域的内外时，声音的衰减效果由 [SpatialAudioZone](/zh-CN/api-reference/rtc/android/class-spatialaudiozone) 中的声音衰减系数决定。
+- 如果用户或媒体播放器处于同一个隔音区域内，则声音衰减效果由 [setPlayerAttenuation](/zh-CN/api-reference/rtc/android/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/android/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation) 中的 `attenuation` 参数决定。如果你未调用 [setPlayerAttenuation](/zh-CN/api-reference/rtc/android/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/android/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation)，SDK 默认的声音衰减系数为 0.5，用于模拟真实环境中的声音衰减。
 - 如果声源和接收者分别处于两个不同的隔音区域，接收者将无法听到声源。
 
 :::info[注]

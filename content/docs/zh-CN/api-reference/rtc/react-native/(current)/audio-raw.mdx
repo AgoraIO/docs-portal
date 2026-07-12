@@ -68,8 +68,8 @@ abstract setEarMonitoringAudioFrameParameters(
 该方法用于设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/react-native/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调的耳返音频数据格式。
 
 :::info[注]
-- 调用该方法前，你需要先调用 enableInEarMonitoring，将 includeAudioFilters 设置为 EarMonitoringFilterBuiltInAudioFilters 或 EarMonitoringFilterNoiseSuppression。
-- SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计算出采样间隔，计算公式为采样间隔 = samplesPerCall /(sampleRate × channel)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 onEarMonitoringAudioFrame 回调。
+- 调用该方法前，你需要先调用 [enableInEarMonitoring](/zh-CN/api-reference/rtc/react-native/audio-capture#api_irtcengine_enableinearmonitoring2)，将 `includeAudioFilters` 设置为 `EarMonitoringFilterBuiltInAudioFilters` 或 `EarMonitoringFilterNoiseSuppression`。
+- SDK 会通过该方法中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算出采样间隔，计算公式为采样间隔 = `samplesPerCall` /(`sampleRate` × `channel`)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/react-native/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调。
 :::
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__parameters"></a>

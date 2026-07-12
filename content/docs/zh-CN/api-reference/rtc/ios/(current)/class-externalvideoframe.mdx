@@ -28,8 +28,8 @@ __attribute__((visibility("default"))) @interface AgoraVideoFrame : NSObject
 <a id="class_externalvideoframe__detailed_desc"></a>
 
 :::info[注]
-1. strideInPixels：步幅单位为像素，而非字节。
-2. 关于帧的宽度和高度：未定义 width 字段，但可以通过以下方式推导：
+1. `strideInPixels`：步幅单位为像素，而非字节。
+2. 关于帧的宽度和高度：未定义 `width` 字段，但可以通过以下方式推导：
 
 `croppedWidth = (strideInPixels - cropLeft - cropRight)` `croppedHeight = (height - cropTop - cropBottom)`
 

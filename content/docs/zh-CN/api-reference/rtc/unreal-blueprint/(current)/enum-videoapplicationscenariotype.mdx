@@ -20,15 +20,22 @@ APPLICATION_SCENARIO_MEETING (1) 适用于会议场景。SDK 会针对该场景�
 
 - 针对会议场景对小流码率要求较高的情况，自动启用多项抗弱网技术，提升小流的抗弱网能力，确保多路流订阅时接收端的流畅性。
 - 实时监测接收端大流的订阅人数，根据订阅人数动态调节大流配置：
+
   - 无人订阅大流时，会自动降低大流的码率和帧率，节省上行带宽和消耗。
-  - 有人订阅大流时，大流会重置为用户最近一次调用 SetVideoEncoderConfiguration 时的 FUABT_VideoEncoderConfiguration 配置。如果用户此前没有进行设置，则使用如下值：
+  - 有人订阅大流时，大流会重置为用户最近一次调用 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_setvideoencoderconfiguration) 时的 [FUABT_VideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/class-videoencoderconfiguration) 配置。如果用户此前没有进行设置，则使用如下值：
+
     - 视频分辨率：桌面端为 1280 × 720；移动端为 960 × 540
     - 视频帧率：15 fps
     - 码率：桌面端为 1600 Kbps；移动端为 1000 Kbps
-- 实时监测接收端小流的订阅人数，根据订阅人数动态开启和关闭小流：:::info [注]
-如果用户已调用 [SetDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setdualstreammode2) 将小流设置为始终不发送 (DISABLE_SIMULCAST_STREAM)，会议场景对小流的动态开关不生效。:::
+- 实时监测接收端小流的订阅人数，根据订阅人数动态开启和关闭小流：
+
+  :::info[注]
+  如果用户已调用 [SetDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setdualstreammode2) 将小流设置为始终不发送 (DISABLE_SIMULCAST_STREAM)，会议场景对小流的动态开关不生效。
+  :::
+
   - 无人订阅小流时，自动关闭小流，节省上行带宽和消耗。
-  - 有人订阅小流时，开启小流并重置为用户最近一次调用 SetDualStreamMode 时的 FSimulcastStreamConfig 配置。如果用户此前没有进行设置，则使用如下值：
+  - 有人订阅小流时，开启小流并重置为用户最近一次调用 SetDualStreamMode 时的 [FSimulcastStreamConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-simulcaststreamconfig) 配置。如果用户此前没有进行设置，则使用如下值：
+
     - 视频分辨率：480 × 272
     - 视频帧率：15 fps
     - 码率：500 Kbps

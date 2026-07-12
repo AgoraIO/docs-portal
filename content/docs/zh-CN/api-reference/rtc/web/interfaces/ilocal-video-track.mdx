@@ -5,9 +5,11 @@ description: "ILocalVideoTrack API reference."
 
 `LocalVideoTrack` 为本地视频轨道的基础类，提供了本地视频轨道的主要功能。 你可以通过 [AgoraRTC.createCustomVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createcustomvideotrack) 或者 [AgoraRTC.createScreenVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createscreenvideotrack) 来获取 `LocalVideoTrack`。 通过摄像头采集到的本地视频轨道对象 [CameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icamera-video-track) 继承于此接口，并在本接口的基础上提供了一些摄像头独有的功能。
 
-- ILocalTrack
+- [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track)
+
   - ILocalVideoTrack
-    - ICameraVideoTrack
+
+    - [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icamera-video-track)
 
 ## Events
 
@@ -91,8 +93,8 @@ isPlaying: boolean
 
 媒体轨道是否正在页面上播放。
 
-- true: 媒体轨道正在页面上播放。
-- false: 媒体轨道没有在页面上播放。
+- `true`: 媒体轨道正在页面上播放。
+- `false`: 媒体轨道没有在页面上播放。
 
 <a id="muted"></a>
 
@@ -128,8 +130,8 @@ trackMediaType: "audio" | "video"
 
 媒体轨道的类型：
 
-- "audio": 音频轨道。
-- "video": 视频轨道。
+- `"audio"`: 音频轨道。
+- `"video"`: 视频轨道。
 
 ## Methods
 
@@ -312,9 +314,9 @@ Returns string
 
 可能返回以下值：
 
-- 如果是通过 createMicrophoneAudioTrack 或 createCameraVideoTrack 创建的轨道，返回 MediaDeviceInfo.label 字段。
-- 如果是通过 createScreenVideoTrack 创建的轨道，返回屏幕共享的 sourceId。
-- 如果是 createCustomAudioTrack 或 createCustomVideoTrack 创建的轨道，返回 MediaStreamTrack.label 字段。
+- 如果是通过 `createMicrophoneAudioTrack` 或 `createCameraVideoTrack` 创建的轨道，返回 [MediaDeviceInfo.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/label) 字段。
+- 如果是通过 `createScreenVideoTrack` 创建的轨道，返回屏幕共享的 `sourceId`。
+- 如果是 `createCustomAudioTrack` 或 `createCustomVideoTrack` 创建的轨道，返回 [MediaStreamTrack.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/label) 字段。
 
 <a id="getvideoelementvisiblestatus"></a>
 
@@ -324,7 +326,7 @@ Returns string
 getVideoElementVisibleStatus(): CheckVideoVisibleResult | undefined
 ```
 
-- @自从 4.8.0
+- @自从 <br /> *4.8.0*
 
 获取 HTML `<video>` 标签的可见状态和不可见原因。
 
@@ -336,9 +338,9 @@ Returns [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvide
 
 [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult) 对象。如果该方法返回 `undefined`，可能为以下原因：
 
-- localVideoTrack.isPlaying 为 false。
-- &lt;video&gt; 标签不存在。
-- &lt;video&gt; 标签不是通过 play 方法调用产生的。
+- `localVideoTrack.isPlaying` 为 `false`。
+- `<video>` 标签不存在。
+- `<video>` 标签不是通过 `play` 方法调用产生的。
 
 <a id="off"></a>
 
@@ -490,7 +492,7 @@ play(element: string | HTMLElement, config?: VideoPlayerConfig): void
 
 | Name | Description |
 | --- | --- |
-| element: string \| HTMLElement | 指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：<br />- string: 指定该 DOM 元素的 ID 值。<br />- HTMLElement: 直接传入一个 DOM 元素对象。 |
+| element: string \| HTMLElement | 指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：<br />- `string`: 指定该 DOM 元素的 ID 值。<br />- `HTMLElement`: 直接传入一个 DOM 元素对象。 |
 | Optional config: VideoPlayerConfig | 设置播放参数（镜像/显示模式）。详见 [VideoPlayerConfig](/zh-CN/api-reference/rtc/web/interfaces/video-player-config)。对于本地视频轨道，镜像模式默认开启。 |
 
 #### Returns
@@ -606,7 +608,7 @@ setEnabled(enabled: boolean): Promise<void>
 
 | Name | Description |
 | --- | --- |
-| enabled: boolean | 是否启用该轨道:<br />- true: 启用该轨道。<br />- false: 禁用该轨道。 |
+| enabled: boolean | 是否启用该轨道:<br />- `true`: 启用该轨道。<br />- `false`: 禁用该轨道。 |
 
 #### Returns
 
@@ -654,7 +656,7 @@ setMuted(muted: boolean): Promise<void>
 
 | Name | Description |
 | --- | --- |
-| muted: boolean | 是否发送该轨道的媒体数据:<br />- true: 暂停发送该轨道的媒体数据。<br />- false: 恢复发送该轨道的媒体数据。 |
+| muted: boolean | 是否发送该轨道的媒体数据:<br />- `true`: 暂停发送该轨道的媒体数据。<br />- `false`: 恢复发送该轨道的媒体数据。 |
 
 #### Returns
 
@@ -682,7 +684,7 @@ setOptimizationMode(mode: OptimizationMode): Promise<void>
 
 | Name | Description |
 | --- | --- |
-| mode: OptimizationMode | 视频传输优化模式：<br />- "balanced": 使用默认的传输优化模式：<br />  - 对于屏幕共享视频流，SDK 默认的优化策略为清晰优先。<br />  - 对于其他视频流，SDK 默认的优化策略为兼顾清晰和流畅，弱网条件下，帧率和分辨率都会被调整。<br />- "detail": 清晰优先。<br />  - 浏览器会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。<br />  - 大部分情况下，SDK 不会降低发送分辨率，但是可能会降低帧率。<br />- "motion": 自 4.21.0 开始，浏览器默认开启流畅优先模式。<br />  - 浏览器不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。<br />  - 大部分情况下，浏览器不会降低帧率，但是可能会降低发送分辨率。 |
+| mode: OptimizationMode | 视频传输优化模式：<br />- `"balanced"`: 使用默认的传输优化模式：<br />  - 对于屏幕共享视频流，SDK 默认的优化策略为清晰优先。<br />  - 对于其他视频流，SDK 默认的优化策略为兼顾清晰和流畅，弱网条件下，帧率和分辨率都会被调整。<br />- `"detail"`: 清晰优先。<br />  - 浏览器会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。<br />  - 大部分情况下，SDK 不会降低发送分辨率，但是可能会降低帧率。<br />- `"motion"`: 自 4.21.0 开始，浏览器默认开启流畅优先模式。<br />  - 浏览器不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。<br />  - 大部分情况下，浏览器不会降低帧率，但是可能会降低发送分辨率。 |
 
 #### Returns
 

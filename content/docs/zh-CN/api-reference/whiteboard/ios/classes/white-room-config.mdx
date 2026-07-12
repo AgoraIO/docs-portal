@@ -102,16 +102,16 @@ description: "配置实时房间的参数。"
 
 数据中心包括：
 
-- WhiteRegionCN：中国杭州。该数据中心为其他数据中心服务区未覆盖的地区提供服务。
-- WhiteRegionUS：美国硅谷。该数据中心为北美洲、南美洲地区提供服务。
-- WhiteRegionIN：印度孟买。该数据中心为印度地区提供服务。
-- WhiteRegionSG：新加坡。该数据中心为新加坡、东亚、东南亚地区提供服务。
-- WhiteRegionEU：欧洲（法兰克福）。该数据中心为欧洲地区提供服务。
+- `WhiteRegionCN`：中国杭州。该数据中心为其他数据中心服务区未覆盖的地区提供服务。
+- `WhiteRegionUS`：美国硅谷。该数据中心为北美洲、南美洲地区提供服务。
+- `WhiteRegionIN`：印度孟买。该数据中心为印度地区提供服务。
+- `WhiteRegionSG`：新加坡。该数据中心为新加坡、东亚、东南亚地区提供服务。
+- `WhiteRegionEU`：欧洲（法兰克福）。该数据中心为欧洲地区提供服务。
 
 **Note:**
 
 - 该方法设置的数据中心必须与要加入的互动白板实时房间所在数据中心一致，否则无法加入房间。
-- 该方法与 WhiteSdkConfiguration 类中的 region 方法作用相同，两个方法只需要调用其中的一个。如果同时调用，该方法会覆盖 WhiteSdkConfiguration 类中的 region。
+- 该方法与 [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk-configuration) 类中的 [region](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk-configuration#//api/name/region) 方法作用相同，两个方法只需要调用其中的一个。如果同时调用，该方法会覆盖 [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk-configuration) 类中的 [region](/zh-CN/api-reference/whiteboard/ios/classes/white-sdk-configuration#//api/name/region)。
 
 #### Availability
 
@@ -139,8 +139,8 @@ description: "配置实时房间的参数。"
 
 #### Discussion
 
-- YES：禁止工具响应用户输入。
-- NO：（默认）允许工具响应用户输入。
+- `YES`：禁止工具响应用户输入。
+- `NO`：（默认）允许工具响应用户输入。
 
 <a id="//api/name/disableCameraTransform"></a>
 
@@ -154,8 +154,8 @@ description: "配置实时房间的参数。"
 
 #### Discussion
 
-- YES：禁止本地用户操作白板视角。
-- NO：（默认）允许本地用户操作白板视角。
+- `YES`：禁止本地用户操作白板视角。
+- `NO`：（默认）允许本地用户操作白板视角。
 
 <a id="//api/name/disableBezier"></a>
 
@@ -169,8 +169,8 @@ description: "配置实时房间的参数。"
 
 #### Discussion
 
-- YES：关闭贝塞尔曲线优化。
-- NO：（默认）开启贝塞尔曲线优化。
+- `YES`：关闭贝塞尔曲线优化。
+- `NO`：（默认）开启贝塞尔曲线优化。
 
 <a id="//api/name/disableOperations"></a>
 
@@ -200,8 +200,8 @@ description: "配置实时房间的参数。"
 
 #### Discussion
 
-- YES：橡皮擦不可以擦除图片。
-- NO：（默认）橡皮擦可以擦除图片。
+- `YES`：橡皮擦不可以擦除图片。
+- `NO`：（默认）橡皮擦可以擦除图片。
 
 <a id="//api/name/floatBar"></a>
 
@@ -215,8 +215,8 @@ description: "配置实时房间的参数。"
 
 #### Discussion
 
-- YES：开启浮动条。
-- NO：（默认）关闭浮动条。
+- `YES`：开启浮动条。
+- `NO`：（默认）关闭浮动条。
 
 <a id="//api/name/cameraBound"></a>
 
@@ -242,9 +242,9 @@ description: "配置实时房间的参数。"
 
 **Note:**
 
-- 必须使用 WhiteRoomConfig 子类，以保证字段结构正确。
-- 自定义的用户信息会被完整透传。 如果要在白板房间中显示用户头像，请在 userPayload 中传入 avatar 字段并添加用户头像的地址，例如 “avatar”, “ https://example.com/user.png ”)。
-- 从 WhiteMemberInformation 迁移，只需要在 userPayload 中，传入相同字段即可。
+- 必须使用 `WhiteRoomConfig` 子类，以保证字段结构正确。
+- 自定义的用户信息会被完整透传。 如果要在白板房间中显示用户头像，请在 `userPayload` 中传入 `avatar` 字段并添加用户头像的地址，例如 “avatar”, “ [https://example.com/user.png](https://example.com/user.png) ”)。
+- 从 [WhiteMemberInformation](/zh-CN/api-reference/whiteboard/ios/classes/white-member-information) 迁移，只需要在 `userPayload` 中，传入相同字段即可。
 
 <a id="//api/name/memberInfo"></a>
 
@@ -274,8 +274,8 @@ description: "配置实时房间的参数。"
 
 在加入房间后，也可以通过 [setWritable](/zh-CN/api-reference/whiteboard/ios/classes/white-room#//api/name/setWritable:completionHandler:) 方法切换读写模式。
 
-- YES：以互动模式加入白板房间，即具有读写权限。
-- NO：以订阅模式加入白板房间，即具有只读权限。不能操作工具、修改房间状态，当前用户也不会出现在 roomMembers 列表中。
+- `YES`：以互动模式加入白板房间，即具有读写权限。
+- `NO`：以订阅模式加入白板房间，即具有只读权限。不能操作工具、修改房间状态，当前用户也不会出现在 `roomMembers` 列表中。
 
 <a id="//api/name/disableNewPencil"></a>
 
@@ -291,8 +291,8 @@ description: "配置实时房间的参数。"
 
 设置是否关闭新铅笔工具：
 
-- YES: （默认）关闭新铅笔工具。SDK 会对铅笔工具（AppliancePencil ）应用旧版笔迹平滑算法。
-- NO: 开启新铅笔工具。SDK 会对铅笔工具应用新版笔迹平滑算法，使书写笔迹更加流畅自然，并带有笔锋效果。
+- `YES`: （默认）关闭新铅笔工具。SDK 会对铅笔工具（`AppliancePencil` ）应用旧版笔迹平滑算法。
+- `NO`: 开启新铅笔工具。SDK 会对铅笔工具应用新版笔迹平滑算法，使书写笔迹更加流畅自然，并带有笔锋效果。
 
 #### Availability
 
@@ -300,8 +300,9 @@ description: "配置实时房间的参数。"
 
 **Note:**
 
-- 在 2.12.2 版本中，默认值为 NO，自 2.12.3 版本起，默认值改为 YES。
+- 在 2.12.2 版本中，默认值为 `NO`，自 2.12.3 版本起，默认值改为 `YES`。
 - 为正常显示笔迹，在开启新铅笔前，请确保该房间内的所有用户使用如下 SDK：
+
   - Android SDK 2.12.3 版或之后
   - iOS SDK 2.12.3 版或之后
   - Web SDK 2.12.5 版或之后
@@ -332,15 +333,15 @@ SDK 超时后会主动断连，并触发 [firePhaseChanged](/zh-CN/api-reference
 
 #### Discussion
 
-- YES：只允许使用 Apple Pencil 在白板上绘制和书写。
-- NO：（默认）允许使用 Apple Pencil 或手指在白板上绘制和书写。
+- `YES`：只允许使用 Apple Pencil 在白板上绘制和书写。
+- `NO`：（默认）允许使用 Apple Pencil 或手指在白板上绘制和书写。
 
 设置 `drawOnlyApplePencil(YES)` 后，用户只能使用 Apple Pencil 在白板上绘制和书写，无法使用手指绘制和书写。 如果用户用手指触碰白板，SDK 会触发两个 [fireRoomStateChanged](/zh-CN/api-reference/whiteboard/ios/protocols/white-room-callback-delegate#//api/name/fireRoomStateChanged:) 回调，报告当前使用的 白板工具 (`memberState`) 在 `ApplianceClicker` 和 `AppliancePencil` 之间发生了切换。
 
 **Note:**
 
 - 该属性仅在 iPad 设备上生效。
-- 该属性的设置建议跟随 UIPencilInteraction.prefersPencilOnlyDrawing 的设置。
+- 该属性的设置建议跟随 `UIPencilInteraction.prefersPencilOnlyDrawing` 的设置。
 
 <a id="//api/name/nativeWebSocket"></a>
 
@@ -359,6 +360,6 @@ SDK 超时后会主动断连，并触发 [firePhaseChanged](/zh-CN/api-reference
 :::info
 **Note:** 由于声网全链路加速（FPA）服务已下架，该功能已废弃。
 
-- YES：开启全链路加速。
-- NO：（默认）关闭全链路加速。
+- `YES`：开启全链路加速。
+- `NO`：（默认）关闭全链路加速。
 :::

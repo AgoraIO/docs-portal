@@ -8,8 +8,8 @@ Creates a group instance.
 After the group is created, the data in the cache and database will be updated and multiple devices will receive the notification event and update the group data to the cache and database. You can set [ChatMultiDeviceEventHandler](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-multi-device-event-handler) to listen for the event. If an event occurs, the callback function [ChatMultiDeviceEventHandler.onGroupEvent](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-multi-device-event-handler/on-group-event) is triggered, where the first parameter is the event which is [ChatMultiDevicesEvent.GROUP_CREATE](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-multi-devices-event) for a group creation event.
 
 - The maximum number of group members. The default value is 200.
-- The group style. See ChatGroupStyle. The default value is ChatGroupStyle.PrivateOnlyOwnerInvite.
-- Whether to ask for permission when inviting a user to join the group. The default value is false, indicating that invitees are automatically added to the group without their permission.
+- The group style. See [ChatGroupStyle](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-style). The default value is [ChatGroupStyle.PrivateOnlyOwnerInvite](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-style).
+- Whether to ask for permission when inviting a user to join the group. The default value is `false`, indicating that invitees are automatically added to the group without their permission.
 - The group detail extensions.
 
 **Return** The created group instance.

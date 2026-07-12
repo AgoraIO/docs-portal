@@ -29,7 +29,7 @@ virtual int disableVideo() = 0;
 加入频道前后均可调用：
 
 - 如果在加入频道前调用，则开启纯音频模式。
-- 如果在加入频道后调用，则由视频模式切换为纯音频模式，然后再调用 enableVideo 方法可开启视频模式。
+- 如果在加入频道后调用，则由视频模式切换为纯音频模式，然后再调用 [enableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video-basic#api_irtcengine_enablevideo) 方法可开启视频模式。
 
 <a id="api_irtcengine_disablevideo__restriction"></a>
 
@@ -37,10 +37,11 @@ virtual int disableVideo() = 0;
 
 - 该方法设置的是内部引擎为禁用状态，在离开频道后仍然有效。
 - 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制视频模块的某一项功能：
-  - enableLocalVideo: 是否启动摄像头采集并创建本地视频流。
-  - muteLocalVideoStream: 是否发布本地视频流。
-  - muteRemoteVideoStream: 是否接收并播放远端视频流。
-  - muteAllRemoteVideoStreams: 是否接收并播放所有远端视频流。
+
+  - [enableLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video-basic#api_irtcengine_enablelocalvideo): 是否启动摄像头采集并创建本地视频流。
+  - [muteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalvideostream): 是否发布本地视频流。
+  - [muteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremotevideostream): 是否接收并播放远端视频流。
+  - [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremotevideostreams): 是否接收并播放所有远端视频流。
 
 <a id="api_irtcengine_disablevideo__related"></a>
 
@@ -95,8 +96,8 @@ virtual int enableLocalVideo(bool enabled) = 0;
 
 是否开启本地视频采集。
 
-- true:（默认）开启本地视频采集。
-- false: 关闭本地视频采集。关闭后，远端用户会接收不到本地用户的视频流；但本地用户依然可以接收远端用户的视频流。设置为 false 时，该方法不需要本地有摄像头。
+- `true`:（默认）开启本地视频采集。
+- `false`: 关闭本地视频采集。关闭后，远端用户会接收不到本地用户的视频流；但本地用户依然可以接收远端用户的视频流。设置为 `false` 时，该方法不需要本地有摄像头。
 
 <a id="api_irtcengine_enablelocalvideo__return_values"></a>
 
@@ -139,10 +140,11 @@ virtual int enableVideo() = 0;
 
 - 该方法设置的是内部引擎为启用状态，在离开频道后仍然有效。
 - 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制视频模块的某一项功能：
-  - enableLocalVideo: 是否启动摄像头采集并创建本地视频流。
-  - muteLocalVideoStream: 是否发布本地视频流。
-  - muteRemoteVideoStream: 是否接收并播放远端视频流。
-  - muteAllRemoteVideoStreams: 是否接收并播放所有远端视频流。
+
+  - [enableLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video-basic#api_irtcengine_enablelocalvideo): 是否启动摄像头采集并创建本地视频流。
+  - [muteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalvideostream): 是否发布本地视频流。
+  - [muteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremotevideostream): 是否接收并播放远端视频流。
+  - [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremotevideostreams): 是否接收并播放所有远端视频流。
 - 在频道内调用该方法时，会重置 enableLocalVideo、 muteRemoteVideoStream 和 muteAllRemoteVideoStreams 的设置，需谨慎使用。
 
 <a id="api_irtcengine_enablevideo__related"></a>
@@ -292,15 +294,22 @@ APPLICATION_SCENARIO_MEETING (1) 适用于会议场景。SDK 会针对该场景�
 
 - 针对会议场景对小流码率要求较高的情况，自动启用多项抗弱网技术，提升小流的抗弱网能力，确保多路流订阅时接收端的流畅性。
 - 实时监测接收端大流的订阅人数，根据订阅人数动态调节大流配置：
+
   - 无人订阅大流时，会自动降低大流的码率和帧率，节省上行带宽和消耗。
-  - 有人订阅大流时，大流会重置为用户最近一次调用 setVideoEncoderConfiguration 时的 VideoEncoderConfiguration 配置。如果用户此前没有进行设置，则使用如下值：
+  - 有人订阅大流时，大流会重置为用户最近一次调用 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/video-basic#api_irtcengine_setvideoencoderconfiguration) 时的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/class-videoencoderconfiguration) 配置。如果用户此前没有进行设置，则使用如下值：
+
     - 视频分辨率：桌面端为 1280 × 720；移动端为 960 × 540
     - 视频帧率：15 fps
     - 码率：桌面端为 1600 Kbps；移动端为 1000 Kbps
-- 实时监测接收端小流的订阅人数，根据订阅人数动态开启和关闭小流：:::info [注]
-如果用户已调用 [setDualStreamMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setdualstreammode2) 将小流设置为始终不发送 (DISABLE_SIMULCAST_STREAM)，会议场景对小流的动态开关不生效。:::
+- 实时监测接收端小流的订阅人数，根据订阅人数动态开启和关闭小流：
+
+  :::info[注]
+  如果用户已调用 [setDualStreamMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setdualstreammode2) 将小流设置为始终不发送 (DISABLE_SIMULCAST_STREAM)，会议场景对小流的动态开关不生效。
+  :::
+
   - 无人订阅小流时，自动关闭小流，节省上行带宽和消耗。
-  - 有人订阅小流时，开启小流并重置为用户最近一次调用 setDualStreamMode [2/2] 时的 SimulcastStreamConfig 配置。如果用户此前没有进行设置，则使用如下值：
+  - 有人订阅小流时，开启小流并重置为用户最近一次调用 setDualStreamMode [2/2] 时的 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/unreal-cpp/class-simulcaststreamconfig) 配置。如果用户此前没有进行设置，则使用如下值：
+
     - 视频分辨率：480 × 272
     - 视频帧率：15 fps
     - 码率：500 Kbps
@@ -315,6 +324,7 @@ APPLICATION_SCENARIO_LIVESHOW (3) 适用于 [秀场直播](https://doc.shengwang
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -1：一般性的错误（未明确归类）。
   - -4：不支持设置视频业务场景。可能的原因是当前使用的是音频 SDK。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
@@ -563,10 +573,10 @@ virtual void onFirstLocalVideoFrame(VIDEO_SOURCE_TYPE source, int width, int hei
 
 SDK 会在以下三种时机触发该回调：
 
-- 开启本地视频模块的情况下，调用 [joinChannel [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel) 或 joinChannel [2/2] 成功加入频道后。
-- 调用 muteLocalVideoStream (true)，再调用 muteLocalVideoStream (false) 后。
-- 调用 disableVideo，再调用 enableVideo 后。
-- 调用 pushVideoFrame 成功向 SDK 推送视频帧后。
+- 开启本地视频模块的情况下，调用 [joinChannel [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel) 或 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 成功加入频道后。
+- 调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalvideostream) (`true`)，再调用 muteLocalVideoStream (`false`) 后。
+- 调用 [disableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video-basic#api_irtcengine_disablevideo)，再调用 [enableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video-basic#api_irtcengine_enablevideo) 后。
+- 调用 [pushVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video-custom-capturenrendering#api_imediaengine_pushvideoframe) 成功向 SDK 推送视频帧后。
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__parameters"></a>
 
@@ -609,9 +619,10 @@ SDK 会在以下时机触发该回调：
 
 - 远端用户首次上线后发送视频。
 - 远端用户视频离线再上线后发送视频。出现这种中断的可能原因包括：
+
   - 远端用户离开频道。
   - 远端用户掉线。
-  - 远端用户调用 disableVideo 方法关闭视频模块。
+  - 远端用户调用 [disableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video-basic#api_irtcengine_disablevideo) 方法关闭视频模块。
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__parameters"></a>
 
@@ -712,14 +723,18 @@ virtual void onFirstRemoteVideoFrame(uid_t userId, int width, int height, int el
 
 ### 触发时机
 
-- SDK 会在如下情况触发该回调，且 state 为 LOCAL_VIDEO_STREAM_STATE_FAILED， reason 为 LOCAL_VIDEO_STREAM_REASON_CAPTURE_FAILURE：
+- SDK 会在如下情况触发该回调，且 state 为 LOCAL_VIDEO_STREAM_STATE_FAILED， reason 为 `LOCAL_VIDEO_STREAM_REASON_CAPTURE_FAILURE`：
+
   - 应用退到后台，系统回收摄像头。
   - Android 9 及以上版本，App 切后台一段时间后，系统会收回相机权限。
-  - Android 6 及以上版本，如果相机被第三方应用占用一段时间后释放，则 SDK 会触发该回调，并报告 onLocalVideoStateChanged (LOCAL_VIDEO_STREAM_STATE_CAPTURING， LOCAL_VIDEO_STREAM_REASON_OK) 回调。
+  - Android 6 及以上版本，如果相机被第三方应用占用一段时间后释放，则 SDK 会触发该回调，并报告 onLocalVideoStateChanged (`LOCAL_VIDEO_STREAM_STATE_CAPTURING，LOCAL_VIDEO_STREAM_REASON_OK`) 回调。
   - 摄像头正常启动，但连续 4 秒都没有输出采集的视频。
-- 当摄像头输出采集的视频帧时，如果 SDK 检测到连续 15 个重复的视频帧，会触发该回调，且 state 为 LOCAL_VIDEO_STREAM_STATE_CAPTURING， reason 为 LOCAL_VIDEO_STREAM_REASON_CAPTURE_FAILURE。:::info [注]
-- 帧重复检测仅针对分辨率大于 200 × 200、帧率大于等于 10 fps、码率小于 20 Kbps 的视频帧。
-- 如果视频采集出现异常，正常情况下可以通过该回调的 reason 参数来排查问题。但在部分设备上，采集出现问题时（如卡死） Android 系统不会抛出任何错误回调，因此 SDK 无法报告本地视频状态改变的原因，此时你可以通过下列方式来判断采集是否无帧：该回调报告 state 为 LOCAL_VIDEO_STREAM_STATE_CAPTURING 或 LOCAL_VIDEO_STREAM_STATE_ENCODING，且 onLocalVideoStats 回调的 captureFrameRate 为 0。:::
+- 当摄像头输出采集的视频帧时，如果 SDK 检测到连续 15 个重复的视频帧，会触发该回调，且 state 为 LOCAL_VIDEO_STREAM_STATE_CAPTURING， reason 为 LOCAL_VIDEO_STREAM_REASON_CAPTURE_FAILURE。
+
+  :::info[注]
+  - 帧重复检测仅针对分辨率大于 200 × 200、帧率大于等于 10 fps、码率小于 20 Kbps 的视频帧。
+  - 如果视频采集出现异常，正常情况下可以通过该回调的 `reason` 参数来排查问题。但在部分设备上，采集出现问题时（如卡死） Android 系统不会抛出任何错误回调，因此 SDK 无法报告本地视频状态改变的原因，此时你可以通过下列方式来判断采集是否无帧：该回调报告 `state` 为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` 或 `LOCAL_VIDEO_STREAM_STATE_ENCODING`，且 [onLocalVideoStats](/zh-CN/api-reference/rtc/unreal-cpp/video-basic#callback_irtcengineeventhandler_onlocalvideostats) 回调的 `captureFrameRate` 为 0。
+  :::
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__parameters"></a>
 
@@ -943,8 +958,8 @@ virtual void onUserEnableLocalVideo(uid_t uid, bool enabled) {
 
 远端用户是否启用视频采集：
 
-- true: 该用户已启用视频功能。启用后，其他用户可以接收到该用户的视频流。
-- false: 该用户已关闭视频功能。关闭后，该用户仍然可以接收其他用户的视频流，但其他用户接收不到该用户的视频流。
+- `true`: 该用户已启用视频功能。启用后，其他用户可以接收到该用户的视频流。
+- `false`: 该用户已关闭视频功能。关闭后，该用户仍然可以接收其他用户的视频流，但其他用户接收不到该用户的视频流。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
@@ -980,8 +995,8 @@ virtual void onUserEnableVideo(uid_t uid, bool enabled) {
 
 #### `enabled`
 
-- true: 该用户已启用视频功能。
-- false: 该用户已关闭视频功能。
+- `true`: 该用户已启用视频功能。
+- `false`: 该用户已关闭视频功能。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
@@ -1021,8 +1036,8 @@ virtual void onUserMuteVideo(uid_t uid, bool muted) {
 
 远端用户是否取消发布视频流：
 
-- true: 取消发布视频流。
-- false: 发布视频流。
+- `true`: 取消发布视频流。
+- `false`: 发布视频流。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

@@ -24,7 +24,7 @@ SDK 会根据在 [ContentInspectConfig](/zh-CN/api-reference/rtc/android/class-c
 
 :::info[注]
 - 在调用该方法前，请确保你已在声网控制台启用本地截图上传功能。
-- 当视频审核模块设置为使用声网自研扩展（CONTENT_INSPECT_TYPE_SUPERVISE ）进行视频审核时，需要使用本地截图上传动态库 agora_content_inspect_extension.so。删除该库将禁用截图上传功能。
+- 当视频审核模块设置为使用声网自研扩展（`CONTENT_INSPECT_TYPE_SUPERVISE` ）进行视频审核时，需要使用本地截图上传动态库 agora_content_inspect_extension.so。删除该库将禁用截图上传功能。
 :::
 
 <a id="api_irtcengine_enablecontentinspect__timing"></a>
@@ -165,7 +165,7 @@ public abstract int takeSnapshot(int uid, String filePath);
 
 快照的本地路径（包含文件扩展名）。例如：
 
-- Android: /storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg
+- Android: `/storage/emulated/0/Android/data/<package name>/files/example.jpg`
 
 <a id="api_irtcengine_takesnapshot__return_values"></a>
 
@@ -193,7 +193,7 @@ public abstract int takeSnapshot(int uid, SnapshotConfig config);
 
 :::info[注]
 - 该方法为异步调用，调用返回时 SDK 尚未完成截图操作。
-- 当用于本地视频截图时，该方法会对 ChannelMediaOptions 中指定的视频流进行截图。
+- 当用于本地视频截图时，该方法会对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中指定的视频流进行截图。
 :::
 
 <a id="api_irtcengine_takesnapshot2__timing"></a>
@@ -286,7 +286,7 @@ public abstract int takeSnapshotEx(RtcConnection connection, int uid, String fil
 
 截图的本地路径（包含文件扩展名）。例如：
 
-- Android: /storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg
+- Android: `/storage/emulated/0/Android/data/<package name>/files/example.jpg`
 
 <a id="api_irtcengineex_takesnapshotex__return_values"></a>
 
@@ -314,7 +314,7 @@ public abstract int takeSnapshotEx(RtcConnection connection, int uid, SnapshotCo
 
 :::info[注]
 - 该方法为异步调用，调用该方法后 SDK 并不会立即完成截图。
-- 用于本地视频截图时，该方法会对 ChannelMediaOptions 中指定的视频流进行截图。
+- 用于本地视频截图时，该方法会对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中指定的视频流进行截图。
 - 如果用户的视频已进行预处理，例如添加水印或美颜，截图结果中会包含这些预处理效果。
 :::
 
@@ -410,9 +410,10 @@ public void onSnapshotTaken(int uid, String filePath, int width, int height, int
 
 - 0：成功。
 - &lt; 0：失败：
+
   - -1：SDK 写入文件或编码 JPEG 图像失败。
-  - -2：调用 takeSnapshot 方法成功后 1 秒内未找到指定用户的视频流。可能原因包括：本地采集停止、远端停止发布或视频数据处理阻塞。
-  - -3：调用 takeSnapshot 方法过于频繁。
+  - -2：调用 `takeSnapshot` 方法成功后 1 秒内未找到指定用户的视频流。可能原因包括：本地采集停止、远端停止发布或视频数据处理阻塞。
+  - -3：调用 `takeSnapshot` 方法过于频繁。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

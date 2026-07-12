@@ -23,14 +23,14 @@ virtual int enableMultiCamera(bool enabled, const CameraCapturerConfiguration& c
 声网建议你在已有摄像头用于视频采集的场景中，按照以下步骤使用多个摄像头进行视频采集和发布：
 
 1. 调用该方法启用多摄像头采集。
-2. 调用 startPreview 启动本地视频预览。
-3. 调用 startCameraCapture，并设置 sourceType，以使用第二个摄像头开始采集。
-4. 调用 joinChannelEx，并将 publishSecondaryCameraTrack 设置为 true，以发布第二个摄像头采集的视频流。
+2. 调用 `startPreview` 启动本地视频预览。
+3. 调用 [startCameraCapture](/zh-CN/api-reference/rtc/cpp-all-platforms/camera-capture#api_irtcengine_startcameracapture)，并设置 `sourceType`，以使用第二个摄像头开始采集。
+4. 调用 [joinChannelEx](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengineex_joinchannelex)，并将 `publishSecondaryCameraTrack` 设置为 true，以发布第二个摄像头采集的视频流。
 
 若需关闭多摄像头采集，请按以下步骤操作：
 
-1. 调用 stopCameraCapture。
-2. 调用该方法并将 enabled 设置为 false。
+1. 调用 [stopCameraCapture](/zh-CN/api-reference/rtc/cpp-all-platforms/camera-capture#api_irtcengine_stopcameracapture)。
+2. 调用该方法并将 `enabled` 设置为 false。
 
 该方法仅适用于 iOS 平台。 使用该功能时，请确保系统版本为 13.0 或更高。 支持多摄像头采集的最低 iOS 设备型号如下：
 
@@ -42,8 +42,8 @@ virtual int enableMultiCamera(bool enabled, const CameraCapturerConfiguration& c
 :::info[注]
 你可以在调用 `startPreview` 之前或之后调用该方法启用多摄像头采集：
 
-- 如果在调用 startPreview 之前启用，则本地视频预览会同时显示两个摄像头采集的画面。
-- 如果在调用 startPreview 之后启用，SDK 会先停止当前摄像头采集，然后启用主摄像头和第二个摄像头。本地视频预览会短暂变黑，随后自动恢复。
+- 如果在调用 `startPreview` 之前启用，则本地视频预览会同时显示两个摄像头采集的画面。
+- 如果在调用 `startPreview` 之后启用，SDK 会先停止当前摄像头采集，然后启用主摄像头和第二个摄像头。本地视频预览会短暂变黑，随后自动恢复。
 :::
 
 <a id="api_irtcengine_enablemulticamera__parameters"></a>
@@ -95,7 +95,7 @@ virtual IVideoDeviceCollection* enumerateVideoDevices() = 0;
 
 ### 返回值
 
-- 方法调用成功，返回 IVideoDeviceCollection 对象，详见 IVideoDeviceCollection。
+- 方法调用成功，返回 [IVideoDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideodevicecollection) 对象，详见 [IVideoDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideodevicecollection)。
 - 方法调用失败，返回 NULL。
 
 ### 所属接口类
@@ -379,9 +379,9 @@ virtual bool isCameraExposureSupported() = 0;
 
 :::info[注]
 - 该方法仅适用于 Android 和 iOS 平台。
-- 必须在 SDK 触发 onLocalVideoStateChanged 回调并返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING （1）后调用。
-- 在调用 setCameraExposureFactor 之前，建议你先调用该方法查询当前摄像头是否支持调节曝光值。
-- 该方法用于调节当前激活摄像头的曝光值，即调用 setCameraCapturerConfiguration 时指定的摄像头。
+- 必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用。
+- 在调用 [setCameraExposureFactor](/zh-CN/api-reference/rtc/cpp-all-platforms/video-device#api_irtcengine_setcameraexposurefactor) 之前，建议你先调用该方法查询当前摄像头是否支持调节曝光值。
+- 该方法用于调节当前激活摄像头的曝光值，即调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
 :::
 
 <a id="api_irtcengine_iscameraexposuresupported__return_values"></a>
@@ -858,9 +858,9 @@ virtual int setCameraExposureFactor(float factor) = 0;
 
 :::info[注]
 - 该方法仅适用于 Android 和 iOS 平台。
-- 你必须在调用 enableVideo 后再调用该方法。设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调并返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING （1）后。
-- 在调用该方法前，声网建议调用 isCameraExposureSupported 检查当前摄像头是否支持调整曝光值。
-- 该方法用于调整当前激活摄像头的曝光值，即调用 setCameraCapturerConfiguration 时指定的摄像头。
+- 你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablevideo) 后再调用该方法。设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后。
+- 在调用该方法前，声网建议调用 [isCameraExposureSupported](/zh-CN/api-reference/rtc/cpp-all-platforms/video-device#api_irtcengine_iscameraexposuresupported) 检查当前摄像头是否支持调整曝光值。
+- 该方法用于调整当前激活摄像头的曝光值，即调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
 :::
 
 <a id="api_irtcengine_setcameraexposurefactor__parameters"></a>
@@ -905,9 +905,9 @@ virtual int setCameraExposurePosition(float positionXinView, float positionYinVi
 自 v2.3.2 版本新增。
 
 :::info[注]
-- setCameraExposurePosition 仅适用于 Android 和 iOS 平台。
-- 你必须在调用 enableVideo 方法之后再调用该方法。
-- 设置将在相机成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调并返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING （1）时生效。
+- [setCameraExposurePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/video-device#api_irtcengine_setcameraexposureposition) 仅适用于 Android 和 iOS 平台。
+- 你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablevideo) 方法之后再调用该方法。
+- 设置将在相机成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）时生效。
 :::
 
 <a id="api_irtcengine_setcameraexposureposition__related"></a>
@@ -1043,7 +1043,7 @@ virtual int setCameraZoomFactor(float factor) = 0;
 
 :::info[注]
 - 该方法仅适用于 Android 和 iOS 平台。
-- 你必须在调用 enableVideo 方法之后再调用该方法。设置将在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调并返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING （1）之后。
+- 你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablevideo) 方法之后再调用该方法。设置将在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）之后。
 :::
 
 <a id="api_irtcengine_setcamerazoomfactor__parameters"></a>
@@ -1149,7 +1149,7 @@ virtual int switchCamera() = 0;
 你可以调用此方法在应用运行过程中根据实际可用的摄像头动态切换前后摄像头，无需重启视频流或重新配置视频源。
 
 :::info[注]
-- 此方法仅切换由第一个摄像头采集的视频流的摄像头，即调用 startCameraCapture 时视频源设置为 VIDEO_SOURCE_CAMERA （0）的视频流。
+- 此方法仅切换由第一个摄像头采集的视频流的摄像头，即调用 [startCameraCapture](/zh-CN/api-reference/rtc/cpp-all-platforms/camera-capture#api_irtcengine_startcameracapture) 时视频源设置为 `VIDEO_SOURCE_CAMERA` （0）的视频流。
 - 此方法仅适用于 Android 和 iOS 平台。
 :::
 

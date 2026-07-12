@@ -5,7 +5,8 @@ description: "IRemoteVideoTrack API reference."
 
 远端视频轨道。 调用 [subscribe](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#subscribe) 后通过 [AgoraRTCRemoteUser.videoTrack](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcremote-user#videotrack) 对象获取。
 
-- IRemoteTrack
+- [IRemoteTrack](/zh-CN/api-reference/rtc/react-sdk/interfaces/iremote-track)
+
   - IRemoteVideoTrack
 
 ## Events
@@ -48,8 +49,8 @@ isPlaying: boolean
 
 媒体轨道是否正在页面上播放。
 
-- true: 媒体轨道正在页面上播放。
-- false: 媒体轨道没有在页面上播放。
+- `true`: 媒体轨道正在页面上播放。
+- `false`: 媒体轨道没有在页面上播放。
 
 <a id="processordestination"></a>
 
@@ -75,8 +76,8 @@ trackMediaType: "audio" | "video"
 
 媒体轨道的类型：
 
-- "audio": 音频轨道。
-- "video": 视频轨道。
+- `"audio"`: 音频轨道。
+- `"video"`: 视频轨道。
 
 ## Methods
 
@@ -222,7 +223,7 @@ Returns [UID](/zh-CN/api-reference/rtc/react-sdk/globals#uid)
 getVideoElementVisibleStatus(): CheckVideoVisibleResult | undefined
 ```
 
-- @自从 4.8.0
+- @自从 <br /> *4.8.0*
 
 获取 HTML `<video>` 标签的可见状态和不可见原因。
 
@@ -234,9 +235,9 @@ Returns [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/globals#che
 
 [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/react-sdk/globals#checkvideovisibleresult) 对象。如果该方法返回 `undefined`，可能为以下原因：
 
-- remoteVideoTrack.isPlaying 为 false。
-- &lt;video&gt; 标签不存在。
-- &lt;video&gt; 标签不是通过 play 方法调用产生的。
+- `remoteVideoTrack.isPlaying` 为 `false`。
+- `<video>` 标签不存在。
+- `<video>` 标签不是通过 `play` 方法调用产生的。
 
 <a id="off"></a>
 
@@ -420,7 +421,7 @@ play(element: string | HTMLElement, config?: VideoPlayerConfig): void
 
 | Name | Description |
 | --- | --- |
-| element: string \| HTMLElement | 指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：<br />- string: 指定该 DOM 元素的 ID 值。<br />- HTMLElement: 直接传入一个 DOM 元素对象。 |
+| element: string \| HTMLElement | 指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：<br />- `string`: 指定该 DOM 元素的 ID 值。<br />- `HTMLElement`: 直接传入一个 DOM 元素对象。 |
 | Optional config: VideoPlayerConfig | 设置播放参数（镜像/显示模式）。详见 [VideoPlayerConfig](/zh-CN/api-reference/rtc/react-sdk/interfaces/video-player-config)。对于本地视频轨道，镜像模式默认开启。 |
 
 #### Returns

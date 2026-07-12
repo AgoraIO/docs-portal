@@ -32,6 +32,7 @@ description: "暂停向所有目标频道的跨频道媒体流转发。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -77,6 +78,7 @@ description: "暂停向所有目标频道的跨频道媒体流转发。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -108,6 +110,7 @@ description: "暂停向所有目标频道的跨频道媒体流转发。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -5：方法调用被拒绝，当前没有已暂停的跨频道媒体流转发。
 
 ### 所属接口类
@@ -153,6 +156,7 @@ description: "暂停向所有目标频道的跨频道媒体流转发。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -5：调用被拒绝，当前没有已暂停的跨频道媒体流转发。
 
 ### 所属接口类
@@ -178,8 +182,8 @@ description: "暂停向所有目标频道的跨频道媒体流转发。"
 
 首次成功调用该方法会开始将媒体流从源频道转发到目标频道。若需将媒体流转发到其他频道，或退出当前的某个媒体流转发，可再次调用该方法更新目标频道。该功能最多支持将媒体流转发到六个目标频道。 调用该方法成功后，SDK 会触发 [rtcEngine:channelMediaRelayStateDidChange:error:](/zh-CN/api-reference/rtc/macos/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调，报告媒体流转发的状态。
 
-- 若该回调返回 AgoraChannelMediaRelayStateRunning （2）和 AgoraChannelMediaRelayErrorNone （0），表示媒体流转发已成功启动。
-- 若该回调返回 AgoraChannelMediaRelayStateFailure （3），表示媒体流转发过程中发生异常。
+- 若该回调返回 `AgoraChannelMediaRelayStateRunning` （2）和 `AgoraChannelMediaRelayErrorNone` （0），表示媒体流转发已成功启动。
+- 若该回调返回 `AgoraChannelMediaRelayStateFailure` （3），表示媒体流转发过程中发生异常。
 
 :::info[注]
 - 请在加入频道后调用该方法。
@@ -202,6 +206,7 @@ description: "暂停向所有目标频道的跨频道媒体流转发。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -8：内部状态错误，可能是因为用户不是主播。
@@ -248,8 +253,8 @@ description: "暂停向所有目标频道的跨频道媒体流转发。"
 
 成功调用该方法后，SDK 会触发 [rtcEngine:channelMediaRelayStateDidChange:error:](/zh-CN/api-reference/rtc/macos/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告媒体流转发的状态。常见状态如下：
 
-- 若回调返回 AgoraChannelMediaRelayStateRunning （2）和 AgoraChannelMediaRelayErrorNone （0），表示 SDK 成功开始将媒体流从源频道转发到目标频道。
-- 若回调返回 AgoraChannelMediaRelayStateFailure （3），表示媒体流转发过程中发生异常。
+- 若回调返回 `AgoraChannelMediaRelayStateRunning` （2）和 `AgoraChannelMediaRelayErrorNone` （0），表示 SDK 成功开始将媒体流从源频道转发到目标频道。
+- 若回调返回 `AgoraChannelMediaRelayStateFailure` （3），表示媒体流转发过程中发生异常。
 
 <a id="api_irtcengineex_startorupdatechannelmediarelayex__parameters"></a>
 
@@ -302,6 +307,7 @@ description: "暂停向所有目标频道的跨频道媒体流转发。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -347,6 +353,7 @@ description: "暂停向所有目标频道的跨频道媒体流转发。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类

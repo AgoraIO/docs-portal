@@ -31,7 +31,7 @@ public abstract int StartRtmpStreamWithoutTranscoding(string url);
 :::warning[注意]
 - 请在加入频道后调用该方法。
 - 只有直播场景下的主播才能调用该方法。
-- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 StopRtmpStream，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 [StopRtmpStream](/zh-CN/api-reference/rtc/csharp-windows/media-push#api_irtcengine_stoprtmpstream)，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
 :::
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding__parameters"></a>
@@ -48,6 +48,7 @@ public abstract int StartRtmpStreamWithoutTranscoding(string url);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
+
   - -2：URL 或转码属性参数错误，请检查你的 URL 或参数设置。
   - -7：调用该方法前，未初始化 SDK。
   - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。
@@ -80,7 +81,7 @@ public abstract int StartRtmpStreamWithoutTranscodingEx(string url, RtcConnectio
 :::warning[注意]
 - 请在加入频道后调用该方法。
 - 只有直播场景下的主播才能调用该方法。
-- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 StopRtmpStream，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 [StopRtmpStream](/zh-CN/api-reference/rtc/csharp-windows/media-push#api_irtcengine_stoprtmpstream)，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
 :::
 
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__parameters"></a>
@@ -101,6 +102,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
+
   - -2：URL 或转码属性参数错误，请检查你的 URL 或参数设置。
   - -7：调用该方法前，未初始化 SDK。
   - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。
@@ -135,7 +137,7 @@ public abstract int StartRtmpStreamWithTranscoding(string url, LiveTranscoding t
 :::warning[注意]
 - 请在加入频道后调用该方法。
 - 只有直播场景下的主播才能调用该方法。
-- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 StopRtmpStream，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 [StopRtmpStream](/zh-CN/api-reference/rtc/csharp-windows/media-push#api_irtcengine_stoprtmpstream)，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
 :::
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding__parameters"></a>
@@ -156,6 +158,7 @@ public abstract int StartRtmpStreamWithTranscoding(string url, LiveTranscoding t
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
+
   - -2：URL 或转码属性参数错误，请检查你的 URL 或参数设置。
   - -7：调用该方法前，未初始化 SDK。
   - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。
@@ -189,7 +192,7 @@ public abstract int StartRtmpStreamWithTranscodingEx(string url, LiveTranscoding
 - 请确保已开通旁路推流服务。
 - 请在加入频道后调用该方法。
 - 只有直播场景下的主播才能调用该方法。
-- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 StopRtmpStreamEx，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 [StopRtmpStreamEx](/zh-CN/api-reference/rtc/csharp-windows/media-push#api_irtcengineex_stoprtmpstreamex)，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
 :::
 
 <a id="api_irtcengineex_startrtmpstreamwithtranscodingex__parameters"></a>
@@ -214,6 +217,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
+
   - -2：URL 或转码属性参数错误，请检查你的 URL 或参数设置。
   - -7：调用该方法前，未初始化 SDK。
   - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。

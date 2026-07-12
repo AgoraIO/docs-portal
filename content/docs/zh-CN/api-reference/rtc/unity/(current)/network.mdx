@@ -40,9 +40,10 @@ public abstract int Complain(string callId, string description);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
-  - -7: IRtcEngine 尚未初始化就调用方法。
+  - -7: [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
@@ -88,8 +89,8 @@ public abstract int EnableEncryption(bool enabled, EncryptionConfig config);
 
 是否开启内置加密：
 
-- true: 开启内置加密。
-- false:（默认）关闭内置加密。
+- `true`: 开启内置加密。
+- `false`:（默认）关闭内置加密。
 
 #### `config`
 
@@ -101,9 +102,10 @@ public abstract int EnableEncryption(bool enabled, EncryptionConfig config);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败
+
   - -2: 调用了无效的参数。需重新指定参数。
   - -4: 设置的加密模式不正确或加载外部加密库失败。需检查枚举值是否正确或重新加载外部加密库。
-  - -7: SDK 尚未初始化。需在调用 API 之前已创建 IRtcEngine 对象并完成初始化。
+  - -7: SDK 尚未初始化。需在调用 API 之前已创建 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象并完成初始化。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
@@ -149,8 +151,8 @@ public abstract int EnableEncryptionEx(RtcConnection connection, bool enabled, E
 
 是否开启内置加密：
 
-- true: 开启内置加密。
-- false:（默认）关闭内置加密。
+- `true`: 开启内置加密。
+- `false`:（默认）关闭内置加密。
 
 #### `config`
 
@@ -476,6 +478,7 @@ public abstract int GetNetworkType();
 ### 返回值
 
 - ≥ 0: 方法调用成功，返回本地网络连接类型。
+
   - 0：网络连接已断开。
   - 1：网络类型为 LAN。
   - 2：网络类型为 Wi-Fi（包含热点）。
@@ -484,6 +487,7 @@ public abstract int GetNetworkType();
   - 5：网络类型为 4G 移动网络。
   - 6：网络类型为 5G 移动网络。
 - &lt; 0: 方法调用失败，返回错误码。
+
   - -1：网络连接类型未知。
 
 ### 所属接口类
@@ -655,6 +659,7 @@ public abstract int Rate(string callId, int rating, string description);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
 
@@ -760,7 +765,7 @@ public abstract int SetCloudProxy(CLOUD_PROXY_TYPE proxyType);
 :::info[注]
 - 建议你在频道外调用该方法。
 - 如果用户处于内网防火墙环境下，使用 Force UDP 云代理时，旁路推流和跨频道媒体流转发功能不可用。
-- 使用 Force UDP 云代理时，调用 StartAudioMixing [2/2] 方法时无法播放 HTTP 协议的在线音频文件。旁路推流和跨频道媒体流转发功能会使用 TCP 协议的云代理。
+- 使用 Force UDP 云代理时，调用 [StartAudioMixing [2/2]](/zh-CN/api-reference/rtc/unity/audio-mixing#api_irtcengine_startaudiomixing2) 方法时无法播放 HTTP 协议的在线音频文件。旁路推流和跨频道媒体流转发功能会使用 TCP 协议的云代理。
 :::
 
 <a id="api_irtcengine_setcloudproxy__parameters"></a>
@@ -777,6 +782,7 @@ public abstract int SetCloudProxy(CLOUD_PROXY_TYPE proxyType);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -2: 传入的参数无效。
   - -7: SDK 尚未初始化。
 
@@ -895,17 +901,18 @@ public abstract int SetLogFileSize(uint fileSizeInKBytes);
 
 默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 调用日志文件，规则如下：
 
-- SDK 日志文件的名称分别为： agorasdk.log、 agorasdk.1.log、 agorasdk.2.log、 agorasdk.3.log、 agorasdk.4.log。
-- API 调用日志文件的名称分别为： agoraapi.log、 agoraapi.1.log、 agoraapi.2.log、 agoraapi.3.log、 agoraapi.4.log。
+- SDK 日志文件的名称分别为： `agorasdk.log`、 `agorasdk.1.log`、 `agorasdk.2.log`、 `agorasdk.3.log`、 `agorasdk.4.log`。
+- API 调用日志文件的名称分别为： `agoraapi.log`、 `agoraapi.1.log`、 `agoraapi.2.log`、 `agoraapi.3.log`、 `agoraapi.4.log`。
 - 每个 SDK 日志文件的默认大小为 2,048 KB；API 调用日志文件的默认大小为 2,048 KB。日志文件均为 UTF-8 编码。
-- 最新的日志永远写在 agorasdk.log 和 agoraapi.log 中。
-- 当 agorasdk.log 写满后，SDK 会按照以下顺序对日志文件进行操作：
-  1. 删除 agorasdk.4.log 文件（如有）。
-  2. 将 agorasdk.3.log 重命名为 agorasdk.4.log。
-  3. 将 agorasdk.2.log 重命名为 agorasdk.3.log。
-  4. 将 agorasdk.1.log 重命名为 agorasdk.2.log。
-  5. 新建 agorasdk.log 文件。
-- agoraapi.log 文件的覆盖规则与 agorasdk.log 相同。
+- 最新的日志永远写在 `agorasdk.log` 和 `agoraapi.log` 中。
+- 当 `agorasdk.log` 写满后，SDK 会按照以下顺序对日志文件进行操作：
+
+  1. 删除 `agorasdk.4.log` 文件（如有）。
+  2. 将 `agorasdk.3.log` 重命名为 `agorasdk.4.log`。
+  3. 将 `agorasdk.2.log` 重命名为 `agorasdk.3.log`。
+  4. 将 `agorasdk.1.log` 重命名为 `agorasdk.2.log`。
+  5. 新建 `agorasdk.log` 文件。
+- `agoraapi.log` 文件的覆盖规则与 `agorasdk.log` 相同。
 
 :::info[注]
 该方法仅用于设置 `agorasdk.log` 文件的大小，对 `agoraapi.log` 不生效。
@@ -1125,7 +1132,7 @@ public abstract int StartEchoTest(EchoTestConfiguration config);
 
 :::info[注]
 - 在频道内调用该方法时，需确保当前没有发布音视频流。
-- 调用该方法后，必须调用 StopEchoTest 结束测试，否则该用户无法进行下一次音视频通话回路测试，也无法加入频道。
+- 调用该方法后，必须调用 [StopEchoTest](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_stopechotest) 结束测试，否则该用户无法进行下一次音视频通话回路测试，也无法加入频道。
 - 直播场景下，该方法仅能由主播调用。
 :::
 
@@ -1181,8 +1188,8 @@ public abstract int StartLastmileProbeTest(LastmileProbeConfig config);
 
 成功调用该方法后，SDK 会依次触发如下 2 个回调：
 
-- OnLastmileQuality，视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
-- OnLastmileProbeResult，视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
+- [OnLastmileQuality](/zh-CN/api-reference/rtc/unity/network#callback_irtcengineeventhandler_onlastmilequality)，视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
+- [OnLastmileProbeResult](/zh-CN/api-reference/rtc/unity/network#callback_irtcengineeventhandler_onlastmileproberesult)，视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
 
 <a id="api_irtcengine_startlastmileprobetest__parameters"></a>
 
@@ -1224,6 +1231,7 @@ public abstract int StopEchoTest();
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -5(ERR_REFUSED): 停止测试失败，可能是测试不在运行中。
 
 ### 所属接口类
@@ -1302,8 +1310,8 @@ public virtual void OnConnectionInterrupted(RtcConnection connection) {}
 
 SDK 在和服务器建立连接后，失去了网络连接超过 4 秒，会触发该回调。在触发事件后，SDK 会主动重连服务器，所以该事件可以用于 UI 提示。该回调与 [OnConnectionLost](/zh-CN/api-reference/rtc/unity/network#callback_irtcengineeventhandler_onconnectionlost) 的区别是：
 
-- OnConnectionInterrupted 回调一定是发生在成功加入频道后，且 SDK 刚失去和服务器连接超过 4 秒时触发。
-- OnConnectionLost 回调是无论是否成功加入频道，只要 10 秒内和服务器无法建立连接都会触发。
+- [OnConnectionInterrupted](/zh-CN/api-reference/rtc/unity/network#callback_irtcengineeventhandler_onconnectioninterrupted) 回调一定是发生在成功加入频道后，且 SDK 刚失去和服务器连接超过 4 秒时触发。
+- [OnConnectionLost](/zh-CN/api-reference/rtc/unity/network#callback_irtcengineeventhandler_onconnectionlost) 回调是无论是否成功加入频道，只要 10 秒内和服务器无法建立连接都会触发。
 
 如果 SDK 在断开连接后，20 分钟内还是没能重新加入频道，SDK 会停止尝试重连。
 

@@ -22,7 +22,7 @@ virtual int startLocalAudioMixer(const LocalAudioMixerConfiguration& config) = 0
 
 该方法支持将多个音频流在本地合并为一个音频流，例如将本地麦克风采集的音频流、媒体播放器的音频流、声卡的音频流以及远端用户的音频流合并为一个音频流，并将该合并后的音频流发布到频道中。
 
-- 如果你希望混合本地采集的音频流，可以在 ChannelMediaOptions 中将 publishMixedAudioTrack 设置为 true，然后将混合后的音频流发布到频道中。
+- 如果你希望混合本地采集的音频流，可以在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中将 `publishMixedAudioTrack` 设置为 true，然后将混合后的音频流发布到频道中。
 - 如果你希望混合远端音频流，请确保远端音频流已在频道中发布，并且你已订阅需要混合的音频流。
 
 :::info[注]
@@ -59,7 +59,8 @@ virtual int startLocalAudioMixer(const LocalAudioMixerConfiguration& config) = 0
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
-  - -7： IRtcEngine 对象尚未初始化。请在调用该方法前先初始化 IRtcEngine 对象。
+
+  - -7： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象尚未初始化。请在调用该方法前先初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
@@ -92,7 +93,8 @@ virtual int stopLocalAudioMixer() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
-  - -7： IRtcEngine 对象尚未初始化。请在调用该方法前先初始化 IRtcEngine 对象。
+
+  - -7： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象尚未初始化。请在调用该方法前先初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
@@ -137,7 +139,8 @@ virtual int updateLocalAudioMixerConfiguration(const LocalAudioMixerConfiguratio
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
-  - -7： IRtcEngine 对象尚未初始化。请在调用此方法前先初始化 IRtcEngine 对象。
+
+  - -7： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象尚未初始化。请在调用此方法前先初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)

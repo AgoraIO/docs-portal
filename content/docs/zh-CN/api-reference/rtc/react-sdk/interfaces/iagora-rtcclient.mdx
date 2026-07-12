@@ -5,7 +5,8 @@ description: "IAgoraRTCClient API reference."
 
 提供音视频通话的核心功能，比如加入频道、发布和订阅音视频轨道等。 你可以通过 [createClient](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtc#createclient) 创建一个 `AgoraRTCClient` 对象。一个 `AgoraRTCClient` 对象代表一个本地客户端。
 
-- EventEmitter
+- [EventEmitter](/zh-CN/api-reference/rtc/react-sdk/classes/event-emitter)
+
   - IAgoraRTCClient
 
 ## Events
@@ -241,14 +242,14 @@ is-using-cloud-proxy(isUsingProxy: boolean): void
 
 SDK 通过这个回调通知当前媒体流是否经云代理服务转发。触发时机如下：
 
-- v4.10.0 之前：成功调用 publish 后。
-- v4.10.0 及之后：成功调用 join 后。
+- v4.10.0 之前：成功调用 [publish](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#publish) 后。
+- v4.10.0 及之后：成功调用 [join](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#join) 后。
 
 #### Parameters
 
 | Name | Description |
 | --- | --- |
-| isUsingProxy: boolean | 当前媒体流是否经云代理服务转发：<br />- true: 经云代理服务转发。<br />- false: 没有经云代理服务转发。 |
+| isUsingProxy: boolean | 当前媒体流是否经云代理服务转发：<br />- `true`: 经云代理服务转发。<br />- `false`: 没有经云代理服务转发。 |
 
 #### Returns
 
@@ -294,12 +295,12 @@ live-streaming-error(url: string, err: AgoraRTCError): void
 
 你可以访问 `err.code` 来获取错误码字符串，下面列出可能出现的错误：
 
-- LIVE_STREAMING_INVALID_ARGUMENT: 推流参数错误。
-- LIVE_STREAMING_INTERNAL_SERVER_ERROR: 推流服务器内部错误。
-- LIVE_STREAMING_PUBLISH_STREAM_NOT_AUTHORIZED: 推流 URL 被占用。
-- LIVE_STREAMING_TRANSCODING_NOT_SUPPORTED: 在非转码推流中调用了转码参数。
-- LIVE_STREAMING_CDN_ERROR: 推流的目标 CDN 出现错误导致推流失败。
-- LIVE_STREAMING_INVALID_RAW_STREAM: 推流超时，请确认目标流是否存在。
+- `LIVE_STREAMING_INVALID_ARGUMENT`: 推流参数错误。
+- `LIVE_STREAMING_INTERNAL_SERVER_ERROR`: 推流服务器内部错误。
+- `LIVE_STREAMING_PUBLISH_STREAM_NOT_AUTHORIZED`: 推流 URL 被占用。
+- `LIVE_STREAMING_TRANSCODING_NOT_SUPPORTED`: 在非转码推流中调用了转码参数。
+- `LIVE_STREAMING_CDN_ERROR`: 推流的目标 CDN 出现错误导致推流失败。
+- `LIVE_STREAMING_INVALID_RAW_STREAM`: 推流超时，请确认目标流是否存在。
 
 #### Parameters
 
@@ -326,9 +327,9 @@ live-streaming-warning(url: string, warning: AgoraRTCError): void
 
 你可以访问 `err.code` 来获取警告码字符串，下面列举可能出现的警告：
 
-- LIVE_STREAMING_WARN_STREAM_NUM_REACH_LIMIT: 推流超过 10 路流。
-- LIVE_STREAMING_WARN_FAILED_LOAD_IMAGE: 推流中的背景图片或者水印地址无法拉取。
-- LIVE_STREAMING_WARN_FREQUENT_REQUEST: 推流请求太频繁。
+- `LIVE_STREAMING_WARN_STREAM_NUM_REACH_LIMIT`: 推流超过 10 路流。
+- `LIVE_STREAMING_WARN_FAILED_LOAD_IMAGE`: 推流中的背景图片或者水印地址无法拉取。
+- `LIVE_STREAMING_WARN_FREQUENT_REQUEST`: 推流请求太频繁。
 
 #### Parameters
 
@@ -448,7 +449,7 @@ stream-fallback(uid: UID, isFallbackOrRecover: "fallback" | "recover"): void
 | Name | Description |
 | --- | --- |
 | uid: UID | 远端流对应的用户 ID。 |
-| isFallbackOrRecover: "fallback" \| "recover" | 订阅流是回退还是恢复：<br />- "fallback": 从音视频流回退为纯音频流。<br />- "recover": 从音频流恢复为音视频。 |
+| isFallbackOrRecover: "fallback" \| "recover" | 订阅流是回退还是恢复：<br />- `"fallback"`: 从音视频流回退为纯音频流。<br />- `"recover"`: 从音频流恢复为音视频。 |
 
 #### Returns
 
@@ -594,8 +595,8 @@ user-joined(user: IAgoraRTCRemoteUser): void
 
 该回调在以下情况下会被触发：
 
-- 通信场景的远端用户/直播场景的远端主播调用 join 方法加入频道。
-- 直播场景的远端观众加入频道后调用 setClientRole 将用户角色改变为主播。
+- 通信场景的远端用户/直播场景的远端主播调用 [join](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#join) 方法加入频道。
+- 直播场景的远端观众加入频道后调用 [setClientRole](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#setclientrole) 将用户角色改变为主播。
 - 通信场景的远端用户/直播场景的远端主播网络中断后重新加入频道。
 
 #### Parameters
@@ -631,7 +632,7 @@ user-left(user: IAgoraRTCRemoteUser, reason: string): void
 | Name | Description |
 | --- | --- |
 | user: IAgoraRTCRemoteUser | 离线的用户信息。 |
-| reason: string | 用户离线的原因。<br />- "Quit": 用户调用了 leave 主动离开频道。<br />- "ServerTimeOut": 因过长时间收不到对方数据包，超时掉线。注意：由于 SDK 使用的是不可靠通道，也有可能对方主动离开本方没收到对方离开消息而误判为超时掉线。<br />- "BecomeAudience": 用户角色从主播切换为观众。 |
+| reason: string | 用户离线的原因。<br />- `"Quit"`: 用户调用了 [leave](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#leave) 主动离开频道。<br />- `"ServerTimeOut"`: 因过长时间收不到对方数据包，超时掉线。注意：由于 SDK 使用的是不可靠通道，也有可能对方主动离开本方没收到对方离开消息而误判为超时掉线。<br />- `"BecomeAudience"`: 用户角色从主播切换为观众。 |
 
 #### Returns
 
@@ -670,7 +671,7 @@ client.on("user-published", async (user, mediaType) => {
 | Name | Description |
 | --- | --- |
 | user: IAgoraRTCRemoteUser | 远端用户信息。 |
-| mediaType: "audio" \| "video" \| "datachannel" | 远端用户发布的媒体类型。<br />- "audio": 远端用户发布了音频轨道。<br />- "video": 远端用户发布了视频轨道。<br />- "datachannel": 预留参数。 |
+| mediaType: "audio" \| "video" \| "datachannel" | 远端用户发布的媒体类型。<br />- `"audio"`: 远端用户发布了音频轨道。<br />- `"video"`: 远端用户发布了视频轨道。<br />- `"datachannel"`: 预留参数。 |
 | Optional config: IDataChannelConfig | 预留参数。 |
 
 #### Returns
@@ -692,7 +693,7 @@ user-unpublished(user: IAgoraRTCRemoteUser, mediaType: "audio" | "video" | "data
 | Name | Description |
 | --- | --- |
 | user: IAgoraRTCRemoteUser | 远端用户信息。 |
-| mediaType: "audio" \| "video" \| "datachannel" | 远端用户取消发布的媒体类型。<br />- "audio": 远端用户取消发布了音频轨道。<br />- "video": 远端用户取消发布了视频轨道。<br />- "datachannel": 预留参数。 |
+| mediaType: "audio" \| "video" \| "datachannel" | 远端用户取消发布的媒体类型。<br />- `"audio"`: 远端用户取消发布了音频轨道。<br />- `"video"`: 远端用户取消发布了视频轨道。<br />- `"datachannel"`: 预留参数。 |
 | Optional config: IDataChannelConfig | 预留参数。 |
 
 #### Returns
@@ -769,8 +770,8 @@ localTracks: ILocalTrack[]
 
 保存当前正在发布的本地轨道对象列表。
 
-- 调用 publish 成功后，发布的轨道对象会自动添加到这个列表中。
-- 调用 unpublish 成功后，取消发布的轨道对象会自动从这个列表中移除。
+- 调用 [publish](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#publish) 成功后，发布的轨道对象会自动添加到这个列表中。
+- 调用 [unpublish](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#unpublish) 成功后，取消发布的轨道对象会自动从这个列表中移除。
 
 <a id="remoteusers"></a>
 
@@ -820,7 +821,7 @@ join(appid: string, channel: string, token: string | null, uid?: UID | null): Pr
 | --- | --- |
 | appid: string | 你的声网项目的 [App ID](https://doc.shengwang.cn/basics/glossary#app-id)。 |
 | channel: string | 标识通话的频道名称，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:<br />- 26 个小写字母 a-z。<br />- 26 个大写字母 A-Z。<br />- 10 个数字 0-9。<br />- 空格。<br />- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "\|", "~", ","。 |
-| token: string \| null | 用于鉴权的 token。<br />- 如果你的项目没有开启 token 鉴权，这里填 null。<br />- 安全要求不高: 你可以使用控制台生成的临时 token，详见 获取 RTC 临时 Token。<br />- 安全要求高：传入从你的服务端获得的正式 token，详见 使用 Token 鉴权。 |
+| token: string \| null | 用于鉴权的 token。<br />- 如果你的项目没有开启 token 鉴权，这里填 `null`。<br />- 安全要求不高: 你可以使用控制台生成的临时 token，详见 [获取 RTC 临时 Token](http://doc.shengwang.cn/doc/rtc/javascript/get-started/enable-service)。<br />- 安全要求高：传入从你的服务端获得的正式 token，详见 [使用 Token 鉴权](http://doc.shengwang.cn/doc/rtc/javascript/basic-features/token-authentication)。 |
 | Optional uid: UID \| null | 标识用户的 ID。整数或字符串，ASCII 字符，需保证唯一性。如果不指定或设为 `null`，服务器会自动分配一个整数型 uid 并在 Promise 中返回。<br />- 如果使用整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (2 32 -1)。<br />- 如果使用字符串作为用户 ID，长度不超过 255 个字符。<br />为保证最佳的用户体验，声网强烈建议你不要使用字符串作为用户 ID。<br />注意事项： 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见 [使用 String 型的用户名](https://docs.agora.io/cn/faq/string)。 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。 |
 
 #### Returns
@@ -831,7 +832,7 @@ Promise 对象，包含本地用户的 ID：
 
 - 如果你使用整数型 uid 加入频道，则返回整数型 uid。
 - 如果你使用字符串型 uid 加入频道，则返回字符串型 uid。
-- 如果你不指定或设为 null，声网服务器自动分配一个整数型 uid 并返回。
+- 如果你不指定或设为 `null`，声网服务器自动分配一个整数型 uid 并返回。
 
 <a id="leave"></a>
 
@@ -907,7 +908,7 @@ user.audioTrack.play();
 | Name | Description |
 | --- | --- |
 | user: IAgoraRTCRemoteUser \| UID | 远端用户对象。 |
-| mediaType: "video" | 订阅的轨道媒体类型。<br />- "video": 订阅指定用户发布的视频轨道。<br />- "audio": 订阅指定用户发布的音频轨道。 |
+| mediaType: "video" | 订阅的轨道媒体类型。<br />- `"video"`: 订阅指定用户发布的视频轨道。<br />- `"audio"`: 订阅指定用户发布的音频轨道。 |
 
 #### Returns
 
@@ -933,7 +934,7 @@ Agora Core
 | Name | Description |
 | --- | --- |
 | user: IAgoraRTCRemoteUser \| UID | 远端用户对象。 |
-| mediaType: "audio" | 订阅的轨道媒体类型。<br />- "video": 订阅指定用户发布的视频轨道。<br />- "audio": 订阅指定用户发布的音频轨道。 |
+| mediaType: "audio" | 订阅的轨道媒体类型。<br />- `"video"`: 订阅指定用户发布的视频轨道。<br />- `"audio"`: 订阅指定用户发布的音频轨道。 |
 
 #### Returns
 
@@ -959,7 +960,7 @@ Agora Core
 | Name | Description |
 | --- | --- |
 | user: IAgoraRTCRemoteUser \| UID | 远端用户对象。 |
-| mediaType: "video" \| "audio" \| "datachannel" | 订阅的轨道媒体类型。<br />- "video": 订阅指定用户发布的视频轨道。<br />- "audio": 订阅指定用户发布的音频轨道。<br />- "datachannel": 预留参数。 |
+| mediaType: "video" \| "audio" \| "datachannel" | 订阅的轨道媒体类型。<br />- `"video"`: 订阅指定用户发布的视频轨道。<br />- `"audio"`: 订阅指定用户发布的音频轨道。<br />- `"datachannel"`: 预留参数。 |
 | Optional channelId: number |  |
 
 #### Returns
@@ -1009,7 +1010,7 @@ unsubscribe(user: IAgoraRTCRemoteUser | UID, mediaType?: "video" | "audio" | "da
 | Name | Description |
 | --- | --- |
 | user: IAgoraRTCRemoteUser \| UID | 远端用户对象。 |
-| Optional mediaType: "video" \| "audio" \| "datachannel" | 取消订阅的轨道媒体类型。<br />- "video": 仅取消订阅指定用户的视频轨道。<br />- “audio”: 仅取消订阅指定用户的音频轨道。<br />- 如不填，取消订阅该用户发布的所有轨道。<br />- "datachannel": 预留参数。 |
+| Optional mediaType: "video" \| "audio" \| "datachannel" | 取消订阅的轨道媒体类型。<br />- `"video"`: 仅取消订阅指定用户的视频轨道。<br />- `“audio”`: 仅取消订阅指定用户的音频轨道。<br />- 如不填，取消订阅该用户发布的所有轨道。<br />- `"datachannel"`: 预留参数。 |
 | Optional channelId: number | 预留参数。 |
 
 #### Returns
@@ -1032,10 +1033,12 @@ startChannelMediaRelay(config: IChannelMediaRelayConfiguration): Promise<void>
 
 调用该方法后，SDK 会触发以下回调：
 
-- AgoraRTCClient.on("channel-media-relay-state")，报告当前的跨频道媒体流转发状态和错误码。
-  - 如果转发中途出现异常，该回调中 state 为 3， code 为错误码。你可以尝试再次调用本方法。
-- AgoraRTCClient.on("channel-media-relay-event")，报告跨频道媒体流转发相关的事件。
-  - 如果跨频道服务开始向目标频道发送数据包，会触发回调， code 为 4.
+- [AgoraRTCClient.on("channel-media-relay-state")](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#event_channel_media_relay_state)，报告当前的跨频道媒体流转发状态和错误码。
+
+  - 如果转发中途出现异常，该回调中 `state` 为 3， `code` 为错误码。你可以尝试再次调用本方法。
+- [AgoraRTCClient.on("channel-media-relay-event")](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#event_channel_media_relay_event)，报告跨频道媒体流转发相关的事件。
+
+  - 如果跨频道服务开始向目标频道发送数据包，会触发回调， `code` 为 4.
 
 注意事项： 跨频道媒体流转发功能需要联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 开通。 该功能不支持 String 型 UID。 请在成功加入频道后调用该方法。 直播场景下，只有主播可以调用该方法。 成功调用该方法后，若你想再次调用该方法，必须先调用 [stopChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#stopchannelmediarelay) 方法退出当前的转发状态。
 
@@ -1132,7 +1135,7 @@ enableDualStream(): Promise<void>
 该方法为本地流开启双流模式。双流为视频大流和视频小流：
 
 - 视频大流指高分辨率、高码率的视频流。
-- 视频小流指低分辨率、低码率的视频流。小流的视频属性默认值固定为分辨率（宽 × 高） 160 × 120，码率 50 Kbps，帧率 15 fps。如果你不想要使用默认的小流视频属性，可以调用 setLowStreamParameter 自定义小流参数，防止因小流码率过高而造成带宽压力。
+- 视频小流指低分辨率、低码率的视频流。小流的视频属性默认值固定为分辨率（宽 × 高） 160 × 120，码率 50 Kbps，帧率 15 fps。如果你不想要使用默认的小流视频属性，可以调用 [setLowStreamParameter](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#setlowstreamparameter) 自定义小流参数，防止因小流码率过高而造成带宽压力。
 
 注意事项： 在部分 Android 设备的浏览器上调用 `enableDualStream` 方法开启双流，会出现对端无法切换小流的问题。 Android Chrome 上无法使用 H.264 编码发送大小流。 在部分使用 Intel 芯片的 Mac 设备的 Safari 浏览器 上，调用 `enableDualStream` 开启 H.264 编码的视频双流模式时，小流与大流分辨率比率低于 1/4 可能会导致系统卡顿。
 
@@ -1300,7 +1303,7 @@ await client.startLiveStreaming("rtmp://xxxx", true);
 | Name | Description |
 | --- | --- |
 | url: string | 直播推流的地址，ASCII 字符。支持 RTMP 协议。 |
-| Optional transcodingEnabled: boolean | (可选) 是否启用直播转码。转码是指在旁路推流时对音视频流进行转码处理后，再推送到其他 RTMP 服务器，适用于频道内有多个主播，需要进行混流、合图的场景。如果设为 `true`，需要在调用该方法前先调用 [setLiveTranscoding](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#setlivetranscoding)。<br />- true: 启用转码，需要在调用该方法前先调用 setLiveTranscoding。<br />- false: （默认）不启用转码，这种情况下需要保证当前用户正在发布。 |
+| Optional transcodingEnabled: boolean | (可选) 是否启用直播转码。转码是指在旁路推流时对音视频流进行转码处理后，再推送到其他 RTMP 服务器，适用于频道内有多个主播，需要进行混流、合图的场景。如果设为 `true`，需要在调用该方法前先调用 [setLiveTranscoding](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#setlivetranscoding)。<br />- `true`: 启用转码，需要在调用该方法前先调用 [setLiveTranscoding](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#setlivetranscoding)。<br />- `false`: （默认）不启用转码，这种情况下需要保证当前用户正在发布。 |
 
 #### Returns
 
@@ -1597,7 +1600,7 @@ for(const {track, mediaType, error} of result) {
 
 | Name | Description |
 | --- | --- |
-| subscribeList: object[] | 订阅的远端用户列表。列表中的每一条都包含以下信息：<br />- user：远端用户对象，详见 AgoraRTCRemoteUser。<br />- mediaType：订阅的轨道媒体类型。<br />  - "video": 订阅指定用户的视频轨道。<br />  - "audio": 订阅指定用户的音频轨道。 |
+| subscribeList: object[] | 订阅的远端用户列表。列表中的每一条都包含以下信息：<br />- `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcremote-user)。<br />- `mediaType`：订阅的轨道媒体类型。<br />  - `"video"`: 订阅指定用户的视频轨道。<br />  - `"audio"`: 订阅指定用户的音频轨道。 |
 
 #### Returns
 
@@ -1605,12 +1608,13 @@ Returns Promise &lt; object [] &gt;
 
 正常情况下，返回列表的长度与顺序和 `subscribeList` 一致。列表中的每一条都包含以下信息：
 
-- user：远端用户对象，详见 AgoraRTCRemoteUser。
-- mediaType：已订阅的轨道媒体类型。
-  - "video": 已订阅指定用户发布的视频轨道。
-  - "audio": 已订阅指定用户发布的音频轨道。
-- track：远端轨道对象，详见 RemoteTrack。
-- error：错误信息。如果对单个用户的音视频轨道订阅失败，会通过这个参数返回错误。
+- `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcremote-user)。
+- `mediaType`：已订阅的轨道媒体类型。
+
+  - `"video"`: 已订阅指定用户发布的视频轨道。
+  - `"audio"`: 已订阅指定用户发布的音频轨道。
+- `track`：远端轨道对象，详见 [RemoteTrack](/zh-CN/api-reference/rtc/react-sdk/interfaces/iremote-track)。
+- `error`：错误信息。如果对单个用户的音视频轨道订阅失败，会通过这个参数返回错误。
 
 <a id="massunsubscribe"></a>
 
@@ -1634,7 +1638,7 @@ client.massUnsubscribe([{user:userA}, {user: userB}]);
 
 | Name | Description |
 | --- | --- |
-| unsubscribeList: object[] | 取消订阅的远端用户列表。列表中的每一条都包含以下信息：<br />- user：远端用户对象，详见 AgoraRTCRemoteUser。<br />- mediaType：取消订阅的轨道媒体类型。<br />  - "video": 取消订阅指定用户的视频轨道。<br />  - "audio": 取消订阅指定用户的音频轨道。<br />  - 如不填，取消订阅该用户发布的所有轨道。 |
+| unsubscribeList: object[] | 取消订阅的远端用户列表。列表中的每一条都包含以下信息：<br />- `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcremote-user)。<br />- `mediaType`：取消订阅的轨道媒体类型。<br />  - `"video"`: 取消订阅指定用户的视频轨道。<br />  - `"audio"`: 取消订阅指定用户的音频轨道。<br />  - 如不填，取消订阅该用户发布的所有轨道。 |
 
 #### Returns
 
@@ -2239,7 +2243,7 @@ setClientRole(role: ClientRole, options?: ClientRoleOptions): Promise<void>
 
 设置直播场景中（[mode](/zh-CN/api-reference/rtc/react-sdk/interfaces/client-config#mode) 设为 `"live"` ）的用户角色。
 
-- 用户角色 (role) 确定用户在 SDK 层的权限，包含是否可以发送流、是否可以接收流、是否可以推流到 CDN 等。用户角色有 "host" （主播）和 "audience" （观众）。主播既可发布轨道，也可订阅轨道；观众不能进行 publish 操作。直播场景中的用户角色默认为观众。如需发布音视频，必须先调用本方法切换角色为主播。
+- 用户角色 (role) 确定用户在 SDK 层的权限，包含是否可以发送流、是否可以接收流、是否可以推流到 CDN 等。用户角色有 `"host"` （主播）和 `"audience"` （观众）。主播既可发布轨道，也可订阅轨道；观众不能进行 [publish](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#publish) 操作。直播场景中的用户角色默认为观众。如需发布音视频，必须先调用本方法切换角色为主播。
 - 用户角色具体设置包含用户级别 (level)。用户级别确定用户在其权限范围内可以操作和享受到的服务级别。例如对于观众，选择接收低延时还是超低延时的视频流。不同的级别会影响计费。
 
 注意事项： 通信场景（[mode](/zh-CN/api-reference/rtc/react-sdk/interfaces/client-config#mode) 设为 `"rtc"` ）无法使用本方法，默认所有用户都是 `"host"` 角色。 如果在加入频道后调用该方法切换用户角色，远端会触发 [AgoraRTCClient.on("user-joined")](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#event_user_joined) 或者 [AgoraRTCClient.on("user-left")](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#event_user_left) 回调。 如果已经调用了 [publish](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#publish)，想要将用户角色切换为 `"audience"` 时，必须先调用 [unpublish](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#unpublish) 取消发布后再调用本方法，否则会设置失败并抛出异常。
@@ -2278,7 +2282,7 @@ setEncryptionConfig(encryptionMode: EncryptionMode, secret: string, salt?: Uint8
 | encryptionMode: EncryptionMode | 加密模式。 |
 | secret: string | ASCII 字符。当用户设置的密码为弱密码时，SDK 会在控制台打印警告信息，提醒用户设置强密码，即密码必须包含大写字母、小写字母、数字和特殊字符，以及长度至少 8 个字符。由于浏览器加密算法限制，密钥长度不能超过 62 个字符。声网推荐你在服务端使用 OpenSSL 生成密钥，详见 [媒体流加密](http://doc.shengwang.cn/doc/rtc/javascript/advanced-features/channel-encryption)。 |
 | Optional salt: Uint8Array | 盐值，仅当加密模式为 `"aes-128-gcm2"` 或 `"aes-256-gcm2"` 时有效。声网推荐你在服务端使用 OpenSSL 生成盐值，详见 [媒体流加密](http://doc.shengwang.cn/doc/rtc/javascript/advanced-features/channel-encryption)。 |
-| Optional encryptDataStream: boolean | 是否加密数据流。数据流加密模式需与媒体流一致。数据流加密目前仅支持 `"aes-128-gcm2"` 和 `"aes-256-gcm2"` 模式，使用其他加密模式会出现报错。<br />- true: 启用数据流加密。<br />- false: 不启用数据流加密。 |
+| Optional encryptDataStream: boolean | 是否加密数据流。数据流加密模式需与媒体流一致。数据流加密目前仅支持 `"aes-128-gcm2"` 和 `"aes-256-gcm2"` 模式，使用其他加密模式会出现报错。<br />- `true`: 启用数据流加密。<br />- `false`: 不启用数据流加密。 |
 
 #### Returns
 
@@ -2388,8 +2392,8 @@ setProxyServer(proxyServer: string): void
 
 该方法不能与 [startProxyServer](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#startproxyserver) 同时调用，二者区别如下：
 
-- setProxyServer：自定义代理，可以用于信令传输、日志上传、事件上报等，但不能用于媒体传输。
-- startProxyServer：声网提供的云代理服务，可以传输媒体流、信令等，只需简单设置即可使用。详见 使用云代理服务。
+- `setProxyServer`：自定义代理，可以用于信令传输、日志上传、事件上报等，但不能用于媒体传输。
+- `startProxyServer`：声网提供的云代理服务，可以传输媒体流、信令等，只需简单设置即可使用。详见 [使用云代理服务](http://doc.shengwang.cn/doc/rtc/javascript/basic-features/firewall)。
 
 注意事项： 该方法必须在 [join](/zh-CN/api-reference/rtc/react-sdk/interfaces/iagora-rtcclient#join) 之前调用。 在使用 Firefox 浏览器时，跨运营商代理速度会比较慢。声网建议使用同运营商进行代理。如果必须使用跨运营商代理，则避免使用 Firefox 浏览器。
 
@@ -2421,7 +2425,7 @@ startProxyServer(mode?: number): void
 
 | Name | Description |
 | --- | --- |
-| Optional mode: number | 云代理模式：<br />- 3: UDP 协议的云代理，即 Force UDP 云代理模式。在该模式下，SDK 始终通过 UDP 协议传输数据。<br />- 5: TCP（加密）协议的云代理，即 Force TCP 云代理模式。在该模式下，SDK 始终通过 TLS 443 传输数据。<br />注意事项： 自 v4.15.0 起， `mode` 的默认值为 `3`。 |
+| Optional mode: number | 云代理模式：<br />- `3`: UDP 协议的云代理，即 Force UDP 云代理模式。在该模式下，SDK 始终通过 UDP 协议传输数据。<br />- `5`: TCP（加密）协议的云代理，即 Force TCP 云代理模式。在该模式下，SDK 始终通过 TLS 443 传输数据。<br />注意事项： 自 v4.15.0 起， `mode` 的默认值为 `3`。 |
 
 #### Returns
 

@@ -60,13 +60,13 @@ This section describes how to register a user at Agora Console and generate a te
 
 To generate a user ID, do the following:
 
-1. On the Project Management page, click Config for the project you want to use.
+1. On the **Project Management** page, click **Config** for the project you want to use.
 
-1. Click Config for Chat(Beta) under Features.
+1. Click **Config** for **Chat(Beta)** under **Features**.
 
-1. Click Create User on the User page under Operation Management.
+1. Click **Create User** on the **User** page under **Operation Management**.
 
-1. Fill in the user information and click Save to create a user.
+1. Fill in the user information and click **Save** to create a user.
 
 <a id="generate-a-user-token"></a>
 
@@ -76,9 +76,9 @@ To ensure communication security, Agora recommends using tokens to authenticate 
 
 For testing purposes, Agora Console supports generating Agora chat tokens. To generate an Agora chat token, do the following:
 
-1. On the Project Management page, click Config for the project you want to use.
-2. Click Config for Chat(Beta) under Features to open the Application Information page.
-3. Under Data Center, enter the user ID in the Chat User Temp Token text box and click Generate to generate a token with user privileges.
+1. On the **Project Management** page, click **Config** for the project you want to use.
+2. Click **Config** for **Chat(Beta)** under **Features** to open the **Application Information** page.
+3. Under **Data Center**, enter the user ID in the **Chat User Temp Token** text box and click `Generate` to generate a token with user privileges.
 
 <a id="project-setup"></a>
 
@@ -102,7 +102,7 @@ flutter create quick_start
 
 #### Android setup
 
-1. In the quick_start/android/app/build.gradle file, add the following lines at the end to set the minimum Android SDK version to 21:
+1. In the `quick_start/android/app/build.gradle` file, add the following lines at the end to set the minimum Android SDK version to 21:
 
 ```gradle
 android {
@@ -112,7 +112,7 @@ android {
 }
 ```
 
-1. In the quick_start/android/app/proguard-rules.pro file, add the following lines to prevent code obfuscation:
+1. In the `quick_start/android/app/proguard-rules.pro` file, add the following lines to prevent code obfuscation:
 
 ```java
 -keep class com.hyphenate.** {*;}
@@ -123,7 +123,7 @@ android {
 
 #### iOS setup
 
-1. Open the quick_start/ios/Runner.xcodeproj file in Xcode, and select TARGETS &gt; Runner in the left sidebar. In the Deployment Info section under the General tab, set the minimum iOS version to iOS 10.0.
+1. Open the `quick_start/ios/Runner.xcodeproj` file in **Xcode**, and select **TARGETS** &gt; **Runner** in the left sidebar. In the **Deployment Info** section under the **General** tab, set the minimum iOS version to **iOS 10.0**.
 
 <a id="3-integrate-the-agora-chat-sdk"></a>
 
@@ -427,7 +427,7 @@ In the `_sendMessage` method, add the following to add the creating and sending 
   }
 ```
 
-1. In the _addChatListener method, add the following to add the chat event handler:
+1. In the `_addChatListener` method, add the following to add the chat event handler:
 
 ```dart
   void _addChatListener() {
@@ -438,7 +438,7 @@ In the `_sendMessage` method, add the following to add the creating and sending 
   }
 ```
 
-1. Under the initState method, add the dispose method to remove the chat event handler, as shown in the following:
+1. Under the `initState` method, add the `dispose` method to remove the chat event handler, as shown in the following:
 
 ```dart
   @override

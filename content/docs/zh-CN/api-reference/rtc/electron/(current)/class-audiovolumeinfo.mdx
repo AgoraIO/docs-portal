@@ -25,8 +25,8 @@ export class AudioVolumeInfo {
 
 用户 ID。
 
-- 在本地用户的回调中， uid 为 0。
-- 在远端用户的回调中， uid 为瞬时音量最高的远端用户（最多 3 位）的 ID。
+- 在本地用户的回调中， `uid` 为 0。
+- 在远端用户的回调中， `uid` 为瞬时音量最高的远端用户（最多 3 位）的 ID。
 
 ### `volume`
 
@@ -35,8 +35,8 @@ export class AudioVolumeInfo {
 ### `vad`
 
 :::info[注]
-- vad 无法报告远端用户的人声状态。对于远端用户， vad 的值始终为 1。
-- 如需使用此参数，请在调用 enableAudioVolumeIndication 时设置 reportVad 为 true。
+- `vad` 无法报告远端用户的人声状态。对于远端用户， `vad` 的值始终为 1。
+- 如需使用此参数，请在调用 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_enableaudiovolumeindication) 时设置 `reportVad` 为 true。
 :::
 
 本地用户的人声状态。

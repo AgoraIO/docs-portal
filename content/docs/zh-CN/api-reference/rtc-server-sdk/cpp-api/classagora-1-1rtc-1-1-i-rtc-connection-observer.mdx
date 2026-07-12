@@ -359,22 +359,22 @@ virtual void agora::rtc::IRtcConnectionObserver::onChannelMediaRelayStateChanged
 
 当跨频道媒体流转发状态发生改变时，SDK 会触发该回调，并报告当前的转发状态以及相关的错误信息。
 
-- RELAY_STATE_IDLE(0): SDK 正在初始化。
-- RELAY_STATE_CONNECTING(1): SDK 尝试跨频道。
-- RELAY_STATE_RUNNING(2): 源频道主播成功加入目标频道。
-- RELAY_STATE_FAILURE(3): 发生异常，详见 code 中提示的错误信息。
-- RELAY_OK(0): 一切正常。
-- RELAY_ERROR_SERVER_ERROR_RESPONSE(1): 服务器回应出错。
-- RELAY_ERROR_SERVER_NO_RESPONSE(2): 服务器无回应。你可以调用 disconnect 方法离开频道。
-- RELAY_ERROR_NO_RESOURCE_AVAILABLE(3): SDK 无法获取服务，可能是因为服务器资源有限导致。
-- RELAY_ERROR_FAILED_JOIN_SRC(4): 服务器加入源频道失败。
-- RELAY_ERROR_FAILED_JOIN_DEST(5): 服务器加入目标频道失败。
-- RELAY_ERROR_FAILED_PACKET_RECEIVED_FROM_SRC(6): 服务器未收到源频道发送的数据。
-- RELAY_ERROR_FAILED_PACKET_SENT_TO_DEST(7): 源频道发送数据失败。
-- RELAY_ERROR_SERVER_CONNECTION_LOST(8): SDK 因网络质量不佳与服务器断开。你可以调用 disconnect 方法离开当前频道。
-- RELAY_ERROR_INTERNAL_ERROR(9): 服务器内部出错。
-- RELAY_ERROR_SRC_TOKEN_EXPIRED(10): 源频道的 Token 已过期。
-- RELAY_ERROR_DEST_TOKEN_EXPIRED(11): 目标频道的 Token 已过期。
+- `RELAY_STATE_IDLE(0)`: SDK 正在初始化。
+- `RELAY_STATE_CONNECTING(1)`: SDK 尝试跨频道。
+- `RELAY_STATE_RUNNING(2)`: 源频道主播成功加入目标频道。
+- `RELAY_STATE_FAILURE(3)`: 发生异常，详见 code 中提示的错误信息。
+- `RELAY_OK(0)`: 一切正常。
+- `RELAY_ERROR_SERVER_ERROR_RESPONSE(1)`: 服务器回应出错。
+- `RELAY_ERROR_SERVER_NO_RESPONSE(2)`: 服务器无回应。你可以调用 `disconnect` 方法离开频道。
+- `RELAY_ERROR_NO_RESOURCE_AVAILABLE(3)`: SDK 无法获取服务，可能是因为服务器资源有限导致。
+- `RELAY_ERROR_FAILED_JOIN_SRC(4)`: 服务器加入源频道失败。
+- `RELAY_ERROR_FAILED_JOIN_DEST(5)`: 服务器加入目标频道失败。
+- `RELAY_ERROR_FAILED_PACKET_RECEIVED_FROM_SRC(6)`: 服务器未收到源频道发送的数据。
+- `RELAY_ERROR_FAILED_PACKET_SENT_TO_DEST(7)`: 源频道发送数据失败。
+- `RELAY_ERROR_SERVER_CONNECTION_LOST(8)`: SDK 因网络质量不佳与服务器断开。你可以调用 `disconnect` 方法离开当前频道。
+- `RELAY_ERROR_INTERNAL_ERROR(9)`: 服务器内部出错。
+- `RELAY_ERROR_SRC_TOKEN_EXPIRED(10)`: 源频道的 Token 已过期。
+- `RELAY_ERROR_DEST_TOKEN_EXPIRED(11)`: 目标频道的 Token 已过期。
 
 #### Parameters
 

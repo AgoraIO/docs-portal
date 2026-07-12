@@ -44,11 +44,11 @@ public abstract int RegisterAudioFrameObserver(IAudioFrameObserver audioFrameObs
 
 音频观测位置。
 
-- AUDIO_FRAME_POSITION_PLAYBACK (0x0001)：该位置可观测所有远端用户混音后的播放音频，对应 OnPlaybackAudioFrame 回调。
-- AUDIO_FRAME_POSITION_RECORD (0x0002)：该位置可观测采集的本地用户的音频，对应 OnRecordAudioFrame 回调。
-- AUDIO_FRAME_POSITION_MIXED (0x0004)：该位置可观测本地和所有远端用户混音后的音频，对应 OnMixedAudioFrame 回调。
-- AUDIO_FRAME_POSITION_BEFORE_MIXING (0x0008)：该位置可观测单个远端用户混音前的音频，对应 OnPlaybackAudioFrameBeforeMixing 回调。
-- AUDIO_FRAME_POSITION_EAR_MONITORING (0x0010)：该位置可观测单个本地用户耳返的音频，对应 OnEarMonitoringAudioFrame 回调。
+- AUDIO_FRAME_POSITION_PLAYBACK (0x0001)：该位置可观测所有远端用户混音后的播放音频，对应 [OnPlaybackAudioFrame](/zh-CN/api-reference/rtc/unity/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调。
+- AUDIO_FRAME_POSITION_RECORD (0x0002)：该位置可观测采集的本地用户的音频，对应 [OnRecordAudioFrame](/zh-CN/api-reference/rtc/unity/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调。
+- AUDIO_FRAME_POSITION_MIXED (0x0004)：该位置可观测本地和所有远端用户混音后的音频，对应 [OnMixedAudioFrame](/zh-CN/api-reference/rtc/unity/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调。
+- AUDIO_FRAME_POSITION_BEFORE_MIXING (0x0008)：该位置可观测单个远端用户混音前的音频，对应 [OnPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/unity/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
+- AUDIO_FRAME_POSITION_EAR_MONITORING (0x0010)：该位置可观测单个本地用户耳返的音频，对应 [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unity/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调。
 
 <a id="api_imediaengine_registeraudioframeobserver__return_values"></a>
 
@@ -77,8 +77,8 @@ public abstract int SetEarMonitoringAudioFrameParameters(int sampleRate, int cha
 该方法用于设置 [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unity/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调的耳返音频数据格式。
 
 :::info[注]
-- 调用该方法前，你需要先调用 EnableInEarMonitoring，将 includeAudioFilters 设置为 EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS 或 EAR_MONITORING_FILTER_NOISE_SUPPRESSION。
-- SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计算出采样间隔，计算公式为采样间隔 = samplesPerCall /(sampleRate × channel)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 OnEarMonitoringAudioFrame 回调。
+- 调用该方法前，你需要先调用 [EnableInEarMonitoring](/zh-CN/api-reference/rtc/unity/audio-capture#api_irtcengine_enableinearmonitoring2)，将 `includeAudioFilters` 设置为 `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS` 或 `EAR_MONITORING_FILTER_NOISE_SUPPRESSION`。
+- SDK 会通过该方法中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算出采样间隔，计算公式为采样间隔 = `samplesPerCall` /(`sampleRate` × `channel`)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unity/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调。
 :::
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__parameters"></a>

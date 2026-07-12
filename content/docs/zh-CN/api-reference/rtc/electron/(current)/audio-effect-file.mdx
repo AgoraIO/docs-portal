@@ -68,8 +68,8 @@ abstract getEffectDuration(filePath: string): number;
 
 文件路径：
 
-- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 C:\\music\\audio.mp4。
-- macOS: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 /var/mobile/Containers/Data/audio.mp4。
+- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。
+- macOS: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `/var/mobile/Containers/Data/audio.mp4`。
 
 <a id="api_irtcengine_geteffectduration__return_values"></a>
 
@@ -229,7 +229,7 @@ abstract playAllEffects(
 
 音效文件循环播放的次数：
 
-- -1: 无限循环播放音效文件，直至调用 stopEffect 或 stopAllEffects 后停止。
+- -1: 无限循环播放音效文件，直至调用 [stopEffect](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengine_stopalleffects) 后停止。
 - 0: 播放音效文件一次。
 - 1: 播放音效文件两次。
 
@@ -403,9 +403,9 @@ abstract playEffectEx(
 
 :::info[注]
 - 声网建议不要同时播放超过三个音效。
-- 该方法中的音效 ID 和文件路径必须与 preloadEffectEx 方法中的保持一致。
-- 如果在调用 playEffectEx 之前调用了 preloadEffectEx， playEffectEx 执行后不会关闭文件资源。下次调用 playEffectEx 时会直接从头开始播放。
-- 如果在调用 playEffectEx 之前未调用 preloadEffectEx， playEffectEx 执行后会销毁资源。下次调用 playEffectEx 时会尝试重新打开文件并从头播放。
+- 该方法中的音效 ID 和文件路径必须与 [preloadEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_preloadeffectex) 方法中的保持一致。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_playeffectex) 之前调用了 [preloadEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_preloadeffectex)， [playEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_playeffectex) 执行后不会关闭文件资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_playeffectex) 时会直接从头开始播放。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_playeffectex) 之前未调用 [preloadEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_preloadeffectex)， [playEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_playeffectex) 执行后会销毁资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_playeffectex) 时会尝试重新打开文件并从头播放。
 :::
 
 <a id="api_irtcengineex_playeffectex__scenario"></a>
@@ -434,9 +434,9 @@ abstract playEffectEx(
 
 音效的循环播放次数：
 
-- -1：无限循环，直到调用 stopEffect 或 stopAllEffects。
-- 0：播放一次。
-- 1：播放两次。
+- `-1`：无限循环，直到调用 [stopEffect](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengine_stopalleffects)。
+- `0`：播放一次。
+- `1`：播放两次。
 
 #### `pitch`
 
@@ -446,9 +446,9 @@ abstract playEffectEx(
 
 音效的空间位置。取值范围为 -1.0 到 1.0：
 
-- -1.0：音效从用户左侧传来。
-- 0.0：音效从用户正前方传来。
-- 1.0：音效从用户右侧传来。
+- `-1.0`：音效从用户左侧传来。
+- `0.0`：音效从用户正前方传来。
+- `1.0`：音效从用户右侧传来。
 
 #### `gain`
 
@@ -513,8 +513,8 @@ abstract preloadEffect(
 
 文件路径：
 
-- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 C:\\music\\audio.mp4。
-- macOS: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 /var/mobile/Containers/Data/audio.mp4。
+- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。
+- macOS: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `/var/mobile/Containers/Data/audio.mp4`。
 
 #### `startPos`
 
@@ -558,8 +558,8 @@ abstract preloadEffectEx(
 :::info[注]
 - 为确保使用体验流畅，音效文件的大小不应超过限制。
 - 声网建议在加入频道前调用该方法。
-- 如果在调用 playEffectEx 前已调用 preloadEffectEx，则 playEffectEx 执行后不会关闭文件资源。下次调用 playEffectEx 时会直接从头开始播放。
-- 如果在调用 playEffectEx 前未调用 preloadEffectEx，则 playEffectEx 执行后会销毁资源。下次调用 playEffectEx 时会尝试重新打开文件并从头开始播放。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_playeffectex) 前已调用 [preloadEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_preloadeffectex)，则 [playEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_playeffectex) 执行后不会关闭文件资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_playeffectex) 时会直接从头开始播放。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_playeffectex) 前未调用 [preloadEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_preloadeffectex)，则 [playEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_playeffectex) 执行后会销毁资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengineex_playeffectex) 时会尝试重新打开文件并从头开始播放。
 :::
 
 <a id="api_irtcengineex_preloadeffectex__scenario"></a>

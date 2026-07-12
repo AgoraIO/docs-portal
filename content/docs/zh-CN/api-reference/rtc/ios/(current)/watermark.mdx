@@ -70,18 +70,18 @@ description: "向本地视频添加水印图像。"
 
 该方法在直播中向本地视频添加 PNG 格式的水印图像。添加水印图像后，频道中的所有观众（包括 CDN 观众）以及采集设备都可以看到并采集该图像。声网 SDK 仅支持在一个直播视频流中添加一张水印图像，新添加的水印图像会替换之前的图像。 水印图像的坐标依赖于 [setVideoEncoderConfiguration:](/zh-CN/api-reference/rtc/ios/video-basic#api_irtcengine_setvideoencoderconfiguration) 方法中的设置：
 
-- 如果编码视频的方向模式（AgoraVideoOutputOrientationMode ）为固定横屏或自适应横屏模式，水印图像将使用横屏方向。
+- 如果编码视频的方向模式（[AgoraVideoOutputOrientationMode](/zh-CN/api-reference/rtc/ios/enum-orientationmode) ）为固定横屏或自适应横屏模式，水印图像将使用横屏方向。
 - 如果编码视频的方向模式为固定竖屏或自适应竖屏模式，水印图像将使用竖屏方向。
-- 设置水印位置时，区域必须小于 setVideoEncoderConfiguration: 方法中设置的尺寸，否则水印图像将被裁剪。
+- 设置水印位置时，区域必须小于 [setVideoEncoderConfiguration:](/zh-CN/api-reference/rtc/ios/video-basic#api_irtcengine_setvideoencoderconfiguration) 方法中设置的尺寸，否则水印图像将被裁剪。
 
 你可以通过调用该方法时设置 `visibleInPreview` 参数来控制水印在预览中的可见性。但其最终是否生效还取决于调用 [setupLocalVideo:](/zh-CN/api-reference/rtc/ios/video-rendering#api_irtcengine_setuplocalvideo) 时设置的 `position` 参数。：
 
-- 观察位置 AgoraVideoModulePositionPostCapture （默认）： visiblePreview 为 YES，则水印可见； visiblePreview 为 NO，则水印不可见。
-- 观察位置 AgoraVideoModulePositionPreEncoder： visiblePreview 为 YES，则水印可见； visiblePreview 为 NO，则水印仍可见。
+- 观察位置 `AgoraVideoModulePositionPostCapture` （默认）： `visiblePreview` 为 YES，则水印可见； `visiblePreview` 为 NO，则水印不可见。
+- 观察位置 `AgoraVideoModulePositionPreEncoder`： `visiblePreview` 为 YES，则水印可见； `visiblePreview` 为 NO，则水印仍可见。
 
 :::info[注]
-- 请确保在调用该方法前已调用 enableVideo。
-- 如果你只想为媒体推流添加水印，可以调用该方法或 startRtmpStreamWithTranscoding:transcoding: 方法。
+- 请确保在调用该方法前已调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video-basic#api_irtcengine_enablevideo)。
+- 如果你只想为媒体推流添加水印，可以调用该方法或 [startRtmpStreamWithTranscoding:transcoding:](/zh-CN/api-reference/rtc/ios/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法。
 - 该方法仅支持添加 PNG 文件格式的水印图像。支持的 PNG 图像像素格式包括 RGBA、RGB、Palette、Gray 和 Alpha_gray。
 - 如果 PNG 图像的尺寸与该方法中的设置不一致，图像将被裁剪或缩放以符合设置。
 - 如果你为本地视频启用了镜像模式，本地视频中的水印也会被镜像。为避免水印被镜像，声网建议你不要同时使用本地视频的镜像和水印功能。你可以在应用层实现水印功能。
@@ -167,15 +167,15 @@ description: "向本地视频添加水印图像。"
 
 该方法在直播中向本地视频添加 PNG 格式的水印图像。添加水印图像后，频道中的所有观众（包括 CDN 观众）以及采集设备都可以看到并采集该图像。声网 SDK 仅支持在一个直播视频流中添加一张水印图像，新添加的水印图像会替换之前的图像。 水印图像的坐标依赖于 `setVideoEncoderConfigurationEx` 方法中的设置：
 
-- 如果编码视频的方向模式（AgoraVideoOutputOrientationMode ）为固定横屏或自适应横屏模式，水印图像将采用横屏方向。
+- 如果编码视频的方向模式（[AgoraVideoOutputOrientationMode](/zh-CN/api-reference/rtc/ios/enum-orientationmode) ）为固定横屏或自适应横屏模式，水印图像将采用横屏方向。
 - 如果编码视频的方向模式为固定竖屏或自适应竖屏模式，水印图像将采用竖屏方向。
-- 设置水印位置时，区域必须小于 setVideoEncoderConfigurationEx 方法中设置的尺寸，否则水印图像将被裁剪。
+- 设置水印位置时，区域必须小于 `setVideoEncoderConfigurationEx` 方法中设置的尺寸，否则水印图像将被裁剪。
 
 :::info[注]
-- 请确保你在调用该方法前已调用 enableVideo。
+- 请确保你在调用该方法前已调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video-basic#api_irtcengine_enablevideo)。
 - 该方法仅支持添加 PNG 文件格式的水印图像。支持的 PNG 图像像素格式包括 RGBA、RGB、Palette、Gray 和 Alpha_gray。
 - 如果 PNG 图像的尺寸与该方法中的设置不一致，图像将被裁剪或缩放以符合设置。
-- 如果你已通过调用 startPreview 方法启用本地视频预览，可使用 visibleInPreview 成员设置水印是否在预览中可见。
+- 如果你已通过调用 [startPreview](/zh-CN/api-reference/rtc/ios/video-basic#api_irtcengine_startpreview) 方法启用本地视频预览，可使用 `visibleInPreview` 成员设置水印是否在预览中可见。
 - 如果你已为本地视频启用镜像模式，本地视频中的水印也会被镜像。为避免水印被镜像，声网建议你不要同时使用本地视频的镜像和水印功能。你可以在应用层实现水印功能。
 :::
 

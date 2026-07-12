@@ -112,7 +112,7 @@ virtual int getCaches(MusicCacheInfo *cacheInfo, int32_t* cacheInfoSize) = 0;
 
 输入和输出参数。
 
-- 输入值： cacheInfo 数组的长度，即你所分配的 MusicCacheInfo 结构体的数量。
+- 输入值： cacheInfo 数组的长度，即你所分配的 [MusicCacheInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-musiccacheinfo) 结构体的数量。
 - 输出值：方法执行完毕后输出的 MusicCacheInfo 结构体的数量。
 
 <a id="api_imusiccontentcenter_getcaches__return_values"></a>
@@ -922,6 +922,7 @@ virtual int setPlayMode(MusicPlayMode mode) = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -2: 参数设置错误，请重新设置参数。
 
 ### 所属接口类

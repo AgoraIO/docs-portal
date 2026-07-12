@@ -5,7 +5,8 @@ description: "IBufferSourceAudioTrack API reference."
 
 直接通过音频数据源创建的音频轨道，继承于 [LocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-audio-track), 在此之上提供了控制音频数据处理流程的功能（开始/暂停/跳转等等）。 可以通过 [AgoraRTC.createBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createbuffersourceaudiotrack) 来获取。
 
-- ILocalAudioTrack
+- [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-audio-track)
+
   - IBufferSourceAudioTrack
 
 ## Events
@@ -24,7 +25,7 @@ source-state-change(currentState: AudioSourceState): void
 
 | Name | Description |
 | --- | --- |
-| currentState: AudioSourceState | 当前音频数据处理状态：<br />- "stopped": 音频源数据处理停止。可能是因为数据处理完毕，也可能是手动触发了停止。<br />- "paused": 音频源数据暂停处理。<br />- "playing": 音频源数据正在处理。 |
+| currentState: AudioSourceState | 当前音频数据处理状态：<br />- `"stopped"`: 音频源数据处理停止。可能是因为数据处理完毕，也可能是手动触发了停止。<br />- `"paused"`: 音频源数据暂停处理。<br />- `"playing"`: 音频源数据正在处理。 |
 
 #### Returns
 
@@ -72,8 +73,8 @@ isPlaying: boolean
 
 媒体轨道是否正在页面上播放。
 
-- true: 媒体轨道正在页面上播放。
-- false: 媒体轨道没有在页面上播放。
+- `true`: 媒体轨道正在页面上播放。
+- `false`: 媒体轨道没有在页面上播放。
 
 <a id="muted"></a>
 
@@ -99,9 +100,9 @@ playbackSpeed: number
 
 当前音频文件的播放速度。取值范围为 [50,400]，其中：
 
-- 50: 0.5 倍速。
-- 100: （默认）原始速度。
-- 400: 4 倍速。
+- `50`: 0.5 倍速。
+- `100`: （默认）原始速度。
+- `400`: 4 倍速。
 
 <a id="processordestination"></a>
 
@@ -137,8 +138,8 @@ trackMediaType: "audio" | "video"
 
 媒体轨道的类型：
 
-- "audio": 音频轨道。
-- "video": 视频轨道。
+- `"audio"`: 音频轨道。
+- `"video"`: 视频轨道。
 
 ## Methods
 
@@ -286,9 +287,9 @@ Returns string
 
 可能返回以下值：
 
-- 如果是通过 createMicrophoneAudioTrack 或 createCameraVideoTrack 创建的轨道，返回 MediaDeviceInfo.label 字段。
-- 如果是通过 createScreenVideoTrack 创建的轨道，返回屏幕共享的 sourceId。
-- 如果是 createCustomAudioTrack 或 createCustomVideoTrack 创建的轨道，返回 MediaStreamTrack.label 字段。
+- 如果是通过 `createMicrophoneAudioTrack` 或 `createCameraVideoTrack` 创建的轨道，返回 [MediaDeviceInfo.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/label) 字段。
+- 如果是通过 `createScreenVideoTrack` 创建的轨道，返回屏幕共享的 `sourceId`。
+- 如果是 `createCustomAudioTrack` 或 `createCustomVideoTrack` 创建的轨道，返回 [MediaStreamTrack.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/label) 字段。
 
 <a id="getvolumelevel"></a>
 
@@ -516,7 +517,7 @@ setAudioBufferPlaybackSpeed(speed: number): void
 
 | Name | Description |
 | --- | --- |
-| speed: number | 播放速度。取值范围为 [50,400]，其中：<br />- 50: 0.5 倍速。<br />- 100: （默认）原始速度。<br />- 400: 4 倍速。 |
+| speed: number | 播放速度。取值范围为 [50,400]，其中：<br />- `50`: 0.5 倍速。<br />- `100`: （默认）原始速度。<br />- `400`: 4 倍速。 |
 
 #### Returns
 
@@ -583,7 +584,7 @@ setEnabled(enabled: boolean): Promise<void>
 
 | Name | Description |
 | --- | --- |
-| enabled: boolean | 是否启用该轨道:<br />- true: 启用该轨道。<br />- false: 禁用该轨道。 |
+| enabled: boolean | 是否启用该轨道:<br />- `true`: 启用该轨道。<br />- `false`: 禁用该轨道。 |
 
 #### Returns
 
@@ -611,7 +612,7 @@ setMuted(muted: boolean): Promise<void>
 
 | Name | Description |
 | --- | --- |
-| muted: boolean | 是否发送该轨道的媒体数据:<br />- true: 暂停发送该轨道的媒体数据。<br />- false: 恢复发送该轨道的媒体数据。 |
+| muted: boolean | 是否发送该轨道的媒体数据:<br />- `true`: 暂停发送该轨道的媒体数据。<br />- `false`: 恢复发送该轨道的媒体数据。 |
 
 #### Returns
 

@@ -146,10 +146,10 @@ public abstract disableAudio(): number;
 
 该方法重置整个引擎，响应时间较慢，因此声网建议使用如下方法来控制音频模块：
 
-- enableLocalAudio：是否启动麦克风采集并创建本地音频流。
-- muteLocalAudioStream：是否发布本地音频流。
-- muteRemoteAudioStream：是否接收并播放远端音频流。
-- muteAllRemoteAudioStreams：是否接收并播放所有远端音频流。
+- [enableLocalAudio](/zh-CN/api-reference/rtc/harmonyos/audio-capture#api_irtcengine_enablelocalaudio)：是否启动麦克风采集并创建本地音频流。
+- [muteLocalAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：是否发布本地音频流。
+- [muteRemoteAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteremoteaudiostream)：是否接收并播放远端音频流。
+- [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)：是否接收并播放所有远端音频流。
 
 <a id="api_irtcengine_disableaudio__return_values"></a>
 
@@ -188,10 +188,11 @@ public abstract enableAudio(): number;
 ### 调用限制
 
 - 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制音频模块的某一项功能：
-  - enableLocalAudio: 是否启动麦克风采集并创建本地音频流。
-  - muteLocalAudioStream: 是否发布本地音频流。
-  - muteRemoteAudioStream: 是否接收并播放远端音频流。
-  - muteAllRemoteAudioStreams: 是否接收并播放所有远端音频流。
+
+  - [enableLocalAudio](/zh-CN/api-reference/rtc/harmonyos/audio-capture#api_irtcengine_enablelocalaudio): 是否启动麦克风采集并创建本地音频流。
+  - [muteLocalAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalaudiostream): 是否发布本地音频流。
+  - [muteRemoteAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteremoteaudiostream): 是否接收并播放远端音频流。
+  - [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams): 是否接收并播放所有远端音频流。
 - 在频道内调用该方法时，会重置 enableLocalAudio、 muteRemoteAudioStream 和 muteAllRemoteAudioStreams 的设置，需谨慎使用。
 
 <a id="api_irtcengine_enableaudio__return_values"></a>
@@ -255,8 +256,8 @@ public abstract enableAudioVolumeIndication(interval: number, smooth: number, re
 
 #### `reportVad`
 
-- true：开启本地人声检测功能。开启后， onAudioVolumeIndication 回调的 vad 参数会报告是否在本地检测到人声。
-- false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， onAudioVolumeIndication 回调的 vad 参数不会报告是否在本地检测到人声。
+- `true`：开启本地人声检测功能。开启后， onAudioVolumeIndication 回调的 vad 参数会报告是否在本地检测到人声。
+- `false`：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， onAudioVolumeIndication 回调的 vad 参数不会报告是否在本地检测到人声。
 
 <a id="api_irtcengine_enableaudiovolumeindication__return_values"></a>
 
@@ -319,8 +320,8 @@ public abstract enableAudioVolumeIndicationEx(interval:number,smooth:number,repo
 
 #### `reportVad`
 
-- true：开启本地人声检测功能。开启后， onAudioVolumeIndication 回调的 vad 参数会报告是否在本地检测到人声。
-- false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， onAudioVolumeIndication 回调的 vad 参数不会报告是否在本地检测到人声。
+- `true`：开启本地人声检测功能。开启后， onAudioVolumeIndication 回调的 vad 参数会报告是否在本地检测到人声。
+- `false`：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， onAudioVolumeIndication 回调的 vad 参数不会报告是否在本地检测到人声。
 
 #### `connection`
 
@@ -640,8 +641,8 @@ onUserMuteAudio?:(uid:number,muted:boolean) =>void;
 
 该用户是否静音：
 
-- true: 该用户已将音频静音。
-- false: 该用户取消了音频静音。
+- `true`: 该用户已将音频静音。
+- `false`: 该用户取消了音频静音。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

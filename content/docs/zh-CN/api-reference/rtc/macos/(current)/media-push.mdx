@@ -24,8 +24,8 @@ description: "开始向 CDN 推流（不进行转码）。"
 
 :::info[注]
 - 请在加入频道后调用该方法。
-- 只有在 LIVE_BROADCASTING 频道场景中的主播可以调用该方法。
-- 如果推流失败后需要重试，必须先调用 stopRtmpStream: 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
+- 只有在 `LIVE_BROADCASTING` 频道场景中的主播可以调用该方法。
+- 如果推流失败后需要重试，必须先调用 [stopRtmpStream:](/zh-CN/api-reference/rtc/macos/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
 :::
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding__related"></a>
@@ -48,6 +48,7 @@ description: "开始向 CDN 推流（不进行转码）。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -2：URL 或转码配置不合法。请检查 URL 和转码配置。
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用。请更换其他地址。
@@ -74,8 +75,8 @@ description: "开始向 CDN 推流（不进行转码）。"
 
 :::info[注]
 - 请在加入频道后调用该方法。
-- 只有在 LIVE_BROADCASTING 频道场景中的主播可以调用该方法。
-- 如果推流失败后需要重试，请先调用 stopRtmpStream: 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
+- 只有在 `LIVE_BROADCASTING` 频道场景中的主播可以调用该方法。
+- 如果推流失败后需要重试，请先调用 [stopRtmpStream:](/zh-CN/api-reference/rtc/macos/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
 :::
 
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__scenario"></a>
@@ -108,6 +109,7 @@ description: "开始向 CDN 推流（不进行转码）。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -2：URL 或转码配置不合法，请检查 URL 和转码配置。
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换地址。
@@ -133,8 +135,8 @@ description: "开始向 CDN 推流（不进行转码）。"
 
 :::info[注]
 - 请在加入频道后调用该方法。
-- 只有在 LIVE_BROADCASTING 频道场景中的主播角色可以调用该方法。
-- 如果你在推流失败后需要重试，请先调用 stopRtmpStream: 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
+- 只有在 `LIVE_BROADCASTING` 频道场景中的主播角色可以调用该方法。
+- 如果你在推流失败后需要重试，请先调用 [stopRtmpStream:](/zh-CN/api-reference/rtc/macos/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
 :::
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding__related"></a>
@@ -161,7 +163,8 @@ description: "开始向 CDN 推流（不进行转码）。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
-  - -2：URL 或转码配置不合法；请检查 url 和 transcoding。
+
+  - -2：URL 或转码配置不合法；请检查 `url` 和 `transcoding`。
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换地址。
 
@@ -224,6 +227,7 @@ description: "开始向 CDN 推流（不进行转码）。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -2：URL 或转码配置不合法，请检查 URL 和转码配置。
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换地址。

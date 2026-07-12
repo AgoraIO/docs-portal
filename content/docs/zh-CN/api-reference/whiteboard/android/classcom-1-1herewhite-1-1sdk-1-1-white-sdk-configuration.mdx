@@ -26,7 +26,7 @@ com.herewhite.sdk.WhiteSdkConfiguration.WhiteSdkConfiguration(String appIdentifi
 | Name | Description |
 | --- | --- |
 | appIdentifier | 白板项目的唯一标识。详见 [获取白板项目的 App Identifier](/doc/whiteboard/android/whiteboard-sdk/get-started/enable-service#获取-app-identifier)。 |
-| log | 是否开启调试日志回调：<br />- true：开启。<br />- false：（默认）关闭。 调试日志仅包含调用初始化互动白板 SDK、加入房间和开始回放等方法的回调。 |
+| log | 是否开启调试日志回调：<br />- `true`：开启。<br />- `false`：（默认）关闭。 调试日志仅包含调用初始化互动白板 SDK、加入房间和开始回放等方法的回调。 |
 
 <a id="adefcf4cfce48f523164941ca1e2859a5"></a>
 
@@ -60,8 +60,8 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableIFramePlugin()
 
 是否启用 iframe 插件：
 
-- true：开启。
-- false：未启用。
+- `true`：开启。
+- `false`：未启用。
 
 <a id="a5983a2cd7a0fa6e51ce8ff7a78ef7c02"></a>
 
@@ -79,7 +79,7 @@ iframe 插件的功能，详见 [iframe-bridge](https://github.com/netless-io/ne
 
 | Name | Description |
 | --- | --- |
-| enableIFramePlugin | 是否启用 iframe 插件：<br />- true：开启。<br />- false：（默认）不启用。 |
+| enableIFramePlugin | 是否启用 iframe 插件：<br />- `true`：开启。<br />- `false`：（默认）不启用。 |
 
 <a id="a8acd28da7ca8b16197e36b46f51fd2ea"></a>
 
@@ -125,8 +125,8 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isDisableNewPencilStroke()
 
 获取新铅笔工具的笔锋效果是否关闭。
 
-- true：关闭笔锋效果。
-- false：开启笔锋效果。
+- `true`：关闭笔锋效果。
+- `false`：开启笔锋效果。
 
 #### Returns
 
@@ -146,8 +146,8 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setDisableNewPencilStroke(boolean d
 
 该方法仅在调用 `setDisableNewPencil(false)` 后生效。
 
-- true：关闭笔锋效果。
-- false：（默认）开启笔锋效果。
+- `true`：关闭笔锋效果。
+- `false`：（默认）开启笔锋效果。
 
 #### Parameters
 
@@ -171,7 +171,7 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setEnableSlideInterrupterAPI(boolea
 
 | Name | Description |
 | --- | --- |
-| enableSlideInterrupterAPI | 是否开启 PPT 资源拦截和替换功能：<br />- true：开启。<br />- false：（默认）关闭。 |
+| enableSlideInterrupterAPI | 是否开启 PPT 资源拦截和替换功能：<br />- `true`：开启。<br />- `false`：（默认）关闭。 |
 
 <a id="aede0a2d191b0dfc5c54c8ea5364392c5"></a>
 
@@ -213,8 +213,8 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableAppliancePlugin()
 
 是否启用 appliance-plugin：
 
-- true：开启。
-- false：（默认）关闭。
+- `true`：开启。
+- `false`：（默认）关闭。
 
 <a id="a826074833f28c8b49a8c475eb1a162d5"></a>
 
@@ -230,7 +230,7 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setEnableAppliancePlugin(boolean en
 
 | Name | Description |
 | --- | --- |
-| enableAppliancePlugin | 是否启用 appliance-plugin：<br />- true：开启。<br />- false：（默认）关闭。 |
+| enableAppliancePlugin | 是否启用 appliance-plugin：<br />- `true`：开启。<br />- `false`：（默认）关闭。 |
 
 <a id="ae74760b5bbf80d908566a35d0146252b"></a>
 
@@ -356,8 +356,8 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isPreloadDynamicPPT()
 
 一次性加载动态 PPT 中的所有图片资源开启状态：
 
-- true：开启。
-- false: 未开启。
+- `true`：开启。
+- `false`: 未开启。
 
 <a id="a7a06793aeeade42d1e539765b27f2642"></a>
 
@@ -377,7 +377,7 @@ Agora 不推荐设置 `setPreloadDynamicPPT(true)`，这样会使 PPT 显示缓�
 
 | Name | Description |
 | --- | --- |
-| preloadDynamicPPT | 是否在加载动态 PPT 首页时，一次性加载动态 PPT 中的所有图片资源：<br />- true：一次性加载所有动态 PPT。<br />- false: （默认）不一次性加载所有动态 PPT。 |
+| preloadDynamicPPT | 是否在加载动态 PPT 首页时，一次性加载动态 PPT 中的所有图片资源：<br />- `true`：一次性加载所有动态 PPT。<br />- `false`: （默认）不一次性加载所有动态 PPT。 |
 
 <a id="ad9538a651c2d1a5a59592d9642d7ab06"></a>
 
@@ -429,7 +429,7 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setUserCursor(boolean userCursor)
 
 | Name | Description |
 | --- | --- |
-| userCursor | 是否显示用户头像：<br />- true：显示。<br />- false：（默认）不显示。 |
+| userCursor | 是否显示用户头像：<br />- `true`：显示。<br />- `false`：（默认）不显示。 |
 
 <a id="af1dc5d8e78cec31cdc7d70e6431a9fca"></a>
 
@@ -445,8 +445,8 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isUserCursor()
 
 是否显示用户头像：
 
-- true：显示。
-- false：不显示。
+- `true`：显示。
+- `false`：不显示。
 
 <a id="ac3ec01e31aa709a3a62b40528c3045a8"></a>
 
@@ -462,8 +462,8 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isOnlyCallbackRemoteStateModify(
 
 是否开启仅接收远端用户状态改变回调：
 
-- true：开启。开启该功能后，本地用户仅会接收到远端用户状态改变的回调，自身状态的改变不会触发回调。
-- false：关闭。关闭该功能后，本地用户会接收到远端用户状态改变的回调，也会接收到自身状态改变的回调。
+- `true`：开启。开启该功能后，本地用户仅会接收到远端用户状态改变的回调，自身状态的改变不会触发回调。
+- `false`：关闭。关闭该功能后，本地用户会接收到远端用户状态改变的回调，也会接收到自身状态改变的回调。
 
 <a id="a86641862170f62dbaed5e9b2548fc296"></a>
 
@@ -481,7 +481,7 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setOnlyCallbackRemoteStateModify(bo
 
 | Name | Description |
 | --- | --- |
-| onlyCallbackRemoteStateModify | 是否开启仅接收远端用户状态改变回调：<br />- true：开启。<br />- false：（默认）关闭。 |
+| onlyCallbackRemoteStateModify | 是否开启仅接收远端用户状态改变回调：<br />- `true`：开启。<br />- `false`：（默认）关闭。 |
 
 <a id="a35e6de1283b312c6c8720bdc0b18b2d8"></a>
 
@@ -497,8 +497,8 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isLog()
 
 是否开启调试日志打印：
 
-- true：开启。
-- false：关闭。
+- `true`：开启。
+- `false`：关闭。
 
 <a id="af29676180672f3e54d050d591707312c"></a>
 
@@ -516,7 +516,7 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setLog(boolean log)
 
 | Name | Description |
 | --- | --- |
-| log | 是否开启调试日志打印：<br />- true：开启。<br />- false：（默认）关闭。 |
+| log | 是否开启调试日志打印：<br />- `true`：开启。<br />- `false`：（默认）关闭。 |
 
 <a id="a04a8a5e4f6e942e1fadd061cb6cd27f8"></a>
 
@@ -532,8 +532,8 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableInterrupterAPI()
 
 是否开启图片拦截和替换功能：
 
-- true：开启。
-- false：关闭。
+- `true`：开启。
+- `false`：关闭。
 
 <a id="aa2e118f6e449997fbd487a5d5357745b"></a>
 
@@ -555,7 +555,7 @@ Agora 建议不要开启图片拦截功能，否则会频繁触发回调。
 
 | Name | Description |
 | --- | --- |
-| enableInterrupterAPI | 是否开启图片拦截和替换功能：<br />- true：开启。<br />- false：（默认）关闭。 |
+| enableInterrupterAPI | 是否开启图片拦截和替换功能：<br />- `true`：开启。<br />- `false`：（默认）关闭。 |
 
 <a id="a1b0ac65018c580328b68c52af6793f35"></a>
 
@@ -571,8 +571,8 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableImgErrorCallback()
 
 是否监听图片加载失败事件：
 
-- true：开启监听。
-- false：关闭监听。
+- `true`：开启监听。
+- `false`：关闭监听。
 
 <a id="ac84ef5bcce300c954e05eace8b18c36b"></a>
 
@@ -588,4 +588,4 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setEnableImgErrorCallback(boolean e
 
 | Name | Description |
 | --- | --- |
-| enableImgErrorCallback | 是否开启对图片加载失败事件的监听：<br />- true：开启。开启后，所有 img 标签加载事件都会在 [onMessage](/zh-CN/api-reference/whiteboard/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a2a843f00164c64d248143d2194beecae) 中回调。<br />- false：（默认）关闭。 |
+| enableImgErrorCallback | 是否开启对图片加载失败事件的监听：<br />- `true`：开启。开启后，所有 `img` 标签加载事件都会在 `onMessage` 中回调。<br />- `false`：（默认）关闭。 |

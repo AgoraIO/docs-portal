@@ -50,7 +50,7 @@ virtual int agora::recording::IRecordingEngine::joinChannel(const char* channelK
 
 ##### `注解`
 
-- 由于录制端暂时未开放 requestToken 和 renewToken 接口，在获取 Token 时，请务必将服务到期时间 privilegeExpiredTs 设置为 0，表示权限一旦生成，永不过期。
+- 由于录制端暂时未开放 requestToken 和 renewToken 接口，在获取 Token 时，请务必将服务到期时间 [privilegeExpiredTs](https://docs.agora.io/cn/Recording/token_server) 设置为 0，表示权限一旦生成，永不过期。
 - 同一个频道里不能出现两个相同的 UID，否则会产生未定义行为。
 
 #### Parameters
@@ -116,7 +116,7 @@ virtual int agora::recording::IRecordingEngine::getUserInfoByUserAccount(const c
 | Name | Description |
 | --- | --- |
 | userAccount | 用户 User Account，必填。 |
-| userinfo | [in/out] 标识用户信息的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-user-info) 对象。<br />- 输入值：一个 UserInfo 对象。<br />- 输出值：一个包含了用户 User Account 和 UID 的 UserInfo 对象。 |
+| userinfo | [in/out] 标识用户信息的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-user-info) 对象。<br />- 输入值：一个 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-user-info) 对象。<br />- 输出值：一个包含了用户 User Account 和 UID 的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-user-info) 对象。 |
 
 #### Returns
 
@@ -142,7 +142,7 @@ virtual int agora::recording::IRecordingEngine::getUserInfoByUid(uid_t uid, agor
 | Name | Description |
 | --- | --- |
 | uid | 用户 UID，必填。 |
-| userInfo | [in/out] 标识用户信息的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-user-info) 对象。<br />- 输入值：一个 UserInfo 对象。<br />- 输出值：一个包含了用户 User Account 和 UID 的 UserInfo 对象。 |
+| userInfo | [in/out] 标识用户信息的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-user-info) 对象。<br />- 输入值：一个 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-user-info) 对象。<br />- 输出值：一个包含了用户 User Account 和 UID 的 [UserInfo](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1linuxsdk-1-1-user-info) 对象。 |
 
 #### Returns
 
@@ -230,7 +230,7 @@ virtual const RecordingEngineProperties* agora::recording::IRecordingEngine::get
 ##### `注解`
 
 - 目前仅支持获取录制的媒体文件和 log 的存放路径。
-- 该方法与 onUserJoined 都能获取录制文件存放路径，两者的区别在于， onUserJoined 只能在录制端加入频道后有其他用户进入频道时触发。
+- 该方法与 [onUserJoined](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#a2ca947993a8c8d9ae23fc0545ae1a05d) 都能获取录制文件存放路径，两者的区别在于， [onUserJoined](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#a2ca947993a8c8d9ae23fc0545ae1a05d) 只能在录制端加入频道后有其他用户进入频道时触发。
 
 #### Returns
 
@@ -383,8 +383,8 @@ virtual int agora::recording::IRecordingEngine::updateWatermarkConfigs(uint32_t 
 
 有以下情况：
 
-- 如果你在调用 setVideoMixingLayout 方法时没有设置 wm_num 和 wm_configs 参数，你可直接调用 updateWatermarkConfigs 方法添加水印。
-- 如果你在调用 setVideoMixingLayout 方法时已设置 wm_num 和 wm_configs 参数添加了水印，你可调用 updateWatermarkConfigs 方法修改水印个数和具体设置，从而增加、更新或删除水印；传值为空则删除全部已添加的水印。
+- 如果你在调用 [setVideoMixingLayout](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine#a4ac28b9e2342729c1b54400a5abb1d90) 方法时没有设置 `wm_num` 和 `wm_configs` 参数，你可直接调用 `updateWatermarkConfigs` 方法添加水印。
+- 如果你在调用 [setVideoMixingLayout](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine#a4ac28b9e2342729c1b54400a5abb1d90) 方法时已设置 `wm_num` 和 `wm_configs` 参数添加了水印，你可调用 `updateWatermarkConfigs` 方法修改水印个数和具体设置，从而增加、更新或删除水印；传值为空则删除全部已添加的水印。
 
 ##### `注解`
 

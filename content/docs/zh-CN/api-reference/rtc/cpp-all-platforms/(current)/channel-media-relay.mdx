@@ -32,6 +32,7 @@ virtual int pauseAllChannelMediaRelay() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -77,6 +78,7 @@ virtual int pauseAllChannelMediaRelayEx(const RtcConnection& connection) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -106,6 +108,7 @@ virtual int resumeAllChannelMediaRelay() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -5：调用被拒绝，当前没有已暂停的跨频道媒体流转发。
 
 ### 所属接口类
@@ -149,6 +152,7 @@ virtual int resumeAllChannelMediaRelayEx(const RtcConnection& connection) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -5：调用被拒绝，当前没有已暂停的跨频道媒体流转发。
 
 ### 所属接口类
@@ -187,8 +191,8 @@ virtual int startOrUpdateChannelMediaRelay(const ChannelMediaRelayConfiguration 
 
 成功调用该方法后，SDK 会触发 [onChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调，报告媒体流转发的状态。 常见状态如下：
 
-- 如果 onChannelMediaRelayStateChanged 回调返回 RELAY_STATE_RUNNING （2）和 RELAY_OK （0），表示 SDK 成功开始将媒体流从源频道转发到目标频道。
-- 如果 onChannelMediaRelayStateChanged 回调返回 RELAY_STATE_FAILURE （3），表示媒体流转发过程中发生异常。
+- 如果 [onChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调返回 `RELAY_STATE_RUNNING` （2）和 `RELAY_OK` （0），表示 SDK 成功开始将媒体流从源频道转发到目标频道。
+- 如果 [onChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调返回 `RELAY_STATE_FAILURE` （3），表示媒体流转发过程中发生异常。
 
 <a id="api_irtcengine_startorupdatechannelmediarelay__parameters"></a>
 
@@ -204,6 +208,7 @@ virtual int startOrUpdateChannelMediaRelay(const ChannelMediaRelayConfiguration 
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -1：发生通用错误。
   - -2：参数无效。
   - -8：内部状态错误，可能是因为用户不是主播。
@@ -231,8 +236,8 @@ virtual int startOrUpdateChannelMediaRelayEx(const ChannelMediaRelayConfiguratio
 
 首次成功调用该方法会开始将媒体流从源频道转发到目标频道。若需将媒体流转发到其他频道，或退出当前的某个媒体流转发，可再次调用该方法以更新目标频道。该功能最多支持将媒体流转发到六个目标频道。调用该方法成功后，SDK 会触发 [onChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调，报告媒体流转发的状态：
 
-- 当回调返回 RELAY_STATE_RUNNING （2）和 RELAY_OK （0）时，表示媒体流已开始从源频道转发到目标频道。
-- 当回调返回 RELAY_STATE_FAILURE （3）时，表示媒体流转发过程中出现异常。
+- 当回调返回 `RELAY_STATE_RUNNING` （2）和 `RELAY_OK` （0）时，表示媒体流已开始从源频道转发到目标频道。
+- 当回调返回 `RELAY_STATE_FAILURE` （3）时，表示媒体流转发过程中出现异常。
 
 :::info[注]
 - 请在加入频道后调用该方法。
@@ -265,6 +270,7 @@ virtual int startOrUpdateChannelMediaRelayEx(const ChannelMediaRelayConfiguratio
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -8：内部状态错误，可能是因为用户不是主播。
@@ -304,6 +310,7 @@ virtual int stopChannelMediaRelay() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -355,6 +362,7 @@ virtual int stopChannelMediaRelayEx(const RtcConnection& connection) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类

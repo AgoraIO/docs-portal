@@ -149,11 +149,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 该方法重置整个引擎，响应时间较慢，因此声网建议使用如下方法来控制音频模块：
 
-- EnableLocalAudio：是否启动麦克风采集并创建本地音频流。
-- EnableLoopbackRecording：是否开启声卡采集。
-- MuteLocalAudioStream：是否发布本地音频流。
-- MuteRemoteAudioStream：是否接收并播放远端音频流。
-- MuteAllRemoteAudioStreams：是否接收并播放所有远端音频流。
+- [EnableLocalAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio-capture#api_irtcengine_enablelocalaudio)：是否启动麦克风采集并创建本地音频流。
+- [EnableLoopbackRecording](/zh-CN/api-reference/rtc/unreal-blueprint/audio-capture#api_irtcengine_enableloopbackrecording)：是否开启声卡采集。
+- [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：是否发布本地音频流。
+- [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremoteaudiostream)：是否接收并播放远端音频流。
+- [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)：是否接收并播放所有远端音频流。
 
 <a id="api_irtcengine_disableaudio__return_values"></a>
 
@@ -193,10 +193,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 调用限制
 
 - 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制音频模块的某一项功能：
-  - EnableLocalAudio: 是否启动麦克风采集并创建本地音频流。
-  - MuteLocalAudioStream: 是否发布本地音频流。
-  - MuteRemoteAudioStream: 是否接收并播放远端音频流。
-  - MuteAllRemoteAudioStreams: 是否接收并播放所有远端音频流。
+
+  - [EnableLocalAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio-capture#api_irtcengine_enablelocalaudio): 是否启动麦克风采集并创建本地音频流。
+  - [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_mutelocalaudiostream): 是否发布本地音频流。
+  - [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremoteaudiostream): 是否接收并播放远端音频流。
+  - [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams): 是否接收并播放所有远端音频流。
 - 在频道内调用该方法时，会重置 EnableLocalAudio、 MuteRemoteAudioStream 和 MuteAllRemoteAudioStreams 的设置，需谨慎使用。
 
 <a id="api_irtcengine_enableaudio__return_values"></a>
@@ -261,8 +262,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 #### `reportVad`
 
-- true：开启本地人声检测功能。开启后， OnAudioVolumeIndication 回调的 vad 参数会报告是否在本地检测到人声。
-- false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， OnAudioVolumeIndication 回调的 vad 参数不会报告是否在本地检测到人声。
+- `true`：开启本地人声检测功能。开启后， OnAudioVolumeIndication 回调的 vad 参数会报告是否在本地检测到人声。
+- `false`：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， OnAudioVolumeIndication 回调的 vad 参数不会报告是否在本地检测到人声。
 
 <a id="api_irtcengine_enableaudiovolumeindication__return_values"></a>
 
@@ -326,8 +327,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 #### `reportVad`
 
-- true：开启本地人声检测功能。开启后， OnAudioVolumeIndication 回调的 vad 参数会报告是否在本地检测到人声。
-- false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， OnAudioVolumeIndication 回调的 vad 参数不会报告是否在本地检测到人声。
+- `true`：开启本地人声检测功能。开启后， OnAudioVolumeIndication 回调的 vad 参数会报告是否在本地检测到人声。
+- `false`：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， OnAudioVolumeIndication 回调的 vad 参数不会报告是否在本地检测到人声。
 
 #### `connection`
 
@@ -681,8 +682,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 SDK 会在以下时机触发该回调：
 
 - 开启本地音频的情况下，调用 JoinChannelWithOptions 成功加入频道后。
-- 调用 MuteLocalAudioStream (true)，再调用 MuteLocalAudioStream (false) 后。
-- 调用 DisableAudio，再调用 EnableAudio 后。
+- 调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_mutelocalaudiostream) (`true)`，再调用 MuteLocalAudioStream (`false)` 后。
+- 调用 [DisableAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio-basic#api_irtcengine_disableaudio)，再调用 [EnableAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio-basic#api_irtcengine_enableaudio) 后。
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__parameters"></a>
 
@@ -718,10 +719,11 @@ SDK 会在以下时机触发该回调：
 
 - 远端用户首次上线后发送音频。
 - 远端用户音频离线再上线发送音频。音频离线指本地在 15 秒内没有收到音频包，可能有如下原因：
+
   - 远端用户离开频道
   - 远端用户掉线
-  - 远端用户调用 MuteLocalAudioStream 方法停止发送音频流
-  - 远端用户调用 DisableAudio 方法关闭音频
+  - 远端用户调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法停止发送音频流
+  - 远端用户调用 [DisableAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio-basic#api_irtcengine_disableaudio) 方法关闭音频
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__parameters"></a>
 
@@ -985,8 +987,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 该用户是否静音：
 
-- true: 该用户已将音频静音。
-- false: 该用户取消了音频静音。
+- `true`: 该用户已将音频静音。
+- `false`: 该用户取消了音频静音。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)

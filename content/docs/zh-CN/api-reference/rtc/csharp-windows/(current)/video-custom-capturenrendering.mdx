@@ -25,8 +25,8 @@ public abstract video_track_id_t CreateCustomVideoTrack();
 当你需要在频道中发布自定义采集视频时，可参考以下步骤：
 
 1. 调用该方法创建视频轨道并获得视频轨道 ID。
-2. 调用 JoinChannel [2/2] 加入频道时，将 ChannelMediaOptions 中的 customVideoTrackId 设置为你想要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 true。
-3. 调用 PushVideoFrame 将 videoTrackId 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
+2. 调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 customVideoTrackId 设置为你想要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 `true`。
+3. 调用 [PushVideoFrame](/zh-CN/api-reference/rtc/csharp-windows/video-custom-capturenrendering#api_imediaengine_pushvideoframe) 将 videoTrackId 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
 
 <a id="api_irtcengine_createcustomvideotrack__return_values"></a>
 
@@ -86,16 +86,19 @@ public abstract int PushVideoFrame(ExternalVideoFrame frame, uint videoTrackId =
 
 当你需要在频道中发布自定义采集视频时，可参考以下步骤：
 
-1. 调用 CreateCustomVideoTrack 方法创建视频轨道并获得视频轨道 ID。:::info [注]
-如果你只需推送一路自定义采集的视频流到频道中，可以直接调用 [SetExternalVideoSource](/zh-CN/api-reference/rtc/csharp-windows/video-custom-capturenrendering#api_imediaengine_setexternalvideosource) 方法启用外部视频源，此时 SDK 会自动创建一个 videoTrackId 为 0 的视频轨道。:::
-2. 调用 JoinChannel [2/2] 加入频道时，将 ChannelMediaOptions 中的 customVideoTrackId 设置为你想要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 true。
+1. 调用 [CreateCustomVideoTrack](/zh-CN/api-reference/rtc/csharp-windows/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法创建视频轨道并获得视频轨道 ID。
+
+   :::info[注]
+   如果你只需推送一路自定义采集的视频流到频道中，可以直接调用 [SetExternalVideoSource](/zh-CN/api-reference/rtc/csharp-windows/video-custom-capturenrendering#api_imediaengine_setexternalvideosource) 方法启用外部视频源，此时 SDK 会自动创建一个 videoTrackId 为 0 的视频轨道。
+   :::
+2. 调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 customVideoTrackId 设置为你想要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 `true`。
 3. 调用该方法将 videoTrackId 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
 
 :::error[危险]
 调用该方法后，即使你停止推送外部视频帧到 SDK，自定义采集的视频流仍然会被计入视频时长用量并产生费用，声网建议你根据实际情况采取相应措施避免此类视频计费：
 
-- 如果你不再需要采集外部视频数据，可以调用 DestroyCustomVideoTrack 销毁自定义采集的视频轨道。
-- 如果你只想将采集到的外部视频数据用于本地预览、而不在频道内发布，可以调用 MuteLocalVideoStream 取消发送视频流，或调用 UpdateChannelMediaOptions 将 publishCustomVideoTrack 设置为 false。
+- 如果你不再需要采集外部视频数据，可以调用 [DestroyCustomVideoTrack](/zh-CN/api-reference/rtc/csharp-windows/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) 销毁自定义采集的视频轨道。
+- 如果你只想将采集到的外部视频数据用于本地预览、而不在频道内发布，可以调用 [MuteLocalVideoStream](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_mutelocalvideostream) 取消发送视频流，或调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_updatechannelmediaoptions) 将 publishCustomVideoTrack 设置为 `false`。
 :::
 
 <a id="api_imediaengine_pushvideoframe__parameters"></a>
@@ -157,15 +160,15 @@ public abstract int SetExternalVideoSource(bool enabled, bool useTexture, EXTERN
 
 是否启用外部视频源：
 
-- true: 启用外部视频源。SDK 准备接收外部视频帧。
-- false:（默认）不启用外部视频源。
+- `true`: 启用外部视频源。SDK 准备接收外部视频帧。
+- `false`:（默认）不启用外部视频源。
 
 #### `useTexture`
 
 是否使用 Texture 格式的外部视频帧：
 
-- true: 使用 Texture 格式的外部视频帧。
-- false: 不使用 Texture 格式的外部视频帧。
+- `true`: 使用 Texture 格式的外部视频帧。
+- `false`: 不使用 Texture 格式的外部视频帧。
 
 #### `sourceType`
 

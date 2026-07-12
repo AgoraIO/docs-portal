@@ -40,7 +40,7 @@ description: "查询设备在屏幕共享时支持的最高帧率。"
 
 ### 返回值
 
-- 方法调用成功，返回设备支持的最高帧率。详见 AgoraScreenCaptureFrameRateCapability。
+- 方法调用成功，返回设备支持的最高帧率。详见 [AgoraScreenCaptureFrameRateCapability](/zh-CN/api-reference/rtc/ios/enum-screencaptureframeratecapability)。
 - 方法调用失败，返回 nil。
 
 ### 所属接口类
@@ -104,9 +104,10 @@ description: "查询设备在屏幕共享时支持的最高帧率。"
 - 在 iOS 平台，屏幕共享仅支持 iOS 12.0 及以上版本。
 - 如果你使用自定义音频源而非 SDK 采集音频，声网建议你在应用中添加保活处理逻辑，以避免应用进入后台后屏幕共享中断。
 - 此功能对设备性能要求较高，声网建议在 iPhone X 及以上机型上使用。
-- 此方法依赖 iOS 屏幕共享动态库 AgoraReplayKitExtension.xcframework。如果该动态库被删除，将无法正常启用屏幕共享。
-- 为避免屏幕共享时系统音频采集失败，声网建议你在加入频道前通过 setAudioScenario: 方法将音频应用场景设置为 AgoraAudioScenarioGameStreaming。
-- 屏幕共享流的计费基于 AgoraScreenVideoParameters 中的 dimensions：
+- 此方法依赖 iOS 屏幕共享动态库 `AgoraReplayKitExtension.xcframework`。如果该动态库被删除，将无法正常启用屏幕共享。
+- 为避免屏幕共享时系统音频采集失败，声网建议你在加入频道前通过 [setAudioScenario:](/zh-CN/api-reference/rtc/ios/audio-basic#api_irtcengine_setaudioscenario) 方法将音频应用场景设置为 `AgoraAudioScenarioGameStreaming`。
+- 屏幕共享流的计费基于 [AgoraScreenVideoParameters](/zh-CN/api-reference/rtc/ios/class-screenvideoparameters) 中的 `dimensions`：
+
   - 如果未传入该值，声网按 1280 × 720 计费。
   - 如果传入该值，声网按传入的值计费。
 :::
@@ -123,8 +124,8 @@ description: "查询设备在屏幕共享时支持的最高帧率。"
 
 你可以在加入频道前或加入频道后调用此方法，具体区别如下：
 
-- 先调用此方法，再调用 joinChannelByToken 加入频道，并将 publishScreenCaptureVideo 设置为 YES，即可开始屏幕共享。
-- 加入频道后调用此方法，再调用 updateChannelWithMediaOptions 并将 publishScreenCaptureVideo 设置为 YES，即可开始屏幕共享。
+- 先调用此方法，再调用 `joinChannelByToken` 加入频道，并将 `publishScreenCaptureVideo` 设置为 YES，即可开始屏幕共享。
+- 加入频道后调用此方法，再调用 `updateChannelWithMediaOptions` 并将 `publishScreenCaptureVideo` 设置为 YES，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapture__related"></a>
 
@@ -146,6 +147,7 @@ description: "查询设备在屏幕共享时支持的最高帧率。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
+
   - -2：参数为 nil。
 
 ### 所属接口类
@@ -171,8 +173,8 @@ description: "查询设备在屏幕共享时支持的最高帧率。"
 
 适用于以下场景：
 
-- iOS：如果你通过调用 startScreenCapture: 开始屏幕采集，则需要调用此方法停止屏幕采集。
-- macOS：如果你通过调用 startScreenCaptureByWindowId:regionRect:captureParams: 或 startScreenCaptureByDisplayId:regionRect:captureParams: 开始屏幕采集，则需要调用此方法停止屏幕采集。
+- iOS：如果你通过调用 `startScreenCapture:` 开始屏幕采集，则需要调用此方法停止屏幕采集。
+- macOS：如果你通过调用 `startScreenCaptureByWindowId:regionRect:captureParams:` 或 `startScreenCaptureByDisplayId:regionRect:captureParams:` 开始屏幕采集，则需要调用此方法停止屏幕采集。
 
 <a id="api_irtcengine_stopscreencapture__timing"></a>
 

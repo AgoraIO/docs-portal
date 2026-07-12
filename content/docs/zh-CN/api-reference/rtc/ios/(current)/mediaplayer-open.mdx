@@ -119,7 +119,7 @@ description: "打开媒体资源。"
 你可以调用此方法将媒体资源预加载到播放列表中。如果需要预加载多个媒体资源，可以多次调用此方法。如果预加载成功并希望播放该媒体资源，请调用 [playPreloadedSrc:](/zh-CN/api-reference/rtc/ios/mediaplayer-control#api_imediaplayer_playpreloadedsrc)；如果希望清空播放列表，请调用 `stop`。
 
 :::info[注]
-- 在调用此方法之前，请确保已成功调用 open:startPos: 或 openWithMediaSource: 打开媒体资源。
+- 在调用此方法之前，请确保已成功调用 [open:startPos:](/zh-CN/api-reference/rtc/ios/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource:](/zh-CN/api-reference/rtc/ios/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体资源。
 - 不支持将重复的媒体资源预加载到播放列表中。但你可以将正在播放的媒体资源再次预加载到播放列表中。
 :::
 
@@ -168,7 +168,7 @@ description: "打开媒体资源。"
 确保在调用该方法前已调用 [open:startPos:](/zh-CN/api-reference/rtc/ios/mediaplayer-open#api_imediaplayer_open) 方法。 为确保正常播放，调用该方法时请注意以下事项：
 
 - 播放暂停时不要调用该方法。
-- 切换过程中不要调用 seekToPosition: 方法。
+- 切换过程中不要调用 [seekToPosition:](/zh-CN/api-reference/rtc/ios/mediaplayer-control#api_imediaplayer_seek) 方法。
 - 切换媒体资源前，请确保播放位置未超过要切换的媒体资源的总时长。
 :::
 

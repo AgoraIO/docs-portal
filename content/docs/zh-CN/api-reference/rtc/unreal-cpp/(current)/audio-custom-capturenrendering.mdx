@@ -117,8 +117,8 @@ virtual rtc::track_id_t createCustomAudioTrack(rtc::AUDIO_TRACK_TYPE trackType, 
 如需在频道中发布自定义采集音频，可参考以下步骤：
 
 1. 调用该方法创建音频轨道并获得音频轨道 ID。
-2. 调用 joinChannel [2/2] 加入频道时，将 ChannelMediaOptions 中的 publishCustomAudioTrackId 设置为你想要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 true。
-3. 调用 pushAudioFrame 将 trackId 指定为步骤 2 中指定的音频轨道 ID，即可实现在频道内发布对应的自定义音频源。
+2. 调用 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions) 中的 publishCustomAudioTrackId 设置为你想要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 `true`。
+3. 调用 [pushAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-custom-capturenrendering#api_imediaengine_pushaudioframe0) 将 trackId 指定为步骤 2 中指定的音频轨道 ID，即可实现在频道内发布对应的自定义音频源。
 
 <a id="api_imediaengine_createcustomaudiotrack__parameters"></a>
 
@@ -216,8 +216,8 @@ virtual int enableCustomAudioLocalPlayback(track_id_t trackId, bool enabled) = 0
 
 是否在本地播放外部音频源：
 
-- true：在本地播放。
-- false：（默认）不在本地播放。
+- `true`：在本地播放。
+- `false`：（默认）不在本地播放。
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback__return_values"></a>
 
@@ -271,8 +271,8 @@ virtual int setExternalAudioSource(bool enabled,
 
 是否开启使用外部音频源的功能：
 
-- true：开启外部音频源。
-- false：（默认）关闭外部音频源。
+- `true`：开启外部音频源。
+- `false`：（默认）关闭外部音频源。
 
 #### `sampleRate`
 
@@ -286,15 +286,15 @@ virtual int setExternalAudioSource(bool enabled,
 
 是否在本地播放外部音频源：
 
-- true：在本地播放。
-- false：（默认）不在本地播放。
+- `true`：在本地播放。
+- `false`：（默认）不在本地播放。
 
 #### `publish`
 
 是否将音频发布到远端：
 
-- true：（默认）发布到远端。
-- false：不发布到远端。
+- `true`：（默认）发布到远端。
+- `false`：不发布到远端。
 
 <a id="api_imediaengine_setexternalaudiosource2__return_values"></a>
 
@@ -381,8 +381,8 @@ virtual int pushAudioFrame(IAudioFrameObserver::AudioFrame* frame, rtc::track_id
 
 调用该方法推送外部音频数据前，请先进行以下操作：
 
-1. 调用 createCustomAudioTrack 创建音频轨道并获得音频轨道 ID。
-2. 调用 joinChannel [2/2] 加入频道时，将 ChannelMediaOptions 中的 publishCustomAudioTrackId 设置为你想要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 true。
+1. 调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 创建音频轨道并获得音频轨道 ID。
+2. 调用 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-channelmediaoptions) 中的 publishCustomAudioTrackId 设置为你想要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 `true`。
 
 <a id="api_imediaengine_pushaudioframe0__restriction"></a>
 
@@ -454,8 +454,8 @@ virtual int setExternalAudioSink(bool enabled, int sampleRate, int channels) = 0
 
 设置是否开启外部音频渲染：
 
-- true：开启外部音频渲染。
-- false：（默认）关闭外部音频渲染。
+- `true`：开启外部音频渲染。
+- `false`：（默认）关闭外部音频渲染。
 
 #### `sampleRate`
 

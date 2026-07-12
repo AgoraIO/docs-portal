@@ -20,14 +20,17 @@ description: "视频应用场景类型。"
 
 - 在需要视频小流具备高码率的场景中，SDK 会启用多种抗网络拥塞技术，提升低质量流性能，确保订阅端流畅接收；
 - SDK 实时监控视频大流的订阅人数，并动态调整配置：
+
   - 若无人订阅，自动降低码率和帧率以节省上行带宽；
-  - 若有人订阅，则恢复为最近一次调用 setVideoEncoderConfiguration 设置的 VideoEncoderConfiguration 配置，若未设置，则使用以下默认值：
+  - 若有人订阅，则恢复为最近一次调用 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoencoderconfiguration) 配置，若未设置，则使用以下默认值：
+
     - Windows 和 macOS 分辨率为 1280 × 720，Android 和 iOS 为 960 × 540；
     - 帧率为 15 fps；
     - 码率为 Windows 和 macOS 为 1600 Kbps，Android 和 iOS 为 1000 Kbps。
 - SDK 还会监控视频小流的订阅人数，并根据订阅情况动态启用或禁用：
+
   - 若无人订阅，自动禁用以节省上行带宽；
-  - 若有人订阅，则启用并恢复为最近一次调用 setDualStreamMode [2/2] 设置的 SimulcastStreamConfig 配置，若未设置，则使用以下默认值：分辨率为 480 × 272，帧率为 15 fps，码率为 500 Kbps。
+  - 若有人订阅，则启用并恢复为最近一次调用 [setDualStreamMode [2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setdualstreammode2) 设置的 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-simulcaststreamconfig) 配置，若未设置，则使用以下默认值：分辨率为 480 × 272，帧率为 15 fps，码率为 500 Kbps。
 
 ### `APPLICATION_SCENARIO_1V1`
 

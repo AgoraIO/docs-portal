@@ -72,7 +72,7 @@ public abstract int SetEarMonitoringAudioFrameParameters(int sampleRate, int cha
 该方法用于设置 [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调的耳返音频数据格式。
 
 :::warning[注意]
-- 调用该方法前，你需要先调用 EnableInEarMonitoring，将 includeAudioFilters 设置为 EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS 或 EAR_MONITORING_FILTER_NOISE_SUPPRESSION。
+- 调用该方法前，你需要先调用 [EnableInEarMonitoring](/zh-CN/api-reference/rtc/csharp-windows/audio-capture#api_irtcengine_enableinearmonitoring2)，将 includeAudioFilters 设置为 EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS 或 EAR_MONITORING_FILTER_NOISE_SUPPRESSION。
 - SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计算出采样间隔，计算公式为 采样间隔 = samplesPerCall /(sampleRate × channel)。请确保采样间隔不小于 0.01 秒。 SDK 会根据该采样间隔触发 OnEarMonitoringAudioFrame 回调。
 :::
 
@@ -383,8 +383,8 @@ public virtual bool OnEarMonitoringAudioFrame(AudioFrame audioFrame)
 
 为保证耳返的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置耳返音频数据格式：
 
-- 方法一：调用 SetEarMonitoringAudioFrameParameters 设置音频数据格式后，调用 RegisterAudioFrameObserver 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnEarMonitoringAudioFrame 回调。
-- 方法二：调用 RegisterAudioFrameObserver 注册音频观测器对象后，在 回调的返回值中设置具体的音频观测位置，然后在 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnEarMonitoringAudioFrame 回调。
+- 方法一：调用 [SetEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnEarMonitoringAudioFrame 回调。
+- 方法二：调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 回调的返回值中设置具体的音频观测位置，然后在 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnEarMonitoringAudioFrame 回调。
 
 :::info[注]
 - 方法一的优先级高于方法二，如果已使用方法一设置了音频数据格式，则使用方法二的设置不生效。
@@ -462,8 +462,8 @@ public virtual bool OnPlaybackAudioFrame(string channelId, AudioFrame audio_fram
 
 为保证播放的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
-- 方法一：调用 SetPlaybackAudioFrameParameters 设置音频数据格式后，调用 RegisterAudioFrameObserver 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnPlaybackAudioFrame 回调。
-- 方法二：调用 RegisterAudioFrameObserver 注册音频观测器对象后，在 回调的返回值中设置具体的音频观测位置，然后在 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnPlaybackAudioFrame 回调。
+- 方法一：调用 [SetPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnPlaybackAudioFrame 回调。
+- 方法二：调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 回调的返回值中设置具体的音频观测位置，然后在 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnPlaybackAudioFrame 回调。
 
 :::info[注]
 - 方法一的优先级高于方法二，如果使用方法一设置音频数据格式，方法二设置无效。
@@ -506,8 +506,8 @@ public virtual bool OnRecordAudioFrame(string channelId, AudioFrame audioFrame)
 
 为保证采集的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
-- 方法一：调用 SetRecordingAudioFrameParameters 设置音频数据格式后，调用 RegisterAudioFrameObserver 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnRecordAudioFrame 回调。
-- 方法二：调用 RegisterAudioFrameObserver 注册音频观测器对象后，在 回调的返回值中设置具体的音频观测位置，然后在 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnRecordAudioFrame 回调。
+- 方法一：调用 [SetRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnRecordAudioFrame 回调。
+- 方法二：调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 回调的返回值中设置具体的音频观测位置，然后在 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnRecordAudioFrame 回调。
 
 :::info[注]
 - 方法一的优先级高于方法二，如果使用方法一设置音频数据格式，方法二设置无效。
@@ -550,8 +550,8 @@ public virtual bool OnMixedAudioFrame(string channelId, AudioFrame audio_frame)
 
 为保证采集和播放混音后的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
-- 方法一：调用 SetMixedAudioFrameParameters 设置音频数据格式后，调用 RegisterAudioFrameObserver 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnMixedAudioFrame 回调。
-- 方法二：调用 RegisterAudioFrameObserver 注册音频观测器对象后，在 回调的返回值中设置具体的音频观测位置，然后在 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnMixedAudioFrame 回调。
+- 方法一：调用 [SetMixedAudioFrameParameters](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_irtcengine_setmixedaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 OnMixedAudioFrame 回调。
+- 方法二：调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 回调的返回值中设置具体的音频观测位置，然后在 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 OnMixedAudioFrame 回调。
 
 :::info[注]
 - 方法一的优先级高于方法二，如果使用方法一设置音频数据格式，方法二设置无效。

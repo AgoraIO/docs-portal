@@ -40,12 +40,14 @@ public class AgoraVideoFrame {
 <a id="class_externalvideoframe__detailed_desc"></a>
 
 :::info[注]
-1. stride 的单位为像素（pixel），而非字节（byte）。
+1. `stride` 的单位为像素（pixel），而非字节（byte）。
 2. 帧宽和高可通过以下方式推导：
-  - 裁剪后宽度： croppedWidth = strideInPixels - cropLeft - cropRight
-  - 裁剪后高度： croppedHeight = height - cropTop - cropBottom
+
+   - 裁剪后宽度： `croppedWidth = strideInPixels - cropLeft - cropRight`
+   - 裁剪后高度： `croppedHeight = height - cropTop - cropBottom`
 3. 关于裁剪：
-  - 如果缓冲区中存在冗余数据，可通过裁剪去除。例如帧大小为 360 × 640，但缓冲区的 stride 为 368，多出的 8 像素用于填充，此时可设置： stride = 368， height = 640， cropRight = 8，其余 cropXXX 默认为 0。
+
+   - 如果缓冲区中存在冗余数据，可通过裁剪去除。例如帧大小为 360 × 640，但缓冲区的 `stride` 为 368，多出的 8 像素用于填充，此时可设置： `stride = 368`， `height = 640`， `cropRight = 8`，其余 `cropXXX` 默认为 0。
 :::
 
 <a id="class_externalvideoframe__parameters"></a>
@@ -56,12 +58,12 @@ public class AgoraVideoFrame {
 
 视频数据的格式：
 
-- 10： TEXTURE_2D。
-- 11： TEXTURE_OES，通常为摄像头采集的数据格式。
-- 1： I420。
-- 3： NV21。
-- 4： RGBA。
-- 16： I422。
+- 10： `TEXTURE_2D`。
+- 11： `TEXTURE_OES`，通常为摄像头采集的数据格式。
+- 1： `I420`。
+- 3： `NV21`。
+- 4： `RGBA`。
+- 16： `I422`。
 
 ### `timeStamp`
 
@@ -126,8 +128,8 @@ EGLContext14，仅适用于纹理格式的视频数据。详见 `EGLContext`。
 
 视频帧包含 Alpha 通道数据时，表示 `alphaBuffer` 与视频帧的相对位置，详见 `AlphaStitchMode`：
 
-- ALPHA_NO_STITCH (0)：默认，仅包含视频帧， alphaBuffer 未拼接。
-- ALPHA_STITCH_UP (1)： alphaBuffer 在视频帧上方。
-- ALPHA_STITCH_BELOW (2)： alphaBuffer 在视频帧下方。
-- ALPHA_STITCH_LEFT (3)： alphaBuffer 在视频帧左侧。
-- ALPHA_STITCH_RIGHT (4)： alphaBuffer 在视频帧右侧。
+- `ALPHA_NO_STITCH (0)`：默认，仅包含视频帧， `alphaBuffer` 未拼接。
+- `ALPHA_STITCH_UP (1)`： `alphaBuffer` 在视频帧上方。
+- `ALPHA_STITCH_BELOW (2)`： `alphaBuffer` 在视频帧下方。
+- `ALPHA_STITCH_LEFT (3)`： `alphaBuffer` 在视频帧左侧。
+- `ALPHA_STITCH_RIGHT (4)`： `alphaBuffer` 在视频帧右侧。

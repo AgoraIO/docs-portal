@@ -88,8 +88,9 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 stopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/electron/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -152,7 +153,7 @@ abstract startScreenCaptureBySourceType(
 :::info[注]
 该方法仅适用于 macOS 和 Windows 平台。
 
-- 如果调用该方法开始屏幕采集，则停止屏幕采集时需要调用 stopScreenCaptureBySourceType。
+- 如果调用该方法开始屏幕采集，则停止屏幕采集时需要调用 [stopScreenCaptureBySourceType](/zh-CN/api-reference/rtc/electron/screencapture#api_irtcengine_stopscreencapture2)。
 - 在 Windows 平台上，最多支持 4 路屏幕采集的视频流。
 - 在 macOS 平台上，最多支持 1 路屏幕采集的视频流。
 :::
@@ -163,8 +164,8 @@ abstract startScreenCaptureBySourceType(
 
 在屏幕共享场景下，你需要调用该方法开始采集屏幕视频流。 SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别，请根据实际场景选用：
 
-- startScreenCaptureByDisplayId / startScreenCaptureByWindowId：仅支持采集单个屏幕或窗口，适合仅共享单个屏幕的场景。
-- startScreenCaptureBySourceType：支持指定多个视频源，以采集多路屏幕共享流，用于本地合图或者多频道发布场景。
+- `startScreenCaptureByDisplayId` / `startScreenCaptureByWindowId`：仅支持采集单个屏幕或窗口，适合仅共享单个屏幕的场景。
+- `startScreenCaptureBySourceType`：支持指定多个视频源，以采集多路屏幕共享流，用于本地合图或者多频道发布场景。
 
 <a id="api_irtcengine_startscreencapture2__timing"></a>
 
@@ -172,8 +173,8 @@ abstract startScreenCaptureBySourceType(
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 joinChannel 加入频道，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 updateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenCaptureVideo` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenCaptureVideo` 为 true，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapture2__parameters"></a>
 
@@ -233,8 +234,8 @@ abstract startScreenCaptureByDisplayId(
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 joinChannel 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 updateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebydisplayid__parameters"></a>
 
@@ -266,8 +267,9 @@ abstract startScreenCaptureByDisplayId(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 stopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/electron/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -296,8 +298,8 @@ abstract startScreenCaptureByScreenRect(
 
 共享一个屏幕或该屏幕的部分区域。你需要在该方法中指定想要共享的屏幕区域。 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 joinChannel 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 updateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
 
 :::info[注]
 该方法仅适用于 Windows 平台。
@@ -325,8 +327,9 @@ abstract startScreenCaptureByScreenRect(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 stopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/electron/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -394,8 +397,8 @@ abstract startScreenCaptureByWindowId(
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 joinChannel 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 updateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebywindowid__parameters"></a>
 
@@ -423,8 +426,9 @@ Electron for 统信 OS SDK 暂不支持该参数。
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 stopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/electron/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -547,8 +551,9 @@ abstract updateScreenCaptureParameters(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 stopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/electron/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
@@ -585,8 +590,9 @@ abstract updateScreenCaptureRegion(regionRect: Rectangle): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 stopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/electron/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)

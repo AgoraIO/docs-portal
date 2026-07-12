@@ -90,7 +90,7 @@ void com.herewhite.sdk.RoomParams.setRegion(Region region)
 ##### `注解`
 
 - 该方法设置的数据中心必须与要加入的互动白板实时房间所在数据中心一致，否则无法加入房间。
-- 该方法与 [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration) 类中的 [setRegion](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a26095c960c0c25f4e5d07ac7dcea3b9d) 方法作用相同，两个方法只需要调用其中的一个。如果同时调用，该方法会覆盖 [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration) 类中的 [setRegion](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a26095c960c0c25f4e5d07ac7dcea3b9d)。
+- 该方法与 `WhiteSdkConfiguration` 类中的 `setRegion` 方法作用相同，两个方法只需要调用其中的一个。如果同时调用，该方法会覆盖 `WhiteSdkConfiguration` 类中的 `setRegion`。
 
 #### Parameters
 
@@ -126,8 +126,8 @@ boolean com.herewhite.sdk.RoomParams.isWritable()
 
 用户是否以互动模式加入白板房间：
 
-- true：以互动模式加入白板房间，即具有读写权限。
-- false：以订阅模式加入白板房间，即具有只读权限。
+- `true`：以互动模式加入白板房间，即具有读写权限。
+- `false`：以订阅模式加入白板房间，即具有只读权限。
 
 <a id="a9dbc3e05cc1229492c3f91ce48b305cd"></a>
 
@@ -148,7 +148,7 @@ void com.herewhite.sdk.RoomParams.setWritable(boolean writable)
 
 | Name | Description |
 | --- | --- |
-| writable | 用户是否以互动模式加入白板房间：<br />- true：（默认）以互动模式加入白板房间。<br />- false：以订阅模式加入白板房间。 |
+| writable | 用户是否以互动模式加入白板房间：<br />- `true`：（默认）以互动模式加入白板房间。<br />- `false`：以订阅模式加入白板房间。 |
 
 <a id="a35f2724130ce493f7bbbdaa8665e28de"></a>
 
@@ -164,8 +164,8 @@ boolean com.herewhite.sdk.RoomParams.getDisableEraseImage()
 
 是否关闭橡皮擦擦除图片功能：
 
-- true：橡皮擦不可以擦除图片。
-- false：橡皮擦可以擦除图片。
+- `true`：橡皮擦不可以擦除图片。
+- `false`：橡皮擦可以擦除图片。
 
 <a id="a580315c5bf3976be29a97acb90261331"></a>
 
@@ -183,7 +183,7 @@ void com.herewhite.sdk.RoomParams.setDisableEraseImage(boolean disableEraseImage
 
 | Name | Description |
 | --- | --- |
-| disableEraseImage | 是否关闭橡皮擦擦除图片功能：<br />- true：橡皮擦不可以擦除图片。<br />- false：（默认）橡皮擦可以擦除图片。 |
+| disableEraseImage | 是否关闭橡皮擦擦除图片功能：<br />- `true`：橡皮擦不可以擦除图片。<br />- `false`：（默认）橡皮擦可以擦除图片。 |
 
 <a id="a3f7054556c1f72ac03f754538b55e5c0"></a>
 
@@ -216,8 +216,8 @@ boolean com.herewhite.sdk.RoomParams.isDisableDeviceInputs()
 
 是否禁止白板工具响应用户输入：
 
-- true：禁止白板工具响应用户输入。
-- false：允许白板工具响应用户输入。
+- `true`：禁止白板工具响应用户输入。
+- `false`：允许白板工具响应用户输入。
 
 <a id="a0be8c01908f2826302fb50ce5c98c0e1"></a>
 
@@ -237,7 +237,7 @@ void com.herewhite.sdk.RoomParams.setDisableDeviceInputs(boolean disableDeviceIn
 
 | Name | Description |
 | --- | --- |
-| disableDeviceInputs | 是否禁止白板工具响应用户输入：<br />- true：禁止白板工具响应用户输入。<br />- false：（默认）允许白板工具响应用户输入。 |
+| disableDeviceInputs | 是否禁止白板工具响应用户输入：<br />- `true`：禁止白板工具响应用户输入。<br />- `false`：（默认）允许白板工具响应用户输入。 |
 
 <a id="a94cc0f493d873a3ba55caffb70b0f0cf"></a>
 
@@ -253,8 +253,8 @@ boolean com.herewhite.sdk.RoomParams.isDisableOperations()
 
 是否禁止白板响应用户的操作。
 
-- true：禁止白板响应用户的操作。
-- false：允许白板响应用户的操作。
+- `true`：禁止白板响应用户的操作。
+- `false`：允许白板响应用户的操作。
 
 <a id="acf4a08b32a536804e91c4dd22f476a04"></a>
 
@@ -280,7 +280,7 @@ void com.herewhite.sdk.RoomParams.setDisableOperations(boolean disableOperations
 
 | Name | Description |
 | --- | --- |
-| disableOperations | 是否禁止白板响应用户的操作：<br />- true：禁止白板响应用户的操作。<br />- false：（默认）允许白板响应用户的操作。 |
+| disableOperations | 是否禁止白板响应用户的操作：<br />- `true`：禁止白板响应用户的操作。<br />- `false`：（默认）允许白板响应用户的操作。 |
 
 <a id="ac4ed37a313c3087cb24170ca6435ff2f"></a>
 
@@ -296,8 +296,8 @@ boolean com.herewhite.sdk.RoomParams.isDisableBezier()
 
 是否关闭贝塞尔曲线优化：
 
-- true: 关闭贝塞尔曲线优化。
-- false: 开启贝塞尔曲线优化。
+- `true`: 关闭贝塞尔曲线优化。
+- `false`: 开启贝塞尔曲线优化。
 
 <a id="a6190fcaaf5dbea2b394cf5c73c9fa411"></a>
 
@@ -317,7 +317,7 @@ void com.herewhite.sdk.RoomParams.setDisableBezier(boolean disableBezier)
 
 | Name | Description |
 | --- | --- |
-| disableBezier | 是否关闭贝塞尔曲线优化：<br />- true: 关闭贝塞尔曲线优化。<br />- false: （默认）开启贝塞尔曲线优化。 |
+| disableBezier | 是否关闭贝塞尔曲线优化：<br />- `true`: 关闭贝塞尔曲线优化。<br />- `false`: （默认）开启贝塞尔曲线优化。 |
 
 <a id="ade13f69996cb32fd94120c46d8b0af0c"></a>
 
@@ -333,8 +333,8 @@ boolean com.herewhite.sdk.RoomParams.isDisableCameraTransform()
 
 是否禁止本地用户操作白板视角：
 
-- true：禁止本地用户操作白板视角。
-- false：允许本地用户操作白板视角。
+- `true`：禁止本地用户操作白板视角。
+- `false`：允许本地用户操作白板视角。
 
 <a id="a891549135084e1b843281a099c2c0561"></a>
 
@@ -350,7 +350,7 @@ void com.herewhite.sdk.RoomParams.setDisableCameraTransform(boolean disableCamer
 
 | Name | Description |
 | --- | --- |
-| disableCameraTransform | 是否禁止本地用户操作白板视角：<br />- true：禁止本地用户操作白板视角。<br />- false：（默认）允许本地用户操作白板视角。 |
+| disableCameraTransform | 是否禁止本地用户操作白板视角：<br />- `true`：禁止本地用户操作白板视角。<br />- `false`：（默认）允许本地用户操作白板视角。 |
 
 <a id="a3b6b4fd252c282c685e217109eeb60c5"></a>
 
@@ -366,8 +366,8 @@ boolean com.herewhite.sdk.RoomParams.isDisableNewPencil()
 
 是否关闭新铅笔工具：
 
-- true: 关闭新铅笔工具。
-- false: 开启新铅笔工具。
+- `true`: 关闭新铅笔工具。
+- `false`: 开启新铅笔工具。
 
 <a id="a49c41b2dfd21f764d6e3ff63ca09f19d"></a>
 
@@ -385,8 +385,9 @@ void com.herewhite.sdk.RoomParams.setDisableNewPencil(boolean disableNewPencil)
 
 ##### `注解`
 
-- 在 2.12.2 版本中， setDisableNewPencil 的默认值为 false，自 2.12.3 版本起， setDisableNewPencil 的默认值改为 true。
+- 在 2.12.2 版本中， `setDisableNewPencil` 的默认值为 `false`，自 2.12.3 版本起， `setDisableNewPencil` 的默认值改为 `true`。
 - 为正常显示笔迹，在开启新铅笔工具前，请确保该房间内的所有用户使用如下 SDK：
+
   - Android SDK 2.12.3 版或之后
   - iOS SDK 2.12.3 版或之后
   - Web SDK 2.12.5 版或之后
@@ -395,7 +396,7 @@ void com.herewhite.sdk.RoomParams.setDisableNewPencil(boolean disableNewPencil)
 
 | Name | Description |
 | --- | --- |
-| disableNewPencil | 是否关闭新铅笔工具：<br />- true: （默认）关闭新铅笔工具。关闭后，SDK 对铅笔工具（pencil ）应用旧版笔迹平滑算法。<br />- false: 开启新铅笔工具。开启后，SDK 对铅笔工具应用新版笔迹平滑算法，使书写笔迹更加流畅自然，并带有笔锋效果。 |
+| disableNewPencil | 是否关闭新铅笔工具：<br />- `true`: （默认）关闭新铅笔工具。关闭后，SDK 对铅笔工具（`pencil` ）应用旧版笔迹平滑算法。<br />- `false`: 开启新铅笔工具。开启后，SDK 对铅笔工具应用新版笔迹平滑算法，使书写笔迹更加流畅自然，并带有笔锋效果。 |
 
 <a id="afd4fb99429b98be70014888b7a9286b6"></a>
 
@@ -585,7 +586,7 @@ Agora 互动白板服务集成了 [Agora 全链路加速（FPA）服务](https:/
 
 | Name | Description |
 | --- | --- |
-| nativeWebSocket | 是否开启全链路加速：<br />- true：开启全链路加速。<br />- false：（默认）关闭全链路加速。 |
+| nativeWebSocket | 是否开启全链路加速：<br />- `true`：开启全链路加速。<br />- `false`：（默认）关闭全链路加速。 |
 
 <a id="ad5a9e486b8d4729382f3e4b4d8895859"></a>
 
@@ -601,8 +602,8 @@ boolean com.herewhite.sdk.RoomParams.isUseNativeWebSocket()
 
 是否开启全链路加速功能：
 
-- true：开启。
-- false：关闭。
+- `true`：开启。
+- `false`：关闭。
 
 <a id="a3f7bff7cbb7a7f7fb5e7b185a9bd8eac"></a>
 
@@ -618,8 +619,8 @@ boolean com.herewhite.sdk.RoomParams.isUsingFloatBar()
 
 浮动条功能是否已开启：
 
-- true：开启。
-- false：关闭。
+- `true`：开启。
+- `false`：关闭。
 
 <a id="a62a0c199916003f9745a509081fc64ab"></a>
 
@@ -635,7 +636,7 @@ void com.herewhite.sdk.RoomParams.setUsingFloatBar(boolean floatBar)
 
 | Name | Description |
 | --- | --- |
-| floatBar | 是否开启浮动条：<br />- true：开启浮动条功能。<br />- false：（默认）关闭浮动条功能。 |
+| floatBar | 是否开启浮动条：<br />- `true`：开启浮动条功能。<br />- `false`：（默认）关闭浮动条功能。 |
 
 <a id="aa8e1d1c2aa0e00f942d91c01e1bc751a"></a>
 

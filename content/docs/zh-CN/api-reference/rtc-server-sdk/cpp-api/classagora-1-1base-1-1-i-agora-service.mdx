@@ -91,15 +91,15 @@ virtual int agora::base::IAgoraService::setLogFile(const char* filePath, unsigne
 
 默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 调用日志文件，规则如下：
 
-- SDK 日志文件的名称分别为： agorasdk.log、 agorasdk.1.log、 agorasdk.2.log、 agorasdk.3.log、 agorasdk.4.log。
-- API 调用日志文件的名称分别为： agoraapi.log、 agoraapi.1.log、 agoraapi.2.log、 agoraapi.3.log、 agoraapi.4.log。
+- SDK 日志文件的名称分别为： `agorasdk.log`、 `agorasdk.1.log`、 `agorasdk.2.log`、 `agorasdk.3.log`、 `agorasdk.4.log`。
+- API 调用日志文件的名称分别为： `agoraapi.log`、 `agoraapi.1.log`、 `agoraapi.2.log`、 `agoraapi.3.log`、 `agoraapi.4.log`。
 - 每个 SDK 日志文件的默认大小为 1,024 KB；API 调用日志文件的默认大小为 2,048 KB。日志文件均为 UTF-8 编码。
-- 最新的日志永远写在 agorasdk.log 和 agoraapi.log 中。 当 agorasdk.log 写满后，SDK 会按照以下顺序对日志文件进行操作：
-- 删除 agorasdk.4.log 文件（如有）。
-- 将 agorasdk.3.log 重命名为 agorasdk.4.log。
-- 将 agorasdk.2.log 重命名为 agorasdk.3.log。
-- 将 agorasdk.1.log 重命名为 agorasdk.2.log。
-- 新建 agorasdk.log 文件。 agoraapi.log 文件的覆盖规则与 agorasdk.log 相同。
+- 最新的日志永远写在 `agorasdk.log` 和 `agoraapi.log` 中。 当 `agorasdk.log` 写满后，SDK 会按照以下顺序对日志文件进行操作：
+- 删除 `agorasdk.4.log` 文件（如有）。
+- 将 `agorasdk.3.log` 重命名为 `agorasdk.4.log`。
+- 将 `agorasdk.2.log` 重命名为 `agorasdk.3.log`。
+- 将 `agorasdk.1.log` 重命名为 `agorasdk.2.log`。
+- 新建 `agorasdk.log` 文件。 `agoraapi.log` 文件的覆盖规则与 `agorasdk.log` 相同。
 
 #### Parameters
 
@@ -158,7 +158,7 @@ virtual agora_refptr<rtc::IRtcConnection> agora::base::IAgoraService::createRtcC
 
 #### Returns
 
-- IRtcConnection 对象的指针：方法调用成功。
+- [IRtcConnection](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtc-connection) 对象的指针：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="adae5bb15639f9559a1399082590955e5"></a>
@@ -179,7 +179,7 @@ virtual agora_refptr<rtc::IRtmpConnection> agora::base::IAgoraService::createRtm
 
 #### Returns
 
-- IRtmpConnection 对象的指针：方法调用成功。
+- [IRtmpConnection](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-connection) 对象的指针：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="a80cdd14cd711c50b153ffb9a8961bf0a"></a>
@@ -196,7 +196,7 @@ SDK 默认通过用户选中的音频输入设备创建本地音频轨道，例�
 
 #### Returns
 
-- ILocalAudioTrack 对象的指针：方法调用成功。
+- [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-audio-track) 对象的指针：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="ab267caa07c4614e8bf27da38527150de"></a>
@@ -219,7 +219,7 @@ virtual agora_refptr<rtc::ILocalAudioTrack> agora::base::IAgoraService::createCu
 
 #### Returns
 
-- ILocalAudioTrack 对象的指针：方法调用成功。
+- [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-audio-track) 对象的指针：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="a2151a9043d465a1c7ae673a030fbb433"></a>
@@ -242,7 +242,7 @@ virtual agora_refptr<rtc::ILocalAudioTrack> agora::base::IAgoraService::createDi
 
 #### Returns
 
-- ILocalAudioTrack 对象的指针：方法调用成功。
+- [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-audio-track) 对象的指针：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="abd68de1445a1561136c05dec655e0a85"></a>
@@ -267,7 +267,7 @@ virtual agora_refptr<rtc::ILocalAudioTrack> agora::base::IAgoraService::createCu
 
 #### Returns
 
-- ILocalAudioTrack 对象的指针：方法调用成功。
+- [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-audio-track) 对象的指针：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="a02745fde3a908936af56c0243506d1d7"></a>
@@ -282,7 +282,7 @@ virtual agora_refptr<rtc::IMediaNodeFactory> agora::base::IAgoraService::createM
 
 #### Returns
 
-- IMediaNodeFactory 的指针: 方法调用成功。
+- [IMediaNodeFactory](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-media-node-factory) 的指针: 方法调用成功。
 - 空指针: 方法调用失败。
 
 <a id="ac209846c760933cc343d3e056c1a0f81"></a>
@@ -306,7 +306,7 @@ virtual agora_refptr<rtc::ILocalVideoTrack> agora::base::IAgoraService::createMi
 
 #### Returns
 
-- ILocalVideoTrack 对象的指针: 方法调用成功。
+- [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-video-track) 对象的指针: 方法调用成功。
 - 空指针: 方法调用失败。
 
 <a id="aaefc87859c82a4266947f0a4ebd07c51"></a>
@@ -330,7 +330,7 @@ virtual agora_refptr<rtc::ILocalVideoTrack> agora::base::IAgoraService::createCu
 
 #### Returns
 
-- ILocalVideoTrack 对象的指针: 方法调用成功。
+- [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-video-track) 对象的指针: 方法调用成功。
 - 空指针: 方法调用失败。
 
 <a id="a5cbbb4b5bebe8a90953389bb249a2d4d"></a>
@@ -355,7 +355,7 @@ virtual agora_refptr<rtc::ILocalVideoTrack> agora::base::IAgoraService::createCu
 
 #### Returns
 
-- ILocalVideoTrack 对象的指针: 方法调用成功。
+- [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-video-track) 对象的指针: 方法调用成功。
 - 空指针: 方法调用失败。
 
 <a id="a1c707744b5e4f06467219a25ecaeccb7"></a>
@@ -376,5 +376,5 @@ virtual agora_refptr<base::IAgoraParameter> agora::base::IAgoraService::getAgora
 
 #### Returns
 
-- [IAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1base-1-1-i-agora-parameter) 对象：方法调用成功。
+- `IAgoraParameter` 对象：方法调用成功。
 - 空指针：方法调用失败。
