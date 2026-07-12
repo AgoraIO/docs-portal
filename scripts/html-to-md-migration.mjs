@@ -3234,7 +3234,11 @@ function setRouteForSource(sourceToRoute, sourceName, routeSegments) {
   }
 }
 
-async function buildTocNodes(sourceStructure, pageTitleBySource = new Map()) {
+async function buildTocNodes(
+  sourceStructure,
+  pageTitleBySource = new Map(),
+  lane,
+) {
   if (sourceStructure.id === SOURCE_TYPES.DITA_OT_API.id) {
     try {
       const tocHtml = await fs.readFile(
@@ -3287,11 +3291,24 @@ async function buildTocNodes(sourceStructure, pageTitleBySource = new Map()) {
   }
 
   const orderedSourceNames = await collectIndexedSourceOrder(sourceStructure);
-  return buildTreeFromSourceNames(
+  const nodes = buildTreeFromSourceNames(
     orderedSourceNames,
     sourceStructure.id,
     pageTitleBySource,
   );
+  if (lane?.isNavigationSource) {
+    markHiddenNavigationNodes(nodes, lane.isNavigationSource);
+  }
+  return nodes;
+}
+
+function markHiddenNavigationNodes(nodes, isNavigationSource) {
+  for (const node of nodes) {
+    if (node.sourceName && !isNavigationSource(node.sourceName)) {
+      node.hidden = true;
+    }
+    markHiddenNavigationNodes(node.children, isNavigationSource);
+  }
 }
 
 function collectNodeSourceNames(nodes, sourceNames) {
@@ -3820,7 +3837,11 @@ async function main() {
     if (description) pageDescriptionBySource.set(name, description);
   }
 
-  const tocNodes = await buildTocNodes(sourceStructure, pageTitleBySource);
+  const tocNodes = await buildTocNodes(
+    sourceStructure,
+    pageTitleBySource,
+    lane,
+  );
 
   // Assign routes
   const sourceToRoute = new Map();

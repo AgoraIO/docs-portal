@@ -473,6 +473,19 @@ async function writeDoxygenFixture(sourceDir: string) {
   </body>
 </html>`,
   );
+  for (const helperName of [
+    'classes.html',
+    'deprecated.html',
+    'examples.html',
+    'hierarchy.html',
+    'pages.html',
+    'dir_8f3a.html',
+  ]) {
+    await writeFixture(
+      path.join(sourceDir, helperName),
+      `<!doctype html><html><body><h1>${helperName}</h1></body></html>`,
+    );
+  }
 }
 
 async function writeIosFixture(sourceDir: string) {
@@ -1035,12 +1048,7 @@ describe('html-to-md-migration', () => {
 
     await expectLaneDryRunAndMigration({
       detected: 'Doxygen/Javadoc HTML reference',
-      expectedMetaPages: [
-        'index',
-        'annotated',
-        'class-agora-1-1rtc-1-1-client',
-        'files',
-      ],
+      expectedMetaPages: ['index', 'class-agora-1-1rtc-1-1-client'],
       expectedPageContents: {
         'annotated.mdx': [
           'title: "Class Index"',
