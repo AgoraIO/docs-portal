@@ -1229,17 +1229,28 @@ function renderDefinitionList(
   const rows = [];
   const children = dl.children().toArray();
   let currentTerm = '';
+  let currentTermAnchor = '';
+  let currentTermIsAlphabetic = false;
 
   for (const child of children) {
     const node = $(child);
     if (node.is('dt')) {
-      currentTerm = inlineChildren(
-        $,
-        node,
-        pageTitleBySource,
-        sourceToRoute,
-        targetBasePath,
-      );
+      currentTermIsAlphabetic = node.is('.alphachar');
+      if (currentTermIsAlphabetic) {
+        const anchor = node.children('a[id], a[name]').first();
+        const anchorId = anchor.attr('id') ?? anchor.attr('name');
+        currentTerm = normalizeText(anchor.text() || node.text());
+        currentTermAnchor = anchorId ? `<a id="${anchorId}"></a>` : '';
+      } else {
+        currentTerm = inlineChildren(
+          $,
+          node,
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath,
+        );
+        currentTermAnchor = '';
+      }
       continue;
     }
     if (node.is('dd')) {
@@ -1252,14 +1263,19 @@ function renderDefinitionList(
         depth + 1,
       );
       if (currentTerm) {
+        if (currentTermAnchor) rows.push(currentTermAnchor);
         rows.push(
-          `${'#'.repeat(markdownHeadingDepth(depth))} \`${currentTerm}\``,
+          currentTermIsAlphabetic
+            ? `${'#'.repeat(markdownHeadingDepth(depth))} ${currentTerm}`
+            : `${'#'.repeat(markdownHeadingDepth(depth))} \`${currentTerm}\``,
         );
         if (value) rows.push(value);
       } else if (value) {
         rows.push(value);
       }
       currentTerm = '';
+      currentTermAnchor = '';
+      currentTermIsAlphabetic = false;
     }
   }
 
