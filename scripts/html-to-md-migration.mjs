@@ -2699,7 +2699,11 @@ function setRouteForSource(sourceToRoute, sourceName, routeSegments) {
   }
 }
 
-async function buildTocNodes(sourceStructure, pageTitleBySource = new Map()) {
+async function buildTocNodes(
+  sourceStructure,
+  pageTitleBySource = new Map(),
+  lane,
+) {
   if (sourceStructure.id === SOURCE_TYPES.DITA_OT_API.id) {
     try {
       const tocHtml = await fs.readFile(
@@ -2730,11 +2734,24 @@ async function buildTocNodes(sourceStructure, pageTitleBySource = new Map()) {
   }
 
   const orderedSourceNames = await collectIndexedSourceOrder(sourceStructure);
-  return buildTreeFromSourceNames(
+  const nodes = buildTreeFromSourceNames(
     orderedSourceNames,
     sourceStructure.id,
     pageTitleBySource,
   );
+  if (lane?.isNavigationSource) {
+    markHiddenNavigationNodes(nodes, lane.isNavigationSource);
+  }
+  return nodes;
+}
+
+function markHiddenNavigationNodes(nodes, isNavigationSource) {
+  for (const node of nodes) {
+    if (node.sourceName && !isNavigationSource(node.sourceName)) {
+      node.hidden = true;
+    }
+    markHiddenNavigationNodes(node.children, isNavigationSource);
+  }
 }
 
 function pruneUnavailableTocNodes(nodes, knownSources) {
@@ -3097,9 +3114,10 @@ async function writeNode(
       output.targetRoot,
       ...node.routeSegments.slice(0, -1),
     );
+    const visibleChildren = node.children.filter((child) => !child.hidden);
     await writeJson(path.join(dir, 'meta.json'), {
       title: pageTitleBySource.get(node.sourceName) ?? node.title,
-      pages: ['index', ...node.children.map((child) => child.slug)],
+      pages: ['index', ...visibleChildren.map((child) => child.slug)],
     });
     if (node.sourceName) {
       await writeFile(
@@ -3258,7 +3276,11 @@ async function main() {
   }
   validateSourceIdentity(opts, sourceStructure, pageTitleBySource);
 
-  const tocNodes = await buildTocNodes(sourceStructure, pageTitleBySource);
+  const tocNodes = await buildTocNodes(
+    sourceStructure,
+    pageTitleBySource,
+    lane,
+  );
 
   // Assign routes
   const sourceToRoute = new Map();
@@ -3337,7 +3359,10 @@ async function main() {
           tocNodes,
           navigationManifest: opts.navigationManifest,
         })
-      : ['index', ...tocNodes.map((node) => node.slug)];
+      : [
+          'index',
+          ...tocNodes.filter((node) => !node.hidden).map((node) => node.slug),
+        ];
   const scopedMetaPages =
     sourceStructure.id === SOURCE_TYPES.TYPEDOC.id
       ? replaceTypeDocGlobalsWithLabeledLink(
