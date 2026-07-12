@@ -1,0 +1,770 @@
+---
+title: "人声音效"
+description: "启用或关闭语音 AI 调音器。"
+---
+<a id="toc_audio_effect"></a>
+
+## 人声音效
+
+<a id="api_irtcengine_enablevoiceaituner"></a>
+
+## enableVoiceAITuner
+
+启用或关闭语音 AI 调音器。
+
+<a id="api_irtcengine_enablevoiceaituner__prototype"></a>
+
+```java
+public abstract int enableVoiceAITuner(boolean enabled, Constants.VOICE_AI_TUNER_TYPE type);
+```
+
+<a id="api_irtcengine_enablevoiceaituner__detailed_desc"></a>
+
+支持增强音质和调整音色风格。
+
+<a id="api_irtcengine_enablevoiceaituner__scenario"></a>
+
+### 适用场景
+
+社交娱乐场景，包括在线 KTV、在线播客和展厅直播等对音质要求较高的场景。
+
+<a id="api_irtcengine_enablevoiceaituner__timing"></a>
+
+### 调用时机
+
+该方法可在加入频道前或后调用。
+
+<a id="api_irtcengine_enablevoiceaituner__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用语音 AI 调音器：
+
+- true：启用语音 AI 调音器。
+- false：（默认）关闭语音 AI 调音器。
+
+#### `type`
+
+语音 AI 调音器的音效类型，详见 [VOICE_AI_TUNER_TYPE](/zh-CN/api-reference/rtc/android/enum-voiceaitunertype)。
+
+<a id="api_irtcengine_enablevoiceaituner__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getaudioeffectmanager"></a>
+
+## getAudioEffectManager
+
+获取用于管理音效文件的 IAudioEffectManager 实例。
+
+<a id="api_irtcengine_getaudioeffectmanager__prototype"></a>
+
+```java
+public abstract IAudioEffectManager getAudioEffectManager();
+```
+
+<a id="api_irtcengine_getaudioeffectmanager__detailed_desc"></a>
+
+<a id="api_irtcengine_getaudioeffectmanager__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回 `IAudioEffectManager` 实例。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setadvancedaudiooptions"></a>
+
+## setAdvancedAudioOptions
+
+设置高级音频选项。
+
+<a id="api_irtcengine_setadvancedaudiooptions__prototype"></a>
+
+```java
+public abstract int setAdvancedAudioOptions(AdvancedAudioOptions options);
+```
+
+<a id="api_irtcengine_setadvancedaudiooptions__detailed_desc"></a>
+
+如果你有高级音频处理需求，例如采集和发送立体声音频，可以调用此方法。
+
+:::info[注]
+请在调用 `joinChannel`、 [enableAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_enableaudio) 和 [enableLocalAudio](/zh-CN/api-reference/rtc/android/audio/audio-capture#api_irtcengine_enablelocalaudio) 之前调用此方法。
+:::
+
+<a id="api_irtcengine_setadvancedaudiooptions__parameters"></a>
+
+### 参数
+
+#### `options`
+
+高级音频选项。详见 [AdvancedAudioOptions](/zh-CN/api-reference/rtc/android/class-advancedaudiooptions)。
+
+<a id="api_irtcengine_setadvancedaudiooptions__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setainsmode"></a>
+
+## setAINSMode
+
+设置是否启用 AI 降噪功能并设置降噪模式。
+
+<a id="api_irtcengine_setainsmode__prototype"></a>
+
+```java
+public abstract int setAINSMode(boolean enabled, int mode);
+```
+
+<a id="api_irtcengine_setainsmode__detailed_desc"></a>
+
+你可以调用此方法启用 AI 降噪功能。启用后，SDK 会在保证人声质量的前提下，自动检测并减少音频中的稳态和非稳态噪声。
+
+- 稳态噪声是指在观察时间内平均统计特性恒定、幅度波动极小的噪声信号，常见来源包括：
+
+  - 电视；
+  - 空调；
+  - 机械设备等。
+- 非稳态噪声是指在观察时间内幅度波动剧烈的噪声信号，常见来源包括：
+
+  - 雷声；
+  - 爆炸声；
+  - 破裂声等。
+
+:::info[注]
+- 此方法依赖于 AI 降噪动态库 libagora_ai_noise_suppression_extension.so。如果该动态库被删除，则无法启用该功能。
+- 声网不建议在运行 Android 6.0 及以下版本的设备上启用此功能。
+:::
+
+<a id="api_irtcengine_setainsmode__scenario"></a>
+
+### 适用场景
+
+在连麦、在线教育和视频会议等场景中，该功能可检测并减少背景噪声，从而提升体验。
+
+<a id="api_irtcengine_setainsmode__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或加入频道后调用此方法。
+
+<a id="api_irtcengine_setainsmode__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用 AI 降噪功能：
+
+- true：启用 AI 降噪。
+- false：（默认）关闭 AI 降噪。
+
+#### `mode`
+
+AI 降噪模式：
+
+- 0：（默认）平衡模式。该模式在降噪效果和延迟之间提供平衡表现。
+- 1：激进模式。适用于对降噪效果要求较高的场景，如户外活动直播。该模式降噪更强，但可能会影响音频的原始特性。
+- 2：低延迟激进模式。该模式的降噪延迟约为平衡模式和激进模式的一半，适用于对低延迟降噪有较高要求的场景，如实时在线合唱。
+
+<a id="api_irtcengine_setainsmode__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setaudioeffectparameters"></a>
+
+## setAudioEffectParameters
+
+设置 SDK 预设音效的参数。
+
+<a id="api_irtcengine_setaudioeffectparameters__prototype"></a>
+
+```java
+public abstract int setAudioEffectParameters(int preset, int param1, int param2);
+```
+
+<a id="api_irtcengine_setaudioeffectparameters__detailed_desc"></a>
+
+#### `自从`
+
+自 v3.2.0 版本新增。
+
+调用该方法可以为发送音频流的本地用户设置以下参数：
+
+- 3D 人声特效：设置 3D 人声的循环周期。
+- 音高修正特效：设置音高修正的基本模式和主音。
+
+声网建议将该方法与界面元素绑定，方便用户交互式地调整音高修正效果。 为了获得更好的人声效果，建议在调用该方法前先调用以下 API：
+
+- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质音频场景，即 `AUDIO_SCENARIO_GAME_STREAMING` （3）。
+- 调用 `setAudioProfile`，将 `profile` 设置为 `MUSIC_HIGH_QUALITY` （4）或 `MUSIC_HIGH_QUALITY_STEREO` （5）。
+
+:::info[注]
+- 你可以在加入频道前或加入频道后调用该方法。
+- 请勿将 `setAudioProfile` 中的 `profile` 设置为 `SPEECH_STANDARD` （1），否则该方法不生效。
+- 该方法在人声处理方面效果最佳，不建议用于处理包含音乐的音频数据。
+- 调用 [setAudioEffectParameters](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 后，不建议再调用以下方法，否则会覆盖该方法设置的效果：
+
+  - [setAudioEffectPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setVoiceConversionPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+- 该方法依赖语音美声动态库 libagora_audio_beauty_extension.so。如果该动态库被删除，将无法正常启用该功能。
+:::
+
+<a id="api_irtcengine_setaudioeffectparameters__parameters"></a>
+
+### 参数
+
+#### `preset`
+
+SDK 预设音效的选项：
+
+- `ROOM_ACOUSTICS_3D_VOICE`：3D 人声特效。
+
+  - 设置该枚举值前，需要将 `setAudioProfile` 中的 `profile` 设置为 `MUSIC_STANDARD_STEREO` （3）或 `MUSIC_HIGH_QUALITY_STEREO` （5），否则设置不生效。
+  - 启用该特效后，用户需使用立体声播放设备才能听到预期效果。
+- `PITCH_CORRECTION`：音高修正特效。
+
+#### `param1`
+
+- 当 `preset` 为 `ROOM_ACOUSTICS_3D_VOICE` 时，表示 3D 人声特效的循环周期，单位为秒，取值范围为 [1,60]，默认值为 10，表示声音每 10 秒绕你一圈。
+- 当 `preset` 为 `PITCH_CORRECTION` 时，表示音高修正特效的基本模式：
+
+  - `1`：（默认）自然大调。
+  - `2`：自然小调。
+  - `3`：日本五声音阶。
+
+#### `param2`
+
+- 当 `preset` 为 `ROOM_ACOUSTICS_3D_VOICE` 时，需将 `param2` 设置为 `0`。
+- 当 `preset` 为 `PITCH_CORRECTION` 时，表示音高修正特效的主音：
+
+  - `1`：A
+  - `2`：A#
+  - `3`：B
+  - `4`：（默认）C
+  - `5`：C#
+  - `6`：D
+  - `7`：D#
+  - `8`：E
+  - `9`：F
+  - `10`：F#
+  - `11`：G
+  - `12`：G#
+
+<a id="api_irtcengine_setaudioeffectparameters__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setaudioeffectpreset"></a>
+
+## setAudioEffectPreset
+
+设置 SDK 预设的音效效果。
+
+<a id="api_irtcengine_setaudioeffectpreset__prototype"></a>
+
+```java
+public abstract int setAudioEffectPreset(int preset);
+```
+
+<a id="api_irtcengine_setaudioeffectpreset__detailed_desc"></a>
+
+#### `自从`
+
+自 v3.2.0 版本新增。
+
+该方法不会改变原始声音的性别特征。设置后，频道内所有用户都能听到该效果。 为获得更好的人声效果，建议在调用该方法前先调用以下方法：
+
+- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质音频场景，即 `AUDIO_SCENARIO_GAME_STREAMING` （3）。
+- 调用 `setAudioProfile`，将 `profile` 参数设置为 `MUSIC_HIGH_QUALITY` （4）或 `MUSIC_HIGH_QUALITY_STEREO` （5）。
+
+:::info[注]
+- 不要将 `setAudioProfile` 中的 `profile` 参数设置为 `SPEECH_STANDARD` （1），否则该方法不生效。
+- 如果调用 [setAudioEffectPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 设置的枚举值不是 `ROOM_ACOUSTICS_3D_VOICE` 或 `PITCH_CORRECTION`，则不要调用 [setAudioEffectParameters](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)，否则 [setAudioEffectPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 的设置会被覆盖。
+- 调用 [setAudioEffectPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 后，声网不建议再调用以下方法，否则 [setAudioEffectPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 设置的效果会被覆盖：
+
+  - [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setVoiceConversionPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+- 该方法依赖语音美声动态库 libagora_audio_beauty_extension.so。如果该动态库被删除，则无法正常启用该功能。
+:::
+
+<a id="api_irtcengine_setaudioeffectpreset__timing"></a>
+
+### 调用时机
+
+该方法可在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_setaudioeffectpreset__parameters"></a>
+
+### 参数
+
+#### `preset`
+
+预设的音效效果：
+
+- `AUDIO_EFFECT_OFF` （0）：关闭音效，使用原始声音。
+- `ROOM_ACOUSTICS_KTV` （1）：KTV 场所典型的混响风格。
+- `ROOM_ACOUSTICS_VOCAL_CONCERT` （2）：音乐会场所典型的混响风格。
+- `ROOM_ACOUSTICS_STUDIO` （3）：录音棚典型的混响风格。
+- `ROOM_ACOUSTICS_PHONOGRAPH` （4）：老式留声机典型的混响风格。
+- `ROOM_ACOUSTICS_VIRTUAL_STEREO` （5）：虚拟立体声效果，将单声道音频渲染为立体声。使用前需将 `setAudioProfile` 的 `profile` 参数设置为 `MUSIC_HIGH_QUALITY` （4）或 `MUSIC_HIGH_QUALITY_STEREO` （5），否则该预设无效。
+- `ROOM_ACOUSTICS_SPACIAL` （6）：更具空间感的音效。
+- `ROOM_ACOUSTICS_ETHEREAL` （7）：更空灵的音效。
+- `ROOM_ACOUSTICS_VIRTUAL_SURROUND_SOUND` （8）：虚拟环绕声效果，SDK 在立体声通道基础上生成模拟环绕声场。启用后，用户需使用立体声播放设备才能听到预期音效。
+- `ROOM_ACOUSTICS_CHORUS` （9）：合唱音效，适用于合唱场景，可增强人声的层次感和空间感。
+- `ROOM_ACOUSTICS_3D_VOICE` （10）：3D 声音效果，使声音在用户周围移动，默认循环周期为 10 秒。使用前需将 `setAudioProfile` 的 `profile` 参数设置为 `MUSIC_STANDARD_STEREO` （3）或 `MUSIC_HIGH_QUALITY_STEREO` （5），否则该预设无效。启用后，用户需使用立体声播放设备才能听到预期音效。
+- `VOICE_CHANGER_EFFECT_UNCLE` （11）：大叔音效，建议用于处理男性音色，否则可能无法听到预期效果。
+- `VOICE_CHANGER_EFFECT_OLDMAN` （12）：老人音效，建议用于处理男性音色，否则可能无法听到预期效果。
+- `VOICE_CHANGER_EFFECT_BOY` （13）：男孩音效，建议用于处理男性音色，否则可能无法听到预期效果。
+- `VOICE_CHANGER_EFFECT_SISTER` （14）：年轻女性音效，建议用于处理女性音色，否则可能无法听到预期效果。
+- `VOICE_CHANGER_EFFECT_GIRL` （15）：女孩音效，建议用于处理女性音色，否则可能无法听到预期效果。
+- `VOICE_CHANGER_EFFECT_PIGKING` （16）：猪八戒音效，声音如熊吼。
+- `VOICE_CHANGER_EFFECT_HULK` （17）：绿巨人音效。
+- `STYLE_TRANSFORMATION_RNB` （18）：R&B 音乐典型的混响风格。使用前需将 `setAudioProfile` 的 `profile` 参数设置为 `MUSIC_HIGH_QUALITY` （4）或 `MUSIC_HIGH_QUALITY_STEREO` （5），否则该预设无效。
+- `STYLE_TRANSFORMATION_POPULAR` （19）：流行音乐典型的混响风格。使用前需将 `setAudioProfile` 的 `profile` 参数设置为 `MUSIC_HIGH_QUALITY` （4）或 `MUSIC_HIGH_QUALITY_STEREO` （5），否则该预设无效。
+- `PITCH_CORRECTION` （20）：音高修正效果，根据自然 C 大调音阶修正用户音高。设置该效果后，可调用 [setAudioEffectParameters](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 调整调音的基本模式和主音音高。
+
+<a id="api_irtcengine_setaudioeffectpreset__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalvoiceequalization"></a>
+
+## setLocalVoiceEqualization
+
+设置本地语音的均衡效果。
+
+<a id="api_irtcengine_setlocalvoiceequalization__prototype"></a>
+
+```java
+public abstract int setLocalVoiceEqualization(Constants.AUDIO_EQUALIZATION_BAND_FREQUENCY bandFrequency, int bandGain);
+```
+
+<a id="api_irtcengine_setlocalvoiceequalization__detailed_desc"></a>
+
+<a id="api_irtcengine_setlocalvoiceequalization__timing"></a>
+
+### 调用时机
+
+该方法可在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_setlocalvoiceequalization__parameters"></a>
+
+### 参数
+
+#### `bandFrequency`
+
+频段索引，取值范围为 0 到 9，分别对应 10 个语音效果的中心频率段：31、62、125、250、500、1k、2k、4k、8k 和 16k Hz。详见 [AUDIO_EQUALIZATION_BAND_FREQUENCY](/zh-CN/api-reference/rtc/android/enum-audioequalizationbandfrequency)。
+
+#### `bandGain`
+
+每个频段的增益值，单位为 dB。取值范围为 -15 到 15，默认值为 0。
+
+<a id="api_irtcengine_setlocalvoiceequalization__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalvoiceformant"></a>
+
+## setLocalVoiceFormant
+
+设置共振峰比例以改变人声音色。
+
+<a id="api_irtcengine_setlocalvoiceformant__prototype"></a>
+
+```java
+public abstract int setLocalVoiceFormant(double formantRatio);
+```
+
+<a id="api_irtcengine_setlocalvoiceformant__detailed_desc"></a>
+
+共振峰比例会影响声音的音色。值越小，声音越低沉；值越大，声音越尖锐。如果你希望同时改变音色和音调，建议同时使用 [setLocalVoiceFormant](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceformant) 和 [setLocalVoicePitch](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch) 方法。
+
+<a id="api_irtcengine_setlocalvoiceformant__scenario"></a>
+
+### 适用场景
+
+你可以调用该方法设置本地音频的共振峰比例，以改变人声音色。
+
+<a id="api_irtcengine_setlocalvoiceformant__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_setlocalvoiceformant__parameters"></a>
+
+### 参数
+
+#### `formantRatio`
+
+共振峰比例。取值范围为 [-1.0, 1.0]。（默认值为 0.0）
+
+:::info[注]
+建议将该值设置在 [-0.4, 0.6] 范围内，否则声音可能会严重失真。
+:::
+
+<a id="api_irtcengine_setlocalvoiceformant__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalvoicepitch"></a>
+
+## setLocalVoicePitch
+
+设置本地语音的音调。
+
+<a id="api_irtcengine_setlocalvoicepitch__prototype"></a>
+
+```java
+public abstract int setLocalVoicePitch(double pitch);
+```
+
+<a id="api_irtcengine_setlocalvoicepitch__detailed_desc"></a>
+
+<a id="api_irtcengine_setlocalvoicepitch__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或加入频道后调用该方法。
+
+<a id="api_irtcengine_setlocalvoicepitch__parameters"></a>
+
+### 参数
+
+#### `pitch`
+
+本地语音的音调。取值范围为 [0.5, 2.0]。值越小，音调越低。（默认值为 1.0，表示不改变音调。）
+
+<a id="api_irtcengine_setlocalvoicepitch__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalvoicereverb"></a>
+
+## setLocalVoiceReverb
+
+设置本地语音的混响效果。
+
+<a id="api_irtcengine_setlocalvoicereverb__prototype"></a>
+
+```java
+public abstract int setLocalVoiceReverb(Constants.AUDIO_REVERB_TYPE reverbKey, int value);
+```
+
+<a id="api_irtcengine_setlocalvoicereverb__detailed_desc"></a>
+
+你可以使用更易用的方法 [setAudioEffectPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 实现如流行、R&B 和 KTV 等预设混响效果。
+
+:::info[注]
+你可以在加入频道前或加入频道后调用该方法。
+:::
+
+<a id="api_irtcengine_setlocalvoicereverb__parameters"></a>
+
+### 参数
+
+#### `reverbKey`
+
+混响键。详见 [AUDIO_REVERB_TYPE](/zh-CN/api-reference/rtc/android/enum-audioreverbtype)。
+
+#### `value`
+
+混响键的取值。
+
+<a id="api_irtcengine_setlocalvoicereverb__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setvoicebeautifierparameters"></a>
+
+## setVoiceBeautifierParameters
+
+设置预设美声特效的参数。
+
+<a id="api_irtcengine_setvoicebeautifierparameters__prototype"></a>
+
+```java
+public abstract int setVoiceBeautifierParameters(int preset, int param1, int param2);
+```
+
+<a id="api_irtcengine_setvoicebeautifierparameters__detailed_desc"></a>
+
+#### `自从`
+
+自 v3.3.0 版本新增。
+
+为了获得更好的人声效果，建议在调用该方法前先调用以下 API：
+
+- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质音频场景，即 `AUDIO_SCENARIO_GAME_STREAMING` （3）。
+- 调用 `setAudioProfile`，将 `profile` 参数设置为 `MUSIC_HIGH_QUALITY` （4）或 `MUSIC_HIGH_QUALITY_STEREO` （5）。
+
+:::info[注]
+- 可在加入频道前或加入频道后调用该方法。
+- 请勿将 `setAudioProfile` 中的 `profile` 参数设置为 `SPEECH_STANDARD` （1），否则该方法不生效。
+- 该方法在人声处理方面效果最佳，不建议用于处理包含音乐的音频数据。
+- 调用 [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters) 后，不建议再调用以下方法，否则会覆盖该方法设置的效果：
+
+  - [setAudioEffectPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [setAudioEffectParameters](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceConversionPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+- 该方法依赖于美声动态库 libagora_audio_beauty_extension.so。若该动态库被删除，则无法正常启用该功能。
+:::
+
+<a id="api_irtcengine_setvoicebeautifierparameters__parameters"></a>
+
+### 参数
+
+#### `preset`
+
+预设音效选项：
+
+- `SINGING_BEAUTIFIER`：美声特效。
+
+#### `param1`
+
+歌声的性别特征选项：
+
+- `1`：男性音色。
+- `2`：女性音色。
+
+#### `param2`
+
+歌声的混响效果选项：
+
+- `1`：小房间混响效果。
+- `2`：大房间混响效果。
+- `3`：大厅混响效果。
+
+<a id="api_irtcengine_setvoicebeautifierparameters__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setvoicebeautifierpreset"></a>
+
+## setVoiceBeautifierPreset
+
+设置预设的美声效果。
+
+<a id="api_irtcengine_setvoicebeautifierpreset__prototype"></a>
+
+```java
+public abstract int setVoiceBeautifierPreset(int preset);
+```
+
+<a id="api_irtcengine_setvoicebeautifierpreset__detailed_desc"></a>
+
+#### `自从`
+
+自 v3.2.0 版本新增。
+
+你可以根据不同场景设置不同的美声效果。 为获得更好的人声效果，建议在调用该方法前调用以下 API：
+
+- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质音频场景，即 `AUDIO_SCENARIO_GAME_STREAMING` （3）。
+- 调用 `setAudioProfile`，将 `profile` 设置为 `MUSIC_HIGH_QUALITY` （4）或 `MUSIC_HIGH_QUALITY_STEREO` （5）。
+
+:::info[注]
+- 不要将 `setAudioProfile` 中的 `profile` 设置为 `SPEECH_STANDARD` （1），否则该方法不生效。
+- 该方法在人声处理方面效果最佳，不建议用于处理包含音乐的音频数据。
+- 调用 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 后，不建议再调用以下方法，否则会覆盖通过该方法设置的效果：
+
+  - [setAudioEffectPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [setAudioEffectParameters](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setVoiceConversionPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+- 该方法依赖于美声动态库 libagora_audio_beauty_extension.so。如果该动态库被删除，则无法正常启用该功能。
+:::
+
+<a id="api_irtcengine_setvoicebeautifierpreset__timing"></a>
+
+### 调用时机
+
+该方法可在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_setvoicebeautifierpreset__parameters"></a>
+
+### 参数
+
+#### `preset`
+
+预设的美声效果选项：
+
+- `VOICE_BEAUTIFIER_OFF`：关闭美声效果，使用原始声音。
+- `CHAT_BEAUTIFIER_MAGNETIC`：更具磁性的声音（仅限男性）。
+- `CHAT_BEAUTIFIER_FRESH`：更清新的声音（仅限女性）。
+- `CHAT_BEAUTIFIER_VITALITY`：更有活力的声音（仅限女性）。
+- `SINGING_BEAUTIFIER`：歌唱美声效果。
+
+  - 调用 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 设置该选项可美化男性声音，并添加类似在小房间中歌唱的混响效果。建议用于处理男性声音，否则可能出现声音失真。
+  - 调用 [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters) 设置该选项可美化男性或女性声音，并添加混响效果。
+- `TIMBRE_TRANSFORMATION_VIGOROUS`：更有力的声音。
+- `TIMBRE_TRANSFORMATION_DEEP`：更深沉的声音。
+- `TIMBRE_TRANSFORMATION_MELLOW`：更柔和的声音。
+- `TIMBRE_TRANSFORMATION_FALSETTO`：假声。
+- `TIMBRE_TRANSFORMATION_FULL`：更饱满的声音。
+- `TIMBRE_TRANSFORMATION_CLEAR`：更清晰的声音。
+- `TIMBRE_TRANSFORMATION_RESOUNDING`：更响亮的声音。
+- `TIMBRE_TRANSFORMATION_RINGING`：更有穿透力的声音。
+- `ULTRA_HIGH_QUALITY_VOICE`：超高音质人声，使音频更清晰并还原更多细节。
+
+  - 为获得更好的音效质量，建议在调用该方法前调用 `setAudioProfile`，将 `profile` 设置为 `MUSIC_HIGH_QUALITY` （4）或 `MUSIC_HIGH_QUALITY_STEREO` （5），并将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING` （3）。
+  - 如果你使用的音频采集设备已经可以高度还原音频细节，建议不要启用超高音质人声，否则 SDK 可能会过度还原音频细节，导致无法听到预期的声音效果。
+
+<a id="api_irtcengine_setvoicebeautifierpreset__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setvoiceconversionpreset"></a>
+
+## setVoiceConversionPreset
+
+设置 SDK 预设的变声效果。
+
+<a id="api_irtcengine_setvoiceconversionpreset__prototype"></a>
+
+```java
+public abstract int setVoiceConversionPreset(int preset);
+```
+
+<a id="api_irtcengine_setvoiceconversionpreset__detailed_desc"></a>
+
+#### `自从`
+
+自 v3.3.1 版本新增。
+
+你可以调用该方法为发布音频流的本地用户设置预设的变声效果。设置后，频道内所有用户都能听到该变声效果。你可以根据不同场景为用户设置不同的变声效果。 为了获得更好的音效效果，建议在调用该方法前调用以下 API：
+
+- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质音频场景，即 `AUDIO_SCENARIO_GAME_STREAMING` （3）。
+- 调用 `setAudioProfile`，并将 `profile` 参数设置为 `MUSIC_HIGH_QUALITY` （4）或 `MUSIC_HIGH_QUALITY_STEREO` （5）。
+
+:::info[注]
+- 不要将 `setAudioProfile` 中的 `profile` 参数设置为 `SPEECH_STANDARD` （1），否则该方法不生效。
+- 该方法对人声处理效果最佳，声网不建议使用该方法处理包含音乐的音频数据。
+- 调用 [setVoiceConversionPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 后，声网不建议你再调用以下方法，否则会覆盖 [setVoiceConversionPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 设置的效果：
+
+  - [setAudioEffectPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [setAudioEffectParameters](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceFormant](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceformant)
+  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+- 该方法依赖于美声特效动态库 libagora_audio_beauty_extension.so。如果该动态库被删除，该功能将无法正常启用。
+:::
+
+<a id="api_irtcengine_setvoiceconversionpreset__timing"></a>
+
+### 调用时机
+
+该方法可在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_setvoiceconversionpreset__parameters"></a>
+
+### 参数
+
+#### `preset`
+
+SDK 预设的变声效果选项：
+
+- `VOICE_CONVERSION_OFF`：关闭变声效果，使用原始声音。
+- `VOICE_CHANGER_NEUTRAL`：中性声音。为避免音频失真，建议用于处理女性音色。
+- `VOICE_CHANGER_SWEET`：甜美声音。为避免音频失真，建议用于处理女性音色。
+- `VOICE_CHANGER_SOLID`：沉稳声音。为避免音频失真，建议用于处理男性音色。
+- `VOICE_CHANGER_BASS`：低沉声音。为避免音频失真，建议用于处理男性音色。
+
+<a id="api_irtcengine_setvoiceconversionpreset__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)

@@ -3164,7 +3164,14 @@ function renderTypeDocReturns(
 // ============================================================================
 
 function parseTocTree($) {
-  const rootList = $('nav.toc > ul > li > ul').first();
+  const rootMapList = $('nav > ul.map').first();
+  const rootMapItem = rootMapList.children('li').first();
+  const rootList = rootMapList.length
+    ? rootMapItem.children('a').length === 0 &&
+      rootMapItem.children('ul').length > 0
+      ? rootMapItem.children('ul').first()
+      : rootMapList
+    : $('nav.toc > ul > li > ul').first();
   return parseList($, rootList);
 }
 
@@ -3236,7 +3243,27 @@ async function buildTocNodes(sourceStructure, pageTitleBySource = new Map()) {
       );
       const toc$ = cheerio.load(tocHtml);
       const tocNodes = parseTocTree(toc$);
-      if (tocNodes.length > 0) return tocNodes;
+      if (tocNodes.length > 0) {
+        const mappedSources = new Set();
+        collectNodeSourceNames(tocNodes, mappedSources);
+        const hiddenNodes = sourceStructure.fileNames
+          .filter(
+            (sourceName) => !mappedSources.has(normalizeSourcePath(sourceName)),
+          )
+          .map((sourceName) => {
+            const slug = toKebab(stripHtml(path.posix.basename(sourceName)));
+            return {
+              children: [],
+              hidden: true,
+              routeSegments: [slug],
+              slug,
+              sourceName,
+              title: pageTitleBySource.get(sourceName) ?? stripHtml(sourceName),
+              type: 'page',
+            };
+          });
+        return [...tocNodes, ...hiddenNodes];
+      }
     } catch {
       console.log(
         `⚠️  No index.html found, will process all HTML files in directory`,
@@ -3265,6 +3292,15 @@ async function buildTocNodes(sourceStructure, pageTitleBySource = new Map()) {
     sourceStructure.id,
     pageTitleBySource,
   );
+}
+
+function collectNodeSourceNames(nodes, sourceNames) {
+  for (const node of nodes) {
+    if (node.sourceName) {
+      sourceNames.add(normalizeSourcePath(node.sourceName));
+    }
+    collectNodeSourceNames(node.children, sourceNames);
+  }
 }
 
 async function buildDartdocTocNodes(sourceStructure, pageTitleBySource) {
@@ -3857,7 +3893,10 @@ async function main() {
     : `${opts.platform.toUpperCase()} API Reference`;
   await writeJson(path.join(targetRoot, 'meta.json'), {
     title: rootTitle,
-    pages: ['index', ...tocNodes.map((node) => node.slug)],
+    pages: [
+      'index',
+      ...tocNodes.filter((node) => !node.hidden).map((node) => node.slug),
+    ],
   });
 
   // Write all pages

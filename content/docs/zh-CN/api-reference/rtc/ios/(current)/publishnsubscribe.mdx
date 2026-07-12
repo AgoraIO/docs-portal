@@ -202,7 +202,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 调用该方法后，你将停止或恢复订阅所有远端用户的音频流，包括之后加入频道的用户。
 
 :::info[注]
-[muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 方法调用后，如果你调用了 [enableAudio](/zh-CN/api-reference/rtc/ios/audio-basic#api_irtcengine_enableaudio) 或 [disableAudio](/zh-CN/api-reference/rtc/ios/audio-basic#api_irtcengine_disableaudio)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的音频流。你可以在调用 `joinChannelByToken` 加入频道时将 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置为 NO，以取消加入频道时对所有用户音频流的订阅。
+[muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 方法调用后，如果你调用了 [enableAudio](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_enableaudio) 或 [disableAudio](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_disableaudio)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的音频流。你可以在调用 `joinChannelByToken` 加入频道时将 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置为 NO，以取消加入频道时对所有用户音频流的订阅。
 :::
 
 <a id="api_irtcengine_muteallremoteaudiostreams__timing"></a>
@@ -302,7 +302,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 调用该方法后，你会停止或恢复订阅所有远端用户的视频流，包括后续加入频道的用户。
 
 :::info[注]
-如果你调用了该方法后又调用了 [enableVideo](/zh-CN/api-reference/rtc/ios/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/ios/video-basic#api_irtcengine_disablevideo)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的视频流。你可以在调用 `joinChannelByToken` 加入频道时将 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中的 `autoSubscribeVideo` 设置为 NO，以取消加入频道时对所有用户的视频流的订阅。
+如果你调用了该方法后又调用了 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_disablevideo)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的视频流。你可以在调用 `joinChannelByToken` 加入频道时将 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中的 `autoSubscribeVideo` 设置为 NO，以取消加入频道时对所有用户的视频流的订阅。
 :::
 
 <a id="api_irtcengine_muteallremotevideostreams__timing"></a>
@@ -406,7 +406,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 ### 相关回调
 
-调用该方法成功后，本地会触发回调 [rtcEngine:didAudioPublishStateChange:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged)；远端会触发回调 [rtcEngine:didAudioMuted:byUid:](/zh-CN/api-reference/rtc/ios/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/ios/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
+调用该方法成功后，本地会触发回调 [rtcEngine:didAudioPublishStateChange:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged)；远端会触发回调 [rtcEngine:didAudioMuted:byUid:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
 
 <a id="api_irtcengine_mutelocalaudiostream__parameters"></a>
 
@@ -443,7 +443,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__detailed_desc"></a>
 
-成功调用该方法后，远端会触发 [rtcEngine:didAudioMuted:byUid:](/zh-CN/api-reference/rtc/ios/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/ios/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+成功调用该方法后，远端会触发 [rtcEngine:didAudioMuted:byUid:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 
 :::info[注]
 该方法不会影响任何正在进行的音频录制，因为它不会禁用音频采集设备。
@@ -494,7 +494,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 <a id="api_irtcengine_mutelocalvideostream__detailed_desc"></a>
 
-该方法用于控制是否发布本地采集的视频流。调用该方法停止发布本地采集的视频流时，视频采集设备仍会继续工作，不受影响。 与调用 [enableLocalVideo:](/zh-CN/api-reference/rtc/ios/video-basic#api_irtcengine_enablelocalvideo) 设置为 NO 以关闭本地视频采集从而取消发布视频流的方法相比，该方法响应更快。
+该方法用于控制是否发布本地采集的视频流。调用该方法停止发布本地采集的视频流时，视频采集设备仍会继续工作，不受影响。 与调用 [enableLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablelocalvideo) 设置为 NO 以关闭本地视频采集从而取消发布视频流的方法相比，该方法响应更快。
 
 <a id="api_irtcengine_mutelocalvideostream__timing"></a>
 
@@ -551,7 +551,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:didVideoMuted:byUid:](/zh-CN/api-reference/rtc/ios/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调报告远端用户是否接收到本地视频流。
+成功调用该方法后，SDK 会触发 [rtcEngine:didVideoMuted:byUid:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调报告远端用户是否接收到本地视频流。
 
 <a id="api_irtcengineex_mutelocalvideostreamex__parameters"></a>
 
