@@ -474,7 +474,6 @@ async function writeDoxygenFixture(sourceDir: string) {
 </html>`,
   );
   for (const helperName of [
-    'classes.html',
     'deprecated.html',
     'examples.html',
     'hierarchy.html',
@@ -486,6 +485,14 @@ async function writeDoxygenFixture(sourceDir: string) {
       `<!doctype html><html><body><h1>${helperName}</h1></body></html>`,
     );
   }
+  await writeFixture(
+    path.join(sourceDir, 'classes.html'),
+    `<!doctype html><html><body><div class="contents">
+      <div class="title">Class Index</div>
+      <dl class="classindex"><dt class="alphachar"><a id="letter_A" name="letter_A">A</a></dt>
+      <dd><a href="class_agora_1_1rtc_1_1_client.html">Client</a></dd></dl>
+    </div></body></html>`,
+  );
 }
 
 async function writeIosFixture(sourceDir: string) {
@@ -1066,6 +1073,12 @@ describe('html-to-md-migration', () => {
           '| channel | Channel name |',
           '#### Returns',
           'Zero on success.',
+        ],
+        'classes.mdx': [
+          'title: "Class Index"',
+          '<a id="letter_A"></a>',
+          '### A',
+          '[Client](/api-reference/rtc/cpp/class-agora-1-1rtc-1-1-client)',
         ],
         'files.mdx': [
           'title: "File List"',
