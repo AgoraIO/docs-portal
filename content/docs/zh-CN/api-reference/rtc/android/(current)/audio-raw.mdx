@@ -80,11 +80,11 @@ SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onMixedA
 
 成功注册音频数据观察器后，SDK 会在每个特定的音频帧处理节点调用该回调，以判断是否触发以下回调：
 
-- onRecordAudioFrame
-- onPlaybackAudioFrame
-- onPlaybackAudioFrameBeforeMixing
-- onMixedAudioFrame
-- onEarMonitoringAudioFrame
+- [onRecordAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onrecordaudioframe)
+- [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe)
+- [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing)
+- [onMixedAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onmixedaudioframe)
+- [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe)
 
 你可以根据场景需求，通过修改 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/android/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 的返回值设置需要观察的一个或多个位置。 当需要观察多个位置时，需使用 |（或运算符）。为节省系统资源，建议减少观察的帧位置数量。
 
@@ -94,11 +94,11 @@ SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onMixedA
 
 返回一个位掩码，用于设置观察位置，具体取值如下：
 
-- POSITION_PLAYBACK （0x0001）：可观察所有远端用户混音后的播放音频，对应 onPlaybackAudioFrame 回调。
-- POSITION_RECORD （0x0002）：可观察本地用户采集的音频，对应 onRecordAudioFrame 回调。
-- POSITION_MIXED （0x0004）：可观察本地用户与所有远端用户混音后的播放音频，对应 onMixedAudioFrame 回调。
-- POSITION_BEFORE_MIXING （0x0008）：可观察单个远端用户混音前的音频，对应 onPlaybackAudioFrameBeforeMixing 回调。
-- POSITION_EAR_MONITORING （0x0010）：可观察本地用户的耳返音频，对应 onEarMonitoringAudioFrame 回调。
+- `POSITION_PLAYBACK` （0x0001）：可观察所有远端用户混音后的播放音频，对应 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调。
+- `POSITION_RECORD` （0x0002）：可观察本地用户采集的音频，对应 [onRecordAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。
+- `POSITION_MIXED` （0x0004）：可观察本地用户与所有远端用户混音后的播放音频，对应 [onMixedAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调。
+- `POSITION_BEFORE_MIXING` （0x0008）：可观察单个远端用户混音前的音频，对应 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
+- `POSITION_EAR_MONITORING` （0x0010）：可观察本地用户的耳返音频，对应 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。
 
 ### 所属接口类
 - [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioframeobserver)
@@ -224,8 +224,8 @@ public abstract int setEarMonitoringAudioFrameParameters(int sampleRate, int cha
 该方法用于设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调中报告的耳返音频数据格式。
 
 :::info[注]
-- 在调用该方法前，你需要先调用 enableInEarMonitoring 方法，并将 includeAudioFilters 设置为 EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS 或 EAR_MONITORING_FILTER_NOISE_SUPPRESSION。
-- SDK 会根据该方法中设置的 samplesPerCall、 sampleRate 和 channel 参数计算采样间隔。采样间隔（秒）= samplesPerCall /（sampleRate × channel ）。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 onEarMonitoringAudioFrame 回调。
+- 在调用该方法前，你需要先调用 `enableInEarMonitoring` 方法，并将 `includeAudioFilters` 设置为 `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS` 或 `EAR_MONITORING_FILTER_NOISE_SUPPRESSION`。
+- SDK 会根据该方法中设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（秒）= `samplesPerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。
 :::
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__parameters"></a>
@@ -247,8 +247,8 @@ public abstract int setEarMonitoringAudioFrameParameters(int sampleRate, int cha
 
 音频帧的使用模式：
 
-- RAW_AUDIO_FRAME_OP_MODE_READ_ONLY （0）：（默认）只读模式。例如，用户通过声网 SDK 获取数据后推送 RTMP 或 RTMPS 流。
-- RAW_AUDIO_FRAME_OP_MODE_READ_WRITE （2）：读写模式。用户从 AudioFrame 中读取数据，修改后再播放。例如，用户有自己的音效处理模块并进行语音预处理，如变声。
+- `RAW_AUDIO_FRAME_OP_MODE_READ_ONLY` （0）：（默认）只读模式。例如，用户通过声网 SDK 获取数据后推送 RTMP 或 RTMPS 流。
+- `RAW_AUDIO_FRAME_OP_MODE_READ_WRITE` （2）：读写模式。用户从 [AudioFrame](/zh-CN/api-reference/rtc/android/class-audioframe) 中读取数据，修改后再播放。例如，用户有自己的音效处理模块并进行语音预处理，如变声。
 
 #### `samplesPerCall`
 
@@ -474,8 +474,8 @@ SDK 会根据 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样�
 
 音频帧的使用模式：
 
-- RAW_AUDIO_FRAME_OP_MODE_READ_ONLY (0)：（默认）只读模式。例如，用户通过声网 SDK 获取数据后推送 RTMP 或 RTMPS 流。
-- RAW_AUDIO_FRAME_OP_MODE_READ_WRITE (2)：读写模式。用户从 AudioFrame 中读取数据，修改后再播放。例如，用户有自己的音效处理模块并进行语音预处理，如变声。
+- `RAW_AUDIO_FRAME_OP_MODE_READ_ONLY` (0)：（默认）只读模式。例如，用户通过声网 SDK 获取数据后推送 RTMP 或 RTMPS 流。
+- `RAW_AUDIO_FRAME_OP_MODE_READ_WRITE` (2)：读写模式。用户从 [AudioFrame](/zh-CN/api-reference/rtc/android/class-audioframe) 中读取数据，修改后再播放。例如，用户有自己的音效处理模块并进行语音预处理，如变声。
 
 #### `samplesPerCall`
 
@@ -533,7 +533,7 @@ SDK 会根据 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样�
 音频帧的使用模式：
 
 - 0：只读模式。例如，用户通过声网 SDK 获取数据后推送 RTMP 或 RTMPS 流。
-- 2：读写模式。用户从 AudioFrame 中读取数据并进行修改后播放。例如，用户有自己的音效处理模块并进行语音预处理，如变声。
+- 2：读写模式。用户从 [AudioFrame](/zh-CN/api-reference/rtc/android/class-audioframe) 中读取数据并进行修改后播放。例如，用户有自己的音效处理模块并进行语音预处理，如变声。
 
 #### `samplesPerCall`
 
@@ -565,8 +565,8 @@ public abstract boolean onEarMonitoringAudioFrame(int type, int samplesPerChanne
 
 该回调用于获取耳返音频数据。为了确保获取的数据符合预期，声网建议你通过以下任一方式设置音频数据格式：
 
-- 方法一：调用 setEarMonitoringAudioFrameParameters 设置音频数据格式，并调用 registerAudioFrameObserver 注册音频帧观察者对象后，SDK 会根据设置的参数计算采样间隔，并按该间隔触发 onEarMonitoringAudioFrame 回调。
-- 方法二：调用 registerAudioFrameObserver 注册音频帧观察者对象后，在 getObservedAudioFramePosition 的返回值中设置音频数据格式。然后 SDK 会根据 getEarMonitoringAudioParams 的返回值计算采样间隔，并按该间隔触发 onEarMonitoringAudioFrame 回调。
+- 方法一：调用 [setEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 设置音频数据格式，并调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象后，SDK 会根据设置的参数计算采样间隔，并按该间隔触发 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。
+- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/android/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 的返回值中设置音频数据格式。然后 SDK 会根据 [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/android/audio-raw#api_iaudioframeobserver_getearmonitoringaudioparams) 的返回值计算采样间隔，并按该间隔触发 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。
 
 :::info[注]
 方法一的优先级高于方法二。如果使用方法一设置音频数据格式，则方法二的设置无效。
@@ -637,8 +637,8 @@ public abstract boolean onMixedAudioFrame(String channelId, int type, int sample
 
 声网建议通过以下两种方式之一设置音频数据格式，以确保混合采集和播放音频帧的数据格式符合预期：
 
-- 方法一：调用 setMixedAudioFrameParameters 设置音频数据格式，并调用 registerAudioFrameObserver 注册音频帧观察者对象后，SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
-- 方法二：调用 registerAudioFrameObserver 注册音频帧观察者对象后，在 getObservedAudioFramePosition 回调的返回值中设置音频数据格式。SDK 会根据 getMixedAudioParams 回调的返回值计算采样间隔，并按照采样间隔触发该回调。
+- 方法一：调用 [setMixedAudioFrameParameters](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_setmixedaudioframeparameters) 设置音频数据格式，并调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象后，SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
+- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/android/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 回调的返回值中设置音频数据格式。SDK 会根据 [getMixedAudioParams](/zh-CN/api-reference/rtc/android/audio-raw#api_iaudioframeobserver_getmixedaudioparams) 回调的返回值计算采样间隔，并按照采样间隔触发该回调。
 
 :::info[注]
 [setMixedAudioFrameParameters](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_setmixedaudioframeparameters) 的设置优先级高于 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/android/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition)。如果使用方法一设置音频数据格式，则方法二的设置无效。
@@ -713,8 +713,8 @@ public abstract boolean onPlaybackAudioFrame(String channelId, int type, int sam
 
 你可以通过以下两种方式之一设置音频数据格式：
 
-- 方法一：调用 setPlaybackAudioFrameParameters 设置音频数据格式，并调用 registerAudioFrameObserver 注册音频帧观察者对象后，SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
-- 方法二：调用 registerAudioFrameObserver 注册音频帧观察者对象后，在 getObservedAudioFramePosition 回调的返回值中设置音频数据格式。SDK 会根据 getPlaybackAudioParams 回调的返回值计算采样间隔，并按照采样间隔触发该回调。
+- 方法一：调用 [setPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 设置音频数据格式，并调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象后，SDK 会根据设置的参数计算采样间隔，并按照采样间隔触发该回调。
+- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/android/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 回调的返回值中设置音频数据格式。SDK 会根据 [getPlaybackAudioParams](/zh-CN/api-reference/rtc/android/audio-raw#api_iaudioframeobserver_getplaybackaudioparams) 回调的返回值计算采样间隔，并按照采样间隔触发该回调。
 
 :::info[注]
 [setPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 的设置优先级高于 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/android/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition)。如果使用方法一设置音频数据格式，则方法二的设置无效。
@@ -874,8 +874,8 @@ public abstract boolean onRecordAudioFrame(String channelId, int type, int sampl
 
 你可以通过以下两种方式之一设置音频数据格式：
 
-- 方法一：调用 setRecordingAudioFrameParameters 设置音频数据格式，并调用 registerAudioFrameObserver 注册音频帧观察者对象后，SDK 会根据方法中设置的参数计算采样间隔，并按照采样间隔触发该回调。
-- 方法二：调用 registerAudioFrameObserver 注册音频帧观察者对象后，在 getObservedAudioFramePosition 回调的返回值中设置音频数据格式。SDK 会根据 getRecordAudioParams 回调的返回值计算采样间隔，并按照采样间隔触发该回调。
+- 方法一：调用 [setRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式，并调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象后，SDK 会根据方法中设置的参数计算采样间隔，并按照采样间隔触发该回调。
+- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频帧观察者对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/android/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 回调的返回值中设置音频数据格式。SDK 会根据 [getRecordAudioParams](/zh-CN/api-reference/rtc/android/audio-raw#api_iaudioframeobserver_getrecordaudioparams) 回调的返回值计算采样间隔，并按照采样间隔触发该回调。
 
 :::info[注]
 [setRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 的设置优先级高于 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/android/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition)。如果使用方法一设置音频数据格式，则方法二的设置无效。

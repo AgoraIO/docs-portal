@@ -35,6 +35,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -77,6 +78,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -111,6 +113,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有暂停的跨频道媒体流转发。
 
 ### 所属接口类
@@ -153,6 +156,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有暂停的跨频道媒体流转发。
 
 ### 所属接口类
@@ -185,7 +189,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 :::warning[注意]
 - 请在成功加入频道后调用该方法。
 - 在直播场景中，只有角色为主播的用户才能调用该方法。
-- 跨频道媒体流转发功能需要 联系技术支持 开通。
+- 跨频道媒体流转发功能需要 [联系技术支持](https://ticket.shengwang.cn/) 开通。
 - 该功能不支持 String 型 UID。
 :::
 
@@ -203,6 +207,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -8：内部状态错误。可能因为用户角色不是主播。
@@ -237,7 +242,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 :::warning[注意]
 - 请在成功加入频道后调用该方法。
 - 在直播场景中，只有角色为主播的用户才能调用该方法。
-- 跨频道媒体流转发功能需要 联系技术支持 开通。
+- 跨频道媒体流转发功能需要 [联系技术支持](https://ticket.shengwang.cn/) 开通。
 - 该功能不支持 String 型 UID。
 :::
 
@@ -259,6 +264,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -8：内部状态错误。可能因为用户角色不是主播。
@@ -295,6 +301,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -337,6 +344,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -378,13 +386,13 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 - RELAY_OK (0)：一切正常。
 - RELAY_ERROR_SERVER_ERROR_RESPONSE (1)：服务器回应出错。
-- RELAY_ERROR_SERVER_NO_RESPONSE (2)：服务器无回应。该错误可能是网络状况不佳导致的。如果在发起跨频道连麦时报告该错误，你可以稍后重试；如果在跨频道连麦过程中报告该错误，你可以调用 LeaveChannelWithOptions 方法离开频道。该错误也可能是由于当前的 App ID 未开启跨频道连麦服务导致的。你可以 联系技术支持 申请开通跨频道连麦服务。
+- RELAY_ERROR_SERVER_NO_RESPONSE (2)：服务器无回应。该错误可能是网络状况不佳导致的。如果在发起跨频道连麦时报告该错误，你可以稍后重试；如果在跨频道连麦过程中报告该错误，你可以调用 [LeaveChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_leavechannel2) 方法离开频道。该错误也可能是由于当前的 App ID 未开启跨频道连麦服务导致的。你可以 [联系技术支持](https://ticket.shengwang.cn/) 申请开通跨频道连麦服务。
 - RELAY_ERROR_NO_RESOURCE_AVAILABLE (3)：SDK 无法获取服务，可能是因为服务器资源有限导致。
 - RELAY_ERROR_FAILED_JOIN_SRC (4)：发起跨频道转发媒体流请求失败。
 - RELAY_ERROR_FAILED_JOIN_DEST (5)：接受跨频道转发媒体流请求失败。
 - RELAY_ERROR_FAILED_PACKET_RECEIVED_FROM_SRC (6)：服务器接收跨频道转发媒体流失败。
 - RELAY_ERROR_FAILED_PACKET_SENT_TO_DEST (7)：服务器发送跨频道转发媒体流失败。
-- RELAY_ERROR_SERVER_CONNECTION_LOST (8)：SDK 因网络质量不佳与服务器断开。你可以调用 LeaveChannelWithOptions 方法离开当前频道。
+- RELAY_ERROR_SERVER_CONNECTION_LOST (8)：SDK 因网络质量不佳与服务器断开。你可以调用 [LeaveChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_leavechannel2) 方法离开当前频道。
 - RELAY_ERROR_INTERNAL_ERROR (9)：服务器内部出错。
 - RELAY_ERROR_SRC_TOKEN_EXPIRED (10)：源频道的 Token 已过期。
 - RELAY_ERROR_DEST_TOKEN_EXPIRED (11)：目标频道的 Token 已过期。

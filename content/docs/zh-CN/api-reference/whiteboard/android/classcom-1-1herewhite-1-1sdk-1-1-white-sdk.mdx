@@ -158,7 +158,7 @@ void com.herewhite.sdk.WhiteSdk.joinRoom(final RoomParams roomParams, final Prom
 | Name | Description |
 | --- | --- |
 | roomParams | 互动白板实时房间的参数配置，详见 `RoomParams`。 |
-| roomPromise | `Promise<Room>` 接口实例，详见 `Promise`。你可以通过该接口获取 `joinRoom` 的调用结果：<br />- 如果方法调用成功，将返回房间对象，详见 [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room)。<br />- 如果方法调用失败，将返回错误信息。 |
+| roomPromise | `Promise<Room>` 接口实例，详见 `Promise`。你可以通过该接口获取 `joinRoom` 的调用结果：<br />- 如果方法调用成功，将返回房间对象，详见 `Room`。<br />- 如果方法调用失败，将返回错误信息。 |
 
 <a id="a307c801d0203f3010797c449fd6b7f49"></a>
 
@@ -176,7 +176,7 @@ void com.herewhite.sdk.WhiteSdk.joinRoom(final RoomParams roomParams, final Room
 | --- | --- |
 | roomParams | 互动白板实时房间的参数配置，详见 `RoomParams`。 |
 | roomListener | 房间事件回调，详见 `RoomListener`。在重连时，如果不传 `roomListener` 参数，则会使用上一次设置的 `roomListener`。如果要释放 `roomListener`，可以调用 `releaseRoom`。 |
-| roomPromise | `Promise<Room>` 接口实例，详见 `Promise`。你可以通过该接口获取 `joinRoom` 的调用结果：<br />- 如果方法调用成功，则返回房间对象，详见 [Room](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-room)。<br />- 如果方法调用失败，则返回错误信息。 |
+| roomPromise | `Promise<Room>` 接口实例，详见 `Promise`。你可以通过该接口获取 `joinRoom` 的调用结果：<br />- 如果方法调用成功，则返回房间对象，详见 `Room`。<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="a685ef819eb970df4ab0ea6e513b4a6d1"></a>
 
@@ -193,7 +193,7 @@ void com.herewhite.sdk.WhiteSdk.createPlayer(final PlayerConfiguration playerCon
 | Name | Description |
 | --- | --- |
 | playerConfiguration | 白板回放的参数配置，详见 `PlayerConfiguration`。 |
-| playerPromise | `Promise<Player>` 接口实例，详见 `Promise`。你可以通过该接口获取 `createPlayer` 的调用结果：<br />- 如果方法调用成功，将返回新创建的回放房间对象，详见 [Player](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-player)。<br />- 如果方法调用失败，将返回错误信息。 |
+| playerPromise | `Promise<Player>` 接口实例，详见 `Promise`。你可以通过该接口获取 `createPlayer` 的调用结果：<br />- 如果方法调用成功，将返回新创建的回放房间对象，详见 `Player`。<br />- 如果方法调用失败，将返回错误信息。 |
 
 <a id="a52f15c160d689ebb1f74801820d05607"></a>
 
@@ -211,7 +211,7 @@ void com.herewhite.sdk.WhiteSdk.createPlayer(final PlayerConfiguration playerCon
 | --- | --- |
 | playerConfiguration | 白板回放的参数配置，详见 `PlayerConfiguration`。 |
 | listener | 白板回放事件的回调，详见 `PlayerListener`。 |
-| playerPromise | `Promise<Player>` 接口实例，详见 `Promise`。你可以通过该接口获取 `createPlayer` 的调用结果：<br />- 如果方法调用成功，将返回新创建的回放房间对象，详见 [Player](/zh-CN/api-reference/whiteboard/android/classcom-1-1herewhite-1-1sdk-1-1-player)。<br />- 如果方法调用失败，将返回错误信息。 |
+| playerPromise | `Promise<Player>` 接口实例，详见 `Promise`。你可以通过该接口获取 `createPlayer` 的调用结果：<br />- 如果方法调用成功，将返回新创建的回放房间对象，详见 `Player`。<br />- 如果方法调用失败，将返回错误信息。 |
 
 <a id="a76a9f524257626f12bc0f6f0ddd4f3a6"></a>
 
@@ -232,7 +232,7 @@ void com.herewhite.sdk.WhiteSdk.isPlayable(final PlayerConfiguration playerConfi
 | Name | Description |
 | --- | --- |
 | playerConfiguration | 白板回放的参数配置，详见 `PlayerConfiguration`。 |
-| playablePromise | `Promise<Boolean>` 接口实例，详见 `Promise`。你可以通过该接口获取 `isPlayable` 的调用结果：<br />- 如果方法调用成功，则返回 true。<br />- 如果方法调用失败，则返回 false。 |
+| playablePromise | `Promise<Boolean>` 接口实例，详见 `Promise`。你可以通过该接口获取 `isPlayable` 的调用结果：<br />- 如果方法调用成功，则返回 `true`。<br />- 如果方法调用失败，则返回 `false`。 |
 
 <a id="a52e56f75148bb1527efd370a9ecee1a0"></a>
 
@@ -259,7 +259,7 @@ void com.herewhite.sdk.WhiteSdk.setupFontFaces(FontFace[] fontFaces)
 - 通过该方法声明的字体，只有当被使用时，才会触发下载。
 - 不同的字体在不同设备上的渲染可能不同，例如，在某些设备上，要等字体加载完成后，才会渲染文字；而在另外一些设备上，会先使用默认的字体渲染文字，等指定的字体加载完毕后，再整体刷新。
 - 每次调用该方法都会覆盖原来的字体声明。
-- 请勿同时调用该方法和 loadFontFaces 方法。否则，无法预期行为。
+- 请勿同时调用该方法和 `loadFontFaces` 方法。否则，无法预期行为。
 
 #### Parameters
 
@@ -291,14 +291,14 @@ void com.herewhite.sdk.WhiteSdk.loadFontFaces(FontFace[] fontFaces, final Promis
 - 使用该方法预加载的字体，只有当该字体被使用时，才会触发下载。
 - 不同的字体在不同设备上的渲染可能不同，例如，在某些设备上，要等字体加载完成后，才会渲染文字；而在另外一些设备上，会先使用默认的字体渲染文字，等指定的字体加载完毕后，再整体刷新。
 - 通过该方法预加载的字体无法删除，每次调用都会在原来的基础上新增。
-- 请勿同时调用该方法和 setupFontFaces 方法。否则，无法预期行为。
+- 请勿同时调用该方法和 `setupFontFaces` 方法。否则，无法预期行为。
 
 #### Parameters
 
 | Name | Description |
 | --- | --- |
 | fontFaces | 指定的字体，详见 `FontFace`。 |
-| loadPromise | `Promise<JSONObject>` 接口实例，详见 `Promise`。你可以通过该接口获取 `loadFontFaces` 的调用结果：<br />- 如果方法调用成功，则返回 FontFace 对象。<br />- 如果方法调用失败，则返回错误信息。 |
+| loadPromise | `Promise<JSONObject>` 接口实例，详见 `Promise`。你可以通过该接口获取 `loadFontFaces` 的调用结果：<br />- 如果方法调用成功，则返回 `FontFace` 对象。<br />- 如果方法调用失败，则返回错误信息。 |
 
 <a id="a0d82c56c6e406fc8b96a6b47ecced374"></a>
 
@@ -440,7 +440,7 @@ void com.herewhite.sdk.WhiteSdk.getSlideVolume(Promise<Double > promise)
 
 | Name | Description |
 | --- | --- |
-| promise | 方法调用结果，包含 `volume` 和 `error` 两个字段：<br />- 调用成功： volume 返回值为 (0,1] 之间的值，代表当前 PPT 的音量， error 返回值为 nil。<br />- 调用失败： volume 返回值为 0， error 返回值为错误消息。 |
+| promise | 方法调用结果，包含 `volume` 和 `error` 两个字段：<br />- 调用成功： `volume` 返回值为 (0,1] 之间的值，代表当前 PPT 的音量， `error` 返回值为 `nil`。<br />- 调用失败： `volume` 返回值为 0， `error` 返回值为错误消息。 |
 
 <a id="a9394cbd9f55e04b7430cf90bd12f54bb"></a>
 

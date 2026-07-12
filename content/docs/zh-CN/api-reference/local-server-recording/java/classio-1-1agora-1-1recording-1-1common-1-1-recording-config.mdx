@@ -57,7 +57,7 @@ boolean io.agora.recording.common.RecordingConfig.isMixingEnabled
 
 设置是否启用合流模式：
 
-- true：启用合流模式录制。多个 UID 的音频混合成一个纯音频文件，多个 UID 的视频混合成一个纯视频文件。无论频道内有多少用户，都只生成 1 个混合音频文件和 1 个混合视频文件。混合文件的音频属性通过 audioProfile 参数进行设置，视频属性通过 mixResolution 参数进行设置。
+- true：启用合流模式录制。多个 UID 的音频混合成一个纯音频文件，多个 UID 的视频混合成一个纯视频文件。无论频道内有多少用户，都只生成 1 个混合音频文件和 1 个混合视频文件。混合文件的音频属性通过 [audioProfile](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a851c4258127f64f81fca53cc94eca658) 参数进行设置，视频属性通过 [mixResolution](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a589b368adc5ed43d0f891cd8a21fd12b) 参数进行设置。
 - false：（默认）启用单流模式录制。一个 UID 对应一个音频文件和一个视频文件。录制文件的音频属性为：采样率固定为 48 kHz，声道数和码率与原始音频流保持一致。录制文件的视频属性与原始视频流保持一致。
 
 <a id="a9cb08bddabde1aa086bab149ebce6424"></a>
@@ -74,8 +74,8 @@ MIXED_AV_CODEC_TYPE io.agora.recording.common.RecordingConfig.mixedVideoAudio
 
 ##### `注解`
 
-- 仅当 isMixingEnabled 为 true 启用合流模式时有效。
-- 推荐设置 mixedVideoAudio 为 AV_CODEC_MIXED_TS_ONLY(6) 或 AV_CODEC_MIXED_TS_AND_MP4(7)，以保证录制进程崩溃后录制文件的可用性。如果设置为 AV_CODEC_MIXED_TS_AND_MP4(7)，录制会有一定程度的性能回退。
+- 仅当 [isMixingEnabled](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a0c5cdca435dad61227698d1ceefff0ef) 为 true 启用合流模式时有效。
+- 推荐设置 `mixedVideoAudio` 为 `AV_CODEC_MIXED_TS_ONLY(6)` 或 `AV_CODEC_MIXED_TS_AND_MP4(7)`，以保证录制进程崩溃后录制文件的可用性。如果设置为 AV_CODEC_MIXED_TS_AND_MP4(7)，录制会有一定程度的性能回退。
 
 <a id="a589b368adc5ed43d0f891cd8a21fd12b"></a>
 
@@ -89,7 +89,7 @@ String io.agora.recording.common.RecordingConfig.mixResolution
 
 ##### `注解`
 
-- 仅当 isMixingEnabled 为 true 启用合流模式时有效。
+- 仅当 [isMixingEnabled](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1common-1-1-recording-config#a0c5cdca435dad61227698d1ceefff0ef) 为 true 启用合流模式时有效。
 - 设置帧率时，仅支持声网标准帧率：1 fps，7 fps，10 fps，15 fps，24 fps，30 fps 和 60 fps。如果你设置成其他帧率，SDK 会采用默认帧率 15 fps。
 
 请参考 [视频属性对照表](/doc/recording/java/best-practices/set-output-video) 设置分辨率、帧率、码率。
@@ -160,17 +160,31 @@ String io.agora.recording.common.RecordingConfig.cfgFilePath
 
 指定 JSON 配置文件的路径。默认为 NULL。示例： `--cfgFilePath /home/guest/recording_dir/cfg.json`。 在该配置文件里，你可以设置以下参数：
 
-- `Recording_Dir`: 字符串类型，存放录制文件的绝对路径。指定路径后，SDK 不会自动生成子目录。 示例： `{"Recording_Dir": "/home/guest/recording_dir/"}`，表示录制文件存放的绝对路径为 `/home/guest/recording_dir/`。
-- `Chunk_Time_Span`: 字符串类型，设置直播场景中单流录制模式下录制文件切片的间隔时间，单位为秒，最小值为 10。 示例： `{"Chunk_Time_Span": "15"}`，表示每隔 15 秒生成一个录制文件。
-- `Secondary_Recorder`: 字符串类型，表示录制两种格式的音频文件， `Secondary_Recorder` 为增加的音频文件格式。 示例： `{"Secondary_Recorder":"mp3"}`，表示生成 AAC 和 MP3 两种格式的音频文件。
-- `Audio_Only_Record`: 字符串类型，表示仅录制一种格式的音频文件， `Audio_Only_Record` 为仅录制的音频文件格式。 示例： `{"Audio_Only_Record":"mp3"}`，表示只生成 MP3 格式的音频文件。
-- `Audio_Sample_Rate`: Number 类型，设置录制的音频的采样率。 示例： `{"Audio_Sample_Rate":16000}`，表示录制音频的采样率是 16000Hz。
-- `Pcm_Sample_Rate`: Number 类型，设置录制 PCM 帧格式的原始音频数据(`getAudioFrame` 为 `2` 或 `3`)的采样率。 示例： `{"Pcm_Sample_Rate":16000}`，表示录制 PCM 帧格式的原始音频数据的采样率是 16000Hz。 ### `注解`
-- Chunk_Time_Span 参数仅适用于直播场景下的单流录制模式。
-- 要使用 Chunk_Time_Span 参数，必须将 enableIntraRequest 设为 true，请求发流端发送关键帧。发流端是否发送关键帧，由发流端使用的 RTC SDK 版本决定。
+- `Recording_Dir`: 字符串类型，存放录制文件的绝对路径。指定路径后，SDK 不会自动生成子目录。
+
+  示例： `{"Recording_Dir": "/home/guest/recording_dir/"}`，表示录制文件存放的绝对路径为 `/home/guest/recording_dir/`。
+- `Chunk_Time_Span`: 字符串类型，设置直播场景中单流录制模式下录制文件切片的间隔时间，单位为秒，最小值为 10。
+
+  示例： `{"Chunk_Time_Span": "15"}`，表示每隔 15 秒生成一个录制文件。
+- `Secondary_Recorder`: 字符串类型，表示录制两种格式的音频文件， `Secondary_Recorder` 为增加的音频文件格式。
+
+  示例： `{"Secondary_Recorder":"mp3"}`，表示生成 AAC 和 MP3 两种格式的音频文件。
+- `Audio_Only_Record`: 字符串类型，表示仅录制一种格式的音频文件， `Audio_Only_Record` 为仅录制的音频文件格式。
+
+  示例： `{"Audio_Only_Record":"mp3"}`，表示只生成 MP3 格式的音频文件。
+- `Audio_Sample_Rate`: Number 类型，设置录制的音频的采样率。
+
+  示例： `{"Audio_Sample_Rate":16000}`，表示录制音频的采样率是 16000Hz。
+- `Pcm_Sample_Rate`: Number 类型，设置录制 PCM 帧格式的原始音频数据(`getAudioFrame` 为 `2` 或 `3`)的采样率。
+
+  示例： `{"Pcm_Sample_Rate":16000}`，表示录制 PCM 帧格式的原始音频数据的采样率是 16000Hz。
+
+  ### `注解`
+- `Chunk_Time_Span` 参数仅适用于直播场景下的单流录制模式。
+- 要使用 `Chunk_Time_Span` 参数，必须将 `enableIntraRequest` 设为 `true`，请求发流端发送关键帧。发流端是否发送关键帧，由发流端使用的 RTC SDK 版本决定。
 - 录制 SDK 只有遇到视频关键帧才会真正切片，因而实际的切片时间间隔与设置的参数会有少许偏差。
-- Audio_Sample_Rate 可以设置为 16000Hz，32000Hz，44100Hz，48000Hz。如果设置的采样率不在上述范围内，则默认采样率为 16000Hz。
-- Pcm_Sample_Rate 可以设置为 8000Hz, 16000Hz, 32000Hz。如果设置的采样率不在上述范围内，则配置不生效。
+- `Audio_Sample_Rate` 可以设置为 16000Hz，32000Hz，44100Hz，48000Hz。如果设置的采样率不在上述范围内，则默认采样率为 16000Hz。
+- `Pcm_Sample_Rate` 可以设置为 8000Hz, 16000Hz, 32000Hz。如果设置的采样率不在上述范围内，则配置不生效。
 
 <a id="ac63aa97b424a2c23556bec88b48fc167"></a>
 
@@ -236,7 +250,7 @@ int io.agora.recording.common.RecordingConfig.idleLimitSec
 
 - 该段时间也会纳入计费。
 - 通信场景下，如果频道内有用户，但用户没有发流，不算作无用户状态。
-- 直播场景下，如果频道内有观众但无主播，一旦无主播的状态超过 idleLimitSec，录制程序会自动退出。
+- 直播场景下，如果频道内有观众但无主播，一旦无主播的状态超过 `idleLimitSec`，录制程序会自动退出。
 
 <a id="a9b2f0065e6c00e59d31ba363e9b4b5a0"></a>
 
@@ -263,7 +277,7 @@ int io.agora.recording.common.RecordingConfig.audioIndicationInterval
 说话者监测的时间间隔。
 
 - &lt;= 0：（默认）禁用说话者监测的功能。
-- &gt; 0：说话者监测的时间间隔，单位为 ms，建议设置时间间隔大于 200 ms。一旦检测到频道内有人说话， 就会在 onActiveSpeaker 回调中返回当前时间段内声音最大的用户的 UID，在 onAudioVolumeIndication 回调中返回当前时间段内所有说话者的 UID 和音量。
+- &gt; 0：说话者监测的时间间隔，单位为 ms，建议设置时间间隔大于 200 ms。一旦检测到频道内有人说话， 就会在 [onActiveSpeaker](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#af8e43e2c55a53bb09b0137e800132c0f) 回调中返回当前时间段内声音最大的用户的 UID，在 [onAudioVolumeIndication](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a5c27a357d938c5d72482a80612574b1b) 回调中返回当前时间段内所有说话者的 UID 和音量。
 
 <a id="ae360e9a6519c44265d55f5eefe7f42e6"></a>
 
@@ -296,7 +310,7 @@ int io.agora.recording.common.RecordingConfig.triggerMode
 选择录制启动模式。
 
 - 0：（默认）automatically 模式，即自动模式。录制端加入频道即开始录制，退出频道即停止录制。
-- 1：mannually 模式，即手动模式。此模式下，可以调用 startService 和 stopService 方法灵活开始、暂停录制。
+- 1：mannually 模式，即手动模式。此模式下，可以调用 [startService](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#adf5f07d0092f3532de708c45c1ee813a) 和 [stopService](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a2008d6e1c37bc969669ffdc6575b2ba8) 方法灵活开始、暂停录制。
 
 <a id="acbf6a6db91cbcd3bba52fe9542d0041b"></a>
 
@@ -324,9 +338,9 @@ String io.agora.recording.common.RecordingConfig.proxyServer
 
 根据 `proxyType` 参数中选择的代理服务器类型设置代理服务器的 IP 地址（域名）和端口，从而实现在内网进行录制：
 
-- 如 proxyType 为 0， proxyServer 设为 "&lt;ip&gt;:&lt;port&gt;"。
-- 如 proxyType 为 1， proxyServer 设为 "&lt;domain&gt;:&lt;port&gt;"。
-- 如 proxyType 为 2， proxyServer 设为 "&lt;ip1&gt;,&lt;ip2&gt;,...,&lt;ipx&gt;:&lt;port&gt;"。
+- 如 `proxyType` 为 0， `proxyServer` 设为 `"<ip>:<port>"`。
+- 如 `proxyType` 为 1， `proxyServer` 设为 `"<domain>:<port>"`。
+- 如 `proxyType` 为 2， `proxyServer` 设为 `"<ip1>,<ip2>,...,<ipx>:<port>"`。
 
 详见 [使用云代理服务](/doc/recording/java/advanced-features/cloud-proxy)。
 

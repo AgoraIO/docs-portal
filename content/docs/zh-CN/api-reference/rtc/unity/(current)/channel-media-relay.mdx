@@ -32,6 +32,7 @@ public abstract int PauseAllChannelMediaRelay();
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -71,6 +72,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -102,6 +104,7 @@ public abstract int ResumeAllChannelMediaRelay();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有暂停的跨频道媒体流转发。
 
 ### 所属接口类
@@ -141,6 +144,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有暂停的跨频道媒体流转发。
 
 ### 所属接口类
@@ -162,8 +166,8 @@ public abstract int StartOrUpdateChannelMediaRelay(ChannelMediaRelayConfiguratio
 
 首次成功调用该方法将开始跨频道转发媒体流。如需将流转发到多个目标频道，或退出当前的转发频道，可以再次调用该方法添加或移除转发的目标频道。该功能最多支持将媒体流转发至 6 个目标频道。 成功调用该方法后，SDK 会触发 [OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/unity/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调，报告当前的跨频道媒体流转发状态。常见状态如下：
 
-- 如果 OnChannelMediaRelayStateChanged 回调报告 RELAY_STATE_RUNNING (2) 和 RELAY_OK (0)， 则表示 SDK 开始在源频道和目标频道之间转发媒体流。
-- 如果 OnChannelMediaRelayStateChanged 回调报告 RELAY_STATE_FAILURE (3)， 则表示跨频道媒体流转发出现异常。
+- 如果 [OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/unity/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告 `RELAY_STATE_RUNNING` (2) 和 `RELAY_OK` (0)， 则表示 SDK 开始在源频道和目标频道之间转发媒体流。
+- 如果 [OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/unity/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告 `RELAY_STATE_FAILURE` (3)， 则表示跨频道媒体流转发出现异常。
 
 :::info[注]
 - 请在成功加入频道后调用该方法。
@@ -186,6 +190,7 @@ public abstract int StartOrUpdateChannelMediaRelay(ChannelMediaRelayConfiguratio
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -8：内部状态错误。可能因为用户角色不是主播。
@@ -209,8 +214,8 @@ public abstract int StartOrUpdateChannelMediaRelayEx(ChannelMediaRelayConfigurat
 
 首次成功调用该方法将开始跨频道转发媒体流。如需将流转发到多个目标频道，或退出当前的转发频道，可以再次调用该方法添加或移除转发的目标频道。该功能最多支持将媒体流转发至 6 个目标频道。 成功调用该方法后，SDK 会触发 [OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/unity/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调，报告当前的跨频道媒体流转发状态。常见状态如下：
 
-- 如果 OnChannelMediaRelayStateChanged 回调报告 RELAY_STATE_RUNNING (2) 和 RELAY_OK (0)， 则表示 SDK 开始在源频道和目标频道之间转发媒体流。
-- 如果 OnChannelMediaRelayStateChanged 回调报告 RELAY_STATE_FAILURE (3)， 则表示跨频道媒体流转发出现异常。
+- 如果 [OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/unity/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告 `RELAY_STATE_RUNNING` (2) 和 `RELAY_OK` (0)， 则表示 SDK 开始在源频道和目标频道之间转发媒体流。
+- 如果 [OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/unity/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告 `RELAY_STATE_FAILURE` (3)， 则表示跨频道媒体流转发出现异常。
 
 :::info[注]
 - 请在成功加入频道后调用该方法。
@@ -237,6 +242,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -8：内部状态错误。可能因为用户角色不是主播。
@@ -270,6 +276,7 @@ public abstract int StopChannelMediaRelay();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -309,6 +316,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类

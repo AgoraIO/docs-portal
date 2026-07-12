@@ -48,7 +48,8 @@ public abstract int EnableInstantMediaRendering();
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
-  - -7: IRtcEngine 尚未初始化就调用方法。
+
+  - -7: [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
@@ -327,8 +328,8 @@ public abstract int SetupLocalVideo(VideoCanvas canvas);
 退出频道后绑定仍然有效。如果需要停止渲染或解除绑定，可以调用该方法将参数 view 设为 NULL，以停止渲染并清理渲染缓存。
 
 :::warning[注意]
-- 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 VideoSurface 类来实现。
-- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 SetLocalRenderMode [2/2] 方法。
+- 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 [VideoSurface](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_videosurface) 类来实现。
+- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 [SetLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
 :::
 
 <a id="api_irtcengine_setuplocalvideo__scenario"></a>
@@ -391,9 +392,9 @@ public abstract int SetupRemoteVideo(VideoCanvas canvas);
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
 :::warning[注意]
-- 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 VideoSurface 类来实现。
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 SetRemoteRenderMode 方法。
-- 当使用录制服务时，由于它不会发送视频流，App 无需为它绑定视图。如果 App 无法识别录制服务，可以在收到 OnFirstRemoteVideoDecoded 回调时再绑定远端用户视图。
+- 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 [VideoSurface](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_videosurface) 类来实现。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [SetRemoteRenderMode](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_irtcengine_setremoterendermode2) 方法。
+- 当使用录制服务时，由于它不会发送视频流，App 无需为它绑定视图。如果 App 无法识别录制服务，可以在收到 [OnFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时再绑定远端用户视图。
 :::
 
 <a id="api_irtcengine_setupremotevideo__parameters"></a>
@@ -438,8 +439,8 @@ public abstract int SetupRemoteVideoEx(VideoCanvas canvas, RtcConnection connect
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
 :::warning[注意]
-- 该方法需要在 JoinChannelEx 之后调用。
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 SetRemoteRenderModeEx 方法。
+- 该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_joinchannelex) 之后调用。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [SetRemoteRenderModeEx](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
 :::
 
 <a id="api_irtcengineex_setupremotevideoex__parameters"></a>
@@ -480,7 +481,7 @@ public abstract int StartMediaRenderingTracing();
 成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
 
 :::info[注]
-- 如果你未调用该方法，SDK 默认以调用 JoinChannel [2/2] 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
+- 如果你未调用该方法，SDK 默认以调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
 - 离开当前频道后，SDK 会自动重置该时间点为下一次加入频道的时刻。
 :::
 
@@ -496,7 +497,8 @@ public abstract int StartMediaRenderingTracing();
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
-  - -7: IRtcEngine 尚未初始化就调用方法。
+
+  - -7: [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
@@ -520,7 +522,7 @@ public abstract int StartMediaRenderingTracingEx(RtcConnection connection);
 成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
 
 :::info[注]
-- 如果你未调用该方法，SDK 默认以调用 JoinChannel [2/2] 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
+- 如果你未调用该方法，SDK 默认以调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
 - 离开当前频道后，SDK 会自动重置该时间点为下一次加入频道的时刻。
 :::
 

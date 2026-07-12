@@ -314,8 +314,8 @@ SDK 在调用 [createChannel](/zh-CN/api-reference/local-server-recording/java/c
 
 [onConnectionInterrupted](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a31d0cfee3f57d8851457276b70ae5b63) 与 [onConnectionLost](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a7ce0f7b40d2a6dded70ef323751910ca) 的区别是：
 
-- onConnectionInterrupted 回调一定是在加入频道成功后，且 SDK 失去和服务器的连接超过 4 秒时触发。
-- onConnectionLost 回调是无论之前加入频道是否成功，只要 10 秒内和服务器无法建立连接都会触发。
+- [onConnectionInterrupted](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a31d0cfee3f57d8851457276b70ae5b63) 回调一定是在加入频道成功后，且 SDK 失去和服务器的连接超过 4 秒时触发。
+- [onConnectionLost](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a7ce0f7b40d2a6dded70ef323751910ca) 回调是无论之前加入频道是否成功，只要 10 秒内和服务器无法建立连接都会触发。
 
 无论是哪种回调，除非应用程序主动调用 [leaveChannel](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a498f6797e2d90999110e04af9c5ea5e1)，不然 SDK 会一直自动重连。
 
@@ -331,8 +331,8 @@ void io.agora.recording.RecordingEventHandler.onConnectionInterrupted()
 
 SDK 在和服务器建立连接后，失去网络连接超过 4 秒，就会触发该回调。在触发事件后，SDK 会主动重连服务器，所以该事件可以用于 UI 提示。
 
-- onConnectionInterrupted 回调一定是在加入频道成功后，且 SDK 失去和服务器的连接超过 4 秒时触发。
-- onConnectionLost 回调是无论之前加入频道是否成功，只要 10 秒内和服务器无法建立连接都会触发。
+- [onConnectionInterrupted](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a31d0cfee3f57d8851457276b70ae5b63) 回调一定是在加入频道成功后，且 SDK 失去和服务器的连接超过 4 秒时触发。
+- [onConnectionLost](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a7ce0f7b40d2a6dded70ef323751910ca) 回调是无论之前加入频道是否成功，只要 10 秒内和服务器无法建立连接都会触发。
 
 无论是哪种回调，除非应用程序主动调用 [leaveChannel](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a498f6797e2d90999110e04af9c5ea5e1)，不然 SDK 会一直自动重连。
 

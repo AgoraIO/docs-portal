@@ -82,9 +82,9 @@ public abstract int MuteAllRemoteAudioStreams(bool mute);
 成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的音频流，包括在调用该方法后加入频道的用户的音频流。
 
 :::info[注]
-- 该方法需要在 JoinChannel [1/2] 或 JoinChannel [2/2] 后调用。
-- 在使用空间音频时，如需设置是否订阅所有远端用户的音频流，建议调用该方法替代 IRtcEngine 的 MuteAllRemoteAudioStreams 方法。
-- 在调用该方法后，你需要调用 UpdateSelfPosition 和 UpdateRemotePosition 更新本地用户和远端用户的空间位置，否则该方法中的设置不会生效。
+- 该方法需要在 [JoinChannel [1/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel) 或 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 后调用。
+- 在使用空间音频时，如需设置是否订阅所有远端用户的音频流，建议调用该方法替代 [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 的 [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 方法。
+- 在调用该方法后，你需要调用 [UpdateSelfPosition](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_ibasespatialaudioengine_updateselfposition) 和 [UpdateRemotePosition](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 更新本地用户和远端用户的空间位置，否则该方法中的设置不会生效。
 :::
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams__parameters"></a>
@@ -95,8 +95,8 @@ public abstract int MuteAllRemoteAudioStreams(bool mute);
 
 是否取消订阅所有远端用户的音频流：
 
-- true: 取消订阅所有远端用户的音频流。
-- false: 订阅所有远端用户的音频流。
+- `true`: 取消订阅所有远端用户的音频流。
+- `false`: 订阅所有远端用户的音频流。
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams__return_values"></a>
 
@@ -123,9 +123,9 @@ public abstract int MuteLocalAudioStream(bool mute);
 
 :::info[注]
 - 该方法不影响音频采集状态，因为没有禁用音频采集设备。
-- 该方法需要在 JoinChannel [1/2] 或 JoinChannel [2/2] 后调用。
-- 在使用空间音频时，如需设置是否发布本地音频流，建议调用该方法替代 IRtcEngine 的 MuteLocalAudioStream 方法。
-- 成功调用该方法后，远端会触发 OnUserMuteAudio 回调和 OnRemoteAudioStateChanged 回调。
+- 该方法需要在 [JoinChannel [1/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel) 或 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 后调用。
+- 在使用空间音频时，如需设置是否发布本地音频流，建议调用该方法替代 [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 的 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法。
+- 成功调用该方法后，远端会触发 [OnUserMuteAudio](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 :::
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream__parameters"></a>
@@ -136,8 +136,8 @@ public abstract int MuteLocalAudioStream(bool mute);
 
 是否取消发布本地音频流。
 
-- true: 取消发布本地音频流。
-- false: 发布本地音频流。
+- `true`: 取消发布本地音频流。
+- `false`: 发布本地音频流。
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream__return_values"></a>
 
@@ -163,8 +163,8 @@ public abstract int MuteRemoteAudioStream(uint uid, bool mute);
 ### 详情
 
 :::info[注]
-- 该方法需要在 JoinChannel [1/2] 或 JoinChannel [2/2] 后调用。
-- 在使用空间音频时，如需设置是否订阅指定用户的音频流，建议调用该方法替代 IRtcEngine 的 MuteRemoteAudioStream 方法。
+- 该方法需要在 [JoinChannel [1/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel) 或 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 后调用。
+- 在使用空间音频时，如需设置是否订阅指定用户的音频流，建议调用该方法替代 [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 的 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteremoteaudiostream) 方法。
 :::
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream__parameters"></a>
@@ -179,8 +179,8 @@ public abstract int MuteRemoteAudioStream(uint uid, bool mute);
 
 是否取消订阅指定远端用户的音频流。
 
-- true: 取消订阅指定用户的音频流。
-- false:（默认）订阅指定用户的音频流，SDK 根据本地用户和远端用户的距离决定是否订阅。
+- `true`: 取消订阅指定用户的音频流。
+- `false`:（默认）订阅指定用户的音频流，SDK 根据本地用户和远端用户的距离决定是否订阅。
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream__return_values"></a>
 
@@ -249,7 +249,7 @@ public abstract int UpdateSelfPosition(float[] position, float[] axisForward, fl
 
 ### 详情
 
-- 在 ILocalSpatialAudioEngine 类下，该方法需要和 UpdateRemotePosition 搭配使用。SDK 会根据该方法和 UpdateRemotePosition 设置的参数计算本地和远端用户之间的相对位置，从而计算用户的空间音频参数。
+- 在 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ilocalspatialaudioengine) 类下，该方法需要和 [UpdateRemotePosition](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 搭配使用。SDK 会根据该方法和 UpdateRemotePosition 设置的参数计算本地和远端用户之间的相对位置，从而计算用户的空间音频参数。
 
 <a id="api_ibasespatialaudioengine_updateselfposition__parameters"></a>
 
@@ -474,6 +474,7 @@ public abstract int SetHeadphoneEQParameters(int lowGain, int highGain);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败
+
   - -1：一般性的错误（未明确归类）。
 
 ### 所属接口类
@@ -515,6 +516,7 @@ public abstract int SetHeadphoneEQPreset(HEADPHONE_EQUALIZER_PRESET preset);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败
+
   - -1：一般性的错误（未明确归类）。
 
 ### 所属接口类
@@ -590,8 +592,9 @@ public abstract int SetPlayerAttenuation(int playerId, double attenuation, bool 
 
 是否强制设定媒体播放器的声音衰减效果：
 
-- true：强制使用 attenuation 设置媒体播放器的声音衰减效果，此时 SpatialAudioZone 中的 audioAttenuation 中设置的隔声区域衰减系数对媒体播放器不生效。
-- false：不强制使用 attenuation 设置媒体播放器的声音衰减效果，分为以下两种情况。
+- `true`：强制使用 attenuation 设置媒体播放器的声音衰减效果，此时 [SpatialAudioZone](/zh-CN/api-reference/rtc/csharp-windows/class-spatialaudiozone) 中的 audioAttenuation 中设置的隔声区域衰减系数对媒体播放器不生效。
+- `false`：不强制使用 attenuation 设置媒体播放器的声音衰减效果，分为以下两种情况。
+
   - 如果音源和听声者分属于隔声区域内部和外部，则声音衰减效果由 SpatialAudioZone 中的 audioAttenuation 决定。
   - 如果音源和听声者在同一个隔声区域内或同在隔声区域外，则声音衰减效果由该方法中的 attenuation 决定。
 
@@ -639,8 +642,9 @@ public abstract int SetRemoteAudioAttenuation(uint uid, double attenuation, bool
 
 是否强制设定该用户的声音衰减效果：
 
-- true：强制使用 attenuation 设置该用户的声音衰减效果，此时 SpatialAudioZone 中的 audioAttenuation 中设置的隔声区域衰减系数对该用户不生效。
-- false：不强制使用 attenuation 设置用户的声音衰减效果，分为以下两种情况。
+- `true`：强制使用 attenuation 设置该用户的声音衰减效果，此时 [SpatialAudioZone](/zh-CN/api-reference/rtc/csharp-windows/class-spatialaudiozone) 中的 audioAttenuation 中设置的隔声区域衰减系数对该用户不生效。
+- `false`：不强制使用 attenuation 设置用户的声音衰减效果，分为以下两种情况。
+
   - 如果音源和听声者分属于隔声区域内部和外部，则声音衰减效果由 SpatialAudioZone 中的 audioAttenuation 决定。
   - 如果音源和听声者在同一个隔声区域内或同在隔声区域外，则声音衰减效果由该方法中的 attenuation 决定。
 
@@ -839,7 +843,7 @@ public abstract int EnableSpatialAudio(bool enabled);
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
-- 该方法依赖于空间音频动态库 libagora_spatial_audio_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+- 该方法依赖于空间音频动态库 `libagora_spatial_audio_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
 
 <a id="api_irtcengine_enablespatialaudio__parameters"></a>
@@ -850,8 +854,8 @@ public abstract int EnableSpatialAudio(bool enabled);
 
 是否开启空间音频：
 
-- true: 开启空间音频。
-- false: 关闭空间音频。
+- `true`: 开启空间音频。
+- `false`: 关闭空间音频。
 
 <a id="api_irtcengine_enablespatialaudio__return_values"></a>
 

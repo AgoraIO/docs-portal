@@ -38,8 +38,8 @@ description: "预设的美声效果选项。"
 
 歌唱美声。
 
-- 如果调用 setVoiceBeautifierPreset (SingingBeautifier)，你可以美化男声并添加歌声在小房间的混响效果。请勿用于设置女声，否则音频会失真。
-- 如果调用 setVoiceBeautifierParameters (SingingBeautifier, param1, param2)，你可以美化男声或女声并添加混响效果。
+- 如果调用 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/react-native/audio-effect#api_irtcengine_setvoicebeautifierpreset) (SingingBeautifier)，你可以美化男声并添加歌声在小房间的混响效果。请勿用于设置女声，否则音频会失真。
+- 如果调用 [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/react-native/audio-effect#api_irtcengine_setvoicebeautifierparameters) (SingingBeautifier, param1, param2)，你可以美化男声或女声并添加混响效果。
 
 ### `TimbreTransformationVigorous`
 
@@ -77,5 +77,5 @@ description: "预设的美声效果选项。"
 
 超高音质，即让音频更清晰、细节更丰富。
 
-- 为达到更好的效果，建议在调用 setVoiceBeautifierPreset 前将 setAudioProfile2 的 profile 参数设置为 AudioProfileMusicHighQuality (4) 或 AudioProfileMusicHighQualityStereo (5)，且 scenario 参数设置为 AudioScenarioGameStreaming (3)。
+- 为达到更好的效果，建议在调用 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/react-native/audio-effect#api_irtcengine_setvoicebeautifierpreset) 前将 `setAudioProfile2` 的 `profile` 参数设置为 `AudioProfileMusicHighQuality` (4) 或 `AudioProfileMusicHighQualityStereo` (5)，且 `scenario` 参数设置为 `AudioScenarioGameStreaming` (3)。
 - 如果用户的音频采集设备可以高度还原音频细节，建议你不要开启超高音质，否则 SDK 会过度还原音频细节，达不到预期效果。

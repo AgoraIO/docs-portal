@@ -180,8 +180,8 @@ abstract play(): number;
 
 ### 调用时机
 
-- 在调用 open 或 openWithMediaSource 打开媒体文件、且收到 onPlayerSourceStateChanged 回调报告状态为 PlayerStateOpenCompleted 后，调用该方法。
-- 在调用 seek 后调用该方法。
+- 在调用 [open](/zh-CN/api-reference/rtc/electron/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/electron/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体文件、且收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态为 PlayerStateOpenCompleted 后，调用该方法。
+- 在调用 [seek](/zh-CN/api-reference/rtc/electron/mediaplayer-control#api_imediaplayer_seek) 后调用该方法。
 
 <a id="api_imediaplayer_play__return_values"></a>
 
@@ -269,8 +269,8 @@ abstract seek(newPos: number): number;
 
 <a id="api_imediaplayer_seek__detailed_desc"></a>
 
-- 如果你在播放已经完成后（收到 onPlayerSourceStateChanged 回调报告播放状态为 PlayerStatePlaybackCompleted 或 PlayerStatePlaybackAllLoopsCompleted）再调用 seek，方法调用成功后，SDK 会从你指定的位置开始自动播放，此时你会收到 onPlayerSourceStateChanged 回调报告播放状态为 PlayerStatePlaying。
-- 如果你在播放暂停的情况下调用 seek，调用成功后 SDK 会定位到你指定位置，如需播放，请调用 resume 或 play。
+- 如果你在播放已经完成后（收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 PlayerStatePlaybackCompleted 或 PlayerStatePlaybackAllLoopsCompleted）再调用 [seek](/zh-CN/api-reference/rtc/electron/mediaplayer-control#api_imediaplayer_seek)，方法调用成功后，SDK 会从你指定的位置开始自动播放，此时你会收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 PlayerStatePlaying。
+- 如果你在播放暂停的情况下调用 [seek](/zh-CN/api-reference/rtc/electron/mediaplayer-control#api_imediaplayer_seek)，调用成功后 SDK 会定位到你指定位置，如需播放，请调用 [resume](/zh-CN/api-reference/rtc/electron/mediaplayer-control#api_imediaplayer_resume) 或 [play](/zh-CN/api-reference/rtc/electron/mediaplayer-control#api_imediaplayer_play)。
 
 <a id="api_imediaplayer_seek__timing"></a>
 

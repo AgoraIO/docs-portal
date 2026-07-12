@@ -46,8 +46,8 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 
 是否取消订阅所有远端用户的音频流：
 
-- true: 取消订阅所有远端用户的音频流。
-- false:（默认）订阅所有远端用户的音频流。
+- `true`: 取消订阅所有远端用户的音频流。
+- `false`:（默认）订阅所有远端用户的音频流。
 
 <a id="api_irtcengine_muteallremoteaudiostreams__return_values"></a>
 
@@ -79,7 +79,7 @@ public abstract muteAllRemoteAudioStreamsEx(muted:boolean,connection:RtcConnecti
 
 :::warning[注意]
 - 该方法需要在加入频道后调用。
-- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 joinChannelWithOptions 加入频道时设置 autoSubscribeAudio 为 false。
+- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeAudio 为 `false`。
 :::
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__parameters"></a>
@@ -90,8 +90,8 @@ public abstract muteAllRemoteAudioStreamsEx(muted:boolean,connection:RtcConnecti
 
 是否取消订阅所有远端用户的音频流：
 
-- true: 取消订阅所有远端用户的音频流。
-- false:（默认）订阅所有远端用户的音频流。
+- `true`: 取消订阅所有远端用户的音频流。
+- `false`:（默认）订阅所有远端用户的音频流。
 
 #### `connection`
 
@@ -147,8 +147,8 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 
 是否取消订阅所有远端用户的视频流。
 
-- true: 取消订阅所有用户的视频流。
-- false:（默认）订阅所有用户的视频流。
+- `true`: 取消订阅所有用户的视频流。
+- `false`:（默认）订阅所有用户的视频流。
 
 <a id="api_irtcengine_muteallremotevideostreams__return_values"></a>
 
@@ -186,8 +186,8 @@ public abstract muteAllRemoteVideoStreamsEx(muted:boolean,connection:RtcConnecti
 
 是否取消订阅所有远端用户的视频流。
 
-- true: 取消订阅所有用户的视频流。
-- false:（默认）订阅所有用户的视频流。
+- `true`: 取消订阅所有用户的视频流。
+- `false`:（默认）订阅所有用户的视频流。
 
 #### `connection`
 
@@ -245,8 +245,8 @@ public abstract muteLocalAudioStream(muted: boolean): number;
 
 是否取消发布本地音频流。
 
-- true: 取消发布。
-- false:（默认）发布。
+- `true`: 取消发布。
+- `false`:（默认）发布。
 
 <a id="api_irtcengine_mutelocalaudiostream__return_values"></a>
 
@@ -288,8 +288,8 @@ public abstract muteLocalAudioStreamEx(muted:boolean,connection:RtcConnection):n
 
 是否取消发布本地音频流。
 
-- true: 取消发布。
-- false:（默认）发布。
+- `true`: 取消发布。
+- `false`:（默认）发布。
 
 #### `connection`
 
@@ -349,8 +349,8 @@ public abstract muteLocalVideoStream(muted: boolean): number;
 
 是否取消发送本地视频流。
 
-- true: 取消发送本地视频流。
-- false: （默认）发送本地视频流。
+- `true`: 取消发送本地视频流。
+- `false`: （默认）发送本地视频流。
 
 <a id="api_irtcengine_mutelocalvideostream__return_values"></a>
 
@@ -392,8 +392,8 @@ public abstract muteLocalVideoStreamEx(muted:boolean,connection:RtcConnection):n
 
 是否取消发送本地视频流。
 
-- true: 取消发送本地视频流。
-- false: （默认）发送本地视频流。
+- `true`: 取消发送本地视频流。
+- `false`: （默认）发送本地视频流。
 
 #### `connection`
 
@@ -453,8 +453,8 @@ public abstract muteRemoteAudioStream(uid: number, muted: boolean): number;
 
 是否取消订阅指定远端用户的音频流。
 
-- true: 取消订阅指定用户的音频流。
-- false:（默认）订阅指定用户的音频流。
+- `true`: 取消订阅指定用户的音频流。
+- `false`:（默认）订阅指定用户的音频流。
 
 <a id="api_irtcengine_muteremoteaudiostream__return_values"></a>
 
@@ -496,8 +496,8 @@ public abstract muteRemoteAudioStreamEx(uid:number,muted:boolean,connection:RtcC
 
 是否停止接收指定音频流：
 
-- true: 停止接收指定音频流。
-- false:（默认）继续接收指定音频流。
+- `true`: 停止接收指定音频流。
+- `false`:（默认）继续接收指定音频流。
 
 #### `connection`
 
@@ -557,8 +557,8 @@ public abstract muteRemoteVideoStream(uid: number, muted: boolean): number;
 
 是否取消订阅指定远端用户的视频流。
 
-- true: 取消订阅指定用户的视频流。
-- false: （默认）订阅指定用户的视频流。
+- `true`: 取消订阅指定用户的视频流。
+- `false`: （默认）订阅指定用户的视频流。
 
 <a id="api_irtcengine_muteremotevideostream__return_values"></a>
 
@@ -600,8 +600,8 @@ public abstract muteRemoteVideoStreamEx(uid:number,muted:boolean,connection:RtcC
 
 是否停止接收某个远端用户的视频：
 
-- true: 停止接收。
-- false: （默认）恢复接收。
+- `true`: 停止接收。
+- `false`: （默认）恢复接收。
 
 #### `connection`
 

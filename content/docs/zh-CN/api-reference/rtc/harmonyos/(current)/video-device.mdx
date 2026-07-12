@@ -25,7 +25,7 @@ public abstract getCameraMaxZoomFactor(): number;
 ### 详情
 
 :::warning[注意]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 ENCODING (2) 之后调用。
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 ENCODING (2) 之后调用。
 :::
 
 <a id="api_irtcengine_getcameramaxzoomfactor__return_values"></a>
@@ -54,15 +54,15 @@ public abstract isCameraAutoFocusFaceModeSupported(): boolean;
 ### 详情
 
 :::warning[注意]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 ENCODING (2) 之后调用。
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 ENCODING (2) 之后调用。
 :::
 
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__return_values"></a>
 
 ### 返回值
 
-- true: 设备支持人脸对焦功能。
-- false: 设备不支持人脸对焦功能。
+- `true`: 设备支持人脸对焦功能。
+- `false`: 设备不支持人脸对焦功能。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
@@ -84,15 +84,15 @@ public abstract isCameraExposurePositionSupported(): boolean;
 ### 详情
 
 :::warning[注意]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 ENCODING (2) 之后调用。
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 ENCODING (2) 之后调用。
 :::
 
 <a id="api_irtcengine_iscameraexposurepositionsupported__return_values"></a>
 
 ### 返回值
 
-- true: 设备支持手动曝光功能。
-- false: 设备不支持手动曝光功能。
+- `true`: 设备支持手动曝光功能。
+- `false`: 设备不支持手动曝光功能。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
@@ -114,17 +114,17 @@ public abstract isCameraExposureSupported(): boolean;
 ### 详情
 
 :::warning[注意]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 ENCODING (2) 之后调用。
-- 建议你在调用 setCameraExposureFactor 调节曝光系数前，先调用该方法查询当前摄像头是否支持曝光调节。
-- 当你调用该方法时，查询的是当前正在使用的摄像头是否支持曝光调节，即调用 setCameraCapturerConfiguration 时指定的摄像头。
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 ENCODING (2) 之后调用。
+- 建议你在调用 [setCameraExposureFactor](/zh-CN/api-reference/rtc/harmonyos/video-device#api_irtcengine_setcameraexposurefactor) 调节曝光系数前，先调用该方法查询当前摄像头是否支持曝光调节。
+- 当你调用该方法时，查询的是当前正在使用的摄像头是否支持曝光调节，即调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/harmonyos/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
 :::
 
 <a id="api_irtcengine_iscameraexposuresupported__return_values"></a>
 
 ### 返回值
 
-- true：方法调用成功。
-- false：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+- `true`：方法调用成功。
+- `false`：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
@@ -145,8 +145,8 @@ public abstract isCameraFaceDetectSupported(): boolean;
 
 ### 返回值
 
-- true: 设备摄像头支持人脸检测。
-- false: 设备摄像头不支持人脸检测。
+- `true`: 设备摄像头支持人脸检测。
+- `false`: 设备摄像头不支持人脸检测。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
@@ -168,15 +168,15 @@ public abstract isCameraFocusSupported(): boolean;
 ### 详情
 
 :::warning[注意]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 ENCODING (2) 之后调用。
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 ENCODING (2) 之后调用。
 :::
 
 <a id="api_irtcengine_iscamerafocussupported__return_values"></a>
 
 ### 返回值
 
-- true: 设备支持手动对焦功能。
-- false: 设备不支持手动对焦功能。
+- `true`: 设备支持手动对焦功能。
+- `false`: 设备不支持手动对焦功能。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
@@ -211,8 +211,8 @@ public abstract isCameraZoomSupported(): boolean;
 
 ### 返回值
 
-- true: 设备支持相机缩放功能。
-- false: 设备不支持相机缩放功能。
+- `true`: 设备支持相机缩放功能。
+- `false`: 设备不支持相机缩放功能。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
@@ -249,8 +249,8 @@ public abstract setCameraAutoFocusFaceModeEnabled(enabled: boolean): number;
 
 是否开启人脸对焦：
 
-- true: 开启人脸对焦功能。
-- false: 关闭人脸对焦功能。
+- `true`: 开启人脸对焦功能。
+- `false`: 关闭人脸对焦功能。
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__return_values"></a>
 
@@ -320,8 +320,8 @@ public abstract setCameraExposurePosition(positionXinView: number, positionYinVi
 ### 详情
 
 :::warning[注意]
-- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 CAPTURING (1) 后。
-- 成功调用该方法后，本地会触发 onCameraExposureAreaChanged 回调。
+- 该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 CAPTURING (1) 后。
+- 成功调用该方法后，本地会触发 [onCameraExposureAreaChanged](/zh-CN/api-reference/rtc/harmonyos/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) 回调。
 :::
 
 <a id="api_irtcengine_setcameraexposureposition__parameters"></a>
@@ -360,8 +360,8 @@ public abstract setCameraFocusPositionInPreview(positionX: number, positionY: nu
 ### 详情
 
 :::warning[注意]
-- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 CAPTURING (1) 后。
-- 成功调用该方法后，本地会触发 onCameraFocusPointChanged 回调。
+- 该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 CAPTURING (1) 后。
+- 成功调用该方法后，本地会触发 [onCameraFocusPointChanged](/zh-CN/api-reference/rtc/harmonyos/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged) 回调。
 :::
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__parameters"></a>
@@ -400,7 +400,7 @@ public abstract setCameraZoomFactor(factor: number): number;
 ### 详情
 
 :::warning[注意]
-- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 CAPTURING (1) 后。
+- 该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/harmonyos/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 CAPTURING (1) 后。
 :::
 
 <a id="api_irtcengine_setcamerazoomfactor__parameters"></a>

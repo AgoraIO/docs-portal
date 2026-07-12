@@ -23,8 +23,8 @@ Future<int> createCustomVideoTrack();
 当你需要在频道中发布自定义采集视频时，可参考以下步骤：
 
 1. 调用该方法创建视频轨道并获得视频轨道 ID。
-2. 调用 joinChannel 加入频道时，将 ChannelMediaOptions 中的 customVideoTrackId 设置为你想要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 true。
-3. 调用 pushVideoFrame 将 videoTrackId 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
+2. 调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中的 `customVideoTrackId` 设置为你想要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 true。
+3. 调用 [pushVideoFrame](/zh-CN/api-reference/rtc/flutter/video-custom-capturenrendering#api_imediaengine_pushvideoframe) 将 `videoTrackId` 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
 
 <a id="api_irtcengine_createcustomvideotrack__return_values"></a>
 
@@ -274,15 +274,15 @@ Future<void> pushVideoFrame(
 
 当你需要在频道中发布自定义采集视频时，可参考以下步骤：
 
-1. 调用 createCustomVideoTrack 方法创建视频轨道并获得视频轨道 ID。
-2. 调用 joinChannel 加入频道时，将 ChannelMediaOptions 中的 customVideoTrackId 设置为你想要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 true。
-3. 调用该方法将 videoTrackId 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
+1. 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/flutter/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法创建视频轨道并获得视频轨道 ID。
+2. 调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中的 `customVideoTrackId` 设置为你想要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 true。
+3. 调用该方法将 `videoTrackId` 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
 
 :::info[注]
 调用该方法后，即使你停止推送外部视频帧到 SDK，自定义采集的视频流仍然会被计入视频时长用量并产生费用，声网建议你根据实际情况采取相应措施避免此类视频计费：
 
-- 如果你不再需要采集外部视频数据，可以调用 destroyCustomVideoTrack 销毁自定义采集的视频轨道。
-- 如果你只想将采集到的外部视频数据用于本地预览、而不在频道内发布，可以调用 muteLocalVideoStream 取消发送视频流，或调用 updateChannelMediaOptions 将 publishCustomVideoTrack 设置为 false。
+- 如果你不再需要采集外部视频数据，可以调用 [destroyCustomVideoTrack](/zh-CN/api-reference/rtc/flutter/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) 销毁自定义采集的视频轨道。
+- 如果你只想将采集到的外部视频数据用于本地预览、而不在频道内发布，可以调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/flutter/publishnsubscribe#api_irtcengine_mutelocalvideostream) 取消发送视频流，或调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_updatechannelmediaoptions) 将 `publishCustomVideoTrack` 设置为 false。
 :::
 
 <a id="api_imediaengine_pushvideoframe__parameters"></a>

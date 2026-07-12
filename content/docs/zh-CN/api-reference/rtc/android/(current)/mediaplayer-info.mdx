@@ -25,7 +25,7 @@ int getAudioBufferDelay();
 ### 返回值
 
 - 方法调用成功，返回音频缓冲延迟（单位：毫秒）。
-- 方法调用失败，返回小于 0 的错误码。你可以使用 MediaPlayerReason 检查错误原因。
+- 方法调用失败，返回小于 0 的错误码。你可以使用 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason) 检查错误原因。
 
 ### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
@@ -143,7 +143,7 @@ long getPlayPosition();
 ### 返回值
 
 - 方法调用成功时，返回当前播放进度（单位为毫秒）。
-- 方法调用失败时，返回小于 0 的值，详见 MediaPlayerReason。
+- 方法调用失败时，返回小于 0 的值，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
 
 ### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
@@ -241,7 +241,7 @@ int getStreamCount();
 ### 返回值
 
 - 方法调用成功，返回媒体资源中的媒体流数量。
-- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
 
 ### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
@@ -280,8 +280,8 @@ MediaStreamInfo getStreamInfo(int index);
 
 ### 返回值
 
-- 方法调用成功，返回 MediaStreamInfo 对象。
-- 方法调用失败，返回 null。
+- 方法调用成功，返回 [MediaStreamInfo](/zh-CN/api-reference/rtc/android/class-playerstreaminfo) 对象。
+- 方法调用失败，返回 `null`。
 
 ### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)

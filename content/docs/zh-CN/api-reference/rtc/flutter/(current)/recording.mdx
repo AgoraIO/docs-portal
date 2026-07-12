@@ -34,7 +34,7 @@ Future<MediaRecorder?> createMediaRecorder(RecorderStreamInfo info);
 
 ### 返回值
 
-- 方法调用成功：返回一个 MediaRecorder 对象。
+- 方法调用成功：返回一个 [MediaRecorder](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorder) 对象。
 - 方法调用失败：返回空指针。
 
 ### 所属接口类
@@ -91,8 +91,8 @@ Future<void> setMediaRecorderObserver(
 
 该方法用于设置音视频录制的回调，以便在录制过程中向 App 通知音视频流的录制状态和信息。 调用该方法前请确保：
 
-- 已创建并初始化 RtcEngine 对象。
-- 已通过 createMediaRecorder 创建音视频录制对象。
+- 已创建并初始化 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 对象。
+- 已通过 [createMediaRecorder](/zh-CN/api-reference/rtc/flutter/recording#api_irtcengine_createmediarecorder) 创建音视频录制对象。
 
 <a id="api_imediarecorder_setmediarecorderobserver__parameters"></a>
 
@@ -171,8 +171,8 @@ Future<void> startRecording(MediaRecorderConfiguration config);
 
 该方法用于开启音视频流录制。声网 SDK 支持同时录制本地及远端用户的音视频流。 在开始录制前请确保：
 
-- 已通过 createMediaRecorder 创建音视频录制对象。
-- 已调用 setMediaRecorderObserver 注册录制对象观测器来监听录制的相关回调。
+- 已通过 [createMediaRecorder](/zh-CN/api-reference/rtc/flutter/recording#api_irtcengine_createmediarecorder) 创建音视频录制对象。
+- 已调用 [setMediaRecorderObserver](/zh-CN/api-reference/rtc/flutter/recording#api_imediarecorder_setmediarecorderobserver) 注册录制对象观测器来监听录制的相关回调。
 - 已加入频道。
 
 该方法支持录制如下数据：

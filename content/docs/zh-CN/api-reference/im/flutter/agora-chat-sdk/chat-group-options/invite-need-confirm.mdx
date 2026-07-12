@@ -7,10 +7,11 @@ Whether you need the approval from the user when adding this user to the chat gr
 
 Whether you can automatically add a user to the chat group depends on the settings of [inviteNeedConfirm](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-group-options/invite-need-confirm) and [ChatOptions.autoAcceptGroupInvitation](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/auto-accept-group-invitation).
 
-- If inviteNeedConfirm is set to false, you can add the invitee directly to the chat group, regardless of the settings of ChatOptions.autoAcceptGroupInvitation.
-- If inviteNeedConfirm is set to true, whether the invitee automatically joins the chat group or not depends on the settings of ChatOptions.autoAcceptGroupInvitation on the invitee's client.
-  - If autoAcceptGroupInvitation is set to true, the invitee automatically joins the chat group.
-  - If autoAcceptGroupInvitation is set to false, the invitee does not join the chat group until this invitee approves the group invitation.
+- If `inviteNeedConfirm` is set to `false`, you can add the invitee directly to the chat group, regardless of the settings of [ChatOptions.autoAcceptGroupInvitation](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/auto-accept-group-invitation).
+- If `inviteNeedConfirm` is set to `true`, whether the invitee automatically joins the chat group or not depends on the settings of [ChatOptions.autoAcceptGroupInvitation](/zh-CN/api-reference/im/flutter/agora-chat-sdk/chat-options/auto-accept-group-invitation) on the invitee's client.
+
+  - If `autoAcceptGroupInvitation` is set to `true`, the invitee automatically joins the chat group.
+  - If `autoAcceptGroupInvitation` is set to `false`, the invitee does not join the chat group until this invitee approves the group invitation.
 
 **Return** Whether you need the approval from the user when adding this user to the chat group.
 

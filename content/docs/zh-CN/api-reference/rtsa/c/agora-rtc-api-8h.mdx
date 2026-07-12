@@ -901,7 +901,7 @@ __agora_api__ int agora_rtc_join_channel(connection_id_t conn_id, const char* ch
 | [in] conn_id | Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](#adef869ae47e2f1c194af611b57d06394) 创建 Connection。 |
 | [in] channel_name | 频道名，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）：<br />- 26 个小写英文字母 a-z<br />- 26 个大写英文字母 A-Z<br />- 10 个数字 0-9<br />- 空格<br />- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "\|", "~", "," |
 | [in] uid | 用户 ID。 |
-| [in] token | 用于鉴权的 RTC Token。<br />- 如果你的声网项目启用的是 App ID 鉴权，可以将该值设为 NULL。<br />- 如果你的声网项目启用的是 App ID + Token 鉴权，你需要将该值设为应用服务端生成的 RTC Token。详见 使用 RTC Token 鉴权。自 1.8.0 版本起，RTSA Lite SDK 支持 AccessToken2。1.8.0 之前的版本支持 AccessToken。 |
+| [in] token | 用于鉴权的 RTC Token。<br />- 如果你的声网项目启用的是 App ID 鉴权，可以将该值设为 NULL。<br />- 如果你的声网项目启用的是 App ID + Token 鉴权，你需要将该值设为应用服务端生成的 RTC Token。详见 [使用 RTC Token 鉴权](https://doc.shengwang.cn/doc/rtc/windows/basic-features/token-authentication)。自 1.8.0 版本起，RTSA Lite SDK 支持 AccessToken2。1.8.0 之前的版本支持 AccessToken。 |
 | [in] options | 频道设置选项。详见 [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t)。 |
 
 #### Returns
@@ -937,7 +937,7 @@ v1.9.5
 | [in] conn_id | Connection ID。 |
 | [in] channel_name | 频道名，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）：<br />- 26 个小写英文字母 a-z<br />- 26 个大写英文字母 A-Z<br />- 10 个数字 0-9<br />- 空格<br />- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "\|", "~", "," |
 | [in] user_account | 用户 User account。 |
-| [in] token | 用于鉴权的 RTC Token。<br />- 如果你的声网项目启用的是 App ID 鉴权，可以将该值设为 NULL。<br />- 如果你的声网项目启用的是 App ID + Token 鉴权，你需要将该值设为应用服务端生成的 RTC Token。详见 使用 RTC Token 鉴权。自 1.8.0 版本起，RTSA Lite SDK 支持 AccessToken2。1.8.0 之前的版本支持 AccessToken。 |
+| [in] token | 用于鉴权的 RTC Token。<br />- 如果你的声网项目启用的是 App ID 鉴权，可以将该值设为 NULL。<br />- 如果你的声网项目启用的是 App ID + Token 鉴权，你需要将该值设为应用服务端生成的 RTC Token。详见 [使用 RTC Token 鉴权](https://doc.shengwang.cn/doc/rtc/windows/basic-features/token-authentication)。自 1.8.0 版本起，RTSA Lite SDK 支持 AccessToken2。1.8.0 之前的版本支持 AccessToken。 |
 | [in] options | 频道设置选项。详见 [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t)。 |
 
 #### Returns
@@ -1037,7 +1037,7 @@ __agora_api__ int agora_rtc_license_verify(const char* certificate, int certific
 ##### `注解`
 
 - 该方法仅用于声网 License 机制。如不使用 License，可忽略该方法。
-- 该方法必须在 agora_rtc_init 前调用。认证通过后，你才能有效调用 RTSA SDK 的其他 API。
+- 该方法必须在 [agora_rtc_init](#a6187076d897f0b56cb20942368c15aaa) 前调用。认证通过后，你才能有效调用 RTSA SDK 的其他 API。
 
 #### Parameters
 
@@ -1302,8 +1302,8 @@ v1.9.2
 
 在文件传输、文件下载等需要可靠传输的场景中，你可以参考如下步骤发送 RDT 消息：
 
-1. 在 RDT 通道中建立连接：在加入频道时，将 rtc_channel_options_t 中的 enable_rdt 参数设置为 true，主动与频道内其他用户建立连接。
-2. 获取 RDT 通道的连接状态：监听 on_rdt_state 回调。当在 RDT 通道中成功建立连接时，连接状态会变为 RDT_STATE_OPENED，此时才可进行下一步。
+1. 在 RDT 通道中建立连接：在加入频道时，将 [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) 中的 enable_rdt 参数设置为 true，主动与频道内其他用户建立连接。
+2. 获取 RDT 通道的连接状态：监听 [on_rdt_state](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#afa921fa31ea49ef1c97a17949119e386) 回调。当在 RDT 通道中成功建立连接时，连接状态会变为 RDT_STATE_OPENED，此时才可进行下一步。
 3. 调用 agora_rtc_send_rdt_msg 方法发送 RDT 消息：你可以根据需要发送控制消息 (RDT_STREAM_CMD) 或数据消息 (RDT_STREAM_DATA)，二者区别如下：
 
 - 控制消息。发送优先级高，不受拥塞控制策略影响，不会阻塞发送。每秒至多发送 100 个消息包，每个消息包的长度至多为 256 B。
@@ -1315,8 +1315,8 @@ v1.9.2
 
 每条连接限制传输 4 Mbps。如果超出，会返回如下错误码：
 
-- ERR_RDT_CMD_EXCEED_LIMIT(603)，控制消息的数量超过限制。
-- ERR_RDT_DATA_EXCEED_LIMIT(604): 数据数据大小超出限制。
+- [ERR_RDT_CMD_EXCEED_LIMIT(603)](#aec639f854206054cb48acde88e998abfaec9b32272bc37e2ba2352908d7037b39)，控制消息的数量超过限制。
+- [ERR_RDT_DATA_EXCEED_LIMIT(604)](#aec639f854206054cb48acde88e998abfad5480174d08af976c9d208da224bb28e): 数据数据大小超出限制。
 
 #### Parameters
 
@@ -1332,10 +1332,11 @@ v1.9.2
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
+
   - RTC_ERR_RDT_USER_NOT_EXIST(600): 频道内不存在该远端用户。
   - RTC_ERR_RDT_USER_NOT_READY(601): 未成功与远端用户建立连接。你需要等 RDT 通道的连接状态变为 RDT_STATE_OPENED 后重新调用该方法。
   - RTC_ERR_RDT_DATA_BLOCKED(602): 发送缓冲区已满。你需要等 RDT 通道的连接状态变为 RDT_STATE_OPENED 后重新调用该方法。
-  - RTC_ERR_RDT_CMD_EXCEED_LIMIT(603): 控制消息的数量超过限制。每秒发送的控制消息包不能超过 4 Mbps。. - ERR_RDT_DATA_EXCEED_LIMIT(604): 数据数据大小超出限制。
+  - RTC_ERR_RDT_CMD_EXCEED_LIMIT(603): 控制消息的数量超过限制。每秒发送的控制消息包不能超过 4 Mbps。. - [ERR_RDT_DATA_EXCEED_LIMIT(604)](#aec639f854206054cb48acde88e998abfad5480174d08af976c9d208da224bb28e): 数据数据大小超出限制。
 
 <a id="a1eaa46ebfb4613c624eef98ae7275319"></a>
 
@@ -1366,6 +1367,7 @@ RTM 默认开启基于 TLS 加密的传输层安全保护且不可关闭。
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
+
   - RTM_ERR_NOT_LOGINED (-1001): 未登录 RTM 系统
   - RTM_ERR_SEND_TO_SELF (-1002): 在 rtm_uid 参数中误填了自己的用户 ID。
   - RTM_ERR_EXCEED_MSG_SIZE (-1003): RTM 消息长度超出限制。消息长度至多为 31 KB。
@@ -1390,8 +1392,9 @@ v1.9.5
 
 ##### `注解`
 
-- 该方法需要在加入频道后、且调用了 agora_rtc_create_data_stream 创建数据通道后调用。
+- 该方法需要在加入频道后、且调用了 [agora_rtc_create_data_stream](#aa6b288b479c7048b4cceb85d995771ed) 创建数据通道后调用。
 - SDK 对该方法的实现进行了如下限制：
+
   - 单个频道里，每秒最多发送 60 个数据包，每个数据包的大小不能超过 1 KB。
   - 频道内每个客户端最多可以同时拥有 5 个数据通道，每个数据通道每秒最多发送 6 KB 的数据流。所有数据通道共用的总发包码率限制为 30 Kbps。
 

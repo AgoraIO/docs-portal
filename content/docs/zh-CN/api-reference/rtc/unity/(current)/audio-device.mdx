@@ -29,7 +29,7 @@ public abstract DeviceInfo[] EnumeratePlaybackDevices();
 ### 返回值
 
 - 方法调用成功，返回一个 DeviceInfo 数组，包含所有音频播放设备的设备 ID 和设备名称。
-- 方法调用失败: null。
+- 方法调用失败: `null`。
 
 ### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
@@ -57,7 +57,7 @@ abstract DeviceInfo[] EnumerateRecordingDevices();
 ### 返回值
 
 - 方法调用成功，返回一个 DeviceInfo 数组，包含所有音频采集设备的设备 ID 和设备名称。
-- 方法调用失败: null。
+- 方法调用失败: `null`。
 
 ### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
@@ -1030,7 +1030,7 @@ public abstract int StartAudioDeviceLoopbackTest(int indicationInterval);
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
 - 该方法仅在本地进行音频设备测试，不涉及网络连接。
-- 完成测试后，必须调用 StopAudioDeviceLoopbackTest 停止音频设备回路测试。
+- 完成测试后，必须调用 [StopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/unity/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__parameters"></a>
@@ -1126,6 +1126,7 @@ SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -2: 参数设置错误，请重新设置参数。
 
 ### 所属接口类
@@ -1149,7 +1150,7 @@ public abstract int StopAudioDeviceLoopbackTest();
 - 该方法仅适用于 Windows 和 macOS。
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
-- 在调用 StartAudioDeviceLoopbackTest 后，必须调用该方法停止音频设备回路测试。
+- 在调用 [StartAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/unity/audio-device#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 后，必须调用该方法停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__return_values"></a>

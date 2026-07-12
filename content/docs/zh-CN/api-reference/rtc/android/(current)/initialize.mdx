@@ -50,9 +50,9 @@ public static synchronized RtcEngine create(Context context, String appId, IRtcE
 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 类中的所有方法均为异步执行，声网建议在同一线程中调用这些方法。
 
 :::info[注]
-- 在调用其他 API 之前，必须先调用此方法以创建 RtcEngine 实例。
-- 你可以通过调用此方法或调用 create [2/2] 来创建 RtcEngine 实例。与此方法相比， create [2/2] 支持更多配置，例如指定连接区域和设置日志文件。
-- 每个 App 仅支持创建一个 RtcEngine 实例。
+- 在调用其他 API 之前，必须先调用此方法以创建 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例。
+- 你可以通过调用此方法或调用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 来创建 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例。与此方法相比， [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 支持更多配置，例如指定连接区域和设置日志文件。
+- 每个 App 仅支持创建一个 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例。
 :::
 
 <a id="api_irtcengine_create__parameters"></a>
@@ -108,8 +108,8 @@ public static synchronized void destroy(@Nullable IRtcEngineReleaseCallback call
 
 用于配置引擎的同步或异步销毁方式：
 
-- 非 null：异步销毁。方法会立即返回，但引擎资源可能尚未完全释放。引擎销毁后会触发 onEngineReleased 回调。
-- null：同步销毁。方法仅在引擎资源完全释放后才返回。详见 IRtcEngineReleaseCallback。
+- 非 `null`：异步销毁。方法会立即返回，但引擎资源可能尚未完全释放。引擎销毁后会触发 [onEngineReleased](/zh-CN/api-reference/rtc/android/initialize#callback_irtcenginereleasecallback_onenginereleased) 回调。
+- `null`：同步销毁。方法仅在引擎资源完全释放后才返回。详见 [IRtcEngineReleaseCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcenginereleasecallback)。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)

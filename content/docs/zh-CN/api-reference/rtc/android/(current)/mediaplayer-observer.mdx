@@ -32,8 +32,8 @@ int registerAudioFrameObserver(IMediaPlayerAudioFrameObserver audioFrameObserver
 
 音频帧的使用模式：
 
-- RAW_AUDIO_FRAME_OP_MODE_READ_ONLY （0）：（默认）只读模式。例如，你通过声网 SDK 获取音频数据后，再推送 RTMP 或 RTMPS 流。
-- RAW_AUDIO_FRAME_OP_MODE_READ_WRITE （2）：读写模式。你可以从 AudioFrame 中读取音频数据，修改后再播放。例如，你有自己的音频特效处理模块，并进行语音预处理，如变声。
+- `RAW_AUDIO_FRAME_OP_MODE_READ_ONLY` （0）：（默认）只读模式。例如，你通过声网 SDK 获取音频数据后，再推送 RTMP 或 RTMPS 流。
+- `RAW_AUDIO_FRAME_OP_MODE_READ_WRITE` （2）：读写模式。你可以从 [AudioFrame](/zh-CN/api-reference/rtc/android/class-audioframe) 中读取音频数据，修改后再播放。例如，你有自己的音频特效处理模块，并进行语音预处理，如变声。
 
 <a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__return_values"></a>
 
@@ -309,8 +309,8 @@ void onPlayBufferUpdated(long playCachedBuffer)
 
 该回调在播放在线媒体资源时每两秒触发一次。
 
-- 当缓冲数据可支持的播放时长小于阈值（默认值为 0）时，SDK 返回 PLAYER_EVENT_BUFFER_LOW （6）。
-- 当缓冲数据可支持的播放时长大于阈值（默认值为 0）时，SDK 返回 PLAYER_EVENT_BUFFER_RECOVER （7）。
+- 当缓冲数据可支持的播放时长小于阈值（默认值为 0）时，SDK 返回 `PLAYER_EVENT_BUFFER_LOW` （6）。
+- 当缓冲数据可支持的播放时长大于阈值（默认值为 0）时，SDK 返回 `PLAYER_EVENT_BUFFER_RECOVER` （7）。
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__timing"></a>
 

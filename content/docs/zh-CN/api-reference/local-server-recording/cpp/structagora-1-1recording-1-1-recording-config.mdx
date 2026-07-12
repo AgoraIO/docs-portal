@@ -40,10 +40,10 @@ bool agora::recording::RecordingConfig::isAudioOnly
 
 与 [isVideoOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#a01e487ff9d854f53b9f768ce2a3210cb) 结合使用：
 
-- 如果 isAudioOnly 为 true，且 isVideoOnly 为 false，则仅录制音频；
-- 如果 isAudioOnly 为 false，且 isVideoOnly 为 true，则仅录制视频；
-- 如果 isAudioOnly 为 false，且 isVideoOnly 为 false，则既录制音频，也录制视频；
-- 不能将 isAudioOnly 和 isVideoOnly 同时设置为 true。
+- 如果 [isAudioOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#adadf31bf660b1f3fe21fc5ca05b78f89) 为 true，且 [isVideoOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#a01e487ff9d854f53b9f768ce2a3210cb) 为 false，则仅录制音频；
+- 如果 [isAudioOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#adadf31bf660b1f3fe21fc5ca05b78f89) 为 false，且 [isVideoOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#a01e487ff9d854f53b9f768ce2a3210cb) 为 true，则仅录制视频；
+- 如果 [isAudioOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#adadf31bf660b1f3fe21fc5ca05b78f89) 为 false，且 [isVideoOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#a01e487ff9d854f53b9f768ce2a3210cb) 为 false，则既录制音频，也录制视频；
+- 不能将 [isAudioOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#adadf31bf660b1f3fe21fc5ca05b78f89) 和 [isVideoOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#a01e487ff9d854f53b9f768ce2a3210cb) 同时设置为 true。
 
 <a id="a01e487ff9d854f53b9f768ce2a3210cb"></a>
 
@@ -60,10 +60,10 @@ bool agora::recording::RecordingConfig::isVideoOnly
 
 与 [isAudioOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#adadf31bf660b1f3fe21fc5ca05b78f89) 结合使用：
 
-- 如果 isAudioOnly 为 true，且 isVideoOnly 为 false，则仅录制音频；
-- 如果 isAudioOnly 为 false，且 isVideoOnly 为 true，则仅录制视频；
-- 如果 isAudioOnly 为 false，且 isVideoOnly 为 false，则既录制音频，也录制视频；
-- 不能将 isAudioOnly 和 isVideoOnly 同时设置为 true。
+- 如果 [isAudioOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#adadf31bf660b1f3fe21fc5ca05b78f89) 为 true，且 [isVideoOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#a01e487ff9d854f53b9f768ce2a3210cb) 为 false，则仅录制音频；
+- 如果 [isAudioOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#adadf31bf660b1f3fe21fc5ca05b78f89) 为 false，且 [isVideoOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#a01e487ff9d854f53b9f768ce2a3210cb) 为 true，则仅录制视频；
+- 如果 [isAudioOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#adadf31bf660b1f3fe21fc5ca05b78f89) 为 false，且 [isVideoOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#a01e487ff9d854f53b9f768ce2a3210cb) 为 false，则既录制音频，也录制视频；
+- 不能将 [isAudioOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#adadf31bf660b1f3fe21fc5ca05b78f89) 和 [isVideoOnly](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#a01e487ff9d854f53b9f768ce2a3210cb) 同时设置为 true。
 
 <a id="a1ee4fc94e7de4c810a5ad0f4f4327299"></a>
 
@@ -75,7 +75,7 @@ bool agora::recording::RecordingConfig::isMixingEnabled
 
 是否启用合流模式。
 
-- true: 启用合流模式录制。多个 UID 的音频混合成一个纯音频文件，多个 UID 的视频混合成一个纯视频文件。无论频道内有多少用户，都只生成 1 个混合音频文件和 1 个混合视频文件。混合文件的音频属性通过 audioProfile 参数进行设置，视频属性通过 mixResolution 参数进行设置。
+- true: 启用合流模式录制。多个 UID 的音频混合成一个纯音频文件，多个 UID 的视频混合成一个纯视频文件。无论频道内有多少用户，都只生成 1 个混合音频文件和 1 个混合视频文件。混合文件的音频属性通过 [audioProfile](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#a0664fe3ead0bc66e31988a1cd9b98fff) 参数进行设置，视频属性通过 [mixResolution](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#aa3e5ae4cacfa51a8cfc709e1cc46877e) 参数进行设置。
 - false:（默认）启用单流模式录制。一个 UID 对应一个音频文件和一个视频文件。录制文件的音频属性为：采样率固定为 48 kHz，声道数和码率与原始音频流保持一致。录制文件的视频属性与原始视频流保持一致。
 
 <a id="afc2322e9bf7424f4e692d99967a50f6e"></a>
@@ -124,8 +124,8 @@ agora::linuxsdk::MIXED_AV_CODEC_TYPE agora::recording::RecordingConfig::mixedVid
 
 ##### `注解`
 
-- 仅当 isMixingEnabled 为 true 启用合流模式时有效。
-- 推荐设置 mixedVideoAudio 为 AV_CODEC_MIXED_TS_ONLY(6) 或 AV_CODEC_MIXED_TS_AND_MP4(7)，以保证录制进程崩溃后录制文件的可用性。如果设置为 AV_CODEC_MIXED_TS_AND_MP4(7)，录制会有一定程度的性能回退。
+- 仅当 [isMixingEnabled](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#a1ee4fc94e7de4c810a5ad0f4f4327299) 为 true 启用合流模式时有效。
+- 推荐设置 `mixedVideoAudio` 为 `AV_CODEC_MIXED_TS_ONLY(6)` 或 `AV_CODEC_MIXED_TS_AND_MP4(7)`，以保证录制进程崩溃后录制文件的可用性。如果设置为 AV_CODEC_MIXED_TS_AND_MP4(7)，录制会有一定程度的性能回退。
 
 <a id="aa3e5ae4cacfa51a8cfc709e1cc46877e"></a>
 
@@ -211,20 +211,32 @@ const char* agora::recording::RecordingConfig::cfgFilePath
 
 在该配置文件里，你可以设置以下参数：
 
-- `Recording_Dir`: 字符串类型，指定存放录制文件的绝对路径。指定路径后，SDK 不会自动生成子目录。 示例： `{"Recording_Dir": "/home/guest/recording_dir/"}`，表示录制文件存放的绝对路径为 `/home/guest/recording_dir/`。
-- `Chunk_Time_Span`: 字符串类型，设置直播场景中单流录制模式下录制文件切片的间隔时间，单位为秒，最小值为 10。 示例： `{"Chunk_Time_Span": "15"}`，表示每隔 15 秒生成一个录制文件。
-- `Secondary_Recorder`: 字符串类型，表示录制两种格式的音频文件， `Secondary_Recorder` 为增加的音频文件格式。 示例： `{"Secondary_Recorder":"mp3"}`，表示生成 AAC 和 MP3 两种格式的音频文件。
-- `Audio_Only_Record`: 字符串类型，表示仅录制一种格式的音频文件， `Audio_Only_Record` 为仅录制的音频文件格式。 示例： `{"Audio_Only_Record":"mp3"}`，表示只生成 MP3 格式的音频文件。
-- `Audio_Sample_Rate`: Number 类型，设置录制的音频的采样率。 示例： `{"Audio_Sample_Rate":16000}`，表示录制音频的采样率是 16000Hz。
-- `Pcm_Sample_Rate`: Number 类型，设置录制 PCM 帧格式的原始音频数据(`getAudioFrame` 为 `2` 或 `3`)的采样率。 示例： `{"Pcm_Sample_Rate":16000}`，表示录制 PCM 帧格式的原始音频数据的采样率是 16000Hz。
+- `Recording_Dir`: 字符串类型，指定存放录制文件的绝对路径。指定路径后，SDK 不会自动生成子目录。
+
+  示例： `{"Recording_Dir": "/home/guest/recording_dir/"}`，表示录制文件存放的绝对路径为 `/home/guest/recording_dir/`。
+- `Chunk_Time_Span`: 字符串类型，设置直播场景中单流录制模式下录制文件切片的间隔时间，单位为秒，最小值为 10。
+
+  示例： `{"Chunk_Time_Span": "15"}`，表示每隔 15 秒生成一个录制文件。
+- `Secondary_Recorder`: 字符串类型，表示录制两种格式的音频文件， `Secondary_Recorder` 为增加的音频文件格式。
+
+  示例： `{"Secondary_Recorder":"mp3"}`，表示生成 AAC 和 MP3 两种格式的音频文件。
+- `Audio_Only_Record`: 字符串类型，表示仅录制一种格式的音频文件， `Audio_Only_Record` 为仅录制的音频文件格式。
+
+  示例： `{"Audio_Only_Record":"mp3"}`，表示只生成 MP3 格式的音频文件。
+- `Audio_Sample_Rate`: Number 类型，设置录制的音频的采样率。
+
+  示例： `{"Audio_Sample_Rate":16000}`，表示录制音频的采样率是 16000Hz。
+- `Pcm_Sample_Rate`: Number 类型，设置录制 PCM 帧格式的原始音频数据(`getAudioFrame` 为 `2` 或 `3`)的采样率。
+
+  示例： `{"Pcm_Sample_Rate":16000}`，表示录制 PCM 帧格式的原始音频数据的采样率是 16000Hz。
 
 ##### `注解`
 
-- Chunk_Time_Span 参数仅适用于直播场景下的单流录制模式。
-- 要使用 Chunk_Time_Span 参数，必须将 enableIntraRequest 设为 true，请求发流端发送关键帧。发流端是否发送关键帧，由发流端使用的 RTC SDK 版本决定。
+- `Chunk_Time_Span` 参数仅适用于直播场景下的单流录制模式。
+- 要使用 `Chunk_Time_Span` 参数，必须将 `enableIntraRequest` 设为 `true`，请求发流端发送关键帧。发流端是否发送关键帧，由发流端使用的 RTC SDK 版本决定。
 - 录制 SDK 只有遇到视频关键帧才会真正切片，因而实际的切片时间间隔与设置的参数会有少许偏差。
-- Audio_Sample_Rate 可以设置为 16000Hz，32000Hz，44100Hz，48000Hz。如果设置的采样率不在上述范围内，则默认采样率为 16000Hz。
-- Pcm_Sample_Rate 可以设置为 8000Hz, 16000Hz, 32000Hz。如果设置的采样率不在上述范围内，则配置不生效。
+- `Audio_Sample_Rate` 可以设置为 16000Hz，32000Hz，44100Hz，48000Hz。如果设置的采样率不在上述范围内，则默认采样率为 16000Hz。
+- `Pcm_Sample_Rate` 可以设置为 8000Hz, 16000Hz, 32000Hz。如果设置的采样率不在上述范围内，则配置不生效。
 
 <a id="a723e05b00dc63e2f2fc85e3e7489e051"></a>
 
@@ -238,7 +250,7 @@ agora::linuxsdk::VIDEO_FORMAT_TYPE agora::recording::RecordingConfig::decodeVide
 
 ##### `注解`
 
-- VIDEO_FORMAT_TYPE = 1，2，3 或 4 时， isMixingEnabled 不能设为 true。
+- [VIDEO_FORMAT_TYPE](/zh-CN/api-reference/local-server-recording/cpp/namespaceagora-1-1linuxsdk#a6ec9426fec3c703757f31793b55c41dd) = 1，2，3 或 4 时， [isMixingEnabled](/zh-CN/api-reference/local-server-recording/cpp/structagora-1-1recording-1-1-recording-config#a1ee4fc94e7de4c810a5ad0f4f4327299) 不能设为 true。
 
 <a id="ae33efa98ee00667f2e568612ecfd2a69"></a>
 
@@ -290,7 +302,7 @@ int agora::recording::RecordingConfig::idleLimitSec
 
 - 该段时间也会纳入计费。
 - 通信场景下，如果频道内有用户，但用户没有发流，不算作无用户状态。
-- 直播场景下，如果频道内有观众但无主播，一旦无主播的状态超过 idleLimitSec，录制程序会自动退出。
+- 直播场景下，如果频道内有观众但无主播，一旦无主播的状态超过 `idleLimitSec`，录制程序会自动退出。
 
 <a id="a9f90bd61e4ebf3ab9506825cb68ef393"></a>
 
@@ -317,7 +329,7 @@ int agora::recording::RecordingConfig::audioIndicationInterval
 说话者监测的时间间隔。
 
 - &lt;= 0:（默认）禁用说话者监测的功能。
-- &gt; 0: 说话者监测的时间间隔，单位为 ms。建议设置时间间隔大于 200 ms。一旦检测到频道内有人说话，就会在 onActiveSpeaker 回调中返回当前时间段内声音最大的用户的 UID，在 onAudioVolumeIndication 回调中返回当前时间段内所有说话者的 UID 和音量。
+- &gt; 0: 说话者监测的时间间隔，单位为 ms。建议设置时间间隔大于 200 ms。一旦检测到频道内有人说话，就会在 [onActiveSpeaker](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#a06e7c77ee7a3da76882922c11a1421c8) 回调中返回当前时间段内声音最大的用户的 UID，在 [onAudioVolumeIndication](/zh-CN/api-reference/local-server-recording/cpp/classagora-1-1recording-1-1-i-recording-engine-event-handler#ac07a64cb066c596c2d826c955dc1a543) 回调中返回当前时间段内所有说话者的 UID 和音量。
 
 <a id="a15fe9c97882629e8d5d74a75720506dd"></a>
 
@@ -385,9 +397,9 @@ const char* agora::recording::RecordingConfig::proxyServer
 
 根据 `proxyType` 参数中选择的代理服务器类型设置代理服务器的 IP 地址（域名）和端口，从而实现在内网进行录制：
 
-- 如 proxyType 为 0， proxyServer 设为 "&lt;ip&gt;:&lt;port&gt;"。
-- 如 proxyType 为 1， proxyServer 设为 "&lt;domain&gt;:&lt;port&gt;"。
-- 如 proxyType 为 2， proxyServer 设为 "&lt;ip1&gt;,&lt;ip2&gt;,...,&lt;ipx&gt;:&lt;port&gt;"。
+- 如 `proxyType` 为 0， `proxyServer` 设为 `"<ip>:<port>"`。
+- 如 `proxyType` 为 1， `proxyServer` 设为 `"<domain>:<port>"`。
+- 如 `proxyType` 为 2， `proxyServer` 设为 `"<ip1>,<ip2>,...,<ipx>:<port>"`。
 
 详见 [使用云代理服务](/doc/recording/cpp/advanced-features/cloud-proxy)。
 

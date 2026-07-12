@@ -33,7 +33,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 :::info[注]
 - 该方法适用于发送端的所有类型的视频流，包括但不限于摄像头采集的视频流、屏幕共享流和自定义采集的视频流。
-- 如果你需要在多频道场景中启用不同质量层级的视频流，可以调用 enableDualStreamModeEx:streamConfig:connection: 方法。
+- 如果你需要在多频道场景中启用不同质量层级的视频流，可以调用 [enableDualStreamModeEx:streamConfig:connection:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 方法。
 - 你可以在加入频道前或加入频道后调用该方法。
 :::
 
@@ -86,7 +86,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 :::info[注]
 - 该方法适用于发送端的所有类型的视频流，包括但不限于摄像头采集的视频流、屏幕共享流和自定义采集的视频流。
-- 如果你需要在多频道场景中启用不同质量层级的视频流，可以调用 enableDualStreamModeEx 方法。
+- 如果你需要在多频道场景中启用不同质量层级的视频流，可以调用 `enableDualStreamModeEx` 方法。
 - 你可以在加入频道前或加入频道后调用该方法。
 :::
 
@@ -251,7 +251,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 :::info[注]
 - 请在加入频道后调用该方法。
-- 如果你希望在加入频道前不订阅远端用户的音频流，可以在调用 joinChannelByToken 时将 AgoraRtcChannelMediaOptions 中的 autoSubscribeAudio 设置为 NO。
+- 如果你希望在加入频道前不订阅远端用户的音频流，可以在调用 `joinChannelByToken` 时将 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置为 NO。
 :::
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__scenario"></a>
@@ -801,14 +801,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 SDK 默认在发送端开启视频小流自适应模式（`AgoraAutoSimulcastStream` ），即发送端不会主动发送视频小流。角色为主播的接收端可以通过调用 [setRemoteVideoStream:type:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 方法发起视频小流请求，发送端在收到请求后会自动开始发送视频小流。
 
-- 如果你希望修改此行为，可以调用本方法并将 mode 设置为 AgoraDisableSimulcastStream （从不发送视频小流）或 AgoraEnableSimulcastStream （始终发送视频小流）。
-- 如果你希望在修改后恢复默认行为，可以再次调用本方法并将 mode 设置为 AgoraAutoSimulcastStream。
+- 如果你希望修改此行为，可以调用本方法并将 `mode` 设置为 `AgoraDisableSimulcastStream` （从不发送视频小流）或 `AgoraEnableSimulcastStream` （始终发送视频小流）。
+- 如果你希望在修改后恢复默认行为，可以再次调用本方法并将 `mode` 设置为 `AgoraAutoSimulcastStream`。
 
 :::info[注]
 本方法与 [enableDualStreamMode:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_enabledualstreammode) 方法的区别如下：
 
-- 当调用本方法并将 mode 设置为 AgoraDisableSimulcastStream 时，效果等同于调用 enableDualStreamMode: (NO)。
-- 当调用本方法并将 mode 设置为 AgoraEnableSimulcastStream 时，效果等同于调用 enableDualStreamMode: (YES)。
+- 当调用本方法并将 `mode` 设置为 `AgoraDisableSimulcastStream` 时，效果等同于调用 [enableDualStreamMode:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_enabledualstreammode) (NO)。
+- 当调用本方法并将 `mode` 设置为 `AgoraEnableSimulcastStream` 时，效果等同于调用 [enableDualStreamMode:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_enabledualstreammode) (YES)。
 - 两个方法都可以在加入频道前后调用。如果两个方法都被调用，则以后调用的方法设置优先生效。
 :::
 
@@ -850,8 +850,8 @@ SDK 默认在发送端开启视频小流的自适应模式（`AgoraAutoSimulcast
 :::info[注]
 本方法与 [enableDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_enabledualstreammode3) 的区别如下：
 
-- 当调用本方法并将 mode 设置为 AgoraDisableSimulcastStream 时，效果等同于调用 enableDualStreamMode:streamConfig: 并将 enabled 设置为 NO。
-- 当调用本方法并将 mode 设置为 AgoraEnableSimulcastStream 时，效果等同于调用 enableDualStreamMode:streamConfig: 并将 enabled 设置为 YES。
+- 当调用本方法并将 `mode` 设置为 `AgoraDisableSimulcastStream` 时，效果等同于调用 [enableDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_enabledualstreammode3) 并将 `enabled` 设置为 NO。
+- 当调用本方法并将 `mode` 设置为 `AgoraEnableSimulcastStream` 时，效果等同于调用 [enableDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_enabledualstreammode3) 并将 `enabled` 设置为 YES。
 - 两个方法都可以在加入频道前或后调用。如果两个方法都被调用，则以后调用的方法中的设置生效。
 :::
 
@@ -898,14 +898,14 @@ SDK 默认在发送端开启视频小流的自适应模式（`AgoraAutoSimulcast
 
 SDK 默认在发送端开启视频小流的自适应模式（`AgoraAutoSimulcastStream` ），即发送端不会主动发送视频小流。角色为主播的接收端可以通过调用 [setRemoteVideoStreamEx:type:connection:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengineex_setremotevideostreamtypeex) 方法发起视频小流请求，发送端在收到请求后会自动开始发送视频小流。
 
-- 如果你希望修改此行为，可以调用本方法并将 mode 设置为 AgoraDisableSimulcastStream （从不发送视频小流）或 AgoraEnableSimulcastStream （始终发送视频小流）。
-- 如果你希望在修改后恢复默认行为，可以再次调用本方法并将 mode 设置为 AgoraAutoSimulcastStream。
+- 如果你希望修改此行为，可以调用本方法并将 `mode` 设置为 `AgoraDisableSimulcastStream` （从不发送视频小流）或 `AgoraEnableSimulcastStream` （始终发送视频小流）。
+- 如果你希望在修改后恢复默认行为，可以再次调用本方法并将 `mode` 设置为 `AgoraAutoSimulcastStream`。
 
 :::info[注]
 该方法与 [enableDualStreamModeEx:streamConfig:connection:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 的区别如下：
 
-- 当调用本方法并将 mode 设置为 AgoraDisableSimulcastStream 时，效果等同于调用 enableDualStreamModeEx:streamConfig:connection: （NO）。
-- 当调用本方法并将 mode 设置为 AgoraEnableSimulcastStream 时，效果等同于调用 enableDualStreamModeEx:streamConfig:connection: （YES）。
+- 当调用本方法并将 `mode` 设置为 `AgoraDisableSimulcastStream` 时，效果等同于调用 [enableDualStreamModeEx:streamConfig:connection:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) （NO）。
+- 当调用本方法并将 `mode` 设置为 `AgoraEnableSimulcastStream` 时，效果等同于调用 [enableDualStreamModeEx:streamConfig:connection:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) （YES）。
 - 两个方法都可以在加入频道前后调用。如果两个方法都被调用，则以后调用的方法设置优先生效。
 :::
 
@@ -961,9 +961,9 @@ SDK 默认在发送端开启视频小流的自适应模式（`AgoraAutoSimulcast
 
 根据发送端的默认行为以及调用 [setDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_setdualstreammode2) 时的具体设置，你调用此方法的场景如下：
 
-- SDK 默认在发送端启用视频小流自适应模式（AgoraAutoSimulcastStream ），即仅发送视频大流。此时，只有角色为主播的接收端可以调用此方法发起视频小流请求。一旦发送端收到请求后，会自动开始发送视频小流。此时，频道内所有用户都可以调用此方法切换为订阅视频小流模式。
-- 如果发送端调用 setDualStreamMode:streamConfig: 并将 mode 设置为 AgoraDisableSimulcastStream （从不发送视频小流），则调用此方法无效。
-- 如果发送端调用 setDualStreamMode:streamConfig: 并将 mode 设置为 AgoraEnableSimulcastStream （始终发送视频小流），则主播和观众角色的接收端都可以调用此方法切换为订阅视频小流模式。
+- SDK 默认在发送端启用视频小流自适应模式（`AgoraAutoSimulcastStream` ），即仅发送视频大流。此时，只有角色为主播的接收端可以调用此方法发起视频小流请求。一旦发送端收到请求后，会自动开始发送视频小流。此时，频道内所有用户都可以调用此方法切换为订阅视频小流模式。
+- 如果发送端调用 [setDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_setdualstreammode2) 并将 `mode` 设置为 `AgoraDisableSimulcastStream` （从不发送视频小流），则调用此方法无效。
+- 如果发送端调用 [setDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_setdualstreammode2) 并将 `mode` 设置为 `AgoraEnableSimulcastStream` （始终发送视频小流），则主播和观众角色的接收端都可以调用此方法切换为订阅视频小流模式。
 
 SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节省带宽和计算资源。视频小流的默认宽高比与视频大流一致。系统会根据当前视频大流的宽高比，自动分配视频小流的分辨率、帧率和码率。
 
@@ -1012,15 +1012,15 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 根据发送端的默认行为以及调用 [setDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_setdualstreammode2) 时的具体设置，你调用此方法的场景如下：
 
-- SDK 默认在发送端启用视频小流自适应模式（AgoraAutoSimulcastStream ），即仅发送视频大流。此时，只有角色为主播的接收端可以调用此方法发起视频小流请求。发送端收到请求后会自动开始发送视频小流，频道内所有用户都可以调用此方法切换为订阅视频小流模式。
-- 如果发送端调用 setDualStreamMode:streamConfig: 并将 mode 设置为 AgoraDisableSimulcastStream （从不发送视频小流），则调用此方法无效。
-- 如果发送端调用 setDualStreamMode:streamConfig: 并将 mode 设置为 AgoraEnableSimulcastStream （始终发送视频小流），则主播和观众角色的接收端都可以调用此方法切换为订阅视频小流模式。
+- SDK 默认在发送端启用视频小流自适应模式（`AgoraAutoSimulcastStream` ），即仅发送视频大流。此时，只有角色为主播的接收端可以调用此方法发起视频小流请求。发送端收到请求后会自动开始发送视频小流，频道内所有用户都可以调用此方法切换为订阅视频小流模式。
+- 如果发送端调用 [setDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_setdualstreammode2) 并将 `mode` 设置为 `AgoraDisableSimulcastStream` （从不发送视频小流），则调用此方法无效。
+- 如果发送端调用 [setDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_setdualstreammode2) 并将 `mode` 设置为 `AgoraEnableSimulcastStream` （始终发送视频小流），则主播和观众角色的接收端都可以调用此方法切换为订阅视频小流模式。
 
 SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节省带宽和计算资源。视频小流的默认宽高比与视频大流相同。系统会根据当前视频大流的宽高比，自动分配视频小流的分辨率、帧率和码率。
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 如果你同时调用此方法和 setRemoteDefaultVideoStreamType:，以 setRemoteVideoStream:type: 的设置为准。
+- 如果你同时调用此方法和 [setRemoteDefaultVideoStreamType:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype)，以 [setRemoteVideoStream:type:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 的设置为准。
 :::
 
 <a id="api_irtcengine_setremotevideostreamtype__parameters"></a>
@@ -1063,9 +1063,9 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 根据发送端的默认行为以及调用 [setDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_setdualstreammode2) 时的具体设置，你调用此方法的场景如下：
 
-- SDK 默认在发送端启用视频小流自适应模式（AgoraAutoSimulcastStream ），即仅发送视频大流。此时，只有角色为主播的接收端可以调用此方法发起视频小流请求。一旦发送端收到请求，会自动开始发送视频小流。此时，频道内所有用户都可以调用此方法切换为视频小流订阅模式。
-- 如果发送端调用 setDualStreamMode:streamConfig: 并将 mode 设置为 AgoraDisableSimulcastStream （从不发送视频小流），则调用此方法无效。
-- 如果发送端调用 setDualStreamMode:streamConfig: 并将 mode 设置为 AgoraEnableSimulcastStream （始终发送视频小流），则无论你是主播还是观众，都可以调用此方法切换为视频小流订阅模式。
+- SDK 默认在发送端启用视频小流自适应模式（`AgoraAutoSimulcastStream` ），即仅发送视频大流。此时，只有角色为主播的接收端可以调用此方法发起视频小流请求。一旦发送端收到请求，会自动开始发送视频小流。此时，频道内所有用户都可以调用此方法切换为视频小流订阅模式。
+- 如果发送端调用 [setDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_setdualstreammode2) 并将 `mode` 设置为 `AgoraDisableSimulcastStream` （从不发送视频小流），则调用此方法无效。
+- 如果发送端调用 [setDualStreamMode:streamConfig:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_setdualstreammode2) 并将 `mode` 设置为 `AgoraEnableSimulcastStream` （始终发送视频小流），则无论你是主播还是观众，都可以调用此方法切换为视频小流订阅模式。
 
 SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节省带宽和计算资源。视频小流的默认宽高比与视频大流相同。系统会根据当前视频大流的宽高比，自动分配视频小流的分辨率、帧率和码率。
 
@@ -1122,9 +1122,9 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 当远端用户开启双流模式时，你可以调用此方法设置订阅该远端用户发送的视频流的选项。SDK 默认的远端视频流订阅行为取决于注册的视频观察者类型：
 
-- 如果注册了 AgoraVideoFrameDelegate 观察者，默认订阅原始数据和编码数据；
-- 如果注册了 AgoraEncodedVideoFrameDelegate 观察者，默认仅订阅编码数据；
-- 如果同时注册了两种观察者，默认行为遵循最后注册的观察者。例如，如果最后注册的是 AgoraVideoFrameDelegate 观察者，则默认订阅原始数据和编码数据。
+- 如果注册了 [AgoraVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoframeobserver) 观察者，默认订阅原始数据和编码数据；
+- 如果注册了 [AgoraEncodedVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoencodedframeobserver) 观察者，默认仅订阅编码数据；
+- 如果同时注册了两种观察者，默认行为遵循最后注册的观察者。例如，如果最后注册的是 [AgoraVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoframeobserver) 观察者，则默认订阅原始数据和编码数据。
 
 如果你希望修改默认行为，或为不同的 `uid` 设置不同的订阅选项，可以调用此方法进行设置。
 
@@ -1218,7 +1218,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 :::info[注]
 - 你可以在加入频道之前或之后调用此方法。
-- 白名单不受 muteRemoteAudioStream:mute:、 muteAllRemoteAudioStreams: 和 AgoraRtcChannelMediaOptions 中的 autoSubscribeAudio 设置的影响。
+- 白名单不受 [muteRemoteAudioStream:mute:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 和 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置的影响。
 - 一旦设置了订阅白名单，即使你离开当前频道并重新加入频道，该设置仍然有效。
 - 如果某个用户同时被添加到白名单和黑名单中，则仅黑名单生效。
 :::
@@ -1259,7 +1259,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 白名单不受 muteRemoteAudioStream、 muteAllRemoteAudioStreams 和 AgoraRtcChannelMediaOptions 中的 autoSubscribeAudio 设置的影响。
+- 白名单不受 `muteRemoteAudioStream`、 `muteAllRemoteAudioStreams` 和 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置的影响。
 - 一旦设置了订阅白名单，即使你离开当前频道并重新加入频道，该设置仍然有效。
 - 如果某个用户同时被添加到白名单和黑名单中，只有黑名单生效。
 :::
@@ -1310,7 +1310,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 黑名单不受 muteRemoteAudioStream:mute:、 muteAllRemoteAudioStreams: 和 AgoraRtcChannelMediaOptions 中的 autoSubscribeAudio 设置的影响。
+- 黑名单不受 [muteRemoteAudioStream:mute:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 和 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置的影响。
 - 一旦设置了订阅黑名单，即使你离开当前频道并重新加入，该设置仍然有效。
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。
 :::
@@ -1351,7 +1351,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 黑名单不受 muteRemoteAudioStream:mute:、 muteAllRemoteAudioStreams: 和 AgoraRtcChannelMediaOptions 中的 autoSubscribeAudio 设置影响。
+- 黑名单不受 [muteRemoteAudioStream:mute:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 和 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置影响。
 - 一旦设置了订阅黑名单，即使你离开当前频道并重新加入，该设置仍然有效。
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。
 :::
@@ -1402,7 +1402,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用该方法。
-- 白名单不受 muteRemoteVideoStream:mute:、 muteAllRemoteVideoStreams: 和 AgoraRtcChannelMediaOptions 中的 autoSubscribeAudio 设置的影响。
+- 白名单不受 [muteRemoteVideoStream:mute:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [muteAllRemoteVideoStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 和 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置的影响。
 - 一旦设置了订阅白名单，即使你离开当前频道并重新加入频道，该设置仍然有效。
 - 如果某个用户同时被添加到白名单和黑名单中，则只有黑名单生效。
 :::
@@ -1443,7 +1443,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 白名单不受 muteRemoteVideoStream:mute:、 muteAllRemoteVideoStreams: 和 AgoraRtcChannelMediaOptions 中的 autoSubscribeAudio 设置的影响。
+- 白名单不受 [muteRemoteVideoStream:mute:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [muteAllRemoteVideoStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 和 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置的影响。
 - 一旦设置了订阅白名单，即使你离开并重新加入当前频道，该设置仍然有效。
 - 如果某个用户同时被加入白名单和黑名单，则只有黑名单生效。
 :::
@@ -1494,7 +1494,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 该 blocklist 不受 muteRemoteVideoStream、 muteAllRemoteVideoStreams 和 AgoraRtcChannelMediaOptions 中的 autoSubscribeAudio 设置的影响。
+- 该 blocklist 不受 `muteRemoteVideoStream`、 `muteAllRemoteVideoStreams` 和 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置的影响。
 - 一旦设置了订阅的 blocklist，即使你离开并重新加入频道，该设置仍然有效。
 - 如果某个用户同时被添加到 allowlist 和 blocklist 中，只有 blocklist 生效。
 :::
@@ -1535,7 +1535,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 阻止名单不受 muteRemoteVideoStream:mute:、 muteAllRemoteVideoStreams: 和 AgoraRtcChannelMediaOptions 中的 autoSubscribeAudio 设置影响。
+- 阻止名单不受 [muteRemoteVideoStream:mute:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [muteAllRemoteVideoStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 和 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置影响。
 - 一旦设置了订阅的阻止名单，即使你离开当前频道并重新加入频道，该设置仍然有效。
 - 如果某个用户同时被添加到允许名单和阻止名单中，则仅阻止名单生效。
 :::

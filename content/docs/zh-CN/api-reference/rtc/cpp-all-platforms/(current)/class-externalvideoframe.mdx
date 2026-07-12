@@ -85,8 +85,8 @@ struct ExternalVideoFrame {
 
 仅适用于 Texture 格式的视频数据。
 
-- 使用 Khronos 定义的 OpenGL 接口（javax.microedition.khronos.egl.*）时，将该字段设置为 eglContext。
-- 使用 Android 定义的 OpenGL 接口（android.opengl.*）时，也将该字段设置为 eglContext。
+- 使用 Khronos 定义的 OpenGL 接口（javax.microedition.khronos.egl.*）时，将该字段设置为 `eglContext`。
+- 使用 Android 定义的 OpenGL 接口（android.opengl.*）时，也将该字段设置为 `eglContext`。
 
 ### `eglType`
 
@@ -122,7 +122,7 @@ struct ExternalVideoFrame {
 对于 BGRA 或 RGBA 格式的视频数据，可以通过以下任一方式设置 Alpha 通道数据：
 
 - 将该参数设置为 true，自动提取。
-- 通过 alphaBuffer 参数手动设置。
+- 通过 `alphaBuffer` 参数手动设置。
 :::
 
 仅适用于 BGRA 或 RGBA 格式的视频数据。是否从视频帧中提取 Alpha 通道数据并自动填充到 `alphaBuffer`：

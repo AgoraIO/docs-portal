@@ -46,9 +46,9 @@ public class AudioRecordingConfiguration {
 
 录制内容选项：
 
-- AUDIO_FILE_RECORDING_MIC (1)：仅录制本地用户的音频。
-- AUDIO_FILE_RECORDING_PLAYBACK (2)：仅录制所有远端用户的音频。
-- AUDIO_FILE_RECORDING_MIXED (3)：（默认）录制本地和所有远端用户的混音音频。
+- `AUDIO_FILE_RECORDING_MIC (1)`：仅录制本地用户的音频。
+- `AUDIO_FILE_RECORDING_PLAYBACK (2)`：仅录制所有远端用户的音频。
+- `AUDIO_FILE_RECORDING_MIXED (3)`：（默认）录制本地和所有远端用户的混音音频。
 
 ### `quality`
 
@@ -58,18 +58,18 @@ public class AudioRecordingConfiguration {
 
 录音音质等级：
 
-- AUDIO_RECORDING_QUALITY_LOW (0)：低音质。例如采样率为 32000 Hz、录制 10 分钟的 AAC 文件大小约为 1.2 MB。
-- AUDIO_RECORDING_QUALITY_MEDIUM (1)：（默认）中等音质，文件大小约为 2 MB。
-- AUDIO_RECORDING_QUALITY_HIGH (2)：高音质，文件大小约为 3.75 MB。
-- AUDIO_RECORDING_QUALITY_ULTRA_HIGH (3)：超高音质，采样率为 32 kHz，录制 10 分钟后的文件大小约为 7.5 MB。
+- `AUDIO_RECORDING_QUALITY_LOW (0)`：低音质。例如采样率为 32000 Hz、录制 10 分钟的 AAC 文件大小约为 1.2 MB。
+- `AUDIO_RECORDING_QUALITY_MEDIUM (1)`：（默认）中等音质，文件大小约为 2 MB。
+- `AUDIO_RECORDING_QUALITY_HIGH (2)`：高音质，文件大小约为 3.75 MB。
+- `AUDIO_RECORDING_QUALITY_ULTRA_HIGH (3)`：超高音质，采样率为 32 kHz，录制 10 分钟后的文件大小约为 7.5 MB。
 
 ### `recordingChannel`
 
 :::info[注]
 实际录制的音频声道与采集的音频声道有关。
 
-- 如果采集的是单声道， recordingChannel 为 2，则录制数据为从单声道复制的双声道数据，而非真正的立体声。
-- 如果采集的是双声道， recordingChannel 为 1，则录制数据为将双声道混合后的单声道。
+- 如果采集的是单声道， `recordingChannel` 为 `2`，则录制数据为从单声道复制的双声道数据，而非真正的立体声。
+- 如果采集的是双声道， `recordingChannel` 为 `1`，则录制数据为将双声道混合后的单声道。
 
 集成方案也会影响最终录制的音频声道。如需立体声录制，请[联系技术支持](https://ticket.shengwang.cn/)。
 :::

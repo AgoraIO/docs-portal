@@ -64,9 +64,10 @@ public abstract enableEncryption(enabled: boolean, config: EncryptionConfig): nu
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败
+
   - -2: 调用了无效的参数。需重新指定参数。
   - -4: 设置的加密模式不正确或加载外部加密库失败。需检查枚举值是否正确或重新加载外部加密库。
-  - -7: SDK 尚未初始化。需在调用 API 之前已创建 RtcEngine 对象并完成初始化。
+  - -7: SDK 尚未初始化。需在调用 API 之前已创建 [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 对象并完成初始化。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
@@ -344,8 +345,8 @@ public abstract startLastmileProbeTest(config: LastmileProbeConfig): number;
 
 成功调用该方法后，SDK 会依次触发如下 2 个回调：
 
-- onLastmileQuality，视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
-- onLastmileProbeResult，视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
+- [onLastmileQuality](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onlastmilequality)，视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
+- [onLastmileProbeResult](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onlastmileproberesult)，视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
 
 <a id="api_irtcengine_startlastmileprobetest__parameters"></a>
 

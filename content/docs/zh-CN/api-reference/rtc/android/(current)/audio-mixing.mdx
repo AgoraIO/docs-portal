@@ -148,8 +148,8 @@ public abstract int getAudioMixingCurrentPosition();
 <a id="api_irtcengine_getaudiomixingcurrentposition__detailed_desc"></a>
 
 :::info[注]
-- 你需要在调用 startAudioMixing 并收到 onAudioMixingStateChanged （AUDIO_MIXING_STATE_PLAYING ）回调后调用此方法。
-- 如果需要多次调用 getAudioMixingCurrentPosition，请确保两次调用之间的时间间隔大于 500 毫秒。
+- 你需要在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用此方法。
+- 如果需要多次调用 [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/android/audio-mixing#api_irtcengine_getaudiomixingcurrentposition)，请确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
 <a id="api_irtcengine_getaudiomixingcurrentposition__return_values"></a>
@@ -364,7 +364,7 @@ public abstract int selectAudioTrack(int audioIndex);
 
 :::info[注]
 - 支持的音频文件格式详见[声网 RTC SDK 支持哪些格式的音频文件](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。
-- 你需要在调用 startAudioMixing 并收到 onAudioMixingStateChanged （AUDIO_MIXING_STATE_PLAYING ）回调后再调用该方法。
+- 你需要在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后再调用该方法。
 :::
 
 <a id="api_irtcengine_selectaudiotrack__parameters"></a>
@@ -622,12 +622,13 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
 该方法支持播放以 `content://` 开头的 URI 文件。支持的音频文件格式详见声网 RTC SDK 支持的音频文件格式。如果本地音乐文件不存在、SDK 不支持该文件格式，或无法访问音乐文件的 URL，SDK 会上报 `AUDIO_MIXING_REASON_CAN_NOT_OPEN`。
 
 :::info[注]
-- 如果调用该方法播放短音效文件，可能会播放失败。建议使用 playEffect 播放此类文件。
+- 如果调用该方法播放短音效文件，可能会播放失败。建议使用 `playEffect` 播放此类文件。
 - 如果需要多次调用该方法，确保每次调用的时间间隔大于 500 毫秒。
 - 在 Android 平台上，有以下注意事项：
+
   - 使用该方法时，需确保 Android 设备版本为 v4.2 或更高，API 版本为 v16 或更高。
   - 如果需要播放在线音乐文件，不建议使用重定向的 URL 地址。部分 Android 设备可能无法打开重定向的 URL。
-  - 如果在模拟器上调用该方法，需确保音乐文件位于 /sdcard/ 目录下，且格式为 MP3。
+  - 如果在模拟器上调用该方法，需确保音乐文件位于 `/sdcard/` 目录下，且格式为 MP3。
 :::
 
 <a id="api_irtcengine_startaudiomixing__timing"></a>
@@ -654,8 +655,8 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
 
 文件路径。支持以下类型：
 
-- 以 content:// 开头的 URI 地址。
-- 以 /assets/ 开头的路径。
+- 以 `content://` 开头的 URI 地址。
+- 以 `/assets/` 开头的路径。
 - URL。
 - 本地文件的绝对路径，需精确到文件名及扩展名。
 
@@ -681,12 +682,14 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -3：SDK 未就绪：
+
     - 音频模块未启用。
     - 程序未完成。
-    - RtcEngine 初始化失败。请重新初始化 RtcEngine。
+    - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -708,12 +711,13 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
 该方法支持播放以 `content://` 开头的 URI 文件。如果本地音乐文件不存在、SDK 不支持该文件格式，或无法访问音乐文件的 URL，SDK 会返回 `AUDIO_MIXING_REASON_CAN_NOT_OPEN`。
 
 :::info[注]
-- 如果你调用该方法播放短音效文件，可能会播放失败。声网建议使用 playEffect 方法播放此类文件。
+- 如果你调用该方法播放短音效文件，可能会播放失败。声网建议使用 `playEffect` 方法播放此类文件。
 - 如果你需要多次调用该方法，请确保每次调用之间的时间间隔大于 500 毫秒。
 - 在 Android 平台上，请注意以下事项：
+
   - 设备需为 Android v4.2 或更高版本，且 API 版本为 v16 或更高。
   - 如果播放在线音乐文件，声网不建议使用重定向的 URL 地址，部分 Android 设备可能无法打开此类地址。
-  - 如果在模拟器上调用该方法，请确保音乐文件位于 /sdcard/ 目录下，且格式为 MP3。
+  - 如果在模拟器上调用该方法，请确保音乐文件位于 `/sdcard/` 目录下，且格式为 MP3。
 :::
 
 <a id="api_irtcengine_startaudiomixing2__timing"></a>
@@ -760,12 +764,14 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无明确原因）。
   - -2：参数无效。
   - -3：SDK 未就绪：
+
     - 音频模块未启用。
     - 程序未完成。
-    - RtcEngine 初始化失败，请重新初始化 RtcEngine。
+    - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 初始化失败，请重新初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -894,22 +900,22 @@ public void onAudioMixingStateChanged(int state, int reason)
 
 音乐文件的播放状态：
 
-- AUDIO_MIXING_STATE_PLAYING (710)：音乐文件正在播放。
-- AUDIO_MIXING_STATE_PAUSED (711)：音乐文件暂停播放。
-- AUDIO_MIXING_STATE_STOPPED (713)：音乐文件停止播放。
-- AUDIO_MIXING_STATE_FAILED (714)：播放音乐文件时出现异常，SDK 会通过 reason 参数返回具体原因。
+- `AUDIO_MIXING_STATE_PLAYING` (710)：音乐文件正在播放。
+- `AUDIO_MIXING_STATE_PAUSED` (711)：音乐文件暂停播放。
+- `AUDIO_MIXING_STATE_STOPPED` (713)：音乐文件停止播放。
+- `AUDIO_MIXING_STATE_FAILED` (714)：播放音乐文件时出现异常，SDK 会通过 `reason` 参数返回具体原因。
 
 #### `reason`
 
 错误码：
 
-- AUDIO_MIXING_REASON_OK (0)：没有错误。
-- AUDIO_MIXING_REASON_CAN_NOT_OPEN (701)：SDK 无法打开音乐文件。
-- AUDIO_MIXING_REASON_TOO_FREQUENT_CALL (702)：SDK 打开音乐文件过于频繁。
-- AUDIO_MIXING_REASON_INTERRUPTED_EOF (703)：音乐文件播放被中断。
-- AUDIO_MIXING_REASON_ONE_LOOP_COMPLETED (721)：音乐文件完成一次循环播放。
-- AUDIO_MIXING_REASON_ALL_LOOPS_COMPLETED (723)：音乐文件完成所有循环播放。
-- AUDIO_MIXING_REASON_STOPPED_BY_USER (724)：通过调用 stopAudioMixing 停止音乐文件播放。
+- `AUDIO_MIXING_REASON_OK` (0)：没有错误。
+- `AUDIO_MIXING_REASON_CAN_NOT_OPEN` (701)：SDK 无法打开音乐文件。
+- `AUDIO_MIXING_REASON_TOO_FREQUENT_CALL` (702)：SDK 打开音乐文件过于频繁。
+- `AUDIO_MIXING_REASON_INTERRUPTED_EOF` (703)：音乐文件播放被中断。
+- `AUDIO_MIXING_REASON_ONE_LOOP_COMPLETED` (721)：音乐文件完成一次循环播放。
+- `AUDIO_MIXING_REASON_ALL_LOOPS_COMPLETED` (723)：音乐文件完成所有循环播放。
+- `AUDIO_MIXING_REASON_STOPPED_BY_USER` (724)：通过调用 [stopAudioMixing](/zh-CN/api-reference/rtc/android/audio-mixing#api_irtcengine_stopaudiomixing) 停止音乐文件播放。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

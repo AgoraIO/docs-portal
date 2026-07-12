@@ -113,7 +113,7 @@ public virtual bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame
 
 :::info[注]
 - 如果你获取到的视频数据类型为 RGBA，SDK 不支持对 Alpha 通道的值进行处理。
-- 建议你在修改 videoFrame 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+- 建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
 :::
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__timing"></a>
@@ -161,9 +161,9 @@ public virtual bool OnPreEncodeVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFra
 成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取编码前的视频数据，然后根据场景需要，对视频数据进行处理。 完成处理后，你可以在该回调中，传入处理后的视频数据将其发送回 SDK。
 
 :::info[注]
-- 你需要通过 RegisterVideoFrameObserver 的 position 参数设置观测 POSITION_PRE_ENCODER (1 &lt;&lt; 2) 后，才能使用该回调获取本地视频编码前的视频数据。
+- 你需要通过 [RegisterVideoFrameObserver](/zh-CN/api-reference/rtc/unity/video-raw#api_imediaengine_registervideoframeobserver) 的 `position` 参数设置观测 `POSITION_PRE_ENCODER` (1 &lt;&lt; 2) 后，才能使用该回调获取本地视频编码前的视频数据。
 - 此处获取的视频数据已经过前处理，如裁剪、旋转和美颜等。
-- 建议你在修改 videoFrame 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+- 建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
 :::
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__parameters"></a>

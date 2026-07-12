@@ -190,8 +190,8 @@ public abstract int registerExtension(String provider, String extension, Constan
 
 <a id="api_irtcengine_registerextension__detailed_desc"></a>
 
-- 对于 SDK 外部的扩展（例如来自云市场和 SDK 扩展），你需要在调用 registerExtension 之前先通过 addExtension 加载它们。
-- 对于 SDK 内部的扩展（即包含在完整 SDK 包中的扩展），在初始化 RtcEngine 后会自动加载并注册。
+- 对于 SDK 外部的扩展（例如来自云市场和 SDK 扩展），你需要在调用 [registerExtension](/zh-CN/api-reference/rtc/android/extension#api_irtcengine_registerextension) 之前先通过 [addExtension](/zh-CN/api-reference/rtc/android/extension#api_irtcengine_addextension) 加载它们。
+- 对于 SDK 内部的扩展（即包含在完整 SDK 包中的扩展），在初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 后会自动加载并注册。
 
 :::info[注]
 - 如果你想注册多个扩展，需要多次调用此方法。
@@ -204,8 +204,8 @@ public abstract int registerExtension(String provider, String extension, Constan
 
 声网建议你在初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 后、加入频道前调用此方法。
 
-- 对于视频扩展（如美颜特效扩展），你需要在调用 enableVideo 或 enableLocalVideo 启用视频模块后再调用此方法。
-- 在调用此方法之前，你需要先调用 addExtension 加载扩展。
+- 对于视频扩展（如美颜特效扩展），你需要在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_enablevideo) 或 [enableLocalVideo](/zh-CN/api-reference/rtc/android/video-basic#api_irtcengine_enablelocalvideo) 启用视频模块后再调用此方法。
+- 在调用此方法之前，你需要先调用 [addExtension](/zh-CN/api-reference/rtc/android/extension#api_irtcengine_addextension) 加载扩展。
 
 <a id="api_irtcengine_registerextension__parameters"></a>
 
@@ -229,6 +229,7 @@ public abstract int registerExtension(String provider, String extension, Constan
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -3：扩展库未加载。建议你检查动态库的存储位置或名称。
 
 ### 所属接口类

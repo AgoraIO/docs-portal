@@ -48,7 +48,8 @@ description: "启用音视频帧的极速渲染。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
-  - -7：在 AgoraRtcEngineKit 初始化前调用该方法。
+
+  - -7：在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 初始化前调用该方法。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
@@ -123,7 +124,7 @@ description: "启用音视频帧的极速渲染。"
 
 调用时序：
 
-- 请确保在调用该方法前已调用 setupLocalVideo: 方法初始化本地视频视图。
+- 请确保在调用该方法前已调用 [setupLocalVideo:](/zh-CN/api-reference/rtc/ios/video-rendering#api_irtcengine_setuplocalvideo) 方法初始化本地视频视图。
 - 通话过程中，你可以多次调用该方法更新本地视频视图的显示模式。
 
 <a id="api_irtcengine_setlocalrendermode2__parameters"></a>
@@ -254,7 +255,7 @@ description: "启用音视频帧的极速渲染。"
 初始化远端用户的视频视图后，你可以调用该方法更新其渲染模式和镜像模式。该方法仅影响本地用户看到的视频视图。
 
 :::info[注]
-- 调用该方法前需先通过 setupRemoteVideo: 方法初始化远端视图。
+- 调用该方法前需先通过 [setupRemoteVideo:](/zh-CN/api-reference/rtc/ios/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图。
 - 通话过程中，你可以多次调用该方法以更新远端用户视频视图的显示模式。
 :::
 
@@ -304,7 +305,7 @@ description: "启用音视频帧的极速渲染。"
 你可以调用该方法更新远端用户的视频渲染模式和镜像模式。该方法仅影响你本地看到的远端用户视频视图。
 
 :::info[注]
-- 请在调用 setupRemoteVideo: 方法初始化远端视图后调用该方法。
+- 请在调用 [setupRemoteVideo:](/zh-CN/api-reference/rtc/ios/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后调用该方法。
 - 通话过程中，你可以根据需要多次调用该方法更新远端用户视频视图的显示模式。
 :::
 
@@ -489,8 +490,8 @@ description: "启用音视频帧的极速渲染。"
 该方法在本地设备上初始化远端视频流的视频视图，仅影响你本地看到的视频画面。调用该方法可以将远端视频流绑定到指定视图，并设置该视图的渲染模式和镜像模式。你需要在该方法中指定远端用户 ID。如果你尚未获取远端用户 ID，请在收到 [rtcEngine:didJoinedOfUid:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onuserjoined) 回调后再设置。 若要解绑远端用户与视图的绑定关系，请将 `view` 参数设置为 nil。一旦远端用户离开频道，SDK 会自动解绑该用户。 在移动端进行合流视频自定义布局的场景中，你可以调用该方法，并为合流视频流中的每个子视频流设置独立的 `view` 进行渲染。
 
 :::info[注]
-- 若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 setRemoteRenderMode 方法。
-- 使用录制服务时，应用无需绑定视图，因为录制服务不会发送视频流。如果你的应用无法识别录制服务，请在 SDK 触发 rtcEngine:firstRemoteVideoDecodedOfUid:size:elapsed: 回调时将远端用户绑定到视图。
+- 若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 `setRemoteRenderMode` 方法。
+- 使用录制服务时，应用无需绑定视图，因为录制服务不会发送视频流。如果你的应用无法识别录制服务，请在 SDK 触发 [rtcEngine:firstRemoteVideoDecodedOfUid:size:elapsed:](/zh-CN/api-reference/rtc/ios/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时将远端用户绑定到视图。
 :::
 
 <a id="api_irtcengine_setupremotevideo__parameters"></a>
@@ -580,7 +581,7 @@ description: "启用音视频帧的极速渲染。"
 从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:](/zh-CN/api-reference/rtc/ios/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关事件信息。
 
 :::info[注]
-- 如果你未调用该方法，SDK 会从调用 joinChannelByToken:channelId:uid:mediaOptions:joinSuccess: 加入频道开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时机调用该方法，以设置追踪视频渲染事件的起始位置。
+- 如果你未调用该方法，SDK 会从调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时机调用该方法，以设置追踪视频渲染事件的起始位置。
 - 本地用户离开当前频道后，SDK 会自动从你加入频道的时刻开始追踪视频渲染事件。
 :::
 
@@ -596,7 +597,8 @@ description: "启用音视频帧的极速渲染。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
-  - -7：在初始化 AgoraRtcEngineKit 之前调用该方法。
+
+  - -7：在初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 之前调用该方法。
 
 ### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
@@ -622,7 +624,7 @@ description: "启用音视频帧的极速渲染。"
 从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:](/zh-CN/api-reference/rtc/ios/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关信息。
 
 :::info[注]
-- 如果你未调用该方法，SDK 会从调用 joinChannelByToken 加入频道时开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时机调用该方法，以设置追踪视频渲染事件的起始位置。
+- 如果你未调用该方法，SDK 会从调用 `joinChannelByToken` 加入频道时开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时机调用该方法，以设置追踪视频渲染事件的起始位置。
 - 本地用户离开当前频道后，SDK 会自动从你加入频道的时刻开始追踪视频渲染事件。
 :::
 

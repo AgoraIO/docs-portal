@@ -61,7 +61,7 @@ struct SpatialAudioParams {
 
 是否开启空气吸收效果，用于模拟声音在空气中传播时的衰减特性。在一定传播距离下，高频声音衰减较快，低频声音衰减较慢。
 
-- true：（默认）开启空气吸收。请确保 speaker_attenuation 的值不为 0，否则该设置不生效。
+- true：（默认）开启空气吸收。请确保 `speaker_attenuation` 的值不为 `0`，否则该设置不生效。
 - false：关闭空气吸收。
 
 ### `speaker_attenuation`
@@ -69,9 +69,9 @@ struct SpatialAudioParams {
 远端用户或媒体播放器的声音衰减系数，取值范围为 [0, 1]。
 
 - 0：广播模式，音量和音色不随距离衰减，本地用户听到的音量和音色不变。
-- (0, 0.5)：弱衰减模式，音量和音色在传播过程中轻微衰减，声音传播距离比真实环境更远。需同时开启 enable_air_absorb。
-- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 speaker_attenuation。
-- (0.5, 1]：强衰减模式，音量和音色在传播过程中快速衰减。需同时开启 enable_air_absorb。
+- (0, 0.5)：弱衰减模式，音量和音色在传播过程中轻微衰减，声音传播距离比真实环境更远。需同时开启 `enable_air_absorb`。
+- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 `speaker_attenuation`。
+- (0.5, 1]：强衰减模式，音量和音色在传播过程中快速衰减。需同时开启 `enable_air_absorb`。
 
 ### `enable_doppler`
 

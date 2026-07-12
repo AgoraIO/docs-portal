@@ -46,8 +46,8 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 
 是否取消订阅所有远端用户的音频流：
 
-- true: 取消订阅所有远端用户的音频流。
-- false:（默认）订阅所有远端用户的音频流。
+- `true`: 取消订阅所有远端用户的音频流。
+- `false`:（默认）订阅所有远端用户的音频流。
 
 <a id="api_irtcengine_muteallremoteaudiostreams__return_values"></a>
 
@@ -79,7 +79,7 @@ public abstract int MuteAllRemoteAudioStreamsEx(bool mute, RtcConnection connect
 
 :::warning[注意]
 - 该方法需要在加入频道后调用。
-- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 JoinChannel [2/2] 加入频道时设置 autoSubscribeAudio 为 false。
+- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeAudio 为 `false`。
 :::
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__parameters"></a>
@@ -90,8 +90,8 @@ public abstract int MuteAllRemoteAudioStreamsEx(bool mute, RtcConnection connect
 
 是否取消订阅所有远端用户的音频流：
 
-- true: 取消订阅所有远端用户的音频流。
-- false:（默认）订阅所有远端用户的音频流。
+- `true`: 取消订阅所有远端用户的音频流。
+- `false`:（默认）订阅所有远端用户的音频流。
 
 #### `connection`
 
@@ -147,8 +147,8 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 
 是否取消订阅所有远端用户的视频流。
 
-- true: 取消订阅所有用户的视频流。
-- false:（默认）订阅所有用户的视频流。
+- `true`: 取消订阅所有用户的视频流。
+- `false`:（默认）订阅所有用户的视频流。
 
 <a id="api_irtcengine_muteallremotevideostreams__return_values"></a>
 
@@ -186,8 +186,8 @@ public abstract int MuteAllRemoteVideoStreamsEx(bool mute, RtcConnection connect
 
 是否取消订阅所有远端用户的视频流。
 
-- true: 取消订阅所有用户的视频流。
-- false:（默认）订阅所有用户的视频流。
+- `true`: 取消订阅所有用户的视频流。
+- `false`:（默认）订阅所有用户的视频流。
 
 #### `connection`
 
@@ -245,8 +245,8 @@ public abstract int MuteLocalAudioStream(bool mute);
 
 是否取消发布本地音频流。
 
-- true: 取消发布。
-- false:（默认）发布。
+- `true`: 取消发布。
+- `false`:（默认）发布。
 
 <a id="api_irtcengine_mutelocalaudiostream__return_values"></a>
 
@@ -288,8 +288,8 @@ public abstract int MuteLocalAudioStreamEx(bool mute, RtcConnection connection);
 
 是否取消发布本地音频流。
 
-- true: 取消发布。
-- false:（默认）发布。
+- `true`: 取消发布。
+- `false`:（默认）发布。
 
 #### `connection`
 
@@ -349,8 +349,8 @@ public abstract int MuteLocalVideoStream(bool mute);
 
 是否取消发送本地视频流。
 
-- true: 取消发送本地视频流。
-- false: （默认）发送本地视频流。
+- `true`: 取消发送本地视频流。
+- `false`: （默认）发送本地视频流。
 
 <a id="api_irtcengine_mutelocalvideostream__return_values"></a>
 
@@ -392,8 +392,8 @@ public abstract int MuteLocalVideoStreamEx(bool mute, RtcConnection connection);
 
 是否取消发送本地视频流。
 
-- true: 取消发送本地视频流。
-- false: （默认）发送本地视频流。
+- `true`: 取消发送本地视频流。
+- `false`: （默认）发送本地视频流。
 
 #### `connection`
 
@@ -453,8 +453,8 @@ public abstract int MuteRemoteAudioStream(uint uid, bool mute);
 
 是否取消订阅指定远端用户的音频流。
 
-- true: 取消订阅指定用户的音频流。
-- false:（默认）订阅指定用户的音频流。
+- `true`: 取消订阅指定用户的音频流。
+- `false`:（默认）订阅指定用户的音频流。
 
 <a id="api_irtcengine_muteremoteaudiostream__return_values"></a>
 
@@ -496,8 +496,8 @@ public abstract int MuteRemoteAudioStreamEx(uint uid, bool mute, RtcConnection c
 
 是否停止接收指定音频流：
 
-- true: 停止接收指定音频流。
-- false:（默认）继续接收指定音频流。
+- `true`: 停止接收指定音频流。
+- `false`:（默认）继续接收指定音频流。
 
 #### `connection`
 
@@ -557,8 +557,8 @@ public abstract int MuteRemoteVideoStream(uint uid, bool mute);
 
 是否取消订阅指定远端用户的视频流。
 
-- true: 取消订阅指定用户的视频流。
-- false: （默认）订阅指定用户的视频流。
+- `true`: 取消订阅指定用户的视频流。
+- `false`: （默认）订阅指定用户的视频流。
 
 <a id="api_irtcengine_muteremotevideostream__return_values"></a>
 
@@ -600,8 +600,8 @@ public abstract int MuteRemoteVideoStreamEx(uint uid, bool mute, RtcConnection c
 
 是否停止接收某个远端用户的视频：
 
-- true: 停止接收。
-- false: （默认）恢复接收。
+- `true`: 停止接收。
+- `false`: （默认）恢复接收。
 
 #### `connection`
 
@@ -635,8 +635,8 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 当远端发送双流时，可调用此方法来设置远端视频流的订阅选项。SDK 对远端视频流的默认订阅行为取决于注册的视频观测器类型：
 
-- 如果注册的是 IVideoFrameObserver 观测器，则默认订阅原始数据和编码后的数据。
-- 如果注册的是 IVideoEncodedFrameObserver 观测器，则默认仅订阅编码后的数据。
+- 如果注册的是 [IVideoFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ivideoframeobserver) 观测器，则默认订阅原始数据和编码后的数据。
+- 如果注册的是 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_ivideoencodedframeobserver) 观测器，则默认仅订阅编码后的数据。
 - 如果注册了两种观测器，则默认跟随后注册的视频观测器。举例来说，如果后注册的是 IVideoFrameObserver 观测器，则默认订阅原始数据和编码后的数据。
 
 如果你想修改以上默认行为，或者想针对不同 `uid` 设置不同的订阅选项，可调用该方法设置。
@@ -727,7 +727,7 @@ public abstract int SetSubscribeAudioAllowlist(uint[] uidList, int uidNumber);
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
-- 音频订阅白名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 的影响。
+- 音频订阅白名单不受 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 autoSubscribeAudio 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -776,7 +776,7 @@ public abstract int GetCacheDir(out string path, int length);
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
-- 音频订阅白名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 的影响。
+- 音频订阅白名单不受 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 autoSubscribeAudio 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -829,7 +829,7 @@ public abstract int SetSubscribeAudioBlocklist(uint[] uidList, int uidNumber);
 
 :::warning[注意]
 - 该方法在加入频道前后均可调用。
-- 音频订阅黑名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 影响。
+- 音频订阅黑名单不受 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 autoSubscribeAudio 影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -878,7 +878,7 @@ public abstract int SetSubscribeAudioBlocklist(uint[] uidList, int uidNumber);
 
 :::warning[注意]
 - 该方法在加入频道前后均可调用。
-- 音频订阅黑名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 影响。
+- 音频订阅黑名单不受 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 autoSubscribeAudio 影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -931,7 +931,7 @@ public abstract int SetSubscribeVideoAllowlist(uint[] uidList, int uidNumber);
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
-- 视频订阅白名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅白名单不受 [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -980,7 +980,7 @@ public abstract int SetSubscribeVideoAllowlistEx(uint[] uidList, int uidNumber, 
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
-- 视频订阅白名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅白名单不受 [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1033,7 +1033,7 @@ public abstract int SetSubscribeVideoBlocklist(uint[] uidList, int uidNumber);
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
-- 视频订阅黑名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅黑名单不受 [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1082,7 +1082,7 @@ public abstract int SetSubscribeVideoBlocklistEx(uint[] uidList, int uidNumber, 
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
-- 视频订阅黑名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅黑名单不受 [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::

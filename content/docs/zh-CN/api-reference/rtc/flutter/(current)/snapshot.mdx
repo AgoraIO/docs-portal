@@ -25,7 +25,7 @@ Future<void> enableContentInspect(
 
 :::info[注]
 - 调用该方法前，请确保已在声网控制台开通本地截图上传服务。
-- 视频审核模块选择声网自研插件截图上传（contentInspectSupervision ）时需集成本地截图上传动态库 libagora_content_inspect_extension.dll，如果删除该动态库会导致无法正常开启本地截图上传功能。
+- 视频审核模块选择声网自研插件截图上传（`contentInspectSupervision` ）时需集成本地截图上传动态库 `libagora_content_inspect_extension.dll`，如果删除该动态库会导致无法正常开启本地截图上传功能。
 :::
 
 <a id="api_irtcengine_enablecontentinspect__timing"></a>
@@ -133,7 +133,7 @@ Future<void> takeSnapshot({required int uid, required String filePath});
 
 :::info[注]
 - 该方法是异步操作，调用返回时 SDK 并没有真正获取截图。
-- 该方法用于本地视频截图时，是对 ChannelMediaOptions 中指定发布的视频流进行截图。
+- 该方法用于本地视频截图时，是对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中指定发布的视频流进行截图。
 - 如果用户的视频经过前处理，例如，添加了水印或美颜，生成的截图会包含前处理效果。
 :::
 
@@ -165,10 +165,10 @@ Future<void> takeSnapshot({required int uid, required String filePath});
 
 截图的本地保存路径，需精确到文件名及格式，例如：
 
-- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg
-- iOS: /App Sandbox/Library/Caches/example.jpg
-- macOS: ～/Library/Logs/example.jpg
-- Android: /storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg
+- Windows: `C:\Users\<user_name>\AppData\Local\Agora\<process_name>\example.jpg`
+- iOS: `/App Sandbox/Library/Caches/example.jpg`
+- macOS: `～/Library/Logs/example.jpg`
+- Android: `/storage/emulated/0/Android/data/<package name>/files/example.jpg`
 
 <a id="api_irtcengine_takesnapshot__return_values"></a>
 
@@ -198,7 +198,7 @@ Future<void> takeSnapshotWithConfig(
 
 :::info[注]
 - 该方法是异步操作，调用返回时 SDK 并没有真正获取截图。
-- 该方法用于本地视频截图时，是对 ChannelMediaOptions 中指定发布的视频流进行截图。
+- 该方法用于本地视频截图时，是对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中指定发布的视频流进行截图。
 :::
 
 <a id="api_irtcengine_takesnapshot2__timing"></a>
@@ -255,7 +255,7 @@ Future<void> takeSnapshotEx(
 
 :::info[注]
 - 该方法是异步操作，调用返回时 SDK 并没有真正获取截图。
-- 该方法用于本地视频截图时，是对 ChannelMediaOptions 中指定发布的视频流进行截图。
+- 该方法用于本地视频截图时，是对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中指定发布的视频流进行截图。
 - 如果用户的视频经过前处理，例如，添加了水印或美颜，生成的截图会包含前处理效果。
 :::
 
@@ -291,10 +291,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 截图的本地保存路径，需精确到文件名及格式，例如：
 
-- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg
-- iOS: /App Sandbox/Library/Caches/example.jpg
-- macOS: ～/Library/Logs/example.jpg
-- Android: /storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg
+- Windows: `C:\Users\<user_name>\AppData\Local\Agora\<process_name>\example.jpg`
+- iOS: `/App Sandbox/Library/Caches/example.jpg`
+- macOS: `～/Library/Logs/example.jpg`
+- Android: `/storage/emulated/0/Android/data/<package name>/files/example.jpg`
 
 <a id="api_irtcengineex_takesnapshotex__return_values"></a>
 
@@ -326,7 +326,7 @@ Future<void> takeSnapshotWithConfigEx(
 
 :::info[注]
 - 该方法是异步操作，调用返回时 SDK 并没有真正获取截图。
-- 该方法用于本地视频截图时，是对 ChannelMediaOptions 中指定发布的视频流进行截图。
+- 该方法用于本地视频截图时，是对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中指定发布的视频流进行截图。
 - 如果用户的视频经过前处理，例如，添加了水印或美颜，生成的截图会包含前处理效果。
 :::
 
@@ -414,9 +414,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 - 0：截图成功。
 - &lt; 0: 截图失败。
+
   - -1：写入文件失败或 JPEG 编码失败。
-  - -2： takeSnapshot 方法调用后 1 秒内没有收到指定用户的视频帧。可能的原因有：本地采集停止、远端停止发布或者视频数据处理堵塞。
-  - -3： takeSnapshot 方法调用过于频繁。
+  - -2： [takeSnapshot](/zh-CN/api-reference/rtc/flutter/snapshot#api_irtcengine_takesnapshot) 方法调用后 1 秒内没有收到指定用户的视频帧。可能的原因有：本地采集停止、远端停止发布或者视频数据处理堵塞。
+  - -3： [takeSnapshot](/zh-CN/api-reference/rtc/flutter/snapshot#api_irtcengine_takesnapshot) 方法调用过于频繁。
 
 ### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)

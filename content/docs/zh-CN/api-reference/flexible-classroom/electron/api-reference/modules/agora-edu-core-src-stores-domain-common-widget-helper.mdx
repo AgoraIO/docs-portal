@@ -24,7 +24,8 @@ convertLocalDimensionsToRatio(dimensions: Dimensions, outerSize: Dimensions): { 
 
 Returns \{ratioDimensions: \{height: number; width: number \} \}
 
-- ##### ratioDimensions: \{height: number; width: number \}
+- ##### ratioDimensions: \{ height: number; width: number \}
+
   - ##### height: number
   - ##### width: number
 
@@ -48,7 +49,8 @@ convertLocalPositionToRatio(position: Point, medX: number, medY: number): { rati
 
 Returns \{ratioPosition: \{x: number; y: number \} \}
 
-- ##### ratioPosition: \{x: number; y: number \}
+- ##### ratioPosition: \{ x: number; y: number \}
+
   - ##### x: number
   - ##### y: number
 
@@ -74,10 +76,12 @@ convertLocalToRatio(position: Point, dimensions: Dimensions, medX: number, medY:
 
 Returns \{ratioDimensions: \{height: number; width: number \}; ratioPosition: \{x: number; y: number \} \}
 
-- ##### ratioDimensions: \{height: number; width: number \}
+- ##### ratioDimensions: \{ height: number; width: number \}
+
   - ##### height: number
   - ##### width: number
-- ##### ratioPosition: \{x: number; y: number \}
+- ##### ratioPosition: \{ x: number; y: number \}
+
   - ##### x: number
   - ##### y: number
 
@@ -102,10 +106,12 @@ convertRatioToLocal(diffRatio: { ratioX: number; ratioY: number }, sizeRatio: { 
 
 Returns \{dimensions: \{height: number; width: number \}; position: \{x: number; y: number \} \}
 
-- ##### dimensions: \{height: number; width: number \}
+- ##### dimensions: \{ height: number; width: number \}
+
   - ##### height: number
   - ##### width: number
-- ##### position: \{x: number; y: number \}
+- ##### position: \{ x: number; y: number \}
+
   - ##### x: number
   - ##### y: number
 
@@ -129,7 +135,8 @@ convertRatioToLocalDimensions(sizeRatio: { ratioHeight: number; ratioWidth: numb
 
 Returns \{dimensions: \{height: number; width: number \} \}
 
-- ##### dimensions: \{height: number; width: number \}
+- ##### dimensions: \{ height: number; width: number \}
+
   - ##### height: number
   - ##### width: number
 
@@ -154,7 +161,8 @@ convertRatioToLocalPosition(diffRatio: { ratioX: number; ratioY: number }, sizeR
 
 Returns \{position: \{x: number; y: number \} \}
 
-- ##### position: \{x: number; y: number \}
+- ##### position: \{ x: number; y: number \}
+
   - ##### x: number
   - ##### y: number
 
@@ -179,7 +187,8 @@ convertRatioToLocalPositionWithFixedDimensions(diffRatio: { ratioX: number; rati
 
 Returns \{position: \{x: number; y: number \} \}
 
-- ##### position: \{x: number; y: number \}
+- ##### position: \{ x: number; y: number \}
+
   - ##### x: number
   - ##### y: number
 
@@ -205,7 +214,8 @@ convertRatioToLocalWithFixedDimensions(diffRatio: { ratioX: number; ratioY: numb
 Returns \{dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions); position: \{x: number; y: number \} \}
 
 - ##### dimensions: Dimensions
-- ##### position: \{x: number; y: number \}
+- ##### position: \{ x: number; y: number \}
+
   - ##### x: number
   - ##### y: number
 
@@ -229,11 +239,21 @@ createClosure(): { next: any; prev: any }
 Returns \{next: any; prev: any \}
 
 - ##### next:function
+
   - next (key: string, value: any): void
-  - #### Parameters #### Returns void
+
+  - #### Parameters
+
     - ##### key: string
     - ##### value: any
+
+    #### Returns void
 - ##### prev:function
+
   - prev (key: string): any
-  - #### Parameters #### Returns any
+
+  - #### Parameters
+
     - ##### key: string
+
+    #### Returns any

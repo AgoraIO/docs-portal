@@ -48,7 +48,8 @@ public abstract int enableInstantMediaRendering();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
-  - -7：在 RtcEngine 初始化之前调用该方法。
+
+  - -7：在 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 初始化之前调用该方法。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -81,9 +82,9 @@ public abstract int setLocalRenderMode(int renderMode)
 
 本地视频的显示模式：
 
-- RENDER_MODE_HIDDEN （1）：隐藏模式。按比例缩放视频，直到填满视图边界，可能会裁剪视频的一部分内容。
-- RENDER_MODE_FIT （2）：适应模式。按比例缩放视频，直到某一边适配视图边界，未填满的区域以黑色填充。
-- RENDER_MODE_ADAPTIVE （3）：自适应模式。该枚举值已废弃，不推荐使用。
+- `RENDER_MODE_HIDDEN` （1）：隐藏模式。按比例缩放视频，直到填满视图边界，可能会裁剪视频的一部分内容。
+- `RENDER_MODE_FIT` （2）：适应模式。按比例缩放视频，直到某一边适配视图边界，未填满的区域以黑色填充。
+- `RENDER_MODE_ADAPTIVE` （3）：自适应模式。该枚举值已废弃，不推荐使用。
 
 <a id="api_irtcengine_setlocalrendermode1__return_values"></a>
 
@@ -125,9 +126,9 @@ public abstract int setLocalRenderMode(int renderMode, int mirrorMode);
 
 本地视频的显示模式：
 
-- RENDER_MODE_HIDDEN (1)：隐藏模式。按比例缩放视频，直到填满视图边界（可能被裁剪）。视频的一条边可能会被裁剪。
-- RENDER_MODE_FIT (2)：适应模式。按比例缩放视频，直到某一边适配视图边界。由于宽高比不一致而未填满的区域将以黑色填充。
-- RENDER_MODE_ADAPTIVE (3)：自适应模式（已废弃，不推荐使用）。
+- `RENDER_MODE_HIDDEN` (1)：隐藏模式。按比例缩放视频，直到填满视图边界（可能被裁剪）。视频的一条边可能会被裁剪。
+- `RENDER_MODE_FIT` (2)：适应模式。按比例缩放视频，直到某一边适配视图边界。由于宽高比不一致而未填满的区域将以黑色填充。
+- `RENDER_MODE_ADAPTIVE` (3)：自适应模式（已废弃，不推荐使用）。
 
 #### `mirrorMode`
 
@@ -137,9 +138,9 @@ public abstract int setLocalRenderMode(int renderMode, int mirrorMode);
 
 本地用户的视频镜像模式：
 
-- VIDEO_MIRROR_MODE_AUTO (0)：SDK 自动决定是否启用镜像模式。
-- VIDEO_MIRROR_MODE_ENABLED (1)：启用本地视图的镜像模式。
-- VIDEO_MIRROR_MODE_DISABLED (2)：关闭本地视图的镜像模式。
+- `VIDEO_MIRROR_MODE_AUTO` (0)：SDK 自动决定是否启用镜像模式。
+- `VIDEO_MIRROR_MODE_ENABLED` (1)：启用本地视图的镜像模式。
+- `VIDEO_MIRROR_MODE_DISABLED` (2)：关闭本地视图的镜像模式。
 
 <a id="api_irtcengine_setlocalrendermode2__return_values"></a>
 
@@ -231,9 +232,9 @@ public abstract int setLocalVideoMirrorMode(int mode)
 
 本地视频镜像模式：
 
-- VIDEO_MIRROR_MODE_AUTO (0)：由 SDK 决定是否启用镜像模式。如果使用前置摄像头，SDK 默认启用镜像模式；如果使用后置摄像头，SDK 默认关闭镜像模式。
-- VIDEO_MIRROR_MODE_ENABLED (1)：开启本地视图的镜像模式。
-- VIDEO_MIRROR_MODE_DISABLED (2)：关闭本地视图的镜像模式。
+- `VIDEO_MIRROR_MODE_AUTO` (0)：由 SDK 决定是否启用镜像模式。如果使用前置摄像头，SDK 默认启用镜像模式；如果使用后置摄像头，SDK 默认关闭镜像模式。
+- `VIDEO_MIRROR_MODE_ENABLED` (1)：开启本地视图的镜像模式。
+- `VIDEO_MIRROR_MODE_DISABLED` (2)：关闭本地视图的镜像模式。
 
 <a id="api_irtcengine_setlocalvideomirrormode__return_values"></a>
 
@@ -266,7 +267,7 @@ public abstract int setRemoteRenderMode(int uid, int renderMode)
 你可以调用该方法更新远端用户视频视图的渲染模式和镜像模式。该方法仅影响本地用户看到的视频视图。
 
 :::info[注]
-- 请确保在调用此方法前已调用 setupRemoteVideo 初始化远端视频视图。
+- 请确保在调用此方法前已调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/android/video-rendering#api_irtcengine_setupremotevideo) 初始化远端视频视图。
 - 通话过程中，你可以多次调用此方法以更新远端用户视频视图的显示模式。
 :::
 
@@ -282,8 +283,8 @@ public abstract int setRemoteRenderMode(int uid, int renderMode)
 
 设置远端用户视频视图的显示模式：
 
-- RENDER_MODE_HIDDEN (1)：按比例缩放视频，直到填满视图边界（可能被裁剪）。视频的一部分内容可能会被截断。
-- RENDER_MODE_FIT (2)：按比例缩放视频，直到某一维度适配视图边界。由于宽高比不一致而未填满的区域将以黑色填充。
+- `RENDER_MODE_HIDDEN` (1)：按比例缩放视频，直到填满视图边界（可能被裁剪）。视频的一部分内容可能会被截断。
+- `RENDER_MODE_FIT` (2)：按比例缩放视频，直到某一维度适配视图边界。由于宽高比不一致而未填满的区域将以黑色填充。
 
 <a id="api_irtcengine_setremoterendermode2__return_values"></a>
 
@@ -329,17 +330,17 @@ public abstract int setRemoteRenderModeEx(int uid, int renderMode, int mirrorMod
 
 远端用户的视频显示模式：
 
-- RENDER_MODE_HIDDEN (1)：隐藏模式。按比例缩放视频，直到填满视图边界（可能被裁剪）。视频的一部分内容可能被截断。
-- RENDER_MODE_FIT (2)：适应模式。按比例缩放视频，直到某一维度适配视图边界。由于宽高比不一致而未填满的区域将以黑色填充。
-- RENDER_MODE_ADAPTIVE (3)：自适应模式（已废弃，不推荐使用）。
+- `RENDER_MODE_HIDDEN` (1)：隐藏模式。按比例缩放视频，直到填满视图边界（可能被裁剪）。视频的一部分内容可能被截断。
+- `RENDER_MODE_FIT` (2)：适应模式。按比例缩放视频，直到某一维度适配视图边界。由于宽高比不一致而未填满的区域将以黑色填充。
+- `RENDER_MODE_ADAPTIVE` (3)：自适应模式（已废弃，不推荐使用）。
 
 #### `mirrorMode`
 
 远端用户视图的镜像模式：
 
-- VIDEO_MIRROR_MODE_AUTO (0)：SDK 自动决定是否启用镜像模式。使用前置摄像头时默认启用镜像模式；使用后置摄像头时默认关闭镜像模式。
-- VIDEO_MIRROR_MODE_ENABLED (1)：启用本地视图的镜像模式。
-- VIDEO_MIRROR_MODE_DISABLED (2)：关闭本地视图的镜像模式。
+- `VIDEO_MIRROR_MODE_AUTO` (0)：SDK 自动决定是否启用镜像模式。使用前置摄像头时默认启用镜像模式；使用后置摄像头时默认关闭镜像模式。
+- `VIDEO_MIRROR_MODE_ENABLED` (1)：启用本地视图的镜像模式。
+- `VIDEO_MIRROR_MODE_DISABLED` (2)：关闭本地视图的镜像模式。
 
 #### `connection`
 
@@ -427,9 +428,9 @@ int setRenderMode(int mode);
 
 设置视图的渲染模式：
 
-- RENDER_MODE_HIDDEN （1）：隐藏模式。按比例缩放视频，直到填满视图边界，可能会裁剪视频的一部分内容。
-- RENDER_MODE_FIT （2）：适应模式。按比例缩放视频，直到某一边适配视图边界。由于宽高比不一致，未填满的区域将以黑色填充。
-- RENDER_MODE_ADAPTIVE （3）：自适应模式。该枚举值已废弃，不推荐使用。
+- `RENDER_MODE_HIDDEN` （1）：隐藏模式。按比例缩放视频，直到填满视图边界，可能会裁剪视频的一部分内容。
+- `RENDER_MODE_FIT` （2）：适应模式。按比例缩放视频，直到某一边适配视图边界。由于宽高比不一致，未填满的区域将以黑色填充。
+- `RENDER_MODE_ADAPTIVE` （3）：自适应模式。该枚举值已废弃，不推荐使用。
 
 <a id="api_imediaplayer_setrendermode__return_values"></a>
 
@@ -508,8 +509,8 @@ public abstract int setupRemoteVideo(VideoCanvas remote);
 该方法在本地设备上初始化远端视频流的视图，仅影响本地用户看到的视频画面。调用该方法可将远端视频流绑定到视频视图，并设置该视图的渲染模式和镜像模式。你需要在该方法中指定远端用户的 ID。如果应用尚未获取远端用户的 ID，请在收到 [onUserJoined](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserjoined) 回调后设置。若要将远端用户与视图解绑，请将 `view` 参数设置为 `null`。一旦远端用户离开频道，SDK 会自动解绑该用户。在移动端进行视频合流布局自定义的场景中，你可以调用该方法，并为合流视频流中的每个子视频流设置独立的 `view` 进行渲染。
 
 :::info[注]
-- 若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 setRemoteRenderMode 方法。
-- 使用录制服务时，应用无需绑定视图，因为录制服务不会发送视频流。如果你的应用无法识别录制服务，请在 SDK 触发 onFirstRemoteVideoDecoded 回调时将远端用户绑定到视图。
+- 若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 [setRemoteRenderMode](/zh-CN/api-reference/rtc/android/video-rendering#api_irtcengine_setremoterendermode2) 方法。
+- 使用录制服务时，应用无需绑定视图，因为录制服务不会发送视频流。如果你的应用无法识别录制服务，请在 SDK 触发 [onFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/android/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时将远端用户绑定到视图。
 :::
 
 <a id="api_irtcengine_setupremotevideo__parameters"></a>
@@ -599,7 +600,7 @@ public abstract int startMediaRenderingTracing();
 从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/android/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调上报相关事件信息。
 
 :::info[注]
-- 如果你未调用该方法，SDK 会从调用 joinChannel 加入频道开始追踪视频帧的渲染事件。
+- 如果你未调用该方法，SDK 会从调用 `joinChannel` 加入频道开始追踪视频帧的渲染事件。
 - 本地用户离开当前频道后，SDK 会自动从再次加入频道开始追踪视频渲染事件。
 :::
 
@@ -621,7 +622,8 @@ public abstract int startMediaRenderingTracing();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
-  - -7：在 RtcEngine 初始化之前调用该方法。
+
+  - -7：在 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 初始化之前调用该方法。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -647,7 +649,7 @@ public abstract int startMediaRenderingTracingEx(RtcConnection connection);
 从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/android/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调上报相关事件信息。
 
 :::info[注]
-- 如果你未调用该方法，SDK 会从调用 joinChannel 加入频道开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时间调用该方法，以设置追踪视频渲染事件的起始位置。
+- 如果你未调用该方法，SDK 会从调用 `joinChannel` 加入频道开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时间调用该方法，以设置追踪视频渲染事件的起始位置。
 - 本地用户离开当前频道后，SDK 会自动从再次加入频道开始追踪视频渲染事件。
 :::
 

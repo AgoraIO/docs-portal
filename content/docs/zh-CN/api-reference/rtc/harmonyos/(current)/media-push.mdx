@@ -31,7 +31,7 @@ public abstract startRtmpStreamWithoutTranscoding(url:string): number;
 :::warning[注意]
 - 请在加入频道后调用该方法。
 - 只有直播场景下的主播才能调用该方法。
-- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 stopRtmpStream，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 [stopRtmpStream](/zh-CN/api-reference/rtc/harmonyos/media-push#api_irtcengine_stoprtmpstream)，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
 :::
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding__parameters"></a>
@@ -48,6 +48,7 @@ public abstract startRtmpStreamWithoutTranscoding(url:string): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
   - -2：URL 或转码属性参数错误，请检查你的 URL 或参数设置。
   - -7：调用该方法前，未初始化 SDK。
   - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。
@@ -82,7 +83,7 @@ public abstract startRtmpStreamWithTranscoding(url: string, transcoding: LiveTra
 :::warning[注意]
 - 请在加入频道后调用该方法。
 - 只有直播场景下的主播才能调用该方法。
-- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 stopRtmpStream，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 [stopRtmpStream](/zh-CN/api-reference/rtc/harmonyos/media-push#api_irtcengine_stoprtmpstream)，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
 :::
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding__parameters"></a>
@@ -103,6 +104,7 @@ public abstract startRtmpStreamWithTranscoding(url: string, transcoding: LiveTra
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
   - -2：URL 或转码属性参数错误，请检查你的 URL 或参数设置。
   - -7：调用该方法前，未初始化 SDK。
   - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。

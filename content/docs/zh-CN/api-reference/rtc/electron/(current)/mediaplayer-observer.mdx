@@ -322,8 +322,8 @@ onPlayBufferUpdated?(playCachedBuffer: number): void;
 
 播放在线媒体资源的过程中，SDK 会每隔 1 秒触发一次该回调，报告当前缓冲的数据能支持的播放时间。
 
-- 当缓冲数据支持的播放时间小于阈值（默认为 0）时，返回 PlayerEventBufferLow (6)。
-- 当缓冲数据支持的播放时间大于阈值（默认为 0）时，返回 PlayerEventBufferRecover (7)。
+- 当缓冲数据支持的播放时间小于阈值（默认为 0）时，返回 `PlayerEventBufferLow` (6)。
+- 当缓冲数据支持的播放时间大于阈值（默认为 0）时，返回 `PlayerEventBufferRecover` (7)。
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__parameters"></a>
 
@@ -354,7 +354,7 @@ onPlayerEvent?(
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__detailed_desc"></a>
 
-- 调用 seek 定位播放后，SDK 会触发该回调，报告定位播放的结果。
+- 调用 [seek](/zh-CN/api-reference/rtc/electron/mediaplayer-control#api_imediaplayer_seek) 定位播放后，SDK 会触发该回调，报告定位播放的结果。
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__parameters"></a>
 

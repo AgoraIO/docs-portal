@@ -100,6 +100,7 @@ abstract enableInEarMonitoring(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
   - -8: 请确保当前的音频路由为蓝牙或耳机。
 
 ### 所属接口类
@@ -121,8 +122,8 @@ abstract enableLocalAudio(enabled: boolean): number;
 
 当用户加入频道时，音频功能默认是开启的。该方法可以关闭或重新开启本地音频功能，即停止或重新开始本地音频采集。 该方法与 [muteLocalAudioStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 的区别在于：
 
-- enableLocalAudio: 开启或关闭本地音频采集及处理。使用 enableLocalAudio 关闭或开启本地采集后，本地听远端播放会有短暂中断。
-- muteLocalAudioStream: 停止或继续发送本地音频流，不影响音频的采集状态。
+- [enableLocalAudio](/zh-CN/api-reference/rtc/react-native/audio-capture#api_irtcengine_enablelocalaudio): 开启或关闭本地音频采集及处理。使用 [enableLocalAudio](/zh-CN/api-reference/rtc/react-native/audio-capture#api_irtcengine_enablelocalaudio) 关闭或开启本地采集后，本地听远端播放会有短暂中断。
+- [muteLocalAudioStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_mutelocalaudiostream): 停止或继续发送本地音频流，不影响音频的采集状态。
 
 <a id="api_irtcengine_enablelocalaudio__scenario"></a>
 
@@ -245,6 +246,7 @@ abstract setInEarMonitoringVolume(volume: number): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
   - -2: 参数设置无效，例如耳返音量超出取值范围 (&lt; 0 或 &gt; 400)。
 
 ### 所属接口类

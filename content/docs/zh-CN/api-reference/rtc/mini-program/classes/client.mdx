@@ -88,10 +88,10 @@ join(channelKey: string, channel: string, uid: number | string, isAudioOnly: boo
 
 | Name | Description |
 | --- | --- |
-| channelKey: string | 在 app 服务器端生成的用于鉴权的 Token：<br />- 安全要求不高：你可以使用控制台生成的临时 Token，详见 生成 Token。<br />- 安全要求高：将值设为你的服务端生成的正式 Token，详见 使用 Token 鉴权。 |
+| channelKey: string | 在 app 服务器端生成的用于鉴权的 Token：<br />- 安全要求不高：你可以使用控制台生成的临时 Token，详见 [生成 Token](https://docs.agora.io/cn/Agora%20Platform/token?platform=All%20Platforms#3-%E7%94%9F%E6%88%90-token)。<br />- 安全要求高：将值设为你的服务端生成的正式 Token，详见 [使用 Token 鉴权](https://docs.agora.io/cn/Agora%20Platform/token_server)。 |
 | channel: string | 频道名，能标识直播频道的字符串。 |
 | uid: number \| string | 指定用户的 ID。<br />- INT: 整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (2 32 -1)。需要保证唯一。如果不指定 uid（即设为 null），服务器会报错。<br />- STRING: 字符串，长度不超过 255 个字符。 |
-| isAudioOnly: boolean | 是否为纯音频场景：<br />- true：纯音频场景。<br />- false：非纯音频场景。 |
+| isAudioOnly: boolean | 是否为纯音频场景：<br />- `true`：纯音频场景。<br />- `false`：非纯音频场景。 |
 | Optional UidType: UidType | 用户 ID 类型, 可选字段, 默认值为 INT 值 0。详见 [UidType](/zh-CN/api-reference/rtc/mini-program/enums/uid-type)。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。返回值为用户 ID。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
@@ -136,7 +136,7 @@ mute(uid: number, target: string, onSuccess?: function, onFailure?: function): P
 | Name | Description |
 | --- | --- |
 | uid: number | 远端用户的 ID。 |
-| target: string | 选择停止接收哪一种流，有三种选择：<br />- audio：远端用户发送的音频流，即声音。<br />- video：远端用户发送的视频流，即视频画面。<br />- all：远端用户发送的音视频流，即声音和视频画面。 |
+| target: string | 选择停止接收哪一种流，有三种选择：<br />- `audio`：远端用户发送的音频流，即声音。<br />- `video`：远端用户发送的视频流，即视频画面。<br />- `all`：远端用户发送的音视频流，即声音和视频画面。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
@@ -158,7 +158,7 @@ muteLocal(target: string, onSuccess?: function, onFailure?: function): Promise<v
 
 | Name | Description |
 | --- | --- |
-| target: string | 选择停止发送哪一种流，有三种选择：<br />- audio：本地用户发送的音频流，即声音。<br />- video：本地用户发送的视频流，即视频画面。<br />- all：本地用户发送的音视频流，即声音和视频画面。 |
+| target: string | 选择停止发送哪一种流，有三种选择：<br />- `audio`：本地用户发送的音频流，即声音。<br />- `video`：本地用户发送的视频流，即视频画面。<br />- `all`：本地用户发送的音视频流，即声音和视频画面。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
@@ -490,11 +490,11 @@ rejoin(channelKey: string, channel: string, uid: number | string, uids: number, 
 
 | Name | Description |
 | --- | --- |
-| channelKey: string | 在 app 服务器端生成的用于鉴权的 Token：<br />- 安全要求不高：你可以使用控制台生成的临时 Token，详见 获取临时 Token。<br />- 安全要求高：将值设为你的服务端生成的正式 Token，详见 从服务端生成 Token。 |
+| channelKey: string | 在 app 服务器端生成的用于鉴权的 Token：<br />- 安全要求不高：你可以使用控制台生成的临时 Token，详见 [获取临时 Token](https://doc.shengwang.cn/doc/rtc/mini-program/get-started/enable-service#%E8%8E%B7%E5%8F%96%E4%B8%B4%E6%97%B6-token)。<br />- 安全要求高：将值设为你的服务端生成的正式 Token，详见 [从服务端生成 Token](https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication)。 |
 | channel: string | 频道名，能标识直播频道的字符串。 |
 | uid: number \| string | 指定用户的 ID。<br />- INT: 整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (2 32 -1)。需要保证唯一性。如果不指定 uid（即设为 null），服务器会报错。<br />- STRING: 字符串，长度不超过 255 个字符。 |
 | uids: number | 频道内已有用户的用户 ID 列表。 |
-| isAudioOnly: boolean | 是否为纯音频场景：<br />- true：纯音频场景。<br />- false：非纯音频场景。 |
+| isAudioOnly: boolean | 是否为纯音频场景：<br />- `true`：纯音频场景。<br />- `false`：非纯音频场景。 |
 | Optional UidType: UidType | 用户 ID 类型, 可选字段, 默认值为 INT 值 0。详见 [UidType](/zh-CN/api-reference/rtc/mini-program/enums/uid-type)。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。返回值为用户 ID。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
@@ -600,7 +600,7 @@ setRole(role: string, onSuccess?: function, onFailure?: function): Promise<void>
 
 | Name | Description |
 | --- | --- |
-| role: string | 用户角色。选择如下一种角色：<br />- broadcaster：将用户角色设置为主播。主播可以调用 publish 和 unpublish 方法。<br />- audience：(默认) 将用户角色设置为观众。观众不能调用 publish 和 unpublish 方法。 |
+| role: string | 用户角色。选择如下一种角色：<br />- `broadcaster`：将用户角色设置为主播。主播可以调用 [publish](/zh-CN/api-reference/rtc/mini-program/classes/client#publish) 和 [unpublish](/zh-CN/api-reference/rtc/mini-program/classes/client#unpublish) 方法。<br />- `audience`：(默认) 将用户角色设置为观众。观众不能调用 [publish](/zh-CN/api-reference/rtc/mini-program/classes/client#publish) 和 [unpublish](/zh-CN/api-reference/rtc/mini-program/classes/client#unpublish) 方法。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
@@ -622,19 +622,21 @@ startChannelMediaRelay(config: ChannelMediaRelayConfiguration, callback: functio
 
 调用该方法后，SDK 会触发以下回调：
 
-- Client.on("channel-media-relay-state")，报告当前的跨频道媒体流转发状态和错误码。
-  - 如果转发成功，该回调中 state 为 2， code 为 0。
-  - 如果转发出现异常，该回调中 state 为 3， code 为错误码。你可以尝试再次调用本方法。
-- Client.on("channel-media-relay-event")，报告跨频道媒体流转发相关的事件。
-  - 如果转发成功，该回调中 code 为 4，表示 SDK 开始向目标频道发送数据包。
+- `Client.on("channel-media-relay-state")`，报告当前的跨频道媒体流转发状态和错误码。
+
+  - 如果转发成功，该回调中 `state` 为 2， `code` 为 0。
+  - 如果转发出现异常，该回调中 `state` 为 3， `code` 为错误码。你可以尝试再次调用本方法。
+- `Client.on("channel-media-relay-event")`，报告跨频道媒体流转发相关的事件。
+
+  - 如果转发成功，该回调中 `code` 为 4，表示 SDK 开始向目标频道发送数据包。
 
 **Note**
 
-- 跨频道媒体流转发功能需要 提交工单 联系技术支持开通。
+- 跨频道媒体流转发功能需要 [提交工单](https://agora-ticket.agora.io/) 联系技术支持开通。
 - 该功能不支持 String 型 UID。
 - 请在成功加入频道后调用该方法。
 - 直播场景下，只有主播可以调用该方法。
-- 成功调用该方法后，若你想再次调用该方法，必须先调用 stopChannelMediaRelay 方法退出当前的转发状态。
+- 成功调用该方法后，若你想再次调用该方法，必须先调用 [stopChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#stopchannelmediarelay) 方法退出当前的转发状态。
 
 ##### `example`
 
@@ -655,7 +657,7 @@ client.startChannelMediaRelay(channelMediaConfig, function(e) {
 | Name | Description |
 | --- | --- |
 | config: ChannelMediaRelayConfiguration | 跨频道媒体流转发参数配置，详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channel-media-relay-configuration)。 |
-| callback: function | 媒体流转发是否成功的回调。<br />- null：媒体流转发成功。<br />- 如果失败，会通过 ChannelMediaError 提供错误信息。 |
+| callback: function | 媒体流转发是否成功的回调。<br />- `null`：媒体流转发成功。<br />- 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channel-media-error) 提供错误信息。 |
 
 #### Returns
 
@@ -675,8 +677,8 @@ stopChannelMediaRelay(callback: function): void
 
 调用该方法会触发 `Client.on("channel-media-relay-state")` 回调。
 
-- 如果成功停止跨频道媒体流转发，该回调中 state 为 0。
-- 如果未成功停止跨频道媒体流转发，该回调中 state 为 3， code 错误码可能为 2 或 8，一般是在网络较差的情况下，退出的消息发送不成功导致的。你可以调用 Client.leave 离开频道来停止跨频道媒体流转发。
+- 如果成功停止跨频道媒体流转发，该回调中 `state` 为 0。
+- 如果未成功停止跨频道媒体流转发，该回调中 `state` 为 3， `code` 错误码可能为 2 或 8，一般是在网络较差的情况下，退出的消息发送不成功导致的。你可以调用 [Client.leave](/zh-CN/api-reference/rtc/mini-program/classes/client#leave) 离开频道来停止跨频道媒体流转发。
 
 ##### `example`
 
@@ -698,7 +700,7 @@ stopChannelMediaRelay: function() {
 
 | Name | Description |
 | --- | --- |
-| callback: function | 停止跨频道媒体流转发是否成功的回调。<br />- null：停止跨频道媒体流转发成功。<br />- 如果失败，会通过 ChannelMediaError 提供错误信息。 |
+| callback: function | 停止跨频道媒体流转发是否成功的回调。<br />- `null`：停止跨频道媒体流转发成功。<br />- 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channel-media-error) 提供错误信息。 |
 
 #### Returns
 
@@ -731,8 +733,8 @@ Returns Promise &lt; object &gt;
 
 一个对象，包含以下数据：
 
-- url：string 型，音视频流的拉流地址
-- rotation：number 型，视频帧顺时针旋转角度。
+- `url`：string 型，音视频流的拉流地址
+- `rotation`：number 型，视频帧顺时针旋转角度。
 
 <a id="unmute"></a>
 
@@ -749,7 +751,7 @@ unmute(uid: number, target: string, onSuccess?: function, onFailure?: function):
 | Name | Description |
 | --- | --- |
 | uid: number | 远端用户的 ID。 |
-| target: string | 选择停止接收哪一种流，有三种选择：<br />- audio：远端用户发送的音频流，即声音。<br />- video：远端用户发送的视频流，即视频画面。<br />- all：远端用户发送的音视频流，即声音和视频画面。 |
+| target: string | 选择停止接收哪一种流，有三种选择：<br />- `audio`：远端用户发送的音频流，即声音。<br />- `video`：远端用户发送的视频流，即视频画面。<br />- `all`：远端用户发送的音视频流，即声音和视频画面。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
@@ -771,7 +773,7 @@ unmuteLocal(target: string, onSuccess?: function, onFailure?: function): Promise
 
 | Name | Description |
 | --- | --- |
-| target: string | 选择恢复发送哪一种流，有三种选择：<br />- audio：本地用户发送的音频流，即声音。<br />- video：本地用户发送的视频流，即视频画面。<br />- all：本地用户发送的音视频流，即声音和视频画面。 |
+| target: string | 选择恢复发送哪一种流，有三种选择：<br />- `audio`：本地用户发送的音频流，即声音。<br />- `video`：本地用户发送的视频流，即视频画面。<br />- `all`：本地用户发送的音视频流，即声音和视频画面。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
@@ -838,12 +840,12 @@ updateChannelMediaRelay(config: ChannelMediaRelayConfiguration, callback: functi
 
 调用该方法后，SDK 会触发 `Client.on("channel-media-relay-event")` 回调。
 
-- 如果更新成功，回调中 code 为 7。
-- 如果更新失败，回调中 code 为 8，同时还会触发 Client.on("channel-media-relay-state") 回调，其中 state 为 3。出错后跨频道媒体流转发状态会被重置，你需要调用 startChannelMediaRelay 重新开始跨频道媒体流转发。
+- 如果更新成功，回调中 `code` 为 7。
+- 如果更新失败，回调中 `code` 为 8，同时还会触发 `Client.on("channel-media-relay-state")` 回调，其中 `state` 为 3。出错后跨频道媒体流转发状态会被重置，你需要调用 [startChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#startchannelmediarelay) 重新开始跨频道媒体流转发。
 
 **Note**
 
-- 请在 startChannelMediaRelay 后调用该方法，更新媒体流转发的频道。
+- 请在 [startChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#startchannelmediarelay) 后调用该方法，更新媒体流转发的频道。
 - 跨频道媒体流转发最多支持 4 个目标频道。
 
 ##### `example`
@@ -865,7 +867,7 @@ client.updateChannelMediaRelay(channelMediaConfig, function(e) {
 | Name | Description |
 | --- | --- |
 | config: ChannelMediaRelayConfiguration | 跨频道媒体流转发参数配置，详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channel-media-relay-configuration)。 |
-| callback: function | 更新目标频道是否成功的回调。<br />- null：更新目标频道成功。<br />- 如果失败，会通过 ChannelMediaError 提供错误信息。 |
+| callback: function | 更新目标频道是否成功的回调。<br />- `null`：更新目标频道成功。<br />- 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channel-media-error) 提供错误信息。 |
 
 #### Returns
 

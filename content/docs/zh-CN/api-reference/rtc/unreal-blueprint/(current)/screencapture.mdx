@@ -75,8 +75,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 除了窗口信息外，SDK 是否返回屏幕信息：
 
-- true：SDK 返回屏幕和窗口信息。
-- false：SDK 仅返回窗口信息。
+- `true`：SDK 返回屏幕和窗口信息。
+- `false`：SDK 仅返回窗口信息。
 
 <a id="api_irtcengine_getscreencapturesources__return_values"></a>
 
@@ -157,6 +157,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 返回值
 
 - 方法调用成功时，返回设备支持的最高帧率。
+
   - 0：最高支持 15 fps。
   - 1：最高支持 30 fps。
   - 2：最高支持 60 fps。
@@ -228,8 +229,9 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -293,6 +295,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS 平台。
 - 屏幕共享流的计费标准以 FScreenVideoParameters 中的 dimensions 值为准：
+
   - 当你未传值时，以 1280 × 720 计费。
   - 当你传值时，以你传入的值计费。
 :::
@@ -309,8 +312,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 JoinChannelWithOptions 加入频道，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 UpdateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道，并设置 publishScreenCaptureVideo 为 `true`，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 publishScreenCaptureVideo 为 `true`，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapture__restriction"></a>
 
@@ -343,6 +346,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -2 (iOS 平台): 参数为空。
   - -2 (Anroid 平台): 系统版本过低，请确保 Android API 级别不低于 21。
   - -3 (Anroid 平台): 无法采集系统音频，请确保 Android API 级别不低于 29。
@@ -377,8 +381,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别，请根据实际场景选用：
 
-- [StartScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/screencapture#api_irtcengine_startscreencapture) / StartScreenCaptureByDisplayId / StartScreenCaptureByWindowId：仅支持采集单个屏幕或窗口，适合仅共享单个屏幕的场景。
-- StartScreenCaptureBySourceType：支持指定多个视频源，以采集多路屏幕共享流，用于本地合图或者多频道发布场景。
+- [StartScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/screencapture#api_irtcengine_startscreencapture) / [StartScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/unreal-blueprint/screencapture#api_irtcengine_startscreencapturebydisplayid) / [StartScreenCaptureByWindowId](/zh-CN/api-reference/rtc/unreal-blueprint/screencapture#api_irtcengine_startscreencapturebywindowid)：仅支持采集单个屏幕或窗口，适合仅共享单个屏幕的场景。
+- [StartScreenCaptureBySourceType](/zh-CN/api-reference/rtc/unreal-blueprint/screencapture#api_irtcengine_startscreencapture2)：支持指定多个视频源，以采集多路屏幕共享流，用于本地合图或者多频道发布场景。
 
 <a id="api_irtcengine_startscreencapture2__timing"></a>
 
@@ -386,8 +390,8 @@ SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别�
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 JoinChannelWithOptions 加入频道，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 UpdateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道，并设置 publishScreenCaptureVideo 为 `true`，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 publishScreenCaptureVideo 为 `true`，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapture2__restriction"></a>
 
@@ -456,8 +460,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 JoinChannelWithOptions 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 UpdateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 `true`，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 `true`，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebydisplayid__restriction"></a>
 
@@ -497,8 +501,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -528,8 +533,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 JoinChannelWithOptions 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 UpdateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 `true`，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 `true`，即可开始屏幕共享。
 
 :::warning[注意]
 该方法仅适用于 Windows 平台。
@@ -557,8 +562,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -625,8 +631,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 JoinChannelWithOptions 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 UpdateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 `true`，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 `true`，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebywindowid__restriction"></a>
 
@@ -656,8 +662,9 @@ SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Gr
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -779,8 +786,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 如果在开启屏幕共享时未采集系统音频、然后想要更新参数配置、发布系统音频，可参考以下步骤：
 
-1. 调用该方法并设置 captureAudio 为 true。
-2. 调用 UpdateChannelMediaOptions 设置 publishScreenCaptureAudio 为 true，即可发布屏幕采集的音频。
+1. 调用该方法并设置 captureAudio 为 `true`。
+2. 调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_updatechannelmediaoptions) 设置 publishScreenCaptureAudio 为 `true`，即可发布屏幕采集的音频。
 
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS 平台。
@@ -801,8 +808,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -847,8 +855,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -888,8 +897,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture](/zh-CN/api-reference/rtc/unreal-blueprint/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)

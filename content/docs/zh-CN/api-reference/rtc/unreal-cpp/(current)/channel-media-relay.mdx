@@ -34,6 +34,7 @@ virtual int pauseAllChannelMediaRelay() = 0;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -75,6 +76,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -108,6 +110,7 @@ virtual int resumeAllChannelMediaRelay() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有暂停的跨频道媒体流转发。
 
 ### 所属接口类
@@ -149,6 +152,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有暂停的跨频道媒体流转发。
 
 ### 所属接口类
@@ -180,7 +184,7 @@ virtual int startOrUpdateChannelMediaRelay(const ChannelMediaRelayConfiguration 
 :::warning[注意]
 - 请在成功加入频道后调用该方法。
 - 在直播场景中，只有角色为主播的用户才能调用该方法。
-- 跨频道媒体流转发功能需要 联系技术支持 开通。
+- 跨频道媒体流转发功能需要 [联系技术支持](https://ticket.shengwang.cn/) 开通。
 - 该功能不支持 String 型 UID。
 :::
 
@@ -198,6 +202,7 @@ virtual int startOrUpdateChannelMediaRelay(const ChannelMediaRelayConfiguration 
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -8：内部状态错误。可能因为用户角色不是主播。
@@ -231,7 +236,7 @@ virtual int startOrUpdateChannelMediaRelayEx(const ChannelMediaRelayConfiguratio
 :::warning[注意]
 - 请在成功加入频道后调用该方法。
 - 在直播场景中，只有角色为主播的用户才能调用该方法。
-- 跨频道媒体流转发功能需要 联系技术支持 开通。
+- 跨频道媒体流转发功能需要 [联系技术支持](https://ticket.shengwang.cn/) 开通。
 - 该功能不支持 String 型 UID。
 :::
 
@@ -253,6 +258,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
   - -8：内部状态错误。可能因为用户角色不是主播。
@@ -288,6 +294,7 @@ virtual int stopChannelMediaRelay() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类
@@ -329,6 +336,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -5: 方法调用被拒绝。当前没有正在进行的跨频道媒体流转发。
 
 ### 所属接口类

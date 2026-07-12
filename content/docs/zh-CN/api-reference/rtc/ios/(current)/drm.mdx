@@ -34,7 +34,7 @@ description: "创建一个音乐播放器。"
 
 ### 返回值
 
-- 方法调用成功，返回 AgoraMusicPlayerProtocol 对象。
+- 方法调用成功，返回 [AgoraMusicPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusicplayer) 对象。
 - 方法调用失败，返回 nil。
 
 ### 所属接口类
@@ -146,7 +146,7 @@ YES：将回调方法派发到主线程。 NO：（默认）不将回调方法�
 
 ### 返回值
 
-- 方法调用成功，返回包含 AgoraMusicCacheInfo 对象的数组。
+- 方法调用成功，返回包含 [AgoraMusicCacheInfo](/zh-CN/api-reference/rtc/ios/class-musiccacheinfo) 对象的数组。
 - 方法调用失败，返回 nil。
 
 ### 所属接口类
@@ -184,14 +184,15 @@ YES：将回调方法派发到主线程。 NO：（默认）不将回调方法�
 
 扩展 JSON 字段，默认为 nil。当前支持以下字段：
 
-- sceneType：频道场景。
+- `sceneType`：频道场景。
+
   - 1：直播场景：在线 K 歌房和背景音乐播放。
   - 2：直播场景：背景音乐播放。
   - 3：（默认）语聊场景：在线 K 歌房。
   - 4：语聊场景：背景音乐播放。
-  - 5：VR 场景：在线 K 歌房和背景音乐播放。示例： \{"sceneType":1\}
+  - 5：VR 场景：在线 K 歌房和背景音乐播放。示例： `{"sceneType":1}`
 
-- highPart：副歌片段的索引。你可以从 onMusicCollectionResult:result:reason: 回调中获取该索引并传入。索引从 0 开始。示例： \{"format": \{"highpart": 0\}\}
+- `highPart`：副歌片段的索引。你可以从 [onMusicCollectionResult:result:reason:](/zh-CN/api-reference/rtc/ios/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取该索引并传入。索引从 0 开始。示例： `{"format": {"highpart": 0}}`
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
 
@@ -321,12 +322,14 @@ YES：将回调方法派发到主线程。 NO：（默认）不将回调方法�
 
 可选的 JSON 扩展字段，默认为 nil。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选条件：
 
-- pitchType：是否支持评分。
-  - 1：支持评分的音乐资源。
-  - 2：不支持评分的音乐资源。
-- needHighPart：是否需要副歌片段资源。
-  - true：需要副歌片段资源。
-  - false：不需要副歌片段资源。
+- `pitchType`：是否支持评分。
+
+  - `1`：支持评分的音乐资源。
+  - `2`：不支持评分的音乐资源。
+- `needHighPart`：是否需要副歌片段资源。
+
+  - `true`：需要副歌片段资源。
+  - `false`：不需要副歌片段资源。
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__return_values"></a>
 
@@ -402,7 +405,7 @@ YES：将回调方法派发到主线程。 NO：（默认）不将回调方法�
 
 ### 返回值
 
-- 方法调用成功时，返回一个 AgoraMusicContentCenter 对象。
+- 方法调用成功时，返回一个 [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter) 对象。
 - 方法调用失败时，返回 nil。
 
 ### 所属接口类
@@ -728,13 +731,15 @@ YES：将回调方法派发到主线程。 NO：（默认）不将回调方法�
 
 可选的扩展 JSON 字段，默认为 nil。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选条件：
 
-- pitchType：音乐资源是否支持评分。
-  - 1：可评分的音乐资源。
-  - 2：不可评分的音乐资源。
+- `pitchType`：音乐资源是否支持评分。
+
+  - `1`：可评分的音乐资源。
+  - `2`：不可评分的音乐资源。
 
 示例： `{"pitchType":1}`。
 
-- needHighPart：是否需要合唱片段资源。
+- `needHighPart`：是否需要合唱片段资源。
+
   - YES：需要合唱片段资源。
   - NO：不需要合唱片段资源。
 
@@ -796,6 +801,7 @@ YES：将回调方法派发到主线程。 NO：（默认）不将回调方法�
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
+
   - -2：参数无效。请重新设置参数。
 
 ### 所属接口类

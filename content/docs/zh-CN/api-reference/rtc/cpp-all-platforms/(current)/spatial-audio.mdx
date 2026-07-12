@@ -125,9 +125,9 @@ virtual int muteAllRemoteAudioStreams(bool mute) = 0;
 调用该方法后，本地用户将停止或恢复订阅所有远端用户的音频流，包括后续加入频道的用户。
 
 :::info[注]
-- 请在调用 joinChannel 方法后调用本方法。
-- 使用空间音效时，如需设置是否停止订阅所有远端用户的音频流，声网推荐使用本方法，而非 IRtcEngine 下的同名方法。
-- 调用本方法后，需要调用 updateSelfPosition 和 updateRemotePosition 更新本地用户和远端用户的空间位置，否则本方法的设置不会生效。
+- 请在调用 `joinChannel` 方法后调用本方法。
+- 使用空间音效时，如需设置是否停止订阅所有远端用户的音频流，声网推荐使用本方法，而非 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 下的同名方法。
+- 调用本方法后，需要调用 [updateSelfPosition](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_updateselfposition_ilocalspatialaudioengine) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 更新本地用户和远端用户的空间位置，否则本方法的设置不会生效。
 :::
 
 <a id="api_ilocalspatialaudioengine_muteallremoteaudiostreams_ilocalspatialaudioengine__parameters"></a>
@@ -211,8 +211,8 @@ virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 <a id="api_ilocalspatialaudioengine_muteremoteaudiostream_ilocalspatialaudioengine__detailed_desc"></a>
 
 :::info[注]
-- 请在调用 joinChannel 方法后调用此方法。
-- 使用空间音效时，如需设置是否停止订阅指定用户的音频流，声网建议调用此方法，而非 muteRemoteAudioStream 方法。
+- 请在调用 `joinChannel` 方法后调用此方法。
+- 使用空间音效时，如需设置是否停止订阅指定用户的音频流，声网建议调用此方法，而非 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_muteremoteaudiostream_ilocalspatialaudioengine) 方法。
 :::
 
 <a id="api_ilocalspatialaudioengine_muteremoteaudiostream_ilocalspatialaudioengine__parameters"></a>
@@ -399,6 +399,7 @@ virtual int setHeadphoneEQParameters(int lowGain, int highGain) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无具体原因）。
 
 ### 所属接口类
@@ -438,6 +439,7 @@ virtual int setHeadphoneEQPreset(HEADPHONE_EQUALIZER_PRESET preset) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -1：发生通用错误（无具体原因）。
 
 ### 所属接口类
@@ -505,17 +507,18 @@ virtual int setPlayerAttenuation(int playerId, double attenuation, bool forceSet
 
 - 0：广播模式，音量和音色不会随距离衰减，本地用户听到的音量和音色不会随距离变化。
 - (0, 0.5)：弱衰减模式，音量和音色在传播过程中仅有轻微衰减，声音传播距离比真实环境更远。
-- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 speaker_attenuation 参数。
+- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 `speaker_attenuation` 参数。
 - (0.5, 1]：强衰减模式，音量和音色在传播过程中快速衰减。
 
 #### `forceSet`
 
 是否强制设置媒体播放器的声音衰减效果：
 
-- true：强制使用 attenuation 设置媒体播放器的衰减效果，此时 SpatialAudioZone 中通过 audioAttenuation 设置的隔音区衰减系数对媒体播放器无效。
-- false：不强制使用 attenuation 设置媒体播放器的声音衰减效果，具体如下：
-  - 如果声源和收听者分别位于隔音区内外，声音衰减效果由 SpatialAudioZone 中的 audioAttenuation 决定。
-  - 如果声源和收听者位于同一隔音区内或同一隔音区外，声音衰减效果由本方法中的 attenuation 决定。
+- true：强制使用 `attenuation` 设置媒体播放器的衰减效果，此时 [SpatialAudioZone](/zh-CN/api-reference/rtc/cpp-all-platforms/class-spatialaudiozone) 中通过 `audioAttenuation` 设置的隔音区衰减系数对媒体播放器无效。
+- false：不强制使用 `attenuation` 设置媒体播放器的声音衰减效果，具体如下：
+
+  - 如果声源和收听者分别位于隔音区内外，声音衰减效果由 [SpatialAudioZone](/zh-CN/api-reference/rtc/cpp-all-platforms/class-spatialaudiozone) 中的 `audioAttenuation` 决定。
+  - 如果声源和收听者位于同一隔音区内或同一隔音区外，声音衰减效果由本方法中的 `attenuation` 决定。
 
 <a id="api_ilocalspatialaudioengine_setplayerattenuation_ilocalspatialaudioengine__return_values"></a>
 
@@ -555,17 +558,18 @@ virtual int setRemoteAudioAttenuation(uid_t uid, double attenuation, bool forceS
 
 - 0：广播模式，音量和音色不会随距离衰减，本地用户听到的音量和音色不会因距离变化而变化。
 - (0, 0.5)：弱衰减模式，音量和音色在传播过程中仅有轻微衰减，声音传播距离比真实环境更远。
-- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 speaker_attenuation 参数。
+- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 `speaker_attenuation` 参数。
 - (0.5, 1]：强衰减模式，音量和音色在传播过程中迅速衰减。
 
 #### `forceSet`
 
 是否强制设置用户的声音衰减效果：
 
-- true：强制使用 attenuation 设置用户的声音衰减效果，此时 SpatialAudioZone 中 audioAttenuation 设置的隔音区衰减系数对该用户无效。
-- false：不强制使用 attenuation 设置用户的声音衰减效果，具体如下：
-  - 若声源和接收者分别位于隔音区内外，衰减效果由 SpatialAudioZone 中的 audioAttenuation 决定；
-  - 若声源和接收者位于同一隔音区或同在隔音区外，衰减效果由本方法中的 attenuation 决定。
+- true：强制使用 `attenuation` 设置用户的声音衰减效果，此时 [SpatialAudioZone](/zh-CN/api-reference/rtc/cpp-all-platforms/class-spatialaudiozone) 中 `audioAttenuation` 设置的隔音区衰减系数对该用户无效。
+- false：不强制使用 `attenuation` 设置用户的声音衰减效果，具体如下：
+
+  - 若声源和接收者分别位于隔音区内外，衰减效果由 [SpatialAudioZone](/zh-CN/api-reference/rtc/cpp-all-platforms/class-spatialaudiozone) 中的 `audioAttenuation` 决定；
+  - 若声源和接收者位于同一隔音区或同在隔音区外，衰减效果由本方法中的 `attenuation` 决定。
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__return_values"></a>
 
@@ -665,8 +669,8 @@ virtual int setZones(const SpatialAudioZone *zones, unsigned int zoneCount) = 0;
 
 在虚拟互动场景中，你可以使用该方法设置隔音区域及其声音衰减系数。当声源（用户或媒体播放器）和接收者分别位于隔音区域的内外时，可以模拟现实中声音被建筑物阻隔时的衰减效果：
 
-- 当声源和接收者分别位于隔音区域的内外时，声音的衰减效果由 SpatialAudioZone 中的衰减系数决定。
-- 当用户或媒体播放器处于同一个隔音区域内时，不受 SpatialAudioZone 的影响，声音衰减效果由 setPlayerAttenuation 或 setRemoteAudioAttenuation 中的 attenuation 参数决定。若未调用上述方法，SDK 默认使用 0.5 的声音衰减系数。
+- 当声源和接收者分别位于隔音区域的内外时，声音的衰减效果由 [SpatialAudioZone](/zh-CN/api-reference/rtc/cpp-all-platforms/class-spatialaudiozone) 中的衰减系数决定。
+- 当用户或媒体播放器处于同一个隔音区域内时，不受 [SpatialAudioZone](/zh-CN/api-reference/rtc/cpp-all-platforms/class-spatialaudiozone) 的影响，声音衰减效果由 [setPlayerAttenuation](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_setplayerattenuation_ilocalspatialaudioengine) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation) 中的 `attenuation` 参数决定。若未调用上述方法，SDK 默认使用 0.5 的声音衰减系数。
 - 当声源和接收者分别位于两个不同的隔音区域中，接收者将无法听到声源。
 
 :::info[注]

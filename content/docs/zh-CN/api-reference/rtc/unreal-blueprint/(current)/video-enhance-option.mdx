@@ -165,7 +165,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用限制
 
-- 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+- 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 - 该功能对设备性能要求较高，调用该方法时 SDK 会自动对当前设备能力进行检查。
 
 <a id="api_irtcengine_setbeautyeffectoptions__parameters"></a>
@@ -176,8 +176,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否开启美颜功能：
 
-- true: 开启美颜功能。
-- false:（默认）关闭美颜功能。
+- `true`: 开启美颜功能。
+- `false`:（默认）关闭美颜功能。
 
 #### `options`
 
@@ -200,7 +200,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -4：当前设备不支持该功能，可能的原因有：
+
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
 
 ### 所属接口类
@@ -228,9 +230,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 你可以调用该方法开启色彩增强功能并设置色彩增强的效果。
 
 :::warning[注意]
-- 请在 EnableVideo 后调用该方法。
+- 请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 后调用该方法。
 - 色彩增强对设备性能有一定要求。开启色彩增强后，如果设备出现严重发烫等问题，建议你将色彩增强等级修改为消耗性能较少的等级或关闭色彩增强功能。
-- 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+- 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
 
 <a id="api_irtcengine_setcolorenhanceoptions__parameters"></a>
@@ -241,8 +243,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否开启色彩增强功能：
 
-- true：开启色彩增强功能。
-- false：（默认）关闭色彩增强功能。
+- `true`：开启色彩增强功能。
+- `false`：（默认）关闭色彩增强功能。
 
 #### `options`
 
@@ -301,7 +303,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 调用限制
 
 - 在 Android 平台上，该方法仅适用于 Android 4.4 及以上版本。
-- 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+- 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 - 该功能对设备性能要求较高，调用该方法时 SDK 会自动对当前设备能力进行检查。
 
 <a id="api_irtcengine_setfaceshapeareaoptions__parameters"></a>
@@ -329,7 +331,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -4：当前设备不支持该功能，可能的原因有：
+
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 4.4，不支持该操作，建议更换设备或升级操作系统。
 
@@ -368,7 +372,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 调用限制
 
 - 在 Android 平台上，该方法仅适用于 Android 4.4 及以上版本。
-- 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+- 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 - 该功能对设备性能要求较高，调用该方法时 SDK 会自动对当前设备能力进行检查。
 
 <a id="api_irtcengine_setfaceshapebeautyoptions__parameters"></a>
@@ -379,8 +383,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否开启美型效果：
 
-- true: 开启美型功能。
-- false:（默认）关闭美型功能。
+- `true`: 开启美型功能。
+- `false`:（默认）关闭美型功能。
 
 #### `options`
 
@@ -403,7 +407,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+
   - -4：当前设备不支持该功能，可能的原因有：
+
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 4.4，不支持该操作，建议更换设备或升级操作系统。
 
@@ -435,7 +441,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用限制
 
-- 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+- 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 - 该功能对设备性能要求较高，调用该方法时 SDK 会自动对当前设备能力进行检查。
 
 <a id="api_irtcengine_setfiltereffectoptions__parameters"></a>
@@ -446,8 +452,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否开启滤镜效果：
 
-- true: 开启滤镜功能。
-- false:（默认）关闭滤镜功能。
+- `true`: 开启滤镜功能。
+- `false`:（默认）关闭滤镜功能。
 
 #### `options`
 
@@ -510,6 +516,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
 - 暗光增强对设备性能有一定要求。开启暗光增强后，如果设备出现严重发烫等问题，建议你将暗光增强等级修改为消耗性能较少的等级或关闭暗光增强功能。
 - 如果要实现优先画质 (LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY) 的暗光增强，需要先调用 [SetVideoDenoiserOptions](/zh-CN/api-reference/rtc/unreal-blueprint/video-enhance-option#api_irtcengine_setvideodenoiseroptions) 实现视频降噪，具体对应关系如下：
+
   - 暗光增强为自动模式 (LOW_LIGHT_ENHANCE_AUTO) 时，视频降噪需设置为优先画质 (VIDEO_DENOISER_LEVEL_HIGH_QUALITY)、自动模式 (VIDEO_DENOISER_AUTO)。
   - 暗光增强为手动模式 (LOW_LIGHT_ENHANCE_MANUAL) 时，视频降噪需设置为优先画质 (VIDEO_DENOISER_LEVEL_HIGH_QUALITY)、手动模式 (VIDEO_DENOISER_MANUAL)。
 
@@ -521,8 +528,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否开启暗光增强功能：
 
-- true: 开启暗光增强功能。
-- false:（默认）关闭暗光增强功能。
+- `true`: 开启暗光增强功能。
+- `false`:（默认）关闭暗光增强功能。
 
 #### `options`
 
@@ -592,7 +599,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用限制
 
-- 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+- 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 - 视频降噪对设备性能有一定要求。开启视频降噪后，如果设备出现严重发烫等问题，建议你将视频降噪等级修改为消耗性能较少的等级或关闭视频降噪功能。
 
 <a id="api_irtcengine_setvideodenoiseroptions__parameters"></a>
@@ -603,8 +610,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否开启视频降噪功能：
 
-- true: 开启视频降噪功能。
-- false:（默认）关闭视频降噪功能。
+- `true`: 开启视频降噪功能。
+- `false`:（默认）关闭视频降噪功能。
 
 #### `options`
 

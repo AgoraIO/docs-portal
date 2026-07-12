@@ -26,7 +26,7 @@ virtual agora_refptr<IMusicPlayer> createMusicPlayer() = 0;
 
 ### 返回值
 
-- 方法调用成功，返回一个 IMusicPlayer 对象，详见 IMusicPlayer。
+- 方法调用成功，返回一个 [IMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusicplayer) 对象，详见 [IMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusicplayer)。
 - 方法调用失败，返回 NULL。
 
 ### 所属接口类
@@ -98,7 +98,7 @@ virtual MusicChartInfo* get(int index) = 0;
 
 ### 返回值
 
-- 方法调用成功，返回 MusicChartInfo 实例，详见 MusicChartInfo。
+- 方法调用成功，返回 [MusicChartInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musicchartinfo) 实例，详见 [MusicChartInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musicchartinfo)。
 - 方法调用失败，返回 NULL。
 
 ### 所属接口类
@@ -132,8 +132,8 @@ virtual int getCaches(MusicCacheInfo *cacheInfo, int32_t* cacheInfoSize) = 0;
 
 输入和输出参数，表示 [MusicCacheInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musiccacheinfo) 数组的大小。
 
-- 输入值：分配的 MusicCacheInfo 结构体数量。
-- 输出值：方法执行后返回的 MusicCacheInfo 结构体数量。
+- 输入值：分配的 [MusicCacheInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musiccacheinfo) 结构体数量。
+- 输出值：方法执行后返回的 [MusicCacheInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musiccacheinfo) 结构体数量。
 
 <a id="api_imusiccontentcenter_getcaches__return_values"></a>
 
@@ -219,8 +219,8 @@ virtual int getInternalSongCode(int64_t songCode, const char* jsonOption, int64_
 
 扩展 JSON 字段，默认为 NULL。目前支持以下字段：
 
-- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例代码 \{"sceneType":1\}。
-- highPart：副歌片段的索引，从 onMusicCollectionResult 回调中获取，索引从 0 开始。示例代码 \{"format": \{"highpart": 0\}\}。
+- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例代码 `{"sceneType":1}`。
+- highPart：副歌片段的索引，从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取，索引从 0 开始。示例代码 `{"format": {"highpart": 0}}`。
 
 #### `internalSongCode`
 
@@ -311,7 +311,7 @@ virtual Music* getMusic(int32_t index) = 0;
 
 ### 返回值
 
-- 方法调用成功，返回 Music 实例，详见 Music。
+- 方法调用成功，返回 [Music](/zh-CN/api-reference/rtc/cpp-all-platforms/class-music) 实例，详见 [Music](/zh-CN/api-reference/rtc/cpp-all-platforms/class-music)。
 - 方法调用失败，返回 NULL。
 
 ### 所属接口类
@@ -395,17 +395,19 @@ virtual int getMusicCollectionByMusicChartId(agora::util::AString& requestId, in
 
 扩展 JSON 字段，默认为 NULL。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选项：
 
-- pitchType：是否支持评分。
+- `pitchType`：是否支持评分。
+
   - 1：可评分音乐。
   - 2：不可评分音乐。
-- needHighPart：是否需要合唱片段。
+- `needHighPart`：是否需要合唱片段。
+
   - true：需要合唱片段。
   - false：不需要合唱片段。
 
 示例：
 
-- \{"pitchType": 1 \}
-- \{"needHighPart": true \}
+- `{"pitchType": 1}`
+- `{"needHighPart": true}`
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__return_values"></a>
 
@@ -909,10 +911,12 @@ virtual int searchMusic(agora::util::AString& requestId, const char* keyWord, in
 
 扩展 JSON 字段，默认为 NULL。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选项：
 
-- pitchType：是否支持评分：
-  - 1：可评分音乐。
-  - 2：不可评分音乐。
-- needHighPart：是否需要合唱片段：
+- `pitchType`：是否支持评分：
+
+  - `1`：可评分音乐。
+  - `2`：不可评分音乐。
+- `needHighPart`：是否需要合唱片段：
+
   - true：需要合唱片段。
   - false：不需要合唱片段。
 
@@ -974,6 +978,7 @@ virtual int setPlayMode(MusicPlayMode mode) = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -2：参数无效。请重新设置参数。
 
 ### 所属接口类

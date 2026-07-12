@@ -101,6 +101,7 @@ virtual int agora::rtc::ILocalUser::publishAudio(agora_refptr<ILocalAudioTrack >
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
+
   - -5(ERR_REFUSED)：如果本地用户的角色不是主播，会返回此错误。
 
 <a id="ab9bae681db866df89983dece3cd85581"></a>
@@ -190,6 +191,7 @@ virtual int agora::rtc::ILocalUser::subscribeAudio(user_id_t userId, aosl_ref_t 
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
+
   - -2(ERR_INVALID_ARGUMENT)：如果用户不存在或 userId 无效时会返回该错误。
 
 <a id="a894d4efd0746016c8e190cee839a798d"></a>
@@ -236,6 +238,7 @@ virtual int agora::rtc::ILocalUser::unsubscribeAudio(user_id_t userId, aosl_ref_
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
+
   - -2(ERR_INVALID_ARGUMENT)：如果用户不存在或 userId 无效时会返回该错误。
 
 <a id="a1b177c676190940a0789876fb87a48b9"></a>
@@ -377,10 +380,10 @@ virtual int agora::rtc::ILocalUser::registerAudioFrameObserver(agora::media::IAu
 
 你必须实现 `IAudioFrameObserverBase` 类并根据需求注册以下回调：
 
-- onRecordAudioFrame
-- onPlaybackAudioFrame
-- onPlaybackAudioFrameBeforeMixing
-- onMixedAudioFrame
+- [onRecordAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp-api/class-i-audio-frame-observer-base#a607f7a30a058bf7fe2b7ec2492fe9610)
+- [onPlaybackAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp-api/class-i-audio-frame-observer-base#a9956d1aa3b4e18089ef02ee3d782d667)
+- [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc-server-sdk/cpp-api/class-i-audio-frame-observer-base#a045b317352faf9d64a97b0274a5529ec)
+- [onMixedAudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp-api/class-i-audio-frame-observer-base#a6b3f76a4245bf27b6a7c5cbc44f1c1dd)
 
 #### Parameters
 
@@ -523,6 +526,7 @@ virtual int agora::rtc::ILocalUser::subscribeVideo(user_id_t userId, const Video
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
+
   - -2(ERR_INVALID_ARGUMENT)：如果用户不存在或 userId 无效时会返回该错误。
 
 <a id="a77ee018bedf45f21aa198d697c3774a4"></a>
@@ -570,6 +574,7 @@ virtual int agora::rtc::ILocalUser::unsubscribeVideo(user_id_t userId, aosl_ref_
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
+
   - -2(ERR_INVALID_ARGUMENT)：如果用户不存在或 userId 无效时会返回该错误。
 
 <a id="ad7abc9f9acdef90c819a137f45a72f88"></a>

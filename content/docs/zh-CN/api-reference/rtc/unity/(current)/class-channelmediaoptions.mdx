@@ -282,8 +282,8 @@ public class ChannelMediaOptions : OptionalJsonParse
 （可选）在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/unity/basic-features/token-authentication)。
 
 :::info[注]
-- 该参数仅在调用 UpdateChannelMediaOptions 或 UpdateChannelMediaOptionsEx 时生效。
-- 请确保用于生成 token 的 App ID、频道名和用户名和 Initialize 方法初始化引擎时用的 App ID，以及 JoinChannel [2/2] 或 JoinChannelEx 方法加入频道时设置的频道名和用户名是一致的。
+- 该参数仅在调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_updatechannelmediaoptions) 或 [UpdateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_updatechannelmediaoptionsex) 时生效。
+- 请确保用于生成 token 的 App ID、频道名和用户名和 [Initialize](/zh-CN/api-reference/rtc/unity/initialize#api_irtcengine_initialize) 方法初始化引擎时用的 App ID，以及 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 或 [JoinChannelEx](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex) 方法加入频道时设置的频道名和用户名是一致的。
 :::
 
 ### `publishRhythmPlayerTrack`
@@ -296,8 +296,8 @@ public class ChannelMediaOptions : OptionalJsonParse
 ### `isInteractiveAudience`
 
 :::info[注]
-- 该参数用于实现跨直播间连麦场景。连麦主播需要调用 JoinChannelEx 方法，以观众身份加入对方的直播间，并将 isInteractiveAudience 设置为 true。
-- 仅当用户角色为 CLIENT_ROLE_AUDIENCE 时，该参数生效。
+- 该参数用于实现跨直播间连麦场景。连麦主播需要调用 [JoinChannelEx](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex) 方法，以观众身份加入对方的直播间，并将 `isInteractiveAudience` 设置为 true。
+- 仅当用户角色为 `CLIENT_ROLE_AUDIENCE` 时，该参数生效。
 :::
 
 是否开启互动观众模式：

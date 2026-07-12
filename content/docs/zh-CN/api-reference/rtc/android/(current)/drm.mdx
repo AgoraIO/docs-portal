@@ -26,8 +26,8 @@ public abstract IAgoraMusicPlayer createMusicPlayer();
 
 ### 返回值
 
-- 方法调用成功，返回 IAgoraMusicPlayer 对象。
-- 方法调用失败，返回 null。
+- 方法调用成功，返回 [IAgoraMusicPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusicplayer) 对象。
+- 方法调用失败，返回 `null`。
 
 ### 所属接口类
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
@@ -139,8 +139,8 @@ public abstract MusicCacheInfo[] getCaches();
 
 ### 返回值
 
-- 方法调用成功，返回包含 MusicCacheInfo 对象的数组。
-- 方法调用失败，返回 null。
+- 方法调用成功，返回包含 [MusicCacheInfo](/zh-CN/api-reference/rtc/android/class-musiccacheinfo) 对象的数组。
+- 方法调用失败，返回 `null`。
 
 ### 所属接口类
 - [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
@@ -177,8 +177,8 @@ public abstract long getInternalSongCode(long songCode, String jsonOption);
 
 扩展 JSON 字段，默认为 `null`。目前支持以下字段：
 
-- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例： \{"sceneType":1\}。
-- highPart：副歌片段的索引，从 onMusicCollectionResult 回调中获取，索引从 0 开始。示例： \{"format": \{"highpart": 0\}\}。
+- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例： `{"sceneType":1}`。
+- highPart：副歌片段的索引，从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取，索引从 0 开始。示例： `{"format": {"highpart": 0}}`。
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
 
@@ -229,7 +229,7 @@ public abstract String getLyric(long songCode, int lyricType);
 
 ### 返回值
 
-- 方法调用成功时，返回唯一标识该请求的 requestId。
+- 方法调用成功时，返回唯一标识该请求的 `requestId`。
 - 方法调用失败，返回空字符串。
 
 ### 所属接口类
@@ -261,7 +261,7 @@ public abstract String getMusicCharts();
 
 ### 返回值
 
-- 方法调用成功时，返回请求的唯一标识符 requestId。
+- 方法调用成功时，返回请求的唯一标识符 `requestId`。
 - 方法调用失败，返回空字符串。
 
 ### 所属接口类
@@ -307,7 +307,7 @@ public String getMusicCollectionByMusicChartId(int musicChartId, int page, int p
 
 ### 返回值
 
-- 方法调用成功时，返回唯一标识此次请求的 requestId。
+- 方法调用成功时，返回唯一标识此次请求的 `requestId`。
 - 方法调用失败，返回空字符串。
 
 ### 所属接口类
@@ -355,10 +355,12 @@ public abstract String getMusicCollectionByMusicChartId(int musicChartId, int pa
 
 可选的 JSON 扩展字段，默认为 `null`。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选项：
 
-- pitchType：音乐资源是否支持评分。
-  - 1：可评分音乐资源。
-  - 2：不可评分音乐资源。
-- needHighPart：是否需要合唱片段资源。
+- `pitchType`：音乐资源是否支持评分。
+
+  - `1`：可评分音乐资源。
+  - `2`：不可评分音乐资源。
+- `needHighPart`：是否需要合唱片段资源。
+
   - true：需要合唱片段。
   - false：不需要合唱片段。
 
@@ -368,7 +370,7 @@ public abstract String getMusicCollectionByMusicChartId(int musicChartId, int pa
 
 ### 返回值
 
-- 方法调用成功时，返回请求的唯一标识符 requestId。
+- 方法调用成功时，返回请求的唯一标识符 `requestId`。
 - 方法调用失败，返回空字符串。
 
 ### 所属接口类
@@ -390,8 +392,8 @@ public abstract String getMusicCollectionByMusicChartId(int musicChartId, int pa
 
 你需要在打开音乐资源后调用此方法：
 
-- 如果使用 open(Uri uri, long startPos) 打开音乐资源，该方法返回音乐资源的标识符（songCode ）。
-- 如果使用 open(String url, long startPos) 打开音乐资源，该方法返回音乐资源的 URL。
+- 如果使用 `open(Uri uri, long startPos)` 打开音乐资源，该方法返回音乐资源的标识符（`songCode` ）。
+- 如果使用 `open(String url, long startPos)` 打开音乐资源，该方法返回音乐资源的 URL。
 
 <a id="api_imusicplayer_getplaysrc__return_values"></a>
 
@@ -435,7 +437,7 @@ public abstract String getSongSimpleInfo(long songCode);
 
 ### 返回值
 
-- 方法调用成功时，返回唯一标识此次请求的 requestId。
+- 方法调用成功时，返回唯一标识此次请求的 `requestId`。
 - 方法调用失败，返回空字符串。
 
 ### 所属接口类
@@ -552,7 +554,7 @@ int open(String url, long startPos)
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。详见 错误码 获取详细信息和排查建议。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。详见 `错误码` 获取详细信息和排查建议。
 
 ### 所属接口类
 - [IAgoraMusicPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusicplayer)
@@ -691,7 +693,7 @@ public abstract String preload(long songCode);
 
 ### 返回值
 
-- 方法调用成功时，返回请求的唯一标识符 requestId。
+- 方法调用成功时，返回请求的唯一标识符 `requestId`。
 - 方法调用失败，返回空字符串。
 
 ### 所属接口类
@@ -837,7 +839,7 @@ public String searchMusic(String keyword, int page, int pageSize)
 
 ### 返回值
 
-- 方法调用成功时，返回唯一标识该请求的 requestId。
+- 方法调用成功时，返回唯一标识该请求的 `requestId`。
 - 方法调用失败，返回空字符串。
 
 ### 所属接口类
@@ -883,10 +885,12 @@ public abstract String searchMusic(String keyword, int page, int pageSize, Strin
 
 可选的 JSON 扩展字段，默认为 `null`。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选条件：
 
-- pitchType：是否支持评分。
+- `pitchType`：是否支持评分。
+
   - 1：支持评分的音乐资源。
   - 2：不支持评分的音乐资源。
-- needHighPart：是否需要副歌片段。
+- `needHighPart`：是否需要副歌片段。
+
   - true：需要副歌片段。
   - false：不需要副歌片段。
 
@@ -894,7 +898,7 @@ public abstract String searchMusic(String keyword, int page, int pageSize, Strin
 
 ### 返回值
 
-- 方法调用成功时，返回唯一标识该请求的 requestId。
+- 方法调用成功时，返回唯一标识该请求的 `requestId`。
 - 方法调用失败，返回空字符串。
 
 ### 所属接口类
@@ -946,6 +950,7 @@ int setPlayMode(MusicPlayMode mode);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
   - -2：参数无效，请重新设置参数。
 
 ### 所属接口类
@@ -1041,17 +1046,18 @@ public abstract int unregisterEventHandler();
 
 来自版权音乐内容中心的请求状态码：
 
-- MUSIC_CONTENT_CENTER_STATE_REASON_OK (0)：请求成功。
-- MUSIC_CONTENT_CENTER_STATE_REASON_ERROR (1)：通用错误，无具体原因。
-- MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY (2)：网关错误。可能原因包括：
+- `MUSIC_CONTENT_CENTER_STATE_REASON_OK` (0)：请求成功。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_ERROR` (1)：通用错误，无具体原因。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY` (2)：网关错误。可能原因包括：
+
   - 当前临时 Token 已过期。请重新生成 Token。
   - 提供的 Token 无效。请确保使用的是 RTM Token。
   - 网络错误。请检查网络连接。
-- MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE (3)：权限错误或音乐资源不存在。请确保项目已启用版权音乐内容中心权限。如有疑问，请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL (7)：HTTP 内部错误。请稍后重试。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE` (3)：权限错误或音乐资源不存在。请确保项目已启用版权音乐内容中心权限。如有疑问，请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE` (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING` (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION` (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL` (7)：HTTP 内部错误。请稍后重试。
 
 ### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcentereventhandler)
@@ -1094,17 +1100,18 @@ public abstract int unregisterEventHandler();
 
 来自音乐内容中心的请求状态码：
 
-- MUSIC_CONTENT_CENTER_STATE_REASON_OK (0)：请求成功。
-- MUSIC_CONTENT_CENTER_STATE_REASON_ERROR (1)：通用错误，无具体原因。
-- MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY (2)：网关错误。可能原因包括：
+- `MUSIC_CONTENT_CENTER_STATE_REASON_OK` (0)：请求成功。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_ERROR` (1)：通用错误，无具体原因。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY` (2)：网关错误。可能原因包括：
+
   - 当前 token 已过期。请重新生成 token。
   - 提供的 token 无效。请确保使用的是 RTM token。
   - 网络错误。请检查网络连接。
-- MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE (3)：权限错误或未找到音乐资源。请确保项目已启用访问声网音乐内容中心。如有问题，请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL (7)：内部 HTTP 错误。请稍后重试。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE` (3)：权限错误或未找到音乐资源。请确保项目已启用访问声网音乐内容中心。如有问题，请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE` (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING` (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION` (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL` (7)：内部 HTTP 错误。请稍后重试。
 
 ### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcentereventhandler)
@@ -1153,17 +1160,18 @@ void onMusicCollectionResult(String requestId, int page, int pageSize, int total
 
 来自声网音乐内容中心的请求状态码：
 
-- MUSIC_CONTENT_CENTER_STATE_REASON_OK (0)：请求成功。
-- MUSIC_CONTENT_CENTER_STATE_REASON_ERROR (1)：通用错误，无具体归因。
-- MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY (2)：网关错误。可能原因包括：
+- `MUSIC_CONTENT_CENTER_STATE_REASON_OK (0)`：请求成功。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_ERROR (1)`：通用错误，无具体归因。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY (2)`：网关错误。可能原因包括：
+
   - 当前临时 Token 已过期。请重新生成临时 Token。
   - 提供的临时 Token 无效。请确保你使用的是 RTM Token。
   - 网络错误。请检查你的网络连接。
-- MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE (3)：权限错误或未找到音乐资源。请确保你的项目已启用访问声网音乐内容中心的权限。如有问题，请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL (7)：HTTP 内部错误。请稍后重试。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE (3)`：权限错误或未找到音乐资源。请确保你的项目已启用访问声网音乐内容中心的权限。如有问题，请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE (4)`：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING (5)`：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION (6)`：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL (7)`：HTTP 内部错误。请稍后重试。
 
 ### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcentereventhandler)
@@ -1222,17 +1230,18 @@ void onPreLoadEvent(String requestId, long songCode, int percent, String lyricUr
 
 来自 Music Content Center 的请求状态码：
 
-- MUSIC_CONTENT_CENTER_STATE_REASON_OK (0)：请求成功。
-- MUSIC_CONTENT_CENTER_STATE_REASON_ERROR (1)：通用错误，无具体归因。
-- MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY (2)：网关错误。可能原因包括：
+- `MUSIC_CONTENT_CENTER_STATE_REASON_OK` (0)：请求成功。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_ERROR` (1)：通用错误，无具体归因。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY` (2)：网关错误。可能原因包括：
+
   - 当前临时 Token 已过期，请重新生成 Token。
   - 提供的 Token 无效，请确保使用的是 Token。
   - 网络错误，请检查网络连接。
-- MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE (3)：权限错误或音乐资源不存在。请确保项目已启用 Music Content Center 访问权限。如有问题请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL (7)：HTTP 内部错误。请稍后重试。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE` (3)：权限错误或音乐资源不存在。请确保项目已启用 Music Content Center 访问权限。如有问题请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE` (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING` (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION` (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL` (7)：HTTP 内部错误。请稍后重试。
 
 ### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcentereventhandler)
@@ -1283,17 +1292,18 @@ void onSongSimpleInfoResult(String requestId, long songCode, String simpleInfo, 
 
 来自音乐内容中心的请求状态码：
 
-- MUSIC_CONTENT_CENTER_STATE_REASON_OK (0)：请求成功。
-- MUSIC_CONTENT_CENTER_STATE_REASON_ERROR (1)：通用错误，无具体原因。
-- MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY (2)：网关错误。可能原因包括：
+- `MUSIC_CONTENT_CENTER_STATE_REASON_OK` (0)：请求成功。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_ERROR` (1)：通用错误，无具体原因。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY` (2)：网关错误。可能原因包括：
+
   - 当前临时 Token 已过期，请生成新的 Token。
   - 提供的 Token 无效，请确保使用的是 RTM Token。
   - 网络错误，请检查网络连接。
-- MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE (3)：权限错误或音乐资源不存在。请确保项目已启用音乐内容中心权限。如有问题，请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
-- MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL (7)：内部 HTTP 错误。请稍后重试。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE` (3)：权限错误或音乐资源不存在。请确保项目已启用音乐内容中心权限。如有问题，请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE` (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING` (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION` (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL` (7)：内部 HTTP 错误。请稍后重试。
 
 ### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcentereventhandler)

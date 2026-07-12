@@ -28,7 +28,7 @@ List<AudioDeviceInfo> enumeratePlaybackDevices();
 
 ### 返回值
 
-- 方法调用成功，返回 AudioDeviceInfo 数组，包含所有音频播放设备的设备 ID 和设备名称。
+- 方法调用成功，返回 [AudioDeviceInfo](/zh-CN/api-reference/rtc/flutter/class-audiodeviceinfo) 数组，包含所有音频播放设备的设备 ID 和设备名称。
 - 方法调用失败: 返回空列表。
 
 ### 所属接口类
@@ -56,7 +56,7 @@ List<AudioDeviceInfo> enumerateRecordingDevices();
 
 ### 返回值
 
-- 方法调用成功，返回一个 AudioDeviceInfo 数组，包含所有音频采集设备的设备 ID 和设备名称。
+- 方法调用成功，返回一个 [AudioDeviceInfo](/zh-CN/api-reference/rtc/flutter/class-audiodeviceinfo) 数组，包含所有音频采集设备的设备 ID 和设备名称。
 - 方法调用失败: 返回空列表。
 
 ### 所属接口类
@@ -804,7 +804,7 @@ Future<void> startAudioDeviceLoopbackTest(int indicationInterval);
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
 - 该方法仅在本地进行音频设备测试，不涉及网络连接。
-- 完成测试后，必须调用 stopAudioDeviceLoopbackTest 停止音频设备回路测试。
+- 完成测试后，必须调用 [stopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/flutter/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__parameters"></a>
@@ -899,6 +899,7 @@ SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio-basi
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
   - -2: 参数设置错误，请重新设置参数。
 
 ### 所属接口类
@@ -922,7 +923,7 @@ Future<void> stopAudioDeviceLoopbackTest();
 - 该方法仅适用于 Windows 和 macOS。
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
-- 在调用 startAudioDeviceLoopbackTest 后，必须调用该方法停止音频设备回路测试。
+- 在调用 [startAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/flutter/audio-device#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 后，必须调用该方法停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__return_values"></a>

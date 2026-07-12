@@ -594,8 +594,8 @@ public abstract startAudioMixing(filepath: string, loopback: boolean, cycle: num
 
 是否只在本地播放音乐文件：
 
-- true：只在本地播放音乐文件，只有本地用户能听到音乐。
-- false：将本地播放的音乐文件发布至远端，本地用户和远端用户都能听到音乐。
+- `true`：只在本地播放音乐文件，只有本地用户能听到音乐。
+- `false`：将本地播放的音乐文件发布至远端，本地用户和远端用户都能听到音乐。
 
 #### `cycle`
 
@@ -614,12 +614,14 @@ public abstract startAudioMixing(filepath: string, loopback: boolean, cycle: num
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败：
+
   - -1：一般性的错误（未明确归类）。
   - -2：设置了无效的参数。
   - -3：SDK 尚未准备好：
+
     - 请检查是否已开启音频模块。
     - 请检查程序集完整性。
-    - RtcEngine 初始化失败。请重新初始化 RtcEngine。
+    - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 RtcEngine。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)

@@ -85,7 +85,7 @@ public class SpatialAudioParams {
 
 :::info[注]
 - 此参数适用于声源高速移动的场景（例如赛车游戏）。不建议在一般音视频互动场景中使用（如语音聊天、连麦或在线 KTV）。
-- 启用此参数后，声网建议你以固定周期（如 30 毫秒）调用 updatePlayerPositionInfo、 updateSelfPosition、 updateRemotePosition 方法持续更新声源与接收器之间的相对距离。
+- 启用此参数后，声网建议你以固定周期（如 30 毫秒）调用 [updatePlayerPositionInfo](/zh-CN/api-reference/rtc/android/spatial-audio#api_ibasespatialaudioengine_updateplayerpositioninfo)、 [updateSelfPosition](/zh-CN/api-reference/rtc/android/spatial-audio#api_ibasespatialaudioengine_updateselfposition)、 [updateRemotePosition](/zh-CN/api-reference/rtc/android/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 方法持续更新声源与接收器之间的相对距离。
 - 若更新周期过长、不规律，或者因网络丢包或延迟导致距离信息丢失，可能造成多普勒效应表现异常或声音抖动。
 :::
 

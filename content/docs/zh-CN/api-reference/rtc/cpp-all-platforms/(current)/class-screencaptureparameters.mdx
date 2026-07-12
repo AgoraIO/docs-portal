@@ -33,8 +33,8 @@ struct ScreenCaptureParameters {
 
 屏幕共享视频流的编码分辨率。默认值为 1920 × 1080，即 2,073,600 像素。声网会根据该参数的值计算费用。如果屏幕尺寸与该参数值不同，SDK 会采用以下编码策略。假设 `dimensions` 设置为 1920 × 1080：
 
-- 如果屏幕尺寸小于 dimensions，例如 1000 × 1000 像素，SDK 使用屏幕尺寸（即 1000 × 1000 像素）进行编码。
-- 如果屏幕尺寸大于 dimensions，例如 2000 × 1500 像素，SDK 会在保持屏幕宽高比（4:3）的前提下，使用不超过 dimensions 的最大值进行编码，即 1440 × 1080。
+- 如果屏幕尺寸小于 `dimensions`，例如 1000 × 1000 像素，SDK 使用屏幕尺寸（即 1000 × 1000 像素）进行编码。
+- 如果屏幕尺寸大于 `dimensions`，例如 2000 × 1500 像素，SDK 会在保持屏幕宽高比（4:3）的前提下，使用不超过 `dimensions` 的最大值进行编码，即 1440 × 1080。
 
 详见 [VideoDimensions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videodimensions)。
 
@@ -93,7 +93,7 @@ struct ScreenCaptureParameters {
 （仅适用于 macOS 和 Windows）
 
 - 在 Windows 平台上，边框颜色为 ARGB 格式。默认值为 0xFF8CBF26。
-- 在 macOS 上， COLOR_CLASS 表示 NSColor。
+- 在 macOS 上， `COLOR_CLASS` 表示 `NSColor`。
 
 ### `enableHighLight`
 

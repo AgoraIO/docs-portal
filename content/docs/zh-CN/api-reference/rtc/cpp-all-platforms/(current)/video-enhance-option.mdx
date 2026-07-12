@@ -27,7 +27,7 @@ virtual int addOrUpdateVideoEffect(uint32_t nodeId, const char* templateName) = 
 :::info[注]
 优先级规则：
 
-- 风格妆 (VIDEO_EFFECT_NODE_ID::STYLE_MAKEUP) 节点优先于滤镜特效 (VIDEO_EFFECT_NODE_ID::FILTER) 节点。
+- 风格妆 (`VIDEO_EFFECT_NODE_ID::STYLE_MAKEUP`) 节点优先于滤镜特效 (`VIDEO_EFFECT_NODE_ID::FILTER`) 节点。
 - 若要应用滤镜特效，必须先移除风格妆特效节点：
 
 ```cpp
@@ -44,8 +44,8 @@ addOrUpdateVideoEffect(VIDEO_EFFECT_NODE_ID::FILTER, "template name");
 
 视频特效节点的唯一标识符或标识符组合。详见 [VIDEO_EFFECT_NODE_ID](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videoeffectnodeid)。 示例：
 
-- 单一特效： VIDEO_EFFECT_NODE_ID::BEAUTY
-- 组合特效： VIDEO_EFFECT_NODE_ID::BEAUTY | VIDEO_EFFECT_NODE_ID::STYLE_MAKEUP
+- 单一特效： `VIDEO_EFFECT_NODE_ID::BEAUTY`
+- 组合特效： `VIDEO_EFFECT_NODE_ID::BEAUTY | VIDEO_EFFECT_NODE_ID::STYLE_MAKEUP`
 
 #### `templateName`
 
@@ -95,7 +95,7 @@ virtual agora_refptr<IVideoEffectObject> createVideoEffectObject(const char* bun
 
 ### 返回值
 
-- 方法调用成功，返回 IVideoEffectObject 对象指针，详见 IVideoEffectObject。
+- 方法调用成功，返回 [IVideoEffectObject](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject) 对象指针，详见 [IVideoEffectObject](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject)。
 - 方法调用失败，返回 NULL。
 
 ### 所属接口类
@@ -182,8 +182,8 @@ virtual int getFaceShapeAreaOptions(agora::rtc::FaceShapeAreaOptions::FACE_SHAPE
 :::info[注]
 在该方法中，该参数仅支持以下两种设置：
 
-- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
-- 如果使用自定义视频源，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果使用自定义视频源，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_getfaceshapeareaoptions__return_values"></a>
@@ -237,8 +237,8 @@ virtual int getFaceShapeBeautyOptions(FaceShapeBeautyOptions& options, agora::me
 :::info[注]
 在该方法中，该参数仅支持以下两种设置：
 
-- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
-- 如果使用自定义视频源，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果使用自定义视频源，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_getfaceshapebeautyoptions__return_values"></a>
@@ -325,7 +325,7 @@ virtual float getVideoEffectFloatParam(const char* option, const char* key) = 0;
 
 ### 返回值
 
-- 如果参数存在，返回对应的 float 值。
+- 如果参数存在，返回对应的 `float` 值。
 - 如果参数不存在或发生错误，返回 0.0f。
 
 ### 所属接口类
@@ -491,8 +491,8 @@ virtual int setBeautyEffectOptions(bool enabled, const BeautyOptions& options, a
 
 媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
-- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
-- 如果使用自定义视频源，设置为 CUSTOM_VIDEO_SOURCE。
+- 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果使用自定义视频源，设置为 `CUSTOM_VIDEO_SOURCE`。
 
 <a id="api_irtcengine_setbeautyeffectoptions__return_values"></a>
 
@@ -500,7 +500,9 @@ virtual int setBeautyEffectOptions(bool enabled, const BeautyOptions& options, a
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -4：当前设备不支持该功能。可能原因包括：
+
     - 当前设备性能不满足美颜特效的要求。建议更换为高性能设备。
 
 ### 所属接口类
@@ -527,7 +529,7 @@ virtual int setColorEnhanceOptions(bool enabled, const ColorEnhanceOptions& opti
 摄像头采集的视频图像可能存在色彩失真。色彩增强功能可智能调整视频的饱和度和对比度等特性，从而增强视频的色彩丰富度和还原度，使画面更加生动。
 
 :::info[注]
-- 请在调用 enableVideo 方法后调用此方法。
+- 请在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablevideo) 方法后调用此方法。
 - 色彩增强功能对设备性能有一定要求。开启该功能后，如设备出现严重发热，声网建议你降低色彩增强等级以减少性能消耗，或关闭该功能。
 - 此方法依赖美颜特效动态库 libagora_clear_vision_extension.dll。若该动态库被删除，将无法正常启用该功能。
 :::
@@ -551,8 +553,8 @@ virtual int setColorEnhanceOptions(bool enabled, const ColorEnhanceOptions& opti
 
 媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
-- 使用摄像头采集本地视频时，使用默认值 PRIMARY_CAMERA_SOURCE。
-- 使用自定义视频源时，设置为 CUSTOM_VIDEO_SOURCE。
+- 使用摄像头采集本地视频时，使用默认值 `PRIMARY_CAMERA_SOURCE`。
+- 使用自定义视频源时，设置为 `CUSTOM_VIDEO_SOURCE`。
 
 <a id="api_irtcengine_setcolorenhanceoptions__return_values"></a>
 
@@ -607,8 +609,8 @@ virtual int setFaceShapeAreaOptions(const FaceShapeAreaOptions& options, agora::
 :::info[注]
 该参数仅支持以下两种设置：
 
-- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
-- 如果使用自定义视频源，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果使用自定义视频源，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_setfaceshapeareaoptions__return_values"></a>
@@ -617,7 +619,9 @@ virtual int setFaceShapeAreaOptions(const FaceShapeAreaOptions& options, agora::
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -4：当前设备不支持该功能。可能原因包括：
+
     - 当前设备能力不满足美颜特效的要求。声网建议更换为高性能设备。
     - 当前设备版本低于 Android 4.4，不支持该功能。声网建议更换设备或升级操作系统。
 
@@ -669,8 +673,8 @@ virtual int setFaceShapeBeautyOptions(bool enabled, const FaceShapeBeautyOptions
 
 要应用滤镜特效的媒体源类型，详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。 该参数仅支持以下两种设置：
 
-- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
-- 如果使用自定义视频源，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+- 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果使用自定义视频源，将该参数设置为 `CUSTOM_VIDEO_SOURCE`。
 
 <a id="api_irtcengine_setfaceshapebeautyoptions__return_values"></a>
 
@@ -678,7 +682,9 @@ virtual int setFaceShapeBeautyOptions(bool enabled, const FaceShapeBeautyOptions
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -4：当前设备不支持该功能。可能原因包括：
+
     - 当前设备能力不满足美颜特效要求。声网建议更换为高性能设备。
     - 当前设备版本低于 Android 4.4，不支持该功能。声网建议更换设备或升级操作系统。
 
@@ -732,8 +738,8 @@ virtual int setFilterEffectOptions(bool enabled, const FilterEffectOptions& opti
 
 应用滤镜特效的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
-- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
-- 如果使用自定义视频源，设置为 CUSTOM_VIDEO_SOURCE。
+- 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果使用自定义视频源，设置为 `CUSTOM_VIDEO_SOURCE`。
 
 <a id="api_irtcengine_setfiltereffectoptions__return_values"></a>
 
@@ -768,9 +774,10 @@ virtual int setLowlightEnhanceOptions(bool enabled, const LowlightEnhanceOptions
 :::info[注]
 - 该方法依赖美颜特效动态库 libagora_clear_vision_extension.dll。如果该动态库被删除，该功能将无法正常启用。
 - 暗光增强对设备性能有一定要求。如果启用暗光增强后设备出现过热，声网建议将暗光增强选项设置为较低的性能消耗等级，或完全关闭暗光增强功能。
-- 如果你希望在使用暗光增强功能时优先保证画质（LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY ），需要先调用 setVideoDenoiserOptions 实现视频降噪，具体对应关系如下：
-  - 当暗光增强设置为自动模式（LOW_LIGHT_ENHANCE_AUTO ）时，视频降噪需设置为优先保证画质（VIDEO_DENOISER_LEVEL_HIGH_QUALITY ）和自动模式（VIDEO_DENOISER_AUTO ）。
-  - 当暗光增强设置为手动模式（LOW_LIGHT_ENHANCE_MANUAL ）时，视频降噪需设置为优先保证画质（VIDEO_DENOISER_LEVEL_HIGH_QUALITY ）和手动模式（VIDEO_DENOISER_MANUAL ）。
+- 如果你希望在使用暗光增强功能时优先保证画质（`LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY` ），需要先调用 [setVideoDenoiserOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/video-enhance-option#api_irtcengine_setvideodenoiseroptions) 实现视频降噪，具体对应关系如下：
+
+  - 当暗光增强设置为自动模式（`LOW_LIGHT_ENHANCE_AUTO` ）时，视频降噪需设置为优先保证画质（`VIDEO_DENOISER_LEVEL_HIGH_QUALITY` ）和自动模式（`VIDEO_DENOISER_AUTO` ）。
+  - 当暗光增强设置为手动模式（`LOW_LIGHT_ENHANCE_MANUAL` ）时，视频降噪需设置为优先保证画质（`VIDEO_DENOISER_LEVEL_HIGH_QUALITY` ）和手动模式（`VIDEO_DENOISER_MANUAL` ）。
 :::
 
 <a id="api_irtcengine_setlowlightenhanceoptions__scenario"></a>
@@ -807,8 +814,8 @@ virtual int setLowlightEnhanceOptions(bool enabled, const LowlightEnhanceOptions
 :::info[注]
 在该方法中，该参数仅支持以下两种设置：
 
-- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
-- 如果使用自定义视频源，设置为 CUSTOM_VIDEO_SOURCE。
+- 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果使用自定义视频源，设置为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_setlowlightenhanceoptions__return_values"></a>
@@ -842,12 +849,13 @@ virtual int setVideoDenoiserOptions(bool enabled, const VideoDenoiserOptions& op
 :::info[注]
 - 该方法依赖美颜特效动态库 libagora_clear_vision_extension.dll。如果该动态库被删除，将无法正常启用该功能。
 - 视频降噪对设备性能有一定要求。如果你在启用视频降噪后设备出现过热情况，声网建议你将视频降噪选项设置为较低的性能消耗等级，或完全关闭视频降噪功能。
-- 如果该方法实现的视频降噪效果无法满足你的需求，声网建议你调用 setBeautyEffectOptions 方法启用美颜和磨皮功能，以获得更好的视频降噪效果。推荐用于强降噪效果的 BeautyOptions 设置如下：
-  - lighteningContrastLevel：LIGHTENING_CONTRAST_NORMAL。
-  - lighteningLevel：0.0。
-  - smoothnessLevel：0.5。
-  - rednessLevel：0.0。
-  - sharpnessLevel：0.1。
+- 如果该方法实现的视频降噪效果无法满足你的需求，声网建议你调用 [setBeautyEffectOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/video-enhance-option#api_irtcengine_setbeautyeffectoptions) 方法启用美颜和磨皮功能，以获得更好的视频降噪效果。推荐用于强降噪效果的 [BeautyOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-beautyoptions) 设置如下：
+
+  - `lighteningContrastLevel`：LIGHTENING_CONTRAST_NORMAL。
+  - `lighteningLevel`：0.0。
+  - `smoothnessLevel`：0.5。
+  - `rednessLevel`：0.0。
+  - `sharpnessLevel`：0.1。
 :::
 
 <a id="api_irtcengine_setvideodenoiseroptions__scenario"></a>
@@ -884,8 +892,8 @@ virtual int setVideoDenoiserOptions(bool enabled, const VideoDenoiserOptions& op
 :::info[注]
 在该方法中，该参数仅支持以下两种设置：
 
-- 如果使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
-- 如果使用自定义视频源，设置该参数为 CUSTOM_VIDEO_SOURCE。
+- 如果使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
+- 如果使用自定义视频源，设置该参数为 `CUSTOM_VIDEO_SOURCE`。
 :::
 
 <a id="api_irtcengine_setvideodenoiseroptions__return_values"></a>

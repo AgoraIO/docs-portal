@@ -50,8 +50,8 @@ description: "添加一个渲染视图。"
 
 视图对象的指针。
 
-- iOS：一个 UIView 对象。
-- macOS：一个 NSView 对象。
+- iOS：一个 `UIView` 对象。
+- macOS：一个 `NSView` 对象。
 
 #### `config`
 
@@ -285,7 +285,7 @@ description: "添加一个渲染视图。"
 
 错误信息对象，可能返回以下错误码，详见 [AgoraRteErrorCode](/zh-CN/api-reference/rtc/macos/enum-rteerrorcode)：
 
-- AgoraRteOk：调用成功。
+- `AgoraRteOk`：调用成功。
 
 <a id="api_config_getappid__return_values"></a>
 
@@ -600,7 +600,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/mac
 
 状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
 
-- AgoraRteOk：调用成功。
+- `AgoraRteOk`：调用成功。
 
 <a id="api_config_getjsonparameter_config__return_values"></a>
 
@@ -786,10 +786,11 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/mac
 
 输出参数，用于指示错误信息。可能的返回值包括：
 
-- AgoraRteOk：调用成功。
-- AgoraRteErrorInvalidOperation：
-  - 对应的内部 AgoraRtePlayer 对象已被销毁或无效。
-  - 打开的 URL 是 RTE URL，不支持调用 getPosition:。详见 AgoraRteError。
+- `AgoraRteOk`：调用成功。
+- `AgoraRteErrorInvalidOperation`：
+
+  - 对应的内部 [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player) 对象已被销毁或无效。
+  - 打开的 URL 是 RTE URL，不支持调用 [getPosition:](/zh-CN/api-reference/rtc/macos/rte-player#api_player_getposition)。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
 
 <a id="api_player_getposition__return_values"></a>
 
@@ -873,8 +874,8 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/mac
 
 一个异步回调函数，用于通知你播放器媒体资源统计信息的获取结果以及任何错误信息。该函数包含以下参数：
 
-- stats：播放器当前播放媒体资源的统计信息，详见 AgoraRtePlayerStats。
-- err：错误信息，详见 AgoraRteError。
+- `stats`：播放器当前播放媒体资源的统计信息，详见 [AgoraRtePlayerStats](/zh-CN/api-reference/rtc/macos/class-rteplayerstats)。
+- `err`：错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
 
 ### 所属接口类
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
@@ -1447,7 +1448,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/mac
 
 ### 返回值
 
-- 方法调用成功，返回 RTE 对象。
+- 方法调用成功，返回 `RTE` 对象。
 - 方法调用失败，返回 nil。
 
 ### 所属接口类
@@ -1749,7 +1750,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/mac
 ### 返回值
 
 - YES：设置成功。
-- NO：设置失败。你可以通过 error 参数返回的错误码获取详细信息。
+- NO：设置失败。你可以通过 `error` 参数返回的错误码获取详细信息。
 
 ### 所属接口类
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
@@ -1963,16 +1964,16 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/mac
 
 媒体文件的播放次数：
 
-- 1：播放一次。
-- 2：播放两次。
-- -1：无限循环播放，直到调用 pause:。
+- `1`：播放一次。
+- `2`：播放两次。
+- `-1`：无限循环播放，直到调用 [pause:](/zh-CN/api-reference/rtc/macos/rte-player#api_player_pause_player)。
 
 #### `error`
 
 输出参数，表示状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
 
-- AgoraRteOk：调用成功。
-- AgoraRteErrorInvalidArgument： count 参数设置为无效值。
+- `AgoraRteOk`：调用成功。
+- `AgoraRteErrorInvalidArgument`： `count` 参数设置为无效值。
 
 ### 所属接口类
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
@@ -2085,8 +2086,8 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/mac
 
 输出参数，返回错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
 
-- AgoraRteOk：设置成功。
-- AgoraRteErrorInvalidArgument：音量参数无效。
+- `AgoraRteOk`：设置成功。
+- `AgoraRteErrorInvalidArgument`：音量参数无效。
 
 ### 所属接口类
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
@@ -2121,8 +2122,8 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/mac
 
 状态或错误信息。
 
-- AgoraRteOk：成功。
-- AgoraRteErrorInvalidArgument： mode 参数设置为非法值。详见 AgoraRteError。
+- `AgoraRteOk`：成功。
+- `AgoraRteErrorInvalidArgument`： `mode` 参数设置为非法值。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
 
 ### 所属接口类
 - [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvasconfig)
@@ -2153,15 +2154,15 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/mac
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。可能返回以下 [AgoraRteErrorCode](/zh-CN/api-reference/rtc/macos/enum-rteerrorcode)：
 
-- AgoraRteOk：成功。
-- AgoraRteErrorInvalidOperation：对应的内部 AgoraRtePlayer 对象已被销毁或无效。
+- `AgoraRteOk`：成功。
+- `AgoraRteErrorInvalidOperation`：对应的内部 [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player) 对象已被销毁或无效。
 
 <a id="api_player_stop_player__return_values"></a>
 
 ### 返回值
 
 - YES：停止成功。
-- NO：停止失败。你可以通过 error 参数查看具体错误信息。
+- NO：停止失败。你可以通过 `error` 参数查看具体错误信息。
 
 ### 所属接口类
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)

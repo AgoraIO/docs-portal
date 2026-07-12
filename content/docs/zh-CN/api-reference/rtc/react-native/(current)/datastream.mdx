@@ -123,7 +123,7 @@ abstract sendStreamMessage(
 成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc/react-native/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/react-native/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::info[注]
-- 该方法需要在加入频道后、且调用 createDataStream 创建数据通道之后调用。
+- 该方法需要在加入频道后、且调用 [createDataStream](/zh-CN/api-reference/rtc/react-native/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
 - 该方法仅适用于主播用户。
 :::
 
@@ -180,8 +180,8 @@ abstract sendStreamMessageEx(
 成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc/react-native/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/react-native/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::info[注]
-- 该方法需要在 joinChannelEx 后调用。
-- 请确保在调用该方法前，已调用 createDataStreamEx 创建了数据通道。
+- 该方法需要在 [joinChannelEx](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengineex_joinchannelex) 后调用。
+- 请确保在调用该方法前，已调用 [createDataStreamEx](/zh-CN/api-reference/rtc/react-native/datastream#api_irtcengineex_createdatastreamex2) 创建了数据通道。
 :::
 
 <a id="api_irtcengineex_sendstreammessageex__parameters"></a>

@@ -24,7 +24,7 @@ description: "启用或关闭本地截图上传功能。"
 
 :::info[注]
 - 在调用该方法前，请确保你已在声网控制台启用了本地截图上传功能。
-- 当视频审核模块设置为使用声网自研扩展（AgoraContentInspectTypeSupervise ）进行视频审核时，需要引入本地截图上传动态库 AgoraContentInspectExtension.xcframework （iOS）或 AgoraContentInspectExtension.framework （macOS）。删除该库将禁用截图上传功能。
+- 当视频审核模块设置为使用声网自研扩展（`AgoraContentInspectTypeSupervise` ）进行视频审核时，需要引入本地截图上传动态库 AgoraContentInspectExtension.xcframework （iOS）或 `AgoraContentInspectExtension.framework` （macOS）。删除该库将禁用截图上传功能。
 :::
 
 <a id="api_irtcengine_enablecontentinspect__timing"></a>
@@ -137,7 +137,7 @@ description: "启用或关闭本地截图上传功能。"
 
 :::info[注]
 - 该方法为异步方法，在方法调用返回时，SDK 尚未完成快照操作。
-- 当用于本地视频快照时，该方法会对 AgoraRtcChannelMediaOptions 中指定的视频流进行快照。
+- 当用于本地视频快照时，该方法会对 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中指定的视频流进行快照。
 - 如果用户的视频已被预处理，例如添加水印或美颜，生成的快照将包含预处理效果。
 :::
 
@@ -169,8 +169,8 @@ description: "启用或关闭本地截图上传功能。"
 
 快照的本地路径（包含文件扩展名）。例如：
 
-- iOS: /App Sandbox/Library/Caches/example.jpg
-- macOS: ～/Library/Logs/example.jpg
+- iOS: `/App Sandbox/Library/Caches/example.jpg`
+- macOS: `～/Library/Logs/example.jpg`
 
 <a id="api_irtcengine_takesnapshot__return_values"></a>
 
@@ -200,7 +200,7 @@ description: "启用或关闭本地截图上传功能。"
 
 :::info[注]
 - 该方法为异步方法，在方法调用返回时 SDK 尚未完成截图操作。
-- 用于本地视频截图时，该方法会对 AgoraRtcChannelMediaOptions 中指定的视频流进行截图。
+- 用于本地视频截图时，该方法会对 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中指定的视频流进行截图。
 :::
 
 <a id="api_irtcengine_takesnapshot2__timing"></a>
@@ -291,8 +291,8 @@ description: "启用或关闭本地截图上传功能。"
 
 截图的本地路径（包含文件扩展名）。例如：
 
-- iOS: /App Sandbox/Library/Caches/example.jpg
-- macOS: ～/Library/Logs/example.jpg
+- iOS: `/App Sandbox/Library/Caches/example.jpg`
+- macOS: `～/Library/Logs/example.jpg`
 
 请确保指定路径存在且可写。
 
@@ -412,9 +412,10 @@ description: "启用或关闭本地截图上传功能。"
 
 - 0：截图成功。
 - &lt; 0：截图失败：
+
   - -1：SDK 无法将数据写入文件或编码 JPEG 图像失败。
-  - -2：在调用 takeSnapshot:filePath: 方法成功后的一秒内未找到指定用户的视频流。可能原因包括：本地采集停止、远端停止发布或视频数据处理阻塞。
-  - -3：调用 takeSnapshot:filePath: 方法过于频繁。
+  - -2：在调用 [takeSnapshot:filePath:](/zh-CN/api-reference/rtc/ios/snapshot#api_irtcengine_takesnapshot) 方法成功后的一秒内未找到指定用户的视频流。可能原因包括：本地采集停止、远端停止发布或视频数据处理阻塞。
+  - -3：调用 [takeSnapshot:filePath:](/zh-CN/api-reference/rtc/ios/snapshot#api_irtcengine_takesnapshot) 方法过于频繁。
 
 ### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)

@@ -145,8 +145,8 @@ abstract getAudioMixingCurrentPosition(): number;
 该方法获取当前音乐文件播放进度，单位为毫秒。
 
 :::info[注]
-- 你需要在调用 startAudioMixing 并收到 onAudioMixingStateChanged(AudioMixingStatePlaying) 回调后调用该方法。
-- 如需多次调用 getAudioMixingCurrentPosition，请确保调用间隔大于 500 ms。
+- 你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/electron/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
+- 如需多次调用 [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/electron/audio-mixing#api_irtcengine_getaudiomixingcurrentposition)，请确保调用间隔大于 500 ms。
 :::
 
 <a id="api_irtcengine_getaudiomixingcurrentposition__return_values"></a>
@@ -268,7 +268,7 @@ abstract getAudioTrackCount(): number;
 <a id="api_irtcengine_getaudiotrackcount__detailed_desc"></a>
 
 :::info[注]
-- 你需要在调用 startAudioMixing 并收到 onAudioMixingStateChanged(AudioMixingStatePlaying) 回调后调用该方法。
+- 你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/electron/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_getaudiotrackcount__return_values"></a>
@@ -363,7 +363,7 @@ abstract selectAudioTrack(index: number): number;
 
 :::info[注]
 - 该方法支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件？](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。
-- 你需要在调用 startAudioMixing 并收到 onAudioMixingStateChanged(AudioMixingStatePlaying) 回调后调用该方法。
+- 你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/electron/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_selectaudiotrack__parameters"></a>
@@ -624,7 +624,7 @@ abstract startAudioMixing(
 该方法支持播放的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。如果本地音乐文件不存在、文件格式不支持或无法访问在线音乐文件 URL，则 SDK 会报告 AudioMixingReasonCanNotOpen。
 
 :::info[注]
-- 使用该方法播放时长较短的音效文件可能会导致播放失败。如需播放音效文件，建议使用 playEffect。
+- 使用该方法播放时长较短的音效文件可能会导致播放失败。如需播放音效文件，建议使用 [playEffect](/zh-CN/api-reference/rtc/electron/audio-effect-file#api_irtcengine_playeffect3)。
 - 如需多次调用该方法，请确保调用间隔大于 500 ms。
 :::
 
@@ -648,8 +648,8 @@ abstract startAudioMixing(
 
 文件路径：
 
-- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 C:\\music\\audio.mp4。
-- macOS: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 /var/mobile/Containers/Data/audio.mp4。
+- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。
+- macOS: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `/var/mobile/Containers/Data/audio.mp4`。
 
 #### `loopback`
 
@@ -675,12 +675,14 @@ abstract startAudioMixing(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败：
+
   - -1：一般性的错误（未明确归类）。
   - -2：设置了无效的参数。
   - -3：SDK 尚未准备好：
+
     - 请检查是否已开启音频模块。
     - 请检查程序集完整性。
-    - IRtcEngine 初始化失败。请重新初始化 IRtcEngine。
+    - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)

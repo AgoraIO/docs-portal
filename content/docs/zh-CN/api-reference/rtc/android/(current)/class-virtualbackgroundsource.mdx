@@ -29,11 +29,11 @@ public class VirtualBackgroundSource {
 
 自定义背景类型。
 
-- BACKGROUND_NONE (0)：仅进行背景与人物分割处理，不替换背景图像。设置该值后，可调用 startLocalVideoTranscoder 实现画中画效果。
-- BACKGROUND_COLOR (1)：（默认）背景为纯色图像。
-- BACKGROUND_IMG (2)：背景为 PNG 或 JPG 格式的图像。
-- BACKGROUND_BLUR (3)：背景为原始背景图像的模糊版本。
-- BACKGROUND_VIDEO (4)：背景为本地视频文件，格式为 MP4、AVI、MKV、FLV 或其他支持格式。
+- `BACKGROUND_NONE` (0)：仅进行背景与人物分割处理，不替换背景图像。设置该值后，可调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/local-transcoder#api_irtcengine_startlocalvideotranscoder) 实现画中画效果。
+- `BACKGROUND_COLOR` (1)：（默认）背景为纯色图像。
+- `BACKGROUND_IMG` (2)：背景为 PNG 或 JPG 格式的图像。
+- `BACKGROUND_BLUR` (3)：背景为原始背景图像的模糊版本。
+- `BACKGROUND_VIDEO` (4)：背景为本地视频文件，格式为 MP4、AVI、MKV、FLV 或其他支持格式。
 
 ### `color`
 
@@ -42,8 +42,8 @@ public class VirtualBackgroundSource {
 :::info[注]
 该参数仅适用于以下类型的自定义背景：
 
-- BACKGROUND_COLOR：背景为传入颜色的纯色图像。
-- BACKGROUND_IMG：若 source 中的图像具有透明背景，该透明区域将被本参数指定的颜色填充。
+- `BACKGROUND_COLOR`：背景为传入颜色的纯色图像。
+- `BACKGROUND_IMG`：若 `source` 中的图像具有透明背景，该透明区域将被本参数指定的颜色填充。
 :::
 
 ### `source`
@@ -62,6 +62,6 @@ public class VirtualBackgroundSource {
 
 自定义背景图像的模糊程度。
 
-- BLUR_DEGREE_LOW (1)：模糊程度低，背景几乎可见。
-- BLUR_DEGREE_MEDIUM (2)：中等模糊，难以识别背景细节。
-- BLUR_DEGREE_HIGH (3)：高强度模糊，背景无法辨认。
+- `BLUR_DEGREE_LOW` (1)：模糊程度低，背景几乎可见。
+- `BLUR_DEGREE_MEDIUM` (2)：中等模糊，难以识别背景细节。
+- `BLUR_DEGREE_HIGH` (3)：高强度模糊，背景无法辨认。

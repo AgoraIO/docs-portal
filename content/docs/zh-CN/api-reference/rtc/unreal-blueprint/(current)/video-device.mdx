@@ -28,14 +28,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 在已有摄像头采集视频的场景下，声网推荐你采用以下步骤实现多路摄像头采集、发布视频：
 
 1. 调用该方法开启多路摄像头采集。
-2. 调用 StartPreview 开启本地视频预览。
-3. 调用 StartCameraCapture 并设置 sourceType 指定第二个摄像头开始采集。
-4. 调用 JoinChannelEx 并设置 publishSecondaryCameraTrack 为 true，在频道内发布第二路摄像头采集的视频流。
+2. 调用 [StartPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_startpreview2) 开启本地视频预览。
+3. 调用 [StartCameraCapture](/zh-CN/api-reference/rtc/unreal-blueprint/camera-capture#api_irtcengine_startcameracapture) 并设置 sourceType 指定第二个摄像头开始采集。
+4. 调用 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_joinchannelex) 并设置 publishSecondaryCameraTrack 为 `true`，在频道内发布第二路摄像头采集的视频流。
 
 如果要关闭多路摄像头采集，可参考以下步骤：
 
-1. 调用 StopCameraCapture。
-2. 调用该方法并将 enabled 设置为 false。
+1. 调用 [StopCameraCapture](/zh-CN/api-reference/rtc/unreal-blueprint/camera-capture#api_irtcengine_stopcameracapture)。
+2. 调用该方法并将 enabled 设置为 `false`。
 
 :::info[注]
 你可以在 [StartPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_startpreview2) 前后调用该方法开启多摄像头采集：
@@ -63,8 +63,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否开启多摄像头视频采集模式：
 
-- true：开启多摄像头采集模式，SDK 使用多路摄像头采集视频。
-- false：关闭多摄像头采集模式，SDK 仅使用单路摄像头采集视频。
+- `true`：开启多摄像头采集模式，SDK 使用多路摄像头采集视频。
+- `false`：关闭多摄像头采集模式，SDK 仅使用单路摄像头采集视频。
 
 #### `config`
 
@@ -131,7 +131,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
 :::
 
 <a id="api_irtcengine_getcameramaxzoomfactor__return_values"></a>
@@ -291,15 +291,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
 :::
 
 <a id="api_irtcengine_iscameraautoexposurefacemodesupported__return_values"></a>
 
 ### 返回值
 
-- true: 设备支持自动曝光功能。
-- false: 设备不支持自动曝光功能。
+- `true`: 设备支持自动曝光功能。
+- `false`: 设备不支持自动曝光功能。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -323,15 +323,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
 :::
 
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__return_values"></a>
 
 ### 返回值
 
-- true: 设备支持人脸对焦功能。
-- false: 设备不支持人脸对焦功能。
+- `true`: 设备支持人脸对焦功能。
+- `false`: 设备不支持人脸对焦功能。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -355,15 +355,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
 :::
 
 <a id="api_irtcengine_iscameraexposurepositionsupported__return_values"></a>
 
 ### 返回值
 
-- true: 设备支持手动曝光功能。
-- false: 设备不支持手动曝光功能。
+- `true`: 设备支持手动曝光功能。
+- `false`: 设备不支持手动曝光功能。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -387,17 +387,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
-- 建议你在调用 SetCameraExposureFactor 调节曝光系数前，先调用该方法查询当前摄像头是否支持曝光调节。
-- 当你调用该方法时，查询的是当前正在使用的摄像头是否支持曝光调节，即调用 SetCameraCapturerConfiguration 时指定的摄像头。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 建议你在调用 [SetCameraExposureFactor](/zh-CN/api-reference/rtc/unreal-blueprint/video-device#api_irtcengine_setcameraexposurefactor) 调节曝光系数前，先调用该方法查询当前摄像头是否支持曝光调节。
+- 当你调用该方法时，查询的是当前正在使用的摄像头是否支持曝光调节，即调用 [SetCameraCapturerConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
 :::
 
 <a id="api_irtcengine_iscameraexposuresupported__return_values"></a>
 
 ### 返回值
 
-- true：方法调用成功。
-- false：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
+- `true`：方法调用成功。
+- `false`：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -419,15 +419,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
 :::
 
 <a id="api_irtcengine_iscamerafacedetectsupported__return_values"></a>
 
 ### 返回值
 
-- true: 设备摄像头支持人脸检测。
-- false: 设备摄像头不支持人脸检测。
+- `true`: 设备摄像头支持人脸检测。
+- `false`: 设备摄像头不支持人脸检测。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -451,15 +451,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
 :::
 
 <a id="api_irtcengine_iscamerafocussupported__return_values"></a>
 
 ### 返回值
 
-- true: 设备支持手动对焦功能。
-- false: 设备不支持手动对焦功能。
+- `true`: 设备支持手动对焦功能。
+- `false`: 设备不支持手动对焦功能。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -483,17 +483,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
-- 一般情况下，App 默认开启前置摄像头，因此如果你的前置摄像头不支持闪光灯常开，直接使用该方法会返回 false。如果需要检查后置摄像头是否支持闪光灯常开，需要先使用 SwitchCamera 切换摄像头，再使用该方法。
-- 在系统版本 15 的 iPad 上，即使 IsCameraTorchSupported 返回 true，也可能因系统问题导致你无法通过 SetCameraTorchOn 成功开启闪光灯。
+- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 一般情况下，App 默认开启前置摄像头，因此如果你的前置摄像头不支持闪光灯常开，直接使用该方法会返回 false。如果需要检查后置摄像头是否支持闪光灯常开，需要先使用 [SwitchCamera](/zh-CN/api-reference/rtc/unreal-blueprint/video-device#api_irtcengine_switchcamera) 切换摄像头，再使用该方法。
+- 在系统版本 15 的 iPad 上，即使 [IsCameraTorchSupported](/zh-CN/api-reference/rtc/unreal-blueprint/video-device#api_irtcengine_iscameratorchsupported) 返回 `true`，也可能因系统问题导致你无法通过 [SetCameraTorchOn](/zh-CN/api-reference/rtc/unreal-blueprint/video-device#api_irtcengine_setcameratorchon) 成功开启闪光灯。
 :::
 
 <a id="api_irtcengine_iscameratorchsupported__return_values"></a>
 
 ### 返回值
 
-- true: 设备支持闪光灯常开。
-- false: 设备不支持闪光灯常开。
+- `true`: 设备支持闪光灯常开。
+- `false`: 设备不支持闪光灯常开。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -533,8 +533,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 返回值
 
-- true: 设备支持相机缩放功能。
-- false: 设备不支持相机缩放功能。
+- `true`: 设备支持相机缩放功能。
+- `false`: 设备不支持相机缩放功能。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
@@ -613,7 +613,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 输入和输出参数。指向 [FFocalLengthInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-focallengthinfo) 对象数组的指针：
 
-- 输入值：指向一个 FFocalLengthInfo 对象数组，用于存储焦距信息。
+- 输入值：指向一个 [FFocalLengthInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-focallengthinfo) 对象数组，用于存储焦距信息。
 - 输出值：方法执行后，输出查询到的焦距信息。
 
 <a id="api_irtcengine_querycamerafocallengthcapability__return_values"></a>
@@ -730,7 +730,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 iOS。
-- 该方法必须在 EnableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 OnLocalVideoStateChanged 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
+- 该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
 :::
 
 <a id="api_irtcengine_setcameraautoexposurefacemodeenabled__parameters"></a>
@@ -741,8 +741,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否开启自动曝光：
 
-- true: 开启自动曝光。
-- false: 关闭自动曝光。
+- `true`: 开启自动曝光。
+- `false`: 关闭自动曝光。
 
 <a id="api_irtcengine_setcameraautoexposurefacemodeenabled__return_values"></a>
 
@@ -795,8 +795,8 @@ SDK 默认在 Android 平台关闭人脸自动对焦，在 iOS 平台开启人�
 
 是否开启人脸对焦：
 
-- true: 开启人脸对焦功能。
-- false: 关闭人脸对焦功能。
+- `true`: 开启人脸对焦功能。
+- `false`: 关闭人脸对焦功能。
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__return_values"></a>
 
@@ -878,7 +878,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 Windows。
-- 该方法必须在 EnableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 OnLocalVideoStateChanged 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
+- 该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
 - 当视频采集设备不带重力感应功能时，你可以调用该方法手动调整采集到的视频画面的旋转角度。
 :::
 
@@ -925,9 +925,9 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 EnableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 OnLocalVideoStateChanged 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
-- 建议你在调用该方法前，先调用 IsCameraExposureSupported 查询当前摄像头是否支持调节曝光系数。
-- 当你调用该方法时，设置的是当前正在使用的摄像头的曝光系数，即调用 SetCameraCapturerConfiguration 时指定的摄像头。
+- 该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
+- 建议你在调用该方法前，先调用 [IsCameraExposureSupported](/zh-CN/api-reference/rtc/unreal-blueprint/video-device#api_irtcengine_iscameraexposuresupported) 查询当前摄像头是否支持调节曝光系数。
+- 当你调用该方法时，设置的是当前正在使用的摄像头的曝光系数，即调用 [SetCameraCapturerConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
 :::
 
 <a id="api_irtcengine_setcameraexposurefactor__parameters"></a>
@@ -969,8 +969,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 EnableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 OnLocalVideoStateChanged 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
-- 成功调用该方法后，本地会触发 OnCameraExposureAreaChanged 回调。
+- 该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
+- 成功调用该方法后，本地会触发 [OnCameraExposureAreaChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) 回调。
 :::
 
 <a id="api_irtcengine_setcameraexposureposition__parameters"></a>
@@ -1014,8 +1014,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 EnableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 OnLocalVideoStateChanged 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
-- 成功调用该方法后，本地会触发 OnCameraFocusAreaChanged 回调。
+- 该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
+- 成功调用该方法后，本地会触发 [OnCameraFocusAreaChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged) 回调。
 :::
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__parameters"></a>
@@ -1059,7 +1059,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 EnableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 OnLocalVideoStateChanged 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
+- 该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
 :::
 
 <a id="api_irtcengine_setcameratorchon__parameters"></a>
@@ -1070,8 +1070,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否打开闪光灯：
 
-- true: 打开闪光灯。
-- false:（默认）关闭闪光灯。
+- `true`: 打开闪光灯。
+- `false`:（默认）关闭闪光灯。
 
 <a id="api_irtcengine_setcameratorchon__return_values"></a>
 
@@ -1104,7 +1104,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 EnableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 OnLocalVideoStateChanged 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
+- 该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 后。
 :::
 
 <a id="api_irtcengine_setcamerazoomfactor__parameters"></a>

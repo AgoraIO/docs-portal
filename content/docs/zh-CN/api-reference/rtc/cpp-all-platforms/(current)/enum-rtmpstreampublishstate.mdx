@@ -22,8 +22,8 @@ description: "旁路推流状态。"
 
 （3）：RTMP 或 RTMPS 推流恢复中。当 CDN 异常或推流中断时，SDK 会尝试恢复推流并返回该状态。
 
-- 若恢复成功，返回 RTMP_STREAM_PUBLISH_STATE_RUNNING （2）。
-- 若 60 秒内未恢复或发生服务器错误，返回 RTMP_STREAM_PUBLISH_STATE_FAILURE （4）。如认为 60 秒过长，可主动尝试重连。
+- 若恢复成功，返回 `RTMP_STREAM_PUBLISH_STATE_RUNNING` （2）。
+- 若 60 秒内未恢复或发生服务器错误，返回 `RTMP_STREAM_PUBLISH_STATE_FAILURE` （4）。如认为 60 秒过长，可主动尝试重连。
 
 ### `RTMP_STREAM_PUBLISH_STATE_FAILURE`
 

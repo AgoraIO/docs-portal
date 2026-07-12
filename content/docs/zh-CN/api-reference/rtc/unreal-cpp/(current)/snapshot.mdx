@@ -33,7 +33,7 @@ virtual int enableContentInspect(bool enabled, const media::ContentInspectConfig
 ### 调用限制
 
 - 调用该方法前，请确保已在声网控制台开通本地截图上传服务。
-- 视频审核模块选择声网自研插件截图上传（CONTENT_INSPECT_SUPERVISION ）时需集成本地截图上传动态库 libagora_content_inspect_extension.dll，如果删除该动态库会导致无法正常开启本地截图上传功能。
+- 视频审核模块选择声网自研插件截图上传（CONTENT_INSPECT_SUPERVISION ）时需集成本地截图上传动态库 `libagora_content_inspect_extension.dll`，如果删除该动态库会导致无法正常开启本地截图上传功能。
 
 <a id="api_irtcengine_enablecontentinspect__parameters"></a>
 
@@ -43,8 +43,8 @@ virtual int enableContentInspect(bool enabled, const media::ContentInspectConfig
 
 设置是否开启本地截图上传：
 
-- true：开启本地截图上传。
-- false：关闭本地截图上传。
+- `true`：开启本地截图上传。
+- `false`：关闭本地截图上传。
 
 #### `config`
 
@@ -96,8 +96,8 @@ virtual int enableContentInspectEx(bool enabled, const media::ContentInspectConf
 
 设置是否开启本地截图上传：
 
-- true：开启本地截图上传。
-- false：关闭本地截图上传。
+- `true`：开启本地截图上传。
+- `false`：关闭本地截图上传。
 
 #### `config`
 
@@ -165,10 +165,10 @@ virtual int takeSnapshot(uid_t uid, const char* filePath)  = 0;
 
 截图的本地保存路径，需精确到文件名及格式，例如：
 
-- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg
-- iOS: /App Sandbox/Library/Caches/example.jpg
-- macOS: ～/Library/Logs/example.jpg
-- Android: /storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg
+- Windows: `C:\Users\<user_name>\AppData\Local\Agora\<process_name>\example.jpg`
+- iOS: `/App Sandbox/Library/Caches/example.jpg`
+- macOS: `～/Library/Logs/example.jpg`
+- Android: `/storage/emulated/0/Android/data/<package name>/files/example.jpg`
 
 :::warning[注意]
 请确保目录存在且可写。
@@ -293,10 +293,10 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 截图的本地保存路径，需精确到文件名及格式，例如：
 
-- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg
-- iOS: /App Sandbox/Library/Caches/example.jpg
-- macOS: ～/Library/Logs/example.jpg
-- Android: /storage/emulated/0/Android/data/&lt;package name&gt;/files/example.jpg
+- Windows: `C:\Users\<user_name>\AppData\Local\Agora\<process_name>\example.jpg`
+- iOS: `/App Sandbox/Library/Caches/example.jpg`
+- macOS: `～/Library/Logs/example.jpg`
+- Android: `/storage/emulated/0/Android/data/<package name>/files/example.jpg`
 
 :::warning[注意]
 请确保目录存在且可写。
@@ -422,6 +422,7 @@ virtual void onSnapshotTaken(uid_t uid, const char* filePath, int width, int hei
 
 - 0：截图成功。
 - &lt; 0: 截图失败。
+
   - -1：写入文件失败或 JPEG 编码失败。
   - -2： takeSnapshot 方法调用后 1 秒内没有收到指定用户的视频帧。可能的原因有：本地采集停止、远端停止发布或者视频数据处理堵塞。
   - -3： takeSnapshot 方法调用过于频繁。

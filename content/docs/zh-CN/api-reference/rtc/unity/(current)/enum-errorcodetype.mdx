@@ -26,9 +26,9 @@ description: "错误代码。"
 
 3：SDK 尚未准备好。可能的原因有：
 
-- IRtcEngine 初始化失败。请重新初始化 IRtcEngine。
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)。
 - 调用方法时用户尚未加入频道。请检查方法的调用逻辑。
-- 调用 Rate 或 Complain 方法时用户尚未离开频道。请检查方法的调用逻辑。
+- 调用 [Rate](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_rate) 或 [Complain](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_complain) 方法时用户尚未离开频道。请检查方法的调用逻辑。
 - 音频模块未开启。
 - 程序集不完整。
 
@@ -42,9 +42,9 @@ description: "错误代码。"
 
 5：方法调用被拒绝。可能的原因有：
 
-- IRtcEngine 初始化失败。请重新初始化 IRtcEngine。
-- 在加入频道时，将频道名设为空字符 ""。请重新设置频道名。
-- 多频道场景下，在调用 JoinChannelEx 方法加入频道时，设置的频道名已存在。请重新设置频道名。
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)。
+- 在加入频道时，将频道名设为空字符 `""`。请重新设置频道名。
+- 多频道场景下，在调用 [JoinChannelEx](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex) 方法加入频道时，设置的频道名已存在。请重新设置频道名。
 
 ### `ERR_BUFFER_TOO_SMALL`
 
@@ -70,15 +70,15 @@ description: "错误代码。"
 
 17：加入频道被拒绝。可能的原因有：
 
-- 用户已经在频道中。建议通过 OnConnectionStateChanged 回调判断用户是否在频道中。除收到 CONNECTION_STATE_DISCONNECTED (1) 状态外，不要再次调用该方法加入频道。
-- 用户在调用 StartEchoTest 进行通话测试后，未调用 StopEchoTest 结束当前测试就尝试加入频道。开始通话测试后，需要先调用 StopEchoTest 结束当前测试，再加入频道。
+- 用户已经在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unity/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 `CONNECTION_STATE_DISCONNECTED` (1) 状态外，不要再次调用该方法加入频道。
+- 用户在调用 [StartEchoTest](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_startechotest3) 进行通话测试后，未调用 [StopEchoTest](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_stopechotest) 结束当前测试就尝试加入频道。开始通话测试后，需要先调用 [StopEchoTest](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_stopechotest) 结束当前测试，再加入频道。
 
 ### `ERR_LEAVE_CHANNEL_REJECTED`
 
 18：离开频道失败。可能的原因有：
 
-- 调用 LeaveChannel [2/2] 前，用户已离开频道。停止调用该方法即可。
-- 用户尚未加入频道，就调用 LeaveChannel [2/2] 退出频道。这种情况下无需额外操作。
+- 调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_leavechannel2) 前，用户已离开频道。停止调用该方法即可。
+- 用户尚未加入频道，就调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_leavechannel2) 退出频道。这种情况下无需额外操作。
 
 ### `ERR_ALREADY_IN_USE`
 
@@ -125,7 +125,7 @@ description: "错误代码。"
 110：Token 无效。一般有以下原因：
 
 - 在控制台中启用了 App 证书，但未使用 App ID + Token 鉴权。当项目启用了 App 证书，就必须使用 Token 鉴权。
-- 生成 Token 时填入的 uid 字段，和用户加入频道时填入的 uid 不匹配。
+- 生成 Token 时填入的 `uid` 字段，和用户加入频道时填入的 `uid` 不匹配。
 
 ### `ERR_CONNECTION_INTERRUPTED`
 

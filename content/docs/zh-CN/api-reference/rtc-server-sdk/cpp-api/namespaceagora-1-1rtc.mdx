@@ -694,7 +694,7 @@ enum agora::rtc::CONNECTION_CHANGED_REASON_TYPE
 | <a id="a329573b5363b2065b4069e5bf6013144a87b7858350d388b2ad6a2c46fd803cbe"></a> CONNECTION_CHANGED_LEAVE_CHANNEL | 5: 离开频道。 |
 | <a id="a329573b5363b2065b4069e5bf6013144ae6f2f9c1a302c6df1c05d6fdd2cc3d8e"></a> CONNECTION_CHANGED_INVALID_APP_ID | 6: 不是有效的 APP ID。请更换有效的 APP ID 重新加入频道。 |
 | <a id="a329573b5363b2065b4069e5bf6013144a7222d75a9cbd116cd16761953e65df3b"></a> CONNECTION_CHANGED_INVALID_CHANNEL_NAME | 7: 不是有效的频道名。请更换有效的频道名重新加入频道。 |
-| <a id="a329573b5363b2065b4069e5bf6013144a26ab3e648572bcf8bdd43d036aba3ec8"></a> CONNECTION_CHANGED_INVALID_TOKEN | 8: 生成的 Token 无效。一般有以下原因：<br />- 在控制台上启用了 App Certificate，但加入频道未使用 Token。当启用了 App Certificate，必须使用 Token。<br />- 在调用 connect 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。 |
+| <a id="a329573b5363b2065b4069e5bf6013144a26ab3e648572bcf8bdd43d036aba3ec8"></a> CONNECTION_CHANGED_INVALID_TOKEN | 8: 生成的 Token 无效。一般有以下原因：<br />- 在控制台上启用了 App Certificate，但加入频道未使用 Token。当启用了 App Certificate，必须使用 Token。<br />- 在调用 `connect` 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。 |
 | <a id="a329573b5363b2065b4069e5bf6013144ac8493348234ccea33ac7e61ad268fe60"></a> CONNECTION_CHANGED_TOKEN_EXPIRED | 9: 生成的 Token 无效。 |
 | <a id="a329573b5363b2065b4069e5bf6013144ae0a9bf5f38d1828a96682e6678ff8c16"></a> CONNECTION_CHANGED_REJECTED_BY_SERVER | 10: 此用户被服务器禁止。 |
 | <a id="a329573b5363b2065b4069e5bf6013144a95d29853df095ef245640e6b3d5e744a"></a> CONNECTION_CHANGED_SETTING_PROXY_SERVER | 11: 由于设置了代理服务器，SDK 尝试重连。 |
@@ -921,11 +921,11 @@ SDK 与 CDN 的连接状态。
 
 | Name | Description |
 | --- | --- |
-| <a id="a843a00f1c45fdfe18856a8f835018681a1e98a9b3e2100a99833d45d3f95c7728"></a> STATE_DISCONNECTED | 1: SDK 与 CDN 断开连接。<br />以下操作会让 SDK 进入该状态：<br />- 调用 createRtmpConnection，即 SDK 与 CDN 的初始连接状态。<br />- 调用 disconnect。 |
+| <a id="a843a00f1c45fdfe18856a8f835018681a1e98a9b3e2100a99833d45d3f95c7728"></a> STATE_DISCONNECTED | 1: SDK 与 CDN 断开连接。<br />以下操作会让 SDK 进入该状态：<br />- 调用 [createRtmpConnection](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1base-1-1-i-agora-service#adae5bb15639f9559a1399082590955e5)，即 SDK 与 CDN 的初始连接状态。<br />- 调用 [disconnect](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-connection#ac3fcd6d1efd903f1bb75797fb709584e)。 |
 | <a id="a843a00f1c45fdfe18856a8f835018681a88f854c4436729950e18c291c8c19b6d"></a> STATE_CONNECTING | 2: SDK 正在连接 CDN。<br />调用 [connect](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-connection#a5e89428056585b3b0643af03ff197ec4) 连接 CDN 的过程中，SDK 会进入该状态。 |
 | <a id="a843a00f1c45fdfe18856a8f835018681af8ba2691700e27ae350207c48b4ec1df"></a> STATE_CONNECTED | 3: SDK 已连接 CDN。<br />调用 [connect](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-connection#a5e89428056585b3b0643af03ff197ec4) 成功连接 CDN 时，SDK 会进入该状态， 你可以开始向 CDN 推流。 |
 | <a id="a843a00f1c45fdfe18856a8f835018681aa0b16717707e51c789610f80d3c6f059"></a> STATE_RECONNECTING | 4: SDK 正在重新连接 CDN。<br />在弱网环境或用户切换网络类型等情况下，如果 SDK 与 CDN 断开连接，SDK 会尝试重新连接 CDN 并进入该状态。 |
-| <a id="a843a00f1c45fdfe18856a8f835018681a2d592cdb8de205cec41e5eb702f4431c"></a> STATE_FAILED | 5: SDK 连接 CDN 失败。<br />以下情况会让 SDK 进入该状态：<br />- 调用 connect 连接 CDN 失败时。<br />- 在弱网环境或用户切换网络类型等情况下，SDK 重新连接 CDN 失败时。<br />该状态下，如需连接 CDN，你需要先调用 [disconnect](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-connection#ac3fcd6d1efd903f1bb75797fb709584e) 断开连接， 再调用 [connect](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-connection#a5e89428056585b3b0643af03ff197ec4)。 |
+| <a id="a843a00f1c45fdfe18856a8f835018681a2d592cdb8de205cec41e5eb702f4431c"></a> STATE_FAILED | 5: SDK 连接 CDN 失败。<br />以下情况会让 SDK 进入该状态：<br />- 调用 [connect](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-connection#a5e89428056585b3b0643af03ff197ec4) 连接 CDN 失败时。<br />- 在弱网环境或用户切换网络类型等情况下，SDK 重新连接 CDN 失败时。<br />该状态下，如需连接 CDN，你需要先调用 [disconnect](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-connection#ac3fcd6d1efd903f1bb75797fb709584e) 断开连接， 再调用 [connect](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-connection#a5e89428056585b3b0643af03ff197ec4)。 |
 | <a id="a843a00f1c45fdfe18856a8f835018681a3941ce0aa3e7b73b3686a94d5804e4b5"></a> STATE_RECONNECTED | 6: SDK 已重新连接 CDN。<br />在弱网环境或用户切换网络类型等情况下，如果 SDK 与 CDN 断开连接，则 SDK 重新连接 CDN 成功时会进入该状态。 你可以继续向 CDN 推流。 |
 
 <a id="ae1713f658284be303aaa022bcf018d47"></a>

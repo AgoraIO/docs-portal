@@ -161,7 +161,7 @@ int preloadSrc(String src, long startPos);
 调用该方法后，如果在 [onPreloadEvent](/zh-CN/api-reference/rtc/android/mediaplayer-observer#callback_imediaplayersourceobserver_onpreloadevent) 回调中收到 `PLAYER_PRELOAD_EVENT_COMPLETE` 事件，表示预加载成功；如果收到 `PLAYER_PRELOAD_EVENT_ERROR` 事件，表示预加载失败。预加载成功后，如需播放该媒体资源，请调用 [playPreloadedSrc](/zh-CN/api-reference/rtc/android/mediaplayer-control#api_imediaplayer_playpreloadedsrc)；如需清空播放列表，请调用 `stop()`。
 
 :::info[注]
-- 在调用此方法前，请确保已成功调用 open 或 openWithMediaSource 打开媒体资源。
+- 在调用此方法前，请确保已成功调用 `open` 或 [openWithMediaSource](/zh-CN/api-reference/rtc/android/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体资源。
 - 声网不支持将重复的媒体资源预加载到播放列表中。但你可以将正在播放的媒体资源再次预加载到播放列表中。
 :::
 
@@ -209,10 +209,11 @@ int switchSrc(String src, boolean syncPts);
 调用此方法后，如果收到 [onPlayerEvent](/zh-CN/api-reference/rtc/android/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告 `PLAYER_EVENT_SWITCH_COMPLETE` 事件，表示切换成功。如果切换失败，SDK 会自动重试 3 次。如果仍然失败，你将收到 [onPlayerEvent](/zh-CN/api-reference/rtc/android/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告 `PLAYER_EVENT_SWITCH_ERROR` 事件，表示切换过程中发生错误。
 
 :::info[注]
-- 请确保在调用 open 之后再调用此方法。
+- 请确保在调用 `open` 之后再调用此方法。
 - 为确保正常播放，调用此方法时请注意以下事项：
+
   - 播放暂停时不要调用此方法。
-  - 切换过程中不要调用 seek 方法。
+  - 切换过程中不要调用 [seek](/zh-CN/api-reference/rtc/android/mediaplayer-control#api_imediaplayer_seek) 方法。
   - 切换媒体资源前，请确保播放位置未超过待切换媒体资源的总时长。
 :::
 

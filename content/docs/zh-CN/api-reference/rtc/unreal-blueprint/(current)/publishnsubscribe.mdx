@@ -36,7 +36,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::info[注]
 - 该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
-- 如果需要在多频道场景下开启视频双流，可以调用 EnableDualStreamModeEx 方法。
+- 如果需要在多频道场景下开启视频双流，可以调用 [EnableDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 方法。
 - 该方法可以在加入频道前后调用。
 :::
 
@@ -48,8 +48,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否开启双流模式：
 
-- true: 开启双流模式。
-- false: (默认) 关闭双流模式。
+- `true`: 开启双流模式。
+- `false`: (默认) 关闭双流模式。
 
 #### `streamConfig`
 
@@ -109,8 +109,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否开启双流模式：
 
-- true: 开启双流模式。
-- false: (默认) 关闭双流模式。
+- `true`: 开启双流模式。
+- `false`: (默认) 关闭双流模式。
 
 #### `streamConfig`
 
@@ -175,8 +175,8 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 
 是否取消订阅所有远端用户的音频流：
 
-- true: 取消订阅所有远端用户的音频流。
-- false:（默认）订阅所有远端用户的音频流。
+- `true`: 取消订阅所有远端用户的音频流。
+- `false`:（默认）订阅所有远端用户的音频流。
 
 <a id="api_irtcengine_muteallremoteaudiostreams__return_values"></a>
 
@@ -209,7 +209,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法需要在加入频道后调用。
-- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 JoinChannelWithOptions 加入频道时设置 autoSubscribeAudio 为 false。
+- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeAudio 为 `false`。
 :::
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__parameters"></a>
@@ -220,8 +220,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否取消订阅所有远端用户的音频流：
 
-- true: 取消订阅所有远端用户的音频流。
-- false:（默认）订阅所有远端用户的音频流。
+- `true`: 取消订阅所有远端用户的音频流。
+- `false`:（默认）订阅所有远端用户的音频流。
 
 #### `connection`
 
@@ -278,8 +278,8 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 
 是否取消订阅所有远端用户的视频流。
 
-- true: 取消订阅所有用户的视频流。
-- false:（默认）订阅所有用户的视频流。
+- `true`: 取消订阅所有用户的视频流。
+- `false`:（默认）订阅所有用户的视频流。
 
 <a id="api_irtcengine_muteallremotevideostreams__return_values"></a>
 
@@ -318,8 +318,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否取消订阅所有远端用户的视频流。
 
-- true: 取消订阅所有用户的视频流。
-- false:（默认）订阅所有用户的视频流。
+- `true`: 取消订阅所有用户的视频流。
+- `false`:（默认）订阅所有用户的视频流。
 
 #### `connection`
 
@@ -378,8 +378,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否取消发布本地音频流。
 
-- true: 取消发布。
-- false:（默认）发布。
+- `true`: 取消发布。
+- `false`:（默认）发布。
 
 <a id="api_irtcengine_mutelocalaudiostream__return_values"></a>
 
@@ -422,8 +422,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否取消发布本地音频流。
 
-- true: 取消发布。
-- false:（默认）发布。
+- `true`: 取消发布。
+- `false`:（默认）发布。
 
 #### `connection`
 
@@ -484,8 +484,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否取消发送本地视频流。
 
-- true: 取消发送本地视频流。
-- false: （默认）发送本地视频流。
+- `true`: 取消发送本地视频流。
+- `false`: （默认）发送本地视频流。
 
 <a id="api_irtcengine_mutelocalvideostream__return_values"></a>
 
@@ -528,8 +528,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否取消发送本地视频流。
 
-- true: 取消发送本地视频流。
-- false: （默认）发送本地视频流。
+- `true`: 取消发送本地视频流。
+- `false`: （默认）发送本地视频流。
 
 #### `connection`
 
@@ -590,8 +590,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否取消订阅指定远端用户的音频流。
 
-- true: 取消订阅指定用户的音频流。
-- false:（默认）订阅指定用户的音频流。
+- `true`: 取消订阅指定用户的音频流。
+- `false`:（默认）订阅指定用户的音频流。
 
 <a id="api_irtcengine_muteremoteaudiostream__return_values"></a>
 
@@ -634,8 +634,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否停止接收指定音频流：
 
-- true: 停止接收指定音频流。
-- false:（默认）继续接收指定音频流。
+- `true`: 停止接收指定音频流。
+- `false`:（默认）继续接收指定音频流。
 
 #### `connection`
 
@@ -696,8 +696,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否取消订阅指定远端用户的视频流。
 
-- true: 取消订阅指定用户的视频流。
-- false: （默认）订阅指定用户的视频流。
+- `true`: 取消订阅指定用户的视频流。
+- `false`: （默认）订阅指定用户的视频流。
 
 <a id="api_irtcengine_muteremotevideostream__return_values"></a>
 
@@ -740,8 +740,8 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 是否停止接收某个远端用户的视频：
 
-- true: 停止接收。
-- false: （默认）恢复接收。
+- `true`: 停止接收。
+- `false`: （默认）恢复接收。
 
 #### `connection`
 
@@ -782,8 +782,8 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 :::info[注]
 该方法和 [EnableDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_enabledualstreammode3) 的区别与联系如下：
 
-- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟调用 EnableDualStreamMode 并设置 enabled 为 false 的效果相同。
-- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟调用 EnableDualStreamMode 并设置 enabled 为 true 的效果相同。
+- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟调用 EnableDualStreamMode 并设置 enabled 为 `false` 的效果相同。
+- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟调用 EnableDualStreamMode 并设置 enabled 为 `true` 的效果相同。
 - 两种方法均可在加入频道前后调用，若同时使用，则以后调用的方法中的设置为准。
 :::
 
@@ -838,8 +838,8 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 :::info[注]
 该方法和 [EnableDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 的区别与联系如下：
 
-- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟 EnableDualStreamModeEx (false) 的效果相同。
-- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟 EnableDualStreamModeEx (true) 的效果相同。
+- 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟 EnableDualStreamModeEx `(false)` 的效果相同。
+- 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟 EnableDualStreamModeEx `(true)` 的效果相同。
 - 两种方法均可在加入频道前后调用，若同时使用，则以后调用的方法中的设置为准。
 :::
 
@@ -890,7 +890,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 取决于发送端的默认行为和调用 [SetDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
-- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 主播身份 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
+- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 **主播身份** 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
 - 当发送端调用 SetDualStreamMode 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效。
 - 当发送端调用 SetDualStreamMode 并将 mode 设置为 ENABLE_SIMULCAST_STREAM （始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
 
@@ -945,7 +945,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 取决于发送端的默认行为和调用 [SetDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
-- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 主播身份 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
+- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 **主播身份** 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
 - 当发送端调用 SetDualStreamMode 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效。
 - 当发送端调用 SetDualStreamMode 并将 mode 设置为 ENABLE_SIMULCAST_STREAM （始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
 
@@ -953,7 +953,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法在加入频道前后都能调用。
-- 如果既调用了该方法，也调用了 SetRemoteDefaultVideoStreamType，则 SDK 以该方法中的设置为准。
+- 如果既调用了该方法，也调用了 [SetRemoteDefaultVideoStreamType](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype)，则 SDK 以该方法中的设置为准。
 :::
 
 <a id="api_irtcengine_setremotevideostreamtype__parameters"></a>
@@ -997,15 +997,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 取决于发送端的默认行为和调用 [SetDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
-- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 主播身份 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
+- SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 **主播身份** 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
 - 当发送端调用 SetDualStreamMode 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效。
 - 当发送端调用 SetDualStreamMode 并将 mode 设置为 ENABLE_SIMULCAST_STREAM （始终发送小流），则主播或观众身份的接收端均可调用该方法切换到小流订阅模式。
 
 在接收视频小流时，SDK 会根据视频窗口的大小动态调整对应视频流的大小，以节约带宽和计算资源。视频小流默认的宽高比和视频大流的宽高比一致。根据当前大流的宽高比，系统会自动分配小流的分辨率、帧率及码率。
 
 :::warning[注意]
-- 如果发送端已调用 SetDualStreamModeEx 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效，你需要在发送端重新调用 SetDualStreamModeEx 修改设置。
-- 观众角色 的接收端调用该方法不生效。
+- 如果发送端已调用 [SetDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效，你需要在发送端重新调用 SetDualStreamModeEx 修改设置。
+- **观众角色** 的接收端调用该方法不生效。
 :::
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__parameters"></a>
@@ -1055,7 +1055,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
-- 音频订阅白名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 FChannelMediaOptions 中的 autoSubscribeAudio 的影响。
+- 音频订阅白名单不受 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeAudio 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1105,7 +1105,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
-- 音频订阅白名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 FChannelMediaOptions 中的 autoSubscribeAudio 的影响。
+- 音频订阅白名单不受 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeAudio 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1159,7 +1159,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法在加入频道前后均可调用。
-- 音频订阅黑名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 FChannelMediaOptions 中的 autoSubscribeAudio 影响。
+- 音频订阅黑名单不受 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeAudio 影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1209,7 +1209,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::warning[注意]
 - 该方法在加入频道前后均可调用。
-- 音频订阅黑名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 FChannelMediaOptions 中的 autoSubscribeAudio 影响。
+- 音频订阅黑名单不受 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeAudio 影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1263,7 +1263,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
-- 视频订阅白名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 FChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅白名单不受 [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1313,7 +1313,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
-- 视频订阅白名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 FChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅白名单不受 [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1367,7 +1367,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
-- 视频订阅黑名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 FChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅黑名单不受 [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::
@@ -1417,7 +1417,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
-- 视频订阅黑名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 FChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 视频订阅黑名单不受 [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 中的 autoSubscribeVideo 的影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
 :::

@@ -47,9 +47,9 @@ encoderConfig: VideoEncoderConfiguration | ScreenEncoderConfigurationPreset
 
 你可以通过以下方式设置该属性：
 
-- 通过 ScreenEncoderConfigurationPreset 传入 SDK 内置的编码配置。
-- 通过传入一个 VideoEncoderConfiguration 对象来自定义视频编码配置。
-- 不传或留空，使用 SDK 的默认值 "1080p_2" （分辨率 1920 × 1080、帧率 30 fps、码率 3000 Kbps）。
+- 通过 [ScreenEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#screenencoderconfigurationpreset) 传入 SDK 内置的编码配置。
+- 通过传入一个 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/video-encoder-configuration) 对象来自定义视频编码配置。
+- 不传或留空，使用 SDK 的默认值 `"1080p_2"` （分辨率 1920 × 1080、帧率 30 fps、码率 3000 Kbps）。
 
 <a id="extensionid"></a>
 
@@ -75,8 +75,8 @@ monitorTypeSurfaces: "exclude" | "include"
 
 是否允许分享整个屏幕，包括浏览器页签和窗口选项。
 
-- "exclude": 不分享整个屏幕。
-- "include": （默认）分享整个屏幕。
+- `"exclude"`: 不分享整个屏幕。
+- `"include"`: （默认）分享整个屏幕。
 
 详见 [monitorTypeSurfaces](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia#monitortypesurfaces)。
 
@@ -104,13 +104,16 @@ optimizationMode: OptimizationMode
 
 视频传输优化模式：
 
-- "detail": 清晰优先。
+- `"detail"`: 清晰优先。
+
   - 浏览器会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。
   - 大部分情况下，浏览器不会降低发送分辨率，但是可能会降低帧率。
-- "motion": 自 4.21.0 开始，浏览器默认开启流畅优先模式。
+- `"motion"`: 自 4.21.0 开始，浏览器默认开启流畅优先模式。
+
   - 浏览器不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
   - 大部分情况下，浏览器不会降低帧率，但是可能会降低发送分辨率。
-- "balanced": 默认的传输优化模式。
+- `"balanced"`: 默认的传输优化模式。
+
   - 对于屏幕共享视频流，SDK 默认的优化策略为清晰优先。
   - 对于其他视频流，SDK 默认的优化策略为坚固清晰合流畅，弱网条件下，帧率和分辨率都会被调整。
 
@@ -128,8 +131,8 @@ preferCurrentTab: boolean
 
 是否默认共享当前页面。
 
-- true: 是。
-- false: （默认）否。
+- `true`: 是。
+- `false`: （默认）否。
 
 注意事项: 该属性仅支持 Chrome 94 及以上版本、Opera 80 及以上版本。
 
@@ -161,8 +164,8 @@ selfBrowserSurface: "include" | "exclude"
 
 是否允许用户共享当前标签页：
 
-- "include"：（默认）允许用户共享当前标签页。
-- "exclude"：禁止用户共享当前标签页。
+- `"include"`：（默认）允许用户共享当前标签页。
+- `"exclude"`：禁止用户共享当前标签页。
 
 详见 [selfBrowserSurface](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#selfBrowserSurface)。
 
@@ -182,8 +185,8 @@ surfaceSwitching: "include" | "exclude"
 
 是否允许用户动态切换共享的标签页：
 
-- "include"：（默认）允许用户动态切换共享的标签页。
-- "exclude"：禁止用户动态切换共享的标签页。
+- `"include"`：（默认）允许用户动态切换共享的标签页。
+- `"exclude"`：禁止用户动态切换共享的标签页。
 
 详见 [surfaceSwitching](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#surfaceSwitching)。
 
@@ -203,8 +206,8 @@ systemAudio: "include" | "exclude"
 
 是否允许采集系统音频：
 
-- "include"：（默认）允许采集系统音频。
-- "exclude"：禁止采集系统音频。
+- `"include"`：（默认）允许采集系统音频。
+- `"exclude"`：禁止采集系统音频。
 
 详见 [systemAudio](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#systemAudio)。
 
@@ -224,7 +227,7 @@ windowAudio: "exclude" | "system"
 
 共享窗口时是否允许分享窗口音频。
 
-- "exclude"：不分享任何音频。
-- "system"：（默认）分享所有系统音频。
+- `"exclude"`：不分享任何音频。
+- `"system"`：（默认）分享所有系统音频。
 
 详见 [withAudio](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia#windowAudio)。

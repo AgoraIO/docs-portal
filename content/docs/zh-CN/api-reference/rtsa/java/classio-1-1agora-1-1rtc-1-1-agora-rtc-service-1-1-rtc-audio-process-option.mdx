@@ -9,8 +9,8 @@ description: "音频处理选项。"
 
 你可以根据实际业务场景选择如下音频处理效果：
 
-- 回声消除和降噪：设置 enableAudioProcess、 enableAec / enableDownlinkAec、 refDataFromSdk、 enableNs 为 true。
-- 仅回声消除：设置 enableAudioProcess、 enableAec / enableDownlinkAec、 refDataFromSdk 为 true， enableNs 为 false。
+- 回声消除和降噪：设置 `enableAudioProcess`、 `enableAec` / `enableDownlinkAec`、 `refDataFromSdk`、 `enableNs` 为 `true`。
+- 仅回声消除：设置 `enableAudioProcess`、 `enableAec` / `enableDownlinkAec`、 `refDataFromSdk` 为 `true`， `enableNs` 为 `false`。
 
 ### `注解`
 
@@ -43,8 +43,8 @@ boolean io.agora.rtc.AgoraRtcService.RtcAudioProcessOption.enableAec
 
 ##### `注解`
 
-- 该参数在 enableAudioProcess 为 true 时生效。
-- 开启回声消除后，SDK 也会自动开启 `ChannelOptions` 中的 enableAudioJitterBuffer。
+- 该参数在 `enableAudioProcess` 为 `true` 时生效。
+- 开启回声消除后，SDK 也会自动开启 [ChannelOptions](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-channel-options) 中的 `enableAudioJitterBuffer`。
 
 <a id="a6a27b45ae0b357a25344b0415045d43e"></a>
 
@@ -76,8 +76,8 @@ boolean io.agora.rtc.AgoraRtcService.RtcAudioProcessOption.enableDownlinkAec
 
 ##### `注解`
 
-- 该参数在 enableAudioProcess 为 true 时生效。
-- 开启回声消除后，SDK 也会自动开启 `ChannelOptions` 中的 enableAudioJitterBuffer。
+- 该参数在 `enableAudioProcess` 为 `true` 时生效。
+- 开启回声消除后，SDK 也会自动开启 [ChannelOptions](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-channel-options) 中的 `enableAudioJitterBuffer`。
 
 <a id="a64cb541e14d288e36cef3dc1fe57222f"></a>
 
@@ -128,5 +128,5 @@ boolean io.agora.rtc.AgoraRtcService.RtcAudioProcessOption.refDataFromSdk
 
 ##### `注解`
 
-- 该参数在 enableAudioProcess 和 enableAec 为 true 时生效。
-- 声网推荐将该参数设置为 true。如需将该参数设为 false，联系 sales.nosp@m. @she.nosp@m. ngwan.nosp@m. g.cn。
+- 该参数在 `enableAudioProcess` 和 `enableAec` 为 `true` 时生效。
+- 声网推荐将该参数设置为 `true`。如需将该参数设为 `false`，联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](#)。

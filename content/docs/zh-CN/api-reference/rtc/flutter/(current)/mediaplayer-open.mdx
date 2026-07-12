@@ -119,7 +119,7 @@ Future<void> preloadSrc({required String src, required int startPos});
 你可以调用该方法将一个媒体资源预加载到播放列表中。如果需要预加载多个媒体资源，你可以多次调用该方法。 预加载成功后，如果你想播放媒体资源，请调用 [playPreloadedSrc](/zh-CN/api-reference/rtc/flutter/mediaplayer-control#api_imediaplayer_playpreloadedsrc)；如果你想清空播放列表，请调用 [stop](/zh-CN/api-reference/rtc/flutter/mediaplayer-control#api_imediaplayer_stop)。
 
 :::info[注]
-- 调用该方法前，请确保你已经调用 open 或 openWithMediaSource 成功打开媒体资源。
+- 调用该方法前，请确保你已经调用 [open](/zh-CN/api-reference/rtc/flutter/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/flutter/mediaplayer-open#api_imediaplayer_openwithmediasource) 成功打开媒体资源。
 - SDK 不支持你预加载重复的媒体资源到播放列表，但支持你将正在播放的媒体资源再次预加载到播放列表。
 :::
 
@@ -166,10 +166,11 @@ Future<void> switchSrc({required String src, bool syncPts = true});
 调用该方法后，如果你收到 [onPlayerEvent](/zh-CN/api-reference/rtc/flutter/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告事件 `playerEventSwitchComplete`，则媒体资源切换成功。如果资源切换失败，SDK 会自动重试 3 次。如果仍然失败，你会收到 [onPlayerEvent](/zh-CN/api-reference/rtc/flutter/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调，报告 `playerEventSwitchError` 事件，表示媒体资源切换时发生错误。
 
 :::info[注]
-- 请确保在 open 之后调用该方法。
+- 请确保在 [open](/zh-CN/api-reference/rtc/flutter/mediaplayer-open#api_imediaplayer_open) 之后调用该方法。
 - 为保证播放正常，请在调用该方法时注意如下：
+
   - 不要在播放暂停时调用该方法。
-  - 不要在切换码率过程中调用 seek。
+  - 不要在切换码率过程中调用 [seek](/zh-CN/api-reference/rtc/flutter/mediaplayer-control#api_imediaplayer_seek)。
   - 确保切换码率前的播放位置不大于待切换的媒体资源总时长。
 :::
 

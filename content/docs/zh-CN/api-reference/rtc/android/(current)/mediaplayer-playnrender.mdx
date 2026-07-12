@@ -61,7 +61,7 @@ int setAudioDualMonoMode(int mode);
 在立体声音频文件中，左右声道可以存储不同的音频数据。你可以根据需要将声道模式设置为原始模式、左声道模式、右声道模式或混合声道模式。例如，在 KTV 场景中，音乐文件的左声道存储伴奏，右声道存储人声。如果你只需要听伴奏，可以将声道模式设置为左声道模式；如果你需要同时听到伴奏和人声，可以将声道模式设置为混合声道模式。
 
 :::info[注]
-- 请在调用 open 方法之后调用该方法。
+- 请在调用 `open` 方法之后调用该方法。
 - 该方法仅适用于立体声音频文件。
 :::
 
@@ -73,10 +73,10 @@ int setAudioDualMonoMode(int mode);
 
 声道模式：
 
-- AUDIO_DUAL_MONO_STEREO (0)：原始模式。
-- AUDIO_DUAL_MONO_L (1)：左声道模式。该模式用左声道的音频替换右声道，你只能听到左声道的音频。
-- AUDIO_DUAL_MONO_R (2)：右声道模式。该模式用右声道的音频替换左声道，你只能听到右声道的音频。
-- AUDIO_DUAL_MONO_MIX (3)：混合声道模式。该模式将左右声道的音频混合，你可以同时听到左右声道的音频。
+- `AUDIO_DUAL_MONO_STEREO` (0)：原始模式。
+- `AUDIO_DUAL_MONO_L` (1)：左声道模式。该模式用左声道的音频替换右声道，你只能听到左声道的音频。
+- `AUDIO_DUAL_MONO_R` (2)：右声道模式。该模式用右声道的音频替换左声道，你只能听到右声道的音频。
+- `AUDIO_DUAL_MONO_MIX` (3)：混合声道模式。该模式将左右声道的音频混合，你可以同时听到左右声道的音频。
 
 <a id="api_imediaplayer_setaudiodualmonomode__return_values"></a>
 

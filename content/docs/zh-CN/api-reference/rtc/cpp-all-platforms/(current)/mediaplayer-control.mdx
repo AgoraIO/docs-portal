@@ -175,8 +175,8 @@ virtual int play() = 0;
 
 ### 调用时机
 
-- 调用 open 或 openWithMediaSource 打开媒体文件，并收到 onPlayerSourceStateChanged 回调报告状态为 PLAYER_STATE_OPEN_COMPLETED 后调用该方法。
-- 调用 seek 后调用该方法。
+- 调用 [open](/zh-CN/api-reference/rtc/cpp-all-platforms/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/cpp-all-platforms/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体文件，并收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态为 `PLAYER_STATE_OPEN_COMPLETED` 后调用该方法。
+- 调用 [seek](/zh-CN/api-reference/rtc/cpp-all-platforms/mediaplayer-control#api_imediaplayer_seek) 后调用该方法。
 
 <a id="api_imediaplayer_play__return_values"></a>
 
@@ -356,17 +356,17 @@ virtual int64_t onSeek(int64_t offset, int whence) = 0;
 
 起始点，可设置为以下值之一：
 
-- 0：起始点为数据开头，定位后的实际数据偏移量为 offset。
-- 1：起始点为当前位置，定位后的实际数据偏移量为当前位置加 offset。
-- 2：起始点为数据末尾，定位后的实际数据偏移量为整个数据长度加 offset。
+- 0：起始点为数据开头，定位后的实际数据偏移量为 `offset`。
+- 1：起始点为当前位置，定位后的实际数据偏移量为当前位置加 `offset`。
+- 2：起始点为数据末尾，定位后的实际数据偏移量为整个数据长度加 `offset`。
 - 65536：不执行定位操作，返回文件大小。建议在播放 MP3、WAV 等纯音频文件时使用该值。
 
 <a id="callback_imediaplayercustomdataprovider_onseek__return_values"></a>
 
 ### 返回值
 
-- whence 为 65536 时，返回媒体文件大小。
-- whence 为 0、 1 或 2 时，返回定位后的实际数据偏移量。
+- `whence` 为 `65536` 时，返回媒体文件大小。
+- `whence` 为 `0`、 `1` 或 `2` 时，返回定位后的实际数据偏移量。
 - -1：定位失败。
 
 ### 所属接口类

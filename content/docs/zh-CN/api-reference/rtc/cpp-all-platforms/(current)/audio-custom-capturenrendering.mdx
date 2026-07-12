@@ -113,8 +113,8 @@ virtual rtc::track_id_t createCustomAudioTrack(rtc::AUDIO_TRACK_TYPE trackType, 
 要发布自定义音频源，请按照以下步骤操作：
 
 1. 调用该方法创建一个自定义音频轨道，并获取音频轨道 ID。
-2. 调用 joinChannel 加入频道。在 ChannelMediaOptions 中，将 publishCustomAudioTrackId 设置为你要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 true。
-3. 调用 pushAudioFrame，并将 trackId 设置为步骤 2 中设置的音频轨道 ID，即可在频道中发布对应的自定义音频源。
+2. 调用 `joinChannel` 加入频道。在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中，将 `publishCustomAudioTrackId` 设置为你要发布的音频轨道 ID，并将 `publishCustomAudioTrack` 设置为 true。
+3. 调用 [pushAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-custom-capturenrendering#api_imediaengine_pushaudioframe)，并将 `trackId` 设置为步骤 2 中设置的音频轨道 ID，即可在频道中发布对应的自定义音频源。
 
 <a id="api_imediaengine_createcustomaudiotrack_imediaengine__timing"></a>
 
@@ -143,7 +143,7 @@ virtual rtc::track_id_t createCustomAudioTrack(rtc::AUDIO_TRACK_TYPE trackType, 
 ### 返回值
 
 - 方法调用成功，返回音频轨道 ID，作为该音频轨道的唯一标识符。
-- 方法调用失败，返回 0xffffffff。
+- 方法调用失败，返回 `0xffffffff`。
 
 ### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
@@ -244,8 +244,8 @@ virtual int pullAudioFrame(IAudioFrameObserverBase::AudioFrame* frame) = 0;
 :::info[注]
 [pullAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-custom-capturenrendering#api_imediaengine_pullaudioframe_imediaengine) 和 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调都可用于获取远端混音后的音频数据。启用外部音频渲染（调用 [setExternalAudioSink](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-custom-capturenrendering#api_imediaengine_setexternalaudiosink_imediaengine) ）后，App 将无法再通过 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调获取数据。请根据实际业务需求选择使用该方法或 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调。两者的区别如下：
 
-- 调用 pullAudioFrame 后，App 会自动从 SDK 拉取音频数据。通过设置音频数据参数，SDK 会调整帧缓冲区，帮助 App 处理延迟，有效避免音频播放抖动。
-- 注册 onPlaybackAudioFrame 回调后，SDK 会通过回调将音频数据发送给 App。若 App 处理音频帧的过程存在延迟，可能会导致音频抖动。
+- 调用 [pullAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-custom-capturenrendering#api_imediaengine_pullaudioframe_imediaengine) 后，App 会自动从 SDK 拉取音频数据。通过设置音频数据参数，SDK 会调整帧缓冲区，帮助 App 处理延迟，有效避免音频播放抖动。
+- 注册 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调后，SDK 会通过回调将音频数据发送给 App。若 App 处理音频帧的过程存在延迟，可能会导致音频抖动。
 
 该方法仅用于获取远端混音后的音频数据。如果你需要获取采集、播放等不同音频处理阶段的数据，可以通过调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册相应的回调。
 :::
@@ -294,8 +294,8 @@ virtual int pushAudioFrame(IAudioFrameObserverBase::AudioFrame* frame, rtc::trac
 
 在调用该方法推送外部音频数据前，请先完成以下操作：
 
-1. 调用 createCustomAudioTrack 创建自定义音频轨道并获取音频轨道 ID。
-2. 调用 joinChannel 加入频道。在 ChannelMediaOptions 中，将 publishCustomAudioTrackId 设置为你希望发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 true。
+1. 调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 创建自定义音频轨道并获取音频轨道 ID。
+2. 调用 `joinChannel` 加入频道。在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中，将 `publishCustomAudioTrackId` 设置为你希望发布的音频轨道 ID，并将 `publishCustomAudioTrack` 设置为 true。
 
 <a id="api_imediaengine_pushaudioframe__parameters"></a>
 

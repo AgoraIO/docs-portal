@@ -29,7 +29,7 @@ public abstract disableVideo(): number;
 加入频道前后均可调用：
 
 - 如果在加入频道前调用，则开启纯音频模式。
-- 如果在加入频道后调用，则由视频模式切换为纯音频模式，然后再调用 enableVideo 方法可开启视频模式。
+- 如果在加入频道后调用，则由视频模式切换为纯音频模式，然后再调用 [enableVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_enablevideo) 方法可开启视频模式。
 
 <a id="api_irtcengine_disablevideo__restriction"></a>
 
@@ -37,10 +37,11 @@ public abstract disableVideo(): number;
 
 - 该方法设置的是内部引擎为禁用状态，在离开频道后仍然有效。
 - 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制视频模块的某一项功能：
-  - enableLocalVideo: 是否启动摄像头采集并创建本地视频流。
-  - muteLocalVideoStream: 是否发布本地视频流。
-  - muteRemoteVideoStream: 是否接收并播放远端视频流。
-  - muteAllRemoteVideoStreams: 是否接收并播放所有远端视频流。
+
+  - [enableLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_enablelocalvideo): 是否启动摄像头采集并创建本地视频流。
+  - [muteLocalVideoStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalvideostream): 是否发布本地视频流。
+  - [muteRemoteVideoStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteremotevideostream): 是否接收并播放远端视频流。
+  - [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteallremotevideostreams): 是否接收并播放所有远端视频流。
 
 <a id="api_irtcengine_disablevideo__related"></a>
 
@@ -95,8 +96,8 @@ public abstract enableLocalVideo(enabled: boolean): number;
 
 是否开启本地视频采集。
 
-- true:（默认）开启本地视频采集。
-- false: 关闭本地视频采集。关闭后，远端用户会接收不到本地用户的视频流；但本地用户依然可以接收远端用户的视频流。设置为 false 时，该方法不需要本地有摄像头。
+- `true`:（默认）开启本地视频采集。
+- `false`: 关闭本地视频采集。关闭后，远端用户会接收不到本地用户的视频流；但本地用户依然可以接收远端用户的视频流。设置为 `false` 时，该方法不需要本地有摄像头。
 
 <a id="api_irtcengine_enablelocalvideo__return_values"></a>
 
@@ -139,10 +140,11 @@ public abstract enableVideo(): number;
 
 - 该方法设置的是内部引擎为启用状态，在离开频道后仍然有效。
 - 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制视频模块的某一项功能：
-  - enableLocalVideo: 是否启动摄像头采集并创建本地视频流。
-  - muteLocalVideoStream: 是否发布本地视频流。
-  - muteRemoteVideoStream: 是否接收并播放远端视频流。
-  - muteAllRemoteVideoStreams: 是否接收并播放所有远端视频流。
+
+  - [enableLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_enablelocalvideo): 是否启动摄像头采集并创建本地视频流。
+  - [muteLocalVideoStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalvideostream): 是否发布本地视频流。
+  - [muteRemoteVideoStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteremotevideostream): 是否接收并播放远端视频流。
+  - [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteallremotevideostreams): 是否接收并播放所有远端视频流。
 - 在频道内调用该方法时，会重置 enableLocalVideo、 muteRemoteVideoStream 和 muteAllRemoteVideoStreams 的设置，需谨慎使用。
 
 <a id="api_irtcengine_enablevideo__related"></a>
@@ -460,11 +462,15 @@ onLocalVideoStateChanged?:(source: Constants.VideoSourceType, state:Constants.Lo
 
 ### 触发时机
 
-- SDK 会在如下情况触发该回调，且 state 为 FAILED， reason 为 CAPTURE_FAILURE：
+- SDK 会在如下情况触发该回调，且 state 为 FAILED， reason 为 `CAPTURE_FAILURE`：
+
   - 摄像头正常启动，但连续 4 秒都没有输出采集的视频。
-- 当摄像头输出采集的视频帧时，如果 SDK 检测到连续 15 个重复的视频帧，会触发该回调，且 state 为 CAPTURING， reason 为 CAPTURE_FAILURE。:::info [注]
-- 帧重复检测仅针对分辨率大于 200 × 200、帧率大于等于 10 fps、码率小于 20 Kbps 的视频帧。
-- 如果视频采集出现异常，正常情况下可以通过该回调的 reason 参数来排查问题。但在部分设备上，采集出现问题时（如卡死） Android 系统不会抛出任何错误回调，因此 SDK 无法报告本地视频状态改变的原因，此时你可以通过下列方式来判断采集是否无帧：该回调报告 state 为 CAPTURING 或 ENCODING，且 onLocalVideoStats 回调的 captureFrameRate 为 0。:::
+- 当摄像头输出采集的视频帧时，如果 SDK 检测到连续 15 个重复的视频帧，会触发该回调，且 state 为 CAPTURING， reason 为 CAPTURE_FAILURE。
+
+  :::info[注]
+  - 帧重复检测仅针对分辨率大于 200 × 200、帧率大于等于 10 fps、码率小于 20 Kbps 的视频帧。
+  - 如果视频采集出现异常，正常情况下可以通过该回调的 `reason` 参数来排查问题。但在部分设备上，采集出现问题时（如卡死） Android 系统不会抛出任何错误回调，因此 SDK 无法报告本地视频状态改变的原因，此时你可以通过下列方式来判断采集是否无帧：该回调报告 `state` 为 `CAPTURING` 或 `ENCODING`，且 [onLocalVideoStats](/zh-CN/api-reference/rtc/harmonyos/video-basic#callback_irtcengineeventhandler_onlocalvideostats) 回调的 `captureFrameRate` 为 0。
+  :::
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__parameters"></a>
 
@@ -612,8 +618,8 @@ onUserEnableVideo?:(uid:number, enabled:boolean) => void;
 
 #### `enabled`
 
-- true: 该用户已启用视频功能。
-- false: 该用户已关闭视频功能。
+- `true`: 该用户已启用视频功能。
+- `false`: 该用户已关闭视频功能。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
@@ -650,8 +656,8 @@ onUserMuteVideo?:(uid:number,muted:boolean) =>void;
 
 远端用户是否取消发布视频流：
 
-- true: 取消发布视频流。
-- false: 发布视频流。
+- `true`: 取消发布视频流。
+- `false`: 发布视频流。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

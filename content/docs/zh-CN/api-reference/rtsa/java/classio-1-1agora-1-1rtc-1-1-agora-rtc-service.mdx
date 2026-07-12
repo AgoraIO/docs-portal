@@ -212,7 +212,7 @@ native int io.agora.rtc.AgoraRtcService.joinChannel(int connId, String channelNa
 ##### `注解`
 
 - 你可以同时加入多个频道，所有你加入的频道都能接收到你发送的音视频数据。
-- 如需使用同一个用户 ID 加入不同频道，或者使用不同用户 ID 加入同一个频道，则你需要创建不同的 Connection 并在调用 joinChannel 方法时填入对应的 Connection ID。
+- 如需使用同一个用户 ID 加入不同频道，或者使用不同用户 ID 加入同一个频道，则你需要创建不同的 Connection 并在调用 `joinChannel` 方法时填入对应的 Connection ID。
 
 #### Parameters
 
@@ -221,7 +221,7 @@ native int io.agora.rtc.AgoraRtcService.joinChannel(int connId, String channelNa
 | connId | Connection ID。设为 `CONNECTION_ID_ALL` 表示针对当前创建的所有 Connection。你可以通过 [createConnection](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#a558085193ea80b9bbf8ffd257262ed74) 创建 Connection。 |
 | channelName | 频道名，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）：<br />- 26 个小写英文字母 a-z<br />- 26 个大写英文字母 A-Z<br />- 10 个数字 0-9<br />- 空格<br />- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "\|", "~", "," |
 | uid | 用户 ID。 |
-| token | 用于鉴权的 Token。<br />- 如果用户启用的是 App ID，可以将该值设为 NULL。<br />- 如果用户想使用 Token，声网还会给开发者分发一个 App Certificate，并结合 Token 的算法在 App 的服务器端生成 Token。 与 App ID 相比，Token 适用于安全要求较高的开发环境。 |
+| token | 用于鉴权的 Token。<br />- 如果用户启用的是 App ID，可以将该值设为 `NULL`。<br />- 如果用户想使用 Token，声网还会给开发者分发一个 App Certificate，并结合 Token 的算法在 App 的服务器端生成 Token。 与 App ID 相比，Token 适用于安全要求较高的开发环境。 |
 | options | 频道设置选项。 |
 
 #### Returns
@@ -293,7 +293,7 @@ native int io.agora.rtc.AgoraRtcService.licenseVerify(String certificate, String
 启用了 [声网 License 机制](https://doc.shengwang.cn/doc/rtsa/java/basic-features/license) 后，安装了 SDK 的设备只有通过 Certificate 验证 才能加入声网频道、使用数据传输功能。
 
 - 该方法仅用于声网 License 机制。如不使用 License，可忽略该方法。
-- 该方法必须在 init 前调用。认证通过后，你才能有效调用 RTSA SDK 的其他 API。
+- 该方法必须在 [init](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service#aab47fc030b290004c6d29a0a306db032) 前调用。认证通过后，你才能有效调用 RTSA SDK 的其他 API。
 
 #### Parameters
 
@@ -555,9 +555,9 @@ v1.9.2
 
 在文件传输、文件下载等需要可靠传输的场景中，你可以参考如下步骤发送 RDT 消息：
 
-1. 在 RDT 通道中建立连接：在加入频道时，将 `ChannelOptions` 中的 autoConnectRdt 参数设置为 true，主动与频道内其他用户建立连接。
-2. 获取 RDT 通道的连接状态：监听 `onRdtState` 回调。当在 RDT 通道中成功建立连接时，连接状态会变为 RDT_STATE_OPENED，此时才可进行下一步。
-3. 调用 sendRdtMsg 方法发送 RDT 消息：你可以根据需要发送控制消息 (RDT_STREAM_CMD) 或数据消息 (RDT_STREAM_DATA)，二者区别如下：
+1. 在 RDT 通道中建立连接：在加入频道时，将 [ChannelOptions](/zh-CN/api-reference/rtsa/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-service-1-1-channel-options) 中的 `autoConnectRdt` 参数设置为 `true`，主动与频道内其他用户建立连接。
+2. 获取 RDT 通道的连接状态：监听 [onRdtState](/zh-CN/api-reference/rtsa/java/interfaceio-1-1agora-1-1rtc-1-1-agora-rtc-events#a60b0269fb3b5926411a4a5730735a5ab) 回调。当在 RDT 通道中成功建立连接时，连接状态会变为 `RDT_STATE_OPENED`，此时才可进行下一步。
+3. 调用 `sendRdtMsg` 方法发送 RDT 消息：你可以根据需要发送控制消息 (`RDT_STREAM_CMD`) 或数据消息 (`RDT_STREAM_DATA`)，二者区别如下：
 
 - 控制消息。发送优先级高，不受拥塞控制策略影响，不会阻塞发送。每秒至多发送 100 个消息包，每个消息包的长度至多为 256 B。
 - 数据消息。发送优先级低，受拥塞控制策略影响，如果缓冲区满了，则消息会发送失败。不限制发送的消息包数量，每个消息包的长度至多为 128 KB。
@@ -577,10 +577,11 @@ v1.9.2
 
 - 0: 方法调用成功。
 - &lt;0: 方法调用失败。
-  - RTC_ERR_RDT_USER_NOT_EXIST (-8): 频道内不存在该远端用户。
-  - RTC_ERR_RDT_USER_NOT_READY (-9): 未成功与远端用户建立连接。你需要等 RDT 通道的连接状态变为 RDT_STATE_OPENED 后重新调用该方法。
-  - RTC_ERR_RDT_DATA_BLOCKED (-10): 发送缓冲区已满。你需要等 RDT 通道的连接状态变为 RDT_STATE_OPENED 后重新调用该方法。
-  - RTC_ERR_RDT_CMD_EXCEED_LIMIT (-11): 控制消息的数量超过限制。每秒发送的控制消息包不能超过 100 个。
+
+  - `RTC_ERR_RDT_USER_NOT_EXIST` (-8): 频道内不存在该远端用户。
+  - `RTC_ERR_RDT_USER_NOT_READY` (-9): 未成功与远端用户建立连接。你需要等 RDT 通道的连接状态变为 `RDT_STATE_OPENED` 后重新调用该方法。
+  - `RTC_ERR_RDT_DATA_BLOCKED` (-10): 发送缓冲区已满。你需要等 RDT 通道的连接状态变为 `RDT_STATE_OPENED` 后重新调用该方法。
+  - `RTC_ERR_RDT_CMD_EXCEED_LIMIT` (-11): 控制消息的数量超过限制。每秒发送的控制消息包不能超过 100 个。
 
 <a id="a8edd069332b33a33c22a06eb67eb142c"></a>
 
@@ -612,11 +613,12 @@ RTM 默认开启基于 TLS 加密的传输层安全保护且不可关闭。
 
 - 0: 方法调用成功。
 - &lt;0: 方法调用失败。
-  - RTM_ERR_NOT_LOGINED (-1001): 未登录 RTM 系统
-  - RTM_ERR_SEND_TO_SELF (-1002): 在 rtmUid 参数中误填了自己的用户 ID。
-  - RTM_ERR_EXCEED_MSG_SIZE (-1003): RTM 消息长度超出限制。消息长度至多为 31 KB。
-  - RTM_ERR_EXCEED_MSG_CNT (-1004): 发送频率超出限制。每秒至多发送 60 条消息。
-  - RTM_ERR_EXCEED_TCP_SKB (-1005): 消息通道已满。等待一秒后重新发送。
+
+  - `RTM_ERR_NOT_LOGINED` (-1001): 未登录 RTM 系统
+  - `RTM_ERR_SEND_TO_SELF` (-1002): 在 `rtmUid` 参数中误填了自己的用户 ID。
+  - `RTM_ERR_EXCEED_MSG_SIZE` (-1003): RTM 消息长度超出限制。消息长度至多为 31 KB。
+  - `RTM_ERR_EXCEED_MSG_CNT` (-1004): 发送频率超出限制。每秒至多发送 60 条消息。
+  - `RTM_ERR_EXCEED_TCP_SKB` (-1005): 消息通道已满。等待一秒后重新发送。
 
 <a id="a7ca97e6efca40fb7d42386b1a8a8123e"></a>
 

@@ -31,8 +31,8 @@ virtual int agora::rtc::IRtmpConnection::connect(const char* url, aosl_ref_t are
 
 根据连接是否成功，连接状态会有如下变化：
 
-- 连接成功：连接状态变更为 STATE_CONNECTED(3)，SDK 会触发 onConnected 回调。
-- 连接失败：连接状态变更为 STATE_FAILED(5)，SDK 会触发 onConnectionFailure 回调。
+- 连接成功：连接状态变更为 `STATE_CONNECTED(3)`，SDK 会触发 [onConnected](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a4048ee1d38dff83649d33bfef93a30f6) 回调。
+- 连接失败：连接状态变更为 `STATE_FAILED(5)`，SDK 会触发 [onConnectionFailure](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a86658e80515ca6a85ebde8c230c71f16) 回调。
 
 #### Parameters
 
@@ -45,8 +45,9 @@ virtual int agora::rtc::IRtmpConnection::connect(const char* url, aosl_ref_t are
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
-  - -2 (ERR_INVALID_ARGUMENT): 参数无效。
-  - -8(ERR_INVALID_STATE): 当前连接状态不是 STATE_DISCONNECTED(1)。
+
+  - -2 (`ERR_INVALID_ARGUMENT`): 参数无效。
+  - -8(`ERR_INVALID_STATE`): 当前连接状态不是 `STATE_DISCONNECTED(1)`。
 
 <a id="ac3fcd6d1efd903f1bb75797fb709584e"></a>
 
@@ -83,7 +84,7 @@ virtual RtmpConnectionInfo agora::rtc::IRtmpConnection::getConnectionInfo() pure
 
 #### Returns
 
-- RtmpConnectionInfo 对象：方法调用成功。
+- [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-rtmp-connection-info) 对象：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="a87b6eedbf3b26da33c0f65135826349b"></a>
@@ -98,7 +99,7 @@ virtual IRtmpLocalUser* agora::rtc::IRtmpConnection::getRtmpLocalUser() pure vir
 
 #### Returns
 
-- IRtmpLocalUser 对象：方法调用成功。
+- [IRtmpLocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtmp-local-user) 对象：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="aa6eea62bee7f3db6a5e5d1046d8074c6"></a>

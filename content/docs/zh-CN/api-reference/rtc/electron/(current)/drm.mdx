@@ -26,7 +26,7 @@ abstract createMusicPlayer(): IMusicPlayer;
 
 ### 返回值
 
-- 方法调用成功：返回 IMusicPlayer 对象。
+- 方法调用成功：返回 [IMusicPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusicplayer) 对象。
 - 方法调用失败：返回空指针。
 
 ### 所属接口类
@@ -125,8 +125,8 @@ abstract getCaches(): { cacheInfo: MusicCacheInfo[]; cacheInfoSize: number };
 
 方法调用成功时，返回一个包含以下属性的对象：
 
-- cacheInfo：音乐缓存信息数组。
-- cacheInfoSize：音乐缓存信息数组的长度。
+- `cacheInfo`：音乐缓存信息数组。
+- `cacheInfoSize`：音乐缓存信息数组的长度。
 
 ### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imusiccontentcenter)
@@ -213,8 +213,8 @@ abstract getInternalSongCode(songCode: number, jsonOption: string): number;
 
 扩展 JSON 字段，默认为 null。目前支持传入下列值：
 
-- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例： \{"sceneType":1\}。
-- highPart：副歌片段的索引，从 onMusicCollectionResult 回调中获取，索引从 0 开始。示例： \{"format": \{"highpart": 0\}\}。
+- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例： `{"sceneType":1}`。
+- highPart：副歌片段的索引，从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/electron/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取，索引从 0 开始。示例： `{"format": {"highpart": 0}}`。
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
 
@@ -363,13 +363,15 @@ abstract getMusicCollectionByMusicChartId(
 
 扩展 JSON 字段，默认为 null。你可以通过该字段来筛选出你需要的音乐资源，目前支持筛选可打分的音乐资源及音乐资源的副歌片段：
 
-- pitchType：音乐资源是否支持评分。
-  - 1：可评分的音乐资源。
-  - 2：不可评分的音乐资源。
+- `pitchType`：音乐资源是否支持评分。
 
-- needHighPart：是否需要合唱片段资源。
-  - YES：需要合唱片段资源。
-  - NO：不需要合唱片段资源。
+  - `1`：可评分的音乐资源。
+  - `2`：不可评分的音乐资源。
+
+- `needHighPart`：是否需要合唱片段资源。
+
+  - `YES`：需要合唱片段资源。
+  - `NO`：不需要合唱片段资源。
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__return_values"></a>
 
@@ -815,13 +817,15 @@ abstract searchMusic(
 
 扩展 JSON 字段，默认为 null。你可以通过该字段来筛选出你需要的音乐资源，目前支持筛选可打分的音乐资源及音乐资源的副歌片段：
 
-- pitchType：音乐资源是否支持评分。
-  - 1：可评分的音乐资源。
-  - 2：不可评分的音乐资源。
+- `pitchType`：音乐资源是否支持评分。
 
-- needHighPart：是否需要合唱片段资源。
-  - YES：需要合唱片段资源。
-  - NO：不需要合唱片段资源。
+  - `1`：可评分的音乐资源。
+  - `2`：不可评分的音乐资源。
+
+- `needHighPart`：是否需要合唱片段资源。
+
+  - `YES`：需要合唱片段资源。
+  - `NO`：不需要合唱片段资源。
 
 #### `requestId`
 
@@ -883,6 +887,7 @@ abstract setPlayMode(mode: MusicPlayMode): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
   - -2: 参数设置错误，请重新设置参数。
 
 ### 所属接口类

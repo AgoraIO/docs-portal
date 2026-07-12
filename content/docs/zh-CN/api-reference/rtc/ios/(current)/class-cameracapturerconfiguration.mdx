@@ -33,8 +33,8 @@ __attribute__((visibility("default"))) @interface AgoraCameraCapturerConfigurati
 :::info[注]
 对于配备多镜头后置摄像头的 iOS 设备（如双摄像头：广角和超广角，或三摄像头：广角、超广角和长焦），你可以使用以下任一方式以超广角视角采集视频：
 
-- 方法一：将该参数设置为 AgoraFocalLengthUltraWide （2）（超广角镜头）。
-- 方法二：将该参数设置为 AgoraFocalLengthDefault （0）（标准镜头），然后调用 setCameraZoomFactor: 将摄像头的缩放因子设置为小于 1.0 的值，最小值为 0.5。
+- 方法一：将该参数设置为 `AgoraFocalLengthUltraWide` （2）（超广角镜头）。
+- 方法二：将该参数设置为 `AgoraFocalLengthDefault` （0）（标准镜头），然后调用 [setCameraZoomFactor:](/zh-CN/api-reference/rtc/ios/video-device#api_irtcengine_setcamerazoomfactor) 将摄像头的缩放因子设置为小于 1.0 的值，最小值为 0.5。
 
 两种方法的区别在于，方法一的超广角尺寸不可调节，而方法二支持自由调节摄像头的缩放因子。
 :::
@@ -55,5 +55,5 @@ __attribute__((visibility("default"))) @interface AgoraCameraCapturerConfigurati
 
 是否遵循通过 `setVideoEncoderConfiguration` 设置的视频宽高比。
 
-- YES：（默认）遵循设置的视频宽高比。SDK 会根据设置的视频宽高比裁剪采集的视频，并同步更新本地预览画面以及 onCaptureVideoFrame 和 onPreEncodeVideoFrame 中的视频帧。
+- YES：（默认）遵循设置的视频宽高比。SDK 会根据设置的视频宽高比裁剪采集的视频，并同步更新本地预览画面以及 `onCaptureVideoFrame` 和 `onPreEncodeVideoFrame` 中的视频帧。
 - NO：不遵循设置的视频宽高比。SDK 不会更改采集视频帧的宽高比。

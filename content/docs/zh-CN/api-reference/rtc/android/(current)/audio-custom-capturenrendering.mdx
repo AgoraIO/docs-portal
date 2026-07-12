@@ -113,8 +113,8 @@ public abstract int createCustomAudioTrack(Constants.AudioTrackType trackType, A
 你可以通过以下步骤发布自定义音频源：
 
 1. 调用该方法创建一个自定义音频轨道，并获取音频轨道 ID。
-2. 调用 joinChannel 加入频道。在 ChannelMediaOptions 中，将 publishCustomAudioTrackId 设置为步骤 1 中获取的音频轨道 ID，并将 publishCustomAudioTrack 设置为 true。
-3. 调用 pushExternalAudioFrame，并将 trackId 设置为步骤 2 中的音频轨道 ID，即可在频道中发布对应的自定义音频源。
+2. 调用 `joinChannel` 加入频道。在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中，将 `publishCustomAudioTrackId` 设置为步骤 1 中获取的音频轨道 ID，并将 `publishCustomAudioTrack` 设置为 true。
+3. 调用 [pushExternalAudioFrame](/zh-CN/api-reference/rtc/android/audio-custom-capturenrendering#api_irtcengine_pushaudioframe2)，并将 `trackId` 设置为步骤 2 中的音频轨道 ID，即可在频道中发布对应的自定义音频源。
 
 :::info[注]
 该方法需要在加入频道前调用。
@@ -141,7 +141,7 @@ public abstract int createCustomAudioTrack(Constants.AudioTrackType trackType, A
 ### 返回值
 
 - 方法调用成功，返回音频轨道 ID，作为该音频轨道的唯一标识。
-- 方法调用失败，返回 0xffffffff。
+- 方法调用失败，返回 `0xffffffff`。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -242,8 +242,8 @@ public abstract int pullPlaybackAudioFrame(byte[] data, int lengthInByte);
 :::info[注]
 `pullPlaybackAudioFrame` 方法和 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调都可用于获取远端混音后的音频数据。启用外部音频渲染（调用 [setExternalAudioSink](/zh-CN/api-reference/rtc/android/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) ）后，无法再通过 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调获取数据。请根据实际业务需求选择使用 `pullPlaybackAudioFrame` 方法或 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调。两者区别如下：
 
-- 调用 pullPlaybackAudioFrame 方法后，App 会自动从 SDK 拉取音频数据。通过设置音频数据参数，SDK 会调整帧缓冲区以帮助 App 处理延迟，有效避免音频播放抖动。
-- 注册 onPlaybackAudioFrame 回调后，SDK 会通过回调将音频数据发送给 App。若处理音频帧存在延迟，可能会导致音频抖动。
+- 调用 `pullPlaybackAudioFrame` 方法后，App 会自动从 SDK 拉取音频数据。通过设置音频数据参数，SDK 会调整帧缓冲区以帮助 App 处理延迟，有效避免音频播放抖动。
+- 注册 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调后，SDK 会通过回调将音频数据发送给 App。若处理音频帧存在延迟，可能会导致音频抖动。
 
 该方法仅用于获取远端混音后的音频数据。如需获取采集、播放等其他音频处理阶段的数据，可通过调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio-raw#api_irtcengine_registeraudioframeobserver) 注册相应的回调。
 :::
@@ -294,9 +294,10 @@ public abstract int pullPlaybackAudioFrame(ByteBuffer data, int lengthInByte);
 
 :::info[注]
 - 该方法需要在加入频道后调用。
-- 该方法与 onPlaybackAudioFrame 回调的区别如下：
-  - onPlaybackAudioFrame：SDK 通过该回调将音频数据发送给 App。若 App 处理音频帧存在延迟，可能会导致音频抖动。
-  - pullPlaybackAudioFrame：App 主动拉取远端音频数据。设置音频参数后，SDK 会调整帧缓冲区，避免外部音频播放中因抖动引发的问题。
+- 该方法与 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调的区别如下：
+
+  - [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe)：SDK 通过该回调将音频数据发送给 App。若 App 处理音频帧存在延迟，可能会导致音频抖动。
+  - `pullPlaybackAudioFrame`：App 主动拉取远端音频数据。设置音频参数后，SDK 会调整帧缓冲区，避免外部音频播放中因抖动引发的问题。
 :::
 
 <a id="api_irtcengine_pullaudioframe2__parameters"></a>
@@ -337,8 +338,8 @@ public abstract int pushExternalAudioFrame(byte[] data, long timestamp, int samp
 
 调用该方法前，请按以下顺序操作：
 
-1. 调用 createCustomAudioTrack 创建自定义音频轨道，并获取音频轨道 ID。
-2. 调用 joinChannel 加入频道。在 ChannelMediaOptions 中，将 publishCustomAudioTrackId 设置为要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 true。
+1. 调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/android/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 创建自定义音频轨道，并获取音频轨道 ID。
+2. 调用 `joinChannel` 加入频道。在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中，将 `publishCustomAudioTrackId` 设置为要发布的音频轨道 ID，并将 `publishCustomAudioTrack` 设置为 true。
 
 <a id="api_irtcengine_pushaudioframe2__timing"></a>
 
@@ -346,8 +347,8 @@ public abstract int pushExternalAudioFrame(byte[] data, long timestamp, int samp
 
 在调用该方法推送外部音频数据前，请先完成以下步骤：
 
-1. 调用 createCustomAudioTrack 创建自定义音频轨道并获取音频轨道 ID。
-2. 调用 joinChannel 加入频道。在 ChannelMediaOptions 中，将 publishCustomAudioTrackId 设置为要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 true。
+1. 调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/android/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 创建自定义音频轨道并获取音频轨道 ID。
+2. 调用 `joinChannel` 加入频道。在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中，将 `publishCustomAudioTrackId` 设置为要发布的音频轨道 ID，并将 `publishCustomAudioTrack` 设置为 true。
 
 <a id="api_irtcengine_pushaudioframe2__parameters"></a>
 
@@ -365,18 +366,18 @@ public abstract int pushExternalAudioFrame(byte[] data, long timestamp, int samp
 
 外部音频源的采样率（Hz），可设置为以下值：
 
-- 8000
-- 16000
-- 32000
-- 44100
-- 48000。
+- `8000`
+- `16000`
+- `32000`
+- `44100`
+- `48000`。
 
 #### `channels`
 
 外部音频源的声道数，可设置为以下值：
 
-- 1：单声道。
-- 2：立体声。
+- `1`：单声道。
+- `2`：立体声。
 
 #### `bytesPerSample`
 
@@ -562,18 +563,18 @@ public abstract int setExternalAudioSource(boolean enabled, int sampleRate, int 
 
 外部音频源的采样率（Hz），可设置为以下值：
 
-- 8000
-- 16000
-- 32000
-- 44100
-- 48000。
+- `8000`
+- `16000`
+- `32000`
+- `44100`
+- `48000`。
 
 #### `channels`
 
 外部音频源的声道数，可设置为以下值：
 
-- 1：单声道。
-- 2：立体声。
+- `1`：单声道。
+- `2`：立体声。
 
 #### `localPlayback`
 

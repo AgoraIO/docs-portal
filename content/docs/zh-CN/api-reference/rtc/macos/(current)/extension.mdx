@@ -63,6 +63,7 @@ description: "启用或禁用扩展功能。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -3：扩展库未加载。声网建议你检查动态库的存储位置或名称。
 
 ### 所属接口类
@@ -198,7 +199,7 @@ description: "启用或禁用扩展功能。"
 
 声网建议你在初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 后、加入频道前调用此方法。
 
-- 对于视频扩展（如美颜特效扩展），你需要在调用 enableVideo 或 enableLocalVideo: 启用视频模块后调用此方法。
+- 对于视频扩展（如美颜特效扩展），你需要在调用 [enableVideo](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_enablevideo) 或 [enableLocalVideo:](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_enablelocalvideo) 启用视频模块后调用此方法。
 - 在调用此方法之前，你需要将扩展动态库（.xcframework）链接到 Xcode 项目中以加载扩展。
 
 <a id="api_irtcengine_registerextension__parameters"></a>
@@ -223,6 +224,7 @@ description: "启用或禁用扩展功能。"
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
   - -3：扩展库未加载。声网建议你检查动态库的存储位置或名称。
 
 ### 所属接口类

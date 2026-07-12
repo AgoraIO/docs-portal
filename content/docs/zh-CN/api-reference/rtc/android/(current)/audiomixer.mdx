@@ -22,7 +22,7 @@ public abstract int startLocalAudioMixer(LocalAudioMixerConfiguration config);
 
 该方法支持在本地将多个音频流合并为一个音频流。例如，可以将本地麦克风采集的音频流、媒体播放器、声卡以及远端用户的音频流混合为一个音频流，并将其发布到频道中。
 
-- 如果你希望混合本地采集的音频流，可以在 ChannelMediaOptions 中将 publishMixedAudioTrack 设置为 true，然后将混合后的音频流发布到频道中。
+- 如果你希望混合本地采集的音频流，可以在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中将 `publishMixedAudioTrack` 设置为 true，然后将混合后的音频流发布到频道中。
 - 如果你希望混合远端音频流，请确保远端音频流已在频道中发布，并且你已订阅了需要合流的音频流。
 
 :::info[注]
@@ -59,7 +59,8 @@ public abstract int startLocalAudioMixer(LocalAudioMixerConfiguration config);
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
-  - -7： RtcEngine 对象尚未初始化。请先初始化 RtcEngine 对象后再调用该方法。
+
+  - -7： [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象尚未初始化。请先初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象后再调用该方法。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -92,7 +93,8 @@ public abstract int stopLocalAudioMixer();
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
-  - -7： RtcEngine 对象尚未初始化。你需要先初始化 RtcEngine 对象再调用该方法。
+
+  - -7： [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象再调用该方法。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
@@ -135,7 +137,8 @@ public abstract int updateLocalAudioMixerConfiguration(LocalAudioMixerConfigurat
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
-  - -7： RtcEngine 对象尚未初始化。请在调用此方法前先初始化 RtcEngine 对象。
+
+  - -7： [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象尚未初始化。请在调用此方法前先初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象。
 
 ### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)

@@ -33,7 +33,7 @@ virtual int enableDualStreamMode(bool enabled) __deprecated = 0;
 
 :::info[注]
 - 该方法适用于发送端的所有类型的视频流，包括但不限于摄像头采集的视频流、屏幕共享流和自定义采集的视频流。
-- 如果你需要在多频道场景中启用双流模式，可以调用 enableDualStreamModeEx 方法。
+- 如果你需要在多频道场景中启用双流模式，可以调用 [enableDualStreamModeEx](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 方法。
 - 你可以在加入频道前或加入频道后调用该方法。
 :::
 
@@ -85,7 +85,7 @@ virtual int enableDualStreamMode(bool enabled, const SimulcastStreamConfig& stre
 
 :::info[注]
 - 此方法适用于发送端的所有类型视频流，包括但不限于摄像头采集的视频流、屏幕共享流和自定义采集的视频流。
-- 如果你需要在多频道场景中启用双流模式，可以调用 enableDualStreamModeEx 方法。
+- 如果你需要在多频道场景中启用双流模式，可以调用 [enableDualStreamModeEx](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 方法。
 - 你可以在加入频道前或加入频道后调用此方法。
 :::
 
@@ -799,8 +799,8 @@ SDK 默认在发送端开启视频小流的自适应模式（`AUTO_SIMULCAST_STR
 :::info[注]
 该方法与 `enableDualStreamMode` 的区别如下：
 
-- 当将 mode 设置为 DISABLE_SIMULCAST_STREAM 时，效果等同于调用 enableDualStreamMode(false)。
-- 当将 mode 设置为 ENABLE_SIMULCAST_STREAM 时，效果等同于调用 enableDualStreamMode(true)。
+- 当将 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` 时，效果等同于调用 `enableDualStreamMode(false)`。
+- 当将 `mode` 设置为 `ENABLE_SIMULCAST_STREAM` 时，效果等同于调用 `enableDualStreamMode(true)`。
 - 两个方法均可在加入频道前或后调用。如果两个方法都被调用，则以后调用的方法设置优先生效。
 :::
 
@@ -838,16 +838,16 @@ virtual int setDualStreamMode(SIMULCAST_STREAM_MODE mode, const SimulcastStreamC
 
 SDK 默认在发送端开启视频小流自适应模式（`AUTO_SIMULCAST_STREAM` ），即发送端不会主动发送视频小流。角色为主播的接收端可以通过调用 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起视频小流请求，发送端在收到请求后会自动开始发送视频小流。
 
-- 如果你希望修改此行为，可以调用此方法并将 mode 设置为 DISABLE_SIMULCAST_STREAM （从不发送视频小流）或 ENABLE_SIMULCAST_STREAM （始终发送视频小流）。
-- 如果你希望恢复默认行为，可以再次调用此方法并将 mode 设置为 AUTO_SIMULCAST_STREAM。
+- 如果你希望修改此行为，可以调用此方法并将 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` （从不发送视频小流）或 `ENABLE_SIMULCAST_STREAM` （始终发送视频小流）。
+- 如果你希望恢复默认行为，可以再次调用此方法并将 `mode` 设置为 `AUTO_SIMULCAST_STREAM`。
 
 与 `setDualStreamMode` 方法（参数为 `SIMULCAST_STREAM_MODE mode` ）的区别在于：该方法还支持配置视频小流，SDK 会根据 `streamConfig` 中的配置发送视频流。
 
 :::info[注]
 此方法与 `enableDualStreamMode` 的区别如下：
 
-- 当调用此方法并将 mode 设置为 DISABLE_SIMULCAST_STREAM 时，效果等同于调用 enableDualStreamMode 并将 enabled 设置为 false。
-- 当调用此方法并将 mode 设置为 ENABLE_SIMULCAST_STREAM 时，效果等同于调用 enableDualStreamMode 并将 enabled 设置为 true。
+- 当调用此方法并将 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` 时，效果等同于调用 `enableDualStreamMode` 并将 `enabled` 设置为 false。
+- 当调用此方法并将 `mode` 设置为 `ENABLE_SIMULCAST_STREAM` 时，效果等同于调用 `enableDualStreamMode` 并将 `enabled` 设置为 true。
 - 两个方法都可以在加入频道前或后调用。如果两个方法都被调用，则以后调用的方法设置优先生效。
 :::
 
@@ -896,8 +896,8 @@ SDK 默认在发送端开启视频小流自适应模式（`AUTO_SIMULCAST_STREAM
 :::info[注]
 该方法与 [enableDualStreamModeEx](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengineex_enabledualstreammodeex) 的区别如下：
 
-- 当调用该方法并将 mode 设置为 DISABLE_SIMULCAST_STREAM 时，效果等同于调用 enableDualStreamModeEx(false)。
-- 当调用该方法并将 mode 设置为 ENABLE_SIMULCAST_STREAM 时，效果等同于调用 enableDualStreamModeEx(true)。
+- 当调用该方法并将 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` 时，效果等同于调用 `enableDualStreamModeEx(false)`。
+- 当调用该方法并将 `mode` 设置为 `ENABLE_SIMULCAST_STREAM` 时，效果等同于调用 `enableDualStreamModeEx(true)`。
 - 两个方法均可在加入频道前或后调用。如果两个方法都被调用，则以后调用的方法设置优先生效。
 :::
 
@@ -953,9 +953,9 @@ virtual int setRemoteDefaultVideoStreamType(VIDEO_STREAM_TYPE streamType) = 0;
 
 根据发送端的默认行为，以及调用 `setDualStreamMode` 时的具体设置，接收端调用此方法的场景如下：
 
-- SDK 默认在发送端开启视频小流自适应模式（AUTO_SIMULCAST_STREAM ），即仅发送视频大流。此时，仅角色为主播的接收端可以调用此方法发起视频小流请求。一旦发送端收到请求，会自动开始发送视频小流。此时，频道内所有用户均可调用此方法切换为视频小流订阅模式。
-- 如果发送端调用 setDualStreamMode 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （从不发送视频小流），则调用此方法无效。
-- 如果发送端调用 setDualStreamMode 并将 mode 设置为 ENABLE_SIMULCAST_STREAM （始终发送视频小流），则主播和观众角色的接收端均可调用此方法切换为视频小流订阅模式。
+- SDK 默认在发送端开启视频小流自适应模式（`AUTO_SIMULCAST_STREAM` ），即仅发送视频大流。此时，仅角色为主播的接收端可以调用此方法发起视频小流请求。一旦发送端收到请求，会自动开始发送视频小流。此时，频道内所有用户均可调用此方法切换为视频小流订阅模式。
+- 如果发送端调用 `setDualStreamMode` 并将 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` （从不发送视频小流），则调用此方法无效。
+- 如果发送端调用 `setDualStreamMode` 并将 `mode` 设置为 `ENABLE_SIMULCAST_STREAM` （始终发送视频小流），则主播和观众角色的接收端均可调用此方法切换为视频小流订阅模式。
 
 SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节省带宽和计算资源。视频小流的默认宽高比与视频大流一致。系统会根据当前视频大流的宽高比，自动分配视频小流的分辨率、帧率和码率。
 
@@ -1003,9 +1003,9 @@ virtual int setRemoteVideoStreamType(uid_t uid, VIDEO_STREAM_TYPE streamType) = 
 
 根据发送端的默认行为以及调用 `setDualStreamMode` 时的具体设置，接收端调用该方法的场景如下：
 
-- SDK 默认在发送端启用视频小流自适应模式（AUTO_SIMULCAST_STREAM ），即默认只发送视频大流。只有角色为主播的接收端可以调用该方法发起视频小流请求。一旦发送端收到请求后，会自动开始发送视频小流。此时，频道内所有用户都可以调用该方法切换为订阅视频小流模式。
-- 如果发送端调用 setDualStreamMode 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （从不发送视频小流），则调用该方法无效。
-- 如果发送端调用 setDualStreamMode 并将 mode 设置为 ENABLE_SIMULCAST_STREAM （始终发送视频小流），则主播和观众角色的接收端都可以调用该方法切换为订阅视频小流模式。
+- SDK 默认在发送端启用视频小流自适应模式（`AUTO_SIMULCAST_STREAM` ），即默认只发送视频大流。只有角色为主播的接收端可以调用该方法发起视频小流请求。一旦发送端收到请求后，会自动开始发送视频小流。此时，频道内所有用户都可以调用该方法切换为订阅视频小流模式。
+- 如果发送端调用 `setDualStreamMode` 并将 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` （从不发送视频小流），则调用该方法无效。
+- 如果发送端调用 `setDualStreamMode` 并将 `mode` 设置为 `ENABLE_SIMULCAST_STREAM` （始终发送视频小流），则主播和观众角色的接收端都可以调用该方法切换为订阅视频小流模式。
 
 SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节省带宽和计算资源。视频小流的默认宽高比与视频大流一致。系统会根据当前视频大流的宽高比，自动分配视频小流的分辨率、帧率和码率。
 
@@ -1057,9 +1057,9 @@ virtual int setRemoteVideoStreamTypeEx(uid_t uid, VIDEO_STREAM_TYPE streamType, 
 
 根据发送端的默认行为以及调用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 时的具体设置，接收端调用此方法的场景如下：
 
-- SDK 默认在发送端启用视频小流自适应模式（AUTO_SIMULCAST_STREAM ），即仅发送视频大流。此时，只有角色为主播的接收端可以调用此方法发起视频小流请求。一旦发送端收到请求，会自动开始发送视频小流。此时，频道内所有用户都可以调用此方法切换为视频小流订阅模式。
-- 如果发送端调用 setDualStreamMode 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （从不发送视频小流），则调用此方法无效。
-- 如果发送端调用 setDualStreamMode 并将 mode 设置为 ENABLE_SIMULCAST_STREAM （始终发送视频小流），则主播和观众角色的接收端都可以调用此方法切换为视频小流订阅模式。
+- SDK 默认在发送端启用视频小流自适应模式（`AUTO_SIMULCAST_STREAM` ），即仅发送视频大流。此时，只有角色为主播的接收端可以调用此方法发起视频小流请求。一旦发送端收到请求，会自动开始发送视频小流。此时，频道内所有用户都可以调用此方法切换为视频小流订阅模式。
+- 如果发送端调用 `setDualStreamMode` 并将 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` （从不发送视频小流），则调用此方法无效。
+- 如果发送端调用 `setDualStreamMode` 并将 `mode` 设置为 `ENABLE_SIMULCAST_STREAM` （始终发送视频小流），则主播和观众角色的接收端都可以调用此方法切换为视频小流订阅模式。
 
 SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节省带宽和计算资源。视频小流的默认宽高比与视频大流一致。系统会根据当前视频大流的宽高比，自动分配视频小流的分辨率、帧率和码率。
 
@@ -1115,9 +1115,9 @@ virtual int setRemoteVideoSubscriptionOptions(uid_t uid, const VideoSubscription
 
 当远端用户开启双流模式时，你可以调用该方法设置订阅该远端用户发送的视频流的选项。SDK 默认的远端视频流订阅行为取决于注册的视频观察器类型：
 
-- 如果注册了 IVideoFrameObserver 观察器，默认订阅原始数据和编码数据；
-- 如果注册了 IVideoEncodedFrameObserver 观察器，默认仅订阅编码数据；
-- 如果同时注册了上述两种观察器，默认行为遵循最后注册的观察器。例如，如果最后注册的是 IVideoFrameObserver，则默认订阅原始数据和编码数据。
+- 如果注册了 [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver) 观察器，默认订阅原始数据和编码数据；
+- 如果注册了 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoencodedframeobserver) 观察器，默认仅订阅编码数据；
+- 如果同时注册了上述两种观察器，默认行为遵循最后注册的观察器。例如，如果最后注册的是 [IVideoFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoframeobserver)，则默认订阅原始数据和编码数据。
 
 如果你希望修改默认行为，或为不同的用户 ID 设置不同的订阅选项，可以调用该方法进行设置。
 
@@ -1207,7 +1207,7 @@ virtual int setSubscribeAudioAllowlist(uid_t* uidList, int uidNumber) = 0;
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 白名单不受 muteRemoteAudioStream、 muteAllRemoteAudioStreams 和 ChannelMediaOptions 中的 autoSubscribeAudio 设置的影响。
+- 白名单不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 和 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置的影响。
 - 一旦设置了订阅白名单，即使你离开当前频道并重新加入频道，该设置仍然有效。
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。
 :::
@@ -1250,7 +1250,7 @@ virtual int setSubscribeAudioAllowlistEx(uid_t* uidList, int uidNumber, const Rt
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 该白名单不受 muteRemoteAudioStream、 muteAllRemoteAudioStreams 和 ChannelMediaOptions 中的 autoSubscribeAudio 设置的影响。
+- 该白名单不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 和 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置的影响。
 - 一旦设置了订阅白名单，即使你离开当前频道并重新加入，该设置仍然有效。
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。
 :::
@@ -1303,7 +1303,7 @@ virtual int setSubscribeAudioBlocklist(uid_t* uidList, int uidNumber) = 0;
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 黑名单设置不受 muteRemoteAudioStream、 muteAllRemoteAudioStreams 和 ChannelMediaOptions 中 autoSubscribeAudio 的影响。
+- 黑名单设置不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 和 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中 `autoSubscribeAudio` 的影响。
 - 一旦设置了订阅黑名单，即使你离开当前频道并重新加入频道，该设置仍然有效。
 - 如果某个用户同时被加入白名单和黑名单，仅黑名单生效。
 :::
@@ -1346,7 +1346,7 @@ virtual int setSubscribeAudioBlocklistEx(uid_t* uidList, int uidNumber, const Rt
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 黑名单设置不受 muteRemoteAudioStream、 muteAllRemoteAudioStreams 和 ChannelMediaOptions 中 autoSubscribeAudio 的影响。
+- 黑名单设置不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 和 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中 `autoSubscribeAudio` 的影响。
 - 一旦设置了订阅黑名单，即使离开当前频道并重新加入频道，该设置仍然有效。
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。
 :::
@@ -1399,7 +1399,7 @@ virtual int setSubscribeVideoAllowlist(uid_t* uidList, int uidNumber) = 0;
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 允许列表不受 muteRemoteVideoStream、 muteAllRemoteVideoStreams 和 ChannelMediaOptions 中的 autoSubscribeAudio 设置的影响。
+- 允许列表不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 和 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置的影响。
 - 一旦设置了订阅的允许列表，即使你离开当前频道并重新加入频道，该设置仍然有效。
 - 如果某个用户同时被添加到允许列表和阻止列表中，则仅阻止列表生效。
 :::
@@ -1444,7 +1444,7 @@ virtual int setSubscribeVideoAllowlistEx(uid_t* uidList, int uidNumber, const Rt
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 该白名单不受 muteRemoteVideoStream、 muteAllRemoteVideoStreams 和 ChannelMediaOptions 中的 autoSubscribeAudio 设置的影响。
+- 该白名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 和 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置的影响。
 - 一旦设置了订阅白名单，即使你离开当前频道并重新加入，该设置仍然有效。
 - 如果某个用户同时被添加到白名单和黑名单中，则仅黑名单生效。
 :::
@@ -1497,7 +1497,7 @@ virtual int setSubscribeVideoBlocklist(uid_t* uidList, int uidNumber) = 0;
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 黑名单不受 muteRemoteVideoStream、 muteAllRemoteVideoStreams 和 ChannelMediaOptions 中的 autoSubscribeAudio 设置的影响。
+- 黑名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 和 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置的影响。
 - 一旦设置了订阅黑名单，即使离开当前频道并重新加入，该设置仍然有效。
 - 如果某个用户同时出现在白名单和黑名单中，只有黑名单生效。
 :::
@@ -1540,7 +1540,7 @@ virtual int setSubscribeVideoBlocklistEx(uid_t* uidList, int uidNumber, const Rt
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
-- 该阻止名单不受 muteRemoteVideoStream、 muteAllRemoteVideoStreams 和 ChannelMediaOptions 中的 autoSubscribeAudio 设置的影响。
+- 该阻止名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremotevideostream)、 [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 和 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置的影响。
 - 一旦设置了订阅的阻止名单，即使你离开当前频道并重新加入频道，该设置仍然有效。
 - 如果某个用户同时被加入允许名单和阻止名单，仅阻止名单生效。
 :::

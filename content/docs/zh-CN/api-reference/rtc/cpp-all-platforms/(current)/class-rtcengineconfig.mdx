@@ -57,17 +57,18 @@ struct RtcEngineContext {
 
 日志配置。详见 [LogConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-logconfig)。 默认情况下，SDK 会生成五个 SDK 日志文件和五个 API 调用日志文件，规则如下：
 
-- SDK 日志文件包括： agorasdk.log、 agorasdk.1.log、 agorasdk.2.log、 agorasdk.3.log 和 agorasdk.4.log。
-- API 调用日志文件包括： agoraapi.log、 agoraapi.1.log、 agoraapi.2.log、 agoraapi.3.log 和 agoraapi.4.log。
+- SDK 日志文件包括： `agorasdk.log`、 `agorasdk.1.log`、 `agorasdk.2.log`、 `agorasdk.3.log` 和 `agorasdk.4.log`。
+- API 调用日志文件包括： `agoraapi.log`、 `agoraapi.1.log`、 `agoraapi.2.log`、 `agoraapi.3.log` 和 `agoraapi.4.log`。
 - 每个日志文件的默认大小为 2048 KB，编码为 UTF-8。
-- SDK 会将最新日志写入 agorasdk.log 或 agoraapi.log。
-- 当 agorasdk.log 写满时，SDK 会按以下顺序处理日志文件：
-  1. 删除 agorasdk.4.log （如存在）；
-  2. 将 agorasdk.3.log 重命名为 agorasdk.4.log；
-  3. 将 agorasdk.2.log 重命名为 agorasdk.3.log；
-  4. 将 agorasdk.1.log 重命名为 agorasdk.2.log；
-  5. 创建新的 agorasdk.log 文件。
-- agoraapi.log 的覆盖规则与 agorasdk.log 相同。
+- SDK 会将最新日志写入 `agorasdk.log` 或 `agoraapi.log`。
+- 当 `agorasdk.log` 写满时，SDK 会按以下顺序处理日志文件：
+
+  1. 删除 `agorasdk.4.log` （如存在）；
+  2. 将 `agorasdk.3.log` 重命名为 `agorasdk.4.log`；
+  3. 将 `agorasdk.2.log` 重命名为 `agorasdk.3.log`；
+  4. 将 `agorasdk.1.log` 重命名为 `agorasdk.2.log`；
+  5. 创建新的 `agorasdk.log` 文件。
+- `agoraapi.log` 的覆盖规则与 `agorasdk.log` 相同。
 
 ### `threadPriority`
 
@@ -96,4 +97,4 @@ SDK 通用线程的线程优先级。详见 `THREAD_PRIORITY_TYPE`。
 是否在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 时自动注册声网插件：
 
 - true：（默认）自动注册插件。
-- false：不自动注册插件。你需要调用 enableExtension 手动注册插件。
+- false：不自动注册插件。你需要调用 [enableExtension](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#api_irtcengine_enableextension) 手动注册插件。

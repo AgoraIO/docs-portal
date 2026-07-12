@@ -24,9 +24,9 @@ public abstract int ConfigRhythmPlayer(AgoraRhythmPlayerConfig config);
 
 自 v4.6.2 版本废弃。
 
-- 调用 StartRhythmPlayer 后，你可以调用该方法重新配置虚拟节拍器。
-- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 AgoraRhythmPlayerConfig 中设置的 beatsPerMinute 控制每个文件的播放时长。例如，将 beatsPerMinute 设为 60，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
-- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 ChannelMediaOptions 中的 publishRhythmPlayerTrack 设为 true。
+- 调用 [StartRhythmPlayer](/zh-CN/api-reference/rtc/unity/rhythmplayer#api_irtcengine_startrhythmplayer) 后，你可以调用该方法重新配置虚拟节拍器。
+- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/unity/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，将 `beatsPerMinute` 设为 `60`，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
+- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unity/class-channelmediaoptions) 中的 `publishRhythmPlayerTrack` 设为 true。
 
 <a id="api_irtcengine_configrhythmplayer__timing"></a>
 
@@ -76,8 +76,8 @@ public abstract int StartRhythmPlayer(string sound1, string sound2, AgoraRhythmP
 
 自 v4.6.2 版本废弃。
 
-- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 AgoraRhythmPlayerConfig 中设置的 beatsPerMinute 控制每个文件的播放时长。例如，将 beatsPerMinute 设为 60，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
-- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 ChannelMediaOptions 中的 publishRhythmPlayerTrack 设为 true。
+- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/unity/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，将 `beatsPerMinute` 设为 `60`，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
+- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/unity/class-channelmediaoptions) 中的 `publishRhythmPlayerTrack` 设为 true。
 
 <a id="api_irtcengine_startrhythmplayer__scenario"></a>
 
@@ -119,7 +119,8 @@ public abstract int StartRhythmPlayer(string sound1, string sound2, AgoraRhythmP
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败
-  - -22: 无法找到音频文件。请填写正确的 sound1 和 sound2。
+
+  - -22: 无法找到音频文件。请填写正确的 `sound1` 和 `sound2`。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)

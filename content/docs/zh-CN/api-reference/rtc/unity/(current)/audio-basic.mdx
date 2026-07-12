@@ -169,11 +169,11 @@ public abstract int DisableAudio();
 :::info[注]
 该方法重置整个引擎，响应时间较慢，因此声网建议使用如下方法来控制音频模块：
 
-- EnableLocalAudio：是否启动麦克风采集并创建本地音频流。
-- EnableLoopbackRecording：是否开启声卡采集。
-- MuteLocalAudioStream：是否发布本地音频流。
-- MuteRemoteAudioStream：是否接收并播放远端音频流。
-- MuteAllRemoteAudioStreams：是否接收并播放所有远端音频流。
+- [EnableLocalAudio](/zh-CN/api-reference/rtc/unity/audio-capture#api_irtcengine_enablelocalaudio)：是否启动麦克风采集并创建本地音频流。
+- [EnableLoopbackRecording](/zh-CN/api-reference/rtc/unity/audio-capture#api_irtcengine_enableloopbackrecording)：是否开启声卡采集。
+- [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：是否发布本地音频流。
+- [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteremoteaudiostream)：是否接收并播放远端音频流。
+- [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)：是否接收并播放所有远端音频流。
 :::
 
 <a id="api_irtcengine_disableaudio__timing"></a>
@@ -210,11 +210,12 @@ public abstract int EnableAudio();
 
 :::info[注]
 - 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制音频模块的某一项功能：
-  - EnableLocalAudio: 是否启动麦克风采集并创建本地音频流。
-  - MuteLocalAudioStream: 是否发布本地音频流。
-  - MuteRemoteAudioStream: 是否接收并播放远端音频流。
-  - MuteAllRemoteAudioStreams: 是否接收并播放所有远端音频流。
-- 在频道内调用该方法时，会重置 EnableLocalAudio、 MuteRemoteAudioStream 和 MuteAllRemoteAudioStreams 的设置，需谨慎使用。
+
+  - [EnableLocalAudio](/zh-CN/api-reference/rtc/unity/audio-capture#api_irtcengine_enablelocalaudio): 是否启动麦克风采集并创建本地音频流。
+  - [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream): 是否发布本地音频流。
+  - [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteremoteaudiostream): 是否接收并播放远端音频流。
+  - [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams): 是否接收并播放所有远端音频流。
+- 在频道内调用该方法时，会重置 [EnableLocalAudio](/zh-CN/api-reference/rtc/unity/audio-capture#api_irtcengine_enablelocalaudio)、 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteremoteaudiostream) 和 [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 的设置，需谨慎使用。
 :::
 
 <a id="api_irtcengine_enableaudio__timing"></a>
@@ -270,7 +271,7 @@ public abstract int EnableAudioVolumeIndication(int interval, int smooth, bool r
 指定音量提示的时间间隔：
 
 - ≤ 0: 禁用音量提示功能。
-- &gt; 0: 返回音量提示的间隔，单位为毫秒。建议设置到大于 100 毫秒，不得小于 10 毫秒，否则会收不到 OnAudioVolumeIndication 回调。
+- &gt; 0: 返回音量提示的间隔，单位为毫秒。建议设置到大于 100 毫秒，不得小于 10 毫秒，否则会收不到 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
 #### `smooth`
 
@@ -278,8 +279,8 @@ public abstract int EnableAudioVolumeIndication(int interval, int smooth, bool r
 
 #### `reportVad`
 
-- true：开启本地人声检测功能。开启后， OnAudioVolumeIndication 回调的 vad 参数会报告是否在本地检测到人声。
-- false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， OnAudioVolumeIndication 回调的 vad 参数不会报告是否在本地检测到人声。
+- true：开启本地人声检测功能。开启后， [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数会报告是否在本地检测到人声。
+- false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数不会报告是否在本地检测到人声。
 
 <a id="api_irtcengine_enableaudiovolumeindication__return_values"></a>
 
@@ -328,7 +329,7 @@ public abstract int EnableAudioVolumeIndicationEx(int interval, int smooth, bool
 指定音量提示的时间间隔：
 
 - ≤ 0: 禁用音量提示功能。
-- &gt; 0: 返回音量提示的间隔，单位为毫秒。建议设置到大于 100 毫秒，不得小于 10 毫秒，否则会收不到 OnAudioVolumeIndication 回调。
+- &gt; 0: 返回音量提示的间隔，单位为毫秒。建议设置到大于 100 毫秒，不得小于 10 毫秒，否则会收不到 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
 #### `smooth`
 
@@ -336,8 +337,8 @@ public abstract int EnableAudioVolumeIndicationEx(int interval, int smooth, bool
 
 #### `reportVad`
 
-- true：开启本地人声检测功能。开启后， OnAudioVolumeIndication 回调的 vad 参数会报告是否在本地检测到人声。
-- false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， OnAudioVolumeIndication 回调的 vad 参数不会报告是否在本地检测到人声。
+- true：开启本地人声检测功能。开启后， [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数会报告是否在本地检测到人声。
+- false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数不会报告是否在本地检测到人声。
 
 #### `connection`
 
@@ -550,8 +551,8 @@ public virtual void OnActiveSpeaker(RtcConnection connection, uint uid) { }
 
 成功调用 [EnableAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_enableaudiovolumeindication) 后，SDK 会持续监测音量最大的远端用户，并统计该用户被判断为音量最大者的次数。当前时间段内，该次数累积最多的远端用户为最活跃的用户。 当频道内用户数量大于或等于 2 且有远端活跃用户时，SDK 会触发该回调并报告远端最活跃用户的 `uid`。
 
-- 如果远端最活跃用户一直是同一位用户，则 SDK 不会再次触发 OnActiveSpeaker 回调。
-- 如果远端最活跃用户有变化，则 SDK 会再次触发该回调并报告新的远端最活跃用户的 uid。
+- 如果远端最活跃用户一直是同一位用户，则 SDK 不会再次触发 [OnActiveSpeaker](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onactivespeaker) 回调。
+- 如果远端最活跃用户有变化，则 SDK 会再次触发该回调并报告新的远端最活跃用户的 `uid`。
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__parameters"></a>
 
@@ -651,15 +652,15 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 用户数量。
 
-- 在本地用户的回调中，只要本地用户在发流， speakerNumber 始终为 1。
-- 在远端用户的回调中， speakerNumber 取值范围为 [0,3]。如果远端发流用户数量大于 3，则此回调中 speakerNumber 值为 3。
+- 在本地用户的回调中，只要本地用户在发流， `speakerNumber` 始终为 1。
+- 在远端用户的回调中， `speakerNumber` 取值范围为 [0,3]。如果远端发流用户数量大于 3，则此回调中 `speakerNumber` 值为 3。
 
 #### `totalVolume`
 
 混音后的总音量，取值范围为 [0,255]。
 
-- 在本地用户的回调中， totalVolume 为本地发流用户的音量。
-- 在远端用户的回调中， totalVolume 为瞬时音量最高的远端用户（最多 3 位）混音后的总音量。
+- 在本地用户的回调中， `totalVolume` 为本地发流用户的音量。
+- 在远端用户的回调中， `totalVolume` 为瞬时音量最高的远端用户（最多 3 位）混音后的总音量。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
@@ -680,10 +681,10 @@ public virtual void OnFirstLocalAudioFramePublished(RtcConnection connection, in
 
 SDK 会在以下时机触发该回调：
 
-- 开启本地音频的情况下，调用 JoinChannel [2/2] 成功加入频道后。
-- 调用 MuteLocalAudioStream (true)，再调用 MuteLocalAudioStream (false) 后。
-- 调用 DisableAudio，再调用 EnableAudio 后。
-- 调用 PushAudioFrame 成功向 SDK 推送音频帧后。
+- 开启本地音频的情况下，调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 成功加入频道后。
+- 调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream) (`true)`，再调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream) (`false)` 后。
+- 调用 [DisableAudio](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_disableaudio)，再调用 [EnableAudio](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_enableaudio) 后。
+- 调用 [PushAudioFrame](/zh-CN/api-reference/rtc/unity/audio-custom-capturenrendering#api_imediaengine_pushaudioframe) 成功向 SDK 推送音频帧后。
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__parameters"></a>
 
@@ -722,10 +723,11 @@ SDK 会在以下时机触发该回调：
 
 - 远端用户首次上线后发送音频。
 - 远端用户音频离线再上线发送音频。音频离线指本地在 15 秒内没有收到音频包，可能有如下原因：
+
   - 远端用户离开频道
   - 远端用户掉线
-  - 远端用户调用 MuteLocalAudioStream 方法停止发送音频流
-  - 远端用户调用 DisableAudio 方法关闭音频
+  - 远端用户调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法停止发送音频流
+  - 远端用户调用 [DisableAudio](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_disableaudio) 方法关闭音频
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__parameters"></a>
 

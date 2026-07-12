@@ -43,6 +43,7 @@ virtual int agora::rtc::IRtcConnection::connect(const char* token, const char* c
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
+
   - -2(ERR_INVALID_ARGUMENT)：参数无效。
   - -8(ERR_INVALID_STATE): 当前连接状态不是 CONNECTION_STATE_DISCONNECTED(1)。
 
@@ -77,9 +78,11 @@ virtual int agora::rtc::IRtcConnection::startLastmileProbeTest(const LastmilePro
 
 启用该方法后，SDK 会依次返回如下 2 个回调：
 
-- onLastmileQuality: 视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
-- onLastmileProbeResult: 视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。 ### `注解`
-- 调用该方法后，在收到 onLastmileQuality 和 onLastmileProbeResult 回调之前请不要调用其他方法，否则可能会由于 API 操作过于频繁导致此方法无法执行。
+- [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtc-connection-observer#a255ffd92a1b67201f04d018e163118fc): 视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
+- [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtc-connection-observer#a91037dcd860c1000e31a3d0eecb1889a): 视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
+
+  ### `注解`
+- 调用该方法后，在收到 [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtc-connection-observer#a255ffd92a1b67201f04d018e163118fc) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtc-connection-observer#a91037dcd860c1000e31a3d0eecb1889a) 回调之前请不要调用其他方法，否则可能会由于 API 操作过于频繁导致此方法无法执行。
 - 在直播场景中，如果本地用户为主播，请勿加入频道后调用该方法。
 
 #### Parameters
@@ -140,7 +143,7 @@ virtual TConnectionInfo agora::rtc::IRtcConnection::getConnectionInfo() pure vir
 
 #### Returns
 
-- TConnectionInfo 对象：方法调用成功。
+- [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-t-connection-info) 对象：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="a1cf54986a330713047da51c1503ec86c"></a>
@@ -155,7 +158,7 @@ virtual ILocalUser* agora::rtc::IRtcConnection::getLocalUser() pure virtual
 
 #### Returns
 
-- ILocalUser 对象：方法调用成功。
+- [ILocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-user) 对象：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="ae1b27f3868e38f5dc434ec572e31de4f"></a>
@@ -312,7 +315,7 @@ virtual RtcStats agora::rtc::IRtcConnection::getTransportStats() pure virtual
 
 #### Returns
 
-- RtcStats：方法调用成功。
+- [RtcStats](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-rtc-stats)：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="a44ce079c780ace4b8188d59ad68d96fb"></a>
@@ -329,7 +332,7 @@ virtual agora::base::IAgoraParameter* agora::rtc::IRtcConnection::getAgoraParame
 
 #### Returns
 
-- IAgoraParameter 对象：方法调用成功。
+- `IAgoraParameter` 对象：方法调用成功。
 - 空指针：方法调用失败。
 
 <a id="a53f87120cf152e9a80a64de9f0144ede"></a>
@@ -346,18 +349,18 @@ virtual int agora::rtc::IRtcConnection::createDataStream(int* streamId, bool rel
 
 ##### `注解`
 
-- 声网不支持你将 reliable 设为 true 且 ordered 设为 false。
-- 当需要数据包立刻到达接收端时，不能将 ordered 参数设置为 true。
-- 设置为与音频同步后，如果数据包的延迟在音频延迟的范围内，SDK 会在播放音频的同时触发与该音频包同步的 onStreamMessage 回调。 当需要数据包立刻到达接收端时，不能将 sync 参数设置为 true。声网推荐你仅在需要实现特殊场景，例如歌词同步时，设置为与音频同步。
+- 声网不支持你将 `reliable` 设为 `true` 且 `ordered` 设为 `false`。
+- 当需要数据包立刻到达接收端时，不能将 `ordered` 参数设置为 `true`。
+- 设置为与音频同步后，如果数据包的延迟在音频延迟的范围内，SDK 会在播放音频的同时触发与该音频包同步的 [onStreamMessage](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-local-user-observer#a0a0af52ad5ef54b08919df497b738f8b) 回调。 当需要数据包立刻到达接收端时，不能将 `sync` 参数设置为 `true`。声网推荐你仅在需要实现特殊场景，例如歌词同步时，设置为与音频同步。
 
 #### Parameters
 
 | Name | Description |
 | --- | --- |
 | streamId | 输出参数，数据流 ID。 |
-| reliable | 该数据流是否可靠：<br />- true: 接收方 5 秒内会收到发送方所发送的数据。<br />- false: 接收方不保证收到，就算数据丢失也不会报错。 |
-| ordered | 该数据流是否有序：<br />- true: 接收方会按照发送方发送的顺序收到数据包。<br />- false: 接收方不保证按照发送方发送的顺序收到数据包。 |
-| sync | 是否与本地发送的音频流同步：<br />- true: 数据流与音频流同步。<br />- false: 数据流与音频流不同步。 |
+| reliable | 该数据流是否可靠：<br />- `true`: 接收方 5 秒内会收到发送方所发送的数据。<br />- `false`: 接收方不保证收到，就算数据丢失也不会报错。 |
+| ordered | 该数据流是否有序：<br />- `true`: 接收方会按照发送方发送的顺序收到数据包。<br />- `false`: 接收方不保证按照发送方发送的顺序收到数据包。 |
+| sync | 是否与本地发送的音频流同步：<br />- `true`: 数据流与音频流同步。<br />- `false`: 数据流与音频流不同步。 |
 
 #### Returns
 
@@ -384,7 +387,7 @@ virtual int agora::rtc::IRtcConnection::sendStreamMessage(int streamId, const ch
 
 ##### `注解`
 
-- 请确保在调用该方法前，已调用 createDataStream 创建了数据通道。
+- 请确保在调用该方法前，已调用 [createDataStream](/zh-CN/api-reference/rtc-server-sdk/cpp-api/classagora-1-1rtc-1-1-i-rtc-connection#a53f87120cf152e9a80a64de9f0144ede) 创建了数据通道。
 - 直播场景下，该方法仅适用于主播用户。
 
 #### Parameters
@@ -445,7 +448,7 @@ virtual int agora::rtc::IRtcConnection::getUserInfoByUserAccount(const char* use
 | Name | Description |
 | --- | --- |
 | userAccount | 用户的 user account。 |
-| [in,out] userInfo | [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-user-info) 对象：<br />- 输入: 一个 UserInfo 对象。<br />- 输出: 一个 UserInfo 对象，包含 user account 和 user ID。 |
+| [in,out] userInfo | [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-user-info) 对象：<br />- 输入: 一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-user-info) 对象。<br />- 输出: 一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-user-info) 对象，包含 user account 和 user ID。 |
 
 #### Returns
 
@@ -467,7 +470,7 @@ virtual int agora::rtc::IRtcConnection::getUserInfoByUid(uid_t uid, rtc::UserInf
 | Name | Description |
 | --- | --- |
 | uid | 用户 ID |
-| [in,out] userInfo | [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-user-info) 对象：<br />- 输入: 一个 UserInfo 对象。<br />- 输出: 一个 UserInfo 对象，包含 user account 和 user ID。 |
+| [in,out] userInfo | [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-user-info) 对象：<br />- 输入: 一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-user-info) 对象。<br />- 输出: 一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp-api/structagora-1-1rtc-1-1-user-info) 对象，包含 user account 和 user ID。 |
 
 #### Returns
 

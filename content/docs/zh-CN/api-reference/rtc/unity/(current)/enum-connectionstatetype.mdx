@@ -10,15 +10,15 @@ description: "网络连接状态。"
 
 1: 网络连接断开。该状态表示 SDK 处于:
 
-- 调用 JoinChannel [2/2] 加入频道前的初始化阶段。
-- 或调用 LeaveChannel [2/2] 后的离开频道阶段。
+- 调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 加入频道前的初始化阶段。
+- 或调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_leavechannel2) 后的离开频道阶段。
 
 ### `CONNECTION_STATE_CONNECTING`
 
 2: 建立网络连接中。该状态表示 SDK 在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 后正在与指定的频道建立连接。
 
-- 如果成功加入频道，App 会收到 OnConnectionStateChanged 回调，通知当前网络状态变成 CONNECTION_STATE_CONNECTED。
-- 建立连接后，SDK 还会初始化媒体，一切就绪后会回调 OnJoinChannelSuccess。
+- 如果成功加入频道，App 会收到 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unity/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调，通知当前网络状态变成 CONNECTION_STATE_CONNECTED。
+- 建立连接后，SDK 还会初始化媒体，一切就绪后会回调 [OnJoinChannelSuccess](/zh-CN/api-reference/rtc/unity/channel#callback_irtcengineeventhandler_onjoinchannelsuccess)。
 
 ### `CONNECTION_STATE_CONNECTED`
 
@@ -28,12 +28,12 @@ description: "网络连接状态。"
 
 4: 重新建立网络连接中。该状态表示 SDK 之前曾加入过频道，但因网络等原因连接中断了，此时 SDK 会自动尝试重新接入频道。
 
-- 如果 SDK 无法在 10 秒内重新加入频道，则 OnConnectionLost 会被触发，SDK 会一直保持在 CONNECTION_STATE_RECONNECTING 的状态，并不断尝试重新加入频道。
-- 如果 SDK 在断开连接后，20 分钟内还是没能重新加入频道，则应用程序会收到 OnConnectionStateChanged 回调，通知 App 的网络状态进入 CONNECTION_STATE_FAILED，SDK 停止尝试重连。
+- 如果 SDK 无法在 10 秒内重新加入频道，则 [OnConnectionLost](/zh-CN/api-reference/rtc/unity/network#callback_irtcengineeventhandler_onconnectionlost) 会被触发，SDK 会一直保持在 CONNECTION_STATE_RECONNECTING 的状态，并不断尝试重新加入频道。
+- 如果 SDK 在断开连接后，20 分钟内还是没能重新加入频道，则应用程序会收到 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unity/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调，通知 App 的网络状态进入 CONNECTION_STATE_FAILED，SDK 停止尝试重连。
 
 ### `CONNECTION_STATE_FAILED`
 
 5: 网络连接失败。该状态表示 SDK 已不再尝试重新加入频道，需要调用 [LeaveChannel [1/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_leavechannel) 离开频道。
 
-- 如果用户还想重新加入频道，则需要再次调用 JoinChannel [2/2]。
-- 如果 SDK 因服务器端使用 RESTful API 禁止加入频道，则 App 会收到 OnConnectionStateChanged。
+- 如果用户还想重新加入频道，则需要再次调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2)。
+- 如果 SDK 因服务器端使用 RESTful API 禁止加入频道，则 App 会收到 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unity/network#callback_irtcengineeventhandler_onconnectionstatechanged)。

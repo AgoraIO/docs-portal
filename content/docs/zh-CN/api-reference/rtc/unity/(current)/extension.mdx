@@ -66,6 +66,7 @@ public abstract int EnableExtension(string provider, string extension, bool enab
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -3: 该插件动态库没有被加载。声网推荐你检查该动态库是否存放在预期的位置，或该动态库名是否正确。
 
 ### 所属接口类
@@ -167,7 +168,7 @@ public abstract int LoadExtensionProvider(string path, bool unload_after_use = f
 
 是否在插件使用完毕后自动卸载：
 
-- true: 当 IRtcEngine 销毁时自动卸载插件。
+- true: 当 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 销毁时自动卸载插件。
 - false: 不自动卸载插件，直到进程退出（推荐）。
 
 <a id="api_irtcengine_loadextensionprovider__return_values"></a>
@@ -205,9 +206,9 @@ public abstract int RegisterExtension(string provider, string extension, MEDIA_S
 
 ### 调用时机
 
-- 建议你在初始化 IRtcEngine 后、加入频道前调用该方法。
-- 对于视频相关插件（例如美颜插件），需要在启用视频模块（EnableVideo / EnableLocalVideo ）之前调用该方法。
-- 调用该方法前，需要先调用 LoadExtensionProvider 加载插件。
+- 建议你在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 后、加入频道前调用该方法。
+- 对于视频相关插件（例如美颜插件），需要在启用视频模块（[EnableVideo](/zh-CN/api-reference/rtc/unity/video-basic#api_irtcengine_enablevideo) / [EnableLocalVideo](/zh-CN/api-reference/rtc/unity/video-basic#api_irtcengine_enablelocalvideo) ）之前调用该方法。
+- 调用该方法前，需要先调用 [LoadExtensionProvider](/zh-CN/api-reference/rtc/unity/extension#api_irtcengine_loadextensionprovider) 加载插件。
 
 <a id="api_irtcengine_registerextension__parameters"></a>
 
@@ -231,6 +232,7 @@ public abstract int RegisterExtension(string provider, string extension, MEDIA_S
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -3: 该插件动态库没有被加载。声网推荐你检查该动态库是否存放在预期的位置，或该动态库名是否正确。
 
 ### 所属接口类

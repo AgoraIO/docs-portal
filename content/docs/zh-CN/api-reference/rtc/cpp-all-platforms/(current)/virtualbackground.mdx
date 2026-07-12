@@ -29,6 +29,7 @@ virtual int enableVirtualBackground(bool enabled, VirtualBackgroundSource backgr
 :::info[注]
 - 使用视频作为虚拟背景会导致内存持续增长，可能引发应用崩溃。建议降低视频的分辨率和帧率。
 - 此功能对设备性能要求较高。调用此方法时，SDK 会自动检测当前设备的性能。声网建议在以下处理器设备上使用虚拟背景功能：
+
   - Snapdragon 700 系列 750G 及以上版本。
   - Snapdragon 800 系列 835 及以上版本。
   - Dimensity 700 系列 720 及以上版本。
@@ -36,12 +37,14 @@ virtual int enableVirtualBackground(bool enabled, VirtualBackgroundSource backgr
   - Kirin 900 系列 980 及以上版本。
   - 配备 i5 及以上 CPU 的设备。
   - 配备 A9 及以上芯片的设备，包括：
+
     - iPhone 6S 及以上版本。
     - iPad Air 第三代及以上版本。
     - iPad 第五代及以上版本。
     - iPad Pro 第一代及以上版本。
     - iPad mini 第五代及以上版本。
 - 声网建议在以下场景中使用此功能：
+
   - 使用高清摄像头设备，且环境光线均匀。
   - 拍摄画面中物体较少，人像为半身像且无遮挡。
   - 背景为纯色，且与用户服装颜色有明显区别。
@@ -71,8 +74,8 @@ virtual int enableVirtualBackground(bool enabled, VirtualBackgroundSource backgr
 
 媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
-- 若使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
-- 若使用自定义视频源，设置为 CUSTOM_VIDEO_SOURCE。
+- 若使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
+- 若使用自定义视频源，设置为 `CUSTOM_VIDEO_SOURCE`。
 
 <a id="api_irtcengine_enablevirtualbackground__return_values"></a>
 
@@ -80,6 +83,7 @@ virtual int enableVirtualBackground(bool enabled, VirtualBackgroundSource backgr
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
   - -4：设备性能不满足虚拟背景功能的要求。建议在性能更高的设备上尝试此功能。
 
 ### 所属接口类

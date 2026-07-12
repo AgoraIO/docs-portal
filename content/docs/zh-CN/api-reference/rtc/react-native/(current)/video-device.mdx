@@ -26,14 +26,14 @@ abstract enableMultiCamera(
 在已有摄像头采集视频的场景下，声网推荐你采用以下步骤实现多路摄像头采集、发布视频：
 
 1. 调用该方法开启多路摄像头采集。
-2. 调用 startPreview 开启本地视频预览。
-3. 调用 startCameraCapture 并设置 sourceType 指定第二个摄像头开始采集。
-4. 调用 joinChannelEx 并设置 publishSecondaryCameraTrack 为 true，在频道内发布第二路摄像头采集的视频流。
+2. 调用 [startPreview](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_startpreview2) 开启本地视频预览。
+3. 调用 [startCameraCapture](/zh-CN/api-reference/rtc/react-native/camera-capture#api_irtcengine_startcameracapture) 并设置 `sourceType` 指定第二个摄像头开始采集。
+4. 调用 [joinChannelEx](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengineex_joinchannelex) 并设置 `publishSecondaryCameraTrack` 为 true，在频道内发布第二路摄像头采集的视频流。
 
 如果要关闭多路摄像头采集，可参考以下步骤：
 
-1. 调用 stopCameraCapture。
-2. 调用该方法并将 enabled 设置为 false。
+1. 调用 [stopCameraCapture](/zh-CN/api-reference/rtc/react-native/camera-capture#api_irtcengine_stopcameracapture)。
+2. 调用该方法并将 `enabled` 设置为 false。
 
 该方法仅适用于 iOS。 使用多路摄像头采集视频时，请确保系统版本为 13.0 及以上。 支持多路摄像头采集的最低 iOS 设备类型如下所示：
 
@@ -45,8 +45,8 @@ abstract enableMultiCamera(
 :::info[注]
 你可以在 [startPreview](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_startpreview2) 前后调用该方法开启多摄像头采集：
 
-- 如果在 startPreview 之前开启，则本地视频预览会同时出现两个摄像头采集的画面。
-- 如果在 startPreview 之后开启，SDK 会先停止当前的摄像头采集，然后再开启原摄像头和第二个摄像头，本地视频预览会出现短暂黑屏、然后自动恢复正常。
+- 如果在 [startPreview](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_startpreview2) 之前开启，则本地视频预览会同时出现两个摄像头采集的画面。
+- 如果在 [startPreview](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_startpreview2) 之后开启，SDK 会先停止当前的摄像头采集，然后再开启原摄像头和第二个摄像头，本地视频预览会出现短暂黑屏、然后自动恢复正常。
 :::
 
 <a id="api_irtcengine_enablemulticamera__parameters"></a>
@@ -89,7 +89,7 @@ abstract getCameraMaxZoomFactor(): number;
 <a id="api_irtcengine_getcameramaxzoomfactor__detailed_desc"></a>
 
 :::info[注]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 LocalVideoStreamStateCapturing (1) 之后调用。
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 之后调用。
 :::
 
 <a id="api_irtcengine_getcameramaxzoomfactor__return_values"></a>
@@ -163,7 +163,7 @@ abstract isCameraAutoFocusFaceModeSupported(): boolean;
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__detailed_desc"></a>
 
 :::info[注]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 LocalVideoStreamStateCapturing (1) 之后调用。
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 之后调用。
 :::
 
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__return_values"></a>
@@ -191,7 +191,7 @@ abstract isCameraExposurePositionSupported(): boolean;
 <a id="api_irtcengine_iscameraexposurepositionsupported__detailed_desc"></a>
 
 :::info[注]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 LocalVideoStreamStateCapturing (1) 之后调用。
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 之后调用。
 :::
 
 <a id="api_irtcengine_iscameraexposurepositionsupported__return_values"></a>
@@ -219,9 +219,9 @@ abstract isCameraExposureSupported(): boolean;
 <a id="api_irtcengine_iscameraexposuresupported__detailed_desc"></a>
 
 :::info[注]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 LocalVideoStreamStateCapturing (1) 之后调用。
-- 建议你在调用 setCameraExposureFactor 调节曝光系数前，先调用该方法查询当前摄像头是否支持曝光调节。
-- 当你调用该方法时，查询的是当前正在使用的摄像头是否支持曝光调节，即调用 setCameraCapturerConfiguration 时指定的摄像头。
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 之后调用。
+- 建议你在调用 [setCameraExposureFactor](/zh-CN/api-reference/rtc/react-native/video-device#api_irtcengine_setcameraexposurefactor) 调节曝光系数前，先调用该方法查询当前摄像头是否支持曝光调节。
+- 当你调用该方法时，查询的是当前正在使用的摄像头是否支持曝光调节，即调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/react-native/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
 :::
 
 <a id="api_irtcengine_iscameraexposuresupported__return_values"></a>
@@ -250,7 +250,7 @@ abstract isCameraFaceDetectSupported(): boolean;
 
 :::info[注]
 - 该方法仅适用于 Android 和 iOS。
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 LocalVideoStreamStateCapturing (1) 之后调用。
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 之后调用。
 :::
 
 <a id="api_irtcengine_iscamerafacedetectsupported__return_values"></a>
@@ -278,7 +278,7 @@ abstract isCameraFocusSupported(): boolean;
 <a id="api_irtcengine_iscamerafocussupported__detailed_desc"></a>
 
 :::info[注]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 LocalVideoStreamStateCapturing (1) 之后调用。
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 之后调用。
 :::
 
 <a id="api_irtcengine_iscamerafocussupported__return_values"></a>
@@ -306,9 +306,9 @@ abstract isCameraTorchSupported(): boolean;
 <a id="api_irtcengine_iscameratorchsupported__detailed_desc"></a>
 
 :::info[注]
-- 该方法必须在 SDK 触发 onLocalVideoStateChanged 回调，返回本地视频状态为 LocalVideoStreamStateCapturing (1) 之后调用。
-- 一般情况下，App 默认开启前置摄像头，因此如果你的前置摄像头不支持闪光灯常开，直接使用该方法会返回 false。如果需要检查后置摄像头是否支持闪光灯常开，需要先使用 switchCamera 切换摄像头，再使用该方法。
-- 在系统版本 15 的 iPad 上，即使 isCameraTorchSupported 返回 true，也可能因系统问题导致你无法通过 setCameraTorchOn 成功开启闪光灯。
+- 该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 之后调用。
+- 一般情况下，App 默认开启前置摄像头，因此如果你的前置摄像头不支持闪光灯常开，直接使用该方法会返回 `false`。如果需要检查后置摄像头是否支持闪光灯常开，需要先使用 [switchCamera](/zh-CN/api-reference/rtc/react-native/video-device#api_irtcengine_switchcamera) 切换摄像头，再使用该方法。
+- 在系统版本 15 的 iPad 上，即使 [isCameraTorchSupported](/zh-CN/api-reference/rtc/react-native/video-device#api_irtcengine_iscameratorchsupported) 返回 true，也可能因系统问题导致你无法通过 [setCameraTorchOn](/zh-CN/api-reference/rtc/react-native/video-device#api_irtcengine_setcameratorchon) 成功开启闪光灯。
 :::
 
 <a id="api_irtcengine_iscameratorchsupported__return_values"></a>
@@ -376,8 +376,8 @@ abstract queryCameraFocalLengthCapability(): {
 
 返回一个包含以下属性的对象：
 
-- focalLengthInfos： FocalLengthInfo 对象数组，其中包含摄像头的方向和焦距类型。
-- size：实际查询到的焦距信息数量。
+- `focalLengthInfos`： [FocalLengthInfo](/zh-CN/api-reference/rtc/react-native/class-focallengthinfo) 对象数组，其中包含摄像头的方向和焦距类型。
+- `size`：实际查询到的焦距信息数量。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
@@ -401,8 +401,9 @@ abstract queryCodecCapability(): { codecInfo: CodecCapInfo[]; size: number };
 ### 返回值
 
 - 如果调用成功，则返回一个包含以下属性的对象：
-  - codecInfo： CodecCapInfo 数组，表示 SDK 的视频编码能力。
-  - size： CodecCapInfo 数组的大小。
+
+  - `codecInfo`： [CodecCapInfo](/zh-CN/api-reference/rtc/react-native/class-codeccapinfo) 数组，表示 SDK 的视频编码能力。
+  - `size`： [CodecCapInfo](/zh-CN/api-reference/rtc/react-native/class-codeccapinfo) 数组的大小。
 - 如果调用超时，请修改调用逻辑，不要在主线程中调用该方法。
 
 ### 所属接口类
@@ -552,7 +553,7 @@ abstract setCameraDeviceOrientation(
 <a id="api_irtcengine_setcameradeviceorientation__detailed_desc"></a>
 
 :::info[注]
-- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 LocalVideoStreamStateCapturing (1) 后。
+- 该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 后。
 - 当视频采集设备不带重力感应功能时，你可以调用该方法手动调整采集到的视频画面的旋转角度。
 :::
 
@@ -591,9 +592,9 @@ abstract setCameraExposureFactor(factor: number): number;
 当拍摄环境光线不足或过于明亮时，会影响视频采集的画质。为了获得更好的视频效果，你可以使用该方法调节摄像头的曝光系数。
 
 :::info[注]
-- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 LocalVideoStreamStateCapturing (1) 后。
-- 建议你在调用该方法前，先调用 isCameraExposureSupported 查询当前摄像头是否支持调节曝光系数。
-- 当你调用该方法时，设置的是当前正在使用的摄像头的曝光系数，即调用 setCameraCapturerConfiguration 时指定的摄像头。
+- 该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 后。
+- 建议你在调用该方法前，先调用 [isCameraExposureSupported](/zh-CN/api-reference/rtc/react-native/video-device#api_irtcengine_iscameraexposuresupported) 查询当前摄像头是否支持调节曝光系数。
+- 当你调用该方法时，设置的是当前正在使用的摄像头的曝光系数，即调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/react-native/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
 :::
 
 <a id="api_irtcengine_setcameraexposurefactor__parameters"></a>
@@ -632,8 +633,8 @@ abstract setCameraExposurePosition(
 <a id="api_irtcengine_setcameraexposureposition__detailed_desc"></a>
 
 :::info[注]
-- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 LocalVideoStreamStateCapturing (1) 后。
-- 成功调用该方法后，本地会触发 onCameraExposureAreaChanged 回调。
+- 该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 后。
+- 成功调用该方法后，本地会触发 [onCameraExposureAreaChanged](/zh-CN/api-reference/rtc/react-native/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) 回调。
 :::
 
 <a id="api_irtcengine_setcameraexposureposition__parameters"></a>
@@ -676,8 +677,8 @@ abstract setCameraFocusPositionInPreview(
 <a id="api_irtcengine_setcamerafocuspositioninpreview__detailed_desc"></a>
 
 :::info[注]
-- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 LocalVideoStreamStateCapturing (1) 后。
-- 成功调用该方法后，本地会触发 onCameraFocusAreaChanged 回调。
+- 该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 后。
+- 成功调用该方法后，本地会触发 [onCameraFocusAreaChanged](/zh-CN/api-reference/rtc/react-native/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged) 回调。
 :::
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__parameters"></a>
@@ -717,7 +718,7 @@ abstract setCameraTorchOn(isOn: boolean): number;
 <a id="api_irtcengine_setcameratorchon__detailed_desc"></a>
 
 :::info[注]
-- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 LocalVideoStreamStateCapturing (1) 后。
+- 该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 后。
 :::
 
 <a id="api_irtcengine_setcameratorchon__parameters"></a>
@@ -758,7 +759,7 @@ abstract setCameraZoomFactor(factor: number): number;
 部分 iOS 设备的后置摄像头为多个摄像头组成的融合镜头，如双摄（广角和超广角）或三摄（广角、超广角和长焦），对于这种具备超广角能力的融合镜头，你可以调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/react-native/video-device#api_irtcengine_setcameracapturerconfiguration) 将 `cameraFocalLengthType` 设置为 `CameraFocalLengthDefault` (0)（标准镜头），然后调用该方法将摄像头缩放比例设置为小于 1.0 的数值，从而实现超广角的拍摄效果。
 
 :::info[注]
-- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 LocalVideoStreamStateCapturing (1) 后。
+- 该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 后。
 :::
 
 <a id="api_irtcengine_setcamerazoomfactor__parameters"></a>
@@ -773,7 +774,7 @@ abstract setCameraZoomFactor(factor: number): number;
 
 ### 返回值
 
-- 方法调用成功: 返回设置的 factor 值。
+- 方法调用成功: 返回设置的 `factor` 值。
 - 方法调用失败: 返回值 &lt; 0。
 
 ### 所属接口类

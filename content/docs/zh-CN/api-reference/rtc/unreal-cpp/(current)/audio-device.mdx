@@ -98,8 +98,8 @@ virtual int followSystemLoopbackDevice(bool enable) = 0;
 
 是否跟随系统默认的播放设备：
 
-- true：跟随。当系统默认播放设备发生改变时，SDK 立即跟随切换声卡采集设备。
-- false：不跟随。只有当 SDK 使用的声卡采集设备被移除后，SDK 才切换至系统默认的音频播放设备。
+- `true`：跟随。当系统默认播放设备发生改变时，SDK 立即跟随切换声卡采集设备。
+- `false`：不跟随。只有当 SDK 使用的声卡采集设备被移除后，SDK 才切换至系统默认的音频播放设备。
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice__return_values"></a>
 
@@ -139,8 +139,8 @@ virtual int followSystemPlaybackDevice(bool enable) = 0;
 
 是否跟随系统默认的音频播放设备：
 
-- true：跟随。当系统默认音频播放设备发生改变时，SDK 立即切换音频播放设备。
-- false：不跟随。只有当 SDK 使用的音频播放设备被移除后，SDK 才切换至系统默认的音频播放设备。
+- `true`：跟随。当系统默认音频播放设备发生改变时，SDK 立即切换音频播放设备。
+- `false`：不跟随。只有当 SDK 使用的音频播放设备被移除后，SDK 才切换至系统默认的音频播放设备。
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice__return_values"></a>
 
@@ -180,8 +180,8 @@ virtual int followSystemRecordingDevice(bool enable) = 0;
 
 是否跟随系统默认的音频采集设备：
 
-- true：跟随。当系统默认的音频采集设备改变时，SDK 立即切换音频采集设备。
-- false：不跟随。只有当 SDK 使用的音频采集设备被移除后，SDK 才切换至系统默认的音频采集设备。
+- `true`：跟随。当系统默认的音频采集设备改变时，SDK 立即切换音频采集设备。
+- `false`：不跟随。只有当 SDK 使用的音频采集设备被移除后，SDK 才切换至系统默认的音频采集设备。
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice__return_values"></a>
 
@@ -652,8 +652,8 @@ virtual int getPlaybackDeviceMute(bool *mute) = 0;
 
 播放设备静音状态：
 
-- true: 播放设备为静音状态。
-- false: 播放设备为非静音状态。
+- `true`: 播放设备为静音状态。
+- `false`: 播放设备为非静音状态。
 
 <a id="api_iaudiodevicemanager_getplaybackdevicemute__return_values"></a>
 
@@ -833,8 +833,8 @@ virtual int getRecordingDeviceMute(bool *mute) = 0;
 
 音频采集设备静音状态：
 
-- true: 采集设备为静音状态。
-- false: 采集设备为非静音状态。
+- `true`: 采集设备为静音状态。
+- `false`: 采集设备为非静音状态。
 
 <a id="api_iaudiodevicemanager_getrecordingdevicemute__return_values"></a>
 
@@ -904,8 +904,8 @@ virtual int isApplicationMute(bool &mute) = 0;
 
 App 当前是否静音：
 
-- true: App 为静音状态。
-- false: App 为非静音状态。
+- `true`: App 为静音状态。
+- `false`: App 为非静音状态。
 
 <a id="api_iaudiodevicecollection_isapplicationmute__return_values"></a>
 
@@ -967,8 +967,8 @@ virtual int setApplicationMute(bool mute) = 0;
 
 是否将 App 设置为静音。
 
-- true: 将 App 静音。
-- false: 将 App 解除静音。
+- `true`: 将 App 静音。
+- `false`: 将 App 解除静音。
 
 <a id="api_iaudiodevicecollection_setapplicationmute__return_values"></a>
 
@@ -1160,8 +1160,8 @@ virtual int setPlaybackDeviceMute(bool mute) = 0;
 
 是否设置播放设备为静音：
 
-- true: 播放设备设为静音。
-- false: 播放设备不设为静音。
+- `true`: 播放设备设为静音。
+- `false`: 播放设备不设为静音。
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute__return_values"></a>
 
@@ -1273,8 +1273,8 @@ virtual int setRecordingDeviceMute(bool mute) = 0;
 
 是否设置音频采集设备静音：
 
-- true: 采集设备静音。
-- false: 采集设备为非静音。
+- `true`: 采集设备静音。
+- `false`: 采集设备为非静音。
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute__return_values"></a>
 
@@ -1345,7 +1345,7 @@ virtual int startAudioDeviceLoopbackTest(int indicationInterval) = 0;
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
 - 该方法仅在本地进行音频设备测试，不涉及网络连接。
-- 完成测试后，必须调用 stopAudioDeviceLoopbackTest 停止音频设备回路测试。
+- 完成测试后，必须调用 [stopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/unreal-cpp/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__parameters"></a>
@@ -1451,6 +1451,7 @@ SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-cpp/audio-b
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
   - -2: 参数设置错误，请重新设置参数。
 
 ### 所属接口类
@@ -1476,7 +1477,7 @@ virtual int stopAudioDeviceLoopbackTest() = 0;
 - 该方法仅适用于 Windows 和 macOS。
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
-- 在调用 startAudioDeviceLoopbackTest 后，必须调用该方法停止音频设备回路测试。
+- 在调用 [startAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/unreal-cpp/audio-device#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 后，必须调用该方法停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__return_values"></a>
@@ -1638,8 +1639,8 @@ virtual void onAudioDeviceVolumeChanged(MEDIA_DEVICE_TYPE deviceType, int volume
 
 音频设备是否为静音状态：
 
-- true: 音频设备已静音。
-- false: 音频设备未被静音。
+- `true`: 音频设备已静音。
+- `false`: 音频设备未被静音。
 
 ### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

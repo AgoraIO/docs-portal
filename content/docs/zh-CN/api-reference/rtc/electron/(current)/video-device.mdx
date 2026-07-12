@@ -24,7 +24,7 @@ abstract enumerateVideoDevices(): VideoDeviceInfo[];
 
 ### 返回值
 
-- 方法调用成功：返回一个 VideoDeviceInfo 数组，其中包含系统中所有视频设备。
+- 方法调用成功：返回一个 [VideoDeviceInfo](/zh-CN/api-reference/rtc/electron/class-videodeviceinfo) 数组，其中包含系统中所有视频设备。
 - 方法调用失败: 返回空列表。
 
 ### 所属接口类
@@ -169,8 +169,9 @@ abstract queryCodecCapability(): { codecInfo: CodecCapInfo[]; size: number };
 ### 返回值
 
 - 如果调用成功，则返回一个包含以下属性的对象：
-  - codecInfo： CodecCapInfo 数组，表示 SDK 的视频编码能力。
-  - size： CodecCapInfo 数组的大小。
+
+  - `codecInfo`： [CodecCapInfo](/zh-CN/api-reference/rtc/electron/class-codeccapinfo) 数组，表示 SDK 的视频编码能力。
+  - `size`： [CodecCapInfo](/zh-CN/api-reference/rtc/electron/class-codeccapinfo) 数组的大小。
 - 如果调用超时，请修改调用逻辑，不要在主线程中调用该方法。
 
 ### 所属接口类
@@ -234,7 +235,7 @@ abstract setCameraDeviceOrientation(
 
 :::info[注]
 - 该方法仅适用于 Windows。
-- 该方法必须在 enableVideo 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 onLocalVideoStateChanged 回调返回本地视频状态为 LocalVideoStreamStateCapturing (1) 后。
+- 该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/electron/video-basic#api_irtcengine_enablevideo) 后调用，设置结果在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/electron/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调返回本地视频状态为 `LocalVideoStreamStateCapturing` (1) 后。
 - 当视频采集设备不带重力感应功能时，你可以调用该方法手动调整采集到的视频画面的旋转角度。
 :::
 

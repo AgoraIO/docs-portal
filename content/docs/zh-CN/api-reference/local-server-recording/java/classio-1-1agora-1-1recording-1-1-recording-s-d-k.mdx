@@ -197,8 +197,8 @@ int io.agora.recording.RecordingSDK.updateWatermarkConfigs(LiteraWatermarkConfig
 
 有以下情况：
 
-- 如果你在调用 setVideoMixingLayout 方法时没有设置 LiteraWatermarkConfig、 TimestampWatermarkConfig 或 ImageWatermarkConfig 参数，你可直接调用 updateWatermarkConfigs 方法添加水印。
-- 如果你在调用 setVideoMixingLayout 方法时已设置 LiteraWatermarkConfig、 TimestampWatermarkConfig 或 ImageWatermarkConfig 参数添加了水印，你可调用 updateWatermarkConfigs 方法修改水印个数和具体设置，从而增加、更新或删除水印；传值为空则删除全部已添加的水印。
+- 如果你在调用 [setVideoMixingLayout](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a5834d23933d66ff7a5555b0de22c4313) 方法时没有设置 `LiteraWatermarkConfig`、 `TimestampWatermarkConfig` 或 `ImageWatermarkConfig` 参数，你可直接调用 `updateWatermarkConfigs` 方法添加水印。
+- 如果你在调用 [setVideoMixingLayout](/zh-CN/api-reference/local-server-recording/java/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a5834d23933d66ff7a5555b0de22c4313) 方法时已设置 `LiteraWatermarkConfig`、 `TimestampWatermarkConfig` 或 `ImageWatermarkConfig` 参数添加了水印，你可调用 `updateWatermarkConfigs` 方法修改水印个数和具体设置，从而增加、更新或删除水印；传值为空则删除全部已添加的水印。
 
 ##### `注解`
 
@@ -315,7 +315,7 @@ RecordingEngineProperties io.agora.recording.RecordingSDK.getProperties()
 
 - 必须要在加入频道后调用。
 - 目前仅支持获取录制路径信息。
-- 该方法与 onUserJoined 的区别是: onUserJoined 只能在加入频道后有其他用户进入频道时使用。
+- 该方法与 [onUserJoined](/zh-CN/api-reference/local-server-recording/java/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler#a873e9e611135f0db276d67a3d3f8b8c6) 的区别是: onUserJoined 只能在加入频道后有其他用户进入频道时使用。
 
 #### Returns
 

@@ -78,7 +78,7 @@ public abstract int QueryScreenCaptureCapability();
 
 ### 返回值
 
-- 方法调用成功时，返回设备支持的最高帧率。详见 SCREEN_CAPTURE_FRAMERATE_CAPABILITY。
+- 方法调用成功时，返回设备支持的最高帧率。详见 [SCREEN_CAPTURE_FRAMERATE_CAPABILITY](/zh-CN/api-reference/rtc/unity/enum-screencaptureframeratecapability)。
 - &lt;0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
 ### 所属接口类
@@ -171,8 +171,9 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture [1/2] 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
@@ -231,19 +232,20 @@ public abstract int StartScreenCapture(ScreenCaptureParameters2 captureParams);
 
 :::info[注]
 - 该方法仅适用于 Android 和 iOS 平台。
-- 屏幕共享流的计费标准以 ScreenVideoParameters 中的 dimensions 值为准：
+- 屏幕共享流的计费标准以 [ScreenVideoParameters](/zh-CN/api-reference/rtc/unity/class-screenvideoparameters) 中的 `dimensions` 值为准：
+
   - 当你未传值时，以 1280 × 720 计费。
   - 当你传值时，以你传入的值计费。
 - 在 iOS 平台上，屏幕共享仅适用于 iOS 12.0 及以上。
 - 在 iOS 平台上，如果你使用音频自采集而非 SDK 采集音频，为避免应用退后台后屏幕共享停止，建议你对应用添加保活处理逻辑。
 - 在 iOS 平台上，该功能对设备性能要求较高，建议你在 iPhone X 及之后机型上使用。
-- 在 iOS 平台上，该方法依赖于屏幕共享动态库 AgoraReplayKitExtension.xcframework，如果删除该动态库会导致无法正常开启屏幕共享。
-- 在 Android 平台上，如果用户未授予 App 屏幕采集权限，SDK 会上报 OnPermissionError(2) 回调。
-- 在 Android 9 及之后版本上，为避免应用退后台后被系统杀死，建议你在 /app/Manifests/AndroidManifest.xml 文件中添加前台服务权限： android.permission.FOREGROUND_SERVICE。
+- 在 iOS 平台上，该方法依赖于屏幕共享动态库 `AgoraReplayKitExtension.xcframework`，如果删除该动态库会导致无法正常开启屏幕共享。
+- 在 Android 平台上，如果用户未授予 App 屏幕采集权限，SDK 会上报 `OnPermissionError(2)` 回调。
+- 在 Android 9 及之后版本上，为避免应用退后台后被系统杀死，建议你在 `/app/Manifests/AndroidManifest.xml` 文件中添加前台服务权限： `android.permission.FOREGROUND_SERVICE`。
 - 因 Android 性能限制，屏幕共享不支持 Android TV。
 - 因 Android 系统限制，使用华为手机进行屏幕共享时，为避免崩溃，请不要在共享过程中调节屏幕共享流的视频编码分辨率。
 - 因 Android 系统限制，部分小米手机不支持屏幕共享时采集系统音频。
-- 为提高屏幕共享时采集系统音频的成功率，建议你在加入频道前通过 SetAudioScenario 方法设置音频场景为 AUDIO_SCENARIO_GAME_STREAMING。
+- 为提高屏幕共享时采集系统音频的成功率，建议你在加入频道前通过 [SetAudioScenario](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_setaudioscenario) 方法设置音频场景为 `AUDIO_SCENARIO_GAME_STREAMING`。
 :::
 
 <a id="api_irtcengine_startscreencapture__scenario"></a>
@@ -258,8 +260,8 @@ public abstract int StartScreenCapture(ScreenCaptureParameters2 captureParams);
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 JoinChannel [2/2] 加入频道，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 UpdateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenCaptureVideo` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenCaptureVideo` 为 true，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapture__parameters"></a>
 
@@ -275,6 +277,7 @@ public abstract int StartScreenCapture(ScreenCaptureParameters2 captureParams);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -2 (iOS 平台): 参数为空。
   - -2 (Anroid 平台): 系统版本过低，请确保 Android API 级别不低于 21。
   - -3 (Anroid 平台): 无法采集系统音频，请确保 Android API 级别不低于 29。
@@ -299,7 +302,7 @@ public abstract int StartScreenCapture(VIDEO_SOURCE_TYPE sourceType, ScreenCaptu
 :::info[注]
 该方法仅适用于 macOS 和 Windows 平台。
 
-- 如果调用该方法开始屏幕采集，则停止屏幕采集时需要调用 StopScreenCapture [2/2]。
+- 如果调用该方法开始屏幕采集，则停止屏幕采集时需要调用 [StopScreenCapture [2/2]](/zh-CN/api-reference/rtc/unity/screencapture#api_irtcengine_stopscreencapture2)。
 - 在 Windows 平台上，最多支持 4 路屏幕采集的视频流。
 - 在 macOS 平台上，最多支持 1 路屏幕采集的视频流。
 :::
@@ -310,8 +313,8 @@ public abstract int StartScreenCapture(VIDEO_SOURCE_TYPE sourceType, ScreenCaptu
 
 在屏幕共享场景下，你需要调用该方法开始采集屏幕视频流。 SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别，请根据实际场景选用：
 
-- startScreenCaptureByDisplayId / startScreenCaptureByWindowId：仅支持采集单个屏幕或窗口，适合仅共享单个屏幕的场景。
-- startScreenCaptureBySourceType：支持指定多个视频源，以采集多路屏幕共享流，用于本地合图或者多频道发布场景。
+- `startScreenCaptureByDisplayId` / `startScreenCaptureByWindowId`：仅支持采集单个屏幕或窗口，适合仅共享单个屏幕的场景。
+- `startScreenCaptureBySourceType`：支持指定多个视频源，以采集多路屏幕共享流，用于本地合图或者多频道发布场景。
 
 <a id="api_irtcengine_startscreencapture2__timing"></a>
 
@@ -319,8 +322,8 @@ public abstract int StartScreenCapture(VIDEO_SOURCE_TYPE sourceType, ScreenCaptu
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 JoinChannel [2/2] 加入频道，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 UpdateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenCaptureVideo 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenCaptureVideo` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenCaptureVideo` 为 true，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapture2__parameters"></a>
 
@@ -380,8 +383,8 @@ public abstract int StartScreenCaptureByDisplayId(uint displayId, Rectangle regi
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 JoinChannel [2/2] 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 UpdateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebydisplayid__parameters"></a>
 
@@ -413,8 +416,9 @@ public abstract int StartScreenCaptureByDisplayId(uint displayId, Rectangle regi
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture [1/2] 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
@@ -440,8 +444,8 @@ public abstract int StartScreenCaptureByScreenRect(Rectangle screenRect, Rectang
 
 共享一个屏幕或该屏幕的部分区域。你需要在该方法中指定想要共享的屏幕区域。 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 JoinChannel [2/2] 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 UpdateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
 
 :::info[注]
 该方法仅适用于 Windows 平台。
@@ -469,8 +473,9 @@ public abstract int StartScreenCaptureByScreenRect(Rectangle screenRect, Rectang
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture [1/2] 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
@@ -534,8 +539,8 @@ public abstract int StartScreenCaptureByWindowId(long windowId, Rectangle region
 
 该方法在加入频道前后均可调用，区别如下：
 
-- 如果在加入频道前调用该方法，然后调用 JoinChannel [2/2] 加入频道，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
-- 如果在加入频道后调用该方法，然后调用 UpdateChannelMediaOptions 更新频道媒体选项，并设置 publishScreenTrack 或 publishSecondaryScreenTrack 为 true，即可开始屏幕共享。
+- 如果在加入频道前调用该方法，然后调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 加入频道，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
+- 如果在加入频道后调用该方法，然后调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_updatechannelmediaoptions) 更新频道媒体选项，并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 true，即可开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebywindowid__parameters"></a>
 
@@ -559,8 +564,9 @@ public abstract int StartScreenCaptureByWindowId(long windowId, Rectangle region
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture [1/2] 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
@@ -665,8 +671,8 @@ public abstract int UpdateScreenCapture(ScreenCaptureParameters2 captureParams);
 
 如果在开启屏幕共享时未采集系统音频、然后想要更新参数配置、发布系统音频，可参考以下步骤：
 
-1. 调用该方法并设置 captureAudio 为 true。
-2. 调用 UpdateChannelMediaOptions 设置 publishScreenCaptureAudio 为 true，即可发布屏幕采集的音频。
+1. 调用该方法并设置 `captureAudio` 为 true。
+2. 调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_updatechannelmediaoptions) 设置 `publishScreenCaptureAudio` 为 true，即可发布屏幕采集的音频。
 
 :::info[注]
 - 该方法仅适用于 Android 和 iOS 平台。
@@ -687,8 +693,9 @@ public abstract int UpdateScreenCapture(ScreenCaptureParameters2 captureParams);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture [1/2] 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
@@ -730,8 +737,9 @@ public abstract int UpdateScreenCaptureParameters(ScreenCaptureParameters captur
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture [1/2] 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
@@ -768,8 +776,9 @@ public abstract int UpdateScreenCaptureRegion(Rectangle regionRect);
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 StopScreenCapture [1/2] 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unity/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 ### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
