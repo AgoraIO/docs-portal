@@ -884,7 +884,7 @@ public abstract int setLocalAccessPoint(LocalAccessPointConfiguration config);
 
 #### `config`
 
-本地接入点配置。详见 [LocalAccessPointConfiguration](/zh-CN/api-reference/rtc/android/class-localaccesspointconfiguration)。
+本地接入点配置。详见 LocalAccessPointConfiguration。
 
 <a id="api_irtcengine_setlocalaccesspoint__return_values"></a>
 
@@ -924,7 +924,7 @@ public abstract int setLogFile(String filePath);
 
 ### 调用时机
 
-该方法需在调用 [create](/zh-CN/api-reference/rtc/android/spatial-audio#api_ilocalspatialaudioengine_create_ilocalspatialaudioengine) 后立即调用，否则输出日志可能不完整。
+该方法需在调用 [create](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_create_ilocalspatialaudioengine) 后立即调用，否则输出日志可能不完整。
 
 <a id="api_irtcengine_setlogfile__parameters"></a>
 
@@ -1908,7 +1908,7 @@ public void onRemoteSubscribeFallbackToAudioOnly(int uid, boolean isFallbackOrRe
 - 下行网络条件改善，已订阅的流恢复为视频流。
 
 :::info[注]
-你可以在 [onRemoteVideoStats](/zh-CN/api-reference/rtc/android/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调中监控高质量与视频小流之间的切换。
+你可以在 [onRemoteVideoStats](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调中监控高质量与视频小流之间的切换。
 :::
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__timing"></a>

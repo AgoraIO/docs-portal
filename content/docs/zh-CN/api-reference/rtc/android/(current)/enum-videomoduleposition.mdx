@@ -8,15 +8,15 @@ description: "视频观察器中视频帧的位置。"
 
 ### `VIDEO_MODULE_POSITION_POST_CAPTURER`
 
-（1）：本地采集的视频数据在预处理之后的位置，对应 [onCaptureVideoFrame](/zh-CN/api-reference/rtc/android/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调。此位置的视频已应用视频预处理效果，可通过开启美颜特效、虚拟背景或水印进行验证。
+（1）：本地采集的视频数据在预处理之后的位置，对应 [onCaptureVideoFrame](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调。此位置的视频已应用视频预处理效果，可通过开启美颜特效、虚拟背景或水印进行验证。
 
 ### `VIDEO_MODULE_POSITION_PRE_RENDERER`
 
-（2）：渲染前的位置，对应 [onRenderVideoFrame](/zh-CN/api-reference/rtc/android/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调中的视频数据。
+（2）：渲染前的位置，对应 [onRenderVideoFrame](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调中的视频数据。
 
 ### `VIDEO_MODULE_POSITION_PRE_ENCODER`
 
-（4）：编码前的位置，对应 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/android/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调中的视频数据。此位置的视频已应用视频预处理和编码前处理效果。
+（4）：编码前的位置，对应 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调中的视频数据。此位置的视频已应用视频预处理和编码前处理效果。
 
 - 若需验证视频预处理效果，可开启美颜特效、虚拟背景或水印。
 - 若需验证编码前处理效果，可设置较低帧率（如 5 fps）。

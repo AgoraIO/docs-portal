@@ -1,0 +1,160 @@
+---
+title: "听声辨位"
+description: "启用或关闭远端用户的立体声声像功能。"
+---
+<a id="toc_sound_position"></a>
+
+## 听声辨位
+
+<a id="api_irtcengine_enablesoundpositionindication"></a>
+
+## enableSoundPositionIndication:
+
+启用或关闭远端用户的立体声声像功能。
+
+<a id="api_irtcengine_enablesoundpositionindication__prototype"></a>
+
+```objectivec
+- (int)enableSoundPositionIndication:(BOOL)enabled NS_SWIFT_NAME(enableSoundPositionIndication(_:));
+```
+
+<a id="api_irtcengine_enablesoundpositionindication__detailed_desc"></a>
+
+请确保在加入频道前调用该方法，从而使你可以通过调用 [setRemoteVoicePosition:pan:gain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/sound-position#api_irtcengine_setremotevoiceposition) 跟踪远端用户的位置。
+
+<a id="api_irtcengine_enablesoundpositionindication__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用远端用户的立体声声像功能：
+
+- YES：启用立体声声像。
+- NO：关闭立体声声像。
+
+<a id="api_irtcengine_enablesoundpositionindication__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setremotevoiceposition"></a>
+
+## setRemoteVoicePosition:pan:gain:
+
+设置远端用户语音的二维位置和音量。
+
+<a id="api_irtcengine_setremotevoiceposition__prototype"></a>
+
+```objectivec
+- (int)setRemoteVoicePosition:(NSUInteger)uid pan:(double)pan gain:(double)gain NS_SWIFT_NAME(setRemoteVoicePosition(_:pan:gain:));
+```
+
+<a id="api_irtcengine_setremotevoiceposition__detailed_desc"></a>
+
+该方法设置远端用户的二维位置和音量，使你可以更容易地听到并识别远端用户的位置。通过左右声道的声音差异，你可以实时追踪远端用户的位置，从而营造空间感。该方法适用于大型多人在线游戏，例如大逃杀类游戏。
+
+:::info[注]
+- 要使该方法生效，请在加入频道前调用 [enableSoundPositionIndication:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/sound-position#api_irtcengine_enablesoundpositionindication) 方法为远端用户开启立体声声道。
+- 为获得最佳语音定位效果，声网建议你使用有线耳机。
+- 请在加入频道后调用该方法。
+:::
+
+<a id="api_irtcengine_setremotevoiceposition__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+远端用户的用户 ID。
+
+#### `pan`
+
+远端用户的语音位置。取值范围为 -1.0 到 1.0：
+
+- 0.0：（默认）远端语音来自正前方。
+- -1.0：远端语音来自左侧。
+- 1.0：远端语音来自右侧。
+
+#### `gain`
+
+远端用户的音量。取值范围为 0.0 到 100.0。默认值为 100.0（远端用户的原始音量）。数值越小，音量越低。
+
+<a id="api_irtcengine_setremotevoiceposition__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_setremotevoicepositionex"></a>
+
+## setRemoteVoicePositionEx:pan:gain:connection:
+
+设置远端用户语音的二维位置和音量。
+
+<a id="api_irtcengineex_setremotevoicepositionex__prototype"></a>
+
+```objectivec
+- (int)setRemoteVoicePositionEx:(NSUInteger)uid
+                          pan:(double)pan
+                         gain:(double)gain
+                   connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(setRemoteVoicePositionEx(_:pan:gain:connection:));
+```
+
+<a id="api_irtcengineex_setremotevoicepositionex__detailed_desc"></a>
+
+你可以使用该方法设置远端用户的语音位置和音量。调用该方法设置远端用户的语音位置后，左右声道的声音差异可以帮助你实时感知远端用户的位置，增强空间感。该方法适用于大型多人在线游戏，例如大逃杀类游戏。
+
+:::info[注]
+- 为获得最佳语音定位效果，声网建议你使用有线耳机。
+- 请在加入频道后调用该方法。
+:::
+
+<a id="api_irtcengineex_setremotevoicepositionex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_setremotevoicepositionex__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+远端用户的用户 ID。
+
+#### `pan`
+
+远端用户的语音位置。取值范围为 -1.0 到 1.0：
+
+- -1.0：远端语音来自左侧。
+- 0.0（默认）：远端语音来自正前方。
+- 1.0：远端语音来自右侧。
+
+#### `gain`
+
+远端用户的音量。取值范围为 0.0 到 100.0。默认值为 100.0（远端用户的原始音量）。值越小，音量越低。
+
+#### `connection`
+
+连接信息，详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+<a id="api_irtcengineex_setremotevoicepositionex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)

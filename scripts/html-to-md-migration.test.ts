@@ -111,6 +111,51 @@ async function writeDitaFixture(sourceDir: string) {
   );
 }
 
+async function writeDitaRootMapFixture(sourceDir: string) {
+  await writeFixture(
+    path.join(sourceDir, 'index.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <nav>
+      <ul class="map">
+        <li class="topicref topichead">Android API Reference
+          <ul>
+            <li>
+              <a href="API/toc_initialize.html">初始化相关</a>
+              <ul>
+                <li><a href="API/class_rtc_engine.html">RtcEngine</a></li>
+              </ul>
+            </li>
+            <li><a href="API/toc_channel.html">频道相关</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'toc_initialize.html'),
+    ditaPage('初始化相关').replace(
+      'Call <code>join</code> from this page.',
+      'See <a href="class_hidden.html">HiddenClass</a>.',
+    ),
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'class_rtc_engine.html'),
+    ditaPage('RtcEngine'),
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'toc_channel.html'),
+    ditaPage('频道相关'),
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'class_hidden.html'),
+    ditaPage('HiddenClass'),
+  );
+}
+
 async function expectLaneDryRunAndMigration({
   detected,
   expectedMetaPages,
@@ -855,6 +900,43 @@ describe('html-to-md-migration', () => {
       fs.readFile(path.join(outputDir, 'class-video-canvas.mdx'), 'utf8'),
     ).resolves.toContain('Call `join` from this page.');
   });
+
+  it('preserves the functional navigation from a DITA root map', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDitaRootMapFixture(sourceDir);
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+    ]);
+
+    await expect(
+      readJson(path.join(outputDir, 'meta.json')),
+    ).resolves.toMatchObject({
+      pages: ['index', 'initialize', 'channel'],
+    });
+    await expect(
+      readJson(path.join(outputDir, 'initialize', 'meta.json')),
+    ).resolves.toMatchObject({
+      pages: ['index', 'class-rtc-engine'],
+    });
+    await expect(
+      fs.readFile(path.join(outputDir, 'initialize', 'index.mdx'), 'utf8'),
+    ).resolves.toContain(
+      '[HiddenClass](/api-reference/rtc/android/class-hidden)',
+    );
+    await expect(
+      fs.readFile(path.join(outputDir, 'class-hidden.mdx'), 'utf8'),
+    ).resolves.toContain('title: "HiddenClass"');
+  }, 15_000);
 
   it('prints detected source type, file count, and planned paths in dry-run without writing', async () => {
     const rootDir = await makeTempDir();

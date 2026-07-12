@@ -17,13 +17,13 @@ description: "设置音频数据格式。"
 
 你可以在以下 API 中传入 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams) 对象，以设置对应回调的音频数据格式：
 
-- [getRecordAudioParams](/zh-CN/api-reference/rtc/ios/audio-raw#api_iaudioframeobserver_getrecordaudioparams)：设置 [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调的音频数据格式。
-- [getPlaybackAudioParams](/zh-CN/api-reference/rtc/ios/audio-raw#api_iaudioframeobserver_getplaybackaudioparams)：设置 `onPlaybackAudioFrame:` 回调的音频数据格式。
-- [getMixedAudioParams](/zh-CN/api-reference/rtc/ios/audio-raw#api_iaudioframeobserver_getmixedaudioparams)：设置 [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调的音频数据格式。
-- [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/ios/audio-raw#api_iaudioframeobserver_getearmonitoringaudioparams)：设置 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调的音频数据格式。
+- [getRecordAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getrecordaudioparams)：设置 [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调的音频数据格式。
+- [getPlaybackAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getplaybackaudioparams)：设置 `onPlaybackAudioFrame:` 回调的音频数据格式。
+- [getMixedAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getmixedaudioparams)：设置 [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调的音频数据格式。
+- [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getearmonitoringaudioparams)：设置 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调的音频数据格式。
 
 :::info[注]
-SDK 会通过 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams) 中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔，并根据采样间隔触发 [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio-raw#callback_iaudioframeobserver_onrecordaudioframe)、 `onPlaybackAudioFrame:`、 [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 和 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。 采样间隔（秒） = `samplesPerCall` / (`sampleRate` × `channel`)。 请确保采样间隔 ≥ 0.01 秒。
+SDK 会通过 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams) 中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔，并根据采样间隔触发 [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe)、 `onPlaybackAudioFrame:`、 [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 和 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。 采样间隔（秒） = `samplesPerCall` / (`sampleRate` × `channel`)。 请确保采样间隔 ≥ 0.01 秒。
 :::
 
 <a id="class_audioparams__parameters"></a>
