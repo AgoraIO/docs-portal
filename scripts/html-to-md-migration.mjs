@@ -2526,6 +2526,10 @@ async function main() {
   // Write meta.json
   await writeJson(path.join(targetRoot, 'meta.json'), {
     title: `${opts.platform.toUpperCase()} API Reference`,
+    ...(opts.product === 'whiteboard' &&
+    ['android', 'ios', 'web'].includes(opts.platform)
+      ? { navScope: {} }
+      : {}),
     pages: ['index', ...tocNodes.map((node) => node.slug)],
   });
 

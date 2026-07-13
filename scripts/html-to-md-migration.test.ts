@@ -34,6 +34,7 @@ async function pathExists(filePath: string) {
 
 async function readJson(filePath: string) {
   return JSON.parse(await fs.readFile(filePath, 'utf8')) as {
+    navScope?: Record<string, unknown>;
     pages?: string[];
     title?: string;
   };
@@ -604,6 +605,28 @@ describe('html-to-md-migration', () => {
     );
     expect(clientOutput).not.toContain('##### `Optional hotKeys');
     expect(clientOutput).not.toMatch(/^#{7,}\s/m);
+  });
+
+  it('creates a scoped sidebar for Whiteboard Web API output', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'typedoc-source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeTypeDocFixture(sourceDir);
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'whiteboard',
+      '--platform',
+      'web',
+    ]);
+
+    await expect(
+      readJson(path.join(outputDir, 'meta.json')),
+    ).resolves.toMatchObject({ navScope: {} });
   });
 
   it('migrates Doxygen/Javadoc output with dry-run planning and rewritten links', async () => {
