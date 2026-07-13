@@ -1580,7 +1580,7 @@ describe('DocsMainColumn', () => {
 
     expect(mainColumn).toHaveClass('min-w-0', 'bg-background');
     expect(mainColumn).not.toHaveClass('h-full', 'min-h-0', 'overflow-hidden');
-    expect(desktopContent).toHaveClass('hidden', 'lg:block');
+    expect(desktopContent).not.toHaveClass('hidden');
     expect(desktopContent).not.toHaveClass(
       'docs-scrollbar',
       'h-full',
