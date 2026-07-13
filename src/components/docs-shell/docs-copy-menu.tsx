@@ -23,12 +23,9 @@ import { DEFAULT_LOCALE, normalizeLocale } from '@/lib/i18n/i18n-config';
 
 const AGORA_DOCS_MCP_URL = 'https://mcp.agora.io';
 const AGORA_DOCS_MCP_NAME = 'agora-docs';
+const SHENGWANG_DOCS_MCP_URL = 'https://doc-mcp.shengwang.cn/mcp';
+const SHENGWANG_DOCS_MCP_NAME = 'shengwang-docs';
 const AGORA_MCP_DOC_ROUTE = '/$locale/$tab/$';
-const AGORA_MCP_DOC_PARAMS = {
-  _splat: 'agora-mcp',
-  locale: 'en',
-  tab: 'introduction',
-};
 const CHATGPT_BASE_URL = 'https://chatgpt.com/';
 const CLAUDE_BASE_URL = 'https://claude.ai/new';
 const COPY_STATE_MS = 2500;
@@ -58,10 +55,19 @@ function buildDocsPageUrl(path: string) {
 }
 
 function buildAiPrompt(input: {
+  locale?: string;
   markdownUrl: string;
   pageUrl: string;
   title: string;
 }) {
+  if (normalizeLocale(input.locale) === 'zh-CN') {
+    return [
+      `请使用这篇声网文档作为上下文：${input.title}`,
+      `正式页面：${input.pageUrl}`,
+      `Markdown 页面：${buildMarkdownPageUrl(input.markdownUrl)}`,
+    ].join('\n');
+  }
+
   return [
     `Use this Agora docs page as context: ${input.title}`,
     `Canonical page: ${input.pageUrl}`,
@@ -70,6 +76,7 @@ function buildAiPrompt(input: {
 }
 
 function buildChatGptUrl(input: {
+  locale?: string;
   markdownUrl: string;
   pageUrl: string;
   title: string;
@@ -78,6 +85,7 @@ function buildChatGptUrl(input: {
 }
 
 function buildClaudeUrl(input: {
+  locale?: string;
   markdownUrl: string;
   pageUrl: string;
   title: string;
@@ -85,12 +93,44 @@ function buildClaudeUrl(input: {
   return `${CLAUDE_BASE_URL}?q=${encodeURIComponent(buildAiPrompt(input))}`;
 }
 
-function getCursorMcpConfig() {
+function getMcpServer(locale: string) {
+  if (normalizeLocale(locale) === 'zh-CN') {
+    return {
+      name: SHENGWANG_DOCS_MCP_NAME,
+      url: SHENGWANG_DOCS_MCP_URL,
+    };
+  }
+
+  return {
+    name: AGORA_DOCS_MCP_NAME,
+    url: AGORA_DOCS_MCP_URL,
+  };
+}
+
+function getMcpDocParams(locale: string) {
+  if (normalizeLocale(locale) === 'zh-CN') {
+    return {
+      _splat: 'mcp-integrate',
+      locale: 'zh-CN',
+      tab: 'introduction',
+    };
+  }
+
+  return {
+    _splat: 'agora-mcp',
+    locale: 'en',
+    tab: 'introduction',
+  };
+}
+
+function getCursorMcpConfig(locale = DEFAULT_LOCALE) {
+  const server = getMcpServer(locale);
+
   return JSON.stringify(
     {
       mcpServers: {
-        [AGORA_DOCS_MCP_NAME]: {
-          url: AGORA_DOCS_MCP_URL,
+        [server.name]: {
+          url: server.url,
         },
       },
     },
@@ -99,8 +139,10 @@ function getCursorMcpConfig() {
   );
 }
 
-function getVsCodeMcpCommand() {
-  return `code --add-mcp '{"name":"${AGORA_DOCS_MCP_NAME}","url":"${AGORA_DOCS_MCP_URL}"}'`;
+function getVsCodeMcpCommand(locale = DEFAULT_LOCALE) {
+  const server = getMcpServer(locale);
+
+  return `code --add-mcp '{"name":"${server.name}","url":"${server.url}"}'`;
 }
 
 export function DocsCopyMenu({
@@ -120,6 +162,7 @@ export function DocsCopyMenu({
     'page' | 'config' | 'command' | null
   >(null);
   const pageUrl = buildCanonicalPageUrl(locale, slug);
+  const mcpDocParams = getMcpDocParams(currentLocale);
   const isPrimaryCopied = copiedAction === 'page';
 
   const copy = async (kind: 'page' | 'config' | 'command', value: string) => {
@@ -175,7 +218,7 @@ export function DocsCopyMenu({
         </Button>
         <DropdownMenuTrigger asChild>
           <Button
-            aria-label={`${t('docs.copyPage')} more actions`}
+            aria-label={t('docs.copyPageMoreActions')}
             className="h-7 rounded-l-none border-0 border-l border-l-[color:var(--line-soft)] px-2 text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)] data-[state=open]:text-[color:var(--ink-1)]"
             size="sm"
             variant="ghost"
@@ -194,6 +237,7 @@ export function DocsCopyMenu({
           <DropdownMenuItem asChild>
             <a
               href={buildChatGptUrl({
+                locale: currentLocale,
                 markdownUrl,
                 pageUrl,
                 title,
@@ -208,6 +252,7 @@ export function DocsCopyMenu({
           <DropdownMenuItem asChild>
             <a
               href={buildClaudeUrl({
+                locale: currentLocale,
                 markdownUrl,
                 pageUrl,
                 title,
@@ -224,19 +269,21 @@ export function DocsCopyMenu({
         <DropdownMenuLabel>{t('docs.copyMenuMcp')}</DropdownMenuLabel>
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link params={AGORA_MCP_DOC_PARAMS} to={AGORA_MCP_DOC_ROUTE}>
+            <Link params={mcpDocParams} to={AGORA_MCP_DOC_ROUTE}>
               {t('docs.connectToCursor')}
               <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link params={AGORA_MCP_DOC_PARAMS} to={AGORA_MCP_DOC_ROUTE}>
+            <Link params={mcpDocParams} to={AGORA_MCP_DOC_ROUTE}>
               {t('docs.connectToVsCode')}
               <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => void copy('config', getCursorMcpConfig())}
+            onClick={() =>
+              void copy('config', getCursorMcpConfig(currentLocale))
+            }
           >
             {copiedAction === 'config' ? (
               <CheckIcon className="size-3.5" />
@@ -248,7 +295,9 @@ export function DocsCopyMenu({
               : t('docs.copyMcpConfig')}
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => void copy('command', getVsCodeMcpCommand())}
+            onClick={() =>
+              void copy('command', getVsCodeMcpCommand(currentLocale))
+            }
           >
             {copiedAction === 'command' ? (
               <CheckIcon className="size-3.5" />
