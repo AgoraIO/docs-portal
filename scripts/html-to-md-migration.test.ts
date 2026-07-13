@@ -366,6 +366,10 @@ async function writeTypeDocFixture(sourceDir: string) {
   </body>
 </html>`,
   );
+  await writeFixture(
+    path.join(sourceDir, 'modules', 'empty-namespace.html'),
+    '<!doctype html><html><body><div class="col-content"></div></body></html>',
+  );
 }
 
 async function writeDoxygenFixture(sourceDir: string) {
@@ -891,7 +895,6 @@ describe('html-to-md-migration', () => {
     const sourceDir = path.join(rootDir, 'source');
     const outputDir = path.join(rootDir, 'output');
     await writeDitaFixture(sourceDir);
-
     const output = runMigration([
       '--source',
       sourceDir,
@@ -991,6 +994,60 @@ describe('html-to-md-migration', () => {
     );
   });
 
+  it('renders DITA related links and omits source pages without meaningful body content', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDitaFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'index.html'),
+      `<!doctype html><html><body><nav><ul class="map"><li>API Reference<ul>
+        <li><a href="API/overview.html">Overview</a></li>
+        <li><a href="API/toc_empty_group.html">Empty group</a><ul>
+          <li><a href="API/class_video_canvas.html">VideoCanvas</a></li>
+        </ul></li>
+      </ul></li></ul></nav></body></html>`,
+    );
+    await writeFixture(
+      path.join(sourceDir, 'API', 'overview.html'),
+      `<!doctype html><html><body><main><article>
+        <h1>Overview</h1><p class="shortdesc">Overview summary.</p>
+        <nav class="related-links"><ul><li><strong><a href="class_video_canvas.html">VideoCanvas</a></strong><br>Canvas details.</li></ul></nav>
+      </article></main></body></html>`,
+    );
+    await writeFixture(
+      path.join(sourceDir, 'API', 'class_empty.html'),
+      '<!doctype html><html><body><main><article><h1>EmptyClass</h1><p class="shortdesc">No source body.</p></article></main></body></html>',
+    );
+    await writeFixture(
+      path.join(sourceDir, 'API', 'toc_empty_group.html'),
+      '<!doctype html><html><body><main><article><h1>Empty group</h1><p class="shortdesc">No source body.</p></article></main></body></html>',
+    );
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+    ]);
+
+    await expect(
+      fs.readFile(path.join(outputDir, 'overview.mdx'), 'utf8'),
+    ).resolves.toContain(
+      '---\n\n- [VideoCanvas](/api-reference/rtc/android/empty-group/class-video-canvas)',
+    );
+    await expect(
+      pathExists(path.join(outputDir, 'class-empty.mdx')),
+    ).resolves.toBe(false);
+    await expect(
+      readJson(path.join(outputDir, 'empty-group', 'meta.json')),
+    ).resolves.toMatchObject({ pages: ['index', 'class-video-canvas'] });
+  });
+
   it('prints detected source type, file count, and planned paths in dry-run without writing', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'source');
@@ -1070,6 +1127,7 @@ describe('html-to-md-migration', () => {
       platform: 'typescript',
       product: 'web',
       sourceDir,
+      unexpectedDryRunPaths: ['modules/empty-namespace.mdx'],
     });
 
     const clientOutput = await fs.readFile(
