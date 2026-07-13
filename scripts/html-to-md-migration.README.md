@@ -36,6 +36,9 @@ node scripts/html-to-md-migration.mjs \
 |----------|-------------|---------|
 | `--locale, -l` | Locale for output | `zh-CN` |
 | `--route-base-path, -r` | Base path for links | `/api-reference` |
+| `--target-base-path` | Exact route for generated links when the output directory adds route segments | Derived from route base, product, and platform |
+| `--navigation` | TypeDoc sidebar source: `generated` or `public-index` | `generated` |
+| `--navigation-manifest` | JSON array of public `{ label, source }` entries used to preserve legacy TypeDoc IA | - |
 | `--version-dir, -V` | Version directory name | - |
 | `--dry-run, -d` | Preview detected source type, file count, and planned output paths without writing files | `false` |
 | `--verbose, -v` | Show detailed output | `false` |
@@ -47,7 +50,7 @@ node scripts/html-to-md-migration.mjs \
 | Lane | Expected source shape | Behavior |
 |------|-----------------------|----------|
 | DITA-OT/Oxygen API reference | `<source>/API/*.html`, with optional `<source>/index.html` TOC | Converts HTML pages to `.mdx`, preserves DITA-OT TOC order when present, and writes `meta.json` files. |
-| TypeDoc | `index.html`, `modules.html`, `classes/`, `interfaces/`, `enums/`, `assets/` | Converts module, class, interface, enum, and related pages; preserves index-link order where available and rewrites internal `.html` links. |
+| TypeDoc | `index.html`, `modules.html`, `classes/`, `interfaces/`, `enums/`, `assets/` | Converts overview and symbol pages, localizes generated structure labels for `zh-CN`, rewrites links, and can preserve a curated public sidebar while retaining hidden symbol routes. |
 | Doxygen/Javadoc | `annotated.html`, `classes.html`, `doxygen.css`, generated `class*.html` / `interface*.html`, `search/`, or Javadoc indexes | Converts index and symbol pages; preserves common index-link order and rewrites internal `.html` links. |
 | iOS doc-generator/Jazzy/appledoc | `Classes/`, `Protocols/`, `Constants/`, `Blocks/`, `Categories/`, `hierarchy.html` | Converts Objective-C/Swift index and symbol pages while preserving stable anchors and folder navigation. |
 | Dartdoc | `index.html`, `index.json`, `categories.json`, `library-index.html`, `static-assets/` | Converts library and API pages while preserving folder navigation and internal `.html` links. |
@@ -81,6 +84,21 @@ node scripts/html-to-md-migration.mjs \
   --product signaling \
   --platform ios
 ```
+
+### Flexible Classroom TypeDoc with the legacy public navigation
+
+```bash
+node scripts/html-to-md-migration.mjs \
+  --source /path/to/shengwang-doc-source/html-docs/flexible-classroom/Web \
+  --output content/docs/zh-CN/api-reference/flexible-classroom/web/api-reference \
+  --product flexible-classroom \
+  --platform web \
+  --target-base-path /zh-CN/api-reference/flexible-classroom/web/api-reference \
+  --navigation public-index \
+  --navigation-manifest scripts/html-migration/navigation/flexible-classroom-store.json
+```
+
+RTC React SDK is not sourced from `html-docs/rtc/React`, because that export contains Web SDK TypeDoc. Migrate the React-specific legacy MDX with `scripts/migrate-rtc-react-api-reference.mjs`; the script resolves its Web SDK cross-links against the actual Web TypeDoc source.
 
 Dry-run output includes:
 
