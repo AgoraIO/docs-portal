@@ -1,0 +1,35 @@
+---
+title: "LowlightEnhanceOptions"
+description: "暗光增强选项。"
+---
+<a id="class_lowlightenhanceoptions__prototype"></a>
+
+```dart
+class LowlightEnhanceOptions {
+
+  const LowlightEnhanceOptions({this.mode, this.level});
+
+  @JsonKey(name: 'mode')
+  final LowLightEnhanceMode? mode;
+
+  @JsonKey(name: 'level')
+  final LowLightEnhanceLevel? level;
+
+  factory LowlightEnhanceOptions.fromJson(Map<String, dynamic> json) =>
+      _$LowlightEnhanceOptionsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LowlightEnhanceOptionsToJson(this);
+}
+```
+
+<a id="class_lowlightenhanceoptions__parameters"></a>
+
+## 属性
+
+### `level`
+
+暗光增强等级。详见 [LowLightEnhanceLevel](/zh-CN/api-reference/rtc/flutter/enum-lowlightenhancelevel)。
+
+### `mode`
+
+暗光增强模式。详见 [LowLightEnhanceMode](/zh-CN/api-reference/rtc/flutter/enum-lowlightenhancemode)。

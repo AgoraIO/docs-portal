@@ -1,0 +1,104 @@
+---
+title: "ConnectionChangedReasonType"
+description: "网络连接状态发生变化的原因。"
+---
+<a id="enum_connectionchangedreasontype__parameters"></a>
+
+## 枚举值
+
+### `connectionChangedConnecting`
+
+0: 建立网络连接中。
+
+### `connectionChangedJoinSuccess`
+
+1: 成功加入频道。
+
+### `connectionChangedInterrupted`
+
+2: 网络连接中断。
+
+### `connectionChangedBannedByServer`
+
+3: 网络连接被服务器禁止。例如，当用户被踢出频道时，会返回该状态。
+
+### `connectionChangedJoinFailed`
+
+4: 加入频道失败。SDK 在尝试加入频道 20 分钟后仍未能加入频道，会返回该状态并不再尝试重连。请提示用户尝试切换网络后重新加入频道。
+
+### `connectionChangedLeaveChannel`
+
+5: 离开频道。
+
+### `connectionChangedInvalidAppId`
+
+6: App ID 无效。请使用有效的 APP ID 重新加入频道，并确保你使用的 App ID 与在声网控制台生成的一致。
+
+### `connectionChangedInvalidChannelName`
+
+7: 频道名无效。请更换有效的频道名重新加入频道。有效的频道名为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+### `connectionChangedInvalidToken`
+
+8: Token 无效。一般有以下原因：
+
+- 你的项目启用了 App Certificate，但加入频道未使用 Token。
+- 在调用 joinChannel 加入频道时指定的用户 ID 与生成 Token 时传入的用户 ID 不一致。
+- 生成的 Token 和加入频道使用的 Token 不一致。
+
+请确保：
+
+- 当你的项目启用了 App Certificate 时，使用 Token 加入频道。
+- 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致，
+- 生成的 Token 和加入频道使用的 Token 一致。
+
+### `connectionChangedTokenExpired`
+
+9: 当前使用的 Token 已过期。请重新在你的服务端生成 Token，然后用新的 Token 重新加入频道。
+
+### `connectionChangedRejectedByServer`
+
+10: 此用户被服务器禁止。一般有以下原因：
+
+- 用户已进入频道，再次调用加入频道的 API，例如 joinChannel，会返回此状态。停止调用该方法即可。
+- 用户在进行通话测试时尝试加入频道。等待通话测试结束后再加入频道即可。
+
+### `connectionChangedSettingProxyServer`
+
+11: 由于设置了代理服务器，SDK 尝试重连。
+
+### `connectionChangedRenewToken`
+
+12: 更新 Token 引起网络连接状态改变。
+
+### `connectionChangedClientIpAddressChanged`
+
+13: 客户端 IP 地址变更。如多次收到该状态码，请提示用户更换网络后尝试重新加入频道。
+
+### `connectionChangedKeepAliveTimeout`
+
+14: SDK 和服务器连接保活超时，进入自动重连状态。
+
+### `connectionChangedRejoinSuccess`
+
+15: 重新加入频道成功。
+
+### `connectionChangedLost`
+
+16: SDK 和服务器失去连接。
+
+### `connectionChangedEchoTest`
+
+17: 连接状态变化由回声测试引起。
+
+### `connectionChangedClientIpAddressChangedByUser`
+
+18: 本地 IP 地址被用户更改。
+
+### `connectionChangedSameUidLogin`
+
+19: 使用相同的 UID 从不同的设备加入同一频道。
+
+### `connectionChangedTooManyBroadcasters`
+
+20: 频道内主播人数已达上限。

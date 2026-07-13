@@ -1,0 +1,33 @@
+---
+title: "StopLocalAudioMixer"
+description: "停止本地音频合流。"
+---
+<a id="api_irtcengine_stoplocalaudiomixer__prototype"></a>
+
+```csharp
+public abstract int StopLocalAudioMixer();
+```
+
+<a id="api_irtcengine_stoplocalaudiomixer__detailed_desc"></a>
+
+调用 [StartLocalAudioMixer](/zh-CN/api-reference/rtc/csharp-windows/api-irtcengine-startlocalaudiomixer) 后，如果你希望停止本地音频合流，请调用该方法。
+
+<a id="api_irtcengine_stoplocalaudiomixer__timing"></a>
+
+## 调用时机
+
+该方法需要在 StartLocalAudioMixer 之后调用。
+
+<a id="api_irtcengine_stoplocalaudiomixer__restriction"></a>
+
+## 调用限制
+
+无。
+
+<a id="api_irtcengine_stoplocalaudiomixer__return_values"></a>
+
+## 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+  - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。

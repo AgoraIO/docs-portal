@@ -1,0 +1,552 @@
+---
+title: "视频渲染"
+description: "视频渲染 API reference."
+---
+<a id="toc_video_rendering"></a>
+
+<a id="api_irtcengine_enableinstantmediarendering"></a>
+
+## enableInstantMediaRendering
+
+开启音视频帧加速渲染。
+
+<a id="api_irtcengine_enableinstantmediarendering__prototype"></a>
+
+```typescript
+abstract enableInstantMediaRendering(): number;
+```
+
+<a id="api_irtcengine_enableinstantmediarendering__detailed_desc"></a>
+
+成功调用该方法后，SDK 会开启加速出图和出声模式，可加快用户加入频道后的首帧出图与出声速度。
+
+:::info[注]
+主播端和观众端都需调用该方法开启音视频帧加速渲染才可体验该功能。 一旦成功调用该方法，只能通过调用 [release](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_release) 方法销毁 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象来取消加速渲染。
+:::
+
+<a id="api_irtcengine_enableinstantmediarendering__scenario"></a>
+
+### 适用场景
+
+声网推荐在直播场景下，对观众开启该模式。
+
+<a id="api_irtcengine_enableinstantmediarendering__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_enableinstantmediarendering__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+  - -7: IRtcEngine 尚未初始化就调用方法。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalrendermode2"></a>
+
+## setLocalRenderMode
+
+更新本地视图显示模式。
+
+<a id="api_irtcengine_setlocalrendermode2__prototype"></a>
+
+```typescript
+abstract setLocalRenderMode(
+    renderMode: RenderModeType,
+    mirrorMode?: VideoMirrorModeType
+  ): number;
+```
+
+<a id="api_irtcengine_setlocalrendermode2__detailed_desc"></a>
+
+初始化本地用户视图后，你可以调用该方法更新本地用户视图的渲染和镜像模式。该方法只影响本地用户看到的视频画面，不影响本地视频的发布。
+
+<a id="api_irtcengine_setlocalrendermode2__timing"></a>
+
+### 调用时机
+
+- 你可以在通话中多次调用该方法，多次更新本地用户视图的显示模式。
+
+<a id="api_irtcengine_setlocalrendermode2__parameters"></a>
+
+### 参数
+
+#### `renderMode`
+
+本地视图显示模式。详见 [RenderModeType](/zh-CN/api-reference/rtc/react-native/enum-rendermodetype)。
+
+#### `mirrorMode`
+
+本地视图的镜像模式，详见 [VideoMirrorModeType](/zh-CN/api-reference/rtc/react-native/enum-videomirrormodetype)。
+
+:::info[注]
+如果你使用前置摄像头，默认启动本地用户视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
+:::
+
+<a id="api_irtcengine_setlocalrendermode2__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalrendertargetfps"></a>
+
+## setLocalRenderTargetFps
+
+设置本地视频渲染的最大帧率。
+
+<a id="api_irtcengine_setlocalrendertargetfps__prototype"></a>
+
+```typescript
+abstract setLocalRenderTargetFps(
+    sourceType: VideoSourceType,
+    targetFps: number
+  ): number;
+```
+
+<a id="api_irtcengine_setlocalrendertargetfps__detailed_desc"></a>
+
+<a id="api_irtcengine_setlocalrendertargetfps__scenario"></a>
+
+### 适用场景
+
+在对视频渲染帧率要求不高的场景（例如：屏幕共享、在线教育）下，你可以调用该方法设置本地视频渲染的最大帧率，SDK 进行本地渲染的实际帧率会尽量接近该值，从而减小 CPU 消耗、提升系统性能。
+
+<a id="api_irtcengine_setlocalrendertargetfps__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_irtcengine_setlocalrendertargetfps__parameters"></a>
+
+### 参数
+
+#### `sourceType`
+
+视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
+
+#### `targetFps`
+
+最大渲染帧率 (fps)。支持的参数值为：1、7、10、15、24、30、60。
+
+:::info[注]
+请将此参数设置为低于视频实际帧率的渲染帧率，否则设置将不会生效。
+:::
+
+<a id="api_irtcengine_setlocalrendertargetfps__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalvideomirrormode"></a>
+
+## setLocalVideoMirrorMode
+
+设置本地视频镜像。
+
+<a id="api_irtcengine_setlocalvideomirrormode__prototype"></a>
+
+```typescript
+abstract setLocalVideoMirrorMode(mirrorMode: VideoMirrorModeType): number;
+```
+
+<a id="api_irtcengine_setlocalvideomirrormode__detailed_desc"></a>
+
+#### `废弃`
+
+弃用: 该方法已废弃。
+
+<a id="api_irtcengine_setlocalvideomirrormode__parameters"></a>
+
+### 参数
+
+#### `mirrorMode`
+
+本地视频镜像模式。详见 [VideoMirrorModeType](/zh-CN/api-reference/rtc/react-native/enum-videomirrormodetype)。
+
+<a id="api_irtcengine_setlocalvideomirrormode__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setremoterendermode2"></a>
+
+## setRemoteRenderMode
+
+更新远端视图显示模式。
+
+<a id="api_irtcengine_setremoterendermode2__prototype"></a>
+
+```typescript
+abstract setRemoteRenderMode(
+    uid: number,
+    renderMode: RenderModeType,
+    mirrorMode: VideoMirrorModeType
+  ): number;
+```
+
+<a id="api_irtcengine_setremoterendermode2__detailed_desc"></a>
+
+初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
+
+:::info[注]
+- 你可以在通话中多次调用该方法，多次更新远端用户视图的显示模式。
+:::
+
+<a id="api_irtcengine_setremoterendermode2__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+远端用户 ID。
+
+#### `renderMode`
+
+远端用户视图的渲染模式，详见 [RenderModeType](/zh-CN/api-reference/rtc/react-native/enum-rendermodetype)。
+
+#### `mirrorMode`
+
+远端用户视图的镜像模式，详见 [VideoMirrorModeType](/zh-CN/api-reference/rtc/react-native/enum-videomirrormodetype)。
+
+<a id="api_irtcengine_setremoterendermode2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_setremoterendermodeex"></a>
+
+## setRemoteRenderModeEx
+
+设置远端视图显示模式。
+
+<a id="api_irtcengineex_setremoterendermodeex__prototype"></a>
+
+```typescript
+abstract setRemoteRenderModeEx(
+    uid: number,
+    renderMode: RenderModeType,
+    mirrorMode: VideoMirrorModeType,
+    connection: RtcConnection
+  ): number;
+```
+
+<a id="api_irtcengineex_setremoterendermodeex__detailed_desc"></a>
+
+初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
+
+<a id="api_irtcengineex_setremoterendermodeex__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+远端用户 ID。
+
+#### `renderMode`
+
+远端视图显示模式，详见 [RenderModeType](/zh-CN/api-reference/rtc/react-native/enum-rendermodetype)。
+
+#### `mirrorMode`
+
+远端用户视图的镜像模式，详见 [VideoMirrorModeType](/zh-CN/api-reference/rtc/react-native/enum-videomirrormodetype)。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+<a id="api_irtcengineex_setremoterendermodeex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_setremoterendertargetfps"></a>
+
+## setRemoteRenderTargetFps
+
+设置视频在远端渲染的最大帧率。
+
+<a id="api_irtcengine_setremoterendertargetfps__prototype"></a>
+
+```typescript
+abstract setRemoteRenderTargetFps(targetFps: number): number;
+```
+
+<a id="api_irtcengine_setremoterendertargetfps__detailed_desc"></a>
+
+<a id="api_irtcengine_setremoterendertargetfps__scenario"></a>
+
+### 适用场景
+
+在对视频渲染帧率要求不高的场景（例如：屏幕共享、在线教育）或者远端使用中低端设备的场景下，你可以调用该方法设置视频在远端渲染的最大帧率，SDK 进行远端视频渲染的实际帧率会尽量接近该值，从而减小 CPU 消耗、提升系统性能。
+
+<a id="api_irtcengine_setremoterendertargetfps__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_irtcengine_setremoterendertargetfps__parameters"></a>
+
+### 参数
+
+#### `targetFps`
+
+最大渲染帧率 (fps)。支持的参数值为：1、7、10、15、24、30、60。
+
+:::info[注]
+请将此参数设置为低于视频实际帧率的渲染帧率，否则设置将不会生效。
+:::
+
+<a id="api_irtcengine_setremoterendertargetfps__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediaplayer_setrendermode"></a>
+
+## setRenderMode
+
+设置播放器视图的渲染模式。
+
+<a id="api_imediaplayer_setrendermode__prototype"></a>
+
+```typescript
+abstract setRenderMode(renderMode: RenderModeType): number;
+```
+
+<a id="api_imediaplayer_setrendermode__detailed_desc"></a>
+
+<a id="api_imediaplayer_setrendermode__parameters"></a>
+
+### 参数
+
+#### `renderMode`
+
+播放器视图的渲染模式。详见 [RenderModeType](/zh-CN/api-reference/rtc/react-native/enum-rendermodetype)。
+
+<a id="api_imediaplayer_setrendermode__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+
+<a id="api_irtcengine_startmediarenderingtracing"></a>
+
+## startMediaRenderingTracing
+
+开启视频帧渲染数据打点。
+
+<a id="api_irtcengine_startmediarenderingtracing__prototype"></a>
+
+```typescript
+abstract startMediaRenderingTracing(): number;
+```
+
+<a id="api_irtcengine_startmediarenderingtracing__detailed_desc"></a>
+
+成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/react-native/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
+
+:::info[注]
+- 如果你未调用该方法，SDK 默认以调用 joinChannel 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
+- 离开当前频道后，SDK 会自动重置该时间点为下一次加入频道的时刻。
+:::
+
+<a id="api_irtcengine_startmediarenderingtracing__scenario"></a>
+
+### 适用场景
+
+声网推荐你将该方法和 App 中的 UI 设置（按钮、滑动条等）结合使用，用于获取符合终端用户实际体验的首帧出图耗时的场景。例如：在终端用户在点击 加入频道 按钮的时刻调用该方法进行打点，然后通过 `onVideoRenderingTracingResult` 回调获取视频帧渲染过程中的各阶段耗时，从而针对各阶段耗时进行专项优化。
+
+<a id="api_irtcengine_startmediarenderingtracing__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+  - -7: IRtcEngine 尚未初始化就调用方法。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_startmediarenderingtracingex"></a>
+
+## startMediaRenderingTracingEx
+
+开启视频帧渲染数据打点。
+
+<a id="api_irtcengineex_startmediarenderingtracingex__prototype"></a>
+
+```typescript
+abstract startMediaRenderingTracingEx(connection: RtcConnection): number;
+```
+
+<a id="api_irtcengineex_startmediarenderingtracingex__detailed_desc"></a>
+
+成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/react-native/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
+
+:::info[注]
+- 如果你未调用该方法，SDK 默认以调用 joinChannel 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
+- 离开当前频道后，SDK 会自动重置该时间点为下一次加入频道的时刻。
+:::
+
+<a id="api_irtcengineex_startmediarenderingtracingex__scenario"></a>
+
+### 适用场景
+
+声网推荐你将该方法和 App 中的 UI 设置（按钮、滑动条等）结合使用，用于获取符合终端用户实际体验的首帧出图耗时的场景。例如：在终端用户在点击 加入频道 按钮的时刻调用该方法进行打点，然后通过 `onVideoRenderingTracingResult` 回调获取视频帧渲染过程中的各阶段耗时，从而针对各阶段耗时进行专项优化。
+
+<a id="api_irtcengineex_startmediarenderingtracingex__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+<a id="api_irtcengineex_startmediarenderingtracingex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+
+<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo"></a>
+
+## onTranscodedStreamLayoutInfo
+
+已接收携带布局信息的合图视频流回调。
+
+<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__prototype"></a>
+
+```typescript
+onTranscodedStreamLayoutInfo?(
+    connection: RtcConnection,
+    uid: number,
+    width: number,
+    height: number,
+    layoutCount: number,
+    layoutlist: VideoLayout[]
+  ): void;
+```
+
+<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__detailed_desc"></a>
+
+当本地第一次接收到合图服务器发送的合图视频流，或者合图流的布局信息有变化时，SDK 会触发该回调，报告合图视频流中每一路子视频流的布局信息。
+
+<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+#### `uid`
+
+发布合图视频流的用户 ID。
+
+#### `width`
+
+合图视频流的宽度 (px)。
+
+#### `height`
+
+合图视频流的高度 (px)。
+
+#### `layoutCount`
+
+合图视频流中布局信息的数量。
+
+#### `layoutlist`
+
+某一路合图视频流的详细布局信息。详见 [VideoLayout](/zh-CN/api-reference/rtc/react-native/class-videolayout)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onvideorenderingtracingresult"></a>
+
+## onVideoRenderingTracingResult
+
+视频帧渲染事件回调。
+
+<a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__prototype"></a>
+
+```typescript
+onVideoRenderingTracingResult?(
+    connection: RtcConnection,
+    uid: number,
+    currentEvent: MediaTraceEvent,
+    tracingInfo: VideoRenderingTracingInfo
+  ): void;
+```
+
+<a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__detailed_desc"></a>
+
+调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/react-native/video/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后，SDK 会触发该回调，报告视频帧渲染的事件和渲染过程中的指标。开发者可以针对指标进行专项优化，以提高出图效率。
+
+<a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+#### `uid`
+
+用户 ID。
+
+#### `currentEvent`
+
+当前视频帧渲染事件。详见 [MediaTraceEvent](/zh-CN/api-reference/rtc/react-native/enum-mediatraceevent)。
+
+#### `tracingInfo`
+
+视频帧渲染过程中的指标。开发者需要尽可能降低指标值，以提高出图效率。详见 [VideoRenderingTracingInfo](/zh-CN/api-reference/rtc/react-native/class-videorenderingtracinginfo)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)

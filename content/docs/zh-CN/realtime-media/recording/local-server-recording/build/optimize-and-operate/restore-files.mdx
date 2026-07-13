@@ -1,0 +1,42 @@
+---
+title: "录制崩溃后修复录制文件"
+---
+## 适用场景
+
+录制进程崩溃后，录制生成的 MP4 文件通常无法播放。为尽可能保留录制生成的音视频文件，声网提供了录制崩溃后修复文件的解决方案。
+
+## 解决方案
+
+### 1. 开启录制文件可恢复
+
+在初始化 `AgoraService` 时，通过设置私有参数，启用录制生成文件可恢复模式：
+
+```java
+AgoraParameter parameter = agoraService.getAgoraParameter();
+parameter.setBool("che.media_recorder_recover_files", true);
+```
+
+```cpp
+auto agoraParameter = service->getAgoraParameter();
+agoraParameter->setBool("che.media_recorder_recover_files", true);
+```
+
+### 2. 获取可恢复文件
+
+开启后，SDK 在生成 MP4 文件的同时，还会在相同路径下，生成对应名字的 H264 文件和 AAC 文件。
+
+例如，你设置的 MP4 文件的 `storagePath` 为 `agoraRecording.mp4`，那么在相同路径下会生成 `agoraRecording.mp4.h264` 的视频文件以及 `agoraRecording.mp4.aac` 的音频文件。
+
+- 如果录制过程能顺利结束，即成功调用 `stopRecording` 且收到 `onRecorderStateChanged` 回调，且当前录制状态为 `Constants.RecorderState.RECORDER_STATE_STOP`，则上述 H264 和 AAC 文件会被 SDK 自动删除。
+
+- 如果录制过程能顺利结束，即成功调用 `stopRecording` 且收到 `onRecorderStateChanged` 回调，且显示此时的录制状态是 `RECORDER_STATE_STOP`，则上述的 H264 和 AAC 文件会被 SDK 自动删除掉。
+
+- 如果在录制过程中录制进程异常崩溃退出，则上述 H264 文件和 AAC 文件会被保留。
+
+### 3. 尝试重新生成 MP4 文件
+
+你可以使用生成的 H264 和 AAC 文件，尝试重新生成 MP4 文件。例如，运行以下 `ffmpeg` 命令：
+
+```shell
+ffmpeg -i video.h264 -i audio.aac -c:v copy -c:a copy output.mp4
+```

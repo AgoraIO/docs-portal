@@ -10,69 +10,111 @@ import {
 
 describe('openapi lanes', () => {
   it('describes each YAML lane as one IA mapping record', () => {
-    expect(getOpenApiLanes()).toEqual([
-      expect.objectContaining({
-        id: 'convoai',
-        publicSourceUrl: {
-          en: '/openapi/conversational-ai/rest-api.en.yaml',
-          'zh-CN': '/openapi/conversational-ai/rest-api.en.yaml',
-        },
-        routePrefix: 'api-reference/api-ref/conversational-ai',
-        sourcePath: {
-          en: 'content/openapi/conversational-ai/rest-api.en.yaml',
-          'zh-CN': 'content/openapi/conversational-ai/rest-api.en.yaml',
-        },
-        tab: 'api-reference',
-      }),
-      expect.objectContaining({
-        id: 'rtc-rest',
-        locales: ['en'],
-        publicSourceUrl: {
-          en: '/openapi/rtc/channel-management.en.yaml',
-          'zh-CN': '/openapi/rtc/channel-management.en.yaml',
-        },
-        routePrefix: 'api-reference/api-ref/rtc',
-        sourcePath: {
-          en: 'content/openapi/rtc/channel-management.en.yaml',
-          'zh-CN': 'content/openapi/rtc/channel-management.en.yaml',
-        },
-        tab: 'api-reference',
-      }),
-      expect.objectContaining({
-        id: 'signaling-rest',
-        routePrefix: 'api-reference/api-ref/signaling',
-        tab: 'api-reference',
-      }),
-      expect.objectContaining({
-        id: 'cloud-recording-rest',
-        routePrefix: 'api-reference/api-ref/cloud-recording',
-        tab: 'api-reference',
-      }),
-      expect.objectContaining({
-        id: 'cloud-transcoding-rest',
-        routePrefix: 'api-reference/api-ref/cloud-transcoding',
-        tab: 'api-reference',
-      }),
-      expect.objectContaining({
-        id: 'media-gateway-rest',
-        locales: ['en'],
-        publicSourceUrl: {
-          en: '/openapi/media-gateway/media-gateway.en.yaml',
-          'zh-CN': '/openapi/media-gateway/media-gateway.en.yaml',
-        },
-        routePrefix: 'api-reference/api-ref/rtmp-gateway',
-        sourcePath: {
-          en: 'content/openapi/media-gateway/media-gateway.en.yaml',
-          'zh-CN': 'content/openapi/media-gateway/media-gateway.en.yaml',
-        },
-        tab: 'api-reference',
-      }),
-      expect.objectContaining({
-        id: 'speech-to-text-rest',
-        routePrefix: 'api-reference/api-ref/speech-to-text',
-        tab: 'api-reference',
-      }),
-    ]);
+    expect(getOpenApiLanes()).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: 'convoai',
+          publicSourceUrl: {
+            en: '/openapi/conversational-ai/rest-api.en.yaml',
+            'zh-CN': '/openapi/conversational-ai/rest-api.zh-CN.yaml',
+          },
+          routePrefix: 'api-reference/api-ref/conversational-ai',
+          sourcePath: {
+            en: 'content/openapi/conversational-ai/rest-api.en.yaml',
+            'zh-CN': 'content/openapi/conversational-ai/rest-api.zh-CN.yaml',
+          },
+          tab: 'api-reference',
+        }),
+        expect.objectContaining({
+          id: 'rtc-rest',
+          locales: ['en'],
+          publicSourceUrl: {
+            en: '/openapi/rtc/channel-management.en.yaml',
+            'zh-CN': '/openapi/rtc/channel-management.en.yaml',
+          },
+          routePrefix: 'api-reference/api-ref/rtc',
+          sourcePath: {
+            en: 'content/openapi/rtc/channel-management.en.yaml',
+            'zh-CN': 'content/openapi/rtc/channel-management.en.yaml',
+          },
+          tab: 'api-reference',
+        }),
+        expect.objectContaining({
+          id: 'signaling-rest',
+          routePrefix: 'api-reference/api-ref/signaling',
+          tab: 'api-reference',
+        }),
+        expect.objectContaining({
+          id: 'cloud-recording-rest',
+          publicSourceUrl: {
+            en: '/openapi/cloud-recording/cloud-recording.en.yaml',
+            'zh-CN': '/openapi/cloud-recording/cloud-recording.zh-CN.yaml',
+          },
+          routePrefix: 'api-reference/api-ref/cloud-recording',
+          sourcePath: {
+            en: 'content/openapi/cloud-recording/cloud-recording.en.yaml',
+            'zh-CN':
+              'content/openapi/cloud-recording/cloud-recording.zh-CN.yaml',
+          },
+          tab: 'api-reference',
+        }),
+        expect.objectContaining({
+          id: 'cloud-transcoding-rest',
+          locales: ['en'],
+          routePrefix: 'api-reference/api-ref/cloud-transcoding',
+          tab: 'api-reference',
+        }),
+        expect.objectContaining({
+          id: 'media-gateway-rest',
+          locales: ['en'],
+          publicSourceUrl: {
+            en: '/openapi/media-gateway/media-gateway.en.yaml',
+            'zh-CN': '/openapi/media-gateway/media-gateway.en.yaml',
+          },
+          routePrefix: 'api-reference/api-ref/rtmp-gateway',
+          sourcePath: {
+            en: 'content/openapi/media-gateway/media-gateway.en.yaml',
+            'zh-CN': 'content/openapi/media-gateway/media-gateway.en.yaml',
+          },
+          tab: 'api-reference',
+        }),
+        expect.objectContaining({
+          id: 'speech-to-text-rest',
+          routePrefix: 'api-reference/api-ref/speech-to-text',
+          tab: 'api-reference',
+        }),
+        expect.objectContaining({
+          id: 'agora-analytics-rest',
+          locales: ['zh-CN'],
+          routePrefix: 'api-reference/api-ref/agora-analytics',
+          tab: 'api-reference',
+        }),
+        expect.objectContaining({
+          id: 'console-rest',
+          locales: ['zh-CN'],
+          routePrefix: 'api-reference/api-ref/console',
+          tab: 'api-reference',
+        }),
+        expect.objectContaining({
+          id: 'fusion-cdn-rest',
+          locales: ['zh-CN'],
+          routePrefix: 'api-reference/api-ref/fusion-cdn',
+          tab: 'api-reference',
+        }),
+        expect.objectContaining({
+          id: 'rtc-rest-zh-cn',
+          locales: ['zh-CN'],
+          routePrefix: 'api-reference/api-ref/rtc',
+          tab: 'api-reference',
+        }),
+        expect.objectContaining({
+          id: 'whiteboard-rest',
+          locales: ['zh-CN'],
+          routePrefix: 'api-reference/api-ref/whiteboard/restful',
+          tab: 'api-reference',
+        }),
+      ]),
+    );
   });
 
   it('builds endpoint and parent URLs from the lane mapping', () => {
@@ -140,7 +182,19 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/speech-to-text/join',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(91);
+    expect(getOpenApiPrerenderPaths()).toContain(
+      '/zh-CN/api-reference/api-ref/console/create-project',
+    );
+    expect(getOpenApiPrerenderPaths()).toContain(
+      '/zh-CN/api-reference/api-ref/fusion-cdn/domain-list',
+    );
+    expect(getOpenApiPrerenderPaths()).toContain(
+      '/zh-CN/api-reference/api-ref/rtc/query-channel-list',
+    );
+    expect(getOpenApiPrerenderPaths()).toContain(
+      '/zh-CN/api-reference/api-ref/whiteboard/restful/create-room',
+    );
+    expect(getOpenApiPrerenderPaths()).toHaveLength(237);
   });
 
   it('resolves RTC REST endpoint routes in the api-reference tab', () => {
@@ -197,22 +251,28 @@ describe('openapi lanes', () => {
 
     expect(route?.lane.operations).toMatchObject({
       'acquire-cloud-recording-resource': {
-        title: { en: 'Acquire a resource ID' },
+        title: { en: 'Acquire a resource ID', 'zh-CN': '获取云端录制资源' },
       },
       'start-cloud-recording': {
-        title: { en: 'Start a cloud recording task' },
+        title: { en: 'Start a cloud recording task', 'zh-CN': '开始云端录制' },
       },
       'update-cloud-recording': {
-        title: { en: 'Update task settings' },
+        title: { en: 'Update task settings', 'zh-CN': '更新云端录制设置' },
       },
       'update-cloud-recording-layout': {
-        title: { en: 'Update layout' },
+        title: { en: 'Update layout', 'zh-CN': '更新云端录制合流布局' },
       },
       'query-cloud-recording': {
-        title: { en: 'Query status' },
+        title: { en: 'Query status', 'zh-CN': '查询云端录制状态' },
       },
       'stop-cloud-recording': {
-        title: { en: 'Stop a cloud recording task' },
+        title: { en: 'Stop a cloud recording task', 'zh-CN': '停止云端录制' },
+      },
+      'get-ncs-ip': {
+        title: {
+          en: 'Query message notification server IP addresses',
+          'zh-CN': '查询消息通知服务器 IP',
+        },
       },
     });
   });

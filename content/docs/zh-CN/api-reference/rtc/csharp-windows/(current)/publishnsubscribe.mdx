@@ -1,0 +1,1232 @@
+---
+title: "发布和订阅"
+description: "发布和订阅 API reference."
+---
+<a id="toc_publishnsubscribe"></a>
+
+<a id="api_irtcengine_muteallremoteaudiostreams"></a>
+
+## MuteAllRemoteAudioStreams
+
+取消或恢复订阅所有远端用户的音频流。
+
+<a id="api_irtcengine_muteallremoteaudiostreams__prototype"></a>
+
+```csharp
+public abstract int MuteAllRemoteAudioStreams(bool mute);
+```
+
+<a id="api_irtcengine_muteallremoteaudiostreams__detailed_desc"></a>
+
+成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的音频流，包括在调用该方法后加入频道的用户的音频流。
+
+:::warning[注意]
+SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修改此行为，可以在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeAudio 为 `false`，即可在加入频道时取消订阅所有用户的音频流。
+:::
+
+<a id="api_irtcengine_muteallremoteaudiostreams__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_muteallremoteaudiostreams__restriction"></a>
+
+### 调用限制
+
+如果在调用该方法之后又调用了 [EnableAudio](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_enableaudio) 或 [DisableAudio](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_disableaudio)，则后调用的方法会生效。
+
+<a id="api_irtcengine_muteallremoteaudiostreams__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+是否取消订阅所有远端用户的音频流：
+
+- true: 取消订阅所有远端用户的音频流。
+- false:（默认）订阅所有远端用户的音频流。
+
+<a id="api_irtcengine_muteallremoteaudiostreams__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_muteallremoteaudiostreamsex"></a>
+
+## MuteAllRemoteAudioStreamsEx
+
+取消或恢复订阅所有远端用户的音频流。
+
+<a id="api_irtcengineex_muteallremoteaudiostreamsex__prototype"></a>
+
+```csharp
+public abstract int MuteAllRemoteAudioStreamsEx(bool mute, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_muteallremoteaudiostreamsex__detailed_desc"></a>
+
+### 详情
+
+成功调用该方法后，本地用户会取消或恢复订阅远端用户的音频流，包括在调用该方法后加入频道的用户的音频流。
+
+:::warning[注意]
+- 该方法需要在加入频道后调用。
+- 如果需要在加入频道前设置默认不订阅远端用户音频流，可以在调用 JoinChannel [2/2] 加入频道时设置 autoSubscribeAudio 为 false。
+:::
+
+<a id="api_irtcengineex_muteallremoteaudiostreamsex__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+是否取消订阅所有远端用户的音频流：
+
+- true: 取消订阅所有远端用户的音频流。
+- false:（默认）订阅所有远端用户的音频流。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+<a id="api_irtcengineex_muteallremoteaudiostreamsex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_muteallremotevideostreams"></a>
+
+## MuteAllRemoteVideoStreams
+
+取消或恢复订阅所有远端用户的视频流。
+
+<a id="api_irtcengine_muteallremotevideostreams__prototype"></a>
+
+```csharp
+public abstract int MuteAllRemoteVideoStreams(bool mute);
+```
+
+<a id="api_irtcengine_muteallremotevideostreams__detailed_desc"></a>
+
+成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的视频流，包括在调用该方法后加入频道的用户的视频流。
+
+:::warning[注意]
+SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修改此行为，可以在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道时设置 autoSubscribeVideo 为 `false`，即可在加入频道时取消订阅所有用户的视频流。
+:::
+
+<a id="api_irtcengine_muteallremotevideostreams__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_muteallremotevideostreams__restriction"></a>
+
+### 调用限制
+
+如果在调用该方法之后又调用了 [EnableVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_enablevideo) 或 [DisableVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_disablevideo)，则后调用的方法会生效。
+
+<a id="api_irtcengine_muteallremotevideostreams__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+是否取消订阅所有远端用户的视频流。
+
+- true: 取消订阅所有用户的视频流。
+- false:（默认）订阅所有用户的视频流。
+
+<a id="api_irtcengine_muteallremotevideostreams__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_muteallremotevideostreamsex"></a>
+
+## MuteAllRemoteVideoStreamsEx
+
+取消或恢复订阅所有远端用户的视频流。
+
+<a id="api_irtcengineex_muteallremotevideostreamsex__prototype"></a>
+
+```csharp
+public abstract int MuteAllRemoteVideoStreamsEx(bool mute, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_muteallremotevideostreamsex__detailed_desc"></a>
+
+### 详情
+
+成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的视频流，包括在调用该方法后加入频道的用户的视频流。
+
+<a id="api_irtcengineex_muteallremotevideostreamsex__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+是否取消订阅所有远端用户的视频流。
+
+- true: 取消订阅所有用户的视频流。
+- false:（默认）订阅所有用户的视频流。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+<a id="api_irtcengineex_muteallremotevideostreamsex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_mutelocalaudiostream"></a>
+
+## MuteLocalAudioStream
+
+取消或恢复发布本地音频流。
+
+<a id="api_irtcengine_mutelocalaudiostream__prototype"></a>
+
+```csharp
+public abstract int MuteLocalAudioStream(bool mute);
+```
+
+<a id="api_irtcengine_mutelocalaudiostream__detailed_desc"></a>
+
+该方法用于控制是否发布本地采集的音频流。如果不发布本地采集的音频流，也不会禁用音频采集设备，所以不影响音频的采集状态。
+
+<a id="api_irtcengine_mutelocalaudiostream__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_mutelocalaudiostream__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_mutelocalaudiostream__related"></a>
+
+### 相关回调
+
+成功调用该方法后，本地会触发 [OnAudioPublishStateChanged](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged) 回调；远端会触发 [OnUserMuteAudio](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+
+<a id="api_irtcengine_mutelocalaudiostream__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+是否取消发布本地音频流。
+
+- true: 取消发布。
+- false:（默认）发布。
+
+<a id="api_irtcengine_mutelocalaudiostream__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_mutelocalaudiostreamex"></a>
+
+## MuteLocalAudioStreamEx
+
+取消或恢复发布本地音频流。
+
+<a id="api_irtcengineex_mutelocalaudiostreamex__prototype"></a>
+
+```csharp
+public abstract int MuteLocalAudioStreamEx(bool mute, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_mutelocalaudiostreamex__detailed_desc"></a>
+
+### 详情
+
+:::warning[注意]
+该方法不影响音频采集状态，因为没有禁用音频采集设备。
+:::
+
+成功调用该方法后，远端会触发 [OnUserMuteAudio](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+
+<a id="api_irtcengineex_mutelocalaudiostreamex__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+是否取消发布本地音频流。
+
+- true: 取消发布。
+- false:（默认）发布。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+<a id="api_irtcengineex_mutelocalaudiostreamex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_mutelocalvideostream"></a>
+
+## MuteLocalVideoStream
+
+取消或恢复发布本地视频流。
+
+<a id="api_irtcengine_mutelocalvideostream__prototype"></a>
+
+```csharp
+public abstract int MuteLocalVideoStream(bool mute);
+```
+
+<a id="api_irtcengine_mutelocalvideostream__detailed_desc"></a>
+
+该方法用于控制是否发布本地采集的视频流。如果不发布本地采集的视频流，也不会禁用视频采集设备，所以不影响视频的采集状态。
+
+相比于调用 [EnableLocalVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_enablelocalvideo) (`false`) 关闭本地视频流采集、从而取消发布本地视频流的方法，该方法响应速度更快。
+
+<a id="api_irtcengine_mutelocalvideostream__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_mutelocalvideostream__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_mutelocalvideostream__related"></a>
+
+### 相关回调
+
+成功调用该方法后，本地会触发 [OnVideoPublishStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) 回调；远端会触发 [OnUserMuteVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调和 [OnRemoteVideoStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
+
+<a id="api_irtcengine_mutelocalvideostream__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+是否取消发送本地视频流。
+
+- true: 取消发送本地视频流。
+- false: （默认）发送本地视频流。
+
+<a id="api_irtcengine_mutelocalvideostream__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_mutelocalvideostreamex"></a>
+
+## MuteLocalVideoStreamEx
+
+取消或恢复发布本地视频流。
+
+<a id="api_irtcengineex_mutelocalvideostreamex__prototype"></a>
+
+```csharp
+public abstract int MuteLocalVideoStreamEx(bool mute, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_mutelocalvideostreamex__detailed_desc"></a>
+
+### 详情
+
+成功调用该方法后，远端会触发 [OnUserMuteVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
+
+:::warning[注意]
+- 该方法不影响视频采集状态，没有禁用摄像头。
+:::
+
+<a id="api_irtcengineex_mutelocalvideostreamex__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+是否取消发送本地视频流。
+
+- true: 取消发送本地视频流。
+- false: （默认）发送本地视频流。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+<a id="api_irtcengineex_mutelocalvideostreamex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_muteremoteaudiostream"></a>
+
+## MuteRemoteAudioStream
+
+取消或恢复订阅指定远端用户的音频流。
+
+<a id="api_irtcengine_muteremoteaudiostream__prototype"></a>
+
+```csharp
+public abstract int MuteRemoteAudioStream(uint uid, bool mute);
+```
+
+<a id="api_irtcengine_muteremoteaudiostream__detailed_desc"></a>
+
+<a id="api_irtcengine_muteremoteaudiostream__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_muteremoteaudiostream__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_muteremoteaudiostream__related"></a>
+
+### 相关回调
+
+成功调用该方法后，本地会触发 [OnAudioSubscribeStateChanged](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#callback_irtcengineeventhandler_onaudiosubscribestatechanged) 回调。
+
+<a id="api_irtcengine_muteremoteaudiostream__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+指定用户的用户 ID。
+
+#### `mute`
+
+是否取消订阅指定远端用户的音频流。
+
+- true: 取消订阅指定用户的音频流。
+- false:（默认）订阅指定用户的音频流。
+
+<a id="api_irtcengine_muteremoteaudiostream__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_muteremoteaudiostreamex"></a>
+
+## MuteRemoteAudioStreamEx
+
+停止/恢复接收指定的音频流。
+
+<a id="api_irtcengineex_muteremoteaudiostreamex__prototype"></a>
+
+```csharp
+public abstract int MuteRemoteAudioStreamEx(uint uid, bool mute, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_muteremoteaudiostreamex__detailed_desc"></a>
+
+### 详情
+
+该方法停止/恢复接收某一个指定远端用户的音频流。在加入频道前或后都可以调用。该方法的设置在离开频道后失效。
+
+<a id="api_irtcengineex_muteremoteaudiostreamex__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+指定用户的 ID。
+
+#### `mute`
+
+是否停止接收指定音频流：
+
+- true: 停止接收指定音频流。
+- false:（默认）继续接收指定音频流。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+<a id="api_irtcengineex_muteremoteaudiostreamex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_muteremotevideostream"></a>
+
+## MuteRemoteVideoStream
+
+取消或恢复订阅指定远端用户的视频流。
+
+<a id="api_irtcengine_muteremotevideostream__prototype"></a>
+
+```csharp
+public abstract int MuteRemoteVideoStream(uint uid, bool mute);
+```
+
+<a id="api_irtcengine_muteremotevideostream__detailed_desc"></a>
+
+<a id="api_irtcengine_muteremotevideostream__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_muteremotevideostream__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_muteremotevideostream__related"></a>
+
+### 相关回调
+
+成功调用该方法后，本地会触发 [OnVideoSubscribeStateChanged](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#callback_irtcengineeventhandler_onvideosubscribestatechanged) 回调。
+
+<a id="api_irtcengine_muteremotevideostream__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+指定用户的用户 ID。
+
+#### `mute`
+
+是否取消订阅指定远端用户的视频流。
+
+- true: 取消订阅指定用户的视频流。
+- false: （默认）订阅指定用户的视频流。
+
+<a id="api_irtcengine_muteremotevideostream__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_muteremotevideostreamex"></a>
+
+## MuteRemoteVideoStreamEx
+
+停止/恢复接收指定的视频流。
+
+<a id="api_irtcengineex_muteremotevideostreamex__prototype"></a>
+
+```csharp
+public abstract int MuteRemoteVideoStreamEx(uint uid, bool mute, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_muteremotevideostreamex__detailed_desc"></a>
+
+### 详情
+
+该方法停止/恢复接收某一个指定远端用户的视频流。在加入频道前或后都可以调用。该方法的设置在离开频道后失效。
+
+<a id="api_irtcengineex_muteremotevideostreamex__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+远端用户的 ID。
+
+#### `mute`
+
+是否停止接收某个远端用户的视频：
+
+- true: 停止接收。
+- false: （默认）恢复接收。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+<a id="api_irtcengineex_muteremotevideostreamex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_setremotevideosubscriptionoptions"></a>
+
+## SetRemoteVideoSubscriptionOptions
+
+设置远端视频流的订阅选项。
+
+<a id="api_irtcengine_setremotevideosubscriptionoptions__prototype"></a>
+
+```csharp
+ public abstract int SetRemoteVideoSubscriptionOptions(uint uid, VideoSubscriptionOptions options);
+```
+
+<a id="api_irtcengine_setremotevideosubscriptionoptions__detailed_desc"></a>
+
+### 详情
+
+当远端发送双流时，可调用此方法来设置远端视频流的订阅选项。SDK 对远端视频流的默认订阅行为取决于注册的视频观测器类型：
+
+- 如果注册的是 IVideoFrameObserver 观测器，则默认订阅原始数据和编码后的数据。
+- 如果注册的是 IVideoEncodedFrameObserver 观测器，则默认仅订阅编码后的数据。
+- 如果注册了两种观测器，则默认跟随后注册的视频观测器。举例来说，如果后注册的是 IVideoFrameObserver 观测器，则默认订阅原始数据和编码后的数据。
+
+如果你想修改以上默认行为，或者想针对不同 `uid` 设置不同的订阅选项，可调用该方法设置。
+
+<a id="api_irtcengine_setremotevideosubscriptionoptions__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+远端用户 ID。
+
+#### `options`
+
+视频流的订阅设置，详见 [VideoSubscriptionOptions](/zh-CN/api-reference/rtc/csharp-windows/class-videosubscriptionoptions)。
+
+<a id="api_irtcengine_setremotevideosubscriptionoptions__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_setremotevideosubscriptionoptionsex"></a>
+
+## SetRemoteVideoSubscriptionOptionsEx
+
+设置远端视频流的订阅选项。
+
+<a id="api_irtcengineex_setremotevideosubscriptionoptionsex__prototype"></a>
+
+```csharp
+public abstract int SetRemoteVideoSubscriptionOptionsEx(uint uid, VideoSubscriptionOptions options, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_setremotevideosubscriptionoptionsex__detailed_desc"></a>
+
+### 详情
+
+当远端发送双流时，可调用此方法来设置远端视频流的订阅选项。
+
+<a id="api_irtcengineex_setremotevideosubscriptionoptionsex__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+远端用户 ID。
+
+#### `options`
+
+视频流的订阅设置，详见 [VideoSubscriptionOptions](/zh-CN/api-reference/rtc/csharp-windows/class-videosubscriptionoptions)。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+<a id="api_irtcengineex_setremotevideosubscriptionoptionsex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_setsubscribeaudioallowlist"></a>
+
+## SetSubscribeAudioAllowlist
+
+设置音频订阅白名单。
+
+<a id="api_irtcengine_setsubscribeaudioallowlist__prototype"></a>
+
+```csharp
+public abstract int SetSubscribeAudioAllowlist(uint[] uidList, int uidNumber);
+```
+
+<a id="api_irtcengine_setsubscribeaudioallowlist__detailed_desc"></a>
+
+### 详情
+
+你可以调用该方法指定想要订阅的音频流。
+
+:::info[注]
+- 该方法在加入频道前后均可调用。
+- 音频订阅白名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 的影响。
+- 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
+- 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
+:::
+
+<a id="api_irtcengine_setsubscribeaudioallowlist__parameters"></a>
+
+### 参数
+
+#### `uidList`
+
+音频订阅白名单的用户 ID 列表。
+
+如果你想指定订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [SetSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
+
+#### `uidNumber`
+
+白名单用户 ID 列表中的用户数量。
+
+<a id="api_irtcengine_setsubscribeaudioallowlist__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_setsubscribeaudioallowlistex"></a>
+
+## SetSubscribeAudioAllowlistEx
+
+设置音频订阅白名单。
+
+<a id="api_irtcengineex_setsubscribeaudioallowlistex__prototype"></a>
+
+```csharp
+public abstract int GetCacheDir(out string path, int length);
+```
+
+<a id="api_irtcengineex_setsubscribeaudioallowlistex__detailed_desc"></a>
+
+### 详情
+
+你可以调用该方法指定想要订阅的音频流。
+
+:::info[注]
+- 该方法在加入频道前后均可调用。
+- 音频订阅白名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 的影响。
+- 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
+- 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
+:::
+
+<a id="api_irtcengineex_setsubscribeaudioallowlistex__parameters"></a>
+
+### 参数
+
+#### `uidList`
+
+音频订阅白名单的用户 ID 列表。
+
+如果你想指定订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [SetSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
+
+#### `uidNumber`
+
+白名单用户 ID 列表中的用户数量。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+<a id="api_irtcengineex_setsubscribeaudioallowlistex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_setsubscribeaudioblocklist"></a>
+
+## SetSubscribeAudioBlocklist
+
+设置音频订阅黑名单。
+
+<a id="api_irtcengine_setsubscribeaudioblocklist__prototype"></a>
+
+```csharp
+public abstract int SetSubscribeAudioBlocklist(uint[] uidList, int uidNumber);
+```
+
+<a id="api_irtcengine_setsubscribeaudioblocklist__detailed_desc"></a>
+
+### 详情
+
+你可以调用该方法指定不订阅的音频流。
+
+:::warning[注意]
+- 该方法在加入频道前后均可调用。
+- 音频订阅黑名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 影响。
+- 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
+- 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
+:::
+
+<a id="api_irtcengine_setsubscribeaudioblocklist__parameters"></a>
+
+### 参数
+
+#### `uidList`
+
+订阅黑名单的用户 ID 列表。
+
+如果你想指定不订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [SetSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
+
+#### `uidNumber`
+
+黑名单用户 ID 列表中的用户数量。
+
+<a id="api_irtcengine_setsubscribeaudioblocklist__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_setsubscribeaudioblocklistex"></a>
+
+## SetSubscribeAudioBlocklistEx
+
+设置音频订阅黑名单。
+
+<a id="api_irtcengineex_setsubscribeaudioblocklistex__prototype"></a>
+
+```csharp
+ public abstract int SetSubscribeAudioBlocklistEx(uint[] uidList, int uidNumber, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_setsubscribeaudioblocklistex__detailed_desc"></a>
+
+### 详情
+
+你可以调用该方法指定不订阅的音频流。
+
+:::warning[注意]
+- 该方法在加入频道前后均可调用。
+- 音频订阅黑名单不受 MuteRemoteAudioStream、 MuteAllRemoteAudioStreams 以及 ChannelMediaOptions 中的 autoSubscribeAudio 影响。
+- 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
+- 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
+:::
+
+<a id="api_irtcengineex_setsubscribeaudioblocklistex__parameters"></a>
+
+### 参数
+
+#### `uidList`
+
+订阅黑名单的用户 ID 列表。
+
+如果你想指定不订阅某一发流用户的音频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [SetSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
+
+#### `uidNumber`
+
+黑名单用户 ID 列表中的用户数量。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+<a id="api_irtcengineex_setsubscribeaudioblocklistex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_setsubscribevideoallowlist"></a>
+
+## SetSubscribeVideoAllowlist
+
+设置视频订阅白名单。
+
+<a id="api_irtcengine_setsubscribevideoallowlist__prototype"></a>
+
+```csharp
+public abstract int SetSubscribeVideoAllowlist(uint[] uidList, int uidNumber);
+```
+
+<a id="api_irtcengine_setsubscribevideoallowlist__detailed_desc"></a>
+
+### 详情
+
+你可以调用该方法指定想要订阅的视频流。
+
+:::info[注]
+- 该方法在加入频道前后均可调用。
+- 视频订阅白名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
+- 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
+:::
+
+<a id="api_irtcengine_setsubscribevideoallowlist__parameters"></a>
+
+### 参数
+
+#### `uidList`
+
+视频订阅白名单的用户 ID 列表。
+
+如果你想指定仅订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [SetSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
+
+#### `uidNumber`
+
+白名单用户 ID 列表中的用户数量。
+
+<a id="api_irtcengine_setsubscribevideoallowlist__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_setsubscribevideoallowlistex"></a>
+
+## SetSubscribeVideoAllowlistEx
+
+设置视频订阅白名单。
+
+<a id="api_irtcengineex_setsubscribevideoallowlistex__prototype"></a>
+
+```csharp
+public abstract int SetSubscribeVideoAllowlistEx(uint[] uidList, int uidNumber, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_setsubscribevideoallowlistex__detailed_desc"></a>
+
+### 详情
+
+你可以调用该方法指定想要订阅的视频流。
+
+:::info[注]
+- 该方法在加入频道前后均可调用。
+- 视频订阅白名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 设置订阅白名单后，如果离开当前频道后再重新加入频道，白名单依然生效。
+- 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
+:::
+
+<a id="api_irtcengineex_setsubscribevideoallowlistex__parameters"></a>
+
+### 参数
+
+#### `uidList`
+
+视频订阅白名单的用户 ID 列表。
+
+如果你想指定仅订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅白名单中移除，需要重新调用 [SetSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新音频订阅白名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
+
+#### `uidNumber`
+
+白名单用户 ID 列表中的用户数量。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+<a id="api_irtcengineex_setsubscribevideoallowlistex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_setsubscribevideoblocklist"></a>
+
+## SetSubscribeVideoBlocklist
+
+设置视频订阅黑名单。
+
+<a id="api_irtcengine_setsubscribevideoblocklist__prototype"></a>
+
+```csharp
+public abstract int SetSubscribeVideoBlocklist(uint[] uidList, int uidNumber);
+```
+
+<a id="api_irtcengine_setsubscribevideoblocklist__detailed_desc"></a>
+
+### 详情
+
+你可以调用该方法指定不订阅的视频流。
+
+:::info[注]
+- 该方法在加入频道前后均可调用。
+- 视频订阅黑名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
+- 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
+:::
+
+<a id="api_irtcengine_setsubscribevideoblocklist__parameters"></a>
+
+### 参数
+
+#### `uidList`
+
+视频订阅黑名单的用户 ID 列表。
+
+如果你想指定不订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [SetSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
+
+#### `uidNumber`
+
+黑名单用户 ID 列表中的用户数量。
+
+<a id="api_irtcengine_setsubscribevideoblocklist__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_setsubscribevideoblocklistex"></a>
+
+## SetSubscribeVideoBlocklistEx
+
+设置视频订阅黑名单。
+
+<a id="api_irtcengineex_setsubscribevideoblocklistex__prototype"></a>
+
+```csharp
+public abstract int SetSubscribeVideoBlocklistEx(uint[] uidList, int uidNumber, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_setsubscribevideoblocklistex__detailed_desc"></a>
+
+### 详情
+
+你可以调用该方法指定不订阅的视频流。
+
+:::info[注]
+- 该方法在加入频道前后均可调用。
+- 视频订阅黑名单不受 MuteRemoteVideoStream、 MuteAllRemoteVideoStreams 以及 ChannelMediaOptions 中的 autoSubscribeVideo 的影响。
+- 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
+- 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
+:::
+
+<a id="api_irtcengineex_setsubscribevideoblocklistex__parameters"></a>
+
+### 参数
+
+#### `uidList`
+
+视频订阅黑名单的用户 ID 列表。
+
+如果你想指定不订阅某一发流用户的视频流，将该用户的 ID 加入此列表中。如果你想要将某一用户从订阅黑名单中移除，需要重新调用 [SetSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新订阅黑名单的用户 ID 列表，使其不包含你想移除的用户的 uid。
+
+#### `uidNumber`
+
+黑名单用户 ID 列表中的用户数量。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+<a id="api_irtcengineex_setsubscribevideoblocklistex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
+
+<a id="callback_irtcengineeventhandler_onaudiopublishstatechanged"></a>
+
+## OnAudioPublishStateChanged
+
+音频发布状态改变回调。
+
+<a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__prototype"></a>
+
+```csharp
+public virtual void OnAudioPublishStateChanged(string channel, STREAM_PUBLISH_STATE oldState,
+            STREAM_PUBLISH_STATE newState, int elapseSinceLastState)
+```
+
+<a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__parameters"></a>
+
+### 参数
+
+#### `channel`
+
+频道名。
+
+#### `oldState`
+
+之前的发布状态，详见 [STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc/csharp-windows/enum-streampublishstate)。
+
+#### `newState`
+
+当前的发布状态，详见 STREAM_PUBLISH_STATE。
+
+#### `elapseSinceLastState`
+
+两次状态变化时间间隔（毫秒）。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged"></a>
+
+## OnAudioSubscribeStateChanged
+
+音频订阅状态发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged__prototype"></a>
+
+```csharp
+public virtual void OnAudioSubscribeStateChanged(string channel, uint uid, STREAM_SUBSCRIBE_STATE oldState,
+            STREAM_SUBSCRIBE_STATE newState, int elapseSinceLastState)
+```
+
+<a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged__parameters"></a>
+
+### 参数
+
+#### `channel`
+
+频道名。
+
+#### `uid`
+
+远端用户的 ID。
+
+#### `oldState`
+
+之前的订阅状态，详见 [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc/csharp-windows/enum-streamsubscribestate)。
+
+#### `newState`
+
+当前的订阅状态，详见 STREAM_SUBSCRIBE_STATE。
+
+#### `elapseSinceLastState`
+
+两次状态变化时间间隔（毫秒）。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged"></a>
+
+## OnVideoSubscribeStateChanged
+
+视频订阅状态发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__prototype"></a>
+
+```csharp
+public virtual void OnVideoSubscribeStateChanged(string channel, uint uid, STREAM_SUBSCRIBE_STATE oldState,
+            STREAM_SUBSCRIBE_STATE newState, int elapseSinceLastState)
+```
+
+<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__parameters"></a>
+
+### 参数
+
+#### `channel`
+
+频道名。
+
+#### `uid`
+
+远端用户的 ID。
+
+#### `oldState`
+
+之前的订阅状态，详见 [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc/csharp-windows/enum-streamsubscribestate)。
+
+#### `newState`
+
+当前的订阅状态，详见 STREAM_SUBSCRIBE_STATE。
+
+#### `elapseSinceLastState`
+
+两次状态变化时间间隔（毫秒）。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)

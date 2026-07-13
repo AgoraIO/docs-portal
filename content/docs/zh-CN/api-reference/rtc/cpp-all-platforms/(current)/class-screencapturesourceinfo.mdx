@@ -1,0 +1,98 @@
+---
+title: "ScreenCaptureSourceInfo"
+description: "描述可共享窗口或屏幕的信息。"
+---
+<a id="class_screencapturesourceinfo__prototype"></a>
+
+```cpp
+struct ScreenCaptureSourceInfo {
+  ScreenCaptureSourceType type;
+  int64_t sourceId;
+  const char* sourceName;
+  ThumbImageBuffer thumbImage;
+  ThumbImageBuffer iconImage;
+  const char* processPath;
+  const char* sourceTitle;
+  bool primaryMonitor;
+  bool isOccluded;
+  Rectangle position;
+#if defined(_WIN32)
+  bool minimizeWindow;
+  int64_t sourceDisplayId;
+#else
+#endif
+};
+```
+
+<a id="class_screencapturesourceinfo__detailed_desc"></a>
+
+该信息通过 [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iscreencapturesourcelist) 返回。
+
+<a id="class_screencapturesourceinfo__parameters"></a>
+
+## 属性
+
+### `type`
+
+共享目标的类型。详见 [ScreenCaptureSourceType](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-screencapturesourcetype)。
+
+### `sourceId`
+
+窗口的 ID 或屏幕的显示 ID。
+
+### `sourceName`
+
+窗口或屏幕的名称，UTF-8 编码。
+
+### `thumbImage`
+
+缩略图的图像内容。详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/cpp-all-platforms/class-thumbimagebuffer)。
+
+### `iconImage`
+
+图标的图像内容。详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/cpp-all-platforms/class-thumbimagebuffer)。
+
+### `processPath`
+
+窗口所属进程的路径，UTF-8 编码。
+
+### `sourceTitle`
+
+窗口的标题，UTF-8 编码。
+
+### `primaryMonitor`
+
+是否为主显示屏：
+
+- true：是主显示屏。
+- false：不是主显示屏。
+
+### `isOccluded`
+
+是否被遮挡：
+
+- true：窗口被遮挡。
+- false：窗口未被遮挡。
+
+### `position`
+
+窗口相对于整个屏幕空间（包括所有可共享屏幕）的位置。详见 [Rectangle](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rectangle)。
+
+### `minimizeWindow`
+
+:::info[注]
+仅适用于 Windows 平台。
+:::
+
+窗口是否最小化：
+
+- true：窗口已最小化。
+- false：窗口未最小化。
+
+### `sourceDisplayId`
+
+窗口所在的屏幕 ID（仅适用于 Windows）。如果窗口跨多个屏幕显示，该参数表示窗口与其交集面积最大的屏幕的 ID；如果窗口位于不可见屏幕之外，则该值为 -2。
+
+:::info[注]
+仅适用于 Windows 平台。
+:::

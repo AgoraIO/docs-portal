@@ -1,0 +1,45 @@
+---
+title: "DataStreamConfig"
+description: "用于配置数据流行为的结构体。"
+---
+<a id="class_datastreamconfig__prototype"></a>
+
+```cpp
+struct DataStreamConfig {
+  bool syncWithAudio;
+  bool ordered;
+};
+```
+
+<a id="class_datastreamconfig__detailed_desc"></a>
+
+下表展示了在不同参数组合下 SDK 的行为：
+
+| `syncWithAudio` | `ordered` | SDK 行为 |
+| --- | --- | --- |
+| false | false | 接收端接收到数据包后，SDK 立即触发 [onStreamMessage](/zh-CN/api-reference/rtc/cpp-all-platforms/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调。 |
+| true | false | 如果数据包延迟在音频延迟范围内，SDK 会在同步的音频包播放时触发 [onStreamMessage](/zh-CN/api-reference/rtc/cpp-all-platforms/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调；如果数据包延迟超过音频延迟，SDK 会在接收到数据包后立即触发回调。 |
+| false | true | 如果数据包延迟小于 5 秒，SDK 会对数据包进行顺序校正；如果延迟超过 5 秒，SDK 会丢弃该数据包。 |
+| true | true | 如果数据包延迟在音频延迟范围内，SDK 会对数据包进行顺序校正；如果延迟超过音频延迟，SDK 会丢弃该数据包。 |
+
+<a id="class_datastreamconfig__parameters"></a>
+
+## 属性
+
+### `syncWithAudio`
+
+是否将数据包与已发布的音频包同步。
+
+- true：将数据包与音频包同步，适用于歌词同步等场景。
+- false：不与音频包同步，适用于需要数据包立即到达接收端的场景。
+
+当设置为同步时，如果数据包延迟在音频延迟范围内，SDK 会在对应音频播放时触发 [onStreamMessage](/zh-CN/api-reference/rtc/cpp-all-platforms/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调。
+
+### `ordered`
+
+是否保证接收端按发送顺序接收数据。
+
+- true：保证接收端按发送顺序接收数据。
+- false：不保证接收端按发送顺序接收数据。
+
+如果希望接收端立即接收数据包，请不要将此参数设置为 true。

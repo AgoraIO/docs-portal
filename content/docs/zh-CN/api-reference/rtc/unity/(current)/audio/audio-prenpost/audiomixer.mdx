@@ -1,0 +1,141 @@
+---
+title: "本地音频合流"
+description: "本地音频合流 API reference."
+---
+<a id="toc_audiomixer"></a>
+
+<a id="api_irtcengine_startlocalaudiomixer"></a>
+
+## StartLocalAudioMixer
+
+开启本地音频合流。
+
+<a id="api_irtcengine_startlocalaudiomixer__prototype"></a>
+
+```csharp
+public abstract int StartLocalAudioMixer(LocalAudioMixerConfiguration config);
+```
+
+<a id="api_irtcengine_startlocalaudiomixer__detailed_desc"></a>
+
+该方法支持在本地将多路音频流合并为一路音频流。例如：将本地麦克风采集的音频流、媒体播放器中的音频流、声卡采集的音频流、远端音频流等合并为一路音频流，然后将合流后的音频流发布到频道中。
+
+- 如果你要对本地采集的音频流进行合流，可以将 ChannelMediaOptions 中的 publishMixedAudioTrack 设置为 true，则可将合流后的音频流发布到频道中。
+- 如果你要对远端音频流进行合流，需确保远端音频流已在频道内发布并且已被订阅。
+
+:::info[注]
+为了保证音频质量，建议参与本地合流的音频流数量不超过 10 个。
+:::
+
+<a id="api_irtcengine_startlocalaudiomixer__scenario"></a>
+
+### 适用场景
+
+你可以在如下场景中开启该功能：
+
+- 结合本地合图功能一起使用，可将合图视频流相关的音频流同步采集和发布。
+- 在直播场景下，用户接收频道内的音频流，在本地进行多路音频流合流后转发到其他频道。
+- 在教育场景下，老师可将跟学生连麦互动的音频在本地进行合流，然后将合并的音频流转发到其他频道。
+
+<a id="api_irtcengine_startlocalaudiomixer__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_irtcengine_startlocalaudiomixer__parameters"></a>
+
+### 参数
+
+#### `config`
+
+本地音频合流的配置。详见 [LocalAudioMixerConfiguration](/zh-CN/api-reference/rtc/unity/class-localaudiomixerconfiguration)。
+
+<a id="api_irtcengine_startlocalaudiomixer__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+  - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoplocalaudiomixer"></a>
+
+## StopLocalAudioMixer
+
+停止本地音频合流。
+
+<a id="api_irtcengine_stoplocalaudiomixer__prototype"></a>
+
+```csharp
+public abstract int StopLocalAudioMixer();
+```
+
+<a id="api_irtcengine_stoplocalaudiomixer__detailed_desc"></a>
+
+调用 [StartLocalAudioMixer](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audiomixer#api_irtcengine_startlocalaudiomixer) 后，如果你希望停止本地音频合流，请调用该方法。
+
+<a id="api_irtcengine_stoplocalaudiomixer__timing"></a>
+
+### 调用时机
+
+该方法需要在 [StartLocalAudioMixer](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audiomixer#api_irtcengine_startlocalaudiomixer) 之后调用。
+
+<a id="api_irtcengine_stoplocalaudiomixer__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+  - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_updatelocalaudiomixerconfiguration"></a>
+
+## UpdateLocalAudioMixerConfiguration
+
+更新本地音频合流的配置。
+
+<a id="api_irtcengine_updatelocalaudiomixerconfiguration__prototype"></a>
+
+```csharp
+public abstract int UpdateLocalAudioMixerConfiguration(LocalAudioMixerConfiguration config);
+```
+
+<a id="api_irtcengine_updatelocalaudiomixerconfiguration__detailed_desc"></a>
+
+调用 [StartLocalAudioMixer](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audiomixer#api_irtcengine_startlocalaudiomixer) 后，如果你希望更新本地音频合流的配置，请调用该方法。
+
+:::info[注]
+为了保证音频质量，建议参与本地合流的音频流数量不超过 10 个。
+:::
+
+<a id="api_irtcengine_updatelocalaudiomixerconfiguration__timing"></a>
+
+### 调用时机
+
+该方法需要在 [StartLocalAudioMixer](/zh-CN/api-reference/rtc/unity/audio/audio-prenpost/audiomixer#api_irtcengine_startlocalaudiomixer) 之后调用。
+
+<a id="api_irtcengine_updatelocalaudiomixerconfiguration__parameters"></a>
+
+### 参数
+
+#### `config`
+
+本地音频合流的配置。详见 [LocalAudioMixerConfiguration](/zh-CN/api-reference/rtc/unity/class-localaudiomixerconfiguration)。
+
+<a id="api_irtcengine_updatelocalaudiomixerconfiguration__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+  - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)

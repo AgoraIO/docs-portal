@@ -289,7 +289,10 @@ export function DocsContent({
       </header>
       {isOpenApiBody ? (
         <div onClickCapture={handleArticleBodyLinkClick}>
-          <FumadocsOpenApiContent pageProps={resolvedBody.pageProps} />
+          <FumadocsOpenApiContent
+            locale={currentLocale}
+            pageProps={resolvedBody.pageProps}
+          />
         </div>
       ) : (
         <div

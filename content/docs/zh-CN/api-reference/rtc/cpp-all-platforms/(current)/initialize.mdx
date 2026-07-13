@@ -1,0 +1,140 @@
+---
+title: "初始化相关"
+description: "初始化相关 API reference."
+---
+<a id="toc_initialize"></a>
+
+<a id="api_irtcengine_createagorartcengine"></a>
+
+## createAgoraRtcEngine
+
+创建一个 IRtcEngine 对象。
+
+<a id="api_irtcengine_createagorartcengine__prototype"></a>
+
+```cpp
+AGORA_API agora::rtc::IRtcEngine* AGORA_CALL createAgoraRtcEngine();
+```
+
+<a id="api_irtcengine_createagorartcengine__detailed_desc"></a>
+
+声网 RTC SDK v4.x 每个 App 仅支持创建一个 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象。
+
+<a id="api_irtcengine_createagorartcengine__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回 IRtcEngine 对象，详见 IRtcEngine。
+- 方法调用失败，返回 NULL。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_initialize"></a>
+
+## initialize
+
+初始化 IRtcEngine。
+
+<a id="api_irtcengine_initialize__prototype"></a>
+
+```cpp
+virtual int initialize(const RtcEngineContext& context) = 0;
+```
+
+<a id="api_irtcengine_initialize__detailed_desc"></a>
+
+:::info[注]
+- IRtcEngine 提供的所有方法均为异步执行。建议你在同一线程中调用这些方法。
+- SDK 仅支持为一个 App 创建一个 IRtcEngine 实例。
+:::
+
+<a id="api_irtcengine_initialize__timing"></a>
+
+### 调用时机
+
+在调用其他 API 之前，必须先调用 [createAgoraRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_createagorartcengine) 和 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 来创建并初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象。
+
+<a id="api_irtcengine_initialize__parameters"></a>
+
+### 参数
+
+#### `context`
+
+[IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 实例的配置，详见 [RtcEngineContext](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcengineconfig)。
+
+<a id="api_irtcengine_initialize__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+  - -1：发生通用错误（无明确原因）。
+  - -2：参数无效。
+  - -7：SDK 未初始化。
+  - -22：资源请求失败。由于你的 App 占用过多系统资源或系统资源不足，SDK 无法分配资源。
+  - -101：App ID 无效。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_release"></a>
+
+## release
+
+释放 IRtcEngine 实例。
+
+<a id="api_irtcengine_release__prototype"></a>
+
+```cpp
+AGORA_CPP_API static void release(RtcEngineReleaseCallback callback = nullptr);
+```
+
+<a id="api_irtcengine_release__detailed_desc"></a>
+
+该方法释放声网 SDK 占用的所有资源，适用于用户偶尔进行语音或视频通话的场景。当用户不再通话时，可以释放资源以供其他操作使用。调用该方法成功后，将无法再使用 SDK 中的任何方法或回调。如需再次使用实时通信功能，必须调用 [createAgoraRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_createagorartcengine) 和 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize) 创建新的 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 实例。
+
+:::info[注]
+不建议在 SDK 的任何回调中调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_release)，否则 SDK 需等待回调返回后才能释放资源，可能导致死锁。
+:::
+
+<a id="api_irtcengine_release__parameters"></a>
+
+### 参数
+
+#### `callback`
+
+用于设置引擎销毁模式的回调函数指针，详见 [RtcEngineReleaseCallback](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengineeventhandler_rtcenginereleasecallback)。
+
+- 非 nullptr：异步销毁引擎。该方法会立即返回，此时引擎资源可能尚未完全释放。引擎销毁后，SDK 会触发 RtcEngineReleaseCallback。
+- nullptr：同步销毁引擎。该方法仅在引擎资源完全释放后才返回。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineeventhandler_rtcenginereleasecallback"></a>
+
+## RtcEngineReleaseCallback
+
+IRtcEngine 被释放时触发的回调。
+
+<a id="api_irtcengineeventhandler_rtcenginereleasecallback__prototype"></a>
+
+```cpp
+using RtcEngineReleaseCallback = void(*)();
+```
+
+<a id="api_irtcengineeventhandler_rtcenginereleasecallback__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="api_irtcengineeventhandler_rtcenginereleasecallback__timing"></a>
+
+### 调用时机
+
+当调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_release) 方法以异步释放 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象时，会触发该回调。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

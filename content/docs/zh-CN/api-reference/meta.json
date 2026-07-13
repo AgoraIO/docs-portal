@@ -1,34 +1,226 @@
 {
-  "title": "API 参考",
+  "title": "参考中心",
   "icon": "Wrench",
   "root": true,
+  "sidebarIndexTitle": "参考概览",
   "pages": [
-    "index",
+    "overview",
+    "sdks",
+    "---指南---",
     "recipes",
+    "faq",
+    "---产品参考---",
+    "api-ref",
     "conversational-ai",
     "rtc",
     "rtm",
-    "im",
-    "rtsa",
-    "speech-to-text",
-    "fusion-cdn",
-    "cloud-recording",
     "local-server-recording",
-    "media-push",
-    "media-pull",
-    "cloud-transcoding",
-    "rtmp-gateway",
+    "flexible-classroom",
+    {
+      "type": "group",
+      "title": "对话式 AI",
+      "icon": "Bot",
+      "collapsible": true,
+      "pages": [
+        "[agent-go](/zh-CN/api-reference/conversational-ai/agent-go)",
+        "[agent-python](/zh-CN/api-reference/conversational-ai/agent-python)",
+        "[agent-typescript](/zh-CN/api-reference/conversational-ai/agent-typescript)",
+        "[Android](/zh-CN/api-reference/conversational-ai/android/overview)",
+        "[iOS](/zh-CN/api-reference/conversational-ai/ios/overview)",
+        "[Web](/zh-CN/api-reference/conversational-ai/web/overview)",
+        "[restclient-go](/zh-CN/api-reference/conversational-ai/restclient-go/overview)",
+        "[restclient-java](/zh-CN/api-reference/conversational-ai/restclient-java/overview)",
+        "[RESTful API](/zh-CN/api-reference/api-ref/conversational-ai)"
+      ]
+    },
+    {
+      "type": "group",
+      "title": "语音与视频 RTC",
+      "icon": "AudioLines",
+      "collapsible": true,
+      "pages": [
+        "[Android](/zh-CN/api-reference/rtc/android/rtc-api-overview)",
+        "[iOS](/zh-CN/api-reference/rtc/ios/rtc-api-overview)",
+        "[macOS](/zh-CN/api-reference/rtc/macos/rtc-api-overview)",
+        "[C++（全平台）](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-api-overview)",
+        "[C#（Windows）](/zh-CN/api-reference/rtc/csharp-windows/rtc-api-overview)",
+        "[Electron](/zh-CN/api-reference/rtc/electron/rtc-api-overview)",
+        "[Unity](/zh-CN/api-reference/rtc/unity/rtc-api-overview)",
+        "[Flutter](/zh-CN/api-reference/rtc/flutter/rtc-api-overview)",
+        "[React Native](/zh-CN/api-reference/rtc/react-native/rtc-api-overview)",
+        "[Unreal (C++)](/zh-CN/api-reference/rtc/unreal-cpp/rtc-api-overview)",
+        "[Unreal (Blueprint)](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-api-overview)",
+        "[HarmonyOS](/zh-CN/api-reference/rtc/harmonyos/rtc-api-overview)",
+        "[Web](/zh-CN/api-reference/rtc/react-sdk/overview)",
+        "[RESTful API](/zh-CN/api-reference/api-ref/rtc)"
+      ]
+    },
+    "cloud-recording",
     "rtc-server-sdk",
-    "ppt-conversion-service",
-    "whiteboard",
-    "micro-calling",
-    "meeting",
-    "online-ktv",
-    "private-room",
-    "online-art-teaching",
-    "online-music-teaching",
-    "teleoperation",
-    "analytics",
-    "console"
+    {
+      "type": "group",
+      "title": "实时消息 RTM",
+      "icon": "Network",
+      "collapsible": true,
+      "pages": [
+        "[Android](/zh-CN/api-reference/rtm/android/configuration)",
+        "[iOS](/zh-CN/api-reference/rtm/ios/configuration)",
+        "[Web](/zh-CN/api-reference/rtm/web/configuration)",
+        "[HarmonyOS](/zh-CN/api-reference/rtm/harmonyos/configuration)",
+        "[Unity](/zh-CN/api-reference/rtm/unity/configuration)",
+        "[Flutter](/zh-CN/api-reference/rtm/flutter/configuration)",
+        "[React Native](/zh-CN/api-reference/rtm/react-native/configuration)",
+        "[C++](/zh-CN/api-reference/rtm/cpp/configuration)",
+        "[Swift](/zh-CN/api-reference/rtm/swift/configuration)",
+        "[RESTful API](/zh-CN/api-reference/api-ref/signaling/publish)"
+      ]
+    },
+    {
+      "type": "group",
+      "title": "互动白板",
+      "icon": "Presentation",
+      "collapsible": true,
+      "pages": [
+        "[Android](/zh-CN/api-reference/whiteboard/fastboard/android)",
+        "[iOS](/zh-CN/api-reference/whiteboard/fastboard/ios)",
+        "[Web](/zh-CN/api-reference/whiteboard/fastboard/web)",
+        "[RESTful API](/zh-CN/api-reference/api-ref/whiteboard/restful)"
+      ]
+    },
+    {
+      "type": "group",
+      "title": "融合 CDN",
+      "icon": "RadioTower",
+      "collapsible": true,
+      "pages": ["[RESTful API](/zh-CN/api-reference/api-ref/fusion-cdn)"]
+    },
+    {
+      "type": "group",
+      "title": "云端录制",
+      "icon": "HardDrive",
+      "collapsible": true,
+      "pages": [
+        "[Go](/zh-CN/api-reference/cloud-recording/go-api/overview.go)",
+        "[Java](/zh-CN/api-reference/cloud-recording/java-api/overview.java)",
+        "[RESTful API](/zh-CN/api-reference/api-ref/cloud-recording)"
+      ]
+    },
+    {
+      "type": "group",
+      "title": "本地服务端录制",
+      "icon": "HardDrive",
+      "collapsible": true,
+      "pages": [
+        "[Java](/zh-CN/api-reference/local-server-recording/java/api-overview)",
+        "[C++](/zh-CN/api-reference/local-server-recording/cpp/api-overview)"
+      ]
+    },
+    {
+      "type": "group",
+      "title": "旁路推流",
+      "icon": "ArrowUpFromLine",
+      "collapsible": true,
+      "pages": ["[RESTful API](/zh-CN/api-reference/api-ref/media-push)"]
+    },
+    {
+      "type": "group",
+      "title": "输入在线媒体流",
+      "icon": "ArrowDownToLine",
+      "collapsible": true,
+      "pages": ["[RESTful API](/zh-CN/api-reference/api-ref/media-pull)"]
+    },
+    {
+      "type": "group",
+      "title": "云端转码",
+      "icon": "Film",
+      "collapsible": true,
+      "pages": ["[RESTful API](/zh-CN/api-reference/api-ref/cloud-transcoding)"]
+    },
+    {
+      "type": "group",
+      "title": "RTMP 网关",
+      "icon": "RadioTower",
+      "collapsible": true,
+      "pages": ["[RESTful API](/zh-CN/api-reference/api-ref/rtmp-gateway)"]
+    },
+    {
+      "type": "group",
+      "title": "RTC 服务端 SDK",
+      "icon": "ServerCog",
+      "collapsible": true,
+      "pages": [
+        "[Go](/zh-CN/api-reference/rtc-server-sdk/go-api/overview.go)",
+        "[Python](/zh-CN/api-reference/rtc-server-sdk/python-api/overview.python)"
+      ]
+    },
+    {
+      "type": "group",
+      "title": "PPT 转码服务",
+      "icon": "FileVideo",
+      "collapsible": true,
+      "pages": ["[RESTful API](/zh-CN/api-reference/api-ref/ppt-conversion-service)"]
+    },
+    {
+      "type": "group",
+      "title": "会议",
+      "icon": "Users",
+      "collapsible": true,
+      "pages": [
+        "[Android](/zh-CN/api-reference/meeting/android)",
+        "[iOS](/zh-CN/api-reference/meeting/ios)",
+        "[Electron](/zh-CN/api-reference/meeting/electron)"
+      ]
+    },
+    {
+      "type": "group",
+      "title": "私密房",
+      "icon": "Lock",
+      "collapsible": true,
+      "pages": [
+        "[Android](/zh-CN/api-reference/private-room/android)",
+        "[iOS](/zh-CN/api-reference/private-room/ios)"
+      ]
+    },
+    {
+      "type": "group",
+      "title": "水晶球",
+      "icon": "ChartColumn",
+      "collapsible": true,
+      "pages": ["[RESTful API](/zh-CN/api-reference/api-ref/agora-analytics)"]
+    },
+    {
+      "type": "group",
+      "title": "控制台",
+      "icon": "LayoutDashboard",
+      "collapsible": true,
+      "pages": ["[RESTful API](/zh-CN/api-reference/api-ref/console)"]
+    },
+    {
+      "type": "group",
+      "title": "灵动课堂",
+      "icon": "GraduationCap",
+      "collapsible": true,
+      "pages": [
+        "[Android](/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk)",
+        "[iOS](/zh-CN/api-reference/flexible-classroom/ios/api-reference/classroom-sdk)",
+        "[Web](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk)",
+        "[Electron](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classroom-sdk)",
+        "[RESTful API](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom)"
+      ]
+    },
+    {
+      "type": "group",
+      "title": "弹幕玩法",
+      "icon": "MessageCircleMore",
+      "collapsible": true,
+      "pages": ["[RESTful API](/zh-CN/api-reference/api-ref/danmaku)"]
+    },
+    {
+      "type": "group",
+      "title": "VoIP 呼叫服务",
+      "icon": "PhoneCall",
+      "collapsible": true,
+      "pages": ["[RESTful API](/zh-CN/api-reference/api-ref/voip-callkit)"]
+    }
   ]
 }

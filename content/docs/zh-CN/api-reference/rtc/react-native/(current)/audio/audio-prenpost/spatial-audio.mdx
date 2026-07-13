@@ -1,0 +1,841 @@
+---
+title: "空间音频"
+description: "空间音频 API reference."
+---
+<a id="toc_spatial_audio"></a>
+
+<a id="api_ilocalspatialaudioengine_clearremotepositions"></a>
+
+## clearRemotePositions
+
+删除所有远端用户的空间位置信息。
+
+<a id="api_ilocalspatialaudioengine_clearremotepositions__prototype"></a>
+
+```typescript
+abstract clearRemotePositions(): number;
+```
+
+<a id="api_ilocalspatialaudioengine_clearremotepositions__detailed_desc"></a>
+
+成功调用该方法后，本地用户将听不到所有远端用户。 离开频道后，为避免计算资源的浪费，你也可以调用该方法删除所有远端用户的空间位置信息。
+
+<a id="api_ilocalspatialaudioengine_clearremotepositions__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ilocalspatialaudioengine)
+
+<a id="api_irtcengine_enablespatialaudio"></a>
+
+## enableSpatialAudio
+
+开启或关闭空间音频。
+
+<a id="api_irtcengine_enablespatialaudio__prototype"></a>
+
+```typescript
+abstract enableSpatialAudio(enabled: boolean): number;
+```
+
+<a id="api_irtcengine_enablespatialaudio__detailed_desc"></a>
+
+开启空间音频后，你可以调用 [setRemoteUserSpatialAudioParams](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音频参数。
+
+:::info[注]
+- 该方法在加入频道前后均可调用。
+- 该方法依赖于空间音频动态库 libagora_spatial_audio_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+:::
+
+<a id="api_irtcengine_enablespatialaudio__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否开启空间音频：
+
+- true: 开启空间音频。
+- false: 关闭空间音频。
+
+<a id="api_irtcengine_enablespatialaudio__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getlocalspatialaudioengine"></a>
+
+## getLocalSpatialAudioEngine
+
+获取 ILocalSpatialAudioEngine 对象。
+
+<a id="api_irtcengine_getlocalspatialaudioengine__prototype"></a>
+
+```typescript
+abstract getLocalSpatialAudioEngine(): ILocalSpatialAudioEngine;
+```
+
+<a id="api_irtcengine_getlocalspatialaudioengine__detailed_desc"></a>
+
+:::info[注]
+该方法需要在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象后调用。
+:::
+
+<a id="api_irtcengine_getlocalspatialaudioengine__return_values"></a>
+
+### 返回值
+
+一个 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ilocalspatialaudioengine) 对象。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine"></a>
+
+## initialize
+
+初始化 ILocalSpatialAudioEngine。
+
+<a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__prototype"></a>
+
+```typescript
+abstract initialize(): number;
+```
+
+<a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__detailed_desc"></a>
+
+:::info[注]
+- 在调用 ILocalSpatialAudioEngine 类的其他方法前，你需要先调用该方法初始化 ILocalSpatialAudioEngine。
+- SDK 只支持每个 App 创建一个 ILocalSpatialAudioEngine 实例。
+:::
+
+<a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ilocalspatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine"></a>
+
+## muteAllRemoteAudioStreams
+
+取消或恢复订阅所有远端用户的音频流。
+
+<a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__prototype"></a>
+
+```typescript
+abstract muteAllRemoteAudioStreams(mute: boolean): number;
+```
+
+<a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__detailed_desc"></a>
+
+成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的音频流，包括在调用该方法后加入频道的用户的音频流。
+
+:::info[注]
+- 该方法需要在 joinChannel 后调用。
+- 在使用空间音频时，如需设置是否订阅所有远端用户的音频流，建议调用该方法替代 IRtcEngine 的 muteAllRemoteAudioStreams 方法。
+- 在调用该方法后，你需要调用 updateSelfPosition 和 updateRemotePosition 更新本地用户和远端用户的空间位置，否则该方法中的设置不会生效。
+:::
+
+<a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+是否取消订阅所有远端用户的音频流：
+
+- true: 取消订阅所有远端用户的音频流。
+- false: 订阅所有远端用户的音频流。
+
+<a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine"></a>
+
+## muteLocalAudioStream
+
+取消或恢复发布本地音频流。
+
+<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__prototype"></a>
+
+```typescript
+abstract muteLocalAudioStream(mute: boolean): number;
+```
+
+<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__detailed_desc"></a>
+
+:::info[注]
+- 该方法不影响音频采集状态，因为没有禁用音频采集设备。
+- 该方法需要在 joinChannel1 或 joinChannel 后调用。
+- 在使用空间音频时，如需设置是否发布本地音频流，建议调用该方法替代 IRtcEngine 的 muteLocalAudioStream 方法。
+- 成功调用该方法后，远端会触发 onUserMuteAudio 回调和 onRemoteAudioStateChanged 回调。
+:::
+
+<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+是否取消发布本地音频流。
+
+- true: 取消发布本地音频流。
+- false: 发布本地音频流。
+
+<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine"></a>
+
+## muteRemoteAudioStream
+
+取消或恢复订阅指定远端用户的音频流。
+
+<a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__prototype"></a>
+
+```typescript
+abstract muteRemoteAudioStream(uid: number, mute: boolean): number;
+```
+
+<a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__detailed_desc"></a>
+
+<a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+用户 ID。需与用户加入频道时填写的用户 ID 一致。
+
+#### `mute`
+
+是否取消订阅指定远端用户的音频流。
+
+- true: 取消订阅指定用户的音频流。
+- false:（默认）订阅指定用户的音频流，SDK 根据本地用户和远端用户的距离决定是否订阅。
+
+<a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_release_ibasespatialaudioengine"></a>
+
+## release
+
+销毁 IBaseSpatialAudioEngine。
+
+<a id="api_ibasespatialaudioengine_release_ibasespatialaudioengine__prototype"></a>
+
+```typescript
+abstract release(): void;
+```
+
+<a id="api_ibasespatialaudioengine_release_ibasespatialaudioengine__detailed_desc"></a>
+
+该方法释放 [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ibasespatialaudioengine) 下的所有资源。当用户不需要使用空间音频时，你可以调用该方法将资源释放出来用于其他操作。 调用该方法后，你将无法再使用 [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ibasespatialaudioengine) 下的任何 API。
+
+### 所属接口类
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ilocalspatialaudioengine_removeremoteposition"></a>
+
+## removeRemotePosition
+
+删除指定远端用户的空间位置信息。
+
+<a id="api_ilocalspatialaudioengine_removeremoteposition__prototype"></a>
+
+```typescript
+abstract removeRemotePosition(uid: number): number;
+```
+
+<a id="api_ilocalspatialaudioengine_removeremoteposition__detailed_desc"></a>
+
+成功调用该方法后，本地用户将听不到指定的远端用户。 离开频道后，为避免计算资源的浪费，你需要调用该方法删除指定远端用户的空间位置信息。否则，该用户的空间位置信息会一直被保存。当远端用户人数大于 [setMaxAudioRecvCount](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setmaxaudiorecvcount) 中设定的可接收音频流数时，会按照相对距离依次自动取消订阅距离最远的用户的音频流。
+
+<a id="api_ilocalspatialaudioengine_removeremoteposition__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+用户 ID。需与用户加入频道时填写的用户 ID 一致。
+
+<a id="api_ilocalspatialaudioengine_removeremoteposition__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ilocalspatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_setaudiorecvrange"></a>
+
+## setAudioRecvRange
+
+设置本地用户的音频接收范围。
+
+<a id="api_ibasespatialaudioengine_setaudiorecvrange__prototype"></a>
+
+```typescript
+abstract setAudioRecvRange(range: number): number;
+```
+
+<a id="api_ibasespatialaudioengine_setaudiorecvrange__detailed_desc"></a>
+
+设置成功后，用户只能听见设置范围内或属于同一队伍的远端用户。你可以随时调用该方法更新音频的接收范围。
+
+<a id="api_ibasespatialaudioengine_setaudiorecvrange__parameters"></a>
+
+### 参数
+
+#### `range`
+
+可接收音频的最大范围，单位为游戏引擎中的距离单位。该参数取值需大于 0，默认值为 20。
+
+<a id="api_ibasespatialaudioengine_setaudiorecvrange__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_setdistanceunit"></a>
+
+## setDistanceUnit
+
+设置游戏引擎单位距离的长度（米）。
+
+<a id="api_ibasespatialaudioengine_setdistanceunit__prototype"></a>
+
+```typescript
+abstract setDistanceUnit(unit: number): number;
+```
+
+<a id="api_ibasespatialaudioengine_setdistanceunit__detailed_desc"></a>
+
+游戏引擎里的距离单位是游戏引擎自定义的，而声网空间音频算法的距离单位为米。默认情况下，SDK 会将每单位的游戏引擎距离换算为一米。你可以调用该方法，将游戏引擎里的单位距离换算为指定的米数。
+
+<a id="api_ibasespatialaudioengine_setdistanceunit__parameters"></a>
+
+### 参数
+
+#### `unit`
+
+每单位游戏引擎距离转换后的米数。该参数取值需大于 0.00，默认值为 1.00。例如，将 unit 设为 2.00，表示每单位的游戏引擎距离等于 2 米。 该值越大，当远端用户远离本地用户时，本地用户听到的声音衰减速度越快。
+
+<a id="api_ibasespatialaudioengine_setdistanceunit__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_irtcengine_setheadphoneeqparameters"></a>
+
+## setHeadphoneEQParameters
+
+设置耳机均衡器的低频和高频参数。
+
+<a id="api_irtcengine_setheadphoneeqparameters__prototype"></a>
+
+```typescript
+abstract setHeadphoneEQParameters(lowGain: number, highGain: number): number;
+```
+
+<a id="api_irtcengine_setheadphoneeqparameters__detailed_desc"></a>
+
+在空间音频场景下，如果在调用 [setHeadphoneEQPreset](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqpreset) 方法使用预设的耳机均衡效果后仍未达到预期，你可以通过调用该方法进一步调节耳机均衡效果。
+
+<a id="api_irtcengine_setheadphoneeqparameters__parameters"></a>
+
+### 参数
+
+#### `lowGain`
+
+耳机均衡器的低频参数。取值范围为 [-10,10]，取值越大，声音越低沉。
+
+#### `highGain`
+
+耳机均衡器的高频参数。取值范围为 [-10,10]，取值越大，声音越尖锐。
+
+<a id="api_irtcengine_setheadphoneeqparameters__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败
+  - -1：一般性的错误（未明确归类）。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setheadphoneeqpreset"></a>
+
+## setHeadphoneEQPreset
+
+设置预设的耳机均衡效果。
+
+<a id="api_irtcengine_setheadphoneeqpreset__prototype"></a>
+
+```typescript
+abstract setHeadphoneEQPreset(preset: HeadphoneEqualizerPreset): number;
+```
+
+<a id="api_irtcengine_setheadphoneeqpreset__detailed_desc"></a>
+
+该方法主要应用于空间音频场景下，你可以选择预设的耳机均衡器收听音频，以达到预期的音频体验。
+
+:::info[注]
+如果你使用的耳机已经具备良好的均衡效果，调用该方法时可能不会获得明显的体验提升效果，甚至可能导致体验下降。
+:::
+
+<a id="api_irtcengine_setheadphoneeqpreset__parameters"></a>
+
+### 参数
+
+#### `preset`
+
+预设的耳机均衡效果。详见 [HeadphoneEqualizerPreset](/zh-CN/api-reference/rtc/react-native/enum-headphoneequalizerpreset)。
+
+<a id="api_irtcengine_setheadphoneeqpreset__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败
+  - -1：一般性的错误（未明确归类）。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_ibasespatialaudioengine_setmaxaudiorecvcount"></a>
+
+## setMaxAudioRecvCount
+
+设置音频接收范围内最多可接收的音频流数。
+
+<a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__prototype"></a>
+
+```typescript
+abstract setMaxAudioRecvCount(maxCount: number): number;
+```
+
+<a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__detailed_desc"></a>
+
+如果在音频接收范围内可接收的音频流数超过设置的值，则本地用户会接收音源距离较近的 `maxCount` 路音频。
+
+<a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__parameters"></a>
+
+### 参数
+
+#### `maxCount`
+
+音频接收范围内最多可接收的音频流数。该参数取值需 ≤ 16，默认值为 10。
+
+<a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_setplayerattenuation"></a>
+
+## setPlayerAttenuation
+
+设置媒体播放器的声音衰减属性。
+
+<a id="api_ibasespatialaudioengine_setplayerattenuation__prototype"></a>
+
+```typescript
+abstract setPlayerAttenuation(
+    playerId: number,
+    attenuation: number,
+    forceSet: boolean
+  ): number;
+```
+
+<a id="api_ibasespatialaudioengine_setplayerattenuation__detailed_desc"></a>
+
+<a id="api_ibasespatialaudioengine_setplayerattenuation__parameters"></a>
+
+### 参数
+
+#### `playerId`
+
+媒体播放器 ID。
+
+#### `attenuation`
+
+媒体播放器的声音衰减系数，取值范围为[0,1]。其中：
+
+- 0：广播模式，即音量和音色均不随距离衰减，无论距离远近，本地用户听到的音量和音色都无变化。
+- (0,0.5)：弱衰减模式，即音量和音色在传播过程中仅发生微弱衰减，跟真实环境相比，声音可以传播得更远。
+- 0.5：（默认）模拟音量在真实环境下的衰减，效果等同于不设置 attenuation 参数。
+- (0.5,1]：强衰减模式，即音量和音色在传播过程中发生迅速衰减。
+
+#### `forceSet`
+
+是否强制设定媒体播放器的声音衰减效果：
+
+- true：强制使用 attenuation 设置媒体播放器的声音衰减效果，此时 SpatialAudioZone 中的 audioAttenuation 中设置的隔声区域衰减系数对媒体播放器不生效。
+- false：不强制使用 attenuation 设置媒体播放器的声音衰减效果，分为以下两种情况。
+  - 如果音源和听声者分属于隔声区域内部和外部，则声音衰减效果由 SpatialAudioZone 中的 audioAttenuation 决定。
+  - 如果音源和听声者在同一个隔声区域内或同在隔声区域外，则声音衰减效果由该方法中的 attenuation 决定。
+
+<a id="api_ibasespatialaudioengine_setplayerattenuation__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation"></a>
+
+## setRemoteAudioAttenuation
+
+设置指定用户的声音衰减效果。
+
+<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__prototype"></a>
+
+```typescript
+abstract setRemoteAudioAttenuation(
+    uid: number,
+    attenuation: number,
+    forceSet: boolean
+  ): number;
+```
+
+<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__detailed_desc"></a>
+
+<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+用户 ID。需与用户加入频道时填写的用户 ID 一致。
+
+#### `attenuation`
+
+针对该用户的声音衰减系数，取值范围为[0,1]。其中：
+
+#### `forceSet`
+
+是否强制设定该用户的声音衰减效果：
+
+- true：强制使用 attenuation 设置该用户的声音衰减效果，此时 SpatialAudioZone 中的 audioAttenuation 中设置的隔声区域衰减系数对该用户不生效。
+- false：不强制使用 attenuation 设置用户的声音衰减效果，分为以下两种情况。
+  - 如果音源和听声者分属于隔声区域内部和外部，则声音衰减效果由 SpatialAudioZone 中的 audioAttenuation 决定。
+  - 如果音源和听声者在同一个隔声区域内或同在隔声区域外，则声音衰减效果由该方法中的 attenuation 决定。
+
+<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ilocalspatialaudioengine)
+
+<a id="api_irtcengine_setremoteuserspatialaudioparams"></a>
+
+## setRemoteUserSpatialAudioParams
+
+设置远端用户的空间音频参数。
+
+<a id="api_irtcengine_setremoteuserspatialaudioparams__prototype"></a>
+
+```typescript
+abstract setRemoteUserSpatialAudioParams(
+    uid: number,
+    params: SpatialAudioParams
+  ): number;
+```
+
+<a id="api_irtcengine_setremoteuserspatialaudioparams__detailed_desc"></a>
+
+该方法需要在 [enableSpatialAudio](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/spatial-audio#api_irtcengine_enablespatialaudio) 后调用。成功设置远端用户的空间音频参数后，本地用户听远端用户会有空间感。
+
+<a id="api_irtcengine_setremoteuserspatialaudioparams__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+用户 ID。需与用户加入频道时填写的用户 ID 一致。
+
+<a id="api_irtcengine_setremoteuserspatialaudioparams__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediaplayer_setspatialaudioparams"></a>
+
+## setSpatialAudioParams
+
+开启或关闭媒体播放器的空间音频。
+
+<a id="api_imediaplayer_setspatialaudioparams__prototype"></a>
+
+```typescript
+abstract setSpatialAudioParams(params: SpatialAudioParams): number;
+```
+
+<a id="api_imediaplayer_setspatialaudioparams__detailed_desc"></a>
+
+成功设置媒体播放器的空间音频参数后，SDK 会开启媒体播放器的空间音频，即本地用户听媒体资源会有空间感。 如果需关闭媒体播放器的空间音频，你需要将 `params` 参数设为空。
+
+<a id="api_imediaplayer_setspatialaudioparams__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+
+<a id="api_ibasespatialaudioengine_setzones"></a>
+
+## setZones
+
+设置隔声区域。
+
+<a id="api_ibasespatialaudioengine_setzones__prototype"></a>
+
+```typescript
+abstract setZones(zones: SpatialAudioZone, zoneCount: number): number;
+```
+
+<a id="api_ibasespatialaudioengine_setzones__detailed_desc"></a>
+
+在虚拟互动场景下，你可以通过该方法设置隔声区域和声音衰减系数。当音源（可以为用户或媒体播放器）跟听声者分属于隔声区域内部和外部时，会体验到类似真实环境中声音在遇到建筑隔断时的衰减效果。
+
+- 当音源跟听声者分属于隔声区域内部和外部时，声音的衰减效果由 SpatialAudioZone 中的声音衰减系数决定。
+- 如果用户或媒体播放器同在一个隔声区域内，则不受 SpatialAudioZone 的影响，声音的衰减效果由 setPlayerAttenuation 或 setRemoteAudioAttenuation 中的 attenuation 参数决定。如果不调用 setPlayerAttenuation 或 setRemoteAudioAttenuation，则 SDK 默认声音的衰减系数为 0.5，即模拟声音在真实环境下的衰减。
+- 如果音源跟接收者分别属于两个隔声区域，则接收者无法听到音源。
+
+:::info[注]
+如果多次调用该方法，以最后一次设置的隔声区域为准。
+:::
+
+<a id="api_ibasespatialaudioengine_setzones__parameters"></a>
+
+### 参数
+
+#### `zones`
+
+隔声区域的设置。详见 [SpatialAudioZone](/zh-CN/api-reference/rtc/react-native/class-spatialaudiozone)。当你将该参数设置为 null 时，表示清除所有隔声区域。
+
+#### `zoneCount`
+
+隔声区域的数量。
+
+<a id="api_ibasespatialaudioengine_setzones__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_updateplayerpositioninfo"></a>
+
+## updatePlayerPositionInfo
+
+更新媒体播放器的空间位置。
+
+<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__prototype"></a>
+
+```typescript
+abstract updatePlayerPositionInfo(
+    playerId: number,
+    positionInfo: RemoteVoicePositionInfo
+  ): number;
+```
+
+<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__detailed_desc"></a>
+
+成功更新后，本地用户可以听到媒体播放器空间位置的变化。
+
+<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__parameters"></a>
+
+### 参数
+
+#### `playerId`
+
+媒体播放器 ID。
+
+#### `positionInfo`
+
+媒体播放器的空间位置信息。详见 [RemoteVoicePositionInfo](/zh-CN/api-reference/rtc/react-native/class-remotevoicepositioninfo)。
+
+<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ilocalspatialaudioengine_updateremoteposition"></a>
+
+## updateRemotePosition
+
+更新远端用户的空间位置信息。
+
+<a id="api_ilocalspatialaudioengine_updateremoteposition__prototype"></a>
+
+```typescript
+abstract updateRemotePosition(
+    uid: number,
+    posInfo: RemoteVoicePositionInfo
+  ): number;
+```
+
+<a id="api_ilocalspatialaudioengine_updateremoteposition__detailed_desc"></a>
+
+成功调用该方法后，SDK 会根据本地和远端用户的相对位置计算空间音频参数。
+
+:::info[注]
+该方法需要在 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 后调用。
+:::
+
+<a id="api_ilocalspatialaudioengine_updateremoteposition__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+用户 ID。需与用户加入频道时填写的用户 ID 一致。
+
+#### `posInfo`
+
+远端用户的空间位置信息。详见 [RemoteVoicePositionInfo](/zh-CN/api-reference/rtc/react-native/class-remotevoicepositioninfo)。
+
+<a id="api_ilocalspatialaudioengine_updateremoteposition__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ilocalspatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_updateselfposition"></a>
+
+## updateSelfPosition
+
+更新本地用户的空间位置。
+
+<a id="api_ibasespatialaudioengine_updateselfposition__prototype"></a>
+
+```typescript
+abstract updateSelfPosition(
+    position: number[],
+    axisForward: number[],
+    axisRight: number[],
+    axisUp: number[]
+  ): number;
+```
+
+<a id="api_ibasespatialaudioengine_updateselfposition__detailed_desc"></a>
+
+- 在 ILocalSpatialAudioEngine 类下，该方法需要和 updateRemotePosition 搭配使用。SDK 会根据该方法和 updateRemotePosition 设置的参数计算本地和远端用户之间的相对位置，从而计算用户的空间音频参数。
+
+<a id="api_ibasespatialaudioengine_updateselfposition__parameters"></a>
+
+### 参数
+
+#### `position`
+
+在世界坐标系中的坐标。该参数是长度为 3 的数组，三个值依次表示前、右、上的坐标值。
+
+#### `axisForward`
+
+在世界坐标系前轴的单位向量。该参数是长度为 3 的数组，三个值依次表示前、右、上的坐标值。
+
+#### `axisRight`
+
+在世界坐标系右轴的单位向量。该参数是长度为 3 的数组，三个值依次表示前、右、上的坐标值。
+
+#### `axisUp`
+
+在世界坐标系上轴的单位向量。该参数是长度为 3 的数组，三个值依次表示前、右、上的坐标值。
+
+<a id="api_ibasespatialaudioengine_updateselfposition__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ibasespatialaudioengine)

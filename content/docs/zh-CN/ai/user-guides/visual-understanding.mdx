@@ -1,0 +1,173 @@
+---
+title: "视觉理解能力"
+---
+声网对话式 AI 引擎支持视觉理解能力。
+
+开启后，智能体可以在推理时结合用户当前画面或用户上传的图片理解问题，并基于图像内容生成回复。
+
+:::info[信息]
+当前对话式 AI 引擎支持以下两种视觉输入来源：
+
+- **RTC 视频流**：用户在频道内发布视频后，智能体会在后续推理时自动使用当前最新画面。
+- **图片消息**：用户通过 RTM 发送图片消息后，智能体会在后续推理时优先使用上传的图片。
+
+ 当一次对话同时存在用户上传的图片与 RTC 视频画面时，对话式 AI 引擎会优先使用上传图片。
+:::
+
+你可以将该能力用于以下场景，而无需自己处理视频订阅、画面采集和图像上下文拼装等底层逻辑：
+
+| 场景类型 | 典型用例 | 推荐输入源 |
+| :--- | :--- | :--- |
+| 实时画面问答 | AI 客服查看故障画面、AI 教育查看学生答题板 | RTC 视频流 |
+| 拍照解题 / 识物 / OCR | 拍照搜题、商品识别、文档翻译 | 图片消息 |
+| 远程协助 / 屏幕辅助 | AI 助手观察屏幕并指导操作 | RTC 视频流 |
+| 拟人陪伴 / 视觉问候 | AI 看到用户画面后进行互动 | RTC 视频流 |
+
+## 前提条件
+
+开始前，请确保你已经：
+
+- 参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现了与 AI 智能体对话互动的基本逻辑。
+- 如果需要让用户上传图片，已阅读[发送图片消息](/zh-CN/ai/build/send-multimodal-messages)并完成 RTM 侧的收发消息集成。
+- 确保你接入的大模型支持视觉输入，并兼容 OpenAI Chat Completions 协议。
+
+## 实现方式
+
+### 开启视觉输入
+
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join) 接口时，在 `properties.llm.input_modalities` 中包含 `"image"` 即可开启视觉能力。
+
+| 取值 | 是否开启视觉 | 说明 |
+| :--- | :--- | :--- |
+| `["text"]` 或不传 | 否 | 纯文本输入，不使用图像内容参与推理。 |
+| `["text", "image"]` | 是 | 推荐配置，明确表示同时支持文本和图像输入。 |
+
+以下为最小可用请求示例：
+
+```json
+{
+  "name": "vision-agent-demo",
+  "properties": {
+    "channel": "test_channel",
+    "token": "<rtc_token>",
+    "agent_rtc_uid": "1000",
+    "remote_rtc_uids": [],
+    "asr": {
+      "language": "zh-CN"
+    },
+    "llm": {
+      "url": "https://your-llm-endpoint/v1/chat/completions",
+      "api_key": "<your_llm_key>",
+      "params": {
+        "model": "gpt-4o"
+      },
+      "input_modalities": ["text", "image"],
+      "output_modalities": ["text"],
+      "system_messages": [
+        {
+          "role": "system",
+          "content": "你是一个能看懂画面的 AI 助手。"
+        }
+      ]
+    },
+    "tts": {
+      "vendor": "minimax",
+      "params": {
+        "voice": "Chinese (Mandarin)_Lyrical_Voice"
+      }
+    }
+  }
+}
+```
+
+### 使用 RTC 视频流作为视觉输入
+
+开启视觉能力后，如果用户在 RTC 频道内发布视频流，智能体会在后续推理时自动结合当前最新画面进行理解。
+
+典型流程如下：
+
+1. 调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)，将 `llm.input_modalities` 配置为 `["text", "image"]`。
+2. 客户端加入 RTC 频道并发布视频流。
+3. 用户发起语音提问，或业务侧调用 [POST 发送自定义指令](/zh-CN/api-reference/api-ref/conversational-ai/think)。
+4. 智能体调用大模型时自动带上当前最新画面。
+
+### 使用图片消息作为视觉输入
+
+如果你的场景更关注清晰度，例如拍照识物、OCR 或文档理解，推荐让用户直接上传图片。
+
+典型流程如下：
+
+1. 创建智能体时同样将 `llm.input_modalities` 配置为 `["text", "image"]`。
+2. 客户端通过 RTM 发送图片消息上传图片，详见[发送图片消息](/zh-CN/ai/build/send-multimodal-messages)。
+3. 用户发起语音提问，或业务侧调用 [POST 发送自定义指令](/zh-CN/api-reference/api-ref/conversational-ai/think)。
+4. 智能体调用大模型时优先使用刚上传的图片进行理解。
+
+## 最佳实践
+
+### 提示词设计
+
+建议在 `system_messages` 中明确告诉大模型其具备视觉能力，例如：
+
+```text
+你能看到用户的实时画面，请结合画面内容回答问题。如果画面不清晰，请明确告诉用户并引导其调整摄像头或重新上传图片。
+```
+
+### 选择合适的输入源
+
+- 如果需要持续观察用户画面，例如远程协助或屏幕指导，推荐使用 RTC 视频流。
+- 如果需要高精度识图、OCR 或文档理解，推荐让用户上传图片。
+- 如果同时使用两种方式，请根据业务流程控制上传时机，因为上传图片会优先于视频画面。
+
+### 控制成本
+
+- 不需要视觉能力时，将 `input_modalities` 配置为 `["text"]` 或不传该字段。
+- 仅在偶发场景需要视觉时，优先考虑上传图片，而不是持续开启视频流。
+- 建议结合提示词约束模型引用图像的频率，并关注大模型侧的 Token 消耗。
+
+## 参考信息
+
+### 开发注意事项
+
+#### 图像优先级
+
+当同一次推理同时存在多种图像来源时，系统按以下顺序选择图像：
+
+1. 用户上传的图片
+2. RTC 视频中的当前最新画面
+3. 不带图像，仅处理文本
+
+这意味着在视频流场景下，如果用户主动上传了图片，智能体会优先理解上传图片，而不是当前视频画面。
+
+#### 哪些交互会触发视觉理解
+
+只有会触发大模型推理的交互才会带图像输入。
+
+| 交互 | 是否会触发大模型推理 | 是否可能带图 |
+| :--- | :--- | :--- |
+| 用户语音说话 | 是 | 是 |
+| [POST 发送自定义指令](/zh-CN/api-reference/api-ref/conversational-ai/think) | 是 | 是 |
+| 静默超时后触发模型思考 | 是 | 是 |
+| 智能体问候语 | 否 | 否 |
+| [POST 播报自定义消息](/zh-CN/api-reference/api-ref/conversational-ai/speak) | 否 | 否 |
+
+#### 其他
+
+- **模型要求**：你接入的大模型必须支持视觉输入，并兼容 OpenAI Chat Completions 协议。
+- **视频流场景**：当前视觉能力不会区分摄像头主流与屏幕共享流。如果频道内同时存在多路视频，建议通过频道规划或 UID 规划明确要给智能体看的画面。
+- **图片消息限制**：上传图片的单张大小不能超过 5 MB。
+- **图像数据存储**：图像数据不会由平台持久化保存。如需审计或复盘，请由业务侧自行存储原始图片或视频。
+
+### 故障排查
+
+| 现象 | 可能原因 | 排查建议 |
+| :--- | :--- | :--- |
+| 智能体没有引用画面内容 | `input_modalities` 未包含 `image`；客户端未发布视频；所选模型不支持视觉 | 检查创建智能体请求体，确认已配置 `["text", "image"]`；确认客户端已正常发布视频；检查模型是否支持视觉输入 |
+| 智能体看到的画面与用户当前画面不一致 | 用户提问时画面刚发生变化 | 建议让用户保持画面稳定片刻后再提问，或改用上传图片方式 |
+| 上传图片后智能体仍未使用图片回答 | 图片未发送成功；图片消息格式不符合要求；图片过大 | 对照[发送图片消息](/zh-CN/ai/build/send-multimodal-messages)检查消息发送流程；确认图片可正常访问且大小不超过 5 MB |
+| 智能体问候语没有结合画面内容 | 问候语不会触发大模型推理 | 如需首次开场就结合画面，可在问候语后由用户提问，或调用 [POST 发送自定义指令](/zh-CN/api-reference/api-ref/conversational-ai/think) 触发一次推理 |
+
+### 相关文档
+
+- [发送图片消息](/zh-CN/ai/build/send-multimodal-messages)
+- [自定义大模型](/zh-CN/ai/build/custom-model-integration/custom-llm)
+- [使用音频模态输出](/zh-CN/ai/build/custom-model-integration/audio-output)

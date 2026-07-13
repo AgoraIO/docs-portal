@@ -1,0 +1,241 @@
+---
+title: "获取并使用许可证"
+---
+License 是声网服务的一种计费模式。
+
+本文介绍设备 License 的整体使用流程。
+
+## 许可证介绍
+
+在 IoT 场景中，声网通过设备 License 对单个设备进行收费，每个设备的 License 是唯一的。在 License 有效期内，不再对通话时长进行收费。
+
+通常 IoT 厂商会预估设备的出货量与音视频用量，向声网采购 License 并激活，再以一机一码的形式将 License 烧录在设备中。完整的 License 获取与使用流程如下：
+
+![License 使用流程](https://web-cdn.agora.io/docs-portal/img/voip-callkit/license-process.svg)
+
+<a id="apply"></a>
+## 使用流程
+### 1. 申请许可证
+
+声网为每位开发者提供 10 个有效期为 6 个月的免费测试 License。如需申请使用 License，联系 sales@shengwang.cn 并提供以下信息：
+
+| 名称 | 说明 |
+| --- | --- |
+| 品类 | License 的品类：设备 License，用于绑定设备。 |
+| 企业 ID (CID) | 声网分配给每个企业 (组织) 的唯一标识。你可以[注册账号](/zh-CN/introduction/quickstart#注册账号)并在[控制台](https://console.shengwang.cn/settings/company)的账号设置页面获取 CID。 |
+| License 类型 | <Slot name="license-html-0-3-1" /> |
+| 库存量单位 (SKU) | <Slot name="license-html-0-4-1" /> |
+| 有效期 | <Slot name="license-html-0-5-1" /> |
+| 申请数量 | 申请的 License 数量。 |
+| 启用 License 的项目 ID (App ID) 列表 | App ID 为声网分配给每个项目的唯一标识，从属于 CID。你可以为指定 App ID 启用 License 功能。你可以[创建项目](/zh-CN/introduction/quickstart#创建项目)并在[控制台](https://console.shengwang.cn/projects)的项目管理页面获取 App ID。 |
+| 是否设置最高同时在线人数 (PCU) 限制 | 启用 PCU 限制后，你可以限制 CID 或 App ID 维度上同时接入 SDK 的最大人数。 |
+
+<Slot for="license-html-0-3-1">
+
+License 的类型：
+
+    - 测试 License
+    - 正式 License
+
+    声网推荐你在集成测试时选用测试 License，正式上线前改用正式 License。详见[测试 License 和正式 License](#licensetype)。
+
+</Slot>
+
+<Slot for="license-html-0-4-1">
+
+设置 License 的能力集，包含以下参数：
+
+    - 产品：
+      - 微呼叫。
+    - License 能力：
+      - 音频。
+      - 视频。
+      - 音视频。
+    - License 分钟数上限：是否限制使用时长，精确到分钟。
+    - License 使用时间段：是否限制使用时段，精确到分钟。
+
+</Slot>
+
+<Slot for="license-html-0-5-1">
+
+License 的有效期：
+
+    - 测试 License 的有效期以天为单位，最少 3 天。
+    - 正式 License 的有效期以年为单位，最少 1 年。
+
+    License 的有效期从激活当日开始计算。
+
+</Slot>
+
+License 申请通过后，License 激活标识（PID）会关联到你的 CID 下，你可以在[控制台](https://console.shengwang.cn/license/usage)的 License 用量页面查看 License 的 PID 和使用情况。
+
+<a id="activate"></a>
+### 2. 激活许可证
+
+调用 [`/active`](/doc/voip-callkit/restful/call/operations/activateLicense) 接口激活 License。
+
+:::warning[注意]
+请确保传入的 `licenseKey` 的值和发起呼叫接口中传入的 `wechat.deviceId` 一致。在调用发起呼叫接口时，SD-RTN™ 会对这两个值进行校验，如果一致且 License 在有效期，则呼叫成功，否则呼叫失败。
+:::
+
+```shell
+curl --location 'https://api.sd-rtn.com/dabiz/license/v2/active?pid=02F5xxxxxxxxxxxxxxxxxxxxxxxxEC30&licenseKey=xxxx&appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e' \
+--header 'Authorization: Basic <Basic Auth>'
+```
+
+License 激活成功的响应示例如下：
+
+```json
+{
+  "code": 200,
+  "data": {
+    "pid": "E4D6xxxxxxxxxxxxxxxxxxxxxxxx7E79",
+    "license": "1D65xxxxxxxxxxxxxxxxxxxxxxxx6016",
+    "licenseKey": "1234xxxxxxxxxxx1234",
+    "expireTime": 17xxxxxxxx,
+    "activationTime": 17xxxxxxxx,
+    "skuView": {
+      "product": 1,
+      "name": "演示申请01",
+      "mediaType": 1,
+      "minutes": 100,
+      "period": "00:00~23:59"
+    }
+  }
+}
+```
+
+### 3. 使用许可证
+
+在使用微呼叫服务过程中，你需要在接口中传入 License 参数。声网服务端会始终对你所使用的 License 进行校验，并返回校验结果。完整的校验流程如下图所示：
+
+![License 校验流程](https://web-cdn.agora.io/docs-portal/img/voip-callkit/license-validate.svg)
+
+服务端会通过 NCS [事件 98](/zh-CN/solutions/voip-call/reference/voip-events#98-api_error) 中的 `errorCode` 字段返回校验结果。
+
+### 4. 查询即将到期的许可证列表
+
+能正常使用 License 后，你可以调用 [`/expiringLicenses`](/doc/voip-callkit/restful/call/operations/getExpiringLicenses) 接口查询即将到期的 License 列表。
+
+```shell
+curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/pids/{pid}/expiringLicenses?expiringDay=90&size=10&page=1' \
+--header 'Authorization: Basic <Basic Auth>'
+```
+
+请求成功的响应示例如下：
+
+```json
+{
+  "code": 200,
+  "data": {
+    "count": 1,
+    "list": [
+      {
+        "license": "698AxxxxxxxxxxxxxxxxxxxxxxxxEDDB0",
+        "licenseKey": "xxxx",
+        "activeTime": "2024-12-02T08:15:39Z",
+        "expireTime": "2024-12-05T08:15:39Z"
+      }
+    ]
+  }
+}
+```
+
+### 5. 许可证续期
+
+如需继续使用声网服务，为不影响你的业务，声网推荐你至少在 License 到期前 30 天联系 sales@shengwang.cn 申请续期。续期申请通过后，声网会生成 `renewId` 并提供给你，你可以调用 [`/renew`](/doc/voip-callkit/restful/call/operations/renewLicense) 接口续期 License。
+
+```shell
+curl --location 'https://api.sd-rtn.com/dabiz/license/v2/renew?appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e&renewId=4750xxxxxxxxxxxxxxxxxxxxxxxx6270&license=85B3xxxxxxxxxxxxxxxxxxxxxxxx656F' \
+--header 'Authorization: Basic <Basic Auth>'
+```
+
+请求成功的响应示例如下：
+
+```json
+{
+  "code": 200,
+  "message": "license续期成功",
+  "data": {
+    "licenseKey": "xxxx",
+    "license": "85B3xxxxxxxxxxxxxxxxxxxxxxxx656F",
+    "renewTimes": 1,
+    "lastRenewTime": 1700644272,
+    "activationTime": 1700642665,
+    "expireTime": 1705913065
+  }
+}
+```
+
+### 6. 查询许可证续期
+
+如果想查询所有的续期订单，可以调用 [`/renewals`](/doc/voip-callkit/restful/call/operations/getLicenseRenewals) 接口。
+
+```shell
+curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/renewals?size=10&page=1 \
+--header 'Authorization: Basic <Basic Auth>'
+```
+
+请求成功的响应示例如下：
+
+```javascript
+{
+  "code": 200,
+  "data": {
+    "count": 2,
+    "list": [
+      {
+        "renewId": "xxxx",
+        "pid": "xxxx",
+        "type": 2,
+        "duration": 50,
+        "totalCount": 20,
+        "allocateCount": 0,
+        "createTime": "2024-12-02T08:32:12Z"
+      },
+      {
+        "renewId": "xxxx",
+        "pid": "xxxx",
+        "type": 1,
+        "duration": 30,
+        "totalCount": 100,
+        "allocateCount": 0,
+        "createTime": "2024-12-02T08:25:30Z"
+      }
+    ]
+  }
+}
+```
+
+## 参考信息
+
+### API 参考
+
+- [License 管理相关 RESTful API](/doc/voip-callkit/restful/call/operations/activateLicense)
+
+### 概念区分
+
+#### 区分 `licenseKey` 和 `licenseValue`
+
+:::warning[注意]
+在使用 `licenseValue` 或 `licenseKey` 时，请注意区分大小写。
+:::
+
+- `licenseValue` 是每个 License 的标识。用户申请续期时，要提供指定 License 的 `licenseValue`。你可以在[激活接口](#activate)的 `license` 响应参数获取 `licenseValue`。
+
+- `licenseKey` 是设备的唯一标识。例如设备的 SN 号、Mac 地址等。字符串长度需小于 64 字节。在调用微呼叫的相关接口时，声网服务端会比对该 `licenseKey` 和 `wechat.deviceId` 是否一致。如果一致则校验成功，否则校验失败。
+
+<a id="licensetype"></a>
+#### 测试许可证和正式许可证
+
+为方便你测试和使用 SDK，声网提供测试 License 和正式 License，区别如下：
+
+- 测试 License：用于集成测试、产品调试阶段。
+- 正式 License：用于产品正式上线阶段。
+
+声网推荐你先使用测试 License，在产品正式上线前，参考如下步骤改用正式 License：
+
+1. 联系 sales@shengwang.cn 申请正式 License（下称“新 License”）。License 申请成功后在 License 用量页面查看 License 的 PID。
+2. 调用 [`/active`](/doc/voip-callkit/restful/call/operations/activateLicense) 激活新的 License，在激活接口中传入新 License 的 PID、与老 License 一致的 `licenseKey`。
+3. 在设备中写入并读取新的 License。
+4. 调用接口时，在参数中传入新的 License。

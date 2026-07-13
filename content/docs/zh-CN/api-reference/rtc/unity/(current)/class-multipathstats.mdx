@@ -1,0 +1,92 @@
+---
+title: "MultipathStats"
+description: "用于汇总多路径传输中各网络路径的统计数据。"
+---
+<a id="class_multipathstats__prototype"></a>
+
+```csharp
+    public class MultipathStats
+    {
+        public uint lanTxBytes;
+
+        public uint lanRxBytes;
+
+        public uint wifiTxBytes;
+
+        public uint wifiRxBytes;
+
+        public uint mobileTxBytes;
+
+        public uint mobileRxBytes;
+
+        public int activePathNum;
+
+        public PathStats[] pathStats;
+
+        public MultipathStats()
+        {
+            this.lanTxBytes = 0;
+            this.lanRxBytes = 0;
+            this.wifiTxBytes = 0;
+            this.wifiRxBytes = 0;
+            this.mobileTxBytes = 0;
+            this.mobileRxBytes = 0;
+            this.activePathNum = 0;
+            this.pathStats = null;
+        }
+
+        public MultipathStats(uint lanTxBytes, uint lanRxBytes, uint wifiTxBytes, uint wifiRxBytes, uint mobileTxBytes, uint mobileRxBytes, int activePathNum, PathStats[] pathStats)
+        {
+            this.lanTxBytes = lanTxBytes;
+            this.lanRxBytes = lanRxBytes;
+            this.wifiTxBytes = wifiTxBytes;
+            this.wifiRxBytes = wifiRxBytes;
+            this.mobileTxBytes = mobileTxBytes;
+            this.mobileRxBytes = mobileRxBytes;
+            this.activePathNum = activePathNum;
+            this.pathStats = pathStats;
+        }
+    }
+```
+
+<a id="class_multipathstats__detailed_desc"></a>
+
+### `自从`
+
+自 v4.6.2 版本新增。
+
+<a id="class_multipathstats__parameters"></a>
+
+## 属性
+
+### `lanTxBytes`
+
+通过 LAN 路径发送的字节总数。
+
+### `lanRxBytes`
+
+通过 LAN 路径接收的字节总数。
+
+### `wifiTxBytes`
+
+通过 Wi-Fi 路径发送的字节总数。
+
+### `wifiRxBytes`
+
+通过 Wi-Fi 路径接收的字节总数。
+
+### `mobileTxBytes`
+
+通过移动网络路径发送的字节总数。
+
+### `mobileRxBytes`
+
+通过移动网络路径接收的字节总数。
+
+### `activePathNum`
+
+当前活跃的传输路径数量。
+
+### `pathStats`
+
+每个活跃传输路径的统计信息数组。详见 [PathStats](/zh-CN/api-reference/rtc/unity/class-pathstats)。

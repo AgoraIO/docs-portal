@@ -1,0 +1,64 @@
+---
+title: RTC 服务端 SDK 概览
+---
+声网 RTC 服务端 SDK 部署在服务端，可与集成了声网 RTC 客户端 SDK 的 App 通过 [SD-RTN™](/basics/glossary#sd-rtn) 进行实时通信，实现向客户端发送音视频流和从客户端接收音视频流的功能。
+
+下图展示了 RTC 服务端 SDK 的几种应用，包括在频道中播放本地文件，直推 CDN，以及与企业呼叫中心互通。服务端 SDK 将 SD&#8209;RTN™ 中的媒体流转换为指定格式，输出给其他模块，并将其他模块的媒体流编码，发送到 SD&#8209;RTN™。
+
+![服务端 SDK 架构](https://web-cdn.agora.io/docs-portal/img/rtc-server-sdk/workflow.png)
+
+:::warning[注意]
+- 在 RTC 服务端 SDK 和客户端 SDK 互通的场景中，请确保客户端 SDK 的频道场景设为 `LIVE_BROADCASTING`。
+- RTC 服务端 SDK 不支持 SIP 转码。
+:::
+
+## 开始构建
+
+<Cards>
+  <Card title="快速开始" href="/zh-CN/realtime-media/rtc-server-sdk/get-started/run-example" description="运行示例或完成最小可用集成，快速验证核心流程。" />
+  <Card title="下载 SDK" href="/zh-CN/api-reference/sdks?product=server-gateway&platform=linux" description="获取 Linux 平台 RTC 服务端 SDK，并在卡片中选择 Java 或 C++ 包。" />
+  <Card title="构建功能" href="/zh-CN/realtime-media/rtc-server-sdk/build/setup-and-access/cloud-proxy" description="按业务任务接入核心能力，并完成生产环境配置。" />
+  <Card title="参考信息" href="/zh-CN/realtime-media/rtc-server-sdk/reference/release-notes" description="查看版本、计费、限制、错误码、API 和兼容性说明。" />
+</Cards>
+
+
+## 产品特性
+
+| <span>特性</span>  | 描述                                                         |
+| :----- | :----------------------------------------------------------- |
+| 兼容   | 与 Android、iOS、Windows、macOS、及框架平台互通。与声网的 Web RTC SDK（3.0.0 或更高版本）以及小程序声网 RTC SDK (2.4.2)  互通。 |
+| 可靠   | 支持集群部署，动态扩容，服务高可用。                         |
+| 流畅   | 基于 SD-RTN™ 的音视频抗丢包特性，实现低延迟的服务器到客户端的内容传递。 |
+| 高并发 | 同时支持推拉数百路音视频流。 |
+| 安全   | 提供音视频通话、数据传输、数据存储等端到端安全保障机制，详情可参考[信息安全说明](https://docs.agora.io/cn/Agora%20Platform/security)。 |
+
+## 适用场景
+
+RTC 服务端 SDK 应用广泛，目前可以在以下场景中发挥重要作用：
+
+|  <span>场景</span>    | 功能描述                                                     |
+| :---------- | :----------------------------------------------------------- |
+| AI 虚拟人 | 服务端 SDK 深度融合了 AI 算法，构建了 AI 虚拟人多模态交互的音视频通讯基础。使用服务端 SDK，可以实现用户和虚拟人之间低延迟、高清音视频的实时互动，用户可以享受身临其境的交流体验。 |
+| AI 互动课堂 | AI 互动课堂是一种个性化在线教学方式，利用 AI 技术对学生的表现进行智能分析，向学生推送针对性的音视频课件讲解，做到因材施教。使用服务端 SDK，可以向频道中不同的用户 ID 发送不同的课件视频。 |
+| IoT | 服务端 SDK 可以支持智能穿戴设备、摄像头、传感器等物联网设备间的实时音视频传输，实现智能安防、远程监控、远程会议等功能。 |
+| 云游戏 | 服务端 SDK 能够处理云游戏画面的实时捕捉、编码和传输，确保玩家在云端大型游戏中获得低延迟、高画质的体验。 |
+| 网络测试 | 在上课之前，服务端 SDK 作为机器人进入频道，与老师和学生通话，测试端到端网络情况。 |
+| 呼叫中心 | 使用服务端 SDK 为企业传统的呼叫中心系统（VoIP/PSTN）建立音频连接，让用户可以在 App 上方便、快捷地发起音频呼叫，联络客服坐席。 |
+
+##  产品功能
+
+| 功能                           | 描述                                                         |
+| :----------------------------- | :----------------------------------------------------------- |
+| 发送和接收多种格式的音视频数据 | 支持向 SD-RTN™ 发送多种格式的媒体流或媒体文件。 |
+| 媒体流发送和接收相互独立       | 可同时发送和接收媒体流、仅发送或仅接收媒体流、音频和视频的发送和接收相互独立。 |
+| 单进程多频道                   | 同时针对多个频道发送或接收媒体流。                            |
+| 支持 `String` 型用户 ID | 支持使用 `String` 型用户 ID 加入频道。 |
+| 接收指定用户 ID 的流              | 支持接收频道内指定用户 ID 的流。                                  |
+| 混音                           | 支持将接收的多路音频流进行混音。                               |
+| 媒体流加密 | 支持多种加密模式，详见[媒体流加密](/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/encryption)。 |
+| 云代理 | 支持云代理服务。用户只需要在防火墙上将特定的 IP 及端口列入白名单，就可以实现内网访问声网服务。 |
+| 发送数据流消息 | 支持发送文本等数据流消息。 |
+
+## 计费
+
+RTC 服务端 SDK 和实时互动 RTC 的计费方式一致，你可以参考[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)了解详细信息。

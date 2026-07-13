@@ -1,0 +1,689 @@
+---
+title: "实现秒开秒切"
+---
+
+<PlatformStructured platform="android">
+
+秒开和秒切可以优化直播体验，让观众能够更快速地进入直播间并切换直播间，提升观看的连贯性和流畅度，详见[什么是秒开秒切](/zh-CN/solutions/showroom/build/customize-and-extend/video-loader/overview)。本文介绍如何通过声网秒开秒切场景化 API（VideoLoader API）集成秒开秒切功能到实时音视频互动中。
+
+## 示例项目
+
+声网在 GitHub 上提供开源 `VideoLoaderAPI` 示例项目供你参考。
+
+<Cards>
+  <Card title="VideoLoaderAPI" href="https://github.com/AgoraIO-Community/VideoLoaderAPI" />
+</Cards>
+
+## 准备开发环境
+
+### 前提条件
+
+请确保已准备好符合要求的开发环境，详见[准备开发环境](/zh-CN/solutions/showroom/build/implement-core-features/integrate-showroom#准备开发环境)。
+
+### 集成 VideoLoader API
+
+将声网 VideoLoader API 集成到你的项目中。添加 [Android/lib_videoloaderapi/src/main/java/io/agora/videoloaderapi](https://github.com/AgoraIO-Community/VideoLoaderAPI/tree/main/Android/lib_videoloaderapi/src/main/java/io/agora/videoloaderapi) 目录下的文件到项目中，具体文件如下：
+
+- `OnLiveRoomItemTouchEventHandler` 文件
+- `OnPageScrollEventHandler.kt` 文件
+- `OnPageScorllEventHandler2.kt` 文件
+- `OnRoomListScrollEventHandler.kt` 文件
+- `VideoLoader.kt` 文件
+- `VideoLoaderImpl.kt` 文件
+
+:::warning[注意]
+为方便后续代码升级，请不要修改你添加的这些文件的名称和路径。
+:::
+
+## 使用 VideoLoader API 前的 API 调用
+
+本节展示在实现秒开、秒切功能前的准备工作。
+
+### 1. 初始化 RtcEngine
+
+调用 RTC SDK 中的 [`create`](/api-ref/rtc/android/API/toc_initialize#create%20[2/2]) 创建并初始化 `RtcEngine` 对象。
+
+```kotlin
+// 初始化声网 RtcEngine
+private val mRtcEngine by lazy {
+    RtcEngine.create(RtcEngineConfig().apply {
+        mContext = applicationContext
+        // 传入你从控制台获取的声网项目的 App ID
+        mAppId = BuildConfig.AGORA_APP_ID
+        mEventHandler = object : IRtcEngineEventHandler() {}
+    })
+}
+```
+
+### 2. 使用通配 Token
+
+你需要先在服务端生成 Token，再在后续客户端实现步骤中，传入 Token 参数进行鉴权。
+
+为加快用户加入频道的速度，你可以使用通配 Token，详见[使用通配 Token 最佳实践](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
+
+:::warning[注意]
+通配 Token 的使用会带来诸如“炸房”的风险，请结合具体需求决定是否使用通配 Token。
+:::
+
+## 实现秒开
+
+本节介绍如何在直播场景中实现观众观看直播时的丝滑秒开体验。
+
+### 1. 实现直播间列表 UI 模块
+
+实现一个展示直播间列表的 UI 模块，下面以一个 `RecyclerView` 举例。
+
+```xml
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/rvRooms"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="7.5dp"
+    android:overScrollMode="never"
+    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+    app:spanCount="2"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:paddingBottom="50dp"
+    android:visibility="visible" />
+```
+
+### 2. 监听直播间列表的滑动事件
+
+创建一个 `OnRoomListScrollEventHandler` 对象，并将其作为直播间列表滑动事件的代理注册给直播间列表的 UI。创建 `OnRoomListScrollEventHandler` 对象时，你需要在构造函数的参数中传入如下：
+
+- `mRtcEngine`：之前初始化的 `RtcEngine` 对象。
+- `localUid`：本地用户的 `uid`。
+
+`OnRoomListScrollEventHandler` 对象监听到直播间列表的滑动事件后，会驱动 `OnRoomListScrollEventHandler` 类内部封装的最佳实践，并对屏幕内出现的直播间进行频道预加载（[`preloadChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_preloadchannel)）。
+
+```kotlin
+// 代码片段来源于 RoomListActivity
+class RoomListActivity : AppCompatActivity() {
+    private val mBinding by lazy { ShowRoomListActivityBinding.inflate(LayoutInflater.from(this)) }
+    // 创建 OnRoomListScrollEventHandler 对象
+    private val onRoomListScrollEventHandler: OnRoomListScrollEventHandler = object : OnRoomListScrollEventHandler(mRtcEngine, RtcEngineInstance.localUid()) {}
+    // 业务服务模块
+    private val mService by lazy { ShowServiceProtocol.getImplInstance() }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // 将 OnRoomListScrollEventHandler 对象设置给直播间列表，监听滑动事件
+        mBinding.rvRooms.addOnScrollListener(onRoomListScrollEventHandler as OnRoomListScrollEventHandler)
+
+        // 获取房间列表
+        mService.getRoomList { roomList ->
+            // 获取房间列表后，将结果传递给 onRoomListScrollEventHandler 对象
+            onRoomListScrollEventHandler?.updateRoomList(roomList)
+        }
+    }
+}
+```
+
+### 3. 监听单个直播间的触碰事件
+
+创建 `OnLiveRoomItemTouchEventHandler` 对象，将该对象作为单个直播间的触碰事件的代理注册给单个直播间 UI。创建 `OnLiveRoomItemTouchEventHandler` 对象时，你需要在构造函数的参数中传入如下：
+
+- `mRtcEngine`：之前初始化的 `RtcEngine` 对象。
+- `roomInfo`：`VideoLoader.RoomInfo` 对象。
+
+`OnLiveRoomItemTouchEventHandler` 对象监听到单个直播间的触碰事件后，会驱动 `OnLiveRoomItemTouchEventHandler` 类内部封装的最佳实践，并进入用户点击的直播间，此时你无需在业务层调用 `joinChannel` 或类似的用于加入频道的方法。
+
+```kotlin
+// 代码片段来源于 RoomListActivity
+class RoomListActivity : AppCompatActivity() {
+    private val mBinding by lazy { ShowRoomListActivityBinding.inflate(LayoutInflater.from(this)) }
+    private lateinit var mRoomAdapter: BindingSingleAdapter<ShowRoomDetailModel, ShowRoomItemBinding>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        mRoomAdapter = object : BindingSingleAdapter<ShowRoomDetailModel, ShowRoomItemBinding>() {
+            override fun onBindViewHolder(
+                holder: BindingViewHolder<ShowRoomItemBinding>,
+                position: Int
+            ) {
+                // 单个直播间的 UI
+                val roomInfo = getItem(position) ?: return
+                // 创建 OnLiveRoomItemTouchEventHandler 对象
+                val onTouchEventHandler = object : OnLiveRoomItemTouchEventHandler(
+                    // 之前初始化的 RtcEngine 对象
+                    mRtcEngine,
+                    // 房间信息
+                    VideoLoader.RoomInfo(
+                        roomInfo.roomId,
+                        arrayListOf(
+                            VideoLoader.AnchorInfo(
+                                roomInfo.roomId,
+                                roomInfo.ownerId.toInt(),
+                                // 上文提到的 Token
+                                // 示例代码中为通配 Token
+                                RtcEngineInstance.generalToken()
+                            )
+                        )
+                    ),
+                    RtcEngineInstance.localUid()
+                ) {
+                    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                        when (event!!.action) {
+                            MotionEvent.ACTION_UP -> {
+                                if (RtcEngineInstance.generalToken() != "") {
+                                    super.onTouch(v, event)
+                                    // 监听到 ACTION_UP 事件，进入直播间内页面
+                                    goLiveDetailActivity(list, position, roomInfo)
+                                }
+                            }
+                        }
+                        return true
+                    }
+
+                    // 通知你渲染主播画面，详见下文解释
+                    override fun onRequireRenderVideo(info: VideoLoader.AnchorInfo): VideoLoader.VideoCanvasContainer? {
+                        // 渲染主播画面的最佳时机
+                        return ...
+                    }
+                }
+
+                // 将 OnLiveRoomItemTouchEventHandler 对象设置给单个直播间，监听触碰事件
+                binding.root.setOnTouchListener(onTouchEventHandler)
+            }
+        }
+        mBinding.rvRooms.adapter = mRoomAdapter
+    }
+}
+```
+
+收到 `onRequireRenderVideo` 事件的时刻是渲染主播画面的最佳时机。因此建议你提前创建好主播画面的容器，在收到 `onRequireRenderVideo` 事件通知后，将容器返回给 `OnLiveRoomItemTouchEventHandler` 对象，该对象会自动将主播画面添加并渲染在该容器上。
+
+## 实现秒切
+
+本节介绍如何在直播场景内实现观众秒速切换直播间观看直播。
+
+### 1. 实现直播间滑动切换 UI 模块
+
+实现一个直播间列表的滑动切换模块，下面以 `ViewPager2` 为例。
+
+```xml
+<androidx.viewpager2.widget.ViewPager2 xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewPager2"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:overScrollMode="never"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_scrollEffect="none"
+    android:layout_height="match_parent" />
+```
+
+### 2. 监听直播间的切换事件
+
+创建一个 `OnPageScrollEventHandler` 对象，并将其注册为直播间 `ViewPager2` 的滑动事件代理。创建 `OnPageScrollEventHandler` 对象时，你需要在构造函数的参数中传入如下：
+
+- `mRtcEngine`：之前初始化的 `RtcEngine` 对象。
+- `localUid`：本地用户的 `uid`。
+- `needPreJoin`：设置是否需要提前加入所处直播间的上下两个直播间。如果设为是（`true`），则会带来更好的秒切效果，但也会增加费用。
+- `sliceMode`：切换直播间出图的时机。
+
+`OnPageScrollEventHandler` 对象监听到直播间 `ViewPager2` 的滑动事件后，会驱动 `OnPageScrollEventHandler` 类内部封装的最佳实践，并在最佳时机对不同直播间的音视频订阅行为进行切换。`OnPageScrollEventHandler` 对象会触发对应位置（`position`）的直播间的如下事件：
+
+- `onPageStartLoading`：刚开始加载/显示直播间：
+- `onPageLoaded`：直播间加载/显示完毕
+- `onPageLeft`：已离开直播间
+- `onRequireRenderVideo`：对应直播间主播视图的最佳渲染时机。此时你必须传入对应直播间的主播画面的容器，`OnPageScrollEventHandler` 对象会将主播画面添加并渲染在该容器上。
+
+```kotlin
+// 代码片段来源于 LiveViewPagerActivity
+class LiveViewPagerActivity : AppCompatActivity() {
+    private val mBinding by lazy { LiveViewPagerActivityBinding.inflate(LayoutInflater.from(this)) }
+    // 使用一个循环数组储存可以切换的直播间列表
+    private val vpFragments = SparseArray<LiveViewPagerFragment>()
+    // 创建 OnPageScrollEventHandler 对象
+    private var onPageScrollEventHandler: OnPageScrollEventHandler? = object : OnPageScrollEventHandler(
+        // 之前初始化的 RtcEngine 对象
+        RtcEngineInstance.rtcEngine,
+        // 本地用户的 uid
+        RtcEngineInstance.localUid(),
+        // 设置是否提前加入所处直播间的上下两个直播间
+        // 如果是（true），则会带来更好的秒切效果，但是会增加费用
+        needPreJoin,
+        // 通过 onPageScrollStateChanged 事件，切换直播间出图的时机
+        sliceMode
+    ) {
+        override fun onPageScrollStateChanged(state: Int) {
+            when (state) {
+                ViewPager2.SCROLL_STATE_SETTLING -> binding.viewPager2.isUserInputEnabled = false
+                ViewPager2.SCROLL_STATE_IDLE -> binding.viewPager2.isUserInputEnabled = true
+            }
+            super.onPageScrollStateChanged(state)
+        }
+
+        override fun onPageStartLoading(position: Int) {
+            // 通知对应 position 的直播间开始显示
+            vpFragments[position]?.startLoadPageSafely()
+        }
+
+        override fun onPageLoaded(position: Int) {
+            // 通知对应 position 的直播间已经显示完毕
+            vpFragments[position]?.onPageLoaded()
+        }
+
+        override fun onPageLeft(position: Int) {
+            // 通知对应 position 的直播间已经离开
+            vpFragments[position]?.stopLoadPage(true)
+        }
+
+        override fun onRequireRenderVideo(position: Int, info: VideoLoader.AnchorInfo): VideoLoader.VideoCanvasContainer? {
+            // 对应直播间主播画面的最佳渲染时机，通知对应 position 的直播间返回对应主播画面的容器
+            return vpFragments[position]?.initAnchorVideoView(info)
+        }
+    }
+
+    // Activity 被创建时执行的操作，详见下文
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // 待补充
+        ...
+    }
+}
+```
+
+你需要在 Activity 创建时调用 `updateRoomList` 将初始的直播间列表信息传给 `onPageScrollEventHandler` 对象；同时在 `FragmentStateAdapter` 的 `createFragment` 事件内调用 `onRoomCreated` 通知 `onPageScrollEventHandler` 对应的直播间被创建。因此，在 `override fun onCreate(savedInstanceState: Bundle?) {` 后补充代码，使其最终如下：
+
+```kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+    // 初始化的 Activity 时，需要将初始的直播间列表信息传给 onPageScrollEventHandler 对象
+    onPageScrollEventHandler?.updateRoomList(list)
+    // 1 代表 ViewPager2 将在内存中至少保留当前页面两侧各一个页面（Fragment）
+    binding.viewPager2.offscreenPageLimit = 1
+    // 创建 FragmentStateAdapter，管理代表直播间的页面
+    val fragmentAdapter = object : FragmentStateAdapter(this) {
+        // 如果 ViewPager2 是可滑动的，则代表容纳无限多个页面
+        // 否则，返回 1，只容纳一个页面
+        override fun getItemCount() = if (mScrollable) Int.MAX_VALUE else 1
+
+        // 为每个直播间创建一个 LiveViewPagerFragment
+        override fun createFragment(position: Int): Fragment {
+            val roomInfo = if (mScrollable) {
+                mRoomInfoList[position % mRoomInfoList.size]
+            } else {
+                mRoomInfoList[selectedRoomIndex]
+            }
+            return LiveViewPagerFragment.newInstance(
+                roomInfo,
+                onPageScrollEventHandler as OnPageScrollEventHandler, position
+            ).apply {
+                // 将创建的 LiveViewPagerFragment 存储在 vpFragments 中
+                vpFragments.put(position, this)
+                // 创建直播间内的主播列表
+                val anchorList = arrayListOf(
+                    VideoLoader.AnchorInfo(
+                        roomInfo.roomId,
+                        roomInfo.ownerId.toInt(),
+                        RtcEngineInstance.generalToken()
+                    )
+                )
+                // onRoomCreated 通知 onPageScrollEventHandler 对应的直播间已被创建
+                onPageScrollEventHandler?.onRoomCreated(
+                    position,
+                    VideoLoader.RoomInfo(roomInfo.roomId, anchorList),
+                    position == binding.viewPager2.currentItem
+                )
+            }
+        }
+    }
+    binding.viewPager2.adapter = fragmentAdapter
+    // 设置用户是否可以手动滑动页面
+    // 一般的直播间场景中，观众可以手动滑动页面，主播不可手动滑动页面
+    binding.viewPager2.isUserInputEnabled = mScrollable
+    if (mScrollable) {
+        // 如果可以滑动
+        // 将 OnPageScrollEventHandler 对象设置给 ViewPager2，监听页面改变事件
+        // 并计算出最新位置
+        binding.viewPager2.registerOnPageChangeCallback(
+            onPageScrollEventHandler as OnPageChangeCallback
+        )
+        binding.viewPager2.setCurrentItem(
+            Int.MAX_VALUE / 2 - Int.MAX_VALUE / 2 % mRoomInfoList.size + selectedRoomIndex,
+            false
+        )
+    } else {
+        // 如果不可滑动
+        // 将当前位置设为 0
+        currLoadPosition = 0
+    }
+}
+```
+
+## 使用 VideoLoader API 后释放资源
+
+使用声网秒开秒切场景化 API（VideoLoader API）后，在离开直播场景时，无需你在业务层主动调用 `leaveChannel`，按照如下示例代码释放资源即可：
+
+```kotlin
+VideoLoader.getImplInstance(mRtcEngine).cleanCache()
+VideoLoader.release()
+RtcEngineEx.destroy()
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+秒开和秒切可以优化直播体验，让观众能够更快速地进入直播间并切换直播间，提升观看的连贯性和流畅度，详见[什么是秒开秒切](/zh-CN/solutions/showroom/build/customize-and-extend/video-loader/overview)。本文介绍如何通过声网秒开秒切场景化 API（VideoLoader API）集成秒开秒切功能到实时音视频互动中。
+
+## 示例项目
+
+声网在 GitHub 上提供开源 `VideoLoaderAPI` 示例项目供你参考。
+
+<Cards>
+  <Card title="VideoLoaderAPI" href="https://github.com/AgoraIO-Community/VideoLoaderAPI" />
+</Cards>
+
+## 准备开发环境
+
+### 前提条件
+
+请确保已准备好符合要求的开发环境，详见[准备开发环境](/zh-CN/solutions/showroom/build/implement-core-features/integrate-showroom#准备开发环境)。
+
+### 集成依赖
+
+1. 参考[克隆仓库](/zh-CN/solutions/showroom/build/customize-and-extend/video-loader/run-project#克隆仓库)下载 `VideoLoaderAPI` 文件夹。将其中的如下文件夹和文件复制到与你的 `*.xcodeproj` 文件同层级的位置：
+
+    - `VideoLoaderAPI` 文件夹。
+    - `VideoLoaderAPI.podspec` 文件。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/videoloader/folder-needed.png)
+
+    :::warning[注意]
+    为方便后续代码升级，请不要修改你添加的这些文件的名称和路径。
+    :::
+
+2. 在终端里进入 `*.xcodeproj` 文件所在目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
+
+3. 打开 `Podfile` 文件，修改文件为如下内容。注意 `target` 和 `path` 的填写。
+
+    ```ruby
+    source 'https://github.com/CocoaPods/Specs.git'
+    use_frameworks!
+
+    platform :ios, '13.0'
+
+    # target 需改为你的项目中实际的 Target 名称
+    target 'VideoLoaderAPI_Example' do
+        pod 'VideoLoaderAPI', :path => 'VideoLoaderAPI.podspec'
+
+        target 'VideoLoaderAPI_Tests' do
+            inherit! :search_paths
+        end
+    end
+    ```
+
+4. 在终端里进入 `*.xcodeproj` 文件所在目录，执行 `pod install` 命令安装依赖库。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/videoloader/install.png)
+
+    依赖库安装成功后，会出现一个 `*.xcworkspace` 文件。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/videoloader/project.png)
+
+5. （可选）如果你在使用 VideoLoader API 前，已在项目中集成了 RTC SDK 依赖。你可以修改 `VideoLoaderAPI.podspec` 这一行内容为你正在使用的 SDK 版本。
+
+   ```shell
+   # 4.1.1.19 为第 4 步默认安装的版本，如果你正在使用其他版本，请修改为当前版本
+   s.dependency 'AgoraRtcEngine_Special_iOS', '4.1.1.19'
+   ```
+
+## 使用 VideoLoader API 前的 API 调用
+
+本节展示在实现秒开、秒切功能前的准备工作。
+
+### 1. 初始化 RtcEngine 和 VideoLoader
+
+在项目工程文件默认的 `ViewController` 里，调用声网 RTC SDK 中的 [`sharedEngineWithConfig`](/api-ref/rtc/ios/API/toc_initialize#sharedEngineWithConfig) 创建并初始化 `AgoraRtcEngineKit` 对象，并初始化 VideoLoader。
+
+```swift
+func prepareEngine() {
+    // 创建 AgoraRtcEngineKit 实例
+    let engine = _createRtcEngine()
+    // 获取 VideoLoaderApiImpl 的实例对象
+    let loader = VideoLoaderApiImpl.shared
+    loader.addListener(listener: self)
+    // 创建 VideoLoaderConfig 实例
+    let config = VideoLoaderConfig()
+    // 设置 AgoraRtcEngineKit 实例
+    config.rtcEngine = engine
+    // 初始化 VideoLoader
+    loader.setup(config: config)
+}
+
+// 初始化 AgoraRtcEngineKit
+private func _createRtcEngine() ->AgoraRtcEngineKit {
+    let config = AgoraRtcEngineConfig()
+    // 传入你从控制台获取的声网项目的 App ID
+    config.appId = KeyCenter.AppId
+    config.channelProfile = .liveBroadcasting
+    config.audioScenario = .gameStreaming
+    config.areaCode = .global
+    let engine = AgoraRtcEngineKit.sharedEngine(with: config,
+                                                delegate: nil)
+    return engine
+}
+```
+
+### 2. 使用通配 Token
+
+你需要先在服务端生成 Token，再在后续客户端实现步骤中，传入 Token 参数进行鉴权。
+
+为加快用户加入频道的速度，你可以使用通配 Token，详见[使用通配 Token 最佳实践](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
+
+:::warning[注意]
+通配 Token 的使用会带来诸如“炸房”的风险，请结合具体需求决定是否使用通配 Token。
+:::
+
+## 实现秒开
+
+本节介绍如何在直播场景中实现观众观看直播时的丝滑秒开体验。
+
+### 1. 实现直播间列表 UI 模块
+
+实现一个展示直播间列表的 UI 模块，下面以一个 `UICollectionView` 举例。
+
+```swift
+private lazy var listView: UICollectionView = {
+    let layout = UICollectionViewFlowLayout()
+    layout.minimumLineSpacing = 5
+    layout.minimumInteritemSpacing = 5
+    layout.sectionInset = .zero
+
+    let w = view.bounds.width / 2 - 5
+    layout.itemSize = CGSize(width: w, height: w * 1.5)
+
+    let collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
+    collectionView.backgroundColor = .white
+    collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "videoloader_listcell")
+    collectionView.scrollsToTop = false
+    collectionView.delegate = self.delegateHandler
+    collectionView.dataSource = self
+    collectionView.contentInsetAdjustmentBehavior = .never
+    collectionView.showsVerticalScrollIndicator = false
+
+    return collectionView
+}()
+```
+
+### 2. 监听直播间列表的滑动事件
+
+创建一个 `AGCollectionLoadingDelegateHandler` 对象，并将其作为直播间列表滑动事件的代理注册给直播间列表的 UI。创建 `AGCollectionLoadingDelegateHandler` 对象时，你需要在构造函数的 `localUid` 参数中传入本地用户的 `uid`。
+
+`AGCollectionLoadingDelegateHandler` 对象监听到直播间列表的滑动事件后，会驱动 `AGCollectionLoadingDelegateHandler` 类内部封装的最佳实践，并对屏幕内出现的直播间进行频道预加载（[`preloadChannel`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_preloadchannel)）。
+
+```swift
+// 代码片段来源于房间列表的 ViewController
+class ShowRoomListVC: UIViewController {
+    // 创建 AGCollectionLoadingDelegateHandler
+    private lazy var delegateHandler: AGCollectionLoadingDelegateHandler = {
+        let handler = AGCollectionLoadingDelegateHandler(localUid: localUid)
+
+        return handler
+    }()
+    // 自己的业务服务模块
+    private lazy var service: ShowServiceProtocol = AppContext.showServiceImp("")
+    // 房间列表
+    private var roomList = [ShowRoomListModel]() {
+        didSet {
+            delegateHandler.roomList = AGRoomArray(roomList: roomList)
+            collectionView.reloadData()
+        }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // 加载视图后可以做其他的额外操作
+        ...
+
+        prepareEngine()
+
+        listView.delegate = self.delegateHandler
+        listView.dataSource = self
+
+        service.getRoomList(page: 1) { [weak self] error, roomList in
+            self?.roomList = roomList ?? []
+        }
+    }
+    ...
+}
+```
+
+### 3. 监听单个直播间的触碰事件
+
+在原生 `listView` 的 `DataSource` 协议中，你可以通过在 `cellForItemAt` 方法中创建 Cell。在创建 Cell 时，添加 `ag_addPreloadTap` 方法来实现监听单个直播间的触碰事件。在添加 `ag_addPreloadTap` 方法时，你需要传入以下参数：
+
+- `roomInfo`：`VideoLoader.RoomInfo` 对象。
+- `localUid`：本地用户的 `uid`。
+- `enableProcess`：点击事件触发的回调函数。你可以根据回调中的点击状态执行相应的业务逻辑，例如检查是否成功获取到 Token 等。
+- `onRequireRenderVideo`：最佳主播画面渲染时机的回调函数。建议你提前创建好主播画面的容器，并在收到 `onRequireRenderVideo` 事件通知后，将容器对象填入该回调函数的返回值中。这样，`ag_addPreloadTap` 会自动将主播画面添加并渲染在该容器上。
+- `completion`：进入直播页面的回调函数。
+
+当触发单个直播间的触碰事件时，`ag_addPreloadTap` 会自动执行内部封装的最佳实践，并加入点击的直播间频道，这样你就无需在业务调用 `joinChannelByToken` 或类似的用于加入频道的方法。
+
+```swift
+// 代码片段来源于直播间列表的 ViewController
+extension ShowRoomListVC: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // 返回房间列表的数量
+        return roomList.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: ShowRoomListCell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(ShowRoomListCell.self), for: indexPath) as! ShowRoomListCell
+        // 获取对应索引的房间数据
+        let room = roomList[indexPath.item]
+
+        // 设置 Cell 内容
+        ...
+
+        // 添加触碰事件
+        cell.ag_addPreloadTap(roomInfo: room, localUid: delegateHandler.localUid) { [weak self] state in
+            if AppContext.shared.rtcToken?.count ?? 0 == 0 {
+                // 如果没有获取到 Token
+                if state == .began {
+                    // 如果是按下的情况，可以尝试再次获取 Token
+                    self?.preGenerateToken()
+                } else if state == .ended {
+                    // 如果点击完成，但是仍然没有获取到 Token，禁止执行进入直播间操作
+                    ToastView.show(text: "Token is not exit, try again!")
+                }
+                return false
+            }
+            return true
+        } onRequireRenderVideo: { _ in
+            // 主播画面渲染的最佳时机
+            return nil
+        } completion: { [weak self] in
+            // 进入直播间内
+            self?.joinRoom(room)
+        }
+
+        return cell
+    }
+}
+```
+
+## 实现秒切
+
+本节介绍如何在直播场景内实现观众秒速切换直播间观看直播。
+
+### 1. 实现直播间滑动切换 UI 模块
+
+实现一个直播间列表的滑动切换模块，下面以 `UICollectionView` 为例。
+
+```swift
+private lazy var collectionView: UICollectionView = {
+    let layout = UICollectionViewFlowLayout()
+    layout.minimumLineSpacing = 0
+    layout.minimumInteritemSpacing = 0
+    layout.sectionInset = .zero
+    layout.itemSize = self.view.bounds.size
+    let collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
+    collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(UICollectionViewCell.self))
+    collectionView.scrollsToTop = false
+    collectionView.isPagingEnabled = true
+    collectionView.contentInsetAdjustmentBehavior = .never
+    collectionView.bounces = false
+    collectionView.showsVerticalScrollIndicator = false
+    return collectionView
+}()
+```
+
+### 2. 监听直播间的切换事件
+
+创建一个 `AGCollectionSlicingDelegateHandler` 的对象，并将其注册为直播间 CollectionView 的滑动事件代理。创建 `AGCollectionSlicingDelegateHandler` 对象时，你需要在构造函数的参数中传入如下：
+
+- `localUid`：本地用户的 `uid`。
+- `needPreJoin`：设置是否需要提前加入所处直播间的上下两个直播间。如果设为是（`true`），则会带来更好的秒切效果，但也会增加费用。
+- `videoType`：切换直播间视频显示的时机。
+- `audioType`：切换直播间音频显示的时机。
+- `onRequireRenderVideo`：对应直播间主播视图的最佳渲染时机。此时你必须传入对应直播间的主播画面的容器，`AGCollectionSlicingDelegateHandler` 对象将主播画面添加并渲染在该容器上。
+
+`AGCollectionSlicingDelegateHandler` 对象监听到直播间 CollectionView 的滑动事件后，会驱动 `AGCollectionSlicingDelegateHandler` 类内部封装的最佳实践，并在最佳时机对不同直播间的音视频订阅行为进行切换。
+
+同时，在创建 ViewController 时，你需要设置 `roomList` 属性，将初始的直播间列表信息传递给 `AGCollectionSlicingDelegateHandler` 对象。
+
+```swift
+// 代码片段来源于房间列表的 ViewController
+class ShowLivePagesViewController: ViewController {
+    // 创建一个 AGCollectionSlicingDelegateHandler 对象
+    private lazy var delegateHandler = {
+        let handler = AGCollectionSlicingDelegateHandler(localUid: localUid, needPrejoin: needPrejoin)
+        handler.videoSlicingType = videoType
+        handler.audioSlicingType = audioType
+        handler.onRequireRenderVideo = { [weak self] info, cell, indexPath in
+            // 在渲染主播画面的最佳时机，执行相应的操作
+            return ...
+        }
+        return handler
+    }()
+
+    // 传递初始的直播间列表信息给 AGCollectionSlicingDelegateHandler 对象
+    var roomList: [ShowRoomListModel]? {
+        didSet {
+            delegateHandler.roomList = AGRoomArray(roomList: roomList)
+        }
+    }
+
+    // 将 delegateHandler 对象注册为直播间 CollectionView 的滑动事件代理
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // 设置代理
+        collectionView.delegate = delegateHandler
+        collectionView.dataSource = self
+        ...
+    }
+}
+```
+
+## 使用 VideoLoader API 后释放资源
+
+使用声网秒开秒切场景化 API（VideoLoader API）后，在离开直播场景时，无需你在业务层主动调用 `leaveChannel`，按照如下示例代码释放资源即可：
+
+```swift
+VideoLoaderApiImpl.shared.cleanCache()
+AgoraRtcEngineKit.destroy()
+```
+
+</PlatformStructured>

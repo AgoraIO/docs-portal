@@ -1,0 +1,165 @@
+---
+title: "展示文件"
+---
+当用户使用互动白板时，可能需要展示 DOC、DOCX、PDF、PPT、PPTX 等不同格式的文件。
+
+声网互动白板 SDK 提供展示文件完整内容的能力，你可以构建多个场景，在每个场景中通过指定 URL 插入并展示一张静态图片或动态 HTML 网页，从而实现文件展示效果，例如按顺序播放 PPT。
+
+## 技术原理
+
+在声网互动白板中展示文件的基本流程如下：
+
+1. 将待展示的源文件分页转换成一组图片或网页，上传至你的服务器或第三方云存储，生成一组公网可访问的 URL。
+2. 创建一组场景，将图片或网页的 URL 按顺序分别插入每个场景中。
+3. 自定义按钮，并调用切换场景 API，通过点击按钮切换场景，实现分页展示文件的效果。
+
+将源文件转换为图片或网页时，你需要特别注意以下几点：
+
+- **确保转换后的图片或网页格式正确。**
+
+  目前声网互动白板 SDK 支持在场景中插入并展示的图片或网页格式如下：
+
+  - PNG、JPG/JPEG、WEBP 格式的静态图片。
+  - 由 PPT、PPTX、DOC、DOCX、PDF 格式（以 `%PDF` 开头）的源文件转换成的 PNG、JPG/JPEG、WEBP 格式的静态图片。你可以自行转换，也可以使用声网互动白板的[静态文档转换服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files#静态文档转换)。
+  - 由 PPTX 格式的源文件转换成的 HTML 网页。你必须使用声网互动白板的[动态文档转换服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files#动态文档转换)进行转换。
+
+- **确保图片或网页的访问权限。**
+
+  你需要确保转换后的图片或网页可通过公网访问；此外，如果存储图片或网页的服务器与你的 Web 应用域名不同，你需要在服务端配置[跨源资源共享（CORS）](https://developer.mozilla.org/zh-CN/docs/Glossary/CORS)，设置 CORS 头部为 `Access-Control-Allow-Origin: *`，确保在本地加载资源时不会被跨域限制阻挡。否则，你的 Web 应用服务将无法访问并加载这些图片或网页。
+
+## 前提条件
+
+开始前，请确保满足以下条件：
+
+- 完成文档转换，并生成一组图片或网页的 URL 地址。如果你需要使用声网互动白板的文档转换功能，详见[文档转换服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files)。
+- 了解场景的基本规则和操作。详见[场景概览](/zh-CN/realtime-media/whiteboard/concepts#场景)和[管理场景](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/manage-scene)。
+- 在项目中集成声网互动白板 SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)。
+
+## 实现文件展示
+
+下面在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)的示例项目基础上添加代码，介绍如何构建多个场景，展示一个六页、带动画效果的 PPTX 文件。
+
+1. 将 PPTX 源文件上传至第三方云存储，调用[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)，创建一个动态文档转换任务，将 PPTX 文件按页转换为 HTML 网页。
+
+2. 调用[查询转换任务进度](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)，从响应包体的 `previews` 参数中获取转换生成的 HTML 网页的 URL 地址。
+
+3. 在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)的 `index.js` 文件中添加如下行，构建新场景并实现场景切换：
+
+```javascript
+var whiteWebSdk = new WhiteWebSdk({
+  appIdentifier: "RMmxxxxAQ", // 你的 AppIdentifier
+});
+
+var joinRoomParams = {
+  uuid: "a7xxxxx69", // 房间的 UUID
+  roomToken: "NETLESSROOM_YWxxxxjk", // Room Token
+};
+
+whiteWebSdk
+  .joinRoom(joinRoomParams)
+  .then(function (room) {
+    room.bindHtmlElement(document.getElementById("whiteboard"));
+    // 指定待展示的 PPT 页面的宽（px）、高（px）和 URL 地址，构建一组新场景。
+    var width = 1280;
+    var height = 720;
+    var imageURLs = [
+      "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/19.slide",
+      "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/20.slide",
+      "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/21.slide",
+      "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/22.slide",
+      "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/23.slide",
+      "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/24.slide",
+    ];
+    var scenes = imageURLs.map(function (url, index) {
+      return {
+        name: "" + (index + 1),
+        ppt: {
+          src: url,
+          width: width,
+          height: height,
+        },
+      };
+    });
+
+    // 指定场景目录，插入新构建的场景。
+    room.putScenes("/AgoraFPA", scenes);
+
+    // 切换到新插入的第一个场景。
+    room.setScenePath("/AgoraFPA/1");
+
+    // 定义“下一页”和“上一页”按钮。
+    var nextpage = document.getElementById("nextpage");
+    var prepage = document.getElementById("prepage");
+
+    // 点击“下一页”按钮，切换至下一个场景。
+    nextpage.addEventListener("click", function () {
+      var nextIndex = room.state.sceneState.index + 1;
+      var scenes = room.state.sceneState.scenes;
+
+      if (nextIndex < scenes.length) {
+        room.setSceneIndex(nextIndex);
+      }
+    });
+
+    // 点击“上一页”按钮，返回上一个场景。
+    prepage.addEventListener("click", function () {
+      var preIndex = room.state.sceneState.index - 1;
+      var scenes = room.state.sceneState.scenes;
+
+      if (preIndex >= 0) {
+        room.setSceneIndex(preIndex);
+      }
+    });
+  })
+  .catch(function (err) {
+    console.error(err);
+  });
+```
+
+4. 在 `index.html` 文件中添加如下代码，将切换场景的按钮加载到页面上：
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://sdk.netless.link/white-web-sdk/2.13.11.js"></script>
+        <script src="./index.js"></script>
+ 
+    </head>
+    <body>
+        <div id="whiteboard" style="width: 100%; height: 100vh;">
+        </div>
+		<!--定义场景切换按钮的样式，并将其添加到网页上-->
+        <div style="display: inline-block;">
+        <div id="nextpage" class="Next" style="width: 50px; border: 1px solid lightskyblue;display: inline-block;position: fixed; bottom: 400px;">
+            下一页
+        </div>
+        <div id="prepage" class="Prev" style="width: 50px; border: 1px solid lightskyblue;display: inline-block;position: fixed; bottom: 430px;">
+            上一页
+        </div>
+    </div>
+    </body>
+</html>
+```
+
+保存修改后重新用浏览器打开 `index.html` 文件，你可以看到 PPTX 文件的首页。点击**下一页**按钮，可以按顺序播放 PPTX 文件，并且可以看到源文件中的动画效果。
+
+## API 参考
+
+互动白板 Web SDK API：
+
+- [`joinRoom`](/api-ref/whiteboard/javascript/classes/whitewebsdk#joinRoom)
+- [`putScenes`](/api-ref/whiteboard/javascript/interfaces/room#putScenes)
+- [`setScenePath`](/api-ref/whiteboard/javascript/interfaces/room#setScenePath)
+- [`setSceneIndex`](/api-ref/whiteboard/javascript/interfaces/room#setSceneIndex)
+- [`SceneState`](/api-ref/whiteboard/javascript/globals.html#scenestate)
+
+互动白板文档转换 RESTful API：
+
+- [发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)
+- [查询转换任务的进度](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)
+
+## 相关文档
+
+- [文档转换服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files)
+- [为什么插入白板的图片或 PPT 资源无法显示？](/zh-CN/api-reference/faq/integration/whiteboard_cors)

@@ -1,0 +1,780 @@
+---
+title: "类及枚举"
+---
+<a id="agoraserviceconfig"></a>
+## 类
+### AgoraServiceConfig
+
+```go
+type AgoraServiceConfig struct {
+    EnableAudioProcessor bool
+    EnableAudioDevice    bool
+    EnableVideo          bool
+    AppId                string
+    AreaCode             AreaCode
+    ChannelProfile       ChannelProfile
+    AudioScenario        AudioScenario
+    UseStringUid         bool
+    LogPath              string
+    LogSize              int
+    DomainLimit          int
+}
+```
+
+<span className="index-desc-agoraserviceconfig">`AgoraServiceConfig` 类的全局配置。在调用 [`Initialize`](#initialize) 方法时设置。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `EnableAudioProcessor` | <Slot name="apidatatype-go-html-0-1-1" /> |
+| `EnableAudioDevice` | <Slot name="apidatatype-go-html-0-2-1" /> |
+| `EnableVideo` | <Slot name="apidatatype-go-html-0-3-1" /> |
+| `AppId` | 你的声网项目的 App ID。如果你的声网项目开启了 Token 鉴权，你也可以将此参数赋值为 RTC Token。详见[获取 App ID](/zh-CN/realtime-media/rtc-server-sdk/get-started/enable-service#get-app-id)。 |
+| `AreaCode` | 服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。区域码支持位操作。指定访问区域后，SDK 会连接指定区域内的声网服务器。详见 [`AreaCode`](#areacode)。 |
+| `ChannelProfile` | 频道使用场景。详见 [`ChannelProfile`](#channelprofile)。 |
+| `AudioScenario` | 音频编码属性。详见 [`AudioScenario`](#audioscenario)。 |
+| `UseStringUid` | <Slot name="apidatatype-go-html-0-8-1" /> |
+| `LogPath` | 日志文件路径。 |
+| `LogSize` | 日志文件大小（字节）。 |
+| `DomainLimit` | <Slot name="apidatatype-go-html-0-11-1" /> |
+
+<Slot for="apidatatype-go-html-0-1-1">
+
+是否开启音频处理模块。
+
+    - `true`: (默认) 开启音频处理模块。
+    - `false`: 关闭音频处理模块。你将无法创建音频轨道。
+
+</Slot>
+
+<Slot for="apidatatype-go-html-0-2-1">
+
+是否开启音频设备模块（Audio Device Module, ADM）。ADM 用来管理音频设备，例如录制和播放音频。
+
+    - `true`: (默认) 开启音频设备模块。你可以录制和播放音频。
+    - `false`: 关闭音频设备模块。你无法录制和播放音频。
+
+    注意：如果你将 `EnableAudioDevice` 设为 `false` 且将 `EnableAudioProcessor` 设为 `true`，你将无法使用音频设备，但你可以推送 PCM 音频数据。
+
+</Slot>
+
+<Slot for="apidatatype-go-html-0-3-1">
+
+是否开启视频。
+
+    - `true`: 开启视频。
+    - `false`: (默认) 关闭视频。
+
+</Slot>
+
+<Slot for="apidatatype-go-html-0-8-1">
+
+是否使用 String 用户 ID。
+
+    - `true`: 使用。
+    - `false`: 不使用。
+
+</Slot>
+
+<Slot for="apidatatype-go-html-0-11-1">
+
+是否开启域名限制：
+
+    - `1`：仅连接被 DNS 解析过的服务器。
+    - `0`：（默认）连接服务器无限制。
+
+</Slot>
+
+<a id="audioencoderconfiguration"></a>
+### AudioEncoderConfiguration
+
+```go
+type AudioEncoderConfiguration struct {
+    AudioProfile int
+}
+```
+
+<span className="index-desc-audioencoderconfiguration">音频编码设置。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `AudioProfile` | <Slot name="apidatatype-go-html-1-1-1" /> |
+
+<Slot for="apidatatype-go-html-1-1-1">
+
+音频场景：
+
+    - `0`: 默认音频场景。
+        - 通信场景下：16 KHz 采样率，语音编码，单声道，编码码率最大值为 16 Kbps。
+        - 直播场景下：48 KHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
+    - `1`: 指定 32 KHz 采样率，语音编码，单声道，编码码率最大值为 18 Kbps。
+    - `2`: 指定 48 KHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
+    - `3`: 指定 48 KHz 采样率，音乐编码，双声道，编码码率最大值为 80 Kbps。
+    - `4`: 指定 48 KHz 采样率，音乐编码，单声道，编码码率最大值为 96 Kbps。
+    - `5`: 指定 48 KHz 采样率，音乐编码，双声道，编码码率最大值为 128 Kbps。
+    - `6`: 指定 16 kHz 采样率，语音编码，单声道，应用回声消除算法 AES。
+
+</Slot>
+
+<a id="audioframe"></a>
+### AudioFrame
+
+```go
+type AudioFrame struct {
+    Type              AudioFrameType
+    SamplesPerChannel int
+    BytesPerSample    int
+    Channels          int
+    SamplesPerSec     int
+    Buffer            []byte
+    RenderTimeMs      int64
+    AvsyncType        int
+}
+```
+
+<span className="index-desc-audioframe">PCM 音频数据。</span>
+
+| 参数 | 描述 |
+|------|------|
+| `Type` | 音频帧类型。详见 [`AudioFrameType`](#audioframetype)。 |
+| `SamplesPerChannel` | 对于每个声道，10 毫秒内采集的音频样本数。 |
+| `BytesPerSample` | 每个样本的字节数。 |
+| `Channels` | 每个样本的声道数。 |
+| `SamplesPerSec` | 采样率 (Hz)。最小值是 8000。 |
+| `Buffer` | 需要发送的 PCM 音频数据。 |
+| `RenderTimeMs` | 音频数据采集时间戳（毫秒）。 |
+| `AvsyncType` | 音视频同步类型。 |
+
+<a id="encodedaudioframeinfo"></a>
+### EncodedAudioFrameInfo
+
+```go
+type EncodedAudioFrameInfo struct {
+    Speech bool
+    Codec AudioCodecType
+    SampleRateHz int
+    SamplesPerChannel int
+    SendEvenIfEmpty bool
+    NumberOfChannels int
+}
+```
+
+<span className="index-desc-encodedaudioframeinfo">已编码的音频数据。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `Speech` | <Slot name="apidatatype-go-html-2-1-1" /> |
+| `Codec` | 音频编码类型。详见 [`AudioCodecType`](#audiocodectype)。 |
+| `SampleRateHz` | 音频帧采样率（Hz）。 |
+| `SamplesPerChannel` | 每个声道的样本数。对于 aac 编码格式，默认为 1024；对于 Opus 编码格式，默认为 960。 |
+| `SendEvenIfEmpty` | <Slot name="apidatatype-go-html-2-5-1" /> |
+| `NumberOfChannels` | 音频帧的声道数。 |
+
+<Slot for="apidatatype-go-html-2-1-1">
+
+音频源是否为语音：
+
+    - `0`: 音频源不是语音。
+    - `1`: （默认）音频源是语音。
+
+</Slot>
+
+<Slot for="apidatatype-go-html-2-5-1">
+
+是否发送空音频帧：
+
+    - `0`: 不发送空音频帧。
+    - `1`: （默认）发送空音频帧。
+
+</Slot>
+
+<a id="encodedvideoframeinfo"></a>
+### EncodedVideoFrameInfo
+
+```go
+type EncodedVideoFrameInfo struct {
+    CodecType        VideoCodecType
+    Width            int
+    Height           int
+    FramesPerSecond  int
+    FrameType        VideoFrameType
+    Rotation         VideoOrientation
+    TrackId          int
+    CaptureTimeMs    int64
+    DecodeTimeMs     int64
+    Uid              uint32
+    StreamType       int
+}
+```
+
+<span className="index-desc-encodedvideoframeinfo">已编码的视频数据。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `CodecType` | 视频编码类型。详见 [`VideoCodecType`](#videocodectype)。 |
+| `Width` | 视频帧宽度（像素）。 |
+| `Height` | 视频帧高度（像素）。 |
+| `FramesPerSecond` | 每秒的视频帧数量。用于计算编码视频帧的时间戳。如果设为 0，SDK 会使用真实的时间戳。 |
+| `FrameType` | 已编码视频帧类型。详见 [`VideoFrameType`](#videoframetype)。 |
+| `Rotation` | 已编码视频帧旋转信息。详见 [`VideoOrientation`](#videoorientation)。 |
+| `TrackID` | 视频帧的轨道 ID。 |
+| `CaptureTimeMs` | 采集外部编码视频帧的 Unix 时间戳（毫秒）。 |
+| `DecodeTimeMs` | 将外部编码视频帧进行解码的时间戳（毫秒）。 |
+| `UID` | 用户 ID。 |
+| `StreamType` | <Slot name="apidatatype-go-html-3-11-1" /> |
+
+<Slot for="apidatatype-go-html-3-11-1">
+
+视频帧的流类型：
+
+        - `0`: 大流。分辨率和码率较高。
+        - `1`: 小流。分辨率和码率较低。
+
+</Slot>
+
+<a id="encryptionconfig"></a>
+### EncryptionConfig
+
+```go
+type EncryptionConfig struct {
+	EncryptionMode int
+	EncryptionKey string
+	EncryptionKdfSalt []byte
+}
+```
+
+加密配置项。
+
+| 参数 | 描述 |
+| --- | --- |
+| `EncryptionMode` | <Slot name="apidatatype-go-html-4-1-1" /> |
+| `EncryptionKey` | 加密密钥，字符串类型，长度无限制。建议使用 32 字节的密钥。 |
+| `EncryptionKdfSalt` | 加密的盐值，长度为 32 字节。建议你在服务端使用 OpenSSL 生成盐。 |
+
+<Slot for="apidatatype-go-html-4-1-1">
+
+加密模式：
+
+    - 1：128 位 AES 加密，XTS 模式。
+    - 2：128 位 AES 加密，ECB 模式。
+    - 3：256 位 AES 加密，XTS 模式。
+    - 4：128 位 SM4 加密，ECB 模式。
+    - 5：128 位 AES 加密，GCM 模式。
+    - 6：256 位 AES 加密，GCM 模式。x
+    - 7：（默认）128 位 AES 加密，GCM 模式。该加密模式需要设置盐（`EncryptionKdfSalt`）。
+    - 8：256 位 AES 加密，GCM 模式。该加密模式需要设置盐（`EncryptionKdfSalt`）。
+
+</Slot>
+
+<a id="externalvideoframe"></a>
+### ExternalVideoFrame
+
+```go
+type ExternalVideoFrame struct {
+    Type           VideoBufferType
+    Format         VideoPixelFormat
+    Buffer         []byte
+    Stride         int
+    Height         int
+    CropLeft       int
+    CropTop        int
+    CropRight      int
+    CropBottom     int
+    Rotation       VideoOrientation
+    Timestamp      int64
+    EGLContext     unsafe.Pointer
+    EGLType        int
+    TextureID      int
+    Matrix         [16]float32
+    MetadataBuffer []byte
+    AlphaBuffer    []byte
+    FillAlphaBuffer bool
+    AlphaMode int
+    ColorSpace ColorSpaceType;
+}
+```
+
+<span className="index-desc-externalvideoframe">YUV 格式的视频数据。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `Type` | 视频数据类型。详见 [`VideoBufferType`](#videobuffertype)。 |
+| `Format` | 像素格式。详见 [`VideoPixelFormat`](#videopixelformat)。 |
+| `Buffer` | 视频缓冲区。 |
+| `Stride` | 传入视频帧的行间距，单位为像素而不是字节。对于 Texture，该值指的是 Texture 的宽度。 |
+| `Height` | 传入视频帧的高度。 |
+| `CropLeft` | 原始数据相关字段。指定左边裁剪掉的像素数量。默认为 0。该参数仅适用于原始视频数据。 |
+| `CropTop` | 原始数据相关字段。指定顶边裁剪掉的像素数量。默认为 0。该参数仅适用于原始视频数据。 |
+| `CropRight` | 原始数据相关字段。指定右边裁剪掉的像素数量。默认为 0。该参数仅适用于原始视频数据。 |
+| `CropBottom` | 原始数据相关字段。指定底边裁剪掉的像素数量。默认为 0。该参数仅适用于原始视频数据。 |
+| `Rotation` | 原始数据相关字段。指定是否对传入的视频做顺时针旋转操作，默认为 0。详见 [`VideoOrientation`](#videoorientation) |
+| `Timestamp` | 传入的视频帧的时间戳，以毫秒为单位。不正确的时间戳会导致丢帧或者音视频不同步。 |
+| `EGLContext` | <Slot name="apidatatype-go-html-5-12-1" /> |
+| `EGLType` | 该参数仅适用于 Texture 格式的视频数据。指该视频帧的 EGL 类型。 |
+| `TextureID` | 该参数仅适用于 Texture 格式的视频数据。指该视频帧的 Texture ID。 |
+| `Matrix` | 该参数仅适用于 Texture 格式的视频数据。为一个输入的 4x4 变换矩阵，典型值为一个单位矩阵。 |
+| `MetadataBuffer` | 该参数仅适用于 Texture 格式的视频数据。指 MetaData 的数据缓冲区，默认值为 `nil`。 |
+| `AlphaBuffer` | 采用人像分割算法输出的 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。你可以通过设置该参数，实现将视频背景自渲染为各种效果，例如：透明、纯色、图片、视频等。 |
+| `FillAlphaBuffer` | <Slot name="apidatatype-go-html-5-18-1" /> |
+| `alphaMode` | <Slot name="apidatatype-go-html-5-19-1" /> |
+| `colorSpace` | <Slot name="apidatatype-go-html-5-20-1" /> |
+
+<Slot for="apidatatype-go-html-5-12-1">
+
+该参数仅适用于 Texture 格式的视频数据。
+
+    - 当使用 Khronos 定义的 OpenGL 接口 (javax.microedition.khronos.egl.*)时，需要将 eglContext 设置给这个字段。
+    - 当使用 Android 定义的 OpenGL 接口 (android.opengl.*)时，需要将 eglContext 设置给这个字段。
+
+</Slot>
+
+<Slot for="apidatatype-go-html-5-18-1">
+
+:::info[自从]
+v2.2.3 起新增。
+:::
+
+    该参数仅适用于 BGRA 或 RGBA 格式的视频数据。设置提取视频祯中的 Alpha 通道数据并自动填入到 alphaBuffer 中。
+
+    - `true`: 提取并填充 Alpha 通道数据。
+    - `false`: （默认）不提取填充 Alpha 通道数据。
+
+    对于 BGRA 或 RGBA 格式的视频数据，你可以任选一种方式设置 Alpha 通道数据：
+
+    - 通过将该参数设置为 `true` 自动填写。
+    - 通过 `alphaBuffer` 参数设置。
+
+</Slot>
+
+<Slot for="apidatatype-go-html-5-19-1">
+
+:::info[自从]
+v2.2.3 起新增。
+:::
+
+    当视频祯中包含 Alpha 通道数据时，设置 alphaBuffer 和视频祯的相对位置：
+
+    - `0`: （默认）仅视频祯，即 alphaBuffer 不和视频祯拼接。
+    - `1`: alphaBuffer 位于视频帧的上方。
+    - `2`: alphaBuffer 位于视频帧的下方。
+    - `3`: alphaBuffer 位于视频帧的左侧。
+    - `4`: alphaBuffer 位于视频帧的右侧。
+
+</Slot>
+
+<Slot for="apidatatype-go-html-5-20-1">
+
+:::info[自从]
+v2.2.3 起新增。
+:::
+
+    视频帧的色彩空间属性，默认情况下会应用 Full Range 和 BT.709 标准配置。你可以根据自定义采集、自定义渲染的业务需求进行自定义设置，详见 [`ColorSpaceType`](https://developer.mozilla.org/en-US/docs/Web/API/VideoColorSpace)。
+
+</Slot>
+
+<a id="rtcconnconfig"></a>
+### RtcConnectionConfig
+
+```go
+type RtcConnectionConfig struct {
+    AutoSubscribeAudio bool
+    AutoSubscribeVideo bool
+    EnableAudioRecordingOrPlayout bool
+    MaxSendBitrate int
+    MinPort int
+    MaxPort int
+    ClientRole     ClientRole
+    ChannelProfile ChannelProfile
+    AudioRecvMediaPacket bool
+    VideoRecvMediaPacket bool
+}
+```
+
+<span className="index-desc-rtcconnconfig">RTC 连接配置。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `AutoSubscribeAudio` | <Slot name="apidatatype-go-html-6-1-1" /> |
+| `AutoSubscribeVideo` | <Slot name="apidatatype-go-html-6-2-1" /> |
+| `EnableAudioRecordingOrPlayout` | <Slot name="apidatatype-go-html-6-3-1" /> |
+| `MaxSendBitrate` | 最大发送码率。 |
+| `MinPort` | 最小端口。 |
+| `MaxPort` | 最大端口。 |
+| `ClientRole` | 用户角色。详见 [`ClientRole`](#clientrole)。 |
+| `ChannelProfile` | 频道场景。详见 [`ChannelProfile`](#channelprofile)。 |
+| `AudioRecvMediaPacket` | <Slot name="apidatatype-go-html-6-9-1" /> |
+| `VideoRecvMediaPacket` | <Slot name="apidatatype-go-html-6-10-1" /> |
+
+<Slot for="apidatatype-go-html-6-1-1">
+
+是否自动订阅所有音频轨道。
+
+    - `0`: 不自动订阅所有音频轨道。
+    - `1`: (默认) 自动订阅所有音频轨道。
+
+</Slot>
+
+<Slot for="apidatatype-go-html-6-2-1">
+
+是否自动订阅所有视频轨道。
+
+    - `0`: 不自动订阅所有视频轨道。
+    - `1`: (默认) 自动订阅所有视频轨道。
+
+</Slot>
+
+<Slot for="apidatatype-go-html-6-3-1">
+
+是否开启音频录制或播放。
+
+    - `false`: 关闭音频录制或播放。
+    - `true`: 开启音频录制或播放。
+
+</Slot>
+
+<Slot for="apidatatype-go-html-6-9-1">
+
+是否接收音频媒体包。
+
+    - `false`: 不接收。
+    - `true`: 接收。
+
+</Slot>
+
+<Slot for="apidatatype-go-html-6-10-1">
+
+是否接收视频媒体包。
+
+    - `false`: 不接收。
+    - `true`: 接收。
+
+</Slot>
+
+<a id="rtcconninfo"></a>
+### RtcConnectionInfo
+
+```go
+type RtcConnectionInfo struct {
+    ConnectionId uint
+    ChannelId string
+    State int
+    LocalUserId string
+}
+```
+
+<span className="index-desc-rtcconninfo">RTC 连接信息。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `ConnectionId` | RTC 连接的 ID。 |
+| `ChannelId` | RTC 频道 ID。 如果你没有调用 [`Connect`](#connect) 方法，该参数返回 `nil`。 |
+| `State` | <Slot name="apidatatype-go-html-7-3-1" /> |
+| `LocalUserId` | 本地用户 ID。 |
+
+<Slot for="apidatatype-go-html-7-3-1">
+
+连接状态：
+
+    - `1`: 网络连接断开。
+    - `2`: 建立网络连接中。
+    - `3`: 网络已连接。
+    - `4`: 重新建立网络连接中 。
+    - `5`: 网络连接失败 。
+
+</Slot>
+
+<a id="senderoptions"></a>
+### VideoEncodedImageSenderOptions
+
+```go
+type VideoEncodedImageSenderOptions struct {
+    CcMode         VideoSendCcState
+    CodecType      VideoCodecType
+    TargetBitrate  int
+}
+```
+
+<span className="index-desc-senderoptions">包含发送编码视频数据的视频源的本地视频轨道对象配置。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `CcMode` | 拥塞控制模式。详见 [`VideoSendCcState`](#videosendccstate)。 |
+| `CodecType` | 视频编码类型。详见 [`VideoCodecType`](#videocodectype)。 |
+| `TargetBitrate` | 当前编码器的目标编码码率 (Kbps)，该码率为 SDK 根据当前网络状况预估的一个值。 |
+
+<a id="videoencoderconfiguration"></a>
+### VideoEncoderConfiguration
+
+```go
+type VideoEncoderConfiguration struct {
+    CodecType          VideoCodecType
+    Width              int
+    Height             int
+    Framerate          int
+    Bitrate            int
+    MinBitrate         int
+    OrientationMode    VideoOrientation
+    DegradePreference  int
+}
+```
+
+<span className="index-desc-videoencoderconfiguration">视频编码属性。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `CodecType` | 视频编码类型。详见 [`VideoCodecType`](#videocodectype)。 |
+| `Width` | 视频编码的宽度（px）。 |
+| `Height` | 视频编码的高度（px）。 |
+| `Framerate` | 视频编码的帧率 (fps)，默认值为 15。 |
+| `Bitrate` | 视频编码码率，单位为 Kbps。 |
+| `MinBitrate` | 最低编码码率，单位为 Kbps。SDK 会根据网络状况自动调整视频编码码率。将参数设为高于默认值可强制视频编码器输出高质量图片，但在网络状况不佳情况下可能导致网络丢包并影响视频播放的流畅度造成卡顿。因此如非对画质有特殊需求，声网建议不要修改该参数的值。 注意: 该参数仅适用于直播场景。 |
+| `OrientationMode` | 视频编码的方向模式。详见 [`VideoOrientation`](#videoorientation)。 |
+| `DegradePreference` | <Slot name="apidatatype-go-html-9-8-1" /> |
+
+<Slot for="apidatatype-go-html-9-8-1">
+
+带宽受限时，视频编码降级偏好：
+
+    - `0`: （默认）带宽受限时，视频编码时优先降低视频帧率，维持视频质量不变。该降级偏好适用于画质优先的场景。
+    - `1`: 带宽受限时，视频编码时优先降低视频质量，维持视频帧率不变。该降级偏好适用于流畅性优先且允许画质降低的场景。
+    - `2`: 带宽受限时，视频编码时同时降低视频帧率和视频质量。`2` 的降幅比 `0` 和 `1` 降幅更低，适用于流畅性和画质均有限的场景。
+    - `3`: 带宽受限时，视频编码时优先降低视频帧率。
+
+</Slot>
+
+<a id="videoframe"></a>
+### VideoFrame
+
+```go
+type VideoFrame struct {
+    Type            VideoBufferType
+    Width           int
+    Height          int
+    YStride         int
+    UStride         int
+    VStride         int
+    YBuffer         []byte
+    UBuffer         []byte
+    VBuffer         []byte
+    Rotation        VideoOrientation
+    RenderTimeMs    int64
+    AVSyncType      int
+}
+```
+
+<span className="index-desc-videoframe">视频帧的属性设置。视频数据的格式为 YUV420。缓冲区给出的是指向指针的指针，该接口不能修改缓冲区的指针，只能修改缓冲区的内容。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `Type` | 视频数据类型。详见 [`VideoBufferType`](#videobuffertype)。 |
+| `Width` | 视频帧宽度（像素）。 |
+| `Height` | 视频帧高度（像素）。 |
+| `YStride` | YUV 数据中的 Y 缓冲区的行跨度。 |
+| `UStride` | YUV 数据中的 U 缓冲区的行跨度。 |
+| `VStride` | YUV 数据中的 V 缓冲区的行跨度。 |
+| `YBuffer` | 指向 YUV 数据中的 Y 缓冲区指针的指针。 |
+| `UBuffer` | 指向 YUV 数据中的 U 缓冲区指针的指针。 |
+| `VBuffer` | 指向 YUV 数据中的 V 缓冲区指针的指针。 |
+| `Rotation` | 在渲染视频前设置该帧的顺时针旋转角度。详见 [`VideoOrientation`](#videoorientation)。 |
+| `RenderTimeMs` | 外部音频帧的时间戳。该参数为必填。你可以使用该时间戳还原音频帧顺序；在有视频的场景中（包含使用外部视频源的场景），该参数可以帮助实现音视频同步。 |
+| `AVSyncType` | 预留参数。 |
+
+<a id="videosubscriptionoptions"></a>
+### VideoSubscriptionOptions
+
+```go
+type VideoSubscriptionOptions struct {
+    StreamType        VideoStreamType
+    EncodedFrameOnly  bool
+}
+```
+
+<span className="index-desc-videosubscriptionoptions">视频订阅选项。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `StreamType` | 订阅的视频类型。详见 [`VideoStreamType`](#videostreamtype)。 |
+| `EncodedFrameOnly` | <Slot name="apidatatype-go-html-11-2-1" /> |
+
+<Slot for="apidatatype-go-html-11-2-1">
+
+是否仅订阅已编码的视频数据：
+
+    - `true`: 仅订阅已编码的视频数据。
+    - `false`: （默认）仅订阅已解码的视频数据。
+
+</Slot>
+
+<a id="areacode"></a>
+## 枚举
+### AreaCode
+
+<span className="index-desc-areacode">服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。区域码支持位操作。指定访问区域后，SDK 会连接指定区域内的声网服务器。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `AreaCodeCN` | `0x00000001`: 中国大陆。 |
+| `AreaCodeNA` | `0x00000002`: 北美区域。 |
+| `AreaCodeEU` | `0x00000004`: 欧洲区域。 |
+| `AreaCodeAS` | `0x00000008`: 除中国大陆以外的亚洲区域。 |
+| `AreaCodeJP` | `0x00000010`: 日本。 |
+| `AreaCodeIN` | `0x00000020`: 印度。 |
+| `AreaCodeGlob` | `0xFFFFFFFF`: （默认）全球。 |
+
+<a id="audiocodectype"></a>
+### AudioCodecType
+
+<span className="index-desc-audiocodectype">音频编码类型。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `AudioCodecOpus` | `1`: OPUS |
+| `AudioCodecPcma` | `3`: PCMA |
+| `AudioCodecPcmu` | `4`: PCMU |
+| `AudioCodecG722` | `5`: G722 |
+| `AudioCodecAacLc` | `8`: AAC LC |
+| `AudioCodecHeAac` | `9`: HE AAC |
+| `AudioCodecHeAac2` | `11`: HEAAC2 |
+
+<a id="audioframetype"></a>
+### AudioFrameType
+
+<span className="index-desc-audioframetype">音频帧类型。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `AudioFrameTypePCM16` | `0`: 16 位 PCM |
+
+<a id="audioscenario"></a>
+### AudioScenario
+
+<span className="index-desc-audioscenario">音频编码属性。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `AudioScenarioDefault` | `0`: （默认）自动场景，根据用户角色和音频路由自动匹配合适的音质。 |
+| `AudioScenarioGameStreaming` | `3`: 高音质场景，适用于音乐为主的场景。 |
+| `AudioScenarioChatRoom` | `5`: 聊天室场景，适用于用户需要频繁上下麦的场景。该场景下，观众会收到申请麦克风权限的弹窗提示。 |
+| `AudioScenarioChorus` | `7`: 合唱场景，适用于网络条件良好，要求极低延时的实时合唱场景。 |
+| `AudioScenarioMeeting` | `8`: 会议场景，适用于人声为主的多人会议。 |
+
+<a id="channelprofile"></a>
+### ChannelProfile
+
+<span className="index-desc-channelprofile">频道使用场景。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `ChannelProfileCommunication` | `0`: （默认）通信场景。当频道中只有两个用户时，建议使用该场景。 |
+| `ChannelProfileLiveBroadcasting` | `1`: 直播场景。该场景有主播和观众两种用户角色。主播可以发布和接收音视频流，观众直接接收流。适用于语聊房、视频直播、互动大班课等应用场景。 |
+
+<a id="clientrole"></a>
+### ClientRole
+
+<span className="index-desc-clientrole">用户角色。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `ClientRoleBroadcaster` | `1`: 主播。主播可以同时发送和接收媒体流。 |
+| `ClientRoleAudience` | `2`: 观众。观众只能接收媒体流。 |
+
+<a id="usermediainfo"></a>
+### UserMediaInfo
+
+<span className="index-desc-usermediainfo">用户媒体信息。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `UserMediaInfoMuteAudio` | `0`: 用户已经停止发布音频流。 |
+| `UserMediaInfoMuteVideo` | `1`: 用户已经停止发布视频流。 |
+| `UserMediaInfoEnableVideo` | `4`: 用户已开启视频功能。 |
+
+<a id="videobuffertype"></a>
+### VideoBufferType
+
+<span className="index-desc-videobuffertype">视频数据类型。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `VideoBufferRawData` | `1`: 原始数据。 |
+| `VideoBufferArray` | `2`: Array 数据。 |
+| `VideoBufferTexture` | `3`: Texture。 |
+
+<a id="videocodectype"></a>
+### VideoCodecType
+
+<span className="index-desc-videocodectype">视频编码类型。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `VideoCodecTypeNone` | `0`: 无 |
+| `VideoCodecTypeVp8` | `1`: VP8 |
+| `VideoCodecTypeH264` | `2`: H.264 |
+| `VideoCodecTypeH265` | `3`: H.265 |
+| `VideoCodecTypeGeneric` | `6`: Generic |
+| `VideoCodecTypeGenericH264` | `7`: Generic H264 |
+| `VideoCodecTypeAv1` | `12`: AV1 |
+| `VideoCodecTypeVp9` | `13`: VP9 |
+| `VideoCodecTypeGenericJpeg` | `20`: JPEG |
+
+<a id="videoframetype"></a>
+### VideoFrameType
+
+<span className="index-desc-videoframetype">已编码视频帧类型</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `VideoFrameTypeBlankFrame` | `0`: 空白帧。 |
+| `VideoFrameTypeKeyFrame` | `3`: 关键帧。对于 H.264 编码格式，SDK 把带有 sps 和 pps 信息的 I 帧归类为关键帧。 |
+| `VideoFrameTypeDeltaFrame` | `4`: Delta 帧。对于 H.264 编码格式，SDK 把 P 帧和不带 sps 和 pps 信息的 I 帧都归类为 Delta 帧。 |
+| `VideoFrameTypeBFrame` | `5`: B 帧。 |
+| `VideoFrameTypeDroppableFrame` | `6`: 丢弃帧 |
+| `VideoFrameTypeUnknown` | `-1`: 未知 |
+
+<a id="videoorientation"></a>
+### VideoOrientation
+
+<span className="index-desc-videoorientation">原始数据相关字段。指定是否对传入的视频组做顺时针旋转操作。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `VideoOrientation0` | `0`: （默认）顺时针旋转 0 度。 |
+| `VideoOrientation90` | `90`: 顺时针旋转 90 度。 |
+| `VideoOrientation180` | `180`: 顺时针旋转 180 度。 |
+| `VideoOrientation270` | `270`: 顺时针旋转 270 度。 |
+
+<a id="videopixelformat"></a>
+### VideoPixelFormat
+
+<span className="index-desc-videopixelformat">像素格式。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `VideoPixelDefault` | `0`: 原始视频像素格式。 |
+| `VideoPixelI420` | `1`: I420 格式。 |
+| `VideoPixelRGBA` | `4`: RGBA 格式。 |
+| `VideoPixelI422` | `16`: I422 格式。 |
+| `VideoTextureID3D11Texture2D` | `17`: ID3D11TEXTURE2D 格式。目前支持的类型有 DXGI_FORMAT_B8G8R8A8_UNORM、DXGI_FORMAT_B8G8R8A8_TYPELESS 和 DXGI_FORMAT_NV12。 |
+
+:::warning[注意]
+SDK 目前不支持 Alpha 通道。传入的 Alpha 值将被丢弃。
+:::
+
+<a id="videosendccstate"></a>
+### VideoSendCcState
+
+<span className="index-desc-videosendccstate">拥塞控制模式。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `VideoSendCcEnabled` | `0`: 开启拥塞控制。 |
+| `VideoSendCcDisabled` | `1`: 关闭拥塞控制。 |
+
+<a id="videostreamtype"></a>
+### VideoStreamType
+
+<span className="index-desc-videostreamtype">视频流类型。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `VideoStreamHigh` | `0`: （默认）大流。分辨率和码率较高。 |
+| `VideoStreamLow` | `1`: 小流。分辨率和码率较低。 |

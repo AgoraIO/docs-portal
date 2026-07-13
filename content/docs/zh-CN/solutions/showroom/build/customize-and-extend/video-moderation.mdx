@@ -1,0 +1,112 @@
+---
+title: "视频审核"
+---
+在社交娱乐、线上直播等场景中，对频道中用户发布的视频流进行审核，可以识别其中的违规内容，从而规避合规风险。本文对声网提供的多种内容审核方案进行介绍和对比，你可以根据本文信息，结合自己的业务场景需要，选择适合的视频审核方案。
+
+## 方案总览
+
+视频审核包含获取视频数据（通常以截图的形式）和审核视频数据两个步骤。针对不同需求，声网提供以下三种获取视频数据的方式，你可以结合业务场景，选择合适的方案。
+
+| 方案 | 适用业务场景 | 优势 | 推荐指数 |
+| --- | --- | --- | --- |
+| [本地截图上传](#本地截图上传) | 大多数内容审核场景 | 性价比高、服务稳定 | 强烈推荐 |
+| [云端截图上传](#云端截图上传) | 已经在项目中使用了声网云端录制服务 | 服务端使用云端录制，客户端无带宽消耗，同时生成录制文件 | 推荐使用 |
+| [旁路推流到 CDN](#旁路推流到-cdn) | 场景中涉及推流到 CDN | - | 不推荐 |
+
+## 本地截图上传
+
+本地截图上传指客户端集成声网 v4.2.3 及更高版本的 RTC SDK，并调用 `enableContentInspect` 方法对 RTC 频道内的视频流截图上传。实现过程中你可以参考如下文档：
+
+- [集成 SDK](/doc/rtc//get-started/quick-start#集成-sdk)
+- [本地截图上传](/doc/rtc//advanced-features/content-inspect)
+
+本地截图上传后，你可以选择接入声网云市场合作伙伴提供的视频审核功能，也可以自行选择第三方视频审核服务提供厂商：
+
+<Tabs defaultValue="extensions" groupId="vendor" persist>
+<TabsList>
+  <TabsTrigger value="extensions">云市场合作伙伴</TabsTrigger>
+  <TabsTrigger value="third-party">第三方审核服务厂商</TabsTrigger>
+</TabsList>
+
+<TabsContent value="extensions">
+
+接入合作伙伴的视频审核服务后，当 RTC 频道内有用户发送视频流时，合作伙伴的服务器会将审核结果直接返回到你的服务器上。声网云市场提供如下合作伙伴的视频审核服务：
+
+- [网易易盾视频审核](/doc/marketplace//integrate-extensions/netease-yidun-video-moderation)
+
+该方案详细的计费策略可以参考如下文档：
+
+- [本地截图上传计费说明](/doc/rtc//billing/billing-strategy#本地截图上传)
+- [购买云市场插件](https://console.shengwang.cn/marketplace/list/all)
+
+</TabsContent>
+
+<TabsContent value="third-party">
+
+如果选用第三方审核服务厂商，则审核部分需要开发者自行实现，本文不涉及。
+
+该方案详细的计费策略可以参考如下文档：
+
+- [本地截图上传计费说明](/doc/rtc//billing/billing-strategy#本地截图上传)
+- 审核部分以提供审核服务的三方厂商的计费策略为准
+
+</TabsContent>
+</Tabs>
+
+:::info[信息]
+**本地截图上传**依托 RTC SDK 的客户端 API 实现，搭配**云市场合作伙伴**的视频审核服务，能稳定、便捷地提供视频审核功能，在大多数实时互动场景下，推荐你优先选择该方案。
+:::
+
+## 云端截图上传
+
+云端截图上传指使用声网[云端录制](/zh-CN/realtime-media/recording/cloud-recording)的截图功能，对频道内的视频流进行截图，并将图片上传至你的第三方云存储。相关实现文档可以参考：
+
+- [云端截图上传](/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/snapshot)
+
+目前，云端截图上传只支持搭配第三方审核服务厂商实现视频审核功能。你需要自行选择三方服务厂商并自行实现审核部分的逻辑。该方案的计费信息可以参考如下文档：
+
+- [云端截图上传计费说明](/zh-CN/realtime-media/recording/cloud-recording/reference/billing-strategy/snapshot-billing)
+- 审核部分以提供审核服务的三方厂商的计费策略为准
+
+:::info[信息]
+云端截图上传方案不占用带宽，在网络环境不稳定或带宽条件无法保证时，我们建议你选用该方案。
+:::
+
+## 旁路推流到 CDN
+
+如果你的场景中涉及旁路推流到 CDN，你也可以直接将流发送到 CDN，然后使用声网云市场合作伙伴或其他三方厂商的视频审核服务。
+
+<Tabs defaultValue="extensions" groupId="vendor" persist>
+<TabsList>
+  <TabsTrigger value="extensions">云市场合作伙伴</TabsTrigger>
+  <TabsTrigger value="third-party">第三方审核服务厂商</TabsTrigger>
+</TabsList>
+
+<TabsContent value="extensions">
+
+如下声网云市场合作伙伴提供视频审核服务：
+
+- [网易易盾视频审核](/doc/marketplace//integrate-extensions/netease-yidun-video-moderation)
+
+该方案详细的计费策略可以参考如下文档：
+
+- [旁路推流计费说明](/zh-CN/realtime-media/media-push/reference/billing)
+- [购买云市场插件](https://console.shengwang.cn/marketplace/list/all)
+
+</TabsContent>
+
+<TabsContent value="third-party">
+
+如果选用第三方审核服务厂商，则审核部分需要开发者自行实现，本文不涉及。
+
+该方案详细的计费策略可以参考如下文档：
+
+- [旁路推流计费说明](/zh-CN/realtime-media/media-push/reference/billing)
+- 审核部分以提供审核服务的三方厂商的计费策略为准
+
+</TabsContent>
+</Tabs>
+
+:::info[信息]
+由于旁路推流到 CDN 涉及音频和视频的服务端转码、服务端转协议，因此该方案会增加服务端和 CDN 带宽两个方面的成本。出于此考虑，我们推荐你选择[本地截图上传](#本地截图上传)或[云端截图上传](#云端截图上传)方案。
+:::

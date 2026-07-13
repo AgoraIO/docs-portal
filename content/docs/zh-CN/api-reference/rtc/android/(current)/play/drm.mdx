@@ -1,0 +1,1297 @@
+---
+title: "版权音乐"
+description: "版权音乐 API reference."
+---
+<a id="toc_drm"></a>
+
+<a id="api_imusiccontentcenter_createmusicplayer"></a>
+
+## createMusicPlayer
+
+创建一个音乐播放器。
+
+<a id="api_imusiccontentcenter_createmusicplayer__prototype"></a>
+
+```java
+public abstract IAgoraMusicPlayer createMusicPlayer();
+```
+
+<a id="api_imusiccontentcenter_createmusicplayer__detailed_desc"></a>
+
+如果你需要播放来自音乐内容中心的音乐资源，必须先调用该方法。
+
+<a id="api_imusiccontentcenter_createmusicplayer__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回 IAgoraMusicPlayer 对象。
+- 方法调用失败，返回 null。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_destroy_imusiccontentcenter"></a>
+
+## destroy
+
+销毁 IAgoraMusicContentCenter 实例。
+
+<a id="api_imusiccontentcenter_destroy_imusiccontentcenter__prototype"></a>
+
+```java
+public static synchronized void destroy()
+```
+
+<a id="api_imusiccontentcenter_destroy_imusiccontentcenter__detailed_desc"></a>
+
+你必须在调用 [destroy](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter) 方法之前调用该方法。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusicplayer_destroy_imusicplayer"></a>
+
+## destroy
+
+销毁音乐播放器。
+
+<a id="api_imusicplayer_destroy_imusicplayer__prototype"></a>
+
+```java
+@Deprecated @Override int destroy();
+```
+
+<a id="api_imusicplayer_destroy_imusicplayer__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃，请改用 [destroyMusicPlayer](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_destroymusicplayer)。
+
+<a id="api_imusicplayer_destroy_imusicplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IAgoraMusicPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusicplayer)
+
+<a id="api_imusiccontentcenter_destroymusicplayer"></a>
+
+## destroyMusicPlayer
+
+销毁音乐播放器对象。
+
+<a id="api_imusiccontentcenter_destroymusicplayer__prototype"></a>
+
+```java
+public abstract int destroyMusicPlayer(IAgoraMusicPlayer player);
+```
+
+<a id="api_imusiccontentcenter_destroymusicplayer__detailed_desc"></a>
+
+如果在销毁后需要再次使用音乐播放器，必须调用 [createMusicPlayer](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_createmusicplayer) 方法重新创建。
+
+<a id="api_imusiccontentcenter_destroymusicplayer__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或加入频道后调用此方法，但必须确保在调用 [destroy](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter) 方法之前调用此方法。
+
+<a id="api_imusiccontentcenter_destroymusicplayer__parameters"></a>
+
+### 参数
+
+#### `player`
+
+音乐播放器对象。详见 [IAgoraMusicPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusicplayer)。
+
+<a id="api_imusiccontentcenter_destroymusicplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_getcaches"></a>
+
+## getCaches
+
+获取已缓存的音乐资源信息。
+
+<a id="api_imusiccontentcenter_getcaches__prototype"></a>
+
+```java
+public abstract MusicCacheInfo[] getCaches();
+```
+
+<a id="api_imusiccontentcenter_getcaches__detailed_desc"></a>
+
+在调用该方法前，你需要预先分配内存空间，用于存储已缓存音乐资源的信息。如果需要设置可缓存的音乐资源数量，可以通过 [initialize](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_initialize_imusiccontentcenter) 的 `configuration` 参数进行配置。当不再需要这些缓存的音乐资源时，应及时释放内存，避免内存泄漏。
+
+<a id="api_imusiccontentcenter_getcaches__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回包含 MusicCacheInfo 对象的数组。
+- 方法调用失败，返回 null。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_getinternalsongcode"></a>
+
+## getInternalSongCode
+
+创建音乐资源副歌片段的内部标识符。
+
+<a id="api_imusiccontentcenter_getinternalsongcode__prototype"></a>
+
+```java
+public abstract long getInternalSongCode(long songCode, String jsonOption);
+```
+
+<a id="api_imusiccontentcenter_getinternalsongcode__detailed_desc"></a>
+
+在播放音乐资源的副歌片段前，需调用该方法，结合音乐资源的 `songCode` 和 `jsonOption` 参数创建副歌片段的内部标识符。该标识符作为资源的唯一引用。在调用相关方法以打开、预加载或移除资源时，应将该标识符作为 `songCode` 参数传入。
+
+<a id="api_imusiccontentcenter_getinternalsongcode__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+音乐资源的标识符。可通过调用 `getMusicCollectionByMusicChartId` 或 `searchMusic` 获取，并从这两个方法触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取 `songCode`。
+
+#### `jsonOption`
+
+:::info[注]
+`sceneType` 会影响计费方式。不同频道场景的计费标准不同，详见计费文档。若需切换频道场景，必须使用新的 `sceneType` 值重新调用该方法。
+:::
+
+扩展 JSON 字段，默认为 `null`。目前支持以下字段：
+
+- sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例： \{"sceneType":1\}。
+- highPart：副歌片段的索引，从 onMusicCollectionResult 回调中获取，索引从 0 开始。示例： \{"format": \{"highpart": 0\}\}。
+
+<a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回创建的音乐资源内部标识符。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_getlyric"></a>
+
+## getLyric
+
+获取音乐资源歌词的下载链接。
+
+<a id="api_imusiccontentcenter_getlyric__prototype"></a>
+
+```java
+public abstract String getLyric(long songCode, int lyricType);
+```
+
+<a id="api_imusiccontentcenter_getlyric__detailed_desc"></a>
+
+<a id="api_imusiccontentcenter_getlyric__related"></a>
+
+### 相关回调
+
+调用该方法后，SDK 会触发 [onLyricResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调。
+
+<a id="api_imusiccontentcenter_getlyric__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+指定音乐资源的标识符。
+
+#### `lyricType`
+
+歌词格式类型：
+
+- 0：xml 格式。
+- 1：lrc 格式。
+
+<a id="api_imusiccontentcenter_getlyric__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回唯一标识该请求的 requestId。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_getmusiccharts"></a>
+
+## getMusicCharts
+
+获取所有音乐排行榜。
+
+<a id="api_imusiccontentcenter_getmusiccharts__prototype"></a>
+
+```java
+public abstract String getMusicCharts();
+```
+
+<a id="api_imusiccontentcenter_getmusiccharts__detailed_desc"></a>
+
+调用该方法时，SDK 会触发 [onMusicChartsResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调，返回音乐排行榜的详细信息。
+
+<a id="api_imusiccontentcenter_getmusiccharts__related"></a>
+
+### 相关回调
+
+该方法调用后会触发 [onMusicChartsResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调。
+
+<a id="api_imusiccontentcenter_getmusiccharts__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回请求的唯一标识符 requestId。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid"></a>
+
+## getMusicCollectionByMusicChartId [1/2]
+
+根据音乐榜单 ID 获取音乐资源列表。
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__prototype"></a>
+
+```java
+public String getMusicCollectionByMusicChartId(int musicChartId, int page, int pageSize)
+```
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__detailed_desc"></a>
+
+成功调用该方法后，SDK 会触发 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调，返回榜单中的音乐资源详细信息。
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__parameters"></a>
+
+### 参数
+
+#### `musicChartId`
+
+音乐榜单的 ID，可通过 [onMusicChartsResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取。
+
+:::info[注]
+你也可以使用 RESTful API 获取“音乐库完整歌曲列表”或“增量歌曲列表”。
+:::
+
+#### `page`
+
+当前页码，默认从 1 开始。
+
+#### `pageSize`
+
+当前音乐资源列表中的总页数，最大值为 50。
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回唯一标识此次请求的 requestId。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid2"></a>
+
+## getMusicCollectionByMusicChartId [2/2]
+
+根据音乐榜单 ID 获取音乐资源列表。
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid2__prototype"></a>
+
+```java
+public abstract String getMusicCollectionByMusicChartId(int musicChartId, int page, int pageSize, String jsonOption);
+```
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid2__detailed_desc"></a>
+
+成功调用该方法后，SDK 会触发 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调，返回榜单中的音乐资源详细信息。
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid2__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调，返回榜单中的音乐资源详细信息。
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid2__parameters"></a>
+
+### 参数
+
+#### `musicChartId`
+
+音乐榜单的 ID。可通过 [onMusicChartsResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取。你也可以使用 RESTful API 获取完整音乐库列表或增量音乐列表。
+
+#### `page`
+
+当前页码，从 1 开始。
+
+#### `pageSize`
+
+每页返回的音乐资源数量，最大值为 50。
+
+#### `jsonOption`
+
+可选的 JSON 扩展字段，默认为 `null`。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选项：
+
+- pitchType：音乐资源是否支持评分。
+  - 1：可评分音乐资源。
+  - 2：不可评分音乐资源。
+- needHighPart：是否需要合唱片段资源。
+  - true：需要合唱片段。
+  - false：不需要合唱片段。
+
+示例： `{"pitchType":1}`， `{"needHighPart":true}`。
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid2__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回请求的唯一标识符 requestId。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusicplayer_getplaysrc"></a>
+
+## getPlaySrc [2/2]
+
+获取当前播放的音乐资源的标识符或 URL。
+
+<a id="api_imusicplayer_getplaysrc__prototype"></a>
+
+```java
+@Override String getPlaySrc();
+```
+
+<a id="api_imusicplayer_getplaysrc__detailed_desc"></a>
+
+你需要在打开音乐资源后调用此方法：
+
+- 如果使用 open(Uri uri, long startPos) 打开音乐资源，该方法返回音乐资源的标识符（songCode ）。
+- 如果使用 open(String url, long startPos) 打开音乐资源，该方法返回音乐资源的 URL。
+
+<a id="api_imusicplayer_getplaysrc__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回音乐资源的标识符或 URL。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [IAgoraMusicPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusicplayer)
+
+<a id="api_imusiccontentcenter_getsongsimpleinfo"></a>
+
+## getSongSimpleInfo
+
+检索特定音乐资源的详细信息。
+
+<a id="api_imusiccontentcenter_getsongsimpleinfo__prototype"></a>
+
+```java
+public abstract String getSongSimpleInfo(long songCode);
+```
+
+<a id="api_imusiccontentcenter_getsongsimpleinfo__detailed_desc"></a>
+
+在调用该方法前，你需要先获取目标音乐资源的标识符。你可以通过调用 `getMusicCollectionByMusicChartId` 或 `searchMusic` 方法获取音乐资源，并通过触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源标识符（`songCode` ）。
+
+:::info[注]
+成功调用该方法后，SDK 会触发 [onSongSimpleInfoResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调，报告音乐资源的详细信息。
+:::
+
+<a id="api_imusiccontentcenter_getsongsimpleinfo__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+音乐资源的标识符，用于指定要查询的音乐资源。
+
+<a id="api_imusiccontentcenter_getsongsimpleinfo__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回唯一标识此次请求的 requestId。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_initialize_imusiccontentcenter"></a>
+
+## initialize
+
+初始化 IAgoraMusicContentCenter。
+
+<a id="api_imusiccontentcenter_initialize_imusiccontentcenter__prototype"></a>
+
+```java
+public abstract int initialize(MusicContentCenterConfiguration configuration);
+```
+
+<a id="api_imusiccontentcenter_initialize_imusiccontentcenter__detailed_desc"></a>
+
+在调用 [initialize](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_initialize_imusiccontentcenter) 方法前，必须先进行初始化，才能调用其他方法。
+
+<a id="api_imusiccontentcenter_initialize_imusiccontentcenter__parameters"></a>
+
+### 参数
+
+#### `configuration`
+
+[IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter) 的配置参数。详见 [MusicContentCenterConfiguration](/zh-CN/api-reference/rtc/android/class-musiccontentcenterconfiguration)。
+
+<a id="api_imusiccontentcenter_initialize_imusiccontentcenter__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_ispreloaded"></a>
+
+## isPreloaded
+
+检查指定音乐资源是否已预加载。
+
+<a id="api_imusiccontentcenter_ispreloaded__prototype"></a>
+
+```java
+public abstract int isPreloaded(long songCode);
+```
+
+<a id="api_imusiccontentcenter_ispreloaded__detailed_desc"></a>
+
+该方法为同步调用。
+
+<a id="api_imusiccontentcenter_ispreloaded__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+音乐资源的标识符。
+
+<a id="api_imusiccontentcenter_ispreloaded__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功，音乐资源已预加载。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusicplayer_open2_imusicplayer"></a>
+
+## open [2/2]
+
+通过 URL 打开音乐资源。
+
+<a id="api_imusicplayer_open2_imusicplayer__prototype"></a>
+
+```java
+int open(String url, long startPos)
+```
+
+<a id="api_imusicplayer_open2_imusicplayer__detailed_desc"></a>
+
+调用该方法会触发 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。在收到播放状态为 `OPEN_COMPLETED` 的上报后，你可以调用 [play](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_play_player) 方法播放媒体文件。
+
+:::info[注]
+如果你要打开的音乐资源受数字版权保护，必须使用此方法打开。对于不受数字版权保护的音乐资源，你可以选择使用此方法，或使用 `open` 方法打开。
+:::
+
+<a id="api_imusicplayer_open2_imusicplayer__related"></a>
+
+### 相关回调
+
+调用该方法会触发 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。
+
+<a id="api_imusicplayer_open2_imusicplayer__parameters"></a>
+
+### 参数
+
+#### `url`
+
+音乐资源的路径，支持本地文件和在线文件。
+
+#### `startPos`
+
+播放起始位置，单位为毫秒。（默认值为 0。）
+
+<a id="api_imusicplayer_open2_imusicplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。详见 错误码 获取详细信息和排查建议。
+
+### 所属接口类
+- [IAgoraMusicPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusicplayer)
+
+<a id="api_imusicplayer_open_imusicplayer"></a>
+
+## open [1/2]
+
+通过资源 ID 打开音乐资源。
+
+<a id="api_imusicplayer_open_imusicplayer__prototype"></a>
+
+```java
+int open(long songCode, long startPos);
+```
+
+<a id="api_imusicplayer_open_imusicplayer__detailed_desc"></a>
+
+调用该方法后，将触发 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。当你收到 `OPEN_COMPLETED` 状态后，可以调用 [play](/zh-CN/api-reference/rtc/android/play/rte-player#api_player_play_player) 方法播放媒体文件。
+
+:::info[注]
+如果要打开的音乐资源受数字版权管理保护，必须使用该方法。对于未受数字版权管理保护的音乐资源，可以使用该方法或 `open` 方法（参数为 `String url, long startPos` ）。
+:::
+
+<a id="api_imusicplayer_open_imusicplayer__related"></a>
+
+### 相关回调
+
+调用该方法后，将触发 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。
+
+<a id="api_imusicplayer_open_imusicplayer__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+音乐资源的资源 ID，用于标识音乐。
+
+#### `startPos`
+
+起始播放位置，单位为毫秒。（默认值为 0）
+
+<a id="api_imusicplayer_open_imusicplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IAgoraMusicPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusicplayer)
+
+<a id="api_imusiccontentcenter_preload"></a>
+
+## preload [1/2]
+
+预加载音乐资源。
+
+<a id="api_imusiccontentcenter_preload__prototype"></a>
+
+```java
+public abstract int preload(long songCode, String jsonOption)
+```
+
+<a id="api_imusiccontentcenter_preload__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃，请改用 [preload [2/2]](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_preload2)。
+
+调用成功后，SDK 会触发 [onPreLoadEvent](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载事件。在调用该方法前，你需要先调用 `getMusicCollectionByMusicChartId` 或 `searchMusic` 获取音乐资源，并从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取资源标识符（`songCode` ）。
+
+:::info[注]
+销毁 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象前，请确保在收到 [onPreLoadEvent](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后调用 [destroy [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 方法。
+:::
+
+<a id="api_imusiccontentcenter_preload__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+音乐资源的标识符。
+
+#### `jsonOption`
+
+扩展的 JSON 字段。声网会根据你在 `sceneType` 字段中设置的应用场景计费，不同场景的计费标准不同，详见计费文档。
+
+- 1：直播场景：在线 K 歌房和背景音乐播放。
+- 2：直播场景：背景音乐播放。
+- 3：（默认）声动语聊场景：在线 K 歌房。
+- 4：声动语聊场景：背景音乐播放。
+- 5：VR 场景：在线 K 歌房和背景音乐播放。
+
+如果你需要切换到其他场景，必须重新调用该方法并在该字段中传入新的 `sceneType` 值。 示例： `{"sceneType":1}`。
+
+<a id="api_imusiccontentcenter_preload__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_preload2"></a>
+
+## preload [2/2]
+
+预加载版权音乐资源。
+
+<a id="api_imusiccontentcenter_preload2__prototype"></a>
+
+```java
+public abstract String preload(long songCode);
+```
+
+<a id="api_imusiccontentcenter_preload2__detailed_desc"></a>
+
+成功调用该方法后，SDK 会触发 [onPreLoadEvent](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调，报告预加载事件。在调用该方法前，你需要先调用 `getMusicCollectionByMusicChartId` 或 `searchMusic` 获取你想播放的版权音乐资源，并通过这些方法触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源标识符（`songCode` ）。
+
+:::info[注]
+销毁 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象前，请确保在收到 [onPreLoadEvent](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后再调用 [destroy [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 方法。
+:::
+
+<a id="api_imusiccontentcenter_preload2__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+版权音乐资源的标识符。
+
+<a id="api_imusiccontentcenter_preload2__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回请求的唯一标识符 requestId。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter"></a>
+
+## registerEventHandler
+
+注册版权音乐内容中心的回调事件。
+
+<a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__prototype"></a>
+
+```java
+public abstract int registerEventHandler(IMusicContentCenterEventHandler eventHandler);
+```
+
+<a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__detailed_desc"></a>
+
+<a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__parameters"></a>
+
+### 参数
+
+#### `eventHandler`
+
+要注册的回调事件。详见 [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcentereventhandler)。
+
+<a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_removecache"></a>
+
+## removeCache
+
+删除已缓存的音乐资源。
+
+<a id="api_imusiccontentcenter_removecache__prototype"></a>
+
+```java
+public abstract int removeCache(long songCode);
+```
+
+<a id="api_imusiccontentcenter_removecache__detailed_desc"></a>
+
+若需删除多个音乐资源，可多次调用此方法。
+
+:::info[注]
+[removeCache](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_removecache) 不会删除当前正在播放的已缓存音乐资源。
+:::
+
+<a id="api_imusiccontentcenter_removecache__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+要删除的音乐资源的标识符。
+
+<a id="api_imusiccontentcenter_removecache__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter"></a>
+
+## renewToken
+
+更新 Token。
+
+<a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__prototype"></a>
+
+```java
+public abstract int renewToken(String token);
+```
+
+<a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__detailed_desc"></a>
+
+当用于鉴权的 Token 即将过期或已经过期时，可以调用该方法传入新生成的 Token。
+
+<a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__parameters"></a>
+
+### 参数
+
+#### `token`
+
+新生成的 Token。
+
+<a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_searchmusic"></a>
+
+## searchMusic [1/2]
+
+搜索音乐资源。
+
+<a id="api_imusiccontentcenter_searchmusic__prototype"></a>
+
+```java
+public String searchMusic(String keyword, int page, int pageSize)
+```
+
+<a id="api_imusiccontentcenter_searchmusic__detailed_desc"></a>
+
+调用该方法后，SDK 会触发 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调，返回检索到的音乐资源列表。
+
+<a id="api_imusiccontentcenter_searchmusic__parameters"></a>
+
+### 参数
+
+#### `keyword`
+
+搜索关键词。支持按歌曲标题或艺术家名称搜索。
+
+#### `page`
+
+要获取的音乐资源列表的页码。
+
+#### `pageSize`
+
+每页返回的最大音乐资源数量，最大值为 50。
+
+<a id="api_imusiccontentcenter_searchmusic__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回唯一标识该请求的 requestId。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_searchmusic2"></a>
+
+## searchMusic [2/2]
+
+搜索音乐资源。
+
+<a id="api_imusiccontentcenter_searchmusic2__prototype"></a>
+
+```java
+public abstract String searchMusic(String keyword, int page, int pageSize, String jsonOption);
+```
+
+<a id="api_imusiccontentcenter_searchmusic2__detailed_desc"></a>
+
+<a id="api_imusiccontentcenter_searchmusic2__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调报告检索到的音乐资源列表。
+
+<a id="api_imusiccontentcenter_searchmusic2__parameters"></a>
+
+### 参数
+
+#### `keyword`
+
+搜索关键词。支持按歌曲名称或歌手名称搜索。
+
+#### `page`
+
+要获取的音乐资源列表的目标页码。
+
+#### `pageSize`
+
+每页显示的最大音乐资源数量。最大值为 50。
+
+#### `jsonOption`
+
+可选的 JSON 扩展字段，默认为 `null`。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选条件：
+
+- pitchType：是否支持评分。
+  - 1：支持评分的音乐资源。
+  - 2：不支持评分的音乐资源。
+- needHighPart：是否需要副歌片段。
+  - true：需要副歌片段。
+  - false：不需要副歌片段。
+
+<a id="api_imusiccontentcenter_searchmusic2__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回唯一标识该请求的 requestId。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusicplayer_setplaymode"></a>
+
+## setPlayMode
+
+设置音乐曲目的播放模式。
+
+<a id="api_imusicplayer_setplaymode__prototype"></a>
+
+```java
+int setPlayMode(MusicPlayMode mode);
+```
+
+<a id="api_imusicplayer_setplaymode__detailed_desc"></a>
+
+如果你未调用该方法设置播放模式，默认播放人声伴奏；如果音乐资源不包含人声伴奏，则播放原唱。
+
+:::info[注]
+你可以通过 [onMusicCollectionResult](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的详细信息，并使用该回调中的 `list` 参数查看该版权音乐支持的播放模式。
+:::
+
+<a id="api_imusicplayer_setplaymode__scenario"></a>
+
+### 适用场景
+
+在在线 K 歌或才艺展示等娱乐场景中，如果你需要播放由声网内容中心提供的版权音乐，可以调用该方法设置播放模式。
+
+<a id="api_imusicplayer_setplaymode__timing"></a>
+
+### 调用时机
+
+你必须在调用 [createMusicPlayer](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_createmusicplayer) 方法之后调用该方法。
+
+<a id="api_imusicplayer_setplaymode__parameters"></a>
+
+### 参数
+
+#### `mode`
+
+播放模式，详见 [MusicPlayMode](/zh-CN/api-reference/rtc/android/enum-musicplaymode)。
+
+<a id="api_imusicplayer_setplaymode__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+  - -2：参数无效，请重新设置参数。
+
+### 所属接口类
+- [IAgoraMusicPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusicplayer)
+
+<a id="api_imusicplayer_stop_imusicplayer"></a>
+
+## stop [2/2]
+
+停止播放音乐资源。
+
+<a id="api_imusicplayer_stop_imusicplayer__prototype"></a>
+
+```java
+@Override int stop();
+```
+
+<a id="api_imusicplayer_stop_imusicplayer__detailed_desc"></a>
+
+<a id="api_imusicplayer_stop_imusicplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IAgoraMusicPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusicplayer)
+
+<a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter"></a>
+
+## unregisterEventHandler
+
+取消注册版权音乐内容中心的事件回调。
+
+<a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter__prototype"></a>
+
+```java
+public abstract int unregisterEventHandler();
+```
+
+<a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter__detailed_desc"></a>
+
+<a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IAgoraMusicContentCenter](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="callback_imusiccontentcentereventhandler_onlyricresult"></a>
+
+## onLyricResult
+
+歌词下载链接回调。
+
+<a id="callback_imusiccontentcentereventhandler_onlyricresult__prototype"></a>
+
+```java
+@CalledByNative void onLyricResult(String requestId, long songCode, String lyricUrl, int reason);
+```
+
+<a id="callback_imusiccontentcentereventhandler_onlyricresult__detailed_desc"></a>
+
+调用 [getLyric](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_getlyric) 后，SDK 会触发该回调。
+
+<a id="callback_imusiccontentcentereventhandler_onlyricresult__timing"></a>
+
+### 触发时机
+
+该回调在调用 [getLyric](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_getlyric) 方法后被触发。
+
+<a id="callback_imusiccontentcentereventhandler_onlyricresult__parameters"></a>
+
+### 参数
+
+#### `requestId`
+
+请求 ID，用于唯一标识该请求。
+
+#### `songCode`
+
+音乐资源的编号，用于标识音乐资源。
+
+#### `lyricUrl`
+
+歌词的下载链接。
+
+#### `reason`
+
+来自版权音乐内容中心的请求状态码：
+
+- MUSIC_CONTENT_CENTER_STATE_REASON_OK (0)：请求成功。
+- MUSIC_CONTENT_CENTER_STATE_REASON_ERROR (1)：通用错误，无具体原因。
+- MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY (2)：网关错误。可能原因包括：
+  - 当前临时 Token 已过期。请重新生成 Token。
+  - 提供的 Token 无效。请确保使用的是 RTM Token。
+  - 网络错误。请检查网络连接。
+- MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE (3)：权限错误或音乐资源不存在。请确保项目已启用版权音乐内容中心权限。如有疑问，请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL (7)：HTTP 内部错误。请稍后重试。
+
+### 所属接口类
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcentereventhandler)
+
+<a id="callback_imusiccontentcentereventhandler_onmusicchartsresult"></a>
+
+## onMusicChartsResult
+
+获取音乐排行榜后的回调。
+
+<a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__prototype"></a>
+
+```java
+@CalledByNative void onMusicChartsResult(String requestId, MusicChartInfo[] list, int reason);
+```
+
+<a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__detailed_desc"></a>
+
+该回调在调用 [getMusicCharts](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_getmusiccharts) 后被触发。
+
+<a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__timing"></a>
+
+### 触发时机
+
+该回调在调用 [getMusicCharts](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_getmusiccharts) 方法后被触发。
+
+<a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__parameters"></a>
+
+### 参数
+
+#### `requestId`
+
+请求 ID，用于标识此次请求的唯一标识符。
+
+#### `list`
+
+当前可播放的音乐排行榜列表，详见 [MusicChartInfo](/zh-CN/api-reference/rtc/android/class-musicchartinfo)。
+
+#### `reason`
+
+来自音乐内容中心的请求状态码：
+
+- MUSIC_CONTENT_CENTER_STATE_REASON_OK (0)：请求成功。
+- MUSIC_CONTENT_CENTER_STATE_REASON_ERROR (1)：通用错误，无具体原因。
+- MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY (2)：网关错误。可能原因包括：
+  - 当前 token 已过期。请重新生成 token。
+  - 提供的 token 无效。请确保使用的是 RTM token。
+  - 网络错误。请检查网络连接。
+- MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE (3)：权限错误或未找到音乐资源。请确保项目已启用访问声网音乐内容中心。如有问题，请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL (7)：内部 HTTP 错误。请稍后重试。
+
+### 所属接口类
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcentereventhandler)
+
+<a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult"></a>
+
+## onMusicCollectionResult
+
+获取音乐资源列表的回调。
+
+<a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__prototype"></a>
+
+```java
+void onMusicCollectionResult(String requestId, int page, int pageSize, int total, Music[] list, int reason)
+```
+
+<a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__detailed_desc"></a>
+
+该回调在调用 `getMusicCollectionByMusicChartId` 或 `searchMusic` 时触发。
+
+<a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__parameters"></a>
+
+### 参数
+
+#### `requestId`
+
+请求 ID，用于唯一标识该请求。
+
+#### `page`
+
+当前页码，从 1 开始。
+
+#### `pageSize`
+
+每页最多返回的音乐资源数量，最大为 50。
+
+#### `total`
+
+音乐资源列表中的总资源数。
+
+#### `list`
+
+音乐资源列表的详细信息，详见 [Music](/zh-CN/api-reference/rtc/android/class-music)。
+
+#### `reason`
+
+来自声网音乐内容中心的请求状态码：
+
+- MUSIC_CONTENT_CENTER_STATE_REASON_OK (0)：请求成功。
+- MUSIC_CONTENT_CENTER_STATE_REASON_ERROR (1)：通用错误，无具体归因。
+- MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY (2)：网关错误。可能原因包括：
+  - 当前临时 Token 已过期。请重新生成临时 Token。
+  - 提供的临时 Token 无效。请确保你使用的是 RTM Token。
+  - 网络错误。请检查你的网络连接。
+- MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE (3)：权限错误或未找到音乐资源。请确保你的项目已启用访问声网音乐内容中心的权限。如有问题，请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL (7)：HTTP 内部错误。请稍后重试。
+
+### 所属接口类
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcentereventhandler)
+
+<a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler"></a>
+
+## onPreLoadEvent
+
+预加载音乐资源事件的回调。
+
+<a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__prototype"></a>
+
+```java
+void onPreLoadEvent(String requestId, long songCode, int percent, String lyricUrl, int state, int reason)
+```
+
+<a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__detailed_desc"></a>
+
+调用 `preload` 方法预加载音乐资源后，SDK 会触发该回调。
+
+<a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__timing"></a>
+
+### 触发时机
+
+该回调在调用 `preload` 方法后被触发。
+
+<a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__parameters"></a>
+
+### 参数
+
+#### `requestId`
+
+请求 ID，用于唯一标识该请求。
+
+#### `songCode`
+
+音乐资源的 ID，用于标识一个音乐资源。
+
+#### `percent`
+
+音乐资源的当前加载进度，取值范围为 [0, 100]。
+
+#### `lyricUrl`
+
+歌词的下载地址。
+
+#### `state`
+
+音乐资源的当前加载状态：
+
+- 0：加载完成。
+- 1：加载失败。
+- 2：加载中。
+
+#### `reason`
+
+来自 Music Content Center 的请求状态码：
+
+- MUSIC_CONTENT_CENTER_STATE_REASON_OK (0)：请求成功。
+- MUSIC_CONTENT_CENTER_STATE_REASON_ERROR (1)：通用错误，无具体归因。
+- MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY (2)：网关错误。可能原因包括：
+  - 当前临时 Token 已过期，请重新生成 Token。
+  - 提供的 Token 无效，请确保使用的是 Token。
+  - 网络错误，请检查网络连接。
+- MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE (3)：权限错误或音乐资源不存在。请确保项目已启用 Music Content Center 访问权限。如有问题请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL (7)：HTTP 内部错误。请稍后重试。
+
+### 所属接口类
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcentereventhandler)
+
+<a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult"></a>
+
+## onSongSimpleInfoResult
+
+获取音乐资源详细信息的回调。
+
+<a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__prototype"></a>
+
+```java
+void onSongSimpleInfoResult(String requestId, long songCode, String simpleInfo, int reason);
+```
+
+<a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__detailed_desc"></a>
+
+<a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__timing"></a>
+
+### 触发时机
+
+该回调在调用 [getSongSimpleInfo](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_getsongsimpleinfo) 后被触发。
+
+<a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__parameters"></a>
+
+### 参数
+
+#### `requestId`
+
+请求 ID，用于标识此次请求的唯一标识符。
+
+#### `songCode`
+
+音乐资源的标识符。
+
+#### `simpleInfo`
+
+音乐资源的相关信息，包括：
+
+- 副歌片段的起始和结束时间（毫秒）。
+- 副歌歌词的下载链接。
+- 副歌片段的时长（毫秒）。
+- 歌曲标题。
+- 艺术家名称。
+
+#### `reason`
+
+来自音乐内容中心的请求状态码：
+
+- MUSIC_CONTENT_CENTER_STATE_REASON_OK (0)：请求成功。
+- MUSIC_CONTENT_CENTER_STATE_REASON_ERROR (1)：通用错误，无具体原因。
+- MUSIC_CONTENT_CENTER_STATE_REASON_GATEWAY (2)：网关错误。可能原因包括：
+  - 当前临时 Token 已过期，请生成新的 Token。
+  - 提供的 Token 无效，请确保使用的是 RTM Token。
+  - 网络错误，请检查网络连接。
+- MUSIC_CONTENT_CENTER_STATE_REASON_PERMISSION_AND_RESOURCE (3)：权限错误或音乐资源不存在。请确保项目已启用音乐内容中心权限。如有问题，请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_INTERNAL_DATA_PARSE (4)：内部数据解析错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_LOADING (5)：加载音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_MUSIC_DECRYPTION (6)：解密音乐资源时发生错误。请[联系技术支持](https://ticket.shengwang.cn/)。
+- MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL (7)：内部 HTTP 错误。请稍后重试。
+
+### 所属接口类
+- [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcentereventhandler)

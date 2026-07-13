@@ -1,0 +1,45 @@
+---
+title: "FUABT_RtcConnection"
+description: "包含连接信息的类。"
+---
+<a id="class_rtcconnection__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FRtcConnection
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcConnection")
+	FString channelId = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcConnection")
+	int64 localUid = 0;
+	FRtcConnection(){}
+	FRtcConnection(const agora::rtc::RtcConnection & AgoraData){
+		channelId = UTF8_TO_TCHAR(AgoraData.channelId);
+		localUid = AgoraData.localUid;
+	}
+	agora::rtc::RtcConnection CreateAgoraData() const {
+		agora::rtc::RtcConnection AgoraData;
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.channelId, this->channelId)
+		AgoraData.localUid = localUid;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::RtcConnection & AgoraData) const {
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.channelId)
+	}
+	
+};
+```
+
+<a id="class_rtcconnection__parameters"></a>
+
+## 属性
+
+### `channelId`
+
+频道名。
+
+### `localUid`
+
+本地用户 ID。

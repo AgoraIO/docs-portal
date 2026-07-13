@@ -1,0 +1,880 @@
+---
+title: "实现 AI 语音助手"
+---
+
+<PlatformStructured platform="android">
+
+声网提供 AIGCService SDK，借助三方 STT（语音转文字）、TTS（文本转语音）和 LLM（大型语言模型）的能力，能在 App 中实现语音识别、自然语言理解、智能对话等功能。
+
+本文介绍 AI 语音助手场景的实现流程，以及如何集成 AIGCService SDK，并调用核心 API 来实现这个流程。
+
+## 业务流程
+
+AI 语音助手的实现流程如下图所示：
+
+![语音助手实现流程](https://web-cdn.agora.io/docs-portal/img/aigc/diagram.svg)
+
+上图中，采集和播放音频数据是使用声网 RTC SDK 的原始音频数据功能实现的。你也可以选用其他 RTC SDK 的相应功能实现。
+
+## 前提条件
+
+开始前，请确保满足如下要求：
+
+- [Git](https://git-scm.com/downloads)
+- [Java Development Kit](https://www.oracle.com/java/technologies/downloads/)
+- Android Studio 4.1 以上版本
+- Android API 级别 23 及以上
+- Android 6.0 或以上版本的移动设备。声网推荐使用真机运行项目，部分模拟机可能存在功能缺失或者性能问题
+- 参考[开通服务](/zh-CN/ai/aigc/get-started/enable-service)创建项目、获取 App ID、App 证书、临时 Token 并开通 AIGCService 服务
+
+## 集成 SDK
+
+参考如下步骤获取 AIGCService SDK，并将 SDK 集成到你的项目中。
+
+:::info[信息]
+如果你本地尚无 Android 项目，可以参考 Android 官方文档 [Create a project](https://developer.android.com/studio/projects/create-project) 创建。
+:::
+
+联系 sales@shengwang.cn 获取最新的 AIGCService SDK 版本号，在 `/app/build.gradle` 的 `dependencies` 中添加对 AIGCService SDK 的依赖。
+
+   ```java
+   // x.y.z 替换为最新的 AIGCService SDK 版本号，例如 1.2.0
+   implementation("io.github.winskyan:Agora-AIGCService:x.y.z")
+   ```
+
+   :::warning[注意]
+   AIGCService SDK 仅支持 arm64-v8a 和 armeabi-v7a 架构。
+   :::
+
+## 项目设置
+
+#### 权限申请
+
+在项目的 `/app/src/main/AndroidManifest.xml` 文件中，添加如下权限：
+
+```java
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+```
+
+#### 环境配置
+
+在项目的 `/app/build.gradle` 文件的 `defaultConfig` 字段中添加如下行：
+
+```java
+minSdk 21
+targetSdk 30
+compileSdk 32
+```
+
+#### 防止代码混淆
+
+在 `/app/proguard-rules.pro` 文件中添加如下行：
+
+```java
+-keep class io.agora.** { *; }
+-keepnames class io.agora.* { *; }
+-keepnames interface io.agora.* { *; }
+-dontwarn io.agora.**
+
+-keep class com.microsoft.cognitiveservices.speech.** { *; }
+-keepnames class com.microsoft.cognitiveservices.speech.* { *; }
+-keepnames interface com.microsoft.cognitiveservices.speech.* { *; }
+-dontwarn com.microsoft.cognitiveservices.speech.**
+
+-keep class io.netty.** { *; }
+-keepnames class io.netty.* { *; }
+-keepnames interface io.netty.* { *; }
+-dontwarn io.netty.**
+```
+
+## 实现 AI 语音助手
+
+下文展示如何在项目中集成 AIGCService 的核心 API，并实现发送音频数据、接收语言模型处理后的音频数据的逻辑。完整的 API 时序图可以参考 [API 时序图](#api-时序图)。
+
+### 1. 创建 AIGCService 实例
+
+调用 `create` 和 `initialize` 方法创建并初始化 AIGC 服务示例。你需要在 `initialize` 方法中通过 [`AIGCServiceConfig`](/api-ref/aigc/android/aigcservice#aigcserviceconfig) 对服务实例进行配置。
+
+```java
+if (null == mAIGCService) {
+    mAIGCService = AIGCService.create();
+}
+mAIGCService.initialize(new AIGCServiceConfig() {{
+    this.context = onContext;
+    this.callback = serviceCallback;
+    this.enableLog = true;
+    this.enableSaveLogToFile = true;
+    this.userName = "AI";
+    this.appId = KeyCenter.APP_ID;
+    this.rtmToken = KeyCenter.getRtmToken(KeyCenter.getUserUid());
+    this.userId = String.valueOf(KeyCenter.getUserUid());
+    this.enableMultiTurnShortTermMemory = false;
+    this.speechRecognitionFiltersLength = 0;
+    this.input = new SceneMode() {{
+        this.language = Language.ZH_CN;
+        this.speechFrameSampleRates = 16000;
+        this.speechFrameChannels = 1;
+        this.speechFrameBits = 16;
+    }};
+    this.output = new SceneMode() {{
+        this.language = Language.ZH_CN;
+        this.speechFrameSampleRates = 16000;
+        this.speechFrameChannels = 1;
+        this.speechFrameBits = 16;
+    }};
+    this.noiseEnvironment = NoiseEnvironment.NOISE;
+    this.speechRecognitionCompletenessLevel = SpeechRecognitionCompletenessLevel.NORMAL;
+}});
+```
+
+初始化为耗时操作。完成初始化后，SDK 会触发 `onEventResult(INITIALIZE, SUCCESS)` 回调。
+
+### 2. 监听回调事件
+
+除了 `onEventResult` 回调外，你还需要注册如下回调，用来接收各语言模型返回的数据结果：
+
+- `onSpeech2TextResult`：回调语音转文字 (STT) 处理后的结果。
+- `onLLMResult`：回调大语言模型 (LLM) 处理后的结果。
+- `onText2SpeechResult`：回调文字转语音 (TTS) 处理后的结果。
+- `onSpeechStateChange`：识别语音说话的状态。
+
+```java
+@Override
+public void onEventResult(@NonNull ServiceEvent event, @NonNull ServiceCode code, @Nullable String msg) {
+    Log.i(TAG, "onEventResult event:" + event + " code:" + code + " msg:" + msg);
+    if (event == ServiceEvent.INITIALIZE && code == ServiceCode.SUCCESS) {
+        
+    } else if (event == ServiceEvent.START && code == ServiceCode.SUCCESS) {
+
+    } else if (event == ServiceEvent.STOP && code == ServiceCode.SUCCESS) {
+
+    } else if (event == ServiceEvent.DESTROY && code == ServiceCode.SUCCESS) {
+
+    }
+}
+
+@Override
+public HandleResult onSpeech2TextResult(String roundId, Data<String> result, boolean isRecognizedSpeech, ServiceCode code) {
+    Log.i(TAG, "onSpeech2TextResult roundId:" + roundId + " result:" + result + " isRecognizedSpeech:" + isRecognizedSpeech + " code:" + code);
+    return HandleResult.CONTINUE;
+}
+
+@Override
+public HandleResult onLLMResult(String roundId, Data<String> answer, boolean isRoundEnd, int estimatedResponseTokens, ServiceCode code) {
+    Log.i(TAG, "onLLMResult roundId:" + roundId + " answer:" + answer + " isRoundEnd:" + isRoundEnd + " estimatedResponseTokens:" + estimatedResponseTokens + " code:" + code);
+    return HandleResult.CONTINUE;
+}
+
+@Override
+public HandleResult onText2SpeechResult(String roundId, Data<byte[]> voice, int sampleRates, int channels, int bits, ServiceCode code) {
+    Log.i(TAG, "onText2SpeechResult roundId:" + roundId + " voice:" + voice + " sampleRates:" + sampleRates + " channels:" + channels + " bits:" + bits + " code:" + code);
+    return HandleResult.CONTINUE;
+}
+
+@Override
+public void onSpeechStateChange(SpeechState state) {
+    Log.i(TAG, "onSpeechStateChange state:" + state);
+}
+```
+
+### 3. 获取和设置参数
+
+该步骤允许用户根据场景需要，自定义 AIGC 服务的属性。具体步骤如下：
+
+1. 调用 `getRoles` 获取 SDK 支持的所有 [`AIRole`](/api-ref/aigc/android/aigcservice#airole)，包括 AI 服务的名称、职业、性别等。
+2. 调用 `setRole` 设置 SDK 使用的 `AIRole`。
+3. 调用 `getServiceVendors` 获取所有 AI 服务商的信息，包含三种类型：
+    - [`LLMVendor`](/api-ref/aigc/android/aigcservice#llmvendor)：大语言模型
+    - [`STTVendor`](/api-ref/aigc/android/aigcservice#sttvendor)：语音转文字模型
+    - [`TTSVendor`](/api-ref/aigc/android/aigcservice#ttsvendor)：文字转语音模型
+4. 调用 `setServiceVendor` 设置所使用的 AI 服务商。
+
+```java
+@Override
+public void onEventResult(@NonNull ServiceEvent event, @NonNull ServiceCode code, @Nullable String msg) {
+    Log.i(TAG, "onEventResult event:" + event + " code:" + code + " msg:" + msg);
+    if (event == ServiceEvent.INITIALIZE && code == ServiceCode.SUCCESS) {
+        Log.i(TAG, "getRoles:" + Arrays.toString(mAIGCService.getRoles()));
+        Log.i(TAG, "getCurrentRole:" + mAIGCService.getCurrentRole());
+        mAIGCService.setRole(mAIGCService.getRoles()[0].getRoleId());
+
+        Log.i(TAG, "getServiceVendors:" + mAIGCService.getServiceVendors());
+        ServiceVendor serviceVendor = new ServiceVendor();
+        serviceVendor.setTtsVendor(mAIGCService.getServiceVendors().getTtsList().get(0));
+        mAIGCService.setServiceVendor(serviceVendor);
+    
+        mAIGCService.setSTTMode(STTMode.FREESTYLE);
+    }
+}
+```
+
+### 4. 开启 AIGCService
+
+完成初始化相关设置后，调用 `start` 方法开启服务。
+
+```java
+mAIGCService.start()
+```
+
+该步骤也是耗时操作。完成开启服务后，会收到 `onEventResult(START, SUCCESS)` 回调，告知 AIGCService 开启成功。
+
+### 5. 发送接收到的数据
+
+获取到用户发送的消息数据后，你需要将该数据发送给 `AIGCService`。AIGCService SDK 接收到数据后，会将数据发送给接入的各语言模型。
+
+:::warning[注意]
+该步骤需要在调用 `start` 开启服务后实现。
+:::
+
+<Tabs defaultValue="audio" groupId="dataType" persist>
+<TabsList>
+  <TabsTrigger value="audio">语音消息</TabsTrigger>
+  <TabsTrigger value="text">文字消息</TabsTrigger>
+</TabsList>
+
+<TabsContent value="audio">
+
+如果用户发送的是语音消息，进行如下步骤：
+
+1. 采集本地用户发送的音频数据。如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/advanced-features/raw-audio-data)，从 `onRecordAudioFrame` 回调中获取。
+
+2. 获取到音频数据后，调用 [`pushSpeechDialogue`](/api-ref/aigc/android/aigcservice#pushspeechdialogue) 方法将数据发送给 `AIGCService`。
+
+    ```java
+    mAIGCService.pushSpeechDialogue(data, Vad.UNKNOWN, false);
+    ```
+
+</TabsContent>
+
+<TabsContent value="text">
+
+如果用户发送的是文字消息，你可以直接调用 [`pushTxtDialogue`](/api-ref/aigc/android/aigcservice#pushtxtdialogue) 或者 [`pushMessagesToLLM`](/api-ref/aigc/android/aigcservice#pushmessagestollm) 将数据发送给 `AIGCService`。
+
+```java
+// 仅支持推送单条文字消息
+mAIGCService.pushTxtDialogue("你叫什么名字？", "");
+
+// 支持推送多条消息（消息及其上下文语境）
+mAIGCService.pushMessagesToLLM("[{\n" +
+    "\t\t\"role\": \"user\",\n" +
+    "\t\t\"content\": \"你想去郊游吗？\"\n" +
+    "\t}, {\n" +
+    "\t\t\"role\": \"assistant\",\n" +
+    "\t\t\"content\": \"好啊！我们什么时候去？\"\n" +
+    "\t},\n" +
+    "\t{\n" +
+    "\t\t\"role\": \"user\",\n" +
+    "\t\t\"content\": \"周日？\"\n" +
+    "\t}\n" +
+    "]", "{\n" +
+    "\t\"temperature\": 0.5,\n" +
+    "\t\"presence_penalty\": 0.9,\n" +
+    "\t\"frequency_penalty\": 0.9\n" +
+    "}",  "");
+```
+
+</TabsContent>
+</Tabs>
+
+### 6. 接收处理结果
+
+各语言模型处理结束后，会将处理结果返回给 SDK。SDK 会触发如下回调，将处理结果发送给 App。
+
+<Tabs defaultValue="audio" groupId="dataType" persist>
+<TabsList>
+  <TabsTrigger value="audio">语音消息</TabsTrigger>
+  <TabsTrigger value="text">文字消息</TabsTrigger>
+</TabsList>
+
+<TabsContent value="audio">
+
+如果用户发送的是语音消息，需要监听如下回调：
+
+- [`onSpeech2TextResult`](/api-ref/aigc/android/aigcservice#onspeech2textresult)
+- [`onLLMResult`](/api-ref/aigc/android/aigcservice#onllmresult)
+- [`onText2SpeechResult`](/api-ref/aigc/android/aigcservice#ontext2speechresult)
+
+```java
+// 接收语音转文字的处理结果
+@Override
+public HandleResult onSpeech2TextResult(String roundId, Data<String> result, boolean isRecognizedSpeech, ServiceCode code) {
+    Log.i(TAG, "onSpeech2TextResult roundId:" + roundId + " result:" + result + " isRecognizedSpeech:" + isRecognizedSpeech + " code:" + code);
+    return HandleResult.CONTINUE;
+}
+
+// 接收大语言模型的处理结果
+@Override
+public HandleResult onLLMResult(String roundId, Data<String> answer, boolean isRoundEnd, int estimatedResponseTokens, ServiceCode code) {
+    Log.i(TAG, "onLLMResult roundId:" + roundId + " answer:" + answer + " isRoundEnd:" + isRoundEnd + " estimatedResponseTokens:" + estimatedResponseTokens + " code:" + code);
+    return HandleResult.CONTINUE;
+}
+
+// 接收语音识别的处理结果
+@Override
+public HandleResult onText2SpeechResult(String roundId, Data<byte[]> voice, int sampleRates, int channels, int bits, ServiceCode code) {
+    Log.i(TAG, "onText2SpeechResult roundId:" + roundId + " voice:" + voice + " sampleRates:" + sampleRates + " channels:" + channels + " bits:" + bits + " code:" + code);
+    return HandleResult.CONTINUE;
+}
+```
+
+</TabsContent>
+
+<TabsContent value="text">
+
+如果用户发送的是文字消息，需要监听如下回调：
+
+- [`onLLMResult`](/api-ref/aigc/android/aigcservice#onllmresult)
+- [`onText2SpeechResult`](/api-ref/aigc/android/aigcservice#ontext2speechresult)
+
+```java
+
+// 接收大语言模型的处理结果
+@Override
+public HandleResult onLLMResult(String roundId, Data<String> answer, boolean isRoundEnd, int estimatedResponseTokens, ServiceCode code) {
+    Log.i(TAG, "onLLMResult roundId:" + roundId + " answer:" + answer + " isRoundEnd:" + isRoundEnd + " estimatedResponseTokens:" + estimatedResponseTokens + " code:" + code);
+    return HandleResult.CONTINUE;
+}
+
+// 接收语音识别的处理结果
+@Override
+public HandleResult onText2SpeechResult(String roundId, Data<byte[]> voice, int sampleRates, int channels, int bits, ServiceCode code) {
+    Log.i(TAG, "onText2SpeechResult roundId:" + roundId + " voice:" + voice + " sampleRates:" + sampleRates + " channels:" + channels + " bits:" + bits + " code:" + code);
+    return HandleResult.CONTINUE;
+}
+```
+
+</TabsContent>
+</Tabs>
+
+接收到处理后的数据后，如果是文字消息，你可以直接返回；如果是语音消息，还需要播放获取到的音频数据。
+
+:::info[信息]
+如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/advanced-features/raw-audio-data)，使用 `onPlaybackAudioFrame` 播放。
+:::
+
+### 7. 停止 AIGCService
+
+无需使用 AI 语音助手后，你可以调用 `stop` 停止 `AIGCService` 实例。
+
+:::warning[注意]
+该步骤需要在调用 `start` 开启服务后实现。
+:::
+
+停止服务为耗时操作。成功停止后，会收到 `onEventResult(STOP, SUCCESS)` 回调。
+
+```java
+mAIGCService.stop();
+```
+
+### 8. 销毁 AIGCService
+
+成功停止服务后调用 `destroy` 销毁服务实例。
+
+```java
+AIGCService.destroy();
+```
+
+成功销毁后，会收到 `onEventResult(DESTROY, SUCCESS)` 回调。
+
+### API 时序图
+
+实现 AI 语音助手的 API 调用时序图如下。其中，实现步骤需要用到如下关键类：
+
+- `AIGCService` 类：提供 AIGC 服务的核心类。
+- `AIGCServiceCallback` 类：`AIGCService` 异步方法的事件回调类。
+
+![AI 语音助手时序图](https://web-cdn.agora.io/docs-portal/img/aigc/api-call.android.svg)
+
+## 相关文档
+
+开发过程中，你还可以参考如下文档：
+
+<Cards>
+  <Card title="API 参考" href="/api-ref/aigc/android/aigcservice" />
+</Cards>
+
+如果你选择使用声网的 RTC SDK 来实现原始音频数据采集和播放功能，也可以参考：
+
+<Cards>
+  <Card title="原始音频数据" href="/zh-CN/realtime-media/rtc/advanced-features/raw-audio-data" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+声网提供 AIGCService SDK，借助三方 STT（语音转文字）、TTS（文本转语音）和 LLM（大型语言模型）的能力，能在 App 中实现语音识别、自然语言理解、智能对话等功能。
+
+本文介绍 AI 语音助手场景的实现流程，以及如何集成 AIGCService SDK，并调用核心 API 来实现这个流程。
+
+## 实现流程
+
+AI 语音助手的实现流程如下图所示：
+
+![语音助手实现流程](https://web-cdn.agora.io/docs-portal/img/aigc/diagram.svg)
+
+上图中，采集和播放音频数据是使用声网 RTC SDK 的原始音频数据功能实现的。你也可以选用其他 RTC SDK 的相应功能实现。
+
+## 前提条件
+
+开始前，请确保满足如下要求：
+
+- [Xcode](https://developer.apple.com/xcode/) 13 或以上版本。
+- 已安装 Cocoapods。如尚未安装 Cocoapods，参考 [Getting Started](https://guides.cocoapods.org/using/getting-started.html#getting-started) 安装。
+- iOS 10 或以上版本的移动设备。声网推荐使用真机运行项目，部分模拟机可能存在功能缺失或者性能问题。
+- 参考[开通服务](/zh-CN/ai/aigc/get-started/enable-service)创建项目、获取 App ID、App 证书、临时 Token 并开通 AIGCService 服务。
+
+## 集成 SDK
+
+参考如下步骤获取 AIGCService SDK，并将 SDK 集成到你的项目中。
+
+:::info[信息]
+如果你本地尚无 iOS 项目，可以参考 Apple 官方文档 [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578) 创建。
+:::
+
+1. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
+
+2. 联系 sales@shengwang.cn 获取最新的 AIGCService SDK 版本号，打开 `Podfile` 文件，添加对 `AgoraAIGCService` 的引用：
+
+    ```ruby
+    platform :ios, '10.0'
+    target 'Your App' do
+      # x.y.z 替换为最新的 AIGCService SDK 版本号，例如 1.2.0
+      pod 'AgoraAIGCService', 'x.y.z'
+    end
+    ```
+
+3. 在终端内运行 `pod install` 命令安装声网 AIGCService，终端中会显示 `Pod installation complete!`。
+
+4. 成功安装后，项目文件夹下会生成一个后缀为 `.xcworkspace` 的文件，通过 **Xcode** 打开该文件进行后续操作。
+
+## 项目设置
+
+点击项目的 `info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，
+添加以下属性：
+
+| key | type | value |
+| --- | --- | --- |
+| `Privacy - Microphone Usage Description` | String | 使用麦克风的目的，如 for using aigc service |
+
+## 实现 AI 语音助手
+
+下文展示如何在项目中集成 AIGCService 的核心 API，并实现发送音频数据、接收语言模型处理后的音频数据的逻辑。完整的 API 时序图可以参考 [API 时序图](#api-时序图)。
+
+### 1. 创建 AIGCService 实例
+
+调用 `create` 和 `initialize` 方法创建并初始化 AIGC 服务示例。你需要在 `initialize` 方法中通过 [`AgoraAIGCConfigure`](/api-ref/aigc/ios/aigcservice#aigcserviceconfig) 对服务实例进行配置。
+
+```swift
+service = AgoraAIGCService.create()
+let uid = "123";
+let token = TokenBuilder.buildRtmToken(Config.appId,
+                            appCertificate: Config.certificate,
+                                  userUuid: uid)
+        
+let input = AgoraAIGCSceneMode(language: .ZH_CN,
+                         peechFrameBits: 16,
+                 speechFrameSampleRates: 16000,
+                    speechFrameChannels: 1)
+let output = AgoraAIGCSceneMode(language: .ZH_CN,
+                         speechFrameBits: 16,
+                  speechFrameSampleRates: 16000,
+                     speechFrameChannels: 1)
+        
+let config = AgoraAIGCConfigure(appId: Config.appId,
+                             rtmToken: token,
+                               userId: uid,
+       enableMultiTurnShortTermMemory: false,
+       speechRecognitionFiltersLength: 10,
+                                input: input,
+                               output: output,
+                            enableLog: true,
+                  enableSaveLogToFile: true,
+                             userName: "小李",
+                    enableChatIdleTip: false,
+                          logFilePath: nil,
+                     noiseEnvironment: .normal,
+   speechRecognitionCompletenessLevel: .normal)
+service.delegate = self
+service.initialize(config)
+```
+
+初始化为耗时操作。完成初始化后，SDK 会触发 `onEventResultWithEvent(Initialize, Success)` 回调。
+
+### 2. 监听回调事件
+
+除了 `onEventResultWithEvent` 回调外，你还需要注册如下回调，用来接收各语言模型返回的数据结果：
+
+- `onSpeech2TextWithRoundId`：回调语音转文字 (STT) 处理后的结果。
+- `onLLMResultWithRoundId`：回调大语言模型 (LLM) 处理后的结果。
+- `onText2SpeechResultWithRoundId`：回调文字转语音 (TTS) 处理后的结果。
+- `onSpeechStateChange`：识别语音说话的状态。
+
+```swift
+// AIGCServiceDelegate
+func onEventResult(with event: AgoraAIGCServiceEvent, 
+                         code: AgoraAIGCServiceCode,
+                      message: String?) {
+    if event == .initialize, code == .initializeFail {
+        print("====initializeFail")
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            // 添加你的处理逻辑
+        }
+        return
+    }
+        
+    if event == .initialize, code == .success {
+        print("====initialize success")
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            // 添加你的处理逻辑
+        }
+        return
+    }
+}
+    
+func onSpeech2Text(withRoundId roundId: String,
+                                result: NSMutableString,
+                      recognizedSpeech: Bool,
+                                  code: AgoraAIGCServiceCode) -> AgoraAIGCHandleResult {
+    DispatchQueue.main.async { [weak self] in
+        guard let `self` = self else {
+            return
+        }
+        
+        if (code == .success) {
+            // 添加你的正确处理逻辑  
+        }
+        else {
+            // 添加你的错误处理逻辑  
+        }
+    }
+    return .continue
+}
+
+func onLLMResult(withRoundId roundId: String,
+                              answer: NSMutableString,
+                          isRoundEnd: Bool,
+      estimatedResponseTokens tokens: UInt,
+                                code: AgoraAIGCServiceCode) -> AgoraAIGCHandleResult {
+    DispatchQueue.main.async { [weak self] in
+        guard let `self` = self else {
+            return
+        }
+        if (code == .success) {
+            // 添加你的正确处理逻辑  
+        }
+        else {
+            // 添加你的错误处理逻辑  
+        }
+    }
+    return .continue
+}
+    
+func onText2SpeechResult(withRoundId roundId: String, 
+                                       voice: Data,
+                                 sampleRates: Int,
+                                    channels: Int,
+                                        bits: Int,
+                                        code: AgoraAIGCServiceCode) -> AIGCHandleResult {
+    DispatchQueue.main.async { [weak self] in
+        guard let `self` = self else {
+            return
+        }
+        if (code == .success) {
+            // 添加你的正确处理逻辑  
+        }
+        else {
+            // 添加你的错误处理逻辑  
+        }
+    }
+    return .continue
+}
+```
+
+### 3. 获取和设置参数
+
+该步骤允许用户根据场景需要，自定义 AIGC 服务的属性。具体步骤如下：
+
+1. 调用 `getRoles` 获取 SDK 支持的所有 [`AgoraAIGCAIRole`](/api-ref/aigc/ios/aigcservice#airole)，包括 AI 服务的名称、职业、性别等。
+2. 调用 `setRoleWithId` 设置 SDK 使用的 `AgoraAIGCAIRole`。
+3. 调用 `getServiceVendors` 获取所有 AI 服务商的信息，包含三种类型：
+    - [`AgoraAIGCLLMVendor`](/api-ref/aigc/android/aigcservice#llmvendor)：大语言模型
+    - [`AgoraAIGCSTTVendor`](/api-ref/aigc/android/aigcservice#sttvendor)：语音转文字模型
+    - [`AgoraAIGCSTTVendor`](/api-ref/aigc/android/aigcservice#ttsvendor)：文字转语音模型
+4. 调用 `setServiceVendor` 设置所使用的 AI 服务商。
+
+```swift
+func onEventResult(with event: AgoraAIGCServiceEvent, 
+                   code: AgoraAIGCServiceCode, 
+                   message: String?) {
+    if event == .initialize, code == .initializeFail {
+        print("====initializeFail")
+        return
+    }
+    
+    if event == .initialize, code == .success {
+        print("====initialize success")
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            let roles = service.getRoles()
+            self.service.setRoleWithId(roles!.first!.roleId)
+            let vendors = service.getVendors()
+            let vendor = AgoraAIGCServiceVendor(stt: vendors!.stt.last!, llm: vendors!.llm.first!, tts: vendors!.tts.last!)
+            self.service.setServiceVendor(vendor)
+        }
+        return
+    }
+}
+```
+
+### 4. 开启 AIGCService
+
+完成初始化相关设置后，调用 `start` 方法开启服务。
+
+```swift
+service.start()
+```
+
+该步骤也是耗时操作。完成开启服务后，会收到 `onEventResultWithEvent(Start, Success)` 回调。
+
+### 5. 发送接收到的数据
+
+获取到用户发送的消息数据后，你需要将该数据发送给 `AgoraAIGCService`。AgoraAIGCService SDK 接收到数据后，会将数据发送给接入的各语言模型。
+
+:::warning[注意]
+该步骤需要在调用 `start` 开启服务后实现。
+:::
+
+<Tabs defaultValue="audio" groupId="dataType" persist>
+<TabsList>
+  <TabsTrigger value="audio">语音消息</TabsTrigger>
+  <TabsTrigger value="text">文字消息</TabsTrigger>
+</TabsList>
+
+<TabsContent value="audio">
+
+如果用户发送的是语音消息，进行如下步骤：
+
+1. 采集本地用户发送的音频数据。如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/advanced-features/raw-audio-data)，从 `onRecordAudioFrame` 回调中获取。
+
+2. 获取到音频数据后，调用 [`pushSpeechDialogueWithData`](/api-ref/aigc/ios/aigcservice#pushspeechdialogue) 方法将数据发送给 `AgoraAIGCService`。
+
+    ```swift
+    service.pushSpeechDialogue(with: data, vad: .unknow, isLastFrame: false)
+    ```
+
+</TabsContent>
+
+<TabsContent value="text">
+
+如果用户发送的是文字消息，你可以直接调用 [`pushTxtDialogue`](/api-ref/aigc/android/aigcservice#pushtxtdialogue) 或者 [`pushMessagesToLlm`](/api-ref/aigc/android/aigcservice#pushmessagestollm) 将数据发送给 `AgoraAIGCService`。
+
+```swift
+// 仅支持推送单条文字消息
+service.pushTxtDialogue("你好", roundId: nil)
+
+// 支持推送多条消息（消息及其上下文语境）
+service.pushMessages(toLlm: "json string", extraInfoJson: nil, roundId: nil)
+```
+
+</TabsContent>
+</Tabs>
+
+### 6. 接收处理结果
+
+各语言模型处理结束后，会将处理结果返回给 SDK。SDK 会触发如下回调，将处理结果发送给 App。
+
+<Tabs defaultValue="audio" groupId="dataType" persist>
+<TabsList>
+  <TabsTrigger value="audio">语音消息</TabsTrigger>
+  <TabsTrigger value="text">文字消息</TabsTrigger>
+</TabsList>
+
+<TabsContent value="audio">
+
+如果用户发送的是语音消息，需要监听如下回调：
+
+- [`onSpeech2TextWithRoundId`](/api-ref/aigc/ios/aigcservice#onspeech2textresult)
+- [`onLLMResultWithRoundId`](/api-ref/aigc/ios/aigcservice#onllmresult)
+- [`onText2SpeechResultWithRoundId`](/api-ref/aigc/ios/aigcservice#ontext2speechresult)
+
+```swift
+// 接收语音转文字的处理结果
+func onSpeech2Text(withRoundId roundId: String,
+                                result: String,
+                      recognizedSpeech: Bool,
+                                  code: AgoraAIGCServiceCode) -> AgoraAIGCHandleResult {
+    DispatchQueue.main.async { [weak self] in
+        guard let `self` = self else {
+            return
+        }
+        if (code == .success) {
+            // 添加你的正确处理逻辑  
+        }
+        else {
+            // 添加你的错误处理逻辑  
+        }
+    }
+    return .continue
+}
+
+// 接收大语言模型的处理结果
+func onLLMResult(withRoundId roundId: String,
+                              answer: String, 
+                          isRoundEnd: Bool,
+      estimatedResponseTokens tokens: UInt,
+                                code: AgoraAIGCServiceCode) -> AgoraAIGCHandleResult {
+    DispatchQueue.main.async { [weak self] in
+        guard let `self` = self else {
+            return
+        }
+        if (code == .success) {
+            // 添加你的正确处理逻辑  
+        }
+        else {
+            // 添加你的错误处理逻辑  
+        }
+    }
+    return .continue
+}
+
+// 接收语音识别的处理结果   
+func onText2SpeechResult(withRoundId roundId: String, 
+                                       voice: Data, 
+                                 sampleRates: Int, 
+                                    channels: Int, 
+                                        bits: Int,
+                                        code: AgoraAIGCServiceCode) -> AIGCHandleResult {
+    DispatchQueue.main.async { [weak self] in
+        guard let `self` = self else {
+            return
+        }
+        if (code == .success) {
+            // 添加你的正确处理逻辑  
+        }
+        else {
+            // 添加你的错误处理逻辑  
+        }
+    }
+    return .continue
+}
+```
+
+</TabsContent>
+
+<TabsContent value="text">
+
+如果用户发送的是文字消息，需要监听如下回调：
+
+- [`onLLMResultWithRoundId`](/api-ref/aigc/ios/aigcservice#onllmresult)
+- [`onText2SpeechResultWithRoundId`](/api-ref/aigc/ios/aigcservice#ontext2speechresult)
+
+```swift
+// 接收大语言模型的处理结果
+func onLLMResult(withRoundId roundId: String, 
+                              answer: String, 
+                          isRoundEnd: Bool,
+      estimatedResponseTokens tokens: UInt,
+                                code: AgoraAIGCServiceCode) -> AgoraAIGCHandleResult {
+    DispatchQueue.main.async { [weak self] in
+        guard let `self` = self else {
+            return
+        }
+        if (code == .success) {
+            // 添加你的正确处理逻辑  
+        }
+        else {
+            // 添加你的错误处理逻辑  
+        }
+    }
+    return .continue
+}
+
+// 接收语音识别的处理结果   
+func onText2SpeechResult(withRoundId roundId: String, 
+                                       voice: Data, 
+                                 sampleRates: Int, 
+                                    channels: Int, 
+                                        bits: Int,
+                                        code: AgoraAIGCServiceCode) -> AIGCHandleResult {
+    DispatchQueue.main.async { [weak self] in
+        guard let `self` = self else {
+            return
+        }
+        if (code == .success) {
+            // 添加你的正确处理逻辑  
+        }
+        else {
+            // 添加你的错误处理逻辑  
+        }
+    }
+    return .continue
+}
+```
+
+</TabsContent>
+</Tabs>
+
+接收到处理后的数据后，如果是文字消息，你可以直接回复给 App 用户；如果是语音消息，还需要播放获取到的音频数据。
+
+:::info[信息]
+如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/advanced-features/raw-audio-data)，使用 `onPlaybackAudioFrame` 播放。
+:::
+
+### 7. 停止 AIGCService
+
+无需使用 AI 语音助手后，你可以调用 `stop` 停止 `AIGCService` 实例。
+
+:::warning[注意]
+该步骤需要在调用 `start` 开启服务后实现。
+:::
+
+停止服务为耗时操作。成功停止后，会收到 `onEventResultWithEvent(Stop, Success)` 回调。
+
+```swift
+service.stop()
+```
+
+### 8. 销毁 AIGCService
+
+成功停止服务后调用 `destroy` 销毁服务实例。
+
+```swift
+AgoraAIGCService.destroy()
+```
+
+成功销毁后，会收到 `onEventResultWithEvent(Destroy, Success)` 回调。
+
+### API 时序图
+
+实现 AI 语音助手的 API 调用时序图如下。其中，实现步骤需要用到如下关键类：
+
+- `AgoraAIGCService` 类：提供 AIGC 服务的核心类。
+- `AgoraAIGCServiceDelegate` 类：`AgoraAIGCService` 异步方法的事件回调类。
+
+![AI 语音助手时序图](https://web-cdn.agora.io/docs-portal/img/aigc/api-call.ios.svg)
+
+## 相关文档
+
+开发过程中，你还可以参考如下文档：
+
+<Cards>
+  <Card title="API 参考" href="/api-ref/aigc/ios/aigcservice" />
+</Cards>
+
+如果你选择使用声网的 RTC SDK 来实现原始音频数据采集和播放功能，也可以参考：
+
+<Cards>
+  <Card title="原始音频数据" href="/zh-CN/realtime-media/rtc/advanced-features/raw-audio-data" />
+</Cards>
+
+</PlatformStructured>

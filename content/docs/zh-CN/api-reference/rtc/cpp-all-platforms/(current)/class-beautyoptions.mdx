@@ -1,0 +1,39 @@
+---
+title: "BeautyOptions"
+description: "美颜特效设置参数。"
+---
+<a id="class_beautyoptions__prototype"></a>
+
+```cpp
+struct BeautyOptions {
+  LIGHTENING_CONTRAST_LEVEL lighteningContrastLevel;
+  float lighteningLevel;
+  float smoothnessLevel;
+  float rednessLevel;
+  float sharpnessLevel;
+};
+```
+
+<a id="class_beautyoptions__parameters"></a>
+
+## 属性
+
+### `lighteningContrastLevel`
+
+对比度等级，与 `lighteningLevel` 参数配合使用。值越大，明暗对比越强。详见 [LIGHTENING_CONTRAST_LEVEL](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-lighteningcontrastlevel)。
+
+### `lighteningLevel`
+
+美白等级，取值范围为 [0.0, 1.0]。0.0 表示原始亮度，默认值为 0.0。值越大，美白程度越高。
+
+### `smoothnessLevel`
+
+磨皮等级，取值范围为 [0.0, 1.0]。0.0 表示原始平滑度，默认值为 0.0。值越大，磨皮程度越高。
+
+### `rednessLevel`
+
+红润等级，取值范围为 [0.0, 1.0]。0.0 表示原始红润度，默认值为 0.0。值越大，红润程度越高。
+
+### `sharpnessLevel`
+
+锐化等级，取值范围为 [0.0, 1.0]。0.0 表示原始锐度，默认值为 0.0。值越大，锐化程度越高。

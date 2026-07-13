@@ -1,0 +1,406 @@
+---
+title: "使用 Go SDK 开始云端转码"
+---
+本文向新手介绍如何使用声网 Go SDK 开始第一次云端转码。
+
+Go SDK 旨在帮助开发者更轻松集成声网 RESTful API。该 SDK 具有如下特性：
+
+- 简化通信流畅：通过封装 RESTful API 的请求和响应处理，让你与 RESTful API 的通信更加简单。
+- 保障可用性：遇到 DNS 解析失败、网络错误、请求超时等网络问题时，会自动切换到最佳域名，确保 REST 服务的可用性。
+- API 易用性：提供简洁易懂的 API，让你能轻松实现创建云端转码、销毁云端转码等常用功能。
+- 其他优势：基于 Go 语言编写，具有高效性、并发性、可扩展性。
+
+## 前提条件
+
+开始前请确保你的本地开发环境满足如下条件：
+
+- [Go](https://go.dev/dl/) 1.18 或以上版本。
+- 参考[开通服务](/zh-CN/realtime-media/transcoding/build/setup-and-access/enable-service)在声网控制台开通云端转码，并复制保存 App ID、临时 Token、客户 ID 和客户密钥。
+
+  :::warning[注意]
+  临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
+  :::
+
+- 在项目中实现了基础的音视频互动场景。你也可以参考[文档](/zh-CN/realtime-media/recording/cloud-recording/get-started/quick-start#模拟音视频互动场景)使用声网实时互动 [Web Demo](https://webdemo.agora.io/index.html) 在浏览器中模拟一个音视频互动场景。
+
+## 创建项目并安装 SDK
+
+#### 创建项目
+
+参考如下步骤创建并配置新项目。
+
+1. 创建一个名为 `test-transcoder` 的空项目文件夹。
+
+2. 进入 `test-transcoder` 路径，执行如下命令初始化 Go 模块。
+
+    ```shell
+    go mod init test-transcoder
+    ```
+
+3. 在项目路径下，新建一个空的 `main.go` 文件，我们会在这个文件中实现一个极简的云端转码任务。
+
+#### 安装并引入 SDK
+
+按照如下命令行安装需要的依赖库，并将 SDK 引入项目中。
+
+1. 在项目路径下，执行如下命令，安装 Go SDK。
+
+    ```shell
+    # 安装 Go SDK
+    go get -u github.com/AgoraIO-Community/agora-rest-client-go
+    # 更新依赖
+    go mod tidy
+    ```
+
+2. 安装完成后，在你的 `main.go` 文件中添加如下代码，以引入 Go SDK。
+
+    ```go
+    import (
+      "context"
+      "log"
+      "time"
+
+      "github.com/AgoraIO-Community/agora-rest-client-go/agora"
+      "github.com/AgoraIO-Community/agora-rest-client-go/agora/auth"
+      "github.com/AgoraIO-Community/agora-rest-client-go/agora/domain"
+      agoraLogger "github.com/AgoraIO-Community/agora-rest-client-go/agora/log"
+      "github.com/AgoraIO-Community/agora-rest-client-go/services/cloudtranscoder"
+      cloudTranscoderAPI "github.com/AgoraIO-Community/agora-rest-client-go/services/cloudtranscoder/api"
+    )
+    ```
+
+## 开始云端转码
+
+本节介绍进行云端转码的极简流程。为方便说明，本节以上面模拟的视频直播为例，并假设将主播的音频进行转码处理。
+
+### 定义变量
+
+在 `main.go` 文件中，添加如下代码，定义或配置关键参数，取值可参考[前提条件](#前提条件)。
+
+```go
+// 定义关键参数
+const (
+  appId             = "<your_app_id>"
+  token             = "<your_token>"           // transcoder 在输入频道内的 Token
+  username          = "<your_customer_key>"    // 你的客户 ID
+  password          = "<your_customer_secret>" // 你的客户密钥
+  inputChannelName  = "show"                   // 输入流的频道名
+  inputUId          = 0                        // 输入流的用户 ID
+  inputToken        = "<your_token>"           // 输入流用户的 Token
+  outputChannelName = "show"                   // 输出流的频道名
+  outputUId         = 0                        // transcoder 在输出频道内的用户 ID
+  outputToken       = "<your_token>"           // transcoder 在输出频道内的 Token
+  instanceId        = "quickstart"             // transcoder 实例的 ID
+)
+```
+
+:::info[信息]
+- 本示例中将 `show` 频道的主播作为 transcoder 的输入流。为简化参数设置，transcoder 输出流也指定到 `show` 频道中，因此输入流和输出流的 Token 相同。
+- 多条输入流需来自同一频道，输出流可以为一条或者多条，并且指定到任意频道。
+:::
+
+### 创建并初始化 Client
+
+在 `main.go` 文件中，添加如下代码，创建并初始化 Client。
+
+```go
+config := &agora.Config{
+  AppID:      appId,
+  Credential: auth.NewBasicAuthCredential(username, password),
+  // Specify the region where the server is located. Options include CN, EU, AP, US.
+  // The client will automatically switch to use the best domain based on the configured region.
+  DomainArea: domain.CN,
+  // Specify the log output level. Options include DebugLevel, InfoLevel, WarningLevel, ErrLevel.
+  // To disable log output, set logger to DiscardLogger.
+  Logger: agoraLogger.NewDefaultLogger(agoraLogger.DebugLevel),
+}
+
+client, err := cloudtranscoder.NewClient(config)
+if err != nil {
+  log.Fatal(err)
+}
+```
+
+### 获取云端转码资源
+
+在开始创建云端转码之前，你需要调用 `Acquire` 方法获取一个 `tokenName`，一个 `tokenName` 仅可用于一次云端转码任务。
+
+```go
+// Call the Acquire API of the cloud transcoder service client
+acquireResp, err := client.Acquire(context.TODO(), &cloudTranscoderAPI.AcquireReqBody{
+  InstanceId: instanceId,
+})
+if err != nil {
+  log.Fatalln(err)
+}
+if acquireResp.IsSuccess() {
+  log.Printf("acquire success:%+v\n", acquireResp)
+} else {
+  log.Fatalf("acquire failed:%+v\n", acquireResp)
+}
+
+tokenName := acquireResp.SuccessResp.TokenName
+
+if tokenName == "" {
+  log.Fatalln("tokenName is empty")
+}
+
+log.Printf("tokenName:%s\n", tokenName)
+```
+
+### 开始云端转码
+
+获取资源后，调用 `Create` 创建云端转码任务，开始云端转码。本示例中，将同一频道的两位主播的音视频流进行混音和合图处理。
+
+```go
+// Create a cloud transcoding task and start cloud transcoding
+createResp, err := client.Create(context.TODO(), tokenName, &cloudTranscoderAPI.CreateReqBody{
+  Services: &cloudTranscoderAPI.CreateReqServices{
+    CloudTranscoder: &cloudTranscoderAPI.CloudTranscoderPayload{
+      ServiceType: "cloudTranscoderV2",
+      Config: &cloudTranscoderAPI.CloudTranscoderConfig{
+        Transcoder: &cloudTranscoderAPI.CloudTranscoderConfigPayload{
+          IdleTimeout: 300,
+          AudioInputs: []cloudTranscoderAPI.CloudTranscoderAudioInput{
+            {
+              Rtc: &cloudTranscoderAPI.CloudTranscoderRtc{
+                RtcChannel: inputChannelName,
+                RtcUID:     inputUId,
+                RtcToken:   inputToken,
+              },
+            },
+          },
+          Outputs: []cloudTranscoderAPI.CloudTranscoderOutput{
+            {
+              Rtc: &cloudTranscoderAPI.CloudTranscoderRtc{
+                RtcChannel: outputChannelName,
+                RtcUID:     outputUId,
+                RtcToken:   outputToken,
+              },
+              AudioOption: &cloudTranscoderAPI.CloudTranscoderOutputAudioOption{
+                ProfileType: "AUDIO_PROFILE_MUSIC_STANDARD",
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+})
+if err != nil {
+  log.Fatalln(err)
+}
+
+if createResp.IsSuccess() {
+  log.Printf("create success:%+v\n", createResp)
+} else {
+  log.Printf("create failed:%+v\n", createResp)
+  return
+}
+
+taskId := createResp.SuccessResp.TaskID
+
+if taskId == "" {
+  log.Fatalln("taskId is empty")
+}
+
+log.Printf("taskId:%s\n", taskId)
+
+// Wait for 10 seconds before stopping the cloud transcoding
+time.Sleep(time.Second * 10)
+```
+
+### 停止云端转码
+
+完成转码任务后，调用 `Delete` 方法结束云端转码：
+
+```go
+// Stop the cloud transcoding
+deleteResp, err := client.Delete(context.TODO(), taskId, tokenName)
+if err != nil {
+  log.Println(err)
+  return
+}
+if deleteResp.IsSuccess() {
+  log.Printf("delete success:%+v\n", deleteResp)
+} else {
+  log.Printf("delete failed:%+v\n", deleteResp)
+  return
+}
+```
+
+### 完整示例代码
+
+完成上述步骤后，`main.go` 文件中完整代码如下，你可自行比对：
+
+<Accordions>
+<Accordion title="完整示例代码">
+
+```go
+package main
+
+import (
+  "context"
+  "log"
+  "time"
+
+  "github.com/AgoraIO-Community/agora-rest-client-go/agora"
+  "github.com/AgoraIO-Community/agora-rest-client-go/agora/auth"
+  "github.com/AgoraIO-Community/agora-rest-client-go/agora/domain"
+  agoraLogger "github.com/AgoraIO-Community/agora-rest-client-go/agora/log"
+  "github.com/AgoraIO-Community/agora-rest-client-go/services/cloudtranscoder"
+  cloudTranscoderAPI "github.com/AgoraIO-Community/agora-rest-client-go/services/cloudtranscoder/api"
+)
+
+// Define key parameters
+const (
+  appId             = "<your_app_id>"
+  token             = "<your_token>"           // transcoder 在输入频道内的 Token
+  username          = "<your_customer_key>"    // 你的客户 ID
+  password          = "<your_customer_secret>" // 你的客户密钥
+  inputChannelName  = "show"                   // 输入流的频道名
+  inputUId          = 0                        // 输入流的用户 ID
+  inputToken        = "<your_token>"           // 输入流用户的 Token
+  outputChannelName = "show"                   // 输出流的频道名
+  outputUId         = 0                        // transcoder 在输出频道内的用户 ID
+  outputToken       = "<your_token>"           // transcoder 在输出频道内的 Token
+  instanceId        = "quickstart"             // transcoder 实例的 ID
+)
+
+func main() {
+  // Initialize Agora Config
+  config := &agora.Config{
+    AppID:      appId,
+    Credential: auth.NewBasicAuthCredential(username, password),
+    // Specify the region where the server is located. Options include CN, EU, AP, US.
+    // The client will automatically switch to use the best domain based on the configured region.
+    DomainArea: domain.CN,
+    // Specify the log output level. Options include DebugLevel, InfoLevel, WarningLevel, ErrLevel.
+    // To disable log output, set logger to DiscardLogger.
+    Logger: agoraLogger.NewDefaultLogger(agoraLogger.DebugLevel),
+  }
+
+  client, err := cloudtranscoder.NewClient(config)
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  // Call the Acquire API of the cloud transcoder service client
+  acquireResp, err := client.Acquire(context.TODO(), &cloudTranscoderAPI.AcquireReqBody{
+    InstanceId: instanceId,
+  })
+  if err != nil {
+    log.Fatalln(err)
+  }
+  if acquireResp.IsSuccess() {
+    log.Printf("acquire success:%+v\n", acquireResp)
+  } else {
+    log.Fatalf("acquire failed:%+v\n", acquireResp)
+  }
+
+  tokenName := acquireResp.SuccessResp.TokenName
+
+  if tokenName == "" {
+    log.Fatalln("tokenName is empty")
+  }
+
+  log.Printf("tokenName:%s\n", tokenName)
+
+  // Create a cloud transcoding task and start cloud transcoding
+  createResp, err := client.Create(context.TODO(), tokenName, &cloudTranscoderAPI.CreateReqBody{
+    Services: &cloudTranscoderAPI.CreateReqServices{
+      CloudTranscoder: &cloudTranscoderAPI.CloudTranscoderPayload{
+        ServiceType: "cloudTranscoderV2",
+        Config: &cloudTranscoderAPI.CloudTranscoderConfig{
+          Transcoder: &cloudTranscoderAPI.CloudTranscoderConfigPayload{
+            IdleTimeout: 300,
+            AudioInputs: []cloudTranscoderAPI.CloudTranscoderAudioInput{
+              {
+                Rtc: &cloudTranscoderAPI.CloudTranscoderRtc{
+                  RtcChannel: inputChannelName,
+                  RtcUID:     inputUId,
+                  RtcToken:   inputToken,
+                },
+              },
+            },
+            Outputs: []cloudTranscoderAPI.CloudTranscoderOutput{
+              {
+                Rtc: &cloudTranscoderAPI.CloudTranscoderRtc{
+                  RtcChannel: outputChannelName,
+                  RtcUID:     outputUId,
+                  RtcToken:   outputToken,
+                },
+                AudioOption: &cloudTranscoderAPI.CloudTranscoderOutputAudioOption{
+                  ProfileType: "AUDIO_PROFILE_MUSIC_STANDARD",
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  if err != nil {
+    log.Fatalln(err)
+  }
+
+  if createResp.IsSuccess() {
+    log.Printf("create success:%+v\n", createResp)
+  } else {
+    log.Printf("create failed:%+v\n", createResp)
+    return
+  }
+
+  taskId := createResp.SuccessResp.TaskID
+
+  if taskId == "" {
+    log.Fatalln("taskId is empty")
+  }
+
+  log.Printf("taskId:%s\n", taskId)
+
+  // Wait for 10 seconds before stopping the cloud transcoding
+  time.Sleep(time.Second * 10)
+
+  // Stop the cloud transcoding
+  deleteResp, err := client.Delete(context.TODO(), taskId, tokenName)
+  if err != nil {
+    log.Println(err)
+    return
+  }
+  if deleteResp.IsSuccess() {
+    log.Printf("delete success:%+v\n", deleteResp)
+  } else {
+    log.Printf("delete failed:%+v\n", deleteResp)
+    return
+  }
+}
+```
+
+</Accordion>
+</Accordions>
+
+## 查看云端转码效果
+
+补全 `main.go` 的代码后，在项目文件夹下，执行如下命令本地运行 Go 项目：
+
+```shell
+go run main.go
+```
+
+你可以在命令行中看到云端转码过程的详细 Log。此时 Web Demo 中播放的远端音频就是经过了转码后的音频。
+
+云端转码支持设置的所有参数请参考 [API 文档](/doc/cloud-transcoder/restful/cloud-transcoder/operations/post-v1-projects-appId-rtsc-cloud-transcoder-builderTokens)。
+
+## 示例项目
+
+完成快速开始后，你可以体验更多云端转码示例：
+
+<Cards>
+  <Card title="GitHub 示例项目" href="https://github.com/AgoraIO-Community/agora-rest-client-go/tree/main/examples/cloudtranscoder" />
+  <Card title="Gitee 示例项目" href="https://gitee.com/agoraio-community/agora-rest-client-go/tree/main/services/cloudtranscoder" />
+</Cards>
+
+## 排查错误
+
+如果遇到问题，可参考[响应状态码和错误码](/zh-CN/realtime-media/transcoding/reference/response-code)排查。

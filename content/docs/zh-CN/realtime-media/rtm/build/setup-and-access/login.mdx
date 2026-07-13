@@ -1,0 +1,258 @@
+---
+title: "登录服务"
+---
+你需要登录才能真正连接上 RTM 服务器、访问 RTM 的网络资源，如发送消息、订阅频道等。
+
+在登录 RTM 服务之前，你需要确保你的设备处于网络连接的状态并完成了[应用设置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup)。
+
+## 登录服务
+
+执行登录操作时，客户端会尝试与 RTM 服务器建立长连接，一旦建立成功，客户端会按照固定的时间间隔向 RTM 服务器传递心跳信息以保持客户端的活跃状态，直到客户端主动退出登录或掉线超时才会中断连接。在此期间，你可以在权限和使用限制范围内访问 RTM 的网络资源。
+
+```csharp
+var (status,response) = await rtmClient.LoginAsync(token);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log("Login Successfully")
+}
+```
+
+```javascript
+try {
+    const result = await rtm.login({ token: "your_token" });
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, because of: ${reason}.`);
+}
+```
+
+```java
+mRtmClient.login("your_token", new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "login success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift
+rtm.login("token") { response, errorInfo in
+    if errorInfo == nil {
+        print("login success!!")
+    } else {
+        print("login failed, errorCode \(errorInfo?.errorCode), reason \(errorInfo?.reason)")
+    }
+}
+```
+
+```objc
+[rtm loginByToken:@"token" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"login success!!");
+    } else {
+        NSLog(@"login failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp
+uint64_t requestId;
+rtmClient->login("your_token", requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onloginresult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onLoginResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("login rtm failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("login rtm success\n");
+        }
+    }
+};
+```
+
+```dart
+try {
+    var (status, response) = await rtmClient.login('your_Token');
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript
+import { RtmError } from '@shengwang/rtm-full';
+
+try {
+  const response = await rtmClient.login("your_token");
+  console.log("Login successful:", response);
+} catch (error) {
+  console.error("Login failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Login failed: ${error.reason} (code: ${error.errorCode})`);
+  } else {
+    console.error("Login failed");
+  }
+}
+```
+
+你可以通过 `config.login` 的返回值或监听 `config.onlinkstateevent` 事件通知来判断登录是否成功以及登录失败的错误码和错误原因。执行登录操作时，客户端的网络连接状态为 `enumv.linkstateconnecting`；登录成功后，其状态会更新为 `enumv.linkstateconnected` 状态。为持续监测客户端的网络连接状态，声网建议你在应用的整个生命周期内持续监听 `config.onlinkstateevent` 事件通知，详见[事件监听](/api-ref/rtm2//toc-configuration/configuration#事件监听)。
+
+:::info[信息]
+用户成功登录 RTM 服务后，应用的 PCU 会增加，这将影响你的账单数据。
+:::
+
+## 退出登录
+
+当不再需要使用 RTM 服务时，你可以通过显式调用 `config.logout` 退出登录。退出登录意味着客户端与 RTM 服务器关闭长连接，你会自动退出或取消订阅所有频道（Stream Channel 及 Message Channel），频道中的其他用户也会收到你的离开频道的 `config.onpresenceevent` 事件通知。
+
+```csharp
+var (status,response) = await rtmClient.LogoutAsync();
+```
+
+```javascript
+try {
+    const result = await rtm.logout();
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, because of: ${reason}.`);
+}
+```
+
+```java
+mRtmClient.logout(new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "logout success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift
+rtm.logout() { response, errorInfo in
+    if errorInfo == nil {
+        print("logout success!!")
+    } else {
+        print("logout failed, errorCode \(errorInfo?.errorCode), reason \(errorInfo?.reason)")
+    }
+}
+```
+
+```objc
+[rtm logout:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"logout success!!");
+    } else {
+        NSLog(@"logout failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp
+uint64_t requestId;
+rtmClient->logout(requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onlogoutresult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onLogoutResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+          // logout failed
+        } else {
+          // logout success
+        }
+    }
+
+    // ...
+};
+```
+
+```dart
+try {
+    var (status, response) = await rtmClient.logout();
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript
+import { RtmError } from '@shengwang/rtm-full';
+
+try {
+  const response = await rtmClient.logout();
+  console.log("Logout successful:", response);
+} catch (error) {
+  console.error("Logout failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`logout: ${error.reason} (code: ${error.errorCode})`);
+  } else {
+    console.error("Logout failed");
+  }
+}
+```
+
+在离开应用时显式地执行退出登录操作是一种良好的实践。退出登录后，你就无法通过 API 访问 RTM 网络资源。
+
+## 销毁 RTM 实例
+
+如果你不再需要使用 RTM 服务，声网建议你及时销毁 `channel.irtmclient` 实例，以避免内存泄漏，以及错误或异常（如空指针异常）导致性能下降。
+
+```csharp
+var status = rtmClient.Dispose();
+```
+
+```java
+mRtmClient.release();
+```
+
+```swift
+rtm.destroy();
+rtm = nil;
+```
+
+```objc
+[rtm destroy];
+rtm = nil;
+```
+
+```cpp
+rtmClient->release();
+```
+
+```dart
+var status = rtmClient.release();
+```
+
+```typescript
+rtmClient.release();
+```

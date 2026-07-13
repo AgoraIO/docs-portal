@@ -1,0 +1,171 @@
+---
+title: "设置输入源和输出端"
+---
+在调用 [`/call/miniapp`](/doc/voip-callkit/restful/call/operations/callMiniApp) 接口时，你需要分别设置 `agora` 和 `wechat` 下的 `source` 和 `sink` 对象：
+
+```json
+ {
+  // ...
+  "agora": {
+    // ...
+    "source": {
+      "videoCodec": "JPEG",
+      "videoWidth": 480,
+      "videoHeight": 320,
+      "videoFrameRate": 10
+    },
+    "sink": {
+      "videoTranscode": true,
+      "audioCodec": "PCMU",
+      "videoCodec": "JPEG",
+      "videoWidth": 240,
+      "videoHeight": 284,
+      "videoFrameRate": 10
+    }
+  },
+  "wechat": {
+    // ...
+    "source": {
+      "videoCodec": "H264",
+      "videoWidth": 640,
+      "videoHeight": 480,
+      "videoFrameRate": 15
+    },
+    "sink": {
+      "videoTranscode": true,
+      "videoCodec": "H264",
+      "videoWidth": 480,
+      "videoHeight": 320,
+      "videoFrameRate": 10
+    }
+  }
+}
+```
+
+其中，`agora.source` 和 `wechat.sink` 为对应关系；`agora.sink` 和 `wechat.source` 为对应关系。本文详细介绍这两组对应关系，并明确相关的参数应如何填写。
+
+## agora.source 和 wechat.sink 对应
+
+在 `/call/miniapp` 接口中，`agora.source` 指设备端发送的视频祯属性；`wechat.sink` 指小程序端接收的视频祯属性。两者设置的对应关系如下表：
+
+| 设备端 | 小程序端 |
+| --- | --- |
+| 设备端发送视频流 | 小程序端接收视频流 |
+| <Slot name="set-source-sink-html-0-2-0" /> | <Slot name="set-source-sink-html-0-2-1" /> |
+
+<Slot for="set-source-sink-html-0-2-0">
+
+```json
+    {
+      "agora": {
+        // ...
+        "source": {
+          "videoCodec": "JPEG",
+          "videoWidth": 480,
+          "videoHeight": 320,
+          "videoFrameRate": 10
+        }
+      }
+    }
+    ```
+
+</Slot>
+
+<Slot for="set-source-sink-html-0-2-1">
+
+```json
+    {
+      "wechat": {
+        // ...
+        "sink": {
+          "videoTranscode": true,
+          "videoCodec": "H264",
+          "videoWidth": 480,
+          "videoHeight": 320,
+          "videoFrameRate": 10
+
+        }
+      }
+    }
+    ```
+
+</Slot>
+
+其中：
+
+- 作为发送端的设备端，`agora.source` 中的 `videoWidth`、`videoHeight` 和 `videoFrameRate` 根据实际需要填写。
+- 作为接收端的小程序，`wechat.sink` 中 `videoWidth`、`videoHeight` 和 `videoFrameRate` 与作为发送端的设备端 `agora.source` 中这几个字段的值保持一致。
+
+  :::warning[注意]
+  如果不一致，小程序端的视频会基于 `agora.sink` 中实际填写的视频宽高比进行缩放。
+  :::
+
+- 设备端 `agora.source` 中的 `videoCodec` 支持设为 JPEG、H264 和 H265；小程序端 `wechat.sink` 中的 `videoCodec` 支持设为 H264 和 H265。两者设置支持如下格式对：
+
+   - JPEG - H264
+   - H264 - H264
+   - H265 - H265
+
+   如果使用 JPEG - H264，则需要将 `wechat.sink` 中的 `videoTranscode` 设为 `true`。
+
+## agora.sink 和 wechat.source 对应
+
+在 `/call/miniapp` 接口中，`agora.sink` 指设备端接收的视频祯属性，`wechat.source` 指小程序端发送的视频祯属性。两者设置的对应关系如下表所示：
+
+| 设备端 | 小程序端 |
+| --- | --- |
+| 设备端接收视频流 | 小程序端发送视频流 |
+| <Slot name="set-source-sink-html-1-2-0" /> | <Slot name="set-source-sink-html-1-2-1" /> |
+
+<Slot for="set-source-sink-html-1-2-0">
+
+```json
+    {
+      "agora": {
+        // ...
+        "sink": {
+          "audioCodec": "PCMU",
+          "videoTranscode": true,
+          "videoCodec": "JPEG",
+          "videoWidth": 240,
+          "videoHeight": 284,
+          "videoFrameRate": 10
+        }
+      }
+    }
+    ```
+
+</Slot>
+
+<Slot for="set-source-sink-html-1-2-1">
+
+```json
+    {
+      "wechat": {
+        // ...
+        "source": {
+          "videoCodec": "H264",
+          "videoWidth": 640,
+          "videoHeight": 480,
+          "videoFrameRate": 15
+
+        }
+      }
+    }
+    ```
+
+</Slot>
+
+其中：
+
+- 作为发送端的小程序，`wechat.source` 中 `videoWidth`、`videoHeight` 和 `videoFrameRate` 字段跟随小程序所在设备的视频属性设置；小程序端默认的视频分辨率帧率为 1280 × 720，30 fps。
+- 作为接收端的设备端，`agora.sink` 中这几个字段根据实际需要设置。
+- 设备端 `agora.sink` 中的 `videoCodec` 支持设为 JPEG、H264 和 H265；小程序端 `wechat.source` 中的 `videoCodec` 支持设为 H264 和 H265。两者设置支持如下格式对：
+
+   - JPEG - H264
+   - H264 - H264
+   - H265 - H265
+
+   如果使用 JPEG - H264，则需要将 `agora.sink` 中的 `videoTranscode` 设为 `true`。
+
+-  `audioCodec` 支持设为 `PCMU`、`PCMA`、`G722` 和 `ACC`。可以根据设备实际需要设置。

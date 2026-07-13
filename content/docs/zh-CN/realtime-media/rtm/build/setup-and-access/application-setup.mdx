@@ -1,0 +1,998 @@
+---
+title: "应用配置"
+---
+在开始配置你的应用之前，你需要先了解用户 ID、服务类型等概念，然后下载并安装 SDK，再初始化一个 RTM 对象实例，最后实现事件监听函数以捕获 RTM 实时网络中的所有事件通知。
+
+## 用户 ID（`userId`）
+
+用户 ID 是一个用于标识用户和设备的 ASCII 码字符串，长度最多为 64 个字符。在初始化 RTM 客户端实例时，你需要自行定义用户 ID 并将其传递给 `userId` 参数。RTM 规定在同一个 App ID（`appId`）下，每个用户或设备都必须具有唯一的全局用户 ID。
+
+为了正确使用 RTM，你需要了解用户、设备和客户端的概念：
+
+- **用户**: 是指应用的实际使用者。
+- **设备**: 是指实际接入 RTM 网络的终端，包括但不限于手机、电脑、智能手表等 IoT 设备。
+- **客户端**: 是指运行在设备上的 RTM 对象实例。
+
+一个用户可能拥有多台设备，而一台设备也有可能被多人拥有。为更好地区分不同的设备和用户，RTM 规定同一个用户 ID 不能在多台设备上同时登录 RTM 服务、一台设备上不能同时存在多个 RTM 客户端。如果一个用户拥有多台设备，则需要为每台设备都分配唯一的用户 ID。如果两台拥有相同用户 ID 的设备同时登录 RTM 服务，那么先登录上的设备会被后登录的设备挤下线，而被强制下线的设备会收到相应的事件通知。
+
+在实际场景中，业务层的用户名和 RTM 的用户 ID 可能不同，你需要自行实现二者的映射与绑定逻辑。例如，用户先通过用户名登录你的业务服务器，服务器再生成对应的用户 ID，然后使用该用户 ID 初始化并登录 RTM 服务。
+
+此外，用户 ID 也会影响计费和在线状态通知等功能的使用，所以声网建议你为用户和设备分配全局唯一的用户 ID 并在整个生命周期内保持不变。
+
+<a id="servicetype"></a>
+## 服务类型
+
+基于不同的传输连接，RTM SDK 提供的功能可以被划分为两种服务类型： `MESSAGE` 服务和 `STREAM` 服务。
+
+- `MESSAGE` 服务涵盖了 `Message Channel`、`User Channel`、`Presence`、`Storage`、`Lock`、`Token` 鉴权等功能特性，通过 `channel.irtmclient` 实例调用 API。
+- `STREAM` 服务则提供了 `Stream Channel`、`Topic` 等功能，通过 `channel.istreamchannel` 实例调用 API。
+
+在 `MESSAGE` 服务中，所有功能特性将共享一条传输连接，该连接在 `config.login` 时建立，在 `config.logout` 时关闭。而在 `STREAM` 服务中，传输连接的数量取决于加入的 `STREAM CHANNEL` 数量，即每个加入的 `STREAM CHANNEL` 实例都拥有独立的连接，连接在 `channel.join` 时建立，在 `channel.leave` 时关闭。
+
+所有传输连接都由 SDK 统一管理，并通过 `config.onlinkstateevent` 事件通知给用户，详见[连接管理](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic)。深入理解 RTM 服务类型的区别，有助于你更准确地选择和使用相关能力。
+
+此外，服务类型还涉及私有化配置的选择。用户可以选择私有化一个服务，或者同时私有化两种服务，具体取决于应用场景和预算。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
+
+<a id="protocol"></a>
+## 连接协议配置
+
+为保证连接的稳定性和服务的持续可用性，RTM 客户端与边缘服务器建立连接时会为每种服务（`MESSAGE` 服务和 `STREAM` 服务）分别建立两条传输链路。默认情况下，这两条链路分别基于 TCP 协议和 UDP 协议，这种设计使得任何一条链路出现网络问题都不会影响传输效果。相较于其他基于 WebSocket 的消息传输方案，RTM 的冗余链路设计能够最大程度地提升传输稳定性和消息到达率。
+
+在某些情况下，用户可能会发现他们的网络不支持 UDP 端口的传输，这可能是暂时的，也可能是永久性的。在这种情况下，为了确保双链路设计能够最大程度地发挥作用，SDK 允许用户将两条链路都配置成 TCP 协议，只需在 `config.rtm` 中设置 `protocolType` 字段即可。以下是一个将双链路都配置为 TCP 协议的代码示例：
+
+```java
+RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
+    .protocolType(RtmProtocolType.TCP_ONLY)
+    .build();
+```
+
+```swift
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+rtmConfig.protocolType = .tcpOnly
+```
+
+```objc
+AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+rtm_config.protocolType = AgoraRtmProtocolTypeTcpOnly;
+```
+
+```cpp
+RtmConfig config;
+config.appId = "appid";
+config.userId = "userId";
+config.protocolType = RTM_PROTOCOL_TYPE_TCP_ONLY;
+```
+
+```dart
+late RtmClient rtmClient;
+const protocolType = RtmProtocolType.tcpOnly;
+const rtmConfig = RtmConfig( protocolType:protocolType );
+try {
+    final (status,client) = await RTM("myAppId", "Tony", rtmConfig:rtmConfig);
+    if (status.error == true) {
+        print(status);
+    } else {
+        rtmClient = client;
+        print('Initialize success!');
+    }
+} catch (e) {
+    print('Failed to create RTM client: $e');
+}
+```
+
+```typescript
+const rtmConfig: RtmConfig = {
+  appId: "your_appId",
+  userId: "your_userId",
+  protocolType: RtmProtocolType.TCP_ONLY
+};
+```
+
+:::info[信息]
+SDK 不支持将两条链路同时配置为 UDP 协议。
+:::
+
+<a id="install"></a>
+## 安装 SDK
+
+你可以通过以下方式获取最新的 RTM  SDK。
+
+#### 方式一：使用 CDN 添加 SDK
+
+[点击此处](https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.2.4.zip)下载最新版本的 JavaScript SDK，并在你的项目中添加以下代码引用它：
+
+```javascript
+// 使用 CDN 直接将以下代码添加到你的 Web 应用中，或下载 SDK 文件后在本地引用
+// 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.2
+// 可通过发版说明获取最新版本号
+<script src="your_path_to_sdk/agora-rtm.x.y.z.min.js"></script>
+```
+
+#### 方式二：使用包管理器引入 SDK
+
+1. 根据你的应用场景和开发需要，选择一种方式和工具安装 SDK。
+
+   **场景一**：项目仅使用 RTM 产品，且没有集成声网任何版本的 RTC 产品。
+
+```shell tab="使用 npm" tabGroup="package"
+npm install agora-rtm
+```
+
+```shell tab="使用 pnpm" tabGroup="package"
+pnpm add agora-rtm
+```
+
+```shell tab="使用 Yarn" tabGroup="package"
+yarn add agora-rtm
+yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+```
+
+    **场景二**：项目中已经集成了 RTC 产品，需要新接入 RTM 产品。
+
+<Tabs defaultValue="npm" groupId="package" persist>
+<TabsList>
+  <TabsTrigger value="npm">使用 npm</TabsTrigger>
+  <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
+  <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
+</TabsList>
+
+<TabsContent value="npm">
+
+```shell
+npm install agora-rtm
+```
+
+</TabsContent>
+
+<TabsContent value="pnpm">
+
+```shell
+pnpm add agora-rtm
+```
+
+如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
+
+```shell
+pnpm update agora-rtc-sdk-ng@4.22.0
+```
+
+或者通过以下命令同时保留两个版本的 RTC 库：
+
+```shell
+pnpm add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
+pnpm add agora-rtc-sdk-ng@4.22.0 --save-exact
+```
+
+然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
+
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng-4.16"
+```
+
+:::warning[注意]
+保留两个版本的 RTC 库会增加项目的包体积。
+:::
+
+</TabsContent>
+
+<TabsContent value="yarn">
+
+```shell
+yarn add agora-rtm
+```
+
+如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
+
+```shell
+yarn upgrade agora-rtc-sdk-ng@4.22.0
+```
+
+或者通过以下命令同时保留两个版本的 RTC 库：
+
+```shell
+yarn add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
+yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+```
+
+然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
+
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng-4.16"
+```
+
+:::warning[注意]
+保留两个版本的 RTC 库会增加项目的包体积。
+:::
+
+</TabsContent>
+</Tabs>
+
+    **场景三**：你的项目是全新的，且需要同时集成 RTM 和 RTC，以利用其共频道、数据优先级控制等能力。这种场景下建议你集成融合版本的 SDK。
+
+```shell tab="使用 npm" tabGroup="package"
+npm install agora-rtx
+```
+
+```shell tab="使用 pnpm" tabGroup="package"
+pnpm add agora-rtx --shamefully-hoist
+```
+
+```shell tab="使用 Yarn" tabGroup="package"
+# 若版本为 2.2.0
+# yarn add agora-rtx
+# yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+
+# 2.2.0 及之后版本
+yarn add agora-rtx
+```
+
+2. 完成安装后，在你的 `app.js` 中引入 RTM：
+
+    ```javascript
+    // 如果安装的是 agora-rtm
+    import AgoraRTM from 'agora-rtm';
+
+    // 如果安装的是融合版 agora-rtx
+    // import AgoraRTM from 'agora-rtx';
+    // import AgoraRTC from 'agora-rtc-sdk-ng';
+    ``` 
+
+[点击此处](https://download.agora.io/sdk/release/Agora_Unity_RTM_SDK_v2.1.9.zip)下载最新版本的 Unity SDK，并在你的项目中导入它。
+
+<Tabs defaultValue="cdn">
+<TabsList>
+  <TabsTrigger value="cdn">使用 CDN</TabsTrigger>
+  <TabsTrigger value="maven">使用 Maven</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cdn">
+
+1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.2.8.zip)下载最新版本的 Java SDK。
+2. 将 SDK 包内 `sdk` 文件夹中的所有文件拷贝到项目的 `/app/libs` 路径下。
+3. 添加 SDK 引用。在 **Project** 窗口找到 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件并添加如下代码：
+
+   1. 在 `defaultConfig` 节点添加 `ndk` 节点，指定支持的架构。
+
+      ```groovy
+      Config {
+          // ...
+
+          ndk{
+              abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+          }
+      }
+      ```
+
+      :::info[信息]
+      支持的架构越多，App 的体积会越大，声网建议你根据实际情况添加需要支持的架构。一般在发布 Android App 时只需保留 armeabi-v7a 和 arm64-v8a 架构。
+      :::
+
+   2. 在 `android` 节点添加 `sourceSets` 节点，指定 `libs` 所在目录。
+
+      ```groovy
+      android {
+          // ...
+          sourceSets {
+              main {
+                  jniLibs.srcDirs = ['libs']
+              }
+          }
+      }
+      ```
+
+   3. 在 `dependencies` 节点引入 `libs` 路径下所有的 jar 库。
+
+      ```groovy
+      dependencies {
+          implementation fileTree(dir: 'libs', include: ['*.jar'])
+          // ...
+      }
+      ```
+
+</TabsContent>
+
+<TabsContent value="maven">
+
+1. 在 `/Gradle Scripts/build.gradle(Project: <projectname>)` 文件中添加如下代码，添加 Maven Central 依赖：
+
+   ```java
+   buildscript {
+       repositories {
+           // ...
+           mavenCentral()
+       }
+       ...
+   }
+   allprojects {
+       repositories {
+           // ...
+           mavenCentral()
+       }
+   }
+   ```
+
+   :::info[信息]
+   如果你的 Android 项目设置了 [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration)，添加 Maven Central 依赖的方式可能存在差异。
+   :::
+
+2. 在 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件中添加如下代码，将 SDK 集成到你的 Android 项目中：
+
+   ```groovy
+   ...
+   dependencies {
+       // 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.8
+       // 对于 2.2.7 及之后版本:
+       implementation 'cn.shengwang.rtm:android-java:x.y.z'
+       // 对于 2.2.6 及之前版本:
+       // implementation 'io.agora:agora-rtm:x.y.z'
+
+   }
+   ```
+
+</TabsContent>
+</Tabs>
+
+<Tabs defaultValue="cdn">
+<TabsList>
+  <TabsTrigger value="cdn">使用 CDN</TabsTrigger>
+  <TabsTrigger value="cocoapods">使用 Cocoapods</TabsTrigger>
+  <TabsTrigger value="spm">通过 SPM 集成 SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cdn">
+
+1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.2.8.zip)下载最新版本的 Objective-C SDK。
+2. 复制 SDK 包中 `/libs` 路径下所有的 `xcframework` 文件至项目路径下。
+3. 打开 Xcode，进入 **TARGETS > Project Name > General > Frameworks, Libraries, and Embedded Content** 菜单。
+4. 点击 **+ > Add Other… > Add Files** 添加所有的 `xcframework` 文件，并确保添加的动态库 **Embed** 属性设置为 **Embed & Sign**。
+
+添加完成后，项目会自动链接所需系统库。
+
+</TabsContent>
+
+<TabsContent value="cocoapods">
+
+1. 开始前请确保你已安装 Cocoapods，如尚未安装 Cocoapods，参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 安装说明。
+2. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
+3. 打开 `Podfile` 文件，修改文件为如下内容。注意将 `Your App` 替换为你的 Target 名称。
+
+   ```ruby
+   platform :ios, '11.0'
+   target 'Your App' do
+      # 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.8
+      # 对于 2.2.7 及之后版本:
+      pod 'ShengwangRtm', 'x.y.z'
+      # 对于 2.2.6 及之前版本:
+      # pod 'AgoraRtm', 'x.y.z'
+      # 如需获取 2.2.0 之前的版本，请将包名修改为 AgoraRtm_iOS
+   end
+   ```
+
+4. 在终端内运行 `pod install` 命令安装声网 SDK。成功安装后，Terminal 中会显示 `Pod installation complete!`。
+5. 成功安装后，项目文件夹下会生成一个后缀为 `.xcworkspace` 的文件，通过 Xcode 打开该文件进行后续操作。
+
+</TabsContent>
+
+<TabsContent value="spm">
+
+使用如下链接，通过 SPM (Swift Package Manager) 集成 SDK：
+
+```text
+https://github.com/AgoraIO/AgoraRtm_Apple.git
+```
+
+</TabsContent>
+</Tabs>
+
+[点击此处](https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Windows_v2.2.8.zip)下载最新版本的 C++ SDK 并解压。将 SDK 包中的如下文件复制到项目的对应目录下：
+
+- 将 `/rtm/sdk/libagora_rtm_sdk.so` 文件复制到项目的 `lib` 目录下。
+- 将 `/rtm/sdk/high_level_api/include` 路径下的所有 `*.h` 文件复制到项目的 `include` 目录下。
+
+1. 打开终端或命令行，执行以下命令来创建一个新的 Flutter 项目：
+
+    ```shell
+    # 创建 Flutter 项目
+    flutter create getting_started
+    ```
+
+2. 使用的你的 IDE 工具打开项目，编辑 `pubspec.yaml` 文件，添加以下依赖：
+
+    ```yaml
+    dependencies:
+      # 添加 RTM Flutter SDK 依赖项，请使用最新版本的 agora_rtm
+      agora_rtm: ^2.2.6
+    ```
+
+   :::info[信息]
+   如果你同时集成了 2.2.1 及以上版本的 RTM SDK 和 4.3.0 及以上版本的 RTC SDK，请参考 [FAQ](/zh-CN/api-reference/faq/integration/rtm2_rtc_integration_issue) 处理集成问题。
+   :::
+
+3. 添加依赖并保存文件后，打开终端，在项目路径下执行以下命令获取并安装依赖：
+
+    ```shell
+    flutter pub get
+    ```
+
+使用 yarn 或者 npm 安装 React Native SDK。
+
+```shell
+# 使用 yarn 安装
+yarn add agora-react-native-rtm
+
+# 使用 npm 安装
+npm i --save agora-react-native-rtm
+```
+
+[点击此处](https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.2.8.zip)下载最新版本的 HarmonyOS SDK。
+
+下载完成后，解压 SDK 包，你将获得一个 `.har` 文件，这是 HarmonyOS 的静态共享包格式。
+
+详细流程参考[快速开始](/zh-CN/realtime-media/rtm/get-started/quick-start)。
+
+## 初始化 RTM 实例
+
+在使用 RTM 功能前，你需要使用 `appId` 和 `userId` 来初始化一个 RTM 实例。在后续的示例代码中，你需要将 `your_appId` 和 `your_userId` 字段都替换为你自己的 `appId` 和 `userId`。
+
+:::info[信息]
+初始化 RTM 对象时的 `appId` 和 `userId` 为必填参数，如果缺失，则初始化会失败。
+:::
+
+在一个客户端中，你只需要初始化一次 RTM 对象实例，即可在后续实现中通过该对象实例调用 RTM 的其他 API。
+
+```csharp showLineNumbers
+using Agora.Rtm;
+
+private IRtmClient rtmClient;
+
+var config = new RtmConfig();
+config.appId = "your_appId";
+config.userId = "your_userId";
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+    Debug.Log("RTM Client Initialize Successful");
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed.", e.Status.Operation ));
+    Debug.Log(string.Format("ErrorCode: {0}, due to: {1}", e.Status.ErrorCode, e.Status.Reason));
+}
+```
+
+```javascript
+const { RTM } = AgoraRTM;
+// Fill in the App ID of your project.
+const appId = "your_appId";
+// Fill in your user ID.
+const userId = "your_userId";
+try {
+    const rtm = new RTM(appId, userId);
+    console.log("Create new RTM client Success!");
+} catch (status) {
+    console.log("Error with status: ${status}");
+}
+```
+
+```java
+RtmConfig rtmConfig = new RtmConfig();
+rtmConfig.userId = "your_userId";
+rtmConfig.appId = "your_appId";
+try {
+    mRtmClient = RtmClient.create(rtmConfig);
+} catch(Exception e) {
+    log(INFO, "create rtm client failed with exception: " e.toString());
+}
+```
+
+```swift
+do {
+    let config = AgoraRtmClientConfig(appId: "yourAppId", userId: "uniqueUserId")
+    // Initializing the RTM client
+    let rtmClient = try AgoraRtmClientKit(config, delegate: nil)
+    if rtmClient != nil {
+        print("RTM Client initialized successfully!")
+    }
+} catch let error {
+    print("Failed to initialize RTM client. Error: \(error)")
+}
+```
+
+```objc
+AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+NSError* initError = nil;
+AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+```
+
+```cpp
+RtmConfig config;
+config.appId = "your_appid";
+config.userId = "your_userId";
+config.eventHandler = new RtmEventHandler();
+
+int errorCode = 0;
+IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
+if (!rtmClient || errorCode != 0) {
+  // create rtm client failed
+}
+```
+
+```dart
+late RtmClient rtmClient;
+
+const rtmConfig = RtmConfig(
+    heartbeatInterval : 30,              // Set heartbeat interval to 30 seconds
+    presenceTimeout : 30);               // Set presence timeout to 30 seconds
+
+try {
+    var (status,client) = await RTM("your_appId", "you_userId", rtmConfig:rtmConfig);
+    if (status.error == true) {
+        print(status);
+    } else {
+        rtmClient = client;
+        print('Initialize success!');
+    }
+} catch (e) {
+    print('Failed to create RTM client: $e');
+}
+```
+
+```typescript
+import { RtmClient, RtmConfig } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const rtmConfig: RtmConfig = {
+  appId: "your_appId",
+  userId: "your_userId"
+};
+
+try {
+  const rtmClient = new RtmClient(rtmConfig);
+  console.log("RTM Client Initialize Successful");
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error(`Initialize failed: ${error.reason} (code: ${error.errorCode})`);
+  } else {
+    console.error("Failed to initialize RTM client:", error);
+  }
+}
+```
+
+我们推荐你使用 `try{...}/catch{...}` 范式捕获初始化过程中可能出现的异常。现在，你就可以使用 `channel.irtmclient` 对象调用 RTM 的其他 API 接口了。
+
+## 日志设置
+
+当你的应用处于开发、测试阶段时，你可能需要 SDK 输出更详细的信息来定位并修复问题。你可以在初始化 RTM 实例的时候通过设置 `config.rtm` 中的 `enumv.loglevel` 来开启日志输出并设置日志信息等级，之后即可在相应平台的日志输出位置查看日志信息。
+
+```csharp showLineNumbers
+using Agora.Rtm;
+
+private IRtmClient rtmClient;
+
+LogConfig logConfig = new LogConfig()
+// set log file path.
+logConfig.filePath = "./logfile/";
+// set log file size.
+logConfig.fileSizeInKB = 512;
+// set log report level.
+logConfig.level = LOG_LEVEL.INFO;
+
+RtmConfig config = new RtmConfig();
+// initialize logconfig.
+config.logConfig = logConfig;
+config.appId = "your_appId";
+config.userId = "your_userId";
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+    Debug.Log("RTM Client Initialize Sucessfull");
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed.", e.Status.Operation ));
+    Debug.Log(string.Format("Error code: {0}, due to: {1}", e.Status.ErrorCode, e.Status.Reason));
+}
+```
+
+```javascript showLineNumbers
+const { RTM } = AgoraRTM;
+const appId = "your_appId";
+const userId = "your_userId";
+const rtmConfig = { logLevel : "debug" };
+const rtm = new RTM(appId, userId, rtmConfig);
+```
+
+```java
+RtmLogConfig logConfig = new RtmLogConfig()
+// set log file path.
+logConfig.filePath = "./logfile/";
+// set log file size.
+logConfig.fileSizeInKB = 512;
+// set log report level.
+logConfig.level = RtmLogLevel.INFO;
+
+RtmConfig rtmConfig = new RtmConfig();
+rtmConfig.userId = "your_userId";
+rtmConfig.appId = "your_appId";
+rtmConfig.logConfig = logConfig; // set log config
+try {
+    mRtmClient = RtmClient.create(rtmConfig);
+} catch(Exception e) {
+    log(INFO, "create rtm client failed with exception: " e.toString());
+}
+```
+
+```swift
+do {
+    let logConfig = AgoraRtmLogConfig()
+    logConfig.level = .error
+    logConfig.filePath = "your_path"
+    logConfig.fileSizeInKB = 512
+
+    let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+    rtmConfig.logConfig = logConfig
+    // Initializing the RTM client
+    let rtmClient = try AgoraRtmClientKit(rtmConfig, delegate: nil)
+    if rtmClient != nil {
+        print("RTM Client initialized successfully!")
+    }
+} catch let error {
+    print("Failed to initialize RTM client. Error: \(error)")
+}
+```
+
+```objc
+AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+// set log config
+AgoraRtmLogConfig* log_cfg = [[AgoraRtmLogConfig alloc] init];
+log_cfg.level= AgoraRtmLogLevelError;
+log_cfg.filePath= @"your_path";
+log_cfg.fileSizeInKB = 512;
+
+rtm_cfg.logConfig = log_cfg;
+
+NSError* initError = nil;
+AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+if (rtm != nil) {
+    NSLog(@"init rtm success!!");
+} else {
+    NSLog(@"init rtm failed!!");
+}
+```
+
+```cpp
+RtmConfig config;
+config.appId = "your_appid";
+config.userId = "your_name";
+config.eventHandler = new RtmEventHandler();
+
+config.logConfig.level = RTM_LOG_LEVEL_INFO;
+config.logConfig.filePath = "your_path";
+config.logConfig.fileSizeInKB = 10 * 1024;
+
+int errorCode = 0;
+IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
+if (!rtmClient || errorCode != 0) {
+  // create rtm client failed
+}
+```
+
+```dart showLineNumbers
+const logConfig = RtmLogConfig(
+    filePath: './rtm_logfile/',
+    fileSizeInKB: 1024,
+    level: warn );
+
+const rtmConfig = RtmConfig( logConfig:logConfig );
+```
+
+```typescript
+import { RtmClient, RtmConfig, RtmLogConfig, RtmLogLevel } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const logConfig: RtmLogConfig = {
+  filePath: "./logfile/",
+  fileSizeInKB: 512,
+  level: RtmLogLevel.INFO
+};
+
+const rtmConfig: RtmConfig = {
+  appId: "your_appId",
+  userId: "your_userId",
+  logConfig: logConfig
+};
+
+try {
+  const rtmClient = new RtmClient(rtmConfig);
+  console.log("RTM Client Initialize Successful");
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error(`Initialize failed: ${error.reason} (code: ${error.errorCode})`);
+  } else {
+    console.error("Failed to initialize RTM client:", error);
+  }
+}
+```
+
+日志有以下五种等级：
+
+:::info[信息]
+在你的应用上线时，你需要将日志等级参数设置为 `enumv.loglevelinfo`。
+:::
+
+|                           枚举值                            | 描述                                                                                         |
+| --- | ------ |
+| `enumv.loglevelnone`  | `0x0000`: 不输出任何日志。                                                                   |
+| `enumv.loglevelinfo`  | `0x0001`: 输出 `enumv.loglevelfatal`、`enumv.loglevelerror`、`enumv.loglevelwarn`、`enumv.loglevelinfo` 级别的日志。我们推荐你将日志级别设为该等级。 |
+| `enumv.loglevelwarn`  | `0x0002`: 仅输出 `enumv.loglevelfatal`、`enumv.loglevelerror`、`enumv.loglevelwarn` 级别的日志。                                       |
+| `enumv.loglevelerror` | `0x0004`: 仅输出 `enumv.loglevelfatal`、`enumv.loglevelerror` 级别的日志。                                               |
+| `enumv.loglevelfatal` | `0x0008`: 仅输出 `enumv.loglevelfatal` 级别的日志。                                                        |
+
+|                           属性值                            | 描述                                      |
+| --- | ------------- |
+| `enumv.logleveldebug` | 输出所有日志。                            |
+| `enumv.loglevelinfo`  | 输出 `error`、`warn`、`info` 级别的日志。 |
+| `enumv.loglevelwarn`  | 输出 `error`、`warn` 级别的日志。         |
+| `enumv.loglevelerror` | 输出 `error` 级别的日志。                 |
+| `enumv.loglevelnone`  | 不输出任何日志。                          |
+
+你也可以查看[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)了解更详细地调试及错误处理方法。
+
+## Cloud Proxy 设置
+
+在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Cloud Proxy 云端代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
+
+```javascript showLineNumbers
+const { RTM } = AgoraRTM;
+const appId = "your_appId";
+const userId = "your_userId";
+const rtmConfig = { cloudProxy: true };
+const rtm = new RTM(appId, userId, rtmConfig);
+```
+
+:::info[信息]
+该功能仅适用于 Message Channel。
+:::
+
+## Proxy 设置
+
+在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Proxy 代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
+
+```csharp showLineNumbers
+using Agora.Rtm;
+
+private IRtmClient rtmClient;
+
+var proxyConfig = new RtmProxyConfig()
+// set proxy type as HTTP.
+proxyConfig.proxyType = RTM_PROXY_TYPE.HTTP;
+// set your proxy server address.
+proxyConfig.server = "192.168.11.101";
+// set your listener port.
+proxyConfig.port = 8080;
+// set your proxy account
+proxyConfig.account = "Tony";
+// set your proxy password
+proxyConfig.password = "my_password"
+
+RtmConfig config = new RtmConfig();
+// initialize proxyConfig
+config.proxyConfig = proxyConfig;
+
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+    Debug.Log("RTM Client Initialize Sucessfull");
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed.", e.Status.Operation ));
+    Debug.Log(string.Format("Error code: {0}, due to: {1}", e.Status.ErrorCode, e.Status.Reason));
+}
+```
+
+```java
+RtmProxyConfig proxyConfig = new RtmProxyConfig()
+
+// set proxy type as HTTP.
+proxyConfig.proxyType = RtmProxyType.HTTP;
+// set your proxy server address.
+proxyConfig.server = "192.168.11.101";
+// set your listener port.
+proxyConfig.port = 8080;
+// set your proxy account
+proxyConfig.account = "your_account";
+// set your proxy password
+proxyConfig.password = "your_password"
+
+RtmConfig config = new RtmConfig();
+// initialize proxyConfig
+config.proxyConfig = proxyConfig;
+
+try {
+    mRtmClient = RtmClient.create(rtmConfig);
+} catch(Exception e) {
+    log(INFO, "create rtm client failed with exception: " e.toString());
+}
+```
+
+```swift
+do {
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+
+let proxyConfig = AgoraRtmProxyConfig()
+proxyConfig.proxyType = .http
+proxyConfig.server = "your_proxy_server"
+proxyConfig.port = 8080
+proxyConfig.account = "username"
+proxyConfig.password = "password"
+
+rtmConfig.proxyConfig = proxyConfig
+
+let rtmClient = try AgoraRtmClientKit(rtmConfig, delegate: nil)
+    if rtmClient != nil {
+        print("RTM Client initialized successfully!")
+    }
+} catch let error {
+    print("Failed to initialize RTM client. Error: \(error)")
+}
+```
+
+```objc
+AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+// set proxy config
+AgoraRtmProxyConfig* proxy_config = [[AgoraRtmProxyConfig alloc] init];
+proxy_config.proxyType = AgoraRtmProxyTypeHttp;
+proxy_config.server = @"your_proxy_server";
+proxy_config.port = 8080; //your server's port
+proxy_config.account = @"username";
+proxy_config.password = @"password";
+rtm_cfg.proxyConfig = proxy_config;
+rtm_cfg.logConfig = log_cfg;
+
+NSError* initError = nil;
+AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+if (rtm != nil) {
+    NSLog(@"init rtm success!!");
+} else {
+    NSLog(@"init rtm failed!!");
+}
+```
+
+```cpp
+RtmConfig config;
+config.appId = "your_appid";
+config.userId = "your_name";
+config.eventHandler = new RtmEventHandler();
+
+config.proxyConfig.proxyType = RTM_PROXY_TYPE_HTTP;
+config.proxyConfig.server = "x.x.x.x";
+config.proxyConfig.port = 8080;
+config.proxyConfig.account = "user_name";
+config.proxyConfig.password = "password";
+
+int errorCode = 0;
+IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
+if (!rtmClient || errorCode != 0) {
+  // create rtm client failed
+}
+```
+
+```dart
+const proxyConfig = RtmProxyConfig(
+    proxyType: RtmProxyType.http,
+    server: "x.x.x.x",
+    port: 8080,
+    account: "user_name",
+    password: "password");
+
+const rtmConfig = RtmConfig( proxyConfig:proxyConfig );
+```
+
+```typescript
+import { RtmClient, RtmConfig, RtmProxyConfig, RtmProxyType } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const proxyConfig: RtmProxyConfig = {
+  proxyType: RtmProxyType.HTTP,
+  server: "192.168.11.101",
+  port: 8080,
+  account: "your_account",
+  password: "your_password"
+};
+
+const rtmConfig: RtmConfig = {
+  appId: "your_appId",
+  userId: "your_userId",
+  proxyConfig: proxyConfig
+};
+
+try {
+  const rtmClient = new RtmClient(rtmConfig);
+  console.log("RTM Client Initialize Successful");
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error(`Initialize failed: ${error.reason} (code: ${error.errorCode})`);
+  } else {
+    console.error("Failed to initialize RTM client:", error);
+  }
+}
+```
+
+## 防火墙白名单设置
+
+大型企业、医院、高校、银行等安全需求较高的机构会部署防火墙将办公环境与外网隔离开来，保护内部信息安全。为避免这些企业用户因防火墙无法使用声网的服务，你需要设置防火墙白名单。
+
+:::info[信息]
+本节展示的目标端口可能会根据实际情况调整。如果遇到问题，联系 rtm-support@agora.io。
+:::
+
+### 消息频道
+
+Message Channel 是 RTM 的基础服务，只要你使用了 RTM，就需要将以下内容添加到防火墙白名单：
+
+#### 域名
+
+```shell
+.edge.agora.io
+.edge.sd-rtn.com
+web-1.ap.sd-rtn.com
+web-2.ap.sd-rtn.com
+web-3.ap.sd-rtn.com
+web-4.ap.sd-rtn.com
+ap-web-1.agora.io
+ap-web-2.agora.io
+ap-web-3.agora.io
+ap-web-4.agora.io
+webcollector-rtm.agora.io
+logservice-rtm.agora.io
+rtm.statscollector.sd-rtn.com
+rtm.logservice.sd-rtn.com
+```
+
+#### 端口
+
+| 目标端口 | 协议 | 操作 |
+| --------------- | ------------ | ------------ |
+| 443; 9591; 9593; 27387 | TCP | 允许 |
+
+#### 域名
+
+```shell
+.agora.io
+```
+
+#### 端口
+
+| 目标端口 | 协议 | 操作 |
+| --------------- | ------------ | ------------ |
+| 443; 7384; 8443; 9130; 9131; 9136; 9137; 9140, 9141 | TCP | 允许 |
+| 1080; 3000; 8000; 8130; 8443; 9120; 9121; 9700; 25000 | UDP | 允许 |
+
+### 流频道
+
+如果你还使用了 Stream Channel，你还需要将以下内容添加到防火墙白名单：
+
+#### 域名
+
+```shell
+.agora.io
+.edge.agora.io
+.sd-rtn.com
+.edge.sd-rtn.com
+```
+
+#### 端口
+
+| 目标端口 | 协议 | 操作 |
+| --------------- | ------------ | ------------ |
+| 80; 3433; 4700 - 5000; 5668; 5669; 6080; 6443; 8667; 9667 | TCP | 允许 |
+| 3478; 4700 - 5000 | UDP | 允许 |
+
+#### 端口
+
+| 目标端口 | 协议 | 操作 |
+| --------------- | ------------ | ------------ |
+| 4001 - 4150 | UDP | 允许 |

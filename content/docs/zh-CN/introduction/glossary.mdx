@@ -1,0 +1,214 @@
+---
+title: 术语库
+---
+
+## A
+
+<a id="appid"></a>
+### App ID
+App ID 是声网为开发项目生成的字符串，是项目的唯一标识。
+
+在调用 API 初始化声网服务或加入频道时，需要传入 App ID 用于[鉴权](#auth)。声网根据 App ID 提供计费、管理、数据统计等服务。
+
+<a id="app-certificate"></a>
+### App 证书
+App 证书 (App Certificate) 是声网控制台为开发项目生成的随机字符串，用于开启 [Token 鉴权](#auth)，并作为生成 [Token](#token) 的参数之一。
+
+:::info[相关链接]
+- [管理 App 证书](/zh-CN/introduction/user-guides/manage_authentication#启用主要证书)
+:::
+
+## H
+
+<a id="audio-mixing"></a>
+### 混音
+混音 (Audio mixing) 是指将两路以上的音频流混合成一路音频流的过程。
+
+常见的混音场景如下：
+
+- 音视频通话时，用户在频道内同时播放自己说话的声音和音乐文件的声音，则频道内所有用户都能听到该用户混音后的声音。
+- 使用合流录制模式录制音频时，得到的录制文件中的声音为频道内所有（或指定）用户混音后的声音。
+
+:::info[相关链接]
+- [播放音效/音乐混音](/zh-CN/realtime-media/rtc/build/audio/audio-effect-mixing)
+- [单流录制和合流录制（本地服务端录制）](/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/set-recording-mode)
+- [合流录制（云端录制）](/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/mix-mode/set-composite)
+:::
+
+## J
+
+<a id="auth"></a>
+### 鉴权
+鉴权 (Authentication) 是指在用户访问系统前，对其进行身份校验的行为。为保证通信安全，当用户使用声网产品或服务时，声网需要对用户的权限进行校验。
+
+声网支持以下鉴权机制：
+
+- App ID 鉴权：在声网控制台中创建项目时，如果将鉴权机制设为**调试模式：App ID**，则该项目使用 App ID 鉴权。该机制下，在初始化 SDK 或加入频道时，用户需要传入 App ID。该方式安全性较低，适用于低安全需求场景，如项目测试阶段临时使用。
+- Token 鉴权：在声网控制台中创建项目时，如果将鉴权机制设为**安全模式：App ID + Token**，则该项目使用 Token 鉴权。该机制下，用户需要传入 App ID 和 Token 才能加入频道。该方式安全性较高，适用于高安全需求场景。
+
+如果你在创建项目时选择了**调试模式**，后续也可通过启用 App 证书来升级为 Token 鉴权。详见[如何升级到 Token 鉴权方案？](/zh-CN/api-reference/faq/integration/appid_to_token)。
+
+:::warning[注意]
+为提高项目的安全性，声网会逐步取消对 App ID 鉴权方案的支持，建议你将所有项目升级至使用 Token 鉴权。
+:::
+
+:::info[相关链接]
+- [Token](#token)
+- [App ID](#appid)
+- [App 证书](#app-certificate)
+:::
+
+## K
+
+### 客户 ID 和客户密钥
+
+客户 ID 和客户密钥 (Customer ID & Custormer Secret) 都是声网提供的字符串，用于开发者调用声网 RESTful API 时进行 HTTP 基本认证。
+
+声网部分 RESTful API 仅支持 HTTPS 协议。调用这些声网 RESTful API 时，开发者需要使用声网提供的客户 ID 和客户密钥生成一个 Base64 算法编码的凭证，并填入 HTTP 请求头部的 `Authorization` 字段中。
+
+:::info[相关链接]
+[实现 HTTP 基本认证（RTC）](/zh-CN/realtime-media/rtc/build/security-and-auth/http-basic-auth)
+:::
+
+<a id="console"></a>
+### 控制台
+声网控制台 (Console) 是声网提供给开发者管理声网各项服务的工具。
+
+控制台提供直观的界面，方便开发者自助开通服务，并在使用声网各项服务时进行充值、查询、管理等操作。此外，声网还提供控制台相关 RESTful API，开发者可以实现查询用量、查询项目信息等功能。
+
+:::info[相关链接]
+- [控制台概览](https://docs.agora.io/cn/Agora%20Platform/console_overview?platform=All%20Platforms)
+- [控制台 RESTful API](https://docs.agora.io/cn/Agora%20Platform/agora_console_restapi?platform=All%20Platforms)
+:::
+
+## L
+
+<a id="cohosting"></a>
+### 连麦
+连麦指在直播场景中，两个及以上主播进行互动的过程，频道内的观众可以看到这些主播并听到他们的声音。
+
+连麦有以下两种情况：
+
+- 一个频道内，两个及以上主播进行连麦互动。既可以是多个主播加入同一频道；也可以是频道内的观众申请上麦，切换用户角色成为连麦主播，与原有的主播进行互动。
+- 两个及以上频道内的主播进行连麦互动。声网 SDK 支持将某一频道中主播的媒体流转发至多个其他频道中，实现跨频道连麦。具体实现方式详见[跨频道媒体流转发](/doc/rtc/android/advanced-features/media-relay)。
+
+一个频道同一时间连麦主播的数量限制，详见[声网 SDK 最多支持多少人同时在线](/zh-CN/api-reference/faq/product/capacity)。如果连麦主播数量过多时，可能会出现音画不同步和信息丢失的问题。
+
+:::info[相关链接]
+- [上麦](#become-host)
+- [下麦](#become-audience)
+:::
+
+## R
+
+<a id="rest"></a>
+### REST
+REST，全称 Representational State Transfer，是一种软件架构风格，规定了创建 Web 服务时所需要遵循的一系列约束条件。凡是符合 REST 架构风格的 API，均可称为 RESTful API。
+
+RESTful API 主要用于客户端和服务器的交互。REST 架构的特点包括：
+
+- 资源（如存储在服务器上的文件、数据等）均由一个 URI 指定。
+- 对资源的操作主要包括获取、创建、修改和删除等，对应了 HTTP 协议中的 GET、POST、PUT 和 DELETE 方法。
+- 服务端的响应可以是 HTML, XML, JSON 或其他格式。
+
+## S
+
+<a id="sd-rtn"></a>
+### SD-RTN™
+SD-RTN™ 是 Software Defined Real-time Network 的缩写，即软件定义实时网，这是声网自建的底层实时传输网络。
+
+所有通过声网 SDK 接入的实时音视频数据都通过 SD-RTN™ 传输和调度，这也是全球唯一一个专门针对实时传输设计的基础设施。目前，声网在全球部署 250 多个数据中心，通过智能动态路由算法，确保全球范围内的毫秒级超低延迟传输，保证技术服务高可用。
+
+<a id="3a"></a>
+### 3A
+3A 即 AEC（回声消除）、ANS（自动噪声抑制）、AGC（自动增益控制）。
+
+3A 处理适合各种音频环境，在音频交互、降噪等场景下提供更好的声音质量。
+
+<a id="become-host"></a>
+### 上麦
+上麦指直播场景中的观众切换用户角色成为主播这一行为。
+
+如果频道内已经有主播，成功上麦的用户也称为连麦主播。连麦主播会发布音视频流，频道内其他用户均能听到并看到该连麦主播。
+
+:::info[相关链接]
+- [下麦](#become-audience)
+- [连麦](#cohosting)
+- [主播](/doc/rtc/android/overview/key-concept#音视频基本流程)
+- [观众](/doc/rtc/android/overview/key-concept#音视频基本流程)
+:::
+
+<a id="dual-stream-mode"></a>
+### 双流模式
+双流模式是指声网 RTC SDK 在发送一路视频流的同时，额外发送一路低分辨率、低码率的视频流。
+
+## T
+
+<a id="tcp"></a>
+### TCP
+TCP (Transmission Control Protocol)，即传输控制协议，是一种可靠的、面向连接的传输层通信协议。
+
+面向连接是指在传输数据之前必须先在发送端和接收端之间建立连接。TCP 通过三次握手的方式建立连接：
+
+- 第一次握手：发送端向接收端发送连接请求。
+- 第二次握手：接收端同意连接，向发送端发送应答。
+- 第三次握手：发送端收到应答，向接收端发送确认信息。
+
+为了保证传输的可靠性，TCP 会给每个数据包一个序号，接收端成功收到数据包后会发回一个相应的确认（ACK），如果在一定的往返时延后发送端没有收到确认，数据包会被重传。
+
+TCP 只支持一对一的传输，不支持一对多或者多对多的数据传输。
+
+TCP 可以用于对传输数据的完整性要求较高、对实时性要求不高的场景，比如文件传输。声网实时消息服务使用的主要是 TCP 协议。
+
+:::info[相关链接]
+- [UDP](#udp)
+- [你知道吗？每次上网，都是一场大型协议互签会](https://www.bilibili.com/video/BV1ET4y1u7Pq)
+:::
+
+<a id="token"></a>
+### Token
+Token 也称为动态密钥，是在加入频道时用于校验用户权限的一组字符串。
+
+你需要在自己的 App 服务端参考提供声网的代码（见相关链接）部署 Token 生成器，生成 Token 回传给客户端。当 App 用户使用声网服务（如加入 RTC 频道、登录 RTM 系统、进入白板房间等）时传入 Token，声网服务端会根据 Token 中的信息校验用户的权限。
+
+对于不同的产品，Token 中包含的信息不完全相同。一般来说，Token 中会包括声网项目的信息（如 App ID）、要使用的声网服务的信息（如 RTC 频道名、白板房间的 UUID）、用户角色或权限、Token 的有效期。Token 过期后，用户将无法正常使用声网服务。开发者可以根据自己的业务需要，合理设置 Token 的有效期，并及时更换过期 Token。
+
+:::info[相关链接]
+- [使用 Token 鉴权（RTC）](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
+- [生成和使用 Token（互动白板）](/doc/whiteboard/javascript/fastboard-sdk/basic-features/generate-token)
+:::
+
+## U
+
+<a id="udp"></a>
+### UDP
+UDP (User Datagram Protocol)，即用户数据报协议，是一种面向无连接的、不可靠的传输层通信协议。
+
+面向无连接是指在传输数据之前发送端和接收端无需建立连接。UDP 不需要握手，想发送数据就可以发送，只会给数据增加一个 UDP 头进行标识。
+
+与 TCP 不同，UDP 并不关心数据是否成功送达。因此在网络质量不好时，可能会出现数据的丢失或乱序。
+
+UDP 既支持一对一的传输，也支持一对多和多对多的传输。
+
+UDP 具有较好的实时性，适用于实时音视频场景。声网 SD-RTN™ 使用的就是基于 UDP 的私有协议。
+
+:::info[相关链接]
+- [SD-RTN™](#sd-rtn)
+- [TCP](#tcp)
+- [你知道吗？每次上网，都是一场大型协议互签会](https://www.bilibili.com/video/BV1ET4y1u7Pq)
+:::
+
+## X
+
+<a id="become-audience"></a>
+### 下麦
+下麦指直播场景中的主播切换用户角色成为观众这一行为。
+
+主播成功下麦后会停止发布音视频流，频道内其他用户不再听到并看到该主播。
+
+:::info[相关链接]
+- [上麦](#become-host)
+- [连麦](#cohosting)
+- [主播](/doc/rtc/android/overview/key-concept#主播)
+- [观众](/doc/rtc/android/overview/key-concept#观众)
+:::

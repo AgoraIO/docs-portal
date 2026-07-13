@@ -1,0 +1,53 @@
+---
+title: "获取原始音视频数据"
+---
+声网本地服务端录制 SDK 目前支持单流模式下的原始音视频数据。
+
+本文介绍如何通过参数设置获取原始音视频数据。
+
+设置参数 `isMixingEnabled` = `0`，即启动单流模式录制后，你可以根据需要生成的文件类型，参考下表进行参数设置：
+
+| 录制内容 | 命令行录制 | 调用 API 录制 |
+| --- | --- | --- |
+| 原始音频数据 | <Slot name="raw-data-html-0-1-1" /> | <Slot name="raw-data-html-0-1-2" /> |
+| 原始视频数据 | <Slot name="raw-data-html-0-2-1" /> | <Slot name="raw-data-html-0-2-2" /> |
+
+<Slot for="raw-data-html-0-1-1">
+
+- `--getAudioFrame 1`：AAC 格式
+        - `--getAudioFrame 2`：PCM 格式
+
+</Slot>
+
+<Slot for="raw-data-html-0-1-2">
+
+- `decodeAudio = 1`：AAC 格式
+        - `decodeAudio = 2`：PCM 格式
+
+</Slot>
+
+<Slot for="raw-data-html-0-2-1">
+
+- `--getVideoFrame 1`：H.264 帧格式
+        - `--getVideoFrame 2`：YUV 帧格式
+        - `--getVideoFrame 3`：JPG 帧格式
+        - `--getVideoFrame 4`：JPG 文件格式
+        - `--getVideoFrame 5`：JPG 文件格式 + MP4 视频文件格式
+
+</Slot>
+
+<Slot for="raw-data-html-0-2-2">
+
+- `decodeVideo = 1`：H.264 帧格式
+        - `decodeVideo = 2`：YUV 帧格式
+        - `decodeVideo = 3`：JPG 帧格式
+        - `decodeVideo = 4`：JPG 文件格式
+        - `decodeVideo = 5`：JPG 文件格式 + MP4 视频文件格式
+
+</Slot>
+
+:::info
+Web 端不支持 H.264 原始视频数据，支持 YUV 原始视频数据。
+:::
+
+当收到原始音频和视频数据时，会分别触发 `videoFrameReceived` 和 `audioFrameReceived` 回调，回调中包含原始音频和视频数据。

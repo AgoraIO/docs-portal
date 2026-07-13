@@ -1,0 +1,213 @@
+---
+title: "跑通示例项目"
+---
+
+<PlatformStructured platform="android">
+
+声网在 GitHub 上提供一个开源的 [MetaWorld](https://github.com/AgoraIO-Community/Agora-MetaWorld/tree/dev_metasdk1.0) 示例项目供你参考。
+
+MetaWorld 包含元语聊和元直播场景：
+
+- 在元语聊场景中，用户可以在 3D 场景中自由走动，与其他用户或 NPC 进行语音聊天，开始 K 歌等。
+- 在元直播场景中，用户可以在 3D 场景中直播。声网面部捕捉插件使用户可以通过模拟脸部表情的 Avatar 形象进行直播，增加直播趣味性。
+- 在融合元语聊和元直播的场景中，用户可以进行在元语聊和元直播场景中支持的所有操作。
+
+本文介绍如何快速跑通该示例项目，体验效果。
+
+## 前提条件
+
+开始前请确保你的开发环境满足如下要求：
+
+- [Git](https://git-scm.com/downloads)
+- [Java Development Kit](https://www.oracle.com/java/technologies/javase-downloads.html)
+- [Android Studio](https://developer.android.com/studio/) 4.1 及以上
+- Android API 级别 22 及以上
+- Android 设备，版本 Android 5.1 及以上
+
+  :::info[信息]
+  声网推荐使用真机运行项目。部分模拟机可能存在功能缺失或者性能问题。
+  :::
+
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务
+- 参考[开通服务](/zh-CN/solutions/meta-world/build/setup-and-access/enable-service)注册并登录[声网控制台](http://console.shengwang.cn)，创建声网项目，获取项目的 App ID、App 证书
+- 联系 sales@shengwang.cn 并提供你的声网项目的 App ID，开通声网内容中心的权限，并获取声网面部捕捉插件的 App ID 和 Certificate
+
+## 获取示例项目
+
+参考如下步骤获取 MetaWorld 示例项目：
+
+1. 运行以下命令克隆仓库到本地：
+
+    ```shell
+    git clone git@github.com:AgoraIO-Community/Agora-MetaWorld.git
+    ```
+
+2. 运行以下命令切换到 `dev_metasdk1.0` 分支：
+
+    ```shell
+    git checkout dev_metasdk1.0
+    ```
+
+## 配置示例项目
+
+参考如下步骤配置示例项目。
+
+### 集成 SDK 和依赖库
+
+声网 Meta SDK 是基于声网 RTC SDK 4.0.1 版开发的元系列特殊版 SDK。参考如下步骤获取并将 SDK 集成到你的项目中：
+
+1. 联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 获取 Meta SDK，下载并解压。
+
+2. 打开解压的 SDK，将以下文件或子文件夹复制到你的项目路径中。
+
+    | 文件或子文件夹             | 项目路径     |
+    |:-------------------------|:-----------|
+    | `agora-rtc-sdk.jar` 文件	| `/app/libs/` |
+    | `AgoraMetaKit.aar` 文件 	| `/app/libs/` |
+    | `face_capture.jar` 文件   | `/app/libs/` |
+    | `FaceCapture.aar` 文件    | `/app/libs/` |
+    | `metakit.jar` 文件        | `/app/libs/` |
+    | `arm64-v8a` 文件夹      	| `/app/src/main/jniLibs/` |
+    | `armeabi-v7a` 文件夹	    | `/app/src/main/jniLibs/` |
+    | `x86_64` 文件夹           | `/app/src/main/jniLibs/` |
+    | `x86` 文件夹	            | `/app/src/main/jniLibs/` |
+
+### 设置 ID 和证书
+
+运行示例项目前，你需要在 `./Agora-MetaWorld/Android/local.properties` 文件中添加并设置如下参数：
+
+```java
+APP_CERTIFICATE="<#Certificate#>"
+APP_ID="<#AppId#>"
+FACE_CAP_APP_ID="<#Face Capture App Id#>"
+FACE_CAP_APP_KEY="<#Face Capture Certificate#>"
+```
+
+其中：
+
+- `<#Certificate#>` 填入你在控制台获取到的声网项目的 App 证书。
+- `<#AppId#>` 填入你在控制台获取到的声网项目的 App ID。
+- `<#Face Capture App Id#>` 和 `<#Face Capture Certificate#>` 为声网面部捕捉插件相关，需要联系 sales@shengwang.cn 获取。
+
+## 编译并运行示例项目
+
+参考如下步骤在 Android Studio 中编译并运行项目：
+
+![Android Studio 运行示意](https://web-cdn.agora.io/docs-files/1687670439946)
+
+1. 用 Android Studio 打开 `Agora-MetaWorld/Android` 文件夹。
+
+2. 开启 Android 设备的开发者选项，打开 USB 调试，通过 USB 连接线将 Android 设备接入电脑，并在 Android 设备选项中勾选你的 Android 设备。
+
+3. 在 Android Studio 中，点击 **Sync Project with Gradle Files** 按钮，以让项目与 Gradle 文件同步。
+
+4. 待同步成功后，点击 ![](https://web-cdn.agora.io/docs-files/1687670569781) 开始编译。
+
+5. 编译成功后，你的 Android 设备上会出现 **AgoraMetaExample** App。
+
+6. 打开 App，体验 MetaWorld 场景。登录后默认进入融合元语聊和元直播的场景，点击右上角的 ![](https://web-cdn.agora.io/docs-files/1687670859690) 即可切换至元直播场景。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+声网在 GitHub 上提供一个开源的 [MetaWorld](https://github.com/AgoraIO-Community/Agora-MetaWorld/tree/dev_metasdk1.0) 示例项目供你参考。
+
+MetaWorld 包含元语聊和元直播场景：
+
+- 在元语聊场景中，用户可以在 3D 场景中自由走动，与其他用户或 NPC 进行语音聊天，开始 K 歌等。
+- 在元直播场景中，用户可以在 3D 场景中直播。声网面部捕捉插件使用户可以通过模拟脸部表情的 Avatar 形象进行直播，增加直播趣味性。
+- 在融合元语聊和元直播的场景中，用户可以进行在元语聊和元直播场景中支持的所有操作。
+
+本文介绍如何快速跑通该示例项目，体验效果。
+
+## 前提条件
+
+开始前请确保你的开发环境满足如下要求：
+
+- [Git](https://git-scm.com/downloads)
+- [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started)
+- [Xcode](https://apps.apple.com/cn/app/xcode/id497799835?mt=12) 12.0 及以上
+- iOS 设备，版本 11.0 及以上
+
+  :::info[信息]
+  声网推荐使用真机运行项目。部分模拟机可能存在功能缺失或者性能问题。
+  :::
+
+- 有效的苹果开发者账号
+- 参考[开通服务](/zh-CN/solutions/meta-world/build/setup-and-access/enable-service)注册并登录[声网控制台](http://console.shengwang.cn)，创建声网项目，获取项目的 App ID、App 证书
+- 联系 sales@shengwang.cn 并提供你的声网项目的 App ID，开通声网内容中心的权限，并获取声网面部捕捉插件的 App ID 和 Certificate
+
+## 获取示例项目
+
+参考如下步骤获取 MetaWorld 示例项目：
+
+1. 运行以下命令克隆仓库到本地：
+
+    ```shell
+    git clone git@github.com:AgoraIO-Community/Agora-MetaWorld.git
+    ```
+
+2. 运行以下命令切换到 `dev_metasdk1.0` 分支：
+
+    ```shell
+    git checkout dev_metasdk1.0
+    ```
+
+## 配置示例项目
+
+### 集成 SDK 及依赖库
+
+参考如下步骤将 SDK 集成到你的项目中，并安装依赖库：
+
+1. 联系 sales@shengwang.cn 获取 Meta SDK，下载并解压。
+
+2. 将 SDK 包内 `libs` 及路径下的文件，拷贝到示例项目的 `./Agora-MetaWorld/ios/sdk/` 路径下。
+
+3. 在 `Agora-MetaWorld/ios` 目录下运行 `pod install`，然后等待依赖库安装完成。
+
+### 设置 ID 和证书
+
+运行示例项目前，你需要在 `./Agora-MetaWorld/ios/MetaChatDemo/KeyCenter.swift` 文件中设置如下参数：
+
+```objc
+@objc static let CHANNEL_ID: String = "<#ChannelId#>"
+@objc static let APP_ID: String = "<#AppId#>"
+@objc static let certificate: String = "<#Certificate#>"
+@objc static let FACE_CAPTURE_APP_ID: String = "<#Face Capture App Id#>"
+@objc static let FACE_CAPTURE_CERTIFICATE: String = "<#Face Capture Certificate#>"
+// ...
+@objc static let RTC_UID: UInt = "<#UID#>"
+// ...
+@objc static let kUserKey: String = "<#kUserKey#>"
+@objc static let kUserSecret: String = "<#kUserSecret#>"
+```
+
+其中：
+
+- `<#ChannelId#>` 为你加入的频道名，可以填入任意字符串
+- `<#Certificate#>` 填入你在控制台获取到的声网项目的 App 证书。
+- `<#AppId#>` 填入你在控制台获取到的声网项目的 App ID。
+- `<#Face Capture App Id#>` 和 `<#Face Capture Certificate#>` 为声网面部捕捉插件相关，需要联系 sales@shengwang.cn 获取。
+- `<#UID#>` 表示加入频道的用户 ID，可以设置为 `0` 以外的任意 Int 值。
+- `<#kUserKey#>` 和 `<#kUserSecret#>` 分别指客户 ID 和客户密钥。声网 RESTful API 使用客户 ID 和客户密钥进行 HTTP 基本认证。你可以参考[获取客户 ID 和客户密钥](/zh-CN/solutions/meta-world/build/setup-and-access/enable-service#获取客户-id-与客户密钥)获取。
+
+## 编译并运行示例项目
+
+参考如下步骤在 Xcode 中编译并运行项目：
+
+![Xcode 运行示意](https://web-cdn.agora.io/docs-files/1686540295452)
+
+1. 点击 `MetaChatDemo.xcworkspace` 文件通过 Xcode 打开项目。
+
+2. 通过 USB 线将你的 iOS 设备接入电脑，并在 **iOS Device** 选项中勾选你的 iOS 设备。
+
+3. 在项目 **TARGETS** 下的 **Signing & Capabilities** 界面勾选 **Automatically manage signing**，配置你的苹果开发者账号和 **Bundle Identifier**。Bundle ID 用于在设备上唯一标识应用程序。在开发应用时，你需要设置 Bundle ID。
+
+4. 点击 ![运行按钮](https://web-cdn.agora.io/docs-files/1686540324207) 开始编译。
+
+5. 编译成功后，你的 iOS 设备上会出现 **MetaChatDemo** 应用。在 iOS 系统设置中将该应用设为信任开发者后你才能打开 App。
+
+6. 打开 App，体验 MetaWorld 场景。在登录界面的**请选择场景**字段可以自行选择**元语聊**或**元直播**场景。
+
+</PlatformStructured>

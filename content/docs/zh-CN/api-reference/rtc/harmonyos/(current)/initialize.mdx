@@ -1,0 +1,131 @@
+---
+title: "初始化相关"
+description: "初始化相关 API reference."
+---
+<a id="toc_initialize"></a>
+
+<a id="api_irtcengine_create"></a>
+
+## createEngine
+
+创建并初始化 RtcEngine。
+
+<a id="api_irtcengine_create__prototype"></a>
+
+```arkts
+public static createEngine(context: Context, appID: string, handler: IRtcEngineEventHandler): RtcEngine {
+    let config = new RtcEngineConfig();
+    config.mContext = context;
+    config.mAppId = appID;
+    config.mEventHandler = handler;
+    return RtcEngineImpl.createEngineImpl(config);
+  }
+```
+
+<a id="api_irtcengine_create__detailed_desc"></a>
+
+### 详情
+
+RtcEngine 类的所有接口函数，如无特殊说明，都是异步调用，对接口的调用建议在同一个线程进行。
+
+:::warning[注意]
+- 请确保在调用其他 API 前先调用该方法创建并初始化 RtcEngine。
+- SDK 只支持每个 App 创建一个 RtcEngine 实例。
+:::
+
+<a id="api_irtcengine_create__parameters"></a>
+
+### 参数
+
+#### `context`
+
+上下文。
+
+#### `appId`
+
+声网为 App 开发者签发的 App ID。 使用同一个 App ID 的 App 才能进入同一个频道进行通话或直播。一个 App ID 只能用于创建一个 RtcEngine。如需更换 App ID，必须先调用 [destroy](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_release) 销毁当前 RtcEngine 再重新创建。
+
+#### `handler`
+
+[RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 的事件句柄，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)。
+
+<a id="api_irtcengine_create__return_values"></a>
+
+### 返回/异常
+
+- 方法调用成功，返回一个 RtcEngine 对象。
+- 方法调用失败，抛出异常，你需要捕获异常并进行处理。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+<a id="api_irtcengine_initialize"></a>
+
+## create
+
+创建并初始化 RtcEngine。
+
+<a id="api_irtcengine_initialize__prototype"></a>
+
+```arkts
+public static create(config: RtcEngineConfig): RtcEngine {
+    return RtcEngineImpl.createEngineImpl(config);
+  }
+```
+
+<a id="api_irtcengine_initialize__detailed_desc"></a>
+
+:::warning[注意]
+RtcEngine 类的所有接口函数，如无特殊说明，都是异步调用，对接口的调用建议在同一个线程进行。
+:::
+
+<a id="api_irtcengine_initialize__timing"></a>
+
+### 调用时机
+
+请确保在调用其他 API 前先调用该方法创建并初始化 RtcEngine。
+
+<a id="api_irtcengine_initialize__restriction"></a>
+
+### 调用限制
+
+SDK 只支持每个 App 创建一个 RtcEngine 实例。
+
+<a id="api_irtcengine_initialize__parameters"></a>
+
+### 参数
+
+#### `config`
+
+[RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 实例的配置。详见 [RtcEngineConfig](/zh-CN/api-reference/rtc/harmonyos/class-rtcengineconfig)。
+
+<a id="api_irtcengine_initialize__return_values"></a>
+
+### 返回/异常
+
+- 方法调用失败，抛出异常，你需要捕获异常并进行处理。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+<a id="api_irtcengine_release"></a>
+
+## destroy
+
+销毁 RtcEngine 对象。
+
+<a id="api_irtcengine_release__prototype"></a>
+
+```arkts
+public static destroy(): Promise<void> {
+    return RtcEngineImpl.destroyEngine();
+  };
+```
+
+<a id="api_irtcengine_release__detailed_desc"></a>
+
+### 详情
+
+该方法释放 SDK 使用的所有资源。有些 App 只在用户需要时才进行实时音视频通信，不需要时则将资源释放出来用于其他操作，该方法适用于此类情况。
+
+:::warning[注意]
+- 该方法为同步调用。需要等待 RtcEngine 资源释放后才能执行其他操作（例如：创建一个新的 RtcEngine 对象），因此建议在子线程中调用该方法，避免主线程阻塞。
+- 不建议在 SDK 的回调中调用 destroy，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
+:::
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)

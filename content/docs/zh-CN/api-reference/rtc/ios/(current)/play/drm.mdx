@@ -1,0 +1,1031 @@
+---
+title: "版权音乐"
+description: "版权音乐 API reference."
+---
+<a id="toc_drm"></a>
+
+<a id="api_imusiccontentcenter_createmusicplayer"></a>
+
+## createMusicPlayerWithDelegate:
+
+创建一个音乐播放器。
+
+<a id="api_imusiccontentcenter_createmusicplayer__prototype"></a>
+
+```objectivec
+- (id<AgoraMusicPlayerProtocol> _Nullable)createMusicPlayerWithDelegate:(id<AgoraRtcMediaPlayerDelegate> _Nullable)delegate NS_SWIFT_NAME(createMusicPlayer(delegate:));
+```
+
+<a id="api_imusiccontentcenter_createmusicplayer__detailed_desc"></a>
+
+如果你需要播放来自版权音乐中心的音乐资源，必须先调用该方法创建一个音乐播放器。
+
+<a id="api_imusiccontentcenter_createmusicplayer__parameters"></a>
+
+### 参数
+
+#### `delegate`
+
+播放器事件回调接口，详见 [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver)。
+
+<a id="api_imusiccontentcenter_createmusicplayer__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回 AgoraMusicPlayerProtocol 对象。
+- 方法调用失败，返回 nil。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_destroy_imusiccontentcenter"></a>
+
+## destroy
+
+销毁 AgoraMusicContentCenter 实例。
+
+<a id="api_imusiccontentcenter_destroy_imusiccontentcenter__prototype"></a>
+
+```objectivec
++ (void)destroy;
+```
+
+<a id="api_imusiccontentcenter_destroy_imusiccontentcenter__detailed_desc"></a>
+
+你必须在调用 [destroy](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter) 方法之前，先调用此方法。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_destroymusicplayer"></a>
+
+## destroyMusicPlayer:
+
+销毁音乐播放器对象。
+
+<a id="api_imusiccontentcenter_destroymusicplayer__prototype"></a>
+
+```objectivec
+- (NSInteger)destroyMusicPlayer:(id<AgoraMusicPlayerProtocol>)musicPlayer;
+```
+
+<a id="api_imusiccontentcenter_destroymusicplayer__detailed_desc"></a>
+
+当你不再需要使用音乐播放器时，可以调用此方法销毁音乐播放器对象。如果在销毁后需要再次使用音乐播放器，必须调用 [createMusicPlayerWithDelegate:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_createmusicplayer) 方法重新创建一个新的音乐播放器对象。
+
+<a id="api_imusiccontentcenter_destroymusicplayer__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或后调用此方法，但必须确保在调用 `destroy [2/2]` 方法之前调用。
+
+<a id="api_imusiccontentcenter_destroymusicplayer__parameters"></a>
+
+### 参数
+
+#### `musicPlayer`
+
+音乐播放器对象。详见 [AgoraMusicPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusicplayer)。
+
+<a id="api_imusiccontentcenter_destroymusicplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_enablemainqueuedispatch_imusiccontentcenter"></a>
+
+## enableMainQueueDispatch:
+
+设置是否将回调方法派发到主线程。
+
+<a id="api_imusiccontentcenter_enablemainqueuedispatch_imusiccontentcenter__prototype"></a>
+
+```objectivec
+- (void)enableMainQueueDispatch:(BOOL)enabled;
+```
+
+<a id="api_imusiccontentcenter_enablemainqueuedispatch_imusiccontentcenter__detailed_desc"></a>
+
+如果你不将回调方法派发到主线程，你需要手动将 UI 操作派发到主线程。
+
+<a id="api_imusiccontentcenter_enablemainqueuedispatch_imusiccontentcenter__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+YES：将回调方法派发到主线程。 NO：（默认）不将回调方法派发到主线程。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_getcaches"></a>
+
+## getCaches
+
+获取缓存音乐资源的信息。
+
+<a id="api_imusiccontentcenter_getcaches__prototype"></a>
+
+```objectivec
+- (NSArray *)getCaches NS_SWIFT_NAME(getCaches());
+```
+
+<a id="api_imusiccontentcenter_getcaches__detailed_desc"></a>
+
+在调用此方法前，你需要分配足够的内存来存储缓存音乐资源的信息。如果你想设置可缓存的音乐资源数量，可以通过 [sharedContentCenterWithConfig:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_initialize_imusiccontentcenter) 方法中的 `config` 参数进行配置。当你不再需要缓存的音乐资源时，应及时释放内存以防止内存泄漏。
+
+<a id="api_imusiccontentcenter_getcaches__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回包含 AgoraMusicCacheInfo 对象的数组。
+- 方法调用失败，返回 nil。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_getinternalsongcode"></a>
+
+## getInternalSongCode:jsonOption:
+
+创建音乐资源副歌片段的内部 ID。
+
+<a id="api_imusiccontentcenter_getinternalsongcode__prototype"></a>
+
+```objectivec
+- (NSInteger)getInternalSongCode:(NSInteger)songCode jsonOption:(NSString * _Nullable)jsonOption  NS_SWIFT_NAME(getInternalSongCode(songCode:jsonOption:));
+```
+
+<a id="api_imusiccontentcenter_getinternalsongcode__detailed_desc"></a>
+
+调用该方法可结合音乐资源的 `songCode` 和 `jsonOption` 参数，为该资源的副歌片段创建一个内部 ID。该 ID 是该资源的唯一标识。获取该 ID 后，你需要在调用打开、预加载或移除资源的方法时，将其作为 `songCode` 参数传入。
+
+<a id="api_imusiccontentcenter_getinternalsongcode__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+音乐资源的唯一标识。你可以通过调用 [getMusicCollectionWithMusicChartId:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 方法，并从 [onMusicCollectionResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取 `songCode`。
+
+#### `jsonOption`
+
+:::info[注]
+声网会根据你在 `sceneType` 中指定的频道场景计费。不同的频道场景对应不同的计费标准，详见计费文档。若需切换频道场景，必须重新调用该方法并传入新的 `sceneType` 值。
+:::
+
+扩展 JSON 字段，默认为 nil。当前支持以下字段：
+
+- sceneType：频道场景。
+  - 1：直播场景：在线 K 歌房和背景音乐播放。
+  - 2：直播场景：背景音乐播放。
+  - 3：（默认）语聊场景：在线 K 歌房。
+  - 4：语聊场景：背景音乐播放。
+  - 5：VR 场景：在线 K 歌房和背景音乐播放。示例： \{"sceneType":1\}
+
+- highPart：副歌片段的索引。你可以从 onMusicCollectionResult:result:reason: 回调中获取该索引并传入。索引从 0 开始。示例： \{"format": \{"highpart": 0\}\}
+
+<a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。详见错误码文档获取详细信息和排查建议。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_getlyric"></a>
+
+## getLyricWithSongCode:lyricType:
+
+获取音乐资源歌词的下载链接。
+
+<a id="api_imusiccontentcenter_getlyric__prototype"></a>
+
+```objectivec
+- (NSString *)getLyricWithSongCode:(NSInteger)songCode lyricType:(NSInteger)lyricType NS_SWIFT_NAME(getLyric(songCode:lyricType:));
+```
+
+<a id="api_imusiccontentcenter_getlyric__detailed_desc"></a>
+
+调用该方法后，SDK 会触发 [onLyricResult:songCode:lyricUrl:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调，返回歌词的下载链接。
+
+<a id="api_imusiccontentcenter_getlyric__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onLyricResult:songCode:lyricUrl:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调，报告歌词的下载链接。
+
+<a id="api_imusiccontentcenter_getlyric__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+音乐资源的标识符，用于指定音乐资源。
+
+#### `lyricType`
+
+歌词的类型：
+
+- 0：XML 格式。
+- 1：LRC 格式。
+
+<a id="api_imusiccontentcenter_getlyric__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回请求 ID，用于标识该请求的唯一性。
+- 方法调用失败时，返回空字符串。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_getmusiccharts"></a>
+
+## getMusicCharts
+
+获取所有音乐排行榜。
+
+<a id="api_imusiccontentcenter_getmusiccharts__prototype"></a>
+
+```objectivec
+- (NSString *)getMusicCharts;
+```
+
+<a id="api_imusiccontentcenter_getmusiccharts__detailed_desc"></a>
+
+调用该方法后，SDK 会触发 [onMusicChartsResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调，报告音乐排行榜的详细信息。
+
+<a id="api_imusiccontentcenter_getmusiccharts__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onMusicChartsResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调，报告音乐排行榜的详细信息。
+
+<a id="api_imusiccontentcenter_getmusiccharts__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回一个唯一标识该请求的 `requestId`。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid"></a>
+
+## getMusicCollectionWithMusicChartId:page:pageSize:jsonOption:
+
+获取指定音乐榜单中的音乐资源列表。
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__prototype"></a>
+
+```objectivec
+- (NSString *)getMusicCollectionWithMusicChartId:(NSInteger)musicChartId page:(NSInteger)page pageSize:(NSInteger)pageSize jsonOption:(NSString * _Nullable)jsonOption NS_SWIFT_NAME(getMusicCollection(musicChartId:page:pageSize:jsonOption:));
+```
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__detailed_desc"></a>
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 `onMusicCollectionResult` 回调报告榜单中的音乐资源详细信息。
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__parameters"></a>
+
+### 参数
+
+#### `musicChartId`
+
+音乐榜单的 ID，可通过 `onMusicChartsResult` 回调获取。你也可以使用 RESTful API 获取完整的音乐库或增量音乐列表。
+
+#### `page`
+
+当前页码，默认从 1 开始。
+
+#### `pageSize`
+
+每页返回的音乐资源数量，最大值为 50。
+
+#### `jsonOption`
+
+可选的 JSON 扩展字段，默认为 nil。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选条件：
+
+- pitchType：是否支持评分。
+  - 1：支持评分的音乐资源。
+  - 2：不支持评分的音乐资源。
+- needHighPart：是否需要副歌片段资源。
+  - true：需要副歌片段资源。
+  - false：不需要副歌片段资源。
+
+<a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回唯一标识该请求的 `requestId`。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_getsongsimpleinfo"></a>
+
+## getSongSimpleInfoWithSongCode:
+
+获取指定音乐资源的详细信息。
+
+<a id="api_imusiccontentcenter_getsongsimpleinfo__prototype"></a>
+
+```objectivec
+- (NSString *)getSongSimpleInfoWithSongCode:(NSInteger)songCode NS_SWIFT_NAME(getSongSimpleInfo(songCode:));
+```
+
+<a id="api_imusiccontentcenter_getsongsimpleinfo__detailed_desc"></a>
+
+在调用该方法前，你需要先获取对应音乐资源的标识符。你可以通过调用 [getMusicCollectionWithMusicChartId:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 方法获取音乐资源，并通过这些方法触发的 [onMusicCollectionResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源标识符（`songCode` ）。
+
+:::info[注]
+成功调用该方法后，SDK 会触发 [onSongSimpleInfoResult:songCode:simpleInfo:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调，返回音乐资源的详细信息。
+:::
+
+<a id="api_imusiccontentcenter_getsongsimpleinfo__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+音乐资源的标识符，用于指定音乐资源。
+
+<a id="api_imusiccontentcenter_getsongsimpleinfo__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回唯一标识此次请求的 `requestId`。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_initialize_imusiccontentcenter"></a>
+
+## sharedContentCenterWithConfig:
+
+初始化 AgoraMusicContentCenter。
+
+<a id="api_imusiccontentcenter_initialize_imusiccontentcenter__prototype"></a>
+
+```objectivec
++ (instancetype _Nullable)sharedContentCenterWithConfig:(AgoraMusicContentCenterConfig *)config NS_SWIFT_NAME(sharedContentCenter(config:));
+```
+
+<a id="api_imusiccontentcenter_initialize_imusiccontentcenter__detailed_desc"></a>
+
+你必须先调用该方法初始化 [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)，然后才能调用该类中的其他方法。
+
+<a id="api_imusiccontentcenter_initialize_imusiccontentcenter__parameters"></a>
+
+### 参数
+
+#### `config`
+
+用于初始化 [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter) 的配置，详见 [AgoraMusicContentCenterConfig](/zh-CN/api-reference/rtc/ios/class-musiccontentcenterconfiguration)。
+
+<a id="api_imusiccontentcenter_initialize_imusiccontentcenter__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回一个 AgoraMusicContentCenter 对象。
+- 方法调用失败时，返回 nil。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_ispreloaded"></a>
+
+## isPreloadedWithSongCode:
+
+检查音乐资源是否已预加载。
+
+<a id="api_imusiccontentcenter_ispreloaded__prototype"></a>
+
+```objectivec
+- (NSInteger)isPreloadedWithSongCode:(NSInteger)songCode NS_SWIFT_NAME(isPreloaded(songCode:));
+```
+
+<a id="api_imusiccontentcenter_ispreloaded__detailed_desc"></a>
+
+该方法为同步调用。你可以调用 [preloadWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload2) 方法来预加载新的音乐资源。
+
+<a id="api_imusiccontentcenter_ispreloaded__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+用于指定特定音乐资源的音乐资源标识符。
+
+<a id="api_imusiccontentcenter_ispreloaded__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功，音乐资源已预加载。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusicplayer_open_imusicplayer"></a>
+
+## openMediaWithSongCode:startPos:
+
+通过资源 ID 打开音乐资源。
+
+<a id="api_imusicplayer_open_imusicplayer__prototype"></a>
+
+```objectivec
+- (NSInteger)openMediaWithSongCode:(NSInteger)songCode startPos:(NSInteger)startPos NS_SWIFT_NAME(openMedia(songCode:startPos:));
+```
+
+<a id="api_imusicplayer_open_imusicplayer__detailed_desc"></a>
+
+调用该方法前，请确保要播放的音乐资源已加载完成。你可以通过调用 [isPreloadedWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_ispreloaded) 方法，或监听 `onPreLoadEvent` 回调来确认音乐资源是否已预加载。 调用该方法后，SDK 会触发 [AgoraRtcMediaPlayer:didChangedToState:reason:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。当你收到播放状态 `AgoraMediaPlayerStateOpenCompleted` 后，可以调用 [play](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法开始播放。
+
+:::info[注]
+如果要打开的音乐资源受数字版权保护，必须使用该方法。对于未受数字版权保护的音乐资源，你可以选择使用该方法或 [open:startPos:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法打开。
+:::
+
+<a id="api_imusicplayer_open_imusicplayer__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+音乐资源的 ID，用于标识音乐内容。
+
+#### `startPos`
+
+播放起始位置，单位为毫秒。（默认值为 0。）
+
+<a id="api_imusicplayer_open_imusicplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。详见错误码及对应的解决方案。
+
+### 所属接口类
+- [AgoraMusicPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusicplayer)
+
+<a id="api_imusiccontentcenter_preload"></a>
+
+## preloadWithSongCode:jsonOption:
+
+预加载音乐资源。
+
+<a id="api_imusiccontentcenter_preload__prototype"></a>
+
+```objectivec
+- (NSInteger)preloadWithSongCode:(NSInteger)songCode jsonOption:(NSString* _Nullable)jsonOption NS_SWIFT_NAME(preload(songCode:jsonOption:))  __attribute__((deprecated("Use preload(songCode:) instead.")));
+```
+
+<a id="api_imusiccontentcenter_preload__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃，请改用 `preload(songCode:)`。
+
+你可以调用此方法预加载你想播放的音乐资源。
+
+:::info[注]
+在销毁 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象前，请确保等待 [onPreLoadEvent:songCode:percent:lyricUrl:state:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后再调用 [destroy](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter) 方法。
+:::
+
+<a id="api_imusiccontentcenter_preload__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onPreLoadEvent:songCode:percent:lyricUrl:state:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载音乐资源的事件。
+
+<a id="api_imusiccontentcenter_preload__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+音乐资源的 ID，用于标识音乐。
+
+#### `jsonOption`
+
+扩展的 JSON 字段。声网会根据你在 `sceneType` 字段中传入的应用场景进行计费。不同的应用场景对应不同的计费标准。
+
+- 1：频道场景：直播中的在线 K 歌和背景音乐播放。
+- 2：频道场景：直播中的背景音乐播放。
+- 3：（默认）频道场景：声动语聊中的在线 K 歌。
+- 4：频道场景：声动语聊中的背景音乐播放。
+- 5：频道场景：VR 中的在线 K 歌和背景音乐播放。
+
+如果你需要切换到其他场景，必须重新调用此方法并在该字段中传入新的 `sceneType` 值。 示例： `{"sceneType":1}`。
+
+<a id="api_imusiccontentcenter_preload__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_preload2"></a>
+
+## preloadWithSongCode:
+
+预加载音乐资源。
+
+<a id="api_imusiccontentcenter_preload2__prototype"></a>
+
+```objectivec
+- (NSString *)preloadWithSongCode:(NSInteger)songCode NS_SWIFT_NAME(preload(songCode:));
+```
+
+<a id="api_imusiccontentcenter_preload2__detailed_desc"></a>
+
+你可以调用此方法预加载你想播放的音乐资源。调用成功后，SDK 会触发 [onPreLoadEvent:songCode:percent:lyricUrl:state:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调，报告音乐资源的预加载事件。
+
+:::info[注]
+在销毁 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象前，必须等待收到 [onPreLoadEvent:songCode:percent:lyricUrl:state:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后再调用 [destroy](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter) 方法。
+:::
+
+<a id="api_imusiccontentcenter_preload2__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onPreLoadEvent:songCode:percent:lyricUrl:state:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告音乐资源的预加载事件。调用此方法前，你需要先调用 [getMusicCollectionWithMusicChartId:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 获取你想播放的音乐资源，并从这些方法触发的 [onMusicCollectionResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取歌曲编号（`songCode` ）。
+
+<a id="api_imusiccontentcenter_preload2__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+音乐资源的标识符。
+
+<a id="api_imusiccontentcenter_preload2__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回请求 ID，用于唯一标识该请求。
+- 方法调用失败时，返回空字符串。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter"></a>
+
+## registerEventDelegate:
+
+注册版权音乐内容中心的回调事件。
+
+<a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__prototype"></a>
+
+```objectivec
+- (NSInteger)registerEventDelegate:(id<AgoraMusicContentCenterEventDelegate> _Nullable)eventDelegate;
+```
+
+<a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__detailed_desc"></a>
+
+<a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__parameters"></a>
+
+### 参数
+
+#### `eventDelegate`
+
+要注册的回调事件。如果你想移除之前注册的回调事件，请传入 nil。详见 [AgoraMusicContentCenterEventDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcentereventhandler)。
+
+<a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_removecache"></a>
+
+## removeCacheWithSongCode:
+
+删除已缓存的音乐资源。
+
+<a id="api_imusiccontentcenter_removecache__prototype"></a>
+
+```objectivec
+- (NSInteger)removeCacheWithSongCode:(NSInteger)songCode NS_SWIFT_NAME(removeCache(songCode:));
+```
+
+<a id="api_imusiccontentcenter_removecache__detailed_desc"></a>
+
+你可以调用此方法删除已缓存的音乐资源。如需删除多个音乐资源，可以多次调用此方法。
+
+:::info[注]
+[removeCacheWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_removecache) 方法不会删除当前正在播放的已缓存音乐资源。
+:::
+
+<a id="api_imusiccontentcenter_removecache__parameters"></a>
+
+### 参数
+
+#### `songCode`
+
+要删除的音乐资源的标识符。
+
+<a id="api_imusiccontentcenter_removecache__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter"></a>
+
+## renewToken:
+
+更新用于鉴权的 Token。
+
+<a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__prototype"></a>
+
+```objectivec
+- (NSInteger)renewToken:(NSString * _Nonnull)token;
+```
+
+<a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__detailed_desc"></a>
+
+当用于鉴权的 Token 即将过期或已经过期时，可以调用该方法传入新生成的 Token。
+
+<a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__parameters"></a>
+
+### 参数
+
+#### `token`
+
+新的 Token。
+
+<a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusiccontentcenter_searchmusic"></a>
+
+## searchMusicWithKeyWord:page:pageSize:jsonOption:
+
+搜索音乐资源。
+
+<a id="api_imusiccontentcenter_searchmusic__prototype"></a>
+
+```objectivec
+- (NSString *)searchMusicWithKeyWord:(NSString *)keyWord page:(NSInteger)page pageSize:(NSInteger)pageSize jsonOption:(NSString * _Nullable)jsonOption NS_SWIFT_NAME(searchMusic(keyWord:page:pageSize:jsonOption:));
+```
+
+<a id="api_imusiccontentcenter_searchmusic__detailed_desc"></a>
+
+调用该方法后，SDK 会触发 [onMusicCollectionResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调，返回检索到的音乐资源列表。
+
+<a id="api_imusiccontentcenter_searchmusic__parameters"></a>
+
+### 参数
+
+#### `keyWord`
+
+搜索关键词。支持按歌曲标题或歌手名搜索。
+
+#### `page`
+
+要获取的音乐资源列表的目标页码。
+
+#### `pageSize`
+
+每页显示的最大音乐资源数量，最大值为 50。
+
+#### `jsonOption`
+
+可选的扩展 JSON 字段，默认为 nil。你可以使用该字段筛选所需的音乐资源。目前支持以下筛选条件：
+
+- pitchType：音乐资源是否支持评分。
+  - 1：可评分的音乐资源。
+  - 2：不可评分的音乐资源。
+
+示例： `{"pitchType":1}`。
+
+- needHighPart：是否需要合唱片段资源。
+  - YES：需要合唱片段资源。
+  - NO：不需要合唱片段资源。
+
+示例： `{"needHighPart":true}`。
+
+<a id="api_imusiccontentcenter_searchmusic__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回请求 ID，用于标识此次请求的唯一标识符。
+- 方法调用失败时，返回空字符串。
+
+### 所属接口类
+- [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)
+
+<a id="api_imusicplayer_setplaymode"></a>
+
+## setPlayMode:
+
+设置音乐资源的播放模式。
+
+<a id="api_imusicplayer_setplaymode__prototype"></a>
+
+```objectivec
+- (NSInteger)setPlayMode:(AgoraMusicPlayMode)mode NS_SWIFT_NAME(setPlayMode(mode:));
+```
+
+<a id="api_imusicplayer_setplaymode__detailed_desc"></a>
+
+你可以调用此方法启用原唱、人声伴奏或导唱。如果不调用此方法，默认播放人声伴奏。如果音乐资源不包含人声伴奏，则播放原唱。
+
+:::info[注]
+你可以通过 `onMusicCollectionResult` 回调获取音乐资源的详细信息。从 `result` 参数中可以了解该版权音乐支持哪些播放模式。
+:::
+
+<a id="api_imusicplayer_setplaymode__scenario"></a>
+
+### 适用场景
+
+在在线 K 歌或才艺展示等娱乐场景中，如果你需要播放由声网内容中心提供的版权音乐，可以调用该方法设置播放模式。
+
+<a id="api_imusicplayer_setplaymode__timing"></a>
+
+### 调用时机
+
+你必须在调用 [createMusicPlayerWithDelegate:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_createmusicplayer) 方法之后调用此方法。
+
+<a id="api_imusicplayer_setplaymode__parameters"></a>
+
+### 参数
+
+#### `mode`
+
+播放模式，详见 [AgoraMusicPlayMode](/zh-CN/api-reference/rtc/ios/enum-musicplaymode)。
+
+<a id="api_imusicplayer_setplaymode__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+  - -2：参数无效。请重新设置参数。
+
+### 所属接口类
+- [AgoraMusicPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusicplayer)
+
+<a id="callback_imusiccontentcentereventhandler_onlyricresult"></a>
+
+## onLyricResult:songCode:lyricUrl:reason:
+
+歌词下载链接的回调。
+
+<a id="callback_imusiccontentcentereventhandler_onlyricresult__prototype"></a>
+
+```objectivec
+- (void)onLyricResult:(NSString*)requestId songCode:(NSInteger)songCode lyricUrl:(NSString* _Nullable)lyricUrl reason:(AgoraMusicContentCenterStateReason)reason;
+```
+
+<a id="callback_imusiccontentcentereventhandler_onlyricresult__detailed_desc"></a>
+
+调用 [getLyricWithSongCode:lyricType:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getlyric) 方法获取指定歌曲的歌词下载链接后，SDK 会触发该回调。
+
+<a id="callback_imusiccontentcentereventhandler_onlyricresult__timing"></a>
+
+### 触发时机
+
+该回调在你调用 [getLyricWithSongCode:lyricType:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getlyric) 获取指定歌曲的歌词下载链接后被触发。
+
+<a id="callback_imusiccontentcentereventhandler_onlyricresult__parameters"></a>
+
+### 参数
+
+#### `requestId`
+
+请求 ID，用于唯一标识该请求。
+
+#### `songCode`
+
+音乐资源的标识符，用于指定音乐资源。
+
+#### `lyricUrl`
+
+歌词的下载链接。
+
+#### `reason`
+
+请求状态码，详见 [AgoraMusicContentCenterStateReason](/zh-CN/api-reference/rtc/ios/enum-musiccontentcenterstatereason)。
+
+### 所属接口类
+- [AgoraMusicContentCenterEventDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcentereventhandler)
+
+<a id="callback_imusiccontentcentereventhandler_onmusicchartsresult"></a>
+
+## onMusicChartsResult:result:reason:
+
+获取音乐排行榜结果的回调。
+
+<a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__prototype"></a>
+
+```objectivec
+- (void)onMusicChartsResult:(NSString *)requestId result:(NSArray<AgoraMusicChartInfo*> *)result reason:(AgoraMusicContentCenterStateReason)reason;
+```
+
+<a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__detailed_desc"></a>
+
+你调用 [getMusicCharts](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccharts) 方法后，SDK 会触发该回调。
+
+<a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__timing"></a>
+
+### 触发时机
+
+该回调在你调用 [getMusicCharts](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccharts) 方法后被触发。
+
+<a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__parameters"></a>
+
+### 参数
+
+#### `requestId`
+
+请求 ID，用于唯一标识该请求。
+
+#### `result`
+
+当前可播放的音乐排行榜列表。详见 [AgoraMusicChartInfo](/zh-CN/api-reference/rtc/ios/class-musicchartinfo)。
+
+#### `reason`
+
+请求的状态码。详见 [AgoraMusicContentCenterStateReason](/zh-CN/api-reference/rtc/ios/enum-musiccontentcenterstatereason)。
+
+### 所属接口类
+- [AgoraMusicContentCenterEventDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcentereventhandler)
+
+<a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult"></a>
+
+## onMusicCollectionResult:result:reason:
+
+获取音乐内容列表的回调。
+
+<a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__prototype"></a>
+
+```objectivec
+- (void)onMusicCollectionResult:(NSString *)requestId result:(AgoraMusicCollection *)result reason:(AgoraMusicContentCenterStateReason)reason;
+```
+
+<a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__detailed_desc"></a>
+
+当你调用 [getMusicCollectionWithMusicChartId:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 方法获取指定榜单或搜索音乐内容时，SDK 会触发该回调，返回音乐内容列表的详细信息。
+
+<a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__timing"></a>
+
+### 触发时机
+
+该回调在你调用 [getMusicCollectionWithMusicChartId:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusicWithKeyWord:page:pageSize:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) 后被触发。
+
+<a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__parameters"></a>
+
+### 参数
+
+#### `requestId`
+
+请求 ID。此请求的唯一标识符。
+
+#### `result`
+
+音乐内容列表的详细信息。详见 [AgoraMusicCollection](/zh-CN/api-reference/rtc/ios/class-musiccollection)。
+
+#### `reason`
+
+请求状态码。详见 [AgoraMusicContentCenterStateReason](/zh-CN/api-reference/rtc/ios/enum-musiccontentcenterstatereason)。
+
+### 所属接口类
+- [AgoraMusicContentCenterEventDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcentereventhandler)
+
+<a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler"></a>
+
+## onPreLoadEvent:songCode:percent:lyricUrl:state:reason:
+
+上报预加载音乐资源的事件。
+
+<a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__prototype"></a>
+
+```objectivec
+- (void)onPreLoadEvent:(NSString*)requestId songCode:(NSInteger)songCode percent:(NSInteger)percent lyricUrl:(NSString * _Nullable)lyricUrl state:(AgoraMusicContentCenterPreloadState)state reason:(AgoraMusicContentCenterStateReason)reason;
+```
+
+<a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__detailed_desc"></a>
+
+调用 [preloadWithSongCode:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload) 或 [preloadWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload2) 方法预加载音乐资源后，SDK 会触发该回调。
+
+<a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__timing"></a>
+
+### 触发时机
+
+该回调在调用 [preloadWithSongCode:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload) 或 [preloadWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload2) 方法预加载音乐资源后被触发。
+
+<a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__parameters"></a>
+
+### 参数
+
+#### `requestId`
+
+请求 ID，用于唯一标识该请求。
+
+#### `songCode`
+
+音乐资源的编号，用于标识特定的音乐资源。
+
+#### `percent`
+
+音乐资源当前的加载进度，取值范围为 [0, 100]。
+
+#### `lyricUrl`
+
+歌词的下载地址。
+
+#### `state`
+
+音乐资源当前的加载状态，详见 [AgoraMusicContentCenterPreloadState](/zh-CN/api-reference/rtc/ios/enum-preloadstate)。
+
+#### `reason`
+
+来自音乐内容中心的请求状态码，详见 [AgoraMusicContentCenterStateReason](/zh-CN/api-reference/rtc/ios/enum-musiccontentcenterstatereason)。
+
+### 所属接口类
+- [AgoraMusicContentCenterEventDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcentereventhandler)
+
+<a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult"></a>
+
+## onSongSimpleInfoResult:songCode:simpleInfo:reason:
+
+获取音乐资源详细信息的回调。
+
+<a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__prototype"></a>
+
+```objectivec
+- (void)onSongSimpleInfoResult:(NSString*)requestId songCode:(NSInteger)songCode simpleInfo:(NSString* _Nullable)simpleInfo reason:(AgoraMusicContentCenterStateReason)reason;
+```
+
+<a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__detailed_desc"></a>
+
+当你调用 [getSongSimpleInfoWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getsongsimpleinfo) 获取某个音乐资源的详细信息后，SDK 会触发该回调。
+
+<a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__timing"></a>
+
+### 触发时机
+
+该回调在你调用 [getSongSimpleInfoWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getsongsimpleinfo) 获取音乐资源详细信息后被触发。
+
+<a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__parameters"></a>
+
+### 参数
+
+#### `requestId`
+
+请求 ID。该请求的唯一标识符。
+
+#### `songCode`
+
+音乐资源的标识符。
+
+#### `simpleInfo`
+
+音乐资源的相关信息，包括：
+
+- 副歌片段的起始和结束时间（毫秒）。
+- 副歌片段的歌词下载 URL。
+- 副歌片段的时长（毫秒）。
+- 歌曲名称。
+- 歌手名称。
+
+#### `reason`
+
+请求状态码，详见 [AgoraMusicContentCenterStateReason](/zh-CN/api-reference/rtc/ios/enum-musiccontentcenterstatereason)。
+
+### 所属接口类
+- [AgoraMusicContentCenterEventDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcentereventhandler)

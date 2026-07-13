@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/sidebar';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
+import type { AppLocale } from '@/lib/i18n/i18n-config';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSidebarTree } from './DocsSidebarTree';
 import { useTransientScrollbar } from './useTransientScrollbar';
@@ -14,12 +15,14 @@ import { useTransientScrollbar } from './useTransientScrollbar';
 export function DocsSidebar({
   activePath,
   header,
+  locale,
   nodes,
   onSelectPath,
   resetKey,
 }: {
   activePath: string;
   header?: DocsSidebarHeader;
+  locale: AppLocale;
   nodes: DocsSidebarNode[];
   onSelectPath: () => void;
   resetKey: string;
@@ -56,6 +59,7 @@ export function DocsSidebar({
           {header ? (
             <DocsSidebarHeaderBlock
               header={header}
+              locale={locale}
               mode="desktop"
               onSelectPath={onSelectPath}
             />

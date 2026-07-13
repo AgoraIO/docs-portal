@@ -1,0 +1,171 @@
+---
+title: "配置录音开场白"
+---
+通过配置录音开场白，你可以让智能体在用户加入频道后优先播放预先准备好的音频文件，而不是临时调用 TTS 合成问候语。这种方式适合固定话术的外呼、客服接待、品牌介绍等场景，有助于降低首句延迟和 TTS 成本，并提升开场听感的一致性。
+
+## 适用场景
+
+以下场景适合使用录音开场白：
+
+- 开场话术固定，且不依赖实时变量替换。
+- 需要统一品牌音色、情绪或真人录音效果。
+- 希望尽量减少开场白阶段的 TTS 开销。
+
+如果你的开场白需要根据用户姓名、套餐、活动信息等动态生成，建议继续使用 `greeting_message` 走原有 TTS 路径。
+
+## 工作原理
+
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join) 接口时，你可以在 `llm` 下配置 `greeting_audio_url`。配置该字段时，必须同时配置 `greeting_message`。系统收到请求后，会优先下载该录音文件并在适当时机播报：
+
+1. 下载录音文件。
+2. 解码音频并转换为与 `tts.params.sample_rate` 一致的采样率。
+3. 按 `greeting_configs.delay_ms` 配置等待后推流给用户。
+4. 如果录音下载失败、解码失败、格式不支持或超时，则自动回退到 `greeting_message` 的 TTS 路径。
+
+## 参数说明
+
+录音开场白相关参数如下：
+
+- `llm.greeting_audio_url`：录音文件 URL。该字段仅支持 `http://` 或 `https://` 开头的字符串，长度不能超过 `2048` 字节。`null` 和字段缺失均视为未配置，此时系统走原有 `greeting_message` 实时 TTS 路径。
+- `llm.greeting_message`：录音对应的文本内容。配置 `greeting_audio_url` 时，该字段为必填，用于异常回退和可打断场景下的上下文重建。如果缺失，请求会直接返回 `400` 错误，`reason` 为 `MissingRequiredField`。
+- `llm.greeting_configs.audio_download_timeout_ms`：录音下载超时时间，单位为毫秒，仅在配置 `greeting_audio_url` 时生效。取值范围为 `[200, 10000]`，默认值为 `1000`。`null` 和字段缺失均视为未配置，此时使用默认值。
+- `llm.greeting_configs.audio_pcm_sample_rate`：PCM 文件采样率，仅在录音格式为 PCM 时需要配置，默认值为 `16000`。
+- `llm.greeting_configs.interruptable`：录音开场白是否允许被用户打断。
+- `llm.greeting_configs.uninterruptible_asr_policy`：当 `interruptable = false` 时，定义开场白播放期间用户 ASR 文本的路由策略。可选值为：
+  - `merge_reply`（默认）：在开场白播放（含 `delay_ms`）期间静默接收 ASR 结果，待开场白播放完毕后，将期间收集到的多段 ASR 文本拼接成单轮 user 消息，统一送入大模型进行一次推理并回复。
+  - `context`：在开场白播放（含 `delay_ms`）期间，将识别到的用户 ASR 文本写入历史对话上下文，不立即送入大模型；开场白结束后，继续等待用户新的有效语音输入。
+- `llm.greeting_configs.delay_ms`：录音开场白播报前的延迟时间。
+
+## 支持的音频格式
+
+当前支持以下录音格式：
+
+- `mp3`
+- `wav`
+- `pcm`
+
+使用时请注意：
+
+- `mp3` 和 `wav` 文件无需额外指定采样率。
+- `pcm` 文件本身不包含采样率信息，因此必须根据实际文件采样率配置 `greeting_configs.audio_pcm_sample_rate`。
+- 系统会在播报前将导入音频统一转换为与 `tts.params.sample_rate` 一致的采样率。
+- 如果 `greeting_audio_url` 不是 `http://` 或 `https://` URL、为空字符串或长度超过 `2048` 字节，请求会返回 `400` 错误，`reason` 为 `InvalidFieldValue`。
+
+## 配置示例
+
+以下示例展示了一个标准录音开场白配置：
+
+```json
+{
+  "name": "outbound_voice_agent",
+  "properties": {
+    "channel": "outbound_call_channel_001",
+    "token": "token",
+    "agent_rtc_uid": "123",
+    "remote_rtc_uids": ["321"],
+    "llm": {
+      "url": "https://api.minimax.chat/v2/text/chatcompletion_v2",
+      "api_key": "xxx",
+      "greeting_audio_url": "https://cdn.example.com/audio/standard-welcome.mp3",
+      "greeting_message": "您好，感谢拨打声网客服热线。我们检测到您的套餐即将到期，请问需要为您办理续费吗？",
+      "greeting_configs": {
+        "delay_ms": 600,
+        "interruptable": true,
+        "audio_download_timeout_ms": 1000
+      },
+      "params": {
+        "model": "abab6.5s-chat"
+      }
+    },
+    "asr": {
+      "language": "zh-CN"
+    },
+    "tts": {
+      "vendor": "minimax",
+      "params": {
+        "group_id": "xxxx",
+        "key": "xxxx",
+        "model": "speech-01-turbo",
+        "voice_setting": {
+          "voice_id": "female-shaonv"
+        },
+        "audio_setting": {
+          "sample_rate": 16000
+        }
+      }
+    }
+  }
+}
+```
+
+如果你使用的是 PCM 文件，则还需要补充采样率配置：
+
+```json
+"greeting_audio_url": "https://cdn.example.com/audio/brand-intro.pcm",
+"greeting_configs": {
+  "audio_pcm_sample_rate": 16000
+}
+```
+
+## 异常回退机制
+
+当录音开场白无法正常播放时，系统会自动回退到 `greeting_message` 的 TTS 路径，确保用户仍然能听到完整开场白。常见触发场景包括：
+
+- 录音 URL 不可访问。
+- 录音下载超时。
+- 音频格式不支持。
+- 解码失败或 PCM 数据损坏。
+
+如果你配置了 `greeting_audio_url` 但未配置 `greeting_message`，请求会直接返回 `400` 错误，`reason` 为 `MissingRequiredField`，不会创建智能体。因此，在所有录音开场白场景中都必须同时配置 `greeting_message`。
+
+## 打断与上下文重建
+
+当 `greeting_configs.interruptable = true` 时，用户可以在录音开场白播报过程中打断智能体。
+
+为保持对话连贯性，系统会基于录音的总时长和实际已播报时长，结合 `greeting_message` 估算用户已经听到的文本片段，并将该片段注入短期记忆中。这样，大模型在后续回复时能够基于真实的播报进度理解上下文。
+
+因此，在可打断场景下，`greeting_message` 不仅用于异常兜底，也用于对话上下文重建。
+
+当 `greeting_configs.interruptable = false` 时，用户在开场白播放期间的语音不会打断当前播报，而是按 `greeting_configs.uninterruptible_asr_policy` 配置处理。
+
+## 不可打断场景下的 ASR 路由策略
+
+当 `greeting_configs.interruptable = false` 时，你可以通过 `greeting_configs.uninterruptible_asr_policy` 控制开场白播放期间用户语音识别结果的处理方式。如果不配置该字段，默认使用 `merge_reply`。
+
+- `merge_reply`：在开场白播放（含 `delay_ms`）期间，引擎会在后台静默接收用户 ASR 结果，但不会立即触发中断或回复。待开场白播放完毕后，引擎会将期间收集到的多段 ASR 文本拼接为单轮 user 消息，再统一送入大模型进行一次推理和回复。
+- `context`：在开场白播放（含 `delay_ms`）期间，引擎会将识别到的用户 ASR 文本写入历史对话上下文，但不会立即送入大模型。开场白结束后，引擎会继续等待用户新的有效语音输入。这些文本仍会记录在 transcript 和 history 中，便于后续查看对话过程。
+
+以下示例展示了不可打断场景下的配置方式：
+
+```json
+"greeting_configs": {
+  "delay_ms": 600,
+  "interruptable": false,
+  "uninterruptible_asr_policy": "merge_reply",
+  "audio_download_timeout_ms": 1000
+}
+```
+
+## 最佳实践
+
+- 为录音文件配置稳定、可公网访问的 URL。
+- 录音内容应与 `greeting_message` 保持一致，避免打断后上下文错位。
+- 对于 PCM 文件，务必确认实际采样率与 `audio_pcm_sample_rate` 一致。
+- 将 `audio_download_timeout_ms` 控制在业务可接受的等待范围内，并确保其取值位于 `[200, 10000]`。
+
+## 错误事件说明
+
+录音开场白下载失败、超时、格式不支持或解码失败等异常会通过服务端 `110 agent error` Webhook / RTM 事件对外暴露。与此同时，如果你在创建智能体时将 `parameters.enable_error_message` 设为 `true`，这类异常还会通过客户端组件的 `onMessageError` 回调下发到端侧，便于你做监控、告警和降级处理。
+
+录音开场白异常触发错误事件时，常见表现如下：
+
+- `110 agent error` 中，`errors[].module` 为 `agent`，`message` 会包含录音 URL 不可达、下载超时、格式不支持或解码失败等错误原因。
+- 客户端 `onMessageError` 回调中的 `MessageError.message` 通常为包含错误详情的 JSON 字符串，你可以解析其中的错误码、错误信息和关联资源，用于日志记录或提示用户。
+
+## 参考信息
+
+- [使用 RESTful API 实现对话式 AI 引擎](/zh-CN/ai/get-started/quick-start)
+- [打断智能体](/zh-CN/ai/build/shape-the-conversation/interrupt-agent)
+- [监听智能体事件](/zh-CN/ai/build/handle-runtime-events/event-notifications)
+- [事件类型](/zh-CN/ai/reference/event-types#110)
+- [发版说明](/zh-CN/ai/release-notes)

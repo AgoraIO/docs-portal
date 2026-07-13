@@ -1,0 +1,123 @@
+---
+title: "RemoteAudioStats"
+description: "用于描述远端用户的音频统计信息。"
+---
+<a id="class_remoteaudiostats__prototype"></a>
+
+```cpp
+struct RemoteAudioStats
+{
+  uid_t uid;
+  int quality;
+  int networkTransportDelay;
+  int jitterBufferDelay;
+  int audioLossRate;
+  int numChannels;
+  int receivedSampleRate;
+  int receivedBitrate;
+  int totalFrozenTime;
+  int frozenRate;
+  int mosValue;
+  uint32_t frozenRateByCustomPlcCount;
+  uint32_t plcCount;
+  uint32_t frozenCntByCustom;
+  uint32_t frozenTimeByCustom;
+  int totalActiveTime;
+  int publishDuration;
+  int qoeQuality;
+  int qualityChangedReason;
+  unsigned int rxAudioBytes;
+  int e2eDelay;
+};
+```
+
+<a id="class_remoteaudiostats__parameters"></a>
+
+## 属性
+
+### `uid`
+
+远端用户的用户 ID。
+
+### `quality`
+
+音频流质量。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-qualitytype)。
+
+### `networkTransportDelay`
+
+从发送端到接收端的网络传输延迟（毫秒）。
+
+### `jitterBufferDelay`
+
+从音频接收端到抖动缓冲区的网络延迟（毫秒）。
+
+:::info[注]
+当接收端为观众且 [ClientRoleOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-clientroleoptions) 中的 `audienceLatencyLevel` 为 1 时，该参数不生效。
+:::
+
+### `audioLossRate`
+
+在统计周期内远端音频流的丢帧率（%）。
+
+### `numChannels`
+
+音频通道数。
+
+### `receivedSampleRate`
+
+在统计周期内接收到的音频流的采样率。
+
+### `receivedBitrate`
+
+在统计周期内接收到的音频流的平均码率（Kbps）。
+
+### `totalFrozenTime`
+
+远端用户加入频道后音频流的总卡顿时长（毫秒）。当音频帧丢失率达到 4% 时视为音频卡顿。
+
+### `frozenRate`
+
+远端音频流的总卡顿时长占音频可用总时长的百分比（%）。当远端用户加入频道后既未停止发送音频流，也未关闭音频模块时，音频被视为可用。
+
+### `mosValue`
+
+在统计周期内远端音频流的质量。该质量由声网实时音频 MOS（主观意见评分）测量方法确定。返回值范围为 [0, 500]，除以 100 后为 MOS 分数，范围为 0 到 5，分数越高表示音频质量越好。声网实时音频 MOS 评分对应的主观音质感受如下：
+
+- 大于 4 分，音频质量佳，清晰流畅。
+- 3.5 - 4 分，音频质量较好，偶有音质损伤，但依然清晰。
+- 3 - 3.5 分，音频质量一般，偶有卡顿，不是非常流畅，需要一点注意力才能听清。
+- 2.5 - 3 分，音频质量较差，卡顿频繁，需要集中精力才能听清。
+- 2 - 2.5 分，音频质量很差，偶有杂音，部分语义丢失，难以交流。
+- 小于 2 分，音频质量非常差，杂音频现，大量语义丢失，完全无法交流。
+
+### `frozenRateByCustomPlcCount`
+
+当丢包隐藏（PLC）连续发生 N 次时，认为发生了一次卡顿；卡顿次数 = (n_plc - n) / m。
+
+### `plcCount`
+
+音频丢包隐藏（PLC）发生的次数。
+
+### `totalActiveTime`
+
+从音频通话开始到远端用户回调之间的总活跃时长（毫秒）。活跃时长指远端用户未处于静音状态的总时长。
+
+### `publishDuration`
+
+远端音频流的总持续时长（毫秒）。
+
+### `qoeQuality`
+
+本地用户接收远端音频流时的体验质量（QoE）。详见 [EXPERIENCE_QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-experiencequalitytype)。
+
+### `qualityChangedReason`
+
+本地用户接收远端音频流时体验质量较差的原因。详见 [EXPERIENCE_POOR_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-experiencepoorreason)。
+
+### `rxAudioBytes`
+
+接收到的音频字节总数（字节），包括 FEC 字节，表示为聚合值。
+
+### `e2eDelay`
+
+端到端音频延迟（毫秒），指从远端用户采集音频到本地用户播放音频的时间。

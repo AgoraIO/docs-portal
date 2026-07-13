@@ -1,0 +1,43 @@
+---
+title: "OnTranscodedStreamLayoutInfo"
+description: "已接收携带布局信息的合图视频流回调。"
+---
+<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__prototype"></a>
+
+```csharp
+public virtual void OnTranscodedStreamLayoutInfo(RtcConnection connection, uint uid, int width, int height, int layoutCount, VideoLayout[] layoutlist)
+```
+
+<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__detailed_desc"></a>
+
+## 详情
+
+当本地第一次接收到合图服务器发送的合图视频流，或者合图流的布局信息有变化时，SDK 会触发该回调，报告合图视频流中每一路子视频流的布局信息。
+
+<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__parameters"></a>
+
+## 参数
+
+### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+### `uid`
+
+发布合图视频流的用户 ID。
+
+### `width`
+
+合图视频流的宽度 (px)。
+
+### `height`
+
+合图视频流的高度 (px)。
+
+### `layoutCount`
+
+合图视频流中布局信息的数量。
+
+### `layoutlist`
+
+某一路合图视频流的详细布局信息。详见 [VideoLayout](/zh-CN/api-reference/rtc/csharp-windows/class-videolayout)。

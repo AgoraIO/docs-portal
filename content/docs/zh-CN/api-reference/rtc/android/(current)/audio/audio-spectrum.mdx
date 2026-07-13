@@ -1,6 +1,6 @@
 ---
 title: "音频频谱"
-description: RTC Android API 参考迁移页。
+description: "音频频谱 API reference."
 ---
 <a id="toc_audio_spectrum"></a>
 
@@ -29,10 +29,10 @@ public abstract int disableAudioSpectrumMonitor();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudiospectrummonitor"></a>
 
@@ -75,11 +75,11 @@ SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/android/audio/audio-s
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
   - -2：参数无效。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registeraudiospectrumobserver"></a>
 
@@ -95,7 +95,7 @@ public abstract int registerAudioSpectrumObserver(IAudioSpectrumObserver observe
 
 <a id="api_irtcengine_registeraudiospectrumobserver__detailed_desc"></a>
 
-成功注册音频频谱观察器并调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 启用音频频谱监测后，SDK 会根据你设置的时间间隔，触发你在 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudiospectrumobserver) 中实现的回调。
+成功注册音频频谱观察器并调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 启用音频频谱监测后，SDK 会根据你设置的时间间隔，触发你在 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudiospectrumobserver) 中实现的回调。
 
 :::info[注]
 你可以在加入频道前或加入频道后调用此方法。
@@ -107,17 +107,17 @@ public abstract int registerAudioSpectrumObserver(IAudioSpectrumObserver observe
 
 #### `observer`
 
-音频频谱观察器。详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudiospectrumobserver)。
+音频频谱观察器。详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudiospectrumobserver)。
 
 <a id="api_irtcengine_registeraudiospectrumobserver__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver"></a>
 
@@ -145,17 +145,17 @@ public abstract int unRegisterAudioSpectrumObserver(IAudioSpectrumObserver obser
 
 #### `observer`
 
-音频频谱观察器，详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudiospectrumobserver)。
+音频频谱观察器，详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudiospectrumobserver)。
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum"></a>
 
@@ -185,7 +185,7 @@ public abstract int unRegisterAudioSpectrumObserver(IAudioSpectrumObserver obser
 
 #### `data`
 
-本地用户的音频频谱数据。详见 [AudioSpectrumInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-audiospectrumdata)。
+本地用户的音频频谱数据。详见 [AudioSpectrumInfo](/zh-CN/api-reference/rtc/android/class-audiospectrumdata)。
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__return_values"></a>
 
@@ -197,7 +197,7 @@ public abstract int unRegisterAudioSpectrumObserver(IAudioSpectrumObserver obser
 - false：未接收到频谱数据。
 
 ### 所属接口类
-- [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudiospectrumobserver)
+- [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudiospectrumobserver)
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum"></a>
 
@@ -227,7 +227,7 @@ boolean onRemoteAudioSpectrum(UserAudioSpectrumInfo[] userAudioSpectrumInfos, in
 
 #### `userAudioSpectrumInfos`
 
-远端用户的音频频谱信息。数组长度为 SDK 监测到的远端用户数量。如果该数组为 `null`，表示未检测到远端用户的音频频谱。详见 [UserAudioSpectrumInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-useraudiospectruminfo)。
+远端用户的音频频谱信息。数组长度为 SDK 监测到的远端用户数量。如果该数组为 `null`，表示未检测到远端用户的音频频谱。详见 [UserAudioSpectrumInfo](/zh-CN/api-reference/rtc/android/class-useraudiospectruminfo)。
 
 #### `spectrumNumber`
 
@@ -241,4 +241,4 @@ boolean onRemoteAudioSpectrum(UserAudioSpectrumInfo[] userAudioSpectrumInfos, in
 - false：未接收到频谱数据。
 
 ### 所属接口类
-- [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudiospectrumobserver)
+- [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudiospectrumobserver)

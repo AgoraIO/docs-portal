@@ -1,0 +1,96 @@
+---
+title: "集成注意事项"
+---
+本文介绍在使用声网产品实现在线互动课堂中，需要注意的 API 调用和参数设置事项。
+
+## 初始化
+
+### 设置频道场景
+
+调用 `setChannelProfile` 设置频道场景，推荐一对一教学场景下设置为 `COMMUNICATION`，一对 N 小班课和直播大班课场景下设置为 `LIVE_BROADCASTING`。
+
+调用 `createClient` 时，通过 `ClientConfig` 中的 `mode` 参数设置频道场景。推荐一对一教学场景下设置为 `"rtc"`，一对 N 小班课和直播大班课场景下设置为 `"live"`。
+
+### 设置用户 ID
+
+加入频道时的用户 ID 需要你自己设置。声网建议你不要使用默认值 0。如果设为 0，SDK 会随机分配一个 UID，后续排查问题时会难以确定问题用户的 UID。
+
+同一频道的用户不要使用相同的用户 ID，以免因用户 ID 冲突导致互踢。如果频道中有录制端，请确保录制端的 UID 也不能与频道中的其他 UID 一致。
+
+## 使用 Token 鉴权
+
+加入频道时，声网强烈推荐使用动态密钥 Token 进行鉴权，并设置一个合理的 Token 过期时间（不超过 24 小时）。详见[使用 Token 鉴权](/doc/rtc//basic-features/token-authentication)。
+
+## 音频相关
+
+对于大多数在线教育场景，不需要调用 `setAudioProfile` 设置音频编码属性，采用默认设置即可。
+
+在有高音质需求的场景（例如音乐教学场景）中，建议将 `profile` 设置为 `MUSIC_HIGH_QUALITY(4)`，`scenario` 设置为 `GAME_STREAMING(3)`。
+
+## 视频相关
+
+### 设置视频属性
+
+在调用 `setVideoEncoderConfiguration` 设置视频编码属性时，声网建议不要设置太高的视频参数。因为分辨率太高对低端机型的编解码 CPU 会造成压力，可能导致卡顿；码率太高会对上下行带宽造成压力。根据窗口大小，在保证视频效果的情况下，尽可能使用低分辨率和低码率，以减少编解码的资源消耗和缓解下行带宽压力。
+
+在通过 `createCameraVideoTrack` 中的 `encoderConfig` 参数设置视频编码属性时，声网建议不要设置太高的视频参数。因为分辨率太高对低端机型的编解码 CPU 会造成压力，可能导致卡顿；码率太高会对上下行带宽造成压力。根据窗口大小，在保证视频效果的情况下，尽可能使用低分辨率和低码率，以减少编解码的资源消耗和缓解下行带宽压力。
+
+通常来讲，视频参数的选择要根据产品实际情况来确定。
+
+举例来说，如果是一对一教学，老师和学生的窗口比较大，要求分辨率会高一点，随之帧率和码率也要高一点；如果是一对四小班课， 老师和学生的窗口都比较小，分辨率可以低一点，对应的码率帧率也会低一点。
+
+你可以参考下表根据实际教学场景，选择合适的视频分辨率、码率和帧率：
+
+| 教学场景 | 推荐分辨率 |
+| --- | --- |
+| 一对一教学 | <Slot name="best-practices-html-0-1-1" /> |
+| 一对 N 小班课 | <Slot name="best-practices-html-0-2-1" /> |
+
+<Slot for="best-practices-html-0-1-1">
+
+- 240P (320 × 240, 15 fps, 200 Kbps)
+        - 360P (640 × 360, 16 fps, 400 Kbps)
+
+</Slot>
+
+<Slot for="best-practices-html-0-2-1">
+
+- 120P (160 × 120, 15 fps, 65 Kbps)
+        - 180P (320 × 180, 15 fps, 140 Kbps)
+        - 240P (320 × 240, 15 fps, 200 Kbps)
+
+</Slot>
+
+### 关闭本地视频
+
+如果想关闭本地视频，但是可以继续收到远端用户的视频，请调用 `enableLocalVideo(false)` 方法，而不是 `muteLocalVideoStream(true)` 方法。前者不会占用摄像头，不会进行视频采集，后者依然进行视频采集只是不发送，会造成资源浪费。
+
+### 渲染远端视频
+
+建议在收到首帧回调 `onFirstRemoteVideoFrame` 后再进行视频渲染。
+
+### 渲染远端视频
+
+建议在收到首帧回调 `first-frame-decoded` 后再进行视频渲染。
+
+### 视频旋转
+
+如场景中涉及视频旋转，可以通过设置视频属性 `setVideoEncoderConfiguration` 方法实现，详见[设置视频属性](/doc/rtc//basic-features/video-profile)。
+
+### 双流与流回退
+
+多人视频场景下，推荐使用双流功能。各发流端在加入频道前或者后，都可以调用 `enableDualStreamMode` 方法开启双流模式，详见 [API 参考](/api-ref/rtc//API/toc_publishnsubscribe)。
+
+### 双流与流回退
+
+多人视频场景下，推荐使用双流功能。各发流端在加入频道前或者后，都可以调用 `enableDualStream` 方法开启双流模式，详见 [API 参考](/api-ref/rtc/javascript/interfaces/iagorartcclient#enableDualStream)。
+
+## 问题排查
+
+### 检查防火墙设置
+
+如果用户加入频道 10 秒内没有成功，可以检查网络环境是否设置了防火墙。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/doc/rtc//basic-features/firewall)。
+
+### 云录制常见问题
+
+云端录制集成相关问题详见[云端录制常见问题](/zh-CN/api-reference/faq/integration)。

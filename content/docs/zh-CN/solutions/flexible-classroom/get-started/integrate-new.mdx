@@ -1,0 +1,272 @@
+---
+title: "集成云课堂场景 (FcrUIScene)"
+---
+
+<PlatformStructured platform="web">
+
+灵动课堂 FcrUIScene 包含了云课堂场景，本文详细介绍如何将灵动课堂云课堂场景集成到你自己的 Web 项目中。
+
+## 技术原理
+
+云课堂代码包含以下包：
+
+```shell
+├── packages
+│   ├── agora-demo-app  # 云课堂 demo，提供在线课堂的课前、课中、课后等场景化代码示例
+│   │   ├── electron  # electron 相关代码
+│   │   ├── src
+│   │   │   ├── api  # 和后台数据交互接口
+│   │   │   ├── components  # 业务组件
+│   │   │   ├── layout  # 业务布局
+│   │   │   ├── pages  # 页面
+│   │   │   ├── router  # 路由
+│   │   │   ├── stores  # 公共数据
+│   ├── agora-plugin-gallery  # 独立插件库，继承 AgoraWidgetBase 类并实现 AgoraWidgetLifecycle 接口，包含互动白板、IM 聊天、答题器、投票器、计时器等插件。
+│   │   └── src
+│   │       ├── common  # widget 公用逻辑，主要包含承载 widget 的 modal 组件。
+│   │       ├── components  # widget 通用 UI 组件
+│   │       └── gallery
+│   │           ├── answer  # 答题器 widget
+│   │           ├── counter  # 计时器 widget
+│   │           ├── hx-chat  # 聊天 widget
+│   │           ├── im  # im通用能力的封装，为聊天 widget 提供统一接口。
+│   │           ├── stream-media  # 视频流播放器
+│   │           ├── vote  # 投票 widget
+│   │           ├── watermark  # 水印 widget
+│   │           ├── webview  # webview widget，包含通用 webview 和 Youtube 同步播放器。
+│   │           └── whiteboard  # 白板 widget
+│   ├── fcr-ui-scene  # 云课堂 SDK
+│   │   ├── src
+│   │   │   ├── uistores  # UI Store 目录。UI Store 负责为 UI 组件提供业务逻辑封装。
+│   │   │   ├── containers  # UI 功能组件，与 UI Store 结合成为 UI 业务组件。
+│   │   │   ├── scenarios  # UI 场景。场景是由多个业务组件组合而成。
+│   │   │   ├── extension  # 与 Widget 通信的API封装。
+│   │   │   ├── resources  # 图片与声音等静态资源文件
+│   │   │   │   ├── images  # 图片资源
+│   │   │   │   └── translations  # 国际化文本
+│   │   │   └── utils  # 通用 UI 组件
+│   ├── fcr-ui-kit  # 云课堂 UI 组件库
+│   │   ├── src
+│   │   │   ├── components  # 通用 UI 组件
+│   │   │   ├── utils  # 通用 hooks 工具类
+│   ├── agora-common-libs  # 通用工具类库，包含 ThemeProvider、I18nProvider等 全局通用工具。
+│   ├── agora-edu-core  # 提供云课堂的上行 API 调用和下行数据结构封装。
+│   └── agora-rte-sdk  # 提供跨端 RTC 适配能力以及教室内事件回调与数据结构封装。
+```
+
+## 集成云课堂
+
+:::warning[注意]
+使用云课堂前需要先调用服务端接口创建房间，否则部分功能无法使用（例如，学生无法自行打开摄像头麦克风等），详见[创建云课堂房间](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom#创建课堂)。
+:::
+
+云课堂支持多种集成方式。根据是否需要修改课堂 UI，你可选择不同的集成方式：
+
+- 如果你直接使用云课堂的默认 UI，无需修改云课堂的代码，则可选择 [npm](https://www.npmjs.com/package/fcr-ui-scene) 或 CDN 集成。
+- 如果你想要基于云课堂的默认 UI 进行修改，则可选择通过 [GitHub 源码](https://github.com/AgoraIO-Community/flexible-classroom-desktop)集成。
+
+:::warning[注意]
+由于灵动课堂代码仓库使用了 Git Submodule 来管理子模块，因此需使用 `git clone` 命令拉取代码，直接下载 ZIP 的源码包中不包含仓库的元数据，会导致后续执行安装脚本失败。
+:::
+
+### 使用默认 UI 的方式集成
+
+如果你直接使用云课堂的默认 UI，无需修改云课堂的代码，则可选择 npm 或 CDN 集成。
+
+<Tabs defaultValue="npm" groupId="integrate" persist>
+<TabsList>
+  <TabsTrigger value="npm">npm 集成</TabsTrigger>
+  <TabsTrigger value="cdn">CDN 集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="npm">
+
+1. 运行安装命令：
+
+    ```shell
+    npm install fcr-ui-scene agora-plugin-gallery
+    ```
+
+2. 在项目的 JavaScript 代码中引入 `FcrUIScene` 模块和插件模块：
+
+    ```javascript
+    import { FcrUIScene } from 'fcr-ui-scene'
+    import {
+      FcrChatroom,
+      FcrBoardWidget,
+      FcrPollingWidget,
+      FcrStreamMediaPlayerWidget,
+      FcrWebviewWidget,
+      FcrCountdownWidget,
+      FcrPopupQuizWidget
+    } from 'agora-plugin-gallery/scene'
+    ```
+
+3. 在项目的 JavaScript 代码中调用 [FcrUIScene.launch](/api-ref/flexible-classroom/javascript/fcr-ui-scene#launch) 方法启动课堂。
+
+</TabsContent>
+
+<TabsContent value="cdn">
+
+1. 在项目的 HTML 文件中添加以下代码：
+
+    ```html
+    <!-- 请把 X.Y.Z 替换为云课堂版本号，例如 1.0.40。
+    你可以通过发版说明或 GitHub 仓库分支查看最新版本号。 -->
+    <script src="https://download.agora.io/edu-apaas/release/scene_sdk@X.Y.Z.bundle.js"></script>
+    <script src="https://download.agora.io/edu-apaas/release/scene_widget@X.Y.Z.bundle.js"></script>
+    ```
+
+2. 在项目的 JavaScript 代码中调用 [FcrUIScene.launch](/api-ref/flexible-classroom/javascript/fcr-ui-scene#launch) 方法启动课堂。
+
+</TabsContent>
+</Tabs>
+
+#### 示例代码
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 引入 SDK，1.0.40 为示例版本号。你可以通过发版说明或 GitHub 仓库分支查看最新版本号。 -->
+    <script src="https://download.agora.io/edu-apaas/release/scene_sdk@1.0.40.bundle.js"></script>
+    <!-- 引入 Widget，1.0.40 为示例版本号，你可以通过发版说明或 GitHub 仓库分支查看最新版本号。 -->
+    <script src="https://download.agora.io/edu-apaas/release/scene_widget@1.0.40.bundle.js"></script>
+  </head>
+
+  <body>
+    <style>
+      #root {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <div id="root"></div>
+    <script type="text/javascript">
+      // 启动云课堂。
+      const unmount = FcrUIScene.launch(document.querySelector("#root"), {
+        appId: "Your App ID",
+        region: "NA",
+        userUuid: "user id",
+        userName: "user name",
+        roomUuid: "room id",
+        roomType: 4, // 房间类型：4 为小班课，目前仅支持小班课。
+        roomName: "room name",
+        pretest: true, // 是否开启课前设备检测。
+        token: "rtm token", // 测试环境下，你可以使用临时 RTM Token；生产或安全环境下，强烈建议你使用服务器生成的 RTM Token。
+        language: "zh",
+        duration: 60 * 30, // 课程时间，单位为秒。
+        recordUrl: "your record url",
+        roleType: 1, // 用户角色：1 为老师，2 为学生。
+        widgets: {
+          easemobIM: FcrChatroom, // IM widget
+          netlessBoard: FcrBoardWidget, // 互动白板widget
+          poll: FcrPollingWidget, // 投票器widget
+          mediaPlayer: FcrStreamMediaPlayerWidget, // 视频同步播放器widget
+          webView: FcrWebviewWidget, // 内嵌浏览器widget
+          countdownTimer: FcrCountdownWidget, // 倒计时widget
+          popupQuiz: FcrPopupQuizWidget, // 答题器widget
+        },
+      });
+    </script>
+  </body>
+</html>
+```
+
+示例代码中 `token` 的填写方式：你可以使用[临时 Token](/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable#生成临时-token)，也可以参考[使用 Token 鉴权](/zh-CN/solutions/flexible-classroom/build/setup-and-access/generate-token) 从服务器生成 Token。
+
+:::warning[注意]
+声网提供的客户端临时 Token 生成器仅适用于 App 的快速测试。在正式环境中，为确保安全，你必须参考[使用 Token 鉴权文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/generate-token)，在服务端部署并生成 Token。生成的 Token 中传入的 `userId` 需要与 `launch` 方法中传入的参数 `userUuid` 保持一致，否则该 Token 无效。
+:::
+
+:::info[信息]
+`launch` 函数会返回一个 `unmount` 函数。当你的 App 路由变更导致页面卸载时，需要调用这个 `unmount` 方法来断开房间连接，回收资源。
+:::
+
+### 使用自定义 UI 的方式集成
+
+如果你想要基于云课堂的默认 UI 进行修改，则参考以下步骤集成云课堂的 GitHub 源码：
+
+:::info[信息]
+开始前请确保你的设备上已准备好[开发环境](/zh-CN/solutions/flexible-classroom/get-started/quick-start#dev-env)。
+:::
+
+1. 运行以下命令克隆仓库到本地：
+
+   ```shell
+   git clone https://github.com/AgoraIO-Community/flexible-classroom-desktop.git
+   ```
+
+2. 运行以下命令进入 `flexible-classroom-desktop` 目录并切换分支至指定版本。将 `{VERSION}` 替换为要切换的版本号：
+
+   ```shell
+   cd flexible-classroom-desktop
+   ```
+
+   ```shell
+   git checkout release/{VERSION}
+   ```
+
+   例如要切换到 2.9.0 版本分支，执行以下命令：
+
+   ```shell
+   git checkout release/2.9.0
+   ```
+
+   声网建议你切换到最新发版分支。参考下图在 GitHub 仓库中查看最新发版分支：
+
+![查看发版分支](https://web-cdn.agora.io/docs-files/1670835651476)
+
+3. 成功拉取代码后，根据你的实际需求，参考[自定义课堂 UI 文档](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/custom-ui)修改代码。
+
+4. 修改完代码后，按照以下步骤进行调试：
+
+   1. 运行以下命令安装项目依赖：
+
+      ```shell
+      # 安装项目依赖
+      yarn install:packages
+      ```
+
+      如遇安装依赖超时，请切换到淘宝镜像源或其他可用镜像源。
+
+      ```shell
+      # 切换到淘宝镜像
+      yarn config set registry https://registry.npmmirror.com/
+      # 安装项目依赖
+      yarn install:packages
+      ```
+
+   2. 通过以下命令以开发模式运行项目。
+
+      ```shell
+      yarn dev:scene
+      ```
+
+5. 完成开发后，通过以下命令打包 SDK JS 文件：
+
+   1. 运行以下命令打包 SDK 代码包：
+
+      ```shell
+      yarn pack:scene:sdk
+      ```
+
+   2. 运行以下命令打包 SDK 插件包。
+
+      ```shell
+      yarn pack:scene:plugin
+      ```
+
+   :::info[信息]
+   打包完成的 SDK JS 文件会输出至 `packages/fcr-ui-scene/lib/scene.bundle.js`，插件包 JS 文件会输出至 `packages/agora-plugin-gallery/lib/scene_widget.bundle.js`。
+   :::
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+灵动课堂云课堂场景暂不支持集成 Electron 客户端。
+
+</PlatformStructured>

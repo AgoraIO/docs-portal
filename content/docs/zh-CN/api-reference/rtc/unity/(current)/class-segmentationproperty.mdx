@@ -1,0 +1,50 @@
+---
+title: "SegmentationProperty"
+description: "背景图像的处理属性。"
+---
+<a id="class_segmentationproperty__prototype"></a>
+
+```csharp
+public class SegmentationProperty
+    {
+        public SEG_MODEL_TYPE modelType;
+
+        public float greenCapacity;
+
+        public SCREEN_COLOR_TYPE screenColorType;
+
+        public SegmentationProperty()
+        {
+            this.modelType = SEG_MODEL_TYPE.SEG_MODEL_AI;
+            this.greenCapacity = 0.5f;
+            this.screenColorType = SCREEN_COLOR_TYPE.SCREEN_COLOR_AUTO;
+        }
+
+        public SegmentationProperty(SEG_MODEL_TYPE modelType, float greenCapacity, SCREEN_COLOR_TYPE screenColorType)
+        {
+            this.modelType = modelType;
+            this.greenCapacity = greenCapacity;
+            this.screenColorType = screenColorType;
+        }
+    }
+```
+
+<a id="class_segmentationproperty__parameters"></a>
+
+## 属性
+
+### `modelType`
+
+进行背景处理的算法。详见 [SEG_MODEL_TYPE](/zh-CN/api-reference/rtc/unity/enum-segmodeltype)。
+
+### `greenCapacity`
+
+对画面中背景颜色识别的精度范围。取值范围为 [0,1]，默认值为 0.5。取值越大，代表可识别的纯色范围越大。当该参数取值过大时，人像边缘和人像范围内的纯色也会被识别。建议你根据实际效果动态调整该参数的值。
+
+:::info[注]
+该参数仅在 `modelType` 设置为 `SEG_MODEL_GREEN` 时生效。
+:::
+
+### `screenColorType`
+
+屏幕颜色类型。详见 [SCREEN_COLOR_TYPE](/zh-CN/api-reference/rtc/unity/enum-screencolortype)。

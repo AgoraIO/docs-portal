@@ -1,0 +1,232 @@
+---
+title: "音频频谱"
+description: "音频频谱 API reference."
+---
+<a id="toc_audio_spectrum"></a>
+
+<a id="api_irtcengine_registeraudiospectrumobserver"></a>
+
+## RegisterAudioSpectrumObserver
+
+注册音频频谱观测器。
+
+<a id="api_irtcengine_registeraudiospectrumobserver__prototype"></a>
+
+```csharp
+public abstract int RegisterAudioSpectrumObserver(IAudioSpectrumObserver observer);
+```
+
+<a id="api_irtcengine_registeraudiospectrumobserver__detailed_desc"></a>
+
+### 详情
+
+成功注册音频频谱观测器并调用 [EnableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 开启音频频谱监测后，SDK 会按照你设置的时间间隔报告你在 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudiospectrumobserver) 类中实现的回调。
+
+:::warning[注意]
+该方法在加入频道前后均可调用。
+:::
+
+<a id="api_irtcengine_registeraudiospectrumobserver__parameters"></a>
+
+### 参数
+
+#### `observer`
+
+音频频谱观测器。详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudiospectrumobserver)。
+
+<a id="api_irtcengine_registeraudiospectrumobserver__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_unregisteraudiospectrumobserver"></a>
+
+## UnregisterAudioSpectrumObserver
+
+取消注册音频频谱观测器。
+
+<a id="api_irtcengine_unregisteraudiospectrumobserver__prototype"></a>
+
+```csharp
+public abstract int UnregisterAudioSpectrumObserver();
+```
+
+<a id="api_irtcengine_unregisteraudiospectrumobserver__detailed_desc"></a>
+
+### 详情
+
+调用 [RegisterAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 后，如果你想取消注册音频频谱观测器，请调用该方法。
+
+:::warning[注意]
+该方法在加入频道前后均可调用。
+:::
+
+<a id="api_irtcengine_unregisteraudiospectrumobserver__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_disableaudiospectrummonitor"></a>
+
+## DisableAudioSpectrumMonitor
+
+关闭音频频谱监测。
+
+<a id="api_irtcengine_disableaudiospectrummonitor__prototype"></a>
+
+```csharp
+public abstract int DisableAudioSpectrumMonitor();
+```
+
+<a id="api_irtcengine_disableaudiospectrummonitor__detailed_desc"></a>
+
+### 详情
+
+调用 [EnableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 后，如果你想关闭音频频谱监测，请调用该方法。
+
+:::warning[注意]
+该方法在加入频道前后均可调用。
+:::
+
+<a id="api_irtcengine_disableaudiospectrummonitor__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enableaudiospectrummonitor"></a>
+
+## EnableAudioSpectrumMonitor
+
+开启音频频谱监测。
+
+<a id="api_irtcengine_enableaudiospectrummonitor__prototype"></a>
+
+```csharp
+public abstract int EnableAudioSpectrumMonitor(int intervalInMS = 100);
+```
+
+<a id="api_irtcengine_enableaudiospectrummonitor__detailed_desc"></a>
+
+### 详情
+
+如果你想获取本地或远端用户的音频频谱数据，请注册音频频谱观测器并开启音频频谱监测。
+
+:::warning[注意]
+该方法在加入频道前后均可调用。
+:::
+
+<a id="api_irtcengine_enableaudiospectrummonitor__parameters"></a>
+
+### 参数
+
+#### `intervalInMS`
+
+SDK 触发 [OnLocalAudioSpectrum](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 和 [OnRemoteAudioSpectrum](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) 回调的时间间隔（毫秒）。 默认值为 100 毫秒。取值不得少于 10 毫秒，否则该方法会调用失败。
+
+<a id="api_irtcengine_enableaudiospectrummonitor__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+  - -2: 参数设置错误。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="callback_iaudiospectrumobserver_onlocalaudiospectrum"></a>
+
+## OnLocalAudioSpectrum
+
+获取本地音频频谱。
+
+<a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__prototype"></a>
+
+```csharp
+public virtual bool OnLocalAudioSpectrum(AudioSpectrumData data)
+        {
+            return true;
+        }
+```
+
+<a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__detailed_desc"></a>
+
+成功调用 [RegisterAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 实现 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudiospectrumobserver) 中的 OnLocalAudioSpectrum 回调并调用 [EnableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 开启音频频谱监测后，SDK 会按照你设置的时间间隔触发该回调，报告编码前的本地音频数据的频谱。
+
+<a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__parameters"></a>
+
+### 参数
+
+#### `data`
+
+本地用户的音频频谱数据。详见 [AudioSpectrumData](/zh-CN/api-reference/rtc/csharp-windows/class-audiospectrumdata)。
+
+<a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__return_values"></a>
+
+### 返回值
+
+是否接收频谱数据：
+
+- true: 接收。
+- false: 不接收。
+
+### 所属接口类
+- [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudiospectrumobserver)
+
+<a id="callback_iaudiospectrumobserver_onremoteaudiospectrum"></a>
+
+## OnRemoteAudioSpectrum
+
+获取远端音频频谱。
+
+<a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__prototype"></a>
+
+```csharp
+public virtual bool OnRemoteAudioSpectrum(UserAudioSpectrumInfo[] spectrums, uint spectrumNumber)
+        {
+            return true;
+        }
+```
+
+<a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__detailed_desc"></a>
+
+成功调用 [RegisterAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 实现 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudiospectrumobserver) 中的 OnRemoteAudioSpectrum 回调并调用 [EnableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 开启音频频谱监测后，SDK 会按照你设置的时间间隔触发该回调，报告接收到的远端音频数据的频谱。
+
+<a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__parameters"></a>
+
+### 参数
+
+#### `spectrums`
+
+远端用户的音频频谱信息，详见 [UserAudioSpectrumInfo](/zh-CN/api-reference/rtc/csharp-windows/class-useraudiospectruminfo)。 数组数量等于 SDK 监测到的远端用户数量，数组为空表示没有监测到远端用户的音频频谱。
+
+#### `spectrumNumber`
+
+远端用户的数量。
+
+<a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__return_values"></a>
+
+### 返回值
+
+是否接收频谱数据：
+
+- true: 接收。
+- false: 不接收。
+
+### 所属接口类
+- [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudiospectrumobserver)

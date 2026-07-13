@@ -1,0 +1,36 @@
+---
+title: "VideoDenoiserOptions"
+description: "视频降噪选项。"
+---
+<a id="class_videodenoiseroptions__prototype"></a>
+
+```cpp
+struct VideoDenoiserOptions {
+    enum VIDEO_DENOISER_MODE {
+        VIDEO_DENOISER_AUTO = 0,
+        VIDEO_DENOISER_MANUAL = 1,
+  };
+    enum VIDEO_DENOISER_LEVEL {
+        VIDEO_DENOISER_LEVEL_HIGH_QUALITY = 0,
+        VIDEO_DENOISER_LEVEL_FAST = 1,
+        VIDEO_DENOISER_LEVEL_STRENGTH = 2,
+  };
+    VIDEO_DENOISER_MODE mode;
+    VIDEO_DENOISER_LEVEL level;
+
+  VideoDenoiserOptions(VIDEO_DENOISER_MODE denoiserMode, VIDEO_DENOISER_LEVEL denoiserLevel) : mode(denoiserMode), level(denoiserLevel) {}
+  VideoDenoiserOptions() : mode(VIDEO_DENOISER_AUTO), level(VIDEO_DENOISER_LEVEL_HIGH_QUALITY) {}
+};
+```
+
+<a id="class_videodenoiseroptions__parameters"></a>
+
+## 属性
+
+### `level`
+
+视频降噪等级。 详见 [VIDEO_DENOISER_LEVEL](/zh-CN/api-reference/rtc/unreal-cpp/enum-videodenoiserlevel)。
+
+### `mode`
+
+视频降噪模式。 详见 [VIDEO_DENOISER_MODE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videodenoisermode)。

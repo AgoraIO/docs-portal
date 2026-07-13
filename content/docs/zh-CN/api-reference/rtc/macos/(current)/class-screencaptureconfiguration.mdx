@@ -1,0 +1,50 @@
+---
+title: "AgoraScreenCaptureConfiguration"
+description: "配置屏幕采集参数。"
+---
+<a id="class_screencaptureconfiguration__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraScreenCaptureConfiguration: NSObject
+@property(assign, nonatomic) BOOL isCaptureWindow;
+@property(assign, nonatomic) UInt32 displayId;
+@property(assign, nonatomic) UInt32 windowId;
+@property(strong, nonatomic) AgoraScreenCaptureParameters* _Nonnull params;
+@property(assign, nonatomic) CGRect regionRect;
+@end
+```
+
+<a id="class_screencaptureconfiguration__parameters"></a>
+
+## 属性
+
+### `isCaptureWindow`
+
+是否采集屏幕上的窗口：
+
+- YES：采集窗口。
+- NO：（默认）采集整个屏幕，而非窗口。
+
+### `displayId`
+
+屏幕的显示 ID。
+
+:::info[注]
+该参数仅在 macOS 上采集屏幕时生效。
+:::
+
+### `windowId`
+
+窗口 ID。
+
+:::info[注]
+该参数仅在采集窗口时生效。
+:::
+
+### `params`
+
+屏幕采集的配置参数，详见 [AgoraScreenCaptureParameters](/zh-CN/api-reference/rtc/macos/class-screencaptureparameters)。
+
+### `regionRect`
+
+共享区域相对于整个屏幕的位置。

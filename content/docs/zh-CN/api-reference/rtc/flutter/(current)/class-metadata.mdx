@@ -1,0 +1,60 @@
+---
+title: "Metadata"
+description: "媒体附属信息。"
+---
+<a id="class_metadata__prototype"></a>
+
+```dart
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class Metadata {
+  const Metadata(
+      {this.channelId, this.uid, this.size, this.buffer, this.timeStampMs});
+
+  @JsonKey(name: 'channelId')
+  final String? channelId;
+
+  @JsonKey(name: 'uid')
+  final int? uid;
+
+  @JsonKey(name: 'size')
+  final int? size;
+
+  @JsonKey(name: 'buffer', ignore: true)
+  final Uint8List? buffer;
+
+  @JsonKey(name: 'timeStampMs')
+  final int? timeStampMs;
+
+  factory Metadata.fromJson(Map<String, dynamic> json) =>
+      _$MetadataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MetadataToJson(this);
+}
+```
+
+<a id="class_metadata__parameters"></a>
+
+## 属性
+
+### `channelId`
+
+频道名称。
+
+### `uid`
+
+用户 ID。
+
+- 对于接收者：发送该 Metadata 的远端用户的 ID。
+- 对于发送者：请忽略。
+
+### `size`
+
+接收到的或发送的 [Metadata](/zh-CN/api-reference/rtc/flutter/class-metadata) 的缓存大小。
+
+### `buffer`
+
+接收到的 [Metadata](/zh-CN/api-reference/rtc/flutter/class-metadata) 的缓存地址。
+
+### `timeStampMs`
+
+发送 [Metadata](/zh-CN/api-reference/rtc/flutter/class-metadata) 的时间戳，单位为毫秒。

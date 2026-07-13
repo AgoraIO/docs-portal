@@ -1,0 +1,329 @@
+---
+title: "音视频录制"
+description: "音视频录制 API reference."
+---
+<a id="toc_recording"></a>
+
+<a id="api_irtcengine_createmediarecorder"></a>
+
+## createMediaRecorder
+
+创建音视频录制对象。
+
+<a id="api_irtcengine_createmediarecorder__prototype"></a>
+
+```dart
+Future<MediaRecorder?> createMediaRecorder(RecorderStreamInfo info);
+```
+
+<a id="api_irtcengine_createmediarecorder__detailed_desc"></a>
+
+在开始音视频流录制前，你需要调用该方法创建一个音视频录制对象。SDK 支持录制本地或远端用户的多个音视频流，你可以多次调用该方法创建录制对象，并通过 `info` 参数指定需要录制的频道名称和发流的用户 ID。 成功创建后，你需要调用 [setMediaRecorderObserver](/zh-CN/api-reference/rtc/flutter/recording#api_imediarecorder_setmediarecorderobserver) 注册录制对象的观测器来监听录制的相关回调，然后再调用 [startRecording](/zh-CN/api-reference/rtc/flutter/recording#api_imediarecorder_startrecording) 开始录制。
+
+<a id="api_irtcengine_createmediarecorder__parameters"></a>
+
+### 参数
+
+#### `info`
+
+需要录制的音视频流相关信息，详见 [RecorderStreamInfo](/zh-CN/api-reference/rtc/flutter/class-recorderstreaminfo)。
+
+<a id="api_irtcengine_createmediarecorder__return_values"></a>
+
+### 返回值
+
+- 方法调用成功：返回一个 MediaRecorder 对象。
+- 方法调用失败：返回空指针。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_destroymediarecorder"></a>
+
+## destroyMediaRecorder
+
+销毁音视频录制对象。
+
+<a id="api_irtcengine_destroymediarecorder__prototype"></a>
+
+```dart
+Future<void> destroyMediaRecorder(MediaRecorder mediaRecorder);
+```
+
+<a id="api_irtcengine_destroymediarecorder__detailed_desc"></a>
+
+当你不需要再录制音视频流时，可以调用该方法销毁对应的音视频录制对象。如果你正在录制，请先调用 [stopRecording](/zh-CN/api-reference/rtc/flutter/recording#api_imediarecorder_stoprecording) 停止录制，再调用该方法来销毁音视频录制对象。
+
+<a id="api_irtcengine_destroymediarecorder__parameters"></a>
+
+### 参数
+
+#### `mediaRecorder`
+
+待销毁的 [MediaRecorder](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorder) 对象。
+
+<a id="api_irtcengine_destroymediarecorder__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediarecorder_setmediarecorderobserver"></a>
+
+## setMediaRecorderObserver
+
+注册 MediaRecorderObserver 观测器。
+
+<a id="api_imediarecorder_setmediarecorderobserver__prototype"></a>
+
+```dart
+Future<void> setMediaRecorderObserver(
+      {required RtcConnection connection,
+      required MediaRecorderObserver callback});
+```
+
+<a id="api_imediarecorder_setmediarecorderobserver__detailed_desc"></a>
+
+该方法用于设置音视频录制的回调，以便在录制过程中向 App 通知音视频流的录制状态和信息。 调用该方法前请确保：
+
+- 已创建并初始化 RtcEngine 对象。
+- 已通过 createMediaRecorder 创建音视频录制对象。
+
+<a id="api_imediarecorder_setmediarecorderobserver__parameters"></a>
+
+### 参数
+
+#### `callback`
+
+音视频流录制回调，详见 [MediaRecorderObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorderobserver)。
+
+<a id="api_imediarecorder_setmediarecorderobserver__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [MediaRecorder](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorder)
+
+<a id="api_irtcengine_startaudiorecording3"></a>
+
+## startAudioRecording
+
+开始客户端录音并进行录音配置。
+
+<a id="api_irtcengine_startaudiorecording3__prototype"></a>
+
+```dart
+Future<void> startAudioRecording(AudioRecordingConfiguration config);
+```
+
+<a id="api_irtcengine_startaudiorecording3__detailed_desc"></a>
+
+SDK 支持通话过程中在客户端进行录音。调用该方法后，你可以录制频道内用户的音频，并得到一个录音文件。录音文件仅支持下列格式：
+
+- WAV: 音质保真度较高，文件较大。例如，采样率为 32000 Hz，录音时长为 10 分钟的文件大小约为 73 M。
+- AAC: 音质保真度较低，文件较小。例如，采样率为 32000 Hz，录音音质为 audioRecordingQualityMedium，录音时长为 10 分钟的文件大小约为 2 M。
+
+用户离开频道后，录音会自动停止。
+
+<a id="api_irtcengine_startaudiorecording3__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_startaudiorecording3__parameters"></a>
+
+### 参数
+
+#### `config`
+
+录音配置。详见 [AudioRecordingConfiguration](/zh-CN/api-reference/rtc/flutter/class-audiorecordingconfiguration)。
+
+<a id="api_irtcengine_startaudiorecording3__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediarecorder_startrecording"></a>
+
+## startRecording
+
+开启音视频流录制。
+
+<a id="api_imediarecorder_startrecording__prototype"></a>
+
+```dart
+Future<void> startRecording(MediaRecorderConfiguration config);
+```
+
+<a id="api_imediarecorder_startrecording__detailed_desc"></a>
+
+该方法用于开启音视频流录制。声网 SDK 支持同时录制本地及远端用户的音视频流。 在开始录制前请确保：
+
+- 已通过 createMediaRecorder 创建音视频录制对象。
+- 已调用 setMediaRecorderObserver 注册录制对象观测器来监听录制的相关回调。
+- 已加入频道。
+
+该方法支持录制如下数据：
+
+- 麦克风采集的、AAC 编码格式的音频。
+- 摄像头采集的、H.264 或 H.265 编码格式的视频。
+
+开启音视频流录制后，当视频分辨率在录制过程中发生变化时，SDK 会停止录制；当音频采样率和声道数发生变化时，SDK 会持续录制并生成单个 MP4 录制文件。 仅当检测到可录制的音视频流时，才能成功生成录制文件；如果没有可录制的音视频流，或在录制过程中的音视频流中断超过 5 秒后，SDK 会停止录制，并触发 [onRecorderStateChanged](/zh-CN/api-reference/rtc/flutter/recording#callback_imediarecorderobserver_onrecorderstatechanged) (`recorderStateError, recorderReasonNoStream`) 回调。
+
+:::info[注]
+- 如果你需要录制的是本地的音视频流，请在开始录制前确保本地用户的角色设为主播。
+- 如果你需要录制的是远端用户的音视频流，请在开始录制前确保已经订阅了该用户的音视频流。
+:::
+
+<a id="api_imediarecorder_startrecording__parameters"></a>
+
+### 参数
+
+#### `config`
+
+音视频流录制配置。详见 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/flutter/class-mediarecorderconfiguration)。
+
+<a id="api_imediarecorder_startrecording__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [MediaRecorder](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorder)
+
+<a id="api_irtcengine_stopaudiorecording"></a>
+
+## stopAudioRecording
+
+停止客户端录音。
+
+<a id="api_irtcengine_stopaudiorecording__prototype"></a>
+
+```dart
+Future<void> stopAudioRecording();
+```
+
+<a id="api_irtcengine_stopaudiorecording__detailed_desc"></a>
+
+<a id="api_irtcengine_stopaudiorecording__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediarecorder_stoprecording"></a>
+
+## stopRecording
+
+停止音视频流录制。
+
+<a id="api_imediarecorder_stoprecording__prototype"></a>
+
+```dart
+Future<void> stopRecording();
+```
+
+<a id="api_imediarecorder_stoprecording__detailed_desc"></a>
+
+:::info[注]
+调用 [startRecording](/zh-CN/api-reference/rtc/flutter/recording#api_imediarecorder_startrecording) 后，如果要停止录制，请调用该方法停止录制；否则，生成的录制文件可能无法正常播放。
+:::
+
+<a id="api_imediarecorder_stoprecording__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [MediaRecorder](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorder)
+
+<a id="callback_imediarecorderobserver_onrecorderinfoupdated"></a>
+
+## onRecorderInfoUpdated
+
+录制信息更新回调。
+
+<a id="callback_imediarecorderobserver_onrecorderinfoupdated__prototype"></a>
+
+```dart
+final void Function(String channelId, int uid, RecorderInfo info)?
+      onRecorderInfoUpdated;
+```
+
+<a id="callback_imediarecorderobserver_onrecorderinfoupdated__detailed_desc"></a>
+
+成功注册该回调并开启音视频流录制后，SDK 会根据你在 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/flutter/class-mediarecorderconfiguration) 中设置的 `recorderInfoUpdateInterval` 的值周期性触发该回调，报告当前录制文件的文件名、时长和大小。
+
+<a id="callback_imediarecorderobserver_onrecorderinfoupdated__parameters"></a>
+
+### 参数
+
+#### `channelId`
+
+频道名称。
+
+#### `uid`
+
+用户 ID。
+
+#### `info`
+
+录制文件信息。详见 [RecorderInfo](/zh-CN/api-reference/rtc/flutter/class-recorderinfo)。
+
+### 所属接口类
+- [MediaRecorderObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorderobserver)
+
+<a id="callback_imediarecorderobserver_onrecorderstatechanged"></a>
+
+## onRecorderStateChanged
+
+录制状态发生改变回调。
+
+<a id="callback_imediarecorderobserver_onrecorderstatechanged__prototype"></a>
+
+```dart
+final void Function(String channelId, int uid, RecorderState state,
+    RecorderReasonCode reason)? onRecorderStateChanged;
+```
+
+<a id="callback_imediarecorderobserver_onrecorderstatechanged__detailed_desc"></a>
+
+音视频流录制状态发生改变时，SDK 会触发该回调，报告当前的录制状态和引起录制状态改变的原因。
+
+<a id="callback_imediarecorderobserver_onrecorderstatechanged__parameters"></a>
+
+### 参数
+
+#### `channelId`
+
+频道名称。
+
+#### `uid`
+
+用户 ID。
+
+#### `state`
+
+当前的录制状态。详见 [RecorderState](/zh-CN/api-reference/rtc/flutter/enum-recorderstate)。
+
+#### `reason`
+
+录制状态出错的原因。详见 [RecorderReasonCode](/zh-CN/api-reference/rtc/flutter/enum-recorderreasoncode)。
+
+### 所属接口类
+- [MediaRecorderObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorderobserver)

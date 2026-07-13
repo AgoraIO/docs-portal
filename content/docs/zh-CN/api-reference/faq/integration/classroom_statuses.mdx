@@ -1,0 +1,65 @@
+---
+title: "灵动课堂有哪些课堂状态？"
+---
+灵动课堂有以下几种课堂状态：
+
+| 课堂状态 | `state` 值 | 说明 |
+| --- | --- | --- |
+| 未开始 | `0` | <Slot name="class-states-markdown-0-1-2" /> |
+| 开始 | `1` | <Slot name="class-states-markdown-0-2-2" /> |
+| 结束 | `2` | 已超过课堂持续时长，但在拖堂时间内。此时老师和学生依旧可以进出课堂，也可以正常使用功能。 |
+| 关闭 | `3` | <Slot name="class-states-markdown-0-4-2" /> |
+
+<Slot for="class-states-markdown-0-1-2">
+
+还未到课堂的开始时间。课堂未开始和开始状态下，老师和学生均可以：
+
+- 用实时音视频功能
+- 使用实时消息功能
+- 看到学生列表
+- 使用互动白板功能
+
+</Slot>
+
+<Slot for="class-states-markdown-0-2-2">
+
+课堂开始时间之后，并且在持续时长之内。课堂未开始和开始状态下，老师和学生均可以：
+
+- 用实时音视频功能
+- 使用实时消息功能
+- 看到学生列表
+- 使用互动白板功能
+
+</Slot>
+
+<Slot for="class-states-markdown-0-4-2">
+
+已超过课堂持续时长和拖堂时间。在关闭状态下：
+
+- 老师和学生会被踢出课堂，且无法再加入。
+- 音视频、实时消息、白板服务均断开。
+- 课堂关闭后无法再重新开始。
+- 课堂关闭 1 小时后会被销毁。
+
+</Slot>
+
+## 课堂状态切换
+
+灵动课堂会在指定的开始时间自动开始，经过课堂持续时长和拖堂时间后自动结束。老师也可以手动开始和结束课堂。
+
+在灵动课堂客户端中，可以在调用 `launch` 方法启动课堂时通过以下参数指定课堂开始时间和持续时间，设置课堂状态的切换：
+
+- `startTime`: 设置课堂开始时间（毫秒），以第一个进入课堂的用户传入的该参数为准。
+- `duration`: 设置课堂持续时长（秒），以第一个进入课堂的用户传入的该参数为准。
+
+在服务端，[创建课堂 RESTful API](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom#创建课堂) 除了能设置 `startTime`、`duration` 外，还支持通过 `closeDelay` 参数设置拖堂时间（单位为秒；默认为 10 分钟）。
+
+在课堂进行过程中，你可以通过[设置课堂状态 RESTful API](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom#设置课堂状态) 设置当前的课堂状态，实现切换。
+
+## 参考 API
+
+- [`launch`（Web）](/api-ref/flexible-classroom/javascript/classroom-sdk#launch)
+- [`launch`（Electron）](/api-ref/flexible-classroom/electron/classroom-sdk#launch)
+- [`launch`（Android）](/api-ref/flexible-classroom/android/classroom-sdk#launch)
+- [`launch`（iOS）](/api-ref/flexible-classroom/ios/classroom-sdk#launch)
+- [创建课堂 RESTful API](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom#创建课堂)

@@ -1,0 +1,703 @@
+---
+title: "存储"
+---
+
+RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据。
+
+## setChannelMetadata
+
+### 接口描述
+
+`setChannelMetadata` 方法可以为频道（Message Channel 或 Stream Channel）设置 Channel Metadata。一个频道只能有一组 Metadata，但每组 Metadata 可以有一个或多个 Metadata Item。如果多次调用该方法，SDK 会依次检索 Metadata Item 的 `key` 值，并按如下规则处理：
+
+- 如果设置的 Metadata Item `key` 值不同，则会根据调用顺序依次增加。
+- 如果设置的 Metadata Item `key` 值相同，则最后一次设置的 Metadata Item 的 `value` 会覆盖之前的值。
+
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `AgoraRtmStorageTypeChannel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
+
+Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `AgoraRtmMetadata` 中的 `majorRevision` 属性开启整组 Channel Metadata 的版本号校验。
+- 通过 `AgoraRtmMetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+设置 Channel Metadata 或 Metadata Item 时，配合版本属性可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则该值会被最新值覆盖；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会创建该值。
+- 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；否则 SDK 会返回错误码。
+
+### 接口方法
+
+你可以通过以下方式调用 `setChannelMetadata` 方法：
+
+```objc
+- (void) setChannelMetadata: (NSString * _Nonnull)channelName
+                channelType: (AgoraRtmChannelType)channelType
+                       data: (AgoraRtmMetadata* _Nonnull)data
+                    options: (AgoraRtmMetadataOptions* _Nullable)options
+                       lock: (NSString * _Nullable)lock
+                 completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
+| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+| `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
+| `lock` | NSString | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-ios-html-0-6-4" /> |
+
+<Slot for="storage-ios-html-0-6-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmMetadataOptions` 数据类型包含以下属性：
+
+|      属性       |  类型   | 是否必填 | 默认值  | 描述        |
+| ------------ | ---- | ----- | ---- | ------------- |
+| `recordTs`  | BOOL |   选填   | `false` | 是否记录编辑的时间戳。            |
+|   `recordUserId`   | BOOL |   选填   | `false` | 是否记录编辑者的用户 ID。         |
+
+### 接口方法
+
+```objc
+//get metadata
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+//set metadata items
+AgoraRtmMetadataItem* apple = [[AgoraRtmMetadataItem alloc] init];
+apple.key = @"Apple";
+apple.value = @"100";
+apple.revision = 174298200;
+AgoraRtmMetadataItem* banana = [[AgoraRtmMetadataItem alloc] init];
+banana.key = @"Banana";
+banana.value = @"200";
+banana.revision = 174298100;
+
+NSArray *item_array = [NSArray arrayWithObjects:apple,banana];
+metadata.items = item_array;
+metadata.majorRevision = 174298100;
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+
+[[rtm getStorage] setChannelMetadata:@"channel_name" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:@"lockName" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"setChannelMetadata success!!");
+    } else {
+        NSLog(@"setChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## getChannelMetadata
+
+### 接口描述
+
+`getChannelMetadata` 方法可以获取指定频道的 Metadata。
+
+### 接口方法
+
+你可以通过以下方式调用 `getChannelMetadata` 方法：
+
+```objc
+- (void) getChannelMetadata: (NSString * _Nonnull)channelName
+                channelType: (AgoraRtmChannelType)channelType
+                 completion: (AgoraRtmGetMetadataBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
+| `completion` | `AgoraRtmGetMetadataBlock` | 选填 | - | <Slot name="storage-ios-html-1-3-4" /> |
+
+<Slot for="storage-ios-html-1-3-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmGetMetadataResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmGetMetadataResponse` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+|     `data`     |      `AgoraRtmMetadata`     | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+
+### 接口方法
+
+```objc
+[[rtm getStorage] getChannelMetadata:@"channel_name" channelType:AgoraRtmChannelTypeMessage completion:^(AgoraRtmGetMetadataResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"getChannelMetadata success!!");
+        AgoraRtmMetadata* data = response.data; //get storage data;
+        NSArray<AgoraRtmMetadataItem *> * items = [data getMetadataItems];
+        for (int i = 0; i < items.count; i++) {
+            NSLog(@"key: %@ value: %@ revison: %lld", items[i].key, items[i].value, items[i].revision);
+        }
+
+    } else {
+        NSLog(@"getChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## removeChannelMetadata
+
+### 接口描述
+
+`removeChannelMetadata` 方法可以删除 Channel Metadata 或 Channel Metadata Item 数组。
+
+删除时，配合版本属性可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会删除该值；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+- 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后删除对应值；否则 SDK 会返回错误码。
+
+成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `AgoraRtmStorageTypeChannel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeChannelMetadata` 方法：
+
+```objc
+- (void) removeChannelMetadata: (NSString * _Nonnull)channelName
+                   channelType: (AgoraRtmChannelType)channelType
+                          data: (AgoraRtmMetadata* _Nonnull)data
+                       options: (AgoraRtmMetadataOptions* _Nullable)options
+                          lock: (NSString * _Nullable)lock
+                    completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
+| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+| `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
+| `lock` | NSString | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-ios-html-2-6-4" /> |
+
+<Slot for="storage-ios-html-2-6-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmMetadataOptions` 数据类型包含以下属性：
+
+|      属性       |  类型   | 是否必填 | 默认值  | 描述        |
+| ------------ | ---- | ----- | ---- | ------------- |
+| `recordTs`  | BOOL |   选填   | `false` | 是否记录编辑的时间戳。            |
+|   `recordUserId`   | BOOL |   选填   | `false` | 是否记录编辑者的用户 ID。         |
+
+### 基本用法
+
+```objc
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+AgoraRtmMetadataItem* apple = [[AgoraRtmMetadataItem alloc] init];
+apple.key = @"Apple";
+apple.revision = 174298200;
+
+NSArray *item_array = [NSArray arrayWithObjects:apple];
+metadata.items = item_array;
+metadata.majorRevision = 174298100;
+
+[[rtm getStorage] removeChannelMetadata:@"channel_name" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"removeChannelMetadata success!!");
+    } else {
+        NSLog(@"removeChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## updateChannelMetadata
+
+### 接口描述
+
+`updateChannelMetadata` 方法可以更新已有的 Channel Metadata。每次调用该方法，你可以更新一个 Channel Metadata，也可以更新一个或多个 Channel Metadata Item 数组。
+
+成功更新后，订阅该频道且开启事件监听的用户会收到 `AgoraRtmStorageTypeChannel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
+
+:::info[信息]
+该方法不能对不存在的 Metadata Item 进行操作。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `updateChannelMetadata` 方法：
+
+```objc
+- (void) updateChannelMetadata: (NSString * _Nonnull)channelName
+                   channelType: (AgoraRtmChannelType)channelType
+                          data: (AgoraRtmMetadata* _Nonnull)data
+                       options: (AgoraRtmMetadataOptions* _Nullable)options
+                          lock: (NSString * _Nullable)lock
+                    completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
+| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+| `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
+| `lock` | NSString | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-ios-html-3-6-4" /> |
+
+<Slot for="storage-ios-html-3-6-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmMetadataOptions` 数据类型包含以下属性：
+
+|      属性       |  类型   | 是否必填 | 默认值  | 描述        |
+| ------------ | ---- | ----- | ---- | ------------- |
+| `recordTs`  | BOOL |   选填   | `false` | 是否记录编辑的时间戳。            |
+|   `recordUserId`   | BOOL |   选填   | `false` | 是否记录编辑者的用户 ID。         |
+
+### 基本用法
+
+```objc
+//get metadata
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+//set metadata items
+AgoraRtmMetadataItem* apple = [[AgoraRtmMetadataItem alloc] init];
+apple.key = @"Apple";
+apple.value = @"120";
+apple.revision = 174298200;
+AgoraRtmMetadataItem* banana = [[AgoraRtmMetadataItem alloc] init];
+banana.key = @"Banana";
+banana.value = @"220";
+banana.revision = 174298100;
+
+NSArray *item_array = [NSArray arrayWithObjects:apple,banana];
+metadata.items = item_array;
+metadata.majorRevision = 174298100;
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+
+[[rtm getStorage] updateChannelMetadata:@"channel_name" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:@"lockName" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"updateChannelMetadata success!!");
+    } else {
+        NSLog(@"updateChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## setUserMetadata
+
+### 接口描述
+
+`setUserMetadata` 方法可以设置 User Metadata。如果多次调用该方法时，SDK 会依次检索 User Metadata Item 的 `key` 值，并按如下规则处理：
+
+- 如果设置的 Metadata Item key 值不同，则会根据调用顺序依次增加。
+- 如果设置的 Metadata Item key 值相同，则最后一次设置的 Metadata 的 value 会覆盖之前的值。
+
+成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `AgoraRtmStorageTypeUser` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
+
+User Metadata 同时也引进了版本控制逻辑 CAS，该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `AgoraRtmMetadata` 中的 `majorRevision` 属性开启整组 Channel Metadata 的版本号校验。
+- 通过 `AgoraRtmMetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+设置 User Metadata 时，配合版本属性可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 User Metadata 或 Metadata Item 已存在，则该值会被最新值覆盖；如果 User Metadata 或 Metadata Item 不存在，则会创建该值。
+- 版本属性为正整数时，本次调用开启 CAS 验证。如果 User Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；否则 SDK 会返回错误码。
+
+### 接口方法
+
+你可以通过以下方式调用 `setUserMetadata` 方法：
+
+```objc
+- (void) setUserMetadata: (NSString * _Nonnull)userId
+                    data: (AgoraRtmMetadata* _Nonnull)data
+                 options: (AgoraRtmMetadataOptions* _Nullable)options
+              completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | NSString | 必填 | 当前用户的 `userId` | 用户 ID。 |
+| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+| `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-ios-html-4-4-4" /> |
+
+<Slot for="storage-ios-html-4-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmMetadataOptions` 数据类型包含以下属性：
+
+|      属性       |  类型   | 是否必填 | 默认值  | 描述        |
+| ------------ | ---- | ----- | ---- | ------------- |
+| `recordTs`  | BOOL |   选填   | `false` | 是否记录编辑的时间戳。            |
+|   `recordUserId`   | BOOL |   选填   | `false` | 是否记录编辑者的用户 ID。         |
+
+### 基本用法
+
+```objc
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+AgoraRtmMetadataItem* name = [[AgoraRtmMetadataItem alloc] init];
+name.key = @"Name";
+name.value = @"Tony";
+name.revision = 174298200;
+AgoraRtmMetadataItem* mute = [[AgoraRtmMetadataItem alloc] init];
+mute.key = @"Mute";
+mute.value = @"true";
+mute.revision = 174298100;
+
+NSArray *item_array = [NSArray arrayWithObjects:name,mute];
+metadata.items = item_array;
+metadata.majorRevision = 174298200;
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+[[rtm getStorage] setUserMetadata:@"Tony" data:metadata options:metadata_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"setUserMetadata success!!");
+    } else {
+        NSLog(@"setUserMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## getUserMetadata
+
+### 接口描述
+
+`getUserMetadata` 方法可以获取指定用户的 Metadata 和 User Metadata Item。
+
+### 接口方法
+
+你可以通过以下方式调用 `getUserMetadata` 方法：
+
+```objc
+- (void) getUserMetadata: (NSString * _Nonnull)userId
+              completion: (AgoraRtmGetMetadataBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | NSString | 必填 | 当前用户的 `userId` | 用户 ID。 |
+| `completion` | `AgoraRtmGetMetadataBlock` | 选填 | - | <Slot name="storage-ios-html-5-2-4" /> |
+
+<Slot for="storage-ios-html-5-2-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmGetMetadataResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmGetMetadataResponse` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+|     `data`     |      `AgoraRtmMetadata`     | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+
+### 基本用法
+
+```objc
+[[rtm getStorage] getUserMetadata:@"Tony" completion:^(AgoraRtmGetMetadataResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"getUserMetadata success!!");
+        AgoraRtmMetadata* data = response.data; //get storage data;
+        NSArray<AgoraRtmMetadataItem *> * items = [data getMetadataItems];
+        for (int i = 0; i < items.count; i++) {
+            NSLog(@"key: %@ value: %@ revison: %lld", items[i].key, items[i].value, items[i].revision);
+        }
+    } else {
+        NSLog(@"getUserMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## removeUserMetadata
+
+### 接口描述
+
+`removeUserMetadata` 方法可以删除 User Metadata 或某几个 User Metadata Item。
+
+成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `AgoraRtmStorageTypeUser` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeUserMetadata` 方法：
+
+```objc
+- (void) removeUserMetadata: (NSString * _Nonnull)userId
+                       data: (AgoraRtmMetadata* _Nonnull)data
+                    options: (AgoraRtmMetadataOptions* _Nullable)options
+                 completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | NSString | 必填 | 当前用户的 `userId` | 用户 ID。 |
+| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+| `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-ios-html-6-4-4" /> |
+
+<Slot for="storage-ios-html-6-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmMetadataOptions` 数据类型包含以下属性：
+
+|      属性       |  类型   | 是否必填 | 默认值  | 描述        |
+| ------------ | ---- | ----- | ---- | ------------- |
+| `recordTs`  | BOOL |   选填   | `false` | 是否记录编辑的时间戳。            |
+|   `recordUserId`   | BOOL |   选填   | `false` | 是否记录编辑者的用户 ID。         |
+
+### 基本用法
+
+```objc
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+AgoraRtmMetadataItem* mute = [[AgoraRtmMetadataItem alloc] init];
+mute.key = @"Mute";
+mute.revision = 174298100;
+
+NSArray *item_array = [NSArray arrayWithObjects:mute];
+metadata.items = item_array;
+metadata.majorRevision = 174298100;
+
+[[rtm getStorage] removeUserMetadata:@"Tony" data:metadata options:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"removeUserMetadata success!!");
+    } else {
+        NSLog(@"removeUserMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## updateUserMetadata
+
+### 接口描述
+
+`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `AgoraRtmStorageTypeUser` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
+
+:::info[信息]
+该方法不能对不存在的 Metadata Item 进行操作。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `updateUserMetadata` 方法：
+
+```objc
+- (void) updateUserMetadata: (NSString * _Nonnull)userId
+                       data: (AgoraRtmMetadata* _Nonnull)data
+                    options: (AgoraRtmMetadataOptions* _Nullable)options
+                 completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | NSString | 必填 | 当前用户的 `userId` | 用户 ID。 |
+| `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
+| `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-ios-html-7-4-4" /> |
+
+<Slot for="storage-ios-html-7-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmMetadataOptions` 数据类型包含以下属性：
+
+|      属性       |  类型   | 是否必填 | 默认值  | 描述        |
+| ------------ | ---- | ----- | ---- | ------------- |
+| `recordTs`  | BOOL |   选填   | `false` | 是否记录编辑的时间戳。            |
+|   `recordUserId`   | BOOL |   选填   | `false` | 是否记录编辑者的用户 ID。         |
+
+### 基本用法
+
+```objc
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+AgoraRtmMetadataItem* mute = [[AgoraRtmMetadataItem alloc] init];
+mute.key = @"Mute";
+mute.value = @"false";
+mute.revision = 174298100;
+
+NSArray *item_array = [NSArray arrayWithObjects:mute];
+metadata.items = item_array;
+metadata.majorRevision = 174298100;
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+
+[[rtm getStorage] updateUserMetadata:@"Tony" data:metadata options:metadata_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"updateUserMetadata success!!");
+    } else {
+        NSLog(@"updateUserMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## subscribeUserMetadata
+
+### 接口描述
+
+`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `AgoraRtmStorageTypeUser` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `subscribeUserMetadata` 方法：
+
+```objc
+- (void) subscribeUserMetadata: (NSString * _Nonnull)userId
+                    completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | NSString | 必填 | 当前用户的 `userId` | 用户 ID。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-ios-html-8-2-4" /> |
+
+<Slot for="storage-ios-html-8-2-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```objc
+[[rtm getStorage] subscribeUserMetadata:@"Tony" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribeUserMetadata success!!");
+    } else {
+        NSLog(@"subscribeUserMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## unsubscribeUserMetadata
+
+### 接口描述
+
+如果你不需要接收某个用户 User Metadata 的变更通知，调用 `unsubscribeUserMetadata` 方法取消订阅。
+
+### 接口方法
+
+你可以通过以下方式调用 `unsubscribeUserMetadata` 方法：
+
+```objc
+- (void) unsubscribeUserMetadata: (NSString * _Nonnull)userId
+                      completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | NSString | 必填 | 当前用户的 `userId` | 用户 ID。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="storage-ios-html-9-2-4" /> |
+
+<Slot for="storage-ios-html-9-2-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```objc
+[[rtm getStorage] unsubscribeUserMetadata:@"Tony" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"unsubscribeUserMetadata success!!");
+    } else {
+        NSLog(@"unsubscribeUserMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## AgoraRtmMetadata
+
+设置和管理 Metadata 的数据结构。包含以下属性：
+
+| 方法 | 描述 |
+| --- | --- |
+| <code className="index-group-item-metadata index-api-metadatainit" id="metadatainit">init</code> | <span class="index-desc-metadatainit">禁止不填参数就初始化 `AgoraRtmMetadata` 实例。</span> |
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `majorRevision` | long long | 选填 | `-1` | <Slot name="storage-ios-html-11-1-4" /> |
+| `items` | `NSArray<AgoraRtmMetadataItem *>` | 选填 | `nil` | 设置 Metadata Item。 |
+
+<Slot for="storage-ios-html-11-1-4">
+
+设置版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`AgoraRtmMetadataItem` 数据类型包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | NSString | 必填 | - | 键。 |
+| `value` | NSString | 必填 | - | 值。 |
+| `authorUserId` | NSString | 必填 | - | 编辑者的用户 ID。该值为只读，不支持写入。 |
+| `revision` | long long | 选填 | `-1` | <Slot name="storage-ios-html-12-4-4" /> |
+| `updateTs` | long long | 选填 | `0` | 更新时间戳。该值为只读，不支持写入。 |
+
+<Slot for="storage-ios-html-12-4-4">
+
+- 在读取操作时作为真实版本号返回。
+    - 在写入操作时作为版本控制开关：
+      -  `-1`: 关闭版本校验。
+      - > `0`: 开启版本校验，只有目标版本号与此值相符才执行操作。
+
+</Slot>

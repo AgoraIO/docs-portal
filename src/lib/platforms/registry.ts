@@ -17,6 +17,13 @@ export const platformRegistry = {
     },
     order: 15,
   },
+  typescript: {
+    label: {
+      en: 'TypeScript',
+      'zh-CN': 'TypeScript',
+    },
+    order: 16,
+  },
   android: {
     label: {
       en: 'Android',
@@ -30,6 +37,13 @@ export const platformRegistry = {
       'zh-CN': 'iOS',
     },
     order: 30,
+  },
+  'device-c': {
+    label: {
+      en: 'Device C',
+      'zh-CN': '设备端 C',
+    },
+    order: 35,
   },
   flutter: {
     label: {
@@ -52,12 +66,54 @@ export const platformRegistry = {
     },
     order: 60,
   },
+  harmonyos: {
+    label: {
+      en: 'HarmonyOS',
+      'zh-CN': 'HarmonyOS',
+    },
+    order: 62,
+  },
+  'mini-program': {
+    label: {
+      en: 'Mini Program',
+      'zh-CN': '小程序',
+    },
+    order: 64,
+  },
   cpp: {
     label: {
       en: 'C++',
       'zh-CN': 'C++',
     },
     order: 65,
+  },
+  csharp: {
+    label: {
+      en: 'C#',
+      'zh-CN': 'C#',
+    },
+    order: 66,
+  },
+  swift: {
+    label: {
+      en: 'Swift',
+      'zh-CN': 'Swift',
+    },
+    order: 67,
+  },
+  c: {
+    label: {
+      en: 'C',
+      'zh-CN': 'C',
+    },
+    order: 68,
+  },
+  java: {
+    label: {
+      en: 'Java',
+      'zh-CN': 'Java',
+    },
+    order: 69,
   },
   macos: {
     label: {
@@ -72,6 +128,13 @@ export const platformRegistry = {
       'zh-CN': 'Electron',
     },
     order: 80,
+  },
+  'electron-uos': {
+    label: {
+      en: 'Electron for UOS',
+      'zh-CN': 'Electron for 统信 OS',
+    },
+    order: 85,
   },
   unity: {
     label: {
@@ -93,6 +156,13 @@ export const platformRegistry = {
       'zh-CN': 'Unreal Blueprint',
     },
     order: 110,
+  },
+  react: {
+    label: {
+      en: 'React',
+      'zh-CN': 'React',
+    },
+    order: 115,
   },
   python: {
     label: {
@@ -129,11 +199,20 @@ export const platformRegistry = {
     },
     order: 140,
   },
+  restful: {
+    label: {
+      en: 'RESTful',
+      'zh-CN': 'RESTful',
+    },
+    order: 150,
+  },
 } as const;
 
 export type PlatformKey = keyof typeof platformRegistry;
 
 const platformAliases = {
+  cscrip: 'csharp',
+  cscript: 'csharp',
   'react-js': 'javascript',
 } as const;
 

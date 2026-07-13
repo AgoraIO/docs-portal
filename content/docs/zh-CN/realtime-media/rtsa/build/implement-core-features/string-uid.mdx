@@ -1,0 +1,126 @@
+---
+title: "使用字符串型用户 ID"
+---
+很多 App 使用 String 类型的用户账号。
+
+从 v1.9.5 起，RTSA 支持 String 型 UID 功能，允许用户以字符串形式的 User Account 加入频道。频道中的主播用户之间可以获取彼此的 User Account 和对应的 UID。
+
+本文介绍如何使用 String 型的 User Account 加入频道实现互通。
+
+## 实现步骤
+
+### 开启 String 型 UID
+
+在初始化 SDK 时，设置 `rtc_service_option_t` 中的 `use_string_uid` 为 `true`，开启 String 型 UID 功能。
+
+:::warning[注意]
+开启 String 型 UID 功能后，所有客户端都需要使用 User Account 加入频道。
+:::
+
+```c
+int ret = 0;
+// 设置 App ID
+const char *appid= "YOUR OWN APPID";
+// 注册相关回调
+agora_rtc_event_handler_t event_handler = {
+    // 加入频道成功事件回调
+    .on_join_channel_success = __on_join_channel_success,
+    // 远端用户使用 User Account 加入频道事件回调
+    .on_user_joined_with_user_account = __on_user_joined_with_user_account,
+    // 远端用户离开频道事件回调
+    .on_user_offline_with_user_account = __on_user_offline_with_user_account,
+    // 远端用户信息变更回调
+    .on_user_info_updated = __on_user_info_updated,
+};
+rtc_service_option_t service_opt = {
+    // 开启 String 型 UID
+    .use_string_uid = true; 
+};
+
+// 初始化
+ret = agora_rtc_init(appid, &event_handler, &service_opt);
+if (ret != 0) {
+    printf("error info: %s", agora_rtc_err_2_str(ret));
+    return -1;
+}
+```
+
+### 使用 User Account 加入频道
+
+调用 [`agora_rtc_create_connection`](/api-ref/rtsa/c/agora__rtc__api_8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection，然后调用 [`agora_rtc_join_channel_with_user_account`](/api-ref/rtsa/c/agora__rtc__api_8h#a64a24029bfaa5408e987122261385013) 加入 Connection 对应的 RTC 频道。
+
+```c
+connection_id_t conn_id = 0;
+const char *user_account = "xxxx";
+ 
+ 
+// 创建connection
+ret = agora_rtc_create_connection(&conn_id);
+if (ret != 0) {
+    printf("error info: %s", agora_rtc_err_2_str(ret));
+    return -1;
+}
+ 
+// 加入频道
+rtc_channel_options_t channel_opt = {xxx};
+ret = agora_rtc_join_channel_with_user_account(conn_id, "channel-xxx", user_account, token, &channel_opt);
+if (ret != 0) {
+    printf("error info: %s", agora_rtc_err_2_str(ret));
+    return -1;
+}
+```
+
+首次使用新的 User Account 加入频道时，可能会比使用 UID 加入频道略有延迟，因为 SDK 需要先请求服务端做 String 型 Uid 与 Int 型 UID 的映射。
+
+加入频道后，主播用户之间可以调用 [`agora_rtc_get_user_info_by_user_account`](/api-ref/rtsa/c/agora__rtc__api_8h#a68efcfa431803942c8fdc733b00c30c1) 或 [`agora_rtc_get_user_info_by_uid`](/api-ref/rtsa/c/agora__rtc__api_8h#ad6b1be785d6c2b4fa8fb0eac90290194)，通过 User Account 或对应的 UID 获取对方的用户信息。
+
+### 监听相关事件回调
+
+你可以通过监听如下事件回调，了解 String 型 UID 场景下远端用户加入、离开和用户信息变更等事件。
+
+```c
+// 本地成功加入频道频道回调
+static void __on_join_channel_success(connection_id_t conn_id, uint32_t uid, int elapsed)
+{
+  LOGI("[conn-%u] Join the channel successfully, uid %u elapsed %d ms", conn_id, uid, elapsed);
+}
+ 
+// 远端用户使用 User Account 加入频道回调
+static void __on_user_joined_with_user_account(connection_id_t conn_id, const user_info_t *user, int elapsed_ms)
+{
+  LOGI("[conn-%u] Remote user %s - %u has joined the channel, elapsed %d ms", conn_id, user->user_account, user->uid, elapsed_ms);
+}
+ 
+ 
+// 远端用户离开频道回调
+static void __on_user_offline_with_user_account(connection_id_t conn_id, const user_info_t *user, int reason)
+{
+  LOGI("[conn-%u] Remote user %s - %u has left the channel, reason %d", conn_id, user->user_account, user->uid, reason);
+}
+ 
+// 远端用户信息变更回调
+static void __on_user_info_updated(connection_id_t conn_id, const user_info_t *user)
+{
+  LOGI("[conn-%u] Remote user info updated: %s - %u", conn_id, user->user_account, user->uid);
+}
+```
+
+## 开发注意事项
+
+SDK 在实现 String 型 UID 功能时有如下限制：
+
+- 一旦开启 String 型 UID 功能，所有客户端都需要使用 User Account 加入频道。
+- 首次使用新的 User Account 加入频道时，可能会比使用 UID 加入频道略有延迟，因为 SDK 需要先请求服务端做 String 型 Uid 与 Int 型 UID 的映射。
+
+## 参考信息
+
+### 完整示例代码
+
+我们在 RTSA SDK 下载包中，提供了完整的使用 String 型 UID 的示例代码。你可以按照如下路径，在 `hello_rtsa.c` 文件中查看完整的实现逻辑。
+
+```shell
+├── agora_rtsa_sdk  # 声网的 SDK 库文件和头文件
+└── example  # 示例代码
+    └── hello_rtsa
+        └── hello_rtsa.c  # 使用 String 型 UID 加入频道
+```

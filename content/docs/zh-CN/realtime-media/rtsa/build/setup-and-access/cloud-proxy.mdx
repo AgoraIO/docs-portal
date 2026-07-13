@@ -1,0 +1,50 @@
+---
+title: "应对防火墙限制"
+---
+为允许用户在有网络访问限制的环境中使用声网 RTSA SDK，声网提供云代理服务。
+
+用户只需在防火墙上将特定的 IP 地址和端口加入白名单，并调用 API 配置声网云代理服务。
+
+## 工作原理
+
+![云代理工作原理](https://web-cdn.agora.io/docs-files/1673942497571)
+
+1. 声网 SDK 向声网云代理发起请求。声网云代理返回相应代理信息。
+2. 声网 SDK 向声网云代理发送数据。声网云代理接收数据并将数据透传给声网 [SD-RTN™](/basics/glossary#sd-rtn)（Software Defined Real-time Network）。
+3. 声网 SD-RTN™ 向声网云代理返回数据。声网云代理接收数据并将数据发送给声网 SDK。
+
+## 实现方法
+
+### 1. 开通服务
+
+[联系技术支持](https://ticket.shengwang.cn)，并提供以下信息申请开通云代理服务。
+
+- App ID
+- 代理服务使用区域
+- 并发规模
+- 网络运营商等信息
+
+### 2. 添加白名单
+
+收到申请后，声网会提供用于云代理的 IP 地址和端口。请确保已将声网提供的 IP 地址和端口添加到防火墙白名单。
+
+<a id="api"></a>
+### 3. 开启云代理
+
+在加入频道前，调用 `agora_rtc_set_cloud_proxy` 方法开启或关闭云代理：
+
+- 开启：将 `type` 设为 `CLOUD_PROXY_UDP(1)`。
+- 关闭：将 `type` 设为 `CLOUD_PROXY_NONE(0)`。
+
+在加入频道前，调用 `setCloudProxy` 方法开启或关闭云代理：
+
+- 开启：将 `type` 设为 `CLOUD_PROXY_UDP(1)`。
+- 关闭：将 `type` 设为 `CLOUD_PROXY_NONE(0)`。
+
+## API 参考
+
+开发过程中，你还可以参考如下文档，了解各 API 的详细信息：
+
+- [`agora_rtc_set_cloud_proxy`](/api-ref/rtsa/c/agora__rtc__api_8h#agora_rtc_set_cloud_proxy())
+
+- [`setCloudProxy`](/api-ref/rtsa/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_service#setCloudProxy())

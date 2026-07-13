@@ -1,0 +1,47 @@
+---
+title: "WatermarkBuffer"
+description: "配置水印图像的格式、尺寸和像素缓冲区。"
+---
+<a id="class_watermarkbuffer__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface WatermarkBuffer : NSObject
+@property(assign, nonatomic) int width;
+@property(assign, nonatomic) int height;
+@property(assign, nonatomic) int length;
+@property(strong, nonatomic) NSData* _Nullable buffer;
+@property(assign, nonatomic) WatermarkBufferFormat format;
+@end
+```
+
+<a id="class_watermarkbuffer__detailed_desc"></a>
+
+### `自从`
+
+自 v4.6.0 版本新增。
+
+包括图像的宽度、高度、长度、图像数据缓冲区和格式。
+
+<a id="class_watermarkbuffer__parameters"></a>
+
+## 属性
+
+### `width`
+
+水印图像的宽度，单位为像素。
+
+### `height`
+
+水印图像的高度，单位为像素。
+
+### `length`
+
+缓冲区的长度，单位为字节。
+
+### `buffer`
+
+原始图像数据缓冲区。
+
+### `format`
+
+水印缓冲区的格式，详见 [WatermarkBufferFormat](/zh-CN/api-reference/rtc/macos/enum-watermarkbufferformat)。

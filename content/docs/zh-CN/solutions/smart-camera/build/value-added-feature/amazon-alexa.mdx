@@ -1,0 +1,128 @@
+---
+title: "与 Amazon Alexa 互通"
+---
+声网 RTSA Lite SDK 支持与内置 Amazon Alexa 的设备，如 Echo 音箱等进行音视频互通。
+
+你可以通过这种方式为smart-camera场景增加智能设备。
+
+Echo 音箱作为 AWS 智能家居的入口，支持基于 AWS 公有云进行技能开发。技能开发的实现依赖于 Echo 内置语音助手 Alexa 的技能 (skill) 和 AWS 公有云 Lambda 服务。详见[手把手教你如何用 Lambda + Alexa 调用 Echo 设备](https://aws.amazon.com/cn/blogs/china/lambda-alexa-echo/)。
+
+Echo 音箱自带支持音视频互通的 WebRTC 协议。声网为了最优化传输音视频，在全球化部署的 SD-RTN™ 中使用了声网专有协议。为了兼容 WebRTC，声网 SD-RTN™ 在全球部署了数百个 VOSWeb 节点用于 WebRTC 协议转换，以支持 Web 浏览器、Echo 音箱、Google 音箱等 WebRTC 客户端。所以，要实现 Alexa 与声网 SDK 的互通，首先要实现 Alexa 与声网 VOSWeb 服务器节点的互通。
+
+![互通流程图](https://web-cdn.agora.io/docs-portal/img/smart-doorbell/cooperate-with-aws.png)
+
+## 前提条件
+
+* 有效的 [AWS 账户](https://www.amazonaws.cn/)
+* 有效的[声网账户](/zh-CN/solutions/smart-camera/build/setup-and-access/enable-service#登录声网控制台)
+* Echo 音箱或其他内置 Amazon Alexa 的设备
+* 连接摄像头和麦克风的设备端，用于与 Echo 音箱互通
+
+## 跑通示例项目
+
+声网提供了一个支持 Alexa 的smart-camera示例项目。你可以参考以下步骤进行跑通。
+
+### 1. 创建 AWS Lambda 函数
+
+参考以下步骤创建 AWS Lambda 函数。
+
+1. 创建一个 AWS Lambda 函数。AWS Lambda支持多种开发语言，本文使用 C#。
+
+![创建函数](https://web-cdn.agora.io/docs-files/1659956936228)
+
+2. 创建 Lambda 函数之后，复制 ARN，用于下一步创建 SmartHome Skill。
+
+![复制 ARN](https://web-cdn.agora.io/docs-files/1659956955476)
+
+3. 创建 Alexa SmartHome Skill。详见 [AWS 开发者文档](https://developer.amazon.com/alexa/console/ask/create-new-skill)。
+
+![创建 Alexa SmartHome Skill](https://web-cdn.agora.io/docs-files/1659957018539)
+
+4. 将 AWS Lambda ARN 复制到 **Smart Home service endpoint** 文本框中。
+
+![复制 ARN 到 SmartHome](https://web-cdn.agora.io/docs-files/1659958932189)
+
+5. 将 Skill ID 复制到 AWS Lambda 中。完成 AWS Lambda 与 SmartHome Skill 的关联。
+
+![完成关联](https://web-cdn.agora.io/docs-files/1659959117605)
+
+6. 设置 Alexa SmartHome Skill OAuth2 认证。详见 [AWS 开发者文档](https://developer.amazon.com/en-US/docs/alexa/account-linking/add-account-linking.html)。
+
+![OAuth2 认证](https://web-cdn.agora.io/docs-files/1659959385835)
+
+### 2. 将 Lambda 工程部署到 AWS Lambda
+
+参考以下步骤使用 AWS Toolkit 将 Lambda 工程部署到 AWS Lambda：
+
+:::warning[注意]
+- 你需要联系 sales@shengwang.cn 获取 Lambda 工程。
+- 由于本示例 Lambda 与设备通过 MQTT 通信，你需要自行修改 Lambda 端和设备端的 MQTT Topic，避免造成冲突。
+:::
+
+1. 下载安装 AWS Toolkit 的 Visual Studio 插件。下载安装完成后，必须在 Visual Studio AWS Toolkit 插件中绑定你的 AWS 账户；否则，无法正确部署工程到 AWS Lambda。
+
+2. 导入 Lambda 工程并部署到 AWS Lambda。
+
+![导入 Lambda 工程](https://web-cdn.agora.io/docs-files/1659965658417)
+
+   确保以下内容填写正确。
+
+![设置部署参数](https://web-cdn.agora.io/docs-files/1659965670039)
+
+### 3. 设备端部署
+
+设备端示例项目用于为 Alexa 提供信令代理服务，其中：
+
+- 设备与 AWS Lambda 基于 MQTTS 通信。
+- 设备与声网 SD-RTN™ 云端基于 https 和 websockets 通信。
+- 设备中转 AWS Lambda 和声网 SD-RTN™ 云端的信令。
+- 声网 RTSA Lite SDK 用于在设备与声网 SD-RTN™ 云端之间进行音视频传输。
+
+你需要联系 sales@shengwang.cn 获取 Alexa 设备端示例项目。
+
+参考以下步骤部署设备端：
+
+1. 参考 `agora_alexa_sdk/signaler-agent-alone/README.zh.md` 交叉编译设备端示例项目。
+2. 设备端同时运行声网 [RTSA Lite SDK](/zh-CN/realtime-media/rtsa/reference/downloads) 中的 `hello_rtsa demo` 和 Alexa 设备端示例项目 `agora_alexa_sdk/signaler-agent-alone` 中的 main demo，然后使用语音或应用控制 Alexa 完成设备同步和语音通话。
+
+实际运行效果如下：
+
+<video controls width="100%" height="auto" src="https://web-cdn.agora.io/docs-files/1659942208574">你的浏览器不支持 `video` 标签。</video>
+
+## 实现步骤
+
+参考以下步骤实现 RTSA Lite SDK 与 Echo 音箱的音视频互通。
+
+### 1. 实现设备端与声网 SD-RTN™ 的互通
+
+你可以使用 [RTSA Lite SDK](/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission#实现流程) 实现设备端与声网 SD-RTN™ 的互通。
+
+### 2. 实现 WebRTC 协议转换
+
+声网 SD-RTN™ 已全球部署数百个 VOSWeb 节点用于 WebRTC 协议转换和流媒体互通。因此，你只需要实现 Alexa 与声网 VOSWeb 服务器节点的互通。
+
+### 3. 实现 Alexa 与声网 VOS Web 节点互通
+
+Alexa 与声网 VOS Web 基于 WebRTC 协议的交互分为信令交互与流媒体传输。你需要通过信令交互打通 Echo 与声网 VOS Web 服务节点之间的 p2p 链接，最终实现 Echo 与声网 VOS Web 之间的流媒体传输。
+
+#### 信令交互
+
+Echo 的信令需要通过 Alexa Skill 分发给 AWS Lambda 进行处理，由于 AWS Lambda 的功能局限性，不满足与声网 VOS Web 服务节点交互的完整条件，需要另外部署一套信令代理服务。AWS Lambda 只完成 Alexa Skill 触发以及与 Agent 的信令交互。
+
+1. 实现 Alexa 与 AWS Lambda 的信令交互。参考 [Alexa Skill](https://developer.amazon.com/en-US/docs/alexa/ask-overviews/what-is-the-alexa-skills-kit.html) 以及 [AWS Lambda 官方文档](https://console.aws.amazon.com/lambda/home?region=us-east-1#/create/function)。例如，你可以实现 Alexa 发现设备 (Alexa, discover devices) 和查看smart-camera (Alexa, show the device) 两个命令。
+2. 实现 AWS Lambda 与设备端的信令代理服务之间的信令交互。参考 [AWS IoT MQTT 官方文档](https://docs.aws.amazon.com/zh_cn/iot/latest/developerguide/view-mqtt-messages.html)。同时，AWS Lambda 需要携带 Alexa 提供的 Echo 音箱流媒体传输信令 (SDP)，经设备端的信令代理服务提供给 VOS Web，再由 VOS Web 创建新的 SDP 最终返回到 Alexa，以用于创建 Echo 与 VOS Web 之间的流媒体传输通道。
+3. 实现设备端的信令代理服务与声网 VOSWeb 的信令交互。信令代理服务向声网发出 VOSWeb 服务节点请求，声网就近分配 VOS Web 节点之后，信令代理服务就可以与 VOS Web 服务节点连接交互。你需要联系 sales@shengwang.cn 获取  VOS Web 服务的调用接口。
+
+由于声网就近分配 VOS Web 服务节点， 为了降低部署成本和网络最优化，声网建议你将信令代理服务部署在设备端，即设备端既要基于声网 RTSA Lite SDK 实现与 SD-RTN™ 的流媒体互通，又要实现 Echo 的信令代理服务与声网 VOS Web 的信令交互。
+
+下图展示了 Alexa 发现设备步骤中所进行的信令交互。
+
+![发现设备信令交互](https://web-cdn.agora.io/docs-portal/img/smart-doorbell/aws-find-device.png)
+
+下图展示了 Alexa 查看smart-camera步骤中所进行的信令交互。
+
+![查看设备信令交互](https://web-cdn.agora.io/docs-portal/img/smart-doorbell/aws-show-device.png)
+
+#### Echo 与 VOS Web服务节点进行流媒体 p2p 传输
+
+当 Echo 和 VOS Web 都获取到对应的 SDP 后，Echo 与 VOS Web 将通过流媒体传输协议进行音视频传输。

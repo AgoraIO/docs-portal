@@ -1,0 +1,616 @@
+---
+title: "初始配置"
+---
+
+RTM SDK API 参考介绍了实时消息相关 API 的接口描述、接口方法、基本用法示例代码和返回值。
+
+想要了解详细的初始配置步骤，可以查看：
+
+- [应用配置](/zh-CN/realtime-media/rtm/user-guide/setup/application-setup)
+
+## AgoraRtmClientConfig
+
+### 接口描述
+
+`AgoraRtmClientConfig` 用于设置 RTM 初始化时配置其他额外属性，这些配置属性会在整个 RTM 客户端的生命周期中生效，影响 RTM 客户端的行为。
+
+### 接口方法
+
+你可以通过以下方式创建 `AgoraRtmClientConfig` 实例：
+
+```swift
+AgoraRtmClientConfig(
+    appId: String,
+    userId: String,
+    useStringUserId: Bool,
+    multipath: Bool,
+    ispPolicyEnabled: Bool,
+    presenceTimeout: UInt32,
+    heartbeatInterval: UInt32,
+    reconnectTimeout: UInt32,
+    areaCode: AgoraRtmAreaCode,
+    proxyConfig: AgoraRtmProxyConfig?,
+    protocolType: AgoraRtmProtocolType,
+    logConfig: AgoraRtmLogConfig?,
+    encryptionConfig: AgoraRtmEncryptionConfig?,
+    privateConfig: AgoraRtmPrivateConfig?
+    callbackQueue: DispatchQueue?
+)
+```
+
+| 属性 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `appId` | String | 必填 | - | 你在声网控制台创建项目时获得的 App ID。 |
+| `userId` | String | 必填 | - | 用户 ID，用于标识用户或设备。为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。 |
+| `areaCode` | `AgoraRtmAreaCode` | 选填 | `GLOB` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`AgoraRtmAreaCode`](/zh-CN/api-reference/rtm/swift/enumv#areacode)。 |
+| `protocolType` | `AgoraRtmProtocolType` | 选填 | `tcpUdp` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`AgoraRtmProtocolType`](/zh-CN/api-reference/rtm/swift/enumv#protocoltype)。 |
+| `presenceTimeout` | UInt32 | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [5,300]。即 RTM 服务器在判定客户端超时后，延迟多久向其他用户发送 `remoteConnectionTimeout` 事件通知。如果客户端在该参数设置的时间内重新建立连接并返回频道，则 RTM 服务器不会向频道中其他人发送 `remoteConnectionTimeout` 事件通知，也不会删除该用户的临时用户数据。 |
+| `heartbeatInterval` | UInt32 | 选填 | `5` | <Slot name="configuration-swift-html-0-6-4" /> |
+| `reconnectTimeout` | UInt32 | 选填 | `0` | <Slot name="configuration-swift-html-0-7-4" /> |
+| `useStringUserId` | Bool | 选填 | `true` | <Slot name="configuration-swift-html-0-8-4" /> |
+| `ispPolicyEnabled` | Bool | 选填 | `false` | <Slot name="configuration-swift-html-0-9-4" /> |
+| `logConfig` | `AgoraRtmLogConfig` | 选填 | - | 本地日志存储的大小、位置和日志等级等配置属性。 |
+| `proxyConfig` | `AgoraRtmProxyConfig` | 选填 | - | 使用 RTM 的 Proxy 功能，则需配置此参数。 |
+| `encryptionConfig` | `AgoraRtmEncryptionConfig` | 选填 | - | 使用 RTM 端侧加密功能，则需配置此参数。 |
+| `privateConfig` | `AgoraRtmPrivateConfig` | 选填 | - | 使用 RTM 私有部署功能时，需要配置此参数。 |
+| `callbackQueue` | DispatchQueue | 选填 | - | <Slot name="configuration-swift-html-0-14-4" /> |
+
+<Slot for="configuration-swift-html-0-6-4">
+
+SDK 心跳时间。单位为秒，取值范围为 [5,1800]。即客户端向 RTM 服务器发送心跳包的时间间隔。如果客户端在该参数设置的时间内没有向 RTM 服务器发送心跳包，则 RTM 服务器会判定客户端超时。
+    :::info[信息]
+    该参数会影响 PCU 计数，从而影响计费。
+    :::
+
+</Slot>
+
+<Slot for="configuration-swift-html-0-7-4">
+
+SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0` 表示从不超时，SDK 会一直尝试重连，直到成功。
+
+    该参数对初次登录 RTM 服务和断线重连均有效：
+
+    - 如果初次登录超时，SDK 会在 `login` 方法的 `completion` 回调中报告 `errorInfo` 为 `AgoraRtmErrorLoginTimeout`；同时触发 `didReceiveLinkStateEvent` 回调，其中 `currentState` 为 `AgoraRtmLinkStateFailed`，`reasonCode` 为 `AgoraRtmLinkStateChangeReasonLoginTimeout`；
+    - 如果断线重连超时，SDK 会触发 `didReceiveLinkStateEvent` 回调，其中 `currentState` 为 `AgoraRtmLinkStateFailed`，`reasonCode` 为 `AgoraRtmLinkStateChangeReasonReconnectTimeout`。
+
+</Slot>
+
+<Slot for="configuration-swift-html-0-8-4">
+
+是否使用 String 类型的用户 ID：
+
+    - `true`: 使用 String 类型的用户 ID。
+    - `false`: 使用 `Uint` 类型的用户 ID，SDK 会自动将 String 类型的 `userId` 属性转换为 `Uint` 类型。该设置下，你需要在 `userId` 属性中传入内容为数值的字符串（例如 `"1234567"`），否则方法会调用失败。
+
+    当同时使用声网 RTC 和 RTM 产品时，需要确保 userId 一致。
+
+</Slot>
+
+<Slot for="configuration-swift-html-0-9-4">
+
+是否开启 ISP 域名策略限制。在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)，你可以通过该字段设置 SDK 的连接模式，连接到已向运营商报备的域名或 IP 白名单中的服务器：
+
+      - `true`: 开启 ISP 域名策略限制。该设置适用于 IoT 设备使用物联网卡进行网络访问的场景。SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+      - `false`: （默认）关闭 ISP 域名策略限制。该设置适用于大部分普通场景。
+
+</Slot>
+
+<Slot for="configuration-swift-html-0-14-4">
+
+回调队列：
+
+    - 如果设为 `nil`，则回调会在主线程中被调用。
+    - 如果不是 `nil`，则回调会在指定队列中被调用。
+
+</Slot>
+
+#### AgoraRtmLogConfig
+
+`AgoraRtmLogConfig` 实例用来设置和存储本地日志文件 agora.log。在调试阶段，通过日志保存和跟踪 App 运行状态，你可以极大的提升效率。如果遇到复杂问题并需要声网技术人员协助调查，你需要提供该日志信息。`AgoraRtmLogConfig` 包含以下属性：
+
+| 属性 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `filePath` | String | 选填 | - | 日志存储路径。 |
+| `fileSizeInKB` | Int32 | 选填 | `1024` | <Slot name="configuration-swift-html-1-2-4" /> |
+| `level` | `AgoraRtmLogLevel` | 选填 | `info` | 日志信息的输出等级，详见 [`AgoraRtmLogLevel`](/zh-CN/api-reference/rtm/swift/enumv#loglevel)。 |
+
+<Slot for="configuration-swift-html-1-2-4">
+
+日志文件大小，单位为 KB，取值范围为 [128,1024]。
+
+    - 如果你填入的值小于 128，则 SDK 按照 128 设置。
+    - 如果你填入的值大于 1024，则 SDK 按照 1024 设置。
+
+</Slot>
+
+#### AgoraRtmProxyConfig
+
+`AgoraRtmProxyConfig` 实例用来设置客户端 Proxy 服务代理等相关属性。在一些网络服务受限的环境下，你可能需要使用此功能。
+
+:::info[信息]
+你需要妥善保管好你的 Proxy 用户名和密码。RTM 不会以任何方式解析、存储、转发你的用户名和密码。此外，如果你在 App 运行过程中修改 Proxy 的设置，该设置要重启 RTM Client 后才能生效。
+:::
+
+`AgoraRtmProxyConfig` 包含以下方法和属性：
+
+| 属性        | 类型            | 必填 | 默认值             | 描述               |
+| ---------- | --------------- | --- | ----------------- | ----------- |
+| `proxyType` | `AgoraRtmProxyType` | 选填 | `none` | Proxy 协议类型。详见 [`AgoraRtmProxyType`](/zh-CN/api-reference/rtm/swift/enumv#proxytype)。 |
+| `server`    | String             | 必填 | -                  | Proxy 服务器域名或 IP 地址。    |
+| `port`      | UInt16             | 选填 | -                  | Proxy 监听端口。                |
+| `account`   | String             | 选填 | -                  | Proxy 登录账号。                |
+| `password`  | String             | 选填 | -                  | Proxy 登录密码。                |
+
+#### AgoraRtmEncryptionConfig
+
+`AgoraRtmEncryptionConfig` 实例用来设置客户端加密所需要的属性。成功设置加密方式、加密密钥等属性后，用户发送的所有消息或者设置的所有状态都会在客户端自动加密和解密。
+
+:::info[信息]
+一旦设置了加密，所有用户必须使用相同的加密模式和密钥，否则数据无法互通。
+:::
+
+`AgoraRtmEncryptionConfig` 包含以下属性：
+
+| 属性                | 类型               | 必填 | 默认值         | 描述           |
+| ---- | ------ | --- | ------- | --------------- |
+| `encryptionMode`    | `AgoraRtmEncryptionMode` | 选填 | `none` | 加密方式。详见 [`AgoraRtmEncryptionMode`](/zh-CN/api-reference/rtm/swift/enumv#encryptionmode)。 |
+| `encryptionKey`     | String           | 选填 | -          | 用户自定义加密密钥，长度无限制。声网推荐使用 32 字节的密钥。       |
+| `encryptionKdfSalt` | Data    | 选填 | -             | 用户自定义加密盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 生成盐。      |
+
+#### AgoraRtmPrivateConfig
+
+`AgoraRtmPrivateConfig` 实例用来设置私有化部署所需要的属性。
+
+`AgoraRtmPrivateConfig` 包含以下属性：
+
+| 属性               | 类型          | 必填 | 默认值 | 描述             |
+| ----------------- | ------ | --- | ----- | --------------- |
+| `serviceType`      | `AgoraRtmServiceType` | 选填 | -      | 服务类型。详见 [`AgoraRtmServiceType`](/zh-CN/api-reference/rtm/swift/enumv#rtmservicetype)。 |
+| `accessPointHosts` | `[String]`        | 选填 | -      | 服务器的地址数组，数组中支持填写域名或 IP 地址。          |
+
+### 基本用法
+
+```swift
+let config = AgoraRtmClientConfig(appId: "yourAppId", userId: "yourUserId")
+config.areaCode = [.CN, .NA]
+config.presenceTimeout = 30
+config.heartbeatInterval = 10
+config.useStringUserId = true
+```
+
+## 创建实例
+
+### 接口描述
+
+创建并初始化 RTM 客户端实例，初始化实例的时候你需要提供 `appId` 和 `userId` 等参数，你可以在声网控制台创建项目并获得 App ID。
+
+:::info[信息]
+- 创建并初始化客户端实例需要在调用 RTM 的其他 API 之前进行。
+- 为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。
+:::
+
+### 接口方法
+
+你可以通过以下方式创建并初始化实例：
+
+```swift
+AgoraRtmClientKit(_ config: AgoraRtmClientConfig, delegate: (any AgoraRtmClientDelegate)?) throws
+```
+
+| 参数       | 类型           | 必填 | 默认值 | 描述           |
+| --------- | ---------- | --- | ------ | ----------------- |
+| `config`   | `AgoraRtmClientConfig` | 必填 | -      | 初始化 RTM Client 的配置参数。详见 `AgoraRtmClientConfig`。 |
+| `delegate` | `AgoraRtmClientDelegate`     | 选填 | `nil`     | RTM 事件通知监听函数设置。详见[事件监听](#事件监听)。        |
+
+### 基本用法
+
+```swift
+do {
+    let config = AgoraRtmClientConfig(appId: "yourAppId", userId: "uniqueUserId")
+    config.areaCode = [.CN, .NA]
+    config.presenceTimeout = 30
+    config.heartbeatInterval = 10
+    config.useStringUserId = true
+    // Initializing the RTM client
+    let rtmClient = try AgoraRtmClientKit(config, delegate: nil)
+    if rtmClient != nil {
+        print("RTM Client initialized successfully!")
+    }
+} catch let error {
+    print("Failed to initialize RTM client. Error: \(error)")
+}
+```
+
+### 返回值
+
+- 方法调用成功，返回一个 RTM 客户端实例，用以在后续调用 RTM 其他 API。
+- `nil`：方法调用失败。
+
+<a id="事件监听"></a>
+## 事件监听
+
+### 接口描述
+
+RTM 总共有 7 种事件通知类型，如下表所示：
+
+| 事件类型            | 描述         |
+| ------------- | --------------- |
+| <code className="index-group-item-rtmeventlistener index-api-onmessageevent" id="didReceiveMessageEvent">didReceiveMessageEvent</code>          | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`AgoraRtmMessageEvent`](#AgoraRtmMessageEvent)。</span>               |
+| <code className="index-group-item-rtmeventlistener index-api-onpresenceevent" id="didReceivePresenceEvent">didReceivePresenceEvent</code>       | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`AgoraRtmPresenceEvent`](#AgoraRtmPresenceEvent)。</span>                |
+| <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="didReceiveTopicEvent">didReceiveTopicEvent</code>                | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`AgoraRtmTopicEvent`](#AgoraRtmTopicEvent)。</span>    |
+| <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="didReceiveStorageEvent">didReceiveStorageEvent</code>          | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`AgoraRtmStorageEvent`](#AgoraRtmStorageEvent)。</span>       |
+| <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="didReceiveLockEvent">didReceiveLockEvent</code>                   | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`AgoraRtmLockEvent`](#AgoraRtmLockEvent)。</span>       |
+| <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="didReceiveLinkStateEvent">didReceiveLinkStateEvent</code>    | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`AgoraRtmLinkStateEvent`](#AgoraRtmLinkStateEvent)。</span>             |
+| <code className="index-group-item-rtmeventlistener index-api-ontokenwillexpire" id="tokenPrivilegeWillExpire">tokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span>       |
+
+<a id="添加监听"></a>
+### 添加监听
+
+你可以在初始化时添加一个事件监听对象，也可以在 App 生命周期的任意时间调用 `addDelegate` 方法添加一个或多个事件监听对象。
+
+#### 初始化时添加
+
+调用 `` 方法初始化 RTM Client 实例时，你可以参考以下示例代码添加一个事件监听对象：
+
+```swift
+class EventHandler: NSObject, AgoraRtmClientDelegate {
+  // message event handler
+  func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+    print("Message received from \(event.channelName): \(event.message)")
+  }
+  // presence event handler
+  func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceivePresenceEvent event: AgoraRtmPresenceEvent) {
+    print("User \(event.publisher) is now \(event.type)")
+  }
+}
+let eventDelegate = EventHandler()
+let rtmClient = try AgoraRtmClientKit(config, delegate: eventDelegate)
+```
+
+#### 任意时间添加
+
+在 App 生命周期的任意时间中，如需添加多个事件监听对象，你可以调用 `addDelegate` 方法。
+
+```swift
+// message event handler
+class MessageHandler: NSObject, AgoraRtmClientDelegate {
+  func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+    print("Message received from \(event.channelName): \(event.message)")
+  }
+}
+// presence event handler
+class PresenceHandler: NSObject, AgoraRtmClientDelegate {
+  func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceivePresenceEvent event: AgoraRtmPresenceEvent) {
+    print("User \(event.publisher) is now \(event.type)")
+  }
+}
+let messageDelegate = MessageHandler()
+let presenceDelegate = PresenceHandler()
+rtmClient.addDelegate(messageDelegate)
+rtmClient.addDelegate(presenceDelegate)
+```
+
+<a id="删除监听"></a>
+### 删除监听
+
+如果你不再需要关注某个事件监听对象，但仍需关注其他事件监听对象，你可以调用 `removeDelegate` 方法删除指定的事件监听对象。
+
+```swift
+rtmClient.removeDelegate(messageDelegate)
+```
+
+#### AgoraRtmMessageEvent
+
+消息事件。
+
+`AgoraRtmMessageEvent` 包含以下属性：
+
+| 属性           | 类型                     | 描述                  |
+| ------------- | ----------------- | --------- |
+| `channelType`  | `AgoraRtmChannelType` | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/swift/enumv#channeltype)。 |
+| `channelName`  | String              | 频道名称。                 |
+| `channelTopic` | String               | Topic 名称。                 |
+| `message`      | `AgoraRtmMessage` | 消息负载。  |
+| `publisher`    | String               | 消息发布者 ID。               |
+| `customType`   | String               | 用户自定义字段。仅支持 String 型。                   |
+| `timestamp`    | UInt64             | 事件发生的时间戳。            |
+
+`AgoraRtmMessage` 数据类型包含以下属性：
+
+| 属性         | 类型     | 描述         |
+| ----------- | ------- | ------------ |
+| `rawData`    | Data   | 二进制消息。 |
+| `stringData` | String | 字符串消息。 |
+
+#### AgoraRtmPresenceEvent
+
+用户 Presence 事件。
+
+`AgoraRtmPresenceEvent` 包含以下属性：
+
+| 属性       |  类型  |   描述       |
+|-------|--------| ---------- |
+| `type`            | `AgoraRtmPresenceEventType`    |   Presence 事件类型。详见 [`AgoraRtmPresenceEventType`](/api-ref/rtm2/swift/enumv#presencetype)。  |
+| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/api-ref/rtm2/swift/enumv#channeltype)。   |
+| `channelName`            | String                |  事件发生的频道名称。  |
+| `publisher`              | String                |  触发此事件的用户 ID。   |
+| `states`            | `[String : String]`    |  标识用户临时状态的键值对。  |
+| `interval`            | `AgoraRtmPresenceIntervalInfo`               |  Interval 状态下，当前频道在上一个周期内用户加入、离开、超时、状态变更等事件通知的聚合增量信息。  |
+| `snapshot`              | `[AgoraRtmUserState]`               |  当前频道的内所有用户及其状态的快照数据。只要用户在频道内，该事件可能会多次触发。   |
+| `timestamp` | UInt64 | 事件发生的时间戳。                |
+
+`AgoraRtmPresenceIntervalInfo` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `joinUserList`         |         `NSArray<NSString *>`        | 在上一个周期内加入频道的用户列表。    |
+| `leaveUserList` | `NSArray<NSString *>` | 在上一个周期内离开频道的用户列表。 |
+| `timeoutUserList` | `NSArray<NSString *>` | 在上一个周期内加入频道超时的用户列表。 |
+| `userStateList` | `ArrayList<UserState>` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
+
+`AgoraRtmUserState` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `userId`         |  NSString  |  用户 ID。     |
+| `states`         |    NSDictionary      | 频道在线用户及其临时状态信息列表。        |
+
+#### AgoraRtmTopicEvent
+
+Topic 事件。
+
+`AgoraRtmTopicEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述           |
+|-----|------| ---------- |
+| `type`            | `AgoraRtmTopicEventType`    |  Topic 事件类型。详见 [`AgoraRtmTopicEventType`](/api-ref/rtm2/swift/enumv#topictype)。  |
+| `channelName`            | String                |  事件发生的频道名称。   |
+| `publisher`              | String                |  触发此事件的用户 ID。   |
+| `topicInfos`            | `[AgoraRtmTopicInfo]`               |  Topic 的详细信息数组，包含 Topic 名称、Topic 发布者等信息。   |
+| `timestamp` | UInt64 | 事件发生的时间戳。                |
+
+`AgoraRtmTopicInfo` 数据类型包含以下属性：
+
+| 属性        |  类型  |   描述      |
+|----|-----| ------ |
+| `topic`            | NSString    |  Topic 名称。  |
+| `publishers`            | `NSArray<AgoraRtmPublisherInfo *>`                |  消息发布者数组。   |
+
+`AgoraRtmPublisherInfo` 数据类型包含以下属性：
+
+| 属性        |  类型  |   描述      |
+|----|-----| ------ |
+| `publisherUserId`            | NSString    |  消息发布者的用户 ID。  |
+| `publisherMeta`            | NSString                |  消息发布者的元数据。   |
+
+#### AgoraRtmStorageEvent
+
+Storage 事件。
+
+`AgoraRtmStorageEvent` 包含以下属性：
+
+| 属性         |  类型  |   描述           |
+|-----|------| ---------- |
+| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/api-ref/rtm2/swift/enumv#channeltype)。   |
+| `storageType`            | `AgoraRtmStorageType`   |  Storage 类型。详见 [`AgoraRtmStorageType`](/api-ref/rtm2/swift/enumv#storagetype)。  |
+| `eventType`            | `AgoraRtmStorageEventType`    |  Storage 事件类型。详见 [`AgoraRtmStorageEventType`](/api-ref/rtm2/swift/enumv#storageeventtype)。  |
+| `target`              | String                |  用户 ID 或频道名称。   |
+| `data`            | `AgoraRtmMetadata`               |   Metadata Item。详见 [`AgoraRtmMetadata`](/api-ref/rtm2/swift/toc-storage/storage#AgoraRtmMetadata)。   |
+| `timestamp` | UInt64 | 事件发生的时间戳。                |
+
+#### AgoraRtmLockEvent
+
+Lock 事件。
+
+`AgoraRtmLockEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述      |
+|----|-----| ------ |
+| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/swift/enumv#channeltype)。   |
+| `eventType`            | `AgoraRtmLockEventType`    |  Lock 事件类型。详见 [`AgoraRtmLockEventType`](/zh-CN/api-reference/rtm/swift/enumv#locktype)。    |
+| `channelName`              | NSString                |  频道名称。   |
+| `lockDetailList`            | `ArrayList<LockDetail>`               |  Lock 的详情。   |
+| `timestamp` | unsigned long long | 事件发生的时间戳。                |
+
+`AgoraRtmLockDetail` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `lockName`         |         NSString         | Lock 的名称。               |
+| `owner`    | NSString  | 拥有锁的用户 ID。   |
+| `ttl`    | int | 锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `didReceiveLockEvent` 事件通知的用户会收到 `lockReleased` 事件。      |
+
+#### AgoraRtmLinkStateEvent
+
+SDK 连接状态事件。
+
+`AgoraRtmLinkStateEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述           |
+|-----|------| ---------- |
+| `currentState`            | `AgoraRtmLinkState`    |  当前的连接状态。详见 [`AgoraRtmLinkState`](/api-ref/rtm2/swift/enumv#linkstate)。   |
+| `previousState`            | `AgoraRtmLinkState`    |  之前的连接状态。详见 [`AgoraRtmLinkState`](/api-ref/rtm2/swift/enumv#linkstate)。   |
+| `serviceType`    | `AgoraRtmServiceType` | 网络连接类型。详见 [`AgoraRtmServiceType`](/api-ref/rtm2/swift/enumv#rtmservicetype)。 |
+| `operation`    | `AgoraRtmLinkOperation` | 触发本次状态迁移的操作。详见 [`AgoraRtmLinkOperation`](/api-ref/rtm2/swift/enumv#linkoperation)。 |
+| `reasonCode`    | `AgoraRtmLinkStateChangeReason` | 本次状态迁移的原因。详见 [`AgoraRtmLinkStateChangeReason`](/api-ref/rtm2/swift/enumv#linkstatechangereason)。 |
+| `reason`    | String | 本次状态迁移的原因。该参数未来会废弃，请使用 `reasonCode` 参数替代。 |
+| `affectedChannels`    | `[String]` | 本次状态迁移影响的频道。 |
+| `unrestoredChannels`    | `[String]` | 未恢复订阅或加入的频道信息，包含频道名、频道类型和频道中的临时状态数据。一般情况下为空。 |
+| `isResumed`    | Bool | 在连接断开的 2 分钟内，是否从 `AgoraRtmLinkStateDisconnected` 状态恢复成 `AgoraRtmLinkStateConnected` 状态。`true` 表示已恢复。 |
+| `timestamp`    | UInt64 | 本次事件通知发送的时间戳。 |
+
+## login
+
+### 接口描述
+
+创建并初始化 RTM 实例之后，你需要执行 `login` 操作以登录 RTM 服务。登录成功将使客户端与 RTM 服务器建立起长连接，之后客户端才能正常访问 RTM 资源。
+
+:::info[信息]
+用户成功登录 RTM 服务后，应用的 PCU 会增加，这将影响你的账单数据。
+:::
+
+### 接口方法
+
+你可以通过以下方法登录 RTM 系统：
+
+```swift
+login(_ token: String?) async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+login(_ token: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | String | 选填 | - | <Slot name="configuration-swift-html-2-1-4" /> |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="configuration-swift-html-2-2-4" /> |
+
+<Slot for="configuration-swift-html-2-1-4">
+
+登录 RTM 系统的 Token。
+
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/get-started/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/user-guide/token/token-generation)。
+    - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
+
+</Slot>
+
+<Slot for="configuration-swift-html-2-2-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+调用 RTM Swift SDK 的绝大部分 API 接口后，都会执行一个 `completion` 回调，包含 `response` 和 `errorInfo` 两个参数。根据不同的调用结果，SDK 会返回不同的参数值：
+
+- 调用成功，则会在 `response` 参数中返回对应数据，在 `errorInfo` 参数中返回 `nil`。
+- 调用失败，则会在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+`AgoraRtmErrorInfo` 类型的 `errorInfo` 返回值中包含本次调用错误码、错误原因及 API 操作名称，如下表所示：
+
+```swift
+class AgoraRtmErrorInfo : NSError {
+  var errorCode: AgoraRtmErrorCode          // 错误码
+  var operation: String                     // API 名称
+  var reason: String  // 错误原因简述
+}
+```
+
+你可以通过检索 `errorCode` 字段所包含的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let (response, error) = await rtmClient.login("your_token_here")
+if let error = error {
+    print("Login failed with error: \(error.reason)")
+} else if let response = response {
+    print("Login successful!")
+} else {
+    print("Unknown error")
+}
+```
+
+```swift tab="callback"
+// callback
+rtmClient.login(token) { response, error in
+    if let errorInfo = error {
+        print("Login failed with error: \(errorInfo.reason)")
+    } else let loginResponse = response {
+        print("Login successful: \(loginResponse)")
+    }
+}
+```
+
+## logout
+
+### 接口描述
+
+当你不再需要操作后，可以登出系统。本操作会影响你账单中的 PCU 计费项。
+
+### 接口方法
+
+你可以通过以下接口退出登录：
+
+```swift
+logout() async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+logout(_ completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="configuration-swift-html-3-1-4" /> |
+
+<Slot for="configuration-swift-html-3-1-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let (response, error) = await rtmClient.logout()
+if let error = error {
+  print("Logout failed with error: \(error.reason)")
+} else if let response = response {
+  print("Logout successful!")
+} else {
+  print("Unknown error")
+}
+```
+
+```swift tab="callback"
+// callback
+rtmClient.logout { response, error in
+  if let errorInfo = error {
+    print("Logout failed with error: \(errorInfo.reason)")
+  } else let logoutResponse = response {
+    print("Logout successful: \(logoutResponse)")
+  }
+}
+```
+
+## destroy
+
+### 接口描述
+
+一旦不再需要 RTM 服务，推荐销毁 `AgoraRtmClientKit` 实例。这样做将使你免受内存泄漏甚至错误和异常引起的性能下降的影响。
+
+:::info[信息]
+`destroy` 需要在非回调内的子线程调用，避免在回调中执行。
+:::
+
+### 接口方法
+
+你可以通过以下方法销毁 `AgoraRtmClientKit` 实例：
+
+```swift
+destroy() -> AgoraRtmErrorCode
+```
+
+### 基本用法
+
+```swift
+let errorCode = rtmClient.destroy()
+if errorCode == .ok {
+    print("RTM instance destroyed successfully.")
+} else {
+    print("Failed to destroy RTM instance: \(errorCode)")
+}
+```
+
+### 返回值
+
+`destroy` 操作会返回一个 `AgoraRtmErrorCode` 数据结构，详见[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)。

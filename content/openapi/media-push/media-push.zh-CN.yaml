@@ -1,0 +1,1746 @@
+openapi: 3.1.0
+x-stoplight:
+  id: oi9e1upp2vkfd
+info:
+  version: ''
+  title: 旁路推流 RESTful API
+  description: >-
+    你可以使用推流 RESTful API 订阅声网频道内的音视频流，将音视频流转码后（或选择不转码），通过标准协议（如 RTMP）推送到 CDN（Content Delivery
+    Network）。这个过程相当于声网通过一个 Converter 将音视频流处理后输出并推到 CDN。你可以通过如下方法控制 Converter：
+
+
+    - [Create](create)：创建一个 Converter。
+
+    - [Delete](delete)：销毁指定的 Converter。
+
+    - [Update](update)：更新指定的 Converter 配置。
+
+    - [Get](get)：获取指定 Converter 的推流状态。
+
+    - [List](list)：查询一个项目下所有 Converter。
+
+    - [List by channel](list-by-channel)：查询一个项目下指定频道内的 Converter。
+
+
+    > 请确保声网频道的场景为直播，而非通信，否则旁路推流会失败。
+
+
+    为方便你监听旁路推流的状态，声网提供[消息通知服务](https://doc.shengwang.cn/doc/media-push/restful/webhook/enable-ncs)。开通该服务后，你可以通过
+    Webhook 接收如下事件：
+
+
+    - [创建推流成功](https://doc.shengwang.cn/api-ref/media-push/restful/converter-created)。
+
+    - [推流配置更新](https://doc.shengwang.cn/api-ref/media-push/restful/converter-updated)。
+
+    - [推流状态变化](https://doc.shengwang.cn/api-ref/media-push/restful/converter-state-changed)。
+
+    - [停止推流成功](https://doc.shengwang.cn/api-ref/media-push/restful/converter-destroyed)。
+
+
+    因为声网会动态调整消息通知服务器的 IP 地址，为不影响你接收事件，你需要定期[查询 IP 地址](get-ncs-ip)并更新防火墙白名单配置。
+servers:
+  - url: https://api.sd-rtn.com
+paths:
+  /{region}/v1/projects/{appId}/rtmp-converters:
+    post:
+      summary: 创建 Converter
+      description: 在项目中创建一个 Converter，用于处理音视频流并推流到 CDN。
+      operationId: post-region-v1-projects-appId-rtmp-converters
+      parameters:
+        - $ref: '#/components/parameters/Content-Type'
+        - $ref: '#/components/parameters/X-Request-ID'
+        - $ref: '#/components/parameters/regionHintIp'
+        - $ref: '#/components/parameters/region'
+        - $ref: '#/components/parameters/appId'
+      requestBody:
+        description: '`Create` 请求可创建**转码**推流和**不转码**推流的 Converter。'
+        content:
+          application/json:
+            schema:
+              type: object
+              oneOf:
+                - type: object
+                  title: 转码推流
+                  properties:
+                    converter:
+                      type: object
+                      description: '**转码**推流时需设置如下字段。'
+                      properties:
+                        name:
+                          $ref: '#/components/schemas/name'
+                        transcodeOptions:
+                          type: object
+                          description: '**转码**推流的配置。'
+                          properties:
+                            rtcChannel:
+                              $ref: '#/components/schemas/rtcChannel'
+                            audioOptions:
+                              type: object
+                              description: >-
+                                Converter 的音频转码配置。
+
+
+                                **注意**：
+
+                                - 该字段仅需在有音频的场景下设置。如果有音频但是无需自定义音频配置，那么将该字段设为空，即 `"audioOptions": {}`。
+
+                                - 暂时只支持不超过 3 名用户进行混音，如果参与混音的用户人数大于
+                                3，请联系[技术支持](https://ticket.shengwang.cn)。
+                              properties:
+                                rtcStreamUids:
+                                  $ref: '#/components/schemas/rtcStreamUids'
+                                codecProfile:
+                                  $ref: '#/components/schemas/codecProfile'
+                                sampleRate:
+                                  $ref: '#/components/schemas/sampleRate'
+                                bitrate:
+                                  $ref: '#/components/schemas/bitrate'
+                                audioChannels:
+                                  $ref: '#/components/schemas/audioChannels'
+                                volumes:
+                                  $ref: '#/components/schemas/volumes'
+                            videoOptions:
+                              type: object
+                              description: |-
+                                Converter 的视频转码配置。
+
+                                **注意**：该字段仅需在有视频的场景下设置。并且在音视频场景下，该字段不能为空。
+                              properties:
+                                canvas:
+                                  type: object
+                                  description: 视频画布的配置。
+                                  properties:
+                                    width:
+                                      $ref: '#/components/schemas/canvas-width'
+                                    height:
+                                      $ref: '#/components/schemas/canvas-height'
+                                    color:
+                                      $ref: '#/components/schemas/canvas-color'
+                                  required:
+                                    - width
+                                    - height
+                                layoutType:
+                                  $ref: '#/components/schemas/layoutType'
+                                layout:
+                                  anyOf:
+                                    - $ref: '#/components/schemas/layout-rtc'
+                                      description: |-
+                                        画布上各用户的视频画面的配置。
+
+                                        > 仅需在 `layoutType` 为自定义布局时设置 `layout` 字段。
+                                    - $ref: '#/components/schemas/layout-image'
+                                      description: |-
+                                        画布上视频图片的配置。画布上视频图片可充当水印。
+
+                                        > 仅需在 `layoutType` 为自定义布局时设置 `layout` 字段。
+                                vertical:
+                                  type: object
+                                  description: |-
+                                    垂直布局的画面配置。
+
+                                    > 仅需在 `layoutType` 为垂直布局时设置 `vertical` 字段。
+                                  properties:
+                                    maxResolutionUid:
+                                      $ref: '#/components/schemas/max-uid'
+                                    fillMode:
+                                      $ref: '#/components/schemas/fillMode'
+                                    refreshIntervalSec:
+                                      $ref: '#/components/schemas/refresh-sec'
+                                defaultPlaceholderImageUrl:
+                                  $ref: '#/components/schemas/default-image'
+                                bitrate:
+                                  $ref: '#/components/schemas/v-bitrate'
+                                frameRate:
+                                  $ref: '#/components/schemas/v-framerate'
+                                gop:
+                                  $ref: '#/components/schemas/v-gop'
+                                codec:
+                                  $ref: '#/components/schemas/v-codec'
+                                codecProfile:
+                                  $ref: '#/components/schemas/v-codec-profile'
+                                seiOptions:
+                                  type: object
+                                  description: >-
+                                    设置携带的用户 SEI（Supplemental Enhancement
+                                    Information）信息。默认为空。不设置则不携带用户 SEI 信息。
+                                  properties:
+                                    source:
+                                      type: object
+                                      description: 设置 SEI 信息的数据来源。默认为空。
+                                      properties:
+                                        metadata:
+                                          $ref: '#/components/schemas/metadata'
+                                        datastream:
+                                          $ref: '#/components/schemas/datastream'
+                                        customized:
+                                          type: object
+                                          description: >-
+                                            自定义 SEI 信息。默认为空。
+
+
+                                            自定义 SEI 信息会被转换为[声网 SEI
+                                            规范](https://doc.shengwang.cn/faq/quality-issues/sei)的
+                                            SEI 信息。
+                                          properties:
+                                            prefixForAgoraSei:
+                                              $ref: '#/components/schemas/prefix'
+                                            payload:
+                                              $ref: '#/components/schemas/source-payload'
+                                    sink:
+                                      type: object
+                                      description: 设置输出的 SEI 信息。默认为空。
+                                      properties:
+                                        type:
+                                          $ref: '#/components/schemas/sink-type'
+                              required:
+                                - canvas
+                                - bitrate
+                          required:
+                            - rtcChannel
+                        rtmpUrl:
+                          $ref: '#/components/schemas/rtmpUrl'
+                        idleTimeout:
+                          $ref: '#/components/schemas/idle'
+                        jitterBufferSizeMs:
+                          $ref: '#/components/schemas/jitter'
+                      required:
+                        - transcodeOptions
+                        - rtmpUrl
+                  required:
+                    - converter
+                - type: object
+                  title: 不转码推流
+                  properties:
+                    converter:
+                      type: object
+                      description: '**不转码**推流时需设置如下字段。'
+                      properties:
+                        name:
+                          $ref: '#/components/schemas/name'
+                        rawOptions:
+                          type: object
+                          description: '**不转码**推流配置。'
+                          properties:
+                            rtcChannel:
+                              $ref: '#/components/schemas/rtcChannel'
+                            rtcStreamUid:
+                              $ref: '#/components/schemas/raw-uid'
+                          required:
+                            - rtcChannel
+                            - rtcStreamUid
+                        rtmpUrl:
+                          $ref: '#/components/schemas/rtmpUrl'
+                        idleTimeout:
+                          $ref: '#/components/schemas/idle'
+                        jitterBufferSizeMs:
+                          $ref: '#/components/schemas/jitter'
+                      required:
+                        - rawOptions
+                        - rtmpUrl
+                  required:
+                    - converter
+            examples:
+              转码且自定义布局:
+                value:
+                  converter:
+                    name: show68_vertical
+                    transcodeOptions:
+                      rtcChannel: show68
+                      audioOptions:
+                        codecProfile: HE-AAC
+                        sampleRate: 48000
+                        bitrate: 128
+                        audioChannels: 1
+                        rtcStreamUids:
+                          - 201
+                          - 202
+                        volumes:
+                          - volume: 50
+                            rtcStreamUid: 201
+                          - volume: 150
+                            rtcStreamUid: 202
+                      videoOptions:
+                        canvas:
+                          width: 360
+                          height: 640
+                          color: 0
+                        layout:
+                          - rtcStreamUid: 201
+                            region:
+                              xPos: 0
+                              yPos: 0
+                              zIndex: 1
+                              width: 360
+                              height: 320
+                            fillMode: fill
+                            placeholderImageUrl: http://example.agora.io/host_placeholder.jpg
+                          - rtcStreamUid: 202
+                            region:
+                              xPos: 0
+                              yPos: 320
+                              zIndex: 1
+                              width: 360
+                              height: 320
+                          - imageUrl: http://example.agora.io/watchmark.jpg
+                            region:
+                              xPos: 0
+                              yPos: 0
+                              zIndex: 2
+                              width: 36
+                              height: 64
+                            fillMode: fit
+                        codec: H.264
+                        codecProfile: high
+                        frameRate: 15
+                        gop: 30
+                        bitrate: 400
+                        seiOptions:
+                          source:
+                            metadata: true
+                            datastream: true
+                            customized:
+                              payload: example
+                          sink:
+                            type: 100
+                    rtmpUrl: rtmp://example/live/show68
+                    idleTimeout: 300
+      responses:
+        2XX:
+          $ref: '#/components/responses/success-basic'
+        非 2XX:
+          $ref: '#/components/responses/failure-message'
+      servers:
+        - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: aj79hthjtq9ii
+      security:
+        - Basic Auth: []
+      x-docs-sections:
+        - position: after-description
+          markdown: >-
+            `Create` 请求的 Body 字段设置较为复杂，请阅读如下文档后再进一步了解本文的字段说明：
+
+
+            -
+            [设置不转码推流](https://doc.shengwang.cn/doc/media-push/restful/user-guides/set-no-transcode)
+
+            - [设置转码推流](https://doc.shengwang.cn/doc/media-push/restful/user-guides/update-transcode)
+
+            - [设置混音音量](https://doc.shengwang.cn/doc/media-push/restful/user-guides/set-volume)
+
+            - [设置 SEI 信息](https://doc.shengwang.cn/doc/media-push/restful/user-guides/set-sei)
+  /{region}/v1/projects/{appId}/rtmp-converters/{converterId}:
+    delete:
+      summary: 销毁指定 Converter
+      description: 在项目中销毁指定 Converter。
+      operationId: delete-region-v1-projects-appId-rtmp-converters-converterId
+      parameters:
+        - $ref: '#/components/parameters/X-Request-ID'
+        - $ref: '#/components/parameters/region2'
+        - $ref: '#/components/parameters/appId'
+        - $ref: '#/components/parameters/converterId'
+      responses:
+        非 2XX:
+          $ref: '#/components/responses/failure-message'
+        2XX:
+          description: 如果状态码为 2XX，请求成功。响应 Body 为空。
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: >-
+                UUID（通用唯一识别码），标识本次请求。该值为本次请求 Header 中 `X-Request-ID`。如果请求出错，请在日志中打印出该值，排查问题。如果你已在请求
+                Header 中对 `X-Request-ID` 赋值，那么你在响应中收到的参数名为 `X-Custom-Request-ID`，而非 `X-Request-ID`。
+            X-Resource-ID:
+              schema:
+                type: string
+              description: UUID（通用唯一识别码），标识本次请求销毁的 Converter 的 ID。
+      servers:
+        - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: r12kntwnth6pp
+      security:
+        - Basic Auth: []
+    patch:
+      summary: 更新指定 Converter
+      description: 在项目中更新指定 Converter 的配置。
+      operationId: patch-region-v1-projects-appId-rtmp-converters-converterId
+      parameters:
+        - $ref: '#/components/parameters/Content-Type'
+        - $ref: '#/components/parameters/X-Request-ID'
+        - $ref: '#/components/parameters/sequence'
+        - $ref: '#/components/parameters/region2'
+        - $ref: '#/components/parameters/appId'
+        - $ref: '#/components/parameters/converterId'
+      requestBody:
+        description: |-
+          `Update` 请求可更新**转码**推流和**不转码**推流的 Converter。
+
+          > `Update` 不支持更新 Converter 的如下配置：
+          > - `name`
+          > - `idleTimeOut`
+          > - `transcodeOptions.rtcChannel`
+          > - `transcodeOptions.audioOptions.codecProfile`
+          > - `transcodeOptions.audioOptions.sampleRate`
+          > - `transcodeOptions.audioOptions.bitrate`
+          > - `transcodeOptions.audioOptions.audioChannels`
+          > - `transcodeOptions.videoOptions.codec`
+          > - `transcodeOptions.videoOptions.codecProfile`
+        content:
+          application/json:
+            schema:
+              type: object
+              oneOf:
+                - type: object
+                  title: 转码推流
+                  required:
+                    - fields
+                  properties:
+                    converter:
+                      type: object
+                      properties:
+                        transcodeOptions:
+                          type: object
+                          description: '**转码**推流的配置。'
+                          properties:
+                            audioOptions:
+                              type: object
+                              description: Converter 的音频转码配置。
+                              properties:
+                                rtcStreamUids:
+                                  $ref: '#/components/schemas/rtcStreamUids'
+                                volumes:
+                                  $ref: '#/components/schemas/volumes'
+                            videoOptions:
+                              type: object
+                              description: Converter 的视频转码配置。
+                              properties:
+                                canvas:
+                                  type: object
+                                  description: 视频画布的配置。
+                                  properties:
+                                    width:
+                                      $ref: '#/components/schemas/canvas-width'
+                                    height:
+                                      $ref: '#/components/schemas/canvas-height'
+                                    color:
+                                      $ref: '#/components/schemas/canvas-color'
+                                layout:
+                                  anyOf:
+                                    - $ref: '#/components/schemas/layout-rtc'
+                                      description: |-
+                                        画布上各用户的视频画面的配置。
+
+                                        > 仅需在 `layoutType` 为自定义布局时设置 `layout` 字段。
+                                    - $ref: '#/components/schemas/layout-image'
+                                      description: |-
+                                        画布上视频图片的配置。画布上视频图片可充当水印。
+
+                                        > 仅需在 `layoutType` 为自定义布局时设置 `layout` 字段。
+                                defaultPlaceholderImageUrl:
+                                  $ref: '#/components/schemas/default-image'
+                                bitrate:
+                                  $ref: '#/components/schemas/v-bitrate'
+                                frameRate:
+                                  $ref: '#/components/schemas/v-framerate'
+                                gop:
+                                  $ref: '#/components/schemas/v-gop'
+                                seiOptions:
+                                  type: object
+                                  description: >-
+                                    设置携带的用户 SEI（Supplemental Enhancement
+                                    Information）信息。默认为空。不设置则不携带用户 SEI 信息。
+                                  properties:
+                                    source:
+                                      type: object
+                                      description: 设置 SEI 信息的数据来源。默认为空。
+                                      properties:
+                                        metadata:
+                                          $ref: '#/components/schemas/metadata'
+                                        datastream:
+                                          $ref: '#/components/schemas/datastream'
+                                        customized:
+                                          type: object
+                                          properties:
+                                            prefixForAgoraSei:
+                                              $ref: '#/components/schemas/prefix'
+                                            payload:
+                                              $ref: '#/components/schemas/source-payload'
+                                    sink:
+                                      type: object
+                                      description: 设置输出的 SEI 信息。默认为空。
+                                      properties:
+                                        type:
+                                          $ref: '#/components/schemas/sink-type'
+                        rtmpUrl:
+                          $ref: '#/components/schemas/rtmpUrl'
+                        jitterBufferSizeMs:
+                          $ref: '#/components/schemas/jitter'
+                    fields:
+                      $ref: '#/components/schemas/request-fields'
+                - type: object
+                  title: 不转码推流
+                  properties:
+                    converter:
+                      type: object
+                      properties:
+                        rtmpUrl:
+                          $ref: '#/components/schemas/rtmpUrl'
+                    fields:
+                      $ref: '#/components/schemas/request-fields'
+            examples:
+              更新推流地址:
+                value:
+                  converter:
+                    rtmpUrl: rtmp://example.agora.io/live/show68_backup
+                  fields: rtmpUrl
+      responses:
+        2XX:
+          $ref: '#/components/responses/success-basic'
+        非 2XX:
+          $ref: '#/components/responses/failure-message'
+      servers:
+        - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: d2ablxsq5m9rk
+      security:
+        - Basic Auth: []
+      x-docs-sections:
+        - position: after-description
+          markdown: >-
+            `Update` 请求的 Body 字段设置较为复杂，请阅读如下文档后再进一步了解本文的字段说明：
+
+
+            -
+            [更新不转码推流](https://doc.shengwang.cn/doc/media-push/restful/user-guides/set-no-transcode)
+
+            - [更新转码推流](https://doc.shengwang.cn/doc/media-push/restful/user-guides/update-transcode)
+
+            - [更新混音音量](https://doc.shengwang.cn/doc/media-push/restful/user-guides/set-volume)
+
+            - [更新 SEI 信息](https://doc.shengwang.cn/doc/media-push/restful/user-guides/set-sei)
+    get:
+      summary: 获取指定 Converter 的推流状态
+      description: 获取指定 Converter 的推流状态。
+      operationId: get-region-v1-projects-appId-rtmp-converters-converterId
+      parameters:
+        - $ref: '#/components/parameters/Content-Type'
+        - $ref: '#/components/parameters/X-Request-ID'
+        - $ref: '#/components/parameters/region2'
+        - $ref: '#/components/parameters/appId'
+        - $ref: '#/components/parameters/converterId'
+      responses:
+        2XX:
+          $ref: '#/components/responses/success-get'
+        非 2XX:
+          $ref: '#/components/responses/failure-reason'
+      servers:
+        - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: ai3d9yk1a6uue
+      security:
+        - Basic Auth: []
+  /v1/projects/{appId}/rtmp-converters:
+    get:
+      summary: 查询项目下所有 Converter
+      description: 查询项目下所有 Converter 的信息。
+      operationId: get-v1-projects-appId-rtmp-converters
+      parameters:
+        - $ref: '#/components/parameters/Content-Type'
+        - $ref: '#/components/parameters/X-Request-ID'
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/appId'
+      responses:
+        2XX:
+          $ref: '#/components/responses/success-list'
+        非 2XX:
+          $ref: '#/components/responses/failure-message-list'
+      servers:
+        - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 71jf81v9dfzyz
+      security:
+        - Basic Auth: []
+  /v1/projects/{appId}/channels/{cname}/rtmp-converters:
+    get:
+      summary: 查询频道内 Converter
+      description: 查询指定频道内所有 Converter 的信息。
+      operationId: get-v1-projects-appId-channels-cname-rtmp-converters
+      parameters:
+        - $ref: '#/components/parameters/Content-Type'
+        - $ref: '#/components/parameters/X-Request-ID'
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/appId'
+        - $ref: '#/components/parameters/cname'
+      responses:
+        2XX:
+          $ref: '#/components/responses/success-list'
+        非 2XX:
+          $ref: '#/components/responses/failure-message-list'
+      servers:
+        - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 6xotv8f5c74bq
+      security:
+        - Basic Auth: []
+  /v1/ncs/ip:
+    get:
+      summary: 查询消息通知服务器 IP
+      description: 查询消息通知服务器的 IP 地址或 IP 地址列表。
+      operationId: get-v1-ncs-ip
+      responses:
+        2XX:
+          description: |-
+            如果返回的 HTTP 状态码为 `2XX`，表示请求成功。
+
+            你只需关心响应 Body 中的 `primaryIP` 字段，无需关心响应 Header 以及响应 Body 中的其他字段。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      service:
+                        type: object
+                        properties:
+                          hosts:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                primaryIP:
+                                  type: string
+                                  description: 声网消息通知服务器的 IP 地址。
+      servers:
+        - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: f8hsf3fsyiqj5
+      security:
+        - Basic Auth: []
+      x-docs-sections:
+        - position: after-description
+          markdown: >-
+            **背景**：开通消息通知服务后，声网消息通知服务可以将旁路推流业务中发生的一些事件以 HTTPS 请求的方式通知到你的服务器。声网会动态调整消息通知服务器的 IP
+            地址，周期为 24 小时。
+
+
+            **用法**：你可以通过本方法查询 IP 地址。查询后，你需要将 IP 地址（或 IP 地址列表）添加到白名单中。
+      x-docs-callouts:
+        - position: after-description
+          markdown: 我们强烈推荐你至少每 24 小时进行一次查询，并自动更新防火墙配置，否则可能会影响你接收通知。
+components:
+  parameters:
+    regionHintIp:
+      name: regionHintIp
+      in: query
+      description: CDN 源站 IP 地址，必须为有效的 IPv4 地址。该参数可以保障 RTMP 流的稳定性。
+      required: false
+      schema:
+        type: string
+    sequence:
+      name: sequence
+      in: query
+      description: >-
+        `Update` 请求的序列号。取值需要大于或等于 0。请确保后一次 `Update` 请求的序列号大于前一次 `Update`
+        请求的序列号。序列号可以确保声网服务器按照你指定的最新配置来更新 Converter。
+
+
+        **推荐用法**：声网推荐你在第一次调用 `Update` 时，将 `sequence` 填 `0`。在第二次调用 `Update` 时，将 `sequence` 填
+        `1`。在第三次调用 `Update` 时，将 `sequence` 填 `2`。依次类推。声网服务器会按照最新 `Update` 请求（即最大的序列号）更新 Converter。
+      required: false
+      schema:
+        type: number
+    cursor:
+      name: cursor
+      in: query
+      description: >-
+        游标，用于分页查询 Converter 信息。取值必须大于或等于 0。
+
+
+        首次发起 List 请求时，无需设置 `cursor` 参数，请求成功后返回第一页的 Converter 信息。每次请求最多返回 500 条 Converter 信息。推荐你根据响应
+        Body 判断是否需要再次发起请求：
+
+        - 如果响应 Body 中的 `cursor` 为 0，那么表示已经查询到所有 Converter 信息，无需再次发起请求。
+
+        - 如果响应 Body 中的 `cursor` 不为 0，那么表示你的 Converter 超过 500 个，你需要再次发起请求继续查询。举例来说，首次发起请求时，不设置
+        `cursor` 参数，返回的响应包体中 `cursor` 假设为 3009；再次发起请求，设置 `cursor` 参数为 3009；以此类推设置 `cursor`
+        参数并循环请求，直到响应包体中 `cursor` 为 0 才停止请求。
+      required: false
+      schema:
+        type: number
+    appId:
+      name: appId
+      in: path
+      description: 声网为每个开发者提供的 **App ID**。在声网控制台创建一个项目后即可得到一个 App ID。一个 App ID 是一个项目的唯一标识。
+      required: true
+      schema:
+        type: string
+    region:
+      name: region
+      in: path
+      description: >-
+        创建 Converter 的区域。声网支持分区域创建 Converter。请保证设置的 `region` 与你的 CDN 源站在同一个区域且传入 `region`
+        的值为小写。目前支持以下区域：
+
+        - `cn`：中国大陆
+
+        - `ap`：除中国以外的亚洲区域
+
+        - `na`：北美
+
+        - `eu`：欧洲
+      required: true
+      schema:
+        type: string
+    region2:
+      name: region
+      in: path
+      description: Converter 所在的区域，必须与创建 Converter 时设置的 `region` 一致。
+      required: true
+      schema:
+        type: string
+    converterId:
+      name: converterId
+      in: path
+      description: Converter 的 ID。
+      required: true
+      schema:
+        type: string
+    cname:
+      name: cname
+      in: path
+      description: >-
+        声网频道名称，即 Converter 处理的流所属的频道的名称。字符串长度必须在 64 字节以内，支持以下字符集（共 89 个字符）：
+
+        - 所有小写英文字母（a-z）
+
+        - 所有大写英文字母（A-Z）
+
+        - 数字 0-9
+
+        - 空格
+
+        - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[",
+        "]", "^", "_", " {", "}", "\|", "~", ","
+      required: true
+      schema:
+        type: string
+    Content-Type:
+      name: Content-Type
+      in: header
+      description: '`application/json`'
+      required: true
+      schema:
+        type: string
+    X-Request-ID:
+      name: X-Request-ID
+      in: header
+      description: >-
+        UUID（通用唯一识别码），标识本次请求。推荐你赋值，赋值后，声网服务器会在响应 Header 中返回一个对应的 `X-Custom-Request-ID`
+        字段，你可以用此进行问题排查。如果你不赋值，那么声网服务器会自动生成一个 UUID 并在响应 Header 中返回一个对应的 `X-Request-ID` 字段。
+      schema:
+        type: string
+  securitySchemes:
+    Basic Auth:
+      type: http
+      description: >-
+        声网旁路推流 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的
+        `Authorization` 字段中。详见[实现 HTTP
+        基本认证](https://doc.shengwang.cn/doc/media-push/restful/user-guides/http-basic-auth)。
+      scheme: basic
+  responses:
+    failure-message:
+      description: 如果状态码不为 2XX，请求失败。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: 描述请求失败的具体原因。
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: >-
+            UUID（通用唯一识别码），标识本次请求。该值为本次请求 Header 中 `X-Request-ID`。如果请求出错，请在日志中打印出该值，排查问题。如果你已在请求
+            Header 中对 `X-Request-ID` 赋值，那么你在响应中收到的参数名为 `X-Custom-Request-ID`，而非
+            `X-Request-ID`。如果本次请求的响应状态码非 2XX，那么响应 Header 中可能无该字段。
+        X-Resource-ID:
+          schema:
+            type: string
+          description: UUID（通用唯一识别码），标识本次请求操作的 Converter 的 ID。
+    failure-message-list:
+      description: 如果状态码不为 2XX，请求失败。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: 描述请求失败的具体原因。
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: >-
+            UUID（通用唯一识别码），标识本次请求。该值为本次请求 Header 中 `X-Request-ID`。如果请求出错，请在日志中打印出该值，排查问题。如果你已在请求
+            Header 中对 `X-Request-ID` 赋值，那么你在响应中收到的参数名为 `X-Custom-Request-ID`，而非
+            `X-Request-ID`。如果本次请求的响应状态码非 2XX，那么响应 Header 中可能无该字段。
+    failure-reason:
+      description: 如果状态码不为 2XX，请求失败。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              reason:
+                type: string
+                description: 描述请求失败的具体原因。
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: >-
+            UUID（通用唯一识别码），标识本次请求。该值为本次请求 Header 中 `X-Request-ID`。如果请求出错，请在日志中打印出该值，排查问题。如果你已在请求
+            Header 中对 `X-Request-ID` 赋值，那么你在响应中收到的参数名为 `X-Custom-Request-ID`，而非
+            `X-Request-ID`。如果本次请求的响应状态码非 2XX，那么响应 Header 中可能无该字段。
+        X-Resource-ID:
+          schema:
+            type: string
+          description: UUID（通用唯一识别码），标识本次请求操作的 Converter 的 ID。
+    success-basic:
+      description: 如果状态码为 2XX，请求成功。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              converter:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/converter-id'
+                  createTs:
+                    $ref: '#/components/schemas/create-ts'
+                  updateTs:
+                    $ref: '#/components/schemas/update-ts'
+                  state:
+                    $ref: '#/components/schemas/converter-state'
+              fields:
+                $ref: '#/components/schemas/response-fields'
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: >-
+            UUID（通用唯一识别码），标识本次请求。该值为本次请求 Header 中 `X-Request-ID`。如果请求出错，请在日志中打印出该值，排查问题。如果你已在请求
+            Header 中对 `X-Request-ID` 赋值，那么你在响应中收到的参数名为 `X-Custom-Request-ID`，而非 `X-Request-ID`。
+        X-Resource-ID:
+          schema:
+            type: string
+          description: UUID（通用唯一识别码），标识本次请求创建的 Converter 的 ID。
+    success-list:
+      description: 如果状态码为 2XX，请求成功。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                $ref: '#/components/schemas/success'
+              data:
+                type: object
+                properties:
+                  total_count:
+                    $ref: '#/components/schemas/count'
+                  cursor:
+                    $ref: '#/components/schemas/cursor'
+                  members:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        rtcChannel:
+                          $ref: '#/components/schemas/rtcChannel-r'
+                        status:
+                          type: string
+                          description: 当前请求状态。
+                        converterName:
+                          $ref: '#/components/schemas/name-r'
+                        updateTs:
+                          $ref: '#/components/schemas/update-ts'
+                        appId:
+                          $ref: '#/components/schemas/appId'
+                        rtmpUrl:
+                          $ref: '#/components/schemas/rtmpUrl-r'
+                        converterId:
+                          $ref: '#/components/schemas/converter-id'
+                        create:
+                          $ref: '#/components/schemas/create-ts'
+                        idleTimeout:
+                          $ref: '#/components/schemas/idle-r'
+                        state:
+                          $ref: '#/components/schemas/converter-state'
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: >-
+            UUID（通用唯一识别码），标识本次请求。该值为本次请求 Header 中 `X-Request-ID`。如果请求出错，请在日志中打印出该值，排查问题。如果你已在请求
+            Header 中对 `X-Request-ID` 赋值，那么你在响应中收到的参数名为 `X-Custom-Request-ID`，而非 `X-Request-ID`。
+    success-get:
+      description: |-
+        如果状态码为 2XX，请求成功。
+
+        `Get` 请求可获取**转码**推流和**不转码**推流的 Converter。
+      content:
+        application/json:
+          schema:
+            type: object
+            oneOf:
+              - type: object
+                title: 转码推流
+                properties:
+                  converter:
+                    type: object
+                    description: '**转码**推流时返回如下字段。'
+                    properties:
+                      name:
+                        $ref: '#/components/schemas/name-r'
+                      transcodeOptions:
+                        type: object
+                        description: '**转码**推流的配置。'
+                        properties:
+                          rtcChannel:
+                            $ref: '#/components/schemas/rtcChannel-r'
+                          audioOptions:
+                            type: object
+                            description: Converter 的音频转码配置。
+                            properties:
+                              rtcStreamUids:
+                                $ref: '#/components/schemas/rtcStreamUids'
+                              codecProfile:
+                                $ref: '#/components/schemas/codecProfile'
+                              sampleRate:
+                                $ref: '#/components/schemas/sampleRate'
+                              bitrate:
+                                $ref: '#/components/schemas/bitrate-r'
+                              audioChannels:
+                                $ref: '#/components/schemas/audioChannels'
+                              volumes:
+                                $ref: '#/components/schemas/volumes-r'
+                          videoOptions:
+                            type: object
+                            description: Converter 的视频转码配置。
+                            properties:
+                              canvas:
+                                type: object
+                                description: 视频画布的配置。
+                                properties:
+                                  width:
+                                    $ref: '#/components/schemas/canvas-width-r'
+                                  height:
+                                    $ref: '#/components/schemas/canvas-height-r'
+                                  color:
+                                    $ref: '#/components/schemas/canvas-color-r'
+                              layoutType:
+                                $ref: '#/components/schemas/layoutType'
+                              layout:
+                                anyOf:
+                                  - $ref: '#/components/schemas/layout-rtc'
+                                    description: |-
+                                      画布上各用户的视频画面的配置。
+
+                                      **注意**：仅在 `layoutType` 为自定义布局时返回 `layout` 字段。
+                                  - $ref: '#/components/schemas/layout-image'
+                                    description: |-
+                                      画布上视频图片的配置。画布上视频图片可充当水印。
+
+                                      **注意**：仅在 `layoutType` 为自定义布局时返回 `layout` 字段。
+                              vertical:
+                                type: object
+                                description: |-
+                                  垂直布局的画面配置。
+
+                                  **注意**：仅在 `layoutType` 为垂直布局时返回 `vertical` 字段。
+                                properties:
+                                  maxResolutionUid:
+                                    $ref: '#/components/schemas/max-uid'
+                                  fillMode:
+                                    $ref: '#/components/schemas/fillMode'
+                                  refreshIntervalSec:
+                                    $ref: '#/components/schemas/refresh-sec'
+                              defaultPlaceholderImageUrl:
+                                $ref: '#/components/schemas/default-image'
+                              bitrate:
+                                $ref: '#/components/schemas/v-bitrate-r'
+                              frameRate:
+                                $ref: '#/components/schemas/v-framerate-r'
+                              gop:
+                                $ref: '#/components/schemas/v-gop'
+                              codec:
+                                $ref: '#/components/schemas/v-codec'
+                              codecProfile:
+                                $ref: '#/components/schemas/v-codec-profile'
+                              seiOptions:
+                                type: object
+                                description: 携带的用户 SEI（Supplemental Enhancement Information）信息。
+                                properties:
+                                  source:
+                                    type: object
+                                    description: SEI 信息的数据来源。
+                                    properties:
+                                      metadata:
+                                        $ref: '#/components/schemas/metadata'
+                                      datastream:
+                                        $ref: '#/components/schemas/datastream'
+                                      customized:
+                                        type: object
+                                        description: >-
+                                          自定义 SEI 信息，会被转换为[声网 SEI
+                                          规范](https://doc.shengwang.cn/faq/quality-issues/sei)的 SEI
+                                          信息。
+                                        properties:
+                                          prefixForAgoraSei:
+                                            $ref: '#/components/schemas/prefix'
+                                          payload:
+                                            $ref: '#/components/schemas/source-payload'
+                                  sink:
+                                    type: object
+                                    description: 输出的 SEI 信息。
+                                    properties:
+                                      type:
+                                        $ref: '#/components/schemas/sink-type'
+                      rtmpUrl:
+                        $ref: '#/components/schemas/rtmpUrl-r'
+                      idleTimeout:
+                        $ref: '#/components/schemas/idle-r'
+                      jitterBufferSizeMs:
+                        $ref: '#/components/schemas/jitter-r'
+              - type: object
+                title: 不转码推流
+                properties:
+                  converter:
+                    type: object
+                    description: '**不转码**推流时返回如下字段。'
+                    properties:
+                      name:
+                        $ref: '#/components/schemas/name-r'
+                      rawOptions:
+                        type: object
+                        description: '**不转码**推流配置。'
+                        properties:
+                          rtcChannel:
+                            $ref: '#/components/schemas/rtcChannel-r'
+                          rtcStreamUid:
+                            $ref: '#/components/schemas/raw-uid'
+                      rtmpUrl:
+                        $ref: '#/components/schemas/rtmpUrl-r'
+                      idleTimeout:
+                        $ref: '#/components/schemas/idle-r'
+                      jitterBufferSizeMs:
+                        $ref: '#/components/schemas/jitter-r'
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: >-
+            UUID（通用唯一识别码），标识本次请求。该值为本次请求 Header 中 `X-Request-ID`。如果请求出错，请在日志中打印出该值，排查问题。如果你已在请求
+            Header 中对 `X-Request-ID` 赋值，那么你在响应中收到的参数名为 `X-Custom-Request-ID`，而非 `X-Request-ID`。
+        X-Resource-ID:
+          schema:
+            type: string
+          description: UUID（通用唯一识别码），标识本次请求获取的 Converter 的 ID。
+  schemas:
+    name:
+      type: string
+      title: name
+      description: >-
+        Converter 的名字。长度必须在 64 个字符以内，支持的字符集范围如下：
+
+        - 所有小写英文字母（a-z）
+
+        - 所有大写英文字母（A-Z）
+
+        - 数字 0-9
+
+        - "-", "_"
+
+        > - 不传值时该字段为空。
+
+        > - 同一时间，一个项目下不允许出现重名的 Converter，否则在尝试创建同名的 Converter 时会收到响应状态码 `409(Conflict)`。
+
+        > - 为避免重复创建多个 Converter 重复推流，请使用 `name` 字段管理指定项目下的 Converter。声网推荐你以“频道名（`rtcChannel`）”和
+        “Converter 特性”组合来给 `name` 赋值。如 `show68_horizontal` 和 `show68_vertical`，分别代表在频道 `show68`
+        中创建的用户画面为水平布局和和垂直布局的 Converter。
+      x-stoplight:
+        id: nlgoexfpnjdru
+    rtcChannel:
+      type: string
+      title: rtcChannel
+      description: >-
+        声网频道名称，即 Converter 处理的流所属频道的名称。字符串长度必须在 64 字节以内，支持以下字符集（共 89 个字符）：
+
+        - 所有小写英文字母（a-z）
+
+        - 所有大写英文字母（A-Z）
+
+        - 数字 0-9
+
+        - 空格
+
+        - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[",
+        "]", "^", "_", " {", "}", "\|", "~", ","
+      x-stoplight:
+        id: vnf018bv3qd4n
+    rtcStreamUids:
+      type: array
+      title: rtcStreamUids
+      description: |-
+        指定参与混音的用户 UID。
+
+        **注意**：
+        - 如果 `audioOptions` 中无该字段，声网将频道内所有用户音频进行混音。
+        - 如果 `audioOptions` 中存在该字段且值为空，则代表不混合任何用户的音频流。
+      items:
+        type: number
+      x-stoplight:
+        id: y8q18kjyp96zf
+    codecProfile:
+      type: string
+      title: codecProfile
+      description: |-
+        Converter 输出的音频编解码规格。支持如下值：
+        - `"LC-AAC"`: MPEG-4 AAC LC。
+        - `"HE-AAC"`: High-Efficiency AAC。
+      default: LC-AAC
+      x-stoplight:
+        id: atsti4klf2sx7
+    sampleRate:
+      type: number
+      title: sampleRate
+      description: |-
+        Converter 输出的音频编码采样率 (Hz)，支持取值如下：
+        - `32000`
+        - `44100`
+        - `48000`
+      default: 48000
+      x-stoplight:
+        id: pz2ie3s9kvoye
+    bitrate:
+      type: number
+      title: bitrate
+      description: |-
+        Converter 输出的音频编码码率 (Kbps)。取值范围为 [32,128]。推荐取值如下：
+        - 如果音频编解码器为 LC-AAC，推荐取值范围为 [32,112]。
+        - 如果音频编解码器为 HE-AAC，推荐取值范围为 [40,96]。
+      default: 48
+      x-stoplight:
+        id: 58lmv62bxpfza
+    audioChannels:
+      type: number
+      title: audioChannels
+      description: |-
+        Converter 输出的音频声道数，支持取值如下：
+        - `1`：单声道。
+        - `2`：双声道。
+      default: 1
+      x-stoplight:
+        id: pvzea1q1vcx0v
+    volumes:
+      type: array
+      title: volumes
+      description: |-
+        参与混音的用户音量。
+
+        **注意**：发起 `Update` 请求更新指定用户音量时，每次请求成功都会将其他用户（非指定用户）的音量恢复成默认音量 `100`。
+      items:
+        type: object
+        properties:
+          rtcStreamUid:
+            $ref: '#/components/schemas/v-rtcStreamUid'
+          volume:
+            $ref: '#/components/schemas/v-volume'
+        required:
+          - rtcStreamUid
+      x-stoplight:
+        id: n0dqpx6eh2ui0
+    v-rtcStreamUid:
+      type: number
+      title: v-rtcStreamUid
+      description: |-
+        待设置音量的混音用户 UID。
+
+        **注意**：填入的 UID 需要存在于 `rtcStreamUids`（参与混音的用户 UID 数组）中，否则请求失败。
+      x-stoplight:
+        id: t38po83td98zp
+    v-volume:
+      type: number
+      title: v-volume
+      description: 指定的混音用户的音量。取值范围为 [0,200]。
+      default: 100
+      x-stoplight:
+        id: 8y6zwqpoxl7ml
+    canvas-width:
+      type: number
+      title: canvas-width
+      description: 画布的宽度 (pixel)。取值范围为 [66,1920]。
+      x-stoplight:
+        id: t1kitl0t59tmk
+    canvas-height:
+      type: number
+      title: canvas-height
+      description: 画布的高度 (pixel)。取值范围为 [66,1920]。
+      x-stoplight:
+        id: dyqu3h4no525t
+    canvas-color:
+      type: number
+      title: canvas-color
+      description: 画布的背景色。RGB 颜色值，以十进制数表示。如 255 代表蓝色。取值范围为 [0,16777215]。默认值为 0，即黑色。
+      default: 0
+      x-stoplight:
+        id: gt1tkyajb5so9
+    layoutType:
+      type: number
+      title: layoutType
+      description: >-
+        输出视频的画面布局类型：
+
+        - `0` 或空：自定义布局，即通过 `layout` 自定义布局。
+
+        - `1`：垂直布局，即通过 `vertical`
+        指定一个用户在屏幕左侧显示大视窗画面，其他用户以小视窗画面在屏幕右侧垂直排列，详见[设置垂直布局](https://doc.shengwang.cn/doc/media-push/restful/user-guides/vertical-streaming)。垂直布局时，通过
+        `Update` 请求只能更新 `rtmpUrl`。
+      default: 0
+      x-stoplight:
+        id: mn9x0adj5v0v3
+    layout-rtc:
+      type: array
+      title: layout-rtc
+      items:
+        type: object
+        properties:
+          rtcStreamUid:
+            type: number
+            description: 用户 UID。
+          region:
+            type: object
+            description: 用户视频画面在画布上的显示区域。超出画布的视频画面会被裁剪。
+            properties:
+              xPos:
+                $ref: '#/components/schemas/rtc-x'
+              yPos:
+                $ref: '#/components/schemas/rtc-y'
+              zIndex:
+                $ref: '#/components/schemas/rtc-z'
+              width:
+                $ref: '#/components/schemas/rtc-width'
+              height:
+                $ref: '#/components/schemas/rtc-height'
+            required:
+              - xPos
+              - yPos
+              - zIndex
+              - width
+              - height
+          fillMode:
+            $ref: '#/components/schemas/fillMode'
+          placeholderImageUrl:
+            type: string
+            description: >-
+              用户画面的背景图 URL 地址。支持 JPG、PNG 和 GIF
+              格式的图片。当频道内用户停止发布视频流，如果设置了该字段，用户的视频画面将切换为该背景图，否则会显示为画布背景色。
+          alpha:
+            $ref: '#/components/schemas/alpha'
+        required:
+          - rtcStreamUid
+          - region
+      x-stoplight:
+        id: c21lo6zsgnghq
+    rtc-x:
+      type: number
+      title: rtc-x
+      description: 画面在画布上的 x 坐标 (pixel)。以画布左上角为原点，x 坐标为画面左上角相对于原点的横向位移。
+      x-stoplight:
+        id: r8of34hgr7qdg
+    rtc-y:
+      type: number
+      title: rtc-y
+      description: 画面在画布上的 y 坐标 (pixel)。以画布左上角为原点，y 坐标为画面左上角相对于原点的纵向位移。
+      x-stoplight:
+        id: mk3taxse1r5od
+    rtc-z:
+      type: number
+      title: rtc-z
+      description: 画面的图层编号。取值范围为 [0,100]。`0` 代表最下层的图层。`100` 代表最上层的图层。
+      x-stoplight:
+        id: kpch7uldvcicd
+    rtc-width:
+      type: number
+      title: rtc-width
+      description: 画面的宽度 (pixel)。
+      x-stoplight:
+        id: 1h5j0gmg3rn0k
+    rtc-height:
+      type: number
+      title: rtc-height
+      description: 画面的高度 (pixel)。
+      x-stoplight:
+        id: mc6kjcaczg0qh
+    fillMode:
+      type: string
+      title: fillMode
+      description: |-
+        用户视频画面的显示模式：
+        - `"fill"`：在保持宽高比的前提下，缩放画面，并居中剪裁。详见[示意图](https://web-cdn.agora.io/docs-files/1628837665989)。
+        - `"fit"`：在保持宽高比的前提下，缩放画面，使其完整显示。详见[示意图](https://web-cdn.agora.io/docs-files/1628837708782)。
+      default: fill
+      x-stoplight:
+        id: k136zbuf5k8q7
+    alpha:
+      type: number
+      title: alpha
+      description: 透明度。`0.0` 代表完全透明，`1.0` 代表完全不透明。
+      format: float
+      minimum: 0
+      maximum: 1
+      default: 1
+      x-stoplight:
+        id: zhw748fm7wt0d
+    layout-image:
+      type: array
+      title: layout-image
+      items:
+        type: object
+        properties:
+          imageUrl:
+            type: string
+            description: 图片的 URL，以 `http` 或 `https` 开头。支持 JPG 和 PNG 格式的图片。
+          region:
+            type: object
+            description: 图片在画布上的显示区域。超出画布的图片会被裁剪。
+            properties:
+              xPos:
+                $ref: '#/components/schemas/ig-x'
+              yPos:
+                $ref: '#/components/schemas/ig-y'
+              zIndex:
+                $ref: '#/components/schemas/ig-z'
+              width:
+                $ref: '#/components/schemas/ig-width'
+              height:
+                $ref: '#/components/schemas/ig-height'
+            required:
+              - xPos
+              - yPos
+              - zIndex
+              - width
+              - height
+          fillMode:
+            $ref: '#/components/schemas/fillMode-image'
+          alpha:
+            $ref: '#/components/schemas/alpha'
+        required:
+          - imageUrl
+          - region
+      x-stoplight:
+        id: mc76zhihgg5fc
+    ig-x:
+      type: number
+      title: ig-x
+      description: 图片在画布上的 x 坐标 (pixel)。以画布左上角为原点，x 坐标为图片左上角相对于原点的横向位移。
+      x-stoplight:
+        id: 20dsqbafuuwz2
+    ig-y:
+      type: number
+      title: ig-y
+      description: 图片在画布上的 y 坐标 (pixel)。以画布左上角为原点，y 坐标为图片左上角相对于原点的纵向位移。
+      x-stoplight:
+        id: x66ykvp9yjtox
+    ig-z:
+      type: number
+      title: ig-z
+      description: 图片的图层编号。取值范围为 [0,100]。`0` 代表最下层的图层。`100` 代表最上层的图层。
+      x-stoplight:
+        id: l6ylesmuhfih7
+    ig-width:
+      type: number
+      title: ig-width
+      description: 图片的宽度 (pixel)。
+      x-stoplight:
+        id: 84a59u7ma74e1
+    ig-height:
+      type: number
+      title: ig-height
+      description: 图片的高度 (pixel)。
+      x-stoplight:
+        id: 91l45axnrohu2
+    fillMode-image:
+      type: string
+      title: fillMode-image
+      description: |-
+        图片的显示模式：
+        - `"fill"`：在保持宽高比的前提下，缩放图片，并居中剪裁。详见[示意图](https://web-cdn.agora.io/docs-files/1628837665989)。
+        - `"fit"`：在保持宽高比的前提下，缩放图片，使其完整显示。详见[示意图](https://web-cdn.agora.io/docs-files/1628837708782)。
+      x-stoplight:
+        id: 2t03s1kdncy9r
+    max-uid:
+      type: number
+      title: max-uid
+      description: |-
+        显示大视窗画面的用户 UID。
+
+        **注意**：如果未设置，则每次布局画面刷新时将音量最大的用户显示为大视窗画面。为维持大视窗画面稳定，建议你设置该字段。
+      x-stoplight:
+        id: thql2jwviiopy
+    refresh-sec:
+      type: number
+      title: refresh-sec
+      description: 布局画面刷新的时间间隔，单位为秒。
+      minimum: 1
+      maximum: 30
+      default: 3
+      x-stoplight:
+        id: vy6k6qrt7ro3w
+    default-image:
+      type: string
+      title: default-image
+      description: |-
+        默认的用户画面背景图 URL 地址。支持 JPG、PNG 和 GIF 格式的图片。当频道内用户停止发布视频流时，背景图的行为如下：
+        - 如果设置了该字段，用户的视频画面将切换为该背景图。
+        - 如果未设置该字段，用户的视频画面先显示为该用户视频最后一帧，布局刷新后显示为画布背景色。
+      x-stoplight:
+        id: 9ubgf6uyu2e9t
+    v-bitrate:
+      type: number
+      title: v-bitrate
+      description: >-
+        输出视频的编码码率 (Kbps)。取值范围为
+        [1,10000]。推荐取值详见[常用视频属性](https://doc.shengwang.cn/doc/media-push/restful/api/video-profile)。
+      x-stoplight:
+        id: 1rs4m2yxj2z5y
+    v-framerate:
+      type: number
+      title: v-framerate
+      description: >-
+        输出视频的编码帧率 (fps)。取值范围为
+        [1,30]。推荐取值详见[常用视频属性](https://doc.shengwang.cn/doc/media-push/restful/api/video-profile)。
+      default: 15
+      x-stoplight:
+        id: v7dmyhmh7jmrf
+    v-gop:
+      type: number
+      title: v-gop
+      description: 输出视频的 GOP。默认值为 `framerate` 的 2 倍。
+      x-stoplight:
+        id: xponkiy416csd
+    v-codec:
+      type: string
+      title: v-codec
+      description: |-
+        输出视频的编解码规格。不可设置为空。支持如下值：
+        - `"H.264"`
+        - `"H.265"`
+      default: H.264
+      x-stoplight:
+        id: 8fsknr880oi8l
+    v-codec-profile:
+      type: string
+      title: v-codec-profile
+      description: |-
+        输出视频的编码规格。支持如下值：
+        - `"high"`: High 级别的视频编码规格，一般用于广播及视频碟片存储，高清电视。
+        - `"baseline"`: Baseline 级别的视频编码规格，一般用于低阶或需要额外容错的应用，比如视频通话、手机视频等。
+        - `"main"`: Main 级别的视频编码规格，一般用于主流消费类电子产品，如 mp4、便携的视频播放器、PSP 和 iPad 等。
+        **注意**：如果 `codec` 为 H.265，那么该字段默认值且唯一支持取值为 `"main"`。如果 `codec` 为 H.264，那么该字段默认值为 `"high"`。
+      x-stoplight:
+        id: 8vl6061ewcvxo
+    metadata:
+      type: boolean
+      title: metadata
+      description: |-
+        是否传入 Metadata 类型的 SEI 信息。
+        - `true`：传入。
+        - `false`：不传入。
+      default: false
+      x-stoplight:
+        id: d18bymyrl2chx
+    datastream:
+      type: boolean
+      title: datastream
+      description: |-
+        是否传入 Datastream 类型的 SEI 信息。
+        - `true`：传入。
+        - `false`：不传入。
+      default: false
+      x-stoplight:
+        id: a5txmkvxsbv55
+    prefix:
+      type: string
+      title: prefix
+      description: 自定义 SEI 信息的 payload 前缀。长度必须在 32 个字符以内。默认为空。
+      x-stoplight:
+        id: s3q7rokkcxfuf
+    source-payload:
+      type: string
+      title: source-payload
+      description: >-
+        自定义 SEI 信息的 payload。长度必须在 4096 个字符以内。默认为空。
+
+
+        自定义 SEI 信息会被转换为[声网 SEI 规范](https://doc.shengwang.cn/faq/quality-issues/sei)的 SEI 信息。此处设置的
+        payload 会被转换至声网 SEI 规范中定义的 `app_data` 中。
+      x-stoplight:
+        id: sx5i75dtrk7ci
+    sink-type:
+      type: number
+      title: sink-type
+      description: 输出 SEI 信息的 payload 的 `type`。
+      default: 100
+      x-stoplight:
+        id: 9u8oe1q2wce9u
+    rtmpUrl:
+      type: string
+      title: rtmpUrl
+      description: >-
+        CDN 推流地址。必须为有效的 RTMP 地址，且长度在 1024 个字符以内。如果你从 OBS 推流更换为旁路推流，需要按照 `{server}/{stream_key}`
+        的规则来拼接 RTMP URL。
+      x-stoplight:
+        id: ube4gun211p5s
+    idle:
+      type: number
+      title: idle
+      description: >-
+        Converter 处于空闲状态的最大时长（秒）。空闲指 Converter 处理的音视频流所对应的所有用户均已离开频道。当 Converter 处于空闲状态时长大于
+        `idleTimeout`，Converter 自动销毁，推流停止。取值范围为 [5,86400]。如果设置值小于 5，则默认为 5；如果设置值大于 86400，则默认为 86400。
+      default: 300
+      x-stoplight:
+        id: 623s7i67w4ecz
+    jitter:
+      type: number
+      title: jitter
+      description: |-
+        音频接收端到网络抖动缓冲端的网络延迟 (ms)。取值范围 [0,1000]。旁路推流服务会根据你设置的值，以 100 为单位向上取整。
+
+        **注意**：声网建议你不要设为 `0`。设为 `0` 表示不使用抖动缓冲延迟，弱网情况下可能导致音画质量问题，
+      default: 1000
+      x-stoplight:
+        id: bvi96th8pvomb
+    raw-uid:
+      type: number
+      title: raw-uid
+      description: 音视频流所属用户的 UID。
+      x-stoplight:
+        id: gmrlbl5h559q2
+    request-fields:
+      type: string
+      title: request-fields
+      description: >-
+        JSON 编码方式的字段掩码，详见[谷歌 protobuf FieldMask
+        文档](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask)。用于描述更新的
+        `converter` object 中包含的字段集合。
+
+
+        示例：
+
+        ```json
+
+        {
+            "converter": {
+                "rtmpUrl": "rtmp://example.agora.io/live/show68_backup"
+            },
+            "fields": "rtmpUrl"
+        }
+
+        ```
+
+        在本示例中，`fields` 描述 `converter` object 中更新 `rtmpUrl` 字段。
+
+
+        **注意**：更新多个字段时，`fields` 中填写的各字段必须用英文逗号分隔，且逗号后无空格。例如，`"fields": "a,b"`。
+      x-stoplight:
+        id: gfrwy593os2y5
+    converter-id:
+      type: string
+      title: converter-id
+      description: Converter 的 ID，是声网服务器生成的一个 UUID（通用唯一识别码），标识一个已创建的 Converter。
+      x-stoplight:
+        id: ti0cqhdgcnvqk
+    create-ts:
+      type: string
+      title: create-ts
+      description: 创建 Converter 时的 Unix 时间戳（秒）。
+      x-stoplight:
+        id: fgtsvvtiaxwjl
+    update-ts:
+      type: string
+      title: update-ts
+      description: 最近一次更新 Converter 配置时的 Unix 时间戳（秒）。
+      x-stoplight:
+        id: n5uiqptwf4ybj
+    converter-state:
+      type: string
+      title: converter-state
+      description: |-
+        Converter 的运行状态：
+        - `"connecting"`: 正在连接声网推流服务器和 CDN 服务器。
+        - `"running"`: 正在进行推流。
+        - `"failed"`: 推流失败。
+      x-stoplight:
+        id: 31t31zq8hj2ol
+    response-fields:
+      type: string
+      title: response-fields
+      description: >-
+        JSON 编码方式的字段掩码，详见[谷歌 protobuf FieldMask
+        文档](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask)。用于描述返回的
+        `converter` object 中包含的字段集合。
+
+
+        示例：
+
+        ```json
+
+        {
+            "converter": {
+              "id": "4c014467d647bb87b60b719f6fa57686",
+              "createTs": 1591786766,
+              "updateTs": 1591788746,
+              "state": "running"
+            },
+            "fields": "id,createTs,updateTs,state"
+        }
+
+        ```
+
+        在本示例中，`fields` 描述返回的 `converter` object 中包含 `id`、`createTs`、`updateTs`、`state` 字段。
+      x-stoplight:
+        id: xubgtcw6ml6lw
+    success:
+      type: boolean
+      title: success
+      description: |-
+        请求是否成功：
+        - `true`：成功。
+        - `false`：不成功。
+      x-stoplight:
+        id: zwzlqr4zdj4gp
+    count:
+      type: number
+      title: count
+      description: 查询到的所有 Converter 的数量。
+      x-stoplight:
+        id: 4v1u4dd8ht8vh
+    cursor:
+      type: number
+      title: cursor
+      description: 游标，用于对 Converter 信息列表进行分页。值为 `0` 表示已查询到所有 Converter，否则需要继续查询。
+      x-stoplight:
+        id: ufh9s8gp6vwqh
+    rtcChannel-r:
+      type: string
+      title: rtcChannel-r
+      description: 声网频道名称，即 Converter 处理的流所属频道的名称。
+      x-stoplight:
+        id: jjv4coeab8aow
+    name-r:
+      type: string
+      title: name-r
+      description: Converter 的名称。
+      x-stoplight:
+        id: jtb5kedy55o28
+    appId:
+      type: string
+      title: appId
+      description: 声网为每个开发者提供的 App ID。一个 App ID 是一个项目的唯一标识。
+      x-stoplight:
+        id: l6wpji48yig69
+    rtmpUrl-r:
+      type: string
+      title: rtmpUrl-r
+      description: CDN 推流地址。
+      x-stoplight:
+        id: s8zmhyzhd9w85
+    idle-r:
+      type: string
+      title: idle-r
+      description: >-
+        Converter 处于空闲状态的最大时长（秒）。空闲指 Converter 处理的音视频流所对应的所有用户均已离开频道。当 Converter 处于空闲状态时长大于
+        `idleTimeout`，Converter 自动销毁，推流停止。
+      x-stoplight:
+        id: pq93pdqv6e6xi
+    bitrate-r:
+      type: number
+      title: bitrate-r
+      description: Converter 输出的音频编码码率 (Kbps)。
+      x-stoplight:
+        id: 3vhdan4xl5f5b
+    volumes-r:
+      type: array
+      title: volumes-r
+      description: 参与混音的用户音量。
+      items:
+        type: object
+        properties:
+          rtcStreamUid:
+            $ref: '#/components/schemas/v-rtcStreamUid-r'
+          volume:
+            $ref: '#/components/schemas/v-volume-r'
+      x-stoplight:
+        id: ty6dkg5rtj7p7
+    v-rtcStreamUid-r:
+      type: number
+      title: v-rtcStreamUid-r
+      description: 待设置音量的混音用户 UID。
+      x-stoplight:
+        id: i50gr67uwwzch
+    v-volume-r:
+      type: number
+      title: v-volume-r
+      description: 指定的混音用户的音量。
+      x-stoplight:
+        id: 4xnzyjy8zdix4
+    canvas-width-r:
+      type: number
+      title: canvas-width-r
+      description: 画布的宽度 (pixel)。
+      x-stoplight:
+        id: qqm95sff94f0s
+    canvas-height-r:
+      type: number
+      title: canvas-height-r
+      description: 画布的高度 (pixel)。
+      x-stoplight:
+        id: gb99yrks4ef0m
+    canvas-color-r:
+      type: number
+      title: canvas-color-r
+      description: 画布的背景色。RGB 颜色值，以十进制数表示。如 255 代表蓝色。
+      x-stoplight:
+        id: 1s9bubhh795en
+    v-bitrate-r:
+      type: number
+      title: v-bitrate-r
+      description: 输出视频的编码码率 (Kbps)。
+      x-stoplight:
+        id: 9t97u2nv8jap0
+    v-framerate-r:
+      type: number
+      title: v-framerate-r
+      description: 输出视频的编码帧率 (fps)。
+      x-stoplight:
+        id: 07ei8lkek0luu
+    jitter-r:
+      type: number
+      title: jitter-r
+      description: 音频接收端到网络抖动缓冲端的网络延迟 (ms)。旁路推流服务会根据你设置的值，以 100 为单位向上取整。
+      x-stoplight:
+        id: tbfz6vm0uccgj
+security:
+  - Basic Auth: []

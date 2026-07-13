@@ -1,129 +1,177 @@
 ---
-title: 总览
-description: 先选对 Agora 的产品入口，再快速进入对应的接入路径和实现文档。
+title: 声网文档
 ---
 
-## Voice agent
+## 构建智能体
 
-了解声网的语音智能体产品。
-
-<OverviewSpotlightGrid size="small">
-  <OverviewSpotlightCard
-    description="15 分钟内跑通一个可用的语音智能体。"
-    href="/zh-CN/ai/quick-start"
-    size="small"
-    title="Voice agent 快速开始"
-    variant="code"
+<SolutionCardGrid>
+  <SolutionCard
+    title="构建对话式 AI 引擎"
+    href="/zh-CN/ai/get-started/quick-start"
+    icon="rtc"
+    tone="purple"
+    description="搭建最小化的后端与客户端流程，快速运行一个可用的实时语音智能体。"
   />
-  <OverviewSpotlightCard
-    description="了解架构、模型选择和生产接入路径。"
-    href="/zh-CN/ai"
-    size="small"
-    title="Voice agent 概览"
-    variant="platform"
+  <SolutionCard
+    title="构建对话式 AI 开发套件"
+    href="/zh-CN/ai/device-kit/build/run-r1-demo"
+    icon="ai"
+    tone="blue"
+    description="快速运行 R1 示例，验证智能硬件上的端到端语音交互流程。"
   />
-</OverviewSpotlightGrid>
+</SolutionCardGrid>
 
-## Realtime & Media
+## 构建实时互动应用
 
-先比较声网的实时能力。
-
-<div className="not-prose my-6">
-  <OverviewSpotlightCard
-    description="查看实时互动、媒体处理、外部媒体连接和大规模分发的完整能力地图。"
-    href="/zh-CN/realtime-media"
-    title="查看 Realtime & Media 总览"
-    variant="platform"
+<SolutionCardGrid>
+  <SolutionCard
+    title="语音通话"
+    href="/zh-CN/realtime-media/rtc"
+    icon="voice-calling"
+    tone="blue"
+    description="面向语音通话、会议、连麦等场景，构建稳定低延迟的实时音频体验。"
   />
+  <SolutionCard
+    title="视频通话"
+    href="/zh-CN/realtime-media/rtc"
+    icon="video-calling"
+    tone="purple"
+    description="面向视频通话、互动直播和多人实时互动场景，构建高清流畅的视频体验。"
+  />
+  <SolutionCard
+    title="信令"
+    href="/zh-CN/realtime-media/rtm"
+    icon="signaling"
+    tone="green"
+    description="实现频道消息、用户状态、在线状态和实时状态同步。"
+  />
+</SolutionCardGrid>
+
+<OverviewLinkBanner
+  title="探索实时与媒体能力"
+  href="/zh-CN/realtime-media/overview"
+  description="查看录制、语音转写、转码、媒体流接入与观众分发等实时互动能力。"
+/>
+
+## 从 AI 工具开始
+
+<SolutionCardGrid>
+  <SolutionCard
+    title="使用 AI 工具开始构建"
+    href="/zh-CN/introduction/mcp-integrate"
+    icon="tools"
+    tone="sand"
+    description="将声网 CLI、MCP Server 和 Skills 接入你的 AI 编程工作流。"
+  />
+</SolutionCardGrid>
+
+## 实时互动场景
+
+<OverviewLinkBanner
+  title="浏览 RTC 产品与使用场景"
+  href="/zh-CN/realtime-media"
+  description="查找适用于通话、直播、在线课堂、智能设备和用量分析等场景的实时互动产品与方案。"
+/>
+
+## SDK 和 API
+
+<div className="not-prose my-8 grid gap-4 lg:grid-cols-3">
+  <ToolkitGroup title="客户端 SDK">
+    <ToolkitItem href="/zh-CN/api-reference/sdks?platform=android" icon="android" label="Android" />
+    <ToolkitItem href="/zh-CN/api-reference/sdks?platform=ios" icon="ios" label="iOS" />
+    <ToolkitItem href="/zh-CN/api-reference/sdks?platform=web" icon="web" label="Web" />
+  </ToolkitGroup>
+
+  <ToolkitGroup title="API">
+    <ToolkitItem href="/zh-CN/api-reference/api-ref" icon="rest" label="REST API" />
+    <ToolkitItem href="/zh-CN/api-reference/api-ref/rtc" icon="rtc" label="音视频通话" />
+    <ToolkitItem href="/zh-CN/api-reference/api-ref/signaling" icon="messaging" label="信令" />
+    <ToolkitItem href="/zh-CN/realtime-media/speech-to-text" icon="stt" label="实时语音转写" />
+  </ToolkitGroup>
+
+  <ToolkitGroup title="服务端 SDK">
+    <ToolkitItem href="/zh-CN/api-reference/rtc-server-sdk/python-api/overview.python" icon="python" label="Python" />
+    <ToolkitItem href="/zh-CN/api-reference/conversational-ai/typescript-api/overview.typescript" icon="typescript" label="TypeScript" />
+    <ToolkitItem href="/zh-CN/api-reference/rtc-server-sdk/go-api/overview.go" icon="go" label="Go" />
+    <ToolkitItem href="/zh-CN/realtime-media/rtc-server-sdk" icon="server" label="Server Gateway" />
+  </ToolkitGroup>
 </div>
 
-<CapabilityMatrix
-  rows={[
+## 获取帮助
+
+<HelpHub
+  cards={[
     {
-      title: '构建实时互动',
-      description: '在同一会话里实时交换媒体和状态。',
-      items: ['Voice & Video', 'Signaling', 'Chat', 'Whiteboard'],
+      title: "提交工单",
+      description: "登录控制台，通过工单联系声网技术支持。",
+      cta: "创建工单",
+      href: "https://agoraio.zendesk.com/hc/zh-cn",
+      icon: "ticket",
     },
     {
-      title: '处理会话内容',
-      description: '把会话中的媒体内容转换成文字和下游资产。',
-      items: ['转录', '翻译', '录制', '转码'],
+      title: "Stack Overflow",
+      description: "声网团队会关注 Stack Overflow 上的相关技术问题。",
+      cta: "前往 Stack Overflow",
+      href: "https://stackoverflow.com/search?q=agora.io",
+      icon: "stack-overflow",
     },
     {
-      title: '连接外部媒体',
-      description: '把 Agora 会话连接到外部流媒体系统。',
-      items: ['Media Push', 'Media Pull', 'RTMP Gateway'],
+      title: "Discord",
+      description: "加入开发者社区，提问并交流你的构建经验。",
+      cta: "加入 Discord",
+      href: "https://discord.gg/QfgBCvuX4d",
+      icon: "discord",
     },
     {
-      title: '分发到更大规模观众',
-      description: '把实时互动层扩展到更大规模播放。',
-      items: ['Fusion CDN'],
+      title: "状态页",
+      description: "查看服务健康状态和维护更新。",
+      cta: "查看状态",
+      href: "https://status.agora.io/",
+      icon: "status",
+    },
+  ]}
+  knowledgeBase={[
+    {
+      label: "如何实现 HTTP 基本认证？",
+      href: "/zh-CN/api-reference/api-ref/conversational-ai/authentication#http-基本认证",
+    },
+    {
+      label: "iOS 或 Android 上为什么无法通过蓝牙接听通话？",
+      href: "/zh-CN/api-reference/faq/quality/ios_bluetooth",
+    },
+    {
+      label: "如何排查黑屏问题？",
+      href: "/zh-CN/api-reference/faq/quality/video_blank",
+    },
+    {
+      label: "通话音量和媒体音量有什么区别？",
+      href: "/zh-CN/api-reference/faq/integration/system_volume",
+    },
+    {
+      label: "前 10,000 分钟免费政策",
+      href: "/zh-CN/api-reference/faq/account/billing_free",
+    },
+  ]}
+  topics={[
+    {
+      label: "集成问题",
+      href: "/zh-CN/api-reference/faq/integration",
+    },
+    {
+      label: "质量问题",
+      href: "/zh-CN/api-reference/faq/quality",
+    },
+    {
+      label: "产品咨询",
+      href: "/zh-CN/api-reference/faq/product",
+    },
+    {
+      label: "账户与计费",
+      href: "/zh-CN/api-reference/faq/account",
+    },
+    {
+      label: "其他问题",
+      href: "/zh-CN/api-reference/faq/other",
     },
   ]}
 />
-
-## Solutions
-
-查看常见产品形态的解决方案路径。
-
-<OverviewSpotlightGrid size="small">
-  <OverviewSpotlightCard
-    description="快速搭建带连麦、PK 和互动玩法的直播产品。"
-    href="/zh-CN/solutions/showroom"
-    size="small"
-    title="直播解决方案"
-    variant="platform"
-  />
-  <OverviewSpotlightCard
-    description="快速搭建支持参会者管理和房间控制的会议产品。"
-    href="/zh-CN/solutions/meeting"
-    size="small"
-    title="会议解决方案"
-    variant="platform"
-  />
-  <OverviewSpotlightCard
-    description="快速搭建以课堂角色、课堂控制和教学流程为核心的在线课堂产品。"
-    href="/zh-CN/solutions/flexible-classroom"
-    size="small"
-    title="课堂解决方案"
-    variant="platform"
-  />
-</OverviewSpotlightGrid>
-
-## SDKs and tools
-
-查看 SDK、API 和开发工具。
-
-<OverviewToolkits>
-  <ToolkitGroup title="Agent frameworks">
-    <ToolkitItem href="/zh-CN/ai/quick-start" icon="python" label="Python" />
-    <ToolkitItem href="/zh-CN/ai/skills-integrate" icon="typescript" label="TypeScript" />
-  </ToolkitGroup>
-
-  <ToolkitGroup title="Tools">
-    <ToolkitItem href="/zh-CN/introduction/start-with-ai" icon="cli" label="CLI" />
-    <ToolkitItem href="/zh-CN/ai" icon="studio" label="AI" />
-    <ToolkitItem href="/zh-CN/ai/mcp-integrate" icon="mcp" label="MCP" />
-    <ToolkitItem href="/zh-CN/ai/skills-integrate" icon="skills" label="Skills" />
-  </ToolkitGroup>
-
-  <ToolkitGroup title="Component libraries">
-    <ToolkitItem href="/zh-CN/api-reference" icon="web" label="Web" />
-    <ToolkitItem href="/zh-CN/api-reference" icon="android" label="Android" />
-    <ToolkitItem href="/zh-CN/api-reference" icon="ios" label="iOS" />
-  </ToolkitGroup>
-
-  <ToolkitGroup title="SDKs and APIs">
-    <ToolkitItem href="/zh-CN/realtime-media/rtc" icon="rtc" label="RTC" />
-    <ToolkitItem href="/zh-CN/realtime-media/rtm2" icon="messaging" label="RTM" />
-    <ToolkitItem href="/zh-CN/realtime-media/speech-to-text" icon="stt" label="Speech to Text" />
-    <ToolkitItem href="/zh-CN/api-reference" icon="rest" label="REST API" />
-  </ToolkitGroup>
-
-  <ToolkitGroup title="Server SDKs">
-    <ToolkitItem href="/zh-CN/api-reference" icon="go" label="Go" />
-    <ToolkitItem href="/zh-CN/api-reference" icon="python" label="Python" />
-    <ToolkitItem href="/zh-CN/api-reference" icon="typescript" label="TypeScript" />
-    <ToolkitItem href="/zh-CN/realtime-media/rtc-server-sdk" icon="server" label="Media processing" />
-  </ToolkitGroup>
-</OverviewToolkits>

@@ -1,0 +1,82 @@
+---
+title: "音视频录制"
+description: "音视频录制 API reference."
+---
+<a id="toc_recording"></a>
+
+<a id="api_irtcengine_startaudiorecording3"></a>
+
+## StartAudioRecording
+
+开始客户端录音并进行录音配置。
+
+<a id="api_irtcengine_startaudiorecording3__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int StartAudioRecording(const FAudioRecordingConfiguration& config);
+```
+
+<a id="api_irtcengine_startaudiorecording3__detailed_desc"></a>
+
+SDK 支持通话过程中在客户端进行录音。调用该方法后，你可以录制频道内用户的音频，并得到一个录音文件。录音文件仅支持下列格式：
+
+- WAV: 音质保真度较高，文件较大。例如，采样率为 32000 Hz，录音时长为 10 分钟的文件大小约为 73 M。
+- AAC: 音质保真度较低，文件较小。例如，采样率为 32000 Hz，录音音质为 AUDIO_RECORDING_QUALITY_MEDIUM，录音时长为 10 分钟的文件大小约为 2 M。
+
+用户离开频道后，录音会自动停止。
+
+<a id="api_irtcengine_startaudiorecording3__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_startaudiorecording3__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_startaudiorecording3__parameters"></a>
+
+### 参数
+
+#### `config`
+
+录音配置。详见 [FAudioRecordingConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/class-audiorecordingconfiguration)。
+
+<a id="api_irtcengine_startaudiorecording3__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopaudiorecording"></a>
+
+## StopAudioRecording
+
+停止客户端录音。
+
+<a id="api_irtcengine_stopaudiorecording__prototype"></a>
+
+```cpp
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int StopAudioRecording();
+```
+
+<a id="api_irtcengine_stopaudiorecording__detailed_desc"></a>
+
+<a id="api_irtcengine_stopaudiorecording__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)

@@ -1,0 +1,52 @@
+---
+title: "FCacheStatistics"
+description: "缓存文件的统计数据。"
+---
+<a id="class_cachestatistics__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FCacheStatistics {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|CacheStatistics")
+	int64 fileSize = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|CacheStatistics")
+	int64 cacheSize = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|CacheStatistics")
+	int64 downloadSize = 0;
+	
+	FCacheStatistics(){}
+	FCacheStatistics(const agora::media::base::CacheStatistics& cacheStatistics) {
+		fileSize = cacheStatistics.fileSize;
+		cacheSize = cacheStatistics.cacheSize;
+		downloadSize = cacheStatistics.downloadSize;
+	}
+	agora::media::base::CacheStatistics CreateAgoraData() const {
+		agora::media::base::CacheStatistics cacheStatistics;
+		cacheStatistics.fileSize = fileSize;
+		cacheStatistics.cacheSize = cacheSize;
+		cacheStatistics.downloadSize = downloadSize;
+		return cacheStatistics;
+	}
+	void FreeAgoraData(agora::media::base::CacheStatistics & AgoraData) const {
+		
+	}
+};
+```
+
+<a id="class_cachestatistics__parameters"></a>
+
+## 属性
+
+### `fileSize`
+
+本次播放的媒体文件的大小，单位为字节。
+
+### `cacheSize`
+
+本次播放的媒体文件已缓存的数据大小，单位为字节。
+
+### `downloadSize`
+
+本次播放已下载的媒体文件大小，单位为字节。

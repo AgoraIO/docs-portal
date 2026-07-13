@@ -1,0 +1,71 @@
+---
+title: "BeautyOptions"
+description: "美颜选项。"
+---
+<a id="class_beautyoptions__prototype"></a>
+
+```csharp
+public class BeautyOptions
+    {
+        public BeautyOptions()
+        {
+            lighteningContrastLevel = LIGHTENING_CONTRAST_LEVEL.LIGHTENING_CONTRAST_NORMAL;
+            this.lighteningLevel = 0;
+            this.smoothnessLevel = 0;
+            this.rednessLevel = 0;
+            this.sharpnessLevel = 0;
+        }
+
+        public BeautyOptions(
+            LIGHTENING_CONTRAST_LEVEL lighteningContrastLevel, float lighteningLevel, float smoothnessLevel,
+            float rednessLevel, float sharpnessLevel)
+        {
+            this.lighteningContrastLevel = lighteningContrastLevel;
+            this.lighteningLevel = lighteningLevel;
+            this.smoothnessLevel = smoothnessLevel;
+            this.rednessLevel = rednessLevel;
+            this.sharpnessLevel = sharpnessLevel;
+        }
+
+        public LIGHTENING_CONTRAST_LEVEL lighteningContrastLevel { set; get; }
+
+        public float lighteningLevel { set; get; }
+
+        public float smoothnessLevel { set; get; }
+
+        public float rednessLevel { set; get; }
+
+        public float sharpnessLevel { set; get; }
+    }
+
+        public LIGHTENING_CONTRAST_LEVEL lighteningContrastLevel { set; get; }
+        public float lighteningLevel { set; get; }
+        public float smoothnessLevel { set; get; }
+        public float rednessLevel { set; get; }
+        public float sharpnessLevel { set; get; }
+    }
+```
+
+<a id="class_beautyoptions__parameters"></a>
+
+## 属性
+
+### `lighteningContrastLevel`
+
+对比度，常与 `lighteningLevel` 搭配使用。取值越大，明暗对比程度越大。详见 [LIGHTENING_CONTRAST_LEVEL](/zh-CN/api-reference/rtc/unity/enum-lighteningcontrastlevel)。
+
+### `lighteningLevel`
+
+美白程度，取值范围为 [0.0,1.0]，其中 0.0 表示原始亮度，默认值为 0.0。取值越大，美白程度越大。
+
+### `smoothnessLevel`
+
+磨皮程度，取值范围为 [0.0,1.0]，其中 0.0 表示原始磨皮程度，默认值为 0.0。取值越大，磨皮程度越大。
+
+### `rednessLevel`
+
+红润度，取值范围为 [0.0,1.0]，其中 0.0 表示原始红润度，默认值为 0.0。取值越大，红润程度越大。
+
+### `sharpnessLevel`
+
+锐化程度，取值范围为 [0.0,1.0]，其中 0.0 表示原始锐度，默认值为 0.0。取值越大，锐化程度越大。

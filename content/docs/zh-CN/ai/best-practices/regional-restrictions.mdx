@@ -1,15 +1,22 @@
 ---
-title: 区域访问限制
-description: 为适应不同国家或地区的法律法规，声网对话式 AI 引擎支持区域访问限制功能。开启区域访问限制后，不论用户在哪个区域使用你的 App，对话式 AI 引擎都只会访问指定区域的声网服务器。
+title: "区域访问限制"
 ---
-为适应不同国家或地区的法律法规，声网对话式 AI 引擎支持区域访问限制功能。开启区域访问限制后，不论用户在哪个区域使用你的 App，对话式 AI 引擎都只会访问指定区域的声网服务器。
+为适应不同国家或地区的法律法规，声网对话式 AI 引擎支持区域访问限制功能。
 
-例如你指定了北美为访问区域，假设有两位用户分别从北美和中国发起通话:
+开启区域访问限制后，不论用户在哪个区域使用你的 App，对话式 AI 引擎都只会访问指定区域的声网服务器。
+
+例如你指定了北美为访问区域，假设有两位用户分别从北美和新加坡发起通话：
 
 | 指定访问区域 | 用户所在区域 | 实际访问区域 | 连接后的用户体验 |
 | --- | --- | --- | --- |
 | 北美 | 北美 | 北美 | 正常 |
-| 北美 | 新加坡 | 北美 | 可能受到较大影响。由于指定区域与 App 用户所在区域之间存在跨区域公共互联网，公共互联网网络质量较差会导致音视频体验受到影响。<p>如果指定区域的服务器都不可用，服务会直接报错。</p> |
+| 北美 | 新加坡 | 北美 | <Slot name="geofencing-markdown-1-2-3" /> |
+
+<Slot for="geofencing-markdown-1-2-3">
+
+可能受到较大影响。由于指定区域与 App 用户所在区域之间存在跨区域公共互联网，公共互联网网络质量较差会导致音视频体验受到影响。如果指定区域的服务器都不可用，服务会直接报错。
+
+</Slot>
 
 ## 默认行为
 
@@ -19,21 +26,49 @@ description: 为适应不同国家或地区的法律法规，声网对话式 AI 
 2. **就近选择**: 如果对应区域没有可用服务器，系统会自动选择最近的可用区域。
 3. **故障转移**: 当某个区域的服务不可用时，系统会自动切换到其他可用区域。
 
-> 注意
-> 开启区域访问限制后，上述默认行为将不再适用。系统会严格限制在指定区域内访问，不会进行跨区域的故障转移。
+:::warning[注意]
+开启区域访问限制后，上述默认行为将不再适用。系统会严格限制在指定区域内访问，不会进行跨区域的故障转移。
+:::
 
 ## 实现方法
 
 ### 配置对话式 AI 引擎区域访问限制
 
-在调用[创建对话式智能体 API](../../api-reference/conversational-ai/rest-api/agent/join.md) 时，通过 `properties.geofence` 字段配置区域访问限制。
+在调用[创建对话式智能体 API](/zh-CN/api-reference/api-ref/conversational-ai/join) 时，通过 `properties.geofence` 字段配置区域访问限制。
 
 #### 参数说明
 
+下表说明 `properties.geofence` 中各字段的含义。
+
 | 字段 | 类型 | 必填 | 描述 |
 | --- | --- | --- | --- |
-| `area` | String | 是 | 允许访问的区域。可选以下值：<br />- `GLOBAL`：全球<br />- `NORTH_AMERICA`：北美<br />- `EUROPE`：欧洲<br />- `ASIA`：亚洲<br />- `INDIA`：印度<br />- `JAPAN`：日本 |
-| `exclude_area` | String | 否 | 排除的区域。仅当 `area` 为 `GLOBAL` 时可用。可选以下值：<br />- `NORTH_AMERICA`：北美<br />- `EUROPE`：欧洲<br />- `ASIA`：亚洲<br />- `INDIA`：印度<br />- `JAPAN`：日本 |
+| `area` | String | 是 | <Slot name="geofencing-html-0-1-3" /> |
+| `exclude_area` | String | 否 | <Slot name="geofencing-html-0-2-3" /> |
+
+<Slot for="geofencing-html-0-1-3">
+
+允许访问的区域。可选以下值：
+
+    - `GLOBAL`：全球
+    - `NORTH_AMERICA`：北美
+    - `EUROPE`：欧洲
+    - `ASIA`：亚洲
+    - `INDIA`：印度
+    - `JAPAN`：日本
+
+</Slot>
+
+<Slot for="geofencing-html-0-2-3">
+
+排除的区域。仅当 `area` 为 `GLOBAL` 时可用。可选以下值：
+
+    - `NORTH_AMERICA`：北美
+    - `EUROPE`：欧洲
+    - `ASIA`：亚洲
+    - `INDIA`：印度
+    - `JAPAN`：日本
+
+</Slot>
 
 #### 配置示例
 
@@ -86,7 +121,7 @@ description: 为适应不同国家或地区的法律法规，声网对话式 AI 
 
 ### 配置 RTC 区域访问限制
 
-声网对话式 AI 引擎服务和声网 RTC 服务的区域访问限制配置是**相互独立**的。如果你需要实现完整的端到端区域访问限制，确保和智能体互动的整个音视频通话链路都限定在指定区域内，你还需要参考 [RTC 区域访问限制](https://doc.shengwang.cn/doc/rtc-server-sdk/cpp/advanced-features/set-region)进行配置。
+声网对话式 AI 引擎服务和声网 RTC 服务的区域访问限制配置是**相互独立**的。如果你需要实现完整的端到端区域访问限制，确保和智能体互动的整个音视频通话链路都限定在指定区域内，你还需要参考 [RTC 区域访问限制](/zh-CN/realtime-media/rtc-server-sdk/advanced-features/set-region)进行配置。
 
 ## 数据驻留 (Data Residency)
 

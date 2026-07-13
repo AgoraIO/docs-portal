@@ -1,0 +1,1386 @@
+---
+title: "调整通话音量"
+---
+
+<PlatformStructured platform="android">
+
+本文介绍如何设置音频采集和播放、以及耳返播放的音量。为了更好地理解这些操作，你需要先了解以下与通话音量相关的基础概念：
+
+- **采集**是指音频信号经由采集设备采集后，传输到发送端的过程。
+- **播放**是指音频信号从接收端传输到播放设备后，通过播放设备进行播放的过程。
+- **耳返**是指将采集到的音频信号实时回传并通过耳机播放的过程。
+
+## 技术原理
+
+声网 SDK 支持对 SDK 采集和播放的音频音量进行调整，以满足用户实际应用场景。例如，进行双人通话时，需要静音远端用户，可以通过调整播放音量的方法将音量设置为 0。下图展示了调整音量的工作流程：
+
+![调节通话音量](https://web-cdn.agora.io/docs-portal/img/rtc/volume.png)
+
+- ①：调用 `adjustRecordingSignalVolume` 调节音频采集信号音量。
+- ②：调用 `setInEarMonitoringVolume` 设置耳返音量。
+- ③：调用 `adjustUserPlaybackSignalVolume` 调节本地播放的指定远端用户信号音量。
+- ④：调用 `adjustPlaybackSignalVolume` 调节本地播放的所有远端用户信号音量。
+
+:::warning[注意]
+如果使用调整信号音量的方法将音量设置过大，在某些设备上可能会出现音频失真。
+:::
+
+## 前提条件
+
+在实现调整通话音量前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+### 调整播放音量
+
+调用  `adjustPlaybackSignalVolume` 或 `adjustUserPlaybackSignalVolume` 调整音频播放信号的音量。
+
+```java
+int volume = 50;
+int uid = 123456;
+// 设置本地播放的所有远端用户音量
+mRtcEngine.adjustPlaybackSignalVolume(volume);
+// 设置本地播放的指定远端用户的音量，例如用户 123456
+mRtcEngine.adjustUserPlaybackSignalVolume(uid, volume);
+```
+
+### 调整耳返音量
+
+在音频采集、混音、播放的整个过程中，你都可以调用 `setInEarMonitoringVolume` 调整耳返的音量。
+
+```java
+// 开启耳返功能
+rtcEngine.enableInEarMonitoring(true);
+int volume = 50;
+// 调整耳返音量
+rtcEngine.setInEarMonitoringVolume(volume);
+```
+
+### 获取用户音量（回调）
+
+在音频采集、混音、播放的整个过程中，你都可以通过 `onAudioVolumeIndication` 回调获取频道内瞬时音量最高的三个用户（即说话者）的用户 ID 及他们的音量。返回的 `uid` 为 0 表示本地用户。
+
+:::warning[注意]
+你需要开启 `enableAudioVolumeIndication` 方法才能收到该回调。
+:::
+
+  ```java
+  private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
+
+        ...
+
+        @override
+        public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume) {
+        // 获取瞬时说话音量最高的三个用户（即说话者）的用户 ID、他们的音量及本地用户是否在说话
+        }
+  };
+
+  ...
+
+  // 启用 onAudioVolumeIndication 回调
+  mRtcEngine.enableAudioVolumeIndication(1000, 3, true);
+  ```
+
+### 调整采集音量
+
+调用 `adjustRecordingSignalVolume` 调整音频采集信号的音量。
+
+```java
+ChannelMediaOptions options = new ChannelMediaOptions();
+options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+mRtcEngine.joinChannel(token, channelName, 1234, options);
+int volume = 50;
+// 调整采集信号音量
+rtcEngine.adjustRecordingSignalVolume(volume);
+```
+
+## 注意事项
+
+使用采集设备采集音频信号时，SDK 默认使用采集设备音量为 85。音量 0 代表静音，音量 255 代表设备的最大音量。如果 SDK 检测到采集设备音量在当前环境中过低，SDK 会自动提高采集设备音量。采集设备音量影响设备的全局音量。如果采集设备音量无法满足你的需求，你可以通过调节麦克风或声卡采集的信号幅度，从而调节采集音量。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了调整采集、播放、耳返音量的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java" />
+  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java" />
+</Cards>
+
+### 参考文档
+
+实现调整通话音量过程中，你还可以参考如下文档：
+
+- [如何处理音量太小问题？](/zh-CN/api-reference/faq/quality/audio_low)
+
+### API 参考
+
+- [`adjustRecordingSignalVolume`](/api-ref/rtc/android/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](/api-ref/rtc/android/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](/api-ref/rtc/android/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`enableInEarMonitoring`[2/2]](/api-ref/rtc/android/API/toc_audio_capture#api_irtcengine_enableinearmonitoring2)
+- [`setInEarMonitoringVolume`](/api-ref/rtc/android/API/toc_audio_capture#api_irtcengine_setinearmonitoringvolume)
+- [`onAudioVolumeIndication`](/api-ref/rtc/android/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文介绍如何设置音频采集和播放、以及耳返播放的音量。为了更好地理解这些操作，你需要先了解以下与通话音量相关的基础概念：
+
+- **采集**是指音频信号经由采集设备采集后，传输到发送端的过程。
+- **播放**是指音频信号从接收端传输到播放设备后，通过播放设备进行播放的过程。
+- **耳返**是指将采集到的音频信号实时回传并通过耳机播放的过程。
+
+## 技术原理
+
+声网 SDK 支持对 SDK 采集和播放的音频音量进行调整，以满足用户实际应用场景。例如，进行双人通话时，需要静音远端用户，可以通过调整播放音量的方法将音量设置为 0。下图展示了调整音量的工作流程：
+
+![调节通话音量](https://web-cdn.agora.io/docs-portal/img/rtc/volume.png)
+
+- ①：调用 `adjustRecordingSignalVolume` 调节音频采集信号音量。
+- ②：调用 `setInEarMonitoringVolume` 设置耳返音量。
+- ③：调用 `adjustUserPlaybackSignalVolume` 调节本地播放的指定远端用户信号音量。
+- ④：调用 `adjustPlaybackSignalVolume` 调节本地播放的所有远端用户信号音量。
+
+:::warning[注意]
+如果使用调整信号音量的方法将音量设置过大，在某些设备上可能会出现音频失真。
+:::
+
+## 前提条件
+
+在实现调整通话音量前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+### 调整播放音量
+
+调用 `adjustPlaybackSignalVolume` 或 `adjustUserPlaybackSignalVolume` 调整音频播放信号的音量。
+
+```objc tab="Objective-C"
+// 设置本地播放的所有远端用户音量
+[agoraKit adjustPlaybackSignalVolume: 50];
+// 设置本地播放的指定远端用户的音量
+[agoraKit adjustUserPlaybackSignalVolume: uid, volume: 50];
+```
+
+```swift tab="Swift"
+// 设置本地播放的所有远端用户音量
+agoraKit.adjustPlaybackSignalVolume(50)
+// 设置本地播放的指定远端用户的音量
+agoraKit.adjustUserPlaybackSignalVolume(uid, volume: 50)
+```
+
+### 调整耳返音量
+
+在音频采集、混音、播放的整个过程中，你都可以调用 `setInEarMonitoringVolume` 调整耳返的音量。
+
+```objc tab="Objective-C"
+// 开启耳返功能
+[agoraKit enableInEarMonitoring(true)];
+// 调整耳返音量
+[agoraKit setInEarMonitoringVolume: 50];
+```
+
+```swift tab="Swift"
+// 开启耳返功能
+agoraKit.enableInearMonitoring(true)
+// 调整耳返音量
+agoraKit.setInEarMonitoringVolume(50)
+```
+
+### 获取用户音量（回调）
+
+在音频采集、混音、播放的整个过程中，你都可以通过 `reportAudioVolumeIndicationOfSpeakers` 回调获取频道内瞬时音量最高的三个用户（即说话者）的用户 ID 及他们的音量。返回的 `uid` 为 0 表示本地用户。
+
+:::warning[注意]
+你需要开启 `enableAudioVolumeIndication` 方法才能收到该回调。
+:::
+
+```objc tab="Objective-C"
+// 获取瞬时说话音量最高的三个用户（即说话者）的用户 ID、他们的音量及本地用户是否在说话
+- (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine   reportAudioVolumeIndicationOfSpeakers:(NSArray<AgoraRtcAudioVolumeInfo*> *_Nonnull)  speakers totalVolume:(NSInteger)totalVolume {
+}
+```
+
+```swift tab="Swift"
+// 获取瞬时说话音量最高的三个用户（即说话者）的用户 ID、他们的音量及本地用户是否在说话
+func rtcEngine(_ engine: AgoraRtcEngineKit, reportAudioVolumeIndicationOfSpeakers speakers:
+[AgoraRtcAudioVolumeInfo], totalVolume: Int) {
+}
+
+// 启用用户音量提示
+agoraKit.enableAudioVolumeIndication(200, smooth: 3, reportVad: true)
+```
+
+### 调整采集音量
+
+调用 `adjustRecordingSignalVolume` 调整音频采集信号的音量。
+
+```objc tab="Objective-C"
+// 调整采集信号音量
+[agoraKit adjustRecordingSignalVolume: 50];
+```
+
+```swift tab="Swift"
+// 调整采集信号音量
+agoraKit.adjustRecordingSignalVolume(50)
+```
+
+## 注意事项
+
+使用采集设备采集音频信号时，SDK 默认使用采集设备音量为 85。音量 0 代表静音，音量 255 代表设备的最大音量。如果 SDK 检测到采集设备音量在当前环境中过低，SDK 会自动提高采集设备音量。采集设备音量影响设备的全局音量。如果采集设备音量无法满足你的需求，你可以通过调节麦克风或声卡采集的信号幅度，从而调节采集音量。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了调整采集、播放、耳返音量的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelAudio" />
+  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelAudio" />
+</Cards>
+
+如需调整混音或音效文件的播放音量，可以参考以下示例项目。
+
+<Cards>
+  <Card title="AudioMixing" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/AudioMixing" />
+  <Card title="AudioMixing" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/AudioMixing" />
+</Cards>
+
+### 参考文档
+
+实现调整通话音量过程中，你还可以参考如下文档：
+
+- [如何处理音量太小问题？](/zh-CN/api-reference/faq/quality/audio_low)
+
+### API 参考
+
+- [`adjustRecordingSignalVolume`](/api-ref/rtc/ios/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](/api-ref/rtc/ios/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](/api-ref/rtc/ios/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`enableInEarMonitoring`[2/2]](/api-ref/rtc/ios/API/toc_audio_capture#api_irtcengine_enableinearmonitoring2)
+- [`setInEarMonitoringVolume`](/api-ref/rtc/ios/API/toc_audio_capture#api_irtcengine_setinearmonitoringvolume)
+- [`reportAudioVolumeIndicationOfSpeakers`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+本文介绍如何设置音频采集和播放、以及耳返播放的音量。为了更好地理解这些操作，你需要先了解以下与通话音量相关的基础概念：
+
+- **采集**是指音频信号经由采集设备采集后，传输到发送端的过程。
+- **播放**是指音频信号从接收端传输到播放设备后，通过播放设备进行播放的过程。
+- **耳返**是指将采集到的音频信号实时回传并通过耳机播放的过程。
+
+## 技术原理
+
+声网 SDK 支持对 SDK 采集和播放的音频音量进行调整，以满足用户实际应用场景。例如，进行双人通话时，需要静音远端用户，可以通过调整播放音量的方法将音量设置为 0。下图展示了调整音量的工作流程：
+
+![调节通话音量](https://web-cdn.agora.io/docs-portal/img/rtc/volume.png)
+
+- ①：调用 `adjustRecordingSignalVolume` 调节音频采集信号音量。
+- ②：调用 `setInEarMonitoringVolume` 设置耳返音量。
+- ③：调用 `adjustUserPlaybackSignalVolume` 调节本地播放的指定远端用户信号音量。
+- ④：调用 `adjustPlaybackSignalVolume` 调节本地播放的所有远端用户信号音量。
+
+:::warning[注意]
+如果使用调整信号音量的方法将音量设置过大，在某些设备上可能会出现音频失真。
+:::
+
+## 前提条件
+
+在实现调整通话音量前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+### 调整播放音量
+
+- 调用 `setDeviceVolume` 调整播放设备音量。`volume` 的值与 macOS 系统中音频设备属性里的值是一一对应的，255 对应下图中喇叭/耳机的音量值调到最右。
+
+![macOS 播放设备音量设置示意图](https://web-cdn.agora.io/docs-files/1545124651243)
+
+```objc tab="Objective-C"
+// 调整播放设备音量为 50
+[agoraKit setDeviceVolume: AgoraMediaDeviceTypeAudioPlayout volume: 50];
+```
+
+```swift tab="Swift"
+// 调整播放设备音量为 50
+agoraKit.setDeviceVolume(.audioPlayout, volume: 50)
+```
+
+- 调用  `adjustPlaybackSignalVolume` 或 `adjustUserPlaybackSignalVolume` 调整音频播放信号的音量。
+
+```objc tab="Objective-C"
+// 设置本地播放的所有远端用户音量
+[agoraKit adjustPlaybackSignalVolume: 50];
+// 设置本地播放的指定远端用户的音量
+[agoraKit adjustUserPlaybackSignalVolume: uid, volume: 50];
+```
+
+```swift tab="Swift"
+// 设置本地播放的所有远端用户音量
+agoraKit.adjustPlaybackSignalVolume(50)
+// 设置本地播放的指定远端用户的音量
+agoraKit.adjustUserPlaybackSignalVolume(uid, volume: 50)
+```
+
+### 获取用户音量（回调）
+
+在音频采集、混音、播放的整个过程中，你都可以通过 `reportAudioVolumeIndicationOfSpeakers` 回调获取频道内瞬时音量最高的三个用户（即说话者）的用户 ID 及他们的音量。返回的 `uid` 为 0 表示本地用户。
+
+:::warning[注意]
+你需要开启 `enableAudioVolumeIndication` 方法才能收到该回调。
+:::
+
+```objc tab="Objective-C"
+// 获取瞬时说话音量最高的三个用户（即说话者）的用户 ID、他们的音量及本地用户是否在说话
+- (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine   reportAudioVolumeIndicationOfSpeakers:(NSArray<AgoraRtcAudioVolumeInfo*> *_Nonnull)  speakers totalVolume:(NSInteger)totalVolume {
+}
+```
+
+```swift tab="Swift"
+// 获取瞬时说话音量最高的三个用户（即说话者）的用户 ID、他们的音量及本地用户是否在说话
+func rtcEngine(_ engine: AgoraRtcEngineKit, reportAudioVolumeIndicationOfSpeakers speakers:
+[AgoraRtcAudioVolumeInfo], totalVolume: Int) {
+}
+
+// 启用用户音量提示
+agoraKit.enableAudioVolumeIndication(200, smooth: 3, reportVad: true)
+```
+
+### 调整采集音量
+
+- 调用 `setDeviceVolume` 调整采集设备音量。`volume` 的值与 macOS 系统中音频设备属性里的值是一一对应的，255 对应下图中麦克风阵列的音量值调到最右。
+
+![macOS 采集设备音量设置示意图](https://web-cdn.agora.io/docs-files/1545124630783)
+
+```objc tab="Objective-C"
+// 调整采集设备音量为 50
+[agoraKit setDeviceVolume: AgoraMediaDeviceTypeAudioRecording volume: 50];
+```
+
+```swift tab="Swift"
+// 调整采集设备音量为 50
+agoraKit.setDeviceVolume(.audioRecording, volume: 50)
+```
+
+- 调用 `adjustRecordingSignalVolume` 调整音频采集信号的音量。
+
+```objc tab="Objective-C"
+// 调整采集信号音量
+[agoraKit adjustRecordingSignalVolume: 50];
+```
+
+```swift tab="Swift"
+// 调整采集信号音量
+agoraKit.adjustRecordingSignalVolume(50)
+```
+
+## 注意事项
+
+使用采集设备采集音频信号时，SDK 默认使用采集设备音量为 85。音量 0 代表静音，音量 255 代表设备的最大音量。如果 SDK 检测到采集设备音量在当前环境中过低，SDK 会自动提高采集设备音量。采集设备音量影响设备的全局音量。如果采集设备音量无法满足你的需求，你可以通过调节麦克风或声卡采集的信号幅度来调整采集音量。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了调整采集、播放、耳返音量的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/blob/main/macOS/APIExample/Examples/Basic/JoinChannelAudio/JoinChannelAudio.swift" />
+  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/blob/main/macOS/APIExample/Examples/Basic/JoinChannelAudio/JoinChannelAudio.swift" />
+</Cards>
+
+如需调整混音或音效文件的播放音量，可以参考以下示例项目。
+
+<Cards>
+  <Card title="AudioMixing" href="https://gitee.com/agoraio-community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/AudioMixing" />
+  <Card title="AudioMixing" href="https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/AudioMixing" />
+</Cards>
+
+### 参考文档
+
+实现调整通话音量过程中，你还可以参考如下文档：
+
+- [如何处理音量太小问题？](/zh-CN/api-reference/faq/quality/audio_low)
+
+### API 参考
+
+- [`setDeviceVolume`](/api-ref/rtc/macos/API/toc_common_device#api_irtcengine_setdevicevolume)
+- [`adjustRecordingSignalVolume`](/api-ref/rtc/macos/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](/api-ref/rtc/macos/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](/api-ref/rtc/macos/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](/api-ref/rtc/macos/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`reportAudioVolumeIndicationOfSpeakers`](/api-ref/rtc/macos/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+在使用声网 Web SDK 时，你可以对 SDK 采集到的声音及 SDK 播放的声音音量进行调整，以满足产品在声音上的个性化需求。比如进行双人通话时，可以通过这个功能调整麦克风采集音量或者远端用户音量。
+
+## 前提条件
+
+开始前，请确保你已参考[快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start)在你的项目中实现基本的实时音视频功能。
+## 实现方法
+
+SDK 为本地音频轨道和远端音频轨道对象分别提供 `setVolume` 方法用于调整本地音频的采集音量和远端音频的播放音量。
+
+**调节远端音频的播放音量**
+
+以下示例中 `remoteUser` 是指已订阅的远端用户对象。
+
+```javascript
+// 将音量减少一半
+remoteUser.audioTrack.setVolume(50);
+// 使用原始音量
+remoteUser.audioTrack.setVolume(100);
+// 将远端音量设置为 0
+remoteUser.audioTrack.setVolume(0);
+```
+
+**调节本地音频的采集音量**
+
+以下示例中 `localAudioTrack` 是指自己创建的本地音频轨道对象。
+
+```javascript
+AgoraRTC.createMicrophoneAudioTrack().then(localAudioTrack => {
+  // 麦克风音量减半
+  localAudioTrack.setVolume(50);
+  // 麦克风音量增大一倍
+  localAudioTrack.setVolume(200);
+  // 将麦克风音量设置为 0
+  localAudioTrack.setVolume(0);
+});
+```
+
+## 参考信息
+### 开发注意事项
+
+音量设置太大在某些设备上可能出现爆音现象。
+
+### API 参考
+
+- [`LocalAudioTrack.setVolume`](/api-ref/rtc/javascript/interfaces/ilocalaudiotrack.html#setvolume)
+- [`RemoteAudioTrack.setVolume`](/api-ref/rtc/javascript/interfaces/iremoteaudiotrack.html#setvolume)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+本文介绍如何设置音频采集和播放、以及耳返播放的音量。为了更好地理解这些操作，你需要先了解以下与通话音量相关的基础概念：
+
+- **采集**是指音频信号经由采集设备采集后，传输到发送端的过程。
+- **播放**是指音频信号从接收端传输到播放设备后，通过播放设备进行播放的过程。
+- **耳返**是指将采集到的音频信号实时回传并通过耳机播放的过程。
+
+## 技术原理
+
+声网 SDK 支持对 SDK 采集和播放的音频音量进行调整，以满足用户实际应用场景。例如，进行双人通话时，需要静音远端用户，可以通过调整播放音量的方法将音量设置为 0。下图展示了调整音量的工作流程：
+
+![调节通话音量](https://web-cdn.agora.io/docs-portal/img/rtc/volume.png)
+
+- ①：调用 `adjustRecordingSignalVolume` 调节音频采集信号音量。
+- ②：调用 `setInEarMonitoringVolume` 设置耳返音量。
+- ③：调用 `adjustUserPlaybackSignalVolume` 调节本地播放的指定远端用户信号音量。
+- ④：调用 `adjustPlaybackSignalVolume` 调节本地播放的所有远端用户信号音量。
+
+:::warning[注意]
+如果使用调整信号音量的方法将音量设置过大，在某些设备上可能会出现音频失真。
+:::
+
+## 前提条件
+
+在实现调整通话音量前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+### 调整播放音量
+
+调用  `adjustPlaybackSignalVolume` 或 `adjustUserPlaybackSignalVolume` 调整音频播放信号的音量。
+
+```cpp
+// 设置本地播放的所有远端用户音量为 50
+int vol = 50;
+m_rtcEngine->adjustPlaybackSignalVolume(vol);
+// 设置本地播放的指定远端用户的音量为 90
+m_rtcEngine->adjustUserPlaybackSignalVolume(uid, 90);
+```
+
+### 获取用户音量（回调）
+
+在音频采集、混音、播放的整个过程中，你都可以通过 `onAudioVolumeIndication` 回调获取频道内瞬时音量最高的三个用户（即说话者）的用户 ID 及他们的音量。返回的 `uid` 为 0 表示本地用户。
+
+:::warning[注意]
+你需要开启 `enableAudioVolumeIndication` 方法才能收到该回调。
+:::
+
+```cpp
+// 获取瞬时说话音量最高的三个用户（即说话者）的用户 ID、他们的音量及本地用户是否在说话
+void CAudioVolumeEventHandler::onAudioVolumeIndication(const AudioVolumeInfo * speakers, unsigned int speakerNumber, int totalVolume){
+}
+
+// 启用 onAudioVolumeIndication 回调
+m_rtcEngine->enableAudioVolumeIndication(1000, 0, true);
+```
+
+### 调整采集音量
+
+调用 `adjustRecordingSignalVolume` 调整音频采集信号的音量。
+
+```cpp
+// 调整采集信号音量为 50
+int vol = 50;
+m_rtcEngine->adjustRecordingSignalVolume(vol);
+```
+
+## 注意事项
+
+使用采集设备采集音频信号时，SDK 默认使用采集设备音量为 85。音量 0 代表静音，音量 255 代表设备的最大音量。如果 SDK 检测到采集设备音量在当前环境中过低，SDK 会自动提高采集设备音量。采集设备音量影响设备的全局音量。如果采集设备音量无法满足你的需求，你可以通过调节麦克风或声卡采集的信号幅度来调整采集音量。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了调整采集、播放、耳返音量的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="AudioVolume" href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioVolume" />
+  <Card title="AudioVolume" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioVolume" />
+</Cards>
+
+如需调整混音或音效文件的播放音量，可以参考以下示例项目。
+
+<Cards>
+  <Card title="AudioMixing" href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioMixing" />
+  <Card title="AudioMixing" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioMixing" />
+
+  <Card title="AudioEffect" href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioEffect" />
+  <Card title="AudioEffect" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioEffect" />
+</Cards>
+
+### 参考文档
+
+实现调整通话音量过程中，你还可以参考如下文档：
+
+- [如何处理音量太小问题？](/zh-CN/api-reference/faq/quality/audio_low)
+
+### API 参考
+
+- [`adjustRecordingSignalVolume`](/api-ref/rtc/windows/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](/api-ref/rtc/windows/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](/api-ref/rtc/windows/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](/api-ref/rtc/windows/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`setInEarMonitoringVolume`](/api-ref/rtc/windows/API/toc_audio_capture#api_irtcengine_setinearmonitoringvolume)
+- [`onAudioVolumeIndication`](/api-ref/rtc/windows/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+本文介绍如何设置音频采集和播放、以及耳返播放的音量。为了更好地理解这些操作，你需要先了解以下与通话音量相关的基础概念：
+
+- **采集**是指音频信号经由采集设备采集后，传输到发送端的过程。
+- **播放**是指音频信号从接收端传输到播放设备后，通过播放设备进行播放的过程。
+- **耳返**是指将采集到的音频信号实时回传并通过耳机播放的过程。
+
+## 技术原理
+
+声网 SDK 支持对 SDK 采集和播放的音频音量进行调整，以满足用户实际应用场景。例如，进行双人通话时，需要静音远端用户，可以通过调整播放音量的方法将音量设置为 0。下图展示了调整音量的工作流程：
+
+![调节通话音量](https://web-cdn.agora.io/docs-portal/img/rtc/volume.png)
+
+- ①：调用 `adjustRecordingSignalVolume` 调节音频采集信号音量。
+- ②：调用 `setInEarMonitoringVolume` 设置耳返音量。
+- ③：调用 `adjustUserPlaybackSignalVolume` 调节本地播放的指定远端用户信号音量。
+- ④：调用 `adjustPlaybackSignalVolume` 调节本地播放的所有远端用户信号音量。
+
+:::warning[注意]
+如果使用调整信号音量的方法将音量设置过大，在某些设备上可能会出现音频失真。
+:::
+
+## 前提条件
+
+在实现调整通话音量前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+### 调整播放音量
+
+调用 `adjustPlaybackSignalVolume` 或 `adjustUserPlaybackSignalVolume` 调整音频播放信号的音量。
+
+```arkts
+let volume = 50;
+let uid = 123456;
+// 设置本地播放的所有远端用户音量
+this.rtcEngine?.adjustPlaybackSignalVolume(volume);
+// 设置本地播放的指定远端用户的音量，例如用户 123456
+this.rtcEngine?.adjustUserPlaybackSignalVolume(uid, volume);
+```
+
+### 调整耳返音量
+
+调用 `enableInEarMonitoring` 开启耳返功能后，在音频采集、混音、播放的整个过程中，你都可以调用 `setInEarMonitoringVolume` 调整耳返的音量。
+
+```arkts
+// 开启耳返功能
+this.rtcEngine?.enableInEarMonitoring(true, 1);
+let volume = 50;
+// 调整耳返音量
+this.rtcEngine?.setInEarMonitoringVolume(volume);
+```
+
+### 获取用户音量（回调）
+
+在音频采集、混音、播放的整个过程中，你都可以通过 `onAudioVolumeIndication` 回调获取频道内瞬时音量最高的三个用户（即说话者）的用户 ID 及他们的音量。返回的 `uid` 为 0 表示本地用户。
+
+:::warning[注意]
+你需要开启 `enableAudioVolumeIndication` 方法才能收到该回调。
+:::
+
+```arkts
+let config: RtcEngineConfig = new RtcEngineConfig();
+config.mEventHandler.onAudioVolumeIndication = (speakers: Array<AudioVolumeInfo>, totalVolume: number) => {
+  Logger.info(TAG, `onAudioVolumeIndication totalVolume:${totalVolume} speakers:${JSON.stringify(speakers)}`)
+};
+this.rtcEngine = RtcEngine.create(config);
+this.rtcEngine.enableAudioVolumeIndication(1000, 3, true);
+```
+
+### 调整采集音量
+
+调用 `adjustRecordingSignalVolume` 调整音频采集信号的音量。
+
+```arkts
+let volume = 50;
+// 调整采集信号音量
+this.rtcEngine?.adjustRecordingSignalVolume(volume);
+```
+
+## 注意事项
+
+使用采集设备采集音频信号时，SDK 默认使用采集设备音量为 85。音量 0 代表静音，音量 255 代表设备的最大音量。如果 SDK 检测到采集设备音量在当前环境中过低，SDK 会自动提高采集设备音量。采集设备音量影响设备的全局音量。如果采集设备音量无法满足你的需求，你可以通过调节麦克风或声卡采集的信号幅度，从而调节采集音量。
+
+## 相关参考
+
+本节提供在实现调整通话音量时可能需要的文档。
+
+### 示例项目
+
+声网提供了调整采集、播放、耳返音量的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinAudioChannel" href="https://gitee.com/agoraio-community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/basic/JoinAudioChannel.ets" />
+  <Card title="JoinAudioChannel" href="https://github.com/Shengwang-Community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/basic/JoinAudioChannel.ets" />
+</Cards>
+
+### 参考文档
+
+实现调整通话音量过程中，你还可以参考如下文档：
+
+- [如何处理音量太小问题？](/zh-CN/api-reference/faq/quality/audio_low)
+
+### API 参考
+
+- [`adjustRecordingSignalVolume`](/api-ref/rtc/harmonyos/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](/api-ref/rtc/harmonyos/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](/api-ref/rtc/harmonyos/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`enableInEarMonitoring`](/api-ref/rtc/harmonyos/API/toc_audio_capture#api_irtcengine_enableinearmonitoring2)
+- [`setInEarMonitoringVolume`](/api-ref/rtc/harmonyos/API/toc_audio_capture#api_irtcengine_setinearmonitoringvolume)
+- [`enableAudioVolumeIndication`](/api-ref/rtc/harmonyos/API/toc_audio_basic#api_irtcengine_enableaudiovolumeindication)
+- [`onAudioVolumeIndication`](/api-ref/rtc/harmonyos/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+本文介绍如何设置音频采集和播放、以及耳返播放的音量。为了更好地理解这些操作，你需要先了解以下与通话音量相关的基础概念：
+
+- **采集**是指音频信号经由采集设备采集后，传输到发送端的过程。
+- **播放**是指音频信号从接收端传输到播放设备后，通过播放设备进行播放的过程。
+- **耳返**是指将采集到的音频信号实时回传并通过耳机播放的过程。
+
+## 技术原理
+
+声网 SDK 支持对 SDK 采集和播放的音频音量进行调整，以满足用户实际应用场景。例如，进行双人通话时，需要静音远端用户，可以通过调整播放音量的方法将音量设置为 0。下图展示了调整音量的工作流程：
+
+![调节通话音量](https://web-cdn.agora.io/docs-portal/img/rtc/volume.png)
+
+- ①：调用 `adjustRecordingSignalVolume` 调节音频采集信号音量。
+- ②：调用 `setInEarMonitoringVolume` 设置耳返音量。
+- ③：调用 `adjustUserPlaybackSignalVolume` 调节本地播放的指定远端用户信号音量。
+- ④：调用 `adjustPlaybackSignalVolume` 调节本地播放的所有远端用户信号音量。
+
+:::warning[注意]
+如果使用调整信号音量的方法将音量设置过大，在某些设备上可能会出现音频失真。
+:::
+
+## 前提条件
+
+在实现调整通话音量前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+### 调整播放音量
+
+调用 `adjustPlaybackSignalVolume` 或 `adjustUserPlaybackSignalVolume` 调整音频播放信号的音量。
+
+```typescript
+//设置播放音量为50
+engine.adjustPlaybackSignalVolume(50);
+ 
+//指定uid为12的远端用户，音量设置为50
+engine.adjustUserPlaybackSignalVolume(12, 50);
+```
+
+### 获取用户音量（回调）
+
+在音频采集、混音、播放的整个过程中，你都可以通过 `onAudioVolumeIndication` 回调获取频道内瞬时音量最高的三个用户（即说话者）的用户 ID 及他们的音量。返回的 `uid` 为 0 表示本地用户。
+
+:::warning[注意]
+你需要开启 `enableAudioVolumeIndication` 方法才能收到该回调。
+:::
+
+```typescript
+// 获取瞬时说话音量最高的三个用户（即说话者）的用户 ID、他们的音量及本地用户是否在说话
+onAudioVolumeIndication?(
+    connection: RtcConnection,
+    speakers: AudioVolumeInfo[],
+    speakerNumber: number,
+    totalVolume: number
+  ): void;
+```
+
+### 调整采集音量
+
+调用 `adjustRecordingSignalVolume` 调整音频采集信号的音量。
+
+```typescript
+// 调整采集信号音量为 50
+engine.adjustRecordingSignalVolume(50);
+```
+
+## 注意事项
+
+使用采集设备采集音频信号时，SDK 默认使用采集设备音量为 85。音量 0 代表静音，音量 255 代表设备的最大音量。如果 SDK 检测到采集设备音量在当前环境中过低，SDK 会自动提高采集设备音量。采集设备音量影响设备的全局音量。如果采集设备音量无法满足你的需求，你可以通过调节麦克风或声卡采集的信号幅度，从而调节采集音量。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了调整采集、播放、耳返音量的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
+  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
+</Cards>
+
+如需调整混音或音效文件的播放音量，可以参考以下示例项目。
+
+<Cards>
+  <Card title="AudioMixing" href="https://gitee.com/agoraio-community/Electron-SDK/blob/main/example/src/renderer/examples/advanced/AudioMixing/AudioMixing.tsx" />
+  <Card title="AudioMixing" href="https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/advanced/AudioMixing/AudioMixing.tsx" />
+</Cards>
+
+### 参考文档
+
+实现调整通话音量过程中，你还可以参考如下文档：
+
+- [如何处理音量太小问题？](/zh-CN/api-reference/faq/quality/audio_low)
+
+### API 参考
+
+- [`adjustRecordingSignalVolume`](/api-ref/rtc/electron/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](/api-ref/rtc/electron/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](/api-ref/rtc/electron/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](/api-ref/rtc/electron/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`onAudioVolumeIndication`](/api-ref/rtc/electron/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+本文介绍如何设置音频采集和播放、以及耳返播放的音量。为了更好地理解这些操作，你需要先了解以下与通话音量相关的基础概念：
+
+- **采集**是指音频信号经由采集设备采集后，传输到发送端的过程。
+- **播放**是指音频信号从接收端传输到播放设备后，通过播放设备进行播放的过程。
+- **耳返**是指将采集到的音频信号实时回传并通过耳机播放的过程。
+
+## 技术原理
+
+声网 SDK 支持对 SDK 采集和播放的音频音量进行调整，以满足用户实际应用场景。例如，进行双人通话时，需要静音远端用户，可以通过调整播放音量的方法将音量设置为 0。下图展示了调整音量的工作流程：
+
+![调节通话音量](https://web-cdn.agora.io/docs-portal/img/rtc/volume.png)
+
+- ①：调用 `AdjustRecordingSignalVolume` 调节音频采集信号音量。
+- ②：调用 `SetInEarMonitoringVolume` 设置耳返音量。
+- ③：调用 `AdjustUserPlaybackSignalVolume` 调节本地播放的指定远端用户信号音量。
+- ④：调用 `AdjustPlaybackSignalVolume` 调节本地播放的所有远端用户信号音量。
+
+:::warning[注意]
+如果使用调整信号音量的方法将音量设置过大，在某些设备上可能会出现音频失真。
+:::
+
+## 前提条件
+
+在实现调整通话音量前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+### 调整播放音量
+
+调用  `AdjustPlaybackSignalVolume` 或 `AdjustUserPlaybackSignalVolume` 调整音频播放信号的音量。
+
+```csharp
+// 设置本地播放的所有远端用户音量为 50
+RtcEngine.AdjustPlaybackSignalVolume(50);
+
+// 指定 uid 为 12 的远端用户在本地播放的音量为 50
+RtcEngine.AdjustUserPlaybackSignalVolume(12, 50);
+```
+
+### 获取用户音量（回调）
+
+在音频采集、混音、播放的整个过程中，你都可以通过 `OnAudioVolumeIndication` 回调获取频道内瞬时音量最高的三个用户（即说话者）的用户 ID 及他们的音量。返回的 `uid` 为 0 表示本地用户。
+
+:::warning[注意]
+你需要调用 `EnableAudioVolumeIndication` 方法启用用户音量提示后才能收到该回调。
+:::
+
+```csharp
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+UserEventHandler handler = new UserEventHandler(this);
+RtcEngineContext context = new RtcEngineContext(
+    _appID,
+    0,
+    CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING,
+    AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT
+);
+RtcEngine.Initialize(context);
+
+// 设置监听回调
+RtcEngine.InitEventHandler(handler);
+
+// 启用用户音量提示
+RtcEngine.EnableAudioVolumeIndication(1, 1, true);
+
+class UserEventHandler : IRtcEngineEventHandler
+{
+    // 该回调会根据你在 EnableAudioVolumeIndication 中设置的时间间隔触发，并报告频道内瞬时音量最高的三个用户
+    public override void OnAudioVolumeIndication(
+        RtcConnection connection,
+        AudioVolumeInfo[] speakers,
+        uint speakerNumber,
+        int totalVolume
+    ) { }
+}
+```
+
+### 调整采集音量
+
+调用 `AdjustRecordingSignalVolume` 调整音频采集信号的音量。
+
+  ```csharp
+// 设置采集信号音量为 50
+RtcEngine.AdjustRecordingSignalVolume(50);
+  ```
+
+## 注意事项
+
+使用采集设备采集音频信号时，SDK 默认使用采集设备音量为 85。音量 0 代表静音，音量 255 代表设备的最大音量。如果 SDK 检测到采集设备音量在当前环境中过低，SDK 会自动提高采集设备音量。采集设备音量影响设备的全局音量。如果采集设备音量无法满足你的需求，你可以通过调节麦克风或声卡采集的信号幅度来调整采集音量。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了调整采集、播放、耳返音量的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="AudioMixing" href="https://gitee.com/agoraio-community/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/AudioMixing" />
+  <Card title="AudioMixing" href="https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/AudioMixing" />
+</Cards>
+
+### 参考文档
+
+实现调整通话音量过程中，你还可以参考如下示例项目及文档：
+
+- [如何处理音量太小问题？](/zh-CN/api-reference/faq/quality/audio_low)
+
+### API 参考
+
+- [`AdjustRecordingSignalVolume`](/api-ref/rtc/unity/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`AdjustPlaybackSignalVolume`](/api-ref/rtc/unity/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`AdjustUserPlaybackSignalVolume`](/api-ref/rtc/unity/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`AdjustAudioMixingPlayoutVolume`](/api-ref/rtc/unity/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`OnAudioVolumeIndication`](/api-ref/rtc/unity/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+本文介绍如何设置音频采集和播放、以及耳返播放的音量。为了更好地理解这些操作，你需要先了解以下与通话音量相关的基础概念：
+
+- **采集**是指音频信号经由采集设备采集后，传输到发送端的过程。
+- **播放**是指音频信号从接收端传输到播放设备后，通过播放设备进行播放的过程。
+- **耳返**是指将采集到的音频信号实时回传并通过耳机播放的过程。
+
+## 技术原理
+
+声网 SDK 支持对 SDK 采集和播放的音频音量进行调整，以满足用户实际应用场景。例如，进行双人通话时，需要静音远端用户，可以通过调整播放音量的方法将音量设置为 0。下图展示了调整音量的工作流程：
+
+![调节通话音量](https://web-cdn.agora.io/docs-portal/img/rtc/volume.png)
+
+- ①：调用 `adjustRecordingSignalVolume` 调节音频采集信号音量。
+- ②：调用 `setInEarMonitoringVolume` 设置耳返音量。
+- ③：调用 `adjustUserPlaybackSignalVolume` 调节本地播放的指定远端用户信号音量。
+- ④：调用 `adjustPlaybackSignalVolume` 调节本地播放的所有远端用户信号音量。
+
+:::warning[注意]
+如果使用调整信号音量的方法将音量设置过大，在某些设备上可能会出现音频失真。
+:::
+
+## 前提条件
+
+在实现调整通话音量前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+### 调整播放音量
+
+调用 `adjustPlaybackSignalVolume` 或 `adjustUserPlaybackSignalVolume` 调整音频播放信号的音量。
+
+```dart
+const int volume = 50;
+// 设置本地播放的所有远端用户音量为 50
+await rtcEngine.adjustPlaybackSignalVolume(volume);
+// 设置本地播放的指定远端用户的音量为 50
+await rtcEngine.adjustUserPlaybackSignalVolume(uid: 1000, volume: volume);
+```
+
+### 获取用户音量（回调）
+
+在音频采集、混音、播放的整个过程中，你都可以通过 `onAudioVolumeIndication` 回调获取频道内瞬时音量最高的三个用户（即说话者）的用户 ID 及他们的音量。返回的 `uid` 为 0 表示本地用户。
+
+:::warning[注意]
+你需要开启 `enableAudioVolumeIndication` 方法才能收到该回调。
+:::
+
+```dart
+// 获取瞬时说话音量最高的三个用户（即说话者）的用户 ID、他们的音量及本地用户是否在说话
+rtcEngine.registerEventHandler(RtcEngineEventHandler(
+onAudioVolumeIndication: (RtcConnection connection,
+    List<AudioVolumeInfo> speakers, int speakerNumber, int totalVolume) {
+  logSink.log(
+    '[onAudioVolumeIndication] speakers: ${speakers.toString()}, speakerNumber: $speakerNumber, totalVolume: $totalVolume');
+  }
+));
+```
+
+### 调整采集音量
+
+调用 `adjustRecordingSignalVolume` 调整音频采集信号的音量。
+
+```dart
+// 调整采集信号音量为 50
+int vol = 50;
+await _rtcEngine->adjustRecordingSignalVolume(vol);
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了调整采集、播放、耳返音量的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="join_channel_audio.dart" href="https://gitee.com/agoraio-community/Agora-Flutter-SDK/blob/main/example/lib/examples/basic/join_channel_audio/join_channel_audio.dart" />
+  <Card title="join_channel_audio.dart" href="https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/blob/main/example/lib/examples/basic/join_channel_audio/join_channel_audio.dart" />
+</Cards>
+
+如需调整混音或音效文件的播放音量，可以参考以下示例项目。
+
+<Cards>
+  <Card title="audio_effect_mixing.dart" href="https://gitee.com/agoraio-community/Agora-Flutter-SDK/blob/main/example/lib/examples/advanced/audio_effect_mixing/audio_effect_mixing.dart" />
+  <Card title="audio_effect_mixing.dart" href="https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/blob/main/example/lib/examples/advanced/audio_effect_mixing/audio_effect_mixing.dart" />
+</Cards>
+
+### 参考文档
+
+实现调整通话音量过程中，你还可以参考如下文档：
+
+- [如何处理音量太小问题？](/zh-CN/api-reference/faq/quality/audio_low)
+
+### API 参考
+
+- [`adjustRecordingSignalVolume`](/api-ref/rtc/flutter/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](/api-ref/rtc/flutter/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](/api-ref/rtc/flutter/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](/api-ref/rtc/flutter/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`onAudioVolumeIndication`](/api-ref/rtc/flutter/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+本文介绍如何设置音频采集和播放、以及耳返播放的音量。为了更好地理解这些操作，你需要先了解以下与通话音量相关的基础概念：
+
+- **采集**是指音频信号经由采集设备采集后，传输到发送端的过程。
+- **播放**是指音频信号从接收端传输到播放设备后，通过播放设备进行播放的过程。
+- **耳返**是指将采集到的音频信号实时回传并通过耳机播放的过程。
+
+## 技术原理
+
+声网 SDK 支持对 SDK 采集和播放的音频音量进行调整，以满足用户实际应用场景。例如，进行双人通话时，需要静音远端用户，可以通过调整播放音量的方法将音量设置为 0。下图展示了调整音量的工作流程：
+
+![调节通话音量](https://web-cdn.agora.io/docs-portal/img/rtc/volume.png)
+
+- ①：调用 `adjustRecordingSignalVolume` 调节音频采集信号音量。
+- ②：调用 `setInEarMonitoringVolume` 设置耳返音量。
+- ③：调用 `adjustUserPlaybackSignalVolume` 调节本地播放的指定远端用户信号音量。
+- ④：调用 `adjustPlaybackSignalVolume` 调节本地播放的所有远端用户信号音量。
+
+:::warning[注意]
+如果使用调整信号音量的方法将音量设置过大，在某些设备上可能会出现音频失真。
+:::
+
+## 前提条件
+
+在实现调整通话音量前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+### 调整播放音量
+
+调用 `adjustPlaybackSignalVolume` 或 `adjustUserPlaybackSignalVolume` 调整音频播放信号的音量。
+
+```typescript
+//设置播放音量为50
+engine.adjustPlaybackSignalVolume(50);
+ 
+//指定uid为12的远端用户，音量设置为50
+engine.adjustUserPlaybackSignalVolume(12, 50);
+```
+
+### 获取用户音量（回调）
+
+在音频采集、混音、播放的整个过程中，你都可以通过 `onAudioVolumeIndication` 回调获取频道内瞬时音量最高的三个用户（即说话者）的用户 ID 及他们的音量。返回的 `uid` 为 0 表示本地用户。
+
+:::warning[注意]
+你需要开启 `enableAudioVolumeIndication` 方法才能收到该回调。
+:::
+
+```typescript
+// 获取瞬时说话音量最高的三个用户（即说话者）的用户 ID、他们的音量及本地用户是否在说话
+onAudioVolumeIndication?(
+    connection: RtcConnection,
+    speakers: AudioVolumeInfo[],
+    speakerNumber: number,
+    totalVolume: number
+  ): void;
+```
+
+### 调整采集音量
+
+调用 `adjustRecordingSignalVolume` 调整音频采集信号的音量。
+
+```typescript
+// 调整采集信号音量为 50
+engine.adjustRecordingSignalVolume(50);
+```
+
+## 注意事项
+
+使用采集设备采集音频信号时，SDK 默认使用采集设备音量为 85。音量 0 代表静音，音量 255 代表设备的最大音量。如果 SDK 检测到采集设备音量在当前环境中过低，SDK 会自动提高采集设备音量。采集设备音量影响设备的全局音量。如果采集设备音量无法满足你的需求，你可以通过调节麦克风或声卡采集的信号幅度来调整采集音量。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了调整采集、播放、耳返音量的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/react-native-agora/blob/main/example/src/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
+  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
+</Cards>
+
+如需调整混音或音效文件的播放音量，可以参考以下示例项目。
+
+<Cards>
+  <Card title="AudioMixing" href="https://gitee.com/agoraio-community/react-native-agora/blob/main/example/src/examples/advanced/AudioMixing/AudioMixing.tsx" />
+  <Card title="AudioMixing" href="https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/AudioMixing/AudioMixing.tsx" />
+</Cards>
+
+### 参考文档
+
+实现调整通话音量过程中，你还可以参考如下文档：
+
+- [如何处理音量太小问题？](/zh-CN/api-reference/faq/quality/audio_low)
+
+### API 参考
+
+- [`adjustRecordingSignalVolume`](/api-ref/rtc/rn/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](/api-ref/rtc/rn/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](/api-ref/rtc/rn/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](/api-ref/rtc/rn/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`onAudioVolumeIndication`](/api-ref/rtc/rn/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unreal">
+
+本文介绍如何设置音频采集和播放、以及耳返播放的音量。为了更好地理解这些操作，你需要先了解以下与通话音量相关的基础概念：
+
+- **采集**是指音频信号经由采集设备采集后，传输到发送端的过程。
+- **播放**是指音频信号从接收端传输到播放设备后，通过播放设备进行播放的过程。
+- **耳返**是指将采集到的音频信号实时回传并通过耳机播放的过程。
+
+## 技术原理
+
+声网 SDK 支持对 SDK 采集和播放的音频音量进行调整，以满足用户实际应用场景。例如，进行双人通话时，需要静音远端用户，可以通过调整播放音量的方法将音量设置为 0。下图展示了调整音量的工作流程：
+
+![调节通话音量](https://web-cdn.agora.io/docs-portal/img/rtc/volume.png)
+
+- ①：调用 `adjustRecordingSignalVolume` 调节音频采集信号音量。
+- ②：调用 `setInEarMonitoringVolume` 设置耳返音量。
+- ③：调用 `adjustUserPlaybackSignalVolume` 调节本地播放的指定远端用户信号音量。
+- ④：调用 `adjustPlaybackSignalVolume` 调节本地播放的所有远端用户信号音量。
+
+:::warning[注意]
+如果使用调整信号音量的方法将音量设置过大，在某些设备上可能会出现音频失真。
+:::
+
+## 前提条件
+
+在实现调整通话音量前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+### 调整播放音量
+
+调用  `adjustPlaybackSignalVolume` 或 `adjustUserPlaybackSignalVolume` 调整音频播放信号的音量。
+
+```cpp
+// 设置本地播放的所有远端用户音量为 50
+int vol = 50;
+m_rtcEngine->adjustPlaybackSignalVolume(vol);
+// 设置本地播放的指定远端用户的音量为 90
+m_rtcEngine->adjustUserPlaybackSignalVolume(uid, 90);
+```
+
+### 获取用户音量（回调）
+
+在音频采集、混音、播放的整个过程中，你都可以通过 `onAudioVolumeIndication` 回调获取频道内瞬时音量最高的三个用户（即说话者）的用户 ID 及他们的音量。返回的 `uid` 为 0 表示本地用户。
+
+:::warning[注意]
+你需要开启 `enableAudioVolumeIndication` 方法才能收到该回调。
+:::
+
+```cpp
+// 获取瞬时说话音量最高的三个用户（即说话者）的用户 ID、他们的音量及本地用户是否在说话
+void CAudioVolumeEventHandler::onAudioVolumeIndication(const AudioVolumeInfo * speakers, unsigned int speakerNumber, int totalVolume){
+}
+
+// 启用 onAudioVolumeIndication 回调
+m_rtcEngine->enableAudioVolumeIndication(1000, 0, true);
+```
+
+### 调整采集音量
+
+调用 `adjustRecordingSignalVolume` 调整音频采集信号的音量。
+
+```cpp
+// 调整采集信号音量为 50
+int vol = 50;
+m_rtcEngine->adjustRecordingSignalVolume(vol);
+```
+
+## 注意事项
+
+使用采集设备采集音频信号时，SDK 默认使用采集设备音量为 85。音量 0 代表静音，音量 255 代表设备的最大音量。如果 SDK 检测到采集设备音量在当前环境中过低，SDK 会自动提高采集设备音量。采集设备音量影响设备的全局音量。如果采集设备音量无法满足你的需求，你可以通过调节麦克风或声卡采集的信号幅度来调整采集音量。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Unreal C++ 示例项目" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example" />
+</Cards>
+
+### 参考文档
+
+实现调整通话音量过程中，你还可以参考如下文档：
+
+- [如何处理音量太小问题？](/zh-CN/api-reference/faq/quality/audio_low)
+
+### API 参考
+
+- [`adjustRecordingSignalVolume`](/api-ref/rtc/unreal-cpp/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](/api-ref/rtc/unreal-cpp/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](/api-ref/rtc/unreal-cpp/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](/api-ref/rtc/unreal-cpp/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`setInEarMonitoringVolume`](/api-ref/rtc/unreal-cpp/API/toc_audio_capture#api_irtcengine_setinearmonitoringvolume)
+- [`onAudioVolumeIndication`](/api-ref/rtc/unreal-cpp/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+</PlatformStructured>
+
+<PlatformStructured platform="blueprint">
+
+本文介绍如何设置音频采集和播放、以及耳返播放的音量。为了更好地理解这些操作，你需要先了解以下与通话音量相关的基础概念：
+
+- **采集**是指音频信号经由采集设备采集后，传输到发送端的过程。
+- **播放**是指音频信号从接收端传输到播放设备后，通过播放设备进行播放的过程。
+- **耳返**是指将采集到的音频信号实时回传并通过耳机播放的过程。
+
+## 技术原理
+
+声网 SDK 支持对 SDK 采集和播放的音频音量进行调整，以满足用户实际应用场景。例如，进行双人通话时，需要静音远端用户，可以通过调整播放音量的方法将音量设置为 0。下图展示了调整音量的工作流程：
+
+![调节通话音量](https://web-cdn.agora.io/docs-portal/img/rtc/volume.png)
+
+- ①：调用 `AdjustRecordingSignalVolume` 调节音频采集信号音量。
+- ②：调用 `SetInEarMonitoringVolume` 设置耳返音量。
+- ③：调用 `AdjustUserPlaybackSignalVolume` 调节本地播放的指定远端用户信号音量。
+- ④：调用 `AdjustPlaybackSignalVolume` 调节本地播放的所有远端用户信号音量。
+
+:::warning[注意]
+如果使用调整信号音量的方法将音量设置过大，在某些设备上可能会出现音频失真。
+:::
+
+## 前提条件
+
+在实现调整通话音量前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+### 调整播放音量
+
+本小节介绍如何调用 `AdjustPlaybackSignalVolume` 调整音频播放信号的音量。
+
+#### 1. 创建 UMG
+
+创建一个 **Slider** (滑块) 控件，命名为 **Slider_PlaybackSignalVolume**，供用户拖动音量条调节播放音量。在本示例中，设置最小值为 0 (静音)，最大值为 100 (原始音量)。如下图所示：
+
+![播放音量滑块控件示意图](https://web-cdn.agora.io/docs-portal/img/rtc/volume-playback-umg.png)
+
+#### 2. 绑定 UI 事件
+
+创建 **Bind Event to On Value Changed** 节点，分别连接 **Slider_PlaybackSignalVolume** 控件和 **OnPlaybackSignalVolumeValChanged** 回调。当用户拖动音量条调节音频播放信号时，会触发 **OnPlaybackSignalVolumeValChanged** 回调。如下图所示：
+
+![播放音量绑定事件示意图](https://web-cdn.agora.io/docs-portal/img/rtc/volume-playback-bind.png)
+
+#### 3. 实现回调函数
+
+创建 **OnPlaybackSignalVolumeValChanged** 回调函数，配置以下参数：
+
+  | 输入参数 | 数据类型 | 参数描述 |
+  |:-------|:--------|:---------|
+  | `Value` | Float | 播放音量。 |
+
+触发该回调后，会获取并处理用户指定的播放音量、将该音量赋值给 **Adjust Playback Signal Volume** 的 **Volume** 参数，并调用 **Adjust Playback Signal Volume** 方法调节播放音量。如下图所示：
+
+![播放音量回调处理示意图](https://web-cdn.agora.io/docs-portal/img/rtc/volume-playback-callback.png)
+
+### 调整采集音量
+
+本小节介绍如何调用 `AdjustRecordingSignalVolume` 调整音频采集信号的音量。
+
+#### 1. 创建 UMG
+
+创建一个 **Slider** (滑块) 控件，命名为 **Slider_RecordingSignalVolume**，供用户滑动音量条调节采集音量。在本示例中，设置最小值为 0 (静音)，最大值为 100 (原始音量)。如下图所示：
+
+![采集音量滑块控件示意图](https://web-cdn.agora.io/docs-portal/img/rtc/volume-recording-umg.png)
+
+#### 2. 绑定 UI 事件
+
+创建 **Bind Event to On Value Changed** 节点，分别连接 **Slider_RecordingSignalVolume** 控件和 **OnRecordingSignalVolumeValChanged** 回调。当用户拖动音量条调节音频采集信号时，会触发 **OnRecordingSignalVolumeValChanged** 回调。如下图所示：
+
+![采集音量绑定事件示意图](https://web-cdn.agora.io/docs-portal/img/rtc/volume-recording-bind.png)
+
+#### 3. 实现 UI 事件
+
+创建 **OnRecordingSignalVolumeValChanged** 回调函数，配置以下参数：
+
+  | 输入参数 | 数据类型 | 参数描述 |
+  |:-------|:--------|:---------|
+  | `Value` | Float | 采集音量。 |
+
+触发该回调后，会获取并处理用户指定的采集音量、将该音量赋值给 **Adjust Recording Signal Volume** 的 **Volume** 参数，并调用 **Adjust Recording Signal Volume** 方法调节采集音量。如下图所示：
+
+![采集音量回调处理示意图](https://web-cdn.agora.io/docs-portal/img/rtc/volume-recording-callback.png)
+
+### 获取用户音量（回调）
+
+在音频采集、混音、播放的整个过程中，你都可以通过 `FOnAudioVolumeIndication` 回调获取频道内瞬时音量最高的三个用户（即说话者）的用户 ID 及他们的音量，返回的 `uid` 为 0 表示本地用户。你需要调用 `EnableAudioVolumeIndication` 方法开启人声检测功能才能收到该回调。
+
+#### 1. 创建 UMG
+
+创建一个 **Button** (按钮) 控件，命名为 **Btn_EnableAudioIndication**，用户可以通过该按钮控制是否启用用户音量提示。如下图所示：
+
+![启用用户音量提示按钮示意图](https://web-cdn.agora.io/docs-portal/img/rtc/volume-indication-umg.png)
+
+#### 2. 绑定 UI 事件
+
+创建 **Bind Event to On Clicked** 节点，分别连接 **Btn_EnableAudioIndication** 控件和 **OnVolumeIndicationClick** 回调。当用户按下按钮开启音量提示时，会触发 **OnVolumeIndicationClick** 回调。如下图所示：
+
+![用户音量提示绑定事件示意图](https://web-cdn.agora.io/docs-portal/img/rtc/volume-indication-bind.png)
+
+#### 3. 实现 UI 事件
+
+创建 **OnVolumeIndicationClick** 回调函数。触发该回调后，会调用 **Enable Audio Volume Indication** 方法启用用户音量提示。在本示例中，设置音量提示的时间间隔 (**Interval**) 为 200 毫秒、平滑系数 (**Smooth**) 为 3 并勾选 **Report Vad** 开启人声检测功能。如下图所示：
+
+![启用用户音量提示蓝图示意图](https://web-cdn.agora.io/docs-portal/img/rtc/volume-indication-callback.png)
+
+#### 4. 添加回调事件
+
+1. 创建 **OnAudioVolumeIndication** 回调函数，配置以下参数：
+
+    | 输入参数 | 数据类型 | 参数描述 |
+    |:-------|:--------|:---------|
+    | `speakers` | Structure | 用户音量信息，详见 [`FAudioVolumeInfo`](/api-ref/rtc/unreal-blueprint/API/class_audiovolumeinfo)。 |
+    | `totalVolume` | Integer | 混音后的总音量。 |
+
+2. 添加对 **OnAudioVolumeIndication** 回调的监听，如下图所示：
+
+![用户音量回调事件监听示意图](https://web-cdn.agora.io/docs-portal/img/rtc/volume-indication-event.png)
+
+3. 按指定的时间间隔触发 **OnAudioVolumeIndication** 回调时，打印监听到的用户音量信息。如下图所示：
+
+![用户音量回调日志示意图](https://web-cdn.agora.io/docs-portal/img/rtc/volume-indication-log.png)
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Blueprint 示例项目" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example" />
+  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Basic/JoinChannelAudio" />
+</Cards>
+
+### 注意事项
+
+使用采集设备采集音频信号时，SDK 默认使用采集设备音量为 85。音量 0 代表静音，音量 255 代表设备的最大音量。如果 SDK 检测到采集设备音量在当前环境中过低，SDK 会自动提高采集设备音量。采集设备音量影响设备的全局音量。如果采集设备音量无法满足你的需求，你可以通过调节麦克风或声卡采集的信号幅度来调整采集音量。
+
+### 常见问题
+
+- [如何处理音量太小问题？](/zh-CN/api-reference/faq/quality/audio_low)
+
+### API 参考
+
+- [`AdjustPlaybackSignalVolume`](/api-ref/rtc/unreal-blueprint/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`AdjustRecordingSignalVolume`](/api-ref/rtc/unreal-blueprint/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`AdjustUserPlaybackSignalVolume`](/api-ref/rtc/unreal-blueprint/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`AdjustAudioMixingPlayoutVolume`](/api-ref/rtc/unreal-blueprint/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`FOnAudioVolumeIndication`](/api-ref/rtc/unreal-blueprint/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+</PlatformStructured>

@@ -1,0 +1,91 @@
+---
+title: "已编码视频数据"
+description: "已编码视频数据 API reference."
+---
+<a id="toc_video_encoded"></a>
+
+<a id="api_imediaengine_registervideoencodedframeobserver"></a>
+
+## registerVideoEncodedFrameObserver
+
+为编码后的视频图像注册视频帧接收观测器。
+
+<a id="api_imediaengine_registervideoencodedframeobserver__prototype"></a>
+
+```cpp
+virtual int registerVideoEncodedFrameObserver(IVideoEncodedFrameObserver* observer) = 0;
+```
+
+<a id="api_imediaengine_registervideoencodedframeobserver__detailed_desc"></a>
+
+### 详情
+
+如果你只想要观测编码后的视频帧 (如 H.264 格式)，而不需要对视频进行解码和渲染，声网推荐你通过该方法注册一个 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoencodedframeobserver) 类。
+
+:::warning[注意]
+该方法需要在加入频道前调用。
+:::
+
+<a id="api_imediaengine_registervideoencodedframeobserver__parameters"></a>
+
+### 参数
+
+#### `observer`
+
+视频帧接收观测器，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoencodedframeobserver)。
+
+<a id="api_imediaengine_registervideoencodedframeobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IMediaEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaengine)
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived"></a>
+
+## onEncodedVideoFrameReceived
+
+报告接收端已收到远端发送的待解码视频帧。
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__prototype"></a>
+
+```cpp
+virtual bool onEncodedVideoFrameReceived(rtc::uid_t uid, const uint8_t* imageBuffer, size_t length,
+                                           const rtc::EncodedVideoFrameInfo& videoEncodedFrameInfo) = 0;
+```
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__detailed_desc"></a>
+
+调用 [setRemoteVideoSubscriptionOptions](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setremotevideosubscriptionoptions) 方法并将 encodedFrameOnly 设置为 `true` 时，SDK 会在本地触发该回调，上报接收到的编码后视频帧信息。
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+远端用户 ID。
+
+#### `imageBuffer`
+
+视频图像 buffer。
+
+#### `length`
+
+视频图像的数据长度。
+
+#### `videoEncodedFrameInfo`
+
+编码后的视频帧信息，详见 [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-encodedvideoframeinfo)。
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__return_values"></a>
+
+### 返回值
+
+无实际含义。
+
+### 所属接口类
+- [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoencodedframeobserver)

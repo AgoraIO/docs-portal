@@ -1,0 +1,26 @@
+---
+title: "VideoEncodedImageSender 类"
+---
+<span className="index-desc-videoencodedimagesender">`VideoEncodedImageSender` 类</span>
+
+<a id="sendencodedvideoimage"></a>
+## send_encoded_video_image
+
+```python
+def send_encoded_video_image(self, buffer_ptr:int, buffer_size:int, frame_info:EncodedVideoFrameInfo)
+```
+
+<span className="index-desc-sendencodedvideoimage">将已编码的视频帧发送到视频轨道。</span>
+
+#### 参数
+
+| 参数         | 描述                                                                                       |
+|--------------|--------------------------------------------------------------------------------------------|
+| `buffer_ptr` | 视频缓冲区。                                                                            |
+| `buffer_size`| 视频数据大小（字节）。                                                                      |
+| `frame_info`      | 已编码视频帧信息：详见 [`EncodedVideoFrameInfo`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#encodedvideoframeinfo)。                   |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。

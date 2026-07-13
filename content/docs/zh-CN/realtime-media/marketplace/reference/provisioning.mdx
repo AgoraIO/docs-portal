@@ -1,0 +1,262 @@
+---
+title: "服务开通 RESTful API"
+---
+本页介绍服务开通 RESTful API 的详细信息。
+
+## 概览
+
+插件的购买、激活、停用等操作需要在声网控制台上完成。当 App 开发者进行这些操作时，声网会将有关信息传递给你，便于管理插件服务。
+
+为此，你需要实现一套服务开通 RESTful API。当 App 开发者在声网控制台上购买（目前支持 License 和套餐包两种预付费方式）、激活、或停用插件时，声网会向你提供的接口地址发送请求。收到请求后，你需要在响应中返回指定的内容，详见各个接口的说明。
+
+![使用插件流程](https://web-cdn.agora.io/docs-files/1640772415889)
+
+## 接口要求
+
+实现服务开通 RESTful API 前，请确保你的服务器满足以下要求：
+
+- 每秒钟可以处理至少 100 个请求。
+- 使用规范的 HTTP 错误信息及排查方法。
+
+每次调用后，声网会等待 500 毫秒。如果等待期内没有收到响应信息，会再次调用接口。重复调用达到三次将停止调用。
+
+## （可选）配置 License（POST）
+
+该接口仅适用于通过 License 方式收费的插件。
+
+### HTTP 请求
+
+**请求 URL**
+
+```shell
+PUT http://{host}/license/customers/{customerId}/activate
+```
+
+**路径参数**
+
+- `host`: 你的域名。
+- `customerId`：String 型。声网控制台会为每个开发者账号生成一个 `customerId`，作为唯一标识。
+
+**请求包体**
+
+请求包体包含以下字段：
+
+| 字段 | 是否必需 | 类型 | 数据长度 | 描述 |
+| --- | --- | --- | --- | --- |
+| `apiKey` | 必需 | String | 32-255 | 用于你和声网之间的鉴权。该字段需要你自行生成，并在入驻云市场时提供给声网。 |
+| `signature` | 必需 | String | 32-255 | 通过[签名算法](/zh-CN/realtime-media/marketplace/build/create-extensions/signature-algorithm)生成的签名。你需要自己部署签名算法，验证请求是否由声网发送。 |
+| `platform` | 必需 | String | N/A | <Slot name="provisioning-html-0-3-4" /> |
+| `expire` | 必需 | String | 32 | License 的有效期。以“生效时间-到期时间”的形式表示，均为 UTC 时间戳。 |
+| `type` | 可选 | String | 32 | License 的类型。如果你的 License 有多种类型，你需要建立映射关系，通过该字段来判断 License 对应的插件服务。 |
+
+<Slot for="provisioning-html-0-3-4">
+
+App 开发者选择的平台，支持填入以下字段：
+
+        - `android`
+        - `ios`
+        - `windows`
+        - `mac`
+        - `linux`
+
+      多个平台用 `\` 分隔。
+
+</Slot>
+
+:::info[信息]
+如果你的服务需要更多配置参数，请联系 sales@shengwang.cn。
+:::
+
+### HTTP 响应
+
+响应包体中包含以下字段：
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `status` | String | <Slot name="provisioning-html-1-1-2" /> |
+| `statusReason` | String | 请求成功或失败的原因。 |
+
+<Slot for="provisioning-html-1-1-2">
+
+请求状态：- `success`：请求成功。
+
+      - `failed`：请求失败。
+
+</Slot>
+                              |
+
+### 示例
+
+**请求包体**
+
+```json
+{
+    "apiKey": "pz**************************gd",
+    "signature": "Q7**************************xM",
+    "platform": "android|ios",
+    "expire": "1619913600-1619917200",
+    "type": "normal"
+}
+```
+
+**响应包体**
+
+```json
+{
+    "status": "success",
+    "statusReason": ""
+}
+```
+
+## 激活插件（POST）
+
+在 App 开发者指定的声网控制台项目中激活你的插件。
+
+### HTTP 请求
+
+**请求 URL**
+
+```shell
+POST https://{host}/customers/{customerId}/projects/new
+```
+
+**路径参数**
+
+- `host`: 你的域名。
+- `customerId`：String 型。声网控制台会为每个开发者账号生成一个 `customerId`，作为唯一标识。
+
+**请求包体**
+
+请求包体中包含以下字段：
+
+| 字段        | 是否必需 | 类型   | 数据长度 | 描述                                                         |
+| ----------- | -------- | ------ | -------- | ------------------------------------------------------------ |
+| `projectId` | 必需       | Int | N/A       | 指定项目的 ID。 App 开发者可以在多个项目中激活你的插件，因此一个 `customerId` 可以对应多个 `projectId`。                  |
+| `apiKey`    | 必需       | String | 32–255   | 用于你和声网之间的鉴权。该字段需要你自行生成，并在入驻云市场时提供给声网。 |
+| `signature` | 必需       | String | N/A      | 通过[签名算法](/zh-CN/realtime-media/marketplace/build/create-extensions/signature-algorithm)生成的签名。你需要自己部署签名算法，验证请求是否由声网发送。 |
+
+### HTTP 响应
+
+响应包体中包含以下字段：
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `status` | String | <Slot name="provisioning-html-2-1-2" /> |
+| `statusReason` | String | 请求成功或失败的原因。 |
+| `data` | Object | <Slot name="provisioning-html-2-3-2" /> |
+
+<Slot for="provisioning-html-2-1-2">
+
+请求状态：
+
+        - `success`：请求成功。
+        - `failed`：请求失败。
+
+</Slot>
+
+<Slot for="provisioning-html-2-3-2">
+
+包含以下字段：
+
+        - `appKey`: String 型，长度为 32–255 字节，用于你对 App 开发者进行鉴权。App 开发者必须填入该字段，才能在 App 中使用你的插件。
+        - `appSecret`：String 型，长度为 32–255 字节，用于你对 App 开发者进行鉴权。App 开发者必须填入该字段，才能在 App 中使用你的插件。
+        - `licenseUrl`：（可选）String 型，用于下载插件 license 的 URL。仅适用于使用 license 计费的插件。
+
+</Slot>
+
+### 示例
+
+**请求包体**
+
+```json
+{
+    "projectId": 4****2,
+    "apiKey": "pz**************************gd",
+    "signature": "Q7**************************xM"
+}
+```
+
+**响应包体**
+
+```json
+{
+    "status": "success",
+    "statusReason": "",
+    "data": {
+        "appKey": "cf**************************yb",
+        "appSecret": "NW**************************M=",
+        "licenseUrl": "https://*********"
+    }
+}
+```
+
+## 停用插件（PUT）
+
+在 App 开发者指定的声网控制台项目中停用你的插件。
+
+### HTTP 请求
+
+**请求 URL**
+
+```shell
+PUT http://{host}/customers/{customerId}/projects/{projectId}/deactivate
+```
+
+**路径参数**
+
+- `host`: 你的域名。
+- `customerId`：String 型。声网控制台会为每个开发者账号生成一个 `customerId`，作为唯一标识。
+- `projectId`：Int 型。指定项目的 ID。
+
+**请求包体**
+
+请求包体包含以下字段：
+
+| 字段        | 是否必需 | 类型   | 数据长度 | 描述                                                         |
+| ----------- | -------- | ------ | -------- | ------------------------------------------------------------ |
+| `apiKey`    | 必需       | String | 32       | 用于你和声网之间的鉴权。该字段需要你自行生成，并在入驻云市场时提供给声网。 |
+| `signature` | 必需       | String | N/A      | 通过[签名算法](/zh-CN/realtime-media/marketplace/build/create-extensions/signature-algorithm)生成的签名。你需要自己部署签名算法，验证请求是否由声网发送。 |
+
+### HTTP 响应
+
+响应包体中包含以下字段：
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `status` | String | <Slot name="provisioning-html-3-1-2" /> |
+| `statusReason` | String | 请求成功或失败的原因。 |
+
+<Slot for="provisioning-html-3-1-2">
+
+请求状态：
+
+        - `success`：请求成功。
+        - `failed`：请求失败。
+
+</Slot>
+
+### 示例
+
+**请求包体**
+
+```json
+{
+    "apiKey": "pz**************************gd",
+    "signature": "Q7**************************xM"
+}
+```
+
+**响应包体**
+
+```json
+{
+    "status": "success",
+    "statusReason": ""
+}
+```
+
+## 常见问题
+
+### 能否在云市场上发布多个插件？
+
+可以。同一家服务商的多个插件在云市场上是相互独立的商品，因此每个插件的发布都要遵循同样的服务商流程。在实现服务开通 RESTful API 时，你可以通过 URL 中的 `host` 参数标识插件。

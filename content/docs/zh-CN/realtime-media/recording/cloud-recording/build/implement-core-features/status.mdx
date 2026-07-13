@@ -1,0 +1,83 @@
+---
+title: "录制模块事件"
+---
+当 `payload` 中的 `serviceType` 返回 `1` 时，表示该回调事件与录制模块相关。
+
+本页介绍录制模块相关的回调事件。如果你想查看其他云端录制的相关事件，可以参考[回调事件概览](/zh-CN/realtime-media/recording/cloud-recording/reference/ncs-events)。
+
+录制模块回调包含如下事件：
+
+| `eventType`     | 事件描述                                                     |
+| ------------- | ------------------------------------------------------------ |
+| [`40`](#40)     | 录制服务已启动                                               |
+| [`41`](#41)     | 录制服务已退出                                               |
+| [`42`](#42)     | 同步录制文件信息                                             |
+| [`43`](#43)     | 音频流状态变化                                               |
+| [`44`](#44)     | 视频流状态变化                                               |
+
+<a id="40"></a>
+## 40 recorder_started
+
+`eventType` 为 40 表示录制服务已启动， `details` 中包含以下字段：
+
+- `msgName`：String 类型，消息名称，即 `recorder_started`。
+- `status`：Number 类型，事件状态，0 表示正常，其他值表示异常。
+
+<a id="41"></a>
+## 41 recorder_leave
+
+`eventType` 为 `41` 表示录制组件已退出， `details` 中包含以下字段：
+
+- `msgName`：String 类型，消息名称，即 `recorder_leave`。
+- `leaveCode`：Number 类型，退出码。将该退出码与各枚举值逐一进行按位与运算，计算结果非零的，即为退出原因。例如，code 为 6（二进制 110）时，将其与各枚举值逐一进行按位与计算，`LEAVE_CODE_SIG`（二进制 10）与 `LEAVE_CODE_NO_USERS`（二进制 100）的结果非零，则退出原因包括收到 SIGINT 信号以及录制超时。
+
+  | 枚举值                  |    描述                                                          |
+  | :---------------------- | ------------------------------------------------------------ |
+  | `LEAVE_CODE_INIT`         | 0：初始化失败。                                              |
+  | `LEAVE_CODE_SIG`          | 2（二进制 10）：`AgoraCoreService` 收到 SIGINT 信号而触发的退出。 |
+  | `LEAVE_CODE_NO_USERS`     | 4（二进制 100）：频道内除录制端外没有其他用户，录制端自动离开频道。 |
+  | `LEAVE_CODE_TIMER_CATCH`  | 8（二进制 1000）：可忽略。                                   |
+  | `LEAVE_CODE_CLIENT_LEAVE` | 16（二进制 10000）：录制端调用 `leaveChannel` 方法退出频道。 |
+
+<a id="42"></a>
+## 42 recorder_slice_start
+
+`eventType` 为 `42` 表示同步录制文件信息， `details` 中包含以下字段：
+
+- `msgName`：String 类型，消息名称，即 `recorder_slice_start`。
+- `startUtcMs`：Number 类型，录制开始时间（即第一个录制切片的开始时间），UTC 时间，精确到毫秒。
+- `discontinueUtcMs`：Number 类型，UTC 时间，精确到毫秒，正常情况下该字段值与 `startUtcMs` 一致。当录制发生异常中断时，声网云端录制会自动恢复录制，此时也会收到该事件通知，且该字段表示上一个正常的录制切片结束的时间。
+- `mixedAllUser`：Boolean 类型，是否将所有用户合并录制。
+  - `true`：所有用户合并在一个录制文件中。
+  - `false`：每个用户分开录制。
+- `streamUid`：String 类型，用户 ID，表示录制的是哪个用户的音频流或视频流。在合流模式下，`streamUid` 为 `"0"`。
+- `trackType`：String 类型，录制文件的类型。
+  - `"audio"`：纯音频文件。
+  - `"video"`：纯视频文件。
+  - `"audio_and_video"`：音视频文件。
+
+举例来说，某次录制生成第一个切片文件时，会收到回调通知该事件，其中 `startUtcMs` 为第一个切片文件开始的时间。假设第 2 个 到第 N 个切片文件都是正常的，不会收到该事件通知，到第 N + 1 个切片时发生故障，导致该切片文件丢失且录制中断，此时重新开始录制后生成第 N + 2 个切片，会再次收到回调通知该事件，其中 `startUtcMs` 为第 N + 2 个切片开始的时间， `discontinueUtcMs` 为第 N 个切片结束的时间。
+
+<a id="43"></a>
+## 43 recorder_audio_stream_state_changed
+
+`eventType` 为 `43` 表示录制的音频流状态变化，`details` 中包含以下字段：
+
+- `msgName`：String 类型，消息名称，即 `recorder_audio_stream_state_changed`。
+- `streamUid`: String 类型，用户 ID，表示录制的是哪个用户的音频流。合流录制模式下，会收到 `streamUid` 为 `0` 的回调，代表合流后的音频流。
+- `state`：Number 类型，云端录制服务是否正在接收音频流。
+  - `0`：云端录制服务正在接收音频流
+  - `1`：云端录制服务未在接收音频流
+- `UtcMs`：Number 类型，音频流状态变化时的时间，UTC 时间，精确到毫秒。
+
+<a id="44"></a>
+## 44 recorder_video_stream_state_changed
+
+`eventType` 为 `44` 表示录制的视频流状态变化，`details` 中包含以下字段：
+
+- `msgName`：String 类型，消息名称，即 `recorder_video_stream_state_changed`。
+- `streamUid`: String 类型，用户 ID，表示录制的是哪个用户的视频流。合流录制模式下，会收到 `streamUid` 为 `0` 的回调，代表合流后的视频流。
+- `state`：Number 类型，云端录制服务是否正在接收视频流。
+  - `0`：云端录制服务正在接收视频流
+  - `1`：云端录制服务未在接收视频流
+- `UtcMs`：Number 类型，视频流状态变化时的时间，UTC 时间，精确到毫秒。

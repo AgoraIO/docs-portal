@@ -226,6 +226,24 @@ describe('docs nav scope', () => {
     });
   });
 
+  it('skips hidden structural parent scopes when building the back link', () => {
+    const scope = resolveDocsNavScope({
+      activePath: '/en/api-reference/rtc/android/overview',
+      getNodeMeta: (node) => {
+        const meta = getNodeMeta(node);
+        return node.$id === 'rtc-folder' && meta
+          ? { ...meta, sidebarHidden: true }
+          : meta;
+      },
+      root: apiReferenceTree,
+      tab: 'api-reference',
+    });
+
+    expect(scope?.parentScope).toBeUndefined();
+    expect(scope?.header.backHref).toBe('/en/api-reference');
+    expect(scope?.header.backLabel).toBe('Reference');
+  });
+
   it('resolves the previous-version scope from a versioned URL', () => {
     const scope = resolveDocsNavScope({
       activePath: '/en/api-reference/rtc/android/4.6.0/overview',

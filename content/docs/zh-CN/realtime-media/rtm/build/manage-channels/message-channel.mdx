@@ -1,0 +1,599 @@
+---
+title: "消息频道"
+---
+**Message** 频道是 RTM 提供的一种基于 Pub/Sub 模型的频道类型。在 Message 频道中，你需要订阅频道才能接收消息，但你在发布消息时无需额外的加入频道操作。RTM 允许你的 App 中同时存在成千上万个 Message 频道，但由于端侧性能和带宽的限制，单个客户端同时只能订阅有限数量的频道，详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
+
+:::info[信息]
+如需接收并处理接收到的消息和事件通知，除了要订阅该频道外，你还需要完成[事件监听](/api-ref/rtm2//toc-configuration/configuration#事件监听)程序的配置。
+:::
+
+## 业务类型
+
+业务类型是指频道中消息发送者和接收者之间的数据流向关系，而基于 Pub/Sub 模式的消息分发机制可以为配置不同的业务类型提供便利。利用 Message 频道你可以轻松地实现以下几种常用的业务类型：
+
+- **一对一频道**：频道中只有两个用户之间相互通信，你可以使用该业务类型来构建私聊频道。常见的业务场景有一对一私聊、一对一客服支持等。
+
+- **群组频道**：多对多的群组频道，频道中的用户群组可见。例如：工作群、家庭群等。你可以允许所有人加入频道，也可以只允许部分被邀请的人加入频道。常见的业务场景有群聊、社区聊天等。
+
+- **广播频道**：一对多的群组频道，频道中的用户群组可见，但只允许一个人发送消息，其他用户都只能接收消息。常见的业务场景有群公告、群问卷调查等。
+
+- **单播频道**：多对一的群组频道，允许多个用户发送消息，但只有一个用户可以接收消息，常见的业务场景有问卷调查的反馈、IoT 传感器数据上传等需要多端数据聚合的场景。
+
+你可以结合实际场景的需要，在实现业务逻辑时选择其中的一种或多种类型。
+
+## 订阅频道
+
+监听了 `config.onmessageevent` 事件通知后，你就可以调用 `channel.subscribe` 方法订阅频道，从而接收频道中的消息和事件通知。
+
+```csharp
+var options = new SubscribeOptions();
+
+var (status,response) = await rtmClient.SubscribeAsync("Chat_room", options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Subscribe channel success! at Channel:{0}", response.ChannelName));
+}
+```
+
+```javascript
+const options = {
+    withMessage: true,
+    withPresence: true,
+    beQuiet : false,
+    withMetadata: true,
+    withLock: true,
+};
+const channelName = "test_channel";
+try {
+    const subscribeResult = await rtmClient.subscribe(channelName, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java
+String channelName = "test_channel";
+SubscribeOptions options = new SubscribeOptions();
+options.setWithMessage(true);
+options.setWithPresence(true);
+options.setWithMetadata(true);
+options.setWithLock(true);
+mRtmClient.subscribe(channelName, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "subscribe channel " + channelName + " success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift
+rtm?.subscribe(channelName: channel, option: nil, completion: { res, error in
+        if error != nil {
+            print("\(error?.operation) failed! error reason is \(error?.reason)")
+        } else {
+            print("success")
+        }
+    })
+```
+
+```objc
+[rtm subscribeWithChannel:@"you_channel" option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp
+// 方法调用
+SubscribeOptions options;
+
+uint64_t requestId;
+rtm_client->subscribe("channelName", options, requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onsubscriberesult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onSubscribeResult(const uint64_t requestId, const char *channelName, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("subscribe rtm channel failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("subscribe rtm channel %s success\n", channelName);
+        }
+    }
+};
+```
+
+```dart
+final channel = 'chat_room';
+try {
+    var (status, response) = await rtmClient.subscribe(
+        channel,
+        withMessage: true,
+        withPresence: true,
+        withMetadata: true,
+        withLock: true,
+        beQuite: false);
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript
+import { SubscribeOptions } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const channelName = "chat_room";
+const options: SubscribeOptions = {
+  withMessage: true,
+  withPresence: true,
+  withMetadata: false,
+  withLock: false
+};
+
+try {
+  const response = await rtmClient.subscribe(channelName, options);
+  console.log("Subscribe channel success:", response);
+} catch (error) {
+  console.error("Subscribe failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Subscribe failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+默认情况下，你会收到你所订阅的所有频道的消息事件。如果你无需接收某些特定频道的消息，但仍需接收这些频道中其他类型的事件通知或其他频道的消息，请勿将 `channel.subscribeoptions` 参数中的 `features` 字段设为 `enumv.subscribechannelfeaturemetadata`。你可以将 `channel.subscribeoptions` 参数中的 `withMessage` 字段设置为 `false`。你可以将 `withMessage` 字段设置为 `false`。
+
+```csharp
+var options = new SubscribeOptions();
+options.withMessage = fasle;
+
+var (status,response) = await rtmClient.SubscribeAsync("Chat_room", options);
+```
+
+```javascript
+const options = {
+    withMessage: false,
+    withPresence: true,
+    withMetadata: true,
+    withLock: true,
+};
+const channelName = "test_channel";
+try {
+    const subscribeResult = await rtmClient.subscribe(channelName, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java
+String channelName = "test_channel";
+SubscribeOptions options = new SubscribeOptions();
+options.setWithMessage(false);
+options.setWithPresence(true);
+options.setWithMetadata(true);
+options.setWithLock(true);
+mRtmClient.subscribe(channelName, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "subscribe channel " + channelName + " success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift
+let option = AgoraRtmSubscribeOptions();
+option.features = [.presence, .metadata, .lock]
+rtm?.subscribe(channelName: channel, option: option, completion: { res, error in
+        if error != nil {
+            print("\(error?.operation) failed! error reason is \(error?.reason)")
+        } else {
+            print("success")
+        }
+    })
+```
+
+```objc
+AgoraRtmSubscribeOptions* opt = [[AgoraRtmSubscribeOptions alloc] init];
+opt.features = AgoraRtmSubscribeChannelFeaturePresence;
+[rtm subscribeWithChannel:@"you_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp
+SubscribeOptions options;
+options.withMessage = false;
+options.withPresence = true;
+options.withMetadata = true;
+options.withLock = true;
+
+uint64_t requestId;
+rtmClient->subscribe("channelName", options, requestId);
+```
+
+```dart
+final channel = 'chat_room';
+try {
+    var (status, response) = await rtmClient.subscribe(
+        channel,
+        withMessage: false,
+        withPresence: true,
+        withMetadata: true,
+        withLock: true,
+        beQuite: false);
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript
+import { SubscribeOptions } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const channelName = "test_channel";
+const options: SubscribeOptions = {
+  withMessage: false,
+  withPresence: true,
+  withMetadata: false,
+  withLock:false 
+};
+
+try {
+  const response = await rtmClient.subscribe(channelName, options);
+  console.log("Subscribe channel success:", response);
+} catch (error) {
+  console.error("Subscribe failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Subscribe failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+`channel.subscribe` 方法只允许你一次订阅一个频道。如需订阅多个频道，你可以多次调用该方法。例如，当你想同时订阅频道 `chats.room1` 和频道 `chats.room2` 时，你可以参考如下示例代码：
+
+```csharp
+var options = new SubscribeOptions();
+
+var (status1,response1) = await rtmClient.SubscribeAsync("chats.room1", options);
+if (status1.Error)
+{
+    // your code
+}
+
+var (status2,response2) = await rtmClient.SubscribeAsync("chats.room2", options);
+if (status2.Error)
+{
+    // your code
+}
+```
+
+```javascript
+const options = {
+    withMessage: true,
+    withPresence: true,
+    beQuiet : false,
+    withMetadata: true,
+    withLock: true,
+};
+const channelName1 = "chats.room1";
+const channelName2 = "chats.room2";
+
+try {
+    const result1 = await rtmClient.subscribe(channelName1, options);
+    // your code
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, due to: ${reason}.`);
+}
+
+try {
+    const result2 = await rtmClient.subscribe(channelName2, options);
+    // your code
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java
+String channelName1 = "chats.room1";
+String channelName2 = "chats.room2";
+SubscribeOptions options = new SubscribeOptions();
+options.setWithMessage(true);
+options.setWithPresence(true);
+options.setWithMetadata(true);
+options.setWithLock(true);
+
+mRtmClient.subscribe(channelName1, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "subscribe channel " + channelName1 + " success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+
+mRtmClient.subscribe(channelName2, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "subscribe channel " + channelName2 + " success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift
+rtm?.subscribe(channelName: channel1, option: nil, completion: { res, error in
+        if error != nil {
+            print("\(error?.operation) failed! error reason is \(error?.reason)")
+        } else {
+            print("success")
+        }
+    })
+rtm?.subscribe(channelName: channel2, option: nil, completion: { res, error in
+        if error != nil {
+            print("\(error?.operation) failed! error reason is \(error?.reason)")
+        } else {
+            print("success")
+        }
+    })
+```
+
+```objc
+[rtm subscribeWithChannel:@"chats.room1" option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+
+[rtm subscribeWithChannel:@"chats.room2" option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp
+SubscribeOptions options;
+options.withMessage = false;
+options.withPresence = true;
+options.withMetadata = true;
+options.withLock = true;
+
+uint64_t requestId;
+rtm_client->subscribe("chats.room1", options, requestId);
+rtm_client->subscribe("chats.room2", options, requestId);
+```
+
+```dart
+final channel1 = 'chats.room1';
+final channel2 = 'chats.room2'
+try {
+    var (status, response) = await rtmClient.subscribe(
+        channel1,
+        withMessage: false,
+        withPresence: true,
+        withMetadata: true,
+        withLock: true,
+        beQuite: false);
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+
+try {
+    var (status, response) = await rtmClient.subscribe(
+        channel2,
+        withMessage: false,
+        withPresence: true,
+        withMetadata: true,
+        withLock: true,
+        beQuite: false);
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript
+import { SubscribeOptions } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const channelName1 = "chats.room1";
+const channelName2 = "chats.room2";
+const options: SubscribeOptions = {
+  withMessage: true,
+  withPresence: true,
+  withMetadata: false,
+  withLock: false
+};
+
+try {
+  const response1 = await rtmClient.subscribe(channelName1, options);
+  console.log("Subscribe channel1 success:", response1);
+} catch (error) {
+  console.error("Subscribe channel1 failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Subscribe failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+
+try {
+  const response2 = await rtmClient.subscribe(channelName2, options);
+  console.log("Subscribe channel2 success:", response2);
+} catch (error) {
+  console.error("Subscribe channel2 failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Subscribe failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+RTM 支持单个客户端同时订阅 50 个 Message 频道，但考虑到客户端性能和带宽的限制，声网建议单个客户端同时订阅不超过 30 个 Message 频道。对于一些大型的或者活跃的频道，建议你根据实际情况进一步降低单个客户端同时订阅的频道数量。
+
+## 取消订阅
+
+如需停止接收某个频道中的所有消息和事件通知，你可以调用 `channel.unsubscribe` 方法。
+
+```csharp
+var (status,response) = await rtmClient.UnsubscribeAsync("chats.room1");
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+```
+
+```javascript
+const channelName = "chats.room1";
+try {
+    const result = await rtmClient.unsubscribe(channelName);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java
+String channelName = "chats.room1";
+mRtmClient.unsubscribe(channelName, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "unsubscribe channel " + channelName + " success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift
+RtmClient?.unsubscribe(channel) { res, error in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+}
+```
+
+```objc
+[rtm unsubscribeWithChannel:@"chats.room1" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"unsubscribe success!!");
+    } else {
+        NSLog(@"unsubscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp
+uint64_t requestId;
+rtmClient->unsubscribe("chats.room1", requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onunsubscriberesult` 回调并返回 API 调用结果。
+
+```cpp
+class RtmEventHandler : public IRtmEventHandler {
+    void onUnsubscribeResult(const uint64_t requestId, const char* channelName, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("unsubscribe rtm channel failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("unsubscribe rtm channel %s success\n", channelName);
+        }
+    }
+};
+```
+
+```dart
+final channel = 'chat_room';
+try {
+    var (status, response) = await rtmClient.unsubscribe( channel );
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript
+import { RtmError } from '@shengwang/rtm-full';
+
+const channelName = "chats.room1";
+
+try {
+  const response = await rtmClient.unsubscribe(channelName);
+  console.log("Unsubscribe channel success:", response);
+} catch (error) {
+  console.error("Unsubscribe failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Unsubscribe failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+该方法一次只能取消订阅一个频道。如需同时取消订阅多个频道，你需要多次调用该方法。

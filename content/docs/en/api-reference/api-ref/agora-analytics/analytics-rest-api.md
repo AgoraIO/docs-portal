@@ -121,10 +121,10 @@ Where:
 - `total_size`: Number. The total number of returned calls.
 - `page_no`: Number. The page number.
 - `page_size`: Number. The number of calls on each page.
-- `has_more`: Boolean. Whether there are calls not included in `call_lists`. 
-    - `true` Indicates that some calls that meet the search criteria are not listed. 
+- `has_more`: Boolean. Whether there are calls not included in `call_lists`.
+    - `true` Indicates that some calls that meet the search criteria are not listed.
     - `false` Indicates that all calls that meet the query criteria are listed.
-    
+
     If the call you need is not in `call_lists`, try narrowing the search and resend the request.
 - `call_lists`: JSONArray. The returned calls in descending order of the starting time. Each call has the following properties:
   - `call_id`: String. The unique ID of the call.
@@ -208,10 +208,10 @@ Where:
 - `code`: Number. The [status code](#status-codes).
 - `message`: String. The error message.
 - `requestId`: String. The unique identifier of the HTTP request corresponding to this HTTP response.
-- `has_more`: Boolean. Whether there are calls not included in `call_lists`. 
-    - `true` Indicates that some calls that meet the search criteria are not listed. 
+- `has_more`: Boolean. Whether there are calls not included in `call_lists`.
+    - `true` Indicates that some calls that meet the search criteria are not listed.
     - `false` Indicates that all calls that meet the query criteria are listed.
-    
+
     If the call you need is not in `call_lists`, try narrowing the search and resend the request.
 - `total_size`: Number. The total number of returned user sessions.
 - `page_no`: Number. The page number.
@@ -316,7 +316,7 @@ Authorization: Basic ZGJhZDMyNmFkxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       - `kvs`: Array. Pairs of the timestamp and the corresponding metric value.
       - `peer_uid`: Number. The user ID of the remote user. 0 represents that the returned metrics are the local user's.
 
-### Get call statistics 
+### Get call statistics
 
 Retrieves statistics on the audio or video freeze rate for a specified call within a given time range and dimension.
 
@@ -372,7 +372,7 @@ Where:
     - `user_count`: Number. The number of users.
     - `value`: Number. The average metric value over the queried time range, matching the metric specified in the request.
 
-### Retrieve Audio/Video freeze rate statistics 
+### Retrieve Audio/Video freeze rate statistics
 
 This method gets audio or video freeze rate statistics for a specific call within a defined time range.
 
@@ -579,7 +579,7 @@ The following query string parameters are required in the URL:
 | `aggregateGranularity` | String | Supported values: `1d` (By day. Returns data for the entire day starting from UTC 00:00 within the query time range); `1h` (By hour. Returns data for each whole UTC hour within the query time range). |
 
 :::info
-For more information about calculating by the number of users, see [How does Agora calculate service minutes?](/en/realtime-media/agora-analytics/reference/billing-policies#how-does-agora-calculate-service-minutes) 
+For more information about calculating by the number of users, see [How does Agora calculate service minutes?](/en/realtime-media/agora-analytics/reference/billing-policies#how-does-agora-calculate-service-minutes)
 :::
 
 #### HTTP request example
@@ -643,7 +643,7 @@ The following query string parameters are required in the URL:
 | `productType`          | String | Supported values: `Native` (The Agora Video SDK for Android, iOS, macOS, and Windows); `WebRTC` (The Agora Video SDK for Web). |
 
 :::info
-For more information about calculating by the number of streams, see [How does Agora calculate service minutes?](/en/realtime-media/agora-analytics/reference/billing-policies#how-does-agora-calculate-service-minutes) 
+For more information about calculating by the number of streams, see [How does Agora calculate service minutes?](/en/realtime-media/agora-analytics/reference/billing-policies#how-does-agora-calculate-service-minutes)
 :::
 
 #### HTTP request example

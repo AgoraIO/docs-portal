@@ -1,0 +1,37 @@
+---
+title: "AdvanceOptions"
+description: "用于配置视频编码的高级选项。"
+---
+<a id="class_advanceoptions__prototype"></a>
+
+```cpp
+struct AdvanceOptions {
+  ENCODING_PREFERENCE encodingPreference;
+  COMPRESSION_PREFERENCE compressionPreference;
+  bool encodeAlpha;
+  bool operator==(const AdvanceOptions& rhs) const {
+    return encodingPreference == rhs.encodingPreference && 
+           compressionPreference == rhs.compressionPreference &&
+           encodeAlpha == rhs.encodeAlpha;
+  }
+};
+```
+
+<a id="class_advanceoptions__parameters"></a>
+
+## 属性
+
+### `encodingPreference`
+
+视频编码器偏好设置。详见 [ENCODING_PREFERENCE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-encodingpreference)。
+
+### `compressionPreference`
+
+视频编码的压缩偏好设置。详见 [COMPRESSION_PREFERENCE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-compressionpreference)。
+
+### `encodeAlpha`
+
+是否对视频帧中存在的 Alpha 数据进行编码并发送到远端：
+
+- true：编码并发送 Alpha 数据。
+- false：（默认）不编码也不发送 Alpha 数据。

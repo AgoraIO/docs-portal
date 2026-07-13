@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/cn';
+import { DEFAULT_LOCALE, normalizeLocale } from '@/lib/i18n/i18n-config';
 
 const AGORA_DOCS_MCP_URL = 'https://mcp.agora.io';
 const AGORA_DOCS_MCP_NAME = 'agora-docs';
@@ -112,7 +113,9 @@ export function DocsCopyMenu({
   className?: string;
   locale: string;
 }) {
-  const { t } = useTranslation('common');
+  const { i18n } = useTranslation('common');
+  const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
+  const t = i18n.getFixedT(currentLocale, 'common');
   const [copiedAction, setCopiedAction] = useState<
     'page' | 'config' | 'command' | null
   >(null);

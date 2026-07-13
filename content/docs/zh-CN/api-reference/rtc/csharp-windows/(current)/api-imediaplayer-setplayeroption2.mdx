@@ -1,0 +1,52 @@
+---
+title: "setPlayerOption [2/2]"
+description: "设置媒体播放器选项。"
+---
+<a id="api_imediaplayer_setplayeroption2__prototype"></a>
+
+```csharp
+public abstract int SetPlayerOption(string key, string value);
+```
+
+<a id="api_imediaplayer_setplayeroption2__detailed_desc"></a>
+
+媒体播放器支持通过 key 和 value 来设置选项。
+
+该方法和 [SetPlayerOption [1/2]](/zh-CN/api-reference/rtc/csharp-windows/api-imediaplayer-setplayeroption) 的区别在于，该方法的 value 是 String 型， SetPlayerOption [1/2] 的 value 是 Int 型。二者不可混用。
+
+<a id="api_imediaplayer_setplayeroption2__scenario"></a>
+
+## 适用场景
+
+需要提供技术预览或特别定制功能的场景。一般情况下，你无需调用该方法，使用媒体播放器默认的选项设置即可。
+
+<a id="api_imediaplayer_setplayeroption2__timing"></a>
+
+## 调用时机
+
+该方法需要在 [Open](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [OpenWithMediaSource](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 之前调用。
+
+<a id="api_imediaplayer_setplayeroption2__restriction"></a>
+
+## 调用限制
+
+无。
+
+<a id="api_imediaplayer_setplayeroption2__parameters"></a>
+
+## 参数
+
+### `key`
+
+key 值。
+
+### `value`
+
+value 值。
+
+<a id="api_imediaplayer_setplayeroption2__return_values"></a>
+
+## 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。

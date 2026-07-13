@@ -1,0 +1,168 @@
+---
+title: "场景介绍"
+---
+声网对话式 AI 开发套件是一套针对智能硬件的完备对话式 AI 解决方案。
+
+它提供即开即用的便捷体验，帮助开发者迅速验证、将对话式 AI 集成到智能硬件中，实现“让智能硬件开口说话”的目标。该方案适用于多种场景，包括 AI 玩具、教育硬件、陪伴设备、穿戴个人助手和家居语音助手。
+
+## 方案架构
+
+声网对话式 AI 智能硬件解决方案基于[媒体流加速 RTSA](/zh-CN/realtime-media/rtsa)（声网专为 IoT 行业设计的 RTC 客户端产品）和[对话式 AI 引擎](/zh-CN/ai)构建。方案技术架构如下图：
+
+![对话式 AI 开发套件方案架构图](https://web-cdn.agora.io/docs-portal/img/toybox/toybox-arch.png)
+
+## 方案优势
+
+#### 极致 AI 对话体验
+
+- 对话延迟低至 650 ms，打断响应低至 340 ms，接近真人对话速度
+- 多模态交互体验：内置麦克风、摄像头、传感器接口，提供文本、音频、视频和触控交互功能
+- 屏蔽 95% 环境噪声，实现精准识别
+
+#### 全球化能力赋能企业出海
+
+- 覆盖 200+ 国家和地区的实时传输网络，大网端到端延时中位数低至 76 ms
+- 35+ 语言支持，实现一套方案覆盖全球多区域
+- 满足海外合规要求，满足 ISO (27001/27018 等)、GDPR、CCPA、HIPAA 等国际隐私法规
+
+#### 先进算法保障复杂环境下的流畅对话
+
+- AI 降噪算法：屏蔽 95% 环境噪声，咖啡馆、火车站也能实现精准识别，避免交互失误
+- BHVS 和声纹算法：背景人声过滤算法、声纹识别算法，保证多人对话场景主讲人锁定
+- 优雅打断算法：让 AI 实时感知用户插话意图，精准判断**何时说话、何时停止**，还原自然对话节奏
+- 弱网对抗算法：具备 80% 抗丢包能力，在地铁、地下室，仍能保障语音交互不中断，维持对话连贯性
+
+#### 灵活扩展，一站式解决方案方便快速验证支持
+
+- 灵活的大模型支持：支持通义千问、豆包、Deepseek 等多种 AI 服务，以及自研大模型
+- 主流 AI 与芯片支持：兼容多种主流通信标准，支持博通、乐鑫、展锐、君正、瑞芯微 RK、Sigmastar 等厂商的产品
+- 极速产品原型送样：1 小时跑通示例项目，1 天完成产品原型送样；软硬件开源，快速完成从设计到上市全流程
+
+## 平台兼容
+
+声网对话式 AI 开发套件支持各类主流 Wi-Fi、LTE Category 1 通信标准、图像信号处理器（ISP 芯片），涵盖博通、乐鑫、展锐、君正、瑞芯微 RK、Sigmastar 等多家知名厂商的产品。如需了解具体支持的厂商品牌和芯片型号，可以[联系技术支持](https://ticket.shengwang.cn)。
+
+## 开发套件介绍
+
+为了让您的想法快速商业化落地，声网与芯片原厂合作推出了一系列开发套件。本节介绍各系列开发套件的核心能力。
+
+<Tabs defaultValue="r1" groupId="kit-name" persist>
+<TabsList>
+  <TabsTrigger value="r1">R1 套件</TabsTrigger>
+</TabsList>
+
+<TabsContent value="r1">
+
+R1 套件基于博通集成 BK7258，开源了软件和硬件资料，拥有丰富的板载资源，如麦克风、扬声器、摄像头、LCD 屏幕、陀螺仪等，适用于各种对话式 AI 应用场景。
+
+### 设计架构
+
+完整的 R1 套件包含硬件设备和软件架构两大模块，各自包含的内容如下：
+
+- 硬件功能模块
+
+![R1 套件硬件功能模块图](https://web-cdn.agora.io/docs-portal/img/toybox/r1-kit-hardware.png)
+
+- 软件包架构
+
+![R1 套件软件包架构图](https://web-cdn.agora.io/docs-portal/img/toybox/r1-kit-software.png)
+
+### 开发套件功能
+
+| 功能 | 描述 |
+| --- | --- |
+| 全双工多模态交互 | <Slot name="product-overview-html-0-1-1" /> |
+| 高性能硬件 | <Slot name="product-overview-html-0-2-1" /> |
+| 低功耗与便携设计 | <Slot name="product-overview-html-0-3-1" /> |
+| 多传感器交互融合 | <Slot name="product-overview-html-0-4-1" /> |
+| 开发者友好生态 | <Slot name="product-overview-html-0-5-1" /> |
+
+<Slot for="product-overview-html-0-1-1">
+
+- 提供超低延时 AI 对话能力
+    - 支持自定义唤醒词和实时连续对话，还支持大模型实时视觉推理
+
+</Slot>
+
+<Slot for="product-overview-html-0-2-1">
+
+- 双麦克风阵列和本地 AEC 算法确保精准拾音，消除回声干扰
+    - 集成摄像头、陀螺仪，扩展视觉识别和运动感知能力
+
+</Slot>
+
+<Slot for="product-overview-html-0-3-1">
+
+- 电池供电和深度休眠模式适配移动场景
+    - 支持蓝牙配网和 Wi-Fi 6，实现一键连接云端服务
+
+</Slot>
+
+<Slot for="product-overview-html-0-4-1">
+
+- 支持语音、触屏和陀螺仪（手势/倾斜控制）多通道输入
+    - 双屏协同显示提升用户体验
+
+</Slot>
+
+<Slot for="product-overview-html-0-5-1">
+
+- 提供标准化 SDK、硬件文档和开源参考示例
+    - 开放音频、视频、数据通道接口，支持自定义 AI 场景开发
+
+</Slot>
+
+### 适用场景
+
+| 场景 | 描述 |
+| --- | --- |
+| AI 玩具 | <Slot name="product-overview-html-1-1-1" /> |
+| AI 教育硬件 | <Slot name="product-overview-html-1-2-1" /> |
+| AI 陪伴设备 | <Slot name="product-overview-html-1-3-1" /> |
+| 家居语音助手 | <Slot name="product-overview-html-1-4-1" /> |
+| 穿戴设备-个人助手 | <Slot name="product-overview-html-1-5-1" /> |
+
+<Slot for="product-overview-html-1-1-1">
+
+- 支持动态剧情调整，激发儿童创造力
+    - 即时解答儿童提问，将知识融入互动
+
+</Slot>
+
+<Slot for="product-overview-html-1-2-1">
+
+- 个性化学习，调整讲解深度与节奏
+    - 语言能力训练，模拟真实对话环境
+
+</Slot>
+
+<Slot for="product-overview-html-1-3-1">
+
+- 通过自然闲聊与情绪共鸣，成为情感寄托
+    - 提供生活辅助，主动提醒健康事项
+
+</Slot>
+
+<Slot for="product-overview-html-1-4-1">
+
+- 支持自然交互和模糊指令，如“调暗灯光”、“放点音乐”
+    - 场景化联动实现跨设备协同，如“观影模式”联动灯光和投影仪
+
+</Slot>
+
+<Slot for="product-overview-html-1-5-1">
+
+- 提供实时翻译、字幕、会议纪要功能
+    - 结合日程管理和任务提醒，实现智能化工作流
+
+</Slot>
+
+</TabsContent>
+</Tabs>
+
+## 计费
+
+声网对话式 AI 开发套件基于媒体流加速 RTSA 和对话式 AI 引擎构建。相关计费策略可以参考如下文档：
+
+- [媒体流加速计费策略](/zh-CN/realtime-media/rtsa/overview/billing)
+- [对话式 AI 引擎计费说明](/zh-CN/ai/overview/billing)

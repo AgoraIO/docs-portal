@@ -1,0 +1,421 @@
+---
+title: "自定义云课堂场景 UI (FcrUIScene)"
+---
+
+<PlatformStructured platform="web">
+
+## UI 组件介绍
+
+灵动课堂 FcrUIScene 包含了云课堂场景，灵动课堂 FcrUIScene 提供的 UI 组件可分为功能组件、业务组件和场景组件三种。
+
+### 功能组件
+
+功能组件是灵动课堂中最基础的 UI 组件，不和业务逻辑绑定。一个功能组件维护一个功能的内部状态和逻辑，例如 `Button`、`Modal`、`Select`、 `Tree` 等。
+
+功能组件位于 `packages/fcr-ui-kit/src/components` 目录中，采用 React + TypeScript + Storybook 的架构。每个功能组件文件夹均包含以下三个文件：
+
+-   `.tsx`: 实现 UI 组件的功能。
+-   `.css`: 实现 UI 组件的样式。
+-   `.stories.tsx`: 用于 UI 组件在 Storybook 中的预览和调试。你可通过 `yarn dev:ui-kit:scene` 或 `npm run dev:ui-kit:scene` 命令启动项目，在 Storybook 中查看各功能组件。
+
+下表详细介绍灵动课堂中使用的功能组件：
+
+| 文件夹          | 功能组件                                                     |
+| :-------------- | :----------------------------------------------------------- |
+| `/avatar`       | 用户名头像。                                                   |
+| `/button`       | 按钮组件。                                                   |
+| `/checkbox`     | 复选框。                                                     |
+| `/dialog`       | 对话框。                                                     |
+| `/dropdown`     | 下拉选择框。                                                     |
+| `/input`        | 输入框。                                                     |
+| `/input-number` | 数字输入框。                           |
+| `/pagination`   | 分页组件。     |
+| `/popover`      | 气泡，用于点击/鼠标移入元素、弹出气泡式的卡片浮层等。    |
+| `/progress`     | 进度条。    |
+| `/radio`        | 单选框。                                                     |
+| `/slider`       | 拖拽进度条。                                                 |
+| `/sound-player` | 播放音频文件的组件。                                         |
+| `/svg-img`      | SVG 图标。                                                   |
+| `/table`        | 表格组件。                                                   |
+| `/tabs`         | 选项卡切换组件。                                             |
+| `/textarea`     | 多行文本输入框。                                               |
+| `/toast`        | 全局提示组件。                                               |
+| `/tooltip`      | 简单的文字提示气泡框。                                       |
+| `/volume`       | 显示说话声音的组件。                                         |
+
+### 业务组件
+
+业务组件指灵动课堂中和业务逻辑绑定的 UI 组件。业务组件大部分是由多个功能组件组合并注入相关的业务逻辑。业务组件依赖于 UI Store 中注入的 Observable 对象和行为函数来自动更新 UI 和调用 API。以举手上讲台功能为例，此功能对应的业务组件可以根据当前举手数据展示举手的用户列表，并提供按钮供用户点击，业务组件内部会调用 API 发送举手请求。
+
+![业务组件示意](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/custom-ui-component.png)
+
+业务组件位于 `packages/fcr-ui-scene/src/containers` 目录下。
+
+下表详细介绍灵动课堂中使用的业务组件：
+
+| 文件夹                         | 对应的业务                                                   |
+| :-------------------------    | :----------------------------------------------------------- |
+| `/action-bar`                 | 底部功能按钮栏。                     |
+| `/breakout-room`              | 分组讨论功能。                     |
+| `/cloud`                      | 云盘组件，实现文件上传、文件删除等业务。                     |
+| `/common`                     | 右上角用户奖励计数。 |
+| `/device-pretest`             | 设备预检组件，实现进入课堂前设备预检业务，包含获取设备列表信息、切换设备等功能。 |
+| `/device-setting`             | 设备设置，实现获取摄像头、麦克风、扬声器列表以及切换设备等业务。 |
+| `/dialog`                     | Dialog 窗口，实现课中弹窗的功能。                            |
+| `/layout`                     | 场景 UI 布局。                            |
+| `/loading`                    | 加载组件，处理加载逻辑。                                     |
+| `/participants`               | 花名册组件，实现查看学生信息、处理上讲台请求、发奖励等业务。 |
+| `/status-bar`                 | 顶部状态栏。                             |
+| `/stream-window`              | 视频窗口组件，负责渲染视频和视频工具栏。                         |
+| `/video-player`               | Toast 提示组件。                                             |
+| `/widget`                     | Widget 容器组件，负责处理自定义 Widget 的渲染。                    |
+
+### 场景组件
+
+场景组件由多个业务组件组合而成。场景组件位于 `packages/fcr-ui-scene/src/scenarios` 目录。如果你想改动某一个场景的布局，找到对应的场景组件修改即可。
+
+| 文件夹          | 场景组件                     |
+| :-------------- | :--------------------------- |
+| `/classroom`    | 通用教育场景           |
+
+### UI 组件关系示意图
+
+各 UI 组件之间的关系如下图：
+
+![UI 组件关系](https://web-cdn.agora.io/docs-files/1649917558727)
+
+## 自定义功能组件
+
+### 项目集成
+
+如需自定义组件，你需要先集成灵动课堂到你的项目中，参考[集成灵动课堂](/zh-CN/solutions/flexible-classroom/get-started/integrate)。
+
+### 新增功能组件
+
+你可参考以下步骤在灵动课堂中新增功能组件，下面以灵动课堂教育场景举例：
+
+1. 在 `packages/fcr-ui-kit/src/components` 目录下新建文件夹，用于存放你所需要新增的功能组件。请注意，文件夹中需包含以下三个文件：
+
+    - `index.tsx`: 实现 UI 组件的功能。
+    - `index.css`: 实现 UI 组件的样式。
+    - `index.stories.tsx`: 用于 UI 组件在 Storybook 中的预览和调试。
+
+2. 添加功能组件的文件夹后，在 `packages/fcr-ui-kit/src/components/index.ts` 下导出该组件，以便后续在你自己的项目中导入新写的组件。
+
+以下示例展示了如何新增一个名为 `agora-demo` 的功能组件，用于展示文字：
+
+1. 在 `packages/agora-classroom-sdk/src/ui-kit/components` 目录下新建了一个 `agora-demo` 的文件夹，包含对应的 `index.tsx`，`index.css` 和 `index.stories.tsx` 文件。
+
+![](https://web-cdn.agora.io/docs-files/1649913888493)
+
+    文件内容如下：
+
+    ```tsx
+    // index.css
+    .agora-demo {
+        color: red
+    }
+    // index.tsx
+    import React from 'react'
+    import './index.css'
+
+    export const AgoraDemo = () => {
+      return (
+        <div className="agora-demo">AgoraDemo</div>
+      )
+    }
+    // index.stories.tsx
+    import React from 'react';
+    import { Meta } from '@storybook/react';
+    import { AgoraDemo } from './index';
+
+    const meta: Meta = {
+        title: 'Components/AgoraDemo',
+        component: AgoraDemo,
+    };
+    export default meta;
+
+    export const Docs = () => (
+        <AgoraDemo />
+    )
+    ```
+
+2. 在 `packages/fcr-ui-kit/src/components/index.ts` 中添加这行代码：`export * from './agora-demo';`
+
+该功能组件在 Storybook 中的效果如下：
+
+![功能组件效果](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/agora-demo.png)
+
+### 修改功能组件
+
+如果你想修改某个功能组件的功能和样式，找到该组件所在的文件夹并修改代码即可。以下提供几个修改示例。
+
+#### 修改 Input 组件占位文字的颜色
+
+你可以通过修改 `packages/fcr-ui-kit/src/components/input/index.css` 文件来修改 Input 组件中占位文字的颜色。
+
+**修改前**
+
+```css
+.fcr-input input::placeholder {
+  @apply fcr-text-3;
+}
+```
+
+![](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/no-highlight.png)
+
+**修改后**
+
+```css
+.fcr-input input::placeholder {
+    color: skyblue;
+    font-size: 14px;
+}
+```
+
+![](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/highlight.png)
+
+## 自定义业务组件
+
+### 新增业务组件
+
+如需新增业务组件，你可以在 `packages/fcr-ui-scene/src/containers` 下新建文件夹，包含以下文件：
+
+-   `index.tsx`: 组合你的功能组件，注入业务逻辑，实现业务功能。
+-   `index.css`: 实现业务组件的样式。
+
+添加对应的文件夹后，你可直接导入该业务组件，启动项目查看效果。
+
+以下示例展示了如何新增一个实现在课堂中间显示上课状态及网络状态的业务组件 `agora-demo`：
+
+1. 在 `packages/fcr-ui-scene/src/containers` 下新建文件夹 `agora-demo`，包含 `index.tsx` 文件和 `index.css` 文件。
+
+    ```tsx
+    // index.css
+    .agora-demo {
+        width: 50%;
+        height: 50%;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        border: 1px solid black;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999999;
+        background: #fff;
+    }
+    .agora-demo-title {
+        color: red;
+    }
+    // index.tsx
+    import React from 'react';
+    import { observer } from 'mobx-react';
+    import './index.css';
+    import { useStore } from '@ui-scene/utils/hooks/use-store';
+
+    export default observer(function AgoraDemo() {
+    const { statusBarUIStore } = useStore();
+    return (
+        <div className="agora-demo">
+        <h1 className="agora-demo-title">这是我们新写的业务组件</h1>
+        <h2>用于展示网络状态和课堂状态</h2>
+        <div>
+            网络状态: {statusBarUIStore.networkQuality} 网络延迟: {statusBarUIStore.delay} 丢包率：
+            {statusBarUIStore.packetLoss}
+        </div>
+        <div>课堂状态: {statusBarUIStore.classStatusText}</div>
+        </div>
+    );
+    });
+    ```
+
+2. 在互动小班课场景 `packages/fcr-ui-scene/src/scenarios/classroom.tsx` 文件中导入该组件：
+
+    ```tsx
+    ...
+    import AgoraDemo from '@ui-scene/containers/agora-demo';
+
+    export const Classroom = observer(() => {
+        const {
+            join,
+            layoutUIStore: { classroomViewportClassName },
+        } = useStore();
+        useEffect(() => {
+            join();
+        }, []);
+        return (
+            <div className={classroomViewportClassName}>
+                ...
+                <AgoraDemo />
+            </div>
+        );
+    });
+    ```
+
+该业务组件在灵动课堂中的效果如下：
+
+![](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/new-component.png)
+
+## 修改 UI Store
+
+业务组件由多个功能组件组合且依赖 UI Store。如果你新增或修改了业务组件，就需要修改 UI Store。本节介绍如何修改业务组件所依赖的 UI Store。
+
+UI Store 位于 `packages/fcr-ui-scene/src/uistores` 目录下，具体介绍如下：
+
+| 文件夹         | 说明                        |
+| :------------- | :-------------------------- |
+| `/cloud`      | 各场景通用的 UI Store。       |
+| `/subscription` | 为小班课定制的 UI Store。     |
+| `/action-bar`     | 为大班课定制的 UI Store。     |
+| `/breakout`  | 为 H5 大班课定制的 UI Store。 |
+| `/device-setting`  | 为一对一场景定制的 UI Store。 |
+| `/gallery-view`     | 为大班课定制的 UI Store。     |
+| `/layout`  | 为 H5 大班课定制的 UI Store。 |
+| `/notification`  | 为一对一场景定制的 UI Store。 |
+| `/participants`     | 为大班课定制的 UI Store。     |
+| `/presentation-view`  | 为 H5 大班课定制的 UI Store。 |
+| `/status-bar`  | 为一对一场景定制的 UI Store。 |
+| `/stream`  | 为一对一场景定制的 UI Store。 |
+| `/widget`  | 为一对一场景定制的 UI Store。 |
+| `/base`    | 所有 UI Store 的基类。 |
+
+所有 UI Store 需集成 `/base` 中的 EduUIStoreBase 类，此类提供初始化方法 `onInstall` 销毁方法 `onDestroy`，分别在教室的创建和销毁时被调用。
+
+如需修改或扩展业务组件功能逻辑，可根据上述功能描述找到组件所对应的 UI Store 进行修改。
+
+## 监听教室事件
+
+SDK 中提供了 `EduEventCenter` 监听教室进行中发生的一些事件。事件的监听代码一般会写在 UI Store 的 `onInstall` 方法中，在 `onDestroy` 方法中取消对事件的监听。
+
+例如收到奖励提示时，通过 Toast 显示一个提示语，可通过以下代码实现：
+
+在 `packages/fcr-ui-scene/src/uistores/notification.tsx` 中 `NotificationUIStore` 的 `onInstall` 和 `onDestroy` 方法中加入以下代码：
+
+```tsx
+onInstall(): void {
+    ...
+    // 添加一个教室事件处理器
+    EduEventCenter.shared.onClassroomEvents(this._handleClassroomEvent);
+}
+onDestroy(): void {
+    ...
+    // 移除一个教室事件处理器
+    EduEventCenter.shared.offClassroomEvents(this._handleClassroomEvent);
+}
+```
+
+为 `NotificationUIStore` 增加事件处理方法 `_handleClassroomEvent`
+
+```tsx
+// 引入装饰器，绑定 This 指针
+import { bound } from 'agora-rte-sdk';
+
+...
+@bound
+private _handleClassroomEvent(event: AgoraEduClassroomEvent, param: any) {
+    if (
+    event === AgoraEduClassroomEvent.RewardReceived
+    ) {
+    // 被奖励人和数量的数组
+    const users: { userUuid: string; userName: string }[] = param;
+    const userNames = users.map((user) => user.userName);
+        // 使用 ToastApi 弹出提示框
+        ToastApi.open({
+        toastProps: {
+            type: 'info',
+            content: "祝贺" + userNames.join(',') + "获得奖励",
+        },
+        });
+    }
+}
+```
+
+`EduEventCenter` 提供了丰富的教室事件：
+
+| 事件类型   | 描述   |
+| :----- | :----- |
+| `Ready` | `1`: 进入教室成功。 |
+| `Destroyed` | `2`: 教室已销毁。 |
+| `FailedToJoin` | `3`: 进入教室失败。 |
+| `KickOut` | `101`: 被踢出房间。 |
+| `TeacherTurnOnMyMic` | `102`: 被开启音频发流权限。 |
+| `TeacherTurnOffMyMic` | `103`: 被关闭音频发流权限。 |
+| `UserAcceptToStage` | `106`: 登上讲台。 |
+| `UserLeaveStage` | `107`: 离开讲台。 |
+| `RewardReceived` | `108`: 收到奖励。 |
+| `TeacherTurnOnMyCam` | `109`: 被开启视频发流权限。 |
+| `TeacherTurnOffMyCam` | `110`: 被关闭视频发流权限。 |
+| `CurrentCamUnplugged` | `111`: 当前摄像头设备拔出。 |
+| `CurrentMicUnplugged` | `112`: 当前麦克风设备拔出。 |
+| `CurrentSpeakerUnplugged` | `113`: 当前扬声器拔出。 |
+| `CaptureScreenPermissionDenied` | `114`: 无屏幕采集权限。 |
+| `BatchRewardReceived` | `117`: 收到批量奖励。 |
+| `InvitedToGroup` | `118`: 收到邀请进入分组。 |
+| `MoveToOtherGroup` | `119`: 被移动到其他分组。 |
+| `JoinSubRoom` | `120`: 加入分组。 |
+| `LeaveSubRoom` | `121`: 离开分组。 |
+| `AcceptedToGroup` | `122`: 用户接受加入分组。 |
+| `UserJoinGroup` | `123`: 其他用户加入分组。 |
+| `UserLeaveGroup` | `124`: 其他用户离开分组。 |
+| `RejectedToGroup` | `125`: 用户拒绝加入分组。 |
+| `RTCStateChanged` | `201`: RTC 连接状态变更。 |
+| `ClassStateChanged` | `202`: 教室状态变更。 |
+
+## 国际化
+
+灵动课堂内置了两种语言： 中文 zh，英文 en。如果你需要支持这两种以外的其他语言，例如西班牙语，可以通过修改以下几处代码：
+
+修改 `packages/fcr-ui-scene/src/type.ts` 文件，为Language类型增加西班牙语：
+
+```tsx
+// 增加西班牙语 es
+export type Language = 'en' | 'zh' | 'es';
+```
+
+在 `packages/fcr-ui-scene/src/resources/translations` 目录下创建语言包文件 `esAr.ts`，内容如下：
+
+```tsx
+// 可以从 enUs.ts 文件复制一份内容到这里，修改对应的语言文本
+export const esAr = {
+    // 语言包 Key: Value
+    ...
+}
+```
+
+在launch方法调用时加载该语言所对应的语言包：
+
+```tsx
+// 引入语言包
+import { esAr } from './resources/translations/esAr.ts';
+...
+
+static launch(dom: HTMLElement, launchOptions: LaunchOptions) {
+    ...
+    // 加载 es 对应的语言包
+    Promise.all([addResourceBundle('zh', zhCn), addResourceBundle('en', enUs), addResourceBundle('es', esAr)])
+    ...
+}
+```
+
+最后，在调用 launch 方法时传入对应的语言：
+
+```tsx
+FcrUIScene.launch(document.querySelector('#root'), {
+    ...
+    language: 'es',
+    ...
+});    
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+灵动课堂云课堂场景暂不支持集成 Electron 客户端。
+
+</PlatformStructured>

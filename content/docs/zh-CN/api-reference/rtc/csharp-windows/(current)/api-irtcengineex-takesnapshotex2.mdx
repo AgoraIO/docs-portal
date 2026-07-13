@@ -1,0 +1,56 @@
+---
+title: "TakeSnapshotEx [2/2]"
+description: "使用连接 ID 获取指定观测位置的视频截图。"
+---
+<a id="api_irtcengineex_takesnapshotex2__prototype"></a>
+
+```csharp
+public abstract int TakeSnapshotEx(RtcConnection connection, uint uid, SnapshotConfig config);
+```
+
+<a id="api_irtcengineex_takesnapshotex2__detailed_desc"></a>
+
+该方法用于对指定用户的视频流进行截图，生成一张 JPG 格式的图片，并保存至指定的路径。
+
+<a id="api_irtcengineex_takesnapshotex2__timing"></a>
+
+## 调用时机
+
+该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_joinchannelex) 后调用。
+
+<a id="api_irtcengineex_takesnapshotex2__restriction"></a>
+
+## 调用限制
+
+- 该方法是异步操作，调用返回时 SDK 并没有真正获取截图。
+- 该方法用于本地视频截图时，是对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中指定发布的视频流进行截图。
+- 如果用户的视频经过前处理，例如，添加了水印或美颜，生成的截图会包含前处理效果。
+
+<a id="api_irtcengineex_takesnapshotex2__related"></a>
+
+## 相关回调
+
+成功调用该方法后，SDK 会触发 [OnSnapshotTaken](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功和获取截图的详情。
+
+<a id="api_irtcengineex_takesnapshotex2__parameters"></a>
+
+## 参数
+
+### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+### `uid`
+
+用户 ID。如果要对本地用户的视频截图，则设为 0。
+
+### `config`
+
+截图设置，详见 [SnapshotConfig](/zh-CN/api-reference/rtc/csharp-windows/class-snapshotconfig)。
+
+<a id="api_irtcengineex_takesnapshotex2__return_values"></a>
+
+## 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。

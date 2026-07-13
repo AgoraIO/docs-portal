@@ -1,0 +1,135 @@
+---
+title: "摄像头采集"
+description: "摄像头采集 API reference."
+---
+<a id="toc_camera_capture"></a>
+
+<a id="api_irtcengine_setcamerastabilizationmode"></a>
+
+## setCameraStabilizationMode:
+
+设置摄像头防抖模式。
+
+<a id="api_irtcengine_setcamerastabilizationmode__prototype"></a>
+
+```objectivec
+- (int) setCameraStabilizationMode:(AgoraCameraStabilizationMode)mode NS_SWIFT_NAME(setCameraStabilizationMode(_:));
+```
+
+<a id="api_irtcengine_setcamerastabilizationmode__detailed_desc"></a>
+
+你需要调用该方法以开启防抖功能并设置合适的防抖模式。摄像头防抖模式默认关闭。
+
+:::info[注]
+- 摄像头防抖仅适用于分辨率大于 1280 × 720 的场景。
+- 启用摄像头防抖后，防抖等级越高，摄像头的视野越小，延迟越大。为提升用户体验，建议将 mode 参数设置为 AgoraCameraStabilizationModeLevel1。
+:::
+
+<a id="api_irtcengine_setcamerastabilizationmode__scenario"></a>
+
+### 适用场景
+
+在移动拍摄、低光环境或使用移动设备时，可以设置摄像头防抖模式，以减少抖动带来的影响，获得更稳定清晰的画面。
+
+<a id="api_irtcengine_setcamerastabilizationmode__timing"></a>
+
+### 调用时机
+
+你必须在摄像头成功开启后调用该方法，即 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）之后。
+
+<a id="api_irtcengine_setcamerastabilizationmode__parameters"></a>
+
+### 参数
+
+#### `mode`
+
+摄像头防抖模式，详见 [AgoraCameraStabilizationMode](/zh-CN/api-reference/rtc/ios/enum-camerastabilizationmode)。
+
+<a id="api_irtcengine_setcamerastabilizationmode__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startcameracapture"></a>
+
+## startCameraCapture:config:
+
+开始视频采集。
+
+<a id="api_irtcengine_startcameracapture__prototype"></a>
+
+```objectivec
+- (int)startCameraCapture:(AgoraVideoSourceType)sourceType config:(AgoraCameraCapturerConfiguration * _Nullable)config NS_SWIFT_NAME(startCameraCapture(_:config:));
+```
+
+<a id="api_irtcengine_startcameracapture__detailed_desc"></a>
+
+你可以调用此方法并指定 `sourceType` 来开始从一个或多个摄像头进行视频采集。
+
+:::info[注]
+在 iOS 上，如果你想启用多摄像头采集，需要先调用 [enableMultiCamera:config:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_enablemulticamera) 并将 `enabled` 设置为 YES，然后再调用此方法。
+:::
+
+<a id="api_irtcengine_startcameracapture__parameters"></a>
+
+### 参数
+
+#### `sourceType`
+
+视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/ios/enum-videosourcetype)。在 iOS 上，如果设备有多个摄像头或支持外接摄像头，你最多可以从 2 个摄像头采集视频。在 macOS 上，你最多可以从 4 个摄像头采集视频。
+
+#### `config`
+
+视频采集的配置。在 iOS 上，此参数无实际作用。请使用 [enableMultiCamera:config:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_enablemulticamera) 中的 `config` 参数来设置视频采集配置。详见 [AgoraCameraCapturerConfiguration](/zh-CN/api-reference/rtc/ios/class-cameracapturerconfiguration)。
+
+<a id="api_irtcengine_startcameracapture__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopcameracapture"></a>
+
+## stopCameraCapture:
+
+停止视频采集。
+
+<a id="api_irtcengine_stopcameracapture__prototype"></a>
+
+```objectivec
+- (int)stopCameraCapture:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(stopCameraCapture(_:));
+```
+
+<a id="api_irtcengine_stopcameracapture__detailed_desc"></a>
+
+调用 [startCameraCapture:config:](/zh-CN/api-reference/rtc/ios/video/camera-capture#api_irtcengine_startcameracapture) 方法通过一个或多个摄像头开始视频采集后，你可以调用该方法并设置 `sourceType` 参数以停止指定摄像头的视频采集。
+
+- 如果你正在使用本地视频合流功能，调用该方法可能会导致本地视频合流中断。
+- 在 iOS 上，如果你想禁用多摄像头采集，需要在调用该方法后调用 enableMultiCamera: 并将 enabled 设置为 NO。
+
+<a id="api_irtcengine_stopcameracapture__parameters"></a>
+
+### 参数
+
+#### `sourceType`
+
+视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/ios/enum-videosourcetype)。
+
+<a id="api_irtcengine_stopcameracapture__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)

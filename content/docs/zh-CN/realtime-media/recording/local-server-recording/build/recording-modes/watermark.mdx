@@ -1,0 +1,427 @@
+---
+title: "在录制中添加水印"
+---
+
+<PlatformStructured platform="cpp">
+
+## 功能简介
+
+在录制视频的过程中，你可以通过添加水印，如公司 Logo、时间戳或自定义文字信息，实现防伪、版权声明、宣传或记录等目的。声网服务端 SDK 支持在单流和合流录制下，对录制视频添加水印。支持的水印类型包括：
+
+- 文字水印：使用一段文字作为水印，可设置字体和字号。
+- 动态时间戳水印：使用录制服务器的当前时间作为水印，显示形式为 2025-06-18 14:30:35。
+- 静态图片水印：使用一张本地 PNG 或 JPG 图片作为水印。
+
+本文介绍如何在使用声网服务端录制 SDK 的录制过程中添加各种类型的水印。
+
+## 前提条件
+
+开始前，请确保你已经参考[开始录制音视频](/zh-CN/realtime-media/recording/local-server-recording/get-started/start-recording)在项目中集成了录制 SDK 并实现了基础的录制功能。
+
+## 实现方法
+
+无论是单流录制，还是合流录制，SDK 都支持在录制视频过程中添加水印。下文以合流录制为例，介绍实现水印功能时核心的参数设置。
+
+你可以通过 [`enableAndUpdateVideoWatermarks`](/api-ref/recording/cpp/iagoramediartcrecorder#enableandupdatevideowatermarks) 开启或更新水印设置：
+
+```cpp
+int enableAndUpdateVideoWatermarks(WatermarkConfig* watermark_configs, int num)
+```
+
+其中，`watermark_configs` 为具体的水印数组指针；`num` 为水印个数。
+
+如果需要关闭水印功能，可以调用 [`disableVideoWatermarks`](/api-ref/recording/cpp/iagoramediartcrecorder#disablevideowatermarks) 实现。
+
+:::info[信息]
+单流录制场景下，实现的水印功能与合流录制一致。两者的差异在于不同场景下，调用的 API 不同。单流下：
+
+- 开启或更新水印：[`enableAndUpdateVideoWatermarksByUid`](/api-ref/recording/cpp/iagoramediartcrecorder#enableandupdatevideowatermarksbyuid)
+- 关闭水印：[`disableVideoWatermarksByUid`](/api-ref/recording/cpp/iagoramediartcrecorder#disablevideowatermarksbyuid)
+:::
+
+### 添加水印文字
+
+通过以下步骤添加文字水印：
+
+1. 调用 `enableAndUpdateVideoWatermarks` 方法，并设置相应的 `watermark_configs` 参数。
+2. 设置水印类型为文字水印：`watermark_configs.type = agora::rtc::LITERA`。
+3. 配置文字水印的内容 `wmLitera`、字体 `fontFilePath` 和大小 `fontSize`。
+
+```cpp
+// 设置水印类型为 LITERA，即文字
+watermarks[i].type = agora::rtc::LITERA;
+// 设置文字内容
+watermarks[i].literaSource.wmLitera = "声网水印示例";
+// 设置字体文件路径（如不设置，使用默认字体）
+watermarks[i].literaSource.fontFilePath = "path/to/font.ttf";
+// 设置字体大小
+watermarks[i].literaSource.fontSize = 24;
+```
+
+### 添加时间戳水印
+
+通过以下步骤添加时间戳水印：
+
+1. 调用 `enableAndUpdateVideoWatermarks` 方法，并设置相应的 `watermark_configs` 参数
+2. 设置水印类型为时间戳水印：`watermark_configs.type = agora::rtc::TIMESTAMPS`
+3. 配置时间戳水印的字体 `fontFilePath` 和大小 `fontSize`。
+
+```cpp
+// 设置水印类型为 TIMESTAMPS，即时间戳
+watermarks[i].type = agora::rtc::TIMESTAMPS;
+// 设置字体文件路径（如不设置，使用默认字体）
+watermarks[i].timestampSource.fontFilePath = "path/to/font.ttf";
+// 设置字体大小
+watermarks[i].timestampSource.fontSize = 20;
+```
+
+### 添加图片水印
+
+通过以下步骤添加图片水印：
+
+1. 调用 `enableAndUpdateVideoWatermarks` 方法，并设置相应的 `watermark_configs` 参数
+2. 设置水印类型为图片水印：`watermark_configs.type = agora::rtc::PICTURE`。
+3. 配置图片水印的路径 `imageUrl`。
+
+```cpp
+// 设置水印类型为 PICTURE，表示图片
+watermarks[i].type = agora::rtc::PICTURE;
+// 设置图片路径
+watermarks[i].imageUrl = "path/to/watermark.png";
+```
+
+### 设置水印位置
+
+无论添加哪种水印，都需要设置水印在视频中的位置。SDK 在 [`WatermarkConfig`](/api-ref/recording/cpp/struct#watermarkconfig) 结构体中提供了两种位置设置模式。
+
+#### 固定像素值 FIT_MODE_COVER_POSITION
+
+使用固定的像素点确定水印在画面中的位置，需要分别设置横屏和竖屏模式下的位置：
+
+- 竖屏模式的水印位置
+
+  ```cpp
+  // 设置固定像素模式
+  watermarks[i].options.mode = agora::rtc::FIT_MODE_COVER_POSITION;
+  // 设置水印的图层编号，值越大水印层级越高
+  watermarks[i].options.zOrder = 1;
+
+  // 设置竖屏模式下的水印位置
+  watermarks[i].options.positionInPortraitMode.x = 50;       // 水平偏移
+  watermarks[i].options.positionInPortraitMode.y = 50;       // 垂直偏移
+  watermarks[i].options.positionInPortraitMode.width = 200;  // 水印宽度
+  watermarks[i].options.positionInPortraitMode.height = 100; // 水印高度
+  ```
+
+- 横屏模式的水印位置
+
+  ```cpp
+  // 设置固定像素模式
+  watermarks[i].options.mode = agora::rtc::FIT_MODE_COVER_POSITION;
+  // 设置水印的图层编号，值越大水印层级越高
+  watermarks[i].options.zOrder = 1;
+
+  // 设置横屏模式下的水印位置
+  watermarks[i].options.positionInLandscapeMode.x = 50;       // 水平偏移
+  watermarks[i].options.positionInLandscapeMode.y = 50;       // 垂直偏移
+  watermarks[i].options.positionInLandscapeMode.width = 200;  // 水印宽度
+  watermarks[i].options.positionInLandscapeMode.height = 100; // 水印高度
+  ```
+
+#### 相对比例 FIT_MODE_USE_IMAGE_RATIO
+
+使用相对的比例来确定水印在画面中的位置：
+
+```cpp
+// 设置相对比例模式
+watermarks[i].options.mode = agora::rtc::FIT_MODE_USE_IMAGE_RATIO;
+// 设置水印的z序，值越大水印层级越高
+watermarks[i].options.zOrder = 1;
+
+// 设置水印的相对位置和大小
+watermarks[i].options.watermarkRatio.xRatio = 0.5;      // 相对于视频宽度的水平位置比例
+watermarks[i].options.watermarkRatio.yRatio = 0.5;      // 相对于视频高度的垂直位置比例
+watermarks[i].options.watermarkRatio.widthRatio = 0.6;  // 相对于视频宽度的水印宽度比例
+```
+
+### 完整示例代码
+
+实现水印功能时，你可以参考如下示例：
+
+```cpp
+//  设置多个水印
+for(int i = 0; i < config.waterMarks.size(); i++){
+    
+    watermarks[i].index = i+1;
+
+    if(config.waterMarks[i].type == Literal){  //  设置文字水印
+        watermarks[i].type = agora::rtc::LITERA;
+        watermarks[i].literaSource.wmLitera = config.waterMarks[i].literalMark.litera.c_str();
+        watermarks[i].literaSource.fontFilePath = config.waterMarks[i].literalMark.fontFilePath.c_str();
+        watermarks[i].literaSource.fontSize = config.waterMarks[i].literalMark.fontSize;
+    } else if(config.waterMarks[i].type == Time) {  //  设置时间戳水印
+        watermarks[i].type = agora::rtc::TIMESTAMPS;
+        watermarks[i].timestampSource.fontFilePath = config.waterMarks[i].timeMark.fontFilePath.c_str();
+        watermarks[i].timestampSource.fontSize = config.waterMarks[i].timeMark.fontSize;
+    } else if(config.waterMarks[i].type == Picture){  //  设置图片水印
+        watermarks[i].type = agora::rtc::PICTURE;
+        watermarks[i].imageUrl = config.waterMarks[i].pictureMark.image_url.c_str();
+    }
+ 
+    // 用固定像素值的方式设置水印位置，注意要横屏和竖屏模式都要设置;
+    watermarks[i].options.mode = agora::rtc::FIT_MODE_COVER_POSITION;
+    watermarks[i].options.zOrder = config.waterMarks[i].pos.zorder;
+    watermarks[i].options.positionInPortraitMode.x = config.waterMarks[i].pos.x;
+    watermarks[i].options.positionInPortraitMode.y = config.waterMarks[i].pos.y;
+    watermarks[i].options.positionInPortraitMode.width = config.waterMarks[i].pos.width;
+    watermarks[i].options.positionInPortraitMode.height = config.waterMarks[i].pos.height;
+    watermarks[i].options.positionInLandscapeMode.x = config.waterMarks[i].pos.x;
+    watermarks[i].options.positionInLandscapeMode.y = config.waterMarks[i].pos.y;
+    watermarks[i].options.positionInLandscapeMode.width = config.waterMarks[i].pos.width;
+    watermarks[i].options.positionInLandscapeMode.height = config.waterMarks[i].pos.height;
+}
+```
+
+## 后续步骤
+
+完成水印设置后，你可以进一步：
+
+- 设置多个水印：可以组合使用不同类型的水印，通过设置不同的 `zOrder` 来控制水印的叠加顺序
+- 更新水印：可以通过再次调用 `enableAndUpdateVideoWatermarks` 方法来更新已有的水印
+- 关闭水印：如需关闭水印，可以调用 `disableVideoWatermarks()` 方法
+
+## 参考信息
+
+- [API 参考](/api-ref/recording/cpp/api-overview)
+
+</PlatformStructured>
+
+<PlatformStructured platform="java">
+
+## 功能简介
+
+在录制视频的过程中，你可以通过添加水印，如公司 Logo、时间戳或自定义文字信息，实现防伪、版权声明、宣传或记录等目的。声网服务端 SDK 支持在单流和合流录制下，对录制视频添加水印。支持的水印类型包括：
+
+- 文字水印：使用一段文字作为水印，可设置字体和字号。
+- 动态时间戳水印：使用录制服务器的当前时间作为水印，显示形式为 2025-06-18 14:30:35。
+- 静态图片水印：使用一张本地 PNG 或 JPG 图片作为水印。
+
+本文介绍如何在使用声网服务端录制 SDK 的录制过程中添加各种类型的水印。
+
+## 前提条件
+
+开始前，请确保你已经参考[开始录制音视频](/zh-CN/realtime-media/recording/local-server-recording/get-started/start-recording)在项目中集成了录制 SDK 并实现了基础的录制功能。
+
+## 实现方法
+
+无论是单流录制，还是合流录制，SDK 都支持在录制视频过程中添加水印。下文以合流录制为例，介绍实现水印功能时核心的参数设置。
+
+你可以通过 [`enableAndUpdateVideoWatermarks`](/api-ref/recording/java/agoramediartcrecorder#enableandupdatevideowatermarks) 开启或更新水印设置：
+
+```java
+int enableAndUpdateVideoWatermarks(WatermarkConfig[] watermarkConfigs)
+```
+
+其中，`watermarkConfigs` 为具体的水印数组。
+
+如果需要关闭水印功能，可以调用 [`disableVideoWatermarks`](/api-ref/recording/java/agoramediartcrecorder#disablevideowatermarks) 实现。
+
+:::info[信息]
+单流录制场景下，实现的水印功能与合流录制一致。两者的差异在于不同场景下，调用的 API 不同。单流下：
+
+- 开启或更新水印：[`enableAndUpdateVideoWatermarksByUid`](/api-ref/recording/java/agoramediartcrecorder#enableandupdatevideowatermarksbyuid)
+- 关闭水印：[`disableVideoWatermarksByUid`](/api-ref/recording/java/agoramediartcrecorder#disablevideowatermarksbyuid)
+:::
+
+### 添加水印文字
+
+通过以下步骤添加文字水印：
+
+1. 调用 `enableAndUpdateVideoWatermarks` 方法，并设置相应的 `watermarkConfigs` 参数。
+2. 设置水印类型为文字水印：`watermarkConfigs[i].setType(Constants.WatermarkSourceType.LITERA)`。
+3. 配置文字水印的内容 `wmLitera`、字体 `fontFilePath` 和大小 `fontSize`。
+
+```java
+// 设置水印类型为 LITERA，即文字
+watermarks[i].setType(Constants.WatermarkSourceType.LITERA);
+WatermarkLitera watermarkLitera = new WatermarkLitera();
+// 设置文字内容
+watermarkLitera.setWmLitera("声网水印示例");
+// 设置字体文件路径（如不设置，使用默认字体）
+watermarkLitera.setFontFilePath("path/to/font.ttf");
+// 设置字体大小
+watermarkLitera.setFontSize(24);
+watermarks[i].setLiteraSource(watermarkLitera);
+```
+
+### 添加时间戳水印
+
+通过以下步骤添加时间戳水印：
+
+1. 调用 `enableAndUpdateVideoWatermarks` 方法，并设置相应的 `watermarkConfigs` 参数
+2. 设置水印类型为时间戳水印：`watermarkConfigs[i].setType(Constants.WatermarkSourceType.TIMESTAMPS)`
+3. 配置时间戳水印的字体 `fontFilePath` 和大小 `fontSize`。
+
+```java
+// 设置水印类型为 TIMESTAMPS，即时间戳
+watermarks[i].setType(Constants.WatermarkSourceType.TIMESTAMPS);
+WatermarkTimestamp watermarkTimestamp = new WatermarkTimestamp();
+// 设置字体文件路径（如不设置，使用默认字体）
+watermarkTimestamp.setFontFilePath("path/to/font.ttf");
+// 设置字体大小
+watermarkTimestamp.setFontSize(20);
+watermarks[i].setTimestampSource(watermarkTimestamp);
+```
+
+### 添加图片水印
+
+通过以下步骤添加图片水印：
+
+1. 调用 `enableAndUpdateVideoWatermarks` 方法，并设置相应的 `watermarkConfigs` 参数
+2. 设置水印类型为图片水印：`watermarkConfigs[i].setType(Constants.WatermarkSourceType.PICTURE)`。
+3. 配置图片水印的路径 `imageUrl`。
+
+```java
+// 设置水印类型为 PICTURE，表示图片
+watermarks[i].setType(Constants.WatermarkSourceType.PICTURE);
+// 设置图片路径
+watermarks[i].setImageUrl("path/to/watermark.png");
+```
+
+### 设置水印位置
+
+无论添加哪种水印，都需要设置水印在视频中的位置。SDK 在 [`Constants.WatermarkFitMode`](/api-ref/recording/java/enum#watermarkfitmode) 中提供了两种位置设置模式。
+
+#### 固定像素值 Constants.WatermarkFitMode.FIT_MODE_COVER_POSITION
+
+使用固定的像素点确定水印在画面中的位置，需要分别设置横屏和竖屏模式下的位置：
+
+- 竖屏模式的水印位置
+
+  ```java
+  WatermarkOptions watermarkOptions = new WatermarkOptions();
+  // 设置固定像素模式
+  watermarkOptions.setMode(Constants.WatermarkFitMode.FIT_MODE_COVER_POSITION);
+  // 设置水印的图层编号，值越大水印层级越高
+  watermarkOptions.setZOrder(1);
+
+  // 设置竖屏模式下的水印位置
+  io.agora.recording.Rectangle positionInPortraitMode = new io.agora.recording.Rectangle();
+  positionInPortraitMode.setX(50);
+  positionInPortraitMode.setY(50);
+  positionInPortraitMode.setWidth(200);
+  positionInPortraitMode.setHeight(100);
+
+  watermarkOptions.setPositionInPortraitMode(positionInPortraitMode);
+  watermarks[i].setOptions(watermarkOptions);
+  ```
+
+- 横屏模式的水印位置
+
+  ```java
+  // 设置固定像素模式
+  WatermarkOptions watermarkOptions = new WatermarkOptions();
+  watermarkOptions.setMode(Constants.WatermarkFitMode.FIT_MODE_COVER_POSITION);
+  // 设置水印的图层编号，值越大水印层级越高
+  watermarkOptions.setZOrder(1);
+
+  // 设置横屏模式下的水印位置
+  io.agora.recording.Rectangle positionInLandscapeMode = new io.agora.recording.Rectangle();
+  positionInLandscapeMode.setX(50);
+  positionInLandscapeMode.setY(50);
+  positionInLandscapeMode.setWidth(200);
+  positionInLandscapeMode.setHeight(100);
+
+  watermarkOptions.setPositionInLandscapeMode(positionInLandscapeMode);
+  watermarks[i].setOptions(watermarkOptions);
+  ```
+
+#### 相对比例 Constants.WatermarkFitMode.FIT_MODE_USE_IMAGE_RATIO
+
+使用相对的比例来确定水印在画面中的位置：
+
+```java
+
+// 设置相对比例模式
+WatermarkOptions watermarkOptions = new WatermarkOptions();
+watermarkOptions.setMode(Constants.WatermarkFitMode.FIT_MODE_USE_IMAGE_RATIO);
+// 设置水印的图层编号，值越大水印层级越高
+watermarkOptions.setZOrder(1);
+
+// 设置水印的相对位置和大小
+WatermarkRatio watermarkRatio = new WatermarkRatio();
+watermarkRatio.setXRatio(0.5);
+watermarkRatio.setYRatio(0.5);
+watermarkRatio.setWidthRatio(0.6);
+watermarkOptions.setWatermarkRatio(watermarkRatio);
+watermarks[i].setOptions(watermarkOptions);
+```
+
+### 完整示例代码
+
+实现水印功能时，你可以参考如下示例：
+
+```java
+//  设置多个水印
+if (null != recorderConfig.getWaterMark() && recorderConfig.getWaterMark().size() > 0) {
+  WatermarkConfig[] watermarks = new WatermarkConfig[recorderConfig.getWaterMark().size()];
+  for (int i = 0; i < recorderConfig.getWaterMark().size(); i++) {
+      watermarks[i] = new WatermarkConfig();
+      watermarks[i].setIndex(i + 1);
+      WatermarkSourceType watermarkSourceType = Utils
+              .convertToWatermarkSourceType(recorderConfig.getWaterMark().get(i).getType());
+      watermarks[i].setType(watermarkSourceType);
+      if (watermarkSourceType == WatermarkSourceType.LITERA) {
+          WatermarkLitera watermarkLitera = new WatermarkLitera();
+          watermarkLitera.setWmLitera(recorderConfig.getWaterMark().get(i).getLitera());
+          watermarkLitera.setFontFilePath(recorderConfig.getWaterMark().get(i).getFontFilePath());
+          watermarkLitera.setFontSize(recorderConfig.getWaterMark().get(i).getFontSize());
+          watermarks[i].setLiteraSource(watermarkLitera);
+      } else if (watermarkSourceType == WatermarkSourceType.TIMESTAMPS) {
+          WatermarkTimestamp watermarkTimestamp = new WatermarkTimestamp();
+          watermarkTimestamp.setFontFilePath(recorderConfig.getWaterMark().get(i).getFontFilePath());
+          watermarkTimestamp.setFontSize(recorderConfig.getWaterMark().get(i).getFontSize());
+          watermarks[i].setTimestampSource(watermarkTimestamp);
+      } else if (watermarkSourceType == WatermarkSourceType.PICTURE) {
+          watermarks[i].setImageUrl(recorderConfig.getWaterMark().get(i).getImgUrl());
+      }
+
+      WatermarkOptions watermarkOptions = new WatermarkOptions();
+      watermarkOptions.setMode(Constants.WatermarkFitMode.FIT_MODE_COVER_POSITION);
+      watermarkOptions.setZOrder(recorderConfig.getWaterMark().get(i).getZorder());
+
+      io.agora.recording.Rectangle positionInPortraitMode = new io.agora.recording.Rectangle();
+      positionInPortraitMode.setX(recorderConfig.getWaterMark().get(i).getX());
+      positionInPortraitMode.setY(recorderConfig.getWaterMark().get(i).getY());
+      positionInPortraitMode.setWidth(recorderConfig.getWaterMark().get(i).getWidth());
+      positionInPortraitMode.setHeight(recorderConfig.getWaterMark().get(i).getHeight());
+
+      io.agora.recording.Rectangle positionInLandscapeMode = new io.agora.recording.Rectangle();
+      positionInLandscapeMode.setX(recorderConfig.getWaterMark().get(i).getX());
+      positionInLandscapeMode.setY(recorderConfig.getWaterMark().get(i).getY());
+      positionInLandscapeMode.setWidth(recorderConfig.getWaterMark().get(i).getWidth());
+      positionInLandscapeMode.setHeight(recorderConfig.getWaterMark().get(i).getHeight());
+
+      watermarkOptions.setPositionInLandscapeMode(positionInLandscapeMode);
+      watermarkOptions.setPositionInPortraitMode(positionInPortraitMode);
+      watermarks[i].setOptions(watermarkOptions);
+  }
+
+  // 调用 API 启用水印
+  agoraMediaRtcRecorder.enableAndUpdateVideoWatermarks(watermarks);
+}
+```
+
+## 后续步骤
+
+完成水印设置后，你可以进一步：
+
+- 设置多个水印：可以组合使用不同类型的水印，通过设置不同的 `zOrder` 来控制水印的叠加顺序
+- 更新水印：可以通过再次调用 `enableAndUpdateVideoWatermarks` 方法来更新已有的水印
+- 关闭水印：如需关闭水印，可以调用 `disableVideoWatermarks()` 方法
+
+## 参考信息
+
+[API 参考](/api-ref/recording/java/api-overview)
+
+</PlatformStructured>

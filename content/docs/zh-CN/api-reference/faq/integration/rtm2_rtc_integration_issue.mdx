@@ -1,0 +1,733 @@
+---
+title: "如何处理同时集成多个声网 SDK 时遇到的库冲突问题？"
+---
+`aosl` 是声网 SDK 的基础设施库，包含在 RTC SDK、RTM SDK 和即时通讯 IM SDK 等声网产品中。
+
+`aosl` 库在不同平台的文件名如下：
+
+- Android: `libaosl.so`
+- iOS/macOS: `aosl.xcframework`
+- Windows: `libaosl.dll`
+- HarmonyOS: `libaosl.so`
+
+如果你的项目同时集成了多个声网 SDK，由于不同版本的声网 SDK 中 `aosl` 的版本和集成方式不同，你可能会遇到库冲突问题。
+
+## 问题现象
+
+### 依赖库版本冲突
+
+使用包管理工具（如 Maven 或 CocoaPods）集成声网 SDK 时，不同声网 SDK 都依赖 `aosl`，但依赖的版本不同，包管理工具会检查并报告依赖版本冲突错误。
+
+<Tabs defaultValue="android">
+<TabsList>
+  <TabsTrigger value="android">Maven</TabsTrigger>
+  <TabsTrigger value="ios">CocoaPods</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+```shell
+2 files found with path 'lib/arm64-v8a/libaosl.so' from inputs:
+- /Users/admin/.gradle/caches/9.2.1/transforms/a2b0a7c8a27b3cbfeee17900a2a7c022/transformed/full-sdk-4.4.0/jni/arm64-v8a/libaosl.so
+- /Users/admin/.gradle/caches/9.2.1/transforms/10f4ec8f241601284facfc671b4dbc2f/transformed/aosl-1.3.0/jni/arm64-v8a/libaosl.so
+```
+
+**具体场景：**
+
+- `io.agora.rtc:full-sdk:4.4.x` 包含 `aosl` 库
+- `rtm:android-java:2.2.7` 依赖 `aosl 1.3.0`
+- Maven 无法自动处理依赖冲突
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+```shell
+[!] CocoaPods could not find compatible versions for pod "AgoraInfra_iOS":
+  In Podfile:
+    AgoraRtcEngine_iOS (= 4.5.2) was resolved to 4.5.2, which depends on
+      AgoraRtcEngine_iOS/RtcBasic (= 4.5.2) was resolved to 4.5.2, which depends on
+        AgoraInfra_iOS (= 1.2.13.1)
+
+    HyphenateChat (= 4.17.0) was resolved to 4.17.0, which depends on
+      AgoraInfra_iOS (~> 1.3.0)
+```
+
+**具体场景：**
+
+- `AgoraRtcEngine_iOS 4.5.2` 要求 `AgoraInfra_iOS = 1.2.13.1`
+- `HyphenateChat 4.17.0` 要求 `AgoraInfra_iOS ~> 1.3.0`
+- 两个版本约束无法同时满足
+
+</TabsContent>
+</Tabs>
+
+### 动态库重复
+
+`aosl` 库因以下原因存在于多个 SDK 包中，编译工具会报动态库重复错误：
+
+  - 当 `aosl` 以非依赖方式集成（如使用 CDN 下载 SDK 包并手动集成）并添加到不同的 module 中（gradle）
+  - SDK 提供商会发布不同品牌名称的 pod（如 `AgoraInfra_iOS` 和 `ShengwangInfra_iOS`），但它们实际上包含相同的 `aosl` 库文件
+
+<Tabs defaultValue="android">
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS/macOS</TabsTrigger>
+  <TabsTrigger value="harmonyos">HarmonyOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+```shell
+com.android.builder.merge.DuplicateRelativeFileException: More than one file was found with OS independent path 'lib/x86/libaosl.so'
+```
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+```shell
+Unexpected duplicate tasks:
+Multiple commands produce '<your_app_build_path>/Contents/Frameworks/aosl.framework'
+```
+
+```shell
+The 'XXX' target has duplicate frameworks with the name 'aosl.xcframework'
+```
+
+**具体场景：**
+
+- `AgoraInfra_iOS` 和 `ShengwangInfra_iOS` 是同一个库的不同品牌名称
+- 两者都包含相同的 `aosl.xcframework`
+- CocoaPods 不允许同一个 framework 被多次引入
+
+</TabsContent>
+
+<TabsContent value="harmonyos">
+
+```shell
+Error Message: Duplicated files found in module xxx. This may cause unexpected errors at runtime.
+'<your_app_build_path>/@shengwang/rtm-full/libs/arm64-v8a/libaosl.so'
+'<your_app_build_path>/@shengwang/rtc-full/libs/arm64-v8a/libaosl.so'
+```
+
+</TabsContent>
+</Tabs>
+
+## 解决方案
+
+本节根据你集成声网 SDK 的方式，提供不同的 `aosl` 库冲突解决方案。
+
+### 使用包管理工具集成 SDK
+
+本节介绍使用 Maven 或 CocoaPods 集成声网 SDK 时，如何解决库冲突问题。
+
+#### 指定依赖库版本（适用于 Maven）
+
+如果你使用 Maven Central 集成声网 SDK，你可以修改 `build.gradle` 文件，显式集成最新的 `aosl` 库，确保 `dependencies` 中 `aosl` 库的引入语句排在其他声网 SDK 之前，然后使用 `pickFirst` 来确保引用第一顺位的 `aosl` 组件。
+
+:::info[信息]
+- 当前 `aosl` 库的最新版本号为 `1.3.5`。
+- 你可以前往 SDK 发版说明页查看各 SDK 中 `aosl` 库的版本信息：
+  - [RTC 发版说明](/doc/rtc/android/overview/release-notes)
+  - [RTM 发版说明](/doc/rtm2/android/overview/release-notes)
+  - [即时通讯 IM 发版说明](https://im.shengwang.cn/docs/sdk/android/releasenote.html)
+:::
+
+```groovy
+android {
+  // ...
+  packagingOptions {
+    // 确保引用第一顺位的 `aosl` 组件
+    pickFirst 'lib/**/libaosl.so'
+  }
+}
+
+dependencies {
+  // 集成 `aosl` 库，排在声网 SDK 之前
+  implementation 'cn.shengwang.infra:aosl:x.y.z'
+  // 集成其他声网 SDK，排在 `aosl` 库之后
+  implementation 'cn.shengwang.rtm:android-java:x.y.z'
+  implementation 'io.agora.rtc:full-sdk:x.y.z'
+
+}
+```
+
+修改保存后，等待 Gradle 文件同步完成，之后重新构建项目，即可解决依赖库版本冲突问题。
+
+#### 使用 pod 脚本（适用于 CocoaPods）
+
+如果你使用 CocoaPods 集成声网 SDK，可以使用声网提供的脚本自动解决冲突。
+
+##### 脚本工作原理
+
+脚本实际是一个 CocoaPods 命令包装器，对 `install` 和 `update` 命令：自动处理依赖和 framework 冲突，对其他命令（如 `--version`, `trunk` 等）：直接透传，不做处理。
+
+通过临时修改 CocoaPods 本地缓存中的 `podspec` 文件，将严格的版本约束（`=`、`~>`）改为宽松的最低版本约束（`>=`），使依赖解析器能够选择一个兼容的版本。同时自动检测并移除重复的 vendored_frameworks，解决 framework 名称冲突。
+
+##### 准备脚本
+
+新建一个 `pod.sh` 文件，将以下代码保存到文件中。
+
+  <Accordions>
+<Accordion title="pod.sh 代码">
+
+```shell
+#!/bin/bash
+
+# 查找 CocoaPods specs 目录
+SPECS_DIR="$HOME/.cocoapods/repos/trunk"
+
+# 存储所有需要恢复的备份文件
+declare -a BACKUP_FILES
+FIRST_POD_FOUND=""
+
+patch_generated_framework_links() {
+  local support_root="Pods/Target Support Files"
+  local conflicting_framework="$1"
+  local kept_pod="$2"
+  local framework_name="${conflicting_framework%.xcframework}"
+  local config_file=""
+
+  [ -d "$support_root" ] || return 0
+  [ -n "$framework_name" ] || return 0
+  [ -n "$kept_pod" ] || return 0
+
+  while IFS= read -r -d '' config_file; do
+    grep -q "$framework_name" "$config_file" || continue
+
+    if grep -q "\${PODS_ROOT}/$kept_pod" "$config_file" || \
+       grep -q "\${PODS_XCFRAMEWORKS_BUILD_DIR}/$kept_pod" "$config_file"; then
+      continue
+    fi
+
+    perl -0pi -e "s/\s+-framework \"$framework_name\"//g; s/\s+-weak_framework \"$framework_name\"//g;" "$config_file"
+    echo "Patched stale $framework_name link flags in $config_file"
+  done < <(find "$support_root" -name '*.xcconfig' -print0)
+}
+
+# 检查是否是 install 或 update 命令
+FIRST_ARG="$1"
+IS_INSTALL_OR_UPDATE=false
+if [[ "$FIRST_ARG" == "install" || "$FIRST_ARG" == "update" ]]; then
+  IS_INSTALL_OR_UPDATE=true
+fi
+
+# 第一次尝试 pod 命令，使用临时文件捕获输出同时实时显示
+TEMP_OUTPUT=$(mktemp)
+if [ "$IS_INSTALL_OR_UPDATE" = true ]; then
+  # install/update 命令强制添加 --verbose
+  if [[ ! "$*" =~ --verbose ]]; then
+    pod "$@" --verbose 2>&1 | tee "$TEMP_OUTPUT"
+  else
+    pod "$@" 2>&1 | tee "$TEMP_OUTPUT"
+  fi
+else
+  pod "$@" 2>&1 | tee "$TEMP_OUTPUT"
+fi
+INSTALL_EXIT_CODE=${PIPESTATUS[0]}
+INSTALL_OUTPUT=$(cat "$TEMP_OUTPUT")
+rm "$TEMP_OUTPUT"
+
+if [ "$IS_INSTALL_OR_UPDATE" = false ]; then
+  exit $INSTALL_EXIT_CODE
+fi
+
+# 检查是否有 framework 冲突（CocoaPods 的 framework 冲突退出码是 0）
+CONFLICTING_FRAMEWORK=$(echo "$INSTALL_OUTPUT" | grep -o "frameworks with conflicting names: [^.]*\.xcframework" | sed 's/frameworks with conflicting names: //')
+
+# 如果成功且没有 framework 冲突，直接退出
+if [ $INSTALL_EXIT_CODE -eq 0 ] && [ -z "$CONFLICTING_FRAMEWORK" ]; then
+  exit 0
+fi
+
+if [ -n "$CONFLICTING_FRAMEWORK" ]; then
+  # 直接跳到 framework 冲突处理
+  echo ""
+  echo "Detected framework conflict, analyzing..."
+
+  # 从第一次输出中提取已安装的 pods
+  ALL_PODS_FIRST=$(echo "$INSTALL_OUTPUT" | grep -E "(Installing|Using) " | sed -E 's/^[-> ]*(Installing|Using) ([^ ]*) (\()?([0-9][0-9.]*).*/\2 \4/')
+
+  # 提取将要移除的 pods
+  REMOVING_PODS=$(echo "$INSTALL_OUTPUT" | awk '/Comparing resolved specification to the sandbox manifest/,/Downloading dependencies/ {if (/^  R /) print $2}')
+
+  # 跳转到 framework 冲突处理部分
+  CONFLICTING_PODS=""
+  SKIP_VERSION_CONFLICT=true
+else
+  # 有版本冲突，继续原有逻辑
+  echo ""
+  echo "Detected dependency conflicts, analyzing..."
+  SKIP_VERSION_CONFLICT=false
+fi
+
+if [ "$SKIP_VERSION_CONFLICT" = false ]; then
+  # 提取冲突的 pod 名称（排除 subspec）
+  CONFLICTING_PODS=$(echo "$INSTALL_OUTPUT" | grep -E '[A-Za-z_][A-Za-z0-9_]* \(= [0-9][0-9.]*\) was resolved to' | grep -v '/' | sed -E 's/^[[:space:]]*([A-Za-z_][A-Za-z0-9_]*) \(= ([0-9][0-9.]*)\).*/\1 \2/' | sort -u)
+
+  # 提取被依赖的冲突 pod（如 AgoraInfra_iOS）
+  DEPENDENCY_POD=$(echo "$INSTALL_OUTPUT" | grep -oE 'compatible versions for pod "([A-Za-z_][A-Za-z0-9_]*)"' | sed 's/compatible versions for pod "\(.*\)"/\1/' | head -1)
+
+  if [ -z "$CONFLICTING_PODS" ] || [ -z "$DEPENDENCY_POD" ]; then
+    echo "Error: Could not parse dependency conflicts from error message"
+    exit 1
+  fi
+
+echo ""
+echo "Found conflicting pods from error:"
+echo "$CONFLICTING_PODS"
+echo ""
+echo "Dependency causing conflict: $DEPENDENCY_POD"
+echo ""
+
+# 处理每个 pod
+while IFS= read -r line; do
+  POD_NAME=$(echo "$line" | awk '{print $1}')
+  POD_VERSION=$(echo "$line" | awk '{print $2}')
+
+  if [ -z "$POD_NAME" ] || [ -z "$POD_VERSION" ]; then
+    continue
+  fi
+
+  echo "Processing $POD_NAME version $POD_VERSION..."
+
+  # 查找 podspec 文件
+  PODSPEC_PATH=$(find "$SPECS_DIR" -name "${POD_NAME}.podspec.json" 2>/dev/null | grep "/${POD_VERSION}/")
+
+  if [ -z "$PODSPEC_PATH" ]; then
+    echo "Warning: Cannot find ${POD_NAME} ${POD_VERSION} podspec, skipping..."
+    continue
+  fi
+
+  BACKUP_PATH="${PODSPEC_PATH}.backup"
+
+  # 备份原始文件
+  if [ ! -f "$BACKUP_PATH" ]; then
+    cp "$PODSPEC_PATH" "$BACKUP_PATH"
+  fi
+
+  # 记录备份文件路径
+  BACKUP_FILES+=("$BACKUP_PATH")
+
+  # 修改依赖：将 ~>, =, 纯数字版本改为 >=，保留 < 和 <= 约束
+  sed -i '' "/\"${DEPENDENCY_POD}\":/,/\]/ {
+    s/\"[~=][>~=]*[[:space:]]*\([0-9][0-9.]*\)\"/\">= \1\"/g
+    s/\"[[:space:]]*\([0-9][0-9.]*\)\"/\">= \1\"/g
+  }" "$PODSPEC_PATH"
+
+done <<< "$CONFLICTING_PODS"
+
+  # 重新执行 pod 命令
+  echo ""
+  echo "Retrying pod $@ with modified podspecs..."
+
+  # 使用临时文件捕获输出同时实时显示
+  TEMP_OUTPUT=$(mktemp)
+  if [[ ! "$*" =~ --verbose ]]; then
+    pod "$@" --verbose 2>&1 | tee "$TEMP_OUTPUT"
+  else
+    pod "$@" 2>&1 | tee "$TEMP_OUTPUT"
+  fi
+  INSTALL_EXIT_CODE=${PIPESTATUS[0]}
+  INSTALL_OUTPUT=$(cat "$TEMP_OUTPUT")
+  rm "$TEMP_OUTPUT"
+
+  # 从第二次输出中提取 pods 信息（版本冲突解决后才有完整的安装信息）
+  ALL_PODS_FIRST=$(echo "$INSTALL_OUTPUT" | grep -E "(Installing|Using) " | sed -E 's/^[-> ]*(Installing|Using) ([^ ]*) (\()?([0-9][0-9.]*).*/\2 \4/')
+  REMOVING_PODS=$(echo "$INSTALL_OUTPUT" | awk '/Comparing resolved specification to the sandbox manifest/,/Downloading dependencies/ {if (/^  R /) print $2}')
+
+  # 检查是否有 framework 冲突
+  CONFLICTING_FRAMEWORK=$(echo "$INSTALL_OUTPUT" | grep -o "frameworks with conflicting names: [^.]*\.xcframework" | sed 's/frameworks with conflicting names: //')
+fi
+
+# 检查是否有 framework 冲突
+
+if [ -n "$CONFLICTING_FRAMEWORK" ]; then
+  echo ""
+  echo "Detected framework conflict: $CONFLICTING_FRAMEWORK"
+  echo "Searching for pods with this framework..."
+
+  # 从 Podfile 读取明确指定的 pods（优先保留，排除注释行）
+  PODFILE_PODS=$(grep "pod '" Podfile | grep -v "^[[:space:]]*#" | sed -n "s/.*pod '\([^']*\)'.*/\1/p")
+
+  # 使用第一次 verbose 输出中的 pods，排除将要移除的 pods
+  ALL_INSTALLED_PODS=$(
+    {
+      echo "$ALL_PODS_FIRST"
+      echo "$CONFLICTING_PODS"
+    } | grep -v '^$' | awk '
+    {
+      pod=$1
+      version=$2
+      # 如果 pod 已存在，跳过（保留第一次出现的版本）
+      if (!(pod in seen)) {
+        seen[pod] = 1
+        print pod " " version
+      }
+    }
+  ' | {
+    # 排除将要移除的 pods
+    if [ -n "$REMOVING_PODS" ]; then
+      grep -v -F -f <(echo "$REMOVING_PODS")
+    else
+      cat
+    fi
+  } | sort)
+
+  # 收集包含冲突 framework 的 pods
+  declare -a PODS_WITH_FRAMEWORK
+
+  while IFS= read -r line; do
+    [ -z "$line" ] && continue
+    pod_name=$(echo "$line" | awk '{print $1}')
+    pod_version=$(echo "$line" | awk '{print $2}')
+
+    [ -z "$pod_name" ] && continue
+    [ -z "$pod_version" ] && continue
+
+    PODSPEC_PATH=$(find "$SPECS_DIR" -name "${pod_name}.podspec.json" 2>/dev/null | grep "/${pod_version}/" | head -1)
+    [ -z "$PODSPEC_PATH" ] && continue
+
+    if grep -q "\"$CONFLICTING_FRAMEWORK\"" "$PODSPEC_PATH" 2>/dev/null; then
+      # 获取 framework 版本从 Pods 目录
+      FRAMEWORK_VERSION=""
+      FRAMEWORK_NAME="${CONFLICTING_FRAMEWORK%.xcframework}"
+      INFO_PLIST=$(find "Pods/$pod_name" -path "*/$CONFLICTING_FRAMEWORK/*/$FRAMEWORK_NAME.framework/Info.plist" 2>/dev/null | head -1)
+      if [ -n "$INFO_PLIST" ]; then
+        FRAMEWORK_VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$INFO_PLIST" 2>/dev/null || echo "")
+      fi
+      [ -z "$FRAMEWORK_VERSION" ] && FRAMEWORK_VERSION="0.0.0"
+
+      # 检查 framework 是否在主 spec 或 default_subspecs 中
+      IN_MAIN_SPEC=false
+      if grep -q "\"vendored_frameworks\".*\"$CONFLICTING_FRAMEWORK\"" "$PODSPEC_PATH" 2>/dev/null; then
+        # 检查是否在根级别的 vendored_frameworks（不在 subspecs 内）
+        if python3 -c "import json; spec=json.load(open('$PODSPEC_PATH')); print('vendored_frameworks' in spec and '$CONFLICTING_FRAMEWORK' in str(spec.get('vendored_frameworks', '')))" 2>/dev/null | grep -q "True"; then
+          IN_MAIN_SPEC=true
+        else
+          # 检查是否在 default_subspecs 中
+          DEFAULT_SUBSPECS=$(python3 -c "import json; spec=json.load(open('$PODSPEC_PATH')); print(','.join(spec.get('default_subspecs', [])))" 2>/dev/null)
+          if [ -n "$DEFAULT_SUBSPECS" ]; then
+            for subspec in $(echo "$DEFAULT_SUBSPECS" | tr ',' ' '); do
+              if python3 -c "import json; spec=json.load(open('$PODSPEC_PATH')); subspecs=spec.get('subspecs', []); print(any(s.get('name')=='$subspec' and '$CONFLICTING_FRAMEWORK' in str(s.get('vendored_frameworks', '')) for s in subspecs))" 2>/dev/null | grep -q "True"; then
+                IN_MAIN_SPEC=true
+                break
+              fi
+            done
+          fi
+        fi
+      fi
+
+      PODS_WITH_FRAMEWORK+=("$pod_name $pod_version $FRAMEWORK_VERSION $IN_MAIN_SPEC $PODSPEC_PATH")
+    fi
+  done <<< "$ALL_INSTALLED_PODS"
+
+  # 优先保留 Podfile 中明确指定的 pod，且 framework 在主 spec 中
+  FIRST_POD_FOUND=""
+  FIRST_POD_VERSION=""
+  FIRST_FRAMEWORK_VERSION=""
+  for pod_info in "${PODS_WITH_FRAMEWORK[@]}"; do
+    pod_name=$(echo "$pod_info" | awk '{print $1}')
+    pod_version=$(echo "$pod_info" | awk '{print $2}')
+    framework_version=$(echo "$pod_info" | awk '{print $3}')
+    in_main_spec=$(echo "$pod_info" | awk '{print $4}')
+    if [ "$in_main_spec" = "true" ] && echo "$PODFILE_PODS" | grep -q "^${pod_name}$"; then
+      FIRST_POD_FOUND="$pod_name"
+      FIRST_POD_VERSION="$pod_version"
+      FIRST_FRAMEWORK_VERSION="$framework_version"
+      echo "  Found in $pod_name ($pod_version) with $CONFLICTING_FRAMEWORK ($framework_version) (keeping - specified in Podfile)"
+      break
+    fi
+  done
+
+  # 如果 Podfile 中没有，保留 framework 版本号最高的
+  if [ -z "$FIRST_POD_FOUND" ] && [ ${#PODS_WITH_FRAMEWORK[@]} -gt 0 ]; then
+    highest_framework_version="0.0.0"
+    highest_pod=""
+    highest_pod_version=""
+    for pod_info in "${PODS_WITH_FRAMEWORK[@]}"; do
+      pod_name=$(echo "$pod_info" | awk '{print $1}')
+      pod_version=$(echo "$pod_info" | awk '{print $2}')
+      framework_version=$(echo "$pod_info" | awk '{print $3}')
+      if [ "$(printf '%s\n' "$highest_framework_version" "$framework_version" | sort -V | tail -1)" = "$framework_version" ]; then
+        highest_framework_version="$framework_version"
+        highest_pod="$pod_name"
+        highest_pod_version="$pod_version"
+      fi
+    done
+    FIRST_POD_FOUND="$highest_pod"
+    FIRST_POD_VERSION="$highest_pod_version"
+    FIRST_FRAMEWORK_VERSION="$highest_framework_version"
+    echo "  Found in $FIRST_POD_FOUND ($FIRST_POD_VERSION) with $CONFLICTING_FRAMEWORK ($highest_framework_version) (keeping - highest framework version)"
+  fi
+
+  # 移除其他 pods 的 vendored_frameworks
+  for pod_info in "${PODS_WITH_FRAMEWORK[@]}"; do
+    pod_name=$(echo "$pod_info" | awk '{print $1}')
+    pod_version=$(echo "$pod_info" | awk '{print $2}')
+    framework_version=$(echo "$pod_info" | awk '{print $3}')
+    PODSPEC_PATH=$(echo "$pod_info" | awk '{print $5}')
+
+    if [ "$pod_name" != "$FIRST_POD_FOUND" ]; then
+      echo "  Found in $pod_name ($pod_version) with $CONFLICTING_FRAMEWORK ($framework_version) (removing)"
+      BACKUP_PATH="${PODSPEC_PATH}.backup"
+      if [ ! -f "$BACKUP_PATH" ]; then
+        cp "$PODSPEC_PATH" "$BACKUP_PATH"
+      fi
+      BACKUP_FILES+=("$BACKUP_PATH")
+
+      # 只移除冲突的 framework，保留其他 frameworks
+      # 如果删除的行没有逗号（数组最后一个元素），先删除上一行的逗号
+      if ! grep "$CONFLICTING_FRAMEWORK" "$PODSPEC_PATH" | grep -q ","; then
+        # 找到包含 framework 的行号，删除前一行的逗号
+        line_num=$(grep -n "$CONFLICTING_FRAMEWORK" "$PODSPEC_PATH" | cut -d: -f1 | head -1)
+        if [ -n "$line_num" ] && [ "$line_num" -gt 1 ]; then
+          prev_line=$((line_num - 1))
+          sed -i '' "${prev_line}s/,\s*$//" "$PODSPEC_PATH"
+        fi
+      fi
+      sed -i '' "/$CONFLICTING_FRAMEWORK/d" "$PODSPEC_PATH"
+    fi
+  done
+
+  # 第三次尝试
+  echo ""
+  echo "Retrying pod $@ after removing duplicate frameworks..."
+  pod "$@"
+  FINAL_EXIT_CODE=$?
+else
+  FINAL_EXIT_CODE=$INSTALL_EXIT_CODE
+fi
+
+if [ "$FINAL_EXIT_CODE" -eq 0 ]; then
+  patch_generated_framework_links "$CONFLICTING_FRAMEWORK" "$FIRST_POD_FOUND"
+fi
+
+# 恢复所有原始文件
+for BACKUP_PATH in "${BACKUP_FILES[@]}"; do
+  if [ -f "$BACKUP_PATH" ]; then
+    PODSPEC_PATH="${BACKUP_PATH%.backup}"
+    cp "$BACKUP_PATH" "$PODSPEC_PATH"
+    rm "$BACKUP_PATH"
+  fi
+done
+
+exit $FINAL_EXIT_CODE
+```
+
+</Accordion>
+</Accordions>
+
+##### 按项目类型使用
+
+<Tabs defaultValue="native-cocoapods">
+<TabsList>
+  <TabsTrigger value="native-cocoapods">原生 iOS/macOS 项目</TabsTrigger>
+  <TabsTrigger value="flutter-cocoapods">Flutter 项目</TabsTrigger>
+</TabsList>
+
+<TabsContent value="native-cocoapods">
+
+1. 在 macOS 终端中为 `pod.sh` 添加执行权限：
+
+    ```bash
+    chmod +x pod.sh
+    ```
+
+2. 在项目的 iOS 或 macOS 工程目录中，使用 `pod.sh` 替代原有的 `pod install` 或 `pod update` 命令：
+
+    ```bash
+    # 替代 pod install
+    ./pod.sh install
+
+    # 替代 pod update
+    ./pod.sh update
+
+    # 支持原生选项
+    ./pod.sh install --repo-update
+    ./pod.sh update --verbose
+
+    # 其他 pod 命令直接透传
+    ./pod.sh --version
+    ./pod.sh trunk push
+    ```
+
+</TabsContent>
+
+<TabsContent value="flutter-cocoapods">
+
+对于 Flutter 项目，由于 `flutter build ios` 和 `flutter run` 会由 Flutter CLI 自己去调用 `pod install`，不会调用手动执行过的 `./pod.sh`，除了 `pod.sh` 之外，还需要额外添加一个名为 `pod` 的代理脚本。
+
+新建一个名为 `pod` 的文件，将以下代码保存到文件中。
+
+<Accordions>
+<Accordion title="pod 代码">
+
+```shell
+#!/bin/bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+SELF_PATH="$SCRIPT_DIR/pod"
+
+resolve_real_pod() {
+  local candidate=""
+  while IFS= read -r candidate; do
+    if [ -n "$candidate" ] && [ "$candidate" != "$SELF_PATH" ]; then
+      printf '%s\n' "$candidate"
+      return 0
+    fi
+  done < <(which -a pod 2>/dev/null)
+  return 1
+}
+
+REAL_POD_BIN="$(resolve_real_pod)"
+if [ -z "${REAL_POD_BIN:-}" ] || [ ! -x "$REAL_POD_BIN" ]; then
+  echo "Error: could not resolve the real CocoaPods binary." >&2
+  exit 1
+fi
+
+export PATH="$(dirname "$REAL_POD_BIN"):$PATH"
+exec "$SCRIPT_DIR/pod.sh" "$@"
+```
+
+</Accordion>
+</Accordions>
+
+确保 `pod` 和 `pod.sh` 位于同一目录，并在 macOS 终端中为两个脚本添加执行权限：
+
+```bash
+chmod +x pod.sh pod
+```
+
+在执行 Flutter 命令前，将脚本所在目录放到 `PATH` 最前面：
+
+```bash
+PATH="<代理脚本目录>:$PATH" flutter build ios
+```
+
+```bash
+PATH="<代理脚本目录>:$PATH" flutter run
+```
+
+其中，`<代理脚本目录>` 表示同时存放 `pod` 和 `pod.sh` 的目录，`pod` 这个文件名不能修改。
+
+</TabsContent>
+</Tabs>
+
+##### 注意事项
+
+1. **临时修改**：脚本会在执行后恢复原始 podspec，不会永久改变 CocoaPods 缓存
+2. **版本兼容性**：确保放宽版本约束后选择的版本确实兼容（通常高版本向下兼容）
+3. **Podfile 优先**：如果 Podfile 中指定了 `aosl` 库的版本（如 `pod 'AgoraInfra_iOS', '1.3.0'`），则使用指定版本，脚本不会修改 Podfile 中的版本约束。
+
+    :::info[信息]
+    如果脚本无法解决你的问题，请[联系技术支持](https://ticket.shengwang.cn)获取帮助。
+    :::
+
+#### 集成 Lite SDK（适用于 RTM）
+
+自 v2.2.2 起，RTM Java/Objective-C SDK 提供了不包含 `aosl` 库的轻量版本（Lite SDK）。
+如果你同时集成了 v2.2.2 及之后的 RTM SDK 和其他声网 SDK，且 RTM SDK 中的 `aosl` 库版本较低，你可以集成 RTM Lite SDK 来避免与其他声网 SDK 中的 `aosl` 库版本冲突问题。
+
+:::info[信息]
+你可以前往[RTM 发版说明](/doc/rtm2/android/overview/release-notes)和[RTC 发版说明](/doc/rtc/android/overview/release-notes)查看各 SDK 中 `aosl` 库的版本信息。
+:::
+
+<Tabs defaultValue="android">
+<TabsList>
+  <TabsTrigger value="android">Maven Central</TabsTrigger>
+  <TabsTrigger value="ios">CocoaPods</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+```groovy
+// ...
+dependencies {
+    // 如果你使用的是 2.2.2 及之后版本的 RTM SDK
+    // 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.7
+    // 可通过发版说明获取最新版本号
+    implementation 'cn.shengwang.rtm:android-java-lite:2.2.7'
+}
+
+```
+
+修改完成后，清理并重新构建项目，即可解决依赖库版本冲突问题。
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+```ruby
+platform :ios, '11.0'
+target 'Your App' do
+    # 如果你使用的是 2.2.2 及之后版本的 RTM SDK
+    # 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.7
+    # 可通过发版说明获取最新版本号
+    pod 'ShengwangRtm', 'x.y.z', :subspecs => ['RtmKit']
+end
+```
+
+修改完成后，清理并重新构建项目，即可解决依赖库版本冲突问题。
+
+</TabsContent>
+</Tabs>
+
+### 手动集成 SDK
+
+本节介绍使用 CDN 链接下载 SDK 包并手动集成声网 SDK 时，如何解决库冲突问题。
+
+#### 手动删除较低版本的库 (Android/iOS/macOS/Windows)
+
+目标平台为 Android/iOS/macOS/Windows 时，你可以在 SDK 包中手动删除较低版本的 `aosl` 库文件。
+
+:::info[信息]
+你可以前往 SDK 发版说明页查看各 SDK 中 `aosl` 库的版本信息：
+
+- [RTC 发版说明](/doc/rtc/android/overview/release-notes)
+- [RTM 发版说明](/doc/rtm2/android/overview/release-notes)
+- [即时通讯 IM 发版说明](https://im.shengwang.cn/docs/sdk/android/releasenote.html)
+:::
+
+`aosl` 库位于 SDK 包的 `lib/{arch}` 目录下，不同平台的文件名如下：
+
+- Android: `libaosl.so`
+- iOS/macOS: `aosl.xcframework`
+- Windows: `libaosl.dll`
+
+你需要在较低版本 `aosl` 库的 SDK 包中删除所有架构目录下的 `aosl` 库文件。
+
+#### 配置过滤规则 (HarmonyOS)
+
+目标平台为 HarmonyOS 时，你需要在项目根目录的 `entry` 文件夹中，修改 `build-profile.json5` 文件中原生库的过滤规则（`buildOption.nativeLib.filter.select`），确保项目引用的 `libaosl.so` 为较高版本。
+
+:::info[信息]
+你可以前往 SDK 发版说明页查看各 SDK 中 `aosl` 库的版本信息：
+
+- [RTC 发版说明](/doc/rtc/harmonyos/overview/release-notes)
+- [RTM 发版说明](/doc/rtm2/harmonyos/overview/release-notes)
+:::
+
+以下为 RTM SDK 的 `aosl` 库版本高于 RTC SDK 的 `aosl` 库版本时的配置示例代码：
+
+```json
+{
+  "apiType": "stageMode",
+  "buildOption": {
+    "nativeLib": {
+      "filter": {
+        "select": [
+          {
+            "package": "@shengwang/rtm-full",
+            "include": [
+              "libaosl.so"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
+```

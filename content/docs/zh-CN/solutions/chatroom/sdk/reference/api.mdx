@@ -1,0 +1,48 @@
+---
+title: "客户端 API"
+---
+本页介绍语聊 PaaS 方案中高频调用的 API。
+
+## 实时互动 RTC API
+
+| API | 描述 |
+| --- | --- |
+| [create](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_initialize) | 创建并初始化 `RtcEngine`。 |
+| [joinChannel](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2) | 加入 RTC 频道。 |
+| [setChannelProfile](/api-ref/rtc/android/API/toc_channel#api_irtcengine_setchannelprofile) | 设置频道模式。 |
+| [setAudioProfile](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioprofile2) | 设置音频属性。 |
+| [setAudioScenario](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioscenario) | 设置音频场景。 |
+| [setParameters](/api-ref/rtc/android/API/toc_network#api_irtcengine_setparameters) | 设置私有参数。 |
+| [setClientRole](/api-ref/rtc/android/API/toc_channel#api_irtcengine_setclientrole) | 设置用户角色。 |
+| [muteLocalAudioStream](/api-ref/rtc/android/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) | 停止发送本地音频流。 |
+| [leaveChannel](/api-ref/rtc/android/API/toc_channel#api_irtcengine_leavechannel) | 离开 RTC 频道。 |
+| [destroy](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_release) | 销毁 `RtcEngine`。 |
+
+| API | 描述 |
+| --- | --- |
+| [sharedEngineWithAppId:delegate:](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_create) | 初始化 `AgoraRtcEngineKit`。 |
+| [joinChannelByToken:channelId:info:uid:joinSuccess:](/api-ref/rtc/ios/API/toc_channel#joinChannelByToken%20[1/4]) | 加入 RTC 频道。 |
+| [setChannelProfile:](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_setchannelprofile) | 设置频道模式。 |
+| [setAudioProfile:](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioprofile2) | 设置音频属性。 |
+| [setAudioScenario:](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioscenario) | 设置音频场景。 |
+| [setParameters:](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setparameters) | 设置私有参数。 |
+| [setClientRole:](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_setclientrole) | 设置用户角色。 |
+| [muteLocalAudioStream:](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) | 停止发送本地音频流。 |
+| [leaveChannel:](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_leavechannel) | 离开 RTC 频道。 |
+| [destroy](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_release) | 销毁 `AgoraRtcEngineKit`。 |
+
+## 即时通讯 IM API
+
+| API | 描述 |
+| --- | --- |
+| [loginWithToken](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_java/v1.1.0/classio_1_1agora_1_1chat_1_1_chat_client.html#ac2b19ffdcd879b5f239baacbaa09423b) | 登录即时通讯系统。 |
+| [joinChatRoom](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_java/v1.1.0/classio_1_1agora_1_1chat_1_1_chat_room_manager.html#a895dbd6d0217ba08bcf2dbb6cf441591) | 加入聊天室。 |
+| [leaveChatRoom](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_java/v1.1.0/classio_1_1agora_1_1chat_1_1_chat_room_manager.html#a4f2c430782206971480c73a49311b1437) | 离开聊天室。 |
+| [asyncDestroyChatRoom](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_java/v1.1.0/classio_1_1agora_1_1chat_1_1_chat_room_manager.html?transId=194274c0-bee4-11ed-b167-a39cc89dc96e#a0d50d2e34d9992fc3f8ea1c82e2db1a) | 销毁聊天室。 |
+
+| API | 描述 |
+| --- | --- |
+| [loginWithUsername:token:completion:](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_oc/v1.1.0/interface_agora_chat_client.html#ad1f4dbc685867ed236fcb57c2d29c2b0) | 登录即时通讯系统。 |
+| [joinChatRoom](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_oc/v1.1.0/protocol_i_agora_chatroom_manager-p.html#ad8d19bd36e60c8af8d04c1f8b4daa2f0) | 加入聊天室。 |
+| [leaveChatroom:completion:](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_oc/v1.1.0/protocol_i_agora_chatroom_manager-p.html#ae9b671ece1a36ad8ac26375d91755467) | 离开聊天室。 |
+| [destroyChatroom:](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_oc/v1.1.0/protocol_i_agora_chatroom_manager-p.html#a1e3a6bacf44a96ff37b34d2068c84386) | 销毁聊天室。 |

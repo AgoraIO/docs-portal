@@ -1,0 +1,224 @@
+---
+title: "LiveTranscoding"
+description: "旁路推流的转码属性。"
+---
+<a id="class_livetranscoding__prototype"></a>
+
+```csharp
+public class LiveTranscoding
+    {
+        public LiveTranscoding()
+        {
+            width = 360;
+            height = 640;
+            videoBitrate = 400;
+            videoFramerate = 15;
+            lowLatency = false;
+            videoGop = 30;
+            videoCodecProfile = VIDEO_CODEC_PROFILE_TYPE.VIDEO_CODEC_PROFILE_HIGH;
+            backgroundColor = 0x000000;
+            videoCodecType = VIDEO_CODEC_TYPE_FOR_STREAM.VIDEO_CODEC_H264_FOR_STREAM;
+            userCount = 0;
+            transcodingUsers = new TranscodingUser[0];
+            transcodingExtraInfo = null;
+            metadata = null;
+            watermark = new RtcImage[0];
+            watermarkCount = 0;
+            backgroundImage = new RtcImage[0];
+            backgroundImageCount = 0;
+            audioSampleRate = AUDIO_SAMPLE_RATE_TYPE.AUDIO_SAMPLE_RATE_48000;
+            audioBitrate = 48;
+            audioChannels = 1;
+            audioCodecProfile = AUDIO_CODEC_PROFILE_TYPE.AUDIO_CODEC_PROFILE_LC_AAC;
+            advancedFeatures = new LiveStreamAdvancedFeature[0];
+            advancedFeatureCount = 0;
+        }
+
+        public LiveTranscoding(int width, int height, int videoBitrate, int videoFramerate, bool lowLatency,
+            int videoGop, VIDEO_CODEC_PROFILE_TYPE videoCodecProfile, uint backgroundColor,
+            VIDEO_CODEC_TYPE_FOR_STREAM videoCodecType, uint userCount, TranscodingUser[] transcodingUsers,
+            string transcodingExtraInfo, string metadata, RtcImage[] watermark, uint watermarkCount,
+            RtcImage[] backgroundImage, uint backgroundImageCount,
+            AUDIO_SAMPLE_RATE_TYPE audioSampleRate, int audioBitrate, int audioChannels,
+            AUDIO_CODEC_PROFILE_TYPE audioCodecProfile, LiveStreamAdvancedFeature[] advancedFeatures, uint advancedFeatureCount)
+        {
+            this.width = width;
+            this.height = height;
+            this.videoBitrate = videoBitrate;
+            this.videoFramerate = videoFramerate;
+            this.lowLatency = lowLatency;
+            this.videoGop = videoGop;
+            this.videoCodecProfile = videoCodecProfile;
+            this.backgroundColor = backgroundColor;
+            this.videoCodecType = videoCodecType;
+            this.userCount = userCount;
+            this.transcodingUsers = transcodingUsers;
+            this.transcodingExtraInfo = transcodingExtraInfo;
+            this.metadata = metadata;
+            this.watermark = watermark;
+            this.watermarkCount = watermarkCount;
+            this.backgroundImage = backgroundImage;
+            this.backgroundImageCount = backgroundImageCount;
+            this.audioSampleRate = audioSampleRate;
+            this.audioBitrate = audioBitrate;
+            this.audioChannels = audioChannels;
+            this.audioCodecProfile = audioCodecProfile;
+            this.advancedFeatures = advancedFeatures;
+            this.advancedFeatureCount = advancedFeatureCount;
+        }
+        public int width { set; get; }
+        public int height { set; get; }
+        public int videoBitrate { set; get; }
+        public int videoFramerate { set; get; }
+        public bool lowLatency { set; get; }
+        public int videoGop { set; get; }
+        public VIDEO_CODEC_PROFILE_TYPE videoCodecProfile { set; get; }
+        public uint backgroundColor { set; get; }
+        public VIDEO_CODEC_TYPE_FOR_STREAM videoCodecType { set; get; }
+        public uint userCount { set; get; }
+        public TranscodingUser[] transcodingUsers { set; get; }
+        public string transcodingExtraInfo { set; get; }
+        public string metadata { set; get; }
+        public RtcImage[] watermark { set; get; }
+        public uint watermarkCount { set; get; }
+        public RtcImage[] backgroundImage { set; get; }
+        public uint backgroundImageCount { set; get; }
+        public AUDIO_SAMPLE_RATE_TYPE audioSampleRate { set; get; }
+        public int audioBitrate { set; get; }
+        public int audioChannels { set; get; }
+        public AUDIO_CODEC_PROFILE_TYPE audioCodecProfile { set; get; }
+        public LiveStreamAdvancedFeature[] advancedFeatures { set; get; }
+        public uint advancedFeatureCount { set; get; }
+    }
+```
+
+<a id="class_livetranscoding__parameters"></a>
+
+## 属性
+
+### `width`
+
+推流视频的总宽度，默认值 360，单位为像素。
+
+- 如果推视频流， width 取值范围为 [64,1920]。如果取值低于 64，声网服务器会自动调整为 64； 如果取值高于 1920，声网服务器会自动调整为 1920。
+- 如果推音频流，请将 width 和 height 设为 0。
+
+### `height`
+
+推流视频的总高度，默认值 640，单位为像素。
+
+- 如果推视频流， height 取值范围为 [64,1080]。如果取值低于 64，声网服务器会自动调整为 64； 如果取值高于 1080，声网服务器会自动调整为 1080。
+- 如果推音频流，请将 width 和 height 设为 0。
+
+### `videoBitrate`
+
+视频编码码率，单位为 Kbps。 详见 [BITRATE](/zh-CN/api-reference/rtc/csharp-windows/enum-bitrate)。 该参数无需设置，保留默认值 STANDARD_BITRATE 即可，SDK 会根据你设定的视频分辨率和帧率自动匹配最合适的码率。有关视频分辨率和帧率的对应关系，详见 [视频属性](https://doc.shengwang.cn/doc/rtc/unity/basic-features/video-profile#%E8%A7%86%E9%A2%91%E5%B1%9E%E6%80%A7%E5%8F%82%E8%80%83)。
+
+### `videoFrameRate`
+
+用于旁路直播的输出视频的帧率。取值范围是 (0,30]，单位为 fps。15 fps 为默认值。
+
+:::warning[注意]
+声网服务器会将高于 30 fps 的帧率统一调整为 30 fps。
+:::
+
+### `lowLatency`
+
+##### `弃用`
+
+不建议使用。
+
+低延时模式
+
+- true: 低延时，不保证画质。
+- false:（默认值）高延时，保证画质。
+
+### `videoGop`
+
+用于旁路直播的输出视频的 GOP (Group of Pictures)。单位为帧。默认值为 30。
+
+### `videoCodecProfile`
+
+用于旁路直播的输出视频的编码规格。可以设置为 66、77 或 100，详见 [VIDEO_CODEC_PROFILE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videocodecprofiletype)。
+
+:::warning[注意]
+如果你把这个参数设为其他值，声网服务器会将其调整为默认值。
+:::
+
+### `videoCodecType`
+
+用于旁路直播的输出视频的编解码类型。详见 [VIDEO_CODEC_TYPE_FOR_STREAM](/zh-CN/api-reference/rtc/csharp-windows/enum-videocodectypeforstream)。
+
+### `transcodingUsers`
+
+用于管理参与旁路直播的视频转码合图的用户。最多支持 17 人同时参与转码合图。详见 [TranscodingUser](/zh-CN/api-reference/rtc/csharp-windows/class-transcodinguser)。
+
+### `transcodingExtraInfo`
+
+预留参数：用户自定义的发送到旁路推流客户端的信息，用于填充 H264/H265 视频中 SEI 帧内容。长度限制：4096 字节。关于 SEI 的详细信息，详见 [SEI 帧相关问题](/zh-CN/api-reference/faq/quality/sei)。
+
+### `backgroundColor`
+
+用于旁路直播的输出视频的背景色，格式为 RGB 定义下的十六进制整数，不要带 # 号，如 0xFFB6C1 表示浅粉色。默认0x000000，黑色。
+
+### `userCount`
+
+参与合图的用户数量，默认 0。取值范围为 [0,17]。
+
+### `metadata`
+
+##### `弃用`
+
+已废弃，不建议使用。
+
+发送给 CDN 客户端的 metadata。
+
+### `watermark`
+
+直播视频上的水印。图片格式需为 PNG。详见 [RtcImage](/zh-CN/api-reference/rtc/csharp-windows/class-rtcimage)。
+
+你可以添加一个水印，或使用数组的方式添加多个水印。 该参数与 watermarkCount 搭配使用。
+
+### `backgroundImage`
+
+直播视频上的背景图。图片格式需为 PNG。详见 [RtcImage](/zh-CN/api-reference/rtc/csharp-windows/class-rtcimage)。
+
+你可以添加一张背景图，或使用数组的方式添加多张背景图。该参数与 backgroundImageCount 搭配使用。
+
+### `audioSampleRate`
+
+用于旁路推流的输出媒体流的音频采样率 (Hz)，详见 [AUDIO_SAMPLE_RATE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-audiosampleratetype)。
+
+### `audioBitrate`
+
+用于旁路直播的输出音频的码率。单位为 Kbps，默认值为 48，最大值为 128。
+
+### `audioChannels`
+
+用于旁路直播的输出音频的声道数，默认值为 1。取值范围为 [1,5] 中的整型，建议取 1 或 2。3、4、5 需要特殊播放器支持：
+
+- 1: （默认）单声道
+- 2: 双声道
+- 3: 三声道
+- 4: 四声道
+- 5: 五声道
+
+### `audioCodecProfile`
+
+用于旁路直播输出音频的编码规格。详见 [AUDIO_CODEC_PROFILE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-audiocodecprofiletype)。
+
+### `watermarkCount`
+
+直播视频上的水印的数量。水印和背景图的总数量需大于等于 0 且小于等于 10。该参数与 watermark 搭配使用。
+
+### `backgroundImageCount`
+
+直播视频上的背景图的数量。水印和背景图的总数量需大于等于 0 且小于等于 10。该参数与 backgroundImage 搭配使用。
+
+### `advancedFeatures`
+
+转码推流的高级功能。详见 [LiveStreamAdvancedFeature](/zh-CN/api-reference/rtc/csharp-windows/class-livestreamadvancedfeature)。
+
+### `advancedFeatureCount`
+
+开启的高级功能数量。默认值为 0。

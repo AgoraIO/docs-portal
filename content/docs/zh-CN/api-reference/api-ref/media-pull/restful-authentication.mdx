@@ -1,0 +1,25 @@
+---
+title: RESTful API 认证
+description: 对输入在线媒体流 RESTful API 请求进行认证。
+---
+
+输入在线媒体流 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的 Customer ID 和 Customer Secret 生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段。
+
+## 推荐做法
+
+- 在服务端保存客户凭证。
+- 对 `customer_id:customer_secret` 字符串进行 Base64 编码，生成 Basic Auth 凭证。
+- 通过 `Authorization: Basic <credential>` 请求头发送编码后的值。
+- 所有 REST API 调用都应在服务端完成，避免在客户端暴露密钥。
+
+## 请求头示例
+
+```text
+Authorization: Basic <base64_credentials>
+```
+
+## 相关页面
+
+- [输入在线媒体流概览](index)
+- [创建云端播放器](create)
+- [查询所有云端播放器](list)

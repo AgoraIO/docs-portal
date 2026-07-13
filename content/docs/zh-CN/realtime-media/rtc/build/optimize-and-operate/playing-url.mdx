@@ -1,0 +1,590 @@
+---
+title: "观众端 URL 拉流"
+---
+## 场景概述
+
+URL 拉流播放指通过 URL 地址从远程服务器获取并播放媒体流。声网提供的 RTE API 支持直接通过 URL 拉取并播放实时媒体流，包括 RTC 频道内的直播流、CDN 直播流。观众端无需显式调用加入频道、订阅等 API，即可观看直播，极大简化开发流程。同时，通过 ABR 功能可以根据网络状况自动切换最优视频质量，提供更好的观看体验。
+
+在开始开发之前，你需要了解以下概念：
+
+- **URL 拉流**：一种通过 URL 地址直接获取并播放媒体流的方式。
+
+- **自适应码率（Adaptive Bitrate，ABR）**：一种根据网络状况自动调整视频清晰度的技术。当网络状况较差时，SDK 会自动降低视频清晰度以保证流畅播放；当网络恢复后，会自动提升清晰度以提供更好的观看体验。
+
+- **视频质量层级**：在 ABR 中，可以将视频流按照不同的清晰度（分辨率、帧率、码率）划分为多个层级。观众端可以在这些预设的层级之间自动或手动切换，实现最优的观看体验。
+
+本文介绍如何在观众端实现拉流播放，以及使用 ABR 功能来根据网络状况自动切换视频质量层级，优化观看直播流时的视频体验。
+
+## 前提条件
+
+- 如果你需要播放 RTC 频道内的直播流，请参考[实现 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)在你的业务服务端部署 Token 生成器并生成一个 Token。
+- 如果你需要使用 ABR 功能，请联系 sales@shengwang.cn 开通。
+
+## 实现拉流播放
+
+本节介绍观众端如何通过 URL 拉流播放直播流。
+
+### 1. 拼接 URL
+
+:::info[信息]
+如果你要播放的是 CDN 直播流或本地媒体文件，可直接跳过本步骤，前往步骤 2。支持播放的格式见[播放器支持的格式及协议](https://doc.shengwang.cn/doc/rtc/windows/advanced-features/media-player#%E6%94%AF%E6%8C%81%E7%9A%84%E6%A0%BC%E5%BC%8F)。
+:::
+
+声网支持观众端直接打开特定的 URL 观看直播。你可以参考下列步骤来拼接一个直播 URL。
+
+1. 对 Token 进行编码。URL 中用于鉴权的 Token 是 Base64 编码，包含了 "+" 和 "/" 字符，这些字符在 URL 中是保留字符。因此需要对 Token 进行百分号编码以避免 URL 解析时产生歧义。下列示例代码展示如何对 Token 进行编码：
+
+```cpp tab="Windows" tabGroup="token-encoding"
+// 初始化 Base64 编码的 Token
+std::wstring szToken = L"007eJxTYPARkBTeqC9o+oypxlXgV89XfsuE36vm/N40a0aYoMoNqVYFBpNE80Rzg6SUVItEExNTyyTLNEtzC+PEpDRzgxQjY2Mz4xl3UxsCGRmaOtYzMjJAIIjPzGBoZMzAAAB+4RzB";
+std::wstring szEncodedToken;
+
+// 定义编码后的 Token 长度和缓冲区
+DWORD encodedLength = MAX_PATH;
+wchar_t encodedToken[MAX_PATH] = { 0 };
+
+// 对 Token 进行百分号编码
+HRESULT result = UrlEscape(szToken.c_str(), encodedToken, &encodedLength, URL_ESCAPE_SEGMENT_ONLY);
+
+// 检查编码结果并输出
+if (result == S_OK) {
+    szEncodedToken = encodedToken;
+} else if (result == E_POINTER) {
+    wchar_t* tempBuffer = new wchar_t[encodedLength];
+    if (UrlEscape(szToken.c_str(), tempBuffer, &encodedLength, URL_ESCAPE_SEGMENT_ONLY) == S_OK) {
+        szEncodedToken = tempBuffer;
+    }
+    delete[] tempBuffer;
+}
+```
+
+```objc tab="Objective-C" tabGroup="token-encoding"
+// 初始化包含 Base64 编码 Token 的字符串
+NSString* token = [[NSString alloc] initWithString:@"007eJxTYPARkBTeqC9o+oypxlXgV89XfsuE36vm/N40a0aYoMoNqVYFBpNE80Rzg6SUVItEExNTyyTLNEtzC+PEpDRzgxQjY2Mz4xl3UxsCGRmaOtYzMjJAIIjPzGBoZMzAAAB+4RzB"];
+
+// 创建 URL 允许字符集，并移除"+"和"/"
+NSCharacterSet *allowCharacters = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+[(NSMutableCharacterSet*)allowCharacters removeCharactersInString:@"+/"];
+
+// 对 Token 进行百分号编码
+NSString* encodedString = [token stringByAddingPercentEncodingWithAllowedCharacters:allowCharacters];
+
+// 输出编码后的 Token
+NSLog(@"encoded token: %@", encodedString);
+```
+
+```java tab="Java" tabGroup="token-encoding"
+String token= "007eJxTYPARkBTeqC9o+oypxlXgV89XfsuE36vm/N40a0aYoMoNqVYFBpNE80Rzg6SUVItEExNTyyTLNEtzC+PEpDRzgxQjY2Mz4xl3UxsCGRmaOtYzMjJAIIjPzGBoZMzAAAB+4RzB";
+
+// 对 Token 进行编码
+String encodedToken = Uri.encode(token);
+```
+
+2. 参考下表说明来拼接一个 URL。Base URL 格式定义如下：
+
+   `rte://{appid}/{appname}/{channelname}?token={token}&uid={uid}&streamid={streamid}&abr_subscription_layer={subscription_layer}&abr_fallback_layer={fallback_layer}`
+
+   | 字段 | 是否必须 | 说明 |
+   | --- | --- | --- |
+   | `{appid}` | 必须 | 你的项目的 App ID，可在声网控制台获取。 |
+   | `{appname}` | 可选 | 发布点。如果你配置了 CDN 回源拉流，可以设置该参数。 |
+   | `{channelname}` | 必须 | 频道名。如果填了 `appname`，则频道名为 `appname\\|channelname`。频道名支持的合法字符为 a-z A-Z 0-9 '-' '_' '.' '~'。 |
+   | `{token}` | 可选 | 用于鉴权的 Token。生成 Token 后你可以参考[步骤 1](#1-拼接-url) 对 Token 进行编码。为确保安全性，声网推荐你使用 Token 鉴权。 |
+   | `{uid}` | 可选 | 观众的用户 ID。 |
+   | `{streamid}` | 可选 | 主播的用户 ID。你可以通过指定 `streamid` 来订阅对应主播的媒体流。 |
+   | `{subscription_layer}` | 可选 | 指定订阅的视频质量层级，详见 [RteAbrSubscriptionLayer](/api-ref/rtc/windows/API/enum_rteabrsubscriptionlayer#RteAbrSubscriptionLayer)。 |
+   | `{fallback_layer}` | 可选 | 网络环境不佳时，指定回退视频质量层级的下限，详见 [RteAbrFallbackLayer](/api-ref/rtc/windows/API/enum_rteabrfallbacklayer#RteAbrFallbackLayer)。 |
+   | `is_string_uid` | 可选 | 用户 ID 的类型，取值说明见下方。 |
+
+   `is_string_uid` 取值说明：
+
+   - `0`：数字类型。
+   - `1`：字符串类型。
+
+   :::warning[注意]
+   该字段仅适用于内测的网页播放器，如需使用，请联系[技术支持](https://ticket.shengwang.cn/)。
+   :::
+
+### 2. 创建并初始化引擎
+
+你可以从下列两种方式中任选一种来创建 RTE 对象。
+
+:::info[信息]
+以下示例代码和 API 均以 Windows 平台为例。如目标平台为其他平台，请参考对应平台的 API 文档。
+:::
+
+- 调用 [`Rte`](/api-ref/rtc/windows/API/toc_rte_player#api_rte_rte) 来构造一个 `Rte` 对象实例。调用 [`SetConfigs`](/api-ref/rtc/windows/API/toc_rte_player#api_rte_setconfigs) 设置你的项目的 App ID，然后调用 [`InitMediaEngine`](/api-ref/rtc/windows/API/toc_rte_player#InitMediaEngine) 来创建并初始化 RTE 引擎。
+
+  ```cpp
+  // 创建一个 Config 对象实例
+  rte::Config rteConfig;
+  // 设置你项目的 App ID
+  rteConfig.SetAppId("The actual appid");
+  // 创建一个 Rte 对象实例
+  rte::Rte* rte = new rte::Rte();
+  // 初始化设置，将配置对象传递给 Rte 对象
+  rte->SetConfigs(&rteConfig);
+  // 创建和初始化 Rte 引擎
+  rte->InitMediaEngine([](rte::Error* err){
+    std::cout << "Init media engine done." << std::endl;
+  });
+  ```
+
+- 如果你已经创建并初始化 RTC 引擎，可直接调用 [`GetFromBridge`](/api-ref/rtc/windows/API/toc_rte_player#GetFromBridge) 方法从现有的 RTC 引擎中桥接出一个 Rte 对象。
+
+  ```cpp
+  rte::Rte *rte;
+  *rte = rte::Rte::GetFromBridge();
+  ```
+
+### 3. 创建播放器对象
+
+调用 `Player` 方法创建一个播放器对象。
+
+```cpp
+rte::Player* player = new rte::Player(rte);
+```
+
+### 4. 渲染主播视图
+
+1. 调用 [`Canvas`](/api-ref/rtc/windows/API/toc_rte_player#Canvas) 创建一个画布对象。
+2. 调用 [`AddView`](/api-ref/rtc/windows/API/toc_rte_player#AddView) 将一个视图（view）添加到画布中。
+3. 调用 [`SetCanvas`](/api-ref/rtc/windows/API/toc_rte_player#SetCanvas) 指定画布对象来显示视频。当视频流成功播放后，视频画面会显示在这个指定的画布上。
+
+   ```cpp
+   // 创建 Canvas 对象
+   rte::Canvas* canvas = new rte::Canvas(rte);
+   RteView view = HWND;    // windows 窗口句柄
+   canvas->AddView(&view, nullptr);
+   player->SetCanvas(canvas);
+   ```
+
+### 5. 打开 URL
+
+调用 [`OpenWithUrl`](/api-ref/rtc/windows/API/toc_rte_player#OpenWithUrl) 来打开 URL 并播放。默认情况下成功打开 URL 后会自动开始播放，如果你想关闭自动播放，可以调用 [`SetAutoPlay`](/api-ref/rtc/windows/API/toc_rte_player#SetAutoPlay) 将 `auto_play` 设为 `false`。
+
+:::warning[注意]
+如果你打开 URL 失败，需要调用 [`Stop`](/api-ref/rtc/windows/API/toc_rte_player#Stop) 停止本次播放，然后再调用 [`OpenWithUrl`](/api-ref/rtc/windows/API/toc_rte_player#OpenWithUrl) 重新打开。
+:::
+
+```cpp
+player->OpenWithUrl("rte://{appid}/{appname}/{channelname}", 0, [](rte::Error* err){
+});
+```
+
+### 6. 切换播放源
+
+如果你播放的是 CDN URL 或本地的媒体文件，在播放过程中你可以调用 [`SwitchWithUrl`](/api-ref/rtc/windows/API/toc_rte_player#SwitchWithUrl) 切换一个新的播放源。
+
+```cpp
+player->SwitchWithUrl("rtmp://example.com/live/stream123", true, [](rte::Error* err) {
+});
+```
+
+声网还支持在播放过程中设置播放音量，如果你播放的是本地媒体文件，还可以从指定位置开始播放、设置播放速度、循环播放次数等，详见 [API 文档](https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_rte_player)。
+
+### 7. 暂停/停止播放
+
+如果需要终止播放，调用 [`Stop`](/api-ref/rtc/windows/API/toc_rte_player#Stop) 方法，如果需要暂停当前播放，调用 [`Pause`](/api-ref/rtc/windows/API/toc_rte_player#Pause) 方法。
+
+```cpp
+player->Pause();
+player->Stop();
+```
+
+### 示例项目
+
+声网在 GitHub 上提供了一个开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Tabs defaultValue="windows" groupId="example-project" persist>
+<TabsList>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="macos">macOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="windows">
+
+<Cards>
+  <Card title="RtePlayer" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/RtePlayer" />
+</Cards>
+
+</TabsContent>
+
+<TabsContent value="android">
+
+<Cards>
+  <Card title="UrlLiveStream" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/UrlLiveStream.java" />
+</Cards>
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+<Cards>
+  <Card title="RtePlayer" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/RtePlayer" />
+</Cards>
+
+</TabsContent>
+
+<TabsContent value="macos">
+
+<Cards>
+  <Card title="RtePlayer" href="https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/RtePlayer" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+## 使用 ABR 功能
+
+ABR（自适应码率）功能允许观众端根据网络状况来选择订阅不同分辨率的视频流。此外，声网还支持用户自定义不同层级的分辨率，观众端可以切换不同分辨率的视频流进行观看。在网络环境不稳定时，SDK 会以指定回退的最低视频质量层级为下限，在此范围内根据网络状况动态调整分辨率。在网络改善时，恢复至订阅的高质量层级。下图展示声网 ABR 功能的技术原理：
+
+![abr](https://web-cdn.agora.io/docs-portal/img/rtc/abr.png)
+
+### 1. 主播端设置转码模板
+
+调用 RESTful API 来创建一个转码模板并设置转码参数。
+
+:::warning[注意]
+发送 HTTP 请求时，你需要通过 Basic HTTP 认证，并将生成的凭证填入 HTTP 请求头部的 `Authorization` 字段。具体生成 `Authorization` 字段的方法请参考[实现 HTTP 基本认证](/zh-CN/realtime-media/rtc/build/security-and-auth/http-basic-auth)。
+:::
+
+**HTTP 请求**
+
+- 方法：POST
+- 接入点：`https://api.agora.io/v1/projects/{appid}/abr/config/layers/{layerid}`
+
+**路径参数**
+
+| 参数名    | 类型   | 是否必填 | 描述                                                         |
+| --------- | ------ | -------- | ------------------------------------------------------------ |
+| `appid`   | string | 是       | 在声网控制台创建一个项目后即可得到一个 App ID。一个 App ID 是一个项目的唯一标识。                                          |
+| `layerid` | string | 是       | 视频质量层级，取值范围 [1,7]。 |
+
+声网支持自定义视频质量层级所对应的分辨率，你可以参考下表进行设置，也可以根据实际需求自行设置：
+<a id="resolution"></a>
+| 视频质量层级              | 分辨率      |
+| :------------------------ | :---------- |
+| 1 |  3840x2160 |
+| 2 |  2560x1440|
+| 3 |  1920x1080 |
+| 4 |1280x720  |
+|5 | 960x540   |
+| 6| 854x480       |
+|7  |  640x360   |
+
+:::warning[注意]
+自定义分辨率时请务必将视频质量层级按分辨率从大到小进行排序，分辨率相同时需按帧率从大到小进行排序。
+:::
+
+**Request Body**
+
+请求体包含以下字段：
+
+| 字段 | 类型 | 是否必填 | 描述 |
+| --- | --- | --- | --- |
+| `enabled` | boolean | 否 | 是否保留此模板，取值说明见下方。 |
+| `video` | object | 是 | 视频转码参数设置。 |
+| `video.width` | string | 是 | 视频帧的宽度，0 表示自适应。 |
+| `video.height` | string | 是 | 视频帧的高度，0 表示自适应。 |
+| `video.fps` | string | 否 | 帧率。不填默认与主播源视频流的帧率一致。 |
+| `video.shortSideAsHeight` | boolean | 否 | 在视频转码过程中，是否将视频的短边视为高度，取值说明见下方。 |
+
+字段取值说明：
+
+- `enabled`：
+  - `true`：保留。
+  - `false`：不保留。如果你无需再使用该模板，可以将其设为 `false`。
+- `video.shortSideAsHeight`：
+  - `true`：将视频的短边视为高度。
+  - `false`：不将视频的短边视为高度。
+
+请求示例：
+
+```shell
+curl -X POST "https://api.agora.io/v1/projects/{appid}/abr/config/layers/6" \
+-H "Authorization: Basic {base64Credentials}" \
+-H "Content-Type: application/json" \
+-d '{
+  "enabled": true,
+  "video": {
+    "width": 0,
+    "height": 480,
+    "fps": 15,
+    "shortSideAsHeight": true
+  }
+}'
+```
+
+**HTTP 响应**
+
+响应包体中包含以下字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `status` | string | 本次请求的状态，取值说明见下方。 |
+| `message` | string | 请求失败或请求参数异常时的详细错误信息。其他常见 HTTP 响应错误码详见[HTTP 状态码](#http-响应状态码)。 |
+
+`status` 取值说明：
+
+- `success`：请求成功。
+- `error`：请求失败。
+- `fail`：请求参数异常，检查你的参数设置。
+
+响应示例：
+
+```json
+// 请求成功时的响应示例
+{
+  "status": "success",
+}
+
+// 请求失败时的响应示例
+{
+  "status": "error",
+  "message": "invalid argument"
+}
+```
+
+### 2. 观众端自适应码率播放
+
+**方式一**
+
+在[拼接 URL](#1-拼接-url)时，将主播推流的频道名 `{channelname}` 改为 `{channelname_abr}`，然后通过 `OpenWithUrl` 成功打开该 URL 即可启用自适应码率功能。开始播放后，SDK 会根据当前的网络状况自动订阅不同分辨率的视频流。
+
+**方式二**
+
+此外，声网也支持手动切换到指定的视频质量层级，你可以自定义不同质量层级的视频流所对应的分辨率。SDK 会以你指定订阅的最低质量层级分辨率为下限，在此范围内根据网络状况动态调整分辨率。你可以通过下列 API 来进行设置：
+
+- [`SetAbrSubscriptionLayer`](/api-ref/rtc/windows/API/toc_rte_player#SetAbrSubscriptionLayer)：设置订阅某一质量层级的视频流。例如，如果你订阅的分辨率层级为 0，则 SDK 会订阅分辨率最高的视频流。
+- [`SetAbrFallbackLayer`](/api-ref/rtc/windows/API/toc_rte_player#SetAbrFallbackLayer)：设置订阅的视频流的回退层级。网络情况差时，SDK 会以你指定的回退层级为**下限**，在此范围内根据网络状况动态调整分辨率。同时，SDK 会持续监控网络质量，并在网络质量改善时恢复至你所订阅的视频流质量层级。
+
+你可以参考下列步骤来实现：
+
+1. 调用 [`OpenWithUrl`](/api-ref/rtc/windows/API/toc_rte_player#OpenWithUrl) 打开 URL 并播放。
+
+   ```cpp
+   // 频道名后拼接 _abr 表示启用自适应码率功能
+   std::string url = "rte://xxxxxxxxxxxx/channel_abr?streamid=100006&abr_subscription_layer=0&abr_fallback_layer=1";
+   rte::Player* player = new rte::Player(rte);
+   // 打开 URL 并播放
+   player->OpenWithUrl(url, 0, [](rte::Error* err) {
+   });
+   ```
+
+2. 调用 [`SetAbrSubscriptionLayer`](/api-ref/rtc/windows/API/toc_rte_player#SetAbrSubscriptionLayer) 设置订阅的视频质量层级。调用 [`SetAbrFallbackLayer`](/api-ref/rtc/windows/API/toc_rte_player#SetAbrFallbackLayer) 设置网络情况差时回退的视频质量层级。调用 [`SetConfigs`](/api-ref/rtc/windows/API/toc_rte_player#api_rte_setconfigs) 将设置应用到播放器中。
+
+   :::warning[注意]
+   观众设置订阅的视频分辨率不得超过主播源视频的分辨率。
+   :::
+
+   ```cpp
+   rte::Player* player = new rte::Player(rte);
+
+   rte::PlayerConfig playerConfig;
+   // 设置订阅的视频质量层级
+   playerConfig.SetAbrSubscriptionLayer(kRteAbrSubscriptionLayer1);
+   // 设置回退的视频质量层级
+   playerConfig.SetAbrFallbackLayer(kRteAbrFallbackLayer6);
+   // 播放器配置
+   player->SetConfigs(&playerConfig);
+   ```
+
+3. 切换不同质量层级的视频流时设置平滑切换以保证画面的连续性和流畅性。
+
+   ```cpp
+   RteConfig rteConfig;
+   // 通过私有参数开启平滑切换
+   rteConfig.SetJsonParameter("{\"rtc.video.smooth_switch_stream_type\":true}");
+   // Rte 对象的配置
+   rte->SetConfigs(&rteConfig);
+   ```
+
+如果你需要删除某一自定义视频质量层级的转码参数设置，或是查询某一质量层级的转码参数，请参考[删除转码模板](#删除转码模板)、[查询转码模板](#查询转码模板)。
+
+## 开发注意事项
+
+- URL 拉流和 ABR 功能目前仅支持在单主播场景下使用。
+- 当 ABR 频道持续 60 秒没有观众时，转码任务将自动终止。
+
+## 参考信息
+
+### 删除转码模板
+
+删除指定视频质量层级的转码参数设置。
+
+**HTTP 请求**
+
+- 方法：DELETE
+- 接入点：`https://api.agora.io/v1/projects/{appid}/abr/config/layers/{layerid}`
+
+**路径参数**
+
+| 参数名    | 类型   | 是否必填 | 描述                                                         |
+| --------- | ------ | -------- | ------------------------------------------------------------ |
+| `appid`   | string | 是       | 在声网控制台创建一个项目后即可得到一个 App ID。一个 App ID 是一个项目的唯一标识。                                          |
+| `layerid` | string | 是       | 你想要删除的视频质量层级，取值范围 [1,7]。|
+
+请求示例：
+
+```shell
+curl -X DELETE "https://api.agora.io/v1/projects/{appid}/abr/config/layers/6" \
+-H "Authorization: Basic {base64Credentials}" \
+-H "Content-Type: application/json"
+```
+
+**HTTP 响应**
+
+响应包体中包含以下字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `status` | string | 本次请求的状态，取值说明见下方。 |
+| `message` | string | 请求失败或请求参数异常时的详细错误信息。其他常见 HTTP 响应错误码详见[HTTP 状态码](#http-响应状态码)。 |
+
+`status` 取值说明：
+
+- `success`：请求成功。
+- `error`：请求失败。
+- `fail`：请求参数异常，检查你的参数设置。
+
+响应示例：
+
+```json
+// 请求成功时的响应示例
+{
+  "status": "success",
+}
+
+// 请求失败时的响应示例
+{
+  "status": "error",
+  "message": "invalid layerid"
+}
+```
+
+### 查询转码模板
+
+查询全部或指定视频质量层级的转码参数设置。
+
+**HTTP 请求**
+
+- 方法：GET
+- 接入点：`https://api.agora.io/v1/projects/{appid}/abr/config/layers/{layerid}`
+
+**路径参数**
+
+| 参数名    | 类型   | 是否必填 | 描述                                                         |
+| --------- | ------ | -------- | ------------------------------------------------------------ |
+| `appid`   | string | 是       | 在声网控制台创建一个项目后即可得到一个 App ID。一个 App ID 是一个项目的唯一标识。                                          |
+| `layerid` | string | 否       | 你想要删除的视频质量层级，取值范围 [1,7]。不填表示查询全部视频质量层级的转码参数设置。|
+
+请求示例：
+
+```shell
+curl -X GET "https://api.agora.io/v1/projects/{appid}/abr/config/layers" \
+-H "Authorization: Basic {base64Credentials}" \
+-H "Content-Type: application/json"
+```
+
+**HTTP 响应**
+
+响应包体中包含以下字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `status` | string | 本次请求的状态，取值说明见下方。 |
+| `message` | string | 请求失败或请求参数异常时的详细错误信息。其他常见 HTTP 响应错误码详见[HTTP 状态码](#http-响应状态码)。 |
+| `data` | object | 查询到的转码参数设置。 |
+
+`status` 取值说明：
+
+- `success`：请求成功。
+- `error`：请求失败。
+- `fail`：请求参数异常，检查你的参数设置。
+
+响应示例：
+
+```json
+// 查询所有层级的响应示例
+{
+    "status": "success",
+    "data": {
+        "enabled": true,
+        "layers": [
+            {
+                "layerid": 1,
+                "enabled": true,
+                "video": {
+                    "width": 1280,
+                    "height": 720,
+                    "bitrate": 2000,
+                    "fps": 30
+                }
+            },
+            {
+                "layerid": 3,
+                "enabled": true,
+                "video": {
+                    "width": 960,
+                    "height": 540,
+                    "bitrate": 1200,
+                    "fps": 30
+                }
+            },
+            {
+                "layerid": 7,
+                "enabled": true,
+                "video": {
+                    "width": 640,
+                    "height": 360,
+                    "bitrate": 700,
+                    "fps": 30
+                }
+            }
+        ]
+    }
+}
+
+// 查询特定层级的响应示例
+{
+    "status": "success",
+    "data": {
+        "layerid": 1,
+        "enabled": true,
+        "video": {
+            "width": 1280,
+            "height": 720,
+            "bitrate": 2000,
+            "fps": 30
+        }
+    }
+}
+
+
+// 查询失败的响应示例
+{
+    "status": "fail",
+    "message": "layer not found"
+}
+```
+
+### HTTP 响应状态码
+
+| HTTP 响应状态码 | 描述 | 错误原因 |
+| --- | --- | --- |
+| `200 OK` | 请求成功，服务器成功返回请求的数据。 | 无需处理。 |
+| `400 Bad Request` | 请求无效，可能的原因见下方。 | 根据响应包体中的 `message` 信息进行响应的处理。 |
+| `401 Unauthorized` | RESTful API 认证失败。 | 请检查 [HTTP 基本认证](/zh-CN/realtime-media/rtc/build/security-and-auth/http-basic-auth)是否符合要求。 |
+| `404 Not Found` | 传入的 `layerid` 不存在。 | 请检查 `layerid` 字段。 |
+| `405 Method Not Allowed` | 该 App ID 未开通 ABR 功能。 | 请联系[技术支持](https://ticket.shengwang.cn/)开通 ABR 功能。 |
+| `429 Too Many Requests` | QPS 超过限制。QPS 默认限制为 100。 | 请采取退避策略进行重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+| `500 Internal Server Error` | 内部服务器错误。 | 请重试。若重试后仍然失败，请联系[技术支持](https://ticket.shengwang.cn/)。 |
+
+`400 Bad Request` 可能的原因包括：
+
+- App ID 不合法。
+- 传入的 `layerid` 字段不合法。
+- 创建或更新请求内 body 格式错误。

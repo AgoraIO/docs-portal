@@ -1,0 +1,274 @@
+---
+title: "消息通知事件类型"
+---
+开通声网消息通知后，声网通知服务器以 HTTPS POST 请求方法向你的服务器发送频道事件通知回调。
+
+数据格式为 JSON，字符编码为 UTF-8，签名算法为 HMAC/SHA1 或 HMAC/SHA256。
+
+本页是实时转录翻译消息通知事件的参考，介绍请求结构、事件类型、字段含义和 `payload` 示例。如果你需要开通消息通知服务、配置 Webhook URL、接收回调或验证签名，请参考[接收 Webhook 事件](/zh-CN/realtime-media/speech-to-text/build/monitor-events/receive-webhook)。
+
+## 请求 Body
+
+消息通知回调的请求 Body 包含以下字段：
+
+| 字段        | 类型        | 描述                                                         |
+| ---------- | ---------- | ----------------------------------------------------------- |
+| `sid`  | String    | 服务 ID。 |
+| `noticeId`  | String      | 通知 ID，标识来自声网业务服务器的一次事件通知。           |
+| `productId` | Number      | 业务 ID。`20` 表示实时转录翻译业务。                         |
+| `eventType` | Number      | 通知的事件类型。详见[事件类型](#eventtype)。 |
+| `notifyMs`  | Number      | 声网消息服务器向你的服务器发送事件通知的 Unix 时间戳 (ms)。 |
+| `payload`   | JSON Object | 通知事件的具体内容。`payload` 因 `eventType` 而异，详见[事件类型](#eventtype)。 |
+
+消息通知回调的请求 Body 示例：
+
+```json
+{
+    "sid": "agent_id",
+    "noticeId": "e94f5b6fd69446ea9d75da90a59ca8a2",
+    "productId": 20,
+    "eventType": 101,
+    "notifyMs": 1750235972193,
+    "payload": {...}
+}
+```
+
+<a id="eventtype"></a>
+## 事件类型
+
+声网消息通知服务可以通知实时转录翻译服务中的以下事件：
+
+| `eventType` | `event_name` | 触发时机 | 事件描述 |
+| :--- | :--- | :--- | :--- |
+| [101](#101) | `agent joined` | 实时转录翻译引擎加入成功时发送。 | 服务加入频道。 |
+| [102](#102) | `agent left` | 实时转录翻译引擎离开成功时发送。 | 服务离开频道。 |
+| [200](#200) | `M3U8 file upload succeed` | 单个 M3U8 索引文件创建并上传完成时发送。若上传多个 M3U8 文件，则会多次回调。 | 单个 M3U8 索引文件上传成功。 |
+| [201](#201) | `transcript upload succeed` | 所有 M3U8 和 VTT 文件上传完成时发送。 | 所有 M3U8 和 VTT 文件上传成功。 |
+| [202](#202) | `transcript upload failed` | M3U8 或 VTT 文件上传完成，但部分或全部文件上传失败时发送。 | M3U8 或 VTT 文件上传失败。 |
+
+<a id="101"></a>
+### 101 agent joined
+
+`eventType` 为 `101` 表示服务加入频道。实时转录翻译引擎加入成功后，会发送该事件。`payload` 中包含以下字段：
+
+| 字段          | 数据类型 | 含义                                                |
+| :------------ | :------- | :-------------------------------------------------- |
+| `agent_id` | String   | 实时转录翻译智能体 ID。                                           |
+| `start_ts`          | Number   | 任务创建的时间戳（毫秒）。 |
+| `channel` | String   | 频道名称。                                           |
+
+`payload` 示例：
+
+```json
+{
+    "agent_id": "agent_id",
+    "channel": "stt_ncs93369",
+    "start_ts": 1750235971
+}
+```
+
+<a id="102"></a>
+### 102 agent left
+
+`eventType` 为 `102` 表示服务离开频道。实时转录翻译引擎离开成功后，会发送该事件。`payload` 中包含以下字段：
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `agent_id` | String | 实时转录翻译智能体 ID。 |
+| `start_ts` | Number | 任务开始的时间戳（毫秒）。 |
+| `stop_ts` | Number | 任务结束的时间戳（毫秒）。 |
+| `channel` | String | 频道名称。 |
+| `status` | String | <Slot name="ncs-events-html-0-5-2" /> |
+| `message` | String | <Slot name="ncs-events-html-0-6-2" /> |
+
+<Slot for="ncs-events-html-0-5-2">
+
+任务状态：
+
+      - `STOPPED`：正常停止或空闲超时。
+      - `FAILED`：失败。
+
+</Slot>
+
+<Slot for="ncs-events-html-0-6-2">
+
+表示服务退出频道的具体原因：
+
+      - `OK`：服务正常退出频道。
+      - `Idle for too long`：由于任务长时间无活动而超时退出。
+      - `RTC connection error`：由于 RTC 连接异常导致退出。
+      - `Fatal ASR error`：ASR 模块错误导致退出。
+      - `Fatal Translation error`：翻译模块错误导致退出。
+
+</Slot>
+
+服务因不同原因离开频道的 `payload` 示例：
+
+```json tab="正常停止" tabGroup="102"
+{
+    "agent_id": "agent_id",
+    "channel": "stt_ncs93369",
+    "message": "OK",
+    "start_ts": 1750235971,
+    "status": "STOPPED",
+    "stop_ts": 1750235984
+}
+```
+
+```json tab="超时退出" tabGroup="102"
+{
+    "agent_id": "agent_id",
+    "channel": "stt_ncs93369",
+    "message": "Idle for too long",
+    "start_ts": 1750235971,
+    "status": "STOPPED",
+    "stop_ts": 1750235984
+}
+```
+
+```json tab="RTC 连接错误" tabGroup="102"
+{
+    "agent_id": "agent_id",
+    "channel": "stt_ncs93369",
+    "message": "RTC connection error",
+    "start_ts": 1750235971,
+    "status": "FAILED",
+    "stop_ts": 1750235984
+}
+```
+
+```json tab="ASR 模块错误" tabGroup="102"
+{
+    "agent_id": "agent_id",
+    "channel": "stt_ncs93369",
+    "message": "Fatal ASR error",
+    "start_ts": 1750235971,
+    "status": "FAILED",
+    "stop_ts": 1750235984
+}
+```
+
+```json tab="翻译模块错误" tabGroup="102"
+{
+    "agent_id": "agent_id",
+    "channel": "stt_ncs93369",
+    "message": "Fatal Translation error",
+    "start_ts": 1750235971,
+    "status": "FAILED",
+    "stop_ts": 1750235984
+}
+```
+
+<a id="200"></a>
+### 200 M3U8 file upload succeed
+
+`eventType` 为 `200` 表示单个 M3U8 索引文件上传成功。单个 M3U8 索引文件创建并上传完成后，会发送该事件。若上传多个 M3U8 文件，则会多次回调。`payload` 中包含以下字段：
+
+| 字段 | 数据类型 | 含义 |
+| :--- | :--- | :--- |
+| `agent_id` | String | 实时转录翻译智能体 ID。 |
+| `channel` | String | 频道名称。 |
+| `file_name` | String | M3U8 文件名称。 |
+| `file_creation_ts` | Int64 | M3U8 文件创建时间的 Unix 时间戳（毫秒）。 |
+| `message` | String | `A STT transcript m3u8 file was successfully generated & uploaded`，表示 M3U8 文件已成功生成并上传。 |
+
+`payload` 示例：
+
+```json
+{
+    "agent_id": "agent_id",
+    "channel": "stt_ncs93369",
+    "file_name": "prefix/1NT29X0TOHQVO6JL1HJE118VBLXNS4SD_agora_rtc_test.m3u8",
+    "file_creation_ts": 1234567891000,
+    "message": "A STT transcript m3u8 file was successfully generated & uploaded"
+}
+```
+
+<a id="201"></a>
+### 201 transcript upload succeed
+
+`eventType` 为 `201` 表示所有 M3U8 和 VTT 文件上传成功。所有 M3U8 和 VTT 文件上传完成后，会发送该事件。`payload` 中包含以下字段：
+
+| 字段 | 数据类型 | 含义 |
+| :--- | :--- | :--- |
+| `agent_id` | String | 实时转录翻译智能体 ID。 |
+| `channel` | String | 频道名称。 |
+| `file_name` | String | M3U8 文件名称。 |
+| `file_creation_ts` | Int64 | M3U8 文件创建时间的 Unix 时间戳（毫秒）。 |
+| `message` | String | `STT transcript upload succeeded.`，表示 M3U8 和 VTT 文件已全部上传成功。 |
+
+`payload` 示例：
+
+```json
+{
+    "agent_id": "agent_id",
+    "channel": "stt_ncs93369",
+    "file_name": "prefix/1NT29X0TOHQVO6JL1HJE118VBLXNS4SD_agora_rtc_test.m3u8",
+    "file_creation_ts": 1234567891000,
+    "message": "STT transcript upload succeeded."
+}
+```
+
+<a id="202"></a>
+### 202 transcript upload failed
+
+`eventType` 为 `202` 表示 M3U8 或 VTT 文件上传失败。M3U8 或 VTT 文件上传完成，但部分或全部文件上传失败时，会发送该事件。
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `agent_id` | String | 实时转录翻译智能体 ID。 |
+| `channel` | String | 频道名称。 |
+| `succeed_file_list` | `Array<Object>` | <Slot name="ncs-events-html-1-3-2" /> |
+| `failed_file_list` | `Array<Object>` | <Slot name="ncs-events-html-1-4-2" /> |
+| `message` | String | `STT transcript upload failed.`，表示存在 M3U8 或 VTT 文件上传失败。 |
+
+<Slot for="ncs-events-html-1-3-2">
+
+上传成功的文件列表。每个对象包含以下字段：
+
+      - `file_name`：文件名称。
+      - `file_creation_ts`：文件创建时间的 Unix 时间戳（毫秒）。
+
+</Slot>
+
+<Slot for="ncs-events-html-1-4-2">
+
+上传失败的文件列表。每个对象包含以下字段：
+
+      - `file_name`：文件名称。
+      - `file_creation_ts`：文件创建时间的 Unix 时间戳（毫秒）。
+      - `message`：具体失败原因。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+    "agent_id": "xxx",
+    "channel": "xxx",
+    "succeed_file_list": [
+        {
+            "file_name": "prefix/1NT29X0TOHQVO6JL1HJE118VBLXNS4SD_agora_rtc_test.m3u8",
+            "file_creation_ts": 1234567891000
+        },
+        {
+            "file_name": "prefix/zh-CN_1NT29X0TOHQVO6JL1HJE118VBLXNS4SD_agora_rtc_test.m3u8",
+            "file_creation_ts": 1234567891001
+        }
+    ],
+    "failed_file_list": [
+        {
+            "file_name": "prefix/ja-JP_1NT29X0TOHQVO6JL1HJE118VBLXNS4SD_agora_rtc_test.m3u8",
+            "file_creation_ts": 1234567891001,
+            "message": "last failed reason xxx"
+        },
+        {
+            "file_name": "prefix/fr-FH_1NT29X0TOHQVO6JL1HJE118VBLXNS4SD_agora_rtc_test.m3u8",
+            "file_creation_ts": 1234567891001,
+            "message": "last failed reason xxx"
+        }
+    ],
+    "message": "STT transcript upload failed."
+}
+```

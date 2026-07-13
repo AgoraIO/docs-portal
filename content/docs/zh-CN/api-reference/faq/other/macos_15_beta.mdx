@@ -1,0 +1,57 @@
+---
+title: "如何解决 macOS 15 Beta 不支持路径中包含中文字符的 App 问题？"
+---
+## 问题现象
+
+在 macOS 15 Beta 系统上开发时，如果 App 的路径（以及 App 名称）包含非英文字符（例如：中文、日文、韩文等），则编译后的 `Metal shader library` 中可能不包含任何方法，导致 App 无法正常运行。
+
+## 问题原因
+
+系统 Bug。
+
+## 解决方案
+
+本节以中文环境为例，介绍如何创建支持多语言的 `InfoPlist` 文件，并定义 App 显示的名称文本。具体步骤如下：
+
+### 创建多语言支持的文件
+
+1. 在 Xcode 中打开你的项目，在中间的主界面中选择 **Info** 页签。
+
+1. 在 **Localizations** 部分，点击 **+** 按钮，选择 **Chinese, Simplified**，使你的项目本地化支持中文字符。
+
+![](https://web-cdn.agora.io/docs-portal/img/rtc/mac15beta-addlanguage.png)
+
+### 创建 InfoPlist 文件
+
+1. 添加新文件
+    1. 在项目导航栏中右键点击你的项目文件夹，选择 **New File...**。
+    1. 在弹出的对话框中，选择 **String Catalog**。
+
+![](https://web-cdn.agora.io/docs-portal/img/rtc/mac15beta-choosetemplate.png)
+
+2. 将文件命名为 `InfoPlist`，然后点击 **Create**。
+
+3. 设置语言
+
+    1. 在项目导航栏中选择刚才创建的 `InfoPlist` 文件，选择你已添加的 **Chinese, Simplified** 语言，点击 **+** 按钮。
+    1. 添加 `Key` 为 `CFBundleDisplayName`，为其增加在中文环境下的显示名称。
+
+    :::warning[注意]
+    如果你的项目中原本的 **Info** 为中文，需要同时设置英文下的显示名称，确保 **Default Localization (zh-Hans)** 和 **English (en)** 字段下显示的名称符合预期。
+    :::
+
+![](https://web-cdn.agora.io/docs-portal/img/rtc/mac15beta-addkey.png)
+
+### 定义 App 本地化显示名称
+
+1. 在 **TARGETS** 中选择目标文件，打开 **Info** 页签。
+
+1. 点击 **+** 按钮，添加 `Key` 为 `Application has localized display name`；并将 `Value` 设置为 `YES`，使 App 的显示名称能够在不同语言环境下显示为不同的文本。
+
+![](https://web-cdn.agora.io/docs-portal/img/rtc/mac15beta-setdisplayname.png)
+
+### 结果验证
+
+1. 确保项目中的所有文件名和 App 生成路径都不包含中文字符。
+1. 编译项目，生成 App。
+1. 在 macOS 系统的**系统偏好设置**中切换语言，确保 App 名称在不同语言下正确显示。

@@ -1,0 +1,148 @@
+---
+title: "VideoCanvas"
+description: "用于设置视频画布的显示、渲染和布局属性。"
+---
+<a id="class_videocanvas__prototype"></a>
+
+```java
+public class VideoCanvas {
+  public int uid;
+  public int subviewUid;
+  public static final int RENDER_MODE_HIDDEN = 1;
+  public static final int RENDER_MODE_FIT = 2;
+  public static final int RENDER_MODE_ADAPTIVE = 3;
+  public static final int VIEW_SETUP_MODE_REPLACE = 0;
+  public static final int VIEW_SETUP_MODE_ADD = 1;
+  public static final int VIEW_SETUP_MODE_REMOVE = 2;
+  public View view;
+  public SurfaceTexture surfaceTexture;
+  public int renderMode;
+  public int mirrorMode;
+  public int setupMode = VIEW_SETUP_MODE_REPLACE;
+  public int sourceType;
+  public int mediaPlayerId;
+  public Rect rect;
+  public boolean enableAlphaMask;
+  public int backgroundColor;
+  public Constants.VideoModulePosition position = Constants.VideoModulePosition.VIDEO_MODULE_POSITION_POST_CAPTURER;
+}
+```
+
+<a id="class_videocanvas__parameters"></a>
+
+## 属性
+
+### `uid`
+
+发布视频源的用户 ID。
+
+### `subviewUid`
+
+在合流视频流中，发布特定子视频流的用户 ID。
+
+### `RENDER_MODE_HIDDEN`
+
+隐藏模式：按比例缩放视频，直到视窗被填满（可能会裁剪视频的一部分）。
+
+### `RENDER_MODE_FIT`
+
+适应模式：按比例缩放视频，直到某一维度匹配视窗边界，未填满区域用黑色填充。
+
+### `RENDER_MODE_ADAPTIVE`
+
+自适应模式。该模式已废弃，声网不推荐使用。
+
+### `VIEW_SETUP_MODE_REPLACE`
+
+设置视图模式为替换模式，默认值。
+
+### `VIEW_SETUP_MODE_ADD`
+
+设置视图模式为新增视图。
+
+### `VIEW_SETUP_MODE_REMOVE`
+
+设置视图模式为移除视图。
+
+### `view`
+
+用于显示视频的视图窗口，必须为 `SurfaceView` 或 `TextureView` 类型。
+
+:::info[注]
+在一个 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-videocanvas) 中只能设置 `view` 或 `surfaceTexture`，若同时设置，仅 `view` 生效。
+:::
+
+### `surfaceTexture`
+
+提供视频图像的容器。
+
+:::info[注]
+在一个 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-videocanvas) 中只能设置 `view` 或 `surfaceTexture`，若同时设置，仅 `view` 生效。
+:::
+
+### `renderMode`
+
+渲染模式：
+
+- RENDER_MODE_HIDDEN (1)：隐藏模式。
+- RENDER_MODE_FIT (2)：适应模式。
+- RENDER_MODE_ADAPTIVE (3)：自适应模式（已废弃，声网不推荐使用）。
+
+### `mirrorMode`
+
+:::info[注]
+- 本地视频视图镜像模式：使用前置摄像头时默认开启，后置摄像头时默认关闭。
+- 远端用户默认关闭镜像模式。
+:::
+
+镜像模式：
+
+- VIDEO_MIRROR_MODE_AUTO (0)：SDK 自动判断是否开启镜像模式。
+- VIDEO_MIRROR_MODE_ENABLED (1)：开启本地视图镜像模式。
+- VIDEO_MIRROR_MODE_DISABLED (2)：关闭本地视图镜像模式。
+
+### `setupMode`
+
+:::info[注]
+不再使用视图时建议将 `setupMode` 设置为 `VIEW_SETUP_MODE_REMOVE`，以防止渲染资源泄漏。
+:::
+
+视图设置模式：
+
+- VIEW_SETUP_MODE_REPLACE (0)：替换视图，默认值。
+- VIEW_SETUP_MODE_ADD (1)：新增视图。
+- VIEW_SETUP_MODE_REMOVE (2)：删除视图。
+
+### `sourceType`
+
+视频源类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。
+
+### `mediaPlayerId`
+
+媒体播放器的 ID。
+
+### `rect`
+
+视频帧的显示区域。 `width` 和 `height` 表示该区域的视频像素宽高。默认值为 `null` （宽或高为 0），表示显示视频帧的实际分辨率。详见 `Rect`。
+
+### `enableAlphaMask`
+
+是否启用 Alpha 遮罩渲染：
+
+- true：启用。
+- false：不启用。
+
+该功能可实现透明图像效果，从视频中提取人像，结合其他功能可实现画中画、水印等效果。
+
+### `backgroundColor`
+
+视频画布的背景颜色，RGBA 格式。默认值为 0x00000000，表示黑色。
+
+:::info[注]
+- 如果使用 Kotlin 开发并设置为 0xFFFFFFFF 时出现编译错误，可使用 (0xFFFFFFFF).toInt() 或 android.graphics.Color.parseColor("#FFFFFFFF")。
+- 当前使用 RGBA 格式时不支持 Alpha 通道。
+:::
+
+### `position`
+
+视频帧在视频链路中的观察位置。详见 [VideoModulePosition](/zh-CN/api-reference/rtc/android/enum-videomoduleposition)。

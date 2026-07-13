@@ -1,0 +1,95 @@
+---
+title: "构建智能门铃场景"
+---
+本文介绍smart-doorbell场景的构建流程。
+
+## 前提条件
+
+smart-doorbell场景中，设备端使用了 RTSA Lite SDK，客户端使用了 RTC SDK，点击如下链接查看相关开发环境要求：
+
+- [RTSA Lite SDK 前提条件](/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission#前提条件)
+- [RTC SDK 前提条件](/zh-CN/realtime-media/rtc/get-started/quick-start#前提条件)
+
+## 构建流程
+
+构建smart-doorbell场景的基本流程如下：
+
+1. 建立呼叫：客户端和设备端建立音频数据传输通道。
+2. 加入频道：设备端使用 RTSA Lite SDK 加入频道，客户端使用 RTC SDK 加入频道。
+3. 采集和发送数据：客户端和设备端分别采集数据并发送给对方。
+4. 接收数据：客户端和设备端分别接收对方的数据。
+
+smart-doorbell场景支持客户端和设备端双向呼叫、双向音频传输，本节以单向呼叫和传输为例，介绍客户端向设备端发送呼叫、设备端采集音频并发送给客户端的基本流程。
+
+:::info[信息]
+如无特别说明，本节的设备端示例代码为 C 语言，客户端示例代码为 Java 语言。你也可以通过 [RTSA Lite SDK 实现流程](/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission#实现流程)和 [RTC SDK 实现流程](/zh-CN/realtime-media/rtc/get-started/quick-start#实现流程)文档查看其他语言的示例代码。
+:::
+
+### 1. 建立呼叫
+
+在呼叫建立过程中，客户端可以通过绑定的账号呼叫设备端，流程图如下：
+
+![建立呼叫流程图](https://web-cdn.agora.io/docs-portal/img/smart-doorbell/create-call.png)
+
+你可以通过以下步骤在自己的业务后台实现呼叫：
+
+1. 注册账号。由客户端发起注册，一般会有账号、手机号、邮箱号等注册项。你的业务后台收到注册请求后，可以在后台数据库中存储满足要求的用户账号信息。
+2. 绑定设备。在你的业务后台中建立设备与账号的映射关系。每个smart-doorbell设备都有唯一的设备序列号，设备开机配网后，会与业务后台维持长连接。因此，业务后台可以根据设备序列号找到这台设备。
+3. 发起呼叫。业务后台根据主叫方账号，从后台数据库中找到与其绑定的设备 ID。同时业务后台会分配此次通话的 RTC 频道 ID、主叫用户 ID、被叫用户 ID 和对应的 RTC Token，分别下发至客户端和设备端。这些参数都是后续客户端使用的声网 RTC SDK 和设备端使用的 RTSA Lite SDK 加入频道所需要的。
+
+:::info[信息]
+你需要在业务后台自行实现以下内容：
+
+- 注册账号与绑定设备的相关逻辑。
+- Token 生成器，用于生成 RTC Token。实现方法详见[使用 RTC Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+:::
+
+### 2. 加入频道
+
+设备端和客户端收到业务后台下发的 RTC 频道 ID、主叫用户 ID、被叫用户 ID、RTC Token 等参数后，分别调用如下方法加入频道：
+
+- 设备端调用 RTSA Lite SDK 中的 `agora_rtc_join_channel` 加入 RTC 频道。
+
+  ```c
+  rval = agora_rtc_join_channel(g_conn_id, CHANNEL_NAME, CALLEE_UID, TOKEN, &channel_options);
+  if (rval < 0) {
+      printf("Failed to join channel \"%s\", reason: %s\n", CHANNEL_NAME, agora_rtc_err_2_str(rval));
+      return -1;
+  }
+  ```
+
+- 客户端调用 RTC SDK 中的 `joinChannel` 加入 RTC 频道。
+
+  ```java
+  ChannelMediaOptions options = new ChannelMediaOptions();
+  // 将用户角色设置为 BROADCASTER 。
+  options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+  // 设置频道场景为 BROADCASTING。
+  options.channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
+
+  // 使用 RTC Token 加入频道。
+  // 你需要自行指定用户 ID，并确保其在频道内的唯一性。
+  mRtcEngine.joinChannel(token, channelName, 0, options);
+  ```
+
+  :::warning[注意]
+  集成 RTC SDK 时，请确保频道场景设为直播，用户角色设为主播。
+  :::
+
+### 3. 采集和发送数据
+
+成功加入频道后，设备端会收到 `on_join_channel_success` 回调，此时就可以调用 `agora_rtc_send_audio_data` 方法发送音频。详细使用步骤参考[传输媒体流](/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission#23-发送和接收音视频流)。
+
+### 4. 接收数据
+
+成功加入频道后，客户端会收到 `onJoinChannelSuccess` 回调并自动接收设备端的音频。
+
+在传输指定格式的音频数据时，RTSA Lite SDK 与 RTC SDK 可以实现互通。详见[与 RTC SDK 互通数据](/zh-CN/realtime-media/rtsa/build/optimize-and-operate/interoperate-rtc)。
+
+## 开发注意事项
+
+在开发过程中，你需要注意如下事项：
+
+- RTC SDK、RTSA Lite SDK 和你的 Token 生成器必须使用相同的 [App ID](/basics/glossary#appid)，否则无法互通。
+
+- 对于 RTSA Lite SDK，两人互通需采用 `on_audio_data` 回调接收数据；3 人以上互通需要用 `on_mixed_audio_data` 回调接收数据。

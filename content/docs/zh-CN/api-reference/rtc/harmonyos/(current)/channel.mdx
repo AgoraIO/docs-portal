@@ -1,0 +1,1145 @@
+---
+title: "频道相关"
+description: "频道相关 API reference."
+---
+<a id="toc_channel"></a>
+
+<a id="api_irtcengine_joinchannel"></a>
+
+## joinChannel
+
+加入频道。
+
+<a id="api_irtcengine_joinchannel__prototype"></a>
+
+```arkts
+public abstract joinChannel(key: string, channel: string, optionalInfo: string, uid: number): number;
+```
+
+<a id="api_irtcengine_joinchannel__detailed_desc"></a>
+
+加入频道后，默认情况下用户订阅频道内所有其他用户的音频流和视频流，因此会产生用量并 **影响计费**。如果想取消订阅，可以通过相应的 mute 方法实现。
+
+<a id="api_irtcengine_joinchannel__timing"></a>
+
+### 调用时机
+
+该方法需要在 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 之后再调用。
+
+<a id="api_irtcengine_joinchannel__restriction"></a>
+
+### 调用限制
+
+- 该方法仅支持用户一次加入一个频道。
+- 使用不同 App ID 的 App 不能互通。
+- 加入频道前，请确保用于生成 Token 的 App ID 和调用 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 方法初始化引擎时使用的是同一个 App ID，否则使用 Token 加入频道会失败。
+
+<a id="api_irtcengine_joinchannel__related"></a>
+
+### 相关回调
+
+成功调用该方法加入频道后会触发以下回调：
+
+- 本地会触发 onJoinChannelSuccess 和 onConnectionStateChanged 回调。
+- 通信场景下的用户和直播场景下的主播加入频道后，远端会触发 onUserJoined 回调。
+
+在网络状况不理想的情况下，客户端可能会与声网服务器失去连接，此时 SDK 会自动尝试重连，重连成功后，本地会触发 [onRejoinChannelSuccess](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) 回调。
+
+<a id="api_irtcengine_joinchannel__parameters"></a>
+
+### 参数
+
+#### `token`
+
+在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/harmonyos/basic-features/token-authentication)。
+
+:::info[注]
+- （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
+- 如果你的项目仅开启调试模式，即选择 APP ID 为鉴权机制，则无需填入 Token 即可加入频道。成功加入频道 24 小时后会自动退出该频道。
+- 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 使用通配 Token。
+:::
+
+#### `channelId`
+
+频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+#### `optionalInfo`
+
+(非必选项) 预留参数。
+
+#### `uid`
+
+用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。 该参数为 32 位有符号整数。取值范围为：-2 31 到 2 31 -1。 如果不指定（即设为 0），SDK 会自动分配一个，并在 onJoinChannelSuccess 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
+
+<a id="api_irtcengine_joinchannel__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+  - -2：传入的参数无效。例如，使用了不合法的 Token， uid 参数未设置为整型，或 ChannelMediaOptions 成员值不合法。你需要填入有效的参数，重新加入频道。
+  - -3： RtcEngine 对象初始化失败。你需要重新初始化 RtcEngine 对象。
+  - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
+  - -8： RtcEngine 对象内部状态错误。
+  - -17：加入频道被拒绝。可能的原因是用户已经在频道中。建议通过 onConnectionStateChanged 回调判断用户是否在频道中。除收到 DISCONNECTED (1) 状态外，不要再次调用该方法加入频道。
+  - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
+  - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_joinchannel2"></a>
+
+## joinChannelWithOptions
+
+设置媒体选项并加入频道。
+
+<a id="api_irtcengine_joinchannel2__prototype"></a>
+
+```arkts
+public abstract joinChannelWithOptions(token: string, channelId: string, uid: number, options: ChannelMediaOptions): number;
+```
+
+<a id="api_irtcengine_joinchannel2__detailed_desc"></a>
+
+相比 [joinChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel)，该方法增加了 options 参数，用于设置媒体选项，如是否在频道内发布音视频流等。用户加入频道时是否自动订阅频道内所有远端音视频流。默认情况下，用户订阅频道内所有其他用户的音频流和视频流，因此会产生用量并 **影响计费**。如果想取消订阅，可以通过设置 options 参数或相应的 mute 方法实现。
+
+<a id="api_irtcengine_joinchannel2__timing"></a>
+
+### 调用时机
+
+该方法需要在 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 之后再调用。
+
+<a id="api_irtcengine_joinchannel2__restriction"></a>
+
+### 调用限制
+
+- 该方法仅支持用户一次加入一个频道。
+- 使用不同 App ID 的 App 不能互通。
+- 加入频道前，请确保用于生成 Token 的 App ID 和调用 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 方法初始化引擎时使用的是同一个 App ID，否则使用 Token 加入频道会失败。
+
+<a id="api_irtcengine_joinchannel2__related"></a>
+
+### 相关回调
+
+成功调用该方法加入频道后会触发以下回调：
+
+- 本地会触发 onJoinChannelSuccess 和 onConnectionStateChanged 回调。
+- 通信场景下的用户和直播场景下的主播加入频道后，远端会触发 onUserJoined 回调。
+
+在网络状况不理想的情况下，客户端可能会与声网服务器失去连接，此时 SDK 会自动尝试重连，重连成功后，本地会触发 [onRejoinChannelSuccess](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) 回调。
+
+<a id="api_irtcengine_joinchannel2__parameters"></a>
+
+### 参数
+
+#### `token`
+
+在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/harmonyos/basic-features/token-authentication)。
+
+:::info[注]
+- （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
+- 如果你的项目仅开启调试模式，即选择 APP ID 为鉴权机制，则无需填入 Token 即可加入频道。成功加入频道 24 小时后会自动退出该频道。
+- 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 使用通配 Token。
+:::
+
+#### `channelId`
+
+频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+#### `uid`
+
+用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。 该参数为 32 位有符号整数。取值范围为：-2 31 到 2 31 -1。 如果不指定（即设为 0），SDK 会自动分配一个，并在 onJoinChannelSuccess 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
+
+#### `options`
+
+频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions)。
+
+<a id="api_irtcengine_joinchannel2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+  - -2：传入的参数无效。例如，使用了不合法的 Token， uid 参数未设置为整型，或 ChannelMediaOptions 成员值不合法。你需要填入有效的参数，重新加入频道。
+  - -3： RtcEngine 对象初始化失败。你需要重新初始化 RtcEngine 对象。
+  - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
+  - -8： RtcEngine 对象内部状态错误。
+  - -17：加入频道被拒绝。可能的原因是用户已经在频道中。建议通过 onConnectionStateChanged 回调判断用户是否在频道中。除收到 DISCONNECTED (1) 状态外，不要再次调用该方法加入频道。
+  - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
+  - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_joinchannelex"></a>
+
+## joinChannelEx
+
+加入频道。
+
+<a id="api_irtcengineex_joinchannelex__prototype"></a>
+
+```arkts
+public abstract joinChannelEx(token: string, connection: RtcConnection, options: ChannelMediaOptions, eventHandler: IRtcEngineEventHandler): number;
+```
+
+<a id="api_irtcengineex_joinchannelex__detailed_desc"></a>
+
+调用该方法，你可以同时加入多个频道。如果你想在不同的设备上加入相同的频道，请确保你在不同设备上使用的用户 ID 都不同。
+
+<a id="api_irtcengineex_joinchannelex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_joinchannelex__timing"></a>
+
+### 调用时机
+
+该方法需要在 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 之后调用。
+
+在多摄像头采集场景下，你需要在调用该方法之后调用 [startPreview](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_startpreview2) 方法设置 sourceType 为 CAMERA_SECONDARY，以确保第二个摄像头采集正常。
+
+<a id="api_irtcengineex_joinchannelex__restriction"></a>
+
+### 调用限制
+
+如果你已经在一个频道内，你不能用相同的用户 ID 再次加入该频道。
+
+加入频道前，请确保用于生成 Token 的 App ID 和调用 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 方法初始化引擎时使用的是同一个 App ID，否则使用 Token 加入频道会失败。
+
+<a id="api_irtcengineex_joinchannelex__related"></a>
+
+### 相关回调
+
+成功调用该方法加入频道后会触发以下回调：
+
+- 本地会触发 onJoinChannelSuccess 和 onConnectionStateChanged 回调。
+- 通信场景下的用户和直播场景下的主播加入频道后，远端会触发 onUserJoined 回调。
+
+在网络状况不理想的情况下，客户端可能会与声网服务器失去连接，此时 SDK 会自动尝试重连，重连成功后，本地会触发 [onRejoinChannelSuccess](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) 回调。
+
+<a id="api_irtcengineex_joinchannelex__parameters"></a>
+
+### 参数
+
+#### `token`
+
+在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/harmonyos/basic-features/token-authentication)。
+
+:::info[注]
+- （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
+- 如果你的项目仅开启调试模式，即选择 APP ID 为鉴权机制，则无需填入 Token 即可加入频道。成功加入频道 24 小时后会自动退出该频道。
+- 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 使用通配 Token。
+:::
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+#### `options`
+
+频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions)。
+
+#### `eventHandler`
+
+[RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex) 的回调类，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)。多频道相关的事件通知通过你在此参数中传递的 eventHandler 对象回调。
+
+<a id="api_irtcengineex_joinchannelex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+  - -2：传入的参数无效。例如，使用了不合法的 Token， uid 参数未设置为整型，或 ChannelMediaOptions 成员值不合法。你需要填入有效的参数，重新加入频道。
+  - -3： RtcEngine 对象初始化失败。你需要重新初始化 RtcEngine 对象。
+  - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
+  - -8： RtcEngine 对象内部状态错误。
+  - -17：加入频道被拒绝。可能的原因是用户已经在频道中。建议通过 onConnectionStateChanged 回调判断用户是否在频道中。除收到 DISCONNECTED (1) 状态外，不要再次调用该方法加入频道。
+  - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
+  - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_leavechannel2"></a>
+
+## leaveChannel
+
+设置频道选项并离开频道。
+
+<a id="api_irtcengine_leavechannel2__prototype"></a>
+
+```arkts
+public abstract leaveChannel(options?: LeaveChannelOptions): number;
+```
+
+<a id="api_irtcengine_leavechannel2__detailed_desc"></a>
+
+调用该方法后，SDK 会终止音视频互动、离开当前频道，并会释放会话相关的所有资源。
+
+成功加入频道后，必须调用本方法结束通话，否则无法开始下一次通话。如果你已调用 [joinChannelEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_joinchannelex) 加入多个频道，调用本方法后会同时离开所有已加入的频道。
+
+:::warning[注意]
+该方法是异步操作，调用返回时并没有真正退出频道。
+:::
+
+<a id="api_irtcengine_leavechannel2__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_leavechannel2__restriction"></a>
+
+### 调用限制
+
+如果你调用了该方法后立即调用 [destroy](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_release) 方法，SDK 将不会触发 onLeaveChannel 回调。
+
+<a id="api_irtcengine_leavechannel2__related"></a>
+
+### 相关回调
+
+成功调用该方法离开频道后会触发以下回调：
+
+- 本地： onLeaveChannel 回调。
+- 远端：主播离开频道后，远端会触发 onUserOffline 回调。
+
+<a id="api_irtcengine_leavechannel2__parameters"></a>
+
+### 参数
+
+#### `options`
+
+离开频道的选项，详见 [LeaveChannelOptions](/zh-CN/api-reference/rtc/harmonyos/class-leavechanneloptions)。
+
+<a id="api_irtcengine_leavechannel2__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_leavechannelex2"></a>
+
+## leaveChannelEx
+
+设置频道选项并离开频道。
+
+<a id="api_irtcengineex_leavechannelex2__prototype"></a>
+
+```arkts
+public abstract leaveChannelEx(connection: RtcConnection, options?:LeaveChannelOptions): number;
+```
+
+<a id="api_irtcengineex_leavechannelex2__detailed_desc"></a>
+
+调用该方法后，SDK 会终止音视频互动、离开当前频道，并会释放会话相关的所有资源。
+
+调用 [joinChannelEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_joinchannelex) 成功加入频道后，必须调用本方法结束通话，否则无法开始下一次通话。
+
+:::warning[注意]
+- 该方法是异步操作，调用返回时并没有真正退出频道。
+- 如果你调用了 leaveChannel 后，会同时离开 joinChannelWithOptions 及 joinChannelEx 加入的频道。
+:::
+
+<a id="api_irtcengineex_leavechannelex2__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_leavechannelex2__timing"></a>
+
+### 调用时机
+
+该方法需要在 [joinChannelEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_joinchannelex) 后调用。
+
+<a id="api_irtcengineex_leavechannelex2__restriction"></a>
+
+### 调用限制
+
+如果你调用了该方法后立即调用 [destroy](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_release) 方法，SDK 将不会触发 onLeaveChannel 回调。
+
+<a id="api_irtcengineex_leavechannelex2__related"></a>
+
+### 相关回调
+
+成功调用该方法离开频道后会触发以下回调：
+
+- 本地： onLeaveChannel 回调。
+- 远端：主播离开频道后，远端会触发 onUserOffline 回调。
+
+<a id="api_irtcengineex_leavechannelex2__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+#### `options`
+
+离开频道的选项，详见 [LeaveChannelOptions](/zh-CN/api-reference/rtc/harmonyos/class-leavechanneloptions)。
+
+:::info[注]
+该参数仅支持设置 LeaveChannelOptions 中的 stopMicrophoneRecording 成员，设置其他成员均不生效。
+:::
+
+<a id="api_irtcengineex_leavechannelex2__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_renewtoken"></a>
+
+## renewToken
+
+更新 Token。
+
+<a id="api_irtcengine_renewtoken__prototype"></a>
+
+```arkts
+public abstract renewToken(token: string): number;
+```
+
+<a id="api_irtcengine_renewtoken__detailed_desc"></a>
+
+该方法用于更新 Token。Token 会在一定时间后失效，此时 SDK 将无法和服务器建立连接。
+
+<a id="api_irtcengine_renewtoken__timing"></a>
+
+### 调用时机
+
+在以下任意一种情况下，声网推荐你在你的服务端重新生成 Token，然后调用该方法传入新的 Token：
+
+- 收到 onTokenPrivilegeWillExpire 回调报告 Token 即将过期时；
+- 收到 onRequestToken 回调报告 Token 已过期；
+- 收到 onConnectionStateChanged 回调报告 TOKEN_EXPIRED (9) 时；
+
+<a id="api_irtcengine_renewtoken__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_renewtoken__parameters"></a>
+
+### 参数
+
+#### `token`
+
+新生成的 Token。
+
+<a id="api_irtcengine_renewtoken__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+  - -2：传入的参数无效。例如，Token 为空。
+  - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
+  - -110：Token 无效。请确保：
+    - 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致，
+    - 生成的 Token 和加入频道使用的 Token 一致。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setchannelprofile"></a>
+
+## setChannelProfile
+
+设置频道场景。
+
+<a id="api_irtcengine_setchannelprofile__prototype"></a>
+
+```arkts
+public abstract setChannelProfile(profile: number): number;
+```
+
+<a id="api_irtcengine_setchannelprofile__detailed_desc"></a>
+
+你可以调用该方法设置频道的使用场景。SDK 会针对不同的使用场景采用不同的优化策略，如直播场景优先保证画质。SDK 初始化后默认的频道场景为直播场景。
+
+<a id="api_irtcengine_setchannelprofile__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_setchannelprofile__restriction"></a>
+
+### 调用限制
+
+为保证实时音视频质量，相同频道内的用户必须使用同一种频道场景。
+
+<a id="api_irtcengine_setchannelprofile__parameters"></a>
+
+### 参数
+
+#### `profile`
+
+频道使用场景。
+
+- COMMUNICATION (0)：通信。声网推荐使用直播场景以获取更好的音视频体验。
+- LIVE_BROADCASTING (1)：（默认）直播。
+- GAME (2)：游戏语音场景。 ### `废弃：`
+
+请改用 LIVE_BROADCASTING。
+- CLOUD_GAMING (3)：互动。该场景对延时进行了优化。如果你的场景中有用户需要频繁互动，建议使用该场景。 ### `废弃：`
+
+请改用 LIVE_BROADCASTING。
+
+<a id="api_irtcengine_setchannelprofile__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+  - -2: 参数无效。
+  - -7: SDK 尚未初始化。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setclientrole2"></a>
+
+## setClientRole
+
+设置直播场景下的用户角色和观众端延时级别。
+
+<a id="api_irtcengine_setclientrole2__prototype"></a>
+
+```arkts
+public abstract setClientRole(role: number, options?: ClientRoleOptions): number;
+```
+
+<a id="api_irtcengine_setclientrole2__detailed_desc"></a>
+
+SDK 默认设置用户角色为观众，你可以调用该方法设置用户角色为主播。用户角色（role ）确定用户在 SDK 层的权限，包含是否有发流权限等。
+
+<a id="api_irtcengine_setclientrole2__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+如果你在加入频道前调用该方法设置用户角色为主播、并且通过 [setupLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setuplocalvideo) 方法设置了本地视频属性，则用户加入频道时会自动开启本地视频预览。
+
+如果你在加入频道后调用该方法切换用户角色，调用成功后，SDK 会自动调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [muteLocalVideoStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalvideostream) 修改发布音视频流的状态。
+
+<a id="api_irtcengine_setclientrole2__restriction"></a>
+
+### 调用限制
+
+当用户角色设为主播时，观众端延时级别仅支持设置为 ULTRA_LOW_LATENCY （超低延时）。
+
+在加入频道前调用该方法并将 role 设为 BROADCASTER （主播）时，本地不会触发 [onClientRoleChanged](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onclientrolechanged) 回调。
+
+<a id="api_irtcengine_setclientrole2__related"></a>
+
+### 相关回调
+
+如果你在加入频道后成功调用该方法切换用户角色，SDK 会触发下列回调：
+
+- 本地触发 onClientRoleChanged 回调。:::info [注]
+在加入频道前调用该方法并将 role 设为 AUDIENCE （观众）时，也会触发该回调。:::
+- 远端触发 onUserJoined 或 onUserOffline 回调。
+
+如果你在加入频道后调用该方法切换用户角色失败，SDK 会触发 [onClientRoleChangeFailed](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onclientrolechangefailed)，报告切换失败的原因和当前的用户角色。
+
+<a id="api_irtcengine_setclientrole2__parameters"></a>
+
+### 参数
+
+#### `role`
+
+用户角色。
+
+- BROADCASTER (1): 主播。主播可以发流也可以收流。
+- AUDIENCE (2):（默认）观众。观众只能收流不能发流。
+
+:::info[注]
+角色为观众的用户无法在频道内发布音视频流。在直播场景下发流时，请确保你的用户角色已切换为主播。
+:::
+
+#### `options`
+
+用户具体设置，包含用户级别。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/harmonyos/class-clientroleoptions)。
+
+<a id="api_irtcengine_setclientrole2__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+  - -1: 一般性的错误（未明确归类）。
+  - -2: 参数无效。
+  - -5: 调用被拒绝。
+  - -7: SDK 尚未初始化。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_updatechannelmediaoptions"></a>
+
+## updateChannelMediaOptions
+
+加入频道后更新频道媒体选项。
+
+<a id="api_irtcengine_updatechannelmediaoptions__prototype"></a>
+
+```arkts
+public abstract updateChannelMediaOptions(options: ChannelMediaOptions): number;
+```
+
+<a id="api_irtcengine_updatechannelmediaoptions__parameters"></a>
+
+### 参数
+
+#### `options`
+
+频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions)。
+
+<a id="api_irtcengine_updatechannelmediaoptions__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+  - -2： ChannelMediaOptions 成员值设置无效。例如，使用了不合法的 Token，设置了无效的用户角色。你需要填入有效的参数。
+  - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
+  - -8： RtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 onConnectionStateChanged 回调判断用户是否在频道中。如果收到 DISCONNECTED (1) 或 FAILED (5)，则表示用户不在频道中。你需要在调用该方法前调用 joinChannelWithOptions 加入频道。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_updatechannelmediaoptionsex"></a>
+
+## updateChannelMediaOptionsEx
+
+加入频道后更新频道媒体选项 。
+
+<a id="api_irtcengineex_updatechannelmediaoptionsex__prototype"></a>
+
+```arkts
+public abstract updateChannelMediaOptionsEx(options:ChannelMediaOptions,connection:RtcConnection):number;
+```
+
+<a id="api_irtcengineex_updatechannelmediaoptionsex__parameters"></a>
+
+### 参数
+
+#### `options`
+
+频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions)。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+<a id="api_irtcengineex_updatechannelmediaoptionsex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+  - -2： ChannelMediaOptions 成员值设置无效。例如，使用了不合法的 Token，设置了无效的用户角色。你需要填入有效的参数。
+  - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
+  - -8： RtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 onConnectionStateChanged 回调判断用户是否在频道中。如果收到 DISCONNECTED (1) 或 FAILED (5)，则表示用户不在频道中。你需要在调用该方法前调用 joinChannelWithOptions 加入频道。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
+
+<a id="callback_irtcengineeventhandler_onclientrolechanged"></a>
+
+## onClientRoleChanged
+
+用户角色、观众端延时级别已切换回调。
+
+<a id="callback_irtcengineeventhandler_onclientrolechanged__prototype"></a>
+
+```arkts
+onClientRoleChanged?:(oldRole:Constants.ClientRole, newRole:Constants.ClientRole, newRoleOptions:ClientRoleOptions) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onclientrolechanged__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onclientrolechanged__timing"></a>
+
+### 触发时机
+
+在以下任意一种情况时，会触发此回调：
+
+- 在 加入频道后 调用 setClientRole 设置用户角色或观众端延时级别。
+- 在 加入频道前 调用 setClientRole 并将用户角色设为 AUDIENCE。
+
+<a id="callback_irtcengineeventhandler_onclientrolechanged__restriction"></a>
+
+### 使用限制
+
+当你在 **加入频道前** 调用 [setClientRole](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_setclientrole2) 并将用户角色设为 BROADCASTER 时，不会触发此回调。
+
+<a id="callback_irtcengineeventhandler_onclientrolechanged__parameters"></a>
+
+### 参数
+
+#### `oldRole`
+
+切换前的角色： [ClientRole](/zh-CN/api-reference/rtc/harmonyos/enum-clientroletype)。
+
+#### `newRole`
+
+切换后的角色： [ClientRole](/zh-CN/api-reference/rtc/harmonyos/enum-clientroletype)。
+
+#### `newRoleOptions`
+
+切换后的角色属性。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/harmonyos/class-clientroleoptions)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onclientrolechangefailed"></a>
+
+## onClientRoleChangeFailed
+
+用户角色切换失败回调。
+
+<a id="callback_irtcengineeventhandler_onclientrolechangefailed__prototype"></a>
+
+```arkts
+onClientRoleChangeFailed?: (reason:number, currentRole:Constants.ClientRole) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onclientrolechangefailed__detailed_desc"></a>
+
+当用户角色切换失败时，你可以通过此回调得知切换失败的原因和当前的用户角色。
+
+<a id="callback_irtcengineeventhandler_onclientrolechangefailed__timing"></a>
+
+### 触发时机
+
+本地用户加入频道后调用 [setClientRole](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_setclientrole2) 设置用户角色失败时，SDK 会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onclientrolechangefailed__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onclientrolechangefailed__parameters"></a>
+
+### 参数
+
+#### `reason`
+
+切换用户角色失败的原因。
+
+- CLIENT_ROLE_CHANGE_FAILED_TOO_MANY_BROADCASTERS (1): 频道内主播人数达到上限。:::info [注]
+该枚举仅在开启 128 人功能后报告。主播人数的上限根据开启 128 人功能时实际配置的人数而定。:::
+- CLIENT_ROLE_CHANGE_FAILED_NOT_AUTHORIZED (2): 请求被服务端拒绝。建议提示用户重新尝试切换用户角色。
+- CLIENT_ROLE_CHANGE_FAILED_REQUEST_TIME_OUT (3): 请求超时。建议提示用户检查网络连接状况后重新尝试切换用户角色。 ### `废弃：`
+
+该枚举值自 v4.4.0 起废弃，不建议使用。
+- CLIENT_ROLE_CHANGE_FAILED_CONNECTION_FAILED (4): 网络连接断开。可根据 onConnectionStateChanged 报告的 reason，排查网络连接失败的具体原因。 ### `废弃：`
+
+该枚举值自 v4.4.0 起废弃，不建议使用。
+
+#### `currentRole`
+
+当前用户角色。详见 [ClientRole](/zh-CN/api-reference/rtc/harmonyos/enum-clientroletype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onerror"></a>
+
+## onError
+
+发生错误回调。
+
+<a id="callback_irtcengineeventhandler_onerror__prototype"></a>
+
+```arkts
+onError?:(err:Constants.ErrorCode,message:string) => void
+```
+
+<a id="callback_irtcengineeventhandler_onerror__detailed_desc"></a>
+
+该回调方法表示 SDK 运行时出现了网络或媒体相关的错误。通常情况下，SDK 上报的错误意味着 SDK 无法自动恢复，需要 App 干预或提示用户。
+
+<a id="callback_irtcengineeventhandler_onerror__parameters"></a>
+
+### 参数
+
+#### `err`
+
+错误码。详见 [ErrorCode](/zh-CN/api-reference/rtc/harmonyos/enum-errorcodetype)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onjoinchannelsuccess"></a>
+
+## onJoinChannelSuccess
+
+成功加入频道回调。
+
+<a id="callback_irtcengineeventhandler_onjoinchannelsuccess__prototype"></a>
+
+```arkts
+onJoinChannelSuccess?:(channel:string, uid:number, elapsed:number) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onjoinchannelsuccess__detailed_desc"></a>
+
+该回调方法表示该客户端成功加入了指定的频道。
+
+<a id="callback_irtcengineeventhandler_onjoinchannelsuccess__timing"></a>
+
+### 触发时机
+
+当你调用 [joinChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel)、 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 或 [joinChannelEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_joinchannelex) 方法成功加入频道后，SDK 会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onjoinchannelsuccess__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onjoinchannelsuccess__parameters"></a>
+
+### 参数
+
+#### `channel`
+
+频道名。
+
+#### `uid`
+
+加入频道的用户 ID。
+
+#### `elapsed`
+
+从本地调用 joinChannelWithOptions 开始到发生此事件过去的时间（毫秒）。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onleavechannel"></a>
+
+## onLeaveChannel
+
+离开频道回调。
+
+<a id="callback_irtcengineeventhandler_onleavechannel__prototype"></a>
+
+```arkts
+onLeaveChannel?:(stats: RtcStats ) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onleavechannel__detailed_desc"></a>
+
+你可以通过该回调获取此次通话的总通话时长、SDK 收发数据的流量等信息。
+
+<a id="callback_irtcengineeventhandler_onleavechannel__timing"></a>
+
+### 触发时机
+
+当你成功调用 [leaveChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_leavechannel2) 或 [leaveChannelEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_leavechannelex2) 离开频道后，SDK 会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onleavechannel__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onleavechannel__parameters"></a>
+
+### 参数
+
+#### `stats`
+
+通话的统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/harmonyos/class-rtcstats)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onrejoinchannelsuccess"></a>
+
+## onRejoinChannelSuccess
+
+成功重新加入频道回调。
+
+<a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__prototype"></a>
+
+```arkts
+onRejoinChannelSuccess?:(channel:string, uid:number, elapsed:number) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__timing"></a>
+
+### 触发时机
+
+有时候由于网络原因，客户端可能会和服务器失去连接，SDK 会进行自动重连，自动重连成功后触发此回调方法。
+
+<a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__parameters"></a>
+
+### 参数
+
+#### `channel`
+
+频道名。
+
+#### `uid`
+
+重新加入频道的用户 ID。
+
+#### `elapsed`
+
+从调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onrequesttoken"></a>
+
+## onRequestToken
+
+Token 已过期回调。
+
+<a id="callback_irtcengineeventhandler_onrequesttoken__prototype"></a>
+
+```arkts
+onRequestToken?:() => void;
+```
+
+<a id="callback_irtcengineeventhandler_onrequesttoken__detailed_desc"></a>
+
+在音视频互动过程中，如果 Token 失效，SDK 会触发该回调报告 Token 已过期。
+
+当收到该回调时，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
+
+- 单频道场景：
+  - 调用 renewToken 来传入新的 Token。
+  - 调用 leaveChannel 离开当前频道，然后在调用 joinChannelWithOptions 时传入新的 Token 重新加入频道。
+- 多频道场景：调用 updateChannelMediaOptionsEx 传入新的 Token。
+
+<a id="callback_irtcengineeventhandler_onrequesttoken__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onrequesttoken__parameters"></a>
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onrtcstats"></a>
+
+## onRtcStats
+
+当前通话相关的统计信息回调。
+
+<a id="callback_irtcengineeventhandler_onrtcstats__prototype"></a>
+
+```arkts
+onRtcStats ? : (stats: RtcStats)  => void
+```
+
+<a id="callback_irtcengineeventhandler_onrtcstats__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onrtcstats__timing"></a>
+
+### 触发时机
+
+SDK 定期向 App 报告当前通话的统计信息，每两秒触发一次。
+
+<a id="callback_irtcengineeventhandler_onrtcstats__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onrtcstats__parameters"></a>
+
+### 参数
+
+#### `stats`
+
+RTC 引擎统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/harmonyos/class-rtcstats)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire"></a>
+
+## onTokenPrivilegeWillExpire
+
+Token 即将在 30s 内过期回调。
+
+<a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__prototype"></a>
+
+```arkts
+onTokenPrivilegeWillExpire?: (token:string) => void;
+```
+
+<a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__detailed_desc"></a>
+
+当收到该回调时，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
+
+- 单频道场景：
+  - 调用 renewToken 来传入新的 Token。
+  - 调用 leaveChannel 离开当前频道，然后在调用 joinChannelWithOptions 时传入新的 Token 重新加入频道。
+- 多频道场景：调用 updateChannelMediaOptionsEx 传入新的 Token。
+
+<a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__timing"></a>
+
+### 触发时机
+
+在音视频互动过程中，SDK 会在 Token 过期前 30 秒触发该回调，提醒 App 更新 Token。
+
+<a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__parameters"></a>
+
+### 参数
+
+#### `token`
+
+即将过期的 Token。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onuserjoined"></a>
+
+## onUserJoined
+
+远端用户（通信场景）/主播（直播场景）加入当前频道回调。
+
+<a id="callback_irtcengineeventhandler_onuserjoined__prototype"></a>
+
+```arkts
+onUserJoined?:(uid:number, elapse:number) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onuserjoined__detailed_desc"></a>
+
+- 通信场景下，该回调提示有远端用户加入了频道。如果加入之前已经有其他用户在频道中，新加入的用户也会收到这些已有用户加入频道的回调。
+- 直播场景下，该回调提示有主播加入了频道。如果加入之前，已经有主播在频道中了，新加入的用户也会收到已有主播加入频道的回调。建议连麦主播不超过 32 人（其中视频连麦主播不超过 17 人）。
+
+<a id="callback_irtcengineeventhandler_onuserjoined__timing"></a>
+
+### 触发时机
+
+该回调在如下情况下会被触发：
+
+- 远端用户/主播加入频道。
+- 远端用户加入频道后将用户角色改变为主播。
+- 远端用户/主播网络中断后重新加入频道。
+
+<a id="callback_irtcengineeventhandler_onuserjoined__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onuserjoined__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+新加入频道的远端用户/主播 ID。
+
+#### `elapsed`
+
+从本地用户调用 joinChannelWithOptions 到该回调触发的延迟（毫秒）。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onuseroffline"></a>
+
+## onUserOffline
+
+远端用户（通信场景）/主播（直播场景）离开当前频道回调。
+
+<a id="callback_irtcengineeventhandler_onuseroffline__prototype"></a>
+
+```arkts
+onUserOffline?:(uid:number, reason:number) => void;
+```
+
+<a id="callback_irtcengineeventhandler_onuseroffline__detailed_desc"></a>
+
+用户离开频道一般有以下两个原因：
+
+- 正常离开：远端用户或主播会发送类似“再见”的消息然后主动离开频道。
+- 超时掉线：在一定时间内（通信场景为 20 秒，直播场景稍有延时），用户没有收到对方的任何数据包，则判定为对方掉线。在网络较差的情况下，有可能会误报。建议使用 RTM SDK 来做可靠的掉线检测。
+
+<a id="callback_irtcengineeventhandler_onuseroffline__timing"></a>
+
+### 触发时机
+
+在音视频互动过程中，当远端用户或主播离开当前频道时会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onuseroffline__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onuseroffline__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+离线的远端用户或主播的 ID。
+
+#### `reason`
+
+远端用户（通信场景）或主播（直播场景）离线的原因：
+
+- USER_OFFLINE_QUIT (0)：用户主动离开。此时离开频道的用户会发送一个类似“再见”的消息。
+- USER_OFFLINE_DROPPED (1)：因过长时间收不到对方数据包，SDK 判定该远端用户超时掉线。注意：在网络连接不稳定时，该判定可能会有误。建议使用 RTM SDK 来做可靠的掉线检测。
+- USER_OFFLINE_BECOME_AUDIENCE (2)：用户的角色从主播切换为观众。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

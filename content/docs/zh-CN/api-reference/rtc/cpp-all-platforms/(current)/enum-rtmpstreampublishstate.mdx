@@ -1,0 +1,34 @@
+---
+title: "RTMP_STREAM_PUBLISH_STATE"
+description: "旁路推流状态。"
+---
+<a id="enum_rtmpstreampublishstate__parameters"></a>
+
+## 枚举值
+
+### `RTMP_STREAM_PUBLISH_STATE_IDLE`
+
+（0）：旁路推流未开始或已结束。
+
+### `RTMP_STREAM_PUBLISH_STATE_CONNECTING`
+
+（1）：正在连接推流服务器和 CDN 服务器。
+
+### `RTMP_STREAM_PUBLISH_STATE_RUNNING`
+
+（2）：RTMP 或 RTMPS 推流中。SDK 成功开始推流并返回该状态。
+
+### `RTMP_STREAM_PUBLISH_STATE_RECOVERING`
+
+（3）：RTMP 或 RTMPS 推流恢复中。当 CDN 异常或推流中断时，SDK 会尝试恢复推流并返回该状态。
+
+- 若恢复成功，返回 RTMP_STREAM_PUBLISH_STATE_RUNNING （2）。
+- 若 60 秒内未恢复或发生服务器错误，返回 RTMP_STREAM_PUBLISH_STATE_FAILURE （4）。如认为 60 秒过长，可主动尝试重连。
+
+### `RTMP_STREAM_PUBLISH_STATE_FAILURE`
+
+（4）：RTMP 或 RTMPS 推流失败。你可通过返回的错误码排查失败原因。
+
+### `RTMP_STREAM_PUBLISH_STATE_DISCONNECTING`
+
+（5）：SDK 正在断开与声网推流服务器和 CDN 的连接。调用 [stopRtmpStream](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 正常停止推流时，SDK 会依次上报状态为 `RTMP_STREAM_PUBLISH_STATE_DISCONNECTING` 和 `RTMP_STREAM_PUBLISH_STATE_IDLE`。

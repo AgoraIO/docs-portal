@@ -1,0 +1,123 @@
+---
+title: "私有化配置"
+---
+自 2.2.0 版本起，RTM 全面支持私有化部署能力。
+
+这意味着用户可以自行部署和管理他们的 RTM 环境，从而更好地控制他们的数据和系统。我们致力于为用户提供更灵活、安全和可定制化的解决方案，希望通过这一功能的推出，能够满足更多用户的需求。
+
+RTM 提供两种不同的服务类型，即 `MESSAGE` 服务和 `STREAM` 服务，详见[服务类型](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#servicetype)。具体的服务类型选择取决于你的实际需求和预算，你可以选择部署其中一种或同时部署两种。以下代码展示同时部署了两种服务的私有化环境配置：
+
+```javascript
+const appId = "your_appId";
+const userId = "your_userId";
+const rtmConfig = {
+    privateConfig: {
+        serviceType: ["MESSAGE", "STREAM"],                                 // 私有化部署的服务类型
+        accessPointHosts: ["private.chinanet.com"],        // 私有化部署服务器列表，仅支持填入域名
+        domainMode: 2,                                     // 升级已有私有化配置时设置为 2，新部署场景可省略或设为 1
+    }
+};
+const rtm = new RTM(appId, userId, rtmConfig);
+```
+
+:::warning[注意]
+如果你需要升级私有化部署的 RTM WEB SDK 至 2.2.4 及以后版本，为保证兼容性，需要将 `domainMode` 设置为 `2`。如果省略该参数或使用默认值 `1`，可能无法连接到 RTM 服务器。
+:::
+
+```java
+ArrayList<String> hosts = new ArrayList<>();
+hosts.add("x.x.x.x"); // your access point hosts list.
+RtmPrivateConfig privateConfig = new RtmPrivateConfig();
+privateConfig.serviceType = EnumSet.of(RtmServiceType.MESSAGE, RtmServiceType.STREAMING);
+privateConfig.accessPointHosts = hosts;
+
+RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
+    .privateConfig(privateConfig)
+    .build();
+```
+
+```swift
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+
+let privateConfig = AgoraRtmPrivateConfig()
+privateConfig.accessPointHosts = ["your_private_server"]
+privateConfig.serviceType = [.stream, .message]
+
+rtmConfig.privateConfig = privateConfig
+```
+
+```objc
+AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+AgoraRtmPrivateConfig* private_config = [[AgoraRtmPrivateConfig alloc] init];
+private_config.accessPointHosts = @[@"your_private_server"];
+private_config.serviceType = AgoraRtmServiceTypeStream | AgoraRtmServiceTypeMessage;
+rtm_config.privateConfig = private_config;
+```
+
+```cpp
+std::vector<const char*> hosts;
+hosts.push_back("xxx");
+
+RtmConfig config;
+config.appId = "your_appid";
+config.userId = "your_name";
+config.privateConfig.serviceType = RTM_SERVICE_TYPE_MESSAGE | RTM_SERVICE_TYPE_STREAM;
+config.privateConfig.accessPointHosts = hosts.data();
+config.privateConfig.accessPointHostsCount = hosts.size();
+```
+
+```dart
+final userId = 'your_userId';
+final appId = 'your_appId';
+late RtmClient rtmClient;
+
+var privateConfig = RtmPrivateConfig(
+    serviceType: { RtmServiceType.message, RtmServiceType.stream },
+    accessPointHosts: ['private.chinanet.com']);
+
+var rtmConfig = RtmConfig( privateConfig:privateConfig );
+
+try {
+    final (status,client) = await RTM(appId, userId, rtmConfig:rtmConfig);
+    if (status.error == true) {
+        print(status);
+    } else {
+        rtmClient = client;
+        print('Initialize success!');
+    }
+} catch (e) {
+    print('Failed to create RTM client: $e');
+}
+```
+
+```typescript
+import { RtmClient, RtmConfig, RtmPrivateConfig, RtmServiceType } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const privateConfig: RtmPrivateConfig = {
+  serviceType: RtmServiceType.MESSAGE | RtmServiceType.STREAM,
+  accessPointHosts: ["x.x.x.x"]
+};
+
+const rtmConfig: RtmConfig = {
+  appId: "your_appId",
+  userId: "your_userId",
+  privateConfig: privateConfig
+};
+
+try {
+  const rtmClient = new RtmClient(rtmConfig);
+  console.log("RTM client initialized with private config successfully");
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error(`Initialize failed: ${error.reason} (code: ${error.errorCode})`);
+  } else {
+    console.error("Failed to initialize RTM client:", error);
+  }
+}
+```
+
+:::warning[注意]
+如需进行私有化环境部署，你需要先确保后端服务的支持。如果你有此项需求，请联系声网 RTM 团队（rtm-support@agora.io），我们将协助你完成环境配置工作。
+:::

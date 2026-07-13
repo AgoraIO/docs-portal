@@ -1,0 +1,34 @@
+---
+title: "MusicChartInfo"
+description: "音乐榜单的详细信息。"
+---
+<a id="class_musicchartinfo__prototype"></a>
+
+```dart
+class MusicChartInfo {
+  const MusicChartInfo({this.chartName, this.id});
+
+  @JsonKey(name: 'chartName')
+  final String? chartName;
+
+  @JsonKey(name: 'id')
+  final int? id;
+
+  factory MusicChartInfo.fromJson(Map<String, dynamic> json) =>
+      _$MusicChartInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MusicChartInfoToJson(this);
+}
+```
+
+<a id="class_musicchartinfo__parameters"></a>
+
+## 属性
+
+### `chartName`
+
+榜单名。
+
+### `id`
+
+音乐榜单的 ID。

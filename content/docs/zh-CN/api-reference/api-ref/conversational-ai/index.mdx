@@ -1,0 +1,35 @@
+---
+title: 对话式 AI 概览
+description: 用于管理对话式智能体和排查 REST API 请求问题。
+---
+
+对话式 AI REST API 可用于从你的服务端创建、停止、更新、查询、打断智能体，并查询智能体会话信息。
+
+## API 基础
+
+所有请求均发送到 `api.agora.io`。
+
+- **鉴权**：每个请求都需要使用 [RESTful 鉴权](authentication)。
+- **请求**：请求包体和响应包体均使用 JSON。
+- **Base URL**：`https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/<appid>`，其中 `<appid>` 为你的项目 App ID。
+
+:::info
+请求 URL 和请求包体区分大小写。
+:::
+
+## REST API
+
+- [创建对话式智能体](join)：创建并启动一个对话式智能体实例。
+- [停止对话式智能体](leave)：停止指定的智能体实例。
+- [更新智能体配置](update)：在运行时调整智能体参数。
+- [查询智能体状态](query)：获取指定智能体实例的当前状态。
+- [获取智能体列表](list)：按条件获取智能体列表。
+- [播报自定义消息](speak)：通过 TTS 模块播报自定义消息。
+- [打断智能体](interrupt)：打断正在说话或思考的智能体。
+- [发送自定义指令](think)：向当前对话流水线发送文本指令。
+- [获取智能体短期记忆](history)：获取短期对话历史。
+- [查询对话轮次信息](turns)：查询轮次级对话详情和指标。
+
+## 相关页面
+
+- [响应状态码](/zh-CN/ai/api/response-code)

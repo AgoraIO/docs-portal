@@ -1,0 +1,246 @@
+---
+title: "IRTCConnectionObserver 类"
+---
+<span className="index-desc-irtcconnectionobserver">`IRTCConnectionObserver` 类，用于监听 SDK 的连接状态。</span>
+
+<a id="onconnected"></a>
+## on_connected
+
+```python
+def on_connected(self, agora_rtc_conn, conn_info, reason)
+```
+
+<span className="index-desc-onconnected">SDK 与频道的连接状态变更为 `3` 时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `conn_info` | 连接信息。详见 [`RTCConnInfo`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#rtcconninfo)。 |
+| `reason` | <Slot name="irtcconnectionobserver-python-html-0-3-1" /> |
+
+<Slot for="irtcconnectionobserver-python-html-0-3-1">
+
+连接状态变更原因：
+
+    - `0`: 建立网络连接中。
+    - `1`: 成功加入频道。
+    - `2`: 网络连接中断。
+    - `3`: 网络连接被服务器禁止。
+    - `4`: 加入频道失败。
+    - `5`: 离开频道。
+    - `6`: 不是有效的 APP ID。请更换有效的 APP ID 重新加入频道。
+    - `7`: 不是有效的频道名。请更换有效的频道名重新加入频道。
+    - `8`: 生成的 Token 无效。一般有以下原因：
+      - 在控制台上启用了 App Certificate，但加入频道未使用 Token。当启用了 App Certificate，必须使用 Token。
+      - 在调用 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。
+    - `9`: 生成的 Token 无效。
+    - `10`: 此用户被服务器禁止。
+    - `11`: 由于设置了代理服务器，SDK 尝试重连。
+    - `12`: 更新 Token 引起网络连接状态改变。
+    - `13`: 客户端 IP 地址变更，可能是由于网络类型，或网络运营商的 IP 或端口发生改变引起。
+    - `14`: SDK 和服务器连接保活超时，进入自动重连状态。
+    - `15`: 重新加入频道成功。
+    - `16`: SDK 和服务器失去连接。
+    - `17`: 连接状态变化由回声测试引起。
+    - `18`: 用户更改了本地 IP 地址。
+
+</Slot>
+
+<a id="ondisconnected"></a>
+## on_disconnected
+
+```python
+def on_disconnected(self, agora_rtc_conn, conn_info, reason)
+```
+
+<span className="index-desc-ondisconnected">SDK 与频道的连接状态变更为 `1` 时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `conn_info` | 连接信息。详见 [`RTCConnInfo`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#rtcconninfo)。 |
+| `reason` | <Slot name="irtcconnectionobserver-python-html-1-3-1" /> |
+
+<Slot for="irtcconnectionobserver-python-html-1-3-1">
+
+连接状态变更原因：
+
+    - `0`: 建立网络连接中。
+    - `1`: 成功加入频道。
+    - `2`: 网络连接中断。
+    - `3`: 网络连接被服务器禁止。
+    - `4`: 加入频道失败。
+    - `5`: 离开频道。
+    - `6`: 不是有效的 APP ID。请更换有效的 APP ID 重新加入频道。
+    - `7`: 不是有效的频道名。请更换有效的频道名重新加入频道。
+    - `8`: 生成的 Token 无效。一般有以下原因：
+      - 在控制台上启用了 App Certificate，但加入频道未使用 Token。当启用了 App Certificate，必须使用 Token。
+      - 在调用 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。
+    - `9`: 生成的 Token 无效。
+    - `10`: 此用户被服务器禁止。
+    - `11`: 由于设置了代理服务器，SDK 尝试重连。
+    - `12`: 更新 Token 引起网络连接状态改变。
+    - `13`: 客户端 IP 地址变更，可能是由于网络类型，或网络运营商的 IP 或端口发生改变引起。
+    - `14`: SDK 和服务器连接保活超时，进入自动重连状态。
+    - `15`: 重新加入频道成功。
+    - `16`: SDK 和服务器失去连接。
+    - `17`: 连接状态变化由回声测试引起。
+    - `18`: 用户更改了本地 IP 地址。
+
+</Slot>
+
+<a id="ontokenprivilegewillexpire"></a>
+## on_token_privilege_will_expire
+
+```python
+def on_token_privilege_will_expire(self, agora_rtc_conn, token)
+```
+
+<span className="index-desc-ontokenprivilegewillexpire">Token 服务将在 30s 内过期回调。</span>
+
+在通话过程中如果 Token 即将失效，SDK 会提前 30 秒触发该回调，提醒 app 更新 Token。
+
+当收到该回调时，你需要重新在服务端生成新的 Token，然后调用 [`renew_token`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#renewtoken) 将新生成的 Token 传给 SDK。
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|------------|
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `token` | 即将过期的 Token。 |
+
+<a id="ontokenprivilegedidexpire"></a>
+## on_token_privilege_did_expire
+
+```python
+def on_token_privilege_did_expire(self, agora_rtc_conn)
+```
+
+<span className="index-desc-ontokenprivilegedidexpire">Token 已过期回调。</span>
+
+在通话过程中如果 Token 已失效，SDK 会触发该回调，提醒 app 更新 Token。
+
+当收到该回调时，你需要重新在服务端生成新的 Token，然后调用 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 重新连接频道。
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|------------|
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+
+<a id="onuserjoined"></a>
+## on_user_joined
+
+```python
+def on_user_joined(self, agora_rtc_conn, user_id)
+```
+
+<span className="index-desc-onuserjoined">远端用户加入频道时触发。你可以通过该回调获取远端用户的 ID。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|------------|
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `user_id` | 远端用户的用户 ID。 |
+
+<a id="onuserleft"></a>
+## on_user_left
+
+```python
+def on_user_left(self, agora_rtc_conn, user_id, reason)
+```
+
+<span className="index-desc-onuserleft">远端用户离开频道时触发。你可以通过 `reason` 参数获取用户离开频道的原因。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `user_id` | 远端用户的用户 ID。 |
+| `reason` | <Slot name="irtcconnectionobserver-python-html-2-3-1" /> |
+
+<Slot for="irtcconnectionobserver-python-html-2-3-1">
+
+连接状态变更原因：
+
+    - `0`: 建立网络连接中。
+    - `1`: 成功加入频道。
+    - `2`: 网络连接中断。
+    - `3`: 网络连接被服务器禁止。
+    - `4`: 加入频道失败。
+    - `5`: 离开频道。
+    - `6`: 不是有效的 APP ID。请更换有效的 APP ID 重新加入频道。
+    - `7`: 不是有效的频道名。请更换有效的频道名重新加入频道。
+    - `8`: 生成的 Token 无效。一般有以下原因：
+      - 在控制台上启用了 App Certificate，但加入频道未使用 Token。当启用了 App Certificate，必须使用 Token。
+      - 在调用 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。
+    - `9`: 生成的 Token 无效。
+    - `10`: 此用户被服务器禁止。
+    - `11`: 由于设置了代理服务器，SDK 尝试重连。
+    - `12`: 更新 Token 引起网络连接状态改变。
+    - `13`: 客户端 IP 地址变更，可能是由于网络类型，或网络运营商的 IP 或端口发生改变引起。
+    - `14`: SDK 和服务器连接保活超时，进入自动重连状态。
+    - `15`: 重新加入频道成功。
+    - `16`: SDK 和服务器失去连接。
+    - `17`: 连接状态变化由回声测试引起。
+    - `18`: 用户更改了本地 IP 地址。
+
+</Slot>
+
+<a id="onstreammessageerror"></a>
+## on_stream_message_error
+
+```python
+def on_stream_message_error(self, user_id: str, stream_id: int, code: int, missed: int, cached: int)
+```
+
+<span className="index-desc-onstreammessageerror">接收数据流消息发生错误的回调。该回调表示本地用户未收到远端用户调用 [`send_stream_message`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#sendstreammessage) 方法发送的流消息。</span>
+
+#### 参数
+
+| 参数        | 描述  |
+|-------------|----------|
+| `user_id`   | 发送消息的用户 ID。              |
+| `stream_id` | 接收到的消息的 Stream ID。         |
+| `code`      | 发生错误的错误码。                |
+| `missed`    | 丢失的消息数量。                     |
+| `cached`    | 数据流中断时，后面缓存的消息数量。          |
+
+<a id="onerror"></a>
+## on_error
+
+```python
+def on_error(self, agora_rtc_conn, error_code, error_msg)
+```
+
+<span className="index-desc-onerror">发生错误回调。该回调方法表示 SDK 运行时出现了网络或媒体相关的错误。通常情况下，SDK 上报的错误意味着 SDK 无法自动恢复，需要 App 干预或提示用户。</span>
+
+#### 参数
+
+| 参数        | 描述  |
+|-------------|----------|
+| `agora_rtc_conn`   | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。              |
+| `error_code` | 错误码。         |
+| `error_msg`      | 错误描述。                |
+
+<a id="onencryptionerror"></a>
+## on_encryption_error
+
+```python
+def on_encryption_error(self, agora_rtc_conn, error_type)
+```
+
+加密功能发生错误回调。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。|
+| `error_type` | 错误码。 |

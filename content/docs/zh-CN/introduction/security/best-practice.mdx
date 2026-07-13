@@ -1,0 +1,104 @@
+---
+title: 安全最佳实践
+---
+
+安全与合规是实时互动的基本要求。声网遵守不同国家和行业的合规性要求，打造安全可靠的云服务，目前已通过 ISO/IEC 27001、ISO/IEC 27017、ISO/IEC 27018、ISO/IEC 27701 认证、公安部网络安全等级保护三级认证，并获得 SOC2 Type II 报告。
+
+此外，声网产品在设计和构建过程中，根据音视频传输领域常见的攻击类型和安全需求，还集成了多重防护措施，满足客户及终端用户的数据安全要求。
+
+| 防护措施 | 是否默认应用 | 推荐场景 |
+| ---------------- | ---------------- | ---------------- |
+| 资源隔离      | 是      | 所有实时场景。      |
+| 频道隔离 | 是 | 所有实时场景。 |
+| 身份认证 | 否 |声网推荐正式生产阶段的 App 均使用该措施。 |
+| 加密 | 否 | 对于有保密需求的实时互动场景，声网推荐使用该措施。 |
+| 限定访问区域 | 否 | 适用于将音视频数据及实时消息数据传输限定在某一区域范围内的场景。 |
+
+## 资源隔离
+
+客户在使用声网 SDK 或服务前，需要先在[声网控制台](https://console.shengwang.cn/)新建项目。成功创建后，声网会自动为每个项目分配一个用于识别项目的 App ID。不同的项目之间彼此独立，通话无法互通，客户可以通过使用项目对应的 App ID，隔离不同的项目。
+
+## 频道隔离
+
+声网为每路音频、视频或消息传输建立单独且逻辑隔离的通道，即频道。在 App ID 一致的前提下，只有在同一频道内的用户才可以进行对应资源（音频、视频、消息）的访问，进行互动。
+
+## 身份认证
+
+除上述基本保障外，声网还提供动态 Token 对即将加入频道的终端用户进行鉴权。
+
+目前声网提供了如下两种认证方式：
+- 基于 App ID 认证。
+- 基于 Token 认证。在采用 Token 认证方式后，客户可通过 App ID 和 App 证书生成 Token，并使用该 Token 对终端用户进行身份认证。
+
+动态 Token 从以下几个方面提供安全保障：
+
+- Token 采用业界标准化的 HMAC-SHA256 加密方案，可对 App ID 和频道名称等重要信息进行加密处理，保证不会泄露。
+- 支持自定义 Token 有效期。Token 的默认有效期为 24 小时。客户可以根据自己的安全需求自定义 Token 的服务有效期。
+- 支持定制不同的服务权限。
+
+详细的生成 Token 的方法及注意事项，请参考[使用 Token 鉴权](https://docportal.shengwang.cn/cn/video-call-4.x/token_server_android_ng?platform=Android)。
+
+## 数据加密
+
+对于对互动内容有保密需求的场景，声网还提供了传输加密和内容加密功能。
+
+### 传输加密
+
+为保证数据在传输过程中的保密性，声网各产品和服务均实施了覆盖全数据链路的传输加密机制，并采用业内主流的强加密算法。其中：
+
+- RTC Native SDK 和 RTM Native SDK 使用 TLS (Transport Layer Security) 加密协议。
+- RTC Web SDK 和 RTM Web SDK 使用 SSL (Secure Sockets Layer) 加密协议。
+
+### 内容加密
+
+下图分别展示了 RTC Native SDK 和 Web SDK 应用加密功能后的数据传输流程：
+
+#### Native SDK
+
+![Native 平台加密传输](https://web-cdn.agora.io/docs-portal/img/security/encryption-native.png)
+
+#### Web SDK
+
+![Web 平台加密传输](https://web-cdn.agora.io/docs-portal/img/security/encryption-web.png)
+
+#### 内置加密
+
+声网 SDK 均内置多种加密算法。客户可以通过该功能对音视频内容进行加密。该加密功能可对所有传输的音视频流进行端到端加密。使用时，客户可以自行配置使用的加密算法。音视频数据在发送端完成加密后，在接收端完成解密，数据以密文形式进行网络传输。客户自行对密钥进行管理，包括密钥的生成、存储、传输和校验等。除涉及 WebRTC 服务外，声网不接触密钥，也无法对密文数据进行解密。
+
+在 WebRTC 服务中，声网需要在服务端进行数据解密和协议转换。声网已实施安全的密钥传输和使用机制，保护客户的密钥不被泄露。
+
+#### 自定义加密
+
+如果使用的是声网 RTC Native SDK，除内置加密外，客户还可以使用自定义加密功能。声网可以将发送前和接收后的音视频数据通过回调发给 App，App 再自行选择加密算法和密钥。自定义加密下，声网接触不到任何加密信息，适用于安全需求更高的场景。
+
+不同平台设置加密方案的步骤详见：
+
+- [Android](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_android_ng?platform=Android)
+- [iOS](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_apple_ng?platform=iOS)
+- [macOS](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_apple_ng?platform=macOS)
+- [Web](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_web_ng?platform=Web)
+- [Windows](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_windows_ng?platform=Windows)
+
+## 限定访问区域
+
+为适应不同国家或地区的法律法规，声网支持限定访问区域功能。开启限定访问区域功能后，不论用户在哪个区域使用你的 App，SDK 都只会访问指定区域的声网服务器。
+
+例如你指定了北美为访问区域，假设有两位用户分别从北美和中国连接声网服务器：
+
+| 指定的访问区域 | App 用户所在区域 | SDK 实际访问的区域 | 连接后的用户体验 |
+| --- | --- | --- | --- |
+| 北美 | 北美 | 北美 | 正常 |
+| 北美 | 中国 | 北美 | 可能受到较大影响 |
+
+:::info[信息]
+- 如果指定区域的服务器都不可用，SDK 会直接报错。
+- 如果指定区域与 App 用户所在区域之间存在跨区域公共互联网，公共互联网网络质量较差会导致音视频体验受到影响。
+:::
+
+具体使用方法，详见：
+
+- [Android](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_android_ng?platform=Android)
+- [iOS](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_apple_ng?platform=iOS)
+- [macOS](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_apple_ng?platform=macOS)
+- [Web](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_web_ng_rtc?platform=Web)
+- [Windows](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_windows_ng?platform=Windows)

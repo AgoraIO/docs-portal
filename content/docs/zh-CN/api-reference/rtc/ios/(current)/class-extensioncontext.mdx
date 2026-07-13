@@ -1,0 +1,37 @@
+---
+title: "AgoraExtensionContext"
+description: "扩展的上下文信息。"
+---
+<a id="class_extensioncontext__prototype"></a>
+
+```objectivec
+@interface AgoraExtensionContext : NSObject
+@property (assign, nonatomic) BOOL isValid;
+@property (assign, nonatomic) NSUInteger uid;
+@property (copy, nonatomic) NSString * _Nullable providerName;
+@property (copy, nonatomic) NSString * _Nullable extensionName;
+@end
+```
+
+<a id="class_extensioncontext__parameters"></a>
+
+## 属性
+
+### `isValid`
+
+`uid` 是否有效：
+
+- YES： uid 有效。
+- NO： uid 无效。
+
+### `uid`
+
+用户 ID。0 表示本地用户，大于 0 表示远端用户。
+
+### `providerName`
+
+扩展提供方的名称。
+
+### `extensionName`
+
+扩展的名称。

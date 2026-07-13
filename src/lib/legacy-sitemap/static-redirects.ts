@@ -13,6 +13,12 @@ export type StaticLegacyRedirectPayload = {
 };
 
 const staticLegacyRedirectRules = staticRedirects as StaticLegacyRedirectRule[];
+const manualStaticLegacyRedirectRules: StaticLegacyRedirectRule[] = [
+  {
+    p: '/en/cloud-recording/get-started/getstarted',
+    t: '/en/realtime-media/cloud-recording/rest-quickstart',
+  },
+];
 
 export function resolveStaticLegacySitemapRedirect(
   legacyPath: string,
@@ -20,13 +26,17 @@ export function resolveStaticLegacySitemapRedirect(
 ): StaticLegacyRedirectPayload | null {
   const normalizedPath = normalizeLegacyPath(legacyPath);
   const normalizedSearch = normalizeLegacySearch(legacySearch);
+  const rules = [
+    ...manualStaticLegacyRedirectRules,
+    ...staticLegacyRedirectRules,
+  ];
   const rule =
-    staticLegacyRedirectRules.find(
+    rules.find(
       (item) =>
         normalizeLegacyPath(item.p) === normalizedPath &&
         normalizeLegacySearch(item.q) === normalizedSearch,
     ) ??
-    staticLegacyRedirectRules.find(
+    rules.find(
       (item) => normalizeLegacyPath(item.p) === normalizedPath && !item.q,
     );
 

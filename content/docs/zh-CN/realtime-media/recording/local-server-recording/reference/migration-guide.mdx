@@ -1,0 +1,237 @@
+---
+title: "迁移指南"
+---
+声网本地服务端录制 4.x SDK 是一个新的 SDK 版本，可帮助用户在实时音视频互动过程中实现录制。
+
+具体的功能列表和适用场景可以参考[产品概述](/zh-CN/realtime-media/recording/local-server-recording)。
+
+本文介绍将 SDK 从 3.x 升级到 4.x 的主要变更。
+
+## 优势介绍
+
+录制 4.x SDK 基于最新的 RTC 4.x SDK 开发，在网络协议、弱网对抗、Codec 支持等方面有更好的兼容性。具体表现在：
+
+- 支持最新版的云代理
+- 支持声网最新的网络协议，有更好的弱网对抗和弱网反馈能力，和新版的 RTC SDK 也能更好地兼容
+- 支持订阅对端 H265 等码流，对更多的视频 Codec 有更好的兼容性
+- 由于底层使用了同一个版本的 RTC 引擎，后续的维护升级也更加便利
+
+## 功能差距
+
+录制 4.x SDK 的产品定位是一个可供开发者进行开发的 SDK，而非一个云端服务或者云端服务的 aPaaS 版本用于直接部署，因此不提供云容器部署的集成方式。
+
+## 行为变更
+
+相比老版本的录制 SDK，录制 4.x 版本不会负责多进程管理、崩溃拉起等后台服务的功能。你需要自行实现多进程管理、服务容灾等功能的开发构建。
+
+## 核心 API 变更
+
+#### 方法
+
+| 功能模块 | 录制 4.x API | 老版本 API |
+| --- | --- | --- |
+| 创建并初始化录制实例 | <Slot name="migration-guide-html-0-1-1" /> | `createAgoraRecordingEngine` |
+| 加入频道 | `joinChannel` 如果开启了 String UID 功能，调用 `joinChannel` 时可以直接使用 String UID 进行传参，无需额外调用其它 API。 | <Slot name="migration-guide-html-0-2-2" /> |
+| 实现订阅逻辑 | <Slot name="migration-guide-html-0-3-1" /> | <Slot name="migration-guide-html-0-3-2" /> |
+| 开始或停止录制 | <Slot name="migration-guide-html-0-4-1" /> | <Slot name="migration-guide-html-0-4-2" /> |
+| 水印 | <Slot name="migration-guide-html-0-5-1" /> | <Slot name="migration-guide-html-0-5-2" /> |
+
+<Slot for="migration-guide-html-0-1-1">
+
+- `createAgoraService`
+    - `IAgoraService::initialize`
+    - `createAgoraMediaComponentFactory`
+    - `createMediaRtcRecorder`
+    - `IAgoraMediaRtcRecorder::initialize`
+
+</Slot>
+
+<Slot for="migration-guide-html-0-2-2">
+
+- `joinChannel`
+    - `joinChannelWithUserAccount`
+    - `getUserInfoByUserAccount`
+    - `getUserInfoByUid`
+
+</Slot>
+
+<Slot for="migration-guide-html-0-3-1">
+
+- `subscribeAllAudio`
+    - `unsubscribeAllAudio`
+    - `subscribeAllVideo`
+    - `unsubscribeAllVideo`
+    - `subscribeAudio`
+    - `unsubscribeAudio`
+    - `subscribeVideo`
+    - `unsunscribeVideo`
+
+</Slot>
+
+<Slot for="migration-guide-html-0-3-2">
+
+`joinChannel` 方法中 `RecordingConfig` 对象的如下字段：
+
+    - `autoSubscribe`
+    - `subscribeVideoUids`
+    - `subscribeAudioUids`
+
+</Slot>
+
+<Slot for="migration-guide-html-0-4-1">
+
+单流录制：
+
+    - `startSingleRecordingByUid`
+    - `stopSingleRecordingByUid`
+    - `setRecorderConfigByUid`
+
+    合流录制：
+
+    - `startRecording`
+    - `stopRecording`
+    - `setRecordingConfig`
+
+    搭配 `initialize` 中 `enable_mix` 参数的设置使用。
+
+</Slot>
+
+<Slot for="migration-guide-html-0-4-2">
+
+单流/合流录制
+
+    - `startService`
+    - `stopService`
+
+    搭配 `RecordingConfig` 中 `isMixingEnabled` 参数的设置使用。
+
+</Slot>
+
+<Slot for="migration-guide-html-0-5-1">
+
+- `enableAndUpdateVideoWatermarks`
+    - `disableVideoWatermarks`
+    - `enableAndUpdateVideoWatermarksByUid`
+    - `disableVideoWatermarksByUid`
+
+</Slot>
+
+<Slot for="migration-guide-html-0-5-2">
+
+- `VideoMixingLayout` 中的 `wm_num` 和 `wm_configs` 参数
+    - `updateWatermarkConfigs`
+
+</Slot>
+
+#### 回调
+
+| 功能模块 | 录制 4.x API | 老版本 API |
+| --- | --- | --- |
+| 本地用户加入频道回调 | `onConnected` | `onJoinChannelSuccess` |
+| 本地用户离开频道回调 | `onDisconnected` | `onLeaveChannel` |
+| 本地用户重连后加入频道回调 | `onReconnected` | `onRejoinChannelSuccess` |
+| 远端用户离开频道回调 | `onUserLeft` | `onUserOffline` |
+| 收到远端音频首帧回调 | `onFirstRemoteAudioDecoded` | `onFirstRemoteAudioFrame` |
+| 远端用户音频状态发生改变回调 | `onUserAudioStateChanged` | `onRemoteAudioStreamStateChanged` |
+| 远端用户视频状态发生改变回调 | `onUserVideoStateChanged` | `onRemoteVideoStreamStateChanged` |
+
+#### 方法
+
+| 功能模块 | 录制 4.x API | 老版本 API |
+| --- | --- | --- |
+| 创建并初始化录制实例 | <Slot name="migration-guide-html-2-1-1" /> | `RecordingSDK` |
+| 加入频道 | `joinChannel` 如果开启了 String UID 功能，调用 `joinChannel` 时可以直接使用 String UID 进行传参，无需额外调用其它 API。 | <Slot name="migration-guide-html-2-2-2" /> |
+| 实现订阅逻辑 | <Slot name="migration-guide-html-2-3-1" /> | <Slot name="migration-guide-html-2-3-2" /> |
+| 开始或停止录制 | <Slot name="migration-guide-html-2-4-1" /> | <Slot name="migration-guide-html-2-4-2" /> |
+| 水印 | <Slot name="migration-guide-html-2-5-1" /> | `updateWatermarkConfigs` |
+
+<Slot for="migration-guide-html-2-1-1">
+
+- `AgoraService`
+    - `AgoraService.initialize`
+    - `createMediaRtcRecorder`
+    - `AgoraMediaRtcRecorder.initialize`
+
+</Slot>
+
+<Slot for="migration-guide-html-2-2-2">
+
+- `createChannel`
+    - `createChannelWithUserAccount`
+    - `getUidByUserAccount`
+    - `getUserAccountByUid`
+
+</Slot>
+
+<Slot for="migration-guide-html-2-3-1">
+
+- `subscribeAllAudio`
+    - `unsubscribeAllAudio`
+    - `subscribeAllVideo`
+    - `unsubscribeAllVideo`
+    - `subscribeAudio`
+    - `unsubscribeAudio`
+    - `subscribeVideo`
+    - `unsunscribeVideo`
+
+</Slot>
+
+<Slot for="migration-guide-html-2-3-2">
+
+`create` 方法中 `RecordingConfig` 对象的如下字段：
+
+    - `autoSubscribe`
+    - `subscribeVideoUids`
+    - `subscribeAudioUids`
+
+</Slot>
+
+<Slot for="migration-guide-html-2-4-1">
+
+单流录制：
+
+    - `startSingleRecordingByUid`
+    - `stopSingleRecordingByUid`
+    - `setRecorderConfigByUid`
+
+    合流录制：
+
+    - `startRecording`
+    - `stopRecording`
+    - `setRecordingConfig`
+
+    搭配 `initialize` 中 `enableMix` 参数的设置使用。
+
+</Slot>
+
+<Slot for="migration-guide-html-2-4-2">
+
+单流/合流录制
+
+    - `startService`
+    - `stopService`
+
+    搭配 `RecordingConfig` 中 `isMixingEnabled` 参数的设置使用。
+
+</Slot>
+
+<Slot for="migration-guide-html-2-5-1">
+
+- `enableAndUpdateVideoWatermarks`
+    - `disableVideoWatermarks`
+    - `enableAndUpdateVideoWatermarksByUid`
+    - `disableVideoWatermarksByUid`
+
+</Slot>
+
+#### 回调
+
+| 功能模块 | 录制 4.x API | 老版本 API |
+| --- | --- | --- |
+| 本地用户加入频道回调 | `onConnected` | `onJoinChannelSuccess` |
+| 本地用户离开频道回调 | `onDisconnected` | `onLeaveChannel` |
+| 本地用户重连后加入频道回调 | `onReconnected` | `onRejoinChannelSuccess` |
+| 远端用户离开频道回调 | `onUserLeft` | `onUserOffline` |
+| 收到远端音频首帧回调 | `onFirstRemoteAudioDecoded` | `onFirstRemoteAudioFrame` |
+| 远端用户音频状态发生改变回调 | `onUserAudioStateChanged` | `onRemoteAudioStreamStateChanged` |
+| 远端用户视频状态发生改变回调 | `onUserVideoStateChanged` | `onRemoteVideoStreamStateChanged` |

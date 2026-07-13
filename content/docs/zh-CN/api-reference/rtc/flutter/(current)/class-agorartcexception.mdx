@@ -1,0 +1,27 @@
+---
+title: "AgoraRtcException"
+description: "错误码及错误描述。"
+---
+<a id="class_agorartcexception__prototype"></a>
+
+```dart
+class AgoraRtcException implements Exception {
+  AgoraRtcException({required this.code, this.message});
+  final int code;
+  final String? message;
+  @override
+  String toString() => 'AgoraRtcException($code, $message)';
+}
+```
+
+<a id="class_agorartcexception__parameters"></a>
+
+## 属性
+
+### `code`
+
+错误码，详见 [ErrorCodeType](/zh-CN/api-reference/rtc/flutter/enum-errorcodetype)。
+
+### `message`
+
+错误描述。

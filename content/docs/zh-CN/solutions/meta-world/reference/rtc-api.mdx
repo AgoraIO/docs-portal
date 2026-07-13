@@ -1,0 +1,52 @@
+---
+title: "实时互动 API"
+---
+
+<PlatformStructured platform="android">
+
+在 MetaWorld 场景中，除了 Meta API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/api-ref/rtc/android/API/rtc_api_overview) 文档来了解详细的 RTC API 用法。
+
+本页展示 MetaWorld 中高频调用的实时互动 SDK API。
+
+|      API 名称      |        描述         |
+|:------------------|:--------------------|
+| [`create`](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_initialize)  | 创建并初始化 RtcEngine。|
+| [`joinChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2) | 设置媒体选项并加入频道。 |
+| [`leaveChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_leavechannel) | 	离开频道。 |
+| [`setupLocalVideo`](/api-ref/rtc/android/API/toc_video_rendering#api_irtcengine_setuplocalvideo) | 初始化本地视图。 |
+| [`create`](/api-ref/rtc/android/API/toc_spatial_audio#create) |  创建 ILocalSpatialAudioEngine。 |
+| [`initialize`](/api-ref/rtc/android/API/toc_spatial_audio#initialize) |  初始化 ILocalSpatialAudioEngine。 |
+| [`setAudioRecvRange`](/api-ref/rtc/android/API/toc_spatial_audio#setAudioRecvRange) | 设置本地用户的音频接收范围。 |
+| [`updateSelfPosition`](/api-ref/rtc/android/API/toc_spatial_audio#updateSelfPosition) | 更新本地用户的空间位置。 |
+| [`updateRemotePosition`](/api-ref/rtc/android/API/toc_spatial_audio#updateRemotePosition) | 更新远端用户的空间位置信息。 |
+| [`destroy`](/api-ref/rtc/android/API/toc_spatial_audio#destroy) |  销毁 ILocalSpatialAudioEngine。 |
+| [`updatePlayerPositionInfo`](/api-ref/rtc/android/API/toc_spatial_audio#updatePlayerPositionInfo) | 更新媒体播放器的空间位置。 |
+| [`onFrame`](/api-ref/rtc/android/API/toc_audio_basic#callback_iaudiopcmframesink_onframe) | 已获取音频帧回调。 |
+| [`sendStreamMessage`](/api-ref/rtc/android/API/toc_datastream#api_irtcengine_sendstreammessage) | 发送数据流。 |
+| [`onStreamMessage`](/api-ref/rtc/android/API/toc_datastream#callback_irtcengineeventhandler_onstreammessage) | 接收到对方数据流消息的回调。 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+在 MetaWorld 场景中，除了 Meta API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/api-ref/rtc/ios/API/rtc_api_overview) 文档来了解详细的 RTC API 用法。
+
+本页展示 MetaWorld 中高频调用的实时互动 SDK API。
+
+|      API 名称      |        描述         |
+|:------------------|:--------------------|
+| [`sharedEngineWithConfig`](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_initialize) | 创建并初始化 AgoraRtcEngineKit。|
+| [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) | 设置媒体选项并加入频道。 |
+| [`leaveChannel`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_leavechannel) | 	离开频道。|
+| [`setupLocalVideo`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_setuplocalvideo) | 初始化本地视图。 |
+| [`sharedLocalSpatialAudioWithConfig`](/api-ref/rtc/ios/API/toc_spatial_audio#sharedLocalSpatialAudioWithConfig) | 初始化 AgoraLocalSpatialAudioKit。|
+| [`setAudioRecvRange`](/api-ref/rtc/ios/API/toc_spatial_audio#setAudioRecvRange) | 设置本地用户的音频接收范围。 |
+| [`updateSelfPosition`](/api-ref/rtc/ios/API/toc_spatial_audio#updateSelfPosition) | 更新本地用户的空间位置。|
+| [`updateRemotePosition`](/api-ref/rtc/ios/API/toc_spatial_audio#updateRemotePosition) | 更新远端用户的空间位置信息。 |
+| [`destroy`](/api-ref/rtc/ios/API/toc_spatial_audio#destroy) | 销毁 AgoraLocalSpatialAudioKit。|
+| [`updatePlayerPositionInfo`](/api-ref/rtc/ios/API/toc_spatial_audio#updatePlayerPositionInfo) | 更新媒体播放器的空间位置。 |
+| [`didReceiveVideoFrame`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_onframe) | 已获取音频帧回调。|
+| [`sendStreamMessage`](/api-ref/rtc/ios/API/toc_datastream#api_irtcengine_sendstreammessage) | 发送数据流。 |
+| [`receiveStreamMessageFromUid`](/api-ref/rtc/ios/API/toc_datastream#callback_irtcengineeventhandler_onstreammessage) | 接收到对方数据流消息的回调。|
+
+</PlatformStructured>

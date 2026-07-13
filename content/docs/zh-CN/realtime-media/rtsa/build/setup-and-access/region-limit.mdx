@@ -1,0 +1,77 @@
+---
+title: "限定访问区域"
+---
+为适应不同国家或地区的法律法规，声网支持限定访问区域功能。
+
+开启限定访问区域功能后，不论用户在哪个区域使用你的 App，SDK 都只会访问指定区域的声网服务器。
+
+例如你指定了北美为访问区域，假设有两位用户分别从北美和中国连接声网服务器：
+
+| 指定访问区域 | App 用户所在区域 | SDK 实际访问区域 | 连接后的用户体验 |
+| --- | --- | --- | --- |
+| 北美 | 北美 | 北美 | 正常 |
+| 北美 | 中国 | 北美 | <Slot name="region-limit-markdown-0-2-3" /> |
+
+<Slot for="region-limit-markdown-0-2-3">
+
+可能受到较大影响。由于指定区域与 App 用户所在区域之间存在跨区域公共互联网，公共互联网网络质量较差会导致音视频体验受到影响。如果指定区域的服务器都不可用，SDK 会直接报错。
+
+</Slot>
+
+:::info[信息]
+该功能为 SDK 的高级设置功能，声网建议你仅在有访问安全限制的场景使用。
+:::
+
+## 实现方法
+
+声网 RTSA SDK 从 v1.5.0 起，支持限定区域访问。一旦指定了访问区域，音视频和消息数据将不会访问指定区域以外的服务器。
+
+你需要在调用 `agora_rtc_init` 方法初始化 SDK 时，通过设置 `option` 参数中的 `area_code` 参数来指定访问区域。
+
+你需要在调用 `init` 方法初始化 SDK 时，通过设置 `option` 参数中的 `areaCode` 参数来指定访问区域。
+
+- `AREA_CODE_CN`: 中国大陆
+- `AREA_CODE_NA`: 北美
+- `AREA_CODE_EU`: 欧洲
+- `AREA_CODE_AS`: 亚洲（除中国大陆）
+- `AREA_CODE_JP`: 日本
+- `AREA_CODE_IN`: 印度
+- `AREA_CODE_GLOB`: （默认）全球。
+
+:::info[信息]
+区域码支持位操作。
+:::
+
+## 示例代码
+
+参考如下示例代码在你的 App 中实现限定访问区域功能。
+
+```c
+// 设置区域为北美
+rtc_service_option_t service_opt;
+service_opt.area_code = AREA_CODE_NA;
+
+...
+
+// 初始化 SDK
+rval = agora_rtc_init(appid, &event_handler, &service_opt);
+```
+
+```java
+// 设置区域为北美
+RtcServiceOptions options = new RtcServiceOptions();
+options.areaCode = AreaCode.AREA_CODE_NA;
+
+...
+
+// 初始化 SDK
+int ret = mRtcService.init(APPID, rtcEvent, options);
+```
+
+## API 参考
+
+开发过程中，你还可以参考如下文档，了解各 API 的详细信息：
+
+- [`agora_rtc_init`](/api-ref/rtsa/c/agora__rtc__api_8h#a6187076d897f0b56cb20942368c15aaa)
+
+- [`init`](/api-ref/rtsa/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_service#aab47fc030b290004c6d29a0a306db032)

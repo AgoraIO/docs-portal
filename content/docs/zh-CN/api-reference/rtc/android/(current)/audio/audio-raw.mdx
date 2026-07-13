@@ -1,6 +1,6 @@
 ---
 title: "原始音频数据"
-description: RTC Android API 参考迁移页。
+description: "原始音频数据 API reference."
 ---
 <a id="toc_audio_raw"></a>
 
@@ -28,10 +28,10 @@ SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onEarMon
 
 ### 返回值
 
-耳返音频数据格式，详见 [AudioParams](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-audioparams)。
+耳返音频数据格式，详见 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams)。
 
 ### 所属接口类
-- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioframeobserver)
+- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="api_iaudioframeobserver_getmixedaudioparams"></a>
 
@@ -57,10 +57,10 @@ SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onMixedA
 
 ### 返回值
 
-方法调用成功，返回 [AudioParams](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-audioparams) 对象。详见 [AudioParams](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-audioparams)。
+方法调用成功，返回 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams) 对象。详见 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams)。
 
 ### 所属接口类
-- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioframeobserver)
+- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="api_iaudioframeobserver_getobservedaudioframeposition"></a>
 
@@ -99,7 +99,7 @@ SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onMixedA
 - POSITION_EAR_MONITORING （0x0010）：可观察本地用户的耳返音频，对应 onEarMonitoringAudioFrame 回调。
 
 ### 所属接口类
-- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioframeobserver)
+- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="api_iaudioframeobserver_getplaybackaudioparams"></a>
 
@@ -118,17 +118,17 @@ public abstract AudioParams getPlaybackAudioParams()
 你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 方法时注册回调。在成功注册音频观测器后，SDK 会触发该回调。你可以在该回调的返回值中设置音频格式。
 
 :::info[注]
-SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-audioparams) 计算采样间隔，并以此触发 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调。采样间隔的计算公式为：采样间隔（秒） = `samplePerCall` /（`sampleRate` × `channel` ）。确保采样间隔 ≥ 0.01 秒。
+SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams) 计算采样间隔，并以此触发 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调。采样间隔的计算公式为：采样间隔（秒） = `samplePerCall` /（`sampleRate` × `channel` ）。确保采样间隔 ≥ 0.01 秒。
 :::
 
 <a id="api_iaudioframeobserver_getplaybackaudioparams__return_values"></a>
 
 ### 返回值
 
-方法调用成功，返回 [AudioParams](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-audioparams) 对象。详见 [AudioParams](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-audioparams)。
+方法调用成功，返回 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams) 对象。详见 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams)。
 
 ### 所属接口类
-- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioframeobserver)
+- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="api_iaudioframeobserver_getrecordaudioparams"></a>
 
@@ -147,17 +147,17 @@ SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/
 调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/android/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册回调后，SDK 会触发该回调。你可以在该回调的返回值中设置音频格式。
 
 :::info[注]
-SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-audioparams) 计算采样间隔并触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。采样间隔（秒） = `samplePerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。
+SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams) 计算采样间隔并触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。采样间隔（秒） = `samplePerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。
 :::
 
 <a id="api_iaudioframeobserver_getrecordaudioparams__return_values"></a>
 
 ### 返回值
 
-方法调用成功，返回 [AudioParams](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-audioparams) 对象。
+方法调用成功，返回 [AudioParams](/zh-CN/api-reference/rtc/android/class-audioparams) 对象。
 
 ### 所属接口类
-- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioframeobserver)
+- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="api_irtcengine_registeraudioframeobserver"></a>
 
@@ -193,17 +193,17 @@ public abstract int registerAudioFrameObserver(IAudioFrameObserver observer);
 
 #### `observer`
 
-音频帧观测器实例。详见 [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioframeobserver)。设置为 `null` 可释放该实例。建议在收到 [onLeaveChannel](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onleavechannel) 回调后调用此方法释放音频帧观测器对象。
+音频帧观测器实例。详见 [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioframeobserver)。设置为 `null` 可释放该实例。建议在收到 [onLeaveChannel](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onleavechannel) 回调后调用此方法释放音频帧观测器对象。
 
 <a id="api_irtcengine_registeraudioframeobserver__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters"></a>
 
@@ -221,10 +221,10 @@ public abstract int setEarMonitoringAudioFrameParameters(int sampleRate, int cha
 
 该方法用于设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调中报告的耳返音频数据格式。
 
-注：
-
+:::info[注]
 - 在调用该方法前，你需要先调用 enableInEarMonitoring 方法，并将 includeAudioFilters 设置为 EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS 或 EAR_MONITORING_FILTER_NOISE_SUPPRESSION。
 - SDK 会根据该方法中设置的 samplesPerCall、 sampleRate 和 channel 参数计算采样间隔。采样间隔（秒）= samplesPerCall /（sampleRate × channel ）。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 onEarMonitoringAudioFrame 回调。
+:::
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__parameters"></a>
 
@@ -257,10 +257,10 @@ public abstract int setEarMonitoringAudioFrameParameters(int sampleRate, int cha
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setmixedaudioframeparameters"></a>
 
@@ -308,10 +308,10 @@ SDK 会根据该方法中设置的 `samplesPerCall`、 `sampleRate` 和 `channel
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters"></a>
 
@@ -367,10 +367,10 @@ SDK 会根据采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-re
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1"></a>
 
@@ -420,10 +420,10 @@ public abstract int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframeparameters"></a>
 
@@ -484,10 +484,10 @@ SDK 会根据 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样�
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setrecordingaudioframeparameters"></a>
 
@@ -542,10 +542,10 @@ SDK 会根据 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样�
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_iaudioframeobserver_onearmonitoringaudioframe"></a>
 
@@ -617,7 +617,7 @@ public abstract boolean onEarMonitoringAudioFrame(int type, int samplesPerChanne
 - false：回调处理失败。
 
 ### 所属接口类
-- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioframeobserver)
+- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="callback_iaudioframeobserver_onmixedaudioframe"></a>
 
@@ -693,7 +693,7 @@ public abstract boolean onMixedAudioFrame(String channelId, int type, int sample
 - false：回调处理失败。
 
 ### 所属接口类
-- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioframeobserver)
+- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframe"></a>
 
@@ -769,7 +769,7 @@ public abstract boolean onPlaybackAudioFrame(String channelId, int type, int sam
 - false：回调处理失败。
 
 ### 所属接口类
-- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioframeobserver)
+- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing"></a>
 
@@ -854,7 +854,7 @@ RTP 时间戳。
 - false：处理失败。
 
 ### 所属接口类
-- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioframeobserver)
+- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioframeobserver)
 
 <a id="callback_iaudioframeobserver_onrecordaudioframe"></a>
 
@@ -930,4 +930,4 @@ public abstract boolean onRecordAudioFrame(String channelId, int type, int sampl
 - false：回调处理失败。
 
 ### 所属接口类
-- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioframeobserver)
+- [IAudioFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioframeobserver)

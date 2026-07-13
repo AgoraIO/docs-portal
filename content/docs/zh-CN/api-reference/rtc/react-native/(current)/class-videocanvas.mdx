@@ -1,0 +1,83 @@
+---
+title: "VideoCanvas"
+description: "视频画布对象的属性。"
+---
+<a id="class_videocanvas__prototype"></a>
+
+```typescript
+export class VideoCanvas {
+  view?: any
+  uid?: number;
+  subviewUid?: number;
+  backgroundColor?: number;
+  renderMode?: RenderModeType
+  mirrorMode?: VideoMirrorModeType
+  setupMode?: VideoViewSetupMode;
+  sourceType?: VideoSourceType
+  mediaPlayerId?: number;
+  cropArea?: Rectangle;
+  enableAlphaMask?: boolean;
+  position?: VideoModulePosition;
+}
+```
+
+<a id="class_videocanvas__parameters"></a>
+
+## 属性
+
+### `uid`
+
+对于 Android 和 iOS 平台，当视频源为合图视频流 (`VideoSourceTranscoded`) 时，该参数表示发布合图视频流的用户 ID。
+
+:::info[注]
+本地用户 `uid` 默认为 0。如果你想使用自定义的 `uid` 渲染本地视图，你还需要同时传入 `sourceType`。
+:::
+
+### `subviewUid`
+
+发布某一路合图子视频流的用户 ID。
+
+### `view`
+
+视频显示窗口。
+
+:::info[注]
+在一个 [VideoCanvas](/zh-CN/api-reference/rtc/react-native/class-videocanvas) 中，你只能选择 `view` 或 `surfaceTexture` 其中一个进行设置，如果同时设置，只有 `view` 中的设置会生效。
+:::
+
+### `renderMode`
+
+视频渲染模式，详见 [RenderModeType](/zh-CN/api-reference/rtc/react-native/enum-rendermodetype)。
+
+### `mirrorMode`
+
+视图镜像模式，详见 [VideoMirrorModeType](/zh-CN/api-reference/rtc/react-native/enum-videomirrormodetype)。
+
+:::info[注]
+- 本地视图镜像模式：如果你使用前置摄像头，默认启动本地视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
+- 远端用户视图镜像模式：默认关闭远端用户的镜像模式。
+:::
+
+### `sourceType`
+
+视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
+
+### `setupMode`
+
+视图设置模式。详见 [VideoViewSetupMode](/zh-CN/api-reference/rtc/react-native/enum-videoviewsetupmode)。
+
+### `mediaPlayerId`
+
+媒体播放器 ID。可通过 [getMediaPlayerId](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取。
+
+### `cropArea`
+
+（可选）视频帧的展示区域，详见 [Rectangle](/zh-CN/api-reference/rtc/react-native/class-rectangle)。其中， `width` 和 `height` 表示该区域的视频像素宽度和高度。默认值为空值 (宽或高为 0)，表示展示实际分辨率的视频帧。
+
+### `backgroundColor`
+
+视频画布的背景颜色，格式为 RGBA。默认值为 0x00000000，代表黑色。
+
+### `position`
+
+视频帧在视频链路中的位置。详见 [VideoModulePosition](/zh-CN/api-reference/rtc/react-native/enum-videomoduleposition)。

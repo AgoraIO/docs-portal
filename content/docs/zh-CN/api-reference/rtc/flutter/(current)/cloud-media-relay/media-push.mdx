@@ -1,0 +1,415 @@
+---
+title: "旁路推流"
+description: "旁路推流 API reference."
+---
+<a id="toc_media_push"></a>
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding"></a>
+
+## startRtmpStreamWithoutTranscoding
+
+开始非转码推流。
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding__prototype"></a>
+
+```dart
+Future<void> startRtmpStreamWithoutTranscoding(String url);
+```
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 调用该方法，你可以向指定的旁路推流地址推送直播音视频流。该方法每次只能向一个地址推送媒体流，如果你需要向多个地址转码推流，则需多次调用该方法。 调用该方法后，SDK 会在本地触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/flutter/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
+
+:::info[注]
+- 请在加入频道后调用该方法。
+- 只有直播场景下的主播才能调用该方法。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 stopRtmpStream，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+:::
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex"></a>
+
+## startRtmpStreamWithoutTranscodingEx
+
+开始非转码推流。
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__prototype"></a>
+
+```dart
+Future<void> startRtmpStreamWithoutTranscodingEx(
+      {required String url, required RtcConnection connection});
+```
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 调用该方法，你可以向指定的旁路推流地址推送直播音视频流。该方法每次只能向一个地址推送媒体流，如果你需要向多个地址转码推流，则需多次调用该方法。 调用该方法后，SDK 会在本地触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/flutter/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
+
+:::info[注]
+- 请在加入频道后调用该方法。
+- 只有直播场景下的主播才能调用该方法。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 stopRtmpStream，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+:::
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding"></a>
+
+## startRtmpStreamWithTranscoding
+
+开始旁路推流并设置转码属性。
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding__prototype"></a>
+
+```dart
+Future<void> startRtmpStreamWithTranscoding(
+    {required String url, required LiveTranscoding transcoding});
+```
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 调用该方法，你可以向指定的旁路推流地址推送直播音视频流并设置转码属性。该方法每次只能向一个地址推送媒体流，如果你需要向多个地址转码推流，则需多次调用该方法。 一次推流代表一个推流任务，最大并发任务数默认为 200，表示你在一个声网项目下最多同时运行 200 个推流任务，如需更高配额，请[联系技术支持](https://ticket.shengwang.cn/)。 调用该方法后，SDK 会在本地触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/flutter/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
+
+:::info[注]
+- 请在加入频道后调用该方法。
+- 只有直播场景下的主播才能调用该方法。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 stopRtmpStream，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+:::
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+#### `transcoding`
+
+旁路推流的转码属性，详见 [LiveTranscoding](/zh-CN/api-reference/rtc/flutter/class-livetranscoding)。
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex"></a>
+
+## startRtmpStreamWithTranscodingEx
+
+开始旁路推流并设置转码属性。
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__prototype"></a>
+
+```dart
+Future<void> startRtmpStreamWithTranscodingEx(
+      {required String url,
+      required LiveTranscoding transcoding,
+      required RtcConnection connection});
+```
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 调用该方法，你可以向指定的旁路推流地址推送直播音视频流并设置转码属性。该方法每次只能向一个地址推送媒体流，如果你需要向多个地址转码推流，则需多次调用该方法。 调用该方法后，SDK 会在本地触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/flutter/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
+
+:::info[注]
+- 请确保已开通旁路推流服务。
+- 请在加入频道后调用该方法。
+- 只有直播场景下的主播才能调用该方法。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 stopRtmpStreamEx，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+:::
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+#### `transcoding`
+
+旁路推流的转码属性，详见 [LiveTranscoding](/zh-CN/api-reference/rtc/flutter/class-livetranscoding)。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_stoprtmpstream"></a>
+
+## stopRtmpStream
+
+结束旁路推流。
+
+<a id="api_irtcengine_stoprtmpstream__prototype"></a>
+
+```dart
+Future<void> stopRtmpStream(String url);
+```
+
+<a id="api_irtcengine_stoprtmpstream__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 调用该方法，你可以结束指定的旁路推流地址上的直播。该方法每次只能结束一个推流地址上的直播，如果你需要结束多个推流地址的直播，则需多次调用该方法。 调用该方法后，SDK 会在本地触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/flutter/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
+
+<a id="api_irtcengine_stoprtmpstream__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+<a id="api_irtcengine_stoprtmpstream__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_stoprtmpstreamex"></a>
+
+## stopRtmpStreamEx
+
+结束旁路推流。
+
+<a id="api_irtcengineex_stoprtmpstreamex__prototype"></a>
+
+```dart
+Future<void> stopRtmpStreamEx(
+      {required String url, required RtcConnection connection});
+```
+
+<a id="api_irtcengineex_stoprtmpstreamex__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 调用该方法，你可以结束指定的旁路推流地址上的直播。该方法每次只能结束一个推流地址上的直播，如果你需要结束多个推流地址的直播，则需多次调用该方法。 调用该方法后，SDK 会在本地触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/flutter/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
+
+<a id="api_irtcengineex_stoprtmpstreamex__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+<a id="api_irtcengineex_stoprtmpstreamex__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_updatertmptranscoding"></a>
+
+## updateRtmpTranscoding
+
+更新旁路推流转码属性。
+
+<a id="api_irtcengine_updatertmptranscoding__prototype"></a>
+
+```dart
+Future<void> updateRtmpTranscoding(LiveTranscoding transcoding);
+```
+
+<a id="api_irtcengine_updatertmptranscoding__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 开启转码推流后，你可以根据场景需求，动态更新转码属性。转码属性更新后，SDK 会触发 [onTranscodingUpdated](/zh-CN/api-reference/rtc/flutter/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) 回调。
+
+<a id="api_irtcengine_updatertmptranscoding__parameters"></a>
+
+### 参数
+
+#### `transcoding`
+
+旁路推流的转码属性，详见 [LiveTranscoding](/zh-CN/api-reference/rtc/flutter/class-livetranscoding)。
+
+<a id="api_irtcengine_updatertmptranscoding__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_updatertmptranscodingex"></a>
+
+## updateRtmpTranscodingEx
+
+更新旁路推流转码属性。
+
+<a id="api_irtcengineex_updatertmptranscodingex__prototype"></a>
+
+```dart
+Future<void> updateRtmpTranscodingEx(
+      {required LiveTranscoding transcoding,
+      required RtcConnection connection});
+```
+
+<a id="api_irtcengineex_updatertmptranscodingex__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 开启转码推流后，你可以根据场景需求，动态更新转码属性。转码属性更新后，SDK 会触发 [onTranscodingUpdated](/zh-CN/api-reference/rtc/flutter/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) 回调。
+
+<a id="api_irtcengineex_updatertmptranscodingex__parameters"></a>
+
+### 参数
+
+#### `transcoding`
+
+旁路推流的转码属性，详见 [LiveTranscoding](/zh-CN/api-reference/rtc/flutter/class-livetranscoding)。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+<a id="api_irtcengineex_updatertmptranscodingex__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingevent"></a>
+
+## onRtmpStreamingEvent
+
+旁路推流事件回调。
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingevent__prototype"></a>
+
+```dart
+final void Function(String url, RtmpStreamingEvent eventCode)?
+      onRtmpStreamingEvent;
+```
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingevent__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingevent__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流 URL。
+
+#### `eventCode`
+
+旁路推流事件码。详见 [RtmpStreamingEvent](/zh-CN/api-reference/rtc/flutter/enum-rtmpstreamingevent)。
+
+### 所属接口类
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged"></a>
+
+## onRtmpStreamingStateChanged
+
+旁路推流状态发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__prototype"></a>
+
+```dart
+final void Function(String url, RtmpStreamPublishState state,
+    RtmpStreamPublishReason reason)? onRtmpStreamingStateChanged;
+```
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__detailed_desc"></a>
+
+旁路推流状态发生改变时，SDK会触发该回调，并在回调中明确状态发生改变的 URL 地址及当前推流状态。该回调方便推流用户了解当前的推流状态；推流出错时，你可以通过返回的错误码了解出错的原因，方便排查问题。
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__parameters"></a>
+
+### 参数
+
+#### `url`
+
+推流状态发生改变的 URL 地址。
+
+#### `state`
+
+当前的推流状态，详见 [RtmpStreamPublishState](/zh-CN/api-reference/rtc/flutter/enum-rtmpstreampublishstate)。
+
+#### `reason`
+
+推流状态改变的原因，详见 [RtmpStreamPublishReason](/zh-CN/api-reference/rtc/flutter/enum-rtmpstreampublishreason)。
+
+### 所属接口类
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_ontranscodingupdated"></a>
+
+## onTranscodingUpdated
+
+旁路推流转码设置已被更新回调。
+
+<a id="callback_irtcengineeventhandler_ontranscodingupdated__prototype"></a>
+
+```dart
+final void Function()? onTranscodingUpdated;
+```
+
+<a id="callback_irtcengineeventhandler_ontranscodingupdated__detailed_desc"></a>
+
+[startRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/flutter/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法中的直播参数 [LiveTranscoding](/zh-CN/api-reference/rtc/flutter/class-livetranscoding) 更新时， [onTranscodingUpdated](/zh-CN/api-reference/rtc/flutter/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) 回调会被触发并向主播报告更新信息。
+
+:::info[注]
+首次调用 [startRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/flutter/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法设置转码参数 [LiveTranscoding](/zh-CN/api-reference/rtc/flutter/class-livetranscoding) 时，不会触发此回调。
+:::
+
+### 所属接口类
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)

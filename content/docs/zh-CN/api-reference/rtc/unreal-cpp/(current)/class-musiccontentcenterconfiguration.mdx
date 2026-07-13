@@ -1,0 +1,50 @@
+---
+title: "MusicContentCenterConfiguration"
+description: "音乐内容中心的设置。"
+---
+<a id="class_musiccontentcenterconfiguration__prototype"></a>
+
+```cpp
+struct MusicContentCenterConfiguration {
+    const char *appId;
+    const char *token;
+    int64_t mccUid;
+    int32_t maxCacheSize;
+
+    IMusicContentCenterEventHandler* eventHandler;
+    MusicContentCenterConfiguration():appId(nullptr),token(nullptr),eventHandler(nullptr),mccUid(0),maxCacheSize(10){}
+    MusicContentCenterConfiguration(const char*appid,const char* token,int64_t id,IMusicContentCenterEventHandler* handler,int32_t maxSize = 10):
+        appId(appid),token(token),mccUid(id),eventHandler(handler),maxCacheSize(maxSize){}
+};
+```
+
+<a id="class_musiccontentcenterconfiguration__detailed_desc"></a>
+
+<a id="class_musiccontentcenterconfiguration__parameters"></a>
+
+## 属性
+
+### `appId`
+
+已启用内容中心的项目的 App ID。
+
+### `token`
+
+使用音乐内容中心时，用于鉴权的 RTM Token。
+
+:::info[注]
+- 声网推荐你使用 AccessToken2 进行鉴权，详见 部署 Token 服务器。生成 Token 时，请向 uid 传入 String 型的 mccUid。
+- 当你的 Token 即将过期时，你可以调用 renewToken 来传入新的 Token。
+:::
+
+### `mccUid`
+
+使用音乐内容中心的用户 ID，该 ID 可以和你加入 RTC 频道时使用的 uid 一致，但不能为 0。
+
+### `eventHandler`
+
+待接收的事件回调，详见 [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcentereventhandler)。
+
+### `maxCacheSize`
+
+可缓存的音乐资源数量，最多不能超过 50。

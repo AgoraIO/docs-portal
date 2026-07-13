@@ -1,0 +1,195 @@
+---
+title: "虚拟节拍器"
+description: "虚拟节拍器 API reference."
+---
+<a id="toc_rhythmplayer"></a>
+
+<a id="api_irtcengine_configrhythmplayer"></a>
+
+## configRhythmPlayer
+
+配置虚拟节拍器。
+
+<a id="api_irtcengine_configrhythmplayer__prototype"></a>
+
+```typescript
+abstract configRhythmPlayer(config: AgoraRhythmPlayerConfig): number;
+```
+
+<a id="api_irtcengine_configrhythmplayer__detailed_desc"></a>
+
+#### `废弃`
+
+自 v4.6.2 版本废弃。
+
+- 调用 startRhythmPlayer 后，你可以调用该方法重新配置虚拟节拍器。
+- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 AgoraRhythmPlayerConfig 中设置的 beatsPerMinute 控制每个文件的播放时长。例如，将 beatsPerMinute 设为 60，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
+- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 ChannelMediaOptions 中的 publishRhythmPlayerTrack 设为 true。
+
+<a id="api_irtcengine_configrhythmplayer__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_configrhythmplayer__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会在本地触发 [onRhythmPlayerStateChanged](/zh-CN/api-reference/rtc/react-native/play/rhythmplayer#callback_irtcengineeventhandler_onrhythmplayerstatechanged) 回调，报告虚拟节拍器的状态。
+
+<a id="api_irtcengine_configrhythmplayer__parameters"></a>
+
+### 参数
+
+#### `config`
+
+节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/react-native/class-agorarhythmplayerconfig)。
+
+<a id="api_irtcengine_configrhythmplayer__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startrhythmplayer"></a>
+
+## startRhythmPlayer
+
+开启虚拟节拍器。
+
+<a id="api_irtcengine_startrhythmplayer__prototype"></a>
+
+```typescript
+abstract startRhythmPlayer(
+  sound1: string,
+  sound2: string,
+  config: AgoraRhythmPlayerConfig
+): number;
+```
+
+<a id="api_irtcengine_startrhythmplayer__detailed_desc"></a>
+
+#### `废弃`
+
+自 v4.6.2 版本废弃。
+
+- 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 AgoraRhythmPlayerConfig 中设置的 beatsPerMinute 控制每个文件的播放时长。例如，将 beatsPerMinute 设为 60，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
+- 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 ChannelMediaOptions 中的 publishRhythmPlayerTrack 设为 true。
+
+<a id="api_irtcengine_startrhythmplayer__scenario"></a>
+
+### 适用场景
+
+在音乐教学、体育教学等场景中，老师通常需要使用节拍器，让学生跟着正确的节拍练习。节拍由强拍和弱拍组成，每小节的第一拍称为强拍，其余称为弱拍。
+
+<a id="api_irtcengine_startrhythmplayer__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_startrhythmplayer__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会在本地触发 [onRhythmPlayerStateChanged](/zh-CN/api-reference/rtc/react-native/play/rhythmplayer#callback_irtcengineeventhandler_onrhythmplayerstatechanged) 回调，报告虚拟节拍器的状态。
+
+<a id="api_irtcengine_startrhythmplayer__parameters"></a>
+
+### 参数
+
+#### `sound1`
+
+强拍文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
+
+#### `sound2`
+
+弱拍文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。
+
+#### `config`
+
+节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/react-native/class-agorarhythmplayerconfig)。
+
+<a id="api_irtcengine_startrhythmplayer__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败
+  - -22: 无法找到音频文件。请填写正确的 sound1 和 sound2。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoprhythmplayer"></a>
+
+## stopRhythmPlayer
+
+关闭虚拟节拍器。
+
+<a id="api_irtcengine_stoprhythmplayer__prototype"></a>
+
+```typescript
+abstract stopRhythmPlayer(): number;
+```
+
+<a id="api_irtcengine_stoprhythmplayer__detailed_desc"></a>
+
+#### `废弃`
+
+自 v4.6.2 版本废弃。
+
+调用 [startRhythmPlayer](/zh-CN/api-reference/rtc/react-native/play/rhythmplayer#api_irtcengine_startrhythmplayer) 后，你可以调用该方法关闭虚拟节拍器。
+
+<a id="api_irtcengine_stoprhythmplayer__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged"></a>
+
+## onRhythmPlayerStateChanged
+
+虚拟节拍器状态发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__prototype"></a>
+
+```typescript
+onRhythmPlayerStateChanged?(
+    state: RhythmPlayerStateType,
+    reason: RhythmPlayerReason
+  ): void;
+```
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__detailed_desc"></a>
+
+#### `废弃`
+
+自 v4.6.2 版本废弃。
+
+虚拟节拍器状态发生改变时，SDK 会触发该回调报告当前的虚拟节拍器状态。在虚拟节拍器出现故障时，该回调可以帮助你了解当前虚拟节拍的状态以及出现故障的原因，方便你排查问题。
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__parameters"></a>
+
+### 参数
+
+#### `state`
+
+当前的虚拟节拍器状态，详见 [RhythmPlayerStateType](/zh-CN/api-reference/rtc/react-native/enum-rhythmplayerstatetype)。
+
+#### `reason`
+
+虚拟节拍器发生错误的错误码和错误信息，详见 [RhythmPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-rhythmplayerreason)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,0 +1,447 @@
+---
+title: "Webhook 回调事件"
+---
+Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送数据。
+
+声网的消息通知服务使用 Webhook 向你推送特定事件的通知，当你订阅的事件发生时，声网业务服务器会将事件消息发送给声网消息通知服务器，然后声网消息通知服务器会通过 HTTPS POST 请求将事件通知投递给你的服务器。
+
+![消息通知服务](https://web-cdn.agora.io/doc-cms/uploads/1727074548122-Webhook.png)
+
+## 适用场景
+
+互动白板的消息通知服务可以在业务层维护一个实时同步的状态机，实现实时监听文档转换任务的进度和运行状态信息。
+
+## 前提条件
+
+开始之前，请确保你满足以下条件：
+
+- 已开启文档转换服务并配置第三方云存储的有效声网项目。详见[使用文档转换服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files)。
+- 满足以下条件的服务器：
+  - 支持 HTTPS 协议。为提高安全性，声网消息通知服务不再支持 HTTP 服务器地址。
+  - （推荐）支持 HTTPS 连接重用，即 keep-alive 模式，以降低消息投递延时。声网建议进行如下设置：
+    - `MaxKeepAliveRequests`：大于等于 100。
+    - `KeepAliveTimeout`：大于等于 10 秒。
+
+## 启用文档转换 Webhook 回调
+
+调用[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)时，在请求 Body 中的 `webhookEndpoint` 字段传入 Webhook 回调地址即可对本次转换启用文档转换 Webhook 回调。你也可以通过 `webhookRetry` 字段配置回调失败时的重试次数。回调内容和字段解释详见 [Webhook 回调内容](#webhook-回调内容)。
+
+```shell
+curl --request POST \
+  --url https://api.netless.link/v5/projector/tasks \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --header 'region: cn-hz' \
+  --header 'token: NETLESSSDK_YWs9xxxxxxM2MjRi' \
+  --data '{
+  "resource": "https://docs-test-xx.oss-cn-hangzhou.aliyuncs.com/xxx",
+  "type": "dynamic",
+  "preview": true,
+  // highlight-start
+  # 配置 Webhook 回调地址
+  "webhookEndpoint": "https://example.com/agoracallback",
+  # 配置 Webhook 回调失败时的重试次数
+  "webhookRetry": 3,
+  // highlight-end
+  "imageCompressionLevel": 0
+}'
+```
+
+转换任务完成时，声网消息服务器会以 HTTPS POST 请求的形式向你的服务器发送消息通知回调。数据格式为 JSON，字符编码为 UTF-8，签名算法为 HMAC/SHA1 或 HMAC/SHA256。
+
+## 验证签名
+
+为提高声网消息服务器和你的服务器之间的通信安全，你可以通过签名机制进行身份验证，确保接收到的请求来自声网。
+
+当声网向你的服务器发送消息通知回调时，会使用密钥通过 HMAC/SHA1 和 HMAC/SHA256 算法生成签名值，并分别添加在 HTTPS 请求 Header 的 `Agora-Signature` 和 `Agora-Signature-V2` 字段中。
+
+参考以下步骤进行签名验证：
+
+1. 获取密钥：登录控制台，在**互动白板-功能配置**页面点击**生成 webhook 密钥**为你的项目生成一个文档转换 Webhook 密钥。
+
+![控制台中的生成 webhook 密钥入口](https://web-cdn.agora.io/docs-portal/img/whiteboard/webhook.png)
+
+2. 收到回调后，使用密钥和请求包体里的参数，选用 HMAC/SHA1 或 HMAC/SHA256 算法计算签名值。
+
+3. 将你计算出的签名与请求 Header 中对应的字段进行对比：
+
+   - 如果你选用 HMAC/SHA1 算法：将计算值与 `Agora-Signature` 字段对比。二者完全相同则说明该请求是由声网发送的。
+   - 如果你选用 HMAC/SHA256 算法：将计算值与 `Agora-Signature-V2` 字段对比。二者完全相同则说明该请求是由声网发送的。
+
+声网提供多种语言的验证签名示例代码供你参考。
+
+<Accordions>
+<Accordion title="Python 示例">
+
+<Tabs defaultValue="256" groupId="signature" persist>
+<TabsList>
+  <TabsTrigger value="256">HMAC/SHA256</TabsTrigger>
+  <TabsTrigger value="1">HMAC/SHA1</TabsTrigger>
+</TabsList>
+
+<TabsContent value="256">
+
+:::warning[注意]
+如下代码中的 `request_body` 是反序列化之前的 binary byte array，不是反序列化之后的 Dictionary。
+:::
+
+```python
+#!/usr/bin/env python2
+# !-*- coding: utf-8 -*-
+import hashlib
+import hmac
+# 拿到消息通知的 raw request body 并对其计算签名
+request_body = '{"type": "dynamic_conversion","taskId": "c705b8axxxxxxxxx669421","time": 1724307537510,"prefixUrl": "https://example.com/preview/dynamicConvert","status": {"code": 0"message": "ok"},"pageCount": 10,}'
+secret = 'secret'
+signature2 = hmac.new(secret, request_body, hashlib.sha256).hexdigest()
+print(signature2) 
+```
+
+</TabsContent>
+
+<TabsContent value="1">
+
+:::warning[注意]
+如下代码中的 `request_body` 是反序列化之前的 binary byte array，不是反序列化之后的 Dictionary。
+:::
+
+```python
+#!/usr/bin/env python2
+# !-*- coding: utf-8 -*-
+import hashlib
+import hmac
+# 拿到消息通知的 raw request body 并对其计算签名
+request_body = '{"type": "dynamic_conversion","taskId": "c705b8axxxxxxxxx669421","time": 1724307537510,"prefixUrl": "https://example.com/preview/dynamicConvert","status": {"code": 0"message": "ok"},"pageCount": 10,}'
+secret = 'secret'
+signature = hmac.new(secret, request_body, hashlib.sha1).hexdigest()
+print(signature) 
+```
+
+</TabsContent>
+</Tabs>
+
+</Accordion>
+
+<Accordion title="Node.js 示例">
+
+```javascript tab="HMAC/SHA256" tabGroup="signature"
+const crypto = require('crypto')
+// 拿到消息通知的 raw request body 并对其计算签名，也就是说下面代码中的 requestBody 是反序列化之前的 binary byte array，不是反序列化之后的 object
+const requestBody = '{"type": "dynamic_conversion","taskId": "c705b8axxxxxxxxx669421","time": 1724307537510,"prefixUrl": "https://example.com/preview/dynamicConvert","status": {"code": 0"message": "ok"},"pageCount": 10,}'
+const secret = 'secret'
+const signature2 = crypto.createHmac('sha256', secret).update(requestBody, 'utf8').digest('hex')
+console.log(signature2)
+```
+
+```javascript tab="HMAC/SHA1" tabGroup="signature"
+const crypto = require('crypto')
+// 拿到消息通知的 raw request body 并对其计算签名，也就是说下面代码中的 requestBody 是反序列化之前的 binary byte array，不是反序列化之后的 object
+const requestBody = '{"type": "dynamic_conversion","taskId": "c705b8axxxxxxxxx669421","time": 1724307537510,"prefixUrl": "https://example.com/preview/dynamicConvert","status": {"code": 0"message": "ok"},"pageCount": 10,}'
+const secret = 'secret'
+const signature = crypto.createHmac('sha1', secret).update(requestBody, 'utf8').digest('hex')
+console.log(signature)
+```
+
+</Accordion>
+
+<Accordion title="Java 示例">
+
+<Tabs defaultValue="256" groupId="signature" persist>
+<TabsList>
+  <TabsTrigger value="256">HMAC/SHA256</TabsTrigger>
+  <TabsTrigger value="1">HMAC/SHA1</TabsTrigger>
+</TabsList>
+
+<TabsContent value="256">
+
+:::warning[注意]
+如下代码中的 `request_body` 是反序列化之前的 binary byte array，不是反序列化之后的 Object。
+:::
+
+```java
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+public class HmacSha {
+    // 将加密后的字节数组转换成字符串
+    public static String bytesToHex(byte[] bytes) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < bytes.length; i++) {
+            String hex = Integer.toHexString(bytes[i] & 0xFF);
+            if (hex.length() < 2) {
+                sb.append(0);
+            }
+            sb.append(hex);
+        }
+        return sb.toString();
+    }
+    // HMAC/SHA256 加密，返回加密后的字符串
+    public static String hmacSha256(String message, String secret) {
+        try {
+            SecretKeySpec signingKey = new SecretKeySpec(secret.getBytes(
+                        "utf-8"), "HmacSHA256");
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(signingKey);
+            byte[] rawHmac = mac.doFinal(message.getBytes("utf-8"));
+            return bytesToHex(rawHmac);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void main(String[] args) {
+        // 拿到消息通知的 raw request body 并对其计算签名
+        String request_body = "{\"type\": \"dynamic_conversion\",\"taskId\": \"c705b8axxxxxxxxx669421\",\"time\": 1724307537510,\"prefixUrl\": \"https://example.com/preview/dynamicConvert\",\"status\": {\"code\": 0\"message\": \"ok\"},\"pageCount\": 10,}";
+        String secret = "secret";
+        System.out.println(hmacSha256(request_body, secret)); 
+    }
+}
+```
+
+</TabsContent>
+
+<TabsContent value="1">
+
+:::warning[注意]
+如下代码中的 `request_body` 是反序列化之前的 binary byte array，不是反序列化之后的 Object。
+:::
+
+```java
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+public class HmacSha {
+    // 将加密后的字节数组转换成字符串
+    public static String bytesToHex(byte[] bytes) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < bytes.length; i++) {
+            String hex = Integer.toHexString(bytes[i] & 0xFF);
+            if (hex.length() < 2) {
+                sb.append(0);
+            }
+            sb.append(hex);
+        }
+        return sb.toString();
+    }
+    // HMAC/SHA1 加密，返回加密后的字符串
+    public static String hmacSha1(String message, String secret) {
+        try {
+            SecretKeySpec signingKey = new SecretKeySpec(secret.getBytes(
+                        "utf-8"), "HmacSHA1");
+            Mac mac = Mac.getInstance("HmacSHA1");
+            mac.init(signingKey);
+            byte[] rawHmac = mac.doFinal(message.getBytes("utf-8"));
+            return bytesToHex(rawHmac);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void main(String[] args) {
+        // 拿到消息通知的 raw request body 并对其计算签名
+        String request_body = "{\"type\": \"dynamic_conversion\",\"taskId\": \"c705b8axxxxxxxxx669421\",\"time\": 1724307537510,\"prefixUrl\": \"https://example.com/preview/dynamicConvert\",\"status\": {\"code\": 0\"message\": \"ok\"},\"pageCount\": 10,}";
+        String secret = "secret";
+        System.out.println(hmacSha1(request_body, secret)); 
+    }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+</Accordion>
+
+<Accordion title="PHP 示例">
+
+```php tab="HMAC/SHA256" tabGroup="signature"
+<?php
+function assertEqual($expect, $actual)
+{
+    if ($expect != $actual) {
+        echo("\n assert failed");
+        echo("\n  expect:\n    " . $expect);
+        echo("\n  actual:\n    " . $actual);
+        echo("\n");
+    } else {
+        echo("assert ok\n");
+        echo("\n");
+    }
+}
+// 拿到消息通知的 raw request body 并对其计算签名，也就是说下面代码中的 requestBody 是反序列化之前的 binary byte array，不是反序列化之后的 object
+$request_body = '{"type": "dynamic_conversion","taskId": "c705b8axxxxxxxxx669421","time": 1724307537510,"prefixUrl": "https://example.com/preview/dynamicConvert","status": {"code": 0"message": "ok"},"pageCount": 10,}';
+$secret = 'secret';
+// 请求 header 中 Agora-Signature-V2 的值
+$sha256 = 'de96da5acf03b0021ac3b4fa2225e7ae6f3533a30d50bb02c08ea4fa748bda24';
+$res2 = (hash_hmac('sha256', $request_body, $secret));
+assertEqual($res2, $sha256);
+?>
+```
+
+```php tab="HMAC/SHA1" tabGroup="signature"
+<?php
+function assertEqual($expect, $actual)
+{
+    if ($expect != $actual) {
+        echo("\n assert failed");
+        echo("\n  expect:\n    " . $expect);
+        echo("\n  actual:\n    " . $actual);
+        echo("\n");
+    } else {
+        echo("assert ok\n");
+        echo("\n");
+    }
+}
+// 拿到消息通知的 raw request body 并对其计算签名，也就是说下面代码中的 requestBody 是反序列化之前的 binary byte array，不是反序列化之后的 object
+$request_body = '{"type": "dynamic_conversion","taskId": "c705b8axxxxxxxxx669421","time": 1724307537510,"prefixUrl": "https://example.com/preview/dynamicConvert","status": {"code": 0"message": "ok"},"pageCount": 10,}';
+$secret = 'secret';
+// 请求 header 中 Agora-Signature 的值
+$sha1 = '5a3bb6a6d9fad2ea9ae3fb707a14c9d7f3136df1';
+$res1 = (hash_hmac('sha1', $request_body, $secret));
+assertEqual($res1, $sha1);
+?>
+```
+
+</Accordion>
+
+<Accordion title="Go 示例">
+
+<Tabs defaultValue="256" groupId="signature" persist>
+<TabsList>
+  <TabsTrigger value="256">HMAC/SHA256</TabsTrigger>
+  <TabsTrigger value="1">HMAC/SHA1</TabsTrigger>
+</TabsList>
+
+<TabsContent value="256">
+
+:::warning[注意]
+如下代码中的 `requestBody` 是反序列化之前的 binary byte array，不是反序列化之后的 Dictionary。
+:::
+
+```go
+package main
+import (
+  "crypto/hmac"
+  "crypto/sha256"
+  "encoding/hex"
+  "fmt"
+)
+func main() {
+  // 拿到消息通知的 raw request body 并对其计算签名
+  request_body := `{"type": "dynamic_conversion","taskId": "c705b8axxxxxxxxx669421","time": 1724307537510,"prefixUrl": "https://example.com/preview/dynamicConvert","status": {"code": 0"message": "ok"},"pageCount": 10,}`
+  secret := "secret"
+  fmt.Println(calcSignatureV2(secret, request_body)) 
+}
+func calcSignatureV2(secret, payload string) string {
+  mac := hmac.New(sha256.New, []byte(secret))
+  mac.Write([]byte(payload))
+  return hex.EncodeToString(mac.Sum(nil))
+}
+```
+
+</TabsContent>
+
+<TabsContent value="1">
+
+:::warning[注意]
+如下代码中的 `request_body` 是反序列化之前的 binary byte array，不是反序列化之后的 Dictionary。
+:::
+
+```go
+package main
+import (
+  "crypto/hmac"
+  "crypto/sha1"
+  "encoding/hex"
+  "fmt"
+)
+func main() {
+  // 拿到消息通知的 raw request body 并对其计算签名
+  request_body := `{"type": "dynamic_conversion","taskId": "c705b8axxxxxxxxx669421","time": 1724307537510,"prefixUrl": "https://example.com/preview/dynamicConvert","status": {"code": 0"message": "ok"},"pageCount": 10,}`
+  secret := "secret"
+  fmt.Println(calcSignatureV1(secret, request_body))
+}
+func calcSignatureV1(secret, payload string) string {
+  mac := hmac.New(sha1.New, []byte(secret))
+  mac.Write([]byte(payload))
+  return hex.EncodeToString(mac.Sum(nil))
+}
+```
+
+</TabsContent>
+</Tabs>
+
+</Accordion>
+</Accordions>
+
+## 参考信息
+
+### 开发注意事项
+
+- 声网消息通知服务不保证消息通知完全按照事件发生的顺序到达，你的服务器需要能处理乱序消息。
+- 为提高消息服务的可靠性，每次事件可能会有不止一次消息通知，你的服务器需要能处理重复消息。
+
+### Webhook 回调内容
+
+#### 请求 Header
+
+消息通知回调的请求头部包含以下字段：
+
+| 字段名               | 值                                                           |
+| :------------------- | :----------------------------------------------------------- |
+| `Content-Type`       | Application/json                                             |
+| `Agora-Signature`    | 声网用客户密钥和 HMAC/SHA1 算法生成的签名值。你需要使用客户密钥和 HMAC/SHA1 算法来验证该签名值。详见[验证签名](#验证签名)。 |
+| `Agora-Signature-V2` | 声网用客户密钥和 HMAC/SHA256 算法生成的签名值。你需要使用客户密钥和 HMAC/SHA256 算法来验证该签名值。详见[验证签名](#验证签名)。 |
+
+#### 请求 Body
+
+消息通知回调的请求 Body 包含以下字段：
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| code | Number | 转换任务状态码，转换成功时为 `0`，失败时会返回错误码，详见[文档转换错误码](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/response-code#文档转换错误码)。 |
+| message | String | 错误码对应的错误消息，描述出错的原因。仅在转换任务失败时，才会返回该字段。 |
+| data | JSON Object | 转换任务相关数据，字段说明见下方。 |
+
+`data` 包含以下字段：
+
+- `taskId`：String。转换任务的 UUID，即转换任务的唯一标识符。
+- `taskType`：转换任务类型，取值如下：
+  - `dynamic_convert`：动态文档转换，即文档转网页。
+  - `static_convert`：静态文档转换，即文档转图片。
+- `prefixUrl`：String。转换结果文件地址前缀路径。
+- `pageCount`：Number。文档页数，转换任务失败时没有该字段。
+- `previews`：JSON Object。转换后的文档预览图地址，每页对应一个预览图地址。该参数仅在[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)时，请求包体中的 `preview` 设为 `true `，且 `type` 设为 `dynamic` 时才生效。
+- `images`：JSON Object。文档转图片结果的地址和图片参数，每页对应一张图片。该参数仅在[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)时，请求包体中的 `type` 设为 `static` 时才生效。
+  - `width`：Number。图片宽度 (px)。
+  - `height`：Number。图片高度 (px)。
+  - `url`：String。图片连接地址。
+- `note`：String。从文档中提取出的所有备注内容。
+- `noticeTimestamp`：Number。发送请求的时间戳。
+
+以下为请求包体示例：
+
+```json
+{
+    "code": 0,
+    "message": "ok",
+    "data": {
+        "taskId": "0d2c7604b730xxxxxxxxx1e31d344c",
+        "taskType": "dynamic_convert",
+        "pageCount": 5,
+        "previews": {
+            "1": "https://conversion-demo-cn.oss-cn-hangzhou.aliyuncs.com/demo/dynamicConvert/0d2c7604b730xxxxxxxxx1e31d344c/preview/1.png",
+            "2": "https://conversion-demo-cn.oss-cn-hangzhou.aliyuncs.com/demo/dynamicConvert/0d2c7604b730xxxxxxxxx1e31d344c/preview/2.png",
+            "3": "https://conversion-demo-cn.oss-cn-hangzhou.aliyuncs.com/demo/dynamicConvert/0d2c7604b730xxxxxxxxx1e31d344c/preview/3.png",
+            "4": "https://conversion-demo-cn.oss-cn-hangzhou.aliyuncs.com/demo/dynamicConvert/0d2c7604b730xxxxxxxxx1e31d344c/preview/4.png",
+            "5": "https://conversion-demo-cn.oss-cn-hangzhou.aliyuncs.com/demo/dynamicConvert/0d2c7604b730xxxxxxxxx1e31d344c/preview/5.png"
+        },
+        "note": "https://conversion-demo-cn.oss-cn-hangzhou.aliyuncs.com/demo/dynamicConvert/0d2c7604b730xxxxxxxxx1e31d344c/jsonOutput/note.json",
+        "prefix": "https://conversion-demo-cn.oss-cn-hangzhou.aliyuncs.com/demo/dynamicConvert",
+        "noticeTimestamp": 1724322571541
+    }
+}
+```
+
+### 相关文档
+
+- [使用文档转换服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files)
+- [发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)
+- [查询转换任务进度](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)

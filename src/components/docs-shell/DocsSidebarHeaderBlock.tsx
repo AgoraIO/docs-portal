@@ -2,6 +2,7 @@
 
 import { Link } from '@tanstack/react-router';
 import { CheckIcon, ChevronDownIcon, ChevronLeftIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -12,18 +13,23 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/cn';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
+import type { AppLocale } from '@/lib/i18n/i18n-config';
 
 export function DocsSidebarHeaderBlock({
   className,
   header,
+  locale,
   mode,
   onSelectPath,
 }: {
   className?: string;
   header: DocsSidebarHeader;
+  locale: AppLocale;
   mode: 'desktop' | 'mobile';
   onSelectPath: () => void;
 }) {
+  const { i18n } = useTranslation('common');
+  const t = i18n.getFixedT(locale, 'common');
   const versionSwitcher = header.versionSwitcher;
   const currentVersion = versionSwitcher?.versions.find(
     (version) => version.id === versionSwitcher.currentId,
@@ -67,7 +73,7 @@ export function DocsSidebarHeaderBlock({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              aria-label="Select documentation version"
+              aria-label={t('docs.versionSelect')}
               className={cn(
                 'mt-2 h-8 max-w-full justify-between gap-2 rounded-md px-2.5 text-[13px] data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
                 mode === 'desktop' ? 'mx-2 w-[calc(100%-1rem)]' : 'w-full',
@@ -81,7 +87,7 @@ export function DocsSidebarHeaderBlock({
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="start"
-            aria-label="Documentation versions"
+            aria-label={t('docs.versionMenuLabel')}
             className="w-48 rounded-lg p-1"
           >
             <DropdownMenuGroup>

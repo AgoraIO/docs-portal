@@ -1,0 +1,37 @@
+---
+title: "ExtensionContext"
+description: "扩展的上下文信息。"
+---
+<a id="class_extensioncontext__prototype"></a>
+
+```cpp
+struct ExtensionContext {
+    bool isValid;
+    uid_t uid;
+    const char *providerName;
+    const char *extensionName;
+};
+```
+
+<a id="class_extensioncontext__parameters"></a>
+
+## 属性
+
+### `isValid`
+
+`uid` 是否有效：
+
+- true： uid 有效。
+- false： uid 无效。
+
+### `uid`
+
+用户 ID。0 表示本地用户，大于 0 表示远端用户。
+
+### `providerName`
+
+扩展提供方名称。
+
+### `extensionName`
+
+扩展名称。

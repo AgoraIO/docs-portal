@@ -1,0 +1,256 @@
+---
+title: "RTMP 网关事件类型"
+---
+当消息通知回调的请求 Body 中 `product_id` 参数为 `10` 时，表示返回的是 RTMP 网关事件。
+
+本页介绍 RTMP 网关事件回调中返回的各事件类型及含义。
+
+## 1 live_stream_connected
+
+`eventType` 为 `1` 表示网关已接收到 RTMP 或 SRT 流，并成功进入了频道。
+
+:::info[信息]
+只要发送了 `live_stream_connected` 事件，后续必然会发送 `live_stream_disconnected` 事件。
+:::
+
+Payload 示例如下：
+
+```json
+{
+    "sid": "55df7402-8778-11ee-92ed-07ec2e86c928",
+    "region": "na",
+    "domain": "rtls-ingress-prod-na.agoramdn.com",
+    "streamKey": "7B***Qbs",
+    "rtcInfo": {
+        "channel": "123",
+        "uid": "1234"
+    },
+    "transcoding": {
+        "audio": {
+            "enabled": true,
+            "profile": 5
+        },
+        "video": {
+             "enabled":true,
+             "bitrate":3800,
+             "fps":30,
+             "height":1080,
+             "width":1920
+        }
+    },
+    "beginAt": "2023-11-21T02:27:31Z"
+}
+```
+
+Payload 中包含如下字段：
+
+| 字段 | 数据类型 | 说明 |
+| --- | --- | --- |
+| `sid` | String | 推流会话 ID，每次推流都会生成一个唯一的 `sid`。 |
+| `region` | String | 接收到推流的服务器区域。 |
+| `domain` | String | 推流时使用的域名。 |
+| `streamKey` | String | 使用的推流码。 |
+| `rtcInfo` | Object | <Slot name="ncs-events-html-0-5-2" /> |
+| `transcoding` | Object | 推流使用的转码配置信息，具体字段信息可以参考[创建或重置流配置模板接口](/doc/rtmp-gateway/restful/rtmp-gateway/operations/put-region-v1-projects-appId-rtls-ingress-stream-templates-templateId)中关于 `transcoding` 字段的说明。 |
+| `beginAt` | String | 开始推流时间（RFC3339 格式）。 |
+
+<Slot for="ncs-events-html-0-5-2">
+
+RTC 信息：
+
+        - `channel`：频道名称。当推流码中绑定的 `channel` 为 "" 时，此字段会保存本次推流使用的具体的随机值。
+        - `uid`：主播 UID，支持整形和字符串型。当推流码中绑定的 `uid` 为 "" 或者 "0" 时，此字段会保存本次推流使用的具体的随机值。
+
+</Slot>
+
+## 2 live_stream_disconnected
+
+`eventType` 为 `2` 表示网关（主动或被动）断开流，并且离开了频道。
+
+Payload 示例如下：
+
+```json
+{
+    "sid": "55df7402-8778-11ee-92ed-07ec2e86c928",
+    "region": "na",
+    "streamKey": "7B***Qbs",
+    "domain": "rtls-ingress-prod-na.agoramdn.com:1935",
+    "rtcInfo": {
+        "channel": "123",
+        "uid": "1234"
+    },
+    "streamStats": {
+        "inputAudioBytes": 281799,
+        "inputVideoBytes": 9244544,
+        "outputAudioBytes": 130000,
+        "outputVideoBytes": 6656704
+    },
+    "beginAt": "2023-11-21T02:27:31Z",
+    "endAt": "2023-11-21T03:27:31Z"
+}
+```
+
+Payload 中包含如下字段：
+
+| 字段 | 数据类型 | 说明 |
+| --- | --- | --- |
+| `sid` | String | 推流会话 ID，每次推流都会生成一个唯一的 `sid`。 |
+| `region` | String | 接收到推流的服务器区域。 |
+| `domain` | String | 推流时使用的域名。 |
+| `streamKey` | String | 使用的推流码。 |
+| `rtcInfo` | Object | <Slot name="ncs-events-html-1-5-2" /> |
+| `streamStats` | Object | <Slot name="ncs-events-html-1-6-2" /> |
+| `beginAt` | String | 开始推流时间（RFC3339 格式）。 |
+| `endAt` | String | 结束推流时间（RFC3339 格式）。 |
+
+<Slot for="ncs-events-html-1-5-2">
+
+RTC 信息：
+
+        - `channel`：频道名称。当推流码中绑定的 `channel` 为 "" 时，此字段会保存本次推流使用的具体的随机值。
+        - `uid`：主播 UID，支持整形和字符串型。当推流码中绑定的 `uid` 为 "" 或者 "0" 时，此字段会保存本次推流使用的具体的随机值。
+
+</Slot>
+
+<Slot for="ncs-events-html-1-6-2">
+
+本次推流的统计信息，包括：
+
+        - `inputAudioBytes`：源流输入的音频流的总字节数。
+        - `inputVideoBytes`：源流输入的视频流的总字节数。
+        - `outputAudioBytes`：推送到 RTC 频道内的音频流的总字节数。
+        - `outputVideoBytes`：推送到 RTC 频道内的视频流的总字节数。
+
+</Slot>
+
+## 3 live_stream_aborted
+
+`eventType` 为 `3` 表示网关接收到 RTMP 或 SRT 流，但是因某种原因终止了该流。
+
+:::info[信息]
+该事件可能单独发送，也可能夹在 `live_stream_connected` 和 `live_stream_disconnected` 事件中间发送。
+:::
+
+Payload 示例如下：
+
+```json
+{
+    "sid": "55df7402-8778-11ee-92ed-07ec2e86c928",
+    "region": "na",
+    "domain": "rtls-ingress-prod-na.agoramdn.com",
+    "streamKey": "7B***Qbs",
+    "rtcInfo": {
+        "channel": "123",
+        "uid": "1234"
+    },
+    "beginAt": "2023-11-21T02:27:31Z",
+    "errorCode": 100,
+    "reason": "invalid"
+}
+```
+
+Payload 中包含如下字段：
+
+| 字段 | 数据类型 | 说明 |
+| --- | --- | --- |
+| `sid` | String | 推流会话 ID，每次推流都会生成一个唯一的 `sid`。 |
+| `region` | String | 接收到推流的服务器区域。 |
+| `domain` | String | 推流时使用的域名。 |
+| `streamKey` | String | 使用的推流码。 |
+| `rtcInfo` | Object | <Slot name="ncs-events-html-2-5-2" /> |
+| `beginAt` | String | 开始推流时间（RFC3339 格式）。 |
+| `errorCode` | Number | 推流终止错误码。 |
+| `reason` | String | 错误信息提示。 |
+
+<Slot for="ncs-events-html-2-5-2">
+
+RTC 信息：
+
+        - `channel`：频道名称。当推流码中绑定的 `channel` 为 "" 时，此字段会保存本次推流使用的具体的随机值。
+        - `uid`：主播 UID，支持整形和字符串型。当推流码中绑定的 `uid` 为 "" 或者 "0" 时，此字段会保存本次推流使用的具体的随机值。
+
+</Slot>
+
+其中，`errorCode` 的可选值有：
+
+| `value` | 说明 | 建议的处理措施 |
+| --- | --- | --- |
+|	`1` |	`streamKey` 不合法（例如 `channelName` 为空或者包含非法字符）|	检查 `streamKey` 格式（特别是本地生成的`streamKey`）|
+|	`2` |	`streamKey` 已失效（过期或者被删除） |	重新创建新的 `streamKey`，然后重试 |
+|	`3` |	无权限使用该 `streamKey`（例如客户自定义域名和 `streamKey` 绑定的 App ID 不匹配）|	检查 `streamKey` 和使用的推流域名是否匹配 |
+|	`4` |	并发流数量超过配额限制 |	等待重试 |
+|	`5` |	检测到冲突，例如同时往同一个 `channel` + `uid` 推流	 |如确实没有在同时推流，请隔 5 - 10 秒后重试几次 |
+|	`6`	| 流属性超过限定值（当前仅限码率） |	检查推流软件配置，调低目标码率值 |
+|	`7` |	超过 10 秒无任何音视频数据的流 |	检查是否上次推流异常退出了，然后重试推流 |
+|	`8` |	加入频道失败 |	`reason` 字段会提示具体的错误原因：`"connect to rtc failed, reason:$N"`。其中，`$N` 的值，可以参考官网文档中关于 [`onConnectionStateChanged`](/api-ref/rtc/android/API/toc_network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调的 `reason` 参数说明 |
+| `9` |	与大网断开连接（具体原因需要[联系技术支持](https://ticket.shengwang.cn)调查）|	重试几次，若仍有问题，请联系技术支持，确认开通时提供的 App 证书是否正确 |
+| `10` |	未知的服务内部错误（具体原因需要[联系技术支持](https://ticket.shengwang.cn)调查）|	尝试重试几次，若仍有问题，请联系技术支持 |
+
+## 4 live_profile_updated
+
+`eventType` 为 `4` 表示流属性更新，例如收到第一帧音频帧和视频帧，或者中途音频或视频的 Profile 发生变更。Payload 示例如下：
+
+```json
+{
+    "sid": "55df7402-8778-11ee-92ed-07ec2e86c928",
+    "region": "na",
+    "domain": "rtls-ingress-prod-na.agoramdn.com",
+    "streamKey": "7B***Qbs",
+    "rtcInfo": {
+        "channel": "123",
+        "uid": "1234"
+    },
+    "videoProfile": {
+        "codec": "H.264",
+        "width": 1920,
+        "height": 1080,
+        "gop": 2000
+    },
+    "audioProfile": {
+        "sampleRate": 48000,
+        "channels": 2
+    },
+    "beginAt": "2023-11-21T02:27:31Z"
+}
+```
+
+Payload 包含如下字段：
+
+| 字段 | 数据类型 | 说明 |
+| --- | --- | --- |
+| `sid` | String | 流 ID，每次推流都会生成一个新的 `sid`。 |
+| `region` | String | 接收到推流的服务器区域。 |
+| `streamKey` | String | 使用的推流码。 |
+| `rtcInfo` | Object | <Slot name="ncs-events-html-3-4-2" /> |
+| `videoProfile` | Object | <Slot name="ncs-events-html-3-5-2" /> |
+| `audioProfile` | Object | <Slot name="ncs-events-html-3-6-2" /> |
+| `beginAt` | String | 开始推流时间（RFC3339 格式）。 |
+
+<Slot for="ncs-events-html-3-4-2">
+
+RTC 信息：
+
+        - `channel`：频道名称。当推流码中绑定的 `channel` 为 "" 时，此字段会保存本次推流使用的具体的随机值。
+        - `uid`：主播 UID，支持整形和字符串型。当推流码中绑定的 `uid` 为 "" 或者 "0" 时，此字段会保存本次推流使用的具体的随机值。
+
+</Slot>
+
+<Slot for="ncs-events-html-3-5-2">
+
+视频属性（对于纯音频流，则无此对象）：
+
+        - `codec`：视频编解码格式，例如 `"H.264"`，`"H.265"`，`"VP8"`，`"VP9"`，`"AV1"` 等
+        - `width`：宽
+        - `height`：高
+        - `gop`：GOP 长度，单位 ms，Number 类型。为防止频繁触发回调，GOP 每分钟计算一次平均值，并按 1000 ms 取整。例如，当实际计算的值在 1500~2499 范围时，会取整为 2000 ms。最小值为 1000 ms。
+
+</Slot>
+
+<Slot for="ncs-events-html-3-6-2">
+
+音频属性：
+
+        - `sampleRate`：采样率，单位 Hz
+        - `channels`：声道数
+
+</Slot>

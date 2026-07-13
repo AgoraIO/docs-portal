@@ -1,0 +1,3693 @@
+---
+title: "发版说明"
+---
+
+<PlatformStructured platform="android">
+
+本文提供 RTM v2 SDK 的发版说明。
+
+### 已知问题和局限性
+
+自 2.2.0 起，RTM SDK 和 RTC SDK（4.3.0 及以上版本）都包含 `libaosl.so` 库。如果你同时使用了 RTM 和 RTC SDK，为避免冲突，需进行如下操作：
+
+- 如果你通过 CDN 手动集成 SDK，请手动删除更低版本的 `libaosl.so` 库；
+- 如果你使用依赖管理工具（如 Maven 或 CocoaPods）集成 SDK，请确保在项目中引入更高版本的 `libaosl.so` 库。
+
+具体的集成指南可以参考[如何处理同时集成 RTM SDK 和 RTC SDK 遇到的问题？](/zh-CN/api-reference/faq/integration/rtm2_rtc_integration_issue)
+
+- 2.2.8 RTM SDK `libaosl.so` 库版本为 1.3.0。
+- 2.2.7 RTM SDK `libaosl.so` 库版本为 1.3.0。
+- 2.2.3、2.2.4、2.2.5、2.2.6 RTM SDK `libaosl.so` 库版本为 1.2.13。
+- 2.2.2 RTM SDK `libaosl.so` 库版本为 1.0.11。
+- 2.2.1 RTM SDK `libaosl.so` 库版本为 1.0.11。
+- 2.2.0 RTM SDK `libaosl.so` 库版本为 1.0.0.17。
+
+## 2.2.8 版
+
+该版本于 2026 年 2 月 12 日发布。
+
+### 问题修复
+
+- 修复部分场景下，App 从后台恢复并叠加网络切换时，可能导致服务连接状态异常的问题。
+- 修复部分场景下，设置 [`Presence`](/api-ref/rtm2/android/toc-presence/presence) 的临时用户状态后，事件通知无法正常下发的问题。
+- 修复在 Android 16 系统的部分机型上，可能出现的权限获取范围过大问题。
+
+## 2.2.7 版
+
+该版本于 2025 年 12 月 12 日发布。
+
+### 升级必看
+
+#### 引用方式变更
+
+从 v2.2.7 起，如果你通过 Maven 将 RTM SDK 导入到项目中，则 `build.gradle` 文件中引入 SDK 的代码需要进行如下变更：
+
+| 变更后（v2.2.7 及之后） | 变更前（v2.2.6 及之前） |
+| --- | --- |
+| <Slot name="release-notes-android-html-0-1-0" /> | <Slot name="release-notes-android-html-0-1-1" /> |
+
+<Slot for="release-notes-android-html-0-1-0">
+
+```groovy
+    dependencies {
+        // ...
+        // highlight-start
+        implementation 'cn.shengwang.rtm:android-java:x.y.z'
+        // highlight-end
+    }
+    ```
+
+</Slot>
+
+<Slot for="release-notes-android-html-0-1-1">
+
+```groovy
+    dependencies {
+        // ...
+        // highlight-start
+        implementation 'io.agora:agora-rtm:x.y.z'
+        // highlight-end
+    }
+    ```
+
+</Slot>
+
+详细集成步骤可以参考[快速开始](/zh-CN/realtime-media/rtm/get-started/quick-start)。
+
+在同时集成了 RTC SDK v4.3.0 及以上版本的场景中，RTM 轻量库的引入代码方式详见 [FAQ](/zh-CN/api-reference/faq/integration/rtm2_rtc_integration_issue)。
+
+
+### 改进
+
+- 该版本对回调的逻辑作了内部优化，避免了某些极端情况下可能产生的死锁问题。
+- 优化了登录操作 (`login`) 的响应机制。
+
+
+### 问题修复
+
+- 修复了某些极端情况下，调整设备时钟可能触发 SDK 进入重连状态的问题。
+- 修复了在长时间和 RTM 服务断开的情况下，重新连接后，自身所在频道的 Presence 状态可能出现异常的问题。
+
+
+
+
+## 2.2.6 版
+
+该版本于 2025 年 10 月 31 日发布。
+
+
+### 改进
+
+
+
+#### 新增重连超时配置
+
+
+该版本在 [`RtmConfig`](/api-ref/rtm2/android/toc-configuration/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
+
+
+
+## 2.2.5 版
+
+该版本于 2025 年 7 月 1 日发布。
+
+
+### 新特性
+
+
+
+#### 支持 IoT 设备域名白名单
+
+
+在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`RtmConfig`](/api-ref/rtm2/android/toc-configuration/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+
+
+
+### 问题修复
+
+
+- 某些场景下，Token 过期的通知可能被多次触发。
+- 某些场景下，点对点消息已送达对端，但发送端却反馈超时。
+- 私有化场景下，频繁切换网络可能造成连接状态异常。
+
+
+
+## 2.2.4 版
+
+该版本于 2025 年 4 月 1 日发布。主要改动点如下：
+
+- 进一步优化了登录服务的时长。
+- 修复了回调函数中，如果业务代码存在未捕获的异常，可能引起 SDK 崩溃的问题。
+- 修复了订阅 Topic 时，可能返回未加入频道的问题。
+
+
+
+
+## 2.2.3 版
+
+该版本于 2025 年 3 月 21 日发布。
+
+
+### 改进
+
+
+
+#### 新增连接状态改变原因
+
+
+该版本在 <code>RtmLinkStateChangeReason</code> 中增加原因 <code>LOGIN_TOO_FREQUENT</code> (37)，表示当前登录操作过于频繁。
+
+
+#### 新增更新 Token 超时错误码
+
+
+为反馈更新 Token 操作的结果，该版本新增错误码 <code>RENEW_TOKEN_TIMEOUT</code> (10026)。
+
+
+#### 在线状态事件通知优化
+
+
+当频道数据无法正常同步时，SDK 会重新触发一次 <code>SNAPSHOT</code> 事件。收到该事件后，用户可以更新自己 App 的本地缓存。
+
+
+#### 其它改进
+
+
+- 加快了切后台或休眠后，RTM 服务恢复重连的速度。
+- 优化了 SDK 在弱网情况下的表现。
+- 优化了接入节点的选择，提升了服务的连接速度。
+
+
+### 问题修复
+
+
+- 重连时偶现订阅服务未恢复。
+- 部分频道内用户查询结果时，可能包含异常离线用户的信息。
+
+
+
+## 2.2.2 版
+
+该版本于 2024 年 11 月 6 日发布。
+
+
+### 升级必看
+
+
+
+#### SNAPSHOT 状态触发时机变更
+
+
+该版本修订了 Presence 事件中 `SNAPSHOT` 事件的触发时机。现在，只要用户在频道内，就可能会再次收到 `SNAPSHOT` 事件；收到后，用户可以更新自己的全量信息，来避免因异常导致的状态不同步问题。
+
+
+#### 锁过期时间计算规则变更
+
+
+该版本修改了锁（Lock）过期时间的计算规则。该版本起，锁的过期时间将从服务端判定用户离线开始计算。
+
+
+### 新特性
+
+
+
+#### 支持历史消息
+
+
+该版本在 <code>PublishOptions</code> 中新增了 `storeInHistory` 属性，支持在频道中发送消息的同时，将消息存储到云端，后续用户可以通过历史消息接口获取。
+
+:::info[信息]
+该功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开启。
+:::
+
+
+#### SDK 连接状态变化原因
+
+
+该版本在 SDK 连接状态 `LinkStateEvent` 中添加 <code>RtmLinkStateChangeReason</code> 枚举类，报告连接状态变更的原因。
+
+
+#### 支持 16 KB 内存页大小
+
+
+自 Android 15 起，系统新增了对 16 KB 内存页大小的支持，详见[支持 16 KB 的页面大小](https://developer.android.com/guide/practices/page-sizes?hl=zh-cn)。为了保证 App 的稳定性和性能表现，自该版本起，SDK 支持 16 KB 内存页大小，确保可以在使用 4 KB 和 16 KB 内存页大小的设备上无缝运行，提升兼容性并避免崩溃。
+
+
+### 改进
+
+
+该版本提升了基础消息服务在服务异常时的业务表现，避免因部分服务出现异常，导致的消息服务不可用的问题。
+
+
+### 问题修复
+
+
+该版本修复了如下问题：
+
+- 某些场景下，Token 类型不正确导致异常错误。
+- 某些场景下，用户可能多次收到相同离线用户的离线通知。
+- 相同用户 ID 在不同端登录后，可能出现连接状态异常。
+- 频繁设置 Presence 状态时，可能导致数据异常。
+- 未开通指定服务时，加入频道时未返回错误。
+- 某些场景下，异常属性值可能导致崩溃问题。
+
+
+
+## 2.2.1 版
+
+该版本于 2024 年 7 月 17 日发布。
+
+
+### 改进
+
+
+该版本进行了如下改进：
+
+- 优化了底层算法能力，提升了数据同步速度。
+- 在 <code>LinkStateEvent</code> 中，将 Token 过期时返回的 `reason` 字段由 `TicketExpired` 改为 `TokenExpired`。
+
+
+### 问题修复
+
+
+该版本修复了本地用户未调用 <code>leave</code> 方法直接调用 <code>logout</code> 方法时，偶现远端用户收不到 <code>REMOTE_LEAVE</code> 事件通知的问题。
+
+
+
+## 2.2.0 版
+
+该版本于 2024 年 4 月 23 日发布。
+
+
+
+### 升级必看
+
+
+该版本对以下功能的实现方式进行了优化，涉及一些 API 的改名、删除或行为变更，为确保项目的正常运行，你需要在升级到该版本后更新 App 中的代码：
+
+- 删除了 `createMetadata` 方法。参考如下示例代码修改你的实现代码：
+
+  ```java
+  // v2.2.0 之前
+  Metadata metadata = rtmClient.getStorage().createMetadata();
+  ```
+
+  ```java
+  // v2.2.0
+  Metadata metadata = new Metadata();
+  ```
+
+- 取消了 `StateItem` 类，并将如下参数由 `ArrayList<StateItem>` 类型变为 `HashMap<String, String>` 类型，参考对应 API 文档修改你的实现代码。
+  - [`setState`](/api-ref/rtm2/android/toc-presence/presence#setState) 中的 `items` 参数。
+  - [`PresenceEvent`](/api-ref/rtm2/android/toc-configuration/configuration#PresenceEvent) 中的 `stateItems` 参数。
+  - [`UserState`](/api-ref/rtm2/android/toc-presence/presence#getState) 中的 `states` 参数。
+
+- 在 [<code>RtmConnectionChangeReason</code>](/api-ref/rtm2/android/enumv#connectionreason) 中新增了 <code>CERTIFICATION_VERIFY_FAILURE(22)</code> 枚举，并将 <code>STREAM_CHANNEL_NOT_AVAILABLE</code> 和 <code>INCONSISTENT_APPID</code> 枚举对应的值修改为 23 和 24。
+
+
+### 新特性
+
+
+
+#### 新增私有化部署能力
+
+
+该版本在 [<code>RtmConfig</code>](/api-ref/rtm2/android/toc-configuration/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
+
+
+#### 新增心跳时间配置
+
+
+该版本在 [<code>RtmConfig</code>](/api-ref/rtm2/android/toc-configuration/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic#heartbeatinterval-and-presencetimeout)。
+
+
+#### 新增双环境配置
+
+
+该版本在 [<code>RtmConfig</code>](/api-ref/rtm2/android/toc-configuration/configuration) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#protocol)。
+
+
+#### 新增用户频道类型
+
+
+该版本在 [<code>RtmChannelType</code>](/api-ref/rtm2/android/enumv#channeltype) 中新增 <code>USER</code> 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
+
+
+#### 新增静默模式配置
+
+
+该版本在 [<code>SubscribeOptions</code>](/api-ref/rtm2/android/toc-channel/channel#subscribe) 和 [<code>JoinChannelOptions</code>](/api-ref/rtm2/android/toc-channel/channel#join) 中新增 `beQuiet` 属性。该属性设置为 `true` 时表示静默订阅或加入频道，频道中其他用户无法感知该用户的出席状态。
+
+
+### 改进
+
+
+
+#### 改进连接状态管理逻辑
+
+
+该版本新增 [<code>onLinkStateEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 <code>onConnectionStateChanged</code> 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic)。
+
+
+#### 改进 REMOTE_STATE_CHANGED 事件通知逻辑
+
+
+该版本改进了 Presence 功能的 `REMOTE_STATE_CHANGED` 事件的触发逻辑，即当用户一次设置或修改多个 key-value 时，频道内其他用户只会接收到一次事件通知。
+
+
+#### 支持事件通知触发时间戳
+
+
+该版本在如下数据结构中新增 `timestamp` 参数，报告触发事件通知的时间戳：
+
+- [<code>MessageEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#MessageEvent)
+- [<code>PresenceEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#PresenceEvent)
+- [<code>TopicEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#TopicEvent)
+- [<code>StorageEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#StorageEvent)
+- [<code>LockEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#LockEvent)
+
+
+#### 优化 API 行为
+
+
+该版本优化了以下 API 的行为：
+
+- [<code>login</code>](/api-ref/rtm2/android/toc-configuration/configuration#login)：
+  - 在之前版本中，不支持连续多次调用该方法；也不支持在该方法的 `token` 参数中传入空字符串。
+  - 自 2.2.0 版本起，支持连续多次调用该方法，中间无需额外调用 <code>logout</code> 方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
+- [<code>subscribe</code>](/api-ref/rtm2/android/toc-channel/channel#subscribe)：
+  - 在之前版本中，不支持连续多次调用该方法。
+  - 自 2.2.0 版本起，支持连续多次调用该方法。
+- [<code>join</code>](/api-ref/rtm2/android/toc-channel/channel#join)：
+  - 在之前版本中，不支持连续多次调用该方法，也不支持在该方法的 `token` 参数中传入空字符串。
+  - 自 2.2.0 版本起，支持连续多次调用该方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
+
+
+#### 修改 presenceTimeout 取值范围
+
+
+该版本将 [<code>RtmConfig</code>](/api-ref/rtm2/android/toc-configuration/configuration) 中 `presenceTimeout` 参数的取值范围由 [10,300] 修改为 [5,300]。
+
+
+
+## 2.1.12 版
+
+该版本于 2024 年 6 月 7 日发布。
+
+
+### 改进
+
+
+该版本进行了如下改进：
+
+- 在因网络原因导致数据同步出错的情况下，该版本增加了用户退出机制，SDK 会自动登出 RTM 系统。
+- 断网期间取消订阅，不再返回取消订阅失败的错误。
+
+
+### 问题修复
+
+
+该版本修复了如下问题：
+
+- 弱网条件下，断线期间用户取消订阅 Message Channel 出错。
+- 弱网条件下，登录成功后，偶现无法收到回调。
+- 断线重连情况下，偶现丢失 <code>onStorageEvent</code> 事件通知。
+- 断线重连情况下，偶现无法恢复 Stream Channel 中的订阅关系。
+- 偶现收不到 Web 端的 Topic 消息。
+
+
+
+## 2.1.11 版
+
+该版本于 2024 年 4 月 30 日发布。
+
+
+### 改进
+
+
+该版本优化了使用 `withPresence=true` 订阅或加入频道时的响应机制。如果 5 秒内未收到 <code>SNAPSHOT</code> 类型的 <code>onPresenceEvent</code> 事件通知，则 SDK 会在 `resultCallback` 参数中报告 <code>CHANNEL_PRESENCE_NOT_READY</code> 错误码。
+
+
+### 问题修复
+
+
+该版本修复了如下问题：
+
+- 特定场景下，登出 RTM 系统后再次登录，然后使用 `withPresence=true` 订阅或加入频道时，偶现订阅或加入频道失败。
+- 由网络问题导致连接断开并恢复的情况下，本地用户主动调用 <code>leave</code> 离开频道，偶现远端用户收不到 <code>REMOTE_TIMEOUT</code> 类型的 <code>onPresenceEvent</code> 事件通知。
+- 频繁调用 <code>subscribe</code> 和 <code>unsubscribe</code> 方法，偶现调用失败。
+
+
+
+## 2.1.10 版
+
+该版本于 2024 年 2 月 26 日发布。
+
+
+### 问题修复
+
+
+该版本修复了如下问题：
+
+- 频繁发送消息时，偶现消息发送超时。
+- 调用 `renewToken` 刷新 Token，因部分服务未能生效而导致非预期的连接断开。
+
+
+
+## 2.1.9 版
+
+该版本于 2024 年 1 月 10 日发布。
+
+
+### 改进
+
+
+该版本优化了在断线重连时对过期用户状态数据的处理逻辑。
+
+
+
+## 2.1.8 版
+
+该版本于 2023 年 12 月 4 日发布。
+
+
+### 升级必看
+
+
+该版本对消息发送选项进行了如下优化，请在升级到该版本后更新 App 代码：
+
+- 在 `PublishOptions` 中删除了 `sendTs` 参数，并新增了 `channelType` 参数。详见 [`PublishOptions`](/api-ref/rtm2/android/toc-message/message#options)。
+- 将 `publishTopicMessage` 方法中的 `options` 参数类型由 `PublishOptions` 修改为 `TopicMessageOptions`。详见 [`TopicMessageOptions`](/api-ref/rtm2/android/toc-topic/topic#options)。
+
+
+### 改进
+
+
+该版本新增了 `INVALID_CHANNEL_TYPE`、`RTM_ERROR_INVALID_ENCRYPTION_PARAMETER` 和 `RTM_ERROR_OPERATION_RATE_EXCEED_LIMITATION` 错误码。错误码描述及解决方法见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)。
+
+
+### 问题修复
+
+
+该版本修复了调用 <code>whoNow</code> 方法返回分页结果时偶现的崩溃问题。
+
+
+
+## 2.1.7 版
+
+该版本于 2023 年 10 月 20 日发布。
+
+
+### 改进
+
+
+该版本优化了内存表现并修复了潜在的内存泄漏问题。
+
+
+### 问题修复
+
+
+该版本修复了如下问题：
+
+- 特定场景下，偶现 Presence 数据丢包。
+- 特定场景下，方法调用后未触发异步回调。
+- 使用端侧加密时，参数无效导致的崩溃。
+
+
+
+## 2.1.6 版
+
+该版本于 2023 年 9 月 19 日发布。
+
+
+### 升级必看
+
+
+该版本对部分功能的实现方式进行了优化，请在升级到该版本后更新 App 代码。
+
+
+#### 多访问区域设置
+
+
+为支持同时设置多个访问区域，该版本将 `areaCode` 参数类型由 `RtmAreaCode` 修改为 `EnumSet<RtmAreaCode>`。你需要参考以下示例代码修改你的实现方式：
+
+```java
+// v2.1.6 之前的方式
+RtmConfig config = new RtmConfig();
+config.code = RtmConstants.RtmAreaCode.GLOB;
+```
+
+```java
+// v2.1.6 的方式
+RtmConfig config = new RtmConfig.Builder(myAppId, mUserId)
+    .eventListener(eventListener)
+    .areaCode(EnumSet.of(RtmConstants.RtmAreaCode.AS, RtmConstants.RtmAreaCode.CN))
+    .build();
+```
+
+#### RtmConfig 构造函数优化
+
+该版本将 `RtmConfig` 的构造函数修改为 Builder 模式。修改示例如下：
+
+```java
+// v2.1.6 之前的方式
+RtmConfig config = new RtmConfig();
+config.appId = myAppId;
+config.userId = mUserId;
+config.eventListener = eventListener;
+config.logConfig = logConfig;
+```
+
+```java
+// v2.1.6 的方式
+RtmConfig config = new RtmConfig.Builder(myAppId, mUserId)
+    .eventListener(eventListener)
+    .logConfig(logConfig)
+    .build();
+```
+
+#### 回调名变更
+
+该版本将 `onConnectionStateChange` 回调名称修改为 `onConnectionStateChanged`。
+
+### 新特性
+
+#### 多种事件监听方式
+
+该版本新增 `addEventListener` 和 `removeEventListener` 方法。除了在初始化时添加或删除事件监听外，你还可以调用新增方法在 App 生命周期的任意时间添加、删除一个或多个事件监听对象。
+
+此外，为优化设置事件监听的体验，该版本不再需要强制实现 `RtmEventListener` 的所有事件，只需实现你关注的事件。示例代码如下：
+
+```java
+RtmEventListener eventListener = new RtmEventListener() {
+    @Override
+    public void onMessageEvent(MessageEvent event) {
+        String text = "Message received from " + event.publisher + " Message: " + event.message.getData() + "\n";
+        writeToMessageHistory(text);
+    }
+
+    @Override
+    public void onPresenceEvent(PresenceEvent event) {
+        String text = "receive presence event, user: " + event.publisher + " event: " + event.type + "\n";
+        writeToMessageHistory(text);
+    }
+
+    @Override
+    public void onConnectionStateChanged(String mChannelName, RtmConstants.RtmConnectionState state, RtmConstants.RtmConnectionChangeReason reason) {
+        String text = "Connection state changed to " + state + ", Reason: " + reason + "\n";
+        writeToMessageHistory(text);
+    }
+};
+```
+
+#### 新结构体构造函数
+
+该版本为如下结构体新增构造函数：
+
+- [`JoinChannelOptions`](/api-ref/rtm2/android/toc-channel/channel#基本用法4)
+- [`JoinTopicOptions`](/api-ref/rtm2/android/toc-topic/topic#基本用法1)
+- [`MetadataItem`](/api-ref/rtm2/android/toc-storage/storage#基本用法11)
+- [`MetadataOptions`](/api-ref/rtm2/android/toc-storage/storage#基本用法1)
+- [`PresenceOptions`](/api-ref/rtm2/android/toc-presence/presence#基本用法1)
+- [`RtmEncryptionConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmEncryptionConfig)
+- [`RtmLogConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmLogConfig)
+- [`RtmProxyConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmProxyConfig)
+- [`StateItem`](/api-ref/rtm2/android/toc-presence/presence#基本用法3)
+- [`SubscribeOptions`](/api-ref/rtm2/android/toc-channel/channel#基本用法1)
+- [`TopicOptions`](/api-ref/rtm2/android/toc-topic/topic#基本用法4)
+
+你可以继续使用之前的实现方式，也可以参考以下示例代码改用新的实现方式：
+
+```java
+// v2.1.6 之前的方式
+SubscribeOptions options = new SubscribeOptions();
+options.withMessage = true;
+options.withMetadata = false;
+options.withPresence = true;
+options.withLock = false;
+```
+
+```java
+// v2.1.6 的方式，任选一种方式即可
+// 方式一：传参方式
+SubscribeOptions options = new SubscribeOptions(true, true, false, false);
+// 方式二：SET 方式
+SubscribeOptions options = new SubscribeOptions();
+options.setWithMessage(true);
+options.setWithMetadata(false);
+options.setWithPresence(true);
+options.setWithLock(false);
+```
+
+### 改进
+
+该版本提升了在 `JoinChannelOptions` 中设置 Presence 事件通知的性能。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 当网络状态发生变化时，偶现无法登出 RTM 系统。
+- 登出 RTM 系统后，当网络状态发生变化时，偶现无法登录 RTM 系统。
+- 网络断开后，因数据未清理导致偶现用户无法收到 `SNAPSHOT` 事件通知。
+- 用户加入频道后，把 App 切到后台再切换回前台时，偶现 SDK 多次触发 `REMOTE_JOIN` 事件通知。
+
+## 2.1.4 版
+
+该版本于 2023 年 8 月 16 日发布。这是 RTM v2 Java SDK 的第一个版本。
+
+本次发布意味着声网实时通讯（RTM）产品步入 v2 时代，我们在功能覆盖、性能提升、体验优化上都将为用户带来革新。
+
+- 功能覆盖：该版本通过引入频道（Channel）、消息（Message）、Topic、Presence、Storage 和 Lock 等功能模块，能覆盖更多业务场景，你可以把更多的精力集中在自己的业务创新上。
+
+- 性能提升：我们在新版本中重构了后台架构，通过优化网络连接进一步提升性能，提供长时间低延迟、高可靠、大并发、易扩展的实时网络接入能力，让你无需为业务质量担忧。
+
+- 体验优化：我们重新设计并简化了 API 接口；优化了包括用户指南、API 参考在内的所有文档，提供了更全面的示例程序，支持开发者低成本学习使用 SDK，快速完成集成，提高开发效率。
+
+### 新特性
+
+该版本提供的核心功能模块如下。
+
+:::info[信息]
+RTM 2.1.4 目前处于 Public Beta 阶段，某些功能细节可能会在随后的版本中发生改变，以提升用户体验。
+:::
+
+#### 初始配置（Setup）
+
+初始配置（Setup）是初始化生产 RTM Client 时预先定义或配置一些关键参数，影响其后续的行为。同时它还提供了登录、登出等功能。核心能力如下：
+
+- `create`：创建一个 RTM Client 实例，并进行如下初始配置：
+  - `appId`：设置 App ID。相同 App ID 的 App 间可以通信，不同 App ID 的 App 相互隔离。
+  - `userId`：设置用户 ID，用以区分用户或设备。
+  - `areaCode`：设置区域代码，用于 Geo-fencing 功能。
+  - `presenceTimeout`：设置 Presence 服务的超时时间。
+  - `useStringUserId`：设置用户 ID 的数据类型，可以是 String 类型，也可以是 Uint 类型。
+  - `eventListener`：设置事件监听函数。
+  - `logConfig`：配置本地日志大小、位置、输出信息等级等参数。
+  - `proxyConfig`：配置 Proxy 服务参数。
+  - `encryptionConfig`：配置端侧加密参数。
+- 事件监听：实现 `onMessageEvent`、`onPresenceEvent`、`onTopicEvent`、`onStorageEvent`、`onLockEvent`、`onConnectionStateChange`、`onTokenPrivilegeWillExpire` 等事件通知的业务逻辑。
+- `login`：登录 RTM 服务。
+- `logout`：登出 RTM 服务。
+- `release`：销毁 RTM Client 实例，释放资源。
+
+#### 频道（Channel）
+
+频道是 RTM 实时网络中一种数据传输的管理机制，任何订阅或加入频道的用户都可以在 100 毫秒内接收到频道中传输的消息和事件，RTM 允许客户端订阅数百甚至数千个频道。大多数 RTM API 都将以频道为基础进行发送、接收、加密等行为。
+
+基于声网的能力，RTM 的频道分成两种类型：Message Channel 和 Stream Channel。两种类型频道的核心能力如下：
+
+- Message Channel：
+    - `subscribe`：订阅指定 Message Channel 并开始接收频道中的消息和事件通知。
+    - `unsubscribe`：取消订阅指定 Message Channel 并停止接收频道中的消息和事件通知。
+
+- Stream Channel：
+    - `createStreamChannel`：创建 Stream Channel 实例，随后可以调用其中的方法。
+    - `join`：加入 Stream Channel，并开始接收频道中的消息和事件通知。
+    - `leave`：离开 Stream Channel，并停止接收频道中的消息和事件通知。
+    - `release`：销毁 Stream Channel 实例以释放资源。
+
+其中：
+
+- `subscribe`、`unsubscribe`、`join`、`leave` 方法都会触发 `onPresenceEvent` 事件通知。频道中的其他用户会收到对应的 `Join`、`Leave` 事件通知。
+- 调用 `subscribe` 和 `join` 操作订阅或加入频道的时候，可以选择是否配置 `withMessage`、`withPresence`、`withMetadata`、`withLock` 等参数以开启对应事件通知的监听功能。如果开启，你同时也需要注册对应事件监听，才能顺利收到对应事件通知。
+
+#### 消息（Message）
+
+RTM 的基础是发送消息的能力，你可以随时随地向频道中发送消息，消息会在 100 毫秒内传递到任何地方。RTM 支持 String 类型和 Byte 类型的消息负载。
+
+`publish` 向指定的 Message Channel 中发送消息。调用 `publish` 会触发 `onMessageEvent` 事件通知，如果想要收到频道中的消息，你需要在 `subscribe` 的时候，设置 `withMessage = true`，注册并实现 `onMessageEvent` 事件。
+
+#### Topic
+
+Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Channel 中利用此特性进行数据流的订阅、分发、事件通知等，灵活使用 Topic 能力，能大大降低业务复杂度，提升开发效率。Topic 的主要功能如下：
+
+- `joinTopic`：注册成为此 Topic 的消息发布者（publisher）。注册后，该用户会具备发送消息的能力。
+- `publishTopicMessage`：向 Stream Channel 中的 Topic 发送消息。
+- `leaveTopic`： 取消注册为该 Topic 的消息发布者。
+- `subscribeTopic`：订阅该频道中 Topic 的一名或多名消息发布者。
+- `unsubscribeTopic`：取消订阅该 Topic 或取消订阅该 Topic 中指定的一名或多名消息发布者。
+
+注册（`joinTopic`）或取消注册（`leaveTopic`）消息发布者操作，会触发 `onTopicEvent` 事件通知，频道中的其他用户将会收到此事件通知。
+
+:::info[信息]
+Topic 特性只在 Stream Channel 中有效，Message Channel 中不存在此特性。
+:::
+
+#### 在线状态
+
+Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开频道的实时状态
+- 订阅或加入同一频道的所有用户的实时状态
+- 一个用户订阅或加入的所有频道的实时信息
+- 自定义临时用户状态及其变更信息
+
+在 Message Channel 和 Stream Channel 中均可使用以下 Presence 功能：
+
+- `whoNow`：实时获取指定频道的在线用户数量、在线用户列表、在线用户的临时状态等信息。
+- `whereNow`：实时获取指定用户所在频道的列表。
+- `setState`：设置用户在指定频道的临时状态。
+- `getState`：获取用户在指定频道的临时状态。
+- `removeState`：删除用户在特定频道的临时状态。
+
+Presence 在提供上述功能的同时，也提供了 `onPresenceEvent` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
+
+#### 存储
+
+RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
+
+##### Channel Metadata
+
+- `setChannelMetadata`：为指定频道设置 Channel Metadata 或 Channel Metadata Item。
+- `getChannelMetadata`：获取指定频道的 Channel Metadata 和 Channel Metadata Item。
+- `removeChannelMetadata`：删除指定频道的 Channel Metadata 或 Channel Metadata Item。
+- `updateChannelMetadata`：更新指定频道已有 Channel Metadata 或 Channel Metadata Item。
+
+Channel Metadata 的设置、删除和更新都会触发 `onStorageEvent` 事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `onStorageEvent` 事件通知中携带的是当前 Channel Metadata 的全量信息，我们将在后续版本中优化，提供性能更优的增量更新能力。
+
+Channel Metadata 同时也引入了 Lock 的控制能力，当调用 API 设置、删除、更新 Channel Metadata 时，如果参数中的 `lockName` 被设置，则开启 Lock 的校验，此时只有拥有此锁的用户才被允许成功调用对应的方法。
+
+##### User Metadata
+
+- `setUserMetadata`：设置指定用户的 User Metadata 或 User Metadata Item。
+- `getUserMetadata`：获取指定用户的 User Metadata 和 User Metadata Item。
+- `removeUserMetadata`：删除指定用户的 User Metadata 或 User Metadata Item。
+- `updateUserMetadata`：更新指定用户已存在的 User Metadata 或 User Metadata Item。
+- `subscribeUserMetadata`：订阅指定用户的 User Metadata 或 User Metadata Item 变更事件通知。
+- `unsubscribeUserMetadata`：取消订阅指定用户的 User Metadata 或 User Metadata Item 事件通知。
+
+User Metadata 的设置、删除和更新都会触发 `onStorageEvent` 事件通知，所有订阅此 User Metadata 的其他用户将会收到事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `onStorageEvent` 事件通知中携带的是所订阅 User Metadata 的全量信息，我们将在后续的版本中优化，提供性能更优的增量更新能力。
+
+##### CAS 控制
+
+Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `Metadata` 中的 `setMajorRevision` 方法设置 `majorRevision` 属性开启整组 Channel Metadata 的版本号校验。
+- 通过 `MetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+设置、删除、更新 Channel Metadata 或 User Metadata 时，配合 `revision` 参数可以控制本次调用是否开启 Revision 校验，逻辑如下：
+
+- `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
+- `majorRevision` 或  `revision` 为 Uint64 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+
+#### 锁
+
+临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
+
+- `setLock`：为指定频道设置锁。
+- `acquireLock`：获取指定频道中指定的锁。
+- `releaseLock`： 释放指定频道中指定的锁。
+- `revokeLock`： 撤销指定频道中某个用户对此锁的占用权限以释放此锁。
+- `getLocks`： 获取指定频道中所有锁的详情。
+- `removeLock`：删除指定频道中指定的锁。
+
+频道中锁的设置、获取、释放、撤销和删除操作都会上报对应的 `onLockEvent` 事件通知。你可以充分利用此特性优化业务的实现逻辑。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文提供 RTM v2 SDK 的发版说明。
+
+### 已知问题和局限性
+
+自 2.2.0 起，RTM SDK 和 RTC SDK（4.3.0 及以上版本）都包含 `aosl.xframework` 库。如果你同时使用了 RTM 和 RTC SDK，为避免冲突，需进行如下操作：
+
+- 如果你通过 CDN 手动集成 SDK，请手动删除更低版本的 `aosl.xframework` 库；
+- 如果你使用依赖管理工具（如 Maven 或 CocoaPods）集成 SDK，请确保在项目中引入更高版本的 `aosl.xframework` 库。
+
+具体的集成指南可以参考[如何处理同时集成 RTM SDK 和 RTC SDK 遇到的问题？](/zh-CN/api-reference/faq/integration/rtm2_rtc_integration_issue)
+
+- 2.2.8 RTM SDK `aosl.xframework` 库版本为 1.3.0。
+- 2.2.7 RTM SDK `aosl.xframework` 库版本为 1.3.0。
+- 2.2.3、2.2.4、2.2.5、2.2.6 RTM SDK `aosl.xframework` 库版本为 1.2.13。
+- 2.2.2 RTM SDK `aosl.xframework` 库版本为 1.0.11。
+- 2.2.1 RTM SDK `aosl.xframework` 库版本为 1.0.11。
+- 2.2.0 RTM SDK `aosl.xframework` 库版本为 1.0.0.17。
+
+## 2.2.8 版
+
+该版本于 2026 年 2 月 12 日发布。
+
+### 问题修复
+
+- 修复部分场景下，App 从后台恢复并叠加网络切换时，可能导致服务连接状态异常的问题。
+- 修复部分场景下，设置 [`Presence`](/api-ref/rtm2/ios/toc-presence/presence) 的临时用户状态后，事件通知无法正常下发的问题。
+
+## 2.2.7 版
+
+该版本于 2025 年 12 月 12 日发布。
+
+### 升级必看
+
+#### SDK 引用方式变更
+
+从 v2.2.7 起，如果你使用 CocoaPods 将 RTM SDK 导入到项目中，则 `Podfile` 文件中引入 SDK 的代码需要进行如下变更：
+
+| 变更后（v2.2.7 及之后） | 变更前（v2.2.6 及之前） |
+| --- | --- |
+| <Slot name="release-notes-ios-html-0-1-0" /> | <Slot name="release-notes-ios-html-0-1-1" /> |
+
+<Slot for="release-notes-ios-html-0-1-0">
+
+```ruby
+    platform :ios, '11.0'
+    target 'Your App' do
+        # ...
+        // highlight-start
+        pod 'ShengwangRtm', 'x.y.z'
+        // highlight-end
+    end
+    ```
+
+</Slot>
+
+<Slot for="release-notes-ios-html-0-1-1">
+
+```ruby
+    platform :ios, '11.0'
+    target 'Your App' do
+        # ...
+        // highlight-start
+        pod 'AgoraRtm', 'x.y.z'
+        // highlight-end
+    end
+    ```
+
+</Slot>
+
+详细集成步骤可以参考[快速开始](/zh-CN/realtime-media/rtm/get-started/quick-start)。
+
+在同时集成了 RTC SDK v4.3.0 及以上版本的场景中，RTM 轻量库的引入代码方式详见 [FAQ](/zh-CN/api-reference/faq/integration/rtm2_rtc_integration_issue)。
+
+
+
+### 改进
+
+
+- 该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中新增 `callbackQueue` 参数，支持对回调所在的线程进行设置。
+- 优化了登录操作 (`loginByToken`) 的响应机制。
+
+
+### 问题修复
+
+- 修复了某些极端情况下，调整设备时钟可能触发 SDK 进入重连状态的问题。
+- 修复了在长时间和 RTM 服务断开的情况下，重新连接后，自身所在频道的 Presence 状态可能出现异常的问题。
+
+
+
+## 2.2.6 版
+
+该版本于 2025 年 10 月 31 日发布。
+
+
+### 改进
+
+
+
+#### 新增重连超时配置
+
+
+该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
+
+
+
+
+## 2.2.5 版
+
+该版本于 2025 年 7 月 1 日发布。
+
+
+### 新特性
+
+
+
+#### 支持 IoT 设备域名白名单
+
+
+在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+
+
+
+### 问题修复
+
+
+- 某些场景下，Token 过期的通知可能被多次触发。
+- 某些场景下，点对点消息已送达对端，但发送端却反馈超时。
+- 某些场景下，iOS 系统在退出 App 时，可能引起 RTM SDK 崩溃的问题。
+- 私有化场景下，频繁切换网络可能造成连接状态异常。
+
+
+
+
+## 2.2.4 版
+
+该版本于 2025 年 4 月 1 日发布。主要改动点如下：
+
+- 进一步优化了登录服务的时长。
+- 修复了回调函数中，如果业务代码存在未捕获的异常，可能引起 SDK 崩溃的问题。
+- 修复了订阅 Topic 时，可能返回未加入频道的问题。
+
+
+
+## 2.2.3 版
+
+该版本于 2025 年 3 月 21 日发布。
+
+
+
+### 升级必看
+
+
+从该版本起，RTM SDK 支持通过 SPM (Swift Package Manager) 集成 SDK。你可以选择该方式进行集成，详见[安装 SDK](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#安装-sdk)。
+
+
+
+### 改进
+
+
+
+#### 新增连接状态改变原因
+
+
+该版本在 <code>AgoraRtmLinkStateChangeReason</code> 中增加原因 <code>AgoraRtmLinkStateChangeReasonLoginTooFrequent</code> (37)，表示当前登录操作过于频繁。
+
+
+#### 新增更新 Token 超时错误码
+
+
+为反馈更新 Token 操作的结果，该版本新增错误码 <code>AgoraRtmErrorRenewTokenTimeout</code> (10026)。
+
+
+#### 在线状态事件通知优化
+
+
+当频道数据无法正常同步时，SDK 会重新触发一次 <code>AgoraRtmPresenceEventTypeSnapshot</code> 事件。收到该事件后，用户可以更新自己 App 的本地缓存。
+
+
+#### 其它改进
+
+
+- 加快了切后台或休眠后，RTM 服务恢复重连的速度。
+- 优化了 SDK 在弱网情况下的表现。
+- 优化了接入节点的选择，提升了服务的连接速度。
+
+
+### 问题修复
+
+
+- 重连时偶现订阅服务未恢复。
+- 部分频道内用户查询结果时，可能包含异常离线用户的信息。
+
+
+
+
+
+## 2.2.2 版
+
+该版本于 2024 年 11 月 6 日发布。
+
+
+### 升级必看
+
+
+
+#### SNAPSHOT 状态触发时机变更
+
+
+该版本修订了 Presence 事件中 `SNAPSHOT` 事件的触发时机。现在，只要用户在频道内，就可能会再次收到 `SNAPSHOT` 事件；收到后，用户可以更新自己的全量信息，来避免因异常导致的状态不同步问题。
+
+
+#### 锁过期时间计算规则变更
+
+
+该版本修改了锁（Lock）过期时间的计算规则。该版本起，锁的过期时间将从服务端判定用户离线开始计算。
+
+
+### 新特性
+
+
+
+#### 支持历史消息
+
+
+该版本在 <code>AgoraRtmPublishOptions</code> 中新增了 `storeInHistory` 属性，支持在频道中发送消息的同时，将消息存储到云端，后续用户可以通过历史消息接口获取。
+
+:::info[信息]
+该功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开启。
+:::
+
+
+#### SDK 连接状态变化原因
+
+
+该版本在 SDK 连接状态 `LinkStateEvent` 中添加 <code>AgoraRtmLinkStateChangeReason</code> 枚举类，报告连接状态变更的原因。
+
+
+### 改进
+
+
+该版本提升了基础消息服务在服务异常时的业务表现，避免因部分服务出现异常，导致的消息服务不可用的问题。
+
+
+### 问题修复
+
+
+该版本修复了如下问题：
+
+- 某些场景下，Token 类型不正确导致异常错误。
+- 某些场景下，用户可能多次收到相同离线用户的离线通知。
+- 相同用户 ID 在不同端登录后，可能出现连接状态异常。
+- 频繁设置 Presence 状态时，可能导致数据异常。
+- 未开通指定服务时，加入频道时未返回错误。
+- 某些场景下，异常属性值可能导致崩溃问题。
+
+
+
+## 2.2.1 版
+
+该版本于 2024 年 7 月 17 日发布。
+
+
+### 改进
+
+
+该版本进行了如下改进：
+
+- 优化了底层算法能力，提升了数据同步速度。
+- 在 <code>AgoraRtmLinkStateEvent</code> 中，将 Token 过期时返回的 `reason` 字段由 `TicketExpired` 改为 `TokenExpired`。
+
+
+### 问题修复
+
+
+该版本修复了本地用户未调用 <code>leave</code> 方法直接调用 <code>logout</code> 方法时，偶现远端用户收不到 <code>AgoraRtmPresenceEventTypeRemoteLeaveChannel</code> 事件通知的问题。
+
+
+
+## 2.2.0 版
+
+该版本于 2024 年 4 月 23 日发布。
+
+
+
+### 升级必看
+
+
+
+
+#### API 变更
+
+
+该版本的 API 变更如下：
+
+- 删除了 `createMetadata` 方法。参考如下示例代码修改你的实现代码：
+
+  ```objc
+  // v2.2.0 之前
+  AgoraRtmMetadata* metadata = [[rtm getStorage] createMetadata];
+  ```
+
+  ```objc
+  // v2.2.0
+  AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+  ```
+
+- 取消了 `AgoraRtmStateItem` 类，并将如下参数由 `NSArray<AgoraRtmStateItem *>` 类型变为 `NSDictionary` 类型，参考对应 API 文档修改你的实现代码。
+  - [`setState`](/api-ref/rtm2/ios/toc-presence/presence#setState) 中的 `items` 参数。
+  - [`PresenceEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmPresenceEvent) 中的 `states` 参数。
+  - [`UserState`](/api-ref/rtm2/ios/toc-presence/presence#getState) 中的 `states` 参数。
+
+
+### 新特性
+
+
+
+#### 新增支持 macOS 和 VisionOS 平台
+
+
+该版本新增支持 macOS 和 VisionOS 平台，支持的最小版本和目标架构见[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)。同时，该版本也将包名由 `AgoraRtm_iOS` 变更为 `AgoraRtm`。升级至该版本后，在使用 CocoaPods 集成方式时，你需要将 `Podfile` 文件修改为以下内容：
+
+```ruby
+platform :ios, '11.0'
+target 'Your App' do
+pod 'AgoraRtm', '2.2.0'
+end
+```
+
+#### 新增私有化部署能力
+
+该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
+
+#### 新增心跳时间配置
+
+该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic#heartbeatinterval-and-presencetimeout)。
+
+#### 新增双环境配置
+
+该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#protocol)。
+
+#### 新增用户频道类型
+
+该版本在 [`AgoraRtmChannelType`](/api-ref/rtm2/ios/enumv#channeltype) 中新增 `AgoraRtmChannelTypeUser` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
+
+#### 新增静默模式配置
+
+该版本在 [`AgoraRtmSubscribeChannelFeature`](/api-ref/rtm2/ios/enumv#subscribechannelfeature) 中新增 `AgoraRtmSubscribeChannelFeatureBeQuiet` 枚举，在 [`AgoraRtmJoinChannelFeature`](/api-ref/rtm2/ios/enumv#joinchannelfeature) 中新增 `AgoraRtmJoinChannelFeatureBeQuiet` 枚举，用于设置静默订阅或加入频道。设置成功后，频道中其他用户无法感知该用户的出席状态。
+
+### 改进
+
+#### 改进连接状态管理逻辑
+
+该版本新增 [`didReceiveLinkStateEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 `connectionChangedToState` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic)。
+
+#### 改进 AgoraRtmPresenceEventTypeRemoteStateChanged 事件通知逻辑
+
+该版本改进了 Presence 功能的 `AgoraRtmPresenceEventTypeRemoteStateChanged` 事件的触发逻辑，即当用户一次设置或修改多个 key-value 时，频道内其他用户只会接收到一次事件通知。
+
+#### 支持事件通知触发时间戳
+
+该版本在如下数据结构中新增 `timestamp` 参数，报告触发事件通知的时间戳：
+
+- [`AgoraRtmMessageEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#messageevent)
+- [`AgoraRtmPresenceEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#presenceevent)
+- [`AgoraRtmTopicEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#topicevent)
+- [`AgoraRtmStorageEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#storageevent)
+- [`AgoraRtmLockEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#lockevent)
+
+#### 优化 API 行为
+
+该版本优化了以下 API 的行为：
+
+- [`loginByToken`](/api-ref/rtm2/ios/toc-configuration/configuration#login)：
+  - 在之前版本中，不支持连续多次调用该方法；也不支持在该方法的 `token` 参数中传入空字符串。
+  - 自 2.2.0 版本起，支持连续多次调用该方法，中间无需额外调用 `logout` 方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
+- [`subscribeWithChannel`](/api-ref/rtm2/ios/toc-channel/channel#subscribe)：
+  - 在之前版本中，不支持连续多次调用该方法。
+  - 自 2.2.0 版本起，支持连续多次调用该方法。
+- [`joinWithOption`](/api-ref/rtm2/ios/toc-channel/channel#join)：
+  - 在之前版本中，不支持连续多次调用该方法，也不支持在该方法的 `token` 参数中传入空字符串。
+  - 自 2.2.0 版本起，支持连续多次调用该方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
+
+#### 修改 presenceTimeout 取值范围
+
+该版本将 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中 `presenceTimeout` 参数的取值范围由 [10,300] 修改为 [5,300]。
+
+## 2.1.12 版
+
+该版本于 2024 年 6 月 7 日发布。
+
+### 改进
+
+该版本进行了如下改进：
+
+- 在因网络原因导致数据同步出错的情况下，该版本增加了用户退出机制，SDK 会自动登出 RTM 系统。
+- 断网期间取消订阅，不再返回取消订阅失败的错误。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 弱网条件下，断线期间用户取消订阅 Message Channel 出错。
+- 弱网条件下，登录成功后，偶现无法收到回调。
+- 断线重连情况下，偶现丢失 `didReceiveStorageEvent` 事件通知。
+- 断线重连情况下，偶现无法恢复 Stream Channel 中的订阅关系。
+- 偶现收不到 Web 端的 Topic 消息。
+
+## 2.1.11 版
+
+该版本于 2024 年 4 月 30 日发布。
+
+### 改进
+
+#### 新增隐私清单文件
+
+为满足 Apple 对于 App 发布的安全合规要求，SDK 自该版本起新增隐私清单文件 `PrivacyInfo.xcprivacy`，其中包含 SDK 中需要访问或使用用户数据的 API 调用说明和 SDK 采集的数据类型说明。
+
+:::info[信息]
+如果你需要将集成 v2.1.10 之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](/zh-CN/api-reference/faq/other/privacyinfortm)
+:::
+
+#### 其他
+
+该版本优化了使用 `AgoraRtmSubscribeChannelFeaturePresence` 订阅频道或使用 `AgoraRtmJoinChannelFeaturePresence` 加入频道时的响应机制。如果 5 秒内未收到 `AgoraRtmPresenceEventTypeSnapshot` 类型的 `didReceivePresenceEvent` 事件通知，则 SDK 会在 `completion` 参数中报告 `AgoraRtmErrorChannelPresenceNotReady` 错误码。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 特定场景下，登出 RTM 系统后再次登录，然后使用 `AgoraRtmSubscribeChannelFeaturePresence` 订阅频道或使用 `AgoraRtmJoinChannelFeaturePresence` 加入频道时，偶现订阅或加入频道失败。
+- 由网络问题导致连接断开并恢复的情况下，本地用户主动调用 `leave` 离开频道，偶现远端用户收不到 `AgoraRtmPresenceEventTypeRemoteConnectionTimeout` 类型的 `didReceivePresenceEvent` 事件通知。
+- 频繁调用 `subscribeWithChannel` 和 `unsubscribeWithChannel` 方法，偶现调用失败。
+
+## 2.1.10 版
+
+该版本于 2024 年 2 月 26 日发布。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 频繁发送消息时，偶现消息发送超时。
+- 调用 `renewToken` 刷新 Token，因部分服务未能生效而导致非预期的连接断开。
+
+## 2.1.9 版
+
+该版本于 2024 年 1 月 10 日发布。
+
+### 改进
+
+该版本优化了在断线重连时对过期用户状态数据的处理逻辑。
+
+### 问题修复
+
+该版本修复了初始化时的内存泄露问题。
+
+## 2.1.8 版
+
+该版本于 2023 年 12 月 4 日发布。
+
+### 升级必看
+
+该版本对消息发送选项进行了如下优化，请在升级到该版本后更新 App 代码：
+
+- 在 `AgoraRtmPublishOptions` 中删除了 `sendTs` 参数，并新增了 `channelType` 参数。详见 [`AgoraRtmPublishOptions`](/api-ref/rtm2/ios/toc-message/message#options)。
+- 将 `publishTopicMessage` 方法中的 `options` 参数类型由 `AgoraRtmPublishOptions` 修改为 `AgoraRtmTopicMessageOptions`。详见 [`AgoraRtmTopicMessageOptions`](/api-ref/rtm2/ios/toc-topic/topic#options)。
+
+### 改进
+
+该版本新增了 `AgoraRtmErrorInvalidChannelType`、`AgoraRtmErrorInvalidEncryptionParameter` 和 `AgoraRtmErrorOperationRateExceedLimitation` 错误码。错误码描述及解决方法见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 初始化时 `encryptionKdfSalt` 参数长度不为 32 字节，未返回初始化失败。
+- 调用 `whoNow` 方法返回分页结果时，偶现崩溃。
+
+## 2.1.7 版
+
+该版本于 2023 年 10 月 20 日发布。
+
+### 改进
+
+该版本优化了内存表现并修复了潜在的内存泄漏问题。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 特定场景下，偶现 Presence 数据丢包。
+- 特定场景下，方法调用后未触发异步回调。
+- 使用端侧加密时，参数无效导致的崩溃。
+- 特定场景下，直接销毁 RTM 实例导致的 ANR (Application Not Responding) 问题。
+
+## 2.1.6 版
+
+该版本于 2023 年 9 月 19 日发布。
+
+### 升级必看
+
+该版本对部分功能的实现方式进行了优化，请在升级到该版本后更新 App 代码。
+
+#### 初始化参数
+
+为提醒用户在初始化时设置必填参数，该版本新增如下方法：
+
+- 在 `AgoraRtmMetadata` 中新增 `init` 方法，禁止用户不填参数就初始化。
+- 在 `AgoraRtmProxyConfig` 中新增 `init` 和 `initWithServer` 方法，要求用户在初始化时填写 `server`、`port` 和 `proxyType` 参数。
+- 在 `AgoraRtmClientConfig` 中新增 `init` 和 `initWithAppId` 方法，要求用户在初始化时填写 `appId` 和 `userId` 参数。
+
+#### 频道选项
+
+该版本对 `AgoraRtmJoinChannelOption` 和 `AgoraRtmSubscribeOptions` 类进行了如下修改：
+
+- 在 `AgoraRtmJoinChannelOption` 中删除了 `withMetadata`、`withPresence` 和 `withLock` 参数，并新增 `features` 参数替代。根据需要，你可以在 `features` 参数中设置一种或多种事件通知。
+- 在 `AgoraRtmSubscribeOptions` 中删除了 `withMessage`、`withMetadata`、`withPresence` 和 `withLock` 参数，并新增 `features` 参数替代。根据需要，你可以在 `features` 参数中设置一种或多种事件通知。
+
+此外，该版本提升了在 `AgoraRtmJoinChannelOption` 中设置 Presence 事件通知的性能。
+
+#### 命名变更
+
+该版本修改了如下回调的名称：
+
+| v2.1.6 之前 | v2.1.6 |
+| ----- | ---------------- |
+| `onMessageEvent` | `didReceiveMessageEvent` |
+| `onPresenceEvent` | `didReceivePresenceEvent` |
+| `onLockEvent` | `didReceiveLockEvent` |
+|`onStorageEvent` | `didReceiveStorageEvent`|
+| `onTopicEvent` | `didReceiveTopicEvent` |
+|`onTokenPrivilegeWillExpire` | `tokenPrivilegeWillExpire` |
+|`connectionStateChanged` | `connectionChangedToState` |
+
+此外，该版本还将 `removeState` 方法的 `items` 参数更名为 `keys`，将 `areaCode` 参数类型由 `unsigned int` 修改为 `AgoraRtmAreaCode`。
+
+### 新特性
+
+#### 多种事件监听方式
+
+该版本新增 `addDelegate` 和 `removeDelegate` 方法。除了在初始化时添加或删除事件监听外，你还可以调用新增方法在 App 生命周期的任意时间添加、删除一个或多个事件监听对象。
+
+### 改进
+
+#### 消息发送
+
+该版本新增 `publish` 和 `publishTopicMessage` 方法的同名方法，并修改了原方法中 `message` 参数的类型。详情如下：
+
+```objc
+// v2.1.6 之前
+// message 参数类型为 NSObject，支持传入字符串和二进制消息
+- (void) publish: (NSString* _Nonnull)channelName
+         message: (NSObject* _Nonnull)message
+      withOption: (AgoraRtmPublishOptions* _Nullable)publishOption
+      completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+
+- (void) publishTopicMessage: (NSObject * _Nonnull) message
+                     inTopic: (NSString * _Nonnull) topic
+                  withOption:(AgoraRtmPublishOptions * _Nullable) options
+                  completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+```objc
+// v2.1.6
+// message 参数分为 NSString 和 NSData 类型
+// NSString 类型仅支持传入字符串数据
+// NSData 类型仅支持传入二进制数据
+
+// publish[1/2]
+- (void) publish:(NSString* _Nonnull)channelName
+         message:(NSString* _Nonnull)message
+          option:(AgoraRtmPublishOptions* _Nullable)publishOption
+      completion:(AgoraRtmOperationBlock _Nullable)completionBlock
+
+// publish[2/2]
+- (void) publish:(NSString* _Nonnull)channelName
+            data:(NSData* _Nonnull)data
+          option:(AgoraRtmPublishOptions* _Nullable)publishOption
+      completion:(AgoraRtmOperationBlock _Nullable)completionBlock
+
+// publishTopicMessage[1/2]
+- (void) publishTopicMessage:(NSString * _Nonnull)topic
+                     message:(NSString * _Nonnull)message
+                      option:(AgoraRtmPublishOptions * _Nullable)options
+                  completion:(AgoraRtmOperationBlock _Nullable)completionBlock
+
+// publishTopicMessage[2/2]
+- (void) publishTopicMessage:(NSString * _Nonnull)topic
+                        data:(NSData * _Nonnull)data
+                      option:(AgoraRtmPublishOptions * _Nullable)options
+                  completion:(AgoraRtmOperationBlock _Nullable)completionBlock
+```
+
+#### 消息接收
+
+该方法在 `AgoraRtmMessage` 类中删除了 `getData` 方法、`getType` 方法和 `AgoraRtmMessageType` 类，新增了 `rawData` 和 `stringData` 属性，分别用于接收二进制消息和字符串消息。
+
+#### 响应和错误信息优化
+
+该版本优化了各方法中 `completion` 回调函数返回的信息：
+
+- 如果方法调用成功，则会在 `response` 参数中返回对应数据，在 `errorInfo` 参数中返回 `nil`。
+- 如果方法调用失败，则会在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+此外，该版本在 `initWithConfig` 和 `createStreamChannel` 方法中新增 `error` 参数，用于输出方法调用失败的错误描述，方便排查问题。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 当网络状态发生变化时，偶现无法登出 RTM 系统。
+- 登出 RTM 系统后，当网络状态发生变化时，偶现无法登录 RTM 系统。
+- 网络断开后，因数据未清理导致偶现用户无法收到 `Snapshot` 事件通知。
+- 用户加入频道后，把 App 切到后台再切换回前台时，偶现 SDK 多次触发 `REMOTE_JOIN` 事件通知。
+
+## 2.1.4 版
+
+该版本于 2023 年 8 月 16 日发布。这是 RTM v2 Objective-C SDK 的第一个版本。
+
+本次发布意味着声网实时通讯（RTM）产品步入 v2 时代，我们在功能覆盖、性能提升、体验优化上都将为用户带来革新。
+
+- 功能覆盖：该版本通过引入频道（Channel）、消息（Message）、Topic、Presence、Storage 和 Lock 等功能模块，能覆盖更多业务场景，你可以把更多的精力集中在自己的业务创新上。
+
+- 性能提升：我们在新版本中重构了后台架构，通过优化网络连接进一步提升性能，提供长时间低延迟、高可靠、大并发、易扩展的实时网络接入能力，让你无需为业务质量担忧。
+
+- 体验优化：我们重新设计并简化了 API 接口；优化了包括用户指南、API 参考在内的所有文档，提供了更全面的示例程序，支持开发者低成本学习使用 SDK，快速完成集成，提高开发效率。
+
+### 新特性
+
+该版本提供的核心功能模块如下。
+
+:::info[信息]
+RTM 2.1.4 目前处于 Public Beta 阶段，某些功能细节可能会在随后的版本中发生改变，以提升用户体验。
+:::
+
+#### 初始配置（Setup）
+
+初始配置（Setup）是初始化生产 RTM Client 时预先定义或配置一些关键参数，影响其后续的行为。同时它还提供了登录、登出等功能。核心能力如下：
+
+- `initWithConfig`：创建一个 RTM Client 实例，并进行如下初始配置：
+  - `appId`：设置 App ID。相同 App ID 的 App 间可以通信，不同 App ID 的 App 相互隔离。
+  - `userId`：设置用户 ID，用以区分用户或设备。
+  - `areaCode`：设置区域代码，用于 Geo-fencing 功能。
+  - `presenceTimeout`：设置 Presence 服务的超时时间。
+  - `useStringUserId`：设置用户 ID 的数据类型，可以是 String 类型，也可以是 Uint 类型。
+  - `logConfig`：配置本地日志大小、位置、输出信息等级等参数。
+  - `proxyConfig`：配置 Proxy 服务参数。
+  - `encryptionConfig`：配置端侧加密参数。
+- 事件监听：实现 `onMessageEvent`、`onPresenceEvent`、`onTopicEvent`、`onStorageEvent`、`onLockEvent`、`connectionStateChanged`、`onTokenPrivilegeWillExpire` 等事件通知的业务逻辑。
+- `loginByToken`：登录 RTM 服务。
+- `logout`：登出 RTM 服务。
+- `destroy`：销毁 RTM Client 实例，释放资源。
+
+#### 频道（Channel）
+
+频道是 RTM 实时网络中一种数据传输的管理机制，任何订阅或加入频道的用户都可以在 100 毫秒内接收到频道中传输的消息和事件，RTM 允许客户端订阅数百甚至数千个频道。大多数 RTM API 都将以频道为基础进行发送、接收、加密等行为。
+
+基于声网的能力，RTM 的频道分成两种类型：Message Channel 和 Stream Channel。两种类型频道的核心能力如下：
+
+- Message Channel：
+    - `subscribeWithChannel`：订阅指定 Message Channel 并开始接收频道中的消息和事件通知。
+    - `unsubscribeWithChannel`：取消订阅指定 Message Channel 并停止接收频道中的消息和事件通知。
+
+- Stream Channel：
+    - `createStreamChannel`：创建 Stream Channel 实例，随后可以调用其中的方法。
+    - `joinWithOption`：加入 Stream Channel，并开始接收频道中的消息和事件通知。
+    - `leave`：离开 Stream Channel，并停止接收频道中的消息和事件通知。
+    - `destroy`：销毁 Stream Channel 实例以释放资源。
+
+其中：
+
+- `subscribeWithChannel`、`unsubscribeWithChannel`、`joinWithOption`、`leave` 方法都会触发 `onPresenceEvent` 事件通知。频道中的其他用户会收到对应的 `Join`、`Leave` 事件通知。
+- 调用 `subscribeWithChannel` 和 `joinWithOption` 操作订阅或加入频道的时候，可以选择是否配置 `withMessage`、`withPresence`、`withMetadata`、`withLock` 等参数以开启对应事件通知的监听功能。如果开启，你同时也需要注册对应事件监听，才能顺利收到对应事件通知。
+
+#### 消息（Message）
+
+RTM 的基础是发送消息的能力，你可以随时随地向频道中发送消息，消息会在 100 毫秒内传递到任何地方。RTM 支持 String 类型和 Byte 类型的消息负载。
+
+`publish` 向指定的 Message Channel 中发送消息。调用 `publish` 会触发 `onMessageEvent` 事件通知，如果想要收到频道中的消息，你需要在 `subscribeWithChannel` 的时候，设置 `withMessage = true`，注册并实现 `onMessageEvent` 事件。
+
+#### Topic
+
+Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Channel 中利用此特性进行数据流的订阅、分发、事件通知等，灵活使用 Topic 能力，能大大降低业务复杂度，提升开发效率。Topic 的主要功能如下：
+
+- `joinTopic`：注册成为此 Topic 的消息发布者（publisher）。注册后，该用户会具备发送消息的能力。
+- `publishTopicMessage`：向 Stream Channel 中的 Topic 发送消息。
+- `leaveTopic`： 取消注册为该 Topic 的消息发布者。
+- `subscribeTopic`：订阅该频道中 Topic 的一名或多名消息发布者。
+- `unsubscribeTopic`：取消订阅该 Topic 或取消订阅该 Topic 中指定的一名或多名消息发布者。
+
+注册（`joinTopic`）或取消注册（`leaveTopic`）消息发布者操作，会触发 `onTopicEvent` 事件通知，频道中的其他用户将会收到此事件通知。
+
+:::info[信息]
+Topic 特性只在 Stream Channel 中有效，Message Channel 中不存在此特性。
+:::
+
+#### 在线状态
+
+Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开频道的实时状态
+- 订阅或加入同一频道的所有用户的实时状态
+- 一个用户订阅或加入的所有频道的实时信息
+- 自定义临时用户状态及其变更信息
+
+在 Message Channel 和 Stream Channel 中均可使用以下 Presence 功能：
+
+- `whoNow`：实时获取指定频道的在线用户数量、在线用户列表、在线用户的临时状态等信息。
+- `whereNow`：实时获取指定用户所在频道的列表。
+- `setState`：设置用户在指定频道的临时状态。
+- `getState`：获取用户在指定频道的临时状态。
+- `removeState`：删除用户在特定频道的临时状态。
+
+Presence 在提供上述功能的同时，也提供了 `onPresenceEvent` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
+
+#### 存储
+
+RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
+
+##### Channel Metadata
+
+- `setChannelMetadata`：为指定频道设置 Channel Metadata 或 Channel Metadata Item。
+- `getChannelMetadata`：获取指定频道的 Channel Metadata 和 Channel Metadata Item。
+- `removeChannelMetadata`：删除指定频道的 Channel Metadata 或 Channel Metadata Item。
+- `updateChannelMetadata`：更新指定频道已有 Channel Metadata 或 Channel Metadata Item。
+
+Channel Metadata 的设置、删除和更新都会触发 `onStorageEvent` 事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `onStorageEvent` 事件通知中携带的是当前 Channel Metadata 的全量信息，我们将在后续版本中优化，提供性能更优的增量更新能力。
+
+Channel Metadata 同时也引入了 Lock 的控制能力，当调用 API 设置、删除、更新 Channel Metadata 时，如果参数中的 `lock` 被设置，则开启 Lock 的校验，此时只有拥有此锁的用户才被允许成功调用对应的方法。
+
+##### User Metadata
+
+- `setUserMetadata`：设置指定用户的 User Metadata 或 User Metadata Item。
+- `getUserMetadata`：获取指定用户的 User Metadata 和 User Metadata Item。
+- `removeUserMetadata`：删除指定用户的 User Metadata 或 User Metadata Item。
+- `updateUserMetadata`：更新指定用户已存在的 User Metadata 或 User Metadata Item。
+- `subscribeUserMetadata`：订阅指定用户的 User Metadata 或 User Metadata Item 变更事件通知。
+- `unsubscribeUserMetadata`：取消订阅指定用户的 User Metadata 或 User Metadata Item 事件通知。
+
+User Metadata 的设置、删除和更新都会触发 `onStorageEvent` 事件通知，所有订阅此 User Metadata 的其他用户将会收到事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `onStorageEvent` 事件通知中携带的是所订阅 User Metadata 的全量信息，我们将在后续的版本中优化，提供性能更优的增量更新能力。
+
+##### CAS 控制
+
+Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `AgoraRtmMetadata` 中的 `setMajorRevision` 方法设置 `majorRevision` 属性开启整组 Channel Metadata 的版本号校验。
+- 通过 `AgoraRtmMetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+设置、删除、更新 Channel Metadata 或 User Metadata 时，配合 `revision` 参数可以控制本次调用是否开启 Revision 校验，逻辑如下：
+
+- `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
+- `majorRevision` 或  `revision` 为 Uint64 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+
+#### 锁
+
+临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
+
+- `setLock`：为指定频道设置锁。
+- `acquireLock`：获取指定频道中指定的锁。
+- `releaseLock`： 释放指定频道中指定的锁。
+- `revokeLock`： 撤销指定频道中某个用户对此锁的占用权限以释放此锁。
+- `getLocks`： 获取指定频道中所有锁的详情。
+- `removeLock`：删除指定频道中指定的锁。
+
+频道中锁的设置、获取、释放、撤销和删除操作都会上报对应的 `onLockEvent` 事件通知。你可以充分利用此特性优化业务的实现逻辑。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+本文提供 RTM v2 SDK 的发版说明。
+
+## 2.2.4 版
+
+该版本于 2026 年 4 月 13 日发布。
+
+### 升级必看
+
+#### 私有化域名默认格式变更
+
+该版本为 `RTMConfig` 的 `privateConfig` 新增 `domainMode` 属性，用于 RTM 私有化部署场景下，配置 RTM SDK 边缘节点服务器的域名格式，支持以下配置：
+
+- `1`：(默认)自定义格式，例如 `ip.**`
+- `2`：老版本私有化格式，例如 `ip.edge.**`
+
+:::warning[注意]
+如果你使用了私有化部署功能，为保证兼容性，需要在升级至该版本后，将 `privateConfig` 中的 `domainMode` 属性设置为 `2`。如果省略该参数或使用默认值 `1`，可能无法连接到 RTM 服务器。
+:::
+
+### 改进
+
+#### 网络波动场景体验优化
+
+该版本综合优化了弱网、断线重连等网络波动场景下的体验，包括：
+
+- 支持断网时调用 `login` 立即重试
+- 支持断网时调用 `unsubscribeUserMetadata`
+- 提高重连期间刷新 Token 操作的稳定性
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 收到 RTM 部分 API 调用结果前调用 `logout`，重新 `login` 后调用相同 API 偶现收不到结果。
+- 调用 `removeUserMetadata` 时传入超过长度限制的 `metadata` 时的报错不符合预期。
+- 调用 `getMessages` 获取二进制类型的历史消息时偶现获取到的内容不符合预期。
+- 使用没有 RTM 权限的 Token 登录时的错误码和错误原因不符合预期。
+- RTM 客户端实例绑定的 App ID 与生成 Token 使用的 App ID 不一致时，错误码不符合预期。
+- 调用 `subscribe` 订阅频道消息失败时返回的错误码不符合预期。
+- 因 Chrome 浏览器网络模块 bug 导致网络状态检测异常，RTM 无法登录。
+
+## 2.2.3 版
+
+该版本于 2025 年 11 月 4 日发布。
+
+### 升级必看
+
+#### tokenPrivilegeWillExpire 事件触发时机
+
+在之前的版本中，SDK 会在 Token 即将过期前的 30 秒、20 秒、10 秒时分别触发一次 `tokenPrivilegeWillExpire` 事件。该版本起，SDK 仅在 Token 即将过期前 30 秒时触发一次该事件，方便统一处理 Token 即将过期的逻辑。
+
+### 改进
+
+- 增加了 Stream Channel 的事件上报，方便进行问题排查。
+- 提高了 Geo-fencing 连接的稳定性。
+- 提高了登录 RTM 服务及弱网重连下连接的可靠性。
+- 新增对 IP 进行打码处理，以满足合规需求。
+- 屏蔽了非业务预期内的频道消息。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 在之前的版本中，使用相同用户 ID 登录服务时收到 `FAILED` 事件后，用户需要先 `logout` 再 `login` 才能登录，并重新实现其他相关逻辑。该版本对该逻辑进行了优化：在收到 `FAILED` 事件后，用户可以直接调用 `login` 登录服务，且无需重复实现已有逻辑。
+- 获取 Lock 然后停止订阅频道后，无法释放 Lock。
+- 偶现 SDK 状态为 `LinkStateConnected`，但实际 RTM 服务不可用。
+- 弱网环境下，偶现 SDK 重连时无法恢复订阅频道。
+- 多次订阅频道时，Presence 事件可能有误。
+
+## 2.2.2 版
+
+该版本于 2025 年 3 月 27 日发布。
+
+### 改进
+
+#### 新增连接状态改变原因
+
+该版本在 [`LinkStateChangeReasonCode`](/api-ref/rtm2/javascript/enumv#连接状态改变原因类型) 中增加原因 `LOGIN_TOO_FREQUENT`，表示当前登录操作过于频繁。
+
+#### 新增更新 Token 超时错误码
+
+为反馈更新 Token 操作的结果，该版本新增错误码 `RTM_ERROR_RENEW_TOKEN_TIMEOUT` (-10026)。
+
+#### 在线状态事件通知优化
+
+当频道数据无法正常同步时，SDK 会重新触发一次 `SNAPSHOT` 事件。收到该事件后，用户可以更新自己 App 的本地缓存。
+
+#### whereNow 查询设置优化
+
+该版本支持在调用 `whereNow` 时将 `userId` 设为空字符串 `""`。设置后，SDK 会使用本地用户的 `userId` 进行查询。
+
+#### 错误码 -10015 原因修订
+
+该版本对错误码 `RTM_ERROR_LOGIN_NOT_AUTHORIZED` (-10015) 的原因进行了修订。在服务未开启、已欠费、账号被封停时，都会返回该错误。
+
+#### 其它改进
+
+- 支持用户未登录 RTM 系统时，取消订阅指定频道。
+- 在调用 `whoNow` 查询当前频道内的用户时，不会再查询到已经超时的用户。
+- 在未调用 API 时，SDK 不会再产生新的日志并上传，从而节省了带宽。
+- 优化了重连逻辑。
+
+### 问题修复
+
+- 修复了停止订阅频道后，还能收到频道消息的问题。
+- 修复了移除频道或用户 Metadata 后，还能通过 `get` 方法获取 Metadata 的问题。
+
+## 2.2.1 版
+
+该版本于 2024 年 11 月 26 日发布。
+
+### 新特性
+
+#### 支持历史消息
+
+该版本在 [`publish`](/api-ref/rtm2/javascript/toc-message/message#publish) 的 `PublishOptions` 参数中新增了 `storeInHistory` 属性，支持在频道中发送消息的同时，将消息存储到云端，后续用户可以通过 [`getMessages`](/api-ref/rtm2/javascript/toc-message/message#getMessages) 方法获取。
+
+:::info[信息]
+该功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开启。
+:::
+
+#### SDK 连接状态变化原因
+
+该版本在 SDK 连接状态 `linkState` 中添加 [`LinkStateChangeReasonCode`](/api-ref/rtm2/javascript/enumv#linkstatechangereason) 枚举类，报告连接状态变更的原因。
+
+### 改进
+
+#### 优化用户状态
+
+该版本对 Presence 功能的用户状态（`state`）进行了如下优化，提升了该功能的可用性：
+
+- 支持对 `state` 进行全量删除。在调用 `removeState` 方法时，如果不设置 `options` 参数，或者将 `options` 参数的 `state` 属性设置为空数组，都会默认删除全部用户状态。
+- `setState` 和 `removeState` 方法支持键值包含 `[`、`]` 和 `.` 字符。
+- 当 SDK 连接状态为 `FAILED` 时，可以调用 `getState`、`setState` 和 `removeState` 方法。在之前的版本中，SDK 会直接报错。
+- Stream Channel 中支持恢复用户状态。
+- 修复了一些 `state` 相关的可用性问题。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- SDK 连接状态为 `FAILED` 时，调用 Lock 和 Storage 的相关方法，SDK 报错 `RTM_ERROR_NOT_LOGIN`；该版本对报错信息进行调整，在 2.2.1 及之后的版本中，SDK 会报 `RTM_ERROR_LOGIN_TIMEOUT`。
+- 断网期间订阅频道操作失败，网络恢复后没有重置到未订阅状态。
+
+## 2.2.0 版
+
+该版本于 2024 年 8 月 29 日发布。
+
+### 升级必看
+
+该版本在 `RTMConfig` 中删除了 `token` 参数，并在 [`login`](/api-ref/rtm2/javascript/toc-configuration/configuration#login) 方法中新增了 `token` 参数作为替代，你需要在升级后修改你的实现代码：
+
+```javascript
+// v2.2.0 之前的方式
+const { RTM, EncryptionMode } = AgoraRTM;
+    // highlight-start
+const rtmConfig = {
+    token : "yourToken",
+    // highlight-end
+    encryptionMode : EncryptionMode.AES_256_GCM,
+    salt : yourSalt,
+    cipherKey : "yourCipherKey",
+    presenceTimeout : 300,
+    logUpload : true,
+    logLevel : "debug",
+    cloudProxy : false,
+    useStringUserId : false
+    privateConfig: {
+        serviceType: ["MESSAGE", "STREAM"]
+    },
+    heartbeatInterval: 5
+};
+const rtm = new RTM("yourAppId", "yourUserId", rtmConfig);
+
+try{
+    // highlight-start
+    const result = await rtm.login();
+    // highlight-end
+    console.log(result);
+} catch (status){
+    console.log(status);
+}
+```
+
+```javascript
+// v2.2.0 及之后的方式
+const { RTM, EncryptionMode } = AgoraRTM;
+// highlight-start
+const rtmConfig = {
+// highlight-end
+    encryptionMode : EncryptionMode.AES_256_GCM,
+    salt : yourSalt,
+    cipherKey : "yourCipherKey",
+    presenceTimeout : 300,
+    logUpload : true,
+    logLevel : "debug",
+    cloudProxy : false,
+    useStringUserId : false
+    privateConfig: {
+        serviceType: ["MESSAGE", "STREAM"]
+    },
+    heartbeatInterval: 5
+};
+const rtm = new RTM("yourAppId", "yourUserId", rtmConfig);
+
+try {
+    // highlight-start
+    const result = await rtm.login({ token: "your_token" });
+    // highlight-end
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, because of: ${reason}.`);
+}
+```
+
+### 新特性
+
+#### 新增私有化部署能力
+
+该版本在 [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
+
+#### 新增心跳时间配置
+
+该版本在 [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic#heartbeatinterval-and-presencetimeout)。
+
+#### 新增用户频道类型
+
+该版本在 [`channelType`](/api-ref/rtm2/javascript/enumv) 中新增 `USER` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
+
+#### 新增静默模式配置
+
+该版本在 [`subscribe`](/api-ref/rtm2/javascript/toc-channel/channel#subscribe) 和 [`join`](/api-ref/rtm2/javascript/toc-channel/channel#join) 方法的 `options` 对象中新增 `beQuiet` 属性。该属性设置为 `true` 时表示静默订阅或加入频道，频道中其他用户无法感知该用户的出席状态。
+
+### 改进
+
+#### 改进连接状态管理逻辑
+
+该版本新增 [`linkState`](/api-ref/rtm2/javascript/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 `status` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic)。
+
+#### 改进 REMOTE_STATE_CHANGED 事件通知逻辑
+
+该版本改进了 Presence 功能的 `REMOTE_STATE_CHANGED` 事件的触发逻辑，即当用户一次设置或修改多个 key-value 时，频道内其他用户只会接收到一次事件通知。
+
+#### 支持事件通知触发时间戳
+
+该版本在如下回调中新增 `timestamp` 参数，报告触发事件通知的时间戳：
+
+- `message`
+- `presence`
+- `topic`
+- `storage`
+- `lock`
+
+#### 优化 API 行为
+
+该版本优化了以下 API 的行为：
+
+- [`login`](/api-ref/rtm2/javascript/toc-configuration/configuration#login)：
+  - 在之前版本中，不支持连续多次调用该方法；也不支持在该方法的 `token` 参数中传入空字符串。
+  - 自 2.2.0 版本起，支持连续多次调用该方法，中间无需额外调用 `logout` 方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
+- [`subscribe`](/api-ref/rtm2/javascript/toc-channel/channel#subscribe)：
+  - 在之前版本中，不支持连续多次调用该方法。
+  - 自 2.2.0 版本起，支持连续多次调用该方法。
+- [`join`](/api-ref/rtm2/javascript/toc-channel/channel#join)：
+  - 在之前版本中，不支持连续多次调用该方法，也不支持在该方法的 `token` 参数中传入空字符串。
+  - 自 2.2.0 版本起，支持连续多次调用该方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
+
+#### 修改 presenceTimeout 取值范围
+
+该版本将 [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration) 中 `presenceTimeout` 参数的取值范围由 [10,300] 修改为 [5,300]。
+
+#### 其他
+
+该版本还进行了如下优化：
+
+- 优化了底层算法能力，提升了数据同步速度。
+- 支持本地用户在发送消息时，可以收到自己发送的消息的事件通知，方便在调试阶段验证消息的收发。
+- 在所有方法的 Response 对象中删除了无效的 `timeToken` 参数。
+
+## 2.1.10 版
+
+该版本于 2024 年 6 月 11 日发布。
+
+### 改进
+
+该版本优化了 `login` 调用失败的错误码提示。例如，开启了 Token 鉴权但使用 App ID 进行初始化，登录时会报错 `RTM_ERROR_INVALID_TOKEN (-10005)`。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 频繁设置和获取锁的场景下，偶现 `lock` 事件通知不准确。
+- 断线重连后，调用 `subscribe` 方法偶现 Presence 服务初始化失败。
+- 使用 Vite 框架开发的 App，偶现收不到消息。
+- 加入频道后断线重连，无法收到 `lock` 和 `storage` 事件通知。
+- 更新 User Metadata 时，偶现重复收到 `UPDATE` 类型的 `storage` 事件通知。
+- 删除锁时，偶现重复收到 `REMOVED` 类型的 `lock` 事件通知。
+
+## 2.1.9 版
+
+该版本于 2024 年 3 月 8 日发布。
+
+### 问题修复
+
+该版本修复了 `messageEvent` 回调的 `messageType` 参数类型。
+
+## 2.1.8 版
+
+该版本于 2024 年 2 月 29 日发布。
+
+### 改进
+
+该版本优化了端侧加密的逻辑，当填入的 `salt` 长度不足 32 字节时，SDK 会自动加 0 补齐长度。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 调用 `renewToken` 刷新 Token，因部分服务未生效而导致非预期的连接断开。
+- 掉线时长超过 `presenceTimeout` 的设置值时，`status` 事件通知报告的 `reason` 值有误。
+- 弱网条件下，偶现无法恢复订阅 Lock 和 Storage 服务。
+- 特定场景下，调用 `acquireLock` 方法无法返回调用结果。
+- 本地用户离开自己加入的最后一个 Topic 时，偶现远端用户收到 `REMOTE_JOIN` 和 `REMOTE_LEAVE` 两个 Topic 事件。
+
+## 2.1.7 版
+
+该版本于 2024 年 1 月 9 日发布。
+
+### 改进
+
+该版本进行了如下改进：
+
+- 优化了在断线重连时对过期用户状态数据的处理逻辑。
+- 提升了弱网条件下 Stream Channel 中消息传输的可靠性。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 调用 `whoNow` 方法并设置 `includedUserId = true`、`includedState = false` 时，返回值中缺少 `nextPage` 参数。
+- 在随机订阅 Topic 的情况下，用户在 `message` 事件通知中的收到的 `publisher` 和实际消息发送者不一致。
+- 重复订阅同一频道后，取消订阅或离开该频道失败。
+
+## 2.1.6 版
+
+该版本于 2023 年 12 月 4 日发布。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 加入频道时设置 `withPresence` 为 `false`，调用 `whoNow` 方法无法获取下一页的结果。
+- 使用默认参数加入频道时，用户临时状态混乱。
+
+## 2.1.5 版
+
+该版本于 2023 年 9 月 28 日发布。
+
+### 升级必看
+
+该版本对以下 API 进行了修改，你需要在升级后修改你的实现代码：
+
+- 把 `messageType` 的参数类型由 `string | binary` 修改为 `STRING | BINARY`。
+- 把 `TokenPrivilegeWillExpire` 回调改名为 `tokenPrivilegeWillExpire`。
+
+### 新特性
+
+#### 删除事件监听
+
+该版本新增 `removeEventListener` 方法，用于删除指定的事件监听。
+
+#### 定时通知模式
+
+该版本支持定时通知模式。当频道中的在线人数超过 Announce Max 的值时，频道会进入定时通知模式。SDK 会以一定的时间间隔触发 `presence` 事件通知，并在 `interval` 属性中返回当前频道在上一个周期内用户加入、离开、超时、状态变更等事件通知的聚合增量信息。详见[定时通知模式](/zh-CN/realtime-media/rtm/build/manage-presence/presence-events#定时通知模式)。
+
+### 改进
+
+#### 在线状态服务
+
+该版本优化了 Presence 服务未就绪时调用 Presence 模块 API 的行为。加入 Stream Channel 或订阅 Message Channel 后，如果 Presence 服务未就绪，SDK 会把你对 Presence 模块的调用操作存在本地，待 Presence 服务就绪后发送出去。
+
+此外，该版本在 `whoNow` 方法的返回值中删除了超时用户的信息。
+
+#### 消息发布者订阅
+
+该版本优化了输入无效用户 ID 时订阅消息发布者的行为。调用 `subscribeTopic` 方法时，如果发布者列表（`users` 属性）中包含无效的用户 ID，则 SDK 会忽略无效的用户 ID 并成功订阅有效的用户 ID。
+
+#### 自定义消息类型
+
+该版本支持在调用 `publish` 或 `publishTopicMessage` 方法时把中文等特殊字符传入 `customType` 参数。
+
+#### 加密盐
+
+该版本支持设置加密时不传入 `salt` 参数。
+
+#### 错误信息优化
+
+为方便排查错误，该版本为每个错误码添加了错误描述，并在 Storage 和 Lock 模块的错误信息中补充了错误堆栈。同时，该版本删除了 `RTM_ERROR_INVALID_ARGUMENT(-2)` 和 `RTM_ERROR_TOO_OFTEN(-12)` 错误码，并新增了如下错误码：
+
+- `RTM_ERROR_LOGIN_NOT_AUTHORIZED(-10015)`
+- `RTM_ERROR_INCONSISTENT_APPID(-10016)`
+- `RTM_ERROR_INVALID_CHANNEL_TYPE(-10019)`
+- `RTM_ERROR_INVALID_ENCRYPTION_PARAMETER(-10020)`
+- `RTM_ERROR_OPERATION_RATE_EXCEED_LIMITATION(-10021)`
+
+错误码描述及处理方法见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 弱网场景下的异常。
+- 在加入频道时设置 `withPresence : false` 后，`getState` 方法返回的 `userId` 属性为空。
+- 在断网重连期间，调用任意 API 都会失败并返回 `RTM_ERROR_NOT_LOGIN(-10002)` 错误码。
+- 当客户端设备进入休眠状态后被唤醒时，调用 Presence 模块的任意 API 会失败。
+- 在资源未加载的情况下，调用 `login` 方法失败。
+- 在 Presence 模块的 API 中传入中文等特殊字符时，消息发送到远端会被截断。
+
+## 2.1.4 版
+
+该版本于 2023 年 8 月 31 日发布。
+
+### 升级必看
+
+该版本改变了事件监听程序的书写方式。升级至该版本后，你需要参考以下示例修改你的实现代码：
+
+- v2.1.4 之前的方式：
+
+```javascript
+rtmClient.addEventListener({
+    message: msgEvent => {
+        // message 事件通知的处理逻辑
+    },
+    presence: presenceEvent => {
+        // presence 事件通知的处理逻辑
+    },
+    // 添加其他事件通知
+});
+```
+
+- v2.1.4 的方式：
+
+```javascript
+rtmClient.addEventListener("message", msgEvent => {
+    // message 事件通知的处理逻辑
+});
+rtmClient.addEventListener("presence", presenceEvent => {
+    // presence 事件通知的处理逻辑
+});
+// 添加其他事件通知
+```
+
+### 改进
+
+该版本缩短了 `logout` 方法的响应时间。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 日志中丢失了 SDK 版本信息。
+- 调用 `getState` 方法获取的 `GetStateResponse` 中 `userId` 字段为空字符串。
+- 调用 `removeState` 方法后，在执行删除操作之前就返回了 `RemoveStateResponse`。
+
+## 2.1.3 版
+
+该版本于 2023 年 7 月 13 日发布。
+
+### 问题修复
+
+修复了 Cloud Proxy 无法登录的问题。
+
+## 2.1.2 版
+
+该版本于 2023 年 6 月 30 日发布。
+
+### 问题修复
+
+修复了 `AreaCode` 默认设置导致的 US/ROW 区域服务不可用的问题。
+
+## 2.1.0-beta 版
+
+该版本于 2023 年 6 月 15 日发布。这是 RTM v2 JavaScript SDK 的第一个版本。
+
+本次发布意味着声网实时通讯（RTM）产品步入 v2 时代，我们在功能覆盖、性能提升、体验优化上都将为用户带来革新。
+
+- 功能覆盖：该版本通过引入频道（Channel）、消息（Message）、Topic、Presence、Storage 和 Lock 等功能模块，能覆盖更多业务场景，你可以把更多的精力集中在自己的业务创新上。
+
+- 性能提升：我们在新版本中重构了后台架构，通过优化网络连接进一步提升性能，提供长时间低延迟、高可靠、大并发、易扩展的实时网络接入能力，让你无需为业务质量担忧。
+
+- 体验优化：我们重新设计并简化了 API 接口，支持业界最流行的 Async/Await 编程模式；优化了包括用户指南、API 参考在内的所有文档，提供了更全面的示例程序，支持开发者低成本学习使用 SDK，快速完成集成，提高开发效率。
+
+### 新特性
+
+该版本提供的核心功能模块如下。
+
+:::info[信息]
+RTM 2.1.0-beta 目前处于 Public Beta 阶段，某些功能细节可能会在随后的版本中发生改变，以提升用户体验。
+:::
+
+#### 初始配置（Setup）
+
+初始配置（Setup）是初始化 RTM Client 时预先定义或配置的一些关键参数，影响其后续行为。同时，它还提供了登录、登出等功能。核心能力如下：
+
+- `new RTM()`： 创建一个 RTM Client 实例，并进行如下初始配置：
+  - `appId`：设置 App ID。相同 App ID 的 App 间可以通信，不同 App ID 的 App 相互隔离。
+  - `userId`：设置用户 ID，用以区分用户或设备。
+  - `rtmConfig`：
+    - `token`: 设置用于用户鉴权的 Token。
+    - `encryptionMode`: 设置端侧加密模式。
+    - `cipherKey`: 设置端侧加密密钥。
+    - `salt`：设置端侧加密盐。
+    - `logUpload`: 配置是否开启日志上传。
+    - `logLevel`: 配置日志消息过滤等级。
+    - `cloudProxy`: 配置是否开启云代理。
+    - `useStringUserId`: 设置是否使用字符串类型的用户 ID。
+- 事件监听：实现 `message`、`presence`、`topic`、`storage`、`lock`、`status`、`tokenPrivilegeWillExpire` 等事件通知的业务逻辑。
+- `login`：登录 RTM 服务。
+- `logout`：登出 RTM 服务。
+
+#### 频道（Channel）
+
+频道是 RTM 实时网络中一种数据传输的管理机制，任何订阅或加入频道的用户都可以在 100 毫秒内接收到频道中传输的消息和事件，RTM 允许客户端订阅数百甚至数千个频道。大多数 RTM API 都将以频道为基础进行发送、接收、加密等行为。
+
+基于声网的能力，RTM 的频道分成两种类型：Message Channel 和 Stream Channel。两种类型频道的核心能力如下：
+
+- Message Channel：
+    - `subscribe`：订阅指定 Message Channel 并开始接收频道中的消息和事件通知。
+    - `unsubscribe`：取消订阅指定 Message Channel 并停止接收频道中的消息和事件通知。
+
+- Stream Channel：
+    - `createStreamChannel`：创建 Stream Channel 实例，随后可以调用其中的方法。
+    - `join`：加入 Stream Channel，并开始接收频道中的消息和事件通知。
+    - `leave`：离开 Stream Channel，并停止接收频道中的消息和事件通知。
+
+其中：
+
+- `subscribe`、`unsubscribe`、`join`、`leave` 方法都会触发 `presence` 事件通知。频道中的其他用户会收到对应的 `Join`、`Leave` 事件通知。
+- 调用 `subscribe` 和 `join` 操作订阅或加入频道的时候，可以选择是否配置 `withMessage`、`withPresence`、`withMetadata`、`withLock` 等参数以开启对应事件通知的监听功能。如果开启，你同时也需要注册对应事件监听，才能顺利收到对应事件通知。
+
+#### 消息（Message）
+
+RTM 的基础是发送消息的能力，你可以随时随地向频道中发送消息，消息会在 100 毫秒内传递到任何地方。RTM 支持 String 类型和 Binary 类型的消息负载。
+
+`publish` 向指定的 Message Channel 中发送消息。调用 `publish` 会触发 `message` 事件通知，如果想要收到频道中的消息，你需要在 `subscribe` 的时候，设置 `withMessage = true`，注册并实现 `message` 事件。
+
+#### Topic
+
+Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Channel 中利用此特性进行数据流的订阅、分发、事件通知等，灵活使用 Topic 能力，能大大降低业务复杂度，提升开发效率。Topic 的主要功能如下：
+
+- `joinTopic`：注册成为此 Topic 的消息发布者（publisher）。注册后，该用户会具备发送消息的能力。
+- `publishTopicMessage`：向 Stream Channel 中的 Topic 发送消息。
+- `leaveTopic`： 取消注册为该 Topic 的消息发布者。
+- `subscribeTopic`：订阅该频道中 Topic 的一名或多名消息发布者。
+- `unsubscribeTopic`：取消订阅该 Topic 或取消订阅该 Topic 中指定的一名或多名消息发布者。
+
+注册（`joinTopic`）或取消注册（`leaveTopic`）消息发布者操作，会触发 `topic` 事件通知，频道中的其他用户将会收到此事件通知。
+
+:::info[信息]
+Topic 特性只在 Stream Channel 中有效，Message Channel 中不存在此特性。
+:::
+
+#### 在线状态
+
+Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 获取频道内在线用户列表。
+- 获取在线用户所在频道列表。
+- 动态监控用户加入或离开频道。
+- 动态监控在线用户临时状态变更。
+
+在 Message Channel 和 Stream Channel 中均可使用以下 Presence 功能：
+
+- `whoNow`：实时获取指定频道的在线用户数量、在线用户列表、在线用户的临时状态等信息。
+- `whereNow`：实时获取指定用户所在频道的列表。
+- `setState`：设置用户在指定频道的临时状态。
+- `getState`：获取用户在指定频道的临时状态。
+- `removeState`：删除用户在特定频道的临时状态。
+
+Presence 在提供上述功能的同时，也提供了 `presence` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
+
+#### 存储
+
+RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
+
+##### Channel Metadata
+
+- `setChannelMetadata`：为指定频道设置 Channel Metadata 或 Channel Metadata Item。
+- `getChannelMetadata`：获取指定频道的 Channel Metadata 和 Channel Metadata Item。
+- `removeChannelMetadata`：删除指定频道的 Channel Metadata 或 Channel Metadata Item。
+- `updateChannelMetadata`：更新指定频道已有 Channel Metadata 或 Channel Metadata Item。
+
+Channel Metadata 的设置、删除和更新都会触发 `storage` 事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `storage` 事件通知中携带的是当前 Channel Metadata 的全量信息，我们将在后续版本中优化，提供性能更优的增量更新能力。
+
+Channel Metadata 同时也引入了 Lock 的控制能力，当调用 API 设置、删除、更新 Channel Metadata 时，如果参数中的 `lockName` 被设置，则开启 Lock 的校验，此时只有拥有此锁的用户才被允许成功调用对应的方法。
+
+##### User Metadata
+
+- `setUserMetadata`：设置指定用户的 User Metadata 或 User Metadata Item。
+- `getUserMetadata`：获取指定用户的 User Metadata 和 User Metadata Item。
+- `removeUserMetadata`：删除指定用户的 User Metadata 或 User Metadata Item。
+- `updateUserMetadata`：更新指定用户已存在的 User Metadata 或 User Metadata Item。
+- `subscribeUserMetadata`：订阅指定用户的 User Metadata 或 User Metadata Item 变更事件通知。
+- `unsubscribeUserMetadata`：取消订阅指定用户的 User Metadata 或 User Metadata Item 事件通知。
+
+User Metadata 的设置、删除和更新都会触发 `storage` 事件通知，所有订阅此 User Metadata 的其他用户将会收到事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `storage` 事件通知中携带的是所订阅 User Metadata 的全量信息，我们将在后续的版本中优化，提供性能更优的增量更新能力。
+
+##### CAS 控制
+
+Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `RtmMetadata` 中的 `majorRevision` 参数开启整组 Metadata 的版本号校验。
+- 通过 `RtmMetadata` 中 `MetadataItem[]` 类的 `revision` 参数开启每个 Metadata Item 数组的版本号校验。
+
+设置、删除、更新 Channel Metadata 或 User Metadata 时，配合 `revision` 参数可以控制本次调用是否开启 Revision 校验，逻辑如下：
+
+- `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
+- `majorRevision` 或  `revision` 为 Uint64 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+
+#### 锁
+
+临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
+
+- `setLock`：为指定频道设置锁。
+- `acquireLock`：获取指定频道中指定的锁。
+- `releaseLock`： 释放指定频道中指定的锁。
+- `revokeLock`： 撤销指定频道中某个用户对此锁的占用权限以释放此锁。
+- `getLock`： 获取指定频道中所有锁的详情。
+- `removeLock`：删除指定频道中指定的锁。
+
+频道中锁的设置、获取、释放、撤销和删除操作都会上报对应的 `lock` 事件通知。你可以充分利用此特性优化业务的实现逻辑。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+本文提供 RTM v2 SDK 的发版说明。
+
+### 已知问题和局限性
+
+自 2.2.0 起，RTM SDK 和 RTC SDK（4.3.0 及以上版本）都包含 `libaosl.so` 库。如果你同时使用了 RTM 和 RTC SDK，为避免冲突，需进行如下操作：
+
+- 如果你通过 CDN 手动集成 SDK，请手动删除更低版本的 `libaosl.so` 库；
+- 如果你使用依赖管理工具（如 Maven 或 CocoaPods） 集成 SDK，请确保在项目中引入更高版本的 `libaosl.so` 库。
+
+具体的集成指南可以参考[如何处理同时集成 RTM SDK 和 RTC SDK 遇到的问题？](/zh-CN/api-reference/faq/integration/rtm2_rtc_integration_issue)
+
+- 2.2.8 RTM SDK `libaosl.so` 库版本为 1.3.0。
+
+## 2.2.8 版
+
+该版本于 2026 年 2 月 12 日发布。这是 RTM v2 HarmonyOS SDK 的 Beta 版本。
+
+本次发布意味着声网实时通讯（RTM）产品正式支持 HarmonyOS 平台，我们在功能覆盖、性能提升、体验优化上都将为用户带来革新。
+
+- 功能覆盖：该版本通过引入频道（Channel）、消息（Message）、Topic、Presence、Storage 和 Lock 等功能模块，能覆盖更多业务场景，你可以把更多的精力集中在自己的业务创新上。
+
+- 性能提升：我们在新版本中重构了后台架构，通过优化网络连接进一步提升性能，提供长时间低延迟、高可靠、大并发、易扩展的实时网络接入能力，让你无需为业务质量担忧。
+
+- 体验优化：我们重新设计并简化了 API 接口，支持 Promise/Async-Await 异步编程模式；优化了包括用户指南、API 参考在内的所有文档，提供了更全面的示例程序，支持开发者低成本学习使用 SDK，快速完成集成，提高开发效率。
+
+### 新特性
+
+该版本提供的核心功能模块如下。
+
+#### 初始配置（Setup）
+
+初始配置（Setup）是初始化生产 RTM Client 时预先定义或配置一些关键参数，影响其后续的行为。同时它还提供了登录、登出等功能。核心能力如下：
+
+- `new RtmClient(...)`：创建一个 RTM Client 实例，并进行如下初始配置：
+  - `appId`：设置 App ID。相同 App ID 的 App 间可以通信，不同 App ID 的 App 相互隔离。
+  - `userId`：设置用户 ID，用以区分用户或设备。
+  - `areaCode`：设置区域代码，用于 Geo-fencing 功能。
+  - `protocolType`：设置消息传输协议类型。
+  - `presenceTimeout`：设置 Presence 服务的超时时间。
+  - `heartbeatInterval`：设置 SDK 心跳间隔时间。
+  - `useStringUserId`：设置用户 ID 的数据类型，可以是 String 类型，也可以是 number 类型。
+  - `logConfig`：配置本地日志大小、位置、输出信息等级等参数。
+  - `proxyConfig`：配置 Proxy 服务参数。
+  - `encryptionConfig`：配置端侧加密参数。
+  - `privateConfig`：配置私有化部署参数。
+  - `reconnectTimeout`：配置连接超时时间，超时后将返回连接失败。
+- 事件监听：实现 `message`、`presence`、`topic`、`storage`、`lock`、`linkState`、`token` 等事件通知的业务逻辑。
+- `login()`：登录 RTM 服务。
+- `logout()`：登出 RTM 服务。
+- `release()`：销毁 RTM Client 实例，释放资源。
+
+#### 频道（Channel）
+
+频道是 RTM 实时网络中一种数据传输的管理机制，任何订阅或加入频道的用户都可以在 100 毫秒内接收到频道中传输的消息和事件，RTM 允许客户端订阅数百甚至数千个频道。大多数 RTM API 都将以频道为基础进行发送、接收、加密等行为。
+
+基于声网的能力，RTM 的频道分成三种类型：Message Channel、User Channel 和 Stream Channel。三种类型频道的核心能力如下：
+
+- Message Channel：
+    - `subscribe()`：订阅指定 Message Channel 并开始接收频道中的消息和事件通知。
+    - `unsubscribe()`：取消订阅指定 Message Channel 并停止接收频道中的消息和事件通知。
+
+- User Channel：用户无需订阅频道操作，可以直接指定用户 ID 发送消息，接收消息也只需监听 `message` 事件。
+
+- Stream Channel：
+    - `createStreamChannel()`：创建 Stream Channel 实例，随后可以调用其中的方法。
+    - `join()`：加入 Stream Channel，并开始接收频道中的消息和事件通知。
+    - `leave()`：离开 Stream Channel，并停止接收频道中的消息和事件通知。
+    - `release()`：销毁 Stream Channel 实例以释放资源。
+
+其中：
+
+- `subscribe()`、`unsubscribe()`、`join()`、`leave()` 方法都会触发 `presence` 事件通知。频道中的其他用户会收到对应的 `Join`、`Leave` 事件通知。
+- 调用 `subscribe()` 和 `join()` 操作订阅或加入频道的时候，可以选择是否配置 `withMessage`、`withPresence`、`withMetadata`、`withLock` 等参数以开启对应事件通知的监听功能。如果开启，你同时也需要注册对应事件监听，才能顺利收到对应事件通知。
+
+#### 消息（Message）
+
+RTM 的基础是发送消息的能力，你可以随时随地向频道中发送消息，消息会在 100 毫秒内传递到任何地方。RTM 支持 String 类型和 Binary 类型的消息负载。
+
+`publish()` 向指定的 Message Channel 或 User Channel 中发送消息。调用 `publish()` 会触发 `message` 事件通知，如果想要收到频道中的消息，你需要在 `subscribe()` 的时候，设置 `withMessage = true`，注册并实现 `message` 事件。
+
+#### Topic
+
+Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Channel 中利用此特性进行数据流的订阅、分发、事件通知等，灵活使用 Topic 能力，能大大降低业务复杂度，提升开发效率。Topic 的主要功能如下：
+
+- `joinTopic()`：注册成为此 Topic 的消息发布者（publisher）。注册后，该用户会具备发送消息的能力。
+- `publishTopicMessage()`：向 Stream Channel 中的 Topic 发送消息。
+- `leaveTopic()`： 取消注册为该 Topic 的消息发布者。
+- `subscribeTopic()`：订阅该频道中 Topic 的一名或多名消息发布者。
+- `unsubscribeTopic()`：取消订阅该 Topic 或取消订阅该 Topic 中指定的一名或多名消息发布者。
+
+注册（`joinTopic()`）或取消注册（`leaveTopic()`）消息发布者操作，会触发 `topic` 事件通知，频道中的其他用户将会收到此事件通知。
+
+:::info[信息]
+Topic 特性只在 Stream Channel 中有效，Message Channel 或 User Channel 中不存在此特性。
+:::
+
+#### 在线状态
+
+Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开频道的实时状态
+- 订阅或加入同一频道的所有用户的实时状态
+- 一个用户订阅或加入的所有频道的实时信息
+- 自定义临时用户状态及其变更信息
+
+在所有频道类型中均可使用以下 Presence 功能：
+
+- `whoNow()`：实时获取指定频道的在线用户数量、在线用户列表、在线用户的临时状态等信息。
+- `whereNow()`：实时获取指定用户所在频道的列表。
+- `setState()`：设置用户在指定频道的临时状态。
+- `getState()`：获取用户在指定频道的临时状态。
+- `removeState()`：删除用户在特定频道的临时状态。
+
+Presence 在提供上述功能的同时，也提供了 `presence` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
+
+#### 存储
+
+RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
+
+##### Channel Metadata
+
+- `setChannelMetadata()`：为指定频道设置 Channel Metadata 或 Channel Metadata Item。
+- `getChannelMetadata()`：获取指定频道的 Channel Metadata 和 Channel Metadata Item。
+- `removeChannelMetadata()`：删除指定频道的 Channel Metadata 或 Channel Metadata Item。
+- `updateChannelMetadata()`：更新指定频道已有 Channel Metadata 或 Channel Metadata Item。
+
+Channel Metadata 的设置、删除和更新都会触发 `storage` 事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `storage` 事件通知中携带的是当前 Channel Metadata 的全量信息，我们将在后续版本中优化，提供性能更优的增量更新能力。
+
+Channel Metadata 同时也引入了 Lock 的控制能力，当调用 API 设置、删除、更新 Channel Metadata 时，如果参数中的 `lockName` 被设置，则开启 Lock 的校验，此时只有拥有此锁的用户才被允许成功调用对应的方法。
+
+##### User Metadata
+
+- `setUserMetadata()`：设置指定用户的 User Metadata 或 User Metadata Item。
+- `getUserMetadata()`：获取指定用户的 User Metadata 和 User Metadata Item。
+- `removeUserMetadata()`：删除指定用户的 User Metadata 或 User Metadata Item。
+- `updateUserMetadata()`：更新指定用户已存在的 User Metadata 或 User Metadata Item。
+- `subscribeUserMetadata()`：订阅指定用户的 User Metadata 或 User Metadata Item 变更事件通知。
+- `unsubscribeUserMetadata()`：取消订阅指定用户的 User Metadata 或 User Metadata Item 事件通知。
+
+User Metadata 的设置、删除和更新都会触发 `storage` 事件通知，所有订阅此 User Metadata 的其他用户将会收到事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `storage` 事件通知中携带的是所订阅 User Metadata 的全量信息，我们将在后续的版本中优化，提供性能更优的增量更新能力。
+
+##### CAS 控制
+
+Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `majorRevision` 参数开启整组 Metadata 的版本号校验。
+- 通过 `MetadataItem` 类的 `revision` 参数开启每个 Metadata Item 数组的版本号校验。
+
+设置、删除、更新 Channel Metadata 或 User Metadata 时，配合 `revision` 参数可以控制本次调用是否开启 Revision 校验，逻辑如下：
+
+- `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
+- `majorRevision` 或  `revision` 为正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+
+#### 锁
+
+临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
+
+- `setLock()`：为指定频道设置锁。
+- `acquireLock()`：获取指定频道中指定的锁。
+- `releaseLock()`： 释放指定频道中指定的锁。
+- `revokeLock()`： 撤销指定频道中某个用户对此锁的占用权限以释放此锁。
+- `getLock()`： 获取指定频道中所有锁的详情。
+- `removeLock()`：删除指定频道中指定的锁。
+
+频道中锁的设置、获取、释放、撤销和删除操作都会上报对应的 `lock` 事件通知。你可以充分利用此特性优化业务的实现逻辑。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+本文提供 RTM v2 SDK 的发版说明。
+
+## 2.1.9 版
+
+该版本于 2024 年 1 月 25 日发布。
+
+### 升级必看
+
+该版本对如下内容进行了优化，请在升级到该版本后更新 App 代码。
+
+#### 消息发送选项
+
+该版本对 `PublishAsync` 和 `PublishTopicMessageAsync` 方法中的 `options` 参数进行如下优化：
+
+- 在 `PublishAsync` 方法的 `PublishOptions` 中删除了 `sendTs` 参数，并新增了 `channelType` 参数。详见 [`PublishOptions`](/api-ref/rtm2/unity/toc-message/message#options)。
+- 将 `publishTopicMessage` 方法中的 `options` 参数类型由 `PublishOptions` 修改为 `TopicMessageOptions`。详见 [`TopicMessageOptions`](/api-ref/rtm2/unity/toc-topic/topic#options)。
+
+#### 连接状态回调更名
+
+该版本将 `onConnectionStateChange` 回调名称修改为 `onConnectionStateChanged`。
+
+### 改进
+
+#### 错误码
+
+该版本新增了 `INVALID_CHANNEL_TYPE`、`INVALID_ENCRYPTION_PARAMETER` 和 `OPERATION_RATE_EXCEED_LIMITATION` 错误码。错误码描述及解决方法见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)。
+
+#### 在线状态模块
+
+该版本优化了在断线重连时对过期用户状态数据的处理逻辑，并提升了在 `JoinChannelOptions` 中设置 Presence 事件通知的性能。
+
+#### 其他
+
+该版本优化了内存表现并修复了潜在的内存泄漏问题。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 调用 `WhoNowAsync` 方法返回分页结果时偶现崩溃。
+- 特定场景下，偶现 Presence 数据丢包。
+- 特定场景下，方法调用后未触发异步回调。
+- 使用端侧加密时，参数无效导致的崩溃。
+- 当网络状态发生变化时，偶现无法登录或登出 RTM 系统。
+- 网络断开后，因数据未清理导致偶现用户无法收到 `SNAPSHOT` 事件通知。
+- 用户加入频道后，把 App 切到后台再切换回前台时，偶现 SDK 多次触发 `REMOTE_JOIN` 事件通知。
+
+## 2.1.4 版
+
+该版本于 2023 年 8 月 22 日发布。
+
+### 新特性
+
+#### 自定义消息负载
+
+为满足用户在各类业务中对消息负载类型的不同需求，该版本提供一套收发自定义消息负载的方案：
+
+- 发送自定义消息负载：调用 `PublishAsync` 或 `PublishTopicMessageAsync` 方法并在 `customType` 参数中填写自定义消息负载类型。
+- 接收自定义消息负载：通过 `OnMessageEvent` 回调的 `customType` 参数获取自定义消息负载的类型，然后根据实际业务需求进行消息反序列化等操作。
+
+#### RtmResult`<T>` 解构能力
+
+为方便用户在调用 API 时使用返回值，提升业务代码可读性，该版本在 API 返回值（`RtmResult<T>`）中提供解构能力。你可以通过如下方式获取 API 调用的返回值：
+
+```csharp
+var (status, response) = await streamChannel.SubscribeTopicAsync(subtopic, topicOptions);
+if (status.Error){
+    Debug.Log(string.Format("{0} is failed, The error code is {1}, because of: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0} Join Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+}
+```
+
+### 改进
+
+#### 错误信息扩充
+
+为提升用户排查错误的效率，该版本在 API 返回值中扩充了 `Status` 结构体的 `Reason` 字段内容，删除了 `Response` 结构体内的 `ErrorCode` 字段。你只需通过 `Status` 结构体即可获取错误码和错误描述。
+
+#### API 简化
+
+为提升易用性，该版本对 API 进行了简化：
+
+- 枚举和结构体命名优化：简化了所有枚举值和部分结构体的名称，例如，将 `RTM_CHANNEL_TYPE_MESSAGE` 简化为 `MESSAGE`。
+- 数据类型优化：
+  - `IntervalInfo` 结构体中 `joinUserList` 参数的类型由 `UserList` 改为 `string[]`。
+  - `MessageEvent` 结构体中 `message` 参数的类型由 `object` 改为 `IRtmMessage`。
+  - 在 `LogoutAsync` 中新增 `RtmResult<LogoutResult>` 类型的返回值。
+- 删除冗余字段：
+  - 在 `PublishOptions` 中删除了 `messageType` 字段。
+  - 在 `GetLocksResult`、`WhoNowResult` 等 `Result` 结构体中删除 `Count` 字段。
+  - 在 `TopicOptions` 结构体中删除 `userCount` 字段。
+  - 在 `IntervalInfo` 结构体中删除 `userStateCount` 字段。
+  - 在 `SnapshotInfo` 结构体中删除 `userCount` 字段。
+  - 在 `LockEvent` 结构体中删除 `count` 字段。
+  - 在 `PresenceEvent` 结构体中删除 `stateItemCount` 字段。
+  - 在 `TopicEvent` 结构体中删除 `topicInfoCount` 字段，并将 `userId` 参数名修改为 `publisher`。
+
+详见 [API 参考](/api-ref/rtm2/unity/toc-configuration/configuration)。
+
+## 2.1.0-beta 版
+
+该版本于 2023 年 4 月 27 日发布。这是 RTM v2 Unity SDK 的第一个版本。
+
+本次发布意味着声网实时通讯（RTM）产品步入 v2 时代，我们在功能覆盖、性能提升、体验优化上都将为用户带来革新。
+
+- 功能覆盖：该版本通过引入频道（Channel）、消息（Message）、Topic、Presence、Storage 和 Lock 等功能模块，能覆盖更多业务场景，你可以把更多的精力集中在自己的业务创新上。
+
+- 性能提升：我们在新版本中重构了后台架构，通过优化网络连接进一步提升性能，提供长时间低延迟、高可靠、大并发、易扩展的实时网络接入能力，让你无需为业务质量担忧。
+
+- 体验优化：我们重新设计并简化了 API 接口，支持业界最流行的 Async/Await 编程模式；优化了包括用户指南、API 参考在内的所有文档，提供了更全面的示例程序，支持开发者低成本学习使用 SDK，快速完成集成，提高开发效率。
+
+### 新特性
+
+该版本提供的核心功能模块如下。
+
+:::info[信息]
+RTM 2.1.0-beta 目前处于 Public Beta 阶段，某些功能细节可能会在随后的版本中发生改变，以提升用户体验。
+:::
+
+#### 初始配置（Setup）
+
+初始配置（Setup）是初始化 RTM Client 时预先定义或配置的一些关键参数，影响其后续行为。同时，它还提供了登录、登出等功能。核心能力如下：
+
+- `CreateAgoraRtmClient`：创建一个 RTM Client 实例，并进行如下初始配置：
+  - `appId`：设置 App ID。相同 App ID 的 App 间可以通信，不同 App ID 的 App 相互隔离。
+  - `userId`：设置用户 ID，用以区分用户或设备。
+  - `areaCode`：设置区域代码，用于 Geo-fencing 功能。
+  - `presenceTimeout`：设置 Presence 服务的超时时间。
+  - `useStringUserId`：设置用户 ID 的数据类型，可以是 String 类型，也可以是 Uint 类型。
+  - `logConfig`：配置本地日志大小、位置、输出信息等级等参数。
+  - `proxyConfig`：配置 Proxy 服务参数。
+  - `encryptionConfig`：配置端侧加密参数。
+- 事件监听：实现 `OnMessageEvent`、`OnPresenceEvent`、`OnTopicEvent`、`OnStorageEvent`、`OnLockEvent`、`OnConnectionStateChanged`、`OnTokenPrivilegeWillExpire` 等事件通知的业务逻辑。
+- `LoginAsync`：登录 RTM 服务。
+- `LogoutAsync`：登出 RTM 服务。
+- `Dispose`：销毁 RTM Client 实例，释放资源。
+
+#### 频道（Channel）
+
+频道是 RTM 实时网络中一种数据传输的管理机制，任何订阅或加入频道的用户都可以在 100 毫秒内接收到频道中传输的消息和事件，RTM 允许客户端订阅数百甚至数千个频道。大多数 RTM API 都将以频道为基础进行发送、接收、加密等行为。
+
+基于声网的能力，RTM 的频道分成两种类型：Message Channel 和 Stream Channel。两种类型频道的核心能力如下：
+
+- Message Channel：
+    - `SubscribeAsync`：订阅指定 Message Channel 并开始接收频道中的消息和事件通知。
+    - `UnsubscribeAsync`：取消订阅指定 Message Channel 并停止接收频道中的消息和事件通知。
+
+- Stream Channel：
+    - `CreateStreamChannel`：创建 Stream Channel 实例，随后可以调用其中的方法。
+    - `JoinAsync`：加入 Stream Channel，并开始接收频道中的消息和事件通知。
+    - `LeaveAsync`：离开 Stream Channel，并停止接收频道中的消息和事件通知。
+    - `Dispose`：销毁 Stream Channel 实例以释放资源。
+
+其中：
+
+- `SubscribeAsync`、`UnsubscribeAsync`、`JoinAsync`、`LeaveAsync` 方法都会触发 `OnPresenceEvent` 事件通知。频道中的其他用户会收到对应的 `Join`、`Leave` 事件通知。
+- 调用 `SubscribeAsync` 和 `JoinAsync` 操作订阅或加入频道的时候，可以选择是否配置 `withMessage`、`withPresence`、`withMetadata`、`withLock` 等参数以开启对应事件通知的监听功能。如果开启，你同时也需要注册对应事件监听，才能顺利收到对应事件通知。
+
+#### 消息（Message）
+
+RTM 的基础是发送消息的能力，你可以随时随地向频道中发送消息，消息会在 100 毫秒内传递到任何地方。RTM 支持 String 类型和 Binary 类型的消息负载。
+
+`PublishAsync` 向指定的 Message Channel 中发送消息。调用 `PublishAsync` 会触发 `OnMessageEvent` 事件通知，如果想要收到频道中的消息，你需要在 `SubscribeAsync` 的时候，设置 `withMessage = true`，注册并实现 `OnMessageEvent` 事件。
+
+#### Topic
+
+Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Channel 中利用此特性进行数据流的订阅、分发、事件通知等，灵活使用 Topic 能力，能大大降低业务复杂度，提升开发效率。Topic 的主要功能如下：
+
+- `JoinTopicAsync`：注册成为此 Topic 的消息发布者（publisher）。注册后，该用户会具备发送消息的能力。
+- `PublishTopicMessageAsync`：向 Stream Channel 中的 Topic 发送消息。
+- `LeaveTopicAsync`： 取消注册为该 Topic 的消息发布者。
+- `SubscribeTopicAsync`：订阅该频道中 Topic 的一名或多名消息发布者。
+- `UnsubscribeTopicAsync`：取消订阅该 Topic 或取消订阅该 Topic 中指定的一名或多名消息发布者。
+
+注册（`JoinTopicAsync`）或取消注册（`LeaveTopicAsync`）消息发布者操作，会触发 `OnTopicEvent` 事件通知，频道中的其他用户将会收到此事件通知。
+
+:::info[信息]
+Topic 特性只在 Stream Channel 中有效，Message Channel 中不存在此特性。
+:::
+
+#### 在线状态
+
+Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开频道的实时状态
+- 订阅或加入同一频道的所有用户的实时状态
+- 一个用户订阅或加入的所有频道的实时信息
+- 自定义临时用户状态及其变更信息
+
+在 Message Channel 和 Stream Channel 中均可使用以下 Presence 功能：
+
+- `WhoNowAsync`：实时获取指定频道的在线用户数量、在线用户列表、在线用户的临时状态等信息。
+- `WhereNowAsync`：实时获取指定用户所在频道的列表。
+- `SetStateAsync`：设置用户在指定频道的临时状态。
+- `GetStateAsync`：获取用户在指定频道的临时状态。
+- `RemoveStateAsync`：删除用户在特定频道的临时状态。
+
+Presence 在提供上述功能的同时，也提供了 `OnPresenceEvent` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
+
+#### 存储
+
+RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
+
+##### Channel Metadata
+
+- `SetChannelMetadataAsync`：为指定频道设置 Channel Metadata 或 Channel Metadata Item。
+- `GetChannelMetadataAsync`：获取指定频道的 Channel Metadata 和 Channel Metadata Item。
+- `RemoveChannelMetadataAsync`：删除指定频道的 Channel Metadata 或 Channel Metadata Item。
+- `UpdateChannelMetadataAsync`：更新指定频道已有 Channel Metadata 或 Channel Metadata Item。
+
+Channel Metadata 的设置、删除和更新都会触发 `OnStorageEvent` 事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `OnStorageEvent` 事件通知中携带的是当前 Channel Metadata 的全量信息，我们将在后续版本中优化，提供性能更优的增量更新能力。
+
+Channel Metadata 同时也引入了 Lock 的控制能力，当调用 API 设置、删除、更新 Channel Metadata 时，如果参数中的 `lockName` 被设置，则开启 Lock 的校验，此时只有拥有此锁的用户才被允许成功调用对应的方法。
+
+##### User Metadata
+
+- `SetUserMetadataAsync`：设置指定用户的 User Metadata 或 User Metadata Item。
+- `GetUserMetadataAsync`：获取指定用户的 User Metadata 和 User Metadata Item。
+- `RemoveUserMetadataAsync`：删除指定用户的 User Metadata 或 User Metadata Item。
+- `UpdateUserMetadataAsync`：更新指定用户已存在的 User Metadata 或 User Metadata Item。
+- `SubscribeUserMetadataAsync`：订阅指定用户的 User Metadata 或 User Metadata Item 变更事件通知。
+- `UnsubscribeUserMetadataAsync`：取消订阅指定用户的 User Metadata 或 User Metadata Item 事件通知。
+
+User Metadata 的设置、删除和更新都会触发 `OnStorageEvent` 事件通知，所有订阅此 User Metadata 的其他用户将会收到事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `OnStorageEvent` 事件通知中携带的是所订阅 User Metadata 的全量信息，我们将在后续的版本中优化，提供性能更优的增量更新能力。
+
+##### CAS 控制
+
+Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `RtmMetadata` 中的 `majorRevision` 参数开启整组 Metadata 的版本号校验。
+- 通过 `RtmMetadata` 中 `MetadataItem` 类的 `revision` 参数开启每个 Metadata Item 数组的版本号校验。
+
+设置、删除、更新 Channel Metadata 或 User Metadata 时，配合 `revision` 参数可以控制本次调用是否开启 Revision 校验，逻辑如下：
+
+- `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
+- `majorRevision` 或  `revision` 为 Int64 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+
+#### 锁
+
+临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
+
+- `SetLockAsync`：为指定频道设置锁。
+- `AcquireLockAsync`：获取指定频道中指定的锁。
+- `ReleaseLockAsync`： 释放指定频道中指定的锁。
+- `RevokeLockAsync`： 撤销指定频道中某个用户对此锁的占用权限以释放此锁。
+- `GetLocksAsync`： 获取指定频道中所有锁的详情。
+- `RemoveLockAsync`：删除指定频道中指定的锁。
+
+频道中锁的设置、获取、释放、撤销和删除操作都会上报对应的 `OnLockEvent` 事件通知。你可以充分利用此特性优化业务的实现逻辑。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+本文提供 RTM v2 SDK 的发版说明。
+
+## 2.2.6 版
+
+该版本于 2025 年 11 月 18 日发布。
+
+### 改进
+
+#### 新增重连超时配置
+
+该版本在 [`RtmConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
+
+## 2.2.5 版
+
+该版本于 2025 年 9 月 16 日发布。
+
+### 升级必看
+
+#### Snapshot 状态触发时机变更
+
+该版本修订了 Presence 事件中 `Snapshot` 事件的触发时机。现在，只要用户在频道内，就可能会再次收到 `Snapshot` 事件；收到后，用户可以更新自己的全量信息，来避免因异常导致的状态不同步问题。
+
+#### 锁过期时间计算规则变更
+
+该版本修改了锁（Lock）过期时间的计算规则。该版本起，锁的过期时间将从服务端判定用户离线开始计算。
+
+### 新特性
+
+#### 支持历史消息
+
+该版本在 `PublishOptions` 中新增了 `storeInHistory` 属性，支持在频道中发送消息的同时，将消息存储到云端，后续用户可以通过历史消息接口 [`getMessages`](/api-ref/rtm2/flutter/toc-message/message#getmessages) 获取。详细的使用指南可以参考[历史消息](/zh-CN/realtime-media/rtm/build/manage-messages/history-message)。
+
+:::info[信息]
+该功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开启。
+:::
+
+#### SDK 连接状态变化原因
+
+该版本在 SDK 连接状态 `LinkStateEvent` 中添加 [`RtmLinkStateChangeReason`](/api-ref/rtm2/flutter/enumv#linkstatechangereason) 枚举类，报告连接状态变更的原因。
+
+#### 支持 IoT 设备域名白名单
+
+在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`RtmConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+
+#### 支持 16 KB 内存页大小（Android）
+
+自 Android 15 起，系统新增了对 16 KB 内存页大小的支持，详见[支持 16 KB 的页面大小](https://developer.android.com/guide/practices/page-sizes?hl=zh-cn)。为了保证 App 的稳定性和性能表现，自该版本起，SDK 支持 16 KB 内存页大小，确保可以在使用 4 KB 和 16 KB 内存页大小的设备上无缝运行，提升兼容性并避免崩溃。
+
+### 改进
+
+#### 新增更新 Token 超时错误码
+
+为反馈更新 Token 操作的结果，该版本新增错误码 `renewTokenTimeout` (-10026)。
+
+#### 在线状态事件通知优化
+
+当频道数据无法正常同步时，SDK 会重新触发一次 `Snapshot` 事件。收到该事件后，用户可以更新自己 App 的本地缓存。
+
+#### 其它改进
+
+- 进一步优化了登录服务的时长。
+- 加快了切后台或休眠后，RTM 服务恢复重连的速度。
+- 优化了 SDK 在弱网情况下的表现。
+- 优化了接入节点的选择，提升了服务的连接速度。
+- 提升了基础消息服务在服务异常时的业务表现，避免因部分服务出现异常，导致的消息服务不可用的问题。
+
+### 问题修复
+
+- 某些场景下，Token 过期的通知可能被多次触发。
+- 某些场景下，点对点消息已送达对端，但发送端却反馈超时。
+- 某些场景下，iOS 系统在退出 App 时，可能引起 RTM SDK 崩溃的问题。
+- 私有化场景下，频繁切换网络可能造成连接状态异常。
+- 回调函数中，如果业务代码存在未捕获的异常，可能引起 SDK 崩溃的问题。
+- 订阅 Topic 时，可能返回未加入频道的问题。
+- 重连时偶现订阅服务未恢复。
+- 部分频道内用户查询结果时，可能包含异常离线用户的信息。
+- 某些场景下，Token 类型不正确导致异常错误。
+- 某些场景下，用户可能多次收到相同离线用户的离线通知。
+- 相同用户 ID 在不同端登录后，可能出现连接状态异常。
+- 频繁设置 Presence 状态时，可能导致数据异常。
+- 未开通指定服务时，加入频道时未返回错误。
+- 某些场景下，异常属性值可能导致崩溃问题。
+
+## 2.2.2 版
+
+该版本于 2024 年 10 月 30 日发布。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 发送消息时，消息缺失了部分字节。
+- 在同时使用 RTC SDK 和 RTM SDK 时，销毁 RTC 实例后，RTM 的事件监听失效。
+
+## 2.2.1 版
+
+该版本于 2024 年 9 月 13 日发布。这是 RTM v2 Flutter SDK 的第一个版本。
+
+本次发布意味着声网实时通讯（RTM）产品步入 v2 时代，我们在功能覆盖、性能提升、体验优化上都将为用户带来革新。
+
+- 功能覆盖：该版本通过引入频道（Channel）、消息（Message）、Topic、Presence、Storage 和 Lock 等功能模块，能覆盖更多业务场景，你可以把更多的精力集中在自己的业务创新上。
+
+- 性能提升：我们在新版本中重构了后台架构，通过优化网络连接进一步提升性能，提供长时间低延迟、高可靠、大并发、易扩展的实时网络接入能力，让你无需为业务质量担忧。
+
+- 体验优化：我们重新设计并简化了 API 接口；优化了包括用户指南、API 参考在内的所有文档，提供了更全面的示例程序，支持开发者低成本学习使用 SDK，快速完成集成，提高开发效率。
+
+### 新特性
+
+该版本提供的核心功能模块如下。
+
+#### 初始配置（Setup）
+
+初始配置（Setup）是初始化生产 RTM Client 时预先定义或配置一些关键参数，影响其后续的行为。同时它还提供了登录、登出等功能。核心能力如下：
+
+- `Future<(RtmStatus, RtmClient)> RTM(...)`：创建一个 RTM Client 实例，并进行如下初始配置：
+  - `appId`：设置 App ID。相同 App ID 的 App 间可以通信，不同 App ID 的 App 相互隔离。
+  - `userId`：设置用户 ID，用以区分用户或设备。
+  - `areaCode`：设置区域代码，用于 Geo-fencing 功能。
+  - `protocolType`：设置消息传输协议类型。
+  - `presenceTimeout`：设置 Presence 服务的超时时间。
+  - `heartbeatInterval`：设置 SDK 心跳间隔时间。
+  - `useStringUserId`：设置用户 ID 的数据类型，可以是 String 类型，也可以是 Int 类型。
+  - `logConfig`：配置本地日志大小、位置、输出信息等级等参数。
+  - `proxyConfig`：配置 Proxy 服务参数。
+  - `encryptionConfig`：配置端侧加密参数。
+  - `privateConfig`：配置私有化部署参数。
+- 事件监听：实现 `message`、`presence`、`topic`、`storage`、`lock`、`linkState`、`token` 等事件通知的业务逻辑。
+- `login`：登录 RTM 服务。
+- `logout`：登出 RTM 服务。
+- `release`：销毁 RTM Client 实例，释放资源。
+
+#### 频道（Channel）
+
+频道是 RTM 实时网络中一种数据传输的管理机制，任何订阅或加入频道的用户都可以在 100 毫秒内接收到频道中传输的消息和事件，RTM 允许客户端订阅数百甚至数千个频道。大多数 RTM API 都将以频道为基础进行发送、接收、加密等行为。
+
+基于声网的能力，RTM 的频道分成三种类型：Message Channel、User Channel 和 Stream Channel。三种类型频道的核心能力如下：
+
+- Message Channel：
+    - `subscribe`：订阅指定 Message Channel 并开始接收频道中的消息和事件通知。
+    - `unsubscribe`：取消订阅指定 Message Channel 并停止接收频道中的消息和事件通知。
+
+- User Channel：用户无需订阅频道操作，可以直接指定用户 ID 发送消息，接收消息也只需监听 `message` 事件。
+
+- Stream Channel：
+    - `createStreamChannel`：创建 Stream Channel 实例，随后可以调用其中的方法。
+    - `join`：加入 Stream Channel，并开始接收频道中的消息和事件通知。
+    - `leave`：离开 Stream Channel，并停止接收频道中的消息和事件通知。
+    - `release`：销毁 Stream Channel 实例以释放资源。
+
+其中：
+
+- `subscribe`、`unsubscribe`、`join`、`leave` 方法都会触发 `presence` 事件通知。频道中的其他用户会收到对应的 `Join`、`Leave` 事件通知。
+- 调用 `subscribe` 和 `join` 操作订阅或加入频道的时候，可以选择是否配置 `withMessage`、`withPresence`、`withMetadata`、`withLock` 等参数以开启对应事件通知的监听功能。如果开启，你同时也需要注册对应事件监听，才能顺利收到对应事件通知。
+
+#### 消息（Message）
+
+RTM 的基础是发送消息的能力，你可以随时随地向频道中发送消息，消息会在 100 毫秒内传递到任何地方。RTM 支持 String 类型和 Binary 类型的消息负载。
+
+`publish` 向指定的 Message Channel 或 User Channel 中发送消息。调用 `publish` 会触发 `message` 事件通知，如果想要收到频道中的消息，你需要在 `subscribe` 的时候，设置 `withMessage = true`，注册并实现 `message` 事件。
+
+#### Topic
+
+Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Channel 中利用此特性进行数据流的订阅、分发、事件通知等，灵活使用 Topic 能力，能大大降低业务复杂度，提升开发效率。Topic 的主要功能如下：
+
+- `joinTopic`：注册成为此 Topic 的消息发布者（publisher）。注册后，该用户会具备发送消息的能力。
+- `publishTextMessage`：向 Stream Channel 中的 Topic 发送消息。
+- `leaveTopic`： 取消注册为该 Topic 的消息发布者。
+- `subscribeTopic`：订阅该频道中 Topic 的一名或多名消息发布者。
+- `unsubscribeTopic`：取消订阅该 Topic 或取消订阅该 Topic 中指定的一名或多名消息发布者。
+
+注册（`joinTopic`）或取消注册（`leaveTopic`）消息发布者操作，会触发 `topic` 事件通知，频道中的其他用户将会收到此事件通知。
+
+:::info[信息]
+Topic 特性只在 Stream Channel 中有效，Message Channel 或 User Channel 中不存在此特性。
+:::
+
+#### 在线状态
+
+Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开频道的实时状态
+- 订阅或加入同一频道的所有用户的实时状态
+- 一个用户订阅或加入的所有频道的实时信息
+- 自定义临时用户状态及其变更信息
+
+在所有频道类型中均可使用以下 Presence 功能：
+
+- `whoNow`：实时获取指定频道的在线用户数量、在线用户列表、在线用户的临时状态等信息。
+- `whereNow`：实时获取指定用户所在频道的列表。
+- `setState`：设置用户在指定频道的临时状态。
+- `getState`：获取用户在指定频道的临时状态。
+- `removeState`：删除用户在特定频道的临时状态。
+
+Presence 在提供上述功能的同时，也提供了 `presence` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
+
+#### 存储
+
+RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
+
+##### Channel Metadata
+
+- `setChannelMetadata`：为指定频道设置 Channel Metadata 或 Channel Metadata Item。
+- `getChannelMetadata`：获取指定频道的 Channel Metadata 和 Channel Metadata Item。
+- `removeChannelMetadata`：删除指定频道的 Channel Metadata 或 Channel Metadata Item。
+- `updateChannelMetadata`：更新指定频道已有 Channel Metadata 或 Channel Metadata Item。
+
+Channel Metadata 的设置、删除和更新都会触发 `storage` 事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `storage` 事件通知中携带的是当前 Channel Metadata 的全量信息，我们将在后续版本中优化，提供性能更优的增量更新能力。
+
+Channel Metadata 同时也引入了 Lock 的控制能力，当调用 API 设置、删除、更新 Channel Metadata 时，如果参数中的 `lockName` 被设置，则开启 Lock 的校验，此时只有拥有此锁的用户才被允许成功调用对应的方法。
+
+##### User Metadata
+
+- `setUserMetadata`：设置指定用户的 User Metadata 或 User Metadata Item。
+- `getUserMetadata`：获取指定用户的 User Metadata 和 User Metadata Item。
+- `removeUserMetadata`：删除指定用户的 User Metadata 或 User Metadata Item。
+- `updateUserMetadata`：更新指定用户已存在的 User Metadata 或 User Metadata Item。
+- `subscribeUserMetadata`：订阅指定用户的 User Metadata 或 User Metadata Item 变更事件通知。
+- `unsubscribeUserMetadata`：取消订阅指定用户的 User Metadata 或 User Metadata Item 事件通知。
+
+User Metadata 的设置、删除和更新都会触发 `storage` 事件通知，所有订阅此 User Metadata 的其他用户将会收到事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `storage` 事件通知中携带的是所订阅 User Metadata 的全量信息，我们将在后续的版本中优化，提供性能更优的增量更新能力。
+
+##### CAS 控制
+
+Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `majorRevision` 参数开启整组 Metadata 的版本号校验。
+- 通过 `` 中 `MetadataItem` 类的 `revision` 参数开启每个 Metadata Item 数组的版本号校验。
+
+设置、删除、更新 Channel Metadata 或 User Metadata 时，配合 `revision` 参数可以控制本次调用是否开启 Revision 校验，逻辑如下：
+
+- `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
+- `majorRevision` 或  `revision` 为 int 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+
+#### 锁
+
+临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
+
+- `setLock`：为指定频道设置锁。
+- `acquireLock`：获取指定频道中指定的锁。
+- `releaseLock`： 释放指定频道中指定的锁。
+- `revokeLock`： 撤销指定频道中某个用户对此锁的占用权限以释放此锁。
+- `getLocks`： 获取指定频道中所有锁的详情。
+- `removeLock`：删除指定频道中指定的锁。
+
+频道中锁的设置、获取、释放、撤销和删除操作都会上报对应的 `lock` 事件通知。你可以充分利用此特性优化业务的实现逻辑。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+本文提供 RTM v2 SDK 的发版说明。
+
+### 已知问题和局限性
+
+自 2.2.0 起，RTM SDK 和 RTC SDK（4.3.0 及以上版本）都包含动态库文件。如果你同时使用了 RTM 和 RTC SDK，为避免冲突，请手动删除更低版本的动态库文件。
+
+- 2.2.8 RTM SDK 动态库版本为 1.3.0。
+- 2.2.7 RTM SDK 动态库版本为 1.3.0。
+- 2.2.3、2.2.4、2.2.5、2.2.6 RTM SDK 动态库版本为 1.2.13。
+- 2.2.2 RTM SDK 动态库版本为 1.0.11。
+- 2.2.1 RTM SDK 动态库版本为 1.0.11。
+- 2.2.0 RTM SDK 动态库版本为 1.0.0.17。
+
+## 2.2.8 版
+
+该版本于 2026 年 2 月 12 日发布。
+
+### 问题修复
+
+- 修复部分场景下，App 从后台恢复并叠加网络切换时，可能导致服务连接状态异常的问题。
+- 修复部分场景下，设置 [`Presence`](/api-ref/rtm2/cpp/toc-presence/presence) 的临时用户状态后，事件通知无法正常下发的问题。
+
+## 2.2.7 版
+
+该版本于 2025 年 12 月 12 日发布。
+
+### 改进
+
+- 优化了登录操作 (`login`) 的响应机制。
+
+### 问题修复
+
+- 修复了某些极端情况下，调整设备时钟可能触发 SDK 进入重连状态的问题。
+- 修复了在长时间和 RTM 服务断开的情况下，重新连接后，自身所在频道的 Presence 状态可能出现异常的问题。
+
+## 2.2.6 版
+
+该版本于 2025 年 10 月 31 日发布。
+
+### 改进
+
+#### 新增重连超时配置
+
+该版本在 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
+
+## 2.2.5 版
+
+该版本于 2025 年 7 月 1 日发布。
+
+### 新特性
+
+#### 支持 IoT 设备域名白名单
+
+在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+
+### 问题修复
+
+- 某些场景下，Token 过期的通知可能被多次触发。
+- 某些场景下，点对点消息已送达对端，但发送端却反馈超时。
+- 某些场景下，频繁调用 C++ 接口反复创建和销毁 RTM 引擎，可能造成崩溃的问题。
+- 私有化场景下，频繁切换网络可能造成连接状态异常。
+
+## 2.2.4 版
+
+该版本于 2025 年 4 月 1 日发布。主要改动点如下：
+
+- 进一步优化了登录服务的时长。
+- 修复了回调函数中，如果业务代码存在未捕获的异常，可能引起 SDK 崩溃的问题。
+- 修复了订阅 Topic 时，可能返回未加入频道的问题。
+
+## 2.2.3 版
+
+该版本于 2025 年 3 月 21 日发布。
+
+### 改进
+
+#### 新增连接状态改变原因
+
+该版本在 `RTM_LINK_STATE_CHANGE_REASON` 中增加原因 `RTM_LINK_STATE_CHANGE_REASON_LOGIN_TOO_FREQUENT` (37)，表示当前登录操作过于频繁。
+
+#### 新增更新 Token 超时错误码
+
+为反馈更新 Token 操作的结果，该版本新增错误码 `RTM_ERROR_RENEW_TOKEN_TIMEOUT` (10026)。
+
+#### 在线状态事件通知优化
+
+当频道数据无法正常同步时，SDK 会重新触发一次 `RTM_PRESENCE_EVENT_TYPE_SNAPSHOT` 事件。收到该事件后，用户可以更新自己 App 的本地缓存。
+
+#### 其它改进
+
+- 加快了切后台或休眠后，RTM 服务恢复重连的速度。
+- 优化了 SDK 在弱网情况下的表现。
+- 优化了接入节点的选择，提升了服务的连接速度。
+
+### 问题修复
+
+- 重连时偶现订阅服务未恢复。
+- 部分频道内用户查询结果时，可能包含异常离线用户的信息。
+
+## 2.2.2 版
+
+该版本于 2024 年 11 月 6 日发布。
+
+### 升级必看
+
+#### SNAPSHOT 状态触发时机变更
+
+该版本修订了 Presence 事件中 `SNAPSHOT` 事件的触发时机。现在，只要用户在频道内，就可能会再次收到 `SNAPSHOT` 事件；收到后，用户可以更新自己的全量信息，来避免因异常导致的状态不同步问题。
+
+#### 锁过期时间计算规则变更
+
+该版本修改了锁（Lock）过期时间的计算规则。该版本起，锁的过期时间将从服务端判定用户离线开始计算。
+
+### 新特性
+
+#### 支持历史消息
+
+该版本在 `PublishOptions` 中新增了 `storeInHistory` 属性，支持在频道中发送消息的同时，将消息存储到云端，后续用户可以通过历史消息接口获取。
+
+:::info[信息]
+该功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开启。
+:::
+
+#### SDK 连接状态变化原因
+
+该版本在 SDK 连接状态 `LinkStateEvent` 中添加 `RTM_LINK_STATE_CHANGE_REASON` 枚举类，报告连接状态变更的原因。
+
+### 改进
+
+该版本提升了基础消息服务在服务异常时的业务表现，避免因部分服务出现异常，导致的消息服务不可用的问题。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 某些场景下，Token 类型不正确导致异常错误。
+- 某些场景下，用户可能多次收到相同离线用户的离线通知。
+- 相同用户 ID 在不同端登录后，可能出现连接状态异常。
+- 频繁设置 Presence 状态时，可能导致数据异常。
+- 未开通指定服务时，加入频道时未返回错误。
+- 某些场景下，异常属性值可能导致崩溃问题。
+
+## 2.2.1 版
+
+该版本于 2024 年 7 月 26 日发布。
+
+### 升级必看
+
+该版本对以下功能的实现方式进行了优化，涉及一些 API 的改名、删除或行为变更，为确保项目的正常运行，你需要在升级到该版本后更新 App 中的代码。
+
+#### 初始化
+
+该版本删除了 `initialize` 方法，并在 [`createAgoraRtmClient`](/api-ref/rtm2/cpp/toc-configuration/configuration#createAgoraRtmClient) 方法中新增初始化参数作为替代。参考如下示例代码修改你的实现代码：
+
+```cpp
+// v2.2.1 之前
+// 创建 RTM 实例
+IRtmClient* rtmClient = createAgoraRtmClient();
+
+RtmConfig config;
+config.appId = "your_appid";
+config.userId = "your_name";
+config.eventHandler = new RtmEventHandler();
+// 初始化 RTM 实例
+int ret = rtmClient->initialize(config);
+if (ret != RTM_ERROR_OK) {
+    // 处理初始化报错
+}
+```
+
+```cpp
+// v2.2.1
+RtmConfig config;
+config.appId = "your_appid"
+config.userId = "your_name";
+config.eventHandler = new RtmEventHandler();
+
+int errorCode = 0;
+// 创建并初始化 RTM 实例
+rtmClient = createAgoraRtmClient(config, errorCode);
+if (!rtmClient || errorCode != 0) {
+    std::cout << RED <<"error creating rtm service!" << std::endl;
+    exit(0);
+}
+```
+
+#### API 返回值
+
+该版本将除 `createAgoraRtmClient`、`createStreamChannel` 和 `release` 以外方法的返回值从 `int` 类型修改为 `void` 类型，并补齐以下异步回调：
+
+  - [`onPublishTopicMessageResult`](/api-ref/rtm2/cpp/toc-topic/topic#异步回调2)
+  - [`onUnsubscribeTopicResult`](/api-ref/rtm2/cpp/toc-topic/topic#异步回调5)
+  - [`onUnsubscribeResult`](/api-ref/rtm2/cpp/toc-channel/channel#异步回调2)
+  - [`onLogoutResult`](/api-ref/rtm2/cpp/toc-configuration/configuration#异步回调5)
+  - [`onRenewTokenResult`](/api-ref/rtm2/cpp/toc-token/token#异步回调1)
+  - [`onUnsubscribeUserMetadataResult`](/api-ref/rtm2/cpp/toc-storage/storage#异步回调10)
+
+#### 创建 Metadata
+
+该版本删除了 `createMetadata` 方法。参考如下示例代码修改你的实现代码：
+
+```cpp
+// v2.2.1 之前
+IMetadata* metadata = rtmClient->getStorage()->createMetadata();
+```
+
+```cpp
+// v2.2.1
+Metadata data;
+```
+
+#### 枚举值变更
+
+该版本在 [`RTM_CONNECTION_CHANGE_REASON`](/api-ref/rtm2/cpp/enumv#connectionreason) 中新增了 `RTM_CONNECTION_CHANGED_CERTIFICATION_VERIFY_FAILURE(22)` 枚举，并将 `RTM_CONNECTION_CHANGED_STREAM_CHANNEL_NOT_AVAILABLE` 和 `RTM_CONNECTION_CHANGED_INCONSISTENT_APPID` 枚举对应的值修改为 23 和 24。
+
+### 新特性
+
+#### 新增私有化部署能力
+
+该版本在 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
+
+#### 新增心跳时间配置
+
+该版本在 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic#heartbeatinterval-and-presencetimeout)。
+
+#### 新增双环境配置
+
+该版本在 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#protocol)。
+
+#### 新增用户频道类型
+
+该版本在 [`RTM_CHANNEL_TYPE`](/api-ref/rtm2/cpp/enumv#channeltype) 中新增 `RTM_CHANNEL_TYPE_USER` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
+
+#### 新增静默模式配置
+
+该版本在 [`SubscribeOptions`](/api-ref/rtm2/cpp/toc-channel/channel#subscribe) 和 [`JoinChannelOptions`](/api-ref/rtm2/cpp/toc-channel/channel#join) 中新增 `beQuiet` 属性。该属性设置为 `true` 时表示静默订阅或加入频道，频道中其他用户无法感知该用户的出席状态。
+
+### 改进
+
+#### 改进连接状态管理逻辑
+
+该版本新增 [`onLinkStateEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 `onConnectionStateChanged` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic)。
+
+#### 改进 RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED 事件通知逻辑
+
+该版本改进了 Presence 功能的 `RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED` 事件的触发逻辑，即当用户一次设置或修改多个 key-value 时，频道内其他用户只会接收到一次事件通知。
+
+#### 支持事件通知触发时间戳
+
+该版本在如下数据结构中新增 `timestamp` 参数，报告触发事件通知的时间戳：
+
+- [`MessageEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#MessageEvent)
+- [`PresenceEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#PresenceEvent)
+- [`TopicEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#TopicEvent)
+- [`StorageEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#StorageEvent)
+- [`LockEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#LockEvent)
+
+#### 优化 API 行为
+
+该版本优化了以下 API 的行为：
+
+- [`login`](/api-ref/rtm2/cpp/toc-configuration/configuration#login)：
+  - 在之前版本中，不支持连续多次调用该方法；也不支持在该方法的 `token` 参数中传入空字符串。
+  - 自 2.2.1 版本起，支持连续多次调用该方法，中间无需额外调用 `logout` 方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
+- [`subscribe`](/api-ref/rtm2/cpp/toc-channel/channel#subscribe)：
+  - 在之前版本中，不支持连续多次调用该方法。
+  - 自 2.2.1 版本起，支持连续多次调用该方法。
+- [`join`](/api-ref/rtm2/cpp/toc-channel/channel#join)：
+  - 在之前版本中，不支持连续多次调用该方法，也不支持在该方法的 `token` 参数中传入空字符串。
+  - 自 2.2.1 版本起，支持连续多次调用该方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
+
+#### 修改 presenceTimeout 取值范围
+
+该版本将 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration) 中 `presenceTimeout` 参数的取值范围由 [10,300] 修改为 [5,300]。
+
+#### 其他
+
+该版本还进行了如下改进。
+
+- 优化了底层算法能力，提升了数据同步速度。
+- 在以下方法中新增 `requestId` 参数：
+  - [`login`](/api-ref/rtm2/cpp/toc-configuration/configuration#login)
+  - [`logout`](/api-ref/rtm2/cpp/toc-configuration/configuration#logout)
+  - [`renewToken`](/api-ref/rtm2/cpp/toc-token/token)
+  - [`unsubscribe`](/api-ref/rtm2/cpp/toc-channel/channel#unsubscribe)
+- 在 [`createStreamChannel`](/api-ref/rtm2/cpp/toc-channel/channel#createStreamChannel) 方法中新增 `errorCode` 参数。
+
+### 问题修复
+
+该版本修复了本地用户未调用 `leave` 方法直接调用 `logout` 方法时，偶现远端用户收不到 `RTM_PRESENCE_EVENT_TYPE_REMOTE_LEAVE_CHANNEL` 事件通知的问题。
+
+## 2.1.12 版
+
+该版本于 2024 年 6 月 7 日发布。
+
+### 改进
+
+该版本进行了如下改进：
+
+- 在因网络原因导致数据同步出错的情况下，该版本增加了用户退出机制，SDK 会自动登出 RTM 系统。
+- 断网期间取消订阅，不再返回取消订阅失败的错误。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 弱网条件下，断线期间用户取消订阅 Message Channel 出错。
+- 弱网条件下，登录成功后，偶现无法收到回调。
+- 断线重连情况下，偶现丢失 `onStorageEvent` 事件通知。
+- 断线重连情况下，偶现无法恢复 Stream Channel 中的订阅关系。
+- 偶现收不到 Web 端的 Topic 消息。
+
+## 2.1.11 版
+
+该版本于 2024 年 4 月 30 日发布。
+
+### 改进
+
+该版本优化了使用 `withPresence=true` 订阅或加入频道时的响应机制。如果 5 秒内未收到 `RTM_PRESENCE_EVENT_TYPE_SNAPSHOT` 类型的 `onPresenceEvent` 事件通知，则 SDK 会触发 `onJoinResult` 回调并报告 `RTM_ERROR_CHANNEL_PRESENCE_NOT_READY` 错误码。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 特定场景下，登出 RTM 系统后再次登录，然后使用 `withPresence=true` 订阅或加入频道时，偶现订阅或加入频道失败。
+- 由网络问题导致连接断开并恢复的情况下，本地用户主动调用 `leave` 离开频道，偶现远端用户收不到 `RTM_PRESENCE_EVENT_TYPE_REMOTE_TIMEOUT` 类型的 `onPresenceEvent` 事件通知。
+- 频繁调用 `subscribe` 和 `unsubscribe` 方法，偶现调用失败。
+
+## 2.1.10 版
+
+该版本于 2024 年 2 月 26 日发布。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 频繁发送消息时，偶现消息发送超时。
+- 调用 `renewToken` 刷新 Token，因部分服务未能生效而导致非预期的连接断开。
+
+## 2.1.9 版
+
+该版本于 2024 年 1 月 10 日发布。
+
+### 改进
+
+该版本优化了在断线重连时对过期用户状态数据的处理逻辑。
+
+## 2.1.8 版
+
+该版本于 2023 年 12 月 4 日发布。这是 RTM v2 C++ SDK 的第一个版本。
+
+本次发布意味着声网实时通讯（RTM）产品步入 v2 时代，我们在功能覆盖、性能提升、体验优化上都将为用户带来革新。
+
+- 功能覆盖：该版本通过引入频道（Channel）、消息（Message）、Topic、Presence、Storage 和 Lock 等功能模块，能覆盖更多业务场景，你可以把更多的精力集中在自己的业务创新上。
+
+- 性能提升：我们在新版本中重构了后台架构，通过优化网络连接进一步提升性能，提供长时间低延迟、高可靠、大并发、易扩展的实时网络接入能力，让你无需为业务质量担忧。
+
+- 体验优化：我们重新设计并简化了 API 接口；优化了包括用户指南、API 参考在内的所有文档，提供了更全面的示例程序，支持开发者低成本学习使用 SDK，快速完成集成，提高开发效率。
+
+### 新特性
+
+该版本提供的核心功能模块如下。
+
+#### 初始配置（Setup）
+
+初始配置（Setup）是初始化生产 RTM Client 时预先定义或配置一些关键参数，影响其后续的行为。同时它还提供了登录、登出等功能。核心能力如下：
+
+- `createAgoraRtmClient`：创建一个 RTM Client 实例。
+- `initialize`：进行如下初始配置：
+  - `appId`：设置 App ID。相同 App ID 的 App 间可以通信，不同 App ID 的 App 相互隔离。
+  - `userId`：设置用户 ID，用以区分用户或设备。
+  - `areaCode`：设置区域代码，用于 Geo-fencing 功能。
+  - `presenceTimeout`：设置 Presence 服务的超时时间。
+  - `context`：
+    - 对于 Android 操作系统，设置安卓活动上下文。
+    - 对于 Windows 操作系统，设置视窗句柄。如设值，则表示支持设备热插拔。
+  - `useStringUserId`：设置用户 ID 的数据类型，可以是 String 类型，也可以是 Uint 类型。
+  - `eventHandler`：设置事件监听函数。
+  - `logConfig`：配置本地日志大小、位置、输出信息等级等参数。
+  - `proxyConfig`：配置 Proxy 服务参数。
+  - `encryptionConfig`：配置端侧加密参数。
+- 事件监听：实现 `onMessageEvent`、`onPresenceEvent`、`onTopicEvent`、`onStorageEvent`、`onLockEvent`、`onConnectionStateChange`、`onTokenPrivilegeWillExpire` 等事件通知的业务逻辑。
+- `login`：登录 RTM 服务。
+- `logout`：登出 RTM 服务。
+- `release`：销毁 RTM Client 实例，释放资源。
+
+#### 频道（Channel）
+
+频道是 RTM 实时网络中一种数据传输的管理机制，任何订阅或加入频道的用户都可以在 100 毫秒内接收到频道中传输的消息和事件，RTM 允许客户端订阅数百甚至数千个频道。大多数 RTM API 都将以频道为基础进行发送、接收、加密等行为。
+
+基于声网的能力，RTM 的频道分成两种类型：Message Channel 和 Stream Channel。两种类型频道的核心能力如下：
+
+- Message Channel：
+    - `subscribe`：订阅指定 Message Channel 并开始接收频道中的消息和事件通知。
+    - `unsubscribe`：取消订阅指定 Message Channel 并停止接收频道中的消息和事件通知。
+
+- Stream Channel：
+    - `createStreamChannel`：创建 Stream Channel 实例，随后可以调用其中的方法。
+    - `join`：加入 Stream Channel，并开始接收频道中的消息和事件通知。
+    - `leave`：离开 Stream Channel，并停止接收频道中的消息和事件通知。
+    - `release`：销毁 Stream Channel 实例以释放资源。
+
+其中：
+
+- `subscribe`、`unsubscribe`、`join`、`leave` 方法都会触发 `onPresenceEvent` 事件通知。频道中的其他用户会收到对应的 `RTM_PRESENCE_EVENT_TYPE_REMOTE_JOIN_CHANNEL`、`RTM_PRESENCE_EVENT_TYPE_REMOTE_LEAVE_CHANNEL` 事件通知。
+- 调用 `subscribe` 和 `join` 操作订阅或加入频道的时候，可以选择是否配置 `withMessage`、`withPresence`、`withMetadata`、`withLock` 等参数以开启对应事件通知的监听功能。如果开启，你同时也需要注册对应事件监听，才能顺利收到对应事件通知。
+
+#### 消息（Message）
+
+RTM 的基础是发送消息的能力，你可以随时随地向频道中发送消息，消息会在 100 毫秒内传递到任何地方。RTM 支持 String 类型和 Byte 类型的消息负载。
+
+`publish` 向指定的 Message Channel 中发送消息。调用 `publish` 会触发 `onMessageEvent` 事件通知，如果想要收到频道中的消息，你需要在 `subscribe` 的时候，设置 `withMessage = true`，注册并实现 `onMessageEvent` 事件。
+
+#### Topic
+
+Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Channel 中利用此特性进行数据流的订阅、分发、事件通知等，灵活使用 Topic 能力，能大大降低业务复杂度，提升开发效率。Topic 的主要功能如下：
+
+- `joinTopic`：注册成为此 Topic 的消息发布者（publisher）。注册后，该用户会具备发送消息的能力。
+- `publishTopicMessage`：向 Stream Channel 中的 Topic 发送消息。
+- `leaveTopic`： 取消注册为该 Topic 的消息发布者。
+- `subscribeTopic`：订阅该频道中 Topic 的一名或多名消息发布者。
+- `unsubscribeTopic`：取消订阅该 Topic 或取消订阅该 Topic 中指定的一名或多名消息发布者。
+
+注册（`joinTopic`）或取消注册（`leaveTopic`）消息发布者操作，会触发 `onTopicEvent` 事件通知，频道中的其他用户将会收到此事件通知。
+
+:::info[信息]
+Topic 特性只在 Stream Channel 中有效，Message Channel 中不存在此特性。
+:::
+
+#### 在线状态
+
+Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开频道的实时状态
+- 订阅或加入同一频道的所有用户的实时状态
+- 一个用户订阅或加入的所有频道的实时信息
+- 自定义临时用户状态及其变更信息
+
+在 Message Channel 和 Stream Channel 中均可使用以下 Presence 功能：
+
+- `whoNow`：实时获取指定频道的在线用户数量、在线用户列表、在线用户的临时状态等信息。
+- `whereNow`：实时获取指定用户所在频道的列表。
+- `setState`：设置用户在指定频道的临时状态。
+- `getState`：获取用户在指定频道的临时状态。
+- `removeState`：删除用户在特定频道的临时状态。
+
+Presence 在提供上述功能的同时，也提供了 `onPresenceEvent` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
+
+#### 存储
+
+RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。调用 `createMetadata` 创建 `Metadata` 后，你可以根据实际需求对 Channel Metadata 和 User Metadata 进行操作。
+
+##### Channel Metadata
+
+- `setChannelMetadata`：为指定频道设置 Channel Metadata 或 Channel Metadata Item。
+- `getChannelMetadata`：获取指定频道的 Channel Metadata 和 Channel Metadata Item。
+- `removeChannelMetadata`：删除指定频道的 Channel Metadata 或 Channel Metadata Item。
+- `updateChannelMetadata`：更新指定频道已有 Channel Metadata 或 Channel Metadata Item。
+
+Channel Metadata 的设置、删除和更新都会触发 `onStorageEvent` 事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `onStorageEvent` 事件通知中携带的是当前 Channel Metadata 的全量信息，我们将在后续版本中优化，提供性能更优的增量更新能力。
+
+Channel Metadata 同时也引入了 Lock 的控制能力，当调用 API 设置、删除、更新 Channel Metadata 时，如果参数中的 `lockName` 被设置，则开启 Lock 的校验，此时只有拥有此锁的用户才被允许成功调用对应的方法。
+
+##### User Metadata
+
+- `setUserMetadata`：设置指定用户的 User Metadata 或 User Metadata Item。
+- `getUserMetadata`：获取指定用户的 User Metadata 和 User Metadata Item。
+- `removeUserMetadata`：删除指定用户的 User Metadata 或 User Metadata Item。
+- `updateUserMetadata`：更新指定用户已存在的 User Metadata 或 User Metadata Item。
+- `subscribeUserMetadata`：订阅指定用户的 User Metadata 或 User Metadata Item 变更事件通知。
+- `unsubscribeUserMetadata`：取消订阅指定用户的 User Metadata 或 User Metadata Item 事件通知。
+
+User Metadata 的设置、删除和更新都会触发 `onStorageEvent` 事件通知，所有订阅此 User Metadata 的其他用户将会收到事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `onStorageEvent` 事件通知中携带的是所订阅 User Metadata 的全量信息，我们将在后续的版本中优化，提供性能更优的增量更新能力。
+
+##### CAS 控制
+
+Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `Metadata` 中的 `setMajorRevision` 方法设置 `revision` 属性开启整组 Channel Metadata 的版本号校验。
+- 通过 `MetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+设置、删除、更新 Channel Metadata 或 User Metadata 时，配合 `revision` 参数可以控制本次调用是否开启 Revision 校验，逻辑如下：
+
+- `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
+- `revision` 为 Uint64 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+
+#### 锁
+
+临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
+
+- `setLock`：为指定频道设置锁。
+- `acquireLock`：获取指定频道中指定的锁。
+- `releaseLock`： 释放指定频道中指定的锁。
+- `revokeLock`： 撤销指定频道中某个用户对此锁的占用权限以释放此锁。
+- `getLocks`： 获取指定频道中所有锁的详情。
+- `removeLock`：删除指定频道中指定的锁。
+
+频道中锁的设置、获取、释放、撤销和删除操作都会上报对应的 `onLockEvent` 事件通知。你可以充分利用此特性优化业务的实现逻辑。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+本文提供 RTM v2 SDK 的发版说明。
+
+### 已知问题和局限性
+
+自 2.2.0 起，RTM SDK 和 RTC SDK（4.3.0 及以上版本）都包含 `aosl.xframework` 库。如果你同时使用了 RTM 和 RTC SDK，为避免冲突，需进行如下操作：
+
+- 如果你通过 CDN 手动集成 SDK，请手动删除更低版本的 `aosl.xframework` 库；
+- 如果你使用依赖管理工具（如 Maven 或 CocoaPods） 集成 SDK，请确保在项目中引入更高版本的 `aosl.xframework` 库。
+
+具体的集成指南可以参考[如何处理同时集成 RTM SDK 和 RTC SDK 遇到的问题？](/zh-CN/api-reference/faq/integration/rtm2_rtc_integration_issue)
+
+- 2.2.8 RTM SDK `aosl.xframework` 库版本为 1.3.0。
+- 2.2.7 RTM SDK `aosl.xframework` 库版本为 1.3.0。
+- 2.2.3、2.2.4、2.2.5、2.2.6 RTM SDK `aosl.xframework` 库版本为 1.2.13。
+- 2.2.2 RTM SDK `aosl.xframework` 库版本为 1.0.11。
+
+## 2.2.8 版
+
+该版本于 2026 年 2 月 12 日发布。
+
+### 问题修复
+
+- 修复部分场景下，App 从后台恢复并叠加网络切换时，可能导致服务连接状态异常的问题。
+- 修复部分场景下，设置 [`Presence`](/api-ref/rtm2/swift/toc-presence/presence) 的临时用户状态后，事件通知无法正常下发的问题。
+
+## 2.2.7 版
+
+该版本于 2025 年 12 月 12 日发布。
+
+### 升级必看
+
+#### SDK 引用方式变更
+
+从 v2.2.7 起，如果你使用 CocoaPods 将 RTM SDK 导入到项目中，则 `Podfile` 文件中引入 SDK 的代码需要进行如下变更：
+
+| 变更后（v2.2.7 及之后） | 变更前（v2.2.6 及之前） |
+| --- | --- |
+| <Slot name="release-notes-swift-html-0-1-0" /> | <Slot name="release-notes-swift-html-0-1-1" /> |
+
+<Slot for="release-notes-swift-html-0-1-0">
+
+```ruby
+    platform :ios, '11.0'
+    target 'Your App' do
+        # ...
+        // highlight-start
+        pod 'ShengwangRtm', 'x.y.z'
+        // highlight-end
+    end
+    ```
+
+</Slot>
+
+<Slot for="release-notes-swift-html-0-1-1">
+
+```ruby
+    platform :ios, '11.0'
+    target 'Your App' do
+        # ...
+        // highlight-start
+        pod 'AgoraRtm', 'x.y.z'
+        // highlight-end
+    end
+    ```
+
+</Slot>
+
+详细集成步骤可以参考[快速开始](/zh-CN/realtime-media/rtm/get-started/quick-start)。
+
+在同时集成了 RTC SDK v4.3.0 及以上版本的场景中，RTM 轻量库的引入代码方式详见 [FAQ](/zh-CN/api-reference/faq/integration/rtm2_rtc_integration_issue)。
+
+### 改进
+
+- 该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/swift/toc-configuration/configuration#AgoraRtmClientConfig) 中新增 `callbackQueue` 参数，支持对回调所在的线程进行设置。
+- 优化了登录操作 (`loginByToken`) 的响应机制。
+
+### 问题修复
+
+- 修复了某些极端情况下，调整设备时钟可能触发 SDK 进入重连状态的问题。
+- 修复了在长时间和 RTM 服务断开的情况下，重新连接后，自身所在频道的 Presence 状态可能出现异常的问题。
+
+## 2.2.6 版
+
+该版本于 2025 年 10 月 31 日发布。
+
+### 改进
+
+#### 新增重连超时配置
+
+该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/swift/toc-configuration/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
+
+## 2.2.5 版
+
+该版本于 2025 年 7 月 1 日发布。
+
+### 新特性
+
+#### 支持 IoT 设备域名白名单
+
+在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/swift/toc-configuration/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+
+### 问题修复
+
+- 某些场景下，Token 过期的通知可能被多次触发。
+- 某些场景下，点对点消息已送达对端，但发送端却反馈超时。
+- 某些场景下，iOS 系统在退出 App 时，可能引起 RTM SDK 崩溃的问题。
+- 私有化场景下，频繁切换网络可能造成连接状态异常。
+
+## 2.2.4 版
+
+该版本于 2025 年 4 月 1 日发布。主要改动点如下：
+
+- 进一步优化了登录服务的时长。
+- 修复了回调函数中，如果业务代码存在未捕获的异常，可能引起 SDK 崩溃的问题。
+- 修复了订阅 Topic 时，可能返回未加入频道的问题。
+
+## 2.2.3 版
+
+该版本于 2025 年 3 月 21 日发布。
+
+### 升级必看
+
+从该版本起，RTM SDK 支持通过 SPM (Swift Package Manager) 集成 SDK。你可以选择该方式进行集成，详见[安装 SDK](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#安装-sdk)。
+
+### 改进
+
+#### 新增连接状态改变原因
+
+该版本在 `AgoraRtmLinkStateChangeReason` 中增加原因 `loginTooFrequent` (37)，表示当前登录操作过于频繁。
+
+#### 新增更新 Token 超时错误码
+
+为反馈更新 Token 操作的结果，该版本新增错误码 `renewTokenTimeout` (10026)。
+
+#### 在线状态事件通知优化
+
+当频道数据无法正常同步时，SDK 会重新触发一次 `snapshot` 事件。收到该事件后，用户可以更新自己 App 的本地缓存。
+
+#### 其它改进
+
+- 加快了切后台或休眠后，RTM 服务恢复重连的速度。
+- 优化了 SDK 在弱网情况下的表现。
+- 优化了接入节点的选择，提升了服务的连接速度。
+
+### 问题修复
+
+- 重连时偶现订阅服务未恢复。
+- 部分频道内用户查询结果时，可能包含异常离线用户的信息。
+
+## 2.2.2 版
+
+该版本于 2024 年 11 月 6 日发布。这是 RTM v2 Swift SDK 的第一个版本。
+
+本次发布意味着声网实时通讯（RTM）产品步入 v2 时代，我们在功能覆盖、性能提升、体验优化上都将为用户带来革新。
+
+- 功能覆盖：该版本通过引入频道（Channel）、消息（Message）、Topic、Presence、Storage 和 Lock 等功能模块，能覆盖更多业务场景，你可以把更多的精力集中在自己的业务创新上。
+
+- 性能提升：我们在新版本中重构了后台架构，通过优化网络连接进一步提升性能，提供长时间低延迟、高可靠、大并发、易扩展的实时网络接入能力，让你无需为业务质量担忧。
+
+- 体验优化：我们重新设计并简化了 API 接口；优化了包括用户指南、API 参考在内的所有文档，提供了更全面的示例程序，支持开发者低成本学习使用 SDK，快速完成集成，提高开发效率。
+
+### 新特性
+
+该版本提供的核心功能模块如下。
+
+#### 初始配置（Setup）
+
+初始配置（Setup）是初始化 RTM Client 时预先定义或配置的一些关键参数，影响其后续行为。同时，它还提供了登录、登出等功能。核心能力如下：
+
+- ``：创建一个 RTM Client 实例，并进行如下初始配置：
+  - `appId`：设置 App ID。相同 App ID 的 App 间可以通信，不同 App ID 的 App 相互隔离。
+  - `userId`：设置用户 ID，用以区分用户或设备。
+  - `areaCode`：设置区域代码，用于 Geo-fencing 功能。
+  - `presenceTimeout`：设置 Presence 服务的超时时间。
+  - `useStringUserId`：设置用户 ID 的数据类型，可以是 String 类型，也可以是 Uint 类型。
+  - `logConfig`：配置本地日志大小、位置、输出信息等级等参数。
+  - `proxyConfig`：配置 Proxy 服务参数。
+  - `encryptionConfig`：配置端侧加密参数。
+- 事件监听：实现 `onMessageEvent`、`onPresenceEvent`、`onTopicEvent`、`onStorageEvent`、`onLockEvent`、`connectionStateChanged`、`onTokenPrivilegeWillExpire` 等事件通知的业务逻辑。
+- `login`：登录 RTM 服务。
+- `logout`：登出 RTM 服务。
+- `destroy`：销毁 RTM Client 实例，释放资源。
+
+#### 频道（Channel）
+
+频道是 RTM 实时网络中一种数据传输的管理机制，任何订阅或加入频道的用户都可以在 100 毫秒内接收到频道中传输的消息和事件，RTM 允许客户端订阅数百甚至数千个频道。大多数 RTM API 都将以频道为基础进行发送、接收、加密等行为。
+
+基于声网的能力，RTM 的频道分成两种类型：Message Channel 和 Stream Channel。两种类型频道的核心能力如下：
+
+- Message Channel：
+    - `subscribe`：订阅指定 Message Channel 并开始接收频道中的消息和事件通知。
+    - `unsubscribe`：取消订阅指定 Message Channel 并停止接收频道中的消息和事件通知。
+
+- Stream Channel：
+    - `createStreamChannel`：创建 Stream Channel 实例，随后可以调用其中的方法。
+    - `join`：加入 Stream Channel，并开始接收频道中的消息和事件通知。
+    - `leave`：离开 Stream Channel，并停止接收频道中的消息和事件通知。
+    - `destroy`：销毁 Stream Channel 实例以释放资源。
+
+其中：
+
+- `subscribe`、`unsubscribe`、`join`、`leave` 方法都会触发 `onPresenceEvent` 事件通知。频道中的其他用户会收到对应的 `Join`、`Leave` 事件通知。
+- 调用 `subscribe` 和 `join` 操作订阅或加入频道的时候，可以选择是否配置 `withMessage`、`withPresence`、`withMetadata`、`withLock` 等参数以开启对应事件通知的监听功能。如果开启，你同时也需要注册对应事件监听，才能顺利收到对应事件通知。
+
+#### 消息（Message）
+
+RTM 的基础是发送消息的能力，你可以随时随地向频道中发送消息，消息会在 100 毫秒内传递到任何地方。RTM 支持 String 类型和 Byte 类型的消息负载。
+
+`publish` 向指定的 Message Channel 中发送消息，同时支持存储历史消息。调用 `publish` 会触发 `onMessageEvent` 事件通知，如果想要收到频道中的消息，你需要在 `subscribe` 的时候，设置 `withMessage = true`，注册并实现 `onMessageEvent` 事件。
+
+#### Topic
+
+Topic 是 Stream Channel 中的数据流管理机制。你可以在 Stream Channel 中利用此特性进行数据流的订阅、分发、事件通知等，灵活使用 Topic 能力，能大大降低业务复杂度，提升开发效率。Topic 的主要功能如下：
+
+- `joinTopic`：注册成为此 Topic 的消息发布者（publisher）。注册后，该用户会具备发送消息的能力。
+- `publishTopicMessage`：向 Stream Channel 中的 Topic 发送消息。
+- `leaveTopic`： 取消注册为该 Topic 的消息发布者。
+- `subscribeTopic`：订阅该频道中 Topic 的一名或多名消息发布者。
+- `unsubscribeTopic`：取消订阅该 Topic 或取消订阅该 Topic 中指定的一名或多名消息发布者。
+
+注册（`joinTopic`）或取消注册（`leaveTopic`）消息发布者操作，会触发 `onTopicEvent` 事件通知，频道中的其他用户将会收到此事件通知。
+
+:::info[信息]
+Topic 特性只在 Stream Channel 中有效，Message Channel 中不存在此特性。
+:::
+
+#### 在线状态
+
+Presence 提供监控用户在线状态及临时状态变化的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开频道的实时状态
+- 订阅或加入同一频道的所有用户的实时状态
+- 一个用户订阅或加入的所有频道的实时信息
+- 自定义临时用户状态及其变更信息
+
+在 Message Channel 和 Stream Channel 中均可使用以下 Presence 功能：
+
+- `whoNow`：实时获取指定频道的在线用户数量、在线用户列表、在线用户的临时状态等信息。
+- `whereNow`：实时获取指定用户所在频道的列表。
+- `setState`：设置用户在指定频道的临时状态。
+- `getState`：获取用户在指定频道的临时状态。
+- `removeState`：删除用户在特定频道的临时状态。
+
+Presence 在提供上述功能的同时，也提供了 `onPresenceEvent` 事件通知能力。频道中用户的加入、离开、掉线、用户状态设置、用户状态删除等事件都会以实时通知（Announce Mode）或定时通知（Interval Mode）的方式通知到频道中的其他用户。Presence 能力将大大简化开发者业务中关于在线用户上下线、状态变更等状态的同步逻辑实现，充分利用此特性将使得你的业务实现更稳定、实时、可靠。
+
+#### 存储
+
+RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据，并监听由 Channel Metadata 或 User Metadata 变更而产生的事件通知。
+
+##### Channel Metadata
+
+- `setChannelMetadata`：为指定频道设置 Channel Metadata 或 Channel Metadata Item。
+- `getChannelMetadata`：获取指定频道的 Channel Metadata 和 Channel Metadata Item。
+- `removeChannelMetadata`：删除指定频道的 Channel Metadata 或 Channel Metadata Item。
+- `updateChannelMetadata`：更新指定频道已有 Channel Metadata 或 Channel Metadata Item。
+
+Channel Metadata 的设置、删除和更新都会触发 `onStorageEvent` 事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `onStorageEvent` 事件通知中携带的是当前 Channel Metadata 的全量信息，我们将在后续版本中优化，提供性能更优的增量更新能力。
+
+Channel Metadata 同时也引入了 Lock 的控制能力，当调用 API 设置、删除、更新 Channel Metadata 时，如果参数中的 `lock` 被设置，则开启 Lock 的校验，此时只有拥有此锁的用户才被允许成功调用对应的方法。
+
+##### User Metadata
+
+- `setUserMetadata`：设置指定用户的 User Metadata 或 User Metadata Item。
+- `getUserMetadata`：获取指定用户的 User Metadata 和 User Metadata Item。
+- `removeUserMetadata`：删除指定用户的 User Metadata 或 User Metadata Item。
+- `updateUserMetadata`：更新指定用户已存在的 User Metadata 或 User Metadata Item。
+- `subscribeUserMetadata`：订阅指定用户的 User Metadata 或 User Metadata Item 变更事件通知。
+- `unsubscribeUserMetadata`：取消订阅指定用户的 User Metadata 或 User Metadata Item 事件通知。
+
+User Metadata 的设置、删除和更新都会触发 `onStorageEvent` 事件通知，所有订阅此 User Metadata 的其他用户将会收到事件通知，合理使用此特性可以极大的优化业务逻辑，获得优异的用户体验。当前 `onStorageEvent` 事件通知中携带的是所订阅 User Metadata 的全量信息，我们将在后续的版本中优化，提供性能更优的增量更新能力。
+
+##### CAS 控制
+
+Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `AgoraRtmMetadata` 中的 `setMajorRevision` 方法设置 `majorRevision` 属性开启整组 Channel Metadata 的版本号校验。
+- 通过 `AgoraRtmMetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+设置、删除、更新 Channel Metadata 或 User Metadata 时，配合 `revision` 参数可以控制本次调用是否开启 Revision 校验，逻辑如下：
+
+- `majorRevision` 或  `revision` 为 `-1` 时，本次调用不开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则该 Metadata 或 Metadata Item 会被最新值覆盖；如果 Metadata 或 Metadata Item 不存在，则会创建对应的 Metadata 或 Metadata Item。
+- `majorRevision` 或  `revision` 为 Uint64 正整数时，本次调用开启 CAS 验证。如果 Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+
+#### 锁
+
+临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。Lock 为你提供了以下能力：
+
+- `setLock`：为指定频道设置锁。
+- `acquireLock`：获取指定频道中指定的锁。
+- `releaseLock`： 释放指定频道中指定的锁。
+- `revokeLock`： 撤销指定频道中某个用户对此锁的占用权限以释放此锁。
+- `getLocks`： 获取指定频道中所有锁的详情。
+- `removeLock`：删除指定频道中指定的锁。
+
+频道中锁的设置、获取、释放、撤销和删除操作都会上报对应的 `onLockEvent` 事件通知。你可以充分利用此特性优化业务的实现逻辑。
+
+</PlatformStructured>

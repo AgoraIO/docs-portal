@@ -1,6 +1,6 @@
 ---
 title: "视频渲染"
-description: RTC Android API 参考迁移页。
+description: "视频渲染 API reference."
 ---
 <a id="toc_video_rendering"></a>
 
@@ -25,7 +25,7 @@ public abstract int enableInstantMediaRendering();
 成功调用该方法后，SDK 会启用即时帧渲染模式，从而加快用户加入频道后首帧的渲染速度。
 
 :::info[注]
-主播和观众都需要调用该方法，才能体验音视频帧的即时渲染效果。一旦成功调用该方法，只能通过调用 [destroy [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 方法销毁 [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 对象来取消即时渲染。
+主播和观众都需要调用该方法，才能体验音视频帧的即时渲染效果。一旦成功调用该方法，只能通过调用 [destroy [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 方法销毁 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象来取消即时渲染。
 :::
 
 <a id="api_irtcengine_enableinstantmediarendering__scenario"></a>
@@ -45,11 +45,11 @@ public abstract int enableInstantMediaRendering();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
   - -7：在 RtcEngine 初始化之前调用该方法。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalrendermode1"></a>
 
@@ -88,10 +88,10 @@ public abstract int setLocalRenderMode(int renderMode)
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalrendermode2"></a>
 
@@ -144,10 +144,10 @@ public abstract int setLocalRenderMode(int renderMode, int mirrorMode);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalrendertargetfps"></a>
 
@@ -183,7 +183,7 @@ public abstract int setLocalRenderTargetFps(Constants.VideoSourceType sourceType
 
 #### `sourceType`
 
-视频源类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-videosourcetype)。
+视频源类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。
 
 #### `targetFps`
 
@@ -198,10 +198,10 @@ public abstract int setLocalRenderTargetFps(Constants.VideoSourceType sourceType
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvideomirrormode"></a>
 
@@ -238,10 +238,10 @@ public abstract int setLocalVideoMirrorMode(int mode)
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremoterendermode2"></a>
 
@@ -263,10 +263,10 @@ public abstract int setRemoteRenderMode(int uid, int renderMode)
 
 你可以调用该方法更新远端用户视频视图的渲染模式和镜像模式。该方法仅影响本地用户看到的视频视图。
 
-注：
-
+:::info[注]
 - 请确保在调用此方法前已调用 setupRemoteVideo 初始化远端视频视图。
 - 通话过程中，你可以多次调用此方法以更新远端用户视频视图的显示模式。
+:::
 
 <a id="api_irtcengine_setremoterendermode2__parameters"></a>
 
@@ -288,10 +288,10 @@ public abstract int setRemoteRenderMode(int uid, int renderMode)
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremoterendermodeex"></a>
 
@@ -341,17 +341,17 @@ public abstract int setRemoteRenderModeEx(int uid, int renderMode, int mirrorMod
 
 #### `connection`
 
-连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
 <a id="api_irtcengineex_setremoterendermodeex__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setremoterendertargetfps"></a>
 
@@ -398,10 +398,10 @@ public abstract int setRemoteRenderTargetFps(int targetFps);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayer_setrendermode"></a>
 
@@ -434,10 +434,10 @@ int setRenderMode(int mode);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_irtcengine_setuplocalvideo"></a>
 
@@ -477,17 +477,17 @@ public abstract int setupLocalVideo(VideoCanvas local);
 
 #### `local`
 
-本地视频画面及相关设置。详见 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-videocanvas)。
+本地视频画面及相关设置。详见 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-videocanvas)。
 
 <a id="api_irtcengine_setuplocalvideo__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setupremotevideo"></a>
 
@@ -505,10 +505,10 @@ public abstract int setupRemoteVideo(VideoCanvas remote);
 
 该方法在本地设备上初始化远端视频流的视图，仅影响本地用户看到的视频画面。调用该方法可将远端视频流绑定到视频视图，并设置该视图的渲染模式和镜像模式。你需要在该方法中指定远端用户的 ID。如果应用尚未获取远端用户的 ID，请在收到 [onUserJoined](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserjoined) 回调后设置。若要将远端用户与视图解绑，请将 `view` 参数设置为 `null`。一旦远端用户离开频道，SDK 会自动解绑该用户。在移动端进行视频合流布局自定义的场景中，你可以调用该方法，并为合流视频流中的每个子视频流设置独立的 `view` 进行渲染。
 
-注：
-
+:::info[注]
 - 若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 setRemoteRenderMode 方法。
 - 使用录制服务时，应用无需绑定视图，因为录制服务不会发送视频流。如果你的应用无法识别录制服务，请在 SDK 触发 onFirstRemoteVideoDecoded 回调时将远端用户绑定到视图。
+:::
 
 <a id="api_irtcengine_setupremotevideo__parameters"></a>
 
@@ -516,17 +516,17 @@ public abstract int setupRemoteVideo(VideoCanvas remote);
 
 #### `remote`
 
-远端视频视图及相关设置。详见 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-videocanvas)。
+远端视频视图及相关设置。详见 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-videocanvas)。
 
 <a id="api_irtcengine_setupremotevideo__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setupremotevideoex"></a>
 
@@ -542,7 +542,7 @@ public abstract int setupRemoteVideoEx(VideoCanvas remote, RtcConnection connect
 
 <a id="api_irtcengineex_setupremotevideoex__detailed_desc"></a>
 
-你可以调用该方法将远端视频流绑定到视频视图，并设置视频视图的渲染模式和镜像模式。该方法仅影响本地用户看到的视频视图。 应用需在远端用户加入频道前，通过 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-videocanvas) 指定远端用户 ID。 如果应用尚未获取远端用户 ID，可在收到 [onUserJoined](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserjoined) 回调后设置。 如果启用了视频录制功能，视频录制服务会以虚拟客户端身份加入频道，其他客户端也会因此收到 [onUserJoined](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserjoined) 回调。请勿将虚拟客户端绑定到应用视图，因为其不会发送任何视频流。 如需解除远端用户与视图的绑定，可将 `view` 参数设为 `null`。 远端用户离开频道后，SDK 会自动解除其绑定。
+你可以调用该方法将远端视频流绑定到视频视图，并设置视频视图的渲染模式和镜像模式。该方法仅影响本地用户看到的视频视图。 应用需在远端用户加入频道前，通过 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-videocanvas) 指定远端用户 ID。 如果应用尚未获取远端用户 ID，可在收到 [onUserJoined](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserjoined) 回调后设置。 如果启用了视频录制功能，视频录制服务会以虚拟客户端身份加入频道，其他客户端也会因此收到 [onUserJoined](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserjoined) 回调。请勿将虚拟客户端绑定到应用视图，因为其不会发送任何视频流。 如需解除远端用户与视图的绑定，可将 `view` 参数设为 `null`。 远端用户离开频道后，SDK 会自动解除其绑定。
 
 :::info[注]
 若需在通话过程中更新远端视频视图的渲染或镜像模式，请使用 [setRemoteRenderModeEx](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
@@ -560,21 +560,21 @@ public abstract int setupRemoteVideoEx(VideoCanvas remote, RtcConnection connect
 
 #### `remote`
 
-远端视频视图的设置。详见 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-videocanvas)。
+远端视频视图的设置。详见 [VideoCanvas](/zh-CN/api-reference/rtc/android/class-videocanvas)。
 
 #### `connection`
 
-连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
 <a id="api_irtcengineex_setupremotevideoex__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_startmediarenderingtracing"></a>
 
@@ -596,10 +596,10 @@ public abstract int startMediaRenderingTracing();
 
 从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/android/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调上报相关事件信息。
 
-注：
-
+:::info[注]
 - 如果你未调用该方法，SDK 会从调用 joinChannel 加入频道开始追踪视频帧的渲染事件。
 - 本地用户离开当前频道后，SDK 会自动从再次加入频道开始追踪视频渲染事件。
+:::
 
 <a id="api_irtcengine_startmediarenderingtracing__scenario"></a>
 
@@ -618,11 +618,11 @@ public abstract int startMediaRenderingTracing();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
   - -7：在 RtcEngine 初始化之前调用该方法。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startmediarenderingtracingex"></a>
 
@@ -644,10 +644,10 @@ public abstract int startMediaRenderingTracingEx(RtcConnection connection);
 
 从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/android/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调上报相关事件信息。
 
-注：
-
+:::info[注]
 - 如果你未调用该方法，SDK 会从调用 joinChannel 加入频道开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时间调用该方法，以设置追踪视频渲染事件的起始位置。
 - 本地用户离开当前频道后，SDK 会自动从再次加入频道开始追踪视频渲染事件。
+:::
 
 <a id="api_irtcengineex_startmediarenderingtracingex__scenario"></a>
 
@@ -667,17 +667,17 @@ public abstract int startMediaRenderingTracingEx(RtcConnection connection);
 
 #### `connection`
 
-连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
 <a id="api_irtcengineex_startmediarenderingtracingex__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo"></a>
 
@@ -711,10 +711,10 @@ public void onTranscodedStreamLayoutInfo(int uid, VideoLayoutInfo info) {}
 
 #### `info`
 
-子视频流的布局信息，详见 [VideoLayoutInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-videolayoutinfo)。
+子视频流的布局信息，详见 [VideoLayoutInfo](/zh-CN/api-reference/rtc/android/class-videolayoutinfo)。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult"></a>
 
@@ -742,11 +742,11 @@ public void onVideoRenderingTracingResult(int uid, Constants.MEDIA_TRACE_EVENT c
 
 #### `currentEvent`
 
-当前的视频帧渲染事件，详见 [MEDIA_TRACE_EVENT](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-mediatraceevent)。
+当前的视频帧渲染事件，详见 [MEDIA_TRACE_EVENT](/zh-CN/api-reference/rtc/android/enum-mediatraceevent)。
 
 #### `tracingInfo`
 
-视频帧渲染过程中的各项指标。详见 [VideoRenderingTracingInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-videorenderingtracinginfo)。
+视频帧渲染过程中的各项指标。详见 [VideoRenderingTracingInfo](/zh-CN/api-reference/rtc/android/class-videorenderingtracinginfo)。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,0 +1,2550 @@
+---
+title: "迁移指南"
+---
+
+<PlatformStructured platform="android">
+
+声网 SDK v4.x 是一个新的 SDK 版本，可帮助用户将实时音视频功能集成到 App 中。在大规模的实时互动场景下，你可以用它实现更好的实时互动效果，详见[产品概述](/zh-CN/realtime-media/rtc)。
+
+本文介绍将 SDK 从 v3.x（指 v3.7.0 以及之前版本）或 v2.x 升级至 v4.0.0 的主要步骤及变更。
+
+## 迁移步骤
+
+### 1. 集成 SDK
+
+参考[建立项目](/zh-CN/realtime-media/rtc/get-started/quick-start#建立项目)，将 v4.x SDK 集成到你的项目中。
+
+### 2. 重命名导入类（Android）
+
+成功集成 SDK 后，你还需要在项目的 `/app/java/com.example.<projectname>/MainActivity` 文件中导入类的代码由 `io.agora.rtc` 前缀修改为 `io.agora.rtc2` 前缀。
+
+:::warning[注意]
+v4.x SDK 的 `AgoraRtcChannelMediaOptions.java` 文件路径也由 `/models` 变更为根目录下。
+:::
+
+### 3. 更新 App 代码
+
+v4.x SDK 对部分功能的实现方式进行了优化或修改，从而导致与 v3.x 或 v2.x 不兼容。为了继续使用 App 中已有的声网功能，请根据[变更介绍](#变更介绍)更新 App 中的代码。
+
+## 变更介绍
+
+本节按如下分类介绍 v4.0.0 相比 v3.7.0 的主要变更，你需要结合实际业务场景更新 App 代码：
+
+- 中断性变更：介绍影响较大的 API 兼容性变更，修改相关实现代码的预期耗时较多。
+- 行为变更：介绍对 SDK 默认行为和 API 行为的合理优化造成的变更，无需修改相关实现代码或修改代码的预期耗时较少。
+- 功能差距：介绍在 v3.7.0 中支持、但在 v4.0.0 中不支持的功能，这些功能会在后续版本中增加。
+- 已删除 API：介绍在 v3.7.0 中支持、但在 v4.0.0 中删除了的 API，这些 API 大部分在 v4.0.0 中有替代方案，修改相关实现代码的预期耗时较少。
+- 命名和数据类型变更：介绍主要 API 的命名和数据类型变更，你可以借助 IDE 的报错提示更新相关实现代码，预期耗时较少。
+
+### 中断性变更
+
+从 v3.7.0 升级至 v4.0.0 后，实现部分功能的 API 存在差异。本节介绍这些 API 的兼容性变更及 App 代码的更新逻辑。
+
+#### 多频道
+
+在 v3.7.0 中，SDK 提供 `RtcChannel` 类和 `IRtcChannelEventHandler` 类实现多频道控制，支持订阅多个频道的音视频流，但只能选择一个频道发布一组音视频流。
+
+在 v4.0.0 中：
+
+- SDK 提供 `RtcEngineEx` 类实现多频道功能，结合多频道能力实现一个 `RtcEngine` 实例同时采集多组音视频流并发布到远端，适应各种业务场景。
+
+  调用 `joinChannel` 加入首个频道后，多次调用 `joinChannelEx` 加入多个频道，通过不同的用户 ID (`localUid`) 和 `ChannelMediaOptions` 设置发布指定的流到不同的频道。
+
+- 新增了 `RtcConnection` 二元组表示 `joinChannel` 建立的连接，一个连接由频道名 (`channelId`) 和 `localUid` 确定。你可以通过 `RtcConnection` 控制不同连接的发布和订阅。所有带 `connection` 参数（对应 `RtcConnection` 类）的 API 命名中都增加了 Ex 以区分，并统一放在 `RtcEngineEx` 类中，用于多流的扩展。
+
+通过设置 `ChannelMediaOptions`，v4.0.0 支持一个 `RtcEngine` 实例同时采集多路音视频源并发布到远端，适应各种业务场景。例如：
+
+- 同时发布多路摄像头采集的视频流或者多路屏幕共享流
+- 同时发布单路媒体播放器的视频流、屏幕共享流和摄像头采集的视频流
+- 同时发布单路麦克风采集、自采集的音频流和媒体播放器的音频流
+
+结合多频道能力，你还可以体验如下功能：
+
+- 将多组音视频流通过不同的 `localUid` 发布到远端
+- 将多路音频流混音后通过一个 `localUid` 发布到远端
+- 将多路视频流合图后通过一个 `localUid` 发布到远端
+
+v3.7.0 的 `RtcChannel` 和 `RtcEngine` 在功能上有部分重复、不够正交，因此在 v4.0.0 中隐藏了 `RtcChannel` 类和 `IRtcChannelEventHandler` 类。你可以参考 [JoinMultiChannel](https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/JoinMultipleChannel.java) 示例项目，用 `joinChannel` 和 `ChannelMediaOptions` 替代 `RtcChannel`，预计迁移成本在一天以内。如果你需要继续使用 `RtcChannel` 和 `IRtcChannelEventHandler` 类，请[联系技术支持](https://ticket.shengwang.cn/)，声网会根据反馈情况决定是否在后续版本中保持兼容。
+
+#### 媒体流发布控制
+
+在 v4.0.0 中，将更多频道相关的设置都汇聚进了 `ChannelMediaOptions`，包括不同音视频流的发布、自动订阅、用户角色切换、Token 更新、默认大小流选项等。你可以在加入频道时通过 `joinChannel` 或 `joinChannelEx` 明确媒体流发布和订阅行为，也可以在加入频道后通过 `updateChannelMediaOptions` 动态更新频道中的媒体选项，例如切换视频源。
+
+你可以参考 [LiveBroadcasting](https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Basic/LiveBroadcasting) 示例项目更新 App 代码。
+
+#### 自定义视频采集与渲染
+
+在 v3.7.0 中，SDK 提供如下方式实现自定义采集与渲染：
+
+- Push 方式自采集
+- 原始视频数据方式自渲染
+- MediaIO 方式 (`IVideoSource`) 自采集
+- MediaIO 方式 (`IVideoSink`) 自渲染
+
+v4.0.0 内部统一了音视频处理管线，推荐使用集成最简单的 Push 方式自采集、原始视频数据方式自渲染，因此删除了 MediaIO 方式的相关 API：
+
+- `IVideoSource`
+- `IVideoSink`
+- `IVideoFrameConsumer`
+- `setVideoSource`
+- `setLocalVideoRenderer`
+- `setRemoteVideoRenderer`
+
+如果你在 v3.7.0 使用了 MediaIO 方式实现视频自采集、视频自渲染、切换视频源等功能，声网推荐参考如下示例项目更新 App 代码：
+
+* 视频自采集：[CustomVideoSourcePush](https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/PushExternalVideo.java)
+* 视频自渲染：[CustomVideoRender](https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/CustomRemoteVideoRender.java)
+* 切换视频源：[ScreenShare](https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/SwitchCameraScreenShare.java)
+
+#### 警告码
+
+在 v3.7.0 中，SDK 通过 `onWarning` 回调报告警告码。
+
+为方便用户定位和排查问题，v4.0.0 通过 API 返回值或不同状态回调来报告问题和原因。例如：
+
+* `getConnectionState`：报告网络连接状态。
+* `onLocalAudioStateChanged`：报告本地音频状态。
+* `onLocalVideoStateChanged`：报告本地视频状态。
+* `onRemoteAudioStateChanged`：报告远端音频状态。
+* `onRemoteVideoStateChanged`：报告远端视频状态。
+
+因此，v4.0.0 删除了 `onWarning` 回调。
+
+:::warning[注意]
+除上述相对于 v3.7.0 的中断性变更以外，v4.0.0 对于 v4.0.0 Beta 也存在极少数中断性变更。例如：
+
+- 在 v4.0.0 中，将 `ChannelMediaOptions` 中的 `publishAudioTrack` 替换为 `publishMicrophoneTrack`。
+- 在 v4.0.0 中，将 `ChannelMediaOptions` 中的 `publishScreenTrack` 替换为 `publishScreenCaptureVideo`。
+
+如果你在 v4.0.0 Beta 版本中使用了该功能、并且希望升级到 v4.0.0 版本，请在升级 SDK 后修改功能的实现。
+:::
+
+### 行为变更
+
+本节介绍由 v4.0.0 对 SDK 默认行为和 API 行为的合理优化造成的变更。
+
+#### 频道场景
+
+在 v3.7.0 中，默认的频道场景为 `CHANNEL_PROFILE_COMMUNICATION`（通信）。
+
+因为直播场景支持从一对一通话无缝切换到多人互动，所以声网自 v3.0.0 起将通信场景下内部的传输协议和弱网对抗能力改成与直播场景一致。在 v4.0.0 中，声网也将默认的频道场景改成了 `CHANNEL_PROFILE_LIVE_BROADCASTING`（直播）。
+
+#### 默认日志文件
+
+在 v3.7.0 中，有多个日志文件时，旧的文件会以 agorasdk_x.log 格式命名，例如 agorasdk_1.log。v4.0.0 修改命名格式为 agorasdk.x.log（例如 agorasdk.1.log）。此外，v4.0.0 新增了 agoraapi.log 记录 API 调用的日志。
+
+#### 快速切换频道
+
+在 v3.7.0 中，你需要调用 `switchChannel` 实现快速切换频道。
+
+在 v4.0.0 中，通过 `leaveChannel` 和 `joinChannel` 切换频道即可实现和 `switchChannel` 一样的切换速度，因此该版本删除了 `switchChannel`。如果你在 v3.7.0 中使用 `switchChannel` 切换频道，你需要在 v4.0.0 中先调用 `leaveChannel` 离开当前频道，再调用 `joinChannel` 加入第二个频道。
+
+#### 声网自研插件
+
+v4.0.0 在 v4.0.0 Beta 的基础上新增了自动加载自研动态库功能。自该版本起，当你使用声网自研的插件时，不需要在项目中手动集成动态库，SDK 会在 `RtcEngine` 初始化阶段自动加载动态库。你可以直接调用插件对应的方法即可开启该功能。
+
+| API | 插件类型 |
+| --- | --- |
+| `enableVirtualBackground` | 虚拟背景插件 |
+| <Slot name="migration-guide-android-html-0-2-0" /> | 视频增强插件 |
+| `enableRemoteSuperResolution` | 超分辨率插件 |
+| <Slot name="migration-guide-android-html-0-4-0" /> | 美声插件 |
+| `enableSpatialAudio` | 空间音频插件 |
+| `enableContentInspect` | 内容审核插件 |
+
+<Slot for="migration-guide-android-html-0-2-0">
+
+- `setBeautyEffectOption`
+      - `setVideoDenoiserOptions`
+      - `setLowlightEnhanceOptions`
+      - `setColorEnhanceOptions`
+
+</Slot>
+
+<Slot for="migration-guide-android-html-0-4-0">
+
+- `setAudioEffectPreset`
+      - `setVoiceBeautifierPreset`
+      - `setVoiceConversionPreset`
+
+</Slot>
+
+#### 虚拟节拍器
+
+当你调用 `startRhythmPlayer` 时，SDK 默认将虚拟节拍器的声音发布到远端，如果你不希望远端用户听到虚拟节拍器，需参考以下操作：
+
+- 在 v3.7.0 中，调用 `configRhythmPlayer` 并将 `publish` 设置为 `false`。
+- 在 v4.0.0 中，将 `ChannelMediaOptions` 中的 `publishRhythmPlayerTrack` 设置为 `false`。
+
+#### 音量提示
+
+当你调用 `enableAudioVolumeIndication` 方法并将 `interval` 参数设置为 > 0 时，可启用用户音量提示。在 v3.7.0 和 v4.0.0 中，`interval` 参数的定义存在差异：
+
+- 在 v3.7.0 中：建议设置到大于 200 毫秒。最小不得少于 10 毫秒，否则会收不到 `onAudioVolumeIndication` 回调。
+- 在 v4.0.0 中：该参数需要设为 200 的整数倍。如果取值低于 200，SDK 会自动调整为 200。
+
+当启用音量提示回调后，SDK 会上报 `onAudioVolumeIndication` 回调，如果本地用户将自己静音（调用了 `muteLocalAudioStream`），在 v3.7.0 和 v4.0.0 中，SDK 的行为不一致：
+
+- 在 v3.7.0 中：SDK 立即停止报告本地用户的音量提示回调。
+- 在 v4.0.0 中：SDK 会继续报告本地用户的音量提示回调。此时，如果用户依旧开启了音频采集，`AudioVolumeInfo` 中 `volume` 的值表示本地音频采集信号的音量。
+
+#### 设备权限
+
+- 在 v3.7.0 中，通过 `onLocalAudioStateChanged` 中的 `LOCAL_AUDIO_STREAM_ERROR_DEVICE_NO_PERMISSION` 上报没有权限启动音频采集设备；通过 `onLocalVideoStateChanged` 中的 `LOCAL_VIDEO_STREAM_ERROR_DEVICE_NO_PERMISSION` 上报没有权限启动视频采集设备。
+
+- 在 v4.0.0 中，统一通过 `onPermissionError` 回调上报音视频采集设备的权限状态。
+
+#### 通话前网络测试
+
+如果你需要开启或停止网络连接质量测试：
+
+- 在 v3.7.0 中，你可以调用 `enableLastmileTest` 开启网络质量测试，如果你想停止网络测试，需要调用 `disableLastmileTest`。
+
+- 在 v4.0.0 中，你可以调用 `startLastmileProbeTest` 启用网络质量测试，如果你想停止网络测试，需要调用 `stopLastmileProbeTest`。
+
+#### 远端媒体事件触发机制
+
+假设存在以下两种场景：
+
+- 场景一：主播在频道外调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态、然后加入频道。
+- 场景二：主播在频道内调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态，然后其他用户加入频道。
+
+v3.7.0 和 v4.0.0 SDK 中存在以下行为差异：
+
+- 在 v3.7.0 中，本地用户会收到 `onRemoteAudioStateChanged` 或 `onRemoteVideoStateChanged` 回调，报告远端主播的音视频流的状态变化。
+- 在 v4.0.0 中，本地用户不会收到 `onRemoteAudioStateChanged` 或 `onRemoteVideoStateChanged` 回调，但是会收到 `onUserMuteAudio` 或 `onUserMuteVideo` 回调，报告远端主播的发流状态变化（即是否正在发布音视频流）。
+
+#### 频道媒体选项
+
+在加入频道的同时设置频道媒体选项时，在 v3.7.0 和 v4.0.0 中，SDK 的行为存在以下差异：
+
+- 在 v3.7.0 中，如果你将 `ChannelMediaOptions` 中的 `publishLocalAudio` 设置为 `false`，会停止在频道内发布本地音频流。
+- 在 v4.0.0 中，如果你将 `ChannelMediaOptions` 中的 `publishMicrophoneTrack` 设置为 `false`，除了停止在频道内发布本地音频流以外，还会停止本地麦克风采集。
+
+### 功能差距
+
+本节介绍在 v3.7.0 中支持、但在 v4.0.0 中不支持或行为不一致的功能，这些功能会在后续版本中支持或改为一致。
+
+#### 音频应用场景
+
+v4.0.0 重构了音频应用场景，可以替代大部分 v3.7.0 的音频应用场景。下表展示了两个版本中音频应用场景的对应关系：
+
+| v3.7.0                                  | v4.0.0                          |
+| :-------------------------------------- | :------------------------------ |
+| `AUDIO_SCENARIO_DEFAULT`                | `AUDIO_SCENARIO_DEFAULT`        |
+| `AUDIO_SCENARIO_CHATROOM_ENTERTAINMENT` | `AUDIO_SCENARIO_CHATROOM`       |
+| `AUDIO_SCENARIO_EDUCATION`              | `AUDIO_SCENARIO_DEFAULT`        |
+| `AUDIO_SCENARIO_GAME_STREAMING`         | `AUDIO_SCENARIO_GAME_STREAMING` |
+| `AUDIO_SCENARIO_SHOWROOM`               | `AUDIO_SCENARIO_DEFAULT`        |
+| `AUDIO_SCENARIO_CHATROOM_GAMING`        | `AUDIO_SCENARIO_CHATROOM`       |
+| `AUDIO_SCENARIO_IOT`                    | `AUDIO_SCENARIO_DEFAULT`        |
+| `AUDIO_SCENARIO_MEETING`                | `AUDIO_SCENARIO_MEETING`        |
+
+#### 不支持功能
+
+相比于 v3.7.0，某些功能在 v4.0.0 中不支持或仅支持部分。本节展示尚未支持的 API，这些 API 会在后续版本中支持。
+
+远端视频流回退：
+
+- `setRemoteUserPriority`
+
+屏幕共享：
+
+- `onScreenCaptureInfoUpdated`
+
+### 已删除 API
+
+v4.0.0 中，删除了已废弃或不推荐使用的 API。已删除 API 的替代方案或删除原因展示如下：
+
+- `virtualBackgroundSourceEnabled`：使用 `enableVirtualBackground` 的返回值替代。
+- `onUserSuperResolutionEnabled`：使用 `remoteVideoStats` 回调的 `superResolutionType` 成员替代。
+- `setAudioMixingPlaybackSpeed`：使用 `IMediaPlayer` (`AgoraRtcMediaPlayerProtocol`) 类下的相关 API 替代。
+- `setExternalAudioSourceVolume`：使用 `adjustCustomAudioPublishVolume` 替代。
+- `getAudioFileInfo` 和 `onRequestAudioFileInfo`：使用 `getDuration` 替代。
+- `onAudioDeviceTestVolumeIndication`：由 `onAudioVolumeIndication` 替代。
+- `setLocalPublishFallbackOption` 和 `onLocalPublishFallbackToAudioOnly`：在 v3.7.0 中很少使用。
+- `RENDER_MODE_TYPE` 中的 `RENDER_MODE_FILL`(4)：该模式可能造成图片过度拉伸，不推荐使用。
+- `AUDIO_MIXING_REASON_TYPE` 中的以下枚举：在 v3.7.0 中应用场景很少。
+  - `AUDIO_MIXING_REASON_STARTED_BY_USER`
+  - `AUDIO_MIXING_REASON_START_NEW_LOOP`
+  - `AUDIO_MIXING_REASON_PAUSED_BY_USER`
+  - `AUDIO_MIXING_REASON_RESUMED_BY_USER`
+- `onAudioMixingFinished`：使用 `onAudioMixingStateChanged` 替代。
+- `enableDeepLearningDenoise`：AI 降噪将在后续版本改由 SDK 控制，不通过 API 实现。
+- `takeSnapshot` 和 `onSnapshotTaken` 中的 `channel` 参数：冗余参数。
+- `setDefaultMuteAllRemoteVideoStreams`：由 `ChannelMediaOptions` 中的 `autoSubscribeVideo` 替代。
+- `setDefaultMuteAllRemoteAudioStreams`：由 `ChannelMediaOptions` 中的 `autoSubscribeAudio` 替代。
+- `startAudioMixing` 中的 `replace` 参数：由 `ChannelMediaOptions` 中的 `publishMicrophoneTrack` 替代。
+
+### 命名变更
+
+v4.0.0 的命名和数据类型变更会在你编译项目时引入 IDE 的报错提示，你需要根据提示更新 App 代码。
+
+主要的 API 及参数名变更如下：
+
+- `onFirstLocalAudioFrame` 变更为 `onFirstLocalAudioFramePublished`。
+- `LogConfig` 中的 `fileSize` 成员变更为 `fileSizeInKB`。
+- `joinChannel`[2/2] 中的 `options` 参数变更为 `mediaOptions`。
+- `enableAudioVolumeIndication` 中的 `report_vad` 参数变更为 `reportVad`。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+声网 SDK v4.x 是一个新的 SDK 版本，可帮助用户将实时音视频功能集成到 App 中。在大规模的实时互动场景下，你可以用它实现更好的实时互动效果，详见[优势介绍](/zh-CN/realtime-media/rtc#优势介绍)。
+
+本文介绍将 SDK 从 v3.x（以下若无特殊说明，则指代 v3.7.0 以及之前版本）或 v2.x 升级至 v4.0.0。
+
+## 迁移步骤
+
+### 1. 集成 SDK
+
+参考[创建项目](/zh-CN/realtime-media/rtc/get-started/quick-start#创建项目)，将 v4.x SDK 集成到你的项目中。
+
+### 2. 更新 App 代码
+
+v4.x SDK 对部分功能的实现方式进行了优化或修改，从而导致与 v3.x 或 v2.x 不兼容。为了继续使用 App 中已有的声网功能，请根据[变更介绍](#变更介绍)更新 App 中的代码。
+
+## 变更介绍
+
+本节以 v3.7.0 为基础，按如下分类介绍 v4.0.0 相对于 v3.7.0 的主要变更，你需要结合实际业务场景更新 App 代码：
+
+:::info[信息]
+如果升级前的版本为 v3.7.0 之前的版本，请查看 [v3.x 发版说明](https://docportal.shengwang.cn/cn/video-legacy/release_ios_video?platform=iOS)获取该版本相对于 v3.7.0 的版本间变更。
+:::
+
+- 中断性变更：介绍影响较大的 API 兼容性变更，修改相关实现代码的预期耗时较多。
+- 行为变更：介绍对 SDK 默认行为和 API 行为的合理优化造成的变更，无需修改相关实现代码或修改代码的预期耗时较少。
+- 功能差距：介绍在 v3.7.0 中支持、但在 v4.0.0 中不支持的功能，这些功能会在后续版本中增加。
+- 已删除 API：介绍在 v3.7.0 中支持、但在 v4.0.0 中删除了的 API，这些 API 大部分在 v4.0.0 中有替代方案，修改相关实现代码的预期耗时较少。
+- 命名和数据类型变更：介绍主要 API 的命名和数据类型变更，你可以借助 IDE 的报错提示更新相关实现代码，预期耗时较少。
+
+### 中断性变更
+
+从 v3.7.0 升级至 v4.0.0 后，实现部分功能的 API 存在差异。本节介绍这些 API 的兼容性变更及 App 代码的更新逻辑。
+
+#### 多频道
+
+在 v3.7.0 中，SDK 提供 `AgoraRtcChannel` 类和 `AgoraRtcChannelDelegate` 类实现多频道控制，支持订阅多个频道的音视频流，但只能选择一个频道发布一组音视频流。
+
+在 v4.0.0 中：
+
+- SDK 支持同时采集或同时发布多组音视频流。例如，同时发布多路摄像头采集或者屏幕共享的视频流。
+- SDK 提供 `AgoraRtcEngineKit(Ex)` 类实现多频道功能：调用 `joinChannelByToken` 加入首个频道后，多次调用 `joinChannelExByToken` 加入多个频道，通过不同的用户 ID (`localUid`) 和 `AgoraRtcChannelMediaOptions` 设置发布指定的流到不同的频道。
+- 新增了 `AgoraRtcConnection` 二元组表示 `joinChannelExByToken` 建立的连接，一个连接由频道名 (`channelId`) 和 `localUid` 确定。你可以通过 `AgoraRtcConnection` 控制不同连接的发布和订阅。所有带 `connection` 参数（对应 `AgoraRtcConnection` 类）的 API 命名中都增加了 `Ex` 以区分，并统一放在 `AgoraRtcEngineKit(Ex)` 类中，用于多流的扩展。
+
+通过设置 `AgoraRtcChannelMediaOptions`，v4.0.0 支持一个 `AgoraRtcEngineKit` 实例同时采集多路音视频源并发布到远端，适应各种业务场景。例如：
+
+- 同时发布多路摄像头采集的视频流或者多路屏幕共享流
+- 同时发布单路媒体播放器的视频流、屏幕共享流和摄像头采集的视频流
+- 同时发布单路麦克风采集、自采集的音频流和媒体播放器的音频流
+
+结合多频道能力，你还可以体验如下功能：
+
+- 将多组音视频流通过不同的 `localUid` 发布到远端
+- 将多路音频流混音后通过一个 `localUid` 发布到远端
+- 将多路视频流合图后通过一个 `localUid` 发布到远端
+
+v3.7.0 的 `AgoraRtcChannel` 和 `AgoraRtcEngineKit` 在功能上有部分重复、不够正交，因此在 v4.0.0 中隐藏了 `AgoraRtcChannel` 类和 `AgoraRtcChannelDelegate` 类。你可以参考 [JoinMultiChannel](https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/JoinMultiChannel) 示例项目，用 `joinChannelExByToken` 和 `AgoraRtcChannelMediaOptions` 替代 `AgoraRtcChannel`，预计迁移成本在一天以内。
+
+如果你需要继续使用 `AgoraRtcChannel` 和 `AgoraRtcChannelDelegate` 类，请[联系技术支持](https://ticket.shengwang.cn/)，声网会根据反馈情况决定是否在后续版本中保持兼容。
+
+#### 媒体流发布控制
+
+在 v4.0.0 中，将更多频道相关的设置都汇聚进了 `AgoraRtcChannelMediaOptions`，包括不同音视频流的发布、自动订阅、用户角色切换、Token 更新、默认大小流选项等。你可以在加入频道时通过 `joinChannelByToken` 或 `joinChannelExByToken` 明确媒体流发布和订阅行为，也可以在加入频道后通过 `updateChannelWithMediaOptions` 动态更新频道中的媒体选项，例如切换视频源。
+
+你可以参考 [JoinChannelVideo](https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelVideo) 示例项目更新 App 代码。
+
+#### 自定义视频采集与渲染
+
+在 v3.7.0 中，SDK 提供如下方式实现自定义采集与渲染：
+
+- Push 方式自采集
+- 原始视频数据方式自渲染
+- MediaIO 方式 (`AgoraVideoSourceProtocol`) 自采集
+- MediaIO 方式 (`AgoraVideoSinkProtocol`) 自渲染
+
+v4.0.0 内部统一了音视频处理管线，推荐使用集成最简单的 Push 方式自采集、原始视频数据方式自渲染，因此删除了 MediaIO 方式的相关 API：
+
+- `AgoraVideoSourceProtocal`
+- `AgoraVideoSinkProtocal`
+- `AgoraVideoFrameConsumer`
+- `setVideoSource`
+- `setLocalVideoRenderer`
+- `setRemoteVideoRenderer`
+
+如果你在 v3.7.0 使用了 MediaIO 方式实现视频自采集、视频自渲染、切换视频源等功能，声网推荐参考如下示例项目更新 App 代码：
+
+- 视频自采集：[CustomVideoSourcePush](https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/CustomVideoSourcePush)
+- 视频自渲染：[CustomVideoRender](https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/CustomVideoRender)
+- 切换视频源：[ScreenShare](https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/ScreenShare)
+
+#### 警告码
+
+在 v3.7.0 中，SDK 通过 `didOccurWarning` 回调报告警告码。
+
+为方便用户定位和排查问题，v4.0.0 通过 API 返回值或不同状态回调来报告问题和原因。例如：
+
+- `connectionChangedToState`：报告网络连接状态。
+- `localAudioStateChanged`：报告本地音频状态。
+- `localVideoStateChangedOfState`：报告本地视频状态。
+- `remoteAudioStateChangedOfUid`：报告远端音频状态。
+- `remoteVideoStateChangedOfUid`：报告远端视频状态。
+
+因此，v4.0.0 删除了 `didOccurWarning` 回调。
+
+:::info[信息]
+除上述相对于 v3.7.0 的中断性变更以外，v4.0.0 对于 v4.0.0 Beta 也存在极少数中断性变更。例如：
+
+  - 在 v4.0.0 中，将 `AgoraRtcChannelMediaOptions` 中的 `publishAudioTrack` 替换为 `publishMicrophoneTrack`。
+  - 在 v4.0.0 中，将 `ChannelMediaOptions` 中的 `publishScreenTrack` 替换为 `publishScreenCaptureVideo`。
+如果你在 v4.0.0 Beta 版本中使用了该功能、并且希望升级到 v4.0.0 版本，请在升级 SDK 后修改功能的实现。
+:::
+
+### 行为变更
+
+本节介绍由 v4.0.0 对 SDK 默认行为和 API 行为的合理优化造成的变更。
+
+#### 频道场景
+
+在 v3.7.0 中，默认的频道场景为 `AgoraChannelProfileCommunication`（通信）。
+
+因为直播场景支持从一对一通话无缝切换到多人互动，所以声网自 v3.0.0 起将通信场景下内部的传输协议和弱网对抗能力改成与直播场景一致。在 v4.0.0 中，声网也将默认的频道场景改成了 `AgoraChannelProfileLiveBroadcasting`（直播）。
+
+#### 默认日志文件
+
+在 v3.7.0 中，有多个日志文件时，旧的文件会以 `agorasdk_x.log` 格式命名，例如 `agorasdk_1.log`。v4.0.0 修改命名格式为 `agorasdk.x.log`（例如 `agorasdk.1.log`）。此外，v4.0.0 新增了 `agoraapi.log` 记录 API 调用的日志。
+
+#### 快速切换频道
+
+在 v3.7.0 中，你需要调用 `switchChannelByToken` 实现快速切换频道。
+
+在 v4.0.0 中，通过 `leaveChannel` 和 `joinChannelByToken` 切换频道即可实现和 `switchChannelByToken` 一样的切换速度，因此该版本删除了 `switchChannelByToken`。如果你在 v3.7.0 中使用 `switchChannelByToken` 切换频道，在 v4.0.0 中你需要先调用 `leaveChannel` 离开当前频道，再调用 `joinChannelByToken` 加入第二个频道。
+
+#### 声网自研插件
+
+v4.0.0 在 v4.0.0 Beta 的基础上新增了自动加载自研动态库功能。自该版本起，当你使用声网自研的插件时，不需要在项目中手动集成动态库，SDK 会在`AgoraRtcEngineKit` 初始化阶段自动加载动态库。你可以直接调用插件对应的方法即可开启该功能。
+
+- 虚拟背景插件：`enableVirtualBackground`
+- 视频增强插件：
+  - `setBeautyEffectOptions`
+  - `setVideoDenoiserOptions`
+  - `setLowlightEnhanceOptions`
+  - `setColorEnhanceOptions`
+- 超分辨率插件：`enableRemoteSuperResolution`
+- 美声插件：
+  - `setAudioEffectPreset`
+  - `setVoiceBeautifierPreset`
+  - `setVoiceConversionPreset`
+- 空间音频插件：`enableSpatialAudio`
+- 内容审核插件：`enableContentInspect`
+
+#### 虚拟节拍器
+当你调用 `startRhythmPlayer` 时，SDK 默认将虚拟节拍器的声音发布到远端，如果你不希望远端用户听到虚拟节拍器，需参考以下操作：
+在 v3.7.0 中，调用  `configRhythmPlayer` 并将 `publish` 设置为 `false`。
+在 v4.0.0 中，将 `AgoraRtcChannelMediaOptions` 中的 `publishRhythmPlayerTrack` 设置为 `false`。
+
+#### 音量提示
+
+当你调用 `enableAudioVolumeIndication` 方法并将 `interval` 参数设置为 > 0 时，可启用用户音量提示。在 v3.7.0 和 v4.0.0 中，`interval` 参数的定义存在差异：
+在 v3.7.0 中：建议设置到大于 200 毫秒。最小不得少于 10 毫秒，否则会收不到 `reportAudioVolumeIndicationOfSpeakers` 回调。
+在 v4.0.0 中：该参数需要设为 200 的整数倍。如果取值低于 200，SDK 会自动调整为 200。
+
+当启用音量提示回调后，SDK 会上报 `reportAudioVolumeIndicationOfSpeakers` 回调，如果本地用户将自己静音（调用了 `muteLocalAudioStream`），在 v3.7.0 和 v4.0.0 中，SDK 的行为不一致：
+
+- 在 v3.7.0 中：SDK 立即停止报告本地用户的音量提示回调。
+- 在 v4.0.0 中：SDK 会继续报告本地用户的音量提示回调。此时，如果用户依旧开启了音频采集，`AudioVolumeInfo` 中 `volume` 的值表示本地音频采集信号的音量。
+
+#### 设备权限
+
+在 v3.7.0 中，通过 `localAudioStateChange` 中的  `AgoraAudioLocalErrorDeviceNoPermission` 上报没有权限启动音频采集设备；通过 `localVideoStateChange` 中的 `AgoraLocalVideoStreamErrorDeviceNoPermission` 上报没有权限启动视频采集设备。
+在 v4.0.0 中，统一通过 `permissionError` 回调上报音视频采集设备的权限状态。
+
+#### 通话前网络测试
+
+如果你需要开启或停止网络连接质量测试：
+
+- 在 v3.7.0 中，你可以调用 `enableLastmileTest` 开启网络质量测试，如果你想停止网络测试，需要调用 `disableLastmileTest`。
+- 在 v4.0.0 中，你可以调用 `startLastmileProbeTest` 启用网络质量测试，如果你想停止网络测试，需要调用 `stopLastmileProbeTest`。
+
+#### 远端媒体事件触发机制
+
+假设存在以下两种场景：
+
+- 场景一：主播在频道外调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态、然后加入频道。
+- 场景二：主播在频道内调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态，然后其他用户加入频道。
+
+v3.7.0 和 v4.0.0 SDK 中存在以下行为差异：
+
+- 在 v3.7.0 中，本地用户会收到 `remoteAudioStateChangedOfUid` 或 `remoteVideoStateChangedOfUid` 回调，报告远端主播的音视频流的状态变化。
+- 在 v4.0.0 中，本地用户不会收到 `remoteAudioStateChangedOfUid` 或 `remoteVideoStateChangedOfUid` 回调，但是会收到 `didAudioMuted` 或 `didVideoMuted` 回调，报告远端主播的发流状态变化（即是否正在发布音视频流）。
+
+#### 频道媒体选项
+
+在加入频道的同时设置频道媒体选项时，在 v3.7.0 和 v4.0.0 中，SDK 的行为存在以下差异：
+
+- 在 v3.7.0 中，如果你将 `AgoraRtcChannelMediaOptions` 中的 `publishLocalAudio` 设置为 `NO`，会停止在频道内发布本地音频流。
+- 在 v4.0.0 中，如果你将 `AgoraRtcChannelMediaOptions` 中的 `publishMicrophoneTrack` 设置为 `NO`，除了停止在频道内发布本地音频流以外，还会停止本地麦克风采集。
+
+#### 视频信息改变事件
+
+如果在采集视频时调整视频采集设备为横屏或竖屏，在 v3.7.0 和 v4.0.0 中，SDK 上报的视频信息改变事件存在以下差异：
+
+- 在 v3.7.0 中，`videoSizeChangedOfUid` 回调中的 `rotation` 参数会显示当前设备的旋转信息。
+- 在 v4.0.0 中，`videoSizeChangedOfSourceType` 回调中的 `rotation` 参数始终为 `0`。
+
+### 功能差距
+
+本节介绍在 v3.7.0 中支持、但在 v4.0.0 中不支持或行为不一致的功能，这些功能会在后续版本中支持或改为一致。
+
+#### 音频应用场景
+
+v4.0.0 重构了音频应用场景，可以替代大部分 v3.7.0 的音频应用场景。下表展示了两个版本中音频应用场景的对应关系：
+
+| v3.7.0                                    | v4.0.0                                                 |
+| :---------------------------------------- | :----------------------------------------------------------- |
+| `AgoraAudioScenarioDefault`               | `AgoraAudioScenarioDefault`                                  |
+| `AgoraAudioScenarioChatRoomEntertainment` | `AgoraAudioScenarioChatRoom`                                 |
+| `AgoraAudioScenarioEducation`             | `AgoraAudioScenarioDefault`                                  |
+| `AgoraAudioScenarioGameStreaming`         | `AgoraAudioScenarioGameStreaming` 或 `AgoraAudioScenarioHighDefinition` |
+| `AgoraAudioScenarioShowRoom`              | `AgoraAudioScenarioDefault`                                  |
+| `AgoraAudioScenarioChatRoomGaming`        | `AgoraAudioScenarioChatRoom`                                 |
+| `AgoraAudioScenarioIot`                   | `AgoraAudioScenarioDefault`                                  |
+| `AgoraAudioScenarioMeeting`               | `AgoraAudioScenarioMeeting`                                                         |
+
+#### 不支持功能
+
+相比于 v3.7.0，某些功能在 v4.0.0 中不支持或仅支持部分。本节展示尚未支持的 API，这些 API 会在后续版本中支持。
+
+远端视频流回退：
+
+- `setRemoteUserPriority`
+
+### 已删除 API
+
+v4.0.0 中，删除了已废弃或不推荐使用的 API。已删除 API 的替代方案或删除原因展示如下：
+
+- `virtualBackgroundSourceEnabled`：使用 `enableVirtualBackground` 的返回值替代。
+- `superResolutionEnabledOfUid`：使用 `AgoraRtcRemoteVideoStats` 类的 `superResolutionType` 成员替代。
+- `setAudioMixingPlaybackSpeed`：使用 `AgoraRtcMediaPlayerProtocol` 类下的相关 API 替代。
+- `setExternalAudioSourceVolume`：使用 `adjustCustomAudioPublishVolume` 替代。
+- `getAudioFileInfo` 和 `didRequestAudioFileInfo`：使用 `getDuration` 替代。
+- `reportAudioDeviceTestVolume`：由 `reportAudioVolumeIndicationOfSpeakers` 替代。
+- `setLocalPublishFallbackOption` 和 `didLocalPublishFallbackToAudioOnly`：在 v3.7.0 中很少使用。
+- `AgoraVideoRenderMode` 中的 `AgoraVideoRenderModeFill`(4)：该模式可能造成图片过度拉伸，不推荐使用。
+- `AgoraAudioMixingReasonCode` 中的以下枚举：在 v3.7.0 中应用场景很少。
+  - `AgoraAudioMixingReasonStartedByUser`
+  - `AgoraAudioMixingReasonStartNewLoop`
+  - `AgoraAudioMixingReasonPausedByUser`
+  - `AgoraAudioMixingReasonResumedByUser`
+
+- `rtcEngineLocalAudioMixingDidFinish`: 使用 `audioMixingStateChanged` 替代。
+- `enableDeepLearningDenoise`：AI 降噪将在后续版本改由 SDK 控制，不通过 API 实现。
+- `takeSnapshot` 和 `snapshotTaken` 中的 `channel` 参数：冗余参数。
+- `setDefaultMuteAllRemoteVideoStreams`：由 `AgoraRtcChannelMediaOptions` 中的 `autoSubscribeVideo` 替代。
+- `setDefaultMuteAllRemoteAudioStreams`：由 `AgoraRtcChannelMediaOptions` 中的 `autoSubscribeAudio` 替代。
+- `startAudioMixing` 中的 `replace` 参数：由 `AgoraRtcChannelMediaOptions` 中的 `publishMicrophoneTrack` 替代。
+
+### 命名变更
+
+v4.0.0 的命名变更会在你编译项目时引入 IDE 的报错提示，你需要根据提示更新 App 代码。
+
+主要的 API 及参数名变更如下：
+
+- `localVideoStateChange` 变更为 `localVideoStateChangedOfState`。
+- `localVideoStats` 变更为 `localVideoStatssourceType`。
+- `didVideoPublishStateChange` 中增加了 `sourceType`。
+- `firstLocalVideoFramePublished` 变更为 `firstLocalVideoFramePublishedWithElapsed`。
+- `videoSizeChangedOfUid` 变更为 `videoSizeChangedOfSourceType`。
+- `firstLocalVideoFrameWithSize` 中增加了 `sourceType` 参数。
+- `firstLocalAudioFrame` 变更为 `firstLocalAudioFramePublished`。
+- `AgoraLogConfig` 中的 `fileSize` 成员变更为 `fileSizeInKB`。
+- `joinChannelByToken`[2/2] 中的 `options` 参数变更为 `mediaOptions`。
+- `enableAudioVolumeIndication` 中的 `report_vad` 参数变更为 `reportVad`。
+- `rtmpStreamingChangedToState` 中的 `errorCode` 变更为 `errCode`。
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+声网 SDK v4.x 是一个新的 SDK 版本，可帮助用户将实时音视频功能集成到 App 中。在大规模的实时互动场景下，你可以用它实现更好的实时互动效果，详见[优势介绍](/zh-CN/realtime-media/rtc#优势介绍)。
+
+本文介绍将 SDK 从 v3.x（以下若无特殊说明，则指代 v3.7.0 以及之前版本）或 v2.x 升级至 v4.0.0。
+
+## 迁移步骤
+
+### 1. 集成 SDK
+
+参考[创建项目](/zh-CN/realtime-media/rtc/get-started/quick-start#创建项目)，将 v4.x SDK 集成到你的项目中。
+
+### 2. 更新 App 代码
+
+v4.x SDK 对部分功能的实现方式进行了优化或修改，从而导致与 v3.x 或 v2.x 不兼容。为了继续使用 App 中已有的声网功能，请根据[变更介绍](#变更介绍)更新 App 中的代码。
+
+## 变更介绍
+
+本节以 v3.7.0 为基础，按如下分类介绍 v4.0.0 相对于 v3.7.0 的主要变更，你需要结合实际业务场景更新 App 代码：
+:::info[信息]
+如果升级前的版本为 v3.7.0 之前的版本，请查看 [v3.x 发版说明](https://docportal.shengwang.cn/cn/video-legacy/release_mac_video?platform=macOS)获取该版本相对于 v3.7.0 的版本间变更。
+:::
+
+- 中断性变更：介绍影响较大的 API 兼容性变更，修改相关实现代码的预期耗时较多。
+- 行为变更：介绍对 SDK 默认行为和 API 行为的合理优化造成的变更，无需修改相关实现代码或修改代码的预期耗时较少。
+- 功能差距：介绍在 v3.7.0 中支持、但在 v4.0.0 中不支持的功能，这些功能会在后续版本中增加。
+- 已删除 API：介绍在 v3.7.0 中支持、但在 v4.0.0 中删除了的 API，这些 API 大部分在 v4.0.0 中有替代方案，修改相关实现代码的预期耗时较少。
+- 命名和数据类型变更：介绍主要 API 的命名和数据类型变更，你可以借助 IDE 的报错提示更新相关实现代码，预期耗时较少。
+
+### 中断性变更
+
+从 v3.7.0 升级至 v4.0.0 后，实现部分功能的 API 存在差异。本节介绍这些 API 的兼容性变更及 App 代码的更新逻辑。
+
+#### 多频道
+
+在 v3.7.0 中，SDK 提供 `AgoraRtcChannel` 类和 `AgoraRtcChannelDelegate` 类实现多频道控制，支持订阅多个频道的音视频流，但只能选择一个频道发布一组音视频流。
+
+在 v4.0.0 中：
+
+- SDK 支持同时采集或同时发布多组音视频流。例如，同时发布多路摄像头采集或者屏幕共享的视频流。
+- SDK 提供 `AgoraRtcEngineKit(Ex)` 类实现多频道功能：调用 `joinChannelByToken` 加入首个频道后，多次调用 `joinChannelExByToken` 加入多个频道，通过不同的用户 ID (`localUid`) 和 `AgoraRtcChannelMediaOptions` 设置发布指定的流到不同的频道。
+- 新增了 `AgoraRtcConnection` 二元组表示 `joinChannelExByToken` 建立的连接，一个连接由频道名 (`channelId`) 和 `localUid` 确定。你可以通过 `AgoraRtcConnection` 控制不同连接的发布和订阅。所有带 `connection` 参数（对应 `AgoraRtcConnection` 类）的 API 命名中都增加了 `Ex` 以区分，并统一放在 `AgoraRtcEngineKit(Ex)` 类中，用于多流的扩展。
+
+通过设置 `AgoraRtcChannelMediaOptions`，v4.0.0 支持一个 `AgoraRtcEngineKit` 实例同时采集多路音视频源并发布到远端，适应各种业务场景。例如：
+
+- 同时发布多路摄像头采集的视频流或者多路屏幕共享流
+- 同时发布单路媒体播放器的视频流、屏幕共享流和摄像头采集的视频流
+- 同时发布单路麦克风采集、自采集的音频流和媒体播放器的音频流
+
+结合多频道能力，你还可以体验如下功能：
+
+- 将多组音视频流通过不同的 `localUid` 发布到远端
+- 将多路音频流混音后通过一个 `localUid` 发布到远端
+- 将多路视频流合图后通过一个 `localUid` 发布到远端
+
+v3.7.0 的 `AgoraRtcChannel` 和 `AgoraRtcEngineKit` 在功能上有部分重复、不够正交，因此在 v4.0.0 中隐藏了 `AgoraRtcChannel` 类和 `AgoraRtcChannelDelegate` 类。你可以参考 [JoinMultiChannel](https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/JoinMultiChannel) 示例项目，用 `joinChannelExByToken` 和 `AgoraRtcChannelMediaOptions` 替代 `AgoraRtcChannel`，预计迁移成本在一天以内。
+
+如果你需要继续使用 `AgoraRtcChannel` 和 `AgoraRtcChannelDelegate` 类，请[联系技术支持](https://ticket.shengwang.cn/)，声网会根据反馈情况决定是否在后续版本中保持兼容。
+
+#### 媒体流发布控制
+
+在 v4.0.0 中，将更多频道相关的设置都汇聚进了 `AgoraRtcChannelMediaOptions`，包括不同音视频流的发布、自动订阅、用户角色切换、Token 更新、默认大小流选项等。你可以在加入频道时通过 `joinChannelByToken` 或 `joinChannelExByToken` 明确媒体流发布和订阅行为，也可以在加入频道后通过 `updateChannelWithMediaOptions` 动态更新频道中的媒体选项，例如切换视频源。
+
+你可以参考 [JoinChannelVideo](https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Basic/JoinChannelVideo) 示例项目更新 App 代码。
+
+#### 自定义视频采集与渲染
+
+在 v3.7.0 中，SDK 提供如下方式实现自定义采集与渲染：
+
+- Push 方式自采集
+- 原始视频数据方式自渲染
+- MediaIO 方式 (`AgoraVideoSourceProtocol`) 自采集
+- MediaIO 方式 (`AgoraVideoSinkProtocol`) 自渲染
+
+v4.0.0 内部统一了音视频处理管线，推荐使用集成最简单的 Push 方式自采集、原始视频数据方式自渲染，因此删除了 MediaIO 方式的相关 API：
+
+- `AgoraVideoSourceProtocal`
+- `AgoraVideoSinkProtocal`
+- `AgoraVideoFrameConsumer`
+- `setVideoSource`
+- `setLocalVideoRenderer`
+- `setRemoteVideoRenderer`
+
+如果你在 v3.7.0 使用了 MediaIO 方式实现视频自采集、视频自渲染、切换视频源等功能，声网推荐参考如下示例项目更新 App 代码：
+
+- 视频自采集：[CustomVideoSourcePush](https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/CustomVideoSourcePush)
+- 视频自渲染：[CustomVideoRender](https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/CustomVideoRender)
+- 切换视频源：[ScreenShare](https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/ScreenShare)
+
+#### 警告码
+
+在 v3.7.0 中，SDK 通过 `didOccurWarning` 回调报告警告码。
+
+为方便用户定位和排查问题，v4.0.0 通过 API 返回值或不同状态回调来报告问题和原因。例如：
+
+- `connectionChangedToState`：报告网络连接状态。
+- `localAudioStateChanged`：报告本地音频状态。
+- `localVideoStateChangedOfState`：报告本地视频状态。
+- `remoteAudioStateChangedOfUid`：报告远端音频状态。
+- `remoteVideoStateChangedOfUid`：报告远端视频状态。
+
+因此，v4.0.0 删除了 `didOccurWarning` 回调。
+
+:::info[信息]
+除上述相对于 v3.7.0 的中断性变更以外，v4.0.0 对于 v4.0.0 Beta 也存在极少数中断性变更。例如：
+
+  - 在 v4.0.0 中，将 `AgoraRtcChannelMediaOptions` 中的 `publishAudioTrack` 替换为 `publishMicrophoneTrack`。
+  - 在 v4.0.0 中，将 `ChannelMediaOptions` 中的 `publishScreenTrack` 替换为 `publishScreenCaptureVideo`。
+如果你在 v4.0.0 Beta 版本中使用了该功能、并且希望升级到 v4.0.0 版本，请在升级 SDK 后修改功能的实现。
+:::
+
+### 行为变更
+
+本节介绍由 v4.0.0 对 SDK 默认行为和 API 行为的合理优化造成的变更。
+
+#### 频道场景
+
+在 v3.7.0 中，默认的频道场景为 `AgoraChannelProfileCommunication`（通信）。
+
+因为直播场景支持从一对一通话无缝切换到多人互动，所以声网自 v3.0.0 起将通信场景下内部的传输协议和弱网对抗能力改成与直播场景一致。在 v4.0.0 中，声网也将默认的频道场景改成了 `AgoraChannelProfileLiveBroadcasting`（直播）。
+
+#### 默认日志文件
+
+在 v3.7.0 中，有多个日志文件时，旧的文件会以 `agorasdk_x.log` 格式命名，例如 `agorasdk_1.log`。v4.0.0 修改命名格式为 `agorasdk.x.log`（例如 `agorasdk.1.log`）。此外，v4.0.0 新增了 `agoraapi.log` 记录 API 调用的日志。
+
+#### 快速切换频道
+
+在 v3.7.0 中，你需要调用 `switchChannelByToken` 实现快速切换频道。
+
+在 v4.0.0 中，通过 `leaveChannel` 和 `joinChannelByToken` 切换频道即可实现和 `switchChannelByToken` 一样的切换速度，因此该版本删除了 `switchChannelByToken`。如果你在 v3.7.0 中使用 `switchChannelByToken` 切换频道，在 v4.0.0 中你需要先调用 `leaveChannel` 离开当前频道，再调用 `joinChannelByToken` 加入第二个频道。
+
+#### 声网自研插件
+
+v4.0.0 在 v4.0.0 Beta 的基础上新增了自动加载自研动态库功能。自该版本起，当你使用声网自研的插件时，不需要在项目中手动集成动态库，SDK 会在`AgoraRtcEngineKit` 初始化阶段自动加载动态库。你可以直接调用插件对应的方法即可开启该功能。
+
+- 虚拟背景插件：`enableVirtualBackground`
+- 视频增强插件：
+  - `setBeautyEffectOptions`
+  - `setVideoDenoiserOptions`
+  - `setLowlightEnhanceOptions`
+  - `setColorEnhanceOptions`
+- 超分辨率插件：`enableRemoteSuperResolution`
+- 美声插件：
+  - `setAudioEffectPreset`
+  - `setVoiceBeautifierPreset`
+  - `setVoiceConversionPreset`
+- 空间音频插件：`enableSpatialAudio`
+- 内容审核插件：`enableContentInspect`
+
+#### 虚拟节拍器
+当你调用 `startRhythmPlayer` 时，SDK 默认将虚拟节拍器的声音发布到远端，如果你不希望远端用户听到虚拟节拍器，需参考以下操作：
+在 v3.7.0 中，调用  `configRhythmPlayer` 并将 `publish` 设置为 `false`。
+在 v4.0.0 中，将 `AgoraRtcChannelMediaOptions` 中的 `publishRhythmPlayerTrack` 设置为 `false`。
+
+#### 音量提示
+
+当你调用 `enableAudioVolumeIndication` 方法并将 `interval` 参数设置为 > 0 时，可启用用户音量提示。在 v3.7.0 和 v4.0.0 中，`interval` 参数的定义存在差异：
+
+- 在 v3.7.0 中：建议设置到大于 200 毫秒。最小不得少于 10 毫秒，否则会收不到 `reportAudioVolumeIndicationOfSpeakers` 回调。
+- 在 v4.0.0 中：该参数需要设为 200 的整数倍。如果取值低于 200，SDK 会自动调整为 200。
+
+当启用音量提示回调后，SDK 会上报 `reportAudioVolumeIndicationOfSpeakers` 回调，如果本地用户将自己静音（调用了 `muteLocalAudioStream`），在 v3.7.0 和 v4.0.0 中，SDK 的行为不一致：
+
+- 在 v3.7.0 中：SDK 立即停止报告本地用户的音量提示回调。
+- 在 v4.0.0 中：SDK 会继续报告本地用户的音量提示回调。此时，如果用户依旧开启了音频采集，`AudioVolumeInfo` 中 `volume` 的值表示本地音频采集信号的音量。
+
+#### 设备权限
+
+在 v3.7.0 中，通过 `localAudioStateChange` 中的  `AgoraAudioLocalErrorDeviceNoPermission` 上报没有权限启动音频采集设备；通过 `localVideoStateChange` 中的 `AgoraLocalVideoStreamErrorDeviceNoPermission` 上报没有权限启动视频采集设备。
+在 v4.0.0 中，统一通过 `permissionError` 回调上报音视频采集设备的权限状态。
+
+#### 通话前网络测试
+
+如果你需要开启或停止网络连接质量测试：
+
+- 在 v3.7.0 中，你可以调用 `enableLastmileTest` 开启网络质量测试，如果你想停止网络测试，需要调用 `disableLastmileTest`。
+- 在 v4.0.0 中，你可以调用 `startLastmileProbeTest` 启用网络质量测试，如果你想停止网络测试，需要调用 `stopLastmileProbeTest`。
+
+#### 远端媒体事件触发机制
+
+假设存在以下两种场景：
+
+- 场景一：主播在频道外调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态、然后加入频道。
+- 场景二：主播在频道内调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态，然后其他用户加入频道。
+
+v3.7.0 和 v4.0.0 SDK 中存在以下行为差异：
+
+- 在 v3.7.0 中，本地用户会收到 `remoteAudioStateChangedOfUid` 或 `remoteVideoStateChangedOfUid` 回调，报告远端主播的音视频流的状态变化。
+- 在 v4.0.0 中，本地用户不会收到 `remoteAudioStateChangedOfUid` 或 `remoteVideoStateChangedOfUid` 回调，但是会收到 `didAudioMuted` 或 `didVideoMuted` 回调，报告远端主播的发流状态变化（即是否正在发布音视频流）。
+
+#### 频道媒体选项
+
+在加入频道的同时设置频道媒体选项时，在 v3.7.0 和 v4.0.0 中，SDK 的行为存在以下差异：
+
+- 在 v3.7.0 中，如果你将 `AgoraRtcChannelMediaOptions` 中的 `publishLocalAudio` 设置为 `NO`，会停止在频道内发布本地音频流。
+- 在 v4.0.0 中，如果你将 `AgoraRtcChannelMediaOptions` 中的 `publishMicrophoneTrack` 设置为 `NO`，除了停止在频道内发布本地音频流以外，还会停止本地麦克风采集。
+
+### 功能差距
+
+本节介绍在 v3.7.0 中支持、但在 v4.0.0 中不支持或行为不一致的功能，这些功能会在后续版本中支持或改为一致。
+
+#### 音频应用场景
+
+v4.0.0 重构了音频应用场景，可以替代大部分 v3.7.0 的音频应用场景。下表展示了两个版本中音频应用场景的对应关系：
+
+| v3.7.0                                    | v4.0.0                                                 |
+| :---------------------------------------- | :----------------------------------------------------------- |
+| `AgoraAudioScenarioDefault`               | `AgoraAudioScenarioDefault`                                  |
+| `AgoraAudioScenarioChatRoomEntertainment` | `AgoraAudioScenarioChatRoom`                                 |
+| `AgoraAudioScenarioEducation`             | `AgoraAudioScenarioDefault`                                  |
+| `AgoraAudioScenarioGameStreaming`         | `AgoraAudioScenarioGameStreaming` 或 `AgoraAudioScenarioHighDefinition` |
+| `AgoraAudioScenarioShowRoom`              | `AgoraAudioScenarioDefault`                                  |
+| `AgoraAudioScenarioChatRoomGaming`        | `AgoraAudioScenarioChatRoom`                                 |
+| `AgoraAudioScenarioIot`                   | `AgoraAudioScenarioDefault`                                  |
+| `AgoraAudioScenarioMeeting`               | `AgoraAudioScenarioMeeting`                                                         |
+
+#### 不支持功能
+
+相比于 v3.7.0，某些功能在 v4.0.0 中不支持或仅支持部分。本节展示尚未支持的 API，这些 API 会在后续版本中支持。
+
+远端视频流回退：
+
+- `setRemoteUserPriority`
+
+### 已删除 API
+
+v4.0.0 中，删除了已废弃或不推荐使用的 API。已删除 API 的替代方案或删除原因展示如下：
+
+- `virtualBackgroundSourceEnabled`：使用 `enableVirtualBackground` 的返回值替代。
+- `superResolutionEnabledOfUid`：使用 `AgoraRtcRemoteVideoStats` 类的 `superResolutionType` 成员替代。
+- `setAudioMixingPlaybackSpeed`：使用 `AgoraRtcMediaPlayerProtocol` 类下的相关 API 替代。
+- `setExternalAudioSourceVolume`：使用 `adjustCustomAudioPublishVolume` 替代。
+- `getAudioFileInfo` 和 `didRequestAudioFileInfo`：使用 `getDuration` 替代。
+- `reportAudioDeviceTestVolume`：由 `reportAudioVolumeIndicationOfSpeakers` 替代。
+-  `setLocalPublishFallbackOption` 和 `didLocalPublishFallbackToAudioOnly`：在 v3.7.0 中很少使用。
+- `AgoraVideoRenderMode` 中的 `AgoraVideoRenderModeFill`(4)：该模式可能造成图片过度拉伸，不推荐使用。
+- `AgoraAudioMixingReasonCode` 中的以下枚举：在 v3.7.0 中应用场景很少。
+  - `AgoraAudioMixingReasonStartedByUser`
+  - `AgoraAudioMixingReasonStartNewLoop`
+  - `AgoraAudioMixingReasonPausedByUser`
+  - `AgoraAudioMixingReasonResumedByUser`
+
+- `rtcEngineLocalAudioMixingDidFinish`: 使用 `audioMixingStateChanged` 替代。
+- `enableDeepLearningDenoise`：AI 降噪将在后续版本改由 SDK 控制，不通过 API 实现。
+- `takeSnapshot` 和 `snapshotTaken` 中的 `channel` 参数：冗余参数。
+- `setDefaultMuteAllRemoteVideoStreams`：由 `AgoraRtcChannelMediaOptions` 中的 `autoSubscribeVideo` 替代。
+- `setDefaultMuteAllRemoteAudioStreams`：由 `AgoraRtcChannelMediaOptions` 中的 `autoSubscribeAudio` 替代。
+- `startAudioMixing` 中的 `replace` 参数：由 `AgoraRtcChannelMediaOptions` 中的 `publishMicrophoneTrack` 替代。
+
+### 命名变更
+
+v4.0.0 的命名变更会在你编译项目时引入 IDE 的报错提示，你需要根据提示更新 App 代码。
+
+主要的 API 及参数名变更如下：
+
+- `localVideoStateChange` 变更为 `localVideoStateChangedOfState`。
+- `localVideoStats` 变更为 `localVideoStatssourceType`。
+- `didVideoPublishStateChange` 中增加了 `sourceType`。
+- `firstLocalVideoFramePublished` 变更为 `firstLocalVideoFramePublishedWithElapsed`。
+- `videoSizeChangedOfUid` 变更为 `videoSizeChangedOfSourceType`。
+- `adjustLoopbackRecordingSignalVolume` 变更为 `adjustLoopbackSignalVolume`。
+- `firstLocalVideoFrameWithSize` 中增加了 `sourceType` 参数。
+- `firstLocalAudioFrame` 变更为 `firstLocalAudioFramePublished`。
+- `AgoraLogConfig` 中的 `fileSize` 成员变更为 `fileSizeInKB`。
+- `joinChannelByToken`[2/2] 中的 `options` 参数变更为 `mediaOptions`。
+- `enableAudioVolumeIndication` 中的 `report_vad` 参数变更为 `reportVad`。
+- `rtmpStreamingChangedToState` 中的 `errorCode` 变更为 `errCode`。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+Web SDK 4.x 是基于 Web SDK 3.x 开发的全量重构版本，在继承了 Web SDK 3.x 功能的基础上，优化了 SDK 的内部架构，提高了 API 的易用性，具体包括以下优势：
+
+- 使用基于 Promise-based 的 API 来实现异步操作，提升集成代码健壮性和可读性。
+- 支持 TypeScript。
+- 以 Track 对象取代 Stream 对象来控制音视频，音视频逻辑互不干扰、各自独立，更为灵活。
+- 优化了频道事件通知机制，统一了频道内事件的命名和回调参数的格式，降低断线重连的处理难度。
+- 提供清晰和完善的错误码，方便错误排查。
+
+本文介绍如何从 Web SDK 3.x 及以下版本升级至 Web SDK 4.x 版本。
+
+:::warning[注意]
+- 声网已经停止维护 Web SDK 3.x 版本。建议你选择合适的时机，参考本文从 3.x 及以下版本升级至 4.x 版本。
+- Web SDK 4.x 是一个**不向下兼容**的版本，和 3.x 版本在 API 和产品行为上有较大变更，升级时建议参考声网提供的文档和示例项目。
+- 在 Web SDK 4.x 中直播场景下，用户角色切换和轨道的发布解耦，调用 `publish` 和 `unpublish` 不会自动切换用户角色。详见[迁移实例详解](#publish)。
+:::
+
+## 优势介绍
+
+本节详细介绍 Web SDK 4.x 版本相对于 3.x 版本的主要优势。
+### 异步方法均返回 Promise
+对于加入和离开频道、发布和订阅、获取媒体设备、开启和关闭转码推流等异步方法，在 Web SDK 3.x 中，通过回调函数（比如加入房间）、事件通知（比如发布/订阅）等方式来通知用户异步操作的结果；在 Web SDK 4.x 中，统一使用 Promise。
+
+### 基于音视频轨道的媒体控制
+在 Web SDK 4.x 中，我们移除了 `Stream` 对象，取而代之的是 `Track` 轨道对象。一个音视频流是由多个音视频轨道构成的。你不直接创建、发布或订阅一个流，而是通过创建、发布或订阅一个或多个轨道来实现媒体管理。这样实现的好处是音视频的逻辑互不干扰、各自独立，同时新方法也比 Web SDK 3.x 的 `Stream.addTrack` 和 `Stream.removeTrack` 更方便易用。
+
+Web SDK 4.x 允许同时发布多个音频轨道，SDK 会自动混音，但是视频轨道只允许同时发布一个。
+
+除了把 `Stream` 拆分成 `Track`，在 Web SDK 4.x 中还区分 `RemoteTrack` 和 `LocalTrack`，有些方法和对象只适用于本地音视频轨道，有些只适用于远端音视频轨道。
+
+这一改动影响多个 API 的使用，包括创建本地媒体对象、发布和订阅音视频，详见下文迁移实例详解中的[通过本地摄像头和麦克风采集音频和视频](#通过本地摄像头和麦克风采集音频和视频)和[发布本地的音视频](#发布本地的音视频)。
+
+### 改进频道内事件通知机制
+
+**更改事件名**
+
+在 Web SDK 4.x 中，我们统一了事件名。举例来说，原来的 Token 过期事件 `onTokenPrivilegeWillExpire` 更名为 `token-privilege-will-expire`。我们还调整了一些事件名以便它可以更好地被理解，比如 `peer-online` 和 `peer-offline` 更名为 `user-joined` 和 `user-left`，`stream-added` 和 `stream-removed` 更名为 `user-published` 和 `user-unpublished`。详见下文[核心 API 改动](#核心-api-改动)。
+
+**调整事件回调携带参数的格式**
+
+Web SDK 3.x 的事件回调如果需要携带多个参数，会把这些参数统一包在一个对象中，但是 Web SDK 4.x 会直接携带多个参数到回调函数中。
+
+以 "connection-state-change" 事件为例：
+
+```javascript
+// 使用 Web SDK 3.x
+client.on("connection-state-change", e => {
+  console.log("current", e.curState, "prev", e.prevState);
+});
+```
+
+```javascript
+// 使用 Web SDK 4.x
+client.on("connection-state-change", (curState, prevState) => {
+  console.log("current", curState, "prev", prevState);
+});
+```
+
+**改进频道内事件通知机制**
+
+Web SDK 4.x 改进了频道内事件通知机制，确保客户端**不会收到重复的**频道内状态通知事件。
+
+假设**本地用户 A** 和**远端用户 B、C、D** 同时加入了一个频道，B、C、D 均发布了流。如果本地用户 A 发生了网络波动，和频道暂时失去了连接，SDK 会自动帮 A 重连，**在重连过程中 B 离开了频道，C 取消了发流**。这整个过程中，触发了哪些频道事件？
+
+首先在 A 首次加入频道时，两个版本的 SDK 事件行为都是一致的，A 会收到：
+
+- 用户 B、C、D 加入频道的事件。
+- 用户 B、C、D 发流的事件。
+
+当 A 由于网络问题和频道暂时失去了连接，然后重连：
+
+- 如果 A 使用的是 Web SDK 3.x，当 SDK 和频道失去连接时，无论是否可以重连， SDK 都会认为 A 已经离开频道并清空频道内的所有状态。所以 A 重连回频道和 A 第一次加入频道时没有区别，会收到：
+  - 用户 C、D 加入频道的事件。
+  - 用户 D 发流的事件。
+- 如果 A 使用的是 Web SDK 4.x，当 SDK 和频道失去连接时，SDK 会认为 A 此时还在频道中，不会清空频道内的状态（用户主动调用 `leave` 离开频道除外）。所以当 A 重连回频道时，SDK 只会向 A 发送那些在重连过程中丢失的事件，包括：
+  - 用户 B 退出频道的事件。
+  - 用户 C 取消发流的事件。
+
+在 Web SDK 3.x 中，你会因为偶然发生的断线重连而收到重复的事件，这可能会导致你在上层事件处理时引发一些预期之外的问题。你需要监听连接状态变化，在断线重连时重置一些应用层的状态，以避免第二次收到这些事件时引发问题。而在 Web SDK 4.x 中，即使你没有像使用 Web SDK 3.x 时那样在断线重连时做一些特殊的逻辑，SDK 也能够确保你的上层应用可以正常工作，不会收到重复的事件。
+
+简单来说，Web SDK 4.x 中的事件通知机制**更符合人类直觉**，你不需要像使用 Web SDK 3.x 时那样做一些额外的工作。
+
+## 迁移实例详解
+
+本节以一个多人通话应用为例，比对 Web SDK 4.x 和 Web SDK 3.x 在使用上的差别。
+
+### 加入频道
+首先，创建一个 `Client` 对象，然后加入目标频道：
+
+```javascript
+// 使用 Web SDK 3.x
+const client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
+client.init("APPID", () => {
+  client.join("Token", "Channel", null, (uid) => {
+    console.log("join success", uid);
+  }, (e) => {
+    console.log("join failed", e);
+  });
+});
+```
+
+```javascript
+// 使用 Web SDK 4.x
+const client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
+
+try {
+  const uid = await client.join("APPID", "Channel", "Token", uid);
+  console.log("join success");
+} catch (e) {
+  console.log("join failed", e);
+}
+```
+
+:::info[信息]
+我们假设代码运行在一个 `async` 函数下，以下 Web SDK 4.x 相关示例代码为了叙述方便都会直接使用 `await`。
+:::
+
+改动点：
+
+- 在 Web SDK 4.x 中，异步操作 `join` 返回 `Promise`，配合 `async/await` 使用。
+- Web SDK 4.x 移除了 `client.init`, 在 `client.join` 时传入 `APPID`，这意味你可以使用一个 Client 对象先后加入不同 App ID 的频道。
+
+### 通过本地摄像头和麦克风采集音频和视频
+通过本地麦克风采集的音频创建音频轨道对象，通过本地摄像头采集的视频创建视频轨道对象。示例代码中，默认播放本地视频，不播放本地音频。
+
+```javascript
+// 使用 Web SDK 3.x
+const localStream = AgoraRTC.createStream({ audio: true, video: true });
+localStream.init(() => {
+  console.log("init stream success");
+  localStream.play("DOM_ELEMENT_ID", { muted: true });
+}, (e) => {
+  console.log("init local stream failed", e);
+});
+```
+
+```javascript
+// 使用 Web SDK 4.x
+const localAudio = await AgoraRTC.createMicrophoneAudioTrack();
+const localVideo = await AgoraRTC.createCameraVideoTrack();
+console.log("create local audio/video track success");
+
+localVideo.play("DOM_ELEMENT_ID");
+```
+
+改动点：
+
+- Web SDK 4.x 移除了 `Stream` 对象。采集麦克风和采集摄像头现在是两个独立的方法，分别返回音频轨道对象和视频轨道对象。
+- Web SDK 4.x 中的音视频对象没有 `init` 方法，因为在创建音视频对象时 SDK 会初始化摄像头和麦克风，并通过 Promise 返回异步操作的结果。
+- 由于在 Web SDK 4.x 中音视频对象分开控制，`play` 方法中移除了 `muted` 参数。如不想播放音频，不调用音频轨道中的 `play` 即可。
+
+<a id="publish"></a>
+#### 发布本地的音视频
+音视频采集完成后，将这些音视频发布到频道中。
+
+```javascript
+// 使用 Web SDK 3.x
+client.publish(localStream, err => {
+  console.log("publish failed", err);
+});
+client.on("stream-published",  () => {
+  console.log("publish success");
+});
+```
+
+```javascript
+// 使用 Web SDK 4.x
+try {
+  // 如果使用通信场景，则不需要这一行
+  await client.setClientRole("host");
+  await client.publish([localAudio, localVideo]);
+  console.log("publish success");
+} catch (e) {
+  console.log("publish failed", e);
+}
+```
+
+改动点：
+
+- 如果你的频道场景为直播场景，请注意以下行为变更：
+  - 在 Web SDK 3.x 中，调用 `publish` 时 SDK 会自动将你的用户角色设为 `host`；但是在 Web SDK 4.x 中，你必须先调用 `setClientRole` 将用户角色设为 `host` 后再调用 `publish`。
+  - 在 Web SDK 3.x 中，主播调用 `unpublish` 取消发布流后，用户角色会自动切换为观众；但是在 Web SDK 4.x 中，主播取消发布流之后，用户角色不会自动切换为观众。如需将用户角色切换为观众，必须调用 `setClientRole`。
+- 在 Web SDK 4.x 中，异步操作 `join` 返回 `Promise`。
+- 在 Web SDK 4.x 中，调用 `publish` 时传入的参数是 `LocalTrack` 列表而非 `Stream`。可以重复调用 `publish` 来增加需要发布的轨道，或者重复调用 `unpublish` 来取消发布轨道。
+
+### 订阅远端音视频并播放
+如果频道里的远端用户发布了音视频轨道，你需要订阅这个用户并播放音视频轨道。在加入频道之前，你需要监听远端用户发布的相关事件，然后在收到事件回调时发起订阅。
+
+```javascript
+// 使用 Web SDK 3.x
+client.on("stream-added", e => {
+  client.subscribe(e.stream, { audio: true, video: true }, err => {
+    console.log("subscribe failed", err);
+  });
+});
+
+client.on("stream-subscribed", e => {
+  console.log("subscribe success");
+  e.stream.play("DOM_ELEMENT_ID");
+});
+```
+
+```javascript
+// 使用 Web SDK 4.x
+client.on("user-published", async (remoteUser, mediaType) => {
+  await client.subscribe(remoteUser, mediaType);
+  if (mediaType === "video" || mediaType === "all") {
+    console.log("subscribe video success");
+    remoteUser.videoTrack.play("DOM_ELEMENT_ID");
+  }
+  if (mediaType === "audio" || mediaType === "all") {
+    console.log("subscribe audio success");
+    remoteUser.audioTrack.play();
+  }
+});
+```
+
+改动点：
+
+- Web SDK 4.x 移除了 `stream-added`、`stream-removed` 和 `stream-updated`，取而代之的是 `user-published` 和 `user-unpublished`。
+
+    :::info[信息]
+    注意 `user-published` 回调中的第二个参数 `mediaType`，该参数有 3 个可能的值：`"video"`，`"audio"` 和 `"all"`。在我们的示例代码中，远端同时发布了音视频，所以 `mediaType` 理应为 `"all"`。但是在实际情况中，由于网络和发送端的不确定性，订阅端可能先收到一次 `user-published(mediaType: "audio")`，再收到一次 `user-published(mediaType: "video")`。因此在我们的示例代码中，我们做了一个简单的判断来处理这种情况。更多信息详见 [`client.on("user-published")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_published)。
+    :::
+
+- Web SDK 4.x 中，`subscribe` 是异步操作，会返回 Promise。传入的参数为 `remoteUser`，也就是远端用户对象，详见 [`AgoraRTCRemoteUser`](/api-ref/rtc/javascript/interfaces/iagorartcremoteuser.html)。
+- 远端音视频轨道对象会在订阅操作成功后保存在 `remoteUser` 下，直接调用 play 即可播放。
+
+## 核心 API 改动
+
+本节介绍 Web SDK 4.x 版本相对于 3.x 版本的核心 API 改动。
+### AgoraRTC
+
+- `getScreenSources` 更名为 [`getElectronScreenSources`](/api-ref/rtc/javascript/interfaces/iagorartc.html#getelectronscreensources)，并且移除了回调参数，现在会返回一个 Promise。
+- [`getDevices`](/api-ref/rtc/javascript/interfaces/iagorartc.html#getdevices) 现在会返回一个 Promise，同时新增 [`getCameras`](/api-ref/rtc/javascript/interfaces/iagorartc.html#getcameras) 和 [`getMicrophones`](/api-ref/rtc/javascript/interfaces/iagorartc.html#getmicrophones)。
+- 移除 `Logger` 对象，增加 [`disableLogUpload`](/api-ref/rtc/javascript/interfaces/iagorartc.html#disablelogupload)、[`enableLogUpload`](/api-ref/rtc/javascript/interfaces/iagorartc.html#enablelogupload) 和 [`setLogLevel`](/api-ref/rtc/javascript/interfaces/iagorartc.html#setloglevel) 用于控制日志上报和打印行为。
+- 移除 `createStream`，新增以下方法创建音视频对象：
+  - [`createMicrophoneAudioTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createmicrophoneaudiotrack): 创建麦克风轨道
+  - [`createCameraVideoTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createcameravideotrack): 创建摄像头轨道
+  - [`createScreenVideoTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createscreenvideotrack): 创建屏幕共享轨道
+  - [`createBufferSourceAudioTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createbuffersourceaudiotrack): 创建音频文件轨道（用于混音）
+  - [`createCustomAudioTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createcustomaudiotrack) 和 [`createCustomVideoTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createcustomvideotrack): 创建自定义音视频轨道（用于自采集）
+
+### Client
+
+- 移除 `Client.init`
+- 移除 `Client.getConnectionState`，新增 [`Client.connectionState`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#connectionstate) 字段表示当前和服务器的连接状态
+- [`ConnectionState`](/api-ref/rtc/javascript/globals.html#connectionstate) 中新增状态 `RECONNECTING` 表示当前正在重连，原来的 `CONNECTING` 仅表示首次正在建立连接
+- 新增 [`Client.uid`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#uid) 来表示当前本地用户的用户 ID
+- 新增 [`Client.remoteUsers`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#remoteusers) 来表示当前远端用户的用户列表
+- 移除 `Client.on("streamInjectStatus")`
+- 移除 [`Client.removeInjectStream`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#addinjectstreamurl) 的 `url` 参数
+- 移除 [`Client.enableDualStream`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#enabledualstream) 和 [`Client.disableDualStream`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#disabledualstream) 的回调参数，现在会返回 Promise
+- 移除 `Client.getCameras`, `Client.getDevices`, `Client.getRecordingDevices`, 现在这些方法被移动到 `AgoraRTC` 下
+- 移除 `Client.getPlayoutDevices`
+- 移除 `Client.getLocalAudioStats`、`Client.getLocalVideoStats`、`Client.getRemoteAudioStats`、`Client.getRemoteVideoStats`，现在音视频媒体统计数据统一通过 [`LocalAudioTrack.getStats`](/api-ref/rtc/javascript/interfaces/ilocalaudiotrack.html#getstats)、[`LocalVideoTrack.getStats`](/api-ref/rtc/javascript/interfaces/ilocalvideotrack.html#getstats)、[`RemoteAudioTrack.getStats`](/api-ref/rtc/javascript/interfaces/iremoteaudiotrack.html#getstats)、[`RemoteVideoTrack.getStats`](/api-ref/rtc/javascript/interfaces/iremotevideotrack.html#getstats) 这些方法来获取，同时字段都做了改变，具体参阅 API 文档
+- 移除 `Client.getSystemStats`
+- 移除 `Client.getSessionStats` 和 `Client.getTransportStats`，现在使用一个方法统一获取这些状态 [`Client.getRTCStats`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#getrtcstats)
+- [`Client.join`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#join) 现在会返回一个 Promise，移除回调参数，增加 `appid` 参数
+- [`Client.leave`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#leave) 现在会返回一个 Promise，移除回调参数
+- 增加 [`Client.once`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#once) 只监听目标事件一次
+- 增加 [`Client.removeAllListeners`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#removealllisteners) 用于删除所有事件监听
+- [`Client.publish`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#publish) 现在需要传入 [`LocalTrack`](/api-ref/rtc/javascript/interfaces/ilocaltrack.html) 的列表，现在会返回一个 Promise，同时移除 `Client.on("stream-published")` 回调。
+- [`Client.unpublish`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#publish) 现在会返回一个 Promise
+- [`Client.subscribe`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#subscribe) 现在使用 [`AgoraRTCRemoteUser`](/api-ref/rtc/javascript/interfaces/iagorartcremoteuser.html) 作为参数，返回一个 Promise，移除 `Client.on("stream-subscribed")`
+- [`Client.unsubscribe`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#unsubscribe) 现在使用 [`AgoraRTCRemoteUser`](/api-ref/rtc/javascript/interfaces/iagorartcremoteuser.html) 作为参数，返回一个 Promise
+- [`Client.renewToken`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#renewtoken) 现在会返回一个 Promise
+- [`Client.setClientRole`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setclientrole) 移除回调参数，现在会返回一个 Promise。**设置角色为 `audience` 后 SDK 不会自动 `unpublish`，调用 `publish` 时也不会自动把角色设置成 `host`**
+- 移除 `Client.setEncryptionMode` 和 `Client.setEncryptionSecret`，现在通过一个方法 [`Client.setEncryptionConfig`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setencryptionconfig) 来配置
+- [`Client.setLiveTranscoding`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setlivetranscoding)、[`Client.startLiveStreaming`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#startlivestreaming) 和 [`Client.stopLiveStreaming`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#stoplivestreaming) 现在都会返回 Promise，同时移除 `Client.on("liveTranscodingUpdated")`、`Client.on("liveStreamingStarted")`、`Client.on("liveStreamingFailed")` 和 `Client.on("liveStreamingStopped")` 事件
+- [`Client.startChannelMediaRelay`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#startchannelmediarelay) 现在会返回一个 Promise
+  - [`ChannelMediaRelayConfiguration`](/api-ref/rtc/javascript/interfaces/ichannelmediarelayconfiguration.html) 移除 `setDestChannelInfo`, 改为 [`addDestChannelInfo`](/api-ref/rtc/javascript/interfaces/ichannelmediarelayconfiguration.html#adddestchannelinfo) 并去除冗余参数，具体参考 API 文档
+  - [`ChannelMediaRelayConfiguration`](/api-ref/rtc/javascript/interfaces/ichannelmediarelayconfiguration.html) 去除了 [`setSrcChannelInfo`](/api-ref/rtc/javascript/interfaces/ichannelmediarelayconfiguration.html#setsrcchannelinfo) 的冗余参数
+- [`Client.stopChannelMediaRelay`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#stopchannelmediarelay) 现在会返回一个 Promise
+- [`Client.updateChannelMediaRelay`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#updatechannelmediarelay) 移除回调参数，现在会返回一个 Promise
+- 移除 `Client.on("first-video-frame-decode")` 和 `Client.on("first-audio-frame-decode")`，现在这两个事件通过 [`RemoteTrack.on("first-frame-decode")`](/api-ref/rtc/javascript/interfaces/iremotetrack.html#event_first_frame_decoded) 触发
+- 移除 `Client.on("active-speaker")` 事件，相同的功能由 [`Client.on("volume-indicator")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_volume_indicator) 提供
+- `Client.on("onTokenPrivilegeWillExpire")` 和 `Client.on("onTokenPrivilegeDidExpire")` 更名为 [`Client.on("token-privilege-will-expire")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_token_privilege_will_expire) 和 [`Client.on("token-privilege-did-expire")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_token_privilege_did_expire)
+- 移除 `Client.on("network-type-changed")` 事件， SDK 无法保证其可靠性
+- 移除 `Client.on("connected")` 和 `Client.on("reconnect")` 事件，连接状态事件统一从 [`Client.on("connection-state-change")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_connection_state_change) 获取
+- [`Client.on("stream-fallback")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_stream_fallback) 参数修改，增加 `isFallbackOrRecover` 参数，详见 API 文档
+
+### Stream
+
+Web SDK 4.x 以 Track 轨道对象取代 3.x 的 `Stream` 对象。一个音视频流是由多个音视频轨道构成的。你可以通过创建、发布或订阅一个或多个轨道来实现媒体管理。音视频的逻辑互不干扰、各自独立。此外，Web SDK 4.x 中还区分 `RemoteTrack` 和 `LocalTrack`，有些方法和对象只适用于本地音视频轨道，有些只适用于远端音视频轨道。
+
+下面列出 4.x 和 3.x 在音视频控制上差异较大的几个功能：
+
+- 启用或禁用本地音视频：4.x 以 [`ILocalTrack.setEnabled`](/api-ref/rtc/javascript/interfaces/ilocalaudiotrack.html#setenabled) 取代 3.x 的 `Stream.muteAudio` 和 `Stream.muteVideo`，用于实现启用或禁用本地轨道。有以下行为变更：
+  - 在 3.x 中，Mute 状态发生改变后 SDK 会触发 `Client.on("mute-audio")`、`Client.on("mute-video")`、`Client.on("unmute-audio")` 或 `Client.on("unmute-video")` 回调；4.x 中移除了上述回调，如果该本地轨道已发布，`setEnabled(false)` 后远端会触发 `Client.on("user-unpublished")`，`setEnabled(true)` 后远端会触发 `Client.on("user-published")`。
+  - 在 3.x 中，调用 `Stream.muteVideo(true)` 禁用本地视频流后，摄像头的指示灯并不会关闭，因而影响用户体验。在 4.x 中，调用 `setEnabled(false)` 禁用本地视频轨道后，SDK 会立刻关闭摄像头。
+- 设置媒体设备：
+  - 4.x 以 [`IMicrophoneAudioTrack.setDevice`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#setdevice) 和 [`ICameraVideoTrack.setDevice`](/api-ref/rtc/javascript/interfaces/icameravideotrack.html#setdevice) 取代 3.x 的 `Stream.switchDevice`，用于设置媒体输入设备。
+  - 4.x 以 [`IRemoteAudioTrack.setPlaybackDevice`](/api-ref/rtc/javascript/interfaces/iremoteaudiotrack.html#setplaybackdevice) 取代 3.x 的 `Stream.setAudioOutput`，用于设置音频输出设备。
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+声网 SDK v4.x 是一个新的 SDK 版本，可帮助用户将实时音视频功能集成到 App 中。在大规模的实时互动场景下，你可以用它实现更好的实时互动效果，详见[产品概述](/zh-CN/realtime-media/rtc)。
+
+本文介绍如何将 SDK 从 v3.x（指 v3.7.0 以及之前版本）或 v2.x 升级至 v4.0.0。
+
+## 迁移步骤
+
+### 1. 集成 SDK
+
+参考[创建项目](/zh-CN/realtime-media/rtc/get-started/quick-start#建立项目)，将 v4.x SDK 集成到你的项目中。
+
+### 2. 更新 App 代码
+
+v4.x SDK 对部分功能的实现方式进行了优化或修改，从而导致与 v3.x 或 v2.x 不兼容。为了继续使用 App 中已有的声网功能，请根据[变更介绍](#changes)更新 App 中的代码。
+
+<a id="changes"></a>
+## 变更介绍
+
+本节以 v3.7.0 为基础，按如下分类介绍 v4.0.0 相对于 v3.7.0 的主要变更，你需要结合实际业务场景更新 App 代码：
+
+:::info[信息]
+如果升级前的版本为 v3.7.0 之前的版本，请查看 [v3.x 发版说明](https://docportal.shengwang.cn/cn/video-legacy/release_windows_video?platform=Windows)获取该版本相对于 v3.7.0 的版本间变更。
+:::
+
+- 中断性变更：介绍影响较大的 API 兼容性变更，修改相关实现代码的预期耗时较多。
+- 行为变更：介绍对 SDK 默认行为和 API 行为的合理优化造成的变更，无需修改相关实现代码或修改代码的预期耗时较少。
+- 功能差距：介绍在 v3.7.0 中支持、但在 v4.0.0 中不支持的功能，这些功能会在后续版本中增加。
+- 已删除 API：介绍在 v3.7.0 中支持、但在 v4.0.0 中删除了的 API，这些 API 大部分在 v4.0.0 中有替代方案，修改相关实现代码的预期耗时较少。
+- 命名和数据类型变更：介绍主要 API 的命名和数据类型变更，你可以借助 IDE 的报错提示更新相关实现代码，预期耗时较少。
+
+### 中断性变更
+
+从 v3.7.0 升级至 v4.0.0 后，实现部分功能的 API 存在差异。本节介绍这些 API 的兼容性变更及 App 代码的更新逻辑。
+
+#### 多频道
+
+在 v3.7.0 中，SDK 提供 `IChannel` 类和 `IChannelEventHandler` 类实现多频道控制，支持订阅多个频道的音视频流，但只能选择一个频道发布一组音视频流。
+
+在 v4.0.0 中：
+
+- SDK 支持同时采集或同时发布多组音视频流。例如，同时发布多路摄像头采集或者屏幕共享的视频流。
+- SDK 提供 `RtcEngineEx` 类实现多频道功能：调用 `joinChannel` 加入首个频道后，多次调用 `joinChannelEx` 加入多个频道，通过不同的用户 ID (`localUid`) 和 `ChannelMediaOptions` 设置发布指定的流到不同的频道。
+- 新增了 `RtcConnection `二元组表示 `joinChannel` 建立的连接，一个连接由频道名 (`channelId`) 和 `localUid` 确定。你可以通过 `RtcConnection` 控制不同连接的发布和订阅。所有带 `connection`参数（对应 `RtcConnection` 类）的 API 命名中都增加了 Ex 以区分，并统一放在 `IRtcEngineEx` 类中，用于多流的扩展。
+
+通过设置 `ChannelMediaOptions`，v4.0.0 支持一个 `IRtcEngine` 实例同时采集多路音视频源并发布到远端，适应各种业务场景。例如：
+
+- 同时发布多路摄像头采集的视频流或者多路屏幕共享流
+- 同时发布单路媒体播放器的视频流、屏幕共享流和摄像头采集的视频流
+- 同时发布单路麦克风采集、自采集的音频流和媒体播放器的音频流
+
+结合多频道能力，你还可以体验如下功能：
+
+- 将多组音视频流通过不同的 `localUid` 发布到远端
+- 将多路音频流混音后通过一个 `localUid` 发布到远端
+- 将多路视频流合图后通过一个 `localUid` 发布到远端
+
+v3.7.0 的 `IChannel` 和 `IRtcEngine` 在功能上有部分重复、不够正交，因此在 v4.0.0 中隐藏了 `IChannel` 类和 `IChannelEventHandler` 类。你可以参考 [JoinMultiChannel](https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/MultiChannel) 示例项目，用 `joinChannel` 和 `ChannelMediaOptions` 替代 `IChannel`，预计迁移成本在一天以内。如果你需要继续使用 `IChannel` 和 `IChannelEventHandler` 类，请[联系技术支持](https://ticket.shengwang.cn/)，声网会根据反馈情况决定是否在后续版本中保持兼容。
+
+#### 媒体流发布控制
+
+在 v4.0.0 中，将更多频道相关的设置都汇聚进了 `ChannelMediaOptions`，包括不同音视频流的发布、自动订阅、用户角色切换、Token 更新、默认大小流选项等。你可以在加入频道时通过 `joinChannel` 或 `joinChannelEx` 明确媒体流发布和订阅行为，也可以在加入频道后通过 `updateChannelMediaOptions` 动态更新频道中的媒体选项，例如切换视频源。
+
+你可以参考 [LiveBroadcasting](https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Basic/LiveBroadcasting) 示例项目更新 App 代码。
+
+#### 自定义视频采集与渲染
+
+在 v3.7.0 中，SDK 提供如下方式实现自定义采集与渲染：
+
+- Push 方式自采集
+- 原始视频数据方式自渲染
+- MediaIO 方式 (`IVideoSource`) 自采集
+- MediaIO 方式 (`IVideoSink`) 自渲染
+
+v4.0.0 内部统一了音视频处理管线，推荐使用集成最简单的 Push 方式自采集、原始视频数据方式自渲染，因此删除了 MediaIO 方式的相关 API：
+
+- `IVideoSource`
+- `IVideoSink`
+- `IVideoFrameConsumer`
+- `setVideoSource`
+- `setLocalVideoRenderer`
+- `setRemoteVideoRenderer`
+
+如果你在 v3.7.0 使用了 MediaIO 方式实现视频自采集、视频自渲染、切换视频源等功能，声网推荐参考如下示例项目更新 App 代码：
+
+- 视频自采集/自渲染：[CustomVideoCapture](https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/CustomVideoCapture)
+- 切换视频源：[ScreenShare](https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/ScreenShare)
+
+#### 警告码
+
+在 v3.7.0 中，SDK 通过 `onWarning` 回调报告警告码。
+
+为方便用户定位和排查问题，v4.0.0 通过 API 返回值或不同状态回调来报告问题和原因。例如：
+
+- `onConnectionStateChanged`：报告网络连接状态。
+- `onLocalAudioStateChanged`：报告本地音频状态。
+- `onLocalVideoStateChanged`：报告本地视频状态。
+- `onRemoteAudioStateChanged`：报告远端音频状态。
+- `onRemoteVideoStateChanged`：报告远端视频状态。
+
+因此，v4.0.0 删除了 `onWarning` 回调。
+
+:::warning[注意]
+除上述相对于 v3.7.0 的中断性变更以外，v4.0.0 对于 v4.0.0 Beta 也存在极少数中断性变更。例如：
+
+- 在 v4.0.0 中，将 `ChannelMediaOptions` 中的 `publishAudioTrack` 替换为 `publishMicrophoneTrack`。
+如果你在 v4.0.0 Beta 版本中使用了该功能、并且希望升级到 v4.0.0 版本，请在升级 SDK 后修改功能的实现。
+:::
+
+### 行为变更
+
+本节介绍由 v4.0.0 对 SDK 默认行为和 API 行为的合理优化造成的变更。
+
+#### 频道场景
+
+在 v3.7.0 中，默认的频道场景为 `CHANNEL_PROFILE_COMMUNICATION`（通信）。
+
+因为直播场景支持从一对一通话无缝切换到多人互动，所以声网自 v3.0.0 起将通信场景下内部的传输协议和弱网对抗能力改成与直播场景一致。在 v4.0.0 中，声网也将默认的频道场景改成了 `CHANNEL_PROFILE_LIVE_BROADCASTING`（直播）。
+
+#### 默认日志文件
+
+在 v3.7.0 中，有多个日志文件时，旧的文件会以 agorasdk_x.log 格式命名，例如 agorasdk_1.log。v4.0.0 修改命名格式为 agorasdk.x.log（例如 agorasdk.1.log）。此外，v4.0.0 新增了 agoraapi.log 记录 API 调用的日志。
+
+#### 快速切换频道
+
+在 v3.7.0 中，你需要调用 `switchChannel` 实现快速切换频道。
+
+在 v4.0.0 中，通过 `leaveChannel` 和 `joinChannel` 切换频道即可实现和 `switchChannel` 一样的切换速度，因此该版本删除了 `switchChannel`。如果你在 v3.7.0 中使用 `switchChannel` 切换频道，在 v4.0.0 中，你需要先调用 `leaveChannel` 离开当前频道，再调用 `joinChannel` 加入第二个频道。
+
+#### 声网自研插件
+
+v4.0.0 在 v4.0.0 Beta 的基础上新增了自动加载自研动态库功能。自该版本起，当你使用声网自研的插件时，不需要在项目中手动集成动态库，SDK 会在 `IRtcEngine` 初始化阶段自动加载动态库。你可以直接调用插件对应的方法即可开启该功能。
+
+| API | 插件类型 |
+| --- | --- |
+| enableVirtualBackground | 虚拟背景插件 |
+| <Slot name="migration-guide-windows-html-0-2-0" /> | 视频增强插件 |
+| enableRemoteSuperResolution | 超分辨率插件 |
+| <Slot name="migration-guide-windows-html-0-4-0" /> | 美声插件 |
+| enableSpatialAudio | 空间音频插件 |
+| enableContentInspect | 内容审核插件 |
+
+<Slot for="migration-guide-windows-html-0-2-0">
+
+- setBeautyEffectOption
+    - setVideoDenoiserOptions
+    - setLowlightEnhanceOptions
+    - setColorEnhanceOptions
+
+</Slot>
+
+<Slot for="migration-guide-windows-html-0-4-0">
+
+- setAudioEffectPreset
+    - setVoiceBeautifierPreset
+    - setVoiceConversionPreset
+
+</Slot>
+
+#### 本地音视频流录制
+
+- 在 v3.7.0 中，如需开启本地音视频流录制，需要调用 `getMediaRecorder` 方法先获取 `AgoraMediaRecorder` 对象。
+- 在 v4.0.0 中，如需开启本地音视频流录制，需要调用 `queryInterface` 方法获取 `IMediaRecorder` 接口类。
+
+#### 虚拟节拍器
+
+当你调用 `startRhythmPlayer` 时，SDK 默认将虚拟节拍器的声音发布到远端，如果你不希望远端用户听到虚拟节拍器，需参考以下操作：
+
+- 在 v3.7.0 中，调用  `configRhythmPlayer` 并将 `publish` 设置为 `false`。
+- 在 v4.0.0 中，将 `ChannelMediaOptions` 中的 `publishRhythmPlayerTrack` 设置为 `false`。
+
+#### 音量提示
+
+当你调用 `enableAudioVolumeIndication` 方法并将 `interval` 参数设置为 > 0 时，可启用用户音量提示。在 v3.7.0 和 v4.0.0 中，`interval` 参数的定义存在差异：
+
+- 在 v3.7.0 中：建议设置到大于 200 毫秒。最小不得少于 10 毫秒，否则会收不到 `onAudioVolumeIndication` 回调。
+- 在 v4.0.0 中：该参数需要设为 200 的整数倍。如果取值低于 200，SDK 会自动调整为 200。
+
+当启用音量提示回调后，SDK 会上报 `onAudioVolumeIndication` 回调，如果本地用户将自己静音（调用了 `muteLocalAudioStream`），在 v3.7.0 和 v4.0.0 中，SDK 的行为不一致：
+
+- 在 v3.7.0 中：SDK 立即停止报告本地用户的音量提示回调。
+- 在 v4.0.0 中：SDK 会继续报告本地用户的音量提示回调。此时，如果用户依旧开启了音频采集，`AudioVolumeInfo` 中 `volume` 的值表示本地音频采集信号的音量。
+
+#### 设备权限
+
+- 在 v3.7.0 中，通过 `onLocalAudioStateChanged` 中的 `LOCAL_AUDIO_STREAM_ERROR_DEVICE_NO_PERMISSION` 上报没有权限启动音频采集设备；通过 `onLocalVideoStateChanged` 中的 `LOCAL_VIDEO_STREAM_ERROR_DEVICE_NO_PERMISSION`上报没有权限启动视频采集设备。
+
+在 v4.0.0 中，统一通过 `onPermissionError` 回调上报音视频采集设备的权限状态。
+
+#### 通话前网络测试
+
+如果你需要开启或停止网络连接质量测试：
+
+在 v3.7.0 中，你可以调用 `enableLastmileTest` 开启网络质量测试，如果你想停止网络测试，需要调用 `disableLastmileTest`。
+
+在 v4.0.0 中，你可以调用 `startLastmileProbeTest` 启用网络质量测试，如果你想停止网络测试，需要调用 `stopLastmileProbeTest`。
+
+#### 远端媒体事件触发机制
+
+假设存在以下两种场景：
+
+- 场景一：主播在频道外调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态、然后加入频道。
+- 场景二：主播在频道内调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态，然后其他用户加入频道。
+
+v3.7.0 和 v4.0.0 SDK 中存在以下行为差异：
+
+- 在 v3.7.0 中，本地用户会收到 `onRemoteAudioStateChanged` 或 `onRemoteVideoStateChanged` 回调，报告远端主播的音视频流的状态变化。
+- 在 v4.0.0 中，本地用户不会收到 `onRemoteAudioStateChanged` 或 `onRemoteVideoStateChanged` 回调，但是会收到 `onUserMuteAudio` 或 `onUserMuteVideo` 回调，报告远端主播的发流状态变化（即是否正在发布音视频流）。
+
+#### 频道媒体选项
+
+在加入频道的同时设置频道媒体选项时，在 v3.7.0 和 v4.0.0 中，SDK 的行为存在以下差异：
+
+- 在 v3.7.0 中，如果你将 `ChannelMediaOptions` 中的 `publishLocalAudio` 设置为 `false`，会停止在频道内发布本地音频流。
+- 在 v4.0.0 中，如果你将 `ChannelMediaOptions` 中的 `publishMicrophoneTrack` 设置为 `false`，除了停止在频道内发布本地音频流以外，还会停止本地麦克风采集。
+
+### 功能差距
+
+本节介绍在 v3.7.0 中支持、但在 v4.0.0 中不支持或行为不一致的功能，这些功能会在后续版本中支持或改为一致。
+
+#### 音频应用场景
+
+v4.0.0 重构了音频应用场景，可以替代大部分 v3.7.0 的音频应用场景。下表展示了两个版本中音频应用场景的对应关系：
+
+| v3.7.0                                  | v4.0.0                          |
+| :-------------------------------------- | :------------------------------ |
+| `AUDIO_SCENARIO_DEFAULT`                | `AUDIO_SCENARIO_DEFAULT`        |
+| `AUDIO_SCENARIO_CHATROOM_ENTERTAINMENT` | `AUDIO_SCENARIO_CHATROOM`       |
+| `AUDIO_SCENARIO_EDUCATION`              | `AUDIO_SCENARIO_DEFAULT`        |
+| `AUDIO_SCENARIO_GAME_STREAMING`         | `AUDIO_SCENARIO_GAME_STREAMING` |
+| `AUDIO_SCENARIO_SHOWROOM`               | `AUDIO_SCENARIO_DEFAULT`        |
+| `AUDIO_SCENARIO_CHATROOM_GAMING`        | `AUDIO_SCENARIO_CHATROOM`       |
+| `AUDIO_SCENARIO_IOT`                    | `AUDIO_SCENARIO_DEFAULT`        |
+| `AUDIO_SCENARIO_MEETING`                | `AUDIO_SCENARIO_MEETING`        |
+
+#### 不支持功能
+
+相比于 v3.7.0，某些功能在 v4.0.0 中不支持或仅支持部分。本节展示尚未支持的 API，这些 API 会在后续版本中支持。
+
+远端视频流回退：
+
+- `setRemoteUserPriority`
+
+屏幕共享：
+
+- `onScreenCaptureInfoUpdated`
+
+### 已删除 API
+
+v4.0.0 中，删除了已废弃或不推荐使用的 API。已删除 API 的替代方案或删除原因展示如下：
+
+- `virtualBackgroundSourceEnabled`：使用 `enableVirtualBackground` 的返回值替代。
+- `onUserSuperResolutionEnabled`：使用 `remoteVideoStats` 回调的 `superResolutionType` 成员替代。
+- `setAudioMixingPlaybackSpeed`：使用 `IMediaPlayer` (`AgoraRtcMediaPlayerProtocol`) 类下的相关 API 替代。
+- `setExternalAudioSourceVolume`：使用 `adjustCustomAudioPublishVolume` 替代。
+- `getAudioFileInfo` 和 `onRequestAudioFileInfo`：使用 `getDuration` 替代。
+- `onAudioDeviceTestVolumeIndication`：由 `onAudioVolumeIndication` 替代。
+- `setLocalPublishFallbackOption` 和 `onLocalPublishFallbackToAudioOnly`：在 v3.7.0 中很少使用。
+- `RENDER_MODE_TYPE` 中的 `RENDER_MODE_FILL`(4)：该模式可能造成图片过度拉伸，不推荐使用。
+- `AUDIO_MIXING_REASON_TYPE` 中的以下枚举：在 v3.7.0 中应用场景很少。
+  - `AUDIO_MIXING_REASON_STARTED_BY_USER`
+  - `AUDIO_MIXING_REASON_START_NEW_LOOP`
+  - `AUDIO_MIXING_REASON_PAUSED_BY_USER`
+  - `AUDIO_MIXING_REASON_RESUMED_BY_USER`
+- `onAudioMixingFinished`: 使用 `onAudioMixingStateChanged` 替代。
+- `enableDeepLearningDenoise`：AI 降噪将在后续版本改由 SDK 控制，不通过 API 实现。
+- `takeSnapshot` 和 `onSnapshotTaken` 中的 `channel` 参数：冗余参数。
+- `SetDefaultMuteAllRemoteVideoStreams`：由 `ChannelMediaOptions` 中的 `autoSubscribeVideo` 替代。
+- `SetDefaultMuteAllRemoteAudioStreams`：由 `ChannelMediaOptions` 中的 `autoSubscribeAudio` 替代。
+- `LOCAL_VIDEO_STREAM_ERROR` 中的 `LOCAL_VIDEO_STREAM_ERROR_SCREEN_CAPTURE_WINDOW_NOT_SUPPORTED`：该枚举在 v3.7.0 已废弃。
+- `startAudioMixing` 中的 `replace` 参数：由 `ChannelMediaOptions` 中的 `publishMicrophoneTrack` 替代。
+
+### 命名变更
+
+v4.0.0 的命名和数据类型变更会在你编译项目时引入 IDE 的报错提示，你需要根据提示更新 App 代码。
+
+主要的 API 及参数名变更如下：
+
+- `adjustLoopbackRecordingSignalVolume` 变更为 `adjustLoopbackSignalVolume`。
+- `onFirstLocalAudioFrame` 变更为 `onFirstLocalAudioFramePublished`。
+- `LogConfig` 中的 `fileSize` 成员变更为 `fileSizeInKB`。
+- `joinChannel`[2/2] 中的 `options` 参数变更为 `mediaOptions`。
+- `enableAudioVolumeIndication` 中的 `report_vad` 参数变更为 `reportVad`。
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+声网 SDK v4.0.0 是一个新的 SDK 版本，可帮助用户将实时音视频功能集成到 App 中。在大规模的实时互动场景下，你可以用它实现更好的实时互动效果，详见[产品概述](/zh-CN/realtime-media/rtc)。
+
+本文介绍如何将 SDK 从 v3.x（指 v3.7.0 以及之前版本）升级至 v4.0.0。
+
+## 迁移步骤
+
+本节介绍将 SDK 从 v3.x 升级至 v4.0.0 的主要步骤。
+
+### 1. 集成 SDK
+
+参考[建立项目](/zh-CN/realtime-media/rtc/get-started/quick-start)，将 v4.0.0 SDK 集成到你的项目中。
+
+### 2. 更新 App 代码
+
+v4.0.0 SDK 对部分功能的实现方式进行了重构，从而导致与 v3.x 不兼容。为了继续使用 App 中已有的声网功能，请根据[变更介绍](#变更介绍)更新 App 中的代码。
+
+## 变更介绍
+
+本节以 v3.7.0 为基础，按如下分类介绍 v4.0.0 相对于 v3.7.0 的主要变更，你需要结合实际业务场景更新 App 代码：
+
+- 中断性变更：介绍影响较大的 API 兼容性变更，修改相关实现代码的预期耗时较多。
+- 行为变更：介绍对 SDK 默认行为和 API 行为的合理优化造成的变更，无需修改相关实现代码或修改代码的预期耗时较少。
+- 功能差距：介绍在 v3.7.0 中支持、但在 v4.0.0 中不支持的功能，这些功能会在后续版本中增加。
+- 已删除 API：介绍在 v3.7.0 中支持、但在 v4.0.0 中删除了的 API，这些 API 大部分在 v4.0.0 中有替代方案，修改相关实现代码的预期耗时较少。
+- 命名和数据类型变更：介绍主要 API 的命名和数据类型变更，你可以借助 IDE 的报错提示更新相关实现代码，预期耗时较少。
+
+### 中断性变更 (3.x → 4.0.0)
+
+从 v3.7.0 升级至 v4.0.0 后，实现部分功能的 API 存在差异。本节介绍这些 API 的兼容性变更及 App 代码的更新逻辑。
+
+#### 初始化引擎
+
+在 v3.7.0 中，你可以使用 `initialize` 方法创建并初始化 `RtcEngine` 实例。
+
+在 v4.0.0 中，你可以使用 `createAgoraRtcEngine `方法来获取 `IRtcEngine`，然后通过 `initialize` 方法来初始化引擎。
+
+#### 注册事件监听
+
+以 `onError` 为例：
+
+在 v3.7.0 中，你可以使用 `on` 方法注册事件监听。
+
+```typescript
+this.engine.on('error', (err, msg) => {});
+```
+
+在 v4.0.0 中，你可以使用 `registerEventHandler` 方法注册事件监听。
+
+```typescript
+this.engine.registerEventHandler({
+  onError(err: ErrorCodeType, msg: string) {},});
+```
+
+#### 多频道
+
+在 v3.7.0 中，SDK 提供 `AgoraRtcChannel` 类，并通过该类的 `on` 函数实现多频道控制，支持订阅多个频道的音视频流，但只能选择一个频道发布一组音视频流。
+
+在 v4.0.0 中：
+
+- SDK 支持同时采集或同时发布多组音视频流。例如，同时发布多路摄像头采集或者屏幕共享的视频流。
+- SDK 提供 `IRtcEngineEx` 类实现多频道功能：调用 `joinChannel` 加入首个频道后，多次调用 `joinChannelEx` 加入多个频道，通过不同的用户 ID (`localUid`) 和 `ChannelMediaOptions` 设置发布指定的流到不同的频道。
+- 新增了 `RtcConnection `二元类表示 `joinChannel` 建立的连接，一个连接由频道名 (`channelId`) 和 `localUid` 确定。你可以通过 `RtcConnection` 控制不同连接的发布和订阅。所有带 `connection`参数（对应 `RtcConnection` 类）的 API 命名中都增加了 Ex 以区分，并统一放在 `IRtcEngineEx` 类中，用于多流的扩展。
+
+通过设置 `ChannelMediaOptions`，v4.0.0 支持一个 `IRtcEngine` 实例同时采集多路音视频源并发布到远端，适应各种业务场景。例如：
+
+- 同时发布多路摄像头采集的视频流或者多路屏幕共享流
+- 同时发布单路媒体播放器的视频流、屏幕共享流和摄像头采集的视频流
+- 同时发布单路麦克风采集、自采集的音频流和媒体播放器的音频流
+
+结合多频道能力，你还可以体验如下功能：
+
+- 将多组音视频流通过不同的 `localUid` 发布到远端
+- 将多路音频流混音后通过一个 `localUid` 发布到远端
+- 将多路视频流合图后通过一个 `localUid` 发布到远端
+
+v3.7.0 的 `AgoraRtcChannel` 和 `IRtcEngine` 在功能上有部分重复、不够正交，因此在 v4.0.0 中隐藏了 `AgoraRtcChannel` 类及其 `on` 函数。你可以参考 [JoinMultiChannel](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/advanced/JoinMultipleChannel/JoinMultipleChannel.tsx) 示例项目，用 `joinChannelEx` 和 `ChannelMediaOptions` 替代 `AgoraRtcChannel`，预计迁移成本在一天以内。如果你需要继续使用 `AgoraRtcChannel` 类及其 `on` 函数，请[联系技术支持](https://ticket.shengwang.cn/)，声网会根据反馈情况决定是否在后续版本中保持兼容。
+
+#### 媒体流发布控制
+
+在 v4.0.0 中，将更多频道相关的设置都汇聚进了 `ChannelMediaOptions`，包括不同音视频流的发布、自动订阅、用户角色切换、Token 更新、默认大小流选项等。你可以在加入频道时通过 `joinChannel` 或 `joinChannelEx` 明确媒体流发布和订阅行为，也可以在加入频道后通过 `updateChannelMediaOptions` 动态更新频道中的媒体选项，例如切换视频源。
+
+你可以参考 [JoinMultiChannel](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/advanced/JoinMultipleChannel/JoinMultipleChannel.tsx) 示例项目更新 App 代码。
+
+#### 错误码与警告码
+
+在 v3.7.0 中，SDK 通过 `Warning` 事件报告警告码。
+
+为方便用户定位和排查问题，v4.0.0 通过 API 返回值或不同状态回调来报告问题和原因。例如：
+
+- `onConnectionStateChanged`：报告网络连接状态。
+- `onLocalAudioStateChanged`：报告本地音频状态。
+- `onLocalVideoStateChanged`：报告本地视频状态。
+- `onRemoteAudioStateChanged`：报告远端音频状态。
+- `onRemoteVideoStateChanged`：报告远端视频状态。
+
+因此，v4.0.0 删除了 `Warning` 事件。
+
+### 中断性变更 (4.0.0 Beta → 4.0.0)
+
+本节介绍 v4.0.0 Beta 升级至 v4.0.0 后存在的中断性变更。
+
+#### SDK 包名变更
+
+从 v4.0.0 Beta 升级至 v4.0.0 后，SDK 包名由 `electron-agora-rtc-ng` 变更为 `agora-electron-sdk`，详见 [集成 SDK](/zh-CN/realtime-media/rtc/get-started/quick-start#集成-sdk)。
+
+#### 加入频道
+
+在 v4.0.0 Beta 中，你可以使用 `joinChannel` 或 `joinChannelWithOptions` 方法加入频道。
+
+```typescript
+this._engine?.joinChannel(token: string, channelId: string, info: string, uid: number): number;
+this._engine?.joinChannelWithOptions(token: string, channelId: string, uid: number, options: ChannelMediaOptions): number;
+```
+
+v4.0.0 移除了原 `joinChannel` 方法，原 `joinChannelWithOptions` 在 v4.0.0 中更名为 `joinChannel`。
+
+```typescript
+this._engine?.joinChannel(
+ token: string,
+ channelId: string,
+ uid: number,
+ options: ChannelMediaOptions
+): number;
+```
+
+此外，`ChannelMediaOptions` 枚举中的 `publishAudioTrack` 替换为 `publishMicrophoneTrack`。如果你在 v4.0.0 Beta 版本中使用了该功能、并且希望升级到 v4.0.0 版本，请在升级 SDK 后修改功能的实现。
+
+### 行为变更
+
+本节介绍由 v4.0.0 对 SDK 默认行为和 API 行为的合理优化造成的变更。
+
+#### 频道场景
+
+在 v3.7.0 中，SDK 使用 `setChannelProfile(profile: *number*)` 方法设置频道场景，默认的频道场景为 setChannelProfile(1)（通信）。
+
+因为直播场景支持从一对一通话无缝切换到多人互动，所以声网自 v3.0.0 起将通信场景下内部的传输协议和弱网对抗能力改成与直播场景一致。在 v4.0.0 中，声网使用 `ChannelProfileType` 枚举设置频道场景，并将默认的频道场景修改为 `ChannelProfileLiveBroadcasting`（直播）。
+
+#### 默认日志文件
+
+在 v3.7.0 中，有多个日志文件时，旧的文件会以 agorasdk_x.log 格式命名，例如 agorasdk_1.log。v4.0.0 修改命名格式为 agorasdk.x.log（例如 agorasdk.1.log）。此外，v4.0.0 新增了 agoraapi.log 记录 API 调用的日志。
+
+#### 快速切换频道
+
+在 v3.7.0 中，你需要调用 `switchChannel` 实现快速切换频道。
+
+在 v4.0.0 中，通过 `leaveChannel` 和 `joinChannel` 切换频道即可实现和 `switchChannel` 一样的切换速度，因此该版本删除了 `switchChannel`。如果你在 v3.7.0 中使用 `switchChannel` 切换频道，你需要在 v4.0.0 中先调用 `leaveChannel` 离开当前频道，再调用 `joinChannel` 加入第二个频道。
+
+#### 声网自研插件
+
+v4.0.0 在 v4.0.0 Beta 的基础上新增了自动加载自研动态库功能。自该版本起，当你使用声网自研的插件时，不需要在项目中手动集成动态库，SDK 会在 `IRtcEngine` 初始化阶段自动加载动态库。你可以直接调用插件对应的方法即可开启该功能。
+
+- 虚拟背景插件：`enableVirtualBackground`
+- 视频增强插件：
+  - `setBeautyEffectOption`
+  - `setVideoDenoiserOptions`
+  - `setLowlightEnhanceOptions`
+  - `setColorEnhanceOptions`
+- 超分辨率插件：`enableRemoteSuperResolution`
+- 美声插件：
+  - `setAudioEffectPreset`
+  - `setVoiceBeautifierPreset`
+  - `setVoiceConversionPreset`
+- 空间音频插件：`enableSpatialAudio`
+- 内容审核插件：`enableContentInspect`
+
+**本地音视频流录制**
+
+- 在 v3.7.0 中，SDK 不支持本地音视频流录制。
+- 在 v4.0.0 中，如需开启本地音视频流录制，需要调用 `getMediaRecorder` 方法获取 `IMediaRecorder` 接口类。
+
+**虚拟节拍器**
+
+当你调用 `startRhythmPlayer` 时，SDK 默认将虚拟节拍器的声音发布到远端，如果你不希望远端用户听到虚拟节拍器，需参考以下操作：
+
+- 在 v3.7.0 中，调用  `configRhythmPlayer` 并将 `publish` 设置为 `false`。
+- 在 v4.0.0 中，将 `ChannelMediaOptions` 中的 `publishRhythmPlayerTrack` 设置为 `false`。
+
+#### 音量提示
+
+当你调用 `enableAudioVolumeIndication` 方法并将 `interval` 参数设置为 > 0 时，可启用用户音量提示。在 v3.7.0 和 v4.0.0 中，`interval` 参数的定义存在差异：
+
+- 在 v3.7.0 中：建议设置到大于 200 毫秒。最小不得少于 10 毫秒，否则会收不到 `onAudioVolumeIndication` 回调。
+- 在 v4.0.0 中：该参数需要设为 200 的整数倍。如果取值低于 200，SDK 会自动调整为 200。
+
+当启用音量提示回调后，SDK 会上报 `onAudioVolumeIndication` 回调，如果本地用户将自己静音（调用了 `muteLocalAudioStream`），在 v3.7.0 和 v4.0.0 中，SDK 的行为不一致：
+
+- 在 v3.7.0 中：SDK 立即停止报告本地用户的音量提示回调。
+- 在 v4.0.0 中：SDK 会继续报告本地用户的音量提示回调。此时，如果用户依旧开启了音频采集，`AudioVolumeInfo` 中 `volume` 的值表示本地音频采集信号的音量。
+
+#### 设备权限
+
+- 在 v3.7.0 中，通过 `localAudioStateChanged` 事件中的 `LOCAL_AUDIO_STREAM_ERROR_DEVICE_NO_PERMISSION` 上报没有权限启动音频采集设备；通过 `localVideoStateChanged` 事件中的 `LOCAL_VIDEO_STREAM_ERROR_DEVICE_NO_PERMISSION`上报没有权限启动视频采集设备。
+
+在 v4.0.0 中，统一通过 `onPermissionError` 回调上报音视频采集设备的权限状态。
+
+**通话前网络测试**
+
+如果你需要开启或停止网络连接质量测试：
+
+在 v3.7.0 中，你可以调用 `enableLastmileTest` 开启网络质量测试，如果你想停止网络测试，需要调用 `disableLastmileTest`。
+
+在 v4.0.0 中，你可以调用 `startLastmileProbeTest` 启用网络质量测试，如果你想停止网络测试，需要调用 `stopLastmileProbeTest`。
+
+#### 远端媒体事件触发机制
+
+假设存在以下两种场景：
+
+- 场景一：主播在频道外调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态、然后加入频道。
+- 场景二：主播在频道内调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态，然后其他用户加入频道。
+
+v3.7.0 和 v4.0.0 SDK 中存在以下行为差异：
+
+- 在 v3.7.0 中，本地用户会收到 `remoteAudioStateChangedOfUid` 或 `remoteVideoStateChangedOfUid` 回调，报告远端主播的音视频流的状态变化。
+- 在 v4.0.0 中，本地用户不会收到 `remoteAudioStateChangedOfUid` 或 `remoteVideoStateChangedOfUid` 回调，但是会收到 `didAudioMuted` 或 `didVideoMuted` 回调，报告远端主播的发流状态变化（即是否正在发布音视频流）。
+
+#### 频道媒体选项
+
+在加入频道的同时设置频道媒体选项时，在 v3.7.0 和 v4.0.0 中，SDK 的行为存在以下差异：
+
+- 在 v3.7.0 中，如果你将 `ChannelMediaOptions` 中的 `publishLocalAudio` 设置为 `false`，会停止在频道内发布本地音频流。
+- 在 v4.0.0 中，如果你将 `ChannelMediaOptions` 中的 `publishMicrophoneTrack` 设置为 `false`，除了停止在频道内发布本地音频流以外，还会停止本地麦克风采集。
+
+### 功能差距
+
+本节介绍在 v3.7.0 中支持、但在 v4.0.0 中不支持或行为不一致的功能，这些功能会在后续版本中支持或改为一致。
+
+#### 音频应用场景
+
+v4.0.0 重构了音频应用场景，可以替代大部分 v3.7.0 的音频应用场景。下表展示了两个版本中音频应用场景的对应关系：
+
+| v3.7.0                               | v4.0.0                       |
+| :----------------------------------- | :--------------------------- |
+| `AudioScenarioDefault`               | `AudioScenarioDefault`       |
+| `AudioScenarioChatroomEntertainment` | `AudioScenarioChatroom`      |
+| `AudioScenarioEducation`             | `AudioScenarioDefault`       |
+| `AudioScenarioGameStreaming`         | `AudioScenarioGameStreaming` |
+| `AudioScenarioShowroom`              | `AudioScenarioDefault`       |
+| `AudioScenarioChatroomGaming`        | `AudioScenarioChatroom`      |
+| `AudioScenarioIot`                   | `AudioScenarioDefault`       |
+| `AudioScenarioMeeting`               | `AudioScenarioMeeting`       |
+
+#### 不支持功能
+
+相比于 v3.7.0，某些功能在 v4.0.0 中不支持或仅支持部分。本节展示尚未支持的 API，这些 API 会在后续版本中支持。
+
+远端视频流回退：
+
+- `setRemoteUserPriority`
+
+屏幕共享：
+
+- `videoSourceScreenCaptureInfoUpdated` 事件``
+
+### 已删除 API
+
+v4.0.0 中，删除了已废弃或不推荐使用的 API。已删除 API 的替代方案或删除原因展示如下：
+
+- `virtualBackgroundSourceEnabled `事件：使用 `enableVirtualBackground` 的返回值替代。
+- `setAudioMixingPlaybackSpeed`：使用 `IMediaPlayer `类下的相关 API 替代。
+- `getAudioFileInfo` 和 `requestAudioFileInfo` 事件：使用 `getDuration` 替代。
+- `audioDeviceTestVolumeIndication` 事件：由 `onAudioVolumeIndication` 替代。
+- `setLocalPublishFallbackOption` 和 `localPublishFallbackToAudioOnly` 事件：在 v3.7.0 中很少使用。
+- `enableDeepLearningDenoise`：AI 降噪将在后续版本改由 SDK 控制，不通过 API 实现。
+- `takeSnapshot` 和 `snapshotTaken` 事件中的 `channel` 参数：冗余参数。
+
+- `setDefaultMuteAllRemoteVideoStreams：`由 `ChannelMediaOptions` 中的 `autoSubscribeVideo` 替代。
+- `setDefaultMuteAllRemoteAudioStreams`：由 `ChannelMediaOptions` 中的 `autoSubscribeAudio` 替代。
+
+- `LOCAL_VIDEO_STREAM_ERROR` 中的 `LOCAL_VIDEO_STREAM_ERROR_SCREEN_CAPTURE_WINDOW_NOT_SUPPORTED`：该枚举在 v3.7.0 已废弃。
+
+- `startAudioMixing` 中的 replace 参数：由 `ChannelMediaOptions` 中的 publishMicrophoneTrack 替代。
+
+### 命名变更
+
+v4.0.0 的命名和数据类型变更会在你编译项目时引入 IDE 的报错提示，你需要根据提示更新 App 代码。
+
+主要的 API 及参数名变更如下：
+
+- `adjustLoopbackRecordingSignalVolume` 变更为 `adjustLoopbackSignalVolume`。(Windows, macOS)
+- `firstLocalAudioFrame` 事件变更为 `onFirstLocalAudioFramePublished`。
+- `LogConfig` 中的 `fileSize` 成员变更为 `fileSizeInKB`。
+- `joinChannel`[2/2] 中的 `options` 参数变更为 `mediaOptions`。
+- `enableAudioVolumeIndication` 中的 `report_vad` 参数变更为 `reportVad`。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+声网 SDK v4.0.0 是一个新的 SDK 版本，可帮助用户将实时音视频功能集成到 App 中。在大规模的实时互动场景下，你可以用它实现更好的实时互动效果，详见[产品概述](/zh-CN/realtime-media/rtc)。
+
+本文介绍如何将 SDK 从 v3.x（指 v3.7.0.3 以及之前版本）升级至 v4.0.0。
+
+## 迁移步骤
+
+本节介绍将 SDK 从 v3.x 升级至 v4.0.0 的主要步骤。
+
+### 1. 集成 SDK
+
+在 v4.0.0 中，当你成功下载声网 Unity SDK 后可以看到一个 `.unitypackage` 的资源包，你可以直接在 Unity 编辑器中将其导入至你的项目中。成功导入后，你项目的 `Assets` 路径下会出现 `Agora-RTC-Plugin `目录。
+
+参考[创建项目](/zh-CN/realtime-media/rtc/get-started/quick-start)，将 v4.0.0 SDK 集成到你的项目中。
+
+### 2. 更新 App 代码
+
+v4.0.0 SDK 对部分功能的实现方式进行了优化或修改，从而导致与 v3.x 不兼容。为了继续使用 App 中已有的声网功能，请根据[变更介绍](#changes)更新 App 中的代码。
+
+<a id="changes"></a>
+## 变更介绍
+
+本节以 v3.x 为基础，按如下分类介绍 v4.0.0 相对于 v3.x 的主要变更，你需要结合实际业务场景更新 App 代码：
+
+- 中断性变更：介绍影响较大的 API 兼容性变更，修改相关实现代码的预期耗时较多。
+- 行为变更：介绍对 SDK 默认行为和 API 行为的合理优化造成的变更，无需修改相关实现代码或修改代码的预期耗时较少。
+- 功能差距：介绍在 v3.x 中支持、但在 v4.0.0 中不支持的功能，这些功能会在后续版本中增加。
+- 已删除 API：介绍在 v3.x 中支持、但在 v4.0.0 中删除了的 API，这些 API 大部分在 v4.0.0 中有替代方案，修改相关实现代码的预期耗时较少。
+- 命名和数据类型变更：介绍主要 API 的命名和数据类型变更，你可以借助 IDE 的报错提示更新相关实现代码，预期耗时较少。
+
+### 中断性变更
+
+从 v3.x 升级至 v4.0.0 后，实现部分功能的 API 存在差异。本节介绍这些 API 的兼容性变更及 App 代码的更新逻辑。
+
+#### 多频道
+
+在 v3.x 中，SDK 提供 `AgoraChannel` 类和 `Channel` 相关 `delegate` 实现多频道控制，支持订阅多个频道的音视频流，但只能选择一个频道发布一组音视频流。
+
+在 v4.0.0 中：
+
+- SDK 支持同时采集或同时发布多组音视频流。例如，同时发布多路摄像头采集或者屏幕共享的视频流。
+- SDK 提供 `IRtcEngineEx` 类实现多频道功能：调用 `JoinChannel` 加入首个频道后，多次调用 `JoinChannelEx` 加入多个频道，通过不同的用户 ID (`localUid`) 和 `ChannelMediaOptions` 设置发布指定的流到不同的频道。
+- 新增了 `RtcConnection ` 二元组表示 `JoinChannel` 建立的连接，一个连接由频道名 (`channelId`) 和 `localUid` 确定。你可以通过 `RtcConnection` 控制不同连接的发布和订阅。所有带 `connection` 参数（对应 `RtcConnection` 类）的 API 命名中都增加了 Ex 以区分，并统一放在 `IRtcEngineEx` 类中，用于多流的扩展。
+
+通过设置 `ChannelMediaOptions`，v4.0.0 支持一个 `IRtcEngine` 实例同时采集多路音视频源并发布到远端，适应各种业务场景。例如：
+
+- 同时发布多路摄像头采集的视频流或者多路屏幕共享流
+- 同时发布单路媒体播放器的视频流、屏幕共享流和摄像头采集的视频流
+- 同时发布单路麦克风采集、自采集的音频流和媒体播放器的音频流
+
+结合多频道能力，你还可以体验如下功能：
+
+- 将多组音视频流通过不同的 `localUid` 发布到远端
+- 将多路音频流混音后通过一个 `localUid` 发布到远端
+- 将多路视频流合图后通过一个 `localUid` 发布到远端
+
+v3.x 的 `AgoraChannel` 和 `IRtcEngine` 在功能上有部分重复、不够正交，因此在 v4.0.0 中隐藏了 `AgoraChannel` 类和 `Channel` 相关 `delegate`。你可以参考[示例项目](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/ScreenShareWhileVideoCall)，用 `JoinChannel` 和 `ChannelMediaOptions` 替代 `AgoraChannel`，预计迁移成本在一天以内。如果你需要继续使用 `AgoraChannel` 和 `Channel` 相关 `delegate`，请[联系技术支持](https://ticket.shengwang.cn/)，声网会根据反馈情况决定是否在后续版本中保持兼容。
+
+#### 媒体流发布控制
+
+在 v4.0.0 中，将更多频道相关的设置都汇聚进了 `ChannelMediaOptions`，包括不同音视频流的发布、自动订阅、用户角色切换、Token 更新、默认大小流选项等。你可以在加入频道时通过 `JoinChannel` 或 `JoinChannelEx` 明确媒体流发布和订阅行为，也可以在加入频道后通过 `UpdateChannelMediaOptions` 动态更新频道中的媒体选项，例如切换视频源。
+
+#### 警告码
+
+在 v3.x 中，SDK 通过 `OnWarning` 回调报告警告码。
+
+为方便用户定位和排查问题，v4.0.0 通过 API 返回值或不同状态回调来报告问题和原因。例如：
+
+- `OnConnectionStateChanged`：报告网络连接状态。
+- `OnLocalAudioStateChanged`：报告本地音频状态。
+- `OnLocalVideoStateChanged`：报告本地视频状态。
+- `OnRemoteAudioStateChanged`：报告远端音频状态。
+- `OnRemoteVideoStateChanged`：报告远端视频状态。
+
+因此，v4.0.0 删除了 `OnWarning` 回调。
+
+:::warning[注意]
+除上述相对于 v3.x 的中断性变更以外，v4.0.0 对于 v4.0.0 Beta 也存在极少数中断性变更。例如在 v4.0.0 中，将 `ChannelMediaOptions` 中的 `publishAudioTrack` 替换为 `publishMicrophoneTrack`。
+如果你在 v4.0.0 Beta 版本中使用了该功能、并且希望升级到 v4.0.0 版本，请在升级 SDK 后修改功能的实现。
+:::
+
+### 行为变更
+
+本节介绍由 v4.0.0 对 SDK 默认行为和 API 行为的合理优化造成的变更。
+
+#### 初始化引擎
+
+在 v3.x 中，你可以使用 `GetEngine (appId)` 或 `GetEngine(engineConfig)` 方法获取 `IRtcEngine` 实例并初始化引擎。
+
+在 v4.0.0 中，你可以使用 `CreateAgoraRtcEngine` 或 `RtcEngine.Instance` 方法来实例化 `IRtcEngine`，然后通过 `Initialize` 方法来初始化引擎，在初始化的同时你还可以通过 `RtcEngineContext` 来设置频道场景、音频应用场景、进行日志文件配置等。
+
+#### 注册回调事件
+
+在 v3.x 中，你可以使用 C# `delegate` 注册的形式来注册回调事件。
+
+在 v4.0.0 中，你依然可以使用 C# `delegate` 注册的形式来注册回调事件，`delegate` 被封装在 `Agora.Rtc.RtcEngineEventHandler` 中。除此之外，你还可以通过 `InitEventHandler` 来注册回调事件，你需要继承声网提供的事件基类并实现自己的 `EventHandler` 类，通过 `InitEventHandler` 方法将自己的 `EventHandler` 类实例注册给 SDK。
+
+#### 资源释放
+
+如果你需要释放声网 Unity SDK 使用的所有资源：
+
+在 v3.x 中，你需要调用 `Destroy` 方法来释放资源。
+
+在 v4.0.0 中，你需要调用 `Dispose` 方法来释放资源。
+
+#### 频道场景
+
+在 v3.x 中，默认的频道场景为 `CHANNEL_PROFILE_COMMUNICATION`（通信）。因为直播场景支持从一对一通话无缝切换到多人互动，所以声网自 v3.0.0 起将通信场景下内部的传输协议和弱网对抗能力改成与直播场景一致。
+
+在 v4.0.0 中，声网也将默认的频道场景改成了 `CHANNEL_PROFILE_LIVE_BROADCASTING`（直播）。
+
+#### 默认日志文件
+
+在 v3.x 中，有多个日志文件时，旧的文件会以 `agorasdk_x.log` 格式命名，例如 `agorasdk_1.log`。
+
+在 v4.0.0 中, 修改命名格式为 `agorasdk.x.log`（例如 `agorasdk.1.log`）。此外，v4.0.0 新增了 `agoraapi.log`、`agora_iris.log` 记录 API 调用的日志。
+
+#### 快速切换频道
+
+在 v3.x 中，你需要调用 `SwitchChannel` 实现快速切换频道。
+
+在 v4.0.0 中，通过 `LeaveChannel` 和 `JoinChannel` 切换频道即可实现和 `SwitchChannel` 一样的切换速度，因此该版本删除了 `SwitchChannel`。如果你在 v3.x 中使用 `SwitchChannel` 切换频道，你需要在 v4.0.0 中先调用 `LeaveChannel` 离开当前频道，再调用 `JoinChannel` 加入第二个频道。
+
+#### 声网自研插件
+
+v4.0.0 在 v4.0.0 Beta 的基础上新增了自动加载自研动态库功能。自该版本起，当你使用声网自研的插件时，不需要在项目中手动集成动态库，SDK 会在 `IRtcEngine` 初始化阶段自动加载动态库。你可以直接调用插件对应的方法即可开启该功能。
+
+| API | 插件类型 |
+| --- | --- |
+| `EnableVirtualBackground` | 虚拟背景插件 |
+| <Slot name="migration-guide-unity-html-0-2-0" /> | 视频增强插件 |
+| `EnableRemoteSuperResolution` | 超分辨率插件 |
+| <Slot name="migration-guide-unity-html-0-4-0" /> | 美声插件 |
+| `EnableSpatialAudio` | 空间音频插件 |
+| `EnableContentInspect` | 内容审核插件 |
+
+<Slot for="migration-guide-unity-html-0-2-0">
+
+- `SetBeautyEffectOptions`
+      - `SetVideoDenoiserOptions`
+      - `SetLowlightEnhanceOptions`
+      - `SetColorEnhanceOptions`
+
+</Slot>
+
+<Slot for="migration-guide-unity-html-0-4-0">
+
+- `SetAudioEffectPreset`
+    - `SetVoiceBeautifierPreset`
+    - `SetVoiceConversionPreset`
+
+</Slot>
+
+#### 音量提示
+
+当你调用 `EnableAudioVolumeIndication` 方法并将 `interval` 参数设置为 > 0 时，可启用用户音量提示。在 v3.x 和 v4.0.0 中，`interval` 参数的定义存在差异：
+
+- 在 v3.x 中：建议设置到大于 200 毫秒。最小不得少于 10 毫秒，否则会收不到 `OnAudioVolumeIndication` 回调。
+- 在 v4.0.0 中：该参数需要设为 200 的整数倍。如果取值低于 200，SDK 会自动调整为 200。
+
+当启用音量提示回调后，SDK 会上报 `OnAudioVolumeIndication` 回调，如果本地用户将自己静音（调用了 `MuteLocalAudioStream`），在 v3.x 和 v4.0.0 中，SDK 的行为不一致：
+
+- 在 v3.x 中：SDK 立即停止报告本地用户的音量提示回调。
+- 在 v4.0.0 中：SDK 会继续报告本地用户的音量提示回调。此时，如果用户依旧开启了音频采集，`AudioVolumeInfo` 中 `volume` 的值表示本地音频采集信号的音量。
+
+#### 设备权限
+
+- 在 v3.x 中，通过 `OnLocalAudioStateChanged` 中的 `LOCAL_AUDIO_STREAM_ERROR_DEVICE_NO_PERMISSION` 上报没有权限启动音频采集设备；通过 `OnLocalVideoStateChanged` 中的 `LOCAL_VIDEO_STREAM_ERROR_DEVICE_NO_PERMISSION `上报没有权限启动视频采集设备。
+
+在 v4.0.0 中，统一通过 `OnPermissionError` 回调上报音视频采集设备的权限状态。
+
+#### 通话前网络测试
+
+如果你需要开启或停止网络连接质量测试：
+
+在 v3.x 中，你可以调用 `EnableLastmileTest` 开启网络质量测试，如果你想停止网络测试，需要调用 `DisableLastmileTest`。
+
+在 v4.0.0 中，你可以调用 `StartLastmileProbeTest` 启用网络质量测试，如果你想停止网络测试，需要调用 `StopLastmileProbeTest`。
+
+#### 原始音视频数据
+
+在 v3.x 中，你可以通过 `VideoRawDataManager`、`AudioRawDataManager` 类下的 API 来管理原始音视频数据。
+
+在 v4.0.0 中，你可以调用 `IRtcEngine` 类中的 `RegisterAudioFrameObserver` 或 `RegisterVideoFrameObserver` 注册语音或视频观测器后，直接使用该类实现原始音视频数据观测；或者通过继承该类，自行实现原始音视频数据观测。
+
+#### 远端媒体事件触发机制
+
+假设存在以下两种场景：
+
+- 场景一：主播在频道外调用 `MuteLocalAudioStream` 或 `MuteLocalVideoStream` 改变本地音视频流的发布状态、然后加入频道。
+- 场景二：主播在频道内调用 `MuteLocalAudioStream` 或 `MuteLocalVideoStream` 改变本地音视频流的发布状态，然后其他用户加入频道。
+
+v3.7.0 和 v4.0.0 SDK 中存在以下行为差异：
+
+- 在 v3.7.0 中，本地用户会收到 `OnRemoteAudioStateChanged` 或 `OnRemoteVideoStateChanged` 回调，报告远端主播的音视频流的状态变化。
+- 在 v4.0.0 中，本地用户不会收到 `OnRemoteAudioStateChanged` 或 `OnRemoteVideoStateChanged` 回调，但是会收到 `OnUserMuteAudio` 或 `OnUserMuteVideo` 回调，报告远端主播的发流状态变化（即是否正在发布音视频流）。
+
+#### 频道媒体选项
+
+在加入频道的同时设置频道媒体选项时，在 v3.7.0 和 v4.0.0 中，SDK 的行为存在以下差异：
+
+- 在 v3.7.0 中，如果你将 `ChannelMediaOptions` 中的 `publishLocalAudio` 设置为 `false`，会停止在频道内发布本地音频流。
+- 在 v4.0.0 中，如果你将 `ChannelMediaOptions` 中的 `publishMicrophoneTrack` 设置为 `false`，除了停止在频道内发布本地音频流以外，还会停止本地麦克风采集。
+
+#### 视频信息改变事件 (iOS)
+
+如果在采集视频时调整视频采集设备为横屏或竖屏，在 v3.7.0 和 v4.0.0 中，SDK 上报的视频信息改变事件存在以下差异：
+
+- 在 v3.7.0 中，`OnVideoSizeChanged` 回调中的 `rotation` 参数会显示当前设备的旋转信息。
+- 在 v4.0.0 中，`OnVideoSizeChanged` 回调中的 `rotation` 参数始终为 `0`。
+
+### 功能差距
+
+本节介绍在 v3.x 中支持、但在 v4.0.0 中不支持或行为不一致的功能，这些功能会在后续版本中支持或改为一致。
+
+#### 音频应用场景
+
+v4.0.0 重构了音频应用场景，可以替代大部分 v3.x 的音频应用场景。下表展示了两个版本中音频应用场景的对应关系：
+
+| v3.x                                  | v4.0.0                        |
+| :-------------------------------------- | :------------------------------ |
+| `AUDIO_SCENARIO_DEFAULT`                | `AUDIO_SCENARIO_DEFAULT`        |
+| `AUDIO_SCENARIO_CHATROOM_ENTERTAINMENT` | `AUDIO_SCENARIO_CHATROOM`       |
+| `AUDIO_SCENARIO_EDUCATION`              | `AUDIO_SCENARIO_DEFAULT`        |
+| `AUDIO_SCENARIO_GAME_STREAMING`         | `AUDIO_SCENARIO_GAME_STREAMING` |
+| `AUDIO_SCENARIO_SHOWROOM`               | `AUDIO_SCENARIO_DEFAULT`        |
+| `AUDIO_SCENARIO_CHATROOM_GAMING`        | `AUDIO_SCENARIO_CHATROOM`       |
+| `AUDIO_SCENARIO_IOT`                    | `AUDIO_SCENARIO_DEFAULT`        |
+| `AUDIO_SCENARIO_MEETING`                | `AUDIO_SCENARIO_MEETING`        |
+
+#### 不支持功能
+
+相比于 v3.x，某些功能在 v4.0.0 中不支持或仅支持部分。本节展示尚未支持的 API，这些 API 会在后续版本中支持。
+
+远端视频流回退：
+
+- `SetRemoteUserPriority`
+
+屏幕共享：
+
+- `OnScreenCaptureInfoUpdated`
+
+### 已删除 API
+
+v4.0.0 中，删除了已废弃或不推荐使用的 类和 API。已删除 API 的替代方案或删除原因展示如下：
+
+- `VideoRawDataManager`：使用 `IVideoFrameObserver` 类下的相关 API 替代。
+- `AudioRawDataManager`：使用 `IAudioFrameObserver` 类下的相关 API 替代。
+- `PacketObserver`：在 v3.x 中很少使用。
+
+- `EnableFilpTextureApply`：推荐自行实现。
+- `SetGameFps`：推荐自行实现。
+- `VirtualBackgroundSourceEnabled`：使用 `EnableVirtualBackground` 的返回值替代。
+
+- `OnUserSuperResolutionEnabled`：使用 `OnRemoteVideoStats` 回调的 `superResolutionType` 成员替代。
+- `SetExternalAudioSourceVolume`：使用 `AdjustCustomAudioPublishVolume` 替代。
+- `GetAudioFileInfo` 和 `OnRequestAudioFileInfo`：使用 `GetDuration` 替代。
+- `OnAudioDeviceTestVolumeIndication`：由 `OnAudioVolumeIndication` 替代。
+- `SetLocalPublishFallbackOption` 和 `OnLocalPublishFallbackToAudioOnly`：在 v3.x 中很少使用。
+- `RENDER_MODE_TYPE` 中的 `RENDER_MODE_FILL`(4)：该模式可能造成图片过度拉伸，不推荐使用。
+- `AUDIO_MIXING_REASON_TYPE` 中的以下枚举：在 v3.x 中应用场景很少。
+  - `AUDIO_MIXING_REASON_STARTED_BY_USER`
+  - `AUDIO_MIXING_REASON_START_NEW_LOOP`
+  - `AUDIO_MIXING_REASON_PAUSED_BY_USER`
+  - `AUDIO_MIXING_REASON_RESUMED_BY_USER`
+- `OnAudioMixingFinished`: 使用 `OnAudioMixingStateChanged` 替代。
+- `EnableDeepLearningDenoise`：AI 降噪将在后续版本改由 SDK 控制，不通过 API 实现。
+- `TakeSnapshot` 和 `OnSnapshotTaken` 中的 `channel` 参数：冗余参数。
+
+- `SetDefaultMuteAllRemoteVideoStreams`：由 `ChannelMediaOptions` 中的 `autoSubscribeVideo` 替代。
+- `SetDefaultMuteAllRemoteAudioStreams`：由 `ChannelMediaOptions` 中的 `autoSubscribeAudio` 替代。
+
+- `LOCAL_VIDEO_STREAM_ERROR` 中的 `LOCAL_VIDEO_STREAM_ERROR_SCREEN_CAPTURE_WINDOW_NOT_SUPPORTED`：该枚举在 v3.x 已废弃。
+
+- `StartAudioMixing` 中的 `replace` 参数：由 `ChannelMediaOptions` 中的 `publishMicrophoneTrack` 替代。
+
+### 命名和数据类型变更
+
+v4.0.0 的命名和数据类型变更会在你编译项目时引入 IDE 的报错提示，你需要根据提示更新 App 代码。
+
+相较于 v3.x，v4.0.0 中主要的命名变更如下：
+
+#### 命名空间变更
+
+- `namespace agora_gaming_rtc` 变更为 `namespace Agora.Rtc`
+
+#### 类名变更
+
+- `AudioPlaybackDeviceManager` 和 `AudioRecorderDeviceManager` 合并为 `IAudioDeviceManager`
+- `VideoDeviceManager` 变更为 `IVideoDeviceManager`
+- `MediaRecorder` 变更为 `IMediaRecorder`
+- `MetadataObserver` 变更为 `IMetadataObserver`
+- `AgoraCallback `变更为 ` IRtcEngineEventHandler`
+
+#### API 及参数名变更
+
+- `AdjustLoopbackRecordingSignalVolume` 变更为 `AdjustLoopbackSignalVolume`
+- `OnFirstLocalAudioFrame` 变更为 `OnFirstLocalAudioFramePublished`
+- `LogConfig` 中的 `fileSize` 成员变更为 `fileSizeInKB`
+- `JoinChannel`[2/2] 中的 `options` 参数变更为 `mediaOptions`
+- `EnableAudioVolumeIndication` 中的 `report_vad` 参数变更为 `reportVad`
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+`agora_rtc_engine: ^6.0.0` 基于声网 RTC SDK v4.0.0，可帮助你将实时音视频功能集成到 App 中。在大规模的实时互动场景下，你可以用它实现更好的实时互动效果，详见[产品概述](/zh-CN/realtime-media/rtc)。
+
+本文介绍如何将 SDK 从 agora_rtc_engine: ^5.x 迁移至 agora_rtc_engine: ^6.0.0。
+
+## 迁移步骤
+
+本节介绍将 agora_rtc_engine: ^5.x 迁移至 agora_rtc_engine: ^6.0.0 的主要步骤。
+
+### 1. 集成 SDK
+
+参考[建立项目](/zh-CN/realtime-media/rtc/get-started/quick-start#创建-flutter-项目)，将 agora_rtc_engine: ^6.0.0 SDK 集成到你的项目中。
+
+### 2. 更新 App 代码
+
+agora_rtc_engine: ^6.0.0 SDK 对部分功能的实现方式进行了优化或修改，从而导致与 agora_rtc_engine: ^5.x 不兼容。为了继续使用 App 中已有的声网功能，请根据[变更介绍](#变更介绍)更新 App 中的代码。
+
+## 变更介绍
+
+本节以 agora_rtc_engine: ^5.x 为基础，按如下分类介绍 agora_rtc_engine: ^6.0.0 相对于 agora_rtc_engine: ^5.x 的主要变更，你需要结合实际业务场景更新 App 代码：
+
+- 中断性变更：介绍影响较大的 API 兼容性变更，修改相关实现代码的预期耗时较多。
+- 行为变更：介绍对 SDK 默认行为和 API 行为的合理优化造成的变更，无需修改相关实现代码或修改代码的预期耗时较少。
+- 功能差距：介绍在 agora_rtc_engine: ^5.x 中支持、但在 agora_rtc_engine: ^6.0.0 中不支持的功能，这些功能会在后续版本中增加。
+- 已删除 API：介绍在 agora_rtc_engine: ^5.x 中支持或被标记成废弃、但在 agora_rtc_engine: ^6.0.0 中删除了的 API，这些 API 大部分在 agora_rtc_engine: ^6.0.0 中有替代方案，修改相关实现代码的预期耗时较少。
+- 命名和数据类型变更：介绍主要 API 的命名和数据类型变更，你可以借助 IDE 的报错提示更新相关实现代码，预期耗时较少。
+
+### 中断性变更
+
+#### 升级前版本为 agora_rtc_engine: ^5.x
+
+从 agora_rtc_engine: ^5.x 升级至 agora_rtc_engine: ^6.0.0 后，实现部分功能的 API 存在差异。本节介绍这些 API 的兼容性变更及 App 代码的更新逻辑。
+
+**命名参数**
+
+为了更好的代码可读性，agora_rtc_engine: ^6.0.0 后将所有参数多于 2 个的方法的参数改成了[命名参数](https://dart.dev/guides/language/language-tour#parameters)，如 `joinChannel` 方法：
+
+```dart
+await _engine.joinChannel(token: '', channelId: 'channelid', uid: 0, options: const ChannelMediaOptions());
+```
+
+**初始化流程**
+
+agora_rtc_engine: ^6.0.0 后提供了 top-level 方法 `createAgoraRtcEngine` 用于创建 RtcEngine，创建完 RtcEngine 后需要主动调用 `initialize` 进行初始化。
+
+**渲染控件**
+
+agora_rtc_engine: ^6.0.0 后移除了 [SurfaceView](https://docs.agora.io/cn/video-legacy/API%20Reference/flutter/v5.3.0/API/class_rtc_local_view_surfaceview.html)/[TextureView](https://docs.agora.io/cn/video-legacy/API%20Reference/flutter/v5.3.0/API/class_rtc_local_view_textureview.html) 控件，视频渲染统一使用 [`AgoraVideoView`](/api-ref/rtc/flutter/API/rtc_interface_class#class_agoravideoview) 控件。
+
+**多频道**
+
+在 agora_rtc_engine: ^5.x 中，SDK 提供 `RtcChannel` 类和 `RtcChannelEventHandler` 类实现多频道控制，支持订阅多个频道的音视频流，但只能选择一个频道发布一组音视频流。
+
+在 agora_rtc_engine: ^6.0.0 中：
+
+- SDK 支持同时采集或同时发布多组音视频流。例如，同时发布多路摄像头采集或者屏幕共享的视频流。
+- SDK 提供 `RtcEngineEx` 类实现多频道功能：调用 `joinChannel` 加入首个频道后，多次调用 `joinChannelEx` 加入多个频道，通过不同的用户 ID (`localUid`) 和 `ChannelMediaOptions` 设置发布指定的流到不同的频道。
+- 新增了 `RtcConnection `二元组表示 `joinChannel` 建立的连接，一个连接由频道名 (`channelId`) 和 `localUid` 确定。你可以通过 `RtcConnection` 控制不同连接的发布和订阅。所有带 `connection`参数（对应 `RtcConnection` 类）的 API 命名中都增加了 Ex 以区分，并统一放在 `RtcEngineEx` 类中，用于多流的扩展。
+
+通过设置 `ChannelMediaOptions`，agora_rtc_engine: ^6.0.0 支持一个 `RtcEngine` 实例同时采集多路音视频源并发布到远端，适应各种业务场景。例如：
+
+- 同时发布多路摄像头采集的视频流或者多路屏幕共享流
+- 同时发布单路媒体播放器的视频流、屏幕共享流和摄像头采集的视频流
+- 同时发布单路麦克风采集、自采集的音频流和媒体播放器的音频流
+
+结合多频道能力，你还可以体验如下功能：
+
+- 将多组音视频流通过不同的 `localUid` 发布到远端
+- 将多路音频流混音后通过一个 `localUid` 发布到远端
+- 将多路视频流合图后通过一个 `localUid` 发布到远端
+
+agora_rtc_engine: ^5.x 的 `RtcChannel` 和 `RtcEngine` 在功能上有部分重复、不够正交，因此在 agora_rtc_engine: ^6.0.0 中隐藏了 `RtcChannel` 类和 `RtcChannelEventHandler` 类。你可以参考 [join_multiple_channel.dart](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/tree/main/example/lib/examples/advanced/join_multiple_channel) 示例项目，用 `joinChannel` 和 `ChannelMediaOptions` 替代 `RtcChannel`，预计迁移成本在一天以内。如果你需要继续使用 `RtcChannel` 和 `RtcChannelEventHandler` 类，请[联系技术支持](https://ticket.shengwang.cn/)，声网会根据反馈情况决定是否在后续版本中保持兼容。
+
+**媒体流发布控制**
+
+在 agora_rtc_engine: ^6.0.0 中，将更多频道相关的设置都汇聚进了 `ChannelMediaOptions`，包括不同音视频流的发布、自动订阅、用户角色切换、Token 更新、默认大小流选项等。你可以在加入频道时通过 `joinChannel` 或 `joinChannelEx` 明确媒体流发布和订阅行为，也可以在加入频道后通过 `updateChannelMediaOptions` 动态更新频道中的媒体选项，例如切换视频源。
+
+**警告码**
+
+在 agora_rtc_engine: ^5.x 中，SDK 通过 `warning` 回调报告警告码。
+
+为方便用户定位和排查问题，agora_rtc_engine: ^6.0.0 通过 API 返回值或不同状态回调来报告问题和原因。例如：
+
+- `onConnectionStateChanged`：报告网络连接状态。
+- `onLocalAudioStateChanged`：报告本地音频状态。
+- `onLocalVideoStateChanged`：报告本地视频状态。
+- `onRemoteAudioStateChanged`：报告远端音频状态。
+- `onRemoteVideoStateChanged`：报告远端视频状态。
+
+因此，agora_rtc_engine: ^6.0.0 删除了 `warning` 回调。
+
+#### 升级前版本为 agora_rtc_engine: ^6.0.0-beta.2
+
+除上述相对于 agora_rtc_engine: ^5.x 的中断性变更以外，agora_rtc_engine: ^6.0.0 相对于 agora_rtc_engine: ^6.0.0-beta.2 也存在极少数中断性变更。例如：
+
+- 将 `ChannelMediaOptions` 中的 `publishAudioTrack` 替换为 `publishMicrophoneTrack`。
+- 移除 `joinChannelWithOptions` 方法。
+- `joinChannel` 方法移除 `info` 参数，新增 `options` 参数，详见 [`joinChannel`](/api-ref/rtc/flutter/API/toc_channel#api_irtcengine_joinchannel2) 方法。
+
+如果你在 agora_rtc_engine: ^6.0.0-beta.2 版本中使用了该功能、并且希望升级到 agora_rtc_engine: ^6.0.0 版本，请在升级 SDK 后修改功能的实现。
+
+### 行为变更
+
+本节介绍由 agora_rtc_engine: ^6.0.0 对 SDK 默认行为和 API 行为的合理优化造成的变更。
+
+#### 频道场景
+
+因为直播场景支持从一对一通话无缝切换到多人互动，所以声网自 agora_rtc_engine: ^5.x 起将通信场景下内部的传输协议和弱网对抗能力改成与直播场景一致。在 agora_rtc_engine: ^6.0.0 中，声网也将默认的频道场景改成了 `ChannelProfileLiveBroadcasting`（直播）。
+
+#### 默认日志文件
+
+在 agora_rtc_engine: ^5.x 中，有多个日志文件时，旧的文件会以 agorasdk_x.log 格式命名，例如 agorasdk_1.log。agora_rtc_engine: ^6.0.0 修改命名格式为 agorasdk.x.log（例如 agorasdk.1.log）。此外，agora_rtc_engine: ^6.0.0 新增了 agoraapi.log 记录 API 调用的日志。
+
+#### 快速切换频道
+
+在 agora_rtc_engine: ^5.x 中，你需要调用 `switchChannel` 实现快速切换频道。
+
+在 agora_rtc_engine: ^6.0.0 中，通过 `leaveChannel` 和 `joinChannel` 切换频道即可实现和 `switchChannel` 一样的切换速度，因此该版本删除了 `switchChannel`。如果你在 agora_rtc_engine: ^5.x 中使用 `switchChannel` 切换频道，你需要在 agora_rtc_engine: ^6.0.0 中先调用 `leaveChannel` 离开当前频道，再调用 `joinChannel` 加入第二个频道。
+
+#### (Windows) 本地音视频流录制
+
+- 在 agora_rtc_engine: ^5.x 中，如需开启本地音视频流录制，需要调用 `MediaRecorder.getMediaRecorder` 方法先获取 MediaRecorder 对象。
+- 在 agora_rtc_engine: ^6.0.0 中，如需开启本地音视频流录制，需要调用 `RtcEngine.getMediaRecorder` 方法获取 MediaRecorder 接口类。
+
+#### 虚拟节拍器
+
+当你调用 `startRhythmPlayer` 时，SDK 默认将虚拟节拍器的声音发布到远端，如果你不希望远端用户听到虚拟节拍器，需参考以下操作：
+
+- 在 agora_rtc_engine: ^5.x 中，调用  `configRhythmPlayer` 并将 `publish` 设置为 `false`。
+- 在 agora_rtc_engine: ^6.0.0 中，将 `ChannelMediaOptions` 中的 `publishRhythmPlayerTrack` 设置为 `false`。
+
+#### 音量提示
+
+当你调用 `enableAudioVolumeIndication` 方法并将 `interval` 参数设置为 > 0 时，可启用用户音量提示。在 agora_rtc_engine: ^5.x 和 agora_rtc_engine: ^6.0.0 中，`interval` 参数的定义存在差异：
+
+- 在 agora_rtc_engine: ^5.x 中：建议设置到大于 200 毫秒。最小不得少于 10 毫秒，否则会收不到 `onAudioVolumeIndication` 回调。
+- 在 agora_rtc_engine: ^6.0.0 中：该参数需要设为 200 的整数倍。如果取值低于 200，SDK 会自动调整为 200。
+
+当启用音量提示回调后，SDK 会上报 `onAudioVolumeIndication` 回调，如果本地用户将自己静音（调用了 `muteLocalAudioStream`），在 agora_rtc_engine: ^5.x 和 agora_rtc_engine: ^6.0.0 中，SDK 的行为不一致：
+
+- 在 agora_rtc_engine: ^5.x 中：SDK 立即停止报告本地用户的音量提示回调。
+- 在 agora_rtc_engine: ^6.0.0 中：SDK 会继续报告本地用户的音量提示回调。此时，如果用户依旧开启了音频采集，`AudioVolumeInfo` 中 `volume` 的值表示本地音频采集信号的音量。
+
+#### 设备权限
+
+在 agora_rtc_engine: ^5.x 中，通过 `localAudioStateChanged` 中的`AudioLocalError.DeviceNoPermission` 上报没有权限启动音频采集设备；通过 `localAudioStateChanged` 中的 `LocalVideoStreamError.DeviceNoPermission` 上报没有权限启动视频采集设备。
+
+在 agora_rtc_engine: ^6.0.0 中，统一通过 `onPermissionError` 回调上报音视频采集设备的权限状态。
+
+#### 通话前网络测试
+
+如果你需要开启或停止网络连接质量测试：
+
+- 在 agora_rtc_engine: ^5.x 中，你可以调用 `enableLastmileTest` 开启网络质量测试，如果你想停止网络测试，需要调用 `disableLastmileTest`。
+- 在 agora_rtc_engine: ^6.0.0 中，你可以调用 `startLastmileProbeTest` 启用网络质量测试，如果你想停止网络测试，需要调用 `stopLastmileProbeTest`。
+
+#### 远端媒体事件触发机制
+
+假设存在以下两种场景：
+
+- 场景一：主播在频道外调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态、然后加入频道。
+- 场景二：主播在频道内调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态，然后其他用户加入频道。
+
+agora_rtc_engine: ^5.x 和 agora_rtc_engine: ^6.0.0 中存在以下行为差异：
+
+- 在 agora_rtc_engine: ^5.x 中，本地用户会收到 `onRemoteAudioStateChanged` 或 `onRemoteVideoStateChanged` 回调，报告远端主播的音视频流的状态变化。
+- 在 agora_rtc_engine: ^6.0.0 中，本地用户不会收到 `onRemoteAudioStateChanged` 或 `onRemoteVideoStateChanged` 回调，但是会收到 `onUserMuteAudio` 或 `onUserMuteVideo` 回调，报告远端主播的发流状态变化（即是否正在发布音视频流）。
+
+#### 频道媒体选项
+
+在加入频道的同时设置频道媒体选项时，在 agora_rtc_engine: ^5.x 和 agora_rtc_engine: ^6.0.0 中，SDK 的行为存在以下差异：
+
+- 在 agora_rtc_engine: ^5.x 中，如果你将 `ChannelMediaOptions` 中的 `publishLocalAudio` 设置为 `false`，会停止在频道内发布本地音频流。
+- 在 agora_rtc_engine: ^6.0.0 中，如果你将 `ChannelMediaOptions` 中的 `publishMicrophoneTrack` 设置为 `false`，除了停止在频道内发布本地音频流以外，还会停止本地麦克风采集。
+
+#### 视频信息改变事件 (iOS)
+
+如果在采集视频时调整视频采集设备为横屏或竖屏，在 agora_rtc_engine: ^5.x 和 agora_rtc_engine: ^6.0.0 中，SDK 上报的视频信息改变事件存在以下差异：
+
+- 在 ^5.x 中，`videoSizeChanged` 回调中的 `rotation` 参数会显示当前设备的旋转信息。
+- 在 ^6.0.0 中，`onVideoSizeChanged` 回调中的 `rotation` 参数始终为 `0`。
+
+### 功能差距
+
+本节介绍在 agora_rtc_engine: ^5.x 中支持、但在 agora_rtc_engine: ^6.0.0 中不支持或行为不一致的功能，这些功能会在后续版本中支持或改为一致。
+
+#### 音频应用场景
+
+agora_rtc_engine: ^6.0.0 重构了音频应用场景，可以替代大部分 agora_rtc_engine: ^5.x 的音频应用场景。下表展示了两个版本中音频应用场景的对应关系：
+
+| agora_rtc_engine: ^5.x   | agora_rtc_engine: ^6.0.0           |
+| :---------- | :-------- |
+| `AudioScenario.Default`                | `AudioScenarioType.audioScenarioDefault`        |
+| `AudioScenario.ChatRoomEntertainment` | `AudioScenarioType.audioScenarioChatroom`       |
+| `AudioScenario.Education`  | `AudioScenarioType.audioScenarioDefault`        |
+| `AudioScenario.GameStreaming`         | `AudioScenarioType.audioScenarioGameStreaming` |
+| `AudioScenario.ShowRoom`               | `AudioScenarioType.audioScenarioDefault`        |
+| `AudioScenario.ChatRoomGaming`        | `AudioScenarioType.audioScenarioChatroom`       |
+| `AudioScenario.IOT`                    | `AudioScenarioType.audioScenarioDefault`        |
+| `AudioScenario.MEETING`                | `AudioScenarioType.audioScenarioMeeting`        |
+
+#### 不支持功能
+
+相比于 agora_rtc_engine: ^5.x，某些功能在 agora_rtc_engine: ^6.0.0 中不支持或仅支持部分。本节展示尚未支持的 API，这些 API 会在后续版本中支持。
+
+远端视频流回退：
+
+- `setRemoteUserPriority`
+
+屏幕共享：
+
+- `onScreenCaptureInfoUpdated`
+
+### 已删除 API
+
+agora_rtc_engine: ^6.0.0 中，删除了已废弃或不推荐使用的 API。已删除 API 的替代方案或删除原因展示如下：
+
+- `virtualBackgroundSourceEnabled`：使用 `enableVirtualBackground` 的返回值替代。
+- `userSuperResolutionEnabled`：使用 `remoteVideoStats` 回调的 `superResolutionType` 成员替代。
+- `setAudioMixingPlaybackSpeed`：使用 `MediaPlayerController` 类下的相关 API 替代。
+- `setExternalAudioSourceVolume`：使用 `adjustCustomAudioPublishVolume` 替代。
+- `getAudioFileInfo` 和 `requestAudioFileInfo`：使用 `getDuration` 替代。
+- `audioDeviceTestVolumeIndication`：由 `onAudioVolumeIndication` 替代。
+- `setLocalPublishFallbackOption` 和 `localPublishFallbackToAudioOnly`：在 agora_rtc_engine: ^5.x 中很少使用。
+- `VideoRenderMode` 中的 `FILL`(4)：该模式可能造成图片过度拉伸，不推荐使用。
+- `AudioMixingReason` 中的以下枚举：在 agora_rtc_engine: ^5.x 中应用场景很少。
+  - `StartedByUser`
+  - `StartNewLoop`
+  - `PausedByUser`
+  - `ResumedByUser`
+- `audioMixingFinished`: 使用 `onAudioMixingStateChanged` 替代。
+- `enableDeepLearningDenoise`：AI 降噪将在后续版本改由 SDK 控制，不通过 API 实现。
+- `takeSnapshot` 和 `onSnapshotTaken` 中的 `channel` 参数：冗余参数。
+- `setDefaultMuteAllRemoteVideoStreams`：由 `ChannelMediaOptions` 中的 `autoSubscribeVideo` 替代。
+- `setDefaultMuteAllRemoteAudioStreams`：由 `ChannelMediaOptions` 中的 `autoSubscribeAudio` 替代。
+- `LocalVideoStreamError` 中的 `LocalVideoStreamErrorScreenCaptureWindowNotSupported`：该枚举在 agora_rtc_engine: ^5.x 已废弃。
+- `startAudioMixing` 中的 `replace` 参数：由 `ChannelMediaOptions` 中的 `publishMicrophoneTrack` 替代。
+
+### 命名变更
+
+agora_rtc_engine: ^6.0.0 的方法命名和数据类型变更会在你编译项目时引入 IDE 的报错提示，你需要根据提示更新 App 代码。
+
+主要的 API 及参数名变更如下：
+
+- (Windows 和 macOS) `adjustLoopbackRecordingSignalVolume` 变更为 `adjustLoopbackSignalVolume`。
+- `firstLocalAudioFrame` 变更为 `onFirstLocalAudioFramePublished`。
+- `LogConfig` 中的 `fileSize` 成员变更为 `fileSizeInKB`。
+- `enableAudioVolumeIndication` 中的 `report_vad` 参数变更为 `reportVad`。
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+声网 SDK v4.0.0 是一个新的 SDK 版本，可帮助用户将实时音视频功能集成到 App 中。在大规模的实时互动场景下，你可以用它实现更好的实时互动效果，详见[产品概述](/zh-CN/realtime-media/rtc)。
+
+本文介绍如何将 SDK 从 v3.x（指 v3.7.0 以及之前版本）升级至 v4.0.0。
+
+## 迁移步骤
+
+本节介绍将 SDK 从 v3.x 升级至 v4.0.0 的主要步骤。
+
+### 1. 集成 SDK
+
+参考[建立项目](/zh-CN/realtime-media/rtc/get-started/quick-start)，将 v4.0.0 SDK 集成到你的项目中。
+
+### 2. 更新 App 代码
+
+v4.0.0 SDK 对部分功能的实现方式进行了重构，从而导致与 v3.x 不兼容。为了继续使用 App 中已有的声网功能，请根据[变更介绍](#变更介绍)更新 App 中的代码。
+
+## 变更介绍
+
+本节以 v3.7.0 为基础，按如下分类介绍 v4.0.0 相对于 v3.7.0 的主要变更，你需要结合实际业务场景更新 App 代码：
+
+- 中断性变更：介绍影响较大的 API 兼容性变更，修改相关实现代码的预期耗时较多。
+- 行为变更：介绍对 SDK 默认行为和 API 行为的合理优化造成的变更，无需修改相关实现代码或修改代码的预期耗时较少。
+- 功能差距：介绍在 v3.7.0 中支持、但在 v4.0.0 中不支持的功能，这些功能会在后续版本中增加。
+- 已删除 API：介绍在 v3.7.0 中支持、但在 v4.0.0 中删除了的 API，这些 API 大部分在 v4.0.0 中有替代方案，修改相关实现代码的预期耗时较少。
+- 命名和数据类型变更：介绍主要 API 的命名和数据类型变更，你可以借助 IDE 的报错提示更新相关实现代码，预期耗时较少。
+
+### 中断性变更 (3.x → 4.0.0)
+
+从 v3.7.0 升级至 v4.0.0 后，实现部分功能的 API 存在差异。本节介绍这些 API 的兼容性变更及 App 代码的更新逻辑。
+
+#### 初始化引擎
+
+在 v3.7.0 中，你可以使用 `create` 或 `createWithContext` 方法创建并初始化 `RtcEngine` 实例。
+
+在 v4.0.0 中，你可以使用 `createAgoraRtcEngine `方法来获取 `IRtcEngine`，然后通过 `initialize` 方法来初始化引擎。
+
+#### 注册事件监听
+
+以 `onError` 为例：
+
+在 v3.7.0 中，你可以使用 `addListener` 方法注册事件监听。
+
+```typescript
+this.engine.addListener('Error', (errorCode) => {});
+```
+
+在 v4.0.0 中，你可以使用 `registerEventHandler` 或 `addListener` 方法注册事件监听。
+
+```typescript
+this.engine.registerEventHandler({
+  onError(err: ErrorCodeType, msg: string) {},
+});
+this.engine.addListener('onError', (err: ErrorCodeType, msg: string) => {});
+```
+
+#### 多频道
+
+在 v3.7.0 中，SDK 提供 `RtcChannel` 类和 `RtcChannelEvents` 类实现多频道控制，支持订阅多个频道的音视频流，但只能选择一个频道发布一组音视频流。
+
+在 v4.0.0 中：
+
+- SDK 支持同时采集或同时发布多组音视频流。例如，同时发布多路摄像头采集或者屏幕共享的视频流。
+- SDK 提供 `IRtcEngineEx` 类实现多频道功能：调用 `joinChannel` 加入首个频道后，多次调用 `joinChannelEx` 加入多个频道，通过不同的用户 ID (`localUid`) 和 `ChannelMediaOptions` 设置发布指定的流到不同的频道。
+- 新增了 `RtcConnection `二元类表示 `joinChannel` 建立的连接，一个连接由频道名 (`channelId`) 和 `localUid` 确定。你可以通过 `RtcConnection` 控制不同连接的发布和订阅。所有带 `connection`参数（对应 `RtcConnection` 类）的 API 命名中都增加了 Ex 以区分，并统一放在 `IRtcEngineEx` 类中，用于多流的扩展。
+
+通过设置 `ChannelMediaOptions`，v4.0.0 支持一个 `IRtcEngine` 实例同时采集多路音视频源并发布到远端，适应各种业务场景。例如：
+
+- 同时发布多路摄像头采集的视频流或者多路屏幕共享流
+- 同时发布单路媒体播放器的视频流、屏幕共享流和摄像头采集的视频流
+- 同时发布单路麦克风采集、自采集的音频流和媒体播放器的音频流
+
+结合多频道能力，你还可以体验如下功能：
+
+- 将多组音视频流通过不同的 `localUid` 发布到远端
+- 将多路音频流混音后通过一个 `localUid` 发布到远端
+- 将多路视频流合图后通过一个 `localUid` 发布到远端
+
+v3.7.0 的 `RtcChannel` 和 `IRtcEngine` 在功能上有部分重复、不够正交，因此在 v4.0.0 中隐藏了 `RtcChannel` 类和 `RtcChannelEvents` 类。你可以参考 [JoinMultiChannel](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/JoinMultipleChannel/JoinMultipleChannel.tsx) 示例项目，用 `joinChannelEx` 和 `ChannelMediaOptions` 替代 `RtcChannel`，预计迁移成本在一天以内。如果你需要继续使用 `RtcChannel` 和 `RtcChannelEvents` 类，请[联系技术支持](https://ticket.shengwang.cn/)，声网会根据反馈情况决定是否在后续版本中保持兼容。
+
+#### 媒体流发布控制
+
+在 v4.0.0 中，将更多频道相关的设置都汇聚进了 `ChannelMediaOptions`，包括不同音视频流的发布、自动订阅、用户角色切换、Token 更新、默认大小流选项等。你可以在加入频道时通过 `joinChannel` 或 `joinChannelEx` 明确媒体流发布和订阅行为，也可以在加入频道后通过 `updateChannelMediaOptions` 动态更新频道中的媒体选项，例如切换视频源。
+
+#### 错误码与警告码
+
+在 v3.7.0 中，SDK 通过 `Warning` 事件报告警告码。
+
+为方便用户定位和排查问题，v4.0.0 通过 API 返回值或不同状态回调来报告问题和原因。例如：
+
+- `onConnectionStateChanged`：报告网络连接状态。
+- `onLocalAudioStateChanged`：报告本地音频状态。
+- `onLocalVideoStateChanged`：报告本地视频状态。
+- `onRemoteAudioStateChanged`：报告远端音频状态。
+- `onRemoteVideoStateChanged`：报告远端视频状态。
+
+因此，v4.0.0 删除了 `Warning` 事件。
+
+### 中断性变更 (4.0.0 Beta → 4.0.0)
+
+本节介绍 v4.0.0 Beta 升级至 v4.0.0 后存在的中断性变更。
+
+#### SDK 包名变更
+
+从 v4.0.0 Beta 升级至 v4.0.0 后，SDK 包名由 `react-native-agora` 变更为 `react-native-agora`，详见 [集成 SDK](/zh-CN/realtime-media/rtc/get-started/quick-start#集成-sdk)。
+
+#### 加入频道
+
+在 v4.0.0 Beta 中，你可以使用 `joinChannel` 或 `joinChannelWithOptions` 方法加入频道。
+
+```typescript
+this._engine?.joinChannel(token: string, channelId: string, info: string, uid: number): number;
+this._engine?.joinChannelWithOptions(token: string, channelId: string, uid: number, options: ChannelMediaOptions): number;
+```
+
+v4.0.0 移除了原 `joinChannel` 方法，原 `joinChannelWithOptions` 在 v4.0.0 中更名为 `joinChannel`。
+
+```typescript
+this._engine?.joinChannel(
+ token: string,
+ channelId: string,
+ uid: number,
+ options: ChannelMediaOptions
+): number;
+```
+
+此外，`ChannelMediaOptions` 枚举中的 `publishAudioTrack` 替换为 `publishMicrophoneTrack`。如果你在 v4.0.0 Beta 版本中使用了该功能、并且希望升级到 v4.0.0 版本，请在升级 SDK 后修改功能的实现。
+
+### 行为变更
+
+本节介绍由 v4.0.0 对 SDK 默认行为和 API 行为的合理优化造成的变更。
+
+#### 频道场景
+
+在 v3.7.0 中，默认的频道场景为 `ChannelProfileCommunication`（通信）。
+
+因为直播场景支持从一对一通话无缝切换到多人互动，所以声网自 v3.0.0 起将通信场景下内部的传输协议和弱网对抗能力改成与直播场景一致。在 v4.0.0 中，声网也将默认的频道场景改成了 `ChannelProfileLiveBroadcasting`（直播）。
+
+#### 默认日志文件
+
+在 v3.7.0 中，有多个日志文件时，旧的文件会以 agorasdk_x.log 格式命名，例如 agorasdk_1.log。v4.0.0 修改命名格式为 agorasdk.x.log（例如 agorasdk.1.log）。此外，v4.0.0 新增了 agoraapi.log 记录 API 调用的日志。
+
+#### 快速切换频道
+
+在 v3.7.0 中，你需要调用 `switchChannel` 实现快速切换频道。
+
+在 v4.0.0 中，通过 `leaveChannel` 和 `joinChannel` 切换频道即可实现和 `switchChannel` 一样的切换速度，因此该版本删除了 `switchChannel`。如果你在 v3.7.0 中使用 `switchChannel` 切换频道，你需要在 v4.0.0 中先调用 `leaveChannel` 离开当前频道，再调用 `joinChannel` 加入第二个频道。
+
+#### 声网自研插件
+
+v4.0.0 在 v4.0.0 Beta 的基础上新增了自动加载自研动态库功能。自该版本起，当你使用声网自研的插件时，不需要在项目中手动集成动态库，SDK 会在 `IRtcEngine` 初始化阶段自动加载动态库。你可以直接调用插件对应的方法即可开启该功能。
+
+- 虚拟背景插件：`enableVirtualBackground`
+- 视频增强插件：
+  - `setBeautyEffectOptions`
+  - `setVideoDenoiserOptions`
+  - `setLowlightEnhanceOptions`
+  - `setColorEnhanceOptions`
+- 超分辨率插件：`enableRemoteSuperResolution`
+- 美声插件：
+  - `setAudioEffectPreset`
+  - `setVoiceBeautifierPreset`
+  - `setVoiceConversionPreset`
+- 空间音频插件：`enableSpatialAudio`
+- 内容审核插件：`enableContentInspect`
+
+#### 本地音视频流录制
+
+- 在 v3.7.0 中，如需开启本地音视频流录制，需要调用 `startRecording` 方法。
+- 在 v4.0.0 中，如需开启本地音视频流录制，需要调用 `getMediaRecorder` 方法获取 `IMediaRecorder` 接口类。
+
+**虚拟节拍器**
+
+当你调用 `startRhythmPlayer` 时，SDK 默认将虚拟节拍器的声音发布到远端，如果你不希望远端用户听到虚拟节拍器，需参考以下操作：
+
+- 在 v3.7.0 中，调用  `configRhythmPlayer` 并将 `publish` 设置为 `false`。
+- 在 v4.0.0 中，将 `ChannelMediaOptions` 中的 `publishRhythmPlayerTrack` 设置为 `false`。
+
+#### 音量提示
+
+当你调用 `enableAudioVolumeIndication` 方法并将 `interval` 参数设置为 > 0 时，可启用用户音量提示。在 v3.7.0 和 v4.0.0 中，`interval` 参数的定义存在差异：
+
+- 在 v3.7.0 中：建议设置到大于 200 毫秒。最小不得少于 10 毫秒，否则会收不到 `onAudioVolumeIndication` 回调。
+- 在 v4.0.0 中：该参数需要设为 200 的整数倍。如果取值低于 200，SDK 会自动调整为 200。
+
+当启用音量提示回调后，SDK 会上报 `onAudioVolumeIndication` 回调，如果本地用户将自己静音（调用了 `muteLocalAudioStream`），在 v3.7.0 和 v4.0.0 中，SDK 的行为不一致：
+
+- 在 v3.7.0 中：SDK 立即停止报告本地用户的音量提示回调。
+- 在 v4.0.0 中：SDK 会继续报告本地用户的音量提示回调。此时，如果用户依旧开启了音频采集，`AudioVolumeInfo` 中 `volume` 的值表示本地音频采集信号的音量。
+
+#### 设备权限
+
+- 在 v3.7.0 中，通过 `LocalAudioStateChanged` 事件中的 `AudioLocalError.DeviceNoPermission `上报没有权限启动音频采集设备；通过 `LocalVideoStateChanged` 事件中的 `LocalVideoStreamError. `上报没有权限启动视频采集设备。
+- 在 v4.0.0 中，统一通过 `onPermissionError `回调上报音视频采集设备的权限状态。
+
+**通话前网络测试**
+
+如果你需要开启或停止网络连接质量测试：
+
+在 v3.7.0 中，你可以调用 `enableLastmileTest` 开启网络质量测试，如果你想停止网络测试，需要调用 `disableLastmileTest`。
+
+在 v4.0.0 中，你可以调用 `startLastmileProbeTest `启用网络质量测试，如果你想停止网络测试，需要调用 `stopLastmileProbeTest`。
+
+#### 远端媒体事件触发机制
+
+假设存在以下两种场景：
+
+- 场景一：主播在频道外调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态、然后加入频道。
+- 场景二：主播在频道内调用 `muteLocalAudioStream` 或 `muteLocalVideoStream` 改变本地音视频流的发布状态，然后其他用户加入频道。
+
+v3.7.0 和 v4.0.0 SDK 中存在以下行为差异：
+
+- 在 v3.7.0 中，本地用户会收到 `remoteAudioStateChangedOfUid` 或 `remoteVideoStateChangedOfUid` 回调，报告远端主播的音视频流的状态变化。
+- 在 v4.0.0 中，本地用户不会收到 `remoteAudioStateChangedOfUid` 或 `remoteVideoStateChangedOfUid` 回调，但是会收到 `didAudioMuted` 或 `didVideoMuted` 回调，报告远端主播的发流状态变化（即是否正在发布音视频流）。
+
+#### 频道媒体选项
+
+在加入频道的同时设置频道媒体选项时，在 v3.7.0 和 v4.0.0 中，SDK 的行为存在以下差异：
+
+- 在 v3.7.0 中，如果你将 `ChannelMediaOptions` 中的 `publishLocalAudio` 设置为 `false`，会停止在频道内发布本地音频流。
+- 在 v4.0.0 中，如果你将 `ChannelMediaOptions` 中的 `publishMicrophoneTrack` 设置为 `false`，除了停止在频道内发布本地音频流以外，还会停止本地麦克风采集。
+
+#### 视频信息改变事件 (iOS)
+
+如果在采集视频时调整视频采集设备为横屏或竖屏，在 v3.7.0 和 v4.0.0 中，SDK 上报的视频信息改变事件存在以下差异：
+
+- 在 v3.7.0 中，`videoSizeChanged` 回调中的 `rotation` 参数会显示当前设备的旋转信息。
+- 在 v4.0.0 中，`onVideoSizeChanged` 回调中的 `rotation` 参数始终为 `0`。
+
+### 功能差距
+
+本节介绍在 v3.7.0 中支持、但在 v4.0.0 中不支持或行为不一致的功能，这些功能会在后续版本中支持或改为一致。
+
+#### 音频应用场景
+
+v4.0.0 重构了音频应用场景，可以替代大部分 v3.7.0 的音频应用场景。下表展示了两个版本中音频应用场景的对应关系：
+
+| v3.7.0                               | v4.0.0                       |
+| :----------------------------------- | :--------------------------- |
+| `AudioScenarioDefault`               | `AudioScenarioDefault`       |
+| `AudioScenarioChatroomEntertainment` | `AudioScenarioChatroom`      |
+| `AudioScenarioEducation`             | `AudioScenarioDefault`       |
+| `AudioScenarioGameStreaming`         | `AudioScenarioGameStreaming` |
+| `AudioScenarioShowroom`              | `AudioScenarioDefault`       |
+| `AudioScenarioChatroomGaming`        | `AudioScenarioChatroom`      |
+| `AudioScenarioIot`                   | `AudioScenarioDefault`       |
+| `AudioScenarioMeeting`               | `AudioScenarioMeeting`       |
+
+### 已删除 API
+
+v4.0.0 中，删除了已废弃或不推荐使用的 API。已删除 API 的替代方案或删除原因展示如下：
+
+- `VirtualBackgroundSourceEnabled` 事件：使用 `enableVirtualBackground `的返回值替代。
+- `UserSuperResolutionEnabled` 事件：使用 `onRemoteVideoStats `回调的 `superResolutionType` 成员替代。
+- `setAudioMixingPlaybackSpeed`：使用 `IMediaPlayer` 类下的相关 API 替代。
+- `getAudioFileInfo `和 `RequestAudioFileInfo` 事件：使用 `getDuration` 替代。
+- `setLocalPublishFallbackOption` 和 `LocalPublishFallbackToAudioOnly` 事件：在 v3.7.0 中很少使用。
+- `RenderMode` 中的 `FILL `(4)：该模式可能造成图片过度拉伸，不推荐使用。
+- `AudioMixingReason `中的以下枚举：在 v3.7.0 中应用场景很少。
+  - `AudioMixingReasonStartedByUser`
+  - `AudioMixingReasonStartNewLoop`
+  - `AudioMixingReasonPausedByUser`
+  - `AudioMixingReasonResumedByUser`
+- `AudioMixingFinished `事件: 使用 `onAudioMixingStateChanged` 替代。
+- `enableDeepLearningDenoise`：AI 降噪将在后续版本改由 SDK 控制，不通过 API 实现。
+- `takeSnapshot` 和 `onSnapshotTaken` 中的 `channel` 参数：冗余参数。
+
+- `setDefaultMuteAllRemoteVideoStreams`：由 `ChannelMediaOptions` 中的 `autoSubscribeVideo `替代。
+- `setDefaultMuteAllRemoteAudioStreams`：由 `ChannelMediaOptions `中的 `autoSubscribeAudio `替代。
+
+- `startAudioMixing `中的 `replace` 参数：由 `ChannelMediaOptions` 中的 `publishMicrophoneTrack` 替代。
+
+### 命名变更
+
+v4.0.0 的命名和数据类型变更会在你编译项目时引入 IDE 的报错提示，你需要根据提示更新 App 代码。
+
+主要的 API 及参数名变更如下：
+
+- `FirstLocalAudioFrame` 事件变更为 `onFirstLocalAudioFramePublished` 回调。
+- `LogConfig `中的 `fileSize `成员变更为 `fileSizeInKB`。
+- `enableAudioVolumeIndication `中的 `report_vad `参数变更为 `reportVad`。
+
+</PlatformStructured>

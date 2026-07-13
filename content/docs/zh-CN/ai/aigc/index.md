@@ -1,0 +1,20 @@
+---
+title: "AIGC"
+---
+声网 RTE × AIGC（Artificial Intelligence Generated Content，生成式人工智能）一站式解决方案，提供更真实、更沉浸、更有趣的 AI 实时互动玩法。通过声网 AIGC 解决方案，可以快速搭建多类低延迟的 AI 实时互动场景，包括：AI 语音助手、AI 虚拟伴侣、AI 口语老师、AI 语音游戏等。声网的 AIGC 解决方案可以搭建语音助手、虚拟恋人、口语陪练等细分场景。
+
+## 开始构建
+
+<Cards>
+  <Card title="快速开始" href="/zh-CN/ai/aigc/get-started/quick-start" description="运行示例或完成最小可用集成，快速验证核心流程。" />
+  <Card title="产品说明" href="/zh-CN/ai/aigc/overview/product-overview" description="了解产品概念、适用场景和关键约束。" />
+  <Card title="资源获取" href="/zh-CN/ai/aigc/resources" description="进入该主题继续了解配置、实现步骤或参考信息。" />
+</Cards>
+
+## 立即体验
+
+    - AIGC 核心功能
+
+## 快速入门
+
+    - 实现 AI 语音助手

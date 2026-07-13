@@ -1,0 +1,66 @@
+---
+title: "FLogUploadServerInfo"
+description: "日志服务器的配置信息。"
+---
+<a id="class_loguploadserverinfo__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FLogUploadServerInfo {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LogUploadServerInfo")
+	FString serverDomain = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LogUploadServerInfo")
+	FString serverPath = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LogUploadServerInfo")
+	int serverPort = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LogUploadServerInfo")
+	bool serverHttps = true;
+	FLogUploadServerInfo() {}
+	FLogUploadServerInfo(const agora::rtc::LogUploadServerInfo& AgoraData) {
+		serverDomain = UTF8_TO_TCHAR(AgoraData.serverDomain);
+		serverPath = UTF8_TO_TCHAR(AgoraData.serverPath);
+		serverPort = AgoraData.serverPort;
+		serverHttps = AgoraData.serverHttps;
+	}
+	agora::rtc::LogUploadServerInfo CreateAgoraData() const {
+		agora::rtc::LogUploadServerInfo AgoraData;
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.serverDomain, serverDomain)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.serverPath, serverPath)
+		
+		AgoraData.serverPort = serverPort;
+		AgoraData.serverHttps = serverHttps;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::LogUploadServerInfo& AgoraData) const {
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.serverDomain)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.serverPath)
+	}
+};
+```
+
+<a id="class_loguploadserverinfo__detailed_desc"></a>
+
+<a id="class_loguploadserverinfo__parameters"></a>
+
+## 属性
+
+### `serverDomain`
+
+日志服务器的域名。
+
+### `serverPath`
+
+日志在服务器上的存储路径。
+
+### `serverPort`
+
+日志服务器的端口。
+
+### `serverHttps`
+
+日志服务器是否使用 HTTPS 协议：
+
+- true: 使用 HTTPS 协议。
+- false: 使用 HTTP 协议。

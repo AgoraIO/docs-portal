@@ -1,0 +1,628 @@
+---
+title: "限定访问区域"
+---
+
+<PlatformStructured platform="android">
+
+为适应不同国家或地区的法律法规，声网支持限定访问区域功能，实现 SDK 只访问指定区域内的声网服务器，将音视频和消息数据传输限定在某一区域范围内。
+
+:::info[信息]
+该功能为高级设置，适用于有访问安全限制的场景。
+:::
+
+## 技术原理
+
+开启限定访问区域功能后，不论用户在哪个区域使用你的 App，SDK 都只会访问指定区域的声网服务器。
+
+例如你指定了北美为访问区域，假设有两位用户分别从北美和中国连接声网服务器：
+
+| 指定的访问区域 | App 用户所在区域 | SDK 实际访问的区域 | 连接后的用户体验 |
+| --- | --- | --- | --- |
+| 北美 | 北美 | 北美 | 正常 |
+| 中国 | 可能受到较大影响 |  |  |
+
+:::info[信息]
+- 如果指定区域的服务器都不可用，SDK 会直接报错。
+- 由于指定区域与 App 用户所在区域之间需要经过跨区域公共互联网，若公网网络质量较差，音视频体验会受到影响。
+:::
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+你需要在调用 `create`[2/2] 方法创建 RtcEngine 实例时，通过设置 `RtcEngineConfig` 中的 `mAreaCode` 参数来指定访问区域。
+
+- `AREA_CODE_GLOB`：（默认）全球。
+- `AREA_CODE_CN`：中国大陆。
+- `AREA_CODE_NA`：北美。
+- `AREA_CODE_EU`：欧洲。
+- `AREA_CODE_AS`：除中国大陆以外的亚洲区域。
+- `AREA_CODE_JP`：日本。
+- `AREA_CODE_IN`：印度。
+
+:::info[信息]
+区域码支持位操作。
+:::
+
+### 指定区域
+
+如果要指定仅访问一个区域的服务器（如北美），在创建 `RtcEngine` 实例之前，添加 `config.mAreaCode = AREA_CODE_NA;`。
+
+```java
+// 初始化 App， 并加入频道
+private void initializeAndJoinChannel() {
+    try {
+        RtcEngineConfig config = new RtcEngineConfig();
+        config.mAppId = appId;
+        config.mContext = mContext;
+        config.mEventHandler = mEngineEventHandler.mRtcEventHandler;
+        // 指定仅访问北美的服务器
+        config.mAreaCode = AREA_CODE_NA;
+        mRtcEngine = RtcEngine.create(config);
+    } catch (Exception e) {
+            throw new RuntimeException("Check the error.");
+    }
+```
+
+### 排除区域
+
+如果要排除一个区域的服务器（如中国大陆），在创建 `RtcEngine` 实例之前，添加 `config.mAreaCode = AREA_CODE_GLOB ^ AREA_CODE_CN;`。
+
+```java
+// 初始化 App， 并加入频道
+private void initializeAndJoinChannel() {
+    try {
+        RtcEngineConfig config = new RtcEngineConfig();
+        config.mAppId = appId;
+        config.mContext = mContext;
+        config.mEventHandler = mEngineEventHandler.mRtcEventHandler;
+        // 在访问区域中排除中国大陆
+        config.mAreaCode = AREA_CODE_GLOB ^ AREA_CODE_CN;
+        mRtcEngine = RtcEngine.create(config);
+    } catch (Exception e) {
+            throw new RuntimeException("Check the error.");
+    }
+```
+
+## 参考信息
+
+### API 参考
+
+- [`create`[2/2]](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_initialize)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+为适应不同国家或地区的法律法规，声网支持限定访问区域功能，实现 SDK 只访问指定区域内的声网服务器，将音视频和消息数据传输限定在某一区域范围内。
+
+:::info[信息]
+该功能为高级设置，适用于有访问安全限制的场景。
+:::
+
+## 技术原理
+
+开启限定访问区域功能后，不论用户在哪个区域使用你的 App，SDK 都只会访问指定区域的声网服务器。
+
+例如你指定了北美为访问区域，假设有两位用户分别从北美和中国连接声网服务器：
+
+| 指定的访问区域 | App 用户所在区域 | SDK 实际访问的区域 | 连接后的用户体验 |
+| --- | --- | --- | --- |
+| 北美 | 北美 | 北美 | 正常 |
+| 中国 | 可能受到较大影响 |  |  |
+
+:::info[信息]
+- 如果指定区域的服务器都不可用，SDK 会直接报错。
+- 由于指定区域与 App 用户所在区域之间需要经过跨区域公共互联网，若公网网络质量较差，音视频体验会受到影响。
+:::
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+你需要在调用 `sharedEngineWithConfig` 方法创建 `AgoraRtcEngineKit` 实例时，通过设置 `AgoraRtcEngineConfig` 中的 `areaCode` 参数来指定访问区域。
+
+- `AgoraAreaCodeTypeGlobal`：（默认）全球。
+- `AgoraAreaCodeTypeCN`：中国大陆。
+- `AgoraAreaCodeTypeNA`：北美。
+- `AgoraAreaCodeTypeEUR`：欧洲。
+- `AgoraAreaCodeTypeAS`：除中国大陆以外的亚洲区域。
+- `AgoraAreaCodeTypeJP`：日本。
+- `AgoraAreaCodeTypeIN`：印度。
+
+:::info[信息]
+区域码支持位操作。
+:::
+
+### 指定区域
+
+如果要指定仅访问一个区域的服务器（如北美），在创建 `AgoraRtcEngineKit` 实例之前，添加 `config.areaCode = .NA`。
+
+```swift
+// 初始化 AgoraEngine
+func initializeAgoraEngine() {
+    let config = AgoraRtcEngineConfig()
+    // 传入你的 App ID
+    config.appId = "YourAppId"
+    // 将频道场景设置为直播
+    config.channelProfile = .liveBroadcasting
+    // 指定仅访问北美的服务器
+    config.areaCode = .NA
+    agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+}
+
+```
+
+### 排除区域
+
+如果要排除一个区域的服务器（如中国大陆），在创建 `AgoraRtcEngineKit` 实例之前，添加 `config.areaCode = AgoraAreaCodeType(rawValue: AgoraAreaCodeType.global.rawValue ^ AgoraAreaCodeType.CN.rawValue)!`。
+
+```swift
+// 初始化 AgoraEngine
+func initializeAgoraEngine() {
+    let config = AgoraRtcEngineConfig()
+    // 传入你的 App ID
+    config.appId = "YourAppId"
+    // 将频道场景设置为直播
+    config.channelProfile = .liveBroadcasting
+    // 在访问区域中排除中国大陆
+    config.areaCode = AgoraAreaCodeType(rawValue: AgoraAreaCodeType.global.rawValue ^ AgoraAreaCodeType.CN.rawValue)!
+    agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+}
+```
+
+## 参考信息
+
+### API 参考
+
+[`sharedEngineWithConfig`](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_initialize)
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+为适应不同国家或地区的法律法规，声网支持限定访问区域功能，实现 SDK 只访问指定区域内的声网服务器，将音视频和消息数据传输限定在某一区域范围内。
+
+:::info[信息]
+该功能为高级设置，适用于有访问安全限制的场景。
+:::
+
+## 技术原理
+
+开启限定访问区域功能后，不论用户在哪个区域使用你的 App，SDK 都只会访问指定区域的声网服务器。
+
+例如你指定了北美为访问区域，假设有两位用户分别从北美和中国连接声网服务器：
+
+| 指定的访问区域 | App 用户所在区域 | SDK 实际访问的区域 | 连接后的用户体验 |
+| --- | --- | --- | --- |
+| 北美 | 北美 | 北美 | 正常 |
+| 中国 | 可能受到较大影响 |  |  |
+
+:::info[信息]
+- 如果指定区域的服务器都不可用，SDK 会直接报错。
+- 由于指定区域与 App 用户所在区域之间需要经过跨区域公共互联网，若公网网络质量较差，音视频体验会受到影响。
+:::
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+你需要在调用 `sharedEngineWithConfig` 方法创建 `AgoraRtcEngineKit` 实例时，通过设置 `AgoraRtcEngineConfig` 中的 `areaCode` 参数来指定访问区域。
+
+- `AgoraAreaCodeTypeGlobal`：（默认）全球。
+- `AgoraAreaCodeTypeCN`：中国大陆。
+- `AgoraAreaCodeTypeNA`：北美。
+- `AgoraAreaCodeTypeEUR`：欧洲。
+- `AgoraAreaCodeTypeAS`：除中国大陆以外的亚洲区域。
+- `AgoraAreaCodeTypeJP`：日本。
+- `AgoraAreaCodeTypeIN`：印度。
+
+:::info[信息]
+区域码支持位操作。
+:::
+
+### 指定区域
+
+如果要指定仅访问一个区域的服务器（如北美），在创建 `AgoraRtcEngineKit` 实例之前，添加 `config.areaCode = .NA`。
+
+```swift
+// 初始化 AgoraEngine
+func initializeAgoraEngine() {
+    let config = AgoraRtcEngineConfig()
+    // 传入你的 App ID
+    config.appId = "YourAppId"
+    // 将频道场景设置为直播
+    config.channelProfile = .liveBroadcasting
+    // 指定仅访问北美的服务器
+    config.areaCode = .NA
+    agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+}
+
+```
+
+### 排除区域
+
+如果要排除一个区域的服务器（如中国大陆），在创建 `AgoraRtcEngineKit` 实例之前，添加 `config.areaCode = AgoraAreaCodeType(rawValue: AgoraAreaCodeType.global.rawValue ^ AgoraAreaCodeType.CN.rawValue)!`。
+
+```swift
+// 初始化 AgoraEngine
+func initializeAgoraEngine() {
+    let config = AgoraRtcEngineConfig()
+    // 传入你的 App ID
+    config.appId = "YourAppId"
+    // 将频道场景设置为直播
+    config.channelProfile = .liveBroadcasting
+    // 在访问区域中排除中国大陆
+    config.areaCode = AgoraAreaCodeType(rawValue: AgoraAreaCodeType.global.rawValue ^ AgoraAreaCodeType.CN.rawValue)!
+    agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+}
+```
+
+## 参考信息
+
+### API 参考
+
+[`sharedEngineWithConfig`](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_initialize)
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+为适应不同国家或地区的法律法规，声网支持限定访问区域功能，实现 SDK 只访问指定区域内的声网服务器，将音视频和消息数据传输限定在某一区域范围内。
+
+:::info[信息]
+该功能为高级设置，适用于有访问安全限制的场景。
+:::
+
+## 技术原理
+
+开启限定访问区域功能后，不论用户在哪个区域使用你的 App，SDK 都只会访问指定区域的声网服务器。
+
+例如你指定了北美为访问区域，假设有两位用户分别从北美和中国连接声网服务器：
+
+| 指定的访问区域 | App 用户所在区域 | SDK 实际访问的区域 | 连接后的用户体验 |
+| --- | --- | --- | --- |
+| 北美 | 北美 | 北美 | 正常 |
+| 中国 | 可能受到较大影响 |  |  |
+
+:::info[信息]
+- 如果指定区域的服务器都不可用，SDK 会直接报错。
+- 由于指定区域与 App 用户所在区域之间需要经过跨区域公共互联网，若公网网络质量较差，音视频体验会受到影响。
+:::
+
+## 实现方法
+
+你可以调用 `AgoraRTC.setArea` 方法来指定访问区域。默认情况下，SDK 会就近选择声网服务器进行连接。设置访问区域之后，SDK 只会连接到指定区域内的声网服务器。
+
+目前仅支持指定单个访问区域。区域可设为：
+
+- `ASIA`: 除中国大陆以外的亚洲区域。
+- `CHINA`: 中国大陆。
+- `EUROPE`: 欧洲区域。
+- `GLOBAL`: 全球。
+- `INDIA`: 印度。
+- `JAPAN`: 日本。
+- `NORTH_AMERICA`: 北美区域。
+
+参考以下示例代码：
+
+```javascript
+AgoraRTC.setArea("ASIA");
+```
+
+## 开发注意事项
+
+如果你的网络环境部署了防火墙，使用该功能还需要根据[应用企业防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)将对应的域名添加到防火墙白名单，不对 IP 地址设限，且开放相应端口。
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+为适应不同国家或地区的法律法规，声网支持限定访问区域功能，实现 SDK 只访问指定区域内的声网服务器，将音视频和消息数据传输限定在某一区域范围内。
+
+:::info[信息]
+该功能为高级设置，适用于有访问安全限制的场景。
+:::
+
+## 技术原理
+
+开启限定访问区域功能后，不论用户在哪个区域使用你的 App，SDK 都只会访问指定区域的声网服务器。
+
+例如你指定了北美为访问区域，假设有两位用户分别从北美和中国连接声网服务器：
+
+| 指定的访问区域 | App 用户所在区域 | SDK 实际访问的区域 | 连接后的用户体验 |
+| --- | --- | --- | --- |
+| 北美 | 北美 | 北美 | 正常 |
+| 中国 | 可能受到较大影响 |  |  |
+
+:::info[信息]
+- 如果指定区域的服务器都不可用，SDK 会直接报错。
+- 由于指定区域与 App 用户所在区域之间需要经过跨区域公共互联网，若公网网络质量较差，音视频体验会受到影响。
+:::
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+你需要在调用 `initialize` 方法初始化 `IRtcEngine` 实例时，通过设置 `RtcEngineContext` 中的 `areaCode` 参数来指定访问区域。
+
+- `AREA_CODE_GLOB`：（默认）全球。
+- `AREA_CODE_CN`：中国大陆。
+- `AREA_CODE_NA`：北美。
+- `AREA_CODE_EU`：欧洲。
+- `AREA_CODE_AS`：除中国大陆以外的亚洲区域。
+- `AREA_CODE_JP`：日本。
+- `AREA_CODE_IN`：印度。
+
+:::info[信息]
+区域码支持按位操作。
+:::
+
+### 指定区域
+
+如果要指定仅访问北美区域的服务器，在调用 `initialize` 方法之前设置 `context.areaCode = AREA_CODE_NA;`。
+
+```cpp
+// 初始化声网 SDK
+bool CAgoraRegionConnDlg::InitAgora() {
+    // 创建 AgoraRtcEngine
+    m_rtcEngine = createAgoraRtcEngine();
+    if (!m_rtcEngine) {
+        m_lstInfo.InsertString(m_lstInfo.GetCount() - 1,
+                               _T("createAgoraRtcEngine failed"));
+        return false;
+    }
+    // 设置接收通知消息的窗口
+    m_eventHandler.SetMsgReceiver(m_hWnd);
+
+    RtcEngineContext context;
+    std::string strAppID = GET_APP_ID;
+    context.appId = strAppID.c_str();
+    CString area_code;
+    m_cmbAreaCode.GetWindowText(area_code);
+
+    // 指定仅访问北美的服务器
+    context.areaCode = AREA_CODE_NA;
+
+    // 初始化 RtcEngineContext
+    int ret = m_rtcEngine->initialize(context);
+    if (ret != 0) {
+        m_initialize = false;
+        CString strInfo;
+        strInfo.Format(_T("initialize failed: %d"), ret);
+        m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+        return false;
+    } else
+        m_initialize = true;
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), _T("initialize success"));
+}
+```
+
+### 排除区域
+
+如果要排除一个区域的服务器（如中国大陆），在调用 `initialize` 方法之前添加 `context.areaCode = AREA_CODE_GLOB ^ AREA_CODE_CN;`。
+
+```cpp
+// 初始化声网 SDK
+bool CAgoraRegionConnDlg::InitAgora() {
+    // 创建 AgoraRtcEngine
+    m_rtcEngine = createAgoraRtcEngine();
+    if (!m_rtcEngine) {
+        m_lstInfo.InsertString(m_lstInfo.GetCount() - 1,
+                               _T("createAgoraRtcEngine failed"));
+        return false;
+    }
+    // 设置接收通知消息的窗口
+    m_eventHandler.SetMsgReceiver(m_hWnd);
+
+    RtcEngineContext context;
+    std::string strAppID = GET_APP_ID;
+    context.appId = strAppID.c_str();
+    CString area_code;
+    m_cmbAreaCode.GetWindowText(area_code);
+
+    // 在访问区域中排除中国大陆
+    context.areaCode = AREA_CODE_GLOB ^ AREA_CODE_CN;
+
+    // 初始化 RtcEngineContext
+    int ret = m_rtcEngine->initialize(context);
+    if (ret != 0) {
+        m_initialize = false;
+        CString strInfo;
+        strInfo.Format(_T("initialize failed: %d"), ret);
+        m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+        return false;
+    } else
+        m_initialize = true;
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), _T("initialize success"));
+}
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="RegionConn" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/RegionConn" />
+</Cards>
+
+### API 参考
+
+[`initialize`](/api-ref/rtc/windows/API/toc_initialize#api_irtcengine_initialize)
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+为适应不同国家或地区的法律法规，声网支持限定访问区域功能，实现 SDK 只访问指定区域内的声网服务器，将音视频和消息数据传输限定在某一区域范围内。
+
+:::info[信息]
+该功能为高级设置，适用于有访问安全限制的场景。
+:::
+
+## 技术原理
+
+开启限定访问区域功能后，不论用户在哪个区域使用你的 App，SDK 都只会访问指定区域的声网服务器。
+
+例如你指定了北美为访问区域，假设有两位用户分别从北美和中国连接声网服务器：
+
+| 指定的访问区域 | App 用户所在区域 | SDK 实际访问的区域 | 连接后的用户体验 |
+| --- | --- | --- | --- |
+| 北美 | 北美 | 北美 | 正常 |
+| 中国 | 可能受到较大影响 |  |  |
+
+:::info[信息]
+- 如果指定区域的服务器都不可用，SDK 会直接报错。
+- 由于指定区域与 App 用户所在区域之间需要经过跨区域公共互联网，若公网网络质量较差，音视频体验会受到影响。
+:::
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+你需要在调用 `create` 方法创建 RtcEngine 实例时，通过设置 `config` 的 `AreaCode` 参数来指定访问区域。
+
+- `GLOB`：全球。
+- `CN`：（默认）中国大陆。
+- `NA`：北美。
+- `EU`：欧洲。
+- `AS`：除中国大陆以外的亚洲区域。
+- `JP`：日本。
+- `IN`：印度。
+
+:::info[信息]
+区域码支持位操作。
+:::
+
+### 指定区域
+
+如果要指定仅访问一个区域的服务器（如北美），可参考下列示例代码：
+
+```arkts
+// 指定区域
+let config: RtcEngineConfig = new RtcEngineConfig();
+let context = getContext(this) as common.UIAbilityContext;
+// 在这里输入你在声网控制台中获取的 App ID
+config.mAppId = "<#Your App ID#>";
+// 指定仅访问北美的服务器
+config.areaCode = Constants.AreaCode.NA;
+config.mEventHandler = {};
+// 创建并初始化 RtcEngine
+this.rtcEngine = RtcEngine.create(config);
+```
+
+### 排除区域
+
+如果要排除一个区域的服务器（如中国大陆），可参考下列示例代码：
+
+```arkts
+// 排除区域
+let config: RtcEngineConfig = new RtcEngineConfig();
+let context = getContext(this) as common.UIAbilityContext;
+// 在这里输入你在声网控制台中获取的 App ID
+config.mAppId = "<#Your App ID#>";
+// // 在访问区域中排除中国大陆
+config.areaCode = Constants.AreaCode.GLOB ^ Constants.AreaCode.CN;
+config.mEventHandler = {};
+// 创建并初始化 RtcEngine
+this.rtcEngine = RtcEngine.create(config);
+```
+
+## API 参考
+
+- [`create`](/api-ref/rtc/harmonyos/API/toc_initialize#api_irtcengine_initialize)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+为适应不同国家或地区的法律法规，声网支持限定访问区域功能，实现 SDK 只访问指定区域内的声网服务器，将音视频和消息数据传输限定在某一区域范围内。
+
+:::info[信息]
+该功能为高级设置，适用于有访问安全限制的场景。
+:::
+
+## 技术原理
+
+开启限定访问区域功能后，不论用户在哪个区域使用你的 App，SDK 都只会访问指定区域的声网服务器。
+
+例如你指定了北美为访问区域，假设有两位用户分别从北美和中国连接声网服务器：
+
+| 指定的访问区域 | App 用户所在区域 | SDK 实际访问的区域 | 连接后的用户体验 |
+| --- | --- | --- | --- |
+| 北美 | 北美 | 北美 | 正常 |
+| 中国 | 可能受到较大影响 |  |  |
+
+:::info[信息]
+- 如果指定区域的服务器都不可用，SDK 会直接报错。
+- 由于指定区域与 App 用户所在区域之间需要经过跨区域公共互联网，若公网网络质量较差，音视频体验会受到影响。
+:::
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+你需要在调用 `Initialize` 方法初始化 `IRtcEngine` 实例时，通过设置 `RtcEngineContext` 中的 `areaCode` 参数来指定访问区域。
+
+- `AREA_CODE_GLOB`：（默认）全球。
+- `AREA_CODE_CN`：中国大陆。
+- `AREA_CODE_NA`：北美。
+- `AREA_CODE_EU`：欧洲。
+- `AREA_CODE_AS`：除中国大陆以外的亚洲区域。
+- `AREA_CODE_JP`：日本。
+- `AREA_CODE_IN`：印度。
+
+:::info[信息]
+区域码支持位操作。
+:::
+
+### 指定区域
+
+如果要指定仅访问一个区域的服务器（如北美），在调用 `Initialize` 方法时将 `areaCode` 设为 `context.areaCode = AREA_CODE_NA;`。
+
+```csharp
+// 创建引擎
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+RtcEngineContext context = new RtcEngineContext();
+context.appId = _appID;
+context.channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING;
+context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT;
+// 设置仅访问北美的服务器
+context.areaCode = AREA_CODE.AREA_CODE_NA;
+// 初始化
+RtcEngine.Initialize(context);
+```
+
+### 排除区域
+
+如果要排除一个区域的服务器（如中国大陆），在调用 `Initialize` 方法时将 `areaCode` 设为 `context.areaCode = AREA_CODE.AREA_CODE_GLOB ^ AREA_CODE.AREA_CODE_CN;`。
+
+```csharp
+// 创建引擎
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+RtcEngineContext context = new RtcEngineContext();
+context.appId = _appID;
+context.channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING;
+context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT;
+// 排除中国大陆的服务器
+context.areaCode = AREA_CODE.AREA_CODE_GLOB ^ AREA_CODE.AREA_CODE_CN;
+// 初始化
+RtcEngine.Initialize(context);
+```
+
+## API 参考
+
+- [`CreateAgoraRtcEngine`](/api-ref/rtc/unity/API/toc_initialize#api_createagorartcengine)
+- [`Initialize`](/api-ref/rtc/unity/API/toc_initialize#api_irtcengine_initialize)
+
+</PlatformStructured>

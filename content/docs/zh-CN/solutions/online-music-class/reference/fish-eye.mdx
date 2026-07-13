@@ -1,0 +1,976 @@
+---
+title: "在线音乐教学 API"
+---
+
+<PlatformStructured platform="android">
+
+声网为在线音乐场景提供鱼眼镜头画面畸变矫正功能，本文提供相关的 API 参考。
+
+除了在线音乐教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/api-ref/rtc/android/API/rtc_api_overview) 文档来了解详细的 RTC API 用法。
+
+:::info[信息]
+鱼眼镜头畸变矫正与分离显示 API 仅存在于声网为在线音乐教学解决方案提供的声网 RTC 教育特殊版 SDK 中。声网官网的视频 SDK v4.x 版本尚不支持该功能。你可以[提交工单](https://ticket.shengwang.cn)联系我们获取声网 RTC 4.0.0 教育特殊版 SDK。
+:::
+
+此外，你还可以参考如下 API 文档，在场景实现中添加相应的功能：
+
+- [RTM SDK](/api-ref/rtm2/android/toc-configuration/configuration)，实现实时消息相关功能
+- [互动白板 SDK](/zh-CN/api-reference/whiteboard/fastboard/android)，实现在线课堂中的白板功能
+- [云端录制](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)，为实时音视频和互动白板提供录制功能
+
+<a id="enablefishcorrection"></a>
+## 方法
+### enableFishCorrection
+
+```java
+public abstract int enableFishCorrection(boolean enable, FishCorrectionParams config);
+```
+
+开启或关闭鱼眼镜头画面畸变矫正。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `enabled` | <Slot name="fish-eye-android-html-0-1-1" /> |
+| `config` | 畸变矫正参数。详见 [`FishCorrectionParams`](/zh-CN/solutions/online-music-class/reference/fish-eye#fishcorrectionparams)。 |
+
+<Slot for="fish-eye-android-html-0-1-1">
+
+是否开启鱼眼镜头画面矫正。
+
+- `YES`：开启鱼眼镜头画面畸变矫正。
+- `NO`：关闭鱼眼镜头画面畸变矫正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enablevideomultirenderer"></a>
+### enableVideoMultiRenderer
+
+```java
+public abstract int enableVideoMultiRenderer(boolean enabled);
+```
+
+开启或关闭多渲染功能。
+
+#### 参数
+| 参数 | 说明 |
+| --- | --- |
+| `enabled` | <Slot name="fish-eye-android-html-1-1-1" /> |
+
+<Slot for="fish-eye-android-html-1-1-1">
+
+是否开启多渲染功能。
+
+- `true`：开启多渲染功能。
+- `false`：关闭多渲染功能。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setuplocalvideo"></a>
+### setupLocalVideo
+
+```java
+public abstract int setupLocalVideo(VideoCanvas local, Constants.VideoViewSetupMode mode);
+```
+
+（多渲染功能）设置本地渲染画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `local` | 视频渲染画布。详见 [`VideoCanvas`](/api-ref/rtc/android/API/class_videocanvas)。 |
+| `mode` | 视频渲染模式。详见 [`VideoViewSetupMode`](/zh-CN/solutions/online-music-class/reference/fish-eye#videoviewsetupmode)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setupremotevideo"></a>
+### setupRemoteVideo
+
+```java
+public abstract int setupRemoteVideo(VideoCanvas remote, Constants.VideoViewSetupMode mode);
+```
+
+（多渲染功能）设置远端渲染画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `remote` | 视频渲染画布。详见 [`VideoCanvas`](/api-ref/rtc/android/API/class_videocanvas)。 |
+| `mode` | 视频渲染模式。详见 [`VideoViewSetupMode`](/zh-CN/solutions/online-music-class/reference/fish-eye#videoviewsetupmode)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setupremotevideoex"></a>
+### setupRemoteVideoEx
+
+```java
+public abstract int setupRemoteVideoEx(
+      VideoCanvas canvas, Constants.VideoViewSetupMode mode, RtcConnection connection)
+```
+
+（多频道场景）设置远端渲染画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `remote` | 视频渲染画布。详见 [`VideoCanvas`](/api-ref/rtc/android/API/class_videocanvas)。 |
+| `mode` | 视频渲染模式。详见 [`VideoViewSetupMode`](/zh-CN/solutions/online-music-class/reference/fish-eye#videoviewsetupmode)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/android/API/class_rtcconnection)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="fishcorrectionparams"></a>
+## 数据类型
+### FishCorrectionParams
+
+```java
+public class FishCorrectionParams {
+  public float xCenter;
+  public float yCenter;
+  public float scaleFactor;
+  public float focalLength;
+  public float polFocalLength;
+  public float splitHeight;
+  public float ss[] = new float[5];
+
+  public FishCorrectionParams() {
+    this.xCenter = 0.49f;
+    this.yCenter = 0.48f;
+    this.scaleFactor = 4.5f;
+    this.focalLength = 31.0f;
+    this.polFocalLength = 31.0f;
+    this.splitHeight = 1.0f;
+    this.ss[0] = 0.9375f;
+    this.ss[1] = 0.0f;
+    this.ss[2] = -2.9440f;
+    this.ss[3] = 5.7344f;
+    this.ss[4] = -4.4564f;
+  }
+
+  public FishCorrectionParams(float xCenter, float yCenter, float scaleFactor, float focalLength,
+      float polFocalLength, float splitHeight, float ss[]) {
+    this.xCenter = xCenter;
+    this.yCenter = yCenter;
+    this.scaleFactor = scaleFactor;
+    this.focalLength = focalLength;
+    this.polFocalLength = polFocalLength;
+    this.splitHeight = splitHeight;
+    this.ss[0] = ss[0];
+    this.ss[1] = ss[1];
+    this.ss[2] = ss[2];
+    this.ss[3] = ss[3];
+    this.ss[4] = ss[4];
+  }
+
+  @CalledByNative
+  float getXCenter() {
+    return xCenter;
+  }
+
+  @CalledByNative
+  float getYCenter() {
+    return yCenter;
+  }
+
+  @CalledByNative
+  float getScaleFactor() {
+    return scaleFactor;
+  }
+
+  @CalledByNative
+  float getFocalLength() {
+    return focalLength;
+  }
+
+  @CalledByNative
+  float getPolFocalLength() {
+    return polFocalLength;
+  }
+
+  @CalledByNative
+  float getSplitHeight() {
+    return splitHeight;
+  }
+
+  @CalledByNative
+  float[] getSS() {
+    return ss;
+  }
+}
+```
+
+鱼眼镜头画面畸变校正参数。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `xCenter` | 鱼眼图像处理的中心位置 X 坐标。取值范围 [0.4,0.6]。 |
+| `yCenter` | 鱼眼图像处理的中心位置 Y 坐标。取值范围 [0.4,0.6]。 |
+| `scaleFactor` | 鱼眼镜头成像的区域大小。取值范围 [1,5]。1 为镜头最内圈，5 为镜头最外圈。 |
+| `focalLength` | 镜头焦距。取值范围 [20,40]。 |
+| `polFocalLength` | 标定鱼眼镜头的参数，通过镜头焦距计算。取值范围 [20,40]。 |
+| `splitHeight` | 鱼眼校正效果切分高度。取值范围 [0,1]。在切分线以上的画面有鱼眼校正效果，在切分线以下的画面无鱼眼校正效果。 |
+| `ss` | 镜头的一组参数，通过多项式拟合得到。不同类型的鱼眼镜头会有不同的值。 |
+
+<a id="crop"></a>
+### Crop
+
+```java
+public static class Crop {
+    public int left;
+    public int top;
+    public int width;
+    public int height;
+
+    @CalledByNative("Crop")
+    int getLeft() {
+      return left;
+    }
+
+    @CalledByNative("Crop")
+    int getTop() {
+      return top;
+    }
+
+    @CalledByNative("Crop")
+    int getWidth() {
+      return width;
+    }
+
+    @CalledByNative("Crop")
+    int getHeight() {
+      return height;
+    }
+  }
+```
+
+需要截取的视频画面区域。参数使用屏幕坐标系，原点在屏幕左上角(0, 0)。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `left` | 屏幕坐标系中图像左上角顶点的 X 坐标。单位为像素。 |
+| `top` | 屏幕坐标系中图像左上角顶点的 Y 坐标。单位为像素。 |
+| `width` | 以图像左上角顶点为起始点，截取画面的宽度。单位为像素。 |
+| `height` | 以图像左上角顶点为起始点，截取画面的高度。单位为像素。 |
+
+图像的截取方式如下图所示：
+
+![截图方式](https://web-cdn.agora.io/docs-files/1645427490815)
+
+<a id="videoviewsetupmode"></a>
+### VideoViewSetupMode
+
+- `VIDEO_VIEW_SETUP_ADD(1)`：添加指定视图。
+- `VIDEO_VIEW_SETUP_REMOVE(2)`：删除指定视图。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+声网为在线音乐场景提供鱼眼镜头画面畸变矫正功能，本文提供相关的 API 参考。
+
+除了在线音乐教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/api-ref/rtc/ios/API/rtc_api_overview) 文档来了解详细的 RTC API 用法。
+
+:::info[信息]
+鱼眼镜头畸变矫正与分离显示 API 仅存在于声网为在线音乐教学解决方案提供的声网 RTC 教育特殊版 SDK 中。声网官网的视频 SDK v4.x 版本尚不支持该功能。你可以[提交工单](https://ticket.shengwang.cn)联系我们获取声网 RTC 4.0.0 教育特殊版 SDK。
+:::
+
+此外，你还可以参考如下 API 文档，在场景实现中添加相应的功能：
+
+- [RTM SDK](/api-ref/rtm2/ios/toc-configuration/configuration)，实现实时消息相关功能
+
+- [互动白板 SDK](/zh-CN/api-reference/whiteboard/fastboard/ios)，实现在线课堂中的白板功能
+
+- [云端录制](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)，为实时音视频和互动白板提供录制功能
+
+<a id="enablefishcorrection"></a>
+## 方法
+### enableFishCorrection
+
+```objc
+- (int) enableFishCorrection:(BOOL)enable
+                      params:(AgoraFishCorrectionParams *_Nullable)params;
+```
+
+开启或关闭鱼眼镜头画面畸变矫正。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `enable` | <Slot name="fish-eye-ios-macos-html-0-1-1" /> |
+| `params` | 畸变矫正参数。详见 [`AgoraFishCorrectionParams`](/zh-CN/solutions/online-music-class/reference/fish-eye#agorafishcorrectionparams)。 |
+
+<Slot for="fish-eye-ios-macos-html-0-1-1">
+
+是否开启鱼眼镜头画面矫正。
+
+- `YES`：开启鱼眼镜头画面畸变矫正。
+- `NO`：关闭鱼眼镜头画面畸变矫正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enablevideomultirenderer"></a>
+### enableVideoMultiRenderer
+
+```objc
+- (int)enableVideoMultiRenderer:(BOOL)enabled;
+```
+
+开启或关闭多渲染功能。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `enabled` | <Slot name="fish-eye-ios-macos-html-1-1-1" /> |
+
+<Slot for="fish-eye-ios-macos-html-1-1-1">
+
+是否开启多渲染功能。
+
+- `true`：开启多渲染功能。
+- `false`：关闭多渲染功能。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setuplocalvideo"></a>
+### setupLocalVideo
+
+```objc
+- (int)setupLocalVideo:(AgoraRtcVideoCanvas * _Nullable)local
+                  mode:(AgoraVideoViewSetupMode)mode;
+```
+
+（多渲染功能）设置本地渲染画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `local` | 视频渲染画布。详见 [`VideoCanvas`](/api-ref/rtc/ios/API/class_videocanvas)。 |
+| `mode` | 视频渲染模式。详见 [`VideoViewSetupMode`](/zh-CN/solutions/online-music-class/reference/fish-eye#videoviewsetupmode)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setupremotevideo"></a>
+### setupRemoteVideo
+
+```objc
+- (int)setupRemoteVideo:(AgoraRtcVideoCanvas * _Nonnull)remote
+                   mode:(AgoraVideoViewSetupMode)mode;
+```
+
+（多渲染功能）设置远端渲染画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `remote` | 视频渲染画布。详见 [`VideoCanvas`](/api-ref/rtc/ios/API/class_videocanvas)。 |
+| `mode` | 视频渲染模式。详见 [`VideoViewSetupMode`](/zh-CN/solutions/online-music-class/reference/fish-eye#videoviewsetupmode)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setupremotevideoex"></a>
+### setupRemoteVideoEx
+
+```objc
+- (int)setupRemoteVideoEx:(AgoraRtcVideoCanvas* _Nonnull)remote
+                     mode:(AgoraVideoViewSetupMode)mode
+               connection:(AgoraRtcConnection * _Nonnull)connection;
+```
+
+（多频道场景）设置远端渲染画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `remote` | 视频渲染画布。详见 [`VideoCanvas`](/api-ref/rtc/ios/API/class_videocanvas)。 |
+| `mode` | 视频渲染模式。详见 [`VideoViewSetupMode`](/zh-CN/solutions/online-music-class/reference/fish-eye#videoviewsetupmode)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/ios/API/class_rtcconnection)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agorafishcorrectionparams"></a>
+## 数据类型
+### AgoraFishCorrectionParams
+
+```objc
+__attribute__((visibility("default"))) @interface AgoraFishCorrectionParams : NSObject
+
+@property (nonatomic, assign) float x_center;
+
+@property (nonatomic, assign) float y_center;
+
+@property (nonatomic, assign) float scale_factor;
+
+@property (nonatomic, assign) float focal_length;
+
+@property (nonatomic, assign) float pol_focal_length;
+
+@property (nonatomic, assign) float split_height;
+
+@property (nonatomic, copy) NSArray *_Nonnull ss;
+
+@end
+```
+
+鱼眼镜头画面畸变校正参数。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `x_center` | 鱼眼图像处理的中心位置 X 坐标。取值范围 [0.4,0.6]。 |
+| `y_center` | 鱼眼图像处理的中心位置 Y 坐标。取值范围 [0.4,0.6]。 |
+| `scale_factor` | 鱼眼镜头成像的区域大小。取值范围 [1,5]。1 为镜头最内圈，5 为镜头最外圈。 |
+| `focal_length` | 镜头焦距。取值范围 [20,40]。 |
+| `pol_focal_length` | 标定鱼眼镜头的参数，通过镜头焦距计算。取值范围 [20,40]。 |
+| `split_height` | 鱼眼校正效果切分高度。取值范围 [0,1]。在切分线以上的画面有鱼眼校正效果，在切分线以下的画面无鱼眼校正效果。 |
+| `ss` | 镜头的一组参数，通过多项式拟合得到。不同类型的鱼眼镜头会有不同的值。 |
+
+<a id="agoravideocroparea"></a>
+### AgoraVideoCropArea
+
+```objc
+__attribute__((visibility("default"))) @interface AgoraVideoCropArea : NSObject
+
+@property (nonatomic, assign) int xPoint;
+
+@property (nonatomic, assign) int yPoint;
+
+@property (nonatomic, assign) int width;
+
+@property (nonatomic, assign) int height;
+
+@end
+```
+
+需要截取的视频画面区域。参数使用屏幕坐标系，原点在屏幕左上角(0, 0)。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `xPoint` | 屏幕坐标系中图像左上角顶点的 X 坐标。单位为像素。 |
+| `yPoint` | 屏幕坐标系中图像左上角顶点的 Y 坐标。单位为像素。 |
+| `width` | 以图像左上角顶点为起始点，截取画面的宽度。单位为像素。 |
+| `height` | 以图像左上角顶点为起始点，截取画面的高度。单位为像素。 |
+
+图像的截取方式如下图所示：
+
+![截图方式](https://web-cdn.agora.io/docs-files/1645160493405)
+
+<a id="videoviewsetupmode"></a>
+### VideoViewSetupMode
+
+- `AgoraVideoViewSetupAdd(1)`：添加指定视图。
+- `AgoraVideoViewSetupRemove(2)`：删除指定视图。
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+声网为在线音乐场景提供鱼眼镜头画面畸变矫正功能，本文提供相关的 API 参考。
+
+除了在线音乐教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/api-ref/rtc/macos/API/rtc_api_overview) 文档来了解详细的 RTC API 用法。
+
+:::info[信息]
+鱼眼镜头畸变矫正与分离显示 API 仅存在于声网为在线音乐教学解决方案提供的声网 RTC 教育特殊版 SDK 中。声网官网的视频 SDK v4.x 版本尚不支持该功能。你可以[提交工单](https://ticket.shengwang.cn)联系我们获取声网 RTC 4.0.0 教育特殊版 SDK。
+:::
+
+此外，你还可以参考如下 API 文档，在场景实现中添加相应的功能：
+
+- [RTM SDK](/api-ref/rtm2/ios/toc-configuration/configuration)，实现实时消息相关功能
+
+- [云端录制](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)，为实时音视频和互动白板提供录制功能
+
+<a id="enablefishcorrection"></a>
+## 方法
+### enableFishCorrection
+
+```objc
+- (int) enableFishCorrection:(BOOL)enable
+                      params:(AgoraFishCorrectionParams *_Nullable)params;
+```
+
+开启或关闭鱼眼镜头画面畸变矫正。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `enable` | <Slot name="fish-eye-ios-macos-html-0-1-1" /> |
+| `params` | 畸变矫正参数。详见 [`AgoraFishCorrectionParams`](/zh-CN/solutions/online-music-class/reference/fish-eye#agorafishcorrectionparams)。 |
+
+<Slot for="fish-eye-ios-macos-html-0-1-1">
+
+是否开启鱼眼镜头画面矫正。
+
+- `YES`：开启鱼眼镜头画面畸变矫正。
+- `NO`：关闭鱼眼镜头画面畸变矫正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enablevideomultirenderer"></a>
+### enableVideoMultiRenderer
+
+```objc
+- (int)enableVideoMultiRenderer:(BOOL)enabled;
+```
+
+开启或关闭多渲染功能。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `enabled` | <Slot name="fish-eye-ios-macos-html-1-1-1" /> |
+
+<Slot for="fish-eye-ios-macos-html-1-1-1">
+
+是否开启多渲染功能。
+
+- `true`：开启多渲染功能。
+- `false`：关闭多渲染功能。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setuplocalvideo"></a>
+### setupLocalVideo
+
+```objc
+- (int)setupLocalVideo:(AgoraRtcVideoCanvas * _Nullable)local
+                  mode:(AgoraVideoViewSetupMode)mode;
+```
+
+（多渲染功能）设置本地渲染画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `local` | 视频渲染画布。详见 [`VideoCanvas`](/api-ref/rtc/macos/API/class_videocanvas)。 |
+| `mode` | 视频渲染模式。详见 [`VideoViewSetupMode`](/zh-CN/solutions/online-music-class/reference/fish-eye#videoviewsetupmode)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setupremotevideo"></a>
+### setupRemoteVideo
+
+```objc
+- (int)setupRemoteVideo:(AgoraRtcVideoCanvas * _Nonnull)remote
+                   mode:(AgoraVideoViewSetupMode)mode;
+```
+
+（多渲染功能）设置远端渲染画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `remote` | 视频渲染画布。详见 [`VideoCanvas`](/api-ref/rtc/macos/API/class_videocanvas)。 |
+| `mode` | 视频渲染模式。详见 [`VideoViewSetupMode`](/zh-CN/solutions/online-music-class/reference/fish-eye#videoviewsetupmode)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setupremotevideoex"></a>
+### setupRemoteVideoEx
+
+```objc
+- (int)setupRemoteVideoEx:(AgoraRtcVideoCanvas* _Nonnull)remote
+                     mode:(AgoraVideoViewSetupMode)mode
+               connection:(AgoraRtcConnection * _Nonnull)connection;
+```
+
+（多频道场景）设置远端渲染画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `remote` | 视频渲染画布。详见 [`VideoCanvas`](/api-ref/rtc/macos/API/class_videocanvas)。 |
+| `mode` | 视频渲染模式。详见 [`VideoViewSetupMode`](/zh-CN/solutions/online-music-class/reference/fish-eye#videoviewsetupmode)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/macos/API/class_rtcconnection)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agorafishcorrectionparams"></a>
+## 数据类型
+### AgoraFishCorrectionParams
+
+```objc
+__attribute__((visibility("default"))) @interface AgoraFishCorrectionParams : NSObject
+
+@property (nonatomic, assign) float x_center;
+
+@property (nonatomic, assign) float y_center;
+
+@property (nonatomic, assign) float scale_factor;
+
+@property (nonatomic, assign) float focal_length;
+
+@property (nonatomic, assign) float pol_focal_length;
+
+@property (nonatomic, assign) float split_height;
+
+@property (nonatomic, copy) NSArray *_Nonnull ss;
+
+@end
+```
+
+鱼眼镜头画面畸变校正参数。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `x_center` | 鱼眼图像处理的中心位置 X 坐标。取值范围 [0.4,0.6]。 |
+| `y_center` | 鱼眼图像处理的中心位置 Y 坐标。取值范围 [0.4,0.6]。 |
+| `scale_factor` | 鱼眼镜头成像的区域大小。取值范围 [1,5]。1 为镜头最内圈，5 为镜头最外圈。 |
+| `focal_length` | 镜头焦距。取值范围 [20,40]。 |
+| `pol_focal_length` | 标定鱼眼镜头的参数，通过镜头焦距计算。取值范围 [20,40]。 |
+| `split_height` | 鱼眼校正效果切分高度。取值范围 [0,1]。在切分线以上的画面有鱼眼校正效果，在切分线以下的画面无鱼眼校正效果。 |
+| `ss` | 镜头的一组参数，通过多项式拟合得到。不同类型的鱼眼镜头会有不同的值。 |
+
+<a id="agoravideocroparea"></a>
+### AgoraVideoCropArea
+
+```objc
+__attribute__((visibility("default"))) @interface AgoraVideoCropArea : NSObject
+
+@property (nonatomic, assign) int xPoint;
+
+@property (nonatomic, assign) int yPoint;
+
+@property (nonatomic, assign) int width;
+
+@property (nonatomic, assign) int height;
+
+@end
+```
+
+需要截取的视频画面区域。参数使用屏幕坐标系，原点在屏幕左上角(0, 0)。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `xPoint` | 屏幕坐标系中图像左上角顶点的 X 坐标。单位为像素。 |
+| `yPoint` | 屏幕坐标系中图像左上角顶点的 Y 坐标。单位为像素。 |
+| `width` | 以图像左上角顶点为起始点，截取画面的宽度。单位为像素。 |
+| `height` | 以图像左上角顶点为起始点，截取画面的高度。单位为像素。 |
+
+图像的截取方式如下图所示：
+
+![截图方式](https://web-cdn.agora.io/docs-files/1645160493405)
+
+<a id="videoviewsetupmode"></a>
+### VideoViewSetupMode
+
+- `AgoraVideoViewSetupAdd(1)`：添加指定视图。
+- `AgoraVideoViewSetupRemove(2)`：删除指定视图。
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+声网为在线音乐场景提供鱼眼镜头画面畸变矫正功能，本文提供相关的 API 参考。
+
+除了在线音乐教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/api-ref/rtc/windows/API/rtc_api_overview) 文档来了解详细的 RTC API 用法。
+
+:::info[信息]
+鱼眼镜头畸变矫正与分离显示 API 仅存在于声网为在线音乐教学解决方案提供的声网 RTC 教育特殊版 SDK 中。声网官网的视频 SDK v4.x 版本尚不支持该功能。你可以[提交工单](https://ticket.shengwang.cn)联系我们获取声网 RTC 4.0.0 教育特殊版 SDK。
+:::
+
+此外，你还可以参考如下 API 文档，在场景实现中添加相应的功能：
+
+- [RTM SDK](/api-ref/rtm2/cpp/toc-configuration/configuration)，实现实时消息相关功能
+- [云端录制](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)，为实时音视频和互动白板提供录制功能
+
+<a id="enablefishcorrection"></a>
+## 方法
+### enableFishCorrection
+
+```cpp
+virtual int enableFishCorrection(bool enabled, const struct FishCorrectionParams &params) = 0;
+```
+
+开启或关闭鱼眼镜头画面畸变矫正。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `enabled` | <Slot name="fish-eye-windows-html-0-1-1" /> |
+| `params` | 畸变矫正参数。详见 [`FishCorrectionParams`](/zh-CN/solutions/online-music-class/reference/fish-eye#fishcorrectionparams)。 |
+
+<Slot for="fish-eye-windows-html-0-1-1">
+
+是否开启鱼眼镜头画面矫正。
+
+- `YES`：开启鱼眼镜头画面畸变矫正。
+- `NO`：关闭鱼眼镜头画面畸变矫正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enableVideoMultiRenderer"></a>
+### enableVideoMultiRenderer
+
+```cpp
+virtual int enableVideoMultiRenderer(bool enabled) = 0;
+```
+
+开启或关闭多渲染功能。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `enabled` | <Slot name="fish-eye-windows-html-1-1-1" /> |
+
+<Slot for="fish-eye-windows-html-1-1-1">
+
+是否开启多渲染功能。
+
+- `true`：开启多渲染功能。
+- `false`：关闭多渲染功能。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setuplocalvideo"></a>
+### setupLocalVideo
+
+```cpp
+virtual int setupLocalVideo(const VideoCanvas& canvas, VIDEO_VIEW_SETUP_MODE mode) = 0;
+```
+
+（多渲染功能）设置本地渲染画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `canvas` | 视频渲染画布。详见 [`VideoCanvas`](/api-ref/rtc/windows/API/class_videocanvas)。 |
+| `mode` | 视频渲染模式。详见 [`VideoViewSetupMode`](/zh-CN/solutions/online-music-class/reference/fish-eye#videoviewsetupmode)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setupRemoteVideo"></a>
+### setupRemoteVideo
+
+```cpp
+virtual int setupRemoteVideo(const VideoCanvas& canvas, VIDEO_VIEW_SETUP_MODE mode) = 0;
+```
+
+（多渲染功能）设置远端渲染画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `canvas` | 视频渲染画布。详见 [`VideoCanvas`](/api-ref/rtc/windows/API/class_videocanvas)。 |
+| `mode` | 视频渲染模式。详见 [`VideoViewSetupMode`](/zh-CN/solutions/online-music-class/reference/fish-eye#videoviewsetupmode)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setupremotevideoex"></a>
+### setupRemoteVideoEx
+
+```cpp
+virtual int setupRemoteVideoEx(const VideoCanvas& canvas, VIDEO_VIEW_SETUP_MODE mode, const RtcConnection& connection) = 0;
+```
+
+（多频道场景）设置远端渲染画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `remote` | 视频渲染画布。详见 [`VideoCanvas`](/api-ref/rtc/windows/API/class_videocanvas)。 |
+| `mode` | 视频渲染模式。详见 [`VideoViewSetupMode`](/zh-CN/solutions/online-music-class/reference/fish-eye#videoviewsetupmode)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/windows/API/class_rtcconnection)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="fishcorrectionparams"></a>
+## 数据类型
+### FishCorrectionParams
+
+```cpp
+struct FishCorrectionParams {
+  float _x_center;
+  float _y_center;
+  float _scale_factor;
+  float _focal_length;
+  float _pol_focal_length;
+  float _split_height;
+  float _ss[5];
+  FishCorrectionParams():_x_center(0.49),
+                         _y_center(0.48),
+                         _scale_factor(4.5),
+                         _focal_length(31),
+                         _pol_focal_length(31),
+                         _split_height(1.0) {
+    _ss[0] = 0.9375;
+    _ss[1] = 0.0;
+    _ss[2] = -2.9440;
+    _ss[3] = 5.7344;
+    _ss[4] = -4.4564;
+  }
+  FishCorrectionParams(float x_center, float y_center, float scale_factor, float focal_length, float pol_focal_length, float split_height, float ss[])
+  : _x_center(x_center),
+    _y_center(y_center),
+    _scale_factor(scale_factor),
+    _focal_length(focal_length),
+    _pol_focal_length(pol_focal_length),
+    _split_height(split_height) {
+    if (ss != OPTIONAL_NULLPTR) {
+      for (int i = 0; i < 5; i++) {
+        _ss[i] = ss[i];
+      }
+    }
+  }
+};
+```
+
+鱼眼镜头画面畸变校正参数。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `_x_center` | 鱼眼图像处理的中心位置 X 坐标。取值范围 [0.4,0.6]。 |
+| `_y_center` | 鱼眼图像处理的中心位置 Y 坐标。取值范围 [0.4,0.6]。 |
+| `_scale_factor` | 鱼眼镜头成像的区域大小。取值范围 [1,5]。1 为镜头最内圈，5 为镜头最外圈。 |
+| `_focal_length` | 镜头焦距。取值范围 [20,40]。 |
+| `_pol_focal_length` | 标定鱼眼镜头的参数，通过镜头焦距计算。取值范围 [20,40]。 |
+| `_split_height` | 鱼眼校正效果切分高度。取值范围 [0,1]。在切分线以上的画面有鱼眼校正效果，在切分线以下的画面无鱼眼校正效果。 |
+| `ss` | 镜头的一组参数，通过多项式拟合得到。不同类型的鱼眼镜头会有不同的值。 |
+
+<a id="videocroparea"></a>
+### VideoCropArea
+
+```cpp
+struct VideoCropArea {
+
+
+    int xPoint;
+
+    int yPoint;
+
+    int width;
+
+    int height;
+    VideoCropArea() : xPoint(0), yPoint(0), width(0), height(0) {}
+    VideoCropArea(int x, int y, int w, int h) : xPoint(x), yPoint(y), width(w), height(h) {}
+};
+```
+
+需要截取的视频画面区域。参数使用屏幕坐标系，原点在屏幕左上角(0, 0)。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `xPoint` | 屏幕坐标系中图像左上角顶点的 X 坐标。单位为像素。 |
+| `yPoint` | 屏幕坐标系中图像左上角顶点的 Y 坐标。单位为像素。 |
+| `width` | 以图像左上角顶点为起始点，截取画面的宽度。单位为像素。 |
+| `height` | 以图像左上角顶点为起始点，截取画面的高度。单位为像素。 |
+
+图像的截取方式如下图所示：
+
+![截图方式](https://web-cdn.agora.io/docs-files/1645160493405)
+
+<a id="VIDEO_VIEW_SETUP_MODE"></a>
+### VIDEO_VIEW_SETUP_MODE
+
+- `VIDEO_VIEW_SETUP_ADD(1)`：添加指定视图。
+- `VIDEO_VIEW_SETUP_REMOVE(2)`：删除指定视图。
+
+</PlatformStructured>

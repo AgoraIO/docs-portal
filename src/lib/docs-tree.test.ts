@@ -242,7 +242,7 @@ describe('docs tree helpers', () => {
     ]);
   });
 
-  it('hides legacy best-practices tabs from the top navigation', () => {
+  it('includes best-practices tabs from root folders', () => {
     const tree: Root = {
       children: [
         {
@@ -287,6 +287,54 @@ describe('docs tree helpers', () => {
         id: 'introduction',
         title: 'Introduction',
         url: '/en/introduction',
+      },
+      {
+        id: 'best-practices',
+        title: 'Best Practices',
+        url: '/en/best-practices',
+      },
+    ]);
+  });
+
+  it('uses the first descendant page for root folders without index pages', () => {
+    const tree: Root = {
+      children: [
+        {
+          $id: 'zh-CN-root',
+          children: [
+            {
+              $id: 'zh-CN-root-tab-1',
+              children: [
+                {
+                  $id: 'zh-CN-rtc-folder',
+                  children: [],
+                  index: {
+                    $id: 'zh-CN-rtc-index',
+                    name: '实时音视频',
+                    type: 'page',
+                    url: '/zh-CN/realtime-media/rtc',
+                  },
+                  name: '实时音视频',
+                  type: 'folder',
+                },
+              ],
+              name: '实时与媒体',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    expect(getTabSummaries(tree)).toEqual([
+      {
+        id: 'realtime-media',
+        title: '实时与媒体',
+        url: '/zh-CN/realtime-media/rtc',
       },
     ]);
   });
@@ -1111,10 +1159,10 @@ describe('docs tree helpers', () => {
           url: '/zh-CN/introduction/recording',
         },
         {
-          id: '/zh-CN/introduction/ppt-transcoding',
+          id: '/zh-CN/solutions/ppt-transcoding',
           title: 'PPT 转码',
           type: 'page',
-          url: '/zh-CN/introduction/ppt-transcoding',
+          url: '/zh-CN/solutions/ppt-transcoding',
         },
       ]),
     ).toEqual([
@@ -1133,10 +1181,10 @@ describe('docs tree helpers', () => {
             url: '/zh-CN/introduction/recording',
           },
           {
-            id: '/zh-CN/introduction/ppt-transcoding',
+            id: '/zh-CN/solutions/ppt-transcoding',
             title: 'PPT 转码',
             type: 'page',
-            url: '/zh-CN/introduction/ppt-transcoding',
+            url: '/zh-CN/solutions/ppt-transcoding',
           },
         ],
         collapsible: true,
@@ -1200,6 +1248,56 @@ describe('docs tree helpers', () => {
         id: 'guides',
         title: 'Guides',
         type: 'section',
+      },
+    ]);
+  });
+
+  it('ends a structured sidebar group before following plain pages', () => {
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          id: 'separator-billing',
+          title: '计费说明',
+          type: 'separator',
+        },
+        {
+          id: '/zh-CN/realtime-media/rtc/reference/billing-strategy',
+          title: '计费策略',
+          type: 'page',
+          url: '/zh-CN/realtime-media/rtc/reference/billing-strategy',
+        },
+        {
+          id: 'separator-billing-end',
+          title: '',
+          type: 'separator',
+        },
+        {
+          id: '/zh-CN/realtime-media/rtc/reference/quota',
+          title: '配额限制',
+          type: 'page',
+          url: '/zh-CN/realtime-media/rtc/reference/quota',
+        },
+      ]),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/zh-CN/realtime-media/rtc/reference/billing-strategy',
+            title: '计费策略',
+            type: 'page',
+            url: '/zh-CN/realtime-media/rtc/reference/billing-strategy',
+          },
+        ],
+        collapsible: false,
+        id: 'separator-billing',
+        title: '计费说明',
+        type: 'section',
+      },
+      {
+        id: '/zh-CN/realtime-media/rtc/reference/quota',
+        title: '配额限制',
+        type: 'page',
+        url: '/zh-CN/realtime-media/rtc/reference/quota',
       },
     ]);
   });
@@ -1592,6 +1690,31 @@ describe('docs tree helpers', () => {
         title: 'Integration',
         type: 'page',
         url: '/en/api-reference/faq/integration',
+      },
+    ]);
+  });
+
+  it('collapses a localized index-only folder whose title does not match the URL slug into a leaf', () => {
+    expect(
+      pageTreeNodeToSidebarNodes({
+        $id: 'faq-integration-folder',
+        children: [
+          {
+            $id: 'faq-integration-index-child',
+            name: '集成类',
+            type: 'page',
+            url: '/zh-CN/api-reference/faq/integration',
+          },
+        ],
+        name: '集成类',
+        type: 'folder',
+      }),
+    ).toEqual([
+      {
+        id: '/zh-CN/api-reference/faq/integration',
+        title: '集成类',
+        type: 'page',
+        url: '/zh-CN/api-reference/faq/integration',
       },
     ]);
   });

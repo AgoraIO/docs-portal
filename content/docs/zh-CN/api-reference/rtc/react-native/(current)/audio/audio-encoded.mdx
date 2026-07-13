@@ -1,0 +1,195 @@
+---
+title: "已编码音频数据"
+description: "已编码音频数据 API reference."
+---
+<a id="toc_audio_encoded"></a>
+
+<a id="api_irtcengine_registeraudioencodedframeobserver"></a>
+
+## registerAudioEncodedFrameObserver
+
+注册音频编码数据观测器。
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__prototype"></a>
+
+```typescript
+abstract registerAudioEncodedFrameObserver(
+    config: AudioEncodedFrameObserverConfig,
+    observer: IAudioEncodedFrameObserver
+  ): number;
+```
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__detailed_desc"></a>
+
+:::info[注]
+- 请在加入频道后调用该方法。
+- 由于该方法和 startAudioRecording 都会设置音频内容和音质，不建议该方法和 startAudioRecording 一起使用。否则，只有后调用的方法会生效。
+:::
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__parameters"></a>
+
+### 参数
+
+#### `config`
+
+编码后音频的观测器设置。详见 [AudioEncodedFrameObserverConfig](/zh-CN/api-reference/rtc/react-native/class-audioencodedframeobserverconfig)。
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__return_values"></a>
+
+### 返回值
+
+一个 [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_iaudioencodedframeobserver) 对象。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_unregisteraudioencodedframeobserver"></a>
+
+## unregisterAudioEncodedFrameObserver
+
+取消注册音频编码数据观测器。
+
+<a id="api_irtcengine_unregisteraudioencodedframeobserver__prototype"></a>
+
+```typescript
+abstract unregisterAudioEncodedFrameObserver(
+    observer: IAudioEncodedFrameObserver
+  ): number;
+```
+
+<a id="api_irtcengine_unregisteraudioencodedframeobserver__detailed_desc"></a>
+
+<a id="api_irtcengine_unregisteraudioencodedframeobserver__parameters"></a>
+
+### 参数
+
+#### `observer`
+
+音频编码数据观测器。详见 [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_iaudioencodedframeobserver)。
+
+<a id="api_irtcengine_unregisteraudioencodedframeobserver__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe"></a>
+
+## onMixedAudioEncodedFrame
+
+获取本地和所有远端用户混音后的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__prototype"></a>
+
+```typescript
+onMixedAudioEncodedFrame?(
+    frameBuffer: Uint8Array,
+    length: number,
+    audioEncodedFrameInfo: EncodedAudioFrameInfo
+  ): void;
+```
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__detailed_desc"></a>
+
+调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/react-native/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频编码内容设为 AudioEncodedFrameObserverPositionMixed 后，你可以通过该回调获取本地和所有远端用户混音、编码后的音频数据。
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__parameters"></a>
+
+### 参数
+
+#### `frameBuffer`
+
+音频 buffer。
+
+#### `length`
+
+音频数据长度，单位为字节。
+
+#### `audioEncodedFrameInfo`
+
+编码后音频的信息。详见 [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc/react-native/class-encodedaudioframeinfo)。
+
+### 所属接口类
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_iaudioencodedframeobserver)
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe"></a>
+
+## onPlaybackAudioEncodedFrame
+
+获取所有远端用户的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__prototype"></a>
+
+```typescript
+onPlaybackAudioEncodedFrame?(
+    frameBuffer: Uint8Array,
+    length: number,
+    audioEncodedFrameInfo: EncodedAudioFrameInfo
+  ): void;
+```
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__detailed_desc"></a>
+
+调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/react-native/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频编码内容设为 AudioEncodedFrameObserverPositionPlayback 后，你可以通过该回调获取所有远端用户的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__parameters"></a>
+
+### 参数
+
+#### `frameBuffer`
+
+音频 buffer。
+
+#### `length`
+
+音频数据长度，单位为字节。
+
+#### `audioEncodedFrameInfo`
+
+编码后音频的信息。详见 [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc/react-native/class-encodedaudioframeinfo)。
+
+### 所属接口类
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_iaudioencodedframeobserver)
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe"></a>
+
+## onRecordAudioEncodedFrame
+
+获取本地用户的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__prototype"></a>
+
+```typescript
+onRecordAudioEncodedFrame?(
+    frameBuffer: Uint8Array,
+    length: number,
+    audioEncodedFrameInfo: EncodedAudioFrameInfo
+  ): void;
+```
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__detailed_desc"></a>
+
+调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/react-native/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频编码内容设为 AudioEncodedFrameObserverPositionRecord 后，你可以通过该回调获取本地用户的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__parameters"></a>
+
+### 参数
+
+#### `frameBuffer`
+
+音频 buffer。
+
+#### `length`
+
+音频数据长度，单位为字节。
+
+#### `audioEncodedFrameInfo`
+
+编码后音频的信息。详见 [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc/react-native/class-encodedaudioframeinfo)。
+
+### 所属接口类
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_iaudioencodedframeobserver)

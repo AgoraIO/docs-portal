@@ -1,0 +1,201 @@
+---
+title: "如何处理音视频相关问题？"
+---
+## 为什么 Web 端无法打开摄像头或麦克风？
+
+请确认浏览器摄像头或麦克风的权限是否打开，步骤参考以下截图：
+
+进入浏览器设置页面，选择**隐私和安全** > **网站设置**：
+
+![打开权限 1](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/browser-setting.png)
+
+点击**摄像头**：
+
+![打开权限 2](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/browser-camera.png)
+
+勾选**设置网站可以请求使用您的摄像头**：
+
+![打开权限 3](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/browser-camera-grant.png)
+
+使用同样的步骤打开网站请求使用麦克风权限。
+
+如果已经开启权限依然不能打开摄像头或麦克风，请按以下步骤刷新：
+
+1. 清理浏览器缓存
+2. 重启浏览器
+3. 升级浏览器版本
+
+## 自己部署的域名下面没有音视频权限，显示禁用，无法使用麦克风和摄像头怎么办？
+
+如果音视频设备被禁用了，如下图所示：
+
+- 视频被禁用：
+
+![禁用视频设备](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/audio-video-disable-1.png)
+
+- 音频被禁用：
+
+![禁用音频设备](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/audio-video-disable-2.png)
+
+出于安全考虑，WebRTC 只允许在 HTTPS 环境下使用，否则浏览器将不允许页面获取音频或视频设备。 所以请将您的域名配置成 HTTPS。
+
+## 如何调整视频分辨率？
+
+### 课堂中视频分辨率
+
+Web 端可以通过改变 [`launch`](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法中的 `launchOption.MediaOptions` 参数来调整课堂中的分辨率：
+
+- `launchOption.MediaOptions.lowStreamCameraEncoderConfiguration` 用于调整小流的分辨率
+- `launchOption.mediaOptions.cameraEncoderConfiguration` 用于调整大流的分辨率
+- `launchOption.mediaOptions.screenShareEncoderConfiguration` 用于调整屏幕共享的分辨率
+
+以下示例代码说明了如何修改大小流的分辨率：
+
+```javascript
+    AgoraEduSDK.launch(appRef.current, {
+        ...launchOption,
+        recordUrl,
+        courseWareList,
+        uiMode: homeStore.theme,
+        virtualBackgroundImages,
+        virtualBackgroundVideos,
+        mediaOptions: {
+        cameraEncoderConfiguration: {
+            width: 1280,
+            height: 720,
+            frameRate: 30,
+            bitrate: 1710,
+        },
+        lowStreamCameraEncoderConfiguration:{
+            width: 1280,
+            height: 720,
+            frameRate: 30,
+            bitrate: 1710,
+        }
+        },
+        listener: (evt: AgoraEduClassroomEvent, type) => {
+        ,
+    });
+
+```
+
+### 录制视频分辨率
+
+Web 端可以通过改变[设置录制状态 RESTful API](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态) 中的 `webRecordConfig` 参数来调整课堂录制视频的分辨率，参照以下示例代码：
+
+```javascript
+get recordArgs() {
+const { recordUrl, rteEngineConfig, recordRetryTimeout } = EduClassroomConfig.shared;
+const args = {
+    webRecordConfig: {
+    rootUrl: `${recordUrl}?language=${rteEngineConfig.language}`,
+        videoBitrate: 3000,
+        videoWidth：1280,
+        videoHeight:720,
+        videoFps:15
+    },
+    mode: RecordMode.Web,
+    retryTimeout: recordRetryTimeout,
+};
+```
+
+## 使用屏幕共享时报错“请先打开屏幕录制权限”?
+
+如果你在开启屏幕共享时遇到如下错误，说明你还未开启系统屏幕录制权限。
+
+![报错截图](https://web-cdn.agora.io/docs-files/1679998107736)
+
+以 macOS 系统为例，你可以在**系统设置** > **隐私与安全性** > **屏幕录制**开启相应的权限，参考以下截图：
+
+![隐私设置 1](https://web-cdn.agora.io/docs-files/1679998119366)
+
+开启 AgoraFlexibleClassroom 的屏幕录制权限：
+
+![隐私设置 2](https://web-cdn.agora.io/docs-files/1679998128665)
+
+## 使用 iframe 集成方式将灵动课堂嵌入页面后，屏幕共享功能无效怎么办?
+
+你可以使用 iframe 的 `allow` 属性添加 `display-capture` 参数，实现屏幕共享。代码示例如下：
+
+```html
+<iframe
+  src="“xxxxxxx”"
+  width="100%"
+  height="100%"
+  frameborder="0"
+  scrolling="no"
+  allowfullscreen="allowfullscreen"
+  allow="display-capture; geolocation; microphone; camera; midi; encrypted-media;"
+  referrerpolicy="no-referrer"
+></iframe>
+```
+
+## 直播是否有网络带宽的要求？
+
+- 老师端带宽及速率：10 Mbps以上独享宽带，上行速率大于 4 Mbps。
+- 学生端带宽及速率：最低 4 Mbps 以上独享宽带。
+
+## 上课时频繁卡顿，听不清音频，出现白屏或黑屏，加载课件失败等怎么办?
+
+如果你出现以上网络问题，可参考以下步骤检查你的网络：
+
+- 重启路由器，重连网络。
+- 设备靠近路由器，不要隔墙。
+- 断开其他占用网速的程序或设备，例如下载程序、在线播放程序、云盘类软件、电视网络机顶盒等。
+- 切换网络，例如从 WiFi 切换成 4G 热点网络重进课堂。
+- 重启设备。
+- 关闭 VPN 或网络代理。
+
+## 学生听不到老师声音怎么办？
+
+- 检查老师端是否开启麦克风。
+- 检查学生端网络情况。
+- 检查学生端扬声器（包括音量合成器）和浏览器是否静音。
+- 检查学生端课堂中使用的扬声器设备是否选择正确。
+- 学生端退出重进课堂或重启设备。
+
+## 老师听不到学生声音怎么办？
+
+- 检查学生是否上台并打开麦克风。
+- 检查老师端扬声器（包括音量合成器）和浏览器是否静音。
+- 检查老师端课堂中使用的扬声器设备是否选择正确。
+- 老师端退出重进课堂或重启设备。
+
+## 屏幕共享带声音如何开启?
+
+### Web 端
+
+Web 端屏幕共享仅支持 Windows 和 macOS 平台下的 Chrome 浏览器 74 及以上版本，其中：
+
+- Windows 平台支持在共享整个屏幕和共享 Chrome 标签页时分享音频，不支持在共享应用窗口时分享音频。
+- macOS 平台仅支持在共享 Chrome 选中的标签页时分享音频。
+
+在灵动课堂中设置了 `withAudio` 为 `true` 后，还需要在屏幕共享的弹出框上，勾选分享音频才能真正生效。
+
+### Electron 端
+
+Electron 端支持在 Windows 平台分享系统声音。
+
+在 macOS 平台则需要通过虚拟声卡采集系统声音来分享系统声音。如果用户使用虚拟声卡，如 Soundflower，可以将虚拟声卡名称 "soundflower" 作为参数传入，SDK 会找到对应的虚拟声卡设备，并开始采集。
+
+:::info[注意]
+macOS 系统默认声卡不支持采集功能。如需开启此功能需要应用自身启用一个虚拟声卡，并将该虚拟声卡的名字作为 `deviceName` 传入 SDK。声网测试并推荐 soundflower 作为虚拟声卡。
+:::
+
+macOS 平台上，灵动课堂的源码默认关闭屏幕共享带声音的功能。对于 2.8.21 及以上版本的灵动课堂，如需开启该功能可以通过修改源码实现。具体的修改步骤如下：
+
+1. 在 UI 层显示屏幕共享带声音的选项
+
+   代码路径：packages/agora-classroom-sdk/src/infra/capabilities/containers/dialog/screen-picker/index.tsx
+
+   代码如下：
+
+![设置屏幕共享带声音](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/screensharewithaudio001.png)
+
+2. 在 macOS 平台下传入虚拟声卡的名称
+
+   代码路径：packages/agora-classroom-sdk/src/infra/stores/common/toolbar/index.ts
+
+   代码如下：
+
+![传入虚拟声卡的名称](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/screensharewithaudio002.png)

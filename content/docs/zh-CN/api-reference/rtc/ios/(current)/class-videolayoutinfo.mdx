@@ -1,0 +1,34 @@
+---
+title: "AgoraVideoLayoutInfo"
+description: "合图视频的布局信息。"
+---
+<a id="class_videolayoutinfo__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraVideoLayoutInfo: NSObject
+@property (assign, nonatomic) NSUInteger width NS_SWIFT_NAME(width);
+@property (assign, nonatomic) NSUInteger height NS_SWIFT_NAME(height);
+@property (assign, nonatomic) NSUInteger layoutCount NS_SWIFT_NAME(layoutCount);
+@property(copy, nonatomic) NSArray<AgoraVideoLayout *> *_Nullable layoutList NS_SWIFT_NAME(layoutList);
+@end
+```
+
+<a id="class_videolayoutinfo__parameters"></a>
+
+## 属性
+
+### `width`
+
+合图视频的宽度（像素）。
+
+### `height`
+
+合图视频的高度（像素）。
+
+### `layoutCount`
+
+合图视频中布局信息的数量。
+
+### `layoutList`
+
+合图视频的详细布局信息，详见 [AgoraVideoLayout](/zh-CN/api-reference/rtc/ios/class-videolayout)。

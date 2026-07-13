@@ -1,0 +1,34 @@
+---
+title: "FUplinkNetworkInfo"
+description: "上行网络信息。"
+---
+<a id="class_uplinknetworkinfo__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FUplinkNetworkInfo {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|UplinkNetworkInfo")
+	int video_encoder_target_bitrate_bps = 0;
+	FUplinkNetworkInfo(){}
+	FUplinkNetworkInfo(const agora::rtc::UplinkNetworkInfo & AgoraData){
+		video_encoder_target_bitrate_bps = AgoraData.video_encoder_target_bitrate_bps;
+	}
+	agora::rtc::UplinkNetworkInfo CreateAgoraData() const {
+		agora::rtc::UplinkNetworkInfo AgoraData;
+		AgoraData.video_encoder_target_bitrate_bps = video_encoder_target_bitrate_bps;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::UplinkNetworkInfo & AgoraData) const {
+	}
+};
+```
+
+<a id="class_uplinknetworkinfo__parameters"></a>
+
+## 属性
+
+### `video_encoder_target_bitrate_bps`
+
+目标视频编码器的码率 (bps)。

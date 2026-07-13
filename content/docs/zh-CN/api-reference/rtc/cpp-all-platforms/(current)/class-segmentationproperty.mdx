@@ -1,0 +1,33 @@
+---
+title: "SegmentationProperty"
+description: "用于设置背景图像处理的相关属性。"
+---
+<a id="class_segmentationproperty__prototype"></a>
+
+```cpp
+struct SegmentationProperty {
+  SEG_MODEL_TYPE modelType;
+  float greenCapacity;
+  SCREEN_COLOR_TYPE screenColorType;
+};
+```
+
+<a id="class_segmentationproperty__parameters"></a>
+
+## 属性
+
+### `modelType`
+
+用于背景处理的算法类型。详见 [SEG_MODEL_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-segmodeltype)。
+
+### `greenCapacity`
+
+识别图像中背景颜色的精度范围。取值范围为 [0,1]，默认值为 0.5。值越大，可识别的纯色色调范围越广。当该参数值过大时，人物边缘和人物区域内的纯色也可能被检测到。声网建议根据实际效果动态调整该参数的值。
+
+:::info[注]
+仅当 `modelType` 设置为 `SEG_MODEL_GREEN` 时该参数才生效。
+:::
+
+### `screenColorType`
+
+屏幕颜色类型。详见 [SCREEN_COLOR_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-screencolortype)。

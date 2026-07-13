@@ -1,0 +1,1216 @@
+---
+title: "视频基础功能"
+description: "视频基础功能 API reference."
+---
+<a id="toc_video_basic"></a>
+
+<a id="api_irtcengine_disablevideo"></a>
+
+## disableVideo
+
+禁用视频模块。
+
+<a id="api_irtcengine_disablevideo__prototype"></a>
+
+```objectivec
+- (int)disableVideo NS_SWIFT_NAME(disableVideo());
+```
+
+<a id="api_irtcengine_disablevideo__detailed_desc"></a>
+
+该方法用于禁用视频模块。
+
+:::info[注]
+该方法会影响内部引擎，且可在离开频道后调用。调用该方法会重置整个引擎，导致响应时间变慢。你可以根据实际需求，使用以下方法分别控制视频模块的具体功能：
+
+- enableLocalVideo:：是否启用摄像头以创建本地视频流。
+- muteLocalVideoStream:：是否发布本地视频流。
+- muteRemoteVideoStream:mute:：是否订阅并播放远端视频流。
+- muteAllRemoteVideoStreams:：是否订阅并播放所有远端视频流。
+:::
+
+<a id="api_irtcengine_disablevideo__timing"></a>
+
+### 调用时机
+
+该方法可在加入频道前或加入频道后调用。
+
+- 如果在加入频道前调用，则进入语音通话模式。
+- 如果在加入频道后调用，则从视频通话模式切换为语音通话模式。之后调用 enableVideo 可重新切换为视频通话模式。
+
+<a id="api_irtcengine_disablevideo__related"></a>
+
+### 相关回调
+
+成功调用该方法后，远端会触发 [rtcEngine:didVideoEnabled:byUid:](/zh-CN/api-reference/rtc/macos/video/video-basic#callback_irtcengineeventhandler_onuserenablevideo) （NO ）回调。
+
+<a id="api_irtcengine_disablevideo__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enablelocalvideo"></a>
+
+## enableLocalVideo:
+
+启用或关闭本地视频采集。
+
+<a id="api_irtcengine_enablelocalvideo__prototype"></a>
+
+```objectivec
+- (int)enableLocalVideo:(BOOL)enabled NS_SWIFT_NAME(enableLocalVideo(_:));
+```
+
+<a id="api_irtcengine_enablelocalvideo__detailed_desc"></a>
+
+该方法用于关闭或重新开启本地视频采集，不影响接收远端视频流。调用 [enableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablevideo) 后，默认开启本地视频采集。如果你在频道内调用 [enableLocalVideo:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablelocalvideo) 传入 NO 关闭本地视频采集，同时会停止在频道内发布视频流。若需重新开启视频采集，你可以调用 [enableLocalVideo:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablelocalvideo) 传入 YES，然后调用 [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_updatechannelmediaoptions) 并设置 `options` 参数，以在频道内发布本地采集的视频流。
+
+:::info[注]
+- 你可以在加入频道前或加入频道后调用该方法。但如果在加入频道前调用，设置仅在加入频道后生效。
+- 该方法会启用内部引擎，离开频道后仍然有效。
+:::
+
+<a id="api_irtcengine_enablelocalvideo__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用本地视频采集。
+
+- YES：（默认）启用本地视频采集。
+- NO：关闭本地视频采集。关闭后，远端用户无法接收你的本地视频流，但你仍可接收远端用户的视频流。设置为 NO 时，无需本地摄像头。
+
+<a id="api_irtcengine_enablelocalvideo__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enablevideo"></a>
+
+## enableVideo
+
+启用视频模块。
+
+<a id="api_irtcengine_enablevideo__prototype"></a>
+
+```objectivec
+- (int)enableVideo NS_SWIFT_NAME(enableVideo());
+```
+
+<a id="api_irtcengine_enablevideo__detailed_desc"></a>
+
+默认情况下视频模块处于关闭状态，调用该方法可启用视频模块。如果需要关闭视频模块，需要调用 [disableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_disablevideo) 方法。 该方法可以在加入频道前或加入频道后调用：
+
+- 如果在加入频道前调用，则启用视频模块。
+- 如果在语音通话过程中调用，则语音通话会自动切换为视频通话。
+
+:::info[注]
+该方法启用内部引擎，离开频道后仍然有效。 调用该方法会重置整个引擎，导致响应时间变慢。你可以根据实际需求，使用以下方法分别控制视频模块的具体功能：
+
+- enableLocalVideo:：是否启用摄像头以创建本地视频流。
+- muteLocalVideoStream:：是否发布本地视频流。
+- muteRemoteVideoStream:mute:：是否订阅并播放远端视频流。
+- muteAllRemoteVideoStreams:：是否订阅并播放所有远端视频流。
+
+成功调用该方法会重置 [enableLocalVideo:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablelocalvideo)、 [muteRemoteVideoStream:mute:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteremotevideostream) 和 [muteAllRemoteVideoStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremotevideostreams)，请谨慎使用。
+:::
+
+<a id="api_irtcengine_enablevideo__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_enablevideo__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [rtcEngine:remoteVideoStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/macos/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调报告远端视频状态变化。
+
+<a id="api_irtcengine_enablevideo__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setvideoencoderconfiguration"></a>
+
+## setVideoEncoderConfiguration:
+
+设置本地视频的编码配置。
+
+<a id="api_irtcengine_setvideoencoderconfiguration__prototype"></a>
+
+```objectivec
+- (int)setVideoEncoderConfiguration:(AgoraVideoEncoderConfiguration * _Nonnull)config NS_SWIFT_NAME(setVideoEncoderConfiguration(_:));
+```
+
+<a id="api_irtcengine_setvideoencoderconfiguration__detailed_desc"></a>
+
+设置本地视频的编码配置。每个配置文件对应一组视频参数，包括分辨率、帧率和码率。
+
+:::info[注]
+- 此方法和 getMirrorApplied 方法都支持设置镜像效果。声网建议你只使用其中一种方法进行设置，同时使用会导致镜像效果叠加，设置失败。
+- 此方法中指定的 config 是在理想网络条件下的最大值。如果由于网络不稳定，视频引擎无法使用指定的 config 渲染视频，则会依次尝试列表中更低的参数，直到找到可用的配置。
+:::
+
+<a id="api_irtcengine_setvideoencoderconfiguration__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或后调用此方法。如果你在加入频道后不需要重新设置视频编码属性，声网建议你在调用 [enableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablevideo) 之前调用此方法，以减少首帧视频渲染时间。
+
+<a id="api_irtcengine_setvideoencoderconfiguration__parameters"></a>
+
+### 参数
+
+#### `config`
+
+视频配置参数。详见 [AgoraVideoEncoderConfiguration](/zh-CN/api-reference/rtc/macos/class-videoencoderconfiguration)。
+
+<a id="api_irtcengine_setvideoencoderconfiguration__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex"></a>
+
+## setVideoEncoderConfigurationEx:connection:
+
+设置视频编码器配置。
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__prototype"></a>
+
+```objectivec
+- (int)setVideoEncoderConfigurationEx:(AgoraVideoEncoderConfiguration* _Nonnull)config
+                           connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(setVideoEncoderConfigurationEx(_:connection:));
+```
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__detailed_desc"></a>
+
+设置本地视频的编码器配置。每个配置文件对应一组视频参数，包括分辨率、帧率和码率。
+
+:::info[注]
+`config` 参数表示在理想网络条件下的最大值。如果由于网络条件不稳定，视频引擎无法使用指定的 `config` 渲染视频，则会依次尝试列表中较低的参数，直到找到可用的配置。
+:::
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或后调用此方法。如果你在加入频道后不需要重新设置视频编码属性，声网建议你在调用 [enableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablevideo) 之前调用此方法，以减少首帧视频渲染时间。
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__parameters"></a>
+
+### 参数
+
+#### `config`
+
+视频配置参数。详见 [AgoraVideoEncoderConfiguration](/zh-CN/api-reference/rtc/macos/class-videoencoderconfiguration)。
+
+#### `connection`
+
+连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_setvideoprofile2"></a>
+
+## setVideoResolution:andFrameRate:bitrate:
+
+手动设置视频编码配置。
+
+<a id="api_irtcengine_setvideoprofile2__prototype"></a>
+
+```objectivec
+- (int)setVideoResolution:(CGSize)size andFrameRate:(NSInteger)frameRate bitrate:(NSInteger)bitrate NS_SWIFT_NAME(setVideoResolution(_:andFrameRate:bitrate:)) __deprecated_msg("use setVideoEncoderConfiguration: instead.");
+```
+
+<a id="api_irtcengine_setvideoprofile2__detailed_desc"></a>
+
+#### `废弃`
+
+自 v2.3 版本废弃，请改用 [setVideoEncoderConfiguration:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_setvideoencoderconfiguration)。
+
+<a id="api_irtcengine_setvideoprofile2__parameters"></a>
+
+### 参数
+
+#### `size`
+
+你想要设置的视频尺寸。最大值为 1280 × 720。
+
+#### `frameRate`
+
+你想要设置的视频帧率。最大值为 30。你可以设置为 5、10、15、24、30 等。
+
+#### `bitrate`
+
+你想要设置的视频码率。你需要根据宽度、高度和帧率手动计算码率。在相同宽高下，码率会随着帧率的变化而变化：
+
+- 如果帧率为 5 fps，推荐码率除以 2。
+- 如果帧率为 15 fps，使用推荐码率。
+- 如果帧率为 30 fps，推荐码率乘以 1.5。
+- 如果选择其他帧率，请按比例计算码率。
+
+例如，分辨率为 320 × 240，帧率为 15 fps，则码率为 200：
+
+- 如果帧率为 5 fps，码率为 100。
+- 如果帧率为 30 fps，码率为 300。
+
+如果你设置的码率超出合理范围，SDK 会自动将其调整到范围内的值。
+
+<a id="api_irtcengine_setvideoprofile2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setvideoscenario"></a>
+
+## setVideoScenario:
+
+设置视频应用场景。
+
+<a id="api_irtcengine_setvideoscenario__prototype"></a>
+
+```objectivec
+- (int)setVideoScenario:(AgoraApplicationScenarioType)scenarioType  NS_SWIFT_NAME(setVideoScenario(_:));
+```
+
+<a id="api_irtcengine_setvideoscenario__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.2.0 版本新增。
+
+调用该方法后，SDK 会根据指定的视频应用场景自动启用最佳实践策略，并调整关键性能指标，以优化视频体验。
+
+:::info[注]
+请在加入频道前调用该方法。
+:::
+
+<a id="api_irtcengine_setvideoscenario__parameters"></a>
+
+### 参数
+
+#### `scenarioType`
+
+视频应用场景的类型，详见 [AgoraApplicationScenarioType](/zh-CN/api-reference/rtc/macos/enum-videoapplicationscenariotype)。
+
+- AgoraApplicationMeetingScenario （1）：适用于会议场景。SDK 会自动启用以下策略：
+  - 若低画质视频流需要较高码率，SDK 会自动启用多种应对网络拥塞的技术，以增强低画质视频流的性能，确保订阅端的流畅接收。
+  - SDK 实时监控高画质视频流的订阅人数，并根据订阅人数动态调整其配置：
+    - 若无人订阅高画质视频流，SDK 会自动降低其码率和帧率以节省上行带宽。
+    - 若有人订阅高画质视频流，SDK 会将其重置为最近一次调用 setVideoEncoderConfiguration: 所设置的配置。如果你未设置过配置，则使用以下默认值：
+      - iOS：
+        - 分辨率：960 × 540。
+        - 帧率：15 fps。
+        - 码率：1000 Kbps。
+      - macOS：
+        - 分辨率：1280 × 720。
+        - 帧率：15 fps。
+        - 码率：1600 Kbps。
+  - SDK 实时监控低画质视频流的订阅人数，并根据订阅人数动态启用或禁用该流。
+    - 若无人订阅低画质视频流，SDK 会自动禁用该流以节省上行带宽。
+    - 若有人订阅低画质视频流，SDK 会启用该流，并将其重置为最近一次调用 setDualStreamMode:streamConfig: 所设置的配置。如果你未设置过配置，则使用以下默认值：
+      - 分辨率：480 × 272。
+      - 帧率：15 fps。
+      - 码率：500 Kbps。
+    - 注意：如果你调用了 setDualStreamMode:streamConfig: 并设置为永不发送低画质视频流（AgoraDisableSimulcastStream ），则会议场景下低画质流的动态调整将不生效。
+
+- AgoraApplication1V1Scenario （2）：适用于一对一直播场景。为满足该场景下低延迟和高画质的需求，SDK 会优化策略，提升视频质量、首帧渲染速度、中低端设备的延迟表现，以及弱网环境下的流畅度。
+
+注意：该枚举值仅适用于主播对主播的场景。
+
+- AgoraApplicationLiveShowScenario （3）：适用于秀场场景。在该场景中，快速的视频渲染和高画质至关重要。SDK 会进行多项性能优化，包括自动启用音视频帧加速渲染以最小化首帧延迟（无需调用 enableInstantMediaRendering ），以及启用 B 帧编码以提升图像质量和带宽效率。即使在网络较差或低端设备上，SDK 也能提供增强的视频质量和流畅的播放体验。
+
+<a id="api_irtcengine_setvideoscenario__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+  - -1：发生通用错误（无具体原因）。
+  - -4：不支持设置视频应用场景。可能原因包括你使用了语音 SDK 而非视频 SDK。
+  - -7： AgoraRtcEngineKit 对象尚未初始化。请在调用该方法前先初始化该对象。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startpreview"></a>
+
+## startPreview
+
+启用本地视频预览。
+
+<a id="api_irtcengine_startpreview__prototype"></a>
+
+```objectivec
+- (int)startPreview NS_SWIFT_NAME(startPreview());
+```
+
+<a id="api_irtcengine_startpreview__detailed_desc"></a>
+
+你可以调用此方法启用本地视频预览。
+
+:::info[注]
+- 本地预览默认启用镜像模式。
+- 离开频道后，本地预览仍然保持开启状态。你需要调用 stopPreview 来关闭本地预览。
+:::
+
+<a id="api_irtcengine_startpreview__timing"></a>
+
+### 调用时机
+
+必须在调用 [enableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablevideo) 和 `setupLocalVideo` 之后调用该方法。
+
+<a id="api_irtcengine_startpreview__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startpreview2"></a>
+
+## startPreview:
+
+启用本地视频预览并指定预览的视频源。
+
+<a id="api_irtcengine_startpreview2__prototype"></a>
+
+```objectivec
+- (int)startPreview: (AgoraVideoSourceType)sourceType NS_SWIFT_NAME(startPreview(_:));
+```
+
+<a id="api_irtcengine_startpreview2__detailed_desc"></a>
+
+该方法用于启动本地视频预览，并指定出现在预览画面中的视频源。
+
+:::info[注]
+- 本地预览默认启用镜像模式。
+- 离开频道后，本地预览仍然保持开启状态。你需要调用 stopPreview 来关闭本地预览。
+:::
+
+<a id="api_irtcengine_startpreview2__timing"></a>
+
+### 调用时机
+
+必须在调用 [enableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablevideo) 和 [setupLocalVideo:](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_setuplocalvideo) 之后调用该方法。
+
+<a id="api_irtcengine_startpreview2__parameters"></a>
+
+### 参数
+
+#### `sourceType`
+
+视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+<a id="api_irtcengine_startpreview2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoppreview"></a>
+
+## stopPreview
+
+停止你本地的视频预览和视频。
+
+<a id="api_irtcengine_stoppreview__prototype"></a>
+
+```objectivec
+- (int)stopPreview NS_SWIFT_NAME(stopPreview());
+```
+
+<a id="api_irtcengine_stoppreview__detailed_desc"></a>
+
+<a id="api_irtcengine_stoppreview__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoppreview2"></a>
+
+## stopPreview:
+
+停止本地视频预览。
+
+<a id="api_irtcengine_stoppreview2__prototype"></a>
+
+```objectivec
+- (int)stopPreview: (AgoraVideoSourceType)sourceType NS_SWIFT_NAME(stopPreview(_:));
+```
+
+<a id="api_irtcengine_stoppreview2__detailed_desc"></a>
+
+<a id="api_irtcengine_stoppreview2__timing"></a>
+
+### 调用时机
+
+在加入频道前或离开频道后调用该方法。
+
+<a id="api_irtcengine_stoppreview2__parameters"></a>
+
+### 参数
+
+#### `sourceType`
+
+视频源的类型。详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+<a id="api_irtcengine_stoppreview2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe"></a>
+
+## rtcEngine:firstLocalVideoFrameWithSize:elapsed:sourceType:
+
+本地视频视图显示首帧本地视频画面时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine firstLocalVideoFrameWithSize:(CGSize)size elapsed:(NSInteger)elapsed sourceType:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(rtcEngine(_:firstLocalVideoFrameWith:elapsed:sourceType:));
+```
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__timing"></a>
+
+### 触发时机
+
+当本地视频视图上显示首帧本地视频画面时触发。
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+引擎对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `size`
+
+首帧本地视频画面的尺寸。
+
+#### `elapsed`
+
+从调用 [joinChannelByToken:channelId:info:uid:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel1) 或 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 加入频道到 SDK 触发该回调的时间间隔（毫秒）。如果在加入频道前调用了 [startPreview](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_startpreview) 或 [startPreview:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_startpreview2)，该参数表示从调用 [startPreview](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_startpreview) 或 [startPreview:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_startpreview2) 到触发该事件的时间间隔。
+
+#### `sourceType`
+
+视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished"></a>
+
+## rtcEngine:firstLocalVideoFramePublishedWithElapsed:sourceType:
+
+当首帧本地视频发布时触发。
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine firstLocalVideoFramePublishedWithElapsed:(NSInteger)elapsed sourceType:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(rtcEngine(_:firstLocalVideoFramePublishedWithElapsed:sourceType:));
+```
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__timing"></a>
+
+### 触发时机
+
+该回调在发布首帧本地视频时触发，触发时机包括：
+
+- 启用视频模块并调用 joinChannelByToken 成功加入频道；
+- 依次调用 muteLocalVideoStream:YES 和 muteLocalVideoStream:NO；
+- 依次调用 disableVideo 和 enableVideo；
+- 调用 pushExternalVideoFrame 成功向 SDK 推送视频帧。
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `elapsed`
+
+从调用 `joinChannelByToken` 加入频道到该回调被触发的时间间隔（毫秒）。
+
+#### `sourceType`
+
+视频源的类型。详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideodecoded"></a>
+
+## rtcEngine:firstRemoteVideoDecodedOfUid:size:elapsed:
+
+接收到并解码首帧远端视频时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine firstRemoteVideoDecodedOfUid:(NSUInteger)uid size:(CGSize)size elapsed:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:firstRemoteVideoDecodedOfUid:size:elapsed:)) __deprecated_msg("use rtcEngine:remoteVideoStateChangedOfUid:state:reason: instead.");
+```
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__detailed_desc"></a>
+
+#### `废弃`
+
+自 v4.5.0 版本废弃，请改用 `remoteVideoStateChangedOfUid`。
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__timing"></a>
+
+### 触发时机
+
+该回调在以下场景中被触发：
+
+- 远端用户加入频道并发送视频流。
+- 远端用户停止发送视频流 15 秒后重新发送。中断的原因包括：远端用户离开频道、掉线，或调用 disableVideo 关闭视频。
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `uid`
+
+发送视频流的远端用户 ID。
+
+#### `size`
+
+视频尺寸。
+
+#### `elapsed`
+
+从调用 `joinChannelByToken` 方法到触发该回调的时间（毫秒）。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideoframe"></a>
+
+## rtcEngine:firstRemoteVideoFrameOfUid:size:elapsed:
+
+远端视频首帧渲染回调。
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideoframe__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine firstRemoteVideoFrameOfUid:(NSUInteger)uid size:(CGSize)size elapsed:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:firstRemoteVideoFrameOfUid:size:elapsed:));
+```
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideoframe__detailed_desc"></a>
+
+:::info[注]
+该回调仅在视频帧由 SDK 渲染时触发；如果你使用自定义视频渲染，则不会触发该回调。你需要使用 SDK 之外的方法自行实现。
+:::
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideoframe__timing"></a>
+
+### 触发时机
+
+该回调在远端用户的视频首帧被 SDK 渲染时触发。
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideoframe__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+引擎对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `uid`
+
+发送视频流的远端用户 ID。
+
+#### `size`
+
+视频画面的尺寸。
+
+#### `elapsed`
+
+从调用 `joinChannelByToken` 加入频道到触发该回调的时间（毫秒）。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged"></a>
+
+## rtcEngine:localVideoStateChangedOfState:reason:sourceType:
+
+当本地视频流状态发生变化时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine localVideoStateChangedOfState:(AgoraVideoLocalState)state reason:(AgoraLocalVideoStreamReason)reason sourceType:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(rtcEngine(_:localVideoStateChangedOf:reason:sourceType:));
+```
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__detailed_desc"></a>
+
+当本地视频状态发生变化时，SDK 会触发该回调，报告当前本地视频状态及其变化原因。你可以通过该回调及时了解本地视频流的状态变化，并根据变化原因采取相应措施，以更好地管理和排查视频流相关问题。
+
+:::info[注]
+请注意，视频帧重复检测仅适用于分辨率大于 200 × 200、帧率大于等于 10 fps 且码率小于 20 Kbps 的视频帧。通常情况下，如果视频采集出现错误，可以通过该回调中的 `reason` 参数排查问题。但在某些设备上，当采集出现问题（如卡顿）时，Android 系统不会抛出任何错误回调，SDK 也无法上报本地视频状态变化的原因。此时，你可以通过以下方式判断是否未采集到视频帧：该回调上报的 `state` 为 `AgoraVideoLocalStateCapturing` 或 `AgoraVideoLocalStateEncoding`，且 [rtcEngine:localVideoStats:sourceType:](/zh-CN/api-reference/rtc/macos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats) 回调中的 `captureFrameRate` 为 0。
+:::
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__timing"></a>
+
+### 触发时机
+
+该回调在以下情况下被触发， `state` 为 `AgoraVideoLocalStateFailed`， `reason` 为 `AgoraLocalVideoStreamReasonCaptureFailure`：
+
+- 应用切换到后台，系统回收了摄像头资源。
+- 摄像头正常启动，但连续四秒未输出视频帧。
+
+当摄像头输出采集的视频帧时，若 SDK 检测到连续 15 帧重复帧，也会触发该回调， `state` 为 `AgoraVideoLocalStateCapturing`， `reason` 为 `AgoraLocalVideoStreamReasonCaptureFailure`。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+当前使用的 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 实例。
+
+#### `sourceType`
+
+视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+#### `state`
+
+本地视频的状态，详见 [AgoraVideoLocalState](/zh-CN/api-reference/rtc/macos/enum-localvideostreamstate)。
+
+#### `reason`
+
+本地视频状态变化的原因，详见 [AgoraLocalVideoStreamReason](/zh-CN/api-reference/rtc/macos/enum-localvideostreamreason)。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats"></a>
+
+## rtcEngine:localVideoStats:sourceType:
+
+本地视频流统计信息回调。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine localVideoStats:(AgoraRtcLocalVideoStats * _Nonnull)stats sourceType:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(rtcEngine(_:localVideoStats:sourceType:));
+```
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats__timing"></a>
+
+### 触发时机
+
+该回调每两秒触发一次。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `stats`
+
+本地视频流的统计信息。详见 [AgoraRtcLocalVideoStats](/zh-CN/api-reference/rtc/macos/class-localvideostats)。
+
+#### `sourceType`
+
+视频源的类型。详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged"></a>
+
+## rtcEngine:remoteVideoStateChangedOfUid:state:reason:elapsed:
+
+远端视频状态发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state reason:(AgoraVideoRemoteReason)reason elapsed:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:remoteVideoStateChangedOfUid:state:reason:elapsed:));
+```
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged__detailed_desc"></a>
+
+:::info[注]
+当频道中的用户数（在通信频道场景中）或主播数（在直播频道中）超过 32 时，该回调无法正常工作。
+:::
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged__timing"></a>
+
+### 触发时机
+
+该回调在远端视频状态发生变化时被触发。
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+引擎对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `uid`
+
+发生视频状态变化的远端用户 ID。
+
+#### `state`
+
+远端视频的状态。详见 [AgoraVideoRemoteState](/zh-CN/api-reference/rtc/macos/enum-remotevideostate)。
+
+#### `reason`
+
+远端视频状态变化的原因。详见 [AgoraVideoRemoteReason](/zh-CN/api-reference/rtc/macos/enum-remotevideostatereason)。
+
+#### `elapsed`
+
+从调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 方法到 SDK 触发该回调的时间间隔（毫秒）。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onremotevideostats"></a>
+
+## rtcEngine:remoteVideoStats:
+
+报告每位远端用户发送的视频流的统计信息。
+
+<a id="callback_irtcengineeventhandler_onremotevideostats__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine remoteVideoStats:(AgoraRtcRemoteVideoStats * _Nonnull)stats NS_SWIFT_NAME(rtcEngine(_:remoteVideoStats:));
+```
+
+<a id="callback_irtcengineeventhandler_onremotevideostats__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onremotevideostats__timing"></a>
+
+### 触发时机
+
+该回调每两秒为每位远端用户触发一次。如果频道中有多个用户或主播发送视频流，SDK 会触发多次该回调。
+
+<a id="callback_irtcengineeventhandler_onremotevideostats__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `stats`
+
+远端视频流的统计信息。详见 [AgoraRtcRemoteVideoStats](/zh-CN/api-reference/rtc/macos/class-remotevideostats)。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onremotevideotransportstats"></a>
+
+## rtcEngine:videoTransportStatsOfUid:delay:lost:rxKBitRate:
+
+上报每个远端视频流的传输层统计信息。
+
+<a id="callback_irtcengineeventhandler_onremotevideotransportstats__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine videoTransportStatsOfUid:(NSUInteger)uid delay:(NSUInteger)delay lost:(NSUInteger)lost rxKBitRate:(NSUInteger)rxKBitRate NS_SWIFT_NAME(rtcEngine(_:videoTransportStatsOfUid:delay:lost:rxKBitRate:)) __deprecated_msg("use rtcEngine:remoteVideoStats: instead");
+```
+
+<a id="callback_irtcengineeventhandler_onremotevideotransportstats__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃，请改用 [rtcEngine:remoteVideoStats:](/zh-CN/api-reference/rtc/macos/video/video-basic#callback_irtcengineeventhandler_onremotevideostats)。
+
+<a id="callback_irtcengineeventhandler_onremotevideotransportstats__timing"></a>
+
+### 触发时机
+
+该回调在通话过程中，每当接收到远端用户或主播发送的视频包时，每 2 秒触发一次。
+
+<a id="callback_irtcengineeventhandler_onremotevideotransportstats__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `uid`
+
+发送视频包的远端用户 ID。
+
+#### `delay`
+
+从发送端到接收端的网络时延（毫秒）。
+
+#### `lost`
+
+远端用户发送的视频包的丢包率（%）。
+
+#### `rxKBitRate`
+
+接收到的视频码率（Kbps）。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onuserenablelocalvideo"></a>
+
+## rtcEngine:didLocalVideoEnabled:byUid:
+
+当指定的远端用户启用或关闭本地视频采集功能时触发。
+
+<a id="callback_irtcengineeventhandler_onuserenablelocalvideo__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didLocalVideoEnabled:(BOOL)enabled byUid:(NSUInteger)uid NS_SWIFT_NAME(rtcEngine(_:didLocalVideoEnabled:byUid:)) __deprecated_msg("use rtcEngine:remoteVideoStateChangedOfUid:state:reason: instead.");
+```
+
+<a id="callback_irtcengineeventhandler_onuserenablelocalvideo__detailed_desc"></a>
+
+#### `废弃`
+
+自 v4.5.0 版本废弃，请改用 `remoteVideoStateChangedOfUid:state:reason:elapsed:`。
+
+当远端用户调用 [enableLocalVideo:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablelocalvideo) 方法启用或关闭本地视频采集功能时，SDK 会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onuserenablelocalvideo__timing"></a>
+
+### 触发时机
+
+该回调在远端用户调用 [enableLocalVideo:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablelocalvideo) 启用或关闭本地视频采集功能时被触发。
+
+<a id="callback_irtcengineeventhandler_onuserenablelocalvideo__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `enabled`
+
+指定的远端用户是否启用本地视频采集功能：
+
+- YES：启用视频模块，频道内其他用户可以看到该远端用户的视频。
+- NO：关闭视频模块，频道内其他用户无法接收该远端用户的视频流，但该远端用户仍可接收其他用户的视频流。
+
+#### `uid`
+
+远端用户的用户 ID。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo"></a>
+
+## rtcEngine:didVideoEnabled:byUid:
+
+远端用户启用或关闭视频模块回调。
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didVideoEnabled:(BOOL)enabled byUid:(NSUInteger)uid NS_SWIFT_NAME(rtcEngine(_:didVideoEnabled:byUid:));
+```
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo__detailed_desc"></a>
+
+当远端用户调用 [enableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_disablevideo) 方法启用或关闭视频模块时，SDK 会触发该回调。一旦视频模块被关闭，用户只能进行语音通话，无法发送或接收任何视频。
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo__timing"></a>
+
+### 触发时机
+
+该回调在远端用户调用 [enableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_disablevideo) 方法启用或关闭视频模块时被触发。
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `enabled`
+
+- YES：视频模块已启用。
+- NO：视频模块已关闭。
+
+#### `uid`
+
+远端用户 ID。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onusermutevideo"></a>
+
+## rtcEngine:didVideoMuted:byUid:
+
+远端用户停止或恢复发布视频流时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onusermutevideo__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didVideoMuted:(BOOL)muted byUid:(NSUInteger)uid NS_SWIFT_NAME(rtcEngine(_:didVideoMuted:byUid:));
+```
+
+<a id="callback_irtcengineeventhandler_onusermutevideo__detailed_desc"></a>
+
+当远端用户调用 [muteLocalVideoStream:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_mutelocalvideostream) 方法停止或恢复发布视频流时，SDK 会触发该回调，报告远端用户的视频流状态。
+
+:::info[注]
+当通信场景中的用户数或直播场景中的主播数超过 32 时，该回调可能不准确。
+:::
+
+<a id="callback_irtcengineeventhandler_onusermutevideo__timing"></a>
+
+### 触发时机
+
+该回调在远端用户调用 [muteLocalVideoStream:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_mutelocalvideostream) 停止或恢复发布视频流时被触发。
+
+<a id="callback_irtcengineeventhandler_onusermutevideo__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `muted`
+
+远端用户是否停止发布视频流：
+
+- YES：远端用户停止发布视频流。
+- NO：远端用户恢复发布视频流。
+
+#### `uid`
+
+远端用户 ID。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onvideopublishstatechanged"></a>
+
+## rtcEngine:didVideoPublishStateChange:sourceType:oldState:newState:elapseSinceLastState:
+
+视频发布状态发生变化回调。
+
+<a id="callback_irtcengineeventhandler_onvideopublishstatechanged__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine didVideoPublishStateChange:(NSString * _Nonnull)channelId
+         sourceType:(AgoraVideoSourceType)sourceType
+           oldState:(AgoraStreamPublishState)oldState
+           newState:(AgoraStreamPublishState)newState
+elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didVideoPublishStateChange:sourceType:oldState:newState:elapseSinceLastState:));
+```
+
+<a id="callback_irtcengineeventhandler_onvideopublishstatechanged__detailed_desc"></a>
+
+该回调在视频发布状态发生变化时触发。
+
+<a id="callback_irtcengineeventhandler_onvideopublishstatechanged__timing"></a>
+
+### 触发时机
+
+该回调在视频发布状态发生变化时触发。
+
+<a id="callback_irtcengineeventhandler_onvideopublishstatechanged__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `channelId`
+
+频道名。
+
+#### `sourceType`
+
+视频源类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+#### `oldState`
+
+之前的视频发布状态，详见 [AgoraStreamPublishState](/zh-CN/api-reference/rtc/macos/enum-streampublishstate)。
+
+#### `newState`
+
+当前的视频发布状态，详见 [AgoraStreamPublishState](/zh-CN/api-reference/rtc/macos/enum-streampublishstate)。
+
+#### `elapseSinceLastState`
+
+从之前状态到当前状态所经历的时间（毫秒）。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onvideosizechanged"></a>
+
+## rtcEngine:videoSizeChangedOfSourceType:uid:size:rotation:
+
+当指定用户的视频尺寸或旋转信息发生变化时触发。
+
+<a id="callback_irtcengineeventhandler_onvideosizechanged__prototype"></a>
+
+```objectivec
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine videoSizeChangedOfSourceType:(AgoraVideoSourceType)sourceType uid:(NSUInteger)uid size:(CGSize)size rotation:(NSInteger)rotation NS_SWIFT_NAME(rtcEngine(_:videoSizeChangedOf:uid:size:rotation:));
+```
+
+<a id="callback_irtcengineeventhandler_onvideosizechanged__detailed_desc"></a>
+
+:::info[注]
+`rotation` 参数在 iOS 上始终为 0。
+:::
+
+<a id="callback_irtcengineeventhandler_onvideosizechanged__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+#### `sourceType`
+
+视频源的类型。详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+#### `uid`
+
+发生视频尺寸或旋转变化的用户 ID。对于本地用户， `uid` 为 0，表示本地用户的视频预览。
+
+#### `size`
+
+视频尺寸。
+
+#### `rotation`
+
+旋转信息，取值范围为 [0, 360)。
+
+:::info[注]
+`rotation` 参数在 iOS 上始终为 0。
+:::
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onvideostopped"></a>
+
+## rtcEngineVideoDidStop:
+
+视频停止播放时的回调。
+
+<a id="callback_irtcengineeventhandler_onvideostopped__prototype"></a>
+
+```objectivec
+- (void)rtcEngineVideoDidStop:(AgoraRtcEngineKit * _Nonnull)engine NS_SWIFT_NAME(rtcEngineVideoDidStop(_:)) __deprecated_msg("Use rtcEngine:localVideoStateChangedOfState:reason:sourceType: instead");
+```
+
+<a id="callback_irtcengineeventhandler_onvideostopped__detailed_desc"></a>
+
+#### `废弃`
+
+该方法已废弃，请改用 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/macos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged)。
+
+该回调在视频停止播放时触发。你可以通过该回调更改视图的配置，例如在视图中显示其他图片。
+
+<a id="callback_irtcengineeventhandler_onvideostopped__timing"></a>
+
+### 触发时机
+
+该回调在视频停止播放时触发。
+
+<a id="callback_irtcengineeventhandler_onvideostopped__parameters"></a>
+
+### 参数
+
+#### `engine`
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+### 所属接口类
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)

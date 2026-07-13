@@ -1,0 +1,202 @@
+---
+title: "FRemoteAudioStats"
+description: "远端用户的音频统计数据。"
+---
+<a id="class_remoteaudiostats__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FRemoteAudioStats
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int64 uid = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int quality = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int networkTransportDelay = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int jitterBufferDelay = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int audioLossRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int numChannels = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int receivedSampleRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int receivedBitrate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int totalFrozenTime = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int frozenRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int mosValue = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int64 frozenRateByCustomPlcCount = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int64 plcCount = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int totalActiveTime = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int publishDuration = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int qoeQuality = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int qualityChangedReason = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int64 rxAudioBytes = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RemoteAudioStats")
+	int e2eDelay = 0;
+	FRemoteAudioStats(){}
+	FRemoteAudioStats(const agora::rtc::RemoteAudioStats & AgoraData){
+		uid = AgoraData.uid;
+		quality = AgoraData.quality;
+		networkTransportDelay = AgoraData.networkTransportDelay;
+		jitterBufferDelay = AgoraData.jitterBufferDelay;
+		audioLossRate = AgoraData.audioLossRate;
+		numChannels = AgoraData.numChannels;
+		receivedSampleRate = AgoraData.receivedSampleRate;
+		receivedBitrate = AgoraData.receivedBitrate;
+		totalFrozenTime = AgoraData.totalFrozenTime;
+		frozenRate = AgoraData.frozenRate;
+		mosValue = AgoraData.mosValue;
+		frozenRateByCustomPlcCount = AgoraData.frozenRateByCustomPlcCount;
+		plcCount = AgoraData.plcCount;
+		totalActiveTime = AgoraData.totalActiveTime;
+		publishDuration = AgoraData.publishDuration;
+		qoeQuality = AgoraData.qoeQuality;
+		qualityChangedReason = AgoraData.qualityChangedReason;
+		rxAudioBytes = AgoraData.rxAudioBytes;
+		e2eDelay = AgoraData.e2eDelay;
+	}
+	agora::rtc::RemoteAudioStats CreateAgoraData() const {
+		agora::rtc::RemoteAudioStats AgoraData;
+		AgoraData.uid = uid;
+		AgoraData.quality = quality;
+		AgoraData.networkTransportDelay = networkTransportDelay;
+		AgoraData.jitterBufferDelay = jitterBufferDelay;
+		AgoraData.audioLossRate = audioLossRate;
+		AgoraData.numChannels = numChannels;
+		AgoraData.receivedSampleRate = receivedSampleRate;
+		AgoraData.receivedBitrate = receivedBitrate;
+		AgoraData.totalFrozenTime = totalFrozenTime;
+		AgoraData.frozenRate = frozenRate;
+		AgoraData.mosValue = mosValue;
+		AgoraData.frozenRateByCustomPlcCount = frozenRateByCustomPlcCount;
+		AgoraData.plcCount = plcCount;
+		AgoraData.totalActiveTime = totalActiveTime;
+		AgoraData.publishDuration = publishDuration;
+		AgoraData.qoeQuality = qoeQuality;
+		AgoraData.qualityChangedReason = qualityChangedReason;
+		AgoraData.rxAudioBytes = rxAudioBytes;
+		AgoraData.e2eDelay = e2eDelay;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::RemoteAudioStats & AgoraData) const {
+	}
+};
+```
+
+<a id="class_remoteaudiostats__parameters"></a>
+
+## 属性
+
+### `uid`
+
+远端用户的用户 ID。
+
+### `quality`
+
+远端用户发送的音频流质量。
+
+- QUALITY_UNKNOWN (0)：质量未知。
+- QUALITY_EXCELLENT (1)：质量极好。
+- QUALITY_GOOD (2)：用户主观感觉和极好差不多，但码率可能略低于极好。
+- QUALITY_POOR (3)：用户主观感受有瑕疵但不影响沟通。
+- QUALITY_BAD (4)：勉强能沟通但不顺畅。
+- QUALITY_VBAD (5)：网络质量非常差，基本不能沟通。
+- QUALITY_DOWN (6)：网络连接断开，完全无法沟通。
+- QUALITY_DETECTING (8)：网络质量检测进行中。
+
+### `networkTransportDelay`
+
+音频发送端到接收端的网络延迟（毫秒）。
+
+### `jitterBufferDelay`
+
+音频接收端到网络抖动缓冲的网络延迟（毫秒）。
+
+:::warning[注意]
+当接收端为观众且 [FClientRoleOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-clientroleoptions) 的 audienceLatencyLevel 为 1 时，该参数不生效。
+:::
+
+### `audioLossRate`
+
+统计周期内的远端音频流的丢帧率 (%)。
+
+### `numChannels`
+
+声道数。
+
+### `receivedSampleRate`
+
+统计周期内接收到的远端音频流的采样率。
+
+### `receivedBitrate`
+
+接收到的远端音频流在统计周期内的平均码率（Kbps）。
+
+### `totalFrozenTime`
+
+远端用户在加入频道后发生音频卡顿的累计时长（毫秒）。通话过程中，音频丢帧率达到 4% 即记为一次音频卡顿。
+
+### `frozenRate`
+
+音频卡顿的累计时长占音频总有效时长的百分比 (%)。音频有效时长是指远端用户加入频道后音频未被停止发送或禁用的时长。
+
+### `totalActiveTime`
+
+远端用户在音频通话开始到本次回调之间的有效时长（毫秒）。
+
+有效时长是指去除了远端用户进入静音状态的总时长。
+
+### `publishDuration`
+
+远端音频流的累计发布时长（毫秒）。
+
+### `qoeQuality`
+
+接收远端音频时，本地用户的主观体验质量。
+
+- EXPERIENCE_QUALITY_GOOD (0)：主观体验质量较好。
+- EXPERIENCE_QUALITY_BAD (1)：主观体验质量较差。
+
+### `qualityChangedReason`
+
+接收远端音频时，本地用户主观体验质量较差的原因。
+
+- EXPERIENCE_REASON_NONE (0): 无原因，说明主观体验质量较好。
+- REMOTE_NETWORK_QUALITY_POOR (1): 远端用户的网络较差。
+- LOCAL_NETWORK_QUALITY_POOR (2): 本地用户的网络较差。
+- WIRELESS_SIGNAL_POOR (4): 本地用户的 Wi-Fi 或者移动数据网络信号弱。
+- WIFI_BLUETOOTH_COEXIST (8): 本地用户同时开启 Wi-Fi 和蓝牙，二者信号互相干扰，导致音频传输质量下降。
+
+### `mosValue`
+
+统计周期内，声网实时音频 MOS（平均主观意见分）评估方法对接收到的远端音频流的质量评分。返回值范围为 [0,500]。返回值除以 100 即可得到 MOS 分数，范围为 [0,5] 分，分数越高，音频质量越好。
+
+声网实时音频 MOS 评分对应的主观音质感受如下：
+
+| MOS 分数 | 音质感受 |
+| --- | --- |
+| 大于 4 分 | 音频质量佳，清晰流畅。 |
+| 3.5 - 4 分 | 音频质量较好，偶有音质损伤，但依然清晰。 |
+| 3 - 3.5 分 | 音频质量一般，偶有卡顿，不是非常流畅，需要一点注意力才能听清。 |
+| 2.5 - 3 分 | 音频质量较差，卡顿频繁，需要集中精力才能听清。 |
+| 2 - 2.5 分 | 音频质量很差，偶有杂音，部分语义丢失，难以交流。 |
+| 小于 2 分 | 音频质量非常差，杂音频现，大量语义丢失，完全无法交流。 |
+
+### `e2eDelay`
+
+端到端音频延时（毫秒），即自远端用户音频采集起，至本地用户开始播放音频的总时长。

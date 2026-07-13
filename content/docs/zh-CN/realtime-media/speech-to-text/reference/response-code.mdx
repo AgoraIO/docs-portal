@@ -1,0 +1,90 @@
+---
+title: "响应码和错误码"
+---
+本文列出了使用转录翻译 RESTful API 过程中可能遇到的错误码和状态码。
+
+若遇到其他错误，请[联系技术支持](https://tickets.shengwang.cn)。
+
+### 响应状态码
+
+调用实时转录翻译 RESTful API 时，可能收到以下 HTTP 状态码：
+
+- `200` 表示请求成功。
+- 非 `200` 表示请求失败。此时请检查响应 Body 中的 `message`、`code` 和 `reason` 字段以确定问题原因。`reason` 字段可能不存在。
+
+### 响应示例
+
+请求失败时，可能收到以下响应：
+
+- 仅含 `message`：
+
+    ```json
+    # 401 Unauthorized
+    # 仅 message 字段
+    {
+      "message": "无效的认证凭据"
+    }
+    ```
+
+- 仅含 `code` 和 `reason`：
+
+    ```json
+    # 400 Bad Request
+    # 仅 code 和 reason 字段
+    {
+      "code": 2,
+      "reason": "Acquire：无效的 resourceExpiredHour 值！"
+    }
+    ```
+
+### 状态码
+
+| 状态码 | 说明 |
+|:----|:------------|
+| `200` | 请求成功。调用 `acquire` 时请记录 `tokenName`；调用 `start` 时请记录 `taskId` 并将其与 `tokenName` 建立映射。 |
+| `201` | 服务已在运行中。请勿使用相同的 `tokenName` 重复发起 `start` 请求。 |
+| `206` | 语音转写过程中，频道内无用户发送音频流。 |
+| `400` | 请求语法错误导致服务器无法处理，或实时转录翻译服务未启用。 |
+| `401` | 未授权（客户 ID/客户密钥错误）。 |
+| `404` | 请求的资源不存在。 |
+| `409` | 任务已启动。 |
+| `500` | 服务器内部错误。 |
+| `504` | 内部通信错误。 |
+
+### 错误信息与错误码
+
+#### 错误信息（Message）
+
+- `"产品名称与 builderToken 不匹配"`：获取的 `builderToken` 存在问题，请重新调用 `acquire`。
+- `"resourceId 超出允许的时间间隔！"`：`builderToken` 在 5 分钟有效期内已过期。请确保在调用 `acquire` 后的 5 分钟内使用 `tokenName` 启动服务。任务创建成功后，请保存 `tokenName`，后续将用于调用 `query`、`update` 和 `stop`。
+- `"无效的 App ID！"`：你的项目未启用实时转录翻译服务。请在控制台启用或联系 [Agora 技术支持](mailto:support@agora.io)。
+- `"请求体格式校验失败，..."`：`start` 或 `update` 请求 Body 有误。`"..."` 部分描述了失败原因。通常由参数不匹配或超出范围引起，请重新检查请求 Body。
+- `"taskId 与 builderToken 不匹配。"`：请检查 `taskId` 与 `tokenName` 不匹配的原因。
+- `"未找到对应任务"`：任务已终止。
+- `"任务已启动，当前状态为 STARTED，taskId 为 ..."`：任务已启动，请记录 `taskId` 并与 `tokenName` 建立映射。
+
+#### 错误码（Error code）
+
+- `1`：调用 `start` 时发生服务器内部错误。如需支持，请[联系技术支持](https://tickets.shengwang.cn)。
+- `2`：参数无效。可能原因：
+    - 数据类型错误。
+    - 参数拼写错误（所有参数区分大小写）。
+    - 参数值超出允许范围。
+    - 缺少必需参数。
+- `6`：调用 `start` 时发生服务器内部错误。如需支持，请[联系技术支持](https://tickets.shengwang.cn)。
+- `20`：处理超时。请采用退避策略在 3 秒和 6 秒后重试相同调用。
+- `23`：调用 `start` 时发生服务器内部错误。如需支持，请[联系技术支持](https://tickets.shengwang.cn)。
+- `49`：使用相同 `tokenName` 重复调用 `start`，或使用相同 `tokenName` 和 `taskId` 重复调用 `stop`。
+- `53`：`taskid` 与 `buildtoken` 不匹配。
+- `62`：若在调用 `acquire` 时收到此错误，表示你的 App ID 未启用实时转录翻译服务。请在控制台启用，或[联系技术支持](https://tickets.shengwang.cn)；若在调用 `start` 时收到此错误，表示因网络问题导致服务未能启动。
+- `404`：调用 `query` 或 `stop` 时任务已终止。
+- `501`：调用 `start` 时发生服务器内部错误。声网建议你使用退避策略。例如，第一次等待 1 秒后重试、第二次等待 3 秒后重试、第三次等待 6 秒后重试。
+- `502`：调用 `start` 时发生服务器内部错误。声网建议你使用退避策略。例如，第一次等待 1 秒后重试、第二次等待 3 秒后重试、第三次等待 6 秒后重试。
+- `504`：调用 `start` 时发生服务器内部错误。声网建议你使用退避策略。例如，第一次等待 1 秒后重试、第二次等待 3 秒后重试、第三次等待 6 秒后重试。
+- `1001`：解析 `tokenName` 失败，请调用 `acquire` 获取新的 `tokenName`。
+- `1003`：App ID 或 `taskId` 与 `tokenName` 不匹配。请确保每个实时转录翻译任务中使用的 App ID 或 `taskId` 与 `tokenName` 匹配。
+
+### 注意事项
+
+- `resourceId` 和 `tokenName` 参数含义相同。某些情况下 `builderToken` 也指代 `tokenName`。
+- 如遇到本文档未提及的错误，请[联系技术支持](https://tickets.shengwang.cn)。

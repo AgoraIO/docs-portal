@@ -1,0 +1,47 @@
+---
+title: "EncryptionMode"
+description: "内置加密模式。"
+---
+<a id="enum_encryptionmode__detailed_desc"></a>
+
+建议使用 Aes128Gcm2 或 Aes256Gcm2 加密模式。这两种模式支持使用盐，安全性更高。
+
+<a id="enum_encryptionmode__parameters"></a>
+
+## 枚举值
+
+### `Aes128Xts`
+
+1: 128 位 AES 加密，XTS 模式。
+
+### `Aes128Ecb`
+
+2: 128 位 AES 加密，ECB 模式。
+
+### `Aes256Xts`
+
+3: 256 位 AES 加密，XTS 模式。
+
+### `Sm4128Ecb`
+
+4: 128 位 SM4 加密，ECB 模式。
+
+### `Aes128Gcm`
+
+5: 128 位 AES 加密，GCM 模式。
+
+### `Aes256Gcm`
+
+6: 256 位 AES 加密，GCM 模式。
+
+### `Aes128Gcm2`
+
+7:（默认）128 位 AES 加密，GCM 模式。该加密模式需要设置盐（`encryptionKdfSalt` ）。
+
+### `Aes256Gcm2`
+
+8: 256 位 AES 加密，GCM 模式。该加密模式需要设置盐（`encryptionKdfSalt` ）。
+
+### `ModeEnd`
+
+枚举值边界。

@@ -1,0 +1,480 @@
+---
+title: "设备端实现（全功能版本）"
+---
+本文介绍如何使用声网灵隼**全功能版本**的设备端 SDK 实现设备管理、呼叫、通话、告警等功能。
+
+:::info[信息]
+如果你没有自研的设备管理等模块，声网建议你使用全功能版本 SDK。
+:::
+
+## 前提条件
+
+开始前，请确保你的开发环境满足如下要求：
+
+- 设备端兼容[产品概述](/zh-CN/solutions/iot-apaas#设备端)中描述的版本。
+- [开通并配置声网灵隼物联网服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。
+- 有效的设备 License。参考[申请和使用 License](/zh-CN/solutions/iot-apaas/build/setup-and-access/license) 获取免费或商业 License。
+
+## 跑通示例项目
+
+设备端示例项目仅支持 Ubuntu 18.04 或更高版本。参考如下步骤跑通示例项目：
+
+1. 下载 [ag-iot-device-demo](https://github.com/AgoraIO-Community/ag-iot-device-demo) 示例项目。示例项目提供 `makefile` 方便进行二次开发编译，你可以修改示例项目相关参数配置，验证项目效果。
+
+2. 在设备端示例项目的源码中，修改 `example/src/app_config.h` 文件的以下参数。你可以在灵隼控制台的**应用配置**页面选择**开发者选项**卡片，查看你在创建灵隼物联网产品时[配置的开发参数]（./enable-service#8-配置开发参数）。
+
+   ```c
+   // 开发者选项中的 App ID
+   #define CONFIG_AGORA_APP_ID "4b31f****************************3037"
+   // 开发者选项中的 RESTful API Customer ID
+   #define CONFIG_CUSTOMER_KEY "8620f******************************7363"
+   // 开发者选项中的 RESTful API Customer Secret
+   #define CONFIG_CUSTOMER_SECRET "492c1****************************e802"
+   // 用户名，你需要自行设置
+   #define CONFIG_USER_ID "6875*********3440"
+   // 设备 ID，你需要自行设置
+   #define CONFIG_DEVICE_ID "mydoorbell"
+   // 开发者选项中的 Master Server URL
+   #define CONFIG_MASTER_SERVER_URL "https://app.agoralink-iot-cn.sd-rtn.com"
+   // 开发者选项中的 Slave Server URL
+   #define CONFIG_SLAVE_SERVER_URL "https://api.sd-rtn.com/agoralink/cn/api"
+   // 开发者选项中的 Product Key
+   #define CONFIG_PRODUCT_KEY "EJIJ**********5lI4"
+   ```
+
+3. 进入项目根目录并运行 `make` 命令编译示例项目。编译成功后，根目录会生成 `hello_doorbell_2` 文件。
+4. 运行以下命令启动示例项目。你可以将 `your_device_id` 替换为自己的设备 ID，只支持字母和数字。你需要保证设备 ID 的唯一性。
+
+   ```shell
+   ./hello_doorbell_2 your_device_id
+   ```
+
+5. 根据提示输入客户端生成的二维码内容。你可以通过微信等二维码扫描工具获取字符串内容，比如：
+
+   ```shell
+   ------------------ Please input QRcode string with JSON type ----------------------
+   {"s":"CMCC-xxxxx","p":"19xxxxx06","u":"6846xxxxxxxx72","k":"EJIxxxxxxxOl5"}
+   -------------------- Got string and parse it now ------------------------------------
+   ```
+
+6. 客户端侧添加设备功能需要扫描产品二维码（实际情况下，一般在说明书或者设备机身找到），你可以使用示例项目中的 `设备产品码.png`。
+
+:::warning[注意]
+为避免设备 ID 重复导致的冲突，示例项目中的设备不可重复绑定。因此，当设备绑定成功后，如果 `device_status.cfg` 文件丢失，你需要在客户端先移除设备再重新激活，否则会出现激活失败的错误警告。
+:::
+
+## 实现设备端功能
+
+设备端全功能实现的核心逻辑如下。
+
+### 1. 通过许可证对设备鉴权
+
+你可以参考以下示例代码调用 `agora_iot_license_activate` 激活购买的 License。
+
+```c
+if (0 != agora_iot_license_activate(CONFIG_AGORA_APP_ID, CONFIG_CUSTOMER_KEY, CONFIG_CUSTOMER_SECRET,
+CONFIG_PRODUCT_KEY, device_id, &cert)) {
+printf("cannot activate agora license !\n");
+goto activate_err;
+}
+```
+
+License 激活成功后，`agora_iot_license_activate` 通过 `cert` 参数返回获取到的 License 检验证书，用于 SDK 初始化授权。你需要保存证书到配置文件或 Flash 中，下次运行时，SDK 就可以从文件或 Flash 中获取证书，无需每次启动都重新激活。每次激活会消耗一个 License 额度，当额度消耗为 0 时，调用 `agora_iot_license_activate` 会返回错误。
+
+### 2. 注册并绑定设备
+
+参考以下示例代码调用 SDK 的 `agora_iot_register_and_bind` 注册并绑定设备。
+
+```c
+if (0 != agora_iot_register_and_bind(CONFIG_MASTER_SERVER_URL, CONFIG_PRODUCT_KEY, device_id,
+user_id, device_name, &device_info)) {
+printf("register device to aws failure\n");
+goto activate_err;
+}
+```
+
+设备注册成功后返回 MQTT 链接 domain，安全连接鉴权 Certificate 和 Private Key。你需要把这些参数保存在配置文件或 Flash 中，下次运行时，SDK 就可以从文件或 Flash 中获取相关参数，无需每次启动都重新调用一次该方法。
+
+`device_id`，即设备 ID，是服务器为设备分配的唯一身份信息。在进行呼叫时，主叫方需要使用设备 ID 找到被叫设备。因此，如果你使用的只有音视频通话功能，你需要将设备 ID 上传到自己的业务服务器中，以便其他端可以呼叫你的设备。
+
+### 3. 初始化 SDK
+
+License 激活和注册设备操作通常在设备激活步骤中完成，在做完这两个操作后，你已经获得了 SDK 初始化所需的全部前置条件参数。每次设备启动时，你需要先检查是否已经获得这些参数，如果已经获得，则无需重复激活设备。
+
+参考以下示例代码调用 `agora_iot_init` 初始化 SDK。
+
+```c
+agora_iot_config_t cfg = {
+.app_id = CONFIG_AGORA_APP_ID,
+.product_key = CONFIG_PRODUCT_KEY,
+.client_id = client_id,
+.domain = domain,
+.root_ca = CONFIG_AWS_ROOT_CA,
+.client_crt = dev_crt,
+.client_key = dev_key,
+.enable_rtc = true,
+.certificate = license,
+.enable_recv_audio = true,
+.enable_recv_video = false,
+
+.rtc_cb = {
+.cb_start_push_frame = iot_cb_start_push_frame,
+.cb_stop_push_frame = iot_cb_stop_push_frame,
+.cb_receive_audio_frame = iot_cb_receive_audio_frame,
+.cb_receive_video_frame = iot_cb_receive_video_frame,
+#ifdef CONFIG_SEND_H264_FRAMES
+.cb_target_bitrate_changed = iot_cb_target_bitrate_changed,
+.cb_key_frame_requested = iot_cb_key_frame_requested,
+#endif
+},
+
+.disable_rtc_log = false,
+.max_possible_bitrate = DEFAULT_MAX_BITRATE,
+.enable_audio_config = true,
+.audio_config = {
+.audio_codec_type = AUDIO_CODEC_TYPE,
+#if defined(CONFIG_SEND_PCM_DATA)
+.pcm_sample_rate = CONFIG_PCM_SAMPLE_RATE,
+.pcm_channel_num = CONFIG_PCM_CHANNEL_NUM,
+#endif
+},
+
+.slave_server_url = CONFIG_SLAVE_SERVER_URL,
+.call_cb = {
+.cb_call_request = iot_cb_call_request,
+.cb_call_answered = iot_cb_call_answered,
+.cb_call_hung_up = iot_cb_call_hung_up,
+.cb_call_local_timeout = iot_cb_call_timeout,
+.cb_call_peer_timeout = iot_cb_call_timeout,
+},
+};
+
+handle = agora_iot_init(&cfg);
+if (NULL == handle) {
+printf("agora_iot_init failed\n");
+goto agora_iot_err;
+}
+```
+
+SDK 初始化接口参数包括：
+
+- 基础能力参数：包括设备注册、License 激活获取的授权参数等。
+- 音视频传输参数：包括音视频码流订阅控制，码率控制回调通知等。
+- 音频编码参数：包括是否启用内置编解码器，编码格式选择等。
+- 呼叫通知参数：包括被叫通知，远端应答通知，等待超时通知等。
+
+### 4. 实现媒体流传输
+
+参考以下步骤实现媒体流传输功能：
+
+1. 启动音视频采集编码。设备端主动发起呼叫，或者收到被呼通知并选择接听后，SDK 会触发 `iot_cb_start_push_frame` 回调，此时你需要尽快初始化设备采集、编码模块，开始推送音视频数据帧。如下示例代码中使用了固定的视频文件数据，在真实设备集成时，你需要自行使用当前设备的音视频采集 API 获取音视频帧。
+
+    ```c
+    void iot_cb_start_push_frame(void)
+   {
+    int rval;
+    printf("Ready to push frames\n");
+
+    // 视频编码的实现代码
+
+    if (g_app.b_push_thread_run) {
+     printf("Already pushing frames!\n");
+     return;
+    }
+    // 发送视频帧的实现代码
+    g_app.b_push_thread_run = true;
+    rval = pthread_create(&g_app.video_thread_id, NULL, video_send_thread, 0);
+    if (rval < 0) {
+     printf("Unable to create video push thread\n");
+     return;
+    }
+    // 发送音频帧的实现代码
+    rval = pthread_create(&g_app.audio_thread_id, NULL, audio_send_thread, 0);
+    if (rval < 0) {
+     printf("Unable to create audio push thread\n");
+     return;
+    }
+   }
+    ```
+
+   当收到 `iot_cb_stop_push_frame` 回调时，你需要停止推送视频并禁用设备音视频采集编码功能。
+
+2. 推送音视频数据帧。你可以在 SDK 初始化后随时调用 `agora_iot_push_video_frame` 和 `agora_iot_push_video_frame` 分别推送视频帧和音频帧数据。
+
+<Tabs defaultValue="audio" groupId="sendstream" persist>
+<TabsList>
+  <TabsTrigger value="audio">推送音频帧</TabsTrigger>
+  <TabsTrigger value="video">推送视频帧</TabsTrigger>
+</TabsList>
+
+<TabsContent value="audio">
+
+```c
+static int send_audio_frame(uint8_t *data, uint32_t len)
+{
+int rval;
+
+// 发送音频帧
+ago_audio_frame_t ago_frame = { 0 };
+ago_frame.data_type = AUDIO_DATA_TYPE;
+ago_frame.audio_buffer = data;
+ago_frame.audio_buffer_size = len;
+rval = agora_iot_push_audio_frame(g_app.iot_handle, &ago_frame);
+if (rval < 0) {
+  printf("Failed to push audio frame\n");
+return -1;
+}
+
+return 0;
+}
+```
+
+:::warning[注意]
+在初始化时使用内部音频编解码器收发 PCM 原始数据的场景下，每帧音频数据的长度必须是 20 ms。如果真实设备上每次获取到的音频帧长度不是 20 ms，你需要用 ring buffer 机制拼接后再调用 `agora_iot_push_audio_frame` 接口发送音频帧。
+:::
+
+</TabsContent>
+
+<TabsContent value="video">
+
+```c
+static int send_video_frame(uint8_t *data, uint32_t len)
+{
+int rval;
+
+// 发送视频帧
+ago_video_frame_t ago_frame = { 0 };
+ago_frame.data_type = VIDEO_DATA_TYPE;
+ago_frame.is_key_frame = true;
+ago_frame.video_buffer = data;
+ago_frame.video_buffer_size = len;
+
+rval = agora_iot_push_video_frame(g_app.iot_handle, &ago_frame);
+if (rval < 0) {
+    printf("Failed to push video frame\n");
+    return -1;
+}
+
+return 0;
+}
+```
+
+:::warning[注意]
+发送视频帧时需要注意 `key_frame` 参数，对于 H.264 编码格式的视频，SDK 只支持 I 帧和 P 帧，如果你的设备编码中存在 B 帧，必须配置编码器取消 B 帧编码。
+:::
+
+</TabsContent>
+</Tabs>
+
+3. 接收远端音视频数据帧。SDK 支持双向音视频实时通话，设备端在初始化时可以指定是否接收远端发来的音频帧和视频帧。如果选择接收，当 SDK 收到远端发来的音视频帧后会触发 `cb_receive_audio_frame` 或 `cb_receive_video_frame` 回调函数。应用层需要在回调函数中尽快取走数据进行解码播放。如果系统解码播放接口耗时较长，则声网建议不要直接在回调函数内操作，否则会影响 SDK 内部音视频收发速度，甚至会导致音视频严重卡顿。
+
+<Tabs defaultValue="audio" groupId="sendstream" persist>
+<TabsList>
+  <TabsTrigger value="audio">接收音频帧</TabsTrigger>
+  <TabsTrigger value="video">接收视频帧</TabsTrigger>
+</TabsList>
+
+<TabsContent value="audio">
+
+如果 SDK 初始化时选择了启用 SDK 内部音频编解码器，则 SDK 会把收到的音频帧解码为原始 PCM 格式；如果未启用 SDK 内部音频编解码器，则你会收到远端发来的原始音频数据，SDK 不会进行解码。
+
+ ```c
+ void iot_cb_receive_audio_frame(ago_audio_frame_t *frame)
+ {
+
+ // 把音频数据发送到解码器的实现代码
+ int ret = 0;
+ static FILE *fp = NULL;
+ if (!fp) {
+     fp = fopen("receive_audio.bin", "wb");
+ }
+
+ ret = fwrite(frame->audio_buffer, 1, frame->audio_buffer_size, fp);
+ }
+ ```
+
+</TabsContent>
+
+<TabsContent value="video">
+
+```c
+void iot_cb_receive_video_frame(ago_video_frame_t *frame)
+{
+// 把视频数据发送到解码器的实现代码
+int ret = 0;
+static FILE *fp = NULL;
+if (!fp) {
+    fp = fopen("receive_video.bin", "wb");
+}
+
+ret = fwrite(frame->video_buffer, 1, frame->video_buffer_size, fp);
+}
+```
+
+</TabsContent>
+</Tabs>
+
+4. 控制视频编码码率。为了保证音视频通话流畅性，你必须对推送的视频帧码率进行控制，否则当推送的视频帧超过真实网络状态下的数据发送上限时，会出现网络拥塞，导致严重的音视频卡顿问题。SDK 提供了 `cb_target_bitrate_changed` 回调函数，用于探测当前网络状态下可推送的视频码率上限，声网推荐你订阅该回调，并根据回调中提供的码率建议实时调整视频编码器的输出码率。
+
+    ```c
+    void iot_cb_target_bitrate_changed(uint32_t target_bitrate)
+    {
+    printf("Bandwidth change detected. Please adjust encoder bitrate to %u kbps\n", target_bitrate / 1000);
+    // 注意：在使用 H.264 编码器的情况下，你需要更新目标码率
+    }
+    ```
+
+5. 根据回调发送关键帧。考虑到网络丢包可能造成的 I 帧损坏、几秒钟视频黑屏（损失一个GOP）等情况，声网推荐你订阅`cb_key_frame_requested` 回调，并在收到该回调时尽快控制编码器输出一个新的关键帧。
+
+    ```c
+    void iot_cb_key_frame_requested(void)
+    {
+    printf("Please notify the encoder to generate key frame immediately\n");
+    // 注意：在使用 H.264 编码器的情况下，你需要强制生成 IDR 帧
+    }
+    ```
+
+### 5. 实现呼叫
+
+参考以下步骤实现呼叫功能：
+
+1. 通过 `agora_iot_call` 向客户端发送呼叫，其中 `user_account` 参数可以通过 `agora_iot_query_user` 查询获取。
+
+    ```c
+    if (0 != agora_iot_call(handle, user_account, "This is a call test")) {
+        printf("------- call %s failed.\n", user_account);
+    }
+    ```
+
+2. 当收到其他端的呼叫请求时（`cb_call_request` 回调），你可以调用 `agora_iot_answer` 接听或 `agora_iot_hang_up` 挂断来响应这个呼叫请求。以下为自动接听的示例代码：
+
+    ```c
+    void iot_cb_call_request(const char *peer_name, const char *attach_msg)
+    {
+        if (!peer_name) {
+        return;
+        }
+
+    printf("Get call from peer \"%s\"\n", peer_name);
+
+    // 自动接听，如果不需要，请将其移除
+    agora_iot_answer(g_app.iot_handle);
+    }
+    ```
+
+   如果不需要自动接听，而是在设备端通过按键或者屏幕操作进行接听，则你需要在触发对应操作后主动调用 `agora_iot_answer` 接听或 `agora_iot_hang_up` 挂断。
+
+### 6. 实现设备远程控制
+
+参考以下步骤实现设备远程控制功能：
+
+1. 参考[定义属性](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service#6-定义属性)添加产品所需属性，并在设备端 App 中定义相同的 DP 值。
+
+    ```c
+    /* Data Point ID start */
+    /* AGORA_DP_ID_<TYPE>_<NAME> */
+    #define AGORA_DP_ID_BOOL_OSD_WATERMARK_SWITCH       100
+    #define AGORA_DP_ID_ENUM_INFRARED_NIGHT_VISION      101
+    #define AGORA_DP_ID_BOOL_MOVING_WARNING             102
+    #define AGORA_DP_ID_ENUM_PIR_SWITCH                 103
+    #define AGORA_DP_ID_INT_VOLUME_CONTROL              104
+    #define AGORA_DP_ID_BOOL_FORCE_RELEASING_WARNING    105
+    #define AGORA_DP_ID_INT_BATTERY_CAPACITY            106
+    #define AGORA_DP_ID_ENUM_VIDEO_ART                  107
+    #define AGORA_DP_ID_BOOL_WORK_LED                   108
+    #define AGORA_DP_ID_STR_FIRMWARE_VER                109
+    #define AGORA_DP_ID_ENUM_TF_STATE                   110
+    #define AGORA_DP_ID_INT_TF_STORAGE_AVAILABLE        111
+    #define AGORA_DP_ID_ENUM_TF_FORMAT_CTRL             112
+    #define AGORA_DP_ID_INT_PREVIEW_TIME                113
+    #define AGORA_DP_ID_BOOL_ALRAM_SONG                 114
+    #define AGORA_DP_ID_BOOL_VOICE_SENSE                115
+    #define AGORA_DP_ID_STR_WIFI_SSID                   501
+    #define AGORA_DP_ID_STR_DEVICE_IP                   502
+    #define AGORA_DP_ID_STR_DEVICE_MAC                  503
+    #define AGORA_DP_ID_STR_TIME_ZONE                   504
+    #define AGORA_DP_ID_ENUM_STANDBY_STATE              1000
+    /* Data Point ID end */
+    ```
+
+2. 注册 DP 属性点对应的回调函数：
+   - 通过 `agora_iot_dp_register_dp_query_handler` 注册查询状态回调函数。
+   - 通过 `agora_iot_dp_register_dp_cmd_handler` 注册状态变更响应回调函数。
+
+    ```c
+    for (int i = 0; i < g_mock_dp_state_total; i++) {
+        agora_iot_dp_register_dp_query_handler(handle, g_mock_dp_state[i].info.dp_id, g_mock_dp_state[i].info.dp_type,
+                                                _query_callback, (void *)handle);
+        if (MODE_RW == g_mock_dp_state[i].mode) {
+        agora_iot_dp_register_dp_cmd_handler(handle, g_mock_dp_state[i].info.dp_id, g_mock_dp_state[i].info.dp_type,
+                                                _cmd_callback, (void *)handle);
+        }
+    }
+    ```
+
+3. 当设备状态发生改变时，你需要调用 `agora_iot_dp_publish` 将发生改变的属性点状态上报服务端。在设备重启等特殊情况下，你可能需要将所有属性点全部上报更新，声网推荐调用效率更高的上报接口：`agora_iot_dp_publish_all`。`agora_iot_dp_publish_all` 会触发 App 注册的 DP 属性点查询状态回调函数，并整合成一个上报请求，一次上报所有属性状态。
+
+### 7. 发送和接收 RTM 消息
+
+你可以通过 `agora_iot_send_rtm` 和 `on_receive_rtm` 发送和接收云信令 RTM 消息。
+
+```c
+// 实现 on_receive_rtm 回调，用于接收 RTM 云信令消息
+agora_iot_config_t cfg = {
+
+    ...
+
+      .rtm_cb = {
+      .on_receive_rtm         = iot_cb_receive_rtm,
+      .on_send_rtm_result     = iot_cb_send_rtm_result
+    }
+};
+
+handle = agora_iot_init(&cfg);
+
+// 调用 agora_iot_send_rtm 发送 RTM 云信令消息
+agora_iot_send_rtm(handle, g_rtm_peer_uid, rtm_msg_id++, "This is a test message for RTM....", 20);
+```
+
+### 8. 释放 SDK 资源
+
+退出设备端应用时，你可以通过 `agora_iot_deinit` 释放资源。
+
+如果你使用的是 Linux 系统，你可以通过异常信号拦截来保证资源的释放：
+
+```c
+static void signal_handler(int sig)
+{
+  switch (sig) {
+  case SIGQUIT:
+  case SIGABRT:
+  case SIGINT:
+    g_app.b_exit = true;
+    if (g_app.b_push_thread_run) {
+      printf("Hang up the call.\n");
+      g_app.b_push_thread_run = false;
+      agora_iot_hang_up(g_app.iot_handle);
+    }
+    break;
+  default:
+    printf("no handler, sig %d", sig);
+  }
+}
+
+void install_signal_handler(void)
+{
+  signal(SIGINT, signal_handler);
+  struct sigaction sa;
+  memset(&sa, 0, sizeof(struct sigaction));
+  sa.sa_handler = signal_handler;
+  sa.sa_flags = 0; // not SA_RESTART!;
+
+
+  sigaction(SIGINT, &sa, NULL);
+  sigaction(SIGTERM, &sa, NULL);
+}
+```
+
+## 参考信息
+
+- [设备端全功能 API 参考](/zh-CN/api-reference/iot-apaas/device-sdk/full/config)

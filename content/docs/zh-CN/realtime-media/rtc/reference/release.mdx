@@ -1,0 +1,210 @@
+---
+title: "插件发版说明"
+---
+本页提供声网 Web SDK 配套的媒体处理插件的发版说明。
+
+:::warning[注意]
+使用 AI 降噪插件和虚拟背景插件可能会产生费用。请与 sales@shengwang.cn 沟通后再使用。
+:::
+
+## AI 降噪插件
+
+如果当前提供的降噪效果不能满足你的场景，你可以联系 sales@shengwang.cn 定制降噪效果。
+
+<Tabs defaultValue="rtc" groupId="usecase" persist>
+<TabsList>
+  <TabsTrigger value="rtc">实时互动场景降噪</TabsTrigger>
+  <TabsTrigger value="convoai">AI 场景专用降噪</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rtc">
+
+### v2.0.1
+
+#### 升级必看
+
+该版本不再支持在 `pipe` 前调用 `disable` 方法关闭 Processor。在调用 `disable` 前，请确保已调用 `pipe`。
+
+#### 新特性
+
+- 在 `IAIDenoiserExtension` 接口类中新增 `setLogLevel` 方法，用于设置插件和 WASM 模块的日志等级。
+- AI 降噪新增了低延迟模式，你可以在 `IAIDenoiserProcessor` 接口类中调用新增的 `setLatency` 方法，用于设置降噪处理的时延。
+
+#### 改进
+
+- 迭代降噪算法，在噪声抑制、人声保真度和整体鲁棒性方面实现提升。
+- 大幅提升 16 kHz 及以上采样率场景下，AI 降噪后的人声保真度。
+- 优化 CPU 资源分配策略，提升运行效率。
+
+#### API 变更
+
+该版本对回调的实现形式进行了调整。废弃了原来的 `onloaderror`, `onoverload`, `ondump`, `ondumpend` 回调，分别改用 `on("pipeerror"|"overload"|"dump"|"dumpend")` 方法监听对应事件。
+
+### v1.1.0
+
+#### 升级必看
+
+升级到 v1.1.0 后，你需要关注 AI 降噪插件的以下变更：
+
+- 必须和 v4.15.0 或以上版本的 Web SDK 搭配使用。
+- 只需要动态加载 Wasm 文件。由于不再依赖外部 JS 文件，你需要重新发布 `node_modules/agora-extension-ai-denoiser/external` 目录下的 Wasm 文件。如果你开启了 CSP（Content Security Policy），还需要修改 CSP 配置。详见[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/noise-reduction#实现步骤)。
+- 转储的音频数据以 PCM 格式保存，而不是 WAV。
+- 调整降噪强度时推荐调用 `setLevel`，而非其它接口。
+
+#### 新增特性
+
+该版本新增以下 API 和参数：
+
+- `checkCompatibility`：快速测试当前浏览器是否支持 AI 降噪插件。
+- `setMode`：调整降噪模式为 AI 降噪或稳态降噪。
+- `setLevel`：调整降噪强度。
+- `onoverload` 增加回调参数 `elapsedTime`：报告插件处理一帧音频的时间。
+
+API 描述详见[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/noise-reduction)。
+
+#### 改进
+
+该版本优化了 AI 降噪算法的计算性能。
+
+### v1.0.0
+
+AI 降噪插件 [agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser)由 Beta 发布转变为正式发布。
+
+相比之前的版本，v1.0.0 版本的 AI 降噪具有更好的人声保真度、更干净的噪声抑制，并新增了去混响 (Dereverberation) 能力。
+
+</TabsContent>
+
+<TabsContent value="convoai">
+
+### v1.0.0-beta2
+
+AI 场景专用降噪插件 [agora-conversational-ai-denoiser](https://www.npmjs.com/package/agora-conversational-ai-denoiser) v1.0.0-beta2 于 2025 年 3 月 5 日发布，用于更好地支持[声网对话式 AI 引擎](/zh-CN/ai)的应用效果。
+
+:::warning[注意]
+`agora-conversational-ai-denoiser` 插件对 CPU 消耗较高，我们建议你仅在 AI 场景下集成并使用该插件。
+:::
+
+主要特性如下：
+
+- 显著提升人声（尤其是歌声）保护。
+- 降低运行中音频采集播放卡顿的风险。
+- 开启 AI 降噪后，AGC 最大增益的默认值从 24dB 下调至 12dB。
+
+</TabsContent>
+</Tabs>
+
+## VAD 语音活动监测插件
+
+### v1.0.0-beta.2
+
+VAD 语音活动监测插件 [agora-extension-vad](https://www.npmjs.com/package/agora-extension-vad) v1.0.0-beta.2 于 2024 年 10 月 15 日发布，是 VAD 插件的第一个版本。详细集成步骤可以参考[使用 VAD 插件](/zh-CN/realtime-media/rtc/build/extensions/voice-activity-detection)。
+
+## 虚拟背景插件
+
+### v2.1.0
+
+该版本包含如下改动：
+
+- 优化了内存及 CPU 开销。
+- 修复了特定分辨率时产生的黑屏问题。
+
+### v2.0.0
+
+该版本将虚拟背景算法升级到 2.0.0 版本。新版本对人像算法进行全面升级，提供更加分明的人像边缘以及更加清晰稳定的视频画面。
+
+### v1.2.0
+
+#### 升级必看
+
+自该版本起，虚拟背景插件内置了依赖的 Wasm 模块，你不需要再单独发布 Wasm 文件，调用 `init` 方法初始化插件时也不需要传入 `wasmDir` 参数。
+
+升级到该版本后，请修改相关代码。
+
+#### 改进
+
+该版本升级了插件的背景分割算法，优化了复杂的静态背景和动态背景下对人像主体、边缘、手指的分割效果。
+
+#### 问题修复
+
+该版本修复了 `checkCompatibility` 在特定设备上检查结果不准确的问题。
+
+#### API 变更
+
+`init` 方法的 `wasmDir` 参数改为可选。
+
+### v1.1.3
+
+#### 问题修复
+
+该版本修复了 Android 端 Chrome 浏览器上背景图片偶现锯齿状效果的问题。
+
+### v1.1.2
+
+#### 升级必看
+
+自 v1.1.2 起，虚拟背景插件必须和 v4.15.0 或以上版本的 Web SDK 搭配使用。
+
+#### 新增特性
+
+该版本支持在调用 `setOptions` 方法时设置 `fit` 属性，用于设置虚拟背景的填充方式。API 描述详见[使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/virtual-background)。
+
+### v1.1.1
+
+#### 新增特性
+
+该版本新增 `checkCompatibility` 方法，用于快速测试当前浏览器是否支持虚拟背景插件。API 描述详见[使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/virtual-background)。
+
+#### 问题修复
+
+该版本修复了背景左侧出现黑边的问题。
+
+### v1.1.0
+
+#### 新增特性
+
+自 v1.1.0 起，你可以创建多个 `VirtualBackgroundProcessor` 实例，同时处理多路视频流。
+
+### v1.0.0
+
+虚拟背景插件 [agora-extension-virtual-background](https://www.npmjs.com/package/agora-extension-virtual-background) 由 Beta 发布转变为正式发布。
+
+## 美颜插件
+
+### v1.0.2-beta
+
+美颜插件 [agora-extension-beauty-effect](https://www.npmjs.com/package/agora-extension-beauty-effect) v1.0.2 于 2022 年 11 月 26 日发布。这是美颜插件的第一个版本，详细集成步骤可以参考[使用美颜插件](/zh-CN/realtime-media/rtc/build/extensions/image-enhancement)。
+
+## 合图插件
+
+### v1.0.0-beta
+
+合图插件 [agora-extension-videp-compositor](https://www.npmjs.com/package/agora-extension-video-compositor) v1.0.0-beta 该版本于 2022 年 10 月 25 日发布。这是合图插件的第一个版本，详细集成步骤可以参考[使用合图插件](/zh-CN/realtime-media/rtc/build/extensions/video-compositing)。
+
+## AI 画质插件
+
+### v2.0.1
+
+该版本对插件的锐化算法进行了优化，提升了部分场景下的视频体验。
+
+### v2.0.0
+
+#### 升级必看
+
+该版本对插件算法进行了优化，新的算法库依赖浏览器具备 SIMD 指令集支持。你可以使用 [WASM SIMD](https://caniuse.com/wasm-simd) 网站提供的测试工具，检测当前浏览器是否支持 SIMD。
+
+#### 改进
+
+- 插件安装包体积减少约 30%。
+- 增加对 WebGL 上下文丢失的恢复机制，提升视频渲染稳定性。
+- 优化应用切换至后台时的帧率同步策略，改善操作流畅度。
+- 提升在 Safari 浏览器上的兼容性与功能稳定性。
+
+### v1.0.1
+
+AI 画质插件 [agora-extension-super-clarity](https://www.npmjs.com/package/agora-extension-super-clarity) v1.0.1 于 2024 年 11 月 10 日发布，这是 AI 画质插件的第一个版本，详细集成步骤可以参考[使用 AI 画质插件](/zh-CN/realtime-media/rtc/build/extensions/super-clarity)。
+
+## 水印插件 (BETA)
+
+### v1.0.0-beta
+
+水印插件 [agora-extension-video-watermark](https://www.npmjs.com/package/agora-extension-video-watermark) v1.0.0-beta 于 2025 年 11 月 25 日发布。这是水印插件的第一个版本，与 Web SDK v4.24.0 及以上搭配使用，可以实现在视频流中添加图像水印的功能。更详细的插件能力和集成步骤可以参考[使用水印插件](/zh-CN/realtime-media/rtc/build/extensions/watermark)。

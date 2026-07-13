@@ -1,6 +1,6 @@
 ---
 title: "音频采集"
-description: RTC Android API 参考迁移页。
+description: "音频采集 API reference."
 ---
 <a id="toc_audio_capture"></a>
 
@@ -43,10 +43,10 @@ public abstract int adjustRecordingSignalVolume(int volume);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableinearmonitoring"></a>
 
@@ -88,11 +88,11 @@ public abstract int enableInEarMonitoring(boolean enabled);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
   - -8：请确保当前音频路由为蓝牙或有线耳机。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableinearmonitoring2"></a>
 
@@ -147,11 +147,11 @@ public abstract int enableInEarMonitoring(boolean enabled, int includeAudioFilte
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
   - -8：请确保当前音频路由为蓝牙或有线耳机。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablelocalaudio"></a>
 
@@ -167,7 +167,7 @@ public abstract int enableLocalAudio(boolean enabled);
 
 <a id="api_irtcengine_enablelocalaudio__detailed_desc"></a>
 
-[enableLocalAudio](/zh-CN/api-reference/rtc/android/audio/audio-capture#api_irtcengine_enablelocalaudio) 用于控制本地音频采集和处理的启用状态。调用该方法关闭或重新启用本地音频采集时，本地用户可能会听到远端音频播放中断。 该方法与 [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_mutelocalaudiostream) 的区别如下：
+[enableLocalAudio](/zh-CN/api-reference/rtc/android/audio/audio-capture#api_irtcengine_enablelocalaudio) 用于控制本地音频采集和处理的启用状态。调用该方法关闭或重新启用本地音频采集时，本地用户可能会听到远端音频播放中断。 该方法与 [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 的区别如下：
 
 - enableLocalAudio：控制本地音频采集和处理的启用状态。
 - muteLocalAudioStream：仅控制是否发送本地音频流，不影响音频采集状态。
@@ -206,10 +206,10 @@ public abstract int enableLocalAudio(boolean enabled);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_muterecordingsignal"></a>
 
@@ -254,10 +254,10 @@ public abstract int muteRecordingSignal(boolean muted);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setinearmonitoringvolume"></a>
 
@@ -292,8 +292,8 @@ public abstract int setInEarMonitoringVolume(int volume);
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
   - -2：参数设置不合法，例如耳返音量超出有效范围（小于 0 或大于 400）。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)

@@ -1,0 +1,35 @@
+---
+title: "DEGRADATION_PREFERENCE"
+description: "带宽受限时的视频编码降级偏好。"
+---
+<a id="enum_degradationpreference__parameters"></a>
+
+## 枚举值
+
+### `MAINTAIN_AUTO`
+
+-1：（默认）自动模式。SDK 会根据你设置的视频场景，自动选择 MAINTAIN_FRAMERATE、 MAINTAIN_BALANCED 或 MAINTAIN_RESOLUTION，以获得最优的综合质量体验 (QoE)。
+
+### `MAINTAIN_QUALITY`
+
+0：带宽受限时，视频编码时优先降低视频帧率，维持分辨率不变。该降级偏好适用于画质优先的场景。
+
+##### `弃用：`
+
+该枚举已废弃。请改用其他枚举。
+
+### `MAINTAIN_FRAMERATE`
+
+1：带宽受限时，视频编码时优先降低视频分辨率，维持视频帧率不变。该降级偏好适用于流畅性优先且允许画质降低的场景。
+
+### `MAINTAIN_BALANCED`
+
+2：带宽受限时，视频编码时同时降低视频帧率和视频分辨率。 MAINTAIN_BALANCED 的降幅比 MAINTAIN_QUALITY 和 MAINTAIN_FRAMERATE 降幅更低，适用于流畅性和画质均有限的场景。
+
+:::warning[注意]
+本地发送的视频分辨率可能改变，远端用户需能处理这种情况，详见 [OnVideoSizeChanged](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged)。
+:::
+
+### `MAINTAIN_RESOLUTION`
+
+3: 带宽受限时，视频编码时优先降低视频帧率，维持分辨率保持不变。该降级偏好适用于画质优先的场景。

@@ -1,8 +1,9 @@
 ---
-title: 优化端到端对话延迟
-description: 在和智能体对话场景中，延迟是影响用户体验的关键因素。本文帮助你理解和优化与对话式智能体的端到端对话延迟，从而提升用户体验。
+title: "优化端到端对话延迟"
 ---
-在和智能体对话场景中，延迟是影响用户体验的关键因素。本文帮助你理解和优化与对话式智能体的端到端对话延迟，从而提升用户体验。
+在与智能体对话的场景中，延迟是影响用户体验的关键因素。
+
+本文帮助你理解和优化与对话式智能体的端到端对话延迟，从而提升用户体验。
 
 ## 理解延迟构成
 
@@ -19,13 +20,20 @@ description: 在和智能体对话场景中，延迟是影响用户体验的关�
 | **RTC** | 音视频延迟 | 包括音频采集、编码、网络传输、解码、播放等环节 | 150-300 ms |
 | **算法前处理** | 前处理延迟 | 包括 VAD（语音活动检测）、优雅打断（AIVAD）等算法处理时间 | 560-940 ms |
 | **ASR** | `asr_ttlw` | Time To Last Word，从用户说话结束到 ASR 输出最后一个词的延迟 | 400-700 ms |
-| **LLM** | `llm_ttfb` / `llm_ttfs` | TTFB: Time To First Byte，首字节延迟<br/>TTFS: Time To First Sentence，首句延迟 | 250-1000 ms |
+| **LLM** | `llm_ttfb` / `llm_ttfs` | <Slot name="opt-latency-markdown-0-4-2" /> | 250-1000 ms |
 | **TTS** | `tts_ttfb` | Time To First Byte，从 TTS 请求开始到收到第一个字节的响应延迟 | 100-350 ms |
 | **数字人** | 渲染延迟 | 数字人模块收到 TTS 音频第一帧到数字人生成并对齐音视频第一帧的延迟（如启用） | 50-200 ms |
 
+<Slot for="opt-latency-markdown-0-4-2">
+
+TTFB: Time To First Byte，首字节延迟
+TTFS: Time To First Sentence，首句延迟
+
+</Slot>
+
 ### 真实延迟示例
 
-以下是一次实际对话中三个对话轮次的延迟数据，来自声网消息通知服务的 [111 agent metrics](../../api-reference/ncs-events.md#111-agent-metrics) 事件：
+以下是一次实际对话中三个对话轮次的延迟数据，来自声网消息通知服务的 [111 agent metrics](/zh-CN/ai/reference/event-types#111-agent-metrics) 事件：
 
 ```json
 {
@@ -39,14 +47,14 @@ description: 在和智能体对话场景中，延迟是影响用户体验的关�
         "asr_ttlw": 141,
         "llm_ttfb": 270,
         "llm_ttfs": 482,
-        "tts_ttfb": 90,
+        "tts_ttfb": 90
     },
     {
         "turn_id": 3,
         "asr_ttlw": 103,
         "llm_ttfb": 306,
         "llm_ttfs": 948,
-        "tts_ttfb": 106,
+        "tts_ttfb": 106
     }
   ]
 }
@@ -60,15 +68,7 @@ description: 在和智能体对话场景中，延迟是影响用户体验的关�
 
 如果你使用客户端组件（Android/iOS/Web），可以通过注册 `onAgentMetrics` 回调来实时监听智能体性能指标。
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="android">
-```kotlin
+```kotlin tab="Android" tabGroup="language"
 api.addHandler(object : IConversationalAIAPIEventHandler {
     override fun onAgentMetrics(agentUserId: String, metric: Metric) {
         when (metric.type) {
@@ -92,10 +92,8 @@ api.addHandler(object : IConversationalAIAPIEventHandler {
     }
 })
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="ios">
-```swift
+```swift tab="iOS" tabGroup="language"
 func onAgentMetrics(agentUserId: String, metrics: Metric) {
     switch metrics.type {
     case .asr:
@@ -111,28 +109,25 @@ func onAgentMetrics(agentUserId: String, metrics: Metric) {
     }
 }
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="web">
-```typescript
+```typescript tab="Web" tabGroup="language"
 conversationalAIAPI.on(
-  EConversationalAIAPIEvents.AGENT_METRICS,
+  EConversationalAIAPIEvents.AGENT_METRICS, 
   (agentUserId: string, metrics: Metric) => {
     console.log(`[${metrics.type}] ${metrics.name}: ${metrics.value}ms`);
-
+    
     if (metrics.type === 'TOTAL') {
       console.log(`Total delay for turn: ${metrics.value}ms`);
     }
   }
 );
 ```
-</CodeBlockTab>
-</CodeBlockTabs>
-详细的集成步骤和 API 参考请见[监听智能体事件](../listen-agent-events.md)。
+
+详细的集成步骤和 API 参考请见[监听智能体事件](/zh-CN/ai/build/handle-runtime-events/event-notifications)。
 
 ### 方式二：通过消息通知服务（NCS）
 
-如果你开通了[声网消息通知服务](../../api-reference/enable-ncs.md)，可以通过接收 `eventType` 为 `111` 的 `agent metrics` 事件来获取智能体性能指标。
+如果你开通了[声网消息通知服务](/zh-CN/ai/build/handle-runtime-events/webhooks)，可以通过接收 `eventType` 为 `111` 的 `agent metrics` 事件来获取智能体性能指标。
 
 #### 事件回调示例
 
@@ -157,14 +152,14 @@ conversationalAIAPI.on(
         "asr_ttlw": 141,
         "llm_ttfb": 270,
         "llm_ttfs": 482,
-        "tts_ttfb": 90,
+        "tts_ttfb": 90
       }
     ]
   }
 }
 ```
 
-详细的事件字段说明请见[事件类型 - 111 agent metrics](../../api-reference/ncs-events.md#111-agent-metrics)。
+详细的事件字段说明请见[事件类型 - 111 agent metrics](/zh-CN/ai/reference/event-types#111-agent-metrics)。
 
 ## 优化三段式架构延迟
 
@@ -223,15 +218,7 @@ RTC 延迟包括音频采集、编码、网络传输、解码、播放等环节�
 - 更低的音频采集和播放延迟
 - 针对 AI 语音特征的音频处理
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="android">
-
-```kotlin
+```kotlin tab="Android" tabGroup="language"
 // 方式一：使用客户端组件 API（推荐）
 val config = ConversationalAIAPIConfig(
     rtcEngine = rtcEngineInstance,
@@ -250,14 +237,11 @@ val config = RtcEngineConfig()
 config.mAudioScenario = Constants.AUDIO_SCENARIO_AI_CLIENT
 rtcEngine = RtcEngine.create(config)
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="ios">
-
-```swift
+```swift tab="iOS" tabGroup="language"
 // 方式一：使用客户端组件 API（推荐）
 let config = ConversationalAIAPIConfig(
-    rtcEngine: rtcEngine,
+    rtcEngine: rtcEngine, 
     rtmEngine: rtmEngine,
     enableLog: true
 )
@@ -273,10 +257,8 @@ let config = AgoraRtcEngineConfig()
 config.audioScenario = .aiClient
 rtcEngine = AgoraRtcEngineKit.sharedEngine(with: config, delegate: delegate)
 ```
-</CodeBlockTab>
-</CodeBlockTabs>
 
-详细的优化音频设置请见[优化音频设置](./audio-settings.md)。
+详细的优化音频设置请见[优化音频设置](/zh-CN/ai/best-practices/audio-setup)。
 
 ## 延迟优化检查清单
 
@@ -288,7 +270,6 @@ rtcEngine = AgoraRtcEngineKit.sharedEngine(with: config, delegate: delegate)
 - [ ] **启用流式响应**: 确保 `stream: true`
 - [ ] **选择低延迟的 ASR/TTS 供应商**: 使用 `turbo` 或 `low-latency` 等模式
 - [ ] **优化地理部署**: 将 ASR、LLM、TTS 部署在同一区域
-- [ ] **配置区域访问限制**: 使用 `geofence` 参数锁定最佳区域
 
 ### 客户端优化
 
@@ -314,12 +295,13 @@ rtcEngine = AgoraRtcEngineKit.sharedEngine(with: config, delegate: delegate)
 | 区域访问限制 | ✅ 适度降低 | ➖ 无影响 | 用户集中在特定区域 |
 | 优化 RTC 设置 | ✅ 适度降低 | ➖ 无影响 | 所有场景 |
 
-> 提示
-> 建议先通过监听延迟指标识别瓶颈，然后针对性地优化贡献最大的模块，而不是盲目追求极致的低延迟。
+:::tip[提示]
+建议先通过监听延迟指标识别瓶颈，然后针对性地优化贡献最大的模块，而不是盲目追求极致的低延迟。
+:::
 
 ## 参考资料
 
-- [监听智能体事件](../listen-agent-events.md)
-- [优化音频设置](./audio-settings.md)
-- [消息通知服务 - agent metrics 事件](../../api-reference/ncs-events.md#111-agent-metrics)
+- [监听智能体事件](/zh-CN/ai/build/handle-runtime-events/event-notifications)
+- [优化音频设置](/zh-CN/ai/best-practices/audio-setup)
+- [消息通知服务 - agent metrics 事件](/zh-CN/ai/reference/event-types#111-agent-metrics)
 - [对话式 AI 引擎适配各主流模型的实时性能数据](https://www.shengwang.cn/duihua/benchmark/overview)

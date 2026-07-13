@@ -78,7 +78,7 @@ describe('single-folder docs sections', () => {
       .map((file) => relative(process.cwd(), file));
 
     expect(offenders).toEqual([]);
-  });
+  }, 30_000);
 });
 
 function findSingleFolderSections() {

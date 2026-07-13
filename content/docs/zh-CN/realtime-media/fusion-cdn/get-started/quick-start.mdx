@@ -1,0 +1,394 @@
+---
+title: "开始融合 CDN 直播"
+---
+:::warning[注意]
+因服务内部调整，新域名自助添加能力暂时不可用。如有相关需求，请联系[声网技术支持](https://ticket.shengwang.cn/)。
+:::
+
+为方便快速体验，你可以通过声网控制台完成域名、证书、防盗链密钥等配置，而无需调用 RESTful API。本文介绍如何在声网控制台配置融合 CDN 直播服务，并完成一次简单的直播。
+
+融合 CDN 直播服务提供两种模式，开始配置之前，你需要了解这两种模式的差异：
+
+| 推流 & 播放模式 | 回源拉流模式 | Column 3 |
+| --- | --- | --- |
+| 实现流程 | 开发者把流推到声网服务器，声网服务器再将内容分发给观众。 | 声网服务器从开发者的源站拉流，然后将内容分发给观众。 |
+| 适用场景 | 不需要源站服务器 | 必须有源站服务器 |
+| 配置方式 | 前往声网控制台。详见[添加域名配置](#2-添加域名配置)。 | <Slot name="quick-start-html-0-3-2" /> |
+
+<Slot for="quick-start-html-0-3-2">
+
+根据你的域名灵活性选择：
+
+- 如果你的域名相对固定，可以在声网控制台上添加。详见[添加域名配置](#2-添加域名配置)。
+- 如果你的域名配置需要较高的灵活性，联系 sales@shengwang.cn 并提供一个接口地址。声网会在拉流之前，向这个接口发送请求，获取你的域名。
+
+</Slot>
+
+## 前提条件
+
+开始前，请确保你已经[开通服务](/zh-CN/realtime-media/fusion-cdn/build/setup-and-access/enable-service)。
+
+## 配置服务
+
+声网控制台为融合 CDN 直播提供域名、证书、防盗链密钥等配置选项。
+
+### 1. 进入配置页面
+
+参考以下步骤：
+
+1. 登录[声网控制台](https://console.shengwang.cn/projects)，点击左侧导航栏的**全部产品**，选择**融合 CDN 直播**。
+
+2. 在**融合 CDN 直播**页面，选择**功能配置**页签，进入**开启融合 CDN 服务**界面。
+
+### 2. 添加域名配置
+
+:::info[信息]
+- 如果需要用于测试的域名，请[联系技术支持](https://ticket.shengwang.cn/)。
+- 为保障安全性，声网强烈建议你对每个推流域名和播放域名都设置防盗链密钥。防盗链密钥需要你自行提供，用于生成 URL 中的鉴权字符串。详见[计算鉴权字符串](/zh-CN/realtime-media/fusion-cdn/build/manage-media-streams/streaming-url#key)。
+:::
+
+根据你需要的服务模式添加域名配置：
+
+<Tabs defaultValue="push" groupId="serviceMode" persist>
+<TabsList>
+  <TabsTrigger value="push">推流 & 播放模式</TabsTrigger>
+  <TabsTrigger value="pull">回源拉流模式</TabsTrigger>
+</TabsList>
+
+<TabsContent value="push">
+
+参考以下步骤配置推流 & 播放模式：
+
+1. 点击**推流 & 播放**页签。
+
+2. 添加推流域名：
+   1. 点击**添加**。
+   2. 填写用于推流的域名，从下拉菜单中选择加速区域。
+   3. 点击**创建**。
+
+    在推流的默认设置中，RTMPS 访问为停用状态，证书和防盗链密钥信息为空。如果需要修改这些设置，点击![编辑按钮](https://web-cdn.agora.io/docs-files/1644806828007) 图标即可。
+
+3. 添加播放域名：
+   1. 点击**添加**。
+   2. 填写用于播放的域名，从下拉菜单中选择加速区域。
+   3. 点击**创建**。
+
+    在播放的默认设置中，HTTPS 访问为停用状态，证书、跨域设置、防盗链密钥信息为空。如果需要修改这些设置，点击![编辑按钮](https://web-cdn.agora.io/docs-files/1644806828007) 图标即可。
+
+4. （可选）添加证书：
+   1. 点击**添加**。
+   2. 填写证书名称。
+   3. 上传你的证书 (`.pem` 或 `.crt`) 和 Key (`.key`) 文件。
+   4. 点击**保存**。
+
+</TabsContent>
+
+<TabsContent value="pull">
+
+参考以下步骤配置回源拉流模式：
+
+1. 点击**回源拉流**页签。
+
+2. 添加回源域名：
+   1. 打开开关。
+   2. 填写源站服务器的域名。
+   3. 点击**保存**。
+
+3. 添加播放域名：
+   1. 点击**添加**。
+   2. 填写用于播放的域名，从下拉菜单中选择加速区域。
+   3. 点击**创建**。
+
+    在播放的默认设置中，HTTPS 访问为停用状态，证书、跨域设置、防盗链密钥信息为空。如果需要修改这些设置，点击![编辑按钮](https://web-cdn.agora.io/docs-files/1644806828007) 图标即可。
+
+4. （可选）添加证书：
+   1. 点击**添加**。
+   2. 填写证书名称。
+   3. 上传你的证书 (`.pem` 或 `.crt`) 和 Key (`.key`) 文件。
+   4. 点击**保存**。
+
+</TabsContent>
+</Tabs>
+
+### 3. 完成 CNAME 配置
+
+完成添加推流域名或播放域名后，声网会自动给该域名分配一个 CNAME（后缀为 `.v1.agoramdn.com`）。使用你的推流或播放域名进行直播之前，你需要在域名解析配置中添加对应的 CNAME 记录，让你的域名指向 CNAME。详情请咨询你的域名服务商。
+
+## 拼接推流 URL
+
+推流支持 RTMP 和 RTMPS 协议。详见[拼接推流 URL](/zh-CN/realtime-media/fusion-cdn/build/manage-media-streams/streaming-url#拼接推流-url)。
+
+## 开始推流
+
+你可以通过以下方式开始推流：
+
+- 使用 OBS 等推流软件。详见[推流软件配置](/zh-CN/realtime-media/fusion-cdn/build/setup-and-access/obs-config)。
+- 使用旁路推流 RESTful API 将声网频道内的流转换成 RTMP/RTMPS 协议的流。详见[旁路推流](/zh-CN/realtime-media/media-push)。
+
+## 拼接播流 URL
+
+播流支持 RTMP、HTTP-FLV、HLS 协议。详见[拼接播流 URL](/zh-CN/realtime-media/fusion-cdn/build/manage-media-streams/streaming-url#拼接播流-url)。
+
+## 开始播放
+
+播流可以使用[声网 RTC SDK 的媒体播放器](/zh-CN/realtime-media/rtc/build/media/media-player)，也可以使用你自己的播放器。
+
+## 后续步骤
+
+### 调用 RESTful API 实现更多功能
+
+融合 CDN 直播提供一套具有丰富功能的 RESTful API。如果你需要使用域名或发布点管理、直播流录制、直播流鉴权、直播流内容处理等功能，可以查看 [API 参考](/doc/fusion-cdn/restful/streaming/operations/get-domain-list)。
+
+如下展示调用融合 CDN 直播 RESTful API 获取禁流列表的完整示例代码。
+
+```python tab="Python" tabGroup="operating-systems"
+#!/usr/bin/env python2
+import hmac
+import base64
+import datetime
+import requests
+from hashlib import sha256
+
+customerKey = "your_customer_key"
+customerSecret = "your_customer_secret"
+appid = "your_appid"
+
+host = "api.agora.io"
+path = "/v1/projects/{}/fls/entry_points/live/admin/banned_streams".format(appid)
+reqBody = ""
+
+def calcHmac(host, path, method, bodyByte, dateTime, key, secret):
+    requestLine = "{} {} {}".format(method, path, "HTTP/1.1")
+
+    bodysha256 = sha256(bodyByte).digest()
+    bodySha256Base64 = base64.b64encode(bodysha256)
+    digest = "SHA-256={}".format(bodySha256Base64.decode("utf-8"))
+
+    signingString = "host: {}\ndate: {}\n{}\ndigest: {}".format(host, dateTime, requestLine, digest)
+    signature = base64.b64encode(hmac.new(secret.encode("utf-8"), signingString.encode("utf-8"), sha256).digest()).decode("utf-8")
+    authorization = 'hmac username="{}", algorithm="hmac-sha256", headers="host date request-line digest", signature="{}"'.format(key, signature)
+
+    return digest, authorization
+
+date = datetime.datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S GMT')
+digest, authorization = calcHmac(host, path, "GET", reqBody.encode('utf-8'), date, customerKey, customerSecret)
+
+headers = {
+    "host": host,
+    "date": date,
+    "digest": digest,
+    "authorization": authorization,
+}
+
+response = requests.get("https://{}{}".format(host, path), headers=headers, data=reqBody)
+print(response.status_code, response.content.decode())
+print(response.headers)
+```
+
+```java tab="Java" tabGroup="operating-systems"
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class HmacExample {
+
+    private static String customerKey = "your_customer_key";
+    private static String customerSecret = "your_customer_secret";
+    private static String appid = "your_appid";
+    
+    private static String host = "api.agora.io";
+    private static String path = String.format("/v1/projects/%s/fls/entry_points/live/admin/banned_streams", appid);
+    private static String reqBody = "";
+
+    private static Map<String, String> calcHmac(String host, String path, String method, byte[] body, String dateTime, String key, String secret) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
+        String requestLine = method + " " + path + " " + "HTTP/1.1";
+
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        messageDigest.update(body);
+        String base64encodedString = Base64.getEncoder().encodeToString(messageDigest.digest());
+        String digest = "SHA-256=" + base64encodedString;
+
+        String signingString = String.format("host: %s\ndate: %s\n%s\ndigest: %s", host, dateTime, requestLine, digest);
+        Mac sha256HMAC = Mac.getInstance("HmacSHA256");
+        sha256HMAC.init(new SecretKeySpec(secret.getBytes("UTF-8"), "HmacSHA256"));
+        String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(signingString.getBytes("UTF-8")));
+        String authorization = String.format("hmac username=\"%s\", algorithm=\"hmac-sha256\", headers=\"host date request-line digest\", signature=\"%s\"", key, signature);
+    
+        Map<String, String> hmac = new HashMap<>();
+        hmac.put("digest", digest);
+        hmac.put("authorization", authorization);
+        return hmac;
+    }
+
+    public static void main(String[] args) throws NoSuchAlgorithmException, IOException, InvalidKeyException {
+        final SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String date = sdf.format(new Date());
+        Map<String, String> hmac = calcHmac(host, path, "GET", reqBody.getBytes("UTF-8"), date, customerKey, customerSecret);
+
+        URL url = new URL("https://" + host + path);
+        HttpURLConnection http = (HttpURLConnection) url.openConnection();
+        http.setRequestMethod("GET");
+        http.setDoOutput(true);
+        http.setRequestProperty("host", host);
+        http.setRequestProperty("date", date);
+        http.setRequestProperty("digest", hmac.get("digest"));
+        http.setRequestProperty("authorization", hmac.get("authorization"));
+
+        InputStream stream = http.getInputStream();
+
+        System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+
+        BufferedReader br = null;
+        if (http.getResponseCode() == 200) {
+            br = new BufferedReader(new InputStreamReader(http.getInputStream()));
+            String strCurrentLine;
+            while ((strCurrentLine = br.readLine()) != null) {
+                System.out.println(strCurrentLine);
+            }
+        } else {
+            br = new BufferedReader(new InputStreamReader(http.getErrorStream()));
+            String strCurrentLine;
+            while ((strCurrentLine = br.readLine()) != null) {
+                System.out.println(strCurrentLine);
+            }
+        }
+        http.disconnect();
+    }
+}
+```
+
+```javascript tab="Node.js" tabGroup="operating-systems"
+var crypto = require("crypto")
+var request = require("request")
+
+var customerKey = "your_customer_key"
+var customerSecret = "your_customer_secret"
+var appid = "your_appid"
+
+var host = "api.agora.io"
+var path = `/v1/projects/${appid}/fls/entry_points/live/admin/banned_streams`
+var reqBody = ""
+
+function calcHmac(host, path, method, bodyByte, dateTime, key, secret) {
+    requestLine = method + " " + path + " " + "HTTP/1.1"
+
+    digest = "SHA-256=" + Buffer.from(crypto.createHash("sha256").update(bodyByte).digest()).toString("base64")
+
+    signingString = `host: ${host}\ndate: ${dateTime}\n${requestLine}\ndigest: ${digest}`
+    signature = Buffer.from(crypto.createHmac("sha256", secret).update(signingString).digest()).toString("base64")
+    authorization = `hmac username="${key}", algorithm="hmac-sha256", headers="host date request-line digest", signature="${signature}"`
+
+    return digest, authorization
+}
+
+var date = new Date().toGMTString();
+var digest, authorization = calcHmac(host, path, "GET", Buffer.from(reqBody, 'utf-8'), date, customerKey, customerSecret)
+
+request.get( {
+        url: "https://" + host + path,
+        headers: { 
+            "content-type": "application/json", 
+            date: date, 
+            digest: digest, 
+            authorization: authorization 
+        },
+        body: reqBody,
+    },
+    function (err, res, body) {
+        console.log("err:", err);
+        console.log("status:", res.statusCode);
+        console.log("body:", body);
+    },
+)
+```
+
+```php tab="PHP" tabGroup="operating-systems"
+<?php
+
+$customerKey = "your_customer_key";
+$customerSecret = "your_customer_secret";
+$appid = "your_appid";
+
+$host = "api.agora.io";
+$path = sprintf("/v1/projects/%s/fls/entry_points/live/admin/banned_streams", $appid);
+$reqBody = "";
+function calcHmac($host, $path, $method, $bodyByte, $dateTime, $key, $secret) {
+    $requestLine = sprintf("%s %s %s", $method, $path, "HTTP/1.1");
+
+    $digest = 'SHA-256=' . base64_encode(pack("H*", hash("sha256", $bodyByte)));
+
+    $signingString = sprintf("host: %s\ndate: %s\n%s\ndigest: %s", $host, $dateTime, $requestLine, $digest);
+    $signature = base64_encode(pack('H*', hash_hmac('sha256', $signingString, $secret)));
+    $authorization = sprintf('hmac username="%s", algorithm="hmac-sha256", headers="host date request-line digest", signature="%s"', $key, $signature);
+
+    return ['digest' => $digest, 'authorization' => $authorization];
+}
+
+$date = gmDate("D, d M Y H:i:s ", time()) . "GMT";
+$hmac = calcHmac($host, $path, "GET", $reqBody, $date, $customerKey, $customerSecret);
+
+$header = [
+    "host: $host",
+    "date: $date",
+    "digest: {$hmac['digest']}",
+    "authorization: {$hmac['authorization']}",
+];
+
+function sendHttpRequest($url, $reqBody, $header = []) {
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, True);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $reqBody);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    return $response;
+}
+
+$response = sendHttpRequest("https://$host$path", $reqBody, $header);
+echo $response;
+```
+
+```javascript tab="Postman 预请求脚本" tabGroup="operating-systems"
+var customer_username = "hmac_user_name"
+var customer_secret = "hmac_user_secret"
+
+gmt_date = new Date().toGMTString()
+digest = "SHA-256=" + CryptoJS.enc.Base64.stringify(CryptoJS.SHA256(pm.request.body.raw))
+request_line = pm.request.method + " " + pm.request.url.getPath() + " " + "HTTP/1.1"
+
+signing_string = "host: " + pm.request.url.getHost()
+signing_string = signing_string + "\ndate: " + gmt_date
+signing_string = signing_string + "\n" + request_line
+signing_string = signing_string + "\ndigest: " + digest
+signature = CryptoJS.HmacSHA256(signing_string, customer_secret)
+signature = CryptoJS.enc.Base64.stringify(signature)
+
+authorization = 'hmac username="' + customer_username + '", '
+authorization = authorization + 'algorithm="hmac-sha256", headers="host date request-line digest", signature="'
+authorization = authorization + signature + '"'
+
+pm.request.headers.add({key: 'date', value: gmt_date})
+pm.request.headers.add({key: 'digest', value: digest})
+pm.request.headers.add({key: 'authorization', value: authorization})
+```
+
+### 使用消息通知服务
+
+如果你需要接收推流、录制、截图等业务事件的通知，你还可以[使用消息通知服务](/zh-CN/realtime-media/fusion-cdn/build/monitor-events/enable-ncs)。
