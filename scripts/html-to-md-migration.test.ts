@@ -980,7 +980,7 @@ describe('html-to-md-migration', () => {
     await expect(
       readJson(path.join(outputDir, 'meta.json')),
     ).resolves.toMatchObject({
-      pages: ['index', 'initialize', 'channel', 'audio'],
+      pages: ['initialize', 'channel', 'audio'],
     });
     await expect(
       fs.readFile(path.join(outputDir, 'index.mdx'), 'utf8'),
