@@ -18,7 +18,7 @@ public abstract int registerVideoEncodedFrameObserver(IVideoEncodedFrameObserver
 
 <a id="api_irtcengine_registervideoencodedframeobserver__detailed_desc"></a>
 
-建议通过此方法注册一个 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoencodedframeobserver) 实例，用于观察编码后的视频帧（例如 H.264 格式），而不进行解码和渲染。
+建议通过此方法注册一个 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoencodedframeobserver) 实例，用于观察编码后的视频帧（例如 H.264 格式），而不进行解码和渲染。
 
 :::info[注]
 请在加入频道前调用此方法。
@@ -30,7 +30,7 @@ public abstract int registerVideoEncodedFrameObserver(IVideoEncodedFrameObserver
 
 #### `receiver`
 
-编码后视频帧的观察器对象，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoencodedframeobserver)。
+编码后视频帧的观察器对象，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoencodedframeobserver)。
 
 <a id="api_irtcengine_registervideoencodedframeobserver__return_values"></a>
 
@@ -40,7 +40,7 @@ public abstract int registerVideoEncodedFrameObserver(IVideoEncodedFrameObserver
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived"></a>
 
@@ -60,7 +60,7 @@ boolean onEncodedVideoFrameReceived(String channelId, int remoteUid, ByteBuffer 
 
 自 v4.6.0 版本新增。
 
-如果你调用了 [setRemoteVideoSubscriptionOptions](/zh-CN/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_setremotevideosubscriptionoptions) 方法并将 `encodedFrameOnly` 设置为 true，SDK 会在本地触发该回调，报告接收到的编码视频帧信息。
+如果你调用了 [setRemoteVideoSubscriptionOptions](/zh-CN/api-reference/rtc/android/4.6.0/publish-and-subscribe#api_irtcengine_setremotevideosubscriptionoptions) 方法并将 `encodedFrameOnly` 设置为 true，SDK 会在本地触发该回调，报告接收到的编码视频帧信息。
 
 <a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__parameters"></a>
 
@@ -80,7 +80,7 @@ boolean onEncodedVideoFrameReceived(String channelId, int remoteUid, ByteBuffer 
 
 #### `info`
 
-编码视频帧的信息，详见 [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-encodedvideoframeinfo)。
+编码视频帧的信息，详见 [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-encodedvideoframeinfo)。
 
 <a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__return_values"></a>
 
@@ -90,4 +90,4 @@ boolean onEncodedVideoFrameReceived(String channelId, int remoteUid, ByteBuffer 
 - false：回调处理失败。
 
 ### 所属接口类
-- [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoencodedframeobserver)
+- [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoencodedframeobserver)

@@ -29,7 +29,7 @@ public class RtcEngineConfig {
 
 ### `mEventHandler`
 
-事件回调处理器。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)。
+事件回调处理器。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineeventhandler)。
 
 ### `mContext`
 
@@ -37,11 +37,11 @@ Android Activity 的上下文对象。
 
 ### `mAppId`
 
-由声网为项目颁发的 App ID。只有使用相同 App ID 的用户才能加入同一频道进行音视频通话。一个 App ID 只能用于创建一个 [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例。更换 App ID 时需调用 [destroy [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 销毁原实例后再创建新实例。
+由声网为项目颁发的 App ID。只有使用相同 App ID 的用户才能加入同一频道进行音视频通话。一个 App ID 只能用于创建一个 [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine) 实例。更换 App ID 时需调用 [destroy [2/2]](/zh-CN/api-reference/rtc/android/4.6.0/initialize#api_irtcengine_destroy1) 销毁原实例后再创建新实例。
 
 ### `mAreaCode`
 
-连接区域，适用于有区域限制的场景。支持按位或运算组合多个区域码。详见 [AreaCode](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-areacode)。
+连接区域，适用于有区域限制的场景。支持按位或运算组合多个区域码。详见 [AreaCode](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-areacode)。
 
 ### `mChannelProfile`
 
@@ -59,7 +59,7 @@ Android Activity 的上下文对象。
 ### `mAudioScenario`
 
 :::info[注]
-在使用此枚举前，需调用 [getAudioDeviceInfo](/zh-CN/api-reference/rtc/android/device-management/audio-device#api_irtcengine_getaudiodeviceinfo) 检查音频设备是否支持超低延迟采集与播放。若需体验超低延迟，需确保音频设备支持超低延迟（`isLowLatencyAudioSupported` = true ）。
+在使用此枚举前，需调用 [getAudioDeviceInfo](/zh-CN/api-reference/rtc/android/4.6.0/device-management/audio-device#api_irtcengine_getaudiodeviceinfo) 检查音频设备是否支持超低延迟采集与播放。若需体验超低延迟，需确保音频设备支持超低延迟（`isLowLatencyAudioSupported` = true ）。
 :::
 
 音频场景类型，不同场景下设备使用的音量类型不同：
@@ -73,7 +73,7 @@ Android Activity 的上下文对象。
 
 ### `mAutoRegisterAgoraExtensions`
 
-是否在初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 时自动注册声网插件：
+是否在初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine) 时自动注册声网插件：
 
 - true：（默认）自动注册插件。
 - false：不自动注册插件，需调用 enableExtension 手动注册。
@@ -84,11 +84,11 @@ Android Activity 的上下文对象。
 
 ### `mExtensionObserver`
 
-[IMediaExtensionObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaextensionobserver) 实例。详见 [IMediaExtensionObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaextensionobserver)。
+[IMediaExtensionObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaextensionobserver) 实例。详见 [IMediaExtensionObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaextensionobserver)。
 
 ### `mLogConfig`
 
-日志配置。详见 [LogConfig](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-logconfig)。 默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 日志文件：
+日志配置。详见 [LogConfig](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-logconfig)。 默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 日志文件：
 
 - SDK 日志文件包括： agorasdk.log、 agorasdk.1.log、 agorasdk.2.log、 agorasdk.3.log、 agorasdk.4.log
 - API 日志文件包括： agoraapi.log、 agoraapi.1.log、 agoraapi.2.log、 agoraapi.3.log、 agoraapi.4.log
@@ -104,7 +104,7 @@ Android Activity 的上下文对象。
 ### `mNativeLibPath`
 
 :::info[注]
-适用于手动集成 SDK。通过 Maven Central 或 JitPack 集成时不适用。请确保该目录存在，否则 [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 初始化会失败。
+适用于手动集成 SDK。通过 Maven Central 或 JitPack 集成时不适用。请确保该目录存在，否则 [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine) 初始化会失败。
 :::
 
 `.so` 文件的存储目录。该目录必须是 App 的有效私有目录，可通过 `Context.getDir` 获取。

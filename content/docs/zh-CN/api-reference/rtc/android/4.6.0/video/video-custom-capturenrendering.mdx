@@ -32,7 +32,7 @@ public abstract int createCustomVideoTrack();
 - 方法调用失败，返回 0xffffffff。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_destroycustomvideotrack"></a>
 
@@ -54,7 +54,7 @@ public abstract int destroyCustomVideoTrack(int video_track_id);
 
 #### `video_track_id`
 
-调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回的视频轨道 ID。
+调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/android/4.6.0/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回的视频轨道 ID。
 
 <a id="api_irtcengine_destroycustomvideotrack__return_values"></a>
 
@@ -64,7 +64,7 @@ public abstract int destroyCustomVideoTrack(int video_track_id);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_istextureencodesupported"></a>
 
@@ -88,7 +88,7 @@ public abstract boolean isTextureEncodeSupported();
 - false：不支持 Texture 编码。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_pushvideoframe"></a>
 
@@ -110,9 +110,9 @@ public abstract int pushExternalVideoFrameById(VideoFrame frame, int videoTrackI
 2. 调用 joinChannel 加入频道。在 ChannelMediaOptions 中，将 customVideoTrackId 设置为要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 true。
 3. 调用 pushExternalVideoFrameById，并将 videoTrackId 设置为第 2 步中设置的视频轨道 ID，即可在频道中发布对应的自定义视频源。
 
-你可以通过调用 `pushExternalVideoFrameById` 或调用 `pushExternalVideoFrameById` （参数为 [AgoraVideoFrame](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-externalvideoframe) ）推送视频帧。
+你可以通过调用 `pushExternalVideoFrameById` 或调用 `pushExternalVideoFrameById` （参数为 [AgoraVideoFrame](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-externalvideoframe) ）推送视频帧。
 
-注： 如果你只需向频道中推送一个自定义视频源，可以直接调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource)，SDK 会自动创建一个 `videoTrackId` 为 0 的视频轨道。 危险：调用本方法后，即使你停止向 SDK 推送外部视频帧，自定义视频流仍会计入视频时长并产生费用。声网建议你根据实际情况采取适当措施以避免此类视频计费：
+注： 如果你只需向频道中推送一个自定义视频源，可以直接调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/android/4.6.0/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource)，SDK 会自动创建一个 `videoTrackId` 为 0 的视频轨道。 危险：调用本方法后，即使你停止向 SDK 推送外部视频帧，自定义视频流仍会计入视频时长并产生费用。声网建议你根据实际情况采取适当措施以避免此类视频计费：
 
 - 如果你不再需要采集外部视频数据，可以调用 destroyCustomVideoTrack 销毁自定义视频轨道。
 - 如果你只想将外部视频数据用于本地预览而不发布到频道中，可以调用 muteLocalVideoStream 取消发送视频流，或调用 updateChannelMediaOptions 将 publishCustomVideoTrack 设置为 false。
@@ -127,7 +127,7 @@ public abstract int pushExternalVideoFrameById(VideoFrame frame, int videoTrackI
 
 #### `videoTrackId`
 
-调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回的视频轨道 ID。
+调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/android/4.6.0/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回的视频轨道 ID。
 
 :::info[注]
 如果你只需推送一个自定义视频源，请将 `videoTrackId` 设置为 0。
@@ -141,7 +141,7 @@ public abstract int pushExternalVideoFrameById(VideoFrame frame, int videoTrackI
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_pushvideoframe2"></a>
 
@@ -161,7 +161,7 @@ public abstract boolean pushExternalVideoFrame(VideoFrame frame)
 
 该方法已废弃。
 
-调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource) 方法并将 `enabled` 参数设置为 true， `encodedFrame` 参数设置为 false 后，可以使用该方法将外部原始视频帧推送至 SDK。你可以调用该方法或 `pushExternalVideoFrame` 推送视频帧。
+调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/android/4.6.0/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource) 方法并将 `enabled` 参数设置为 true， `encodedFrame` 参数设置为 false 后，可以使用该方法将外部原始视频帧推送至 SDK。你可以调用该方法或 `pushExternalVideoFrame` 推送视频帧。
 
 <a id="api_irtcengine_pushvideoframe2__parameters"></a>
 
@@ -179,7 +179,7 @@ public abstract boolean pushExternalVideoFrame(VideoFrame frame)
 - false：推送视频帧失败。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_pushvideoframe3"></a>
 
@@ -203,7 +203,7 @@ public abstract int pushExternalVideoFrameById(AgoraVideoFrame frame, int videoT
 
 你可以通过调用 `pushExternalVideoFrameById` 或调用 `pushExternalVideoFrame` 推送视频帧。
 
-注： 如果你只需向频道中推送一个自定义视频源，可以直接调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource) 方法，SDK 会自动创建一个 `videoTrackId` 为 0 的视频轨道。 警告：调用 `pushExternalVideoFrameById` 后，即使你停止向 SDK 推送外部视频帧，自定义视频流仍会被计入视频时长并产生费用。声网建议你根据实际情况采取适当措施以避免此类视频计费：
+注： 如果你只需向频道中推送一个自定义视频源，可以直接调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/android/4.6.0/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource) 方法，SDK 会自动创建一个 `videoTrackId` 为 0 的视频轨道。 警告：调用 `pushExternalVideoFrameById` 后，即使你停止向 SDK 推送外部视频帧，自定义视频流仍会被计入视频时长并产生费用。声网建议你根据实际情况采取适当措施以避免此类视频计费：
 
 - 如果你不再需要采集外部视频数据，可以调用 destroyCustomVideoTrack 销毁自定义视频轨道。
 - 如果你只想将外部视频数据用于本地预览而不在频道中发布，可以调用 muteLocalVideoStream 取消发送视频流，或调用 updateChannelMediaOptions 将 publishCustomVideoTrack 设置为 false。
@@ -214,11 +214,11 @@ public abstract int pushExternalVideoFrameById(AgoraVideoFrame frame, int videoT
 
 #### `frame`
 
-要推送的外部原始视频帧。详见 [AgoraVideoFrame](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-externalvideoframe)。
+要推送的外部原始视频帧。详见 [AgoraVideoFrame](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-externalvideoframe)。
 
 #### `videoTrackId`
 
-调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回的视频轨道 ID。
+调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/android/4.6.0/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回的视频轨道 ID。
 
 :::info[注]
 如果你只需推送一个自定义视频源，请将 `videoTrackId` 设置为 0。
@@ -232,7 +232,7 @@ public abstract int pushExternalVideoFrameById(AgoraVideoFrame frame, int videoT
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_pushvideoframe4"></a>
 
@@ -252,7 +252,7 @@ public abstract boolean pushExternalVideoFrame(AgoraVideoFrame frame)
 
 自 v4.5.0 版本废弃。
 
-调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource) 方法并将 `enabled` 参数设置为 true， `encodedFrame` 参数设置为 false 后，可以使用 `pushExternalVideoFrame` 将外部原始视频帧推送至 SDK。你也可以调用 `pushExternalVideoFrame` 推送视频帧。
+调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/android/4.6.0/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource) 方法并将 `enabled` 参数设置为 true， `encodedFrame` 参数设置为 false 后，可以使用 `pushExternalVideoFrame` 将外部原始视频帧推送至 SDK。你也可以调用 `pushExternalVideoFrame` 推送视频帧。
 
 <a id="api_irtcengine_pushvideoframe4__parameters"></a>
 
@@ -260,7 +260,7 @@ public abstract boolean pushExternalVideoFrame(AgoraVideoFrame frame)
 
 #### `frame`
 
-要推送的外部原始视频帧。详见 [AgoraVideoFrame](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-externalvideoframe)。
+要推送的外部原始视频帧。详见 [AgoraVideoFrame](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-externalvideoframe)。
 
 <a id="api_irtcengine_pushvideoframe4__return_values"></a>
 
@@ -270,7 +270,7 @@ public abstract boolean pushExternalVideoFrame(AgoraVideoFrame frame)
 - false：推送失败。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setexternalremoteeglcontext"></a>
 
@@ -316,7 +316,7 @@ public abstract int setExternalRemoteEglContext(Object eglContext);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setexternalvideosource"></a>
 
@@ -364,7 +364,7 @@ public abstract int setExternalVideoSource(boolean enable, boolean useTexture, C
 
 #### `sourceType`
 
-外部视频帧是否为编码格式，详见 [ExternalVideoSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-externalvideosourcetype)。
+外部视频帧是否为编码格式，详见 [ExternalVideoSourceType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-externalvideosourcetype)。
 
 <a id="api_irtcengine_setexternalvideosource__return_values"></a>
 
@@ -374,4 +374,4 @@ public abstract int setExternalVideoSource(boolean enable, boolean useTexture, C
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)

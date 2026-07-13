@@ -21,7 +21,7 @@ int selectAudioTrack(int index);
 获取音频文件的轨道索引后，可以调用该方法选择指定的音频轨道进行播放。例如，如果一个多轨道文件的不同轨道存储了不同语言的音频内容，可以调用该方法设置播放语言。
 
 :::info[注]
-[selectAudioTrack](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_selectaudiotrack_imediaplayer) 需要在调用 [getStreamInfo](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取音频流索引值之后再调用。
+[selectAudioTrack](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-playnrender#api_imediaplayer_selectaudiotrack_imediaplayer) 需要在调用 [getStreamInfo](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取音频流索引值之后再调用。
 :::
 
 <a id="api_imediaplayer_selectaudiotrack_imediaplayer__parameters"></a>
@@ -40,7 +40,7 @@ int selectAudioTrack(int index);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_setaudiodualmonomode"></a>
 
@@ -84,7 +84,7 @@ int setAudioDualMonoMode(int mode);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_setaudiopitch"></a>
 
@@ -120,7 +120,7 @@ int setAudioPitch(int pitch);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_setloopcount"></a>
 
@@ -137,7 +137,7 @@ int setLoopCount(int loopCount);
 <a id="api_imediaplayer_setloopcount__detailed_desc"></a>
 
 :::info[注]
-当循环播放完成后，SDK 会触发 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调，并报告播放状态为 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。
+当循环播放完成后，SDK 会触发 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调，并报告播放状态为 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。
 :::
 
 <a id="api_imediaplayer_setloopcount__parameters"></a>
@@ -159,7 +159,7 @@ int setLoopCount(int loopCount);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_setplaybackspeed"></a>
 
@@ -197,7 +197,7 @@ int setPlaybackSpeed(int speed);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_setplayeroption"></a>
 
@@ -213,7 +213,7 @@ int setPlayerOption(String key, int value);
 
 <a id="api_imediaplayer_setplayeroption__detailed_desc"></a>
 
-该方法用于通过 `key` 和 `value` 设置媒体播放器的选项。与 [setPlayerOptionString](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 不同，本方法的 `value` 参数类型为 `int`，而 [setPlayerOptionString](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的 `value` 参数类型为 `String`。这两个方法不能同时使用。一般情况下无需调用此方法，直接使用媒体播放器提供的默认选项即可。
+该方法用于通过 `key` 和 `value` 设置媒体播放器的选项。与 [setPlayerOptionString](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 不同，本方法的 `value` 参数类型为 `int`，而 [setPlayerOptionString](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的 `value` 参数类型为 `String`。这两个方法不能同时使用。一般情况下无需调用此方法，直接使用媒体播放器提供的默认选项即可。
 
 <a id="api_imediaplayer_setplayeroption__scenario"></a>
 
@@ -225,7 +225,7 @@ int setPlayerOption(String key, int value);
 
 ### 调用时机
 
-请在调用 `open` 或 [openWithMediaSource](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法之前调用。
+请在调用 `open` 或 [openWithMediaSource](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法之前调用。
 
 <a id="api_imediaplayer_setplayeroption__parameters"></a>
 
@@ -247,7 +247,7 @@ int setPlayerOption(String key, int value);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_setplayeroption2"></a>
 
@@ -263,7 +263,7 @@ int setPlayerOptionString(String key, String value);
 
 <a id="api_imediaplayer_setplayeroption2__detailed_desc"></a>
 
-该方法与 [setPlayerOption](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的区别在于： [setPlayerOptionString](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的 `value` 参数类型为 `String`，而 [setPlayerOption](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的 `value` 参数类型也是 `String`。这两个方法不能同时使用。通常情况下无需调用该方法，直接使用媒体播放器提供的默认参数即可。
+该方法与 [setPlayerOption](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的区别在于： [setPlayerOptionString](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的 `value` 参数类型为 `String`，而 [setPlayerOption](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的 `value` 参数类型也是 `String`。这两个方法不能同时使用。通常情况下无需调用该方法，直接使用媒体播放器提供的默认参数即可。
 
 <a id="api_imediaplayer_setplayeroption2__scenario"></a>
 
@@ -275,7 +275,7 @@ int setPlayerOptionString(String key, String value);
 
 ### 调用时机
 
-请在调用 `open` 或 [openWithMediaSource](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法之前调用本方法。
+请在调用 `open` 或 [openWithMediaSource](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法之前调用本方法。
 
 <a id="api_imediaplayer_setplayeroption2__parameters"></a>
 
@@ -297,7 +297,7 @@ int setPlayerOptionString(String key, String value);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_setview"></a>
 
@@ -335,4 +335,4 @@ int setView(View videoView);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)

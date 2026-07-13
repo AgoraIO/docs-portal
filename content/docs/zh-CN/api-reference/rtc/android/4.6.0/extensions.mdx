@@ -27,7 +27,7 @@ public void addExtension(String providerName)
 要添加的扩展名称。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_enableextension"></a>
 
@@ -46,7 +46,7 @@ public abstract int enableExtension(String provider, String extension, boolean e
 通过调用该方法，你可以动态启用或禁用扩展功能，而无需更改处理流程。
 
 :::info[注]
-[enableExtension](/zh-CN/api-reference/rtc/android/extensions#api_irtcengine_enableextension) 会在未调用 [registerExtension](/zh-CN/api-reference/rtc/android/extensions#api_irtcengine_registerextension) 的情况下自动注册指定扩展，以保证兼容性。建议你显式调用 [registerExtension](/zh-CN/api-reference/rtc/android/extensions#api_irtcengine_registerextension)。
+[enableExtension](/zh-CN/api-reference/rtc/android/4.6.0/extensions#api_irtcengine_enableextension) 会在未调用 [registerExtension](/zh-CN/api-reference/rtc/android/4.6.0/extensions#api_irtcengine_registerextension) 的情况下自动注册指定扩展，以保证兼容性。建议你显式调用 [registerExtension](/zh-CN/api-reference/rtc/android/4.6.0/extensions#api_irtcengine_registerextension)。
 :::
 
 <a id="api_irtcengine_enableextension__parameters"></a>
@@ -76,7 +76,7 @@ public abstract int enableExtension(String provider, String extension, boolean e
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_getextensionproperty"></a>
 
@@ -122,7 +122,7 @@ public abstract String getExtensionProperty(String provider, String extension, S
 - 方法调用失败，返回空字符串。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_getextensionproperty2"></a>
 
@@ -162,7 +162,7 @@ public abstract String getExtensionProperty(String provider, String extension, S
 
 #### `sourceType`
 
-扩展组件的来源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+扩展组件的来源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-mediasourcetype)。
 
 <a id="api_irtcengine_getextensionproperty2__return_values"></a>
 
@@ -172,7 +172,7 @@ public abstract String getExtensionProperty(String provider, String extension, S
 - 方法调用失败，返回空字符串。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_registerextension"></a>
 
@@ -200,7 +200,7 @@ public abstract int registerExtension(String provider, String extension, Constan
 
 ### 调用时机
 
-声网建议你在初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 后、加入频道前调用此方法。
+声网建议你在初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine) 后、加入频道前调用此方法。
 
 - 对于视频扩展（如美颜特效扩展），你需要在调用 enableVideo 或 enableLocalVideo 启用视频模块后再调用此方法。
 - 在调用此方法之前，你需要先调用 addExtension 加载扩展。
@@ -219,7 +219,7 @@ public abstract int registerExtension(String provider, String extension, Constan
 
 #### `sourceType`
 
-扩展的数据源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+扩展的数据源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-mediasourcetype)。
 
 <a id="api_irtcengine_registerextension__return_values"></a>
 
@@ -230,7 +230,7 @@ public abstract int registerExtension(String provider, String extension, Constan
   - -3：扩展库未加载。建议你检查动态库的存储位置或名称。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setextensionproperty"></a>
 
@@ -256,7 +256,7 @@ public abstract int setExtensionProperty(String provider, String extension, Stri
 
 ### 调用时机
 
-在调用 [enableExtension](/zh-CN/api-reference/rtc/android/extensions#api_irtcengine_enableextension) 方法之后调用该方法。
+在调用 [enableExtension](/zh-CN/api-reference/rtc/android/4.6.0/extensions#api_irtcengine_enableextension) 方法之后调用该方法。
 
 <a id="api_irtcengine_setextensionproperty__parameters"></a>
 
@@ -286,7 +286,7 @@ public abstract int setExtensionProperty(String provider, String extension, Stri
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setextensionproviderproperty"></a>
 
@@ -312,7 +312,7 @@ public abstract int setExtensionProviderProperty(String provider, String key, St
 
 ### 调用时机
 
-在调用 [enableExtension](/zh-CN/api-reference/rtc/android/extensions#api_irtcengine_enableextension) 之前， [registerExtension](/zh-CN/api-reference/rtc/android/extensions#api_irtcengine_registerextension) 之后调用该方法。
+在调用 [enableExtension](/zh-CN/api-reference/rtc/android/4.6.0/extensions#api_irtcengine_enableextension) 之前， [registerExtension](/zh-CN/api-reference/rtc/android/4.6.0/extensions#api_irtcengine_registerextension) 之后调用该方法。
 
 <a id="api_irtcengine_setextensionproviderproperty__parameters"></a>
 
@@ -338,7 +338,7 @@ public abstract int setExtensionProviderProperty(String provider, String key, St
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onextensionerrorwithcontext"></a>
 
@@ -366,7 +366,7 @@ default void onErrorWithContext(ExtensionContext extContext, int error, String m
 
 #### `extContext`
 
-扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-extensioncontext)。
+扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-extensioncontext)。
 
 #### `error`
 
@@ -377,7 +377,7 @@ default void onErrorWithContext(ExtensionContext extContext, int error, String m
 错误原因。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onextensioneventwithcontext"></a>
 
@@ -401,7 +401,7 @@ default void onEventWithContext(ExtensionContext extContext, String key, String 
 
 #### `extContext`
 
-扩展的上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-extensioncontext)。
+扩展的上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-extensioncontext)。
 
 #### `key`
 
@@ -412,7 +412,7 @@ default void onEventWithContext(ExtensionContext extContext, String key, String 
 扩展事件键对应的值。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onextensionstartedwithcontext"></a>
 
@@ -440,10 +440,10 @@ default void onStartedWithContext(ExtensionContext extContext)
 
 #### `extContext`
 
-扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-extensioncontext)。
+扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-extensioncontext)。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext"></a>
 
@@ -471,7 +471,7 @@ default void onStoppedWithContext(ExtensionContext extContext)
 
 #### `extContext`
 
-扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-extensioncontext)。
+扩展的上下文信息。详见 [ExtensionContext](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-extensioncontext)。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineeventhandler)
