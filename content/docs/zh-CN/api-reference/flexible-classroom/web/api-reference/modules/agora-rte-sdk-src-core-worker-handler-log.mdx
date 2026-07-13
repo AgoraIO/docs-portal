@@ -1,9 +1,9 @@
 ---
 title: "agora-rte-sdk/src/core/worker/handler/log"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "agora-rte-sdk/src/core/worker/handler/log API 参考。"
 ---
 
-## Type aliases
+## 类型别名
 
 <a id="Log"></a>
 
@@ -13,7 +13,7 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 Log: { content: string; created_at: number; label: string; timestamp: string }
 ```
 
-#### Type declaration
+#### 类型声明
 
 ##### `content: string`
 
@@ -23,7 +23,7 @@ Log: { content: string; created_at: number; label: string; timestamp: string }
 
 ##### `timestamp: string`
 
-## Functions
+## 函数
 
 <a id="collectLogs"></a>
 
@@ -33,17 +33,17 @@ Log: { content: string; created_at: number; label: string; timestamp: string }
 collectLogs(self: WorkerContext, callId: number, labels: string[]): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | self: WorkerContext |  |
 | callId: number |  |
 | labels: string[] |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="deleteLogs"></a>
 
@@ -53,18 +53,18 @@ Returns Promise &lt; void &gt;
 deleteLogs(self: WorkerContext, callId: number, labels: string[], lastId: number): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | self: WorkerContext |  |
 | callId: number |  |
 | labels: string[] |  |
 | lastId: number |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setMaxRecords"></a>
 
@@ -74,17 +74,17 @@ Returns Promise &lt; void &gt;
 setMaxRecords(self: WorkerContext, callId: number, max: number): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | self: WorkerContext |  |
 | callId: number |  |
 | max: number |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="writeLog"></a>
 
@@ -94,14 +94,14 @@ Returns void
 writeLog(self: WorkerContext, callId: number, log: "agora-rte-sdk/src/core/worker/handler/log".Log): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | self: WorkerContext |  |
 | callId: number |  |
 | log: "agora-rte-sdk/src/core/worker/handler/log".Log |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void

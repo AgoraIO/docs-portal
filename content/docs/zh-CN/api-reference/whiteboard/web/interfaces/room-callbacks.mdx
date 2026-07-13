@@ -1,6 +1,6 @@
 ---
 title: "Room<CALLBACKS>"
-description: "Room<CALLBACKS> API reference."
+description: "Room<CALLBACKS> API 参考。"
 ---
 
 `Room` 接口继承了 `Displayer` 接口，并且增加了用于操作互动白板实时房间的属性。
@@ -9,7 +9,7 @@ description: "Room<CALLBACKS> API reference."
 
   - Room
 
-## Properties
+## 属性
 
 <a id="calibrationtimestamp"></a>
 
@@ -396,7 +396,7 @@ version: string
 
 2.13.14
 
-## Methods
+## 方法
 
 <a id="addmagixeventlistener"></a>
 
@@ -418,17 +418,17 @@ addMagixEventListener(event: string, listener: EventsListener, fireInterval: num
 
 对于同名的自定义事件，SDK 仅支持触发一个回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 想要监听的自定义事件名称。 |
 | listener: EventListener | 自定义事件回调，详见 [EventListener](/zh-CN/api-reference/whiteboard/web/globals#eventlistener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。 |
 | Optional options: MagixEventListenerOptions | 自从 v2.15.2。 自定义事件监听设置选项。详见 [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/web/globals#magixeventlisteneroptions)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 注册高频自定义事件监听。
 
@@ -450,17 +450,17 @@ function listener(events) {
 displayer.addMagixEventListener("my-event", listener, 100);
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 想要监听的自定义事件名称。 |
 | listener: EventsListener | 自定义事件回调，详见 [EventsListener](/zh-CN/api-reference/whiteboard/web/globals#eventslistener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。 |
 | fireInterval: number | SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如果设置为低于该值会被重置为 500 ms。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="bindhtmlelement"></a>
 
@@ -472,15 +472,15 @@ bindHtmlElement(element: HTMLDivElement | null): void
 
 将白板绑定到 HTML 元素上。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | element: HTMLDivElement \| null | 用于容纳白板的 HTML 元素容器。若为 `null`，表示解除对白板的绑定。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="cleancurrentscene"></a>
 
@@ -492,15 +492,15 @@ cleanCurrentScene(retainPpt?: boolean): void
 
 清理当前场景的所有内容。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional retainPpt: boolean | 是否保留 PPT 页面：<br />- `true`：（默认）保留 PPT 页面。<br />- `false`：连 PPT 页面一起清空。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="clearundohistory"></a>
 
@@ -516,15 +516,15 @@ clearUndoHistory(includeRedo?: boolean): void
 
 2.16.48
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional includeRedo: boolean | 是否同时清空重做的记录：<br />- `true`：（默认）同时清空重做记录。<br />- `false`：不同时清空重做记录。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="completeimageupload"></a>
 
@@ -542,16 +542,16 @@ completeImageUpload(uuid: string, src: string): void
 
 调用该方法前，请确保你已经调用 [insertImage](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#insertimage) 方法在白板上插入了图片占位符。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uuid: string | 指定图片的 UUID, 即在 [insertImage](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#insertimage) 方法的 [ImageInformation](/zh-CN/api-reference/whiteboard/web/globals#imageinformation) 中传入的图片 UUID。 |
 | src: string | 图片的 URL 地址。请确保 app 客户端能够访问该 URL，否则图片无法正常展示。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="converttopointinworld"></a>
 
@@ -565,15 +565,15 @@ convertToPointInWorld(point: { x: number; y: number }): { x: number; y: number }
 
 该方法可以将屏幕坐标系（以屏幕左上角为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下） 中的坐标转换为世界坐标系（以白板初始化时的中点为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下） 中的坐标。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | point: \{ x: number; y: number \} | 点在屏幕坐标系中的坐标。 |
 
-#### Returns
+#### 返回值
 
-Returns \{x: number; y: number \}
+\{x: number; y: number \}
 
 点在世界坐标系中的坐标。
 
@@ -603,9 +603,9 @@ copy(): void
 
 2.9.0
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="createinvisibleplugin"></a>
 
@@ -617,16 +617,16 @@ createInvisiblePlugin<K, A, P>(pluginClass: InvisiblePluginClass<K, A, P>, attri
 
 创建不可见插件对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | pluginClass: InvisiblePluginClass&lt;K, A, P&gt; | 不可见插件的类。 |
 | attributes: A | 不可见插件的属性。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin-a) &lt; A &gt; &gt;
+Promise &lt; [InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin-a) &lt; A &gt; &gt;
 
 创建的不可见插件对象。
 
@@ -647,16 +647,16 @@ createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): Scenes
 - 该方法需要在加入白板房间后调用。
 - 对于每个场景目录，仅支持创建一个监听器对象。如果需要创建新的监听器对象，必须先调用 `dispose` 释放已创建的监听器对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | path: string | 场景目录的路径。如果你传入的是场景路径，SDK 会将监听对象设置为其父场景目录。 |
 | Optional callbacks: Partial&lt;ScenesCallbacks&gt; | 需要监听的回调。详见 `ScenesCallbacks`。 |
 
-#### Returns
+#### 返回值
 
-Returns [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node) | null
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node) | null
 
 - 方法调用成功时，返回 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node) 对象。
 - 方法调用失败时，返回 `null`。方法调用失败可能是因为指定的场景目录不存在。
@@ -671,9 +671,9 @@ delete(): void
 
 删除选中的内容。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="disconnect"></a>
 
@@ -687,9 +687,9 @@ disconnect(): Promise<void>
 
 该方法会让用户离开房间，并且把与当前房间对象相关的所有资源释放掉。如果要再次加入房间，需要重新调用 [joinRoom](/zh-CN/api-reference/whiteboard/web/classes/white-web-sdk#joinroom)。
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 - 如果方法调用成功，则返回房间的全局状态。
 - 如果方法调用失败，则返回错误信息。
@@ -708,16 +708,16 @@ dispatchMagixEvent(event: string, payload: any): void
 
 所有注册监听该事件的用户都会收到通知。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 自定义事件的名称。 |
 | payload: any | 自定义事件的内容。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="duplicate"></a>
 
@@ -738,9 +738,9 @@ duplicate(): void
 
 2.9.0
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="entirescenes"></a>
 
@@ -752,9 +752,9 @@ entireScenes(): SceneMap
 
 获取当前房间内所有场景的信息。
 
-#### Returns
+#### 返回值
 
-Returns [SceneMap](/zh-CN/api-reference/whiteboard/web/globals#scenemap)
+[SceneMap](/zh-CN/api-reference/whiteboard/web/globals#scenemap)
 
 当前房间内所有场景的信息。
 
@@ -776,15 +776,15 @@ v2.14.5
 
 成功调用该方法后，SDK 会导出指定场景的内容并保存为 Blob 对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | scenePath: string | 需要导出的场景路径。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; Blob &gt;
+Promise &lt; Blob &gt;
 
 导出场景内容的 Blob 对象。
 
@@ -798,18 +798,18 @@ fillSceneSnapshot(scenePath: string, div: HTMLElement, width: number, height: nu
 
 生成特定场景的屏幕快照。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | scenePath: string | 特定场景的路径。 |
 | div: HTMLElement | 用于显示屏幕快照的 div。 |
 | width: number | 屏幕快照的宽度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示屏幕快照的 div 的宽度。 |
 | height: number | 屏幕快照的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示屏幕快照的 div 的高度。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="generatescreenshot"></a>
 
@@ -825,17 +825,17 @@ generateScreenshot(scenePath?: string, width?: number, height?: number): Promise
 
 该方法已废弃，请使用 [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#screenshottocanvasasync) 方法。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional scenePath: string | 特定场景的路径。 |
 | Optional width: number | 截图的宽度。 |
 | Optional height: number | 截图的高度 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; string &gt;
+Promise &lt; string &gt;
 
 截图的 URL 地址。
 
@@ -853,15 +853,15 @@ getInvisiblePlugin<A>(kind: string): InvisiblePlugin<A> | null
 
 获取指定的不可见插件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | kind: string | 不可见插件的类型。 |
 
-#### Returns
+#### 返回值
 
-Returns [InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin-a) &lt; A &gt; | null
+[InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin-a) &lt; A &gt; | null
 
 指定的不可见插件。
 
@@ -875,15 +875,15 @@ getPluginAttributes(identifier: Identifier): any | undefined
 
 获取组件插件对象的属性。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | identifier: Identifier | 组件插件对象在房间内的唯一标识符。 |
 
-#### Returns
+#### 返回值
 
-Returns any | undefined
+any | undefined
 
 <a id="getpluginrectangle"></a>
 
@@ -895,15 +895,15 @@ getPluginRectangle(identifier: string): Rectangle | undefined
 
 获取组件插件对象在白板上的位置信息。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | identifier: string | 组件插件对象在房间内的唯一标识符。 |
 
-#### Returns
+#### 返回值
 
-Returns [Rectangle](/zh-CN/api-reference/whiteboard/web/enums/cursor-names#rectangle) | undefined
+[Rectangle](/zh-CN/api-reference/whiteboard/web/enums/cursor-names#rectangle) | undefined
 
 组件插件对象的矩形。
 
@@ -917,15 +917,15 @@ getScene(path: string): WhiteScene | undefined
 
 获取指定场景的信息。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | path: string | 场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如， `/math/classA`。 |
 
-#### Returns
+#### 返回值
 
-Returns [WhiteScene](/zh-CN/api-reference/whiteboard/web/globals#whitescene) | undefined
+[WhiteScene](/zh-CN/api-reference/whiteboard/web/globals#whitescene) | undefined
 
 场景信息。详见 [WhiteScene](/zh-CN/api-reference/whiteboard/web/globals#whitescene)。
 
@@ -945,16 +945,16 @@ v2.14.5
 
 你可以调用该方法将通过 [exportScene](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#exportscene) 导出的场景内容导入指定的场景目录中。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | dir: string | 场景要导入的场景目录。确保该场景目录的 [ScenePathType](/zh-CN/api-reference/whiteboard/web/enums/scene-path-type) 不为 `conflict`；否则，场景将无法导入。 你可以通过 [scenePathType](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#scenepathtype) 查询路径类型。 |
 | payload: Blob | 场景内容的 Blob 对象。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [SceneDefinition](/zh-CN/api-reference/whiteboard/web/globals#scenedefinition) &gt;
+Promise &lt; [SceneDefinition](/zh-CN/api-reference/whiteboard/web/globals#scenedefinition) &gt;
 
 方法调用成功后，返回 [SceneDefinition](/zh-CN/api-reference/whiteboard/web/globals#scenedefinition) 对象，其中包含导入场景的 `name`。导入场景的路径即为 `dir` + `name`。 如果需要修改场景路径，可以调用 [moveScene](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#movescene)。
 
@@ -972,15 +972,15 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片占位符
 
 调用该方法后，还需要调用 [completeImageUpload](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#completeimageupload) 传入图片的 URL 地址，以在该占位符插入并展示图片。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | imageInfo: ImageInformation | 图片信息，详见 [ImageInformation](/zh-CN/api-reference/whiteboard/web/globals#imageinformation)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="insertplugin"></a>
 
@@ -992,16 +992,16 @@ insertPlugin(kind: string, description?: PluginDescription): Identifier
 
 在白板中插入组件插件对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | kind: string | 组件插件的类型，是组件的唯一标识符。 |
 | Optional description: PluginDescription | 组件插件的描述。 |
 
-#### Returns
+#### 返回值
 
-Returns [Identifier](/zh-CN/api-reference/whiteboard/web/globals#identifier)
+[Identifier](/zh-CN/api-reference/whiteboard/web/globals#identifier)
 
 组件插件对象在房间内的唯一标识符。
 
@@ -1015,17 +1015,17 @@ insertText(x: number, y: number, textContent?: string): Identifier
 
 在指定位置插入文字。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | x: number | 第一个文字左侧边的中点在世界坐标系中的 X 轴坐标。 |
 | y: number | 第一个文字左侧边的中点在世界坐标系中的 Y 轴坐标。 |
 | Optional textContent: string | 初始的文字内容，不传则为空。 |
 
-#### Returns
+#### 返回值
 
-Returns [Identifier](/zh-CN/api-reference/whiteboard/web/globals#identifier)
+[Identifier](/zh-CN/api-reference/whiteboard/web/globals#identifier)
 
 文字的标识符，字符串格式。
 
@@ -1041,16 +1041,16 @@ lockImage(uuid: string, locked: boolean): void
 
 图片被锁定后，用户无法移动或缩放图片。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uuid: string | 指定图片的 UUID。 |
 | locked: boolean | 是否锁定图片：<br />- `true`: 锁定。<br />- `false`: 不锁定。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="lockimages"></a>
 
@@ -1068,15 +1068,15 @@ v2.14.5
 
 该方法可以修改当前选中图片的锁定状态。当图片被锁定时，用户无法移动、放缩或删除该图片。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | locked: boolean | 是否锁定图片:<br />- true：锁定图片。<br />- false：不锁定图片。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="memberstate"></a>
 
@@ -1088,15 +1088,15 @@ memberState(memberId: number): MemberState
 
 获取房间内指定用户的白板工具状态。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | memberId: number | 指定用户的 ID。 |
 
-#### Returns
+#### 返回值
 
-Returns [MemberState](/zh-CN/api-reference/whiteboard/web/globals#memberstate)
+[MemberState](/zh-CN/api-reference/whiteboard/web/globals#memberstate)
 
 指定用户的白板工具状态。
 
@@ -1110,15 +1110,15 @@ moveCamera(camera: Partial<Camera> & Readonly<{ animationMode?: AnimationMode }>
 
 调整视角。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | camera: Partial&lt;Camera&gt; & Readonly&lt;\{ animationMode?: AnimationMode \}&gt; | 视角的参数配置，详见 [Camera](/zh-CN/api-reference/whiteboard/web/globals#camera)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="movecameratocontain"></a>
 
@@ -1130,15 +1130,15 @@ moveCameraToContain(rectangle: Rectangle & Readonly<{ animationMode?: AnimationM
 
 调整视角，以保证完整显示视觉矩形。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | rectangle: Rectangle & Readonly&lt;\{ animationMode?: AnimationMode \}&gt; | 视觉矩形的参数设置，详见 [Rectangle](/api-ref/whiteboard/javascript/enums/cursornames.html#rectangle)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="movescene"></a>
 
@@ -1152,16 +1152,16 @@ moveScene(originalPath: string, targetPath: string): void
 
 成功移动场景后，场景路径也会改变。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | originalPath: string | 需要移动的场景的原路径。必须为场景路径，不能是场景目录的路径。 |
 | targetPath: string | 目标场景目录的路径或目标场景的路径：<br />- 当 `targetPath` 设置为目标场景目录时，表示将指定场景移至其他场景目录中，场景路径会发生改变，但是场景名称不变。<br />- 当 `targetPath` 设置为目标场景路径时，表示改变指定场景在当前场景目录的位置，场景路径和场景名都会发生改变。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="moveselectedcomponentstobottom"></a>
 
@@ -1177,9 +1177,9 @@ moveSelectedComponentsToBottom(): void
 
 v2.14.5
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="moveselectedcomponentstotop"></a>
 
@@ -1195,9 +1195,9 @@ moveSelectedComponentsToTop(): void
 
 v2.14.5
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="paste"></a>
 
@@ -1219,9 +1219,9 @@ paste(): void
 
 2.9.0
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="pptnextstep"></a>
 
@@ -1235,9 +1235,9 @@ pptNextStep(): void
 
 当前 PPT 页面的动画已全部执行完成时，SDK 会将场景切换至下一页 PPT。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="pptpreviousstep"></a>
 
@@ -1251,9 +1251,9 @@ pptPreviousStep(): void
 
 当前 PPT 页面的动画全部回退完成时，SDK 会将场景切回至上一页 PPT。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="putscenes"></a>
 
@@ -1269,17 +1269,17 @@ putScenes(path: string, scenes: ReadonlyArray<SceneDefinition>, index?: number):
 
 调用该方法插入多个场景后不会切换到新插入的场景。如果要切换至新插入的场景，需要调用 [setScenePath](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#setscenepath)。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | path: string | 指定场景目录的地址，必须以 `/` 开头，不能为场景路径。 |
 | scenes: ReadonlyArray&lt;SceneDefinition&gt; | 由多个场景构成的数组。单个场景的字段详见 [SceneDefinition](/zh-CN/api-reference/whiteboard/web/globals#scenedefinition)。 |
 | Optional index: number | 待插入的多个场景中，第一个场景在该场景目录的索引号。场景的索引号从 0 开始。<br />- 如果传入的索引号小于或等于该场景目录下现有场景的索引号，新插入的场景会排在传入索引号对应场景的前面。<br />- 如果传入的索引号大于该场景目录下现有场景的索引号，新插入的场景会排在现有场景的最后。<br />- 如果不传入索引号（该参数为选填），新插入的场景会排在现有场景的最后。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="redo"></a>
 
@@ -1295,9 +1295,9 @@ redo(): number
 
 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disableserialization) 设为 `false` 时生效。
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 剩余的可重做次数。
 
@@ -1313,9 +1313,9 @@ refreshViewSize(): void
 
 当白板的 view 发生改变时，需要手动调用该方法刷新白板的界面。 该方法仅在 `autoResize` 为 `false` 时生效。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removemagixeventlistener"></a>
 
@@ -1327,16 +1327,16 @@ removeMagixEventListener(event: string, listener?: EventListener): void
 
 移除自定义事件监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 想要移除监听的自定义事件名称。 |
 | Optional listener: EventListener | 要移除的监听。若不传，该自定义事件之下的所有监听器将全部注销。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removeplugin"></a>
 
@@ -1348,15 +1348,15 @@ removePlugin(identifier: Identifier): boolean
 
 删除组件插件对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | identifier: Identifier | 组件插件对象在房间内的唯一标识符。 |
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="removescenes"></a>
 
@@ -1380,15 +1380,15 @@ removeScenes(path: string): void
   3. 如果当前场景目录路径下 `dirA` 后没有场景目录，也不存在任何场景，则查看 `dirA` 前面是否存在场景目录 `dirC`；如果存在，则选择 `dirC` 中的第一个场景（index 为 0）。
   4. 以上都不满足，则继续向上递归执行该逻辑。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | path: string | 场景路径或场景目录路径。如果传入的是场景目录，则会删除该场景目录下的所有场景。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="scaleppttofit"></a>
 
@@ -1404,15 +1404,15 @@ scalePptToFit(animationMode?: AnimationMode): void
 
 2.3.18
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional animationMode: AnimationMode | 视角调整时的动画模式，详见 [AnimationMode](/zh-CN/api-reference/whiteboard/web/enums/animation-mode)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="scenepathtype"></a>
 
@@ -1424,15 +1424,15 @@ scenePathType(path: string): ScenePathType
 
 查询场景路径类型。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | path: string | 场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如， `/math/classA`。 |
 
-#### Returns
+#### 返回值
 
-Returns [ScenePathType](/zh-CN/api-reference/whiteboard/web/enums/scene-path-type)
+[ScenePathType](/zh-CN/api-reference/whiteboard/web/enums/scene-path-type)
 
 场景路径的类型。
 
@@ -1446,18 +1446,18 @@ scenePreview(scenePath: string, div: HTMLElement, width: number | undefined, hei
 
 生成特定场景的预览图。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | scenePath: string | 特定场景的路径。 |
 | div: HTMLElement | 用于显示预览内容的 div。 |
 | width: number \| undefined | 预览图的宽度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示预览内容的 div 的宽度。 |
 | height: number \| undefined | 预览图的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示预览内容的 div 的高度。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="screenshottocanvas"></a>
 
@@ -1469,9 +1469,9 @@ screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: 
 
 生成屏幕快照，并写入指定的 CanvasRenderingContext2D 对象中。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | context: CanvasRenderingContext2D | CanvasRenderingContext2D 对象。 |
 | scenePath: string | 场景的路径。你可以通过 `room.state.sceneState.scenePath` 获取当前场景。 |
@@ -1480,9 +1480,9 @@ screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: 
 | camera: Camera | 视角的描述。 |
 | Optional ratio: number | 设备像素比。该参数为可选参数，如果不填，则默认值为 1。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="screenshottocanvasasync"></a>
 
@@ -1500,9 +1500,9 @@ screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, wi
 - 如果目标场景的图片无法完成加载，则该函数无法返回屏幕快照，你需要自行处理超时逻辑。
 - 如果你希望生成的屏幕快照不包含图片，请使用 [screenshotToCanvas](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#screenshottocanvas)。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | context: CanvasRenderingContext2D | CanvasRenderingContext2D 对象。 |
 | scenePath: string | 场景的路径。你可以通过 `room.state.sceneState.scenePath` 获取当前场景。 |
@@ -1512,9 +1512,9 @@ screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, wi
 | Optional ratio: number | 设备像素比。该参数为可选参数，如果不填，则默认值为 1。 |
 | Optional timeout: number | 图片加载的超时时间 (ms)，默认为永不超时，只能设为大于 `0` 的数。图片的加载时间超过该值后，SDK 会直接进行下一步绘制操作，而不会等待图片加载完成。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setcamerabound"></a>
 
@@ -1526,15 +1526,15 @@ setCameraBound(cameraBound: CameraBound): void
 
 设置用户的视角边界。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cameraBound: CameraBound | 视角边界。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setglobalstate"></a>
 
@@ -1568,15 +1568,15 @@ room.setGlobalState({
 });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | modifyState: Partial&lt;GlobalState&gt; | 房间公共全局状态。 |
 
-#### Returns
+#### 返回值
 
-Returns [GlobalState](/zh-CN/api-reference/whiteboard/web/globals#globalstate)
+[GlobalState](/zh-CN/api-reference/whiteboard/web/globals#globalstate)
 
 修改后的房间公共全局状态。
 
@@ -1612,15 +1612,15 @@ room.setMemberState({
 });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | modifyState: Partial&lt;MemberState&gt; | 需要修改的白板工具状态，详见 [MemberState](/zh-CN/api-reference/whiteboard/web/globals#memberstate)。 |
 
-#### Returns
+#### 返回值
 
-Returns [MemberState](/zh-CN/api-reference/whiteboard/web/globals#memberstate)
+[MemberState](/zh-CN/api-reference/whiteboard/web/globals#memberstate)
 
 修改后的白板工具状态，
 
@@ -1640,15 +1640,15 @@ setSceneIndex(index: number): void
 
 指定的场景必须在当前场景目录中，否则方法调用会失败。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | index: number | 目标场景在当前场景目录下的索引号。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setscenepath"></a>
 
@@ -1672,15 +1672,15 @@ setScenePath(scenePath: string): void
 - 场景路径对应的场景不存在。
 - 传入的路径是场景目录的路径，而不是场景路径。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | scenePath: string | 想要切换到的场景路径。请确保场景路径以 "/" 开头并且由场景目录和场景名构成，如 `/math/classA`。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setviewmode"></a>
 
@@ -1706,15 +1706,15 @@ setViewMode(viewMode: ViewMode): void
 - 当一个用户的视角设置为主播模式后，房间内其他所有用户（包括新加入房间的用户）的视角会被自动设置为跟随模式。
 - 当跟随模式的用户进行白板操作时，其视角会自动切换为自由模式。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | viewMode: ViewMode | 视角模式，详见 [ViewMode](/zh-CN/api-reference/whiteboard/web/enums/view-mode)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setwritable"></a>
 
@@ -1726,15 +1726,15 @@ setWritable(isWritable: boolean): Promise<void>
 
 设置用户在房间中是否为互动模式。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | isWritable: boolean | 用户在房间中是否为互动模式：<br />- `true`：互动模式，即具有读写权限。<br />- `false`：订阅模式，即具有只读权限。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="stopblocktimestamp"></a>
 
@@ -1750,9 +1750,9 @@ stopBlockTimestamp(): void
 
 2.13.8
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="syncblocktimestamp"></a>
 
@@ -1772,15 +1772,15 @@ syncBlockTimestamp(timestamp: number): void
 
 在同时订阅音视频流和白板内容的场景中，你可以从音视频流附带的 SEI 帧中获取时间信息，并调用该方法设置远端白板内容在本地的显示时间，以确保音视频流和白板内容实时同步。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | timestamp: number | 远端白板内容在本地显示的 Unix 时间戳，单位为毫秒。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="undo"></a>
 
@@ -1796,9 +1796,9 @@ undo(): number
 
 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disableserialization) 设为 `false` 时生效。
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 剩余的可撤销次数。
 
@@ -1812,16 +1812,16 @@ updatePlugin(identifier: Identifier, description: PluginDescription): boolean
 
 修改组件插件对象的描述。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | identifier: Identifier | 组件插件对象在房间内的唯一标识符。 |
 | description: PluginDescription | 组件插件对象的新描述。 |
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="updateselectedtext"></a>
 
@@ -1835,15 +1835,15 @@ updateSelectedText(format: TextFormat): void
 
 选中文字后，你可以调用该方法修改字体大小、颜色、是否加粗、是否斜体等样式。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | format: TextFormat | 修改后的字体样式。详见 [TextFormat](/zh-CN/api-reference/whiteboard/web/globals#textformat)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="updatetext"></a>
 
@@ -1857,16 +1857,16 @@ updateText(identifier: Identifier, textContent: string): void
 
 调用 [insertText](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#inserttext) 方法后，你可以调用该方法并传入 `insertText` 方法返回的 `Identifier`，修改指定文字的内容。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | identifier: Identifier | 文字的标识符，为 [insertText](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#inserttext) 的返回值。 |
 | textContent: string | 修改后的文字内容。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="waitmagixevent"></a>
 
@@ -1878,14 +1878,14 @@ waitMagixEvent(filter: EventFilter): Promise<Event>
 
 等待特定的自定义事件发生。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | filter: EventFilter | 事件过滤器。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [Event](/zh-CN/api-reference/whiteboard/web/globals#event) &gt;
+Promise &lt; [Event](/zh-CN/api-reference/whiteboard/web/globals#event) &gt;
 
 当特定自定义事件发生时，返回该事件。

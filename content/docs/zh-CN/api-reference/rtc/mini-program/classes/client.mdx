@@ -1,11 +1,11 @@
 ---
 title: "Client"
-description: "Client API reference."
+description: "Client API 参考。"
 ---
 
 - Client
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -19,17 +19,17 @@ new Client(options: object): Client
 
 **NOTE**：加解密功能仅在 IoT 场景适用。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | options: object |  |
 
-#### Returns
+#### 返回值
 
-Returns [Client](/zh-CN/api-reference/rtc/mini-program/classes/client)
+[Client](/zh-CN/api-reference/rtc/mini-program/classes/client)
 
-## Methods
+## 方法
 
 <a id="destroy"></a>
 
@@ -41,16 +41,16 @@ destroy(onSuccess?: function, onFailure?: function): Promise<void>
 
 销毁客户端对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="init"></a>
 
@@ -62,17 +62,17 @@ init(appId: string, onSuccess?: function, onFailure?: function): Promise<void>
 
 初始化客户端对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | appId: string | 你的小程序项目的 App ID。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="join"></a>
 
@@ -84,9 +84,9 @@ join(channelKey: string, channel: string, uid: number | string, isAudioOnly: boo
 
 加入频道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | channelKey: string | 在 app 服务器端生成的用于鉴权的 Token：<br />- 安全要求不高：你可以使用控制台生成的临时 Token，详见 [生成 Token](https://docs.agora.io/cn/Agora%20Platform/token?platform=All%20Platforms#3-%E7%94%9F%E6%88%90-token)。<br />- 安全要求高：将值设为你的服务端生成的正式 Token，详见 [使用 Token 鉴权](https://docs.agora.io/cn/Agora%20Platform/token_server)。 |
 | channel: string | 频道名，能标识直播频道的字符串。 |
@@ -96,9 +96,9 @@ join(channelKey: string, channel: string, uid: number | string, isAudioOnly: boo
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。返回值为用户 ID。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="leave"></a>
 
@@ -110,16 +110,16 @@ leave(onSuccess?: function, onFailure?: function): Promise<void>
 
 退出频道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="mute"></a>
 
@@ -131,18 +131,18 @@ mute(uid: number, target: string, onSuccess?: function, onFailure?: function): P
 
 停止接收远端用户的音视频流。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: number | 远端用户的 ID。 |
 | target: string | 选择停止接收哪一种流，有三种选择：<br />- `audio`：远端用户发送的音频流，即声音。<br />- `video`：远端用户发送的视频流，即视频画面。<br />- `all`：远端用户发送的音视频流，即声音和视频画面。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="mutelocal"></a>
 
@@ -154,17 +154,17 @@ muteLocal(target: string, onSuccess?: function, onFailure?: function): Promise<v
 
 停止发送本地用户的音视频流。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | target: string | 选择停止发送哪一种流，有三种选择：<br />- `audio`：本地用户发送的音频流，即声音。<br />- `video`：本地用户发送的视频流，即视频画面。<br />- `all`：本地用户发送的音视频流，即声音和视频画面。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="off"></a>
 
@@ -176,15 +176,15 @@ off(event: string): void
 
 取消监听流事件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 想要取消监听的流事件。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="on"></a>
 
@@ -254,80 +254,80 @@ v2.5.4
 
 当你在服务端踢除频道内的用户后，被踢出频道的用户会收到该回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "client-banned" | 当前触发的事件。 `"client-banned"` 表示用户被服务器禁止。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 通知应用程序发生错误。 该回调中会包含详细的错误码和错误信息。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "error" | 当前触发的事件。 `"error"` 表示发生错误。 |
 | callback: function | 具体的事件详情。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 通知应用程序已添加远端音视频流。 该回调中会包含已添加的远端用户 ID。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "stream-added" | 当前触发的事件。 `"stream-added"` 表示已添加远端音视频流。 |
 | callback: function | 具体的事件详情。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 通知应用程序已删除远端音视频流。 该回调中会包含已删除的远端用户 ID。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "stream-removed" | 当前触发的事件。 `"stream-removed"` 表示已删除远端音视频流。 |
 | callback: function | 具体的事件详情。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 通知应用程序已更新 URL 地址。 该回调中会包含远端用户的 ID 和更新后的拉流地址。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "update-url" | 当前触发的事件。 `"update-url"` 表示已更新 URL 地址。 |
 | callback: function | 具体的事件详情。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 通知应用程序远端视频已旋转。 该回调中会包含视频的旋转信息以及远端用户的 ID。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "video-rotation" | 当前触发的事件。 `"video-rotation"` 表示远端视频已旋转。 |
 | callback: function | 具体的事件详情。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 Token 已过期回调。
 
@@ -339,15 +339,15 @@ v2.5.3
 
 一般情况下，在收到该消息之后，应向服务端重新申请 Token，并调用 [join](/zh-CN/api-reference/rtc/mini-program/classes/client#join) 方法传入新的 Token 重新加入频道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "token-privilege-did-expire" | 当前触发的事件。 `"token-privilege-did-expire"` 表示 Token 已过期。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 Token 服务即将过期回调。
 
@@ -357,97 +357,97 @@ v2.5.3
 
 在调用 [join](/zh-CN/api-reference/rtc/mini-program/classes/client#join) 时如果指定了 Token，由于 Token 具有一定的时效，在通话过程中如果 Token 即将失效，SDK 会提前 30 秒触发该回调，提醒 App 更新 Token。当收到该回调时，你需要重新在服务端生成新的 Token， 然后调用 [renewToken](/zh-CN/api-reference/rtc/mini-program/classes/client#renewtoken) 将新生成的 Token 传给 SDK。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "token-privilege-will-expire" | 当前触发的事件。 `"token-privilege-will-expire"` 表示 Token 即将过期。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 通知应用程序远端用户已停止发送音频流。 该回调中会包含停止发送音频流的用户 ID。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "mute-audio" | 当前触发的事件。 `"mute-audio"` 表示远端用户已停止发送音频流。 |
 | callback: function | 具体的事件详情。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 通知应用程序远端用户已停止发送视频流。 该回调中会包含停止发送视频流的用户 ID。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "mute-video" | 当前触发的事件。 `"mute-video"` 表示远端用户已停止发送视频流。 |
 | callback: function | 具体的事件详情。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 通知应用程序远端用户已恢复发送音频流。 该回调中会包含恢复发送音频流的用户 ID。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "unmute-audio" | 当前触发的事件。 `"unmute-audio"` 表示远端用户已恢复发送音频流。 |
 | callback: function | 具体的事件详情。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 通知应用程序远端用户已恢复发送视频流。 该回调中会包含恢复发送视频流的用户 ID。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "unmute-video" | 当前触发的事件。 `"unmute-video"` 表示远端用户已恢复发送视频流。 |
 | callback: function | 具体的事件详情。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 跨频道媒体流转发事件回调。
 
 该回调报告跨频道媒体流转发过程中发生的事件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "channel-media-relay-event" | 当前触发的事件。 `"channel-media-relay-event"` 表示报告媒体流转发事件。 |
 | callback: function | 具体的事件详情。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 跨频道媒体流转发状态回调。
 
 当跨频道媒体流转发状态发生改变时，SDK 会触发该回调，并报告当前的转发状态以及相关的错误信息。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "channel-media-relay-state" | 当前触发的事件。 `"channel-media-relay-state"` 表示媒体流转发状态。 |
 | callback: function | 具体的事件详情。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="publish"></a>
 
@@ -461,16 +461,16 @@ publish(onSuccess?: function, onFailure?: function): Promise<string>
 
 该方法将本地音视频流发布到 SD-RTN。互动直播中，调用该 API 的用户即默认为主播。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。返回值为音视频流的推流地址。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; string &gt;
+Promise &lt; string &gt;
 
 string 型，音视频流的推流地址。
 
@@ -486,9 +486,9 @@ rejoin(channelKey: string, channel: string, uid: number | string, uids: number, 
 
 该方法让用户重新加入声网 RTC 频道。如果你的小程序中有切后台的场景需求，请确保使用该方法做好重连机制。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | channelKey: string | 在 app 服务器端生成的用于鉴权的 Token：<br />- 安全要求不高：你可以使用控制台生成的临时 Token，详见 [获取临时 Token](https://doc.shengwang.cn/doc/rtc/mini-program/get-started/enable-service#%E8%8E%B7%E5%8F%96%E4%B8%B4%E6%97%B6-token)。<br />- 安全要求高：将值设为你的服务端生成的正式 Token，详见 [从服务端生成 Token](https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication)。 |
 | channel: string | 频道名，能标识直播频道的字符串。 |
@@ -499,9 +499,9 @@ rejoin(channelKey: string, channel: string, uid: number | string, uids: number, 
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。返回值为用户 ID。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="renewtoken"></a>
 
@@ -519,17 +519,17 @@ v2.5.3
 
 该方法更新 Token。如果启用了 Token 机制，过一段时间后密钥会失效。 当收到 `client.on("token-privilege-will-expire")` 消息时，调用该 API 以更新 Token，否则 SDK 会无法和服务器建立连接。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | token: string | 新的 Token。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setaudiocodec"></a>
 
@@ -545,15 +545,15 @@ setAudioCodec(audioCodec: AudioCodec): void
 
 v2.5.6
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | audioCodec: AudioCodec | IoT 设备使用的音频编码格式，详见 [AudioCodec](/zh-CN/api-reference/rtc/mini-program/enums/audio-codec)。<br />- 0: PCMU/G711u 格式。<br />- 8: PCMA/G711a 格式。<br />- 9: G722 格式。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setremotevideostreamtype"></a>
 
@@ -571,18 +571,18 @@ v2.5.3
 
 如果发送端选择发送视频双流 (大流和小流)，该方法可以在订阅端选择接收大流还是小流。如果不设置，订阅端默认接收大流。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: number | 用户 ID。 |
 | streamType: 0 \| 1 |  |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setrole"></a>
 
@@ -596,17 +596,17 @@ setRole(role: string, onSuccess?: function, onFailure?: function): Promise<void>
 
 注：如果在主播已 `publish` 的状态下调用该方法将用户角色设置为 `audience`，会导致之前的推流地址无效。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | role: string | 用户角色。选择如下一种角色：<br />- `broadcaster`：将用户角色设置为主播。主播可以调用 [publish](/zh-CN/api-reference/rtc/mini-program/classes/client#publish) 和 [unpublish](/zh-CN/api-reference/rtc/mini-program/classes/client#unpublish) 方法。<br />- `audience`：(默认) 将用户角色设置为观众。观众不能调用 [publish](/zh-CN/api-reference/rtc/mini-program/classes/client#publish) 和 [unpublish](/zh-CN/api-reference/rtc/mini-program/classes/client#unpublish) 方法。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="startchannelmediarelay"></a>
 
@@ -652,16 +652,16 @@ client.startChannelMediaRelay(channelMediaConfig, function(e) {
 });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: ChannelMediaRelayConfiguration | 跨频道媒体流转发参数配置，详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channel-media-relay-configuration)。 |
 | callback: function | 媒体流转发是否成功的回调。<br />- `null`：媒体流转发成功。<br />- 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channel-media-error) 提供错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="stopchannelmediarelay"></a>
 
@@ -696,15 +696,15 @@ stopChannelMediaRelay: function() {
 }
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | callback: function | 停止跨频道媒体流转发是否成功的回调。<br />- `null`：停止跨频道媒体流转发成功。<br />- 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channel-media-error) 提供错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="subscribe"></a>
 
@@ -718,18 +718,18 @@ subscribe(uid: number, options?: object, onSuccess?: function, onFailure?: funct
 
 该方法从 SD-RTN 订阅并接收远端音视频流。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: number | 要订阅的远端用户 ID。 |
 | Optional options: object | 设置是否订阅视频或音频。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。返回值为音视频的拉流地址。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; object &gt;
+Promise &lt; object &gt;
 
 一个对象，包含以下数据：
 
@@ -746,18 +746,18 @@ unmute(uid: number, target: string, onSuccess?: function, onFailure?: function):
 
 恢复接收远端用户的音视频流。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: number | 远端用户的 ID。 |
 | target: string | 选择停止接收哪一种流，有三种选择：<br />- `audio`：远端用户发送的音频流，即声音。<br />- `video`：远端用户发送的视频流，即视频画面。<br />- `all`：远端用户发送的音视频流，即声音和视频画面。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="unmutelocal"></a>
 
@@ -769,17 +769,17 @@ unmuteLocal(target: string, onSuccess?: function, onFailure?: function): Promise
 
 恢复发送本地用户的音视频流。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | target: string | 选择恢复发送哪一种流，有三种选择：<br />- `audio`：本地用户发送的音频流，即声音。<br />- `video`：本地用户发送的视频流，即视频画面。<br />- `all`：本地用户发送的音视频流，即声音和视频画面。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="unpublish"></a>
 
@@ -791,16 +791,16 @@ unpublish(onSuccess?: function, onFailure?: function): Promise<void>
 
 停止发布本地音视频流。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用失败时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="unsubscribe"></a>
 
@@ -814,17 +814,17 @@ unsubscribe(uid: number, onSuccess?: function, onFailure?: function): Promise<vo
 
 该方法停止从 SD-RTN 订阅并接收远端音视频流。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: number | 要停止订阅的远端用户 ID。 |
 | Optional onSuccess: function | 方法调用成功时执行的回调函数。无返回值。 |
 | Optional onFailure: function | 方法调用成功时执行的回调函数。返回值为错误码和错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="updatechannelmediarelay"></a>
 
@@ -862,16 +862,16 @@ client.updateChannelMediaRelay(channelMediaConfig, function(e) {
 });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: ChannelMediaRelayConfiguration | 跨频道媒体流转发参数配置，详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/mini-program/interfaces/channel-media-relay-configuration)。 |
 | callback: function | 更新目标频道是否成功的回调。<br />- `null`：更新目标频道成功。<br />- 如果失败，会通过 [ChannelMediaError](/zh-CN/api-reference/rtc/mini-program/classes/channel-media-error) 提供错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="updateplayernetstatus"></a>
 
@@ -889,16 +889,16 @@ v2.5.3
 
 当收到 live-player 组件报告的网络状态通知时，你可以调用该接口将其上报给声网的数据中心。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: number | 远端用户的用户 ID。 |
 | detail: any | 微信事件回调的 `e.detail` 对象。 Note：要收到 live-player 组件报告的网络状态数据，你需要在创建 live-player 组件时注册监听 `bindnetstatus`。详见 [微信小程序 live-player 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="updateplayerstatechange"></a>
 
@@ -916,16 +916,16 @@ v2.5.3
 
 当收到 live-player 组件报告的拉流状态变化通知时，你可以调用该接口将其上报给声网的数据中心。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: number | 远端用户的用户 ID。 |
 | detail: any | 微信事件回调的 `e.detail` 对象。 Note：要收到 live-player 组件报告的拉流状态码，你需要在创建 live-player 组件时注册监听 `bindstatechange`。详见 [微信小程序 live-player 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="updatepushernetstatus"></a>
 
@@ -943,15 +943,15 @@ v2.5.3
 
 当收到 live-pusher 组件报告的网络状态通知时，你可以调用该接口将其上报给声网的数据中心。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | detail: any | 微信事件回调的 `e.detail` 对象。 Note：要收到 live-pusher 组件报告的网络状态通知，你需要在创建 live-pusher 组件时注册监听 `bindnetstatus`。详见 [微信小程序 live-pusher 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="updatepusherstatechange"></a>
 
@@ -969,12 +969,12 @@ v2.5.3
 
 当收到 live-pusher 组件报告的推流状态变化通知时，你可以调用该接口将其上报给声网的数据中心。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | detail: any | 微信事件回调的 `e.detail` 对象。 Note：要收到 live-pusher 组件报告的推流状态码，你需要在创建 live-pusher 组件时注册监听 `bindstatechange`。详见 [微信小程序 live-pusher 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void

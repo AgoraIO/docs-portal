@@ -1,13 +1,13 @@
 ---
 title: "BatchRecord<E>"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "BatchRecord<E> API 参考。"
 ---
 
 此类主要处理将多个数据包中的同一批变更合并到一起，合并完成后执行callback
 
 - BatchRecord
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -17,20 +17,20 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new BatchRecord<E>(_batchId: number, _total?: number, _current?: number, _cb?: (dataChunk: E[]) => void): BatchRecord<E>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | _batchId: number |  |
 | Optional _total: number |  |
 | Optional _current: number |  |
 | Optional _cb: (dataChunk: E[]) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/classes/batch-record-e) &lt; E &gt;
+[BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/batch-record-e) &lt; E &gt;
 
-## Methods
+## 方法
 
 <a id="addChunk"></a>
 
@@ -40,15 +40,15 @@ Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/classes/b
 addChunk(data: E): BatchRecord<E>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | data: E |  |
 
-#### Returns
+#### 返回值
 
-Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/classes/batch-record-e) &lt; E &gt;
+[BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/batch-record-e) &lt; E &gt;
 
 <a id="execute"></a>
 
@@ -58,9 +58,9 @@ Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/classes/b
 execute(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setCallback"></a>
 
@@ -70,15 +70,15 @@ Returns void
 setCallback(cb: (dataChunk: E[]) => void): BatchRecord<E>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: (dataChunk: E[]) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/classes/batch-record-e) &lt; E &gt;
+[BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/batch-record-e) &lt; E &gt;
 
 <a id="setCurrent"></a>
 
@@ -88,15 +88,15 @@ Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/classes/b
 setCurrent(current: number): BatchRecord<E>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | current: number |  |
 
-#### Returns
+#### 返回值
 
-Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/classes/batch-record-e) &lt; E &gt;
+[BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/batch-record-e) &lt; E &gt;
 
 <a id="setTotal"></a>
 
@@ -106,15 +106,15 @@ Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/classes/b
 setTotal(total: number): BatchRecord<E>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | total: number |  |
 
-#### Returns
+#### 返回值
 
-Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/classes/batch-record-e) &lt; E &gt;
+[BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/batch-record-e) &lt; E &gt;
 
 <a id="getBatchRecord"></a>
 
@@ -124,12 +124,12 @@ Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/classes/b
 getBatchRecord<T>(batchId: number): BatchRecord<T>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | batchId: number |  |
 
-#### Returns
+#### 返回值
 
-Returns [BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/classes/batch-record-e) &lt; T &gt;
+[BatchRecord](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/batch-record-e) &lt; T &gt;

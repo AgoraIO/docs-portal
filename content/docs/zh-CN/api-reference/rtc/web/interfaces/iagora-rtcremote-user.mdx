@@ -1,13 +1,13 @@
 ---
 title: "IAgoraRTCRemoteUser"
-description: "IAgoraRTCRemoteUser API reference."
+description: "IAgoraRTCRemoteUser API 参考。"
 ---
 
 频道内的远端用户信息，可以通过 [AgoraRTCClient.remoteUsers](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#remoteusers) 或者 [AgoraRTCClient.on("user-joined")](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_joined) 等事件获取。 该对象描述了频道内远端用户的当前状态，包括远端用户 ID、远端是否发布了音频或视频等。 如果检测到远端用户已经发布，可以将这个对象传入 [AgoraRTCClient.subscribe](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#subscribe) 中发起订阅，订阅成功后可以通过本对象的 [audioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcremote-user#audiotrack) 或者 [videoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcremote-user#videotrack) 字段获取远端音视频轨道对象用于播放。
 
 - IAgoraRTCRemoteUser
 
-## Properties
+## 属性
 
 <a id="audiotrack"></a>
 

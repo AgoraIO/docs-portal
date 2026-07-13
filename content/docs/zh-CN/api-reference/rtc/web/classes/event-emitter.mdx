@@ -1,6 +1,6 @@
 ---
 title: "EventEmitter"
-description: "EventEmitter API reference."
+description: "EventEmitter API 参考。"
 ---
 
 `EventEmitter` 类提供了定义、触发和处理事件的方式。
@@ -10,7 +10,7 @@ description: "EventEmitter API reference."
   - [IAgoraRTC](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc)
   - [IAgoraRTCClient](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient)
 
-## Methods
+## 方法
 
 <a id="getlisteners"></a>
 
@@ -22,15 +22,15 @@ getListeners(event: string): Function[]
 
 指定一个事件名，获取当前所有监听这个事件的回调函数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 事件名称。 |
 
-#### Returns
+#### 返回值
 
-Returns Function []
+Function []
 
 <a id="off"></a>
 
@@ -42,16 +42,16 @@ off(event: string, listener: Function): void
 
 取消一个指定事件的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 监听事件时传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="on"></a>
 
@@ -63,16 +63,16 @@ on(event: string, listener: Function): void
 
 监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="once"></a>
 
@@ -86,16 +86,16 @@ once(event: string, listener: Function): void
 
 当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removealllisteners"></a>
 
@@ -107,12 +107,12 @@ removeAllListeners(event?: string): void
 
 指定一个事件，取消其所有的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional event: string | 指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void

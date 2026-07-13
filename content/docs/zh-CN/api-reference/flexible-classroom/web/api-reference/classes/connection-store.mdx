@@ -1,15 +1,15 @@
 ---
 title: "ConnectionStore"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "ConnectionStore API 参考。"
 ---
 
 `ConnectionStore` 类用于管理连接状态。
 
-- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/web/classes/edu-store-base)
+- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/edu-store-base)
 
   - ConnectionStore
 
-## Properties
+## 属性
 
 <a id="classroomState"></a>
 
@@ -41,7 +41,7 @@ rtcState: AGRtcState
 
 RTC 连接状态
 
-## Accessors
+## 访问器
 
 <a id="scene"></a>
 
@@ -53,9 +53,9 @@ get scene(): undefined | AgoraRteScene
 
 当前场景对象
 
-#### Returns
+#### 返回值
 
-Returns undefined | [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-scene)
+undefined | [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-scene)
 
 <a id="sceneId"></a>
 
@@ -67,11 +67,11 @@ get sceneId(): string
 
 当前场景 ID
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
-## Methods
+## 方法
 
 <a id="addCloudProxyObserver"></a>
 
@@ -83,15 +83,15 @@ addCloudProxyObserver(observer: AgoraCloudProxyObserver): void
 
 添加一个云代理观察者，joinClassroom 成功调用后才能调用此方法
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | observer: AgoraCloudProxyObserver |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="checkIn"></a>
 
@@ -103,17 +103,17 @@ checkIn(sessionInfo: EduSessionInfo, sceneType: SceneType, mode: "check-in" | "e
 
 进入房间预检，进入房间前请先调用此方法
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | sessionInfo: EduSessionInfo | 当前房间数据 |
 | sceneType: SceneType | scene 类型 |
 | mode: "check-in" \| "entry" |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="getEngine"></a>
 
@@ -125,9 +125,9 @@ getEngine(): AgoraRteEngine
 
 获取当前 RteEngine，调用此方法获取实例前需要先调用 connectionStore.initialize， 否则将抛出异常
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-engine)
+[AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-engine)
 
 RTE engine
 
@@ -141,15 +141,15 @@ getRtcState(connectionType: AGRtcConnectionType): AGRtcState
 
 获取房间 RTC 状态
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns [AGRtcState](/zh-CN/api-reference/flexible-classroom/web/enums/agrtc-state)
+[AGRtcState](/zh-CN/api-reference/flexible-classroom/web/api-reference/enums/agrtc-state)
 
 <a id="initialize"></a>
 
@@ -161,9 +161,9 @@ initialize(): void
 
 初始化 RTE engine
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="joinClassroom"></a>
 
@@ -175,15 +175,15 @@ joinClassroom(options?: { mode: "check-in" | "entry" }): Promise<undefined>
 
 加入房间
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional options: \{ mode: "check-in" \| "entry" \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; undefined &gt;
+Promise &lt; undefined &gt;
 
 <a id="joinRTC"></a>
 
@@ -195,15 +195,15 @@ joinRTC(options?: AgoraRteSceneJoinRTCOptions): Promise<void>
 
 加入 RTC 频道
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional options: AgoraRteSceneJoinRTCOptions | RTC 配置 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="joinSubRoom"></a>
 
@@ -215,15 +215,15 @@ joinSubRoom(roomUuid: string): Promise<void>
 
 加入子房间
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string | 子房间 ID |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="leaveClassroom"></a>
 
@@ -235,16 +235,16 @@ leaveClassroom(reason: LeaveReason, promise?: Promise<void>): Promise<void>
 
 离开房间
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | reason: LeaveReason | 原因 |
 | Optional promise: Promise&lt;void&gt; |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="leaveRTC"></a>
 
@@ -256,15 +256,15 @@ leaveRTC(connectionType?: AGRtcConnectionType): Promise<void>
 
 离开 RTC 频道
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional connectionType: AGRtcConnectionType | 大小 scene |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="leaveSubRoom"></a>
 
@@ -276,9 +276,9 @@ leaveSubRoom(): Promise<void>
 
 离开子房间
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="removeCloudProxyObserver"></a>
 
@@ -290,12 +290,12 @@ removeCloudProxyObserver(observer: AgoraCloudProxyObserver): void
 
 移除一个云代理观察者，joinClassroom 成功调用后才能调用此方法
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | observer: AgoraCloudProxyObserver |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void

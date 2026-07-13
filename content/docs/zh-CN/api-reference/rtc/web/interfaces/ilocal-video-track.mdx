@@ -1,6 +1,6 @@
 ---
 title: "ILocalVideoTrack"
-description: "ILocalVideoTrack API reference."
+description: "ILocalVideoTrack API 参考。"
 ---
 
 `LocalVideoTrack` 为本地视频轨道的基础类，提供了本地视频轨道的主要功能。 你可以通过 [AgoraRTC.createCustomVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createcustomvideotrack) 或者 [AgoraRTC.createScreenVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createscreenvideotrack) 来获取 `LocalVideoTrack`。 通过摄像头采集到的本地视频轨道对象 [CameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icamera-video-track) 继承于此接口，并在本接口的基础上提供了一些摄像头独有的功能。
@@ -11,7 +11,7 @@ description: "ILocalVideoTrack API reference."
 
     - [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icamera-video-track)
 
-## Events
+## 事件
 
 <a id="event_beauty_effect_overload"></a>
 
@@ -35,15 +35,15 @@ sei-received(sei: Uint8Array): void
 
 从 H.264 或 H.265 视频流中解析出 SEI 数据时触发，此事件会返回 SEI 数据。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | sei: Uint8Array | Uint8Array 类型的 SEI 数据 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_video_element_visible_status"></a>
 
@@ -61,17 +61,17 @@ video-element-visible-status(data?: CheckVideoVisibleResult): void
 
 调用 `localVideoTrack.play` 后 SDK 会创建 [HTML &lt;video&gt;](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `localVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可通过此事件来进行问题排查。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional data: CheckVideoVisibleResult | `<video>` 标签的可见状态信息。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-## Properties
+## 属性
 
 <a id="enabled"></a>
 
@@ -133,7 +133,7 @@ trackMediaType: "audio" | "video"
 - `"audio"`: 音频轨道。
 - `"video"`: 视频轨道。
 
-## Methods
+## 方法
 
 <a id="clone"></a>
 
@@ -151,16 +151,16 @@ clone(config?: VideoEncoderConfiguration | VideoEncoderConfigurationPreset, clon
 
 在视频会议、在线教育等场景中，你可以用该方法实现同一视频流的两路显示，并为每路显示设置不同的分辨率、帧率、码率等参数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional config: VideoEncoderConfiguration \| VideoEncoderConfigurationPreset | 新生成视频轨道的编码配置。你可以通过 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/video-encoder-configuration) 传入 SDK 内置的编码配置；也可以通过传入一个 [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset) 来自定义视频编码配置。 |
 | Optional cloneTrack: boolean | 是否克隆当前轨道。默认为 `true`。 |
 
-#### Returns
+#### 返回值
 
-Returns [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track)
+[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track)
 
 新生成的视频轨道。
 
@@ -176,9 +176,9 @@ close(): void
 
 一旦本地轨道被关闭，就无法再次使用。如需再次使用本地轨道，需要重新创建。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="getcurrentframedata"></a>
 
@@ -196,9 +196,9 @@ getCurrentFrameData(): ImageData
 
 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track#play) 则返回空数据。
 
-#### Returns
+#### 返回值
 
-Returns ImageData
+ImageData
 
 存储了 RGBA 数据的 `ImageData` 对象。该对象为浏览器原生对象，详见 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData)。
 
@@ -212,15 +212,15 @@ getListeners(event: string): Function[]
 
 指定一个事件名，获取当前所有监听这个事件的回调函数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 事件名称。 |
 
-#### Returns
+#### 返回值
 
-Returns Function []
+Function []
 
 <a id="getmediastreamtrack"></a>
 
@@ -232,9 +232,9 @@ getMediaStreamTrack(): MediaStreamTrack
 
 获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-#### Returns
+#### 返回值
 
-Returns MediaStreamTrack
+MediaStreamTrack
 
 一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
@@ -252,15 +252,15 @@ getRTCRtpTransceiver(type?: StreamType): RTCRtpTransceiver | undefined
 
 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例： 本地轨道： [ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track#event_transceiver_updated) 远端轨道： [IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremote-track#event_transceiver_updated_2)
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional type: StreamType | 视频流的类型。详见 [StreamType](/zh-CN/api-reference/rtc/web/enums/stream-type)。 |
 
-#### Returns
+#### 返回值
 
-Returns RTCRtpTransceiver | undefined
+RTCRtpTransceiver | undefined
 
 当前轨道的 `RTCRtpTransceiver` 实例。
 
@@ -278,9 +278,9 @@ getStats(): LocalVideoTrackStats
 
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#getlocalaudiostats)。
 
-#### Returns
+#### 返回值
 
-Returns [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-video-track-stats)
+[LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-video-track-stats)
 
 <a id="gettrackid"></a>
 
@@ -292,9 +292,9 @@ getTrackId(): string
 
 获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
 媒体轨道 ID。
 
@@ -308,9 +308,9 @@ getTrackLabel(): string
 
 获取本地轨道的来源描述。
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
 可能返回以下值：
 
@@ -332,9 +332,9 @@ getVideoElementVisibleStatus(): CheckVideoVisibleResult | undefined
 
 调用 `localVideoTrack.play` 后 SDK 会创建 [HTML &lt;video&gt;](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `localVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可调用该方法进行问题排查。
 
-#### Returns
+#### 返回值
 
-Returns [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult) | undefined
+[CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult) | undefined
 
 [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult) 对象。如果该方法返回 `undefined`，可能为以下原因：
 
@@ -352,16 +352,16 @@ off(event: string, listener: Function): void
 
 取消一个指定事件的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 监听事件时传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="on"></a>
 
@@ -383,51 +383,51 @@ on(event: "video-element-visible-status", listener: typeof event_video_element_v
 on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "track-updated" | 事件名称。 |
 | listener: typeof event_track_updated | 详见 [track-updated](/zh-CN/api-reference/rtc/web/globals#event_track_updated)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "track-ended" | 事件名称。 |
 | listener: typeof event_track_ended | 详见 [track-ended](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track#event_track_ended)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "video-element-visible-status" | 事件名称。 |
 | listener: typeof event_video_element_visible_status | 详见 [video-element-visible-status](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track#event_video_element_visible_status)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 添加事件监听器。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "transceiver-updated" | 事件名称。 |
 | listener: typeof event_transceiver_updated | 详见 [ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track#event_transceiver_updated)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="once"></a>
 
@@ -441,16 +441,16 @@ once(event: string, listener: Function): void
 
 当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="pipe"></a>
 
@@ -466,15 +466,15 @@ pipe(processor: IBaseProcessor): IBaseProcessor
 
 将 `Processor` 注入本地视频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | processor: IBaseProcessor | `Processor` 实例。每个插件均有对应类型的 `Processor`。 |
 
-#### Returns
+#### 返回值
 
-Returns IBaseProcessor
+IBaseProcessor
 
 `Processor` 实例。
 
@@ -488,16 +488,16 @@ play(element: string | HTMLElement, config?: VideoPlayerConfig): void
 
 在页面上播放远端视频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | element: string \| HTMLElement | 指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：<br />- `string`: 指定该 DOM 元素的 ID 值。<br />- `HTMLElement`: 直接传入一个 DOM 元素对象。 |
 | Optional config: VideoPlayerConfig | 设置播放参数（镜像/显示模式）。详见 [VideoPlayerConfig](/zh-CN/api-reference/rtc/web/interfaces/video-player-config)。对于本地视频轨道，镜像模式默认开启。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removealllisteners"></a>
 
@@ -509,15 +509,15 @@ removeAllListeners(event?: string): void
 
 指定一个事件，取消其所有的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional event: string | 指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="replacetrack"></a>
 
@@ -555,16 +555,16 @@ const newTrack = await navigator.mediaDevices.getUserMedia({audio: true, video: 
 await localVideoTrack.replaceTrack(newTrack, true);
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | track: MediaStreamTrack | 新的视频轨道。需要传入一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。 |
 | stopOldTrack: boolean | 是否停止原有的视频轨道：<br />- 停止原有的视频轨道。<br />- 保留原有的视频轨道。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="sendseidata"></a>
 
@@ -576,15 +576,15 @@ sendSeiData(sei: Uint8Array): void
 
 在 H.264 视频流中添加 SEI 数据。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | sei: Uint8Array | SEI 数据。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setenabled"></a>
 
@@ -604,15 +604,15 @@ setEnabled(enabled: boolean): Promise<void>
 
 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track#event_track_ended) 事件。 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_published) 事件。 `setEnabled` 和 `setMuted` 不能同时调用。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enabled: boolean | 是否启用该轨道:<br />- `true`: 启用该轨道。<br />- `false`: 禁用该轨道。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setencoderconfiguration"></a>
 
@@ -624,15 +624,15 @@ setEncoderConfiguration(config: VideoEncoderConfiguration | VideoEncoderConfigur
 
 设置视频的编码参数，包括分辨率、帧率、码率。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: VideoEncoderConfiguration \| VideoEncoderConfigurationPreset | 你可以传入 SDK 预设的视频编码配置 [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset)，也可以传入自定义的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/video-encoder-configuration) 对象。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setmuted"></a>
 
@@ -652,15 +652,15 @@ setMuted(muted: boolean): Promise<void>
 
 与 [setEnabled](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](http://doc.shengwang.cn/faq/integration-issues/diff-setenabled-setmuted)。 `setEnabled` 和 `setMuted` 不能同时调用。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | muted: boolean | 是否发送该轨道的媒体数据:<br />- `true`: 暂停发送该轨道的媒体数据。<br />- `false`: 恢复发送该轨道的媒体数据。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setoptimizationmode"></a>
 
@@ -680,15 +680,15 @@ setOptimizationMode(mode: OptimizationMode): Promise<void>
 
 注意事项：该方法只支持 Chrome 浏览器。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mode: OptimizationMode | 视频传输优化模式：<br />- `"balanced"`: 使用默认的传输优化模式：<br />  - 对于屏幕共享视频流，SDK 默认的优化策略为清晰优先。<br />  - 对于其他视频流，SDK 默认的优化策略为兼顾清晰和流畅，弱网条件下，帧率和分辨率都会被调整。<br />- `"detail"`: 清晰优先。<br />  - 浏览器会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。<br />  - 大部分情况下，SDK 不会降低发送分辨率，但是可能会降低帧率。<br />- `"motion"`: 自 4.21.0 开始，浏览器默认开启流畅优先模式。<br />  - 浏览器不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。<br />  - 大部分情况下，浏览器不会降低帧率，但是可能会降低发送分辨率。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="stop"></a>
 
@@ -700,9 +700,9 @@ stop(): void
 
 停止播放。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="unpipe"></a>
 
@@ -718,6 +718,6 @@ unpipe(): void
 
 取消本地视频轨道上注入的 `Processor`。
 
-#### Returns
+#### 返回值
 
-Returns void
+void

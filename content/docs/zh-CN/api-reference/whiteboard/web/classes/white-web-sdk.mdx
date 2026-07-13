@@ -1,13 +1,13 @@
 ---
 title: "WhiteWebSdk"
-description: "WhiteWebSdk API reference."
+description: "WhiteWebSdk API 参考。"
 ---
 
 `WhiteWebSdk` 类用于初始化 `WhiteWebSdk` 对象。
 
 - WhiteWebSdk
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -19,19 +19,19 @@ new WhiteWebSdk(params: WhiteWebSdkConfiguration): WhiteWebSdk
 
 `WhiteWebSdk` 的构造函数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: WhiteWebSdkConfiguration | 构造参数。 |
 
-#### Returns
+#### 返回值
 
-Returns [WhiteWebSdk](/zh-CN/api-reference/whiteboard/web/classes/white-web-sdk)
+[WhiteWebSdk](/zh-CN/api-reference/whiteboard/web/classes/white-web-sdk)
 
 构造的 `WhiteWebSdk` 对象。
 
-## Properties
+## 属性
 
 <a id="devicetype"></a>
 
@@ -99,7 +99,7 @@ version: string
 
 2.13.14
 
-## Methods
+## 方法
 
 <a id="isplayable"></a>
 
@@ -111,15 +111,15 @@ isPlayable(params: PlayableCheckingParams): Promise<boolean>
 
 查看房间是否有回放数据。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: PlayableCheckingParams | 检查白板房间是否可以回放的参数配置，详见 [PlayableCheckingParams](/zh-CN/api-reference/whiteboard/web/globals#playablecheckingparams)。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; boolean &gt;
+Promise &lt; boolean &gt;
 
 - 如果方法调用成功，则返回 `true`。
 - 如果方法调用失败，则返回 `false`。
@@ -149,16 +149,16 @@ whiteWebSdk.joinRoom(joinRoomParams, roomCallbacks)
            });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: JoinRoomParams | 互动白板实时房间的参数配置，详见 [JoinRoomParams](/zh-CN/api-reference/whiteboard/web/globals#joinroomparams)。 |
 | Optional callbacks: Partial&lt;RoomCallbacks&gt; | 实时房间的事件回调。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) &gt;
+Promise &lt; [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) &gt;
 
 - 如果方法调用成功，则返回房间对象，详见 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks)。
 - 如果方法调用失败，则返回错误信息。
@@ -188,16 +188,16 @@ whiteWebSdk.replayRoom(replayRoomParams, replayCallbacks)
            });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: ReplayRoomParams | `Player` 对象的参数配置，详见 [ReplayRoomParams](/zh-CN/api-reference/whiteboard/web/globals#replayroomparams)。 |
 | Optional callbacks: Partial&lt;PlayerCallbacks&gt; | `Player` 对象的事件回调。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks) &gt;
+Promise &lt; [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks) &gt;
 
 - 如果方法调用成功，则返回房间对象，详见 [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks)。
 - 如果方法调用失败，则返回错误信息。

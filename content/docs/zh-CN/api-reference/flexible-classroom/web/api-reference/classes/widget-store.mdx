@@ -1,15 +1,15 @@
 ---
 title: "WidgetStore"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "WidgetStore API 参考。"
 ---
 
 `WidgetStore` 提供活跃插件的数据和状态的访问；提供 WidgetController 实例的直接访问；提供插件相关 API，用于激活、停用和更新插件的状态。
 
-- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/web/classes/edu-store-base)
+- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/edu-store-base)
 
   - WidgetStore
 
-## Accessors
+## 访问器
 
 <a id="widgetController"></a>
 
@@ -19,11 +19,11 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 get widgetController(): undefined | AgoraWidgetController
 ```
 
-#### Returns
+#### 返回值
 
-Returns undefined | [AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/web/classes/agora-widget-controller)
+undefined | [AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-widget-controller)
 
-## Methods
+## 方法
 
 <a id="addWidgetStateListener"></a>
 
@@ -37,15 +37,15 @@ addWidgetStateListener(listener: AgoraWidgetStateListener): void
 
 since v2.9.0, please use AgoraWidgetController.addWidgetStateListener 添加一个组件状态监听器
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | listener: AgoraWidgetStateListener |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="deleteWidget"></a>
 
@@ -57,15 +57,15 @@ deleteWidget(widgetId: string): undefined | Promise<{ data: any }>
 
 删除当前房间中的此组件实例
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string | widget ID |
 
-#### Returns
+#### 返回值
 
-Returns undefined | Promise &lt; \{data: any \} &gt;
+undefined | Promise &lt; \{data: any \} &gt;
 
 <a id="onDestroy"></a>
 
@@ -75,9 +75,9 @@ Returns undefined | Promise &lt; \{data: any \} &gt;
 onDestroy(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="onInstall"></a>
 
@@ -87,9 +87,9 @@ Returns void
 onInstall(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removeWidgetExtra"></a>
 
@@ -101,16 +101,16 @@ removeWidgetExtra(widgetId: string, keys?: string[]): undefined | Promise<{ data
 
 删除组件扩展属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 | Optional keys: string[] |  |
 
-#### Returns
+#### 返回值
 
-Returns undefined | Promise &lt; \{data: any \} &gt;
+undefined | Promise &lt; \{data: any \} &gt;
 
 <a id="removeWidgetStateListener"></a>
 
@@ -124,15 +124,15 @@ removeWidgetStateListener(listener: AgoraWidgetStateListener): void
 
 since v2.9.0, please use AgoraWidgetController.removeWidgetStateListener 移除一个组件状态监听器
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | listener: AgoraWidgetStateListener |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removeWidgetUserProperties"></a>
 
@@ -144,16 +144,16 @@ removeWidgetUserProperties(widgetId: string, keys?: string[]): undefined | Promi
 
 删除组件用户属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 | Optional keys: string[] |  |
 
-#### Returns
+#### 返回值
 
-Returns undefined | Promise &lt; \{data: any \} &gt;
+undefined | Promise &lt; \{data: any \} &gt;
 
 <a id="setActive"></a>
 
@@ -165,17 +165,17 @@ setActive(widgetId: string, widgetProps?: any, ownerUserUuid?: string): void
 
 设置组件为可用状态
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string | widget ID |
 | Optional widgetProps: any | widget 属性 |
 | Optional ownerUserUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setInactive"></a>
 
@@ -187,16 +187,16 @@ setInactive(widgetId: string, widgetProps?: any): void
 
 设置组件为不可用状态
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string | widget ID |
 | Optional widgetProps: any | widget 属性 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="updateWidgetProperties"></a>
 
@@ -208,16 +208,16 @@ updateWidgetProperties(widgetId: string, widgetProps?: any): undefined | Promise
 
 更新组件全局属性，属性更新将同步至该组件在所有客户端上的实例
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 | Optional widgetProps: any |  |
 
-#### Returns
+#### 返回值
 
-Returns undefined | Promise &lt; \{data: any \} &gt;
+undefined | Promise &lt; \{data: any \} &gt;
 
 <a id="updateWidgetUserProperties"></a>
 
@@ -229,13 +229,13 @@ updateWidgetUserProperties(widgetId: string, widgetProps?: any): undefined | voi
 
 更新组件用户属性，属性更新将同步至当前用户私有属性中
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 | Optional widgetProps: any |  |
 
-#### Returns
+#### 返回值
 
-Returns undefined | void
+undefined | void

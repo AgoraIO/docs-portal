@@ -1,13 +1,13 @@
 ---
 title: "AgoraRtePublishThreadMain"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "AgoraRtePublishThreadMain API 参考。"
 ---
 
-- [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-thread)
+- [AgoraRteThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-thread)
 
   - AgoraRtePublishThreadMain
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -17,18 +17,18 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new AgoraRtePublishThreadMain(client: IAgoraRTCClient, _config: RtcAdapterWebConfig): AgoraRtePublishThreadMain
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | client: IAgoraRTCClient |  |
 | _config: RtcAdapterWebConfig |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-publish-thread-main)
+[AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-publish-thread-main)
 
-## Properties
+## 属性
 
 <a id="muteLocalAudio"></a>
 
@@ -54,7 +54,7 @@ muteLocalVideo: boolean
 runnable: boolean
 ```
 
-## Accessors
+## 访问器
 
 <a id="latencyLevel"></a>
 
@@ -64,9 +64,9 @@ runnable: boolean
 get latencyLevel(): AudienceLatencyLevelType
 ```
 
-#### Returns
+#### 返回值
 
-Returns AudienceLatencyLevelType
+AudienceLatencyLevelType
 
 <a id="localAudioTrack"></a>
 
@@ -76,9 +76,9 @@ Returns AudienceLatencyLevelType
 get localAudioTrack(): undefined | AGMediaBaseTrack
 ```
 
-#### Returns
+#### 返回值
 
-Returns undefined | [AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/web/modules/agora-rte-sdk-src-core-rtc-type#AGMediaBaseTrack)
+undefined | [AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-rte-sdk-src-core-rtc-type#AGMediaBaseTrack)
 
 <a id="localVideoTrack"></a>
 
@@ -88,11 +88,11 @@ Returns undefined | [AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/w
 get localVideoTrack(): undefined | AGMediaBaseTrack
 ```
 
-#### Returns
+#### 返回值
 
-Returns undefined | [AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/web/modules/agora-rte-sdk-src-core-rtc-type#AGMediaBaseTrack)
+undefined | [AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/web/api-reference/modules/agora-rte-sdk-src-core-rtc-type#AGMediaBaseTrack)
 
-## Methods
+## 方法
 
 <a id="checkAllTracksPublishState"></a>
 
@@ -102,9 +102,9 @@ Returns undefined | [AGMediaBaseTrack](/zh-CN/api-reference/flexible-classroom/w
 checkAllTracksPublishState(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="checkDuplicateTypeTracks"></a>
 
@@ -114,15 +114,15 @@ Returns boolean
 checkDuplicateTypeTracks(tracks: ILocalTrack[]): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | tracks: ILocalTrack[] |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="emit"></a>
 
@@ -132,16 +132,16 @@ Returns Promise &lt; void &gt;
 emit(evt: string, ...args: any[]): AgoraRtePublishThreadMain
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | Rest ...args: any[] |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-publish-thread-main)
+[AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-publish-thread-main)
 
 <a id="handleTrackDestroy"></a>
 
@@ -151,15 +151,15 @@ Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/
 handleTrackDestroy(track: ILocalTrack): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | track: ILocalTrack |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="handleTrackStateChanged"></a>
 
@@ -169,15 +169,15 @@ Returns Promise &lt; void &gt;
 handleTrackStateChanged(state: AgoraRteMediaSourceState): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | state: AgoraRteMediaSourceState |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="isTrackPublished"></a>
 
@@ -187,15 +187,15 @@ Returns void
 isTrackPublished(track?: ILocalTrack): boolean
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional track: ILocalTrack |  |
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="off"></a>
 
@@ -205,16 +205,16 @@ Returns boolean
 off(evt: string, cb: CallableFunction): AgoraRtePublishThreadMain
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-publish-thread-main)
+[AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-publish-thread-main)
 
 <a id="on"></a>
 
@@ -224,16 +224,16 @@ Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/
 on(evt: string, cb: CallableFunction): AgoraRtePublishThreadMain
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-publish-thread-main)
+[AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-publish-thread-main)
 
 <a id="onExecution"></a>
 
@@ -243,9 +243,9 @@ Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/
 onExecution(): Promise<void>
 ```
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="once"></a>
 
@@ -255,16 +255,16 @@ Returns Promise &lt; void &gt;
 once(evt: string, cb: CallableFunction): AgoraRtePublishThreadMain
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-publish-thread-main)
+[AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-publish-thread-main)
 
 <a id="publishTracks"></a>
 
@@ -274,15 +274,15 @@ Returns [AgoraRtePublishThreadMain](/zh-CN/api-reference/flexible-classroom/web/
 publishTracks(tracks: ILocalTrack[]): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | tracks: ILocalTrack[] |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="removeAllEventListeners"></a>
 
@@ -292,9 +292,9 @@ Returns Promise &lt; void &gt;
 removeAllEventListeners(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="run"></a>
 
@@ -304,9 +304,9 @@ Returns void
 run(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setTrackThread"></a>
 
@@ -316,16 +316,16 @@ Returns void
 setTrackThread(type: "audio" | "video", trackThread: AgoraRteMediaTrackThread): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | type: "audio" \| "video" |  |
 | trackThread: AgoraRteMediaTrackThread |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="stop"></a>
 
@@ -335,9 +335,9 @@ Returns void
 stop(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="unpublishTracks"></a>
 
@@ -347,12 +347,12 @@ Returns void
 unpublishTracks(tracks: ILocalTrack[]): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | tracks: ILocalTrack[] |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;

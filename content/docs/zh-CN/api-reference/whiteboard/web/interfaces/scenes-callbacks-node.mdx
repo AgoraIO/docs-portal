@@ -1,6 +1,6 @@
 ---
 title: "ScenesCallbacksNode"
-description: "ScenesCallbacksNode API reference."
+description: "ScenesCallbacksNode API 参考。"
 ---
 
 场景目录的信息。
@@ -9,7 +9,7 @@ description: "ScenesCallbacksNode API reference."
 
   - ScenesCallbacksNode
 
-## Properties
+## 属性
 
 <a id="path"></a>
 
@@ -61,7 +61,7 @@ scenesCount: number
 
 场景目录下场景的数量。
 
-## Methods
+## 方法
 
 <a id="dispose"></a>
 
@@ -73,9 +73,9 @@ dispose(): void
 
 释放监听器对象。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="forwardto"></a>
 
@@ -87,16 +87,16 @@ forwardTo<NAME>(name: NAME, toCallbacks: Callbacks<ScenesCallbacks>): any
 
 将注册的回调转到另一个 `Callbacks` 对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | name: NAME | 注册回调的名称。 |
 | toCallbacks: Callbacks&lt;ScenesCallbacks&gt; | 转到的 `Callbacks` 对象。 |
 
-#### Returns
+#### 返回值
 
-Returns any
+any
 
 <a id="off"></a>
 
@@ -108,16 +108,16 @@ off<NAME>(name?: NAME, listener?: any): void
 
 注销回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional name: NAME | 回调名。 |
 | Optional listener: any | 回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="on"></a>
 
@@ -129,16 +129,16 @@ on<NAME>(name: NAME, listener: any): void
 
 注册一个回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | name: NAME | 回调名。 |
 | listener: any | 回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="once"></a>
 
@@ -150,13 +150,13 @@ once<NAME>(name: NAME, listener: any): void
 
 注册只使用一次的回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | name: NAME | 回调名。 |
 | listener: any | 回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void

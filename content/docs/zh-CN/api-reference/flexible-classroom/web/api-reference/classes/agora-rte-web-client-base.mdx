@@ -1,16 +1,16 @@
 ---
 title: "AgoraRteWebClientBase"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "AgoraRteWebClientBase API 参考。"
 ---
 
-- [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/classes/agevent-emitter)
+- [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agevent-emitter)
 
   - AgoraRteWebClientBase
 
-    - [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-web-client-main)
-    - [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-web-client-sub)
+    - [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
+    - [AgoraRteWebClientSub](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-sub)
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -20,9 +20,9 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new AgoraRteWebClientBase(channelName: string, configs: RtcAdapterWebConfig, base: RtcAdapterBase, connectionType: AGRtcConnectionType, audioRawDataDispatcher: AGAudioRawDataDispatcher): AgoraRteWebClientBase
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | channelName: string |  |
 | configs: RtcAdapterWebConfig |  |
@@ -30,11 +30,11 @@ new AgoraRteWebClientBase(channelName: string, configs: RtcAdapterWebConfig, bas
 | connectionType: AGRtcConnectionType |  |
 | audioRawDataDispatcher: AGAudioRawDataDispatcher |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-web-client-base)
+[AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-base)
 
-## Properties
+## 属性
 
 <a id="logger"></a>
 
@@ -44,7 +44,7 @@ Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/clas
 logger: "agora-rte-sdk/src/core/logger/type".Logger
 ```
 
-## Accessors
+## 访问器
 
 <a id="base"></a>
 
@@ -54,9 +54,9 @@ logger: "agora-rte-sdk/src/core/logger/type".Logger
 get base(): RtcAdapterWeb
 ```
 
-#### Returns
+#### 返回值
 
-Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-adapter-web)
+[RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-web)
 
 <a id="ready"></a>
 
@@ -66,11 +66,11 @@ Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-
 get ready(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
-## Methods
+## 方法
 
 <a id="emit"></a>
 
@@ -80,16 +80,16 @@ Returns boolean
 emit(evt: string, ...args: any[]): AgoraRteWebClientBase
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | Rest ...args: any[] |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-web-client-base)
+[AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-base)
 
 <a id="getClientSessionId"></a>
 
@@ -99,9 +99,9 @@ Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/clas
 getClientSessionId(): any
 ```
 
-#### Returns
+#### 返回值
 
-Returns any
+any
 
 <a id="join"></a>
 
@@ -111,17 +111,17 @@ Returns any
 join(appId: string, token: string, streamUuid: string): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | appId: string |  |
 | token: string |  |
 | streamUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="leave"></a>
 
@@ -131,9 +131,9 @@ Returns Promise &lt; void &gt;
 leave(): Promise<void>
 ```
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="off"></a>
 
@@ -143,16 +143,16 @@ Returns Promise &lt; void &gt;
 off(evt: string, cb: CallableFunction): AgoraRteWebClientBase
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-web-client-base)
+[AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-base)
 
 <a id="on"></a>
 
@@ -162,16 +162,16 @@ Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/clas
 on(evt: string, cb: CallableFunction): AgoraRteWebClientBase
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-web-client-base)
+[AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-base)
 
 <a id="once"></a>
 
@@ -181,16 +181,16 @@ Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/clas
 once(evt: string, cb: CallableFunction): AgoraRteWebClientBase
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-web-client-base)
+[AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-base)
 
 <a id="removeAllEventListeners"></a>
 
@@ -200,9 +200,9 @@ Returns [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/clas
 removeAllEventListeners(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setCloudProxy"></a>
 
@@ -212,15 +212,15 @@ Returns void
 setCloudProxy(proxyType: AgoraCloudProxyType): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | proxyType: AgoraCloudProxyType |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setLatencyLevel"></a>
 
@@ -230,12 +230,12 @@ Returns void
 setLatencyLevel(level: AgoraLatencyLevel): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | level: AgoraLatencyLevel |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void

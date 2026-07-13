@@ -1,13 +1,13 @@
 ---
 title: "AgoraRteScene"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "AgoraRteScene API 参考。"
 ---
 
 - EventEmitter
 
   - AgoraRteScene
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -17,18 +17,18 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new AgoraRteScene(sceneId: string, options: SceneObjects): AgoraRteScene
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | sceneId: string |  |
 | options: SceneObjects |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/classes/agora-rte-scene)
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-scene)
 
-## Properties
+## 属性
 
 <a id="createTs"></a>
 
@@ -62,7 +62,7 @@ logger: LoggerFacade
 sceneId: string
 ```
 
-## Accessors
+## 访问器
 
 <a id="engine"></a>
 
@@ -72,9 +72,9 @@ sceneId: string
 get engine(): AgoraRteEngine
 ```
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/electron/classes/agora-rte-engine)
+[AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-engine)
 
 <a id="localUser"></a>
 
@@ -84,9 +84,9 @@ Returns [AgoraRteEngine](/zh-CN/api-reference/flexible-classroom/electron/classe
 get localUser(): undefined | AgoraRteLocalUser
 ```
 
-#### Returns
+#### 返回值
 
-Returns undefined | [AgoraRteLocalUser](/zh-CN/api-reference/flexible-classroom/electron/classes/agora-rte-local-user)
+undefined | [AgoraRteLocalUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-local-user)
 
 <a id="rtcChannel"></a>
 
@@ -96,9 +96,9 @@ Returns undefined | [AgoraRteLocalUser](/zh-CN/api-reference/flexible-classroom/
 get rtcChannel(): AGRtcChannel
 ```
 
-#### Returns
+#### 返回值
 
-Returns [AGRtcChannel](/zh-CN/api-reference/flexible-classroom/electron/classes/agrtc-channel)
+[AGRtcChannel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agrtc-channel)
 
 <a id="rtcSid"></a>
 
@@ -108,9 +108,9 @@ Returns [AGRtcChannel](/zh-CN/api-reference/flexible-classroom/electron/classes/
 get rtcSid(): string
 ```
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
 <a id="rtmSid"></a>
 
@@ -120,9 +120,9 @@ Returns string
 get rtmSid(): string
 ```
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
 <a id="timestampServerLocalGap"></a>
 
@@ -132,11 +132,11 @@ Returns string
 get timestampServerLocalGap(): number
 ```
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
-## Methods
+## 方法
 
 <a id="addCloudProxyObserver"></a>
 
@@ -146,15 +146,15 @@ Returns number
 addCloudProxyObserver(observer: AgoraCloudProxyObserver): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | observer: AgoraCloudProxyObserver |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="addCustomMessageObserver"></a>
 
@@ -164,15 +164,15 @@ Returns void
 addCustomMessageObserver(observer: AgoraRteCustomMessageObserver): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | observer: AgoraRteCustomMessageObserver |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="enableDualStream"></a>
 
@@ -182,16 +182,16 @@ Returns void
 enableDualStream(enable: boolean, connectionType?: AGRtcConnectionType): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enable: boolean |  |
 | Optional connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="getApiService"></a>
 
@@ -201,9 +201,9 @@ Returns Promise &lt; void &gt;
 getApiService(): AgoraRteService
 ```
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteService](/zh-CN/api-reference/flexible-classroom/electron/classes/agora-rte-service)
+[AgoraRteService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agora-rte-service)
 
 <a id="joinRTC"></a>
 
@@ -213,15 +213,15 @@ Returns [AgoraRteService](/zh-CN/api-reference/flexible-classroom/electron/class
 joinRTC(options?: AgoraRteSceneJoinRTCOptions): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional options: AgoraRteSceneJoinRTCOptions |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="joinScene"></a>
 
@@ -231,15 +231,15 @@ Returns Promise &lt; void &gt;
 joinScene(options: AgoraRteSceneJoinOptions): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | options: AgoraRteSceneJoinOptions |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="leaveRTC"></a>
 
@@ -249,15 +249,15 @@ Returns Promise &lt; void &gt;
 leaveRTC(connectionType?: AGRtcConnectionType): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="leaveScene"></a>
 
@@ -267,9 +267,9 @@ Returns Promise &lt; void &gt;
 leaveScene(): Promise<void>
 ```
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="muteRemoteAudioStream"></a>
 
@@ -279,16 +279,16 @@ Returns Promise &lt; void &gt;
 muteRemoteAudioStream(streamUuid: string, muted: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | muted: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteRemoteVideoStream"></a>
 
@@ -298,16 +298,16 @@ Returns number
 muteRemoteVideoStream(streamUuid: string, muted: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | muted: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteRemoteVideoStreamMass"></a>
 
@@ -317,16 +317,16 @@ Returns number
 muteRemoteVideoStreamMass(streamUuids: string[], muted: boolean): Promise<string[]>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuids: string[] |  |
 | muted: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; string [] &gt;
+Promise &lt; string [] &gt;
 
 <a id="removeCloudProxyObserver"></a>
 
@@ -336,15 +336,15 @@ Returns Promise &lt; string [] &gt;
 removeCloudProxyObserver(observer: AgoraCloudProxyObserver): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | observer: AgoraCloudProxyObserver |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removeCustomMessageObserver"></a>
 
@@ -354,15 +354,15 @@ Returns void
 removeCustomMessageObserver(observer: AgoraRteCustomMessageObserver): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | observer: AgoraRteCustomMessageObserver |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setAllRemoteTracksVolume"></a>
 
@@ -372,15 +372,15 @@ Returns void
 setAllRemoteTracksVolume(volume: number): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | volume: number |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setLowStreamParameter"></a>
 
@@ -390,16 +390,16 @@ Returns void
 setLowStreamParameter(streamParameter: AGLowStreamParameter, connectionType?: AGRtcConnectionType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamParameter: AGLowStreamParameter |  |
 | Optional connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setRemoteTrackVolume"></a>
 
@@ -409,16 +409,16 @@ Returns number
 setRemoteTrackVolume(streamUuid: string, volume: number): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | volume: number |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setRemoteVideoStreamType"></a>
 
@@ -428,16 +428,16 @@ Returns void
 setRemoteVideoStreamType(streamUuid: string, streamType: AGRemoteVideoStreamType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | streamType: AGRemoteVideoStreamType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="updateRemoteMediaStreamBatch"></a>
 
@@ -447,12 +447,12 @@ Returns number
 updateRemoteMediaStreamBatch(streams: { audioSourceType?: AgoraRteAudioSourceType; audioState?: AgoraRteMediaPublishState; streamUuid: string; userUuid: string; videoSourceType?: AgoraRteVideoSourceType; videoState?: AgoraRteMediaPublishState }[]): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streams: \{ audioSourceType?: AgoraRteAudioSourceType; audioState?: AgoraRteMediaPublishState; streamUuid: string; userUuid: string; videoSourceType?: AgoraRteVideoSourceType; videoState?: AgoraRteMediaPublishState \}[] |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;

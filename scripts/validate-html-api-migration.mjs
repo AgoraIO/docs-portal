@@ -20,6 +20,27 @@ const matrix = [
     source: 'rtc/Android',
   },
   {
+    contentChecks: [
+      {
+        file: 'index.mdx',
+        includes: [
+          '### Cloud Drive Store',
+          '/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/cloud-drive-store',
+        ],
+        excludes: [
+          '[Cloud Drive Store](#cloud-drive-store)',
+          '/zh-CN/api-reference/flexible-classroom/web/classes/',
+        ],
+      },
+      {
+        file: 'meta.json',
+        includes: [
+          '[CloudDriveStore]',
+          '[WidgetStore]',
+          '"!modules"',
+        ],
+      },
+    ],
     id: 'typedoc-flex-web',
     lane: 'TypeDoc',
     platform: 'web',
@@ -29,9 +50,28 @@ const matrix = [
       'classes/agora-rte-engine.mdx',
     ],
     source: 'flexible-classroom/Web',
+    targetRouteSuffix: 'flexible-classroom/web/api-reference',
+    navigationManifest:
+      'scripts/html-migration/navigation/flexible-classroom-store.json',
   },
   {
     contentChecks: [
+      {
+        file: 'index.mdx',
+        includes: ['### SDK 初始化', '### 实时房间管理'],
+        excludes: ['[SDK 初始化](#sdk-初始化)'],
+      },
+      {
+        file: 'meta.json',
+        includes: [
+          '[WhiteWebSdk]',
+          '[Room]',
+          '[Player]',
+          '[Displayer]',
+          '[Globals]',
+          '"!interfaces"',
+        ],
+      },
       {
         file: 'globals.mdx',
         includes: [
@@ -81,6 +121,8 @@ const matrix = [
     product: 'whiteboard',
     sampleFiles: ['globals.mdx'],
     source: 'whiteboard/Web',
+    navigationManifest:
+      'scripts/html-migration/navigation/whiteboard-web.json',
   },
   {
     id: 'doxygen-recording-cpp',
@@ -192,6 +234,20 @@ function migrationArgs(entry, sourceDir, outputDir, opts, dryRun) {
     entry.platform,
     '--route-base-path',
     opts.routeBasePath,
+    ...(entry.targetRouteSuffix
+      ? [
+          '--target-base-path',
+          `${opts.routeBasePath}/${entry.targetRouteSuffix}`,
+        ]
+      : []),
+    ...(entry.navigationManifest
+      ? [
+          '--navigation',
+          'public-index',
+          '--navigation-manifest',
+          entry.navigationManifest,
+        ]
+      : []),
     ...(dryRun ? ['--dry-run'] : []),
   ];
 }

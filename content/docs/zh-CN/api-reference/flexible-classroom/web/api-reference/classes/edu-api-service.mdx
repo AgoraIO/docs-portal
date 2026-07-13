@@ -1,13 +1,13 @@
 ---
 title: "EduApiService"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "EduApiService API 参考。"
 ---
 
-- [ApiBase](/zh-CN/api-reference/flexible-classroom/web/classes/api-base)
+- [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/api-base)
 
   - EduApiService
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -17,11 +17,11 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new EduApiService(): EduApiService
 ```
 
-#### Returns
+#### 返回值
 
-Returns [EduApiService](/zh-CN/api-reference/flexible-classroom/web/classes/edu-api-service)
+[EduApiService](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/edu-api-service)
 
-## Properties
+## 属性
 
 <a id="fallbackRequestHandler"></a>
 
@@ -71,7 +71,7 @@ pathPrefix?: string
 domainHolder: DomainHolder
 ```
 
-## Methods
+## 方法
 
 <a id="acceptGroupInvite"></a>
 
@@ -83,17 +83,17 @@ acceptGroupInvite(roomUuid: string, groupUuid: string, data?: { leaveGroupUuids:
 
 接受分组邀请
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | groupUuid: string |  |
 | Optional data: \{ leaveGroupUuids: string[] \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="acceptHandsUp"></a>
 
@@ -105,15 +105,15 @@ acceptHandsUp(params: { roomUuid: string; toUserUuid?: string }): Promise<any>
 
 接受举手上台请求
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ roomUuid: string; toUserUuid?: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="addCloudDriveFile"></a>
 
@@ -125,17 +125,17 @@ addCloudDriveFile(resourceUuid: string, userUuid: string, resourceInfo: CloudDri
 
 新增云盘资源
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | resourceUuid: string |  |
 | userUuid: string |  |
 | resourceInfo: CloudDriveResourceInfo |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="addCloudDriveFileV3"></a>
 
@@ -149,17 +149,17 @@ addCloudDriveFileV3(resourceUuid: string, userUuid: string, resourceInfo: CloudD
 
 This API will be removed in near future. 新增云盘资源
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | resourceUuid: string |  |
 | userUuid: string |  |
 | resourceInfo: CloudDriveResourceInfo |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="addGroup"></a>
 
@@ -171,16 +171,16 @@ addGroup(roomUuid: string, data: { groups: GroupDetail[]; inProgress: boolean })
 
 新增组
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | data: \{ groups: GroupDetail[]; inProgress: boolean \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="allowHandsUp"></a>
 
@@ -192,15 +192,15 @@ allowHandsUp(params: { defaultAcceptRole?: "" | "audience"; roomUuid: string; st
 
 允许举手上台申请
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ defaultAcceptRole?: "" \| "audience"; roomUuid: string; state: number \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="broadcastHxChatMessage"></a>
 
@@ -212,16 +212,16 @@ broadcastHxChatMessage(roomUuid: string, data: { msg: string; range: BroadcastMe
 
 发送全体消息(AgoraChat)
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | data: \{ msg: string; range: BroadcastMessageRange; toGroupUuids?: string[]; type: BroadcastMessageType \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="broadcastMessage"></a>
 
@@ -233,16 +233,16 @@ broadcastMessage(roomUuid: string, data: { msg: string; range: BroadcastMessageR
 
 发送全体消息(根据区域判断)
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | data: \{ msg: string; range: BroadcastMessageRange; toGroupUuids?: string[]; type: BroadcastMessageType \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="broadcastRtmChatMessage"></a>
 
@@ -254,16 +254,16 @@ broadcastRtmChatMessage(roomUuid: string, data: { msg: string; range: BroadcastM
 
 发送全体消息(RTM)
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | data: \{ msg: string; range: BroadcastMessageRange; toGroupUuids?: string[]; type: BroadcastMessageType \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="cancelHandsUp"></a>
 
@@ -275,15 +275,15 @@ cancelHandsUp(params: { roomUuid: string; toUserUuid?: string }): Promise<any>
 
 取消举手
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ roomUuid: string; toUserUuid?: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="cancelHandsWave"></a>
 
@@ -295,15 +295,15 @@ cancelHandsWave(params: { roomUuid: string; toUserUuid?: string }): Promise<any>
 
 取消挥手
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ roomUuid: string; toUserUuid?: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="checkIn"></a>
 
@@ -315,17 +315,17 @@ checkIn(session: Partial<EduSessionInfo>, handsUpLimit?: { maxAccept: number; ma
 
 预检
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | session: Partial&lt;EduSessionInfo&gt; |  |
 | Optional handsUpLimit: \{ maxAccept: number; maxWait: number; timeout: number; type: number \} |  |
 | Optional stream: \{ audioSourceState?: AgoraRteMediaSourceState; audioState?: AgoraRteMediaPublishState; videoSourceState?: AgoraRteMediaSourceState; videoState?: AgoraRteMediaPublishState \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="copyScenes"></a>
 
@@ -337,16 +337,16 @@ copyScenes(roomUuid: string, fromRoomUuid: string): Promise<any>
 
 复制房间笔迹
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | fromRoomUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="deleteBatchUserProperties"></a>
 
@@ -358,15 +358,15 @@ deleteBatchUserProperties(param0: { data: { cause?: unknown; properties: string[
 
 批量删除用户属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | param0: \{ data: \{ cause?: unknown; properties: string[]; userUuid: string \}[]; roomUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="deleteWidget"></a>
 
@@ -378,16 +378,16 @@ deleteWidget(roomUuid: string, widgetUuid: string): Promise<{ data: any }>
 
 删除房间 widget
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | widgetUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="entry"></a>
 
@@ -399,16 +399,16 @@ entry(session: Partial<EduSessionInfo>, stream?: { audioSourceState?: AgoraRteMe
 
 进入房间
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | session: Partial&lt;EduSessionInfo&gt; |  |
 | Optional stream: \{ audioSourceState?: AgoraRteMediaSourceState; audioState?: AgoraRteMediaPublishState; videoSourceState?: AgoraRteMediaSourceState; videoState?: AgoraRteMediaPublishState \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="fetch"></a>
 
@@ -418,15 +418,15 @@ Returns Promise &lt; any &gt;
 fetch(params: AgoraFetchParams): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: AgoraFetchParams |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="fetchFileUploadSts"></a>
 
@@ -438,15 +438,15 @@ fetchFileUploadSts(param0: Partial<{ contentType: string; conversion?: Partial<P
 
 获取上传信息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | param0: Partial&lt;\{ contentType: string; conversion?: Partial&lt;Partial&lt;\{ canvasVersion: boolean; outputFormat: string; preview: boolean; scale: number; type: string \}&gt;&gt;; ext: string; resourceName: string; size: number; userUuid: string \}&gt; |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="fetchPersonalResources"></a>
 
@@ -458,16 +458,16 @@ fetchPersonalResources(userUuid: string, options: { converted?: number; limit?: 
 
 获取个人资源列表
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | userUuid: string |  |
 | options: \{ converted?: number; limit?: number; nextId?: string; orderBy?: string; pageNo?: number; pageSize?: number; parentResourceUuid?: string; resourceName?: string; tags?: string[] \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="fetchUserList"></a>
 
@@ -479,16 +479,16 @@ fetchUserList(roomId: string, params: { count?: number; nextId: undefined | null
 
 获取房间内用户列表
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomId: string |  |
 | params: \{ count?: number; nextId: undefined \| null \| string \| number; role: EduRoleTypeEnum; type?: "0" \| "1"; userName?: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="getAgoraChatToken"></a>
 
@@ -500,15 +500,15 @@ getAgoraChatToken(param0: { roomUuid: string; userUuid: string }): Promise<any>
 
 获取 AgoraChat 用户登录 Token
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | param0: \{ roomUuid: string; userUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="getAnswerList"></a>
 
@@ -520,17 +520,17 @@ getAnswerList(roomUuid: string, popupQuizId: string, query: { count: number; nex
 
 获取答题列表
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | popupQuizId: string |  |
 | query: \{ count: number; nextId: number \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="getConversationHistoryChatMessage"></a>
 
@@ -542,15 +542,15 @@ getConversationHistoryChatMessage(params: { data: { nextId: string; sort: number
 
 获取聊天历史会话信息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ data: \{ nextId: string; sort: number; studentUuid: string \}; roomUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="getConversationList"></a>
 
@@ -562,15 +562,15 @@ getConversationList(params: { data: { nextId: string }; roomUuid: string }): Pro
 
 获取聊天会话列表
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ data: \{ nextId: string \}; roomUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="getHistoryChatMessage"></a>
 
@@ -582,15 +582,15 @@ getHistoryChatMessage(params: { data: { nextId: string; sort: number }; roomUuid
 
 获取聊天历史记录
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ data: \{ nextId: string; sort: number \}; roomUuid: string; userUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="getRecordList"></a>
 
@@ -602,15 +602,15 @@ getRecordList(param0: { nextId?: number; roomUuid: string }): Promise<any>
 
 查询房间录制列表
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | param0: \{ nextId?: number; roomUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="getRoomEvents"></a>
 
@@ -622,15 +622,15 @@ getRoomEvents(param0: { causeDataFilterKeys?: string; causeDataFilterValues?: st
 
 查询房间sequences事件
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | param0: \{ causeDataFilterKeys?: string; causeDataFilterValues?: string; cmd?: number; nextId?: number; roomUuid: string; userUuid?: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="getWindowManagerAttributes"></a>
 
@@ -642,15 +642,15 @@ getWindowManagerAttributes(roomUuid: string): Promise<any>
 
 获取白板windowManager属性（课件）
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="handsUp"></a>
 
@@ -662,15 +662,15 @@ handsUp(params: { payload?: unknown; retry?: boolean; roomUuid: string; timout?:
 
 举手
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ payload?: unknown; retry?: boolean; roomUuid: string; timout?: number; toUserUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="handsWave"></a>
 
@@ -682,15 +682,15 @@ handsWave(params: { payload?: unknown; retry?: boolean; roomUuid: string; timout
 
 挥手
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ payload?: unknown; retry?: boolean; roomUuid: string; timout?: number; toUserUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="kickOutOnceOrBan"></a>
 
@@ -702,17 +702,17 @@ kickOutOnceOrBan(userUuid: string, isBan: boolean, roomUuid: string): Promise<an
 
 踢出房间
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | userUuid: string |  |
 | isBan: boolean |  |
 | roomUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="muteChat"></a>
 
@@ -724,15 +724,15 @@ muteChat(params: { muteChat: number; roomUuid: string }): Promise<any>
 
 聊天禁言
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ muteChat: number; roomUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="pauseCountdownTimer"></a>
 
@@ -744,16 +744,16 @@ pauseCountdownTimer(roomUuid: string, countdownTimerId: string): Promise<{ data:
 
 暂停倒计时
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | countdownTimerId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="rejectGroupInvite"></a>
 
@@ -765,16 +765,16 @@ rejectGroupInvite(roomUuid: string, groupUuid: string): Promise<any>
 
 拒绝进入分组邀请
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | groupUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="remoteControlGetTokens"></a>
 
@@ -786,16 +786,16 @@ remoteControlGetTokens(roomUuid: string, userUuid: string): Promise<any>
 
 远程控制-获取远程控制需要的token
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | userUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="remoteControlStudentAcceptInvite"></a>
 
@@ -807,16 +807,16 @@ remoteControlStudentAcceptInvite(roomUuid: string, userUuid: string): Promise<an
 
 远程控制-学生同意邀请
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | userUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="remoteControlTeacherAuthorization"></a>
 
@@ -828,16 +828,16 @@ remoteControlTeacherAuthorization(roomUuid: string, userUuid: string): Promise<a
 
 远程控制授权
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | userUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="remoteControlTeacherInvite"></a>
 
@@ -849,16 +849,16 @@ remoteControlTeacherInvite(roomUuid: string, data: { toUserUuid: string }): Prom
 
 远程控制-老师发起邀请
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | data: \{ toUserUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="remoteControlTeacherStopInvite"></a>
 
@@ -870,16 +870,16 @@ remoteControlTeacherStopInvite(roomUuid: string, toUserUuid: string): Promise<an
 
 远程控制-老师结束邀请
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | toUserUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="remoteControlTeacherUnauthorization"></a>
 
@@ -891,16 +891,16 @@ remoteControlTeacherUnauthorization(roomUuid: string, userUuid: string): Promise
 
 远程控制取消授权
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | userUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="removeGroup"></a>
 
@@ -912,16 +912,16 @@ removeGroup(roomUuid: string, data: { removeGroupUuids: string[] }): Promise<any
 
 删除分组
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | data: \{ removeGroupUuids: string[] \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="removeMaterials"></a>
 
@@ -933,16 +933,16 @@ removeMaterials(resourceUuids: string[], userUuid: string): Promise<any>
 
 删除个人资源
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | resourceUuids: string[] |  |
 | userUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="removeWidgetExtraProperties"></a>
 
@@ -954,17 +954,17 @@ removeWidgetExtraProperties(roomUuid: string, widgetUuid: string, properties: un
 
 移除 extra 中的属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | widgetUuid: string |  |
 | properties: unknown |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="removeWidgetUserProperties"></a>
 
@@ -976,18 +976,18 @@ removeWidgetUserProperties(roomUuid: string, widgetUuid: string, userUuid: strin
 
 移除用户 widget 属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | widgetUuid: string |  |
 | userUuid: string |  |
 | properties: unknown |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="reportMicCameraStateLeagcy"></a>
 
@@ -999,15 +999,15 @@ reportMicCameraStateLeagcy(payload: { data: unknown; roomUuid: string; userUuid:
 
 上报麦克风设备状态（兼容历史版本）
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | payload: \{ data: unknown; roomUuid: string; userUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="resumeCountdownTimer"></a>
 
@@ -1019,16 +1019,16 @@ resumeCountdownTimer(roomUuid: string, countdownTimerId: string): Promise<{ data
 
 恢复倒计时
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | countdownTimerId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="revokeAllCoVideo"></a>
 
@@ -1040,15 +1040,15 @@ revokeAllCoVideo(params: { roomUuid: string }): Promise<any>
 
 所有成员下台，停止连麦
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ roomUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="revokeCoVideo"></a>
 
@@ -1060,15 +1060,15 @@ revokeCoVideo(params: { roomUuid: string; toUserUuid?: string }): Promise<any>
 
 下台，停止连麦
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ roomUuid: string; toUserUuid?: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="sendChat"></a>
 
@@ -1080,15 +1080,15 @@ sendChat(params: { data: { message: string; type: number }; roomUuid: string; us
 
 发送聊天信息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ data: \{ message: string; type: number \}; roomUuid: string; userUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="sendConversationChat"></a>
 
@@ -1100,15 +1100,15 @@ sendConversationChat(params: { data: { message: string; type: number }; roomUuid
 
 发送聊天会话信息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ data: \{ message: string; type: number \}; roomUuid: string; userUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="sendNotificationMessage"></a>
 
@@ -1120,16 +1120,16 @@ sendNotificationMessage(roomUuid: string, data: { msg: string; rang: number; toG
 
 发送全体消息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | data: \{ msg: string; rang: number; toGroupUuids: string[]; type: string \} | rang: 1.大房间 2.指定组 3.全体（大房间+所有组） toGroupUuids: 当type=2时，传入指定小组id type: 消息类型；txt:文本消息，img：图片消息，loc：位置消息，audio：语音消息，video：视频消息，file：文件消息 msg: 消息 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="sendRewards"></a>
 
@@ -1141,16 +1141,16 @@ sendRewards(params: { rewards: { changeReward: number; userUuid: string }[]; roo
 
 发送奖励
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ rewards: \{ changeReward: number; userUuid: string \}[]; roomUuid: string \} |  |
 | Optional isBatch: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="setWindowManagerAttributes"></a>
 
@@ -1162,16 +1162,16 @@ setWindowManagerAttributes(roomUuid: string, data: unknown): Promise<any>
 
 保存白板windowManager属性（课件）
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | data: unknown |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="startAnswer"></a>
 
@@ -1183,16 +1183,16 @@ startAnswer(roomUuid: string, properties: unknown): Promise<{ data: any }>
 
 开启选择题
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | properties: unknown |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="startCarousel"></a>
 
@@ -1204,15 +1204,15 @@ startCarousel(payload: { count?: number; interval?: number; range?: number; room
 
 开启轮播
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | payload: \{ count?: number; interval?: number; range?: number; roomUuid: string; type?: number \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="startCountdownTimer"></a>
 
@@ -1224,16 +1224,16 @@ startCountdownTimer(roomUuid: string, duration: number): Promise<{ data: any }>
 
 开启倒计时
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | duration: number |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="startPolling"></a>
 
@@ -1245,16 +1245,16 @@ startPolling(roomUuid: string, properties: unknown): Promise<{ data: any }>
 
 开启投票
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | properties: unknown |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="startShareScreen"></a>
 
@@ -1266,17 +1266,17 @@ startShareScreen(roomId: string, userUuid: string, audioOptions?: Partial<AgoraS
 
 开启屏幕共享
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomId: string |  |
 | userUuid: string |  |
 | Optional audioOptions: Partial&lt;AgoraStreamStates&gt; |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="startShareScreenStateless"></a>
 
@@ -1288,16 +1288,16 @@ startShareScreenStateless(roomId: string, userUuid: string): Promise<any>
 
 开启屏幕共享
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomId: string |  |
 | userUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="stopAnswer"></a>
 
@@ -1309,16 +1309,16 @@ stopAnswer(roomUuid: string, popupQuizId: string): Promise<{ data: any }>
 
 停止选择
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | popupQuizId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="stopCarousel"></a>
 
@@ -1330,15 +1330,15 @@ stopCarousel(payload: { roomUuid: string }): Promise<any>
 
 关闭轮播
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | payload: \{ roomUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="stopCountdownTimer"></a>
 
@@ -1350,16 +1350,16 @@ stopCountdownTimer(roomUuid: string, countdownTimerId: string): Promise<{ data: 
 
 结束倒计时
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | countdownTimerId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="stopPolling"></a>
 
@@ -1371,16 +1371,16 @@ stopPolling(roomUuid: string, pollId: string): Promise<{ data: any }>
 
 结束投票
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | pollId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="stopShareScreen"></a>
 
@@ -1392,16 +1392,16 @@ stopShareScreen(roomId: string, userUuid: string): Promise<any>
 
 停止屏幕共享
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomId: string |  |
 | userUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="stopShareScreenStateless"></a>
 
@@ -1413,16 +1413,16 @@ stopShareScreenStateless(roomId: string, userUuid: string): Promise<any>
 
 停止屏幕共享
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomId: string |  |
 | userUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="submitAnswer"></a>
 
@@ -1434,18 +1434,18 @@ submitAnswer(roomUuid: string, popupQuizId: string, userUuid: string, properties
 
 提交答案
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | popupQuizId: string |  |
 | userUuid: string |  |
 | properties: unknown |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="submitResult"></a>
 
@@ -1457,18 +1457,18 @@ submitResult(roomUuid: string, pollId: string, userUuid: string, properties: unk
 
 投票
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | pollId: string | 投票id |
 | userUuid: string | 用户ID |
 | properties: unknown |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="updateAnswerCorrectItems"></a>
 
@@ -1480,17 +1480,17 @@ updateAnswerCorrectItems(roomUuid: string, popupQuizId: string, correctItems: st
 
 修改答题正确选项
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | popupQuizId: string |  |
 | correctItems: string[] |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="updateBatchUserProperties"></a>
 
@@ -1502,15 +1502,15 @@ updateBatchUserProperties(param0: { data: { cause?: unknown; properties: unknown
 
 批量更新用户属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | param0: \{ data: \{ cause?: unknown; properties: unknown; userUuid: string \}[]; roomUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateClassState"></a>
 
@@ -1522,15 +1522,15 @@ updateClassState(params: { roomUuid: string; state: ClassState }): Promise<any>
 
 更新教室状态
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ roomUuid: string; state: ClassState \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateCloudDriveFile"></a>
 
@@ -1542,17 +1542,17 @@ updateCloudDriveFile(resourceUuid: string, userUuid: string, resourceInfo: Pick<
 
 修改云盘资源
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | resourceUuid: string |  |
 | userUuid: string |  |
 | resourceInfo: Pick&lt;CloudDriveResourceInfo, "resourceName"&gt; |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateExpandedScopeAndStreams"></a>
 
@@ -1564,17 +1564,17 @@ updateExpandedScopeAndStreams(roomUuid: string, state: 0 | 1, data: { userUuids:
 
 更新视频墙开关状态和发流用户列表
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string | 课堂 ID |
 | state: 0 \| 1 | ：视频墙开关状态<br />- 1：开启视频墙功能<br />- 0：关闭视频墙功能 |
 | data: \{ userUuids: string[] \} | 想要控制发流权限的用户 ID 列表 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateFlexProperties"></a>
 
@@ -1586,16 +1586,16 @@ updateFlexProperties(roomUuid: string, params: { cause?: unknown; increments?: u
 
 更新用户属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | params: \{ cause?: unknown; increments?: unknown; properties?: unknown; throttleTime?: number \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateGroupInfo"></a>
 
@@ -1607,16 +1607,16 @@ updateGroupInfo(roomUuid: string, data: { groups: PatchGroup[] }): Promise<any>
 
 修改分组信息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | data: \{ groups: PatchGroup[] \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateGroupState"></a>
 
@@ -1628,17 +1628,17 @@ updateGroupState(roomUuid: string, data: { groups: GroupDetail[]; inProgress?: b
 
 开启/关闭分组
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | data: \{ groups: GroupDetail[]; inProgress?: boolean; syncBoardScenes?: boolean \} |  |
 | Optional state: GroupState |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateGroupUsers"></a>
 
@@ -1650,16 +1650,16 @@ updateGroupUsers(roomUuid: string, data: { groups: PatchGroup[]; inProgress: boo
 
 更新分组成员
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | data: \{ groups: PatchGroup[]; inProgress: boolean \} | 🔢 inProgress 是否邀请，true 发送邀请 false 直接加入 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateRecordingState"></a>
 
@@ -1671,15 +1671,15 @@ updateRecordingState(params: { args?: unknown; backupCount?: number; roomUuid: s
 
 更新录制状态
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ args?: unknown; backupCount?: number; roomUuid: string; state: number \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateRecordingStateOngoing"></a>
 
@@ -1691,15 +1691,15 @@ updateRecordingStateOngoing(params: { opts: { onHold: boolean }; roomUuid: strin
 
 更新录制状态(录制中)
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: \{ opts: \{ onHold: boolean \}; roomUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateUserTags"></a>
 
@@ -1711,15 +1711,15 @@ updateUserTags(param0: { data: unknown; key: string; roomUuid: string; userUuid:
 
 更新用户tag属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | param0: \{ data: unknown; key: string; roomUuid: string; userUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateWidgetProperties"></a>
 
@@ -1731,17 +1731,17 @@ updateWidgetProperties(roomUuid: string, widgetUuid: string, properties: unknown
 
 更新房间 widget 属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | widgetUuid: string |  |
 | properties: unknown |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="updateWidgetUserProperties"></a>
 
@@ -1753,15 +1753,15 @@ updateWidgetUserProperties(roomUuid: string, widgetUuid: string, userUuid: strin
 
 设置用户 widget 属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | widgetUuid: string |  |
 | userUuid: string |  |
 | properties: unknown |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;

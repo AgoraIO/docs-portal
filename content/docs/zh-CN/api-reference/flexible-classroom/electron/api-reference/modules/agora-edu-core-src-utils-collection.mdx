@@ -1,9 +1,9 @@
 ---
 title: "agora-edu-core/src/utils/collection"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "agora-edu-core/src/utils/collection API 参考。"
 ---
 
-## Functions
+## 函数
 
 <a id="iterateMap"></a>
 
@@ -13,16 +13,16 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 iterateMap<K, V, T, E>(map: Map<K, V>, processors?: { onFilter?: (key: K, item: V) => boolean; onMap?: (key: K, item: V) => T; onReduce?: (prev: E, key: K, item: V) => E }): { list: T[]; prev: E }
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | map: Map&lt;K, V&gt; |  |
 | Optional processors: \{ onFilter?: (key: K, item: V) =&gt; boolean; onMap?: (key: K, item: V) =&gt; T; onReduce?: (prev: E, key: K, item: V) =&gt; E \} |  |
 
-#### Returns
+#### 返回值
 
-Returns \{list: T []; prev: E \}
+\{list: T []; prev: E \}
 
 - ##### list: T[]
 - ##### prev: E
@@ -35,16 +35,16 @@ Returns \{list: T []; prev: E \}
 iterateSet<V, T, E>(map: Set<V>, processors?: { onFilter?: (item: V) => boolean; onMap?: (item: V) => T; onReduce?: (prev: E, item: V) => E }): { list: T[]; prev: E }
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | map: Set&lt;V&gt; |  |
 | Optional processors: \{ onFilter?: (item: V) =&gt; boolean; onMap?: (item: V) =&gt; T; onReduce?: (prev: E, item: V) =&gt; E \} |  |
 
-#### Returns
+#### 返回值
 
-Returns \{list: T []; prev: E \}
+\{list: T []; prev: E \}
 
 - ##### list: T[]
 - ##### prev: E

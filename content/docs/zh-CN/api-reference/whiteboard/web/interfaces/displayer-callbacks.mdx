@@ -1,6 +1,6 @@
 ---
 title: "Displayer<CALLBACKS>"
-description: "Displayer<CALLBACKS> API reference."
+description: "Displayer<CALLBACKS> API 参考。"
 ---
 
 `Displayer` 接口是白板房间的基础接口。
@@ -10,7 +10,7 @@ description: "Displayer<CALLBACKS> API reference."
   - [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks)
   - [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks)
 
-## Properties
+## 属性
 
 <a id="callbacks"></a>
 
@@ -208,7 +208,7 @@ version: string
 
 2.13.14
 
-## Methods
+## 方法
 
 <a id="addmagixeventlistener"></a>
 
@@ -230,17 +230,17 @@ addMagixEventListener(event: string, listener: EventsListener, fireInterval: num
 
 对于同名的自定义事件，SDK 仅支持触发一个回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 想要监听的自定义事件名称。 |
 | listener: EventListener | 自定义事件回调，详见 [EventListener](/zh-CN/api-reference/whiteboard/web/globals#eventlistener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。 |
 | Optional options: MagixEventListenerOptions | 自从 v2.15.2。 自定义事件监听设置选项。详见 [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/web/globals#magixeventlisteneroptions)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 注册高频自定义事件监听。
 
@@ -262,17 +262,17 @@ function listener(events) {
 displayer.addMagixEventListener("my-event", listener, 100);
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 想要监听的自定义事件名称。 |
 | listener: EventsListener | 自定义事件回调，详见 [EventsListener](/zh-CN/api-reference/whiteboard/web/globals#eventslistener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。 |
 | fireInterval: number | SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如果设置为低于该值会被重置为 500 ms。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="bindhtmlelement"></a>
 
@@ -284,15 +284,15 @@ bindHtmlElement(element: HTMLDivElement | null): void
 
 将白板绑定到 HTML 元素上。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | element: HTMLDivElement \| null | 用于容纳白板的 HTML 元素容器。若为 `null`，表示解除对白板的绑定。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="converttopointinworld"></a>
 
@@ -306,15 +306,15 @@ convertToPointInWorld(point: { x: number; y: number }): { x: number; y: number }
 
 该方法可以将屏幕坐标系（以屏幕左上角为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下） 中的坐标转换为世界坐标系（以白板初始化时的中点为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下） 中的坐标。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | point: \{ x: number; y: number \} | 点在屏幕坐标系中的坐标。 |
 
-#### Returns
+#### 返回值
 
-Returns \{x: number; y: number \}
+\{x: number; y: number \}
 
 点在世界坐标系中的坐标。
 
@@ -342,16 +342,16 @@ createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): Scenes
 - 该方法需要在加入白板房间后调用。
 - 对于每个场景目录，仅支持创建一个监听器对象。如果需要创建新的监听器对象，必须先调用 `dispose` 释放已创建的监听器对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | path: string | 场景目录的路径。如果你传入的是场景路径，SDK 会将监听对象设置为其父场景目录。 |
 | Optional callbacks: Partial&lt;ScenesCallbacks&gt; | 需要监听的回调。详见 `ScenesCallbacks`。 |
 
-#### Returns
+#### 返回值
 
-Returns [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node) | null
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node) | null
 
 - 方法调用成功时，返回 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node) 对象。
 - 方法调用失败时，返回 `null`。方法调用失败可能是因为指定的场景目录不存在。
@@ -366,9 +366,9 @@ entireScenes(): SceneMap
 
 获取当前房间内所有场景的信息。
 
-#### Returns
+#### 返回值
 
-Returns [SceneMap](/zh-CN/api-reference/whiteboard/web/globals#scenemap)
+[SceneMap](/zh-CN/api-reference/whiteboard/web/globals#scenemap)
 
 当前房间内所有场景的信息。
 
@@ -382,18 +382,18 @@ fillSceneSnapshot(scenePath: string, div: HTMLElement, width: number, height: nu
 
 生成特定场景的屏幕快照。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | scenePath: string | 特定场景的路径。 |
 | div: HTMLElement | 用于显示屏幕快照的 div。 |
 | width: number | 屏幕快照的宽度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示屏幕快照的 div 的宽度。 |
 | height: number | 屏幕快照的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示屏幕快照的 div 的高度。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="generatescreenshot"></a>
 
@@ -409,17 +409,17 @@ generateScreenshot(scenePath?: string, width?: number, height?: number): Promise
 
 该方法已废弃，请使用 [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#screenshottocanvasasync) 方法。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional scenePath: string | 特定场景的路径。 |
 | Optional width: number | 截图的宽度。 |
 | Optional height: number | 截图的高度 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; string &gt;
+Promise &lt; string &gt;
 
 截图的 URL 地址。
 
@@ -437,15 +437,15 @@ getInvisiblePlugin<A>(kind: string): InvisiblePlugin<A> | null
 
 获取指定的不可见插件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | kind: string | 不可见插件的类型。 |
 
-#### Returns
+#### 返回值
 
-Returns [InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin-a) &lt; A &gt; | null
+[InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin-a) &lt; A &gt; | null
 
 指定的不可见插件。
 
@@ -459,15 +459,15 @@ getScene(path: string): WhiteScene | undefined
 
 获取指定场景的信息。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | path: string | 场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如， `/math/classA`。 |
 
-#### Returns
+#### 返回值
 
-Returns [WhiteScene](/zh-CN/api-reference/whiteboard/web/globals#whitescene) | undefined
+[WhiteScene](/zh-CN/api-reference/whiteboard/web/globals#whitescene) | undefined
 
 场景信息。详见 [WhiteScene](/zh-CN/api-reference/whiteboard/web/globals#whitescene)。
 
@@ -481,15 +481,15 @@ memberState(memberId: number): MemberState
 
 获取房间内指定用户的白板工具状态。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | memberId: number | 指定用户的 ID。 |
 
-#### Returns
+#### 返回值
 
-Returns [MemberState](/zh-CN/api-reference/whiteboard/web/globals#memberstate)
+[MemberState](/zh-CN/api-reference/whiteboard/web/globals#memberstate)
 
 指定用户的白板工具状态。
 
@@ -503,15 +503,15 @@ moveCamera(camera: Partial<Camera> & Readonly<{ animationMode?: AnimationMode }>
 
 调整视角。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | camera: Partial&lt;Camera&gt; & Readonly&lt;\{ animationMode?: AnimationMode \}&gt; | 视角的参数配置，详见 [Camera](/zh-CN/api-reference/whiteboard/web/globals#camera)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="movecameratocontain"></a>
 
@@ -523,15 +523,15 @@ moveCameraToContain(rectangle: Rectangle & Readonly<{ animationMode?: AnimationM
 
 调整视角，以保证完整显示视觉矩形。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | rectangle: Rectangle & Readonly&lt;\{ animationMode?: AnimationMode \}&gt; | 视觉矩形的参数设置，详见 [Rectangle](/api-ref/whiteboard/javascript/enums/cursornames.html#rectangle)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="refreshviewsize"></a>
 
@@ -545,9 +545,9 @@ refreshViewSize(): void
 
 当白板的 view 发生改变时，需要手动调用该方法刷新白板的界面。 该方法仅在 `autoResize` 为 `false` 时生效。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removemagixeventlistener"></a>
 
@@ -559,16 +559,16 @@ removeMagixEventListener(event: string, listener?: EventListener): void
 
 移除自定义事件监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 想要移除监听的自定义事件名称。 |
 | Optional listener: EventListener | 要移除的监听。若不传，该自定义事件之下的所有监听器将全部注销。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="scaleppttofit"></a>
 
@@ -584,15 +584,15 @@ scalePptToFit(animationMode?: AnimationMode): void
 
 2.3.18
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional animationMode: AnimationMode | 视角调整时的动画模式，详见 [AnimationMode](/zh-CN/api-reference/whiteboard/web/enums/animation-mode)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="scenepathtype"></a>
 
@@ -604,15 +604,15 @@ scenePathType(path: string): ScenePathType
 
 查询场景路径类型。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | path: string | 场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如， `/math/classA`。 |
 
-#### Returns
+#### 返回值
 
-Returns [ScenePathType](/zh-CN/api-reference/whiteboard/web/enums/scene-path-type)
+[ScenePathType](/zh-CN/api-reference/whiteboard/web/enums/scene-path-type)
 
 场景路径的类型。
 
@@ -626,18 +626,18 @@ scenePreview(scenePath: string, div: HTMLElement, width: number | undefined, hei
 
 生成特定场景的预览图。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | scenePath: string | 特定场景的路径。 |
 | div: HTMLElement | 用于显示预览内容的 div。 |
 | width: number \| undefined | 预览图的宽度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示预览内容的 div 的宽度。 |
 | height: number \| undefined | 预览图的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示预览内容的 div 的高度。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="screenshottocanvas"></a>
 
@@ -649,9 +649,9 @@ screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: 
 
 生成屏幕快照，并写入指定的 CanvasRenderingContext2D 对象中。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | context: CanvasRenderingContext2D | CanvasRenderingContext2D 对象。 |
 | scenePath: string | 场景的路径。你可以通过 `room.state.sceneState.scenePath` 获取当前场景。 |
@@ -660,9 +660,9 @@ screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: 
 | camera: Camera | 视角的描述。 |
 | Optional ratio: number | 设备像素比。该参数为可选参数，如果不填，则默认值为 1。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="screenshottocanvasasync"></a>
 
@@ -680,9 +680,9 @@ screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, wi
 - 如果目标场景的图片无法完成加载，则该函数无法返回屏幕快照，你需要自行处理超时逻辑。
 - 如果你希望生成的屏幕快照不包含图片，请使用 [screenshotToCanvas](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#screenshottocanvas)。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | context: CanvasRenderingContext2D | CanvasRenderingContext2D 对象。 |
 | scenePath: string | 场景的路径。你可以通过 `room.state.sceneState.scenePath` 获取当前场景。 |
@@ -692,9 +692,9 @@ screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, wi
 | Optional ratio: number | 设备像素比。该参数为可选参数，如果不填，则默认值为 1。 |
 | Optional timeout: number | 图片加载的超时时间 (ms)，默认为永不超时，只能设为大于 `0` 的数。图片的加载时间超过该值后，SDK 会直接进行下一步绘制操作，而不会等待图片加载完成。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setcamerabound"></a>
 
@@ -706,15 +706,15 @@ setCameraBound(cameraBound: CameraBound): void
 
 设置用户的视角边界。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cameraBound: CameraBound | 视角边界。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="waitmagixevent"></a>
 
@@ -726,14 +726,14 @@ waitMagixEvent(filter: EventFilter): Promise<Event>
 
 等待特定的自定义事件发生。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | filter: EventFilter | 事件过滤器。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [Event](/zh-CN/api-reference/whiteboard/web/globals#event) &gt;
+Promise &lt; [Event](/zh-CN/api-reference/whiteboard/web/globals#event) &gt;
 
 当特定自定义事件发生时，返回该事件。

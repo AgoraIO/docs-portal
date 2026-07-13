@@ -1,13 +1,13 @@
 ---
 title: "AgoraRteService"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "AgoraRteService API 参考。"
 ---
 
-- [ApiBase](/zh-CN/api-reference/flexible-classroom/web/classes/api-base)
+- [ApiBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/api-base)
 
   - AgoraRteService
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -17,11 +17,11 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new AgoraRteService(): AgoraRteService
 ```
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteService](/zh-CN/api-reference/flexible-classroom/web/classes/agora-rte-service)
+[AgoraRteService](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-service)
 
-## Properties
+## 属性
 
 <a id="fallbackRequestHandler"></a>
 
@@ -71,7 +71,7 @@ pathPrefix?: string
 domainHolder: DomainHolder
 ```
 
-## Methods
+## 方法
 
 <a id="deleteBatchUserProperties"></a>
 
@@ -81,15 +81,15 @@ domainHolder: DomainHolder
 deleteBatchUserProperties(__namedParameters: { data: { cause?: any; properties: string[]; userUuid: string }[]; roomUuid: string }): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | __namedParameters: \{ data: \{ cause?: any; properties: string[]; userUuid: string \}[]; roomUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="deleteRoomProperties"></a>
 
@@ -99,15 +99,15 @@ Returns Promise &lt; any &gt;
 deleteRoomProperties(__namedParameters: { cause?: unknown; properties: string[]; roomUuid: string }): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | __namedParameters: \{ cause?: unknown; properties: string[]; roomUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="deleteStream"></a>
 
@@ -117,17 +117,17 @@ Returns Promise &lt; any &gt;
 deleteStream(roomUuid: string, userUuid: string, streamUuid: string): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | userUuid: string |  |
 | streamUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="deleteUserProperties"></a>
 
@@ -137,15 +137,15 @@ Returns Promise &lt; any &gt;
 deleteUserProperties(__namedParameters: { cause?: any; properties: string[]; roomUuid: string; userUuid: string }): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | __namedParameters: \{ cause?: any; properties: string[]; roomUuid: string; userUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="entryRoom"></a>
 
@@ -155,15 +155,15 @@ Returns Promise &lt; any &gt;
 entryRoom(params: EntryRequestParams): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: EntryRequestParams |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="fetch"></a>
 
@@ -173,15 +173,15 @@ Returns Promise &lt; any &gt;
 fetch(params: AgoraFetchParams): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: AgoraFetchParams |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="publishStreamToCdn"></a>
 
@@ -191,18 +191,18 @@ Returns Promise &lt; any &gt;
 publishStreamToCdn(roomUuid: string, userUuid: string, streamUuid: string, params: PublishCdnParams): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | userUuid: string |  |
 | streamUuid: string |  |
 | params: PublishCdnParams |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="sendCustomChannelMessage"></a>
 
@@ -212,17 +212,17 @@ Returns Promise &lt; any &gt;
 sendCustomChannelMessage(roomUuid: string, payload: { cmd: string; data: any }, sync?: boolean): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | payload: \{ cmd: string; data: any \} |  |
 | Optional sync: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="sendCustomPeerMessage"></a>
 
@@ -232,18 +232,18 @@ Returns Promise &lt; any &gt;
 sendCustomPeerMessage(roomUuid: string, payload: { cmd: string; data: any }, toUserUuid: string, waitForAck?: boolean): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | payload: \{ cmd: string; data: any \} |  |
 | toUserUuid: string |  |
 | Optional waitForAck: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="sendRoomChatMessage"></a>
 
@@ -253,16 +253,16 @@ Returns Promise &lt; any &gt;
 sendRoomChatMessage(message: string, roomUuid: string): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | message: string |  |
 | roomUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="syncPeerSequence"></a>
 
@@ -272,18 +272,18 @@ Returns Promise &lt; any &gt;
 syncPeerSequence(roomUuid: string, userUuid: string, seqId: number, count: number): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | userUuid: string |  |
 | seqId: number |  |
 | count: number |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="syncSequence"></a>
 
@@ -293,17 +293,17 @@ Returns Promise &lt; any &gt;
 syncSequence(roomUuid: string, seqId: number, count: number): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | seqId: number |  |
 | count: number |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateBatchUserProperties"></a>
 
@@ -313,15 +313,15 @@ Returns Promise &lt; any &gt;
 updateBatchUserProperties(__namedParameters: { data: { cause?: any; properties: unknown; userUuid: string }[]; roomUuid: string }): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | __namedParameters: \{ data: \{ cause?: any; properties: unknown; userUuid: string \}[]; roomUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateDeviceState"></a>
 
@@ -331,18 +331,18 @@ Returns Promise &lt; any &gt;
 updateDeviceState(roomUuid: string, userUuid: string, streamUuid: string, __namedParameters: { audioSourceState?: AgoraRteMediaSourceState; videoSourceState?: AgoraRteMediaSourceState }): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | userUuid: string |  |
 | streamUuid: string |  |
 | __namedParameters: \{ audioSourceState?: AgoraRteMediaSourceState; videoSourceState?: AgoraRteMediaSourceState \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateOnlineState"></a>
 
@@ -352,15 +352,15 @@ Returns Promise &lt; any &gt;
 updateOnlineState(__namedParameters: { roomUuid: string; userUuid: string }): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | __namedParameters: \{ roomUuid: string; userUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateRoomProperties"></a>
 
@@ -370,15 +370,15 @@ Returns Promise &lt; any &gt;
 updateRoomProperties(__namedParameters: { cause?: unknown; properties: unknown; roomUuid: string }): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | __namedParameters: \{ cause?: unknown; properties: unknown; roomUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="updateUserProperties"></a>
 
@@ -388,15 +388,15 @@ Returns Promise &lt; any &gt;
 updateUserProperties(__namedParameters: { cause?: any; properties: unknown; roomUuid: string; userUuid: string }): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | __namedParameters: \{ cause?: any; properties: unknown; roomUuid: string; userUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="upsertStream"></a>
 
@@ -406,18 +406,18 @@ Returns Promise &lt; any &gt;
 upsertStream(roomUuid: string, userUuid: string, streamUuid: string, __namedParameters: { audioSourceType?: AgoraRteAudioSourceType; publishAudio?: AgoraRteMediaPublishState; publishVideo?: AgoraRteMediaPublishState; videoSourceType?: AgoraRteVideoSourceType }): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | userUuid: string |  |
 | streamUuid: string |  |
 | __namedParameters: \{ audioSourceType?: AgoraRteAudioSourceType; publishAudio?: AgoraRteMediaPublishState; publishVideo?: AgoraRteMediaPublishState; videoSourceType?: AgoraRteVideoSourceType \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="upsertStreamBatch"></a>
 
@@ -427,13 +427,13 @@ Returns Promise &lt; any &gt;
 upsertStreamBatch(roomUuid: string, streams: { audioSourceType?: AgoraRteAudioSourceType; audioState?: AgoraRteMediaPublishState; streamUuid: string; userUuid: string; videoSourceType?: AgoraRteVideoSourceType; videoState?: AgoraRteMediaPublishState }[]): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | roomUuid: string |  |
 | streams: \{ audioSourceType?: AgoraRteAudioSourceType; audioState?: AgoraRteMediaPublishState; streamUuid: string; userUuid: string; videoSourceType?: AgoraRteVideoSourceType; videoState?: AgoraRteMediaPublishState \}[] |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;

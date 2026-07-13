@@ -1,13 +1,13 @@
 ---
 title: "RtcAdapterWeb"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "RtcAdapterWeb API 参考。"
 ---
 
-- [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-adapter-base)
+- [RtcAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-base)
 
   - RtcAdapterWeb
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -17,17 +17,17 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new RtcAdapterWeb(configs?: RtcAdapterWebConfig): RtcAdapterWeb
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional configs: RtcAdapterWebConfig |  |
 
-#### Returns
+#### 返回值
 
-Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-adapter-web)
+[RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-web)
 
-## Properties
+## 属性
 
 <a id="cameraThread"></a>
 
@@ -93,7 +93,7 @@ screenThread: AgoraRteScreenShareThread
 defaultConfigs: RtcAdapterWebConfig
 ```
 
-## Accessors
+## 访问器
 
 <a id="audioPlaybackDeviceId"></a>
 
@@ -103,9 +103,9 @@ defaultConfigs: RtcAdapterWebConfig
 get audioPlaybackDeviceId(): undefined | string
 ```
 
-#### Returns
+#### 返回值
 
-Returns undefined | string
+undefined | string
 
 <a id="channelProfile"></a>
 
@@ -115,9 +115,9 @@ Returns undefined | string
 get channelProfile(): AGChannelProfile
 ```
 
-#### Returns
+#### 返回值
 
-Returns [AGChannelProfile](/zh-CN/api-reference/flexible-classroom/web/enums/agchannel-profile)
+[AGChannelProfile](/zh-CN/api-reference/flexible-classroom/web/api-reference/enums/agchannel-profile)
 
 <a id="configs"></a>
 
@@ -127,23 +127,23 @@ Returns [AGChannelProfile](/zh-CN/api-reference/flexible-classroom/web/enums/agc
 get configs(): { codec: SDK_CODEC; latencyLevel: AudienceLatencyLevelType; mode: SDK_MODE }
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | codec: SDK_CODEC |  |
 | latencyLevel: AudienceLatencyLevelType |  |
 | mode: SDK_MODE |  |
 
-#### Returns
+#### 返回值
 
-Returns \{codec: SDK_CODEC; latencyLevel: AudienceLatencyLevelType; mode: SDK_MODE \}
+\{codec: SDK_CODEC; latencyLevel: AudienceLatencyLevelType; mode: SDK_MODE \}
 
 - ##### codec: SDK_CODEC
 - ##### latencyLevel: AudienceLatencyLevelType
 - ##### mode: SDK_MODE
 
-## Methods
+## 方法
 
 <a id="addAudioRawDataObserver"></a>
 
@@ -153,16 +153,16 @@ Returns \{codec: SDK_CODEC; latencyLevel: AudienceLatencyLevelType; mode: SDK_MO
 addAudioRawDataObserver(observer: AgoraRteAudioRawDataObserver, position: AgoraRteAudioRawDataPosition): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | observer: AgoraRteAudioRawDataObserver |  |
 | position: AgoraRteAudioRawDataPosition |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="addCameraProcessors"></a>
 
@@ -172,15 +172,15 @@ Returns number
 addCameraProcessors(processors: IBaseProcessor[]): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | processors: IBaseProcessor[] |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="addMicrophoneProcessors"></a>
 
@@ -190,15 +190,15 @@ Returns number
 addMicrophoneProcessors(processors: IBaseProcessor[]): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | processors: IBaseProcessor[] |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="addPreviewCameraProcessors"></a>
 
@@ -208,15 +208,15 @@ Returns number
 addPreviewCameraProcessors(processors: IBaseProcessor[]): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | processors: IBaseProcessor[] |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="addPreviewMicrophoneProcessors"></a>
 
@@ -226,15 +226,15 @@ Returns number
 addPreviewMicrophoneProcessors(processors: IBaseProcessor[]): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | processors: IBaseProcessor[] |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="adjustLoopbackSignalVolume"></a>
 
@@ -244,15 +244,15 @@ Returns number
 adjustLoopbackSignalVolume(volume: number): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | volume: number |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="createRtcChannel"></a>
 
@@ -262,16 +262,16 @@ Returns number
 createRtcChannel(channelName: string, base: RtcAdapterBase): RtcChannelAdapterBase
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | channelName: string |  |
 | base: RtcAdapterBase |  |
 
-#### Returns
+#### 返回值
 
-Returns [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-channel-adapter-base)
+[RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-channel-adapter-base)
 
 <a id="destroy"></a>
 
@@ -281,9 +281,9 @@ Returns [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/web/clas
 destroy(): number
 ```
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="emit"></a>
 
@@ -293,16 +293,16 @@ Returns number
 emit(evt: string, ...args: any[]): RtcAdapterWeb
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | Rest ...args: any[] |  |
 
-#### Returns
+#### 返回值
 
-Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-adapter-web)
+[RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-web)
 
 <a id="enableLocalAudio"></a>
 
@@ -312,15 +312,15 @@ Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-
 enableLocalAudio(enable: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enable: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="enableLocalVideo"></a>
 
@@ -330,15 +330,15 @@ Returns number
 enableLocalVideo(enable: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enable: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="enableLoopbackRecording"></a>
 
@@ -348,16 +348,16 @@ Returns number
 enableLoopbackRecording(enable: boolean, device?: string): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enable: boolean |  |
 | Optional device: string |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="enablePreviewLocalAudio"></a>
 
@@ -367,15 +367,15 @@ Returns number
 enablePreviewLocalAudio(enable: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enable: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="enablePreviewLocalVideo"></a>
 
@@ -385,15 +385,15 @@ Returns number
 enablePreviewLocalVideo(enable: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enable: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="getAudioDeviceManager"></a>
 
@@ -403,9 +403,9 @@ Returns number
 getAudioDeviceManager(): RtcAudioDeviceManagerBase
 ```
 
-#### Returns
+#### 返回值
 
-Returns [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-audio-device-manager-base)
+[RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-audio-device-manager-base)
 
 <a id="getCurrentFrameData"></a>
 
@@ -415,17 +415,17 @@ Returns [RtcAudioDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/web/
 getCurrentFrameData(channelName: string, streamUuid: string, isLocal: boolean): ImageData
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | channelName: string |  |
 | streamUuid: string |  |
 | isLocal: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns ImageData
+ImageData
 
 <a id="getDiaplayDevices"></a>
 
@@ -435,9 +435,9 @@ Returns ImageData
 getDiaplayDevices(): Promise<AGScreenShareDevice[]>
 ```
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/interfaces/agscreen-share-device) [] &gt;
+Promise &lt; [AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agscreen-share-device) [] &gt;
 
 <a id="getVideoDeviceManager"></a>
 
@@ -447,9 +447,9 @@ Returns Promise &lt; [AGScreenShareDevice](/zh-CN/api-reference/flexible-classro
 getVideoDeviceManager(): RtcVideoDeviceManagerBase
 ```
 
-#### Returns
+#### 返回值
 
-Returns [RtcVideoDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-video-device-manager-base)
+[RtcVideoDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-video-device-manager-base)
 
 <a id="getWindowDevices"></a>
 
@@ -459,9 +459,9 @@ Returns [RtcVideoDeviceManagerBase](/zh-CN/api-reference/flexible-classroom/web/
 getWindowDevices(): Promise<AGScreenShareDevice[]>
 ```
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/interfaces/agscreen-share-device) [] &gt;
+Promise &lt; [AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/interfaces/agscreen-share-device) [] &gt;
 
 <a id="hasScreenSharePermission"></a>
 
@@ -471,9 +471,9 @@ Returns Promise &lt; [AGScreenShareDevice](/zh-CN/api-reference/flexible-classro
 hasScreenSharePermission(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="isScreenDeviceEnumerateSupported"></a>
 
@@ -483,9 +483,9 @@ Returns boolean
 isScreenDeviceEnumerateSupported(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="off"></a>
 
@@ -495,16 +495,16 @@ Returns boolean
 off(evt: string, cb: CallableFunction): RtcAdapterWeb
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-adapter-web)
+[RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-web)
 
 <a id="on"></a>
 
@@ -514,16 +514,16 @@ Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-
 on(evt: string, cb: CallableFunction): RtcAdapterWeb
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-adapter-web)
+[RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-web)
 
 <a id="onAutoplayFailed"></a>
 
@@ -533,15 +533,15 @@ Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-
 onAutoplayFailed(cb: () => void): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: () =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onLocalAudioPlaybackTestVolumeChanged"></a>
 
@@ -551,15 +551,15 @@ Returns number
 onLocalAudioPlaybackTestVolumeChanged(cb: LocalAudioPlaybackVolumeIndicatorEvent): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: LocalAudioPlaybackVolumeIndicatorEvent |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onLocalAudioTrackStateChanged"></a>
 
@@ -569,15 +569,15 @@ Returns number
 onLocalAudioTrackStateChanged(cb: LocalAudioTrackStateEvent): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: LocalAudioTrackStateEvent |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onLocalAudioVolume"></a>
 
@@ -587,15 +587,15 @@ Returns number
 onLocalAudioVolume(cb: (volume: number) => void): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: (volume: number) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onLocalLoopbackDeviceStateChanged"></a>
 
@@ -605,15 +605,15 @@ Returns number
 onLocalLoopbackDeviceStateChanged(cb: LocalLoopbackDeviceStateEvent): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: LocalLoopbackDeviceStateEvent |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onLocalPreviewAudioTrackStateChanged"></a>
 
@@ -623,15 +623,15 @@ Returns number
 onLocalPreviewAudioTrackStateChanged(cb: LocalAudioTrackStateEvent): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: LocalAudioTrackStateEvent |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onLocalPreviewAudioVolume"></a>
 
@@ -641,15 +641,15 @@ Returns number
 onLocalPreviewAudioVolume(cb: (volume: number) => void): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: (volume: number) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onLocalPreviewVideoTrackStateChanged"></a>
 
@@ -659,15 +659,15 @@ Returns number
 onLocalPreviewVideoTrackStateChanged(cb: LocalVideoTrackStateEvent): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: LocalVideoTrackStateEvent |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onLocalScreenShareTrackStateChanged"></a>
 
@@ -677,15 +677,15 @@ Returns number
 onLocalScreenShareTrackStateChanged(cb: LocalVideoTrackStateEvent): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: LocalVideoTrackStateEvent |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onLocalVideoTrackStateChanged"></a>
 
@@ -695,15 +695,15 @@ Returns number
 onLocalVideoTrackStateChanged(cb: LocalVideoTrackStateEvent): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: LocalVideoTrackStateEvent |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="once"></a>
 
@@ -713,16 +713,16 @@ Returns number
 once(evt: string, cb: CallableFunction): RtcAdapterWeb
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-adapter-web)
+[RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-web)
 
 <a id="removeAllEventListeners"></a>
 
@@ -732,9 +732,9 @@ Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/classes/rtc-
 removeAllEventListeners(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removeAudioRawDataObserver"></a>
 
@@ -744,16 +744,16 @@ Returns void
 removeAudioRawDataObserver(observer: AgoraRteAudioRawDataObserver, position: AgoraRteAudioRawDataPosition): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | observer: AgoraRteAudioRawDataObserver |  |
 | position: AgoraRteAudioRawDataPosition |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="removeCameraProcessors"></a>
 
@@ -763,9 +763,9 @@ Returns number
 removeCameraProcessors(): number
 ```
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="removeMicrophoneProcessors"></a>
 
@@ -775,9 +775,9 @@ Returns number
 removeMicrophoneProcessors(): number
 ```
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="removePreviewCameraProcessors"></a>
 
@@ -787,9 +787,9 @@ Returns number
 removePreviewCameraProcessors(): number
 ```
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="removePreviewMicrophoneProcessors"></a>
 
@@ -799,9 +799,9 @@ Returns number
 removePreviewMicrophoneProcessors(): number
 ```
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setAudioFrameCallback"></a>
 
@@ -811,9 +811,9 @@ Returns number
 setAudioFrameCallback(): number
 ```
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setAudioPlaybackDevice"></a>
 
@@ -823,15 +823,15 @@ Returns number
 setAudioPlaybackDevice(deviceId: string): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | deviceId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setAudioRawDataConfig"></a>
 
@@ -841,16 +841,16 @@ Returns number
 setAudioRawDataConfig(config: AgoraRteAudioRawDataConfig, position: AgoraRteAudioRawDataPosition): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: AgoraRteAudioRawDataConfig |  |
 | position: AgoraRteAudioRawDataPosition |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setAudioRecordingDevice"></a>
 
@@ -860,15 +860,15 @@ Returns number
 setAudioRecordingDevice(deviceId: string): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | deviceId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setBeautyEffectOptions"></a>
 
@@ -878,16 +878,16 @@ Returns number
 setBeautyEffectOptions(enable: boolean, options: AGBeautyEffect): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enable: boolean |  |
 | options: AGBeautyEffect |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setVideoCameraDevice"></a>
 
@@ -897,15 +897,15 @@ Returns number
 setVideoCameraDevice(deviceId: string): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | deviceId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setupLocalVideo"></a>
 
@@ -915,16 +915,16 @@ Returns number
 setupLocalVideo(canvas: AgoraRtcVideoCanvas, videoSourceType: AgoraRteVideoSourceType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | canvas: AgoraRtcVideoCanvas |  |
 | videoSourceType: AgoraRteVideoSourceType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setupPreviewLocalVideo"></a>
 
@@ -934,15 +934,15 @@ Returns number
 setupPreviewLocalVideo(canvas: AgoraRtcVideoCanvas): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | canvas: AgoraRtcVideoCanvas |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setupRemoteVideo"></a>
 
@@ -952,15 +952,15 @@ Returns number
 setupRemoteVideo(canvas: AgoraRtcVideoCanvas): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | canvas: AgoraRtcVideoCanvas |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="startAudioPlaybackDeviceTest"></a>
 
@@ -970,15 +970,15 @@ Returns number
 startAudioPlaybackDeviceTest(url: string): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | url: string |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="startAudioRecordingDeviceTest"></a>
 
@@ -988,15 +988,15 @@ Returns number
 startAudioRecordingDeviceTest(indicateInterval: number): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | indicateInterval: number |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="startScreenCapture"></a>
 
@@ -1006,15 +1006,15 @@ Returns number
 startScreenCapture(params?: { withAudio?: boolean }): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional params: \{ withAudio?: boolean \} |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="stopAudioFrameCallback"></a>
 
@@ -1024,9 +1024,9 @@ Returns number
 stopAudioFrameCallback(): number
 ```
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="stopAudioPlaybackDeviceTest"></a>
 
@@ -1036,9 +1036,9 @@ Returns number
 stopAudioPlaybackDeviceTest(): number
 ```
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="stopAudioRecordingDeviceTest"></a>
 
@@ -1048,9 +1048,9 @@ Returns number
 stopAudioRecordingDeviceTest(): number
 ```
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="stopScreenCapture"></a>
 
@@ -1060,9 +1060,9 @@ Returns number
 stopScreenCapture(): number
 ```
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="takeSnapshot"></a>
 
@@ -1072,17 +1072,17 @@ Returns number
 takeSnapshot(channelName: string, streamUuid: number, filePath: string): Promise<never>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | channelName: string |  |
 | streamUuid: number |  |
 | filePath: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; never &gt;
+Promise &lt; never &gt;
 
 <a id="getLogLevel"></a>
 
@@ -1092,9 +1092,9 @@ Returns Promise &lt; never &gt;
 getLogLevel(): 0 | 1 | 2 | 4 | 3
 ```
 
-#### Returns
+#### 返回值
 
-Returns 0 | 1 | 2 | 4 | 3
+0 | 1 | 2 | 4 | 3
 
 <a id="getRtcVersion"></a>
 
@@ -1104,6 +1104,6 @@ Returns 0 | 1 | 2 | 4 | 3
 getRtcVersion(): string
 ```
 
-#### Returns
+#### 返回值
 
-Returns string
+string

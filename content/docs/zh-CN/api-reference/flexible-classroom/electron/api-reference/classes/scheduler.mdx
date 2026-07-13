@@ -1,11 +1,11 @@
 ---
 title: "Scheduler"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "Scheduler API 参考。"
 ---
 
 - Scheduler
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -15,11 +15,11 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new Scheduler(): Scheduler
 ```
 
-#### Returns
+#### 返回值
 
-Returns [Scheduler](/zh-CN/api-reference/flexible-classroom/electron/classes/scheduler)
+[Scheduler](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/scheduler)
 
-## Methods
+## 方法
 
 <a id="addDelayTask"></a>
 
@@ -29,16 +29,16 @@ Returns [Scheduler](/zh-CN/api-reference/flexible-classroom/electron/classes/sch
 addDelayTask(runnable: () => void, delayInMs: number): Task
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | runnable: () =&gt; void |  |
 | delayInMs: number |  |
 
-#### Returns
+#### 返回值
 
-Returns [Task](/zh-CN/api-reference/flexible-classroom/electron/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
+[Task](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
 
 <a id="addIntervalTask"></a>
 
@@ -48,18 +48,18 @@ Returns [Task](/zh-CN/api-reference/flexible-classroom/electron/modules/agora-rt
 addIntervalTask(runnable: () => void, intervalInMs: number, immediate?: boolean, onFail?: () => ActionWhenTaskFail): Task
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | runnable: () =&gt; void |  |
 | intervalInMs: number |  |
 | Optional immediate: boolean |  |
 | Optional onFail: () =&gt; ActionWhenTaskFail |  |
 
-#### Returns
+#### 返回值
 
-Returns [Task](/zh-CN/api-reference/flexible-classroom/electron/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
+[Task](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
 
 <a id="addPollingTask"></a>
 
@@ -69,15 +69,15 @@ Returns [Task](/zh-CN/api-reference/flexible-classroom/electron/modules/agora-rt
 addPollingTask(runnable: () => void, intervalInMs: number, immediate?: boolean, onFail?: () => ActionWhenTaskFail): Task
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | runnable: () =&gt; void |  |
 | intervalInMs: number |  |
 | Optional immediate: boolean |  |
 | Optional onFail: () =&gt; ActionWhenTaskFail |  |
 
-#### Returns
+#### 返回值
 
-Returns [Task](/zh-CN/api-reference/flexible-classroom/electron/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)
+[Task](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-schedule-scheduler#Task)

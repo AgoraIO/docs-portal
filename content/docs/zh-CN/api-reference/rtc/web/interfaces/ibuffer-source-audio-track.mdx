@@ -1,6 +1,6 @@
 ---
 title: "IBufferSourceAudioTrack"
-description: "IBufferSourceAudioTrack API reference."
+description: "IBufferSourceAudioTrack API 参考。"
 ---
 
 直接通过音频数据源创建的音频轨道，继承于 [LocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-audio-track), 在此之上提供了控制音频数据处理流程的功能（开始/暂停/跳转等等）。 可以通过 [AgoraRTC.createBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createbuffersourceaudiotrack) 来获取。
@@ -9,7 +9,7 @@ description: "IBufferSourceAudioTrack API reference."
 
   - IBufferSourceAudioTrack
 
-## Events
+## 事件
 
 <a id="event_source_state_change"></a>
 
@@ -21,17 +21,17 @@ source-state-change(currentState: AudioSourceState): void
 
 当 [BufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffer-source-audio-track) 的音频数据源处理状态变化时，会触发此事件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | currentState: AudioSourceState | 当前音频数据处理状态：<br />- `"stopped"`: 音频源数据处理停止。可能是因为数据处理完毕，也可能是手动触发了停止。<br />- `"paused"`: 音频源数据暂停处理。<br />- `"playing"`: 音频源数据正在处理。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-## Properties
+## 属性
 
 <a id="currentstate"></a>
 
@@ -141,7 +141,7 @@ trackMediaType: "audio" | "video"
 - `"audio"`: 音频轨道。
 - `"video"`: 视频轨道。
 
-## Methods
+## 方法
 
 <a id="close"></a>
 
@@ -155,9 +155,9 @@ close(): void
 
 一旦本地轨道被关闭，就无法再次使用。如需再次使用本地轨道，需要重新创建。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="getcurrenttime"></a>
 
@@ -169,9 +169,9 @@ getCurrentTime(): number
 
 获取当前的音频处理的进度，单位为秒。
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 当前音频处理的进度。
 
@@ -185,15 +185,15 @@ getListeners(event: string): Function[]
 
 指定一个事件名，获取当前所有监听这个事件的回调函数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 事件名称。 |
 
-#### Returns
+#### 返回值
 
-Returns Function []
+Function []
 
 <a id="getmediastreamtrack"></a>
 
@@ -205,9 +205,9 @@ getMediaStreamTrack(): MediaStreamTrack
 
 获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-#### Returns
+#### 返回值
 
-Returns MediaStreamTrack
+MediaStreamTrack
 
 一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
@@ -225,15 +225,15 @@ getRTCRtpTransceiver(type?: StreamType): RTCRtpTransceiver | undefined
 
 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例： 本地轨道： [ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track#event_transceiver_updated) 远端轨道： [IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremote-track#event_transceiver_updated_2)
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional type: StreamType | 视频流的类型。详见 [StreamType](/zh-CN/api-reference/rtc/web/enums/stream-type)。 |
 
-#### Returns
+#### 返回值
 
-Returns RTCRtpTransceiver | undefined
+RTCRtpTransceiver | undefined
 
 当前轨道的 `RTCRtpTransceiver` 实例。
 
@@ -251,9 +251,9 @@ getStats(): LocalAudioTrackStats
 
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#getlocalaudiostats)。
 
-#### Returns
+#### 返回值
 
-Returns [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-audio-track-stats)
+[LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-audio-track-stats)
 
 <a id="gettrackid"></a>
 
@@ -265,9 +265,9 @@ getTrackId(): string
 
 获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
 媒体轨道 ID。
 
@@ -281,9 +281,9 @@ getTrackLabel(): string
 
 获取本地轨道的来源描述。
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
 可能返回以下值：
 
@@ -301,9 +301,9 @@ getVolumeLevel(): number
 
 获取本地音频轨道的音量等级。
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 音量等级值，范围 [0, 1]，1 代表理论最大音量。通常该值大于 0.6 代表用户在持续说话。
 
@@ -317,16 +317,16 @@ off(event: string, listener: Function): void
 
 取消一个指定事件的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 监听事件时传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="on"></a>
 
@@ -340,29 +340,29 @@ on(event: "source-state-change", listener: typeof event_source_state_change): vo
 on(event: string, listener: Function): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "source-state-change" | 事件名称。 |
 | listener: typeof event_source_state_change | 详见 [source-state-change](/zh-CN/api-reference/rtc/web/interfaces/ibuffer-source-audio-track#event_source_state_change)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 当指定的事件触发时，会调用传入的回调函数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 事件名称。 |
 | listener: Function | 回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="once"></a>
 
@@ -376,16 +376,16 @@ once(event: string, listener: Function): void
 
 当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="pauseprocessaudiobuffer"></a>
 
@@ -397,9 +397,9 @@ pauseProcessAudioBuffer(): void
 
 暂停处理音频数据。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="pipe"></a>
 
@@ -415,15 +415,15 @@ pipe(processor: IAudioProcessor): IAudioProcessor
 
 将 `Processor` 注入本地音频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | processor: IAudioProcessor | `Processor` 实例。每个插件均有对应类型的 `Processor`。 |
 
-#### Returns
+#### 返回值
 
-Returns IAudioProcessor
+IAudioProcessor
 
 `Processor` 实例。
 
@@ -439,9 +439,9 @@ play(): void
 
 播放音频时 SDK 不会创建任何 DOM 元素，所以无需像视频一样提供 DOM 元素。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removealllisteners"></a>
 
@@ -453,15 +453,15 @@ removeAllListeners(event?: string): void
 
 指定一个事件，取消其所有的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional event: string | 指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="resumeprocessaudiobuffer"></a>
 
@@ -473,9 +473,9 @@ resumeProcessAudioBuffer(): void
 
 恢复被暂停的音频数据处理。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="seekaudiobuffer"></a>
 
@@ -487,15 +487,15 @@ seekAudioBuffer(time: number): void
 
 跳转到指定时间。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | time: number | 指定的音频时间，单位为秒。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setaudiobufferplaybackspeed"></a>
 
@@ -513,15 +513,15 @@ setAudioBufferPlaybackSpeed(speed: number): void
 
 在加入频道前和加入频道后，你都可以调用该方法。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | speed: number | 播放速度。取值范围为 [50,400]，其中：<br />- `50`: 0.5 倍速。<br />- `100`: （默认）原始速度。<br />- `400`: 4 倍速。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setaudioframecallback"></a>
 
@@ -551,16 +551,16 @@ track.setAudioFrameCallback((buffer) => {
 track.setAudioFrameCallback(null);
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | audioFrameCallback: null \| function | 用于接收 [AudioBuffer](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer) 的回调函数。设为 `null` 后，SDK 就会停止获取音频原始数据。 |
 | Optional frameSize: number | 每次回调的 `AudioBuffer` 中每个声道包含的采样数据个数，只能设为下列值：256, 512, 1024, 2048, 4096, 8192, 16384。默认为 4096。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setenabled"></a>
 
@@ -580,15 +580,15 @@ setEnabled(enabled: boolean): Promise<void>
 
 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track#event_track_ended) 事件。 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_published) 事件。 `setEnabled` 和 `setMuted` 不能同时调用。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enabled: boolean | 是否启用该轨道:<br />- `true`: 启用该轨道。<br />- `false`: 禁用该轨道。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setmuted"></a>
 
@@ -608,15 +608,15 @@ setMuted(muted: boolean): Promise<void>
 
 与 [setEnabled](/zh-CN/api-reference/rtc/web/interfaces/ibuffer-source-audio-track#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](http://doc.shengwang.cn/faq/integration-issues/diff-setenabled-setmuted)。 `setEnabled` 和 `setMuted` 不能同时调用。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | muted: boolean | 是否发送该轨道的媒体数据:<br />- `true`: 暂停发送该轨道的媒体数据。<br />- `false`: 恢复发送该轨道的媒体数据。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setplaybackdevice"></a>
 
@@ -634,15 +634,15 @@ setPlaybackDevice(deviceId: string): Promise<void>
 
 设置本地播放远端音频流的设备（扬声器）。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | deviceId: string | 设备 ID，可以通过 [getPlaybackDevices](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#getplaybackdevices) 方法获取。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setvolume"></a>
 
@@ -654,15 +654,15 @@ setVolume(volume: number): void
 
 设置本地音频轨道的音量。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | volume: number | 音量值，范围 [0, 1000], 0 代表静音，100 代表原始音量。100 以上会使用 WebAudio 进行音量增益。如果本地音频轨道已经发布，修改音量会影响远端听到的音量大小。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="startprocessaudiobuffer"></a>
 
@@ -676,15 +676,15 @@ startProcessAudioBuffer(options?: AudioSourceOptions): void
 
 开始处理音频数据源说明我们已经将音频数据送入 SDK 的处理节点。如果此时该音频轨道已发布，远端可以听到该音源的声音。 只有在调用 [play](/zh-CN/api-reference/rtc/web/interfaces/ibuffer-source-audio-track#play) 之后，音频数据才会送入声卡，此时本地才能听到该音源的声音。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional options: AudioSourceOptions | 音频数据源处理的相关设置，包括是否需要循环播放/开始播放的位置。详见 [AudioSourceOptions](/zh-CN/api-reference/rtc/web/interfaces/audio-source-options)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="stop"></a>
 
@@ -696,9 +696,9 @@ stop(): void
 
 停止播放。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="stopprocessaudiobuffer"></a>
 
@@ -710,9 +710,9 @@ stopProcessAudioBuffer(): void
 
 停止处理音频数据。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="unpipe"></a>
 
@@ -728,6 +728,6 @@ unpipe(): void
 
 取消本地音频轨道上注入的 `Processor`。
 
-#### Returns
+#### 返回值
 
-Returns void
+void

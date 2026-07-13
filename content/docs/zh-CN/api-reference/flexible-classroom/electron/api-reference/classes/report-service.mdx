@@ -1,13 +1,13 @@
 ---
 title: "ReportService"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "ReportService API 参考。"
 ---
 
-- [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/classes/api-base)
+- [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/api-base)
 
   - ReportService
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -17,11 +17,11 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new ReportService(): ReportService
 ```
 
-#### Returns
+#### 返回值
 
-Returns [ReportService](/zh-CN/api-reference/flexible-classroom/electron/classes/report-service)
+[ReportService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/report-service)
 
-## Properties
+## 属性
 
 <a id="fallbackRequestHandler"></a>
 
@@ -79,7 +79,7 @@ domainHolder: DomainHolder
 shared: ReportService
 ```
 
-## Accessors
+## 访问器
 
 <a id="platform"></a>
 
@@ -89,11 +89,11 @@ shared: ReportService
 get platform(): "electron" | "web"
 ```
 
-#### Returns
+#### 返回值
 
-Returns "electron" | "web"
+"electron" | "web"
 
-## Methods
+## 方法
 
 <a id="buildBaseParams"></a>
 
@@ -103,9 +103,9 @@ Returns "electron" | "web"
 buildBaseParams(ctype: string, src: string, m: string, metric: ReportPointMetricParams, optional: ReportPointOptionalParams, event?: string, category?: string): "agora-rte-sdk/src/core/services/report".ReportParams
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | ctype: string |  |
 | src: string |  |
@@ -115,9 +115,9 @@ buildBaseParams(ctype: string, src: string, m: string, metric: ReportPointMetric
 | Optional event: string |  |
 | Optional category: string |  |
 
-#### Returns
+#### 返回值
 
-Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/modules/agora-rte-sdk-src-core-services-report). [ReportParams](/zh-CN/api-reference/flexible-classroom/electron/modules/agora-rte-sdk-src-core-services-report#ReportParams)
+["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-services-report). [ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-services-report#ReportParams)
 
 <a id="buildEventParams"></a>
 
@@ -127,18 +127,18 @@ Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible
 buildEventParams(event: string, category: string, metric: ReportPointMetricParams, optional: ReportPointOptionalParams): "agora-rte-sdk/src/core/services/report".ReportParams
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string |  |
 | category: string |  |
 | metric: ReportPointMetricParams |  |
 | optional: ReportPointOptionalParams |  |
 
-#### Returns
+#### 返回值
 
-Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/modules/agora-rte-sdk-src-core-services-report). [ReportParams](/zh-CN/api-reference/flexible-classroom/electron/modules/agora-rte-sdk-src-core-services-report#ReportParams)
+["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-services-report). [ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-services-report#ReportParams)
 
 <a id="buildHBParams"></a>
 
@@ -148,9 +148,9 @@ Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible
 buildHBParams(): "agora-rte-sdk/src/core/services/report".ReportParams
 ```
 
-#### Returns
+#### 返回值
 
-Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/modules/agora-rte-sdk-src-core-services-report). [ReportParams](/zh-CN/api-reference/flexible-classroom/electron/modules/agora-rte-sdk-src-core-services-report#ReportParams)
+["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-services-report). [ReportParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-rte-sdk-src-core-services-report#ReportParams)
 
 <a id="fetch"></a>
 
@@ -160,15 +160,15 @@ Returns ["agora-rte-sdk/src/core/services/report"](/zh-CN/api-reference/flexible
 fetch(params: AgoraFetchParams): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: AgoraFetchParams |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="getElapse"></a>
 
@@ -178,17 +178,17 @@ Returns Promise &lt; any &gt;
 getElapse(event: string, category: string, api?: string): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string |  |
 | category: string |  |
 | Optional api: string |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="guardParams"></a>
 
@@ -198,9 +198,9 @@ Returns number
 guardParams(): undefined | true
 ```
 
-#### Returns
+#### 返回值
 
-Returns undefined | true
+undefined | true
 
 <a id="report"></a>
 
@@ -210,18 +210,18 @@ Returns undefined | true
 report(event: string, category: string, metric: ReportPointMetricParams, optional?: ReportPointOptionalParams): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string |  |
 | category: string |  |
 | metric: ReportPointMetricParams |  |
 | Optional optional: ReportPointOptionalParams |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="reportEC"></a>
 
@@ -231,17 +231,17 @@ Returns Promise &lt; any &gt;
 reportEC(event: string, category: string, optional?: ReportPointOptionalParams): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string |  |
 | category: string |  |
 | Optional optional: ReportPointOptionalParams |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="reportElapse"></a>
 
@@ -251,17 +251,17 @@ Returns Promise &lt; any &gt;
 reportElapse(event: string, category: string, optional?: ReportPointOptionalParams): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string |  |
 | category: string |  |
 | Optional optional: ReportPointOptionalParams |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="reportHB"></a>
 
@@ -271,9 +271,9 @@ Returns Promise &lt; any &gt;
 reportHB(): Promise<any>
 ```
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="reportHttp"></a>
 
@@ -283,9 +283,9 @@ Returns Promise &lt; any &gt;
 reportHttp(event: string, category: string, api: string, httpCode: number, result: boolean, errCode: string): Promise<any>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string |  |
 | category: string |  |
@@ -294,9 +294,9 @@ reportHttp(event: string, category: string, api: string, httpCode: number, resul
 | result: boolean |  |
 | errCode: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="startTick"></a>
 
@@ -306,17 +306,17 @@ Returns Promise &lt; any &gt;
 startTick(event: string, category: string, api?: string): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string |  |
 | category: string |  |
 | Optional api: string |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="tickerKey"></a>
 
@@ -326,14 +326,14 @@ Returns void
 tickerKey(event: string, category: string, api?: string): string
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string |  |
 | category: string |  |
 | Optional api: string |  |
 
-#### Returns
+#### 返回值
 
-Returns string
+string

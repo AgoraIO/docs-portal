@@ -1,9 +1,9 @@
 ---
 title: "agora-rte-sdk/src/core/utils/utils"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "agora-rte-sdk/src/core/utils/utils API 参考。"
 ---
 
-## Type aliases
+## 类型别名
 
 <a id="AbortCallback"></a>
 
@@ -37,7 +37,7 @@ AttemptFailCallback: (args: RetryAttemptArgs & { timeFn: any }) => Promise<boole
 RetryAttemptArgs: { currentRetry: number; error: Error; exponential: number; factor: number; interval: number; jitter: number; maxBackoff: number; retriesMax: number }
 ```
 
-#### Type declaration
+#### 类型声明
 
 ##### `currentRetry: number`
 
@@ -63,7 +63,7 @@ RetryAttemptArgs: { currentRetry: number; error: Error; exponential: number; fac
 RetryOptions: { exponential?: boolean; factor?: number; interval?: number; isCb?: boolean; jitter?: number; maxBackoff?: number; retriesMax?: number }
 ```
 
-#### Type declaration
+#### 类型声明
 
 ##### `exponential?: boolean`
 
@@ -79,7 +79,7 @@ RetryOptions: { exponential?: boolean; factor?: number; interval?: number; isCb?
 
 ##### `retriesMax?: number`
 
-## Functions
+## 函数
 
 <a id="arr2Map"></a>
 
@@ -89,16 +89,16 @@ RetryOptions: { exponential?: boolean; factor?: number; interval?: number; isCb?
 arr2Map<T>(arr: T[], fnKey: (ele: T) => string): Map<string, T>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | arr: T[] |  |
 | fnKey: (ele: T) =&gt; string |  |
 
-#### Returns
+#### 返回值
 
-Returns Map &lt; string, T &gt;
+Map &lt; string, T &gt;
 
 <a id="arr2map"></a>
 
@@ -108,16 +108,16 @@ Returns Map &lt; string, T &gt;
 arr2map<T>(arr: T[], fnKey: (ele: T) => string): Record<string, T>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | arr: T[] |  |
 | fnKey: (ele: T) =&gt; string |  |
 
-#### Returns
+#### 返回值
 
-Returns Record &lt; string, T &gt;
+Record &lt; string, T &gt;
 
 <a id="isElectron"></a>
 
@@ -127,9 +127,9 @@ Returns Record &lt; string, T &gt;
 isElectron(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="jsonstring"></a>
 
@@ -139,15 +139,15 @@ Returns boolean
 jsonstring(json: unknown): string
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | json: unknown |  |
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
 <a id="printarr"></a>
 
@@ -157,16 +157,16 @@ Returns string
 printarr(arr: unknown[], keyFn?: (i: unknown) => string): string
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | arr: unknown[] |  |
 | Optional keyFn: (i: unknown) =&gt; string |  |
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
 <a id="retryAttempt"></a>
 
@@ -176,17 +176,17 @@ Returns string
 retryAttempt(fn: "agora-rte-sdk/src/core/utils/utils".AnyFunction, args: unknown[], opts?: RetryOptions): Retry
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | fn: "agora-rte-sdk/src/core/utils/utils".AnyFunction |  |
 | args: unknown[] |  |
 | Optional opts: RetryOptions |  |
 
-#### Returns
+#### 返回值
 
-Returns [Retry](/zh-CN/api-reference/flexible-classroom/web/classes/retry)
+[Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/retry)
 
 <a id="sleep"></a>
 
@@ -196,12 +196,12 @@ Returns [Retry](/zh-CN/api-reference/flexible-classroom/web/classes/retry)
 sleep(ms: number): Promise<unknown>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | ms: number |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; unknown &gt;
+Promise &lt; unknown &gt;

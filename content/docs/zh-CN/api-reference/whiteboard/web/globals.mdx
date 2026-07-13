@@ -1,9 +1,9 @@
 ---
 title: "Agora Interactive Whiteboard Web SDK API Reference"
-description: "Agora Interactive Whiteboard Web SDK API Reference API reference."
+description: "Agora Interactive Whiteboard Web SDK API Reference API 参考。"
 ---
 
-## Type aliases
+## 类型别名
 
 <a id="broadcaststate"></a>
 
@@ -15,7 +15,7 @@ BroadcastState: { broadcasterId?: number; mode: ViewMode }
 
 视角状态，包含视角为主播模式的用户信息。
 
-#### Type declaration
+#### 类型声明
 
 ##### `broadcasterId?: number`
 
@@ -35,7 +35,7 @@ Camera: { centerX: number; centerY: number; scale: number }
 
 视角的描述。
 
-#### Type declaration
+#### 类型声明
 
 ##### `centerX: number`
 
@@ -61,7 +61,7 @@ CameraBound: { centerX?: number; centerY?: number; damping?: number; height?: nu
 
 视角边界是白板上用户可以看见的部分。在视角边界内，用户可以自由移动和缩放视角。视角如果超出了视角边界的范围，会被 SDK 拉回视角边界内。
 
-#### Type declaration
+#### 类型声明
 
 ##### `centerX?: number`
 
@@ -135,7 +135,7 @@ ConstructRoomParams: { cameraBound?: CameraBound; commandWheelToZoom?: boolean; 
 
 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 对象和 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 对象共用的参数配置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `cameraBound?: CameraBound`
 
@@ -230,7 +230,7 @@ ConvertedFile: { conversionFileUrl: string; height: number; preview?: string; wi
 
 转换后生成的图片或动态 PPT 页。
 
-#### Type declaration
+#### 类型声明
 
 ##### `conversionFileUrl: string`
 
@@ -258,7 +258,7 @@ CursorDescription: { height: number; width: number; x: number; y: number }
 
 光标的描述。
 
-#### Type declaration
+#### 类型声明
 
 ##### `height: number`
 
@@ -286,7 +286,7 @@ DisplayerCallbacks: { onBackgroundError: (url: string) => void; onCatchErrorWhen
 
 `Displayer` 对象的回调。
 
-#### Type declaration
+#### 类型声明
 
 ##### `onBackgroundError: (url: string) => void`
 
@@ -320,7 +320,7 @@ DisplayerState: { cameraState: CameraState; globalState: GlobalState; roomMember
 
 `DisplayerState` 是 `Room` 对象和 `Player` 对象共有的类型。
 
-#### Type declaration
+#### 类型声明
 
 ##### `cameraState: CameraState`
 
@@ -352,7 +352,7 @@ Event: { authorId: number; event: string; payload: any; phase: EventPhase; scope
 
 自定义事件。
 
-#### Type declaration
+#### 类型声明
 
 ##### `authorId: number`
 
@@ -414,7 +414,7 @@ FloatBarOptions: { colors: ReadonlyArray<Readonly<Color>> }
 
 悬浮条的配置参数。
 
-#### Type declaration
+#### 类型声明
 
 ##### `colors: ReadonlyArray<Readonly<Color>>`
 
@@ -477,7 +477,7 @@ HotKeyDescription: { altKey: boolean | null; ctrlKey: boolean | null; key: strin
 
 自定义快捷键的描述。
 
-#### Type declaration
+#### 类型声明
 
 ##### `altKey: boolean | null`
 
@@ -505,7 +505,7 @@ HotKeyEvent: { altKey: boolean; ctrlKey: boolean; key: string; kind: "KeyDown" |
 
 自定义快捷键的事件。
 
-#### Type declaration
+#### 类型声明
 
 ##### `altKey: boolean`
 
@@ -544,7 +544,7 @@ HotKeys: { changeToArrow: HotKey; changeToClick: HotKey; changeToEllipse: HotKey
 
 快捷键对应的效果。
 
-#### Type declaration
+#### 类型声明
 
 ##### `changeToArrow: HotKey`
 
@@ -638,7 +638,7 @@ ImageInformation: { centerX: number; centerY: number; crossOrigin?: boolean | st
 
 图片的描述。
 
-#### Type declaration
+#### 类型声明
 
 ##### `centerX: number`
 
@@ -699,7 +699,7 @@ International: { displayNote?: string; displaySidebar?: string; hideNote?: strin
 
 `International` 类，用于添加 PPT 预览菜单栏的界面文字。你可以直接传入要展示的文字，例如 “Next”。
 
-#### Type declaration
+#### 类型声明
 
 ##### `displayNote?: string`
 
@@ -759,7 +759,7 @@ InvisibleCallbacks<A>: { onAttributesUpdate: (attributes: A) => void; onDestroy:
 
 不可见插件的回调事件。
 
-#### Type declaration
+#### 类型声明
 
 ##### `onAttributesUpdate: (attributes: A) => void`
 
@@ -775,7 +775,7 @@ InvisiblePluginClass<K, A, P>: { kind: K; onCreate?: (plugin: P) => void; onDest
 
 不可见插件。
 
-#### Type declaration
+#### 类型声明
 
 ##### `kind: K`
 
@@ -795,7 +795,7 @@ InvisiblePluginContext: { displayer: Displayer; kind: string }
 
 不可见插件的上下文。
 
-#### Type declaration
+#### 类型声明
 
 ##### `displayer: Displayer`
 
@@ -981,7 +981,7 @@ LoggerOptions: { printLevelMask?: Level; reportDebugLogMode?: LoggerReportMode; 
 
 日志的配置参数。
 
-#### Type declaration
+#### 类型声明
 
 ##### `printLevelMask?: Level`
 
@@ -1013,7 +1013,7 @@ MagixEventListenerOptions: { fireInterval?: number; fireSelfEventAfterCommit?: b
 
 v2.15.2
 
-#### Type declaration
+#### 类型声明
 
 ##### `fireInterval?: number`
 
@@ -1038,7 +1038,7 @@ Margin: { bottom: number; left: number; right: number; top: number }
 
 空白区域的设置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `bottom: number`
 
@@ -1083,7 +1083,7 @@ MemberInformation: { id: number; payload: any; session: string }
 
 已废弃。请改用 [JoinRoomParams](/zh-CN/api-reference/whiteboard/web/globals#joinroomparams) 中的 `userPayload`。
 
-#### Type declaration
+#### 类型声明
 
 ##### `id: number`
 
@@ -1101,7 +1101,7 @@ MemberState: { arrowCompleteToSelector?: boolean; bold?: boolean; currentApplian
 
 互动白板实时房间的白板工具状态。
 
-#### Type declaration
+#### 类型声明
 
 ##### `arrowCompleteToSelector?: boolean`
 
@@ -1244,7 +1244,7 @@ PlayableCheckingParams: { beginTimestamp?: number; duration?: number; region?: s
 
 检查白板房间是否可以回放的参数配置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `beginTimestamp?: number`
 
@@ -1370,7 +1370,7 @@ Plugin<C, T>: { defaultAttributes?: T; hitTest?: (plugin: PluginInstance<C, T>, 
 
 组件插件的描述。Agora 支持的自定义插件包括组件插件和不可见插件。
 
-#### Type declaration
+#### 类型声明
 
 ##### `defaultAttributes?: T`
 
@@ -1398,7 +1398,7 @@ PluginDescription<A>: { attributes?: A; height?: number; originX?: number; origi
 
 组件插件对象的描述。
 
-#### Type declaration
+#### 类型声明
 
 ##### `attributes?: A`
 
@@ -1437,7 +1437,7 @@ PluginProps<C, T>: { margin: Margin; origin: Point; plugin: PluginInstance<C, T>
 
 组件插件的外观设置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `margin: Margin`
 
@@ -1469,7 +1469,7 @@ Point: { x: number; y: number }
 
 世界坐标系（以白板初始化时的中心点为原点的坐标系）的点坐标。
 
-#### Type declaration
+#### 类型声明
 
 ##### `x: number`
 
@@ -1501,7 +1501,7 @@ PptDescription: { height: number; previewURL?: string; src: string; width: numbe
 - 一个场景只能插入一张图片或动态 PPT 页。
 - 插入的图片或动态 PPT 页的中心点坐标默认为世界坐标系的原点。图片或动态 PPT 页插入场景后，你无法改变它在白板上的位置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `height: number`
 
@@ -1532,7 +1532,7 @@ PreviewConfig: { international?: International }
 
 PPT 预览页面的配置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `international?: International`
 
@@ -1548,7 +1548,7 @@ Progress: { convertedFileList: ConvertedFile[]; convertedPageSize: number; conve
 
 文档转换任务的进度详情。
 
-#### Type declaration
+#### 类型声明
 
 ##### `convertedFileList: ConvertedFile[]`
 
@@ -1591,7 +1591,7 @@ RTCClient: { adjustAudioMixingPlayoutVolume?: (volume: number) => number; adjust
 
 目前仅支持 Electron 平台的 Agora RTC SDK.
 
-#### Type declaration
+#### 类型声明
 
 ##### `adjustAudioMixingPlayoutVolume?: (volume: number) => number`
 
@@ -1627,7 +1627,7 @@ ReconnectionOptions: { disableReconnect: boolean }
 
 断线重连设置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `disableReconnect: boolean`
 
@@ -1663,7 +1663,7 @@ RenderPlugin<C, T>: { defaultAttributes?: T; hitTest?: (plugin: PluginInstance<C
 
 组件插件的渲染。
 
-#### Type declaration
+#### 类型声明
 
 ##### `defaultAttributes?: T`
 
@@ -1875,7 +1875,7 @@ RoomMember: { memberId: number; memberState: MemberState; payload: UserPayload; 
 
 实时房间内互动模式（具有读写权限）用户的信息。
 
-#### Type declaration
+#### 类型声明
 
 ##### `memberId: number`
 
@@ -1926,7 +1926,7 @@ SceneDefinition: { name?: string; ppt?: PptDescription }
 
 场景定义。
 
-#### Type declaration
+#### 类型声明
 
 ##### `name?: string`
 
@@ -1956,7 +1956,7 @@ SceneState: { contextPath: string; index: number; sceneName: string; scenePath: 
 
 场景状态。
 
-#### Type declaration
+#### 类型声明
 
 ##### `contextPath: string`
 
@@ -1996,7 +1996,7 @@ ScenesCallbacks: { onAddScene: (scenesCallbacks: ScenesCallbacksNode, name: stri
 
 场景回调。
 
-#### Type declaration
+#### 类型声明
 
 ##### `onAddScene: (scenesCallbacks: ScenesCallbacksNode, name: string) => void`
 
@@ -2080,7 +2080,7 @@ Size: { height: number; width: number }
 
 尺寸大小。
 
-#### Type declaration
+#### 类型声明
 
 ##### `height: number`
 
@@ -2100,7 +2100,7 @@ TextFormat: { bold?: boolean; color?: Color; fontSize?: number; italic?: boolean
 
 字体样式。
 
-#### Type declaration
+#### 类型声明
 
 ##### `bold?: boolean`
 
@@ -2191,7 +2191,7 @@ WhiteScene: { name: string; ppt?: PptDescription }
 
 白板场景。
 
-#### Type declaration
+#### 类型声明
 
 ##### `name: string`
 
@@ -2215,7 +2215,7 @@ WhiteWebSdkConfiguration: { appIdentifier: string; deviceType?: DeviceType; disa
 
 成功初始化 `WhiteWebSdk` 后，无法再调用 `WhiteWebSdkConfiguration` 中的任何方法修改 `WhiteWebSdk` 的配置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `appIdentifier: string`
 
@@ -2386,7 +2386,7 @@ WorldViewRectangle: { height: number; originX: number; originY: number; width: n
 
 你可以根据要展示的 PPT 幻灯片或图像的尺寸设置视觉矩形，以确保相同的内容在不同尺寸的屏幕上都可以完整显示。
 
-#### Type declaration
+#### 类型声明
 
 ##### `height: number`
 
@@ -2418,7 +2418,7 @@ WrappedComponents: ReadonlyArray<ComponentType<{}>>
 
 由 `React.ComponentType` 类型组成的数组，用于包装白板的界面。默认值为 []。
 
-## Variables
+## 变量
 
 <a id="adminobserverid"></a>
 
@@ -2499,7 +2499,7 @@ WhiteVersion: string
 
 当前 SDK 的版本号，格式为字符串，如 `"2.12.11"`。
 
-## Functions
+## 函数
 
 <a id="contentmodeaspectfill"></a>
 
@@ -2511,9 +2511,9 @@ contentModeAspectFill(): ContentMode
 
 等比例缩放视角，使视角边界的短边正好顶住与其垂直的屏幕的两边，以保证视角边界铺满屏幕。
 
-#### Returns
+#### 返回值
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
+[ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 视角的实时缩放比例。
 
@@ -2527,15 +2527,15 @@ contentModeAspectFillScale(scale: number): ContentMode
 
 等比例缩放视角，使视角边界的短边正好顶住与其垂直的屏幕的两边，以保证视角边界铺满屏幕；在此基础上再将视角边界缩放指定的倍数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | scale: number | 在等比例缩放的基础上再缩放视角边界的倍数。 |
 
-#### Returns
+#### 返回值
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
+[ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 视角的实时缩放比例。
 
@@ -2549,9 +2549,9 @@ contentModeAspectFit(): ContentMode
 
 等比例缩放视角，使视角边界的长边正好顶住与其垂直的屏幕的两边，以保证在屏幕上完整展示视角边界。
 
-#### Returns
+#### 返回值
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
+[ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 实时缩放比例。
 
@@ -2565,15 +2565,15 @@ contentModeAspectFitScale(scale: number): ContentMode
 
 等比例缩放视角，使视角边界的长边正好顶住与其垂直的屏幕的两边，以保证在屏幕上完整展示视角边界；在此基础上，再将视角边界缩放指定的倍数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | scale: number | 在等比例缩放的基础上再缩放视角边界的倍数。 |
 
-#### Returns
+#### 返回值
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
+[ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 实时缩放比例。
 
@@ -2587,15 +2587,15 @@ contentModeAspectFitSpace(space: number): ContentMode
 
 等比例缩放视角，使视角边界的长边正好顶住与其垂直的屏幕的两边；在此基础上，在视角边界的四周填充指定的空白空间。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | space: number | 在等比例缩放的基础上再填充的空白空间，单位为像素。 |
 
-#### Returns
+#### 返回值
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
+[ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 实时缩放比例。
 
@@ -2609,15 +2609,15 @@ contentModeScale(scale: number): ContentMode
 
 按指定的比例缩放视角边界。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | scale: number | 指定的缩放比例。 |
 
-#### Returns
+#### 返回值
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
+[ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 实时缩放比例。
 
@@ -2631,15 +2631,15 @@ createPlugins<C_MAP>(plugins: Readonly<{}>): Plugins<C_MAP>
 
 创建插件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | plugins: Readonly&lt;\{\}&gt; | 创建的插件。 |
 
-#### Returns
+#### 返回值
 
-Returns [Plugins](/zh-CN/api-reference/whiteboard/web/interfaces/plugins-c-map) &lt; C_MAP &gt;
+[Plugins](/zh-CN/api-reference/whiteboard/web/interfaces/plugins-c-map) &lt; C_MAP &gt;
 
 <a id="injectcustomstyle"></a>
 
@@ -2651,15 +2651,15 @@ injectCustomStyle(icons: UserCursorIcons): void
 
 添加自定义的图标。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | icons: UserCursorIcons | 自定义的图标。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="isplayer"></a>
 
@@ -2671,15 +2671,15 @@ isPlayer(displayer: Displayer): boolean
 
 判断 `Displayer` 对象是否为 `Player` 对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | displayer: Displayer | `Displayer` 对象。 |
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 该 `Displayer` 对象是否为 `Player` 对象：
 
@@ -2696,15 +2696,15 @@ isRoom(displayer: Displayer): boolean
 
 判断 `Displayer` 对象是否为 `Room` 对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | displayer: Displayer | `Displayer` 对象。 |
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 `Displayer` 对象是否为 `Room` 对象：
 
@@ -2721,12 +2721,12 @@ setAsyncModuleLoadMode(mode: AsyncModuleLoadMode): void
 
 设置异步模块的加载模式。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mode: AsyncModuleLoadMode | 异步模块的加载模式，详见 [AsyncModuleLoadMode](/zh-CN/api-reference/whiteboard/web/enums/async-module-load-mode)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void

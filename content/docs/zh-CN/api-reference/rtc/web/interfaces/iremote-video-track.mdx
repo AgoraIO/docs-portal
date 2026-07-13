@@ -1,6 +1,6 @@
 ---
 title: "IRemoteVideoTrack"
-description: "IRemoteVideoTrack API reference."
+description: "IRemoteVideoTrack API 参考。"
 ---
 
 远端视频轨道。 调用 [subscribe](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#subscribe) 后通过 [AgoraRTCRemoteUser.videoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcremote-user#videotrack) 对象获取。
@@ -9,7 +9,7 @@ description: "IRemoteVideoTrack API reference."
 
   - IRemoteVideoTrack
 
-## Events
+## 事件
 
 <a id="event_video_element_visible_status_2"></a>
 
@@ -27,17 +27,17 @@ video-element-visible-status(data?: CheckVideoVisibleResult): void
 
 调用 `remoteVideoTrack.play` 后 SDK 会创建 [HTML &lt;video&gt;](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `remoteVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可通过此事件来进行问题排查。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional data: CheckVideoVisibleResult | `<video>` 标签的可见状态信息。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-## Properties
+## 属性
 
 <a id="isplaying"></a>
 
@@ -79,7 +79,7 @@ trackMediaType: "audio" | "video"
 - `"audio"`: 音频轨道。
 - `"video"`: 视频轨道。
 
-## Methods
+## 方法
 
 <a id="getcurrentframedata"></a>
 
@@ -97,9 +97,9 @@ getCurrentFrameData(): ImageData
 
 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/web/interfaces/iremote-video-track#play) 则返回空数据。
 
-#### Returns
+#### 返回值
 
-Returns ImageData
+ImageData
 
 存储了 RGBA 数据的 `ImageData` 对象。该对象为浏览器原生对象，详见 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData)。
 
@@ -113,15 +113,15 @@ getListeners(event: string): Function[]
 
 指定一个事件名，获取当前所有监听这个事件的回调函数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 事件名称。 |
 
-#### Returns
+#### 返回值
 
-Returns Function []
+Function []
 
 <a id="getmediastreamtrack"></a>
 
@@ -133,9 +133,9 @@ getMediaStreamTrack(): MediaStreamTrack
 
 获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-#### Returns
+#### 返回值
 
-Returns MediaStreamTrack
+MediaStreamTrack
 
 一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
@@ -153,15 +153,15 @@ getRTCRtpTransceiver(type?: StreamType): RTCRtpTransceiver | undefined
 
 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例： 本地轨道： [ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track#event_transceiver_updated) 远端轨道： [IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremote-track#event_transceiver_updated_2)
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional type: StreamType | 视频流的类型。详见 [StreamType](/zh-CN/api-reference/rtc/web/enums/stream-type)。 |
 
-#### Returns
+#### 返回值
 
-Returns RTCRtpTransceiver | undefined
+RTCRtpTransceiver | undefined
 
 当前轨道的 `RTCRtpTransceiver` 实例。
 
@@ -177,9 +177,9 @@ getStats(): RemoteVideoTrackStats
 
 **不推荐使用** 请使用 [AgoraRTCClient.getRemoteVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#getremotevideostats) 获取远端视频轨道相关信息。
 
-#### Returns
+#### 返回值
 
-Returns [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remote-video-track-stats)
+[RemoteVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remote-video-track-stats)
 
 一个 [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remote-video-track-stats) 对象。
 
@@ -193,9 +193,9 @@ getTrackId(): string
 
 获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
 媒体轨道 ID。
 
@@ -209,9 +209,9 @@ getUserId(): UID
 
 获取发布远端轨道的远端用户 ID。
 
-#### Returns
+#### 返回值
 
-Returns [UID](/zh-CN/api-reference/rtc/web/globals#uid)
+[UID](/zh-CN/api-reference/rtc/web/globals#uid)
 
 远端轨道对应的 `uid`。
 
@@ -229,9 +229,9 @@ getVideoElementVisibleStatus(): CheckVideoVisibleResult | undefined
 
 调用 `remoteVideoTrack.play` 后 SDK 会创建 [HTML &lt;video&gt;](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `remoteVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可调用该方法进行问题排查。
 
-#### Returns
+#### 返回值
 
-Returns [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult) | undefined
+[CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult) | undefined
 
 [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult) 对象。如果该方法返回 `undefined`，可能为以下原因：
 
@@ -249,16 +249,16 @@ off(event: string, listener: Function): void
 
 取消一个指定事件的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 监听事件时传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="on"></a>
 
@@ -288,75 +288,75 @@ on(event: "transceiver-updated", listener: typeof event_transceiver_updated_2): 
 on(event: "sei-received", listener: typeof event_sei_received): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "track-updated" | 事件名称。 |
 | listener: typeof event_track_updated | 详见 [track-updated](/zh-CN/api-reference/rtc/web/globals#event_track_updated)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "video-state-changed" | 事件名称。 |
 | listener: typeof event_video_state_changed | 详见 [video-state-changed](/zh-CN/api-reference/rtc/web/interfaces/iremote-track#event_video_state_changed)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "first-frame-decoded" | 事件名称。 |
 | listener: typeof event_first_frame_decoded | 详见 [first-frame-decoded](/zh-CN/api-reference/rtc/web/interfaces/iremote-track#event_first_frame_decoded)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "video-element-visible-status" | 事件名称。 |
 | listener: typeof event_video_element_visible_status_2 | 详见 [video-element-visible-status](/zh-CN/api-reference/rtc/web/interfaces/iremote-video-track#event_video_element_visible_status_2)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 添加事件监听器。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "transceiver-updated" | 事件名称。 |
 | listener: typeof event_transceiver_updated_2 | 详见 [IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremote-track#event_transceiver_updated_2)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 添加事件监听器。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "sei-received" | 事件名称。 |
 | listener: typeof event_sei_received | 详见 [ILocalTrack.sei-received](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track#event_sei_received)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="once"></a>
 
@@ -370,16 +370,16 @@ once(event: string, listener: Function): void
 
 当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="pipe"></a>
 
@@ -395,15 +395,15 @@ pipe(processor: IBaseProcessor): IBaseProcessor
 
 将 `Processor` 注入远端视频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | processor: IBaseProcessor | `Processor` 实例。每个插件均有对应类型的 `Processor`。 |
 
-#### Returns
+#### 返回值
 
-Returns IBaseProcessor
+IBaseProcessor
 
 `Processor` 实例。
 
@@ -417,16 +417,16 @@ play(element: string | HTMLElement, config?: VideoPlayerConfig): void
 
 在页面上播放本地视频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | element: string \| HTMLElement | 指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：<br />- `string`: 指定该 DOM 元素的 ID 值。<br />- `HTMLElement`: 直接传入一个 DOM 元素对象。 |
 | Optional config: VideoPlayerConfig | 设置播放参数（镜像/显示模式）。详见 [VideoPlayerConfig](/zh-CN/api-reference/rtc/web/interfaces/video-player-config)。对于本地视频轨道，镜像模式默认开启。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removealllisteners"></a>
 
@@ -438,15 +438,15 @@ removeAllListeners(event?: string): void
 
 指定一个事件，取消其所有的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional event: string | 指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="stop"></a>
 
@@ -458,9 +458,9 @@ stop(): void
 
 停止播放。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="unpipe"></a>
 
@@ -476,6 +476,6 @@ unpipe(): void
 
 取消远端视频轨道上注入的 `Processor`。
 
-#### Returns
+#### 返回值
 
-Returns void
+void

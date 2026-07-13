@@ -1,15 +1,15 @@
 ---
 title: "GroupStore"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "GroupStore API 参考。"
 ---
 
 `GroupStore` 类提供分组讨论功能相关的能力。
 
-- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/electron/classes/edu-store-base)
+- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/edu-store-base)
 
   - GroupStore
 
-## Properties
+## 属性
 
 <a id="groupDetails"></a>
 
@@ -31,7 +31,7 @@ state: GroupState
 
 分组状态
 
-## Accessors
+## 访问器
 
 <a id="currentSubRoom"></a>
 
@@ -43,9 +43,9 @@ get currentSubRoom(): undefined | string
 
 当前所在小组
 
-#### Returns
+#### 返回值
 
-Returns undefined | string
+undefined | string
 
 <a id="groupUuidByUserUuid"></a>
 
@@ -57,9 +57,9 @@ get groupUuidByUserUuid(): Map<string, string>
 
 用户所在组 ID 映射关系
 
-#### Returns
+#### 返回值
 
-Returns Map &lt; string, string &gt;
+Map &lt; string, string &gt;
 
 <a id="userByUuid"></a>
 
@@ -71,11 +71,11 @@ get userByUuid(): Map<string, GroupUser>
 
 返回 userUuid 组成的 map 数据
 
-#### Returns
+#### 返回值
 
-Returns Map &lt; string, [GroupUser](/zh-CN/api-reference/flexible-classroom/electron/interfaces/group-user) &gt;
+Map &lt; string, [GroupUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/interfaces/group-user) &gt;
 
-## Methods
+## 方法
 
 <a id="acceptGroupInvite"></a>
 
@@ -87,15 +87,15 @@ acceptGroupInvite(groupUuid: string): Promise<void>
 
 接受加入小组的邀请
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | groupUuid: string | 组 ID |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="addGroups"></a>
 
@@ -107,16 +107,16 @@ addGroups(groupDetails: (GroupDetail & { groupUuid?: string })[], inProgress?: b
 
 新建小组
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | groupDetails: (GroupDetail & \{ groupUuid?: string \})[] |  |
 | Optional inProgress: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="broadcastMessage"></a>
 
@@ -128,15 +128,15 @@ broadcastMessage(messageText: string): void
 
 发送全体消息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | messageText: string | 消息 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="joinSubRoom"></a>
 
@@ -148,15 +148,15 @@ joinSubRoom(groupUuid: string): void
 
 进入子房间
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | groupUuid: string | 组 ID |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="leaveSubRoom"></a>
 
@@ -168,9 +168,9 @@ leaveSubRoom(): void
 
 离开小组
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="moveIntoSubRoom"></a>
 
@@ -182,16 +182,16 @@ moveIntoSubRoom(fromGroupUuid: string, toGroupUuid: string): void
 
 用户主动从某房间移动至另一房间
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | fromGroupUuid: string | 原组 ID |
 | toGroupUuid: string | 目标组 ID |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="moveUsersToGroup"></a>
 
@@ -203,17 +203,17 @@ moveUsersToGroup(fromGroupUuid: string, toGroupUuid: string, users: string[]): P
 
 将用户从某小组移入另一小组
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | fromGroupUuid: string | 原组 ID |
 | toGroupUuid: string | 目标组 ID |
 | users: string[] | 用户 ID 列表 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="rejectGroupInvite"></a>
 
@@ -225,15 +225,15 @@ rejectGroupInvite(groupUuid: string): Promise<void>
 
 拒绝加入小组的邀请
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | groupUuid: string | 组 ID |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="removeGroupUsers"></a>
 
@@ -245,16 +245,16 @@ removeGroupUsers(fromGroupUuid: string, users: string[]): Promise<void>
 
 将用户从小组中移除
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | fromGroupUuid: string | 组 ID |
 | users: string[] | 用户 ID 列表 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="removeGroups"></a>
 
@@ -266,15 +266,15 @@ removeGroups(groups: string[]): Promise<void>
 
 移除小组
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | groups: string[] | 小组 ID 列表 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="startGroup"></a>
 
@@ -286,16 +286,16 @@ startGroup(groupDetails: GroupDetail[], syncBoardScenes?: boolean): Promise<void
 
 开启分组讨论
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | groupDetails: GroupDetail[] | 分组配置数组 |
 | Optional syncBoardScenes: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="stopGroup"></a>
 
@@ -307,9 +307,9 @@ stopGroup(): Promise<void>
 
 结束分组讨论
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="updateGroupInfo"></a>
 
@@ -321,15 +321,15 @@ updateGroupInfo(groups: PatchGroup[]): Promise<void>
 
 更新分组配置
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | groups: PatchGroup[] | 分组配置数组 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="updateGroupUsers"></a>
 
@@ -341,13 +341,13 @@ updateGroupUsers(patches: PatchGroup[], sendInvitation?: boolean): Promise<void>
 
 更新小组成员列表
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | patches: PatchGroup[] | 更新配置 |
 | Optional sendInvitation: boolean | 是否发送邀请 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;

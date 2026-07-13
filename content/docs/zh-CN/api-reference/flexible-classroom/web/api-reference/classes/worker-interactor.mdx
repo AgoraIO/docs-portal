@@ -1,11 +1,11 @@
 ---
 title: "WorkerInteractor"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "WorkerInteractor API 参考。"
 ---
 
 - WorkerInteractor
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -15,11 +15,11 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new WorkerInteractor(): WorkerInteractor
 ```
 
-#### Returns
+#### 返回值
 
-Returns [WorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/classes/worker-interactor)
+[WorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/worker-interactor)
 
-## Methods
+## 方法
 
 <a id="clearTempLogs"></a>
 
@@ -29,9 +29,9 @@ Returns [WorkerInteractor](/zh-CN/api-reference/flexible-classroom/web/classes/w
 clearTempLogs(): Promise<void>
 ```
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="collectLogs"></a>
 
@@ -41,15 +41,15 @@ Returns Promise &lt; void &gt;
 collectLogs(labels: string[]): Promise<{ file: File; lastId: number }>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | labels: string[] |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{file: File; lastId: number \} &gt;
+Promise &lt; \{file: File; lastId: number \} &gt;
 
 <a id="deleteLogs"></a>
 
@@ -59,16 +59,16 @@ Returns Promise &lt; \{file: File; lastId: number \} &gt;
 deleteLogs(labels: string[], lastId: number): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | labels: string[] |  |
 | lastId: number |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="getBinary"></a>
 
@@ -78,15 +78,15 @@ Returns Promise &lt; void &gt;
 getBinary(id: number): Promise<null | Buffer>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | id: number |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; null | Buffer &gt;
+Promise &lt; null | Buffer &gt;
 
 <a id="persistBinary"></a>
 
@@ -96,16 +96,16 @@ Returns Promise &lt; null | Buffer &gt;
 persistBinary(id: number, buffer: Buffer): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | id: number |  |
 | buffer: Buffer |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="sendLog"></a>
 
@@ -115,16 +115,16 @@ Returns Promise &lt; void &gt;
 sendLog(message: string, label: string): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | message: string |  |
 | label: string |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setMaxRecords"></a>
 
@@ -134,15 +134,15 @@ Returns void
 setMaxRecords(maxRecords: number): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | maxRecords: number |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="unpersistBinary"></a>
 
@@ -152,12 +152,12 @@ Returns Promise &lt; void &gt;
 unpersistBinary(id: number): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | id: number |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;

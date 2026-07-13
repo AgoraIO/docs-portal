@@ -1,15 +1,15 @@
 ---
 title: "MessagesStore"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "MessagesStore API 参考。"
 ---
 
 `MessagesStore` 类用于处理各种聊天消息及IM信令控制。
 
-- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/web/classes/edu-store-base)
+- [EduStoreBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/edu-store-base)
 
   - MessagesStore
 
-## Accessors
+## 访问器
 
 <a id="chatConvasationMessageId"></a>
 
@@ -19,9 +19,9 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 get chatConvasationMessageId(): Map<string, MessageItem>
 ```
 
-#### Returns
+#### 返回值
 
-Returns Map &lt; string, [MessageItem](/zh-CN/api-reference/flexible-classroom/web/classes/message-item) &gt;
+Map &lt; string, [MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/message-item) &gt;
 
 <a id="chatConvasationUserUuid"></a>
 
@@ -31,9 +31,9 @@ Returns Map &lt; string, [MessageItem](/zh-CN/api-reference/flexible-classroom/w
 get chatConvasationUserUuid(): Map<string, Conversation>
 ```
 
-#### Returns
+#### 返回值
 
-Returns Map &lt; string, [Conversation](/zh-CN/api-reference/flexible-classroom/web/classes/conversation) &gt;
+Map &lt; string, [Conversation](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/conversation) &gt;
 
 <a id="chatMuted"></a>
 
@@ -45,9 +45,9 @@ get chatMuted(): boolean
 
 是否禁止聊天
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="newMessageFlag"></a>
 
@@ -57,9 +57,9 @@ Returns boolean
 get newMessageFlag(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="roomChatConversations"></a>
 
@@ -71,9 +71,9 @@ get roomChatConversations(): Conversation[]
 
 会话列表
 
-#### Returns
+#### 返回值
 
-Returns [Conversation](/zh-CN/api-reference/flexible-classroom/web/classes/conversation) []
+[Conversation](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/conversation) []
 
 <a id="roomChatMessages"></a>
 
@@ -85,9 +85,9 @@ get roomChatMessages(): MessageItem[]
 
 历史消息列表
 
-#### Returns
+#### 返回值
 
-Returns [MessageItem](/zh-CN/api-reference/flexible-classroom/web/classes/message-item) []
+[MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/message-item) []
 
 <a id="roomChatMessagesMessageId"></a>
 
@@ -97,9 +97,9 @@ Returns [MessageItem](/zh-CN/api-reference/flexible-classroom/web/classes/messag
 get roomChatMessagesMessageId(): Map<string, MessageItem>
 ```
 
-#### Returns
+#### 返回值
 
-Returns Map &lt; string, [MessageItem](/zh-CN/api-reference/flexible-classroom/web/classes/message-item) &gt;
+Map &lt; string, [MessageItem](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/message-item) &gt;
 
 <a id="unreadMessageCount"></a>
 
@@ -111,11 +111,11 @@ get unreadMessageCount(): number
 
 未读消息数量
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
-## Methods
+## 方法
 
 <a id="addChatMessage"></a>
 
@@ -127,15 +127,15 @@ addChatMessage(args: MessageItem): void
 
 增加一条消息到消息列表
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | args: MessageItem |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="addConversationChatMessage"></a>
 
@@ -145,16 +145,16 @@ Returns void
 addConversationChatMessage(args: MessageItem, conversation: Conversation): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | args: MessageItem |  |
 | conversation: Conversation |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="addRoomChatConversation"></a>
 
@@ -164,15 +164,15 @@ Returns void
 addRoomChatConversation(conversation: Conversation): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | conversation: Conversation |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="getConversationHistoryChatMessage"></a>
 
@@ -184,15 +184,15 @@ getConversationHistoryChatMessage(data: { nextId: string; sort: number; studentU
 
 根据学生 ID 获取学生的提问消息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | data: \{ nextId: string; sort: number; studentUuid: string \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="getConversationList"></a>
 
@@ -204,15 +204,15 @@ getConversationList(data: { nextId: string; sort: number }): Promise<any>
 
 获取 提问列表用户信息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | data: \{ nextId: string; sort: number \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="getHistoryChatMessage"></a>
 
@@ -224,15 +224,15 @@ getHistoryChatMessage(data: { nextId: string; sort: number }): Promise<any>
 
 获取房间历史的聊天消息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | data: \{ nextId: string; sort: number \} |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="incrementUnreadMessageCount"></a>
 
@@ -244,9 +244,9 @@ incrementUnreadMessageCount(): void
 
 增加未读消息总数
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="muteChat"></a>
 
@@ -258,9 +258,9 @@ muteChat(): Promise<void>
 
 禁止聊天
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="onDestroy"></a>
 
@@ -270,9 +270,9 @@ Returns Promise &lt; void &gt;
 onDestroy(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="onInstall"></a>
 
@@ -282,9 +282,9 @@ Returns void
 onInstall(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="resetUnreadMessageCount"></a>
 
@@ -296,9 +296,9 @@ resetUnreadMessageCount(): void
 
 重置未读消息数
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="sendMessage"></a>
 
@@ -310,15 +310,15 @@ sendMessage(message: string): Promise<void>
 
 发送消息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | message: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="sendMessageToConversation"></a>
 
@@ -330,16 +330,16 @@ sendMessageToConversation(message: string, conversation: Conversation): Promise<
 
 发送会话消息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | message: string |  |
 | conversation: Conversation |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="unmuteChat"></a>
 
@@ -351,6 +351,6 @@ unmuteChat(): Promise<void>
 
 解除禁止聊天
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;

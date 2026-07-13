@@ -1,13 +1,13 @@
 ---
 title: "Edu Store Typescript API Reference for Web"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "Edu Store Typescript API Reference for Web API 参考。"
 ---
 
 本文档仅适用于声网 Classroom SDK v2.3.x 及之后版本。
 
 自 Classroom SDK 2.0.x 版本开始，Web端使用 Edu Store 为交互层提供能力支持，对应到 iOS 和 Android 端的 Edu Context。不同的 Store 代表灵动课堂中不同的业务功能模块。每个 Store 包含可观察属性和教室 API 供 App 调用。
 
-[Cloud Drive Store](#cloud-drive-store)
+### Cloud Drive Store
 
 `CloudDriveStore` 类提供云盘相关能力。
 
@@ -15,21 +15,21 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 
 | 方法 | 描述 |
 | --- | --- |
-| [CloudDriveStore.cancelUpload](/zh-CN/api-reference/flexible-classroom/electron/classes/cloud-drive-store#cancelUpload) | 取消上传资源 |
-| [CloudDriveStore.fetchPersonalResources](/zh-CN/api-reference/flexible-classroom/electron/classes/cloud-drive-store#fetchPersonalResources) | 获取个人网盘资源 |
-| [CloudDriveStore.removePersonalResources](/zh-CN/api-reference/flexible-classroom/electron/classes/cloud-drive-store#removePersonalResources) | 移除个人网盘资源 |
-| [CloudDriveStore.retryUpload](/zh-CN/api-reference/flexible-classroom/electron/classes/cloud-drive-store#retryUpload) | 重新上传资源 |
-| [CloudDriveStore.uploadPersonalResource](/zh-CN/api-reference/flexible-classroom/electron/classes/cloud-drive-store#uploadPersonalResource) | 上传文件至个人资源 |
-| [CloudDriveStore.calcResourceUuid](/zh-CN/api-reference/flexible-classroom/electron/classes/cloud-drive-store#calcResourceUuid) | 计算资源文件 UUID |
+| [CloudDriveStore.cancelUpload](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/cloud-drive-store#cancelUpload) | 取消上传资源 |
+| [CloudDriveStore.fetchPersonalResources](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/cloud-drive-store#fetchPersonalResources) | 获取个人网盘资源 |
+| [CloudDriveStore.removePersonalResources](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/cloud-drive-store#removePersonalResources) | 移除个人网盘资源 |
+| [CloudDriveStore.retryUpload](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/cloud-drive-store#retryUpload) | 重新上传资源 |
+| [CloudDriveStore.uploadPersonalResource](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/cloud-drive-store#uploadPersonalResource) | 上传文件至个人资源 |
+| [CloudDriveStore.calcResourceUuid](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/cloud-drive-store#calcResourceUuid) | 计算资源文件 UUID |
 
 **可观察属性**
 
 | 属性 | 描述 |
 | --- | --- |
-| [CloudDriveStore.personalResources](/zh-CN/api-reference/flexible-classroom/electron/classes/cloud-drive-store#personalResources) | 云盘个人资源文件列表 |
-| [CloudDriveStore.uploadProgress](/zh-CN/api-reference/flexible-classroom/electron/classes/cloud-drive-store#uploadProgress) | 云盘资源上传进度 |
+| [CloudDriveStore.personalResources](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/cloud-drive-store#personalResources) | 云盘个人资源文件列表 |
+| [CloudDriveStore.uploadProgress](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/cloud-drive-store#uploadProgress) | 云盘资源上传进度 |
 
-[Group Store](#group-store)
+### Group Store
 
 `GroupStore` 提供分组讨论功能相关能力。
 
@@ -37,28 +37,28 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 
 | 方法 | 描述 |
 | --- | --- |
-| [GroupStore.acceptGroupInvite](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#acceptGroupInvite) | 接受加入小组的邀请 |
-| [GroupStore.addGroups](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#addGroups) | 添加分组 |
-| [GroupStore.joinSubRoom](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#joinSubRoom) | 进入小组 |
-| [GroupStore.leaveSubRoom](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#leaveSubRoom) | 离开小组 |
-| [GroupStore.moveIntoSubRoom](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#moveIntoSubRoom) | 用户主动从某房间移动至另一房间 |
-| [GroupStore.moveUsersToGroup](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#moveUsersToGroup) | 将用户从某小组移入另一小组 |
-| [GroupStore.rejectGroupInvite](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#rejectGroupInvite) | 拒绝加入小组的邀请 |
-| [GroupStore.removeGroupUsers](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#removeGroupUsers) | 将用户从小组中移除 |
-| [GroupStore.removeGroups](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#removeGroups) | 移除分组 |
-| [GroupStore.startGroup](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#startGroup) | 开启分组讨论 |
-| [GroupStore.stopGroup](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#stopGroup) | 结束分组讨论 |
-| [GroupStore.updateGroupInfo](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#updateGroupInfo) | 更新分组配置 |
-| [GroupStore.updateGroupUsers](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#updateGroupUsers) | 更新分组成员列表 |
+| [GroupStore.acceptGroupInvite](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#acceptGroupInvite) | 接受加入小组的邀请 |
+| [GroupStore.addGroups](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#addGroups) | 添加分组 |
+| [GroupStore.joinSubRoom](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#joinSubRoom) | 进入小组 |
+| [GroupStore.leaveSubRoom](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#leaveSubRoom) | 离开小组 |
+| [GroupStore.moveIntoSubRoom](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#moveIntoSubRoom) | 用户主动从某房间移动至另一房间 |
+| [GroupStore.moveUsersToGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#moveUsersToGroup) | 将用户从某小组移入另一小组 |
+| [GroupStore.rejectGroupInvite](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#rejectGroupInvite) | 拒绝加入小组的邀请 |
+| [GroupStore.removeGroupUsers](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#removeGroupUsers) | 将用户从小组中移除 |
+| [GroupStore.removeGroups](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#removeGroups) | 移除分组 |
+| [GroupStore.startGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#startGroup) | 开启分组讨论 |
+| [GroupStore.stopGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#stopGroup) | 结束分组讨论 |
+| [GroupStore.updateGroupInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#updateGroupInfo) | 更新分组配置 |
+| [GroupStore.updateGroupUsers](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#updateGroupUsers) | 更新分组成员列表 |
 
 **可观察属性**
 
 | 属性 | 描述 |
 | --- | --- |
-| [GroupStore.state](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#state) | 分组状态 |
-| [GroupStore.groupDetails](/zh-CN/api-reference/flexible-classroom/electron/classes/group-store#groupDetails) | 分组详情 |
+| [GroupStore.state](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#state) | 分组状态 |
+| [GroupStore.groupDetails](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/group-store#groupDetails) | 分组详情 |
 
-[Hand Up Store](#hand-up-store)
+### Hand Up Store
 
 `HandUpStore` 类提供举手上台功能相关能力。
 
@@ -66,14 +66,14 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 
 | 方法 | 描述 |
 | --- | --- |
-| [HandUpStore.cancelHandUp](/zh-CN/api-reference/flexible-classroom/electron/classes/hand-up-store#cancelHandUp) | 学生取消举手 |
-| [HandUpStore.offPodium](/zh-CN/api-reference/flexible-classroom/electron/classes/hand-up-store#offPodium) | 让指定学生下讲台 |
-| [HandUpStore.offPodiumAll](/zh-CN/api-reference/flexible-classroom/electron/classes/hand-up-store#offPodiumAll) | 让全部学生下讲台 |
-| [HandUpStore.onPodium](/zh-CN/api-reference/flexible-classroom/electron/classes/hand-up-store#onPodium) | 邀请学生上讲台 |
-| [HandUpStore.rejectHandUp](/zh-CN/api-reference/flexible-classroom/electron/classes/hand-up-store#rejectHandUp) | 拒绝举手请求 |
-| [HandUpStore.waveArm](/zh-CN/api-reference/flexible-classroom/electron/classes/hand-up-store#waveArm) | 挥手 |
+| [HandUpStore.cancelHandUp](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/hand-up-store#cancelHandUp) | 学生取消举手 |
+| [HandUpStore.offPodium](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/hand-up-store#offPodium) | 让指定学生下讲台 |
+| [HandUpStore.offPodiumAll](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/hand-up-store#offPodiumAll) | 让全部学生下讲台 |
+| [HandUpStore.onPodium](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/hand-up-store#onPodium) | 邀请学生上讲台 |
+| [HandUpStore.rejectHandUp](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/hand-up-store#rejectHandUp) | 拒绝举手请求 |
+| [HandUpStore.waveArm](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/hand-up-store#waveArm) | 挥手 |
 
-[Media Store](#media-store)
+### Media Store
 
 `MediaStore` 用于媒体数据处理。
 
@@ -81,43 +81,43 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 
 | 方法 | 描述 |
 | --- | --- |
-| [MediaStore.enableLocalAudio](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#enableLocalAudio) | 开启或关闭本地视频 |
-| [MediaStore.enableLocalVideo](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#enableLocalVideo) | 开启或关闭本地视频 |
-| [MediaStore.getWindowDevices](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#getWindowDevices) | 获取 Window 设备 |
-| [MediaStore.hasScreenSharePermission](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#hasScreenSharePermission) | 是否有屏幕共享的权限 |
-| [MediaStore.isScreenDeviceEnumerateSupported](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#isScreenDeviceEnumerateSupported) | 检测是否可以获取到屏幕采集设备列表 |
-| [MediaStore.setupLocalScreenShare](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#setupLocalScreenShare) | 为屏幕共享设置显示区域 |
-| [MediaStore.startScreenShareCapture](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#startScreenShareCapture) | 开始屏幕共享 |
-| [MediaStore.stopScreenShareCapture](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#stopScreenShareCapture) | 停止屏幕共享 |
-| [MediaStore.updateLocalMediaState](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#updateLocalMediaState) | 更新本地媒体状态 |
-| [MediaStore.enableDualStream](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#enableDualStream) | 开启双流模式 |
-| [MediaStore.setLowStreamParameter](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#setLowStreamParameter) | 开启双流模式 |
-| [MediaStore.setMirror](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#setMirror) | 设置本地镜像 |
-| [MediaStore.addAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#addAudioRawDataObserver) | 增加一个音频裸数据监听 |
-| [MediaStore.removeAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#removeAudioRawDataObserver) | 移除一个音频裸数据监听 |
-| [MediaStore.setupLocalVideo](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#setupLocalVideo) | 渲染本地视频 |
+| [MediaStore.enableLocalAudio](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#enableLocalAudio) | 开启或关闭本地视频 |
+| [MediaStore.enableLocalVideo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#enableLocalVideo) | 开启或关闭本地视频 |
+| [MediaStore.getWindowDevices](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#getWindowDevices) | 获取 Window 设备 |
+| [MediaStore.hasScreenSharePermission](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#hasScreenSharePermission) | 是否有屏幕共享的权限 |
+| [MediaStore.isScreenDeviceEnumerateSupported](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#isScreenDeviceEnumerateSupported) | 检测是否可以获取到屏幕采集设备列表 |
+| [MediaStore.setupLocalScreenShare](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#setupLocalScreenShare) | 为屏幕共享设置显示区域 |
+| [MediaStore.startScreenShareCapture](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#startScreenShareCapture) | 开始屏幕共享 |
+| [MediaStore.stopScreenShareCapture](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#stopScreenShareCapture) | 停止屏幕共享 |
+| [MediaStore.updateLocalMediaState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#updateLocalMediaState) | 更新本地媒体状态 |
+| [MediaStore.enableDualStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#enableDualStream) | 开启双流模式 |
+| [MediaStore.setLowStreamParameter](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#setLowStreamParameter) | 开启双流模式 |
+| [MediaStore.setMirror](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#setMirror) | 设置本地镜像 |
+| [MediaStore.addAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#addAudioRawDataObserver) | 增加一个音频裸数据监听 |
+| [MediaStore.removeAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#removeAudioRawDataObserver) | 移除一个音频裸数据监听 |
+| [MediaStore.setupLocalVideo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#setupLocalVideo) | 渲染本地视频 |
 
 **可观察属性**
 
 | 属性 | 描述 |
 | --- | --- |
-| [MediaStore.videoCameraDevices](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#videoCameraDevices) | AGRtcDeviceInfo |
-| [MediaStore.audioRecordingDevices](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#audioRecordingDevices) | 视频采集设备 |
-| [MediaStore.audioRecordingDevices](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#audioRecordingDevices) | 音频采集设备 |
-| [MediaStore.audioPlaybackDevices](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#audioPlaybackDevices) | 音频播放设备 |
-| [MediaStore.cameraDeviceId](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#cameraDeviceId) | 当前视频采集设备 ID |
-| [MediaStore.recordingDeviceId](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#recordingDeviceId) | 当前音频采集设备 ID |
-| [MediaStore.playbackDeviceId](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#playbackDeviceId) | 当前视频播放设备 ID |
-| [MediaStore.localCameraTrackState](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#localCameraTrackState) | 本地视频采集设备状态 |
-| [MediaStore.localMicTrackState](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#localMicTrackState) | 本地音频采集设备状态 |
-| [MediaStore.localScreenShareTrackState](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#localScreenShareTrackState) | 本地屏幕采集设备状态 |
-| [MediaStore.localScreenShareAudioTrackState](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#localScreenShareAudioTrackState) | 本地视频采集设备状态 |
-| [MediaStore.currentScreenShareDevice](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#currentScreenShareDevice) | 当前采集屏幕设备 |
-| [MediaStore.localMicAudioVolume](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#localMicAudioVolume) | 本地音频设备音量 |
-| [MediaStore.localPlaybackTestVolume](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#localPlaybackTestVolume) | 本地扬声器音量 |
-| [MediaStore.isMirror](/zh-CN/api-reference/flexible-classroom/electron/classes/media-store#isMirror) | 视频是否镜像 |
+| [MediaStore.videoCameraDevices](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#videoCameraDevices) | AGRtcDeviceInfo |
+| [MediaStore.audioRecordingDevices](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#audioRecordingDevices) | 视频采集设备 |
+| [MediaStore.audioRecordingDevices](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#audioRecordingDevices) | 音频采集设备 |
+| [MediaStore.audioPlaybackDevices](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#audioPlaybackDevices) | 音频播放设备 |
+| [MediaStore.cameraDeviceId](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#cameraDeviceId) | 当前视频采集设备 ID |
+| [MediaStore.recordingDeviceId](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#recordingDeviceId) | 当前音频采集设备 ID |
+| [MediaStore.playbackDeviceId](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#playbackDeviceId) | 当前视频播放设备 ID |
+| [MediaStore.localCameraTrackState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#localCameraTrackState) | 本地视频采集设备状态 |
+| [MediaStore.localMicTrackState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#localMicTrackState) | 本地音频采集设备状态 |
+| [MediaStore.localScreenShareTrackState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#localScreenShareTrackState) | 本地屏幕采集设备状态 |
+| [MediaStore.localScreenShareAudioTrackState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#localScreenShareAudioTrackState) | 本地视频采集设备状态 |
+| [MediaStore.currentScreenShareDevice](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#currentScreenShareDevice) | 当前采集屏幕设备 |
+| [MediaStore.localMicAudioVolume](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#localMicAudioVolume) | 本地音频设备音量 |
+| [MediaStore.localPlaybackTestVolume](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#localPlaybackTestVolume) | 本地扬声器音量 |
+| [MediaStore.isMirror](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/media-store#isMirror) | 视频是否镜像 |
 
-[Recording Store](#recording-store)
+### Recording Store
 
 `RecordingStore` 类提供录制相关能力。
 
@@ -125,10 +125,10 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 
 | 方法 | 描述 |
 | --- | --- |
-| [RecordingStore.startRecording](/zh-CN/api-reference/flexible-classroom/electron/classes/recording-store#startRecording) | 开始录制 |
-| [RecordingStore.stopRecording](/zh-CN/api-reference/flexible-classroom/electron/classes/recording-store#stopRecording) | 停止录制 |
+| [RecordingStore.startRecording](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/recording-store#startRecording) | 开始录制 |
+| [RecordingStore.stopRecording](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/recording-store#stopRecording) | 停止录制 |
 
-[Room Store](#room-store)
+### Room Store
 
 `RoomStore` 用于初始化教室和监听教室数据。
 
@@ -136,29 +136,29 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 
 | 方法 | 描述 |
 | --- | --- |
-| [RoomStore.sendRewards](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#sendRewards) | 授予学生奖励 |
-| [RoomStore.startCarousel](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#startCarousel) | 开始视频轮播 |
-| [RoomStore.stopCarousel](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#stopCarousel) | 停止视频轮播 |
-| [RoomStore.updateClassState](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#updateClassState) | 更新课堂状态 |
-| [RoomStore.updateFlexProperties](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#updateFlexProperties) | 更新房间自定义属性 |
+| [RoomStore.sendRewards](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#sendRewards) | 授予学生奖励 |
+| [RoomStore.startCarousel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#startCarousel) | 开始视频轮播 |
+| [RoomStore.stopCarousel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#stopCarousel) | 停止视频轮播 |
+| [RoomStore.updateClassState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#updateClassState) | 更新课堂状态 |
+| [RoomStore.updateFlexProperties](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#updateFlexProperties) | 更新房间自定义属性 |
 
 **可观察属性**
 
 | 属性 | 描述 |
 | --- | --- |
-| [RoomStore.carousel](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#carousel) | 轮播设置 |
-| [RoomStore.expandedScope](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#expandedScope) | 视频墙状态 |
-| [RoomStore.waveArmList](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#waveArmList) | 挥手的用户列表 |
-| [RoomStore.acceptedList](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#acceptedList) | 台上用户列表 |
-| [RoomStore.flexProps](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#flexProps) | 自定义房间属性 |
-| [RoomStore.recordStatus](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#recordStatus) | 录制状态 |
-| [RoomStore.recordReady](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#recordReady) | 录制是否已经准备好 |
-| [RoomStore.recordStreamingUrl](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#recordStreamingUrl) | 录制生成的视频流地址 |
-| [RoomStore.screenShareStreamUuid](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#screenShareStreamUuid) | 当前教室内正在进行的屏幕共享的流 UUID |
-| [RoomStore.screenShareUserUuid](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#screenShareUserUuid) | 当前教室内正在进行的屏幕共享的流所属的用户 UUID |
-| [RoomStore.isOnPodium](/zh-CN/api-reference/flexible-classroom/electron/classes/room-store#isOnPodium) | 当前用户是否在台上 |
+| [RoomStore.carousel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#carousel) | 轮播设置 |
+| [RoomStore.expandedScope](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#expandedScope) | 视频墙状态 |
+| [RoomStore.waveArmList](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#waveArmList) | 挥手的用户列表 |
+| [RoomStore.acceptedList](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#acceptedList) | 台上用户列表 |
+| [RoomStore.flexProps](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#flexProps) | 自定义房间属性 |
+| [RoomStore.recordStatus](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#recordStatus) | 录制状态 |
+| [RoomStore.recordReady](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#recordReady) | 录制是否已经准备好 |
+| [RoomStore.recordStreamingUrl](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#recordStreamingUrl) | 录制生成的视频流地址 |
+| [RoomStore.screenShareStreamUuid](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#screenShareStreamUuid) | 当前教室内正在进行的屏幕共享的流 UUID |
+| [RoomStore.screenShareUserUuid](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#screenShareUserUuid) | 当前教室内正在进行的屏幕共享的流所属的用户 UUID |
+| [RoomStore.isOnPodium](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/room-store#isOnPodium) | 当前用户是否在台上 |
 
-[Statistics Store](#statistics-store)
+### Statistics Store
 
 `StatisticsStore` 提供网络相关数据。
 
@@ -166,14 +166,14 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 
 | 属性 | 描述 |
 | --- | --- |
-| [StatisticsStore.packetLoss](/zh-CN/api-reference/flexible-classroom/electron/classes/statistics-store#packetLoss) | 丢包率 |
-| [StatisticsStore.uplinkNetworkQuality](/zh-CN/api-reference/flexible-classroom/electron/classes/statistics-store#uplinkNetworkQuality) | 上行网络质量 |
-| [StatisticsStore.downlinkNetworkQuality](/zh-CN/api-reference/flexible-classroom/electron/classes/statistics-store#downlinkNetworkQuality) | 下行网络质量 |
-| [StatisticsStore.cpu](/zh-CN/api-reference/flexible-classroom/electron/classes/statistics-store#cpu) | 应用 CPU 用量 |
-| [StatisticsStore.cpuTotal](/zh-CN/api-reference/flexible-classroom/electron/classes/statistics-store#cpuTotal) | 系统 CPU 用量 |
-| [StatisticsStore.delay](/zh-CN/api-reference/flexible-classroom/electron/classes/statistics-store#delay) | 网络延迟 |
+| [StatisticsStore.packetLoss](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/statistics-store#packetLoss) | 丢包率 |
+| [StatisticsStore.uplinkNetworkQuality](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/statistics-store#uplinkNetworkQuality) | 上行网络质量 |
+| [StatisticsStore.downlinkNetworkQuality](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/statistics-store#downlinkNetworkQuality) | 下行网络质量 |
+| [StatisticsStore.cpu](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/statistics-store#cpu) | 应用 CPU 用量 |
+| [StatisticsStore.cpuTotal](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/statistics-store#cpuTotal) | 系统 CPU 用量 |
+| [StatisticsStore.delay](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/statistics-store#delay) | 网络延迟 |
 
-[Stream Store](#stream-store)
+### Stream Store
 
 `StreamStore` 类用于管理媒体流。
 
@@ -181,34 +181,34 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 
 | 方法 | 描述 |
 | --- | --- |
-| [StreamStore.updateExpandedScopeAndStreams](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#updateExpandedScopeAndStreams) | 更新视频墙开关状态和发流用户列表 |
-| [StreamStore.initializeScreenShareStream](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#initializeScreenShareStream) | 初始化屏幕共享流 |
-| [StreamStore.destroyScreenShareStream](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#destroyScreenShareStream) | 销毁屏幕共享流 |
-| [StreamStore.setRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#setRemoteVideoStreamType) | 设置远端视频质量 |
-| [StreamStore.setupRemoteVideo](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#setupRemoteVideo) | 渲染远端视频 |
-| [StreamStore.muteRemoteVideoStream](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#muteRemoteVideoStream) | 订阅/取消远端视频流 |
-| [StreamStore.muteRemoteAudioStream](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#muteRemoteAudioStream) | 订阅/取消远端音频流 |
-| [StreamStore.muteRemoteVideoStreamMass](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#muteRemoteVideoStreamMass) | 批量订阅 |
-| [StreamStore.updateLocalPublishState](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#updateLocalPublishState) | 更新本地音频和视频发布状态 |
-| [StreamStore.updateRemotePublishState](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#updateRemotePublishState) | 更新远端音频和视频发布状态 |
-| [StreamStore.publishStreamToCdn](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#publishStreamToCdn) | 旁路推流，将当前已发布的流推送到CDN |
-| [StreamStore.publishScreenShare](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#publishScreenShare) | 创建屏幕共享流 |
-| [StreamStore.unpublishScreenShare](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#unpublishScreenShare) | 取消发布屏幕共享流 |
-| [StreamStore.setLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#setLatencyLevel) | 设置延时等级 |
+| [StreamStore.updateExpandedScopeAndStreams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#updateExpandedScopeAndStreams) | 更新视频墙开关状态和发流用户列表 |
+| [StreamStore.initializeScreenShareStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#initializeScreenShareStream) | 初始化屏幕共享流 |
+| [StreamStore.destroyScreenShareStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#destroyScreenShareStream) | 销毁屏幕共享流 |
+| [StreamStore.setRemoteVideoStreamType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#setRemoteVideoStreamType) | 设置远端视频质量 |
+| [StreamStore.setupRemoteVideo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#setupRemoteVideo) | 渲染远端视频 |
+| [StreamStore.muteRemoteVideoStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#muteRemoteVideoStream) | 订阅/取消远端视频流 |
+| [StreamStore.muteRemoteAudioStream](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#muteRemoteAudioStream) | 订阅/取消远端音频流 |
+| [StreamStore.muteRemoteVideoStreamMass](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#muteRemoteVideoStreamMass) | 批量订阅 |
+| [StreamStore.updateLocalPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#updateLocalPublishState) | 更新本地音频和视频发布状态 |
+| [StreamStore.updateRemotePublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#updateRemotePublishState) | 更新远端音频和视频发布状态 |
+| [StreamStore.publishStreamToCdn](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#publishStreamToCdn) | 旁路推流，将当前已发布的流推送到CDN |
+| [StreamStore.publishScreenShare](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#publishScreenShare) | 创建屏幕共享流 |
+| [StreamStore.unpublishScreenShare](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#unpublishScreenShare) | 取消发布屏幕共享流 |
+| [StreamStore.setLatencyLevel](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#setLatencyLevel) | 设置延时等级 |
 
 **可观察属性**
 
 | 属性 | 描述 |
 | --- | --- |
-| [StreamStore.streamByStreamUuid](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#streamByStreamUuid) | 流列表 |
-| [StreamStore.streamByUserUuid](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#streamByUserUuid) | 用户流列表 |
-| [StreamStore.streamVolumes](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#streamVolumes) | 音量列表 |
-| [StreamStore.localCameraStreamUuid](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#localCameraStreamUuid) | 本地摄像头视频流 UUID |
-| [StreamStore.localMicStreamUuid](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#localMicStreamUuid) | 本地麦克风音频流 UUID |
-| [StreamStore.localShareStreamUuid](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#localShareStreamUuid) | 本地屏幕共享视频流 UUID |
-| [StreamStore.shareStreamToken](/zh-CN/api-reference/flexible-classroom/electron/classes/stream-store#shareStreamToken) | 本地屏幕共享 Token |
+| [StreamStore.streamByStreamUuid](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#streamByStreamUuid) | 流列表 |
+| [StreamStore.streamByUserUuid](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#streamByUserUuid) | 用户流列表 |
+| [StreamStore.streamVolumes](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#streamVolumes) | 音量列表 |
+| [StreamStore.localCameraStreamUuid](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#localCameraStreamUuid) | 本地摄像头视频流 UUID |
+| [StreamStore.localMicStreamUuid](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#localMicStreamUuid) | 本地麦克风音频流 UUID |
+| [StreamStore.localShareStreamUuid](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#localShareStreamUuid) | 本地屏幕共享视频流 UUID |
+| [StreamStore.shareStreamToken](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/stream-store#shareStreamToken) | 本地屏幕共享 Token |
 
-[User Store](#user-store)
+### User Store
 
 `UserStore` 类用于管理用户。
 
@@ -216,23 +216,23 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 
 | 方法 | 描述 |
 | --- | --- |
-| [UserStore.fetchUserList](/zh-CN/api-reference/flexible-classroom/electron/classes/user-store#fetchUserList) | 获取用户列表 |
-| [UserStore.kickOutOnceOrBan](/zh-CN/api-reference/flexible-classroom/electron/classes/user-store#kickOutOnceOrBan) | 将用户踢出房间 |
-| [UserStore.updateUserProperties](/zh-CN/api-reference/flexible-classroom/electron/classes/user-store#updateUserProperties) | 更新用户自定属性 |
+| [UserStore.fetchUserList](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/user-store#fetchUserList) | 获取用户列表 |
+| [UserStore.kickOutOnceOrBan](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/user-store#kickOutOnceOrBan) | 将用户踢出房间 |
+| [UserStore.updateUserProperties](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/user-store#updateUserProperties) | 更新用户自定属性 |
 
 **可观察属性**
 
 | 属性 | 描述 |
 | --- | --- |
-| [UserStore.localUser](/zh-CN/api-reference/flexible-classroom/electron/classes/user-store#localUser) | 本地用户 |
-| [UserStore.users](/zh-CN/api-reference/flexible-classroom/electron/classes/user-store#users) |  |
-| [UserStore.userCount](/zh-CN/api-reference/flexible-classroom/electron/classes/user-store#userCount) | 房间内用户数 |
-| [UserStore.teacherList](/zh-CN/api-reference/flexible-classroom/electron/classes/user-store#teacherList) | 老师列表 |
-| [UserStore.studentList](/zh-CN/api-reference/flexible-classroom/electron/classes/user-store#studentList) | 学生列表 |
-| [UserStore.assistantList](/zh-CN/api-reference/flexible-classroom/electron/classes/user-store#assistantList) | 助教列表 |
-| [UserStore.rewards](/zh-CN/api-reference/flexible-classroom/electron/classes/user-store#rewards) | 奖励信息字典 |
+| [UserStore.localUser](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/user-store#localUser) | 本地用户 |
+| [UserStore.users](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/user-store#users) |  |
+| [UserStore.userCount](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/user-store#userCount) | 房间内用户数 |
+| [UserStore.teacherList](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/user-store#teacherList) | 老师列表 |
+| [UserStore.studentList](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/user-store#studentList) | 学生列表 |
+| [UserStore.assistantList](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/user-store#assistantList) | 助教列表 |
+| [UserStore.rewards](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/user-store#rewards) | 奖励信息字典 |
 
-[Connection Store](#connection-store)
+### Connection Store
 
 `ConnectionStore` 类用于管理连接状态。
 
@@ -240,20 +240,20 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 
 | 方法 | 描述 |
 | --- | --- |
-| [ConnectionStore.checkIn](/zh-CN/api-reference/flexible-classroom/electron/classes/connection-store#checkIn) | 设置载入数据 |
-| [ConnectionStore.initialize](/zh-CN/api-reference/flexible-classroom/electron/classes/connection-store#initialize) | 初始化 RteEngine |
-| [ConnectionStore.joinClassroom](/zh-CN/api-reference/flexible-classroom/electron/classes/connection-store#joinClassroom) | 加入房间 |
-| [ConnectionStore.joinRTC](/zh-CN/api-reference/flexible-classroom/electron/classes/connection-store#joinRTC) | 加入 RTC 频道 |
-| [ConnectionStore.leaveClassroom](/zh-CN/api-reference/flexible-classroom/electron/classes/connection-store#leaveClassroom) | 离开房间 |
-| [ConnectionStore.leaveRTC](/zh-CN/api-reference/flexible-classroom/electron/classes/connection-store#leaveRTC) | 离开 RTC 频道 |
-| [ConnectionStore.addCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/electron/classes/connection-store#addCloudProxyObserver) | 添加一个云代理观察者 |
-| [ConnectionStore.removeCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/electron/classes/connection-store#removeCloudProxyObserver) | 移除一个云代理观察者 |
+| [ConnectionStore.checkIn](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/connection-store#checkIn) | 设置载入数据 |
+| [ConnectionStore.initialize](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/connection-store#initialize) | 初始化 RteEngine |
+| [ConnectionStore.joinClassroom](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/connection-store#joinClassroom) | 加入房间 |
+| [ConnectionStore.joinRTC](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/connection-store#joinRTC) | 加入 RTC 频道 |
+| [ConnectionStore.leaveClassroom](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/connection-store#leaveClassroom) | 离开房间 |
+| [ConnectionStore.leaveRTC](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/connection-store#leaveRTC) | 离开 RTC 频道 |
+| [ConnectionStore.addCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/connection-store#addCloudProxyObserver) | 添加一个云代理观察者 |
+| [ConnectionStore.removeCloudProxyObserver](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/connection-store#removeCloudProxyObserver) | 移除一个云代理观察者 |
 
 **可观察属性**
 
 | 属性 | 描述 |
 | --- | --- |
-| [ConnectionStore.classroomState](/zh-CN/api-reference/flexible-classroom/electron/classes/connection-store#classroomState) | 房间连接状态 |
-| [ConnectionStore.rtcState](/zh-CN/api-reference/flexible-classroom/electron/classes/connection-store#rtcState) | RTC 连接状态 |
-| [ConnectionStore.scene](/zh-CN/api-reference/flexible-classroom/electron/classes/connection-store#scene) | 房间对象 |
-| [ConnectionStore.engine](/zh-CN/api-reference/flexible-classroom/electron/classes/connection-store#engine) | RTE 引擎 |
+| [ConnectionStore.classroomState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/connection-store#classroomState) | 房间连接状态 |
+| [ConnectionStore.rtcState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/connection-store#rtcState) | RTC 连接状态 |
+| [ConnectionStore.scene](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/connection-store#scene) | 房间对象 |
+| [ConnectionStore.engine](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/connection-store#engine) | RTE 引擎 |
