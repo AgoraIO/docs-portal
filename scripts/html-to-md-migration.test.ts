@@ -130,9 +130,9 @@ async function writeDitaRootMapFixture(sourceDir: string) {
             </li>
             <li><a href="API/toc_channel.html">频道相关</a></li>
             <li>
-              <a href="API/toc_audio.html">音频相关</a>
+              <a href="API/toc_audio.html#toc_audio">音频相关</a>
               <ul>
-                <li><a href="API/toc_audio_basic.html">音频基础功能</a></li>
+                <li><a href="API/toc_audio_basic.html#toc_audio_basic">音频基础功能</a></li>
               </ul>
             </li>
           </ul>
@@ -381,6 +381,10 @@ async function writeTypeDocFixture(sourceDir: string) {
   </body>
 </html>`,
   );
+  await writeFixture(
+    path.join(sourceDir, 'modules', 'empty-namespace.html'),
+    '<!doctype html><html><body><div class="col-content"></div></body></html>',
+  );
 }
 
 async function writeDoxygenFixture(sourceDir: string) {
@@ -433,6 +437,7 @@ async function writeDoxygenFixture(sourceDir: string) {
         <p>See <a href="class_agora_1_1rtc_1_1_client-members.html">All members</a>.</p>
         <p>Open <a href="class_agora_1_1rtc_1_1_client_source.html">Source view</a>.</p>
         <p>Browse the <a href="functions.html">Function index</a>.</p>
+        <p>Contact <a href="#" onclick="location.href='mai'+'lto:'+'sal'+'es'+'@sh'+'en'+'gwa'+'ng'+'.cn'; return false;">sales<span class="obfuscator">.nosp@m.</span>@she<span class="obfuscator">.nosp@m.</span>ngwan<span class="obfuscator">.nosp@m.</span>g.cn</a>.</p>
       </div>
       <h2 class="groupheader">Member Function Documentation</h2>
       <a id="join"></a>
@@ -459,6 +464,18 @@ async function writeDoxygenFixture(sourceDir: string) {
           <dl class="section return"><dt>Returns</dt><dd>Zero on success.</dd></dl>
         </div>
       </div>
+      <a id="join"></a>
+      <h2 class="memtitle">join(int)</h2>
+      <div class="memitem"><div class="memproto"><table class="memname"><tr>
+        <td class="memname">int agora::rtc::Client::join </td><td>(</td>
+        <td class="paramtype">int </td><td class="paramname"><em>uid</em></td><td>)</td>
+      </tr></table></div><div class="memdoc"><p>See <a href="#join">second overload</a>.</p></div></div>
+      <a id="join"></a>
+      <h2 class="memtitle">join(bool)</h2>
+      <div class="memitem"><div class="memdoc"><p>Third overload.</p></div></div>
+      <a id="join-2"></a>
+      <h2 class="memtitle">joinLegacy()</h2>
+      <div class="memitem"><div class="memdoc"><p><a id="inline"></a><a id="inline"></a>Source suffix collision.</p></div></div>
     </div>
     <hr class="footer"><address class="footer">制作者 <a href="https://www.doxygen.org/">Doxygen</a> 1.9.1</address>
   </body>
@@ -494,6 +511,26 @@ async function writeDoxygenFixture(sourceDir: string) {
     </div>
   </body>
 </html>`,
+  );
+  for (const helperName of [
+    'deprecated.html',
+    'examples.html',
+    'hierarchy.html',
+    'pages.html',
+    'dir_8f3a.html',
+  ]) {
+    await writeFixture(
+      path.join(sourceDir, helperName),
+      `<!doctype html><html><body><h1>${helperName}</h1></body></html>`,
+    );
+  }
+  await writeFixture(
+    path.join(sourceDir, 'classes.html'),
+    `<!doctype html><html><body><div class="contents">
+      <div class="title">Class Index</div>
+      <dl class="classindex"><dt class="alphachar"><a id="letter_A" name="letter_A">A</a></dt>
+      <dd><a href="class_agora_1_1rtc_1_1_client.html">Client</a></dd></dl>
+    </div></body></html>`,
   );
 }
 
@@ -894,7 +931,6 @@ describe('html-to-md-migration', () => {
     const sourceDir = path.join(rootDir, 'source');
     const outputDir = path.join(rootDir, 'output');
     await writeDitaFixture(sourceDir);
-
     const output = runMigration([
       '--source',
       sourceDir,
@@ -1149,6 +1185,7 @@ describe('html-to-md-migration', () => {
       platform: 'typescript',
       product: 'web',
       sourceDir,
+      unexpectedDryRunPaths: ['modules/empty-namespace.mdx'],
     });
 
     const clientOutput = await fs.readFile(
@@ -1157,6 +1194,33 @@ describe('html-to-md-migration', () => {
     );
     expect(clientOutput).not.toContain('##### `Optional hotKeys');
     expect(clientOutput).not.toMatch(/^#{7,}\s/m);
+  });
+
+  it('rejects Web SDK sources mapped to the React SDK platform route', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'typedoc-source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeTypeDocFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'index.html'),
+      '<!doctype html><html><body><main><h1>Agora Web SDK API Reference v4.22.0</h1><p>Web SDK 4.x.</p></main></body></html>',
+    );
+
+    const output = runMigrationFailure([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'react-sdk',
+    ]);
+
+    expect(output).toContain(
+      'Source identity mismatch: react-sdk cannot publish Web SDK API reference content.',
+    );
+    await expect(pathExists(outputDir)).resolves.toBe(false);
   });
 
   it('migrates Doxygen/Javadoc output with dry-run planning and rewritten links', async () => {
@@ -1181,6 +1245,10 @@ describe('html-to-md-migration', () => {
           'title: "Client Class Reference"',
           '[all classes](/api-reference/rtc/cpp/annotated)',
           '<a id="join"></a>',
+          '<a id="join-2"></a>',
+          '<a id="join-3"></a>',
+          '<a id="join-2-2"></a>',
+          '<a id="inline"></a>',
           '## Member Function Documentation',
           '### join()',
           '```cpp\nint agora::rtc::Client::join(const char* channel)\n```',
@@ -1189,6 +1257,16 @@ describe('html-to-md-migration', () => {
           '| channel | Channel name |',
           '#### Returns',
           'Zero on success.',
+          '[sales@shengwang.cn](mailto:sales@shengwang.cn)',
+          '[second overload](#join-2)',
+          'Third overload.',
+          'Source suffix collision.',
+        ],
+        'classes.mdx': [
+          'title: "Class Index"',
+          '<a id="letter_A"></a>',
+          '### A',
+          '[Client](/api-reference/rtc/cpp/class-agora-1-1rtc-1-1-client)',
         ],
         'files.mdx': [
           'title: "File List"',
@@ -1204,6 +1282,7 @@ describe('html-to-md-migration', () => {
         'annotated.mdx': ['制作者'],
         'empty-reference.mdx': ['制作者'],
         'class-agora-1-1rtc-1-1-client.mdx': [
+          '<a id="inline-2"></a>',
           'All members',
           'Source view',
           'Function index',
@@ -1250,6 +1329,34 @@ describe('html-to-md-migration', () => {
       'Detected source type: Doxygen/Javadoc HTML reference',
     );
     expect(output).not.toContain('Detected source type: iOS-doc-generator');
+  });
+
+  it('prefers Doxygen/Javadoc when a Doxygen tree also has modules.html', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'doxygen-source');
+    const outputDir = path.join(rootDir, 'dry-output');
+    await writeDoxygenFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'modules.html'),
+      '<!doctype html><html><body><div class="contents"><h1>Modules</h1></div></body></html>',
+    );
+
+    const output = runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc-server-sdk',
+      '--platform',
+      'cpp-api',
+      '--dry-run',
+    ]);
+
+    expect(output).toContain(
+      'Detected source type: Doxygen/Javadoc HTML reference',
+    );
+    expect(output).not.toContain('Detected source type: TypeDoc');
   });
 
   it('migrates iOS doc-generator output with dry-run planning and rewritten links', async () => {
