@@ -2373,14 +2373,34 @@ function renderIosDocGeneratorPage({
       if (renderedTasks) sections.push(renderedTasks);
     }
   } else {
-    const overviewPage = renderChildren(
+    const overview = renderIosOverview(
       $,
       main,
       pageTitleBySource,
       sourceToRoute,
       targetBasePath,
     );
-    if (overviewPage) sections.push(overviewPage);
+    const navigation = renderIosIndexNavigation(
+      $,
+      main,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (overview) sections.push(overview);
+    if (navigation) sections.push(navigation);
+    if (!overview && !navigation) {
+      const cleanMain = main.clone();
+      cleanMain.find('.footer-copyright').remove();
+      const overviewPage = renderChildren(
+        $,
+        cleanMain,
+        pageTitleBySource,
+        sourceToRoute,
+        targetBasePath,
+      );
+      if (overviewPage) sections.push(overviewPage);
+    }
   }
 
   sourceToRoute.currentSource = previousCurrentSource;
@@ -2396,6 +2416,33 @@ function renderIosDocGeneratorPage({
     '',
     `${sections.join('\n\n')}\n`,
   ].join('\n');
+}
+
+function renderIosIndexNavigation(
+  $,
+  main,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const sections = [];
+  for (const column of main
+    .find('> .index-container > .index-column')
+    .toArray()) {
+    const node = $(column);
+    const title = inlineText(node.children('.index-title').first());
+    const list = renderList(
+      $,
+      node.children('ul').first(),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      false,
+      { preferInlineOnly: true },
+    );
+    if (title && list) sections.push(`## ${title}\n\n${list}`);
+  }
+  return sections.join('\n\n');
 }
 
 function renderIosOverview(
