@@ -1454,7 +1454,11 @@ describe('html-to-md-migration', () => {
     expect(meta.title).toBe('Jazzy API');
   });
 
-  it('creates a scoped sidebar for Whiteboard SDK API output', async () => {
+  it.each([
+    'android',
+    'ios',
+    'web',
+  ])('creates a scoped sidebar for Whiteboard %s SDK API output', async (platform) => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'ios-source');
     const outputDir = path.join(rootDir, 'output');
@@ -1468,7 +1472,7 @@ describe('html-to-md-migration', () => {
       '--product',
       'whiteboard',
       '--platform',
-      'ios',
+      platform,
     ]);
 
     await expect(
