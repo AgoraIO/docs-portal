@@ -363,6 +363,7 @@ async function writeDoxygenFixture(sourceDir: string) {
       <div class="title">Class Index</div>
       <p>See <a href="class_agora_1_1rtc_1_1_client.html#join">Client</a>.</p>
     </div>
+    <hr class="footer"><address class="footer">制作者 <a href="https://www.doxygen.org/">Doxygen</a> 1.9.1</address>
   </body>
 </html>`,
   );
@@ -409,6 +410,7 @@ async function writeDoxygenFixture(sourceDir: string) {
         </div>
       </div>
     </div>
+    <hr class="footer"><address class="footer">制作者 <a href="https://www.doxygen.org/">Doxygen</a> 1.9.1</address>
   </body>
 </html>`,
   );
@@ -1152,7 +1154,10 @@ describe('html-to-md-migration', () => {
       product: 'rtc',
       sourceDir,
       unexpectedPageContents: {
+        'annotated.mdx': ['制作者', 'doxygen.org'],
         'class-agora-1-1rtc-1-1-client.mdx': [
+          '制作者',
+          'doxygen.org',
           'All members',
           'Source view',
           'Function index',
@@ -1168,6 +1173,28 @@ describe('html-to-md-migration', () => {
         'functions.mdx',
       ],
     });
+  });
+
+  it('creates a scoped sidebar for Whiteboard Android API output', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'doxygen-source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDoxygenFixture(sourceDir);
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'whiteboard',
+      '--platform',
+      'android',
+    ]);
+
+    await expect(
+      readJson(path.join(outputDir, 'meta.json')),
+    ).resolves.toMatchObject({ navScope: {} });
   });
 
   it('migrates iOS doc-generator output with dry-run planning and rewritten links', async () => {

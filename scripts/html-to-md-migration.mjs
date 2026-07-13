@@ -822,6 +822,11 @@ function readDescription($) {
       '.contents p',
     ].join(', '),
   )
+    .filter(
+      (_, element) =>
+        $(element).closest('footer, .footer-copyright, address.footer')
+          .length === 0,
+    )
     .first()
     .text();
   return fallbackDesc ? normalizeText(fallbackDesc) : '';
@@ -877,7 +882,7 @@ function typeDocDescription(description, title, locale) {
 
 function selectContentRoot($) {
   $(
-    'script, style, link, iframe, form, nav:not(.related-links), header, footer, aside',
+    'script, style, link, iframe, form, nav:not(.related-links), header, footer, aside, hr.footer, address.footer',
   ).remove();
   const selectors = [
     'main > article',
