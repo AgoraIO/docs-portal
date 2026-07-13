@@ -4,7 +4,9 @@ import {
   getMachineReadableLocale,
   isMachineReadableDocsPath,
   isMachineReadableLocale,
+  isPublicMarkdownLocale,
   MACHINE_READABLE_LOCALE,
+  PUBLIC_MARKDOWN_LOCALES,
 } from './machine-readable-docs';
 
 describe('machine-readable docs filters', () => {
@@ -20,6 +22,12 @@ describe('machine-readable docs filters', () => {
     expect(isMachineReadableDocsPath('/zh-CN/introduction/about-agora')).toBe(
       false,
     );
+  });
+
+  it('allows English and Chinese public markdown page output', () => {
+    expect(PUBLIC_MARKDOWN_LOCALES).toEqual(['en', 'zh-CN']);
+    expect(isPublicMarkdownLocale('en')).toBe(true);
+    expect(isPublicMarkdownLocale('zh-CN')).toBe(true);
   });
 
   it('filters page collections by path or url', () => {
