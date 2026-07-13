@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # check=skip=SecretsUsedInArgOrEnv
 
-FROM oven/bun:1.3.12-alpine AS dependencies
+FROM oven/bun:1.3.12 AS dependencies
 
 WORKDIR /app
 
