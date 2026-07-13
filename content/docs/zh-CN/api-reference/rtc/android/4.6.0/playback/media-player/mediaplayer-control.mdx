@@ -43,7 +43,7 @@ int adjustPlayoutVolume(int volume);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_adjustpublishsignalvolume"></a>
 
@@ -87,7 +87,7 @@ int adjustPublishSignalVolume(int volume);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_mute"></a>
 
@@ -128,7 +128,7 @@ int mute(boolean muted);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_pause"></a>
 
@@ -158,7 +158,7 @@ int pause();
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_play"></a>
 
@@ -189,7 +189,7 @@ int play();
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_playpreloadedsrc"></a>
 
@@ -205,7 +205,7 @@ int playPreloadedSrc(String src);
 
 <a id="api_imediaplayer_playpreloadedsrc__detailed_desc"></a>
 
-调用 [preloadSrc](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_preloadsrc) 将媒体资源预加载到播放列表后，可以调用 [playPreloadedSrc](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_playpreloadedsrc) 播放该预加载的媒体资源。调用该方法后，如果收到 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调并报告 `PLAYER_STATE_PLAYING` 状态，则表示播放成功。 如果想更换要播放的预加载媒体资源，可以再次调用 [playPreloadedSrc](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_playpreloadedsrc) 并指定新的媒体资源 URL。若想重新播放该媒体资源，需要先调用 [preloadSrc](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_preloadsrc) 重新预加载后再播放。若想清空播放列表，请调用 [stop](/zh-CN/api-reference/rtc/android/playback/rte-player#api_player_stop_player)。
+调用 [preloadSrc](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-open#api_imediaplayer_preloadsrc) 将媒体资源预加载到播放列表后，可以调用 [playPreloadedSrc](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-control#api_imediaplayer_playpreloadedsrc) 播放该预加载的媒体资源。调用该方法后，如果收到 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调并报告 `PLAYER_STATE_PLAYING` 状态，则表示播放成功。 如果想更换要播放的预加载媒体资源，可以再次调用 [playPreloadedSrc](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-control#api_imediaplayer_playpreloadedsrc) 并指定新的媒体资源 URL。若想重新播放该媒体资源，需要先调用 [preloadSrc](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-open#api_imediaplayer_preloadsrc) 重新预加载后再播放。若想清空播放列表，请调用 [stop](/zh-CN/api-reference/rtc/android/4.6.0/playback/rte-player#api_player_stop_player)。
 
 :::info[注]
 如果在播放暂停时调用该方法，该方法在播放恢复之前不会生效。
@@ -217,7 +217,7 @@ int playPreloadedSrc(String src);
 
 #### `src`
 
-播放列表中媒体资源的 URL，必须与通过 [preloadSrc](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_preloadsrc) 设置的 `src` 保持一致，否则无法播放该媒体资源。
+播放列表中媒体资源的 URL，必须与通过 [preloadSrc](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-open#api_imediaplayer_preloadsrc) 设置的 `src` 保持一致，否则无法播放该媒体资源。
 
 <a id="api_imediaplayer_playpreloadedsrc__return_values"></a>
 
@@ -227,7 +227,7 @@ int playPreloadedSrc(String src);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_resume"></a>
 
@@ -251,7 +251,7 @@ int resume();
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_seek"></a>
 
@@ -267,7 +267,7 @@ int seek(long newPos);
 
 <a id="api_imediaplayer_seek__detailed_desc"></a>
 
-如果在播放完成后调用 [seek](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_seek)，即收到回调 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged)，播放状态为 `PLAYER_STATE_PLAYBACK_COMPLETED` 或 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`，SDK 会从指定位置开始播放媒体文件，并触发 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调，播放状态为 `PLAYER_STATE_PLAYING`。 如果在播放暂停时调用 [seek](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_seek)，调用成功后，SDK 会跳转到指定位置。要恢复播放，请调用 [resume](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_resume) 或 [play](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_play)。
+如果在播放完成后调用 [seek](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-control#api_imediaplayer_seek)，即收到回调 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged)，播放状态为 `PLAYER_STATE_PLAYBACK_COMPLETED` 或 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`，SDK 会从指定位置开始播放媒体文件，并触发 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调，播放状态为 `PLAYER_STATE_PLAYING`。 如果在播放暂停时调用 [seek](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-control#api_imediaplayer_seek)，调用成功后，SDK 会跳转到指定位置。要恢复播放，请调用 [resume](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-control#api_imediaplayer_resume) 或 [play](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-control#api_imediaplayer_play)。
 
 <a id="api_imediaplayer_seek__timing"></a>
 
@@ -279,7 +279,7 @@ int seek(long newPos);
 
 ### 相关回调
 
-调用该方法成功后，你会收到 [onPlayerEvent](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调，报告跳转到新播放位置的结果。
+调用该方法成功后，你会收到 [onPlayerEvent](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调，报告跳转到新播放位置的结果。
 
 <a id="api_imediaplayer_seek__parameters"></a>
 
@@ -297,7 +297,7 @@ int seek(long newPos);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="api_imediaplayer_stop"></a>
 
@@ -313,7 +313,7 @@ int stop();
 
 <a id="api_imediaplayer_stop__detailed_desc"></a>
 
-调用该方法后，如需再次播放，需要调用 `open` 或 [openWithMediaSource](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_openwithmediasource) 重新打开媒体资源。
+调用该方法后，如需再次播放，需要调用 `open` 或 [openWithMediaSource](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-open#api_imediaplayer_openwithmediasource) 重新打开媒体资源。
 
 <a id="api_imediaplayer_stop__timing"></a>
 
@@ -329,7 +329,7 @@ int stop();
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IMediaPlayer](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+- [IMediaPlayer](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayer)
 
 <a id="callback_imediaplayercustomdataprovider_onseek"></a>
 
@@ -345,7 +345,7 @@ long onSeek(long offset, int whence)
 
 <a id="callback_imediaplayercustomdataprovider_onseek__detailed_desc"></a>
 
-当你调用 [openWithMediaSource](/zh-CN/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_openwithmediasource) 或 `open` 方法打开自定义媒体资源时，SDK 会触发该回调，请求媒体资源中指定位置的数据。
+当你调用 [openWithMediaSource](/zh-CN/api-reference/rtc/android/4.6.0/playback/media-player/mediaplayer-open#api_imediaplayer_openwithmediasource) 或 `open` 方法打开自定义媒体资源时，SDK 会触发该回调，请求媒体资源中指定位置的数据。
 
 <a id="callback_imediaplayercustomdataprovider_onseek__parameters"></a>
 
@@ -373,4 +373,4 @@ long onSeek(long offset, int whence)
 - -1：定位失败。
 
 ### 所属接口类
-- [IMediaPlayerCustomDataProvider](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayercustomdataprovider)
+- [IMediaPlayerCustomDataProvider](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayercustomdataprovider)

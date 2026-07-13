@@ -50,7 +50,7 @@ public abstract int startLocalVideoTranscoder(LocalTranscoderConfiguration confi
 
 ### 相关回调
 
-当调用该方法失败时，SDK 会触发 [onLocalVideoTranscoderError](/zh-CN/api-reference/rtc/android/video/pre-and-post-processing/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) 回调报告失败原因。
+当调用该方法失败时，SDK 会触发 [onLocalVideoTranscoderError](/zh-CN/api-reference/rtc/android/4.6.0/video/pre-and-post-processing/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) 回调报告失败原因。
 
 <a id="api_irtcengine_startlocalvideotranscoder__parameters"></a>
 
@@ -58,7 +58,7 @@ public abstract int startLocalVideoTranscoder(LocalTranscoderConfiguration confi
 
 #### `config`
 
-本地视频合图的配置，详见 [LocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-localtranscoderconfiguration)。
+本地视频合图的配置，详见 [LocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-localtranscoderconfiguration)。
 
 <a id="api_irtcengine_startlocalvideotranscoder__return_values"></a>
 
@@ -68,7 +68,7 @@ public abstract int startLocalVideoTranscoder(LocalTranscoderConfiguration confi
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_stoplocalvideotranscoder"></a>
 
@@ -84,7 +84,7 @@ public abstract int stopLocalVideoTranscoder();
 
 <a id="api_irtcengine_stoplocalvideotranscoder__detailed_desc"></a>
 
-调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/video/pre-and-post-processing/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如需停止本地合图，可调用该方法。
+调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/4.6.0/video/pre-and-post-processing/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如需停止本地合图，可调用该方法。
 
 <a id="api_irtcengine_stoplocalvideotranscoder__return_values"></a>
 
@@ -94,7 +94,7 @@ public abstract int stopLocalVideoTranscoder();
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_updatelocaltranscoderconfiguration"></a>
 
@@ -110,10 +110,10 @@ public abstract int updateLocalTranscoderConfiguration(LocalTranscoderConfigurat
 
 <a id="api_irtcengine_updatelocaltranscoderconfiguration__detailed_desc"></a>
 
-调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/video/pre-and-post-processing/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如果你需要更新本地合图配置，可以调用该方法。
+调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/4.6.0/video/pre-and-post-processing/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如果你需要更新本地合图配置，可以调用该方法。
 
 :::info[注]
-如果你想更新用于本地合图的视频源类型，例如添加第二个摄像头或屏幕进行视频采集，需要在调用 [startCameraCapture](/zh-CN/api-reference/rtc/android/video/camera-capture#api_irtcengine_startcameracapture) 或 [startScreenCapture](/zh-CN/api-reference/rtc/android/video/screencapture#api_irtcengine_startscreencapture) 后调用该方法。
+如果你想更新用于本地合图的视频源类型，例如添加第二个摄像头或屏幕进行视频采集，需要在调用 [startCameraCapture](/zh-CN/api-reference/rtc/android/4.6.0/video/camera-capture#api_irtcengine_startcameracapture) 或 [startScreenCapture](/zh-CN/api-reference/rtc/android/4.6.0/video/screencapture#api_irtcengine_startscreencapture) 后调用该方法。
 :::
 
 <a id="api_irtcengine_updatelocaltranscoderconfiguration__parameters"></a>
@@ -122,7 +122,7 @@ public abstract int updateLocalTranscoderConfiguration(LocalTranscoderConfigurat
 
 #### `config`
 
-本地合图配置。详见 [LocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-localtranscoderconfiguration)。
+本地合图配置。详见 [LocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-localtranscoderconfiguration)。
 
 <a id="api_irtcengine_updatelocaltranscoderconfiguration__return_values"></a>
 
@@ -132,7 +132,7 @@ public abstract int updateLocalTranscoderConfiguration(LocalTranscoderConfigurat
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onlocalvideotranscodererror"></a>
 
@@ -148,13 +148,13 @@ public void onLocalVideoTranscoderError(LocalTranscoderConfiguration.Transcoding
 
 <a id="callback_irtcengineeventhandler_onlocalvideotranscodererror__detailed_desc"></a>
 
-当调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/video/pre-and-post-processing/local-transcoder#api_irtcengine_startlocalvideotranscoder) 或 [updateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/video/pre-and-post-processing/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) 失败时，SDK 会触发该回调报告失败原因。
+当调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/4.6.0/video/pre-and-post-processing/local-transcoder#api_irtcengine_startlocalvideotranscoder) 或 [updateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/4.6.0/video/pre-and-post-processing/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) 失败时，SDK 会触发该回调报告失败原因。
 
 <a id="callback_irtcengineeventhandler_onlocalvideotranscodererror__timing"></a>
 
 ### 触发时机
 
-该回调在调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/video/pre-and-post-processing/local-transcoder#api_irtcengine_startlocalvideotranscoder) 或 [updateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/video/pre-and-post-processing/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) 失败时被触发。
+该回调在调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/4.6.0/video/pre-and-post-processing/local-transcoder#api_irtcengine_startlocalvideotranscoder) 或 [updateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/4.6.0/video/pre-and-post-processing/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) 失败时被触发。
 
 <a id="callback_irtcengineeventhandler_onlocalvideotranscodererror__parameters"></a>
 
@@ -162,7 +162,7 @@ public void onLocalVideoTranscoderError(LocalTranscoderConfiguration.Transcoding
 
 #### `stream`
 
-在视频合图过程中无法被合图的视频流。详见 [TranscodingVideoStream](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-transcodingvideostream)。
+在视频合图过程中无法被合图的视频流。详见 [TranscodingVideoStream](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-transcodingvideostream)。
 
 #### `error`
 
@@ -176,4 +176,4 @@ public void onLocalVideoTranscoderError(LocalTranscoderConfiguration.Transcoding
 - 20：内部错误。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineeventhandler)

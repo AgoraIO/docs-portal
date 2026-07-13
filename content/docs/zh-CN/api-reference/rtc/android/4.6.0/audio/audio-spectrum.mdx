@@ -18,7 +18,7 @@ public abstract int disableAudioSpectrumMonitor();
 
 <a id="api_irtcengine_disableaudiospectrummonitor__detailed_desc"></a>
 
-调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 后，如需关闭音频频谱监测，可以调用该方法。
+调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 后，如需关闭音频频谱监测，可以调用该方法。
 
 :::info[注]
 你可以在加入频道前或加入频道后调用此方法。
@@ -32,7 +32,7 @@ public abstract int disableAudioSpectrumMonitor();
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_enableaudiospectrummonitor"></a>
 
@@ -60,7 +60,7 @@ public abstract int enableAudioSpectrumMonitor(int intervalInMS);
 
 ### 相关回调
 
-[onLocalAudioSpectrum](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 和 [onRemoteAudioSpectrum](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) 回调。
+[onLocalAudioSpectrum](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 和 [onRemoteAudioSpectrum](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) 回调。
 
 <a id="api_irtcengine_enableaudiospectrummonitor__parameters"></a>
 
@@ -68,7 +68,7 @@ public abstract int enableAudioSpectrumMonitor(int intervalInMS);
 
 #### `intervalInMS`
 
-SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 和 [onRemoteAudioSpectrum](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) 回调的时间间隔，单位为毫秒。该参数不能小于 10，否则调用该方法会失败。（默认值为 100）
+SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 和 [onRemoteAudioSpectrum](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) 回调的时间间隔，单位为毫秒。该参数不能小于 10，否则调用该方法会失败。（默认值为 100）
 
 <a id="api_irtcengine_enableaudiospectrummonitor__return_values"></a>
 
@@ -79,7 +79,7 @@ SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/android/audio/audio-s
   - -2：参数无效。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_registeraudiospectrumobserver"></a>
 
@@ -95,7 +95,7 @@ public abstract int registerAudioSpectrumObserver(IAudioSpectrumObserver observe
 
 <a id="api_irtcengine_registeraudiospectrumobserver__detailed_desc"></a>
 
-成功注册音频频谱观察器并调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 启用音频频谱监测后，SDK 会根据你设置的时间间隔，触发你在 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudiospectrumobserver) 中实现的回调。
+成功注册音频频谱观察器并调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 启用音频频谱监测后，SDK 会根据你设置的时间间隔，触发你在 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_iaudiospectrumobserver) 中实现的回调。
 
 :::info[注]
 你可以在加入频道前或加入频道后调用此方法。
@@ -107,7 +107,7 @@ public abstract int registerAudioSpectrumObserver(IAudioSpectrumObserver observe
 
 #### `observer`
 
-音频频谱观察器。详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudiospectrumobserver)。
+音频频谱观察器。详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_iaudiospectrumobserver)。
 
 <a id="api_irtcengine_registeraudiospectrumobserver__return_values"></a>
 
@@ -117,7 +117,7 @@ public abstract int registerAudioSpectrumObserver(IAudioSpectrumObserver observe
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver"></a>
 
@@ -133,7 +133,7 @@ public abstract int unRegisterAudioSpectrumObserver(IAudioSpectrumObserver obser
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__detailed_desc"></a>
 
-调用 [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 后，如果你希望关闭音频频谱监测，可以调用此方法。
+调用 [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 后，如果你希望关闭音频频谱监测，可以调用此方法。
 
 :::info[注]
 你可以在加入频道前或加入后调用此方法。
@@ -145,7 +145,7 @@ public abstract int unRegisterAudioSpectrumObserver(IAudioSpectrumObserver obser
 
 #### `observer`
 
-音频频谱观察器，详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudiospectrumobserver)。
+音频频谱观察器，详见 [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_iaudiospectrumobserver)。
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__return_values"></a>
 
@@ -155,7 +155,7 @@ public abstract int unRegisterAudioSpectrumObserver(IAudioSpectrumObserver obser
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum"></a>
 
@@ -171,7 +171,7 @@ public abstract int unRegisterAudioSpectrumObserver(IAudioSpectrumObserver obser
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__detailed_desc"></a>
 
-在成功调用 [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 实现 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 回调，并调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 启用音频频谱监测后，SDK 会按照你设置的时间间隔，在编码前触发该回调报告本地用户的音频频谱数据。
+在成功调用 [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 实现 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 回调，并调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 启用音频频谱监测后，SDK 会按照你设置的时间间隔，在编码前触发该回调报告本地用户的音频频谱数据。
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__timing"></a>
 
@@ -185,7 +185,7 @@ public abstract int unRegisterAudioSpectrumObserver(IAudioSpectrumObserver obser
 
 #### `data`
 
-本地用户的音频频谱数据。详见 [AudioSpectrumInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-audiospectrumdata)。
+本地用户的音频频谱数据。详见 [AudioSpectrumInfo](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-audiospectrumdata)。
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__return_values"></a>
 
@@ -197,7 +197,7 @@ public abstract int unRegisterAudioSpectrumObserver(IAudioSpectrumObserver obser
 - false：未接收到频谱数据。
 
 ### 所属接口类
-- [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudiospectrumobserver)
+- [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_iaudiospectrumobserver)
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum"></a>
 
@@ -213,13 +213,13 @@ boolean onRemoteAudioSpectrum(UserAudioSpectrumInfo[] userAudioSpectrumInfos, in
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__detailed_desc"></a>
 
-成功调用 [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 并调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 启用音频频谱监测后，SDK 会按照你设置的时间间隔触发该回调。
+成功调用 [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 并调用 [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 启用音频频谱监测后，SDK 会按照你设置的时间间隔触发该回调。
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__timing"></a>
 
 ### 触发时机
 
-该回调在成功调用 [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 并启用音频频谱监测后，根据设置的时间间隔被触发。
+该回调在成功调用 [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 并启用音频频谱监测后，根据设置的时间间隔被触发。
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__parameters"></a>
 
@@ -227,7 +227,7 @@ boolean onRemoteAudioSpectrum(UserAudioSpectrumInfo[] userAudioSpectrumInfos, in
 
 #### `userAudioSpectrumInfos`
 
-远端用户的音频频谱信息。数组长度为 SDK 监测到的远端用户数量。如果该数组为 `null`，表示未检测到远端用户的音频频谱。详见 [UserAudioSpectrumInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-useraudiospectruminfo)。
+远端用户的音频频谱信息。数组长度为 SDK 监测到的远端用户数量。如果该数组为 `null`，表示未检测到远端用户的音频频谱。详见 [UserAudioSpectrumInfo](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-useraudiospectruminfo)。
 
 #### `spectrumNumber`
 
@@ -241,4 +241,4 @@ boolean onRemoteAudioSpectrum(UserAudioSpectrumInfo[] userAudioSpectrumInfos, in
 - false：未接收到频谱数据。
 
 ### 所属接口类
-- [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudiospectrumobserver)
+- [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_iaudiospectrumobserver)

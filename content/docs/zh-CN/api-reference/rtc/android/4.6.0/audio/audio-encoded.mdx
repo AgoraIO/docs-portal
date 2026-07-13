@@ -28,11 +28,11 @@ public abstract int registerAudioEncodedFrameObserver(AudioEncodedFrameObserverC
 
 #### `config`
 
-编码音频的观察器配置。详见 [AudioEncodedFrameObserverConfig](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-audioencodedframeobserverconfig)。
+编码音频的观察器配置。详见 [AudioEncodedFrameObserverConfig](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-audioencodedframeobserverconfig)。
 
 #### `observer`
 
-编码音频数据的观察器。详见 [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioencodedframeobserver)。
+编码音频数据的观察器。详见 [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_iaudioencodedframeobserver)。
 
 <a id="api_irtcengine_registeraudioencodedframeobserver__return_values"></a>
 
@@ -42,7 +42,7 @@ public abstract int registerAudioEncodedFrameObserver(AudioEncodedFrameObserverC
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe"></a>
 
@@ -58,7 +58,7 @@ public abstract void onMixedAudioEncodedFrame(ByteBuffer buffer, int samplesPerC
 
 <a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__detailed_desc"></a>
 
-调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频配置设置为 `AUDIO_ENCODED_FRAME_OBSERVER_POSITION_MIXED` 后，可以通过该回调获取混音编码音频数据。
+调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频配置设置为 `AUDIO_ENCODED_FRAME_OBSERVER_POSITION_MIXED` 后，可以通过该回调获取混音编码音频数据。
 
 <a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__parameters"></a>
 
@@ -93,7 +93,7 @@ public abstract void onMixedAudioEncodedFrame(ByteBuffer buffer, int samplesPerC
 - 11：HE-AAC v2。
 
 ### 所属接口类
-- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioencodedframeobserver)
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_iaudioencodedframeobserver)
 
 <a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe"></a>
 
@@ -109,7 +109,7 @@ public abstract void onPlaybackAudioEncodedFrame(ByteBuffer buffer, int samplesP
 
 <a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__detailed_desc"></a>
 
-调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将编码音频设置为 `AUDIO_ENCODED_FRAME_OBSERVER_POSITION_PLAYBACK` 后，可以通过该回调获取所有远端用户的编码音频数据。
+调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将编码音频设置为 `AUDIO_ENCODED_FRAME_OBSERVER_POSITION_PLAYBACK` 后，可以通过该回调获取所有远端用户的编码音频数据。
 
 <a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__timing"></a>
 
@@ -150,7 +150,7 @@ public abstract void onPlaybackAudioEncodedFrame(ByteBuffer buffer, int samplesP
 - 11：HE-AAC v2。
 
 ### 所属接口类
-- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioencodedframeobserver)
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_iaudioencodedframeobserver)
 
 <a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe"></a>
 
@@ -166,7 +166,7 @@ public abstract void onRecordAudioEncodedFrame(ByteBuffer buffer, int samplesPer
 
 <a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__detailed_desc"></a>
 
-调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将编码音频设置为 `AUDIO_ENCODED_FRAME_OBSERVER_POSITION_MIC` 后，可以通过该回调获取本地用户的编码音频数据。
+调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将编码音频设置为 `AUDIO_ENCODED_FRAME_OBSERVER_POSITION_MIC` 后，可以通过该回调获取本地用户的编码音频数据。
 
 <a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__parameters"></a>
 
@@ -201,4 +201,4 @@ public abstract void onRecordAudioEncodedFrame(ByteBuffer buffer, int samplesPer
 - 11：HE-AAC v2。
 
 ### 所属接口类
-- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_iaudioencodedframeobserver)
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_iaudioencodedframeobserver)

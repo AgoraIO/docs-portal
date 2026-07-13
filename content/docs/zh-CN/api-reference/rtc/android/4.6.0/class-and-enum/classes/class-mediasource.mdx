@@ -41,7 +41,7 @@ public class MediaPlayerSource {
 ### `autoPlay`
 
 :::info[注]
-如果关闭自动播放，在打开媒体文件后需手动调用 [play](/zh-CN/api-reference/rtc/android/playback/rte-player#api_player_play_player) 方法播放。
+如果关闭自动播放，在打开媒体文件后需手动调用 [play](/zh-CN/api-reference/rtc/android/4.6.0/playback/rte-player#api_player_play_player) 方法播放。
 :::
 
 是否在媒体文件打开后自动播放：
@@ -52,7 +52,7 @@ public class MediaPlayerSource {
 ### `enableCache`
 
 :::info[注]
-声网仅支持缓存非 HLS 协议传输的点播音视频流。如果需要启用缓存功能，请为 `uri` 赋值；否则，默认基于 `url` 进行缓存。启用该功能后，Media Player 会将正在播放的部分音视频文件缓存于本地设备，可在无网络的情况下播放。缓存统计信息会在播放后每秒更新一次，详见 [CacheStatistics](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-cachestatistics)。
+声网仅支持缓存非 HLS 协议传输的点播音视频流。如果需要启用缓存功能，请为 `uri` 赋值；否则，默认基于 `url` 进行缓存。启用该功能后，Media Player 会将正在播放的部分音视频文件缓存于本地设备，可在无网络的情况下播放。缓存统计信息会在播放后每秒更新一次，详见 [CacheStatistics](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-cachestatistics)。
 :::
 
 播放过程中是否缓存媒体文件：
@@ -63,7 +63,7 @@ public class MediaPlayerSource {
 ### `enableMultiAudioTrack`
 
 :::info[注]
-如果需要为本地播放和发布到频道分别设置音轨，需设置此参数为 true，然后调用 [selectMultiAudioTrack](/zh-CN/api-reference/rtc/android/playback/audio-mixing#api_imediaplayer_selectmultiaudiotrack) 方法选择音轨。
+如果需要为本地播放和发布到频道分别设置音轨，需设置此参数为 true，然后调用 [selectMultiAudioTrack](/zh-CN/api-reference/rtc/android/4.6.0/playback/audio-mixing#api_imediaplayer_selectmultiaudiotrack) 方法选择音轨。
 :::
 
 是否允许在播放媒体资源时选择不同的音轨：
@@ -95,7 +95,7 @@ public class MediaPlayerSource {
 
 ### `provider`
 
-自定义媒体资源文件的数据提供回调，详见 [IMediaPlayerCustomDataProvider](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayercustomdataprovider)。
+自定义媒体资源文件的数据提供回调，详见 [IMediaPlayerCustomDataProvider](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_imediaplayercustomdataprovider)。
 
 :::info[注]
 如果打开的是自定义媒体资源，请传入 `provider` 的值；如果打开的是普通媒体资源，请传入 `url` 的值。声网建议不要在一次调用中同时传入 `url` 和 `provider` 的值，否则调用可能失败。

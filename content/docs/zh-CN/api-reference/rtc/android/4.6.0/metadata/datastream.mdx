@@ -19,7 +19,7 @@ public abstract int createDataStream(boolean reliable, boolean ordered);
 <a id="api_irtcengine_createdatastream1__detailed_desc"></a>
 
 :::info[注]
-每个用户在 [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 的生命周期内最多可创建五个数据流。离开频道时，数据流会被销毁，如需继续使用需重新创建。如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
+每个用户在 [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine) 的生命周期内最多可创建五个数据流。离开频道时，数据流会被销毁，如需继续使用需重新创建。如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
 :::
 
 <a id="api_irtcengine_createdatastream1__timing"></a>
@@ -32,7 +32,7 @@ public abstract int createDataStream(boolean reliable, boolean ordered);
 
 ### 相关回调
 
-将 `reliable` 设置为 true 后，如果接收端在五秒内未收到数据，SDK 会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并返回错误码。
+将 `reliable` 设置为 true 后，如果接收端在五秒内未收到数据，SDK 会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/android/4.6.0/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并返回错误码。
 
 <a id="api_irtcengine_createdatastream1__parameters"></a>
 
@@ -64,7 +64,7 @@ public abstract int createDataStream(boolean reliable, boolean ordered);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_createdatastream2"></a>
 
@@ -83,7 +83,7 @@ public abstract int createDataStream(DataStreamConfig config);
 该方法不保证数据传输的可靠性。如果数据包在发送后五秒内未被接收，SDK 会直接丢弃该数据。
 
 :::info[注]
-每个用户在 [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 的生命周期内最多可以创建五个数据流。离开频道时数据流会被销毁，如需继续使用需重新创建。如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用声网实时消息。
+每个用户在 [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine) 的生命周期内最多可以创建五个数据流。离开频道时数据流会被销毁，如需继续使用需重新创建。如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用声网实时消息。
 :::
 
 <a id="api_irtcengine_createdatastream2__timing"></a>
@@ -98,7 +98,7 @@ public abstract int createDataStream(DataStreamConfig config);
 
 #### `config`
 
-数据流的配置，详见 [DataStreamConfig](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-datastreamconfig)。
+数据流的配置，详见 [DataStreamConfig](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-datastreamconfig)。
 
 <a id="api_irtcengine_createdatastream2__return_values"></a>
 
@@ -108,7 +108,7 @@ public abstract int createDataStream(DataStreamConfig config);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengineex_createdatastreamex1"></a>
 
@@ -126,10 +126,10 @@ public abstract int createDataStreamEx(boolean reliable, boolean ordered, RtcCon
 
 #### `废弃`
 
-该方法已废弃，请改用 [createDataStreamEx [2/2]](/zh-CN/api-reference/rtc/android/metadata/datastream#api_irtcengineex_createdatastreamex2)
+该方法已废弃，请改用 [createDataStreamEx [2/2]](/zh-CN/api-reference/rtc/android/4.6.0/metadata/datastream#api_irtcengineex_createdatastreamex2)
 
 :::info[注]
-每个用户在 [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 的生命周期内最多可创建五个数据流。离开频道时数据流会被销毁，如需继续使用需重新创建。
+每个用户在 [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine) 的生命周期内最多可创建五个数据流。离开频道时数据流会被销毁，如需继续使用需重新创建。
 :::
 
 <a id="api_irtcengineex_createdatastreamex1__scenario"></a>
@@ -142,13 +142,13 @@ public abstract int createDataStreamEx(boolean reliable, boolean ordered, RtcCon
 
 ### 调用时机
 
-请在调用 [joinChannelEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex) 后调用此方法。
+请在调用 [joinChannelEx](/zh-CN/api-reference/rtc/android/4.6.0/channel#api_irtcengineex_joinchannelex) 后调用此方法。
 
 <a id="api_irtcengineex_createdatastreamex1__related"></a>
 
 ### 相关回调
 
-将 `reliable` 设置为 true 后，如果接收端在五秒内未收到数据，SDK 会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并返回错误码。
+将 `reliable` 设置为 true 后，如果接收端在五秒内未收到数据，SDK 会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/android/4.6.0/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并返回错误码。
 
 <a id="api_irtcengineex_createdatastreamex1__parameters"></a>
 
@@ -174,7 +174,7 @@ public abstract int createDataStreamEx(boolean reliable, boolean ordered, RtcCon
 
 #### `connection`
 
-连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-rtcconnection)。
 
 <a id="api_irtcengineex_createdatastreamex1__return_values"></a>
 
@@ -184,7 +184,7 @@ public abstract int createDataStreamEx(boolean reliable, boolean ordered, RtcCon
 - 方法调用失败，返回小于 0 的值。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineex)
 
 <a id="api_irtcengineex_createdatastreamex2"></a>
 
@@ -200,10 +200,10 @@ public abstract int createDataStreamEx(DataStreamConfig config, RtcConnection co
 
 <a id="api_irtcengineex_createdatastreamex2__detailed_desc"></a>
 
-与 [createDataStreamEx [1/2]](/zh-CN/api-reference/rtc/android/metadata/datastream#api_irtcengineex_createdatastreamex1) 相比，该方法不保证数据传输的可靠性。如果数据包在发送后五秒内未被接收，SDK 会直接丢弃该数据。
+与 [createDataStreamEx [1/2]](/zh-CN/api-reference/rtc/android/4.6.0/metadata/datastream#api_irtcengineex_createdatastreamex1) 相比，该方法不保证数据传输的可靠性。如果数据包在发送后五秒内未被接收，SDK 会直接丢弃该数据。
 
 :::info[注]
-每个用户在 [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 的生命周期内最多可创建五个数据流。离开频道时数据流会被销毁，如需继续使用需重新创建。如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
+每个用户在 [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine) 的生命周期内最多可创建五个数据流。离开频道时数据流会被销毁，如需继续使用需重新创建。如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
 :::
 
 <a id="api_irtcengineex_createdatastreamex2__scenario"></a>
@@ -216,7 +216,7 @@ public abstract int createDataStreamEx(DataStreamConfig config, RtcConnection co
 
 ### 调用时机
 
-请在调用 [joinChannelEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex) 后调用该方法。
+请在调用 [joinChannelEx](/zh-CN/api-reference/rtc/android/4.6.0/channel#api_irtcengineex_joinchannelex) 后调用该方法。
 
 <a id="api_irtcengineex_createdatastreamex2__parameters"></a>
 
@@ -224,11 +224,11 @@ public abstract int createDataStreamEx(DataStreamConfig config, RtcConnection co
 
 #### `config`
 
-数据流的配置，详见 [DataStreamConfig](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-datastreamconfig)。
+数据流的配置，详见 [DataStreamConfig](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-datastreamconfig)。
 
 #### `connection`
 
-连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-rtcconnection)。
 
 <a id="api_irtcengineex_createdatastreamex2__return_values"></a>
 
@@ -238,7 +238,7 @@ public abstract int createDataStreamEx(DataStreamConfig config, RtcConnection co
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineex)
 
 <a id="api_irtcengine_sendstreammessage"></a>
 
@@ -269,7 +269,7 @@ public abstract int sendStreamMessage(int streamId, byte[] message);
 
 ### 相关回调
 
-调用成功后会触发远端客户端的 [onStreamMessage](/zh-CN/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可通过该回调获取数据流消息。调用失败则会触发远端客户端的 [onStreamMessageError](/zh-CN/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
+调用成功后会触发远端客户端的 [onStreamMessage](/zh-CN/api-reference/rtc/android/4.6.0/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可通过该回调获取数据流消息。调用失败则会触发远端客户端的 [onStreamMessageError](/zh-CN/api-reference/rtc/android/4.6.0/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 <a id="api_irtcengine_sendstreammessage__parameters"></a>
 
@@ -291,7 +291,7 @@ public abstract int sendStreamMessage(int streamId, byte[] message);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengineex_sendstreammessageex"></a>
 
@@ -328,7 +328,7 @@ public abstract int sendStreamMessageEx(int streamId, byte[] message, RtcConnect
 
 ### 相关回调
 
-调用成功后会触发远端客户端的 [onStreamMessage](/zh-CN/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可通过该回调获取数据流消息。调用失败则会触发远端客户端的 [onStreamMessageError](/zh-CN/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
+调用成功后会触发远端客户端的 [onStreamMessage](/zh-CN/api-reference/rtc/android/4.6.0/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可通过该回调获取数据流消息。调用失败则会触发远端客户端的 [onStreamMessageError](/zh-CN/api-reference/rtc/android/4.6.0/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 <a id="api_irtcengineex_sendstreammessageex__parameters"></a>
 
@@ -344,7 +344,7 @@ public abstract int sendStreamMessageEx(int streamId, byte[] message, RtcConnect
 
 #### `connection`
 
-连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-rtcconnection)。
 
 <a id="api_irtcengineex_sendstreammessageex__return_values"></a>
 
@@ -354,7 +354,7 @@ public abstract int sendStreamMessageEx(int streamId, byte[] message, RtcConnect
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onstreammessage"></a>
 
@@ -378,7 +378,7 @@ public void onStreamMessage(int uid, int streamId, byte[] data)
 
 ### 触发时机
 
-该回调在本地用户收到远端用户通过 [sendStreamMessage](/zh-CN/api-reference/rtc/android/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的数据流消息时被触发。
+该回调在本地用户收到远端用户通过 [sendStreamMessage](/zh-CN/api-reference/rtc/android/4.6.0/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的数据流消息时被触发。
 
 <a id="callback_irtcengineeventhandler_onstreammessage__parameters"></a>
 
@@ -397,7 +397,7 @@ public void onStreamMessage(int uid, int streamId, byte[] data)
 接收到的数据内容。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror"></a>
 
@@ -413,7 +413,7 @@ public void onStreamMessageError(int uid, int streamId, int error, int missed, i
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__detailed_desc"></a>
 
-该回调在本地用户未能接收到远端用户通过调用 [sendStreamMessage](/zh-CN/api-reference/rtc/android/metadata/datastream#api_irtcengine_sendstreammessage) 发送的流消息时触发。
+该回调在本地用户未能接收到远端用户通过调用 [sendStreamMessage](/zh-CN/api-reference/rtc/android/4.6.0/metadata/datastream#api_irtcengine_sendstreammessage) 发送的流消息时触发。
 
 :::info[注]
 如果你需要一个更全面的低延迟、高并发和可扩展的实时消息和状态同步解决方案，建议使用实时消息。
@@ -423,7 +423,7 @@ public void onStreamMessageError(int uid, int streamId, int error, int missed, i
 
 ### 触发时机
 
-该回调在本地用户未能接收到远端用户通过 [sendStreamMessage](/zh-CN/api-reference/rtc/android/metadata/datastream#api_irtcengine_sendstreammessage) 发送的流消息时被触发。
+该回调在本地用户未能接收到远端用户通过 [sendStreamMessage](/zh-CN/api-reference/rtc/android/4.6.0/metadata/datastream#api_irtcengine_sendstreammessage) 发送的流消息时被触发。
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__parameters"></a>
 
@@ -450,4 +450,4 @@ public void onStreamMessageError(int uid, int streamId, int error, int missed, i
 数据流中断时缓存的传入消息数量。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineeventhandler)

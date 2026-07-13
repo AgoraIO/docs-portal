@@ -22,7 +22,7 @@ public abstract int configRhythmPlayer(AgoraRhythmPlayerConfig config);
 
 自 v4.6.0 版本废弃。
 
-调用 [startRhythmPlayer](/zh-CN/api-reference/rtc/android/playback/rhythmplayer#api_irtcengine_startrhythmplayer) 后，可以使用该方法重新配置虚拟节拍器。启用虚拟节拍器后，SDK 会从头开始播放指定的音效文件，并根据在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，如果将 `beatsPerMinute` 设置为 60，SDK 每秒播放一个节拍。如果文件时长超过节拍时长，SDK 只播放节拍时长内的音频。默认情况下，虚拟节拍器的声音会在频道中发布。如果希望远端用户也能听到该声音，可以在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-channelmediaoptions) 中将 `publishRhythmPlayerTrack` 设置为 true。
+调用 [startRhythmPlayer](/zh-CN/api-reference/rtc/android/4.6.0/playback/rhythmplayer#api_irtcengine_startrhythmplayer) 后，可以使用该方法重新配置虚拟节拍器。启用虚拟节拍器后，SDK 会从头开始播放指定的音效文件，并根据在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，如果将 `beatsPerMinute` 设置为 60，SDK 每秒播放一个节拍。如果文件时长超过节拍时长，SDK 只播放节拍时长内的音频。默认情况下，虚拟节拍器的声音会在频道中发布。如果希望远端用户也能听到该声音，可以在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-channelmediaoptions) 中将 `publishRhythmPlayerTrack` 设置为 true。
 
 <a id="api_irtcengine_configrhythmplayer__timing"></a>
 
@@ -36,7 +36,7 @@ public abstract int configRhythmPlayer(AgoraRhythmPlayerConfig config);
 
 #### `config`
 
-节拍器的配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-agorarhythmplayerconfig)。
+节拍器的配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-agorarhythmplayerconfig)。
 
 <a id="api_irtcengine_configrhythmplayer__return_values"></a>
 
@@ -46,7 +46,7 @@ public abstract int configRhythmPlayer(AgoraRhythmPlayerConfig config);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_startrhythmplayer"></a>
 
@@ -66,7 +66,7 @@ public abstract int startRhythmPlayer(String sound1, String sound2, AgoraRhythmP
 
 自 v4.6.0 版本废弃。
 
-启用虚拟节拍器后，SDK 会从头开始播放指定的音效文件，并根据你在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，如果你将 `beatsPerMinute` 设置为 60，SDK 每秒播放一个节拍。如果文件时长超过节拍时长，SDK 只播放节拍时长内的音频内容。 默认情况下，虚拟节拍器的声音会在频道中发布。如果你希望远端用户也能听到该声音，可以在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-channelmediaoptions) 中将 `publishRhythmPlayerTrack` 设置为 true。
+启用虚拟节拍器后，SDK 会从头开始播放指定的音效文件，并根据你在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，如果你将 `beatsPerMinute` 设置为 60，SDK 每秒播放一个节拍。如果文件时长超过节拍时长，SDK 只播放节拍时长内的音频内容。 默认情况下，虚拟节拍器的声音会在频道中发布。如果你希望远端用户也能听到该声音，可以在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-channelmediaoptions) 中将 `publishRhythmPlayerTrack` 设置为 true。
 
 <a id="api_irtcengine_startrhythmplayer__scenario"></a>
 
@@ -94,7 +94,7 @@ public abstract int startRhythmPlayer(String sound1, String sound2, AgoraRhythmP
 
 #### `config`
 
-节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-agorarhythmplayerconfig)。
+节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-agorarhythmplayerconfig)。
 
 <a id="api_irtcengine_startrhythmplayer__return_values"></a>
 
@@ -105,7 +105,7 @@ public abstract int startRhythmPlayer(String sound1, String sound2, AgoraRhythmP
   - -22：未找到音效文件。请为 sound1 和 sound2 设置正确的路径。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_stoprhythmplayer"></a>
 
@@ -135,7 +135,7 @@ public abstract int stopRhythmPlayer();
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged"></a>
 
@@ -188,4 +188,4 @@ public void onRhythmPlayerStateChanged(int state, int reason)
 - RHYTHM_PLAYER_REASON_FILE_OVER_DURATION_LIMIT （803）：节拍音频文件的时长超过限制，最大为 1.2 秒。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineeventhandler)

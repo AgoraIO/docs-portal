@@ -38,7 +38,7 @@ addOrUpdateVideoEffect(VIDEO_EFFECT_NODE_ID.FILTER, "template name");
 
 #### `nodeId`
 
-视频特效节点的唯一标识符或标识符组合。详见 [VIDEO_EFFECT_NODE_ID](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-videoeffectnodeid)。例如：
+视频特效节点的唯一标识符或标识符组合。详见 [VIDEO_EFFECT_NODE_ID](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-videoeffectnodeid)。例如：
 
 - 单个特效： VIDEO_EFFECT_NODE_ID.BEAUTY。
 - 组合特效： VIDEO_EFFECT_NODE_ID.BEAUTY | VIDEO_EFFECT_NODE_ID.STYLE_MAKEUP。
@@ -55,7 +55,7 @@ addOrUpdateVideoEffect(VIDEO_EFFECT_NODE_ID.FILTER, "template name");
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoeffectobject)
 
 <a id="api_irtcengine_createvideoeffectobject"></a>
 
@@ -76,7 +76,7 @@ public abstract IVideoEffectObject createVideoEffectObject(String bundlePath, Co
 自 v4.6.0 版本新增。
 
 :::info[注]
-你必须先调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 方法再调用此方法。该方法适用于 Android 4.4 及以上版本。
+你必须先调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 方法再调用此方法。该方法适用于 Android 4.4 及以上版本。
 :::
 
 <a id="api_irtcengine_createvideoeffectobject__parameters"></a>
@@ -89,16 +89,16 @@ public abstract IVideoEffectObject createVideoEffectObject(String bundlePath, Co
 
 #### `sourceType`
 
-媒体源类型，例如 `PRIMARY_CAMERA_SOURCE`。详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+媒体源类型，例如 `PRIMARY_CAMERA_SOURCE`。详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-mediasourcetype)。
 
 <a id="api_irtcengine_createvideoeffectobject__return_values"></a>
 
 ### 返回值
 
-方法调用成功，返回 [IVideoEffectObject](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoeffectobject) 对象。 方法调用失败，返回 `null`。
+方法调用成功，返回 [IVideoEffectObject](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoeffectobject) 对象。 方法调用失败，返回 `null`。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_destroyvideoeffectobject"></a>
 
@@ -119,7 +119,7 @@ public abstract int destroyVideoEffectObject(IVideoEffectObject videoEffectObjec
 自 v4.6.0 版本新增。
 
 :::info[注]
-在调用该方法前必须先调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 方法。该方法适用于 Android 4.4 及以上版本。
+在调用该方法前必须先调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 方法。该方法适用于 Android 4.4 及以上版本。
 :::
 
 <a id="api_irtcengine_destroyvideoeffectobject__parameters"></a>
@@ -128,7 +128,7 @@ public abstract int destroyVideoEffectObject(IVideoEffectObject videoEffectObjec
 
 #### `videoEffectObject`
 
-要销毁的视频特效对象。详见 [IVideoEffectObject](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoeffectobject)。
+要销毁的视频特效对象。详见 [IVideoEffectObject](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoeffectobject)。
 
 <a id="api_irtcengine_destroyvideoeffectobject__return_values"></a>
 
@@ -138,7 +138,7 @@ public abstract int destroyVideoEffectObject(IVideoEffectObject videoEffectObjec
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_getfaceshapeareaoptions"></a>
 
@@ -164,7 +164,7 @@ public abstract FaceShapeAreaOptions getFaceShapeAreaOptions(int shapeArea, Cons
 
 ### 调用时机
 
-在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 之后调用此方法。
+在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 之后调用此方法。
 
 <a id="api_irtcengine_getfaceshapeareaoptions__parameters"></a>
 
@@ -206,7 +206,7 @@ public abstract FaceShapeAreaOptions getFaceShapeAreaOptions(int shapeArea, Cons
 
 #### `sourceType`
 
-媒体源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+媒体源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-mediasourcetype)。
 
 注： 该参数仅支持以下两种设置：
 
@@ -221,7 +221,7 @@ public abstract FaceShapeAreaOptions getFaceShapeAreaOptions(int shapeArea, Cons
 - 方法调用失败，返回 null。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_getfaceshapeareaoptions2"></a>
 
@@ -249,7 +249,7 @@ public abstract FaceShapeAreaOptions getFaceShapeAreaOptions(int shapeArea);
 
 ### 调用时机
 
-在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 方法之后调用此方法。
+在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 方法之后调用此方法。
 
 <a id="api_irtcengine_getfaceshapeareaoptions2__parameters"></a>
 
@@ -297,7 +297,7 @@ public abstract FaceShapeAreaOptions getFaceShapeAreaOptions(int shapeArea);
 - 方法调用失败，返回 null。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_getfaceshapebeautyoptions"></a>
 
@@ -325,7 +325,7 @@ public abstract FaceShapeBeautyOptions getFaceShapeBeautyOptions(Constants.Media
 
 ### 调用时机
 
-在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 之后调用此方法。
+在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 之后调用此方法。
 
 <a id="api_irtcengine_getfaceshapebeautyoptions__parameters"></a>
 
@@ -333,7 +333,7 @@ public abstract FaceShapeBeautyOptions getFaceShapeBeautyOptions(Constants.Media
 
 #### `sourceType`
 
-媒体源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+媒体源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-mediasourcetype)。
 
 注： 该参数仅支持以下两种设置：
 
@@ -344,10 +344,10 @@ public abstract FaceShapeBeautyOptions getFaceShapeBeautyOptions(Constants.Media
 
 ### 返回值
 
-方法调用成功，返回 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-faceshapebeautyoptions) 实例。 方法调用失败，返回 `null`。
+方法调用成功，返回 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-faceshapebeautyoptions) 实例。 方法调用失败，返回 `null`。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_getfaceshapebeautyoptions2"></a>
 
@@ -373,7 +373,7 @@ public abstract FaceShapeBeautyOptions getFaceShapeBeautyOptions();
 
 ### 调用时机
 
-在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 之后调用此方法。
+在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 之后调用此方法。
 
 <a id="api_irtcengine_getfaceshapebeautyoptions2__return_values"></a>
 
@@ -383,7 +383,7 @@ public abstract FaceShapeBeautyOptions getFaceShapeBeautyOptions();
 - 方法调用失败，返回 null。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_watermarkconfig_getoptions"></a>
 
@@ -407,10 +407,10 @@ public WatermarkOptions getOptions()
 
 ### 返回值
 
-方法调用成功，返回 [WatermarkOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-watermarkoptions) 对象。
+方法调用成功，返回 [WatermarkOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-watermarkoptions) 对象。
 
 ### 所属接口类
-- [WatermarkConfig](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-watermarkconfig)
+- [WatermarkConfig](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-watermarkconfig)
 
 <a id="api_ivideoeffectobject_getvideoeffectboolparam"></a>
 
@@ -450,7 +450,7 @@ boolean getVideoEffectBoolParam(String option, String key);
 - false：参数未启用或不存在。
 
 ### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_getvideoeffectfloatparam"></a>
 
@@ -490,7 +490,7 @@ float getVideoEffectFloatParam(String option, String key);
 - 方法调用失败，返回 0.0f。
 
 ### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_getvideoeffectintparam"></a>
 
@@ -530,7 +530,7 @@ int getVideoEffectIntParam(String option, String key);
 - 方法调用失败，返回 0。
 
 ### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_performvideoeffectaction"></a>
 
@@ -560,7 +560,7 @@ int performVideoEffectAction(int nodeId, VIDEO_EFFECT_ACTION actionId);
 
 #### `actionId`
 
-要在视频特效节点上执行的操作，详见 [VIDEO_EFFECT_ACTION](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-videoeffectaction)。
+要在视频特效节点上执行的操作，详见 [VIDEO_EFFECT_ACTION](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-videoeffectaction)。
 
 <a id="api_ivideoeffectobject_performvideoeffectaction__return_values"></a>
 
@@ -570,7 +570,7 @@ int performVideoEffectAction(int nodeId, VIDEO_EFFECT_ACTION actionId);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_removevideoeffect"></a>
 
@@ -606,7 +606,7 @@ int removeVideoEffect(int nodeId);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoeffectobject)
 
 <a id="api_irtcengine_setbeautyeffectoptions"></a>
 
@@ -636,7 +636,7 @@ public abstract int setBeautyEffectOptions(boolean enabled, BeautyOptions option
 
 ### 调用时机
 
-在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 或 `startPreview` 之后调用此方法。
+在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 或 `startPreview` 之后调用此方法。
 
 <a id="api_irtcengine_setbeautyeffectoptions__parameters"></a>
 
@@ -651,7 +651,7 @@ public abstract int setBeautyEffectOptions(boolean enabled, BeautyOptions option
 
 #### `options`
 
-美颜特效参数。详见 [BeautyOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-beautyoptions)。
+美颜特效参数。详见 [BeautyOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-beautyoptions)。
 
 <a id="api_irtcengine_setbeautyeffectoptions__return_values"></a>
 
@@ -664,7 +664,7 @@ public abstract int setBeautyEffectOptions(boolean enabled, BeautyOptions option
     - 当前设备版本低于 Android 5.0，不支持该功能。声网建议更换设备或升级操作系统。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setbeautyeffectoptions2"></a>
 
@@ -684,13 +684,13 @@ public abstract int setBeautyEffectOptions(boolean enabled, BeautyOptions option
 
 自 v2.4.0 版本新增。
 
-该方法用于启用或禁用美颜特效功能，并设置相关选项。与 [setBeautyEffectOptions [1/2]](/zh-CN/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setbeautyeffectoptions) 方法类似，但该方法允许你指定应用美颜特效的媒体源类型。
+该方法用于启用或禁用美颜特效功能，并设置相关选项。与 [setBeautyEffectOptions [1/2]](/zh-CN/api-reference/rtc/android/4.6.0/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setbeautyeffectoptions) 方法类似，但该方法允许你指定应用美颜特效的媒体源类型。
 
 <a id="api_irtcengine_setbeautyeffectoptions2__timing"></a>
 
 ### 调用时机
 
-在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 或 `startPreview` 之后调用该方法。
+在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 或 `startPreview` 之后调用该方法。
 
 <a id="api_irtcengine_setbeautyeffectoptions2__parameters"></a>
 
@@ -705,11 +705,11 @@ public abstract int setBeautyEffectOptions(boolean enabled, BeautyOptions option
 
 #### `options`
 
-美颜特效选项。详见 [BeautyOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-beautyoptions)。
+美颜特效选项。详见 [BeautyOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-beautyoptions)。
 
 #### `sourceType`
 
-应用美颜特效效果的媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+应用美颜特效效果的媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-mediasourcetype)。
 
 注： 该参数仅支持以下两种设置：
 
@@ -727,7 +727,7 @@ public abstract int setBeautyEffectOptions(boolean enabled, BeautyOptions option
     - 当前设备的系统版本低于 Android 5.0，不支持该功能，建议更换设备或升级操作系统。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setcolorenhanceoptions"></a>
 
@@ -768,7 +768,7 @@ public abstract int setColorEnhanceOptions(boolean enabled, ColorEnhanceOptions 
 
 #### `options`
 
-色彩增强选项。详见 [ColorEnhanceOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-colorenhanceoptions)。
+色彩增强选项。详见 [ColorEnhanceOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-colorenhanceoptions)。
 
 <a id="api_irtcengine_setcolorenhanceoptions__return_values"></a>
 
@@ -778,7 +778,7 @@ public abstract int setColorEnhanceOptions(boolean enabled, ColorEnhanceOptions 
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setcolorenhanceoptions2"></a>
 
@@ -798,7 +798,7 @@ public abstract int setColorEnhanceOptions(boolean enabled, ColorEnhanceOptions 
 
 自 v3.6.2 版本新增。
 
-摄像头采集的视频图像可能存在色彩失真。色彩增强功能可智能调整视频的饱和度和对比度等参数，从而提升视频的色彩丰富度和还原度，使画面更加生动。该方法与 [setColorEnhanceOptions [1/2]](/zh-CN/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setcolorenhanceoptions) 功能相同，但允许你指定应用色彩增强的媒体源类型。
+摄像头采集的视频图像可能存在色彩失真。色彩增强功能可智能调整视频的饱和度和对比度等参数，从而提升视频的色彩丰富度和还原度，使画面更加生动。该方法与 [setColorEnhanceOptions [1/2]](/zh-CN/api-reference/rtc/android/4.6.0/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setcolorenhanceoptions) 功能相同，但允许你指定应用色彩增强的媒体源类型。
 
 注：
 
@@ -819,11 +819,11 @@ public abstract int setColorEnhanceOptions(boolean enabled, ColorEnhanceOptions 
 
 #### `options`
 
-色彩增强选项。详见 [ColorEnhanceOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-colorenhanceoptions)。
+色彩增强选项。详见 [ColorEnhanceOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-colorenhanceoptions)。
 
 #### `sourceType`
 
-媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-mediasourcetype)。
 
 注： 该参数仅支持以下两种设置：
 
@@ -838,7 +838,7 @@ public abstract int setColorEnhanceOptions(boolean enabled, ColorEnhanceOptions 
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setfaceshapeareaoptions"></a>
 
@@ -854,7 +854,7 @@ public abstract int setFaceShapeAreaOptions(FaceShapeAreaOptions options, Consta
 
 <a id="api_irtcengine_setfaceshapeareaoptions__detailed_desc"></a>
 
-如果通过 `setFaceShapeBeautyOptions` 方法实现的预设美颜特效无法满足预期，你可以使用此方法设置美颜区域选项，单独微调面部的每个部分，从而实现更精细的美颜效果。该方法与 [setFaceShapeAreaOptions [2/2]](/zh-CN/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setfaceshapeareaoptions2) 类似，区别在于该方法支持指定应用美颜特效的媒体源。
+如果通过 `setFaceShapeBeautyOptions` 方法实现的预设美颜特效无法满足预期，你可以使用此方法设置美颜区域选项，单独微调面部的每个部分，从而实现更精细的美颜效果。该方法与 [setFaceShapeAreaOptions [2/2]](/zh-CN/api-reference/rtc/android/4.6.0/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setfaceshapeareaoptions2) 类似，区别在于该方法支持指定应用美颜特效的媒体源。
 
 注：
 
@@ -874,11 +874,11 @@ public abstract int setFaceShapeAreaOptions(FaceShapeAreaOptions options, Consta
 
 #### `options`
 
-面部增强区域，详见 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-faceshapeareaoptions)。
+面部增强区域，详见 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-faceshapeareaoptions)。
 
 #### `sourceType`
 
-媒体源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+媒体源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-mediasourcetype)。
 
 注： 在此方法中，该参数仅支持以下两种设置：
 
@@ -896,7 +896,7 @@ public abstract int setFaceShapeAreaOptions(FaceShapeAreaOptions options, Consta
     - 当前设备版本低于 Android 4.4，不支持此功能。建议更换设备或升级操作系统。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setfaceshapeareaoptions2"></a>
 
@@ -932,7 +932,7 @@ public abstract int setFaceShapeAreaOptions(FaceShapeAreaOptions options);
 
 #### `options`
 
-面部增强区域选项，详见 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-faceshapeareaoptions)。
+面部增强区域选项，详见 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-faceshapeareaoptions)。
 
 <a id="api_irtcengine_setfaceshapeareaoptions2__return_values"></a>
 
@@ -945,7 +945,7 @@ public abstract int setFaceShapeAreaOptions(FaceShapeAreaOptions options);
     - 当前设备版本低于 Android 4.4，不支持此功能，建议你更换设备或升级操作系统。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setfaceshapebeautyoptions"></a>
 
@@ -961,7 +961,7 @@ public abstract int setFaceShapeBeautyOptions(boolean enabled, FaceShapeBeautyOp
 
 <a id="api_irtcengine_setfaceshapebeautyoptions__detailed_desc"></a>
 
-该方法可通过预设参数一次性调整面部多个部位，实现瘦脸、放大眼睛、瘦鼻等轻度美型效果，并支持整体调节美型强度。该方法与 [setFaceShapeBeautyOptions [2/2]](/zh-CN/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions2) 功能类似，区别在于该方法支持指定应用美型特效的媒体源。
+该方法可通过预设参数一次性调整面部多个部位，实现瘦脸、放大眼睛、瘦鼻等轻度美型效果，并支持整体调节美型强度。该方法与 [setFaceShapeBeautyOptions [2/2]](/zh-CN/api-reference/rtc/android/4.6.0/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions2) 功能类似，区别在于该方法支持指定应用美型特效的媒体源。
 
 注：
 
@@ -973,7 +973,7 @@ public abstract int setFaceShapeBeautyOptions(boolean enabled, FaceShapeBeautyOp
 
 ### 调用时机
 
-在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 后调用此方法。
+在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 后调用此方法。
 
 <a id="api_irtcengine_setfaceshapebeautyoptions__parameters"></a>
 
@@ -988,11 +988,11 @@ public abstract int setFaceShapeBeautyOptions(boolean enabled, FaceShapeBeautyOp
 
 #### `options`
 
-美型风格选项，详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-faceshapebeautyoptions)。
+美型风格选项，详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-faceshapebeautyoptions)。
 
 #### `sourceType`
 
-应用美型特效的媒体源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+应用美型特效的媒体源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-mediasourcetype)。
 
 注： 该参数仅支持以下两种设置：
 
@@ -1010,7 +1010,7 @@ public abstract int setFaceShapeBeautyOptions(boolean enabled, FaceShapeBeautyOp
     - 当前设备系统版本低于 Android 4.4，建议更换设备或升级操作系统。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setfaceshapebeautyoptions2"></a>
 
@@ -1036,7 +1036,7 @@ public abstract int setFaceShapeBeautyOptions(boolean enabled, FaceShapeBeautyOp
 
 ### 调用时机
 
-在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 方法之后调用此方法。
+在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 方法之后调用此方法。
 
 <a id="api_irtcengine_setfaceshapebeautyoptions2__parameters"></a>
 
@@ -1051,7 +1051,7 @@ public abstract int setFaceShapeBeautyOptions(boolean enabled, FaceShapeBeautyOp
 
 #### `options`
 
-美型风格选项，详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-faceshapebeautyoptions)。
+美型风格选项，详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-faceshapebeautyoptions)。
 
 <a id="api_irtcengine_setfaceshapebeautyoptions2__return_values"></a>
 
@@ -1064,7 +1064,7 @@ public abstract int setFaceShapeBeautyOptions(boolean enabled, FaceShapeBeautyOp
     - 当前设备版本低于 Android 4.4，不支持该功能。建议更换设备或升级操作系统。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setfiltereffectoptions"></a>
 
@@ -1096,7 +1096,7 @@ public abstract int setFilterEffectOptions(boolean enabled, FilterEffectOptions 
 
 ### 调用时机
 
-在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
+在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
 
 <a id="api_irtcengine_setfiltereffectoptions__parameters"></a>
 
@@ -1111,11 +1111,11 @@ public abstract int setFilterEffectOptions(boolean enabled, FilterEffectOptions 
 
 #### `options`
 
-滤镜特效参数。详见 [FilterEffectOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-filtereffectoptions)。
+滤镜特效参数。详见 [FilterEffectOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-filtereffectoptions)。
 
 #### `sourceType`
 
-滤镜特效应用的媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+滤镜特效应用的媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-mediasourcetype)。
 
 注： 该参数仅支持以下两种设置：
 
@@ -1130,7 +1130,7 @@ public abstract int setFilterEffectOptions(boolean enabled, FilterEffectOptions 
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setfiltereffectoptions2"></a>
 
@@ -1158,7 +1158,7 @@ public abstract int setFilterEffectOptions(boolean enabled, FilterEffectOptions 
 
 ### 调用时机
 
-在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 方法之后调用该方法。
+在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 方法之后调用该方法。
 
 <a id="api_irtcengine_setfiltereffectoptions2__parameters"></a>
 
@@ -1173,7 +1173,7 @@ public abstract int setFilterEffectOptions(boolean enabled, FilterEffectOptions 
 
 #### `options`
 
-滤镜特效选项。详见 [FilterEffectOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-filtereffectoptions)。
+滤镜特效选项。详见 [FilterEffectOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-filtereffectoptions)。
 
 <a id="api_irtcengine_setfiltereffectoptions2__return_values"></a>
 
@@ -1183,7 +1183,7 @@ public abstract int setFilterEffectOptions(boolean enabled, FilterEffectOptions 
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setlowlightenhanceoptions"></a>
 
@@ -1221,7 +1221,7 @@ public abstract int setLowlightEnhanceOptions(boolean enabled, LowLightEnhanceOp
 
 ### 调用时机
 
-请在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 后调用此方法。
+请在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 后调用此方法。
 
 <a id="api_irtcengine_setlowlightenhanceoptions__parameters"></a>
 
@@ -1236,7 +1236,7 @@ public abstract int setLowlightEnhanceOptions(boolean enabled, LowLightEnhanceOp
 
 #### `options`
 
-暗光增强选项。详见 [LowLightEnhanceOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-lowlightenhanceoptions)。
+暗光增强选项。详见 [LowLightEnhanceOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-lowlightenhanceoptions)。
 
 <a id="api_irtcengine_setlowlightenhanceoptions__return_values"></a>
 
@@ -1246,7 +1246,7 @@ public abstract int setLowlightEnhanceOptions(boolean enabled, LowLightEnhanceOp
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setlowlightenhanceoptions2"></a>
 
@@ -1283,7 +1283,7 @@ public abstract int setLowlightEnhanceOptions(boolean enabled, LowLightEnhanceOp
 
 ### 调用时机
 
-请在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 方法之后调用该方法。
+请在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 方法之后调用该方法。
 
 <a id="api_irtcengine_setlowlightenhanceoptions2__parameters"></a>
 
@@ -1298,11 +1298,11 @@ public abstract int setLowlightEnhanceOptions(boolean enabled, LowLightEnhanceOp
 
 #### `options`
 
-低光增强选项。详见 [LowLightEnhanceOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-lowlightenhanceoptions)。
+低光增强选项。详见 [LowLightEnhanceOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-lowlightenhanceoptions)。
 
 #### `sourceType`
 
-媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-mediasourcetype)。
 
 注： 该参数仅支持以下两种设置：
 
@@ -1317,7 +1317,7 @@ public abstract int setLowlightEnhanceOptions(boolean enabled, LowLightEnhanceOp
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setvideodenoiseroptions"></a>
 
@@ -1360,7 +1360,7 @@ public abstract int setVideoDenoiserOptions(boolean enabled, VideoDenoiserOption
 
 ### 调用时机
 
-调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 方法后调用此方法。
+调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 方法后调用此方法。
 
 <a id="api_irtcengine_setvideodenoiseroptions__parameters"></a>
 
@@ -1375,7 +1375,7 @@ public abstract int setVideoDenoiserOptions(boolean enabled, VideoDenoiserOption
 
 #### `options`
 
-视频降噪选项。详见 [VideoDenoiserOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-videodenoiseroptions)。
+视频降噪选项。详见 [VideoDenoiserOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-videodenoiseroptions)。
 
 <a id="api_irtcengine_setvideodenoiseroptions__return_values"></a>
 
@@ -1385,7 +1385,7 @@ public abstract int setVideoDenoiserOptions(boolean enabled, VideoDenoiserOption
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setvideodenoiseroptions2"></a>
 
@@ -1405,7 +1405,7 @@ public abstract int setVideoDenoiserOptions(boolean enabled, VideoDenoiserOption
 
 自 v3.6.2 版本新增。
 
-你可以调用此方法启用视频降噪功能并设置视频降噪效果的选项。该方法与 [setVideoDenoiserOptions [1/2]](/zh-CN/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setvideodenoiseroptions) 类似，但支持你指定应用降噪的媒体源类型。
+你可以调用此方法启用视频降噪功能并设置视频降噪效果的选项。该方法与 [setVideoDenoiserOptions [1/2]](/zh-CN/api-reference/rtc/android/4.6.0/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setvideodenoiseroptions) 类似，但支持你指定应用降噪的媒体源类型。
 
 注：
 
@@ -1428,7 +1428,7 @@ public abstract int setVideoDenoiserOptions(boolean enabled, VideoDenoiserOption
 
 ### 调用时机
 
-请在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 方法之后调用此方法。
+请在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 方法之后调用此方法。
 
 <a id="api_irtcengine_setvideodenoiseroptions2__parameters"></a>
 
@@ -1443,11 +1443,11 @@ public abstract int setVideoDenoiserOptions(boolean enabled, VideoDenoiserOption
 
 #### `options`
 
-视频降噪选项，详见 [VideoDenoiserOptions](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-videodenoiseroptions)。
+视频降噪选项，详见 [VideoDenoiserOptions](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-videodenoiseroptions)。
 
 #### `sourceType`
 
-媒体源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+媒体源类型，详见 [MediaSourceType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-mediasourcetype)。
 
 注： 在此方法中，该参数仅支持以下两种设置：
 
@@ -1462,7 +1462,7 @@ public abstract int setVideoDenoiserOptions(boolean enabled, VideoDenoiserOption
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_ivideoeffectobject_setvideoeffectboolparam"></a>
 
@@ -1509,7 +1509,7 @@ int setVideoEffectBoolParam(String option, String key, boolean value);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_setvideoeffectfloatparam"></a>
 
@@ -1553,7 +1553,7 @@ int setVideoEffectFloatParam(String option, String key, float value);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_setvideoeffectintparam"></a>
 
@@ -1597,4 +1597,4 @@ int setVideoEffectIntParam(String option, String key, int value);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_ivideoeffectobject)

@@ -19,7 +19,7 @@ public abstract float getCameraMaxZoomFactor();
 <a id="api_irtcengine_getcameramaxzoomfactor__detailed_desc"></a>
 
 :::info[注]
-你必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用该方法。
+你必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用该方法。
 :::
 
 <a id="api_irtcengine_getcameramaxzoomfactor__return_values"></a>
@@ -29,7 +29,7 @@ public abstract float getCameraMaxZoomFactor();
 方法调用成功，返回摄像头支持的最大变焦倍数。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_iscameraautofocusfacemodesupported"></a>
 
@@ -46,7 +46,7 @@ public abstract boolean isCameraAutoFocusFaceModeSupported();
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__detailed_desc"></a>
 
 :::info[注]
-你必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用该方法。
+你必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用该方法。
 :::
 
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__return_values"></a>
@@ -57,7 +57,7 @@ public abstract boolean isCameraAutoFocusFaceModeSupported();
 - false：设备不支持人脸自动对焦功能。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_iscameraexposurepositionsupported"></a>
 
@@ -78,7 +78,7 @@ public abstract boolean isCameraExposurePositionSupported();
 自 v2.3.2 版本新增。
 
 :::info[注]
-你必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用该方法。
+你必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用该方法。
 :::
 
 <a id="api_irtcengine_iscameraexposurepositionsupported__return_values"></a>
@@ -89,7 +89,7 @@ public abstract boolean isCameraExposurePositionSupported();
 - false：设备不支持手动曝光。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_iscameraexposuresupported"></a>
 
@@ -110,7 +110,7 @@ public abstract boolean isCameraExposureSupported();
 自 v4.2.2 版本新增。
 
 :::info[注]
-该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用。在调用 [setCameraExposureFactor](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcameraexposurefactor) 之前，建议先调用该方法查询当前摄像头是否支持调节曝光值。该方法会调节当前激活摄像头的曝光值，即调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
+该方法必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用。在调用 [setCameraExposureFactor](/zh-CN/api-reference/rtc/android/4.6.0/device-management/video-device#api_irtcengine_setcameraexposurefactor) 之前，建议先调用该方法查询当前摄像头是否支持调节曝光值。该方法会调节当前激活摄像头的曝光值，即调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/android/4.6.0/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
 :::
 
 <a id="api_irtcengine_iscameraexposuresupported__return_values"></a>
@@ -121,7 +121,7 @@ public abstract boolean isCameraExposureSupported();
 - false：当前摄像头不支持调节曝光值。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_iscamerafacedetectsupported"></a>
 
@@ -145,7 +145,7 @@ public abstract boolean isCameraFaceDetectSupported();
 - false：设备摄像头不支持人脸检测。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_iscamerafocussupported"></a>
 
@@ -162,7 +162,7 @@ public abstract boolean isCameraFocusSupported();
 <a id="api_irtcengine_iscamerafocussupported__detailed_desc"></a>
 
 :::info[注]
-你必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用该方法。
+你必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用该方法。
 :::
 
 <a id="api_irtcengine_iscamerafocussupported__return_values"></a>
@@ -173,7 +173,7 @@ public abstract boolean isCameraFocusSupported();
 - false：设备不支持手动对焦功能。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_iscameratorchsupported"></a>
 
@@ -190,7 +190,7 @@ public abstract boolean isCameraTorchSupported();
 <a id="api_irtcengine_iscameratorchsupported__detailed_desc"></a>
 
 :::info[注]
-你必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用该方法。App 默认启用前置摄像头。如果前置摄像头不支持闪光灯，该方法返回 false。如果你想检查后置摄像头是否支持闪光灯功能，请在调用该方法前调用 `switchCamera`。
+你必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用该方法。App 默认启用前置摄像头。如果前置摄像头不支持闪光灯，该方法返回 false。如果你想检查后置摄像头是否支持闪光灯功能，请在调用该方法前调用 `switchCamera`。
 :::
 
 <a id="api_irtcengine_iscameratorchsupported__return_values"></a>
@@ -201,7 +201,7 @@ public abstract boolean isCameraTorchSupported();
 - false：设备不支持相机闪光灯功能。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_iscamerazoomsupported"></a>
 
@@ -221,7 +221,7 @@ public abstract boolean isCameraZoomSupported();
 
 ### 调用时机
 
-必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用。
+必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用。
 
 <a id="api_irtcengine_iscamerazoomsupported__return_values"></a>
 
@@ -231,7 +231,7 @@ public abstract boolean isCameraZoomSupported();
 - false：设备不支持摄像头变焦。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_querycamerafocallengthcapability"></a>
 
@@ -247,7 +247,7 @@ public abstract AgoraFocalLengthInfo[] queryCameraFocalLengthCapability();
 
 <a id="api_irtcengine_querycamerafocallengthcapability__detailed_desc"></a>
 
-建议在启用广角或超广角模式进行视频采集前，调用该方法检查设备是否支持所需的焦距能力。根据查询结果调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 方法调整摄像头的焦距配置，以确保最佳的视频采集性能。
+建议在启用广角或超广角模式进行视频采集前，调用该方法检查设备是否支持所需的焦距能力。根据查询结果调用 [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/android/4.6.0/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 方法调整摄像头的焦距配置，以确保最佳的视频采集性能。
 
 <a id="api_irtcengine_querycamerafocallengthcapability__return_values"></a>
 
@@ -257,7 +257,7 @@ public abstract AgoraFocalLengthInfo[] queryCameraFocalLengthCapability();
 - 方法调用失败，返回空数组。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_querycodeccapability"></a>
 
@@ -277,10 +277,10 @@ public abstract CodecCapInfo[] queryCodecCapability();
 
 ### 返回值
 
-方法调用成功，返回 [CodecCapInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-codeccapinfo) 数组，表示设备的视频编码能力。方法调用超时，请修改调用逻辑，避免在主线程中调用该方法。
+方法调用成功，返回 [CodecCapInfo](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-codeccapinfo) 数组，表示设备的视频编码能力。方法调用超时，请修改调用逻辑，避免在主线程中调用该方法。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled"></a>
 
@@ -300,7 +300,7 @@ public abstract int setCameraAutoFocusFaceModeEnabled(boolean enabled);
 
 ### 调用时机
 
-必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用。
+必须在 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后调用。
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__parameters"></a>
 
@@ -321,7 +321,7 @@ public abstract int setCameraAutoFocusFaceModeEnabled(boolean enabled);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setcameracapturerconfiguration"></a>
 
@@ -340,7 +340,7 @@ public abstract int setCameraCapturerConfiguration(CameraCapturerConfiguration c
 该方法需要在启用本地视频采集前调用，例如调用 `startPreview` 或 `joinChannel` 之前。
 
 :::info[注]
-如需调整摄像头焦距配置，建议先调用 [queryCameraFocalLengthCapability](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) 查询设备的焦距能力，并根据查询结果进行设置。由于部分 Android 设备的限制，即使根据 [queryCameraFocalLengthCapability](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) 返回的结果设置了焦距类型，设置也可能不生效。
+如需调整摄像头焦距配置，建议先调用 [queryCameraFocalLengthCapability](/zh-CN/api-reference/rtc/android/4.6.0/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) 查询设备的焦距能力，并根据查询结果进行设置。由于部分 Android 设备的限制，即使根据 [queryCameraFocalLengthCapability](/zh-CN/api-reference/rtc/android/4.6.0/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) 返回的结果设置了焦距类型，设置也可能不生效。
 :::
 
 <a id="api_irtcengine_setcameracapturerconfiguration__timing"></a>
@@ -355,7 +355,7 @@ public abstract int setCameraCapturerConfiguration(CameraCapturerConfiguration c
 
 #### `config`
 
-摄像头采集配置。详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-cameracapturerconfiguration)。
+摄像头采集配置。详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-cameracapturerconfiguration)。
 
 <a id="api_irtcengine_setcameracapturerconfiguration__return_values"></a>
 
@@ -365,7 +365,7 @@ public abstract int setCameraCapturerConfiguration(CameraCapturerConfiguration c
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setcameraexposurefactor"></a>
 
@@ -407,7 +407,7 @@ public abstract int setCameraExposureFactor(int factor);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setcameraexposureposition"></a>
 
@@ -428,7 +428,7 @@ public abstract int setCameraExposurePosition(float positionXinView, float posit
 自 v2.3.2 版本新增。
 
 :::info[注]
-你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 方法之后再调用此方法。设置结果会在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后生效。成功调用该方法后，SDK 会触发 [onCameraExposureAreaChanged](/zh-CN/api-reference/rtc/android/device-management/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) 回调。
+你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 方法之后再调用此方法。设置结果会在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后生效。成功调用该方法后，SDK 会触发 [onCameraExposureAreaChanged](/zh-CN/api-reference/rtc/android/4.6.0/device-management/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) 回调。
 :::
 
 <a id="api_irtcengine_setcameraexposureposition__parameters"></a>
@@ -451,7 +451,7 @@ public abstract int setCameraExposurePosition(float positionXinView, float posit
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview"></a>
 
@@ -468,7 +468,7 @@ public abstract int setCameraFocusPositionInPreview(float positionX, float posit
 <a id="api_irtcengine_setcamerafocuspositioninpreview__detailed_desc"></a>
 
 :::info[注]
-你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 之后再调用此方法。设置结果会在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后生效。成功调用该方法后，SDK 会触发 [onCameraFocusAreaChanged](/zh-CN/api-reference/rtc/android/device-management/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged) 回调。
+你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 之后再调用此方法。设置结果会在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后生效。成功调用该方法后，SDK 会触发 [onCameraFocusAreaChanged](/zh-CN/api-reference/rtc/android/4.6.0/device-management/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged) 回调。
 :::
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__parameters"></a>
@@ -491,7 +491,7 @@ public abstract int setCameraFocusPositionInPreview(float positionX, float posit
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setcameratorchon"></a>
 
@@ -508,7 +508,7 @@ public abstract int setCameraTorchOn(boolean isOn);
 <a id="api_irtcengine_setcameratorchon__detailed_desc"></a>
 
 :::info[注]
-你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 之后再调用此方法。设置结果会在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后。
+你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 之后再调用此方法。设置结果会在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后。
 :::
 
 <a id="api_irtcengine_setcameratorchon__parameters"></a>
@@ -530,7 +530,7 @@ public abstract int setCameraTorchOn(boolean isOn);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_setcamerazoomfactor"></a>
 
@@ -547,7 +547,7 @@ public abstract int setCameraZoomFactor(float factor);
 <a id="api_irtcengine_setcamerazoomfactor__detailed_desc"></a>
 
 :::info[注]
-你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 之后再调用此方法。该设置在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后。
+你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#api_irtcengine_enablevideo) 之后再调用此方法。该设置在摄像头成功开启后生效，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）后。
 :::
 
 <a id="api_irtcengine_setcamerazoomfactor__parameters"></a>
@@ -556,7 +556,7 @@ public abstract int setCameraZoomFactor(float factor);
 
 #### `factor`
 
-摄像头缩放因子。你可以通过调用 [getCameraMaxZoomFactor](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) 获取设备支持的最大缩放因子。
+摄像头缩放因子。你可以通过调用 [getCameraMaxZoomFactor](/zh-CN/api-reference/rtc/android/4.6.0/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) 获取设备支持的最大缩放因子。
 
 <a id="api_irtcengine_setcamerazoomfactor__return_values"></a>
 
@@ -566,7 +566,7 @@ public abstract int setCameraZoomFactor(float factor);
 - 方法调用失败，返回小于 0 的值。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_switchcamera"></a>
 
@@ -585,14 +585,14 @@ public abstract int switchCamera();
 你可以调用该方法在应用运行过程中根据实际可用的摄像头动态切换前置或后置摄像头，无需重启视频流或重新配置视频源。该方法与 `switchCamera` （带参数版本）都可用于切换摄像头。不同之处在于， `switchCamera(String cameraId)` 通过指定摄像头 ID 切换到特定摄像头，而本方法则切换摄像头的方向（前置或后置）。
 
 :::info[注]
-该方法仅用于切换由第一个摄像头采集的视频流的摄像头，即调用 [startCameraCapture](/zh-CN/api-reference/rtc/android/video/camera-capture#api_irtcengine_startcameracapture) 时视频源设置为 `VIDEO_SOURCE_CAMERA_PRIMARY` （0）的视频流。
+该方法仅用于切换由第一个摄像头采集的视频流的摄像头，即调用 [startCameraCapture](/zh-CN/api-reference/rtc/android/4.6.0/video/camera-capture#api_irtcengine_startcameracapture) 时视频源设置为 `VIDEO_SOURCE_CAMERA_PRIMARY` （0）的视频流。
 :::
 
 <a id="api_irtcengine_switchcamera__timing"></a>
 
 ### 调用时机
 
-必须在摄像头成功启用后调用，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）之后。
+必须在摄像头成功启用后调用，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）之后。
 
 <a id="api_irtcengine_switchcamera__return_values"></a>
 
@@ -602,7 +602,7 @@ public abstract int switchCamera();
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="api_irtcengine_switchcamera2"></a>
 
@@ -621,14 +621,14 @@ public abstract int switchCamera(String cameraId);
 你可以调用该方法在应用运行过程中根据实际可用的摄像头动态切换摄像头，无需重启视频流或重新配置视频源。该方法与 `switchCamera` 功能类似，区别在于： `switchCamera` 切换的是摄像头方向（前置或后置），而该方法通过指定摄像头 ID 切换到特定摄像头。
 
 :::info[注]
-该方法仅用于切换由第一个摄像头采集的视频流，即调用 [startCameraCapture](/zh-CN/api-reference/rtc/android/video/camera-capture#api_irtcengine_startcameracapture) 时视频源设置为 `VIDEO_SOURCE_CAMERA_PRIMARY` （0）的视频流。
+该方法仅用于切换由第一个摄像头采集的视频流，即调用 [startCameraCapture](/zh-CN/api-reference/rtc/android/4.6.0/video/camera-capture#api_irtcengine_startcameracapture) 时视频源设置为 `VIDEO_SOURCE_CAMERA_PRIMARY` （0）的视频流。
 :::
 
 <a id="api_irtcengine_switchcamera2__timing"></a>
 
 ### 调用时机
 
-必须在摄像头成功启用后调用，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）之后。
+必须在摄像头成功启用后调用，即 SDK 触发 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` （1）之后。
 
 <a id="api_irtcengine_switchcamera2__parameters"></a>
 
@@ -646,7 +646,7 @@ public abstract int switchCamera(String cameraId);
 - &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_oncameraexposureareachanged"></a>
 
@@ -662,13 +662,13 @@ public void onCameraExposureAreaChanged(Rect rect)
 
 <a id="callback_irtcengineeventhandler_oncameraexposureareachanged__detailed_desc"></a>
 
-当本地用户调用 [setCameraExposurePosition](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcameraexposureposition) 更改摄像头曝光位置时，SDK 会触发该回调。
+当本地用户调用 [setCameraExposurePosition](/zh-CN/api-reference/rtc/android/4.6.0/device-management/video-device#api_irtcengine_setcameraexposureposition) 更改摄像头曝光位置时，SDK 会触发该回调。
 
 <a id="callback_irtcengineeventhandler_oncameraexposureareachanged__timing"></a>
 
 ### 触发时机
 
-该回调在调用 [setCameraExposurePosition](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcameraexposureposition) 更改摄像头曝光位置时被触发。
+该回调在调用 [setCameraExposurePosition](/zh-CN/api-reference/rtc/android/4.6.0/device-management/video-device#api_irtcengine_setcameraexposureposition) 更改摄像头曝光位置时被触发。
 
 <a id="callback_irtcengineeventhandler_oncameraexposureareachanged__parameters"></a>
 
@@ -679,7 +679,7 @@ public void onCameraExposureAreaChanged(Rect rect)
 本地预览中的曝光矩形区域。详见 [`Rect`](https://developer.android.google.cn/reference/android/graphics/Rect)。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_oncamerafocusareachanged"></a>
 
@@ -695,7 +695,7 @@ public void onCameraFocusAreaChanged(Rect rect)
 
 <a id="callback_irtcengineeventhandler_oncamerafocusareachanged__detailed_desc"></a>
 
-当本地用户调用 [setCameraFocusPositionInPreview](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcamerafocuspositioninpreview) 更改摄像头对焦位置时，SDK 会触发该回调。
+当本地用户调用 [setCameraFocusPositionInPreview](/zh-CN/api-reference/rtc/android/4.6.0/device-management/video-device#api_irtcengine_setcamerafocuspositioninpreview) 更改摄像头对焦位置时，SDK 会触发该回调。
 
 <a id="callback_irtcengineeventhandler_oncamerafocusareachanged__parameters"></a>
 
@@ -706,7 +706,7 @@ public void onCameraFocusAreaChanged(Rect rect)
 本地预览中的对焦矩形区域。详见 [`Rect`](https://developer.android.google.cn/reference/android/graphics/Rect)。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_oncameraready"></a>
 
@@ -724,7 +724,7 @@ public void onCameraReady() {}
 
 #### `废弃`
 
-该方法已废弃，请改用 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged)。
+该方法已废弃，请改用 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/android/4.6.0/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged)。
 
 <a id="callback_irtcengineeventhandler_oncameraready__timing"></a>
 
@@ -733,4 +733,4 @@ public void onCameraReady() {}
 该回调在摄像头成功开启并准备好采集视频时被触发。
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/4.6.0/full-sdk-api-list#class_irtcengineeventhandler)

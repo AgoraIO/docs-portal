@@ -958,6 +958,39 @@ describe('html-to-md-migration', () => {
     ).resolves.toContain('title: "HiddenClass"');
   }, 15_000);
 
+  it('preserves the active version directory in migrated internal links', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDitaFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'API', 'overview.html'),
+      ditaPage('Overview').replace(
+        'Call <code>join</code> from this page.',
+        'See <a href="class_video_canvas.html">VideoCanvas</a>.',
+      ),
+    );
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+      '--version-dir',
+      '4.6.0',
+    ]);
+
+    await expect(
+      fs.readFile(path.join(outputDir, 'overview.mdx'), 'utf8'),
+    ).resolves.toContain(
+      '[VideoCanvas](/api-reference/rtc/android/4.6.0/class-video-canvas)',
+    );
+  });
+
   it('prints detected source type, file count, and planned paths in dry-run without writing', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'source');

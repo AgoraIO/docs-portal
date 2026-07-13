@@ -49,7 +49,7 @@ public class ChannelMediaOptions {
 
 <a id="class_channelmediaoptions__detailed_desc"></a>
 
-支持在同一个 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection) 中同时发布多个音频流和一个视频流。例如，可以同时启用 `publishMicrophoneTrack`、 `publishCustomAudioTrack` 和 `publishMediaPlayerAudioTrack`，但 `publishCameraTrack`、 `publishScreenCaptureVideo`、 `publishCustomVideoTrack` 和 `publishEncodedVideoTrack` 中只能有一个设置为 true。
+支持在同一个 [RtcConnection](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/classes/class-rtcconnection) 中同时发布多个音频流和一个视频流。例如，可以同时启用 `publishMicrophoneTrack`、 `publishCustomAudioTrack` 和 `publishMediaPlayerAudioTrack`，但 `publishCameraTrack`、 `publishScreenCaptureVideo`、 `publishCustomVideoTrack` 和 `publishEncodedVideoTrack` 中只能有一个设置为 true。
 
 :::info[注]
 建议你根据业务场景自行设置各成员参数值，否则 SDK 会自动分配默认值。
@@ -121,7 +121,7 @@ public class ChannelMediaOptions {
 
 ### `publishCustomAudioTrackId`
 
-要发布的自定义音频轨道的 ID。可通过 [createCustomAudioTrack](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法获取该 ID。
+要发布的自定义音频轨道的 ID。可通过 [createCustomAudioTrack](/zh-CN/api-reference/rtc/android/4.6.0/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法获取该 ID。
 
 ### `publishCustomVideoTrack`
 
@@ -315,7 +315,7 @@ public class ChannelMediaOptions {
 
 ### `preferMultipathType`
 
-首选的传输路径类型。详见 [MultipathType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-multipathtype)。
+首选的传输路径类型。详见 [MultipathType](/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-multipathtype)。
 
 :::info[注]
 使用该参数时，需确保 `enableMultipath` 设置为 true。
