@@ -13,15 +13,15 @@ description: "当前 CDN 推流状态。"
 
 ### `DIRECT_CDN_STREAMING_STATE_RUNNING`
 
-1：正在推流中。当你调用 [startDirectCdnStreaming](/zh-CN/api-reference/rtc/unreal-cpp/toc-cdn-streaming#api_irtcengine_startdirectcdnstreaming) 成功推流时，SDK 会返回该值。
+1：正在推流中。当你调用 [startDirectCdnStreaming](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/cdn-streaming#api_irtcengine_startdirectcdnstreaming) 成功推流时，SDK 会返回该值。
 
 ### `DIRECT_CDN_STREAMING_STATE_STOPPED`
 
-2：推流已正常结束。当你调用 [stopDirectCdnStreaming](/zh-CN/api-reference/rtc/unreal-cpp/toc-cdn-streaming#api_irtcengine_stopdirectcdnstreaming) 主动停止推流时，SDK 会返回该值。
+2：推流已正常结束。当你调用 [stopDirectCdnStreaming](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/cdn-streaming#api_irtcengine_stopdirectcdnstreaming) 主动停止推流时，SDK 会返回该值。
 
 ### `DIRECT_CDN_STREAMING_STATE_FAILED`
 
-3：推流失败。你可以通过 [onDirectCdnStreamingStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/toc-cdn-streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) 回调报告的信息排查问题，然后重新推流。
+3：推流失败。你可以通过 [onDirectCdnStreamingStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/cdn-streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) 回调报告的信息排查问题，然后重新推流。
 
 ### `DIRECT_CDN_STREAMING_STATE_RECOVERING`
 

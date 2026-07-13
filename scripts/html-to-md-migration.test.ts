@@ -130,9 +130,9 @@ async function writeDitaRootMapFixture(sourceDir: string) {
             </li>
             <li><a href="API/toc_channel.html">频道相关</a></li>
             <li>
-              <a href="API/toc_audio.html">音频相关</a>
+              <a href="API/toc_audio.html#toc_audio">音频相关</a>
               <ul>
-                <li><a href="API/toc_audio_basic.html">音频基础功能</a></li>
+                <li><a href="API/toc_audio_basic.html#toc_audio_basic">音频基础功能</a></li>
               </ul>
             </li>
           </ul>

@@ -3342,7 +3342,8 @@ function parseList($, list) {
 
 function parseItem($, item) {
   const anchor = item.children('a').first();
-  const sourceName = anchor.length ? path.basename(anchor.attr('href')) : null;
+  const href = anchor.attr('href')?.split('#')[0].split('?')[0];
+  const sourceName = anchor.length && href ? path.basename(href) : null;
   const title = normalizeText(
     anchor.length ? anchor.text() : item.children('span').first().text(),
   );

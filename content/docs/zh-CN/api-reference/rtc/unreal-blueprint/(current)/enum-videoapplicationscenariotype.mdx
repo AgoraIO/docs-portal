@@ -23,7 +23,7 @@ APPLICATION_SCENARIO_MEETING (1) 适用于会议场景。SDK 会针对该场景�
 - 实时监测接收端大流的订阅人数，根据订阅人数动态调节大流配置：
 
   - 无人订阅大流时，会自动降低大流的码率和帧率，节省上行带宽和消耗。
-  - 有人订阅大流时，大流会重置为用户最近一次调用 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/toc-video-basic#api_irtcengine_setvideoencoderconfiguration) 时的 [FUABT_VideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/class-videoencoderconfiguration) 配置。如果用户此前没有进行设置，则使用如下值：
+  - 有人订阅大流时，大流会重置为用户最近一次调用 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 时的 [FUABT_VideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/class-videoencoderconfiguration) 配置。如果用户此前没有进行设置，则使用如下值：
 
     - 视频分辨率：桌面端为 1280 × 720；移动端为 960 × 540
     - 视频帧率：15 fps
@@ -31,7 +31,7 @@ APPLICATION_SCENARIO_MEETING (1) 适用于会议场景。SDK 会针对该场景�
 - 实时监测接收端小流的订阅人数，根据订阅人数动态开启和关闭小流：
 
   :::info[注]
-  如果用户已调用 [SetDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/toc-publishnsubscribe#api_irtcengine_setdualstreammode2) 将小流设置为始终不发送 (DISABLE_SIMULCAST_STREAM)，会议场景对小流的动态开关不生效。
+  如果用户已调用 [SetDualStreamMode](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_setdualstreammode2) 将小流设置为始终不发送 (DISABLE_SIMULCAST_STREAM)，会议场景对小流的动态开关不生效。
   :::
 
   - 无人订阅小流时，自动关闭小流，节省上行带宽和消耗。
@@ -51,4 +51,4 @@ APPLICATION_SCENARIO_1V1 (2) 适用于 [视频 1v1 通话](https://doc.shengwang
 
 3: 秀场直播
 
-APPLICATION_SCENARIO_LIVESHOW (3) 适用于 [秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview) 场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [EnableInstantMediaRendering](/zh-CN/api-reference/rtc/unreal-blueprint/toc-video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+APPLICATION_SCENARIO_LIVESHOW (3) 适用于 [秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview) 场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [EnableInstantMediaRendering](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。

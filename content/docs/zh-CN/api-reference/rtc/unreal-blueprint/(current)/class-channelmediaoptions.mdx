@@ -416,8 +416,8 @@ SDK 支持在同一时间、同一 [FUABT_RtcConnection](/zh-CN/api-reference/rt
 （可选）在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/unreal-blueprint/basic-features/token-authentication)。
 
 :::warning[注意]
-- 该参数仅在调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/toc-channel#api_irtcengine_updatechannelmediaoptions) 或 [UpdateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/unreal-blueprint/toc-channel#api_irtcengineex_updatechannelmediaoptionsex) 时生效。
-- 请确保用于生成 token 的 App ID、频道名和用户名和 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/toc-initialize#api_irtcengine_initialize) 方法初始化引擎时用的 App ID，以及 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/toc-channel#api_irtcengine_joinchannel2) 或 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/toc-channel#api_irtcengineex_joinchannelex) 方法加入频道时设置的频道名和用户名是一致的。
+- 该参数仅在调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_updatechannelmediaoptions) 或 [UpdateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_updatechannelmediaoptionsex) 时生效。
+- 请确保用于生成 token 的 App ID、频道名和用户名和 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 方法初始化引擎时用的 App ID，以及 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 或 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_joinchannelex) 方法加入频道时设置的频道名和用户名是一致的。
 :::
 
 ### `publishRhythmPlayerTrack`
@@ -435,7 +435,7 @@ SDK 支持在同一时间、同一 [FUABT_RtcConnection](/zh-CN/api-reference/rt
 - `false`：不开启互动观众模式。本地用户作为普通观众，收到默认设置的远端用户视频。
 
 :::warning[注意]
-- 该参数用于实现跨直播间连麦场景。连麦主播需要调用 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/toc-channel#api_irtcengineex_joinchannelex) 方法，以观众身份加入对方的直播间，并将 isInteractiveAudience 设置为 `true`。
+- 该参数用于实现跨直播间连麦场景。连麦主播需要调用 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_joinchannelex) 方法，以观众身份加入对方的直播间，并将 isInteractiveAudience 设置为 `true`。
 - 仅当用户角色为 CLIENT_ROLE_AUDIENCE 时，该参数生效。
 :::
 
