@@ -1,4 +1,33 @@
-export const docsFooterContent = {
+type FooterLink = {
+  href: string;
+  label: string;
+};
+
+export type DocsFooterContent = {
+  ariaLabel: string;
+  certification?: {
+    label: string;
+    title: string;
+  };
+  contact: {
+    address: readonly string[];
+    phone: string;
+    title: string;
+  };
+  copyright: string;
+  legalLinks: readonly FooterLink[];
+  logoAlt: string;
+  navGroups: readonly {
+    links: readonly FooterLink[];
+    title: string;
+  }[];
+  rights: string;
+  regulatoryLinks?: readonly FooterLink[];
+  socialLinks: readonly FooterLink[];
+};
+
+const enDocsFooterContent = {
+  ariaLabel: 'Agora footer',
   contact: {
     address: ['2804 Mission College Blvd.', 'Santa Clara, CA, USA 95054'],
     phone: '+1 (408) 879-5885',
@@ -35,6 +64,7 @@ export const docsFooterContent = {
       label: 'Manage My Cookies',
     },
   ],
+  logoAlt: 'Agora',
   navGroups: [
     {
       links: [
@@ -151,4 +181,139 @@ export const docsFooterContent = {
       label: 'Discord',
     },
   ],
-} as const;
+} as const satisfies DocsFooterContent;
+
+const zhCnDocsFooterContent = {
+  ariaLabel: '声网页脚',
+  contact: {
+    address: ['上海声网科技有限公司'],
+    phone: '400 632 6626',
+    title: '咨询电话',
+  },
+  copyright: 'Copyright © 2026 声网',
+  legalLinks: [
+    {
+      href: 'https://www.shengwang.cn/privacy-policy/',
+      label: '隐私政策',
+    },
+    {
+      href: 'https://www.shengwang.cn/terms-of-service/',
+      label: '服务条款',
+    },
+    {
+      href: 'https://www.shengwang.cn/acceptable-use-policy/',
+      label: '可接受的使用政策',
+    },
+    {
+      href: 'https://www.shengwang.cn/compliance/',
+      label: '安全合规',
+    },
+  ],
+  certification: {
+    label: '962110',
+    title: '网络社会征信网认证',
+  },
+  logoAlt: '声网',
+  navGroups: [
+    {
+      links: [
+        {
+          href: 'https://www.shengwang.cn/solution/',
+          label: '解决方案',
+        },
+        {
+          href: 'https://www.shengwang.cn/usecase/',
+          label: '客户案例',
+        },
+        {
+          href: 'https://doc.shengwang.cn/',
+          label: '文档中心',
+        },
+      ],
+      title: '产品与方案',
+    },
+    {
+      links: [
+        {
+          href: 'https://www.shengwang.cn/',
+          label: '声网官网',
+        },
+        {
+          href: 'https://www.shengwang.cn/news/',
+          label: '新闻中心',
+        },
+        {
+          href: 'https://www.shengwang.cn/compliance/',
+          label: '安全合规',
+        },
+        {
+          href: 'https://app.mokahr.com/apply/agora/6334#/',
+          label: '加入我们',
+        },
+      ],
+      title: '了解声网',
+    },
+    {
+      links: [
+        {
+          href: 'https://console.shengwang.cn/',
+          label: '控制台',
+        },
+        {
+          href: '/zh-CN/',
+          label: '文档中心',
+        },
+        {
+          href: 'https://www.shengwang.cn/contact-sales/',
+          label: '联系我们',
+        },
+      ],
+      title: '开始使用',
+    },
+  ],
+  regulatoryLinks: [
+    {
+      href: 'https://beian.mps.gov.cn/#/query/webSearch?code=31011002006829',
+      label: '沪公网安备31011002006829号',
+    },
+    {
+      href: 'https://beian.miit.gov.cn/',
+      label: '沪ICP备2024090791号-1',
+    },
+    {
+      href: 'https://www.shengwang.cn/',
+      label: '上海声网科技有限公司',
+    },
+  ],
+  rights: '保留所有权利',
+  socialLinks: [
+    {
+      href: 'https://twitter.com/AgoraIO',
+      label: 'Twitter',
+    },
+    {
+      href: 'https://www.linkedin.com/company/agora-lab-inc/',
+      label: 'LinkedIn',
+    },
+    {
+      href: 'https://www.facebook.com/AgoraIO',
+      label: 'Facebook',
+    },
+    {
+      href: 'https://agoraio.slack.com/',
+      label: 'Slack',
+    },
+    {
+      href: 'https://www.youtube.com/channel/UCjPZukasIgWoB4HBHga5CGA',
+      label: 'YouTube',
+    },
+    {
+      href: 'https://medium.com/agora-io',
+      label: 'Medium',
+    },
+  ],
+} as const satisfies DocsFooterContent;
+
+export function getDocsFooterContent(locale: string): DocsFooterContent {
+  return locale === 'zh-CN' ? zhCnDocsFooterContent : enDocsFooterContent;
+}

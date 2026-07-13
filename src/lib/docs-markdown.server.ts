@@ -4,7 +4,7 @@ import {
   getSourceSlugsFromContentPath,
   isSupportedDocLocale,
 } from './docs-routing';
-import { isMachineReadableLocale } from './machine-readable-docs';
+import { isPublicMarkdownLocale } from './machine-readable-docs';
 import {
   isKnownPlatform,
   normalizePlatformKey,
@@ -34,7 +34,7 @@ export async function getPublicDocsMarkdownResponse({
     return null;
   }
 
-  if (!isSupportedDocLocale(locale) || !isMachineReadableLocale(locale)) {
+  if (!isSupportedDocLocale(locale) || !isPublicMarkdownLocale(locale)) {
     throw notFound();
   }
 

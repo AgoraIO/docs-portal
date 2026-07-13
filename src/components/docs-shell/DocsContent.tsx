@@ -37,7 +37,7 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
-import { isMachineReadableLocale } from '@/lib/machine-readable-docs';
+import { isPublicMarkdownLocale } from '@/lib/machine-readable-docs';
 import type { PlatformKey } from '@/lib/platforms/registry';
 import {
   PlatformHeaderTabs,
@@ -100,7 +100,7 @@ export function DocsContent({
 }) {
   const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
-  const canCopyMarkdownContent = isMachineReadableLocale(currentLocale);
+  const canCopyMarkdownContent = isPublicMarkdownLocale(currentLocale);
   const t = i18n.getFixedT(currentLocale, 'common');
   const displayTitle = title ?? slug;
   const lastUpdatedMetadata = ensureDocsLastUpdatedMetadata(lastUpdated);

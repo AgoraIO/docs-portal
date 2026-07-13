@@ -50,7 +50,7 @@ describe('openapi markdown serializer', () => {
     expect(pages.some((page) => page.url.startsWith('/zh-CN/'))).toBe(false);
   });
 
-  it('does not publish RTC REST markdown for zh-CN', async () => {
+  it('resolves public RTC REST markdown for zh-CN page paths', async () => {
     await expect(
       getOpenApiMarkdownByContentPath(
         'en/api-reference/api-ref/rtc/query-channel-list.md',
@@ -62,6 +62,8 @@ describe('openapi markdown serializer', () => {
       getOpenApiMarkdownByContentPath(
         'zh-CN/api-reference/api-ref/rtc/query-channel-list.md',
       ),
-    ).resolves.toBeNull();
+    ).resolves.toContain(
+      '# 查询项目的频道列表 (/zh-CN/api-reference/api-ref/rtc/query-channel-list)',
+    );
   });
 });
