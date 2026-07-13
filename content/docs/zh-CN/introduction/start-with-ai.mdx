@@ -1,0 +1,87 @@
+---
+title: "Start with AI"
+description: "安装 Agora CLI，配置 Agora Skills 和 Shengwang Doc MCP Server，让 AI Coding Agent 接入声网产品。"
+---
+
+当你希望 AI Coding Agent 帮你接入声网产品时，从这里开始。推荐流程是：先安装 Agora CLI 并登录，再配置 Agora Skills，最后用提示词告诉 Agent 目标产品、平台、语言和功能。
+
+CLI 负责项目、能力开通和本地环境变量；skills 负责让 Agent 选择正确的接入流程；MCP 负责让 Agent 在生成代码前查询最新官方文档。
+
+## 快速开始
+
+### 1. 安装 Agora CLI
+
+    - Agora CLI 需要 Node.js 18 或更高版本。使用 npm 全局安装：
+
+        ```bash
+        npm install -g agoraio-cli
+        ```
+
+        安装完成后，运行下面任一命令确认 CLI 可用：
+
+        ```bash
+        agora version
+        ```
+
+    - 登录中国区并准备项目
+
+        使用中国区区域参数登录：
+
+        ```bash
+        agora login --region cn
+        ```
+
+### 2. 配置 Agora Skills
+
+安装 [Agora Skills](/zh-CN/introduction/skills-integrate)，让 AI Coding Agent 在编辑代码前选择正确的声网工作流、Starter 和接入步骤。
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="skills-cli">Skills CLI</TabsTrigger>
+  <TabsTrigger value="manual">手动安装</TabsTrigger>
+</TabsList>
+
+<TabsContent value="skills-cli">
+
+```bash
+npx skills add AgoraIO/skills
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+克隆仓库，并将 AI Coding Agent 指向 Agora skill 文件：
+
+```bash
+git clone https://github.com/AgoraIO/skills.git ~/agora-skills
+```
+
+使用 `skills/agora/` 作为目录入口；如果你的工具需要单个根文件，也可以直接加载 `SKILL.md`。
+
+</TabsContent>
+</Tabs>
+
+如果你的工具偏好本地指令文件，请将它指向 `skills/agora/` 或顶层 `SKILL.md`。
+
+如果你只需要文档查询能力，不需要工作流指导，可以改为安装 [Shengwang Doc MCP Server](/zh-CN/introduction/mcp-integrate)。推荐同时使用 skills 和 MCP。
+
+### 3. 提示词
+
+现在告诉 AI Coding Agent 你想构建什么，以及希望它如何处理接入流程。一个清晰的提示词应包含声网产品、目标平台、开发语言或 Starter 偏好，以及最终目标。
+
+```text
+使用 Agora Skills 帮我用 Python 构建一个网页端对话式 AI Demo。
+```
+
+接下来，让 AI Coding Agent 选择合适的 Starter，运行 `agora login --region cn`，初始化项目，并解释它写入本地的环境变量。
+
+## 如何判断配置成功
+
+当 AI Coding Agent 能做到以下事情时，说明工作流已经进入正确状态：
+
+- 使用 `agora login --region cn` 登录中国区控制面。
+- 使用 CLI 创建或切换项目，并启用 `rtc` 和 `convoai` 能力。
+- 将项目凭证写入本地 `.env` 文件。
+- 在生成代码前通过 MCP 查询声网官方文档。
+- 按 Agora Skills 提供的流程选择合适的示例、SDK、Token 和服务端接入方式。

@@ -2809,6 +2809,26 @@ Web body
     });
   });
 
+  it('redirects the zh-CN Device Kit overview path to the product overview page', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'ai', ['device-kit']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/ai/device-kit/overview/product-overview',
+    });
+  });
+
+  it('redirects legacy zh-CN Device Kit quickstart paths to the R1 demo page', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'ai', [
+        'device-kit',
+        'get-started',
+        'quickstart',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/ai/device-kit/build/run-r1-demo',
+    });
+  });
+
   it('redirects the Recipes path entry to the scoped recipes tree', async () => {
     await expect(
       loadDocsPagePayload('en', 'api-reference', ['voice-ai-recipes']),

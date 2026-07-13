@@ -19,11 +19,90 @@ title: "打断智能体"
 - 当语义判定用户未结束发言时，会等待一段时间才最终判定对话结束，此时响应延时会有所增加。
 :::
 
-优雅打断功能默认关闭，你需要在调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时，设置 `turn_detection.config.end_of_speech.mode` 为 `semantic` 开启优雅打断。以 curl 为例：
+优雅打断功能默认关闭。通过 Agents SDK 创建会话或调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时，设置 `turn_detection.config.end_of_speech.mode` 为 `semantic` 即可开启优雅打断。以下示例只展示语音打断相关配置，其他 STT、LLM、TTS 和频道参数请参考[启动和停止智能体](/zh-CN/ai/build/start-stop-agent)。
 
 #### 请求示例
 
-```bash
+```go tab="Go SDK" tabGroup="agent-sdk-language"
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
+)
+
+agent := agentkit.NewAgent(client,
+    agentkit.WithTurnDetectionConfig(&agentkit.TurnDetectionConfig{
+        Mode: Agora.String("default"),
+        Config: &agentkit.TurnDetectionNestedConfig{
+            SpeechThreshold: Agora.Float64(0.5),
+            StartOfSpeech: &agentkit.StartOfSpeechConfig{
+                Mode: Agora.String("vad"),
+                VadConfig: &agentkit.StartOfSpeechVadConfig{
+                    InterruptDurationMs:         Agora.Float64(160),
+                    SpeakingInterruptDurationMs: Agora.Float64(320),
+                    PrefixPaddingMs:             Agora.Float64(800),
+                },
+            },
+            EndOfSpeech: &agentkit.EndOfSpeechConfig{
+                Mode: Agora.String("semantic"),
+                SemanticConfig: &agentkit.EndOfSpeechSemanticConfig{
+                    SilenceDurationMs: Agora.Float64(320),
+                    MaxWaitMs:         Agora.Float64(3000),
+                },
+            },
+        },
+    }),
+)
+```
+
+```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
+const agent = baseAgent.withTurnDetection({
+  mode: 'default',
+  config: {
+    speech_threshold: 0.5,
+    start_of_speech: {
+      mode: 'vad',
+      vad_config: {
+        interrupt_duration_ms: 160,
+        speaking_interrupt_duration_ms: 320,
+        prefix_padding_ms: 800,
+      },
+    },
+    end_of_speech: {
+      mode: 'semantic',
+      semantic_config: {
+        silence_duration_ms: 320,
+        max_wait_ms: 3000,
+      },
+    },
+  },
+});
+```
+
+```python tab="Python SDK" tabGroup="agent-sdk-language"
+agent = base_agent.with_turn_detection({
+    'mode': 'default',
+    'config': {
+        'speech_threshold': 0.5,
+        'start_of_speech': {
+            'mode': 'vad',
+            'vad_config': {
+                'interrupt_duration_ms': 160,
+                'speaking_interrupt_duration_ms': 320,
+                'prefix_padding_ms': 800,
+            },
+        },
+        'end_of_speech': {
+            'mode': 'semantic',
+            'semantic_config': {
+                'silence_duration_ms': 320,
+                'max_wait_ms': 3000,
+            },
+        },
+    },
+})
+```
+
+```bash tab="REST API" tabGroup="agent-sdk-language"
 curl --request POST \
   --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/join \
   --header 'Authorization: agora token="007abcxxxxxxx123"' \
@@ -39,12 +118,11 @@ curl --request POST \
     ],
     "enable_string_uid": false,
     "idle_timeout": 120,
-    // highlight-start
     "turn_detection": {
       "mode": "default",
       "config": {
         "end_of_speech": {
-          "mode": "semantic"
+          "mode": "semantic",
           "semantic_config": {
             "silence_duration_ms": 240,
             "max_wait_ms": 3000
@@ -52,7 +130,6 @@ curl --request POST \
         }
       }
     },
-    // highlight-end
     "llm": {
       "url": "https://api.minimax.chat/v2/text/chatcompletion_v2",
       "api_key": "xxx",
@@ -116,15 +193,27 @@ curl --request POST \
 
 声网对话式 AI 引擎支持通过调用 RESTful API 或客户端组件 API 主动发起打断请求，从而实现点击按钮或发送特定命令来打断智能体。
 
-### 方案一：调用 RESTful API
+### 方案一：在服务端调用打断接口
 
-你可以调用 [POST 打断智能体](/zh-CN/api-reference/api-ref/conversational-ai/interrupt)接口主动发起打断请求。
+你可以通过 Agents SDK 或 [POST 打断智能体](/zh-CN/api-reference/api-ref/conversational-ai/interrupt)接口主动发起打断请求。
 
 #### 请求示例
 
-以 curl 为例：
+```go tab="Go SDK" tabGroup="agent-sdk-language"
+if err := session.Interrupt(ctx); err != nil {
+    log.Fatal(err)
+}
+```
 
-```bash
+```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
+await session.interrupt();
+```
+
+```python tab="Python SDK" tabGroup="agent-sdk-language"
+session.interrupt()
+```
+
+```bash tab="REST API" tabGroup="agent-sdk-language"
 curl --request POST \
   --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/interrupt \
   --header 'Authorization: agora token="007abcxxxxxxx123"' \
