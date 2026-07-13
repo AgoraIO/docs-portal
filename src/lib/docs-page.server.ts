@@ -14,6 +14,7 @@ import {
   resolveDocsNavScope,
 } from './docs-nav-scope';
 import { getSourceSlugs } from './docs-routing';
+import { getSearchEntryMetadata } from './docs-search';
 import {
   type DocsSidebarNode,
   type DocsSidebarSectionNode,
@@ -38,6 +39,7 @@ import {
   resolveOpenApiEndpointRoute,
   resolveOpenApiLaneRoute,
 } from './openapi/lanes';
+import { getOpenApiMarkdownPages } from './openapi/markdown';
 import { getOpenApiOperation } from './openapi/source.server';
 import {
   filterPlatformGroupPanelNodes,
@@ -54,6 +56,7 @@ import {
 } from './platforms/processed-text';
 import type { PlatformKey } from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
+import { isPublishedDocsLocale, PUBLISHED_DOCS_LOCALES } from './site-region';
 import {
   type source as docsSource,
   getPageMarkdownUrl,
@@ -788,7 +791,7 @@ export async function loadDocsPagePayload(
     lastUpdated,
     layoutMode,
     hideToc: ('hideToc' in page.data ? page.data.hideToc : undefined) ?? false,
-    localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {
+    localeLinks: PUBLISHED_DOCS_LOCALES.map((targetLocale) => {
       const targetPage = source.getPage(page.slugs.slice(1), targetLocale);
       const targetTabEntry = getFirstTabPageUrl(
         getCanonicalPageTree(source, targetLocale),
@@ -859,23 +862,39 @@ function canonicalizeZhCnProductIaRedirectUrl(
 export async function loadDocsSearchIndex(locale: string) {
   const supportedLocale = toSupportedLocale(locale);
 
-  if (!supportedLocale) {
+  if (!supportedLocale || !isPublishedDocsLocale(supportedLocale)) {
     return [];
   }
 
   const { source } = await import('./source.server');
-  const pages = getCanonicalSourcePages(source.getPages(locale)).map(
-    (item) => ({
-      description: item.data.description,
-      title: item.data.title ?? item.slugs.at(-1) ?? item.url,
-      url: item.url,
+  const pages = await Promise.all(
+    getCanonicalSourcePages(source.getPages(locale)).map(async (item) => {
+      const content = await readSearchText(item);
+
+      return {
+        content,
+        description: item.data.description,
+        ...getSearchEntryMetadata(item.url, content),
+        title: item.data.title ?? item.slugs.at(-1) ?? item.url,
+        url: item.url,
+      };
     }),
   );
+  const existingUrls = new Set(pages.map((page) => page.url));
+  const openApiPages = (await getOpenApiMarkdownPages())
+    .filter(
+      (page) =>
+        page.url.startsWith(`/${supportedLocale}/`) &&
+        !existingUrls.has(page.url),
+    )
+    .map((page) => ({
+      content: page.markdown,
+      ...getSearchEntryMetadata(page.url, page.markdown, 'openapi'),
+      title: page.title,
+      url: page.url,
+    }));
 
-  return getDocsPages({
-    locale: supportedLocale,
-    pages,
-  });
+  return [...pages, ...openApiPages];
 }
 
 function getCanonicalPageTree(source: typeof docsSource, locale?: string) {
@@ -1631,12 +1650,20 @@ export type DocsRedirectPayload = {
 };
 
 async function readProcessedText(page: PageWithSource) {
+  return readPageText(page, 'processed');
+}
+
+async function readSearchText(page: PageWithSource) {
+  return readPageText(page, 'raw');
+}
+
+async function readPageText(page: PageWithSource, kind: 'processed' | 'raw') {
   try {
-    if (!hasProcessedText(page)) {
+    if (!hasPageText(page)) {
       return '';
     }
 
-    return await page.data.getText('processed');
+    return await page.data.getText(kind);
   } catch {
     return '';
   }
@@ -1691,8 +1718,8 @@ function normalizeToc(toc: TOCItemType[] | undefined) {
   });
 }
 
-function hasProcessedText(page: PageWithSource): page is PageWithSource & {
-  data: { getText: (kind: 'processed') => Promise<string> };
+function hasPageText(page: PageWithSource): page is PageWithSource & {
+  data: { getText: (kind: 'processed' | 'raw') => Promise<string> };
 } {
   return 'getText' in page.data && typeof page.data.getText === 'function';
 }
@@ -2534,39 +2561,6 @@ function stripSidebarSectionMeta(
   const { icon: _icon, url: _url, ...rest } = node;
 
   return rest;
-}
-
-function getDocsPages({
-  locale,
-  pages,
-}: {
-  locale: AppLocale | null;
-  pages: {
-    description?: string;
-    title: string;
-    url: string;
-  }[];
-}) {
-  if (!locale) {
-    return pages;
-  }
-
-  const existingUrls = new Set(pages.map((page) => page.url));
-  const endpointPages = getOpenApiLanes()
-    .filter(
-      (lane) =>
-        isOpenApiTab(lane.tab) &&
-        getOpenApiLaneLocales(lane).includes(locale as AppLocale),
-    )
-    .flatMap((lane) =>
-      getOpenApiOperationIds(lane).map((operationId) => ({
-        title: lane.operations[operationId].title[locale],
-        url: getOpenApiEndpointUrl(lane, locale, operationId),
-      })),
-    )
-    .filter((page) => !existingUrls.has(page.url));
-
-  return [...pages, ...endpointPages];
 }
 
 function resolveDocsSidebarHeader({

@@ -1,6 +1,7 @@
 import { liteClient } from 'algoliasearch/lite';
 import type { SearchClient } from 'fumadocs-core/search/client';
 import { SUPPORTED_LOCALES } from '../i18n/i18n-config';
+import type { DocsSearchScope } from './search-provider';
 
 export type AlgoliaSearchFilters = {
   platform?: string;
@@ -40,22 +41,21 @@ export function createAlgoliaDocsClient({
   indexName,
   locale,
   platform,
-  scopeFilter,
+  scope,
   searchApiKey,
 }: {
   appId: string;
   indexName: string;
   locale: string;
   platform?: string;
-  // Raw Algolia filter narrowing results to a product/tab scope, e.g.
-  // `product:"video"`. Derived from the nav, so no re-sync is needed.
-  scopeFilter?: string;
+  // Product/tab scope derived from the docs navigation.
+  scope?: DocsSearchScope;
   searchApiKey: string;
 }): SearchClient {
   const client = liteClient(appId, searchApiKey);
 
   return {
-    deps: [appId, indexName, locale, platform, scopeFilter, searchApiKey],
+    deps: [appId, indexName, locale, platform, scope, searchApiKey],
     async search(query) {
       if (query.trim().length === 0) {
         return [];
@@ -70,7 +70,7 @@ export function createAlgoliaDocsClient({
             // One result per page: a page's best-matching section, never the
             // same page repeated for each matching heading.
             distinct: 1,
-            filters: buildFilters({ locale, platform, scopeFilter }),
+            filters: buildFilters({ locale, platform, scope }),
             // Demote low-signal pages so real docs rank above them. Boosting
             // via optionalFilters keeps Algolia's textual relevance intact and
             // only nudges by category: normal docs (+2) and deprecated (+1)
@@ -158,16 +158,16 @@ export function createAlgoliaDocsClient({
 function buildFilters({
   locale,
   platform,
-  scopeFilter,
+  scope,
 }: {
   locale: string;
   platform?: string;
-  scopeFilter?: string;
+  scope?: DocsSearchScope;
 }) {
   return [
     `locale:${locale}`,
     platform ? `platform:${platform}` : undefined,
-    scopeFilter || undefined,
+    scope ? `${scope.field}:"${scope.value}"` : undefined,
   ]
     .filter(Boolean)
     .join(' AND ');

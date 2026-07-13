@@ -121,6 +121,21 @@ describe('docs route locale guards', () => {
     throw new Error('expected loader to reject with notFound');
   });
 
+  it('rejects locales that are not published by the deployment region', async () => {
+    try {
+      await getLoader(LocaleIndexRoute)({
+        params: {
+          locale: 'zh-CN',
+        },
+      } as never);
+    } catch (error) {
+      expect(isNotFound(error)).toBe(true);
+      return;
+    }
+
+    throw new Error('expected global deployment to reject zh-CN');
+  });
+
   it('rejects unsupported locale on the tab index route before content lookup', async () => {
     try {
       await getLoader(TabIndexRoute)({
@@ -388,27 +403,29 @@ describe('docs route locale guards', () => {
     REAL_DOCS_ROUTE_TIMEOUT,
   );
 
-  it('serves direct zh-CN .md docs page URLs as markdown', async () => {
-    const response = (await getGetHandler(DocPageRoute)({
-      context: {},
-      next: vi.fn(() => {
-        throw new Error('expected zh-CN .md request to be handled directly');
-      }),
-      params: {
-        _splat: 'mcp-integrate.md',
-        locale: 'zh-CN',
-        tab: 'introduction',
-      },
-      pathname: '/zh-CN/introduction/mcp-integrate.md',
-      request: new Request(
-        'https://docs.example.com/zh-CN/introduction/mcp-integrate.md',
-      ),
-    } as never)) as Response;
+  it('does not serve zh-CN direct .md docs page URLs', async () => {
+    try {
+      await getGetHandler(DocPageRoute)({
+        context: {},
+        next: vi.fn(() => {
+          throw new Error('expected zh-CN .md request to be rejected');
+        }),
+        params: {
+          _splat: 'build/shape-the-conversation/filler-words.md',
+          locale: 'zh-CN',
+          tab: 'ai',
+        },
+        pathname: '/zh-CN/ai/build/shape-the-conversation/filler-words.md',
+        request: new Request(
+          'https://docs.example.com/zh-CN/ai/build/shape-the-conversation/filler-words.md',
+        ),
+      } as never);
+    } catch (error) {
+      expect(isNotFound(error)).toBe(true);
+      return;
+    }
 
-    await expect(response.text()).resolves.toContain(
-      '# 使用 MCP 集成 (/zh-CN/introduction/mcp-integrate)',
-    );
-    expect(response.headers.get('Content-Type')).toBe('text/markdown');
+    throw new Error('expected zh-CN .md request to reject with notFound');
   });
 
   it(
@@ -443,30 +460,29 @@ describe('docs route locale guards', () => {
     REAL_DOCS_ROUTE_TIMEOUT,
   );
 
-  it('serves direct zh-CN platform .md docs page URLs as markdown', async () => {
-    const response = (await getGetHandler(DocPageRoute)({
-      context: {},
-      next: vi.fn(() => {
-        throw new Error(
-          'expected zh-CN platform .md request to be handled directly',
-        );
-      }),
-      params: {
-        _splat: 'api-ref/uikit-sdk/android.md',
-        locale: 'zh-CN',
-        tab: 'api-reference',
-      },
-      pathname: '/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
-      request: new Request(
-        'https://docs.example.com/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
-      ),
-    } as never)) as Response;
-    const markdown = await response.text();
+  it('does not serve zh-CN direct platform .md docs page URLs', async () => {
+    try {
+      await getGetHandler(DocPageRoute)({
+        context: {},
+        next: vi.fn(() => {
+          throw new Error('expected zh-CN platform .md request to be rejected');
+        }),
+        params: {
+          _splat: 'api-ref/uikit-sdk/android.md',
+          locale: 'zh-CN',
+          tab: 'api-reference',
+        },
+        pathname: '/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
+        request: new Request(
+          'https://docs.example.com/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
+        ),
+      } as never);
+    } catch (error) {
+      expect(isNotFound(error)).toBe(true);
+      return;
+    }
 
-    expect(response.headers.get('Content-Type')).toBe('text/markdown');
-    expect(markdown).toContain(
-      '/zh-CN/api-reference/api-ref/uikit-sdk/android',
-    );
+    throw new Error('expected zh-CN platform .md request to reject');
   });
 
   it(
