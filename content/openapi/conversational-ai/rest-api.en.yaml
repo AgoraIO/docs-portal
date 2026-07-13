@@ -13,12 +13,24 @@ components:
     basicAuth:
       type: http
       scheme: basic
-      description: Use Basic HTTP authentication with your Agora customer ID and customer secret.
+      description: |-
+        Use Basic HTTP authentication with your Agora customer ID and customer secret. For details on generating your Base64-encoded credentials, see [RESTful authentication](/en/api-reference/api-ref/conversational-ai/authentication).
+        
+        Example:
+        ```http
+        Authorization: Basic <your_base64_encoded_credentials>
+        ```
     tokenAuth:
       type: apiKey
       in: header
       name: Authorization
-      description: Use an RTC token in the format `agora token=<your_token>`.
+      description: |-
+        Use an RTC token in the format `agora token=<your_token>`. To learn how to generate an RTC token on your server, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
+        
+        Example:
+        ```http
+        Authorization: agora token=<your_token>
+        ```
   parameters:
     Authorization:
       name: Authorization

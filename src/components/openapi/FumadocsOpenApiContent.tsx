@@ -366,15 +366,26 @@ function OpenApiAuthorizationSection({
       <p className="mb-2 text-fd-muted-foreground text-xs">
         This endpoint requires authentication.
       </p>
-      <div className="flex flex-wrap gap-1.5">
-        {securityKeys.map((key) => (
-          <code
-            className="rounded-md border border-fd-border bg-fd-secondary px-1.5 py-0.5 text-[11px] text-fd-muted-foreground"
-            key={key}
-          >
-            {key}
-          </code>
-        ))}
+      <div className="flex flex-col gap-3">
+        {securityKeys.map((key) => {
+          const scheme = getOpenApiSecurityScheme(operation, key);
+          const description = getString(scheme?.description);
+
+          return (
+            <div key={key} className="flex flex-col gap-1.5">
+              <div>
+                <code className="rounded-md border border-fd-border bg-fd-secondary px-1.5 py-0.5 text-[11px] text-fd-muted-foreground">
+                  {key}
+                </code>
+              </div>
+              {description ? (
+                <div className="prose prose-sm prose-fd text-fd-muted-foreground text-xs max-w-none prose-pre:overflow-x-auto">
+                  {renderOpenApiMarkdown(description)}
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
       </div>
     </OpenApiRightSection>
   );
@@ -445,6 +456,15 @@ function getOpenApiSecurityKeys(operation?: OpenApiOperation) {
       ),
     ),
   ];
+}
+
+function getOpenApiSecurityScheme(
+  operation: OpenApiOperation | undefined,
+  key: string,
+) {
+  const components = getRecord(operation?.__document?.components);
+  const schemes = getRecord(components?.securitySchemes);
+  return getRecord(schemes?.[key]);
 }
 
 function getCurrentOperation(
