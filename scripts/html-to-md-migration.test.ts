@@ -111,6 +111,65 @@ async function writeDitaFixture(sourceDir: string) {
   );
 }
 
+async function writeDitaRootMapFixture(sourceDir: string) {
+  await writeFixture(
+    path.join(sourceDir, 'index.html'),
+    `<!doctype html>
+<html>
+  <body>
+    <nav>
+      <ul class="map">
+        <li class="topicref topichead">Android API Reference
+          <ul>
+            <li>
+              <a href="API/toc_initialize.html">初始化相关</a>
+              <ul>
+                <li><a href="API/class_rtc_engine.html">RtcEngine</a></li>
+              </ul>
+            </li>
+            <li><a href="API/toc_channel.html">频道相关</a></li>
+            <li>
+              <a href="API/toc_audio.html">音频相关</a>
+              <ul>
+                <li><a href="API/toc_audio_basic.html">音频基础功能</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </body>
+</html>`,
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'toc_initialize.html'),
+    ditaPage('初始化相关').replace(
+      'Call <code>join</code> from this page.',
+      'See <a href="class_hidden.html">HiddenClass</a>.',
+    ),
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'class_rtc_engine.html'),
+    ditaPage('RtcEngine'),
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'toc_channel.html'),
+    ditaPage('频道相关'),
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'toc_audio.html'),
+    '<!doctype html><html><body><main><article><h1>音频相关</h1><div class="body"><p class="shortdesc"></p></div></article></main></body></html>',
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'toc_audio_basic.html'),
+    ditaPage('音频基础功能'),
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'class_hidden.html'),
+    ditaPage('HiddenClass'),
+  );
+}
+
 async function expectLaneDryRunAndMigration({
   detected,
   expectedMetaPages,
@@ -854,6 +913,139 @@ describe('html-to-md-migration', () => {
     await expect(
       fs.readFile(path.join(outputDir, 'class-video-canvas.mdx'), 'utf8'),
     ).resolves.toContain('Call `join` from this page.');
+  });
+
+  it('preserves the functional navigation from a DITA root map', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDitaRootMapFixture(sourceDir);
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+    ]);
+
+    await expect(
+      readJson(path.join(outputDir, 'meta.json')),
+    ).resolves.toMatchObject({
+      pages: ['index', 'initialize', 'channel', 'audio'],
+    });
+    await expect(
+      readJson(path.join(outputDir, 'initialize', 'meta.json')),
+    ).resolves.toMatchObject({
+      pages: ['index', 'class-rtc-engine'],
+    });
+    await expect(
+      fs.readFile(path.join(outputDir, 'initialize', 'index.mdx'), 'utf8'),
+    ).resolves.toContain(
+      '[HiddenClass](/api-reference/rtc/android/class-hidden)',
+    );
+    await expect(
+      fs.readFile(path.join(outputDir, 'class-hidden.mdx'), 'utf8'),
+    ).resolves.toContain('title: "HiddenClass"');
+    await expect(
+      readJson(path.join(outputDir, 'audio', 'meta.json')),
+    ).resolves.toMatchObject({ pages: ['audio-basic'] });
+    await expect(
+      pathExists(path.join(outputDir, 'audio', 'index.mdx')),
+    ).resolves.toBe(false);
+  }, 15_000);
+
+  it('preserves the active version directory in migrated internal links', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDitaFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'API', 'overview.html'),
+      ditaPage('Overview').replace(
+        'Call <code>join</code> from this page.',
+        'See <a href="class_video_canvas.html">VideoCanvas</a>.',
+      ),
+    );
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+      '--version-dir',
+      '4.6.0',
+    ]);
+
+    await expect(
+      fs.readFile(path.join(outputDir, 'overview.mdx'), 'utf8'),
+    ).resolves.toContain(
+      '[VideoCanvas](/api-reference/rtc/android/4.6.0/class-video-canvas)',
+    );
+  });
+
+  it('renders DITA related links and omits source pages without meaningful body content', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDitaFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'index.html'),
+      `<!doctype html><html><body><nav><ul class="map"><li>API Reference<ul>
+        <li><a href="API/overview.html">Overview</a></li>
+        <li><a href="API/toc_empty_group.html">Empty group</a><ul>
+          <li><a href="API/class_video_canvas.html">VideoCanvas</a></li>
+        </ul></li>
+      </ul></li></ul></nav></body></html>`,
+    );
+    await writeFixture(
+      path.join(sourceDir, 'API', 'overview.html'),
+      `<!doctype html><html><body><main><article>
+        <h1>Overview</h1><p class="shortdesc">Overview summary.</p>
+        <nav class="related-links"><ul><li><strong><a href="class_video_canvas.html">VideoCanvas</a></strong><br>Canvas details.</li></ul></nav>
+      </article></main></body></html>`,
+    );
+    await writeFixture(
+      path.join(sourceDir, 'API', 'class_empty.html'),
+      '<!doctype html><html><body><main><article><h1>EmptyClass</h1><p class="shortdesc">No source body.</p></article></main></body></html>',
+    );
+    await writeFixture(
+      path.join(sourceDir, 'API', 'toc_empty_group.html'),
+      '<!doctype html><html><body><main><article><h1>Empty group</h1><p class="shortdesc">No source body.</p></article></main></body></html>',
+    );
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+    ]);
+
+    await expect(
+      fs.readFile(path.join(outputDir, 'overview.mdx'), 'utf8'),
+    ).resolves.toContain(
+      '---\n\n- [VideoCanvas](/api-reference/rtc/android/empty-group/class-video-canvas)',
+    );
+    await expect(
+      pathExists(path.join(outputDir, 'class-empty.mdx')),
+    ).resolves.toBe(false);
+    await expect(
+      readJson(path.join(outputDir, 'empty-group', 'meta.json')),
+    ).resolves.toMatchObject({ pages: ['class-video-canvas'] });
+    await expect(
+      pathExists(path.join(outputDir, 'empty-group', 'index.mdx')),
+    ).resolves.toBe(false);
   });
 
   it('prints detected source type, file count, and planned paths in dry-run without writing', async () => {

@@ -3620,7 +3620,8 @@ function collectPlannedOutputPaths(targetRoot, tocNodes) {
   const visit = (node) => {
     if (node.children.length > 0) {
       const dir = path.join(targetRoot, ...node.routeSegments.slice(0, -1));
-      planned.push(path.join(dir, 'index.mdx'), path.join(dir, 'meta.json'));
+      if (node.sourceName) planned.push(path.join(dir, 'index.mdx'));
+      planned.push(path.join(dir, 'meta.json'));
       for (const child of node.children) visit(child);
       return;
     }
@@ -3653,7 +3654,10 @@ async function writeNode(
     const visibleChildren = node.children.filter((child) => !child.hidden);
     await writeJson(path.join(dir, 'meta.json'), {
       title: pageTitleBySource.get(node.sourceName) ?? node.title,
-      pages: ['index', ...visibleChildren.map((child) => child.slug)],
+      pages: [
+        ...(node.sourceName ? ['index'] : []),
+        ...visibleChildren.map((child) => child.slug),
+      ],
     });
     if (node.sourceName) {
       await writeFile(
@@ -3672,11 +3676,6 @@ async function writeNode(
           sourceToRoute,
           targetBasePath: output.targetBasePath,
         }),
-      );
-    } else {
-      await writeFile(
-        path.join(dir, 'index.mdx'),
-        renderSyntheticIndex(node.title, `${node.title} API reference.`),
       );
     }
 
