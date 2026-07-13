@@ -128,6 +128,12 @@ async function writeDitaRootMapFixture(sourceDir: string) {
               </ul>
             </li>
             <li><a href="API/toc_channel.html">频道相关</a></li>
+            <li>
+              <a href="API/toc_audio.html">音频相关</a>
+              <ul>
+                <li><a href="API/toc_audio_basic.html">音频基础功能</a></li>
+              </ul>
+            </li>
           </ul>
         </li>
       </ul>
@@ -149,6 +155,14 @@ async function writeDitaRootMapFixture(sourceDir: string) {
   await writeFixture(
     path.join(sourceDir, 'API', 'toc_channel.html'),
     ditaPage('频道相关'),
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'toc_audio.html'),
+    '<!doctype html><html><body><main><article><h1>音频相关</h1><div class="body"><p class="shortdesc"></p></div></article></main></body></html>',
+  );
+  await writeFixture(
+    path.join(sourceDir, 'API', 'toc_audio_basic.html'),
+    ditaPage('音频基础功能'),
   );
   await writeFixture(
     path.join(sourceDir, 'API', 'class_hidden.html'),
@@ -957,7 +971,7 @@ describe('html-to-md-migration', () => {
     await expect(
       readJson(path.join(outputDir, 'meta.json')),
     ).resolves.toMatchObject({
-      pages: ['index', 'initialize', 'channel'],
+      pages: ['index', 'initialize', 'channel', 'audio'],
     });
     await expect(
       readJson(path.join(outputDir, 'initialize', 'meta.json')),
@@ -972,6 +986,12 @@ describe('html-to-md-migration', () => {
     await expect(
       fs.readFile(path.join(outputDir, 'class-hidden.mdx'), 'utf8'),
     ).resolves.toContain('title: "HiddenClass"');
+    await expect(
+      readJson(path.join(outputDir, 'audio', 'meta.json')),
+    ).resolves.toMatchObject({ pages: ['audio-basic'] });
+    await expect(
+      pathExists(path.join(outputDir, 'audio', 'index.mdx')),
+    ).resolves.toBe(false);
   }, 15_000);
 
   it('preserves the active version directory in migrated internal links', async () => {
@@ -1058,7 +1078,10 @@ describe('html-to-md-migration', () => {
     ).resolves.toBe(false);
     await expect(
       readJson(path.join(outputDir, 'empty-group', 'meta.json')),
-    ).resolves.toMatchObject({ pages: ['index', 'class-video-canvas'] });
+    ).resolves.toMatchObject({ pages: ['class-video-canvas'] });
+    await expect(
+      pathExists(path.join(outputDir, 'empty-group', 'index.mdx')),
+    ).resolves.toBe(false);
   });
 
   it('prints detected source type, file count, and planned paths in dry-run without writing', async () => {
