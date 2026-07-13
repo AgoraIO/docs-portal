@@ -78,6 +78,7 @@ describe('api reference composition', () => {
     expect(restUrlOf('Console')).toBe(
       '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     );
+    expect(restUrlOf('On-Premise Recording')).toBeUndefined();
     expect(restUrlOf('Media Player Kit')).toBeUndefined();
     expect(restUrlOf('IoT')).toBeUndefined();
   });
