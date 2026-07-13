@@ -766,7 +766,7 @@ function readDescription($) {
 
 function selectContentRoot($) {
   $(
-    'script, style, link, iframe, form, nav:not(.related-links), header, footer, aside',
+    'script, style, link, iframe, form, nav:not(.related-links), header, footer, aside, hr.footer, address.footer',
   ).remove();
   const selectors = [
     'main > article',
@@ -1574,6 +1574,7 @@ function renderNestedArticle(
   pageTitleBySource,
   sourceToRoute,
   targetBasePath,
+  options = {},
 ) {
   const id = article.attr('id');
   const heading = article.find('> h1, > h2, > h3, > h4, > h5, > h6').first();
@@ -1584,7 +1585,7 @@ function renderNestedArticle(
   const content = [];
 
   if (id) content.push(`<a id="${id}"></a>`);
-  if (title) content.push(`${level} ${title}`);
+  if (title && !options.omitTitle) content.push(`${level} ${title}`);
 
   const shortdesc = article.find('> .body > .shortdesc').first().text().trim();
   if (shortdesc) content.push(shortdesc);
@@ -1731,12 +1732,20 @@ function renderPage({
 
   const nestedArticles = body.find('> article').toArray();
   for (const article of nestedArticles) {
+    const articleTitle = inlineText(
+      $(article).find('> h1, > h2, > h3, > h4, > h5, > h6').first(),
+    );
     const rendered = renderNestedArticle(
       $,
       $(article),
       pageTitleBySource,
       sourceToRoute,
       targetBasePath,
+      {
+        omitTitle:
+          lane?.id === SOURCE_TYPES.DITA_OT_API.id &&
+          articleTitle === pageTitle,
+      },
     );
     if (rendered) sections.push(rendered);
   }
@@ -2190,14 +2199,34 @@ function renderIosDocGeneratorPage({
       if (renderedTasks) sections.push(renderedTasks);
     }
   } else {
-    const overviewPage = renderChildren(
+    const overview = renderIosOverview(
       $,
       main,
       pageTitleBySource,
       sourceToRoute,
       targetBasePath,
     );
-    if (overviewPage) sections.push(overviewPage);
+    const navigation = renderIosIndexNavigation(
+      $,
+      main,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (overview) sections.push(overview);
+    if (navigation) sections.push(navigation);
+    if (!overview && !navigation) {
+      const cleanMain = main.clone();
+      cleanMain.find('.footer-copyright').remove();
+      const overviewPage = renderChildren(
+        $,
+        cleanMain,
+        pageTitleBySource,
+        sourceToRoute,
+        targetBasePath,
+      );
+      if (overviewPage) sections.push(overviewPage);
+    }
   }
 
   sourceToRoute.currentSource = previousCurrentSource;
@@ -2213,6 +2242,33 @@ function renderIosDocGeneratorPage({
     '',
     `${sections.join('\n\n')}\n`,
   ].join('\n');
+}
+
+function renderIosIndexNavigation(
+  $,
+  main,
+  pageTitleBySource,
+  sourceToRoute,
+  targetBasePath,
+) {
+  const sections = [];
+  for (const column of main
+    .find('> .index-container > .index-column')
+    .toArray()) {
+    const node = $(column);
+    const title = inlineText(node.children('.index-title').first());
+    const list = renderList(
+      $,
+      node.children('ul').first(),
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      false,
+      { preferInlineOnly: true },
+    );
+    if (title && list) sections.push(`## ${title}\n\n${list}`);
+  }
+  return sections.join('\n\n');
 }
 
 function renderIosOverview(
@@ -3894,13 +3950,29 @@ async function writeNode(
   );
 }
 
-function renderSyntheticIndex(title, description) {
+function renderGeneratedIndex(title, description, nodes, targetBasePath) {
+  const navigation = [];
+  const appendNodes = (items, depth) => {
+    for (const node of items.filter((item) => !item.hidden)) {
+      const label = escapeInlineText(node.title);
+      const linked = node.sourceName || node.children.length === 0;
+      const item = linked
+        ? `[${label}](${routeSegmentsToDocPath(node.routeSegments, targetBasePath)})`
+        : `**${label}**`;
+      navigation.push(`${'  '.repeat(depth)}- ${item}`);
+      appendNodes(node.children, depth + 1);
+    }
+  };
+  appendNodes(nodes, 0);
+
   return `---
 title: ${escapeYaml(title)}
 description: ${escapeYaml(description)}
 ---
 
-This section contains migrated API reference pages.
+## API navigation
+
+${navigation.join('\n')}
 `;
 }
 
@@ -4085,9 +4157,11 @@ async function main() {
   } else {
     await writeFile(
       path.join(targetRoot, 'index.mdx'),
-      renderSyntheticIndex(
+      renderGeneratedIndex(
         `${opts.platform.toUpperCase()} API Reference`,
         `${opts.product} ${opts.platform} API reference.`,
+        tocNodes,
+        targetBasePath,
       ),
     );
   }
@@ -4099,6 +4173,10 @@ async function main() {
     : `${opts.platform.toUpperCase()} API Reference`;
   await writeJson(path.join(targetRoot, 'meta.json'), {
     title: rootTitle,
+    ...(opts.product === 'whiteboard' &&
+    ['android', 'ios', 'web'].includes(opts.platform)
+      ? { navScope: {} }
+      : {}),
     pages: [
       'index',
       ...tocNodes.filter((node) => !node.hidden).map((node) => node.slug),
