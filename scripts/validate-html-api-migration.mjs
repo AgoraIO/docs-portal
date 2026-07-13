@@ -271,9 +271,47 @@ export function hasInvalidMarkdownHeading(text) {
   return false;
 }
 
-async function scanGeneratedOutput(outputDir, sampleFiles, contentChecks = []) {
+export function hasPageDescriptionCopiedFromFirstMember(text) {
+  const descriptionMatch = text.match(
+    /^description: ("(?:[^"\\]|\\.)*")$/m,
+  );
+  if (!descriptionMatch) return false;
+
+  let description;
+  try {
+    description = JSON.parse(descriptionMatch[1]);
+  } catch {
+    return false;
+  }
+
+  const body = text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
+  const lines = body.split(/\r?\n/).map((line) => line.trim());
+  const isCompatibilityAnchor = (line) => /^<(?:a|span)\b/.test(line);
+  const firstContentIndex = lines.findIndex(
+    (line) => line && !isCompatibilityAnchor(line),
+  );
+  if (
+    firstContentIndex === -1 ||
+    !/^#{1,6}\s+/.test(lines[firstContentIndex])
+  ) {
+    return false;
+  }
+
+  const firstMemberDescription = lines
+    .slice(firstContentIndex + 1)
+    .find((line) => line && !isCompatibilityAnchor(line));
+  return firstMemberDescription === description;
+}
+
+async function scanGeneratedOutput(
+  outputDir,
+  sampleFiles,
+  contentChecks = [],
+  lane,
+) {
   const issues = {
     contentMismatches: [],
+    copiedMemberDescriptions: [],
     helperPollution: [],
     internalHtmlLinks: [],
     invalidHeadings: [],
@@ -336,6 +374,14 @@ async function scanGeneratedOutput(outputDir, sampleFiles, contentChecks = []) {
       if (helperPattern.test(text)) issues.helperPollution.push(relative);
       if (hasInvalidMarkdownHeading(text))
         issues.invalidHeadings.push(relative);
+      if (entry.name.endsWith('.mdx')) {
+        if (
+          lane === 'DITA/Oxygen' &&
+          hasPageDescriptionCopiedFromFirstMember(text)
+        ) {
+          issues.copiedMemberDescriptions.push(relative);
+        }
+      }
 
       for (const match of text.matchAll(markdownHtmlLinkPattern)) {
         const href = match[1];
@@ -526,6 +572,7 @@ async function main() {
       outputDir,
       entry.sampleFiles,
       entry.contentChecks,
+      entry.lane,
     );
     assertOutputAuditsPassed(issues, entry.id);
 
