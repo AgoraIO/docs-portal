@@ -1,8 +1,14 @@
-export const SUPPORTED_LOCALES = ['en', 'zh-CN'] as const;
-export const DEFAULT_LOCALE = 'en';
+import {
+  DOCS_LOCALES,
+  type DocsLocale,
+  getDefaultDocsLocale,
+} from '../site-region';
+
+export const SUPPORTED_LOCALES = DOCS_LOCALES;
+export const DEFAULT_LOCALE = getDefaultDocsLocale();
 export const LOCALE_STORAGE_KEY = 'docs-portal-locale';
 
-export type AppLocale = (typeof SUPPORTED_LOCALES)[number];
+export type AppLocale = DocsLocale;
 
 export function normalizeLocale(
   locale: string | null | undefined,

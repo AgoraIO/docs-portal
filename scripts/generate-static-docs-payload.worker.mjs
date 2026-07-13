@@ -5,7 +5,6 @@ import {
   loadDocsPagePayload,
   loadDocsSearchIndex,
 } from '../src/lib/docs-page.server.ts';
-import { SUPPORTED_LOCALES } from '../src/lib/i18n/i18n-config.ts';
 import { MACHINE_READABLE_LOCALE } from '../src/lib/machine-readable-docs.ts';
 import { getOpenApiPrerenderPaths } from '../src/lib/openapi/lanes.ts';
 import {
@@ -17,6 +16,11 @@ import {
   normalizePlatformKey,
 } from '../src/lib/platforms/registry.ts';
 import { getContentDocsPrerenderPaths } from '../src/lib/prerender-content-routes.ts';
+import {
+  DOCS_LOCALES,
+  isPublishedDocsPath,
+  PUBLISHED_DOCS_LOCALES,
+} from '../src/lib/site-region.ts';
 import { createSitemapXml, getSitemapUrls } from '../src/lib/sitemap.ts';
 import {
   getLLMText,
@@ -58,11 +62,12 @@ export async function generateStaticDocsPayload() {
     new Set([...getContentDocsPrerenderPaths(), ...getOpenApiPrerenderPaths()]),
   )
     .filter((route) => route !== '/')
+    .filter((route) => isPublishedDocsPath(route))
     .sort();
   let generated = 0;
   const staticSeoPages = [];
 
-  for (const locale of SUPPORTED_LOCALES) {
+  for (const locale of PUBLISHED_DOCS_LOCALES) {
     await writeSearchIndex(searchOutputRoot, {
       locale,
       pages: await loadDocsSearchIndex(locale),
@@ -176,10 +181,14 @@ async function removeGeneratedMachineReadableDocs() {
   await fs.rm(path.join(markdownOutputRoot, 'llms.txt'), { force: true });
   await fs.rm(path.join(markdownOutputRoot, 'llms-full.txt'), { force: true });
   await fs.rm(path.join(markdownOutputRoot, 'sitemap.xml'), { force: true });
-  await fs.rm(path.join(markdownOutputRoot, MACHINE_READABLE_LOCALE), {
-    force: true,
-    recursive: true,
-  });
+  await Promise.all(
+    DOCS_LOCALES.map((locale) =>
+      fs.rm(path.join(markdownOutputRoot, locale), {
+        force: true,
+        recursive: true,
+      }),
+    ),
+  );
 }
 
 async function generateStaticMachineReadableDocs() {

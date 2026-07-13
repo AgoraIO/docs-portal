@@ -1,5 +1,6 @@
 import { createFileRoute, notFound } from '@tanstack/react-router';
 import { normalizeLocale } from '@/lib/i18n/i18n-config';
+import { isPublishedDocsLocale } from '@/lib/site-region';
 
 export const Route = createFileRoute('/__static/docs-search/$')({
   server: {
@@ -16,7 +17,7 @@ export async function getDocsSearchIndexResponse(fileName = '') {
 
   const locale = normalizeLocale(fileName.replace(/\.json$/, ''));
 
-  if (!locale) {
+  if (!locale || !isPublishedDocsLocale(locale)) {
     throw notFound();
   }
 

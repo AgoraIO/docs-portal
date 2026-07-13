@@ -1,5 +1,6 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import { PUBLISHED_DOCS_LOCALES } from '../src/lib/site-region.ts';
 import { injectStaticSeoHead } from '../src/lib/static-seo.ts';
 
 const repoRoot = process.cwd();
@@ -24,6 +25,14 @@ export async function generateStaticRouteHtml() {
 
     await fs.mkdir(path.dirname(routeIndexPath), { recursive: true });
     await fs.writeFile(routeIndexPath, injectStaticSeoHead(spaHtml, page));
+    generated += 1;
+  }
+
+  for (const locale of PUBLISHED_DOCS_LOCALES) {
+    const localeIndexPath = path.join(distRoot, locale, 'index.html');
+
+    await fs.mkdir(path.dirname(localeIndexPath), { recursive: true });
+    await fs.writeFile(localeIndexPath, spaHtml);
     generated += 1;
   }
 

@@ -2,6 +2,7 @@ import type { Folder, Item, Node, Root } from 'fumadocs-core/page-tree';
 import { findNeighbour, getPageTreeRoots } from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
 import { buildDocPath } from './docs-routing';
+import type { DocsSearchScope } from './search/search-provider';
 
 export type TabSummary = {
   description?: string;
@@ -11,15 +12,14 @@ export type TabSummary = {
   url: string;
 };
 
-// A search scope the user can narrow to. `filter` is an Algolia filter
-// expression over the already-indexed `product`/`tab` fields, so scoping needs
-// no re-sync. `group` is the section header shown in the scope dropdown.
+// A search scope the user can narrow to. Both local and hosted search adapters
+// translate this domain value into their provider-specific filter syntax.
 export type ProductScope = {
   description?: string;
-  filter: string;
   group?: string;
   id: string;
   label: string;
+  scope: DocsSearchScope;
 };
 
 export type SidebarEntry =
@@ -117,10 +117,10 @@ export function getProductScopes(root: Root): ProductScope[] {
         }
 
         const scope: ProductScope = {
-          filter: `product:"${productId}"`,
           group: tabLabel,
           id: `product:${productId}`,
           label: normalizeLabel(child.name, productId),
+          scope: { field: 'product', value: productId },
         };
 
         if (typeof childIndex.description === 'string') {
@@ -133,9 +133,9 @@ export function getProductScopes(root: Root): ProductScope[] {
 
     // A whole tab (e.g. AI, Reference) as one scope.
     const scope: ProductScope = {
-      filter: `tab:"${tabId}"`,
       id: `tab:${tabId}`,
       label: tabLabel,
+      scope: { field: 'tab', value: tabId },
     };
 
     if (typeof item.description === 'string') {
