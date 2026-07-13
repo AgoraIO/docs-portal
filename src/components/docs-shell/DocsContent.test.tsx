@@ -1317,6 +1317,93 @@ describe('DocsTableOfContents', () => {
     ).toHaveAttribute('data-primary', 'true');
   });
 
+  it('keeps the active rail item visible inside long table of contents lists', async () => {
+    const longToc = Array.from({ length: 24 }, (_, index) => ({
+      depth: index % 4 === 0 ? 3 : 2,
+      title: `Heading ${index + 1}`,
+      url: `#heading-${index + 1}`,
+    }));
+
+    render(
+      <AppProviders>
+        <div
+          data-testid="docs-main-desktop-scroll"
+          style={{ height: 400, overflow: 'auto' }}
+        >
+          {longToc.map((item) => (
+            <h2 id={item.url.slice(1)} key={item.url}>
+              {item.title}
+            </h2>
+          ))}
+        </div>
+        <div style={{ height: 240, overflow: 'auto' }}>
+          <DocsTableOfContents toc={longToc} />
+        </div>
+      </AppProviders>,
+    );
+
+    const scrollContainer = screen.getByTestId('docs-main-desktop-scroll');
+    const scrollIntoView = vi.fn();
+    const activeHeading = document.getElementById('heading-24');
+    const activeLink = screen.getByRole('link', { name: 'Heading 24' });
+
+    expect(activeHeading).toBeInstanceOf(HTMLElement);
+    expect(screen.getAllByRole('link')).toHaveLength(24);
+    Object.defineProperty(activeLink, 'scrollIntoView', {
+      configurable: true,
+      value: scrollIntoView,
+    });
+    vi.spyOn(scrollContainer, 'getBoundingClientRect').mockReturnValue({
+      bottom: 500,
+      height: 400,
+      left: 0,
+      right: 800,
+      top: 100,
+      width: 800,
+      x: 0,
+      y: 100,
+      toJSON: () => ({}),
+    });
+
+    for (const item of longToc) {
+      const heading = document.getElementById(item.url.slice(1));
+      expect(heading).toBeInstanceOf(HTMLElement);
+      vi.spyOn(heading as HTMLElement, 'getBoundingClientRect').mockReturnValue(
+        {
+          bottom: item.url === '#heading-24' ? 180 : 80,
+          height: 28,
+          left: 0,
+          right: 800,
+          top: item.url === '#heading-24' ? 150 : 50,
+          width: 800,
+          x: 0,
+          y: item.url === '#heading-24' ? 150 : 50,
+          toJSON: () => ({}),
+        },
+      );
+    }
+
+    fireEvent.scroll(scrollContainer);
+
+    await waitFor(() => {
+      expect(activeLink).toHaveAttribute('aria-current', 'location');
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        block: 'nearest',
+        inline: 'nearest',
+      });
+    });
+
+    scrollIntoView.mockClear();
+    fireEvent.resize(window);
+
+    await waitFor(() => {
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        block: 'nearest',
+        inline: 'nearest',
+      });
+    });
+  });
+
   it('marks every visible content section while keeping one primary aria-current item', async () => {
     render(
       <AppProviders>
