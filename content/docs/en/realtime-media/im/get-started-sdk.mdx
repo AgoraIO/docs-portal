@@ -17,7 +17,7 @@ The following figure shows the workflow of sending and receiving peer-to-peer me
 </details>
 
 1. Clients retrieve an authentication token from your app server.
-1. Users log in to Chat using the app key, their user ID, and token.
+1. Users log in to Chat using the App ID, their user ID, and token.
 1. Clients send and receive messages through Chat as follows:
     1. Client A sends a message to Client B. The message is sent to the Agora Chat server.
     1. The server delivers the message to Client B. When Client B receives a message, the SDK triggers an event.
@@ -29,7 +29,7 @@ In order to follow the procedure on this page, you must have:
 
 - A valid [Agora account](/en/realtime-media/im/get-started/manage-agora-account#create-an-agora-account).
 - An [Agora project](/en/realtime-media/im/get-started/manage-agora-account#create-an-agora-project) for which you have [enabled Chat](./enable#enable-).
-- The [App Key](./enable#get-chat-project-information) for the project.
+- The [App ID](./enable#get-chat-project-information) for the project.
 - Internet access.
 
     Ensure that no firewall is blocking your network communication.
@@ -612,7 +612,7 @@ To implement this workflow in your app, take the following steps:
     ```java
     private String userId = "<User ID of the local user>";
     private String token = "<Your authentication token>";
-    private String appKey = "<App key from Agora console>";
+    private String appId = "<App ID from Agora console>";
 
     private ChatClient agoraChatClient;
     private boolean isJoined = false;
@@ -645,11 +645,11 @@ To implement this workflow in your app, take the following steps:
     ```java
     private void setupChatClient() {
         ChatOptions options = new ChatOptions();
-        if (appKey.isEmpty()) {
-            showLog("You need to set your AppKey");
+        if (appId.isEmpty()) {
+            showLog("You need to set your App ID");
             return;
         }
-        options.setAppKey(appKey); // Set your app key in options
+        options.setAppId(appId); // Set your app ID in options
         agoraChatClient = ChatClient.getInstance();
         agoraChatClient.init(this, options); // Initialize the ChatClient
         agoraChatClient.setDebugMode(true); // Enable debug info output
@@ -930,7 +930,7 @@ To implement this workflow in your app, take the following steps:
     ```swift
     var userId = "<User ID of the local user>"
     var token = "<Your authentication token>"
-    var appKey = "<App key from Agora console>"
+    var appId = "<App ID from Agora console>"
 
     var agoraChatClient: AgoraChatClient!
     var isJoined: Bool = false
@@ -950,11 +950,11 @@ To implement this workflow in your app, take the following steps:
 
     ```swift
     func setupChatClient() {
-        if (appKey.isEmpty) {
-            showLog("You need to set your AppKey")
+        if (appId.isEmpty) {
+            showLog("You need to set your App ID")
             return
         }
-        let options = AgoraChatOptions(appkey: appKey)  // Create AgoraChatOptions with your app key
+        let options = AgoraChatOptions(appId: appId)  // Create AgoraChatOptions with your App ID
         agoraChatClient = AgoraChatClient.shared()
         options.enableConsoleLog = true  // Enable printing logs on console
         agoraChatClient.initializeSDK(with: options)  // Initialize the AgoraChatClient
@@ -1121,8 +1121,8 @@ import "./App.css";
 import AgoraChat from "agora-chat";
 
 function App() {
-  // Replaces <Your app key> with your app key.
-  const appKey = "<Your app key>";
+  // Replaces <Your App ID> with your App ID.
+  const appId = "<Your App ID>";
   const [userId, setUserId] = useState("");
   const [token, setToken] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -1184,7 +1184,7 @@ function App() {
   useEffect(() => {
     // Initializes the Web client.
     chatClient.current = new AgoraChat.connection({
-      appKey: appKey,
+      appId: appId,
     });
 
     // Adds the event handler.
@@ -1360,7 +1360,7 @@ Import the Chat SDK package and set up the app framework.
 
     ```dart
     class _MyHomePageState extends State<MyHomePage> {
-      static const String appKey = "<App key from Agora console>";
+      static const String appId = "<App ID from Agora console>";
       static const String userId = "<User ID of the local user>";
       String token = "<Your authentication token>";
 
@@ -1507,8 +1507,8 @@ To implement this workflow in your app, take the following steps:
 
     ```dart
     void setupChatClient() async {
-      ChatOptions options = ChatOptions(
-        appKey: appKey,
+      ChatOptions options = ChatOptions.withAppId(
+        appId,
         autoLogin: false,
       );
       agoraChatClient = ChatClient.getInstance;
@@ -1706,7 +1706,8 @@ Open `simple_demo/App.js`, and replace the code with the following:
 
 ```javascript
 // Imports dependencies.
-
+import React, {useEffect} from 'react';
+import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -1714,7 +1715,7 @@ Open `simple_demo/App.js`, and replace the code with the following:
   TextInput,
   View,
 } from 'react-native';
-
+import {
   ChatClient,
   ChatOptions,
   ChatMessageChatType,
@@ -1725,8 +1726,8 @@ Open `simple_demo/App.js`, and replace the code with the following:
 const App = () => {
   // Defines the variable.
   const title = 'AgoraChatQuickstart';
-  // Replaces <your appKey> with your app key.
-  const appKey = '<your appKey>';
+  // Replaces <your App ID> with your App ID.
+  const appId = '<your App ID>';
   // Replaces <your userId> with your user ID.
   const [username, setUsername] = React.useState('<your userId>');
   // Replaces <your agoraToken> with your Agora token.
@@ -1790,9 +1791,9 @@ const App = () => {
     // Initializes the SDK.
     // Initializes any interface before calling it.
     const init = () => {
-      let o = new ChatOptions({
+      let o = ChatOptions.withAppId({
         autoLogin: false,
-        appKey: appKey,
+        appId: appId,
       });
       chatClient.removeAllConnectionListener();
       chatClient
@@ -1825,7 +1826,7 @@ const App = () => {
     };
 
     init();
-  }, [chatClient, chatManager, appKey]);
+  }, [chatClient, chatManager, appId]);
 
   // Logs in with an account ID and a token.
   const login = () => {
@@ -2178,7 +2179,7 @@ To implement this workflow in your app, take the following steps:
     private TMP_Text messageList;
     private string userId = "";
     private string token = "";
-    private string appKey = "";
+    private string appId = "";
     private bool isJoined = false;
     SDKClient agoraChatClient;
     ```
@@ -2210,13 +2211,13 @@ To implement this workflow in your app, take the following steps:
     ```csharp
     void setupChatSDK()
     {
-        if (appKey == "")
+        if (appId == "")
         {
-            Debug.Log("You should set your appKey first!");
+            Debug.Log("You should set your App ID first!");
             return;
         }
         // Initialize the Agora Chat SDK
-        Options options = new Options(appKey);
+        Options options = Options.InitOptionsWithAppId(appId);
         options.UsingHttpsOnly = true;
         options.DebugMode = true;
         agoraChatClient = SDKClient.Instance;
@@ -2606,7 +2607,7 @@ To implement this workflow in your app, take the following steps:
     ```c#
     private readonly string userId = "<User ID of the local user>";
     private string token = "<Your authentication token>";
-    private readonly string app_key = "<App key from Agora console>";
+    private readonly string app_id = "<App ID from Agora console>";
     private bool isJoined = false;
     // Update the UI from callbacks on a separate thread
     private readonly System.Windows.Threading.Dispatcher? Dip = null;
@@ -2638,7 +2639,7 @@ To implement this workflow in your app, take the following steps:
     ```c#
     private void setupChatClient()
     {
-        var options = new Options(appKey: app_key);
+        var options = Options.InitOptionsWithAppId(app_id);
         options.UsingHttpsOnly = true;
         // Initialize the chat SDKClient
         SDKClient.Instance.InitWithOptions(options);
@@ -2962,7 +2963,7 @@ To ensure that you have implemented Peer-to-Peer Messaging in your app:
 
     1. [Register a user](./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable#generate-a-user-token).
 
-    1. In the `MainActivity` class, update `userId`, `token`, and `appKey` with values from Agora Console.  To get your app key, see [Get Chat project information](./enable#get-chat-project-information).
+    1. In the `MainActivity` class, update `userId`, `token`, and `appId` with values from Agora Console.  To get your App ID, see [Get Chat project information](./enable#get-chat-project-information).
 
     1. Connect a physical Android device to your development device.
 
@@ -2972,7 +2973,7 @@ To ensure that you have implemented Peer-to-Peer Messaging in your app:
 
     1. Register a second user in Agora Console and generate a user token.
 
-    1. In the `MainActivity` class, update `userId` and `token` with values for the second user. Make sure you use the same `appKey` as for the first user.
+    1. In the `MainActivity` class, update `userId` and `token` with values for the second user. Make sure you use the same `appId` as for the first user.
 
     1. Run the modified app on a device emulator or a second physical Android device.
 
@@ -2994,7 +2995,7 @@ To ensure that you have implemented Peer-to-Peer Messaging in your app:
 
     1. [Register a user](./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable#generate-a-user-token).
 
-    1. In the `ViewController` class, update `userId`, `token`, and `appKey` with values from Agora Console.  To get your app key, see [Get Chat project information](./enable#get-chat-project-information).
+    1. In the `ViewController` class, update `userId`, `token`, and `appId` with values from Agora Console.  To get your App ID, see [Get Chat project information](./enable#get-chat-project-information).
 
     1. Connect a physical device to your development device.
 
@@ -3004,7 +3005,7 @@ To ensure that you have implemented Peer-to-Peer Messaging in your app:
 
     1. Register a second user in Agora Console and generate a user token.
 
-    1. In the `ViewController` class, update `userId` and `token` with values for the second user. Make sure you use the same `appKey` as for the first user.
+    1. In the `ViewController` class, update `userId` and `token` with values for the second user. Make sure you use the same `appId` as for the first user.
 
     1. Run the modified app on a device emulator or a second physical device.
 
@@ -3065,7 +3066,7 @@ To validate the peer-to-peer messaging you have just integrated into your Web ap
 
     1. [Register a user](./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable#generate-a-user-token).
 
-    1. In the `_MyHomePageState` class, update `appKey`, `token`, and `userId` with values from Agora Console.  To get your app key, see [Get Chat project information](./enable#get-chat-project-information).
+    1. In the `_MyHomePageState` class, update `appId`, `token`, and `userId` with values from Agora Console.  To get your App ID, see [Get Chat project information](./enable#get-chat-project-information).
 
     1. Connect a physical test device to your development device.
 
@@ -3075,7 +3076,7 @@ To validate the peer-to-peer messaging you have just integrated into your Web ap
 
     1. Register a second user in Agora Console and generate a user token.
 
-    1. In the `_MyHomePageState` class, update `userId` and `token` with values for the second user. Make sure you use the same `appKey` as for the first user.
+    1. In the `_MyHomePageState` class, update `userId` and `token` with values for the second user. Make sure you use the same `appId` as for the first user.
 
     1. Run the modified app on a device emulator or a second physical test device.
 
@@ -3100,7 +3101,7 @@ You can log in to the app by either modifying the fields in the <code>App.js</co
 To validate the peer-to-peer messaging you have just integrated into your app using Agora Chat, perform the following operations:
 
 1. Log in
-a. In the [`App.js`](#sign-in) file, replace the placeholders of `appKey`, `username`, and `chatToken` with the App Key, user ID, and Agora token of the sender.
+a. In the [`App.js`](#sign-in) file, replace the placeholders of `appId`, `username`, and `chatToken` with the App ID, user ID, and Agora token of the sender.
 b. Run and [build](#build) your app.
 c. On your simulator or physical device, click **SIGN IN** to log in with the sender account.
 
@@ -3111,7 +3112,7 @@ Fill in the user ID of the receiver in the **Enter the username you want to send
 Click **SIGN OUT** to log out of the sender account.
 
 4. Receive the message
-a. After signing out, change the values of `appKey`, `username`, and `chatToken` to the user ID, Agora token, and App Key of the receiver in the [`App.js`](#sign-in) file.
+a. After signing out, change the values of `appId`, `username`, and `chatToken` to the user ID, Agora token, and App ID of the receiver in the [`App.js`](#sign-in) file.
 b. Run the app on another device or simulator with the receiver account and receive the message sent in step 2.
 
 You can also read from the logs on the UI to see whether you have successfully signed in, signed out, and sent and received a text message.
@@ -3122,7 +3123,7 @@ You can also read from the logs on the UI to see whether you have successfully s
 
 1. [Register a user](./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable#generate-a-user-token).
 
-1. In the `NewBehaviourScript` class, update `userId`, `token`, and `appKey` with values from Agora Console. To get your app key, see [Get Chat project information](./enable#get-chat-project-information).
+1. In the `NewBehaviourScript` class, update `userId`, `token`, and `appId` with values from Agora Console. To get your App ID, see [Get Chat project information](./enable#get-chat-project-information).
 
 1. In Unity Editor, click **Play**. A moment later you see the project installed on your development device.
 
@@ -3136,7 +3137,7 @@ You can also read from the logs on the UI to see whether you have successfully s
 
 1. [Register the recipient user](./enable#register-a-user) in Agora Console and [Generate a user token](./enable#generate-a-user-token).
 
-1. In the `NewBehaviourScript` class, update `userId` and `token` with values you generated for recipient. Make sure you use the same `appKey` as for both users.
+1. In the `NewBehaviourScript` class, update `userId` and `token` with values you generated for recipient. Make sure you use the same `appId` as for both users.
 
 1. Save your changes and click **Play** to run the app.
 
@@ -3152,7 +3153,7 @@ You can also read from the logs on the UI to see whether you have successfully s
 
     1. [Register a user](./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable#generate-a-user-token).
 
-    1. In the `MainWindow` class, update `userId`, `token`, and `appKey` with values from Agora Console.  To get your app key, see [Get Chat project information](./enable#get-chat-project-information).
+    1. In the `MainWindow` class, update `userId`, `token`, and `appId` with values from Agora Console.  To get your App ID, see [Get Chat project information](./enable#get-chat-project-information).
 
     1. Click the **Start** button. You see the following interface:
 
@@ -3162,7 +3163,7 @@ You can also read from the logs on the UI to see whether you have successfully s
 
    1. Register a second user in Agora Console and generate a user token.
 
-    1. Build a second instance of your app after updating `userId` and `token` with values for the second user. Make sure you use the same `appKey` as for the first user.
+    1. Build a second instance of your app after updating `userId` and `token` with values for the second user. Make sure you use the same `appId` as for the first user.
 
     1. Click the **Start** button to launch the second instance.
 

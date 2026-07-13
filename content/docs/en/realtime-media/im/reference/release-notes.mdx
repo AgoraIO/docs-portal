@@ -12,6 +12,70 @@ This page provides release notes for Chat SDK for Web.
 
 ## Client API
 
+## v1.4.0
+
+Released on July 3, 2026.
+
+#### New features
+
+- Added support for sending and receiving GIF image messages. A GIF image message is a subtype of image message that is not compressed when sent. For details, see [Send and receive a GIF image message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#send-and-receive-a-gif-image-message).
+- Added support for setting, updating, and retrieving chat group avatars. For details, see [Manage the chat group avatar](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-group-attributes#manage-the-chat-group-avatar).
+- Added support for retrieving the following information when a user joins a chat room:
+  - The current member count, using `ChatRoom#getMemberCount`. This count updates when members join or leave the chat room.
+  - The chat room-wide mute status, using `ChatRoom#isAllMemberMuted`. This status updates when a mute or unmute event is received.
+  - The chat room creation time, using the new `ChatRoom#getCreateTimestamp` method.
+  - Whether the current user is on the chat room allow list, using the new `ChatRoom#isInWhitelist` method.
+  - The current user's mute expiration time, using `ChatRoom#getMuteExpireTimestamp`.
+- Added the `ChatRoomChangeListener#onMuteListAdded(String, Map<String, Long>)` event, which provides the muted members' user IDs and their mute expiration timestamps through the `muteInfo` parameter. This event deprecates `ChatRoomChangeListener#onMuteListAdded(String, List<String>, long)`. For details, see [Listen for chat room events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatrooms#listen-for-chat-room-events).
+- Added support for retrieving roaming messages sent by specific group members from the server. For details, see [Retrieve message history of the specified conversation](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-message-history-of-the-specified-conversation).
+- Added support for retrieving messages sent by specific members in a local group conversation. For details, see [Search local messages sent by specific members](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#search-local-messages-sent-by-specific-members).
+- Added support for searching all local conversations by keyword. The SDK returns the matching conversation IDs and their message IDs. For details, see [Search local conversations by keyword](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#search-local-conversations-by-keyword).
+- Added support for retrieving one or more local messages by message ID. For details, see [Retrieve local messages by message ID](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-local-messages-by-message-id).
+- Added the `GroupChangeListener#onMembersJoined` and `GroupChangeListener#onMembersExited` events, which notify other members in batches when one or more members join or leave a group. Previously, the SDK triggered a separate event for each member. These events deprecate `GroupChangeListener#onMemberJoined` and `GroupChangeListener#onMemberExited`. For details, see [Listen for chat group events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#listen-for-chat-group-events).
+
+#### Improvements
+
+- Changed the unique app identifier from the App Key to the App ID.
+
+  :::info
+  As of v1.4.0, the App Key, including the `org_name` and `app_name` parameters, is deprecated in favor of the App ID. If you integrated an earlier version of the SDK using the App Key, no changes are required: both the App Key and the App ID continue to work with Agora Chat.
+  :::
+
+- Added support for modifying more message types with `ChatManager#asyncModifyMessage`:
+  - Text and custom messages: modify the message body and the extension fields (`ext`).
+  - File, video, voice, image, location, and combined messages: modify the extension fields (`ext`) only.
+  - Command messages: modification is not supported.
+
+  For details, see [Modify sent messages](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#modify-sent-messages).
+- Allowed group owners, chat room owners, and admins to recall messages sent by other members. For details, see [Recall a message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#recall-a-message).
+- Changed the trigger threshold for the `ConnectionListener#onTokenWillExpire` event: the SDK now triggers the event when 80% of the token's validity period has elapsed, instead of 50%. For details, see [Authentication](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
+- Added support for retrieving a group member list that includes each member's role and join time, using `GroupManager#asyncFetchGroupMembersInfo`. For details, see [Retrieve the member list of a chat group](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#retrieve-the-member-list-of-a-chat-group).
+- Changed `CursorResult#cursor` from `undefined` to an empty string (`""`) when `ChatManager#asyncFetchHistoryMessages` reaches the last page of roaming messages.
+- Removed APIs that were deprecated before Android SDK v1.1.0.
+- Optimized certain database operations.
+- Added exception clearing and null pointer protection at the JNI layer.
+- Optimized the reconnection logic to automatically switch reconnection addresses by default.
+- Added the device timezone offset to log files to facilitate troubleshooting.
+- Removed the reflection-based approach for obtaining absolute file paths from `FileProvider`.
+- Upgraded the BoringSSL and SQLCipher dependencies to their latest versions to mitigate potential security risks.
+- Improved the loading performance of the local conversation list when the latest message is an attachment by removing redundant file length checks.
+
+#### Issues fixed
+
+- Messages in memory were not deleted when the corresponding local conversation was removed.
+- The `TYPE` field was empty in the `ChatThreadChangeListener#onChatThreadUserRemoved` event.
+- A crash occurred on certain devices when retrieving the start and end times of the conversation Do Not Disturb (DND) settings.
+- `MessageListener#onMessageContentChanged` did not return modification details when editing message types other than text and custom messages.
+- After a group or chat room was disbanded, the SDK still fetched group or chat room details from the server after members received the disband event.
+- The database was mistakenly rebuilt when a `SQLITE_BUSY` error occurred.
+- The latest message in a conversation retrieved from the server with `ChatManager#asyncFetchConversationsFromServer` did not contain translations or message reactions.
+- An exception occurred during logout when SDK API calls were nested within SDK events.
+- A crash occurred under extreme network conditions.
+
+:::info
+A compilation error may occur when you use Agora Chat SDK with Signaling SDK 2.2.0 or later, or Video SDK 4.3.0 or later. For the fix, see [Integration issues](../get-started-sdk#integration-issues).
+:::
+
 ## v1.3.2
 
 v1.3.2 was released on April 7, 2025.
@@ -405,6 +469,72 @@ This page provides release notes for Chat SDK for Web.
 
 ## Client API
 
+## v1.4.0
+
+Released on July 3, 2026.
+
+#### New features
+
+- Added support for sending and receiving GIF image messages. A GIF image message is a subtype of image message that is not compressed when sent. For details, see [Send and receive a GIF image message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#send-and-receive-a-gif-image-message).
+- Added support for setting, updating, and retrieving chat group avatars. For details, see [Manage the chat group avatar](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-group-attributes#manage-the-chat-group-avatar).
+- Added support for retrieving the following information when a user joins a chat room:
+  - The current member count, using the `ChatRoom#getMemberCount` method. This count updates when members join or leave the chat room.
+  - The chat room-wide mute status, using the `ChatRoom#isAllMemberMuted` method. This status updates when a mute or unmute event is received.
+  - The chat room creation time, using the new `ChatRoom#getCreateTimestamp` method.
+  - Whether the current user is on the chat room allow list, using the new `ChatRoom#isInWhitelist` method.
+  - The current user's mute expiration time, using the `ChatRoom#getMuteExpireTimestamp` method.
+- Added the `AgoraChatroomManagerDelegate#chatroomMuteListDidUpdate:addedMutedMembers:` event, which provides the muted members' user IDs and their mute expiration timestamps through an `NSDictionary<NSString *, NSNumber *>` parameter. This event deprecates the old `AgoraChatroomManagerDelegate#chatroomMuteListDidUpdate:addedMutedMembers:muteExpire:` event. For details, see [Listen for chat room events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatrooms#listen-for-chat-room-events).
+- Added support for retrieving roaming messages sent by specific group members from the server. For details, see [Retrieve historical messages of the specified conversation](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-historical-messages-of-the-specified-conversation).
+- Added support for retrieving messages sent by specific members in a local group conversation. For details, see [Search local messages sent by specific members](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#search-local-messages-sent-by-specific-members).
+- Added support for searching all local conversations by keyword. The SDK returns the matching conversation IDs and their message IDs. For details, see [Search local conversations by keyword](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#search-local-conversations-by-keyword).
+- Added support for retrieving one or more local messages by message ID. For details, see [Retrieve local messages by message ID](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-local-messages-by-message-id).
+- Added the `AgoraChatGroupManagerDelegate#userDidJoinGroup:users:` and `AgoraChatGroupManagerDelegate#userDidLeaveGroup:users:` events, which notify other members in batches when one or more members join or leave a group. Previously, the SDK triggered a separate event for each member. These events deprecate `AgoraChatGroupManagerDelegate#userDidJoinGroup:user:` and `AgoraChatGroupManagerDelegate#userDidLeaveGroup:user:`. For details, see [Listen for chat group events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#listen-for-chat-group-events).
+
+#### Improvements
+
+- Changed the unique app identifier from the App Key to the App ID.
+
+  :::info
+  As of v1.4.0, the App Key, including the `org_name` and `app_name` parameters, is deprecated in favor of the App ID. If you integrated an earlier version of the SDK using the App Key, no changes are required: both the App Key and the App ID continue to work with Agora Chat.
+  :::
+
+- Added support for modifying more message types with `AgoraChatManager#modifyMessage`:
+  - Text and custom messages: modify the message body and the extension fields (`ext`).
+  - File, video, voice, image, location, and combined messages: modify the extension fields (`ext`) only.
+  - Command messages: modification is not supported.
+
+  For details, see [Modify sent messages](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#modify-sent-messages).
+- Allowed group owners, chat room owners, and admins to recall messages sent by other members. For details, see [Recall a message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#recall-a-message).
+- Changed the trigger threshold for the `AgoraChatClientDelegate#tokenWillExpire` event: the SDK now triggers the event when 80% of the token's validity period has elapsed, instead of 50%. For details, see [Authentication](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
+- Added support for retrieving a group member list that includes each member's role and join time, using `AgoraChatGroupManager#fetchGroupMemberInfoListFromServerWithGroupId:cursor:limit:completion:`. For details, see [Retrieve the member list of a chat group](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#retrieve-the-member-list-of-a-chat-group).
+- Changed `AgoraChatCursorResult#cursor` from `undefined` to an empty string (`""`) when `AgoraChatManager#fetchMessagesFromServerBy:conversationType:cursor:pageSize:option:completion:` reaches the last page of roaming messages.
+- Removed APIs that were deprecated before SDK v1.1.0.
+- Optimized certain database operations.
+- Optimized the reconnection logic to automatically switch reconnection addresses by default.
+- Improved the `applicationWillEnterForeground` logic by sending a ping message to trigger reconnection.
+- Disabled the default constructors of `AgoraChatMessage`, `AgoraChatConversation`, and `AgoraChatMessageBody` to prevent crashes caused by null pointers.
+- Added the device timezone offset to log files to facilitate troubleshooting.
+- Upgraded the BoringSSL and SQLCipher dependencies to their latest versions to mitigate potential security risks.
+- Improved the loading performance of the local conversation list when the latest message is an attachment by removing redundant file length checks.
+
+#### Issues fixed
+
+- Messages in memory were not deleted when the corresponding local conversation was removed.
+- The `TYPE` field was empty in the `AgoraChatThreadManagerDelegate#onUserKickOutOfChatThread` event.
+- A crash occurred on certain devices when retrieving the start and end times of the conversation Do Not Disturb (DND) settings.
+- `AgoraChatManagerDelegate#onMessageContentChanged` did not return modification details when editing message types other than text and custom messages.
+- After a group or chat room was disbanded, the SDK still fetched group or chat room details from the server after members received the disband event.
+- The database was mistakenly rebuilt when a `SQLITE_BUSY` error occurred.
+- The latest message in a conversation retrieved from the server with `AgoraChatManager#getConversationsFromServerWithCursor` did not contain translations or message reactions.
+- Some API completion callbacks were not executed on the main thread, including:
+  - All APIs in `AgoraChatUserInfoManager` and `AgoraChatPresenceManager`.
+  - The `fetchMessagesFromServer`, `fetchSupportedLanguages`, `translateMessage`, and `getMessageCountWithCompletion` APIs in `AgoraChatChatManager`.
+- A crash occurred under extreme network conditions.
+
+:::info
+A compilation error may occur when you use Agora Chat SDK with Signaling SDK 2.2.0 or later, or Video SDK 4.3.0 or later. For the fix, see [Integration issues](../get-started-sdk#integration-issues).
+:::
+
 ## v1.3.1
 
 v1.3.1 was released on December 20, 2024.
@@ -738,6 +868,43 @@ This page provides release notes for Chat SDK for Web.
 
 ## Client API
 
+## v1.4.0
+
+Released on July 3, 2026.
+
+#### New features
+
+- Added support for sending and receiving GIF image messages. A GIF image message is a subtype of image message that is not compressed when sent. For details, see [Send and receive a GIF image message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#send-and-receive-a-gif-image-message).
+- Added support for setting, updating, and retrieving chat group avatars. For details, see [Update the chat group avatar](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-group-attributes#update-the-chat-group-avatar).
+- Added an `info` field to the `joinChatRoom` response, so that a user receives the following information when joining a chat room: the chat room creation time (`createtimestamp`), whether all members are muted (`isallmembersmuted`), whether the user is on the allow list (`isinallowlist`), the current member count (`membercount`), and the user's mute expiration time (`muteexpiretimestamp`). For details, see [Join and leave a chat room](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatrooms#join-and-leave-a-chat-room).
+- Added the `muteTimestamp` and `userId` parameters to the `muteMember` event, so that the chat room mute event includes the muted member's user ID and mute expiration time. For details, see [Listen for chat room events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatrooms#listen-for-chat-room-events).
+- Added support for retrieving roaming messages sent by a specific group member from the server. For details, see [Retrieve message history of the specified conversation](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-message-history-of-the-specified-conversation).
+- Added the `membersPresence` and `membersAbsence` events, which notify other members in batches when one or more members join or leave a group. Previously, the SDK triggered a separate event for each member. The original `memberPresence` and `memberAbsence` events remain valid. For details, see [Listen for chat group events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#listen-for-chat-group-events).
+- Added an `announcement` field to the chat room announcement update event (`updateAnnouncement`), so that members receive the new announcement content after it is modified.
+- Added support for setting extension information when creating a group. Use `createGroupVNext` instead of the deprecated `createGroup`. For details, see [Create and destroy a chat group](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#create-and-destroy-a-chat-group).
+
+#### Improvements
+
+- Added support for modifying more message types with `modifyMessage`:
+  - Text and custom messages: modify both the message body and the extension fields (`ext`).
+  - File, video, voice, image, location, and combined messages: modify the extension fields (`ext`) only.
+  - Command messages: modification is not supported.
+
+  For details, see [Modify sent messages](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#modify-sent-messages).
+- Allowed group owners, chat room owners, and admins to recall messages sent by other members. For details, see [Recall a message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#recall-a-message).
+- Changed the trigger threshold for the `onTokenWillExpire` event: the SDK now triggers the event when 80% of the token's validity period has elapsed, instead of 50%. For details, see [Authentication](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
+- Added support for retrieving a group or chat room member list that includes each member's user ID, role, and join time:
+  - Use `getGroupMembers` instead of the deprecated `listGroupMembers`. For details, see [Retrieve the member list of a chat group](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#retrieve-the-member-list-of-a-chat-group).
+  - Use `getChatRoomMembers` instead of the deprecated `listChatRoomMembers`. For details, see [Retrieve the chat room member list](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatroom-members#retrieve-the-chat-room-member-list).
+- Optimized the reconnection logic to automatically switch reconnection addresses by default.
+- Adjusted the execution order of the login callback `open().then` and the connection success event `onConnected`. Calling `open()` now triggers the `onConnected` or `onDisconnected` event before resolving `open().then` or rejecting `open().catch`. This ensures that subsequent actions only occur after the connection is fully established, resolving the previous issue where messages could only be sent after `onConnected` was triggered following the login callback. Login errors, such as authentication failures, are now thrown directly in `open().catch`.
+- Added `parseDownloadResponse` and `download` methods to the SDK's `message` object. These methods are now available in both the `utils` object and the `message` object.
+
+#### Issues fixed
+
+- The `conversationId` parameter value was incorrect in the message pinning event `onMessagePinEvent`.
+- Message retrieval occasionally failed.
+
 ## v1.3.1
 
 v1.3.1 was released on December 20, 2024.
@@ -1009,6 +1176,59 @@ This page provides release notes for Chat SDK for Web.
 - [RESTful API](#restful-api)
 
 ## Client API
+
+## v1.4.0
+
+Released on July 3, 2026.
+
+#### New features
+
+- Added support for sending and receiving GIF image messages. A GIF image message is a subtype of image message that is not compressed when sent. For details, see [Send and receive a GIF image message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#send-and-receive-a-gif-image-message).
+- Added support for setting, updating, and retrieving chat group avatars. For details, see [Update the chat group avatar](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-group-attributes#update-the-chat-group-avatar).
+- Added support for retrieving the following information when a user joins a chat room:
+  - The current member count, using the `ChatRoom#memberCount` attribute. This count updates when members join or leave the chat room.
+  - The chat room-wide mute status, using the `ChatRoom#isAllMemberMuted` attribute. This status updates when a mute or unmute event is received.
+  - The chat room creation time, using the new `ChatRoom#createTimestamp` attribute.
+  - Whether the current user is on the chat room allow list, using the new `ChatRoom#isInWhitelist` attribute.
+  - The current user's mute expiration time, using the `ChatRoom#muteExpireTimestamp` attribute.
+- Added the `ChatRoomEventHandler#onMuteListAddedFromChatRoom(roomId, Map<String, int> mutes)` event, which provides the muted members' user IDs and their mute expiration timestamps through the `mutes` parameter. This event deprecates the old `ChatRoomEventHandler#onMuteListAddedFromChatRoom(roomId, List<String> mutes, int expireTime)` event. For details, see [Listen for chat room events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatrooms#listen-for-chat-room-events).
+- Added support for retrieving roaming messages sent by specific group members from the server. For details, see [Retrieve message history of the specified conversation](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-message-history-of-the-specified-conversation).
+- Added support for retrieving messages sent by specific members in a local group conversation. For details, see [Search local messages sent by specific members](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#search-local-messages-sent-by-specific-members).
+- Added support for searching all local conversations by keyword. The SDK returns the matching conversation IDs and their message IDs. For details, see [Search local conversations by keyword](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#search-local-conversations-by-keyword).
+- Added support for retrieving one or more local messages by message ID. For details, see [Retrieve local messages by message ID](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-local-messages-by-message-id).
+- Added the `ChatGroupEventHandler#onMembersJoinedFromGroup` and `ChatGroupEventHandler#onMembersExitedFromGroup` events, which notify other members in batches when one or more members join or leave a group. Previously, the SDK triggered a separate event for each member. These events deprecate `ChatGroupEventHandler#onMemberJoinedFromGroup` and `ChatGroupEventHandler#onMemberExitedFromGroup`. For details, see [Listen for chat group events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#listen-for-chat-group-events).
+
+#### Improvements
+
+- Changed the unique app identifier from the App Key to the App ID.
+
+  :::info
+  As of v1.4.0, the App Key, including the `org_name` and `app_name` parameters, is deprecated in favor of the App ID. If you integrated an earlier version of the SDK using the App Key, no changes are required: both the App Key and the App ID continue to work with Agora Chat.
+  :::
+
+- Added support for modifying more message types with `ChatManager#modifyMessage`:
+  - Text and custom messages: modify the message body and the extension attributes (`attributes`).
+  - File, video, voice, image, location, and combined messages: modify the extension attributes (`attributes`) only.
+  - Command messages: modification is not supported.
+
+  For details, see [Modify sent messages](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#modify-sent-messages).
+- Allowed group owners, chat room owners, and admins to recall messages sent by other members. For details, see [Recall a message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#recall-a-message).
+- Changed the trigger threshold for the `ConnectionEventHandler#onTokenWillExpire` event: the SDK now triggers the event when 80% of the token's validity period has elapsed, instead of 50%. For details, see [Authentication](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
+- Added support for retrieving a group member list that includes each member's role and join time, using `ChatGroupManager#fetchGroupMembersInfo`. For details, see [Retrieve the chat group member list](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#retrieve-the-chat-group-member-list).
+- Optimized certain database operations.
+- Optimized the reconnection logic to automatically switch reconnection addresses by default.
+- Added the device timezone offset to log files to facilitate troubleshooting.
+- Improved the loading performance of the local conversation list when the latest message is an attachment by removing redundant file length checks.
+
+#### Issues fixed
+
+- Messages in memory were not deleted when the corresponding local conversation was removed.
+- The `TYPE` field was empty in the `ChatThreadEventHandler#onUserKickOutOfChatThread` event.
+- `ChatEventHandler#onMessageContentChanged` did not return modification details when editing message types other than text and custom messages.
+- After a group or chat room was disbanded, the SDK still fetched group or chat room details from the server after members received the disband event.
+- The database was mistakenly rebuilt when a `SQLITE_BUSY` error occurred.
+- The latest message in a conversation retrieved from the server with `ChatManager#fetchConversationsByOptions` did not contain translations or message reactions.
+- A crash occurred under extreme network conditions.
 
 ## v1.3.3
 
@@ -1303,6 +1523,82 @@ This page provides release notes for Chat SDK for Web.
 - [RESTful API](#restful-api)
 
 ## Client API
+
+## v1.4.0
+
+Released on July 3, 2026.
+
+#### New features
+
+- Added support for sending and receiving GIF image messages. A GIF image message is a subtype of image message that is not compressed when sent. For details, see [Send and receive a GIF image message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#send-and-receive-a-gif-image-message).
+- Added support for setting, updating, and retrieving chat group avatars. For details, see [Update the chat group avatar](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-group-attributes#update-the-chat-group-avatar).
+- Added the `createGroupEx` method, which supports setting a custom group avatar when creating a group. The original `createGroup` method is deprecated. For details, see [Create a chat group](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#create-a-chat-group).
+- Added support for retrieving the following information when a user joins a chat room:
+  - The current member count, using the `ChatRoom#getMemberCount` method. This count updates when members join or leave the chat room.
+  - The chat room-wide mute status, using the `ChatRoom#isAllMemberMuted` method. This status updates when a mute or unmute event is received.
+  - The chat room creation time, using the new `ChatRoom#getCreateTimestamp` method.
+  - Whether the current user is on the chat room allow list, using the new `ChatRoom#isInWhitelist` method.
+  - The current user's mute expiration time, using the `ChatRoom#getMuteExpireTimestamp` method.
+- Added the `ChatRoomEventListener#onMuteListAddedV2` event, which provides the muted members' user IDs and their mute expiration timestamps through the `mutes` parameter. This event deprecates the old `ChatRoomEventListener#onMuteListAdded` event. For details, see [Listen for chat room events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatrooms#listen-for-chat-room-events).
+- Added support for retrieving roaming messages sent by specific group members from the server. For details, see [Retrieve historical messages of the specified conversation](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-historical-messages-of-the-specified-conversation).
+- Added support for retrieving messages sent by specific members in a local group conversation. The `getConvMsgsWithKeyword` method gains a `senders` parameter, which replaces the deprecated `sender` parameter. For details, see [Search local messages sent by specific members](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#search-local-messages-sent-by-specific-members).
+- Added support for searching all local conversations by keyword. The SDK returns the matching conversation IDs and their message IDs. For details, see [Search local conversations by keyword](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#search-local-conversations-by-keyword).
+- Added support for retrieving one or more local messages by message ID. For details, see [Retrieve local messages by message ID](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-local-messages-by-message-id).
+- Added the `ChatGroupEventListener#onMembersJoined` and `ChatGroupEventListener#onMembersExited` events, which notify other members in batches when one or more members join or leave a group. Previously, the SDK triggered a separate event for each member. These events deprecate `ChatGroupEventListener#onMemberJoined` and `ChatGroupEventListener#onMemberExited`. For details, see [Listen for chat group events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#listen-for-chat-group-events).
+- Added the `onOfflineMessageSyncStart` and `onOfflineMessageSyncFinish` events to the connection listener, so you can monitor when offline message synchronization from the server starts and finishes.
+- Added the `ChatManager#getMessageCount` method to retrieve the total number of messages in the local database.
+
+#### Improvements
+
+- Changed the unique app identifier from the App Key to the App ID.
+
+  :::info
+  As of v1.4.0, the App Key, including the `org_name` and `app_name` parameters, is deprecated in favor of the App ID. If you integrated an earlier version of the SDK using the App Key, no changes are required: both the App Key and the App ID continue to work with Agora Chat.
+  :::
+
+- Added the `ChatManager#modifyMsgBody` method to support modifying more message types, replacing the deprecated `ChatManager#modifyMessageBody`:
+  - Text and custom messages: modify the message body and the extension fields (`ext`).
+  - File, video, voice, image, location, and combined messages: modify the extension fields (`ext`) only.
+  - Command messages: modification is not supported.
+
+  For details, see [Modify sent messages](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#modify-sent-messages).
+- Allowed group owners, chat room owners, and admins to recall messages sent by other members. For details, see [Recall a message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#recall-a-message).
+- Enhanced security by adding access checks for message attachments. For example, if you receive an image message in a group and forward it to others outside the group, they cannot download the image.
+- Changed the trigger threshold for the `ChatConnectEventListener#onTokenWillExpire` event: the SDK now triggers the event when 80% of the token's validity period has elapsed, instead of 50%. For details, see [Authentication](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
+- Added support for retrieving a group member list that includes each member's role and join time, using `ChatGroupManager#fetchMemberInfoListFromServer`. For details, see [Retrieve the chat group member list](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#retrieve-the-chat-group-member-list).
+- Changed the cursor value in `ChatManager#fetchHistoryMessagesByOptions` from `undefined` to an empty string (`""`) when the last page of roaming messages is returned.
+- Added the static constructors `ChatOptions#withAppId` and `ChatOptions#withAppKey` to initialize the SDK with an app ID or app key, replacing the deprecated `ChatOptions` constructor.
+- Added `ChatGroupManager#fetchGroupInfoWithoutMembersFromServer` to retrieve group information without member information, replacing the deprecated `ChatGroupManager#fetchGroupInfoFromServer`. To retrieve member information, call `ChatGroupManager#fetchMemberInfoListFromServer`.
+- Removed the deprecated `ChatMessageEventListener#onMessagesRecalled` event. Use `ChatMessageEventListener#onMessagesRecalledInfo` instead.
+- Removed APIs that were deprecated before native SDK v1.1.0.
+- Optimized certain database operations.
+- Added exception clearing and null pointer protection to the JNI layer on Android.
+- Optimized the reconnection logic to automatically switch reconnection addresses by default.
+- Improved the `applicationWillEnterForeground` handling on iOS by sending a ping message to trigger reconnection.
+- Disabled the default constructors for message, conversation, and message body objects to prevent null pointer crashes on iOS.
+- Added the device timezone offset to log files to facilitate troubleshooting.
+- Removed the reflection-based approach for obtaining absolute file paths from `FileProvider` on Android.
+- Upgraded the BoringSSL and SQLCipher dependencies to their latest versions to mitigate potential security risks.
+- Improved the loading performance of the local conversation list when the latest message is an attachment by removing redundant file length checks.
+- Added 16 KB page alignment support for Android 15 and later compatibility.
+
+#### Issues fixed
+
+- Messages in memory were not deleted when the corresponding local conversation was removed.
+- The `TYPE` field was empty in the `ChatMessageEventListener#onChatMessageThreadUserRemoved` event.
+- A crash occurred on certain devices when retrieving the start and end times of the conversation Do Not Disturb (DND) settings.
+- `ChatMessageEventListener#onMessageContentChanged` did not return modification details when editing message types other than text and custom messages.
+- Group or chat room members incorrectly requested details from the server after a disband event was triggered.
+- The database was mistakenly rebuilt when a `SQLITE_BUSY` error occurred.
+- The latest message in a conversation retrieved from the server with `ChatManager#fetchConversationsFromServerWithCursor` did not contain translations or message reactions.
+- An exception occurred during logout when SDK API calls were nested within SDK events on Android.
+- On iOS, completion callbacks for some APIs were not invoked on the main thread, including the APIs in `ChatUserInfoManager` and `ChatPresenceManager`, as well as `ChatManager#fetchHistoryMessagesByOptions`, `ChatManager#fetchSupportedLanguages`, `ChatManager#translateMessage`, and `ChatManager#getMessageCount`.
+- A crash occurred under extreme network conditions.
+- Applications using React Native 0.77, 0.78, 0.79, or 0.80 failed to compile when integrating the Chat SDK.
+- Conversation types were converted incorrectly on iOS.
+- `EMFetchMessageOption` was converted incorrectly on Android.
+- No API was available to check whether the current user was on a chat room's mute list.
+- Circular dependencies existed between files.
 
 ## v1.3.6
 
@@ -1704,6 +2000,59 @@ This page provides release notes for Chat SDK for Web.
 
 ## Client API
 
+## v1.4.0
+
+Released on July 3, 2026.
+
+#### New features
+
+- Added support for sending and receiving GIF image messages. A GIF image message is a subtype of image message that is not compressed when sent. For details, see [Send and receive a GIF image message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#send-and-receive-a-gif-image-message).
+- Added support for setting, updating, and retrieving chat group avatars. For details, see [Update the chat group avatar](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-group-attributes#update-the-chat-group-avatar).
+- Added support for retrieving the following information when a user joins a chat room:
+  - The current member count, using the `Room#MemberCount` attribute. This count updates when members join or leave the chat room.
+  - The chat room-wide mute status, using the `Room#IsAllMemberMuted` attribute. This status updates when a mute or unmute event is received.
+  - The chat room creation time, using the new `Room#CreateTimeStamp` attribute.
+  - Whether the current user is on the chat room allow list, using the new `Room#IsInAllowList` attribute.
+  - The current user's mute expiration time, using the `Room#MuteUntilTimeStamp` attribute.
+- Added the `IRoomManagerDelegate#OnMuteListAddedFromRoom(string roomId, Dictionary<string, long> mutes)` event, which provides the muted members' user IDs and their mute expiration timestamps through the `mutes` parameter. This event deprecates the old `IRoomManagerDelegate#OnMuteListAddedFromRoom(string roomId, List<string> mutes, long expireTime)` event. For details, see [Listen for chat room events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatrooms#listen-for-chat-room-events).
+- Added support for retrieving roaming messages sent by specific group members from the server. The `FetchServerMessagesOption#FromIds` attribute replaces the original `FetchServerMessagesOption#From` attribute. For details, see [Retrieve message history of the specified conversation](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-message-history-of-the-specified-conversation).
+- Added support for retrieving messages sent by specific members in a local group conversation. For details, see [Search local messages sent by specific members](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#search-local-messages-sent-by-specific-members).
+- Added support for searching all local conversations by keyword. The SDK returns the matching conversation IDs and their message IDs. For details, see [Search local conversations by keyword](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#search-local-conversations-by-keyword).
+- Added support for retrieving one local message (using `ChatManager#LoadMessage`) or multiple local messages (using `ChatManager#LoadMessages`) by message ID. For details, see [Retrieve local messages by message ID](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-local-messages-by-message-id).
+- Added the `IGroupManagerDelegate#OnMembersJoinedFromGroup` and `IGroupManagerDelegate#OnMembersExitedFromGroup` events, which notify other members in batches when one or more members join or leave a group. Previously, the SDK triggered a separate event for each member. These events deprecate `IGroupManagerDelegate#OnMemberJoinedFromGroup` and `IGroupManagerDelegate#OnMemberExitedFromGroup`. For details, see [Listen for chat group events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#listen-for-chat-group-events).
+
+#### Improvements
+
+- Changed the unique app identifier from the App Key to the App ID.
+
+  :::info
+  As of v1.4.0, the App Key, including the `org_name` and `app_name` parameters, is deprecated in favor of the App ID. If you integrated an earlier version of the SDK using the App Key, no changes are required: both the App Key and the App ID continue to work with Agora Chat.
+  :::
+
+- Added support for modifying more message types with `ChatManager#ModifyMessage`:
+  - Text and custom messages: modify the message body and the extension attributes (`attributes`).
+  - File, video, voice, image, location, and combined messages: modify the extension attributes (`attributes`) only.
+  - Command messages: modification is not supported.
+
+  For details, see [Modify sent messages](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#modify-sent-messages).
+- Allowed group owners, chat room owners, and admins to recall messages sent by other members. For details, see [Recall a message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#recall-a-message).
+- Changed the trigger threshold for the `IConnectionDelegate#OnTokenWillExpire` event: the SDK now triggers the event when 80% of the token's validity period has elapsed, instead of 50%. For details, see [Authentication](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
+- Added support for retrieving a group member list that includes each member's role and join time, using `GroupManager#FetchGroupMemberInfoFromServer`. For details, see [Retrieve the chat group member list](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#retrieve-the-chat-group-member-list).
+- Improved the loading performance of the local conversation list when the latest message is an attachment by removing redundant file length checks.
+- Optimized certain database operations.
+- Optimized the reconnection logic to automatically switch reconnection addresses by default.
+- Added the device timezone offset to log files to facilitate troubleshooting.
+
+#### Issues fixed
+
+- Messages in memory were not deleted when the corresponding local conversation was removed.
+- The `TYPE` field was empty in the `IChatThreadManagerDelegate#OnUserKickOutOfChatThread` event.
+- `IChatManagerDelegate#OnMessageContentChanged` did not return modification details when editing message types other than text and custom messages.
+- After a group or chat room was disbanded, the SDK still fetched group or chat room details from the server after members received the disband event.
+- The database was mistakenly rebuilt when a `SQLITE_BUSY` error occurred.
+- The latest message in a conversation retrieved from the server with `ChatManager#GetConversationsFromServerWithCursor` or `ChatManager#GetConversationsFromServerWithPage` did not contain translations or message reactions.
+- A crash occurred under extreme network conditions.
+
 ## v1.3.1
 
 v1.3.1 was released on March 10, 2025.
@@ -2017,6 +2366,59 @@ This page provides release notes for Chat SDK for Web.
 - [RESTful API](#restful-api)
 
 ## Client API
+
+## v1.4.0
+
+Released on July 3, 2026.
+
+#### New features
+
+- Added support for sending and receiving GIF image messages. A GIF image message is a subtype of image message that is not compressed when sent. For details, see [Send and receive a GIF image message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#send-and-receive-a-gif-image-message).
+- Added support for setting, updating, and retrieving chat group avatars. For details, see [Update the chat group avatar](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-group-attributes#update-the-chat-group-avatar).
+- Added support for retrieving the following information when a user joins a chat room:
+  - The current member count, using the `Room#MemberCount` attribute. This count updates when members join or leave the chat room.
+  - The chat room-wide mute status, using the `Room#IsAllMemberMuted` attribute. This status updates when a mute or unmute event is received.
+  - The chat room creation time, using the new `Room#CreateTimeStamp` attribute.
+  - Whether the current user is on the chat room allow list, using the new `Room#IsInAllowList` attribute.
+  - The current user's mute expiration time, using the `Room#MuteUntilTimeStamp` attribute.
+- Added the `IRoomManagerDelegate#OnMuteListAddedFromRoom(string roomId, Dictionary<string, long> mutes)` event, which provides the muted members' user IDs and their mute expiration timestamps through the `mutes` parameter. This event deprecates the old `IRoomManagerDelegate#OnMuteListAddedFromRoom(string roomId, List<string> mutes, long expireTime)` event. For details, see [Listen for chat room events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatrooms#listen-for-chat-room-events).
+- Added support for retrieving roaming messages sent by specific group members from the server. The `FetchServerMessagesOption#FromIds` attribute replaces the original `FetchServerMessagesOption#From` attribute. For details, see [Retrieve message history of the specified conversation](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-message-history-of-the-specified-conversation).
+- Added support for retrieving messages sent by specific members in a local group conversation. For details, see [Search local messages sent by specific members](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#search-local-messages-sent-by-specific-members).
+- Added support for searching all local conversations by keyword. The SDK returns the matching conversation IDs and their message IDs. For details, see [Search local conversations by keyword](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#search-local-conversations-by-keyword).
+- Added support for retrieving one local message (using `ChatManager#LoadMessage`) or multiple local messages (using `ChatManager#LoadMessages`) by message ID. For details, see [Retrieve local messages by message ID](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-local-messages-by-message-id).
+- Added the `IGroupManagerDelegate#OnMembersJoinedFromGroup` and `IGroupManagerDelegate#OnMembersExitedFromGroup` events, which notify other members in batches when one or more members join or leave a group. Previously, the SDK triggered a separate event for each member. These events deprecate `IGroupManagerDelegate#OnMemberJoinedFromGroup` and `IGroupManagerDelegate#OnMemberExitedFromGroup`. For details, see [Listen for chat group events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#listen-for-chat-group-events).
+
+#### Improvements
+
+- Changed the unique app identifier from the App Key to the App ID.
+
+  :::info
+  As of v1.4.0, the App Key, including the `org_name` and `app_name` parameters, is deprecated in favor of the App ID. If you integrated an earlier version of the SDK using the App Key, no changes are required: both the App Key and the App ID continue to work with Agora Chat.
+  :::
+
+- Added support for modifying more message types with `ChatManager#ModifyMessage`:
+  - Text and custom messages: modify the message body and the extension attributes (`attributes`).
+  - File, video, voice, image, location, and combined messages: modify the extension attributes (`attributes`) only.
+  - Command messages: modification is not supported.
+
+  For details, see [Modify sent messages](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#modify-sent-messages).
+- Allowed group owners, chat room owners, and admins to recall messages sent by other members. For details, see [Recall a message](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#recall-a-message).
+- Changed the trigger threshold for the `IConnectionDelegate#OnTokenWillExpire` event: the SDK now triggers the event when 80% of the token's validity period has elapsed, instead of 50%. For details, see [Authentication](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
+- Added support for retrieving a group member list that includes each member's role and join time, using `GroupManager#FetchGroupMemberInfoFromServer`. For details, see [Retrieve the chat group member list](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#retrieve-the-chat-group-member-list).
+- Improved the loading performance of the local conversation list when the latest message is an attachment by removing redundant file length checks.
+- Optimized certain database operations.
+- Optimized the reconnection logic to automatically switch reconnection addresses by default.
+- Added the device timezone offset to log files to facilitate troubleshooting.
+
+#### Issues fixed
+
+- Messages in memory were not deleted when the corresponding local conversation was removed.
+- The `TYPE` field was empty in the `IChatThreadManagerDelegate#OnUserKickOutOfChatThread` event.
+- `IChatManagerDelegate#OnMessageContentChanged` did not return modification details when editing message types other than text and custom messages.
+- After a group or chat room was disbanded, the SDK still fetched group or chat room details from the server after members received the disband event.
+- The database was mistakenly rebuilt when a `SQLITE_BUSY` error occurred.
+- The latest message in a conversation retrieved from the server with `ChatManager#GetConversationsFromServerWithCursor` or `ChatManager#GetConversationsFromServerWithPage` did not contain translations or message reactions.
+- A crash occurred under extreme network conditions.
 
 ## v1.3.1
 

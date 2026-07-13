@@ -18,8 +18,7 @@ The following table lists common request and response parameters of the Chat RES
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Required |
 | :--------- | :----- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                      | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                           | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                              | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
 
 <Slot for="username">
@@ -31,7 +30,7 @@ The unique login account of the user. The user ID must be 64 characters or less 
 - "\_", "-", "."
 
 :::info
-Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same app is unique. Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
+Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same App ID is unique. Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
 :::
 
 </Slot>
@@ -41,9 +40,9 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | Parameter | Type | Description |
 | :------------------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `action` | String | The request method. |
-| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. |
 | `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
-| `applicationName` | String | The unique identifier assigned to each app by the Chat service . This is the same as `app_name`. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service . |
 | `uri` | String | The request URI. |
 | `entities ` | JSON | The response entity. |
 | `timestamp` | Number | The Unix timestamp (ms) of the HTTP response. |
@@ -70,7 +69,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-PUT https://{host}/{org_name}/{app_name}/metadata/user/{username}
+PUT https://{host}/app-id/{app_id}/metadata/user/{username}
 ```
 
 #### Path parameter
@@ -127,7 +126,7 @@ The user attributes used in this example are named `ext`, `nickname`, and `avata
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X PUT -H 'Content-Type: application/x-www-form-urlencoded' -H 'Authorization: Bearer {YourAppToken}' -d 'avatarurl=http://www.agorachat.com/avatar.png&ext=ext&nickname=nickname' 'http://XXXX/XXXX/XXXX/metadata/user/XXXX'
+curl -X PUT -H 'Content-Type: application/x-www-form-urlencoded' -H 'Authorization: Bearer {YourAppToken}' -d 'avatarurl=http://www.agorachat.com/avatar.png&ext=ext&nickname=nickname' 'http://XXXX/app-id/XXXX/metadata/user/XXXX'
 ```
 
 #### Response example
@@ -153,7 +152,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/metadata/user/{username}
+GET https://{host}/app-id/{app_id}/metadata/user/{username}
 ```
 
 #### Path parameter
@@ -187,7 +186,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X GET -H 'Authorization: Bearer {YourAppToken}' -H 'Content-Type:  application/json''http://XXXX/XXXX/XXXX/metadata/user/XXXX'
+curl -X GET -H 'Authorization: Bearer {YourAppToken}' -H 'Content-Type:  application/json''http://XXXX/app-id/XXXX/metadata/user/XXXX'
 ```
 
 #### Response example
@@ -213,7 +212,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/metadata/user/get
+POST https://{host}/app-id/{app_id}/metadata/user/get
 ```
 
 #### Path parameter
@@ -267,7 +266,7 @@ curl -X POST -H 'Authorization: Bearer {YourAppToken}' -H 'Content-Type:  applic
     "user2",
     "user3"
   ]
-}' 'http://XXXX/XXXX/XXXX/metadata/user/get'
+}' 'http://XXXX/app-id/XXXX/metadata/user/get'
 ```
 
 #### Response example
@@ -305,7 +304,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/metadata/user/capacity
+GET https://{host}/app-id/{app_id}/metadata/user/capacity
 ```
 
 #### Path parameter
@@ -337,7 +336,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```bash
-curl -X GET -H 'Authorization: Bearer {YourAppToken}''http://XXXX/XXXX/XXXX/metadata/user/capacity'
+curl -X GET -H 'Authorization: Bearer {YourAppToken}''http://XXXX/app-id/XXXX/metadata/user/capacity'
 ```
 
 #### Response example
@@ -359,7 +358,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-DELETE https://{host}/{org_name}/{app_name}/metadata/user/{username}
+DELETE https://{host}/app-id/{app_id}/metadata/user/{username}
 ```
 
 #### Path parameter
@@ -391,7 +390,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```bash
-curl -X DELETE -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/metadata/user/XXXX'
+curl -X DELETE -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/app-id/XXXX/metadata/user/XXXX'
 ```
 
 #### Response example

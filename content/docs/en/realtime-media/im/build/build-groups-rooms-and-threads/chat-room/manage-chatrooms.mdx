@@ -125,12 +125,24 @@ public interface ChatRoomChangeListener {
     void onRemovedFromChatRoom(final int reason, final String roomId, final String roomName, final String participant);
 
     /**
+     * Occurs when members are added to the chat room mute list. The muted members receive this event.
+     *
+     * <p>Available since SDK v1.4.0.
+     *
+     * @param chatRoomId    The chat room ID
+     * @param muteInfo      A map of the muted members' user IDs to their mute expiration timestamps (Unix timestamps in milliseconds)
+     */
+    void onMuteListAdded(final String chatRoomId, final Map<String, Long> muteInfo);
+
+    /**
      * Occurs when a member is added to the chat room mute list.
      *
      * @param chatRoomId    The chat room ID
      * @param mutes         The usernames of the members added to the chat room mute list
-     * @param expireTime    The Unix timestamp when the mute expires, in miliseconds
+     * @param expireTime    The Unix timestamp when the mute expires, in milliseconds
+     * @deprecated Deprecated since SDK v1.4.0. Use {@link #onMuteListAdded(String, Map)} instead.
      */
+    @Deprecated
     void onMuteListAdded(final String chatRoomId, final List mutes, final long expireTime);
 
     /**
@@ -354,15 +366,27 @@ To monitor the chat room events, you can listen for the callbacks in the `ChatRo
   }
 
 /**
+ *  Occurs when one or more members are added to the chat room mute list. The muted members receive this event.
+ *  Available since SDK v1.4.0.
+ *  @param aChatroom    The chat room ID
+ *  @param aMutes       A dictionary that maps each muted member's user ID to their mute expiration timestamp (a Unix timestamp in milliseconds)
+ */
+- (void)chatroomMuteListDidUpdate:(AgoraChatroom *)aChatroom
+                addedMutedMembers:(NSDictionary<NSString *,NSNumber *> *)aMutes {
+
+  }
+
+/**
  *  Occurs when a member is added to the chat room mute list.
+ *  Deprecated since SDK v1.4.0. Use chatroomMuteListDidUpdate:addedMutedMembers: instead.
  *  @param aChatroom        The chat room ID
- *  @param aMutedMembers    The username of the member added to the must list
- *  @param aMuteExpire      The Unix timestamp when the mute expires. Not currently available.
+ *  @param aMutedMembers    The username of the member added to the mute list
+ *  @param aMuteExpire      The Unix timestamp when the mute expires
  */
 - (void)chatroomMuteListDidUpdate:(AgoraChatroom *)aChatroom
                 addedMutedMembers:(NSArray *)aMutes
                        muteExpire:(NSInteger)aMuteExpire {
-                        f
+
   }
 
 /**
@@ -684,8 +708,9 @@ The following code sample shows how to add and remove the chat room listener:
         /// Occurs when a new member joins the chat room.
         onMemberJoinedFromChatRoom: (roomId, participant) {},
 
-        /// Occurs when a member is added to the chat room mute list.
-        onMuteListAddedFromChatRoom: (roomId, mutes, expireTime) {},
+        /// Occurs when one or more members are added to the chat room mute list. The muted members receive this event.
+        /// Since SDK v1.4.0, mutes is a Map<String, int> of each muted member's user ID to their mute expiration timestamp (a Unix timestamp in milliseconds).
+        onMuteListAddedFromChatRoom: (roomId, mutes) {},
 
         /// Occurs when a member is removed from the chat room mute list.
         onMuteListRemovedFromChatRoom: (roomId, mutes) {},
@@ -940,7 +965,14 @@ const roomListener: ChatRoomEventListener = new (class
       params.roomName
     );
   }
+  // Occurs when one or more members are added to the chat room mute list. The muted members receive this event.
+  // Available since SDK v1.4.0. mutes maps each muted member's user ID to their mute expiration timestamp (a Unix timestamp in milliseconds).
+  onMuteListAddedV2(params: { roomId: string; mutes: Record<string, number> }): void {
+    console.log(`onMuteListAddedV2:`, params.roomId, params.mutes);
+  }
+
   // Occurs when a member is added to the chat room mute list.
+  // Deprecated since SDK v1.4.0. Use onMuteListAddedV2 instead.
   onMuteListAdded(params: {
     roomId: string;
     mutes: string[];
@@ -1300,12 +1332,20 @@ public interface IRoomManagerDelegate
         */
         void OnRemovedFromRoom(string roomId, string roomName, string participant);
         /**
+        * Occurs when one or more members are added to the chat room mute list. The muted members receive this event.
+        * Available since SDK v1.4.0.
+        *
+        * @param roomId    The chat room ID
+        * @param mutes     A dictionary that maps each muted member's user ID to their mute expiration timestamp (a Unix timestamp in milliseconds)
+        */
+        void OnMuteListAddedFromRoom(string roomId, Dictionary<string, long> mutes);
+        /**
         * Occurs when a member is added to the chat room mute list.
+        * Deprecated since SDK v1.4.0. Use OnMuteListAddedFromRoom(string, Dictionary<string, long>) instead.
         *
         * @param roomId        The chat room ID
         * @param mutes         The user IDs of the members added to the chat room mute list
         * @param expireTime    The Unix timestamp when the mute duration expires, in milliseconds
-        *
         */
         void OnMuteListAddedFromRoom(string roomId, List mutes, long expireTime);
         /**
@@ -1631,12 +1671,20 @@ public interface IRoomManagerDelegate
         */
         void OnRemovedFromRoom(string roomId, string roomName, string participant);
         /**
+        * Occurs when one or more members are added to the chat room mute list. The muted members receive this event.
+        * Available since SDK v1.4.0.
+        *
+        * @param roomId    The chat room ID
+        * @param mutes     A dictionary that maps each muted member's user ID to their mute expiration timestamp (a Unix timestamp in milliseconds)
+        */
+        void OnMuteListAddedFromRoom(string roomId, Dictionary<string, long> mutes);
+        /**
         * Occurs when a member is added to the chat room mute list.
+        * Deprecated since SDK v1.4.0. Use OnMuteListAddedFromRoom(string, Dictionary<string, long>) instead.
         *
         * @param roomId        The chat room ID
         * @param mutes         The user IDs of the members added to the chat room mute list
         * @param expireTime    The Unix timestamp when the mute duration expires, in milliseconds
-        *
         */
         void OnMuteListAddedFromRoom(string roomId, List mutes, long expireTime);
         /**
@@ -1793,6 +1841,8 @@ All chat users can call `joinChatRoom` to join the specified chat room. Once a c
 
 All chat room members can call `leaveChatRoom` to leave the specified chat room. Once a chat room member leaves a chat room, all the other members receive the `memberAbsence` callback.
 
+Since SDK v1.4.0, the `joinChatRoom` response includes an `info` field with the following chat room information: the creation time (`createtimestamp`), whether all members are muted (`isallmembersmuted`), whether the user is on the allow list (`isinallowlist`), the current member count (`membercount`), and the user's mute expiration time (`muteexpiretimestamp`).
+
 ```javascript
 // All chat users can call joinChatRoom to join the specified chat room.
 const options = {
@@ -1850,13 +1900,13 @@ chatClient.addEventHandler("handlerId", {
       // Occurs when a member deletes a chat room announcement.
       case "deleteAnnouncement":
         break;
-      // Occurs when a member updates a chat room announcement.
+      // Occurs when a member updates a chat room announcement. Since SDK v1.4.0, the event includes the new announcement content (announcement).
       case "updateAnnouncement":
         break;
       // Occurs when a member is removed from the chat room mute list.
       case "unmuteMember":
         break;
-      // Occurs when a member is added to the chat room mute list.
+      // Occurs when a member is added to the chat room mute list. Since SDK v1.4.0, the event includes the muted member's user ID (userId) and mute expiration time (muteTimestamp).
       case "muteMember":
         break;
       // Occurs when a chat room admin is removed from the admin list.

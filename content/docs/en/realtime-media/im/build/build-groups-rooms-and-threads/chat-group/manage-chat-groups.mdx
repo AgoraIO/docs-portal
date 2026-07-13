@@ -59,10 +59,10 @@ Users can request to join a public chat group as follows:
 
 1. Call `getPublicGroupsFromServer` to retrieve the list of public groups by page. Users can obtain the ID of the group that they want to join.
 2. Call `joinGroup` to send a join request to the chat group:
-    - If the type of the chat group is set to `GroupStylePublicJoin`, the request from the user is accepted automatically and the other chat group members receive the `onMemberJoined` callback.
+    - If the type of the chat group is set to `GroupStylePublicJoin`, the request from the user is accepted automatically and the other chat group members receive the `onMembersJoined` callback.
     - If the type of the chat group is set to `GroupStylePublicNeedApproval`, the chat group owner and chat group admins receive the `onRequestToJoinReceived` callback and determine whether to accept the request from the user.
 
-Users can call `leaveGroup` to leave a chat group. Once a user leaves the group, all the other group members receive the `onMemberExited` callback.
+Users can call `leaveGroup` to leave a chat group. Once a user leaves the group, all the other group members receive the `onMembersExited` callback.
 
 Refer to the following sample code to join and leave a chat group:
 
@@ -110,6 +110,29 @@ ChatClient.getInstance().groupManager().leaveGroup(groupId);
 
      memberList.addAll(group.getAdminList());// gets group admins.
      memberList.add(group.getOwner());// gets the group owner.
+    ```
+- Since SDK v1.4.0, you can call the `asyncFetchGroupMembersInfo` method to retrieve detailed information about all group members (including the group owner and admins), such as each member's user ID, the time they joined the group, and their role.
+
+    ```java
+    // The second parameter is the cursor for pagination; pass null for the first page.
+    // The third parameter is the number of members to retrieve per page.
+    ChatClient.getInstance().groupManager().asyncFetchGroupMembersInfo(groupId, null, 50, new ValueCallBack<CursorResult<GroupMemberInfo>>() {
+        @Override
+        public void onSuccess(CursorResult<GroupMemberInfo> value) {
+            List<GroupMemberInfo> list = value.getData();
+            for (GroupMemberInfo groupMemberInfo : list) {
+                // Get the member's user ID, join time, and role.
+                String id = groupMemberInfo.getMemberId();
+                long joinTime = groupMemberInfo.getJoinTime();
+                Group.GroupPermissionType role = groupMemberInfo.getRole();
+            }
+        }
+
+        @Override
+        public void onError(int error, String errorMsg) {
+
+        }
+    });
     ```
 ### Retrieve the chat group list
 
@@ -288,13 +311,31 @@ GroupChangeListener groupListener = new GroupChangeListener() {
 
     }
 
+    // Occurs when one or more members join the chat group. All group members except the new members receive this callback.
+    // Available since SDK v1.4.0.
+    @Override
+    public void onMembersJoined(final String groupId, final List<String> members) {
+
+    }
+
     // Occurs when a user joins a chat group.
+    // Deprecated since SDK v1.4.0. Use onMembersJoined instead.
+    @Deprecated
     @Override
     public void onMemberJoined(final String groupId, final String member){
 
     }
 
+    // Occurs when one or more members leave the chat group, actively or passively. All group members except those who left receive this callback.
+    // Available since SDK v1.4.0.
+    @Override
+    public void onMembersExited(final String groupId, final List<String> members) {
+
+    }
+
     // Occurs when a member leaves a chat group.
+    // Deprecated since SDK v1.4.0. Use onMembersExited instead.
+    @Deprecated
     @Override
     public void onMemberExited(final String groupId, final String member) {
 
@@ -303,6 +344,12 @@ GroupChangeListener groupListener = new GroupChangeListener() {
     // Occurs when a member updates the chat group announcement.
     @Override
     public void onAnnouncementChanged(String groupId, String announcement) {
+
+    }
+
+    // Occurs when the chat group details, such as the name, description, or avatar, change.
+    @Override
+    public void onSpecificationChanged(Group group) {
 
     }
 
@@ -354,7 +401,7 @@ Before proceeding, ensure that you meet the following requirements:
 
 ## Implementation
 
-This section describes how to call the APIs provided by the Chat SDK to implement  features.
+This section describes how to call the APIs provided by the Chat SDK to implement chat group features.
 
 ### Create and destroy a chat group
 
@@ -380,6 +427,7 @@ NSArray *members = @{@"memeber1",@"member2"};
      message:@"message"
      setting:options
      error:nil];
+
 
 // Call destroyGroup to disband a chat group. Once a chat group is disbanded, all chat group members receive the `userDidLeaveGroup` callback.
 [[AgoraChatClient sharedClient].groupManager destroyGroup:@"groupID"];
@@ -407,14 +455,79 @@ AgoraChatCursorResult *result = [[AgoraChatCursorResult alloc]init];
 do {
   result = [[AgoraChatClient sharedClient].groupManager
                 getPublicGroupsFromServerWithCursor:cursor
-                pageSize:50
-                error:nil];
+                pageSize:50 
+                error:nil];  
   [memberList addObjectsFromArray:result.list];
   cursor = result.cursor;
-} while (result && result.list  * _Nullable aList, EMError * _Nullable aError) {
+} while (result && result.list < pageSize);
+
+// Call joinPublicGroup to send a join request to a chat group.
+[[AgoraChatClient sharedClient].groupManager joinPublicGroup:@"groupID" error:nil];
+
+// Call leaveGroup to leave a chat group.
+[[AgoraChatClient sharedClient].groupManager leaveGroup:@"groupID" error:nil];
+```
+
+### Retrieve the member list of a chat group
+
+- When a group has less than 200 members, you can call the `getGroupSpecificationFromServerWithId` method to retrieve the group member list that contains the group owner, admins, and regular members.
+
+    ```objc
+    // If `true` is passed to the second parameter, the SDK returns the group member list that contains up to 200 group members.
+    // It is a synchronous method. The asynchronous method is [AgoraChatGroupManager getGroupSpecificationFromServerWithId:fetchMembers:completion:].
+    AgoraChatGroup *group = [[AgoraChatClient sharedClient].groupManager
+                                 getGroupSpecificationFromServerWithId:@"groupID"
+                                 fetchMembers:YES
+                                 error:nil];
+    NSArray *memberList = group.memberList;
+    ```
+
+- When a group has more than 200 members, you can first call the `getGroupSpecificationFromServerWithId` method to get the group member list that contains the group owner and admins and then call the `getGroupMemberListFromServerWithId` method to obtain the list of regular group members.
+
+    ```objc
+    AgoraChatGroup *group = [[AgoraChatClient sharedClient].groupManager
+                                getGroupSpecificationFromServerWithId:@"groupID"
+                                fetchMembers:NO
+                                error:nil];
+    NSMutableArray *memberList = [[NSMutableArray alloc]init];
+    NSInteger pageSize = 50;
+    NSString *cursor = nil;
+    AgoraChatCursorResult *result = [[AgoraChatCursorResult alloc]init];
+    do {
+      // It is a synchronous method. The asynchronous method is [AgoraChatGroupManager getGroupMemberListFromServerWithId:cursor:pageSize:completion:].
+        result = [[AgoraChatClient sharedClient].groupManager
+                      getGroupMemberListFromServerWithId:@"groupID"
+                      cursor:cursor
+                      pageSize:pageSize
+                      error:nil];
+        [memberList addObjectsFromArray:result.list];
+        cursor = result.cursor;
+    } while (result && result.list < pageSize);
+    ```
+
+Since SDK v1.4.0, you can call `fetchGroupMemberInfoListFromServerWithGroupId:cursor:limit:completion:` to retrieve a member list in which each entry includes the member's user ID, role, and the time they joined the group:
+
+```objc
+NSString *cursor = nil;
+[AgoraChatClient.sharedClient.groupManager fetchGroupMemberInfoListFromServerWithGroupId:@"groupId" cursor:cursor limit:20 completion:^(AgoraChatCursorResult<AgoraChatGroupMemberInfo *> * _Nullable cursorResult, AgoraChatError * _Nullable error) {
+    for (AgoraChatGroupMemberInfo *memberInfo in cursorResult.list) {
+        NSString *userId = memberInfo.userId;             // The member's user ID.
+        NSUInteger joinedTs = memberInfo.joinedTimestamp; // The time the member joined the group.
+        AgoraChatGroupPermissionType role = memberInfo.role; // The member's role.
+    }
+}];
+```
+
+### Retrieve the chat group list
+
+- Users can call `getJoinedGroupsFromServer` method to retrieve a list of groups they have joined and created from the server.
+
+    ```objc
+    // Asynchronous method
+    NSArray *chatGroupList = [[ChatClient sharedClient].groupManager getJoinedGroupsFromServerWithPage:0 pageSize:20 needMemberCount:YES needRole:YES completion:^(NSArray<EMGroup *> * _Nullable aList, EMError * _Nullable aError) {
             // got group list
         }];
-```
+    ```
 
 - Users can call `getAllGroups` method to load the local group list. To ensure the accuracy of results, retrieve the joined chat group list from the server first.
 
@@ -424,21 +537,261 @@ do {
     ```
 - Users can also call `getPublicGroupsFromServerWithCursor` method to paginate the public group list:
 
+    ```objc
+    NSMutableArray *memberList = [[NSMutableArray alloc]init];
+    NSInteger pageSize = 50;
+    NSString *cursor = nil;
+    EMCursorResult *result = [[EMCursorResult alloc]init];
+    do {
+      // Synchronous method, see [ChatGroupManager getPublicGroupsFromServerWithCursor:pageSize:completion:] for the asynchronous method
+        result = [[ChatClient sharedClient].groupManager
+                                          getPublicGroupsFromServerWithCursor:cursor
+                                          pageSize:50
+                                          error:nil];
+        [memberList addObjectsFromArray:result.list];
+        cursor = result.cursor;
+    } while (result && result.list < pageSize);
+    ```
+### Retrieve the number of groups joined by the current user 
+
+Users can call `getJoinedGroupsCountFromServerWithCompletion` to retrieve the number of groups they have joined directly from the server. The limit on the number of groups a user can join is determined by the pricing package. For more details, please refer to the [product pricing](../../../reference/pricing-plan-details#group).
+
 ```objc
-NSMutableArray *memberList = [[NSMutableArray alloc]init];
-NSInteger pageSize = 50;
-NSString *cursor = nil;
-EMCursorResult *result = [[EMCursorResult alloc]init];
-do {
-  // Synchronous method, see [ChatGroupManager getPublicGroupsFromServerWithCursor:pageSize:completion:] for the asynchronous method
-    result = [[ChatClient sharedClient].groupManager
-                                      getPublicGroupsFromServerWithCursor:cursor
-                                      pageSize:50
-                                      error:nil];
-    [memberList addObjectsFromArray:result.list];
-    cursor = result.cursor;
-} while (result && result.list  result =
-  await ChatClient.getInstance.groupManager.fetchPublicGroupsFromServer();
+AgoraChatClient.shared().groupManager?.getJoinedGroupsCountFromServer(completion: { count, err in
+    if err == nil {
+        // Successfully getting the count of joined groups.
+    }
+})
+```
+
+### Block and unblock a chat group
+
+All chat group members can block and unblock a chat group. Once members block a chat group, they no longer receive messages from this chat group.
+
+Refer to the following sample code to block and unblock a chat group:
+
+```objc
+// Call blockGroup to block a chat group.
+[[AgoraChatClient sharedClient].groupManager blockGroup:@"groupID"error:nil];
+
+// Call unblockGroup to unblock a chat group.
+[[AgoraChatClient sharedClient].groupManager unblockGroup:@"groupID" error:nil];
+```
+
+The chat group owner and chat group admins can call `getGroupSpecificationFromServerWithId` to retrieve the member list of a chat group and call `isBlocked` to further retrieve the list of members who block the chat group.  
+Chat group members can call `isBlocked` to check whether they block the chat group.
+
+### Listen for chat group events
+
+To monitor the chat group events, users can listen for the callbacks in the `AgoraChatGroupManager` class and add app logics accordingly. If a user wants to stop listening for the callbacks, make sure that the user removes the listener to prevent memory leakage.
+
+```objc
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [[AgoraChatClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
+}
+
+- (void)dealloc
+{
+    [[AgoraChatClient sharedClient].groupManager removeDelegate:self];
+}
+```
+
+```objc
+// Occurs when a user receives a group invitation.
+- (void)groupInvitationDidReceive:(NSString *)aGroupId inviter:(NSString *)aInviter message:(NSString *)aMessage
+
+// Occurs when the chat group owner receives a join request.
+- (void)joinGroupRequestDidReceive:(AgoraChatGroup *)aGroup user:(NSString *)aUsername reason:(NSString *)aReason
+
+// Occurs when the chat group owner approves a join request.
+- (void)joinGroupRequestDidApprove:(AgoraChatGroup *)aGroup
+
+// Occurs when the chat group owner rejects a join request.
+- (void)joinGroupRequestDidDecline:(NSString *)aGroupId reason:(NSString *)aReason
+
+// Occurs when a user accepts a group invitation.
+- (void)groupInvitationDidAccept:(AgoraChatGroup *)aGroup invitee:(NSString *)aInvitee
+
+// Occurs when a user declines a group invitation.
+- (void)groupInvitationDidDecline:(AgoraChatGroup *)aGroup invitee:(NSString *)aInvitee reason:(NSString *)aReason
+
+// Occurs when a user automatically accepts a group invitation. The invitee receives this event.
+- (void)didJoinGroup:(AgoraChatGroup *)aGroup inviter:(NSString *)aInviter message:(NSString *)aMessage
+
+// Occurs when a user is added to the chat group mute list.
+- (void)groupMuteListDidUpdate:(AgoraChatGroup *)aGroup addedMutedMembers:(NSArray *)aMutedMembers muteExpire:(NSInteger)aMuteExpire
+
+// Occurs when a user is removed from the chat group mute list.
+- (void)groupMuteListDidUpdate:(AgoraChatGroup *)aGroup removedMutedMembers:(NSArray *)aMutedMembers
+
+// Occurs when a user is added to the chat group allow list.
+- (void)groupWhiteListDidUpdate:(AgoraChatGroup *)aGroup addedWhiteListMembers:(NSArray *)aMembers
+
+// Occurs when a user is removed from the chat group allow list.
+- (void)groupWhiteListDidUpdate:(AgoraChatGroup *)aGroup removedWhiteListMembers:(NSArray *)aMembers
+
+// Occurs when all group members are muted.
+- (void)groupAllMemberMuteChanged:(AgoraChatGroup *)aGroup isAllMemberMuted:(BOOL)aMuted
+
+// Occurs when a chat group member is added to the admin list.
+- (void)groupAdminListDidUpdate:(AgoraChatGroup *)aGroup addedAdmin:(NSString *)aAdmin
+
+// Occurs when a chat group admin is removed from the admin list.
+- (void)groupAdminListDidUpdate:(AgoraChatGroup *)aGroup removedAdmin:(NSString *)aAdmin
+
+// Occurs when the chat group owner is changed.
+- (void)groupOwnerDidUpdate:(AgoraChatGroup *)aGroup newOwner:(NSString *)aNewOwner oldOwner:(NSString *)aOldOwner
+
+// Occurs when one or more members join a chat group. All group members except the new members receive this callback.
+// Available since SDK v1.4.0.
+- (void)userDidJoinGroup:(AgoraChatGroup *)aGroup users:(NSArray<NSString *> *)aUsers
+
+// Occurs when a user joins a chat group.
+// Deprecated since SDK v1.4.0. Use userDidJoinGroup:users: instead.
+- (void)userDidJoinGroup:(AgoraChatGroup *)aGroup user:(NSString *)aUsername
+
+// Occurs when one or more members leave a chat group. All group members except those who left receive this callback.
+// Available since SDK v1.4.0.
+- (void)userDidLeaveGroup:(AgoraChatGroup *)aGroup users:(NSArray<NSString *> *)aUsers
+
+// Occurs when a user leaves a chat group.
+// Deprecated since SDK v1.4.0. Use userDidLeaveGroup:users: instead.
+- (void)userDidLeaveGroup:(AgoraChatGroup *)aGroup user:(NSString *)aUsername
+
+// Occurs when a user updates the announcement of a chat group.
+- (void)groupAnnouncementDidUpdate:(AgoraChatGroup *)aGroup announcement:(NSString *)aAnnouncement
+
+// Occurs when the chat group details, such as the name, description, or avatar, change.
+- (void)groupSpecificationDidUpdate:(AgoraChatGroup *)aGroup
+
+// Occurs when a user uploads a shared file to a chat group.
+- (void)groupFileListDidUpdate:(AgoraChatGroup *)aGroup addedSharedFile:(AgoraChatGroupSharedFile *)aSharedFile
+
+// Occurs when a user removes a shared file from the chat group.
+- (void)groupFileListDidUpdate:(AgoraChatGroup *)aGroup removedSharedFile:(NSString *)aFileId
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+Chat groups enable real-time messaging among multiple users.
+
+This page shows how to use the Chat SDK to create and manage a chat group in your app.
+
+## Understand the tech
+
+The Chat SDK provides the `ChatGroup`, `ChatGroupManager`, and `ChatGroupEventHandler` classes for chat group management, which allows you to implement the following features:
+
+- Create and destroy a chat group
+- Join and leave a chat group
+- Retrieve the chat group attributes
+- Retrieve the chat group member list
+- Retrieve the chat group list
+- Block and unblock a chat group
+- Listen for chat group events
+
+## Prerequisites
+
+Before proceeding, ensure that you meet the following requirements:
+
+- You have initialized the Chat SDK. For details, see [SDK quickstart](../../../get-started-sdk).
+- You understand the call frequency limits of the Chat APIs supported by different pricing plans as described in [Limitations](../../limitations).
+- You understand the number of chat groups and chat group members supported by different pricing plans as described in [Pricing Plan Details](../../../reference/pricing-plan-details).
+
+## Implementation
+
+This section describes how to call the APIs provided by the Chat SDK to implement chat group features.
+
+### Create a chat group
+
+Set `ChatGroupStyle` and `inviteNeedConfirm` before creating a chat group.
+
+1. Is the group public or private, and who can invite members (`ChatGroupStyle`):
+- `PrivateOnlyOwnerInvite`: A private group. Only the chat group owner and admins can add users to the chat group.
+- `PrivateMemberCanInvite`: A private group. All chat group members can add users to the chat group.
+- `PublicJoinNeedApproval`: A public group. The chat group owner and admins can add users, and users can send join requests to the chat group.
+- `PublicOpenJoin`: A public group. All users can join the chat group automatically without any need for approval from the chat group owner and admins.
+
+2. Does a group invitation require consent from an invitee to add them to the group (`inviteNeedConfirm`):
+
+- Yes (`ChatGroupOptions#inviteNeedConfirm` is set to `true`). After creating a group and sending group invitations, the subsequent logic varies based on whether an invitee automatically consents to the group invitation (`autoAcceptGroupInvitation`):
+- Yes (`autoAcceptGroupInvitation` is set to `true`). The invitee automatically joins the chat group and receives the `ChatGroupEventHandler#onAutoAcceptInvitationFromGroup` callback, the inviter receives the `ChatGroupEventHandler#onInvitationAcceptedFromGroup` and `ChatGroupEventHandler#onMembersJoinedFromGroup` callbacks, and the other chat group members receives the `ChatGroupEventHandler#onMembersJoinedFromGroup` callback.
+- No (`autoAcceptGroupInvitation` is set to `false`). The invitee receives the `ChatGroupEventHandler#onInvitationReceivedFromGroup` callback and chooses whether to join the chat group:
+    - If the invitee accepts the group invitation, the inviter receives the `ChatGroupEventHandler#onInvitationAcceptedFromGroup` and `ChatGroupEventHandler#onMembersJoinedFromGroup` callbacks, and the other chat group members receive the `ChatGroupEventHandler#onMembersJoinedFromGroup` callback;
+    - If the invitee declines the group invitation, the chat group owner receives the `ChatGroupEventHandler#onInvitationDeclinedFromGroup` callback.
+
+![](https://assets-docs.agora.io/images/im/create_group_flutter.png)
+
+- No (`ChatGroupOptions#inviteNeedConfirm` is set to `false`). After creating a chat group and sending group invitations, an invitee is added to the chat group regardless of their `autoAcceptGroupInvitation` setting. The invitee receives the `ChatGroupEventHandler#onAutoAcceptInvitationFromGroup` callback, the inviter receives the `ChatGroupEventHandler#onInvitationAcceptedFromGroup` and `ChatGroupEventHandler#onMembersJoinedFromGroup` callbacks, and the other chat group members receive the `ChatGroupEventHandler#onMembersJoinedFromGroup` callback.
+
+    Users can call `createGroup` to create a chat group and set the chat group attributes such as the chat group name, description, maximum number of members, and reason for creating the group, by specifying `ChatGroupOptions`.
+
+    The following code sample shows how to create a chat group:
+
+    ```dart
+    ChatGroupOptions groupOptions = ChatGroupOptions(
+      // The permission style of the chat group.
+      style: ChatGroupStyle.PrivateMemberCanInvite,
+      inviteNeedConfirm: true,
+    );
+    // The name of the chat group can be a maximum of 128 characters.
+    String groupName = "newGroup";
+    // The description of the chat group can be a maximum of 512 characters.
+    String groupDesc = "group desc";
+    try {
+      await ChatClient.getInstance.groupManager.createGroup(
+        groupName: groupName,
+        desc: groupDesc,
+        options: groupOptions,
+      );
+    } on ChatError catch (e) {
+    }
+    ```
+
+### Destroy a chat group
+
+Only the chat group owner can call `destroyGroup` to disband a chat group. Once a chat group is disbanded, all chat group members receive the `onGroupDestroyed` callback and are immediately removed from the chat group.
+
+:::info
+Once a chat group is destroyed, all chat group data is deleted from the local database and memory.
+:::
+
+The following code sample shows how to destroy a chat group:
+
+```dart
+try {
+  await ChatClient.getInstance.groupManager.destroyGroup(groupId);
+} on ChatError catch (e) {
+}
+```
+
+### Join a chat group
+
+The logic of joining a chat group varies according to the `GroupStyle` setting you choose when [creating the chat group](#create-a-chat-group):
+
+- If the `GroupStyle` is set to `PublicOpenJoin`, all users can join the chat group without the consent from the chat group owner and admins. Once a user joins a chat group, all chat group members receive the `ChatGroupEventHandler#onMembersJoinedFromGroup` callback;
+- If the `GroupStyle` is set to `PublicJoinNeedApproval`, users can send join requests to the chat group. The chat group owner and chat group admins receive the `ChatGroupEventHandler#onRequestToJoinReceivedFromGroup` callback and choose whether to accept the join request:
+  - If the request is accepted, the user joins the chat group and receives the `ChatGroupEventHandler#onRequestToJoinAcceptedFromGroup` callback, while all the other chat group members receive the `ChatGroupEventHandler#onMembersJoinedFromGroup` callback.
+  - If the request is declined, the user receives the `ChatGroupEventHandler#onRequestToJoinDeclinedFromGroup` callback.
+
+<div class="alert info">Users can only request to join public groups; private groups do not allow join requests.</div>
+
+Users can refer to the following steps to join a chat group:
+
+1. Call `fetchPublicGroupsFromServer` to retrieve the list of public groups from the server, and locate the ID of the chat group that you want to join.
+
+2. Call `joinPublicGroup` to pass in the chat group ID and request to join the specified chat group.
+
+The following code sample shows how to join a chat group:
+
+```dart
+// Retrieve the list of public groups with pagination.
+try {
+  ChatCursorResult<ChatGroupInfo> result =
+      await ChatClient.getInstance.groupManager.fetchPublicGroupsFromServer();
 } on ChatError catch (e) {
 }
 // Request to join the specified chat group.
@@ -450,7 +803,7 @@ try {
 
 ### Leave a chat group
 
-Chat group members can call `leaveGroup` to leave the specified chat group, whereas the chat group owner cannot perform this operation. Once a member leaves a chat group, all the other chat group members receive the `ChatGroupEventHandler#onMemberExitedFromGroup` callback.
+Chat group members can call `leaveGroup` to leave the specified chat group, whereas the chat group owner cannot perform this operation. Once a member leaves a chat group, all the other chat group members receive the `ChatGroupEventHandler#onMembersExitedFromGroup` callback.
 
 The following code sample shows how to leave a chat group:
 
@@ -491,7 +844,7 @@ The following code sample shows how to retrieve the chat group member list:
 ```dart
 // The ID of the chat group.
 try {
-  ChatCursorResult result =
+  ChatCursorResult<String> result =
       await ChatClient.getInstance.groupManager.fetchMemberListFromServer(
     groupId,
   );
@@ -499,13 +852,27 @@ try {
 }
 ```
 
+Since SDK v1.4.0, you can call `fetchGroupMembersInfo` to retrieve a member list in which each entry includes the member's user ID, role, and the time they joined the group:
+
+```dart
+try {
+  ChatCursorResult<GroupMemberInfo> result =
+      await ChatClient.getInstance.groupManager.fetchGroupMembersInfo(
+    groupId: groupId,
+    cursor: cursor,
+    limit: limit,
+  );
+} on ChatError catch (e) {
+}
+```
+
 ### Retrieve the chat group list
 
-- Users can call `fetchJoinedGroupsFromServer` to retrieve the groups they have joined and created from the server.
+- Users can call `fetchJoinedGroupsFromServer` to retrieve the  groups they have joined and created from the server.
 
     ```dart
     try {
-      List list =
+      List<ChatGroup> list =
           await ChatClient.getInstance.groupManager.fetchJoinedGroupsFromServer();
     } on ChatError catch (e) {
     }
@@ -515,7 +882,7 @@ try {
 
     ```dart
     try {
-      List list =
+      List<ChatGroup> list =
           await ChatClient.getInstance.groupManager.getJoinedGroups();
     } on ChatError catch (e) {
     }
@@ -525,7 +892,7 @@ try {
 
     ```dart
     try {
-      ChatCursorResult result =
+      ChatCursorResult<ChatGroupInfo> result =
           await ChatClient.getInstance.groupManager.fetchPublicGroupsFromServer(
         // The maximum number of chat groups to retrieve with pagination.
         pageSize: pageSize,
@@ -535,7 +902,7 @@ try {
     } on ChatError catch (e) {
     }
     ```
-### Retrieve the number of groups joined by the current user
+### Retrieve the number of groups joined by the current user 
 
 Users can call `fetchJoinedGroupCount` to retrieve the number of groups they have joined directly from the server. The limit on the number of groups a user can join is determined by the pricing package. For more details, please refer to the [product pricing](../../../reference/pricing-plan-details#group).
 
@@ -641,10 +1008,20 @@ Refer to the following code sample to listen for chat group events:
         /// Occurs when an invitee receives a group invitation.
         onInvitationReceivedFromGroup: (groupId, groupName, inviter, reason) {},
 
+        /// Occurs when one or more members leave a chat group. All group members except those who left receive this callback.
+        /// Available since SDK v1.4.0.
+        onMembersExitedFromGroup: (groupId, userIds) {},
+
         /// Occurs when a member leaves a chat group.
+        /// Deprecated since SDK v1.4.0. Use onMembersExitedFromGroup instead.
         onMemberExitedFromGroup: (groupId, member) {},
 
+        /// Occurs when one or more members join a chat group. All group members except the new members receive this callback.
+        /// Available since SDK v1.4.0.
+        onMembersJoinedFromGroup: (groupId, userIds) {},
+
         /// Occurs when a user joins a chat group.
+        /// Deprecated since SDK v1.4.0. Use onMembersJoinedFromGroup instead.
         onMemberJoinedFromGroup: (groupId, member) {},
 
         /// Occurs when a member is added to the chat group mute list.
@@ -682,38 +1059,6 @@ Refer to the following code sample to listen for chat group events:
     /// Removes a group event listener.
     ChatClient.getInstance.groupManager.removeEventHandler('UNIQUE_HANDLER_ID');
 ```
-
-</PlatformStructured>
-
-<PlatformStructured platform="flutter">
-
-Chat groups enable real-time messaging among multiple users.
-
-This page shows how to use the Chat SDK to create and manage a chat group in your app.
-
-## Understand the tech
-
-The Chat SDK provides the `ChatGroup`, `ChatGroupManager`, and `ChatGroupEventHandler` classes for chat group management, which allows you to implement the following features:
-
-- Create and destroy a chat group
-- Join and leave a chat group
-- Retrieve the chat group attributes
-- Retrieve the chat group member list
-- Retrieve the chat group list
-- Block and unblock a chat group
-- Listen for chat group events
-
-## Prerequisites
-
-Before proceeding, ensure that you meet the following requirements:
-
-- You have initialized the Chat SDK. For details, see [SDK quickstart](../../../get-started-sdk).
-- You understand the call frequency limits of the Chat APIs supported by different pricing plans as described in [Limitations](../../limitations).
-- You understand the number of chat groups and chat group members supported by different pricing plans as described in [Pricing Plan Details](../../../reference/pricing-plan-details).
-
-## Implementation
-
-This section describes how to call the APIs provided by the Chat SDK to implement  features.
 
 </PlatformStructured>
 
@@ -760,14 +1105,14 @@ Set `GroupStyle` and `inviteNeedConfirm` before creating a chat group.
 2. Does a group invitation require consent from an invitee to add them to the group (`inviteNeedConfirm`):
 
 - Yes (`ChatGroupOptions#inviteNeedConfirm` is set to `true`). After creating a group and sending group invitations, the subsequent logic varies based on whether an invitee automatically consents to the group invitation (`autoAcceptGroupInvitation`):
-    - Yes (`autoAcceptGroupInvitation` is set to `true`). The invitee automatically joins the chat group and receives the `ChatGroupEventListener#onAutoAcceptInvitation` callback, the chat group owner receives the `ChatGroupEventListener#onInvitationAccepted` and `ChatGroupEventListener#onMemberJoined` callbacks, and the other chat group members receives the `ChatGroupEventListener#onMemberJoined` callback.
+    - Yes (`autoAcceptGroupInvitation` is set to `true`). The invitee automatically joins the chat group and receives the `ChatGroupEventListener#onAutoAcceptInvitation` callback, the chat group owner receives the `ChatGroupEventListener#onInvitationAccepted` and `ChatGroupEventListener#onMembersJoined` callbacks, and the other chat group members receives the `ChatGroupEventListener#onMembersJoined` callback.
     - No (`autoAcceptGroupInvitation` is set to `false`). The invitee receives the `ChatGroupEventListener#onInvitationReceived` callback and chooses whether to join the chat group:
-        - If the invitee accepts the group invitation, the chat group owner receives the `ChatGroupEventListener#onInvitationAccepted` and `ChatGroupEventListener#onMemberJoined` callbacks, and the other chat group members receive the `ChatGroupEventListener#onMemberJoined` callback;
+        - If the invitee accepts the group invitation, the chat group owner receives the `ChatGroupEventListener#onInvitationAccepted` and `ChatGroupEventListener#onMembersJoined` callbacks, and the other chat group members receive the `ChatGroupEventListener#onMembersJoined` callback;
         - If the invitee declines the group invitation, the chat group owner receives the `ChatGroupEventListener#onInvitationDeclined` callback.
 
 ![1653385689954](https://web-cdn.agora.io/docs-files/1653385689954)
 
-- No (`ChatGroupOptions#inviteNeedConfirm` is set to `false`). After creating a chat group and sending group invitations, an invitee is added to the chat group regardless of their `autoAcceptGroupInvitation` setting. The invitee receives the `ChatGroupEventListener#onAutoAcceptInvitation` callback, the chat group owner receives the `ChatGroupEventListener#onInvitationAccepted` and `ChatGroupEventListener#onMemberJoined` callbacks, and the other chat group members receive the `ChatGroupEventListener#onMemberJoined` callback.
+- No (`ChatGroupOptions#inviteNeedConfirm` is set to `false`). After creating a chat group and sending group invitations, an invitee is added to the chat group regardless of their `autoAcceptGroupInvitation` setting. The invitee receives the `ChatGroupEventListener#onAutoAcceptInvitation` callback, the chat group owner receives the `ChatGroupEventListener#onInvitationAccepted` and `ChatGroupEventListener#onMembersJoined` callbacks, and the other chat group members receive the `ChatGroupEventListener#onMembersJoined` callback.
 
 Users can call `createGroup` to create a chat group and set the chat group attributes such as the chat group name, description, maximum number of members, and reason for creating the group, by specifying `ChatGroupOptions`.
 
@@ -790,6 +1135,22 @@ ChatClient.getInstance()
   .catch((reason) => {
     console.log("create group fail.", reason);
   });
+```
+
+Since SDK v1.4.0, you can call `createGroupEx` to create a chat group, set the group attributes through `ChatGroupOptions`, and set the group avatar. The `createGroup` method is deprecated.
+
+```typescript
+ChatClient.getInstance().groupManager.createGroupEx({
+  // The group options. The key option is `style`, which sets the group type. See `ChatGroupStyle`.
+  options: new ChatGroupOptions({ style: ChatGroupStyle.PrivateOnlyOwnerInvite }),
+  // The group name, which cannot exceed 128 characters.
+  groupName: '<GROUP_NAME>',
+  // The group description, which cannot exceed 512 characters.
+  desc: '<GROUP_DESC>',
+  // The members to invite.
+  inviteMembers: ['<USER_ID_1>', '<USER_ID_2>'],
+  inviteReason: '<INVITE_REASON>',
+});
 ```
 
 ### Destroy a chat group
@@ -818,9 +1179,9 @@ ChatClient.getInstance()
 
 The logic of joining a chat group varies according to the `GroupStyle` setting you choose when [creating the chat group](./manage-chat-groups#create-a-chat-group):
 
-- If the `GroupStyle` is set to `PublicOpenJoin`, all users can join the chat group without the consent from the chat group owner and admins. Once a user joins a chat group, all chat group members receive the `ChatGroupEventListener#onMemberJoined` callback.
+- If the `GroupStyle` is set to `PublicOpenJoin`, all users can join the chat group without the consent from the chat group owner and admins. Once a user joins a chat group, all chat group members receive the `ChatGroupEventListener#onMembersJoined` callback.
 - If the `GroupStyle` is set to `PublicJoinNeedApproval`, users can send join requests to the chat group. The chat group owner and chat group admins receive the `ChatGroupEventListener#onRequestToJoinReceived` callback and choose whether to accept the join request:
-    - If the request is accepted, the user joins the chat group and receives the `ChatGroupEventListener#onRequestToJoinAccepted` callback, while all the other chat group members receive the `ChatGroupEventListener#onMemberJoined` callback.
+    - If the request is accepted, the user joins the chat group and receives the `ChatGroupEventListener#onRequestToJoinAccepted` callback, while all the other chat group members receive the `ChatGroupEventListener#onMembersJoined` callback.
     - If the request is declined, the user receives the `ChatGroupEventListener#onRequestToJoinDeclined` callback.
 
 :::info
@@ -865,7 +1226,7 @@ ChatClient.getInstance()
 
 ### Leave a chat group
 
-Chat group members can call `leaveGroup` to leave the specified chat group, whereas the chat group owner cannot perform this operation. Once a member leaves a chat group, all the other chat group members receive the `ChatGroupEventListener#onMemberExited` callback.
+Chat group members can call `leaveGroup` to leave the specified chat group, whereas the chat group owner cannot perform this operation. Once a member leaves a chat group, all the other chat group members receive the `ChatGroupEventListener#onMembersExited` callback.
 
 The following code sample shows how to leave a chat group:
 
@@ -929,6 +1290,22 @@ ChatClient.getInstance()
     console.log("get group info fail.", reason);
   });
 ```
+Since SDK v1.4.0, you can call `fetchMemberInfoListFromServer` to retrieve a member list in which each entry includes the member's user ID, role, and the time they joined the group:
+
+```typescript
+const groupId = '<GROUP_ID>';
+const cursor = ''; // The position to start from. Pass an empty string for the first page.
+const limit = 200; // The number of members to retrieve per page; the maximum depends on the server.
+ChatClient.getInstance()
+  .groupManager.fetchMemberInfoListFromServer(groupId, cursor, limit)
+  .then((result) => {
+    console.log('Fetch member info list result:', result);
+  })
+  .catch((error) => {
+    console.error('Error fetching member info list:', error);
+  });
+```
+
 ### Retrieve the chat group list
 
 - Users can call `fetchJoinedGroupsFromServer` to retrieve the joined chat group list from the server with pagination.
@@ -1186,11 +1563,23 @@ const groupListener: ChatGroupEventListener = new (class
       params.oldOwner
     );
   }
+  // Occurs when one or more members join a chat group. All group members except the new members receive this callback.
+  // Available since SDK v1.4.0.
+  onMembersJoined(params: { groupId: string; members: string[] }): void {
+    console.log(`onMembersJoined:`, params.groupId, params.members);
+  }
   // Occurs when a user joins a chat group.
+  // Deprecated since SDK v1.4.0. Use onMembersJoined instead.
   onMemberJoined(params: { groupId: string; member: string }): void {
     console.log(`onMemberJoined:`, params.groupId, params.member);
   }
+  // Occurs when one or more members leave a chat group. All group members except those who left receive this callback.
+  // Available since SDK v1.4.0.
+  onMembersExited(params: { groupId: string; members: string[] }): void {
+    console.log(`onMembersExited:`, params.groupId, params.members);
+  }
   // Occurs when a member leaves a chat group.
+  // Deprecated since SDK v1.4.0. Use onMembersExited instead.
   onMemberExited(params: { groupId: string; member: string }): void {
     console.log(`onMemberExited:`, params.groupId, params.member);
   }
@@ -1290,14 +1679,14 @@ Set `GroupStyle` and `inviteNeedConfirm` before creating a chat group.
 2. Does a group invitation require consent from an invitee to add them to the group (`inviteNeedConfirm`):
 
 - Yes (`option.InviteNeedConfirm` is set to `true`). After creating a group and sending group invitations, the subsequent logic varies based on whether an invitee automatically consents to the group invitation (`AutoAcceptGroupInvitation`):
-  - Yes (`AutoAcceptGroupInvitation` is set to `true`). The invitee automatically joins the chat group and receives the `IGroupManagerDelegate#OnAutoAcceptInvitationFromGroup` callback, the inviter receives the `IGroupManagerDelegate#OnInvitationAcceptedFromGroup` and `IGroupManagerDelegate#OnMemberJoinedFromGroup` callbacks, and all chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback.
+  - Yes (`AutoAcceptGroupInvitation` is set to `true`). The invitee automatically joins the chat group and receives the `IGroupManagerDelegate#OnAutoAcceptInvitationFromGroup` callback, the inviter receives the `IGroupManagerDelegate#OnInvitationAcceptedFromGroup` and `IGroupManagerDelegate#OnMembersJoinedFromGroup` callbacks, and all chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback.
   - No (`AutoAcceptGroupInvitation` is set to `false`). The invitee receives the `IGroupManagerDelegate#OnInvitationReceivedFromGroup` callback and chooses whether to join the chat group:
-    - If the invitee accepts the group invitation, the inviter receives the `IGroupManagerDelegate#OnInvitationAcceptedFromGroup` and `IGroupManagerDelegate#OnMemberJoinedFromGroup` callbacks and all chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback;
+    - If the invitee accepts the group invitation, the inviter receives the `IGroupManagerDelegate#OnInvitationAcceptedFromGroup` and `IGroupManagerDelegate#OnMembersJoinedFromGroup` callbacks and all chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback;
     - If the invitee declines the group invitation, the inviter receives the`IGroupManagerDelegate#OnInvitationDeclinedFromGroup` callback.
 
 ![Unity Windows chat group creation settings](https://assets-docs.agora.io/images/im/create_group_unity_windows.png)
 
-- No (`option.InviteNeedConfirm` is set to `false`). After creating a chat group and sending group invitations, an invitee is added to the chat group regardless of their `IsAutoAcceptGroupInvitation` setting. The invitee receives the `IGroupManagerDelegate#OnAutoAcceptInvitationFromGroup` callback, the inviter receives the `IGroupManagerDelegate#OnInvitationAcceptedFromGroup` and `IGroupManagerDelegate#OnMemberJoinedFromGroup` callbacks, and all chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback.
+- No (`option.InviteNeedConfirm` is set to `false`). After creating a chat group and sending group invitations, an invitee is added to the chat group regardless of their `IsAutoAcceptGroupInvitation` setting. The invitee receives the `IGroupManagerDelegate#OnAutoAcceptInvitationFromGroup` callback, the inviter receives the `IGroupManagerDelegate#OnInvitationAcceptedFromGroup` and `IGroupManagerDelegate#OnMembersJoinedFromGroup` callbacks, and all chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback.
 
 Users can call `CreateGroup` to create a chat group and set the chat group attributes such as the chat group name, description, maximum number of members, and reason for creating the group, by specifying `GroupOptions`.
 
@@ -1339,9 +1728,9 @@ SDKClient.Instance.GroupManager.DestroyGroup(groupId, new CallBack(
 
 The logic of joining a chat group varies according to the `GroupStyle` setting you choose when [creating the chat group](./group-overview#create-and-destroy-a-chat-group):
 
-- If the `GroupStyle` is set to `PublicOpenJoin`, all users can join the chat group without the consent from the inviter and admins. Once a user joins a chat group, all chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback;
+- If the `GroupStyle` is set to `PublicOpenJoin`, all users can join the chat group without the consent from the inviter and admins. Once a user joins a chat group, all chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback;
 - If the `GroupStyle` is set to `PublicJoinNeedApproval`, users can send join requests to the chat group. The inviter and chat group admins receive the `IGroupManagerDelegate#OnRequestToJoinReceivedFromGroup` callback and choose whether to approve the join request:
-  - If the request is accepted, the user joins the chat group and receives the `IGroupManagerDelegate#OnRequestToJoinAcceptedFromGroup` callback, while all chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback.
+  - If the request is accepted, the user joins the chat group and receives the `IGroupManagerDelegate#OnRequestToJoinAcceptedFromGroup` callback, while all chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback.
   - If the request is declined, the user receives the `IGroupManagerDelegate#OnRequestToJoinDeclinedFromGroup` callback.
 
 :::info
@@ -1380,7 +1769,7 @@ SDKClient.Instance.GroupManager.JoinPublicGroup(groupId, new CallBack(
 
 ### Leave a chat group
 
-Chat group members can call `LeaveGroup` to leave the specified chat group, whereas the inviter cannot perform this operation. Once a member leaves a chat group, all chat group members receive the `IGroupManagerDelegate#OnMemberExitedFromGroup` callback.
+Chat group members can call `LeaveGroup` to leave the specified chat group, whereas the inviter cannot perform this operation. Once a member leaves a chat group, all chat group members receive the `IGroupManagerDelegate#OnMembersExitedFromGroup` callback.
 
 The following code sample shows how to leave a chat group:
 
@@ -1431,6 +1820,15 @@ SDKClient.Instance.GroupManager.GetGroupMemberListFromServer(groupId, pageSize, 
   onError: (code, desc) =>
   {
   }
+));
+```
+
+Since SDK v1.4.0, you can call `FetchGroupMemberInfoFromServer` to retrieve a member list in which each entry includes the member's user ID, role, and the time they joined the group:
+
+```csharp
+SDKClient.Instance.GroupManager.FetchGroupMemberInfoFromServer(currentGroupId, cursor, pageSize, new ValueCallBack<CursorResult<GroupMemberInfo>>(
+    onSuccess: (result) => { },
+    onError: (code, error) => { }
 ));
 ```
 
@@ -1604,16 +2002,32 @@ public class GroupManagerDelegate : IGroupManagerDelegate {
     public void OnOwnerChangedFromGroup(string groupId, string newOwner, string oldOwner)
     {
     }
+    // Occurs when one or more members join a chat group. All group members except the new members receive this callback.
+    // Available since SDK v1.4.0.
+    public void OnMembersJoinedFromGroup(string groupId, List<string> members)
+    {
+    }
     // Occurs when a user joins a chat group.
+    // Deprecated since SDK v1.4.0. Use OnMembersJoinedFromGroup instead.
     public void OnMemberJoinedFromGroup(string groupId, string member)
     {
     }
+    // Occurs when one or more members leave a chat group. All group members except those who left receive this callback.
+    // Available since SDK v1.4.0.
+    public void OnMembersExitedFromGroup(string groupId, List<string> members)
+    {
+    }
     // Occurs when a member leaves a chat group.
+    // Deprecated since SDK v1.4.0. Use OnMembersExitedFromGroup instead.
     public void OnMemberExitedFromGroup(string groupId, string member)
     {
     }
     // Occurs when the chat group announcements are updated.
     public void OnAnnouncementChangedFromGroup(string groupId, string announcement)
+    {
+    }
+    // Occurs when the chat group details, such as the name, description, or avatar, change.
+    public void OnSpecificationChangedFromGroup(Group group)
     {
     }
     // Occurs when a shared file is uploaded to a chat group.
@@ -1692,14 +2106,14 @@ Set `GroupStyle` and `inviteNeedConfirm` before creating a chat group.
 2. Does a group invitation require consent from an invitee to add them to the group (`inviteNeedConfirm`):
 
 - Yes (`option.InviteNeedConfirm` is set to `true`). After creating a group and sending group invitations, the subsequent logic varies based on whether an invitee automatically consents to the group invitation (`AutoAcceptGroupInvitation`):
-  - Yes (`AutoAcceptGroupInvitation` is set to `true`). The invitee automatically joins the chat group and receives the `IGroupManagerDelegate#OnAutoAcceptInvitationFromGroup` callback, the chat group owner receives the `IGroupManagerDelegate#OnInvitationAcceptedFromGroup` and `IGroupManagerDelegate#OnMemberJoinedFromGroup` callbacks, and all chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback.
+  - Yes (`AutoAcceptGroupInvitation` is set to `true`). The invitee automatically joins the chat group and receives the `IGroupManagerDelegate#OnAutoAcceptInvitationFromGroup` callback, the chat group owner receives the `IGroupManagerDelegate#OnInvitationAcceptedFromGroup` and `IGroupManagerDelegate#OnMembersJoinedFromGroup` callbacks, and all chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback.
   - No (`AutoAcceptGroupInvitation` is set to `false`). The invitee receives the `IGroupManagerDelegate#OnInvitationReceivedFromGroup` callback and chooses whether to join the chat group:
-    - If the invitee accepts the group invitation, the inviter receives the `IGroupManagerDelegate#OnInvitationAcceptedFromGroup` and `IGroupManagerDelegate#OnMemberJoinedFromGroup` callbacks and the other chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback;
+    - If the invitee accepts the group invitation, the inviter receives the `IGroupManagerDelegate#OnInvitationAcceptedFromGroup` and `IGroupManagerDelegate#OnMembersJoinedFromGroup` callbacks and the other chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback;
     - If the invitee declines the group invitation, the inviter receives the`IGroupManagerDelegate#OnInvitationDeclinedFromGroup` callback.
 
 ![Unity Windows chat group creation settings](https://assets-docs.agora.io/images/im/create_group_unity_windows.png)
 
-- No (`option.InviteNeedConfirm` is set to `false`). After creating a chat group and sending group invitations, an invitee is added to the chat group regardless of their `IsAutoAcceptGroupInvitation` setting. The invitee receives the `IGroupManagerDelegate#OnAutoAcceptInvitationFromGroup` callback, the inviter receives the `IGroupManagerDelegate#OnInvitationAcceptedFromGroup` and `IGroupManagerDelegate#OnMemberJoinedFromGroup` callbacks, and the other chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback.
+- No (`option.InviteNeedConfirm` is set to `false`). After creating a chat group and sending group invitations, an invitee is added to the chat group regardless of their `IsAutoAcceptGroupInvitation` setting. The invitee receives the `IGroupManagerDelegate#OnAutoAcceptInvitationFromGroup` callback, the inviter receives the `IGroupManagerDelegate#OnInvitationAcceptedFromGroup` and `IGroupManagerDelegate#OnMembersJoinedFromGroup` callbacks, and the other chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback.
 
 Users can call `CreateGroup` to create a chat group and set the chat group attributes such as the chat group name, description, maximum number of members, and reason for creating the group, by specifying `GroupOptions`.
 
@@ -1741,9 +2155,9 @@ SDKClient.Instance.GroupManager.DestroyGroup(groupId, new CallBack(
 
 The logic of joining a chat group varies according to the `GroupStyle` setting you choose when [creating the chat group](./group-overview#create-and-destroy-a-chat-group):
 
-- If the `GroupStyle` is set to `PublicOpenJoin`, all users can join the chat group without the consent from the inviter and admins. Once a user joins a chat group, all chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback;
+- If the `GroupStyle` is set to `PublicOpenJoin`, all users can join the chat group without the consent from the inviter and admins. Once a user joins a chat group, all chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback;
 - If the `GroupStyle` is set to `PublicJoinNeedApproval`, users can send join requests to the chat group. The inviter and chat group admins receive the `IGroupManagerDelegate#OnRequestToJoinReceivedFromGroup` callback and choose whether to approve the join request:
-  - If the request is accepted, the user joins the chat group and receives the `IGroupManagerDelegate#OnRequestToJoinAcceptedFromGroup` callback, while all the other chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback.
+  - If the request is accepted, the user joins the chat group and receives the `IGroupManagerDelegate#OnRequestToJoinAcceptedFromGroup` callback, while all the other chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback.
   - If the request is declined, the user receives the `IGroupManagerDelegate#OnRequestToJoinDeclinedFromGroup` callback.
 
 :::info
@@ -1782,7 +2196,7 @@ SDKClient.Instance.GroupManager.JoinPublicGroup(groupId, new CallBack(
 
 ### Leave a chat group
 
-Chat group members can call `LeaveGroup` to leave the specified chat group, whereas the inviter cannot perform this operation. Once a member leaves a chat group, all the other chat group members receive the `IGroupManagerDelegate#OnMemberExitedFromGroup` callback.
+Chat group members can call `LeaveGroup` to leave the specified chat group, whereas the inviter cannot perform this operation. Once a member leaves a chat group, all the other chat group members receive the `IGroupManagerDelegate#OnMembersExitedFromGroup` callback.
 
 The following code sample shows how to leave a chat group:
 
@@ -1833,6 +2247,15 @@ SDKClient.Instance.GroupManager.GetGroupMemberListFromServer(groupId, pageSize, 
   onError: (code, desc) =>
   {
   }
+));
+```
+
+Since SDK v1.4.0, you can call `FetchGroupMemberInfoFromServer` to retrieve a member list in which each entry includes the member's user ID, role, and the time they joined the group:
+
+```csharp
+SDKClient.Instance.GroupManager.FetchGroupMemberInfoFromServer(currentGroupId, cursor, pageSize, new ValueCallBack<CursorResult<GroupMemberInfo>>(
+    onSuccess: (result) => { },
+    onError: (code, error) => { }
 ));
 ```
 
@@ -2006,16 +2429,32 @@ public class GroupManagerDelegate : IGroupManagerDelegate {
     public void OnOwnerChangedFromGroup(string groupId, string newOwner, string oldOwner)
     {
     }
+    // Occurs when one or more members join a chat group. All group members except the new members receive this callback.
+    // Available since SDK v1.4.0.
+    public void OnMembersJoinedFromGroup(string groupId, List<string> members)
+    {
+    }
     // Occurs when a user joins a chat group.
+    // Deprecated since SDK v1.4.0. Use OnMembersJoinedFromGroup instead.
     public void OnMemberJoinedFromGroup(string groupId, string member)
     {
     }
+    // Occurs when one or more members leave a chat group. All group members except those who left receive this callback.
+    // Available since SDK v1.4.0.
+    public void OnMembersExitedFromGroup(string groupId, List<string> members)
+    {
+    }
     // Occurs when a member leaves a chat group.
+    // Deprecated since SDK v1.4.0. Use OnMembersExitedFromGroup instead.
     public void OnMemberExitedFromGroup(string groupId, string member)
     {
     }
     // Occurs when the chat group announcements are updated.
     public void OnAnnouncementChangedFromGroup(string groupId, string announcement)
+    {
+    }
+    // Occurs when the chat group details, such as the name, description, or avatar, change.
+    public void OnSpecificationChangedFromGroup(Group group)
     {
     }
     // Occurs when a shared file is uploaded to a chat group.
@@ -2113,16 +2552,43 @@ const options = {
 chatClient.destroyGroup(options).then((res) => console.log(res));
 ```
 
+Since SDK v1.4.0, call `createGroupVNext` to create a chat group and set its attributes, including the group avatar and extension information. The `createGroup` method is deprecated.
+
+```javascript
+chatClient
+  .createGroupVNext({
+    groupName: "groupname",
+    avatar: "group avatar",
+    description: "this is my group",
+    members: ["user1", "user2"],
+    // Whether the group is public. Public groups can be found by group ID; private groups cannot.
+    isPublic: true,
+    // Whether join requests require approval by the group owner or admins. Only valid for public groups.
+    needApprovalToJoin: false,
+    // Whether regular members can invite others. Only valid for private groups.
+    allowMemberToInvite: true,
+    // Whether an invitee must confirm before joining.
+    inviteNeedConfirm: false,
+    // The maximum number of members. The default is 200; the upper limit depends on your pricing plan.
+    maxMemberCount: 200,
+    // Group extension information (up to 8 KB).
+    extension: JSON.stringify({ info: "group info" }),
+  })
+  .then((res) => {
+    console.log(res);
+  });
+```
+
 ### Join and leave a chat group
 
 Users can request to join a public chat group as follows:
 
 1. Call `getPublicGroups` to retrieve the list of public groups by page. Users can obtain the ID of the group that they want to join.
 2. Call `joinGroup` to send a join request to the chat group:
-   - If the `approval` parameter of the group type is set to `false`, the request from the user is accepted automatically and the chat group members receive the `memberPresence` callback.
+   - If the `approval` parameter of the group type is set to `false`, the request from the user is accepted automatically and the chat group members receive the `membersPresence` callback.
    - If the `approval` parameter is set to `true`, the chat group owner and chat group admins receive the `requestToJoin` callback and determine whether to accept the request from the user.
 
-Users can call `joinGroup` to leave a chat group. Once a user leaves the group, all the other group members receive the `memberAbsence` callback.
+Users can call `joinGroup` to leave a chat group. Once a user leaves the group, all the other group members receive the `membersAbsence` callback.
 
 Refer to the following sample code to join and leave a chat group:
 
@@ -2152,19 +2618,16 @@ chatClient.leaveGroup(options).then((res) => console.log(res));
 
 ### Retrieve the member list of a chat group
 
-Users can call `listGroupMembers` to retrieve the member list of a chat group by page.
-
-Refer to the following sample code to retrieve the member list of a chat group:
+Since SDK v1.4.0, call `getGroupMembers` to retrieve the chat group member list with pagination. Each entry includes the member's user ID, role, and the time they joined the group. The `listGroupMembers` method is deprecated.
 
 ```javascript
-let pageNum = 1,
-  pageSize = 1000;
-let options = {
-  pageNum: pageNum,
-  pageSize: pageSize,
-  groupId: "groupId",
-};
-chatClient.listGroupMembers(options).then((res) => console.log(res));
+// cursor: the position to start from. Pass an empty string for the first page; for subsequent pages, pass res.data.cursor from the previous result.
+// limit: the number of members to retrieve per page. The default is 50; the upper limit depends on the server.
+chatClient
+  .getGroupMembers({ cursor: "", limit: 50, groupId: "groupId" })
+  .then((res) => {
+    console.log(res);
+  });
 ```
 
 ### Listen for chat group events
@@ -2222,11 +2685,17 @@ chatClient.addEventHandler("handlerId", {
       // Occurs when an invitee accepts the group invitation automatically.
       case "directJoined":
         break;
-      // Occurs when a group member leaves a chat group.
+      // Occurs when a single group member leaves a chat group. Except the member who left, all group members receive this callback.
       case "memberAbsence":
         break;
-      // Occurs when a user joins a chat group.
+      // Occurs when one or more group members leave a chat group. Except the members who left, all group members receive this callback. Available since SDK v1.4.0.
+      case "membersAbsence":
+        break;
+      // Occurs when a single user joins a chat group. Except the new member, all group members receive this callback.
       case "memberPresence":
+        break;
+      // Occurs when one or more users join a chat group. Except the new members, all group members receive this callback. Available since SDK v1.4.0.
+      case "membersPresence":
         break;
       // Occurs when a user is removed from a chat group.
       case "removeMember":

@@ -239,7 +239,7 @@ In order to improve the security of the project, Agora uses a token (dynamic key
 #### HTTP request
 
 ```bash
-GET https://{host}/{org_name}/{app_name}/callbacks/storage/info
+GET https://{host}/app-id/{app_id}/callbacks/storage/info
 ```
 
 #### Path parameter
@@ -247,8 +247,7 @@ GET https://{host}/{org_name}/{app_name}/callbacks/storage/info
 | Parameter | Type | Description | Required |
 | :--------- | :----- | :----------------------------------------------------------- | :------- |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get Chat project information](../../get-started/enable#get-chat-project-information). | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get Chat project information](../../get-started/enable#get-chat-project-information). | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get Chat project information](../../get-started/enable#get-chat-project-information). | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 
 #### Request header
 
@@ -285,7 +284,7 @@ curl -X GET 'https://a1.easemob.com/easemob-demo/easeim/callbacks/storage/info' 
 ```json
 {
   "path": "/callbacks",
-  "uri": "https://XXXX/XXXX/XXXX/callbacks",
+  "uri": "https://XXXX/app-id/XXXX/callbacks",
   "timestamp": 1631193031254,
   "organization": "XXXX",
   "application": "8dfb1641-XXXX-XXXX-bbe9-d8d45a3be39f",
@@ -314,7 +313,7 @@ You can resend the callback data stored on the Chat server by date key. It is re
 #### HTTP request
 
 ```bash
-POST https://{host}/{org_name}/{app_name}/callbacks/storage/retry
+POST https://{host}/app-id/{app_id}/callbacks/storage/retry
 ```
 
 #### Path parameter
@@ -322,8 +321,7 @@ POST https://{host}/{org_name}/{app_name}/callbacks/storage/retry
 | Parameter | Type | Description | Required |
 | :--------- | :----- | :----------------------------------------------------------- | :------- |
 | `host` | String | The domain name assigned by the Agora Chat service to access RESTful APIs. For how to get the domain name, see [Get Chat project information](../../get-started/enable#get-chat-project-information). | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Agora Chat service. For how to get the organization name, see [Get Chat project information](../../get-started/enable#get-chat-project-information). | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Agora Chat service. For how to get the app name, see [Get Chat project information](../../get-started/enable#get-chat-project-information). | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 
 #### Request header
 
@@ -356,7 +354,7 @@ POST https://{host}/{org_name}/{app_name}/callbacks/storage/retry
 #### Request example
 
 ```bash
-curl -X POST 'https://XXXX/XXXX/XXXX/callback/storage/retry' \
+curl -X POST 'https://XXXX/app-id/XXXX/callback/storage/retry' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \
 -d '{
@@ -371,7 +369,7 @@ curl -X POST 'https://XXXX/XXXX/XXXX/callback/storage/retry' \
 ```json
 {
   "path": "/callbacks",
-  "uri": "https://XXXX/XXXX/XXXX/callbacks",
+  "uri": "https://XXXX/app-id/XXXX/callbacks",
   "timestamp": 1631194031721,
   "organization": "XXXX",
   "application": "8dfb1641-XXXX-XXXX-bbe9-d8d45a3be39f",

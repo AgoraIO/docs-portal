@@ -16,8 +16,7 @@ The following table lists common request and response parameters of the Chat RES
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Required |
 | :--------- | :----- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                                | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                 | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                                    | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
 
 <Slot for="username">
@@ -29,7 +28,7 @@ The unique login account of the user. The user ID must be 64 characters or less 
 - "\_", "-", "."
 
 :::info
-Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same app is unique. Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
+Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same App ID is unique. Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
 :::
 
 </Slot>
@@ -39,9 +38,9 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | Parameter | Type | Description |
 | :------------------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `action` | String | The request method. |
-| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. |
 | `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
-| `applicationName` | String | The unique identifier assigned to each app by the Chat service . This is the same as `app_name`. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service . |
 | `uri` | String | The request URI. |
 | `path` | String | The request path, which is part of the request URL. You can safely ignore this parameter. |
 | `entities ` | JSON | The response entity. |
@@ -83,7 +82,7 @@ This method sends a message to a peer user.
 #### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/messages/users
+POST https://{host}/app-id/{app_id}/messages/users
 ```
 
 ##### Path parameter
@@ -129,7 +128,7 @@ The request body is a JSON object, which contains the following parameters:
   | `filename` | String | The name of the image file. You are advised to pass in this parameter, or there is no image name displayed on the client that receives the message.  | No |
   | `secret` | String | The secret for accessing the image file. You can obtain the value of `secret` from the `share-secret` parameter in the response body of the [upload](#upload) method. If you set `restrict-access` as `true` in the request header of `upload` when uploading the image file, ensure that you set this parameter. | No |
   | `size` | JSON | The size of the image (in pixels). This parameter contains two fields:height: The image height.width: The image width. | No |
-  | `url` | String | The URL address of the image file, in the format of `https://{host}/{org_name}/{app_name}/chatfiles/{file_uuid}`, in which `file_uuid` can be obtained from the response body of `upload` after you upload the file to the server. | Yes |
+  | `url` | String | The URL address of the image file, in the format of `https://{host}/app-id/{app_id}/chatfiles/{file_uuid}`, in which `file_uuid` can be obtained from the response body of `upload` after you upload the file to the server. | Yes |
 
 - Voice message
 
@@ -138,19 +137,19 @@ The request body is a JSON object, which contains the following parameters:
   | `filename` | String | The name of the audio file. You are advised to pass in this parameter, or there is no voice file name displayed on the client that receives the message. | No |
   | `secret` | String | The secret for accessing the audio file. You can obtain the value of `secret` from the `share-secret` parameter in the response body of the [upload](#upload) method. If you set `restrict-access` as `true` in the request header of `upload` when uploading the audio file, ensure that you set this parameter. | No |
   | `length` | Int | The length of the audio file (in seconds). | No |
-  | `url` | String | The URL address of the audio file, in the format of `https://{host}/{org_name}/{app_name}/chatfiles/{file_uuid}`, in which `file_uuid` can be obtained from the response body of `upload` after you upload the file to the server. | Yes |
+  | `url` | String | The URL address of the audio file, in the format of `https://{host}/app-id/{app_id}/chatfiles/{file_uuid}`, in which `file_uuid` can be obtained from the response body of `upload` after you upload the file to the server. | Yes |
 
 - Video message
 
   | Parameter | Type | Description | Required |
   | --- | --- | --- | --- |
   | `filename` | String | The name of the video file. You are advised to pass in this parameter, or there is no video file name displayed on the client that receives the message. | No |
-  | `thumb` | String | The URL address of the video thumbnail, in the format of `https://{host}/{org_name}/{app_name}/chatfiles/{file_uuid}`, in which `file_uuid` can be obtained from the response body of `upload` after you upload the file to the server. | No |
+  | `thumb` | String | The URL address of the video thumbnail, in the format of `https://{host}/app-id/{app_id}/chatfiles/{file_uuid}`, in which `file_uuid` can be obtained from the response body of `upload` after you upload the file to the server. | No |
   | `length` | Int | The length of the video file (in seconds). | No |
   | `secret` | String | The secret for accessing the video file. You can obtain the value of `secret` from the `share-secret` parameter in the response body of the [upload](#upload) method. If you set `restrict-access` as `true` in the request header of `upload` when uploading the video file, ensure that you set this parameter. | No |
   | `file_length` | Long | The data length of the video file (in bytes). | No |
   | `thumb_secret` | String | The secret for accessing the video thumbnail. You can obtain the value of `thumb_secret` from the `share-secret` parameter in the response body of the [upload](#upload) method. If you set `restrict-access` as `true` in the request header of `upload` when uploading the thumbnail, ensure that you set this parameter. | No |
-  | `url` | String | The URL address of the video file, in the format of `https://{host}/{org_name}/{app_name}/chatfiles/{file_uuid}`, in which `file_uuid` can be obtained from the response body of `upload` after you upload the file to the server. | Yes |
+  | `url` | String | The URL address of the video file, in the format of `https://{host}/app-id/{app_id}/chatfiles/{file_uuid}`, in which `file_uuid` can be obtained from the response body of `upload` after you upload the file to the server. | Yes |
 
 - File message
 
@@ -158,7 +157,7 @@ The request body is a JSON object, which contains the following parameters:
   | --- | --- | --- | --- |
   | `filename` | String | The name of the file. You are advised to pass in this parameter, or there is no file name displayed on the client that receives the message. | Yes |
   | `secret` | String | The secret for accessing the file. You can obtain the value of `secret` from the `share-secret` parameter in the response body of the [upload](#upload) method. If you set `restrict-access` as `true` in the request header of `upload` when uploading file, ensure that you set this parameter. | No |
-  | `url` | String | The URL address of the file, in the format of `https://{host}/{org_name}/{app_name}/chatfiles/{file_uuid}`, in which `file_uuid` can be obtained from the response body of `upload` after you upload the file to the server. | Yes |
+  | `url` | String | The URL address of the file, in the format of `https://{host}/app-id/{app_id}/chatfiles/{file_uuid}`, in which `file_uuid` can be obtained from the response body of `upload` after you upload the file to the server. | Yes |
 
 - Location message
 
@@ -203,62 +202,62 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'http://XXXX/XXXX/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["user2"],"type": "txt","body": {"msg": "testmessages"},"roam_ignore_users": [],"ext": {"em_ignore_notification": true}}'
+    curl -X POST -i 'http://XXXX/app-id/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["user2"],"type": "txt","body": {"msg": "testmessages"},"roam_ignore_users": [],"ext": {"em_ignore_notification": true}}'
     ```
 
 - Send a text message to the online user while synchronizing the message with the sender
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'http://XXXX/XXXX/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["user2"],"type": "txt","body": {"msg": "testmessages"},"ext": {"em_ignore_notification": true},"routetype":"ROUTE_ONLINE", "sync_device":true}'    ```
+    curl -X POST -i 'http://XXXX/app-id/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["user2"],"type": "txt","body": {"msg": "testmessages"},"ext": {"em_ignore_notification": true},"routetype":"ROUTE_ONLINE", "sync_device":true}'    ```
 
 - Send an image message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["user2"],"type": "img","body": {"filename":"testimg.jpg","secret":"VfXXXXNb_","url":"https://XXXX/XXXX/XXXX/chatfiles/55f12940-XXXX-XXXX-8a5b-ff2336f03252","size":{"width":480,"height":720}}}'
+    curl -X POST -i 'https://XXXX/app-id/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["user2"],"type": "img","body": {"filename":"testimg.jpg","secret":"VfXXXXNb_","url":"https://XXXX/app-id/XXXX/chatfiles/55f12940-XXXX-XXXX-8a5b-ff2336f03252","size":{"width":480,"height":720}}}'
     ```
 
 - Send a voice message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["user2"],"type": "audio","body": {"url": "https://XXXX/XXXX/XXXX/chatfiles/1dfc7f50-XXXX-XXXX-8a07-7d75b8fb3d42","filename": "testaudio.amr","length": 10,"secret": "HfXXXXCjM"}}'
+    curl -X POST -i 'https://XXXX/app-id/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["user2"],"type": "audio","body": {"url": "https://XXXX/app-id/XXXX/chatfiles/1dfc7f50-XXXX-XXXX-8a07-7d75b8fb3d42","filename": "testaudio.amr","length": 10,"secret": "HfXXXXCjM"}}'
     ```
 
 - Send a video message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d  '{"from": "user1","to": ["user2"],"type": "video","body": {"filename":"testvideo.avi","thumb" : "https://XXXX/XXXX/XXXX/chatfiles/67279b20-7f69-11e4-8eee-21d3334b3a97","length" : 0,"secret":"VfXXXXNb_","file_length" : 58103,"thumb_secret" : "ZyXXXX2I","url" : "https://XXXX/XXXX/XXXX/chatfiles/671dfe30-XXXX-XXXX-ba67-8fef0d502f46"}}'
+    curl -X POST -i 'https://XXXX/app-id/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d  '{"from": "user1","to": ["user2"],"type": "video","body": {"filename":"testvideo.avi","thumb" : "https://XXXX/app-id/XXXX/chatfiles/67279b20-7f69-11e4-8eee-21d3334b3a97","length" : 0,"secret":"VfXXXXNb_","file_length" : 58103,"thumb_secret" : "ZyXXXX2I","url" : "https://XXXX/app-id/XXXX/chatfiles/671dfe30-XXXX-XXXX-ba67-8fef0d502f46"}}'
     ```
 
 - Send a file message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["user2"],"type": "file","body": {"filename":"test.txt","secret":"1-g0XXXXua","url":"https://XXXX/XXXX/XXXX/chatfiles/d7eXXXX7444"}}'
+    curl -X POST -i 'https://XXXX/app-id/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["user2"],"type": "file","body": {"filename":"test.txt","secret":"1-g0XXXXua","url":"https://XXXX/app-id/XXXX/chatfiles/d7eXXXX7444"}}'
     ```
 
 - Send a location message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i "https://XXXX/XXXX/XXXX/messages/users"  -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["user2"],"type": "loc","body":{"lat": "39.966","lng":"116.322","addr":"North America"}}'
+    curl -X POST -i "https://XXXX/app-id/XXXX/messages/users"  -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["user2"],"type": "loc","body":{"lat": "39.966","lng":"116.322","addr":"North America"}}'
     ```
 
 - Send a CMD message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i "https://XXXX/XXXX/XXXX/messages/users" -H 'Content-Type: application/json' -H 'Accept: application/json'  -H "Authorization:Bearer {YourToken}" -d '{"from": "user1","to": ["user2"],"type": "cmd","body":{"action":"action1"}}'
+    curl -X POST -i "https://XXXX/app-id/XXXX/messages/users" -H 'Content-Type: application/json' -H 'Accept: application/json'  -H "Authorization:Bearer {YourToken}" -d '{"from": "user1","to": ["user2"],"type": "cmd","body":{"action":"action1"}}'
     ```
 
  - Send a custom message
 
    ```bash
    # Replace {YourToken} with the app token generated on your server
-   curl -X POST -i "https://XXXX/XXXX/XXXX/messages/users" \
+   curl -X POST -i "https://XXXX/app-id/XXXX/messages/users" \
    -H 'Content-Type: application/json' \
    -H 'Accept: application/json' \
    -H "Authorization:Bearer " \
@@ -282,7 +281,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/users",
-        "uri": "https://XXXX/XXXX/XXXX/messages/users",
+        "uri": "https://XXXX/app-id/XXXX/messages/users",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -300,7 +299,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/users",
-        "uri": "https://XXXX/XXXX/XXXX/messages/users",
+        "uri": "https://XXXX/app-id/XXXX/messages/users",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -318,7 +317,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/users",
-        "uri": "https://XXXX/XXXX/XXXX/messages/users",
+        "uri": "https://XXXX/app-id/XXXX/messages/users",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -336,7 +335,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/users",
-        "uri": "https://XXXX/XXXX/XXXX/messages/users",
+        "uri": "https://XXXX/app-id/XXXX/messages/users",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -354,7 +353,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/users",
-        "uri": "https://XXXX/XXXX/XXXX/messages/users",
+        "uri": "https://XXXX/app-id/XXXX/messages/users",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -372,7 +371,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/users",
-        "uri": "https://XXXX/XXXX/XXXX/messages/users",
+        "uri": "https://XXXX/app-id/XXXX/messages/users",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -390,7 +389,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/users",
-        "uri": "https://XXXX/XXXX/XXXX/messages/users",
+        "uri": "https://XXXX/app-id/XXXX/messages/users",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -408,7 +407,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/users",
-        "uri": "https://XXXX/XXXX/XXXX/messages/users",
+        "uri": "https://XXXX/app-id/XXXX/messages/users",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -426,7 +425,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/messages/chatgroups
+POST https://{host}/app-id/{app_id}/messages/chatgroups
 ```
 
 ##### Path parameter
@@ -474,7 +473,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
     ```bash
     # Replace {YourAppToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/chatgroups'
+    curl -X POST -i 'https://XXXX/app-id/XXXX/messages/chatgroups'
     -H 'Content-Type: application/json'
     -H 'Accept: application/json'
     -H 'Authorization: Bearer '
@@ -498,7 +497,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-        curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/chatgroups'
+        curl -X POST -i 'https://XXXX/app-id/XXXX/messages/chatgroups'
         -H 'Content-Type: application/json'
         -H 'Accept: application/json'
         -H 'Authorization: Bearer '
@@ -521,49 +520,49 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/chatgroups' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["184524748161025"],"type": "img","body": {"filename":"testimg.jpg","secret":"VfXXXXNb_","url":"https://XXXX/XXXX/XXXX/chatfiles/55f12940-XXXX-XXXX-8a5b-ff2336f03252","size":{"width":480,"height":720}}}'
+    curl -X POST -i 'https://XXXX/app-id/XXXX/messages/chatgroups' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["184524748161025"],"type": "img","body": {"filename":"testimg.jpg","secret":"VfXXXXNb_","url":"https://XXXX/app-id/XXXX/chatfiles/55f12940-XXXX-XXXX-8a5b-ff2336f03252","size":{"width":480,"height":720}}}'
     ```
 
 - Send a voice message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/chatgroups' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["184524748161025"],"type": "audio","body": {"url": "https://XXXX/XXXX/XXXX/chatfiles/1dfc7f50-XXXX-XXXX-8a07-7d75b8fb3d42","filename": "testaudio.amr","length": 10,"secret": "HfXXXXCjM"}}'
+    curl -X POST -i 'https://XXXX/app-id/XXXX/messages/chatgroups' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["184524748161025"],"type": "audio","body": {"url": "https://XXXX/app-id/XXXX/chatfiles/1dfc7f50-XXXX-XXXX-8a07-7d75b8fb3d42","filename": "testaudio.amr","length": 10,"secret": "HfXXXXCjM"}}'
     ```
 
 - Send a video message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/chatgroups' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d  '{"from": "user1","to": ["184524748161025"],"type": "video","body": {"filename" : "testvideo.avi","thumb" : "https://XXXX/XXXX/XXXX/chatfiles/67279b20-7f69-11e4-8eee-21d3334b3a97","length" : 0,"secret":"VfXXXXNb_","file_length" : 58103,"thumb_secret" : "ZyXXXX2I","url" : "https://XXXX/XXXX/XXXX/chatfiles/671dfe30-XXXX-XXXX-ba67-8fef0d502f46"}}'
+    curl -X POST -i 'https://XXXX/app-id/XXXX/messages/chatgroups' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d  '{"from": "user1","to": ["184524748161025"],"type": "video","body": {"filename" : "testvideo.avi","thumb" : "https://XXXX/app-id/XXXX/chatfiles/67279b20-7f69-11e4-8eee-21d3334b3a97","length" : 0,"secret":"VfXXXXNb_","file_length" : 58103,"thumb_secret" : "ZyXXXX2I","url" : "https://XXXX/app-id/XXXX/chatfiles/671dfe30-XXXX-XXXX-ba67-8fef0d502f46"}}'
     ```
 
 - Send a file message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/chatgroups' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["184524748161025"],"type": "file","body": {"filename":"test.txt","secret":"1-g0XXXXua","url":"https://XXXX/XXXX/XXXX/chatfiles/d7eXXXX7444"}}'
+    curl -X POST -i 'https://XXXX/app-id/XXXX/messages/chatgroups' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["184524748161025"],"type": "file","body": {"filename":"test.txt","secret":"1-g0XXXXua","url":"https://XXXX/app-id/XXXX/chatfiles/d7eXXXX7444"}}'
     ```
 
 - Send a location message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i "https://XXXX/XXXX/XXXX/messages/chatgroups"  -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["184524748161025"],"type": "loc","body":{"lat": "39.966","lng":"116.322","addr":"North America"}}'
+    curl -X POST -i "https://XXXX/app-id/XXXX/messages/chatgroups"  -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["184524748161025"],"type": "loc","body":{"lat": "39.966","lng":"116.322","addr":"North America"}}'
     ```
 
 - Send a CMD message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i "https://XXXX/XXXX/XXXX/messages/chatgroups" -H 'Content-Type: application/json' -H 'Accept: application/json'  -H "Authorization:Bearer {YourToken}" -d '{"from": "user1","to": ["184524748161025"],"type": "cmd","body":{"action":"action1"}}'
+    curl -X POST -i "https://XXXX/app-id/XXXX/messages/chatgroups" -H 'Content-Type: application/json' -H 'Accept: application/json'  -H "Authorization:Bearer {YourToken}" -d '{"from": "user1","to": ["184524748161025"],"type": "cmd","body":{"action":"action1"}}'
     ```
 
 - Send a Custom message
 
    ```bash
    # Replace {YourToken} with the app token generated on your server
-   curl -X POST -i "https://XXXX/XXXX/XXXX/messages/chatgroups" \
+   curl -X POST -i "https://XXXX/app-id/XXXX/messages/chatgroups" \
    -H 'Content-Type: application/json' \
    -H 'Accept: application/json'  \
    -H "Authorization:Bearer " \
@@ -587,7 +586,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/chatgroups",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatgroups",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatgroups",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -605,7 +604,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/chatgroups",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatgroups",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatgroups",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -623,7 +622,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```bash
     {
         "path": "/messages/chatgroups",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatgroups",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatgroups",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -641,7 +640,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```bash
     {
         "path": "/messages/chatgroups",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatgroups",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatgroups",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -659,7 +658,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```bash
     {
         "path": "/messages/chatgroups",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatgroups",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatgroups",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -677,7 +676,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```bash
     {
         "path": "/messages/chatgroups",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatgroups",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatgroups",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -695,7 +694,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```bash
     {
         "path": "/messages/chatgroups",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatgroups",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatgroups",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -713,7 +712,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```bash
     {
         "path": "/messages/chatgroups",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatgroups",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatgroups",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -739,7 +738,7 @@ Even high-priorities messages can be dropped when the server load goes too high.
 #### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/messages/chatrooms
+POST https://{host}/app-id/{app_id}/messages/chatrooms
 ```
 
 ##### Path parameter
@@ -787,56 +786,56 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'http://XXXX/XXXX/XXXX/messages/chatrooms' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["185145305923585"],"type": "txt","body": {"msg": "testmessages"},"roam_ignore_users": []}'
+    curl -X POST -i 'http://XXXX/app-id/XXXX/messages/chatrooms' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["185145305923585"],"type": "txt","body": {"msg": "testmessages"},"roam_ignore_users": []}'
     ```
 
 - Send an image message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/chatrooms' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["185145305923585"],"type": "img","body": {"filename":"testimg.jpg","secret":"VfXXXXNb_","url":"https://XXXX/XXXX/XXXX/chatfiles/55f12940-XXXX-XXXX-8a5b-ff2336f03252","size":{"width":480,"height":720}}}'
+    curl -X POST -i 'https://XXXX/app-id/XXXX/messages/chatrooms' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["185145305923585"],"type": "img","body": {"filename":"testimg.jpg","secret":"VfXXXXNb_","url":"https://XXXX/app-id/XXXX/chatfiles/55f12940-XXXX-XXXX-8a5b-ff2336f03252","size":{"width":480,"height":720}}}'
     ```
 
 - Send a voice message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/chatrooms' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["185145305923585"],"type": "audio","body": {"url": "https://XXXX/XXXX/XXXX/chatfiles/1dfc7f50-XXXX-XXXX-8a07-7d75b8fb3d42","filename": "testaudio.amr","length": 10,"secret": "HfXXXXCjM"}}'
+    curl -X POST -i 'https://XXXX/app-id/XXXX/messages/chatrooms' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["185145305923585"],"type": "audio","body": {"url": "https://XXXX/app-id/XXXX/chatfiles/1dfc7f50-XXXX-XXXX-8a07-7d75b8fb3d42","filename": "testaudio.amr","length": 10,"secret": "HfXXXXCjM"}}'
     ```
 
 - Send a video message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/chatrooms' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d  '{"from": "user1","to": ["185145305923585"],"type": "video","body": {"filename":"testvideo.avi","thumb" : "https://XXXX/XXXX/XXXX/chatfiles/67279b20-7f69-11e4-8eee-21d3334b3a97","length" : 0,"secret":"VfXXXXNb_","file_length" : 58103,"thumb_secret" : "ZyXXXX2I","url" : "https://XXXX/XXXX/XXXX/chatfiles/671dfe30-XXXX-XXXX-ba67-8fef0d502f46"}}'
+    curl -X POST -i 'https://XXXX/app-id/XXXX/messages/chatrooms' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d  '{"from": "user1","to": ["185145305923585"],"type": "video","body": {"filename":"testvideo.avi","thumb" : "https://XXXX/app-id/XXXX/chatfiles/67279b20-7f69-11e4-8eee-21d3334b3a97","length" : 0,"secret":"VfXXXXNb_","file_length" : 58103,"thumb_secret" : "ZyXXXX2I","url" : "https://XXXX/app-id/XXXX/chatfiles/671dfe30-XXXX-XXXX-ba67-8fef0d502f46"}}'
     ```
 
 - Send a file message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/chatrooms' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["185145305923585"],"type": "file","body": {"filename":"test.txt","secret":"1-g0XXXXua","url":"https://XXXX/XXXX/XXXX/chatfiles/d7eXXXX7444"}}'
+    curl -X POST -i 'https://XXXX/app-id/XXXX/messages/chatrooms' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["185145305923585"],"type": "file","body": {"filename":"test.txt","secret":"1-g0XXXXua","url":"https://XXXX/app-id/XXXX/chatfiles/d7eXXXX7444"}}'
     ```
 
 - Send a location message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i "https://XXXX/XXXX/XXXX/messages/chatrooms"  -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["185145305923585"],"type": "loc","body":{"lat": "39.966","lng":"116.322","addr":"North America"}}'
+    curl -X POST -i "https://XXXX/app-id/XXXX/messages/chatrooms"  -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["185145305923585"],"type": "loc","body":{"lat": "39.966","lng":"116.322","addr":"North America"}}'
     ```
 
 - Send a CMD message
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i "https://XXXX/XXXX/XXXX/messages/chatrooms" -H 'Content-Type: application/json' -H 'Accept: application/json'  -H "Authorization:Bearer {YourToken}" -d '{"from": "user1","to": ["185145305923585"],"type": "cmd","body":{"action":"action1"}}'
+    curl -X POST -i "https://XXXX/app-id/XXXX/messages/chatrooms" -H 'Content-Type: application/json' -H 'Accept: application/json'  -H "Authorization:Bearer {YourToken}" -d '{"from": "user1","to": ["185145305923585"],"type": "cmd","body":{"action":"action1"}}'
     ```
 
 - Send a custom message
 
    ```bash
    # Replace {YourToken} with the app token generated on your server
-   curl -X POST -i "https://XXXX/XXXX/XXXX/messages/chatrooms" \
+   curl -X POST -i "https://XXXX/app-id/XXXX/messages/chatrooms" \
    -H 'Content-Type: application/json' \
    -H 'Accept: application/json' \
    -H "Authorization:Bearer " \
@@ -860,7 +859,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/chatrooms",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatrooms",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatrooms",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -878,7 +877,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/chatrooms",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatrooms",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatrooms",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -896,7 +895,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/chatrooms",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatrooms",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatrooms",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -914,7 +913,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/chatrooms",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatrooms",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatrooms",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -932,7 +931,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/chatrooms",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatrooms",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatrooms",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -950,7 +949,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/chatrooms",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatrooms",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatrooms",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -968,7 +967,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/chatrooms",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatrooms",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatrooms",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -986,7 +985,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     ```json
     {
         "path": "/messages/chatrooms",
-        "uri": "https://XXXX/XXXX/XXXX/messages/chatrooms",
+        "uri": "https://XXXX/app-id/XXXX/messages/chatrooms",
         "timestamp": 1657254052191,
         "organization": "XXXX",
         "application": "e82bcc5f-XXXX-XXXX-a7c1-92de917ea2b0",
@@ -1009,7 +1008,7 @@ For each App Key, the call frequency limit of this method is 10 per minute and 1
 #### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/messages/chatrooms/broadcast
+POST https://{host}/app-id/{app_id}/messages/chatrooms/broadcast
 ```
 
 ##### Path parameter
@@ -1062,7 +1061,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
     ```bash
     # Replace {YourAppToken} with the app token generated in your server.
-    curl -L 'https://XXXX/XXXX/XXXX/messages/chatrooms/broadcast' \
+    curl -L 'https://XXXX/app-id/XXXX/messages/chatrooms/broadcast' \
     -H 'Content-Type: application/json' \
     -H 'Authorization: Bearer ' \
     -d '{
@@ -1082,7 +1081,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
     ```bash
     # Replace {YourAppToken} with the app token generated in your server.
-    curl -L 'https://XXXX/XXXX/XXXX/messages/chatrooms/broadcast' \
+    curl -L 'https://XXXX/app-id/XXXX/messages/chatrooms/broadcast' \
     -H 'Content-Type: application/json' \
     -H 'Authorization: Bearer ' \
     -d '{
@@ -1090,7 +1089,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
             "type": "img",
             "filename":"testimg.jpg",
             "secret":"VfXXXXNb_",
-            "url":"https://XXXX/XXXX/XXXX/chatfiles/55f12940-XXXX-XXXX-8a5b-ff2336f03252",
+            "url":"https://XXXX/app-id/XXXX/chatfiles/55f12940-XXXX-XXXX-8a5b-ff2336f03252",
             "size":{
                "width":480,
                "height":720
@@ -1108,13 +1107,13 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
     ```bash
     # Replace {YourAppToken} with the app token generated in your server.
-    curl -L 'https://XXXX/XXXX/XXXX/messages/chatrooms/broadcast' \
+    curl -L 'https://XXXX/app-id/XXXX/messages/chatrooms/broadcast' \
     -H 'Content-Type: application/json' \
     -H 'Authorization: Bearer ' \
     -d '{
         "msg": {
             "type": "audio",
-            "url": "https://XXXX/XXXX/XXXX/chatfiles/1dfc7f50-XXXX-XXXX-8a07-7d75b8fb3d42",
+            "url": "https://XXXX/app-id/XXXX/chatfiles/1dfc7f50-XXXX-XXXX-8a07-7d75b8fb3d42",
             "filename": "testaudio.amr",
             "length": 10,
             "secret": "HfXXXXCjM"
@@ -1131,18 +1130,18 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
     ```bash
     # Replace {YourAppToken} with the app token generated in your server.
-    curl -L 'https://XXXX/XXXX/XXXX/messages/chatrooms/broadcast' \
+    curl -L 'https://XXXX/app-id/XXXX/messages/chatrooms/broadcast' \
     -H 'Content-Type: application/json' \
     -H 'Authorization: Bearer ' \
     -d '{
         "msg": {
             "type": "video",
-            "thumb" : "https://XXXX/XXXX/XXXX/chatfiles/67279b20-7f69-11e4-8eee-21d3334b3a97",
+            "thumb" : "https://XXXX/app-id/XXXX/chatfiles/67279b20-7f69-11e4-8eee-21d3334b3a97",
             "length" : 0,
             "secret":"VfXXXXNb_",
             "file_length" : 58103,
             "thumb_secret" : "ZyXXXX2I",
-            "url" : "https://XXXX/XXXX/XXXX/chatfiles/671dfe30-XXXX-XXXX-ba67-8fef0d502f46"
+            "url" : "https://XXXX/app-id/XXXX/chatfiles/671dfe30-XXXX-XXXX-ba67-8fef0d502f46"
         },
         "from": "admin",
         "ext": {
@@ -1156,7 +1155,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
     ```bash
     # Replace {YourAppToken} with the app token generated in your server.
-    curl -L 'https://XXXX/XXXX/XXXX/messages/chatrooms/broadcast' \
+    curl -L 'https://XXXX/app-id/XXXX/messages/chatrooms/broadcast' \
     -H 'Content-Type: application/json' \
     -H 'Authorization: Bearer ' \
     -d '{
@@ -1164,7 +1163,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
             "type": "file",
             "filename":"test.txt",
             "secret":"1-g0XXXXua",
-            "url":"https://XXXX/XXXX/XXXX/chatfiles/d7eXXXX7444"
+            "url":"https://XXXX/app-id/XXXX/chatfiles/d7eXXXX7444"
         },
         "from": "admin",
         "ext": {
@@ -1178,7 +1177,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
     ```bash
     # Replace {YourAppToken} with the app token generated in your server.
-    curl -L 'https://XXXX/XXXX/XXXX/messages/chatrooms/broadcast' \
+    curl -L 'https://XXXX/app-id/XXXX/messages/chatrooms/broadcast' \
     -H 'Content-Type: application/json' \
     -H 'Authorization: Bearer ' \
     -d '{
@@ -1200,7 +1199,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
     ```bash
     # Replace {YourAppToken} with the app token generated in your server.
-    curl -L 'https://XXXX/XXXX/XXXX/messages/chatrooms/broadcast' \
+    curl -L 'https://XXXX/app-id/XXXX/messages/chatrooms/broadcast' \
     -H 'Content-Type: application/json' \
     -H 'Authorization: Bearer ' \
     -d '{
@@ -1220,7 +1219,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
     ```bash
     # Replace {YourAppToken} with the app token generated in your server.
-    curl -L 'https://XXXX/XXXX/XXXX/messages/chatrooms/broadcast' \
+    curl -L 'https://XXXX/app-id/XXXX/messages/chatrooms/broadcast' \
     -H 'Content-Type: application/json' \
     -H 'Authorization: Bearer ' \
     -d '{
@@ -1241,7 +1240,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 ```json
 {
   "path": "/messages/chatrooms/broadcast",
-  "uri": "https://XXXX/XXXX/XXXX/messages/chatrooms/broadcast",
+  "uri": "https://XXXX/app-id/XXXX/messages/chatrooms/broadcast",
   "timestamp": 1699944653964,
   "organization": "XXXX",
   "application": "331d42e6-ad85-460f-b6b0-d1fb6fef9f12",
@@ -1288,7 +1287,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/chatfiles
+POST https://{host}/app-id/{app_id}/chatfiles
 ```
 
 #### Path parameter
@@ -1335,7 +1334,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourAppToken} with the app token generated on your server, and the path of file with the local full path where the file to be uploaded is located
-curl -X POST 'https://XXXX/XXXX/XXXX/chatfiles' -H 'Authorization: Bearer ' -H 'Content-Type: multipart/form-data; boundary=---WebKitFormBoundary7MA4YWxkTrZu0gW' -H 'restrict-access: true' -H 'thumbnail-height: 180' -H 'thumbnail-width: 180' -F 'file="@/Users/test/9.2/agora/image/IMG_2953.JPG"'
+curl -X POST 'https://XXXX/app-id/XXXX/chatfiles' -H 'Authorization: Bearer ' -H 'Content-Type: multipart/form-data; boundary=---WebKitFormBoundary7MA4YWxkTrZu0gW' -H 'restrict-access: true' -H 'thumbnail-height: 180' -H 'thumbnail-width: 180' -F 'file="@/Users/test/9.2/agora/image/IMG_2953.JPG"'
 ```
 
 #### Response example
@@ -1345,7 +1344,7 @@ curl -X POST 'https://XXXX/XXXX/XXXX/chatfiles' -H 'Authorization: Bearer ' -H '
     "action": "post",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
     "path": "/chatfiles",
-    "uri": "https://XXXX/XXXX/XXXX/chatfiles",
+    "uri": "https://XXXX/app-id/XXXX/chatfiles",
     "entities": [
         {
             "uuid": "5fd74830-XXXX-XXXX-822a-81ea50bb049d",
@@ -1369,7 +1368,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/chatfiles/{file_uuid}
+GET https://{host}/app-id/{app_id}/chatfiles/{file_uuid}
 ```
 
 #### Path parameter
@@ -1402,7 +1401,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourToken} with the app token generated on your server, and the path of file with the local full path where the file to be downloaded is located
-curl -X GET -H 'Accept: application/octet-stream' -H 'Authorization: Bearer {YourToken}' -H 'share-secret: f0Vr-uyyEeiHpHmsu53XXXXXXXXZYgyLkdfsZ4xo2Z0cSBnB' 'http://XXXX/XXXX/XXXX/chatfiles/7f456bf0-XXXX-XXXX-b630-777db304f26c'-o /Users/test/chat/image/image.JPG
+curl -X GET -H 'Accept: application/octet-stream' -H 'Authorization: Bearer {YourToken}' -H 'share-secret: f0Vr-uyyEeiHpHmsu53XXXXXXXXZYgyLkdfsZ4xo2Z0cSBnB' 'http://XXXX/app-id/XXXX/chatfiles/7f456bf0-XXXX-XXXX-b630-777db304f26c'-o /Users/test/chat/image/image.JPG
 ```
 
 #### Response example
@@ -1422,7 +1421,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/chatfiles/{file_uuid}
+GET https://{host}/app-id/{app_id}/chatfiles/{file_uuid}
 ```
 
 #### Path parameter
@@ -1454,7 +1453,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourToken} with the app token generated on your server
-curl -X GET -H 'Accept: application/octet-stream' -H 'Authorization: Bearer {YourToken}' -H 'share-secret: f0Vr-uyyEeiHpHmsu53XXXXXXXXZYgyLkdfsZ4xo2Z0cSBnB' -H 'thumbnail: true' 'http://XXXX/XXXX/XXXX/chatfiles/7f456bf0-ecb2-11e8-b630-777db304f26c'
+curl -X GET -H 'Accept: application/octet-stream' -H 'Authorization: Bearer {YourToken}' -H 'share-secret: f0Vr-uyyEeiHpHmsu53XXXXXXXXZYgyLkdfsZ4xo2Z0cSBnB' -H 'thumbnail: true' 'http://XXXX/app-id/XXXX/chatfiles/7f456bf0-ecb2-11e8-b630-777db304f26c'
 ```
 
 #### Response example
@@ -1478,7 +1477,7 @@ For each App Key, the call frequency limit of this method is 10 per minute.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/chatmessages/${time}
+GET https://{host}/app-id/{app_id}/chatmessages/${time}
 ```
 
 #### Path parameter
@@ -1516,7 +1515,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 # Replace {YourToken} with the app token generated on your server.
-curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' 'http://XXXX/XXXX/XXXX/chatmessages/2018112717'
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' 'http://XXXX/app-id/XXXX/chatmessages/2018112717'
 ```
 
 #### Response example
@@ -1525,7 +1524,7 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}'
 {
     "action": "get",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
-    "uri": "'http://XXXX/XXXX/XXXX/chatmessages/2018112717",
+    "uri": "'http://XXXX/app-id/XXXX/chatmessages/2018112717",
     "data": [
         {
             "url": "http://XXXX?Expires=1543316122&OSSAccessKeyId=XXXX&Signature=XXXX"
@@ -1740,7 +1739,7 @@ The fields of `bodies` for different message types vary:
                 "filename": "record.md",
                 "secret": "2RNXCgeeEeeXXXX-XXXXbtZXJH4cgr2admVXn560He2PD3RX",
                 "type": "file",
-                "url": "https://XXXX/XXXX/XXXX/chatfiles/d9135700-XXXX-XXXX-b000-a7039876610f"
+                "url": "https://XXXX/app-id/XXXX/chatfiles/d9135700-XXXX-XXXX-b000-a7039876610f"
             }
         ]
     }
@@ -1800,7 +1799,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```bash
-PUT https://{host}/{org_name}/{app_name}/messages/rewrite/{msg_id}
+PUT https://{host}/app-id/{app_id}/messages/rewrite/{msg_id}
 ```
 #### Path parameter
 
@@ -1863,7 +1862,7 @@ If the returned HTTP status code is not `200`, the request fails. Common errors 
 
     ```bash
     # Replace {YourAppToken} with the app token generated in your server.
-    curl -X PUT -i 'https://XXXX/XXXX/XXXX/messages/rewrite/1235807318835202004' \
+    curl -X PUT -i 'https://XXXX/app-id/XXXX/messages/rewrite/1235807318835202004' \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
     -H 'Authorization: Bearer ' \
@@ -1880,7 +1879,7 @@ If the returned HTTP status code is not `200`, the request fails. Common errors 
 
     ```bash
     # Replace {YourAppToken} with the app token generated in your server.
-    curl -X PUT -i 'https://XXXX/XXXX/XXXX/messages/rewrite/1235807318835202004' \
+    curl -X PUT -i 'https://XXXX/app-id/XXXX/messages/rewrite/1235807318835202004' \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
     -H 'Authorization: Bearer ' \
@@ -1906,7 +1905,7 @@ If the returned HTTP status code is not `200`, the request fails. Common errors 
 ```json
 {
   "path": "/messages/rewrite/1235807318835202004",
-  "uri": "https://XXXX/XXXX/XXXX/messages/rewrite/1235807318835202004",
+  "uri": "https://XXXX/app-id/XXXX/messages/rewrite/1235807318835202004",
   "timestamp": 1705372388118,
   "organization": "XXXX",
   "application": "ff678832-XXXX-XXXX-8130-58ac38cb6c15",
@@ -1927,7 +1926,7 @@ The default time limit for recalling a message is two minutes. You can extend th
 For each App Key, the call frequency limit of this method is 100 per second.
 
 ```html
-POST https://{host}/{org_name}/{app_name}/messages/msg_recall
+POST https://{host}/app-id/{app_id}/messages/msg_recall
 ```
 
 #### Path parameter
@@ -2001,7 +2000,7 @@ If the request fails, refer to [Status codes](./http-status-codes) for possible 
 ```bash
 # Replace {YourToken} with the app token generated on your server
 curl -i -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: Bearer {YourToken}"
-"http://XXXX/XXXX/XXXX/messages/msg_recall"
+"http://XXXX/app-id/XXXX/messages/msg_recall"
 -d '{
     "msg_id": "1028442084794698104",
     "to": "user2",
@@ -2018,7 +2017,7 @@ curl -i -X POST -H 'Content-Type: application/json' -H 'Accept: application/json
     ```json
     {
         "path": "/messages/msg_recall",
-        "uri": "https://XXXX/XXXX/XXXX/messages/msg_recall",
+        "uri": "https://XXXX/app-id/XXXX/messages/msg_recall",
         "timestamp": 1657529588473,
         "organization": "XXXX",
         "application": "09ebbf8b-XXXX-XXXX-XXXX-d47c3b38e434",
@@ -2063,7 +2062,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-DELETE https://{host}/{orgName}/{appName}/users/{userName}/user_channel
+DELETE https://{host}/app-id/{app_id}/users/{userName}/user_channel
 ```
 
 #### Path parameter
@@ -2105,7 +2104,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```bash
-curl -L -X DELETE 'https://XXXX/XXXX/XXXX/users/u1/user_channel'
+curl -L -X DELETE 'https://XXXX/app-id/XXXX/users/u1/user_channel'
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json'  \
 -H 'Accept: application/json'  \
@@ -2140,7 +2139,7 @@ You can call the RESTful API to modify a text or custom message that was success
 ### HTTP request
 
 ```html
-PUT https://{host}/{org_name}/{app_name}/messages/rewrite/{msg_id}
+PUT https://{host}/app-id/{app_id}/messages/rewrite/{msg_id}
 ```
 
 #### Path parameter
@@ -2206,7 +2205,7 @@ For other exceptions, you can refer to [Status codes](./http-status-codes) for p
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X PUT -i 'https://XXXX/XXXX/XXXX/messages/rewrite/1235807318835202004' \
+curl -X PUT -i 'https://XXXX/app-id/XXXX/messages/rewrite/1235807318835202004' \
 -H 'Content-Type: application/json' \
 -H 'Accept: application/json' \
 -H 'Authorization: Bearer ' \
@@ -2223,7 +2222,7 @@ curl -X PUT -i 'https://XXXX/XXXX/XXXX/messages/rewrite/1235807318835202004' \
 
 ```bash
 # Replace {YourAppToken} with the app token generated in your server.
-curl -X PUT -i 'https://XXXX/XXXX/XXXX/messages/rewrite/1235807318835202004' \
+curl -X PUT -i 'https://XXXX/app-id/XXXX/messages/rewrite/1235807318835202004' \
 -H 'Content-Type: application/json' \
 -H 'Accept: application/json' \
 -H 'Authorization: Bearer ' \
@@ -2249,7 +2248,7 @@ curl -X PUT -i 'https://XXXX/XXXX/XXXX/messages/rewrite/1235807318835202004' \
 ```json
 {
   "path": "/messages/rewrite/1235807318835202004",
-  "uri": "https://XXXX/XXXX/XXXX/messages/rewrite/1235807318835202004",
+  "uri": "https://XXXX/app-id/XXXX/messages/rewrite/1235807318835202004",
   "timestamp": 1705372388118,
   "organization": "XXXX",
   "application": "ff678832-XXXX-XXXX-8130-58ac38cb6c15",
@@ -2267,7 +2266,7 @@ This method imports a one-to-one message. You can import only one message each t
 ### HTTP request
 
 ```html
-POST https://{host}/{orgName}/{appName}/messages/users/import
+POST https://{host}/app-id/{app_id}/messages/users/import
 ```
 
 #### Request header
@@ -2311,7 +2310,7 @@ If the request fails, refer to [Status codes](./http-status-codes) for possible 
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -H "Authorization: Bearer {YourToken}" "https://XXXX/XXXX/XXXX/messages/users/import" -d '{
+    curl -X POST -H "Authorization: Bearer {YourToken}" "https://XXXX/app-id/XXXX/messages/users/import" -d '{
         "target": "username2",
         "type": "txt",
         "body": {
@@ -2330,7 +2329,7 @@ If the request fails, refer to [Status codes](./http-status-codes) for possible 
 
     ```bash
     # Replace {YourToken} with token generated on your server
-    curl -X POST -H "Authorization: Bearer {YourToken}" "https://XXXX/XXXX/XXXX/messages/users/import" -d '{
+    curl -X POST -H "Authorization: Bearer {YourToken}" "https://XXXX/app-id/XXXX/messages/users/import" -d '{
         "target": "username2",
         "type": "img",
         "body": {
@@ -2356,7 +2355,7 @@ If the request fails, refer to [Status codes](./http-status-codes) for possible 
 ```json
 {
     "path": "/messages/users/import",
-    "uri": "https://XXXX/XXXX/XXXX/messages/users/import",
+    "uri": "https://XXXX/app-id/XXXX/messages/users/import",
     "timestamp": 1638440544078,
     "organization": "XXXX",
     "application": "c3624975-XXXX-XXXX-9da2-ee91ed4c5a76",
@@ -2377,7 +2376,7 @@ This method imports a chat group message. You can import only one message each t
 ### HTTP request
 
 ```html
-POST https://{host}/{orgName}/{appName}/messages/chatgroups/import
+POST https://{host}/app-id/{app_id}/messages/chatgroups/import
 ```
 
 #### Request header
@@ -2421,7 +2420,7 @@ If the request fails, refer to [Status codes](./http-status-codes) for possible 
 
     ```bash
     # Replace {YourAppToken} with the app token generated on your server
-    curl -X POST -H "Authorization: Bearer  " "https://XXXX/XXXX/XXXX/messages/chatgroups/import" -d '{
+    curl -X POST -H "Authorization: Bearer  " "https://XXXX/app-id/XXXX/messages/chatgroups/import" -d '{
         "target": "1123376564212",
         "type": "txt",
         "body": {
@@ -2440,7 +2439,7 @@ If the request fails, refer to [Status codes](./http-status-codes) for possible 
 
     ```bash
     # Replace {YourAppToken} with the app token generated on your server
-    curl -X POST -H "Authorization: Bearer {YourToken}" "https://XXXX/XXXX/XXXX/messages/chatgroups/import" -d '{
+    curl -X POST -H "Authorization: Bearer {YourToken}" "https://XXXX/app-id/XXXX/messages/chatgroups/import" -d '{
         "target": "1123376564212",
         "type": "img",
         "body": {
@@ -2466,7 +2465,7 @@ If the request fails, refer to [Status codes](./http-status-codes) for possible 
 ```json
 {
     "path": "/messages/users/import",
-    "uri": "https://XXXX/XXXX/XXXX/messages/chatgroups/import",
+    "uri": "https://XXXX/app-id/XXXX/messages/chatgroups/import",
     "timestamp": 1638440544078,
     "organization": "XXXX",
     "application": "c3624975-XXXX-XXXX-9da2-ee91ed4c5a76",
