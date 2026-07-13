@@ -1138,6 +1138,33 @@ describe('html-to-md-migration', () => {
     expect(clientOutput).not.toMatch(/^#{7,}\s/m);
   });
 
+  it('rejects Web SDK sources mapped to the React SDK platform route', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'typedoc-source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeTypeDocFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'index.html'),
+      '<!doctype html><html><body><main><h1>Agora Web SDK API Reference v4.22.0</h1><p>Web SDK 4.x.</p></main></body></html>',
+    );
+
+    const output = runMigrationFailure([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'react-sdk',
+    ]);
+
+    expect(output).toContain(
+      'Source identity mismatch: react-sdk cannot publish Web SDK API reference content.',
+    );
+    await expect(pathExists(outputDir)).resolves.toBe(false);
+  });
+
   it('migrates Doxygen/Javadoc output with dry-run planning and rewritten links', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'doxygen-source');
