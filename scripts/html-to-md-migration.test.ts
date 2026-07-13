@@ -416,6 +416,7 @@ async function writeDoxygenFixture(sourceDir: string) {
         <p>See <a href="class_agora_1_1rtc_1_1_client-members.html">All members</a>.</p>
         <p>Open <a href="class_agora_1_1rtc_1_1_client_source.html">Source view</a>.</p>
         <p>Browse the <a href="functions.html">Function index</a>.</p>
+        <p>Contact <a href="#" onclick="location.href='mai'+'lto:'+'sal'+'es'+'@sh'+'en'+'gwa'+'ng'+'.cn'; return false;">sales<span class="obfuscator">.nosp@m.</span>@she<span class="obfuscator">.nosp@m.</span>ngwan<span class="obfuscator">.nosp@m.</span>g.cn</a>.</p>
       </div>
       <h2 class="groupheader">Member Function Documentation</h2>
       <a id="join"></a>
@@ -1191,6 +1192,7 @@ describe('html-to-md-migration', () => {
           '| channel | Channel name |',
           '#### Returns',
           'Zero on success.',
+          '[sales@shengwang.cn](mailto:sales@shengwang.cn)',
         ],
         'classes.mdx': [
           'title: "Class Index"',
@@ -1215,6 +1217,8 @@ describe('html-to-md-migration', () => {
           'class_agora_1_1rtc_1_1_client-members.html',
           'class_agora_1_1rtc_1_1_client_source.html',
           'functions.html',
+          'nosp@m',
+          '](#)',
         ],
         'files.mdx': ['class_agora_1_1rtc_1_1_client_source.html'],
       },
