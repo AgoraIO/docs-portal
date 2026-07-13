@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 type DocsMeta = {
   navScope?: unknown;
   pages?: string[];
+  sidebarHidden?: boolean;
   title?: string;
 };
 
@@ -77,6 +78,25 @@ describe('zh-CN product nav scope content', () => {
     expect(rtcMeta.navScope).toEqual({});
     expect(rtcMeta.pages).toContain('index');
     expect(rtcIndex).toMatch(/^title:\s*"?语音与视频 RTC 概览"?$/m);
+  });
+
+  it('keeps Whiteboard SDK scopes mounted behind the curated product links', () => {
+    const apiReferenceMeta = readMeta(
+      resolve(zhDocsRoot, 'api-reference/meta.json'),
+    );
+    const whiteboardMeta = readMeta(
+      resolve(zhDocsRoot, 'api-reference/whiteboard/meta.json'),
+    );
+
+    expect(apiReferenceMeta.pages).toContain('whiteboard');
+    expect(whiteboardMeta.sidebarHidden).toBe(true);
+    for (const platform of ['android', 'ios', 'web']) {
+      const platformMeta = readMeta(
+        resolve(zhDocsRoot, `api-reference/whiteboard/${platform}/meta.json`),
+      );
+
+      expect(platformMeta.navScope).toEqual({});
+    }
   });
 
   it('keeps fully shared MCP and Skills docs only under introduction', () => {
