@@ -21,14 +21,68 @@ title: "传递自定义信息"
 
 ### 打开 RTM 开关
 
-调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时，将 `advanced_features.enable_rtm` 配置设置为 `true` 即可启用 RTM，并设置 `llm.vendor` 为 `"custom"` 以启用自定义大模型。以下为请求示例：
+通过 Agents SDK 创建会话或调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时，将 `advanced_features.enable_rtm` 配置设置为 `true` 即可启用 RTM。如果需要让大模型处理 `context.presence` 字段，建议配合[自定义大模型](/zh-CN/ai/build/custom-model-integration/custom-llm)使用。
 
 :::info[信息]
 - 声网推荐启动 RTM 时开启 String UID（`enable_string_uid` 配置为 `true`），并参考 [FAQ](/zh-CN/api-reference/faq/integration/rtc_rtm_token) 生成同时具备 RTC 和 RTM 权限的 Token，之后传入 `agent_rtc_uid` 字段即可。
 - 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多使用 String UID 的相关信息请参考[如何使用 String 型用户 ID](/zh-CN/api-reference/faq/integration/string_uid)。
 :::
 
-```shell
+```go tab="Go SDK" tabGroup="agent-sdk-language"
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
+)
+
+// 在已配置 STT、LLM、TTS 的 agent 上追加 RTM 开关。
+agent := baseAgent.WithAdvancedFeatures(&agentkit.AdvancedFeatures{
+    EnableRtm: Agora.Bool(true),
+})
+
+session := agent.CreateSession(agentkit.CreateSessionOptions{
+    Channel:         "channel_name",
+    AgentUID:        "friday",
+    RemoteUIDs:      []string{"*"},
+    EnableStringUID: Agora.Bool(true),
+})
+
+agentID, err := session.Start(ctx)
+```
+
+```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
+// 在已配置 STT、LLM、TTS 的 agent 上追加 RTM 开关。
+const agent = baseAgent
+  .withAdvancedFeatures({ enable_rtm: true });
+
+const session = agent.createSession({
+  name: 'unique_name',
+  channel: 'channel_name',
+  agentUid: 'friday',
+  remoteUids: ['*'],
+  enableStringUid: true,
+});
+
+const agentId = await session.start();
+```
+
+```python tab="Python SDK" tabGroup="agent-sdk-language"
+# 在已配置 STT、LLM、TTS 的 agent 上追加 RTM 开关。
+agent = base_agent.with_advanced_features({
+    'enable_rtm': True,
+})
+
+session = agent.create_session(
+    name='unique_name',
+    channel='channel_name',
+    agent_uid='friday',
+    remote_uids=['*'],
+    enable_string_uid=True,
+)
+
+agent_id = session.start()
+```
+
+```shell tab="REST API" tabGroup="agent-sdk-language"
 curl --request POST \
   --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/<your_app_id>/join \
   --header 'Authorization: agora token="007abcxxxxxxx123"' \
@@ -39,11 +93,9 @@ curl --request POST \
     "channel": "channel_name",
     "token": "token",
     "agent_rtc_uid": "friday",
-    // highlight-start
     "advanced_features": {
       "enable_rtm": true
     },
-    // highlight-end
     "remote_rtc_uids": [
       "*"
     ],
@@ -53,14 +105,14 @@ curl --request POST \
       "api_key": "xxx",
       "vendor": "custom",
       "params": {
-        "model": "xxxx",
+        "model": "xxxx"
       }
     },
     "tts": {
       "vendor": "vendor_name",
       "params": {
         "key": "xxxx",
-        "voice_id": "xxxx",
+        "voice_id": "xxxx"
       }
     }
   }

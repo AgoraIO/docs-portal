@@ -972,22 +972,34 @@ function resolveDeviceKitRedirect(
   }
 
   const normalizedPath = slugSegments.join('/');
+  const isZhCn = locale === 'zh-CN';
+  const deviceKitOverviewPath = isZhCn
+    ? `/${locale}/ai/device-kit/overview/product-overview`
+    : `/${locale}/ai/device-kit/start-here/quickstart`;
+  const deviceKitQuickstartPath = isZhCn
+    ? `/${locale}/ai/device-kit/build/run-r1-demo`
+    : `/${locale}/ai/device-kit/start-here/quickstart`;
+  const deviceKitRunDemoPath = isZhCn
+    ? `/${locale}/ai/device-kit/build/run-r1-demo`
+    : `/${locale}/ai/device-kit/build/run-the-r1-demo`;
 
   if (normalizedPath === 'device-kit') {
-    return `/${locale}/ai/device-kit/start-here/quickstart`;
+    return deviceKitOverviewPath;
   }
 
   if (normalizedPath === `choose-your-path/${DEVICE_KIT_PATH_ENTRY_SLUG}`) {
-    return `/${locale}/ai/device-kit/start-here/quickstart`;
+    return deviceKitQuickstartPath;
   }
 
   const redirects: Record<string, string> = {
-    'device-kit/get-started': `/${locale}/ai/device-kit/start-here/quickstart`,
-    'device-kit/get-started/quickstart': `/${locale}/ai/device-kit/start-here/quickstart`,
+    'device-kit/get-started': deviceKitQuickstartPath,
+    'device-kit/get-started/quickstart': deviceKitQuickstartPath,
     'device-kit/get-started/enable-services': `/${locale}/ai/device-kit/reference/enable-services`,
-    'device-kit/get-started/run-the-demo': `/${locale}/ai/device-kit/build/run-the-r1-demo`,
-    'device-kit/overview': `/${locale}/ai/device-kit/build/architecture-overview`,
-    'device-kit/overview/architecture': `/${locale}/ai/device-kit/build/architecture-overview`,
+    'device-kit/get-started/run-the-demo': deviceKitRunDemoPath,
+    'device-kit/overview': deviceKitOverviewPath,
+    'device-kit/overview/architecture': isZhCn
+      ? deviceKitOverviewPath
+      : `/${locale}/ai/device-kit/build/architecture-overview`,
     'device-kit/reference': `/${locale}/ai/device-kit/reference/enable-services`,
     'device-kit/reference/device-controls': `/${locale}/ai/device-kit/build/device-controls`,
     'device-kit/overview/pricing': `/${locale}/ai/device-kit/reference/pricing`,
@@ -2398,10 +2410,6 @@ function flattenDeviceKitSidebarChildren(
     findSidebarPageByExactUrlInNodes(
       children,
       '/en/ai/device-kit/reference/release-notes',
-    ) ??
-    findSidebarPageByExactUrlInNodes(
-      children,
-      '/zh-CN/ai/device-kit/reference/release-notes',
     );
 
   for (const child of children) {
@@ -2414,8 +2422,7 @@ function flattenDeviceKitSidebarChildren(
       }
 
       if (
-        child.url === '/en/ai/device-kit/reference/release-notes' ||
-        child.url === '/zh-CN/ai/device-kit/reference/release-notes'
+        child.url === '/en/ai/device-kit/reference/release-notes'
       ) {
         hasPushedReleaseNotes = true;
       }
@@ -2428,10 +2435,6 @@ function flattenDeviceKitSidebarChildren(
         findSidebarPageByExactUrl(
           child,
           '/en/ai/device-kit/start-here/quickstart',
-        ) ??
-        findSidebarPageByExactUrl(
-          child,
-          '/zh-CN/ai/device-kit/start-here/quickstart',
         );
 
       if (quickstart) {

@@ -346,7 +346,9 @@ conversationalAIAPI.subscribeMessage(channel_name)
 
 ### 智能体加入频道
 
-调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口，并完成以下参数设置：
+你可以通过 RESTful API 或 Agents SDK 创建并启动智能体；本文后续步骤聚焦客户端组件侧的事件订阅和消息处理。
+
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口，或在 Agents SDK 的会话配置中完成以下参数设置：
 
 - `advanced_features.enable_rtm: true` —— （必选）启动 RTM 服务
 - `parameters.data_channel: "rtm"` —— （必选）开启 RTM 数据传输通道
