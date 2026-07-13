@@ -14,13 +14,16 @@ Agents SDK 采用的 `AgentKit` 接入思路，相比直接调用 RESTful API，
 
 开始前请确保：
 
-- 已参考[开通服务](/zh-CN/ai/get-started/enable-service)在声网控制台完成以下步骤：
-  - 为你的项目开通声网对话式 AI 引擎。
-  - 获取 App ID。
-  - 获取 App Certificate。
-  - 为用于和智能体对话的客户端生成 RTC 临时 Token。
+- 已准备开通对话式 AI 引擎的声网中国区项目，并获取 App ID 和 App Certificate。可在控制台完成，也可使用 Agora CLI：
+
+  ```bash
+  agora login --region cn
+  agora project create <project-name> --feature rtc --feature convoai --rtm-data-center CN
+  agora project use <project-name>
+  agora project doctor --feature convoai
+  agora project env --format shell --with-secrets
+  ```
 - 已参考[实现音视频互动](https://doc.shengwang.cn/doc/rtc/android/get-started/quick-start)集成 v4.5.1 及以上版本的实时互动 SDK，并在你的 App 中实现基本的实时音视频功能。
-- 如果你准备使用 BYOK 模式，请提前获取对应 STT、LLM、TTS 供应商的 API key 或其他认证信息。
 
 :::info[信息]
 如果你希望先验证服务端逻辑，也可以使用[实时互动 Web
