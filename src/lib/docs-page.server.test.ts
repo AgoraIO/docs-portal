@@ -1254,24 +1254,42 @@ describe('loadDocsSearchIndex', () => {
   });
 
   it('returns locale page entries and generated OpenAPI endpoints for the static docs search index', async () => {
+    const page = createPage();
+
+    mockedGetPages.mockReturnValue([page]);
+
     await expect(loadDocsSearchIndex('en')).resolves.toEqual(
       expect.arrayContaining([
-        {
+        expect.objectContaining({
+          content: expect.stringContaining('Why teams use it.'),
           description:
             'Build a working mental model of Agora by understanding what it is.',
+          objectType: 'docs',
+          product: 'about-agora',
+          tab: 'introduction',
           title: 'About Agora',
           url: '/en/introduction/about-agora',
-        },
-        {
+        }),
+        expect.objectContaining({
+          content: expect.stringContaining('/v2/projects/{appid}/join'),
+          objectType: 'openapi',
+          tab: 'api-reference',
           title: 'Start a conversational AI agent',
           url: '/en/api-reference/api-ref/conversational-ai/join',
-        },
+        }),
       ]),
+    );
+    expect('getText' in page.data && page.data.getText).toHaveBeenCalledWith(
+      'raw',
     );
   });
 
   it('returns an empty index for unsupported locales', async () => {
     await expect(loadDocsSearchIndex('fr')).resolves.toEqual([]);
+  });
+
+  it('returns an empty index for locales outside the deployment region', async () => {
+    await expect(loadDocsSearchIndex('zh-CN')).resolves.toEqual([]);
   });
 
   it('excludes split-file platform panel pages from search entries', async () => {
@@ -1283,12 +1301,12 @@ describe('loadDocsSearchIndex', () => {
 
     await expect(loadDocsSearchIndex('en')).resolves.toEqual(
       expect.arrayContaining([
-        {
+        expect.objectContaining({
           description:
             'Build a working mental model of Agora by understanding what it is.',
           title: 'Split platform page',
           url: '/en/ai/get-started/platform-split',
-        },
+        }),
       ]),
     );
     const pages = await loadDocsSearchIndex('en');
@@ -1345,11 +1363,6 @@ describe('loadDocsPagePayload', () => {
           href: '/en/introduction/about-agora',
           isActive: true,
           locale: 'en',
-        },
-        {
-          href: '/zh-CN/introduction',
-          isActive: false,
-          locale: 'zh-CN',
         },
       ],
       lastUpdated: {
@@ -1822,11 +1835,6 @@ Web body
           href: '/en/api-reference/api-ref/conversational-ai/join',
           isActive: true,
           locale: 'en',
-        },
-        {
-          href: '/zh-CN/api-reference/api-ref/conversational-ai/join',
-          isActive: false,
-          locale: 'zh-CN',
         },
       ],
       markdownUrl: '/en/api-reference/api-ref/conversational-ai/join.md',
@@ -2506,7 +2514,7 @@ Web body
     });
   });
 
-  it('falls back locale links to the target tab entry when the same slug is missing', async () => {
+  it('does not expose locale links outside the deployment region', async () => {
     const page = createPage();
     const zhPageTree: Root = {
       children: [
@@ -2559,11 +2567,6 @@ Web body
           href: '/en/ai/get-started/quickstart',
           isActive: true,
           locale: 'en',
-        },
-        {
-          href: '/zh-CN/ai/quick-start',
-          isActive: false,
-          locale: 'zh-CN',
         },
       ],
     });

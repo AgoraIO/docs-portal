@@ -1,6 +1,11 @@
 import { type AppLocale, DEFAULT_LOCALE } from './i18n/i18n-config';
+import { type DocsRegion, getDefaultDocsLocale } from './site-region';
 
 export const MACHINE_READABLE_LOCALE = DEFAULT_LOCALE;
+
+export function getMachineReadableLocale(region?: DocsRegion) {
+  return getDefaultDocsLocale(region);
+}
 
 export function isMachineReadableLocale(
   locale: string | null | undefined,

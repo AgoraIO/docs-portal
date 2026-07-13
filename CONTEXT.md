@@ -6,6 +6,14 @@ Migration behavior, migration protocol, migration acceptance rules, and migratio
 
 ## Language
 
+**Deployment region**:
+The build-time publication boundary for one deployed docs site. `global` publishes every locale except `zh-CN`; `cn` publishes only `zh-CN`. A deployment region controls published routes and generated site artifacts, but does not imply different branding, source repositories, product links, or asset hosts.
+_Avoid_: locale, brand region, market locale
+
+**Published locale**:
+A documentation locale exposed by a particular **Deployment region**, including its public routes, static payloads, machine-readable output, sitemap entries, and search records.
+_Avoid_: supported locale, repository locale
+
 **Content staging**:
 The repository-owned staging layer that holds normalized documentation inputs before the docs website renders them.
 _Avoid_: source dump, public assets

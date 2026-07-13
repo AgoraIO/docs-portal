@@ -14,6 +14,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -939,6 +940,38 @@ function TocLinks({
   variant: 'mobile' | 'rail';
   visibleUrls: Set<string>;
 }) {
+  const activeRailLinkRef = useRef<HTMLAnchorElement | null>(null);
+  const scrollActiveLinkIntoView = useCallback(() => {
+    if (variant !== 'rail') {
+      return;
+    }
+
+    activeRailLinkRef.current?.scrollIntoView?.({
+      block: 'nearest',
+      inline: 'nearest',
+    });
+  }, [variant]);
+  const setActiveRailLinkRef = useCallback(
+    (node: HTMLAnchorElement | null) => {
+      activeRailLinkRef.current = node;
+      scrollActiveLinkIntoView();
+    },
+    [scrollActiveLinkIntoView],
+  );
+
+  useEffect(() => {
+    if (variant !== 'rail' || !primaryActiveUrl) {
+      return;
+    }
+
+    scrollActiveLinkIntoView();
+    window.addEventListener('resize', scrollActiveLinkIntoView);
+
+    return () => {
+      window.removeEventListener('resize', scrollActiveLinkIntoView);
+    };
+  }, [primaryActiveUrl, scrollActiveLinkIntoView, variant]);
+
   return (
     <nav
       className={cn(
@@ -982,6 +1015,9 @@ function TocLinks({
               event.preventDefault();
               onHeadingClick(item.url);
             }}
+            ref={
+              isPrimary && variant === 'rail' ? setActiveRailLinkRef : undefined
+            }
           >
             {item.title}
           </a>
