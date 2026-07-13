@@ -1,0 +1,148 @@
+---
+title: "Agora CLI"
+description: "安装 Agora CLI，登录中国区，管理项目、启用能力、写入环境变量，并检查本地接入状态。"
+---
+
+Agora CLI 是声网提供的命令行工具，可用于登录、项目管理、能力开通、环境变量写入和本地检查。对于中国区的对话式 AI 引擎接入场景，你可以用 CLI 完成项目基础管理，而无需频繁进入控制台。
+
+如果你希望 AI Coding Agent 协助接入声网产品，建议先安装 CLI，再配置 [Shengwang skills](/zh-CN/introduction/skills-integrate) 和 [Shengwang Doc MCP Server](/zh-CN/introduction/mcp-integrate)。
+
+## 快速开始
+
+### 环境要求
+
+- macOS 12 及以上、Linux，或 Windows 10 及以上版本。
+- Node.js 18 或更高版本。
+
+### 安装 CLI
+
+使用 npm 安装 Agora CLI：
+
+```bash
+npm install -g agoraio-cli
+```
+
+### 验证安装
+
+安装完成后，运行下面任一命令确认 CLI 是否可用：
+
+```bash
+agora --help
+agora version
+```
+
+如果能正常输出帮助信息或版本号，说明 CLI 已安装成功。
+
+## 登录并切换到中国区
+
+使用中国区区域参数登录 Agora CLI：
+
+```bash
+agora login --region cn
+```
+
+查看当前登录身份和登录状态详情：
+
+```bash
+agora whoami
+agora auth status --json
+```
+
+## 管理项目
+
+查看当前账号下的项目列表：
+
+```bash
+agora project list
+```
+
+创建一个名为 `my-convoai-demo` 的项目，并启用 `rtc` 和 `convoai` 能力：
+
+```bash
+agora project create my-convoai-demo --feature rtc --feature convoai
+```
+
+切换到指定项目上下文：
+
+```bash
+agora project use my-convoai-demo
+```
+
+查看当前项目或指定项目的信息：
+
+```bash
+agora project show
+```
+
+查看 `convoai` 能力当前是否已开通：
+
+```bash
+agora project feature status convoai
+```
+
+启用指定项目的 `convoai` 能力：
+
+```bash
+agora project feature enable convoai
+```
+
+## 写入本地环境变量
+
+将当前项目凭证写入 `.env` 文件，使用标准键名布局并覆盖已有内容：
+
+```bash
+agora project env write .env --overwrite --template standard
+```
+
+也可以将指定项目的凭证写入 `.env` 文件：
+
+```bash
+agora project env write .env --project prj_xxxxxxxx --overwrite --template standard
+```
+
+## 打开控制台和产品文档
+
+Agora CLI 可以直接打开与当前区域对应的控制台和产品文档。
+
+打开当前区域对应的控制台：
+
+```bash
+agora open --target console
+```
+
+打开当前区域对应的产品文档：
+
+```bash
+agora open --target product-docs
+```
+
+其中：
+
+- `console` 会打开 `https://console.shengwang.cn`
+- `product-docs` 会打开 `https://doc.shengwang.cn`
+
+## 本地检查
+
+如果需要检查本地 CLI 安装状态、网络连通性和登录状态，可以运行：
+
+```bash
+agora doctor
+```
+
+## 命令参考
+
+| 命令 | 用途 |
+| --- | --- |
+| `agora login --region cn` | 登录中国区控制面 |
+| `agora whoami` | 查看当前登录身份 |
+| `agora auth status --json` | 查看当前登录状态 |
+| `agora project list` | 查看当前账号下的项目列表 |
+| `agora project create` | 创建项目并按参数启用能力 |
+| `agora project use` | 切换当前项目上下文 |
+| `agora project show` | 查看当前项目或指定项目的信息 |
+| `agora project feature status` | 查询能力状态 |
+| `agora project feature enable` | 启用指定能力 |
+| `agora project env write` | 将项目凭证写入本地环境变量文件 |
+| `agora open --target console` | 打开控制台 |
+| `agora open --target product-docs` | 打开产品文档 |
+| `agora doctor` | 检查本地环境、网络和登录状态 |
