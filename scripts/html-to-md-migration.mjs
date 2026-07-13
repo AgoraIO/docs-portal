@@ -4184,7 +4184,9 @@ async function main() {
       ? { navScope: {} }
       : {}),
     pages: [
-      ...(sourceStructure.id === SOURCE_TYPES.DITA_OT_API.id ? [] : ['index']),
+      ...(sourceStructure.id === SOURCE_TYPES.DITA_OT_API.id
+        ? ['!index']
+        : ['index']),
       ...tocNodes.filter((node) => !node.hidden).map((node) => node.slug),
     ],
   });
