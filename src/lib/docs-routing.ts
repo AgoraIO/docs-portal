@@ -3,6 +3,7 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from './i18n/i18n-config';
+import { type DocsRegion, isPublishedDocsLocale } from './site-region';
 
 export type DocsRoute = {
   locale: string;
@@ -50,6 +51,10 @@ export function buildDocPath(
 
 export function isSupportedDocLocale(locale: string) {
   return normalizeLocale(locale) === locale;
+}
+
+export function isPublishedDocLocale(locale: string, region?: DocsRegion) {
+  return isSupportedDocLocale(locale) && isPublishedDocsLocale(locale, region);
 }
 
 export function getSourceSlugs(route: DocsRoute) {

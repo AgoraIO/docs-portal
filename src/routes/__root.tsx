@@ -5,6 +5,7 @@ import {
   Scripts,
 } from '@tanstack/react-router';
 import { AppProviders } from '@/components/providers/AppProviders';
+import { DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import { appDescription, appName } from '@/lib/shared';
 import appCss from '@/styles/app.css?url';
 
@@ -49,7 +50,7 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={DEFAULT_LOCALE} suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>

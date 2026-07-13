@@ -8,7 +8,7 @@ import type {
   DocsRedirectPayload,
 } from '@/lib/docs-page.server';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
-import { isSupportedDocLocale } from '@/lib/docs-routing';
+import { isPublishedDocLocale } from '@/lib/docs-routing';
 import {
   resolvePlatformStaticDocsPayload,
   shouldUseStaticDocsPayload,
@@ -40,7 +40,7 @@ export const Route = createFileRoute('/$locale/$tab/$')({
     },
   },
   loader: async ({ location, params }) => {
-    if (!isSupportedDocLocale(params.locale)) {
+    if (!isPublishedDocLocale(params.locale)) {
       throw notFound();
     }
 
