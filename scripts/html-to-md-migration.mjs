@@ -742,11 +742,25 @@ function normalizeTypeDocTitle(title) {
     .trim();
 }
 
-function readDescription($) {
-  const desc = $('main > article > .body > .shortdesc').first().text().trim();
+function readDescription($, sourceTypeId) {
+  const mainArticle = $('main > article').first();
+  const ditaPageArticle = mainArticle.children('article.nested0').first();
+  const pageArticle =
+    sourceTypeId === SOURCE_TYPES.DITA_OT_API.id && ditaPageArticle.length > 0
+      ? ditaPageArticle
+      : mainArticle;
+  const bodyDesc = pageArticle
+    .children('.body')
+    .children('.shortdesc')
+    .first()
+    .text()
+    .trim();
+  const desc =
+    bodyDesc || pageArticle.children('.shortdesc').first().text().trim();
   if (desc) return normalizeText(desc);
   const metaDesc = $('meta[name="description"]').attr('content');
   if (metaDesc) return normalizeText(metaDesc);
+  if (sourceTypeId === SOURCE_TYPES.DITA_OT_API.id) return '';
   const fallbackDesc = $(
     [
       '.shortdesc',
@@ -4092,7 +4106,7 @@ async function main() {
     const html = await fs.readFile(path.join(apiSourceDir, name), 'utf8');
     const $ = cheerio.load(html);
     const title = readCanonicalTitle($, sourceStructure.id) || stripHtml(name);
-    const description = readDescription($);
+    const description = readDescription($, sourceStructure.id);
     pageTitleBySource.set(name, title);
     if (description) pageDescriptionBySource.set(name, description);
   }

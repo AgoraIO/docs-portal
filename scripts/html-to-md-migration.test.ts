@@ -1016,6 +1016,46 @@ describe('html-to-md-migration', () => {
     ).resolves.not.toContain('## 频道相关');
   }, 15_000);
 
+  it('does not use a nested DITA member short description as page metadata', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDitaRootMapFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'API', 'toc_channel.html'),
+      `<!doctype html><html><body><main><article>
+        <article class="nested0" id="toc_channel">
+          <h1>频道相关</h1>
+          <div class="body refbody"></div>
+          <article class="topic reference nested1" id="join_channel">
+            <h2>JoinChannel</h2>
+            <div class="body refbody">
+              <p class="shortdesc">Joins a channel.</p>
+            </div>
+          </article>
+        </article>
+      </article></main></body></html>`,
+    );
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+    ]);
+
+    const page = await fs.readFile(
+      path.join(outputDir, 'channel.mdx'),
+      'utf8',
+    );
+    expect(page).toContain('description: "频道相关 API reference."');
+    expect(page).toContain('Joins a channel.');
+  });
+
   it('preserves the active version directory in migrated internal links', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'source');
