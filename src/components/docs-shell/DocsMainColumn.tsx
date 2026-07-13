@@ -49,7 +49,10 @@ export function DocsMainColumn({
           next={next}
           previous={previous}
         />
-        <DocsSiteFooter className="relative left-1/2 w-screen -translate-x-1/2 lg:hidden" />
+        <DocsSiteFooter
+          className="relative left-1/2 w-screen -translate-x-1/2 lg:hidden"
+          locale={locale}
+        />
       </div>
       <div
         className="hidden lg:block"

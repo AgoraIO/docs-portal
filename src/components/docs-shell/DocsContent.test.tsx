@@ -293,25 +293,28 @@ describe('DocsContent', () => {
     expect(within(lastUpdated).queryByText('1970/01/01 00:00:00')).toBeNull();
   });
 
-  it('does not render the copy page action when the locale has no public markdown content', async () => {
+  it('renders the copy page action for zh-CN public markdown content', async () => {
     renderWithRouter(
       <DocsContent
-        contentPath="zh-CN/introduction/about-agora.md"
+        contentPath="zh-CN/introduction/mcp-integrate.mdx"
         locale="zh-CN"
-        markdownUrl="/zh-CN/introduction/about-agora.md"
-        slug="introduction/about-agora"
-        title="About Agora"
+        markdownUrl="/zh-CN/introduction/mcp-integrate.md"
+        slug="introduction/mcp-integrate"
+        title="使用 MCP 集成"
         toc={[]}
       />,
-      '/zh-CN/introduction/about-agora',
+      '/zh-CN/introduction/mcp-integrate',
     );
 
     expect(
-      await screen.findByRole('heading', { name: 'About Agora' }),
+      await screen.findByRole('heading', { name: '使用 MCP 集成' }),
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole('button', { name: 'Copy Page' }),
-    ).not.toBeInTheDocument();
+      screen.getByRole('button', { name: '复制页面' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: '复制页面更多操作' }),
+    ).toBeInTheDocument();
   });
 
   it('renders MDX content in the server output without a skeleton', () => {
@@ -892,7 +895,84 @@ describe('DocsContent', () => {
     );
 
     expect(html).toContain('复制页面');
+    expect(html).toContain('复制页面更多操作');
     expect(html).not.toContain('Copy Page');
+  });
+
+  it('renders zh-CN copy page menu actions with Chinese docs targets', async () => {
+    renderWithRouter(
+      <DocsCopyMenu
+        locale="zh-CN"
+        markdownUrl="/zh-CN/introduction/mcp-integrate.md"
+        slug="introduction/mcp-integrate"
+        title="使用 MCP 集成"
+      />,
+      '/zh-CN/introduction/mcp-integrate',
+    );
+
+    fireEvent.pointerDown(
+      await screen.findByRole('button', { name: '复制页面更多操作' }),
+      { button: 0 },
+    );
+
+    expect(await screen.findByText('AI 工具')).toBeInTheDocument();
+    expect(screen.getByText('MCP')).toBeInTheDocument();
+    expect(screen.getByText('其他')).toBeInTheDocument();
+    expect(
+      screen.getByRole('menuitem', { name: '连接到 Cursor' }),
+    ).toHaveAttribute('href', '/zh-CN/introduction/mcp-integrate');
+    expect(
+      screen.getByRole('menuitem', { name: '连接到 VS Code' }),
+    ).toHaveAttribute('href', '/zh-CN/introduction/mcp-integrate');
+    expect(
+      screen.getByRole('menuitem', { name: '查看 Markdown' }),
+    ).toHaveAttribute('href', '/zh-CN/introduction/mcp-integrate.md');
+  });
+
+  it('copies zh-CN MCP config and command from the copy page menu', async () => {
+    clipboardWriteText.mockReset();
+    clipboardWriteText.mockResolvedValue(undefined);
+
+    renderWithRouter(
+      <DocsCopyMenu
+        locale="zh-CN"
+        markdownUrl="/zh-CN/introduction/mcp-integrate.md"
+        slug="introduction/mcp-integrate"
+        title="使用 MCP 集成"
+      />,
+      '/zh-CN/introduction/mcp-integrate',
+    );
+
+    fireEvent.pointerDown(
+      await screen.findByRole('button', { name: '复制页面更多操作' }),
+      { button: 0 },
+    );
+
+    fireEvent.click(
+      await screen.findByRole('menuitem', { name: '复制 MCP 配置' }),
+    );
+    await waitFor(() => {
+      expect(clipboardWriteText).toHaveBeenCalledWith(`{
+  "mcpServers": {
+    "shengwang-docs": {
+      "url": "https://doc-mcp.shengwang.cn/mcp"
+    }
+  }
+}`);
+    });
+
+    fireEvent.pointerDown(
+      screen.getByRole('button', { name: '复制页面更多操作' }),
+      { button: 0 },
+    );
+    fireEvent.click(
+      await screen.findByRole('menuitem', { name: '复制 MCP 命令' }),
+    );
+    await waitFor(() => {
+      expect(clipboardWriteText).toHaveBeenLastCalledWith(
+        `code --add-mcp '{"name":"shengwang-docs","url":"https://doc-mcp.shengwang.cn/mcp"}'`,
+      );
+    });
   });
 
   it('copies MCP config and command from the copy page menu', async () => {

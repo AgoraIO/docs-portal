@@ -1,6 +1,6 @@
 import type { AppLocale } from '@/lib/i18n/i18n-config';
 import {
-  isMachineReadableLocale,
+  isPublicMarkdownLocale,
   MACHINE_READABLE_LOCALE,
 } from '@/lib/machine-readable-docs';
 import {
@@ -133,7 +133,7 @@ export async function getOpenApiMarkdownByContentPath(path: string) {
   const fileName = rest.at(-1);
 
   if (
-    !isMachineReadableLocale(locale) ||
+    !isPublicMarkdownLocale(locale) ||
     tab !== 'api-reference' ||
     fileName?.endsWith('.md') !== true
   ) {
