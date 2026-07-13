@@ -313,7 +313,7 @@ func (conn *RtcConnection) UnregisterObserver() int {
 - 0: 方法调用成功。
 - < 0: 方法调用失败。
 
-<a id="createdatastream"></a>
+<a id="createdatastream-2"></a>
 ## CreateDataStream
 
 ```go
@@ -399,7 +399,7 @@ func (conn *RtcConnection) EnableEncryption(enable int, config *EncryptionConfig
 - 0: 方法调用成功。
 - < 0: 方法调用失败。
 
-<a id="sendstreammessage"></a>
+<a id="sendstreammessage-2"></a>
 ## SendStreamMessage
 
 ```go
@@ -424,7 +424,7 @@ func (conn *RtcConnection) SendStreamMessage(streamId int, msg []byte) int {
 成功调用该方法后，远端会触发 [`on_stream_message`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息。
 
 :::warning[注意]
-- 请确保在调用该方法前，已调用 [`create_data_stream`](#createdatastream) 创建了数据通道。
+- 请确保在调用该方法前，已调用 [`create_data_stream`](#createdatastream-2) 创建了数据通道。
 - 直播场景下，该方法仅适用于主播用户。
 :::
 
@@ -432,7 +432,7 @@ func (conn *RtcConnection) SendStreamMessage(streamId int, msg []byte) int {
 
 | 参数        | 描述   |
 |-------------|------------|
-| `stream_id` | 数据流 ID。可以通过 [`CreateDataStream`](#createdatastream) 获取。|
+| `stream_id` | 数据流 ID。可以通过 [`CreateDataStream`](#createdatastream-2) 获取。|
 | `data`      | 待发送的数据。|
 
 #### 返回值

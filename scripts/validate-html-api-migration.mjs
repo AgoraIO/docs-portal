@@ -271,9 +271,21 @@ export function hasInvalidMarkdownHeading(text) {
   return false;
 }
 
+export function findDuplicateExplicitAnchorIds(text) {
+  const counts = new Map();
+  for (const match of text.matchAll(/<a id="([^"]+)"><\/a>/g)) {
+    counts.set(match[1], (counts.get(match[1]) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .filter(([, count]) => count > 1)
+    .map(([id]) => id)
+    .sort();
+}
+
 async function scanGeneratedOutput(outputDir, sampleFiles, contentChecks = []) {
   const issues = {
     contentMismatches: [],
+    duplicateAnchors: [],
     helperPollution: [],
     internalHtmlLinks: [],
     invalidHeadings: [],
@@ -336,6 +348,11 @@ async function scanGeneratedOutput(outputDir, sampleFiles, contentChecks = []) {
       if (helperPattern.test(text)) issues.helperPollution.push(relative);
       if (hasInvalidMarkdownHeading(text))
         issues.invalidHeadings.push(relative);
+      if (entry.name.endsWith('.mdx')) {
+        for (const id of findDuplicateExplicitAnchorIds(text)) {
+          issues.duplicateAnchors.push(`${relative}: ${id}`);
+        }
+      }
 
       for (const match of text.matchAll(markdownHtmlLinkPattern)) {
         const href = match[1];
@@ -437,6 +454,7 @@ function renderReport({ compileResult, opts, restResult, results }) {
       `- Sample files checked: ${result.sampleFiles.map((file) => `\`${file}\``).join(', ')}`,
       `- Missing required files: ${result.issues.missingFiles.length}`,
       `- Content assertion mismatches: ${result.issues.contentMismatches.length}`,
+      `- Duplicate explicit anchors: ${result.issues.duplicateAnchors.length}`,
       `- Internal relative .html links: ${result.issues.internalHtmlLinks.length}`,
       `- Helper-page pollution matches: ${result.issues.helperPollution.length}`,
       `- Invalid level-7+ headings: ${result.issues.invalidHeadings.length}`,
