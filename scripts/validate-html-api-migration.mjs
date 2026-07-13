@@ -282,9 +282,47 @@ export function findDuplicateExplicitAnchorIds(text) {
     .sort();
 }
 
-async function scanGeneratedOutput(outputDir, sampleFiles, contentChecks = []) {
+export function hasPageDescriptionCopiedFromFirstMember(text) {
+  const descriptionMatch = text.match(
+    /^description: ("(?:[^"\\]|\\.)*")$/m,
+  );
+  if (!descriptionMatch) return false;
+
+  let description;
+  try {
+    description = JSON.parse(descriptionMatch[1]);
+  } catch {
+    return false;
+  }
+
+  const body = text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
+  const lines = body.split(/\r?\n/).map((line) => line.trim());
+  const isCompatibilityAnchor = (line) => /^<(?:a|span)\b/.test(line);
+  const firstContentIndex = lines.findIndex(
+    (line) => line && !isCompatibilityAnchor(line),
+  );
+  if (
+    firstContentIndex === -1 ||
+    !/^#{1,6}\s+/.test(lines[firstContentIndex])
+  ) {
+    return false;
+  }
+
+  const firstMemberDescription = lines
+    .slice(firstContentIndex + 1)
+    .find((line) => line && !isCompatibilityAnchor(line));
+  return firstMemberDescription === description;
+}
+
+async function scanGeneratedOutput(
+  outputDir,
+  sampleFiles,
+  contentChecks = [],
+  lane,
+) {
   const issues = {
     contentMismatches: [],
+    copiedMemberDescriptions: [],
     duplicateAnchors: [],
     helperPollution: [],
     internalHtmlLinks: [],
@@ -351,6 +389,12 @@ async function scanGeneratedOutput(outputDir, sampleFiles, contentChecks = []) {
       if (entry.name.endsWith('.mdx')) {
         for (const id of findDuplicateExplicitAnchorIds(text)) {
           issues.duplicateAnchors.push(`${relative}: ${id}`);
+        }
+        if (
+          lane === 'DITA/Oxygen' &&
+          hasPageDescriptionCopiedFromFirstMember(text)
+        ) {
+          issues.copiedMemberDescriptions.push(relative);
         }
       }
 
@@ -544,6 +588,7 @@ async function main() {
       outputDir,
       entry.sampleFiles,
       entry.contentChecks,
+      entry.lane,
     );
     assertOutputAuditsPassed(issues, entry.id);
 
