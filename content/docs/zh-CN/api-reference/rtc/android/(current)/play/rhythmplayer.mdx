@@ -2,9 +2,8 @@
 title: "虚拟节拍器"
 description: "配置虚拟节拍器。"
 ---
-<a id="toc_rhythmplayer"></a>
 
-## 虚拟节拍器
+<a id="toc_rhythmplayer"></a>
 
 <a id="api_irtcengine_configrhythmplayer"></a>
 
@@ -47,7 +46,6 @@ public abstract int configRhythmPlayer(AgoraRhythmPlayerConfig config);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startrhythmplayer"></a>
@@ -107,7 +105,6 @@ public abstract int startRhythmPlayer(String sound1, String sound2, AgoraRhythmP
 
   - -22：未找到音效文件。请为 `sound1` 和 `sound2` 设置正确的路径。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoprhythmplayer"></a>
@@ -137,7 +134,6 @@ public abstract int stopRhythmPlayer();
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged"></a>
@@ -190,5 +186,4 @@ public void onRhythmPlayerStateChanged(int state, int reason)
 - `RHYTHM_PLAYER_REASON_CAN_NOT_PLAY` （802）：播放节拍文件时出错。
 - `RHYTHM_PLAYER_REASON_FILE_OVER_DURATION_LIMIT` （803）：节拍音频文件的时长超过限制，最大为 1.2 秒。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

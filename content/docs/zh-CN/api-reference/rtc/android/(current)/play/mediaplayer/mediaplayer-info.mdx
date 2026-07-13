@@ -2,9 +2,8 @@
 title: "播放信息获取"
 description: "获取播放媒体文件时的音频缓冲延迟。"
 ---
-<a id="toc_mediaplayer_info"></a>
 
-## 播放信息获取
+<a id="toc_mediaplayer_info"></a>
 
 <a id="api_imediaplayer_getaudiobufferdelay"></a>
 
@@ -27,7 +26,6 @@ int getAudioBufferDelay();
 - 方法调用成功，返回音频缓冲延迟（单位：毫秒）。
 - 方法调用失败，返回小于 0 的错误码。你可以使用 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason) 检查错误原因。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getduration"></a>
@@ -51,7 +49,6 @@ long getDuration();
 - 方法调用成功时，返回媒体文件的总时长（毫秒）。
 - 方法调用失败时，返回小于 0 的值。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getmediaplayerid"></a>
@@ -75,7 +72,6 @@ int getMediaPlayerId();
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getmute"></a>
@@ -98,7 +94,6 @@ boolean getMute();
 
 true：媒体资源已被静音。 false：媒体资源未被静音。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplayoutvolume"></a>
@@ -121,7 +116,6 @@ int getPlayoutVolume();
 
 方法调用成功，返回本地播放音量，取值范围为 0 到 100。 0 表示静音，100（默认）表示原始音量。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplayposition"></a>
@@ -145,7 +139,6 @@ long getPlayPosition();
 - 方法调用成功时，返回当前播放进度（单位为毫秒）。
 - 方法调用失败时，返回小于 0 的值，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplaysrc_imediaplayer"></a>
@@ -168,7 +161,6 @@ String getPlaySrc();
 
 方法调用成功时，返回当前正在播放的媒体资源路径。 方法调用失败，返回空字符串。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getpublishsignalvolume"></a>
@@ -192,7 +184,6 @@ int getPublishSignalVolume();
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstate"></a>
@@ -215,7 +206,6 @@ Constants.MediaPlayerState getState();
 
 方法调用成功，返回当前播放状态。详见 [MediaPlayerState](/zh-CN/api-reference/rtc/android/enum-mediaplayerstate)。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstreamcount"></a>
@@ -243,7 +233,6 @@ int getStreamCount();
 - 方法调用成功，返回媒体资源中的媒体流数量。
 - &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstreaminfo"></a>
@@ -283,7 +272,6 @@ MediaStreamInfo getStreamInfo(int index);
 - 方法调用成功，返回 [MediaStreamInfo](/zh-CN/api-reference/rtc/android/class-playerstreaminfo) 对象。
 - 方法调用失败，返回 `null`。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
 <a id="callback_imediaplayersourceobserver_onplayerplaybackstats"></a>
@@ -316,5 +304,4 @@ void onPlayerPlaybackStats(PlayerPlaybackStats stats)
 
 媒体文件的统计信息。详见 [PlayerPlaybackStats](/zh-CN/api-reference/rtc/android/class-playerplaybackstats)。
 
-### 所属接口类
 - [IMediaPlayerObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayersourceobserver)

@@ -1,0 +1,169 @@
+---
+title: "本地合图"
+description: "开始本地视频合图。"
+---
+
+<a id="toc_local_transcoder"></a>
+
+<a id="api_irtcengine_startlocalvideotranscoder"></a>
+
+## startLocalVideoTranscoder
+
+开始本地视频合图。
+
+<a id="api_irtcengine_startlocalvideotranscoder__prototype"></a>
+
+```cpp
+virtual int startLocalVideoTranscoder(const LocalTranscoderConfiguration& config) = 0;
+```
+
+<a id="api_irtcengine_startlocalvideotranscoder__detailed_desc"></a>
+
+你可以调用该方法在本地将多个视频流合并为一个视频流，例如摄像头采集的视频流、屏幕共享、媒体播放器、远端视频、视频文件、图片等，并将混流后的视频流发布到频道中。 以下是实现人像画中画效果的典型用例：
+
+1. 调用 [enableVirtualBackground](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground)，并将自定义背景图设置为 `BACKGROUND_NONE`，实现摄像头采集视频中人像与背景的分离。
+2. 调用 `startScreenCapture` 开始采集屏幕共享视频流。
+3. 调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder)，并将采集人像的视频源设置为参与本地视频合图的视频源之一，即可在合图视频中实现人像画中画效果。
+
+:::info[注]
+- 本地视频合图对设备性能要求较高，建议在高性能设备上使用。
+- 若需混合本地采集的视频流，SDK 支持以下组合：
+
+  - Windows 平台：最多支持 4 路摄像头采集的视频流 + 4 路屏幕共享流。
+  - macOS 平台：最多支持 4 路摄像头采集的视频流 + 1 路屏幕共享流。
+  - Android 和 iOS 平台：最多支持 2 路摄像头采集的视频流（需设备支持双摄或外接摄像头）+ 1 路屏幕共享流。
+- 配置本地视频混流时，需确保采集人像的视频流的图层编号大于屏幕共享流的图层编号，否则人像会被屏幕共享遮挡，无法在最终合图视频中显示。
+:::
+
+<a id="api_irtcengine_startlocalvideotranscoder__scenario"></a>
+
+### 适用场景
+
+适用于远程会议、直播、在线教育等场景，便于用户查看和管理多个视频流，并支持人像画中画等功能。
+
+<a id="api_irtcengine_startlocalvideotranscoder__timing"></a>
+
+### 调用时机
+
+- 若需混合本地采集的视频流，需在调用 [startCameraCapture](/zh-CN/api-reference/rtc/cpp-all-platforms/video/camera-capture#api_irtcengine_startcameracapture) 或 `startScreenCapture` 后调用本方法。
+- 若希望将合图后的视频流发布到频道中，需在调用 `joinChannel` 或 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions) 时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中的 `publishTranscodedVideoTrack` 设置为 true。
+
+<a id="api_irtcengine_startlocalvideotranscoder__related"></a>
+
+### 相关回调
+
+调用该方法失败时，SDK 会触发 [onLocalVideoTranscoderError](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) 回调报告失败原因。
+
+<a id="api_irtcengine_startlocalvideotranscoder__parameters"></a>
+
+### 参数
+
+#### `config`
+
+本地视频合图的配置，详见 [LocalTranscoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-localtranscoderconfiguration)。
+
+:::info[注]
+- 参与本地视频合图的每路视频流的最大分辨率为 4096 × 2160，超出该限制将导致合图失败。
+- 合图后的视频流最大分辨率为 4096 × 2160。
+:::
+
+<a id="api_irtcengine_startlocalvideotranscoder__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoplocalvideotranscoder"></a>
+
+## stopLocalVideoTranscoder
+
+停止本地合图。
+
+<a id="api_irtcengine_stoplocalvideotranscoder__prototype"></a>
+
+```cpp
+virtual int stopLocalVideoTranscoder() = 0;
+```
+
+<a id="api_irtcengine_stoplocalvideotranscoder__detailed_desc"></a>
+
+调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如果你希望停止本地合图，可以调用该方法。
+
+<a id="api_irtcengine_stoplocalvideotranscoder__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_updatelocaltranscoderconfiguration"></a>
+
+## updateLocalTranscoderConfiguration
+
+更新本地合图配置。
+
+<a id="api_irtcengine_updatelocaltranscoderconfiguration__prototype"></a>
+
+```cpp
+virtual int updateLocalTranscoderConfiguration(const LocalTranscoderConfiguration& config) = 0;
+```
+
+<a id="api_irtcengine_updatelocaltranscoderconfiguration__detailed_desc"></a>
+
+调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如果你需要更新本地合图配置，可以调用该方法。
+
+:::info[注]
+如果你需要更新用于本地合图的视频源类型，例如添加第二个摄像头或屏幕进行视频采集，需要在调用 [startCameraCapture](/zh-CN/api-reference/rtc/cpp-all-platforms/video/camera-capture#api_irtcengine_startcameracapture) 或 `startScreenCapture` 后调用该方法。
+:::
+
+<a id="api_irtcengine_updatelocaltranscoderconfiguration__parameters"></a>
+
+### 参数
+
+#### `config`
+
+本地合图配置。详见 [LocalTranscoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-localtranscoderconfiguration)。
+
+<a id="api_irtcengine_updatelocaltranscoderconfiguration__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onlocalvideotranscodererror"></a>
+
+## onLocalVideoTranscoderError
+
+本地视频合图过程中发生错误的回调。
+
+<a id="callback_irtcengineeventhandler_onlocalvideotranscodererror__prototype"></a>
+
+```cpp
+virtual void onLocalVideoTranscoderError(const TranscodingVideoStream& stream, VIDEO_TRANSCODER_ERROR error)
+```
+
+<a id="callback_irtcengineeventhandler_onlocalvideotranscodererror__detailed_desc"></a>
+
+当调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder) 或 [updateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) 失败时，SDK 会触发该回调报告失败原因。
+
+<a id="callback_irtcengineeventhandler_onlocalvideotranscodererror__parameters"></a>
+
+### 参数
+
+#### `stream`
+
+在视频合图过程中无法被合图的视频流。详见 [TranscodingVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/class-transcodingvideostream)。
+
+#### `error`
+
+本地视频合图失败的原因。详见 [VIDEO_TRANSCODER_ERROR](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videotranscodererror)。
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

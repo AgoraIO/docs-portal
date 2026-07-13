@@ -2,9 +2,8 @@
 title: "媒体流附属信息分发"
 description: "当 SDK 请求元数据最大大小时触发的回调。"
 ---
-<a id="toc_metadata_observer"></a>
 
-## 媒体流附属信息分发
+<a id="toc_metadata_observer"></a>
 
 <a id="api_imetadataobserver_getmaxmetadatasize"></a>
 
@@ -28,7 +27,6 @@ public abstract int getMaxMetadataSize()
 
 方法调用成功，返回你希望使用的元数据 `buffer` 的最大大小，单位为字节。最大值为 1024 字节。请确保设置返回值。
 
-### 所属接口类
 - [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)
 
 <a id="api_irtcengine_registermediametadataobserver"></a>
@@ -72,7 +70,6 @@ public abstract int registerMediaMetadataObserver(IMetadataObserver observer, in
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unregistermediametadataobserver"></a>
@@ -110,7 +107,6 @@ public abstract int unregisterMediaMetadataObserver(IMetadataObserver observer, 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_imetadataobserver_onmetadatareceived"></a>
@@ -141,7 +137,6 @@ public abstract void onMetadataReceived(AgoraMetadata metadata)
 
 接收到的元数据。详见 [AgoraMetadata](/zh-CN/api-reference/rtc/android/class-metadata)。
 
-### 所属接口类
 - [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)
 
 <a id="callback_imetadataobserver_onreadytosendmetadata"></a>
@@ -186,5 +181,4 @@ public abstract byte[] onReadyToSendMetadata(long timeStampMs, int sourceType)
 
 方法调用成功时，返回希望发送的元数据，格式为字节数组。
 
-### 所属接口类
 - [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)

@@ -2,6 +2,7 @@
 title: "ScreenCaptureParameters"
 description: "屏幕共享的参数配置。"
 ---
+
 <a id="class_screencaptureparameters__prototype"></a>
 
 ```dart
@@ -101,14 +102,14 @@ class ScreenCaptureParameters {
 由于 macOS 系统限制，设置该成员将窗口前置时，如果当前的应用存在多个窗口，只会将主窗口前置。
 :::
 
-调用 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/flutter/screencapture#api_irtcengine_startscreencapturebywindowid) 方法共享窗口时，是否将该窗口前置：
+调用 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_startscreencapturebywindowid) 方法共享窗口时，是否将该窗口前置：
 
 - true: 前置窗口。
 - false:（默认）不前置窗口。
 
 ### `excludeWindowList`
 
-待屏蔽窗口的 ID 列表。调用 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/flutter/screencapture#api_irtcengine_startscreencapturebydisplayid) 开启屏幕共享时，你可以通过该参数屏蔽指定的窗口。你可以在调用 [updateScreenCaptureParameters](/zh-CN/api-reference/rtc/flutter/screencapture#api_irtcengine_updatescreencaptureparameters) 更新屏幕共享的配置参数时，通过该参数动态屏蔽指定的窗口。
+待屏蔽窗口的 ID 列表。调用 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开启屏幕共享时，你可以通过该参数屏蔽指定的窗口。你可以在调用 [updateScreenCaptureParameters](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_updatescreencaptureparameters) 更新屏幕共享的配置参数时，通过该参数动态屏蔽指定的窗口。
 
 ### `enableHighLight`
 

@@ -2,9 +2,8 @@
 title: "插件"
 description: "启用/禁用插件。"
 ---
-<a id="toc_extension"></a>
 
-## 插件
+<a id="toc_extension"></a>
 
 <a id="api_irtcengine_enableextension"></a>
 
@@ -70,7 +69,6 @@ Future<void> enableExtension(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getextensionproperty2"></a>
@@ -129,7 +127,6 @@ Future<String> getExtensionProperty(
 - 方法调用成功，则返回插件信息。
 - 方法调用失败，则返回空字符串。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_loadextensionprovider"></a>
@@ -180,7 +177,6 @@ Future<void> loadExtensionProvider(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registerextension"></a>
@@ -212,7 +208,7 @@ Future<void> registerExtension(
 ### 调用时机
 
 - 建议你在初始化 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 后、加入频道前调用该方法。
-- 对于视频相关插件（例如美颜插件），需要在启用视频模块（[enableVideo](/zh-CN/api-reference/rtc/flutter/video-basic#api_irtcengine_enablevideo) / [enableLocalVideo](/zh-CN/api-reference/rtc/flutter/video-basic#api_irtcengine_enablelocalvideo) ）之前调用该方法。
+- 对于视频相关插件（例如美颜插件），需要在启用视频模块（[enableVideo](/zh-CN/api-reference/rtc/flutter/video/video-basic#api_irtcengine_enablevideo) / [enableLocalVideo](/zh-CN/api-reference/rtc/flutter/video/video-basic#api_irtcengine_enablelocalvideo) ）之前调用该方法。
 - 调用该方法前，需要先调用 [loadExtensionProvider](/zh-CN/api-reference/rtc/flutter/extension#api_irtcengine_loadextensionprovider) 加载插件。
 
 <a id="api_irtcengine_registerextension__parameters"></a>
@@ -237,7 +233,6 @@ Future<void> registerExtension(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setextensionproperty"></a>
@@ -307,7 +302,6 @@ Future<void> setExtensionProperty(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setextensionproviderproperty"></a>
@@ -359,7 +353,6 @@ Future<void> setExtensionProviderProperty(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onextensionerrorwithcontext"></a>
@@ -395,7 +388,6 @@ final void Function(ExtensionContext context, int error, String message)?
 
 错误原因。详见插件服务商提供的插件文档。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onextensioneventwithcontext"></a>
@@ -431,7 +423,6 @@ final void Function(ExtensionContext context, String key, String value)?
 
 插件属性 Key 对应的值。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onextensionstartedwithcontext"></a>
@@ -458,7 +449,6 @@ final void Function(ExtensionContext context)? onExtensionStartedWithContext;
 
 插件上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/flutter/class-extensioncontext)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext"></a>
@@ -485,5 +475,4 @@ final void Function(ExtensionContext context)? onExtensionStoppedWithContext;
 
 插件上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/flutter/class-extensioncontext)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)

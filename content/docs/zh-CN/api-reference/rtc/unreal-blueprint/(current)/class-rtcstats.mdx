@@ -2,6 +2,7 @@
 title: "FRtcStats"
 description: "通话相关的统计信息。"
 ---
+
 <a id="class_rtcstats__prototype"></a>
 
 ```cpp
@@ -236,7 +237,7 @@ public:
 当前 App 的 CPU 使用率 (%)。
 
 :::warning[注意]
-- [OnLeaveChannel](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onleavechannel) 回调中报告的 cpuAppUsage 恒为 0。
+- [OnLeaveChannel](/zh-CN/api-reference/rtc/unreal-blueprint/toc-channel#callback_irtcengineeventhandler_onleavechannel) 回调中报告的 cpuAppUsage 恒为 0。
 - 自 Android 8.1 起，因系统限制，你可能无法通过该属性获取 CPU 使用率。
 :::
 
@@ -247,7 +248,7 @@ public:
 对于 Windows 平台，在多核环境中，该成员指多核 CPU 的平均使用率。 计算方式为 (100 - 任务管理中显示的系统空闲进程 CPU)/100。
 
 :::warning[注意]
-- [OnLeaveChannel](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onleavechannel) 回调中报告的 cpuTotalUsage 恒为 0。
+- [OnLeaveChannel](/zh-CN/api-reference/rtc/unreal-blueprint/toc-channel#callback_irtcengineeventhandler_onleavechannel) 回调中报告的 cpuTotalUsage 恒为 0。
 - 自 Android 8.1 起，因系统限制，你无法通过该属性获取 CPU 使用率。
 :::
 

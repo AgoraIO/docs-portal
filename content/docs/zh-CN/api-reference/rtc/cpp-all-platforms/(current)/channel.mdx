@@ -2,9 +2,8 @@
 title: "频道相关"
 description: "通过传入用户 ID 获取用户信息。"
 ---
-<a id="toc_channel"></a>
 
-## 频道相关
+<a id="toc_channel"></a>
 
 <a id="api_irtcengine_getuserinfobyuid"></a>
 
@@ -47,7 +46,6 @@ virtual int getUserInfoByUid(uid_t uid, rtc::UserInfo* userInfo) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getuserinfobyuidex"></a>
@@ -95,7 +93,6 @@ virtual int getUserInfoByUidEx(uid_t uid, rtc::UserInfo* userInfo, const RtcConn
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_getuserinfobyuseraccount"></a>
@@ -139,7 +136,6 @@ virtual int getUserInfoByUserAccount(const char* userAccount, rtc::UserInfo* use
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getuserinfobyuseraccountex"></a>
@@ -187,7 +183,6 @@ virtual int getUserInfoByUserAccountEx(const char* userAccount, rtc::UserInfo* u
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_joinchannel1"></a>
@@ -275,7 +270,6 @@ virtual int joinChannel(const char* token, const char* channelId, const char* in
   - -102：频道名无效。你需要在 `channelId` 中传入有效的频道名重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中传入有效的用户 ID 重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannel2"></a>
@@ -363,7 +357,6 @@ virtual int joinChannel(const char* token, const char* channelId, uid_t uid, con
   - -102：频道名无效。你需要在 `channelId` 中传入有效的频道名重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中传入有效的用户 ID 重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_joinchannelex"></a>
@@ -450,7 +443,6 @@ virtual int joinChannelEx(const char* token, const RtcConnection& connection, co
   - -102：频道名无效。你需要在 `channelId` 中传入有效的频道名以重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中传入有效的用户 ID 以重新加入频道。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_joinchannelwithuseraccount1"></a>
@@ -539,7 +531,6 @@ virtual int joinChannelWithUserAccount(const char* token, const char* channelId,
   - -102：频道名无效。请在 `channelId` 中传入有效的频道名重新加入频道。
   - -121：用户 ID 无效。请在 `uid` 中传入有效的用户 ID 重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannelwithuseraccount2"></a>
@@ -629,7 +620,6 @@ virtual int joinChannelWithUserAccount(const char* token, const char* channelId,
   - -102：频道名无效。你需要在 `channelId` 中传入有效的频道名以重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中传入有效的用户 ID 以重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannelwithuseraccountex_irtcengine"></a>
@@ -732,7 +722,6 @@ virtual int joinChannelWithUserAccountEx(const char* token, const char* channelI
   - -102：频道名无效。你需要在 `channelId` 中传入有效的频道名重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中传入有效的用户 ID 重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_leavechannel"></a>
@@ -783,7 +772,6 @@ virtual int leaveChannel() = 0;
   - -2：参数无效。
   - -7：SDK 未初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_leavechannel2"></a>
@@ -836,7 +824,6 @@ virtual int leaveChannel(const LeaveChannelOptions& options) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_leavechannelex"></a>
@@ -895,7 +882,6 @@ virtual int leaveChannelEx(const RtcConnection& connection) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengineex_leavechannelex2"></a>
@@ -968,7 +954,6 @@ virtual int leaveChannelEx(const RtcConnection& connection, const LeaveChannelOp
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_preloadchannel"></a>
@@ -1037,7 +1022,6 @@ virtual int preloadChannel(const char* token, const char* channelId, uid_t uid) 
   - -7： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象尚未初始化。请先初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象后再调用该方法。
   - -102：频道名无效。请传入有效的频道名并重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_preloadchannelwithuseraccount"></a>
@@ -1113,7 +1097,6 @@ virtual int preloadChannelWithUserAccount(const char* token, const char* channel
   - -7： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象尚未初始化。请先初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象后再调用该方法。
   - -102：频道名无效。请传入有效的频道名后重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registerlocaluseraccount"></a>
@@ -1168,7 +1151,6 @@ virtual int registerLocalUserAccount(const char* appId, const char* userAccount)
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_renewtoken"></a>
@@ -1212,7 +1194,6 @@ virtual int renewToken(const char* token) = 0;
     - 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致。
     - 生成的 Token 与加入频道时传入的 Token 相同。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setchannelprofile"></a>
@@ -1232,7 +1213,7 @@ virtual int setChannelProfile(CHANNEL_PROFILE_TYPE profile) = 0;
 SDK 会根据不同的频道场景采用不同的优化策略。例如，在直播场景中，SDK 会优先保证视频质量。初始化 SDK 后，默认频道场景为直播。
 
 :::info[注]
-为保证实时通信质量，声网建议频道内所有用户使用相同的频道场景。在不同的频道场景中，SDK 的默认音频路由也不同。详见 [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone)。
+为保证实时通信质量，声网建议频道内所有用户使用相同的频道场景。在不同的频道场景中，SDK 的默认音频路由也不同。详见 [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone)。
 :::
 
 <a id="api_irtcengine_setchannelprofile__timing"></a>
@@ -1259,7 +1240,6 @@ SDK 会根据不同的频道场景采用不同的优化策略。例如，在直�
   - -2：参数无效。
   - -7：SDK 未初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole1"></a>
@@ -1278,7 +1258,7 @@ virtual int setClientRole(CLIENT_ROLE_TYPE role) = 0;
 
 - 默认情况下，SDK 会将用户角色设置为观众。你可以调用该方法将用户角色设置为主播。用户角色（`role` ）决定了用户在 SDK 层的权限，包括是否可以在频道中发布音视频流。
 
-- 如果你在加入频道前调用该方法将用户角色设置为主播，并通过 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_setuplocalvideo) 设置本地视频属性，则用户加入频道时会自动开启本地视频预览。
+- 如果你在加入频道前调用该方法将用户角色设置为主播，并通过 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setuplocalvideo) 设置本地视频属性，则用户加入频道时会自动开启本地视频预览。
 
 - 如果你在加入频道后调用该方法设置用户角色，SDK 会自动调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [muteLocalVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalvideostream) 方法来更新音视频流的发布状态。
 
@@ -1326,7 +1306,6 @@ virtual int setClientRole(CLIENT_ROLE_TYPE role) = 0;
   - -2：参数无效。
   - -7：SDK 未初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole2"></a>
@@ -1345,7 +1324,7 @@ virtual int setClientRole(CLIENT_ROLE_TYPE role, const ClientRoleOptions& option
 
 该方法用于设置用户角色以及观众延迟等级。你可以调用该方法将用户角色设置为主播。用户角色 `role` 决定了用户在 SDK 层的权限，例如是否可以在频道中发布音视频流。 该方法与 `setClientRole` 的区别在于，它支持设置 `audienceLatencyLevel`。你需要将 `audienceLatencyLevel` 与 `role` 搭配使用，以决定用户在其权限范围内可享受的服务等级。例如，观众可以选择接收低延迟或超低延迟的远端流。
 
-- 如果你在加入频道前调用该方法将用户角色设置为主播，并通过 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_setuplocalvideo) 设置本地视频属性，则用户加入频道时会自动开启本地视频预览。
+- 如果你在加入频道前调用该方法将用户角色设置为主播，并通过 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setuplocalvideo) 设置本地视频属性，则用户加入频道时会自动开启本地视频预览。
 - 如果你在加入频道后调用该方法设置用户角色，SDK 会自动调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [muteLocalVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalvideostream) 方法来改变音视频流的发布状态。
 
 :::info[注]
@@ -1397,7 +1376,6 @@ virtual int setClientRole(CLIENT_ROLE_TYPE role, const ClientRoleOptions& option
   - -5：请求被拒绝。
   - -7：SDK 未初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatechannelmediaoptions"></a>
@@ -1433,7 +1411,6 @@ virtual int updateChannelMediaOptions(const ChannelMediaOptions& options) = 0;
   - -7： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象再调用该方法。
   - -8： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象的内部状态错误，可能是用户尚未加入频道。建议你通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果你收到 `CONNECTION_STATE_DISCONNECTED` （1）或 `CONNECTION_STATE_FAILED` （5）状态，说明用户不在频道中。你需要先调用 `joinChannel` 加入频道，再调用该方法。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex"></a>
@@ -1479,7 +1456,6 @@ virtual int updateChannelMediaOptionsEx(const ChannelMediaOptions& options, cons
   - -7： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象再调用该方法。
   - -8： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象的内部状态错误，可能的原因是用户未加入频道。声网建议你通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果你收到 `CONNECTION_STATE_DISCONNECTED` （1）或 `CONNECTION_STATE_FAILED` （5）状态，说明用户不在频道中。你需要先调用 `joinChannel` 加入频道，再调用该方法。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_updatepreloadchanneltoken"></a>
@@ -1522,7 +1498,6 @@ virtual int updatePreloadChannelToken(const char* token) = 0;
   - -2：参数无效，例如传入的 Token 无效。请传入有效参数并重新加入频道。
   - -7： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象尚未初始化。请先初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象后再调用该方法。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged"></a>
@@ -1572,7 +1547,6 @@ virtual void onClientRoleChanged(CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newR
 自 v4.1.0 起引入。
 :::
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed"></a>
@@ -1609,7 +1583,6 @@ virtual void onClientRoleChangeFailed(CLIENT_ROLE_CHANGE_FAILED_REASON reason, C
 
 当前的用户角色。详见 [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-clientroletype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onerror"></a>
@@ -1640,7 +1613,6 @@ virtual void onError(int err, const char* msg)
 
 错误信息。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess"></a>
@@ -1679,7 +1651,6 @@ virtual void onJoinChannelSuccess(const char* channel, uid_t uid, int elapsed)
 
 从本地用户调用 `joinChannel`、 `joinChannelWithUserAccount`、 [joinChannelEx](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengineex_joinchannelex) 或 [joinChannelWithUserAccountEx](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_joinchannelwithuseraccountex_irtcengine) 加入频道到触发该回调的时间间隔，单位为毫秒。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onleavechannel"></a>
@@ -1712,7 +1683,6 @@ virtual void onLeaveChannel(const RtcStats& stats)
 
 通话统计信息。详见 [RtcStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcstats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered"></a>
@@ -1743,7 +1713,6 @@ virtual void onLocalUserRegistered(uid_t uid, const char* userAccount)
 
 本地用户的用户 User Account。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess"></a>
@@ -1784,7 +1753,6 @@ virtual void onRejoinChannelSuccess(const char* channel, uid_t uid, int elapsed)
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间间隔（单位为毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrenewtokenresult"></a>
@@ -1819,7 +1787,6 @@ virtual void onRenewTokenResult(const char* token, RENEW_TOKEN_ERROR_CODE code)
 
 错误码，详见 [RENEW_TOKEN_ERROR_CODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-renewtokenerrorcode)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrequesttoken"></a>
@@ -1850,7 +1817,6 @@ virtual void onRequestToken() {}
 
 当 Token 过期时触发该回调。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrtcstats"></a>
@@ -1881,7 +1847,6 @@ virtual void onRtcStats(const RtcStats& stats)
 
 RTC 引擎的统计信息。详见 [RtcStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcstats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire"></a>
@@ -1920,7 +1885,6 @@ SDK 会在 Token 过期前 30 秒触发该回调，提醒你更新 Token。
 
 即将过期的 Token。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated"></a>
@@ -1951,7 +1915,6 @@ virtual void onUserInfoUpdated(uid_t uid, const UserInfo& info)
 
 包含远端用户的用户 ID 和用户 User Account 信息的对象。详见 [UserInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-userinfo)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserjoined"></a>
@@ -1992,7 +1955,6 @@ SDK 在以下任一情况下触发该回调：
 
 从本地用户调用 `joinChannel` 到该回调被触发的延迟时间（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuseroffline"></a>
@@ -2032,5 +1994,4 @@ virtual void onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason)
 
 用户离线的原因，详见 [USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-userofflinereasontype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

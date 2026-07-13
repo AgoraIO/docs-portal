@@ -2,9 +2,8 @@
 title: "频道相关"
 description: "频道相关 API reference."
 ---
-<a id="toc_channel"></a>
 
-## 频道相关
+<a id="toc_channel"></a>
 
 <a id="api_irtcengine_joinchannel"></a>
 
@@ -93,7 +92,6 @@ public abstract joinChannel(key: string, channel: string, optionalInfo: string, 
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannel2"></a>
@@ -183,7 +181,6 @@ public abstract joinChannelWithOptions(token: string, channelId: string, uid: nu
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_joinchannelex"></a>
@@ -214,7 +211,7 @@ public abstract joinChannelEx(token: string, connection: RtcConnection, options:
 
 该方法需要在 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 之后调用。
 
-在多摄像头采集场景下，你需要在调用该方法之后调用 [startPreview](/zh-CN/api-reference/rtc/harmonyos/video-basic#api_irtcengine_startpreview2) 方法设置 sourceType 为 CAMERA_SECONDARY，以确保第二个摄像头采集正常。
+在多摄像头采集场景下，你需要在调用该方法之后调用 [startPreview](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#api_irtcengine_startpreview2) 方法设置 sourceType 为 CAMERA_SECONDARY，以确保第二个摄像头采集正常。
 
 <a id="api_irtcengineex_joinchannelex__restriction"></a>
 
@@ -276,7 +273,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_leavechannel2"></a>
@@ -337,7 +333,6 @@ public abstract leaveChannel(options?: LeaveChannelOptions): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_leavechannelex2"></a>
@@ -413,7 +408,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_renewtoken"></a>
@@ -470,7 +464,6 @@ public abstract renewToken(token: string): number;
     - 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致，
     - 生成的 Token 和加入频道使用的 Token 一致。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setchannelprofile"></a>
@@ -532,7 +525,6 @@ public abstract setChannelProfile(profile: number): number;
   - -2: 参数无效。
   - -7: SDK 尚未初始化。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole2"></a>
@@ -557,7 +549,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 该方法在加入频道前后均可调用。
 
-如果你在加入频道前调用该方法设置用户角色为主播、并且通过 [setupLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video-rendering#api_irtcengine_setuplocalvideo) 方法设置了本地视频属性，则用户加入频道时会自动开启本地视频预览。
+如果你在加入频道前调用该方法设置用户角色为主播、并且通过 [setupLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setuplocalvideo) 方法设置了本地视频属性，则用户加入频道时会自动开启本地视频预览。
 
 如果你在加入频道后调用该方法切换用户角色，调用成功后，SDK 会自动调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [muteLocalVideoStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalvideostream) 修改发布音视频流的状态。
 
@@ -615,7 +607,6 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
   - -5: 调用被拒绝。
   - -7: SDK 尚未初始化。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatechannelmediaoptions"></a>
@@ -649,7 +640,6 @@ public abstract updateChannelMediaOptions(options: ChannelMediaOptions): number;
   - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
   - -8： RtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果收到 DISCONNECTED (1) 或 FAILED (5)，则表示用户不在频道中。你需要在调用该方法前调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex"></a>
@@ -687,7 +677,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
   - -7： RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
   - -8： RtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果收到 DISCONNECTED (1) 或 FAILED (5)，则表示用户不在频道中。你需要在调用该方法前调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged"></a>
@@ -735,7 +724,6 @@ onClientRoleChanged?:(oldRole:Constants.ClientRole, newRole:Constants.ClientRole
 
 切换后的角色属性。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/harmonyos/class-clientroleoptions)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed"></a>
@@ -795,7 +783,6 @@ onClientRoleChangeFailed?: (reason:number, currentRole:Constants.ClientRole) => 
 
 当前用户角色。详见 [ClientRole](/zh-CN/api-reference/rtc/harmonyos/enum-clientroletype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onerror"></a>
@@ -822,7 +809,6 @@ onError?:(err:Constants.ErrorCode,message:string) => void
 
 错误码。详见 [ErrorCode](/zh-CN/api-reference/rtc/harmonyos/enum-errorcodetype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess"></a>
@@ -869,7 +855,6 @@ onJoinChannelSuccess?:(channel:string, uid:number, elapsed:number) => void;
 
 从本地调用 joinChannelWithOptions 开始到发生此事件过去的时间（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onleavechannel"></a>
@@ -908,7 +893,6 @@ onLeaveChannel?:(stats: RtcStats ) => void;
 
 通话的统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/harmonyos/class-rtcstats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess"></a>
@@ -953,7 +937,6 @@ onRejoinChannelSuccess?:(channel:string, uid:number, elapsed:number) => void;
 
 从调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrequesttoken"></a>
@@ -988,7 +971,6 @@ onRequestToken?:() => void;
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__parameters"></a>
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrtcstats"></a>
@@ -1025,7 +1007,6 @@ SDK 定期向 App 报告当前通话的统计信息，每两秒触发一次。
 
 RTC 引擎统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/harmonyos/class-rtcstats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire"></a>
@@ -1070,7 +1051,6 @@ onTokenPrivilegeWillExpire?: (token:string) => void;
 
 即将过期的 Token。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserjoined"></a>
@@ -1118,7 +1098,6 @@ onUserJoined?:(uid:number, elapse:number) => void;
 
 从本地用户调用 joinChannelWithOptions 到该回调触发的延迟（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuseroffline"></a>
@@ -1168,5 +1147,4 @@ onUserOffline?:(uid:number, reason:number) => void;
 - USER_OFFLINE_DROPPED (1)：因过长时间收不到对方数据包，SDK 判定该远端用户超时掉线。注意：在网络连接不稳定时，该判定可能会有误。建议使用 RTM SDK 来做可靠的掉线检测。
 - USER_OFFLINE_BECOME_AUDIENCE (2)：用户的角色从主播切换为观众。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

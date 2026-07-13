@@ -1,0 +1,316 @@
+---
+title: "播放器控制"
+description: "调节本地播放音量。"
+---
+
+<a id="toc_mediaplayer_control"></a>
+
+<a id="api_imediaplayer_adjustplayoutvolume"></a>
+
+## adjustPlayoutVolume
+
+调节本地播放音量。
+
+<a id="api_imediaplayer_adjustplayoutvolume__prototype"></a>
+
+```dart
+Future<void> adjustPlayoutVolume(int volume);
+```
+
+<a id="api_imediaplayer_adjustplayoutvolume__detailed_desc"></a>
+
+<a id="api_imediaplayer_adjustplayoutvolume__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_imediaplayer_adjustplayoutvolume__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+本地播放音量，取值范围从 0 到 100：
+
+- 0: 无声。
+- 100: （默认）媒体文件的原始播放音量。
+
+<a id="api_imediaplayer_adjustplayoutvolume__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_adjustpublishsignalvolume"></a>
+
+## adjustPublishSignalVolume
+
+调节远端用户听到的音量。
+
+<a id="api_imediaplayer_adjustpublishsignalvolume__prototype"></a>
+
+```dart
+Future<void> adjustPublishSignalVolume(int volume);
+```
+
+<a id="api_imediaplayer_adjustpublishsignalvolume__detailed_desc"></a>
+
+连接到声网服务器后，你可以调用该方法，调节远端用户听到的媒体文件的音量。
+
+<a id="api_imediaplayer_adjustpublishsignalvolume__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_imediaplayer_adjustpublishsignalvolume__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+信号音量，取值范围从 0 到 400：
+
+- 0: 无声。
+- 100: （默认）媒体文件的原始音量。
+- 400: 原始音量的四倍（自带溢出保护）。
+
+<a id="api_imediaplayer_adjustpublishsignalvolume__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_mute"></a>
+
+## mute
+
+设置是否静音。
+
+<a id="api_imediaplayer_mute__prototype"></a>
+
+```dart
+Future<void> mute(bool muted);
+```
+
+<a id="api_imediaplayer_mute__detailed_desc"></a>
+
+<a id="api_imediaplayer_mute__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_imediaplayer_mute__parameters"></a>
+
+### 参数
+
+#### `muted`
+
+静音选项。
+
+- true：静音。
+- false：（默认）不静音。
+
+<a id="api_imediaplayer_mute__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_pause"></a>
+
+## pause
+
+暂停播放。
+
+<a id="api_imediaplayer_pause__prototype"></a>
+
+```dart
+Future<void> pause();
+```
+
+<a id="api_imediaplayer_pause__detailed_desc"></a>
+
+<a id="api_imediaplayer_pause__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_imediaplayer_pause__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_play"></a>
+
+## play
+
+播放媒体文件。
+
+<a id="api_imediaplayer_play__prototype"></a>
+
+```dart
+Future<void> play();
+```
+
+<a id="api_imediaplayer_play__detailed_desc"></a>
+
+<a id="api_imediaplayer_play__timing"></a>
+
+### 调用时机
+
+- 在调用 [open](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体文件、且收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态为 playerStateOpenCompleted 后，调用该方法。
+- 在调用 [seek](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 后调用该方法。
+
+<a id="api_imediaplayer_play__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_playpreloadedsrc"></a>
+
+## playPreloadedSrc
+
+播放预加载的媒体资源。
+
+<a id="api_imediaplayer_playpreloadedsrc__prototype"></a>
+
+```dart
+Future<void> playPreloadedSrc(String src);
+```
+
+<a id="api_imediaplayer_playpreloadedsrc__detailed_desc"></a>
+
+调用 [preloadSrc](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc) 方法将媒体资源预加载到播放列表后，可以调用该方法播放已预加载的媒体资源。调用该方法后，如果你收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态 `playerStatePlaying`，则表示播放成功。 如果你想更换播放的预加载媒体资源，你可以再次调用该方法并指定新的媒体资源路径。如果你想重新播放媒体资源，你需要在播放前调用 [preloadSrc](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc) 重新将该媒体资源预加载到播放列表。如果你想清空播放列表，请调用 [stop](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-control#api_imediaplayer_stop)。
+
+:::info[注]
+如果你在播放暂停时调用该方法，该方法会在恢复播放后才生效。
+:::
+
+<a id="api_imediaplayer_playpreloadedsrc__parameters"></a>
+
+### 参数
+
+#### `src`
+
+播放列表中的媒体资源 URL 地址，必须与 [preloadSrc](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc) 方法设置的 `src` 一致，否则无法播放。
+
+<a id="api_imediaplayer_playpreloadedsrc__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_resume"></a>
+
+## resume
+
+暂停后恢复播放。
+
+<a id="api_imediaplayer_resume__prototype"></a>
+
+```dart
+Future<void> resume();
+```
+
+<a id="api_imediaplayer_resume__detailed_desc"></a>
+
+<a id="api_imediaplayer_resume__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_seek"></a>
+
+## seek
+
+定位到媒体文件的指定播放位置。
+
+<a id="api_imediaplayer_seek__prototype"></a>
+
+```dart
+Future<void> seek(int newPos);
+```
+
+<a id="api_imediaplayer_seek__detailed_desc"></a>
+
+- 如果你在播放已经完成后（收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 playerStatePlaybackCompleted 或 playerStatePlaybackAllLoopsCompleted）再调用 [seek](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek)，方法调用成功后，SDK 会从你指定的位置开始自动播放，此时你会收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 playerStatePlaying。
+- 如果你在播放暂停的情况下调用 [seek](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek)，调用成功后 SDK 会定位到你指定位置，如需播放，请调用 [resume](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-control#api_imediaplayer_resume) 或 [play](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-control#api_imediaplayer_play)。
+
+<a id="api_imediaplayer_seek__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_imediaplayer_seek__related"></a>
+
+### 相关回调
+
+成功调用该方法后，你会收到 [onPlayerEvent](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调，报告当前播放器发生的事件，如定位开始、定位成功或定位失败。
+
+<a id="api_imediaplayer_seek__parameters"></a>
+
+### 参数
+
+#### `newPos`
+
+指定的位置（毫秒）。
+
+<a id="api_imediaplayer_seek__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_stop"></a>
+
+## stop
+
+停止播放。
+
+<a id="api_imediaplayer_stop__prototype"></a>
+
+```dart
+Future<void> stop();
+```
+
+<a id="api_imediaplayer_stop__detailed_desc"></a>
+
+调用该方法停止播放后，如需重新播放，需要调用 [open](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 再次打开媒体资源。
+
+<a id="api_imediaplayer_stop__timing"></a>
+
+### 调用时机
+
+该方法需要在 play 之后调用。
+
+<a id="api_imediaplayer_stop__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)

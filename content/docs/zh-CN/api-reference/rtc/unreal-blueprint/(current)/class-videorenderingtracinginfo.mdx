@@ -2,6 +2,7 @@
 title: "FVideoRenderingTracingInfo"
 description: "视频帧渲染过程中的指标信息。"
 ---
+
 <a id="class_videorenderingtracinginfo__prototype"></a>
 
 ```cpp
@@ -57,11 +58,11 @@ public:
 
 ### `elapsedTime`
 
-从调用 [StartMediaRenderingTracing](/zh-CN/api-reference/rtc/unreal-blueprint/video-rendering#api_irtcengine_startmediarenderingtracing) 到触发 [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/unreal-blueprint/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调的时间间隔 (ms)。建议在加入频道前调用 StartMediaRenderingTracing。
+从调用 [StartMediaRenderingTracing](/zh-CN/api-reference/rtc/unreal-blueprint/toc-video-rendering#api_irtcengine_startmediarenderingtracing) 到触发 [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/unreal-blueprint/toc-video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调的时间间隔 (ms)。建议在加入频道前调用 StartMediaRenderingTracing。
 
 ### `start2JoinChannel`
 
-从调用 StartMediaRenderingTracing 到调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 的时间间隔 (ms)。负数表示在调用 JoinChannelWithOptions 后调用 StartMediaRenderingTracing。
+从调用 StartMediaRenderingTracing 到调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/toc-channel#api_irtcengine_joinchannel2) 的时间间隔 (ms)。负数表示在调用 JoinChannelWithOptions 后调用 StartMediaRenderingTracing。
 
 ### `join2JoinSuccess`
 

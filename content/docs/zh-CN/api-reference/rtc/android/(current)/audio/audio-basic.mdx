@@ -2,9 +2,8 @@
 title: "音频基础功能"
 description: "调节所有远端用户的本地播放音量。"
 ---
-<a id="toc_audio_basic"></a>
 
-## 音频基础功能
+<a id="toc_audio_basic"></a>
 
 <a id="api_irtcengine_adjustplaybacksignalvolume"></a>
 
@@ -47,7 +46,6 @@ public abstract int adjustPlaybackSignalVolume(int volume);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume"></a>
@@ -95,7 +93,6 @@ public abstract int adjustUserPlaybackSignalVolume(int uid, int volume);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex"></a>
@@ -153,7 +150,6 @@ public abstract int adjustUserPlaybackSignalVolumeEx(int uid, int volume, RtcCon
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_disableaudio"></a>
@@ -194,7 +190,6 @@ public abstract int disableAudio();
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudio"></a>
@@ -236,7 +231,6 @@ public abstract int enableAudio();
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudiovolumeindication"></a>
@@ -294,7 +288,6 @@ public abstract int enableAudioVolumeIndication(int interval, int smooth, boolea
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex"></a>
@@ -364,7 +357,6 @@ public abstract int enableAudioVolumeIndicationEx(int interval, int smooth, bool
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setaudioprofile"></a>
@@ -433,7 +425,6 @@ public abstract int setAudioProfile(int profile, int scenario);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioprofile2"></a>
@@ -489,7 +480,6 @@ public abstract int setAudioProfile(int profile);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioscenario"></a>
@@ -540,7 +530,6 @@ public abstract int setAudioScenario(int scenario);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onactivespeaker"></a>
@@ -576,7 +565,6 @@ public void onActiveSpeaker(int uid)
 
 最活跃远端说话用户的用户 ID。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudioquality"></a>
@@ -628,7 +616,6 @@ public void onAudioQuality(int uid, int quality, short delay, short lost)
 
 从远端用户发送到接收端的音频数据包的丢包率（%）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication"></a>
@@ -670,7 +657,6 @@ public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume)
 - 对于远端用户的回调， `totalVolume` 是瞬时音量最高的最多三位远端用户的音量总和。
 - 如果调用了 `startAudioMixing`，则 `totalVolume` 是混音后的音量。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished"></a>
@@ -708,7 +694,6 @@ public void onFirstLocalAudioFramePublished(int elapsed)
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间间隔（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded"></a>
@@ -750,7 +735,6 @@ public void onFirstRemoteAudioDecoded(int uid, int elapsed)
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe"></a>
@@ -789,7 +773,6 @@ public void onFirstRemoteAudioFrame(int uid, int elapsed) {}
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged"></a>
@@ -843,7 +826,6 @@ public void onLocalAudioStateChanged(int state, int reason)
 - `LOCAL_AUDIO_STREAM_REASON_ENCODE_FAILURE` （5）：本地音频编码失败。
 - `LOCAL_AUDIO_STREAM_REASON_INTERRUPTED` （8）：本地音频采集被系统电话、智能助手或闹钟中断。如果需要继续采集本地音频，提示用户结束电话、智能助手或闹钟。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats"></a>
@@ -876,7 +858,6 @@ public void onLocalAudioStats(LocalAudioStats stats) {}
 
 本地音频统计信息。详见 [LocalAudioStats](/zh-CN/api-reference/rtc/android/class-localaudiostats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged"></a>
@@ -940,7 +921,6 @@ public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapse
 
 从本地用户调用 `joinChannel` 方法到 SDK 触发该回调的时间（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats"></a>
@@ -967,7 +947,6 @@ public void onRemoteAudioStats(RemoteAudioStats stats) {}
 
 远端音频流的统计信息。详见 [RemoteAudioStats](/zh-CN/api-reference/rtc/android/class-remoteaudiostats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats"></a>
@@ -1016,7 +995,6 @@ public void onRemoteAudioTransportStats(int uid, int delay, int lost, int rxKBit
 
 接收到的音频码率，单位为 Kbps。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio"></a>
@@ -1060,5 +1038,4 @@ public void onUserMuteAudio(int uid, boolean muted)
 - true：音频流被静音。
 - false：音频流未被静音。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

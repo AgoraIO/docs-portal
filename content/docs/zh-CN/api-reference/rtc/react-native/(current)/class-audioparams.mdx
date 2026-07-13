@@ -2,6 +2,7 @@
 title: "AudioParams"
 description: "音频数据格式。"
 ---
+
 <a id="class_audioparams__prototype"></a>
 
 ```typescript
@@ -21,12 +22,12 @@ export class AudioParams {
 
 SDK 会根据 [AudioParams](/zh-CN/api-reference/rtc/react-native/class-audioparams) 设置以下回调中的音频数据格式：
 
-- [onRecordAudioFrame](/zh-CN/api-reference/rtc/react-native/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe)
-- [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/react-native/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe)
-- [onMixedAudioFrame](/zh-CN/api-reference/rtc/react-native/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe)
+- [onRecordAudioFrame](/zh-CN/api-reference/rtc/react-native/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe)
+- [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/react-native/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe)
+- [onMixedAudioFrame](/zh-CN/api-reference/rtc/react-native/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe)
 
 :::info[注]
-- SDK 会通过 [AudioParams](/zh-CN/api-reference/rtc/react-native/class-audioparams) 中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔，并根据该采样间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/react-native/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe)、 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/react-native/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe)、 [onMixedAudioFrame](/zh-CN/api-reference/rtc/react-native/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 和 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/react-native/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调。
+- SDK 会通过 [AudioParams](/zh-CN/api-reference/rtc/react-native/class-audioparams) 中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔，并根据该采样间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/react-native/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe)、 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/react-native/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe)、 [onMixedAudioFrame](/zh-CN/api-reference/rtc/react-native/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 和 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/react-native/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调。
 - 采样间隔 = `samplesPerCall` /(`sampleRate` × `channel`)。
 - 请确保采样间隔不得小于 0.01 (s)。
 :::

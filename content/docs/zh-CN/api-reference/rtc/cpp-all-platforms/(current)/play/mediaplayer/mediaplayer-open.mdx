@@ -1,0 +1,235 @@
+---
+title: "媒体资源打开"
+description: "打开媒体资源。"
+---
+
+<a id="toc_mediaplayer_open"></a>
+
+<a id="api_imediaplayer_open"></a>
+
+## open
+
+打开媒体资源。
+
+<a id="api_imediaplayer_open__prototype"></a>
+
+```cpp
+virtual int open(const char* url, int64_t startPos) = 0;
+```
+
+<a id="api_imediaplayer_open__detailed_desc"></a>
+
+:::info[注]
+[open](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 为异步调用。
+:::
+
+<a id="api_imediaplayer_open__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或加入频道后调用。
+
+<a id="api_imediaplayer_open__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态。在收到播放状态为 `PLAYER_STATE_OPEN_COMPLETED` 的通知后，你可以调用 [play](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
+
+<a id="api_imediaplayer_open__parameters"></a>
+
+### 参数
+
+#### `url`
+
+媒体文件路径，支持本地路径和在线路径。
+
+#### `startPos`
+
+播放起始位置，单位为毫秒。默认值为 0。
+
+<a id="api_imediaplayer_open__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_openwithmediasource"></a>
+
+## openWithMediaSource
+
+打开媒体文件并配置播放场景。
+
+<a id="api_imediaplayer_openwithmediasource__prototype"></a>
+
+```cpp
+virtual int openWithMediaSource(const media::base::MediaSource &source) = 0;
+```
+
+<a id="api_imediaplayer_openwithmediasource__detailed_desc"></a>
+
+该方法支持打开来自不同来源的媒体文件，包括自定义媒体源，并允许你配置播放场景。
+
+:::info[注]
+[openWithMediaSource](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 为异步调用。如果你需要播放媒体文件，请确保在调用 [play](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法前，已收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调并报告 `PLAYER_STATE_OPEN_COMPLETED`。
+:::
+
+<a id="api_imediaplayer_openwithmediasource__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或后调用该方法。
+
+<a id="api_imediaplayer_openwithmediasource__parameters"></a>
+
+### 参数
+
+#### `source`
+
+媒体资源。详见 [MediaSource](/zh-CN/api-reference/rtc/cpp-all-platforms/class-mediasource)。
+
+<a id="api_imediaplayer_openwithmediasource__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_preloadsrc"></a>
+
+## preloadSrc
+
+预加载媒体资源。
+
+<a id="api_imediaplayer_preloadsrc__prototype"></a>
+
+```cpp
+virtual int preloadSrc(const char* src, int64_t startPos) = 0;
+```
+
+<a id="api_imediaplayer_preloadsrc__detailed_desc"></a>
+
+你可以调用该方法将媒体资源预加载到播放列表中。如果需要预加载多个媒体资源，可以多次调用该方法。调用该方法后，如果在 [onPreloadEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpreloadevent) 回调中收到 `PLAYER_PRELOAD_EVENT_COMPLETE` 事件，表示预加载成功；如果收到 `PLAYER_PRELOAD_EVENT_ERROR` 事件，表示预加载失败。预加载成功后，如果你希望播放该媒体资源，请调用 [playPreloadedSrc](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_playpreloadedsrc)；如果希望清空播放列表，请调用 [stop](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_stop)。
+
+:::info[注]
+- 在调用该方法之前，请确保已成功调用 [open](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体资源。
+- 声网不支持将重复的媒体资源预加载到播放列表中。但你可以将正在播放的媒体资源再次预加载到播放列表中。
+:::
+
+<a id="api_imediaplayer_preloadsrc__parameters"></a>
+
+### 参数
+
+#### `src`
+
+媒体资源的 URL。
+
+#### `startPos`
+
+媒体资源预加载到播放列表后开始播放的位置（单位：毫秒）。
+
+:::info[注]
+预加载直播流时，请将该参数设为 0。
+:::
+
+<a id="api_imediaplayer_preloadsrc__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_switchsrc"></a>
+
+## switchSrc
+
+切换当前正在播放的媒体资源。
+
+<a id="api_imediaplayer_switchsrc__prototype"></a>
+
+```cpp
+virtual int switchSrc(const char* src, bool syncPts = true) = 0;
+```
+
+<a id="api_imediaplayer_switchsrc__detailed_desc"></a>
+
+你可以根据当前的网络状况调用该方法切换播放的媒体资源。例如：
+
+- 当网络较差时，切换为码率较低的媒体资源地址；
+- 当网络良好时，切换为码率较高的媒体资源地址。
+
+调用该方法后，如果收到 [onPlayerEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告 `PLAYER_EVENT_SWITCH_COMPLETE` 事件，表示切换成功；如果切换失败，SDK 会自动重试 3 次，若仍失败，将通过 [onPlayerEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告 `PLAYER_EVENT_SWITCH_ERROR` 事件，表示切换失败。
+
+:::info[注]
+- 请确保在调用 [open](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法之后再调用该方法。
+- 为确保正常播放，调用该方法时请注意以下事项：
+
+  - 播放暂停时不要调用该方法；
+  - 切换过程中不要调用 [seek](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 方法；
+  - 切换前请确保当前播放位置未超过目标媒体资源的总时长。
+:::
+
+<a id="api_imediaplayer_switchsrc__parameters"></a>
+
+### 参数
+
+#### `src`
+
+媒体资源的 URL 地址。
+
+#### `syncPts`
+
+是否在切换前后同步播放位置（毫秒）：
+
+- true：同步切换前后的播放位置。
+- false：（默认）不同步切换前后的播放位置。
+
+<a id="api_imediaplayer_switchsrc__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_unloadsrc"></a>
+
+## unloadSrc
+
+卸载预加载的媒体资源。
+
+<a id="api_imediaplayer_unloadsrc__prototype"></a>
+
+```cpp
+virtual int unloadSrc(const char* src) = 0;
+```
+
+<a id="api_imediaplayer_unloadsrc__detailed_desc"></a>
+
+:::info[注]
+[unloadSrc](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_unloadsrc) 方法无法释放正在播放的媒体资源。
+:::
+
+<a id="api_imediaplayer_unloadsrc__parameters"></a>
+
+### 参数
+
+#### `src`
+
+媒体资源的 URL。
+
+<a id="api_imediaplayer_unloadsrc__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)

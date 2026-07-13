@@ -1,0 +1,265 @@
+---
+title: "音频采集"
+description: "音频采集 API reference."
+---
+
+<a id="toc_audio_capture"></a>
+
+<a id="api_irtcengine_adjustrecordingsignalvolume"></a>
+
+## adjustRecordingSignalVolume
+
+调节音频采集信号音量。
+
+<a id="api_irtcengine_adjustrecordingsignalvolume__prototype"></a>
+
+```arkts
+public abstract adjustRecordingSignalVolume(volume: number): number;
+```
+
+<a id="api_irtcengine_adjustrecordingsignalvolume__detailed_desc"></a>
+
+<a id="api_irtcengine_adjustrecordingsignalvolume__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_adjustrecordingsignalvolume__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_adjustrecordingsignalvolume__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+音量，取值范围为 [0,400]。
+
+- 0: 静音。
+- 100: （默认）原始音量。
+- 400: 原始音量的 4 倍，自带溢出保护。
+
+<a id="api_irtcengine_adjustrecordingsignalvolume__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enableinearmonitoring"></a>
+
+开启耳返功能。
+
+<a id="api_irtcengine_enableinearmonitoring__prototype"></a>
+
+```arkts
+
+```
+
+<a id="api_irtcengine_enableinearmonitoring__detailed_desc"></a>
+
+该方法用于打开或关闭耳返功能。
+
+<a id="api_irtcengine_enableinearmonitoring__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_enableinearmonitoring__restriction"></a>
+
+### 调用限制
+
+用户必须使用耳机（有线和蓝牙均可）才能听到耳返效果。
+
+<a id="api_irtcengine_enableinearmonitoring__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+开启/关闭耳返功能:
+
+- `true`: 开启耳返功能。
+- `false`: （默认）关闭耳返功能。
+
+<a id="api_irtcengine_enableinearmonitoring__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+  - - 8: 请确保当前的音频路由为蓝牙或耳机。
+
+<a id="api_irtcengine_enableinearmonitoring2"></a>
+
+## enableInEarMonitoring
+
+开启耳返功能。
+
+<a id="api_irtcengine_enableinearmonitoring2__prototype"></a>
+
+```arkts
+public abstract enableInEarMonitoring(enabled: boolean, includeAudioFilters?: Constants.EarMontoringFilterType): number;
+```
+
+<a id="api_irtcengine_enableinearmonitoring2__detailed_desc"></a>
+
+该方法用于打开或关闭耳返功能。
+
+<a id="api_irtcengine_enableinearmonitoring2__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_enableinearmonitoring2__restriction"></a>
+
+### 调用限制
+
+用户必须使用耳机（有线和蓝牙均可）才能听到耳返效果。
+
+<a id="api_irtcengine_enableinearmonitoring2__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+开启/关闭耳返功能:
+
+- `true`: 开启耳返功能。
+- `false`: （默认）关闭耳返功能。
+
+#### `includeAudioFilters`
+
+耳返 Audio filter 类型。详见 [EarMontoringFilterType](/zh-CN/api-reference/rtc/harmonyos/enum-earmonitoringfiltertype)。
+
+<a id="api_irtcengine_enableinearmonitoring2__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+  - - 8: 请确保当前的音频路由为蓝牙或耳机。
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enablelocalaudio"></a>
+
+## enableLocalAudio
+
+开启或关闭本地音频采集。
+
+<a id="api_irtcengine_enablelocalaudio__prototype"></a>
+
+```arkts
+public abstract enableLocalAudio(enabled: boolean): number;
+```
+
+<a id="api_irtcengine_enablelocalaudio__detailed_desc"></a>
+
+当用户加入频道时，音频功能默认是开启的。该方法可以关闭或重新开启本地音频功能，即停止或重新开始本地音频采集。
+
+该方法与 [muteLocalAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 的区别在于：
+
+- enableLocalAudio: 开启或关闭本地音频采集及处理。使用 enableLocalAudio 关闭或开启本地采集后，本地听远端播放会有短暂中断。
+- muteLocalAudioStream: 停止或继续发送本地音频流，不影响音频的采集状态。
+
+<a id="api_irtcengine_enablelocalaudio__scenario"></a>
+
+### 适用场景
+
+该方法不影响接收远端音频流， [enableLocalAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-capture#api_irtcengine_enablelocalaudio) `(false)` 适用于只听不发的用户场景。
+
+<a id="api_irtcengine_enablelocalaudio__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。在加入频道前调用只能设置设备状态，在加入频道后才会立即生效。
+
+<a id="api_irtcengine_enablelocalaudio__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_enablelocalaudio__related"></a>
+
+### 相关回调
+
+音频功能关闭或重新开启后，会收到 [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，并报告 STOPPED (0) 或 RECORDING (1)。
+
+<a id="api_irtcengine_enablelocalaudio__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+- `true`: 重新开启本地音频功能，即开启本地音频采集（默认）；
+- `false`: 关闭本地音频功能，即停止本地音频采集。
+
+<a id="api_irtcengine_enablelocalaudio__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setinearmonitoringvolume"></a>
+
+## setInEarMonitoringVolume
+
+设置耳返音量。
+
+<a id="api_irtcengine_setinearmonitoringvolume__prototype"></a>
+
+```arkts
+public abstract setInEarMonitoringVolume(volume: number): number;
+```
+
+<a id="api_irtcengine_setinearmonitoringvolume__detailed_desc"></a>
+
+<a id="api_irtcengine_setinearmonitoringvolume__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_setinearmonitoringvolume__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_setinearmonitoringvolume__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+音量，取值范围为 [0,400]。
+
+- 0: 静音。
+- 100: （默认）原始音量。
+- 400: 原始音量的 4 倍，自带溢出保护。
+
+<a id="api_irtcengine_setinearmonitoringvolume__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
+
+  - -2: 参数设置无效，例如耳返音量超出取值范围 (&lt; 0 或 &gt; 400)。
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)

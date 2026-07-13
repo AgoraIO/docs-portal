@@ -1,0 +1,64 @@
+---
+title: "初始化"
+description: "初始化 API reference."
+---
+
+<a id="toc_mediaplayer_initialize"></a>
+
+<a id="api_irtcengine_createmediaplayer"></a>
+
+## createMediaPlayer
+
+创建媒体播放器对象。
+
+<a id="api_irtcengine_createmediaplayer__prototype"></a>
+
+```arkts
+public abstract createMediaPlayer():IMediaPlayer|undefined;
+```
+
+<a id="api_irtcengine_createmediaplayer__detailed_desc"></a>
+
+在调用 [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer) 类下的其他 API 前，你需要先调用该方法创建一个媒体播放器实例。如果你需要创建多个实例，可以多次调用该方法。
+
+<a id="api_irtcengine_createmediaplayer__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_irtcengine_createmediaplayer__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_createmediaplayer__parameters"></a>
+
+<a id="api_irtcengine_createmediaplayer__return_values"></a>
+
+### 返回值
+
+- 方法调用成功：返回 [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer) 对象。
+- 方法调用失败：返回空指针。
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_destroymediaplayer"></a>
+
+## destroy
+
+销毁媒体播放器。
+
+<a id="api_irtcengine_destroymediaplayer__prototype"></a>
+
+```arkts
+public abstract destroy():number;
+```
+
+<a id="api_irtcengine_destroymediaplayer__return_values"></a>
+
+### 返回值
+
+- ≥ 0: 方法调用成功，返回媒体播放器 ID
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。

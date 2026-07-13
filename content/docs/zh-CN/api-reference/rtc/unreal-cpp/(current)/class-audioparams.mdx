@@ -2,6 +2,7 @@
 title: "AudioParams"
 description: "音频数据格式。"
 ---
+
 <a id="class_audioparams__prototype"></a>
 
 ```cpp
@@ -19,10 +20,10 @@ struct AudioParams {
 
 你可以在以下 API 中传入 AudioParams 对象，用于设置对应回调报告的音频数据格式：
 
-- [getRecordAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_getrecordaudioparams)：设置 [onRecordAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调的数据格式。
-- [getPlaybackAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_getplaybackaudioparams)：设置 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调的数据格式。
-- [getMixedAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_getmixedaudioparams)：设置 [onMixedAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调的数据格式。
-- [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_getearmonitoringaudioparams)：设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调的数据格式。
+- [getRecordAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/toc-audio-raw#callback_iaudioframeobserverbase_getrecordaudioparams)：设置 [onRecordAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/toc-audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调的数据格式。
+- [getPlaybackAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/toc-audio-raw#callback_iaudioframeobserverbase_getplaybackaudioparams)：设置 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/toc-audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调的数据格式。
+- [getMixedAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/toc-audio-raw#callback_iaudioframeobserverbase_getmixedaudioparams)：设置 [onMixedAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/toc-audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调的数据格式。
+- [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/toc-audio-raw#callback_iaudioframeobserverbase_getearmonitoringaudioparams)：设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/toc-audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调的数据格式。
 
 :::warning[注意]
 - SDK 会通过 AudioParams 中的 samplesPerCall、 sampleRate 和 channel 参数计算采样间隔，并根据该采样间隔触发 onRecordAudioFrame、 onPlaybackAudioFrame、 onMixedAudioFrame 和 onEarMonitoringAudioFrame 回调。

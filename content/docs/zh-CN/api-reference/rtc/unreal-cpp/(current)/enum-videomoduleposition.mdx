@@ -2,6 +2,7 @@
 title: "VIDEO_MODULE_POSITION"
 description: "视频观测位置。"
 ---
+
 <a id="enum_videomoduleposition__parameters"></a>
 
 ## 枚举值
@@ -12,15 +13,15 @@ description: "视频观测位置。"
 
 ### `POSITION_POST_CAPTURER`
 
-1: 本地采集视频数据并且经过前处理之后的位置，对应 [onCaptureVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调。此处观测到的视频具备视频前处理的效果，可通过开启美颜、虚拟背景或水印等方式验证。
+1: 本地采集视频数据并且经过前处理之后的位置，对应 [onCaptureVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/toc-video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调。此处观测到的视频具备视频前处理的效果，可通过开启美颜、虚拟背景或水印等方式验证。
 
 ### `POSITION_PRE_RENDERER`
 
-2: 接收远端发送的视频在渲染前的位置，对应 [onRenderVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调。
+2: 接收远端发送的视频在渲染前的位置，对应 [onRenderVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/toc-video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调。
 
 ### `POSITION_PRE_ENCODER`
 
-4: 本地视频编码前的位置，对应 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调。此处观测到的视频具备视频前处理和编码前处理的效果：
+4: 本地视频编码前的位置，对应 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/toc-video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调。此处观测到的视频具备视频前处理和编码前处理的效果：
 
 - 对于视频前处理效果，可通过开启美颜、虚拟背景或水印等方式验证。
 - 对于编码前处理效果，可通过设置一个较低的帧率（例如 5 fps）验证。

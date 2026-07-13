@@ -2,9 +2,8 @@
 title: "旁路推流"
 description: "开始向 CDN 推送音视频流（不进行转码）。"
 ---
-<a id="toc_media_push"></a>
 
-## 旁路推流
+<a id="toc_media_push"></a>
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding"></a>
 
@@ -53,7 +52,6 @@ public abstract int startRtmpStreamWithoutTranscoding(String url);
   - -7：调用该方法前未初始化 SDK。
   - -19：推流地址已被使用，请更换地址。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex"></a>
@@ -113,7 +111,6 @@ public abstract int startRtmpStreamWithoutTranscodingEx(String url, RtcConnectio
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换地址。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding"></a>
@@ -167,7 +164,6 @@ public abstract int startRtmpStreamWithTranscoding(String url, LiveTranscoding t
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换其他地址。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startrtmpstreamwithtranscodingex"></a>
@@ -226,7 +222,6 @@ public abstract int startRtmpStreamWithTranscodingEx(String url, LiveTranscoding
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换地址。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_stoprtmpstream"></a>
@@ -260,7 +255,6 @@ public abstract int stopRtmpStream(String url);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_stoprtmpstreamex"></a>
@@ -310,7 +304,6 @@ public abstract int stopRtmpStreamEx(String url, RtcConnection connection);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_updatertmptranscoding"></a>
@@ -344,7 +337,6 @@ public abstract int updateRtmpTranscoding(LiveTranscoding transcoding);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatertmptranscodingex"></a>
@@ -388,7 +380,6 @@ public abstract int updateRtmpTranscodingEx(LiveTranscoding transcoding, RtcConn
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingevent"></a>
@@ -426,7 +417,6 @@ public void onRtmpStreamingEvent(String url, int event)
 - `RTMP_STREAMING_EVENT_ADVANCED_FEATURE_NOT_SUPPORT` （3）：该功能不支持。
 - `RTMP_STREAMING_EVENT_REQUEST_TOO_OFTEN` （4）：保留参数。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged"></a>
@@ -494,7 +484,6 @@ public void onRtmpStreamingStateChanged(String url, int state, int reason)
 - `RTMP_STREAM_PUBLISH_REASON_INVALID_PRIVILEGE` (16)：项目无权限使用旁路推流服务。
 - `RTMP_STREAM_UNPUBLISH_REASON_OK` (100)：已正常停止旁路推流。调用 [stopRtmpStream](/zh-CN/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流后，SDK 返回该值。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_ontranscodingupdated"></a>
@@ -523,5 +512,4 @@ public void onTranscodingUpdated() {}
 
 该回调在发布端的云端转码配置发生更新时被触发。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

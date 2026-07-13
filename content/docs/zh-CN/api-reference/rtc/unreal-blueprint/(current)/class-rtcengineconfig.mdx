@@ -2,6 +2,7 @@
 title: "FRtcEngineContext"
 description: "FRtcEngineContext 定义。"
 ---
+
 <a id="class_rtcengineconfig__prototype"></a>
 
 ```cpp
@@ -78,7 +79,7 @@ struct FRtcEngineContext
 
 ### `appId`
 
-声网为 App 开发者签发的 App ID。 使用同一个 App ID 的 App 才能进入同一个频道进行通话或直播。一个 App ID 只能用于创建一个 IRtcEngine。如需更换 App ID，必须先调用 [Release](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_release) 销毁当前 IRtcEngine 再重新创建。
+声网为 App 开发者签发的 App ID。 使用同一个 App ID 的 App 才能进入同一个频道进行通话或直播。一个 App ID 只能用于创建一个 IRtcEngine。如需更换 App ID，必须先调用 [Release](/zh-CN/api-reference/rtc/unreal-blueprint/toc-initialize#api_irtcengine_release) 销毁当前 IRtcEngine 再重新创建。
 
 ### `channelProfile`
 
@@ -125,4 +126,4 @@ struct FRtcEngineContext
 是否在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 时自动注册声网插件：
 
 - `true`：（默认）初始化 IRtcEngine 时自动注册声网插件。
-- `false`：初始化 IRtcEngine 时不注册声网插件。你需要调用 [EnableExtension](/zh-CN/api-reference/rtc/unreal-blueprint/extension#api_irtcengine_enableextension) 来注册声网插件。
+- `false`：初始化 IRtcEngine 时不注册声网插件。你需要调用 [EnableExtension](/zh-CN/api-reference/rtc/unreal-blueprint/toc-extension#api_irtcengine_enableextension) 来注册声网插件。

@@ -2,6 +2,7 @@
 title: "ChannelMediaOptions"
 description: "频道媒体设置选项。"
 ---
+
 <a id="class_channelmediaoptions__prototype"></a>
 
 ```cpp
@@ -197,7 +198,7 @@ SDK 支持在同一时间、同一 [RtcConnection](/zh-CN/api-reference/rtc/unre
 
 ### `publishCustomAudioTrackId`
 
-待发布的自定义音频轨道的 ID，默认值为 0。你可以通过 [createCustomAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法来获取自定义音频轨道 ID。
+待发布的自定义音频轨道的 ID，默认值为 0。你可以通过 [createCustomAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/toc-audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法来获取自定义音频轨道 ID。
 
 ### `publishCustomVideoTrack`
 
@@ -287,8 +288,8 @@ SDK 支持在同一时间、同一 [RtcConnection](/zh-CN/api-reference/rtc/unre
 （可选）在服务端生成的用于鉴权的动态密钥。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/unreal-cpp/basic-features/token-authentication)。
 
 :::warning[注意]
-- 该参数仅在调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_updatechannelmediaoptions) 或 [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_updatechannelmediaoptionsex) 时生效。
-- 请确保用于生成 token 的 App ID、频道名和用户名和 [initialize](/zh-CN/api-reference/rtc/unreal-cpp/initialize#api_irtcengine_initialize) 方法初始化引擎时用的 App ID，以及 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 或 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_joinchannelex) 方法加入频道时设置的频道名和用户名是一致的。
+- 该参数仅在调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/toc-channel#api_irtcengine_updatechannelmediaoptions) 或 [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/unreal-cpp/toc-channel#api_irtcengineex_updatechannelmediaoptionsex) 时生效。
+- 请确保用于生成 token 的 App ID、频道名和用户名和 [initialize](/zh-CN/api-reference/rtc/unreal-cpp/toc-initialize#api_irtcengine_initialize) 方法初始化引擎时用的 App ID，以及 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/toc-channel#api_irtcengine_joinchannel2) 或 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/toc-channel#api_irtcengineex_joinchannelex) 方法加入频道时设置的频道名和用户名是一致的。
 :::
 
 ### `publishRhythmPlayerTrack`
@@ -306,13 +307,13 @@ SDK 支持在同一时间、同一 [RtcConnection](/zh-CN/api-reference/rtc/unre
 - `false`：不开启互动观众模式。本地用户作为普通观众，收到默认设置的远端用户视频。
 
 :::warning[注意]
-- 该参数用于实现跨直播间连麦场景。连麦主播需要调用 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_joinchannelex) 方法，以观众身份加入对方的直播间，并将 isInteractiveAudience 设置为 `true`。
+- 该参数用于实现跨直播间连麦场景。连麦主播需要调用 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/toc-channel#api_irtcengineex_joinchannelex) 方法，以观众身份加入对方的直播间，并将 isInteractiveAudience 设置为 `true`。
 - 仅当用户角色为 CLIENT_ROLE_AUDIENCE 时，该参数生效。
 :::
 
 ### `customVideoTrackId`
 
-调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/unreal-cpp/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。默认值为 0。
+调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/unreal-cpp/toc-video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。默认值为 0。
 
 ### `isAudioFilterable`
 

@@ -2,9 +2,8 @@
 title: "Full SDK API 列表"
 description: "本页列出 iOS 所有的接口类以及其中包含的 API。"
 ---
-<a id="rtc_interface_class"></a>
 
-## Full SDK API 列表
+<a id="rtc_interface_class"></a>
 
 本页列出 iOS 所有的接口类以及其中包含的 API。
 
@@ -26,7 +25,6 @@ AgoraMediaMetadataDataSource 协议用于提供媒体元数据的数据源。
 请在关键线程中实现该协议中的所有回调。建议避免在关键线程中执行任何耗时操作。
 :::
 
-### 相关参考
 - [metadataMaxSize](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_metadatamaxsize)
 - [readyToSendMetadataAtTimestamp:sourceType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_readytosendmetadataattimestamp)
 
@@ -36,7 +34,6 @@ AgoraMediaMetadataDataSource 协议用于提供媒体元数据的数据源。
 
 用于接收媒体播放器的视频帧回调。
 
-### 相关参考
 - [AgoraRtcMediaPlayerGetVideoPixelFormat](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#api_agorartcmediaplayervideoframedelegate_agorartcmediaplayergetvideopixelformat)
 - [AgoraRtcMediaPlayer:didReceivePixelBuffer:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#api_agorartcmediaplayervideoframedelegate_didreceivepixelbuffer)
 - [AgoraRtcMediaPlayer:didReceiveVideoFrame:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#api_agorartcmediaplayervideoframedelegate_didreceivevideoframe)
@@ -53,7 +50,6 @@ AgoraMediaMetadataDataSource 协议用于提供媒体元数据的数据源。
 
 自 v4.4.0 版本新增。
 
-### 相关参考
 - [addView:config:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_addview)
 - [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_canvas_canvas)
 - [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas)
@@ -72,7 +68,6 @@ AgoraRteCanvasConfig 用于配置播放器的视频渲染。
 
 自 v4.4.0 版本新增。
 
-### 相关参考
 - [videoMirrorMode:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvasconfig_getmirrormode)
 - [videoRenderMode:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvasconfig_getrendermode)
 - [setVideoMirrorMode:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvasconfig_setmirrormode)
@@ -90,7 +85,6 @@ AgoraRteCanvasConfig 用于配置播放器的视频渲染。
 
 自 v4.4.0 版本新增。
 
-### 相关参考
 - [code](/zh-CN/api-reference/rtc/ios/play/rte-player#api_error_code)
 - [message](/zh-CN/api-reference/rtc/ios/play/rte-player#api_error_message)
 
@@ -104,7 +98,6 @@ AgoraRteCanvasConfig 用于配置播放器的视频渲染。
 
 该接口用于接收编码后的音频帧事件回调。
 
-### 相关参考
 - [onMixedEncodedAudioFrame:info:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#callback_iaudioencodedframeobserver_onmixedaudioencodedframe)
 - [onPlaybackEncodedAudioFrame:info:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#callback_iaudioencodedframeobserver_onplaybackaudioencodedframe)
 - [onRecordEncodedAudioFrame:info:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#callback_iaudioencodedframeobserver_onrecordaudioencodedframe)
@@ -119,7 +112,6 @@ AgoraRteCanvasConfig 用于配置播放器的视频渲染。
 
 将音频帧数据传递给你的应用程序。
 
-### 相关参考
 - [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getearmonitoringaudioparams)
 - [getMixedAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getmixedaudioparams)
 - [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition)
@@ -141,7 +133,6 @@ AgoraRteCanvasConfig 用于配置播放器的视频渲染。
 
 该协议用于接收和处理来自媒体播放器的音频帧数据回调。
 
-### 相关参考
 - [AgoraRtcMediaPlayer:didReceiveAudioFrame:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_iaudiopcmframesink_onframe_iaudiopcmframesink)
 
 <a id="class_iaudiospectrumobserver"></a>
@@ -150,7 +141,6 @@ AgoraRteCanvasConfig 用于配置播放器的视频渲染。
 
 处理音频频谱事件的代理。
 
-### 相关参考
 - [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum)
 - [onRemoteAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum)
 
@@ -160,7 +150,6 @@ AgoraRteCanvasConfig 用于配置播放器的视频渲染。
 
 空间音效功能的基础类。
 
-### 相关参考
 - [clearRemotePositions:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_clearremotepositions)
 - [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine)
 - [muteLocalAudioStream:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine)
@@ -180,7 +169,6 @@ AgoraRteCanvasConfig 用于配置播放器的视频渲染。
 
 用于实现本地空间音效功能的引擎类。
 
-### 相关参考
 - [sharedLocalSpatialAudioWithConfig:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine)
 - [destroy](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_release_ilocalspatialaudioengine)
 - [removeRemotePosition:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_removeremoteposition)
@@ -199,7 +187,6 @@ AgoraRteCanvasConfig 用于配置播放器的视频渲染。
 
 媒体播放器的代理协议。
 
-### 相关参考
 - [adjustPlayoutVolume:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustplayoutvolume)
 - [adjustPublishSignalVolume:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustpublishsignalvolume)
 - [getAudioBufferDelay](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getaudiobufferdelay)
@@ -248,7 +235,6 @@ AgoraRteCanvasConfig 用于配置播放器的视频渲染。
 
 你可以使用该协议提供的方法设置缓存参数、删除缓存文件以及获取缓存信息。
 
-### 相关参考
 - [enableAutoRemoveCache:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_enableautoremovecache)
 - [cacheDir](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getcachedir)
 - [cacheFileCount](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getcachefilecount)
@@ -273,7 +259,6 @@ AgoraRtcMediaPlayerDelegate 协议，用于接收媒体播放器的回调事件�
 
 你可以通过实现 [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver) 协议中的方法，处理媒体播放过程中的相关事件。
 
-### 相关参考
 - [AgoraRtcMediaPlayer:volumeIndicationDidReceive:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver)
 - [AgoraRtcMediaPlayer:didReceiveData:length:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onmetadata)
 - [AgoraRtcMediaPlayer:didPlayBufferUpdated:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplaybufferupdated)
@@ -296,7 +281,6 @@ AgoraMediaRecorder 类用于音视频流录制。
 
 你可以使用 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder) 开始和停止录制、设置录制配置，并注册录制观察者以监听录制相关的回调。
 
-### 相关参考
 - [enableMainQueueDispatch:](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_enablemainqueuedispatch_imediarecorder)
 - [setMediaRecorderDelegate:](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_setmediarecorderobserver)
 - [startRecording:](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_startrecording)
@@ -312,7 +296,6 @@ AgoraMediaRecorder 类用于音视频流录制。
 
 你可以通过实现该协议，在音频或视频录制过程中接收录制状态更新和相关信息。
 
-### 相关参考
 - [mediaRecorder:informationDidUpdated:uid:info:](/zh-CN/api-reference/rtc/ios/recording#callback_imediarecorderobserver_onrecorderinfoupdated)
 - [mediaRecorder:stateDidChanged:uid:state:reason:](/zh-CN/api-reference/rtc/ios/recording#callback_imediarecorderobserver_onrecorderstatechanged)
 
@@ -326,7 +309,6 @@ AgoraMediaMetadataDelegate 协议，用于在关键线程中处理回调。
 
 建议避免在关键线程中执行耗时操作。
 
-### 相关参考
 - [didMetadataReceived:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#callback_imetadataobserver_onmetadatareceived)
 
 <a id="class_imusiccontentcenter"></a>
@@ -339,7 +321,6 @@ AgoraMediaMetadataDelegate 协议，用于在关键线程中处理回调。
 
 该类用于管理声网提供的音乐内容资源，支持音乐内容的搜索、加载、播放等功能。
 
-### 相关参考
 - [createMusicPlayerWithDelegate:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_createmusicplayer)
 - [destroy](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter)
 - [destroyMusicPlayer:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroymusicplayer)
@@ -365,7 +346,6 @@ AgoraMediaMetadataDelegate 协议，用于在关键线程中处理回调。
 
 音乐内容中心事件代理。
 
-### 相关参考
 - [onLyricResult:songCode:lyricUrl:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onlyricresult)
 - [onMusicChartsResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult)
 - [onMusicCollectionResult:result:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult)
@@ -378,7 +358,6 @@ AgoraMediaMetadataDelegate 协议，用于在关键线程中处理回调。
 
 音乐播放器协议。
 
-### 相关参考
 - [openMediaWithSongCode:startPos:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusicplayer_open_imusicplayer)
 - [setPlayMode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusicplayer_setplaymode)
 
@@ -392,7 +371,6 @@ AgoraMediaMetadataDelegate 协议，用于在关键线程中处理回调。
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 是声网 Native SDK 的基础类。你可以通过创建 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象并调用其方法，使用声网提供的实时音视频通信功能。声网通过专为实时 Web 和移动端应用优化的虚拟全球网络，保障全球范围内基于互联网的音视频通信体验质量（QoE）。
 
-### 相关参考
 - [addVideoWatermark:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_addvideowatermark1)
 - [addVideoWatermark:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_addvideowatermark2)
 - [addVideoWatermarkWithConfig:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_addvideowatermark3)
@@ -703,7 +681,6 @@ AgoraMediaMetadataDelegate 协议，用于在关键线程中处理回调。
 
 SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler) 协议中的代理回调向应用报告运行时事件。从 v1.1 版本起，SDK 中部分 block 回调被代理回调替代。旧的 block 回调虽已废弃，但当前版本仍支持使用。声网建议你将 block 回调替换为代理回调。如果同时定义了 block 和代理回调，SDK 将优先调用 block 回调。
 
-### 相关参考
 - [rtcEngine:activeSpeaker:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onactivespeaker)
 - [rtcEngineDidAudioEffectFinish:soundId:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished)
 - [rtcEngineLocalAudioMixingDidFinish:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingfinished)
@@ -797,7 +774,6 @@ AgoraRtcEngineKitEx 接口，扩展了 AgoraRtcEngineKit 的功能。
 
 扩展了 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的功能。
 
-### 相关参考
 - [addVideoWatermarkEx:options:connection:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengineex_addvideowatermarkex)
 - [addVideoWatermarkEx:connection:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengineex_addvideowatermarkex1)
 - [adjustUserPlaybackSignalVolumeEx:volume:connection:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengineex_adjustuserplaybacksignalvolumeex)
@@ -866,7 +842,6 @@ AgoraRtcEngineKitEx 接口，扩展了 AgoraRtcEngineKit 的功能。
 
 自 v4.6.0 版本新增。
 
-### 相关参考
 - [addOrUpdateVideoEffectWithNodeId:templateName:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_addorupdatevideoeffect)
 - [getVideoEffectBoolParamWithOption:key:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectboolparam)
 - [getVideoEffectFloatParamWithOption:key:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectfloatparam)
@@ -887,7 +862,6 @@ AgoraRtcEngineKitEx 接口，扩展了 AgoraRtcEngineKit 的功能。
 
 你可以实现该协议中的方法以按需处理接收到的编码后视频帧。
 
-### 相关参考
 - [onEncodedVideoFrameReceived:length:info:channelId:uid:](/zh-CN/api-reference/rtc/ios/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived)
 
 <a id="class_ivideoframeobserver"></a>
@@ -900,7 +874,6 @@ AgoraRtcEngineKitEx 接口，扩展了 AgoraRtcEngineKit 的功能。
 
 你可以通过实现该协议中的方法，接收并处理本地设备采集或远端用户发送的视频帧。
 
-### 相关参考
 - [getMirrorApplied](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getmirrorapplied)
 - [getObservedFramePosition](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getobservedframeposition)
 - [getRotationApplied](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getrotationapplied)
@@ -922,7 +895,6 @@ AgoraRtePlayer 类用于播放 URL 资源。
 
 自 v4.4.0 版本新增。
 
-### 相关参考
 - [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_getconfigs_player)
 - [getInfo:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_getinfo)
 - [getPosition:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_getposition)
@@ -954,7 +926,6 @@ AgoraRtePlayer 类用于播放 URL 资源。
 
 自 v4.4.0 版本新增。
 
-### 相关参考
 - [abrFallbackLayer:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_getabrfallbacklayer)
 - [abrSubscriptionLayer:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_getabrsubscriptionlayer)
 - [autoPlay:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_getautoplay)
@@ -980,7 +951,6 @@ AgoraRtePlayer 类用于播放 URL 资源。
 
 自 v4.4.0 版本新增。
 
-### 相关参考
 - [onAudioVolumeIndication:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onaudiovolumeindication_playerobserver)
 - [onEvent:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onevent)
 - [onMetadata:data:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onmetadata_playerobserver)
@@ -1001,7 +971,6 @@ AgoraRte 是声网实时互动 SDK 的基础接口。
 
 自 v4.4.0 版本新增。
 
-### 相关参考
 - [destroy:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_destroy_rte)
 - [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_getconfigs_rte)
 - [getFromBridge:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_getfrombridge)

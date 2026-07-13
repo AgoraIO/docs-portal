@@ -2,6 +2,7 @@
 title: "ERROR_CODE_TYPE"
 description: "错误代码。"
 ---
+
 <a id="enum_errorcodetype__detailed_desc"></a>
 
 错误代码意味着 SDK 遇到不可恢复的错误，需要应用程序干预。例如：打开摄像头失败时会返回错误，App 需要提示用户不能使用摄像头。
@@ -28,7 +29,7 @@ description: "错误代码。"
 
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 IRtcEngine。
 - 调用方法时用户尚未加入频道。请检查方法的调用逻辑。
-- 调用 [rate](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_rate) 或 [complain](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_complain) 方法时用户尚未离开频道。请检查方法的调用逻辑。
+- 调用 [rate](/zh-CN/api-reference/rtc/unreal-cpp/toc-network#api_irtcengine_rate) 或 [complain](/zh-CN/api-reference/rtc/unreal-cpp/toc-network#api_irtcengine_complain) 方法时用户尚未离开频道。请检查方法的调用逻辑。
 - 音频模块未开启。
 - 程序集不完整。
 
@@ -44,7 +45,7 @@ description: "错误代码。"
 
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 IRtcEngine。
 - 在加入频道时，将频道名设为空字符 `""`。请重新设置频道名。
-- 多频道场景下，在调用 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_joinchannelex) 方法加入频道时，设置的频道名已存在。请重新设置频道名。
+- 多频道场景下，在调用 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/toc-channel#api_irtcengineex_joinchannelex) 方法加入频道时，设置的频道名已存在。请重新设置频道名。
 
 ### `ERR_BUFFER_TOO_SMALL`
 
@@ -70,14 +71,14 @@ description: "错误代码。"
 
 17：加入频道被拒绝。可能的原因有：
 
-- 用户已经在频道中。建议通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 CONNECTION_STATE_DISCONNECTED (1) 状态外，不要再次调用该方法加入频道。
-- 用户在调用 [startEchoTest](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_startechotest3) 进行通话测试后，未调用 [stopEchoTest](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_stopechotest) 结束当前测试就尝试加入频道。开始通话测试后，需要先调用 stopEchoTest 结束当前测试，再加入频道。
+- 用户已经在频道中。建议通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/toc-network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 CONNECTION_STATE_DISCONNECTED (1) 状态外，不要再次调用该方法加入频道。
+- 用户在调用 [startEchoTest](/zh-CN/api-reference/rtc/unreal-cpp/toc-network#api_irtcengine_startechotest3) 进行通话测试后，未调用 [stopEchoTest](/zh-CN/api-reference/rtc/unreal-cpp/toc-network#api_irtcengine_stopechotest) 结束当前测试就尝试加入频道。开始通话测试后，需要先调用 stopEchoTest 结束当前测试，再加入频道。
 
 ### `ERR_LEAVE_CHANNEL_REJECTED`
 
 18：离开频道失败。可能的原因有：
 
-- 调用 [leaveChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_leavechannel2) 前，用户已离开频道。停止调用该方法即可。
+- 调用 [leaveChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/toc-channel#api_irtcengine_leavechannel2) 前，用户已离开频道。停止调用该方法即可。
 - 用户尚未加入频道，就调用 leaveChannel [2/2] 退出频道。这种情况下无需额外操作。
 
 ### `ERR_ALREADY_IN_USE`
@@ -110,11 +111,11 @@ description: "错误代码。"
 
 ### `ERR_TOKEN_EXPIRED`
 
-109：当前使用的 Token 过期，不再有效。请在服务端申请生成新的 Token，并调用 [renewToken](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_renewtoken) 更新 Token。
+109：当前使用的 Token 过期，不再有效。请在服务端申请生成新的 Token，并调用 [renewToken](/zh-CN/api-reference/rtc/unreal-cpp/toc-channel#api_irtcengine_renewtoken) 更新 Token。
 
 ##### `弃用：`
 
-该枚举已废弃。请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 CONNECTION_CHANGED_TOKEN_EXPIRED (9)。
+该枚举已废弃。请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/toc-network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 CONNECTION_CHANGED_TOKEN_EXPIRED (9)。
 
 ### `ERR_INVALID_TOKEN`
 
@@ -125,7 +126,7 @@ description: "错误代码。"
 
 ##### `弃用：`
 
-该枚举已废弃。请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 CONNECTION_CHANGED_INVALID_TOKEN (8)。
+该枚举已废弃。请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/toc-network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 CONNECTION_CHANGED_INVALID_TOKEN (8)。
 
 ### `ERR_CONNECTION_INTERRUPTED`
 
@@ -137,7 +138,7 @@ description: "错误代码。"
 
 ### `ERR_NOT_IN_CHANNEL`
 
-113：调用 [sendStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/datastream#api_irtcengine_sendstreammessage) 方法时用户不在频道内。
+113：调用 [sendStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/toc-datastream#api_irtcengine_sendstreammessage) 方法时用户不在频道内。
 
 ### `ERR_SIZE_TOO_LARGE`
 
@@ -149,7 +150,7 @@ description: "错误代码。"
 
 ### `ERR_TOO_MANY_DATA_STREAMS`
 
-116：在调用 [createDataStream [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/datastream#api_irtcengine_createdatastream2) 时，创建的数据流超过限制（5 个）。
+116：在调用 [createDataStream [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/toc-datastream#api_irtcengine_createdatastream2) 时，创建的数据流超过限制（5 个）。
 
 ### `ERR_STREAM_MESSAGE_TIMEOUT`
 

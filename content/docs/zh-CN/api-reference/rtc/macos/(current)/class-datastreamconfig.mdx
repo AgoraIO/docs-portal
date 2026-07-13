@@ -2,6 +2,7 @@
 title: "AgoraDataStreamConfig"
 description: "配置数据流参数。"
 ---
+
 <a id="class_datastreamconfig__prototype"></a>
 
 ```objectivec
@@ -17,7 +18,7 @@ description: "配置数据流参数。"
 
 | `syncWithAudio` | `ordered` | SDK 行为 |
 | --- | --- | --- |
-| NO | NO | 接收端接收到数据包后，SDK 会立即触发 [rtcEngine:receiveStreamMessageFromUid:streamId:data:](/zh-CN/api-reference/rtc/macos/datastream#callback_irtcengineeventhandler_onstreammessage) 回调。 |
+| NO | NO | 接收端接收到数据包后，SDK 会立即触发 [rtcEngine:receiveStreamMessageFromUid:streamId:data:](/zh-CN/api-reference/rtc/macos/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调。 |
 | YES | NO | 如果数据包延迟在音频延迟范围内，SDK 会在同步的音频包播放时触发回调；如果数据包延迟超过音频延迟，SDK 会在接收到数据包时立即触发回调。 |
 | NO | YES | 如果数据包延迟小于 5 秒，SDK 会对数据包进行顺序校正；如果延迟超过 5 秒，SDK 会丢弃该数据包。 |
 | YES | YES | 如果数据包延迟在音频延迟范围内，SDK 会对数据包进行顺序校正；如果延迟超过音频延迟，SDK 会丢弃该数据包。 |

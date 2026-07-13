@@ -1,0 +1,128 @@
+---
+title: "音频设备管理"
+description: "获取音频设备信息。"
+---
+
+<a id="toc_audio_device"></a>
+
+<a id="api_irtcengine_getaudiodeviceinfo"></a>
+
+## getAudioDeviceInfo
+
+获取音频设备信息。
+
+<a id="api_irtcengine_getaudiodeviceinfo__prototype"></a>
+
+```typescript
+abstract getAudioDeviceInfo(): DeviceInfo;
+```
+
+<a id="api_irtcengine_getaudiodeviceinfo__detailed_desc"></a>
+
+调用该方法后，你可以获取音频设备是否支持极低延时采集和播放。
+
+:::info[注]
+- 该方法在加入频道前后均可调用。
+:::
+
+<a id="api_irtcengine_getaudiodeviceinfo__return_values"></a>
+
+### 返回值
+
+包含音频设备信息的 [DeviceInfo](/zh-CN/api-reference/rtc/react-native/class-deviceinfo) 对象。
+
+- 非空：方法调用成功。
+- 空：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getaudiodevicemanager"></a>
+
+## getAudioDeviceManager
+
+获取 IAudioDeviceManager 对象，以管理音频设备。
+
+<a id="api_irtcengine_getaudiodevicemanager__prototype"></a>
+
+```typescript
+abstract getAudioDeviceManager(): IAudioDeviceManager;
+```
+
+<a id="api_irtcengine_getaudiodevicemanager__detailed_desc"></a>
+
+<a id="api_irtcengine_getaudiodevicemanager__return_values"></a>
+
+### 返回值
+
+一个 [IAudioDeviceManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_iaudiodevicemanager) 对象。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_iaudiodevicemanager_startplaybackdevicetest"></a>
+
+## startPlaybackDeviceTest
+
+启动音频播放设备测试。
+
+<a id="api_iaudiodevicemanager_startplaybackdevicetest__prototype"></a>
+
+```typescript
+abstract startPlaybackDeviceTest(testAudioFilePath: string): number;
+```
+
+<a id="api_iaudiodevicemanager_startplaybackdevicetest__detailed_desc"></a>
+
+该方法用于测试本地音频播放设备是否能正常工作。启动测试后，SDK 播放指定的音频文件，测试者如果能听到声音，说明播放设备能正常工作。 调用该方法后，SDK 会每隔 100 毫秒触发一次 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 1 及播放设备的音量信息。 该方法和 [startEchoTest](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频播放设备能否正常工作，后者可以检测音视频设备及网络是否正常。
+
+:::info[注]
+该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/react-native/device-management/audio-device#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
+:::
+
+<a id="api_iaudiodevicemanager_startplaybackdevicetest__parameters"></a>
+
+### 参数
+
+#### `testAudioFilePath`
+
+音频文件的绝对路径，路径字符串使用 UTF-8 编码格式。
+
+- 支持文件格式: wav、mp3、m4a、aac。
+- 支持文件采样率: 8000、16000、32000、44100、48000。
+
+<a id="api_iaudiodevicemanager_startplaybackdevicetest__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_iaudiodevicemanager)
+
+<a id="api_iaudiodevicemanager_stopplaybackdevicetest"></a>
+
+## stopPlaybackDeviceTest
+
+停止音频播放设备测试。
+
+<a id="api_iaudiodevicemanager_stopplaybackdevicetest__prototype"></a>
+
+```typescript
+abstract stopPlaybackDeviceTest(): number;
+```
+
+<a id="api_iaudiodevicemanager_stopplaybackdevicetest__detailed_desc"></a>
+
+该方法用于停止音频播放设备测试。调用 [startPlaybackDeviceTest](/zh-CN/api-reference/rtc/react-native/device-management/audio-device#api_iaudiodevicemanager_startplaybackdevicetest) 后，必须调用该方法停止测试。
+
+:::info[注]
+该方法需要在加入频道前调用。
+:::
+
+<a id="api_iaudiodevicemanager_stopplaybackdevicetest__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+- [IAudioDeviceManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_iaudiodevicemanager)

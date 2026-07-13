@@ -1,0 +1,83 @@
+---
+title: "摄像头采集"
+description: "开始视频采集。"
+---
+
+<a id="toc_camera_capture"></a>
+
+<a id="api_irtcengine_startcameracapture"></a>
+
+## startCameraCapture:config:
+
+开始视频采集。
+
+<a id="api_irtcengine_startcameracapture__prototype"></a>
+
+```objectivec
+- (int)startCameraCapture:(AgoraVideoSourceType)sourceType config:(AgoraCameraCapturerConfiguration * _Nullable)config NS_SWIFT_NAME(startCameraCapture(_:config:));
+```
+
+<a id="api_irtcengine_startcameracapture__detailed_desc"></a>
+
+你可以调用此方法并指定 `sourceType` 来开始从一个或多个摄像头进行视频采集。
+
+:::info[注]
+在 iOS 上，如果你想启用多摄像头采集，需要先调用 `enableMultiCamera:config:` 并将 `enabled` 设置为 YES，然后再调用此方法。
+:::
+
+<a id="api_irtcengine_startcameracapture__parameters"></a>
+
+### 参数
+
+#### `sourceType`
+
+视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。在 iOS 上，如果设备有多个摄像头或支持外接摄像头，你最多可以从 2 个摄像头采集视频。在 macOS 上，你最多可以从 4 个摄像头采集视频。
+
+#### `config`
+
+视频采集的配置。在 iOS 上，此参数无实际作用。请使用 `enableMultiCamera:config:` 中的 `config` 参数来设置视频采集配置。详见 [AgoraCameraCapturerConfiguration](/zh-CN/api-reference/rtc/macos/class-cameracapturerconfiguration)。
+
+<a id="api_irtcengine_startcameracapture__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopcameracapture"></a>
+
+## stopCameraCapture:
+
+停止视频采集。
+
+<a id="api_irtcengine_stopcameracapture__prototype"></a>
+
+```objectivec
+- (int)stopCameraCapture:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(stopCameraCapture(_:));
+```
+
+<a id="api_irtcengine_stopcameracapture__detailed_desc"></a>
+
+调用 [startCameraCapture:config:](/zh-CN/api-reference/rtc/macos/video/camera-capture#api_irtcengine_startcameracapture) 方法通过一个或多个摄像头开始视频采集后，你可以调用该方法并设置 `sourceType` 参数以停止指定摄像头的视频采集。
+
+- 如果你正在使用本地视频合流功能，调用该方法可能会导致本地视频合流中断。
+- 在 iOS 上，如果你想禁用多摄像头采集，需要在调用该方法后调用 `enableMultiCamera:` 并将 `enabled` 设置为 NO。
+
+<a id="api_irtcengine_stopcameracapture__parameters"></a>
+
+### 参数
+
+#### `sourceType`
+
+视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-videosourcetype)。
+
+<a id="api_irtcengine_stopcameracapture__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)

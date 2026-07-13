@@ -1,0 +1,423 @@
+---
+title: "本地截图上传"
+description: "启用或关闭本地截图上传功能。"
+---
+
+<a id="toc_snapshot"></a>
+
+<a id="api_irtcengine_enablecontentinspect"></a>
+
+## enableContentInspect
+
+启用或关闭本地截图上传功能。
+
+<a id="api_irtcengine_enablecontentinspect__prototype"></a>
+
+```cpp
+virtual int enableContentInspect(bool enabled, const media::ContentInspectConfig &config) = 0;
+```
+
+<a id="api_irtcengine_enablecontentinspect__detailed_desc"></a>
+
+启用该功能后，SDK 会根据你在 [ContentInspectConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-contentinspectconfig) 中设置的模块类型和频率，对本地用户发送的视频进行截图并上传。截图和上传完成后，声网服务器会通过 HTTPS 请求将回调通知发送到你的应用服务器，并将所有截图上传至第三方云存储服务。
+
+:::info[注]
+- 在调用该方法前，请确保你已在声网控制台启用了本地截图上传功能。
+- 当视频审核模块设置为使用声网自研扩展（`CONTENT_INSPECT_SUPERVISION` ）进行视频审核时，需要使用本地截图上传动态库 libagora_content_inspect_extension.dll。删除该库将禁用截图上传功能。
+:::
+
+<a id="api_irtcengine_enablecontentinspect__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_enablecontentinspect__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用本地截图上传功能：
+
+- true：启用本地截图上传功能。
+- false：关闭本地截图上传功能。
+
+#### `config`
+
+截图上传配置，详见 [ContentInspectConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-contentinspectconfig)。
+
+<a id="api_irtcengine_enablecontentinspect__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_enablecontentinspectex"></a>
+
+## enableContentInspectEx
+
+启用或关闭本地截图上传功能。
+
+<a id="api_irtcengineex_enablecontentinspectex__prototype"></a>
+
+```cpp
+virtual int enableContentInspectEx(bool enabled, const media::ContentInspectConfig &config, const RtcConnection& connection) = 0;
+```
+
+<a id="api_irtcengineex_enablecontentinspectex__detailed_desc"></a>
+
+该方法可对多个视频流进行截图并上传。启用该功能后，SDK 会根据你在 [ContentInspectConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-contentinspectconfig) 中设置的模块类型和频率，对本地用户发送的视频进行截图并上传。截图上传完成后，声网服务器会通过 HTTPS 请求将回调通知发送至你的应用服务器，并将所有截图上传至第三方云存储服务。
+
+:::info[注]
+调用该方法前，请确保你已在声网控制台启用了本地截图上传功能。
+:::
+
+<a id="api_irtcengineex_enablecontentinspectex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_enablecontentinspectex__timing"></a>
+
+### 调用时机
+
+该方法可在加入频道前或加入频道后调用。
+
+<a id="api_irtcengineex_enablecontentinspectex__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用本地截图上传功能：
+
+- true：启用本地截图上传功能。
+- false：关闭本地截图上传功能。
+
+#### `config`
+
+截图和上传的配置。详见 [ContentInspectConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-contentinspectconfig)。
+
+#### `connection`
+
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+<a id="api_irtcengineex_enablecontentinspectex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_takesnapshot"></a>
+
+## takeSnapshot [1/2]
+
+截取视频流快照。
+
+<a id="api_irtcengine_takesnapshot__prototype"></a>
+
+```cpp
+virtual int takeSnapshot(uid_t uid, const char* filePath) = 0;
+```
+
+<a id="api_irtcengine_takesnapshot__detailed_desc"></a>
+
+该方法用于从指定用户的视频流中截取一帧图像，生成 JPG 图片，并保存到指定路径。
+
+:::info[注]
+- 该方法为异步调用，调用返回时 SDK 尚未完成截图操作。
+- 用于本地视频截图时，该方法会对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中指定的视频流进行截图。如果用户的视频已进行预处理，例如添加水印或美颜，截图结果中会包含这些预处理效果。
+:::
+
+<a id="api_irtcengine_takesnapshot__timing"></a>
+
+### 调用时机
+
+请在加入频道后调用该方法。
+
+<a id="api_irtcengine_takesnapshot__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onSnapshotTaken](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
+
+<a id="api_irtcengine_takesnapshot__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+用户 ID。若要截取本地用户的视频，请将 `uid` 设置为 0。
+
+#### `filePath`
+
+:::info[注]
+请确保指定路径存在且可写。
+:::
+
+截图的本地路径（包含文件扩展名）。例如：
+
+- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg
+- iOS: `/App Sandbox/Library/Caches/example.jpg`
+- macOS: `～/Library/Logs/example.jpg`
+- Android: `/storage/emulated/0/Android/data/<package name>/files/example.jpg`
+
+<a id="api_irtcengine_takesnapshot__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_takesnapshot2"></a>
+
+## takeSnapshot [2/2]
+
+截取指定观察点的视频截图。
+
+<a id="api_irtcengine_takesnapshot2__prototype"></a>
+
+```cpp
+virtual int takeSnapshot(uid_t uid, const media::SnapshotConfig& config) = 0;
+```
+
+<a id="api_irtcengine_takesnapshot2__detailed_desc"></a>
+
+:::info[注]
+- 该方法为异步方法，调用返回时 SDK 尚未完成截图操作。
+- 用于本地视频截图时，会对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中指定的视频流进行截图。
+:::
+
+<a id="api_irtcengine_takesnapshot2__timing"></a>
+
+### 调用时机
+
+在加入频道后调用该方法。
+
+<a id="api_irtcengine_takesnapshot2__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onSnapshotTaken](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
+
+<a id="api_irtcengine_takesnapshot2__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+用户 ID。若要截取本地用户的视频，请将 `uid` 设置为 0。
+
+#### `config`
+
+截图配置，详见 [SnapshotConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-snapshotconfig)。
+
+<a id="api_irtcengine_takesnapshot2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_takesnapshotex"></a>
+
+## takeSnapshotEx [1/2]
+
+使用连接 ID 对指定用户的视频流进行截图。
+
+<a id="api_irtcengineex_takesnapshotex__prototype"></a>
+
+```cpp
+virtual int takeSnapshotEx(const RtcConnection& connection, uid_t uid, const char* filePath) = 0;
+```
+
+<a id="api_irtcengineex_takesnapshotex__detailed_desc"></a>
+
+该方法为异步调用，调用该方法时 SDK 尚未完成截图操作。用于本地视频截图时，会对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中指定的视频流进行截图。如果用户的视频已被预处理（如添加水印或美颜），截图结果中会包含这些预处理效果。
+
+<a id="api_irtcengineex_takesnapshotex__scenario"></a>
+
+### 适用场景
+
+适用于多频道场景。
+
+<a id="api_irtcengineex_takesnapshotex__timing"></a>
+
+### 调用时机
+
+请在调用 [joinChannelEx](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengineex_joinchannelex) 后调用该方法。
+
+<a id="api_irtcengineex_takesnapshotex__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onSnapshotTaken](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
+
+<a id="api_irtcengineex_takesnapshotex__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+#### `uid`
+
+用户 ID。若要对本地用户的视频进行截图，请将 `uid` 设置为 0。
+
+#### `filePath`
+
+:::info[注]
+请确保指定的路径存在且可写。
+:::
+
+截图的本地路径（包含文件扩展名）。例如：
+
+- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.jpg
+- iOS: `/App Sandbox/Library/Caches/example.jpg`
+- macOS: `～/Library/Logs/example.jpg`
+- Android: `/storage/emulated/0/Android/data/<package name>/files/example.jpg`
+
+<a id="api_irtcengineex_takesnapshotex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengineex_takesnapshotex2"></a>
+
+## takeSnapshotEx [2/2]
+
+通过连接 ID 获取指定用户的视频截图。
+
+<a id="api_irtcengineex_takesnapshotex2__prototype"></a>
+
+```cpp
+virtual int takeSnapshotEx(const RtcConnection& connection, uid_t uid, const media::SnapshotConfig& config) = 0;
+```
+
+<a id="api_irtcengineex_takesnapshotex2__detailed_desc"></a>
+
+该方法从指定用户的视频流中截取一帧图像，生成 JPG 图片，并保存到指定路径。截图结果中会包含视频预处理效果，例如水印或美颜。
+
+:::info[注]
+- 该方法为异步调用，调用返回时 SDK 尚未完成截图操作。
+- 用于本地视频截图时，将对 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中指定的视频流进行截图。
+:::
+
+<a id="api_irtcengineex_takesnapshotex2__scenario"></a>
+
+### 适用场景
+
+适用于多频道场景。
+
+<a id="api_irtcengineex_takesnapshotex2__timing"></a>
+
+### 调用时机
+
+请在调用 [joinChannelEx](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengineex_joinchannelex) 后调用该方法。
+
+<a id="api_irtcengineex_takesnapshotex2__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onSnapshotTaken](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
+
+<a id="api_irtcengineex_takesnapshotex2__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。
+
+#### `uid`
+
+用户 ID。
+
+:::info[注]
+若要截取本地用户的视频，请将 `uid` 设置为 0。
+:::
+
+#### `config`
+
+截图配置。详见 [SnapshotConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-snapshotconfig)。
+
+<a id="api_irtcengineex_takesnapshotex2__return_values"></a>
+
+### 返回值
+
+- 0：调用成功。
+- &lt; 0：调用失败。
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
+
+<a id="callback_irtcengineeventhandler_onsnapshottaken"></a>
+
+## onSnapshotTaken
+
+截图结果回调。
+
+<a id="callback_irtcengineeventhandler_onsnapshottaken__prototype"></a>
+
+```cpp
+virtual void onSnapshotTaken(uid_t uid, const char* filePath, int width, int height, int errCode)
+```
+
+<a id="callback_irtcengineeventhandler_onsnapshottaken__detailed_desc"></a>
+
+调用 `takeSnapshot` 方法成功后，SDK 会触发该回调，用于报告截图是否成功以及截图的详细信息。
+
+<a id="callback_irtcengineeventhandler_onsnapshottaken__timing"></a>
+
+### 触发时机
+
+调用 `takeSnapshot` 方法成功后触发。
+
+<a id="callback_irtcengineeventhandler_onsnapshottaken__parameters"></a>
+
+### 参数
+
+#### `uid`
+
+用户 ID。 `uid` 为 0 表示本地用户。
+
+#### `filePath`
+
+截图的本地路径。
+
+#### `width`
+
+截图的宽度（像素）。
+
+#### `height`
+
+截图的高度（像素）。
+
+#### `errCode`
+
+截图结果的错误码：
+
+- 0：成功。
+- &lt; 0：失败：
+
+  - -1：SDK 写入文件或编码 JPEG 图像失败。
+  - -2：调用 `takeSnapshot` 方法成功后 1 秒内未找到指定用户的视频流。可能原因包括：本地采集停止、远端停止发布或视频数据处理阻塞。
+  - -3：调用 `takeSnapshot` 方法过于频繁。
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

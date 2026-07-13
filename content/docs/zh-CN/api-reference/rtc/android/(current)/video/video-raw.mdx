@@ -2,9 +2,8 @@
 title: "原始视频数据"
 description: "每次 SDK 接收到视频帧时触发的回调，用于设置是否对采集的视频进行镜像。"
 ---
-<a id="toc_video_raw"></a>
 
-## 原始视频数据
+<a id="toc_video_raw"></a>
 
 <a id="api_ivideoframeobserver_getmirrorapplied"></a>
 
@@ -42,7 +41,6 @@ description: "每次 SDK 接收到视频帧时触发的回调，用于设置是�
 - true：对采集的视频进行镜像。
 - false：（默认）不对采集的视频进行镜像。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="api_ivideoframeobserver_getobservedframeposition"></a>
@@ -75,7 +73,6 @@ description: "每次 SDK 接收到视频帧时触发的回调，用于设置是�
 - `VIDEO_MODULE_POSITION_PRE_RENDERER` (1 &lt;&lt; 1)：远端视频渲染前的位置。
 - `VIDEO_MODULE_POSITION_PRE_ENCODER` (1 &lt;&lt; 2)：编码前的位置。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="api_ivideoframeobserver_getrotationapplied"></a>
@@ -111,7 +108,6 @@ getRotationApplied 回调在每次 SDK 接收到视频帧时触发，用于设�
 - true：旋转采集的视频。
 - false：（默认）不旋转采集的视频。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="api_ivideoframeobserver_getvideoformatpreference"></a>
@@ -152,7 +148,6 @@ getRotationApplied 回调在每次 SDK 接收到视频帧时触发，用于设�
 - `VIDEO_PIXEL_RGBA` （4）：RGBA 格式。
 - `VIDEO_PIXEL_I422` （16）：I422 格式。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="api_ivideoframeobserver_getvideoframeprocessmode"></a>
@@ -180,7 +175,6 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 - `PROCESS_MODE_READ_ONLY` （0）：（默认）只读取视频帧。
 - `PROCESS_MODE_READ_WRITE` （1）：读取并写入视频帧。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="api_irtcengine_registervideoframeobserver"></a>
@@ -231,7 +225,6 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe"></a>
@@ -293,7 +286,6 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
   - true：设置 SDK 接收该视频帧。
   - false：设置 SDK 丢弃该视频帧。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe"></a>
@@ -356,7 +348,6 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
   - true：SDK 接收该视频帧。
   - false：SDK 丢弃该视频帧。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onrendervideoframe"></a>
@@ -416,5 +407,4 @@ boolean onRenderVideoFrame(String channelId, int uid, VideoFrame videoFrame)
   - true：SDK 接收该视频帧。
   - false：SDK 丢弃该视频帧。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)

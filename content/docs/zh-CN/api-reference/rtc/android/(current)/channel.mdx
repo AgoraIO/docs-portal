@@ -2,9 +2,8 @@
 title: "频道相关"
 description: "通过传入用户 ID 获取用户信息。"
 ---
-<a id="toc_channel"></a>
 
-## 频道相关
+<a id="toc_channel"></a>
 
 <a id="api_irtcengine_getuserinfobyuid"></a>
 
@@ -47,7 +46,6 @@ public abstract int getUserInfoByUid(int uid, UserInfo userInfo);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getuserinfobyuidex"></a>
@@ -95,7 +93,6 @@ public abstract int getUserInfoByUidEx(int uid, UserInfo userInfo, RtcConnection
 - 方法调用成功，返回 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo) 对象。
 - 方法调用失败，返回 `null`。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_getuserinfobyuseraccount"></a>
@@ -133,7 +130,6 @@ public abstract int getUserInfoByUserAccount(String userAccount, UserInfo userIn
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getuserinfobyuseraccountex"></a>
@@ -181,7 +177,6 @@ public abstract int getUserInfoByUserAccountEx(String userAccount, UserInfo user
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_joinchannel1"></a>
@@ -269,7 +264,6 @@ public abstract int joinChannel(String token, String channelId, String optionalI
   - -102：频道名无效。请在 `channelId` 中传入有效的频道名重新加入频道。
   - -121：用户 ID 无效。请在 `uid` 中传入有效的用户 ID 重新加入频道。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannel2"></a>
@@ -357,7 +351,6 @@ public abstract int joinChannel(String token, String channelId, int uid, Channel
   - -102：频道名无效。请在 `channelId` 中传入有效的频道名重新加入频道。
   - -121：用户 ID 无效。请在 `uid` 中传入有效的用户 ID 重新加入频道。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_joinchannelex"></a>
@@ -444,7 +437,6 @@ public abstract int joinChannelEx(String token, RtcConnection connection, Channe
   - -102：频道名无效。你需要在 `channelId` 中传入有效的频道名以重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中传入有效的用户 ID 以重新加入频道。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_joinchannelwithuseraccount1"></a>
@@ -530,7 +522,6 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
   - -102：频道名无效。你需要在 `channelId` 中传入有效的频道名重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中传入有效的用户 ID 重新加入频道。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannelwithuseraccount2"></a>
@@ -624,7 +615,6 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
   - -102：频道名无效。请在 `channelId` 中传入有效的频道名重新加入频道。
   - -121：用户 ID 无效。请在 `uid` 中传入有效的用户 ID 重新加入频道。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_joinchannelwithuseraccountex"></a>
@@ -724,7 +714,6 @@ public abstract int joinChannelWithUserAccountEx(String token, String channelId,
   - -102：频道名无效。请在 `channelId` 中传入有效的频道名后重新加入频道。
   - -121：用户 ID 无效。请在 `uid` 中传入有效的用户 ID 后重新加入频道。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_leavechannel"></a>
@@ -775,7 +764,6 @@ public abstract int leaveChannel();
   - -2：参数无效。
   - -7：SDK 未初始化。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_leavechannel2"></a>
@@ -828,7 +816,6 @@ public abstract int leaveChannel(LeaveChannelOptions options);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_leavechannelex"></a>
@@ -889,7 +876,6 @@ public abstract int leaveChannelEx(RtcConnection connection);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengineex_leavechannelex2"></a>
@@ -962,7 +948,6 @@ public abstract int leaveChannelEx(RtcConnection connection, LeaveChannelOptions
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_preloadchannel"></a>
@@ -1025,7 +1010,6 @@ public abstract int preloadChannel(String token, String channelName, int optiona
   - -7： [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象尚未初始化。请先初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象再调用该方法。
   - -102：频道名无效。请传入有效的频道名并重新加入频道。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_preloadchannelwithuseraccount"></a>
@@ -1101,7 +1085,6 @@ public abstract int preloadChannelWithUserAccount(String token, String channelNa
   - -7： [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象尚未初始化。请先初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象后再调用该方法。
   - -102：频道名无效。请传入有效的频道名后重新加入频道。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registerlocaluseraccount"></a>
@@ -1154,7 +1137,6 @@ public abstract int registerLocalUserAccount(String appId, String userAccount);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_renewtoken"></a>
@@ -1198,7 +1180,6 @@ public abstract int renewToken(String token);
     - 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致。
     - 生成的 Token 与加入频道时传入的 Token 相同。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setchannelprofile"></a>
@@ -1250,7 +1231,6 @@ SDK 会根据不同的频道场景采用不同的优化策略，例如在直播�
   - -2：参数无效。
   - -7：SDK 未初始化。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole1"></a>
@@ -1319,7 +1299,6 @@ public abstract int setClientRole(int role);
   - -2：参数无效。
   - -7：SDK 未初始化。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole2"></a>
@@ -1393,7 +1372,6 @@ public abstract int setClientRole(int role, ClientRoleOptions options);
   - -5：请求被拒绝。
   - -7：SDK 未初始化。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatechannelmediaoptions"></a>
@@ -1429,7 +1407,6 @@ public abstract int updateChannelMediaOptions(ChannelMediaOptions options);
   - -7： [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象再调用该方法。
   - -8： [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象的内部状态错误。可能的原因是用户不在频道中。声网建议你使用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果你收到 `CONNECTION_STATE_DISCONNECTED` （1）或 `CONNECTION_STATE_FAILED` （5）状态，说明用户不在频道中。你需要先调用 `joinChannel` 加入频道，再调用该方法。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex"></a>
@@ -1475,7 +1452,6 @@ public abstract int updateChannelMediaOptionsEx(ChannelMediaOptions options, Rtc
   - -7： [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象再调用该方法。
   - -8： [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象的内部状态错误，可能的原因是用户不在频道中。声网建议你使用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果你收到 `CONNECTION_STATE_DISCONNECTED` （1）或 `CONNECTION_STATE_FAILED` （5）状态，说明用户不在频道中。你需要先调用 `joinChannel` 加入频道，再调用该方法。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_updatepreloadchanneltoken"></a>
@@ -1518,7 +1494,6 @@ public abstract int updatePreloadChannelToken(String token);
   - -2：参数无效，例如 Token 无效。你需要传入有效参数并重新加入频道。
   - -7： [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要先初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象再调用此方法。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged"></a>
@@ -1570,7 +1545,6 @@ public void onClientRoleChanged(int oldRole, int newRole, ClientRoleOptions newR
 
 用户切换后的角色属性，详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/android/class-clientroleoptions)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed"></a>
@@ -1619,7 +1593,6 @@ public void onClientRoleChangeFailed(int reason, int currentRole)
 - `CLIENT_ROLE_BROADCASTER` (1)：主播，可以发送和接收音视频流。
 - `CLIENT_ROLE_AUDIENCE` (2)：观众，只能接收音视频流。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onerror"></a>
@@ -1652,7 +1625,6 @@ public void onError(int err)
 
 错误码。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)文档。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess"></a>
@@ -1691,7 +1663,6 @@ public void onJoinChannelSuccess(String channel, int uid, int elapsed)
 
 从本地用户调用 `joinChannel` 加入频道到 SDK 触发该回调的时间间隔，单位为毫秒。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onleavechannel"></a>
@@ -1722,7 +1693,6 @@ public void onLeaveChannel(RtcStats stats) {}
 
 通话统计信息。详见 [RtcStats](/zh-CN/api-reference/rtc/android/class-rtcstats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered"></a>
@@ -1763,7 +1733,6 @@ public void onLocalUserRegistered(int uid, String userAccount)
 
 本地用户的用户 User Account。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess"></a>
@@ -1804,7 +1773,6 @@ public void onRejoinChannelSuccess(String channel, int uid, int elapsed)
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间间隔，单位为毫秒。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrenewtokenresult"></a>
@@ -1845,7 +1813,6 @@ public void onRenewTokenResult(String token, Constants.RenewTokenErrorCode code)
 
 错误码。详见 [RenewTokenErrorCode](/zh-CN/api-reference/rtc/android/enum-renewtokenerrorcode)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrequesttoken"></a>
@@ -1876,7 +1843,6 @@ public void onRequestToken() {}
 
 该回调在 Token 过期时被触发。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrtcstats"></a>
@@ -1907,7 +1873,6 @@ public void onRtcStats(RtcStats stats) {}
 
 RTC 引擎的统计信息，详见 [RtcStats](/zh-CN/api-reference/rtc/android/class-rtcstats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire"></a>
@@ -1946,7 +1911,6 @@ public void onTokenPrivilegeWillExpire(String token)
 
 即将过期的 Token。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated"></a>
@@ -1987,7 +1951,6 @@ public void onUserInfoUpdated(int uid, UserInfo userInfo) {}
 
 包含远端用户的用户 ID 和用户 User Account 信息。详见 [UserInfo](/zh-CN/api-reference/rtc/android/class-userinfo)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserjoined"></a>
@@ -2028,7 +1991,6 @@ public void onUserJoined(int uid, int elapsed)
 
 从本地用户调用 `joinChannel` 到该回调被触发的延迟（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuseroffline"></a>
@@ -2072,5 +2034,4 @@ public void onUserOffline(int uid, int reason)
 - `USER_OFFLINE_DROPPED` (1)：SDK 超时未收到任何数据包，用户掉线。网络连接不佳可能导致误判，建议使用声网 RTM SDK 进行可靠的离线检测。
 - `USER_OFFLINE_BECOME_AUDIENCE` (2)：用户将角色从主播切换为观众。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

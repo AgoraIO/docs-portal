@@ -2,9 +2,8 @@
 title: "本地截图上传"
 description: "启用或关闭本地截图上传功能。"
 ---
-<a id="toc_snapshot"></a>
 
-## 本地截图上传
+<a id="toc_snapshot"></a>
 
 <a id="api_irtcengine_enablecontentinspect"></a>
 
@@ -55,7 +54,6 @@ SDK 会根据在 [ContentInspectConfig](/zh-CN/api-reference/rtc/android/class-c
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enablecontentinspectex"></a>
@@ -116,7 +114,6 @@ public abstract int enableContentInspectEx(boolean enabled, ContentInspectConfig
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_takesnapshot"></a>
@@ -174,7 +171,6 @@ public abstract int takeSnapshot(int uid, String filePath);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_takesnapshot2"></a>
@@ -227,7 +223,6 @@ public abstract int takeSnapshot(int uid, SnapshotConfig config);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_takesnapshotex"></a>
@@ -295,7 +290,6 @@ public abstract int takeSnapshotEx(RtcConnection connection, int uid, String fil
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengineex_takesnapshotex2"></a>
@@ -359,7 +353,6 @@ public abstract int takeSnapshotEx(RtcConnection connection, int uid, SnapshotCo
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken"></a>
@@ -415,5 +408,4 @@ public void onSnapshotTaken(int uid, String filePath, int width, int height, int
   - -2：调用 `takeSnapshot` 方法成功后 1 秒内未找到指定用户的视频流。可能原因包括：本地采集停止、远端停止发布或视频数据处理阻塞。
   - -3：调用 `takeSnapshot` 方法过于频繁。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

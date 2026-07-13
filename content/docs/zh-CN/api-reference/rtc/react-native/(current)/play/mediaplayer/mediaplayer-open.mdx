@@ -1,0 +1,216 @@
+---
+title: "媒体资源打开"
+description: "打开媒体资源。"
+---
+
+<a id="toc_mediaplayer_open"></a>
+
+<a id="api_imediaplayer_open"></a>
+
+## open
+
+打开媒体资源。
+
+<a id="api_imediaplayer_open__prototype"></a>
+
+```typescript
+abstract open(url: string, startPos: number): number;
+```
+
+<a id="api_imediaplayer_open__detailed_desc"></a>
+
+<a id="api_imediaplayer_open__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_imediaplayer_open__related"></a>
+
+### 相关回调
+
+调用该方法后会触发 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。在收到报告播放状态为 `PlayerStateOpenCompleted` 后，你可以调用 [play](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
+
+<a id="api_imediaplayer_open__parameters"></a>
+
+### 参数
+
+#### `url`
+
+设置媒体文件的路径，支持本地和在线文件。
+
+#### `startPos`
+
+设置起始播放位置（毫秒），默认值为 0。
+
+<a id="api_imediaplayer_open__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_openwithmediasource"></a>
+
+## openWithMediaSource
+
+打开媒体资源并进行播放设置。
+
+<a id="api_imediaplayer_openwithmediasource__prototype"></a>
+
+```typescript
+abstract openWithMediaSource(source: MediaSource): number;
+```
+
+<a id="api_imediaplayer_openwithmediasource__detailed_desc"></a>
+
+该方法支持你打开不同类型的媒体资源，包括自定义的媒体资源文件，并可进行播放设置。
+
+:::info[注]
+该方法为异步调用。如需播放媒体文件，需要在收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态为 `PlayerStateOpenCompleted` 后再调用 [play](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
+:::
+
+<a id="api_imediaplayer_openwithmediasource__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_imediaplayer_openwithmediasource__parameters"></a>
+
+### 参数
+
+#### `source`
+
+媒体资源，详见 [MediaSource](/zh-CN/api-reference/rtc/react-native/class-mediasource)。
+
+<a id="api_imediaplayer_openwithmediasource__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_preloadsrc"></a>
+
+## preloadSrc
+
+预加载媒体资源。
+
+<a id="api_imediaplayer_preloadsrc__prototype"></a>
+
+```typescript
+abstract preloadSrc(src: string, startPos: number): number;
+```
+
+<a id="api_imediaplayer_preloadsrc__detailed_desc"></a>
+
+你可以调用该方法将一个媒体资源预加载到播放列表中。如果需要预加载多个媒体资源，你可以多次调用该方法。 调用该方法后，如果收到 [onPreloadEvent](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpreloadevent) 回调报告事件 `PlayerPreloadEventComplete`，则预加载成功；如果你收到 [onPreloadEvent](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpreloadevent) 回调报告事件 `PlayerPreloadEventError`，则预加载失败。 预加载成功后，如果你想播放媒体资源，请调用 [playPreloadedSrc](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-control#api_imediaplayer_playpreloadedsrc)；如果你想清空播放列表，请调用 [stop](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-control#api_imediaplayer_stop)。
+
+:::info[注]
+- 调用该方法前，请确保你已经调用 [open](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 成功打开媒体资源。
+- SDK 不支持你预加载重复的媒体资源到播放列表，但支持你将正在播放的媒体资源再次预加载到播放列表。
+:::
+
+<a id="api_imediaplayer_preloadsrc__parameters"></a>
+
+### 参数
+
+#### `src`
+
+媒体资源的网络路径。
+
+#### `startPos`
+
+预加载到播放列表后，开始播放时的起始位置（毫秒）。预加载直播流时，将该参数设置为 0。
+
+<a id="api_imediaplayer_preloadsrc__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_switchsrc"></a>
+
+## switchSrc
+
+切换媒体资源。
+
+<a id="api_imediaplayer_switchsrc__prototype"></a>
+
+```typescript
+abstract switchSrc(src: string, syncPts?: boolean): number;
+```
+
+<a id="api_imediaplayer_switchsrc__detailed_desc"></a>
+
+你可以根据当前网络状态调用该方法切换播放的媒体资源的码率。例如：
+
+- 在网络较差时，将播放的媒体资源切换为较低码率的媒体资源地址。
+- 在网络较好时，将播放的媒体资源切换为较高码率的媒体资源地址。
+
+调用该方法后，如果你收到 [onPlayerEvent](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告事件 `PlayerEventSwitchComplete`，则媒体资源切换成功。如果资源切换失败，SDK 会自动重试 3 次。如果仍然失败，你会收到 [onPlayerEvent](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调，报告 `PlayerEventSwitchError` 事件，表示媒体资源切换时发生错误。
+
+:::info[注]
+- 请确保在 [open](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 之后调用该方法。
+- 为保证播放正常，请在调用该方法时注意如下：
+
+  - 不要在播放暂停时调用该方法。
+  - 不要在切换码率过程中调用 [seek](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek)。
+  - 确保切换码率前的播放位置不大于待切换的媒体资源总时长。
+:::
+
+<a id="api_imediaplayer_switchsrc__parameters"></a>
+
+### 参数
+
+#### `src`
+
+媒体资源的网络路径。
+
+#### `syncPts`
+
+是否同步切换前后的起始播放位置:
+
+- true：同步。
+- false：(默认) 不同步。
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_unloadsrc"></a>
+
+## unloadSrc
+
+释放预加载的媒体资源。
+
+<a id="api_imediaplayer_unloadsrc__prototype"></a>
+
+```typescript
+abstract unloadSrc(src: string): number;
+```
+
+<a id="api_imediaplayer_unloadsrc__detailed_desc"></a>
+
+<a id="api_imediaplayer_unloadsrc__parameters"></a>
+
+### 参数
+
+#### `src`
+
+媒体资源的网络路径。
+
+<a id="api_imediaplayer_unloadsrc__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
+
+- [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)

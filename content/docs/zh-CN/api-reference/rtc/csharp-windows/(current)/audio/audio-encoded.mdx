@@ -1,0 +1,183 @@
+---
+title: "已编码音频数据"
+description: "已编码音频数据 API reference."
+---
+
+<a id="toc_audio_encoded"></a>
+
+<a id="api_irtcengine_registeraudioencodedframeobserver"></a>
+
+## RegisterAudioEncodedFrameObserver
+
+注册音频编码数据观测器。
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__prototype"></a>
+
+```csharp
+public abstract int RegisterAudioEncodedFrameObserver(AudioEncodedFrameObserverConfig config, IAudioEncodedFrameObserver observer);
+```
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__detailed_desc"></a>
+
+### 详情
+
+:::warning[注意]
+- 请在加入频道后调用该方法。
+- 由于该方法和 [StartAudioRecording [3/3]](/zh-CN/api-reference/rtc/csharp-windows/recording#api_irtcengine_startaudiorecording3) 都会设置音频内容和音质，不建议该方法和 StartAudioRecording [3/3] 一起使用。否则，只有后调用的方法会生效。
+:::
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__parameters"></a>
+
+### 参数
+
+#### `config`
+
+编码后音频的观测器设置。详见 [AudioEncodedFrameObserverConfig](/zh-CN/api-reference/rtc/csharp-windows/class-audioencodedframeobserverconfig)。
+
+#### `observer`
+
+编码后音频的观测器。详见 [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudioencodedframeobserver)。
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_unregisteraudioencodedframeobserver"></a>
+
+## UnRegisterAudioEncodedFrameObserver
+
+取消注册音频编码数据观测器。
+
+<a id="api_irtcengine_unregisteraudioencodedframeobserver__prototype"></a>
+
+```csharp
+public abstract int UnRegisterAudioEncodedFrameObserver();
+```
+
+<a id="api_irtcengine_unregisteraudioencodedframeobserver__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe"></a>
+
+## OnMixedAudioEncodedFrame
+
+获取本地和所有远端用户混音后的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__prototype"></a>
+
+```csharp
+public virtual void OnMixedAudioEncodedFrame(IntPtr frameBufferPtr, int length,
+                                                    EncodedAudioFrameInfo audioEncodedFrameInfo)
+        {
+
+        }
+```
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__detailed_desc"></a>
+
+调用 [RegisterAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频编码内容设为 AUDIO_ENCODED_FRAME_OBSERVER_POSITION_MIXED 后，你可以通过该回调获取本地和所有远端用户混音、编码后的音频数据。
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__parameters"></a>
+
+### 参数
+
+#### `frameBufferPtr`
+
+音频 buffer。
+
+#### `length`
+
+音频数据长度，单位为字节。
+
+#### `audioEncodedFrameInfo`
+
+编码后音频的信息。详见 [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc/csharp-windows/class-encodedaudioframeinfo)。
+
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudioencodedframeobserver)
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe"></a>
+
+## OnPlaybackAudioEncodedFrame
+
+获取所有远端用户的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__prototype"></a>
+
+```csharp
+public virtual void OnPlaybackAudioEncodedFrame(IntPtr frameBufferPtr, int length,
+                                                    EncodedAudioFrameInfo audioEncodedFrameInfo)
+        {
+
+        }
+```
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__detailed_desc"></a>
+
+调用 [RegisterAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频编码内容设为 AUDIO_ENCODED_FRAME_OBSERVER_POSITION_PLAYBACK 后，你可以通过该回调获取所有远端用户的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__parameters"></a>
+
+### 参数
+
+#### `frameBufferPtr`
+
+音频 buffer。
+
+#### `length`
+
+音频数据长度，单位为字节。
+
+#### `audioEncodedFrameInfo`
+
+编码后音频的信息。详见 [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc/csharp-windows/class-encodedaudioframeinfo)。
+
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudioencodedframeobserver)
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe"></a>
+
+## OnRecordAudioEncodedFrame
+
+获取本地用户的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__prototype"></a>
+
+```csharp
+public virtual void OnRecordAudioEncodedFrame(IntPtr frameBufferPtr, int length,
+                                                    EncodedAudioFrameInfo audioEncodedFrameInfo)
+        {
+
+        }
+```
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__detailed_desc"></a>
+
+调用 [RegisterAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频编码内容设为 AUDIO_ENCODED_FRAME_OBSERVER_POSITION_RECORD 后，你可以通过该回调获取本地用户的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__parameters"></a>
+
+### 参数
+
+#### `frameBufferPtr`
+
+音频 buffer。
+
+#### `length`
+
+音频数据长度，单位为字节。
+
+#### `audioEncodedFrameInfo`
+
+编码后音频的信息。详见 [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc/csharp-windows/class-encodedaudioframeinfo)。
+
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudioencodedframeobserver)

@@ -1,0 +1,382 @@
+---
+title: "音频采集"
+description: "调节声卡采集信号音量。"
+---
+
+<a id="toc_audio_capture"></a>
+
+<a id="api_irtcengine_adjustloopbacksignalvolume"></a>
+
+## adjustLoopbackSignalVolume
+
+调节声卡采集信号音量。
+
+<a id="api_irtcengine_adjustloopbacksignalvolume__prototype"></a>
+
+```typescript
+abstract adjustLoopbackSignalVolume(volume: number): number;
+```
+
+<a id="api_irtcengine_adjustloopbacksignalvolume__detailed_desc"></a>
+
+调用 [enableLoopbackRecording](/zh-CN/api-reference/rtc/electron/audio/audio-capture#api_irtcengine_enableloopbackrecording) 开启声卡采集后，你可以调用该方法调节声卡采集的信号音量。
+
+<a id="api_irtcengine_adjustloopbacksignalvolume__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+音乐文件音量范围为 0~100。100 （默认值）为原始文件音量。
+
+<a id="api_irtcengine_adjustloopbacksignalvolume__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_adjustrecordingsignalvolume"></a>
+
+## adjustRecordingSignalVolume
+
+调节音频采集信号音量。
+
+<a id="api_irtcengine_adjustrecordingsignalvolume__prototype"></a>
+
+```typescript
+abstract adjustRecordingSignalVolume(volume: number): number;
+```
+
+<a id="api_irtcengine_adjustrecordingsignalvolume__detailed_desc"></a>
+
+如果你只需将音频信号静音，建议你使用 [muteRecordingSignal](/zh-CN/api-reference/rtc/electron/audio/audio-capture#api_irtcengine_muterecordingsignal)。
+
+<a id="api_irtcengine_adjustrecordingsignalvolume__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_adjustrecordingsignalvolume__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+音量，取值范围为 [0,400]。
+
+- 0: 静音。
+- 100: （默认）原始音量。
+- 400: 原始音量的 4 倍，自带溢出保护。
+
+<a id="api_irtcengine_adjustrecordingsignalvolume__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enableinearmonitoring2"></a>
+
+## enableInEarMonitoring
+
+开启耳返功能。
+
+<a id="api_irtcengine_enableinearmonitoring2__prototype"></a>
+
+```typescript
+abstract enableInEarMonitoring(
+    enabled: boolean,
+    includeAudioFilters: EarMonitoringFilterType
+  ): number;
+```
+
+<a id="api_irtcengine_enableinearmonitoring2__detailed_desc"></a>
+
+该方法用于打开或关闭耳返功能。
+
+:::info[注]
+用户必须使用耳机（有线和蓝牙均可）才能听到耳返效果。
+:::
+
+<a id="api_irtcengine_enableinearmonitoring2__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_enableinearmonitoring2__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+开启/关闭耳返功能:
+
+- true: 开启耳返功能。
+- false: （默认）关闭耳返功能。
+
+#### `includeAudioFilters`
+
+耳返 Audio filter 类型。详见 [EarMonitoringFilterType](/zh-CN/api-reference/rtc/electron/enum-earmonitoringfiltertype)。
+
+<a id="api_irtcengine_enableinearmonitoring2__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
+  - -8: 请确保当前的音频路由为蓝牙或耳机。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enablelocalaudio"></a>
+
+## enableLocalAudio
+
+开启或关闭本地音频采集。
+
+<a id="api_irtcengine_enablelocalaudio__prototype"></a>
+
+```typescript
+abstract enableLocalAudio(enabled: boolean): number;
+```
+
+<a id="api_irtcengine_enablelocalaudio__detailed_desc"></a>
+
+当用户加入频道时，音频功能默认是开启的。该方法可以关闭或重新开启本地音频功能，即停止或重新开始本地音频采集。 该方法与 [muteLocalAudioStream](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 的区别在于：
+
+- [enableLocalAudio](/zh-CN/api-reference/rtc/electron/audio/audio-capture#api_irtcengine_enablelocalaudio): 开启或关闭本地音频采集及处理。使用 [enableLocalAudio](/zh-CN/api-reference/rtc/electron/audio/audio-capture#api_irtcengine_enablelocalaudio) 关闭或开启本地采集后，本地听远端播放会有短暂中断。
+- [muteLocalAudioStream](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_mutelocalaudiostream): 停止或继续发送本地音频流，不影响音频的采集状态。
+
+<a id="api_irtcengine_enablelocalaudio__scenario"></a>
+
+### 适用场景
+
+该方法不影响远端音频流的接收和播放。 `enableLocalAudio(false)` 适用于只接收远端音频而不发送本地采集音频的场景。
+
+<a id="api_irtcengine_enablelocalaudio__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。在加入频道前调用只能设置设备状态，在加入频道后才会立即生效。
+
+<a id="api_irtcengine_enablelocalaudio__related"></a>
+
+### 相关回调
+
+音频功能关闭或重新开启后，会收到 [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，并报告 `LocalAudioStreamStateStopped` (0) 或 `LocalAudioStreamStateRecording` (1)。
+
+<a id="api_irtcengine_enablelocalaudio__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+- true: 重新开启本地音频功能，即开启本地音频采集（默认）；
+- false: 关闭本地音频功能，即停止本地音频采集。
+
+<a id="api_irtcengine_enablelocalaudio__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enableloopbackrecording"></a>
+
+## enableLoopbackRecording
+
+开启声卡采集。
+
+<a id="api_irtcengine_enableloopbackrecording__prototype"></a>
+
+```typescript
+abstract enableLoopbackRecording(
+    enabled: boolean,
+    deviceName?: string
+  ): number;
+```
+
+<a id="api_irtcengine_enableloopbackrecording__detailed_desc"></a>
+
+启用声卡采集功能后，声卡播放的声音会被合到本地音频流中，从而可以发送到远端。
+
+:::info[注]
+- 该方法在加入频道前后都能调用。
+- 如果你调用了 [disableAudio](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_disableaudio) 关闭音频模块，声卡采集功能也会被关闭。如果你需要再次启用声卡采集功能，需要调用 [enableAudio](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_enableaudio) 启用音频模块后再次调用 [enableLoopbackRecording](/zh-CN/api-reference/rtc/electron/audio/audio-capture#api_irtcengine_enableloopbackrecording)。
+:::
+
+<a id="api_irtcengine_enableloopbackrecording__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否开启声卡采集:
+
+- true: 开启声卡采集；系统声音 &gt; 输出界面显示虚拟声卡名称。
+- false:（默认）关闭声卡采集；系统声音 &gt; 输出界面不显示虚拟声卡名称。
+
+#### `deviceName`
+
+:::info[注]
+Electron for 统信 OS SDK 不支持该参数。
+:::
+
+- macOS: 虚拟声卡的设备名。默认为空，代表使用 AgoraALD 虚拟声卡进行采集。
+- Windows: 声卡的设备名。默认为空，代表使用设备自带的声卡进行采集。
+
+<a id="api_irtcengine_enableloopbackrecording__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_enableloopbackrecordingex"></a>
+
+## enableLoopbackRecordingEx
+
+开启声卡采集。
+
+<a id="api_irtcengineex_enableloopbackrecordingex__prototype"></a>
+
+```typescript
+abstract enableLoopbackRecordingEx(
+    connection: RtcConnection,
+    enabled: boolean,
+    deviceName?: string
+  ): number;
+```
+
+<a id="api_irtcengineex_enableloopbackrecordingex__detailed_desc"></a>
+
+启用声卡采集功能后，声卡播放的声音会被合到本地音频流中，从而可以发送到远端。
+
+:::info[注]
+- macOS 系统默认声卡不支持采集功能，如果你需要使用该功能，请启用一个虚拟声卡，并将 `deviceName` 设为该虚拟声卡的设备名。声网推荐你使用声网自研的虚拟声卡 AgoraALD 进行采集。
+- 该方法目前仅支持一路声卡采集。
+:::
+
+<a id="api_irtcengineex_enableloopbackrecordingex__parameters"></a>
+
+### 参数
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
+
+#### `enabled`
+
+是否开启声卡采集：
+
+- true: 开启声卡采集。
+- false:（默认）不开启声卡采集。
+
+#### `deviceName`
+
+:::info[注]
+Electron for 统信 OS SDK 不支持该参数。
+:::
+
+- macOS: 虚拟声卡的设备名。默认为空，代表使用 AgoraALD 虚拟声卡进行采集。
+- Windows: 声卡的设备名。默认为空，代表使用设备自带的声卡进行采集。
+
+<a id="api_irtcengineex_enableloopbackrecordingex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_muterecordingsignal"></a>
+
+## muteRecordingSignal
+
+是否将录音信号静音。
+
+<a id="api_irtcengine_muterecordingsignal__prototype"></a>
+
+```typescript
+abstract muteRecordingSignal(mute: boolean): number;
+```
+
+<a id="api_irtcengine_muterecordingsignal__detailed_desc"></a>
+
+如果你已经调用 [adjustRecordingSignalVolume](/zh-CN/api-reference/rtc/electron/audio/audio-capture#api_irtcengine_adjustrecordingsignalvolume) 调节了音频采集信号音量，则调用该方法并设置为 true 时，SDK 的行为如下：
+
+1. 记录调节后的音量。
+2. 将音频采集信号静音。
+
+当你再次调用该方法并设置为 false 时，录音信号会恢复为静音前 SDK 记录的音量。
+
+<a id="api_irtcengine_muterecordingsignal__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_muterecordingsignal__parameters"></a>
+
+### 参数
+
+#### `mute`
+
+- true: 静音。
+- false:（默认）原始音量。
+
+<a id="api_irtcengine_muterecordingsignal__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setinearmonitoringvolume"></a>
+
+## setInEarMonitoringVolume
+
+设置耳返音量。
+
+<a id="api_irtcengine_setinearmonitoringvolume__prototype"></a>
+
+```typescript
+abstract setInEarMonitoringVolume(volume: number): number;
+```
+
+<a id="api_irtcengine_setinearmonitoringvolume__detailed_desc"></a>
+
+<a id="api_irtcengine_setinearmonitoringvolume__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_setinearmonitoringvolume__parameters"></a>
+
+### 参数
+
+#### `volume`
+
+音量，取值范围为 [0,400]。
+
+- 0: 静音。
+- 100: （默认）原始音量。
+- 400: 原始音量的 4 倍，自带溢出保护。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)

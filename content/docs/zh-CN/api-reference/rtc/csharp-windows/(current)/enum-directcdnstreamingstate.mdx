@@ -2,6 +2,7 @@
 title: "DIRECT_CDN_STREAMING_STATE"
 description: "当前 CDN 推流状态。"
 ---
+
 <a id="enum_directcdnstreamingstate__detailed_desc"></a>
 
 ## 详情
@@ -16,15 +17,15 @@ description: "当前 CDN 推流状态。"
 
 ### `DIRECT_CDN_STREAMING_STATE_RUNNING`
 
-1：正在推流中。当你调用 [StartDirectCdnStreaming](/zh-CN/api-reference/rtc/csharp-windows/cdn-streaming#api_irtcengine_startdirectcdnstreaming) 成功推流时，SDK 会返回该值。
+1：正在推流中。当你调用 [StartDirectCdnStreaming](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/cdn-streaming#api_irtcengine_startdirectcdnstreaming) 成功推流时，SDK 会返回该值。
 
 ### `DIRECT_CDN_STREAMING_STATE_STOPPED`
 
-2：推流已正常结束。当你调用 [StopDirectCdnStreaming](/zh-CN/api-reference/rtc/csharp-windows/cdn-streaming#api_irtcengine_stopdirectcdnstreaming) 主动停止推流时，SDK 会返回该值。
+2：推流已正常结束。当你调用 [StopDirectCdnStreaming](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/cdn-streaming#api_irtcengine_stopdirectcdnstreaming) 主动停止推流时，SDK 会返回该值。
 
 ### `DIRECT_CDN_STREAMING_STATE_FAILED`
 
-3：推流失败。你可以通过 [OnDirectCdnStreamingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/cdn-streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) 回调报告的信息排查问题，然后重新推流。
+3：推流失败。你可以通过 [OnDirectCdnStreamingStateChanged](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/cdn-streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) 回调报告的信息排查问题，然后重新推流。
 
 ### `DIRECT_CDN_STREAMING_STATE_RECOVERING`
 

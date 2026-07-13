@@ -2,9 +2,8 @@
 title: "音视频录制"
 description: "创建音视频录制对象。"
 ---
-<a id="toc_recording"></a>
 
-## 音视频录制
+<a id="toc_recording"></a>
 
 <a id="api_irtcengine_createmediarecorder"></a>
 
@@ -37,7 +36,6 @@ Future<MediaRecorder?> createMediaRecorder(RecorderStreamInfo info);
 - 方法调用成功：返回一个 [MediaRecorder](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorder) 对象。
 - 方法调用失败：返回空指针。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroymediarecorder"></a>
@@ -70,7 +68,6 @@ Future<void> destroyMediaRecorder(MediaRecorder mediaRecorder);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_setmediarecorderobserver"></a>
@@ -108,7 +105,6 @@ Future<void> setMediaRecorderObserver(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaRecorder](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorder)
 
 <a id="api_irtcengine_startaudiorecording3"></a>
@@ -152,7 +148,6 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_startrecording"></a>
@@ -201,7 +196,6 @@ Future<void> startRecording(MediaRecorderConfiguration config);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaRecorder](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorder)
 
 <a id="api_irtcengine_stopaudiorecording"></a>
@@ -224,7 +218,6 @@ Future<void> stopAudioRecording();
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_stoprecording"></a>
@@ -251,7 +244,6 @@ Future<void> stopRecording();
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaRecorder](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorder)
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated"></a>
@@ -287,7 +279,6 @@ final void Function(String channelId, int uid, RecorderInfo info)?
 
 录制文件信息。详见 [RecorderInfo](/zh-CN/api-reference/rtc/flutter/class-recorderinfo)。
 
-### 所属接口类
 - [MediaRecorderObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorderobserver)
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged"></a>
@@ -327,5 +318,4 @@ final void Function(String channelId, int uid, RecorderState state,
 
 录制状态出错的原因。详见 [RecorderReasonCode](/zh-CN/api-reference/rtc/flutter/enum-recorderreasoncode)。
 
-### 所属接口类
 - [MediaRecorderObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediarecorderobserver)

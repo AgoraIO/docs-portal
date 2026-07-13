@@ -2,9 +2,8 @@
 title: "发布和订阅"
 description: "在发送端开启或关闭双流模式并设置视频小流。"
 ---
-<a id="toc_publishnsubscribe"></a>
 
-## 发布和订阅
+<a id="toc_publishnsubscribe"></a>
 
 <a id="api_irtcengine_enabledualstreammode3"></a>
 
@@ -66,7 +65,6 @@ abstract enableDualStreamMode(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enabledualstreammodeex"></a>
@@ -132,7 +130,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muteallremoteaudiostreams"></a>
@@ -152,7 +149,7 @@ abstract muteAllRemoteAudioStreams(mute: boolean): number;
 成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的音频流，包括在调用该方法后加入频道的用户的音频流。
 
 :::info[注]
-SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修改此行为，可以在调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道时设置 `autoSubscribeAudio` 为 false，即可在加入频道时取消订阅所有用户的音频流。 如果在调用该方法之后又调用了 [enableAudio](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_enableaudio) 或 [disableAudio](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_disableaudio)，则后调用的方法会生效。
+SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修改此行为，可以在调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道时设置 `autoSubscribeAudio` 为 false，即可在加入频道时取消订阅所有用户的音频流。 如果在调用该方法之后又调用了 [enableAudio](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_enableaudio) 或 [disableAudio](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_disableaudio)，则后调用的方法会生效。
 :::
 
 <a id="api_irtcengine_muteallremoteaudiostreams__timing"></a>
@@ -179,7 +176,6 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex"></a>
@@ -228,7 +224,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muteallremotevideostreams"></a>
@@ -248,7 +243,7 @@ abstract muteAllRemoteVideoStreams(mute: boolean): number;
 成功调用该方法后，本地用户会取消或恢复订阅所有远端用户的视频流，包括在调用该方法后加入频道的用户的视频流。
 
 :::info[注]
-SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修改此行为，可以在调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道时设置 `autoSubscribeVideo` 为 false，即可在加入频道时取消订阅所有用户的视频流。 如果在调用该方法之后又调用了 [enableVideo](/zh-CN/api-reference/rtc/electron/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/electron/video-basic#api_irtcengine_disablevideo)，则后调用的方法会生效。
+SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修改此行为，可以在调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道时设置 `autoSubscribeVideo` 为 false，即可在加入频道时取消订阅所有用户的视频流。 如果在调用该方法之后又调用了 [enableVideo](/zh-CN/api-reference/rtc/electron/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/electron/video/video-basic#api_irtcengine_disablevideo)，则后调用的方法会生效。
 :::
 
 <a id="api_irtcengine_muteallremotevideostreams__timing"></a>
@@ -275,7 +270,6 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_muteallremotevideostreamsex"></a>
@@ -319,7 +313,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_mutelocalaudiostream"></a>
@@ -348,7 +341,7 @@ abstract muteLocalAudioStream(mute: boolean): number;
 
 ### 相关回调
 
-成功调用该方法后，本地会触发 [onAudioPublishStateChanged](/zh-CN/api-reference/rtc/electron/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged) 回调；远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/electron/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/electron/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+成功调用该方法后，本地会触发 [onAudioPublishStateChanged](/zh-CN/api-reference/rtc/electron/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged) 回调；远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 
 <a id="api_irtcengine_mutelocalaudiostream__parameters"></a>
 
@@ -368,7 +361,6 @@ abstract muteLocalAudioStream(mute: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_mutelocalaudiostreamex"></a>
@@ -388,7 +380,7 @@ abstract muteLocalAudioStreamEx(
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__detailed_desc"></a>
 
-成功调用该方法后，远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/electron/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/electron/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+成功调用该方法后，远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 
 :::info[注]
 该方法不影响音频采集状态，因为没有禁用音频采集设备。
@@ -416,7 +408,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_mutelocalvideostream"></a>
@@ -433,7 +424,7 @@ abstract muteLocalVideoStream(mute: boolean): number;
 
 <a id="api_irtcengine_mutelocalvideostream__detailed_desc"></a>
 
-该方法用于控制是否发布本地采集的视频流。如果不发布本地采集的视频流，也不会禁用视频采集设备，所以不影响视频的采集状态。 相比于调用 [enableLocalVideo](/zh-CN/api-reference/rtc/electron/video-basic#api_irtcengine_enablelocalvideo) (false) 关闭本地视频流采集、从而取消发布本地视频流的方法，该方法响应速度更快。
+该方法用于控制是否发布本地采集的视频流。如果不发布本地采集的视频流，也不会禁用视频采集设备，所以不影响视频的采集状态。 相比于调用 [enableLocalVideo](/zh-CN/api-reference/rtc/electron/video/video-basic#api_irtcengine_enablelocalvideo) (false) 关闭本地视频流采集、从而取消发布本地视频流的方法，该方法响应速度更快。
 
 <a id="api_irtcengine_mutelocalvideostream__timing"></a>
 
@@ -445,7 +436,7 @@ abstract muteLocalVideoStream(mute: boolean): number;
 
 ### 相关回调
 
-成功调用该方法后，本地会触发 [onVideoPublishStateChanged](/zh-CN/api-reference/rtc/electron/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) 回调；远端会触发 [onUserMuteVideo](/zh-CN/api-reference/rtc/electron/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调和 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/electron/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
+成功调用该方法后，本地会触发 [onVideoPublishStateChanged](/zh-CN/api-reference/rtc/electron/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) 回调；远端会触发 [onUserMuteVideo](/zh-CN/api-reference/rtc/electron/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调和 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/electron/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
 
 <a id="api_irtcengine_mutelocalvideostream__parameters"></a>
 
@@ -465,7 +456,6 @@ abstract muteLocalVideoStream(mute: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_mutelocalvideostreamex"></a>
@@ -485,7 +475,7 @@ abstract muteLocalVideoStreamEx(
 
 <a id="api_irtcengineex_mutelocalvideostreamex__detailed_desc"></a>
 
-成功调用该方法后，远端会触发 [onUserMuteVideo](/zh-CN/api-reference/rtc/electron/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
+成功调用该方法后，远端会触发 [onUserMuteVideo](/zh-CN/api-reference/rtc/electron/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
 
 :::info[注]
 - 该方法不影响视频采集状态，没有禁用摄像头。
@@ -513,7 +503,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muteremoteaudiostream"></a>
@@ -564,7 +553,6 @@ abstract muteRemoteAudioStream(uid: number, mute: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_muteremoteaudiostreamex"></a>
@@ -613,7 +601,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muteremotevideostream"></a>
@@ -664,7 +651,6 @@ abstract muteRemoteVideoStream(uid: number, mute: boolean): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_muteremotevideostreamex"></a>
@@ -713,7 +699,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setdualstreammode2"></a>
@@ -769,7 +754,6 @@ SDK 默认在发送端开启小流自适应模式 (`AutoSimulcastStream`)，即�
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setdualstreammodeex"></a>
@@ -830,7 +814,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype"></a>
@@ -880,7 +863,6 @@ abstract setRemoteDefaultVideoStreamType(streamType: VideoStreamType): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremotevideostreamtype"></a>
@@ -932,7 +914,6 @@ abstract setRemoteVideoStreamType(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremotevideostreamtypeex"></a>
@@ -988,7 +969,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setremotevideosubscriptionoptions"></a>
@@ -1035,7 +1015,6 @@ abstract setRemoteVideoSubscriptionOptions(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremotevideosubscriptionoptionsex"></a>
@@ -1081,7 +1060,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setsubscribeaudioallowlist"></a>
@@ -1129,7 +1107,6 @@ abstract setSubscribeAudioAllowlist(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex"></a>
@@ -1182,7 +1159,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setsubscribeaudioblocklist"></a>
@@ -1230,7 +1206,6 @@ abstract setSubscribeAudioBlocklist(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex"></a>
@@ -1283,7 +1258,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setsubscribevideoallowlist"></a>
@@ -1331,7 +1305,6 @@ abstract setSubscribeVideoAllowlist(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex"></a>
@@ -1384,7 +1357,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setsubscribevideoblocklist"></a>
@@ -1432,7 +1404,6 @@ abstract setSubscribeVideoBlocklist(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex"></a>
@@ -1485,7 +1456,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onaudiopublishstatechanged"></a>
@@ -1527,7 +1497,6 @@ onAudioPublishStateChanged?(
 
 两次状态变化时间间隔（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged"></a>
@@ -1574,7 +1543,6 @@ onAudioSubscribeStateChanged?(
 
 两次状态变化时间间隔（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideosubscribestatechanged"></a>
@@ -1621,5 +1589,4 @@ onVideoSubscribeStateChanged?(
 
 两次状态变化时间间隔（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)

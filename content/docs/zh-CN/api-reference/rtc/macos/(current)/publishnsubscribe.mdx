@@ -2,9 +2,8 @@
 title: "发布和订阅"
 description: "在发送端启用或关闭不同质量层级的视频流模式。"
 ---
-<a id="toc_publishnsubscribe"></a>
 
-## 发布和订阅
+<a id="toc_publishnsubscribe"></a>
 
 <a id="api_irtcengine_enabledualstreammode"></a>
 
@@ -55,7 +54,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enabledualstreammode3"></a>
@@ -112,7 +110,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enabledualstreammodeex"></a>
@@ -182,7 +179,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muteallremoteaudiostreams"></a>
@@ -202,7 +198,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 调用该方法后，你将停止或恢复订阅所有远端用户的音频流，包括之后加入频道的用户。
 
 :::info[注]
-[muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 方法调用后，如果你调用了 [enableAudio](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_enableaudio) 或 [disableAudio](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_disableaudio)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的音频流。你可以在调用 `joinChannelByToken` 加入频道时将 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置为 NO，以取消加入频道时对所有用户音频流的订阅。
+[muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 方法调用后，如果你调用了 [enableAudio](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_enableaudio) 或 [disableAudio](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_disableaudio)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的音频流。你可以在调用 `joinChannelByToken` 加入频道时将 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置为 NO，以取消加入频道时对所有用户音频流的订阅。
 :::
 
 <a id="api_irtcengine_muteallremoteaudiostreams__timing"></a>
@@ -229,7 +225,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex"></a>
@@ -282,7 +277,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muteallremotevideostreams"></a>
@@ -302,7 +296,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 调用该方法后，你会停止或恢复订阅所有远端用户的视频流，包括后续加入频道的用户。
 
 :::info[注]
-如果你调用了该方法后又调用了 [enableVideo](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_disablevideo)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的视频流。你可以在调用 `joinChannelByToken` 加入频道时将 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `autoSubscribeVideo` 设置为 NO，以取消加入频道时对所有用户的视频流的订阅。
+如果你调用了该方法后又调用了 [enableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_disablevideo)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的视频流。你可以在调用 `joinChannelByToken` 加入频道时将 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `autoSubscribeVideo` 设置为 NO，以取消加入频道时对所有用户的视频流的订阅。
 :::
 
 <a id="api_irtcengine_muteallremotevideostreams__timing"></a>
@@ -329,7 +323,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_muteallremotevideostreamsex"></a>
@@ -377,7 +370,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_mutelocalaudiostream"></a>
@@ -406,7 +398,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 ### 相关回调
 
-调用该方法成功后，本地会触发回调 [rtcEngine:didAudioPublishStateChange:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged)；远端会触发回调 [rtcEngine:didAudioMuted:byUid:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
+调用该方法成功后，本地会触发回调 [rtcEngine:didAudioPublishStateChange:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged)；远端会触发回调 [rtcEngine:didAudioMuted:byUid:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
 
 <a id="api_irtcengine_mutelocalaudiostream__parameters"></a>
 
@@ -426,7 +418,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_mutelocalaudiostreamex"></a>
@@ -443,7 +434,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__detailed_desc"></a>
 
-成功调用该方法后，远端会触发 [rtcEngine:didAudioMuted:byUid:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+成功调用该方法后，远端会触发 [rtcEngine:didAudioMuted:byUid:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 
 :::info[注]
 该方法不会影响任何正在进行的音频录制，因为它不会禁用音频采集设备。
@@ -477,7 +468,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_mutelocalvideostream"></a>
@@ -494,7 +484,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 <a id="api_irtcengine_mutelocalvideostream__detailed_desc"></a>
 
-该方法用于控制是否发布本地采集的视频流。调用该方法停止发布本地采集的视频流时，视频采集设备仍会继续工作，不受影响。 与调用 [enableLocalVideo:](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_enablelocalvideo) 设置为 NO 以关闭本地视频采集从而取消发布视频流的方法相比，该方法响应更快。
+该方法用于控制是否发布本地采集的视频流。调用该方法停止发布本地采集的视频流时，视频采集设备仍会继续工作，不受影响。 与调用 [enableLocalVideo:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_enablelocalvideo) 设置为 NO 以关闭本地视频采集从而取消发布视频流的方法相比，该方法响应更快。
 
 <a id="api_irtcengine_mutelocalvideostream__timing"></a>
 
@@ -520,7 +510,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_mutelocalvideostreamex"></a>
@@ -551,7 +540,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:didVideoMuted:byUid:](/zh-CN/api-reference/rtc/macos/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调报告远端用户是否接收到本地视频流。
+成功调用该方法后，SDK 会触发 [rtcEngine:didVideoMuted:byUid:](/zh-CN/api-reference/rtc/macos/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调报告远端用户是否接收到本地视频流。
 
 <a id="api_irtcengineex_mutelocalvideostreamex__parameters"></a>
 
@@ -575,7 +564,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muteremoteaudiostream"></a>
@@ -626,7 +614,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_muteremoteaudiostreamex"></a>
@@ -679,7 +666,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muteremotevideostream"></a>
@@ -729,7 +715,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_muteremotevideostreamex"></a>
@@ -782,7 +767,6 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setdualstreammode"></a>
@@ -827,7 +811,6 @@ SDK 默认在发送端开启视频小流自适应模式（`AgoraAutoSimulcastStr
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setdualstreammode2"></a>
@@ -877,7 +860,6 @@ SDK 默认在发送端开启视频小流的自适应模式（`AgoraAutoSimulcast
 
 0：方法调用成功。 &lt; 0：方法调用失败。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setdualstreammodeex"></a>
@@ -942,7 +924,6 @@ SDK 默认在发送端开启视频小流的自适应模式（`AgoraAutoSimulcast
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype"></a>
@@ -992,7 +973,6 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremotevideostreamtype"></a>
@@ -1042,7 +1022,6 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremotevideostreamtypeex"></a>
@@ -1102,7 +1081,6 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setremotevideosubscriptionoptions"></a>
@@ -1147,7 +1125,6 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremotevideosubscriptionoptionsex"></a>
@@ -1197,7 +1174,6 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setsubscribeaudioallowlist"></a>
@@ -1238,7 +1214,6 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex"></a>
@@ -1289,7 +1264,6 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setsubscribeaudioblocklist"></a>
@@ -1330,7 +1304,6 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex"></a>
@@ -1381,7 +1354,6 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setsubscribevideoallowlist"></a>
@@ -1422,7 +1394,6 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex"></a>
@@ -1473,7 +1444,6 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setsubscribevideoblocklist"></a>
@@ -1514,7 +1484,6 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex"></a>
@@ -1565,7 +1534,6 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onaudiopublishstatechanged"></a>
@@ -1617,7 +1585,6 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didAudi
 
 从之前状态切换到当前状态所经过的时间（毫秒）。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged"></a>
@@ -1668,7 +1635,6 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didAudi
 
 从上一个状态到当前状态所经历的时间（毫秒）。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideosubscribestatechanged"></a>
@@ -1719,5 +1685,4 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didVide
 
 从上一个状态到当前状态所经历的时间（毫秒）。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)

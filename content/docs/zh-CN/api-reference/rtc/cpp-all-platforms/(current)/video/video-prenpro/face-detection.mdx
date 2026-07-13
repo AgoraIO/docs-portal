@@ -1,0 +1,126 @@
+---
+title: "人脸检测"
+description: "启用或关闭本地用户的人脸检测功能。"
+---
+
+<a id="toc_face_detection"></a>
+
+<a id="api_irtcengine_enablefacedetection"></a>
+
+## enableFaceDetection
+
+启用或关闭本地用户的人脸检测功能。
+
+<a id="api_irtcengine_enablefacedetection__prototype"></a>
+
+```cpp
+virtual int enableFaceDetection(bool enabled) = 0;
+```
+
+<a id="api_irtcengine_enablefacedetection__detailed_desc"></a>
+
+:::info[注]
+该方法仅适用于 Android 和 iOS 平台。
+:::
+
+<a id="api_irtcengine_enablefacedetection__timing"></a>
+
+### 调用时机
+
+该方法需在调用 `startPreview` 或 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 开启摄像头之后调用。
+
+<a id="api_irtcengine_enablefacedetection__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onFacePositionChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/face-detection#callback_irtcengineeventhandler_onfacepositionchanged) 回调，报告本地用户的人脸信息，包括：
+
+- 本地视频的宽度和高度。
+- 人脸在本地视图中的位置。
+- 人脸与屏幕之间的距离。
+
+<a id="api_irtcengine_enablefacedetection__parameters"></a>
+
+### 参数
+
+#### `enabled`
+
+是否启用本地用户的人脸检测功能：
+
+- true：启用人脸检测。
+- false：（默认）关闭人脸检测。
+
+<a id="api_irtcengine_enablefacedetection__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onfacepositionchanged"></a>
+
+## onFacePositionChanged
+
+上报本地用户的人脸检测结果。
+
+<a id="callback_irtcengineeventhandler_onfacepositionchanged__prototype"></a>
+
+```cpp
+virtual void onFacePositionChanged(int imageWidth, int imageHeight, const Rectangle* vecRectangle, const int* vecDistance, int numFaces)
+```
+
+<a id="callback_irtcengineeventhandler_onfacepositionchanged__detailed_desc"></a>
+
+调用 [enableFaceDetection](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/face-detection#api_irtcengine_enablefacedetection) 启用人脸检测后，你可以实时获取以下本地用户的信息：
+
+- 本地视频的宽度和高度。
+- 人脸在本地视图中的位置。
+- 人脸与屏幕之间的距离。
+
+该距离值基于本地视频尺寸和人脸位置的拟合计算得出。
+
+:::info[注]
+- 该回调仅适用于 Android 和 iOS 平台。
+- 当检测到摄像头前的人脸消失时，会立即触发该回调。当未检测到人脸时，为降低本地设备功耗，该回调的触发频率会降低。
+- 当人脸靠近屏幕时，SDK 会停止触发该回调。
+- 在 Android 平台，该回调中上报的距离值可能与实际距离存在偏差，因此声网不建议将其用于精确计算。
+:::
+
+<a id="callback_irtcengineeventhandler_onfacepositionchanged__timing"></a>
+
+### 触发时机
+
+当检测到人脸位置变化时触发。
+
+<a id="callback_irtcengineeventhandler_onfacepositionchanged__parameters"></a>
+
+### 参数
+
+#### `imageWidth`
+
+本地摄像头采集的视频图像的宽度（像素）。
+
+#### `imageHeight`
+
+本地摄像头采集的视频图像的高度（像素）。
+
+#### `vecRectangle`
+
+长度为 `numFaces` 的数组，表示检测到的人脸信息：
+
+- `x`：人脸在本地视图中的 x 坐标（像素），以视图左上角为原点，表示人脸相对于原点的水平位置。
+- `y`：人脸在本地视图中的 y 坐标（像素），以视图左上角为原点，表示人脸相对于原点的垂直位置。
+- `width`：人脸在捕获视图中的宽度（像素）。
+- `height`：人脸在捕获视图中的高度（像素）。详见 [Rectangle](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rectangle)。
+
+#### `vecDistance`
+
+长度为 `numFaces` 的数组，表示每张人脸与设备屏幕之间的距离（厘米）。
+
+#### `numFaces`
+
+检测到的人脸数量。若为 0，表示未检测到人脸。
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

@@ -2,6 +2,7 @@
 title: "VOICE_BEAUTIFIER_PRESET"
 description: "SDK 预设的声动语聊美声效果选项。"
 ---
+
 <a id="enum_voicebeautifierpreset__parameters"></a>
 
 ## 枚举值
@@ -79,5 +80,5 @@ description: "SDK 预设的声动语聊美声效果选项。"
 （0x01040100）：超高音质效果，使音频更清晰并还原更多细节。
 
 :::info[注]
-为获得更好的音效质量，建议在调用 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect#api_irtcengine_setvoicebeautifierpreset) 前，将 `setAudioProfile(AUDIO_PROFILE_TYPE profile)` 的 `profile` 设置为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY` （4）或 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO` （5），并将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING` （3）。如果音频采集设备本身已具备高保真能力，建议不要启用超高音质，否则 SDK 可能会过度还原音频细节，导致无法获得预期的声音效果。
+为获得更好的音效质量，建议在调用 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 前，将 `setAudioProfile(AUDIO_PROFILE_TYPE profile)` 的 `profile` 设置为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY` （4）或 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO` （5），并将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING` （3）。如果音频采集设备本身已具备高保真能力，建议不要启用超高音质，否则 SDK 可能会过度还原音频细节，导致无法获得预期的声音效果。
 :::

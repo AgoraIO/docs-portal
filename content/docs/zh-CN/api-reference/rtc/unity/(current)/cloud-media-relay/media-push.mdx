@@ -1,0 +1,419 @@
+---
+title: "旁路推流"
+description: "开始非转码推流。"
+---
+
+<a id="toc_media_push"></a>
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding"></a>
+
+## StartRtmpStreamWithoutTranscoding
+
+开始非转码推流。
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding__prototype"></a>
+
+```csharp
+public abstract int StartRtmpStreamWithoutTranscoding(string url);
+```
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 调用该方法，你可以向指定的旁路推流地址推送直播音视频流。该方法每次只能向一个地址推送媒体流，如果你需要向多个地址转码推流，则需多次调用该方法。 调用该方法后，SDK 会在本地触发 [OnRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
+
+:::info[注]
+- 请在加入频道后调用该方法。
+- 只有直播场景下的主播才能调用该方法。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 [StopRtmpStream](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream)，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+:::
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
+  - -2：URL 或转码属性参数错误，请检查你的 URL 或参数设置。
+  - -7：调用该方法前，未初始化 SDK。
+  - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex"></a>
+
+## StartRtmpStreamWithoutTranscodingEx
+
+开始非转码推流。
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__prototype"></a>
+
+```csharp
+public abstract int StartRtmpStreamWithoutTranscodingEx(string url, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 调用该方法，你可以向指定的旁路推流地址推送直播音视频流。该方法每次只能向一个地址推送媒体流，如果你需要向多个地址转码推流，则需多次调用该方法。 调用该方法后，SDK 会在本地触发 [OnRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
+
+:::info[注]
+- 请在加入频道后调用该方法。
+- 只有直播场景下的主播才能调用该方法。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 [StopRtmpStream](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream)，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+:::
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
+  - -2：URL 或转码属性参数错误，请检查你的 URL 或参数设置。
+  - -7：调用该方法前，未初始化 SDK。
+  - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding"></a>
+
+## StartRtmpStreamWithTranscoding
+
+开始旁路推流并设置转码属性。
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding__prototype"></a>
+
+```csharp
+public abstract int StartRtmpStreamWithTranscoding(string url, LiveTranscoding transcoding);
+```
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 调用该方法，你可以向指定的旁路推流地址推送直播音视频流并设置转码属性。该方法每次只能向一个地址推送媒体流，如果你需要向多个地址转码推流，则需多次调用该方法。 一次推流代表一个推流任务，最大并发任务数默认为 200，表示你在一个声网项目下最多同时运行 200 个推流任务，如需更高配额，请[联系技术支持](https://ticket.shengwang.cn/)。 调用该方法后，SDK 会在本地触发 [OnRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
+
+:::info[注]
+- 请在加入频道后调用该方法。
+- 只有直播场景下的主播才能调用该方法。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 [StopRtmpStream](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream)，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+:::
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+#### `transcoding`
+
+旁路推流的转码属性，详见 [LiveTranscoding](/zh-CN/api-reference/rtc/unity/class-livetranscoding)。
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
+  - -2：URL 或转码属性参数错误，请检查你的 URL 或参数设置。
+  - -7：调用该方法前，未初始化 SDK。
+  - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex"></a>
+
+## StartRtmpStreamWithTranscodingEx
+
+开始旁路推流并设置转码属性。
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__prototype"></a>
+
+```csharp
+public abstract int StartRtmpStreamWithTranscodingEx(string url, LiveTranscoding transcoding, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 调用该方法，你可以向指定的旁路推流地址推送直播音视频流并设置转码属性。该方法每次只能向一个地址推送媒体流，如果你需要向多个地址转码推流，则需多次调用该方法。 调用该方法后，SDK 会在本地触发 [OnRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
+
+:::info[注]
+- 请确保已开通旁路推流服务。
+- 请在加入频道后调用该方法。
+- 只有直播场景下的主播才能调用该方法。
+- 调用该方法推流失败后，如果你想要重新推流，那么请你务必先调用 [StopRtmpStreamEx](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#api_irtcengineex_stoprtmpstreamex)，再调用该方法重推，否则 SDK 会返回与上次推流失败时一样的错误码。
+:::
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+#### `transcoding`
+
+旁路推流的转码属性，详见 [LiveTranscoding](/zh-CN/api-reference/rtc/unity/class-livetranscoding)。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
+  - -2：URL 或转码属性参数错误，请检查你的 URL 或参数设置。
+  - -7：调用该方法前，未初始化 SDK。
+  - -19：该旁路推流 URL 已在使用中，请使用其他旁路推流 URL。
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_stoprtmpstream"></a>
+
+## StopRtmpStream
+
+结束旁路推流。
+
+<a id="api_irtcengine_stoprtmpstream__prototype"></a>
+
+```csharp
+public abstract int StopRtmpStream(string url);
+```
+
+<a id="api_irtcengine_stoprtmpstream__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 调用该方法，你可以结束指定的旁路推流地址上的直播。该方法每次只能结束一个推流地址上的直播，如果你需要结束多个推流地址的直播，则需多次调用该方法。 调用该方法后，SDK 会在本地触发 [OnRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
+
+<a id="api_irtcengine_stoprtmpstream__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+<a id="api_irtcengine_stoprtmpstream__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_stoprtmpstreamex"></a>
+
+## StopRtmpStreamEx
+
+结束旁路推流。
+
+<a id="api_irtcengineex_stoprtmpstreamex__prototype"></a>
+
+```csharp
+public abstract int StopRtmpStreamEx(string url, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_stoprtmpstreamex__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 调用该方法，你可以结束指定的旁路推流地址上的直播。该方法每次只能结束一个推流地址上的直播，如果你需要结束多个推流地址的直播，则需多次调用该方法。 调用该方法后，SDK 会在本地触发 [OnRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调，报告推流的状态。
+
+<a id="api_irtcengineex_stoprtmpstreamex__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
+
+<a id="api_irtcengineex_stoprtmpstreamex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_updatertmptranscoding"></a>
+
+## UpdateRtmpTranscoding
+
+更新旁路推流转码属性。
+
+<a id="api_irtcengine_updatertmptranscoding__prototype"></a>
+
+```csharp
+public abstract int UpdateRtmpTranscoding(LiveTranscoding transcoding);
+```
+
+<a id="api_irtcengine_updatertmptranscoding__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 开启转码推流后，你可以根据场景需求，动态更新转码属性。转码属性更新后，SDK 会触发 [OnTranscodingUpdated](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) 回调。
+
+<a id="api_irtcengine_updatertmptranscoding__parameters"></a>
+
+### 参数
+
+#### `transcoding`
+
+旁路推流的转码属性，详见 [LiveTranscoding](/zh-CN/api-reference/rtc/unity/class-livetranscoding)。
+
+<a id="api_irtcengine_updatertmptranscoding__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_updatertmptranscodingex"></a>
+
+## UpdateRtmpTranscodingEx
+
+更新旁路推流转码属性。
+
+<a id="api_irtcengineex_updatertmptranscodingex__prototype"></a>
+
+```csharp
+public abstract int UpdateRtmpTranscodingEx(LiveTranscoding transcoding, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_updatertmptranscodingex__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 开启转码推流后，你可以根据场景需求，动态更新转码属性。转码属性更新后，SDK 会触发 [OnTranscodingUpdated](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) 回调。
+
+<a id="api_irtcengineex_updatertmptranscodingex__parameters"></a>
+
+### 参数
+
+#### `transcoding`
+
+旁路推流的转码属性，详见 [LiveTranscoding](/zh-CN/api-reference/rtc/unity/class-livetranscoding)。
+
+#### `connection`
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-rtcconnection)。
+
+<a id="api_irtcengineex_updatertmptranscodingex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingevent"></a>
+
+## OnRtmpStreamingEvent
+
+旁路推流事件回调。
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingevent__prototype"></a>
+
+```csharp
+public virtual void OnRtmpStreamingEvent(string url, RTMP_STREAMING_EVENT eventCode)
+```
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingevent__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingevent__parameters"></a>
+
+### 参数
+
+#### `url`
+
+旁路推流 URL。
+
+#### `eventCode`
+
+旁路推流事件码。详见 [RTMP_STREAMING_EVENT](/zh-CN/api-reference/rtc/unity/enum-rtmpstreamingevent)。
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged"></a>
+
+## OnRtmpStreamingStateChanged
+
+旁路推流状态发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__prototype"></a>
+
+```csharp
+public virtual void OnRtmpStreamingStateChanged(string url, RTMP_STREAM_PUBLISH_STATE state, RTMP_STREAM_PUBLISH_REASON reason)
+```
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__detailed_desc"></a>
+
+旁路推流状态发生改变时，SDK会触发该回调，并在回调中明确状态发生改变的 URL 地址及当前推流状态。该回调方便推流用户了解当前的推流状态；推流出错时，你可以通过返回的错误码了解出错的原因，方便排查问题。
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__parameters"></a>
+
+### 参数
+
+#### `url`
+
+推流状态发生改变的 URL 地址。
+
+#### `state`
+
+当前的推流状态，详见 [RTMP_STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc/unity/enum-rtmpstreampublishstate)。
+
+#### `reason`
+
+推流状态改变的原因，详见 [RTMP_STREAM_PUBLISH_REASON](/zh-CN/api-reference/rtc/unity/enum-rtmpstreampublishreason)。
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_ontranscodingupdated"></a>
+
+## OnTranscodingUpdated
+
+旁路推流转码设置已被更新回调。
+
+<a id="callback_irtcengineeventhandler_ontranscodingupdated__prototype"></a>
+
+```csharp
+public virtual void OnTranscodingUpdated()
+```
+
+<a id="callback_irtcengineeventhandler_ontranscodingupdated__detailed_desc"></a>
+
+[StartRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法中的直播参数 [LiveTranscoding](/zh-CN/api-reference/rtc/unity/class-livetranscoding) 更新时， [OnTranscodingUpdated](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) 回调会被触发并向主播报告更新信息。
+
+:::info[注]
+首次调用 [StartRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/unity/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法设置转码参数 [LiveTranscoding](/zh-CN/api-reference/rtc/unity/class-livetranscoding) 时，不会触发此回调。
+:::
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)

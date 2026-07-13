@@ -2,6 +2,7 @@
 title: "SpatialAudioParams"
 description: "空间音频参数。"
 ---
+
 <a id="class_spatialaudioparams__prototype"></a>
 
 ```csharp
@@ -83,5 +84,5 @@ public class SpatialAudioParams : OptionalJsonParse
 
 :::warning[注意]
 - 该参数适用于声源高速运动的场景（例如：赛车游戏），在普通音视频互动场景（语聊、连麦、在线 KTV）中不建议开启。
-- 开启该参数时，建议设定一个规律的周期（比如 30 ms），然后调用 [UpdatePlayerPositionInfo](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_ibasespatialaudioengine_updateplayerpositioninfo)、 [UpdateSelfPosition](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_ibasespatialaudioengine_updateselfposition) 和 [UpdateRemotePosition](/zh-CN/api-reference/rtc/csharp-windows/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 方法持续更新声源和接收方的相对距离。以下因素会导致多普勒效应达不到预期或者声音出现抖动：更新距离的周期过长，更新周期不规律，网络丢包或延迟导致距离信息丢失。
+- 开启该参数时，建议设定一个规律的周期（比如 30 ms），然后调用 [UpdatePlayerPositionInfo](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateplayerpositioninfo)、 [UpdateSelfPosition](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselfposition) 和 [UpdateRemotePosition](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 方法持续更新声源和接收方的相对距离。以下因素会导致多普勒效应达不到预期或者声音出现抖动：更新距离的周期过长，更新周期不规律，网络丢包或延迟导致距离信息丢失。
 :::
