@@ -3,11 +3,7 @@ title: "虚拟节拍器"
 description: "配置虚拟节拍器。"
 ---
 
-<a id="toc_rhythmplayer"></a>
-
-<a id="api_irtcengine_configrhythmplayer"></a>
-
-## configRhythmPlayer
+## <span id="toc_rhythmplayer"></span>configRhythmPlayer [#api_irtcengine_configrhythmplayer]
 
 配置虚拟节拍器。
 
@@ -17,40 +13,30 @@ description: "配置虚拟节拍器。"
 public abstract int configRhythmPlayer(AgoraRhythmPlayerConfig config);
 ```
 
-<a id="api_irtcengine_configrhythmplayer__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_configrhythmplayer__detailed_desc]
 
 自 v4.6.0 版本废弃。
 
 调用 [startRhythmPlayer](/zh-CN/api-reference/rtc/android/play/rhythmplayer#api_irtcengine_startrhythmplayer) 后，可以使用该方法重新配置虚拟节拍器。启用虚拟节拍器后，SDK 会从头开始播放指定的音效文件，并根据在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，如果将 `beatsPerMinute` 设置为 60，SDK 每秒播放一个节拍。如果文件时长超过节拍时长，SDK 只播放节拍时长内的音频。默认情况下，虚拟节拍器的声音会在频道中发布。如果希望远端用户也能听到该声音，可以在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中将 `publishRhythmPlayerTrack` 设置为 true。
 
-<a id="api_irtcengine_configrhythmplayer__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_configrhythmplayer__timing]
 
 该方法可以在加入频道前或后调用。
 
-<a id="api_irtcengine_configrhythmplayer__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_configrhythmplayer__parameters]
 
 #### `config`
 
 节拍器的配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/class-agorarhythmplayerconfig)。
 
-<a id="api_irtcengine_configrhythmplayer__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_configrhythmplayer__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_startrhythmplayer"></a>
-
-## startRhythmPlayer
+## startRhythmPlayer [#api_irtcengine_startrhythmplayer]
 
 启用虚拟节拍器。
 
@@ -60,29 +46,21 @@ public abstract int configRhythmPlayer(AgoraRhythmPlayerConfig config);
 public abstract int startRhythmPlayer(String sound1, String sound2, AgoraRhythmPlayerConfig config);
 ```
 
-<a id="api_irtcengine_startrhythmplayer__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_startrhythmplayer__detailed_desc]
 
 自 v4.6.0 版本废弃。
 
 启用虚拟节拍器后，SDK 会从头开始播放指定的音效文件，并根据你在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，如果你将 `beatsPerMinute` 设置为 60，SDK 每秒播放一个节拍。如果文件时长超过节拍时长，SDK 只播放节拍时长内的音频内容。 默认情况下，虚拟节拍器的声音会在频道中发布。如果你希望远端用户也能听到该声音，可以在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中将 `publishRhythmPlayerTrack` 设置为 true。
 
-<a id="api_irtcengine_startrhythmplayer__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_startrhythmplayer__scenario]
 
 在音乐教育、体育教学等场景中，教师通常需要使用节拍器帮助学生按照正确的节奏进行练习。节拍由强拍和弱拍组成，每小节的第一个节拍称为强拍，其余为弱拍。
 
-<a id="api_irtcengine_startrhythmplayer__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_startrhythmplayer__timing]
 
 该方法可以在加入频道前或后调用。
 
-<a id="api_irtcengine_startrhythmplayer__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_startrhythmplayer__parameters]
 
 #### `sound1`
 
@@ -96,9 +74,7 @@ public abstract int startRhythmPlayer(String sound1, String sound2, AgoraRhythmP
 
 节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/class-agorarhythmplayerconfig)。
 
-<a id="api_irtcengine_startrhythmplayer__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_startrhythmplayer__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
@@ -107,9 +83,7 @@ public abstract int startRhythmPlayer(String sound1, String sound2, AgoraRhythmP
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_stoprhythmplayer"></a>
-
-## stopRhythmPlayer
+## stopRhythmPlayer [#api_irtcengine_stoprhythmplayer]
 
 禁用虚拟节拍器。
 
@@ -119,26 +93,20 @@ public abstract int startRhythmPlayer(String sound1, String sound2, AgoraRhythmP
 public abstract int stopRhythmPlayer();
 ```
 
-<a id="api_irtcengine_stoprhythmplayer__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_stoprhythmplayer__detailed_desc]
 
 自 v4.6.0 版本废弃。
 
 你可以调用该方法来禁用虚拟节拍器。
 
-<a id="api_irtcengine_stoprhythmplayer__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_stoprhythmplayer__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged"></a>
-
-## onRhythmPlayerStateChanged
+## onRhythmPlayerStateChanged [#callback_irtcengineeventhandler_onrhythmplayerstatechanged]
 
 虚拟节拍器状态发生变化回调。
 
@@ -148,23 +116,17 @@ public abstract int stopRhythmPlayer();
 public void onRhythmPlayerStateChanged(int state, int reason)
 ```
 
-<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#callback_irtcengineeventhandler_onrhythmplayerstatechanged__detailed_desc]
 
 自 v4.6.0 版本废弃。
 
 该回调用于报告虚拟节拍器的当前状态，指示本地音频流的状态，帮助你在音频异常发生时排查问题。
 
-<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onrhythmplayerstatechanged__timing]
 
 该回调在虚拟节拍器状态发生变化时被触发。
 
-<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onrhythmplayerstatechanged__parameters]
 
 #### `state`
 

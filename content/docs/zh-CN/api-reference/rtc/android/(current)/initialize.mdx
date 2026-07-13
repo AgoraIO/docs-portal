@@ -3,11 +3,7 @@ title: "初始化相关"
 description: "添加事件处理器。"
 ---
 
-<a id="toc_initialize"></a>
-
-<a id="api_irtcengine_addhandler"></a>
-
-## addHandler
+## <span id="toc_initialize"></span>addHandler [#api_irtcengine_addhandler]
 
 添加事件处理器。
 
@@ -21,9 +17,7 @@ public void addHandler(IRtcEngineEventHandler handler)
 
 SDK 使用 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler) 将回调发送到 App。你可以继承该类中的方法以接收回调。该类中的所有方法都有默认（空）实现，因此你只需根据实际场景继承所需的回调方法。 在回调中应避免执行耗时操作或调用可能阻塞线程的 API，例如 [sendStreamMessage](/zh-CN/api-reference/rtc/android/metadata/datastream#api_irtcengine_sendstreammessage)，否则可能导致 SDK 无法正常工作。
 
-<a id="api_irtcengine_addhandler__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_addhandler__parameters]
 
 #### `handler`
 
@@ -31,9 +25,7 @@ SDK 使用 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interfa
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_create"></a>
-
-## create [1/2]
+## create [1/2] [#api_irtcengine_create]
 
 创建并初始化 RtcEngine 实例。
 
@@ -53,9 +45,7 @@ public static synchronized RtcEngine create(Context context, String appId, IRtcE
 - 每个 App 仅支持创建一个 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例。
 :::
 
-<a id="api_irtcengine_create__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_create__parameters]
 
 #### `context`
 
@@ -69,17 +59,13 @@ Android Activity 的上下文。
 
 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 的事件处理器。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)。
 
-<a id="api_irtcengine_create__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_create__return_values]
 
 方法调用成功，返回已初始化的 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例。 方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_destroy1"></a>
-
-## destroy [2/2]
+## destroy [2/2] [#api_irtcengine_destroy1]
 
 销毁 RtcEngine 实例并释放相关资源。
 
@@ -89,17 +75,13 @@ Android Activity 的上下文。
 public static synchronized void destroy(@Nullable IRtcEngineReleaseCallback callback)
 ```
 
-<a id="api_irtcengine_destroy1__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_destroy1__detailed_desc]
 
 自 v4.6.0 版本新增。
 
 当你不再需要实时通信时，调用该方法以释放 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例，使相关资源可用于其他操作。推荐在语音通话或视频通话等场景中使用。
 
-<a id="api_irtcengine_destroy1__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_destroy1__parameters]
 
 #### `callback`
 
@@ -110,9 +92,7 @@ public static synchronized void destroy(@Nullable IRtcEngineReleaseCallback call
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_initialize"></a>
-
-## create [2/2]
+## create [2/2] [#api_irtcengine_initialize]
 
 创建并初始化 RtcEngine 实例。
 
@@ -130,31 +110,23 @@ public static synchronized RtcEngine create(RtcEngineConfig config) throws Excep
 每个 App 仅支持创建一个 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例。 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 类中的所有方法均为异步执行，声网建议在同一线程中调用这些方法。
 :::
 
-<a id="api_irtcengine_initialize__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_initialize__timing]
 
 在调用其他 API 之前，必须先调用此方法创建 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象。
 
-<a id="api_irtcengine_initialize__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_initialize__parameters]
 
 #### `config`
 
 用于配置 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例的参数。详见 [RtcEngineConfig](/zh-CN/api-reference/rtc/android/class-rtcengineconfig)。
 
-<a id="api_irtcengine_initialize__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_initialize__return_values]
 
 方法调用成功，返回初始化后的 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象。 方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_release"></a>
-
-## destroy [1/2]
+## destroy [1/2] [#api_irtcengine_release]
 
 释放 RtcEngine 实例。
 
@@ -174,9 +146,7 @@ public static synchronized void destroy()
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_removehandler"></a>
-
-## removeHandler
+## removeHandler [#api_irtcengine_removehandler]
 
 移除指定的 IRtcEngineEventHandler 实例。
 
@@ -190,9 +160,7 @@ public void removeHandler(IRtcEngineEventHandler handler)
 
 该方法用于移除指定的回调处理器。对于只需监听一次的回调事件，在接收到事件后，可以调用该方法移除对应的回调处理器。
 
-<a id="api_irtcengine_removehandler__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_removehandler__parameters]
 
 #### `handler`
 
@@ -200,9 +168,7 @@ public void removeHandler(IRtcEngineEventHandler handler)
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="callback_irtcenginereleasecallback_onenginereleased"></a>
-
-## onEngineReleased
+## onEngineReleased [#callback_irtcenginereleasecallback_onenginereleased]
 
 RtcEngine 被释放时触发的回调。
 
@@ -216,9 +182,7 @@ RtcEngine 被释放时触发的回调。
 
 该回调在调用 [destroy [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 方法以异步方式释放 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象时被触发。
 
-<a id="callback_irtcenginereleasecallback_onenginereleased__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcenginereleasecallback_onenginereleased__timing]
 
 该回调在调用 [destroy [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 方法以异步方式释放 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象时被触发。
 

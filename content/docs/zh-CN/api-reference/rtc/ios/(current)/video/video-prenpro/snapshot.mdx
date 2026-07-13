@@ -3,11 +3,7 @@ title: "本地截图上传"
 description: "启用或关闭本地截图上传功能。"
 ---
 
-<a id="toc_snapshot"></a>
-
-<a id="api_irtcengine_enablecontentinspect"></a>
-
-## enableContentInspect:config:
+## <span id="toc_snapshot"></span>enableContentInspect:config: [#api_irtcengine_enablecontentinspect]
 
 启用或关闭本地截图上传功能。
 
@@ -26,15 +22,11 @@ description: "启用或关闭本地截图上传功能。"
 - 当视频审核模块设置为使用声网自研扩展（`AgoraContentInspectTypeSupervise` ）进行视频审核时，需要引入本地截图上传动态库 AgoraContentInspectExtension.xcframework （iOS）或 `AgoraContentInspectExtension.framework` （macOS）。删除该库将禁用截图上传功能。
 :::
 
-<a id="api_irtcengine_enablecontentinspect__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_enablecontentinspect__timing]
 
 你可以在加入频道前或加入频道后调用该方法。
 
-<a id="api_irtcengine_enablecontentinspect__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablecontentinspect__parameters]
 
 #### `enabled`
 
@@ -47,18 +39,14 @@ description: "启用或关闭本地截图上传功能。"
 
 截图和上传的配置，详见 [AgoraContentInspectConfig](/zh-CN/api-reference/rtc/ios/class-contentinspectconfig)。
 
-<a id="api_irtcengine_enablecontentinspect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablecontentinspect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_enablecontentinspectex"></a>
-
-## enableContentInspectEx:config:connection:
+## enableContentInspectEx:config:connection: [#api_irtcengineex_enablecontentinspectex]
 
 启用或关闭本地截图上传功能。
 
@@ -76,21 +64,15 @@ description: "启用或关闭本地截图上传功能。"
 调用该方法前，请确保你已[联系技术支持](https://ticket.shengwang.cn/)开通本地截图上传服务。
 :::
 
-<a id="api_irtcengineex_enablecontentinspectex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_enablecontentinspectex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_enablecontentinspectex__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengineex_enablecontentinspectex__timing]
 
 该方法可在加入频道前或加入频道后调用。
 
-<a id="api_irtcengineex_enablecontentinspectex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_enablecontentinspectex__parameters]
 
 #### `enabled`
 
@@ -107,18 +89,14 @@ description: "启用或关闭本地截图上传功能。"
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_enablecontentinspectex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_enablecontentinspectex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_takesnapshot"></a>
-
-## takeSnapshot:filePath:
+## takeSnapshot:filePath: [#api_irtcengine_takesnapshot]
 
 截取视频流快照并保存为 JPG 图像。
 
@@ -138,21 +116,15 @@ description: "启用或关闭本地截图上传功能。"
 - 如果用户的视频已被预处理，例如添加水印或美颜，生成的快照将包含预处理效果。
 :::
 
-<a id="api_irtcengine_takesnapshot__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_takesnapshot__timing]
 
 请在加入频道后调用该方法。
 
-<a id="api_irtcengine_takesnapshot__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_takesnapshot__related]
 
 调用该方法成功后，SDK 会触发 [rtcEngine:snapshotTaken:filePath:width:height:errCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告快照是否成功以及快照的详细信息。
 
-<a id="api_irtcengine_takesnapshot__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_takesnapshot__parameters]
 
 #### `uid`
 
@@ -169,18 +141,14 @@ description: "启用或关闭本地截图上传功能。"
 - iOS: `/App Sandbox/Library/Caches/example.jpg`
 - macOS: `～/Library/Logs/example.jpg`
 
-<a id="api_irtcengine_takesnapshot__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_takesnapshot__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_takesnapshot2"></a>
-
-## takeSnapshotWithConfig:config:
+## takeSnapshotWithConfig:config: [#api_irtcengine_takesnapshot2]
 
 截取指定用户视频的截图并保存为 JPG 文件。
 
@@ -199,21 +167,15 @@ description: "启用或关闭本地截图上传功能。"
 - 用于本地视频截图时，该方法会对 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中指定的视频流进行截图。
 :::
 
-<a id="api_irtcengine_takesnapshot2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_takesnapshot2__timing]
 
 请在加入频道后调用该方法。
 
-<a id="api_irtcengine_takesnapshot2__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_takesnapshot2__related]
 
 调用该方法成功后，SDK 会触发 [rtcEngine:snapshotTaken:filePath:width:height:errCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
 
-<a id="api_irtcengine_takesnapshot2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_takesnapshot2__parameters]
 
 #### `uid`
 
@@ -223,18 +185,14 @@ description: "启用或关闭本地截图上传功能。"
 
 截图的配置，详见 [AgoraSnapshotConfig](/zh-CN/api-reference/rtc/ios/class-snapshotconfig)。
 
-<a id="api_irtcengine_takesnapshot2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_takesnapshot2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_takesnapshotex"></a>
-
-## takeSnapshotEx:uid:filePath:
+## takeSnapshotEx:uid:filePath: [#api_irtcengineex_takesnapshotex]
 
 使用连接 ID 对视频流进行截图。
 
@@ -252,27 +210,19 @@ description: "启用或关闭本地截图上传功能。"
 该方法为异步调用，方法返回时 SDK 尚未完成截图操作。当用于本地视频截图时，该方法会对 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中指定的视频流进行截图。如果用户的视频已进行预处理，例如添加水印或美颜，截图结果中会包含这些预处理效果。
 :::
 
-<a id="api_irtcengineex_takesnapshotex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_takesnapshotex__scenario]
 
 适用于多频道场景。
 
-<a id="api_irtcengineex_takesnapshotex__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengineex_takesnapshotex__timing]
 
 请在调用 [joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 之后调用该方法。
 
-<a id="api_irtcengineex_takesnapshotex__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengineex_takesnapshotex__related]
 
 成功调用该方法后，SDK 会触发 [rtcEngine:snapshotTaken:filePath:width:height:errCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
 
-<a id="api_irtcengineex_takesnapshotex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_takesnapshotex__parameters]
 
 #### `connection`
 
@@ -291,18 +241,14 @@ description: "启用或关闭本地截图上传功能。"
 
 请确保指定路径存在且可写。
 
-<a id="api_irtcengineex_takesnapshotex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_takesnapshotex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengineex_takesnapshotex2"></a>
-
-## takeSnapshotExWithConfig:uid:config:
+## takeSnapshotExWithConfig:uid:config: [#api_irtcengineex_takesnapshotex2]
 
 获取指定用户视频流的截图。
 
@@ -316,21 +262,15 @@ description: "启用或关闭本地截图上传功能。"
 
 该方法从指定用户的视频流中截取一帧图像，生成 JPG 图片，并保存到指定路径。 该方法为异步调用，调用返回时 SDK 尚未完成截图。 用于本地视频截图时，该方法会对 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中指定的视频流进行截图。 如果用户的视频已进行预处理（如添加水印或美颜），截图结果将包含预处理效果。
 
-<a id="api_irtcengineex_takesnapshotex2__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_takesnapshotex2__scenario]
 
 适用于多频道场景。
 
-<a id="api_irtcengineex_takesnapshotex2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengineex_takesnapshotex2__timing]
 
 请在调用 `joinChannelExByToken` 之后调用该方法。
 
-<a id="api_irtcengineex_takesnapshotex2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_takesnapshotex2__parameters]
 
 #### `connection`
 
@@ -344,18 +284,14 @@ description: "启用或关闭本地截图上传功能。"
 
 截图的配置信息。详见 [AgoraSnapshotConfig](/zh-CN/api-reference/rtc/ios/class-snapshotconfig)。
 
-<a id="api_irtcengineex_takesnapshotex2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_takesnapshotex2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="callback_irtcengineeventhandler_onsnapshottaken"></a>
-
-## rtcEngine:snapshotTaken:filePath:width:height:errCode:
+## rtcEngine:snapshotTaken:filePath:width:height:errCode: [#callback_irtcengineeventhandler_onsnapshottaken]
 
 报告视频截图的结果。
 
@@ -369,15 +305,11 @@ description: "启用或关闭本地截图上传功能。"
 
 调用 [takeSnapshot:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法后，SDK 会触发该回调，报告截图是否成功以及截图的详细信息。
 
-<a id="callback_irtcengineeventhandler_onsnapshottaken__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onsnapshottaken__timing]
 
 调用 [takeSnapshot:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法成功后触发。
 
-<a id="callback_irtcengineeventhandler_onsnapshottaken__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onsnapshottaken__parameters]
 
 #### `engine`
 

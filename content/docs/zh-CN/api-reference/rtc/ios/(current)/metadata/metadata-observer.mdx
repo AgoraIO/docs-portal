@@ -3,11 +3,7 @@ title: "媒体流附属信息分发"
 description: "当 SDK 请求元数据的最大大小时触发。"
 ---
 
-<a id="toc_metadata_observer"></a>
-
-<a id="api_agoramediametadatadatasource_metadatamaxsize"></a>
-
-## metadataMaxSize
+## <span id="toc_metadata_observer"></span>metadataMaxSize [#api_agoramediametadatadatasource_metadatamaxsize]
 
 当 SDK 请求元数据的最大大小时触发。
 
@@ -21,17 +17,13 @@ description: "当 SDK 请求元数据的最大大小时触发。"
 
 调用 [setMediaMetadataDelegate:withType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) 方法成功注册后，SDK 每发送一帧视频时会触发该回调。你需要在该回调的返回值中指定元数据的最大大小。
 
-<a id="api_agoramediametadatadatasource_metadatamaxsize__return_values"></a>
-
-### 返回值
+### 返回值 [#api_agoramediametadatadatasource_metadatamaxsize__return_values]
 
 方法调用成功，返回你希望使用的元数据缓冲区的最大大小，单位为字节。最大值为 1024 字节。
 
 - [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource)
 
-<a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp"></a>
-
-## readyToSendMetadataAtTimestamp:sourceType:
+## readyToSendMetadataAtTimestamp:sourceType: [#api_agoramediametadatadatasource_readytosendmetadataattimestamp]
 
 当 SDK 准备好发送元数据时触发回调。
 
@@ -49,15 +41,11 @@ description: "当 SDK 请求元数据的最大大小时触发。"
 请确保元数据的大小不超过 [metadataMaxSize](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_metadatamaxsize) 回调中设置的值。
 :::
 
-<a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_agoramediametadatadatasource_readytosendmetadataattimestamp__timing]
 
 当 SDK 准备好发送元数据时触发。
 
-<a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp__parameters"></a>
-
-### 参数
+### 参数 [#api_agoramediametadatadatasource_readytosendmetadataattimestamp__parameters]
 
 #### `timestamp`
 
@@ -67,9 +55,7 @@ description: "当 SDK 请求元数据的最大大小时触发。"
 
 视频数据类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/ios/enum-videosourcetype)。
 
-<a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp__return_values"></a>
-
-### 返回值
+### 返回值 [#api_agoramediametadatadatasource_readytosendmetadataattimestamp__return_values]
 
 你希望发送的元数据，格式为 `NSData`，包含以下参数：
 
@@ -80,9 +66,7 @@ description: "当 SDK 请求元数据的最大大小时触发。"
 
 - [AgoraMediaMetadataDataSource](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agoramediametadatadatasource)
 
-<a id="api_irtcengine_registermediametadataobserver"></a>
-
-## setMediaMetadataDelegate:withType:
+## setMediaMetadataDelegate:withType: [#api_irtcengine_registermediametadataobserver]
 
 注册元数据观察者。
 
@@ -100,9 +84,7 @@ description: "当 SDK 请求元数据的最大大小时触发。"
 请在调用 `joinChannelByToken` 之前调用该方法。
 :::
 
-<a id="api_irtcengine_registermediametadataobserver__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_registermediametadataobserver__parameters]
 
 #### `metadataDelegate`
 
@@ -112,18 +94,14 @@ description: "当 SDK 请求元数据的最大大小时触发。"
 
 元数据类型，详见 [AgoraMetadataType](/zh-CN/api-reference/rtc/ios/enum-metadatatype)。当前 SDK 仅支持 `AgoraMetadataTypeVideo`。
 
-<a id="api_irtcengine_registermediametadataobserver__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_registermediametadataobserver__return_values]
 
 - YES：方法调用成功。
 - NO：方法调用失败。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setmediametadatadatasource"></a>
-
-## setMediaMetadataDataSource:withType:
+## setMediaMetadataDataSource:withType: [#api_irtcengine_setmediametadatadatasource]
 
 设置元数据的数据源。
 
@@ -141,9 +119,7 @@ description: "当 SDK 请求元数据的最大大小时触发。"
 该方法需要在加入频道前调用。
 :::
 
-<a id="api_irtcengine_setmediametadatadatasource__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setmediametadatadatasource__parameters]
 
 #### `metadataDataSource`
 
@@ -153,18 +129,14 @@ description: "当 SDK 请求元数据的最大大小时触发。"
 
 元数据的类型，详见 [AgoraMetadataType](/zh-CN/api-reference/rtc/ios/enum-metadatatype)。SDK 当前仅支持 `AgoraMetadataTypeVideo`。
 
-<a id="api_irtcengine_setmediametadatadatasource__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setmediametadatadatasource__return_values]
 
 - YES：方法调用成功。
 - NO：方法调用失败。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="callback_imetadataobserver_onmetadatareceived"></a>
-
-## didMetadataReceived:
+## didMetadataReceived: [#callback_imetadataobserver_onmetadatareceived]
 
 当本地用户接收到元数据时触发。
 
@@ -174,17 +146,11 @@ description: "当 SDK 请求元数据的最大大小时触发。"
 - (void)didMetadataReceived:(AgoraMetadata * _Nonnull)metadata NS_SWIFT_NAME(didMetadataReceived(_:));
 ```
 
-<a id="callback_imetadataobserver_onmetadatareceived__detailed_desc"></a>
-
-<a id="callback_imetadataobserver_onmetadatareceived__timing"></a>
-
-### 触发时机
+### <span id="callback_imetadataobserver_onmetadatareceived__detailed_desc"></span>触发时机 [#callback_imetadataobserver_onmetadatareceived__timing]
 
 该回调在本地用户接收到元数据时被触发。
 
-<a id="callback_imetadataobserver_onmetadatareceived__parameters"></a>
-
-### 参数
+### 参数 [#callback_imetadataobserver_onmetadatareceived__parameters]
 
 #### `metadata`
 

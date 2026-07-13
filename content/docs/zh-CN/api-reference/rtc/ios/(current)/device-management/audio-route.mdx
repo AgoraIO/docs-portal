@@ -3,11 +3,7 @@ title: "音频路由"
 description: "检查是否启用扬声器播放音频。"
 ---
 
-<a id="toc_audio_route"></a>
-
-<a id="api_irtcengine_isspeakerphoneenabled"></a>
-
-## isSpeakerphoneEnabled
+## <span id="toc_audio_route"></span>isSpeakerphoneEnabled [#api_irtcengine_isspeakerphoneenabled]
 
 检查是否启用扬声器播放音频。
 
@@ -17,26 +13,18 @@ description: "检查是否启用扬声器播放音频。"
 - (BOOL)isSpeakerphoneEnabled NS_SWIFT_NAME(isSpeakerphoneEnabled());
 ```
 
-<a id="api_irtcengine_isspeakerphoneenabled__detailed_desc"></a>
-
-<a id="api_irtcengine_isspeakerphoneenabled__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_isspeakerphoneenabled__detailed_desc"></span>调用时机 [#api_irtcengine_isspeakerphoneenabled__timing]
 
 你可以在加入频道前或加入频道后调用该方法。
 
-<a id="api_irtcengine_isspeakerphoneenabled__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_isspeakerphoneenabled__return_values]
 
 - YES：（默认）已启用扬声器，音频将从扬声器播放。
 - NO：未启用扬声器，音频将从非扬声器设备播放，例如耳机或听筒。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setdefaultaudioroutetospeakerphone"></a>
-
-## setDefaultAudioRouteToSpeakerphone:
+## setDefaultAudioRouteToSpeakerphone: [#api_irtcengine_setdefaultaudioroutetospeakerphone]
 
 设置默认音频播放路由。
 
@@ -61,15 +49,11 @@ description: "检查是否启用扬声器播放音频。"
 调用此方法设置默认音频路由后，系统的实际音频路由会随着外部音频设备（有线耳机或蓝牙耳机）的连接而变化。
 :::
 
-<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setdefaultaudioroutetospeakerphone__timing]
 
 该方法需要在加入频道前调用。
 
-<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setdefaultaudioroutetospeakerphone__parameters]
 
 #### `defaultToSpeaker`
 
@@ -78,18 +62,14 @@ description: "检查是否启用扬声器播放音频。"
 - YES：将扬声器设置为默认音频路由。
 - NO：将听筒设置为默认音频路由。
 
-<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setdefaultaudioroutetospeakerphone__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setenablespeakerphone"></a>
-
-## setEnableSpeakerphone:
+## setEnableSpeakerphone: [#api_irtcengine_setenablespeakerphone]
 
 设置是否将音频路由到扬声器。
 
@@ -108,21 +88,15 @@ description: "检查是否启用扬声器播放音频。"
 - 如果你使用了蓝牙或有线耳机等外部音频播放设备，该方法不生效。SDK 会通过外部设备播放音频。当你连接多个外部设备时，SDK 会通过最后连接的设备播放音频。
 :::
 
-<a id="api_irtcengine_setenablespeakerphone__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_setenablespeakerphone__scenario]
 
 如果 SDK 的默认音频路由或 [setDefaultAudioRouteToSpeakerphone:](/zh-CN/api-reference/rtc/ios/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) 的设置无法满足你的需求，可以调用该方法切换当前音频路由。
 
-<a id="api_irtcengine_setenablespeakerphone__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setenablespeakerphone__timing]
 
 请在加入频道后调用该方法。
 
-<a id="api_irtcengine_setenablespeakerphone__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setenablespeakerphone__parameters]
 
 #### `enableSpeaker`
 
@@ -131,18 +105,14 @@ description: "检查是否启用扬声器播放音频。"
 - YES：启用设备状态监测，音频路由为扬声器。
 - NO：关闭设备状态监测，音频路由为听筒。
 
-<a id="api_irtcengine_setenablespeakerphone__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setenablespeakerphone__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="callback_irtcengineeventhandler_onaudioroutingchanged"></a>
-
-## rtcEngine:didAudioRouteChanged:
+## rtcEngine:didAudioRouteChanged: [#callback_irtcengineeventhandler_onaudioroutingchanged]
 
 本地音频路由发生变化时的回调。
 
@@ -156,15 +126,11 @@ description: "检查是否启用扬声器播放音频。"
 
 该回调在本地音频路由发生变化时触发，例如从听筒切换到扬声器。
 
-<a id="callback_irtcengineeventhandler_onaudioroutingchanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onaudioroutingchanged__timing]
 
 该回调在本地音频路由发生变化时被触发。
 
-<a id="callback_irtcengineeventhandler_onaudioroutingchanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onaudioroutingchanged__parameters]
 
 #### `engine`
 

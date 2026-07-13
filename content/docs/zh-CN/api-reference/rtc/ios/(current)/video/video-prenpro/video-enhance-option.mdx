@@ -3,11 +3,7 @@ title: "视频增强"
 description: "添加或更新指定节点 ID 和模板的视频特效。"
 ---
 
-<a id="toc_video_enhance_option"></a>
-
-<a id="api_ivideoeffectobject_addorupdatevideoeffect"></a>
-
-## addOrUpdateVideoEffectWithNodeId:templateName:
+## <span id="toc_video_enhance_option"></span>addOrUpdateVideoEffectWithNodeId:templateName: [#api_ivideoeffectobject_addorupdatevideoeffect]
 
 添加或更新指定节点 ID 和模板的视频特效。
 
@@ -19,9 +15,7 @@ description: "添加或更新指定节点 ID 和模板的视频特效。"
 NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 ```
 
-<a id="api_ivideoeffectobject_addorupdatevideoeffect__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_ivideoeffectobject_addorupdatevideoeffect__detailed_desc]
 
 自 v4.6.0 版本新增。
 
@@ -37,9 +31,7 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 ```
 :::
 
-<a id="api_ivideoeffectobject_addorupdatevideoeffect__parameters"></a>
-
-### 参数
+### 参数 [#api_ivideoeffectobject_addorupdatevideoeffect__parameters]
 
 #### `nodeId`
 
@@ -52,18 +44,14 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 
 特效模板名称。如果设置为 nil 或空字符串，SDK 会自动从资源包中加载默认参数配置。
 
-<a id="api_ivideoeffectobject_addorupdatevideoeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoeffectobject_addorupdatevideoeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject)
 
-<a id="api_irtcengine_createvideoeffectobject"></a>
-
-## createVideoEffectObjectWithBundlePath:sourceType:
+## createVideoEffectObjectWithBundlePath:sourceType: [#api_irtcengine_createvideoeffectobject]
 
 创建一个视频特效对象。
 
@@ -75,17 +63,13 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
     NS_SWIFT_NAME(createVideoEffectObject(bundlePath:sourceType:));
 ```
 
-<a id="api_irtcengine_createvideoeffectobject__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_createvideoeffectobject__detailed_desc]
 
 自 v4.6.0 版本新增。
 
 返回一个 [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject) 视频特效对象的指针。
 
-<a id="api_irtcengine_createvideoeffectobject__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_createvideoeffectobject__parameters]
 
 #### `bundlePath`
 
@@ -95,18 +79,14 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 
 媒体源类型，例如 `AgoraMediaSourceTypePrimaryCamera`。详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/ios/enum-mediasourcetype)。
 
-<a id="api_irtcengine_createvideoeffectobject__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_createvideoeffectobject__return_values]
 
 - 方法调用成功，返回 [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject) 对象，详见 [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject)。
 - 方法调用失败，返回 nil。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_destroyvideoeffectobject"></a>
-
-## destroyVideoEffectObject:
+## destroyVideoEffectObject: [#api_irtcengine_destroyvideoeffectobject]
 
 销毁一个视频特效对象。
 
@@ -116,32 +96,24 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 - (int)destroyVideoEffectObject:(id<AgoraVideoEffectObject> _Nullable)videoEffectObject NS_SWIFT_NAME(destroyVideoEffectObject(_:));
 ```
 
-<a id="api_irtcengine_destroyvideoeffectobject__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_destroyvideoeffectobject__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_irtcengine_destroyvideoeffectobject__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_destroyvideoeffectobject__parameters]
 
 #### `videoEffectObject`
 
 要销毁的 [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject) 实例的指针。详见 [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject)。
 
-<a id="api_irtcengine_destroyvideoeffectobject__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_destroyvideoeffectobject__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getfaceshapeareaoptions"></a>
-
-## getFaceShapeAreaOptions:sourceType:
+## getFaceShapeAreaOptions:sourceType: [#api_irtcengine_getfaceshapeareaoptions]
 
 获取美型区域的选项。
 
@@ -151,23 +123,15 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 - (AgoraFaceShapeAreaOptions * _Nullable)getFaceShapeAreaOptions:(AgoraFaceShapeArea) area sourceType:(AgoraMediaSourceType)sourceType NS_SWIFT_NAME(getFaceShapeAreaOptions(_:sourceType:));
 ```
 
-<a id="api_irtcengine_getfaceshapeareaoptions__detailed_desc"></a>
-
-<a id="api_irtcengine_getfaceshapeareaoptions__scenario"></a>
-
-### 适用场景
+### <span id="api_irtcengine_getfaceshapeareaoptions__detailed_desc"></span>适用场景 [#api_irtcengine_getfaceshapeareaoptions__scenario]
 
 当用户在应用中打开美型区域和塑形强度菜单时，可以调用该方法获取当前的美颜特效选项，然后根据结果刷新用户界面中的菜单并更新 UI。
 
-<a id="api_irtcengine_getfaceshapeareaoptions__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_getfaceshapeareaoptions__timing]
 
 在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 之后调用此方法。
 
-<a id="api_irtcengine_getfaceshapeareaoptions__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_getfaceshapeareaoptions__parameters]
 
 #### `area`
 
@@ -180,17 +144,13 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 - 如果使用摄像头采集本地视频，使用默认值 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果使用自定义视频源，将该参数设置为 `AgoraMediaSourceTypeCustomVideo`。
 
-<a id="api_irtcengine_getfaceshapeareaoptions__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getfaceshapeareaoptions__return_values]
 
 方法调用成功，返回 [AgoraFaceShapeAreaOptions](/zh-CN/api-reference/rtc/ios/class-faceshapeareaoptions) 对象。 方法调用失败，返回 nil。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getfaceshapeareaoptions2"></a>
-
-## getFaceShapeAreaOptions:
+## getFaceShapeAreaOptions: [#api_irtcengine_getfaceshapeareaoptions2]
 
 获取当前的美颜特效设置。
 
@@ -200,39 +160,27 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 - (AgoraFaceShapeAreaOptions * _Nullable)getFaceShapeAreaOptions:(AgoraFaceShapeArea) area NS_SWIFT_NAME(getFaceShapeAreaOptions(_:));
 ```
 
-<a id="api_irtcengine_getfaceshapeareaoptions2__detailed_desc"></a>
-
-<a id="api_irtcengine_getfaceshapeareaoptions2__scenario"></a>
-
-### 适用场景
+### <span id="api_irtcengine_getfaceshapeareaoptions2__detailed_desc"></span>适用场景 [#api_irtcengine_getfaceshapeareaoptions2__scenario]
 
 当用户在应用中打开美颜区域和塑形强度菜单时，可调用此方法获取当前美颜效果选项，然后根据结果刷新用户界面中的菜单并更新 UI。
 
-<a id="api_irtcengine_getfaceshapeareaoptions2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_getfaceshapeareaoptions2__timing]
 
 在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 之后调用此方法。
 
-<a id="api_irtcengine_getfaceshapeareaoptions2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_getfaceshapeareaoptions2__parameters]
 
 #### `area`
 
 美型增强区域。参见 [AgoraFaceShapeArea](/zh-CN/api-reference/rtc/ios/enum-faceshapearea)。
 
-<a id="api_irtcengine_getfaceshapeareaoptions2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getfaceshapeareaoptions2__return_values]
 
 方法调用成功，返回 [AgoraFaceShapeAreaOptions](/zh-CN/api-reference/rtc/ios/class-faceshapeareaoptions) 对象。 方法调用失败，返回 nil。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getfaceshapebeautyoptions"></a>
-
-## getFaceShapeBeautyOptions:
+## getFaceShapeBeautyOptions: [#api_irtcengine_getfaceshapebeautyoptions]
 
 获取美颜特效选项。
 
@@ -242,23 +190,15 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 - (AgoraFaceShapeBeautyOptions * _Nullable)getFaceShapeBeautyOptions:(AgoraMediaSourceType)sourceType NS_SWIFT_NAME(getFaceShapeBeautyOptions(_:));
 ```
 
-<a id="api_irtcengine_getfaceshapebeautyoptions__detailed_desc"></a>
-
-<a id="api_irtcengine_getfaceshapebeautyoptions__scenario"></a>
-
-### 适用场景
+### <span id="api_irtcengine_getfaceshapebeautyoptions__detailed_desc"></span>适用场景 [#api_irtcengine_getfaceshapebeautyoptions__scenario]
 
 当用户在应用中打开美型风格和风格强度菜单时，可以调用该方法获取当前的美型选项，然后根据结果刷新用户界面中的菜单，并更新 UI。
 
-<a id="api_irtcengine_getfaceshapebeautyoptions__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_getfaceshapebeautyoptions__timing]
 
 在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 后调用此方法。
 
-<a id="api_irtcengine_getfaceshapebeautyoptions__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_getfaceshapebeautyoptions__parameters]
 
 #### `sourceType`
 
@@ -267,18 +207,14 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 - 如果你使用摄像头采集本地视频，使用默认值 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果你使用自定义视频源，设置为 `AgoraMediaSourceTypeCustomVideo`。
 
-<a id="api_irtcengine_getfaceshapebeautyoptions__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getfaceshapebeautyoptions__return_values]
 
 - 方法调用成功，返回 [AgoraFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/ios/class-faceshapebeautyoptions) 对象，详见 [AgoraFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/ios/class-faceshapebeautyoptions)。
 - 方法调用失败，返回 nil。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getfaceshapebeautyoptions2"></a>
-
-## getFaceShapeBeautyOptions
+## getFaceShapeBeautyOptions [#api_irtcengine_getfaceshapebeautyoptions2]
 
 获取当前的美颜特效设置。
 
@@ -288,32 +224,22 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 - (AgoraFaceShapeBeautyOptions * _Nullable)getFaceShapeBeautyOptions NS_SWIFT_NAME(getFaceShapeBeautyOptions());
 ```
 
-<a id="api_irtcengine_getfaceshapebeautyoptions2__detailed_desc"></a>
-
-<a id="api_irtcengine_getfaceshapebeautyoptions2__scenario"></a>
-
-### 适用场景
+### <span id="api_irtcengine_getfaceshapebeautyoptions2__detailed_desc"></span>适用场景 [#api_irtcengine_getfaceshapebeautyoptions2__scenario]
 
 当用户在应用中打开美型和风格强度菜单时，可以调用此方法获取当前的美颜特效设置，然后根据结果刷新用户界面中的菜单，并更新 UI。
 
-<a id="api_irtcengine_getfaceshapebeautyoptions2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_getfaceshapebeautyoptions2__timing]
 
 在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 方法之后调用该方法。
 
-<a id="api_irtcengine_getfaceshapebeautyoptions2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getfaceshapebeautyoptions2__return_values]
 
 - 方法调用成功，返回 [AgoraFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/ios/class-faceshapebeautyoptions) 对象。
 - 方法调用失败，返回 nil。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_ivideoeffectobject_getvideoeffectboolparam"></a>
-
-## getVideoEffectBoolParamWithOption:key:
+## getVideoEffectBoolParamWithOption:key: [#api_ivideoeffectobject_getvideoeffectboolparam]
 
 获取视频特效中的布尔参数。
 
@@ -325,15 +251,11 @@ NS_SWIFT_NAME(addOrUpdateVideoEffect(nodeId:templateName:));
 NS_SWIFT_NAME(getVideoEffectBoolParam(option:key:));
 ```
 
-<a id="api_ivideoeffectobject_getvideoeffectboolparam__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_ivideoeffectobject_getvideoeffectboolparam__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_ivideoeffectobject_getvideoeffectboolparam__parameters"></a>
-
-### 参数
+### 参数 [#api_ivideoeffectobject_getvideoeffectboolparam__parameters]
 
 #### `option`
 
@@ -343,18 +265,14 @@ NS_SWIFT_NAME(getVideoEffectBoolParam(option:key:));
 
 参数的键值。
 
-<a id="api_ivideoeffectobject_getvideoeffectboolparam__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoeffectobject_getvideoeffectboolparam__return_values]
 
 - YES：参数已启用。
 - NO：参数未启用或不存在。
 
 - [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject)
 
-<a id="api_ivideoeffectobject_getvideoeffectfloatparam"></a>
-
-## getVideoEffectFloatParamWithOption:key:
+## getVideoEffectFloatParamWithOption:key: [#api_ivideoeffectobject_getvideoeffectfloatparam]
 
 获取视频特效中的 float 类型参数。
 
@@ -366,17 +284,13 @@ NS_SWIFT_NAME(getVideoEffectBoolParam(option:key:));
 NS_SWIFT_NAME(getVideoEffectFloatParam(option:key:));
 ```
 
-<a id="api_ivideoeffectobject_getvideoeffectfloatparam__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_ivideoeffectobject_getvideoeffectfloatparam__detailed_desc]
 
 自 v4.6.0 版本新增。
 
 用于获取视频特效中指定 `option` 和 `key` 对应的 `float` 类型参数值。
 
-<a id="api_ivideoeffectobject_getvideoeffectfloatparam__parameters"></a>
-
-### 参数
+### 参数 [#api_ivideoeffectobject_getvideoeffectfloatparam__parameters]
 
 #### `option`
 
@@ -386,18 +300,14 @@ NS_SWIFT_NAME(getVideoEffectFloatParam(option:key:));
 
 参数的键名。
 
-<a id="api_ivideoeffectobject_getvideoeffectfloatparam__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoeffectobject_getvideoeffectfloatparam__return_values]
 
 - 如果参数存在，返回对应的 `float` 值。
 - 如果参数不存在或发生错误，返回 0.0f。
 
 - [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject)
 
-<a id="api_ivideoeffectobject_getvideoeffectintparam"></a>
-
-## getVideoEffectIntParamWithOption:key:
+## getVideoEffectIntParamWithOption:key: [#api_ivideoeffectobject_getvideoeffectintparam]
 
 获取视频特效中的整数类型参数。
 
@@ -409,15 +319,11 @@ NS_SWIFT_NAME(getVideoEffectFloatParam(option:key:));
 NS_SWIFT_NAME(getVideoEffectIntParam(option:key:));
 ```
 
-<a id="api_ivideoeffectobject_getvideoeffectintparam__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_ivideoeffectobject_getvideoeffectintparam__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_ivideoeffectobject_getvideoeffectintparam__parameters"></a>
-
-### 参数
+### 参数 [#api_ivideoeffectobject_getvideoeffectintparam__parameters]
 
 #### `option`
 
@@ -427,18 +333,14 @@ NS_SWIFT_NAME(getVideoEffectIntParam(option:key:));
 
 参数的键值。
 
-<a id="api_ivideoeffectobject_getvideoeffectintparam__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoeffectobject_getvideoeffectintparam__return_values]
 
 - 方法调用成功时，返回对应参数的整数值。
 - 方法调用失败或参数不存在时，返回 0。
 
 - [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject)
 
-<a id="api_ivideoeffectobject_performvideoeffectaction"></a>
-
-## performVideoEffectActionWithNodeId:actionId:
+## performVideoEffectActionWithNodeId:actionId: [#api_ivideoeffectobject_performvideoeffectaction]
 
 对指定的视频特效节点执行操作。
 
@@ -450,15 +352,11 @@ NS_SWIFT_NAME(getVideoEffectIntParam(option:key:));
 NS_SWIFT_NAME(performVideoEffectAction(nodeId:actionId:));
 ```
 
-<a id="api_ivideoeffectobject_performvideoeffectaction__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_ivideoeffectobject_performvideoeffectaction__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_ivideoeffectobject_performvideoeffectaction__parameters"></a>
-
-### 参数
+### 参数 [#api_ivideoeffectobject_performvideoeffectaction__parameters]
 
 #### `nodeId`
 
@@ -468,18 +366,14 @@ NS_SWIFT_NAME(performVideoEffectAction(nodeId:actionId:));
 
 要执行的操作，详见 [AgoraVideoEffectAction](/zh-CN/api-reference/rtc/ios/enum-videoeffectaction)。
 
-<a id="api_ivideoeffectobject_performvideoeffectaction__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoeffectobject_performvideoeffectaction__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject)
 
-<a id="api_ivideoeffectobject_removevideoeffect"></a>
-
-## removeVideoEffectWithNodeId:
+## removeVideoEffectWithNodeId: [#api_ivideoeffectobject_removevideoeffect]
 
 移除指定节点 ID 的视频特效。
 
@@ -490,32 +384,24 @@ NS_SWIFT_NAME(performVideoEffectAction(nodeId:actionId:));
 NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 ```
 
-<a id="api_ivideoeffectobject_removevideoeffect__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_ivideoeffectobject_removevideoeffect__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_ivideoeffectobject_removevideoeffect__parameters"></a>
-
-### 参数
+### 参数 [#api_ivideoeffectobject_removevideoeffect__parameters]
 
 #### `nodeId`
 
 要移除的视频特效节点的唯一标识符。详见 [AgoraVideoEffectNodeId](/zh-CN/api-reference/rtc/ios/enum-videoeffectnodeid)。
 
-<a id="api_ivideoeffectobject_removevideoeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoeffectobject_removevideoeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject)
 
-<a id="api_irtcengine_setbeautyeffectoptions"></a>
-
-## setBeautyEffectOptions:options:
+## setBeautyEffectOptions:options: [#api_irtcengine_setbeautyeffectoptions]
 
 设置美颜特效选项。
 
@@ -534,15 +420,11 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 该功能对设备性能要求较高。调用该方法时，SDK 会自动检测当前设备的性能能力。
 :::
 
-<a id="api_irtcengine_setbeautyeffectoptions__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setbeautyeffectoptions__timing]
 
 请在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 或 [startPreview:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_startpreview2) 方法之后调用本方法。
 
-<a id="api_irtcengine_setbeautyeffectoptions__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setbeautyeffectoptions__parameters]
 
 #### `enable`
 
@@ -555,9 +437,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 美颜特效选项，详见 [AgoraBeautyOptions](/zh-CN/api-reference/rtc/ios/class-beautyoptions)。
 
-<a id="api_irtcengine_setbeautyeffectoptions__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setbeautyeffectoptions__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -568,9 +448,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setbeautyeffectoptions2"></a>
-
-## setBeautyEffectOptions:options:sourceType:
+## setBeautyEffectOptions:options:sourceType: [#api_irtcengine_setbeautyeffectoptions2]
 
 设置美颜特效选项并指定媒体源。
 
@@ -584,15 +462,11 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 该方法与 [setBeautyEffectOptions:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setbeautyeffectoptions) 都用于设置美颜特效选项，但该方法允许你指定应用美颜特效的媒体源。
 
-<a id="api_irtcengine_setbeautyeffectoptions2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setbeautyeffectoptions2__timing]
 
 请在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 或 [startPreview:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_startpreview2) 之后调用该方法。
 
-<a id="api_irtcengine_setbeautyeffectoptions2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setbeautyeffectoptions2__parameters]
 
 #### `enable`
 
@@ -616,9 +490,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 如果你使用自定义视频源，请将该参数设置为 `AgoraMediaSourceTypeCustomVideo`。
 :::
 
-<a id="api_irtcengine_setbeautyeffectoptions2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setbeautyeffectoptions2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -629,9 +501,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setcolorenhanceoptions"></a>
-
-## setColorEnhanceOptions:options:
+## setColorEnhanceOptions:options: [#api_irtcengine_setcolorenhanceoptions]
 
 设置色彩增强效果。
 
@@ -641,9 +511,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - (int)setColorEnhanceOptions:(BOOL)enable options:(AgoraColorEnhanceOptions* _Nullable)options  NS_SWIFT_NAME(setColorEnhanceOptions(_:options:));
 ```
 
-<a id="api_irtcengine_setcolorenhanceoptions__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_setcolorenhanceoptions__detailed_desc]
 
 自 v4.0.0 版本新增。
 
@@ -655,9 +523,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 此方法依赖美颜特效动态库 AgoraClearVisionExtension.xcframework （iOS）或 `AgoraClearVisionExtension.framework` （macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
 
-<a id="api_irtcengine_setcolorenhanceoptions__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setcolorenhanceoptions__parameters]
 
 #### `enable`
 
@@ -670,18 +536,14 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 色彩增强参数，详见 [AgoraColorEnhanceOptions](/zh-CN/api-reference/rtc/ios/class-colorenhanceoptions)。
 
-<a id="api_irtcengine_setcolorenhanceoptions__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setcolorenhanceoptions__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setcolorenhanceoptions2"></a>
-
-## setColorEnhanceOptions:options:sourceType:
+## setColorEnhanceOptions:options:sourceType: [#api_irtcengine_setcolorenhanceoptions2]
 
 设置色彩增强选项并指定媒体源。
 
@@ -691,9 +553,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - (int)setColorEnhanceOptions:(BOOL)enable options:(AgoraColorEnhanceOptions* _Nullable)options sourceType:(AgoraMediaSourceType)sourceType NS_SWIFT_NAME(setColorEnhanceOptions(_:options:sourceType:));
 ```
 
-<a id="api_irtcengine_setcolorenhanceoptions2__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_setcolorenhanceoptions2__detailed_desc]
 
 自 v4.0.0 版本新增。
 
@@ -705,9 +565,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 此方法依赖美颜特效动态库 AgoraClearVisionExtension.xcframework （iOS）或 `AgoraClearVisionExtension.framework` （macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
 
-<a id="api_irtcengine_setcolorenhanceoptions2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setcolorenhanceoptions2__parameters]
 
 #### `enable`
 
@@ -727,18 +585,14 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 默认值为 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果使用自定义视频源，请将该参数设置为 `AgoraMediaSourceTypeCustomVideo`。
 
-<a id="api_irtcengine_setcolorenhanceoptions2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setcolorenhanceoptions2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setfaceshapeareaoptions"></a>
-
-## setFaceShapeAreaOptions:sourceType:
+## setFaceShapeAreaOptions:sourceType: [#api_irtcengine_setfaceshapeareaoptions]
 
 设置美颜增强的面部区域选项。
 
@@ -757,15 +611,11 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 此功能对设备性能要求较高。调用此方法时，SDK 会自动检测当前设备的能力。
 :::
 
-<a id="api_irtcengine_setfaceshapeareaoptions__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setfaceshapeareaoptions__timing]
 
 在调用 `setFaceShapeBeautyOptions` 方法之后调用此方法。
 
-<a id="api_irtcengine_setfaceshapeareaoptions__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setfaceshapeareaoptions__parameters]
 
 #### `options`
 
@@ -778,9 +628,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 如果使用摄像头采集本地视频，使用默认值 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果使用自定义视频源，将该参数设置为 `AgoraMediaSourceTypeCustomVideo`。
 
-<a id="api_irtcengine_setfaceshapeareaoptions__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setfaceshapeareaoptions__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -791,9 +639,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setfaceshapeareaoptions2"></a>
-
-## setFaceShapeAreaOptions:
+## setFaceShapeAreaOptions: [#api_irtcengine_setfaceshapeareaoptions2]
 
 设置美颜增强的面部区域选项。
 
@@ -812,23 +658,17 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 此功能对设备性能要求较高。调用此方法时，SDK 会自动检测当前设备的能力。
 :::
 
-<a id="api_irtcengine_setfaceshapeareaoptions2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setfaceshapeareaoptions2__timing]
 
 在调用 `setFaceShapeBeautyOptions:` 方法之后调用。
 
-<a id="api_irtcengine_setfaceshapeareaoptions2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setfaceshapeareaoptions2__parameters]
 
 #### `options`
 
 面部增强区域。详见 [AgoraFaceShapeAreaOptions](/zh-CN/api-reference/rtc/ios/class-faceshapeareaoptions)。
 
-<a id="api_irtcengine_setfaceshapeareaoptions2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setfaceshapeareaoptions2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -839,9 +679,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setfaceshapebeautyoptions"></a>
-
-## setFaceShapeBeautyOptions:options:sourceType:
+## setFaceShapeBeautyOptions:options:sourceType: [#api_irtcengine_setfaceshapebeautyoptions]
 
 设置美型选项并指定媒体源。
 
@@ -860,15 +698,11 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 该功能对设备性能要求较高。调用该方法时，SDK 会自动检测当前设备的能力。
 :::
 
-<a id="api_irtcengine_setfaceshapebeautyoptions__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setfaceshapebeautyoptions__timing]
 
 在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 后调用该方法。
 
-<a id="api_irtcengine_setfaceshapebeautyoptions__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setfaceshapebeautyoptions__parameters]
 
 #### `enable`
 
@@ -888,9 +722,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 如果使用摄像头采集本地视频，使用默认值 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果使用自定义视频源，设置为 `AgoraMediaSourceTypeCustomVideo`。
 
-<a id="api_irtcengine_setfaceshapebeautyoptions__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setfaceshapebeautyoptions__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -901,9 +733,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setfaceshapebeautyoptions2"></a>
-
-## setFaceShapeBeautyOptions:options:
+## setFaceShapeBeautyOptions:options: [#api_irtcengine_setfaceshapebeautyoptions2]
 
 设置美型选项。
 
@@ -922,15 +752,11 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 此功能对设备性能要求较高。调用该方法时，SDK 会自动检测当前设备的能力。
 :::
 
-<a id="api_irtcengine_setfaceshapebeautyoptions2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setfaceshapebeautyoptions2__timing]
 
 在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 方法之后调用。
 
-<a id="api_irtcengine_setfaceshapebeautyoptions2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setfaceshapebeautyoptions2__parameters]
 
 #### `enable`
 
@@ -943,9 +769,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 美型风格选项，详见 [AgoraFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/ios/class-faceshapebeautyoptions)。
 
-<a id="api_irtcengine_setfaceshapebeautyoptions2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setfaceshapebeautyoptions2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -956,9 +780,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setfiltereffectoptions"></a>
-
-## setFilterEffectOptions:options:sourceType:
+## setFilterEffectOptions:options:sourceType: [#api_irtcengine_setfiltereffectoptions]
 
 设置滤镜特效参数并指定媒体源。
 
@@ -968,9 +790,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - (int)setFilterEffectOptions:(BOOL)enable options:(AgoraFilterEffectOptions* _Nullable)options sourceType:(AgoraMediaSourceType)sourceType NS_SWIFT_NAME(setFilterEffectOptions(_:options:sourceType:));
 ```
 
-<a id="api_irtcengine_setfiltereffectoptions__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_setfiltereffectoptions__detailed_desc]
 
 自 v4.4.1 版本新增。
 
@@ -981,15 +801,11 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 该功能对设备性能要求较高。调用该方法时，SDK 会自动检测当前设备的性能能力。
 :::
 
-<a id="api_irtcengine_setfiltereffectoptions__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setfiltereffectoptions__timing]
 
 在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 后调用该方法。
 
-<a id="api_irtcengine_setfiltereffectoptions__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setfiltereffectoptions__parameters]
 
 #### `enable`
 
@@ -1009,18 +825,14 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 如果使用摄像头采集本地视频，使用默认值 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果使用自定义视频源，设置为 `AgoraMediaSourceTypeCustomVideo`。
 
-<a id="api_irtcengine_setfiltereffectoptions__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setfiltereffectoptions__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setfiltereffectoptions2"></a>
-
-## setFilterEffectOptions:options:
+## setFilterEffectOptions:options: [#api_irtcengine_setfiltereffectoptions2]
 
 设置滤镜特效选项。
 
@@ -1030,9 +842,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - (int)setFilterEffectOptions:(BOOL)enable options:(AgoraFilterEffectOptions* _Nullable)options  NS_SWIFT_NAME(setFilterEffectOptions(_:options:));
 ```
 
-<a id="api_irtcengine_setfiltereffectoptions2__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_setfiltereffectoptions2__detailed_desc]
 
 自 v4.4.1 版本新增。
 
@@ -1043,15 +853,11 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 此功能对设备性能要求较高。调用此方法时，SDK 会自动检测当前设备的性能能力。
 :::
 
-<a id="api_irtcengine_setfiltereffectoptions2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setfiltereffectoptions2__timing]
 
 在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 方法之后调用。
 
-<a id="api_irtcengine_setfiltereffectoptions2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setfiltereffectoptions2__parameters]
 
 #### `enable`
 
@@ -1064,18 +870,14 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 滤镜特效选项，详见 [AgoraFilterEffectOptions](/zh-CN/api-reference/rtc/ios/class-filtereffectoptions)。
 
-<a id="api_irtcengine_setfiltereffectoptions2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setfiltereffectoptions2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlowlightenhanceoptions"></a>
-
-## setLowlightEnhanceOptions:options:
+## setLowlightEnhanceOptions:options: [#api_irtcengine_setlowlightenhanceoptions]
 
 设置暗光增强功能。
 
@@ -1085,9 +887,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - (int)setLowlightEnhanceOptions:(BOOL)enable options:(AgoraLowlightEnhanceOptions* _Nullable)options  NS_SWIFT_NAME(setLowlightEnhanceOptions(_:options:));
 ```
 
-<a id="api_irtcengine_setlowlightenhanceoptions__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_setlowlightenhanceoptions__detailed_desc]
 
 自 v4.0.0 版本新增。
 
@@ -1102,21 +902,15 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
   - 当暗光增强设置为手动模式（`AgoraLowlightEnhanceModeManual` ）时，视频降噪需设置为优先保证画质（`AgoraVideoDenoiserLevelHighQuality` ）和手动模式（`AgoraVideoDenoiserModeManual` ）。
 :::
 
-<a id="api_irtcengine_setlowlightenhanceoptions__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_setlowlightenhanceoptions__scenario]
 
 暗光增强功能可自适应调整在背光、多云或黑暗等低光或光线不均的场景中采集的视频亮度值，恢复或突出图像细节，提升视频整体视觉效果。
 
-<a id="api_irtcengine_setlowlightenhanceoptions__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setlowlightenhanceoptions__timing]
 
 在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 之后调用此方法。
 
-<a id="api_irtcengine_setlowlightenhanceoptions__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlowlightenhanceoptions__parameters]
 
 #### `enable`
 
@@ -1129,18 +923,14 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 暗光增强选项，详见 [AgoraLowlightEnhanceOptions](/zh-CN/api-reference/rtc/ios/class-lowlightenhanceoptions)。
 
-<a id="api_irtcengine_setlowlightenhanceoptions__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlowlightenhanceoptions__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlowlightenhanceoptions2"></a>
-
-## setLowlightEnhanceOptions:options:sourceType:
+## setLowlightEnhanceOptions:options:sourceType: [#api_irtcengine_setlowlightenhanceoptions2]
 
 设置低光增强选项并指定媒体源。
 
@@ -1150,9 +940,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - (int)setLowlightEnhanceOptions:(BOOL)enable options:(AgoraLowlightEnhanceOptions* _Nullable)options sourceType:(AgoraMediaSourceType)sourceType NS_SWIFT_NAME(setLowlightEnhanceOptions(_:options:sourceType:));
 ```
 
-<a id="api_irtcengine_setlowlightenhanceoptions2__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_setlowlightenhanceoptions2__detailed_desc]
 
 自 v4.0.0 版本新增。
 
@@ -1163,21 +951,15 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 视频降噪对设备性能有一定要求。如果你在启用视频降噪后设备出现过热，声网建议你将视频降噪选项调整为较低的性能消耗等级，或完全关闭视频降噪功能。
 :::
 
-<a id="api_irtcengine_setlowlightenhanceoptions2__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_setlowlightenhanceoptions2__scenario]
 
 适用于黑暗环境或低端视频采集设备导致图像噪点较多的场景。在实时互动中，图像噪点会占用码流资源，降低编码效率。
 
-<a id="api_irtcengine_setlowlightenhanceoptions2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setlowlightenhanceoptions2__timing]
 
 请在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 方法之后调用本方法。
 
-<a id="api_irtcengine_setlowlightenhanceoptions2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlowlightenhanceoptions2__parameters]
 
 #### `enable`
 
@@ -1197,18 +979,14 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 默认值为 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果你使用自定义视频源，请将该参数设置为 `AgoraMediaSourceTypeCustomVideo`。
 
-<a id="api_irtcengine_setlowlightenhanceoptions2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlowlightenhanceoptions2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setvideodenoiseroptions"></a>
-
-## setVideoDenoiserOptions:options:
+## setVideoDenoiserOptions:options: [#api_irtcengine_setvideodenoiseroptions]
 
 设置视频降噪功能。
 
@@ -1218,9 +996,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - (int)setVideoDenoiserOptions:(BOOL)enable options:(AgoraVideoDenoiserOptions* _Nullable)options  NS_SWIFT_NAME(setVideoDenoiserOptions(_:options:));
 ```
 
-<a id="api_irtcengine_setvideodenoiseroptions__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_setvideodenoiseroptions__detailed_desc]
 
 自 v4.0.0 版本新增。
 
@@ -1238,21 +1014,15 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
   - `sharpnessLevel`: 0.1
 :::
 
-<a id="api_irtcengine_setvideodenoiseroptions__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_setvideodenoiseroptions__scenario]
 
 在光线较暗的环境中或使用低端视频采集设备时，视频图像可能会出现明显噪点，影响视频质量。在实时互动场景中，视频噪点还会占用码流资源，降低编码效率。该方法适用于多频道场景。
 
-<a id="api_irtcengine_setvideodenoiseroptions__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setvideodenoiseroptions__timing]
 
 请在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 方法之后调用此方法。
 
-<a id="api_irtcengine_setvideodenoiseroptions__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setvideodenoiseroptions__parameters]
 
 #### `enable`
 
@@ -1265,18 +1035,14 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 
 视频降噪选项，详见 [AgoraVideoDenoiserOptions](/zh-CN/api-reference/rtc/ios/class-videodenoiseroptions)。
 
-<a id="api_irtcengine_setvideodenoiseroptions__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setvideodenoiseroptions__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setvideodenoiseroptions2"></a>
-
-## setVideoDenoiserOptions:options:sourceType:
+## setVideoDenoiserOptions:options:sourceType: [#api_irtcengine_setvideodenoiseroptions2]
 
 设置视频降噪并指定媒体源。
 
@@ -1286,9 +1052,7 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - (int)setVideoDenoiserOptions:(BOOL)enable options:(AgoraVideoDenoiserOptions* _Nullable)options sourceType:(AgoraMediaSourceType)sourceType NS_SWIFT_NAME(setVideoDenoiserOptions(_:options:sourceType:));
 ```
 
-<a id="api_irtcengine_setvideodenoiseroptions2__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_setvideodenoiseroptions2__detailed_desc]
 
 自 v4.0.0 版本新增。
 
@@ -1306,21 +1070,15 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
   - `sharpnessLevel`: 0.1
 :::
 
-<a id="api_irtcengine_setvideodenoiseroptions2__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_setvideodenoiseroptions2__scenario]
 
 光线较暗的环境和低端视频采集设备可能导致视频图像中出现明显噪点，影响视频质量。在实时互动场景中，视频噪点还会占用码流资源，降低编码效率。
 
-<a id="api_irtcengine_setvideodenoiseroptions2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setvideodenoiseroptions2__timing]
 
 请在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 方法之后调用此方法。
 
-<a id="api_irtcengine_setvideodenoiseroptions2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setvideodenoiseroptions2__parameters]
 
 #### `enable`
 
@@ -1340,18 +1098,14 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 - 默认值为 `AgoraMediaSourceTypePrimaryCamera`。
 - 如果你使用自定义视频源，请将该参数设置为 `AgoraMediaSourceTypeCustomVideo`。
 
-<a id="api_irtcengine_setvideodenoiseroptions2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setvideodenoiseroptions2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_ivideoeffectobject_setvideoeffectboolparam"></a>
-
-## setVideoEffectBoolParamWithOption:key:boolValue:
+## setVideoEffectBoolParamWithOption:key:boolValue: [#api_ivideoeffectobject_setvideoeffectboolparam]
 
 设置视频特效的布尔参数。
 
@@ -1364,15 +1118,11 @@ NS_SWIFT_NAME(removeVideoEffect(nodeId:));
 NS_SWIFT_NAME(setVideoEffectBoolParam(option:key:boolValue:));
 ```
 
-<a id="api_ivideoeffectobject_setvideoeffectboolparam__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_ivideoeffectobject_setvideoeffectboolparam__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_ivideoeffectobject_setvideoeffectboolparam__parameters"></a>
-
-### 参数
+### 参数 [#api_ivideoeffectobject_setvideoeffectboolparam__parameters]
 
 #### `option`
 
@@ -1389,18 +1139,14 @@ NS_SWIFT_NAME(setVideoEffectBoolParam(option:key:boolValue:));
 - YES：设置为启用。
 - NO：设置为禁用。
 
-<a id="api_ivideoeffectobject_setvideoeffectboolparam__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoeffectobject_setvideoeffectboolparam__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject)
 
-<a id="api_ivideoeffectobject_setvideoeffectfloatparam"></a>
-
-## setVideoEffectFloatParamWithOption:key:floatValue:
+## setVideoEffectFloatParamWithOption:key:floatValue: [#api_ivideoeffectobject_setvideoeffectfloatparam]
 
 设置视频特效的浮点参数。
 
@@ -1413,15 +1159,11 @@ NS_SWIFT_NAME(setVideoEffectBoolParam(option:key:boolValue:));
 NS_SWIFT_NAME(setVideoEffectFloatParam(option:key:floatValue:));
 ```
 
-<a id="api_ivideoeffectobject_setvideoeffectfloatparam__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_ivideoeffectobject_setvideoeffectfloatparam__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_ivideoeffectobject_setvideoeffectfloatparam__parameters"></a>
-
-### 参数
+### 参数 [#api_ivideoeffectobject_setvideoeffectfloatparam__parameters]
 
 #### `option`
 
@@ -1435,18 +1177,14 @@ NS_SWIFT_NAME(setVideoEffectFloatParam(option:key:floatValue:));
 
 要设置的浮点值。
 
-<a id="api_ivideoeffectobject_setvideoeffectfloatparam__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoeffectobject_setvideoeffectfloatparam__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraVideoEffectObject](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject)
 
-<a id="api_ivideoeffectobject_setvideoeffectintparam"></a>
-
-## setVideoEffectIntParamWithOption:key:intValue:
+## setVideoEffectIntParamWithOption:key:intValue: [#api_ivideoeffectobject_setvideoeffectintparam]
 
 设置视频特效的整数参数。
 
@@ -1459,15 +1197,11 @@ NS_SWIFT_NAME(setVideoEffectFloatParam(option:key:floatValue:));
 NS_SWIFT_NAME(setVideoEffectIntParam(option:key:intValue:));
 ```
 
-<a id="api_ivideoeffectobject_setvideoeffectintparam__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_ivideoeffectobject_setvideoeffectintparam__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_ivideoeffectobject_setvideoeffectintparam__parameters"></a>
-
-### 参数
+### 参数 [#api_ivideoeffectobject_setvideoeffectintparam__parameters]
 
 #### `option`
 
@@ -1481,9 +1215,7 @@ NS_SWIFT_NAME(setVideoEffectIntParam(option:key:intValue:));
 
 要设置的整数值。
 
-<a id="api_ivideoeffectobject_setvideoeffectintparam__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoeffectobject_setvideoeffectintparam__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。

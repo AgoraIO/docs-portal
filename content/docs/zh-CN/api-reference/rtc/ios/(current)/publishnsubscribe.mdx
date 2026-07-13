@@ -3,11 +3,7 @@ title: "发布和订阅"
 description: "在发送端启用或关闭不同质量层级的视频流模式。"
 ---
 
-<a id="toc_publishnsubscribe"></a>
-
-<a id="api_irtcengine_enabledualstreammode"></a>
-
-## enableDualStreamMode:
+## <span id="toc_publishnsubscribe"></span>enableDualStreamMode: [#api_irtcengine_enabledualstreammode]
 
 在发送端启用或关闭不同质量层级的视频流模式。
 
@@ -17,9 +13,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - (int)enableDualStreamMode:(BOOL)enabled NS_SWIFT_NAME(enableDualStreamMode(_:)) __deprecated_msg("use setDualStreamMode: instead.");
 ```
 
-<a id="api_irtcengine_enabledualstreammode__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_enabledualstreammode__detailed_desc]
 
 自 v4.2.0 版本废弃，请改用 `setDualStreamMode`。
 
@@ -36,9 +30,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 你可以在加入频道前或加入频道后调用该方法。
 :::
 
-<a id="api_irtcengine_enabledualstreammode__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enabledualstreammode__parameters]
 
 #### `enabled`
 
@@ -47,18 +39,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - YES：启用不同质量层级的视频流模式。
 - NO：（默认）关闭不同质量层级的视频流模式。
 
-<a id="api_irtcengine_enabledualstreammode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enabledualstreammode__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_enabledualstreammode3"></a>
-
-## enableDualStreamMode:streamConfig:
+## enableDualStreamMode:streamConfig: [#api_irtcengine_enabledualstreammode3]
 
 设置发送端的不同质量层级的视频流模式及视频小流配置。
 
@@ -69,9 +57,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
                streamConfig:(AgoraSimulcastStreamConfig* _Nonnull)streamConfig NS_SWIFT_NAME(enableDualStreamMode(_:streamConfig:)) __deprecated_msg("use setDualStreamMode: instead.");
 ```
 
-<a id="api_irtcengine_enabledualstreammode3__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_enabledualstreammode3__detailed_desc]
 
 自 v4.2.0 版本废弃，请改用 `setDualStreamMode`。
 
@@ -88,9 +74,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 你可以在加入频道前或加入频道后调用该方法。
 :::
 
-<a id="api_irtcengine_enabledualstreammode3__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enabledualstreammode3__parameters]
 
 #### `enabled`
 
@@ -103,18 +87,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 视频小流的配置。详见 [AgoraSimulcastStreamConfig](/zh-CN/api-reference/rtc/ios/class-simulcaststreamconfig)。注意：当 `mode` 设置为 `AgoraDisableSimulcastStream` 时， `streamConfig` 的设置不生效。
 
-<a id="api_irtcengine_enabledualstreammode3__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enabledualstreammode3__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_enabledualstreammodeex"></a>
-
-## enableDualStreamModeEx:streamConfig:connection:
+## enableDualStreamModeEx:streamConfig:connection: [#api_irtcengineex_enabledualstreammodeex]
 
 在发送端启用或关闭不同质量层级的视频流。
 
@@ -126,9 +106,7 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
                    connection:(AgoraRtcConnection* _Nonnull)connection NS_SWIFT_NAME(enableDualStreamModeEx(_:streamConfig:connection:)) __deprecated_msg("use setDualStreamModeEx: instead.");
 ```
 
-<a id="api_irtcengineex_enabledualstreammodeex__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengineex_enabledualstreammodeex__detailed_desc]
 
 自 v4.2.0 版本废弃，请改用 `setDualStreamModeEx`。
 
@@ -143,15 +121,11 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 该方法适用于发送端的所有类型的视频流，包括但不限于摄像头采集的视频流、屏幕共享流和自定义采集的视频流。
 :::
 
-<a id="api_irtcengineex_enabledualstreammodeex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_enabledualstreammodeex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_enabledualstreammodeex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_enabledualstreammodeex__parameters]
 
 #### `enabled`
 
@@ -172,18 +146,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 连接信息，详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_enabledualstreammodeex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_enabledualstreammodeex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_muteallremoteaudiostreams"></a>
-
-## muteAllRemoteAudioStreams:
+## muteAllRemoteAudioStreams: [#api_irtcengine_muteallremoteaudiostreams]
 
 停止或恢复订阅所有远端用户的音频流。
 
@@ -201,15 +171,11 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 方法调用后，如果你调用了 [enableAudio](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_enableaudio) 或 [disableAudio](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_disableaudio)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的音频流。你可以在调用 `joinChannelByToken` 加入频道时将 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置为 NO，以取消加入频道时对所有用户音频流的订阅。
 :::
 
-<a id="api_irtcengine_muteallremoteaudiostreams__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_muteallremoteaudiostreams__timing]
 
 该方法需要在加入频道后调用。
 
-<a id="api_irtcengine_muteallremoteaudiostreams__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_muteallremoteaudiostreams__parameters]
 
 #### `mute`
 
@@ -218,18 +184,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - YES：停止订阅所有远端用户的音频流。
 - NO：（默认）订阅所有远端用户的音频流。
 
-<a id="api_irtcengine_muteallremoteaudiostreams__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_muteallremoteaudiostreams__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_muteallremoteaudiostreamsex"></a>
-
-## muteAllRemoteAudioStreamsEx:connection:
+## muteAllRemoteAudioStreamsEx:connection: [#api_irtcengineex_muteallremoteaudiostreamsex]
 
 停止或恢复订阅所有远端用户的音频流。
 
@@ -249,15 +211,11 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - 如果你希望在加入频道前不订阅远端用户的音频流，可以在调用 `joinChannelByToken` 时将 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置为 NO。
 :::
 
-<a id="api_irtcengineex_muteallremoteaudiostreamsex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_muteallremoteaudiostreamsex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_muteallremoteaudiostreamsex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_muteallremoteaudiostreamsex__parameters]
 
 #### `mute`
 
@@ -270,18 +228,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_muteallremoteaudiostreamsex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_muteallremoteaudiostreamsex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_muteallremotevideostreams"></a>
-
-## muteAllRemoteVideoStreams:
+## muteAllRemoteVideoStreams: [#api_irtcengine_muteallremotevideostreams]
 
 停止或恢复订阅所有远端用户的视频流。
 
@@ -299,15 +253,11 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 如果你调用了该方法后又调用了 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_disablevideo)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的视频流。你可以在调用 `joinChannelByToken` 加入频道时将 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中的 `autoSubscribeVideo` 设置为 NO，以取消加入频道时对所有用户的视频流的订阅。
 :::
 
-<a id="api_irtcengine_muteallremotevideostreams__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_muteallremotevideostreams__timing]
 
 请在加入频道后调用该方法。
 
-<a id="api_irtcengine_muteallremotevideostreams__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_muteallremotevideostreams__parameters]
 
 #### `mute`
 
@@ -316,18 +266,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - YES：停止订阅所有远端用户的视频流。
 - NO：（默认）订阅所有远端用户的视频流。
 
-<a id="api_irtcengine_muteallremotevideostreams__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_muteallremotevideostreams__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_muteallremotevideostreamsex"></a>
-
-## muteAllRemoteVideoStreamsEx:connection:
+## muteAllRemoteVideoStreamsEx:connection: [#api_irtcengineex_muteallremotevideostreamsex]
 
 停止或恢复订阅所有远端用户的视频流。
 
@@ -342,15 +288,11 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 调用该方法后，会停止或恢复订阅所有远端用户的视频流，包括之后加入频道的所有远端用户。
 
-<a id="api_irtcengineex_muteallremotevideostreamsex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_muteallremotevideostreamsex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_muteallremotevideostreamsex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_muteallremotevideostreamsex__parameters]
 
 #### `mute`
 
@@ -363,18 +305,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_muteallremotevideostreamsex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_muteallremotevideostreamsex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_mutelocalaudiostream"></a>
-
-## muteLocalAudioStream:
+## muteLocalAudioStream: [#api_irtcengine_mutelocalaudiostream]
 
 停止或恢复发布本地音频流。
 
@@ -388,21 +326,15 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 该方法用于控制是否发布本地采集的音频流。如果你调用该方法停止发布音频流，音频采集设备仍会正常工作，不受影响。
 
-<a id="api_irtcengine_mutelocalaudiostream__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_mutelocalaudiostream__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_mutelocalaudiostream__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_mutelocalaudiostream__related]
 
 调用该方法成功后，本地会触发回调 [rtcEngine:didAudioPublishStateChange:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged)；远端会触发回调 [rtcEngine:didAudioMuted:byUid:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
 
-<a id="api_irtcengine_mutelocalaudiostream__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_mutelocalaudiostream__parameters]
 
 #### `mute`
 
@@ -411,18 +343,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - YES：停止发布本地音频流。
 - NO：（默认）恢复发布本地音频流。
 
-<a id="api_irtcengine_mutelocalaudiostream__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_mutelocalaudiostream__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_mutelocalaudiostreamex"></a>
-
-## muteLocalAudioStreamEx:connection:
+## muteLocalAudioStreamEx:connection: [#api_irtcengineex_mutelocalaudiostreamex]
 
 停止或恢复发布本地音频流。
 
@@ -440,15 +368,11 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 该方法不会影响任何正在进行的音频录制，因为它不会禁用音频采集设备。
 :::
 
-<a id="api_irtcengineex_mutelocalaudiostreamex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_mutelocalaudiostreamex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_mutelocalaudiostreamex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_mutelocalaudiostreamex__parameters]
 
 #### `mute`
 
@@ -461,18 +385,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_mutelocalaudiostreamex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_mutelocalaudiostreamex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_mutelocalvideostream"></a>
-
-## muteLocalVideoStream:
+## muteLocalVideoStream: [#api_irtcengine_mutelocalvideostream]
 
 控制是否发布本地采集的视频流。
 
@@ -486,15 +406,11 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 该方法用于控制是否发布本地采集的视频流。调用该方法停止发布本地采集的视频流时，视频采集设备仍会继续工作，不受影响。 与调用 [enableLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablelocalvideo) 设置为 NO 以关闭本地视频采集从而取消发布视频流的方法相比，该方法响应更快。
 
-<a id="api_irtcengine_mutelocalvideostream__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_mutelocalvideostream__timing]
 
 该方法可以在加入频道前或后调用。
 
-<a id="api_irtcengine_mutelocalvideostream__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_mutelocalvideostream__parameters]
 
 #### `mute`
 
@@ -503,18 +419,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - YES：停止发布本地视频流。
 - NO：（默认）发布本地视频流。
 
-<a id="api_irtcengine_mutelocalvideostream__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_mutelocalvideostream__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_mutelocalvideostreamex"></a>
-
-## muteLocalVideoStreamEx:connection:
+## muteLocalVideoStreamEx:connection: [#api_irtcengineex_mutelocalvideostreamex]
 
 停止或恢复发布本地视频流。
 
@@ -530,21 +442,15 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 该方法不会影响任何正在进行的视频录制，因为它不会关闭摄像头。
 :::
 
-<a id="api_irtcengineex_mutelocalvideostreamex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_mutelocalvideostreamex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_mutelocalvideostreamex__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengineex_mutelocalvideostreamex__related]
 
 成功调用该方法后，SDK 会触发 [rtcEngine:didVideoMuted:byUid:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调报告远端用户是否接收到本地视频流。
 
-<a id="api_irtcengineex_mutelocalvideostreamex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_mutelocalvideostreamex__parameters]
 
 #### `mute`
 
@@ -557,18 +463,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_mutelocalvideostreamex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_mutelocalvideostreamex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_muteremoteaudiostream"></a>
-
-## muteRemoteAudioStream:mute:
+## muteRemoteAudioStream:mute: [#api_irtcengine_muteremoteaudiostream]
 
 停止或恢复订阅指定用户的音频流。
 
@@ -578,23 +480,15 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - (int)muteRemoteAudioStream:(NSUInteger)uid mute:(BOOL)mute NS_SWIFT_NAME(muteRemoteAudioStream(_:mute:));
 ```
 
-<a id="api_irtcengine_muteremoteaudiostream__detailed_desc"></a>
-
-<a id="api_irtcengine_muteremoteaudiostream__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_muteremoteaudiostream__detailed_desc"></span>调用时机 [#api_irtcengine_muteremoteaudiostream__timing]
 
 在加入频道后调用该方法。
 
-<a id="api_irtcengine_muteremoteaudiostream__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_muteremoteaudiostream__related]
 
 成功调用该方法后，SDK 会触发 [rtcEngine:didAudioSubscribeStateChange:uid:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#callback_irtcengineeventhandler_onaudiosubscribestatechanged) 回调。
 
-<a id="api_irtcengine_muteremoteaudiostream__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_muteremoteaudiostream__parameters]
 
 #### `uid`
 
@@ -607,18 +501,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - YES：停止订阅该用户的音频流。
 - NO：（默认）订阅该用户的音频流。
 
-<a id="api_irtcengine_muteremoteaudiostream__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_muteremoteaudiostream__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_muteremoteaudiostreamex"></a>
-
-## muteRemoteAudioStreamEx:mute:connection:
+## muteRemoteAudioStreamEx:mute:connection: [#api_irtcengineex_muteremoteaudiostreamex]
 
 停止或恢复接收指定用户的音频流。
 
@@ -634,15 +524,11 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 你可以在加入频道前或加入频道后调用该方法。如果用户离开频道，该方法中的设置将失效。
 
-<a id="api_irtcengineex_muteremoteaudiostreamex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_muteremoteaudiostreamex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_muteremoteaudiostreamex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_muteremoteaudiostreamex__parameters]
 
 #### `uid`
 
@@ -659,18 +545,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_muteremoteaudiostreamex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_muteremoteaudiostreamex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_muteremotevideostream"></a>
-
-## muteRemoteVideoStream:mute:
+## muteRemoteVideoStream:mute: [#api_irtcengine_muteremotevideostream]
 
 停止或恢复订阅指定用户的视频流。
 
@@ -687,15 +569,11 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 成功调用该方法后，SDK 会触发 [rtcEngine:didVideoSubscribeStateChange:uid:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#callback_irtcengineeventhandler_onvideosubscribestatechanged) 回调。
 :::
 
-<a id="api_irtcengine_muteremotevideostream__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_muteremotevideostream__timing]
 
 请在加入频道后调用该方法。
 
-<a id="api_irtcengine_muteremotevideostream__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_muteremotevideostream__parameters]
 
 #### `uid`
 
@@ -708,18 +586,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 - YES：停止订阅该用户的视频流。
 - NO （默认）：订阅该用户的视频流。
 
-<a id="api_irtcengine_muteremotevideostream__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_muteremotevideostream__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_muteremotevideostreamex"></a>
-
-## muteRemoteVideoStreamEx:mute:connection:
+## muteRemoteVideoStreamEx:mute:connection: [#api_irtcengineex_muteremotevideostreamex]
 
 停止或恢复接收指定用户的视频流。
 
@@ -735,15 +609,11 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 你可以在加入频道前或加入频道后调用该方法。如果远端用户离开频道，该方法中的设置将失效。
 
-<a id="api_irtcengineex_muteremotevideostreamex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_muteremotevideostreamex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_muteremotevideostreamex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_muteremotevideostreamex__parameters]
 
 #### `uid`
 
@@ -760,18 +630,14 @@ description: "在发送端启用或关闭不同质量层级的视频流模式。
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_muteremotevideostreamex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_muteremotevideostreamex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setdualstreammode"></a>
-
-## setDualStreamMode:
+## setDualStreamMode: [#api_irtcengine_setdualstreammode]
 
 设置发送端的不同质量层级的视频流模式。
 
@@ -796,26 +662,20 @@ SDK 默认在发送端开启视频小流自适应模式（`AgoraAutoSimulcastStr
 - 两个方法都可以在加入频道前后调用。如果两个方法都被调用，则以后调用的方法设置优先生效。
 :::
 
-<a id="api_irtcengine_setdualstreammode__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setdualstreammode__parameters]
 
 #### `mode`
 
 发送视频流的模式，详见 [AgoraSimulcastStreamMode](/zh-CN/api-reference/rtc/ios/enum-simulcaststreammode)。
 
-<a id="api_irtcengine_setdualstreammode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setdualstreammode__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setdualstreammode2"></a>
-
-## setDualStreamMode:streamConfig:
+## setDualStreamMode:streamConfig: [#api_irtcengine_setdualstreammode2]
 
 设置发送端的不同质量层级的视频流模式配置。
 
@@ -838,9 +698,7 @@ SDK 默认在发送端开启视频小流的自适应模式（`AgoraAutoSimulcast
 - 两个方法都可以在加入频道前或后调用。如果两个方法都被调用，则以后调用的方法中的设置生效。
 :::
 
-<a id="api_irtcengine_setdualstreammode2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setdualstreammode2__parameters]
 
 #### `mode`
 
@@ -854,17 +712,13 @@ SDK 默认在发送端开启视频小流的自适应模式（`AgoraAutoSimulcast
 当 `mode` 设置为 `AgoraDisableSimulcastStream` 时，设置 `streamConfig` 不生效。
 :::
 
-<a id="api_irtcengine_setdualstreammode2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setdualstreammode2__return_values]
 
 0：方法调用成功。 &lt; 0：方法调用失败。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setdualstreammodeex"></a>
-
-## setDualStreamModeEx:streamConfig:connection:
+## setDualStreamModeEx:streamConfig:connection: [#api_irtcengineex_setdualstreammodeex]
 
 设置发送端的不同质量层级的视频流模式。
 
@@ -891,15 +745,11 @@ SDK 默认在发送端开启视频小流的自适应模式（`AgoraAutoSimulcast
 - 两个方法都可以在加入频道前后调用。如果两个方法都被调用，则以后调用的方法设置优先生效。
 :::
 
-<a id="api_irtcengineex_setdualstreammodeex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setdualstreammodeex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setdualstreammodeex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setdualstreammodeex__parameters]
 
 #### `mode`
 
@@ -917,18 +767,14 @@ SDK 默认在发送端开启视频小流的自适应模式（`AgoraAutoSimulcast
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_setdualstreammodeex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setdualstreammodeex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setremotedefaultvideostreamtype"></a>
-
-## setRemoteDefaultVideoStreamType:
+## setRemoteDefaultVideoStreamType: [#api_irtcengine_setremotedefaultvideostreamtype]
 
 设置默认订阅的视频流类型。
 
@@ -952,32 +798,24 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 如果你同时调用此方法和 [setRemoteVideoStream:type:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setremotevideostreamtype)，则以 [setRemoteVideoStream:type:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 的设置为准。
 :::
 
-<a id="api_irtcengine_setremotedefaultvideostreamtype__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setremotedefaultvideostreamtype__timing]
 
 该方法需要在加入频道前调用。SDK 不支持在加入频道后更改默认订阅的视频流类型。
 
-<a id="api_irtcengine_setremotedefaultvideostreamtype__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremotedefaultvideostreamtype__parameters]
 
 #### `streamType`
 
 默认订阅的视频流类型，详见 [AgoraVideoStreamType](/zh-CN/api-reference/rtc/ios/enum-videostreamtype)。
 
-<a id="api_irtcengine_setremotedefaultvideostreamtype__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremotedefaultvideostreamtype__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setremotevideostreamtype"></a>
-
-## setRemoteVideoStream:type:
+## setRemoteVideoStream:type: [#api_irtcengine_setremotevideostreamtype]
 
 设置你要订阅的视频流类型。
 
@@ -1003,9 +841,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 如果你同时调用此方法和 [setRemoteDefaultVideoStreamType:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype)，以 [setRemoteVideoStream:type:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 的设置为准。
 :::
 
-<a id="api_irtcengine_setremotevideostreamtype__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremotevideostreamtype__parameters]
 
 #### `uid`
 
@@ -1015,18 +851,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 视频流类型，详见 [AgoraVideoStreamType](/zh-CN/api-reference/rtc/ios/enum-videostreamtype)。
 
-<a id="api_irtcengine_setremotevideostreamtype__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremotevideostreamtype__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setremotevideostreamtypeex"></a>
-
-## setRemoteVideoStreamEx:type:connection:
+## setRemoteVideoStreamEx:type:connection: [#api_irtcengineex_setremotevideostreamtypeex]
 
 设置你要订阅的视频流类型。
 
@@ -1052,15 +884,11 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 如果发送端已调用 [setDualStreamModeEx:streamConfig:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 并将 `mode` 设置为 `AgoraDisableSimulcastStream` （从不发送视频小流），则调用此方法无效。你需要在发送端再次调用 [setDualStreamModeEx:streamConfig:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 并调整设置。
 :::
 
-<a id="api_irtcengineex_setremotevideostreamtypeex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setremotevideostreamtypeex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setremotevideostreamtypeex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setremotevideostreamtypeex__parameters]
 
 #### `uid`
 
@@ -1074,18 +902,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_setremotevideostreamtypeex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setremotevideostreamtypeex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setremotevideosubscriptionoptions"></a>
-
-## setRemoteVideoSubscriptionOptions:options:
+## setRemoteVideoSubscriptionOptions:options: [#api_irtcengine_setremotevideosubscriptionoptions]
 
 设置订阅远端视频流的选项。
 
@@ -1106,9 +930,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 如果你希望修改默认行为，或为不同的 `uid` 设置不同的订阅选项，可以调用此方法进行设置。
 
-<a id="api_irtcengine_setremotevideosubscriptionoptions__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremotevideosubscriptionoptions__parameters]
 
 #### `uid`
 
@@ -1118,18 +940,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 视频订阅选项，详见 [AgoraVideoSubscriptionOptions](/zh-CN/api-reference/rtc/ios/class-videosubscriptionoptions)。
 
-<a id="api_irtcengine_setremotevideosubscriptionoptions__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremotevideosubscriptionoptions__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setremotevideosubscriptionoptionsex"></a>
-
-## setRemoteVideoSubscriptionOptionsEx:options:connection:
+## setRemoteVideoSubscriptionOptionsEx:options:connection: [#api_irtcengineex_setremotevideosubscriptionoptionsex]
 
 设置订阅远端视频流的选项。
 
@@ -1145,15 +963,11 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 当远端用户开启双流模式时，你可以调用该方法选择订阅该远端用户发送的视频流的选项。
 
-<a id="api_irtcengineex_setremotevideosubscriptionoptionsex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setremotevideosubscriptionoptionsex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setremotevideosubscriptionoptionsex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setremotevideosubscriptionoptionsex__parameters]
 
 #### `uid`
 
@@ -1167,18 +981,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 连接信息，详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_setremotevideosubscriptionoptionsex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setremotevideosubscriptionoptionsex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setsubscribeaudioallowlist"></a>
-
-## setSubscribeAudioAllowlist:
+## setSubscribeAudioAllowlist: [#api_irtcengine_setsubscribeaudioallowlist]
 
 设置音频流订阅的白名单。
 
@@ -1199,26 +1009,20 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 如果某个用户同时被添加到白名单和黑名单中，则仅黑名单生效。
 :::
 
-<a id="api_irtcengine_setsubscribeaudioallowlist__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setsubscribeaudioallowlist__parameters]
 
 #### `allowlist`
 
 希望订阅的用户的用户 ID 列表。如果希望订阅某个用户的音频流，请将该用户的 ID 添加到该列表中。如果希望将某个用户从白名单中移除，需要调用 [setSubscribeAudioAllowlist:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法更新用户 ID 列表；也就是说，只需在新的用户 ID 列表中添加希望订阅的用户的 `uid`。
 
-<a id="api_irtcengine_setsubscribeaudioallowlist__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setsubscribeaudioallowlist__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setsubscribeaudioallowlistex"></a>
-
-## setSubscribeAudioAllowlistEx:connection:
+## setSubscribeAudioAllowlistEx:connection: [#api_irtcengineex_setsubscribeaudioallowlistex]
 
 设置音频流订阅的白名单。
 
@@ -1239,15 +1043,11 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 如果某个用户同时被添加到白名单和黑名单中，只有黑名单生效。
 :::
 
-<a id="api_irtcengineex_setsubscribeaudioallowlistex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setsubscribeaudioallowlistex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setsubscribeaudioallowlistex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setsubscribeaudioallowlistex__parameters]
 
 #### `allowlist`
 
@@ -1257,18 +1057,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_setsubscribeaudioallowlistex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setsubscribeaudioallowlistex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setsubscribeaudioblocklist"></a>
-
-## setSubscribeAudioBlocklist:
+## setSubscribeAudioBlocklist: [#api_irtcengine_setsubscribeaudioblocklist]
 
 设置音频流订阅的黑名单。
 
@@ -1289,26 +1085,20 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。
 :::
 
-<a id="api_irtcengine_setsubscribeaudioblocklist__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setsubscribeaudioblocklist__parameters]
 
 #### `blocklist`
 
 不希望订阅其音频流的远端用户 ID 列表。如果你希望指定不订阅某个用户的音频流，请将该用户的 ID 添加到此列表中。如果你希望将某个用户从黑名单中移除，需要调用 [setSubscribeAudioBlocklist:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新用户 ID 列表；这意味着你只需在新的用户 ID 列表中添加不希望订阅的用户的 ID。
 
-<a id="api_irtcengine_setsubscribeaudioblocklist__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setsubscribeaudioblocklist__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setsubscribeaudioblocklistex"></a>
-
-## setSubscribeAudioBlocklistEx:connection:
+## setSubscribeAudioBlocklistEx:connection: [#api_irtcengineex_setsubscribeaudioblocklistex]
 
 设置音频流订阅的黑名单。
 
@@ -1329,15 +1119,11 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。
 :::
 
-<a id="api_irtcengineex_setsubscribeaudioblocklistex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setsubscribeaudioblocklistex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setsubscribeaudioblocklistex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setsubscribeaudioblocklistex__parameters]
 
 #### `blocklist`
 
@@ -1347,18 +1133,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_setsubscribeaudioblocklistex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setsubscribeaudioblocklistex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setsubscribevideoallowlist"></a>
-
-## setSubscribeVideoAllowlist:
+## setSubscribeVideoAllowlist: [#api_irtcengine_setsubscribevideoallowlist]
 
 设置视频流订阅的白名单。
 
@@ -1379,26 +1161,20 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 如果某个用户同时被添加到白名单和黑名单中，则只有黑名单生效。
 :::
 
-<a id="api_irtcengine_setsubscribevideoallowlist__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setsubscribevideoallowlist__parameters]
 
 #### `allowlist`
 
 你想要订阅的视频流用户的用户 ID 列表。如果你想指定某个用户的视频流进行订阅，请将该用户的用户 ID 添加到此列表中。如果你想将某个用户从白名单中移除，你需要调用 [setSubscribeVideoAllowlist:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新用户 ID 列表；这意味着你只需在新的用户 ID 列表中添加你想要订阅的用户的用户 ID。
 
-<a id="api_irtcengine_setsubscribevideoallowlist__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setsubscribevideoallowlist__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setsubscribevideoallowlistex"></a>
-
-## setSubscribeVideoAllowlistEx:connection:
+## setSubscribeVideoAllowlistEx:connection: [#api_irtcengineex_setsubscribevideoallowlistex]
 
 设置视频流订阅的白名单。
 
@@ -1419,15 +1195,11 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 如果某个用户同时被加入白名单和黑名单，则只有黑名单生效。
 :::
 
-<a id="api_irtcengineex_setsubscribevideoallowlistex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setsubscribevideoallowlistex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setsubscribevideoallowlistex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setsubscribevideoallowlistex__parameters]
 
 #### `allowlist`
 
@@ -1437,18 +1209,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_setsubscribevideoallowlistex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setsubscribevideoallowlistex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setsubscribevideoblocklist"></a>
-
-## setSubscribeVideoBlocklist:
+## setSubscribeVideoBlocklist: [#api_irtcengine_setsubscribevideoblocklist]
 
 设置不订阅的视频流用户的 blocklist。
 
@@ -1469,26 +1237,20 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 如果某个用户同时被添加到 allowlist 和 blocklist 中，只有 blocklist 生效。
 :::
 
-<a id="api_irtcengine_setsubscribevideoblocklist__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setsubscribevideoblocklist__parameters]
 
 #### `blocklist`
 
 不希望订阅其视频流的用户 ID 列表。如果你希望指定不订阅某个用户的视频流，请将该用户的用户 ID 添加到此列表中。如果你希望将某个用户从 blocklist 中移除，需要调用 [setSubscribeVideoBlocklist:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新用户 ID 列表；这意味着你只需在新的用户 ID 列表中添加不希望订阅的用户的用户 ID。
 
-<a id="api_irtcengine_setsubscribevideoblocklist__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setsubscribevideoblocklist__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setsubscribevideoblocklistex"></a>
-
-## setSubscribeVideoBlocklistEx:connection:
+## setSubscribeVideoBlocklistEx:connection: [#api_irtcengineex_setsubscribevideoblocklistex]
 
 设置视频流订阅的阻止名单。
 
@@ -1509,15 +1271,11 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 如果某个用户同时被添加到允许名单和阻止名单中，则仅阻止名单生效。
 :::
 
-<a id="api_irtcengineex_setsubscribevideoblocklistex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setsubscribevideoblocklistex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setsubscribevideoblocklistex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setsubscribevideoblocklistex__parameters]
 
 #### `blocklist`
 
@@ -1527,18 +1285,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_setsubscribevideoblocklistex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setsubscribevideoblocklistex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="callback_irtcengineeventhandler_onaudiopublishstatechanged"></a>
-
-## rtcEngine:didAudioPublishStateChange:oldState:newState:elapseSinceLastState:
+## rtcEngine:didAudioPublishStateChange:oldState:newState:elapseSinceLastState: [#callback_irtcengineeventhandler_onaudiopublishstatechanged]
 
 音频发布状态发生变化回调。
 
@@ -1555,15 +1309,11 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didAudi
 
 该回调在音频发布状态发生变化时触发。
 
-<a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onaudiopublishstatechanged__timing]
 
 该回调在音频发布状态发生变化时触发。
 
-<a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onaudiopublishstatechanged__parameters]
 
 #### `engine`
 
@@ -1587,9 +1337,7 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didAudi
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged"></a>
-
-## rtcEngine:didAudioSubscribeStateChange:uid:oldState:newState:elapseSinceLastState:
+## rtcEngine:didAudioSubscribeStateChange:uid:oldState:newState:elapseSinceLastState: [#callback_irtcengineeventhandler_onaudiosubscribestatechanged]
 
 音频订阅状态发生变化回调。
 
@@ -1607,9 +1355,7 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didAudi
 
 该回调在音频订阅状态发生变化时触发。
 
-<a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onaudiosubscribestatechanged__parameters]
 
 #### `engine`
 
@@ -1637,9 +1383,7 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didAudi
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged"></a>
-
-## rtcEngine:didVideoSubscribeStateChange:uid:oldState:newState:elapseSinceLastState:
+## rtcEngine:didVideoSubscribeStateChange:uid:oldState:newState:elapseSinceLastState: [#callback_irtcengineeventhandler_onvideosubscribestatechanged]
 
 远端视频订阅状态发生变化回调。
 
@@ -1657,9 +1401,7 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didVide
 
 该回调在你订阅远端视频流的状态发生变化时触发。
 
-<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onvideosubscribestatechanged__parameters]
 
 #### `engine`
 

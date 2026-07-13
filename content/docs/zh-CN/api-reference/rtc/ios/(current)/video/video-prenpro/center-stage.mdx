@@ -3,11 +3,7 @@ title: "人像锁定"
 description: "开启或关闭人像锁定功能。"
 ---
 
-<a id="toc_center_stage"></a>
-
-<a id="api_irtcengine_enablecameracenterstage"></a>
-
-## enableCameraCenterStage:
+## <span id="toc_center_stage"></span>enableCameraCenterStage: [#api_irtcengine_enablecameracenterstage]
 
 开启或关闭人像锁定功能。
 
@@ -36,21 +32,15 @@ description: "开启或关闭人像锁定功能。"
 声网建议你在启用该功能前调用 [isCameraCenterStageSupported](/zh-CN/api-reference/rtc/ios/video/video-prenpro/center-stage#api_irtcengine_iscameracenterstagesupported) 方法检查当前设备是否支持人像锁定功能。
 :::
 
-<a id="api_irtcengine_enablecameracenterstage__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_enablecameracenterstage__scenario]
 
 人像锁定功能适用于在线会议、演出、在线教育等场景。主持人可以使用该功能确保无论是否移动，始终处于画面中央，从而获得更好的展示效果。
 
-<a id="api_irtcengine_enablecameracenterstage__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_enablecameracenterstage__timing]
 
 必须在成功开启摄像头之后调用此方法，即 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）之后。
 
-<a id="api_irtcengine_enablecameracenterstage__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablecameracenterstage__parameters]
 
 #### `enabled`
 
@@ -59,18 +49,14 @@ description: "开启或关闭人像锁定功能。"
 - YES：开启人像锁定功能。
 - NO：关闭人像锁定功能。
 
-<a id="api_irtcengine_enablecameracenterstage__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablecameracenterstage__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_iscameracenterstagesupported"></a>
-
-## isCameraCenterStageSupported
+## isCameraCenterStageSupported [#api_irtcengine_iscameracenterstagesupported]
 
 检查当前摄像头是否支持人像锁定。
 
@@ -84,15 +70,11 @@ description: "开启或关闭人像锁定功能。"
 
 在调用 [enableCameraCenterStage:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/center-stage#api_irtcengine_enablecameracenterstage) 方法前，建议调用该方法检查当前设备是否支持人像锁定功能。
 
-<a id="api_irtcengine_iscameracenterstagesupported__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_iscameracenterstagesupported__timing]
 
 你必须在摄像头成功启用后调用该方法，即 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）之后。
 
-<a id="api_irtcengine_iscameracenterstagesupported__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_iscameracenterstagesupported__return_values]
 
 - YES：当前摄像头支持人像锁定。
 - NO：当前摄像头不支持人像锁定。

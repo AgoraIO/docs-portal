@@ -3,11 +3,7 @@ title: "视频设备管理"
 description: "启用或关闭多摄像头采集模式。"
 ---
 
-<a id="toc_video_device"></a>
-
-<a id="api_irtcengine_enablemulticamera"></a>
-
-## enableMultiCamera:config:
+## <span id="toc_video_device"></span>enableMultiCamera:config: [#api_irtcengine_enablemulticamera]
 
 启用或关闭多摄像头采集模式。
 
@@ -45,9 +41,7 @@ description: "启用或关闭多摄像头采集模式。"
 - 如果在 [startPreview:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_startpreview2) 之后启用，SDK 会先停止当前摄像头采集，然后启用主摄像头和第二个摄像头。本地视频预览会短暂变黑，然后自动恢复正常。
 :::
 
-<a id="api_irtcengine_enablemulticamera__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablemulticamera__parameters]
 
 #### `enabled`
 
@@ -60,18 +54,14 @@ description: "启用或关闭多摄像头采集模式。"
 
 第二个摄像头的采集配置。详见 [AgoraCameraCapturerConfiguration](/zh-CN/api-reference/rtc/ios/class-cameracapturerconfiguration)。
 
-<a id="api_irtcengine_enablemulticamera__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablemulticamera__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getcameramaxzoomfactor"></a>
-
-## cameraMaxZoomFactor
+## cameraMaxZoomFactor [#api_irtcengine_getcameramaxzoomfactor]
 
 获取摄像头支持的最大变焦倍数。
 
@@ -87,17 +77,13 @@ description: "启用或关闭多摄像头采集模式。"
 你必须在 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）后调用该方法。
 :::
 
-<a id="api_irtcengine_getcameramaxzoomfactor__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getcameramaxzoomfactor__return_values]
 
 方法调用成功，返回摄像头支持的最大变焦倍数。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_iscameraautoexposurefacemodesupported"></a>
-
-## isCameraAutoExposureFaceModeSupported
+## isCameraAutoExposureFaceModeSupported [#api_irtcengine_iscameraautoexposurefacemodesupported]
 
 检查设备是否支持自动曝光。
 
@@ -113,18 +99,14 @@ description: "启用或关闭多摄像头采集模式。"
 [isCameraAutoExposureFaceModeSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscameraautoexposurefacemodesupported) 方法必须在 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）后调用。
 :::
 
-<a id="api_irtcengine_iscameraautoexposurefacemodesupported__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_iscameraautoexposurefacemodesupported__return_values]
 
 - YES：设备支持自动曝光。
 - NO：设备不支持自动曝光。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_iscameraautofocusfacemodesupported"></a>
-
-## isCameraAutoFocusFaceModeSupported
+## isCameraAutoFocusFaceModeSupported [#api_irtcengine_iscameraautofocusfacemodesupported]
 
 检查设备是否支持人脸自动对焦功能。
 
@@ -140,18 +122,14 @@ description: "启用或关闭多摄像头采集模式。"
 你必须在 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）后调用此方法。
 :::
 
-<a id="api_irtcengine_iscameraautofocusfacemodesupported__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_iscameraautofocusfacemodesupported__return_values]
 
 - YES：设备支持人脸自动对焦功能。
 - NO：设备不支持人脸自动对焦功能。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_iscameraexposurepositionsupported"></a>
-
-## isCameraExposurePositionSupported
+## isCameraExposurePositionSupported [#api_irtcengine_iscameraexposurepositionsupported]
 
 检查设备是否支持手动曝光。
 
@@ -167,18 +145,14 @@ description: "启用或关闭多摄像头采集模式。"
 必须在 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）后调用此方法。
 :::
 
-<a id="api_irtcengine_iscameraexposurepositionsupported__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_iscameraexposurepositionsupported__return_values]
 
 - YES：设备支持手动曝光。
 - NO：设备不支持手动曝光。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_iscameraexposuresupported"></a>
-
-## isCameraExposureSupported
+## isCameraExposureSupported [#api_irtcengine_iscameraexposuresupported]
 
 查询当前摄像头是否支持调节曝光值。
 
@@ -188,9 +162,7 @@ description: "启用或关闭多摄像头采集模式。"
 - (BOOL)isCameraExposureSupported NS_SWIFT_NAME(isCameraExposureSupported());
 ```
 
-<a id="api_irtcengine_iscameraexposuresupported__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_iscameraexposuresupported__detailed_desc]
 
 自 v4.2.2 版本新增。
 
@@ -200,18 +172,14 @@ description: "启用或关闭多摄像头采集模式。"
 - 该方法用于调节当前激活摄像头的曝光值，即调用 [setCameraCapturerConfiguration:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 时指定的摄像头。
 :::
 
-<a id="api_irtcengine_iscameraexposuresupported__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_iscameraexposuresupported__return_values]
 
 - YES：查询成功，当前摄像头支持调节曝光值。
 - NO：查询失败，当前摄像头不支持调节曝光值。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_iscamerafocussupported"></a>
-
-## isCameraFocusPositionInPreviewSupported
+## isCameraFocusPositionInPreviewSupported [#api_irtcengine_iscamerafocussupported]
 
 检查设备是否支持手动对焦功能。
 
@@ -227,18 +195,14 @@ description: "启用或关闭多摄像头采集模式。"
 必须在 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）后调用此方法。
 :::
 
-<a id="api_irtcengine_iscamerafocussupported__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_iscamerafocussupported__return_values]
 
 - YES：设备支持手动对焦功能。
 - NO：设备不支持手动对焦功能。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_iscameratorchsupported"></a>
-
-## isCameraTorchSupported
+## isCameraTorchSupported [#api_irtcengine_iscameratorchsupported]
 
 检查设备是否支持相机闪光灯。
 
@@ -254,18 +218,14 @@ description: "启用或关闭多摄像头采集模式。"
 你必须在 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）后调用该方法。App 默认启用前置摄像头。如果前置摄像头不支持闪光灯，该方法返回 NO。如果你想检查后置摄像头是否支持闪光灯功能，请在调用该方法前调用 [switchCamera](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_switchcamera)。在系统版本为 15 的 iPad 上，即使 [isCameraTorchSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscameratorchsupported) 返回 YES，你也可能因系统问题调用 [setCameraTorchOn:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameratorchon) 启用闪光灯失败。
 :::
 
-<a id="api_irtcengine_iscameratorchsupported__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_iscameratorchsupported__return_values]
 
 - YES：设备支持相机闪光灯。
 - NO：设备不支持相机闪光灯。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_iscamerazoomsupported"></a>
-
-## isCameraZoomSupported
+## isCameraZoomSupported [#api_irtcengine_iscamerazoomsupported]
 
 检查设备是否支持摄像头变焦。
 
@@ -275,26 +235,18 @@ description: "启用或关闭多摄像头采集模式。"
 - (BOOL)isCameraZoomSupported NS_SWIFT_NAME(isCameraZoomSupported());
 ```
 
-<a id="api_irtcengine_iscamerazoomsupported__detailed_desc"></a>
-
-<a id="api_irtcengine_iscamerazoomsupported__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_iscamerazoomsupported__detailed_desc"></span>调用时机 [#api_irtcengine_iscamerazoomsupported__timing]
 
 你必须在 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）后调用该方法。
 
-<a id="api_irtcengine_iscamerazoomsupported__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_iscamerazoomsupported__return_values]
 
 - YES：设备支持摄像头变焦。
 - NO：设备不支持摄像头变焦。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_querycamerafocallengthcapability"></a>
-
-## queryCameraFocalLengthCapability
+## queryCameraFocalLengthCapability [#api_irtcengine_querycamerafocallengthcapability]
 
 查询摄像头支持的焦距能力。
 
@@ -308,18 +260,14 @@ description: "启用或关闭多摄像头采集模式。"
 
 如果你希望在视频采集中启用广角或超广角模式，建议你首先调用 [queryCameraFocalLengthCapability](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) 方法检查设备是否支持所需的焦距能力。然后，根据查询结果调用 [setCameraCapturerConfiguration:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 方法调整摄像头的焦距配置，以确保最佳的视频采集性能。
 
-<a id="api_irtcengine_querycamerafocallengthcapability__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_querycamerafocallengthcapability__return_values]
 
 - 方法调用成功，返回一个 [AgoraFocalLengthInfo](/zh-CN/api-reference/rtc/ios/class-focallengthinfo) 对象数组，包含摄像头的方向和焦距类型，详见 [AgoraFocalLengthInfo](/zh-CN/api-reference/rtc/ios/class-focallengthinfo)。
 - 方法调用失败，返回 nil。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_querycodeccapability"></a>
-
-## queryCodecCapability
+## queryCodecCapability [#api_irtcengine_querycodeccapability]
 
 查询设备支持的视频编解码能力。
 
@@ -329,20 +277,14 @@ description: "启用或关闭多摄像头采集模式。"
 - (NSArray <AgoraVideoCodecCapInfo *> *_Nullable)queryCodecCapability;
 ```
 
-<a id="api_irtcengine_querycodeccapability__detailed_desc"></a>
-
-<a id="api_irtcengine_querycodeccapability__return_values"></a>
-
-### 返回值
+### <span id="api_irtcengine_querycodeccapability__detailed_desc"></span>返回值 [#api_irtcengine_querycodeccapability__return_values]
 
 - 方法调用成功时，返回一个 [AgoraVideoCodecCapInfo](/zh-CN/api-reference/rtc/ios/class-codeccapinfo) 数组，表示设备的视频编码能力，详见 [AgoraVideoCodecCapInfo](/zh-CN/api-reference/rtc/ios/class-codeccapinfo)。
 - 方法调用失败时，返回 nil。如果调用超时，请调整调用逻辑，避免在主线程中调用该方法。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setcameraautoexposurefacemodeenabled"></a>
-
-## setCameraAutoExposureFaceModeEnabled:
+## setCameraAutoExposureFaceModeEnabled: [#api_irtcengine_setcameraautoexposurefacemodeenabled]
 
 设置是否启用自动曝光。
 
@@ -358,9 +300,7 @@ description: "启用或关闭多摄像头采集模式。"
 你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 方法之后再调用此方法。设置结果将在摄像头成功开启后生效，即 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）之后。
 :::
 
-<a id="api_irtcengine_setcameraautoexposurefacemodeenabled__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setcameraautoexposurefacemodeenabled__parameters]
 
 #### `enable`
 
@@ -369,18 +309,14 @@ description: "启用或关闭多摄像头采集模式。"
 - YES：启用自动曝光。
 - NO：关闭自动曝光。
 
-<a id="api_irtcengine_setcameraautoexposurefacemodeenabled__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setcameraautoexposurefacemodeenabled__return_values]
 
 - YES：设置成功。
 - NO：设置失败。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setcameraautofocusfacemodeenabled"></a>
-
-## setCameraAutoFocusFaceModeEnabled:
+## setCameraAutoFocusFaceModeEnabled: [#api_irtcengine_setcameraautofocusfacemodeenabled]
 
 启用或关闭摄像头人像自动对焦功能。
 
@@ -394,15 +330,11 @@ description: "启用或关闭多摄像头采集模式。"
 
 你可以通过调用该方法关闭人像自动对焦功能。SDK 默认启用该功能。
 
-<a id="api_irtcengine_setcameraautofocusfacemodeenabled__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setcameraautofocusfacemodeenabled__timing]
 
 必须在 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）后调用。
 
-<a id="api_irtcengine_setcameraautofocusfacemodeenabled__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setcameraautofocusfacemodeenabled__parameters]
 
 #### `enable`
 
@@ -411,18 +343,14 @@ description: "启用或关闭多摄像头采集模式。"
 - YES：启用摄像头人像自动对焦功能。
 - NO：关闭人像自动对焦功能。
 
-<a id="api_irtcengine_setcameraautofocusfacemodeenabled__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setcameraautofocusfacemodeenabled__return_values]
 
 - YES：设置成功。
 - NO：设置失败。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setcameracapturerconfiguration"></a>
-
-## setCameraCapturerConfiguration:
+## setCameraCapturerConfiguration: [#api_irtcengine_setcameracapturerconfiguration]
 
 设置视频采集配置。
 
@@ -440,15 +368,11 @@ description: "启用或关闭多摄像头采集模式。"
 如需调整摄像头焦距配置，建议先调用 [queryCameraFocalLengthCapability](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) 查询设备的焦距能力，并根据查询结果进行配置。
 :::
 
-<a id="api_irtcengine_setcameracapturerconfiguration__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setcameracapturerconfiguration__timing]
 
 在启用本地摄像头采集前调用，例如在调用 [startPreview:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_startpreview2) 和 `joinChannelByToken` 之前。
 
-<a id="api_irtcengine_setcameracapturerconfiguration__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setcameracapturerconfiguration__parameters]
 
 #### `config`
 
@@ -458,18 +382,14 @@ description: "启用或关闭多摄像头采集模式。"
 在此方法中，无需设置 `deviceId` 参数。
 :::
 
-<a id="api_irtcengine_setcameracapturerconfiguration__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setcameracapturerconfiguration__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setcameraexposurefactor"></a>
-
-## setCameraExposureFactor:
+## setCameraExposureFactor: [#api_irtcengine_setcameraexposurefactor]
 
 设置摄像头曝光值。
 
@@ -479,9 +399,7 @@ description: "启用或关闭多摄像头采集模式。"
 - (CGFloat)setCameraExposureFactor:(CGFloat)exposureFactor NS_SWIFT_NAME(setCameraExposureFactor(_:));
 ```
 
-<a id="api_irtcengine_setcameraexposurefactor__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_setcameraexposurefactor__detailed_desc]
 
 自 v4.2.2 版本新增。
 
@@ -493,25 +411,19 @@ description: "启用或关闭多摄像头采集模式。"
 - 该方法调整的是当前正在使用的摄像头的曝光值，即调用 [setCameraCapturerConfiguration:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) 方法时指定的摄像头。
 :::
 
-<a id="api_irtcengine_setcameraexposurefactor__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setcameraexposurefactor__parameters]
 
 #### `exposureFactor`
 
 摄像头曝光值（默认值为 0）。值越大，曝光越强。当视频图像过曝时，可以降低曝光值；当视频图像曝光不足且暗部细节丢失时，可以提高曝光值。如果设置的曝光值超出设备支持的范围，SDK 会自动将其调整为设备实际支持的范围。取值范围为 [-8.0, 8.0]。
 
-<a id="api_irtcengine_setcameraexposurefactor__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setcameraexposurefactor__return_values]
 
 无实际意义。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setcameraexposureposition"></a>
-
-## setCameraExposurePosition:
+## setCameraExposurePosition: [#api_irtcengine_setcameraexposureposition]
 
 设置摄像头曝光位置。
 
@@ -527,26 +439,20 @@ description: "启用或关闭多摄像头采集模式。"
 你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 方法之后再调用该方法。设置结果会在摄像头成功开启后生效，即 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）后生效。成功调用该方法后，SDK 会触发 [rtcEngine:cameraExposureDidChangedToRect:](/zh-CN/api-reference/rtc/ios/device-management/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) 回调。
 :::
 
-<a id="api_irtcengine_setcameraexposureposition__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setcameraexposureposition__parameters]
 
 #### `positionInView`
 
 视图中触摸点的横坐标。
 
-<a id="api_irtcengine_setcameraexposureposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setcameraexposureposition__return_values]
 
 - YES：设置成功。
 - NO：设置失败。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setcamerafocuspositioninpreview"></a>
-
-## setCameraFocusPositionInPreview:
+## setCameraFocusPositionInPreview: [#api_irtcengine_setcamerafocuspositioninpreview]
 
 设置摄像头的手动对焦位置。
 
@@ -562,26 +468,20 @@ description: "启用或关闭多摄像头采集模式。"
 你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 方法之后再调用本方法。设置结果会在摄像头成功开启后生效，即 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）后生效。成功调用该方法后，SDK 会触发 [rtcEngine:cameraFocusDidChangedToRect:](/zh-CN/api-reference/rtc/ios/device-management/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged) 回调。
 :::
 
-<a id="api_irtcengine_setcamerafocuspositioninpreview__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setcamerafocuspositioninpreview__parameters]
 
 #### `position`
 
 视图中触摸点的坐标。
 
-<a id="api_irtcengine_setcamerafocuspositioninpreview__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setcamerafocuspositioninpreview__return_values]
 
 - YES：设置成功。
 - NO：设置失败。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setcameratorchon"></a>
-
-## setCameraTorchOn:
+## setCameraTorchOn: [#api_irtcengine_setcameratorchon]
 
 启用摄像头闪光灯。
 
@@ -597,9 +497,7 @@ description: "启用或关闭多摄像头采集模式。"
 你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 后再调用此方法。设置结果将在摄像头成功开启后生效，即 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）后。
 :::
 
-<a id="api_irtcengine_setcameratorchon__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setcameratorchon__parameters]
 
 #### `isOn`
 
@@ -608,18 +506,14 @@ description: "启用或关闭多摄像头采集模式。"
 - YES：打开闪光灯。
 - NO：（默认）关闭闪光灯。
 
-<a id="api_irtcengine_setcameratorchon__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setcameratorchon__return_values]
 
 - YES：设置成功。
 - NO：设置失败。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setcamerazoomfactor"></a>
-
-## setCameraZoomFactor:
+## setCameraZoomFactor: [#api_irtcengine_setcamerazoomfactor]
 
 设置摄像头的缩放因子。
 
@@ -637,26 +531,20 @@ description: "启用或关闭多摄像头采集模式。"
 你必须在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 之后再调用此方法。设置结果将在摄像头成功开启后生效，即 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）之后。
 :::
 
-<a id="api_irtcengine_setcamerazoomfactor__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setcamerazoomfactor__parameters]
 
 #### `zoomFactor`
 
 摄像头缩放因子。对于不支持超广角的设备，该值范围为 1.0 到最大缩放因子；对于支持超广角的设备，该值范围为 0.5 到最大缩放因子。你可以通过调用 [cameraMaxZoomFactor](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) 方法获取设备支持的最大缩放因子。
 
-<a id="api_irtcengine_setcamerazoomfactor__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setcamerazoomfactor__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_switchcamera"></a>
-
-## switchCamera
+## switchCamera [#api_irtcengine_switchcamera]
 
 切换前后摄像头。
 
@@ -674,24 +562,18 @@ description: "启用或关闭多摄像头采集模式。"
 此方法仅切换由第一个摄像头采集的视频流的摄像头，即调用 [startCameraCapture:config:](/zh-CN/api-reference/rtc/ios/video/camera-capture#api_irtcengine_startcameracapture) 时视频源设置为 `AgoraVideoSourceTypeCamera` （0）的视频流。
 :::
 
-<a id="api_irtcengine_switchcamera__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_switchcamera__timing]
 
 必须在摄像头成功启用后调用，即 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）之后。
 
-<a id="api_irtcengine_switchcamera__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_switchcamera__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="callback_irtcengineeventhandler_oncameraexposureareachanged"></a>
-
-## rtcEngine:cameraExposureDidChangedToRect:
+## rtcEngine:cameraExposureDidChangedToRect: [#callback_irtcengineeventhandler_oncameraexposureareachanged]
 
 摄像头曝光区域发生变化回调。
 
@@ -705,15 +587,11 @@ description: "启用或关闭多摄像头采集模式。"
 
 当你调用 [setCameraExposurePosition:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameraexposureposition) 方法更改摄像头曝光位置时，SDK 会触发该回调。
 
-<a id="callback_irtcengineeventhandler_oncameraexposureareachanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_oncameraexposureareachanged__timing]
 
 该回调在你调用 [setCameraExposurePosition:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameraexposureposition) 更改摄像头曝光位置时被触发。
 
-<a id="callback_irtcengineeventhandler_oncameraexposureareachanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_oncameraexposureareachanged__parameters]
 
 #### `engine`
 
@@ -725,9 +603,7 @@ description: "启用或关闭多摄像头采集模式。"
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_oncamerafocusareachanged"></a>
-
-## rtcEngine:cameraFocusDidChangedToRect:
+## rtcEngine:cameraFocusDidChangedToRect: [#callback_irtcengineeventhandler_oncamerafocusareachanged]
 
 摄像头对焦区域发生变化时的回调。
 
@@ -741,15 +617,11 @@ description: "启用或关闭多摄像头采集模式。"
 
 调用 [setCameraFocusPositionInPreview:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcamerafocuspositioninpreview) 方法更改摄像头对焦位置时，SDK 会触发该回调。
 
-<a id="callback_irtcengineeventhandler_oncamerafocusareachanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_oncamerafocusareachanged__timing]
 
 该回调在你调用 [setCameraFocusPositionInPreview:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcamerafocuspositioninpreview) 更改摄像头对焦位置时被触发。
 
-<a id="callback_irtcengineeventhandler_oncamerafocusareachanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_oncamerafocusareachanged__parameters]
 
 #### `rect`
 
@@ -761,9 +633,7 @@ description: "启用或关闭多摄像头采集模式。"
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_oncameraready"></a>
-
-## rtcEngineCameraDidReady:
+## rtcEngineCameraDidReady: [#callback_irtcengineeventhandler_oncameraready]
 
 摄像头准备就绪回调。
 
@@ -773,21 +643,15 @@ description: "启用或关闭多摄像头采集模式。"
 - (void)rtcEngineCameraDidReady:(AgoraRtcEngineKit * _Nonnull)engine NS_SWIFT_NAME(rtcEngineCameraDidReady(_:)) __deprecated_msg("Use rtcEngine:localVideoStateChangedOfState:reason:sourceType: instead");
 ```
 
-<a id="callback_irtcengineeventhandler_oncameraready__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#callback_irtcengineeventhandler_oncameraready__detailed_desc]
 
 该方法已废弃，请改用 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged)。
 
-<a id="callback_irtcengineeventhandler_oncameraready__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_oncameraready__timing]
 
 该回调在摄像头成功打开并准备好采集视频时触发。
 
-<a id="callback_irtcengineeventhandler_oncameraready__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_oncameraready__parameters]
 
 #### `engine`
 

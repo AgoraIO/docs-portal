@@ -3,11 +3,7 @@ title: "视频渲染"
 description: "启用音视频帧的极速渲染。"
 ---
 
-<a id="toc_video_rendering"></a>
-
-<a id="api_irtcengine_enableinstantmediarendering"></a>
-
-## enableInstantMediaRendering
+## <span id="toc_video_rendering"></span>enableInstantMediaRendering [#api_irtcengine_enableinstantmediarendering]
 
 启用音视频帧的极速渲染。
 
@@ -17,9 +13,7 @@ description: "启用音视频帧的极速渲染。"
 - (int)enableInstantMediaRendering NS_SWIFT_NAME(enableInstantMediaRendering());
 ```
 
-<a id="api_irtcengine_enableinstantmediarendering__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_enableinstantmediarendering__detailed_desc]
 
 自 v4.1.1 版本新增。
 
@@ -29,21 +23,15 @@ description: "启用音视频帧的极速渲染。"
 主播和观众都需调用该方法，才能体验音视频帧的极速渲染。若需取消极速渲染，需调用 [destroy](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_release) 方法销毁 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。
 :::
 
-<a id="api_irtcengine_enableinstantmediarendering__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_enableinstantmediarendering__scenario]
 
 声网建议在直播场景中为观众开启该模式。
 
-<a id="api_irtcengine_enableinstantmediarendering__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_enableinstantmediarendering__timing]
 
 请在加入频道前调用该方法。
 
-<a id="api_irtcengine_enableinstantmediarendering__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enableinstantmediarendering__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -52,9 +40,7 @@ description: "启用音视频帧的极速渲染。"
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlocalrendermode1"></a>
-
-## setLocalRenderMode:mode:
+## setLocalRenderMode:mode: [#api_irtcengine_setlocalrendermode1]
 
 设置本地视频显示模式。
 
@@ -65,17 +51,13 @@ description: "启用音视频帧的极速渲染。"
                      mode:(AgoraVideoRenderMode)mode NS_SWIFT_NAME(setLocalRenderMode(_:mode:)) __deprecated;
 ```
 
-<a id="api_irtcengine_setlocalrendermode1__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_setlocalrendermode1__detailed_desc]
 
 该方法已废弃。
 
 你可以在通话过程中多次调用该方法以更改本地视频的显示模式。
 
-<a id="api_irtcengine_setlocalrendermode1__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlocalrendermode1__parameters]
 
 #### `uid`
 
@@ -85,18 +67,14 @@ description: "启用音视频帧的极速渲染。"
 
 本地视频显示模式，详见 [AgoraVideoRenderMode](/zh-CN/api-reference/rtc/ios/enum-rendermodetype)。
 
-<a id="api_irtcengine_setlocalrendermode1__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlocalrendermode1__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlocalrendermode2"></a>
-
-## setLocalRenderMode:mirror:
+## setLocalRenderMode:mirror: [#api_irtcengine_setlocalrendermode2]
 
 更新本地视频视图的显示模式。
 
@@ -115,18 +93,14 @@ description: "启用音视频帧的极速渲染。"
 该方法仅对主摄像头（`AgoraMediaSourceTypePrimaryCamera` ）生效。在使用自定义视频采集或其他视频源的场景中，应使用 [setupLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setuplocalvideo) 方法替代。
 :::
 
-<a id="api_irtcengine_setlocalrendermode2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setlocalrendermode2__timing]
 
 调用时序：
 
 - 请确保在调用该方法前已调用 [setupLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setuplocalvideo) 方法初始化本地视频视图。
 - 通话过程中，你可以多次调用该方法更新本地视频视图的显示模式。
 
-<a id="api_irtcengine_setlocalrendermode2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlocalrendermode2__parameters]
 
 #### `mode`
 
@@ -136,18 +110,14 @@ description: "启用音视频帧的极速渲染。"
 
 本地视频视图的镜像模式，详见 [AgoraVideoMirrorMode](/zh-CN/api-reference/rtc/ios/enum-videomirrormodetype)。如果使用前置摄像头，SDK 默认启用镜像模式；如果使用后置摄像头，SDK 默认关闭镜像模式。
 
-<a id="api_irtcengine_setlocalrendermode2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlocalrendermode2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlocalrendertargetfps"></a>
-
-## setLocalRenderTargetFps:targetFps:
+## setLocalRenderTargetFps:targetFps: [#api_irtcengine_setlocalrendertargetfps]
 
 设置本地视频渲染的最大帧率。
 
@@ -162,21 +132,15 @@ description: "启用音视频帧的极速渲染。"
 
 在对视频渲染帧率要求不高的场景（如屏幕共享或在线教育）中，可以调用该方法设置本地视频渲染的最大帧率。SDK 会尝试将本地渲染的实际帧率保持在该值附近，从而降低 CPU 消耗并提升系统性能。
 
-<a id="api_irtcengine_setlocalrendertargetfps__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_setlocalrendertargetfps__scenario]
 
 在对视频渲染帧率要求不高的场景（如屏幕共享或在线教育）中，你可以调用该方法设置本地视频渲染的最大帧率。SDK 会尝试将本地渲染的实际帧率保持在该值附近，以降低 CPU 消耗并提升系统性能。
 
-<a id="api_irtcengine_setlocalrendertargetfps__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setlocalrendertargetfps__timing]
 
 你可以在加入频道前或后调用该方法。
 
-<a id="api_irtcengine_setlocalrendertargetfps__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlocalrendertargetfps__parameters]
 
 #### `sourceType`
 
@@ -186,18 +150,14 @@ description: "启用音视频帧的极速渲染。"
 
 本地视频的采集帧率（fps）。支持的取值包括：1、7、10、15、24、30、60。将该参数设置为低于实际视频帧率的值，否则设置不生效。
 
-<a id="api_irtcengine_setlocalrendertargetfps__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlocalrendertargetfps__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlocalvideomirrormode"></a>
-
-## setLocalVideoMirrorMode:
+## setLocalVideoMirrorMode: [#api_irtcengine_setlocalvideomirrormode]
 
 设置本地视频镜像模式。
 
@@ -207,32 +167,24 @@ description: "启用音视频帧的极速渲染。"
 - (int)setLocalVideoMirrorMode:(AgoraVideoMirrorMode)mode NS_SWIFT_NAME(setLocalVideoMirrorMode(_:)) __deprecated;
 ```
 
-<a id="api_irtcengine_setlocalvideomirrormode__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_setlocalvideomirrormode__detailed_desc]
 
 该方法已废弃。
 
-<a id="api_irtcengine_setlocalvideomirrormode__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlocalvideomirrormode__parameters]
 
 #### `mode`
 
 本地视频镜像模式。详见 [AgoraVideoMirrorMode](/zh-CN/api-reference/rtc/ios/enum-videomirrormodetype)。
 
-<a id="api_irtcengine_setlocalvideomirrormode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlocalvideomirrormode__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setremoterendermode2"></a>
-
-## setRemoteRenderMode:mode:mirror:
+## setRemoteRenderMode:mode:mirror: [#api_irtcengine_setremoterendermode2]
 
 更新远端用户视频视图的显示模式。
 
@@ -253,9 +205,7 @@ description: "启用音视频帧的极速渲染。"
 - 通话过程中，你可以多次调用该方法以更新远端用户视频视图的显示模式。
 :::
 
-<a id="api_irtcengine_setremoterendermode2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremoterendermode2__parameters]
 
 #### `uid`
 
@@ -269,18 +219,14 @@ description: "启用音视频帧的极速渲染。"
 
 远端用户视图的镜像模式，详见 [AgoraVideoMirrorMode](/zh-CN/api-reference/rtc/ios/enum-videomirrormodetype)。
 
-<a id="api_irtcengine_setremoterendermode2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremoterendermode2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setremoterendermodeex"></a>
-
-## setRemoteRenderModeEx:mode:mirror:connection:
+## setRemoteRenderModeEx:mode:mirror:connection: [#api_irtcengineex_setremoterendermodeex]
 
 设置指定远端用户的视频显示模式。
 
@@ -302,15 +248,11 @@ description: "启用音视频帧的极速渲染。"
 - 通话过程中，你可以根据需要多次调用该方法更新远端用户视频视图的显示模式。
 :::
 
-<a id="api_irtcengineex_setremoterendermodeex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setremoterendermodeex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setremoterendermodeex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setremoterendermodeex__parameters]
 
 #### `uid`
 
@@ -328,18 +270,14 @@ description: "启用音视频帧的极速渲染。"
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_setremoterendermodeex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setremoterendermodeex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setremoterendertargetfps"></a>
-
-## setRemoteRenderTargetFps:
+## setRemoteRenderTargetFps: [#api_irtcengine_setremoterendertargetfps]
 
 设置远端视频渲染的最大帧率。
 
@@ -353,38 +291,28 @@ description: "启用音视频帧的极速渲染。"
 
 在视频渲染帧率要求不高的场景（例如屏幕共享、在线教育）或远端用户使用中低端设备的情况下，你可以调用该方法设置远端客户端的视频渲染最大帧率。SDK 会尽可能将实际渲染帧率控制在该值附近，从而降低 CPU 消耗并提升系统性能。
 
-<a id="api_irtcengine_setremoterendertargetfps__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_setremoterendertargetfps__scenario]
 
 在视频渲染帧率要求不高的场景（例如屏幕共享、在线教育）或远端用户使用中低端设备的情况下，你可以调用该方法设置远端客户端的视频渲染最大帧率。SDK 会尽可能将实际渲染帧率控制在该值附近，从而降低 CPU 消耗并提升系统性能。
 
-<a id="api_irtcengine_setremoterendertargetfps__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setremoterendertargetfps__timing]
 
 你可以在加入频道前或加入频道后调用该方法。
 
-<a id="api_irtcengine_setremoterendertargetfps__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremoterendertargetfps__parameters]
 
 #### `targetFps`
 
 本地视频的采集帧率（fps）。支持的取值包括：1、7、10、15、24、30、60。将该参数设置为低于实际视频帧率的值，否则设置不生效。
 
-<a id="api_irtcengine_setremoterendertargetfps__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremoterendertargetfps__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_imediaplayer_setrendermode"></a>
-
-## setRenderMode:
+## setRenderMode: [#api_imediaplayer_setrendermode]
 
 设置媒体播放器的渲染模式。
 
@@ -394,28 +322,20 @@ description: "启用音视频帧的极速渲染。"
 - (int)setRenderMode:(AgoraMediaPlayerRenderMode)mode NS_SWIFT_NAME(setRenderMode(_:));
 ```
 
-<a id="api_imediaplayer_setrendermode__detailed_desc"></a>
-
-<a id="api_imediaplayer_setrendermode__parameters"></a>
-
-### 参数
+### <span id="api_imediaplayer_setrendermode__detailed_desc"></span>参数 [#api_imediaplayer_setrendermode__parameters]
 
 #### `mode`
 
 视图的渲染模式，详见 [AgoraMediaPlayerRenderMode](/zh-CN/api-reference/rtc/ios/enum-agoramediaplayerrendermode)。
 
-<a id="api_imediaplayer_setrendermode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_setrendermode__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_irtcengine_setuplocalvideo"></a>
-
-## setupLocalVideo:
+## setupLocalVideo: [#api_irtcengine_setuplocalvideo]
 
 初始化本地视频画面。
 
@@ -433,38 +353,28 @@ description: "启用音视频帧的极速渲染。"
 若仅需在通话中更新本地视频画面的渲染模式或镜像模式，请调用 [setLocalRenderMode:mirror:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
 :::
 
-<a id="api_irtcengine_setuplocalvideo__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_setuplocalvideo__scenario]
 
 初始化后调用该方法设置本地视频，然后加入频道。在实时互动场景中，如需在本地预览中同时查看多个不同观察位置的画面，可多次调用该方法设置不同的 `view` 和观察位置。
 
-<a id="api_irtcengine_setuplocalvideo__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setuplocalvideo__timing]
 
 你可以在加入频道前或后调用该方法。
 
-<a id="api_irtcengine_setuplocalvideo__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setuplocalvideo__parameters]
 
 #### `local`
 
 本地视频画面及相关设置，详见 [AgoraRtcVideoCanvas](/zh-CN/api-reference/rtc/ios/class-videocanvas)。
 
-<a id="api_irtcengine_setuplocalvideo__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setuplocalvideo__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setupremotevideo"></a>
-
-## setupRemoteVideo:
+## setupRemoteVideo: [#api_irtcengine_setupremotevideo]
 
 初始化远端用户的视频视图。
 
@@ -483,26 +393,20 @@ description: "启用音视频帧的极速渲染。"
 - 使用录制服务时，应用无需绑定视图，因为录制服务不会发送视频流。如果你的应用无法识别录制服务，请在 SDK 触发 [rtcEngine:firstRemoteVideoDecodedOfUid:size:elapsed:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时将远端用户绑定到视图。
 :::
 
-<a id="api_irtcengine_setupremotevideo__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setupremotevideo__parameters]
 
 #### `remote`
 
 远端视频视图及其相关设置，详见 [AgoraRtcVideoCanvas](/zh-CN/api-reference/rtc/ios/class-videocanvas)。
 
-<a id="api_irtcengine_setupremotevideo__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setupremotevideo__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setupremotevideoex"></a>
-
-## setupRemoteVideoEx:connection:
+## setupRemoteVideoEx:connection: [#api_irtcengineex_setupremotevideoex]
 
 初始化远端用户的视频视图。
 
@@ -521,15 +425,11 @@ description: "启用音视频帧的极速渲染。"
 若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 `setRemoteRenderModeEx` 方法。
 :::
 
-<a id="api_irtcengineex_setupremotevideoex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setupremotevideoex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setupremotevideoex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setupremotevideoex__parameters]
 
 #### `remote`
 
@@ -539,17 +439,13 @@ description: "启用音视频帧的极速渲染。"
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_setupremotevideoex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setupremotevideoex__return_values]
 
 0：方法调用成功。 &lt; 0：方法调用失败。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_startmediarenderingtracing"></a>
-
-## startMediaRenderingTracing
+## startMediaRenderingTracing [#api_irtcengine_startmediarenderingtracing]
 
 启用视频帧渲染过程的追踪功能。
 
@@ -559,9 +455,7 @@ description: "启用音视频帧的极速渲染。"
 - (int)startMediaRenderingTracing NS_SWIFT_NAME(startMediaRenderingTracing());
 ```
 
-<a id="api_irtcengine_startmediarenderingtracing__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_startmediarenderingtracing__detailed_desc]
 
 自 v4.1.1 版本新增。
 
@@ -572,15 +466,11 @@ description: "启用音视频帧的极速渲染。"
 - 本地用户离开当前频道后，SDK 会自动从你加入频道的时刻开始追踪视频渲染事件。
 :::
 
-<a id="api_irtcengine_startmediarenderingtracing__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_startmediarenderingtracing__scenario]
 
 你可以结合应用中的 UI 设置（如按钮、滑块）调用该方法，以提升用户体验。例如，在用户点击“加入频道”按钮时调用该方法，然后通过 [rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调获取视频帧渲染过程所耗费的时间，从而优化相关指标。
 
-<a id="api_irtcengine_startmediarenderingtracing__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_startmediarenderingtracing__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -589,9 +479,7 @@ description: "启用音视频帧的极速渲染。"
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_startmediarenderingtracingex"></a>
-
-## startMediaRenderingTracingEx:
+## startMediaRenderingTracingEx: [#api_irtcengineex_startmediarenderingtracingex]
 
 启用视频帧渲染过程的追踪。
 
@@ -601,9 +489,7 @@ description: "启用音视频帧的极速渲染。"
 - (int)startMediaRenderingTracingEx:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(startMediaRenderingTracingEx(_:));
 ```
 
-<a id="api_irtcengineex_startmediarenderingtracingex__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_startmediarenderingtracingex__detailed_desc]
 
 自 v4.1.1 版本新增。
 
@@ -614,32 +500,24 @@ description: "启用音视频帧的极速渲染。"
 - 本地用户离开当前频道后，SDK 会自动从你加入频道的时刻开始追踪视频渲染事件。
 :::
 
-<a id="api_irtcengineex_startmediarenderingtracingex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_startmediarenderingtracingex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_startmediarenderingtracingex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_startmediarenderingtracingex__parameters]
 
 #### `connection`
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_startmediarenderingtracingex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_startmediarenderingtracingex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo"></a>
-
-## rtcEngine:didTranscodedStreamLayoutInfoUpdatedWithUserId:videoLayoutInfo:
+## rtcEngine:didTranscodedStreamLayoutInfoUpdatedWithUserId:videoLayoutInfo: [#callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo]
 
 当本地用户接收到携带视频合流布局信息的合图视频时触发。
 
@@ -653,15 +531,11 @@ description: "启用音视频帧的极速渲染。"
 
 该回调在你首次接收到由视频合流服务器发送的合图视频，或混合流的布局信息发生变化时被触发。
 
-<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__timing]
 
 该回调在你首次接收到由视频合流服务器发送的合图视频，或混合流的布局信息发生变化时被触发。
 
-<a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__parameters]
 
 #### `engine`
 
@@ -677,9 +551,7 @@ description: "启用音视频帧的极速渲染。"
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onvideorenderingtracingresult"></a>
-
-## rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:
+## rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo: [#callback_irtcengineeventhandler_onvideorenderingtracingresult]
 
 视频帧渲染事件的回调。
 
@@ -693,15 +565,11 @@ description: "启用音视频帧的极速渲染。"
 
 调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后，SDK 会触发该回调，用于上报视频帧渲染的事件及渲染过程中的指标。你可以通过优化这些指标，提高首帧视频渲染的效率。
 
-<a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onvideorenderingtracingresult__timing]
 
 该回调在调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后被触发。
 
-<a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onvideorenderingtracingresult__parameters]
 
 #### `engine`
 

@@ -3,11 +3,7 @@ title: "音频设备管理"
 description: "获取音频设备信息。"
 ---
 
-<a id="toc_audio_device"></a>
-
-<a id="api_irtcengine_getaudiodeviceinfo"></a>
-
-## getAudioDeviceInfo
+## <span id="toc_audio_device"></span>getAudioDeviceInfo [#api_irtcengine_getaudiodeviceinfo]
 
 获取音频设备信息。
 
@@ -23,17 +19,13 @@ public abstract DeviceInfo getAudioDeviceInfo();
 你可以在加入频道前或加入频道后调用该方法。
 :::
 
-<a id="api_irtcengine_getaudiodeviceinfo__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getaudiodeviceinfo__return_values]
 
 方法调用成功，返回 [DeviceInfo](/zh-CN/api-reference/rtc/android/class-deviceinfo) 对象。 方法调用失败，返回 `null`。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_startplaybackdevicetest"></a>
-
-## startPlaybackDeviceTest
+## startPlaybackDeviceTest [#api_irtcengine_startplaybackdevicetest]
 
 启动本地音频播放设备测试。
 
@@ -51,26 +43,20 @@ public abstract int startPlaybackDeviceTest(String audioFileName);
 请在加入频道前调用该方法。测试完成后，请在加入频道前调用 [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/android/device-management/audio-device#api_irtcengine_stopplaybackdevicetest) 停止测试。
 :::
 
-<a id="api_irtcengine_startplaybackdevicetest__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_startplaybackdevicetest__parameters]
 
 #### `audioFileName`
 
 音频文件的路径，UTF-8 编码的字符串。支持的文件格式包括：wav、mp3、m4a 和 aac。支持的采样率包括：8000、16000、32000、44100 和 48000 Hz。
 
-<a id="api_irtcengine_startplaybackdevicetest__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_startplaybackdevicetest__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_startrecordingdevicetest"></a>
-
-## startRecordingDeviceTest
+## startRecordingDeviceTest [#api_irtcengine_startrecordingdevicetest]
 
 启动音频采集设备测试。
 
@@ -88,17 +74,13 @@ public abstract int startRecordingDeviceTest(int indicationInterval);
 请在加入频道前调用该方法。测试完成后，在加入频道前调用 [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/android/device-management/audio-device#api_irtcengine_stoprecordingdevicetest) 停止测试。
 :::
 
-<a id="api_irtcengine_startrecordingdevicetest__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_startrecordingdevicetest__parameters]
 
 #### `indicationInterval`
 
 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔（毫秒）。该值应大于 10，否则将无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，且 SDK 返回错误码 -2。建议设置为 100。
 
-<a id="api_irtcengine_startrecordingdevicetest__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_startrecordingdevicetest__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
@@ -107,9 +89,7 @@ public abstract int startRecordingDeviceTest(int indicationInterval);
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_stopplaybackdevicetest"></a>
-
-## stopPlaybackDeviceTest
+## stopPlaybackDeviceTest [#api_irtcengine_stopplaybackdevicetest]
 
 停止音频播放设备测试。
 
@@ -127,18 +107,14 @@ public abstract int stopPlaybackDeviceTest();
 请在加入频道前调用该方法。
 :::
 
-<a id="api_irtcengine_stopplaybackdevicetest__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_stopplaybackdevicetest__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_stoprecordingdevicetest"></a>
-
-## stopRecordingDeviceTest
+## stopRecordingDeviceTest [#api_irtcengine_stoprecordingdevicetest]
 
 停止音频采集设备测试。
 
@@ -156,9 +132,7 @@ public abstract int stopRecordingDeviceTest();
 请在加入频道前调用该方法。
 :::
 
-<a id="api_irtcengine_stoprecordingdevicetest__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_stoprecordingdevicetest__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。

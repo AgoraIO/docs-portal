@@ -3,11 +3,7 @@ title: "音频采集"
 description: "调节采集音频信号的音量。"
 ---
 
-<a id="toc_audio_capture"></a>
-
-<a id="api_irtcengine_adjustrecordingsignalvolume"></a>
-
-## adjustRecordingSignalVolume
+## <span id="toc_audio_capture"></span>adjustRecordingSignalVolume [#api_irtcengine_adjustrecordingsignalvolume]
 
 调节采集音频信号的音量。
 
@@ -21,15 +17,11 @@ public abstract int adjustRecordingSignalVolume(int volume);
 
 如果你只需要静音音频信号，声网建议使用 [muteRecordingSignal](/zh-CN/api-reference/rtc/android/audio/audio-capture#api_irtcengine_muterecordingsignal) 方法。
 
-<a id="api_irtcengine_adjustrecordingsignalvolume__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_adjustrecordingsignalvolume__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_adjustrecordingsignalvolume__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_adjustrecordingsignalvolume__parameters]
 
 #### `volume`
 
@@ -39,18 +31,14 @@ public abstract int adjustRecordingSignalVolume(int volume);
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
 
-<a id="api_irtcengine_adjustrecordingsignalvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_adjustrecordingsignalvolume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_enableinearmonitoring"></a>
-
-## enableInEarMonitoring [1/2]
+## enableInEarMonitoring [1/2] [#api_irtcengine_enableinearmonitoring]
 
 启用或关闭耳返监听。
 
@@ -66,15 +54,11 @@ public abstract int enableInEarMonitoring(boolean enabled);
 你必须使用有线或蓝牙耳机才能听到耳返监听效果。
 :::
 
-<a id="api_irtcengine_enableinearmonitoring__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_enableinearmonitoring__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_enableinearmonitoring__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enableinearmonitoring__parameters]
 
 #### `enabled`
 
@@ -83,9 +67,7 @@ public abstract int enableInEarMonitoring(boolean enabled);
 - true：启用耳返监听。
 - false：关闭耳返监听。
 
-<a id="api_irtcengine_enableinearmonitoring__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enableinearmonitoring__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
@@ -94,9 +76,7 @@ public abstract int enableInEarMonitoring(boolean enabled);
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_enableinearmonitoring2"></a>
-
-## enableInEarMonitoring [2/2]
+## enableInEarMonitoring [2/2] [#api_irtcengine_enableinearmonitoring2]
 
 启用或关闭耳返监听功能。
 
@@ -112,15 +92,11 @@ public abstract int enableInEarMonitoring(boolean enabled, int includeAudioFilte
 你必须使用有线或蓝牙耳机才能听到耳返监听效果。
 :::
 
-<a id="api_irtcengine_enableinearmonitoring2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_enableinearmonitoring2__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_enableinearmonitoring2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enableinearmonitoring2__parameters]
 
 #### `enabled`
 
@@ -142,9 +118,7 @@ public abstract int enableInEarMonitoring(boolean enabled, int includeAudioFilte
 - `EAR_MONITORING_FILTER_NOISE_SUPPRESSION (1 <<2)`：（4）在耳返监听中添加降噪音频滤镜。该枚举值支持使用按位或运算符（|）组合使用。
 - `EAR_MONITORING_FILTER_REUSE_POST_PROCESSING_FILTER (1 <<15)`：复用发送端已处理的音频滤镜用于耳返监听。该枚举值可降低 CPU 使用率，但会增加耳返监听延迟，适用于对延迟不敏感但要求低 CPU 消耗的场景。该枚举值仅支持单独使用，选中后其他音频滤镜配置将自动失效。
 
-<a id="api_irtcengine_enableinearmonitoring2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enableinearmonitoring2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
@@ -153,9 +127,7 @@ public abstract int enableInEarMonitoring(boolean enabled, int includeAudioFilte
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_enablelocalaudio"></a>
-
-## enableLocalAudio
+## enableLocalAudio [#api_irtcengine_enablelocalaudio]
 
 启用或关闭本地音频采集功能。
 
@@ -172,27 +144,19 @@ public abstract int enableLocalAudio(boolean enabled);
 - [enableLocalAudio](/zh-CN/api-reference/rtc/android/audio/audio-capture#api_irtcengine_enablelocalaudio)：控制本地音频采集和处理的启用状态。
 - [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：仅控制是否发送本地音频流，不影响音频采集状态。
 
-<a id="api_irtcengine_enablelocalaudio__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_enablelocalaudio__scenario]
 
 `enableLocalAudio(false)` 适用于只接收远端音频流而不发送本地采集音频的场景。该方法不会影响接收远端音频流。
 
-<a id="api_irtcengine_enablelocalaudio__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_enablelocalaudio__timing]
 
 你可以在加入频道前或加入频道后调用该方法。在加入频道前调用该方法仅设置设备状态，并在加入频道后立即生效。
 
-<a id="api_irtcengine_enablelocalaudio__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_enablelocalaudio__related]
 
 一旦本地音频功能被关闭或重新启用，SDK 会触发 [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，报告 `LOCAL_AUDIO_STREAM_STATE_STOPPED` （0）或 `LOCAL_AUDIO_STREAM_STATE_RECORDING` （1）。
 
-<a id="api_irtcengine_enablelocalaudio__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablelocalaudio__parameters]
 
 #### `enabled`
 
@@ -201,18 +165,14 @@ public abstract int enableLocalAudio(boolean enabled);
 - true：（默认）重新启用本地音频功能，即启动本地音频采集设备（如麦克风）。
 - false：关闭本地音频功能，即停止本地音频采集。
 
-<a id="api_irtcengine_enablelocalaudio__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablelocalaudio__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_muterecordingsignal"></a>
-
-## muteRecordingSignal
+## muteRecordingSignal [#api_irtcengine_muterecordingsignal]
 
 设置是否静音录制信号。
 
@@ -231,15 +191,11 @@ public abstract int muteRecordingSignal(boolean muted);
 
 当你再次调用该方法并将参数设置为 false 时，录制信号的音量会恢复为静音前记录的音量。
 
-<a id="api_irtcengine_muterecordingsignal__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_muterecordingsignal__timing]
 
 该方法可以在加入频道前或后调用。
 
-<a id="api_irtcengine_muterecordingsignal__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_muterecordingsignal__parameters]
 
 #### `muted`
 
@@ -248,18 +204,14 @@ public abstract int muteRecordingSignal(boolean muted);
 - true：静音录制信号。
 - false：（默认）不静音录制信号。
 
-<a id="api_irtcengine_muterecordingsignal__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_muterecordingsignal__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setinearmonitoringvolume"></a>
-
-## setInEarMonitoringVolume
+## setInEarMonitoringVolume [#api_irtcengine_setinearmonitoringvolume]
 
 设置耳返音量。
 
@@ -269,25 +221,17 @@ public abstract int muteRecordingSignal(boolean muted);
 public abstract int setInEarMonitoringVolume(int volume);
 ```
 
-<a id="api_irtcengine_setinearmonitoringvolume__detailed_desc"></a>
-
-<a id="api_irtcengine_setinearmonitoringvolume__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_setinearmonitoringvolume__detailed_desc"></span>调用时机 [#api_irtcengine_setinearmonitoringvolume__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_setinearmonitoringvolume__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setinearmonitoringvolume__parameters]
 
 #### `volume`
 
 用户的音量，取值范围为 [0, 400]。0 表示静音，100（默认）表示原始音量，400 表示原始音量的四倍（将音频信号放大四倍）。
 
-<a id="api_irtcengine_setinearmonitoringvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setinearmonitoringvolume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。

@@ -3,11 +3,7 @@ title: "直播水印"
 description: "向本地视频添加水印图像。"
 ---
 
-<a id="toc_watermark"></a>
-
-<a id="api_irtcengine_addvideowatermark1"></a>
-
-## addVideoWatermark [1/3]
+## <span id="toc_watermark"></span>addVideoWatermark [1/3] [#api_irtcengine_addvideowatermark1]
 
 向本地视频添加水印图像。
 
@@ -17,9 +13,7 @@ description: "向本地视频添加水印图像。"
 public abstract int addVideoWatermark(AgoraImage watermark)
 ```
 
-<a id="api_irtcengine_addvideowatermark1__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_addvideowatermark1__detailed_desc]
 
 自 v2.9.1 版本废弃，请改用 [addVideoWatermark [3/3]](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_irtcengine_addvideowatermark3)。
 
@@ -31,26 +25,20 @@ public abstract int addVideoWatermark(AgoraImage watermark)
 - SDK 仅支持在本地视频或 CDN 推流中添加一张水印图像。新添加的水印图像会替换之前的图像。
 :::
 
-<a id="api_irtcengine_addvideowatermark1__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_addvideowatermark1__parameters]
 
 #### `watermark`
 
 要添加到本地直播中的水印图像。详见 [AgoraImage](/zh-CN/api-reference/rtc/android/class-rtcimage)。
 
-<a id="api_irtcengine_addvideowatermark1__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_addvideowatermark1__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_addvideowatermark2"></a>
-
-## addVideoWatermark [2/3]
+## addVideoWatermark [2/3] [#api_irtcengine_addvideowatermark2]
 
 向本地视频添加水印图像。
 
@@ -60,9 +48,7 @@ public abstract int addVideoWatermark(AgoraImage watermark)
 public abstract int addVideoWatermark(String watermarkUrl, WatermarkOptions options)
 ```
 
-<a id="api_irtcengine_addvideowatermark2__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_addvideowatermark2__detailed_desc]
 
 自 v4.6.0 版本废弃，请改用 [addVideoWatermark [3/3]](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_irtcengine_addvideowatermark3) 方法。
 
@@ -85,9 +71,7 @@ public abstract int addVideoWatermark(String watermarkUrl, WatermarkOptions opti
 - 如果你为本地视频启用了镜像模式，则本地视频中的水印也会被镜像。为避免水印被镜像，声网建议不要同时使用本地视频的镜像和水印功能。你可以在应用层实现水印功能。
 :::
 
-<a id="api_irtcengine_addvideowatermark2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_addvideowatermark2__parameters]
 
 #### `watermarkUrl`
 
@@ -97,18 +81,14 @@ public abstract int addVideoWatermark(String watermarkUrl, WatermarkOptions opti
 
 水印图像的相关设置。详见 [WatermarkOptions](/zh-CN/api-reference/rtc/android/class-watermarkoptions)。
 
-<a id="api_irtcengine_addvideowatermark2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_addvideowatermark2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_addvideowatermark3"></a>
-
-## addVideoWatermark [3/3]
+## addVideoWatermark [3/3] [#api_irtcengine_addvideowatermark3]
 
 向本地视频流添加水印图像。
 
@@ -118,34 +98,26 @@ public abstract int addVideoWatermark(String watermarkUrl, WatermarkOptions opti
 public abstract int addVideoWatermark(WatermarkConfig config);
 ```
 
-<a id="api_irtcengine_addvideowatermark3__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_addvideowatermark3__detailed_desc]
 
 自 v4.6.0 版本新增。
 
 你可以使用该方法通过 [WatermarkConfig](/zh-CN/api-reference/rtc/android/class-watermarkconfig) 配置，在本地视频流中叠加水印图像，包括设置水印在预览中的位置、大小和可见性。
 
-<a id="api_irtcengine_addvideowatermark3__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_addvideowatermark3__parameters]
 
 #### `config`
 
 水印配置。详见 [WatermarkConfig](/zh-CN/api-reference/rtc/android/class-watermarkconfig)。
 
-<a id="api_irtcengine_addvideowatermark3__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_addvideowatermark3__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_addvideowatermarkex"></a>
-
-## addVideoWatermarkEx [1/2]
+## addVideoWatermarkEx [1/2] [#api_irtcengineex_addvideowatermarkex]
 
 向本地视频添加水印图像。
 
@@ -155,9 +127,7 @@ public abstract int addVideoWatermark(WatermarkConfig config);
 public abstract int addVideoWatermarkEx(String watermarkUrl, WatermarkOptions options, RtcConnection connection)
 ```
 
-<a id="api_irtcengineex_addvideowatermarkex__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengineex_addvideowatermarkex__detailed_desc]
 
 自 v4.6.0 版本废弃，请改用 [addVideoWatermarkEx [2/2]](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_irtcengineex_addvideowatermarkex1) 方法。
 
@@ -175,15 +145,11 @@ public abstract int addVideoWatermarkEx(String watermarkUrl, WatermarkOptions op
 - 如果你为本地视频启用了镜像模式，则本地视频中的水印也会被镜像。为避免水印被镜像，声网建议不要同时使用本地视频的镜像和水印功能。你可以在应用层实现水印功能。
 :::
 
-<a id="api_irtcengineex_addvideowatermarkex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_addvideowatermarkex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_addvideowatermarkex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_addvideowatermarkex__parameters]
 
 #### `watermarkUrl`
 
@@ -197,18 +163,14 @@ public abstract int addVideoWatermarkEx(String watermarkUrl, WatermarkOptions op
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_addvideowatermarkex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_addvideowatermarkex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengineex_addvideowatermarkex1"></a>
-
-## addVideoWatermarkEx [2/2]
+## addVideoWatermarkEx [2/2] [#api_irtcengineex_addvideowatermarkex1]
 
 向本地视频添加水印图像。
 
@@ -218,21 +180,15 @@ public abstract int addVideoWatermarkEx(String watermarkUrl, WatermarkOptions op
 public abstract int addVideoWatermarkEx(WatermarkConfig config, RtcConnection connection);
 ```
 
-<a id="api_irtcengineex_addvideowatermarkex1__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_addvideowatermarkex1__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_irtcengineex_addvideowatermarkex1__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_addvideowatermarkex1__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_addvideowatermarkex1__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_addvideowatermarkex1__parameters]
 
 #### `config`
 
@@ -242,18 +198,14 @@ public abstract int addVideoWatermarkEx(WatermarkConfig config, RtcConnection co
 
 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection) 对象。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_addvideowatermarkex1__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_addvideowatermarkex1__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengineex_clearvideowatermarkex"></a>
-
-## clearVideoWatermarkEx
+## clearVideoWatermarkEx [#api_irtcengineex_clearvideowatermarkex]
 
 从视频流中移除水印图像。
 
@@ -263,34 +215,24 @@ public abstract int addVideoWatermarkEx(WatermarkConfig config, RtcConnection co
 public abstract int clearVideoWatermarkEx(RtcConnection connection);
 ```
 
-<a id="api_irtcengineex_clearvideowatermarkex__detailed_desc"></a>
-
-<a id="api_irtcengineex_clearvideowatermarkex__scenario"></a>
-
-### 适用场景
+### <span id="api_irtcengineex_clearvideowatermarkex__detailed_desc"></span>适用场景 [#api_irtcengineex_clearvideowatermarkex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_clearvideowatermarkex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_clearvideowatermarkex__parameters]
 
 #### `connection`
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_clearvideowatermarkex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_clearvideowatermarkex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_clearvideowatermarks"></a>
-
-## clearVideoWatermarks
+## clearVideoWatermarks [#api_irtcengine_clearvideowatermarks]
 
 从视频流中移除水印图像。
 
@@ -300,20 +242,14 @@ public abstract int clearVideoWatermarkEx(RtcConnection connection);
 public abstract int clearVideoWatermarks();
 ```
 
-<a id="api_irtcengine_clearvideowatermarks__detailed_desc"></a>
-
-<a id="api_irtcengine_clearvideowatermarks__return_values"></a>
-
-### 返回值
+### <span id="api_irtcengine_clearvideowatermarks__detailed_desc"></span>返回值 [#api_irtcengine_clearvideowatermarks__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_watermarkbuffer_getbuffer"></a>
-
-## getBuffer
+## getBuffer [#api_watermarkbuffer_getbuffer]
 
 获取水印图像的数据缓冲区。
 
@@ -323,23 +259,17 @@ public abstract int clearVideoWatermarks();
 public ByteBuffer getBuffer()
 ```
 
-<a id="api_watermarkbuffer_getbuffer__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_watermarkbuffer_getbuffer__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_watermarkbuffer_getbuffer__return_values"></a>
-
-### 返回值
+### 返回值 [#api_watermarkbuffer_getbuffer__return_values]
 
 方法调用成功时，返回包含水印图像数据的 `ByteBuffer` 对象。
 
 - [WatermarkBuffer](/zh-CN/api-reference/rtc/android/class-watermarkbuffer)
 
-<a id="api_watermarkbuffer_getformat"></a>
-
-## getFormat
+## getFormat [#api_watermarkbuffer_getformat]
 
 获取水印图像的格式。
 
@@ -349,23 +279,17 @@ public ByteBuffer getBuffer()
 public int getFormat()
 ```
 
-<a id="api_watermarkbuffer_getformat__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_watermarkbuffer_getformat__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_watermarkbuffer_getformat__return_values"></a>
-
-### 返回值
+### 返回值 [#api_watermarkbuffer_getformat__return_values]
 
 方法调用成功，返回水印图像缓冲区的格式。
 
 - [WatermarkBuffer](/zh-CN/api-reference/rtc/android/class-watermarkbuffer)
 
-<a id="api_watermarkbuffer_getheight"></a>
-
-## getHeight
+## getHeight [#api_watermarkbuffer_getheight]
 
 获取水印图像的高度。
 
@@ -375,23 +299,17 @@ public int getFormat()
 public int getHeight()
 ```
 
-<a id="api_watermarkbuffer_getheight__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_watermarkbuffer_getheight__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_watermarkbuffer_getheight__return_values"></a>
-
-### 返回值
+### 返回值 [#api_watermarkbuffer_getheight__return_values]
 
 方法调用成功，返回水印图像的高度，单位为像素。
 
 - [WatermarkBuffer](/zh-CN/api-reference/rtc/android/class-watermarkbuffer)
 
-<a id="api_watermarkbuffer_getid"></a>
-
-## getId
+## getId [#api_watermarkbuffer_getid]
 
 获取水印的唯一标识符。
 
@@ -401,26 +319,20 @@ public int getHeight()
 public String getId()
 ```
 
-<a id="api_watermarkbuffer_getid__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_watermarkbuffer_getid__detailed_desc]
 
 自 v4.6.0 版本新增。
 
 用于从 [WatermarkBuffer](/zh-CN/api-reference/rtc/android/class-watermarkbuffer) 或 [WatermarkConfig](/zh-CN/api-reference/rtc/android/class-watermarkconfig) 实例中获取水印的唯一标识符。
 
-<a id="api_watermarkbuffer_getid__return_values"></a>
-
-### 返回值
+### 返回值 [#api_watermarkbuffer_getid__return_values]
 
 - 方法调用成功时，返回水印的唯一标识符。
 - 方法调用失败，返回空字符串。
 
 - [WatermarkBuffer](/zh-CN/api-reference/rtc/android/class-watermarkbuffer)
 
-<a id="api_watermarkconfig_getimageurl"></a>
-
-## getImageUrl
+## getImageUrl [#api_watermarkconfig_getimageurl]
 
 获取水印图像的 URL。
 
@@ -430,24 +342,18 @@ public String getId()
 public String getImageUrl()
 ```
 
-<a id="api_watermarkconfig_getimageurl__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_watermarkconfig_getimageurl__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_watermarkconfig_getimageurl__return_values"></a>
-
-### 返回值
+### 返回值 [#api_watermarkconfig_getimageurl__return_values]
 
 - 方法调用成功时，返回水印图像的 URL。
 - 方法调用失败，返回空字符串。
 
 - [WatermarkConfig](/zh-CN/api-reference/rtc/android/class-watermarkconfig)
 
-<a id="api_watermarkoptions_getpositioninlandscapemode"></a>
-
-## getPositionInLandscapeMode
+## getPositionInLandscapeMode [#api_watermarkoptions_getpositioninlandscapemode]
 
 获取横屏模式下水印的位置。
 
@@ -457,23 +363,17 @@ public String getImageUrl()
 public int[] getPositionInLandscapeMode()
 ```
 
-<a id="api_watermarkoptions_getpositioninlandscapemode__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_watermarkoptions_getpositioninlandscapemode__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_watermarkoptions_getpositioninlandscapemode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_watermarkoptions_getpositioninlandscapemode__return_values]
 
 方法调用成功，返回一个包含四个元素的整数数组，依次表示水印矩形的 x、y、宽度和高度。
 
 - [WatermarkOptions](/zh-CN/api-reference/rtc/android/class-watermarkoptions)
 
-<a id="api_watermarkoptions_getpositioninportraitmode"></a>
-
-## getPositionInPortraitMode
+## getPositionInPortraitMode [#api_watermarkoptions_getpositioninportraitmode]
 
 获取竖屏模式下水印的位置。
 
@@ -483,23 +383,17 @@ public int[] getPositionInLandscapeMode()
 public int[] getPositionInPortraitMode()
 ```
 
-<a id="api_watermarkoptions_getpositioninportraitmode__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_watermarkoptions_getpositioninportraitmode__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_watermarkoptions_getpositioninportraitmode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_watermarkoptions_getpositioninportraitmode__return_values]
 
 方法调用成功，返回一个包含四个元素的整数数组，分别表示水印矩形的 x、y、宽度和高度。
 
 - [WatermarkOptions](/zh-CN/api-reference/rtc/android/class-watermarkoptions)
 
-<a id="api_watermarkconfig_gettype"></a>
-
-## getType
+## getType [#api_watermarkconfig_gettype]
 
 获取当前水印配置中的水印类型信息。
 
@@ -509,15 +403,11 @@ public int[] getPositionInPortraitMode()
 public int getType()
 ```
 
-<a id="api_watermarkconfig_gettype__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_watermarkconfig_gettype__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_watermarkconfig_gettype__return_values"></a>
-
-### 返回值
+### 返回值 [#api_watermarkconfig_gettype__return_values]
 
 方法调用成功，返回水印类型：
 
@@ -526,9 +416,7 @@ public int getType()
 
 - [WatermarkConfig](/zh-CN/api-reference/rtc/android/class-watermarkconfig)
 
-<a id="api_watermarkbuffer_getwidth"></a>
-
-## getWidth
+## getWidth [#api_watermarkbuffer_getwidth]
 
 获取水印图像的宽度。
 
@@ -538,23 +426,17 @@ public int getType()
 public int getWidth()
 ```
 
-<a id="api_watermarkbuffer_getwidth__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_watermarkbuffer_getwidth__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_watermarkbuffer_getwidth__return_values"></a>
-
-### 返回值
+### 返回值 [#api_watermarkbuffer_getwidth__return_values]
 
 方法调用成功，返回水印图像的宽度，单位为像素。
 
 - [WatermarkBuffer](/zh-CN/api-reference/rtc/android/class-watermarkbuffer)
 
-<a id="api_watermarkoptions_getzorder"></a>
-
-## getzOrder
+## getzOrder [#api_watermarkoptions_getzorder]
 
 获取水印图像的 Z-order 索引。
 
@@ -564,23 +446,17 @@ public int getWidth()
 public int getzOrder()
 ```
 
-<a id="api_watermarkoptions_getzorder__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_watermarkoptions_getzorder__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_watermarkoptions_getzorder__return_values"></a>
-
-### 返回值
+### 返回值 [#api_watermarkoptions_getzorder__return_values]
 
 方法调用成功，返回水印图像的 Z-order 索引。
 
 - [WatermarkOptions](/zh-CN/api-reference/rtc/android/class-watermarkoptions)
 
-<a id="api_watermarkoptions_isvisibleinpreview"></a>
-
-## isVisibleInPreview
+## isVisibleInPreview [#api_watermarkoptions_isvisibleinpreview]
 
 检查水印在本地视频预览中是否可见。
 
@@ -590,24 +466,18 @@ public int getzOrder()
 public boolean isVisibleInPreview()
 ```
 
-<a id="api_watermarkoptions_isvisibleinpreview__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_watermarkoptions_isvisibleinpreview__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_watermarkoptions_isvisibleinpreview__return_values"></a>
-
-### 返回值
+### 返回值 [#api_watermarkoptions_isvisibleinpreview__return_values]
 
 - true：水印在本地视频预览中可见。
 - false：水印在本地视频预览中不可见。
 
 - [WatermarkOptions](/zh-CN/api-reference/rtc/android/class-watermarkoptions)
 
-<a id="api_irtcengine_removevideowatermark"></a>
-
-## removeVideoWatermark
+## removeVideoWatermark [#api_irtcengine_removevideowatermark]
 
 从本地视频中移除水印图像。
 
@@ -617,34 +487,26 @@ public boolean isVisibleInPreview()
 public abstract int removeVideoWatermark(String id);
 ```
 
-<a id="api_irtcengine_removevideowatermark__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_removevideowatermark__detailed_desc]
 
 自 v4.6.0 版本新增。
 
 该方法使用指定的唯一 ID，从本地视频流中移除之前添加的水印图像。
 
-<a id="api_irtcengine_removevideowatermark__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_removevideowatermark__parameters]
 
 #### `id`
 
 要移除的水印图像的 ID。
 
-<a id="api_irtcengine_removevideowatermark__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_removevideowatermark__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_removevideowatermarkex"></a>
-
-## removeVideoWatermarkEx
+## removeVideoWatermarkEx [#api_irtcengineex_removevideowatermarkex]
 
 从本地或远端视频流中移除指定的水印图像。
 
@@ -654,21 +516,15 @@ public abstract int removeVideoWatermark(String id);
 public abstract int removeVideoWatermarkEx(String id, RtcConnection connection);
 ```
 
-<a id="api_irtcengineex_removevideowatermarkex__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_removevideowatermarkex__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_irtcengineex_removevideowatermarkex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_removevideowatermarkex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_removevideowatermarkex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_removevideowatermarkex__parameters]
 
 #### `id`
 
@@ -678,9 +534,7 @@ public abstract int removeVideoWatermarkEx(String id, RtcConnection connection);
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_removevideowatermarkex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_removevideowatermarkex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。

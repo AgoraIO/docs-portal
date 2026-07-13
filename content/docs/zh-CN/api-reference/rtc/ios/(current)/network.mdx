@@ -3,11 +3,7 @@ title: "网络及其他"
 description: "允许你在通话结束后投诉通话质量。"
 ---
 
-<a id="toc_network"></a>
-
-<a id="api_irtcengine_complain"></a>
-
-## complain:description:
+## <span id="toc_network"></span>complain:description: [#api_irtcengine_complain]
 
 允许你在通话结束后投诉通话质量。
 
@@ -22,9 +18,7 @@ description: "允许你在通话结束后投诉通话质量。"
 
 请在你离开频道后调用该方法。
 
-<a id="api_irtcengine_complain__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_complain__parameters]
 
 #### `callId`
 
@@ -34,9 +28,7 @@ description: "允许你在通话结束后投诉通话质量。"
 
 （可选）对通话的描述。字符串长度应小于 800 字节。
 
-<a id="api_irtcengine_complain__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_complain__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -47,9 +39,7 @@ description: "允许你在通话结束后投诉通话质量。"
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_enableencryption"></a>
-
-## enableEncryption:encryptionConfig:
+## enableEncryption:encryptionConfig: [#api_irtcengine_enableencryption]
 
 启用或关闭内置加密。
 
@@ -68,21 +58,15 @@ description: "允许你在通话结束后投诉通话质量。"
 - 启用内置加密后，无法使用旁路推流功能。
 :::
 
-<a id="api_irtcengine_enableencryption__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_enableencryption__scenario]
 
 适用于安全性要求较高的场景。
 
-<a id="api_irtcengine_enableencryption__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_enableencryption__timing]
 
 请在加入频道前调用此方法。
 
-<a id="api_irtcengine_enableencryption__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enableencryption__parameters]
 
 #### `enabled`
 
@@ -95,9 +79,7 @@ description: "允许你在通话结束后投诉通话质量。"
 
 内置加密配置。详见 [AgoraEncryptionConfig](/zh-CN/api-reference/rtc/ios/class-encryptionconfig)。
 
-<a id="api_irtcengine_enableencryption__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enableencryption__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -108,9 +90,7 @@ description: "允许你在通话结束后投诉通话质量。"
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_enableencryptionex"></a>
-
-## enableEncryptionEx:encryptionConfig:connection:
+## enableEncryptionEx:encryptionConfig:connection: [#api_irtcengineex_enableencryptionex]
 
 启用或关闭内置加密。
 
@@ -129,21 +109,15 @@ description: "允许你在通话结束后投诉通话质量。"
 - 启用内置加密后，无法使用旁路推流功能。
 :::
 
-<a id="api_irtcengineex_enableencryptionex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_enableencryptionex__scenario]
 
 适用于多频道场景，或对安全性要求较高的场景。
 
-<a id="api_irtcengineex_enableencryptionex__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengineex_enableencryptionex__timing]
 
 该方法需要在加入频道前调用。
 
-<a id="api_irtcengineex_enableencryptionex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_enableencryptionex__parameters]
 
 #### `enabled`
 
@@ -160,18 +134,14 @@ description: "允许你在通话结束后投诉通话质量。"
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_enableencryptionex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_enableencryptionex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_enablemainqueuedispatch"></a>
-
-## enableMainQueueDispatch:
+## enableMainQueueDispatch: [#api_irtcengine_enablemainqueuedispatch]
 
 启用或禁用将回调方法派发到主线程。
 
@@ -185,26 +155,20 @@ description: "允许你在通话结束后投诉通话质量。"
 
 如果未将回调方法派发到主线程，则需要自行将 UI 操作派发到主线程。
 
-<a id="api_irtcengine_enablemainqueuedispatch__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablemainqueuedispatch__parameters]
 
 #### `enabled`
 
 YES：将回调方法派发到主线程。 NO：不将回调方法派发到主线程。
 
-<a id="api_irtcengine_enablemainqueuedispatch__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablemainqueuedispatch__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_enablewebsdkinteroperability"></a>
-
-## enableWebSdkInteroperability:
+## enableWebSdkInteroperability: [#api_irtcengine_enablewebsdkinteroperability]
 
 启用或关闭与声网 Web SDK 的互通功能。
 
@@ -214,17 +178,13 @@ YES：将回调方法派发到主线程。 NO：不将回调方法派发到主�
 - (int)enableWebSdkInteroperability:(BOOL)enabled NS_SWIFT_NAME(enableWebSdkInteroperability(_:)) __deprecated;
 ```
 
-<a id="api_irtcengine_enablewebsdkinteroperability__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_enablewebsdkinteroperability__detailed_desc]
 
 该方法已废弃。SDK 自动开启与 Web SDK 的互通，无需调用该方法开启。
 
 你可以调用该方法启用或关闭与声网 Web SDK 的互通功能。如果频道中有 Web SDK 用户，确保调用该方法，否则 Native 用户的视频画面在 Web 端将显示为黑屏。该方法仅适用于直播场景，在语音通话场景中默认启用互通功能。
 
-<a id="api_irtcengine_enablewebsdkinteroperability__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablewebsdkinteroperability__parameters]
 
 #### `enabled`
 
@@ -233,18 +193,14 @@ YES：将回调方法派发到主线程。 NO：不将回调方法派发到主�
 - YES：启用互通功能。
 - NO：（默认）关闭互通功能。
 
-<a id="api_irtcengine_enablewebsdkinteroperability__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablewebsdkinteroperability__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getcallid"></a>
-
-## getCallId
+## getCallId [#api_irtcengine_getcallid]
 
 获取当前通话 ID。
 
@@ -258,24 +214,18 @@ YES：将回调方法派发到主线程。 NO：不将回调方法派发到主�
 
 当你在客户端加入频道时，系统会生成一个用于标识该通话的 `callId`。你可以调用 [getCallId](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getcallid) 方法获取 `callId`，并在调用 `rate`、 `complain` 等方法时传入该值。
 
-<a id="api_irtcengine_getcallid__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_getcallid__timing]
 
 请在加入频道后调用此方法。
 
-<a id="api_irtcengine_getcallid__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getcallid__return_values]
 
 - 方法调用成功时，返回当前通话的 `callId` 字符串。
 - 方法调用失败时，返回 nil。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_getcallidex"></a>
-
-## getCallIdEx:
+## getCallIdEx: [#api_irtcengineex_getcallidex]
 
 获取与连接 ID 对应的通话 ID。
 
@@ -289,38 +239,28 @@ YES：将回调方法派发到主线程。 NO：不将回调方法派发到主�
 
 当你在客户端加入频道时，SDK 会生成一个用于标识该通话的 `callId`。你可以调用该方法获取 `callId`，并在调用如 [rate:rating:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_rate) 和 [complain:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_complain) 等方法时传入该 `callId`。
 
-<a id="api_irtcengineex_getcallidex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_getcallidex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_getcallidex__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengineex_getcallidex__timing]
 
 在加入频道后调用此方法。
 
-<a id="api_irtcengineex_getcallidex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_getcallidex__parameters]
 
 #### `connection`
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_getcallidex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_getcallidex__return_values]
 
 - 方法调用成功时，返回用于标识客户端通话的 `callId` 字符串。
 - 方法调用失败时，返回空字符串。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_getconnectionstate"></a>
-
-## getConnectionState
+## getConnectionState [#api_irtcengine_getconnectionstate]
 
 获取当前 SDK 的连接状态。
 
@@ -330,25 +270,17 @@ YES：将回调方法派发到主线程。 NO：不将回调方法派发到主�
 - (AgoraConnectionState)getConnectionState NS_SWIFT_NAME(getConnectionState());
 ```
 
-<a id="api_irtcengine_getconnectionstate__detailed_desc"></a>
-
-<a id="api_irtcengine_getconnectionstate__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_getconnectionstate__detailed_desc"></span>调用时机 [#api_irtcengine_getconnectionstate__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_getconnectionstate__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getconnectionstate__return_values]
 
 方法调用成功时，返回当前连接状态，详见 [AgoraConnectionState](/zh-CN/api-reference/rtc/ios/enum-connectionstatetype)。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_getconnectionstateex"></a>
-
-## getConnectionStateEx:
+## getConnectionStateEx: [#api_irtcengineex_getconnectionstateex]
 
 获取 SDK 当前的连接状态。
 
@@ -358,39 +290,27 @@ YES：将回调方法派发到主线程。 NO：不将回调方法派发到主�
 - (AgoraConnectionState)getConnectionStateEx:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(getConnectionStateEx(_:));
 ```
 
-<a id="api_irtcengineex_getconnectionstateex__detailed_desc"></a>
-
-<a id="api_irtcengineex_getconnectionstateex__scenario"></a>
-
-### 适用场景
+### <span id="api_irtcengineex_getconnectionstateex__detailed_desc"></span>适用场景 [#api_irtcengineex_getconnectionstateex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_getconnectionstateex__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengineex_getconnectionstateex__timing]
 
 该方法可以在加入频道前或后调用。
 
-<a id="api_irtcengineex_getconnectionstateex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_getconnectionstateex__parameters]
 
 #### `connection`
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_getconnectionstateex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_getconnectionstateex__return_values]
 
 当前的连接状态。详见 [AgoraConnectionState](/zh-CN/api-reference/rtc/ios/enum-connectionstatetype)。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_getcurrentmonotonictimeinms"></a>
-
-## getCurrentMonotonicTimeInMs
+## getCurrentMonotonicTimeInMs [#api_irtcengine_getcurrentmonotonictimeinms]
 
 获取 SDK 当前的单调时间。
 
@@ -404,24 +324,18 @@ YES：将回调方法派发到主线程。 NO：不将回调方法派发到主�
 
 单调时间是指一个随时间递增的时间序列，单位为毫秒。在自定义视频采集和自定义音频采集场景中，为确保音视频同步，声网建议你调用该方法获取 SDK 当前的单调时间，并将该值传入采集的视频帧（[AgoraOutputVideoFrame](/zh-CN/api-reference/rtc/ios/class-videoframe) ）和音频帧（[AgoraAudioFrame](/zh-CN/api-reference/rtc/ios/class-audioframe) ）的时间戳参数中。
 
-<a id="api_irtcengine_getcurrentmonotonictimeinms__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_getcurrentmonotonictimeinms__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_getcurrentmonotonictimeinms__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getcurrentmonotonictimeinms__return_values]
 
 - ≥ 0：方法调用成功，返回 SDK 当前的单调时间（单位为毫秒）。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_geterrordescription"></a>
-
-## getErrorDescription:
+## getErrorDescription: [#api_irtcengine_geterrordescription]
 
 获取警告或错误描述信息。
 
@@ -435,25 +349,19 @@ YES：将回调方法派发到主线程。 NO：不将回调方法派发到主�
 
 你可以通过该方法获取由 SDK 报告的警告或错误码所对应的描述信息。
 
-<a id="api_irtcengine_geterrordescription__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_geterrordescription__parameters]
 
 #### `error`
 
 SDK 报告的错误码。
 
-<a id="api_irtcengine_geterrordescription__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_geterrordescription__return_values]
 
 方法调用成功时，返回错误码对应的描述信息。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getnativehandle"></a>
-
-## getNativeHandle
+## getNativeHandle [#api_irtcengine_getnativehandle]
 
 获取 Native SDK 的 C++ 句柄。
 
@@ -467,17 +375,13 @@ SDK 报告的错误码。
 
 该方法用于获取 SDK 的 C++ 句柄，可用于注册音频和视频帧观察器。
 
-<a id="api_irtcengine_getnativehandle__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getnativehandle__return_values]
 
 方法调用成功，返回 SDK 的原生句柄。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getnetworktype"></a>
-
-## getNetworkType
+## getNetworkType [#api_irtcengine_getnetworktype]
 
 获取本地网络连接类型。
 
@@ -495,9 +399,7 @@ SDK 报告的错误码。
 你可以在加入频道前或后调用此方法。
 :::
 
-<a id="api_irtcengine_getnetworktype__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getnetworktype__return_values]
 
 - 0：方法调用成功，返回本地网络连接类型：
 
@@ -514,9 +416,7 @@ SDK 报告的错误码。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getntpwalltimeinms"></a>
-
-## getNtpWallTimeInMs
+## getNtpWallTimeInMs [#api_irtcengine_getntpwalltimeinms]
 
 获取当前的 NTP（网络时间协议）时间。
 
@@ -530,17 +430,13 @@ SDK 报告的错误码。
 
 在实时合唱场景中，尤其是当多个接收端因网络问题导致下行连接不一致时，可以调用该方法获取当前的 NTP 时间作为参考时间，以对齐多个接收端的歌词和音乐，实现合唱同步。
 
-<a id="api_irtcengine_getntpwalltimeinms__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getntpwalltimeinms__return_values]
 
 方法调用成功，返回当前 NTP 时间的 Unix 时间戳（毫秒）。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getversion"></a>
-
-## getSdkVersion
+## getSdkVersion [#api_irtcengine_getversion]
 
 获取 SDK 的版本号。
 
@@ -550,19 +446,13 @@ SDK 报告的错误码。
 + (NSString * _Nonnull)getSdkVersion NS_SWIFT_NAME(getSdkVersion());
 ```
 
-<a id="api_irtcengine_getversion__detailed_desc"></a>
-
-<a id="api_irtcengine_getversion__return_values"></a>
-
-### 返回值
+### <span id="api_irtcengine_getversion__detailed_desc"></span>返回值 [#api_irtcengine_getversion__return_values]
 
 方法调用成功时，返回 SDK 的版本号，类型为 `NSString`。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_isfeatureavailableondevice"></a>
-
-## isFeatureAvailableOnDevice:
+## isFeatureAvailableOnDevice: [#api_irtcengine_isfeatureavailableondevice]
 
 检查当前设备是否支持指定的高级功能。
 
@@ -572,34 +462,26 @@ SDK 报告的错误码。
 - (BOOL)isFeatureAvailableOnDevice:(AgoraFeatureType)type;
 ```
 
-<a id="api_irtcengine_isfeatureavailableondevice__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_isfeatureavailableondevice__detailed_desc]
 
 自 v4.3.0 版本新增。
 
 你可以使用该方法检查当前设备的能力是否满足虚拟背景、美颜特效等高级功能的要求。该方法适用于在启用高级功能前进行设备能力判断，以避免在低端设备上启用功能时出现性能下降或功能不可用的问题。你可以根据该方法的返回值决定是否显示或启用相应的功能按钮，或在设备能力不足时通知用户。
 
-<a id="api_irtcengine_isfeatureavailableondevice__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_isfeatureavailableondevice__parameters]
 
 #### `type`
 
 高级功能的类型，详见 [AgoraFeatureType](/zh-CN/api-reference/rtc/ios/enum-featuretype)。
 
-<a id="api_irtcengine_isfeatureavailableondevice__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_isfeatureavailableondevice__return_values]
 
 - YES：当前设备支持指定的功能。
 - NO：当前设备不支持指定的功能。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_querydevicescore"></a>
-
-## queryDeviceScore
+## queryDeviceScore [#api_irtcengine_querydevicescore]
 
 查询设备评分。
 
@@ -613,18 +495,14 @@ SDK 报告的错误码。
 
 在高清或超高清的视频场景中，你可以先调用该方法查询设备评分。如果返回的评分较低（例如低于 60），你需要降低视频分辨率，以避免影响视频体验。不同业务场景对设备评分的最低要求不同。具体评分建议请[联系技术支持](https://ticket.shengwang.cn/)。
 
-<a id="api_irtcengine_querydevicescore__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_querydevicescore__return_values]
 
 - &gt; 0：方法调用成功，返回当前设备的评分，范围为 [0,100]，数值越大表示设备性能越强。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_rate"></a>
-
-## rate:rating:description:
+## rate:rating:description: [#api_irtcengine_rate]
 
 允许你在通话结束后对通话进行评分。
 
@@ -642,9 +520,7 @@ SDK 报告的错误码。
 请确保在离开频道后调用此方法。
 :::
 
-<a id="api_irtcengine_rate__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_rate__parameters]
 
 #### `callId`
 
@@ -658,9 +534,7 @@ SDK 报告的错误码。
 
 （可选）对本次通话的描述。字符串长度应小于 800 字节。
 
-<a id="api_irtcengine_rate__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_rate__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -670,9 +544,7 @@ SDK 报告的错误码。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_sendcustomreportmessage"></a>
-
-## sendCustomReportMessage:category:event:label:value:
+## sendCustomReportMessage:category:event:label:value: [#api_irtcengine_sendcustomreportmessage]
 
 上报自定义消息。
 
@@ -690,9 +562,7 @@ SDK 报告的错误码。
 
 声网支持你上报和分析自定义消息。该功能目前处于测试阶段，提供免费试用。在测试版本中，最多支持在 6 秒内上报 10 条消息，每条消息不超过 256 字节，每个字符串不超过 100 字节。如需试用该功能，请[联系技术支持](https://ticket.shengwang.cn/)，并与我们讨论自定义消息的格式。
 
-<a id="api_irtcengine_sendcustomreportmessage__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_sendcustomreportmessage__parameters]
 
 #### `messageId`
 
@@ -714,18 +584,14 @@ SDK 报告的错误码。
 
 消息的数值。
 
-<a id="api_irtcengine_sendcustomreportmessage__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_sendcustomreportmessage__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_sendcustomreportmessageex"></a>
-
-## sendCustomReportMessageEx:category:event:label:value:connection:
+## sendCustomReportMessageEx:category:event:label:value:connection: [#api_irtcengineex_sendcustomreportmessageex]
 
 支持上报和分析自定义消息。
 
@@ -744,15 +610,11 @@ SDK 报告的错误码。
 
 该方法支持上报和分析自定义消息。目前该功能处于测试阶段，提供免费试用。在测试版本中，最多支持在 6 秒内上报 10 条消息，每条消息不超过 256 字节，每个字符串不超过 100 字节。如需试用该功能，请[联系技术支持](https://ticket.shengwang.cn/)，并与我们讨论自定义消息的格式。
 
-<a id="api_irtcengineex_sendcustomreportmessageex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_sendcustomreportmessageex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_sendcustomreportmessageex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_sendcustomreportmessageex__parameters]
 
 #### `messageId`
 
@@ -778,18 +640,14 @@ SDK 报告的错误码。
 
 连接的频道信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_sendcustomreportmessageex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_sendcustomreportmessageex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setavsyncsource"></a>
-
-## setAVSyncSource:uid:
+## setAVSyncSource:uid: [#api_irtcengine_setavsyncsource]
 
 设置发布端的音视频同步。
 
@@ -807,9 +665,7 @@ SDK 报告的错误码。
 该方法需要在加入频道前调用。
 :::
 
-<a id="api_irtcengine_setavsyncsource__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setavsyncsource__parameters]
 
 #### `channelId`
 
@@ -819,18 +675,14 @@ SDK 报告的错误码。
 
 音频发布设备的用户 ID。
 
-<a id="api_irtcengine_setavsyncsource__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setavsyncsource__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setcloudproxy"></a>
-
-## setCloudProxy:
+## setCloudProxy: [#api_irtcengine_setcloudproxy]
 
 设置云代理服务。
 
@@ -840,9 +692,7 @@ SDK 报告的错误码。
 - (int)setCloudProxy:(AgoraCloudProxyType)proxyType  NS_SWIFT_NAME(setCloudProxy(_:));
 ```
 
-<a id="api_irtcengine_setcloudproxy__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_setcloudproxy__detailed_desc]
 
 自 v3.3.0 版本新增。
 
@@ -854,17 +704,13 @@ SDK 报告的错误码。
 - 当你使用强制 TCP 云代理时，若调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放 HTTP 协议的在线音乐文件，会出现错误。旁路推流和跨频道联播服务使用基于 TCP 协议的云代理。
 :::
 
-<a id="api_irtcengine_setcloudproxy__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setcloudproxy__parameters]
 
 #### `proxyType`
 
 云代理的类型，详见 [AgoraCloudProxyType](/zh-CN/api-reference/rtc/ios/enum-cloudproxytype)。该参数为必填项，若未传入值，SDK 会报错。
 
-<a id="api_irtcengine_setcloudproxy__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setcloudproxy__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -874,9 +720,7 @@ SDK 报告的错误码。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlocalaccesspoint"></a>
-
-## setLocalAccessPoint:
+## setLocalAccessPoint: [#api_irtcengine_setlocalaccesspoint]
 
 配置连接到声网私有媒体服务器接入模块。
 
@@ -894,32 +738,24 @@ SDK 报告的错误码。
 该方法仅在部署声网混合云方案后生效。你可以联系销售了解更多信息并部署声网混合云。
 :::
 
-<a id="api_irtcengine_setlocalaccesspoint__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setlocalaccesspoint__timing]
 
 你必须在加入频道前调用该方法。
 
-<a id="api_irtcengine_setlocalaccesspoint__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlocalaccesspoint__parameters]
 
 #### `config`
 
 本地接入点配置，详见 AgoraLocalAccessPointConfiguration。
 
-<a id="api_irtcengine_setlocalaccesspoint__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlocalaccesspoint__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。详见错误码获取详细信息和排查建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlogfile"></a>
-
-## setLogFile:
+## setLogFile: [#api_irtcengine_setlogfile]
 
 设置 SDK 输出日志文件。
 
@@ -929,9 +765,7 @@ SDK 报告的错误码。
 - (int)setLogFile:(NSString * _Nonnull)filePath NS_SWIFT_NAME(setLogFile(_:));
 ```
 
-<a id="api_irtcengine_setlogfile__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_setlogfile__detailed_desc]
 
 该方法已废弃，请在调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 时通过 `config` 参数设置日志文件路径。
 
@@ -941,32 +775,24 @@ SDK 报告的错误码。
 确保日志文件所在的目录存在且可写。
 :::
 
-<a id="api_irtcengine_setlogfile__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setlogfile__timing]
 
 该方法需在调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 后立即调用，否则输出的日志可能不完整。
 
-<a id="api_irtcengine_setlogfile__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlogfile__parameters]
 
 #### `filePath`
 
 日志文件的完整路径。日志文件使用 UTF-8 编码。
 
-<a id="api_irtcengine_setlogfile__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlogfile__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlogfilesize"></a>
-
-## setLogFileSize:
+## setLogFileSize: [#api_irtcengine_setlogfilesize]
 
 设置 agorasdk.log 文件的大小。
 
@@ -976,9 +802,7 @@ SDK 报告的错误码。
 - (int)setLogFileSize:(NSUInteger)fileSizeInKBytes NS_SWIFT_NAME(setLogFileSize(_:));
 ```
 
-<a id="api_irtcengine_setlogfilesize__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_setlogfilesize__detailed_desc]
 
 该方法已废弃，请改用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 中的 `logConfig` 参数设置日志文件大小。
 
@@ -1001,26 +825,20 @@ SDK 报告的错误码。
 该方法仅用于设置 `agorasdk.log` 文件的大小，不影响 `agoraapi.log` 文件。
 :::
 
-<a id="api_irtcengine_setlogfilesize__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlogfilesize__parameters]
 
 #### `fileSizeInKBytes`
 
 `agorasdk.log` 文件的大小（单位：KB）。取值范围为 [128, 20480]。（默认值：2,048 KB）。如果你设置的值小于 128 KB，SDK 会自动调整为 128 KB；如果设置的值大于 20,480 KB，SDK 会自动调整为 20,480 KB。
 
-<a id="api_irtcengine_setlogfilesize__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlogfilesize__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlogfilter"></a>
-
-## setLogFilter:
+## setLogFilter: [#api_irtcengine_setlogfilter]
 
 设置 SDK 的日志输出等级。
 
@@ -1030,34 +848,26 @@ SDK 报告的错误码。
 - (int)setLogFilter:(NSUInteger)filter NS_SWIFT_NAME(setLogFilter(_:));
 ```
 
-<a id="api_irtcengine_setlogfilter__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_setlogfilter__detailed_desc]
 
 该方法已废弃，请改用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 中的 `logConfig`。
 
 你可以使用该方法设置 SDK 的日志输出等级。日志等级按以下顺序排列： `AgoraLogFilterOff`、 `AgoraLogFilterCritical`、 `AgoraLogFilterError`、 `AgoraLogFilterWarning`、 `AgoraLogFilterInfo` 和 `AgoraLogFilterDebug`。选择某个等级后，你可以查看该等级及其之前的日志内容。例如，如果将日志等级设置为 `AgoraLogFilterWarning`，你将看到 `AgoraLogFilterCritical`、 `AgoraLogFilterError` 和 `AgoraLogFilterWarning` 等级的日志。
 
-<a id="api_irtcengine_setlogfilter__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlogfilter__parameters]
 
 #### `filter`
 
 日志输出等级，详见 [AgoraLogFilter](/zh-CN/api-reference/rtc/ios/enum-logfiltertype)。
 
-<a id="api_irtcengine_setlogfilter__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlogfilter__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setloglevel"></a>
-
-## setLogLevel:
+## setLogLevel: [#api_irtcengine_setloglevel]
 
 设置 SDK 的输出日志等级。
 
@@ -1067,34 +877,26 @@ SDK 报告的错误码。
 - (int)setLogLevel:(AgoraLogLevel)level NS_SWIFT_NAME(setLogLevel(_:));
 ```
 
-<a id="api_irtcengine_setloglevel__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_setloglevel__detailed_desc]
 
 该方法已废弃，请在调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 时通过 `config` 参数设置日志输出级别。
 
 你可以选择一个日志等级，以查看该等级及更高级别的日志信息。详见 [AgoraLogLevel](/zh-CN/api-reference/rtc/ios/enum-loglevel)。
 
-<a id="api_irtcengine_setloglevel__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setloglevel__parameters]
 
 #### `level`
 
 日志等级。详见 [AgoraLogLevel](/zh-CN/api-reference/rtc/ios/enum-loglevel)。
 
-<a id="api_irtcengine_setloglevel__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setloglevel__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setparameters"></a>
-
-## setParameters:
+## setParameters: [#api_irtcengine_setparameters]
 
 通过配置 JSON 选项为 SDK 提供技术预览功能或特殊定制。
 
@@ -1104,28 +906,20 @@ SDK 报告的错误码。
 - (int)setParameters:(NSString * _Nonnull)options NS_SWIFT_NAME(setParameters(_:));
 ```
 
-<a id="api_irtcengine_setparameters__detailed_desc"></a>
-
-<a id="api_irtcengine_setparameters__parameters"></a>
-
-### 参数
+### <span id="api_irtcengine_setparameters__detailed_desc"></span>参数 [#api_irtcengine_setparameters__parameters]
 
 #### `options`
 
 以 JSON 字符串形式设置的参数。
 
-<a id="api_irtcengine_setparameters__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setparameters__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setremotesubscribefallbackoption"></a>
-
-## setRemoteSubscribeFallbackOption:
+## setRemoteSubscribeFallbackOption: [#api_irtcengine_setremotesubscribefallbackoption]
 
 设置订阅端视频流的回退选项。
 
@@ -1139,32 +933,24 @@ SDK 报告的错误码。
 
 不稳定的网络会影响视频通话或互动直播中的音视频质量。如果你将 `option` 设置为 `AgoraStreamFallbackOptionVideoStreamLow` 或 `AgoraStreamFallbackOptionAudioOnly`，当下行网络无法同时支持音频和视频时，SDK 会自动将视频从高质量流切换为低质量流，或关闭视频，以保证音频质量。SDK 会持续监测网络质量，在网络改善时恢复订阅音视频流。
 
-<a id="api_irtcengine_setremotesubscribefallbackoption__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_setremotesubscribefallbackoption__related]
 
 当订阅的视频流回退为纯音频流，或从纯音频流恢复为音视频流时，SDK 会触发 [rtcEngine:didRemoteSubscribeFallbackToAudioOnly:byUid:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly) 回调。
 
-<a id="api_irtcengine_setremotesubscribefallbackoption__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremotesubscribefallbackoption__parameters]
 
 #### `option`
 
 订阅流的回退选项，详见 [AgoraStreamFallbackOptions](/zh-CN/api-reference/rtc/ios/enum-streamfallbackoptions)。
 
-<a id="api_irtcengine_setremotesubscribefallbackoption__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremotesubscribefallbackoption__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_startechotest3"></a>
-
-## startEchoTestWithConfig:
+## startEchoTestWithConfig: [#api_irtcengine_startechotest3]
 
 启动音视频设备回路测试。
 
@@ -1184,32 +970,24 @@ SDK 报告的错误码。
 - 在直播场景中，该方法仅适用于主播。
 :::
 
-<a id="api_irtcengine_startechotest3__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_startechotest3__timing]
 
 你可以在加入频道前或加入频道后调用该方法。
 
-<a id="api_irtcengine_startechotest3__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_startechotest3__parameters]
 
 #### `config`
 
 音视频通话回路测试的配置，详见 [AgoraEchoTestConfiguration](/zh-CN/api-reference/rtc/ios/class-echotestconfiguration)。
 
-<a id="api_irtcengine_startechotest3__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_startechotest3__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_startlastmileprobetest"></a>
-
-## startLastmileProbeTest:
+## startLastmileProbeTest: [#api_irtcengine_startlastmileprobetest]
 
 启动 Last mile 网络探测测试。
 
@@ -1227,26 +1005,20 @@ SDK 报告的错误码。
 在收到 [rtcEngine:lastmileQuality:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onlastmilequality) 和 [rtcEngine:lastmileProbeTestResult:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onlastmileproberesult) 回调前，不要调用其他方法，否则可能会中断这些回调。
 :::
 
-<a id="api_irtcengine_startlastmileprobetest__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_startlastmileprobetest__parameters]
 
 #### `config`
 
 Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN/api-reference/rtc/ios/class-lastmileprobeconfig)。
 
-<a id="api_irtcengine_startlastmileprobetest__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_startlastmileprobetest__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_stopechotest"></a>
-
-## stopEchoTest
+## stopEchoTest [#api_irtcengine_stopechotest]
 
 停止音频通话测试。
 
@@ -1260,9 +1032,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 调用 [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_startechotest3) 后，必须调用此方法来结束测试。否则无法进行下一次音视频通话循环测试，也无法加入频道。
 
-<a id="api_irtcengine_stopechotest__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_stopechotest__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -1271,9 +1041,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_stoplastmileprobetest"></a>
-
-## stopLastmileProbeTest
+## stopLastmileProbeTest [#api_irtcengine_stoplastmileprobetest]
 
 停止 Last-mile 网络探测测试。
 
@@ -1283,20 +1051,14 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 - (int)stopLastmileProbeTest NS_SWIFT_NAME(stopLastmileProbeTest());
 ```
 
-<a id="api_irtcengine_stoplastmileprobetest__detailed_desc"></a>
-
-<a id="api_irtcengine_stoplastmileprobetest__return_values"></a>
-
-### 返回值
+### <span id="api_irtcengine_stoplastmileprobetest__detailed_desc"></span>返回值 [#api_irtcengine_stoplastmileprobetest__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="callback_irtcengineeventhandler_onconnectionbanned"></a>
-
-## rtcEngineConnectionDidBanned:
+## rtcEngineConnectionDidBanned: [#callback_irtcengineeventhandler_onconnectionbanned]
 
 连接被声网服务器封禁时触发的回调。
 
@@ -1306,23 +1068,17 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 - (void)rtcEngineConnectionDidBanned:(AgoraRtcEngineKit * _Nonnull)engine NS_SWIFT_NAME(rtcEngineConnectionDidBanned(_:));
 ```
 
-<a id="callback_irtcengineeventhandler_onconnectionbanned__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#callback_irtcengineeventhandler_onconnectionbanned__detailed_desc]
 
 该方法已废弃，请改用 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
 
 该回调在连接被声网服务器封禁时触发。
 
-<a id="callback_irtcengineeventhandler_onconnectionbanned__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onconnectionbanned__timing]
 
 该回调在连接被声网服务器封禁时触发。
 
-<a id="callback_irtcengineeventhandler_onconnectionbanned__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onconnectionbanned__parameters]
 
 #### `engine`
 
@@ -1330,9 +1086,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onconnectioninterrupted"></a>
-
-## rtcEngineConnectionDidInterrupted:
+## rtcEngineConnectionDidInterrupted: [#callback_irtcengineeventhandler_onconnectioninterrupted]
 
 连接中断回调。
 
@@ -1342,9 +1096,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 - (void)rtcEngineConnectionDidInterrupted:(AgoraRtcEngineKit * _Nonnull)engine NS_SWIFT_NAME(rtcEngineConnectionDidInterrupted(_:));
 ```
 
-<a id="callback_irtcengineeventhandler_onconnectioninterrupted__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#callback_irtcengineeventhandler_onconnectioninterrupted__detailed_desc]
 
 该方法已废弃，请改用 [rtcEngine:connectionChangedToState:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
 
@@ -1355,15 +1107,11 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 如果 SDK 在与声网边缘服务器断开连接 20 分钟后仍未重新加入频道，则停止重连。
 
-<a id="callback_irtcengineeventhandler_onconnectioninterrupted__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onconnectioninterrupted__timing]
 
 该回调在 SDK 与服务器的连接中断超过四秒时被触发。
 
-<a id="callback_irtcengineeventhandler_onconnectioninterrupted__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onconnectioninterrupted__parameters]
 
 #### `engine`
 
@@ -1371,9 +1119,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onconnectionlost"></a>
-
-## rtcEngineConnectionDidLost:
+## rtcEngineConnectionDidLost: [#callback_irtcengineeventhandler_onconnectionlost]
 
 连接中断 10 秒后仍无法重连时触发的回调。
 
@@ -1387,15 +1133,11 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 调用 `joinChannelByToken` 方法后，无论是否已加入频道，如果 SDK 在连接中断后 10 秒内仍无法连接到服务器，则会触发该回调。如果在与声网边缘服务器断开连接后 20 分钟内仍无法重新加入频道，SDK 将停止尝试重新加入频道。
 
-<a id="callback_irtcengineeventhandler_onconnectionlost__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onconnectionlost__timing]
 
 当 SDK 与声网边缘服务器的连接中断后 10 秒仍无法重连时触发。
 
-<a id="callback_irtcengineeventhandler_onconnectionlost__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onconnectionlost__parameters]
 
 #### `engine`
 
@@ -1403,9 +1145,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onconnectionstatechanged"></a>
-
-## rtcEngine:connectionChangedToState:reason:
+## rtcEngine:connectionChangedToState:reason: [#callback_irtcengineeventhandler_onconnectionstatechanged]
 
 网络连接状态发生变化时的回调。
 
@@ -1419,15 +1159,11 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 该回调在网络连接状态发生变化时触发，报告当前的连接状态以及导致状态变化的原因。
 
-<a id="callback_irtcengineeventhandler_onconnectionstatechanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onconnectionstatechanged__timing]
 
 该回调在网络连接状态发生变化时被触发。
 
-<a id="callback_irtcengineeventhandler_onconnectionstatechanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onconnectionstatechanged__parameters]
 
 #### `engine`
 
@@ -1443,9 +1179,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onencryptionerror"></a>
-
-## rtcEngine:didOccurEncryptionError:
+## rtcEngine:didOccurEncryptionError: [#callback_irtcengineeventhandler_onencryptionerror]
 
 内置加密错误回调。
 
@@ -1459,15 +1193,11 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 当你调用 [enableEncryption:encryptionConfig:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_enableencryption) 启用加密功能后，如果在发送端或接收端的加密或解密过程中发生错误，SDK 会触发该回调。
 
-<a id="callback_irtcengineeventhandler_onencryptionerror__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onencryptionerror__timing]
 
 该回调在加密或解密过程中发生错误时被触发。
 
-<a id="callback_irtcengineeventhandler_onencryptionerror__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onencryptionerror__parameters]
 
 #### `engine`
 
@@ -1479,9 +1209,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onlastmileproberesult"></a>
-
-## rtcEngine:lastmileProbeTestResult:
+## rtcEngine:lastmileProbeTestResult: [#callback_irtcengineeventhandler_onlastmileproberesult]
 
 报告 Last-mile 网络探测结果。
 
@@ -1495,15 +1223,11 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 该回调在调用 [startLastmileProbeTest:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_startlastmileprobetest) 后 30 秒内触发。
 
-<a id="callback_irtcengineeventhandler_onlastmileproberesult__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onlastmileproberesult__timing]
 
 该回调在调用 [startLastmileProbeTest:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_startlastmileprobetest) 后 30 秒内触发。
 
-<a id="callback_irtcengineeventhandler_onlastmileproberesult__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onlastmileproberesult__parameters]
 
 #### `engine`
 
@@ -1515,9 +1239,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onlastmilequality"></a>
-
-## rtcEngine:lastmileQuality:
+## rtcEngine:lastmileQuality: [#callback_irtcengineeventhandler_onlastmilequality]
 
 上报本地用户的 Last-mile 网络质量。
 
@@ -1531,15 +1253,11 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 该回调在用户加入频道前，由 SDK 在调用 [startLastmileProbeTest:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_startlastmileprobetest) 后触发一次，用于上报本地用户的 Last-mile 网络状况。Last-mile 指的是本地设备与声网边缘服务器之间的连接。
 
-<a id="callback_irtcengineeventhandler_onlastmilequality__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onlastmilequality__timing]
 
 该回调在调用 [startLastmileProbeTest:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_startlastmileprobetest) 后被触发，用于上报本地用户的 Last-mile 网络状况。
 
-<a id="callback_irtcengineeventhandler_onlastmilequality__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onlastmilequality__parameters]
 
 #### `engine`
 
@@ -1551,9 +1269,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onmultipathstats"></a>
-
-## rtcEngine:multiPathStats:
+## rtcEngine:multiPathStats: [#callback_irtcengineeventhandler_onmultipathstats]
 
 上报多路径传输统计信息。
 
@@ -1563,21 +1279,15 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine multiPathStats:(AgoraMultipathStats * _Nonnull)stats NS_SWIFT_NAME(rtcEngine(_:multiPathStats:));
 ```
 
-<a id="callback_irtcengineeventhandler_onmultipathstats__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#callback_irtcengineeventhandler_onmultipathstats__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="callback_irtcengineeventhandler_onmultipathstats__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onmultipathstats__timing]
 
 该回调在你将 `enableMultipath` 设置为 `true` 以启用多路径传输后触发。
 
-<a id="callback_irtcengineeventhandler_onmultipathstats__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onmultipathstats__parameters]
 
 #### `engine`
 
@@ -1589,9 +1299,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onnetworkquality"></a>
-
-## rtcEngine:networkQuality:txQuality:rxQuality:
+## rtcEngine:networkQuality:txQuality:rxQuality: [#callback_irtcengineeventhandler_onnetworkquality]
 
 报告频道中每个用户的 Last-mile 网络质量。
 
@@ -1609,15 +1317,11 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 `txQuality` 在用户未发送流时为 `Unknown`； `rxQuality` 在用户未接收流时为 `Unknown`。
 :::
 
-<a id="callback_irtcengineeventhandler_onnetworkquality__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onnetworkquality__timing]
 
 该回调在 SDK 每两秒检测一次网络质量时被触发。
 
-<a id="callback_irtcengineeventhandler_onnetworkquality__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onnetworkquality__parameters]
 
 #### `engine`
 
@@ -1637,9 +1341,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onnetworktypechanged"></a>
-
-## rtcEngine:networkTypeChanged:
+## rtcEngine:networkTypeChanged: [#callback_irtcengineeventhandler_onnetworktypechanged]
 
 本地网络类型发生变化回调。
 
@@ -1653,9 +1355,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 该回调在本地用户的连接状态发生变化时触发。你可以通过该回调获取连接状态及其变化原因。当网络连接中断时，该回调会指示中断是由于网络类型变化还是网络状况不佳导致。
 
-<a id="callback_irtcengineeventhandler_onnetworktypechanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onnetworktypechanged__parameters]
 
 #### `engine`
 
@@ -1667,9 +1367,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onpermissionerror"></a>
-
-## rtcEngine:permissionError:
+## rtcEngine:permissionError: [#callback_irtcengineeventhandler_onpermissionerror]
 
 当 SDK 无法获取设备权限时触发的回调。
 
@@ -1679,17 +1377,11 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine permissionError:(AgoraPermissionType)type NS_SWIFT_NAME(rtcEngine(_:permissionError:));
 ```
 
-<a id="callback_irtcengineeventhandler_onpermissionerror__detailed_desc"></a>
-
-<a id="callback_irtcengineeventhandler_onpermissionerror__timing"></a>
-
-### 触发时机
+### <span id="callback_irtcengineeventhandler_onpermissionerror__detailed_desc"></span>触发时机 [#callback_irtcengineeventhandler_onpermissionerror__timing]
 
 该回调在 SDK 无法获取设备权限时被触发。
 
-<a id="callback_irtcengineeventhandler_onpermissionerror__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onpermissionerror__parameters]
 
 #### `engine`
 
@@ -1701,9 +1393,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onproxyconnected"></a>
-
-## rtcEngine:didProxyConnected:withUid:proxyType:localProxyIp:elapsed:
+## rtcEngine:didProxyConnected:withUid:proxyType:localProxyIp:elapsed: [#callback_irtcengineeventhandler_onproxyconnected]
 
 代理连接状态回调。
 
@@ -1717,15 +1407,11 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 你可以使用该回调监听 SDK 的代理连接状态。例如，当你调用 [setCloudProxy:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setcloudproxy) 并成功加入频道后，SDK 会触发该回调，上报用户 ID、连接的代理类型，以及从调用 `joinChannelByToken` 到触发该回调所经历的时间（毫秒）。
 
-<a id="callback_irtcengineeventhandler_onproxyconnected__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onproxyconnected__timing]
 
 该回调在你调用 [setCloudProxy:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setcloudproxy) 并成功加入频道后被触发。
 
-<a id="callback_irtcengineeventhandler_onproxyconnected__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onproxyconnected__parameters]
 
 #### `engine`
 
@@ -1753,9 +1439,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly"></a>
-
-## rtcEngine:didRemoteSubscribeFallbackToAudioOnly:byUid:
+## rtcEngine:didRemoteSubscribeFallbackToAudioOnly:byUid: [#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly]
 
 远端媒体流因网络变化在音频流与视频流之间切换时触发的回调。
 
@@ -1776,15 +1460,11 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 一旦远端媒体流因网络较弱切换为视频小流，你可以在 `remoteVideoStats` 回调中监控高质量与视频小流之间的切换。
 :::
 
-<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__timing]
 
 该回调在远端媒体流因网络不佳降级为纯音频流，或在网络改善后恢复为视频流时被触发。
 
-<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__parameters]
 
 #### `engine`
 
@@ -1801,9 +1481,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated"></a>
-
-## rtcEngine:uplinkNetworkInfoUpdate:
+## rtcEngine:uplinkNetworkInfoUpdate: [#callback_irtcengineeventhandler_onuplinknetworkinfoupdated]
 
 当上行网络信息发生变化时触发该回调。
 
@@ -1819,15 +1497,11 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/i
 该回调仅适用于将外部编码的 H.264 格式视频数据推送至 SDK 的场景。
 :::
 
-<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onuplinknetworkinfoupdated__timing]
 
 当上行网络信息发生变化时触发。
 
-<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onuplinknetworkinfoupdated__parameters]
 
 #### `engine`
 

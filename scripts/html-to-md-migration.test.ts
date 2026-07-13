@@ -1013,7 +1013,14 @@ describe('html-to-md-migration', () => {
     ).resolves.toBe(false);
     await expect(
       fs.readFile(path.join(outputDir, 'channel.mdx'), 'utf8'),
-    ).resolves.not.toContain('## 频道相关');
+    ).resolves.toContain(
+      '### <span id="toc_channel"></span>JoinChannel [#join]',
+    );
+    await expect(
+      fs.readFile(path.join(outputDir, 'channel.mdx'), 'utf8'),
+    ).resolves.not.toMatch(
+      /<a id="(?:toc_channel|join)"><\/a>\n\n#{1,6}\s/,
+    );
   }, 15_000);
 
   it('preserves the active version directory in migrated internal links', async () => {

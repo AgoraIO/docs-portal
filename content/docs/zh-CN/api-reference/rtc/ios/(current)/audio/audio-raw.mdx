@@ -3,11 +3,7 @@ title: "原始音频数据"
 description: "设置 onEarMonitoringAudioFrame: 回调的音频格式。"
 ---
 
-<a id="toc_audio_raw"></a>
-
-<a id="api_iaudioframeobserver_getearmonitoringaudioparams"></a>
-
-## getEarMonitoringAudioParams
+## <span id="toc_audio_raw"></span>getEarMonitoringAudioParams [#api_iaudioframeobserver_getearmonitoringaudioparams]
 
 设置 onEarMonitoringAudioFrame: 回调的音频格式。
 
@@ -25,17 +21,13 @@ description: "设置 onEarMonitoringAudioFrame: 回调的音频格式。"
 SDK 会根据你在返回值中设置的 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams) 计算采样间隔，并以该间隔触发 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。采样间隔（秒） = `samplePerCall` / (`sampleRate` × `channel`)。确保采样间隔 ≥ 0.01 秒。
 :::
 
-<a id="api_iaudioframeobserver_getearmonitoringaudioparams__return_values"></a>
-
-### 返回值
+### 返回值 [#api_iaudioframeobserver_getearmonitoringaudioparams__return_values]
 
 方法调用成功，返回耳返音频数据格式对象，详见 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams)。
 
 - [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
 
-<a id="api_iaudioframeobserver_getmixedaudioparams"></a>
-
-## getMixedAudioParams
+## getMixedAudioParams [#api_iaudioframeobserver_getmixedaudioparams]
 
 设置 onMixedAudioFrame:channelId: 回调的音频格式。
 
@@ -53,17 +45,13 @@ SDK 会根据你在返回值中设置的 [AgoraAudioParams](/zh-CN/api-reference
 SDK 会根据你在返回值中设置的采样间隔触发 [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调。采样间隔的计算公式为：采样间隔（秒） = `samplePerCall` /（`sampleRate` × `channel` ）。确保采样间隔 ≥ 0.01 秒。
 :::
 
-<a id="api_iaudioframeobserver_getmixedaudioparams__return_values"></a>
-
-### 返回值
+### 返回值 [#api_iaudioframeobserver_getmixedaudioparams__return_values]
 
 方法调用成功，返回混合后的采集和播放音频数据对象，详见 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams)。
 
 - [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
 
-<a id="api_iaudioframeobserver_getobservedaudioframeposition"></a>
-
-## getObservedAudioFramePosition
+## getObservedAudioFramePosition [#api_iaudioframeobserver_getobservedaudioframeposition]
 
 设置音频数据观察位置。
 
@@ -85,9 +73,7 @@ SDK 会根据你在返回值中设置的采样间隔触发 [onMixedAudioFrame:ch
 
 你可以根据场景需求，通过修改 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 的返回值设置需要观察的一个或多个位置。 当你需要观察多个位置时，需使用 |（或运算符）。为节省系统资源，建议减少观察位置的数量。
 
-<a id="api_iaudioframeobserver_getobservedaudioframeposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_iaudioframeobserver_getobservedaudioframeposition__return_values]
 
 返回一个位掩码，用于设置观察位置，具体取值如下，详见 `AgoraAudioFramePosition`：
 
@@ -99,9 +85,7 @@ SDK 会根据你在返回值中设置的采样间隔触发 [onMixedAudioFrame:ch
 
 - [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
 
-<a id="api_iaudioframeobserver_getplaybackaudioparams"></a>
-
-## getPlaybackAudioParams
+## getPlaybackAudioParams [#api_iaudioframeobserver_getplaybackaudioparams]
 
 设置 onPlaybackAudioFrame:channelId: 回调的音频格式。
 
@@ -119,17 +103,13 @@ SDK 会根据你在返回值中设置的采样间隔触发 [onMixedAudioFrame:ch
 SDK 会根据你在返回值中设置的 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams) 计算采样间隔，并以此触发 [onPlaybackAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调。采样间隔（秒）= `samplePerCall` / (`sampleRate` × `channel`)。确保采样间隔 ≥ 0.01 秒。
 :::
 
-<a id="api_iaudioframeobserver_getplaybackaudioparams__return_values"></a>
-
-### 返回值
+### 返回值 [#api_iaudioframeobserver_getplaybackaudioparams__return_values]
 
 方法调用成功，返回用于播放的音频参数对象，详见 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams)。
 
 - [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
 
-<a id="api_iaudioframeobserver_getrecordaudioparams"></a>
-
-## getRecordAudioParams
+## getRecordAudioParams [#api_iaudioframeobserver_getrecordaudioparams]
 
 设置 onRecordAudioFrame:channelId: 回调的音频格式。
 
@@ -147,17 +127,13 @@ SDK 会根据你在返回值中设置的 [AgoraAudioParams](/zh-CN/api-reference
 SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。采样间隔（秒） = `samplePerCall` / (`sampleRate` × `channel`)。确保采样间隔 ≥ 0.01 秒。
 :::
 
-<a id="api_iaudioframeobserver_getrecordaudioparams__return_values"></a>
-
-### 返回值
+### 返回值 [#api_iaudioframeobserver_getrecordaudioparams__return_values]
 
 方法调用成功，返回采集的音频参数对象，详见 [AgoraAudioParams](/zh-CN/api-reference/rtc/ios/class-audioparams)。
 
 - [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
 
-<a id="api_irtcengine_registeraudioframeobserver"></a>
-
-## setAudioFrameDelegate:
+## setAudioFrameDelegate: [#api_irtcengine_registeraudioframeobserver]
 
 注册音频帧观察者对象。
 
@@ -171,32 +147,24 @@ SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onRecord
 
 调用此方法可注册音频帧观察者对象。当你需要 SDK 触发 `onMixedAudioFrame`、 `onRecordAudioFrame`、 `onPlaybackAudioFrame`、 `onPlaybackAudioFrameBeforeMixing` 或 `onEarMonitoringAudioFrame` 回调时，需要通过此方法注册回调。
 
-<a id="api_irtcengine_registeraudioframeobserver__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_registeraudioframeobserver__timing]
 
 该方法需要在加入频道前调用。
 
-<a id="api_irtcengine_registeraudioframeobserver__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_registeraudioframeobserver__parameters]
 
 #### `delegate`
 
 观察者实例。将该参数设为 nil 可释放该实例。声网建议在收到 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调后调用此方法释放音频观察者对象。详见 [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)。
 
-<a id="api_irtcengine_registeraudioframeobserver__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_registeraudioframeobserver__return_values]
 
 - YES：方法调用成功。
 - NO：方法调用失败。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setearmonitoringaudioframeparameters"></a>
-
-## setEarMonitoringAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:
+## setEarMonitoringAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall: [#api_irtcengine_setearmonitoringaudioframeparameters]
 
 设置耳返原始音频数据的格式。
 
@@ -218,9 +186,7 @@ SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onRecord
 - SDK 会根据该方法中设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（秒）= `samplesPerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。
 :::
 
-<a id="api_irtcengine_setearmonitoringaudioframeparameters__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setearmonitoringaudioframeparameters__parameters]
 
 #### `sampleRate`
 
@@ -241,18 +207,14 @@ SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onRecord
 
 在 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调中报告的数据采样数，例如媒体推流时为 1024。
 
-<a id="api_irtcengine_setearmonitoringaudioframeparameters__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setearmonitoringaudioframeparameters__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setmixedaudioframeparameters"></a>
-
-## setMixedAudioFrameParametersWithSampleRate:channel:samplesPerCall:
+## setMixedAudioFrameParametersWithSampleRate:channel:samplesPerCall: [#api_irtcengine_setmixedaudioframeparameters]
 
 设置用于音频采集和播放的混音后原始音频数据格式。
 
@@ -268,15 +230,11 @@ SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onRecord
 
 SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（秒） = `samplesPerCall` / (`sampleRate` × `channel`)，请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onMixedAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调。
 
-<a id="api_irtcengine_setmixedaudioframeparameters__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setmixedaudioframeparameters__timing]
 
 请在加入频道前调用该方法。
 
-<a id="api_irtcengine_setmixedaudioframeparameters__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setmixedaudioframeparameters__parameters]
 
 #### `sampleRate`
 
@@ -293,18 +251,14 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 每次回调的数据采样数，例如媒体推流时为 1024。
 
-<a id="api_irtcengine_setmixedaudioframeparameters__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setmixedaudioframeparameters__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters"></a>
-
-## setPlaybackAudioFrameBeforeMixingParametersWithSampleRate:channel:
+## setPlaybackAudioFrameBeforeMixingParametersWithSampleRate:channel: [#api_irtcengine_setplaybackaudioframebeforemixingparameters]
 
 设置混音前原始音频播放数据的格式。
 
@@ -319,15 +273,11 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 你可以在加入频道前调用该方法，设置混音前原始音频播放数据的采样率和声道数。SDK 会根据采样间隔触发 [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
 
-<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setplaybackaudioframebeforemixingparameters__timing]
 
 在加入频道前调用该方法。
 
-<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setplaybackaudioframebeforemixingparameters__parameters]
 
 #### `sampleRate`
 
@@ -340,18 +290,14 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 - 1：单声道。
 - 2：立体声。
 
-<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setplaybackaudioframebeforemixingparameters__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1"></a>
-
-## setPlaybackAudioFrameBeforeMixingParametersWithSampleRate:channel:samplesPerCall:
+## setPlaybackAudioFrameBeforeMixingParametersWithSampleRate:channel:samplesPerCall: [#api_irtcengine_setplaybackaudioframebeforemixingparameters1]
 
 设置 onPlaybackAudioFrameBeforeMixing:channelId:uid: 回调中音频数据的格式。
 
@@ -367,9 +313,7 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 用于设置 [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的音频数据的采样率、声道数和每次回调的采样点数。
 
-<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setplaybackaudioframebeforemixingparameters1__parameters]
 
 #### `sampleRate`
 
@@ -386,18 +330,14 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 设置 [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的数据的每次回调采样点数。例如，在 RTMP 推流场景中，建议设置为 1024。
 
-<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setplaybackaudioframebeforemixingparameters1__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setplaybackaudioframeparameters"></a>
-
-## setPlaybackAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:
+## setPlaybackAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall: [#api_irtcengine_setplaybackaudioframeparameters]
 
 设置原始音频播放数据的格式。
 
@@ -414,21 +354,15 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（秒）= `samplesPerCall` / (`sampleRate` × `channel`)。请确保采样间隔 ≥ 0.01 秒。
 
-<a id="api_irtcengine_setplaybackaudioframeparameters__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setplaybackaudioframeparameters__timing]
 
 请在加入频道前调用该方法。
 
-<a id="api_irtcengine_setplaybackaudioframeparameters__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_setplaybackaudioframeparameters__related]
 
 SDK 会根据采样间隔触发 `onPlaybackAudioFrame:` 回调。
 
-<a id="api_irtcengine_setplaybackaudioframeparameters__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setplaybackaudioframeparameters__parameters]
 
 #### `sampleRate`
 
@@ -449,18 +383,14 @@ SDK 会根据采样间隔触发 `onPlaybackAudioFrame:` 回调。
 
 每次回调的数据采样数，例如媒体推流时为 1024。
 
-<a id="api_irtcengine_setplaybackaudioframeparameters__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setplaybackaudioframeparameters__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setrecordingaudioframeparameters"></a>
-
-## setRecordingAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:
+## setRecordingAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall: [#api_irtcengine_setrecordingaudioframeparameters]
 
 设置采集的原始音频数据格式。
 
@@ -477,15 +407,11 @@ SDK 会根据采样间隔触发 `onPlaybackAudioFrame:` 回调。
 
 SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（单位：秒）= `samplesPerCall` / (`sampleRate` × `channel`)。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调。
 
-<a id="api_irtcengine_setrecordingaudioframeparameters__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setrecordingaudioframeparameters__timing]
 
 请在加入频道前调用该方法。
 
-<a id="api_irtcengine_setrecordingaudioframeparameters__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setrecordingaudioframeparameters__parameters]
 
 #### `sampleRate`
 
@@ -506,18 +432,14 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 每次回调的数据采样数，例如媒体推流时为 1024。
 
-<a id="api_irtcengine_setrecordingaudioframeparameters__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setrecordingaudioframeparameters__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="callback_iaudioframeobserver_onearmonitoringaudioframe"></a>
-
-## onEarMonitoringAudioFrame:
+## onEarMonitoringAudioFrame: [#callback_iaudioframeobserver_onearmonitoringaudioframe]
 
 获取耳返音频帧回调。
 
@@ -538,32 +460,24 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 - 方法一的优先级高于方法二。如果使用方法一设置音频数据格式，则方法二的设置无效。
 :::
 
-<a id="callback_iaudioframeobserver_onearmonitoringaudioframe__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_iaudioframeobserver_onearmonitoringaudioframe__timing]
 
 该回调在采样间隔到达时被触发。
 
-<a id="callback_iaudioframeobserver_onearmonitoringaudioframe__parameters"></a>
-
-### 参数
+### 参数 [#callback_iaudioframeobserver_onearmonitoringaudioframe__parameters]
 
 #### `frame`
 
 原始音频数据，详见 [AgoraAudioFrame](/zh-CN/api-reference/rtc/ios/class-audioframe)。
 
-<a id="callback_iaudioframeobserver_onearmonitoringaudioframe__return_values"></a>
-
-### 返回值
+### 返回值 [#callback_iaudioframeobserver_onearmonitoringaudioframe__return_values]
 
 - YES：回调处理成功。
 - NO：回调处理失败。
 
 - [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
 
-<a id="callback_iaudioframeobserver_onmixedaudioframe"></a>
-
-## onMixedAudioFrame:channelId:
+## onMixedAudioFrame:channelId: [#callback_iaudioframeobserver_onmixedaudioframe]
 
 获取混合后的采集和播放音频帧回调。
 
@@ -584,15 +498,11 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 - 方法一的优先级高于方法二。如果使用方法一设置音频数据格式，则方法二的设置无效。
 :::
 
-<a id="callback_iaudioframeobserver_onmixedaudioframe__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_iaudioframeobserver_onmixedaudioframe__timing]
 
 该回调在获取混合后的采集和播放音频帧时被触发。
 
-<a id="callback_iaudioframeobserver_onmixedaudioframe__parameters"></a>
-
-### 参数
+### 参数 [#callback_iaudioframeobserver_onmixedaudioframe__parameters]
 
 #### `frame`
 
@@ -602,18 +512,14 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 频道 ID。
 
-<a id="callback_iaudioframeobserver_onmixedaudioframe__return_values"></a>
-
-### 返回值
+### 返回值 [#callback_iaudioframeobserver_onmixedaudioframe__return_values]
 
 - YES：回调处理成功。
 - NO：回调处理失败。
 
 - [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
 
-<a id="callback_iaudioframeobserver_onplaybackaudioframe"></a>
-
-## onPlaybackAudioFrame:channelId:
+## onPlaybackAudioFrame:channelId: [#callback_iaudioframeobserver_onplaybackaudioframe]
 
 获取用于播放的原始音频帧回调。
 
@@ -634,15 +540,11 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 [setPlaybackAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 的优先级高于 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 和 [getPlaybackAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getplaybackaudioparams)。如果使用方法一设置音频数据格式，则方法二的设置无效。
 :::
 
-<a id="callback_iaudioframeobserver_onplaybackaudioframe__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_iaudioframeobserver_onplaybackaudioframe__timing]
 
 该回调在 SDK 获取到用于播放的音频帧时被触发。
 
-<a id="callback_iaudioframeobserver_onplaybackaudioframe__parameters"></a>
-
-### 参数
+### 参数 [#callback_iaudioframeobserver_onplaybackaudioframe__parameters]
 
 #### `frame`
 
@@ -652,18 +554,14 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 频道 ID。
 
-<a id="callback_iaudioframeobserver_onplaybackaudioframe__return_values"></a>
-
-### 返回值
+### 返回值 [#callback_iaudioframeobserver_onplaybackaudioframe__return_values]
 
 - YES：处理成功。
 - NO：处理失败。
 
 - [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
 
-<a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing"></a>
-
-## onPlaybackAudioFrameBeforeMixing:channelId:uid:
+## onPlaybackAudioFrameBeforeMixing:channelId:uid: [#callback_iaudioframeobserver_onplaybackaudioframebeforemixing]
 
 获取已订阅远端用户在混音前的音频帧。
 
@@ -673,11 +571,7 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 - (BOOL)onPlaybackAudioFrameBeforeMixing:(AgoraAudioFrame* _Nonnull)frame channelId:(NSString * _Nonnull)channelId uid:(NSUInteger)uid  NS_SWIFT_NAME(onPlaybackAudioFrame(beforeMixing:channelId:uid:));
 ```
 
-<a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__detailed_desc"></a>
-
-<a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__parameters"></a>
-
-### 参数
+### <span id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__detailed_desc"></span>参数 [#callback_iaudioframeobserver_onplaybackaudioframebeforemixing__parameters]
 
 #### `frame`
 
@@ -691,18 +585,14 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 远端用户 ID。
 
-<a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__return_values"></a>
-
-### 返回值
+### 返回值 [#callback_iaudioframeobserver_onplaybackaudioframebeforemixing__return_values]
 
 - YES：回调处理成功。
 - NO：回调处理失败。
 
 - [AgoraAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioframeobserver)
 
-<a id="callback_iaudioframeobserver_onrecordaudioframe"></a>
-
-## onRecordAudioFrame:channelId:
+## onRecordAudioFrame:channelId: [#callback_iaudioframeobserver_onrecordaudioframe]
 
 采集到音频帧时触发的回调。
 
@@ -723,15 +613,11 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 [setRecordingAudioFrameParametersWithSampleRate:channel:mode:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 的设置优先级高于 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) 和 [getRecordAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getrecordaudioparams) 的设置。如果使用方法一设置音频数据格式，则方法二的设置无效。
 :::
 
-<a id="callback_iaudioframeobserver_onrecordaudioframe__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_iaudioframeobserver_onrecordaudioframe__timing]
 
 该回调在采集到音频帧时被触发。
 
-<a id="callback_iaudioframeobserver_onrecordaudioframe__parameters"></a>
-
-### 参数
+### 参数 [#callback_iaudioframeobserver_onrecordaudioframe__parameters]
 
 #### `frame`
 
@@ -741,9 +627,7 @@ SDK 会根据你设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数�
 
 频道 ID。
 
-<a id="callback_iaudioframeobserver_onrecordaudioframe__return_values"></a>
-
-### 返回值
+### 返回值 [#callback_iaudioframeobserver_onrecordaudioframe__return_values]
 
 - YES：处理成功。
 - NO：处理失败。

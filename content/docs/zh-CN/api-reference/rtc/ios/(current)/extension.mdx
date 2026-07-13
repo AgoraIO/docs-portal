@@ -3,11 +3,7 @@ title: "插件"
 description: "启用或禁用扩展功能。"
 ---
 
-<a id="toc_extension"></a>
-
-<a id="api_irtcengine_enableextension"></a>
-
-## enableExtensionWithVendor:extension:enabled:sourceType:
+## <span id="toc_extension"></span>enableExtensionWithVendor:extension:enabled:sourceType: [#api_irtcengine_enableextension]
 
 启用或禁用扩展功能。
 
@@ -27,15 +23,11 @@ description: "启用或禁用扩展功能。"
 - 成功调用该方法后，不能再加载其他扩展。
 :::
 
-<a id="api_irtcengine_enableextension__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_enableextension__timing]
 
 该方法建议在你加入频道后调用。
 
-<a id="api_irtcengine_enableextension__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enableextension__parameters]
 
 #### `provider`
 
@@ -56,9 +48,7 @@ description: "启用或禁用扩展功能。"
 
 扩展的来源类型，详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/ios/enum-mediasourcetype)。
 
-<a id="api_irtcengine_enableextension__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enableextension__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -67,9 +57,7 @@ description: "启用或禁用扩展功能。"
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getextensionproperty"></a>
-
-## getExtensionPropertyWithVendor:extension:key:
+## getExtensionPropertyWithVendor:extension:key: [#api_irtcengine_getextensionproperty]
 
 获取扩展组件的详细信息。
 
@@ -81,17 +69,11 @@ description: "启用或禁用扩展功能。"
                                                    key:(NSString * _Nonnull)key NS_SWIFT_NAME(getExtensionProperty(withVendor:extension:key:));
 ```
 
-<a id="api_irtcengine_getextensionproperty__detailed_desc"></a>
-
-<a id="api_irtcengine_getextensionproperty__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_getextensionproperty__detailed_desc"></span>调用时机 [#api_irtcengine_getextensionproperty__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_getextensionproperty__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_getextensionproperty__parameters]
 
 #### `provider`
 
@@ -105,18 +87,14 @@ description: "启用或禁用扩展功能。"
 
 扩展组件的键值。
 
-<a id="api_irtcengine_getextensionproperty__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getextensionproperty__return_values]
 
 - 方法调用成功时，返回扩展组件的信息。
 - 方法调用失败时，返回空字符串。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getextensionproperty2"></a>
-
-## getExtensionPropertyWithVendor:extension:key:sourceType:
+## getExtensionPropertyWithVendor:extension:key:sourceType: [#api_irtcengine_getextensionproperty2]
 
 获取扩展的详细信息。
 
@@ -129,17 +107,11 @@ description: "启用或禁用扩展功能。"
                                             sourceType:(AgoraMediaSourceType)sourceType NS_SWIFT_NAME(getExtensionProperty(withVendor:extension:key:sourceType:));
 ```
 
-<a id="api_irtcengine_getextensionproperty2__detailed_desc"></a>
-
-<a id="api_irtcengine_getextensionproperty2__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_getextensionproperty2__detailed_desc"></span>调用时机 [#api_irtcengine_getextensionproperty2__timing]
 
 该方法可以在加入频道前或后调用。
 
-<a id="api_irtcengine_getextensionproperty2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_getextensionproperty2__parameters]
 
 #### `provider`
 
@@ -157,18 +129,14 @@ description: "启用或禁用扩展功能。"
 
 扩展的来源类型，详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/ios/enum-mediasourcetype)。
 
-<a id="api_irtcengine_getextensionproperty2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getextensionproperty2__return_values]
 
 - 方法调用成功时，返回扩展信息。
 - 方法调用失败时，返回空字符串。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_registerextension"></a>
-
-## registerExtensionWithVendor:extension:sourceType:
+## registerExtensionWithVendor:extension:sourceType: [#api_irtcengine_registerextension]
 
 注册一个扩展。
 
@@ -189,18 +157,14 @@ description: "启用或禁用扩展功能。"
 - SDK 中不同扩展的数据处理顺序由注册顺序决定。即先注册的扩展会先处理数据。
 :::
 
-<a id="api_irtcengine_registerextension__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_registerextension__timing]
 
 声网建议你在初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 后、加入频道前调用此方法。
 
 - 对于视频扩展（如美颜特效扩展），你需要在调用 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 或 [enableLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablelocalvideo) 启用视频模块后调用此方法。
 - 在调用此方法之前，你需要将扩展动态库（.xcframework）链接到 Xcode 项目中以加载扩展。
 
-<a id="api_irtcengine_registerextension__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_registerextension__parameters]
 
 #### `provider`
 
@@ -214,9 +178,7 @@ description: "启用或禁用扩展功能。"
 
 扩展的数据源类型，详见 [AgoraMediaSourceType](/zh-CN/api-reference/rtc/ios/enum-mediasourcetype)。
 
-<a id="api_irtcengine_registerextension__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_registerextension__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -225,9 +187,7 @@ description: "启用或禁用扩展功能。"
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setextensionproperty"></a>
-
-## setExtensionPropertyWithVendor:extension:key:value:
+## setExtensionPropertyWithVendor:extension:key:value: [#api_irtcengine_setextensionproperty]
 
 设置扩展属性。
 
@@ -248,15 +208,11 @@ description: "启用或禁用扩展功能。"
 如果需要为多个扩展设置属性，需要多次调用该方法。
 :::
 
-<a id="api_irtcengine_setextensionproperty__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setextensionproperty__timing]
 
 在调用 [enableExtensionWithVendor:extension:enabled:sourceType:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_enableextension) 方法之后调用。
 
-<a id="api_irtcengine_setextensionproperty__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setextensionproperty__parameters]
 
 #### `provider`
 
@@ -274,18 +230,14 @@ description: "启用或禁用扩展功能。"
 
 扩展属性键对应的值。
 
-<a id="api_irtcengine_setextensionproperty__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setextensionproperty__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setextensionproviderproperty"></a>
-
-## setExtensionProviderPropertyWithVendor:key:value:
+## setExtensionProviderPropertyWithVendor:key:value: [#api_irtcengine_setextensionproviderproperty]
 
 设置扩展提供方的属性。
 
@@ -305,15 +257,11 @@ description: "启用或禁用扩展功能。"
 如果你想为多个扩展设置扩展提供方的属性，需要多次调用此方法。
 :::
 
-<a id="api_irtcengine_setextensionproviderproperty__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setextensionproviderproperty__timing]
 
 在调用 [enableExtensionWithVendor:extension:enabled:sourceType:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_enableextension) 之前，且在调用 [registerExtensionWithVendor:extension:sourceType:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_registerextension) 之后调用此方法。
 
-<a id="api_irtcengine_setextensionproviderproperty__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setextensionproviderproperty__parameters]
 
 #### `provider`
 
@@ -327,18 +275,14 @@ description: "启用或禁用扩展功能。"
 
 扩展键的值。
 
-<a id="api_irtcengine_setextensionproviderproperty__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setextensionproviderproperty__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext"></a>
-
-## onExtensionErrorWithContext:error:message:
+## onExtensionErrorWithContext:error:message: [#callback_irtcengineeventhandler_onextensionerrorwithcontext]
 
 当扩展运行异常时触发的回调。
 
@@ -354,15 +298,11 @@ description: "启用或禁用扩展功能。"
 
 当扩展启用失败或运行时发生错误时，会触发该回调，并报告错误码及原因。
 
-<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onextensionerrorwithcontext__timing]
 
 该回调在扩展启用失败或运行时发生错误时被触发。
 
-<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onextensionerrorwithcontext__parameters]
 
 #### `context`
 
@@ -378,9 +318,7 @@ description: "启用或禁用扩展功能。"
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onextensioneventwithcontext"></a>
-
-## onEventWithContext:key:value:
+## onEventWithContext:key:value: [#callback_irtcengineeventhandler_onextensioneventwithcontext]
 
 扩展的事件回调。
 
@@ -396,9 +334,7 @@ description: "启用或禁用扩展功能。"
 
 你需要注册该回调以在扩展运行期间监听事件。
 
-<a id="callback_irtcengineeventhandler_onextensioneventwithcontext__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onextensioneventwithcontext__parameters]
 
 #### `context`
 
@@ -414,9 +350,7 @@ description: "启用或禁用扩展功能。"
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onextensionstartedwithcontext"></a>
-
-## onExtensionStartedWithContext:
+## onExtensionStartedWithContext: [#callback_irtcengineeventhandler_onextensionstartedwithcontext]
 
 扩展启用成功时触发的回调。
 
@@ -426,17 +360,11 @@ description: "启用或禁用扩展功能。"
 - (void)onExtensionStartedWithContext:(AgoraExtensionContext * _Nonnull)context NS_SWIFT_NAME(onExtensionStartedWithContext(_:));
 ```
 
-<a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__detailed_desc"></a>
-
-<a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__timing"></a>
-
-### 触发时机
+### <span id="callback_irtcengineeventhandler_onextensionstartedwithcontext__detailed_desc"></span>触发时机 [#callback_irtcengineeventhandler_onextensionstartedwithcontext__timing]
 
 该回调在扩展成功启用后被触发。
 
-<a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onextensionstartedwithcontext__parameters]
 
 #### `context`
 
@@ -444,9 +372,7 @@ description: "启用或禁用扩展功能。"
 
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext"></a>
-
-## onExtensionStoppedWithContext:
+## onExtensionStoppedWithContext: [#callback_irtcengineeventhandler_onextensionstoppedwithcontext]
 
 当扩展被禁用时触发的回调。
 
@@ -456,17 +382,11 @@ description: "启用或禁用扩展功能。"
 - (void)onExtensionStoppedWithContext:(AgoraExtensionContext * _Nonnull)context NS_SWIFT_NAME(onExtensionStoppedWithContext(_:));
 ```
 
-<a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__detailed_desc"></a>
-
-<a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__timing"></a>
-
-### 触发时机
+### <span id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__detailed_desc"></span>触发时机 [#callback_irtcengineeventhandler_onextensionstoppedwithcontext__timing]
 
 该回调在扩展成功被禁用后触发。
 
-<a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onextensionstoppedwithcontext__parameters]
 
 #### `context`
 

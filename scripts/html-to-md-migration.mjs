@@ -3898,7 +3898,7 @@ async function writeNode(
     if (node.sourceName) {
       await writeFile(
         path.join(dir, 'index.mdx'),
-        deduplicateExplicitAnchors(
+        finalizeRenderedPage(
           renderPage({
             $: cheerio.load(
               await fs.readFile(
@@ -3913,6 +3913,7 @@ async function writeNode(
             sourceToRoute,
             targetBasePath: output.targetBasePath,
           }),
+          lane,
         ),
       );
     }
@@ -3937,7 +3938,7 @@ async function writeNode(
   );
   await writeFile(
     filePath,
-    deduplicateExplicitAnchors(
+    finalizeRenderedPage(
       renderPage({
         $: cheerio.load(
           await fs.readFile(
@@ -3952,6 +3953,7 @@ async function writeNode(
         sourceToRoute,
         targetBasePath: output.targetBasePath,
       }),
+      lane,
     ),
   );
 }
@@ -4027,6 +4029,57 @@ function deduplicateExplicitAnchors(markdown) {
     });
     output.push(line);
     if (line.trim()) previousStandaloneAnchor = null;
+  }
+
+  return output.join('\n');
+}
+
+function finalizeRenderedPage(markdown, lane) {
+  const deduplicated = deduplicateExplicitAnchors(markdown);
+  if (lane?.id !== SOURCE_TYPES.DITA_OT_API.id) return deduplicated;
+  return attachDitaAnchorsToHeadings(deduplicated);
+}
+
+function attachDitaAnchorsToHeadings(markdown) {
+  const lines = markdown.split('\n');
+  const output = [];
+
+  for (let index = 0; index < lines.length; ) {
+    const firstAnchor = lines[index].match(
+      /^\s*<a id="([^"]+)"><\/a>\s*$/,
+    );
+    if (!firstAnchor) {
+      output.push(lines[index]);
+      index += 1;
+      continue;
+    }
+
+    const anchorIds = [];
+    let cursor = index;
+    while (cursor < lines.length) {
+      const anchor = lines[cursor].match(
+        /^\s*<a id="([^"]+)"><\/a>\s*$/,
+      );
+      if (!anchor) break;
+      anchorIds.push(anchor[1]);
+      cursor += 1;
+      while (cursor < lines.length && !lines[cursor].trim()) cursor += 1;
+    }
+
+    const heading = lines[cursor]?.match(/^(#{1,6})\s+(.+?)\s*$/);
+    if (!heading) {
+      output.push(lines[index]);
+      index += 1;
+      continue;
+    }
+
+    const primaryId = anchorIds.at(-1);
+    const aliases = anchorIds
+      .slice(0, -1)
+      .map((id) => `<span id="${id}"></span>`)
+      .join('');
+    output.push(`${heading[1]} ${aliases}${heading[2]} [#${primaryId}]`);
+    index = cursor + 1;
   }
 
   return output.join('\n');

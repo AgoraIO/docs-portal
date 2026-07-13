@@ -3,11 +3,7 @@ title: "摄像头采集"
 description: "设置摄像头防抖模式。"
 ---
 
-<a id="toc_camera_capture"></a>
-
-<a id="api_irtcengine_setcamerastabilizationmode"></a>
-
-## setCameraStabilizationMode:
+## <span id="toc_camera_capture"></span>setCameraStabilizationMode: [#api_irtcengine_setcamerastabilizationmode]
 
 设置摄像头防抖模式。
 
@@ -26,38 +22,28 @@ description: "设置摄像头防抖模式。"
 - 启用摄像头防抖后，防抖等级越高，摄像头的视野越小，延迟越大。为提升用户体验，建议将 `mode` 参数设置为 `AgoraCameraStabilizationModeLevel1`。
 :::
 
-<a id="api_irtcengine_setcamerastabilizationmode__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_setcamerastabilizationmode__scenario]
 
 在移动拍摄、低光环境或使用移动设备时，可以设置摄像头防抖模式，以减少抖动带来的影响，获得更稳定清晰的画面。
 
-<a id="api_irtcengine_setcamerastabilizationmode__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setcamerastabilizationmode__timing]
 
 你必须在摄像头成功开启后调用该方法，即 SDK 触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调并返回本地视频状态为 `AgoraVideoLocalStateCapturing` （1）之后。
 
-<a id="api_irtcengine_setcamerastabilizationmode__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setcamerastabilizationmode__parameters]
 
 #### `mode`
 
 摄像头防抖模式，详见 [AgoraCameraStabilizationMode](/zh-CN/api-reference/rtc/ios/enum-camerastabilizationmode)。
 
-<a id="api_irtcengine_setcamerastabilizationmode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setcamerastabilizationmode__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_startcameracapture"></a>
-
-## startCameraCapture:config:
+## startCameraCapture:config: [#api_irtcengine_startcameracapture]
 
 开始视频采集。
 
@@ -75,9 +61,7 @@ description: "设置摄像头防抖模式。"
 在 iOS 上，如果你想启用多摄像头采集，需要先调用 [enableMultiCamera:config:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_enablemulticamera) 并将 `enabled` 设置为 YES，然后再调用此方法。
 :::
 
-<a id="api_irtcengine_startcameracapture__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_startcameracapture__parameters]
 
 #### `sourceType`
 
@@ -87,18 +71,14 @@ description: "设置摄像头防抖模式。"
 
 视频采集的配置。在 iOS 上，此参数无实际作用。请使用 [enableMultiCamera:config:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_enablemulticamera) 中的 `config` 参数来设置视频采集配置。详见 [AgoraCameraCapturerConfiguration](/zh-CN/api-reference/rtc/ios/class-cameracapturerconfiguration)。
 
-<a id="api_irtcengine_startcameracapture__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_startcameracapture__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_stopcameracapture"></a>
-
-## stopCameraCapture:
+## stopCameraCapture: [#api_irtcengine_stopcameracapture]
 
 停止视频采集。
 
@@ -115,17 +95,13 @@ description: "设置摄像头防抖模式。"
 - 如果你正在使用本地视频合流功能，调用该方法可能会导致本地视频合流中断。
 - 在 iOS 上，如果你想禁用多摄像头采集，需要在调用该方法后调用 `enableMultiCamera:` 并将 `enabled` 设置为 NO。
 
-<a id="api_irtcengine_stopcameracapture__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_stopcameracapture__parameters]
 
 #### `sourceType`
 
 视频源的类型，详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/ios/enum-videosourcetype)。
 
-<a id="api_irtcengine_stopcameracapture__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_stopcameracapture__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。

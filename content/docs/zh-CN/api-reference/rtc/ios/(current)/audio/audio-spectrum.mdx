@@ -3,11 +3,7 @@ title: "音频频谱"
 description: "禁用音频频谱监测。"
 ---
 
-<a id="toc_audio_spectrum"></a>
-
-<a id="api_irtcengine_disableaudiospectrummonitor"></a>
-
-## disableAudioSpectrumMonitor
+## <span id="toc_audio_spectrum"></span>disableAudioSpectrumMonitor [#api_irtcengine_disableaudiospectrummonitor]
 
 禁用音频频谱监测。
 
@@ -25,18 +21,14 @@ description: "禁用音频频谱监测。"
 你可以在加入频道前或后调用此方法。
 :::
 
-<a id="api_irtcengine_disableaudiospectrummonitor__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_disableaudiospectrummonitor__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_enableaudiospectrummonitor"></a>
-
-## enableAudioSpectrumMonitor:
+## enableAudioSpectrumMonitor: [#api_irtcengine_enableaudiospectrummonitor]
 
 开启音频频谱监测。
 
@@ -54,23 +46,17 @@ description: "禁用音频频谱监测。"
 你可以在加入频道前或加入频道后调用该方法。
 :::
 
-<a id="api_irtcengine_enableaudiospectrummonitor__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_enableaudiospectrummonitor__scenario]
 
 你可以在加入频道前或加入频道后调用此方法。
 
-<a id="api_irtcengine_enableaudiospectrummonitor__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enableaudiospectrummonitor__parameters]
 
 #### `intervalInMS`
 
 SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 和 [onRemoteAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) 回调的时间间隔（单位为毫秒，默认值为 100）。该参数不能小于 10，否则调用该方法会失败。
 
-<a id="api_irtcengine_enableaudiospectrummonitor__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enableaudiospectrummonitor__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
@@ -79,9 +65,7 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spec
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_registeraudiospectrumobserver"></a>
-
-## registerAudioSpectrumDelegate:
+## registerAudioSpectrumDelegate: [#api_irtcengine_registeraudiospectrumobserver]
 
 注册音频频谱观察者。
 
@@ -99,26 +83,20 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spec
 你可以在加入频道前或加入频道后调用此方法。
 :::
 
-<a id="api_irtcengine_registeraudiospectrumobserver__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_registeraudiospectrumobserver__parameters]
 
 #### `delegate`
 
 音频频谱观察者。详见 [AgoraAudioSpectrumDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudiospectrumobserver)。
 
-<a id="api_irtcengine_registeraudiospectrumobserver__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_registeraudiospectrumobserver__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_unregisteraudiospectrumobserver"></a>
-
-## unregisterAudioSpectrumDelegate:
+## unregisterAudioSpectrumDelegate: [#api_irtcengine_unregisteraudiospectrumobserver]
 
 取消注册音频频谱观察者。
 
@@ -136,26 +114,20 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spec
 你可以在加入频道前或加入频道后调用此方法。
 :::
 
-<a id="api_irtcengine_unregisteraudiospectrumobserver__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_unregisteraudiospectrumobserver__parameters]
 
 #### `delegate`
 
 音频频谱观察者。详见 [AgoraAudioSpectrumDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudiospectrumobserver)。
 
-<a id="api_irtcengine_unregisteraudiospectrumobserver__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_unregisteraudiospectrumobserver__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="callback_iaudiospectrumobserver_onlocalaudiospectrum"></a>
-
-## onLocalAudioSpectrum:
+## onLocalAudioSpectrum: [#callback_iaudiospectrumobserver_onlocalaudiospectrum]
 
 获取本地音频频谱数据。
 
@@ -169,26 +141,20 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spec
 
 成功调用 [registerAudioSpectrumDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 实现 [AgoraAudioSpectrumDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudiospectrumobserver) 中的 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 回调，并调用 [enableAudioSpectrumMonitor:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 启用音频频谱监测后，SDK 会按照你设置的时间间隔触发该回调，在编码前报告接收到的远端音频数据频谱。
 
-<a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__parameters"></a>
-
-### 参数
+### 参数 [#callback_iaudiospectrumobserver_onlocalaudiospectrum__parameters]
 
 #### `audioSpectrumData`
 
 本地用户的音频频谱数据。声网将音频频率划分为 256 个频率域，并通过该参数报告每个频率域的能量值。每个能量值的取值范围为 [-300, 1]，单位为 dBFS。
 
-<a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__return_values"></a>
-
-### 返回值
+### 返回值 [#callback_iaudiospectrumobserver_onlocalaudiospectrum__return_values]
 
 - YES：接收到音频频谱数据。
 - NO：未接收到音频频谱数据。
 
 - [AgoraAudioSpectrumDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudiospectrumobserver)
 
-<a id="callback_iaudiospectrumobserver_onremoteaudiospectrum"></a>
-
-## onRemoteAudioSpectrum:
+## onRemoteAudioSpectrum: [#callback_iaudiospectrumobserver_onremoteaudiospectrum]
 
 获取远端音频频谱信息回调。
 
@@ -202,23 +168,17 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spec
 
 你调用 [registerAudioSpectrumDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 注册 [AgoraAudioSpectrumDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudiospectrumobserver) 协议并实现 [onRemoteAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) 回调，同时调用 [enableAudioSpectrumMonitor:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 启用音频频谱监测后，该回调会按照设置的时间间隔触发，用于报告接收到的远端音频频谱数据。
 
-<a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_iaudiospectrumobserver_onremoteaudiospectrum__timing]
 
 该回调在接收到远端音频频谱数据时被触发。
 
-<a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__parameters"></a>
-
-### 参数
+### 参数 [#callback_iaudiospectrumobserver_onremoteaudiospectrum__parameters]
 
 #### `AudioSpectrumInfo`
 
 远端用户的音频频谱信息。数组的数量为 SDK 监测到的远端用户数量。若该数组为 nil，表示未检测到远端用户的音频频谱。详见 [AgoraAudioSpectrumInfo](/zh-CN/api-reference/rtc/ios/class-useraudiospectruminfo)。
 
-<a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__return_values"></a>
-
-### 返回值
+### 返回值 [#callback_iaudiospectrumobserver_onremoteaudiospectrum__return_values]
 
 - YES：已接收到频谱数据。
 - NO：未接收到频谱数据。

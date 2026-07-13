@@ -3,11 +3,7 @@ title: "音效文件播放"
 description: "获取指定音效文件的播放位置。"
 ---
 
-<a id="toc_audio_effect_file"></a>
-
-<a id="api_irtcengine_geteffectcurrentposition"></a>
-
-## getEffectCurrentPosition
+## <span id="toc_audio_effect_file"></span>getEffectCurrentPosition [#api_irtcengine_geteffectcurrentposition]
 
 获取指定音效文件的播放位置。
 
@@ -23,26 +19,20 @@ public abstract int getEffectCurrentPosition(int soundId);
 请在调用 `playEffect` 方法之后调用此方法。
 :::
 
-<a id="api_irtcengine_geteffectcurrentposition__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_geteffectcurrentposition__parameters]
 
 #### `soundId`
 
 音效 ID。每个音效文件的 ID 是唯一的。
 
-<a id="api_irtcengine_geteffectcurrentposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_geteffectcurrentposition__return_values]
 
 - 方法调用成功，返回指定音效文件的播放位置（毫秒）。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_geteffectduration"></a>
-
-## getEffectDuration
+## getEffectDuration [#api_irtcengine_geteffectduration]
 
 获取音效文件的时长。
 
@@ -58,9 +48,7 @@ public abstract int getEffectDuration(String filePath);
 请在加入频道后调用该方法。
 :::
 
-<a id="api_irtcengine_geteffectduration__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_geteffectduration__parameters]
 
 #### `filePath`
 
@@ -70,18 +58,14 @@ public abstract int getEffectDuration(String filePath);
 
 `content://com.android.providers.media.documents/document/audio%3A14441`。
 
-<a id="api_irtcengine_geteffectduration__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_geteffectduration__return_values]
 
 - 方法调用成功，返回指定音效文件的总时长（毫秒）。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_geteffectsvolume"></a>
-
-## getEffectsVolume
+## getEffectsVolume [#api_irtcengine_geteffectsvolume]
 
 获取音效的音量。
 
@@ -99,18 +83,14 @@ public abstract double getEffectsVolume();
 请在调用 `playEffect` 方法后调用此方法。
 :::
 
-<a id="api_irtcengine_geteffectsvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_geteffectsvolume__return_values]
 
 - 方法调用成功，返回音效的音量。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getvolumeofeffect"></a>
-
-## getVolumeOfEffect
+## getVolumeOfEffect [#api_irtcengine_getvolumeofeffect]
 
 获取指定音效文件的音量。
 
@@ -120,28 +100,20 @@ public abstract double getEffectsVolume();
 public abstract int getVolumeOfEffect(int soundId);
 ```
 
-<a id="api_irtcengine_getvolumeofeffect__detailed_desc"></a>
-
-<a id="api_irtcengine_getvolumeofeffect__parameters"></a>
-
-### 参数
+### <span id="api_irtcengine_getvolumeofeffect__detailed_desc"></span>参数 [#api_irtcengine_getvolumeofeffect__parameters]
 
 #### `soundId`
 
 音效文件的 ID。
 
-<a id="api_irtcengine_getvolumeofeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getvolumeofeffect__return_values]
 
 - 方法调用成功，返回指定音效的音量，取值范围为 0 到 100，100 表示原始音量。
 - 方法调用失败，返回值小于 0。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_pausealleffects"></a>
-
-## pauseAllEffects
+## pauseAllEffects [#api_irtcengine_pausealleffects]
 
 暂停所有音效。
 
@@ -151,20 +123,14 @@ public abstract int getVolumeOfEffect(int soundId);
 public abstract int pauseAllEffects();
 ```
 
-<a id="api_irtcengine_pausealleffects__detailed_desc"></a>
-
-<a id="api_irtcengine_pausealleffects__return_values"></a>
-
-### 返回值
+### <span id="api_irtcengine_pausealleffects__detailed_desc"></span>返回值 [#api_irtcengine_pausealleffects__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_pauseeffect"></a>
-
-## pauseEffect
+## pauseEffect [#api_irtcengine_pauseeffect]
 
 暂停指定音效文件的播放。
 
@@ -174,28 +140,20 @@ public abstract int pauseAllEffects();
 public abstract int pauseEffect(int soundId);
 ```
 
-<a id="api_irtcengine_pauseeffect__detailed_desc"></a>
-
-<a id="api_irtcengine_pauseeffect__parameters"></a>
-
-### 参数
+### <span id="api_irtcengine_pauseeffect__detailed_desc"></span>参数 [#api_irtcengine_pauseeffect__parameters]
 
 #### `soundId`
 
 音效 ID。每个音效文件的 ID 是唯一的。
 
-<a id="api_irtcengine_pauseeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_pauseeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_playalleffects"></a>
-
-## playAllEffects
+## playAllEffects [#api_irtcengine_playalleffects]
 
 播放所有音效。
 
@@ -209,9 +167,7 @@ public abstract int playAllEffects(int loopCount, double pitch, double pan, doub
 
 多次调用 `preloadEffect` 将多个音效预加载到内存后，可以调用该方法为频道内所有用户播放所有预加载的音效。
 
-<a id="api_irtcengine_playalleffects__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_playalleffects__parameters]
 
 #### `loopCount`
 
@@ -244,18 +200,14 @@ public abstract int playAllEffects(int loopCount, double pitch, double pan, doub
 - true：将音效发布给远端用户，本地用户和远端用户都能听到音效。
 - false：（默认）不发布音效，只有本地用户能听到。
 
-<a id="api_irtcengine_playalleffects__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_playalleffects__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_playeffect2"></a>
-
-## playEffect [1/2]
+## playEffect [1/2] [#api_irtcengine_playeffect2]
 
 播放指定的本地或在线音效文件。
 
@@ -275,21 +227,15 @@ public abstract int playEffect(int soundId, String filePath, int loopCount, doub
 - 如果未调用 `preloadEffectEx` 就直接调用 `playEffectEx`，则 `playEffectEx` 执行后会销毁资源。下次调用时将尝试重新打开文件并从头播放。
 :::
 
-<a id="api_irtcengine_playeffect2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_playeffect2__timing]
 
 你可以在加入频道前或后调用该方法。
 
-<a id="api_irtcengine_playeffect2__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_playeffect2__related]
 
 音效文件播放完成后，SDK 会触发 [onAudioEffectFinished](/zh-CN/api-reference/rtc/android/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调。
 
-<a id="api_irtcengine_playeffect2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_playeffect2__parameters]
 
 #### `soundId`
 
@@ -344,18 +290,14 @@ public abstract int playEffect(int soundId, String filePath, int loopCount, doub
 - true：将音效发布给远端用户，本地用户和远端用户都能听到音效。
 - false：不将音效发布给远端用户，只有本地用户能听到音效。
 
-<a id="api_irtcengine_playeffect2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_playeffect2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_playeffect3"></a>
-
-## playEffect [2/2]
+## playEffect [2/2] [#api_irtcengine_playeffect3]
 
 播放指定的本地或在线音效文件。
 
@@ -375,21 +317,15 @@ public abstract int playEffect(int soundId, String filePath, int loopCount, doub
 - 如果未调用 `preloadEffect` 就执行 `playEffect`，则播放结束后资源将被销毁。下次调用 `playEffect` 时将尝试重新打开文件并从头播放。
 :::
 
-<a id="api_irtcengine_playeffect3__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_playeffect3__timing]
 
 你可以在加入频道前或加入频道后调用该方法。
 
-<a id="api_irtcengine_playeffect3__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_playeffect3__related]
 
 音效文件播放完成后，SDK 会触发 [onAudioEffectFinished](/zh-CN/api-reference/rtc/android/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调。
 
-<a id="api_irtcengine_playeffect3__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_playeffect3__parameters]
 
 #### `soundId`
 
@@ -441,17 +377,13 @@ public abstract int playEffect(int soundId, String filePath, int loopCount, doub
 
 音效文件的播放起始位置（单位：毫秒）。
 
-<a id="api_irtcengine_playeffect3__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_playeffect3__return_values]
 
 0：方法调用成功。 &lt; 0：方法调用失败。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_playeffectex"></a>
-
-## playEffectEx [1/2]
+## playEffectEx [1/2] [#api_irtcengineex_playeffectex]
 
 在频道中播放指定的音效。
 
@@ -461,9 +393,7 @@ public abstract int playEffect(int soundId, String filePath, int loopCount, doub
 public abstract int playEffectEx(RtcConnection connection, int soundId, String filePath, int loopCount, double pitch, double pan, double gain, boolean publish, int startPos);
 ```
 
-<a id="api_irtcengineex_playeffectex__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_playeffectex__detailed_desc]
 
 自 v4.6.0 版本新增。
 
@@ -476,15 +406,11 @@ public abstract int playEffectEx(RtcConnection connection, int soundId, String f
 - 如果在调用 `playEffectEx` 之前未调用 `preloadEffectEx`，则在 `playEffectEx` 执行后资源将被销毁。下次调用 `playEffectEx` 时将尝试重新打开文件并从头开始播放。
 :::
 
-<a id="api_irtcengineex_playeffectex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_playeffectex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_playeffectex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_playeffectex__parameters]
 
 #### `connection`
 
@@ -533,18 +459,14 @@ public abstract int playEffectEx(RtcConnection connection, int soundId, String f
 
 音效文件的播放起始位置（单位为毫秒）。
 
-<a id="api_irtcengineex_playeffectex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_playeffectex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengineex_playeffectex2"></a>
-
-## playEffectEx [2/2]
+## playEffectEx [2/2] [#api_irtcengineex_playeffectex2]
 
 在频道中播放指定音效。
 
@@ -554,9 +476,7 @@ public abstract int playEffectEx(RtcConnection connection, int soundId, String f
 public abstract int playEffectEx(RtcConnection connection, int soundId, String filePath, int loopCount, double pitch, double pan, double gain, boolean publish);
 ```
 
-<a id="api_irtcengineex_playeffectex2__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_playeffectex2__detailed_desc]
 
 自 v4.6.0 版本新增。
 
@@ -569,15 +489,11 @@ public abstract int playEffectEx(RtcConnection connection, int soundId, String f
 - 如果在调用 `playEffectEx` 之前未调用 `preloadEffectEx`，则在 `playEffectEx` 执行后资源将被销毁。下次调用 `playEffectEx` 时将尝试重新打开文件并从头播放。
 :::
 
-<a id="api_irtcengineex_playeffectex2__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_playeffectex2__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_playeffectex2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_playeffectex2__parameters]
 
 #### `connection`
 
@@ -622,18 +538,14 @@ public abstract int playEffectEx(RtcConnection connection, int soundId, String f
 - true：在频道中发布音效。
 - false：不在频道中发布音效。
 
-<a id="api_irtcengineex_playeffectex2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_playeffectex2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_preloadeffect"></a>
-
-## preloadEffect [1/2]
+## preloadEffect [1/2] [#api_irtcengine_preloadeffect]
 
 预加载指定的音效文件。
 
@@ -654,9 +566,7 @@ public abstract int preloadEffect(int soundId, String filePath, int startPos);
 - 如果在调用 `playEffect` 之前未调用 `preloadEffect`，则 `playEffect` 执行后资源将被销毁。下次调用 `playEffect` 时将尝试重新打开文件并从头开始播放。
 :::
 
-<a id="api_irtcengine_preloadeffect__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_preloadeffect__parameters]
 
 #### `soundId`
 
@@ -670,18 +580,14 @@ public abstract int preloadEffect(int soundId, String filePath, int startPos);
 
 在线音效文件的起始播放位置。支持的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv 和 wav。
 
-<a id="api_irtcengine_preloadeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_preloadeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_preloadeffect2"></a>
-
-## preloadEffect [2/2]
+## preloadEffect [2/2] [#api_irtcengine_preloadeffect2]
 
 将指定的音效文件预加载到内存中。
 
@@ -700,15 +606,11 @@ public abstract int preloadEffect(int soundId, String filePath);
 - 如果在调用 `playEffect` 之前未调用 `preloadEffect`， `playEffect` 执行后会销毁资源。下次调用 `playEffect` 时，将尝试重新打开文件并从头开始播放。
 :::
 
-<a id="api_irtcengine_preloadeffect2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_preloadeffect2__timing]
 
 声网建议在加入频道前调用该方法。
 
-<a id="api_irtcengine_preloadeffect2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_preloadeffect2__parameters]
 
 #### `soundId`
 
@@ -724,18 +626,14 @@ public abstract int preloadEffect(int soundId, String filePath);
 
 路径需精确到文件名和后缀名。如果使用绝对路径访问本地文件，可能会遇到权限问题，建议使用 URI 地址，例如： `content://com.android.providers.media.documents/document/audio%3A14441`。
 
-<a id="api_irtcengine_preloadeffect2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_preloadeffect2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_preloadeffectex"></a>
-
-## preloadEffectEx [1/2]
+## preloadEffectEx [1/2] [#api_irtcengineex_preloadeffectex]
 
 将指定音效预加载到频道中。
 
@@ -745,9 +643,7 @@ public abstract int preloadEffect(int soundId, String filePath);
 public abstract int preloadEffectEx(RtcConnection connection, int soundId, String filePath, int startPos);
 ```
 
-<a id="api_irtcengineex_preloadeffectex__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_preloadeffectex__detailed_desc]
 
 自 v4.6.0 版本新增。
 
@@ -760,15 +656,11 @@ public abstract int preloadEffectEx(RtcConnection connection, int soundId, Strin
 - 如果在调用 `playEffectEx` 前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后会销毁文件资源。下次调用 `playEffectEx` 时将尝试重新打开文件并从头开始播放。
 :::
 
-<a id="api_irtcengineex_preloadeffectex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_preloadeffectex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_preloadeffectex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_preloadeffectex__parameters]
 
 #### `connection`
 
@@ -786,18 +678,14 @@ public abstract int preloadEffectEx(RtcConnection connection, int soundId, Strin
 
 音效文件的播放起始位置（毫秒）。
 
-<a id="api_irtcengineex_preloadeffectex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_preloadeffectex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengineex_preloadeffectex2"></a>
-
-## preloadEffectEx [2/2]
+## preloadEffectEx [2/2] [#api_irtcengineex_preloadeffectex2]
 
 将指定音效预加载到频道中。
 
@@ -807,9 +695,7 @@ public abstract int preloadEffectEx(RtcConnection connection, int soundId, Strin
 public abstract int preloadEffectEx(RtcConnection connection, int soundId, String filePath);
 ```
 
-<a id="api_irtcengineex_preloadeffectex2__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_preloadeffectex2__detailed_desc]
 
 自 v4.6.0 版本新增。
 
@@ -822,15 +708,11 @@ public abstract int preloadEffectEx(RtcConnection connection, int soundId, Strin
 - 如果在调用 `playEffectEx` 之前未调用 `preloadEffectEx`，则在 `playEffectEx` 执行后资源将被销毁。下次调用 `playEffectEx` 时将尝试重新打开文件并从头开始播放。
 :::
 
-<a id="api_irtcengineex_preloadeffectex2__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_preloadeffectex2__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_preloadeffectex2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_preloadeffectex2__parameters]
 
 #### `connection`
 
@@ -844,18 +726,14 @@ public abstract int preloadEffectEx(RtcConnection connection, int soundId, Strin
 
 本地文件的绝对路径或在线文件的 URL。支持的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv 和 wav。
 
-<a id="api_irtcengineex_preloadeffectex2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_preloadeffectex2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_resumealleffects"></a>
-
-## resumeAllEffects
+## resumeAllEffects [#api_irtcengine_resumealleffects]
 
 恢复播放所有音效文件。
 
@@ -869,24 +747,18 @@ public abstract int resumeAllEffects();
 
 调用 [pauseAllEffects](/zh-CN/api-reference/rtc/android/play/audio-effect-file#api_irtcengine_pausealleffects) 暂停播放后，可以调用该方法恢复播放。
 
-<a id="api_irtcengine_resumealleffects__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_resumealleffects__timing]
 
 请在调用 [pauseAllEffects](/zh-CN/api-reference/rtc/android/play/audio-effect-file#api_irtcengine_pausealleffects) 之后调用该方法。
 
-<a id="api_irtcengine_resumealleffects__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_resumealleffects__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_resumeeffect"></a>
-
-## resumeEffect
+## resumeEffect [#api_irtcengine_resumeeffect]
 
 恢复播放指定音效。
 
@@ -896,28 +768,20 @@ public abstract int resumeAllEffects();
 public abstract int resumeEffect(int soundId);
 ```
 
-<a id="api_irtcengine_resumeeffect__detailed_desc"></a>
-
-<a id="api_irtcengine_resumeeffect__parameters"></a>
-
-### 参数
+### <span id="api_irtcengine_resumeeffect__detailed_desc"></span>参数 [#api_irtcengine_resumeeffect__parameters]
 
 #### `soundId`
 
 音效 ID。每个音效文件的 ID 是唯一的。
 
-<a id="api_irtcengine_resumeeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_resumeeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_seteffectposition"></a>
-
-## setEffectPosition
+## setEffectPosition [#api_irtcengine_seteffectposition]
 
 设置音效文件的播放位置。
 
@@ -933,9 +797,7 @@ public abstract int setEffectPosition(int soundId, int pos);
 请在调用 `playEffect` 方法之后调用此方法。
 :::
 
-<a id="api_irtcengine_seteffectposition__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_seteffectposition__parameters]
 
 #### `soundId`
 
@@ -945,18 +807,14 @@ public abstract int setEffectPosition(int soundId, int pos);
 
 音效文件的播放位置，单位为毫秒。
 
-<a id="api_irtcengine_seteffectposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_seteffectposition__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_seteffectsvolume"></a>
-
-## setEffectsVolume
+## setEffectsVolume [#api_irtcengine_seteffectsvolume]
 
 设置音效的播放音量。
 
@@ -970,32 +828,24 @@ public abstract int setEffectsVolume(double volume);
 
 该方法需要在调用 `playEffect` 方法之后调用。
 
-<a id="api_irtcengine_seteffectsvolume__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_seteffectsvolume__timing]
 
 该方法需要在调用 `playEffect` 方法之后调用。
 
-<a id="api_irtcengine_seteffectsvolume__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_seteffectsvolume__parameters]
 
 #### `volume`
 
 播放音量，取值范围为 [0, 100]。（默认值为 100，表示原始音量。）
 
-<a id="api_irtcengine_seteffectsvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_seteffectsvolume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setvolumeofeffect"></a>
-
-## setVolumeOfEffect
+## setVolumeOfEffect [#api_irtcengine_setvolumeofeffect]
 
 设置指定音效文件的播放音量。
 
@@ -1009,15 +859,11 @@ public abstract int setVolumeOfEffect(int soundId, double volume);
 
 在调用 `playEffect` 方法之后调用该方法。
 
-<a id="api_irtcengine_setvolumeofeffect__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setvolumeofeffect__timing]
 
 在调用 `playEffect` 方法之后调用该方法。
 
-<a id="api_irtcengine_setvolumeofeffect__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setvolumeofeffect__parameters]
 
 #### `soundId`
 
@@ -1027,18 +873,14 @@ public abstract int setVolumeOfEffect(int soundId, double volume);
 
 播放音量，取值范围为 [0, 100]。（默认值为 100）
 
-<a id="api_irtcengine_setvolumeofeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setvolumeofeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_stopalleffects"></a>
-
-## stopAllEffects
+## stopAllEffects [#api_irtcengine_stopalleffects]
 
 停止播放所有音效。
 
@@ -1052,24 +894,18 @@ public abstract int stopAllEffects();
 
 如果你只需要暂停播放，请调用 [pauseAllEffects](/zh-CN/api-reference/rtc/android/play/audio-effect-file#api_irtcengine_pausealleffects) 方法。
 
-<a id="api_irtcengine_stopalleffects__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_stopalleffects__timing]
 
 在调用 `playEffect` 方法之后调用。
 
-<a id="api_irtcengine_stopalleffects__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_stopalleffects__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_stopeffect"></a>
-
-## stopEffect
+## stopEffect [#api_irtcengine_stopeffect]
 
 停止播放指定音效。
 
@@ -1083,32 +919,24 @@ public abstract int stopEffect(int soundId);
 
 如果只需要暂停播放，请调用 [pauseEffect](/zh-CN/api-reference/rtc/android/play/audio-effect-file#api_irtcengine_pauseeffect) 方法。
 
-<a id="api_irtcengine_stopeffect__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_stopeffect__timing]
 
 在调用 `playEffect` 之后调用。
 
-<a id="api_irtcengine_stopeffect__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_stopeffect__parameters]
 
 #### `soundId`
 
 音效的 ID。每个音效都有唯一的 ID。
 
-<a id="api_irtcengine_stopeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_stopeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_unloadeffect"></a>
-
-## unloadEffect
+## unloadEffect [#api_irtcengine_unloadeffect]
 
 释放指定的预加载音效文件。
 
@@ -1122,32 +950,24 @@ public abstract int unloadEffect(int soundId);
 
 调用 `preloadEffect` 将音效文件加载到内存后，如需释放该音效文件，可调用 [unloadEffect](/zh-CN/api-reference/rtc/android/play/audio-effect-file#api_irtcengine_unloadeffect)。
 
-<a id="api_irtcengine_unloadeffect__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_unloadeffect__timing]
 
 你可以在加入频道前或加入频道后调用此方法。
 
-<a id="api_irtcengine_unloadeffect__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_unloadeffect__parameters]
 
 #### `soundId`
 
 音效的 ID。每个音效都有唯一的 ID。
 
-<a id="api_irtcengine_unloadeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_unloadeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="callback_irtcengineeventhandler_onaudioeffectfinished"></a>
-
-## onAudioEffectFinished
+## onAudioEffectFinished [#callback_irtcengineeventhandler_onaudioeffectfinished]
 
 本地音效文件播放完成时的回调。
 
@@ -1157,17 +977,11 @@ public abstract int unloadEffect(int soundId);
 public void onAudioEffectFinished(int soundId) {}
 ```
 
-<a id="callback_irtcengineeventhandler_onaudioeffectfinished__detailed_desc"></a>
-
-<a id="callback_irtcengineeventhandler_onaudioeffectfinished__timing"></a>
-
-### 触发时机
+### <span id="callback_irtcengineeventhandler_onaudioeffectfinished__detailed_desc"></span>触发时机 [#callback_irtcengineeventhandler_onaudioeffectfinished__timing]
 
 该回调在本地音效文件播放完成时被触发。
 
-<a id="callback_irtcengineeventhandler_onaudioeffectfinished__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onaudioeffectfinished__parameters]
 
 #### `soundId`
 

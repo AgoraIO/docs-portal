@@ -3,11 +3,7 @@ title: "URL 拉流播放"
 description: "添加一个渲染视图。"
 ---
 
-<a id="toc_rte_player"></a>
-
-<a id="api_canvas_addview"></a>
-
-## addView:config:error:
+## <span id="toc_rte_player"></span>addView:config:error: [#api_canvas_addview]
 
 添加一个渲染视图。
 
@@ -17,9 +13,7 @@ description: "添加一个渲染视图。"
 - (BOOL)addView:(AgoraRteView * _Nonnull)view config:(AgoraRteViewConfig* _Nullable)config error:(AgoraRteError* _Nullable)error;
 ```
 
-<a id="api_canvas_addview__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_canvas_addview__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -29,21 +23,15 @@ description: "添加一个渲染视图。"
 当前仅支持一个视图。
 :::
 
-<a id="api_canvas_addview__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_canvas_addview__scenario]
 
 当你需要使用播放器播放视频时，可以调用此方法将视图添加到视频渲染器中，以显示视频内容。
 
-<a id="api_canvas_addview__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_canvas_addview__timing]
 
 你必须在调用 [setCanvas:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_setcanvas) 之前调用此方法。
 
-<a id="api_canvas_addview__parameters"></a>
-
-### 参数
+### 参数 [#api_canvas_addview__parameters]
 
 #### `view`
 
@@ -60,18 +48,14 @@ description: "添加一个渲染视图。"
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_canvas_addview__return_values"></a>
-
-### 返回值
+### 返回值 [#api_canvas_addview__return_values]
 
 - YES：添加视图成功。
 - NO：添加视图失败。
 
 - [AgoraRteCanvas](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_canvas)
 
-<a id="api_canvas_canvas_canvas"></a>
-
-## initWithRte:initialConfig:
+## initWithRte:initialConfig: [#api_canvas_canvas_canvas]
 
 构造一个 AgoraRteCanvas 对象。
 
@@ -81,15 +65,11 @@ description: "添加一个渲染视图。"
 - (instancetype _Nonnull)initWithRte:(AgoraRte* _Nonnull)rte initialConfig:(AgoraRteCanvasInitialConfig * _Nullable)config;
 ```
 
-<a id="api_canvas_canvas_canvas__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_canvas_canvas_canvas__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_canvas_canvas_canvas__parameters"></a>
-
-### 参数
+### 参数 [#api_canvas_canvas_canvas__parameters]
 
 #### `rte`
 
@@ -101,9 +81,7 @@ description: "添加一个渲染视图。"
 
 - [AgoraRteCanvas](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_canvas)
 
-<a id="api_error_code"></a>
-
-## code
+## code [#api_error_code]
 
 获取 API 调用返回的错误码。
 
@@ -113,31 +91,23 @@ description: "添加一个渲染视图。"
 - (AgoraRteErrorCode)code;
 ```
 
-<a id="api_error_code__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_error_code__detailed_desc]
 
 自 v4.4.0 版本新增。
 
 当 API 调用失败时，你可以调用该方法获取错误码。
 
-<a id="api_error_code__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_error_code__timing]
 
 当 API 调用失败时，你可以调用该方法获取错误码。
 
-<a id="api_error_code__return_values"></a>
-
-### 返回值
+### 返回值 [#api_error_code__return_values]
 
 方法调用成功时，返回错误码，详见 [AgoraRteErrorCode](/zh-CN/api-reference/rtc/ios/enum-rteerrorcode)。
 
 - [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)
 
-<a id="api_rte_destroy_rte"></a>
-
-## destroy:
+## destroy: [#api_rte_destroy_rte]
 
 销毁 RTE 对象。
 
@@ -147,34 +117,26 @@ description: "添加一个渲染视图。"
 - (BOOL)destroy:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_rte_destroy_rte__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_rte_destroy_rte__detailed_desc]
 
 自 v4.4.0 版本新增。
 
 该方法会释放 `RTE` 对象使用的所有资源。
 
-<a id="api_rte_destroy_rte__parameters"></a>
-
-### 参数
+### 参数 [#api_rte_destroy_rte__parameters]
 
 #### `error`
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_rte_destroy_rte__return_values"></a>
-
-### 返回值
+### 返回值 [#api_rte_destroy_rte__return_values]
 
 - YES：销毁成功。
 - NO：销毁失败。
 
 - [AgoraRte](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_rte)
 
-<a id="api_playerconfig_getabrfallbacklayer"></a>
-
-## abrFallbackLayer:
+## abrFallbackLayer: [#api_playerconfig_getabrfallbacklayer]
 
 获取已配置的视频流分层回退选项。
 
@@ -184,37 +146,27 @@ description: "添加一个渲染视图。"
 - (AgoraRteAbrFallbackLayer)abrFallbackLayer:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_playerconfig_getabrfallbacklayer__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_playerconfig_getabrfallbacklayer__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_playerconfig_getabrfallbacklayer__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_playerconfig_getabrfallbacklayer__timing]
 
 你必须在调用 [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
 
-<a id="api_playerconfig_getabrfallbacklayer__parameters"></a>
-
-### 参数
+### 参数 [#api_playerconfig_getabrfallbacklayer__parameters]
 
 #### `error`
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_playerconfig_getabrfallbacklayer__return_values"></a>
-
-### 返回值
+### 返回值 [#api_playerconfig_getabrfallbacklayer__return_values]
 
 已配置的视频流分层回退选项，详见 [AgoraRteAbrFallbackLayer](/zh-CN/api-reference/rtc/ios/enum-rteabrfallbacklayer)。
 
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerconfig)
 
-<a id="api_playerconfig_getabrsubscriptionlayer"></a>
-
-## abrSubscriptionLayer:
+## abrSubscriptionLayer: [#api_playerconfig_getabrsubscriptionlayer]
 
 获取订阅端视频流的质量层级。
 
@@ -224,37 +176,27 @@ description: "添加一个渲染视图。"
 - (AgoraRteAbrSubscriptionLayer)abrSubscriptionLayer:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_playerconfig_getabrsubscriptionlayer__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_playerconfig_getabrsubscriptionlayer__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_playerconfig_getabrsubscriptionlayer__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_playerconfig_getabrsubscriptionlayer__timing]
 
 你必须在调用 [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
 
-<a id="api_playerconfig_getabrsubscriptionlayer__parameters"></a>
-
-### 参数
+### 参数 [#api_playerconfig_getabrsubscriptionlayer__parameters]
 
 #### `error`
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_playerconfig_getabrsubscriptionlayer__return_values"></a>
-
-### 返回值
+### 返回值 [#api_playerconfig_getabrsubscriptionlayer__return_values]
 
 当前设置的视频质量层级，详见 [AgoraRteAbrSubscriptionLayer](/zh-CN/api-reference/rtc/ios/enum-rteabrsubscriptionlayer)。
 
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerconfig)
 
-<a id="api_config_getappid"></a>
-
-## appId:
+## appId: [#api_config_getappid]
 
 获取你已设置的声网 App ID。
 
@@ -264,15 +206,11 @@ description: "添加一个渲染视图。"
 - (NSString* _Nullable)appId:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_config_getappid__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_config_getappid__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_config_getappid__parameters"></a>
-
-### 参数
+### 参数 [#api_config_getappid__parameters]
 
 #### `error`
 
@@ -280,18 +218,14 @@ description: "添加一个渲染视图。"
 
 - `AgoraRteOk`：调用成功。
 
-<a id="api_config_getappid__return_values"></a>
-
-### 返回值
+### 返回值 [#api_config_getappid__return_values]
 
 - 方法调用成功时，返回你已设置的声网 App ID。
 - 方法调用失败时，返回空字符串。
 
 - [AgoraRteConfig](/zh-CN/api-reference/rtc/ios/class-config)
 
-<a id="api_playerconfig_getautoplay"></a>
-
-## autoPlay:
+## autoPlay: [#api_playerconfig_getautoplay]
 
 获取媒体播放器的自动播放设置。
 
@@ -301,9 +235,7 @@ description: "添加一个渲染视图。"
 - (BOOL)autoPlay:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_playerconfig_getautoplay__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_playerconfig_getautoplay__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -313,23 +245,17 @@ description: "添加一个渲染视图。"
 必须在调用 [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 方法之后调用。
 :::
 
-<a id="api_playerconfig_getautoplay__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_playerconfig_getautoplay__timing]
 
 必须在调用 [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 方法之后调用。
 
-<a id="api_playerconfig_getautoplay__parameters"></a>
-
-### 参数
+### 参数 [#api_playerconfig_getautoplay__parameters]
 
 #### `error`
 
 状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_playerconfig_getautoplay__return_values"></a>
-
-### 返回值
+### 返回值 [#api_playerconfig_getautoplay__return_values]
 
 是否成功获取自动播放设置：
 
@@ -338,9 +264,7 @@ description: "添加一个渲染视图。"
 
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerconfig)
 
-<a id="api_canvas_getconfigs_canvas"></a>
-
-## getConfigs:error:
+## getConfigs:error: [#api_canvas_getconfigs_canvas]
 
 获取当前播放器的视频渲染配置。
 
@@ -350,21 +274,15 @@ description: "添加一个渲染视图。"
 - (BOOL)getConfigs:(AgoraRteCanvasConfig* _Nonnull)config error:(AgoraRteError* _Nullable)error;
 ```
 
-<a id="api_canvas_getconfigs_canvas__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_canvas_getconfigs_canvas__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_canvas_getconfigs_canvas__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_canvas_getconfigs_canvas__timing]
 
 你需要在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_canvas_canvas) 方法之后调用该方法。
 
-<a id="api_canvas_getconfigs_canvas__parameters"></a>
-
-### 参数
+### 参数 [#api_canvas_getconfigs_canvas__parameters]
 
 #### `config`
 
@@ -374,18 +292,14 @@ description: "添加一个渲染视图。"
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_canvas_getconfigs_canvas__return_values"></a>
-
-### 返回值
+### 返回值 [#api_canvas_getconfigs_canvas__return_values]
 
 - YES：获取成功。
 - NO：获取失败。
 
 - [AgoraRteCanvas](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_canvas)
 
-<a id="api_player_getconfigs_player"></a>
-
-## getConfigs:error:
+## getConfigs:error: [#api_player_getconfigs_player]
 
 获取当前媒体播放器配置选项。
 
@@ -395,21 +309,15 @@ description: "添加一个渲染视图。"
 - (BOOL)getConfigs:(AgoraRtePlayerConfig * _Nonnull)config error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_getconfigs_player__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_getconfigs_player__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_player_getconfigs_player__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_player_getconfigs_player__timing]
 
 你必须在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用此方法。
 
-<a id="api_player_getconfigs_player__parameters"></a>
-
-### 参数
+### 参数 [#api_player_getconfigs_player__parameters]
 
 #### `config`
 
@@ -419,18 +327,14 @@ description: "添加一个渲染视图。"
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_player_getconfigs_player__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_getconfigs_player__return_values]
 
 - YES：获取成功。
 - NO：获取失败。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_rte_getconfigs_rte"></a>
-
-## getConfigs:error:
+## getConfigs:error: [#api_rte_getconfigs_rte]
 
 获取 RTE 对象的配置信息。
 
@@ -440,21 +344,15 @@ description: "添加一个渲染视图。"
 - (BOOL)getConfigs:(AgoraRteConfig *_Nonnull)config error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_rte_getconfigs_rte__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_rte_getconfigs_rte__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_rte_getconfigs_rte__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_rte_getconfigs_rte__timing]
 
 你必须在调用 [initWithInitialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_rte_rte) 之后调用该方法。
 
-<a id="api_rte_getconfigs_rte__parameters"></a>
-
-### 参数
+### 参数 [#api_rte_getconfigs_rte__parameters]
 
 #### `config`
 
@@ -464,18 +362,14 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_rte_getconfigs_rte__return_values"></a>
-
-### 返回值
+### 返回值 [#api_rte_getconfigs_rte__return_values]
 
 - YES：获取成功。
 - NO：获取失败。
 
 - [AgoraRte](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_rte)
 
-<a id="api_rte_getfrombridge"></a>
-
-## getFromBridge:
+## getFromBridge: [#api_rte_getfrombridge]
 
 桥接一个来自 AgoraRtcEngineKit 的 RTE 对象。
 
@@ -485,39 +379,29 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 + (instancetype _Nonnull)getFromBridge:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_rte_getfrombridge__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_rte_getfrombridge__detailed_desc]
 
 自 v4.4.0 版本新增。
 
 通过调用此方法创建的 `RTE` 对象无需通过 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 进行初始化。如果你尚未创建并初始化 RTC 引擎，可以先调用 [AgoraRte](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_rte) 创建一个 `RTE` 对象，然后使用 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 进行初始化。
 
-<a id="api_rte_getfrombridge__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_rte_getfrombridge__timing]
 
 在调用此方法之前，请确保你已通过调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) 初始化 RTC 引擎。
 
-<a id="api_rte_getfrombridge__parameters"></a>
-
-### 参数
+### 参数 [#api_rte_getfrombridge__parameters]
 
 #### `error`
 
 用于接收状态和错误码的指针，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_rte_getfrombridge__return_values"></a>
-
-### 返回值
+### 返回值 [#api_rte_getfrombridge__return_values]
 
 方法调用成功，返回一个 `RTE` 对象，详见 [AgoraRte](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_rte)。
 
 - [AgoraRte](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_rte)
 
-<a id="api_player_getinfo"></a>
-
-## getInfo:error:
+## getInfo:error: [#api_player_getinfo]
 
 获取播放器播放和媒体流相关的信息。
 
@@ -527,9 +411,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (BOOL)getInfo:(AgoraRtePlayerInfo * _Nonnull)info error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_getinfo__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_getinfo__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -539,9 +421,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 你必须在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用此方法。
 :::
 
-<a id="api_player_getinfo__parameters"></a>
-
-### 参数
+### 参数 [#api_player_getinfo__parameters]
 
 #### `info`
 
@@ -551,18 +431,14 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_player_getinfo__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_getinfo__return_values]
 
 - YES：成功获取信息。
 - NO：获取信息失败。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_config_getjsonparameter_config"></a>
-
-## jsonParameter:
+## jsonParameter: [#api_config_getjsonparameter_config]
 
 获取当前配置的 RTE 私有参数。
 
@@ -572,15 +448,11 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (NSString * _Nullable)jsonParameter:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_config_getjsonparameter_config__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_config_getjsonparameter_config__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_config_getjsonparameter_config__parameters"></a>
-
-### 参数
+### 参数 [#api_config_getjsonparameter_config__parameters]
 
 #### `error`
 
@@ -588,18 +460,14 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - `AgoraRteOk`：调用成功。
 
-<a id="api_config_getjsonparameter_config__return_values"></a>
-
-### 返回值
+### 返回值 [#api_config_getjsonparameter_config__return_values]
 
 - 方法调用成功时，返回已设置的 JSON 格式参数集。
 - 方法调用失败时，返回空字符串。
 
 - [AgoraRteConfig](/zh-CN/api-reference/rtc/ios/class-config)
 
-<a id="api_playerconfig_getloopcount"></a>
-
-## loopCount:
+## loopCount: [#api_playerconfig_getloopcount]
 
 获取媒体文件的循环次数参数。
 
@@ -609,31 +477,23 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (int32_t)loopCount:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_playerconfig_getloopcount__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_playerconfig_getloopcount__detailed_desc]
 
 自 v4.5.1 版本新增。
 
-<a id="api_playerconfig_getloopcount__parameters"></a>
-
-### 参数
+### 参数 [#api_playerconfig_getloopcount__parameters]
 
 #### `error`
 
 输出参数，用于指示错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_playerconfig_getloopcount__return_values"></a>
-
-### 返回值
+### 返回值 [#api_playerconfig_getloopcount__return_values]
 
 方法调用成功时，返回媒体文件的循环次数。
 
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerconfig)
 
-<a id="api_canvasconfig_getmirrormode"></a>
-
-## videoMirrorMode:
+## videoMirrorMode: [#api_canvasconfig_getmirrormode]
 
 获取当前设置的镜像模式。
 
@@ -643,37 +503,27 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (AgoraRteVideoMirrorMode)videoMirrorMode:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_canvasconfig_getmirrormode__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_canvasconfig_getmirrormode__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_canvasconfig_getmirrormode__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_canvasconfig_getmirrormode__timing]
 
 你必须在调用 [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
 
-<a id="api_canvasconfig_getmirrormode__parameters"></a>
-
-### 参数
+### 参数 [#api_canvasconfig_getmirrormode__parameters]
 
 #### `error`
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_canvasconfig_getmirrormode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_canvasconfig_getmirrormode__return_values]
 
 当前设置的镜像模式，详见 [AgoraRteVideoMirrorMode](/zh-CN/api-reference/rtc/ios/enum-rtevideomirrormode)。
 
 - [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_canvasconfig)
 
-<a id="api_playerconfig_getplaybackspeed"></a>
-
-## playbackSpeed:
+## playbackSpeed: [#api_playerconfig_getplaybackspeed]
 
 获取播放速度参数。
 
@@ -683,31 +533,23 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (int32_t)playbackSpeed:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_playerconfig_getplaybackspeed__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_playerconfig_getplaybackspeed__detailed_desc]
 
 自 v4.5.1 版本新增。
 
-<a id="api_playerconfig_getplaybackspeed__parameters"></a>
-
-### 参数
+### 参数 [#api_playerconfig_getplaybackspeed__parameters]
 
 #### `error`
 
 输出参数，用于指示错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_playerconfig_getplaybackspeed__return_values"></a>
-
-### 返回值
+### 返回值 [#api_playerconfig_getplaybackspeed__return_values]
 
 方法调用成功时，返回播放速度的值。
 
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerconfig)
 
-<a id="api_playerconfig_getplayoutvolume"></a>
-
-## playoutVolume:
+## playoutVolume: [#api_playerconfig_getplayoutvolume]
 
 获取媒体播放器的播放音量。
 
@@ -717,31 +559,23 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (int32_t)playoutVolume:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_playerconfig_getplayoutvolume__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_playerconfig_getplayoutvolume__detailed_desc]
 
 自 v4.5.1 版本新增。
 
-<a id="api_playerconfig_getplayoutvolume__parameters"></a>
-
-### 参数
+### 参数 [#api_playerconfig_getplayoutvolume__parameters]
 
 #### `error`
 
 输出参数，用于返回错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_playerconfig_getplayoutvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_playerconfig_getplayoutvolume__return_values]
 
 方法调用成功，返回媒体播放器的播放音量。
 
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerconfig)
 
-<a id="api_player_getposition"></a>
-
-## getPosition:
+## getPosition: [#api_player_getposition]
 
 获取当前播放位置。
 
@@ -751,17 +585,13 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (uint64_t)getPosition:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_getposition__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_getposition__detailed_desc]
 
 自 v4.5.1 版本新增。
 
 该方法用于获取当前播放的时间位置，单位为毫秒。
 
-<a id="api_player_getposition__parameters"></a>
-
-### 参数
+### 参数 [#api_player_getposition__parameters]
 
 #### `error`
 
@@ -773,17 +603,13 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
   - 对应的内部 [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player) 对象已被销毁或无效。
   - 打开的 URL 是 RTE URL，不支持调用 [getPosition:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_getposition)。详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_player_getposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_getposition__return_values]
 
 方法调用成功时，返回当前播放位置，单位为毫秒。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_canvasconfig_getrendermode"></a>
-
-## videoRenderMode:
+## videoRenderMode: [#api_canvasconfig_getrendermode]
 
 获取当前设置的视频渲染模式。
 
@@ -793,37 +619,27 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (AgoraRteVideoRenderMode)videoRenderMode:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_canvasconfig_getrendermode__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_canvasconfig_getrendermode__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_canvasconfig_getrendermode__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_canvasconfig_getrendermode__timing]
 
 你需要在调用 [getConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
 
-<a id="api_canvasconfig_getrendermode__parameters"></a>
-
-### 参数
+### 参数 [#api_canvasconfig_getrendermode__parameters]
 
 #### `error`
 
 状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_canvasconfig_getrendermode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_canvasconfig_getrendermode__return_values]
 
 当前设置的视频渲染模式。详见 [AgoraRteVideoRenderMode](/zh-CN/api-reference/rtc/ios/enum-rtevideorendermode)。
 
 - [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_canvasconfig)
 
-<a id="api_player_getstats"></a>
-
-## getStats:
+## getStats: [#api_player_getstats]
 
 获取播放器当前播放媒体资源的统计信息。
 
@@ -833,9 +649,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)getStats:(void (^_Nonnull)(AgoraRtePlayerStats* _Nonnull stats, AgoraRteError* _Nullable err))cb;
 ```
 
-<a id="api_player_getstats__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_getstats__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -845,9 +659,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 你必须在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 方法之后再调用此方法。
 :::
 
-<a id="api_player_getstats__parameters"></a>
-
-### 参数
+### 参数 [#api_player_getstats__parameters]
 
 #### `cb`
 
@@ -858,9 +670,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_rte_initmediaengine"></a>
-
-## initMediaEngine:error:
+## initMediaEngine:error: [#api_rte_initmediaengine]
 
 初始化 RTE 引擎。
 
@@ -870,9 +680,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (BOOL)initMediaEngine:(void (^ _Nullable)(AgoraRteError* _Nullable err) )cb error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_rte_initmediaengine__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_rte_initmediaengine__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -882,15 +690,11 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 该返回值仅表示初始化操作是否已成功加入异步任务队列，并不表示初始化是否成功。
 :::
 
-<a id="api_rte_initmediaengine__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_rte_initmediaengine__timing]
 
 你需要在创建 `RTE` 对象并设置 App ID 后调用该方法。
 
-<a id="api_rte_initmediaengine__parameters"></a>
-
-### 参数
+### 参数 [#api_rte_initmediaengine__parameters]
 
 #### `cb`
 
@@ -900,9 +704,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 初始化过程中发生的错误信息。当调用 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 方法进行初始化时，如果发生可立即检测的错误（如参数无效或资源不足），SDK 会通过该参数同步返回错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_rte_initmediaengine__return_values"></a>
-
-### 返回值
+### 返回值 [#api_rte_initmediaengine__return_values]
 
 - YES：异步操作成功加入队列。
 - NO：异步操作未能加入队列。
@@ -911,9 +713,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRte](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_rte)
 
-<a id="api_error_message"></a>
-
-## message
+## message [#api_error_message]
 
 获取详细错误信息。
 
@@ -923,30 +723,22 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (NSString * _Nullable)message;
 ```
 
-<a id="api_error_message__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_error_message__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_error_message__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_error_message__timing]
 
 当 API 调用失败时，你可以调用此方法获取错误信息，以帮助排查问题。
 
-<a id="api_error_message__return_values"></a>
-
-### 返回值
+### 返回值 [#api_error_message__return_values]
 
 - 方法调用成功时，返回错误信息字符串。
 - 方法调用失败时，返回空字符串。
 
 - [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)
 
-<a id="api_player_muteaudio"></a>
-
-## muteAudio:error:
+## muteAudio:error: [#api_player_muteaudio]
 
 开始或停止接收音频流。
 
@@ -956,27 +748,19 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (BOOL)muteAudio:(BOOL)mute error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_muteaudio__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_muteaudio__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_player_muteaudio__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_player_muteaudio__timing]
 
 你必须在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之后调用此方法。
 
-<a id="api_player_muteaudio__related"></a>
-
-### 相关回调
+### 相关回调 [#api_player_muteaudio__related]
 
 调用该方法成功后，会触发 [onPlayerInfoUpdated:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onplayerinfoupdated_playerobserver) 回调以上报最新的播放器和媒体流信息。
 
-<a id="api_player_muteaudio__parameters"></a>
-
-### 参数
+### 参数 [#api_player_muteaudio__parameters]
 
 #### `mute`
 
@@ -989,18 +773,14 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 输出参数，状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_player_muteaudio__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_muteaudio__return_values]
 
 - YES：操作成功。
 - NO：操作失败。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_player_mutevideo"></a>
-
-## muteVideo:error:
+## muteVideo:error: [#api_player_mutevideo]
 
 开始或停止接收远端视频流。
 
@@ -1010,27 +790,19 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (BOOL)muteVideo:(BOOL)mute error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_mutevideo__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_mutevideo__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_player_mutevideo__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_player_mutevideo__timing]
 
 你必须在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之后调用此方法。
 
-<a id="api_player_mutevideo__related"></a>
-
-### 相关回调
+### 相关回调 [#api_player_mutevideo__related]
 
 调用该方法成功后，会触发 [onPlayerInfoUpdated:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onplayerinfoupdated_playerobserver) 回调以上报最新的播放器和媒体流信息。
 
-<a id="api_player_mutevideo__parameters"></a>
-
-### 参数
+### 参数 [#api_player_mutevideo__parameters]
 
 #### `mute`
 
@@ -1043,18 +815,14 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_player_mutevideo__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_mutevideo__return_values]
 
 - YES：操作成功。
 - NO：操作失败。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_player_openwithurl"></a>
-
-## openWithUrl:startTime:cb:
+## openWithUrl:startTime:cb: [#api_player_openwithurl]
 
 打开一个 URL 资源。
 
@@ -1064,9 +832,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)openWithUrl:(NSString * _Nonnull)url startTime:(uint64_t)startTime cb:(void (^_Nullable)(AgoraRteError* _Nullable err))cb;
 ```
 
-<a id="api_player_openwithurl__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_openwithurl__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -1076,21 +842,15 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 该方法目前仅支持打开以 `rte://` 开头的 URL、CDN 推流 URL 和本地媒体文件。
 :::
 
-<a id="api_player_openwithurl__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_player_openwithurl__timing]
 
 该方法必须在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用。
 
-<a id="api_player_openwithurl__related"></a>
-
-### 相关回调
+### 相关回调 [#api_player_openwithurl__related]
 
 成功调用该方法后，SDK 会触发 [onStateChanged:newState:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onstatechanged) 回调报告播放器连接状态为 `AgoraRtePlayerStateOpening`，表示正在打开 URL。打开成功后，播放器连接状态会报告为 `AgoraRtePlayerStateOpenCompleted`。如果资源打开失败，会收到 [onStateChanged:newState:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onstatechanged) 回调，报告连接状态为 `AgoraRtePlayerStateFailed`。此时需先调用 [pause:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_pause_player)，再调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 重新打开 URL 资源。如果已关闭自动播放，可在资源打开后调用 [play:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_play_player) 开始播放。
 
-<a id="api_player_openwithurl__parameters"></a>
-
-### 参数
+### 参数 [#api_player_openwithurl__parameters]
 
 #### `url`
 
@@ -1106,9 +866,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_player_pause_player"></a>
-
-## pause:
+## pause: [#api_player_pause_player]
 
 暂停播放。
 
@@ -1118,40 +876,30 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (BOOL)pause:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_pause_player__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_pause_player__detailed_desc]
 
 自 v4.4.0 版本新增。
 
 调用 [play:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_play_player) 播放 URL 资源后，如果你希望暂停播放，可以调用该方法。如果你希望停止播放，请调用 [pause:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_pause_player)。你必须在调用 [play:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_play_player) 之后调用该方法。
 
-<a id="api_player_pause_player__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_player_pause_player__timing]
 
 你必须在调用 [play:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_play_player) 之后调用该方法。
 
-<a id="api_player_pause_player__parameters"></a>
-
-### 参数
+### 参数 [#api_player_pause_player__parameters]
 
 #### `error`
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_player_pause_player__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_pause_player__return_values]
 
 - YES：暂停播放成功。
 - NO：暂停播放失败。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_player_play_player"></a>
-
-## play:
+## play: [#api_player_play_player]
 
 播放一个以 rte:// 开头的 URL 资源。
 
@@ -1161,40 +909,30 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (BOOL)play:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_play_player__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_play_player__detailed_desc]
 
 自 v4.4.0 版本新增。
 
 如果你已关闭自动播放，在使用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 成功打开直播流后，可以调用此方法开始播放。
 
-<a id="api_player_play_player__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_player_play_player__timing]
 
 仅在收到 [onStateChanged:newState:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#callback_playerobserver_onstatechanged) 回调并报告状态为 `AgoraRtePlayerStateOpenCompleted` 后调用此方法。
 
-<a id="api_player_play_player__parameters"></a>
-
-### 参数
+### 参数 [#api_player_play_player__parameters]
 
 #### `error`
 
 连接状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_player_play_player__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_play_player__return_values]
 
 - YES：播放成功。
 - NO：播放失败。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_player_player_player"></a>
-
-## initWithRte:initialConfig:
+## initWithRte:initialConfig: [#api_player_player_player]
 
 构造一个播放器对象。
 
@@ -1204,21 +942,15 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (instancetype _Nonnull)initWithRte:(AgoraRte * _Nonnull)rte initialConfig:(AgoraRtePlayerInitialConfig * _Nullable)config;
 ```
 
-<a id="api_player_player_player__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_player_player__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_player_player_player__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_player_player_player__timing]
 
 你必须在调用 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 之后调用此方法。
 
-<a id="api_player_player_player__parameters"></a>
-
-### 参数
+### 参数 [#api_player_player_player__parameters]
 
 #### `rte`
 
@@ -1230,9 +962,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_player_preloadwithurl"></a>
-
-## preloadWithUrl:error:
+## preloadWithUrl:error: [#api_player_preloadwithurl]
 
 预加载 URL 资源。
 
@@ -1242,9 +972,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 + (BOOL)preloadWithUrl:(NSString * _Nonnull)url error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_preloadwithurl__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_preloadwithurl__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -1254,15 +982,11 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 该方法当前仅对以 `rte://` 为前缀的 URL 生效。最多可预加载 20 个 URL，若超过限制，最新预加载的 URL 会替换最早的 URL。
 :::
 
-<a id="api_player_preloadwithurl__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_player_preloadwithurl__scenario]
 
 在打开媒体资源前预加载，可以减少用户等待时间，提供更流畅的视听体验。
 
-<a id="api_player_preloadwithurl__parameters"></a>
-
-### 参数
+### 参数 [#api_player_preloadwithurl__parameters]
 
 #### `url`
 
@@ -1272,18 +996,14 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_player_preloadwithurl__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_preloadwithurl__return_values]
 
 - YES：预加载成功。
 - NO：预加载失败。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_player_registerobserver_player"></a>
-
-## registerObserver:error:
+## registerObserver:error: [#api_player_registerobserver_player]
 
 注册一个播放器观察者对象。
 
@@ -1293,17 +1013,13 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (BOOL)registerObserver:(AgoraRtePlayerObserver *_Nonnull)observer error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_registerobserver_player__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_registerobserver_player__detailed_desc]
 
 自 v4.4.0 版本新增。
 
 在调用此方法之前，你需要实现一个继承自 [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerobserver) 的接口类。你必须在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后再调用此方法。
 
-<a id="api_player_registerobserver_player__parameters"></a>
-
-### 参数
+### 参数 [#api_player_registerobserver_player__parameters]
 
 #### `observer`
 
@@ -1313,18 +1029,14 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_player_registerobserver_player__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_registerobserver_player__return_values]
 
 - YES：注册成功。
 - NO：注册失败。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_canvas_removeview"></a>
-
-## removeView:config:error:
+## removeView:config:error: [#api_canvas_removeview]
 
 移除一个渲染视图。
 
@@ -1334,9 +1046,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (BOOL)removeView:(AgoraRteView * _Nonnull)view config:(AgoraRteViewConfig* _Nullable)config error:(AgoraRteError* _Nullable)error;
 ```
 
-<a id="api_canvas_removeview__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_canvas_removeview__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -1346,15 +1056,11 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 每次只能移除一个视图。
 :::
 
-<a id="api_canvas_removeview__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_canvas_removeview__timing]
 
 必须在调用 [addView:config:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_addview) 方法之后调用。
 
-<a id="api_canvas_removeview__parameters"></a>
-
-### 参数
+### 参数 [#api_canvas_removeview__parameters]
 
 #### `view`
 
@@ -1368,18 +1074,14 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_canvas_removeview__return_values"></a>
-
-### 返回值
+### 返回值 [#api_canvas_removeview__return_values]
 
 - YES：视图移除成功。
 - NO：视图移除失败。
 
 - [AgoraRteCanvas](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_canvas)
 
-<a id="api_rte_rte_rte"></a>
-
-## initWithInitialConfig:
+## initWithInitialConfig: [#api_rte_rte_rte]
 
 构造一个 RTE 对象。
 
@@ -1389,40 +1091,30 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (instancetype _Nonnull)initWithInitialConfig:(AgoraRteInitialConfig * _Nullable)config;
 ```
 
-<a id="api_rte_rte_rte__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_rte_rte_rte__detailed_desc]
 
 自 v4.4.0 版本新增。
 
 `RTE` 对象用于组织和管理 `RTE` 的内部资源。你必须在调用 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 方法之前调用此方法。
 
-<a id="api_rte_rte_rte__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_rte_rte_rte__timing]
 
 你必须在调用 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 方法之前调用此方法。
 
-<a id="api_rte_rte_rte__parameters"></a>
-
-### 参数
+### 参数 [#api_rte_rte_rte__parameters]
 
 #### `config`
 
 初始化设置。你可以传入 nil。
 
-<a id="api_rte_rte_rte__return_values"></a>
-
-### 返回值
+### 返回值 [#api_rte_rte_rte__return_values]
 
 - 方法调用成功，返回 `RTE` 对象。
 - 方法调用失败，返回 nil。
 
 - [AgoraRte](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_rte)
 
-<a id="api_player_seek"></a>
-
-## seek:error:
+## seek:error: [#api_player_seek]
 
 跳转到指定的播放位置。
 
@@ -1432,15 +1124,11 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (BOOL)seek:(uint64_t)newTime error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_seek__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_seek__detailed_desc]
 
 自 v4.5.1 版本新增。
 
-<a id="api_player_seek__parameters"></a>
-
-### 参数
+### 参数 [#api_player_seek__parameters]
 
 #### `newTime`
 
@@ -1450,18 +1138,14 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 输出参数，用于在跳转操作失败时返回错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_player_seek__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_seek__return_values]
 
 - YES：跳转成功。
 - NO：跳转失败。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_playerconfig_setabrfallbacklayer"></a>
-
-## setAbrFallbackLayer:error:
+## setAbrFallbackLayer:error: [#api_playerconfig_setabrfallbacklayer]
 
 设置已订阅远端视频流的分层推流回退选项。
 
@@ -1471,9 +1155,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)setAbrFallbackLayer:(AgoraRteAbrFallbackLayer)layer error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_playerconfig_setabrfallbacklayer__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_playerconfig_setabrfallbacklayer__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -1483,21 +1165,15 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 如果未开启 ABR 功能，远端视频流的回退质量层级只能设置为 `AgoraRteAbrFallbackLow` 或 `AgoraRteAbrFallbackAudioOnly`。
 :::
 
-<a id="api_playerconfig_setabrfallbacklayer__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_playerconfig_setabrfallbacklayer__scenario]
 
 一般场景下，可调用该方法并将回退质量层设置为 `kRteAbrFallbackLow` 或 `kRteAbrFallbackAudioOnly`。当网络较差时，SDK 会回退为视频小流或仅接收音频流。 如果对回退视频流的分辨率有更高要求，可[联系技术支持](https://ticket.shengwang.cn/)开启 ABR 功能。开启后，可自定义每一层的分辨率。SDK 会以你指定的最低质量层的分辨率为下限，并根据网络状况在该范围内动态调整分辨率。
 
-<a id="api_playerconfig_setabrfallbacklayer__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_playerconfig_setabrfallbacklayer__timing]
 
 必须在调用 [setConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_setconfigs_canvas) 之前调用该方法。
 
-<a id="api_playerconfig_setabrfallbacklayer__parameters"></a>
-
-### 参数
+### 参数 [#api_playerconfig_setabrfallbacklayer__parameters]
 
 #### `layer`
 
@@ -1524,9 +1200,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerconfig)
 
-<a id="api_playerconfig_setabrsubscriptionlayer"></a>
-
-## setAbrSubscriptionLayer:error:
+## setAbrSubscriptionLayer:error: [#api_playerconfig_setabrsubscriptionlayer]
 
 设置订阅端媒体流的视频质量层级。
 
@@ -1536,9 +1210,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)setAbrSubscriptionLayer:(AgoraRteAbrSubscriptionLayer)layer error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_playerconfig_setabrsubscriptionlayer__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_playerconfig_setabrsubscriptionlayer__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -1548,21 +1220,15 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 如果在调用该方法时未开启 ABR 功能，订阅的视频质量层级只能设置为 `AgoraRteAbrSubscriptionHigh` 或 `AgoraRteAbrSubscriptionLow`。
 :::
 
-<a id="api_playerconfig_setabrsubscriptionlayer__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_playerconfig_setabrsubscriptionlayer__scenario]
 
 在网络环境不稳定的场景中，订阅端可根据实际网络状况选择合适的视频质量层级，以保障流畅的观看体验。
 
-<a id="api_playerconfig_setabrsubscriptionlayer__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_playerconfig_setabrsubscriptionlayer__timing]
 
 你必须在调用 [setConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_setconfigs_canvas) 之前调用该方法。
 
-<a id="api_playerconfig_setabrsubscriptionlayer__parameters"></a>
-
-### 参数
+### 参数 [#api_playerconfig_setabrsubscriptionlayer__parameters]
 
 #### `layer`
 
@@ -1585,9 +1251,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerconfig)
 
-<a id="api_config_setappid"></a>
-
-## setAppId:error:
+## setAppId:error: [#api_config_setappid]
 
 设置声网 App ID。
 
@@ -1597,21 +1261,15 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)setAppId:(NSString * _Nullable)appId error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_config_setappid__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_config_setappid__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_config_setappid__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_config_setappid__timing]
 
 你必须在调用 [initMediaEngine:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_initmediaengine) 之前调用此方法。
 
-<a id="api_config_setappid__parameters"></a>
-
-### 参数
+### 参数 [#api_config_setappid__parameters]
 
 #### `appId`
 
@@ -1623,9 +1281,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRteConfig](/zh-CN/api-reference/rtc/ios/class-config)
 
-<a id="api_playerconfig_setautoplay"></a>
-
-## setAutoPlay:error:
+## setAutoPlay:error: [#api_playerconfig_setautoplay]
 
 设置是否启用自动播放。
 
@@ -1635,9 +1291,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)setAutoPlay:(BOOL)autoPlay error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_playerconfig_setautoplay__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_playerconfig_setautoplay__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -1647,15 +1301,11 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 该方法必须在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之前调用。
 :::
 
-<a id="api_playerconfig_setautoplay__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_playerconfig_setautoplay__timing]
 
 该方法必须在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之前调用。
 
-<a id="api_playerconfig_setautoplay__parameters"></a>
-
-### 参数
+### 参数 [#api_playerconfig_setautoplay__parameters]
 
 #### `autoPlay`
 
@@ -1670,9 +1320,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerconfig)
 
-<a id="api_player_setcanvas"></a>
-
-## setCanvas:error:
+## setCanvas:error: [#api_player_setcanvas]
 
 设置用于显示视频的视图窗口。
 
@@ -1682,9 +1330,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (BOOL)setCanvas:(AgoraRteCanvas *_Nonnull)canvas error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_setcanvas__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_setcanvas__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -1694,9 +1340,7 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 你必须在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用此方法。
 :::
 
-<a id="api_player_setcanvas__parameters"></a>
-
-### 参数
+### 参数 [#api_player_setcanvas__parameters]
 
 #### `canvas`
 
@@ -1706,18 +1350,14 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_player_setcanvas__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_setcanvas__return_values]
 
 - YES：设置成功。
 - NO：设置失败。你可以通过 `error` 参数返回的错误码获取详细信息。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_canvas_setconfigs_canvas"></a>
-
-## setConfigs:error:
+## setConfigs:error: [#api_canvas_setconfigs_canvas]
 
 设置播放器的视频渲染配置。
 
@@ -1727,21 +1367,15 @@ RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (BOOL)setConfigs:(AgoraRteCanvasConfig* _Nonnull)config error:(AgoraRteError* _Nullable)error;
 ```
 
-<a id="api_canvas_setconfigs_canvas__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_canvas_setconfigs_canvas__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_canvas_setconfigs_canvas__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_canvas_setconfigs_canvas__timing]
 
 你必须在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 之前调用此方法。
 
-<a id="api_canvas_setconfigs_canvas__parameters"></a>
-
-### 参数
+### 参数 [#api_canvas_setconfigs_canvas__parameters]
 
 #### `config`
 
@@ -1751,18 +1385,14 @@ Canvas 对象的设置，详见 [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_canvas_setconfigs_canvas__return_values"></a>
-
-### 返回值
+### 返回值 [#api_canvas_setconfigs_canvas__return_values]
 
 - YES：配置成功。
 - NO：配置失败。
 
 - [AgoraRteCanvas](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_canvas)
 
-<a id="api_player_setconfigs_player"></a>
-
-## setConfigs:error:
+## setConfigs:error: [#api_player_setconfigs_player]
 
 配置播放器参数。
 
@@ -1772,9 +1402,7 @@ Canvas 对象的设置，详见 [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/
 - (BOOL)setConfigs:(AgoraRtePlayerConfig * _Nonnull)config error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_setconfigs_player__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_setconfigs_player__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -1784,9 +1412,7 @@ Canvas 对象的设置，详见 [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/
 必须在调用 [initWithRte:initialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_player_player) 之后调用此方法。
 :::
 
-<a id="api_player_setconfigs_player__parameters"></a>
-
-### 参数
+### 参数 [#api_player_setconfigs_player__parameters]
 
 #### `config`
 
@@ -1796,18 +1422,14 @@ Canvas 对象的设置，详见 [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/
 
 状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_player_setconfigs_player__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_setconfigs_player__return_values]
 
 - YES：配置成功。
 - NO：配置失败。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_rte_setconfigs_rte"></a>
-
-## setConfigs:error:
+## setConfigs:error: [#api_rte_setconfigs_rte]
 
 配置 RTE 对象的信息。
 
@@ -1817,9 +1439,7 @@ Canvas 对象的设置，详见 [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/
 - (BOOL)setConfigs:(AgoraRteConfig * _Nonnull)config error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_rte_setconfigs_rte__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_rte_setconfigs_rte__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -1829,9 +1449,7 @@ Canvas 对象的设置，详见 [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/
 必须在调用 [initWithInitialConfig:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_rte_rte_rte) 之后调用此方法。
 :::
 
-<a id="api_rte_setconfigs_rte__parameters"></a>
-
-### 参数
+### 参数 [#api_rte_setconfigs_rte__parameters]
 
 #### `config`
 
@@ -1841,18 +1459,14 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_rte_setconfigs_rte__return_values"></a>
-
-### 返回值
+### 返回值 [#api_rte_setconfigs_rte__return_values]
 
 - YES：配置成功。
 - NO：配置失败。
 
 - [AgoraRte](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_rte)
 
-<a id="api_config_setjsonparameter_config"></a>
-
-## setJsonParameter:error:
+## setJsonParameter:error: [#api_config_setjsonparameter_config]
 
 通过 JSON 配置 SDK 提供的技术预览或定制功能。
 
@@ -1862,9 +1476,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)setJsonParameter:(NSString * _Nullable)jsonParameter error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_config_setjsonparameter_config__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_config_setjsonparameter_config__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -1874,15 +1486,11 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 你必须在调用 [setConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_setconfigs_canvas) 之前调用此方法。
 :::
 
-<a id="api_config_setjsonparameter_config__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_config_setjsonparameter_config__scenario]
 
 当你需要设置私有参数或使用定制化功能时，可以调用此方法。
 
-<a id="api_config_setjsonparameter_config__parameters"></a>
-
-### 参数
+### 参数 [#api_config_setjsonparameter_config__parameters]
 
 #### `jsonParameter`
 
@@ -1894,9 +1502,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRteConfig](/zh-CN/api-reference/rtc/ios/class-config)
 
-<a id="api_playerconfig_setloopcount"></a>
-
-## setLoopCount:error:
+## setLoopCount:error: [#api_playerconfig_setloopcount]
 
 设置播放媒体文件的循环次数。
 
@@ -1906,15 +1512,11 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)setLoopCount:(int32_t)count error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_playerconfig_setloopcount__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_playerconfig_setloopcount__detailed_desc]
 
 自 v4.5.1 版本新增。
 
-<a id="api_playerconfig_setloopcount__parameters"></a>
-
-### 参数
+### 参数 [#api_playerconfig_setloopcount__parameters]
 
 #### `count`
 
@@ -1933,9 +1535,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerconfig)
 
-<a id="api_canvasconfig_setmirrormode"></a>
-
-## setVideoMirrorMode:error:
+## setVideoMirrorMode:error: [#api_canvasconfig_setmirrormode]
 
 设置视频镜像模式。
 
@@ -1945,21 +1545,15 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)setVideoMirrorMode:(AgoraRteVideoMirrorMode)mode error:(AgoraRteError* _Nullable)error;
 ```
 
-<a id="api_canvasconfig_setmirrormode__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_canvasconfig_setmirrormode__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_canvasconfig_setmirrormode__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_canvasconfig_setmirrormode__timing]
 
 你必须在调用 [setConfigs:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_canvas_setconfigs_canvas) 之前调用此方法。
 
-<a id="api_canvasconfig_setmirrormode__parameters"></a>
-
-### 参数
+### 参数 [#api_canvasconfig_setmirrormode__parameters]
 
 #### `mode`
 
@@ -1971,9 +1565,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_canvasconfig)
 
-<a id="api_playerconfig_setplaybackspeed"></a>
-
-## setPlaybackSpeed:error:
+## setPlaybackSpeed:error: [#api_playerconfig_setplaybackspeed]
 
 设置播放速度参数。
 
@@ -1983,9 +1575,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)setPlaybackSpeed:(int32_t)speed error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_playerconfig_setplaybackspeed__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_playerconfig_setplaybackspeed__detailed_desc]
 
 自 v4.5.1 版本新增。
 
@@ -1993,9 +1583,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 你可以在调用 [openWithUrl:startTime:cb:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_openwithurl) 方法之后调用此方法。
 :::
 
-<a id="api_playerconfig_setplaybackspeed__parameters"></a>
-
-### 参数
+### 参数 [#api_playerconfig_setplaybackspeed__parameters]
 
 #### `speed`
 
@@ -2007,9 +1595,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerconfig)
 
-<a id="api_playerconfig_setplayoutvolume"></a>
-
-## setPlayoutVolume:error:
+## setPlayoutVolume:error: [#api_playerconfig_setplayoutvolume]
 
 设置播放音量参数。
 
@@ -2019,17 +1605,13 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)setPlayoutVolume:(int32_t)volume error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_playerconfig_setplayoutvolume__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_playerconfig_setplayoutvolume__detailed_desc]
 
 自 v4.5.1 版本新增。
 
 你可以使用该方法设置播放音量。有效范围为 [0, 400]。
 
-<a id="api_playerconfig_setplayoutvolume__parameters"></a>
-
-### 参数
+### 参数 [#api_playerconfig_setplayoutvolume__parameters]
 
 #### `volume`
 
@@ -2044,9 +1626,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerconfig)
 
-<a id="api_canvasconfig_setrendermode_canvasconfig"></a>
-
-## setVideoRenderMode:error:
+## setVideoRenderMode:error: [#api_canvasconfig_setrendermode_canvasconfig]
 
 设置视频渲染模式。
 
@@ -2056,15 +1636,11 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)setVideoRenderMode:(AgoraRteVideoRenderMode)mode error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_canvasconfig_setrendermode_canvasconfig__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_canvasconfig_setrendermode_canvasconfig__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_canvasconfig_setrendermode_canvasconfig__parameters"></a>
-
-### 参数
+### 参数 [#api_canvasconfig_setrendermode_canvasconfig__parameters]
 
 #### `mode`
 
@@ -2079,9 +1655,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_canvasconfig)
 
-<a id="api_player_stop_player"></a>
-
-## stop:
+## stop: [#api_player_stop_player]
 
 停止播放。
 
@@ -2091,15 +1665,11 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (BOOL)stop:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_stop_player__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_stop_player__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="api_player_stop_player__parameters"></a>
-
-### 参数
+### 参数 [#api_player_stop_player__parameters]
 
 #### `error`
 
@@ -2108,18 +1678,14 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - `AgoraRteOk`：成功。
 - `AgoraRteErrorInvalidOperation`：对应的内部 [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player) 对象已被销毁或无效。
 
-<a id="api_player_stop_player__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_stop_player__return_values]
 
 - YES：停止成功。
 - NO：停止失败。你可以通过 `error` 参数查看具体错误信息。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_player_switchwithurl"></a>
-
-## switchWithUrl:syncPts:cb:
+## switchWithUrl:syncPts:cb: [#api_player_switchwithurl]
 
 在播放过程中切换到新的 URL。
 
@@ -2129,9 +1695,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)switchWithUrl:(NSString * _Nonnull)url syncPts:(BOOL)syncPts cb:(void (^_Nullable)(AgoraRteError* _Nullable err))cb;
 ```
 
-<a id="api_player_switchwithurl__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_switchwithurl__detailed_desc]
 
 自 v4.5.1 版本新增。
 
@@ -2139,9 +1703,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 该方法仅在使用非 RTE URL 打开播放器时有效。你必须在 SDK 返回播放器状态为 `AgoraRtePlayerStateOpenCompleted` 后调用此方法。
 :::
 
-<a id="api_player_switchwithurl__parameters"></a>
-
-### 参数
+### 参数 [#api_player_switchwithurl__parameters]
 
 #### `url`
 
@@ -2160,9 +1722,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="api_player_unregisterobserver_player"></a>
-
-## unregisterObserver:error:
+## unregisterObserver:error: [#api_player_unregisterobserver_player]
 
 取消注册媒体播放器事件观察者对象。
 
@@ -2172,9 +1732,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (BOOL)unregisterObserver:(AgoraRtePlayerObserver * _Nullable)observer error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="api_player_unregisterobserver_player__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_player_unregisterobserver_player__detailed_desc]
 
 自 v4.4.0 版本新增。
 
@@ -2184,15 +1742,11 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 该方法必须在调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 之后调用。
 :::
 
-<a id="api_player_unregisterobserver_player__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_player_unregisterobserver_player__timing]
 
 该方法必须在调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 之后调用。
 
-<a id="api_player_unregisterobserver_player__parameters"></a>
-
-### 参数
+### 参数 [#api_player_unregisterobserver_player__parameters]
 
 #### `observer`
 
@@ -2202,18 +1756,14 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_error)。
 
-<a id="api_player_unregisterobserver_player__return_values"></a>
-
-### 返回值
+### 返回值 [#api_player_unregisterobserver_player__return_values]
 
 - YES：取消注册成功。
 - NO：取消注册失败。
 
 - [AgoraRtePlayer](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_player)
 
-<a id="callback_playerobserver_onaudiovolumeindication_playerobserver"></a>
-
-## onAudioVolumeIndication:
+## onAudioVolumeIndication: [#callback_playerobserver_onaudiovolumeindication_playerobserver]
 
 播放器音量提示回调。
 
@@ -2223,21 +1773,15 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)onAudioVolumeIndication:(int32_t)volume;
 ```
 
-<a id="callback_playerobserver_onaudiovolumeindication_playerobserver__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#callback_playerobserver_onaudiovolumeindication_playerobserver__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="callback_playerobserver_onaudiovolumeindication_playerobserver__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_playerobserver_onaudiovolumeindication_playerobserver__timing]
 
 当播放器音量发生变化时，SDK 会触发该回调。
 
-<a id="callback_playerobserver_onaudiovolumeindication_playerobserver__parameters"></a>
-
-### 参数
+### 参数 [#callback_playerobserver_onaudiovolumeindication_playerobserver__parameters]
 
 #### `volume`
 
@@ -2245,9 +1789,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerobserver)
 
-<a id="callback_playerobserver_onevent"></a>
-
-## onEvent:
+## onEvent: [#callback_playerobserver_onevent]
 
 播放器事件回调。
 
@@ -2257,23 +1799,17 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)onEvent:(AgoraRtePlayerEvent)event;
 ```
 
-<a id="callback_playerobserver_onevent__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#callback_playerobserver_onevent__detailed_desc]
 
 自 v4.4.0 版本新增。
 
 如果你需要监听播放器事件，必须先调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。
 
-<a id="callback_playerobserver_onevent__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_playerobserver_onevent__timing]
 
 该回调在播放器事件发生变化时被触发。
 
-<a id="callback_playerobserver_onevent__parameters"></a>
-
-### 参数
+### 参数 [#callback_playerobserver_onevent__parameters]
 
 #### `event`
 
@@ -2281,9 +1817,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerobserver)
 
-<a id="callback_playerobserver_onmetadata_playerobserver"></a>
-
-## onMetadata:data:
+## onMetadata:data: [#callback_playerobserver_onmetadata_playerobserver]
 
 接收媒体元数据的回调。
 
@@ -2293,23 +1827,17 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)onMetadata:(AgoraRtePlayerMetadataType)type data:(NSData * _Nonnull)data;
 ```
 
-<a id="callback_playerobserver_onmetadata_playerobserver__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#callback_playerobserver_onmetadata_playerobserver__detailed_desc]
 
 自 v4.4.0 版本新增。
 
 如果你需要从输入在线媒体流中获取元数据，必须先调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 注册一个播放器观察者对象。
 
-<a id="callback_playerobserver_onmetadata_playerobserver__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_playerobserver_onmetadata_playerobserver__timing]
 
 该回调在 SDK 从输入在线媒体流中解析出元数据后触发，用于上报数据的类型和内容。
 
-<a id="callback_playerobserver_onmetadata_playerobserver__parameters"></a>
-
-### 参数
+### 参数 [#callback_playerobserver_onmetadata_playerobserver__parameters]
 
 #### `type`
 
@@ -2321,9 +1849,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerobserver)
 
-<a id="callback_playerobserver_onplayerinfoupdated_playerobserver"></a>
-
-## onPlayerInfoUpdated:
+## onPlayerInfoUpdated: [#callback_playerobserver_onplayerinfoupdated_playerobserver]
 
 播放器或媒体流信息发生变化时触发的回调。
 
@@ -2333,23 +1859,17 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 - (void)onPlayerInfoUpdated:(AgoraRtePlayerInfo * _Nonnull)info;
 ```
 
-<a id="callback_playerobserver_onplayerinfoupdated_playerobserver__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#callback_playerobserver_onplayerinfoupdated_playerobserver__detailed_desc]
 
 自 v4.4.0 版本新增。
 
 如果你希望获取播放器或媒体流的信息，需要先调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。你也可以直接使用 [getInfo:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_getinfo) 方法获取信息。
 
-<a id="callback_playerobserver_onplayerinfoupdated_playerobserver__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_playerobserver_onplayerinfoupdated_playerobserver__timing]
 
 当播放器或媒体流信息发生变化时，SDK 会触发该回调。
 
-<a id="callback_playerobserver_onplayerinfoupdated_playerobserver__parameters"></a>
-
-### 参数
+### 参数 [#callback_playerobserver_onplayerinfoupdated_playerobserver__parameters]
 
 #### `info`
 
@@ -2357,9 +1877,7 @@ RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/ios
 
 - [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerobserver)
 
-<a id="callback_playerobserver_onpositionchanged_playerobserver"></a>
-
-## onPositionChanged:utcTime:
+## onPositionChanged:utcTime: [#callback_playerobserver_onpositionchanged_playerobserver]
 
 onPositionChanged:utcTime: 回调。报告媒体资源的当前播放进度。
 
@@ -2369,21 +1887,15 @@ onPositionChanged:utcTime: 回调。报告媒体资源的当前播放进度。
 - (void)onPositionChanged:(uint64_t)currentTime utcTime:(uint64_t)utcTime;
 ```
 
-<a id="callback_playerobserver_onpositionchanged_playerobserver__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#callback_playerobserver_onpositionchanged_playerobserver__detailed_desc]
 
 自 v4.4.0 版本新增。
 
-<a id="callback_playerobserver_onpositionchanged_playerobserver__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_playerobserver_onpositionchanged_playerobserver__timing]
 
 该回调在媒体资源播放过程中每秒触发一次。
 
-<a id="callback_playerobserver_onpositionchanged_playerobserver__parameters"></a>
-
-### 参数
+### 参数 [#callback_playerobserver_onpositionchanged_playerobserver__parameters]
 
 #### `currentTime`
 
@@ -2395,9 +1907,7 @@ onPositionChanged:utcTime: 回调。报告媒体资源的当前播放进度。
 
 - [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerobserver)
 
-<a id="callback_playerobserver_onresolutionchanged"></a>
-
-## onResolutionChanged:height:
+## onResolutionChanged:height: [#callback_playerobserver_onresolutionchanged]
 
 视频分辨率变化的回调。
 
@@ -2407,23 +1917,17 @@ onPositionChanged:utcTime: 回调。报告媒体资源的当前播放进度。
 - (void)onResolutionChanged:(int)width height:(int)height;
 ```
 
-<a id="callback_playerobserver_onresolutionchanged__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#callback_playerobserver_onresolutionchanged__detailed_desc]
 
 自 v4.4.0 版本新增。
 
 如果你需要监控播放器正在播放的视频流的分辨率变化，必须先调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。
 
-<a id="callback_playerobserver_onresolutionchanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_playerobserver_onresolutionchanged__timing]
 
 该回调在视频流的分辨率发生变化时被触发，报告当前视频的宽度和高度。
 
-<a id="callback_playerobserver_onresolutionchanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_playerobserver_onresolutionchanged__parameters]
 
 #### `width`
 
@@ -2435,9 +1939,7 @@ onPositionChanged:utcTime: 回调。报告媒体资源的当前播放进度。
 
 - [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_playerobserver)
 
-<a id="callback_playerobserver_onstatechanged"></a>
-
-## onStateChanged:newState:error:
+## onStateChanged:newState:error: [#callback_playerobserver_onstatechanged]
 
 播放器状态发生变化回调。
 
@@ -2447,23 +1949,17 @@ onPositionChanged:utcTime: 回调。报告媒体资源的当前播放进度。
 - (void)onStateChanged:(AgoraRtePlayerState)oldState newState:(AgoraRtePlayerState)newState error:(AgoraRteError * _Nullable)error;
 ```
 
-<a id="callback_playerobserver_onstatechanged__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#callback_playerobserver_onstatechanged__detailed_desc]
 
 自 v4.4.0 版本新增。
 
 如果你需要监听播放器状态的变化，必须先调用 [registerObserver:error:](/zh-CN/api-reference/rtc/ios/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。
 
-<a id="callback_playerobserver_onstatechanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_playerobserver_onstatechanged__timing]
 
 该回调在播放器状态发生变化时被触发，用于报告当前状态和之前的状态。
 
-<a id="callback_playerobserver_onstatechanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_playerobserver_onstatechanged__parameters]
 
 #### `oldState`
 

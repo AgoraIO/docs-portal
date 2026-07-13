@@ -3,11 +3,7 @@ title: "播放器控制"
 description: "调节本地播放音量。"
 ---
 
-<a id="toc_mediaplayer_control"></a>
-
-<a id="api_imediaplayer_adjustplayoutvolume"></a>
-
-## adjustPlayoutVolume
+## <span id="toc_mediaplayer_control"></span>adjustPlayoutVolume [#api_imediaplayer_adjustplayoutvolume]
 
 调节本地播放音量。
 
@@ -17,17 +13,11 @@ description: "调节本地播放音量。"
 int adjustPlayoutVolume(int volume);
 ```
 
-<a id="api_imediaplayer_adjustplayoutvolume__detailed_desc"></a>
-
-<a id="api_imediaplayer_adjustplayoutvolume__timing"></a>
-
-### 调用时机
+### <span id="api_imediaplayer_adjustplayoutvolume__detailed_desc"></span>调用时机 [#api_imediaplayer_adjustplayoutvolume__timing]
 
 该方法可在加入频道前或加入频道后调用。
 
-<a id="api_imediaplayer_adjustplayoutvolume__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_adjustplayoutvolume__parameters]
 
 #### `volume`
 
@@ -36,18 +26,14 @@ int adjustPlayoutVolume(int volume);
 - 0：静音。
 - 100：（默认）原始音量。
 
-<a id="api_imediaplayer_adjustplayoutvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_adjustplayoutvolume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_adjustpublishsignalvolume"></a>
-
-## adjustPublishSignalVolume
+## adjustPublishSignalVolume [#api_imediaplayer_adjustpublishsignalvolume]
 
 调节用于发布的媒体文件音量。
 
@@ -61,15 +47,11 @@ int adjustPublishSignalVolume(int volume);
 
 你可以调用该方法调节远端用户听到的媒体文件音量。
 
-<a id="api_imediaplayer_adjustpublishsignalvolume__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_imediaplayer_adjustpublishsignalvolume__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_imediaplayer_adjustpublishsignalvolume__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_adjustpublishsignalvolume__parameters]
 
 #### `volume`
 
@@ -79,18 +61,14 @@ int adjustPublishSignalVolume(int volume);
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
 
-<a id="api_imediaplayer_adjustpublishsignalvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_adjustpublishsignalvolume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_mute"></a>
-
-## mute
+## mute [#api_imediaplayer_mute]
 
 设置是否静音媒体文件。
 
@@ -100,17 +78,11 @@ int adjustPublishSignalVolume(int volume);
 int mute(boolean muted);
 ```
 
-<a id="api_imediaplayer_mute__detailed_desc"></a>
-
-<a id="api_imediaplayer_mute__timing"></a>
-
-### 调用时机
+### <span id="api_imediaplayer_mute__detailed_desc"></span>调用时机 [#api_imediaplayer_mute__timing]
 
 你可以在加入频道前或加入频道后调用该方法。
 
-<a id="api_imediaplayer_mute__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_mute__parameters]
 
 #### `muted`
 
@@ -119,18 +91,14 @@ int mute(boolean muted);
 - true：静音媒体文件。
 - false：（默认）取消静音媒体文件。
 
-<a id="api_imediaplayer_mute__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_mute__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_pause"></a>
-
-## pause
+## pause [#api_imediaplayer_pause]
 
 暂停播放。
 
@@ -140,26 +108,18 @@ int mute(boolean muted);
 int pause();
 ```
 
-<a id="api_imediaplayer_pause__detailed_desc"></a>
-
-<a id="api_imediaplayer_pause__timing"></a>
-
-### 调用时机
+### <span id="api_imediaplayer_pause__detailed_desc"></span>调用时机 [#api_imediaplayer_pause__timing]
 
 你可以在加入频道前或加入频道后调用此方法。
 
-<a id="api_imediaplayer_pause__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_pause__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_play"></a>
-
-## play
+## play [#api_imediaplayer_play]
 
 播放媒体文件。
 
@@ -169,27 +129,19 @@ int pause();
 int play();
 ```
 
-<a id="api_imediaplayer_play__detailed_desc"></a>
-
-<a id="api_imediaplayer_play__timing"></a>
-
-### 调用时机
+### <span id="api_imediaplayer_play__detailed_desc"></span>调用时机 [#api_imediaplayer_play__timing]
 
 - 在调用 `open` 或 [openWithMediaSource](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体文件并收到 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态为 `PLAYER_STATE_OPEN_COMPLETED` 后调用该方法。
 - 在调用 [seek](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 后调用该方法。
 
-<a id="api_imediaplayer_play__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_play__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_playpreloadedsrc"></a>
-
-## playPreloadedSrc
+## playPreloadedSrc [#api_imediaplayer_playpreloadedsrc]
 
 播放预加载的媒体资源。
 
@@ -207,26 +159,20 @@ int playPreloadedSrc(String src);
 如果在播放暂停时调用该方法，该方法在播放恢复之前不会生效。
 :::
 
-<a id="api_imediaplayer_playpreloadedsrc__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_playpreloadedsrc__parameters]
 
 #### `src`
 
 播放列表中媒体资源的 URL，必须与通过 [preloadSrc](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc) 设置的 `src` 保持一致，否则无法播放该媒体资源。
 
-<a id="api_imediaplayer_playpreloadedsrc__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_playpreloadedsrc__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_resume"></a>
-
-## resume
+## resume [#api_imediaplayer_resume]
 
 恢复播放媒体文件。
 
@@ -236,20 +182,14 @@ int playPreloadedSrc(String src);
 int resume();
 ```
 
-<a id="api_imediaplayer_resume__detailed_desc"></a>
-
-<a id="api_imediaplayer_resume__return_values"></a>
-
-### 返回值
+### <span id="api_imediaplayer_resume__detailed_desc"></span>返回值 [#api_imediaplayer_resume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_seek"></a>
-
-## seek
+## seek [#api_imediaplayer_seek]
 
 跳转到新的播放位置。
 
@@ -263,38 +203,28 @@ int seek(long newPos);
 
 如果在播放完成后调用 [seek](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek)，即收到回调 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged)，播放状态为 `PLAYER_STATE_PLAYBACK_COMPLETED` 或 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`，SDK 会从指定位置开始播放媒体文件，并触发 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调，播放状态为 `PLAYER_STATE_PLAYING`。 如果在播放暂停时调用 [seek](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek)，调用成功后，SDK 会跳转到指定位置。要恢复播放，请调用 [resume](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_resume) 或 [play](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_play)。
 
-<a id="api_imediaplayer_seek__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_imediaplayer_seek__timing]
 
 你可以在加入频道前或后调用此方法。
 
-<a id="api_imediaplayer_seek__related"></a>
-
-### 相关回调
+### 相关回调 [#api_imediaplayer_seek__related]
 
 调用该方法成功后，你会收到 [onPlayerEvent](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调，报告跳转到新播放位置的结果。
 
-<a id="api_imediaplayer_seek__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_seek__parameters]
 
 #### `newPos`
 
 新的播放位置，单位为毫秒。
 
-<a id="api_imediaplayer_seek__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_seek__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_stop"></a>
-
-## stop [1/2]
+## stop [1/2] [#api_imediaplayer_stop]
 
 停止播放媒体轨道。
 
@@ -308,24 +238,18 @@ int stop();
 
 调用该方法后，如需再次播放，需要调用 `open` 或 [openWithMediaSource](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 重新打开媒体资源。
 
-<a id="api_imediaplayer_stop__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_imediaplayer_stop__timing]
 
 请在播放后调用此方法。
 
-<a id="api_imediaplayer_stop__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_stop__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
-<a id="callback_imediaplayercustomdataprovider_onseek"></a>
-
-## onSeek
+## onSeek [#callback_imediaplayercustomdataprovider_onseek]
 
 当 SDK 定位媒体资源数据时触发的回调。
 
@@ -339,9 +263,7 @@ long onSeek(long offset, int whence)
 
 当你调用 [openWithMediaSource](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 或 `open` 方法打开自定义媒体资源时，SDK 会触发该回调，请求媒体资源中指定位置的数据。
 
-<a id="callback_imediaplayercustomdataprovider_onseek__parameters"></a>
-
-### 参数
+### 参数 [#callback_imediaplayercustomdataprovider_onseek__parameters]
 
 #### `offset`
 
@@ -356,9 +278,7 @@ long onSeek(long offset, int whence)
 - 2：起始点为数据末尾，定位后的实际数据偏移量为整个数据长度加 `offset`。
 - 65536：不执行定位操作，返回文件大小。建议在播放 MP3、WAV 等纯音频文件时使用该值。
 
-<a id="callback_imediaplayercustomdataprovider_onseek__return_values"></a>
-
-### 返回值
+### 返回值 [#callback_imediaplayercustomdataprovider_onseek__return_values]
 
 - `whence` 为 65536 时，返回媒体文件大小。
 - `whence` 为 0、1 或 2 时，返回定位后的实际数据偏移量。

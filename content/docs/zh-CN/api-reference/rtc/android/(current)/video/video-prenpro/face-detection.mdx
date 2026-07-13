@@ -3,11 +3,7 @@ title: "人脸检测"
 description: "启用或关闭本地用户的人脸检测功能。"
 ---
 
-<a id="toc_face_detection"></a>
-
-<a id="api_irtcengine_enablefacedetection"></a>
-
-## enableFaceDetection
+## <span id="toc_face_detection"></span>enableFaceDetection [#api_irtcengine_enablefacedetection]
 
 启用或关闭本地用户的人脸检测功能。
 
@@ -17,17 +13,11 @@ description: "启用或关闭本地用户的人脸检测功能。"
 public abstract int enableFaceDetection(boolean enabled);
 ```
 
-<a id="api_irtcengine_enablefacedetection__detailed_desc"></a>
-
-<a id="api_irtcengine_enablefacedetection__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_enablefacedetection__detailed_desc"></span>调用时机 [#api_irtcengine_enablefacedetection__timing]
 
 该方法需在调用 `startPreview` 或 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 启动相机后调用。
 
-<a id="api_irtcengine_enablefacedetection__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_enablefacedetection__related]
 
 启用人脸检测后，SDK 会触发 [onFacePositionChanged](/zh-CN/api-reference/rtc/android/video/video-prenpro/face-detection#callback_irtcengineeventhandler_onfacepositionchanged) 回调，报告本地用户的人脸信息，包括：
 
@@ -35,9 +25,7 @@ public abstract int enableFaceDetection(boolean enabled);
 - 人脸在本地视图中的位置。
 - 人脸与屏幕之间的距离。
 
-<a id="api_irtcengine_enablefacedetection__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablefacedetection__parameters]
 
 #### `enabled`
 
@@ -46,18 +34,14 @@ public abstract int enableFaceDetection(boolean enabled);
 - true：启用人脸检测。
 - false：（默认）关闭人脸检测。
 
-<a id="api_irtcengine_enablefacedetection__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablefacedetection__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="callback_irtcengineeventhandler_onfacepositionchanged"></a>
-
-## onFacePositionChanged
+## onFacePositionChanged [#callback_irtcengineeventhandler_onfacepositionchanged]
 
 上报本地用户的人脸检测结果。
 
@@ -81,9 +65,7 @@ public void onFacePositionChanged(int imageWidth, int imageHeight, AgoraFacePosi
 - 在 Android 平台，该回调中上报的距离值可能与实际距离略有偏差，因此不建议用于精确计算。
 :::
 
-<a id="callback_irtcengineeventhandler_onfacepositionchanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onfacepositionchanged__parameters]
 
 #### `imageWidth`
 
