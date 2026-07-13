@@ -52,7 +52,10 @@ function parseArgs() {
     product: null,
     platform: null,
     locale: 'zh-CN',
+    navigation: 'generated',
+    navigationManifest: null,
     routeBasePath: '/api-reference',
+    targetBasePath: null,
     dryRun: false,
     verbose: false,
     versionDir: null, // e.g., '4.6.0' or '(current)'
@@ -84,6 +87,15 @@ function parseArgs() {
       case '-r':
         opts.routeBasePath = args[++i];
         break;
+      case '--target-base-path':
+        opts.targetBasePath = args[++i];
+        break;
+      case '--navigation':
+        opts.navigation = args[++i];
+        break;
+      case '--navigation-manifest':
+        opts.navigationManifest = args[++i];
+        break;
       case '--version-dir':
       case '-V':
         opts.versionDir = args[++i];
@@ -107,6 +119,11 @@ function parseArgs() {
     console.error(
       'Error: --source, --output, --product, and --platform are required.\n',
     );
+    printHelp();
+    process.exit(1);
+  }
+  if (!['generated', 'public-index'].includes(opts.navigation)) {
+    console.error('Error: --navigation must be generated or public-index.\n');
     printHelp();
     process.exit(1);
   }
@@ -135,6 +152,9 @@ Required:
 Options:
   --locale, -l          Locale for output (default: zh-CN)
   --route-base-path, -r Base path for links (default: /api-reference)
+  --target-base-path   Exact output route for links; overrides the derived product/platform route
+  --navigation         Sidebar source: generated or public-index (default: generated)
+  --navigation-manifest JSON array of public { label, source } entries for legacy IA fidelity
   --version-dir, -V     Version directory name (e.g., '4.6.0' or '(current)')
   --dry-run, -d         Print detected type, file count, and planned paths without writing
   --verbose, -v         Show detailed processing information
@@ -781,6 +801,39 @@ function readDescription($, sourceTypeId) {
     .first()
     .text();
   return fallbackDesc ? normalizeText(fallbackDesc) : '';
+}
+
+const TYPE_DOC_ZH_LABELS = new Map([
+  ['Accessors', '访问器'],
+  ['Classes', '类'],
+  ['Constructors', '构造函数'],
+  ['Description', '描述'],
+  ['Enumeration members', '枚举成员'],
+  ['Enums', '枚举'],
+  ['Functions', '函数'],
+  ['Hierarchy', '继承关系'],
+  ['Interfaces', '接口'],
+  ['Methods', '方法'],
+  ['Modules', '模块'],
+  ['Name', '名称'],
+  ['Parameters', '参数'],
+  ['Properties', '属性'],
+  ['Returns', '返回值'],
+  ['Type aliases', '类型别名'],
+  ['Type declaration', '类型声明'],
+  ['Variables', '变量'],
+]);
+
+function typeDocLabel(label, locale) {
+  return locale === 'zh-CN' ? (TYPE_DOC_ZH_LABELS.get(label) ?? label) : label;
+}
+
+function typeDocDescription(description, title, locale) {
+  if (locale !== 'zh-CN') return description;
+  if (!description || /^Documentation for\b/i.test(description)) {
+    return `${title} API 参考。`;
+  }
+  return description;
 }
 
 function selectContentRoot($) {
@@ -1506,6 +1559,16 @@ function renderChildren(
     )
       continue;
 
+    const wrappedHeading = element.is('a[href^="#"]')
+      ? element.children('h1, h2, h3, h4, h5, h6').first()
+      : null;
+    if (wrappedHeading?.length) {
+      flushInline();
+      const rendered = renderHeading($, wrappedHeading);
+      if (rendered) parts.push(rendered);
+      continue;
+    }
+
     if (isInlineElement(element)) {
       const rendered = renderInlineElement(
         $,
@@ -1689,6 +1752,14 @@ function renderPage({
       targetBasePath,
     });
     if (typedocPage) return typedocPage;
+    if (sourceToRoute.locale === 'zh-CN') {
+      $('h1, h2, h3, h4, h5, h6').each((_, heading) => {
+        const element = $(heading);
+        const label = normalizeText(element.text());
+        const localized = typeDocLabel(label, sourceToRoute.locale);
+        if (localized !== label) element.text(localized);
+      });
+    }
   }
   if (lane?.id === SOURCE_TYPES.DOXYGEN_JAVADOC.id) {
     const doxygenPage = renderDoxygenPage({
@@ -2988,7 +3059,12 @@ function renderTypeDocPage({
     pageTitleBySource.get(currentSource) ??
     normalizeTypeDocTitle(readTitle($)) ??
     stripHtml(currentSource);
-  const description = pageDescriptionBySource.get(currentSource);
+  const locale = sourceToRoute.locale ?? 'zh-CN';
+  const description = typeDocDescription(
+    pageDescriptionBySource.get(currentSource),
+    pageTitle,
+    locale,
+  );
   const sections = [];
 
   const intro = renderTypeDocIntro(
@@ -3031,7 +3107,7 @@ function renderTypeDocPage({
     `title: ${escapeYaml(pageTitle)}`,
     description
       ? `description: ${escapeYaml(description)}`
-      : `description: ${escapeYaml(`${pageTitle} API reference.`)}`,
+      : `description: ${escapeYaml(typeDocDescription('', pageTitle, locale))}`,
     '---',
     '',
     `${sections.join('\n\n')}\n`,
@@ -3081,7 +3157,10 @@ function renderTypeDocMemberGroup(
   sourceToRoute,
   targetBasePath,
 ) {
-  const title = inlineText(group.children('h2').first());
+  const title = typeDocLabel(
+    inlineText(group.children('h2').first()),
+    sourceToRoute.locale,
+  );
   const parts = title ? [`## ${title}`] : [];
 
   for (const member of group.children('section.tsd-member').toArray()) {
@@ -3167,7 +3246,9 @@ function renderTypeDocTypeDeclaration(
   if (!declaration || declaration.length === 0) return '';
 
   const title = inlineText(declaration.children('h4').first());
-  const parts = [`#### ${title || 'Type declaration'}`];
+  const parts = [
+    `#### ${typeDocLabel(title || 'Type declaration', sourceToRoute.locale)}`,
+  ];
   const parameters = declaration
     .children('ul.tsd-parameters')
     .children('li.tsd-parameter');
@@ -3283,9 +3364,9 @@ function renderTypeDocParameters(
   if (rows.length === 0) return '';
 
   const lines = [
-    '#### Parameters',
+    `#### ${typeDocLabel('Parameters', sourceToRoute.locale)}`,
     '',
-    '| Name | Description |',
+    `| ${typeDocLabel('Name', sourceToRoute.locale)} | ${typeDocLabel('Description', sourceToRoute.locale)} |`,
     '| --- | --- |',
   ];
   for (const [name, description] of rows) {
@@ -3312,7 +3393,7 @@ function renderTypeDocReturns(
     pageTitleBySource,
     sourceToRoute,
     targetBasePath,
-  );
+  ).replace(/^Returns\s*/i, '');
   const clone = description.clone();
   clone
     .children()
@@ -3327,7 +3408,13 @@ function renderTypeDocReturns(
     4,
   );
 
-  return ['#### Returns', title, details].filter(Boolean).join('\n\n');
+  return [
+    `#### ${typeDocLabel('Returns', sourceToRoute.locale)}`,
+    title,
+    details,
+  ]
+    .filter(Boolean)
+    .join('\n\n');
 }
 
 // ============================================================================
@@ -3708,6 +3795,116 @@ function resolveLinkedSourceName(href, currentDir = '.') {
   return normalized.startsWith('../') ? null : normalizeSourcePath(normalized);
 }
 
+async function buildPublicIndexMetaPages({
+  navigationManifest,
+  sourceStructure,
+  sourceToRoute,
+  targetBasePath,
+  tocNodes,
+}) {
+  const rootSource = sourceStructure.rootIndexSource;
+  if (!rootSource) return ['index', ...tocNodes.map((node) => node.slug)];
+
+  const hiddenPages = tocNodes.map((node) => `!${node.slug}`);
+  if (navigationManifest) {
+    const manifest = JSON.parse(
+      await fs.readFile(path.resolve(navigationManifest), 'utf8'),
+    );
+    if (!Array.isArray(manifest)) {
+      throw new Error('TypeDoc navigation manifest must be a JSON array.');
+    }
+    const entries = manifest.map(({ label, source }) => {
+      const sourceName = normalizeSourcePath(source ?? '');
+      const routeSegments = sourceToRoute.get(sourceName);
+      if (!label || !routeSegments) {
+        throw new Error(
+          `TypeDoc navigation manifest entry does not resolve: ${label ?? ''} -> ${source ?? ''}`,
+        );
+      }
+      return `[${label}](${routeSegmentsToDocPath(routeSegments, targetBasePath)})`;
+    });
+    return ['index', ...entries, ...hiddenPages];
+  }
+
+  const html = await fs.readFile(
+    path.join(sourceStructure.sourceDir, rootSource),
+    'utf8',
+  );
+  const $ = cheerio.load(html);
+  const content = $('.col-content').first();
+  if (content.length === 0)
+    return ['index', ...tocNodes.map((node) => node.slug)];
+
+  const panel = content.find('.tsd-panel.tsd-typography').first();
+  const root = panel.length ? panel : content;
+  const entries = [];
+  const seenSources = new Set();
+  const indexDir = normalizeSourcePath(path.posix.dirname(rootSource));
+
+  const addAnchor = (anchor) => {
+    const href = anchor.attr('href')?.trim();
+    const sourceName = resolveLinkedSourceName(href, indexDir);
+    const routeSegments = sourceName ? sourceToRoute.get(sourceName) : null;
+    if (!sourceName || !routeSegments || seenSources.has(sourceName)) return;
+
+    seenSources.add(sourceName);
+    const basename = path.posix.basename(sourceName);
+    const rawLabel = normalizeText(anchor.text()).split('.')[0];
+    const label = basename === 'globals.html' ? 'Globals' : rawLabel;
+    if (!label) return;
+    entries.push(
+      `[${label}](${routeSegmentsToDocPath(routeSegments, targetBasePath)})`,
+    );
+  };
+
+  const wrappedHeadings = root
+    .children('a[href^="#"]')
+    .filter(
+      (_, anchor) => $(anchor).children('h1, h2, h3, h4, h5, h6').length > 0,
+    )
+    .toArray();
+
+  const firstHeading = wrappedHeadings[0];
+  if (firstHeading) {
+    for (const sibling of root.children().toArray()) {
+      if (sibling === firstHeading) break;
+      $(sibling)
+        .find('a[href]')
+        .each((_, anchor) => addAnchor($(anchor)));
+    }
+  }
+
+  for (const headingNode of wrappedHeadings) {
+    let sibling = $(headingNode).next();
+    while (sibling.length > 0) {
+      if (
+        sibling.is('a[href^="#"]') &&
+        sibling.children('h1, h2, h3, h4, h5, h6').length > 0
+      )
+        break;
+      const firstLink = sibling.is('a[href]')
+        ? sibling
+        : sibling.find('a[href]').first();
+      if (firstLink.length > 0) {
+        addAnchor(firstLink);
+        break;
+      }
+      sibling = sibling.next();
+    }
+  }
+
+  const globalsRoute = sourceToRoute.get('globals.html');
+  if (globalsRoute && !seenSources.has('globals.html')) {
+    entries.push(
+      `[Globals](${routeSegmentsToDocPath(globalsRoute, targetBasePath)})`,
+    );
+  }
+
+  if (entries.length === 0)
+    return ['index', ...tocNodes.map((node) => node.slug)];
+  return ['index', ...entries, ...hiddenPages];
+}
+
 function buildTreeFromSourceNames(
   sourceNames,
   sourceTypeId,
@@ -4059,9 +4256,7 @@ function attachDitaAnchorsToHeadings(markdown) {
   const output = [];
 
   for (let index = 0; index < lines.length; ) {
-    const firstAnchor = lines[index].match(
-      /^\s*<a id="([^"]+)"><\/a>\s*$/,
-    );
+    const firstAnchor = lines[index].match(/^\s*<a id="([^"]+)"><\/a>\s*$/);
     if (!firstAnchor) {
       output.push(lines[index]);
       index += 1;
@@ -4071,9 +4266,7 @@ function attachDitaAnchorsToHeadings(markdown) {
     const anchorIds = [];
     let cursor = index;
     while (cursor < lines.length) {
-      const anchor = lines[cursor].match(
-        /^\s*<a id="([^"]+)"><\/a>\s*$/,
-      );
+      const anchor = lines[cursor].match(/^\s*<a id="([^"]+)"><\/a>\s*$/);
       if (!anchor) break;
       anchorIds.push(anchor[1]);
       cursor += 1;
@@ -4145,7 +4338,9 @@ async function main() {
     opts.versionDir && opts.versionDir !== '(current)'
       ? `/${opts.versionDir}`
       : '';
-  const targetBasePath = `${opts.routeBasePath}/${opts.product}/${opts.platform}${versionRouteSegment}`;
+  const targetBasePath =
+    opts.targetBasePath ??
+    `${opts.routeBasePath}/${opts.product}/${opts.platform}${versionRouteSegment}`;
 
   // Read page titles and descriptions
   const pageTitleBySource = new Map();
@@ -4159,7 +4354,11 @@ async function main() {
     const html = await fs.readFile(path.join(apiSourceDir, name), 'utf8');
     const $ = cheerio.load(html);
     const title = readCanonicalTitle($, sourceStructure.id) || stripHtml(name);
-    const description = readDescription($, sourceStructure.id);
+    const rawDescription = readDescription($, sourceStructure.id);
+    const description =
+      sourceStructure.id === SOURCE_TYPES.TYPEDOC.id
+        ? typeDocDescription(rawDescription, title, opts.locale)
+        : rawDescription;
     pageTitleBySource.set(name, title);
     if (description) pageDescriptionBySource.set(name, description);
   }
@@ -4173,6 +4372,7 @@ async function main() {
 
   // Assign routes
   const sourceToRoute = new Map();
+  sourceToRoute.locale = opts.locale;
   assignRoutes(tocNodes, [], sourceToRoute);
   if (sourceStructure.rootIndexSource) {
     setRouteForSource(sourceToRoute, sourceStructure.rootIndexSource, []);
@@ -4239,6 +4439,23 @@ async function main() {
     );
   }
 
+  const metaPages =
+    opts.navigation === 'public-index' &&
+    sourceStructure.id === SOURCE_TYPES.TYPEDOC.id
+      ? await buildPublicIndexMetaPages({
+          sourceStructure,
+          sourceToRoute,
+          targetBasePath,
+          tocNodes,
+          navigationManifest: opts.navigationManifest,
+        })
+      : [
+          ...(sourceStructure.id === SOURCE_TYPES.DITA_OT_API.id
+            ? ['!index']
+            : ['index']),
+          ...tocNodes.filter((node) => !node.hidden).map((node) => node.slug),
+        ];
+
   // Write meta.json
   const rootTitle = sourceStructure.rootIndexSource
     ? (pageTitleBySource.get(sourceStructure.rootIndexSource) ??
@@ -4250,12 +4467,7 @@ async function main() {
     ['android', 'ios', 'web'].includes(opts.platform)
       ? { navScope: {} }
       : {}),
-    pages: [
-      ...(sourceStructure.id === SOURCE_TYPES.DITA_OT_API.id
-        ? ['!index']
-        : ['index']),
-      ...tocNodes.filter((node) => !node.hidden).map((node) => node.slug),
-    ],
+    pages: metaPages,
   });
 
   // Write all pages
