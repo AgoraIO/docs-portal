@@ -72,7 +72,7 @@ public static void registerExtensionApp(List<AgoraExtAppConfiguration> apps);
 
 在 EduCore 内注册开发者自行开发的 ExtApp。
 
-ExtApp 是灵动课堂 UIKit 的补充插件。详见[自定义插件](/zh-CN/solutions/flexible-classroom/advanced-features/widget)。
+ExtApp 是灵动课堂 UIKit 的补充插件。详见[自定义插件](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget)。
 
 <a id="exit"></a>
 ### exit
@@ -153,7 +153,7 @@ class AgoraEduLaunchConfig(val userName: String,
 | `roomUuid` | <Slot name="classroom-sdk-android-markdown-5-4-1" /> |
 | `roleType` | 用户在课堂中的角色，详见 [`AgoraEduRoleType`](#agoraeduroletype)。 |
 | `roomType` | 课堂类型，详见 [`AgoraEduRoomType`](#agoraeduroomtype)。 |
-| `rtmToken` | 用于鉴权的 RTM Token，详见[使用 AccessToken 鉴权](/zh-CN/solutions/flexible-classroom/basic-features/generate-token)。 |
+| `rtmToken` | 用于鉴权的 RTM Token，详见[使用 AccessToken 鉴权](/zh-CN/solutions/flexible-classroom/build/setup-and-access/generate-token)。 |
 | `startTime` | 课堂开始时间，单位为毫秒，以第一个进入课堂的用户传入的参数为准。 |
 | `duration` | 课堂持续时间，单位为秒，以第一个进入课堂的用户传入的参数为准。 |
 | `region` | 区域。建议设置为靠近你的课件或录制文件对象存储服务所在的区域，因为跨区域传输较大的静态资源会造成比较大的延迟。举例来说，如果你的 S3 服务在北美，则建议将 `region` 也设为北美区域。所有灵动课堂客户端必须设置相同的区域，否则无法互通。支持的区域详见 [`AgoraEduRegion`](#agoraeduregion)。 |

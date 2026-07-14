@@ -1,10 +1,8 @@
 ---
 title: "发版说明"
+description: "查看实时消息 RTM 的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
 ---
-
 <PlatformStructured platform="android">
-
-本文提供 RTM v2 SDK 的发版说明。
 
 ### 已知问题和局限性
 
@@ -318,7 +316,7 @@ title: "发版说明"
 #### 新增心跳时间配置
 
 
-该版本在 [<code>RtmConfig</code>](/api-ref/rtm2/android/toc-configuration/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic#heartbeatinterval-and-presencetimeout)。
+该版本在 [<code>RtmConfig</code>](/api-ref/rtm2/android/toc-configuration/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
 
 
 #### 新增双环境配置
@@ -346,7 +344,7 @@ title: "发版说明"
 #### 改进连接状态管理逻辑
 
 
-该版本新增 [<code>onLinkStateEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 <code>onConnectionStateChanged</code> 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic)。
+该版本新增 [<code>onLinkStateEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 <code>onConnectionStateChanged</code> 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
 
 
 #### 改进 REMOTE_STATE_CHANGED 事件通知逻辑
@@ -1142,7 +1140,7 @@ end
 
 #### 新增心跳时间配置
 
-该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic#heartbeatinterval-and-presencetimeout)。
+该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
 
 #### 新增双环境配置
 
@@ -1160,7 +1158,7 @@ end
 
 #### 改进连接状态管理逻辑
 
-该版本新增 [`didReceiveLinkStateEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 `connectionChangedToState` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic)。
+该版本新增 [`didReceiveLinkStateEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 `connectionChangedToState` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
 
 #### 改进 AgoraRtmPresenceEventTypeRemoteStateChanged 事件通知逻辑
 
@@ -1801,7 +1799,7 @@ try {
 
 #### 新增心跳时间配置
 
-该版本在 [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic#heartbeatinterval-and-presencetimeout)。
+该版本在 [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
 
 #### 新增用户频道类型
 
@@ -1815,7 +1813,7 @@ try {
 
 #### 改进连接状态管理逻辑
 
-该版本新增 [`linkState`](/api-ref/rtm2/javascript/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 `status` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic)。
+该版本新增 [`linkState`](/api-ref/rtm2/javascript/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 `status` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
 
 #### 改进 REMOTE_STATE_CHANGED 事件通知逻辑
 
@@ -3114,7 +3112,7 @@ Metadata data;
 
 #### 新增心跳时间配置
 
-该版本在 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic#heartbeatinterval-and-presencetimeout)。
+该版本在 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
 
 #### 新增双环境配置
 
@@ -3132,7 +3130,7 @@ Metadata data;
 
 #### 改进连接状态管理逻辑
 
-该版本新增 [`onLinkStateEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 `onConnectionStateChanged` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic)。
+该版本新增 [`onLinkStateEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 `onConnectionStateChanged` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
 
 #### 改进 RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED 事件通知逻辑
 

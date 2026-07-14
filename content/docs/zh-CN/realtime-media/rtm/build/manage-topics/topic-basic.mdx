@@ -1,7 +1,10 @@
 ---
 title: "主题基础"
+description: "了解如何在实时消息 RTM 中主题基础，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-**Topic** 是 Stream 类型频道中数据管理、传输和分发的机制。加入 Stream Channel 后，你并不具备消息收发的能力，你需要通过 Topic 实现消息收发功能。Topic 的所有订阅者会在 100 毫秒内收到发布者发送的数据。
+Topic 是 Stream 类型频道中数据管理、传输和分发的机制。
+
+入 Stream Channel 后，你并不具备消息收发的能力，你需要通过 Topic 实现消息收发功能。Topic 的所有订阅者会在 100 毫秒内收到发布者发送的数据。
 
 相比于 Message Channel，Stream Channel 中的 Topic 机制具备更高的消息传输速率、更大的消息并发能力及与音视频数据同步传输的协同能力等优秀特性。因此，Topic 机制被广泛地应用在元宇宙、AR/VR、互动游戏、实时协同、平行操控等场景。
 
@@ -11,7 +14,7 @@ title: "主题基础"
 
 ## Topic 限制
 
-RTM 允许单个客户端同时存在无限个 Topic，且每个 Topic 中的订阅者和发布者数量没有限制。然而，为了平衡端侧带宽和性能，RTM 对单个客户端同时加入的 Topic 数量、同时订阅的 Topic 数量以及在一个 Topic 中同时订阅的消息发布者数量有一定限制，详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
+RTM 允许单个客户端同时存在无限个 Topic，且每个 Topic 中的订阅者和发布者数量没有限制。然而，为了平衡端侧带宽和性能，RTM 对单个客户端同时加入的 Topic 数量、同时订阅的 Topic 数量以及在一个 Topic 中同时订阅的消息发布者数量有一定限制，详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
 
 ## Topic 命名
 

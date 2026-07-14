@@ -1,10 +1,8 @@
 ---
 title: "跑通 API 示例项目"
+description: "了解如何快速接入实时互动 RTC，完成环境准备、参数配置、示例运行和核心流程验证。"
 ---
-
 <PlatformStructured platform="android">
-
-声网提供开源示例项目演示声网 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
 
 <Cards>
   <Card title="API-Examples" href="https://gitee.com/agoraio-community/API-Examples/tree/main/Android" />
@@ -23,8 +21,8 @@ title: "跑通 API 示例项目"
     声网推荐使用真机运行项目。部分模拟机可能存在功能缺失或者性能问题。
     :::
 
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
     - App ID：声网随机生成的字符串，用于识别你的 App。
     - (可选) App 证书：声网提供的 App 证书，用于在服务器部署并生成 Token 或使用控制台生成临时的 Token。
 
@@ -105,7 +103,7 @@ title: "跑通 API 示例项目"
 - Xcode 13.0 或以上版本。
 - 已安装 Cocoapods。如尚未安装 Cocoapods，参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 安装说明。
 - 两台 iOS 14.0 以上版本的设备。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
 
   - App ID：声网随机生成的字符串，用于识别你的项目。
   - App 证书（可选）：用于生成 Token 的字符串。如果你的项目启用了**允许仅 App ID 加入**，则不需要获取该字段。
@@ -189,7 +187,7 @@ title: "跑通 API 示例项目"
 - Xcode 13.0 或以上版本。
 - 已安装 Cocoapods。如尚未安装 Cocoapods，参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 安装说明。
 - 两台 macOS 10.10 或以上版本的设备。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
 
   - App ID：声网随机生成的字符串，用于识别你的项目。
   - App 证书（可选）：用于生成 Token 的字符串。如果你的项目启用了**允许仅 App ID 加入**，则不需要获取该字段。
@@ -266,13 +264,13 @@ title: "跑通 API 示例项目"
 
   - 具备物理音视频采集设备。
 
-  - 可连接到互联网。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+  - 可连接到互联网。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
 
   - 搭载 2.2 GHz Intel 第二代 i3/i5/i7 处理器或同等性能的其他处理器。
 
 - 安装 [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。
 
-- 参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)在声网控制台完成注册登录、创建项目，并获取项目的 App ID 和 App 证书。
+- 参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)在声网控制台完成注册登录、创建项目，并获取项目的 App ID 和 App 证书。
 
 ## 操作步骤
 
@@ -372,7 +370,7 @@ Web API Example 项目中包含有丰富的功能模块，你可以参考如下�
 
 - 两台运行 Windows 7 及以上版本的设备。
 
-- 参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)创建有效的声网账户和声网项目，并从声网控制台获取以下信息：
+- 参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)创建有效的声网账户和声网项目，并从声网控制台获取以下信息：
 
   - App ID：声网随机生成的字符串，用于识别你的项目。
   - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
@@ -438,7 +436,7 @@ Web API Example 项目中包含有丰富的功能模块，你可以参考如下�
 - 已通过授权的华为开发者账号。可在[华为开发者联盟](https://developer.huawei.com/consumer/cn/)注册账号。
 - 两台支持鸿蒙 NEXT 的设备，建议使用 Mate 60 Pro 及更高性能的设备。
 - 可以访问互联网的计算机。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
   - App ID：声网随机生成的字符串，用于识别你的项目。
   - App 证书（可选）：用于生成 Token 的字符串。如果你的项目启用了允许仅 App ID 加入，则不需要获取该字段。
 
@@ -512,7 +510,7 @@ Web API Example 项目中包含有丰富的功能模块，你可以参考如下�
 
 - 一个经过企业认证的微信小程序账号。在调试小程序示例项目过程中，需要使用 live-pusher 和 live-player 组件。只有特定行业的认证企业账号才可以使用这两个组件。详见[小程序官网文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。
 - 下载并安装最新版本的[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)。
-- 参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)在控制台创建项目、获取 App ID 和临时 Token，并开启小程序服务。
+- 参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)在控制台创建项目、获取 App ID 和临时 Token，并开启小程序服务。
 
   :::warning[注意]
   临时 Token 的有效期是 24 小时。Token 过期会引起项目编译失败。
@@ -612,8 +610,8 @@ https://miniapp-4.agoraio.cn
 - [Node.js](https://nodejs.org/en/download/) 14 或更高版本
 - [Yarn](https://yarnpkg.com/getting-started) 包管理工具
 - Python 3.11.x
-- 可以访问互联网的 Windows 或 macOS 电脑。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 可以访问互联网的 Windows 或 macOS 电脑。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
     - App ID：声网随机生成的字符串，用于识别你的项目。
     - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
 
@@ -693,7 +691,7 @@ yarn
 
 - 计算机可以访问互联网。请确保你的网络环境未部署防火墙，否则可能无法正常使用声网服务。
 
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
 
   - App ID：声网随机生成的字符串，用于识别你的项目。
   - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
@@ -796,8 +794,8 @@ yarn
     - 你可以运行 `flutter doctor` 命令检查开发和运行环境是否达到要求。
     :::
 
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
     - App ID：声网随机生成的字符串，用于识别你的项目。
     - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
     - 频道名：用于标识频道的字符串。
@@ -898,8 +896,8 @@ yarn
 - 最新版本的 Android Studio
 - [Yarn](https://yarnpkg.com/getting-started) 包管理工具
 - Android 5.0 或以上设备
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 有效的声网账户和声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获取以下信息：
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 有效的声网账户和声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获取以下信息：
    - App ID：声网随机生成的字符串，用于识别你的 App。
    - 临时 Token：你的 App 客户端加入频道时会使用 Token 对用户进行鉴权。临时 Token 的有效期为 24 小时。
 
@@ -913,8 +911,8 @@ yarn
 - [Yarn](https://yarnpkg.com/getting-started) 包管理工具
 - [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 1.12 及以上版本
 - iOS 12.4 或以上设备
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 有效的声网账户和声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获取以下信息：
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 有效的声网账户和声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获取以下信息：
    - App ID：声网随机生成的字符串，用于识别你的 App。
    - 临时 Token：你的 App 客户端加入频道时会使用 Token 对用户进行鉴权。临时 Token 的有效期为 24 小时。
 
@@ -1024,8 +1022,8 @@ yarn
   | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。  |
   | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。  |
   | Windows | [Windows 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 32 位 Windows 仅支持 Unreal Engine 4 及以下版本，你需要在 `AgoraPluginLibrary.Build.cs` 文件中将 Windows 32 相关的代码取消注释。 |
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
     - App ID：声网随机生成的字符串，用于识别你的项目。
     - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
     - 频道名：用于标识频道的字符串。
@@ -1120,8 +1118,8 @@ yarn
   | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。  |
   | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。  |
   | Windows | [Windows 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 32 位 Windows 仅支持 Unreal Engine 4 及以下版本，你需要在 `AgoraPluginLibrary.Build.cs` 文件中将 Windows 32 相关的代码取消注释。 |
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
     - App ID：声网随机生成的字符串，用于识别你的项目。
     - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
     - 频道名：用于标识频道的字符串。

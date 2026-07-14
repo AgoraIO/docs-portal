@@ -1,0 +1,900 @@
+---
+title: "媒体流加密"
+description: "了解实时互动 RTC 在不同平台上的媒体流加密方式，包括接入流程、关键配置和平台差异。"
+---
+媒体流加密是指通过由 App 开发者控制的唯一的密钥和盐)为 App 中的音视频流加密。
+
+<PlatformStructured platform="android">
+
+声网提供媒体流加密功能以确保传输过程中数据的保密性，建议你根据实际的业务场景合理应用。
+
+本文介绍如何在你的 App 中添加声网内置媒体流加密。
+
+## 技术原理
+
+下图描述了启用媒体流加密后的数据传输流程。声网推荐使用 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式，并设置密钥和盐。
+
+![加密传输流程](https://web-cdn.agora.io/docs-portal/img/rtc/encryption.png)
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+参考如下步骤，为你的 App 添加内置媒体流加密功能：
+
+1. 在你的服务端生成一个密钥和盐。
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成一个 16 字节的随机值，并以 16 进制 (hex) 字符串形式输出，作为密钥使用：
+
+      ```shell
+      # 随机生成一个密钥
+      openssl rand -hex 16
+      # 示例输出
+      9f3c7a1e5b8d4c2a6e0f91b7d4a2c8e5
+      ```
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成 Base64 编码、32 字节的盐：
+
+      ```shell
+      # 随机生成一个 Base64 编码、32 字节的盐
+      openssl rand -base64 32
+      # 示例输出
+      X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw=
+      ```
+
+2. 实现客户端逻辑：
+
+   1. 从服务端获取 `String` 型的密钥和 Base64 编码的盐。
+
+   2. 将盐从 Base64 转换成 `uint8_t`。
+
+   3. 加入频道前，调用 [`enableEncryption`](/api-ref/rtc/android/API/toc_network#api_irtcengine_enableencryption) 设置 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式，并将密钥和盐传入 SDK。
+
+:::warning[注意]
+- 同一频道内所有用户必须使用相同的加密模式、密钥和盐。否则，可能会出现黑屏或音频丢失等未定义行为。
+- 为确保安全性，声网建议在每次启用媒体流加密前使用新的密钥和盐。
+:::
+
+   以下示例代码展示了该逻辑的实现过程：
+
+   ```java
+   import java.util.Base64;
+   import io.agora.rtc2.RtcEngine;
+   import io.agora.rtc2.internal.EncryptionConfig;
+
+   class Example
+   {
+       public bool enableEncryption(RtcEngine engine) {
+           if(engine == null)
+               return false;
+           // 从服务端获取 Base64 编码的盐
+           String encryptionKdfSaltBase64 = Server.getEncryptionKdfSaltBase64();
+           // 从服务端获取 String 型的密钥
+           String encryptionSecret = Server.getEncryptionSecret();
+           if(encryptionKdfSaltBase64 == null || encryptionSecret == null)
+               return false;
+
+           // 将 Base64 编码的盐转换成 uint8_t
+           byte[] encryptionKdfSalt = Base64.getDecoder().decode(encryptionKdfSaltBase64);
+           // 创建一个 EncryptionConfig 实例
+           EncryptionConfig config = new EncryptionConfig();
+           // 将加密模式设置为 AES_128_GCM2
+           config.encryptionMode = EncryptionConfig.EncryptionMode.AES_128_GCM2;
+           config.encryptionKey = encryptionSecret;
+           System.arraycopy(encryptionKdfSalt, 0, config.encryptionKdfSalt, 0, config.encryptionKdfSalt.length);
+           int result = engine.enableEncryption(true, config);
+           return (result == 0);
+       }
+   }
+   ```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的媒体流加密示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="ChannelEncryption" href="https://gitee.com/agoraio-community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/ChannelEncryption.java" />
+  <Card title="ChannelEncryption" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/ChannelEncryption.java" />
+</Cards>
+
+### 注意事项
+
+如需与 Web 平台的音视频 SDK 互通，你还需要将本文提到的 `String` 型密钥从 Hex 编码格式转换成 ASCII 编码格式。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+媒体流加密是指通过由 App 开发者控制的唯一的密钥和[盐](https://en.wikipedia.org/wiki/Salt_(cryptography))为 App 中的音视频流加密。声网提供媒体流加密功能以确保传输过程中数据的保密性，建议你根据实际的业务场景合理应用。
+
+本文介绍如何在你的 App 中添加声网内置媒体流加密。
+
+## 技术原理
+
+下图描述了启用媒体流加密后的数据传输流程。声网推荐使用 `AgoraEncryptionModeAES128GCM2` 或 `AgoraEncryptionModeAES256GCM2` 加密模式，并设置密钥和盐。
+
+![加密传输流程](https://web-cdn.agora.io/docs-portal/img/rtc/encryption.png)
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+参考如下步骤，为你的 App 添加内置媒体流加密功能：
+
+1. 在你的服务端生成一个密钥和盐。
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成一个 16 字节的随机值，并以 16 进制 (hex) 字符串形式输出，作为密钥使用：
+
+      ```shell
+      # 随机生成一个密钥
+      openssl rand -hex 16
+      # 示例输出
+      9f3c7a1e5b8d4c2a6e0f91b7d4a2c8e5
+      ```
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成 Base64 编码、32 字节的盐：
+
+      ```shell
+      # 随机生成一个 Base64 编码、32 字节的盐
+      openssl rand -base64 32
+      # 示例输出
+      X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw=
+      ```
+
+2. 实现客户端逻辑：
+
+   1. 根据以下步骤，手动为你的项目添加加密库：
+
+      1. 将 SDK 包中的 `AgoraRtcCryptoLoader.framework` 复制到你的项目文件夹中。
+      2. 打开 Xcode（此处以 Xcode 11.0 为例），进入 **TARGETS > Project Name > General > Frameworks, Libraries, and Embedded Content** 菜单。
+      3. 点击 **+** 和 **Add Other...**，添加 `AgoraRtcCryptoLoader.framework`。
+      4. 为确保动态库的签名和 App 的签名一致，将动态库的 **Embed** 属性设置为 **Embed & Sign**。
+
+      :::warning[注意]
+      根据 Apple 的要求，App 的 **Extension** 不包含动态库。如果要将 SDK 集成到 **Extension** 里的动态库中，需要将文件状态改为 **Do Not Embed**。
+      :::
+
+      :::info[信息]
+      更多集成方式，详见[其他集成方式](#othermethods)。
+      :::
+
+   2. 在 `ViewController.swift` 文件中添加以下代码，导入 `AgoraRtcCryptoLoader` 库：
+
+      ```swift
+      import AgoraRtcCryptoLoader
+      ```
+
+   3. 从服务端获取 `String` 型的密钥和 Base64 编码的盐。
+
+   4. 将盐从 Base64 转换成 `uint8_t`。
+
+   5. 加入频道前，调用 [`enableEncryption`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_enableencryption)，设置 `AgoraEncryptionModeAES128GCM2` 或 `AgoraEncryptionModeAES256GCM2` 加密模式，并将密钥和盐传入 SDK。
+
+   :::warning[注意]
+   - 同一频道内所有用户必须使用相同的加密模式、密钥和盐。否则，可能会出现黑屏或音频丢失等未定义行为。
+   - 为确保安全性，声网建议在每次启用媒体流加密前使用新的密钥和盐。
+   :::
+
+   以下示例代码展示了该逻辑的实现过程：
+
+   ```swift
+   func getEncryptionSaltFromServer() -> Data {
+      // 将 Base64 编码的盐转换成 uint8_t
+      return "EncryptionKdfSaltInBase64Strings".data(using: .utf8)!
+   }
+
+   // 创建一个 AgoraEncryptionConfig 实例
+   let config = AgoraEncryptionConfig()
+   // 将加密模式设置为 AgoraEncryptionModeAES128GCM2
+   config.encryptionMode = .AES128GCM2
+   // 从服务端获取 Base64 编码的盐
+   config.encryptionKdfSalt = getEncryptionKdfSaltBase64FromServer()
+   // 从服务端获取 String 型的密钥
+   config.encryptionKey = getEncryptionKeyFromServer()
+   let ret = agoraKit.enableEncryption(true, encryptionConfig: config)
+   if ret != 0 {
+      self.showAlert(title: "Error", message: "enableEncryption call failed: \(ret), please check your params")
+   }
+   ```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的媒体流加密示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="StreamEncryption" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/StreamEncryption" />
+  <Card title="StreamEncryption" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/StreamEncryption" />
+</Cards>
+
+<a id="othermethods"></a>
+### 通过 CocoaPods 集成加密库
+
+根据以下步骤，通过 CocoaPods 集成加密库：
+
+1. 安装 CocoaPods。安装指南请参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started)。
+
+2. 在终端，打开项目路径，运行 `pod init` 命令，在项目文件夹中创建 `Podfile`。
+
+3. 打开 `Podfile`，删除所有内容后，输入以下内容。注意将 `Your App` 替换为你的 Target 名称，并将 `version` 替换成你需要集成的 SDK 版本。
+
+   ```ruby
+   # platform :ios, '9.0'
+   target 'Your App' do
+     pod 'AgoraRtcEngine_iOS_Crypto', '~> version
+   end
+   ```
+
+4. 回到终端，运行 `pod install` 命令，安装声网 SDK。SDK 安装成功后，终端会显示 `Pod installation complete!`，你可以在项目文件夹中看到 `xcworkspace` 文件。
+
+5. 打开 Xcode 中生成的 `xcworkspace` 文件。
+
+### 注意事项
+
+如需与 Web 平台的音视频 SDK 互通，你还需要将本文提到的 `String` 型密钥从 Hex 编码格式转换成 ASCII 编码格式。
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+媒体流加密是指通过由 App 开发者控制的唯一的密钥和[盐](https://en.wikipedia.org/wiki/Salt_(cryptography))为 App 中的音视频流加密。声网提供媒体流加密功能以确保传输过程中数据的保密性，建议你根据实际的业务场景合理应用。
+
+本文介绍如何在你的 App 中添加声网内置媒体流加密。
+
+## 技术原理
+
+下图描述了启用媒体流加密后的数据传输流程。声网推荐使用 `AgoraEncryptionModeAES128GCM2` 或 `AgoraEncryptionModeAES256GCM2` 加密模式，并设置密钥和盐。
+
+![加密传输流程](https://web-cdn.agora.io/docs-portal/img/rtc/encryption.png)
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+参考如下步骤，为你的 App 添加内置媒体流加密功能：
+
+1. 在你的服务端生成一个密钥和盐。
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成一个 16 字节的随机值，并以 16 进制 (hex) 字符串形式输出，作为密钥使用：
+
+      ```shell
+      # 随机生成一个密钥
+      openssl rand -hex 16
+      # 示例输出
+      9f3c7a1e5b8d4c2a6e0f91b7d4a2c8e5
+      ```
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成 Base64 编码、32 字节的盐：
+
+      ```shell
+      # 随机生成一个 Base64 编码、32 字节的盐
+      openssl rand -base64 32
+      # 示例输出
+      X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw=
+      ```
+
+2. 实现客户端逻辑：
+
+   1. 根据以下步骤，手动为你的项目添加加密库：
+
+      1. 将 SDK 包中的 `AgoraRtcCryptoLoader.framework` 复制到你的项目文件夹中。
+      2. 打开 Xcode（此处以 Xcode 11.0 为例），进入 **TARGETS > Project Name > General > Frameworks, Libraries, and Embedded Content** 菜单。
+      3. 点击 **+** 和 **Add Other...**，添加 `AgoraRtcCryptoLoader.framework`。
+      4. 为确保动态库的签名和 App 的签名一致，将动态库的 **Embed** 属性设置为 **Embed & Sign**。
+
+      :::warning[注意]
+      根据 Apple 的要求，App 的 **Extension** 不包含动态库。如果要将 SDK 集成到 **Extension** 里的动态库中，需要将文件状态改为 **Do Not Embed**。
+      :::
+
+      :::info[信息]
+      更多集成方式，详见[其他集成方式](#othermethods)。
+      :::
+
+   2. 在 `ViewController.swift` 文件中添加以下代码，导入 `AgoraRtcCryptoLoader` 库：
+
+      ```swift
+      import AgoraRtcCryptoLoader
+      ```
+
+   3. 从服务端获取 `String` 型的密钥和 Base64 编码的盐。
+
+   4. 将盐从 Base64 转换成 `uint8_t`。
+
+   5. 加入频道前，调用 [`enableEncryption`](/api-ref/rtc/macos/API/toc_network#api_irtcengine_enableencryption)，设置 `AgoraEncryptionModeAES128GCM2` 或 `AgoraEncryptionModeAES256GCM2` 加密模式，并将密钥和盐传入 SDK。
+
+   :::warning[注意]
+   - 同一频道内所有用户必须使用相同的加密模式、密钥和盐。否则，可能会出现黑屏或音频丢失等未定义行为。
+   - 为确保安全性，声网建议在每次启用媒体流加密前使用新的密钥和盐。
+   :::
+
+   以下示例代码展示了该逻辑的实现过程：
+
+   ```swift
+   func getEncryptionSaltFromServer() -> Data {
+      // 将 Base64 编码的盐转换成 uint8_t
+      return "EncryptionKdfSaltInBase64Strings".data(using: .utf8)!
+   }
+
+   // 创建一个 AgoraEncryptionConfig 实例
+   let config = AgoraEncryptionConfig()
+   // 将加密模式设置为 AgoraEncryptionModeAES128GCM2
+   config.encryptionMode = .AES128GCM2
+   // 从服务端获取 Base64 编码的盐
+   config.encryptionKdfSalt = getEncryptionKdfSaltBase64FromServer()
+   // 从服务端获取 String 型的密钥
+   config.encryptionKey = getEncryptionKeyFromServer()
+   let ret = agoraKit.enableEncryption(true, encryptionConfig: config)
+   if ret != 0 {
+      self.showAlert(title: "Error", message: "enableEncryption call failed: \(ret), please check your params")
+   }
+   ```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的媒体流加密示例项目供你参考，你可以前往下载或查看其中的源代码。
+<Cards>
+  <Card title="StreamEncryption" href="https://gitee.com/agoraio-community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/StreamEncryption" />
+  <Card title="StreamEncryption" href="https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/StreamEncryption" />
+</Cards>
+
+<a id="othermethods"></a>
+### 通过 CocoaPods 集成加密库
+
+根据以下步骤，通过 CocoaPods 集成加密库：
+
+1. 安装 CocoaPods。安装指南请参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started)。
+
+2. 在终端，打开项目路径，运行 `pod init` 命令，在项目文件夹中创建 `Podfile`。
+
+3. 打开 `Podfile`，删除所有内容后，输入以下内容。注意将 `Your App` 替换为你的 Target 名称，并将 `version` 替换成你需要集成的 SDK 版本。
+
+   ```ruby
+   # platform :ios, '9.0'
+   target 'Your App' do
+     pod 'AgoraRtcEngine_iOS_Crypto', '~> version
+   end
+   ```
+
+4. 回到终端，运行 `pod install` 命令，安装声网 SDK。SDK 安装成功后，终端会显示 `Pod installation complete!`，你可以在项目文件夹中看到 `xcworkspace` 文件。
+
+5. 打开 Xcode 中生成的 `xcworkspace` 文件。
+
+### 注意事项
+
+如需与 Web 平台的音视频 SDK 互通，你还需要将本文提到的 `String` 型密钥从 Hex 编码格式转换成 ASCII 编码格式。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+在实时音视频互动过程中，开发者需要对媒体流加密，从而保障用户的数据安全。声网提供媒体流加密功能，你可以调用 API 选择加密模式并设置密钥和盐。
+
+下图描述了启用媒体流加密功能后的数据传输流程：
+
+![加密传输流程](https://web-cdn.agora.io/doc-cms/uploads/1728355317054-Web-channel-encryption.png)
+
+## 实现方法
+
+本节介绍如何使用 Web SDK 的媒体流加密功能。
+
+开始前，请确保你已参考[快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start)文档在你的项目中实现基本的实时音视频互动功能。
+
+在加入频道前，调用 [`AgoraRTCClient.setEncryptionConfig`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setencryptionconfig) 方法选择加密模式。声网支持以下加密模式：
+
+- `"aes-128-xts"`: 128 位 AES 加密，XTS 模式。
+- `"aes-256-xts"`: 256 位 AES 加密，XTS 模式。
+- `"aes-128-gcm"`: 128 位 AES 加密，GCM 模式。
+- `"aes-256-gcm"`: 256 位 AES 加密，GCM 模式。
+- `"aes-128-ecb"`: 128 位 AES 加密，ECB 模式。
+- `"sm4-128-ecb"`: 128 位 SM4 加密，ECB 模式。
+- `"aes-128-gcm2"`: 128 位 AES 加密，GCM 模式，加盐。仅适用于 Web SDK v4.5.0 及之后版本。
+- `"aes-256-gcm2"`: 256 位 AES 加密，GCM 模式，加盐。仅适用于 Web SDK v4.5.0 及之后版本。
+
+如果你选择除 `"aes-128-gcm2"` 和 `"aes-256-gcm2"` 之外的加密模式，只需设置密钥。为加强安全性，声网建议将加密模式设为 `"aes-128-gcm2"` 或 `"aes-256-gcm2"`，并设置密钥和盐。
+
+参考以下步骤分别生成并设置密钥和盐。
+
+:::warning[注意]
+同一频道内所有用户必须使用相同的加密模式、密钥和盐值。
+:::
+
+### 生成并设置密钥
+
+1. 参考以下命令在服务端通过 OpenSSL 随机生成一个 16 字节的随机值，并以 16 进制 (hex) 字符串形式输出，作为密钥使用：
+
+    ```shell
+    # 随机生成一个密钥
+    openssl rand -hex 16
+    # 示例输出
+    9f3c7a1e5b8d4c2a6e0f91b7d4a2c8e5
+    ```
+
+2. Web 客户端从服务端获取 Hex 编码的密钥，并在调用 `setEncryptionConfig` 时传入 SDK。
+
+### 生成并设置盐
+
+1. 参考以下命令在服务端通过 OpenSSL 生成 Base64 编码、32 字节的盐。你也可以参考声网在 GitHub 上提供的 [C++ 示例代码](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/sample/RtcChannelEncryptionSaltSample.cpp)在服务端生成 byte array 型的盐，然后转换成 Base64 编码。
+
+   ```shell
+   # Generate a random salt (32 bytes) in the Base64 format
+   openssl rand -base64 32
+   X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw=
+   ```
+
+2. Web 客户端从服务端获取 Base64 编码的盐。
+
+3. Web 客户端将盐从 Base64 转换成 Uint8Array，并在调用 `setEncryptionConfig` 时传入 SDK。
+
+## 示例代码
+
+以下示例代码中的 `client` 是指通过 `AgoraRTC.createClient` 创建的本地客户端对象。
+
+```javascript
+// 声明一个工具函数，用于将 Base64 转换成 Uint8Array
+function base64ToUint8Array(base64Str: string): Uint8Array {
+  const raw = window.atob(base64Str);
+  const result = new Uint8Array(new ArrayBuffer(raw.length));
+
+  for (let i = 0; i < raw.length; i += 1) {
+    result[i] = raw.charCodeAt(i);
+  }
+
+  return result;
+}
+
+// 声明一个工具函数，用于将 Hex 转换成 ASCII
+function hex2ascii(hexx) {
+    const hex = hexx.toString();//force conversion
+    let str = '';
+    for (let i = 0; i < hex.length; i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
+}
+
+async function getSecretAndSalt() {
+// 假设 getSecretAndSaltFromServer 返回从服务器拿到的密钥和盐值 ["dba643c8ba6b6dc738df43d9fd624293b4b12d87a60f518253bd10ba98c48453", "X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw="]
+  let [secret, salt] = await getSecretAndSaltFromServer();
+  salt = base64ToUint8Array(salt);
+  secret = hex2ascii(secret);
+  return [secret, salt];
+}
+
+let [secret, salt] = await getSecretAndSalt();
+
+// 设置加密方案为 aes-256-gcm2，并传入 secret 和 salt
+client.setEncryptionConfig("aes-256-gcm2", secret, salt);
+```
+
+## 开发注意事项
+
+- 请确保在调用 `AgoraRTCClient.join` 加入频道之前设置加密。
+- 通信和直播场景均支持媒体流加密功能。但是在直播场景下，声网不支持将加密后的媒体流推到 CDN 上。
+- 如需使用媒体流加密功能，请确保接收端和发送端使用相同的加密模式，否则会出现未定义行为，例如音频无声或视频黑屏。
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+媒体流加密是指通过由 App 开发者控制的唯一的密钥和[盐](https://en.wikipedia.org/wiki/Salt_(cryptography))为 App 中的音视频流加密。声网提供媒体流加密功能以确保传输过程中数据的保密性，建议你根据实际的业务场景合理应用。
+
+本文介绍如何在你的 App 中添加声网内置媒体流加密。
+
+## 技术原理
+
+下图描述了启用媒体流加密后的数据传输流程。声网推荐使用 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式，并设置密钥和盐。
+
+![加密传输流程](https://web-cdn.agora.io/docs-portal/img/rtc/encryption.png)
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+参考如下步骤，为你的 App 添加内置媒体流加密功能：
+
+1. 在你的服务端生成一个密钥和盐。
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成一个 16 字节的随机值，并以 16 进制（hex）字符串形式输出，作为密钥使用：
+
+      ```shell
+      # 随机生成一个密钥
+      openssl rand -hex 16
+      # 示例输出
+      9f3c7a1e5b8d4c2a6e0f91b7d4a2c8e5
+      ```
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成 Base64 编码、32 字节的盐：
+
+      ```shell
+      # 随机生成一个 Base64 编码、32 字节的盐
+      openssl rand -base64 32
+      # 示例输出
+      X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw=
+      ```
+
+2. 实现客户端逻辑：
+
+   1. 从服务端获取 `String` 型的密钥和 Base64 编码的盐。
+
+   2. 将盐从 Base64 转换成 `uint8_t`。
+
+   3. 加入频道前，调用 [`enableEncryption`](/api-ref/rtc/windows/API/toc_network#api_irtcengine_enableencryption) 设置 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式，并将密钥和盐传入 SDK。
+
+   :::warning[注意]
+   - 同一频道内所有用户必须使用相同的加密模式、密钥和盐。否则，可能会出现黑屏或音频丢失等未定义行为。
+   - 为确保安全性，声网建议在每次启用媒体流加密前使用新的密钥和盐。
+   :::
+
+   以下示例代码展示了该逻辑的实现过程：
+
+    ```cpp
+    #include <boost/algorithm/string/trim.hpp>
+    #include <boost/archive/iterators/base64_from_binary.hpp>
+    #include <boost/archive/iterators/binary_from_base64.hpp>
+    #include <boost/archive/iterators/transform_width.hpp>
+    #include <boost/range/algorithm/copy.hpp>
+
+    namespace detail {
+    using Base64FromBinary = boost::archive::iterators::base64_from_binary<
+        boost::archive::iterators::transform_width<const char*, 6, 8>>;
+
+    using BinaryFromBase64 = boost::archive::iterators::transform_width<
+        boost::archive::iterators::binary_from_base64<std::string::const_iterator>,
+        8, 6>;
+    }
+
+    void decodeBase64(const std::string& encoded, std::vector<uint8_t>& out) {
+        auto unpadded = encoded;
+
+        const auto num_padded = std::count(begin(encoded), end(encoded), '=');
+        std::replace(begin(unpadded), end(unpadded), '=', 'A');  // A_64 == \0
+
+        std::string decoded{
+            detail::BinaryFromBase64{begin(unpadded)},
+            detail::BinaryFromBase64{begin(unpadded) + unpadded.length()}};
+
+        decoded.erase(end(decoded) - num_padded, end(decoded));
+        std::copy(begin(decoded), end(decoded), out.begin());
+    }
+    // 请在调用 initialize 初始化 rtcEngine 后再调用该方法
+    int enableEncryption() {
+        std::string secret;
+        std::string kdfSaltBase64;
+        std::vector<uint8_t> kdfSalt;
+        for (int i = 0; i < 32; ++i) {
+            kdfSalt.push_back(0);
+        }
+        if (!getSecretAndSaltFromSever(secret, kdfSaltBase64)) return -1;
+        if (rtcEngine && decodeBase64(kdfSaltBase64, kdfSalt)) {
+            // 创建一个 EncryptionConfig 实例
+            agora::rtc::EncryptionConfig config;
+            // 将加密模式设置为 AES_128_GCM2
+            config.encryptionMode = AES_128_GCM2;
+            // 设置密钥
+            config.encryptionKey = secret.c_str();
+            // 设置盐
+            memcpy(config.encryptionKdfSalt, kdfSalt.data(),
+                sizeof(config.encryptionKdfSalt));
+            // 开启内置加密
+            return rtcEngine->enableEncryption(true, config);
+        }
+        return -1;
+    }
+    ```
+
+   上述示例代码中使用到了第三方库 Boost，你可以前往 [boostorg](https://boostorg.jfrog.io/artifactory/main/release/) 官网下载。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的媒体流加密示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="CAgoraMediaEncryptDlg" href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/MediaEncrypt" />
+  <Card title="CAgoraMediaEncryptDlg" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/MediaEncrypt" />
+</Cards>
+
+### 注意事项
+
+如需与 Web 平台的音视频 SDK 互通，你还需要将本文提到的 `String` 型密钥从 Hex 编码格式转换成 ASCII 编码格式。
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+媒体流加密是指通过由 App 开发者控制的唯一的密钥和[盐](https://en.wikipedia.org/wiki/Salt_(cryptography))为 App 中的音视频流加密。声网提供媒体流加密功能以确保传输过程中数据的保密性，建议你根据实际的业务场景合理应用。
+
+本文介绍如何在你的 App 中添加声网内置媒体流加密。
+
+## 技术原理
+
+下图描述了启用媒体流加密后的数据传输流程。声网推荐使用 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式，并设置密钥和盐。
+
+![加密传输流程](https://web-cdn.agora.io/docs-portal/img/rtc/encryption.png)
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+参考如下步骤，为你的 App 添加内置媒体流加密功能：
+
+1. 在你的服务端生成一个密钥和盐。
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成一个 16 字节的随机值，并以 16 进制 (hex) 字符串形式输出，作为密钥使用：
+
+      ```shell
+      # 随机生成一个密钥
+      openssl rand -hex 16
+      # 示例输出
+      9f3c7a1e5b8d4c2a6e0f91b7d4a2c8e5
+      ```
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成 Base64 编码、32 字节的盐：
+
+      ```shell
+      # 随机生成一个 Base64 编码、32 字节的盐
+      openssl rand -base64 32
+      # 示例输出
+      X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw=
+      ```
+
+2. 实现客户端逻辑：
+
+   1. 从服务端获取 `String` 型的密钥和 Base64 编码的盐。
+
+   2. 将盐从 Base64 转换成 `uint8_t`。
+
+   3. 加入频道前，调用 [`enableEncryption`](/api-ref/rtc/electron/API/toc_network#api_irtcengine_enableencryption) 设置 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式，并将密钥和盐传入 SDK。
+
+:::warning[注意]
+- 同一频道内所有用户必须使用相同的加密模式、密钥和盐。否则，可能会出现黑屏或音频丢失等未定义行为。
+- 为确保安全性，声网建议在每次启用媒体流加密前使用新的密钥和盐。
+:::
+
+以下示例代码展示了该逻辑的实现过程：
+
+```typescript
+// 开启内置加密
+enableEncryption = () => {
+  // 内置加密模式为 Aes128Xts
+  const encryptionMode = EncryptionMode.Aes128Xts;
+  // 内置加密密钥
+  const encryptionKey = '';
+  // 盐
+  const encryptionKdfSalt = new Array(32).fill(1, 0, 32);
+  if (!encryptionKey) {
+    this.error("encryptionKey is invalid");
+    return;
+  }
+  rtcEngine.enableEncryption(true, {
+    encryptionMode,
+    encryptionKey,
+    encryptionKdfSalt,
+  });
+};
+
+// 关闭内置加密
+disableEncryption = () => {
+  rtcEngine.enableEncryption(false, {});
+};
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的媒体流加密示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Encryption" href="https://gitee.com/agoraio-community/Electron-SDK/tree/main/example/src/renderer/examples/advanced/Encryption/Encryption.tsx" />
+  <Card title="Encryption" href="https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/advanced/Encryption/Encryption.tsx" />
+</Cards>
+
+### 注意事项
+
+如需与 Web 平台的音视频 SDK 互通，你还需要将本文提到的 `String` 型密钥从 Hex 编码格式转换成 ASCII 编码格式。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+媒体流加密是指通过由 App 开发者控制的唯一的密钥和[盐](https://en.wikipedia.org/wiki/Salt_(cryptography))为 App 中的音视频流加密。声网提供媒体流加密功能以确保传输过程中数据的保密性，建议你根据实际的业务场景合理应用。
+
+本文介绍如何在你的 App 中添加声网内置媒体流加密。
+
+## 技术原理
+
+下图描述了启用媒体流加密后的数据传输流程。声网推荐使用 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式，并设置密钥和盐。
+
+![加密传输流程](https://web-cdn.agora.io/docs-portal/img/rtc/encryption-unity.png)
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+参考如下步骤，为你的 App 添加内置媒体流加密功能：
+
+1. 在你的服务端生成一个密钥和盐。
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成一个 16 字节的随机值，并以 16 进制 (hex) 字符串形式输出，作为密钥使用：
+
+      ```shell
+      # 随机生成一个密钥
+      openssl rand -hex 16
+      # 示例输出
+      9f3c7a1e5b8d4c2a6e0f91b7d4a2c8e5
+      ```
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成 Base64 编码、32 字节的盐：
+
+      ```shell
+      # 随机生成一个 Base64 编码、32 字节的盐
+      openssl rand -base64 32
+      # 示例输出
+      X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw=
+      ```
+
+2. 实现客户端逻辑：
+
+   1. 从服务端获取 `String` 型的密钥和 Base64 编码的盐。
+
+   2. 将盐从 Base64 转换成 `uint8_t`。
+
+   3. 加入频道前，调用 [`EnableEncryption`](/api-ref/rtc/unity/API/toc_network#api_irtcengine_enableencryption) 设置 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式，并将密钥和盐传入 SDK。
+
+   :::warning[注意]
+   - 同一频道内所有用户必须使用相同的加密模式、密钥和盐。否则，可能会出现黑屏或音频丢失等未定义行为。
+   - 为确保安全性，声网建议在每次启用媒体流加密前使用新的密钥和盐。
+   :::
+
+   以下示例代码展示了该逻辑的实现过程：
+
+    ```csharp
+    // 从服务器传输得到的密钥
+    string secret;
+    //从服务传输得到的 32 位的盐
+    byte[] kdfSal;
+    // 设置加密模式
+    ENCRYPTION_MODE EncrytionMode = ENCRYPTION_MODE.AES_128_GCM2;
+    var config = new EncryptionConfig
+    {
+        encryptionMode = EncrytionMode,
+        encryptionKey = secret,
+        encryptionKdfSalt = kdfSal
+    };
+    // 开启加密。请在初始化引擎后再调用该方法
+    var nRet= RtcEngine.EnableEncryption(true, config);
+    Debug.Log("EnableEncryption: " + nRet);
+    ```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的媒体流加密示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="SetEncryption" href="https://gitee.com/agoraio-community/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/SetEncryption" />
+  <Card title="SetEncryption" href="https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/blob/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/SetEncryption/EncryptionSample.cs" />
+</Cards>
+
+### 注意事项
+
+如需与 Web 平台的音视频 SDK 互通，你还需要将本文提到的 `String` 型密钥从 Hex 编码格式转换成 ASCII 编码格式。
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+媒体流加密是指通过由 App 开发者控制的唯一的密钥和[盐](https://en.wikipedia.org/wiki/Salt_(cryptography))为 App 中的音视频流加密。声网提供媒体流加密功能以确保传输过程中数据的保密性，建议你根据实际的业务场景合理应用。
+
+本文介绍如何在你的 App 中添加声网内置媒体流加密。
+
+## 技术原理
+
+下图描述了启用媒体流加密后的数据传输流程。声网推荐使用 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式，并设置密钥和盐。
+
+![加密传输流程](https://web-cdn.agora.io/docs-portal/img/rtc/encryption.png)
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+参考如下步骤，为你的 App 添加内置媒体流加密功能：
+
+1. 在你的服务端生成一个密钥和盐。
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成一个 16 字节的随机值，并以 16 进制 (hex) 字符串形式输出，作为密钥使用：
+
+      ```shell
+      # 随机生成一个密钥
+      openssl rand -hex 16
+      # 示例输出
+      9f3c7a1e5b8d4c2a6e0f91b7d4a2c8e5
+      ```
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成 Base64 编码、32 字节的盐：
+
+      ```shell
+      # 随机生成一个 Base64 编码、32 字节的盐
+      openssl rand -base64 32
+      # 示例输出
+      X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw=
+      ```
+
+2. 实现客户端逻辑：
+
+   1. 从服务端获取 `String` 型的密钥和 Base64 编码的盐。
+
+   2. 将盐从 Base64 转换成 `uint8_t`。
+
+   3. 加入频道前，调用 [`enableEncryption`](/api-ref/rtc/rn/API/toc_network#api_irtcengine_enableencryption) 设置 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式，并将密钥和盐传入 SDK。
+
+:::warning[注意]
+- 同一频道内所有用户必须使用相同的加密模式、密钥和盐。否则，可能会出现黑屏或音频丢失等未定义行为。
+- 为确保安全性，声网建议在每次启用媒体流加密前使用新的密钥和盐。
+:::
+
+以下示例代码展示了该逻辑的实现过程：
+
+```typescript
+// 开启内置加密
+enableEncryption = () => {
+  // 内置加密模式为 Aes128Xts
+  const encryptionMode = EncryptionMode.Aes128Xts;
+  // 内置加密密钥
+  const encryptionKey = '';
+  // 盐
+  const encryptionKdfSalt = new Array(32).fill(1, 0, 32);
+  if (!encryptionKey) {
+    this.error("encryptionKey is invalid");
+    return;
+  }
+  rtcEngine.enableEncryption(true, {
+    encryptionMode,
+    encryptionKey,
+    encryptionKdfSalt,
+  });
+};
+
+// 关闭内置加密
+disableEncryption = () => {
+  rtcEngine.enableEncryption(false, {});
+};
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的媒体流加密示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Encryption" href="https://gitee.com/agoraio-community/react-native-agora/tree/main/example/src/examples/advanced/Encryption/Encryption.tsx" />
+  <Card title="Encryption" href="https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/Encryption/Encryption.tsx" />
+</Cards>
+
+### 注意事项
+
+如需与 Web 平台的音视频 SDK 互通，你还需要将本文提到的 `String` 型密钥从 Hex 编码格式转换成 ASCII 编码格式。
+
+</PlatformStructured>

@@ -1,5 +1,6 @@
 ---
 title: "媒体流加密"
+description: "了解如何在 RTSA 中媒体流加密，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
 在实时音视频互动过程中，你需要对媒体流加密，从而保障用户的数据安全。
 
@@ -65,7 +66,7 @@ RTSA SDK 目前支持以下加密模式：
 
 以下示例代码展示了该逻辑的实现过程：
 
-``` c
+```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-encryption-1"
 rtc_channel_options_t channel_options = { 0 };
 // 开启加密
 channel_options.crypto_opt.enable = true;
@@ -83,7 +84,7 @@ free(salt_bytes);
 agora_rtc_join_channel(conn_id, channel_name, uid, token, &channel_options);
 ```
 
-``` java
+```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-encryption-1"
 import java.util.Base64;
 ChannelOptions chOptions = new ChannelOptions();
 // 开启加密

@@ -20733,13 +20733,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-09T02:41:49.000Z',
   'content/docs/zh-CN/realtime-media/rtm/build/manage-channels/stream-channel.mdx':
     '2026-07-09T02:43:17.000Z',
-  'content/docs/zh-CN/realtime-media/rtm/build/manage-connections/link-basic.mdx':
+  'content/docs/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/rtm/build/manage-connections/link-state.mdx':
+  'content/docs/zh-CN/realtime-media/rtm/build/setup-and-access/link-state.mdx':
     '2026-07-09T09:17:03.000Z',
   'content/docs/zh-CN/realtime-media/rtm/build/manage-connections/meta.json':
     '2026-07-09T09:17:03.000Z',
-  'content/docs/zh-CN/realtime-media/rtm/build/manage-messages/add-event-listener.mdx':
+  'content/docs/zh-CN/realtime-media/rtm/build/setup-and-access/add-event-listener.mdx':
     '2026-07-09T02:41:49.000Z',
   'content/docs/zh-CN/realtime-media/rtm/build/manage-messages/constructed.mdx':
     '2026-07-09T02:41:49.000Z',

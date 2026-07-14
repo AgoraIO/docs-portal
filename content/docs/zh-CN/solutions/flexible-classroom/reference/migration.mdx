@@ -1,6 +1,8 @@
 ---
 title: "升级指南"
+description: "查看灵动课堂的升级指南，了解关键概念、参数说明、使用限制和接入注意事项。"
 ---
+如果你通过源码方式集成灵动课堂，并且对源码进行了修改，那么当灵动课堂升级时，你需要进行相应升级。
 
 <PlatformStructured platform="android">
 
@@ -8,7 +10,7 @@ title: "升级指南"
 
 ## 升级源代码的建议
 
-如果你通过源码方式集成灵动课堂，并且对源码进行了修改，那么当灵动课堂升级时，你需要进行相应升级。建议如下：
+建议如下：
 
 - 为了方便后续升级操作，建议对于需要修改的模块，通过源码方式引用；不需要修改的模块，通过 Maven 方式引用。
 - 如果你需要修改灵动课堂的源码，建议将自己的业务封装在自己的类中，再引用到灵动课堂的模块代码，以便后续升级时减少代码冲突。
@@ -23,11 +25,11 @@ title: "升级指南"
 
 从 2.8.70 版本以后，需要在 Application 的 `onCreate` 方法里面，初始化以下代码：
 
-```java
+```java tab="Java" tabGroup="zh-cn-solutions-flexible-classroom-reference-migration-1"
 AgoraSDKInitUtils.INSTANCE.initSDK(this);
 ```
 
-```kotlin
+```kotlin tab="Kotlin" tabGroup="zh-cn-solutions-flexible-classroom-reference-migration-1"
 AgoraSDKInitUtils.initSDK(this);
 ```
 

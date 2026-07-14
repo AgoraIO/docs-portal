@@ -1,11 +1,12 @@
 ---
-title: "如何调用 API"
+title: "调用灵动会议 RESTful API"
+description: "查看灵动会议的调用灵动会议 RESTful API，了解关键概念、参数说明、使用限制和接入注意事项。"
 ---
+# 前提条件
+
 本文介绍灵动会议 RESTful API 的构成，并引导你如何正确地调用 API。
 
-## 前提条件
-
-在调用 RESTful API 之前，确保已经[开通服务](/zh-CN/solutions/meeting/build/setup-and-access/enable-service)并获取 App ID 和临时 Token。
+在调用 RESTful API 之前，确保已经[开通灵动会议服务](/zh-CN/solutions/meeting/build/setup-and-access/enable-service)并获取 App ID 和临时 Token。
 
 ## 配置 URL
 
@@ -57,7 +58,7 @@ curl -X POST 'https://api.sd-rtn.com/{region}/conference/apps/{yourAppId}/v1/roo
 
 - `Content-Type`：`application/json`。代表指定请求 Body 的类型为 JSON，以 `UTF-8` 字符编码进行编码。
 
-- `Authorization`：用于 HTTP Token 认证的鉴权字段。每次发送 HTTP 请求时，都必须填入 `Authorization` 字段。详见[实现 HTTP Token 认证](/zh-CN/solutions/meeting/build/customize-and-extend/http-token-auth)。
+- `Authorization`：用于 HTTP Token 鉴权的鉴权字段。每次发送 HTTP 请求时，都必须填入 `Authorization` 字段。详见[实现 HTTP Token 鉴权](/zh-CN/solutions/meeting/build/customize-and-extend/http-token-auth)。
 
 ### 请求 Body（可选）
 
