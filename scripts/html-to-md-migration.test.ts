@@ -1302,6 +1302,67 @@ describe('html-to-md-migration', () => {
     ).resolves.toMatchObject({ pages: ['rtc'] });
   });
 
+  it('registers nested Flexible Classroom TypeDoc output through every ancestor', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'typedoc-source');
+    const apiReferenceDir = path.join(
+      rootDir,
+      'content',
+      'docs',
+      'zh-CN',
+      'api-reference',
+    );
+    const productDir = path.join(apiReferenceDir, 'flexible-classroom');
+    const platformDir = path.join(productDir, 'web');
+    const outputDir = path.join(platformDir, 'api-reference');
+    await writeTypeDocFixture(sourceDir);
+    await writeFixture(
+      path.join(apiReferenceDir, 'meta.json'),
+      `${JSON.stringify(
+        { title: '参考中心', pages: ['flexible-classroom'] },
+        null,
+        2,
+      )}\n`,
+    );
+    await writeFixture(
+      path.join(productDir, 'meta.json'),
+      `${JSON.stringify(
+        { title: '灵动课堂', sidebarHidden: true, pages: ['web'] },
+        null,
+        2,
+      )}\n`,
+    );
+    await writeFixture(
+      path.join(platformDir, 'meta.json'),
+      `${JSON.stringify({ title: 'Web', navScope: {}, pages: [] }, null, 2)}\n`,
+    );
+
+    const args = [
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'flexible-classroom',
+      '--platform',
+      'web',
+      '--navigation',
+      'generated',
+    ];
+    runMigration(args);
+    runMigration(args);
+
+    await expect(
+      readJson(path.join(platformDir, 'meta.json')),
+    ).resolves.toMatchObject({ navScope: {}, pages: ['api-reference'] });
+    await expect(
+      readJson(path.join(productDir, 'meta.json')),
+    ).resolves.toMatchObject({ sidebarHidden: true, pages: ['web'] });
+    await expect(
+      readJson(path.join(apiReferenceDir, 'meta.json')),
+    ).resolves.toMatchObject({ pages: ['flexible-classroom'] });
+  });
+
   it('rejects Web SDK sources mapped to the React SDK platform route', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'typedoc-source');
