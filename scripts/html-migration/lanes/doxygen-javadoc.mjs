@@ -14,6 +14,7 @@ const GENERATED_INDEX_PAGES = new Set([
   'classes.html',
   'deprecated.html',
   'dirs.html',
+  'doxygen_crawl.html',
   'examples.html',
   'files.html',
   'hierarchy.html',

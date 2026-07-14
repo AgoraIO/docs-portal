@@ -520,6 +520,7 @@ async function writeDoxygenFixture(sourceDir: string) {
   );
   for (const helperName of [
     'deprecated.html',
+    'doxygen_crawl.html',
     'examples.html',
     'hierarchy.html',
     'pages.html',
@@ -1479,9 +1480,12 @@ describe('html-to-md-migration', () => {
       'c',
     ]);
 
+    const meta = await readJson(path.join(outputDir, 'meta.json'));
+    expect(meta).toMatchObject({ navScope: {} });
+    expect(meta.pages).not.toContain('doxygen-crawl');
     await expect(
-      readJson(path.join(outputDir, 'meta.json')),
-    ).resolves.toMatchObject({ navScope: {} });
+      pathExists(path.join(outputDir, 'doxygen-crawl.mdx')),
+    ).resolves.toBe(true);
   });
 
   it('migrates iOS doc-generator output with dry-run planning and rewritten links', async () => {
