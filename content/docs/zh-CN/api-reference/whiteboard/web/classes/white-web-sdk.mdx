@@ -13,7 +13,7 @@ description: "WhiteWebSdk API 参考。"
 
 ### constructor
 
-```ts
+```ts title="TypeScript"
 new WhiteWebSdk(params: WhiteWebSdkConfiguration): WhiteWebSdk
 ```
 
@@ -37,7 +37,7 @@ new WhiteWebSdk(params: WhiteWebSdkConfiguration): WhiteWebSdk
 
 ### deviceType
 
-```ts
+```ts title="TypeScript"
 deviceType: DeviceType
 ```
 
@@ -47,7 +47,7 @@ deviceType: DeviceType
 
 ### region
 
-```ts
+```ts title="TypeScript"
 region: string
 ```
 
@@ -69,7 +69,7 @@ region: string
 
 ### renderEngine
 
-```ts
+```ts title="TypeScript"
 renderEngine: RenderEngine
 ```
 
@@ -79,7 +79,7 @@ renderEngine: RenderEngine
 
 ### screenType
 
-```ts
+```ts title="TypeScript"
 screenType: ScreenType
 ```
 
@@ -89,7 +89,7 @@ screenType: ScreenType
 
 ### version
 
-```ts
+```ts title="TypeScript"
 version: string
 ```
 
@@ -105,7 +105,7 @@ version: string
 
 ### isPlayable
 
-```ts
+```ts title="TypeScript"
 isPlayable(params: PlayableCheckingParams): Promise<boolean>
 ```
 
@@ -128,7 +128,7 @@ Promise &lt; boolean &gt;
 
 ### joinRoom
 
-```ts
+```ts title="TypeScript"
 joinRoom(params: JoinRoomParams, callbacks?: Partial<RoomCallbacks>): Promise<Room>
 ```
 
@@ -136,7 +136,7 @@ joinRoom(params: JoinRoomParams, callbacks?: Partial<RoomCallbacks>): Promise<Ro
 
 ##### `example`
 
-```text
+```text title="Text"
 const joinRoomParams = {...};
 const roomCallbacks = {...};
 
@@ -158,16 +158,16 @@ whiteWebSdk.joinRoom(joinRoomParams, roomCallbacks)
 
 #### 返回值
 
-Promise &lt; [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) &gt;
+Promise &lt; [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room) &gt;
 
-- 如果方法调用成功，则返回房间对象，详见 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks)。
+- 如果方法调用成功，则返回房间对象，详见 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room)。
 - 如果方法调用失败，则返回错误信息。
 
 <a id="replayroom"></a>
 
 ### replayRoom
 
-```ts
+```ts title="TypeScript"
 replayRoom(params: ReplayRoomParams, callbacks?: Partial<PlayerCallbacks>): Promise<Player>
 ```
 
@@ -175,7 +175,7 @@ replayRoom(params: ReplayRoomParams, callbacks?: Partial<PlayerCallbacks>): Prom
 
 ##### `example`
 
-```text
+```text title="Text"
 const replayRoomParams = {...};
 const replayCallbacks = {...};
 
@@ -197,7 +197,7 @@ whiteWebSdk.replayRoom(replayRoomParams, replayCallbacks)
 
 #### 返回值
 
-Promise &lt; [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks) &gt;
+Promise &lt; [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player) &gt;
 
-- 如果方法调用成功，则返回房间对象，详见 [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks)。
+- 如果方法调用成功，则返回房间对象，详见 [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player)。
 - 如果方法调用失败，则返回错误信息。

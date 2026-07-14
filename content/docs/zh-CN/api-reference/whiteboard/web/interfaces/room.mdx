@@ -5,7 +5,7 @@ description: "Room<CALLBACKS> API 参考。"
 
 `Room` 接口继承了 `Displayer` 接口，并且增加了用于操作互动白板实时房间的属性。
 
-- [Displayer](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks)
+- [Displayer](/zh-CN/api-reference/whiteboard/web/interfaces/displayer)
 
   - Room
 
@@ -15,7 +15,7 @@ description: "Room<CALLBACKS> API 参考。"
 
 ### calibrationTimestamp
 
-```ts
+```ts title="TypeScript"
 calibrationTimestamp: number
 ```
 
@@ -29,7 +29,7 @@ calibrationTimestamp: number
 
 ### callbacks
 
-```ts
+```ts title="TypeScript"
 callbacks: Callbacks<CALLBACKS>
 ```
 
@@ -37,7 +37,7 @@ callbacks: Callbacks<CALLBACKS>
 
 ##### `example`
 
-```text
+```text title="Text"
 // 监听到 onSliceChanged 回调
 function sliceChangeCallback(slice) {
 
@@ -59,27 +59,27 @@ displayer.callbacks.once("onSliceChanged", function(slice) {
 
 ### canRedoSteps
 
-```ts
+```ts title="TypeScript"
 canRedoSteps: number
 ```
 
-可重做次数。即此时此刻，还可以调用多少次 [redo](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#redo) 方法。
+可重做次数。即此时此刻，还可以调用多少次 [redo](/zh-CN/api-reference/whiteboard/web/interfaces/room#redo) 方法。
 
 <a id="canundosteps"></a>
 
 ### canUndoSteps
 
-```ts
+```ts title="TypeScript"
 canUndoSteps: number
 ```
 
-可撤销次数。即此时此刻，还可以调用多少次 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#undo) 方法。
+可撤销次数。即此时此刻，还可以调用多少次 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room#undo) 方法。
 
 <a id="devicetype"></a>
 
 ### deviceType
 
-```ts
+```ts title="TypeScript"
 deviceType: DeviceType
 ```
 
@@ -89,7 +89,7 @@ deviceType: DeviceType
 
 ### disableCameraTransform
 
-```ts
+```ts title="TypeScript"
 disableCameraTransform: boolean
 ```
 
@@ -106,7 +106,7 @@ disableCameraTransform: boolean
 
 ### disableDeviceInputs
 
-```ts
+```ts title="TypeScript"
 disableDeviceInputs: boolean
 ```
 
@@ -121,7 +121,7 @@ disableDeviceInputs: boolean
 
 ### disableEraseImage
 
-```ts
+```ts title="TypeScript"
 disableEraseImage: boolean
 ```
 
@@ -138,7 +138,7 @@ disableEraseImage: boolean
 
 ### disableOthersSelectingBox
 
-```ts
+```ts title="TypeScript"
 disableOthersSelectingBox: boolean
 ```
 
@@ -159,7 +159,7 @@ disableOthersSelectingBox: boolean
 
 ### disableSerialization
 
-```ts
+```ts title="TypeScript"
 disableSerialization: boolean
 ```
 
@@ -188,7 +188,7 @@ disableSerialization: boolean
 
 ### enableWriteNow
 
-```ts
+```ts title="TypeScript"
 enableWriteNow: boolean
 ```
 
@@ -205,7 +205,7 @@ enableWriteNow: boolean
 
 ### handToolActive
 
-```ts
+```ts title="TypeScript"
 handToolActive: boolean
 ```
 
@@ -218,7 +218,7 @@ handToolActive: boolean
 
 ### handToolKey
 
-```ts
+```ts title="TypeScript"
 handToolKey: string | undefined
 ```
 
@@ -228,7 +228,7 @@ handToolKey: string | undefined
 
 ### isWritable
 
-```ts
+```ts title="TypeScript"
 isWritable: boolean
 ```
 
@@ -241,7 +241,7 @@ isWritable: boolean
 
 ### observerId
 
-```ts
+```ts title="TypeScript"
 observerId: number
 ```
 
@@ -257,7 +257,7 @@ observerId: number
 
 ### phase
 
-```ts
+```ts title="TypeScript"
 phase: RoomPhase
 ```
 
@@ -267,7 +267,7 @@ phase: RoomPhase
 
 ### region
 
-```ts
+```ts title="TypeScript"
 region: string
 ```
 
@@ -285,7 +285,7 @@ region: string
 
 ### roomToken
 
-```ts
+```ts title="TypeScript"
 roomToken: string
 ```
 
@@ -295,7 +295,7 @@ roomToken: string
 
 ### screenType
 
-```ts
+```ts title="TypeScript"
 screenType: ScreenType
 ```
 
@@ -305,7 +305,7 @@ screenType: ScreenType
 
 ### session
 
-```ts
+```ts title="TypeScript"
 session: string
 ```
 
@@ -315,7 +315,7 @@ session: string
 
 ### slice
 
-```ts
+```ts title="TypeScript"
 slice: string
 ```
 
@@ -325,7 +325,7 @@ slice: string
 
 ### state
 
-```ts
+```ts title="TypeScript"
 state: RoomState
 ```
 
@@ -335,7 +335,7 @@ state: RoomState
 
 ### timeDelay
 
-```ts
+```ts title="TypeScript"
 timeDelay: number
 ```
 
@@ -349,7 +349,7 @@ timeDelay: number
 
 ### uid
 
-```ts
+```ts title="TypeScript"
 uid: string
 ```
 
@@ -359,7 +359,7 @@ uid: string
 
 ### useNativeClipboard
 
-```ts
+```ts title="TypeScript"
 useNativeClipboard: boolean
 ```
 
@@ -376,7 +376,7 @@ useNativeClipboard: boolean
 
 ### uuid
 
-```ts
+```ts title="TypeScript"
 uuid: string
 ```
 
@@ -386,7 +386,7 @@ uuid: string
 
 ### version
 
-```ts
+```ts title="TypeScript"
 version: string
 ```
 
@@ -402,11 +402,11 @@ version: string
 
 ### addMagixEventListener
 
-```ts
+```ts title="TypeScript"
 addMagixEventListener(event: string, listener: EventListener, options?: MagixEventListenerOptions): void
 ```
 
-```ts
+```ts title="TypeScript"
 addMagixEventListener(event: string, listener: EventsListener, fireInterval: number): void
 ```
 
@@ -440,7 +440,7 @@ void
 
 ##### `example`
 
-```text
+```text title="Text"
 function listener(events) {
     // events 是一个数组
     for (const event of events) {
@@ -466,7 +466,7 @@ void
 
 ### bindHtmlElement
 
-```ts
+```ts title="TypeScript"
 bindHtmlElement(element: HTMLDivElement | null): void
 ```
 
@@ -486,7 +486,7 @@ void
 
 ### cleanCurrentScene
 
-```ts
+```ts title="TypeScript"
 cleanCurrentScene(retainPpt?: boolean): void
 ```
 
@@ -506,7 +506,7 @@ void
 
 ### clearUndoHistory
 
-```ts
+```ts title="TypeScript"
 clearUndoHistory(includeRedo?: boolean): void
 ```
 
@@ -530,7 +530,7 @@ void
 
 ### completeImageUpload
 
-```ts
+```ts title="TypeScript"
 completeImageUpload(uuid: string, src: string): void
 ```
 
@@ -540,13 +540,13 @@ completeImageUpload(uuid: string, src: string): void
 
 **Note**
 
-调用该方法前，请确保你已经调用 [insertImage](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#insertimage) 方法在白板上插入了图片占位符。
+调用该方法前，请确保你已经调用 [insertImage](/zh-CN/api-reference/whiteboard/web/interfaces/room#insertimage) 方法在白板上插入了图片占位符。
 
 #### 参数
 
 | 名称 | 描述 |
 | --- | --- |
-| uuid: string | 指定图片的 UUID, 即在 [insertImage](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#insertimage) 方法的 [ImageInformation](/zh-CN/api-reference/whiteboard/web/globals#imageinformation) 中传入的图片 UUID。 |
+| uuid: string | 指定图片的 UUID, 即在 [insertImage](/zh-CN/api-reference/whiteboard/web/interfaces/room#insertimage) 方法的 [ImageInformation](/zh-CN/api-reference/whiteboard/web/globals#imageinformation) 中传入的图片 UUID。 |
 | src: string | 图片的 URL 地址。请确保 app 客户端能够访问该 URL，否则图片无法正常展示。 |
 
 #### 返回值
@@ -557,7 +557,7 @@ void
 
 ### convertToPointInWorld
 
-```ts
+```ts title="TypeScript"
 convertToPointInWorld(point: { x: number; y: number }): { x: number; y: number }
 ```
 
@@ -588,7 +588,7 @@ convertToPointInWorld(point: { x: number; y: number }): { x: number; y: number }
 
 ### copy
 
-```ts
+```ts title="TypeScript"
 copy(): void
 ```
 
@@ -597,7 +597,7 @@ copy(): void
 **Note**
 
 - 该方法会将选中的内容存储到内存中，不会粘贴到白板中。
-- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disableserialization) 设为 `false` 时生效。
+- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room#disableserialization) 设为 `false` 时生效。
 
 ##### `since`
 
@@ -611,7 +611,7 @@ void
 
 ### createInvisiblePlugin
 
-```ts
+```ts title="TypeScript"
 createInvisiblePlugin<K, A, P>(pluginClass: InvisiblePluginClass<K, A, P>, attributes: A): Promise<InvisiblePlugin<A>>
 ```
 
@@ -626,7 +626,7 @@ createInvisiblePlugin<K, A, P>(pluginClass: InvisiblePluginClass<K, A, P>, attri
 
 #### 返回值
 
-Promise &lt; [InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin-a) &lt; A &gt; &gt;
+Promise &lt; [InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin) &lt; A &gt; &gt;
 
 创建的不可见插件对象。
 
@@ -634,7 +634,7 @@ Promise &lt; [InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invis
 
 ### createScenesCallback
 
-```ts
+```ts title="TypeScript"
 createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): ScenesCallbacksNode | null
 ```
 
@@ -665,7 +665,7 @@ createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): Scenes
 
 ### delete
 
-```ts
+```ts title="TypeScript"
 delete(): void
 ```
 
@@ -679,7 +679,7 @@ void
 
 ### disconnect
 
-```ts
+```ts title="TypeScript"
 disconnect(): Promise<void>
 ```
 
@@ -698,7 +698,7 @@ Promise &lt; void &gt;
 
 ### dispatchMagixEvent
 
-```ts
+```ts title="TypeScript"
 dispatchMagixEvent(event: string, payload: any): void
 ```
 
@@ -723,7 +723,7 @@ void
 
 ### duplicate
 
-```ts
+```ts title="TypeScript"
 duplicate(): void
 ```
 
@@ -731,7 +731,7 @@ duplicate(): void
 
 **Note**
 
-- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disableserialization) 设为 `false` 时生效。
+- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room#disableserialization) 设为 `false` 时生效。
 - 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中心，可能会出现随机偏移。
 
 ##### `since`
@@ -746,7 +746,7 @@ void
 
 ### entireScenes
 
-```ts
+```ts title="TypeScript"
 entireScenes(): SceneMap
 ```
 
@@ -762,7 +762,7 @@ entireScenes(): SceneMap
 
 ### exportScene
 
-```ts
+```ts title="TypeScript"
 exportScene(scenePath: string): Promise<Blob>
 ```
 
@@ -792,7 +792,7 @@ Promise &lt; Blob &gt;
 
 ### fillSceneSnapshot
 
-```ts
+```ts title="TypeScript"
 fillSceneSnapshot(scenePath: string, div: HTMLElement, width: number, height: number): void
 ```
 
@@ -815,7 +815,7 @@ void
 
 ### generateScreenshot
 
-```ts
+```ts title="TypeScript"
 generateScreenshot(scenePath?: string, width?: number, height?: number): Promise<string>
 ```
 
@@ -823,7 +823,7 @@ generateScreenshot(scenePath?: string, width?: number, height?: number): Promise
 
 ##### `deprecated`
 
-该方法已废弃，请使用 [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#screenshottocanvasasync) 方法。
+该方法已废弃，请使用 [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/web/interfaces/room#screenshottocanvasasync) 方法。
 
 #### 参数
 
@@ -847,7 +847,7 @@ Promise &lt; string &gt;
 
 ### getInvisiblePlugin
 
-```ts
+```ts title="TypeScript"
 getInvisiblePlugin<A>(kind: string): InvisiblePlugin<A> | null
 ```
 
@@ -861,7 +861,7 @@ getInvisiblePlugin<A>(kind: string): InvisiblePlugin<A> | null
 
 #### 返回值
 
-[InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin-a) &lt; A &gt; | null
+[InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin) &lt; A &gt; | null
 
 指定的不可见插件。
 
@@ -869,7 +869,7 @@ getInvisiblePlugin<A>(kind: string): InvisiblePlugin<A> | null
 
 ### getPluginAttributes
 
-```ts
+```ts title="TypeScript"
 getPluginAttributes(identifier: Identifier): any | undefined
 ```
 
@@ -889,7 +889,7 @@ any | undefined
 
 ### getPluginRectangle
 
-```ts
+```ts title="TypeScript"
 getPluginRectangle(identifier: string): Rectangle | undefined
 ```
 
@@ -911,7 +911,7 @@ getPluginRectangle(identifier: string): Rectangle | undefined
 
 ### getScene
 
-```ts
+```ts title="TypeScript"
 getScene(path: string): WhiteScene | undefined
 ```
 
@@ -933,7 +933,7 @@ getScene(path: string): WhiteScene | undefined
 
 ### importScene
 
-```ts
+```ts title="TypeScript"
 importScene(dir: string, payload: Blob): Promise<SceneDefinition>
 ```
 
@@ -943,26 +943,26 @@ importScene(dir: string, payload: Blob): Promise<SceneDefinition>
 
 v2.14.5
 
-你可以调用该方法将通过 [exportScene](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#exportscene) 导出的场景内容导入指定的场景目录中。
+你可以调用该方法将通过 [exportScene](/zh-CN/api-reference/whiteboard/web/interfaces/room#exportscene) 导出的场景内容导入指定的场景目录中。
 
 #### 参数
 
 | 名称 | 描述 |
 | --- | --- |
-| dir: string | 场景要导入的场景目录。确保该场景目录的 [ScenePathType](/zh-CN/api-reference/whiteboard/web/enums/scene-path-type) 不为 `conflict`；否则，场景将无法导入。 你可以通过 [scenePathType](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#scenepathtype) 查询路径类型。 |
+| dir: string | 场景要导入的场景目录。确保该场景目录的 [ScenePathType](/zh-CN/api-reference/whiteboard/web/enums/scene-path-type) 不为 `conflict`；否则，场景将无法导入。 你可以通过 [scenePathType](/zh-CN/api-reference/whiteboard/web/interfaces/room#scenepathtype) 查询路径类型。 |
 | payload: Blob | 场景内容的 Blob 对象。 |
 
 #### 返回值
 
 Promise &lt; [SceneDefinition](/zh-CN/api-reference/whiteboard/web/globals#scenedefinition) &gt;
 
-方法调用成功后，返回 [SceneDefinition](/zh-CN/api-reference/whiteboard/web/globals#scenedefinition) 对象，其中包含导入场景的 `name`。导入场景的路径即为 `dir` + `name`。 如果需要修改场景路径，可以调用 [moveScene](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#movescene)。
+方法调用成功后，返回 [SceneDefinition](/zh-CN/api-reference/whiteboard/web/globals#scenedefinition) 对象，其中包含导入场景的 `name`。导入场景的路径即为 `dir` + `name`。 如果需要修改场景路径，可以调用 [moveScene](/zh-CN/api-reference/whiteboard/web/interfaces/room#movescene)。
 
 <a id="insertimage"></a>
 
 ### insertImage
 
-```ts
+```ts title="TypeScript"
 insertImage(imageInfo: ImageInformation): void
 ```
 
@@ -970,7 +970,7 @@ insertImage(imageInfo: ImageInformation): void
 
 SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片占位符。
 
-调用该方法后，还需要调用 [completeImageUpload](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#completeimageupload) 传入图片的 URL 地址，以在该占位符插入并展示图片。
+调用该方法后，还需要调用 [completeImageUpload](/zh-CN/api-reference/whiteboard/web/interfaces/room#completeimageupload) 传入图片的 URL 地址，以在该占位符插入并展示图片。
 
 #### 参数
 
@@ -986,7 +986,7 @@ void
 
 ### insertPlugin
 
-```ts
+```ts title="TypeScript"
 insertPlugin(kind: string, description?: PluginDescription): Identifier
 ```
 
@@ -1009,7 +1009,7 @@ insertPlugin(kind: string, description?: PluginDescription): Identifier
 
 ### insertText
 
-```ts
+```ts title="TypeScript"
 insertText(x: number, y: number, textContent?: string): Identifier
 ```
 
@@ -1033,7 +1033,7 @@ insertText(x: number, y: number, textContent?: string): Identifier
 
 ### lockImage
 
-```ts
+```ts title="TypeScript"
 lockImage(uuid: string, locked: boolean): void
 ```
 
@@ -1056,7 +1056,7 @@ void
 
 ### lockImages
 
-```ts
+```ts title="TypeScript"
 lockImages(locked: boolean): void
 ```
 
@@ -1082,7 +1082,7 @@ void
 
 ### memberState
 
-```ts
+```ts title="TypeScript"
 memberState(memberId: number): MemberState
 ```
 
@@ -1104,7 +1104,7 @@ memberState(memberId: number): MemberState
 
 ### moveCamera
 
-```ts
+```ts title="TypeScript"
 moveCamera(camera: Partial<Camera> & Readonly<{ animationMode?: AnimationMode }>): void
 ```
 
@@ -1124,7 +1124,7 @@ void
 
 ### moveCameraToContain
 
-```ts
+```ts title="TypeScript"
 moveCameraToContain(rectangle: Rectangle & Readonly<{ animationMode?: AnimationMode }>): void
 ```
 
@@ -1144,7 +1144,7 @@ void
 
 ### moveScene
 
-```ts
+```ts title="TypeScript"
 moveScene(originalPath: string, targetPath: string): void
 ```
 
@@ -1167,7 +1167,7 @@ void
 
 ### moveSelectedComponentsToBottom
 
-```ts
+```ts title="TypeScript"
 moveSelectedComponentsToBottom(): void
 ```
 
@@ -1185,7 +1185,7 @@ void
 
 ### moveSelectedComponentsToTop
 
-```ts
+```ts title="TypeScript"
 moveSelectedComponentsToTop(): void
 ```
 
@@ -1203,7 +1203,7 @@ void
 
 ### paste
 
-```ts
+```ts title="TypeScript"
 paste(): void
 ```
 
@@ -1211,8 +1211,8 @@ paste(): void
 
 **Note**
 
-- 该方法会将 [copy](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#copy) 方法复制的内容粘贴到白板上（用户当前视角的中心）。
-- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disableserialization) 设为 `false` 时生效。
+- 该方法会将 [copy](/zh-CN/api-reference/whiteboard/web/interfaces/room#copy) 方法复制的内容粘贴到白板上（用户当前视角的中心）。
+- 该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room#disableserialization) 设为 `false` 时生效。
 - 多次调用该方法时，不能保证粘贴的内容每次都在用户当前的视角中心，可能会出现随机偏移。
 
 ##### `since`
@@ -1227,7 +1227,7 @@ void
 
 ### pptNextStep
 
-```ts
+```ts title="TypeScript"
 pptNextStep(): void
 ```
 
@@ -1243,7 +1243,7 @@ void
 
 ### pptPreviousStep
 
-```ts
+```ts title="TypeScript"
 pptPreviousStep(): void
 ```
 
@@ -1259,7 +1259,7 @@ void
 
 ### putScenes
 
-```ts
+```ts title="TypeScript"
 putScenes(path: string, scenes: ReadonlyArray<SceneDefinition>, index?: number): void
 ```
 
@@ -1267,7 +1267,7 @@ putScenes(path: string, scenes: ReadonlyArray<SceneDefinition>, index?: number):
 
 **Note**
 
-调用该方法插入多个场景后不会切换到新插入的场景。如果要切换至新插入的场景，需要调用 [setScenePath](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#setscenepath)。
+调用该方法插入多个场景后不会切换到新插入的场景。如果要切换至新插入的场景，需要调用 [setScenePath](/zh-CN/api-reference/whiteboard/web/interfaces/room#setscenepath)。
 
 #### 参数
 
@@ -1285,7 +1285,7 @@ void
 
 ### redo
 
-```ts
+```ts title="TypeScript"
 redo(): number
 ```
 
@@ -1293,7 +1293,7 @@ redo(): number
 
 **Note**
 
-该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disableserialization) 设为 `false` 时生效。
+该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room#disableserialization) 设为 `false` 时生效。
 
 #### 返回值
 
@@ -1305,7 +1305,7 @@ number
 
 ### refreshViewSize
 
-```ts
+```ts title="TypeScript"
 refreshViewSize(): void
 ```
 
@@ -1321,7 +1321,7 @@ void
 
 ### removeMagixEventListener
 
-```ts
+```ts title="TypeScript"
 removeMagixEventListener(event: string, listener?: EventListener): void
 ```
 
@@ -1342,7 +1342,7 @@ void
 
 ### removePlugin
 
-```ts
+```ts title="TypeScript"
 removePlugin(identifier: Identifier): boolean
 ```
 
@@ -1362,7 +1362,7 @@ boolean
 
 ### removeScenes
 
-```ts
+```ts title="TypeScript"
 removeScenes(path: string): void
 ```
 
@@ -1394,7 +1394,7 @@ void
 
 ### scalePptToFit
 
-```ts
+```ts title="TypeScript"
 scalePptToFit(animationMode?: AnimationMode): void
 ```
 
@@ -1418,7 +1418,7 @@ void
 
 ### scenePathType
 
-```ts
+```ts title="TypeScript"
 scenePathType(path: string): ScenePathType
 ```
 
@@ -1440,7 +1440,7 @@ scenePathType(path: string): ScenePathType
 
 ### scenePreview
 
-```ts
+```ts title="TypeScript"
 scenePreview(scenePath: string, div: HTMLElement, width: number | undefined, height: number | undefined): void
 ```
 
@@ -1463,7 +1463,7 @@ void
 
 ### screenshotToCanvas
 
-```ts
+```ts title="TypeScript"
 screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number): void
 ```
 
@@ -1488,7 +1488,7 @@ void
 
 ### screenshotToCanvasAsync
 
-```ts
+```ts title="TypeScript"
 screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number, timeout?: number): Promise<void>
 ```
 
@@ -1498,7 +1498,7 @@ screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, wi
 
 - 该功能处于实验阶段。
 - 如果目标场景的图片无法完成加载，则该函数无法返回屏幕快照，你需要自行处理超时逻辑。
-- 如果你希望生成的屏幕快照不包含图片，请使用 [screenshotToCanvas](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#screenshottocanvas)。
+- 如果你希望生成的屏幕快照不包含图片，请使用 [screenshotToCanvas](/zh-CN/api-reference/whiteboard/web/interfaces/room#screenshottocanvas)。
 
 #### 参数
 
@@ -1520,7 +1520,7 @@ Promise &lt; void &gt;
 
 ### setCameraBound
 
-```ts
+```ts title="TypeScript"
 setCameraBound(cameraBound: CameraBound): void
 ```
 
@@ -1540,7 +1540,7 @@ void
 
 ### setGlobalState
 
-```ts
+```ts title="TypeScript"
 setGlobalState(modifyState: Partial<GlobalState>): GlobalState
 ```
 
@@ -1552,7 +1552,7 @@ setGlobalState(modifyState: Partial<GlobalState>): GlobalState
 
 ##### `example`
 
-```text
+```text title="Text"
 room.setGlobalState({
     foobar: "hello world",
 });
@@ -1562,7 +1562,7 @@ room.setGlobalState({
 
 ##### `example`
 
-```text
+```text title="Text"
 room.setGlobalState({
     foobar: undefined,
 });
@@ -1584,7 +1584,7 @@ room.setGlobalState({
 
 ### setMemberState
 
-```ts
+```ts title="TypeScript"
 setMemberState(modifyState: Partial<MemberState>): MemberState
 ```
 
@@ -1596,7 +1596,7 @@ setMemberState(modifyState: Partial<MemberState>): MemberState
 
 ##### `example`
 
-```text
+```text title="Text"
 room.setMemberState({
     foobar: "hello world",
 });
@@ -1606,7 +1606,7 @@ room.setMemberState({
 
 ##### `example`
 
-```text
+```text title="Text"
 room.setMemberState({
     foobar: undefined,
 });
@@ -1628,7 +1628,7 @@ room.setMemberState({
 
 ### setSceneIndex
 
-```ts
+```ts title="TypeScript"
 setSceneIndex(index: number): void
 ```
 
@@ -1654,7 +1654,7 @@ void
 
 ### setScenePath
 
-```ts
+```ts title="TypeScript"
 setScenePath(scenePath: string): void
 ```
 
@@ -1686,7 +1686,7 @@ void
 
 ### setViewMode
 
-```ts
+```ts title="TypeScript"
 setViewMode(viewMode: ViewMode): void
 ```
 
@@ -1720,7 +1720,7 @@ void
 
 ### setWritable
 
-```ts
+```ts title="TypeScript"
 setWritable(isWritable: boolean): Promise<void>
 ```
 
@@ -1740,11 +1740,11 @@ Promise &lt; void &gt;
 
 ### stopBlockTimestamp
 
-```ts
+```ts title="TypeScript"
 stopBlockTimestamp(): void
 ```
 
-取消 [syncBlockTimestamp](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#syncblocktimestamp) 方法设置的本地显示远端白板内容的时间。
+取消 [syncBlockTimestamp](/zh-CN/api-reference/whiteboard/web/interfaces/room#syncblocktimestamp) 方法设置的本地显示远端白板内容的时间。
 
 ##### `since`
 
@@ -1758,7 +1758,7 @@ void
 
 ### syncBlockTimestamp
 
-```ts
+```ts title="TypeScript"
 syncBlockTimestamp(timestamp: number): void
 ```
 
@@ -1786,7 +1786,7 @@ void
 
 ### undo
 
-```ts
+```ts title="TypeScript"
 undo(): number
 ```
 
@@ -1794,7 +1794,7 @@ undo(): number
 
 **Note**
 
-该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disableserialization) 设为 `false` 时生效。
+该方法仅当 [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room#disableserialization) 设为 `false` 时生效。
 
 #### 返回值
 
@@ -1806,7 +1806,7 @@ number
 
 ### updatePlugin
 
-```ts
+```ts title="TypeScript"
 updatePlugin(identifier: Identifier, description: PluginDescription): boolean
 ```
 
@@ -1827,7 +1827,7 @@ boolean
 
 ### updateSelectedText
 
-```ts
+```ts title="TypeScript"
 updateSelectedText(format: TextFormat): void
 ```
 
@@ -1849,19 +1849,19 @@ void
 
 ### updateText
 
-```ts
+```ts title="TypeScript"
 updateText(identifier: Identifier, textContent: string): void
 ```
 
 修改指定文字的内容。
 
-调用 [insertText](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#inserttext) 方法后，你可以调用该方法并传入 `insertText` 方法返回的 `Identifier`，修改指定文字的内容。
+调用 [insertText](/zh-CN/api-reference/whiteboard/web/interfaces/room#inserttext) 方法后，你可以调用该方法并传入 `insertText` 方法返回的 `Identifier`，修改指定文字的内容。
 
 #### 参数
 
 | 名称 | 描述 |
 | --- | --- |
-| identifier: Identifier | 文字的标识符，为 [insertText](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#inserttext) 的返回值。 |
+| identifier: Identifier | 文字的标识符，为 [insertText](/zh-CN/api-reference/whiteboard/web/interfaces/room#inserttext) 的返回值。 |
 | textContent: string | 修改后的文字内容。 |
 
 #### 返回值
@@ -1872,7 +1872,7 @@ void
 
 ### waitMagixEvent
 
-```ts
+```ts title="TypeScript"
 waitMagixEvent(filter: EventFilter): Promise<Event>
 ```
 

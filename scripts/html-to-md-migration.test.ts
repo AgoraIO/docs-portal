@@ -402,9 +402,13 @@ async function writeWhiteboardWebTypeDocFixture(sourceDir: string) {
   await writeTypeDocFixture(sourceDir);
   for (const [source, title] of [
     ['classes/whitewebsdk.html', 'Class WhiteWebSdk'],
+    ['classes/invisibleplugin.html', 'Class InvisiblePlugin&lt;A&gt;'],
     ['interfaces/room.html', 'Interface Room&lt;CALLBACKS&gt;'],
     ['interfaces/player.html', 'Interface Player&lt;CALLBACKS&gt;'],
     ['interfaces/displayer.html', 'Interface Displayer&lt;CALLBACKS&gt;'],
+    ['interfaces/callbacks.html', 'Interface Callbacks&lt;CALLBACKS&gt;'],
+    ['interfaces/plugininstance.html', 'Interface PluginInstance&lt;C, A&gt;'],
+    ['interfaces/plugins.html', 'Interface Plugins&lt;C_MAP&gt;'],
     ['globals.html', 'Globals'],
   ]) {
     await writeFixture(
@@ -1631,16 +1635,44 @@ describe('html-to-md-migration', () => {
     );
     expect(meta.pages).not.toContain('classes');
     expect(meta.pages).not.toContain('interfaces');
-    for (const route of ['room', 'player', 'displayer']) {
+    const interfaceRoutes = [
+      'room',
+      'player',
+      'displayer',
+      'callbacks',
+      'plugin-instance',
+      'plugins',
+    ];
+    const interfacesMeta = await readJson(
+      path.join(outputDir, 'interfaces', 'meta.json'),
+    );
+    expect(interfacesMeta.pages).toEqual(
+      expect.arrayContaining(interfaceRoutes),
+    );
+    for (const route of interfaceRoutes) {
       await expect(
         pathExists(path.join(outputDir, 'interfaces', `${route}.mdx`)),
       ).resolves.toBe(true);
-      await expect(
-        pathExists(
-          path.join(outputDir, 'interfaces', `${route}-callbacks.mdx`),
-        ),
-      ).resolves.toBe(false);
     }
+    for (const oldRoute of [
+      'room-callbacks',
+      'player-callbacks',
+      'displayer-callbacks',
+      'callbacks-callbacks',
+      'plugin-instance-c-a',
+      'plugins-c-map',
+    ]) {
+      await expect(
+        pathExists(path.join(outputDir, 'interfaces', `${oldRoute}.mdx`)),
+      ).resolves.toBe(false);
+      expect(interfacesMeta.pages).not.toContain(oldRoute);
+    }
+    await expect(
+      pathExists(path.join(outputDir, 'classes', 'invisible-plugin.mdx')),
+    ).resolves.toBe(true);
+    await expect(
+      pathExists(path.join(outputDir, 'classes', 'invisible-plugin-a.mdx')),
+    ).resolves.toBe(false);
   });
 
   it('registers Whiteboard Web output in existing ancestor navigation', async () => {

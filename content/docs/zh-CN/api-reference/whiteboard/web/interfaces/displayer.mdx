@@ -7,8 +7,8 @@ description: "Displayer<CALLBACKS> API 参考。"
 
 - Displayer
 
-  - [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks)
-  - [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks)
+  - [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room)
+  - [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player)
 
 ## 属性
 
@@ -16,7 +16,7 @@ description: "Displayer<CALLBACKS> API 参考。"
 
 ### callbacks
 
-```ts
+```ts title="TypeScript"
 callbacks: Callbacks<CALLBACKS>
 ```
 
@@ -24,7 +24,7 @@ callbacks: Callbacks<CALLBACKS>
 
 ##### `example`
 
-```text
+```text title="Text"
 // 监听到 onSliceChanged 回调
 function sliceChangeCallback(slice) {
 
@@ -46,7 +46,7 @@ displayer.callbacks.once("onSliceChanged", function(slice) {
 
 ### deviceType
 
-```ts
+```ts title="TypeScript"
 deviceType: DeviceType
 ```
 
@@ -56,7 +56,7 @@ deviceType: DeviceType
 
 ### disableCameraTransform
 
-```ts
+```ts title="TypeScript"
 disableCameraTransform: boolean
 ```
 
@@ -73,7 +73,7 @@ disableCameraTransform: boolean
 
 ### disableOthersSelectingBox
 
-```ts
+```ts title="TypeScript"
 disableOthersSelectingBox: boolean
 ```
 
@@ -94,7 +94,7 @@ disableOthersSelectingBox: boolean
 
 ### enableWriteNow
 
-```ts
+```ts title="TypeScript"
 enableWriteNow: boolean
 ```
 
@@ -111,7 +111,7 @@ enableWriteNow: boolean
 
 ### handToolActive
 
-```ts
+```ts title="TypeScript"
 handToolActive: boolean
 ```
 
@@ -124,7 +124,7 @@ handToolActive: boolean
 
 ### handToolKey
 
-```ts
+```ts title="TypeScript"
 handToolKey: string | undefined
 ```
 
@@ -134,7 +134,7 @@ handToolKey: string | undefined
 
 ### observerId
 
-```ts
+```ts title="TypeScript"
 observerId: number
 ```
 
@@ -150,7 +150,7 @@ observerId: number
 
 ### region
 
-```ts
+```ts title="TypeScript"
 region: string
 ```
 
@@ -168,7 +168,7 @@ region: string
 
 ### screenType
 
-```ts
+```ts title="TypeScript"
 screenType: ScreenType
 ```
 
@@ -178,7 +178,7 @@ screenType: ScreenType
 
 ### slice
 
-```ts
+```ts title="TypeScript"
 slice: string
 ```
 
@@ -188,7 +188,7 @@ slice: string
 
 ### state
 
-```ts
+```ts title="TypeScript"
 state: DisplayerState
 ```
 
@@ -198,7 +198,7 @@ state: DisplayerState
 
 ### version
 
-```ts
+```ts title="TypeScript"
 version: string
 ```
 
@@ -214,11 +214,11 @@ version: string
 
 ### addMagixEventListener
 
-```ts
+```ts title="TypeScript"
 addMagixEventListener(event: string, listener: EventListener, options?: MagixEventListenerOptions): void
 ```
 
-```ts
+```ts title="TypeScript"
 addMagixEventListener(event: string, listener: EventsListener, fireInterval: number): void
 ```
 
@@ -252,7 +252,7 @@ void
 
 ##### `example`
 
-```text
+```text title="Text"
 function listener(events) {
     // events 是一个数组
     for (const event of events) {
@@ -278,7 +278,7 @@ void
 
 ### bindHtmlElement
 
-```ts
+```ts title="TypeScript"
 bindHtmlElement(element: HTMLDivElement | null): void
 ```
 
@@ -298,7 +298,7 @@ void
 
 ### convertToPointInWorld
 
-```ts
+```ts title="TypeScript"
 convertToPointInWorld(point: { x: number; y: number }): { x: number; y: number }
 ```
 
@@ -329,7 +329,7 @@ convertToPointInWorld(point: { x: number; y: number }): { x: number; y: number }
 
 ### createScenesCallback
 
-```ts
+```ts title="TypeScript"
 createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): ScenesCallbacksNode | null
 ```
 
@@ -360,7 +360,7 @@ createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): Scenes
 
 ### entireScenes
 
-```ts
+```ts title="TypeScript"
 entireScenes(): SceneMap
 ```
 
@@ -376,7 +376,7 @@ entireScenes(): SceneMap
 
 ### fillSceneSnapshot
 
-```ts
+```ts title="TypeScript"
 fillSceneSnapshot(scenePath: string, div: HTMLElement, width: number, height: number): void
 ```
 
@@ -399,7 +399,7 @@ void
 
 ### generateScreenshot
 
-```ts
+```ts title="TypeScript"
 generateScreenshot(scenePath?: string, width?: number, height?: number): Promise<string>
 ```
 
@@ -407,7 +407,7 @@ generateScreenshot(scenePath?: string, width?: number, height?: number): Promise
 
 ##### `deprecated`
 
-该方法已废弃，请使用 [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#screenshottocanvasasync) 方法。
+该方法已废弃，请使用 [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#screenshottocanvasasync) 方法。
 
 #### 参数
 
@@ -431,7 +431,7 @@ Promise &lt; string &gt;
 
 ### getInvisiblePlugin
 
-```ts
+```ts title="TypeScript"
 getInvisiblePlugin<A>(kind: string): InvisiblePlugin<A> | null
 ```
 
@@ -445,7 +445,7 @@ getInvisiblePlugin<A>(kind: string): InvisiblePlugin<A> | null
 
 #### 返回值
 
-[InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin-a) &lt; A &gt; | null
+[InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin) &lt; A &gt; | null
 
 指定的不可见插件。
 
@@ -453,7 +453,7 @@ getInvisiblePlugin<A>(kind: string): InvisiblePlugin<A> | null
 
 ### getScene
 
-```ts
+```ts title="TypeScript"
 getScene(path: string): WhiteScene | undefined
 ```
 
@@ -475,7 +475,7 @@ getScene(path: string): WhiteScene | undefined
 
 ### memberState
 
-```ts
+```ts title="TypeScript"
 memberState(memberId: number): MemberState
 ```
 
@@ -497,7 +497,7 @@ memberState(memberId: number): MemberState
 
 ### moveCamera
 
-```ts
+```ts title="TypeScript"
 moveCamera(camera: Partial<Camera> & Readonly<{ animationMode?: AnimationMode }>): void
 ```
 
@@ -517,7 +517,7 @@ void
 
 ### moveCameraToContain
 
-```ts
+```ts title="TypeScript"
 moveCameraToContain(rectangle: Rectangle & Readonly<{ animationMode?: AnimationMode }>): void
 ```
 
@@ -537,7 +537,7 @@ void
 
 ### refreshViewSize
 
-```ts
+```ts title="TypeScript"
 refreshViewSize(): void
 ```
 
@@ -553,7 +553,7 @@ void
 
 ### removeMagixEventListener
 
-```ts
+```ts title="TypeScript"
 removeMagixEventListener(event: string, listener?: EventListener): void
 ```
 
@@ -574,7 +574,7 @@ void
 
 ### scalePptToFit
 
-```ts
+```ts title="TypeScript"
 scalePptToFit(animationMode?: AnimationMode): void
 ```
 
@@ -598,7 +598,7 @@ void
 
 ### scenePathType
 
-```ts
+```ts title="TypeScript"
 scenePathType(path: string): ScenePathType
 ```
 
@@ -620,7 +620,7 @@ scenePathType(path: string): ScenePathType
 
 ### scenePreview
 
-```ts
+```ts title="TypeScript"
 scenePreview(scenePath: string, div: HTMLElement, width: number | undefined, height: number | undefined): void
 ```
 
@@ -643,7 +643,7 @@ void
 
 ### screenshotToCanvas
 
-```ts
+```ts title="TypeScript"
 screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number): void
 ```
 
@@ -668,7 +668,7 @@ void
 
 ### screenshotToCanvasAsync
 
-```ts
+```ts title="TypeScript"
 screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number, timeout?: number): Promise<void>
 ```
 
@@ -678,7 +678,7 @@ screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, wi
 
 - 该功能处于实验阶段。
 - 如果目标场景的图片无法完成加载，则该函数无法返回屏幕快照，你需要自行处理超时逻辑。
-- 如果你希望生成的屏幕快照不包含图片，请使用 [screenshotToCanvas](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#screenshottocanvas)。
+- 如果你希望生成的屏幕快照不包含图片，请使用 [screenshotToCanvas](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#screenshottocanvas)。
 
 #### 参数
 
@@ -700,7 +700,7 @@ Promise &lt; void &gt;
 
 ### setCameraBound
 
-```ts
+```ts title="TypeScript"
 setCameraBound(cameraBound: CameraBound): void
 ```
 
@@ -720,7 +720,7 @@ void
 
 ### waitMagixEvent
 
-```ts
+```ts title="TypeScript"
 waitMagixEvent(filter: EventFilter): Promise<Event>
 ```
 

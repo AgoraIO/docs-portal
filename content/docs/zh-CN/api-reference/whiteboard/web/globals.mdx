@@ -9,7 +9,7 @@ description: "Agora Interactive Whiteboard Web SDK API Reference API 参考。"
 
 ### BroadcastState
 
-```ts
+```ts title="TypeScript"
 BroadcastState: { broadcasterId?: number; mode: ViewMode }
 ```
 
@@ -29,7 +29,7 @@ BroadcastState: { broadcasterId?: number; mode: ViewMode }
 
 ### Camera
 
-```ts
+```ts title="TypeScript"
 Camera: { centerX: number; centerY: number; scale: number }
 ```
 
@@ -53,7 +53,7 @@ Camera: { centerX: number; centerY: number; scale: number }
 
 ### CameraBound
 
-```ts
+```ts title="TypeScript"
 CameraBound: { centerX?: number; centerY?: number; damping?: number; height?: number; maxContentMode?: ContentMode; minContentMode?: ContentMode; width?: number }
 ```
 
@@ -98,7 +98,7 @@ CameraBound: { centerX?: number; centerY?: number; damping?: number; height?: nu
 
 ### CameraState
 
-```ts
+```ts title="TypeScript"
 CameraState: Camera & { height: number; width: number }
 ```
 
@@ -119,7 +119,7 @@ CameraState: Camera & { height: number; width: number }
 
 ### Color
 
-```ts
+```ts title="TypeScript"
 Color: number[]
 ```
 
@@ -129,11 +129,11 @@ Color: number[]
 
 ### ConstructRoomParams
 
-```ts
+```ts title="TypeScript"
 ConstructRoomParams: { cameraBound?: CameraBound; commandWheelToZoom?: boolean; cursorAdapter?: CursorAdapter | false; disableAutoResize?: boolean; disableCameraTransform?: boolean; disableOthersSelectingBox?: boolean; invisiblePlugins?: ReadonlyArray<InvisiblePluginClass<string, any, any>>; wrappedComponents?: WrappedComponents }
 ```
 
-[Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 对象和 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 对象共用的参数配置。
+[Room](/zh-CN/api-reference/whiteboard/web/interfaces/room) 对象和 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room) 对象共用的参数配置。
 
 #### 类型声明
 
@@ -202,7 +202,7 @@ ConstructRoomParams: { cameraBound?: CameraBound; commandWheelToZoom?: boolean; 
 
 ### ContentMode
 
-```ts
+```ts title="TypeScript"
 ContentMode: (screenSize: Size, boundSize: Size) => number
 ```
 
@@ -224,7 +224,7 @@ ContentMode: (screenSize: Size, boundSize: Size) => number
 
 ### ConvertedFile
 
-```ts
+```ts title="TypeScript"
 ConvertedFile: { conversionFileUrl: string; height: number; preview?: string; width: number }
 ```
 
@@ -252,7 +252,7 @@ ConvertedFile: { conversionFileUrl: string; height: number; preview?: string; wi
 
 ### CursorDescription
 
-```ts
+```ts title="TypeScript"
 CursorDescription: { height: number; width: number; x: number; y: number }
 ```
 
@@ -280,7 +280,7 @@ CursorDescription: { height: number; width: number; x: number; y: number }
 
 ### DisplayerCallbacks
 
-```ts
+```ts title="TypeScript"
 DisplayerCallbacks: { onBackgroundError: (url: string) => void; onCatchErrorWhenAppendFrame: (userId: number, error: Error) => void; onCatchErrorWhenRender: (error: Error) => void; onEnableWriteNowChanged: (enableWriteNow: boolean) => void; onHandToolActive: (active: boolean) => void; onPPTMediaPause: (shapeId: string, type: MediaType) => void; onPPTMediaPlay: (shapeId: string, type: MediaType) => void; onPPTMediaPlayError: (shapeId: string, type: MediaType, error: Error) => void; onRenderDuration: (renderDuration: number) => void; onSliceChanged: (slice: string) => void }
 ```
 
@@ -314,7 +314,7 @@ DisplayerCallbacks: { onBackgroundError: (url: string) => void; onCatchErrorWhen
 
 ### DisplayerState
 
-```ts
+```ts title="TypeScript"
 DisplayerState: { cameraState: CameraState; globalState: GlobalState; roomMembers: ReadonlyArray<RoomMember>; sceneState: SceneState }
 ```
 
@@ -346,7 +346,7 @@ DisplayerState: { cameraState: CameraState; globalState: GlobalState; roomMember
 
 ### Event
 
-```ts
+```ts title="TypeScript"
 Event: { authorId: number; event: string; payload: any; phase: EventPhase; scope: Scope }
 ```
 
@@ -378,7 +378,7 @@ Event: { authorId: number; event: string; payload: any; phase: EventPhase; scope
 
 ### EventFilter
 
-```ts
+```ts title="TypeScript"
 EventFilter: (event: Event) => boolean
 ```
 
@@ -388,7 +388,7 @@ EventFilter: (event: Event) => boolean
 
 ### EventListener
 
-```ts
+```ts title="TypeScript"
 EventListener: (event: Event) => void
 ```
 
@@ -398,7 +398,7 @@ EventListener: (event: Event) => void
 
 ### EventsListener
 
-```ts
+```ts title="TypeScript"
 EventsListener: (events: Event[]) => void
 ```
 
@@ -408,7 +408,7 @@ EventsListener: (events: Event[]) => void
 
 ### FloatBarOptions
 
-```ts
+```ts title="TypeScript"
 FloatBarOptions: { colors: ReadonlyArray<Readonly<Color>> }
 ```
 
@@ -424,7 +424,7 @@ FloatBarOptions: { colors: ReadonlyArray<Readonly<Color>> }
 
 ### GlobalState
 
-```ts
+```ts title="TypeScript"
 GlobalState: {}
 ```
 
@@ -436,7 +436,7 @@ GlobalState: {}
 
 ### HotKey
 
-```ts
+```ts title="TypeScript"
 HotKey: string | HotKeyDescription | ReadonlyArray<string | HotKeyDescription> | HotKeyChecker
 ```
 
@@ -446,7 +446,7 @@ HotKey: string | HotKeyDescription | ReadonlyArray<string | HotKeyDescription> |
 
 ### HotKeyChecker
 
-```ts
+```ts title="TypeScript"
 HotKeyChecker: (event: HotKeyEvent, kind: KeyboardKind) => boolean
 ```
 
@@ -471,7 +471,7 @@ HotKeyChecker: (event: HotKeyEvent, kind: KeyboardKind) => boolean
 
 ### HotKeyDescription
 
-```ts
+```ts title="TypeScript"
 HotKeyDescription: { altKey: boolean | null; ctrlKey: boolean | null; key: string; shiftKey: boolean | null }
 ```
 
@@ -499,7 +499,7 @@ HotKeyDescription: { altKey: boolean | null; ctrlKey: boolean | null; key: strin
 
 ### HotKeyEvent
 
-```ts
+```ts title="TypeScript"
 HotKeyEvent: { altKey: boolean; ctrlKey: boolean; key: string; kind: "KeyDown" | "KeyUp"; nativeEvent?: KeyboardEvent; shiftKey: boolean }
 ```
 
@@ -538,7 +538,7 @@ HotKeyEvent: { altKey: boolean; ctrlKey: boolean; key: string; kind: "KeyDown" |
 
 ### HotKeys
 
-```ts
+```ts title="TypeScript"
 HotKeys: { changeToArrow: HotKey; changeToClick: HotKey; changeToEllipse: HotKey; changeToEraser: HotKey; changeToHand: HotKey; changeToLaserPointer: HotKey; changeToPencil: HotKey; changeToRectangle: HotKey; changeToSelector: HotKey; changeToStraight: HotKey; changeToText: HotKey; copy: HotKey; delete: HotKey; duplicate: HotKey; lock: HotKey; paste: HotKey; redo: HotKey; undo: HotKey }
 ```
 
@@ -622,7 +622,7 @@ HotKeys: { changeToArrow: HotKey; changeToClick: HotKey; changeToEllipse: HotKey
 
 ### Identifier
 
-```ts
+```ts title="TypeScript"
 Identifier: string
 ```
 
@@ -632,7 +632,7 @@ Identifier: string
 
 ### ImageInformation
 
-```ts
+```ts title="TypeScript"
 ImageInformation: { centerX: number; centerY: number; crossOrigin?: boolean | string; height: number; locked: boolean; uniformScale?: boolean; uuid: string; width: number }
 ```
 
@@ -693,7 +693,7 @@ ImageInformation: { centerX: number; centerY: number; crossOrigin?: boolean | st
 
 ### International
 
-```ts
+```ts title="TypeScript"
 International: { displayNote?: string; displaySidebar?: string; hideNote?: string; hideSidebar?: string; jumpTo?: string; nextPage?: string; nextStep?: string; pageNumber?: string; prePage?: string; preStep?: string; resetCurrentPPTAnimation?: string; resetCurrentSlideAnimation?: string }
 ```
 
@@ -753,7 +753,7 @@ International: { displayNote?: string; displaySidebar?: string; hideNote?: strin
 
 ### InvisibleCallbacks
 
-```ts
+```ts title="TypeScript"
 InvisibleCallbacks<A>: { onAttributesUpdate: (attributes: A) => void; onDestroy: () => void }
 ```
 
@@ -769,7 +769,7 @@ InvisibleCallbacks<A>: { onAttributesUpdate: (attributes: A) => void; onDestroy:
 
 ### InvisiblePluginClass
 
-```ts
+```ts title="TypeScript"
 InvisiblePluginClass<K, A, P>: { kind: K; onCreate?: (plugin: P) => void; onDestroy?: (plugin: P) => void }
 ```
 
@@ -789,7 +789,7 @@ InvisiblePluginClass<K, A, P>: { kind: K; onCreate?: (plugin: P) => void; onDest
 
 ### InvisiblePluginContext
 
-```ts
+```ts title="TypeScript"
 InvisiblePluginContext: { displayer: Displayer; kind: string }
 ```
 
@@ -809,11 +809,11 @@ InvisiblePluginContext: { displayer: Displayer; kind: string }
 
 ### JoinRoomParams
 
-```ts
+```ts title="TypeScript"
 JoinRoomParams: ConstructRoomParams & { disableDeviceInputs?: boolean; disableEraseImage?: boolean; disableMagixEventDispatchLimit?: boolean; disableNewPencil?: boolean; disablePencilWrittingLimitFrequency?: boolean; enableDrawPoint?: boolean; floatBar?: boolean | Partial<FloatBarOptions>; hotKeys?: Partial<HotKeys>; isWritable?: boolean; newPencilWritingQuality?: NewPencilWritingQuality; optimizeOptions?: OptimizeOptions; region?: string; rejectWhenReadonlyErrorLevel?: RoomErrorLevel; roomToken: string; uid: string; userPayload?: {}; uuid: string }
 ```
 
-[Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 对象的参数设置，用于加入互动白板实时房间。该类型继承 [ConstructRoomParams](/zh-CN/api-reference/whiteboard/web/globals#constructroomparams) 且包含以下属性：
+[Room](/zh-CN/api-reference/whiteboard/web/interfaces/room) 对象的参数设置，用于加入互动白板实时房间。该类型继承 [ConstructRoomParams](/zh-CN/api-reference/whiteboard/web/globals#constructroomparams) 且包含以下属性：
 
 - **uuid**: *string*
 
@@ -848,7 +848,7 @@ JoinRoomParams: ConstructRoomParams & { disableDeviceInputs?: boolean; disableEr
 
 ##### `example`
 
-```text
+```text title="Text"
 for (var member of room.state.roomMembers) {
     // 读取房间内某个用户的 userPayload 字段
     console.log(member.userPayload);
@@ -954,7 +954,7 @@ for (var member of room.state.roomMembers) {
 
 ### Level
 
-```ts
+```ts title="TypeScript"
 Level: "debug" | "info" | "warn" | "error"
 ```
 
@@ -975,7 +975,7 @@ Level: "debug" | "info" | "warn" | "error"
 
 ### LoggerOptions
 
-```ts
+```ts title="TypeScript"
 LoggerOptions: { printLevelMask?: Level; reportDebugLogMode?: LoggerReportMode; reportLevelMask?: Level; reportQualityMode?: LoggerReportMode }
 ```
 
@@ -1003,7 +1003,7 @@ SDK 上报连接质量数据的模式。
 
 ### MagixEventListenerOptions
 
-```ts
+```ts title="TypeScript"
 MagixEventListenerOptions: { fireInterval?: number; fireSelfEventAfterCommit?: boolean }
 ```
 
@@ -1023,16 +1023,16 @@ SDK 会根据该参数的值周期性触发自定义事件回调。
 
 ##### `fireSelfEventAfterCommit?: boolean`
 
-设置是否待服务器确认 [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#dispatchmagixevent) 方法调用成功后再发送事件回调：
+设置是否待服务器确认 [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/web/interfaces/room#dispatchmagixevent) 方法调用成功后再发送事件回调：
 
-- true：调用 [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#dispatchmagixevent) 后立即触发事件回调。
+- true：调用 [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/web/interfaces/room#dispatchmagixevent) 后立即触发事件回调。
 - false：（默认）待服务器确认事件发送成功后再发送事件回调。
 
 <a id="margin"></a>
 
 ### Margin
 
-```ts
+```ts title="TypeScript"
 Margin: { bottom: number; left: number; right: number; top: number }
 ```
 
@@ -1060,7 +1060,7 @@ Margin: { bottom: number; left: number; right: number; top: number }
 
 ### MediaType
 
-```ts
+```ts title="TypeScript"
 MediaType: "video" | "audio"
 ```
 
@@ -1073,7 +1073,7 @@ MediaType: "video" | "audio"
 
 ### MemberInformation
 
-```ts
+```ts title="TypeScript"
 MemberInformation: { id: number; payload: any; session: string }
 ```
 
@@ -1095,7 +1095,7 @@ MemberInformation: { id: number; payload: any; session: string }
 
 ### MemberState
 
-```ts
+```ts title="TypeScript"
 MemberState: { arrowCompleteToSelector?: boolean; bold?: boolean; currentApplianceName: ApplianceNames; dottedLine?: boolean; ellipseCompleteToSelector?: boolean; fillColor?: Color; italic?: boolean; lineThrough?: boolean; rectangleCompleteToSelector?: boolean; shapeCompleteToSelector?: boolean; shapeType?: ShapeType; straightCompleteToSelector?: boolean; strokeColor: Color; strokeWidth: number; textCanSelectText?: boolean; textColor?: Color; textCompleteToSelector?: boolean; textSize: number; textSizeOverride?: number; underline?: boolean }
 ```
 
@@ -1223,7 +1223,7 @@ MemberState: { arrowCompleteToSelector?: boolean; bold?: boolean; currentApplian
 
 ### NativeEvent
 
-```ts
+```ts title="TypeScript"
 NativeEvent: MouseEvent | WheelEvent | KeyboardEvent | TouchEvent
 ```
 
@@ -1238,7 +1238,7 @@ NativeEvent: MouseEvent | WheelEvent | KeyboardEvent | TouchEvent
 
 ### PlayableCheckingParams
 
-```ts
+```ts title="TypeScript"
 PlayableCheckingParams: { beginTimestamp?: number; duration?: number; region?: string; room: string; roomToken: string; slice?: string }
 ```
 
@@ -1294,7 +1294,7 @@ PlayableCheckingParams: { beginTimestamp?: number; duration?: number; region?: s
 
 ### PlayerCallbacks
 
-```ts
+```ts title="TypeScript"
 PlayerCallbacks: DisplayerCallbacks & { onIsPlayableChanged: (isPlayable: boolean) => void; onLoadFirstFrame: () => void; onPhaseChanged: (phase: PlayerPhase) => void; onPlayerStateChanged: (modifyState: Partial<PlayerState>) => void; onProgressTimeChanged: (progressTimestamp: number) => void; onStoppedWithError: (error: Error) => void }
 ```
 
@@ -1350,7 +1350,7 @@ PlayerCallbacks: DisplayerCallbacks & { onIsPlayableChanged: (isPlayable: boolea
 
 ### PlayerState
 
-```ts
+```ts title="TypeScript"
 PlayerState: DisplayerState & { observerMode: ObserverMode }
 ```
 
@@ -1364,7 +1364,7 @@ PlayerState: DisplayerState & { observerMode: ObserverMode }
 
 ### Plugin
 
-```ts
+```ts title="TypeScript"
 Plugin<C, T>: { defaultAttributes?: T; hitTest?: (plugin: PluginInstance<C, T>, x: number, y: number, selectorRadius: number) => boolean; kind?: string; render: ComponentType<PluginProps<C, T>>; willInterruptEvent?: (plugin: PluginInstance<C, T>, event: NativeEvent) => boolean }
 ```
 
@@ -1392,7 +1392,7 @@ Plugin<C, T>: { defaultAttributes?: T; hitTest?: (plugin: PluginInstance<C, T>, 
 
 ### PluginDescription
 
-```ts
+```ts title="TypeScript"
 PluginDescription<A>: { attributes?: A; height?: number; originX?: number; originY?: number; selectable?: boolean; width?: number }
 ```
 
@@ -1431,7 +1431,7 @@ PluginDescription<A>: { attributes?: A; height?: number; originX?: number; origi
 
 ### PluginProps
 
-```ts
+```ts title="TypeScript"
 PluginProps<C, T>: { margin: Margin; origin: Point; plugin: PluginInstance<C, T>; scale: number; size: Size }
 ```
 
@@ -1463,7 +1463,7 @@ PluginProps<C, T>: { margin: Margin; origin: Point; plugin: PluginInstance<C, T>
 
 ### Point
 
-```ts
+```ts title="TypeScript"
 Point: { x: number; y: number }
 ```
 
@@ -1483,7 +1483,7 @@ Point: { x: number; y: number }
 
 ### PptDescription
 
-```ts
+```ts title="TypeScript"
 PptDescription: { height: number; previewURL?: string; src: string; width: number }
 ```
 
@@ -1526,7 +1526,7 @@ PptDescription: { height: number; previewURL?: string; src: string; width: numbe
 
 ### PreviewConfig
 
-```ts
+```ts title="TypeScript"
 PreviewConfig: { international?: International }
 ```
 
@@ -1542,7 +1542,7 @@ PPT 预览页面的配置。
 
 ### Progress
 
-```ts
+```ts title="TypeScript"
 Progress: { convertedFileList: ConvertedFile[]; convertedPageSize: number; convertedPercentage: number; currentStep?: CurrentStep; totalPageSize: number }
 ```
 
@@ -1574,7 +1574,7 @@ Progress: { convertedFileList: ConvertedFile[]; convertedPageSize: number; conve
 
 ### RTCClient
 
-```ts
+```ts title="TypeScript"
 RTCClient: { adjustAudioMixingPlayoutVolume?: (volume: number) => number; adjustAudioMixingPublishVolume?: (volume: number) => number; adjustAudioMixingVolume?: (volume: number) => number; getAudioMixingCurrentPosition?: () => number; getAudioMixingDuration?: () => number; getAudioMixingPlayoutVolume?: () => number; getAudioMixingPublishVolume?: () => number; pauseAudioMixing: () => number; resumeAudioMixing: () => number; setAudioMixingPosition: (position: number) => number; startAudioMixing: (filePath: string, loopback: boolean, replace: boolean, cycle: number, callback?: (state: number, errorCode: number) => void) => number; stopAudioMixing: (callback?: (state: number, errorCode: number) => void) => number }
 ```
 
@@ -1621,7 +1621,7 @@ RTCClient: { adjustAudioMixingPlayoutVolume?: (volume: number) => number; adjust
 
 ### ReconnectionOptions
 
-```ts
+```ts title="TypeScript"
 ReconnectionOptions: { disableReconnect: boolean }
 ```
 
@@ -1640,7 +1640,7 @@ ReconnectionOptions: { disableReconnect: boolean }
 
 ### Rectangle
 
-```ts
+```ts title="TypeScript"
 Rectangle: Size & { originX: number; originY: number }
 ```
 
@@ -1657,7 +1657,7 @@ Rectangle: Size & { originX: number; originY: number }
 
 ### RenderPlugin
 
-```ts
+```ts title="TypeScript"
 RenderPlugin<C, T>: { defaultAttributes?: T; hitTest?: (plugin: PluginInstance<C, T>, x: number, y: number, selectorRadius: number) => boolean; kind: string; render: ComponentType<PluginProps<C, T>>; willInterruptEvent?: (plugin: PluginInstance<C, T>, event: NativeEvent) => boolean }
 ```
 
@@ -1685,7 +1685,7 @@ RenderPlugin<C, T>: { defaultAttributes?: T; hitTest?: (plugin: PluginInstance<C
 
 ### ReplayRoomParams
 
-```ts
+```ts title="TypeScript"
 ReplayRoomParams: ConstructRoomParams & { alignmentInterval?: number; alignmentThreshold?: number; beginTimestamp?: number; crops?: Array<{ from: number; to: number }>; duration?: number; region?: string; room: string; roomToken: string; slice?: string }
 ```
 
@@ -1762,7 +1762,7 @@ ReplayRoomParams: ConstructRoomParams & { alignmentInterval?: number; alignmentT
 
 ### RoomCallbacks
 
-```ts
+```ts title="TypeScript"
 RoomCallbacks: DisplayerCallbacks & { onCanRedoStepsUpdate: (canRedoSteps: number) => void; onCanUndoStepsUpdate: (canUndoSteps: number) => void; onConnection: (duration: number) => void; onDisconnectWithError: (error: Error) => void; onKeyDown: (event: KeyboardEvent) => void; onKeyUp: (event: KeyboardEvent) => void; onKickedWithReason: (reason: string) => void; onObjectsLimit: (limit: number, soft: boolean) => void; onPhaseChanged: (phase: RoomPhase) => void; onRoomStateChanged: (modifyState: Partial<RoomState>) => void; willInterceptKeyboardEvent: (event: KeyboardEvent) => boolean }
 ```
 
@@ -1836,7 +1836,7 @@ RoomCallbacks: DisplayerCallbacks & { onCanRedoStepsUpdate: (canRedoSteps: numbe
 
   可撤销次数发生变化回调。
 
-  当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#undo) 撤销上一步操作时，会触发该回调，报告剩余的可撤销次数。
+  当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room#undo) 撤销上一步操作时，会触发该回调，报告剩余的可撤销次数。
 
 ##### `param`
 
@@ -1846,7 +1846,7 @@ RoomCallbacks: DisplayerCallbacks & { onCanRedoStepsUpdate: (canRedoSteps: numbe
 
   可重做次数发生变化回调。
 
-  当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#undo) 重做上一步操作时，会触发该回调，报告剩余的可重做次数。
+  当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room#undo) 重做上一步操作时，会触发该回调，报告剩余的可重做次数。
 
 ##### `param`
 
@@ -1869,7 +1869,7 @@ RoomCallbacks: DisplayerCallbacks & { onCanRedoStepsUpdate: (canRedoSteps: numbe
 
 ### RoomMember
 
-```ts
+```ts title="TypeScript"
 RoomMember: { memberId: number; memberState: MemberState; payload: UserPayload; session: string }
 ```
 
@@ -1903,7 +1903,7 @@ v2.15.0
 
 ### RoomState
 
-```ts
+```ts title="TypeScript"
 RoomState: DisplayerState & { broadcastState: Readonly<BroadcastState>; memberState: MemberState }
 ```
 
@@ -1920,7 +1920,7 @@ RoomState: DisplayerState & { broadcastState: Readonly<BroadcastState>; memberSt
 
 ### SceneDefinition
 
-```ts
+```ts title="TypeScript"
 SceneDefinition: { name?: string; ppt?: PptDescription }
 ```
 
@@ -1940,7 +1940,7 @@ SceneDefinition: { name?: string; ppt?: PptDescription }
 
 ### SceneMap
 
-```ts
+```ts title="TypeScript"
 SceneMap: {}
 ```
 
@@ -1950,7 +1950,7 @@ SceneMap: {}
 
 ### SceneState
 
-```ts
+```ts title="TypeScript"
 SceneState: { contextPath: string; index: number; sceneName: string; scenePath: string; scenes: ReadonlyArray<WhiteScene> }
 ```
 
@@ -1990,7 +1990,7 @@ SceneState: { contextPath: string; index: number; sceneName: string; scenePath: 
 
 ### ScenesCallbacks
 
-```ts
+```ts title="TypeScript"
 ScenesCallbacks: { onAddScene: (scenesCallbacks: ScenesCallbacksNode, name: string) => void; onAddSceneGroup: (scenesCallbacks: ScenesCallbacksNode, name: string) => void; onRemoveScene: (scenesCallbacks: ScenesCallbacksNode, name: string) => void; onRemoveSceneGroup: (scenesCallbacks: ScenesCallbacksNode, name: string) => void; onScenesCountUpdate: (scenesCallbacks: ScenesCallbacksNode, scenesCount: number) => void; onScenesGroupCountUpdate: (scenesCallbacks: ScenesCallbacksNode, sceneGroupsCount: number) => void }
 ```
 
@@ -2074,7 +2074,7 @@ ScenesCallbacks: { onAddScene: (scenesCallbacks: ScenesCallbacksNode, name: stri
 
 ### Size
 
-```ts
+```ts title="TypeScript"
 Size: { height: number; width: number }
 ```
 
@@ -2094,7 +2094,7 @@ Size: { height: number; width: number }
 
 ### TextFormat
 
-```ts
+```ts title="TypeScript"
 TextFormat: { bold?: boolean; color?: Color; fontSize?: number; italic?: boolean; lineThrough?: boolean; underline?: boolean }
 ```
 
@@ -2142,7 +2142,7 @@ TextFormat: { bold?: boolean; color?: Color; fontSize?: number; italic?: boolean
 
 ### UserCursorIcons
 
-```ts
+```ts title="TypeScript"
 UserCursorIcons: {}
 ```
 
@@ -2152,7 +2152,7 @@ UserCursorIcons: {}
 
 ### UserFonts
 
-```ts
+```ts title="TypeScript"
 UserFonts: {}
 ```
 
@@ -2162,7 +2162,7 @@ UserFonts: {}
 
 ### UserPayload
 
-```ts
+```ts title="TypeScript"
 UserPayload: {} & { uid: string }
 ```
 
@@ -2185,7 +2185,7 @@ v2.15.0
 
 ### WhiteScene
 
-```ts
+```ts title="TypeScript"
 WhiteScene: { name: string; ppt?: PptDescription }
 ```
 
@@ -2205,7 +2205,7 @@ WhiteScene: { name: string; ppt?: PptDescription }
 
 ### WhiteWebSdkConfiguration
 
-```ts
+```ts title="TypeScript"
 WhiteWebSdkConfiguration: { appIdentifier: string; deviceType?: DeviceType; disableCurveAnimes?: boolean; disableNewPencilStroke?: boolean; disableRotation?: boolean; fontFamily?: string; fonts?: UserFonts; handToolKey?: string; invisiblePlugins?: ReadonlyArray<InvisiblePluginClass<string, any, any>>; loggerOptions?: LoggerOptions; onWhiteSetupFailed?: (error: Error) => void; onlyCallbackRemoteStateModify?: boolean; plugins?: Plugins; preloadDynamicPPT?: boolean; reconnectionOptions?: Partial<ReconnectionOptions> | false; region?: string; renderEngine?: RenderEngine; screenType?: ScreenType; urlInterrupter?: (url: string) => string; useMobXState?: boolean; wrappedComponents?: WrappedComponents }
 ```
 
@@ -2351,7 +2351,7 @@ Agora 不推荐设置 `preloadDynamicPPT(true)`，这样会使 PPT 显示缓慢�
 
 ###### `example`
 
-```text
+```text title="Text"
 import React from "react";
 
 class WrappedComponent extends React.Component {
@@ -2376,7 +2376,7 @@ const whiteWebSdk = new WhiteWebSdk({
 
 ### WorldViewRectangle
 
-```ts
+```ts title="TypeScript"
 WorldViewRectangle: { height: number; originX: number; originY: number; width: number }
 ```
 
@@ -2412,7 +2412,7 @@ WorldViewRectangle: { height: number; originX: number; originY: number; width: n
 
 ### WrappedComponents
 
-```ts
+```ts title="TypeScript"
 WrappedComponents: ReadonlyArray<ComponentType<{}>>
 ```
 
@@ -2424,7 +2424,7 @@ WrappedComponents: ReadonlyArray<ComponentType<{}>>
 
 ### Const AdminObserverId
 
-```ts
+```ts title="TypeScript"
 AdminObserverId: number
 ```
 
@@ -2434,7 +2434,7 @@ AdminObserverId: number
 
 ### Const AkkoVersion
 
-```ts
+```ts title="TypeScript"
 AkkoVersion: any
 ```
 
@@ -2444,7 +2444,7 @@ Akko 的版本。
 
 ### Const DefaultHotKeys
 
-```ts
+```ts title="TypeScript"
 DefaultHotKeys: Partial<HotKeys>
 ```
 
@@ -2463,7 +2463,7 @@ DefaultHotKeys: Partial<HotKeys>
 
 ### Const DisplayerConsumer
 
-```ts
+```ts title="TypeScript"
 DisplayerConsumer: Consumer<Displayer>
 ```
 
@@ -2473,7 +2473,7 @@ DisplayerConsumer: Consumer<Displayer>
 
 ### Const PlayerConsumer
 
-```ts
+```ts title="TypeScript"
 PlayerConsumer: Consumer<Player | undefined>
 ```
 
@@ -2483,7 +2483,7 @@ PlayerConsumer: Consumer<Player | undefined>
 
 ### Const RoomConsumer
 
-```ts
+```ts title="TypeScript"
 RoomConsumer: Consumer<Room | undefined>
 ```
 
@@ -2493,7 +2493,7 @@ RoomConsumer: Consumer<Room | undefined>
 
 ### Const WhiteVersion
 
-```ts
+```ts title="TypeScript"
 WhiteVersion: string
 ```
 
@@ -2505,7 +2505,7 @@ WhiteVersion: string
 
 ### contentModeAspectFill
 
-```ts
+```ts title="TypeScript"
 contentModeAspectFill(): ContentMode
 ```
 
@@ -2521,7 +2521,7 @@ contentModeAspectFill(): ContentMode
 
 ### contentModeAspectFillScale
 
-```ts
+```ts title="TypeScript"
 contentModeAspectFillScale(scale: number): ContentMode
 ```
 
@@ -2543,7 +2543,7 @@ contentModeAspectFillScale(scale: number): ContentMode
 
 ### contentModeAspectFit
 
-```ts
+```ts title="TypeScript"
 contentModeAspectFit(): ContentMode
 ```
 
@@ -2559,7 +2559,7 @@ contentModeAspectFit(): ContentMode
 
 ### contentModeAspectFitScale
 
-```ts
+```ts title="TypeScript"
 contentModeAspectFitScale(scale: number): ContentMode
 ```
 
@@ -2581,7 +2581,7 @@ contentModeAspectFitScale(scale: number): ContentMode
 
 ### contentModeAspectFitSpace
 
-```ts
+```ts title="TypeScript"
 contentModeAspectFitSpace(space: number): ContentMode
 ```
 
@@ -2603,7 +2603,7 @@ contentModeAspectFitSpace(space: number): ContentMode
 
 ### contentModeScale
 
-```ts
+```ts title="TypeScript"
 contentModeScale(scale: number): ContentMode
 ```
 
@@ -2625,7 +2625,7 @@ contentModeScale(scale: number): ContentMode
 
 ### createPlugins
 
-```ts
+```ts title="TypeScript"
 createPlugins<C_MAP>(plugins: Readonly<{}>): Plugins<C_MAP>
 ```
 
@@ -2639,13 +2639,13 @@ createPlugins<C_MAP>(plugins: Readonly<{}>): Plugins<C_MAP>
 
 #### 返回值
 
-[Plugins](/zh-CN/api-reference/whiteboard/web/interfaces/plugins-c-map) &lt; C_MAP &gt;
+[Plugins](/zh-CN/api-reference/whiteboard/web/interfaces/plugins) &lt; C_MAP &gt;
 
 <a id="injectcustomstyle"></a>
 
 ### injectCustomStyle
 
-```ts
+```ts title="TypeScript"
 injectCustomStyle(icons: UserCursorIcons): void
 ```
 
@@ -2665,7 +2665,7 @@ void
 
 ### isPlayer
 
-```ts
+```ts title="TypeScript"
 isPlayer(displayer: Displayer): boolean
 ```
 
@@ -2690,7 +2690,7 @@ boolean
 
 ### isRoom
 
-```ts
+```ts title="TypeScript"
 isRoom(displayer: Displayer): boolean
 ```
 
@@ -2715,7 +2715,7 @@ boolean
 
 ### setAsyncModuleLoadMode
 
-```ts
+```ts title="TypeScript"
 setAsyncModuleLoadMode(mode: AsyncModuleLoadMode): void
 ```
 
