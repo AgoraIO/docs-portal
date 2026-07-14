@@ -159,7 +159,7 @@ interface FcrUISceneCreatorConfig {
 
 **参数**
 
-- `appId`：项目的 App ID。详见[获取 App ID](/zh-CN/solutions/meeting/get-started/enable-service#获取-app-id)。
+- `appId`：项目的 App ID。详见[获取 App ID](/zh-CN/solutions/meeting/build/setup-and-access/enable-service#获取-app-id)。
 - `userId`：用户 ID，是用户的**唯一标识符**。如果用户 ID 重复，会收到 [onExited](#onexited) 回调且报告退出原因为 `ABORTED(4)`。长度在 64 字符以内。支持的字符集范围（共 36 个字符）：
     - 26 个小写英文字母 a-z
     - 10 个数字 0-9
@@ -189,7 +189,7 @@ interface FcrUISceneConfig {
     - 26 个大写英文字母 A-Z
     - 10 个数字 0-9
     - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"&#123;"、"&#125;"、"|"、"~"、","
-- `roomToken`：用于鉴权的 Token。详见[控制台生成临时 Token](/zh-CN/solutions/meeting/get-started/enable-service#生成临时-token) 或[服务端生成正式 Token](/zh-CN/solutions/meeting/user-guides/generate-token)。
+- `roomToken`：用于鉴权的 Token。详见[控制台生成临时 Token](/zh-CN/solutions/meeting/build/setup-and-access/enable-service#生成临时-token) 或[服务端生成正式 Token](/zh-CN/solutions/meeting/build/customize-and-extend/generate-token)。
 
     :::warning[注意]
     临时 Token 仅适用于集成测试和体验。在生产环境中，请使用正式 Token 以确保安全。无论是临时 Token 还是正式 Token，有效期最长都是 24 小时，请尽快使用。

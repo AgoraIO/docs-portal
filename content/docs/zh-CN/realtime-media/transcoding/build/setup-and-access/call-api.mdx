@@ -1,11 +1,12 @@
 ---
-title: "如何调用 API"
+title: "调用转码 RESTful API"
+description: "了解如何在云端转码中调用转码 RESTful API，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
+# 前提条件
+
 本文介绍声网 RESTful API 的构成，并引导你如何正确地调用 API。
 
-## 前提条件
-
-在调用 RESTful API 之前，请确保已获取声网 App ID 和 Token（可选，用于安全鉴权）；对于服务端产品，还需要获取客户 ID 和客户密钥。可参考[开通服务](/zh-CN/realtime-media/transcoding/build/setup-and-access/enable-service)。
+在调用 RESTful API 之前，请确保已获取声网 App ID 和 Token（可选，用于安全鉴权）；对于服务端产品，还需要获取客户 ID 和客户密钥。可参考[开通转码服务](/zh-CN/realtime-media/transcoding/build/setup-and-access/enable-service)。
 
 ## 配置 URL
 
@@ -131,7 +132,7 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/projects/<your_app_id>
 请求 Header 包含了处理请求所需要的信息，比如：
 
 - `Accept`：告知服务器，客户端可以处理哪些类型的响应，如 `application/json`。
-- `Authorization`：声网 RESTful API 要求 HTTP 认证。每次发送 HTTP 请求时，都必须在请求 Header 部填入 Authorization 字段。关于如何生成该字段的值，请参考[实现 HTTP 安全认证](/zh-CN/realtime-media/transcoding/build/setup-and-access/http-auth)。
+- `Authorization`：声网 RESTful API 要求 HTTP 鉴权。每次发送 HTTP 请求时，都必须在请求 Header 部填入 Authorization 字段。关于如何生成该字段的值，请参考[实现 HTTP 鉴权](/zh-CN/realtime-media/transcoding/build/setup-and-access/http-auth)。
 - `Content-Type`：指定请求体的类型为 `application/json` 。
 
 ### 请求 Body（可选）

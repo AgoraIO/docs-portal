@@ -1,15 +1,16 @@
 ---
-title: "实现 HTTP 安全认证"
+title: "实现 HTTP 鉴权"
+description: "了解如何在对话式 AI 引擎中 HTTP 鉴权，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-本文介绍在对话式 AI 引擎中进行 HTTP 安全认证的方法，包括使用 RTC Token 认证和 HTTP 基本认证。
+本文介绍在对话式 AI 引擎中进行 HTTP 鉴权的方法，包括使用 RTC Token 鉴权和 HTTP 基本认证。
 
 ## 前提条件
 
 已参考[开通服务](/zh-CN/ai/get-started/enable-service)开通对话式 AI 引擎服务。
 
-## 使用 RTC Token 认证 (推荐)
+## 使用 RTC Token 鉴权 (推荐)
 
-进行 HTTP 安全认证时，你可以将用于声网对话式 AI 引擎项目的 RTC Token 填入 HTTP 请求 Header 的 `Authorization` 字段中。本节介绍如何获取和填入 RTC Token，你可以根据需求选择以下任一方式获取 RTC Token。
+进行 HTTP 鉴权时，你可以将用于声网对话式 AI 引擎项目的 RTC Token 填入 HTTP 请求 Header 的 `Authorization` 字段中。本节介绍如何获取和填入 RTC Token，你可以根据需求选择以下任一方式获取 RTC Token。
 
 ### 使用临时 Token
 

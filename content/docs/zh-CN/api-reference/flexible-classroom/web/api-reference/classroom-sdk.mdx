@@ -115,7 +115,7 @@ export type LaunchOption = {
 
 | 参数 | 描述 |
 | --- | --- |
-| `rtmToken` | （必填）用于鉴权的 RTM Token。详见[使用 Token 鉴权](/zh-CN/solutions/flexible-classroom/basic-features/generate-token)。 |
+| `rtmToken` | （必填）用于鉴权的 RTM Token。详见[使用 Token 鉴权](/zh-CN/solutions/flexible-classroom/build/setup-and-access/generate-token)。 |
 | `userUuid` | <Slot name="classroom-sdk-javascript-electron-markdown-1-2-1" /> |
 | `userName` | <Slot name="classroom-sdk-javascript-electron-markdown-1-3-1" /> |
 | `roomUuid` | <Slot name="classroom-sdk-javascript-electron-markdown-1-4-1" /> |
@@ -129,7 +129,7 @@ export type LaunchOption = {
 | `startTime` | （选填）课堂开始时间（毫秒），以第一个进入课堂的用户传入的参数为准。 |
 | `duration` | （必填）课堂持续时间（秒），以第一个进入课堂的用户传入的参数为准。最大值为 86,400 秒，建议根据课堂实际时长设置。 |
 | `recordUrl` | （选填）待录制 URL 地址，开发者需传入自己部署的网页地址，用于页面录制，例如 `https://cn.bing.com/recordUrl`。 |
-| `widgets` | （选填）扩展插件集合，扩展教室能力，详见[自定义插件](/zh-CN/solutions/flexible-classroom/advanced-features/widget)。 |
+| `widgets` | （选填）扩展插件集合，扩展教室能力，详见[自定义插件](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget)。 |
 | `courseWareList` | （选填）教育机构指派的课件配置，客户端无法编辑。详见 [`CourseWareList`](#coursewarelist)。配置后，SDK 会在启动课堂时将相应的课件从声网云盘组件中下载至本地。 |
 | `userFlexProperties` | （选填）由开发者自定义的用户属性。详见[如何设置自定义用户属性？](/zh-CN/api-reference/faq/integration/agora_class_custom_properties)。 |
 | `mediaOptions` | （选填）媒体流相关设置，包含媒体流加密、摄像头视频流编码参数配置和屏幕共享视频流编码参数配置，详见 `MediaOptions`。 |

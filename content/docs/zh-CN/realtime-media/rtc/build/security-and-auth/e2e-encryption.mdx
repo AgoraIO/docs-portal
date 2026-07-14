@@ -1,8 +1,9 @@
 ---
 title: "端到端加密（Beta 版）"
+description: "了解如何在实时互动 RTC 中端到端加密（Beta 版），包括适用场景、配置步骤、实现要点和注意事项。"
 ---
+在数据安全要求较高的场景下，除了使用媒体流加密功能，你还可以使用端到端加密功能，实现在发送端设备上对媒体流进行加密、在接收端设备上对媒体流进行解密，确保数据不会在传输过程中被第三方获取。
 
-在数据安全要求较高的场景下，除了使用[媒体流加密](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-encryption)功能，你还可以使用端到端加密功能，实现在发送端设备上对媒体流进行加密、在接收端设备上对媒体流进行解密，确保数据不会在传输过程中被第三方获取。
 ## 功能介绍
 
 Web SDK 的端到端加密功能基于 [WebRTC Encoded Transform](https://www.w3.org/TR/webrtc-encoded-transform/) 标准实现。由于 WebRTC Encoded Transform 还不够成熟、可能存在兼容或性能问题，目前端到端加密功能也存在一些使用限制。

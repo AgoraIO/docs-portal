@@ -1,9 +1,12 @@
 ---
 title: "观众端 URL 拉流"
+description: "了解如何在实时互动 RTC 中观众端 URL 拉流，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
 ## 场景概述
 
-URL 拉流播放指通过 URL 地址从远程服务器获取并播放媒体流。声网提供的 RTE API 支持直接通过 URL 拉取并播放实时媒体流，包括 RTC 频道内的直播流、CDN 直播流。观众端无需显式调用加入频道、订阅等 API，即可观看直播，极大简化开发流程。同时，通过 ABR 功能可以根据网络状况自动切换最优视频质量，提供更好的观看体验。
+URL 拉流播放指通过 URL 地址从远程服务器获取并播放媒体流。
+
+声网提供的 RTE API 支持直接通过 URL 拉取并播放实时媒体流，包括 RTC 频道内的直播流、CDN 直播流。观众端无需显式调用加入频道、订阅等 API，即可观看直播，极大简化开发流程。同时，通过 ABR 功能可以根据网络状况自动切换最优视频质量，提供更好的观看体验。
 
 在开始开发之前，你需要了解以下概念：
 
@@ -17,7 +20,7 @@ URL 拉流播放指通过 URL 地址从远程服务器获取并播放媒体流�
 
 ## 前提条件
 
-- 如果你需要播放 RTC 频道内的直播流，请参考[实现 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)在你的业务服务端部署 Token 生成器并生成一个 Token。
+- 如果你需要播放 RTC 频道内的直播流，请参考[实现 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)在你的业务服务端部署 Token 生成器并生成一个 Token。
 - 如果你需要使用 ABR 功能，请联系 sales@shengwang.cn 开通。
 
 ## 实现拉流播放
@@ -248,7 +251,7 @@ ABR（自适应码率）功能允许观众端根据网络状况来选择订阅�
 调用 RESTful API 来创建一个转码模板并设置转码参数。
 
 :::warning[注意]
-发送 HTTP 请求时，你需要通过 Basic HTTP 认证，并将生成的凭证填入 HTTP 请求头部的 `Authorization` 字段。具体生成 `Authorization` 字段的方法请参考[实现 HTTP 基本认证](/zh-CN/realtime-media/rtc/build/security-and-auth/http-basic-auth)。
+发送 HTTP 请求时，你需要通过 Basic HTTP 认证，并将生成的凭证填入 HTTP 请求头部的 `Authorization` 字段。具体生成 `Authorization` 字段的方法请参考[实现 HTTP 基本认证](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth)。
 :::
 
 **HTTP 请求**
@@ -577,7 +580,7 @@ curl -X GET "https://api.agora.io/v1/projects/{appid}/abr/config/layers" \
 | --- | --- | --- |
 | `200 OK` | 请求成功，服务器成功返回请求的数据。 | 无需处理。 |
 | `400 Bad Request` | 请求无效，可能的原因见下方。 | 根据响应包体中的 `message` 信息进行响应的处理。 |
-| `401 Unauthorized` | RESTful API 认证失败。 | 请检查 [HTTP 基本认证](/zh-CN/realtime-media/rtc/build/security-and-auth/http-basic-auth)是否符合要求。 |
+| `401 Unauthorized` | RESTful API 鉴权失败。 | 请检查 [HTTP 基本认证](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth)是否符合要求。 |
 | `404 Not Found` | 传入的 `layerid` 不存在。 | 请检查 `layerid` 字段。 |
 | `405 Method Not Allowed` | 该 App ID 未开通 ABR 功能。 | 请联系[技术支持](https://ticket.shengwang.cn/)开通 ABR 功能。 |
 | `429 Too Many Requests` | QPS 超过限制。QPS 默认限制为 100。 | 请采取退避策略进行重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |

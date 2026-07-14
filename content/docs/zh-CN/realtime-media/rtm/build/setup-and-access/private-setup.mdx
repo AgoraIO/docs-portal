@@ -1,5 +1,6 @@
 ---
 title: "私有化配置"
+description: "了解实时消息 RTM 中私有化配置相关内容的适用场景、配置步骤、实现要点和注意事项。"
 ---
 自 2.2.0 版本起，RTM 全面支持私有化部署能力。
 
@@ -24,7 +25,7 @@ const rtm = new RTM(appId, userId, rtmConfig);
 如果你需要升级私有化部署的 RTM WEB SDK 至 2.2.4 及以后版本，为保证兼容性，需要将 `domainMode` 设置为 `2`。如果省略该参数或使用默认值 `1`，可能无法连接到 RTM 服务器。
 :::
 
-```java
+```java tab="Java" tabGroup="rtm-build-setup-and-access-private-setup-1"
 ArrayList<String> hosts = new ArrayList<>();
 hosts.add("x.x.x.x"); // your access point hosts list.
 RtmPrivateConfig privateConfig = new RtmPrivateConfig();
@@ -36,7 +37,7 @@ RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
     .build();
 ```
 
-```swift
+```swift tab="Swift" tabGroup="rtm-build-setup-and-access-private-setup-1"
 let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
 
 let privateConfig = AgoraRtmPrivateConfig()
@@ -46,7 +47,7 @@ privateConfig.serviceType = [.stream, .message]
 rtmConfig.privateConfig = privateConfig
 ```
 
-```objc
+```objc tab="Objective-C" tabGroup="rtm-build-setup-and-access-private-setup-1"
 AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
 
 AgoraRtmPrivateConfig* private_config = [[AgoraRtmPrivateConfig alloc] init];
@@ -55,7 +56,7 @@ private_config.serviceType = AgoraRtmServiceTypeStream | AgoraRtmServiceTypeMess
 rtm_config.privateConfig = private_config;
 ```
 
-```cpp
+```cpp tab="C++" tabGroup="rtm-build-setup-and-access-private-setup-1"
 std::vector<const char*> hosts;
 hosts.push_back("xxx");
 
@@ -67,7 +68,7 @@ config.privateConfig.accessPointHosts = hosts.data();
 config.privateConfig.accessPointHostsCount = hosts.size();
 ```
 
-```dart
+```dart tab="Dart" tabGroup="rtm-build-setup-and-access-private-setup-1"
 final userId = 'your_userId';
 final appId = 'your_appId';
 late RtmClient rtmClient;
@@ -91,7 +92,7 @@ try {
 }
 ```
 
-```typescript
+```typescript tab="TypeScript" tabGroup="rtm-build-setup-and-access-private-setup-1"
 import { RtmClient, RtmConfig, RtmPrivateConfig, RtmServiceType } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 

@@ -1,5 +1,6 @@
 ---
 title: "设置优质音频体验"
+description: "了解 1v1 私密房三方信令方案中设置优质音频体验相关内容的适用场景、配置步骤、实现要点和注意事项。"
 ---
 one-to-one-live中，优质的音频体验至关重要。
 
@@ -105,14 +106,14 @@ let audioScenarioApi = AudioScenarioApi(rtcEngine: rtc)
 
 加入频道前，调用 `setAudioScenario`，根据 1v1 通话的身份来配置音频优化体验。在加入频道前配置一次即可，音频配置不随加入/退出频道而发生改变。
 
-```kotlin
+```kotlin tab="Kotlin" tabGroup="zh-cn-solutions-one-to-one-live-custom-signaling-build-customize-and-extend-audio-scenario-1"
 // 1v1 场景，身份为主叫（发起呼叫方）
 audioScenarioApi.setAudioScenario(SceneType.Chat, AudioScenarioType.Chat_Caller)
 // 1v1 场景，身份为被叫（接受呼叫方）
 audioScenarioApi.setAudioScenario(SceneType.Chat, AudioScenarioType.Chat_Callee)
 ```
 
-```swift
+```swift tab="Swift" tabGroup="zh-cn-solutions-one-to-one-live-custom-signaling-build-customize-and-extend-audio-scenario-1"
 // 1v1 场景，身份为主叫（发起呼叫方）
 audioScenarioApi.setAudioScenario(sceneType: .Chat, audioScenarioType: .Chat_Caller)
 // 1v1 场景，身份为被叫（接受呼叫方）
