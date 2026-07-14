@@ -11,12 +11,14 @@ Implement authentication on your server to reduce the risk of credential leakage
 
 ## Generate a customer ID and customer secret
 
-1. In [Agora Console](https://console.agora.io), click **Developer Toolkit** > **RESTful API**.
-2. Click **Add a secret**, then click **OK**. Agora generates a customer ID and customer secret.
-3. Click **Download** in the **Customer Secret** column. Read the prompt carefully and save the downloaded `key_and_secret.txt` file in a secure location.
-4. Use the customer ID and customer secret to generate a Base64-encoded credential, then pass it to the `Authorization` request header.
+1. In [Agora Console](https://console.agora.io/v2), click the username at the bottom of the navigation sidebar to open the account menu, then select **Developer Hub**.
+2. Switch to the **RESTful API** tab.
 
-You can download the customer secret from Agora Console only once. Keep it secure.
+    ![RESTful API keys](/console-tmp/restful-api-keys.png)
+
+3. Select **Add Secret**. Agora generates a customer ID and customer secret.
+4. Select **Download** and save the file somewhere secure — you can download it only once. In the file, **Key** is your customer ID and **Secret** is your customer secret.
+5. Use the customer ID (**Key**) and customer secret (**Secret**) to generate a Base64-encoded credential, then pass it to the `Authorization` request header.
 
 ## Authorization header
 
