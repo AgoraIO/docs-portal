@@ -2096,8 +2096,7 @@ function renderTypeDocMember(
   const anchor = member.children('a.tsd-anchor[id], a[id], a[name]').first();
   const id = anchor.attr('id') ?? anchor.attr('name');
   const parts = [];
-  if (id) parts.push(`<a id="${id}"></a>`);
-  parts.push(`### ${title}`);
+  parts.push(`### ${title}${id ? ` [#${id}]` : ''}`);
 
   const signature = renderTypeDocSignatures($, member);
   if (signature) parts.push(signature);

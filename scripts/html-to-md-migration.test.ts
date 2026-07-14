@@ -889,9 +889,8 @@ describe('html-to-md-migration', () => {
       expectedPageContents: {
         'classes/client.mdx': [
           'title: "Client"',
-          '<a id="connect"></a>',
           '## 方法',
-          '### connect',
+          '### connect [#connect]',
           '```ts title="TypeScript"\nconnect(appId: string): Promise<void>\n```',
           'Call `connect` before publishing.',
           '#### 参数',
@@ -899,8 +898,7 @@ describe('html-to-md-migration', () => {
           '| appId: string | Agora application ID. |',
           '#### 返回值',
           'Promise &lt;void&gt;',
-          '<a id="joinroomparams"></a>',
-          '### JoinRoomParams',
+          '### JoinRoomParams [#joinroomparams]',
           '- **hotKeys?**: *Partial&lt;HotKeys&gt;*',
           '  Custom shortcuts. Defaults to:',
           '  | Key | Effect |',
@@ -936,6 +934,10 @@ describe('html-to-md-migration', () => {
       path.join(outputDir, 'classes/client.mdx'),
       'utf8',
     );
+    expect(clientOutput).toContain('### connect [#connect]');
+    expect(clientOutput).toContain('### JoinRoomParams [#joinroomparams]');
+    expect(clientOutput).not.toContain('<a id="connect"></a>');
+    expect(clientOutput).not.toContain('<a id="joinroomparams"></a>');
     expect(clientOutput).not.toContain('##### `Optional hotKeys');
     expect(clientOutput).not.toContain('Returns Promise');
     expect(clientOutput).not.toMatch(/^#{7,}\s/m);
