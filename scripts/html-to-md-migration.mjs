@@ -903,6 +903,19 @@ function typeDocDescription(description, title, locale) {
   return description;
 }
 
+const DOXYGEN_ZH_LABELS = new Map([
+  ['Description', '描述'],
+  ['Members', '成员'],
+  ['Name', '名称'],
+  ['Parameters', '参数'],
+  ['Returns', '返回值'],
+  ['Values', '值'],
+]);
+
+function doxygenLabel(label, locale) {
+  return locale === 'zh-CN' ? (DOXYGEN_ZH_LABELS.get(label) ?? label) : label;
+}
+
 function selectContentRoot($) {
   $(
     'script, style, link, iframe, form, nav:not(.related-links), header, footer, aside, hr.footer, address.footer',
@@ -2023,7 +2036,10 @@ function renderDoxygenPage({
     sourceToRoute,
     targetBasePath,
   );
-  if (details) sections.push(details);
+  const detailsText = readDoxygenDetailsText($, contents);
+  if (details && (!description || normalizeText(description) !== detailsText)) {
+    sections.push(details);
+  }
 
   for (const group of collectDoxygenMemberGroups($, contents)) {
     const renderedGroup = renderDoxygenMemberGroup(
@@ -2058,31 +2074,48 @@ function renderDoxygenDetails(
   sourceToRoute,
   targetBasePath,
 ) {
+  const parts = [];
+  for (const element of collectDoxygenDetailElements($, contents)) {
+    const rendered = renderElement(
+      $,
+      element,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      2,
+    );
+    if (rendered) parts.push(rendered);
+  }
+  return parts.join('\n\n');
+}
+
+function collectDoxygenDetailElements($, contents) {
   const detailsHeader = contents
     .children('h2.groupheader')
     .filter((_, header) =>
       /详细描述|Detailed Description/i.test(normalizeText($(header).text())),
     )
     .first();
-  if (detailsHeader.length === 0) return '';
+  if (detailsHeader.length === 0) return [];
 
-  const parts = [];
+  const elements = [];
   let cursor = detailsHeader.next();
   while (cursor.length > 0 && !cursor.is('h2.groupheader, h2.memtitle')) {
     if (cursor.is('.textblock, p, div, dl, table, ul, ol')) {
-      const rendered = renderElement(
-        $,
-        cursor,
-        pageTitleBySource,
-        sourceToRoute,
-        targetBasePath,
-        2,
-      );
-      if (rendered) parts.push(rendered);
+      elements.push(cursor);
     }
     cursor = cursor.next();
   }
-  return parts.join('\n\n');
+  return elements;
+}
+
+function readDoxygenDetailsText($, contents) {
+  const parts = [];
+  for (const element of collectDoxygenDetailElements($, contents)) {
+    const text = normalizeText(element.text());
+    if (text) parts.push(text);
+  }
+  return normalizeText(parts.join(' '));
 }
 
 function collectDoxygenMemberGroups($, contents) {
@@ -2122,7 +2155,9 @@ function renderDoxygenMemberGroup(
   sourceToRoute,
   targetBasePath,
 ) {
-  const parts = [`## ${escapeInlineText(group.title)}`];
+  const parts = [
+    `## ${escapeInlineText(doxygenLabel(group.title, sourceToRoute.locale))}`,
+  ];
   for (const member of group.members) {
     const rendered = renderDoxygenMember(
       $,
@@ -2262,9 +2297,9 @@ function renderDoxygenParameters(
 
   if (rows.length === 0) return '';
   const lines = [
-    '#### Parameters',
+    `#### ${doxygenLabel('Parameters', sourceToRoute.locale)}`,
     '',
-    '| Name | Description |',
+    `| ${doxygenLabel('Name', sourceToRoute.locale)} | ${doxygenLabel('Description', sourceToRoute.locale)} |`,
     '| --- | --- |',
   ];
   for (const [name, description] of rows) {
@@ -2291,7 +2326,11 @@ function renderDoxygenReturns(
     targetBasePath,
     4,
   );
-  return rendered ? ['#### Returns', rendered].join('\n\n') : '';
+  return rendered
+    ? [`#### ${doxygenLabel('Returns', sourceToRoute.locale)}`, rendered].join(
+        '\n\n',
+      )
+    : '';
 }
 
 function renderDoxygenEnumTable(
@@ -2323,7 +2362,12 @@ function renderDoxygenEnumTable(
   }
   if (rows.length === 0) return '';
 
-  const lines = ['#### Values', '', '| Name | Description |', '| --- | --- |'];
+  const lines = [
+    `#### ${doxygenLabel('Values', sourceToRoute.locale)}`,
+    '',
+    `| ${doxygenLabel('Name', sourceToRoute.locale)} | ${doxygenLabel('Description', sourceToRoute.locale)} |`,
+    '| --- | --- |',
+  ];
   for (const [name, description] of rows) {
     lines.push(
       `| ${name.replace(/\|/g, '\\|')} | ${description.replace(/\|/g, '\\|')} |`,
