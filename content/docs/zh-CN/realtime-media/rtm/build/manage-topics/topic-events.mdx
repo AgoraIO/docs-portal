@@ -1,8 +1,7 @@
 ---
 title: "Topic 事件通知"
-description: "了解如何在实时消息 RTM 中 Topic 事件通知，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-当频道中的用户加入或离开 Topic 时，RTM 会触发 config.ontopicevent 事件通知。
+当频道中的用户加入或离开 Topic 时，RTM 会触发 `config.ontopicevent` 事件通知。
 
 频道中的用户会实时收到此事件通知，并通过此事件通知来跟踪频道中 Topic 状态的变化。
 
@@ -24,19 +23,7 @@ Topic 事件通知有以下三种类型：
 
 ## 添加事件监听
 
-事件监听及处理程序的设置在[事件监听](/zh-CN/realtime-media/rtm/build/setup-and-access/add-event-listener)中有过简单的介绍。接收 Topic 事件通知（`config.ontopicevent`）的前提是你需要为其添加事件处理程序。成功添加 Topic 事件处理程序后，你会收到你加入的所有 Stream Channel 中所有 Topic 的事件通知。`config.ontopicevent` 中包含以下数据：
-
-<Tabs defaultValue="unity" groupId="rtm-topic-event-properties" persist>
-<TabsList>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-</TabsList>
-
-<TabsContent value="unity">
+事件监听及处理程序的设置在[事件监听](/zh-CN/realtime-media/rtm/build/manage-messages/add-event-listener)中有过简单的介绍。接收 Topic 事件通知（`config.ontopicevent`）的前提是你需要为其添加事件处理程序。成功添加 Topic 事件处理程序后，你会收到你加入的所有 Stream Channel 中所有 Topic 的事件通知。`config.ontopicevent` 中包含以下数据：
 
 |     属性      | 描述 |
 | ---------- | ----------- |
@@ -44,10 +31,6 @@ Topic 事件通知有以下三种类型：
 | `channelName` |  事件发生的频道名称。 |
 |  `publisher`  |  触发此事件的用户 ID。 |
 | `topicInfos`  | Topic 的详细信息数组，包含 Topic 名称、Topic 发布者等信息。 |
-
-</TabsContent>
-
-<TabsContent value="web">
 
 |     属性      | 描述                                                                                       |
 | ---------- | ---- |
@@ -57,10 +40,6 @@ Topic 事件通知有以下三种类型：
 | `topicInfos`  | Topic 的详细信息数组，包含 Topic 名称、Topic 发布者等信息。                  |
 | `totalTopics` | `topicInfos` 数组的个数。                                                                  |
 
-</TabsContent>
-
-<TabsContent value="android">
-
 | 属性        |   描述 |
 |---| -------------- |
 | `type`            |  Topic 事件类型。详见 [`RtmTopicEventType`](/api-ref/rtm2/android/enumv#topictype)。  |
@@ -69,21 +48,13 @@ Topic 事件通知有以下三种类型：
 | `topicInfos`            |   Topic 的详细信息数组，包含 Topic 名称、Topic 发布者等信息。   |
 | `timestamp` |  事件发生的时间戳。                |
 
-</TabsContent>
-
-<TabsContent value="ios">
-
 | 属性        |     描述 |
 |---| ---- |
-| `type`            |   Topic 事件类型。详见 [`AgoraRtmTopicEventType`](/api-ref/rtm2/ios/enumv#topictype)。  |
+| `type`            |   Topic 事件类型。详见 [`AgoraRtmTopicEventType`](/api-ref/rtm2//enumv#topictype)。  |
 | `channelName`            |   事件发生的频道名称。   |
 | `publisher`              |   触发此事件的用户 ID。   |
 | `topicInfos`            |  Topic 的详细信息数组，包含 Topic 名称、Topic 发布者等信息。   |
 | `timestamp` |  事件发生的时间戳。                |
-
-</TabsContent>
-
-<TabsContent value="cpp">
 
 | 属性        |     描述 |
 |---| ----------------- |
@@ -94,10 +65,6 @@ Topic 事件通知有以下三种类型：
 | `topicInfoCount`            |   Topic 信息的数量。   |
 | `timestamp` |  事件发生的时间戳。                |
 
-</TabsContent>
-
-<TabsContent value="flutter">
-
 | 属性             | 描述                                                                               |
 | --------------- | ------------ |
 | `type`           | Topic 事件类型。详见 [`RtmTopicEventType`](/api-ref/rtm2/flutter/enumv#topictype)。 |
@@ -105,6 +72,3 @@ Topic 事件通知有以下三种类型：
 | `publisher`      | 触发此事件的用户 ID。                                                              |
 | `topicInfos`     | Topic 的详细信息，包含 Topic 名称、Topic 发布者等信息。                            |
 | `timestamp`      | 事件发生的时间戳。                                                                 |
-
-</TabsContent>
-</Tabs>

@@ -1,11 +1,9 @@
 ---
 title: "频道相关"
-description: "通过 UID 获取用户信息。"
+description: "频道相关 API reference."
 ---
 
 <a id="toc_channel"></a>
-
-## 频道相关
 
 <a id="api_irtcengine_getuserinfobyuid"></a>
 
@@ -223,7 +221,7 @@ abstract joinChannelEx(
 
 ### 调用时机
 
-该方法需要在 [initialize](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_initialize) 之后调用。 在多摄像头采集场景下，你需要在调用该方法之后调用 [startPreview](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_startpreview2) 方法设置 `sourceType` 为 `VideoSourceCameraSecondary`，以确保第二个摄像头采集正常。
+该方法需要在 [initialize](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_initialize) 之后调用。 在多摄像头采集场景下，你需要在调用该方法之后调用 [startPreview](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview2) 方法设置 `sourceType` 为 `VideoSourceCameraSecondary`，以确保第二个摄像头采集正常。
 
 <a id="api_irtcengineex_joinchannelex__related"></a>
 
@@ -853,7 +851,7 @@ abstract setChannelProfile(profile: ChannelProfileType): number;
 你可以调用该方法设置频道的使用场景。SDK 会针对不同的使用场景采用不同的优化策略，如直播场景优先保证画质。SDK 初始化后默认的频道场景为直播场景。
 
 :::info[注]
-不同的频道场景下，SDK 的默认音频路由是不同的，详见 [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/react-native/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) 中的说明。 为保证实时音视频质量，相同频道内的用户必须使用同一种频道场景。
+不同的频道场景下，SDK 的默认音频路由是不同的，详见 [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/react-native/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) 中的说明。 为保证实时音视频质量，相同频道内的用户必须使用同一种频道场景。
 :::
 
 <a id="api_irtcengine_setchannelprofile__timing"></a>

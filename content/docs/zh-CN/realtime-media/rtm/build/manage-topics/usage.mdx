@@ -1,13 +1,12 @@
 ---
 title: "使用主题"
-description: "了解如何在实时消息 RTM 中主题，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-上述两类行为之间相互独立，即你对某个 Topic 中消息发布者的行为并不会影响你对该 Topic 中消息订阅者的行为。
-
 Topic 的相关操作主要有加入、离开、订阅和取消订阅，可以归纳为以下两种行为：
 
 - **消息发布者行为**：加入 Topic 的目的在于注册成为该 Topic 的消息发布者，从而让用户具备发送消息的能力。同理，离开 Topic 是为了取消对该 Topic 消息发布者的注册，从而让用户失去发送消息的能力。
 - **消息订阅者行为**：订阅 Topic 的目的在于订阅 Topic 中的消息，从而让用户具备接收消息的能力。同理，取消订阅 Topic 是为了取消订阅 Topic 中的消息，从而让用户失去接收消息的能力。
+
+上述两类行为之间相互独立，即你对某个 Topic 中消息发布者的行为并不会影响你对该 Topic 中消息订阅者的行为。
 
 ## 加入 Topic
 
@@ -17,7 +16,7 @@ Topic 的相关操作主要有加入、离开、订阅和取消订阅，可以�
 
 示例代码如下：
 
-```csharp tab="C#" tabGroup="rtm-build-manage-topics-usage-1"
+```csharp
 string topic = "Chat";
 var options = new JoinTopicOptions();
 options.qos = RTM_MESSAGE_QOS.ORDERED;
@@ -33,7 +32,7 @@ else
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-topics-usage-1"
+```javascript
 const topicName = "Chat";
 try {
     const result = await streamChannel.joinTopic(topicName);
@@ -43,7 +42,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-topics-usage-1"
+```java
 var options = new JoinTopicOptions();
 options.messageQos = RtmMessageQos.ORDERED;
 mStreamChannel.joinTopic("topic_name", options, new ResultCallback<Void>() {
@@ -59,7 +58,7 @@ mStreamChannel.joinTopic("topic_name", options, new ResultCallback<Void>() {
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-topics-usage-1"
+```swift
 streamChannel.joinTopic("your_topic", option: nil) { response, errorInfo in
     if errorInfo == nil {
         print("Join topic success!!")
@@ -69,7 +68,7 @@ streamChannel.joinTopic("your_topic", option: nil) { response, errorInfo in
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-topics-usage-1"
+```objc
 [stream_channel joinTopic:@"your_topic" option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"join topic success!!");
@@ -80,7 +79,7 @@ streamChannel.joinTopic("your_topic", option: nil) { response, errorInfo in
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-topics-usage-1"
+```cpp
 JoinTopicOptions options;
 uint64_t requestId;
 streamChannel->joinTopic("topicName", options, requestId);
@@ -88,7 +87,7 @@ streamChannel->joinTopic("topicName", options, requestId);
 
 调用该方法后，SDK 会触发 `config.onjointopicresult` 回调并返回 API 调用结果。
 
-```cpp tab="C++" tabGroup="rtm-build-manage-topics-usage-2"
+```cpp
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onJoinTopicResult(const uint64_t requestId, const char *channelName, const char *userId, const char *topic, const char *meta, RTM_ERROR_CODE errorCode) override {
@@ -101,7 +100,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-topics-usage-2"
+```dart
 final topicName = 'topic101';
 try {
     var (status, response) = await stChannel.joinTopic(
@@ -118,7 +117,7 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-topics-usage-2"
+```typescript
 import { JoinTopicOptions, RtmMessageQos } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -144,7 +143,7 @@ try {
 
 示例代码如下：
 
-```csharp tab="C#" tabGroup="rtm-build-manage-topics-usage-3"
+```csharp
 var (status,response) = await streamChannel.LeaveTopicAsync("Motion");
 if (status.Error)
 {
@@ -156,7 +155,7 @@ else
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-topics-usage-3"
+```javascript
 const topicName = "Motion";
 try {
     const result = await streamChannel.leaveTopic(topicName);
@@ -166,7 +165,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-topics-usage-3"
+```java
 mStreamChannel.leaveTopic("Motion", new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
@@ -180,7 +179,7 @@ mStreamChannel.leaveTopic("Motion", new ResultCallback<Void>() {
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-topics-usage-3"
+```swift
 streamChannel.leaveTopic("your_topic", completion: { response, errorInfo in
                 if errorInfo == nil {
                         print("Leave topic success!!")
@@ -192,7 +191,7 @@ streamChannel.leaveTopic("your_topic", completion: { response, errorInfo in
             })
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-topics-usage-3"
+```objc
 [stream_channel leaveTopic:@"your_topic" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"leave topic success!!");
@@ -202,14 +201,14 @@ streamChannel.leaveTopic("your_topic", completion: { response, errorInfo in
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-topics-usage-3"
+```cpp
 uint64_t requestId;
 streamChannel->leaveTopic("topicName", requestId);
 ```
 
 调用该方法后，SDK 会触发 `config.onleavetopicresult` 回调并返回 API 调用结果。
 
-```cpp tab="C++" tabGroup="rtm-build-manage-topics-usage-4"
+```cpp
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onLeaveTopicResult(const uint64_t requestId, const char *channelName, const char *userId, const char *topic, const char *meta, RTM_ERROR_CODE errorCode) override
@@ -223,7 +222,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-topics-usage-4"
+```dart
 final topicName = 'topic101';
 try {
     var (status, response) = await stChannel.leaveTopic( topicName);
@@ -237,7 +236,7 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-topics-usage-4"
+```typescript
 import { RtmError } from '@shengwang/rtm-full';
 
 const topicName = "Motion";
@@ -266,7 +265,7 @@ try {
 
 示例代码如下：
 
-```csharp tab="C#" tabGroup="rtm-build-manage-topics-usage-5"
+```csharp
 List<string> userList = new List<string>();
 userList.Add("Tony");
 userList.Add("Marry");
@@ -287,7 +286,7 @@ else
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-topics-usage-5"
+```javascript
 const topicName = "Motion";
 const options = {
     users: ["Tony"],
@@ -300,7 +299,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-topics-usage-5"
+```java
 TopicOptions options = new TopicOptions();
 options.users = new ArrayList<>(Arrays.asList("user_name"));
 
@@ -317,7 +316,7 @@ mStreamChannel.subscribeTopic("Motion", options, new ResultCallback<SubscribeTop
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-topics-usage-5"
+```swift
 let topicOption = AgoraRtmTopicOption()
 topicOption.users = ["user1", "user2"]
   
@@ -335,7 +334,7 @@ streamChannel.subscribeTopic("your_topic", option: topicOption,completion: { res
             })
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-topics-usage-5"
+```objc
 AgoraRtmTopicOption* topic_opt = [[AgoraRtmTopicOption alloc] init];
 topic_opt.users = @[@"user1", @"user2"];
 
@@ -350,7 +349,7 @@ topic_opt.users = @[@"user1", @"user2"];
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-topics-usage-5"
+```cpp
 std::vector<const char*> users;
 users.push_back("UserA");
 users.push_back("UserB");
@@ -365,7 +364,7 @@ streamChannel->subscribeTopic("topicName", options, requestId);
 
 调用该方法后，SDK 会触发 `config.onsubscribetopicresult` 回调并返回 API 调用结果。
 
-```cpp tab="C++" tabGroup="rtm-build-manage-topics-usage-6"
+```cpp
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onSubscribeTopicResult(const uint64_t requestId, const char *channelName, const char *userId, const char *topic, UserList succeedUsers, UserList failedUsers, RTM_ERROR_CODE errorCode) override {
@@ -378,7 +377,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-topics-usage-6"
+```dart
 final topicName = 'topic101';
 var users = ['Tony','Lily'];
 try {
@@ -395,7 +394,7 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-topics-usage-6"
+```typescript
 import { TopicOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -423,7 +422,7 @@ try {
 
 示例代码如下：
 
-```csharp tab="C#" tabGroup="rtm-build-manage-topics-usage-7"
+```csharp
 List<string> userList = new List<string>();
 userList.Add("Tony");
 userList.Add("Marry");
@@ -440,7 +439,7 @@ if (result.Status.Error)
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-topics-usage-7"
+```javascript
 const topicName = "Motion";
 const options = {
     users: ["Tony"],
@@ -453,7 +452,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-topics-usage-7"
+```java
 var topicName = "Motion";
 var options = new TopicOptions();
 options.users = new ArrayList<>(Arrays.asList("Tony"));
@@ -471,7 +470,7 @@ mStreamChannel.unsubscribeTopic(topicName.toString(), options, new ResultCallbac
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-topics-usage-7"
+```swift
 let topicOpt = AgoraRtmTopicOption()
 topicOpt.users = ["user1", "user2"]
 
@@ -486,7 +485,7 @@ streamChannel.unsubscribeTopic("your_topic", option: topicOpt,  completion:{ res
         });
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-topics-usage-7"
+```objc
 AgoraRtmTopicOption* topic_opt = [[AgoraRtmTopicOption alloc] init];
 topic_opt.users = @[@"user1", @"user2"];
 
@@ -500,7 +499,7 @@ topic_opt.users = @[@"user1", @"user2"];
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-topics-usage-7"
+```cpp
 std::vector<const char*> users;
 users.push_back("UserA");
 users.push_back("UserB");
@@ -514,7 +513,7 @@ streamChannel->unsubscribeTopic("topicName", options, requestId);
 
 调用该方法后，SDK 会触发 `config.onunsubscribetopicresult` 回调并返回 API 调用结果。
 
-```cpp tab="C++" tabGroup="rtm-build-manage-topics-usage-8"
+```cpp
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onUnsubscribeTopicResult(const uint64_t requestId, const char* channelName, const char* topic, RTM_ERROR_CODE errorCode) override {
@@ -527,7 +526,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-topics-usage-8"
+```dart
 final topicName = 'topic101';
 var users = ['Tony','Lily'];
 try {
@@ -544,7 +543,7 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-topics-usage-8"
+```typescript
 import { TopicOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -574,7 +573,7 @@ RTC 音视频数据与 RTM 消息/指令数据同步传输功能是 RTM 重要�
 
 示例代码如下：
 
-```csharp tab="C#" tabGroup="rtm-build-manage-topics-usage-9"
+```csharp
 string topic = "facialExpression";
 var options = new JoinTopicOptions();
 options.qos = RTM_MESSAGE_QOS.ORDERED;
@@ -591,7 +590,7 @@ else
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-topics-usage-9"
+```java
 var options = new JoinTopicOptions();
 options.messageQos = RtmMessageQos.ORDERED;
 options.syncWithMedia = true;
@@ -608,7 +607,7 @@ mStreamChannel.joinTopic("topic_name", options, new ResultCallback<Void>() {
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-topics-usage-9"
+```swift
 let joinTopicOpt = AgoraRtmJoinTopicOption()
 joinTopicOpt.qos = .ordered
 joinTopicOpt.syncWithMedia = true
@@ -623,7 +622,7 @@ streamChannels[channel]?.joinTopic("your_topic", option: joinTopicOpt, completio
         })
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-topics-usage-9"
+```objc
 AgoraRtmJoinTopicOption* join_topic_opt = [[AgoraRtmJoinTopicOption alloc] init];
 join_topic_opt.qos = AgoraRtmMessageQosOrdered;
 join_topic_opt.syncWithMedia = true;
@@ -638,7 +637,7 @@ join_topic_opt.syncWithMedia = true;
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-topics-usage-9"
+```cpp
 JoinTopicOptions options;
 options.qos = RTM_MESSAGE_QOS_ORDERED;
 options.syncWithMedia = true;

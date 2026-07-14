@@ -10,7 +10,7 @@ Topic 只存在于 Stream Channel。所以用户在使用相关特性之前，�
 
 想要了解 Topic 的更多特性，可以查看：
 
-- [Topic](/zh-CN/realtime-media/rtm/build/manage-topics/topic-basic)
+- [Topic](/zh-CN/realtime-media/rtm/user-guide/topic/topic-basic)
 
 ## joinTopic
 
@@ -20,7 +20,7 @@ Topic 只存在于 Stream Channel。所以用户在使用相关特性之前，�
 
 :::info[信息]
 - 当前 RTM 支持单客户端在同一个 Stream Channel 中同时加入 8 个 Topic。
-- 在执行此操作之前，用户需要首先创建 `AgoraRtmStreamChannel` 对象实例，并调用 `join` 方法加入频道，详见[频道](/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic)。
+- 在执行此操作之前，用户需要首先创建 `AgoraRtmStreamChannel` 对象实例，并调用 `join` 方法加入频道，详见[频道](/zh-CN/realtime-media/rtm/user-guide/channel/channel-basic)。
 :::
 
 成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `remoteJoinTopic` 类型的 `didReceiveTopicEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/swift/configuration#事件监听)。
@@ -376,7 +376,7 @@ stChannel.leaveTopic(topic) { (response, error) in
 
 `subscribeTopic` 为增量方法。例如，第一次调用该方法时，订阅消息发布者列表为 `[UserA, UserB]`，第二次调用该方法时，订阅消息发布者列表为 `[UserB, UserC]`，则最后成功订阅的结果是 `[UserA, UserB, UserC]`。
 
-同一个用户在同一个频道中最多只能同时订阅 50 个 Topic，且每个 Topic 中最多只能订阅 64 个消息发布者。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
+同一个用户在同一个频道中最多只能同时订阅 50 个 Topic，且每个 Topic 中最多只能订阅 64 个消息发布者。详见 [API 使用限制](/zh-CN/realtime-media/rtm/user-guide/setup/api-limits)。
 
 ### 接口方法
 

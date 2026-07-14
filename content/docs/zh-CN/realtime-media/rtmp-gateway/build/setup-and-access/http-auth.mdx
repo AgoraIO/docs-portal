@@ -1,15 +1,14 @@
 ---
-title: "实现 HTTP 鉴权"
-description: "了解如何在实时消息 RTM 中 HTTP 鉴权，包括适用场景、配置步骤、实现要点和注意事项。"
+title: "实现 HTTP 安全认证"
 ---
-本节介绍如何进行 HTTP 基本认证。
-
-TMP 网关服务 RESTful API 支持以下鉴权方式：
+RTMP 网关服务 RESTful API 使用如下安全认证：
 
 - HTTP 基本认证。易用，但安全性较弱。
-- HTTP HMAC（Hash-based Message Authentication Code）鉴权。安全性较高，推荐使用。
+- HTTP HMAC (Hash-based Message Authentication Code) 认证。安全性较高，推荐使用。
 
 ## 实现 HTTP 基本认证
+
+本节介绍如何进行 HTTP 基本认证。
 
 ### 前提条件
 
@@ -17,11 +16,11 @@ TMP 网关服务 RESTful API 支持以下鉴权方式：
 
 ### 实现方法
 
-参考 [HTTP 基本认证](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth#生成方法)实现。
+参考 [HTTP 基本认证](/zh-CN/realtime-media/rtc/build/security-and-auth/http-basic-auth#生成方法)实现。
 
-## 实现 HTTP HMAC 鉴权
+## 实现 HTTP HMAC 认证
 
-本节介绍如何实现 HTTP HMAC 鉴权。
+本节介绍如何实现 HTTP HMAC 认证。
 
 ### 前提条件
 
@@ -81,7 +80,7 @@ console.log(`Authorization: ${auth}`);
 
 ## 下一步
 
-开通服务、实现 HTTP 鉴权后，你可以进行如下操作：
+开通服务、实现 HTTP 安全认证后，你可以进行如下操作：
 
 1. 参考 [API 文档](../rtmp-gateway/operations/post-region-v1-projects-appId-rtls-ingress-streamkeys)集成 rtmp-gateway服务。
 2. 参考[接收 Webhook 事件](/zh-CN/realtime-media/rtmp-gateway/build/monitor-events/enable-ncs)开启消息通知服务，通过事件回调监听服务状态。

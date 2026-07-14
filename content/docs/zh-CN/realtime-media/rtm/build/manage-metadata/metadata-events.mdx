@@ -1,12 +1,9 @@
 ---
 title: "元数据事件通知"
-description: "了解如何在实时消息 RTM 中元数据事件通知，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
 ## 添加事件监听
 
-如果想要接收 Storage 事件通知，你需要实现事件监听程序，详见事件监听。
-
-除此之外，如果你想要接收 Channel Metadata 的事件通知，你需要在订阅或加入频道时将 `features` 参数设为 `enumv.joinchannelfeaturemetadata` 或 `enumv.subscribechannelfeaturemetadata`你需要在订阅或加入频道时将 `withMetadata` 参数设置成 `true`。如果你想要接收 User Metadata 的事件通知，你需要调用 `storage.subscribeuser` 订阅指定用户的 User Metadata。
+如果想要接收 Storage 事件通知，你需要实现事件监听程序，详见[事件监听](/api-ref/rtm2//toc-configuration/configuration#事件监听)。除此之外，如果你想要接收 Channel Metadata 的事件通知，你需要在订阅或加入频道时将 `features` 参数设为 `enumv.joinchannelfeaturemetadata` 或 `enumv.subscribechannelfeaturemetadata`你需要在订阅或加入频道时将 `withMetadata` 参数设置成 `true`。如果你想要接收 User Metadata 的事件通知，你需要调用 `storage.subscribeuser` 订阅指定用户的 User Metadata。
 
 ## 事件通知模式
 
@@ -45,31 +42,24 @@ RTM 的 Storage 事件通知有以下四种类型：
 
 Storage 事件的数据结构参数含义如下：
 
-<Tabs defaultValue="web" groupId="rtm-storage-event-properties" persist>
-<TabsList>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="swift">Swift</TabsTrigger>
-  <TabsTrigger value="ios">Objective-C</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-</TabsList>
-
-<TabsContent value="web">
-
 | 参数 | 描述 |
 | --- | --- |
 | `storageType` | 通知类型，可能的取值为`NONE`、`USER` 或 `CHANNEL`。`USER` 为用户属性变更，`CHANNEL` 为频道属性变更。 |
 | `channelType` | 频道类型，可能的取值为 `MESSAGE` 或 `STREAM`。 |
-| `channelName` | 事件发生的频道名称。该参数仅在频道属性相关事件中生效。 |
+| `channelName` | <Slot name="event-html-2-3-1" /> |
 | `publisher` | 触发此事件的用户 ID。 |
 | `eventType` | 事件类型。可能的取值为 `NONE`、`SNAPSHOT`、`SET`、`REMOVE` 或 `UPDATE`。 |
 | `data` | 用户或者频道属性数据。 |
 
-</TabsContent>
+<Slot for="event-html-2-3-1">
 
-<TabsContent value="android">
+事件发生的频道名称。
+
+      :::info[信息]
+      该参数仅在频道属性相关事件中生效。
+      :::
+
+</Slot>
 
 | 属性         |  类型  |   描述                                                                                                                         |
 |---|----| ------ |
@@ -80,12 +70,8 @@ Storage 事件的数据结构参数含义如下：
 | `data`            | `Metadata`               |   Metadata Item。详见 [`Metadata`](/api-ref/rtm2/android/toc-storage/storage#Metadata)。   |
 | `timestamp` | long | 事件发生的时间戳。                |
 
-</TabsContent>
-
-<TabsContent value="swift">
-
 | 属性         |  类型  |   描述                                                                                                                         |
-|---|----| ---- |
+|---|----| ----
 | `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/api-ref/rtm2/swift/enumv#channeltype)。   |
 | `storageType`            | `AgoraRtmStorageType`   |  Storage 类型。详见 [`AgoraRtmStorageType`](/api-ref/rtm2/swift/enumv#storagetype)。  |
 | `eventType`            | `AgoraRtmStorageEventType`    |  Storage 事件类型。详见 [`AgoraRtmStorageEventType`](/api-ref/rtm2/swift/enumv#storageeventtype)。  |
@@ -93,12 +79,8 @@ Storage 事件的数据结构参数含义如下：
 | `data`            | `AgoraRtmMetadata`               |   Metadata Item。详见 [`AgoraRtmMetadata`](/api-ref/rtm2/swift/toc-storage/storage#AgoraRtmMetadata)。   |
 | `timestamp` | UInt64 | 事件发生的时间戳。                |
 
-</TabsContent>
-
-<TabsContent value="ios">
-
 | 属性         |  类型  |   描述                                                                                                                         |
-|---|----| ---- |
+|---|----| ----
 | `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/api-ref/rtm2/ios/enumv#channeltype)。   |
 | `storageType`            | `AgoraRtmStorageType`   |  Storage 类型。详见 [`AgoraRtmStorageType`](/api-ref/rtm2/ios/enumv#storagetype)。  |
 | `eventType`            | `AgoraRtmStorageEventType`    |  Storage 事件类型。详见 [`AgoraRtmStorageEventType`](/api-ref/rtm2/ios/enumv#storageeventtype)。  |
@@ -106,34 +88,22 @@ Storage 事件的数据结构参数含义如下：
 | `data`            | `AgoraRtmMetadata`               |   Metadata Item。详见 [`AgoraRtmMetadata`](/api-ref/rtm2/ios/toc-storage/storage#AgoraRtmMetadata)。   |
 | `timestamp` | unsigned long long | 事件发生的时间戳。                |
 
-</TabsContent>
-
-<TabsContent value="unity">
-
 | 属性         |  类型  |   描述                                                                                                                         |
-|---|----| ---- |
+|---|----| ----
 | `channelType`            | `RTM_CHANNEL_TYPE`    |  频道类型。   |
 | `storageType`            | `RTM_STORAGE_TYPE`    |  Storage 事件类型。详见 [`RTM_STORAGE_TYPE`](/api-ref/rtm2/unity/enumv#storagetype)。  |
 | `eventType`            | `RTM_STORAGE_EVENT_TYPE`    |  Storage 事件类型。详见 [`RTM_STORAGE_EVENT_TYPE`](/api-ref/rtm2/unity/enumv#storageeventtype)。  |
 | `target`              | string                |  用户 ID 或频道名称。   |
 | `data`            | `RtmMetadata`               |   Metadata Item 数组。   |
 
-</TabsContent>
-
-<TabsContent value="cpp">
-
 | 属性         |  类型  |   描述                                                                                                                         |
-|---|----| ---- |
+|---|----| ----
 | `channelType`            | `RTM_CHANNEL_TYPE`    |  频道类型。详见 [`RTM_CHANNEL_TYPE`](/api-ref/rtm2/cpp/enumv#channeltype)。   |
 | `storageType`            | `RTM_STORAGE_TYPE`    |  Storage 类型。详见 [`RTM_STORAGE_TYPE`](/api-ref/rtm2/cpp/enumv#storagetype)。  |
 | `eventType`            | `RTM_STORAGE_EVENT_TYPE`    |  Storage 事件类型。详见 [`RTM_STORAGE_EVENT_TYPE`](/api-ref/rtm2/cpp/enumv#storageeventtype)。  |
 | `target`              | const char*                |  用户 ID 或频道名称。   |
 | `data`            | `Metadata`               |   Metadata Item 数组。   |
 | `timestamp` | uint64_t | 事件发生的时间戳。                |
-
-</TabsContent>
-
-<TabsContent value="flutter">
 
 | 属性          | 类型                     | 描述                                                                                          |
 | ------------ | --------- | ------- |
@@ -143,6 +113,3 @@ Storage 事件的数据结构参数含义如下：
 | `target`      | String              | 用户 ID 或频道名称。                                                                          |
 | `data`        | `Metadata`               | Metadata Item 数组。                                                                          |
 | `timestamp`   | int                 | 事件发生的时间戳。                                                                            |
-
-</TabsContent>
-</Tabs>

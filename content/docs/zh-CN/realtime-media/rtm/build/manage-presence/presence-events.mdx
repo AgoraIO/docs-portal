@@ -1,12 +1,9 @@
 ---
 title: "在线状态事件通知"
-description: "了解如何在实时消息 RTM 中在线状态事件通知，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
 ## 添加事件监听
 
-接收 Presence 事件通知，你需要实现事件监听程序，详见事件监听。
-
-除此之外，在订阅或加入频道时还需将 `features` 参数设为 `enumv.joinchannelfeaturepresence` 或 `enumv.subscribechannelfeaturepresence`你需要在订阅或加入频道时将 `withPresence` 参数设置成 `true`。`config.presenceevent` 数据结构包含以下属性：
+接收 Presence 事件通知，你需要实现事件监听程序，详见[事件监听](/zh-CN/realtime-media/rtm/build/manage-messages/add-event-listener)。除此之外，在订阅或加入频道时还需将 `features` 参数设为 `enumv.joinchannelfeaturepresence` 或 `enumv.subscribechannelfeaturepresence`你需要在订阅或加入频道时将 `withPresence` 参数设置成 `true`。`config.presenceevent` 数据结构包含以下属性：
 
 |     参数      | 描述                                                                                                                                        |
 | ----------- | -------------- |
@@ -640,7 +637,7 @@ Presence 事件通知模式是指在频道中如何将 Presence 事件通知到�
 
 当频道中的在线人数超过实时通知最大人数的值时，频道会进入定时通知模式。在这种模式下，`enumv.presencetypejoin`、`enumv.presencetypeleave`、`enumv.presencetypetimeout`、`enumv.presencetypechange` 事件会被 `enumv.presencetypeint` 事件代替，并以一定的时间间隔发送给频道中所有用户。
 
-```csharp tab="C#" tabGroup="rtm-build-manage-presence-presence-events-1" showLineNumbers
+```csharp showLineNumbers
 {
     "type" : RTM_PRESENCE_EVENT_TYPE.INTERVAL,
     "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
@@ -664,7 +661,7 @@ Presence 事件通知模式是指在频道中如何将 Presence 事件通知到�
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-presence-presence-events-1"
+```java
 {
     eventType : RtmPresenceEventType.INTERVAL,
     channelType : RtmChannelType.MESSAGE,
@@ -698,7 +695,7 @@ Presence 事件通知模式是指在频道中如何将 Presence 事件通知到�
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-presence-presence-events-1"
+```swift
 {
     "type" : AgoraRtmPresenceEventTypeInterval,
     "channelType" : AgoraRtmChannelTypeMessages,
@@ -722,7 +719,7 @@ Presence 事件通知模式是指在频道中如何将 Presence 事件通知到�
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-presence-presence-events-1"
+```objc
 {
     "type" : AgoraRtmPresenceEventTypeInterval,
     "channelType" : AgoraRtmChannelTypeMessages,
@@ -746,7 +743,7 @@ Presence 事件通知模式是指在频道中如何将 Presence 事件通知到�
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-presence-presence-events-1"
+```javascript
 interval: {
     join: { users: ["Tony", "Lily"], userCount: 2 },
     leave: { users: ["Jason"], userCount: 1 },
@@ -761,7 +758,7 @@ interval: {
 },
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-presence-presence-events-1"
+```cpp
 {
     "type" : RTM_PRESENCE_EVENT_TYPE_INTERVAL,
     "channelType" : RTM_CHANNEL_TYPE_MESSAGE,
@@ -789,7 +786,7 @@ interval: {
 }
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-presence-presence-events-1"
+```dart
 {
     type : RtmPresenceEventType.interval,
     channelType : RtmChannelType.message,,
@@ -813,7 +810,7 @@ interval: {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-presence-presence-events-1"
+```typescript
 {
     eventType: RtmPresenceEventType.INTERVAL,
     channelType: RtmChannelType.MESSAGE,

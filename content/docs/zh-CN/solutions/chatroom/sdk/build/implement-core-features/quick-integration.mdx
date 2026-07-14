@@ -1,8 +1,10 @@
 ---
 title: "实现语聊房"
-description: "了解语聊房在不同平台上的语聊房方式，包括接入流程、关键配置和平台差异。"
 ---
+
 <PlatformStructured platform="android">
+
+本文介绍如何实现语聊房，包含登录系统、初始化引擎、创建房间、麦位管理、退出房间。
 
 ## 示例项目
 
@@ -43,7 +45,7 @@ description: "了解语聊房在不同平台上的语聊房方式，包括接入
 - [Android Studio](https://developer.android.com/studio/) 3.5 及以上。
 - Android 手机，版本 Android 5.0（API Level 21）及以上。
 - 可以访问互联网的计算机。确保你的网络环境没有部署防火墙，否则无法正常使用声网服务。
-- 参考[开通语聊房 SDK 相关服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)创建声网开发者账号和声网项目，并获取项目的 App ID 和临时 Token，以及登录即时通讯系统所需的用户名 (ID) 和 Token。
+- 参考[开通服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)创建声网开发者账号和声网项目，并获取项目的 App ID 和临时 Token，以及登录即时通讯系统所需的用户名 (ID) 和 Token。
 
 ### 集成 SDK
 
@@ -183,7 +185,7 @@ public void login(String uid,String token,CallBack callBack){
 
 参考如下步骤初始化 `RtcEngine`：
 
-1. 根据[开通语聊房 SDK 相关服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)在声网控制台创建声网项目后，复制界面的 App ID。
+1. 根据[开通服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)在声网控制台创建声网项目后，复制界面的 App ID。
 2. 调用声网 RTC SDK 中的 [`create`](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_initialize) 方法创建并初始化 `RtcEngine`。
 
 ```kotlin
@@ -274,7 +276,7 @@ val rtcEngine = RtcEngineEx.create(config) as RtcEngineEx
         }
         ```
 
-    - 调用声网 RTC SDK 中 `RtcEngine` 类的 `joinChannel` 加入 RTC 频道以实现房间内的实时音频通话。方法中的参数含义和支持取值请参考 [`joinChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2)。在这一步里需要填写声网 RTC Token。你可以使用[开通语聊房 SDK 相关服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)中获取的临时 Token，也可以参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)获取正式用途的声网 RTC Token。临时 Token 的有效期为 24 小时，建议你仅在测试用途下使用。
+    - 调用声网 RTC SDK 中 `RtcEngine` 类的 `joinChannel` 加入 RTC 频道以实现房间内的实时音频通话。方法中的参数含义和支持取值请参考 [`joinChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2)。在这一步里需要填写声网 RTC Token。你可以使用[开通服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)中获取的临时 Token，也可以参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)获取正式用途的声网 RTC Token。临时 Token 的有效期为 24 小时，建议你仅在测试用途下使用。
 
       你还可以调用 [`setChannelProfile`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_setchannelprofile)、[`setAudioProfile`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioprofile2)、[`setAudioScenario`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioscenario)、[`setParameters`](/api-ref/rtc/android/API/toc_network#api_irtcengine_setparameters) 为不同业务场景（语聊社交、KTV、游戏陪玩、专业音频直播场景）配置语聊房的推荐音效参数。
 
@@ -404,7 +406,7 @@ val rtcEngine = RtcEngineEx.create(config) as RtcEngineEx
 - iOS 设备，版本 13.0 及以上。
 - 有效的苹果开发者账号。
 - 可以访问互联网的计算机。确保你的网络环境没有部署防火墙，否则无法正常使用声网服务。
-- 参考[开通语聊房 SDK 相关服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)创建声网开发者账号和声网项目，并获取项目的 App ID 和临时 Token。
+- 参考[开通服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)创建声网开发者账号和声网项目，并获取项目的 App ID 和临时 Token。
 
 ### 集成 SDK
 
@@ -510,7 +512,7 @@ ChatRoomServiceImp.getSharedInstance().fetchRoomList(page: 0) { error, rooms in
 
 参考如下步骤初始化 `AgoraRtcEngineKit`：
 
-1. 根据[开通语聊房 SDK 相关服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)在声网控制台创建声网项目后，复制界面的 App ID。
+1. 根据[开通服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)在声网控制台创建声网项目后，复制界面的 App ID。
 2. 调用声网 RTC SDK 中的 [`sharedEngineWithAppId`](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_create) 方法创建并初始化 `AgoraRtcEngineKit`。
 
 ```swift
@@ -579,7 +581,7 @@ let rtcKit: AgoraRtcEngineKit = AgoraRtcEngineKit.sharedEngine(withAppId: KeyCen
         }
         ```
 
-    - 调用声网 RTC SDK 中 `AgoraRtcEngineKit` 类的 `joinChannelByToken` 加入 RTC 频道以实现房间内的实时音频通话。方法中的参数含义和支持取值请参考 [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#joinChannelByToken%20[1/4])。在这一步里需要填写声网 RTC Token。你可以使用[开通语聊房 SDK 相关服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)中获取的临时 Token，也可以参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)获取正式用途的声网 RTC Token。临时 Token 的有效期为 24 小时，建议你仅在测试用途下使用。
+    - 调用声网 RTC SDK 中 `AgoraRtcEngineKit` 类的 `joinChannelByToken` 加入 RTC 频道以实现房间内的实时音频通话。方法中的参数含义和支持取值请参考 [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#joinChannelByToken%20[1/4])。在这一步里需要填写声网 RTC Token。你可以使用[开通服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)中获取的临时 Token，也可以参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)获取正式用途的声网 RTC Token。临时 Token 的有效期为 24 小时，建议你仅在测试用途下使用。
 
       你还可以调用 [`setChannelProfile`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_setchannelprofile)、[`setAudioProfile`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioprofile2)、[`setAudioScenario`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioscenario)、[`setParameters`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setparameters) 来为不同业务场景（语聊社交、KTV、游戏陪玩、专业音频直播场景）设置语聊房的最佳音效。
 

@@ -1,8 +1,7 @@
 ---
-title: "实现 HTTP Token 鉴权"
-description: "了解如何在灵动课堂中 HTTP Token 鉴权，包括适用场景、配置步骤、实现要点和注意事项。"
+title: "实现 HTTP Token 认证"
 ---
-在使用灵动课堂 RESTful API 前，你需要通过 HTTP Token 鉴权。
+在使用灵动课堂 RESTful API 前，你需要通过 HTTP Token 认证。
 
 灵动课堂支持使用 EducationToken 进行认证。
 
@@ -18,7 +17,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 
-// 基于 Java 实现的 HTTP Token 鉴权示例，使用 RTC 的服务端 RESTful API
+// 基于 Java 实现的 HTTP Token 认证示例，使用 RTC 的服务端 RESTful API
 class TokenAuthExample {
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -65,7 +64,7 @@ func main() {
     }
 }
 
-// 基于 Golang 实现的 HTTP Token 鉴权示例，使用 RTC 的服务端 RESTful API
+// 基于 Golang 实现的 HTTP Token 认证示例，使用 RTC 的服务端 RESTful API
 func tokenAuthExamle() error {
     var (
             // 输入你生成的 Token

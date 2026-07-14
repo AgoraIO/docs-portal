@@ -1,8 +1,6 @@
 ---
 title: "发版说明"
-description: "查看实时互动 RTC 的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
 ---
-该版本删除了 EncodedVideoFrameInfo 结构体中的 uid 参数。
 
 <PlatformStructured platform="android">
 
@@ -37,7 +35,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 #### EncodedVideoFrameInfo 结构体删除参数 uid
 
-你可以直接从 [`onEncodedVideoFrameReceived`](/api-ref/rtc/android/API/toc_video_encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) 回调中获取远端用户的 `remoteUid` 信息。如果你之前集成过相关代码，请相应更新集成逻辑。
+该版本删除了 `EncodedVideoFrameInfo` 结构体中的 `uid` 参数。你可以直接从 [`onEncodedVideoFrameReceived`](/api-ref/rtc/android/API/toc_video_encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) 回调中获取远端用户的 `remoteUid` 信息。如果你之前集成过相关代码，请相应更新集成逻辑。
 
 #### Lite 和 Voice 包中去除音频频谱功能
 
@@ -289,7 +287,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 #### 媒体播放器信息属性可访问
 
-   自该版本起，媒体播放器相关信息 [`PlayerUpdatedInfo`](/api-ref/rtc/android/API/class_playerupdatedinfo#PlayerUpdatedInfo) 中的所有属性访问修饰符已从 private 修改为 public。这一改进旨在提高类的可访问性，使得外部代码能够更方便地访问和修改这些属性。
+   自该版本起，媒体播放器相关信息 [[`PlayerUpdatedInfo`](/api-ref/rtc/android/API/class_playerupdatedinfo)](api-ref/rtc/android/API/class_playerupdatedinfo#PlayerUpdatedInfo) 中的所有属性访问修饰符已从 private 修改为 public。这一改进旨在提高类的可访问性，使得外部代码能够更方便地访问和修改这些属性。
 
 ### 问题修复
 
@@ -385,7 +383,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
    有关美型和美妆的实现步骤，详见[实现高级美颜](/zh-CN/realtime-media/rtc/build/video/advanced-beauty)。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -509,7 +507,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
    自该版本起，声网推出 Lite 版 SDK，该 SDK 中仅包含音视频基础能力、对高阶音视频处理的功能进行部分裁剪，可有效减少集成 SDK 后的 App 体积。
 
    - Lite SDK 支持手动集成或三方仓库集成，详见[下载](/zh-CN/realtime-media/rtc/reference/downloads)和[集成 SDK](/zh-CN/realtime-media/rtc/get-started/quick-start#集成-sdk)。
-   - Lite SDK 包含的动态库信息详见[减小 App 体积](/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size)。
+   - Lite SDK 包含的动态库信息详见[减小 App 体积](/zh-CN/realtime-media/rtc/build/quality-and-operations/reduce-app-size)。
    - Lite SDK 支持的 API 清单详见 [Lite SDK API 列表](/api-ref/rtc/android/API/rtc_lite_api)。
    - 使用 Lite SDK 播放媒体文件时的限制和注意事项详见 [RTC SDK 支持播放哪些格式的音频文件？](/zh-CN/api-reference/faq/product/audio_format)
 
@@ -1432,7 +1430,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/android/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
 :::warning[注意]
-由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 ### 新增特性
@@ -1795,7 +1793,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 :::info[信息]
 - 超高清分辨率（4K，60 fps）目前为 Beta 功能，且对设备性能和网络带宽有一定要求，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
 - 高分辨率通常需要更高的性能消耗，为避免设备性能不足导致体验下降，声网建议你在性能较好的设备上开启全高清和超高清视频分辨率。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -2266,7 +2264,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    有关美型和美妆的实现步骤，详见[实现高级美颜](https://doc.shengwang.cn/doc/rtc/ios/advanced-features/advanced-beauty)。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -2377,7 +2375,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    自该版本起，声网推出 Lite 版 SDK，该 SDK 中仅包含音视频基础能力、对高阶音视频处理的功能进行部分裁剪，可有效减少集成 SDK 后的 App 体积。
 
    - Lite SDK 支持手动集成或三方仓库集成，详见[下载](/zh-CN/realtime-media/rtc/reference/downloads)和[集成 SDK](/zh-CN/realtime-media/rtc/get-started/quick-start#集成-sdk)。
-   - Lite SDK 包含的动态库信息详见[减小 App 体积](/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size)。
+   - Lite SDK 包含的动态库信息详见[减小 App 体积](/zh-CN/realtime-media/rtc/build/quality-and-operations/reduce-app-size)。
    - Lite SDK 支持的 API 清单详见 [Lite SDK API 列表](/api-ref/rtc/ios/API/rtc_lite_api)。
    - 使用 Lite SDK 播放媒体文件时的限制和注意事项详见 [RTC SDK 支持播放哪些格式的音频文件？](/zh-CN/api-reference/faq/product/audio_format)
 
@@ -2994,7 +2992,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### 支持仅播放副歌片段
 
-   该版本新增 [`getInternalSongCode:jsonOption:`](/api-ref/rtc/ios/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](https://docs.agora.io/cn/online-ktv/ktv_overview?platform=Android)了解更多 K 歌场景方案。
+   该版本新增 [`getInternalSongCode:jsonOption:`](/api-ref/rtc/ios/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](https://docportal.shengwang.cn/cn/online-ktv/landing-page?platform=Android)了解更多 K 歌场景方案。
 
 ### 改进
 
@@ -3304,7 +3302,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
-<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
+<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
 
 #### 设置远端视频流的订阅选项
 
@@ -3677,7 +3675,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 :::info[信息]
 - 超高清分辨率（4K，60 fps）目前为 Beta 功能，且对设备性能和网络带宽有一定要求，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
 - 高分辨率通常需要更高的性能消耗，为避免设备性能不足导致体验下降，声网建议你在性能较好的设备上开启全高清和超高清视频分辨率。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -4104,7 +4102,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    有关美型和美妆的实现步骤，详见[实现高级美颜](https://doc.shengwang.cn/doc/rtc/macos/advanced-features/advanced-beauty)。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -4980,7 +4978,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration:`](/api-ref/rtc/macos/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
 :::warning[注意]
-由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 设置远端视频流的订阅选项
@@ -5366,7 +5364,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 :::info[信息]
 - 该功能对设备性能和网络带宽有一定要求，在不同的平台上支持的上下行帧率也不同，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -5674,7 +5672,7 @@ A、B 正常互通过程中，A 先取消发布和订阅音频流，然后重新
 
 为降低用户等待主播视频首帧渲染出图的时间，该版本在 `join` 方法中新增参数 `options`，用来设置加入频道选项。通过将 [`IJoinOptions`](/api-ref/rtc/javascript/interfaces/ijoinoptions.html) 中的 `autoSubscribe` 设为 `true`，可以设置用户加入频道时即自动订阅频道中主播的媒体流。
 
-在一对一、一对多等实时互动场景中，该功能可以有效降低首帧出图时间，提高互动体验。更多适用场景和最佳实践可以参考[频道秒开](/zh-CN/realtime-media/rtc/build/optimize-and-operate/preload)。参考最佳实践集成后，在 Windows 和 macOS 端 Chrome 浏览器上，首帧出图时间最低可降至 300 毫秒以内。
+在一对一、一对多等实时互动场景中，该功能可以有效降低首帧出图时间，提高互动体验。更多适用场景和最佳实践可以参考[频道秒开](/zh-CN/realtime-media/rtc/build/quality-and-operations/preload)。参考最佳实践集成后，在 Windows 和 macOS 端 Chrome 浏览器上，首帧出图时间最低可降至 300 毫秒以内。
 
 :::warning[注意]
 如果设置自动订阅主播的媒体流，声网后台会在用户加入频道时就开始下发媒体流，并开始计费。
@@ -5765,7 +5763,7 @@ v4.23.3 将虚拟背景插件升级到了 [2.1.0 版本](https://www.npmjs.com/p
 
 #### 优化包体积
 
-为进一步减小包体积，该版本将 ESM-bundle 格式包中的兼容 WebRTC 中的 Plan-B 功能拆分成了独立的服务模块。用户可根据实际需求，手动导入进行集成。集成方式详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/build/optimize-and-operate/tree-shaking)。
+为进一步减小包体积，该版本将 ESM-bundle 格式包中的兼容 WebRTC 中的 Plan-B 功能拆分成了独立的服务模块。用户可根据实际需求，手动导入进行集成。集成方式详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/build/implement-core-features/tree-shaking)。
 
 #### 其他改进
 
@@ -5821,7 +5819,7 @@ v4.23.3 将虚拟背景插件升级到了 [2.1.0 版本](https://www.npmjs.com/p
 
 ### 升级必看
 
-为进一步减小包体积，该版本将 ESM-bundle 格式包中的跨频道连麦、旁路推流、实时审核（鉴黄）等功能拆分成了独立的服务模块。用户可根据实际需求，手动导入进行集成。集成方式详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/build/optimize-and-operate/tree-shaking)。
+为进一步减小包体积，该版本将 ESM-bundle 格式包中的跨频道连麦、旁路推流、实时审核（鉴黄）等功能拆分成了独立的服务模块。用户可根据实际需求，手动导入进行集成。集成方式详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/build/implement-core-features/tree-shaking)。
 
 ### 新增特性
 
@@ -5831,7 +5829,7 @@ v4.23.3 将虚拟背景插件升级到了 [2.1.0 版本](https://www.npmjs.com/p
 
 #### 优化频道秒开
 
-使用频道秒开功能时，为减少首帧渲染时间，我们建议在调用加入频道方法时立即下发主播的媒体流，详见[频道秒开](/zh-CN/realtime-media/rtc/build/optimize-and-operate/preload#22-进入频道)。该设置下，用户一加入频道就会产生拉流，从而产生计费，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy#基础服务)。
+使用频道秒开功能时，为减少首帧渲染时间，我们建议在调用加入频道方法时立即下发主播的媒体流，详见[频道秒开](/zh-CN/realtime-media/rtc/build/quality-and-operations/preload#22-进入频道)。该设置下，用户一加入频道就会产生拉流，从而产生计费，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy#基础服务)。
 
 #### 支持 AV1 编码 (Beta)
 
@@ -5871,7 +5869,7 @@ SDK 新增了对 AV1 视频编码格式的支持。你可以通过设置 `Client
 
 #### 预加载频道
 
-该版本新增 [`AgoraRTC.preload`](/api-ref/rtc/javascript/interfaces/iagorartc.html#preload) 方法，支持角色为观众的用户在加入频道前预先加载一个或多个频道。该方法调用成功后可以减少观众加入频道的时间，从而缩短观众听到主播首帧音频以及看到首帧画面的耗时，提升观众端的音视频体验。关于预加载频道的最佳实践，详见[频道秒开](/zh-CN/realtime-media/rtc/build/optimize-and-operate/preload)。
+该版本新增 [`AgoraRTC.preload`](/api-ref/rtc/javascript/interfaces/iagorartc.html#preload) 方法，支持角色为观众的用户在加入频道前预先加载一个或多个频道。该方法调用成功后可以减少观众加入频道的时间，从而缩短观众听到主播首帧音频以及看到首帧画面的耗时，提升观众端的音视频体验。关于预加载频道的最佳实践，详见[频道秒开](/zh-CN/realtime-media/rtc/build/quality-and-operations/preload)。
 
 ### 改进
 
@@ -6037,11 +6035,11 @@ Safari 存在已知问题，不能在网络条件较差或者视频发送帧率�
 
 #### 端到端媒体加密 (Beta)
 
-在数据安全要求较高的场景下，除了使用[媒体流加密](/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption)功能，你还可以使用该版本新增的端到端加密功能，实现在发送端设备上对媒体流进行加密、在接收端设备上对媒体流进行解密，确保数据不会在传输过程中被其它第三方获取。如需开通端到端加密功能，请[联系技术支持](https://ticket.shengwang.cn/)。
+在数据安全要求较高的场景下，除了使用[媒体流加密](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-encryption)功能，你还可以使用该版本新增的端到端加密功能，实现在发送端设备上对媒体流进行加密、在接收端设备上对媒体流进行解密，确保数据不会在传输过程中被其它第三方获取。如需开通端到端加密功能，请[联系技术支持](https://ticket.shengwang.cn/)。
 
 #### Tree shaking（摇树优化）
 
-自该版本起，SDK 包支持 [Tree shaking](https://webpack.js.org/guides/tree-shaking/)，能够在构建过程中移除未引用的代码，从而减小集成 SDK 后的 App 体积。如需使用该功能，请确保通过 npm 集成 SDK 并且使用正确的导入 (`import`) 方式。详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/build/optimize-and-operate/tree-shaking)。
+自该版本起，SDK 包支持 [Tree shaking](https://webpack.js.org/guides/tree-shaking/)，能够在构建过程中移除未引用的代码，从而减小集成 SDK 后的 App 体积。如需使用该功能，请确保通过 npm 集成 SDK 并且使用正确的导入 (`import`) 方式。详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/build/implement-core-features/tree-shaking)。
 
 #### 同一视频流两路显示
 
@@ -6449,7 +6447,7 @@ v4.16.0 修复了以下问题：
 
 #### 云代理服务默认采用 Force UDP 模式
 
-v4.15.0 将 `startProxyServer` 方法的  `mode`  参数默认值改为 `3`，即 Force UDP 云代理模式。在该模式下，SDK 始终通过 UDP 协议传输数据。详情参考[使用云代理服务](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)。
+v4.15.0 将 `startProxyServer` 方法的  `mode`  参数默认值改为 `3`，即 Force UDP 云代理模式。在该模式下，SDK 始终通过 UDP 协议传输数据。详情参考[使用云代理服务](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)。
 
 ### 新增特性
 
@@ -6858,7 +6856,7 @@ Web SDK 自 v4.6.0 起支持极速直播。极速直播与互动直播的区别�
 - 互动直播中观众端延时级别为超低延时 400 毫秒到 800 毫秒。
 - 极速直播中观众端延时级别为低延时 1500 毫秒到 2000 毫秒。
 
-声网针对不同级别的观众端延时收取不同的费用。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+声网针对不同级别的观众端延时收取不同的费用。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 你可通过以下两种方式实现低延时观众端：
 
@@ -6919,7 +6917,7 @@ v4.6.0 修复了以下问题：
 
 #### 媒体流加密
 
-为了加强密钥的安全性，v4.5.0 新增 `"aes-128-gcm2"` 和 `"aes-256-gcm2"` 加密模式，使用 PBKDF2 (Password-Based Key Derivation Function 2) 函数来派生密钥。调用 `setEncryptionConfig` 将加密模式设为 `"aes-128-gcm2"` 或 `"aes-256-gcm2"` 时，除了 `secret`，你还需要设置盐值 `salt`。`secret` 和 `salt` 的生成和设置方式详见[媒体流加密](/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption)。
+为了加强密钥的安全性，v4.5.0 新增 `"aes-128-gcm2"` 和 `"aes-256-gcm2"` 加密模式，使用 PBKDF2 (Password-Based Key Derivation Function 2) 函数来派生密钥。调用 `setEncryptionConfig` 将加密模式设为 `"aes-128-gcm2"` 或 `"aes-256-gcm2"` 时，除了 `secret`，你还需要设置盐值 `salt`。`secret` 和 `salt` 的生成和设置方式详见[媒体流加密](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-encryption)。
 
 #### 屏幕共享视频属性预设值
 
@@ -6982,7 +6980,7 @@ v4.5.0 修复了以下问题：
 
 #### 云代理服务
 
-v4.4.0 新增 `client.on("is-using-cloud-proxy")` 事件，SDK 会在本地成功发布媒体流后触发该事件，提示当前媒体流是否经[云代理服务](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)转发。
+v4.4.0 新增 `client.on("is-using-cloud-proxy")` 事件，SDK 会在本地成功发布媒体流后触发该事件，提示当前媒体流是否经[云代理服务](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)转发。
 
 #### 错误码
 
@@ -7013,7 +7011,7 @@ v4.4.0 修复了以下问题：
 
 该版本优化了声网云代理架构，进一步加强了有网络访问限制的环境中 SDK 的连通性，同时支持限定访问区域。
 
-你可联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 或技术支持申请使用优化后的云代理服务，然后调用 `startProxyServer` 方法将 `mode` 参数设为 3 实现使用云代理服务。详见[使用云代理服务](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)。
+你可联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 或技术支持申请使用优化后的云代理服务，然后调用 `startProxyServer` 方法将 `mode` 参数设为 3 实现使用云代理服务。详见[使用云代理服务](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)。
 
 ## v4.2.1
 
@@ -7617,7 +7615,7 @@ v4.0.0 修复了以下问题：
    有关美型和美妆的实现步骤，详见[实现高级美颜](/zh-CN/realtime-media/rtc/build/video/advanced-beauty)。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -8547,7 +8545,7 @@ v4.0.0 修复了以下问题：
  如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/windows/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
 :::info[信息]
-由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 ### 新增特性
@@ -8990,7 +8988,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 :::info[信息]
 - 该功能对设备性能和网络带宽有一定要求，在不同的平台上支持的上下行帧率也不同，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -9164,7 +9162,7 @@ SDK 会根据你在 `VideoEncoderConfiguration` 中的设置，自动选择选�
 
 - [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
 - [实现纯语音互动](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start)
-- [实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)
+- [实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)
 - [API 参考](/api-ref/rtc/csharp/API/rtc_api_overview)
 
 声网在 GitHub 提供一个开源的 [CSharp API Example](https://github.com/AgoraIO-Extensions/Agora-C_Sharp-SDK/tree/master/APIExample) 示例项目，你也可以前往下载并体验。
@@ -9262,7 +9260,7 @@ SDK 提供了一套强大的 API，使开发者可以轻松构建具备实时音
 
 - [跑通 API 示例项目](/zh-CN/realtime-media/rtc/get-started/run-demo)
 - [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
-- [实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)
+- [实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)
 - [实现纯语音互动](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start)
 - [API 参考](/api-ref/rtc/harmonyos/API/rtc_api_overview)
 
@@ -9873,7 +9871,7 @@ https://miniapp-4.agoraio.cn
    - 美妆：调用 [`setExtensionProperty`](/api-ref/rtc/electron/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -10646,7 +10644,7 @@ https://miniapp-4.agoraio.cn
 
  如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/electron/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
-<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
+<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
 
 #### 其他兼容性变更
 
@@ -11194,7 +11192,7 @@ v4.0.0 SDK 包名由 `electron-agora-rtc-ng` 变更为 `agora-electron-sdk`，�
 该功能对设备性能和网络带宽有一定要求，在不同的平台上支持的上下行帧率也不同，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
 
 :::info[信息]
-高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -11651,7 +11649,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/electron/API/clas
    - 美妆：调用 [`SetExtensionProperty`](/api-ref/rtc/unity/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -12668,7 +12666,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/electron/API/clas
  如果你想自定义视频编码分辨率，可调用 [`SetVideoEncoderConfiguration`](/api-ref/rtc/unity/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
 :::warning[注意]
-由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 其他兼容性变更
@@ -13304,7 +13302,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.x 
 你可以在调用 [`SetVideoEncoderConfiguration`](/api-ref/rtc/unity/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 时，设置编码分辨率为 4K (3840 × 2160)、帧率为 60 fps。当你的设备不支持 4K 时，SDK 支持自动回退到适合的分辨率和帧率。
 :::info[信息]
 - 该功能对设备性能和网络带宽有一定要求，在不同的平台上支持的上下行帧率也不同，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 全高清和超高清分辨率 (Android, iOS)
@@ -13313,7 +13311,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.x 
 
 :::info[信息]
 - 高分辨率通常需要更高的性能消耗，为避免设备性能不足导致体验下降，声网建议你在性能较好的设备上开启全高清和超高清视频分辨率。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -13760,7 +13758,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/unity/API/class_v
    - 美妆：调用 [`setExtensionProperty`](/api-ref/rtc/flutter/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -14690,7 +14688,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/unity/API/class_v
 
 自该版本起，SDK 对视频编码的算法进行了优化，将默认的视频编码分辨率从 640 × 360 提升为 960 × 540，以适应设备性能和网络带宽的提升，在各种音视频互动场景下，为用户提供全链路的高清体验。
 如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/flutter/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
-由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 #### 其他兼容性变更
 
@@ -15350,7 +15348,7 @@ v6.0.0 SDK 包名由 `agora_rtc_ng` 变更为 `agora_rtc_engine`，且对部分�
 
 :::info[信息]
 - 该功能对设备性能和网络带宽有一定要求，在不同的平台上支持的上下行帧率也不同，如需体验该功能，请联系[技术支持](https://ticket.shengwang.cn/)。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 全高清和超高清分辨率 (Android, iOS)
@@ -15360,7 +15358,7 @@ v6.0.0 SDK 包名由 `agora_rtc_ng` 变更为 `agora_rtc_engine`，且对部分�
 :::info[信息]
 - 超高清分辨率 (4K，60 fps) 目前为 Beta 功能，且对设备性能和网络带宽有一定要求，如需体验该功能，请联系[技术支持](https://ticket.shengwang.cn/)。
 - 高分辨率通常需要更高的性能消耗，为避免设备性能不足导致体验下降，声网建议你在性能较好的设备上开启全高清和超高清视频分辨率。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -15757,7 +15755,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/flutter/API/class
    - 美妆：调用 [`setExtensionProperty`](/api-ref/rtc/rn/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -16433,7 +16431,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/flutter/API/class
 
 #### 支持仅播放副歌片段
 
-   该版本新增 [`getInternalSongCode`](/api-ref/rtc/rn/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](https://docs.agora.io/cn/online-ktv/ktv_overview?platform=Android)了解更多 K 歌场景方案。
+   该版本新增 [`getInternalSongCode`](/api-ref/rtc/rn/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](https://docportal.shengwang.cn/cn/online-ktv/landing-page?platform=Android)了解更多 K 歌场景方案。
 
 ### 改进
 
@@ -16581,7 +16579,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/flutter/API/class
 
  如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/rn/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
-<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
+<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
 
 #### 其他兼容性变更
 
@@ -17103,7 +17101,7 @@ v4.0.0 SDK 包名由 `react-native-agora-rtc-ng` 变更为 `react-native-agora`�
 :::info[信息]
 - 超高清分辨率（4K，60 fps）目前为 Beta 功能，且对设备性能和网络带宽有一定要求，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
 - 高分辨率通常需要更高的性能消耗，为避免设备性能不足导致体验下降，声网建议你在性能较好的设备上开启全高清和超高清视频分辨率。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -17306,7 +17304,7 @@ AudioMixerModuleName=
 - 美妆：调用 [`setExtensionProperty`](/api-ref/rtc/unreal-cpp/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
 :::info[信息]
-目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+目前，高级美颜功能为**限时免费**，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 秀场直播场景
@@ -17530,7 +17528,7 @@ SDK 提供了一套强大的 C++ API，使开发者可以轻松构建具备实�
 
 - [跑通 API 示例项目](/zh-CN/realtime-media/rtc/get-started/run-demo)
 - [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
-- [实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)
+- [实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)
 - [实现纯语音互动](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start)
 - [API 参考](/api-ref/rtc/unreal-cpp/API/rtc_api_overview)
 
@@ -17630,7 +17628,7 @@ AudioMixerModuleName=
 - 美妆：调用 [`SetExtensionProperty`](/api-ref/rtc/unreal-blueprint/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
 :::info[信息]
-目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+目前，高级美颜功能为**限时免费**，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 秀场直播场景
@@ -17705,7 +17703,7 @@ AudioMixerModuleName=
 
 ![Get 函数](https://web-cdn.agora.io/docs-portal/img/rtc/ue-bp-release440-01.png)
 
-下图演示通过 [`GetAgoraRtcEngine`](/api-ref/rtc/unreal-blueprint/API/toc_initialize#api_createagorartcengine) 创建 [`IRtcEngine`](/api-ref/rtc/unreal-blueprint/API/rtc_interface_class#class_irtcengine) 实例，并连接 [`Initialize`](/api-ref/rtc/unreal-blueprint/API/toc_initialize#api_irtcengine_initialize) 节点进行初始化操作。
+下图演示通过 [`GetAgoraRtcEngine`](/api-ref/rtc/unreal-blueprint/API/toc_initialize#api_createagorartcengine) 创建 [`IRtcEngine`](/api-ref/rtc/unreal-blueprint/API/rtc_interface_class#class_irtcengine) 实例，并连接 [`Initialize`]((/api-ref/rtc/unreal-blueprint/API/toc_initialize#api_irtcengine_initialize)) 节点进行初始化操作。
 
 ![Get 示例](https://web-cdn.agora.io/docs-portal/img/rtc/ue-bp-release440-02.png)
 
@@ -17830,7 +17828,7 @@ SDK 提供可视化界面和一系列直观易用的节点，开发者可在 Unr
 
 - [跑通 API 示例项目](/zh-CN/realtime-media/rtc/get-started/run-demo)
 - [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
-- [实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)
+- [实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)
 - [实现纯语音互动](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start)
 - [API 参考](/api-ref/rtc/unreal-blueprint/API/rtc_api_overview)
 

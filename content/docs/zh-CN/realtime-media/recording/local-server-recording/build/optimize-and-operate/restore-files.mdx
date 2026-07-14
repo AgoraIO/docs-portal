@@ -1,12 +1,9 @@
 ---
 title: "录制崩溃后修复录制文件"
-description: "了解如何在本地服务端录制中录制崩溃后修复录制文件，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
 ## 适用场景
 
-录制进程崩溃后，录制生成的 MP4 文件通常无法播放。
-
-为尽可能保留录制生成的音视频文件，声网提供了录制崩溃后修复文件的解决方案。
+录制进程崩溃后，录制生成的 MP4 文件通常无法播放。为尽可能保留录制生成的音视频文件，声网提供了录制崩溃后修复文件的解决方案。
 
 ## 解决方案
 
@@ -14,12 +11,12 @@ description: "了解如何在本地服务端录制中录制崩溃后修复录制
 
 在初始化 `AgoraService` 时，通过设置私有参数，启用录制生成文件可恢复模式：
 
-```java tab="Java" tabGroup="zh-cn-realtime-media-recording-local-server-recording-build-optimize-and-operate-restore-files-1"
+```java
 AgoraParameter parameter = agoraService.getAgoraParameter();
 parameter.setBool("che.media_recorder_recover_files", true);
 ```
 
-```cpp tab="C++" tabGroup="zh-cn-realtime-media-recording-local-server-recording-build-optimize-and-operate-restore-files-1"
+```cpp
 auto agoraParameter = service->getAgoraParameter();
 agoraParameter->setBool("che.media_recorder_recover_files", true);
 ```

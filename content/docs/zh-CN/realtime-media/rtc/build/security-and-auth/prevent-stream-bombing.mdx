@@ -1,10 +1,10 @@
 ---
 title: "预防和处理炸房捣乱现象"
-description: "了解实时互动 RTC 在不同平台上的预防和处理炸房捣乱现象方式，包括接入流程、关键配置和平台差异。"
 ---
+
 <PlatformStructured platform="android">
 
-常见的炸房捣乱行为包括：
+炸房捣乱指用户恶意扰乱房间聊天秩序的现象，通常出现在语音聊天室、多人连麦直播等互动场景中。常见的炸房捣乱行为包括：
 
 - 截获 Token 非法加入频道，或利用 Token 有效期过长，反复加入频道。
 - 不断制造噪音或发送违规的音视频内容。
@@ -15,7 +15,7 @@ description: "了解实时互动 RTC 在不同平台上的预防和处理炸房�
 
 ## 前提条件
 
-- 有效的声网开发者账号和声网控制台项目，详见[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+- 有效的声网开发者账号和声网控制台项目，详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
 - 已启用 Token 鉴权。你可以根据你的项目情况选择启用 Token 鉴权的方法：
   - 新建项目：在控制台创建项目时，选择 App ID + Token 为鉴权机制。详见[管理鉴权方式](/zh-CN/introduction/user-guides/manage_authentication#使用-app-id-和-token-鉴权)。
   - 已有项目：如果你在创建项目时选择了 App ID 为鉴权机制，可以升级到 App ID + Token 鉴权。
@@ -27,7 +27,7 @@ description: "了解实时互动 RTC 在不同平台上的预防和处理炸房�
 
 ### 使用 Token 鉴权
 
-为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)来进行部署和调试。
+为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)来进行部署和调试。
 
 参考下列方式来使用 Token 鉴权：
 
@@ -135,7 +135,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ## 前提条件
 
-- 有效的声网开发者账号和声网控制台项目，详见[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+- 有效的声网开发者账号和声网控制台项目，详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
 - 已启用 Token 鉴权。你可以根据你的项目情况选择启用 Token 鉴权的方法：
   - 新建项目：在控制台创建项目时，选择 App ID + Token 为鉴权机制。详见[管理鉴权方式](/zh-CN/introduction/user-guides/manage_authentication#使用-app-id-和-token-鉴权)。
   - 已有项目：如果你在创建项目时选择了 App ID 为鉴权机制，可以升级到 App ID + Token 鉴权。
@@ -147,7 +147,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 使用 Token 鉴权
 
-为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)来进行部署和调试。
+为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)来进行部署和调试。
 
 参考下列方式来使用 Token 鉴权：
 
@@ -255,7 +255,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ## 前提条件
 
-- 有效的声网开发者账号和声网控制台项目，详见[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+- 有效的声网开发者账号和声网控制台项目，详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
 - 已启用 Token 鉴权。你可以根据你的项目情况选择启用 Token 鉴权的方法：
   - 新建项目：在控制台创建项目时，选择 App ID + Token 为鉴权机制。详见[管理鉴权方式](/zh-CN/introduction/user-guides/manage_authentication#使用-app-id-和-token-鉴权)。
   - 已有项目：如果你在创建项目时选择了 App ID 为鉴权机制，可以升级到 App ID + Token 鉴权。
@@ -267,7 +267,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 使用 Token 鉴权
 
-为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)来进行部署和调试。
+为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)来进行部署和调试。
 
 参考下列方式来使用 Token 鉴权：
 
@@ -375,7 +375,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ## 前提条件
 
-- 有效的声网开发者账号和声网控制台项目，详见[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+- 有效的声网开发者账号和声网控制台项目，详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
 - 已启用 Token 鉴权。你可以根据你的项目情况选择启用 Token 鉴权的方法：
   - 新建项目：在控制台创建项目时，选择 App ID + Token 为鉴权机制。详见[管理鉴权方式](/zh-CN/introduction/user-guides/manage_authentication#使用-app-id-和-token-鉴权)。
   - 已有项目：如果你在创建项目时选择了 App ID 为鉴权机制，可以升级到 App ID + Token 鉴权。
@@ -387,7 +387,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 使用 Token 鉴权
 
-为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)来进行部署和调试。
+为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)来进行部署和调试。
 
 参考下列方式来使用 Token 鉴权：
 
@@ -495,7 +495,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ## 前提条件
 
-- 有效的声网开发者账号和声网控制台项目，详见[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+- 有效的声网开发者账号和声网控制台项目，详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
 - 已启用 Token 鉴权。你可以根据你的项目情况选择启用 Token 鉴权的方法：
   - 新建项目：在控制台创建项目时，选择 App ID + Token 为鉴权机制。详见[管理鉴权方式](/zh-CN/introduction/user-guides/manage_authentication#使用-app-id-和-token-鉴权)。
   - 已有项目：如果你在创建项目时选择了 App ID 为鉴权机制，可以升级到 App ID + Token 鉴权。
@@ -507,7 +507,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 使用 Token 鉴权
 
-为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)来进行部署和调试。
+为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)来进行部署和调试。
 
 参考下列方式来使用 Token 鉴权：
 
@@ -615,7 +615,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ## 前提条件
 
-- 有效的声网开发者账号和声网控制台项目，详见[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+- 有效的声网开发者账号和声网控制台项目，详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
 - 已启用 Token 鉴权。你可以根据你的项目情况选择启用 Token 鉴权的方法：
   - 新建项目：在控制台创建项目时，选择 App ID + Token 为鉴权机制。详见[管理鉴权方式](/zh-CN/introduction/user-guides/manage_authentication#使用-app-id-和-token-鉴权)。
   - 已有项目：如果你在创建项目时选择了 App ID 为鉴权机制，可以升级到 App ID + Token 鉴权。
@@ -627,7 +627,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 使用 Token 鉴权
 
-为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)来进行部署和调试。
+为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)来进行部署和调试。
 
 参考下列方式来使用 Token 鉴权：
 
@@ -735,7 +735,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ## 前提条件
 
-- 有效的声网开发者账号和声网控制台项目，详见[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+- 有效的声网开发者账号和声网控制台项目，详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
 - 已启用 Token 鉴权。你可以根据你的项目情况选择启用 Token 鉴权的方法：
   - 新建项目：在控制台创建项目时，选择 App ID + Token 为鉴权机制。详见[管理鉴权方式](/zh-CN/introduction/user-guides/manage_authentication#使用-app-id-和-token-鉴权)。
   - 已有项目：如果你在创建项目时选择了 App ID 为鉴权机制，可以升级到 App ID + Token 鉴权。
@@ -747,7 +747,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 使用 Token 鉴权
 
-为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)来进行部署和调试。
+为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)来进行部署和调试。
 
 参考下列方式来使用 Token 鉴权：
 
@@ -855,7 +855,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ## 前提条件
 
-- 有效的声网开发者账号和声网控制台项目，详见[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+- 有效的声网开发者账号和声网控制台项目，详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
 - 已启用 Token 鉴权。你可以根据你的项目情况选择启用 Token 鉴权的方法：
   - 新建项目：在控制台创建项目时，选择 App ID + Token 为鉴权机制。详见[管理鉴权方式](/zh-CN/introduction/user-guides/manage_authentication#使用-app-id-和-token-鉴权)。
   - 已有项目：如果你在创建项目时选择了 App ID 为鉴权机制，可以升级到 App ID + Token 鉴权。
@@ -867,7 +867,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 使用 Token 鉴权
 
-为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)来进行部署和调试。
+为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)来进行部署和调试。
 
 参考下列方式来使用 Token 鉴权：
 
@@ -975,7 +975,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ## 前提条件
 
-- 有效的声网开发者账号和声网控制台项目，详见[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+- 有效的声网开发者账号和声网控制台项目，详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
 - 已启用 Token 鉴权。你可以根据你的项目情况选择启用 Token 鉴权的方法：
   - 新建项目：在控制台创建项目时，选择 App ID + Token 为鉴权机制。详见[管理鉴权方式](/zh-CN/introduction/user-guides/manage_authentication#使用-app-id-和-token-鉴权)。
   - 已有项目：如果你在创建项目时选择了 App ID 为鉴权机制，可以升级到 App ID + Token 鉴权。
@@ -987,7 +987,7 @@ Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rt
 
 ### 使用 Token 鉴权
 
-为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)来进行部署和调试。
+为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)来进行部署和调试。
 
 参考下列方式来使用 Token 鉴权：
 

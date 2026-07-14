@@ -1,0 +1,142 @@
+---
+title: "本地音频合流"
+description: "本地音频合流 API reference."
+---
+
+<a id="toc_audiomixer"></a>
+
+<a id="api_irtcengine_startlocalaudiomixer"></a>
+
+## startLocalAudioMixer
+
+开始本地音频混音。
+
+<a id="api_irtcengine_startlocalaudiomixer__prototype"></a>
+
+```cpp
+virtual int startLocalAudioMixer(const LocalAudioMixerConfiguration& config) = 0;
+```
+
+<a id="api_irtcengine_startlocalaudiomixer__detailed_desc"></a>
+
+该方法支持将多个音频流在本地合并为一个音频流，例如将本地麦克风采集的音频流、媒体播放器的音频流、声卡的音频流以及远端用户的音频流合并为一个音频流，并将该合并后的音频流发布到频道中。
+
+- 如果你希望混合本地采集的音频流，可以在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中将 `publishMixedAudioTrack` 设置为 true，然后将混合后的音频流发布到频道中。
+- 如果你希望混合远端音频流，请确保远端音频流已在频道中发布，并且你已订阅需要混合的音频流。
+
+:::info[注]
+为确保音频质量，建议混音的音频流数量不超过 10 路。
+:::
+
+<a id="api_irtcengine_startlocalaudiomixer__scenario"></a>
+
+### 适用场景
+
+你可以在以下场景中启用该功能：
+
+- 使用本地视频合图功能时，可同时采集并发布合图视频流所关联的音频流。
+- 在直播场景中，用户可以接收频道内的音频流，在本地混合多个音频流后，将混合后的音频流转发到其他频道。
+- 在在线课堂中，老师可以将与学生互动的音频在本地混合后转发到其他频道。
+
+<a id="api_irtcengine_startlocalaudiomixer__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或加入频道后调用该方法。
+
+<a id="api_irtcengine_startlocalaudiomixer__parameters"></a>
+
+### 参数
+
+#### `config`
+
+本地音频混音的配置参数，详见 [LocalAudioMixerConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-localaudiomixerconfiguration)。
+
+<a id="api_irtcengine_startlocalaudiomixer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+  - -7： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象尚未初始化。请在调用该方法前先初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoplocalaudiomixer"></a>
+
+## stopLocalAudioMixer
+
+停止本地混音。
+
+<a id="api_irtcengine_stoplocalaudiomixer__prototype"></a>
+
+```cpp
+virtual int stopLocalAudioMixer() = 0;
+```
+
+<a id="api_irtcengine_stoplocalaudiomixer__detailed_desc"></a>
+
+调用 [startLocalAudioMixer](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audiomixer#api_irtcengine_startlocalaudiomixer) 后，如需停止本地混音，可调用该方法。
+
+<a id="api_irtcengine_stoplocalaudiomixer__timing"></a>
+
+### 调用时机
+
+请在调用 [startLocalAudioMixer](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audiomixer#api_irtcengine_startlocalaudiomixer) 之后调用该方法。
+
+<a id="api_irtcengine_stoplocalaudiomixer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+  - -7： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象尚未初始化。请在调用该方法前先初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_updatelocalaudiomixerconfiguration"></a>
+
+## updateLocalAudioMixerConfiguration
+
+更新本地混音配置。
+
+<a id="api_irtcengine_updatelocalaudiomixerconfiguration__prototype"></a>
+
+```cpp
+virtual int updateLocalAudioMixerConfiguration(const LocalAudioMixerConfiguration& config) = 0;
+```
+
+<a id="api_irtcengine_updatelocalaudiomixerconfiguration__detailed_desc"></a>
+
+调用 [startLocalAudioMixer](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audiomixer#api_irtcengine_startlocalaudiomixer) 后，如需更新本地混音配置，可调用该方法。
+
+:::info[注]
+为确保音频质量，建议混音的音频流数量不超过 10。
+:::
+
+<a id="api_irtcengine_updatelocalaudiomixerconfiguration__timing"></a>
+
+### 调用时机
+
+请在调用 [startLocalAudioMixer](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/audiomixer#api_irtcengine_startlocalaudiomixer) 之后调用此方法。
+
+<a id="api_irtcengine_updatelocalaudiomixerconfiguration__parameters"></a>
+
+### 参数
+
+#### `config`
+
+本地混音配置。详见 [LocalAudioMixerConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-localaudiomixerconfiguration)。
+
+<a id="api_irtcengine_updatelocalaudiomixerconfiguration__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+  - -7： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象尚未初始化。请在调用此方法前先初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)

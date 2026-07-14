@@ -1,6 +1,5 @@
 ---
 title: "限定访问区域"
-description: "了解 RTSA 的配额、API 调用限制、并发限制和使用约束。"
 ---
 为适应不同国家或地区的法律法规，声网支持限定访问区域功能。
 
@@ -47,7 +46,7 @@ description: "了解 RTSA 的配额、API 调用限制、并发限制和使用�
 
 参考如下示例代码在你的 App 中实现限定访问区域功能。
 
-```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-setup-and-access-region-limit-1"
+```c
 // 设置区域为北美
 rtc_service_option_t service_opt;
 service_opt.area_code = AREA_CODE_NA;
@@ -58,7 +57,7 @@ service_opt.area_code = AREA_CODE_NA;
 rval = agora_rtc_init(appid, &event_handler, &service_opt);
 ```
 
-```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-setup-and-access-region-limit-1"
+```java
 // 设置区域为北美
 RtcServiceOptions options = new RtcServiceOptions();
 options.areaCode = AreaCode.AREA_CODE_NA;

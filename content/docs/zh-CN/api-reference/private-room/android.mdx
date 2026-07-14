@@ -59,7 +59,7 @@ fun renewToken(rtcToken: String)
 
 | 参数        | 类型     | 含义                 |
 | ---------- | ------- | -------------------- |
-| `rtcToken`      | String | RTC 服务 Token，详见[使用 RTC Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。 |
+| `rtcToken`      | String | RTC 服务 Token，详见[使用 RTC Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication)。 |
 
 <a id="prepareforcall"></a>
 ### prepareForCall
@@ -377,7 +377,7 @@ fun tokenPrivilegeWillExpire()
 收到该回调后，你需要重新获取 RTC 服务的 Token，然后调用 [`renewToken`](#renewtoken) 将新的 Token 发送给 SDK。
 
 :::info[信息]
-如果你的信令 Token 与 RTC Token 过期时间一致，收到该回调即意味着信令 Token 也已过期。收到该回调后，你可以同步生成并更新信令 Token。例如，如果你使用的是声网的 RTM SDK 实现的信令通道，则可以重新[生成 RTM Token](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)，然后调用 `AgoraRtmClientKit.revewToken` 方法更新信令 Token。
+如果你的信令 Token 与 RTC Token 过期时间一致，收到该回调即意味着信令 Token 也已过期。收到该回调后，你可以同步生成并更新信令 Token。例如，如果你使用的是声网的 RTM SDK 实现的信令通道，则可以重新[生成 RTM Token](/zh-CN/realtime-media/rtm/user-guide/token/token-generation)，然后调用 `AgoraRtmClientKit.revewToken` 方法更新信令 Token。
 :::
 
 该回调为可选。你可以根据实际业务场景选择是否监听。
@@ -545,7 +545,7 @@ open class PrepareConfig(
 RTC Token。
 
         :::warning[注意]
-        - 你需要使用通配频道名的 Token，即在生成 Token 时将 `channelName` 设为通配符或空字符串。详见[使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
+        - 你需要使用通配频道名的 Token，即在生成 Token 时将 `channelName` 设为通配符或空字符串。详见[使用通配 Token](/zh-CN/realtime-media/rtc/best-practice/wildcard-token)。
                 - 请确保生成通配 Token 时填的 `uid` 和 [`initialize`](#initialize) 中的 `userId` 一致。
         :::
 

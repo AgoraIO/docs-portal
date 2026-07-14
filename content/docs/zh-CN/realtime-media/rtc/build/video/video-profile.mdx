@@ -1,8 +1,10 @@
 ---
 title: "设置视频编码属性"
-description: "了解实时互动 RTC 在不同平台上的设置视频编码属性方式，包括接入流程、关键配置和平台差异。"
 ---
+
 <PlatformStructured platform="android">
+
+本文介绍如何调用声网提供的 API 设置视频编码属性。
 
 ## 功能介绍
 
@@ -42,7 +44,7 @@ engine.setVideoEncoderConfiguration(new VideoEncoderConfiguration(
 ## 开发注意事项
 
 - `setVideoEncoderConfiguration` 中的各参数值是在理想网络状态下的最大值。声网 SDK 会根据实时网络环境和设备，对设置的参数作自适应调整，通常会下调参数。
-- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 参考信息
 
@@ -252,7 +254,7 @@ agoraKit.setVideoEncoderConfiguration(AgoraVideoEncoderConfiguration(size: resol
 ## 开发注意事项
 
 - `setVideoEncoderConfiguration` 中的各参数值是在理想网络状态下的最大值。声网 SDK 会根据实时网络环境和设备，对设置的参数作自适应调整，通常会下调参数。
-- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 参考信息
 
@@ -462,7 +464,7 @@ agoraKit.setVideoEncoderConfiguration(AgoraVideoEncoderConfiguration(size: resol
 ## 开发注意事项
 
 - `setVideoEncoderConfiguration` 中的各参数值是在理想网络状态下的最大值。声网 SDK 会根据实时网络环境和设备，对设置的参数作自适应调整，通常会下调参数。
-- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 参考信息
 
@@ -800,7 +802,7 @@ rtcEngine->setVideoEncoderConfiguration(videoConfig);
 ## 开发注意事项
 
 - `setVideoEncoderConfiguration` 中的各参数值是在理想网络状态下的最大值。声网 SDK 会根据实时网络环境和设备，对设置的参数作自适应调整，通常会下调参数。
-- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 参考信息
 
@@ -963,7 +965,7 @@ this.rtcEngine.enableVideo()
 ## 开发注意事项
 
 - `setVideoEncoderConfiguration` 中的各参数值是在理想网络状态下的最大值。声网 SDK 会根据实时网络环境和设备，对设置的参数作自适应调整，通常会下调参数。
-- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 参考信息
 
@@ -1184,7 +1186,7 @@ Status Bar 与屏幕的相对方向保持一致，与手机重力感应无关（
 ## 开发注意事项
 
 - `setVideoEncoderConfiguration` 中的各参数值是在理想网络状态下的最大值。声网 SDK 会根据实时网络环境和设备，对设置的参数作自适应调整，通常会下调参数。
-- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 参考信息
 
@@ -1357,7 +1359,7 @@ RtcEngine.SetVideoEncoderConfiguration(config);
 ### 开发注意事项
 
 - `SetVideoEncoderConfiguration` 中的各参数值是在理想网络状态下的最大值。声网 SDK 会根据实时网络环境和设备，对设置的参数作自适应调整，通常会下调参数。
-- `SetVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- `SetVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ### 示例项目
 
@@ -1524,7 +1526,7 @@ await _engine.setVideoEncoderConfiguration(
 ## 开发注意事项
 
 - `setVideoEncoderConfiguration` 中的各参数值是在理想网络状态下的最大值。声网 SDK 会根据实时网络环境和设备，对设置的参数作自适应调整，通常会下调参数。
-- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 参考信息
 
@@ -1694,7 +1696,7 @@ await _engine.setVideoEncoderConfiguration(
 ## 开发注意事项
 
 - `setVideoEncoderConfiguration` 中的各参数值是在理想网络状态下的最大值。声网 SDK 会根据实时网络环境和设备，对设置的参数作自适应调整，通常会下调参数。
-- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 参考信息
 
@@ -1857,7 +1859,7 @@ rtcEngine->setVideoEncoderConfiguration(videoConfig);
 ## 开发注意事项
 
 - `setVideoEncoderConfiguration` 中的各参数值是在理想网络状态下的最大值。声网 SDK 会根据实时网络环境和设备，对设置的参数作自适应调整，通常会下调参数。
-- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- `setVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 参考信息
 
@@ -2065,7 +2067,7 @@ rtcEngine->setVideoEncoderConfiguration(videoConfig);
 ## 开发注意事项
 
 - `SetVideoEncoderConfiguration` 中的各参数值是在理想网络状态下的最大值。声网 SDK 会根据实时网络环境和设备，对设置的参数作自适应调整，通常会下调参数。
-- `SetVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- `SetVideoEncoderConfiguration` 中的参数设置可能会影响计费。如果因自适应产生参数下调，计费按用户实际订阅的视频分辨率为准。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 参考信息
 

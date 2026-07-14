@@ -5,8 +5,6 @@ description: "插件 API reference."
 
 <a id="toc_extension"></a>
 
-## 插件
-
 <a id="api_irtcengine_enableextension"></a>
 
 ## EnableExtension
@@ -210,7 +208,7 @@ public abstract int RegisterExtension(string provider, string extension, MEDIA_S
 ### 调用时机
 
 - 建议你在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 后、加入频道前调用该方法。
-- 对于视频相关插件（例如美颜插件），需要在启用视频模块（[EnableVideo](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_enablevideo) / [EnableLocalVideo](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_enablelocalvideo) ）之前调用该方法。
+- 对于视频相关插件（例如美颜插件），需要在启用视频模块（[EnableVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_enablevideo) / [EnableLocalVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_enablelocalvideo) ）之前调用该方法。
 - 调用该方法前，需要先调用 [LoadExtensionProvider](/zh-CN/api-reference/rtc/csharp-windows/extension#api_irtcengine_loadextensionprovider) 加载插件。
 
 <a id="api_irtcengine_registerextension__restriction"></a>

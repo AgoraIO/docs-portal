@@ -1,8 +1,10 @@
 ---
 title: "实现字节火山美颜"
-description: "了解秀场直播在不同平台上的字节火山美颜方式，包括接入流程、关键配置和平台差异。"
 ---
+
 <PlatformStructured platform="android">
+
+本文介绍如何通过声网美颜场景化 API (Beauty API) 集成字节火山美颜功能到实时音视频互动中。
 
 ## 示例项目
 
@@ -22,7 +24,7 @@ description: "了解秀场直播在不同平台上的字节火山美颜方式，
 - [Java Development Kit](https://www.oracle.com/java/technologies/javase-downloads.html) 11
 - [Android Studio](https://developer.android.com/studio/) 3.5 及以上
 - Android 手机，版本 Android 5.0（API Level 21）及以上
-- [开通秀场直播服务](/zh-CN/solutions/showroom/build/setup-and-access/enable-service)
+- [开通服务](/zh-CN/solutions/showroom/build/setup-and-access/enable-service)
 - 已联系字节技术获取最新的美颜 SDK、美颜资源、美颜证书
 - 已在项目中添加 Kotlin 插件
 
@@ -330,7 +332,7 @@ mRtcEngine.registerVideoFrameObserver(object : IVideoFrameObserver {
 
 调用 `RtcEngine` 类的 `joinChannel` 加入频道，同时传入如下参数：
 
-- `token`：用于鉴权的动态密钥。如果在[创建声网项目](/zh-CN/solutions/showroom/build/setup-and-access/enable-service#创建声网项目)时启用**调试模式**，那么将 `token` 参数传空。如果启用**安全模式**，那么你先参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)在你的业务服务端生成 Token，然后将生成的 Token 传入该参数。
+- `token`：用于鉴权的动态密钥。如果在[创建声网项目](/zh-CN/solutions/showroom/build/setup-and-access/enable-service#创建声网项目)时启用**调试模式**，那么将 `token` 参数传空。如果启用**安全模式**，那么你先参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)在你的业务服务端生成 Token，然后将生成的 Token 传入该参数。
 - `channelId`：频道名。
 - `options`：频道媒体设置选项。
 
@@ -458,7 +460,7 @@ RtcEngine.destroy()
 - [Xcode](https://apps.apple.com/cn/app/xcode/id497799835?mt=12) 12.0 及以上
 - iOS 设备，版本 13.0 及以上
 - 有效的苹果开发者账号
-- [开通秀场直播服务](/zh-CN/solutions/showroom/build/setup-and-access/enable-service)
+- [开通服务](/zh-CN/solutions/showroom/build/setup-and-access/enable-service)
 - 已联系字节火山技术获取最新的美颜 SDK、美颜资源、美颜证书
 
 ### 创建项目并集成 SDK
@@ -670,7 +672,7 @@ extension BeautyViewController: AgoraVideoFrameDelegate {
 
 调用 `AgoraRtcEngineKit` 类的 `joinChannelByToken` 加入频道，同时传入如下参数：
 
-- `token`：用于鉴权的动态密钥。如果在[创建声网项目](/zh-CN/solutions/showroom/build/setup-and-access/enable-service#创建声网项目)时启用**调试模式**，那么将 `token` 参数传空。如果启用**安全模式**，那么你先参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)在你的业务服务端生成 Token，然后将生成的 Token 传入该参数。
+- `token`：用于鉴权的动态密钥。如果在[创建声网项目](/zh-CN/solutions/showroom/build/setup-and-access/enable-service#创建声网项目)时启用**调试模式**，那么将 `token` 参数传空。如果启用**安全模式**，那么你先参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)在你的业务服务端生成 Token，然后将生成的 Token 传入该参数。
 - `channelId`：频道名。
 - `mediaOptions`：频道媒体设置选项。
 

@@ -1,0 +1,362 @@
+---
+title: "媒体播放器缓存"
+description: "媒体播放器缓存 API reference."
+---
+
+<a id="toc_mediaplayer_cache"></a>
+
+<a id="api_imediaplayercachemanager_enableautoremovecache"></a>
+
+## enableAutoRemoveCache
+
+设置是否开启自动清除缓存文件功能。
+
+<a id="api_imediaplayercachemanager_enableautoremovecache__prototype"></a>
+
+```typescript
+abstract enableAutoRemoveCache(enable: boolean): number;
+```
+
+<a id="api_imediaplayercachemanager_enableautoremovecache__detailed_desc"></a>
+
+开启自动清除缓存文件后，当播放器中缓存的媒体文件超过你设置的文件数量或总缓存大小的上限时，SDK 会自动清除近期最少使用的一个缓存文件。
+
+<a id="api_imediaplayercachemanager_enableautoremovecache__parameters"></a>
+
+### 参数
+
+#### `enable`
+
+是否自动清除缓存文件：
+
+- true：开启自动清除缓存文件功能。
+- false：（默认）关闭自动清除缓存文件功能。
+
+<a id="api_imediaplayercachemanager_enableautoremovecache__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_getcachedir"></a>
+
+## getCacheDir
+
+获取缓存文件的储存路径。
+
+<a id="api_imediaplayercachemanager_getcachedir__prototype"></a>
+
+```typescript
+abstract getCacheDir(length: number): string;
+```
+
+<a id="api_imediaplayercachemanager_getcachedir__detailed_desc"></a>
+
+如果你在调用该方法前未曾调用 [setCacheDir](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_setcachedir) 方法自定义缓存文件的储存路径，该方法返回的为 SDK 默认的缓存文件储存路径。
+
+<a id="api_imediaplayercachemanager_getcachedir__parameters"></a>
+
+### 参数
+
+#### `length`
+
+输入参数，缓存文件储存路径字符串的最大长度。
+
+<a id="api_imediaplayercachemanager_getcachedir__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回缓存文件的储存路径。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_getcachefilecount"></a>
+
+## getCacheFileCount
+
+获取当前已缓存的媒体文件的总数量。
+
+<a id="api_imediaplayercachemanager_getcachefilecount__prototype"></a>
+
+```typescript
+abstract getCacheFileCount(): number;
+```
+
+<a id="api_imediaplayercachemanager_getcachefilecount__detailed_desc"></a>
+
+<a id="api_imediaplayercachemanager_getcachefilecount__return_values"></a>
+
+### 返回值
+
+- ≥ 0：方法调用成功，返回当前已缓存的媒体文件的总数量。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_getmaxcachefilecount"></a>
+
+## getMaxCacheFileCount
+
+获取所设置的缓存文件数量上限。
+
+<a id="api_imediaplayercachemanager_getmaxcachefilecount__prototype"></a>
+
+```typescript
+abstract getMaxCacheFileCount(): number;
+```
+
+<a id="api_imediaplayercachemanager_getmaxcachefilecount__detailed_desc"></a>
+
+SDK 默认的缓存文件数量上限为 1000。
+
+<a id="api_imediaplayercachemanager_getmaxcachefilecount__return_values"></a>
+
+### 返回值
+
+- &gt; 0：方法调用成功，返回缓存文件数量的上限。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_getmaxcachefilesize"></a>
+
+## getMaxCacheFileSize
+
+获取所设置的缓存文件总缓存的上限。
+
+<a id="api_imediaplayercachemanager_getmaxcachefilesize__prototype"></a>
+
+```typescript
+abstract getMaxCacheFileSize(): number;
+```
+
+<a id="api_imediaplayercachemanager_getmaxcachefilesize__detailed_desc"></a>
+
+SDK 默认的缓存文件总缓存上限为 1GB。你可以调用 [setMaxCacheFileSize](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilesize) 方法自定义总缓存大小的上限。
+
+<a id="api_imediaplayercachemanager_getmaxcachefilesize__return_values"></a>
+
+### 返回值
+
+- &gt; 0：方法调用成功，返回缓存文件的总缓存上限，单位为字节。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_removeallcaches"></a>
+
+## removeAllCaches
+
+删除媒体播放器中所有已缓存的媒体文件。
+
+<a id="api_imediaplayercachemanager_removeallcaches__prototype"></a>
+
+```typescript
+abstract removeAllCaches(): number;
+```
+
+<a id="api_imediaplayercachemanager_removeallcaches__detailed_desc"></a>
+
+:::info[注]
+该方法不会删除正在播放中的已缓存媒体文件。
+:::
+
+<a id="api_imediaplayercachemanager_removeallcaches__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_removecachebyuri"></a>
+
+## removeCacheByUri
+
+删除指定的已缓存媒体文件。
+
+<a id="api_imediaplayercachemanager_removecachebyuri__prototype"></a>
+
+```typescript
+abstract removeCacheByUri(uri: string): number;
+```
+
+<a id="api_imediaplayercachemanager_removecachebyuri__detailed_desc"></a>
+
+:::info[注]
+该方法不会删除正在播放中的已缓存媒体文件。
+:::
+
+<a id="api_imediaplayercachemanager_removecachebyuri__parameters"></a>
+
+### 参数
+
+#### `uri`
+
+待删除的缓存文件的 URI（Uniform Resource Identifier），可用于标识媒体文件。
+
+<a id="api_imediaplayercachemanager_removecachebyuri__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_removeoldcache"></a>
+
+## removeOldCache
+
+删除媒体播放器中近期最少使用的一个缓存媒体文件。
+
+<a id="api_imediaplayercachemanager_removeoldcache__prototype"></a>
+
+```typescript
+abstract removeOldCache(): number;
+```
+
+<a id="api_imediaplayercachemanager_removeoldcache__detailed_desc"></a>
+
+缓存媒体文件占用过多空间时，你可以调用该方法清理缓存文件。调用该方法后，SDK 会删除最少使用的一个缓存媒体文件。
+
+:::info[注]
+当你调用此方法删除缓存媒体文件时，当前正在播放的已缓存媒体文件不会被删除。
+:::
+
+<a id="api_imediaplayercachemanager_removeoldcache__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_setcachedir"></a>
+
+## setCacheDir
+
+设置待缓存的媒体文件的储存路径。
+
+<a id="api_imediaplayercachemanager_setcachedir__prototype"></a>
+
+```typescript
+abstract setCacheDir(path: string): number;
+```
+
+<a id="api_imediaplayercachemanager_setcachedir__detailed_desc"></a>
+
+:::info[注]
+该方法需在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 之后调用。
+:::
+
+<a id="api_imediaplayercachemanager_setcachedir__parameters"></a>
+
+### 参数
+
+#### `path`
+
+缓存文件储存的绝对路径。请确保指定的目录存在且可写。
+
+<a id="api_imediaplayercachemanager_setcachedir__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_setmaxcachefilecount"></a>
+
+## setMaxCacheFileCount
+
+设置缓存媒体文件数量的上限。
+
+<a id="api_imediaplayercachemanager_setmaxcachefilecount__prototype"></a>
+
+```typescript
+abstract setMaxCacheFileCount(count: number): number;
+```
+
+<a id="api_imediaplayercachemanager_setmaxcachefilecount__detailed_desc"></a>
+
+<a id="api_imediaplayercachemanager_setmaxcachefilecount__parameters"></a>
+
+### 参数
+
+#### `count`
+
+可缓存的媒体文件数量的上限，默认值为 1000。
+
+<a id="api_imediaplayercachemanager_setmaxcachefilecount__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="api_imediaplayercachemanager_setmaxcachefilesize"></a>
+
+## setMaxCacheFileSize
+
+设置缓存媒体文件的总缓存大小的上限。
+
+<a id="api_imediaplayercachemanager_setmaxcachefilesize__prototype"></a>
+
+```typescript
+abstract setMaxCacheFileSize(cacheSize: number): number;
+```
+
+<a id="api_imediaplayercachemanager_setmaxcachefilesize__detailed_desc"></a>
+
+<a id="api_imediaplayercachemanager_setmaxcachefilesize__parameters"></a>
+
+### 参数
+
+#### `cacheSize`
+
+缓存媒体文件的总缓存上限，单位为字节。默认为 1 GB。
+
+<a id="api_imediaplayercachemanager_setmaxcachefilesize__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
+
+- [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayercachemanager)
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats"></a>
+
+## onPlayerCacheStats
+
+报告当前缓存中的媒体资源的相关信息。
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats__prototype"></a>
+
+```typescript
+onPlayerCacheStats?(stats: CacheStatistics): void;
+```
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats__detailed_desc"></a>
+
+调用 [openWithMediaSource](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法且设置 `enableCache` 成员为 true 后，SDK 会在媒体文件打开后每秒触发一次该回调，报告当前缓存的媒体文件的统计数据。
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats__parameters"></a>
+
+### 参数
+
+#### `stats`
+
+缓存中的媒体资源的相关信息，详见 [CacheStatistics](/zh-CN/api-reference/rtc/electron/class-cachestatistics)。
+
+- [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayersourceobserver)

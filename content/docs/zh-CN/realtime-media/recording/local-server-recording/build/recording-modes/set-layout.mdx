@@ -1,6 +1,5 @@
 ---
 title: "设置合流布局"
-description: "了解本地服务端录制中设置合流布局相关内容的适用场景、配置步骤、实现要点和注意事项。"
 ---
 在使用合流录制模式时，你需要设置频道内所有发流用户子视频的大小及其在视频画布上的位置，进行合流布局。
 
@@ -101,7 +100,7 @@ struct MixerLayoutConfig {
 
 你可以参考如下示例代码设置合流布局：
 
-```java tab="Java" tabGroup="zh-cn-realtime-media-recording-local-server-recording-build-recording-modes-set-layout-1"
+```java
 VideoMixingLayout recorderLayout = new VideoMixingLayout();
 recorderLayout.setCanvasWidth(1280);
 recorderLayout.setCanvasHeight(720);
@@ -133,7 +132,7 @@ recorderLayout.setUserLayoutConfigs(layout);
 agoraMediaRtcRecorder.setVideoMixingLayout(recorderLayout);
 ```
 
-```cpp tab="C++" tabGroup="zh-cn-realtime-media-recording-local-server-recording-build-recording-modes-set-layout-1"
+```cpp
 struct VideoMixingLayout  recorderLayout;
 recorderLayout.canvasWidth = 1280;
 recorderLayout.canvasHeight = 720;

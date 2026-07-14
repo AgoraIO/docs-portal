@@ -1,0 +1,175 @@
+---
+title: "媒体流附属信息分发"
+description: "媒体流附属信息分发 API reference."
+---
+
+<a id="toc_metadata_observer"></a>
+
+<a id="api_imetadataobserver_getmaxmetadatasize"></a>
+
+## getMaxMetadataSize
+
+当 SDK 请求元数据最大大小时触发的回调。
+
+<a id="api_imetadataobserver_getmaxmetadatasize__prototype"></a>
+
+```cpp
+virtual int getMaxMetadataSize() { return DEFAULT_METADATA_SIZE_IN_BYTE; }
+```
+
+<a id="api_imetadataobserver_getmaxmetadatasize__detailed_desc"></a>
+
+调用 [registerMediaMetadataObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) 成功注册后，SDK 在每发送一帧视频时会触发该回调。你需要在该回调的返回值中指定元数据的最大大小。
+
+<a id="api_imetadataobserver_getmaxmetadatasize__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回你希望使用的元数据 `buffer` 的最大大小，单位为字节。最大值为 1024 字节。
+
+- [IMetadataObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imetadataobserver)
+
+<a id="api_irtcengine_registermediametadataobserver"></a>
+
+## registerMediaMetadataObserver
+
+注册元数据观察器。
+
+<a id="api_irtcengine_registermediametadataobserver__prototype"></a>
+
+```cpp
+virtual int registerMediaMetadataObserver(IMetadataObserver *observer, IMetadataObserver::METADATA_TYPE type) = 0;
+```
+
+<a id="api_irtcengine_registermediametadataobserver__detailed_desc"></a>
+
+你需要实现 [IMetadataObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imetadataobserver) 类，并在该方法中指定元数据类型。该方法支持在视频流中添加同步元数据，用于实现更丰富的互动直播场景，例如发送购物链接、数字优惠券和在线问答。成功调用该方法后，SDK 会触发 [getMaxMetadataSize](/zh-CN/api-reference/rtc/cpp-all-platforms/metadata/metadata-observer#api_imetadataobserver_getmaxmetadatasize) 回调。
+
+:::info[注]
+请在调用 `joinChannel` 之前调用此方法。
+:::
+
+<a id="api_irtcengine_registermediametadataobserver__parameters"></a>
+
+### 参数
+
+#### `observer`
+
+元数据观察器。详见 [IMetadataObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imetadataobserver)。
+
+#### `type`
+
+元数据类型。详见 [METADATA_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-metadatatype)。SDK 当前仅支持 `VIDEO_METADATA`。
+
+<a id="api_irtcengine_registermediametadataobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_unregistermediametadataobserver"></a>
+
+## unregisterMediaMetadataObserver
+
+取消注册指定的元数据观察器。
+
+<a id="api_irtcengine_unregistermediametadataobserver__prototype"></a>
+
+```cpp
+virtual int unregisterMediaMetadataObserver(IMetadataObserver* observer, IMetadataObserver::METADATA_TYPE type) = 0;
+```
+
+<a id="api_irtcengine_unregistermediametadataobserver__detailed_desc"></a>
+
+<a id="api_irtcengine_unregistermediametadataobserver__parameters"></a>
+
+### 参数
+
+#### `observer`
+
+元数据观察器。详见 [IMetadataObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imetadataobserver)。
+
+#### `type`
+
+元数据类型。SDK 当前仅支持 `VIDEO_METADATA`。
+
+<a id="api_irtcengine_unregistermediametadataobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="callback_imetadataobserver_onmetadatareceived"></a>
+
+## onMetadataReceived
+
+当本地用户接收到 metadata 时触发的回调。
+
+<a id="callback_imetadataobserver_onmetadatareceived__prototype"></a>
+
+```cpp
+virtual void onMetadataReceived(const Metadata& metadata) = 0;
+```
+
+<a id="callback_imetadataobserver_onmetadatareceived__detailed_desc"></a>
+
+<a id="callback_imetadataobserver_onmetadatareceived__parameters"></a>
+
+### 参数
+
+#### `metadata`
+
+接收到的元数据。详见 [Metadata](/zh-CN/api-reference/rtc/cpp-all-platforms/class-metadata)。
+
+- [IMetadataObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imetadataobserver)
+
+<a id="callback_imetadataobserver_onreadytosendmetadata"></a>
+
+## onReadyToSendMetadata
+
+当 SDK 准备好发送元数据时触发的回调。
+
+<a id="callback_imetadataobserver_onreadytosendmetadata__prototype"></a>
+
+```cpp
+virtual bool onReadyToSendMetadata(Metadata &metadata, VIDEO_SOURCE_TYPE source_type) = 0;
+```
+
+<a id="callback_imetadataobserver_onreadytosendmetadata__detailed_desc"></a>
+
+:::info[注]
+请确保元数据的大小不超过 [getMaxMetadataSize](/zh-CN/api-reference/rtc/cpp-all-platforms/metadata/metadata-observer#api_imetadataobserver_getmaxmetadatasize) 回调中设置的值。
+:::
+
+<a id="callback_imetadataobserver_onreadytosendmetadata__timing"></a>
+
+### 触发时机
+
+当 SDK 准备好发送元数据时触发。
+
+<a id="callback_imetadataobserver_onreadytosendmetadata__parameters"></a>
+
+### 参数
+
+#### `metadata`
+
+用户希望发送的元数据。详见 [Metadata](/zh-CN/api-reference/rtc/cpp-all-platforms/class-metadata)。
+
+#### `source_type`
+
+视频数据类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。
+
+<a id="callback_imetadataobserver_onreadytosendmetadata__return_values"></a>
+
+### 返回值
+
+- true：发送该视频帧。
+- false：不发送该视频帧。
+
+- [IMetadataObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imetadataobserver)

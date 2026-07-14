@@ -1,10 +1,9 @@
 ---
 title: "响应状态码"
-description: "查询云端转码的响应状态码、错误码含义、常见原因和处理建议。"
 ---
-# 云端转码
-
 本文提供云端转码和观众端多码率的响应状态码。
+
+## 云端转码
 
 在调用 RESTful API 过程中，你可能收到如下 HTTP 响应状态码：
 
@@ -76,7 +75,7 @@ description: "查询云端转码的响应状态码、错误码含义、常见原
 | --------- | --- | ------- |
 | `200 OK`     | 操作成功。 | 无需排查。 |
 | `400 Bad Request` | 请求无效。 | 检查请求参数是否合法。 |
-| `401 Unauthorized` | 鉴权无效。 | 检查用于 HTTP 认证的 `Authorization` 字段是否正确。详见[实现 HTTP 鉴权](/zh-CN/realtime-media/transcoding/build/setup-and-access/http-auth)。 |
+| `401 Unauthorized` | 鉴权无效。 | 检查用于 HTTP 认证的 `Authorization` 字段是否正确。详见[实现 HTTP 安全认证](/zh-CN/realtime-media/transcoding/build/setup-and-access/http-auth)。 |
 | `404 Not Found` | 请求的资源未找到。 | 检查 `appid` 或者 `codecId` 字段是否正确。 |
 | `415 Unsupported Media Type` | 不支持的媒体类型。 | 检查请求 Header 中的 `Content-Type` 字段是否设为 `application/json`。 |
 | `429 Too Many Requests` | 请求过于频繁。 | 等待一段时间后再重试。 |

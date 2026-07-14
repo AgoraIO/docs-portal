@@ -1,6 +1,5 @@
 ---
 title: "登录服务"
-description: "了解如何在实时消息 RTM 中登录服务，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
 你需要登录才能真正连接上 RTM 服务器、访问 RTM 的网络资源，如发送消息、订阅频道等。
 
@@ -10,7 +9,7 @@ description: "了解如何在实时消息 RTM 中登录服务，包括适用场�
 
 执行登录操作时，客户端会尝试与 RTM 服务器建立长连接，一旦建立成功，客户端会按照固定的时间间隔向 RTM 服务器传递心跳信息以保持客户端的活跃状态，直到客户端主动退出登录或掉线超时才会中断连接。在此期间，你可以在权限和使用限制范围内访问 RTM 的网络资源。
 
-```csharp tab="C#" tabGroup="rtm-build-setup-and-access-login-1"
+```csharp
 var (status,response) = await rtmClient.LoginAsync(token);
 if (status.Error)
 {
@@ -22,7 +21,7 @@ else
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-setup-and-access-login-1"
+```javascript
 try {
     const result = await rtm.login({ token: "your_token" });
 } catch (status) {
@@ -31,7 +30,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-setup-and-access-login-1"
+```java
 mRtmClient.login("your_token", new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
@@ -45,7 +44,7 @@ mRtmClient.login("your_token", new ResultCallback<Void>() {
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-setup-and-access-login-1"
+```swift
 rtm.login("token") { response, errorInfo in
     if errorInfo == nil {
         print("login success!!")
@@ -55,7 +54,7 @@ rtm.login("token") { response, errorInfo in
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-setup-and-access-login-1"
+```objc
 [rtm loginByToken:@"token" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"login success!!");
@@ -65,14 +64,14 @@ rtm.login("token") { response, errorInfo in
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-setup-and-access-login-1"
+```cpp
 uint64_t requestId;
 rtmClient->login("your_token", requestId);
 ```
 
 调用该方法后，SDK 会触发 `config.onloginresult` 回调并返回 API 调用结果。
 
-```cpp tab="C++" tabGroup="rtm-build-setup-and-access-login-2"
+```cpp
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onLoginResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
@@ -85,7 +84,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-setup-and-access-login-2"
+```dart
 try {
     var (status, response) = await rtmClient.login('your_Token');
     if (status.error == true ){
@@ -98,7 +97,7 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-setup-and-access-login-2"
+```typescript
 import { RtmError } from '@shengwang/rtm-full';
 
 try {
@@ -124,11 +123,11 @@ try {
 
 当不再需要使用 RTM 服务时，你可以通过显式调用 `config.logout` 退出登录。退出登录意味着客户端与 RTM 服务器关闭长连接，你会自动退出或取消订阅所有频道（Stream Channel 及 Message Channel），频道中的其他用户也会收到你的离开频道的 `config.onpresenceevent` 事件通知。
 
-```csharp tab="C#" tabGroup="rtm-build-setup-and-access-login-3"
+```csharp
 var (status,response) = await rtmClient.LogoutAsync();
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-setup-and-access-login-3"
+```javascript
 try {
     const result = await rtm.logout();
 } catch (status) {
@@ -137,7 +136,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-setup-and-access-login-3"
+```java
 mRtmClient.logout(new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
@@ -151,7 +150,7 @@ mRtmClient.logout(new ResultCallback<Void>() {
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-setup-and-access-login-3"
+```swift
 rtm.logout() { response, errorInfo in
     if errorInfo == nil {
         print("logout success!!")
@@ -161,7 +160,7 @@ rtm.logout() { response, errorInfo in
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-setup-and-access-login-3"
+```objc
 [rtm logout:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"logout success!!");
@@ -171,14 +170,14 @@ rtm.logout() { response, errorInfo in
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-setup-and-access-login-3"
+```cpp
 uint64_t requestId;
 rtmClient->logout(requestId);
 ```
 
 调用该方法后，SDK 会触发 `config.onlogoutresult` 回调并返回 API 调用结果。
 
-```cpp tab="C++" tabGroup="rtm-build-setup-and-access-login-4"
+```cpp
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onLogoutResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
@@ -193,7 +192,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-setup-and-access-login-4"
+```dart
 try {
     var (status, response) = await rtmClient.logout();
     if (status.error == true ){
@@ -206,7 +205,7 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-setup-and-access-login-4"
+```typescript
 import { RtmError } from '@shengwang/rtm-full';
 
 try {
@@ -228,32 +227,32 @@ try {
 
 如果你不再需要使用 RTM 服务，声网建议你及时销毁 `channel.irtmclient` 实例，以避免内存泄漏，以及错误或异常（如空指针异常）导致性能下降。
 
-```csharp tab="C#" tabGroup="rtm-build-setup-and-access-login-5"
+```csharp
 var status = rtmClient.Dispose();
 ```
 
-```java tab="Java" tabGroup="rtm-build-setup-and-access-login-5"
+```java
 mRtmClient.release();
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-setup-and-access-login-5"
+```swift
 rtm.destroy();
 rtm = nil;
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-setup-and-access-login-5"
+```objc
 [rtm destroy];
 rtm = nil;
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-setup-and-access-login-5"
+```cpp
 rtmClient->release();
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-setup-and-access-login-5"
+```dart
 var status = rtmClient.release();
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-setup-and-access-login-5"
+```typescript
 rtmClient.release();
 ```

@@ -5,8 +5,6 @@ description: "发布和订阅 API reference."
 
 <a id="toc_publishnsubscribe"></a>
 
-## 发布和订阅
-
 <a id="api_irtcengine_muteallremoteaudiostreams"></a>
 
 ## MuteAllRemoteAudioStreams
@@ -37,7 +35,7 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 
 ### 调用限制
 
-如果在调用该方法之后又调用了 [EnableAudio](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_enableaudio) 或 [DisableAudio](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#api_irtcengine_disableaudio)，则后调用的方法会生效。
+如果在调用该方法之后又调用了 [EnableAudio](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_enableaudio) 或 [DisableAudio](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#api_irtcengine_disableaudio)，则后调用的方法会生效。
 
 <a id="api_irtcengine_muteallremoteaudiostreams__parameters"></a>
 
@@ -136,7 +134,7 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 
 ### 调用限制
 
-如果在调用该方法之后又调用了 [EnableVideo](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_enablevideo) 或 [DisableVideo](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_disablevideo)，则后调用的方法会生效。
+如果在调用该方法之后又调用了 [EnableVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_enablevideo) 或 [DisableVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_disablevideo)，则后调用的方法会生效。
 
 <a id="api_irtcengine_muteallremotevideostreams__parameters"></a>
 
@@ -232,7 +230,7 @@ public abstract int MuteLocalAudioStream(bool mute);
 
 ### 相关回调
 
-成功调用该方法后，本地会触发 [OnAudioPublishStateChanged](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged) 回调；远端会触发 [OnUserMuteAudio](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+成功调用该方法后，本地会触发 [OnAudioPublishStateChanged](/zh-CN/api-reference/rtc/csharp-windows/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged) 回调；远端会触发 [OnUserMuteAudio](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 
 <a id="api_irtcengine_mutelocalaudiostream__parameters"></a>
 
@@ -274,7 +272,7 @@ public abstract int MuteLocalAudioStreamEx(bool mute, RtcConnection connection);
 该方法不影响音频采集状态，因为没有禁用音频采集设备。
 :::
 
-成功调用该方法后，远端会触发 [OnUserMuteAudio](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+成功调用该方法后，远端会触发 [OnUserMuteAudio](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__parameters"></a>
 
@@ -316,7 +314,7 @@ public abstract int MuteLocalVideoStream(bool mute);
 
 该方法用于控制是否发布本地采集的视频流。如果不发布本地采集的视频流，也不会禁用视频采集设备，所以不影响视频的采集状态。
 
-相比于调用 [EnableLocalVideo](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_enablelocalvideo) (`false`) 关闭本地视频流采集、从而取消发布本地视频流的方法，该方法响应速度更快。
+相比于调用 [EnableLocalVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_enablelocalvideo) (`false`) 关闭本地视频流采集、从而取消发布本地视频流的方法，该方法响应速度更快。
 
 <a id="api_irtcengine_mutelocalvideostream__timing"></a>
 
@@ -334,7 +332,7 @@ public abstract int MuteLocalVideoStream(bool mute);
 
 ### 相关回调
 
-成功调用该方法后，本地会触发 [OnVideoPublishStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) 回调；远端会触发 [OnUserMuteVideo](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调和 [OnRemoteVideoStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
+成功调用该方法后，本地会触发 [OnVideoPublishStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) 回调；远端会触发 [OnUserMuteVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调和 [OnRemoteVideoStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
 
 <a id="api_irtcengine_mutelocalvideostream__parameters"></a>
 
@@ -372,7 +370,7 @@ public abstract int MuteLocalVideoStreamEx(bool mute, RtcConnection connection);
 
 ### 详情
 
-成功调用该方法后，远端会触发 [OnUserMuteVideo](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
+成功调用该方法后，远端会触发 [OnUserMuteVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 回调。
 
 :::warning[注意]
 - 该方法不影响视频采集状态，没有禁用摄像头。

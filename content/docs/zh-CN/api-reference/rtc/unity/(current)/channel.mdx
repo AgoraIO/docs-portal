@@ -1,11 +1,9 @@
 ---
 title: "频道相关"
-description: "通过 UID 获取用户信息。"
+description: "频道相关 API reference."
 ---
 
 <a id="toc_channel"></a>
-
-## 频道相关
 
 <a id="api_irtcengine_getuserinfobyuid"></a>
 
@@ -316,7 +314,7 @@ public abstract int JoinChannelEx(string token, RtcConnection connection, Channe
 
 ### 调用时机
 
-该方法需要在 [Initialize](/zh-CN/api-reference/rtc/unity/initialize#api_irtcengine_initialize) 之后调用。 在多摄像头采集场景下，你需要在调用该方法之后调用 [StartPreview [2/2]](/zh-CN/api-reference/rtc/unity/video-basic#api_irtcengine_startpreview2) 方法设置 `sourceType` 为 `VIDEO_SOURCE_CAMERA_SECONDARY`，以确保第二个摄像头采集正常。
+该方法需要在 [Initialize](/zh-CN/api-reference/rtc/unity/initialize#api_irtcengine_initialize) 之后调用。 在多摄像头采集场景下，你需要在调用该方法之后调用 [StartPreview [2/2]](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_startpreview2) 方法设置 `sourceType` 为 `VIDEO_SOURCE_CAMERA_SECONDARY`，以确保第二个摄像头采集正常。
 
 <a id="api_irtcengineex_joinchannelex__related"></a>
 
@@ -664,7 +662,7 @@ public abstract int LeaveChannelEx(RtcConnection connection);
 - 该方法是异步操作，调用返回时并没有真正退出频道。
 - 如果你调用了 [LeaveChannel [1/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_leavechannel) 或 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_leavechannel2)，会同时离开 [JoinChannel [1/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel1) 或 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 及 [JoinChannelEx](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex) 加入的频道。
 
-如果你调用了该方法后立即调用 [Dispose](/zh-CN/api-reference/rtc/unity/mediaplayer-initialize#api_imediaplayer_dispose_imediaplayer) 方法，SDK 将不会触发 [OnLeaveChannel](/zh-CN/api-reference/rtc/unity/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
+如果你调用了该方法后立即调用 [Dispose](/zh-CN/api-reference/rtc/unity/play/mediaplayer/mediaplayer-initialize#api_imediaplayer_dispose_imediaplayer) 方法，SDK 将不会触发 [OnLeaveChannel](/zh-CN/api-reference/rtc/unity/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
 :::
 
 <a id="api_irtcengineex_leavechannelex__scenario"></a>
@@ -725,7 +723,7 @@ public abstract int LeaveChannelEx(RtcConnection connection, LeaveChannelOptions
 - 该方法是异步操作，调用返回时并没有真正退出频道。
 - 如果你调用了 [LeaveChannel [1/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_leavechannel) 或 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_leavechannel2) 后，会同时离开 [JoinChannel [1/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel1) 或 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 及 [JoinChannelEx](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex) 加入的频道。
 
-如果你调用了该方法后立即调用 [Dispose](/zh-CN/api-reference/rtc/unity/mediaplayer-initialize#api_imediaplayer_dispose_imediaplayer) 方法，SDK 将不会触发 [OnLeaveChannel](/zh-CN/api-reference/rtc/unity/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
+如果你调用了该方法后立即调用 [Dispose](/zh-CN/api-reference/rtc/unity/play/mediaplayer/mediaplayer-initialize#api_imediaplayer_dispose_imediaplayer) 方法，SDK 将不会触发 [OnLeaveChannel](/zh-CN/api-reference/rtc/unity/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
 :::
 
 <a id="api_irtcengineex_leavechannelex2__scenario"></a>
@@ -1095,7 +1093,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 ### 调用时机
 
-该方法在加入频道前后均可调用。 如果你在加入频道前调用该方法设置用户角色为主播、并且调用 [SetEnable](/zh-CN/api-reference/rtc/unity/video-rendering#api_videosurface_setenable) 方法开启视频渲染，则用户加入频道时会自动开启本地视频预览。 如果你在加入频道后调用该方法切换用户角色，调用成功后，SDK 会自动调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [MuteLocalVideoStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalvideostream) 修改发布音视频流的状态。
+该方法在加入频道前后均可调用。 如果你在加入频道前调用该方法设置用户角色为主播、并且调用 [SetEnable](/zh-CN/api-reference/rtc/unity/video/video-rendering#api_videosurface_setenable) 方法开启视频渲染，则用户加入频道时会自动开启本地视频预览。 如果你在加入频道后调用该方法切换用户角色，调用成功后，SDK 会自动调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [MuteLocalVideoStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalvideostream) 修改发布音视频流的状态。
 
 <a id="api_irtcengine_setclientrole1__related"></a>
 
@@ -1147,7 +1145,7 @@ public abstract int SetClientRole(CLIENT_ROLE_TYPE role, ClientRoleOptions optio
 
 <a id="api_irtcengine_setclientrole2__detailed_desc"></a>
 
-SDK 默认设置用户角色为观众，你可以调用该方法设置用户角色为主播。用户角色（`role` ）确定用户在 SDK 层的权限，包含是否有发流权限等。 该方法与 [SetClientRole [1/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_setclientrole1) 的区别在于，该方法还支持设置观众端延时级别（`audienceLatencyLevel` ）。 `audienceLatencyLevel` 需与 `role` 结合使用，确定用户在其权限范围内可以享受到的服务。例如对于观众，选择接收低延时还是超低延时的视频流。 不同的延时级别会影响计费，详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy#%E6%9E%81%E9%80%9F%E7%9B%B4%E6%92%AD%E8%A7%82%E4%BC%97%E8%B4%B9%E7%94%A8)。
+SDK 默认设置用户角色为观众，你可以调用该方法设置用户角色为主播。用户角色（`role` ）确定用户在 SDK 层的权限，包含是否有发流权限等。 该方法与 [SetClientRole [1/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_setclientrole1) 的区别在于，该方法还支持设置观众端延时级别（`audienceLatencyLevel` ）。 `audienceLatencyLevel` 需与 `role` 结合使用，确定用户在其权限范围内可以享受到的服务。例如对于观众，选择接收低延时还是超低延时的视频流。 不同的延时级别会影响计费，详见[计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy#%E6%9E%81%E9%80%9F%E7%9B%B4%E6%92%AD%E8%A7%82%E4%BC%97%E8%B4%B9%E7%94%A8)。
 
 :::info[注]
 当用户角色设为主播时，观众端延时级别仅支持设置为 AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY（超低延时）。 在加入频道前调用该方法并将 `role` 设为 `BROADCASTER` （主播）时，本地不会触发 [OnClientRoleChanged](/zh-CN/api-reference/rtc/unity/channel#callback_irtcengineeventhandler_onclientrolechanged) 回调。
@@ -1157,7 +1155,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 ### 调用时机
 
-该方法在加入频道前后均可调用。 如果你在加入频道前调用该方法设置用户角色为主播、并且调用 [SetEnable](/zh-CN/api-reference/rtc/unity/video-rendering#api_videosurface_setenable) 方法开启视频渲染，则用户加入频道时会自动开启本地视频预览。 如果你在加入频道后调用该方法切换用户角色，调用成功后，SDK 会自动调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [MuteLocalVideoStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalvideostream) 修改发布音视频流的状态。
+该方法在加入频道前后均可调用。 如果你在加入频道前调用该方法设置用户角色为主播、并且调用 [SetEnable](/zh-CN/api-reference/rtc/unity/video/video-rendering#api_videosurface_setenable) 方法开启视频渲染，则用户加入频道时会自动开启本地视频预览。 如果你在加入频道后调用该方法切换用户角色，调用成功后，SDK 会自动调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [MuteLocalVideoStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalvideostream) 修改发布音视频流的状态。
 
 <a id="api_irtcengine_setclientrole2__related"></a>
 

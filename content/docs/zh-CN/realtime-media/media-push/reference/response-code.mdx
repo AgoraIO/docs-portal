@@ -1,9 +1,6 @@
 ---
 title: "响应状态码"
-description: "查询旁路推流的响应状态码、错误码含义、常见原因和处理建议。"
 ---
-下表介绍调用旁路推流 API 时，可能收到的响应状态码、message 或 reason 字段内容，以及相应的原因和建议措施。
-
 在调用旁路推流 API 过程中，你可能收到如下 HTTP 响应状态码：
 
 - 如果 HTTP 状态码为 2XX，则请求成功。
@@ -28,11 +25,13 @@ description: "查询旁路推流的响应状态码、错误码含义、常见原
 }
 ```
 
+下表介绍调用旁路推流 API 时，可能收到的响应状态码、`message` 或 `reason` 字段内容，以及相应的原因和建议措施。
+
 | 状态码 | 可能的 `message` 或 `reason` 字段内容 | 原因 | 建议措施 |
 | --- | --- | --- | --- |
 | `200 OK` | 无该字段。 | 创建成功。 | 无需处理。 |
 | `400 Bad Request` | <Slot name="response-code-markdown-0-2-1" /> | 请求参数错误。 | 参考 HTTP 响应 Body 中的 `message` 或 `reason` 字段进行排查。 |
-| `401 Unauthorized` | Invalid authentication credentials. | RESTful API 鉴权失败。 | 重新进行 [HTTP 基本认证](/zh-CN/realtime-media/media-push/build/setup-and-access/http-basic-auth)。 |
+| `401 Unauthorized` | Invalid authentication credentials. | RESTful API 认证失败。 | 重新进行 [HTTP 基本认证](/zh-CN/realtime-media/media-push/build/setup-and-access/http-basic-auth)。 |
 | `403 Forbidden` | No valid permission to use this function. Contact us. | 未开通服务。 | 开通[旁路推流服务](/zh-CN/realtime-media/media-push/build/setup-and-access/enable-service#开通旁路推流服务)。 |
 | `404 Not Found` | Resource is not found and destroyed. | 并未成功启动推流任务、启动任务后中途退出、自动迁移中、正在销毁 Converter。 | 使用[退避策略重试](/zh-CN/realtime-media/media-push/build/optimize-and-operate/rest-availability#使用退避策略重试)。 |
 | `409 Conflict` | Resource with the same name has already existed. Use the existing resource, otherwise delete it and create a new resource. | 已存在相同名称的 Converter。 | 删除已有 Converter 并重新创建。 |

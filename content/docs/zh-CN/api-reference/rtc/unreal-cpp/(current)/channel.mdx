@@ -5,8 +5,6 @@ description: "频道相关 API reference."
 
 <a id="toc_channel"></a>
 
-## 频道相关
-
 <a id="api_irtcengine_getuserinfobyuid"></a>
 
 ## getUserInfoByUid
@@ -359,7 +357,7 @@ virtual int joinChannelEx(const char* token, const RtcConnection& connection,
 
 该方法需要在 [initialize](/zh-CN/api-reference/rtc/unreal-cpp/initialize#api_irtcengine_initialize) 之后调用。
 
-在多摄像头采集场景下，你需要在调用该方法之后调用 [startPreview [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video-basic#api_irtcengine_startpreview2) 方法设置 sourceType 为 VIDEO_SOURCE_CAMERA_SECONDARY，以确保第二个摄像头采集正常。
+在多摄像头采集场景下，你需要在调用该方法之后调用 [startPreview [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_startpreview2) 方法设置 sourceType 为 VIDEO_SOURCE_CAMERA_SECONDARY，以确保第二个摄像头采集正常。
 
 <a id="api_irtcengineex_joinchannelex__restriction"></a>
 
@@ -1295,7 +1293,7 @@ virtual int setChannelProfile(CHANNEL_PROFILE_TYPE profile) = 0;
 你可以调用该方法设置频道的使用场景。SDK 会针对不同的使用场景采用不同的优化策略，如直播场景优先保证画质。SDK 初始化后默认的频道场景为直播场景。
 
 :::warning[注意]
-不同的频道场景下，SDK 的默认音频路由是不同的，详见 [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/unreal-cpp/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) 中的说明。
+不同的频道场景下，SDK 的默认音频路由是不同的，详见 [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) 中的说明。
 :::
 
 <a id="api_irtcengine_setchannelprofile__timing"></a>
@@ -1352,7 +1350,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 该方法在加入频道前后均可调用。
 
-如果你在加入频道前调用该方法设置用户角色为主播、并且通过 [setupLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video-rendering#api_irtcengine_setuplocalvideo) 方法设置了本地视频属性，则用户加入频道时会自动开启本地视频预览。
+如果你在加入频道前调用该方法设置用户角色为主播、并且通过 [setupLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setuplocalvideo) 方法设置了本地视频属性，则用户加入频道时会自动开启本地视频预览。
 
 如果你在加入频道后调用该方法切换用户角色，调用成功后，SDK 会自动调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [muteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalvideostream) 修改发布音视频流的状态。
 
@@ -1418,7 +1416,7 @@ virtual int setClientRole(CLIENT_ROLE_TYPE role, const ClientRoleOptions& option
 
 SDK 默认设置用户角色为观众，你可以调用该方法设置用户角色为主播。用户角色（role ）确定用户在 SDK 层的权限，包含是否有发流权限等。
 
-该方法与 [setClientRole [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_setclientrole) 的区别在于，该方法还支持设置观众端延时级别（audienceLatencyLevel ）。 audienceLatencyLevel 需与 role 结合使用，确定用户在其权限范围内可以享受到的服务。例如对于观众，选择接收低延时还是超低延时的视频流。不同的延时级别会影响计费，详见 [计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy#%E6%9E%81%E9%80%9F%E7%9B%B4%E6%92%AD%E8%A7%82%E4%BC%97%E8%B4%B9%E7%94%A8)。
+该方法与 [setClientRole [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_setclientrole) 的区别在于，该方法还支持设置观众端延时级别（audienceLatencyLevel ）。 audienceLatencyLevel 需与 role 结合使用，确定用户在其权限范围内可以享受到的服务。例如对于观众，选择接收低延时还是超低延时的视频流。不同的延时级别会影响计费，详见 [计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy#%E6%9E%81%E9%80%9F%E7%9B%B4%E6%92%AD%E8%A7%82%E4%BC%97%E8%B4%B9%E7%94%A8)。
 
 <a id="api_irtcengine_setclientrole2__timing"></a>
 
@@ -1426,7 +1424,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 该方法在加入频道前后均可调用。
 
-如果你在加入频道前调用该方法设置用户角色为主播、并且通过 [setupLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video-rendering#api_irtcengine_setuplocalvideo) 方法设置了本地视频属性，则用户加入频道时会自动开启本地视频预览。
+如果你在加入频道前调用该方法设置用户角色为主播、并且通过 [setupLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setuplocalvideo) 方法设置了本地视频属性，则用户加入频道时会自动开启本地视频预览。
 
 如果你在加入频道后调用该方法切换用户角色，调用成功后，SDK 会自动调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [muteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalvideostream) 修改发布音视频流的状态。
 

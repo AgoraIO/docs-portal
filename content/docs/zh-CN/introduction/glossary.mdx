@@ -1,14 +1,12 @@
 ---
 title: 术语库
-description: "了解如何在声网开发者文档中术语库，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-App ID 是声网为开发项目生成的字符串，是项目的唯一标识。
 
 ## A
 
 <a id="appid"></a>
 ### App ID
-
+App ID 是声网为开发项目生成的字符串，是项目的唯一标识。
 
 在调用 API 初始化声网服务或加入频道时，需要传入 App ID 用于[鉴权](#auth)。声网根据 App ID 提供计费、管理、数据统计等服务。
 
@@ -33,7 +31,7 @@ App 证书 (App Certificate) 是声网控制台为开发项目生成的随机字
 
 :::info[相关链接]
 - [播放音效/音乐混音](/zh-CN/realtime-media/rtc/build/audio/audio-effect-mixing)
-- [单流录制和合流录制（本地服务端录制）](/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/recording-mode)
+- [单流录制和合流录制（本地服务端录制）](/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/set-recording-mode)
 - [合流录制（云端录制）](/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/mix-mode/set-composite)
 :::
 
@@ -69,7 +67,7 @@ App 证书 (App Certificate) 是声网控制台为开发项目生成的随机字
 声网部分 RESTful API 仅支持 HTTPS 协议。调用这些声网 RESTful API 时，开发者需要使用声网提供的客户 ID 和客户密钥生成一个 Base64 算法编码的凭证，并填入 HTTP 请求头部的 `Authorization` 字段中。
 
 :::info[相关链接]
-[实现 HTTP 基本认证（RTC）](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth)
+[实现 HTTP 基本认证（RTC）](/zh-CN/realtime-media/rtc/build/security-and-auth/http-basic-auth)
 :::
 
 <a id="console"></a>
@@ -176,7 +174,7 @@ Token 也称为动态密钥，是在加入频道时用于校验用户权限的�
 对于不同的产品，Token 中包含的信息不完全相同。一般来说，Token 中会包括声网项目的信息（如 App ID）、要使用的声网服务的信息（如 RTC 频道名、白板房间的 UUID）、用户角色或权限、Token 的有效期。Token 过期后，用户将无法正常使用声网服务。开发者可以根据自己的业务需要，合理设置 Token 的有效期，并及时更换过期 Token。
 
 :::info[相关链接]
-- [使用 Token 鉴权（RTC）](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)
+- [使用 Token 鉴权（RTC）](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
 - [生成和使用 Token（互动白板）](/doc/whiteboard/javascript/fastboard-sdk/basic-features/generate-token)
 :::
 

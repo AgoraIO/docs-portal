@@ -5,7 +5,7 @@ description: "预设音效效果。"
 
 <a id="enum_audioeffectpreset__detailed_desc"></a>
 
-为了获得更好的音效效果，Agora 建议在使用预设音效前调用 [setAudioProfile:scenario:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioprofile) 方法，并按如下建议设置 `profile` 参数。
+为了获得更好的音效效果，Agora 建议在使用预设音效前调用 [setAudioProfile:scenario:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioprofile) 方法，并按如下建议设置 `profile` 参数。
 
 | 预设音效效果 | `profile` |
 | --- | --- |
@@ -50,7 +50,7 @@ description: "预设音效效果。"
 
 ### `AgoraAudioEffectPresetRoomAcous3DVoice`
 
-（0x02010800）：3D 音效，使声音围绕用户移动，默认循环周期为 10 秒。设置该效果后，可调用 [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectparameters) 修改移动周期。
+（0x02010800）：3D 音效，使声音围绕用户移动，默认循环周期为 10 秒。设置该效果后，可调用 [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 修改移动周期。
 
 :::info[注]
 启用 3D 音效时，用户需使用立体声播放设备以获得预期音效。
@@ -126,4 +126,4 @@ description: "预设音效效果。"
 
 ### `AgoraAudioEffectPresetPitchCorrection`
 
-（0x02040100）：音高修正效果，基于自然 C 大调音阶修正用户音高。设置该效果后，可调用 [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectparameters) 调整调音模式和主音音高。
+（0x02040100）：音高修正效果，基于自然 C 大调音阶修正用户音高。设置该效果后，可调用 [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 调整调音模式和主音音高。

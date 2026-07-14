@@ -1,12 +1,12 @@
 ---
 title: "错误排查"
-description: "了解实时消息 RTM 在不同平台上的错误排查方式，包括接入流程、关键配置和平台差异。"
 ---
+
 <PlatformStructured platform="android">
 
 ## 开启本地日志
 
-你可以在初始化 RTM 实例的时候通过设置 `RtmConfig` 中的 `RtmLogConfig` 来开启日志输出并设置日志信息等级，之后即可在 IDE 中查看日志信息。
+当你的应用处于开发、测试阶段时，你可能需要 SDK 输出更详细的信息来定位并修复问题。你可以在初始化 RTM 实例的时候通过设置 `RtmConfig` 中的 `RtmLogConfig` 来开启日志输出并设置日志信息等级，之后即可在 IDE 中查看日志信息。
 
 ```java showLineNumbers
 RtmConfig rtmConfig = new RtmConfig();
@@ -73,7 +73,7 @@ rtmConfig.logConfig = logConfig;
 | `-11002` | `CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
 | `-11003` | `CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | 订阅该 Topic 人数超出限制。 |
 | `-11004` | `CHANNEL_IN_REUSE` | 共频道模式下，RTM 释放了 Stream Channel。 |
-| `-11005` | `CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11005` | `CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-11006` | `CHANNEL_IN_ERROR_STATE` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
 | `-11007` | `CHANNEL_JOIN_FAILED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2" /> |
 | `-11008` | `CHANNEL_INVALID_TOPIC_NAME` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2" /> |
@@ -127,8 +127,8 @@ rtmConfig.logConfig = logConfig;
 | `-13001` | `PRESENCE_NOT_CONNECTED` | 用户未连接到系统。 |
 | `-13002` | `PRESENCE_NOT_WRITABLE` | Presence 服务不可用。 |
 | `-13003` | `PRESENCE_INVALID_ARGUMENT` | 无效参数。 |
-| `-13004` | `PRESENCE_CACHED_TOO_MANY_STATES` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
-| `-13005` | `PRESENCE_STATE_COUNT_OVERFLOW` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13004` | `PRESENCE_CACHED_TOO_MANY_STATES` | 加入频道前缓存的临时用户状态超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `PRESENCE_STATE_COUNT_OVERFLOW` | 临时用户状态键/值对数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-13006` | `PRESENCE_INVALID_STATE_KEY` | 无效状态键。 |
 | `-13007` | `PRESENCE_INVALID_STATE_VALUE` | 无效状态值。 |
 | `-13008` | `PRESENCE_STATE_KEY_SIZE_OVERFLOW` | 状态键长度溢出。 |
@@ -376,7 +376,7 @@ rtm_cfg.logConfig = log_cfg;
 | `-11002` | `AgoraRtmErrorChannelNotSubscribed` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
 | `-11003` | `AgoraRtmErrorChannelExceedTopicUserLimitation` | 订阅该 Topic 人数超出限制。 |
 | `-11004` | `AgoraRtmErrorChannelReused` | 共频道模式下，RTM 释放了 Stream Channel。 |
-| `-11005` | `AgoraRtmErrorChannelInstanceExceedLimitation` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11005` | `AgoraRtmErrorChannelInstanceExceedLimitation` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-11006` | `AgoraRtmErrorChannelInErrorState` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
 | `-11007` | `AgoraRtmErrorChannelJoinFailed` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2" /> |
 | `-11008` | `AgoraRtmErrorChannelInvalidTopicName` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2" /> |
@@ -430,8 +430,8 @@ rtm_cfg.logConfig = log_cfg;
 | `-13001` | `AgoraRtmErrorPresenceNotConnected` | 用户未连接到系统。 |
 | `-13002` | `AgoraRtmErrorPresenceNotWritable` | Presence 服务不可用。 |
 | `-13003` | `AgoraRtmErrorPresenceInvalidArgument` | 无效参数。 |
-| `-13004` | `AgoraRtmErrorPresenceCacheTooManyStates` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
-| `-13005` | `AgoraRtmErrorPresenceStateCountOverflow` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13004` | `AgoraRtmErrorPresenceCacheTooManyStates` | 加入频道前缓存的临时用户状态超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `AgoraRtmErrorPresenceStateCountOverflow` | 临时用户状态键/值对数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-13006` | `AgoraRtmErrorPresenceInvalidStateKey` | 无效状态键。 |
 | `-13007` | `AgoraRtmErrorPresenceInvalidStateValue` | 无效状态值。 |
 | `-13008` | `AgoraRtmErrorPresenceStateKeySizeOverflow` | 状态键长度溢出。 |
@@ -687,7 +687,7 @@ type ErrorInfo = {
 | `-11001` | `RTM_ERROR_CHANNEL_NOT_JOINED` | <Slot name="error-codes-javascript-html-0-22-2" /> |
 | `-11002` | `RTM_ERROR_CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-javascript-html-0-23-2" /> |
 | `-11003` | `RTM_ERROR_CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | 订阅该 Topic 人数超出限制。 |
-| `-11005` | `RTM_ERROR_CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11005` | `RTM_ERROR_CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-11006` | `RTM_ERROR_CHANNEL_IN_ERROR_STATE` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
 | `-11007` | `RTM_ERROR_CHANNEL_JOIN_FAILED` | <Slot name="error-codes-javascript-html-0-27-2" /> |
 | `-11008` | `RTM_ERROR_CHANNEL_INVALID_TOPIC_NAME` | <Slot name="error-codes-javascript-html-0-28-2" /> |
@@ -729,8 +729,8 @@ type ErrorInfo = {
 | `-12019` | `RTM_ERROR_STORAGE_NOT_AVAILABLE` | Storage 服务不可用。 |
 | `-13001` | `RTM_ERROR_PRESENCE_NOT_CONNECTED` | 用户未连接到系统。 |
 | `-13003` | `RTM_ERROR_PRESENCE_INVALID_ARGUMENT` | 无效参数。 |
-| `-13004` | `RTM_ERROR_PRESENCE_CACHED_TOO_MANY_STATES` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
-| `-13005` | `RTM_ERROR_PRESENCE_STATE_COUNT_OVERFLOW` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13004` | `RTM_ERROR_PRESENCE_CACHED_TOO_MANY_STATES` | 加入频道前缓存的临时用户状态超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `RTM_ERROR_PRESENCE_STATE_COUNT_OVERFLOW` | 临时用户状态键/值对数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-13006` | `RTM_ERROR_PRESENCE_INVALID_STATE_KEY` | 无效状态键。 |
 | `-13008` | `RTM_ERROR_PRESENCE_STATE_KEY_SIZE_OVERFLOW` | 状态键长度溢出。 |
 | `-13010` | `RTM_ERROR_PRESENCE_STATE_DUPLICATE_KEY` | 重复的状态键。 |
@@ -978,7 +978,7 @@ try {
 | `-11002` | `` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
 | `-11003` | `` | 订阅该 Topic 人数超出限制。 |
 | `-11004` | `` | 共频道模式下，RTM 释放了 Stream Channel。 |
-| `-11005` | `` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11005` | `` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-11006` | `` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
 | `-11007` | `` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2" /> |
 | `-11008` | `` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2" /> |
@@ -1032,8 +1032,8 @@ try {
 | `-13001` | `` | 用户未连接到系统。 |
 | `-13002` | `` | Presence 服务不可用。 |
 | `-13003` | `` | 无效参数。 |
-| `-13004` | `` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
-| `-13005` | `` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13004` | `` | 加入频道前缓存的临时用户状态超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `` | 临时用户状态键/值对数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-13006` | `` | 无效状态键。 |
 | `-13007` | `` | 无效状态值。 |
 | `-13008` | `` | 状态键长度溢出。 |
@@ -1281,7 +1281,7 @@ catch (RTMException e)
 | `-11002` | `CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2" /> |
 | `-11003` | `CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | 订阅该 Topic 人数超出限制。 |
 | `-11004` | `CHANNEL_IN_REUSE` | 共频道模式下，RTM 释放了 Stream Channel。 |
-| `-11005` | `CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11005` | `CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-11006` | `CHANNEL_IN_ERROR_STATE` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
 | `-11007` | `CHANNEL_JOIN_FAILED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
 | `-11008` | `CHANNEL_INVALID_TOPIC_NAME` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-29-2" /> |
@@ -1331,8 +1331,8 @@ catch (RTMException e)
 | `-13001` | `PRESENCE_NOT_CONNECTED` | 用户未连接到系统。 |
 | `-13002` | `PRESENCE_NOT_WRITABLE` | Presence 服务不可用。 |
 | `-13003` | `PRESENCE_INVALID_ARGUMENT` | 无效参数。 |
-| `-13004` | `PRESENCE_CACHED_TOO_MANY_STATES` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
-| `-13005` | `PRESENCE_STATE_COUNT_OVERFLOW` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13004` | `PRESENCE_CACHED_TOO_MANY_STATES` | 加入频道前缓存的临时用户状态超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `PRESENCE_STATE_COUNT_OVERFLOW` | 临时用户状态键/值对数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-13006` | `PRESENCE_INVALID_STATE_KEY` | 无效状态键。 |
 | `-13007` | `PRESENCE_INVALID_STATE_VALUE` | 无效状态值。 |
 | `-13008` | `PRESENCE_STATE_KEY_SIZE_OVERFLOW` | 状态键长度溢出。 |
@@ -1551,7 +1551,7 @@ const rtmConfig = RtmConfig( logConfig:logConfig );
 | `-11002` | `channelNotSubscribed` | <Slot name="error-codes-flutter-html-0-28-2" /> |
 | `-11003` | `channelExceedTopicUserLimitation` | 订阅该 Topic 人数超出限制。 |
 | `-11004` | `channelInReuse` | 共频道模式下，RTM 释放了 Stream Channel。 |
-| `-11005` | `channelInstanceExceedLimitation` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11005` | `channelInstanceExceedLimitation` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-11006` | `channelInErrorState` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel/User Channel。 |
 | `-11007` | `channelJoinFailed` | <Slot name="error-codes-flutter-html-0-33-2" /> |
 | `-11008` | `channelInvalidTopicName` | <Slot name="error-codes-flutter-html-0-34-2" /> |
@@ -1602,8 +1602,8 @@ const rtmConfig = RtmConfig( logConfig:logConfig );
 | `-13001` | `presenceNotConnected` | 用户未连接到系统。 |
 | `-13002` | `presenceNotWritable` | Presence 服务不可用。 |
 | `-13003` | `presenceInvalidArgument` | 无效参数。 |
-| `-13004` | `presenceCachedTooManyStates` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
-| `-13005` | `presenceStateCountOverflow` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13004` | `presenceCachedTooManyStates` | 加入频道前缓存的临时用户状态超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `presenceStateCountOverflow` | 临时用户状态键/值对数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-13006` | `presenceInvalidStateKey` | 无效状态键。 |
 | `-13007` | `presenceInvalidStateValue` | 无效状态值。 |
 | `-13008` | `presenceStateKeySizeOverflow` | 状态键长度溢出。 |
@@ -1846,7 +1846,7 @@ if (!rtmClient_ || errorCode != 0) {
 | `-11002` | `RTM_ERROR_CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
 | `-11003` | `RTM_ERROR_CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | 订阅该 Topic 人数超出限制。 |
 | `-11004` | `RTM_ERROR_CHANNEL_IN_REUSE` | 共频道模式下，RTM 释放了 Stream Channel。 |
-| `-11005` | `RTM_ERROR_CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11005` | `RTM_ERROR_CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-11006` | `RTM_ERROR_CHANNEL_IN_ERROR_STATE` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
 | `-11007` | `RTM_ERROR_CHANNEL_JOIN_FAILED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2" /> |
 | `-11008` | `RTM_ERROR_CHANNEL_INVALID_TOPIC_NAME` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2" /> |
@@ -1900,8 +1900,8 @@ if (!rtmClient_ || errorCode != 0) {
 | `-13001` | `RTM_ERROR_PRESENCE_NOT_CONNECTED` | 用户未连接到系统。 |
 | `-13002` | `RTM_ERROR_PRESENCE_NOT_WRITABLE` | Presence 服务不可用。 |
 | `-13003` | `RTM_ERROR_PRESENCE_INVALID_ARGUMENT` | 无效参数。 |
-| `-13004` | `RTM_ERROR_PRESENCE_CACHED_TOO_MANY_STATES` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
-| `-13005` | `RTM_ERROR_PRESENCE_STATE_COUNT_OVERFLOW` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13004` | `RTM_ERROR_PRESENCE_CACHED_TOO_MANY_STATES` | 加入频道前缓存的临时用户状态超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `RTM_ERROR_PRESENCE_STATE_COUNT_OVERFLOW` | 临时用户状态键/值对数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-13006` | `RTM_ERROR_PRESENCE_INVALID_STATE_KEY` | 无效状态键。 |
 | `-13007` | `RTM_ERROR_PRESENCE_INVALID_STATE_VALUE` | 无效状态值。 |
 | `-13008` | `RTM_ERROR_PRESENCE_STATE_KEY_SIZE_OVERFLOW` | 状态键长度溢出。 |
@@ -2145,7 +2145,7 @@ config.logConfig?.level = .error
 | `-11002` | `channelNotSubscribed` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
 | `-11003` | `channelExceedTopicUserLimitation` | 订阅该 Topic 人数超出限制。 |
 | `-11004` | `channelReused` | 共频道模式下，RTM 释放了 Stream Channel。 |
-| `-11005` | `channelInstanceExceedLimitation` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11005` | `channelInstanceExceedLimitation` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-11006` | `channelInErrorState` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
 | `-11007` | `channelJoinFailed` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2" /> |
 | `-11008` | `channelInvalidTopicName` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2" /> |
@@ -2199,8 +2199,8 @@ config.logConfig?.level = .error
 | `-13001` | `presenceNotConnected` | 用户未连接到系统。 |
 | `-13002` | `presenceNotWritable` | Presence 服务不可用。 |
 | `-13003` | `presenceInvalidArgument` | 无效参数。 |
-| `-13004` | `presenceCacheTooManyStates` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
-| `-13005` | `presenceStateCountOverflow` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13004` | `presenceCacheTooManyStates` | 加入频道前缓存的临时用户状态超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `presenceStateCountOverflow` | 临时用户状态键/值对数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
 | `-13006` | `presenceInvalidStateKey` | 无效状态键。 |
 | `-13007` | `presenceInvalidStateValue` | 无效状态值。 |
 | `-13008` | `presenceStateKeySizeOverflow` | 状态键长度溢出。 |

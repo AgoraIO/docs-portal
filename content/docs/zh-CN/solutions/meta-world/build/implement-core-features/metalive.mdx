@@ -1,7 +1,7 @@
 ---
 title: "实现元直播"
-description: "了解声网解决方案在不同平台上的元直播方式，包括接入流程、关键配置和平台差异。"
 ---
+
 <PlatformStructured platform="android">
 
 MetaWorld 解决方案支持元语聊、元直播场景。本文介绍如何实现元直播。
@@ -36,7 +36,7 @@ MetaWorld 解决方案支持元语聊、元直播场景。本文介绍如何实�
 初始化 `IMetaService` 时，需要在 `MetaServiceConfig` 里设置如下重要的字段：
 
 - `mRtcEngine`：通过 `create` 方法创建的 `RtcEngine` 实例。
-- `mAppId`：在声网控制台获取的 App ID。详见[开通元语聊服务](/zh-CN/solutions/meta-world/build/setup-and-access/enable-service)。
+- `mAppId`：在声网控制台获取的 App ID。详见[开通服务](/zh-CN/solutions/meta-world/build/setup-and-access/enable-service)。
 - `mUserId`：登录声网 RTM 系统的用户 ID。推荐取值详见 [`MetaServiceConfig`](/zh-CN/solutions/meta-world/reference/meta-api#metaserviceconfig)。
 - `mRtmToken`：用于登录声网 RTM 系统的动态密钥。开启动态鉴权后可用。详见[生成 Token](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
 - `mLocalDownloadPath`：场景资源下载到本地的保存路径。
@@ -46,7 +46,7 @@ MetaWorld 解决方案支持元语聊、元直播场景。本文介绍如何实�
 
 - RTC UID：用于在实时音视频通讯中标志用户身份的用户 ID。推荐取值详见 [joinChannel 的参数解释](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2)。
 - RTM UID：用于在云信令系统中标志用户身份的用户 ID。推荐取值详见 [MetaServiceConfig 的字段解释](/zh-CN/solutions/meta-world/reference/meta-api#metaserviceconfig)。
-- RTC Token：用于保障实时音视频通讯安全的动态密钥。详见[如何生成 RTC Token 进行鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- RTC Token：用于保障实时音视频通讯安全的动态密钥。详见[如何生成 RTC Token 进行鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
 - RTM Token：用于保障云信令系统安全的动态密钥。详见[如何生成 RTM Token 进行鉴权](/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication)。
 
 ```java
@@ -400,7 +400,7 @@ MetaWorld 解决方案支持元语聊、元直播场景。本文介绍如何实�
 初始化 `AgoraMetaServiceKit` 时，需要在 `AgoraMetaServiceConfig` 里设置如下重要的字段：
 
 - `rtcEngine`：通过 `sharedEngineWithConfig` 方法创建的 `AgoraRtcEngineKit` 实例。
-- `appId`：在声网控制台获取的 App ID。详见[开通元语聊服务](/zh-CN/solutions/meta-world/build/setup-and-access/enable-service)。
+- `appId`：在声网控制台获取的 App ID。详见[开通服务](/zh-CN/solutions/meta-world/build/setup-and-access/enable-service)。
 - `userId`：登录声网 RTM 系统的用户 ID。推荐取值详见 [AgoraMetaServiceConfig](/zh-CN/solutions/meta-world/reference/meta-api#agorametaserviceconfig)。
 - `rtmToken`：用于登录声网 RTM 系统的动态密钥。开启动态鉴权后可用。详见[生成 Token](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
 - `localDownloadPath`：场景资源下载到本地的保存路径。
@@ -410,7 +410,7 @@ MetaWorld 解决方案支持元语聊、元直播场景。本文介绍如何实�
 
 - RTC UID：用于在实时音视频通讯中标志用户身份的用户 ID。推荐取值详见 [joinChannelByToken 的参数解释](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2)。
 - RTM UID：用于在云信令系统中标志用户身份的用户 ID。推荐取值详见 [AgoraMetaServiceConfig 的字段解释](/zh-CN/solutions/meta-world/reference/meta-api#agorametaserviceconfig)。
-- RTC Token：用于保障实时音视频通讯安全的动态密钥。详见[如何生成 RTC Token 进行鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- RTC Token：用于保障实时音视频通讯安全的动态密钥。详见[如何生成 RTC Token 进行鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
 - RTM Token：用于保障云信令系统安全的动态密钥。详见[如何生成 RTM Token 进行鉴权](/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication)。
 
 ```swift

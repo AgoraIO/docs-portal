@@ -1,10 +1,7 @@
 ---
 title: "更改音视频流传输状态"
-description: "了解如何在 RTSA 中更改音视频流传输状态，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-连接 Connection 并开始音视频流传输后，你可以暂停向指定或所有 Connection 发送流，也可以暂停接收指定或所有 Connection 的流，从而灵活调整音视频流传输状态。
-
-文介绍如何更改音视频流传输状态。
+连接 Connection 并开始音视频流传输后，你可以暂停向指定或所有 Connection 发送流，也可以暂停接收指定或所有 Connection 的流，从而灵活调整音视频流传输状态。本文介绍如何更改音视频流传输状态。
 
 ## 发送端实现
 
@@ -20,7 +17,7 @@ description: "了解如何在 RTSA 中更改音视频流传输状态，包括适
 
 示例代码如下：
 
-```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-stream-state-1"
+```c
 // 暂停向指定 Connection 发送音频流
 agora_rtc_mute_local_audio(12345, 1);
 // 恢复向指定 Connection 发送音频流
@@ -31,7 +28,7 @@ agora_rtc_mute_local_video(12345, 1);
 agora_rtc_mute_local_video(12345, 0);
 ```
 
-```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-stream-state-1"
+```java
 // 暂停向指定 Connection 发送音频流
 mRtcService.muteLocalAudio(12345, 1);
 // 恢复向指定 Connection 发送音频流
@@ -100,7 +97,7 @@ public void onUserMuteVideo(int connId, int uid, boolean muted) {
 
 示例代码如下：
 
-```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-stream-state-2"
+```c
 const uint32_t remote_uid = 789;
 
 // 暂停接收指定 Connection 中远端用户的音频流
@@ -113,7 +110,7 @@ agora_rtc_mute_remote_video (12345, remote_uid, 1);
 agora_rtc_mute_remote_video (12345, remote_uid, 0);
 ```
 
-```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-stream-state-2"
+```java
 int remote_uid = 789;
 
 // 暂停接收指定 Connection 中远端用户的音频流

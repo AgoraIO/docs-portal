@@ -39,11 +39,11 @@ public init(appIdentifier: String,
 
 **参数**
 
-- `appIdentifier`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+- `appIdentifier`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
 - `roomUUID`：String。房间的 UUID，即房间的唯一标识符。详见[创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)请求成功后响应包体中 `uuid` 参数的值。
 - `roomToken`：String。房间的 Room Token，用于加入房间时的用户鉴权。可以通过以下方式获取：
   - 调用[生成 Room Token](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
-  - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。
+  - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。
 - `region`：数据中心。详见 [`Region`](#region)。
 - `userUID`：String。用户的 UID，即用户的唯一标识符，字符串格式，不能超过 1024 字节。请确保同一房间内每个用户的 UID 唯一。
 - `userPayload`：用户光标显示的用户信息，包括用户的昵称和头像。详见  [`FastUserPayload`](#fastuserpayload)。
@@ -170,7 +170,7 @@ public func insertPptx(
 
 在白板子窗口中插入并展示动态文档。
 
-动态文档指通过[声网互动白板文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)，由 PPTX 格式的文件转换成的 HTML 网页。转换后的文件会保留源文件里的动画效果。
+动态文档指通过[声网互动白板文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files)，由 PPTX 格式的文件转换成的 HTML 网页。转换后的文件会保留源文件里的动画效果。
 
 成功[发起文档转换任务](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)并调用[查询文档转换任务进度](https://docs.agora.io/cn/whiteboard/whiteboard_file_conversion?platform=RESTful#查询转换任务的进度)获取文档转换结果后，可以调用该方法并传入获取的文档转换结果，SDK 会自动创建子窗口，插入并分页展示转换后的文档。
 

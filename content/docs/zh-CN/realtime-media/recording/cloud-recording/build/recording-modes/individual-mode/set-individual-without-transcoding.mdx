@@ -1,10 +1,7 @@
 ---
 title: "设置单流不转码录制"
-description: "了解云端录制中设置单流不转码录制相关内容的适用场景、配置步骤、实现要点和注意事项。"
 ---
-在仅录制音频的场景下，如果单流转码录制生成的文件无法满足你的需求，例如你需要调整音频编码属性或去除录制文件中的静音片段，则可以采用单流不转码录制。
-
-于单流音频转码与不转码录制的区别，可参考[单流音频转码与不转码对比](/zh-CN/realtime-media/recording/cloud-recording/reference/concepts#转码)。
+在仅录制音频的场景下，如果单流转码录制生成的文件无法满足你的需求，例如你需要调整音频编码属性或去除录制文件中的静音片段，则可以采用单流不转码录制。关于单流音频转码与不转码录制的区别，可参考[单流音频转码与不转码对比](/zh-CN/realtime-media/recording/cloud-recording/reference/concepts#转码)。
 
 本文介绍如何使用云端录制 RESTful API 进行单流音频不转码录制，并重点说明了相关参数的设置方法。
 
@@ -33,7 +30,7 @@ description: "了解云端录制中设置单流不转码录制相关内容的适
    | :---------------------------- | :------------------------------------------------------------------------------- |
    | `recordingConfig.streamTypes` | 订阅媒体流类型，单流音频不转码录制设置为 `0` （仅订阅音频）。       |
    | `recordingConfig.streamMode`  | [媒体流输出模式](/zh-CN/realtime-media/recording/cloud-recording/reference/api-reference#媒体流输出模式设置)，单流音频不转码录制设置为 `original`（原始模式）。 |
-   | `recordingConfig.subscribeUidGroup` | 预估的订阅人数峰值。该字段在单流录制模式下必填；例如订阅人数为 1 到 2 个用户 ID 时，可设置为 `0`。更多取值说明可参考 [云端录制存储参数参考](/zh-CN/realtime-media/recording/cloud-recording/reference/api-reference#录制的音视频流配置项)。 |
+   | `recordingConfig.subscribeUidGroup` | 预估的订阅人数峰值。该字段在单流录制模式下必填；例如订阅人数为 1 到 2 个用户 ID 时，可设置为 `0`。更多取值说明可参考 [API 参考](/zh-CN/realtime-media/recording/cloud-recording/reference/api-reference#录制的音视频流配置项)。 |
 
 3. 参照[快速开始](/zh-CN/realtime-media/recording/cloud-recording/get-started/quick-start#开始录制)配置 `storageConfig` 相关参数。
 

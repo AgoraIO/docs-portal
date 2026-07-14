@@ -1,8 +1,10 @@
 ---
 title: "使用 MetaKit 插件"
-description: "了解如何快速接入 MetaKit 插件，完成环境准备、参数配置、示例运行和核心流程验证。"
 ---
+
 <PlatformStructured platform="android">
+
+本文介绍如何在你的项目中集成 MetaKit 插件，体验虚拟人、Animoji、Sticker、灯光特效和背景特效功能模块。
 
 ## 前提条件
 
@@ -11,11 +13,11 @@ description: "了解如何快速接入 MetaKit 插件，完成环境准备、参
 - 已集成 4.3.x 版本的实时互动 SDK，并确保你已在 App 中实现了基本的实时音视频功能，请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
     :::warning[注意]
     - 通过 Maven Central 集成时，指定 `'implementation "io.agora.rtc:agora-special-full:4.2.6.5"'`。
-        - MetaKit 插件主要用到实时互动 SDK 的面部捕捉插件 (`libagora_face_capture_extension.so`) 和虚拟背景插件 (`libagora_segmentation_extension.so`)，你可以按需删除不需要的插件以[减小 App 体积](/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size#删除不需要的插件)。
+        - MetaKit 插件主要用到实时互动 SDK 的面部捕捉插件 (`libagora_face_capture_extension.so`) 和虚拟背景插件 (`libagora_segmentation_extension.so`)，你可以按需删除不需要的插件以[减小 App 体积](/zh-CN/realtime-media/rtc/build/quality-and-operations/reduce-app-size#删除不需要的插件)。
     :::
 - Android Studio 4.2 及以上版本。
 - 建议使用 2019 年及以后生产的 Android 机型，确保设备的前置摄像头与麦克风功能正常。
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
 
 ## 集成 MetaKit 插件
 
@@ -288,7 +290,7 @@ description: "了解如何快速接入 MetaKit 插件，完成环境准备、参
 活动上下文地址不支持传递 Java 对象的引用地址。安卓需要将活动上下文以 C++ 指针的形式共享给 MetaKit 引擎层，因此业务层需要通过 JNI 进行转换。
 :::
 
-```java tab="Java" tabGroup="zh-cn-realtime-media-sdk-extensions-metakit-build-implement-core-features-quick-start-1"
+```java
 Activity mActivity;
 JSONObject valueObj = new JSONObject();
 try {
@@ -301,7 +303,7 @@ try {
 mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "setActivityContext", valueObj.toString());
 ```
 
-```cpp tab="C++" tabGroup="zh-cn-realtime-media-sdk-extensions-metakit-build-implement-core-features-quick-start-1"
+```cpp
 // 通过 JNI 将 Java 层传入的 Activity 对象转换为全局引用，并返回其地址
 JNIEXPORT jlong JNICALL Java_xxx_getContextHandler
 (JNIEnv *env, jobject obj, jobject context)
@@ -584,13 +586,13 @@ mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit",
 - 已集成 4.3.x 版本的实时互动 SDK，并确保你已在 App 中实现了基本的实时音视频功能，请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
     :::warning[注意]
     - 通过 CocoaPods 集成时，打开 `Podfile`，指定 `pod 'AgoraRtcEngine_Special_iOS', 'x.y.z'`，`x.y.z` 替换为具体的 SDK 版本号。
-        - MetaKit 插件需要用到实时互动 SDK 的面部捕捉插件 (`AgoraFaceCaptureExtension.xcframework`) 和虚拟背景插件 (`AgoraVideoSegmentationExtension.xcframework`)，你可以按需删除不需要的插件以[减小 App 体积](/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size#删除不需要的插件)。
+        - MetaKit 插件需要用到实时互动 SDK 的面部捕捉插件 (`AgoraFaceCaptureExtension.xcframework`) 和虚拟背景插件 (`AgoraVideoSegmentationExtension.xcframework`)，你可以按需删除不需要的插件以[减小 App 体积](/zh-CN/realtime-media/rtc/build/quality-and-operations/reduce-app-size#删除不需要的插件)。
     :::
 - Xcode 13.0 及以上版本。
 - iOS 14.0 及以上版本的真机设备，设备的前置摄像头与麦克风功能正常。
 - Apple 开发者账号。
 - 已安装 CocoaPods，详见 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started)。
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
 
 ## 集成 MetaKit 插件
 

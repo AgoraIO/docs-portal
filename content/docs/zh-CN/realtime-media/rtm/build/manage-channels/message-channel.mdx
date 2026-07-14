@@ -1,10 +1,7 @@
 ---
 title: "消息频道"
-description: "了解如何在实时消息 RTM 中消息频道，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-Message 频道是 RTM 提供的一种基于 Pub/Sub 模型的频道类型。
-
- Message 频道中，你需要订阅频道才能接收消息，但你在发布消息时无需额外的加入频道操作。RTM 允许你的 App 中同时存在成千上万个 Message 频道，但由于端侧性能和带宽的限制，单个客户端同时只能订阅有限数量的频道，详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
+**Message** 频道是 RTM 提供的一种基于 Pub/Sub 模型的频道类型。在 Message 频道中，你需要订阅频道才能接收消息，但你在发布消息时无需额外的加入频道操作。RTM 允许你的 App 中同时存在成千上万个 Message 频道，但由于端侧性能和带宽的限制，单个客户端同时只能订阅有限数量的频道，详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
 
 :::info[信息]
 如需接收并处理接收到的消息和事件通知，除了要订阅该频道外，你还需要完成[事件监听](/api-ref/rtm2//toc-configuration/configuration#事件监听)程序的配置。
@@ -28,7 +25,7 @@ Message 频道是 RTM 提供的一种基于 Pub/Sub 模型的频道类型。
 
 监听了 `config.onmessageevent` 事件通知后，你就可以调用 `channel.subscribe` 方法订阅频道，从而接收频道中的消息和事件通知。
 
-```csharp tab="C#" tabGroup="rtm-build-manage-channels-message-channel-1"
+```csharp
 var options = new SubscribeOptions();
 
 var (status,response) = await rtmClient.SubscribeAsync("Chat_room", options);
@@ -42,7 +39,7 @@ else
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-channels-message-channel-1"
+```javascript
 const options = {
     withMessage: true,
     withPresence: true,
@@ -59,7 +56,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-channels-message-channel-1"
+```java
 String channelName = "test_channel";
 SubscribeOptions options = new SubscribeOptions();
 options.setWithMessage(true);
@@ -79,7 +76,7 @@ mRtmClient.subscribe(channelName, options, new ResultCallback<Void>() {
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-channels-message-channel-1"
+```swift
 rtm?.subscribe(channelName: channel, option: nil, completion: { res, error in
         if error != nil {
             print("\(error?.operation) failed! error reason is \(error?.reason)")
@@ -89,7 +86,7 @@ rtm?.subscribe(channelName: channel, option: nil, completion: { res, error in
     })
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-channels-message-channel-1"
+```objc
 [rtm subscribeWithChannel:@"you_channel" option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"subscribe success!!");
@@ -99,7 +96,7 @@ rtm?.subscribe(channelName: channel, option: nil, completion: { res, error in
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-channels-message-channel-1"
+```cpp
 // 方法调用
 SubscribeOptions options;
 
@@ -109,7 +106,7 @@ rtm_client->subscribe("channelName", options, requestId);
 
 调用该方法后，SDK 会触发 `config.onsubscriberesult` 回调并返回 API 调用结果。
 
-```cpp tab="C++" tabGroup="rtm-build-manage-channels-message-channel-2"
+```cpp
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onSubscribeResult(const uint64_t requestId, const char *channelName, RTM_ERROR_CODE errorCode) {
@@ -122,7 +119,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-channels-message-channel-2"
+```dart
 final channel = 'chat_room';
 try {
     var (status, response) = await rtmClient.subscribe(
@@ -143,7 +140,7 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-channels-message-channel-2"
+```typescript
 import { SubscribeOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -168,14 +165,14 @@ try {
 
 默认情况下，你会收到你所订阅的所有频道的消息事件。如果你无需接收某些特定频道的消息，但仍需接收这些频道中其他类型的事件通知或其他频道的消息，请勿将 `channel.subscribeoptions` 参数中的 `features` 字段设为 `enumv.subscribechannelfeaturemetadata`。你可以将 `channel.subscribeoptions` 参数中的 `withMessage` 字段设置为 `false`。你可以将 `withMessage` 字段设置为 `false`。
 
-```csharp tab="C#" tabGroup="rtm-build-manage-channels-message-channel-3"
+```csharp
 var options = new SubscribeOptions();
 options.withMessage = fasle;
 
 var (status,response) = await rtmClient.SubscribeAsync("Chat_room", options);
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-channels-message-channel-3"
+```javascript
 const options = {
     withMessage: false,
     withPresence: true,
@@ -191,7 +188,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-channels-message-channel-3"
+```java
 String channelName = "test_channel";
 SubscribeOptions options = new SubscribeOptions();
 options.setWithMessage(false);
@@ -211,7 +208,7 @@ mRtmClient.subscribe(channelName, options, new ResultCallback<Void>() {
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-channels-message-channel-3"
+```swift
 let option = AgoraRtmSubscribeOptions();
 option.features = [.presence, .metadata, .lock]
 rtm?.subscribe(channelName: channel, option: option, completion: { res, error in
@@ -223,7 +220,7 @@ rtm?.subscribe(channelName: channel, option: option, completion: { res, error in
     })
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-channels-message-channel-3"
+```objc
 AgoraRtmSubscribeOptions* opt = [[AgoraRtmSubscribeOptions alloc] init];
 opt.features = AgoraRtmSubscribeChannelFeaturePresence;
 [rtm subscribeWithChannel:@"you_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
@@ -235,7 +232,7 @@ opt.features = AgoraRtmSubscribeChannelFeaturePresence;
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-channels-message-channel-3"
+```cpp
 SubscribeOptions options;
 options.withMessage = false;
 options.withPresence = true;
@@ -246,7 +243,7 @@ uint64_t requestId;
 rtmClient->subscribe("channelName", options, requestId);
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-channels-message-channel-3"
+```dart
 final channel = 'chat_room';
 try {
     var (status, response) = await rtmClient.subscribe(
@@ -267,7 +264,7 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-channels-message-channel-3"
+```typescript
 import { SubscribeOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -292,7 +289,7 @@ try {
 
 `channel.subscribe` 方法只允许你一次订阅一个频道。如需订阅多个频道，你可以多次调用该方法。例如，当你想同时订阅频道 `chats.room1` 和频道 `chats.room2` 时，你可以参考如下示例代码：
 
-```csharp tab="C#" tabGroup="rtm-build-manage-channels-message-channel-4"
+```csharp
 var options = new SubscribeOptions();
 
 var (status1,response1) = await rtmClient.SubscribeAsync("chats.room1", options);
@@ -308,7 +305,7 @@ if (status2.Error)
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-channels-message-channel-4"
+```javascript
 const options = {
     withMessage: true,
     withPresence: true,
@@ -336,7 +333,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-channels-message-channel-4"
+```java
 String channelName1 = "chats.room1";
 String channelName2 = "chats.room2";
 SubscribeOptions options = new SubscribeOptions();
@@ -370,7 +367,7 @@ mRtmClient.subscribe(channelName2, options, new ResultCallback<Void>() {
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-channels-message-channel-4"
+```swift
 rtm?.subscribe(channelName: channel1, option: nil, completion: { res, error in
         if error != nil {
             print("\(error?.operation) failed! error reason is \(error?.reason)")
@@ -387,7 +384,7 @@ rtm?.subscribe(channelName: channel2, option: nil, completion: { res, error in
     })
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-channels-message-channel-4"
+```objc
 [rtm subscribeWithChannel:@"chats.room1" option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"subscribe success!!");
@@ -405,7 +402,7 @@ rtm?.subscribe(channelName: channel2, option: nil, completion: { res, error in
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-channels-message-channel-4"
+```cpp
 SubscribeOptions options;
 options.withMessage = false;
 options.withPresence = true;
@@ -417,7 +414,7 @@ rtm_client->subscribe("chats.room1", options, requestId);
 rtm_client->subscribe("chats.room2", options, requestId);
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-channels-message-channel-4"
+```dart
 final channel1 = 'chats.room1';
 final channel2 = 'chats.room2'
 try {
@@ -457,7 +454,7 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-channels-message-channel-4"
+```typescript
 import { SubscribeOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -497,7 +494,7 @@ RTM 支持单个客户端同时订阅 50 个 Message 频道，但考虑到客户
 
 如需停止接收某个频道中的所有消息和事件通知，你可以调用 `channel.unsubscribe` 方法。
 
-```csharp tab="C#" tabGroup="rtm-build-manage-channels-message-channel-5"
+```csharp
 var (status,response) = await rtmClient.UnsubscribeAsync("chats.room1");
 if (status.Error)
 {
@@ -505,7 +502,7 @@ if (status.Error)
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-channels-message-channel-5"
+```javascript
 const channelName = "chats.room1";
 try {
     const result = await rtmClient.unsubscribe(channelName);
@@ -515,7 +512,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-channels-message-channel-5"
+```java
 String channelName = "chats.room1";
 mRtmClient.unsubscribe(channelName, new ResultCallback<Void>() {
     @Override
@@ -530,7 +527,7 @@ mRtmClient.unsubscribe(channelName, new ResultCallback<Void>() {
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-channels-message-channel-5"
+```swift
 RtmClient?.unsubscribe(channel) { res, error in
     if error != nil {
         print("\(error?.operation) failed! error reason is \(error?.reason)")
@@ -540,7 +537,7 @@ RtmClient?.unsubscribe(channel) { res, error in
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-channels-message-channel-5"
+```objc
 [rtm unsubscribeWithChannel:@"chats.room1" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"unsubscribe success!!");
@@ -550,14 +547,14 @@ RtmClient?.unsubscribe(channel) { res, error in
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-channels-message-channel-5"
+```cpp
 uint64_t requestId;
 rtmClient->unsubscribe("chats.room1", requestId);
 ```
 
 调用该方法后，SDK 会触发 `config.onunsubscriberesult` 回调并返回 API 调用结果。
 
-```cpp tab="C++" tabGroup="rtm-build-manage-channels-message-channel-6"
+```cpp
 class RtmEventHandler : public IRtmEventHandler {
     void onUnsubscribeResult(const uint64_t requestId, const char* channelName, RTM_ERROR_CODE errorCode) override {
         if (errorCode != RTM_ERROR_OK) {
@@ -569,7 +566,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-channels-message-channel-6"
+```dart
 final channel = 'chat_room';
 try {
     var (status, response) = await rtmClient.unsubscribe( channel );
@@ -583,7 +580,7 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-channels-message-channel-6"
+```typescript
 import { RtmError } from '@shengwang/rtm-full';
 
 const channelName = "chats.room1";

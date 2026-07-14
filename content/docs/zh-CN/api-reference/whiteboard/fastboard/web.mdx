@@ -352,7 +352,7 @@ insertDocs(title: string, response: ProjectorResponse): Promise<string | undefin
 
 自从 v0.3.8。
 
-在白板子窗口中插入并展示文档。该方法适用于[新版文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)。
+在白板子窗口中插入并展示文档。该方法适用于[新版文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files)。
 
 成功发起文档转换任务并调用[查询文档转换任务进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)获取文档转换结果后，可以调用该方法并传入获取的文档转换结果，SDK 会自动创建子窗口，插入并分页展示转换后的文档。
 
@@ -712,7 +712,7 @@ export interface FastboardOptions {
 `FastboardOptions` 接口包含以下属性：
 
 - `sdkConfig`: （必需）Object。`WhiteWebSdk` 实例的配置，必须传入以下参数：
-  - `appIdentifier`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+  - `appIdentifier`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
   - `region`：String。数据中心，必须与[创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)时设置的数据中心一致。取值如下：
     - `cn-hz`：中国杭州，服务区覆盖其他数据中心未覆盖的地区。
     - `us-sv`：美国硅谷，服务区覆盖北美洲、南美洲。
@@ -724,12 +724,12 @@ export interface FastboardOptions {
   - `uuid`: String。房间的 UUID，即房间的唯一标识符。详见[创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)请求成功后响应包体中 `uuid` 参数的值。
   - `roomToken`: String 型。房间的 Room Token，用于加入房间时的用户鉴权。可以通过以下方式获取：
     - 调用[生成 Room Token ](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
-    - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。
+    - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。
   - `callbacks`：（可选）白板房间的事件回调，详见 [`RoomCallbacks`](/api-ref/whiteboard/javascript/globals#roomcallbacks)。
 - `managerConfig`: （可选）Object。[WindowManager](https://github.com/netless-io/window-manager/blob/master/docs/api.md#mount) 配置选项。
 - `netlessApps`：（可选）Object。官方内置或自定义的 Fastboard 插件，详见[注册和使用 Fastboard 插件](https://github.com/netless-io/fastboard/blob/main/README-zh.md#%E6%B3%A8%E5%86%8C%E4%B8%8E%E4%BD%BF%E7%94%A8-apps)。
 - `enableAppliancePlugin`: （可选）启用 `appliance-plugin` 插件，详见 [`AppliancePluginOptions`](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0)。
-- `enableAppInMainViewPlugin`: （可选）启用 [`@netless/app-in-mainview-plugin`](https://www.npmjs.com/package/@netless/app-in-mainview-plugin) 插件，支持在白板主视图管理[小窗应用](/zh-CN/realtime-media/whiteboard/concepts#小窗应用)：
+- `enableAppInMainViewPlugin`: （可选）启用 [`@netless/app-in-mainview-plugin`](https://www.npmjs.com/package/@netless/app-in-mainview-plugin) 插件，支持在白板主视图管理[小窗应用](/zh-CN/realtime-media/whiteboard/fastboard-sdk/overview/concepts#小窗应用)：
   - `true`：采用默认配置启用插件。
   - `AppInMainViewOptions`：采用自定义配置启用插件，详见 [`AppInMainViewOptions`](https://github.com/netless-io/appInMainView/blob/main/README.zh-cn.md#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE)。
 
@@ -753,7 +753,7 @@ export interface FastboardReplayOptions {
 `FastboardReplayOptions` 接口包含以下属性：
 
 - `sdkConfig`: （必需）Object。`WhiteWebSdk` 实例的配置，必须传入以下参数：
-  - `appIdentifier`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+  - `appIdentifier`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
   - `region`：String。数据中心，必须与[创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)时设置的数据中心一致。取值如下：
     - `cn-hz`：中国杭州，服务区覆盖其他数据中心未覆盖的地区。
     - `us-sv`：美国硅谷，服务区覆盖北美洲、南美洲。
@@ -764,13 +764,13 @@ export interface FastboardReplayOptions {
   - `room`：String。房间的 UUID，即房间的唯一标识符。详见[创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)请求成功后响应包体中 `uuid` 参数的值。
   - `roomToken`：String 型。房间的 Room Token，用于加入房间时的用户鉴权。可以通过以下方式获取：
     - 调用[生成 Room Token ](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
-    - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。
+    - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。
   - `beginTimestamp`：Number。回放开始时间，单位为毫秒。
   - `duration`：Number。回放持续时间，单位为毫秒。
 - `managerConfig`: （可选）Object。[WindowManager](https://github.com/netless-io/window-manager/blob/master/docs/api.md#mount) 配置选项。
 - `netlessApps`：（可选）Object。官方内置或自定义的 Fastboard 插件，详见[注册和使用 Fastboard 插件](https://github.com/netless-io/fastboard/blob/main/README-zh.md#%E6%B3%A8%E5%86%8C%E4%B8%8E%E4%BD%BF%E7%94%A8-apps)。
 - `enableAppliancePlugin`: （可选）启用 `appliance-plugin` 插件，详见 [`AppliancePluginOptions`](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0)。
-- `enableAppInMainViewPlugin`: （可选）启用 [`@netless/app-in-mainview-plugin`](https://www.npmjs.com/package/@netless/app-in-mainview-plugin) 插件，支持在白板主视图管理[小窗应用](/zh-CN/realtime-media/whiteboard/concepts#小窗应用)：
+- `enableAppInMainViewPlugin`: （可选）启用 [`@netless/app-in-mainview-plugin`](https://www.npmjs.com/package/@netless/app-in-mainview-plugin) 插件，支持在白板主视图管理[小窗应用](/zh-CN/realtime-media/whiteboard/fastboard-sdk/overview/concepts#小窗应用)：
   - `true`：采用默认配置启用插件。
   - `AppInMainViewOptions`：采用自定义配置启用插件，详见 [`AppInMainViewOptions`](https://github.com/netless-io/appInMainView/blob/main/README.zh-cn.md#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE)。
 

@@ -77,7 +77,7 @@ struct SpatialAudioParams {
 ### `enable_doppler`
 
 :::info[注]
-该参数适用于声源高速移动的场景（例如赛车游戏）。不推荐在常见的音视频互动场景中使用（例如语音聊天、连麦或在线 KTV）。启用该参数后，建议以固定周期（如 30 毫秒）调用 [updatePlayerPositionInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_updateplayerpositioninfo_ilocalspatialaudioengine)、 [updateSelfPosition](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_updateselfposition_ilocalspatialaudioengine) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 方法，持续更新声源与接收者之间的相对距离。以下因素可能导致多普勒效应不可预测或声音抖动：更新周期过长、更新周期不规律，或因网络丢包或延迟导致距离信息丢失。
+该参数适用于声源高速移动的场景（例如赛车游戏）。不推荐在常见的音视频互动场景中使用（例如语音聊天、连麦或在线 KTV）。启用该参数后，建议以固定周期（如 30 毫秒）调用 [updatePlayerPositionInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateplayerpositioninfo_ilocalspatialaudioengine)、 [updateSelfPosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateselfposition_ilocalspatialaudioengine) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 方法，持续更新声源与接收者之间的相对距离。以下因素可能导致多普勒效应不可预测或声音抖动：更新周期过长、更新周期不规律，或因网络丢包或延迟导致距离信息丢失。
 :::
 
 是否开启多普勒效应：当声源与接收者之间存在相对位移时，接收者听到的音调会发生变化。

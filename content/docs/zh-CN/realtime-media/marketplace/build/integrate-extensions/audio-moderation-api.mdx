@@ -1,10 +1,9 @@
 ---
 title: "使用网易易盾音频审核"
-description: "了解如何在云市场中网易易盾音频审核，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-# 技术原理
-
 本文介绍如何在你的项目中使用网易易盾语音审核插件。
+
+## 技术原理
 
 通过[声网云端录制](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)提供的 RESTful API，你可以对声网频道内的音频流使用第三方语音审核服务。当频道内有用户发送音频流时，审核结果会由第三方直接返回到你的服务器。
 
@@ -24,7 +23,7 @@ description: "了解如何在云市场中网易易盾音频审核，包括适用
 
 ### 开通语音审核服务
 
-1. 注册声网开发者账号，创建项目并获取声网 App ID 和 RTC 临时 Token。详情请参考[开通云市场服务](/zh-CN/realtime-media/marketplace/get-started/enable-service)。
+1. 注册声网开发者账号，创建项目并获取声网 App ID 和 RTC 临时 Token。详情请参考[开通服务](/zh-CN/realtime-media/marketplace/get-started/enable-service)。
 
 2. [开通云端录制服务](/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/enable-service#开通云端录制服务)。
 
@@ -366,7 +365,7 @@ POST https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/acquire HTTPS/1.
 
 特定的客户请求参数，对于该请求包含以下参数：
 
-        - `token`：String 类型，用于鉴权的 RTC Token。如果你的项目已启用 App 证书，则务必在该参数中传入你项目的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+        - `token`：String 类型，用于鉴权的 RTC Token。如果你的项目已启用 App 证书，则务必在该参数中传入你项目的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
         - `recordingConfig`：JSON Object 类型，声网频道内音频流订阅的详细设置，声网会将你订阅的音频流发送给第三方语音审核服务。详见 [recordingConfig 成员列表](#recordingConfig)。
         - `extensionServiceConfig`：JSON Object 类型，第三方语音审核服务的详细设置。详见 [extensionServiceConfig 成员列表](#extensionServiceConfig)。
 

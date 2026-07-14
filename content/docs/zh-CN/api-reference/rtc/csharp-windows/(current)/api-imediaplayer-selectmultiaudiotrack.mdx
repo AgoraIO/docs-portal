@@ -15,7 +15,7 @@ public abstract int SelectMultiAudioTrack(int playoutTrackIndex, int publishTrac
 
 你可以调用该方法分别设置本地播放和发送到远端的音轨。
 
-在调用该方法前，你需要通过 [OpenWithMediaSource](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-open#api_imediaplayer_openwithmediasource) 来打开媒体文件，并通过 [MediaSource](/zh-CN/api-reference/rtc/csharp-windows/class-mediasource) 将 enableMultiAudioTrack 设为 `true`。
+在调用该方法前，你需要通过 [OpenWithMediaSource](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 来打开媒体文件，并通过 [MediaSource](/zh-CN/api-reference/rtc/csharp-windows/class-mediasource) 将 enableMultiAudioTrack 设为 `true`。
 
 <a id="api_imediaplayer_selectmultiaudiotrack__scenario"></a>
 
@@ -29,11 +29,11 @@ public abstract int SelectMultiAudioTrack(int playoutTrackIndex, int publishTrac
 
 ### `playoutTrackIndex`
 
-用于本地播放的音轨索引。你可以通过 [GetStreamInfo](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
+用于本地播放的音轨索引。你可以通过 [GetStreamInfo](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
 
 ### `publishTrackIndex`
 
-用于发送至远端的音轨索引。你可以通过 [GetStreamInfo](/zh-CN/api-reference/rtc/csharp-windows/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
+用于发送至远端的音轨索引。你可以通过 [GetStreamInfo](/zh-CN/api-reference/rtc/csharp-windows/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
 
 <a id="api_imediaplayer_selectmultiaudiotrack__return_values"></a>
 

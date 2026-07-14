@@ -1,22 +1,19 @@
 ---
 title: "频道元数据"
-description: "了解如何在实时消息 RTM 中频道元数据，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-Storage 服务为你提供了 Channel Metadata 的能力，可以用来存储和分发你应用中的上下文数据，例如：道具、公告、成员列表和关系链等。
-
-hannel Metadata 在被设置、更新和删除的时候会触发 `config.onstorageevent` 事件通知，频道中的其他人会在 100 ms 内收到此信息。Storage 服务对于 Message Channel 和 Stream Channel 都有效，在使用的时候可以通过 `channelType` 参数区分。
+Storage 服务为你提供了 Channel Metadata 的能力，可以用来存储和分发你应用中的上下文数据，例如：道具、公告、成员列表和关系链等。Channel Metadata 在被设置、更新和删除的时候会触发 `config.onstorageevent` 事件通知，频道中的其他人会在 100 ms 内收到此信息。Storage 服务对于 Message Channel 和 Stream Channel 都有效，在使用的时候可以通过 `channelType` 参数区分。
 
 Channel Metadata 属于永久存储数据，一旦被设置将会长期保存在 RTM 数据库，不会因为你的频道被销毁而丢失，除非你手动删除。这将影响你的存储计费项，详见[计费规则](/zh-CN/realtime-media/rtm/reference/billing/billing-strategy)。
 
 ## 设置频道元数据
 
-你可以为指定频道设置一组 Channel Metadata，用以实现业务上房间级别的数据存储和实时通知，例如房间内的道具信息、拍卖品价格更新、群公告等。每个频道只能有一组 Channel Metadata，但每组 Channel Metadata 可以包含一个或多个 Metadata Item，相关限制详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。每个 Metadata Item 包含 `key`、`value`、`revision` 等预定义字段。
+你可以为指定频道设置一组 Channel Metadata，用以实现业务上房间级别的数据存储和实时通知，例如房间内的道具信息、拍卖品价格更新、群公告等。每个频道只能有一组 Channel Metadata，但每组 Channel Metadata 可以包含一个或多个 Metadata Item，相关限制详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。每个 Metadata Item 包含 `key`、`value`、`revision` 等预定义字段。
 
 如果当前 Channel Metadata 或者 Metadata Item 不存在，该方法将为指定频道新增属性；如果 Channel Metadata 或者 Metadata Item 已存在，则会使用新值覆盖原有值。关于 `storage.setchannel` 接口的更多信息详见 [Storage API 参考](/api-ref/rtm2//toc-storage/storage)。
 
 以下示例展示了如何设置 Channel Metadata：
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-channel-metadata-1"
+```javascript
 const properties = {
     key : "Quantity",
     value : "20"
@@ -43,7 +40,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-metadata-channel-metadata-1"
+```java
 Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Quantity", "20"));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our shop!"));
@@ -62,7 +59,7 @@ mRtmClient.getStorage().setChannelMetadata("channel1", RtmChannelType.MESSAGE, m
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-channel-metadata-1"
+```swift
 // 获取元数据
 let metadata = AgoraRtmMetadata()!
 
@@ -99,7 +96,7 @@ rtm.getStorage()?.setChannelMetadata(channelName: "channel1", channelType: .mess
 
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-channel-metadata-1"
+```objc
 //get metadata
 AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
 
@@ -130,7 +127,7 @@ metadata_opt.recordTs = true;
         }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-channel-metadata-1"
+```cpp
 Metadata metadata;
 std::vector<agora::rtm::MetadataItem> items;
 MetadataItem item0("Quantity", "20");
@@ -150,7 +147,7 @@ rtmClient->getStorage()->setChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE
 
 调用该方法后，SDK 会触发 `config.onsetchannelmetadataresult` 回调并返回 API 调用结果。
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-channel-metadata-2"
+```cpp
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onSetChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, RTM_ERROR_CODE errorCode) override {
@@ -163,7 +160,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-channel-metadata-2"
+```dart
 var properties = MetadataItem(
   key: 'Quantity',
   value: '20');
@@ -196,7 +193,7 @@ try{
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-channel-metadata-2"
+```typescript
 import { RtmChannelType, MetadataItem, MetadataOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -279,7 +276,7 @@ public void onSuccess(Void responseInfo) {
 
 以下示例代码展示了如何获得 Channel Metadata：
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-channel-metadata-3"
+```javascript
 try {
     const result = await rtm.storage.getChannelMetadata("channel1","MESSAGE");
     console.log(JSON.stringify(result));
@@ -288,7 +285,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-metadata-channel-metadata-3"
+```java
 mRtmClient.getStorage().getChannelMetadata("channel1", RtmChannelType.MESSAGE, new ResultCallback<Metadata>() {
     @Override
     public void onSuccess(Metadata data) {
@@ -306,7 +303,7 @@ mRtmClient.getStorage().getChannelMetadata("channel1", RtmChannelType.MESSAGE, n
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-channel-metadata-3"
+```swift
 rtm.getStorage()?.getChannelMetadata(channelName: "channel1", channelType: .message) { response, errorInfo in
     if errorInfo == nil {
         print("getChannelMetadata success!!")
@@ -321,7 +318,7 @@ rtm.getStorage()?.getChannelMetadata(channelName: "channel1", channelType: .mess
 
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-channel-metadata-3"
+```objc
 [[rtm getStorage] getChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage completion:^(AgoraRtmGetMetadataResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"getChannelMetadata success!!");
@@ -332,14 +329,14 @@ rtm.getStorage()?.getChannelMetadata(channelName: "channel1", channelType: .mess
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-channel-metadata-3"
+```cpp
 uint64_t requestId;
 rtmClient->getStorage()->getChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, requestId);
 ```
 
 调用该方法后，SDK 会触发 `config.ongetchannelmetadataresult` 回调并返回 API 调用结果。
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-channel-metadata-4"
+```cpp
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onGetChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, const Metadata& data, RTM_ERROR_CODE errorCode) override {
@@ -355,7 +352,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-channel-metadata-4"
+```dart
 try{
     var (status,response) = await rtmClient.getStorage.getChannelMetadata(
         'channel1',
@@ -371,7 +368,7 @@ try{
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-channel-metadata-4"
+```typescript
 import { RtmChannelType } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -396,7 +393,7 @@ try {
 
 当上述操作成功后，RTM SDK 会返回如下数据结构：
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-channel-metadata-5"
+```javascript
 {
     totalCount: 3,
     majorRevision: 734874892,
@@ -425,7 +422,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-metadata-channel-metadata-5"
+```java
 {
     majorRevision: 734874892,
     metadata:{
@@ -454,7 +451,7 @@ try {
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-channel-metadata-5"
+```swift
 {
     majorRevision: 734874892,
     metadata:{
@@ -480,7 +477,7 @@ try {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-channel-metadata-5"
+```objc
 {
     majorRevision: 734874892,
     metadata:{
@@ -506,7 +503,7 @@ try {
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-channel-metadata-5"
+```cpp
 {
     majorRevision: 734874892,
     metadata:{
@@ -532,7 +529,7 @@ try {
 }
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-channel-metadata-5"
+```dart
 {
     data:{
         majorRevision: 734874892,
@@ -563,7 +560,7 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-channel-metadata-5"
+```typescript
 {
     channelName: "channel1",
     channelType: RtmChannelType.MESSAGE,
@@ -605,7 +602,7 @@ try {
 
 以下示例代码展示了如何更新 Metadata Item 值：
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-channel-metadata-6"
+```javascript
 const price = {
     key : "T-shirt",
     value : "299"
@@ -622,7 +619,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-metadata-channel-metadata-6"
+```java
 Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("T-shirt", "299"));
 MetadataOptions options = new MetadataOptions()
@@ -642,7 +639,7 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-channel-metadata-6"
+```swift
 // 获取元数据
 let metadata = AgoraRtmMetadata()!
 
@@ -672,7 +669,7 @@ rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .m
 
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-channel-metadata-6"
+```objc
 //get metadata
 AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
 
@@ -697,7 +694,7 @@ metadata_opt.recordTs = true;
         }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-channel-metadata-6"
+```cpp
 Metadata metadata;
 std::vector<agora::rtm::MetadataItem> items;
 items.push_back(MetadataItem("T-shirt", "299"));
@@ -714,7 +711,7 @@ rtmClient->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESS
 
 调用该方法后，SDK 会触发 `config.onupdatechannelmetadataresult` 回调并返回 API 调用结果。
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-channel-metadata-7"
+```cpp
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onUpdateChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, RTM_ERROR_CODE errorCode) override {
@@ -727,7 +724,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-channel-metadata-7"
+```dart
 var price = MetadataItem(
   key: 'T-shirt',
   value: '299');
@@ -752,7 +749,7 @@ try{
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-channel-metadata-7"
+```typescript
 import { RtmChannelType, MetadataItem, MetadataOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -832,7 +829,7 @@ public void onSuccess(Void responseInfo) {
 
 如果你不再需要 Channel Metadata 或者某几个 Metadata Item，你可以参考以下示例代码使用 `storage.removechannel` 进行删除操作：
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-channel-metadata-8"
+```javascript
 const announcement = {
     key : "Announcement",
 };
@@ -851,7 +848,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-metadata-channel-metadata-8"
+```java
 Metadata metadata = new Metadata();
 MetadataItem announcement = new MetadataItem();
 announcement.setKey("Announcement");
@@ -870,7 +867,7 @@ mRtmClient.getStorage().removeChannelMetadata("channel1", RtmChannelType.MESSAGE
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-channel-metadata-8"
+```swift
 let metadata = AgoraRtmMetadata()!
 
 let announcement = AgoraRtmMetadataItem()
@@ -891,7 +888,7 @@ rtm.getStorage()?.removeChannelMetadata(channelName: "channel1", channelType: .m
 
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-channel-metadata-8"
+```objc
 AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
 AgoraRtmMetadataItem* announcement = [[AgoraRtmMetadataItem alloc] init];
 announcement.key = @"Announcement";
@@ -907,7 +904,7 @@ metadata.items = item_array;
         }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-channel-metadata-8"
+```cpp
 Metadata metadata;
 std::vector<agora::rtm::MetadataItem> items;
 MetadataItem item;
@@ -926,7 +923,7 @@ rtmClient->getStorage()->removeChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESS
 
 调用该方法后，SDK 会触发 `config.onremovechannelmetadataresult` 回调并返回 API 调用结果。
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-channel-metadata-9"
+```cpp
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onRemoveChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, RTM_ERROR_CODE errorCode) override {
@@ -939,7 +936,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-channel-metadata-9"
+```dart
 var announcement = MetadataItem(key: 'Announcement');
 var metadata = [announcement];
 
@@ -959,7 +956,7 @@ try{
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-channel-metadata-9"
+```typescript
 import { RtmChannelType, MetadataItem } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -1110,7 +1107,7 @@ Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set）�
 
 以下示例代码展示了如何使用 `majorRevision` 和 `revision` 更新 Channel Metadata 和 Metadata Item：
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-channel-metadata-10"
+```javascript
 const properties = {
     key : "Quantity",
     value : "30",
@@ -1139,7 +1136,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-metadata-channel-metadata-10"
+```java
 Metadata metadata = new Metadata();
 metadata.setMajorRevision(734874892);
 metadata.getItems().add(new MetadataItem("Quantity", "30", 734874888));
@@ -1162,7 +1159,7 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-channel-metadata-10"
+```swift
 let metadata = AgoraRtmMetadata()
 
 let properties = AgoraRtmMetadataItem()
@@ -1200,7 +1197,7 @@ rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .m
 
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-channel-metadata-10"
+```objc
 AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
 
 AgoraRtmMetadataItem* properties = [[AgoraRtmMetadataItem alloc] init];
@@ -1231,7 +1228,7 @@ metadata_opt.recordTs = true;
         }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-channel-metadata-10"
+```cpp
 Metadata metadata;
 metadata.majorRevision = 734874892;
 std::vector<MetadataItem> items;
@@ -1249,7 +1246,7 @@ uint64_t requestId;
 rtmClient->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, "lockName", requestId);
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-channel-metadata-10"
+```dart
 var properties = MetadataItem(
   key: 'Quantity',
   value: '20'
@@ -1285,7 +1282,7 @@ try{
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-channel-metadata-10"
+```typescript
 import { RtmChannelType, Metadata, MetadataItem } from '@shengwang/rtm-full';
 
 // Define metadata items with revision control
@@ -1328,7 +1325,7 @@ Lock 为用户提供了对临界资源互斥访问的能力，你可以解决用
 
 以下代码展示了如何使用 Lock 来更新 Channel Metadata：
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-channel-metadata-11"
+```javascript
 const properties = {
     key : "Quantity",
     value : "40"
@@ -1355,7 +1352,7 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-metadata-channel-metadata-11"
+```java
 Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Quantity", "40"));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our Shop!"));
@@ -1378,7 +1375,7 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-channel-metadata-11"
+```swift
 let metadata = AgoraRtmMetadata()
 
 let properties = AgoraRtmMetadataItem()
@@ -1415,7 +1412,7 @@ rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .m
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-channel-metadata-11"
+```objc
 AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
 
 AgoraRtmMetadataItem* properties = [[AgoraRtmMetadataItem alloc] init];
@@ -1444,7 +1441,7 @@ metadata_opt.recordTs = true;
         }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-channel-metadata-11"
+```cpp
 Metadata metadata;
 std::vector<MetadataItem> items;
 items.emplace_back(MetadataItem("Quantity", "40"));
@@ -1462,7 +1459,7 @@ std::string lockName = "manage";
 rtm_client->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, lockName, requestId);
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-channel-metadata-11"
+```dart
 var properties = MetadataItem(
   key: 'Quantity',
   value: '20');
@@ -1496,7 +1493,7 @@ try{
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-channel-metadata-11"
+```typescript
 import { RtmChannelType, Metadata } from '@shengwang/rtm-full';
 
 // Define metadata items

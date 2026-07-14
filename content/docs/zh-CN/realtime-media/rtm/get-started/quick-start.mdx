@@ -1,10 +1,10 @@
 ---
-title: "快速开始：实现收发消息"
-description: "了解如何快速接入实时消息 RTM，完成环境准备、参数配置、示例运行和核心流程验证。"
+title: "实现收发消息"
 ---
-本文将指导你如何利用 RTM Java SDK 构建简单的应用程序，内容涵盖了集成和开发的基础知识：开通声网账号、获取 SDK、发送消息、接收消息等。
 
 <PlatformStructured platform="android">
+
+本文将指导你如何利用 RTM Java SDK 构建简单的应用程序，内容涵盖了集成和开发的基础知识：开通声网账号、获取 SDK、发送消息、接收消息等。
 
 同时，我们也提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
 
@@ -15,7 +15,7 @@ description: "了解如何快速接入实时消息 RTM，完成环境准备、�
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -883,7 +883,7 @@ mRtmClient.logout(new ResultCallback<Void>() {
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -1506,7 +1506,7 @@ self.channelMsg = self.GroupMsgTextField.text;
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的浏览器是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的浏览器是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 获取 SDK
 
@@ -1529,157 +1529,117 @@ self.channelMsg = self.GroupMsgTextField.text;
 
    **场景一**：项目仅使用 RTM 产品，且没有集成声网任何版本的 RTC 产品。
 
-   <Tabs defaultValue="npm" groupId="package" persist>
-   <TabsList>
-     <TabsTrigger value="npm">使用 npm</TabsTrigger>
-     <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
-     <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
-   </TabsList>
+```shell tab="使用 npm" tabGroup="package"
+npm install agora-rtm
+```
 
-   <TabsContent value="npm">
+```shell tab="使用 pnpm" tabGroup="package"
+pnpm add agora-rtm
+```
 
-   ```shell
-   npm install agora-rtm
-   ```
+```shell tab="使用 Yarn" tabGroup="package"
+yarn add agora-rtm
+yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+```
 
-   </TabsContent>
+    **场景二**：项目中已经集成了 RTC 产品，需要新接入 RTM 产品。
 
-   <TabsContent value="pnpm">
+<Tabs defaultValue="npm" groupId="package" persist>
+<TabsList>
+  <TabsTrigger value="npm">使用 npm</TabsTrigger>
+  <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
+  <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
+</TabsList>
 
-   ```shell
-   pnpm add agora-rtm
-   ```
+<TabsContent value="npm">
 
-   </TabsContent>
+```shell
+npm install agora-rtm
+```
 
-   <TabsContent value="yarn">
+</TabsContent>
 
-   ```shell
-   yarn add agora-rtm
-   yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
-   ```
+<TabsContent value="pnpm">
 
-   </TabsContent>
-   </Tabs>
+```shell
+pnpm add agora-rtm
+```
 
-   **场景二**：项目中已经集成了 RTC 产品，需要新接入 RTM 产品。
+如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
 
-   <Tabs defaultValue="npm" groupId="package" persist>
-   <TabsList>
-     <TabsTrigger value="npm">使用 npm</TabsTrigger>
-     <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
-     <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
-   </TabsList>
+```shell
+pnpm update agora-rtc-sdk-ng@4.22.0
+```
 
-   <TabsContent value="npm">
+或者通过以下命令同时保留两个版本的 RTC 库：
 
-   ```shell
-   npm install agora-rtm
-   ```
+```shell
+pnpm add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
+pnpm add agora-rtc-sdk-ng@4.22.0 --save-exact
+```
 
-   </TabsContent>
+然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
 
-   <TabsContent value="pnpm">
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng-4.16"
+```
 
-   ```shell
-   pnpm add agora-rtm
-   ```
+:::warning[注意]
+保留两个版本的 RTC 库会增加项目的包体积。
+:::
 
-   如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
+</TabsContent>
 
-   ```shell
-   pnpm update agora-rtc-sdk-ng@4.22.0
-   ```
+<TabsContent value="yarn">
 
-   或者通过以下命令同时保留两个版本的 RTC 库：
+```shell
+yarn add agora-rtm
+```
 
-   ```shell
-   pnpm add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
-   pnpm add agora-rtc-sdk-ng@4.22.0 --save-exact
-   ```
+如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
 
-   然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
+```shell
+yarn upgrade agora-rtc-sdk-ng@4.22.0
+```
 
-   ```javascript
-   import AgoraRTC from "agora-rtc-sdk-ng-4.16"
-   ```
+或者通过以下命令同时保留两个版本的 RTC 库：
 
-   :::warning[注意]
-   保留两个版本的 RTC 库会增加项目的包体积。
-   :::
+```shell
+yarn add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
+yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+```
 
-   </TabsContent>
+然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
 
-   <TabsContent value="yarn">
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng-4.16"
+```
 
-   ```shell
-   yarn add agora-rtm
-   ```
+:::warning[注意]
+保留两个版本的 RTC 库会增加项目的包体积。
+:::
 
-   如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
+</TabsContent>
+</Tabs>
 
-   ```shell
-   yarn upgrade agora-rtc-sdk-ng@4.22.0
-   ```
+    **场景三**：你的项目是全新的，且需要同时集成 RTM 和 RTC，以利用其共频道、数据优先级控制等能力。这种场景下建议你集成融合版本的 SDK。
 
-   或者通过以下命令同时保留两个版本的 RTC 库：
+```shell tab="使用 npm" tabGroup="package"
+npm install agora-rtx
+```
 
-   ```shell
-   yarn add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
-   yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
-   ```
+```shell tab="使用 pnpm" tabGroup="package"
+pnpm add agora-rtx --shamefully-hoist
+```
 
-   然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
+```shell tab="使用 Yarn" tabGroup="package"
+# 若版本为 2.2.0
+# yarn add agora-rtx
+# yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
 
-   ```javascript
-   import AgoraRTC from "agora-rtc-sdk-ng-4.16"
-   ```
-
-   :::warning[注意]
-   保留两个版本的 RTC 库会增加项目的包体积。
-   :::
-
-   </TabsContent>
-   </Tabs>
-
-   **场景三**：你的项目是全新的，且需要同时集成 RTM 和 RTC，以利用其共频道、数据优先级控制等能力。这种场景下建议你集成融合版本的 SDK。
-
-   <Tabs defaultValue="npm" groupId="package" persist>
-   <TabsList>
-     <TabsTrigger value="npm">使用 npm</TabsTrigger>
-     <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
-     <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
-   </TabsList>
-
-   <TabsContent value="npm">
-
-   ```shell
-   npm install agora-rtx
-   ```
-
-   </TabsContent>
-
-   <TabsContent value="pnpm">
-
-   ```shell
-   pnpm add agora-rtx --shamefully-hoist
-   ```
-
-   </TabsContent>
-
-   <TabsContent value="yarn">
-
-   ```shell
-   # 若版本为 2.2.0
-   # yarn add agora-rtx
-   # yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
-
-   # 2.2.0 及之后版本
-   yarn add agora-rtx
-   ```
-
-   </TabsContent>
-   </Tabs>
+# 2.2.0 及之后版本
+yarn add agora-rtx
+```
 
 2. 完成安装后，在你的 `app.js` 中引入 RTM：
 
@@ -2062,7 +2022,7 @@ try {
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -2877,7 +2837,7 @@ rtmManager.release();
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境和运行环境是否满足如下要求：
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境和运行环境是否满足如下要求：
 
 - [Unity Hub](https://unity.com/download) 任意版本
 
@@ -3478,7 +3438,7 @@ if (streamChannel != null)
 
 ### 订阅 Topic 中的发布者
 
-你可以通过调用 `SubscribeTopicAsync` 方法订阅某个 Topic 中的一位或多位消息发布者以便于接收他们发送的消息。单个客户端在单个 Topic 中最多只能订阅 64 个消息发布者，详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
+你可以通过调用 `SubscribeTopicAsync` 方法订阅某个 Topic 中的一位或多位消息发布者以便于接收他们发送的消息。单个客户端在单个 Topic 中最多只能订阅 64 个消息发布者，详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
 
 将以下代码添加到程序中：
 
@@ -4126,7 +4086,7 @@ public class HelloWorld : MonoBehaviour
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -4538,7 +4498,7 @@ void main() async {
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -5169,7 +5129,7 @@ int main(int argc, const char * argv[]) {
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境和运行环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境和运行环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 

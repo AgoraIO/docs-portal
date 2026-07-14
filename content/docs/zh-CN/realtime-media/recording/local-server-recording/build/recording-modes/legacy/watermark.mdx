@@ -1,6 +1,5 @@
 ---
 title: "在录制文件中添加水印"
-description: "了解本地服务端录制中在录制文件中添加水印相关内容的适用场景、配置步骤、实现要点和注意事项。"
 ---
 在使用合流录制模式时，你可在录制视频文件中添加水印，如公司 Logo、时间戳或特定文字信息，以实现防伪、版权声明、宣传或记录等目的。
 
@@ -136,7 +135,7 @@ description: "了解本地服务端录制中在录制文件中添加水印相关
 
 参考如下示例代码，了解如何调用 `setVideoMixingLayout` 方法添加 1 个图片水印、1 个时间戳水印和 1 个文字水印。
 
-```cpp tab="C++" tabGroup="zh-cn-realtime-media-recording-local-server-recording-build-recording-modes-legacy-watermark-1"
+```cpp
 agora::linuxsdk::VideoMixingLayout layout;
 
 //TO DO: Set other video mixing layout configuration here.
@@ -172,7 +171,7 @@ layout.wm_configs = config;
 int res = m_enigne->setVideoMixingLayout(layout);
 ```
 
-```java tab="Java" tabGroup="zh-cn-realtime-media-recording-local-server-recording-build-recording-modes-legacy-watermark-1"
+```java
 /*
  * RecordingSDKInstance is the instance of the RecordingSDK class.
  */

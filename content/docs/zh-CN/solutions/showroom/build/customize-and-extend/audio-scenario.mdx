@@ -1,6 +1,5 @@
 ---
 title: "设置优质音频体验"
-description: "了解秀场直播中设置优质音频体验相关内容的适用场景、配置步骤、实现要点和注意事项。"
 ---
 showroom中，优质的音频体验至关重要。
 
@@ -106,7 +105,7 @@ let audioScenarioApi = AudioScenarioApi(rtcEngine: rtc)
 
 加入频道前，调用 `setAudioScenario`，根据秀场直播的身份来配置音频优化体验。在加入频道前配置一次即可，音频配置不随加入/退出频道而发生改变。
 
-```kotlin tab="Kotlin" tabGroup="zh-cn-solutions-showroom-build-customize-and-extend-audio-scenario-1"
+```kotlin
 // 秀场直播场景，身份为主播
 audioScenarioApi.setAudioScenario(SceneType.Show, AudioScenarioType.Show_Host)
 // 秀场直播场景，身份为连麦观众
@@ -114,7 +113,7 @@ audioScenarioApi.setAudioScenario(SceneType.Show, AudioScenarioType.Show_Interac
 
 ```
 
-```swift tab="Swift" tabGroup="zh-cn-solutions-showroom-build-customize-and-extend-audio-scenario-1"
+```swift
 
 // 秀场直播场景，身份为主播
 audioScenarioApi.setAudioScenario(sceneType: .Show, audioScenarioType: .Show_Host)

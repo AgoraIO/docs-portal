@@ -229,7 +229,7 @@ export function DocsContent({
         <div
           className={cn(
             'flex flex-col gap-3',
-            canCopyMarkdownContent && 'lg:flex-row lg:items-start lg:gap-6',
+            canCopyMarkdownContent && 'xl:flex-row xl:items-start xl:gap-6',
           )}
         >
           <div className="min-w-0 flex-1">
@@ -264,7 +264,7 @@ export function DocsContent({
           </div>
           {canCopyMarkdownContent && markdownUrl ? (
             <DocsCopyMenu
-              className="self-start lg:ml-auto lg:shrink-0 lg:translate-y-1"
+              className="self-start xl:ml-auto xl:shrink-0 xl:translate-y-1"
               locale={currentLocale}
               markdownUrl={markdownUrl}
               slug={slug ?? ''}

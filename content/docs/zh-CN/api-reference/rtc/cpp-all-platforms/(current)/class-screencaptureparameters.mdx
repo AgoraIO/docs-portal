@@ -64,14 +64,14 @@ struct ScreenCaptureParameters {
 由于 macOS 系统限制，当设置该参数将窗口置于前台时，如果当前应用有多个窗口，只有主窗口会被置于前台。
 :::
 
-调用 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/cpp-all-platforms/screencapture#api_irtcengine_startscreencapturebywindowid) 方法共享窗口时，是否将该窗口置于前台：
+调用 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebywindowid) 方法共享窗口时，是否将该窗口置于前台：
 
 - true：将窗口置于前台。
 - false：（默认）不将窗口置于前台。
 
 ### `excludeWindowList`
 
-要屏蔽的窗口 ID 列表。调用 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/cpp-all-platforms/screencapture#api_irtcengine_startscreencapturebydisplayid) 开始屏幕共享时，可使用该参数屏蔽指定窗口。调用 [updateScreenCaptureParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/screencapture#api_irtcengine_updatescreencaptureparameters) 更新屏幕共享配置时，也可使用该参数动态屏蔽指定窗口。
+要屏蔽的窗口 ID 列表。调用 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开始屏幕共享时，可使用该参数屏蔽指定窗口。调用 [updateScreenCaptureParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_updatescreencaptureparameters) 更新屏幕共享配置时，也可使用该参数动态屏蔽指定窗口。
 
 ### `excludeWindowCount`
 

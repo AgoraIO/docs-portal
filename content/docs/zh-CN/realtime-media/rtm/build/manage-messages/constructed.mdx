@@ -1,10 +1,7 @@
 ---
 title: "消息负载结构化"
-description: "了解如何在实时消息 RTM 中消息负载结构化，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-消息负载的结构应该具备易读性和可扩展性，以减少程序的构建和维护成本，以及在未来版本升级时新老版本可以更容易地兼容。
-
-于通过 RTM 发送的消息只能为字符串（String）或二进制（Binary）类型，RTM 无法直接提供可解析、可扩展的消息数据结构。但你可以根据业务需求自行构建结构化消息负载，并使用 `customType` 参数来标识和解析它。
+消息负载的结构应该具备易读性和可扩展性，以减少程序的构建和维护成本，以及在未来版本升级时新老版本可以更容易地兼容。由于通过 RTM 发送的消息只能为字符串（String）或二进制（Binary）类型，RTM 无法直接提供可解析、可扩展的消息数据结构。但你可以根据业务需求自行构建结构化消息负载，并使用 `customType` 参数来标识和解析它。
 
 你在业务流程中可能会涉及到以下类型的消息：
 
@@ -35,7 +32,7 @@ description: "了解如何在实时消息 RTM 中消息负载结构化，包括�
 
 现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `message.publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。详见：[消息负载序列化](/zh-CN/realtime-media/rtm/build/manage-messages/serialized)。
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-1" showLineNumbers
+```javascript showLineNumbers
 // Define message structure
 const message = {
     type: "image",
@@ -63,7 +60,7 @@ rtm.addEventListener("message", event => {
 });
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-1"
+```java
 String message = {
     "type": "image",
     "asset_url": "https://my.app/image.png",
@@ -102,7 +99,7 @@ new RtmEventListener {
 
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-1"
+```swift
 let option = AgoraRtmPublishOptions();
 option.customType = "image"
 let message = "{
@@ -133,7 +130,7 @@ class RtmListenerEx: NSObject, AgoraRtmClientDelegate {
 
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-1"
+```objc
 -(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
     NSLog(@"didReceiveMessageEvent");
     if (event.customType == @"image") {
@@ -144,7 +141,7 @@ class RtmListenerEx: NSObject, AgoraRtmClientDelegate {
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-1"
+```cpp
 PublishOptions options;
 options.messageType = RTM_MESSAGE_TYPE_STRING;
 options.customType = "image";
@@ -174,7 +171,7 @@ class RtmHandler: public IRtmEventHandler {
 
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-messages-constructed-1"
+```dart
 import 'dart:convert';
 
 final channelName = 'chat_room';
@@ -212,7 +209,7 @@ rtm.addListener( message: (MessageEvent event) {
 });
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-messages-constructed-1"
+```typescript
 import { PublishOptions, RtmChannelType, MessageEvent } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -270,7 +267,7 @@ rtmClient.addEventListener("message", (event: object) => {
 
 ### 文本消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-1"
+```csharp
 {
     type: "text",
     message: "This is a message",
@@ -279,7 +276,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-1" showLineNumbers
+```javascript showLineNumbers
 {
     type: "text",
     message: "This is a message",
@@ -288,7 +285,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-1"
+```java
 {
     "type": "text",
     "message": "This is a message",
@@ -297,7 +294,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-1"
+```swift
 {
     "type": "text",
     "message": "This is a message",
@@ -306,7 +303,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-1"
+```objc
 {
     "type": "text",
     "message": "This is a message",
@@ -315,7 +312,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-1"
+```cpp
 {
     "type": "text",
     "message": "This is a message",
@@ -324,7 +321,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-1"
+```json
 {
     type: "text",
     message: "This is a message",
@@ -333,7 +330,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-1"
+```json
 {
     "type": "text",
     "message": "This is a message",
@@ -344,7 +341,7 @@ rtmClient.addEventListener("message", (event: object) => {
 
 ### 多语言消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-2"
+```csharp
 {
     type: "translation",
     message: {
@@ -357,7 +354,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-2" showLineNumbers
+```javascript showLineNumbers
 {
     type: "translation",
     message: {
@@ -370,7 +367,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-2"
+```java
 {
     "type": "translation",
     "message": {
@@ -383,7 +380,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-2"
+```swift
 {
     "type": "translation",
     "message": {
@@ -396,7 +393,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-2"
+```objc
 {
     "type": "translation",
     "message": {
@@ -409,7 +406,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-2"
+```cpp
 {
     "type": "translation",
     "message": {
@@ -422,7 +419,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-2"
+```json
 {
     type: "translation",
     message: {
@@ -435,7 +432,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-2"
+```json
 {
     "type": "translation",
     "message": {
@@ -450,7 +447,7 @@ rtmClient.addEventListener("message", (event: object) => {
 
 ### 图片附件消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-3"
+```csharp
 {
     type: "attachment",
     text: "Here is a image below!"
@@ -467,7 +464,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-3" showLineNumbers
+```javascript showLineNumbers
 {
     type: "attachment",
     text: "Here is a image below!"
@@ -484,7 +481,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-3"
+```java
 {
     "type": "attachment",
     "text": "Here is a image below!",
@@ -501,7 +498,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-3"
+```swift
 {
     "type": "attachment",
     "text": "Here is a image below!",
@@ -518,7 +515,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-3"
+```objc
 {
     "type": "attachment",
     "text": "Here is a image below!",
@@ -535,7 +532,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-3"
+```cpp
 {
     "type": "attachment",
     "text": "Here is a image below!",
@@ -552,7 +549,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-3"
+```json
 {
     type: "attachment",
     text: "Here is a image below!"
@@ -569,7 +566,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-3"
+```json
 {
     "type": "attachment",
     "text": "Here is a image below!",
@@ -588,7 +585,7 @@ rtmClient.addEventListener("message", (event: object) => {
 
 ### 图片消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-4"
+```csharp
 {
     type: "image",
     asset_url: "https://my.app/image.png",
@@ -598,7 +595,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-4" showLineNumbers
+```javascript showLineNumbers
 {
     type: "image",
     asset_url: "https://my.app/image.png",
@@ -608,7 +605,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-4"
+```java
 {
     "type": "image",
     "asset_url": "https://my.app/image.png",
@@ -618,7 +615,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-4"
+```swift
 {
     "type": "image",
     "asset_url": "https://my.app/image.png",
@@ -628,7 +625,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-4"
+```objc
 {
     "type": "image",
     "asset_url": "https://my.app/image.png",
@@ -638,7 +635,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-4"
+```cpp
 {
     "type": "image",
     "asset_url": "https://my.app/image.png",
@@ -648,7 +645,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-4"
+```json
 {
     type: "image",
     asset_url: "https://my.app/image.png",
@@ -658,7 +655,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-4"
+```json
 {
     "type": "image",
     "asset_url": "https://my.app/image.png",
@@ -670,7 +667,7 @@ rtmClient.addEventListener("message", (event: object) => {
 
 ### 视频消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-5"
+```csharp
 {
     type: "video",
     asset_url: "https://my.app/video.mp4",
@@ -680,7 +677,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-5" showLineNumbers
+```javascript showLineNumbers
 {
     type: "video",
     asset_url: "https://my.app/video.mp4",
@@ -690,7 +687,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-5"
+```java
 {
     "type": "video",
     "asset_url": "https://my.app/video.mp4",
@@ -700,7 +697,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-5"
+```swift
 {
     "type": "video",
     "asset_url": "https://my.app/video.mp4",
@@ -710,7 +707,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-5"
+```objc
 {
     "type": "video",
     "asset_url": "https://my.app/video.mp4",
@@ -720,7 +717,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-5"
+```cpp
 {
     "type": "video",
     "asset_url": "https://my.app/video.mp4",
@@ -730,7 +727,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-5"
+```json
 {
     type: "video",
     asset_url: "https://my.app/video.mp4",
@@ -740,7 +737,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-5"
+```json
 {
     "type": "video",
     "asset_url": "https://my.app/video.mp4",
@@ -752,7 +749,7 @@ rtmClient.addEventListener("message", (event: object) => {
 
 ### 动作提示消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-6"
+```csharp
 {
     type: "action",
     event: "正在输入",
@@ -760,7 +757,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-6" showLineNumbers
+```javascript showLineNumbers
 {
     type: "action",
     event: "正在输入",
@@ -768,7 +765,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-6"
+```java
 {
     "type": "action",
     "event": "正在输入",
@@ -776,7 +773,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-6"
+```swift
 {
     "type": "action",
     "event": "正在输入",
@@ -784,7 +781,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-6"
+```objc
 {
     "type": "action",
     "event": "正在输入",
@@ -792,7 +789,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-6"
+```cpp
 {
     "type": "action",
     "event": "正在输入",
@@ -800,7 +797,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-6"
+```json
 {
     type: "action",
     event: "正在输入",
@@ -808,7 +805,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-6"
+```json
 {
     "type": "action",
     "event": "正在输入",
@@ -818,7 +815,7 @@ rtmClient.addEventListener("message", (event: object) => {
 
 ### 聊天邀请消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-7"
+```csharp
 {
     type: "chatInvite",
     channel: "this is the channel you are being invited too",
@@ -826,7 +823,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-7" showLineNumbers
+```javascript showLineNumbers
 {
     type: "chatInvite",
     channel: "this is the channel you are being invited too",
@@ -834,7 +831,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-7"
+```java
 {
     "type": "chatInvite",
     "channel": "this is the channel you are being invited too",
@@ -842,7 +839,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-7"
+```swift
 {
     "type": "chatInvite",
     "channel": "this is the channel you are being invited too",
@@ -850,7 +847,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-7"
+```objc
 {
     "type": "chatInvite",
     "channel": "this is the channel you are being invited too",
@@ -858,7 +855,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-7"
+```cpp
 {
     "type": "chatInvite",
     "channel": "this is the channel you are being invited too",
@@ -866,7 +863,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-7"
+```json
 {
     type: "chatInvite",
     channel: "this is the channel you are being invited too",
@@ -874,7 +871,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-7"
+```json
 {
     "type": "chatInvite",
     "channel": "this is the channel you are being invited too",
@@ -884,7 +881,7 @@ rtmClient.addEventListener("message", (event: object) => {
 
 ### 视频呼叫消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-8"
+```csharp
 {
     type: "chatInvite",
     session: "your_video_session",
@@ -893,7 +890,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-8" showLineNumbers
+```javascript showLineNumbers
 {
     type: "chatInvite",
     session: "your_video_session",
@@ -902,7 +899,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-8"
+```java
 {
     "type": "chatInvite",
     "session": "your_video_session",
@@ -911,7 +908,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-8"
+```swift
 {
     "type": "chatInvite",
     "session": "your_video_session",
@@ -920,7 +917,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-8"
+```objc
 {
     "type": "chatInvite",
     "session": "your_video_session",
@@ -929,7 +926,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-8"
+```cpp
 {
     "type": "chatInvite",
     "session": "your_video_session",
@@ -938,7 +935,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-8"
+```json
 {
     type: "chatInvite",
     session: "your_video_session",
@@ -947,7 +944,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-8"
+```json
 {
     "type": "chatInvite",
     "session": "your_video_session",
@@ -958,7 +955,7 @@ rtmClient.addEventListener("message", (event: object) => {
 
 ### 问卷消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-9"
+```csharp
 {
     type: "poll",
     question: "Which option is right?",
@@ -971,7 +968,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-9" showLineNumbers
+```javascript showLineNumbers
 {
     type: "poll",
     question: "Which option is right?",
@@ -984,7 +981,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-9"
+```java
 {
     "type": "poll",
     "question": "Which option is right?",
@@ -997,7 +994,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-9"
+```swift
 {
     "type": "poll",
     "question": "Which option is right?",
@@ -1010,7 +1007,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-9"
+```objc
 {
     "type": "poll",
     "question": "Which option is right?",
@@ -1023,7 +1020,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-9"
+```cpp
 {
     "type": "poll",
     "question": "Which option is right?",
@@ -1036,7 +1033,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-9"
+```json
 {
     type: "poll",
     question: "Which option is right?",
@@ -1049,7 +1046,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-9"
+```json
 {
     "type": "poll",
     "question": "Which option is right?",
@@ -1064,7 +1061,7 @@ rtmClient.addEventListener("message", (event: object) => {
 
 ### 状态同步消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-10"
+```csharp
 {
     type: "position",
     data: {
@@ -1076,7 +1073,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-10" showLineNumbers
+```javascript showLineNumbers
 {
     type: "position",
     data: {
@@ -1088,7 +1085,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-10"
+```java
 {
     "type": "position",
     "question": "Which option is right?",
@@ -1101,7 +1098,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-10"
+```swift
 {
     "type": "position",
     "question": "Which option is right?",
@@ -1114,7 +1111,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-10"
+```objc
 {
     "type": "position",
     "question": "Which option is right?",
@@ -1127,7 +1124,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-10"
+```cpp
 {
     "type": "position",
     "question": "Which option is right?",
@@ -1140,7 +1137,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-10"
+```json
 {
     type: "position",
     data: {
@@ -1152,7 +1149,7 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-10"
+```json
 {
     "type": "position",
     "data": {

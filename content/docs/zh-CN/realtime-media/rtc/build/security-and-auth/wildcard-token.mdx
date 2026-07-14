@@ -1,16 +1,16 @@
 ---
 title: "使用通配 Token"
-description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，包括接入流程、关键配置和平台差异。"
 ---
+
 <PlatformStructured platform="android">
 
-观众如果需要加入多个频道，或在频道间频繁切换，每加入一个新的频道都需要向服务端申请一个 Token，然后通过用户 ID (`uid`)、频道名 (`channelName`)、以及获取到的 Token 来加入频道。
+用户在进行音视频互动时，声网会使用 Token 对用户鉴权。观众如果需要加入多个频道，或在频道间频繁切换，每加入一个新的频道都需要向服务端申请一个 Token，然后通过用户 ID (`uid`)、频道名 (`channelName`)、以及获取到的 Token 来加入频道。
 
 为解决在切换频道时需要频繁申请 Token 的问题，声网提供将**用户 ID** 或**频道名**设为通配符的通配 Token。通过使用通配 Token，观众可以复用同一个 Token 加入不同频道，既可减少频繁获取 Token 所造成的耗时，从而加快切换、加入频道的速度，同时也能减小你的 Token 服务器的压力。
 
 ## 前提条件
 
-在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。如果你使用的是 AccessToken，请参考 [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/setup-and-access/token-server-upgrade)升级至 AccessToken2。
+在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。如果你使用的是 AccessToken，请参考 [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/security-and-auth/token-server-upgrade)升级至 AccessToken2。
 
 ## 生成通配 Token
 
@@ -49,9 +49,9 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 参考文档
 
-- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)
+- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
 
-- [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/setup-and-access/token-server-upgrade)
+- [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/security-and-auth/token-server-upgrade)
 
 - [如何使用连麦鉴权功能？](/zh-CN/api-reference/faq/integration/token_cohost)
 
@@ -65,7 +65,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 前提条件
 
-在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。如果你使用的是 AccessToken，请参考 [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/setup-and-access/token-server-upgrade)升级至 AccessToken2。
+在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。如果你使用的是 AccessToken，请参考 [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/security-and-auth/token-server-upgrade)升级至 AccessToken2。
 
 ## 生成通配 Token
 
@@ -104,9 +104,9 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 参考文档
 
-- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)
+- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
 
-- [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/setup-and-access/token-server-upgrade)
+- [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/security-and-auth/token-server-upgrade)
 
 - [如何使用连麦鉴权功能？](/zh-CN/api-reference/faq/integration/token_cohost)
 
@@ -120,7 +120,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 前提条件
 
-在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。如果你使用的是 AccessToken，请参考 [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/setup-and-access/token-server-upgrade)升级至 AccessToken2。
+在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。如果你使用的是 AccessToken，请参考 [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/security-and-auth/token-server-upgrade)升级至 AccessToken2。
 
 ## 生成通配 Token
 
@@ -159,9 +159,9 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 参考文档
 
-- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)
+- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
 
-- [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/setup-and-access/token-server-upgrade)
+- [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/security-and-auth/token-server-upgrade)
 
 - [如何使用连麦鉴权功能？](/zh-CN/api-reference/faq/integration/token_cohost)
 
@@ -175,9 +175,9 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 前提条件
 
-在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
 
-- 如果你使用的是 AccessToken，请参考 [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/setup-and-access/token-server-upgrade)升级至 AccessToken2。
+- 如果你使用的是 AccessToken，请参考 [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/security-and-auth/token-server-upgrade)升级至 AccessToken2。
 
 - 如果你使用的是 Web 端，需要调用 `setParameter` 将 `USE_NEW_TOKEN` 设为 `true`，示例代码如下：
 
@@ -219,7 +219,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 参考文档
 
-- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)
+- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
 
 - [如何使用连麦鉴权功能？](/zh-CN/api-reference/faq/integration/token_cohost)
 
@@ -233,7 +233,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 前提条件
 
-在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。如果你使用的是 AccessToken，请参考 [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/setup-and-access/token-server-upgrade)升级至 AccessToken2。
+在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。如果你使用的是 AccessToken，请参考 [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/security-and-auth/token-server-upgrade)升级至 AccessToken2。
 
 ## 生成通配 Token
 
@@ -272,9 +272,9 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 参考文档
 
-- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)
+- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
 
-- [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/setup-and-access/token-server-upgrade)
+- [AccessToken 升级指南](/zh-CN/realtime-media/rtc/build/security-and-auth/token-server-upgrade)
 
 - [如何使用连麦鉴权功能？](/zh-CN/api-reference/faq/integration/token_cohost)
 
@@ -288,7 +288,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 前提条件
 
-在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
 
 ## 生成通配 Token
 
@@ -327,7 +327,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 参考文档
 
-- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)
+- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
 
 - [如何使用连麦鉴权功能？](/zh-CN/api-reference/faq/integration/token_cohost)
 
@@ -341,7 +341,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 前提条件
 
-在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
 
 ## 生成通配 Token
 
@@ -380,7 +380,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 参考文档
 
-- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)
+- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
 
 - [如何使用连麦鉴权功能？](/zh-CN/api-reference/faq/integration/token_cohost)
 
@@ -394,7 +394,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 前提条件
 
-在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
 
 ## 生成通配 Token
 
@@ -433,7 +433,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 参考文档
 
-- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)
+- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
 
 - [如何使用连麦鉴权功能？](/zh-CN/api-reference/faq/integration/token_cohost)
 
@@ -447,7 +447,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 前提条件
 
-在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
 
 ## 生成通配 Token
 
@@ -486,7 +486,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 参考文档
 
-- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)
+- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
 
 - [如何使用连麦鉴权功能？](/zh-CN/api-reference/faq/integration/token_cohost)
 
@@ -500,7 +500,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 前提条件
 
-在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
 
 ## 生成通配 Token
 
@@ -539,7 +539,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 参考文档
 
-- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)
+- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
 
 - [如何使用连麦鉴权功能？](/zh-CN/api-reference/faq/integration/token_cohost)
 
@@ -553,7 +553,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 前提条件
 
-在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
 
 ## 生成通配 Token
 
@@ -592,7 +592,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 参考文档
 
-- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)
+- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
 
 - [如何使用连麦鉴权功能？](/zh-CN/api-reference/faq/integration/token_cohost)
 
@@ -606,7 +606,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 前提条件
 
-在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+在生成通配 Token 前，请确保你已部署 AccessToken2 服务器。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
 
 ## 生成通配 Token
 
@@ -645,7 +645,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 ## 参考文档
 
-- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)
+- [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)
 
 - [如何使用连麦鉴权功能？](/zh-CN/api-reference/faq/integration/token_cohost)
 

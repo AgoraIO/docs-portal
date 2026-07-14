@@ -1,9 +1,6 @@
 ---
 title: "响应状态码"
-description: "查询融合 CDN 直播的响应状态码、错误码含义、常见原因和处理建议。"
 ---
-下表列出在使用融合 CDN 过程中可能收到的响应状态码、错误原因和解决方案。
-
 在调用融合 CDN 直播 RESTful API 过程中，你可能收到如下 HTTP 状态码：
 
 - 如果 HTTP 状态码为 `2XX`，则请求成功。
@@ -20,12 +17,14 @@ description: "查询融合 CDN 直播的响应状态码、错误码含义、常�
 
 ## 状态码
 
+下表列出在使用融合 CDN 过程中可能收到的响应状态码、错误原因和解决方案。
+
 | 状态码 | 错误原因 | 解决方法 |
 | --- | --- | --- |
 | `200 OK` | 请求执行成功。 | 无需解决。 |
 | `201 Created` | <Slot name="response-code-html-0-2-1" /> | 无需解决。 |
 | `400 Bad Request` | 参数非法。 在不同的 API 中，400 具体代表的错误不同，详见 [400 状态码详情](#400-状态码详情)。 | 详见 [400 状态码详情](#400-状态码详情)。 |
-| `401 Unauthorized` | 服务未经授权，如客户 ID 和客户密钥匹配错误。 | 参考[实现 HTTP HMAC 鉴权](/zh-CN/realtime-media/fusion-cdn/build/setup-and-access/http-hmac-auth)重新获取 `Authorization` 字段。 |
+| `401 Unauthorized` | 服务未经授权，如客户 ID 和客户密钥匹配错误。 | 参考[实现 HTTP HMAC 认证](/zh-CN/realtime-media/fusion-cdn/build/setup-and-access/http-hmac-auth)重新获取 `Authorization` 字段。 |
 | `404 Not Found` | 服务器无法根据请求找到资源，即请求的域名不存在或者请求的 URI 路径非法。 | 检查请求中的 URI 路径是否正确。 |
 | `500 Internal Server Error` | 服务器内部错误，无法完成请求。 | 使用退避策略重试三次。例如，调用后等待 1 秒再重试。 |
 | `504 Gateway Timeout` | 服务器内部错误。充当网关或代理的服务器未从远端服务器获取请求。 | 使用退避策略重试三次。例如，调用后等待 1 秒再重试。 |

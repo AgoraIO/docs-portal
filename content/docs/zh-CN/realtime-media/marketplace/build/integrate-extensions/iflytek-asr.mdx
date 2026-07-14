@@ -1,8 +1,10 @@
 ---
-title: "集成讯飞转写及翻译插件"
-description: "了解云市场在不同平台上的集成讯飞转写及翻译插件方式，包括接入流程、关键配置和平台差异。"
+title: "讯飞转写及翻译使用说明"
 ---
+
 <PlatformStructured platform="android">
+
+本文介绍如何在你的项目中集成和使用讯飞语音实时转写及翻译（多语种）插件（以下简称“讯飞转写及翻译插件”）。
 
 ## 技术原理
 
@@ -39,7 +41,7 @@ Android 开发环境需满足以下要求：
 
 1. 在 Android Studio 中打开示例项目。
 2. 将项目与 Gradle 文件同步。
-3. 打开 `AgoraWithHyAndroid/app/src/main/java/agoramarketplace/hy/demo/MainActivity.java` 文件，将 `#YOUR APP ID#` 替换为你的声网 App ID。获取 App ID 请参考[开通云市场服务](/zh-CN/realtime-media/marketplace/get-started/enable-service)。
+3. 打开 `AgoraWithHyAndroid/app/src/main/java/agoramarketplace/hy/demo/MainActivity.java` 文件，将 `#YOUR APP ID#` 替换为你的声网 App ID。获取 App ID 请参考[开通服务](/zh-CN/realtime-media/marketplace/get-started/enable-service)。
 
     ```java
     private static final String appId = "#YOUR APP ID#";
@@ -351,7 +353,7 @@ iOS 开发环境需满足以下要求：
 参考以下步骤快速跑通示例项目：
 
 1. 在 Xcode 中打开 `AgoraWithHyIos/AgoraWithHyIos.xcodeproj`。
-2. 打开 `AppID.m` 文件，将 `#YOUR APP ID#` 替换为你的声网 App ID。获取 App ID 请参考[开通云市场服务](/zh-CN/realtime-media/marketplace/get-started/enable-service)。
+2. 打开 `AppID.m` 文件，将 `#YOUR APP ID#` 替换为你的声网 App ID。获取 App ID 请参考[开通服务](/zh-CN/realtime-media/marketplace/get-started/enable-service)。
 
     ```objc
     NSString *const appID = @"#YOUR APP ID#";
@@ -548,7 +550,7 @@ iOS 开发环境需满足以下要求：
 - Windows 或 macOS 计算机，需满足以下要求：
   - 下载桌面端 Chrome 90 或以上版本。
   - 具备物理音视频采集设备。
-  - 可连接到互联网。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+  - 可连接到互联网。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
   - 搭载 2.2 GHz Intel 第二代 i3/i5/i7 处理器或同等性能的其他处理器。
 - 安装 [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。
 
@@ -715,7 +717,7 @@ Windows 开发环境需满足以下要求：
 参考以下步骤快速跑通示例项目：
 
 1. 在 Microsoft Visual Studio 中打开 `AgoraWithHyWin/AgoraWithHyWin.sln`，并且安装 MFC 组件。
-2. 打开头文件筛选器中的 `AgoraWithHyWinDlg.h` 文件，将 `#YOUR APP ID#` 替换为你的声网 App ID。获取 App ID 请参考[开通云市场服务](/zh-CN/realtime-media/marketplace/get-started/enable-service)。
+2. 打开头文件筛选器中的 `AgoraWithHyWinDlg.h` 文件，将 `#YOUR APP ID#` 替换为你的声网 App ID。获取 App ID 请参考[开通服务](/zh-CN/realtime-media/marketplace/get-started/enable-service)。
 
     ```cpp
     #define AGORA_APP_ID "#YOUR APP ID#"
