@@ -2324,11 +2324,8 @@ function renderIosDocGeneratorPage({
   const sourcePageTitle =
     pageTitleBySource.get(currentSource) ?? stripHtml(currentSource);
   const pageTitle =
-    currentSource === 'index.html' && /^Reference$/i.test(sourcePageTitle)
-      ? sourceToRoute.locale === 'zh-CN' &&
-        sourceToRoute.product === 'whiteboard'
-        ? '互动白板 iOS API 参考'
-        : `${sourceToRoute.product} ${sourceToRoute.platform} API Reference`
+    currentSource === 'index.html'
+      ? resolveIosRootTitle(sourcePageTitle, sourceToRoute)
       : sourcePageTitle;
   const description = pageDescriptionBySource.get(currentSource);
   const sections = [];
@@ -2451,6 +2448,15 @@ function renderIosIndexNavigation(
     if (title && list) sections.push(`## ${title}\n\n${list}`);
   }
   return sections.join('\n\n');
+}
+
+function resolveIosRootTitle(sourceTitle, context) {
+  return /^Reference$/i.test(sourceTitle) &&
+    context.locale === 'zh-CN' &&
+    context.product === 'whiteboard' &&
+    context.platform === 'ios'
+    ? '互动白板 iOS API 参考'
+    : sourceTitle;
 }
 
 function renderIosOverview(
@@ -4573,11 +4579,8 @@ async function main() {
       `${opts.platform.toUpperCase()} API Reference`)
     : `${opts.platform.toUpperCase()} API Reference`;
   const rootTitle =
-    sourceStructure.id === SOURCE_TYPES.IOS_DOC_GENERATOR.id &&
-    /^Reference$/i.test(sourceRootTitle) &&
-    opts.locale === 'zh-CN' &&
-    opts.product === 'whiteboard'
-      ? '互动白板 iOS API 参考'
+    sourceStructure.id === SOURCE_TYPES.IOS_DOC_GENERATOR.id
+      ? resolveIosRootTitle(sourceRootTitle, opts)
       : sourceRootTitle;
   await writeJson(path.join(targetRoot, 'meta.json'), {
     title: rootTitle,
