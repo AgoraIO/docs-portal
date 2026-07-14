@@ -34,11 +34,14 @@
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import * as cheerio from 'cheerio';
 import {
   getSourceLane,
   SOURCE_LANE_IDS,
 } from './html-migration/lanes/index.mjs';
+
+const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 
 // ============================================================================
 // CLI Argument Parsing
@@ -52,7 +55,7 @@ function parseArgs() {
     product: null,
     platform: null,
     locale: 'zh-CN',
-    navigation: 'generated',
+    navigation: null,
     navigationManifest: null,
     routeBasePath: '/api-reference',
     targetBasePath: null,
@@ -122,7 +125,10 @@ function parseArgs() {
     printHelp();
     process.exit(1);
   }
-  if (!['generated', 'public-index'].includes(opts.navigation)) {
+  if (
+    opts.navigation !== null &&
+    !['generated', 'public-index'].includes(opts.navigation)
+  ) {
     console.error('Error: --navigation must be generated or public-index.\n');
     printHelp();
     process.exit(1);
@@ -153,7 +159,7 @@ Options:
   --locale, -l          Locale for output (default: zh-CN)
   --route-base-path, -r Base path for links (default: /api-reference)
   --target-base-path   Exact output route for links; overrides the derived product/platform route
-  --navigation         Sidebar source: generated or public-index (default: generated)
+  --navigation         Sidebar source: generated or public-index (default: known legacy preset, otherwise generated)
   --navigation-manifest JSON array of public { label, source } entries for legacy IA fidelity
   --version-dir, -V     Version directory name (e.g., '4.6.0' or '(current)')
   --dry-run, -d         Print detected type, file count, and planned paths without writing
@@ -4484,6 +4490,7 @@ async function main() {
     );
   }
   await filterSourcesWithoutMeaningfulBody(sourceStructure);
+  await applyBuiltInNavigationPreset(opts, sourceStructure);
 
   console.log(`\n📄 HTML to Markdown Migration Tool`);
   console.log(`${'─'.repeat(50)}`);
@@ -4495,6 +4502,7 @@ async function main() {
   console.log(`Platform:  ${opts.platform}`);
   console.log(`Locale:    ${opts.locale}`);
   console.log(`Route:     ${opts.routeBasePath}`);
+  console.log(`Navigation: ${opts.navigation}`);
   console.log(`Dry run:   ${opts.dryRun ? 'yes' : 'no'}`);
   console.log(`${'─'.repeat(50)}\n`);
 
@@ -4698,6 +4706,45 @@ async function main() {
   console.log(`   Pages written: ${writtenCount}`);
   console.log(`   Output: ${targetRoot}`);
   console.log(`${'─'.repeat(50)}\n`);
+}
+
+async function applyBuiltInNavigationPreset(opts, sourceStructure) {
+  if (opts.navigation !== null) return;
+  if (opts.navigationManifest) {
+    opts.navigation = 'public-index';
+    return;
+  }
+
+  opts.navigation = 'generated';
+  if (
+    sourceStructure.id !== SOURCE_TYPES.TYPEDOC.id ||
+    opts.product !== 'flexible-classroom' ||
+    opts.platform !== 'web'
+  ) {
+    return;
+  }
+
+  const manifestPath = path.join(
+    SCRIPT_DIR,
+    'html-migration',
+    'navigation',
+    'flexible-classroom-store.json',
+  );
+  const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
+  const knownSources = new Set(
+    sourceStructure.fileNames.map(normalizeSourcePath),
+  );
+  if (
+    !manifest.every(
+      (entry) =>
+        entry?.source && knownSources.has(normalizeSourcePath(entry.source)),
+    )
+  ) {
+    return;
+  }
+
+  opts.navigation = 'public-index';
+  opts.navigationManifest = manifestPath;
 }
 
 function replaceTypeDocGlobalsWithLabeledLink(
