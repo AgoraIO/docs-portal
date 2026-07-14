@@ -690,6 +690,54 @@ describe('html-to-md-migration', () => {
     ).resolves.toMatchObject({ navScope: {} });
   });
 
+  it('creates a scoped TypeDoc sidebar with one labelled Globals entry for RTC Web', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'typedoc-source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeTypeDocFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'globals.html'),
+      `<!doctype html>
+<html>
+  <body>
+    <header>
+      <div class="tsd-page-title">
+        <ul class="tsd-breadcrumb"><li><a href="globals.html">Globals</a></li></ul>
+        <h1>TypeDoc API</h1>
+      </div>
+    </header>
+    <main class="col-content"><h2>Type aliases</h2></main>
+    <nav class="tsd-navigation primary"><a href="globals.html">Globals</a></nav>
+  </body>
+</html>`,
+    );
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'web',
+      '--target-base-path',
+      '/zh-CN/api-reference/rtc/web',
+    ]);
+
+    await expect(
+      readJson(path.join(outputDir, 'meta.json')),
+    ).resolves.toMatchObject({
+      title: 'TypeDoc API',
+      navScope: {},
+      pages: expect.arrayContaining([
+        'index',
+        '[Globals](/zh-CN/api-reference/rtc/web/globals)',
+        '!globals',
+      ]),
+    });
+  });
+
   it('migrates Doxygen/Javadoc output with dry-run planning and rewritten links', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'doxygen-source');
