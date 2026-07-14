@@ -4325,6 +4325,25 @@ async function writeFile(filePath, contents) {
   await fs.writeFile(filePath, contents, 'utf8');
 }
 
+async function registerIosAncestorNavigation(targetRoot) {
+  const productDir = path.dirname(targetRoot);
+  const apiReferenceDir = path.dirname(productDir);
+  if (path.basename(apiReferenceDir) !== 'api-reference') return;
+
+  const apiReferenceMetaPath = path.join(apiReferenceDir, 'meta.json');
+  if (!(await fileExists(apiReferenceMetaPath))) return;
+
+  await registerNavigationChild(
+    path.join(productDir, 'meta.json'),
+    path.basename(targetRoot),
+    titleFromSlug(path.basename(productDir)),
+  );
+  await registerNavigationChild(
+    apiReferenceMetaPath,
+    path.basename(productDir),
+  );
+}
+
 async function registerDoxygenAncestorNavigation(targetRoot) {
   const productDir = path.dirname(targetRoot);
   const apiReferenceDir = path.dirname(productDir);
@@ -4983,6 +5002,8 @@ async function main() {
     await registerDoxygenAncestorNavigation(targetRoot);
   } else if (sourceStructure.id === SOURCE_TYPES.DARTDOC.id) {
     await registerDartdocAncestorNavigation(targetRoot);
+  } else if (sourceStructure.id === SOURCE_TYPES.IOS_DOC_GENERATOR.id) {
+    await registerIosAncestorNavigation(targetRoot);
   }
 
   console.log(`\n${'─'.repeat(50)}`);

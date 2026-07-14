@@ -2391,6 +2391,77 @@ describe('html-to-md-migration', () => {
     ).resolves.toMatchObject({ navScope: {} });
   });
 
+  it('registers Whiteboard iOS output through the API Reference ancestors', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'ios-source');
+    const apiReferenceDir = path.join(
+      rootDir,
+      'content',
+      'docs',
+      'zh-CN',
+      'api-reference',
+    );
+    const productDir = path.join(apiReferenceDir, 'whiteboard');
+    const outputDir = path.join(productDir, 'ios');
+    await writeIosFixture(sourceDir);
+    await writeFixture(
+      path.join(apiReferenceDir, 'meta.json'),
+      `${JSON.stringify(
+        {
+          title: '参考中心',
+          pages: [
+            'overview',
+            {
+              type: 'group',
+              title: '互动白板',
+              pages: [
+                '[Fastboard iOS](/zh-CN/api-reference/whiteboard/fastboard/ios)',
+              ],
+            },
+            '!legacy-product',
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+    await writeFixture(
+      path.join(productDir, 'meta.json'),
+      `${JSON.stringify(
+        { title: '互动白板', pages: ['fastboard'] },
+        null,
+        2,
+      )}\n`,
+    );
+
+    const args = [
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'whiteboard',
+      '--platform',
+      'ios',
+    ];
+    runMigration(args);
+    runMigration(args);
+
+    await expect(
+      readJson(path.join(productDir, 'meta.json')),
+    ).resolves.toMatchObject({ pages: ['fastboard', 'ios'] });
+    await expect(
+      readJson(path.join(apiReferenceDir, 'meta.json')),
+    ).resolves.toMatchObject({
+      pages: [
+        'overview',
+        expect.objectContaining({ title: '互动白板' }),
+        'whiteboard',
+        '!legacy-product',
+      ],
+    });
+  });
+
   it('migrates Dartdoc output with dry-run planning, semantic pages, and filtered navigation', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'dartdoc-source');
