@@ -1296,6 +1296,10 @@ function renderAnchor(
   sourceToRoute,
   targetBasePath,
 ) {
+  const decodedEmail = decodeDoxygenMailto(anchor.attr('onclick'));
+  if (decodedEmail) {
+    return `[${decodedEmail}](mailto:${decodedEmail})`;
+  }
   const href = anchor.attr('href')?.trim() ?? '';
   const id = anchor.attr('id') ?? anchor.attr('name');
   const label = inlineText(anchor) || href;
@@ -1338,6 +1342,17 @@ function renderHref(label, href, sourceToRoute, targetBasePath) {
     routeTarget.routeSegments,
     targetBasePath,
   )}${hashPart ? `#${hashPart}` : ''})`;
+}
+
+function decodeDoxygenMailto(onclick) {
+  if (!onclick?.includes('location.href')) return null;
+  const fragments = [...onclick.matchAll(/'([^']*)'/g)].map(
+    (match) => match[1],
+  );
+  const target = fragments.join('');
+  if (!target.toLowerCase().startsWith('mailto:')) return null;
+  const email = target.slice('mailto:'.length);
+  return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email) ? email : null;
 }
 
 function isFilteredHelperHtmlSource(sourceName) {
