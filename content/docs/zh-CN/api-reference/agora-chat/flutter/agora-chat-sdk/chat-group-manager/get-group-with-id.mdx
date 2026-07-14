@@ -1,0 +1,42 @@
+---
+title: "getGroupWithId method"
+description: "API docs for the getGroupWithId method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Gets the group instance from the cache by group ID.
+
+**Return** The group instance. Returns null if the group does not exist.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+
+```dart title="Dart"
+Future<ChatGroup?> getGroupWithId(String groupId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatGroup?> getGroupWithId(String groupId) async {
+  Map req = {'groupId': groupId};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.getGroupWithId, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    if (result.containsKey(ChatMethodKeys.getGroupWithId)) {
+      return ChatGroup.fromJson(result[ChatMethodKeys.getGroupWithId]);
+    } else {
+      return null;
+    }
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

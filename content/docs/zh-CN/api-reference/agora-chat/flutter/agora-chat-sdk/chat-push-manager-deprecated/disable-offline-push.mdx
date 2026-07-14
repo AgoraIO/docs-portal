@@ -1,0 +1,40 @@
+---
+title: "disableOfflinePush method"
+description: "API docs for the disableOfflinePush method from the ChatPushManagerDeprecated extension, for the Dart programming language."
+---
+
+Do not push the offline messages within the specified time period (24-hour clock).
+
+**Throws** A description of the issue that caused this exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error)
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `start` | The start hour(24-hour clock). |
+| `end` | The end hour(24-hour clock). |
+
+```dart title="Dart"
+@Deprecated("Use #setSilentModeForAll to instead")Future<void> disableOfflinePush({required int start, required int end})@Deprecated("Use #setSilentModeForAll to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+@Deprecated("Use #setSilentModeForAll to instead")
+Future<void> disableOfflinePush({
+  required int start,
+  required int end,
+}) async {
+  Map req = {'start': start, 'end': end};
+  Map result =
+      await PushChannel.invokeMethod(ChatMethodKeys.disableOfflinePush, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

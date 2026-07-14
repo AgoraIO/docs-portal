@@ -1,0 +1,35 @@
+---
+title: "lastReceivedMessage method"
+description: "API docs for the lastReceivedMessage method from the ChatConversation class, for the Dart programming language."
+---
+
+Gets the latest message from the conversation.
+
+**Return** The message instance.
+
+```dart title="Dart"
+Future<ChatMessage?> lastReceivedMessage()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatMessage?> lastReceivedMessage() async {
+  Map req = this._toJson();
+  Map result = await _emConversationChannel.invokeMethod(
+      ChatMethodKeys.getLatestMessageFromOthers, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    if (result.containsKey(ChatMethodKeys.getLatestMessageFromOthers)) {
+      return ChatMessage.fromJson(
+          result[ChatMethodKeys.getLatestMessageFromOthers]);
+    } else {
+      return null;
+    }
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

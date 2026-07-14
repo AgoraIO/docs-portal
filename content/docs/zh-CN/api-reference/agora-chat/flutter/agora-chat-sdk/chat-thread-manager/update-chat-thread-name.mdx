@@ -1,0 +1,46 @@
+---
+title: "updateChatThreadName method"
+description: "API docs for the updateChatThreadName method from the ChatThreadManager class, for the Dart programming language."
+---
+
+Change Chat Thread name.
+
+The group owner, group administrator and Thread creator have permission. After modifying chat thread name, members of the organization (group) to which chat thread belongs will receive the update notification event. You can set [ChatThreadEvent](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-event) to listen on the event.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `chatThreadId` | Chat Thread ID. |
+| `newName` | New Chat Thread name. No more than 64 characters in length. |
+
+```dart title="Dart"
+Future<void> updateChatThreadName({required String chatThreadId, required String newName})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> updateChatThreadName({
+  required String chatThreadId,
+  required String newName,
+}) async {
+  Map req = {
+    "name": newName,
+    "threadId": chatThreadId,
+  };
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.updateChatThreadSubject,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

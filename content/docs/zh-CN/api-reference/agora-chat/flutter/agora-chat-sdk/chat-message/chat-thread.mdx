@@ -1,0 +1,38 @@
+---
+title: "chatThread method"
+description: "API docs for the chatThread method from the ChatMessage class, for the Dart programming language."
+---
+
+Get an overview of the thread in the message (currently only supported by group messages)
+
+**Return** overview of the thread
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error)
+
+```dart title="Dart"
+Future<ChatThread?> chatThread()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatThread?> chatThread() async {
+  Map req = {"msg": msgId};
+  Map result =
+      await _emMessageChannel.invokeMethod(ChatMethodKeys.getChatThread, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    if (result.containsKey(ChatMethodKeys.getChatThread)) {
+      return result.getValueWithKey<ChatThread>(
+          ChatMethodKeys.getChatThread,
+          callback: (obj) => ChatThread.fromJson(obj));
+    } else {
+      return null;
+    }
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

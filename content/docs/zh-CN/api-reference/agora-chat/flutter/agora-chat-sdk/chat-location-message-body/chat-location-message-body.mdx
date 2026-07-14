@@ -1,0 +1,35 @@
+---
+title: "ChatLocationMessageBody constructor"
+description: "API docs for the ChatLocationMessageBody constructor from Class ChatLocationMessageBody from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Creates a location message body instance.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| [latitude](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-location-message-body/latitude) | The latitude. |
+| [longitude](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-location-message-body/longitude) | The longitude. |
+| `address` | The address. |
+| `buildingName` | The building name. |
+
+```dart title="Dart"
+ChatLocationMessageBody({required double latitude, required double longitude, String? address, String? buildingName})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+ChatLocationMessageBody({
+  required this.latitude,
+  required this.longitude,
+  String? address,
+  String? buildingName,
+}) : super(type: MessageType.LOCATION) {
+  _address = address;
+  _buildingName = buildingName;
+}
+```

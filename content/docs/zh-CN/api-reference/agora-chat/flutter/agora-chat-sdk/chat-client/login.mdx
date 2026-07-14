@@ -1,0 +1,43 @@
+---
+title: "login method"
+description: "API docs for the login method from the ChatClient class, for the Dart programming language."
+---
+
+An app user logs in to the chat server with a password or token.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `userId` | The username. |
+| `pwdOrToken` | The password or token. |
+| `isPassword` | Whether to log in with password or token. `true`: (default) Log in with password. `false`: Log in with token. |
+
+```dart title="Dart"
+Future<void> login(String userId, String pwdOrToken, [bool isPassword = true])
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> login(String userId, String pwdOrToken,
+    [bool isPassword = true]) async {
+  EMLog.v('login: $userId : $pwdOrToken, isPassword: $isPassword');
+  Map req = {
+    'username': userId,
+    'pwdOrToken': pwdOrToken,
+    'isPassword': isPassword
+  };
+  Map result = await ClientChannel.invokeMethod(ChatMethodKeys.login, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    _currentUserId = userId;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,0 +1,37 @@
+---
+title: "updateAPNsDeviceToken method"
+description: "API docs for the updateAPNsDeviceToken method from the ChatPushManager class, for the Dart programming language."
+---
+
+Updates the APNs push token.
+
+**Throws** A description of the issue that caused this exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error)
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `token` | The APNs push token. |
+
+```dart title="Dart"
+Future<void> updateAPNsDeviceToken(String token)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> updateAPNsDeviceToken(String token) async {
+  if (Platform.isIOS) {
+    Map req = {'token': token};
+    Map result = await PushChannel.invokeMethod(
+        ChatMethodKeys.updateAPNsPushToken, req);
+    try {
+      ChatError.hasErrorFromResult(result);
+    } on ChatError catch (e) {
+      throw e;
+    }
+  }
+}
+```

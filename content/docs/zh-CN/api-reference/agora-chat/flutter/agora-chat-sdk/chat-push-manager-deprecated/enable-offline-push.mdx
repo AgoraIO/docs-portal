@@ -1,0 +1,29 @@
+---
+title: "enableOfflinePush method"
+description: "API docs for the enableOfflinePush method from the ChatPushManagerDeprecated extension, for the Dart programming language."
+---
+
+Turns on the push notification.
+
+**Throws** A description of the issue that caused this exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error)
+
+```dart title="Dart"
+@Deprecated("Use #setSilentModeForAll to instead")Future<void> enableOfflinePush()@Deprecated("Use #setSilentModeForAll to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+@Deprecated("Use #setSilentModeForAll to instead")
+Future<void> enableOfflinePush() async {
+  Map result =
+      await PushChannel.invokeMethod(ChatMethodKeys.enableOfflinePush);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,0 +1,30 @@
+---
+title: "ChatMessageReactionEvent.fromJson constructor"
+description: "API docs for the ChatMessageReactionEvent.fromJson constructor from Class ChatMessageReactionEvent from the agora_chat_sdk library, for the Dart programming language."
+---
+
+nodoc
+
+```dart title="Dart"
+ChatMessageReactionEvent.fromJson(Map map)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+factory ChatMessageReactionEvent.fromJson(Map map) {
+  String conversationId = map["conversationId"];
+  String messageId = map["messageId"];
+  List<ChatMessageReaction> reactions = [];
+  map["reactions"]?.forEach((element) {
+    reactions.add(ChatMessageReaction.fromJson(element));
+  });
+  return ChatMessageReactionEvent._private(
+    conversationId: conversationId,
+    messageId: messageId,
+    reactions: reactions,
+  );
+}
+```

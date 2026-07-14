@@ -1,0 +1,55 @@
+---
+title: "fetchMuteListFromServer method"
+description: "API docs for the fetchMuteListFromServer method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Gets the mute list of the group from the server.
+
+Only the group owner or admin can call this method.
+
+**Return** The group mute map, key is memberId and value is mute time.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `pageSize` | The number of muted members per page. |
+| `pageNum` | The page number, starting from 1. |
+
+```dart title="Dart"
+Future<Map<String, int>> fetchMuteListFromServer(String groupId, {int pageSize = 200, int pageNum = 1})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<Map<String, int>> fetchMuteListFromServer(
+  String groupId, {
+  int pageSize = 200,
+  int pageNum = 1,
+}) async {
+  Map req = {'groupId': groupId, 'pageNum': pageNum, 'pageSize': pageSize};
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.getGroupMuteListFromServer, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    Map? tmpMap = result[ChatMethodKeys.getGroupMuteListFromServer];
+    Map<String, int> ret = {};
+    if (tmpMap != null) {
+      for (var item in tmpMap.entries) {
+        if (item.key is String && item.value is int) {
+          ret[item.key] = item.value;
+        }
+      }
+    }
+    return ret;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

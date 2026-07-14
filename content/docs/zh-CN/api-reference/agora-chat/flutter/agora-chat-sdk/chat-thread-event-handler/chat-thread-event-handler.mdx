@@ -1,0 +1,32 @@
+---
+title: "ChatThreadEventHandler constructor"
+description: "API docs for the ChatThreadEventHandler constructor from Class ChatThreadEventHandler from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The message thread listener callback
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| [onChatThreadCreate](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-event-handler/on-chat-thread-create) | A message thread is created callback. |
+| [onChatThreadDestroy](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-event-handler/on-chat-thread-destroy) | A message thread is destroyed callback. |
+| [onChatThreadUpdate](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-event-handler/on-chat-thread-update) | A message thread is updated callback. |
+| [onUserKickOutOfChatThread](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-event-handler/on-user-kick-out-of-chat-thread) | Current user is removed from the message thread by the group owner or a group admin to which the message thread belongs callback. |
+
+```dart title="Dart"
+ChatThreadEventHandler({void onChatThreadCreate(ChatThreadEvent event)?, void onChatThreadDestroy(ChatThreadEvent event)?, void onChatThreadUpdate(ChatThreadEvent event)?, void onUserKickOutOfChatThread(ChatThreadEvent event)?})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+ChatThreadEventHandler({
+  this.onChatThreadCreate,
+  this.onChatThreadDestroy,
+  this.onChatThreadUpdate,
+  this.onUserKickOutOfChatThread,
+});
+```

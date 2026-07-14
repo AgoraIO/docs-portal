@@ -1,0 +1,33 @@
+---
+title: "fetchSilentModeForAll method"
+description: "API docs for the fetchSilentModeForAll method from the ChatPushManager class, for the Dart programming language."
+---
+
+Gets the DND normal settings of the current login user.
+
+**Return** The normal silent mode.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+```dart title="Dart"
+Future<ChatSilentModeResult> fetchSilentModeForAll()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatSilentModeResult> fetchSilentModeForAll() async {
+  Map result =
+      await PushChannel.invokeMethod(ChatMethodKeys.fetchSilentModeForAll);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatSilentModeResult.fromJson(
+      result[ChatMethodKeys.fetchSilentModeForAll],
+    );
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

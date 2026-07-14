@@ -1,0 +1,37 @@
+---
+title: "updateFCMPushToken method"
+description: "API docs for the updateFCMPushToken method from the ChatPushManager class, for the Dart programming language."
+---
+
+Updates the FCM push token.
+
+**Throws** A description of the issue that caused this exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error)
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `token` | The FCM push token. |
+
+```dart title="Dart"
+Future<void> updateFCMPushToken(String token)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> updateFCMPushToken(String token) async {
+  if (Platform.isAndroid) {
+    Map req = {'token': token};
+    Map result = await PushChannel.invokeMethod(
+        ChatMethodKeys.updateFCMPushToken, req);
+    try {
+      ChatError.hasErrorFromResult(result);
+    } on ChatError catch (e) {
+      throw e;
+    }
+  }
+}
+```

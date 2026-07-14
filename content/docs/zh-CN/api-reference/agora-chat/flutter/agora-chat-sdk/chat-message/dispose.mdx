@@ -1,0 +1,18 @@
+---
+title: "dispose method"
+description: "API docs for the dispose method from the ChatMessage class, for the Dart programming language."
+---
+
+```dart title="Dart"
+void dispose()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+void dispose() {
+  MessageCallBackManager.getInstance.removeMessage(localTime.toString());
+}
+```

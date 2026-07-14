@@ -1,0 +1,24 @@
+---
+title: "onMuteListAddedFromGroup property"
+description: "API docs for the onMuteListAddedFromGroup property from the ChatGroupEventHandler class, for the Dart programming language."
+---
+
+Occurs when one or more group members are muted.
+
+Note: The mute function is different from a block list. A user, when muted, can still see group messages, but cannot send messages in the group. However, a user on the block list can neither see nor send group messages.
+
+```dart title="Dart"
+(void Function?(String groupId, List<String> mutes, int? muteExpire)?)onMuteListAddedFromGroup final
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+final void Function(
+  String groupId,
+  List<String> mutes,
+  int? muteExpire,
+)? onMuteListAddedFromGroup;
+```

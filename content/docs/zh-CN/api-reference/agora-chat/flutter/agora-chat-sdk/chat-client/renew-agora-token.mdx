@@ -1,0 +1,38 @@
+---
+title: "renewAgoraToken method"
+description: "API docs for the renewAgoraToken method from the ChatClient class, for the Dart programming language."
+---
+
+Renews the Agora token.
+
+If a user is logged in with an Agora token, when the token expires, you need to call this method to update the token.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `agoraToken` | The new Agora token. |
+
+```dart title="Dart"
+Future<void> renewAgoraToken(String agoraToken)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> renewAgoraToken(String agoraToken) async {
+  Map req = {"agora_token": agoraToken};
+
+  Map result =
+      await ClientChannel.invokeMethod(ChatMethodKeys.renewToken, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

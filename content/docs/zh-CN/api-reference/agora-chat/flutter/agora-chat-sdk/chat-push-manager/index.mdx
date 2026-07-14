@@ -1,0 +1,294 @@
+---
+title: "ChatPushManager class"
+description: "API docs for the ChatPushManager class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The message push configuration options.
+
+### Available Extensions
+
+- [ChatPushManagerDeprecated](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager-deprecated)
+
+<a id="constructors"></a>
+
+## Constructors
+
+<a id="ChatPushManager"></a>
+
+### [ChatPushManager](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/chat-push-manager)
+
+```dart title="Dart"
+ChatPushManager()
+```
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart title="Dart"
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart title="Dart"
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="fetchConversationSilentMode"></a>
+
+### [fetchConversationSilentMode](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/fetch-conversation-silent-mode)
+
+```dart title="Dart"
+fetchConversationSilentMode({required String conversationId, required ChatConversationType type}) -> Future<ChatSilentModeResult>
+```
+
+Gets the DND setting of the special conversation.
+
+<a id="fetchPreferredNotificationLanguage"></a>
+
+### [fetchPreferredNotificationLanguage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/fetch-preferred-notification-language)
+
+```dart title="Dart"
+fetchPreferredNotificationLanguage() -> Future<String?>
+```
+
+Gets the push translation language set by the user.
+
+<a id="fetchPushConfigsFromServer"></a>
+
+### [fetchPushConfigsFromServer](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/fetch-push-configs-from-server)
+
+```dart title="Dart"
+fetchPushConfigsFromServer() -> Future<ChatPushConfigs>
+```
+
+Gets the push configurations from the server.
+
+<a id="fetchSilentModeForAll"></a>
+
+### [fetchSilentModeForAll](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/fetch-silent-mode-for-all)
+
+```dart title="Dart"
+fetchSilentModeForAll() -> Future<ChatSilentModeResult>
+```
+
+Gets the DND normal settings of the current login user.
+
+<a id="fetchSilentModeForConversations"></a>
+
+### [fetchSilentModeForConversations](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/fetch-silent-mode-for-conversations)
+
+```dart title="Dart"
+fetchSilentModeForConversations(List<ChatConversation> conversations) -> Future<Map<String, ChatSilentModeResult>>
+```
+
+Obtain the DND Settings of specified conversations in batches.
+
+<a id="getNoPushUsersFromCache"></a>
+
+### [getNoPushUsersFromCache](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/get-no-push-users-from-cache)
+
+```dart title="Dart"
+getNoPushUsersFromCache() -> Future<List<String>>
+```
+
+Gets the list of users which have blocked the push notification.
+
+_@Deprecated('')._
+
+<a id="getPushConfigsFromCache"></a>
+
+### [getPushConfigsFromCache](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/get-push-configs-from-cache)
+
+```dart title="Dart"
+getPushConfigsFromCache() -> Future<ChatPushConfigs?>
+```
+
+<a id="getPushTemplate"></a>
+
+### [getPushTemplate](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/get-push-template)
+
+```dart title="Dart"
+getPushTemplate() -> Future<String?>
+```
+
+Gets the offline push template for Settings.
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart title="Dart"
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="removeConversationSilentMode"></a>
+
+### [removeConversationSilentMode](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/remove-conversation-silent-mode)
+
+```dart title="Dart"
+removeConversationSilentMode({required String conversationId, required ChatConversationType type}) -> Future<void>
+```
+
+Remove the setting of offline push notification type for the special conversation. After clearing, the session follows the Settings of the current logged-in user [ChatPushManager.setSilentModeForAll](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/set-silent-mode-for-all).
+
+<a id="setConversationSilentMode"></a>
+
+### [setConversationSilentMode](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/set-conversation-silent-mode)
+
+```dart title="Dart"
+setConversationSilentMode({required String conversationId, required ChatConversationType type, required ChatSilentModeParam param}) -> Future<void>
+```
+
+Set offline push notification type for the special conversation.
+
+<a id="setPreferredNotificationLanguage"></a>
+
+### [setPreferredNotificationLanguage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/set-preferred-notification-language)
+
+```dart title="Dart"
+setPreferredNotificationLanguage(String languageCode) -> Future<void>
+```
+
+Set user push translation language.
+
+<a id="setPushTemplate"></a>
+
+### [setPushTemplate](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/set-push-template)
+
+```dart title="Dart"
+setPushTemplate(String pushTemplateName) -> Future<void>
+```
+
+Set the push template for offline push.
+
+<a id="setSilentModeForAll"></a>
+
+### [setSilentModeForAll](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/set-silent-mode-for-all)
+
+```dart title="Dart"
+setSilentModeForAll({required ChatSilentModeParam param}) -> Future<void>
+```
+
+Set the DND normal settings for the current login user.
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart title="Dart"
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="updateAPNsDeviceToken"></a>
+
+### [updateAPNsDeviceToken](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/update-apns-device-token)
+
+```dart title="Dart"
+updateAPNsDeviceToken(String token) -> Future<void>
+```
+
+Updates the APNs push token.
+
+<a id="updateFCMPushToken"></a>
+
+### [updateFCMPushToken](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/update-fcmpush-token)
+
+```dart title="Dart"
+updateFCMPushToken(String token) -> Future<void>
+```
+
+Updates the FCM push token.
+
+<a id="updateHMSPushToken"></a>
+
+### [updateHMSPushToken](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/update-hmspush-token)
+
+```dart title="Dart"
+updateHMSPushToken(String token) -> Future<void>
+```
+
+Updates the HMS push token.
+
+<a id="updatePushDisplayStyle"></a>
+
+### [updatePushDisplayStyle](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/update-push-display-style)
+
+```dart title="Dart"
+updatePushDisplayStyle(DisplayStyle displayStyle) -> Future<void>
+```
+
+Updates the push message style. The default value is [DisplayStyle.Simple](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/display-style).
+
+<a id="updatePushNickname"></a>
+
+### [updatePushNickname](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/update-push-nickname)
+
+```dart title="Dart"
+updatePushNickname(String nickname) -> Future<void>
+```
+
+Updates the push display nickname of the current user.
+
+<a id="updatePushServiceForGroup"></a>
+
+### [updatePushServiceForGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/update-push-service-for-group)
+
+```dart title="Dart"
+updatePushServiceForGroup({required List<String> groupIds, required bool enablePush}) -> Future<void>
+```
+
+Sets whether to turn on or turn off the push notification for the the specified groups.
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart title="Dart"
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

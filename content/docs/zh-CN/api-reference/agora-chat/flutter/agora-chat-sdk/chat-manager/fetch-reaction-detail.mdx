@@ -1,0 +1,56 @@
+---
+title: "fetchReactionDetail method"
+description: "API docs for the fetchReactionDetail method from the ChatManager class, for the Dart programming language."
+---
+
+Gets the reaction details.
+
+**Return** The result callback, which contains the reaction list obtained from the server and the cursor for the next query. Returns null if all the data is fetched.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `messageId` | The message ID. |
+| `reaction` | The reaction content. |
+| `cursor` | The cursor position from which to get Reactions. |
+| `pageSize` | The number of Reactions you expect to get on each page. |
+
+```dart title="Dart"
+Future<ChatCursorResult<ChatMessageReaction>> fetchReactionDetail({required String messageId, required String reaction, String? cursor, int pageSize = 20})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatCursorResult<ChatMessageReaction>> fetchReactionDetail({
+  required String messageId,
+  required String reaction,
+  String? cursor,
+  int pageSize = 20,
+}) async {
+  Map req = {
+    "msgId": messageId,
+    "reaction": reaction,
+  };
+  req.setValueWithOutNull("cursor", cursor);
+  req.setValueWithOutNull("pageSize", pageSize);
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.fetchReactionDetail, req);
+
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatCursorResult<ChatMessageReaction>.fromJson(
+        result[ChatMethodKeys.fetchReactionDetail],
+        dataItemCallback: (value) {
+      return ChatMessageReaction.fromJson(value);
+    });
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

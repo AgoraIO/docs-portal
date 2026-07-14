@@ -1,0 +1,41 @@
+---
+title: "changeGroupName method"
+description: "API docs for the changeGroupName method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Changes the group name.
+
+Only the group owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `name` | The new group name. |
+
+```dart title="Dart"
+Future<void> changeGroupName(String groupId, String name)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> changeGroupName(
+  String groupId,
+  String name,
+) async {
+  Map req = {'name': name, 'groupId': groupId};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.updateGroupSubject, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,0 +1,39 @@
+---
+title: "addUserToBlockList method"
+description: "API docs for the addUserToBlockList method from the ChatContactManager class, for the Dart programming language."
+---
+
+Adds a user to the block list. You can send messages to the users on the block list, but cannot receive messages from them.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `username` | The user to be added to the block list. |
+
+```dart title="Dart"
+Future<void> addUserToBlockList(String username)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> addUserToBlockList(
+  String username,
+) async {
+  Map req = {'username': username};
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.addUserToBlockList,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

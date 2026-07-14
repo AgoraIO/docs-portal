@@ -1,0 +1,33 @@
+---
+title: "getJoinedGroups method"
+description: "API docs for the getJoinedGroups method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Gets all groups of the current user from the cache.
+
+**Return** The group list.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+```dart title="Dart"
+Future<List<ChatGroup>> getJoinedGroups()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<List<ChatGroup>> getJoinedGroups() async {
+  Map result = await _channel.invokeMethod(ChatMethodKeys.getJoinedGroups);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatGroup> list = [];
+    result[ChatMethodKeys.getJoinedGroups]
+        ?.forEach((element) => list.add(ChatGroup.fromJson(element)));
+    return list;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

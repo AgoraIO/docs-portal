@@ -1,0 +1,53 @@
+---
+title: "createChatRoom method"
+description: "API docs for the createChatRoom method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Creates a chat room.
+
+**Return** The chat room instance.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `name` | The chat room name. |
+| `desc` | The chat room description. |
+| `welcomeMsg` | A welcome message that invites users to join the chat room. |
+| `maxUserCount` | The maximum number of members allowed to join the chat room. |
+| `members` | The list of members invited to join the chat room. |
+
+```dart title="Dart"
+Future<ChatRoom> createChatRoom(String name, {String? desc, String? welcomeMsg, int maxUserCount = 300, List<String>? members})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatRoom> createChatRoom(
+  String name, {
+  String? desc,
+  String? welcomeMsg,
+  int maxUserCount = 300,
+  List<String>? members,
+}) async {
+  Map req = Map();
+  req['subject'] = name;
+  req['maxUserCount'] = maxUserCount;
+  req.setValueWithOutNull("desc", desc);
+  req.setValueWithOutNull("welcomeMsg", welcomeMsg);
+  req.setValueWithOutNull("members", members);
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.createChatRoom, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatRoom.fromJson(result[ChatMethodKeys.createChatRoom]);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

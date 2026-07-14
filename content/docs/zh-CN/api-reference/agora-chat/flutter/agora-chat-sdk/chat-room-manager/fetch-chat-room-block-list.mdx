@@ -1,0 +1,47 @@
+---
+title: "fetchChatRoomBlockList method"
+description: "API docs for the fetchChatRoomBlockList method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Gets the chat room block list with pagination.
+
+Only the chat room owner or admin can call this method.
+
+**Return** The list of the blocked chat room members.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `pageNum` | The page number, starting from 1. |
+| `pageSize` | The number of users on the block list per page. |
+
+```dart title="Dart"
+Future<List<String>> fetchChatRoomBlockList(String roomId, {int pageNum = 1, int pageSize = 200})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<List<String>> fetchChatRoomBlockList(
+  String roomId, {
+  int pageNum = 1,
+  int pageSize = 200,
+}) async {
+  Map req = {"roomId": roomId, "pageNum": pageNum, "pageSize": pageSize};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.fetchChatRoomBlockList, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result[ChatMethodKeys.fetchChatRoomBlockList]?.cast<String>() ??
+        [];
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,0 +1,41 @@
+---
+title: "removeGroupSharedFile method"
+description: "API docs for the removeGroupSharedFile method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Removes a shared file of the group.
+
+Group members can delete their own uploaded files. The group owner or admin can delete all shared files.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `fileId` | The ID of the shared file. |
+
+```dart title="Dart"
+Future<void> removeGroupSharedFile(String groupId, String fileId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> removeGroupSharedFile(
+  String groupId,
+  String fileId,
+) async {
+  Map req = {'groupId': groupId, 'fileId': fileId};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.removeGroupSharedFile, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

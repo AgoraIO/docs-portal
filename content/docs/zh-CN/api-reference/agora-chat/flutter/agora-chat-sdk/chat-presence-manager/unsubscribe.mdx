@@ -1,0 +1,37 @@
+---
+title: "unsubscribe method"
+description: "API docs for the unsubscribe method from the ChatPresenceManager class, for the Dart programming language."
+---
+
+Unsubscribes from a user's presence states.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `members` | The array of IDs of users whose presence states you want to unsubscribe from. |
+
+```dart title="Dart"
+Future<void> unsubscribe({required List<String> members})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> unsubscribe({
+  required List<String> members,
+}) async {
+  Map req = {'members': members};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.presenceUnsubscribe, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

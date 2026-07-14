@@ -1,0 +1,20 @@
+---
+title: "expireTime property"
+description: "API docs for the expireTime property from the ChatUserInfo class, for the Dart programming language."
+---
+
+Gets the time period(seconds) when the user attributes in the cache expire. If the interval between two callers is less than or equal to the value you set in the parameter, user attributes are obtained directly from the local cache; otherwise, they are obtained from the server. For example, if you set this parameter to 120(2 minutes), once this method is called again within 2 minutes, the SDK returns the attributes obtained last time.
+
+**Return** The time period(seconds) when the user attributes in the cache expire.
+
+```dart title="Dart"
+int expireTime final
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+final int expireTime = DateTime.now().millisecondsSinceEpoch;
+```

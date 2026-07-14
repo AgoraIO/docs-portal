@@ -1,0 +1,67 @@
+---
+title: "fetchUserInfoById method"
+description: "API docs for the fetchUserInfoById method from the ChatUserInfoManager class, for the Dart programming language."
+---
+
+Gets user attributes of the specified users.
+
+**Return** A map that contains key-value pairs where the key is the user ID and the value is user attributes.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `userIds` | The username array. |
+| `expireTime` | The time period(seconds) when the user attributes in the cache expire. If the interval between two callers is less than or equal to the value you set in the parameter, user attributes are obtained directly from the local cache; otherwise, they are obtained from the server. For example, if you set this parameter to 120(2 minutes), once this method is called again within 2 minutes, the SDK returns the attributes obtained last time. |
+
+```dart title="Dart"
+Future<Map<String, ChatUserInfo>> fetchUserInfoById(List<String> userIds, {int expireTime = 0})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<Map<String, ChatUserInfo>> fetchUserInfoById(
+  List<String> userIds, {
+  int expireTime = 0,
+}) async {
+  List<String> needReqIds = userIds
+      .where((element) =>
+          !_effectiveUserInfoMap.containsKey(element) ||
+          (_effectiveUserInfoMap.containsKey(element) &&
+              DateTime.now().millisecondsSinceEpoch -
+                      _effectiveUserInfoMap[element]!.expireTime >
+                  expireTime * 1000))
+      .toList();
+  Map<String, ChatUserInfo> resultMap = Map();
+
+  userIds.forEach((element) {
+    if (_effectiveUserInfoMap.containsKey(element)) {
+      resultMap[element] = _effectiveUserInfoMap[element]!;
+    }
+  });
+  if (needReqIds.length == 0) {
+    return resultMap;
+  }
+
+  Map req = {'userIds': needReqIds};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.fetchUserInfoById, req);
+
+  try {
+    ChatError.hasErrorFromResult(result);
+    result[ChatMethodKeys.fetchUserInfoById]?.forEach((key, value) {
+      ChatUserInfo eUserInfo = ChatUserInfo.fromJson(value);
+      resultMap[key] = eUserInfo;
+      _effectiveUserInfoMap[key] = eUserInfo;
+    });
+    return resultMap;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

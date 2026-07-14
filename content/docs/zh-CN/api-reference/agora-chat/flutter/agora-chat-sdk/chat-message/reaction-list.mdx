@@ -1,0 +1,40 @@
+---
+title: "reactionList method"
+description: "API docs for the reactionList method from the ChatMessage class, for the Dart programming language."
+---
+
+Gets the Reaction list.
+
+**Return** The Reaction list
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error)
+
+```dart title="Dart"
+Future<List<ChatMessageReaction>> reactionList()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<List<ChatMessageReaction>> reactionList() async {
+  Map req = {"msgId": msgId};
+  Map result = await _emMessageChannel.invokeMethod(
+    ChatMethodKeys.getReactionList,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatMessageReaction> list = [];
+    result[ChatMethodKeys.getReactionList]?.forEach(
+      (element) => list.add(
+        ChatMessageReaction.fromJson(element),
+      ),
+    );
+    return list;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

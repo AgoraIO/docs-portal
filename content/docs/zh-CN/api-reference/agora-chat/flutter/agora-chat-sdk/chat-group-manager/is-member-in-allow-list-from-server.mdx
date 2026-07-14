@@ -1,0 +1,38 @@
+---
+title: "isMemberInAllowListFromServer method"
+description: "API docs for the isMemberInAllowListFromServer method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Gets whether the member is on the allow list of the group.
+
+**Return** A Boolean value to indicate whether the current user is on the allow list of the group;
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+
+```dart title="Dart"
+Future<bool> isMemberInAllowListFromServer(String groupId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<bool> isMemberInAllowListFromServer(String groupId) async {
+  Map req = {'groupId': groupId};
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.isMemberInWhiteListFromServer, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result.boolValue(ChatMethodKeys.isMemberInWhiteListFromServer);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

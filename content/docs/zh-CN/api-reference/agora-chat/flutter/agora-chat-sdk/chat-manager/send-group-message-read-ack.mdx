@@ -1,0 +1,54 @@
+---
+title: "sendGroupMessageReadAck method"
+description: "API docs for the sendGroupMessageReadAck method from the ChatManager class, for the Dart programming language."
+---
+
+Sends the group message receipt to the server.
+
+You can call the method only after setting the following method: [ChatOptions.requireAck](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-options/require-ack) and [ChatMessage.needGroupAck](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/need-group-ack).
+
+**Note**
+
+- This method takes effect only after you set [ChatOptions.requireAck](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-options/require-ack) and [ChatMessage.needGroupAck](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/need-group-ack) as `true`.
+- This method applies to group messages only. To send a one-to-one chat message receipt, call [sendMessageReadAck](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-manager/send-message-read-ack); to send a conversation receipt, call [sendConversationReadAck](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-manager/send-conversation-read-ack).
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `msgId` | The message ID. |
+| `groupId` | The group ID. |
+| `content` | The extension information, which is a custom keyword that specifies a custom action or command. |
+
+```dart title="Dart"
+Future<bool> sendGroupMessageReadAck(String msgId, String groupId, {String? content})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<bool> sendGroupMessageReadAck(
+  String msgId,
+  String groupId, {
+  String? content,
+}) async {
+  Map req = {
+    "msg_id": msgId,
+    "group_id": groupId,
+  };
+  req.setValueWithOutNull("content", content);
+
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.ackGroupMessageRead, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result.boolValue(ChatMethodKeys.ackMessageRead);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

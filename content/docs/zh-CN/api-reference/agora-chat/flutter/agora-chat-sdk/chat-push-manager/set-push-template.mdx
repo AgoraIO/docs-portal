@@ -1,0 +1,36 @@
+---
+title: "setPushTemplate method"
+description: "API docs for the setPushTemplate method from the ChatPushManager class, for the Dart programming language."
+---
+
+Set the push template for offline push.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `pushTemplateName` | push template name. |
+
+```dart title="Dart"
+Future<void> setPushTemplate(String pushTemplateName)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> setPushTemplate(String pushTemplateName) async {
+  Map result =
+      await PushChannel.invokeMethod(ChatMethodKeys.setPushTemplate, {
+    "pushTemplateName": pushTemplateName,
+  });
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

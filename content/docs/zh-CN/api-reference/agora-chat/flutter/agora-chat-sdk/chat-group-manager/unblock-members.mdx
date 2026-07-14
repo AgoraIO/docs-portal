@@ -1,0 +1,41 @@
+---
+title: "unblockMembers method"
+description: "API docs for the unblockMembers method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Removes users from the group block list.
+
+Only the group owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `members` | The users to be removed from the group block list. |
+
+```dart title="Dart"
+Future<void> unblockMembers(String groupId, List<String> members)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> unblockMembers(
+  String groupId,
+  List<String> members,
+) async {
+  Map req = {'groupId': groupId, 'members': members};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.unblockMembers, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

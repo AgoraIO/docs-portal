@@ -1,0 +1,30 @@
+---
+title: "getNoPushGroupsFromCache method"
+description: "API docs for the getNoPushGroupsFromCache method from the ChatPushManagerDeprecated extension, for the Dart programming language."
+---
+
+Gets the list of groups which have blocked the push notification.
+
+**return** The list of groups that blocked the push notification.
+
+**Throws** A description of the issue that caused this exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error)
+
+```dart title="Dart"
+@deprecated Future<List<String>> getNoPushGroupsFromCache()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+@deprecated
+Future<List<String>> getNoPushGroupsFromCache() async {
+  Map result = await PushChannel.invokeMethod(ChatMethodKeys.getNoPushGroups);
+  List<String> list = [];
+  if (result.containsKey(ChatMethodKeys.getNoPushGroups)) {
+    list = result[ChatMethodKeys.getNoPushGroups]?.cast<String>();
+  }
+  return list;
+}
+```

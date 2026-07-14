@@ -1,0 +1,40 @@
+---
+title: "setSilentModeForAll method"
+description: "API docs for the setSilentModeForAll method from the ChatPushManager class, for the Dart programming language."
+---
+
+Set the DND normal settings for the current login user.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `param` | Push DND parameters offline. |
+
+```dart title="Dart"
+Future<void> setSilentModeForAll({required ChatSilentModeParam param})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> setSilentModeForAll({
+  required ChatSilentModeParam param,
+}) async {
+  Map req = {};
+  req["param"] = param.toJson();
+  Map result = await PushChannel.invokeMethod(
+    ChatMethodKeys.setSilentModeForAll,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

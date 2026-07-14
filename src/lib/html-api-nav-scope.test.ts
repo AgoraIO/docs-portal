@@ -132,4 +132,34 @@ describe('migrated HTML API navigation scopes', () => {
       ),
     ).toBe(false);
   });
+
+  it('mounts Agora Chat Flutter Dartdoc under its canonical API route', () => {
+    const route =
+      '/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-manager/send-message';
+    const navScope = resolveDocsNavScope({
+      activePath: route,
+      getNodeMeta: getZhNodeMeta,
+      root: source.getPageTree('zh-CN'),
+      tab: 'api-reference',
+    });
+
+    expect(source.getPages('zh-CN').map((page) => page.url)).toContain(route);
+    expect(navScope).not.toBeNull();
+    if (!navScope) return;
+
+    const urls = collectPageUrls(
+      getScopedNavScopeSidebarNodes({
+        getNodeMeta: getZhNodeMeta,
+        navScope,
+      }),
+    );
+    expect(urls).toContain(
+      '/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-manager',
+    );
+    expect(
+      urls.every((url) =>
+        url.startsWith('/zh-CN/api-reference/agora-chat/flutter'),
+      ),
+    ).toBe(true);
+  });
 });

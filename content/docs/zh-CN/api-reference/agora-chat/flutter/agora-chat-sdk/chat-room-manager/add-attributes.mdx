@@ -1,0 +1,57 @@
+---
+title: "addAttributes method"
+description: "API docs for the addAttributes method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Sets custom chat room attributes.
+
+- - 26 lowercase English letters (a-z)
+- - 26 uppercase English letters (A-Z)
+- - 10 numbers (0-9)
+- - "_", "-", "."
+
+**Return** `failureKeys map` is returned in key-value format, where the key is the attribute key and the value is the reason for the failure. **Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `attributes` | The chat room attributes to add. The attributes are in key-value format. Note: In a key-value pair, the key is the attribute name that can contain 128 characters at most; the value is the attribute value that cannot exceed 4096 characters. A chat room can have a maximum of 100 custom attributes and the total length of custom chat room attributes cannot exceed 10 GB for each app. Attribute keys support the following character sets: |
+| `deleteWhenLeft` | Whether to delete the chat room attributes set by the member when he or she exits the chat room. |
+| `overwrite` | Whether to overwrite the attributes with same key set by others. |
+
+```dart title="Dart"
+Future<Map<String, int>?> addAttributes(String roomId, {required Map<String, String> attributes, bool deleteWhenLeft = false, bool overwrite = false})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<Map<String, int>?> addAttributes(
+  String roomId, {
+  required Map<String, String> attributes,
+  bool deleteWhenLeft = false,
+  bool overwrite = false,
+}) async {
+  Map req = {
+    "roomId": roomId,
+    "attributes": attributes,
+    "autoDelete": deleteWhenLeft,
+    "forced": overwrite,
+  };
+
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.setChatRoomAttributes,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result[ChatMethodKeys.setChatRoomAttributes]?.cast<String, int>();
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

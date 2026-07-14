@@ -1,0 +1,41 @@
+---
+title: "uploadGroupSharedFile method"
+description: "API docs for the uploadGroupSharedFile method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Uploads the shared file to the group.
+
+When a shared file is uploaded, the upload progress callback will be triggered.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `filePath` | The local path of the shared file. |
+
+```dart title="Dart"
+Future<void> uploadGroupSharedFile(String groupId, String filePath)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> uploadGroupSharedFile(
+  String groupId,
+  String filePath,
+) async {
+  Map req = {'groupId': groupId, 'filePath': filePath};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.uploadGroupSharedFile, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

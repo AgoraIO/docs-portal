@@ -1,0 +1,29 @@
+---
+title: "removeConnectionListener method"
+description: "API docs for the removeConnectionListener method from the ChatClientDeprecated extension, for the Dart programming language."
+---
+
+Removes the chat server connection listener.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The chat server connection listener to be removed. |
+
+```dart title="Dart"
+@Deprecated("Use #removeConnectionEventHandler to instead")void removeConnectionListener(ChatConnectionListener listener)@Deprecated("Use #removeConnectionEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+@Deprecated("Use #removeConnectionEventHandler to instead")
+void removeConnectionListener(ChatConnectionListener listener) {
+  if (_connectionListeners.contains(listener)) {
+    _connectionListeners.remove(listener);
+  }
+}
+```

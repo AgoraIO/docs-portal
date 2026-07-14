@@ -1,0 +1,23 @@
+---
+title: "ChatGroupInfo.fromJson constructor"
+description: "API docs for the ChatGroupInfo.fromJson constructor from Class ChatGroupInfo from the agora_chat_sdk library, for the Dart programming language."
+---
+
+```dart title="Dart"
+ChatGroupInfo.fromJson(Map map)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+factory ChatGroupInfo.fromJson(Map map) {
+  String groupId = map["groupId"];
+  String? groupName = map["name"];
+  return ChatGroupInfo._private(
+    groupId: groupId,
+    name: groupName,
+  );
+}
+```

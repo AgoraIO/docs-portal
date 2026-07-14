@@ -1,0 +1,40 @@
+---
+title: "addAllowList method"
+description: "API docs for the addAllowList method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Adds members to the allow list of the group.
+
+Only the group owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `members` | The members to be added to the allow list of the group. |
+
+```dart title="Dart"
+Future<void> addAllowList(String groupId, List<String> members)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> addAllowList(
+  String groupId,
+  List<String> members,
+) async {
+  Map req = {'groupId': groupId, 'members': members};
+  Map result = await _channel.invokeMethod(ChatMethodKeys.addWhiteList, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

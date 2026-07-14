@@ -1,0 +1,39 @@
+---
+title: "removeChatRoomAdmin method"
+description: "API docs for the removeChatRoomAdmin method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Removes privileges of a chat room admin.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `admin` | The ID of admin whose privileges are to be removed. |
+
+```dart title="Dart"
+Future<void> removeChatRoomAdmin(String roomId, String admin)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> removeChatRoomAdmin(
+  String roomId,
+  String admin,
+) async {
+  Map req = {"roomId": roomId, "admin": admin};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.removeChatRoomAdmin, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

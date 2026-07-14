@@ -1,0 +1,36 @@
+---
+title: "getBlockListFromDB method"
+description: "API docs for the getBlockListFromDB method from the ChatContactManager class, for the Dart programming language."
+---
+
+Gets the block list from the local database.
+
+**Return** The block list obtained from the local database.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+```dart title="Dart"
+Future<List<String>> getBlockListFromDB()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<List<String>> getBlockListFromDB() async {
+  Map result = await _channel.invokeMethod(ChatMethodKeys.getBlockListFromDB);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<String> list = [];
+    result[ChatMethodKeys.getBlockListFromDB]?.forEach((element) {
+      if (element is String) {
+        list.add(element);
+      }
+    });
+    return list;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,0 +1,128 @@
+---
+title: "ChatPresenceEventHandler class"
+description: "API docs for the ChatPresenceEventHandler class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The presence event handler.
+
+Occurs when the following presence events happens: presence status changed.
+
+Adds a presence event handler:
+
+```dart title="Dart"
+  ChatClient.getInstance.presenceManager.addEventHandler(UNIQUE_HANDLER_ID, ChatPresenceEventHandler());
+```
+
+Remove a presence event handler:
+
+```dart title="Dart"
+  ChatClient.getInstance.presenceManager.removeEventHandler(UNIQUE_HANDLER_ID);
+```
+
+<a id="constructors"></a>
+
+## Constructors
+
+<a id="ChatPresenceEventHandler"></a>
+
+### [ChatPresenceEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-presence-event-handler/chat-presence-event-handler)
+
+```dart title="Dart"
+ChatPresenceEventHandler({dynamic onPresenceStatusChanged(List<ChatPresence> list)?})
+```
+
+The presence manager listener callback.
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart title="Dart"
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="onPresenceStatusChanged"></a>
+
+### [onPresenceStatusChanged](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-presence-event-handler/on-presence-status-changed)
+
+```dart title="Dart"
+onPresenceStatusChanged ->(dynamic Function?(List<ChatPresence> list)?)
+```
+
+Occurs when the presence state of a subscribed user changes.
+
+_final._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart title="Dart"
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart title="Dart"
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart title="Dart"
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart title="Dart"
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

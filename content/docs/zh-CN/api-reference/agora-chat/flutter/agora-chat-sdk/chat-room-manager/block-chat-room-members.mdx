@@ -1,0 +1,46 @@
+---
+title: "blockChatRoomMembers method"
+description: "API docs for the blockChatRoomMembers method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Adds the specified members to the block list of the chat room.
+
+Only the chat room owner or admin can call this method.
+
+**Note**
+
+- Chat room members added to the block list are removed from the chat room by the server, and cannot re-join the chat room.
+- The removed members receive the [ChatRoomEventHandler.onRemovedFromChatRoom](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-room-event-handler/on-removed-from-chat-room) callback.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `members` | The list of members to be added to block list. |
+
+```dart title="Dart"
+Future<void> blockChatRoomMembers(String roomId, List members)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> blockChatRoomMembers(
+  String roomId,
+  List members,
+) async {
+  Map req = {"roomId": roomId, "members": members};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.blockChatRoomMembers, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

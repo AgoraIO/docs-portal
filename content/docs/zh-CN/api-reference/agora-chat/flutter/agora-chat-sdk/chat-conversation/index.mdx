@@ -1,0 +1,310 @@
+---
+title: "ChatConversation class"
+description: "API docs for the ChatConversation class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The conversation class, indicating a one-to-one chat, a group chat, or a conversation chat. It contains the messages that are sent and received within the conversation.
+
+The following code shows how to get the number of the unread messages from the conversation.
+
+```dart title="Dart"
+  // ConversationId can be the other party id, the group id, or the chat room id.
+  ChatConversation? con = await ChatClient.getInstance.chatManager.getConversation(conversationId);
+  int? unreadCount = con?.unreadCount;
+```
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="ext"></a>
+
+### [ext](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/ext)
+
+```dart title="Dart"
+ext -> Map<String, String>?
+```
+
+_read-only._
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart title="Dart"
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="id"></a>
+
+### [id](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/id)
+
+```dart title="Dart"
+id -> String
+```
+
+The conversation ID.
+
+_final._
+
+<a id="isChatThread"></a>
+
+### [isChatThread](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/is-chat-thread)
+
+```dart title="Dart"
+isChatThread -> bool
+```
+
+Is chat thread conversation.
+
+_final._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart title="Dart"
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="type"></a>
+
+### [type](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/type)
+
+```dart title="Dart"
+type -> ChatConversationType
+```
+
+The conversation type.
+
+_final._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="appendMessage"></a>
+
+### [appendMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/append-message)
+
+```dart title="Dart"
+appendMessage(ChatMessage message) -> Future<void>
+```
+
+Inserts a message to the end of a conversation in the local database.
+
+<a id="deleteAllMessages"></a>
+
+### [deleteAllMessages](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/delete-all-messages)
+
+```dart title="Dart"
+deleteAllMessages() -> Future<void>
+```
+
+Deletes all the messages of the conversation from both the memory and local database.
+
+<a id="deleteMessage"></a>
+
+### [deleteMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/delete-message)
+
+```dart title="Dart"
+deleteMessage(String messageId) -> Future<void>
+```
+
+Deletes a message in the local database.
+
+<a id="insertMessage"></a>
+
+### [insertMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/insert-message)
+
+```dart title="Dart"
+insertMessage(ChatMessage message) -> Future<void>
+```
+
+Inserts a message to a conversation in the local database and the SDK will automatically update the last message.
+
+<a id="lastReceivedMessage"></a>
+
+### [lastReceivedMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/last-received-message)
+
+```dart title="Dart"
+lastReceivedMessage() -> Future<ChatMessage?>
+```
+
+Gets the latest message from the conversation.
+
+<a id="latestMessage"></a>
+
+### [latestMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/latest-message)
+
+```dart title="Dart"
+latestMessage() -> Future<ChatMessage?>
+```
+
+Gets the last message from the conversation.
+
+<a id="loadMessage"></a>
+
+### [loadMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/load-message)
+
+```dart title="Dart"
+loadMessage(String messageId) -> Future<ChatMessage?>
+```
+
+Gets the message with a specific message ID.
+
+<a id="loadMessages"></a>
+
+### [loadMessages](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/load-messages)
+
+```dart title="Dart"
+loadMessages({String startMsgId = '', int loadCount = 20, ChatSearchDirection direction = ChatSearchDirection.Up}) -> Future<List<ChatMessage>>
+```
+
+Loads multiple messages from the local database.
+
+<a id="loadMessagesFromTime"></a>
+
+### [loadMessagesFromTime](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/load-messages-from-time)
+
+```dart title="Dart"
+loadMessagesFromTime({required int startTime, required int endTime, int count = 20}) -> Future<List<ChatMessage>>
+```
+
+Loads messages from the local database according the following parameters: start timestamp, end timestamp, count.
+
+<a id="loadMessagesWithKeyword"></a>
+
+### [loadMessagesWithKeyword](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/load-messages-with-keyword)
+
+```dart title="Dart"
+loadMessagesWithKeyword(String keywords, {String? sender, int timestamp = -1, int count = 20, ChatSearchDirection direction = ChatSearchDirection.Up}) -> Future<List<ChatMessage>>
+```
+
+Loads messages from the local database by the following parameters: keywords, timestamp, max count, sender, search direction.
+
+<a id="loadMessagesWithMsgType"></a>
+
+### [loadMessagesWithMsgType](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/load-messages-with-msg-type)
+
+```dart title="Dart"
+loadMessagesWithMsgType({required MessageType type, int timestamp = -1, int count = 20, String? sender, ChatSearchDirection direction = ChatSearchDirection.Up}) -> Future<List<ChatMessage>>
+```
+
+Retrieves messages from the database according to the following parameters: the message type, the Unix timestamp, max count, sender.
+
+<a id="markAllMessagesAsRead"></a>
+
+### [markAllMessagesAsRead](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/mark-all-messages-as-read)
+
+```dart title="Dart"
+markAllMessagesAsRead() -> Future<void>
+```
+
+Marks all messages as read.
+
+<a id="markMessageAsRead"></a>
+
+### [markMessageAsRead](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/mark-message-as-read)
+
+```dart title="Dart"
+markMessageAsRead(String messageId) -> Future<void>
+```
+
+Marks a message as read.
+
+<a id="messagesCount"></a>
+
+### [messagesCount](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/messages-count)
+
+```dart title="Dart"
+messagesCount() -> Future<int>
+```
+
+Message count
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart title="Dart"
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="setExt"></a>
+
+### [setExt](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/set-ext)
+
+```dart title="Dart"
+setExt(Map<String, String>? ext) -> Future<void>
+```
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart title="Dart"
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="unreadCount"></a>
+
+### [unreadCount](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/unread-count)
+
+```dart title="Dart"
+unreadCount() -> Future<int>
+```
+
+Gets the unread message count of the conversation.
+
+<a id="updateMessage"></a>
+
+### [updateMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/update-message)
+
+```dart title="Dart"
+updateMessage(ChatMessage message) -> Future<void>
+```
+
+Updates a message in the local database.
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart title="Dart"
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

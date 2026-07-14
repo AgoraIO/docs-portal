@@ -1,0 +1,37 @@
+---
+title: "getAllContactsFromServer method"
+description: "API docs for the getAllContactsFromServer method from the ChatContactManager class, for the Dart programming language."
+---
+
+Gets all the contacts from the server.
+
+**Return** The list of contacts.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+```dart title="Dart"
+Future<List<String>> getAllContactsFromServer()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<List<String>> getAllContactsFromServer() async {
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.getAllContactsFromServer);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<String> list = [];
+    result[ChatMethodKeys.getAllContactsFromServer]?.forEach((element) {
+      if (element is String) {
+        list.add(element);
+      }
+    });
+    return list;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

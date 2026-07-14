@@ -1,0 +1,46 @@
+---
+title: "fetchPublicChatRoomsFromServer method"
+description: "API docs for the fetchPublicChatRoomsFromServer method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Gets chat room data from the server with pagination.
+
+**Return** Chat room data. See `ChatPageResult`.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `pageNum` | The page number, starting from 1. |
+| `pageSize` | The number of records per page. |
+
+```dart title="Dart"
+Future<ChatPageResult<ChatRoom>> fetchPublicChatRoomsFromServer({int pageNum = 1, int pageSize = 200})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatPageResult<ChatRoom>> fetchPublicChatRoomsFromServer({
+  int pageNum = 1,
+  int pageSize = 200,
+}) async {
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.fetchPublicChatRoomsFromServer,
+      {"pageNum": pageNum, "pageSize": pageSize});
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatPageResult<ChatRoom>.fromJson(
+        result[ChatMethodKeys.fetchPublicChatRoomsFromServer],
+        dataItemCallback: (map) {
+      return ChatRoom.fromJson(map);
+    });
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

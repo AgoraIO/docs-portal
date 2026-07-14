@@ -1,0 +1,44 @@
+---
+title: "fetchPresenceStatus method"
+description: "API docs for the fetchPresenceStatus method from the ChatPresenceManager class, for the Dart programming language."
+---
+
+Gets the current presence state of users.
+
+**Return** Which contains the users whose presence state you have subscribed to.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `members` | The array of IDs of users whose current presence state you want to check. |
+
+```dart title="Dart"
+Future<List<ChatPresence>> fetchPresenceStatus({required List<String> members})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<List<ChatPresence>> fetchPresenceStatus({
+  required List<String> members,
+}) async {
+  Map req = {'members': members};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.fetchPresenceStatus, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatPresence> list = [];
+    result[ChatMethodKeys.fetchPresenceStatus]?.forEach((element) {
+      list.add(ChatPresence.fromJson(element));
+    });
+    return list;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

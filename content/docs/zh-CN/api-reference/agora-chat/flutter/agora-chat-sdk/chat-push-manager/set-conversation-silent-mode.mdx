@@ -1,0 +1,45 @@
+---
+title: "setConversationSilentMode method"
+description: "API docs for the setConversationSilentMode method from the ChatPushManager class, for the Dart programming language."
+---
+
+Set offline push notification type for the special conversation.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `conversationId` | The conversation id. |
+| `type` | The conversation type. |
+| `param` | Push DND parameters offline. |
+
+```dart title="Dart"
+Future<void> setConversationSilentMode({required String conversationId, required ChatConversationType type, required ChatSilentModeParam param})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> setConversationSilentMode({
+  required String conversationId,
+  required ChatConversationType type,
+  required ChatSilentModeParam param,
+}) async {
+  Map req = {};
+  req["conversationId"] = conversationId;
+  req["conversationType"] = conversationTypeToInt(type);
+  req["param"] = param.toJson();
+
+  Map result = await PushChannel.invokeMethod(
+      ChatMethodKeys.setConversationSilentMode, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

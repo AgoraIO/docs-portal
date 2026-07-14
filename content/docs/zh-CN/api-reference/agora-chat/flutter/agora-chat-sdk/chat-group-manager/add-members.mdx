@@ -1,0 +1,43 @@
+---
+title: "addMembers method"
+description: "API docs for the addMembers method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Adds users to the group.
+
+Only the group owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `members` | The array of new members to add. |
+| `welcome` | The welcome message. |
+
+```dart title="Dart"
+Future<void> addMembers(String groupId, List<String> members, {String? welcome})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> addMembers(
+  String groupId,
+  List<String> members, {
+  String? welcome,
+}) async {
+  Map req = {'groupId': groupId, 'members': members};
+  req.setValueWithOutNull("welcome", welcome);
+  Map result = await _channel.invokeMethod(ChatMethodKeys.addMembers, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

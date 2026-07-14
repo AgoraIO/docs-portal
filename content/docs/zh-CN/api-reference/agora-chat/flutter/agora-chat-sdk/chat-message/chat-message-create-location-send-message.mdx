@@ -1,0 +1,48 @@
+---
+title: "ChatMessage.createLocationSendMessage constructor"
+description: "API docs for the ChatMessage.createLocationSendMessage constructor from Class ChatMessage from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Creates a location message for sending.
+
+- For a one-to-one chat, it is the username of the peer user.
+- For a group chat, it is the group ID.
+- For a chat room, it is the chat room ID.
+
+**Return** The message instance.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `targetId` | The ID of the message recipient. |
+| `latitude` | The latitude. |
+| `longitude` | The longitude. |
+| `address` | The address. |
+| `buildingName` | The building name. |
+
+```dart title="Dart"
+ChatMessage.createLocationSendMessage({required String targetId, required double latitude, required double longitude, String? address, String? buildingName, ChatType chatType = ChatType.Chat})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+ChatMessage.createLocationSendMessage({
+  required String targetId,
+  required double latitude,
+  required double longitude,
+  String? address,
+  String? buildingName,
+  ChatType chatType = ChatType.Chat,
+}) : this.createSendMessage(
+          chatType: chatType,
+          to: targetId,
+          body: ChatLocationMessageBody(
+            latitude: latitude,
+            longitude: longitude,
+            address: address,
+          ));
+```

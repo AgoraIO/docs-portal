@@ -1,0 +1,40 @@
+---
+title: "logout method"
+description: "API docs for the logout method from the ChatClient class, for the Dart programming language."
+---
+
+An app user logs out.
+
+`true` (default) Yes. `false` No.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `unbindDeviceToken` | Whether to unbind the token when logout. |
+
+```dart title="Dart"
+Future<void> logout([bool unbindDeviceToken = true])
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> logout([
+  bool unbindDeviceToken = true,
+]) async {
+  EMLog.v('logout unbindDeviceToken: $unbindDeviceToken');
+  Map req = {'unbindToken': unbindDeviceToken};
+  Map result = await ClientChannel.invokeMethod(ChatMethodKeys.logout, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    _clearAllInfo();
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,0 +1,58 @@
+---
+title: "fetchChatThreadMembers method"
+description: "API docs for the fetchChatThreadMembers method from the ChatThreadManager class, for the Dart programming language."
+---
+
+Paging to get Chat Thread members.
+
+The members of the group to which Chat Thread belongs have permission.
+
+**Return** The result of [ChatCursorResult](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-cursor-result), including the cursor for getting data next time and the chat thread member list.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `chatThreadId` | Chat Thread ID. |
+| `cursor` | The initial value can be empty or empty string. |
+| `limit` | The number of fetches at one time. Value range (0, 50]. |
+
+```dart title="Dart"
+Future<List<String>> fetchChatThreadMembers({required String chatThreadId, String? cursor, int limit = 20})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<List<String>> fetchChatThreadMembers({
+  required String chatThreadId,
+  String? cursor,
+  int limit = 20,
+}) async {
+  Map req = {
+    "pageSize": limit,
+    "threadId": chatThreadId,
+  };
+  req.setValueWithOutNull("cursor", cursor);
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.fetchChatThreadMember,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<String> list = [];
+    result[ChatMethodKeys.fetchChatThreadMember]?.forEach((element) {
+      if (element is String) {
+        list.add(element);
+      }
+    });
+    return list;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

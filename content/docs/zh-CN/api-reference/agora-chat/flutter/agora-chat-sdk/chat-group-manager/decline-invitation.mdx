@@ -1,0 +1,42 @@
+---
+title: "declineInvitation method"
+description: "API docs for the declineInvitation method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Declines a group invitation.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `inviter` | The username of the inviter. |
+| `reason` | The reason of declining. |
+
+```dart title="Dart"
+Future<void> declineInvitation({required String groupId, required String inviter, String? reason})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> declineInvitation({
+  required String groupId,
+  required String inviter,
+  String? reason,
+}) async {
+  Map req = {'groupId': groupId, 'inviter': inviter};
+  req.setValueWithOutNull('reason', reason);
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.declineInvitationFromGroup, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,0 +1,30 @@
+---
+title: "ChatThreadManager constructor"
+description: "API docs for the ChatThreadManager constructor from Class ChatThreadManager from the agora_chat_sdk library, for the Dart programming language."
+---
+
+```dart title="Dart"
+ChatThreadManager()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+ChatThreadManager() {
+  _channel.setMethodCallHandler((MethodCall call) async {
+    Map? argMap = call.arguments;
+    if (call.method == ChatMethodKeys.onChatThreadCreate) {
+      _onChatThreadCreated(argMap);
+    } else if (call.method == ChatMethodKeys.onChatThreadUpdate) {
+      _onChatThreadUpdated(argMap);
+    } else if (call.method == ChatMethodKeys.onChatThreadDestroy) {
+      _onChatThreadDestroyed(argMap);
+    } else if (call.method == ChatMethodKeys.onUserKickOutOfChatThread) {
+      _onChatThreadUserRemoved(argMap);
+    }
+    return null;
+  });
+}
+```

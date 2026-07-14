@@ -1,0 +1,54 @@
+---
+title: "fetchSilentModeForConversations method"
+description: "API docs for the fetchSilentModeForConversations method from the ChatPushManager class, for the Dart programming language."
+---
+
+Obtain the DND Settings of specified conversations in batches.
+
+**Return** key is conversation id and the value is silent mode.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `conversations` | The conversation list. |
+
+```dart title="Dart"
+Future<Map<String, ChatSilentModeResult>> fetchSilentModeForConversations(List<ChatConversation> conversations)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<Map<String, ChatSilentModeResult>> fetchSilentModeForConversations(
+  List<ChatConversation> conversations,
+) async {
+  Map<String, int> req = {};
+  for (var item in conversations) {
+    req[item.id] = conversationTypeToInt(item.type);
+  }
+  Map result = await PushChannel.invokeMethod(
+    ChatMethodKeys.fetchSilentModeForConversations,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+    Map<String, ChatSilentModeResult> ret = {};
+    Map? tmpMap = result[ChatMethodKeys.fetchSilentModeForConversations];
+    if (tmpMap != null) {
+      for (var item in tmpMap.entries) {
+        if (item.key is String && item.value is Map) {
+          ret[item.key] = ChatSilentModeResult.fromJson(item.value);
+        }
+      }
+    }
+    return ret;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

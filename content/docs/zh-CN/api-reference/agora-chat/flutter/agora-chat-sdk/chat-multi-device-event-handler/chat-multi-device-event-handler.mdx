@@ -1,0 +1,30 @@
+---
+title: "ChatMultiDeviceEventHandler constructor"
+description: "API docs for the ChatMultiDeviceEventHandler constructor from Class ChatMultiDeviceEventHandler from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The multi-device event handler.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| [onContactEvent](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-multi-device-event-handler/on-contact-event) | The multi-device event of contact. |
+| [onGroupEvent](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-multi-device-event-handler/on-group-event) | The multi-device event of group. |
+| [onChatThreadEvent](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-multi-device-event-handler/on-chat-thread-event) | The multi-device event of thread. |
+
+```dart title="Dart"
+ChatMultiDeviceEventHandler({void onContactEvent(ChatMultiDevicesEvent event, String userId, String? ext)?, void onGroupEvent(ChatMultiDevicesEvent event, String groupId, List<String>? userIds)?, void onChatThreadEvent(ChatMultiDevicesEvent event, String chatThreadId, List<String> userIds)?})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+ChatMultiDeviceEventHandler({
+  this.onContactEvent,
+  this.onGroupEvent,
+  this.onChatThreadEvent,
+});
+```

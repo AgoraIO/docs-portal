@@ -1,0 +1,30 @@
+---
+title: "ChatSilentModeParam.silentModeInterval constructor"
+description: "API docs for the ChatSilentModeParam.silentModeInterval constructor from Class ChatSilentModeParam from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Set the start time of offline push DND, you need to create the start time and end time together.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| [startTime](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-silent-mode-param/start-time) | Do not disturb start time. |
+| [endTime](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-silent-mode-param/end-time) | Do not disturb end time. |
+
+```dart title="Dart"
+ChatSilentModeParam.silentModeInterval({required ChatSilentModeTime? startTime, required ChatSilentModeTime? endTime})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+ChatSilentModeParam.silentModeInterval({
+  required this.startTime,
+  required this.endTime,
+})  : this.silentDuration = null,
+      this.remindType = null,
+      this._paramType = ChatSilentModeParamType.SILENT_MODE_INTERVAL;
+```

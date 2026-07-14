@@ -1,0 +1,42 @@
+---
+title: "muteMembers method"
+description: "API docs for the muteMembers method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Mutes group members.
+
+Only the group owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `members` | The list of members to be muted. |
+| `duration` | The mute duration in milliseconds. |
+
+```dart title="Dart"
+Future<void> muteMembers(String groupId, List<String> members, {int duration = -1})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> muteMembers(
+  String groupId,
+  List<String> members, {
+  int duration = -1,
+}) async {
+  Map req = {'groupId': groupId, 'members': members, 'duration': duration};
+  Map result = await _channel.invokeMethod(ChatMethodKeys.muteMembers, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

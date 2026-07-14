@@ -1,0 +1,47 @@
+---
+title: "fetchChatRoomMembers method"
+description: "API docs for the fetchChatRoomMembers method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Gets the chat room member list.
+
+**Return** The list of chat room members. See `ChatCursorResult`. If [ChatCursorResult.cursor](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-cursor-result/cursor) is an empty string (""), all data is fetched.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `cursor` | The cursor position from which to start getting data. |
+| `pageSize` | The number of members per page. |
+
+```dart title="Dart"
+Future<ChatCursorResult<String>> fetchChatRoomMembers(String roomId, {String? cursor, int pageSize = 200})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatCursorResult<String>> fetchChatRoomMembers(
+  String roomId, {
+  String? cursor,
+  int pageSize = 200,
+}) async {
+  Map req = {"roomId": roomId, "pageSize": pageSize};
+  req.setValueWithOutNull("cursor", cursor);
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.fetchChatRoomMembers, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatCursorResult<String>.fromJson(
+        result[ChatMethodKeys.fetchChatRoomMembers],
+        dataItemCallback: (obj) => obj);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,0 +1,46 @@
+---
+title: "removeMembersFromChatRoomAllowList method"
+description: "API docs for the removeMembersFromChatRoomAllowList method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Removes members from the allow list.
+
+Only the chat room owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `members` | The list of members to be removed from the allow list. |
+
+```dart title="Dart"
+Future<void> removeMembersFromChatRoomAllowList(String roomId, List<String> members)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> removeMembersFromChatRoomAllowList(
+  String roomId,
+  List<String> members,
+) async {
+  Map req = {
+    "roomId": roomId,
+    "members": members,
+  };
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.removeMembersFromChatRoomWhiteList,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

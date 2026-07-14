@@ -1,0 +1,27 @@
+---
+title: "enableFCM method"
+description: "API docs for the enableFCM method from the ChatOptions class, for the Dart programming language."
+---
+
+Enable Firebase Cloud Messaging (FCM) push on devices that support Google Play.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `appId` | The app ID for FCM push. |
+
+```dart title="Dart"
+void enableFCM(String appId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+void enableFCM(String appId) {
+  _pushConfig.enableFCM = true;
+  _pushConfig.fcmId = appId;
+}
+```

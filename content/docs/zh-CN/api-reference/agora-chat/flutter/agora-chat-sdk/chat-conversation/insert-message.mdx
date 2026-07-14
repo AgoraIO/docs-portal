@@ -1,0 +1,38 @@
+---
+title: "insertMessage method"
+description: "API docs for the insertMessage method from the ChatConversation class, for the Dart programming language."
+---
+
+Inserts a message to a conversation in the local database and the SDK will automatically update the last message.
+
+Make sure you set the conversation ID as that of the conversation where you want to insert the message.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `message` | The message instance. |
+
+```dart title="Dart"
+Future<void> insertMessage(ChatMessage message)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> insertMessage(ChatMessage message) async {
+  Map req = this._toJson();
+  req['msg'] = message.toJson();
+  Map result = await _emConversationChannel.invokeMethod(
+      ChatMethodKeys.insertMessage, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

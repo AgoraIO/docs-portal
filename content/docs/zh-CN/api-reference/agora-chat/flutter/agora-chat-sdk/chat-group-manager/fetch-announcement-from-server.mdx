@@ -1,0 +1,40 @@
+---
+title: "fetchAnnouncementFromServer method"
+description: "API docs for the fetchAnnouncementFromServer method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Gets the group announcement from the server.
+
+Group members can call this method.
+
+**Return** The group announcement.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+
+```dart title="Dart"
+Future<String?> fetchAnnouncementFromServer(String groupId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<String?> fetchAnnouncementFromServer(String groupId) async {
+  Map req = {'groupId': groupId};
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.getGroupAnnouncementFromServer, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result[ChatMethodKeys.getGroupAnnouncementFromServer];
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

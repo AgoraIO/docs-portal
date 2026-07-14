@@ -1,0 +1,41 @@
+---
+title: "updateGroupExtension method"
+description: "API docs for the updateGroupExtension method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Updates the group extension field.
+
+Only the group owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `extension` | The group extension field. |
+
+```dart title="Dart"
+Future<void> updateGroupExtension(String groupId, String extension)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> updateGroupExtension(
+  String groupId,
+  String extension,
+) async {
+  Map req = {'groupId': groupId, 'ext': extension};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.updateGroupExt, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

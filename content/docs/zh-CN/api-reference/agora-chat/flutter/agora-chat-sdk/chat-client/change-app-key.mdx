@@ -1,0 +1,41 @@
+---
+title: "changeAppKey method"
+description: "API docs for the changeAppKey method from the ChatClient class, for the Dart programming language."
+---
+
+Updates the App Key, which is the unique identifier to access Agora Chat.
+
+You can retrieve the new App Key from Agora Console.
+
+As this key controls all access to Agora Chat for your app, you can only update the key when the current user is logged out.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `newAppKey` | The App Key. Ensure that you set this parameter. |
+
+```dart title="Dart"
+Future<bool> changeAppKey({required String newAppKey})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<bool> changeAppKey({required String newAppKey}) async {
+  EMLog.v('changeAppKey: $newAppKey');
+  Map req = {'appKey': newAppKey};
+  Map result =
+      await ClientChannel.invokeMethod(ChatMethodKeys.changeAppKey, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result.boolValue(ChatMethodKeys.changeAppKey);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```
