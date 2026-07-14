@@ -74,6 +74,10 @@ function ditaPage(title: string) {
           <section id="details">
             <h2>Details</h2>
             <p>Call <code>join</code> from this page.</p>
+            <pre class="language-kotlin">fun join()</pre>
+            <pre class="language-arkts">rtcEngine.joinChannel()</pre>
+            <pre class="language-gradle">implementation 'io.agora:rtc:1.0.0'</pre>
+            <pre>{ "state": "connected" }</pre>
           </section>
         </div>
       </article>
@@ -647,7 +651,20 @@ describe('html-to-md-migration', () => {
     ).resolves.toContain('title: "Overview"');
     await expect(
       fs.readFile(path.join(outputDir, 'class-video-canvas.mdx'), 'utf8'),
-    ).resolves.toContain('Call `join` from this page.');
+    ).resolves.toContain('```kotlin title="Kotlin"\nfun join()\n```');
+    await expect(
+      fs.readFile(path.join(outputDir, 'class-video-canvas.mdx'), 'utf8'),
+    ).resolves.toContain(
+      '```typescript title="ArkTS"\nrtcEngine.joinChannel()\n```',
+    );
+    await expect(
+      fs.readFile(path.join(outputDir, 'class-video-canvas.mdx'), 'utf8'),
+    ).resolves.toContain(
+      '```text title="Gradle"\nimplementation \'io.agora:rtc:1.0.0\'\n```',
+    );
+    await expect(
+      fs.readFile(path.join(outputDir, 'class-video-canvas.mdx'), 'utf8'),
+    ).resolves.toContain('```text title="Text"\n{ "state": "connected" }\n```');
   });
 
   it('keeps DITA links to the current source page fragment-only', async () => {
@@ -931,7 +948,7 @@ describe('html-to-md-migration', () => {
           '<a id="connect"></a>',
           '## 方法',
           '### connect',
-          '```ts\nconnect(appId: string): Promise<void>\n```',
+          '```ts title="TypeScript"\nconnect(appId: string): Promise<void>\n```',
           'Call `connect` before publishing.',
           '#### 参数',
           '| 名称 | 描述 |',
@@ -1186,7 +1203,7 @@ describe('html-to-md-migration', () => {
           '<a id="inline"></a>',
           '## Member Function Documentation',
           '### join()',
-          '```cpp\nint agora::rtc::Client::join(const char* channel)\n```',
+          '```cpp title="C++"\nint agora::rtc::Client::join(const char* channel)\n```',
           'Joins a channel.',
           '#### 参数',
           '| 名称 | 描述 |',
@@ -1197,7 +1214,7 @@ describe('html-to-md-migration', () => {
           '[second overload](#join-2)',
           'Third overload.',
           'Source suffix collision.',
-          '```html\n<a id="join"></a>\n[example](#join)\n```',
+          '```html title="HTML"\n<a id="join"></a>\n[example](#join)\n```',
           'Inline example: `<a id="join"></a>`.',
           'Multiline example: `<a id="join"></a>\n<a id="join"></a>`.',
         ],
@@ -1239,6 +1256,26 @@ describe('html-to-md-migration', () => {
         'functions.mdx',
       ],
     });
+
+    const cOutputDir = path.join(rootDir, 'c-output');
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      cOutputDir,
+      '--product',
+      'rtsa',
+      '--platform',
+      'c',
+    ]);
+    await expect(
+      fs.readFile(
+        path.join(cOutputDir, 'class-agora-1-1rtc-1-1-client.mdx'),
+        'utf8',
+      ),
+    ).resolves.toContain(
+      '```cpp title="C"\nint agora::rtc::Client::join(const char* channel)\n```',
+    );
   });
 
   it('deduplicates and localizes zh-CN Doxygen member documentation', async () => {
