@@ -410,6 +410,18 @@ async function writeDoxygenFixture(sourceDir: string) {
           <dl class="section return"><dt>Returns</dt><dd>Zero on success.</dd></dl>
         </div>
       </div>
+      <a id="join"></a>
+      <h2 class="memtitle">join(int)</h2>
+      <div class="memitem"><div class="memproto"><table class="memname"><tr>
+        <td class="memname">int agora::rtc::Client::join </td><td>(</td>
+        <td class="paramtype">int </td><td class="paramname"><em>uid</em></td><td>)</td>
+      </tr></table></div><div class="memdoc"><p>See <a href="#join">second overload</a>.</p></div></div>
+      <a id="join"></a>
+      <h2 class="memtitle">join(bool)</h2>
+      <div class="memitem"><div class="memdoc"><p>Third overload.</p></div></div>
+      <a id="join-2"></a>
+      <h2 class="memtitle">joinLegacy()</h2>
+      <div class="memitem"><div class="memdoc"><p><a id="inline"></a><a id="inline"></a>Source suffix collision.</p></div></div>
     </div>
     <hr class="footer"><address class="footer">制作者 <a href="https://www.doxygen.org/">Doxygen</a> 1.9.1</address>
   </body>
@@ -1132,6 +1144,10 @@ describe('html-to-md-migration', () => {
           'title: "Client Class Reference"',
           '[all classes](/api-reference/rtc/cpp/annotated)',
           '<a id="join"></a>',
+          '<a id="join-2"></a>',
+          '<a id="join-3"></a>',
+          '<a id="join-2-2"></a>',
+          '<a id="inline"></a>',
           '## Member Function Documentation',
           '### join()',
           '```cpp\nint agora::rtc::Client::join(const char* channel)\n```',
@@ -1141,6 +1157,9 @@ describe('html-to-md-migration', () => {
           '#### Returns',
           'Zero on success.',
           '[sales@shengwang.cn](mailto:sales@shengwang.cn)',
+          '[second overload](#join-2)',
+          'Third overload.',
+          'Source suffix collision.',
         ],
         'classes.mdx': [
           'title: "Class Index"',
@@ -1160,6 +1179,7 @@ describe('html-to-md-migration', () => {
       unexpectedPageContents: {
         'annotated.mdx': ['制作者', 'doxygen.org'],
         'class-agora-1-1rtc-1-1-client.mdx': [
+          '<a id="inline-2"></a>',
           '制作者',
           'doxygen.org',
           'All members',

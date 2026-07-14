@@ -3161,20 +3161,22 @@ async function writeNode(
     if (node.sourceName) {
       await writeFile(
         path.join(dir, 'index.mdx'),
-        renderPage({
-          $: cheerio.load(
-            await fs.readFile(
-              path.join(output.sourceDir, node.sourceName),
-              'utf8',
+        deduplicateExplicitAnchors(
+          renderPage({
+            $: cheerio.load(
+              await fs.readFile(
+                path.join(output.sourceDir, node.sourceName),
+                'utf8',
+              ),
             ),
-          ),
-          currentSource: node.sourceName,
-          lane,
-          pageDescriptionBySource,
-          pageTitleBySource,
-          sourceToRoute,
-          targetBasePath: output.targetBasePath,
-        }),
+            currentSource: node.sourceName,
+            lane,
+            pageDescriptionBySource,
+            pageTitleBySource,
+            sourceToRoute,
+            targetBasePath: output.targetBasePath,
+          }),
+        ),
       );
     } else {
       await writeFile(
@@ -3203,17 +3205,22 @@ async function writeNode(
   );
   await writeFile(
     filePath,
-    renderPage({
-      $: cheerio.load(
-        await fs.readFile(path.join(output.sourceDir, node.sourceName), 'utf8'),
-      ),
-      currentSource: node.sourceName,
-      lane,
-      pageDescriptionBySource,
-      pageTitleBySource,
-      sourceToRoute,
-      targetBasePath: output.targetBasePath,
-    }),
+    deduplicateExplicitAnchors(
+      renderPage({
+        $: cheerio.load(
+          await fs.readFile(
+            path.join(output.sourceDir, node.sourceName),
+            'utf8',
+          ),
+        ),
+        currentSource: node.sourceName,
+        lane,
+        pageDescriptionBySource,
+        pageTitleBySource,
+        sourceToRoute,
+        targetBasePath: output.targetBasePath,
+      }),
+    ),
   );
 }
 
@@ -3225,6 +3232,56 @@ description: ${escapeYaml(description)}
 
 This section contains migrated API reference pages.
 `;
+}
+
+function deduplicateExplicitAnchors(markdown) {
+  const collapsedMarkdown = markdown.replace(
+    /(<a id="([^"]+)"><\/a>)(?:[ \t]*\1)+/g,
+    '$1',
+  );
+  const counts = new Map();
+  const activeIds = new Map();
+  const usedIds = new Set();
+  const output = [];
+  let previousStandaloneAnchor = null;
+
+  const allocateId = (sourceId) => {
+    let count = (counts.get(sourceId) ?? 0) + 1;
+    let uniqueId = count === 1 ? sourceId : `${sourceId}-${count}`;
+    while (usedIds.has(uniqueId)) {
+      count += 1;
+      uniqueId = `${sourceId}-${count}`;
+    }
+    counts.set(sourceId, count);
+    usedIds.add(uniqueId);
+    activeIds.set(sourceId, uniqueId);
+    return uniqueId;
+  };
+
+  for (const sourceLine of collapsedMarkdown.split('\n')) {
+    const standalone = sourceLine.match(/^\s*<a id="([^"]+)"><\/a>\s*$/);
+    if (standalone) {
+      const sourceId = standalone[1];
+      if (previousStandaloneAnchor === sourceId) continue;
+      const uniqueId = allocateId(sourceId);
+      output.push(`<a id="${uniqueId}"></a>`);
+      previousStandaloneAnchor = sourceId;
+      continue;
+    }
+
+    let line = sourceLine.replace(/<a id="([^"]+)"><\/a>/g, (_, sourceId) => {
+      const uniqueId = allocateId(sourceId);
+      return `<a id="${uniqueId}"></a>`;
+    });
+    line = line.replace(/\]\(#([^)]+)\)/g, (link, sourceId) => {
+      const activeId = activeIds.get(sourceId);
+      return activeId && activeId !== sourceId ? `](#${activeId})` : link;
+    });
+    output.push(line);
+    if (line.trim()) previousStandaloneAnchor = null;
+  }
+
+  return output.join('\n');
 }
 
 async function main() {
@@ -3363,20 +3420,22 @@ async function main() {
   if (sourceStructure.rootIndexSource) {
     await writeFile(
       path.join(targetRoot, 'index.mdx'),
-      renderPage({
-        $: cheerio.load(
-          await fs.readFile(
-            path.join(apiSourceDir, sourceStructure.rootIndexSource),
-            'utf8',
+      deduplicateExplicitAnchors(
+        renderPage({
+          $: cheerio.load(
+            await fs.readFile(
+              path.join(apiSourceDir, sourceStructure.rootIndexSource),
+              'utf8',
+            ),
           ),
-        ),
-        currentSource: sourceStructure.rootIndexSource,
-        lane,
-        pageDescriptionBySource,
-        pageTitleBySource,
-        sourceToRoute,
-        targetBasePath,
-      }),
+          currentSource: sourceStructure.rootIndexSource,
+          lane,
+          pageDescriptionBySource,
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath,
+        }),
+      ),
     );
   } else {
     await writeFile(
