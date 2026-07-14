@@ -1590,10 +1590,14 @@ describe('html-to-md-migration', () => {
     await writeIosFixture(sourceDir, 'Reference');
 
     runMigration([
-      '--source', sourceDir,
-      '--output', outputDir,
-      '--product', 'whiteboard',
-      '--platform', 'ios',
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'whiteboard',
+      '--platform',
+      'ios',
     ]);
 
     const index = await fs.readFile(path.join(outputDir, 'index.mdx'), 'utf8');
@@ -1601,6 +1605,11 @@ describe('html-to-md-migration', () => {
     expect(index).toContain('## 编程指南');
     expect(index).toContain('## 类参考');
     expect(index).not.toContain('## Programming Guides');
+    await expect(
+      readJson(path.join(outputDir, 'meta.json')),
+    ).resolves.toMatchObject({
+      title: '互动白板 iOS API 参考',
+    });
   });
 
   it.each([
