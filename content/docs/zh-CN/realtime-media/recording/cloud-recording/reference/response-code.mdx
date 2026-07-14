@@ -1,6 +1,9 @@
 ---
 title: "响应状态码"
+description: "查询云端录制的响应状态码、错误码含义、常见原因和处理建议。"
 ---
+本文介绍你在调用云端录制 API 过程中可能会收到的错误码及其含义。
+
 在调用云端录制 RESTful API 过程中，你可能收到如下 HTTP 状态码：
 
 - 如果 HTTP 状态码为 200，则请求成功。
@@ -28,14 +31,14 @@ title: "响应状态码"
 }
 ```
 
-本文介绍你在调用云端录制 API 过程中可能会收到的错误码及其含义。你可以根据文档进行问题定位和排障。
+你可以根据文档进行问题定位和排障。
 
 ## 通用状态码
 
 | 状态码 | `message` 字段 | 错误说明 | 解决方法 |
 | --- | --- | --- | --- |
 | `400 Bad Request` | <Slot name="response-code-html-0-1-1" /> | 使用了非法的 App ID。 | 服务未开通，请先[开通云端录制服务](/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/enable-service)再调用 API。 |
-| `401 Unauthorized` | <Slot name="response-code-html-0-2-1" /> | Authorization 缺失。 | 没有进行 HTTP 基础认证。在调用 API 时请确保[使用 HTTP 基础认证](/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/http-basic-auth)获取 Authorization 的值。 |
+| `401 Unauthorized` | <Slot name="response-code-html-0-2-1" /> | Authorization 缺失。 | 没有进行 HTTP 基本认证。在调用 API 时请确保[使用 HTTP 基本认证](/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/http-basic-auth)获取 Authorization 的值。 |
 | `401 Unauthorized` | <Slot name="response-code-html-0-3-1" /> | 非法的 Authorization。 | <Slot name="response-code-html-0-3-3" /> |
 | `404 Not Found` | <Slot name="response-code-html-0-4-1" /> | 请求路由错误。 | 请检查发送请求的接口和 URL 是否正确 |
 | `429 Too Many Requests` | <Slot name="response-code-html-0-5-1" /> | 被限流了。 | 请求太快被限制，可以[联系技术支持](https://ticket.shengwang.cn) 申请提高 API 配额，或者稍后进行重试，同时检查集成避免过多的 API 调用。 |

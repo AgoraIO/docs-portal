@@ -1,17 +1,15 @@
 ---
 title: "实现极速直播"
+description: "了解如何快速接入实时互动 RTC，完成环境准备、参数配置、示例运行和核心流程验证。"
 ---
-
 <PlatformStructured platform="android">
-
-本文介绍如何集成声网实时互动 SDK，在基础的音视频互动能力上进行少量代码修改，即可实现一个极速直播 App。
 
 极速直播是区别于互动直播的一种直播场景，两者的区别在于观众端的延时级别：
 
 - 互动直播：观众端的延时级别为**超低延时**，以便满足主播和观众需要频繁进行音视频互动的需求。
 - 极速直播：观众端的延时级别为**低延时**，可以满足主播与观众较低频率的音视频互动，或者回应观众文字、弹幕及打赏信息。
 
-更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 前提条件
 
@@ -89,7 +87,7 @@ mRtcEngine.joinChannel(token, channelName, 0, options);
 - 互动直播：观众端的延时级别为**超低延时**，以便满足主播和观众需要频繁进行音视频互动的需求。
 - 极速直播：观众端的延时级别为**低延时**，可以满足主播与观众较低频率的音视频互动，或者回应观众文字、弹幕及打赏信息。
 
-更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 前提条件
 
@@ -155,7 +153,7 @@ mRtcEngine.joinChannel(token, channelName, 0, options);
 - 互动直播：观众端的延时级别为**超低延时**，以便满足主播和观众需要频繁进行音视频互动的需求。
 - 极速直播：观众端的延时级别为**低延时**，可以满足主播与观众较低频率的音视频互动，或者回应观众文字、弹幕及打赏信息。
 
-更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 前提条件
 
@@ -223,7 +221,7 @@ mRtcEngine.joinChannel(token, channelName, 0, options);
 - 互动直播：观众端的延时级别为**超低延时**，以便满足主播和观众需要频繁进行音视频互动的需求。
 - 极速直播：观众端的延时级别为**低延时**，可以满足主播与观众较低频率的音视频互动，或者回应观众文字、弹幕及打赏信息。
 
-更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 前提条件
 
@@ -291,7 +289,7 @@ rtc.client.setClientRole(options.role, clientRoleOptions);
 - 互动直播：观众端的延时级别为**超低延时**，以便满足主播和观众需要频繁进行音视频互动的需求。
 - 极速直播：观众端的延时级别为**低延时**，可以满足主播与观众较低频率的音视频互动，或者回应观众文字、弹幕及打赏信息。
 
-更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 ## 前提条件
 
 已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
@@ -409,7 +407,7 @@ int ret = m_rtcEngine->joinChannel(token, cs2utf8(strChannelName).c_str(), 0, op
 - 互动直播：观众端的延时级别为**超低延时**，以便满足主播和观众需要频繁进行音视频互动的需求。
 - 极速直播：观众端的延时级别为**低延时**，可以满足主播与观众较低频率的音视频互动，或者回应观众文字、弹幕及打赏信息。
 
-更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 前提条件
 
@@ -471,7 +469,7 @@ int ret = m_rtcEngine->joinChannel(token, cs2utf8(strChannelName).c_str(), 0, op
 - 互动直播：观众端的延时级别为**超低延时**，以便满足主播和观众需要频繁进行音视频互动的需求。
 - 极速直播：观众端的延时级别为**低延时**，可以满足主播与观众较低频率的音视频互动，或者回应观众文字、弹幕及打赏信息。
 
-更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 前提条件
 
@@ -533,7 +531,7 @@ int ret = m_rtcEngine->joinChannel(token, cs2utf8(strChannelName).c_str(), 0, op
 - 互动直播：观众端的延时级别为**超低延时**，以便满足主播和观众需要频繁进行音视频互动的需求。
 - 极速直播：观众端的延时级别为**低延时**，可以满足主播与观众较低频率的音视频互动，或者回应观众文字、弹幕及打赏信息。
 
-更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 ## 前提条件
 
 已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
@@ -607,7 +605,7 @@ public void Join() {
 - 互动直播：观众端的延时级别为**超低延时**，以便满足主播和观众需要频繁进行音视频互动的需求。
 - 极速直播：观众端的延时级别为**低延时**，可以满足主播与观众较低频率的音视频互动，或者回应观众文字、弹幕及打赏信息。
 
-更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 前提条件
 
@@ -686,7 +684,7 @@ await _engine.joinChannel(
 - 互动直播：观众端的延时级别为**超低延时**，以便满足主播和观众需要频繁进行音视频互动的需求。
 - 极速直播：观众端的延时级别为**低延时**，可以满足主播与观众较低频率的音视频互动，或者回应观众文字、弹幕及打赏信息。
 
-更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 前提条件
 
@@ -748,7 +746,7 @@ await _engine.joinChannel(
 - 互动直播：观众端的延时级别为**超低延时**，以便满足主播和观众需要频繁进行音视频互动的需求。
 - 极速直播：观众端的延时级别为**低延时**，可以满足主播与观众较低频率的音视频互动，或者回应观众文字、弹幕及打赏信息。
 
-更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 前提条件
 
@@ -817,7 +815,7 @@ RtcEngineProxy->joinChannel(TCHAR_TO_ANSI(*_token), TCHAR_TO_ANSI(*_channelName)
 - 互动直播：观众端的延时级别为**超低延时**，以便满足主播和观众需要频繁进行音视频互动的需求。
 - 极速直播：观众端的延时级别为**低延时**，可以满足主播与观众较低频率的音视频互动，或者回应观众文字、弹幕及打赏信息。
 
-更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+更多关于极速直播的延时指标、同步性、互动体验以及费用介绍，详见[直播场景区别](/zh-CN/api-reference/faq/product/streaming_difference)和[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 ## 前提条件
 

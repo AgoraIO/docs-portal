@@ -1,13 +1,16 @@
 ---
 title: "用户元数据"
+description: "了解如何在实时消息 RTM 中用户元数据，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-`Storage` 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。User Metadata 在被设置、更新和删除的时候会触发 `config.onstorageevent` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
+Storage 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。
+
+ser Metadata 在被设置、更新和删除的时候会触发 `config.onstorageevent` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
 
 需要注意的是，User Metadata 属于永久存储，一旦被设置将会长期保存在 RTM 数据库，不会因为你的用户注销而丢失，直到你手动删除它们为止。知道这一点非常重要，因为它将影响你的存储计费项，详见[计费规则](/zh-CN/realtime-media/rtm/reference/billing/billing-strategy)。
 
 ## 设置用户元数据
 
-你可以为指定的用户设置一组 User Metadata 用以实现业务上用户级别的数据存储和实时通知，例如用户的姓名、年级、头像链接、自我介绍等任何自定义数据。每个用户只能有一组 User Metadata，但每组 User Metadata 可以包含一个或多个 Metadata Item，相关限制详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。每个 Metadata Item 包含有 `key`、`value`、`revision` 预定义字段。
+你可以为指定的用户设置一组 User Metadata 用以实现业务上用户级别的数据存储和实时通知，例如用户的姓名、年级、头像链接、自我介绍等任何自定义数据。每个用户只能有一组 User Metadata，但每组 User Metadata 可以包含一个或多个 Metadata Item，相关限制详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。每个 Metadata Item 包含有 `key`、`value`、`revision` 预定义字段。
 
 如果当前 User Metadata 或者 Metadata Item 不存在，该方法将为指定用户新增属性；如果 User Metadata 或者 Metadata Item 存在，则会使用新值覆盖原有值。
 

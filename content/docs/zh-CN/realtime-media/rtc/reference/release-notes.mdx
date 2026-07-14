@@ -1,6 +1,8 @@
 ---
 title: "发版说明"
+description: "查看实时互动 RTC 的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
 ---
+该版本删除了 EncodedVideoFrameInfo 结构体中的 uid 参数。
 
 <PlatformStructured platform="android">
 
@@ -35,7 +37,7 @@ title: "发版说明"
 
 #### EncodedVideoFrameInfo 结构体删除参数 uid
 
-该版本删除了 `EncodedVideoFrameInfo` 结构体中的 `uid` 参数。你可以直接从 [`onEncodedVideoFrameReceived`](/api-ref/rtc/android/API/toc_video_encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) 回调中获取远端用户的 `remoteUid` 信息。如果你之前集成过相关代码，请相应更新集成逻辑。
+你可以直接从 [`onEncodedVideoFrameReceived`](/api-ref/rtc/android/API/toc_video_encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) 回调中获取远端用户的 `remoteUid` 信息。如果你之前集成过相关代码，请相应更新集成逻辑。
 
 #### Lite 和 Voice 包中去除音频频谱功能
 
@@ -383,7 +385,7 @@ title: "发版说明"
    有关美型和美妆的实现步骤，详见[实现高级美颜](/zh-CN/realtime-media/rtc/build/video/advanced-beauty)。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -1430,7 +1432,7 @@ title: "发版说明"
 如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/android/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
 :::warning[注意]
-由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 ### 新增特性
@@ -1793,7 +1795,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 :::info[信息]
 - 超高清分辨率（4K，60 fps）目前为 Beta 功能，且对设备性能和网络带宽有一定要求，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
 - 高分辨率通常需要更高的性能消耗，为避免设备性能不足导致体验下降，声网建议你在性能较好的设备上开启全高清和超高清视频分辨率。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -2264,7 +2266,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    有关美型和美妆的实现步骤，详见[实现高级美颜](https://doc.shengwang.cn/doc/rtc/ios/advanced-features/advanced-beauty)。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -3302,7 +3304,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
-<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
+<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
 
 #### 设置远端视频流的订阅选项
 
@@ -3675,7 +3677,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 :::info[信息]
 - 超高清分辨率（4K，60 fps）目前为 Beta 功能，且对设备性能和网络带宽有一定要求，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
 - 高分辨率通常需要更高的性能消耗，为避免设备性能不足导致体验下降，声网建议你在性能较好的设备上开启全高清和超高清视频分辨率。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -4102,7 +4104,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    有关美型和美妆的实现步骤，详见[实现高级美颜](https://doc.shengwang.cn/doc/rtc/macos/advanced-features/advanced-beauty)。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -4978,7 +4980,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration:`](/api-ref/rtc/macos/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
 :::warning[注意]
-由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 设置远端视频流的订阅选项
@@ -5364,7 +5366,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 :::info[信息]
 - 该功能对设备性能和网络带宽有一定要求，在不同的平台上支持的上下行帧率也不同，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -5829,7 +5831,7 @@ v4.23.3 将虚拟背景插件升级到了 [2.1.0 版本](https://www.npmjs.com/p
 
 #### 优化频道秒开
 
-使用频道秒开功能时，为减少首帧渲染时间，我们建议在调用加入频道方法时立即下发主播的媒体流，详见[频道秒开](/zh-CN/realtime-media/rtc/build/optimize-and-operate/preload#22-进入频道)。该设置下，用户一加入频道就会产生拉流，从而产生计费，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy#基础服务)。
+使用频道秒开功能时，为减少首帧渲染时间，我们建议在调用加入频道方法时立即下发主播的媒体流，详见[频道秒开](/zh-CN/realtime-media/rtc/build/optimize-and-operate/preload#22-进入频道)。该设置下，用户一加入频道就会产生拉流，从而产生计费，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy#基础服务)。
 
 #### 支持 AV1 编码 (Beta)
 
@@ -6856,7 +6858,7 @@ Web SDK 自 v4.6.0 起支持极速直播。极速直播与互动直播的区别�
 - 互动直播中观众端延时级别为超低延时 400 毫秒到 800 毫秒。
 - 极速直播中观众端延时级别为低延时 1500 毫秒到 2000 毫秒。
 
-声网针对不同级别的观众端延时收取不同的费用。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+声网针对不同级别的观众端延时收取不同的费用。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 你可通过以下两种方式实现低延时观众端：
 
@@ -7615,7 +7617,7 @@ v4.0.0 修复了以下问题：
    有关美型和美妆的实现步骤，详见[实现高级美颜](/zh-CN/realtime-media/rtc/build/video/advanced-beauty)。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -8545,7 +8547,7 @@ v4.0.0 修复了以下问题：
  如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/windows/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
 :::info[信息]
-由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 ### 新增特性
@@ -8988,7 +8990,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 :::info[信息]
 - 该功能对设备性能和网络带宽有一定要求，在不同的平台上支持的上下行帧率也不同，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -9871,7 +9873,7 @@ https://miniapp-4.agoraio.cn
    - 美妆：调用 [`setExtensionProperty`](/api-ref/rtc/electron/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -10644,7 +10646,7 @@ https://miniapp-4.agoraio.cn
 
  如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/electron/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
-<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
+<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
 
 #### 其他兼容性变更
 
@@ -11192,7 +11194,7 @@ v4.0.0 SDK 包名由 `electron-agora-rtc-ng` 变更为 `agora-electron-sdk`，�
 该功能对设备性能和网络带宽有一定要求，在不同的平台上支持的上下行帧率也不同，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
 
 :::info[信息]
-高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -11649,7 +11651,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/electron/API/clas
    - 美妆：调用 [`SetExtensionProperty`](/api-ref/rtc/unity/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -12666,7 +12668,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/electron/API/clas
  如果你想自定义视频编码分辨率，可调用 [`SetVideoEncoderConfiguration`](/api-ref/rtc/unity/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
 :::warning[注意]
-由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 其他兼容性变更
@@ -13302,7 +13304,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.x 
 你可以在调用 [`SetVideoEncoderConfiguration`](/api-ref/rtc/unity/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 时，设置编码分辨率为 4K (3840 × 2160)、帧率为 60 fps。当你的设备不支持 4K 时，SDK 支持自动回退到适合的分辨率和帧率。
 :::info[信息]
 - 该功能对设备性能和网络带宽有一定要求，在不同的平台上支持的上下行帧率也不同，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 全高清和超高清分辨率 (Android, iOS)
@@ -13311,7 +13313,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.x 
 
 :::info[信息]
 - 高分辨率通常需要更高的性能消耗，为避免设备性能不足导致体验下降，声网建议你在性能较好的设备上开启全高清和超高清视频分辨率。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -13758,7 +13760,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/unity/API/class_v
    - 美妆：调用 [`setExtensionProperty`](/api-ref/rtc/flutter/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -14688,7 +14690,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/unity/API/class_v
 
 自该版本起，SDK 对视频编码的算法进行了优化，将默认的视频编码分辨率从 640 × 360 提升为 960 × 540，以适应设备性能和网络带宽的提升，在各种音视频互动场景下，为用户提供全链路的高清体验。
 如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/flutter/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
-由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 
 #### 其他兼容性变更
 
@@ -15348,7 +15350,7 @@ v6.0.0 SDK 包名由 `agora_rtc_ng` 变更为 `agora_rtc_engine`，且对部分�
 
 :::info[信息]
 - 该功能对设备性能和网络带宽有一定要求，在不同的平台上支持的上下行帧率也不同，如需体验该功能，请联系[技术支持](https://ticket.shengwang.cn/)。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 全高清和超高清分辨率 (Android, iOS)
@@ -15358,7 +15360,7 @@ v6.0.0 SDK 包名由 `agora_rtc_ng` 变更为 `agora_rtc_engine`，且对部分�
 :::info[信息]
 - 超高清分辨率 (4K，60 fps) 目前为 Beta 功能，且对设备性能和网络带宽有一定要求，如需体验该功能，请联系[技术支持](https://ticket.shengwang.cn/)。
 - 高分辨率通常需要更高的性能消耗，为避免设备性能不足导致体验下降，声网建议你在性能较好的设备上开启全高清和超高清视频分辨率。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -15755,7 +15757,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/flutter/API/class
    - 美妆：调用 [`setExtensionProperty`](/api-ref/rtc/rn/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
    :::info[信息]
-   目前，高级美颜功能为**限时免费**，详见[计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+   目前，高级美颜功能为**限时免费**，详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
    :::
 
 #### 秀场直播场景
@@ -16579,7 +16581,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/flutter/API/class
 
  如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/rn/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
-<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
+<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
 
 #### 其他兼容性变更
 
@@ -17101,7 +17103,7 @@ v4.0.0 SDK 包名由 `react-native-agora-rtc-ng` 变更为 `react-native-agora`�
 :::info[信息]
 - 超高清分辨率（4K，60 fps）目前为 Beta 功能，且对设备性能和网络带宽有一定要求，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
 - 高分辨率通常需要更高的性能消耗，为避免设备性能不足导致体验下降，声网建议你在性能较好的设备上开启全高清和超高清视频分辨率。
-- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 内置媒体播放器
@@ -17304,7 +17306,7 @@ AudioMixerModuleName=
 - 美妆：调用 [`setExtensionProperty`](/api-ref/rtc/unreal-cpp/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
 :::info[信息]
-目前，高级美颜功能为**限时免费**，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 秀场直播场景
@@ -17628,7 +17630,7 @@ AudioMixerModuleName=
 - 美妆：调用 [`SetExtensionProperty`](/api-ref/rtc/unreal-blueprint/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
 
 :::info[信息]
-目前，高级美颜功能为**限时免费**，详见[计费策略](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+目前，高级美颜功能为**限时免费**，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
 :::
 
 #### 秀场直播场景
