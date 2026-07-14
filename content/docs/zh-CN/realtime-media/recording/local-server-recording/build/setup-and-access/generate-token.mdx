@@ -1,5 +1,6 @@
 ---
 title: "使用 Token 鉴权"
+description: "了解如何在本地服务端录制中 Token 鉴权，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
 鉴权是指在用户访问你的系统前，对用户权限进行校验，声网用 Token 对用户鉴权。
 
@@ -350,11 +351,11 @@ if __name__ == "__main__":
 加入频道时使用的用户 ID 和频道名必须和生成 Token 时的用户 ID 和频道名一致。
 :::
 
-```cpp
+```cpp tab="C++" tabGroup="zh-cn-realtime-media-recording-local-server-recording-build-setup-and-access-generate-token-1"
 recorder->joinChannel(config.token.c_str(), config.ChannelName.c_str(), config.UserId.c_str());
 ```
 
-```java
+```java tab="Java" tabGroup="zh-cn-realtime-media-recording-local-server-recording-build-setup-and-access-generate-token-1"
 agoraMediaRtcRecorder.joinChannel(recorderConfig.getToken(),
     recorderConfig.getChannelName(),
     recorderConfig.getUserId());

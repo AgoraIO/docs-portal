@@ -1,31 +1,34 @@
 ---
-title: "实现 HTTP 安全认证"
+title: "实现 HTTP 鉴权"
+description: "了解如何在云端转码中 HTTP 鉴权，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-本文介绍如何进行以下 HTTP 安全认证：
+云端转码和观众端多码率使用 HTTP 基本认证。
+
+文介绍如何进行以下 HTTP 鉴权：
 
 - HTTP 基本认证：易用，但安全性较弱。云端转码和观众端多码率都支持这种认证方式。
-- HTTP HMAC (Hash-based Message Authentication Code) 认证：安全性较高。仅观众端多码率支持这种认证方式。
+- HTTP HMAC（Hash-based Message Authentication Code）鉴权：安全性较高。仅观众端多码率支持这种认证方式。
 
 ## 实现 HTTP 基本认证
 
-云端转码和观众端多码率使用 HTTP 基本认证。本节介绍如何进行 HTTP 基本认证。
+本节介绍如何进行 HTTP 基本认证。
 
 ### 前提条件
 
-已经从声网控制台获取客户 ID 和客户密钥，详见[开通服务](/zh-CN/realtime-media/transcoding/build/setup-and-access/enable-service)。
+已经从声网控制台获取客户 ID 和客户密钥，详见[开通转码服务](/zh-CN/realtime-media/transcoding/build/setup-and-access/enable-service)。
 
 ### 实现方法
 
-参考 [HTTP 基本认证](/zh-CN/realtime-media/rtc/build/security-and-auth/http-basic-auth#生成方法)实现。
+参考 [HTTP 基本认证](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth#生成方法)实现。
 
-## 实现 HTTP HMAC 认证
+## 实现 HTTP HMAC 鉴权
 
-观众端多码率使用如下安全认证：
+观众端多码率支持以下鉴权方式：
 
 - [HTTP 基本认证](#实现-http-基本认证)。易用，但安全性较弱。
-- HTTP HMAC (Hash-based Message Authentication Code) 认证。安全性较高，推荐使用。
+- HTTP HMAC（Hash-based Message Authentication Code）鉴权。安全性较高，推荐使用。
 
-本节介绍如何实现 HTTP HMAC 认证。
+本节介绍如何实现 HTTP HMAC 鉴权。
 
 发送请求时，你需要通过 HMAC-SHA256 算法生成签名，并在请求 Header 的 `Authorization` 字段中传入该签名。在生成签名的过程中，你需要用到以下声网账号的信息：
 
@@ -255,7 +258,7 @@ public class Main {
 
 ### 下一步
 
-开通服务、实现 HTTP HMAC 认证后，你可以进行如下操作：
+开通服务、实现 HTTP HMAC 鉴权后，你可以进行如下操作：
 
 1. 参考[实现观众端多码率](/zh-CN/realtime-media/transcoding/build/setup-and-access/enable-multiple-bitrate)了解实现流程。
 2. 参考[多码率 RESTful API 说明](../cloud-transcoder/operations/post-v1-projects-appId-rtls-abr-config-codecs-codecId)进行集成。

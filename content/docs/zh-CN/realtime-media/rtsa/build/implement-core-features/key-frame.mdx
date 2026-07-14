@@ -1,5 +1,6 @@
 ---
 title: "发送关键帧"
+description: "了解 RTSA 中发送关键帧相关内容的适用场景、配置步骤、实现要点和注意事项。"
 ---
 关键帧是自带全部解码信息的独立视频帧，解码时仅需本帧数据，无需参考其他图像。
 
@@ -15,7 +16,7 @@ title: "发送关键帧"
 
 示例代码如下：
 
-```c
+```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-key-frame-1"
 static connection_id_t g_conn_id;
 video_frame_info_t info;
 info.type = frame.u.video.is_key_frame ? VIDEO_FRAME_KEY : VIDEO_FRAME_DELTA;
@@ -27,7 +28,7 @@ info.data_type = config->video_data_type;
 agora_rtc_send_video_data(g_conn_id, data, len, &info);
 ```
 
-```java
+```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-key-frame-1"
 int streamId = 0;
 VideoFrameInfo videoFrameInfo = new VideoFrameInfo();
 videoFrameInfo.video_data_type = VideoDataType.VIDEO_DATA_TYPE_H264;

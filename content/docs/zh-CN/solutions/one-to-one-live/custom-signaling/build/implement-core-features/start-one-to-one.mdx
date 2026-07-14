@@ -1,10 +1,10 @@
 ---
 title: "实现 1v1 私密房"
+description: "了解如何快速接入 1v1 私密房三方信令方案，完成环境准备、参数配置、示例运行和核心流程验证。"
 ---
-
 <PlatformStructured platform="android">
 
-在陌生人社交场景中，用户可以根据头像、个人简介等筛选到感兴趣的用户进行 1v1 私密视频通话；也可以通过地理位置、标签随机匹配的方式进行 1v1 私密视频通话。1v1 私密通话中，默认通话双方都开启摄像头和麦克风，双向发送接收音视频流。
+1v1 私密通话中，默认通话双方都开启摄像头和麦克风，双向发送接收音视频流。
 
 本文以环信为例，介绍如何使用 [`CallAPI`](https://github.com/AgoraIO-Community/CallAPI) 和自定义的三方信令管理类 [`CallEasemobSignalClient`](https://github.com/AgoraIO-Community/CallAPI/blob/main/Android/app/src/main/java/io/agora/onetoone/signalClient/CallEasemobSignalClient.kt) 实现 1v1 私密房场景。
 
@@ -33,7 +33,7 @@ title: "实现 1v1 私密房"
 - [Git](https://git-scm.com/downloads)。
 - [Java Development Kit](https://www.oracle.com/java/technologies/javase-downloads.html)。
 - [Android Studio](https://developer.android.com/studio/) 4.1 及以上。
-- 参考[开通服务](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service)在控制台创建项目，获取 App ID 和 App 证书。
+- 参考[开通一对一直播服务](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service)在控制台创建项目，获取 App ID 和 App 证书。
 - 参考[集成 CallAPI 和三方信令](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/integrate-third-party)将 `CallAPI` 集成进项目中。
 
 ## 实现 1v1 私密房
@@ -442,7 +442,7 @@ signalClient.logout()
 - [RTC API 参考](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/rtc-api)
 - [环信即时通讯云文档](https://doc.easemob.com/product/introduction.html)
 
-如果希望在项目中实现更高阶的功能，可以参考[进阶集成指引](/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/integration-guideline)。
+如果希望在项目中实现更高阶的功能，可以参考[优化自定义信令方案集成逻辑](/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/integration-guideline)。
 
 </PlatformStructured>
 
@@ -478,7 +478,7 @@ signalClient.logout()
 - [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started)。
 - [Xcode](https://apps.apple.com/cn/app/xcode/id497799835?mt=12) 12.0 及以上。
 - 有效的苹果开发者账号。
-- 参考[开通服务](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service)在控制台创建项目，获取 App ID 和 App 证书。
+- 参考[开通一对一直播服务](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service)在控制台创建项目，获取 App ID 和 App 证书。
 - 参考[集成 CallAPI 和三方信令](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/integrate-third-party)将 `CallAPI` 和 `CallEasemobSignalClient` 集成到项目中。
 
 ## 实现 1v1 私密房
@@ -889,6 +889,6 @@ signalClient.logout()
 - [RTC API 参考](/zh-CN/solutions/one-to-one-live/custom-signaling/reference/rtc-api)
 - [环信即时通讯云文档](https://doc.easemob.com/product/introduction.html)
 
-如果希望在项目中实现更高阶的功能，可以参考[进阶集成指引](/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/integration-guideline)。
+如果希望在项目中实现更高阶的功能，可以参考[优化自定义信令方案集成逻辑](/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/integration-guideline)。
 
 </PlatformStructured>

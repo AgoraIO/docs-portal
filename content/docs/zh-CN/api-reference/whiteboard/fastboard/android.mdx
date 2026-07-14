@@ -113,11 +113,11 @@ public class FastRoomOptions {
 
 `FastRoomOptions` 类包含以下属性：
 
-- `appId`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+- `appId`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 - `uuid`：String。房间的 UUID，即房间的唯一标识符。详见[创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)请求成功后响应包体中 `uuid` 参数的值。
 - `token`：String。房间的 Room Token，用于加入房间时的用户鉴权。可以通过以下方式获取：
   - 调用[生成 Room Token](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
-  - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。
+  - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。
 - `uid`：String。用户的 UID，即用户的唯一标识符，字符串格式，不能超过 1024 字节。请确保同一房间内每个用户的 uid 唯一。
 - `writable`：boolean。用户是否以互动模式加入白板房间：
   - `true`：以互动模式加入白板房间，即具有读写权限。
@@ -504,8 +504,8 @@ public class DocPage {
 插入文档的参数设置。`DocPage` 类包含以下属性：
 
 - `src`：String。图片或动态 PPT 页的地址。
-  - 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过[文档转换功能](/zh-CN/realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files)生成的 URL 地址。你可以从[查询转换任务进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)返回的 `image` 字段中获取该地址。请确保 App 客户端能够访问该 URL，否则无法正常加载图片。
-  - 动态 PPT 页：通过[文档转换功能](/zh-CN/realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files)生成的 URI 地址。
+  - 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过[文档转换功能](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)生成的 URL 地址。你可以从[查询转换任务进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)返回的 `image` 字段中获取该地址。请确保 App 客户端能够访问该 URL，否则无法正常加载图片。
+  - 动态 PPT 页：通过[文档转换功能](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)生成的 URI 地址。
 - `preview`：String。（可选）图片或动态 PPT 预览图的 URL 地址。动态 PPT 预览图的 URL 地址可以从[查询文档转换进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)返回的 `preview` 字段获取。传入后，将在 App 左侧展示预览图。请确保 App 客户端能够访问该 URL，否则无法正常加载预览图。
 - `width`：int。插入的文档在白板中的宽度（px）。
 - `height`：int。插入的文档在白板中的高度（px）。
@@ -519,7 +519,7 @@ public void insertPptx(String taskUuid, String prefixUrl, String title, FastResu
 
 在白板子窗口中插入动态文档。
 
-该方法可以插入通过[动态文档转换](/zh-CN/realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files#动态文档转换)转换后的动态 HTML 网页。
+该方法可以插入通过[动态文档转换](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files#动态文档转换)转换后的动态 HTML 网页。
 
 **参数**
 
@@ -571,7 +571,7 @@ public class FastInsertDocParams {
 - `taskUUID`：String。文档转换任务的 Task UUID，即[发起文档转换任务](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)请求成功时响应包体中 `uuid` 字段的值。
 - `taskToken`：String。文档转换任务的 Task Token，必须和[发起文档转换任务](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)时传入的 Task Token 一致。
 - `converterType`: 枚举。文档转换服务的版本，取值如下：
-  - `Projector`: 新版。详见[新版文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files)。
+  - `Projector`: 新版。详见[新版文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)。
   - `WhiteboardConverter`: 旧版（默认值），当前已不再维护。
 - `fileType`：String。文档类型：
   - `pdf`：静态文档。

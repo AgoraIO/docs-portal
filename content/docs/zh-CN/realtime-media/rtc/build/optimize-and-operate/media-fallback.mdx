@@ -1,0 +1,60 @@
+---
+title: "媒体流回退"
+description: "了解如何在实时互动 RTC 中媒体流回退，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+网络不理想的环境下，音视频的质量都会下降。
+
+声网支持媒体流回退，在网络条件差、无法同时保证音视频质量的情况下，SDK 会自动将视频流从大流切换为小流，或将媒体流回退为音频流，从而确保音频质量。
+
+## 前提条件
+
+开始前，请确保你已参考[快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start)在你的项目中实现基本的实时音视频功能。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现媒体流回退功能：
+
+1. 在发布之前，发送端调用 `AgoraRTCClient.enableDualStream` 方法开启[双流模式](https://docs.agora.io/cn/Agora%20Platform/terms?platform=All%20Platforms#dual-stream)。
+2. 接收端调用 `AgoraRTCClient.setStreamFallbackOption` 方法设置弱网环境下接收媒体流的回退选项。
+   - `fallbackType` 设为 `1`，则下行网络较弱时，只接收主播的视频小流。
+   - `fallbackType` 设为 `2`，则下行网络较弱时，先尝试只接收主播的视频小流。如果网络环境无法显示视频，则只接收主播的音频流。
+
+此外，发送端启用双流模式后，接收端可以调用 `setRemoteVideoStreamType` 方法，并设置 `streamType` 为 `1`，只接收视频小流。
+
+用户接收到的流从音视频流切换到纯音频流，或从纯音频流切换到音视频流时，SDK 会触发 `AgoraRTCClient.on("stream-fallback")` 回调，帮助该用户了解当前接收流的状态。当接收到的流从大流切换到小流，或从小流切换到大流时，SDK 会触发 `AgoraRTCClient.on("stream-type-changed")` 回调，帮助该用户了解当前接收到的视频流类型。
+
+以下示例代码中的 `client` 是指通过 `AgoraRTC.createClient` 创建的本地客户端对象，`remoteStream` 是指通过 `stream-added` 事件获取的远端音视频流对象。
+
+```javascript
+// 开启双流模式
+client.enableDualStream().then(() => {
+  console.log("Enable dual stream success!")
+}).catch(err => {
+  console.log(err)
+});
+
+// 接收端的配置。弱网环境下先尝试接收小流；若当前网络环境无法显示视频，则只接收音频流
+client.setStreamFallbackOption(remoteStream, 2)
+
+// 接收端的配置。弱网情况下为保证通话质量，将订阅的视频大流手动切换成视频小流
+client.setRemoteVideoStreamType(remoteStream, 1);
+```
+
+## 参考信息
+
+### 开发注意事项
+
+-  `enableDualStream` 方法对纯音频通话场景无效。
+- 在移动端发送大小流存在以下限制：
+  - 在 Android Chrome 上无法使用 H.264 编码发送大小流。
+  - 在 iOS Safari 上发送小流且调用 `setLowStreamParameter` 设置小流视频属性时，不支持设置 `LowStreamParameter.bitrate`，且小流分辨率需要与大流分辨率成比例。
+- 调用 `setRemoteVideoStreamType` 方法时，某些浏览器对双流模式不完全适配。目前发现的适配问题有：
+   - macOS Safari: 大小流帧率、分辨率一致。
+   - iOS Safari 11: 不支持大小流切换。
+   - Firefox: 小流帧率固定为 30 fps。
+
+### API 参考
+
+- [`AgoraRTCClient.enableDualStream`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#enabledualstream)
+- [`AgoraRTCClient.setStreamFallbackOption`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setstreamfallbackoption)
+- [`AgoraRTCClient.setRemoteVideoStreamType`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setremotevideostreamtype)

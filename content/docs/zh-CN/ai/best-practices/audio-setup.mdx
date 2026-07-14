@@ -1,5 +1,6 @@
 ---
 title: "优化音频设置"
+description: "了解对话式 AI 引擎中优化音频设置相关内容的适用场景、配置步骤、实现要点和注意事项。"
 ---
 在实时互动场景中，人与 AI 的对话在对话节奏、发言连续性和语音语调方面与人与人之间的对话存在显著差异。
 
@@ -29,7 +30,7 @@ title: "优化音频设置"
 - AI 降噪插件：`libagora_ai_noise_suppression_extension.so`
 - AI 回声消除插件：`libagora_ai_echo_cancellation_extension.so`
 
-集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/best-practice/reduce-app-size#删除不需要的插件)。
+集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size#删除不需要的插件)。
 
 </TabsContent>
 
@@ -38,13 +39,13 @@ title: "优化音频设置"
 - AI 降噪插件：`AgoraAiNoiseSuppressionExtension.xcframework`
 - AI 回声消除插件：`AgoraAiEchoCancellationExtension.xcframework`
 
-集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/best-practice/reduce-app-size#删除不需要的插件)。
+集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size#删除不需要的插件)。
 
 </TabsContent>
 
 <TabsContent value="web">
 
-- 参考[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/advanced-features/extensions/noise-reduction)集成 AI 降噪插件：`agora-extension-ai-denoiser`。
+- 参考[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/noise-reduction)集成 AI 降噪插件：`agora-extension-ai-denoiser`。
 
 </TabsContent>
 </Tabs>
@@ -410,7 +411,7 @@ extension RTCManager: AgoraRtcEngineDelegate {
 
 <TabsContent value="web">
 
-参考[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/advanced-features/extensions/noise-reduction)了解如何集成 AI 降噪插件以提高 AI 对话音频体验。
+参考[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/noise-reduction)了解如何集成 AI 降噪插件以提高 AI 对话音频体验。
 
 </TabsContent>
 </Tabs>

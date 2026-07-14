@@ -1,9 +1,10 @@
 ---
-title: "实现 HTTP HMAC 认证"
+title: "实现 HTTP HMAC 鉴权"
+description: "了解如何在融合 CDN 直播中 HTTP HMAC 鉴权，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-本文介绍如何实现 HTTP HMAC 认证。
+# 前提条件
 
-## 前提条件
+本文介绍如何实现 HTTP HMAC 鉴权。
 
 发送请求时，你需要通过 HMAC-SHA256 算法生成一个签名，并在请求 Header 中的 `Authorization` 字段传入签名。在生成签名的过程中，你需要用到以下声网账号的信息：
 
