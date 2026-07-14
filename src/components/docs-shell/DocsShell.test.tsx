@@ -741,11 +741,22 @@ describe('DocsShell', () => {
 
   it('mounts docs content once so hash targets stay unique across breakpoints', async () => {
     renderDocsShell({
-      children: <h2 id="legacy-api-anchor">Legacy API entry</h2>,
+      children: (
+        <>
+          <h1>Agora Web SDK API Reference</h1>
+          <h2 id="legacy-api-anchor">Legacy API entry</h2>
+        </>
+      ),
     });
 
     await screen.findByTestId('docs-body-shell');
 
+    expect(
+      screen.getAllByRole('heading', {
+        level: 1,
+        name: 'Agora Web SDK API Reference',
+      }),
+    ).toHaveLength(1);
     expect(document.querySelectorAll('#legacy-api-anchor')).toHaveLength(1);
   });
 
