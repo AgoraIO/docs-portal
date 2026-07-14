@@ -1858,6 +1858,59 @@ describe('html-to-md-migration', () => {
     });
   });
 
+  it('registers Dartdoc output in the API Reference navigation tree', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'dartdoc-source');
+    const apiReferenceDir = path.join(
+      rootDir,
+      'content',
+      'docs',
+      'zh-CN',
+      'api-reference',
+    );
+    const productDir = path.join(apiReferenceDir, 'agora-chat');
+    const outputDir = path.join(productDir, 'flutter');
+    await writeDartdocFixture(sourceDir);
+    await writeFixture(
+      path.join(apiReferenceDir, 'meta.json'),
+      `${JSON.stringify(
+        {
+          title: '参考中心',
+          pages: ['overview', '!legacy-product'],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+
+    const args = [
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'agora-chat',
+      '--platform',
+      'flutter',
+      '--target-base-path',
+      '/zh-CN/api-reference/agora-chat/flutter',
+    ];
+    runMigration(args);
+    runMigration(args);
+
+    await expect(
+      readJson(path.join(apiReferenceDir, 'meta.json')),
+    ).resolves.toMatchObject({
+      pages: ['overview', 'agora-chat', '!legacy-product'],
+    });
+    await expect(
+      readJson(path.join(productDir, 'meta.json')),
+    ).resolves.toMatchObject({
+      title: 'Agora Chat',
+      pages: ['flutter'],
+    });
+  });
+
   it('fails unsupported sources without API with a clear actionable error', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'unsupported-source');
