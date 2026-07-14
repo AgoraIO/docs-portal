@@ -1536,6 +1536,42 @@ describe('html-to-md-migration', () => {
     expect(meta.title).toBe('Jazzy API');
   });
 
+  it('does not create clickable iOS wrapper pages without source indexes', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'ios-source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeIosFixture(sourceDir);
+    await fs.rm(path.join(sourceDir, 'Classes', 'index.html'));
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'whiteboard',
+      '--platform',
+      'ios',
+    ]);
+
+    await expect(
+      pathExists(path.join(outputDir, 'classes', 'index.mdx')),
+    ).resolves.toBe(false);
+    await expect(
+      pathExists(path.join(outputDir, 'protocols', 'index.mdx')),
+    ).resolves.toBe(false);
+    await expect(
+      readJson(path.join(outputDir, 'classes', 'meta.json')),
+    ).resolves.toMatchObject({
+      pages: expect.not.arrayContaining(['index']),
+    });
+    await expect(
+      readJson(path.join(outputDir, 'protocols', 'meta.json')),
+    ).resolves.toMatchObject({
+      pages: expect.not.arrayContaining(['index']),
+    });
+  });
+
   it('localizes a generic Whiteboard iOS appledoc index', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'ios-source');

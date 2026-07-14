@@ -3622,7 +3622,7 @@ async function writeFile(filePath, contents) {
   await fs.writeFile(filePath, contents, 'utf8');
 }
 
-function collectPlannedOutputPaths(targetRoot, tocNodes) {
+function collectPlannedOutputPaths(targetRoot, tocNodes, sourceTypeId) {
   const planned = [
     path.join(targetRoot, 'index.mdx'),
     path.join(targetRoot, 'meta.json'),
@@ -3631,7 +3631,13 @@ function collectPlannedOutputPaths(targetRoot, tocNodes) {
   const visit = (node) => {
     if (node.children.length > 0) {
       const dir = path.join(targetRoot, ...node.routeSegments.slice(0, -1));
-      planned.push(path.join(dir, 'index.mdx'), path.join(dir, 'meta.json'));
+      if (
+        node.sourceName ||
+        sourceTypeId !== SOURCE_TYPES.IOS_DOC_GENERATOR.id
+      ) {
+        planned.push(path.join(dir, 'index.mdx'));
+      }
+      planned.push(path.join(dir, 'meta.json'));
       for (const child of node.children) visit(child);
       return;
     }
@@ -3662,9 +3668,15 @@ async function writeNode(
       ...node.routeSegments.slice(0, -1),
     );
     const visibleChildren = node.children.filter((child) => !child.hidden);
+    const hasFolderIndex =
+      Boolean(node.sourceName) ||
+      lane?.id !== SOURCE_TYPES.IOS_DOC_GENERATOR.id;
     await writeJson(path.join(dir, 'meta.json'), {
       title: pageTitleBySource.get(node.sourceName) ?? node.title,
-      pages: ['index', ...visibleChildren.map((child) => child.slug)],
+      pages: [
+        ...(hasFolderIndex ? ['index'] : []),
+        ...visibleChildren.map((child) => child.slug),
+      ],
     });
     if (node.sourceName) {
       await writeFile(
@@ -3684,7 +3696,7 @@ async function writeNode(
           targetBasePath: output.targetBasePath,
         }),
       );
-    } else {
+    } else if (hasFolderIndex) {
       await writeFile(
         path.join(dir, 'index.mdx'),
         renderSyntheticIndex(node.title, `${node.title} API reference.`),
@@ -3897,7 +3909,11 @@ async function main() {
   }
 
   if (opts.dryRun) {
-    const plannedOutputPaths = collectPlannedOutputPaths(targetRoot, tocNodes);
+    const plannedOutputPaths = collectPlannedOutputPaths(
+      targetRoot,
+      tocNodes,
+      sourceStructure.id,
+    );
 
     console.log(`\n📋 Dry run summary`);
     console.log(`Detected source type: ${sourceStructure.label}`);
