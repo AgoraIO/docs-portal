@@ -334,6 +334,24 @@ class OutputPathError extends Error {
   }
 }
 
+class SourceIdentityError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'SourceIdentityError';
+  }
+}
+
+function validateSourceIdentity(opts, sourceStructure, pageTitleBySource) {
+  if (opts.platform !== 'react-sdk' || !sourceStructure.rootIndexSource) return;
+  const sourceTitle =
+    pageTitleBySource.get(sourceStructure.rootIndexSource) ?? '';
+  if (/\bWeb SDK\b/i.test(sourceTitle)) {
+    throw new SourceIdentityError(
+      'Source identity mismatch: react-sdk cannot publish Web SDK API reference content.',
+    );
+  }
+}
+
 async function detectSourceStructure(sourceDir) {
   const entries = await fs.readdir(sourceDir, { withFileTypes: true });
   const hasDir = (name) =>
@@ -2835,6 +2853,7 @@ async function main() {
       }
     }
   }
+  validateSourceIdentity(opts, sourceStructure, pageTitleBySource);
 
   const tocNodes = await buildTocNodes(sourceStructure, pageTitleBySource);
 
@@ -2985,7 +3004,8 @@ function replaceTypeDocGlobalsWithLabeledLink(
 main().catch((error) => {
   if (
     error instanceof SourceStructureError ||
-    error instanceof OutputPathError
+    error instanceof OutputPathError ||
+    error instanceof SourceIdentityError
   ) {
     console.error(error.message);
   } else {
