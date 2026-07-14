@@ -1197,6 +1197,28 @@ describe('html-to-md-migration', () => {
     ).resolves.toMatchObject({ navScope: {} });
   });
 
+  it('creates a scoped sidebar for Doxygen/Javadoc API output', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'doxygen-source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDoxygenFixture(sourceDir);
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtsa',
+      '--platform',
+      'c',
+    ]);
+
+    await expect(
+      readJson(path.join(outputDir, 'meta.json')),
+    ).resolves.toMatchObject({ navScope: {} });
+  });
+
   it('migrates iOS doc-generator output with dry-run planning and rewritten links', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'ios-source');

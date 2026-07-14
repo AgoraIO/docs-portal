@@ -3403,6 +3403,7 @@ async function main() {
   await writeJson(path.join(targetRoot, 'meta.json'), {
     title: rootTitle,
     ...(sourceStructure.id === SOURCE_TYPES.TYPEDOC.id ||
+    sourceStructure.id === SOURCE_TYPES.DOXYGEN_JAVADOC.id ||
     (opts.product === 'whiteboard' &&
       ['android', 'ios', 'web'].includes(opts.platform))
       ? { navScope: {} }
