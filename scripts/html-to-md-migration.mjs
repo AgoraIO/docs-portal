@@ -1214,19 +1214,27 @@ function renderHref(label, href, sourceToRoute, targetBasePath) {
   const hashPart = hashIndex === -1 ? '' : href.slice(hashIndex + 1);
   if (!filePart) return `[${label}](#${hashPart})`;
 
-  const routeSegments = resolveRouteForHref(
+  const routeTarget = resolveRouteTargetForHref(
     filePart,
     sourceToRoute.currentSource,
     sourceToRoute,
   );
-  if (!routeSegments) return `[${label}](${href})`;
+  if (!routeTarget) return `[${label}](${href})`;
+  if (
+    hashPart &&
+    sourceToRoute.currentSource &&
+    routeTarget.sourceName === normalizeSourcePath(sourceToRoute.currentSource)
+  ) {
+    return `[${label}](#${hashPart})`;
+  }
 
-  return `[${label}](${routeSegmentsToDocPath(routeSegments, targetBasePath)}${
-    hashPart ? `#${hashPart}` : ''
-  })`;
+  return `[${label}](${routeSegmentsToDocPath(
+    routeTarget.routeSegments,
+    targetBasePath,
+  )}${hashPart ? `#${hashPart}` : ''})`;
 }
 
-function resolveRouteForHref(filePart, currentSource, sourceToRoute) {
+function resolveRouteTargetForHref(filePart, currentSource, sourceToRoute) {
   const withoutQuery = filePart.split('?')[0];
   if (!withoutQuery.endsWith('.html')) return null;
 
@@ -1245,7 +1253,7 @@ function resolveRouteForHref(filePart, currentSource, sourceToRoute) {
 
   for (const candidate of candidates) {
     const routeSegments = sourceToRoute.get(candidate);
-    if (routeSegments) return routeSegments;
+    if (routeSegments) return { routeSegments, sourceName: candidate };
   }
   return null;
 }

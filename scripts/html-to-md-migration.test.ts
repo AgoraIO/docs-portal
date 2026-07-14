@@ -524,6 +524,53 @@ describe('html-to-md-migration', () => {
     ).resolves.toContain('Call `join` from this page.');
   });
 
+  it('keeps DITA links to the current source page fragment-only', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDitaFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'API', 'overview.html'),
+      `<!doctype html>
+<html>
+  <body>
+    <main>
+      <article>
+        <h1>Overview</h1>
+        <div class="body">
+          <section id="details">
+            <h2>Details</h2>
+            <p><a href="overview.html#details">Same-page details</a></p>
+            <p><a href="class_video_canvas.html#details">VideoCanvas details</a></p>
+          </section>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>`,
+    );
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+    ]);
+
+    const output = await fs.readFile(
+      path.join(outputDir, 'overview.mdx'),
+      'utf8',
+    );
+    expect(output).toContain('[Same-page details](#details)');
+    expect(output).toContain(
+      '[VideoCanvas details](/api-reference/rtc/android/class-video-canvas#details)',
+    );
+  });
+
   it('prints detected source type, file count, and planned paths in dry-run without writing', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'source');
