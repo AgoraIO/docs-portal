@@ -272,6 +272,34 @@ describe('docs nav scope', () => {
     });
   });
 
+  it.each([
+    {
+      activePath: '/en/api-reference/rtc/android/class-video-canvas',
+      expectedFolder: 'android-current-folder',
+      expectedVersion: 'current',
+    },
+    {
+      activePath: '/en/api-reference/rtc/android/4.6.0/class-video-canvas',
+      expectedFolder: 'android-4-6-0-folder',
+      expectedVersion: '4.6.0',
+    },
+  ])('inherits the $expectedVersion scope for a page hidden from the sidebar tree', ({
+    activePath,
+    expectedFolder,
+    expectedVersion,
+  }) => {
+    const scope = resolveDocsNavScope({
+      activePath,
+      getNodeMeta,
+      root: apiReferenceTree,
+      tab: 'api-reference',
+    });
+
+    expect(scope?.scope.node.$id).toBe('android-folder');
+    expect(scope?.activeVersion?.id).toBe(expectedVersion);
+    expect(scope?.sidebarRoot.$id).toBe(expectedFolder);
+  });
+
   it('falls back to the target version index when the relative page is missing', () => {
     const scope = resolveDocsNavScope({
       activePath: '/en/api-reference/rtc/android/audio/audio-basic',

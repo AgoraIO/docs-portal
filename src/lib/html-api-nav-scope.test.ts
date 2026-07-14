@@ -4,10 +4,15 @@ import {
   getScopedNavScopeSidebarNodes,
   resolveDocsNavScope,
 } from './docs-nav-scope';
+import { loadDocsPagePayload } from './docs-page.server';
 import type { DocsSidebarNode } from './docs-tree';
 import { source } from './source.server';
 
 const affectedRoutes = [
+  {
+    root: '/zh-CN/api-reference/rtc/android',
+    route: '/zh-CN/api-reference/rtc/android/class-videocanvas',
+  },
   {
     root: '/zh-CN/api-reference/rtc/web',
     route: '/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc',
@@ -58,7 +63,7 @@ function collectPageUrls(nodes: DocsSidebarNode[]): string[] {
 }
 
 describe('migrated HTML API navigation scopes', () => {
-  it.each(affectedRoutes)('uses the generated local sidebar for $root', ({
+  it.each(affectedRoutes)('uses the generated local sidebar for $root', async ({
     root: routeRoot,
     route,
   }) => {
@@ -68,6 +73,24 @@ describe('migrated HTML API navigation scopes', () => {
       root: source.getPageTree('zh-CN'),
       tab: 'api-reference',
     });
+
+    if (route.endsWith('/class-videocanvas')) {
+      expect(source.getPages('zh-CN').map((page) => page.url)).toContain(route);
+      expect(
+        source.getPage(
+          ['api-reference', 'rtc', 'android', 'class-videocanvas'],
+          'zh-CN',
+        ),
+      ).toBeDefined();
+      const payload = await loadDocsPagePayload('zh-CN', 'api-reference', [
+        'rtc',
+        'android',
+        'class-videocanvas',
+      ]);
+      expect(
+        payload && 'activePath' in payload ? payload.activePath : null,
+      ).toBe(route);
+    }
 
     expect(navScope).not.toBeNull();
     if (!navScope) return;
