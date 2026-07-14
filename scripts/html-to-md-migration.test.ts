@@ -1794,14 +1794,12 @@ describe('html-to-md-migration', () => {
         'index.mdx': ['[agora_rtc library](/api-reference/rtc/dart/agora-rtc)'],
         'agora-rtc/index.mdx': [
           'title: "agora_rtc library"',
-          '<a id="classes"></a>',
-          '## Classes',
-          '<a id="RtcEngine"></a>',
-          '### RtcEngine',
+          '## Classes [#classes]',
+          '### RtcEngine [#RtcEngine]',
           '[RtcEngine](/api-reference/rtc/dart/agora-rtc/rtc-engine)',
           'Primary Dart RTC engine.',
           '1. Initialize the engine.',
-          '<a id="enums"></a>',
+          '## Enums [#enums]',
           '[ChannelProfile](/api-reference/rtc/dart/agora-rtc/channel-profile)',
         ],
         'agora-rtc/rtc-engine/index.mdx': [
@@ -1809,10 +1807,8 @@ describe('html-to-md-migration', () => {
           'Controls a realtime session.',
           '### Inheritance',
           '- Object',
-          '<a id="instance-methods"></a>',
-          '## Methods',
-          '<a id="connect"></a>',
-          '### connect',
+          '## Methods [#instance-methods]',
+          '### connect [#connect]',
           '[connect](/api-reference/rtc/dart/agora-rtc/rtc-engine/connect)',
           '```dart title="Dart"\nconnect(String channel) -> Future<void>\n```',
           '[ChannelProfile](/api-reference/rtc/dart/agora-rtc/channel-profile)',
@@ -1826,14 +1822,13 @@ describe('html-to-md-migration', () => {
           '| [profile](/api-reference/rtc/dart/agora-rtc/channel-profile) | Profile override. |',
           '**Return** Future result.',
           '[ChannelProfile](/api-reference/rtc/dart/agora-rtc/channel-profile)',
-          '<a id="source"></a>',
-          '## Implementation',
+          '## Implementation [#source]',
           'return _invoke(channel);',
         ],
         'agora-rtc/channel-profile/index.mdx': [
           'title: "ChannelProfile enum"',
-          '<a id="values"></a>',
-          '### communication',
+          '## Values [#values]',
+          '### communication [#communication]',
         ],
       },
       outputDir,
@@ -1845,6 +1840,24 @@ describe('html-to-md-migration', () => {
         'agora-rtc/rtc-engine/index.mdx': ['### ['],
       },
     });
+
+    const libraryOutput = await fs.readFile(
+      path.join(outputDir, 'agora-rtc', 'index.mdx'),
+      'utf8',
+    );
+    expect(libraryOutput).toContain('## Classes [#classes]');
+    expect(libraryOutput).toContain('### RtcEngine [#RtcEngine]');
+    expect(libraryOutput).not.toContain('<a id="classes"></a>');
+    expect(libraryOutput).not.toContain('<a id="RtcEngine"></a>');
+
+    const classOutput = await fs.readFile(
+      path.join(outputDir, 'agora-rtc', 'rtc-engine', 'index.mdx'),
+      'utf8',
+    );
+    expect(classOutput).toContain('## Methods [#instance-methods]');
+    expect(classOutput).toContain('### connect [#connect]');
+    expect(classOutput).not.toContain('<a id="instance-methods"></a>');
+    expect(classOutput).not.toContain('<a id="connect"></a>');
 
     const rootMeta = await readJson(path.join(outputDir, 'meta.json'));
     expect(rootMeta.navScope).toEqual({});
