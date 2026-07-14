@@ -4256,13 +4256,32 @@ async function registerDoxygenAncestorNavigation(targetRoot) {
   );
 }
 
-async function registerNavigationChild(metaPath, childSlug) {
+async function registerDartdocAncestorNavigation(targetRoot) {
+  const productDir = path.dirname(targetRoot);
+  const apiReferenceDir = path.dirname(productDir);
+  if (path.basename(apiReferenceDir) !== 'api-reference') return;
+
+  const apiReferenceMetaPath = path.join(apiReferenceDir, 'meta.json');
+  if (!(await fileExists(apiReferenceMetaPath))) return;
+
+  await registerNavigationChild(
+    path.join(productDir, 'meta.json'),
+    path.basename(targetRoot),
+    titleFromSlug(path.basename(productDir)),
+  );
+  await registerNavigationChild(
+    apiReferenceMetaPath,
+    path.basename(productDir),
+  );
+}
+
+async function registerNavigationChild(metaPath, childSlug, fallbackTitle) {
   let meta;
   try {
     meta = JSON.parse(await fs.readFile(metaPath, 'utf8'));
   } catch (error) {
-    if (error?.code === 'ENOENT') return;
-    throw error;
+    if (error?.code !== 'ENOENT' || !fallbackTitle) throw error;
+    meta = { title: fallbackTitle, pages: [] };
   }
 
   if (!Array.isArray(meta.pages)) return;
@@ -4749,6 +4768,8 @@ async function main() {
 
   if (sourceStructure.id === SOURCE_TYPES.DOXYGEN_JAVADOC.id) {
     await registerDoxygenAncestorNavigation(targetRoot);
+  } else if (sourceStructure.id === SOURCE_TYPES.DARTDOC.id) {
+    await registerDartdocAncestorNavigation(targetRoot);
   }
 
   console.log(`\n${'─'.repeat(50)}`);
