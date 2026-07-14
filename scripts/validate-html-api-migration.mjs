@@ -4,6 +4,7 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { protectMarkdownCode } from './html-migration/markdown-code-segments.mjs';
 
 const repoRoot = process.cwd();
 const defaultOutputRoot = '/tmp/html-migration-matrix';
@@ -303,42 +304,11 @@ export function hasPageDescriptionCopiedFromFirstMember(text) {
 
 export function findDuplicateExplicitAnchorIds(text) {
   const counts = new Map();
-  let fence = null;
-  for (const line of text.split(/\r?\n/)) {
-    const fenceMatch = line.match(/^\s*(`{3,}|~{3,})(.*)$/);
-    if (fenceMatch) {
-      const marker = fenceMatch[1];
-      if (fence === null) {
-        fence = { character: marker[0], length: marker.length };
-      } else if (
-        marker[0] === fence.character &&
-        marker.length >= fence.length &&
-        fenceMatch[2].trim() === ''
-      ) {
-        fence = null;
-      }
-      continue;
-    }
-    if (fence !== null) continue;
-
-    let cursor = 0;
-    while (cursor < line.length) {
-      const opening = line.indexOf('`', cursor);
-      const textEnd = opening === -1 ? line.length : opening;
-      for (const match of line
-        .slice(cursor, textEnd)
-        .matchAll(/<a id="([^"]+)"><\/a>/g)) {
-        counts.set(match[1], (counts.get(match[1]) ?? 0) + 1);
-      }
-      if (opening === -1) break;
-
-      let markerEnd = opening;
-      while (line[markerEnd] === '`') markerEnd += 1;
-      const marker = line.slice(opening, markerEnd);
-      const closing = line.indexOf(marker, markerEnd);
-      if (closing === -1) break;
-      cursor = closing + marker.length;
-    }
+  const protectedMarkdown = protectMarkdownCode(text);
+  for (const match of protectedMarkdown.text.matchAll(
+    /<a id="([^"]+)"><\/a>/g,
+  )) {
+    counts.set(match[1], (counts.get(match[1]) ?? 0) + 1);
   }
   return [...counts.entries()]
     .filter(([, count]) => count > 1)

@@ -51,6 +51,10 @@ describe('validate-html-api-migration', () => {
           '<a id="example"></a>',
           '```',
           'Inline `<a id="inline"></a>` and `<a id="inline"></a>`.',
+          'Multiline ``<a id="multiline"></a>',
+          '<a id="multiline"></a>`` span.',
+          'Longer ```<a id="longer"></a>',
+          '<a id="longer"></a>``` span.',
         ].join('\n'),
       ),
     ).toEqual([]);
