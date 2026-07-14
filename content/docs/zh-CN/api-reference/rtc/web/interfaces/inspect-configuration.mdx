@@ -9,11 +9,9 @@ description: "InspectConfiguration API 参考。"
 
 ## 属性
 
-<a id="extrainfo"></a>
+### Optional extraInfo [#extrainfo]
 
-### Optional extraInfo
-
-```ts
+```ts title="TypeScript"
 extraInfo: string
 ```
 
@@ -21,11 +19,9 @@ extraInfo: string
 
 SDK 会将附加信息和截图一起上传至声网服务器；截图完成后，声网服务器会将附加信息随回调通知一起发送给你的服务器。
 
-<a id="inspecttype"></a>
+### Optional inspectType [#inspecttype]
 
-### Optional inspectType
-
-```ts
+```ts title="TypeScript"
 inspectType: ("supervise" | "moderation")[]
 ```
 
@@ -33,21 +29,17 @@ inspectType: ("supervise" | "moderation")[]
 
 使用视频截图上传时，你需要设为 `supervise`。SDK 会对本地用户发送的视频进行截图，并将截图上传到你的第三方云存储。
 
-<a id="interval"></a>
+### interval [#interval]
 
-### interval
-
-```ts
+```ts title="TypeScript"
 interval: number
 ```
 
 视频截图的间隔（ms），最小值为 `1000`。如果设置的值小于 `1000`，SDK 会自动改为 `1000`。
 
-<a id="ossfileprefix"></a>
+### Optional ossFilePrefix [#ossfileprefix]
 
-### Optional ossFilePrefix
-
-```ts
+```ts title="TypeScript"
 ossFilePrefix: string
 ```
 

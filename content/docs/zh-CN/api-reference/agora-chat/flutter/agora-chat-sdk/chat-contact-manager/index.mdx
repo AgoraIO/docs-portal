@@ -9,13 +9,9 @@ The contact manager class, which manages chat contacts such as adding, deleting,
 
 - [ChatContactManagerDeprecated](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager-deprecated)
 
-<a id="instance-properties"></a>
+## Properties [#instance-properties]
 
-## Properties
-
-<a id="hashCode"></a>
-
-### hashCode
+### hashCode [#hashCode]
 
 [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
 
@@ -29,9 +25,7 @@ _read-only, inherited._
 
 _Inherited._
 
-<a id="runtimeType"></a>
-
-### runtimeType
+### runtimeType [#runtimeType]
 
 [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
 
@@ -45,13 +39,9 @@ _read-only, inherited._
 
 _Inherited._
 
-<a id="instance-methods"></a>
+## Methods [#instance-methods]
 
-## Methods
-
-<a id="acceptInvitation"></a>
-
-### acceptInvitation
+### acceptInvitation [#acceptInvitation]
 
 [acceptInvitation](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/accept-invitation)
 
@@ -61,9 +51,7 @@ acceptInvitation(String username) -> Future<void>
 
 Accepts a friend invitation。
 
-<a id="addContact"></a>
-
-### addContact
+### addContact [#addContact]
 
 [addContact](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/add-contact)
 
@@ -73,9 +61,7 @@ addContact(String userId, {String? reason}) -> Future<void>
 
 Adds a new contact.
 
-<a id="addEventHandler"></a>
-
-### addEventHandler
+### addEventHandler [#addEventHandler]
 
 [addEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/add-event-handler)
 
@@ -85,9 +71,7 @@ addEventHandler(String identifier, ContactEventHandler handler) -> void
 
 Adds the contact event handler. After calling this method, you can handle for new contact event when they arrive.
 
-<a id="addUserToBlockList"></a>
-
-### addUserToBlockList
+### addUserToBlockList [#addUserToBlockList]
 
 [addUserToBlockList](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/add-user-to-block-list)
 
@@ -97,9 +81,7 @@ addUserToBlockList(String username) -> Future<void>
 
 Adds a user to the block list. You can send messages to the users on the block list, but cannot receive messages from them.
 
-<a id="clearEventHandlers"></a>
-
-### clearEventHandlers
+### clearEventHandlers [#clearEventHandlers]
 
 [clearEventHandlers](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/clear-event-handlers)
 
@@ -109,9 +91,7 @@ clearEventHandlers() -> void
 
 Clear all contact event handlers.
 
-<a id="declineInvitation"></a>
-
-### declineInvitation
+### declineInvitation [#declineInvitation]
 
 [declineInvitation](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/decline-invitation)
 
@@ -121,9 +101,7 @@ declineInvitation(String username) -> Future<void>
 
 Declines a friend invitation.
 
-<a id="deleteContact"></a>
-
-### deleteContact
+### deleteContact [#deleteContact]
 
 [deleteContact](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/delete-contact)
 
@@ -133,9 +111,7 @@ deleteContact(String username, {bool keepConversation = false}) -> Future<void>
 
 Deletes a contact and all the related conversations.
 
-<a id="getAllContactsFromDB"></a>
-
-### getAllContactsFromDB
+### getAllContactsFromDB [#getAllContactsFromDB]
 
 [getAllContactsFromDB](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/get-all-contacts-from-db)
 
@@ -145,9 +121,7 @@ getAllContactsFromDB() -> Future<List<String>>
 
 Gets the contact list from the local database.
 
-<a id="getAllContactsFromServer"></a>
-
-### getAllContactsFromServer
+### getAllContactsFromServer [#getAllContactsFromServer]
 
 [getAllContactsFromServer](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/get-all-contacts-from-server)
 
@@ -157,9 +131,7 @@ getAllContactsFromServer() -> Future<List<String>>
 
 Gets all the contacts from the server.
 
-<a id="getBlockListFromDB"></a>
-
-### getBlockListFromDB
+### getBlockListFromDB [#getBlockListFromDB]
 
 [getBlockListFromDB](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/get-block-list-from-db)
 
@@ -169,9 +141,7 @@ getBlockListFromDB() -> Future<List<String>>
 
 Gets the block list from the local database.
 
-<a id="getBlockListFromServer"></a>
-
-### getBlockListFromServer
+### getBlockListFromServer [#getBlockListFromServer]
 
 [getBlockListFromServer](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/get-block-list-from-server)
 
@@ -181,9 +151,7 @@ getBlockListFromServer() -> Future<List<String>>
 
 Gets the block list from the server.
 
-<a id="getEventHandler"></a>
-
-### getEventHandler
+### getEventHandler [#getEventHandler]
 
 [getEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/get-event-handler)
 
@@ -193,9 +161,7 @@ getEventHandler(String identifier) -> ContactEventHandler?
 
 Get the contact event handler.
 
-<a id="getSelfIdsOnOtherPlatform"></a>
-
-### getSelfIdsOnOtherPlatform
+### getSelfIdsOnOtherPlatform [#getSelfIdsOnOtherPlatform]
 
 [getSelfIdsOnOtherPlatform](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/get-self-ids-on-other-platform)
 
@@ -205,9 +171,7 @@ getSelfIdsOnOtherPlatform() -> Future<List<String>>
 
 Gets the unique IDs of the current user on the other devices. The ID is in the format of username + "/" + resource.
 
-<a id="noSuchMethod"></a>
-
-### noSuchMethod
+### noSuchMethod [#noSuchMethod]
 
 [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
 
@@ -221,9 +185,7 @@ _inherited._
 
 _Inherited._
 
-<a id="removeEventHandler"></a>
-
-### removeEventHandler
+### removeEventHandler [#removeEventHandler]
 
 [removeEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/remove-event-handler)
 
@@ -233,9 +195,7 @@ removeEventHandler(String identifier) -> void
 
 Remove the contact event handler.
 
-<a id="removeUserFromBlockList"></a>
-
-### removeUserFromBlockList
+### removeUserFromBlockList [#removeUserFromBlockList]
 
 [removeUserFromBlockList](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/remove-user-from-block-list)
 
@@ -245,9 +205,7 @@ removeUserFromBlockList(String username) -> Future<void>
 
 Removes the contact from the block list.
 
-<a id="toString"></a>
-
-### toString
+### toString [#toString]
 
 [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
 
@@ -261,13 +219,9 @@ _inherited._
 
 _Inherited._
 
-<a id="operators"></a>
+## Operators [#operators]
 
-## Operators
-
-<a id="operator =="></a>
-
-### operator ==
+### operator == [#operator ==]
 
 [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
 

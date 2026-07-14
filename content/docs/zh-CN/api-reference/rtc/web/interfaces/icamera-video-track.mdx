@@ -11,21 +11,17 @@ description: "ICameraVideoTrack API 参考。"
 
 ## 属性
 
-<a id="enabled"></a>
+### enabled [#enabled]
 
-### enabled
-
-```ts
+```ts title="TypeScript"
 enabled: boolean
 ```
 
 本地轨道当前的启用状态。
 
-<a id="isplaying"></a>
+### isPlaying [#isplaying]
 
-### isPlaying
-
-```ts
+```ts title="TypeScript"
 isPlaying: boolean
 ```
 
@@ -34,21 +30,17 @@ isPlaying: boolean
 - `true`: 媒体轨道正在页面上播放。
 - `false`: 媒体轨道没有在页面上播放。
 
-<a id="muted"></a>
+### muted [#muted]
 
-### muted
-
-```ts
+```ts title="TypeScript"
 muted: boolean
 ```
 
 本地媒体轨道当前的静音状态。
 
-<a id="processordestination"></a>
+### processorDestination [#processordestination]
 
-### processorDestination
-
-```ts
+```ts title="TypeScript"
 processorDestination: IBaseProcessor
 ```
 
@@ -58,11 +50,9 @@ processorDestination: IBaseProcessor
 
 本地视频轨道上当前媒体处理链路的最终节点。
 
-<a id="trackmediatype"></a>
+### trackMediaType [#trackmediatype]
 
-### trackMediaType
-
-```ts
+```ts title="TypeScript"
 trackMediaType: "audio" | "video"
 ```
 
@@ -73,11 +63,9 @@ trackMediaType: "audio" | "video"
 
 ## 方法
 
-<a id="clone"></a>
+### clone [#clone]
 
-### clone
-
-```ts
+```ts title="TypeScript"
 clone(config?: VideoEncoderConfiguration | VideoEncoderConfigurationPreset, cloneTrack?: boolean): ICameraVideoTrack
 ```
 
@@ -102,11 +90,9 @@ clone(config?: VideoEncoderConfiguration | VideoEncoderConfigurationPreset, clon
 
 新生成的视频轨道。
 
-<a id="close"></a>
+### close [#close]
 
-### close
-
-```ts
+```ts title="TypeScript"
 close(): void
 ```
 
@@ -118,11 +104,9 @@ close(): void
 
 void
 
-<a id="getcurrentframedata"></a>
+### getCurrentFrameData [#getcurrentframedata]
 
-### getCurrentFrameData
-
-```ts
+```ts title="TypeScript"
 getCurrentFrameData(): ImageData
 ```
 
@@ -140,11 +124,9 @@ ImageData
 
 存储了 RGBA 数据的 `ImageData` 对象。该对象为浏览器原生对象，详见 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData)。
 
-<a id="getlisteners"></a>
+### getListeners [#getlisteners]
 
-### getListeners
-
-```ts
+```ts title="TypeScript"
 getListeners(event: string): Function[]
 ```
 
@@ -160,11 +142,9 @@ getListeners(event: string): Function[]
 
 Function []
 
-<a id="getmediastreamtrack"></a>
+### getMediaStreamTrack [#getmediastreamtrack]
 
-### getMediaStreamTrack
-
-```ts
+```ts title="TypeScript"
 getMediaStreamTrack(): MediaStreamTrack
 ```
 
@@ -176,11 +156,9 @@ MediaStreamTrack
 
 一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-<a id="getrtcrtptransceiver"></a>
+### getRTCRtpTransceiver [#getrtcrtptransceiver]
 
-### getRTCRtpTransceiver
-
-```ts
+```ts title="TypeScript"
 getRTCRtpTransceiver(type?: StreamType): RTCRtpTransceiver | undefined
 ```
 
@@ -202,11 +180,9 @@ RTCRtpTransceiver | undefined
 
 当前轨道的 `RTCRtpTransceiver` 实例。
 
-<a id="getstats"></a>
+### getStats [#getstats]
 
-### getStats
-
-```ts
+```ts title="TypeScript"
 getStats(): LocalVideoTrackStats
 ```
 
@@ -220,11 +196,9 @@ getStats(): LocalVideoTrackStats
 
 [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-video-track-stats)
 
-<a id="gettrackid"></a>
+### getTrackId [#gettrackid]
 
-### getTrackId
-
-```ts
+```ts title="TypeScript"
 getTrackId(): string
 ```
 
@@ -236,11 +210,9 @@ string
 
 媒体轨道 ID。
 
-<a id="gettracklabel"></a>
+### getTrackLabel [#gettracklabel]
 
-### getTrackLabel
-
-```ts
+```ts title="TypeScript"
 getTrackLabel(): string
 ```
 
@@ -256,11 +228,9 @@ string
 - 如果是通过 `createScreenVideoTrack` 创建的轨道，返回屏幕共享的 `sourceId`。
 - 如果是 `createCustomAudioTrack` 或 `createCustomVideoTrack` 创建的轨道，返回 [MediaStreamTrack.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/label) 字段。
 
-<a id="getvideoelementvisiblestatus"></a>
+### getVideoElementVisibleStatus [#getvideoelementvisiblestatus]
 
-### getVideoElementVisibleStatus
-
-```ts
+```ts title="TypeScript"
 getVideoElementVisibleStatus(): CheckVideoVisibleResult | undefined
 ```
 
@@ -280,11 +250,9 @@ getVideoElementVisibleStatus(): CheckVideoVisibleResult | undefined
 - `<video>` 标签不存在。
 - `<video>` 标签不是通过 `play` 方法调用产生的。
 
-<a id="off"></a>
+### off [#off]
 
-### off
-
-```ts
+```ts title="TypeScript"
 off(event: string, listener: Function): void
 ```
 
@@ -301,23 +269,21 @@ off(event: string, listener: Function): void
 
 void
 
-<a id="on"></a>
+### on [#on]
 
-### on
-
-```ts
+```ts title="TypeScript"
 on(event: "track-updated", listener: typeof event_track_updated): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "track-ended", listener: typeof event_track_ended): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "video-element-visible-status", listener: typeof event_video_element_visible_status): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
 ```
 
@@ -367,11 +333,9 @@ void
 
 void
 
-<a id="once"></a>
+### once [#once]
 
-### once
-
-```ts
+```ts title="TypeScript"
 once(event: string, listener: Function): void
 ```
 
@@ -390,11 +354,9 @@ once(event: string, listener: Function): void
 
 void
 
-<a id="pipe"></a>
+### pipe [#pipe]
 
-### pipe
-
-```ts
+```ts title="TypeScript"
 pipe(processor: IBaseProcessor): IBaseProcessor
 ```
 
@@ -416,11 +378,9 @@ IBaseProcessor
 
 `Processor` 实例。
 
-<a id="play"></a>
+### play [#play]
 
-### play
-
-```ts
+```ts title="TypeScript"
 play(element: string | HTMLElement, config?: VideoPlayerConfig): void
 ```
 
@@ -437,11 +397,9 @@ play(element: string | HTMLElement, config?: VideoPlayerConfig): void
 
 void
 
-<a id="removealllisteners"></a>
+### removeAllListeners [#removealllisteners]
 
-### removeAllListeners
-
-```ts
+```ts title="TypeScript"
 removeAllListeners(event?: string): void
 ```
 
@@ -457,11 +415,9 @@ removeAllListeners(event?: string): void
 
 void
 
-<a id="replacetrack"></a>
+### replaceTrack [#replacetrack]
 
-### replaceTrack
-
-```ts
+```ts title="TypeScript"
 replaceTrack(track: MediaStreamTrack, stopOldTrack: boolean): Promise<void>
 ```
 
@@ -482,7 +438,7 @@ replaceTrack(track: MediaStreamTrack, stopOldTrack: boolean): Promise<void>
 
 **示例代码**
 
-```text
+```text title="Text"
 // 原有的本地视频轨道
 const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
 // 获取新的视频轨道（方式一）
@@ -504,11 +460,9 @@ await localVideoTrack.replaceTrack(newTrack, true);
 
 Promise &lt; void &gt;
 
-<a id="sendseidata"></a>
+### sendSeiData [#sendseidata]
 
-### sendSeiData
-
-```ts
+```ts title="TypeScript"
 sendSeiData(sei: Uint8Array): void
 ```
 
@@ -524,11 +478,9 @@ sendSeiData(sei: Uint8Array): void
 
 void
 
-<a id="setdevice"></a>
+### setDevice [#setdevice]
 
-### setDevice
-
-```ts
+```ts title="TypeScript"
 setDevice(deviceId: string | RequiredOnlyOneOf<object>): Promise<void>
 ```
 
@@ -546,11 +498,9 @@ setDevice(deviceId: string | RequiredOnlyOneOf<object>): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="setenabled"></a>
+### setEnabled [#setenabled]
 
-### setEnabled
-
-```ts
+```ts title="TypeScript"
 setEnabled(enabled: boolean): Promise<void>
 ```
 
@@ -574,11 +524,9 @@ setEnabled(enabled: boolean): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="setencoderconfiguration"></a>
+### setEncoderConfiguration [#setencoderconfiguration]
 
-### setEncoderConfiguration
-
-```ts
+```ts title="TypeScript"
 setEncoderConfiguration(config: VideoEncoderConfiguration | VideoEncoderConfigurationPreset): Promise<void>
 ```
 
@@ -594,11 +542,9 @@ setEncoderConfiguration(config: VideoEncoderConfiguration | VideoEncoderConfigur
 
 Promise &lt; void &gt;
 
-<a id="setmuted"></a>
+### setMuted [#setmuted]
 
-### setMuted
-
-```ts
+```ts title="TypeScript"
 setMuted(muted: boolean): Promise<void>
 ```
 
@@ -622,11 +568,9 @@ setMuted(muted: boolean): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="setoptimizationmode"></a>
+### setOptimizationMode [#setoptimizationmode]
 
-### setOptimizationMode
-
-```ts
+```ts title="TypeScript"
 setOptimizationMode(mode: OptimizationMode): Promise<void>
 ```
 
@@ -650,11 +594,9 @@ setOptimizationMode(mode: OptimizationMode): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="stop"></a>
+### stop [#stop]
 
-### stop
-
-```ts
+```ts title="TypeScript"
 stop(): void
 ```
 
@@ -664,11 +606,9 @@ stop(): void
 
 void
 
-<a id="unpipe"></a>
+### unpipe [#unpipe]
 
-### unpipe
-
-```ts
+```ts title="TypeScript"
 unpipe(): void
 ```
 

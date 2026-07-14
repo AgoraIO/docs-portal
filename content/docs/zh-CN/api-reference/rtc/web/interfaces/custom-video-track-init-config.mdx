@@ -9,31 +9,25 @@ description: "CustomVideoTrackInitConfig API 参考。"
 
 ## 属性
 
-<a id="bitratemax"></a>
+### Optional bitrateMax [#bitratemax]
 
-### Optional bitrateMax
-
-```ts
+```ts title="TypeScript"
 bitrateMax: number
 ```
 
 指定发送这个视频轨道时的最大码率，单位为 Kbps。
 
-<a id="bitratemin"></a>
+### Optional bitrateMin [#bitratemin]
 
-### Optional bitrateMin
-
-```ts
+```ts title="TypeScript"
 bitrateMin: number
 ```
 
 指定发送这个视频轨道时的最小码率，单位为 Kbps。
 
-<a id="framerate"></a>
+### Optional frameRate [#framerate]
 
-### Optional frameRate
-
-```ts
+```ts title="TypeScript"
 frameRate: number | ConstrainLong
 ```
 
@@ -47,11 +41,9 @@ frameRate: number | ConstrainLong
 
 关于约束对象的详细说明可以参考 [ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constrain-long)。
 
-<a id="height"></a>
+### Optional height [#height]
 
-### Optional height
-
-```ts
+```ts title="TypeScript"
 height: number | ConstrainLong
 ```
 
@@ -65,21 +57,17 @@ height: number | ConstrainLong
 
 关于约束对象的详细说明可以参考 [ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constrain-long)。
 
-<a id="mediastreamtrack"></a>
+### mediaStreamTrack [#mediastreamtrack]
 
-### mediaStreamTrack
-
-```ts
+```ts title="TypeScript"
 mediaStreamTrack: MediaStreamTrack
 ```
 
 这里填写您自己维护的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象
 
-<a id="optimizationmode"></a>
+### Optional optimizationMode [#optimizationmode]
 
-### Optional optimizationMode
-
-```ts
+```ts title="TypeScript"
 optimizationMode: OptimizationMode
 ```
 
@@ -110,11 +98,9 @@ optimizationMode: OptimizationMode
   - SDK 不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
   - 大部分情况下，SDK 不会降低帧率，但是可能会降低发送分辨率。
 
-<a id="width"></a>
+### Optional width [#width]
 
-### Optional width
-
-```ts
+```ts title="TypeScript"
 width: number | ConstrainLong
 ```
 

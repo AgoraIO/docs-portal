@@ -11,9 +11,7 @@ description: "Player<CALLBACKS> API 参考。"
 
 ## 属性
 
-<a id="begintimestamp"></a>
-
-### beginTimestamp
+### beginTimestamp [#begintimestamp]
 
 ```ts title="TypeScript"
 beginTimestamp: number
@@ -21,9 +19,7 @@ beginTimestamp: number
 
 回放的起始时间（Unix 时间戳，单位为毫秒）。
 
-<a id="callbacks"></a>
-
-### callbacks
+### callbacks [#callbacks]
 
 ```ts title="TypeScript"
 callbacks: Callbacks<CALLBACKS>
@@ -51,9 +47,7 @@ displayer.callbacks.once("onSliceChanged", function(slice) {
 });
 ```
 
-<a id="devicetype"></a>
-
-### deviceType
+### deviceType [#devicetype]
 
 ```ts title="TypeScript"
 deviceType: DeviceType
@@ -61,9 +55,7 @@ deviceType: DeviceType
 
 该客户端的设备类型，决定 SDK 如何处理鼠标事件和触碰事件。
 
-<a id="disablecameratransform"></a>
-
-### disableCameraTransform
+### disableCameraTransform [#disablecameratransform]
 
 ```ts title="TypeScript"
 disableCameraTransform: boolean
@@ -78,9 +70,7 @@ disableCameraTransform: boolean
 
 该属性不影响 `setCameraBound`、 `moveCamera`、 `moveCameraToContain` 方法的使用。
 
-<a id="disableothersselectingbox"></a>
-
-### disableOthersSelectingBox
+### disableOthersSelectingBox [#disableothersselectingbox]
 
 ```ts title="TypeScript"
 disableOthersSelectingBox: boolean
@@ -99,9 +89,7 @@ disableOthersSelectingBox: boolean
 
 该属性不影响自己的高亮框显示。
 
-<a id="enablewritenow"></a>
-
-### enableWriteNow
+### enableWriteNow [#enablewritenow]
 
 ```ts title="TypeScript"
 enableWriteNow: boolean
@@ -116,9 +104,7 @@ enableWriteNow: boolean
 - `true`：有写的权限。
 - `false`：没有写的权限。
 
-<a id="framescount"></a>
-
-### framesCount
+### framesCount [#framescount]
 
 ```ts title="TypeScript"
 framesCount: number
@@ -126,9 +112,7 @@ framesCount: number
 
 回放的总帧数。
 
-<a id="handtoolactive"></a>
-
-### handToolActive
+### handToolActive [#handtoolactive]
 
 ```ts title="TypeScript"
 handToolActive: boolean
@@ -139,9 +123,7 @@ handToolActive: boolean
 - `true`：启用抓手工具。
 - `false`：不启用抓手工具。
 
-<a id="handtoolkey"></a>
-
-### handToolKey
+### handToolKey [#handtoolkey]
 
 ```ts title="TypeScript"
 handToolKey: string | undefined
@@ -149,9 +131,7 @@ handToolKey: string | undefined
 
 抓手工具的快捷键。用户可以使用抓手工具拖动页面。如果设为 `undefined`，表示不启用快捷键功能。
 
-<a id="isplayable"></a>
-
-### isPlayable
+### isPlayable [#isplayable]
 
 ```ts title="TypeScript"
 isPlayable: boolean
@@ -166,9 +146,7 @@ isPlayable: boolean
 - `true`：可以立即播放。
 - `false`：不能立即播放。
 
-<a id="observerid"></a>
-
-### observerId
+### observerId [#observerid]
 
 ```ts title="TypeScript"
 observerId: number
@@ -182,9 +160,7 @@ observerId: number
   - 当用户的 `ObserverMode` 为 `Directory` 时， `observerId` 为被跟随的用户的用户 ID。
   - 当用户的 `ObserverMode` 为 `Freedom` 时，为 `AdminObserverId`。
 
-<a id="phase"></a>
-
-### phase
+### phase [#phase]
 
 ```ts title="TypeScript"
 phase: PlayerPhase
@@ -192,9 +168,7 @@ phase: PlayerPhase
 
 回放的阶段，详见 [PlayerPhase](/zh-CN/api-reference/whiteboard/web/enums/player-phase)。
 
-<a id="playbackspeed"></a>
-
-### playbackSpeed
+### playbackSpeed [#playbackspeed]
 
 ```ts title="TypeScript"
 playbackSpeed: number
@@ -202,9 +176,7 @@ playbackSpeed: number
 
 回放的播放倍速。取值必须大于 `0`，设为 `1` 表示按原速播放。
 
-<a id="progresstime"></a>
-
-### progressTime
+### progressTime [#progresstime]
 
 ```ts title="TypeScript"
 progressTime: number
@@ -212,9 +184,7 @@ progressTime: number
 
 回放的进度，单位为毫秒。录像开始时为 `0`。
 
-<a id="region"></a>
-
-### region
+### region [#region]
 
 ```ts title="TypeScript"
 region: string
@@ -230,9 +200,7 @@ region: string
 | `eu` | 欧洲（法兰克福） | 欧洲 |
 | `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
 
-<a id="roomuuid"></a>
-
-### roomUUID
+### roomUUID [#roomuuid]
 
 ```ts title="TypeScript"
 roomUUID: string
@@ -240,9 +208,7 @@ roomUUID: string
 
 回放录像所属房间的 UUID。
 
-<a id="screentype"></a>
-
-### screenType
+### screenType [#screentype]
 
 ```ts title="TypeScript"
 screenType: ScreenType
@@ -250,9 +216,7 @@ screenType: ScreenType
 
 用户的屏幕类型，用于调整手势识别参数。
 
-<a id="slice"></a>
-
-### slice
+### slice [#slice]
 
 ```ts title="TypeScript"
 slice: string
@@ -260,9 +224,7 @@ slice: string
 
 当前录像所属分片的 UUID。
 
-<a id="state"></a>
-
-### state
+### state [#state]
 
 ```ts title="TypeScript"
 state: PlayerState
@@ -270,9 +232,7 @@ state: PlayerState
 
 回放的状态，详见 [PlayerState](/zh-CN/api-reference/whiteboard/web/globals#playerstate)。
 
-<a id="timeduration"></a>
-
-### timeDuration
+### timeDuration [#timeduration]
 
 ```ts title="TypeScript"
 timeDuration: number
@@ -280,9 +240,7 @@ timeDuration: number
 
 回放的总时长，单位为毫秒。
 
-<a id="version"></a>
-
-### version
+### version [#version]
 
 ```ts title="TypeScript"
 version: string
@@ -296,9 +254,7 @@ version: string
 
 ## 方法
 
-<a id="addmagixeventlistener"></a>
-
-### addMagixEventListener
+### addMagixEventListener [#addmagixeventlistener]
 
 ```ts title="TypeScript"
 addMagixEventListener(event: string, listener: EventListener, options?: MagixEventListenerOptions): void
@@ -360,9 +316,7 @@ displayer.addMagixEventListener("my-event", listener, 100);
 
 void
 
-<a id="bindhtmlelement"></a>
-
-### bindHtmlElement
+### bindHtmlElement [#bindhtmlelement]
 
 ```ts title="TypeScript"
 bindHtmlElement(element: HTMLDivElement | null): void
@@ -380,9 +334,7 @@ bindHtmlElement(element: HTMLDivElement | null): void
 
 void
 
-<a id="converttopointinworld"></a>
-
-### convertToPointInWorld
+### convertToPointInWorld [#converttopointinworld]
 
 ```ts title="TypeScript"
 convertToPointInWorld(point: { x: number; y: number }): { x: number; y: number }
@@ -411,9 +363,7 @@ convertToPointInWorld(point: { x: number; y: number }): { x: number; y: number }
 
   点在世界坐标系上的 Y 轴坐标。
 
-<a id="createscenescallback"></a>
-
-### createScenesCallback
+### createScenesCallback [#createscenescallback]
 
 ```ts title="TypeScript"
 createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): ScenesCallbacksNode | null
@@ -442,9 +392,7 @@ createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): Scenes
 - 方法调用成功时，返回 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node) 对象。
 - 方法调用失败时，返回 `null`。方法调用失败可能是因为指定的场景目录不存在。
 
-<a id="entirescenes"></a>
-
-### entireScenes
+### entireScenes [#entirescenes]
 
 ```ts title="TypeScript"
 entireScenes(): SceneMap
@@ -458,9 +406,7 @@ entireScenes(): SceneMap
 
 当前房间内所有场景的信息。
 
-<a id="fillscenesnapshot"></a>
-
-### fillSceneSnapshot
+### fillSceneSnapshot [#fillscenesnapshot]
 
 ```ts title="TypeScript"
 fillSceneSnapshot(scenePath: string, div: HTMLElement, width: number, height: number): void
@@ -481,9 +427,7 @@ fillSceneSnapshot(scenePath: string, div: HTMLElement, width: number, height: nu
 
 void
 
-<a id="generatescreenshot"></a>
-
-### generateScreenshot
+### generateScreenshot [#generatescreenshot]
 
 ```ts title="TypeScript"
 generateScreenshot(scenePath?: string, width?: number, height?: number): Promise<string>
@@ -513,9 +457,7 @@ Promise &lt; string &gt;
 
 如果场景中展示了图片或动态 PPT 幻灯片，请确保该图片或 PPT 幻灯片的存储服务器支持跨域资源共享；否则，生成的截图中可能不会显示该图片或 PPT 幻灯片。
 
-<a id="getinvisibleplugin"></a>
-
-### getInvisiblePlugin
+### getInvisiblePlugin [#getinvisibleplugin]
 
 ```ts title="TypeScript"
 getInvisiblePlugin<A>(kind: string): InvisiblePlugin<A> | null
@@ -535,9 +477,7 @@ getInvisiblePlugin<A>(kind: string): InvisiblePlugin<A> | null
 
 指定的不可见插件。
 
-<a id="getscene"></a>
-
-### getScene
+### getScene [#getscene]
 
 ```ts title="TypeScript"
 getScene(path: string): WhiteScene | undefined
@@ -557,9 +497,7 @@ getScene(path: string): WhiteScene | undefined
 
 场景信息。详见 [WhiteScene](/zh-CN/api-reference/whiteboard/web/globals#whitescene)。
 
-<a id="memberstate"></a>
-
-### memberState
+### memberState [#memberstate]
 
 ```ts title="TypeScript"
 memberState(memberId: number): MemberState
@@ -579,9 +517,7 @@ memberState(memberId: number): MemberState
 
 指定用户的白板工具状态。
 
-<a id="movecamera"></a>
-
-### moveCamera
+### moveCamera [#movecamera]
 
 ```ts title="TypeScript"
 moveCamera(camera: Partial<Camera> & Readonly<{ animationMode?: AnimationMode }>): void
@@ -599,9 +535,7 @@ moveCamera(camera: Partial<Camera> & Readonly<{ animationMode?: AnimationMode }>
 
 void
 
-<a id="movecameratocontain"></a>
-
-### moveCameraToContain
+### moveCameraToContain [#movecameratocontain]
 
 ```ts title="TypeScript"
 moveCameraToContain(rectangle: Rectangle & Readonly<{ animationMode?: AnimationMode }>): void
@@ -619,9 +553,7 @@ moveCameraToContain(rectangle: Rectangle & Readonly<{ animationMode?: AnimationM
 
 void
 
-<a id="pause"></a>
-
-### pause
+### pause [#pause]
 
 ```ts title="TypeScript"
 pause(): void
@@ -633,9 +565,7 @@ pause(): void
 
 void
 
-<a id="play"></a>
-
-### play
+### play [#play]
 
 ```ts title="TypeScript"
 play(): void
@@ -649,9 +579,7 @@ play(): void
 
 void
 
-<a id="refreshviewsize"></a>
-
-### refreshViewSize
+### refreshViewSize [#refreshviewsize]
 
 ```ts title="TypeScript"
 refreshViewSize(): void
@@ -665,9 +593,7 @@ refreshViewSize(): void
 
 void
 
-<a id="removemagixeventlistener"></a>
-
-### removeMagixEventListener
+### removeMagixEventListener [#removemagixeventlistener]
 
 ```ts title="TypeScript"
 removeMagixEventListener(event: string, listener?: EventListener): void
@@ -686,9 +612,7 @@ removeMagixEventListener(event: string, listener?: EventListener): void
 
 void
 
-<a id="scaleppttofit"></a>
-
-### scalePptToFit
+### scalePptToFit [#scaleppttofit]
 
 ```ts title="TypeScript"
 scalePptToFit(animationMode?: AnimationMode): void
@@ -710,9 +634,7 @@ scalePptToFit(animationMode?: AnimationMode): void
 
 void
 
-<a id="scenepathtype"></a>
-
-### scenePathType
+### scenePathType [#scenepathtype]
 
 ```ts title="TypeScript"
 scenePathType(path: string): ScenePathType
@@ -732,9 +654,7 @@ scenePathType(path: string): ScenePathType
 
 场景路径的类型。
 
-<a id="scenepreview"></a>
-
-### scenePreview
+### scenePreview [#scenepreview]
 
 ```ts title="TypeScript"
 scenePreview(scenePath: string, div: HTMLElement, width: number | undefined, height: number | undefined): void
@@ -755,9 +675,7 @@ scenePreview(scenePath: string, div: HTMLElement, width: number | undefined, hei
 
 void
 
-<a id="screenshottocanvas"></a>
-
-### screenshotToCanvas
+### screenshotToCanvas [#screenshottocanvas]
 
 ```ts title="TypeScript"
 screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number): void
@@ -780,9 +698,7 @@ screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: 
 
 void
 
-<a id="screenshottocanvasasync"></a>
-
-### screenshotToCanvasAsync
+### screenshotToCanvasAsync [#screenshottocanvasasync]
 
 ```ts title="TypeScript"
 screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number, timeout?: number): Promise<void>
@@ -812,9 +728,7 @@ screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, wi
 
 Promise &lt; void &gt;
 
-<a id="seektoprogresstime"></a>
-
-### seekToProgressTime
+### seekToProgressTime [#seektoprogresstime]
 
 ```ts title="TypeScript"
 seekToProgressTime(progressTime: number): Promise<PlayerSeekingResult>
@@ -842,9 +756,7 @@ Promise &lt; [PlayerSeekingResult](/zh-CN/api-reference/whiteboard/web/enums/pla
 
 定位回放的结果。详见 [PlayerSeekingResult](/zh-CN/api-reference/whiteboard/web/enums/player-seeking-result)。
 
-<a id="setcamerabound"></a>
-
-### setCameraBound
+### setCameraBound [#setcamerabound]
 
 ```ts title="TypeScript"
 setCameraBound(cameraBound: CameraBound): void
@@ -862,9 +774,7 @@ setCameraBound(cameraBound: CameraBound): void
 
 void
 
-<a id="setobservermode"></a>
-
-### setObserverMode
+### setObserverMode [#setobservermode]
 
 ```ts title="TypeScript"
 setObserverMode(observerMode: ObserverMode): void
@@ -882,9 +792,7 @@ setObserverMode(observerMode: ObserverMode): void
 
 void
 
-<a id="stop"></a>
-
-### stop
+### stop [#stop]
 
 ```ts title="TypeScript"
 stop(): void
@@ -898,9 +806,7 @@ stop(): void
 
 void
 
-<a id="waitmagixevent"></a>
-
-### waitMagixEvent
+### waitMagixEvent [#waitmagixevent]
 
 ```ts title="TypeScript"
 waitMagixEvent(filter: EventFilter): Promise<Event>

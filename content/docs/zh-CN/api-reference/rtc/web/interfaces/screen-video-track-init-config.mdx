@@ -9,11 +9,9 @@ description: "ScreenVideoTrackInitConfig API 参考。"
 
 ## 属性
 
-<a id="displaysurface"></a>
+### Optional displaySurface [#displaysurface]
 
-### Optional displaySurface
-
-```ts
+```ts title="TypeScript"
 displaySurface: "browser" | "window" | "monitor"
 ```
 
@@ -25,21 +23,17 @@ displaySurface: "browser" | "window" | "monitor"
 
 注意事项：该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
 
-<a id="electronscreensourceid"></a>
+### Optional electronScreenSourceId [#electronscreensourceid]
 
-### Optional electronScreenSourceId
-
-```ts
+```ts title="TypeScript"
 electronScreenSourceId: string
 ```
 
 使用 Electron 屏幕共享时，传入 `sourceId`。
 
-<a id="encoderconfig"></a>
+### Optional encoderConfig [#encoderconfig]
 
-### Optional encoderConfig
-
-```ts
+```ts title="TypeScript"
 encoderConfig: VideoEncoderConfiguration | ScreenEncoderConfigurationPreset
 ```
 
@@ -51,21 +45,17 @@ encoderConfig: VideoEncoderConfiguration | ScreenEncoderConfigurationPreset
 - 通过传入一个 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/video-encoder-configuration) 对象来自定义视频编码配置。
 - 不传或留空，使用 SDK 的默认值 `"1080p_2"` （分辨率 1920 × 1080、帧率 30 fps、码率 3000 Kbps）。
 
-<a id="extensionid"></a>
+### Optional extensionId [#extensionid]
 
-### Optional extensionId
-
-```ts
+```ts title="TypeScript"
 extensionId: string
 ```
 
 使用 Chrome 浏览器插件进行屏幕共享时，传入插件的 ID。
 
-<a id="monitortypesurfaces"></a>
+### Optional monitorTypeSurfaces [#monitortypesurfaces]
 
-### Optional monitorTypeSurfaces
-
-```ts
+```ts title="TypeScript"
 monitorTypeSurfaces: "exclude" | "include"
 ```
 
@@ -82,11 +72,9 @@ monitorTypeSurfaces: "exclude" | "include"
 
 该参数仅支持 Chrome 119 及以上。 如果将 `monitorTypeSurface` 设为 `exclude`，则无法将 `displaySurface` 设为 `monitor`，否则会报错。
 
-<a id="optimizationmode"></a>
+### Optional optimizationMode [#optimizationmode]
 
-### Optional optimizationMode
-
-```ts
+```ts title="TypeScript"
 optimizationMode: OptimizationMode
 ```
 
@@ -117,11 +105,9 @@ optimizationMode: OptimizationMode
   - 对于屏幕共享视频流，SDK 默认的优化策略为清晰优先。
   - 对于其他视频流，SDK 默认的优化策略为坚固清晰合流畅，弱网条件下，帧率和分辨率都会被调整。
 
-<a id="prefercurrenttab"></a>
+### Optional preferCurrentTab [#prefercurrenttab]
 
-### Optional preferCurrentTab
-
-```ts
+```ts title="TypeScript"
 preferCurrentTab: boolean
 ```
 
@@ -136,11 +122,9 @@ preferCurrentTab: boolean
 
 注意事项: 该属性仅支持 Chrome 94 及以上版本、Opera 80 及以上版本。
 
-<a id="screensourcetype"></a>
+### Optional screenSourceType [#screensourcetype]
 
-### Optional screenSourceType
-
-```ts
+```ts title="TypeScript"
 screenSourceType: ScreenSourceType
 ```
 
@@ -150,11 +134,9 @@ screenSourceType: ScreenSourceType
 
 屏幕共享源的类型。
 
-<a id="selfbrowsersurface"></a>
+### Optional selfBrowserSurface [#selfbrowsersurface]
 
-### Optional selfBrowserSurface
-
-```ts
+```ts title="TypeScript"
 selfBrowserSurface: "include" | "exclude"
 ```
 
@@ -171,11 +153,9 @@ selfBrowserSurface: "include" | "exclude"
 
 注意事项： Chrome 107 上该属性的默认值为 `"exclude"`，但 SDK 为保证兼容性将默认值改为了 `"include"`，以免用户升级到 Chrome 107 后无法共享当前标签页。 该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
 
-<a id="surfaceswitching"></a>
+### Optional surfaceSwitching [#surfaceswitching]
 
-### Optional surfaceSwitching
-
-```ts
+```ts title="TypeScript"
 surfaceSwitching: "include" | "exclude"
 ```
 
@@ -192,11 +172,9 @@ surfaceSwitching: "include" | "exclude"
 
 注意事项：该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
 
-<a id="systemaudio"></a>
+### Optional systemAudio [#systemaudio]
 
-### Optional systemAudio
-
-```ts
+```ts title="TypeScript"
 systemAudio: "include" | "exclude"
 ```
 
@@ -213,11 +191,9 @@ systemAudio: "include" | "exclude"
 
 注意事项：该属性仅支持 Windows 设备上的 Chrome 105 及以上版本、Edge 105 及以上版本。
 
-<a id="windowaudio"></a>
+### Optional windowAudio [#windowaudio]
 
-### Optional windowAudio
-
-```ts
+```ts title="TypeScript"
 windowAudio: "exclude" | "system"
 ```
 

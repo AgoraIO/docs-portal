@@ -1,7 +1,7 @@
+import { existsSync } from 'node:fs';
 import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
-import { existsSync } from 'node:fs';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import { resolveMovedDocsRedirect } from './docs-moved-redirects';
@@ -62,6 +62,7 @@ import {
   getPageMarkdownUrl,
   type PageWithSource,
 } from './source.server';
+import { createStaticSeoMetadata } from './static-seo';
 import { resolveZhCnProductIaRedirect } from './zh-cn-product-ia-redirects';
 
 const OPENAPI_TAB = 'api-reference';
@@ -823,6 +824,11 @@ export async function loadDocsPagePayload(
             sourcePageUrls ? (url) => sourcePageUrls.has(url) : undefined,
           ),
     productScopes: getProductScopes(pageTree),
+    seo: createStaticSeoMetadata({
+      description: page.data.description,
+      title: page.data.title,
+      url: page.url,
+    }),
     sidebar,
     sidebarHeader,
     slug: page.slugs.at(-1),
@@ -1117,7 +1123,7 @@ function resolveFlexibleClassroomPlatformRedirect(normalizedPath: string) {
 
   const [, platform, slug] = match;
 
-  if (slug.startsWith('api-reference/')) {
+  if (slug === 'api-reference' || slug.startsWith('api-reference/')) {
     return null;
   }
 

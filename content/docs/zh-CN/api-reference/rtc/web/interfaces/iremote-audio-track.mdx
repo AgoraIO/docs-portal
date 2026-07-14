@@ -11,11 +11,9 @@ description: "IRemoteAudioTrack API 参考。"
 
 ## 属性
 
-<a id="isplaying"></a>
+### isPlaying [#isplaying]
 
-### isPlaying
-
-```ts
+```ts title="TypeScript"
 isPlaying: boolean
 ```
 
@@ -24,11 +22,9 @@ isPlaying: boolean
 - `true`: 媒体轨道正在页面上播放。
 - `false`: 媒体轨道没有在页面上播放。
 
-<a id="processordestination"></a>
+### processorDestination [#processordestination]
 
-### processorDestination
-
-```ts
+```ts title="TypeScript"
 processorDestination: IAudioProcessor
 ```
 
@@ -38,11 +34,9 @@ processorDestination: IAudioProcessor
 
 远端音频轨道上当前媒体处理链路的最终节点。
 
-<a id="trackmediatype"></a>
+### trackMediaType [#trackmediatype]
 
-### trackMediaType
-
-```ts
+```ts title="TypeScript"
 trackMediaType: "audio" | "video"
 ```
 
@@ -53,11 +47,9 @@ trackMediaType: "audio" | "video"
 
 ## 方法
 
-<a id="getlisteners"></a>
+### getListeners [#getlisteners]
 
-### getListeners
-
-```ts
+```ts title="TypeScript"
 getListeners(event: string): Function[]
 ```
 
@@ -73,11 +65,9 @@ getListeners(event: string): Function[]
 
 Function []
 
-<a id="getmediastreamtrack"></a>
+### getMediaStreamTrack [#getmediastreamtrack]
 
-### getMediaStreamTrack
-
-```ts
+```ts title="TypeScript"
 getMediaStreamTrack(): MediaStreamTrack
 ```
 
@@ -89,11 +79,9 @@ MediaStreamTrack
 
 一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-<a id="getrtcrtptransceiver"></a>
+### getRTCRtpTransceiver [#getrtcrtptransceiver]
 
-### getRTCRtpTransceiver
-
-```ts
+```ts title="TypeScript"
 getRTCRtpTransceiver(type?: StreamType): RTCRtpTransceiver | undefined
 ```
 
@@ -115,11 +103,9 @@ RTCRtpTransceiver | undefined
 
 当前轨道的 `RTCRtpTransceiver` 实例。
 
-<a id="getstats"></a>
+### getStats [#getstats]
 
-### getStats
-
-```ts
+```ts title="TypeScript"
 getStats(): RemoteAudioTrackStats
 ```
 
@@ -133,11 +119,9 @@ getStats(): RemoteAudioTrackStats
 
 一个 [RemoteAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remote-audio-track-stats) 对象。
 
-<a id="gettrackid"></a>
+### getTrackId [#gettrackid]
 
-### getTrackId
-
-```ts
+```ts title="TypeScript"
 getTrackId(): string
 ```
 
@@ -149,11 +133,9 @@ string
 
 媒体轨道 ID。
 
-<a id="getuserid"></a>
+### getUserId [#getuserid]
 
-### getUserId
-
-```ts
+```ts title="TypeScript"
 getUserId(): UID
 ```
 
@@ -165,11 +147,9 @@ getUserId(): UID
 
 远端轨道对应的 `uid`。
 
-<a id="getvolume"></a>
+### getVolume [#getvolume]
 
-### getVolume
-
-```ts
+```ts title="TypeScript"
 getVolume(): number
 ```
 
@@ -177,11 +157,9 @@ getVolume(): number
 
 number
 
-<a id="getvolumelevel"></a>
+### getVolumeLevel [#getvolumelevel]
 
-### getVolumeLevel
-
-```ts
+```ts title="TypeScript"
 getVolumeLevel(): number
 ```
 
@@ -193,11 +171,9 @@ number
 
 音量等级值，范围 [0, 1]，1 代表理论最大音量。通常该值大于 0.6 代表用户在持续说话。
 
-<a id="off"></a>
+### off [#off]
 
-### off
-
-```ts
+```ts title="TypeScript"
 off(event: string, listener: Function): void
 ```
 
@@ -214,19 +190,17 @@ off(event: string, listener: Function): void
 
 void
 
-<a id="on"></a>
+### on [#on]
 
-### on
-
-```ts
+```ts title="TypeScript"
 on(event: "track-updated", listener: typeof event_track_updated): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "first-frame-decoded", listener: typeof event_first_frame_decoded): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "transceiver-updated", listener: typeof event_transceiver_updated_2): void
 ```
 
@@ -265,11 +239,9 @@ void
 
 void
 
-<a id="once"></a>
+### once [#once]
 
-### once
-
-```ts
+```ts title="TypeScript"
 once(event: string, listener: Function): void
 ```
 
@@ -288,11 +260,9 @@ once(event: string, listener: Function): void
 
 void
 
-<a id="pipe"></a>
+### pipe [#pipe]
 
-### pipe
-
-```ts
+```ts title="TypeScript"
 pipe(processor: IAudioProcessor): IAudioProcessor
 ```
 
@@ -314,11 +284,9 @@ IAudioProcessor
 
 `Processor` 实例。
 
-<a id="play"></a>
+### play [#play]
 
-### play
-
-```ts
+```ts title="TypeScript"
 play(): void
 ```
 
@@ -330,11 +298,9 @@ play(): void
 
 void
 
-<a id="removealllisteners"></a>
+### removeAllListeners [#removealllisteners]
 
-### removeAllListeners
-
-```ts
+```ts title="TypeScript"
 removeAllListeners(event?: string): void
 ```
 
@@ -350,11 +316,9 @@ removeAllListeners(event?: string): void
 
 void
 
-<a id="setamplifiedvolume"></a>
+### setAmplifiedVolume [#setamplifiedvolume]
 
-### setAmplifiedVolume
-
-```ts
+```ts title="TypeScript"
 setAmplifiedVolume(volume: number): void
 ```
 
@@ -368,11 +332,9 @@ setAmplifiedVolume(volume: number): void
 
 void
 
-<a id="setaudioframecallback"></a>
+### setAudioFrameCallback [#setaudioframecallback]
 
-### setAudioFrameCallback
-
-```ts
+```ts title="TypeScript"
 setAudioFrameCallback(audioFrameCallback: null | function, frameSize?: number): void
 ```
 
@@ -382,7 +344,7 @@ setAudioFrameCallback(audioFrameCallback: null | function, frameSize?: number): 
 
 你可以通过 `frameSize` 来设置每次回调中音频帧的大小。该设置也会影响回调的间隔， `frameSize` 越大，每次回调的音频数据越多，回调间隔越长。
 
-```text
+```text title="Text"
 track.setAudioFrameCallback((buffer) => {
   for (let channel = 0; channel < buffer.numberOfChannels; channel += 1) {
     // Float32Array with PCM data
@@ -407,11 +369,9 @@ track.setAudioFrameCallback(null);
 
 void
 
-<a id="setplaybackdevice"></a>
+### setPlaybackDevice [#setplaybackdevice]
 
-### setPlaybackDevice
-
-```ts
+```ts title="TypeScript"
 setPlaybackDevice(deviceId: string): Promise<void>
 ```
 
@@ -433,11 +393,9 @@ setPlaybackDevice(deviceId: string): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="setvolume"></a>
+### setVolume [#setvolume]
 
-### setVolume
-
-```ts
+```ts title="TypeScript"
 setVolume(volume: number): void
 ```
 
@@ -453,11 +411,9 @@ setVolume(volume: number): void
 
 void
 
-<a id="stop"></a>
+### stop [#stop]
 
-### stop
-
-```ts
+```ts title="TypeScript"
 stop(): void
 ```
 
@@ -467,11 +423,9 @@ stop(): void
 
 void
 
-<a id="unpipe"></a>
+### unpipe [#unpipe]
 
-### unpipe
-
-```ts
+```ts title="TypeScript"
 unpipe(): void
 ```
 

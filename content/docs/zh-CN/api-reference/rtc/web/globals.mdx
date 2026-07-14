@@ -5,11 +5,9 @@ description: "Agora Web SDK API Reference v4.24.1 API 参考。"
 
 ## 类型别名
 
-<a id="audioencoderconfigurationpreset"></a>
+### AudioEncoderConfigurationPreset [#audioencoderconfigurationpreset]
 
-### AudioEncoderConfigurationPreset
-
-```ts
+```ts title="TypeScript"
 AudioEncoderConfigurationPreset: keyof typeof AUDIO_ENCODER_CONFIG_SETTINGS
 ```
 
@@ -32,11 +30,9 @@ SDK 预设的 [AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interface
 | `"high_quality"` | 48 kHz 采样率，单声道， 编码码率约 128 Kbps |
 | `"high_quality_stereo"` | 48 kHz 采样率，双声道，编码码率约 192 Kbps |
 
-<a id="audiosourcestate"></a>
+### AudioSourceState [#audiosourcestate]
 
-### AudioSourceState
-
-```ts
+```ts title="TypeScript"
 AudioSourceState: "stopped" | "playing" | "paused"
 ```
 
@@ -46,11 +42,9 @@ AudioSourceState: "stopped" | "playing" | "paused"
 - `"playing"`: 音频源数据正在处理。
 - `"paused"`: 音频源数据暂停处理。
 
-<a id="checkvideovisibleresult"></a>
+### CheckVideoVisibleResult [#checkvideovisibleresult]
 
-### CheckVideoVisibleResult
-
-```ts
+```ts title="TypeScript"
 CheckVideoVisibleResult: CheckVisibleResult
 ```
 
@@ -73,11 +67,9 @@ CheckVideoVisibleResult: CheckVisibleResult
   - `"POSITION"`: `<video>` 或其祖先元素被定位到视口区域外，导致 `<video>` 只有小面积区域在视口内或全部不在视口内。
   - `"COVERED"`: `<video>` 被其他元素遮挡。
 
-<a id="clientrole"></a>
+### ClientRole [#clientrole]
 
-### ClientRole
-
-```ts
+```ts title="TypeScript"
 ClientRole: "audience" | "host"
 ```
 
@@ -86,11 +78,9 @@ ClientRole: "audience" | "host"
 - `"host"`: 直播场景中的主播，可以发布和订阅音视频轨道。
 - `"audience"`: 直播场景中的观众，只能订阅，不能发布音视频轨道。
 
-<a id="connectionstate"></a>
+### ConnectionState [#connectionstate]
 
-### ConnectionState
-
-```ts
+```ts title="TypeScript"
 ConnectionState: "DISCONNECTED" | "CONNECTING" | "RECONNECTING" | "CONNECTED" | "DISCONNECTING"
 ```
 
@@ -108,11 +98,9 @@ SDK 和服务器有以下 5 种连接状态:
 - `"RECONNECTING"`: 正在重连中。因网络断开或切换而导致 SDK 与服务器的连接中断，SDK 会自动重连，此时连接状态变为 `"RECONNECTING"`。
 - `"DISCONNECTING"`: 正在断开连接。在调用 [leave](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#leave) 的时候为此状态。
 
-<a id="devicestate"></a>
+### DeviceState [#devicestate]
 
-### DeviceState
-
-```ts
+```ts title="TypeScript"
 DeviceState: "ACTIVE" | "INACTIVE"
 ```
 
@@ -121,11 +109,9 @@ DeviceState: "ACTIVE" | "INACTIVE"
 - `"ACTIVE"`: 该设备已经插入。
 - `"INACTIVE"`: 该设备已经被拔出。
 
-<a id="encryptionmode"></a>
+### EncryptionMode [#encryptionmode]
 
-### EncryptionMode
-
-```ts
+```ts title="TypeScript"
 EncryptionMode: "aes-128-xts" | "aes-256-xts" | "aes-128-ecb" | "sm4-128-ecb" | "aes-128-gcm" | "aes-256-gcm" | "aes-128-gcm2" | "aes-256-gcm2" | "none"
 ```
 
@@ -141,11 +127,9 @@ EncryptionMode: "aes-128-xts" | "aes-256-xts" | "aes-128-ecb" | "sm4-128-ecb" | 
 - `"sm4-128-ecb"`: 128 位 SM4 加密，ECB 模式。
 - `"none"`: 不加密。
 
-<a id="localaccesspointconfig"></a>
+### LocalAccessPointConfig [#localaccesspointconfig]
 
-### LocalAccessPointConfig
-
-```ts
+```ts title="TypeScript"
 LocalAccessPointConfig: object & object
 ```
 
@@ -170,7 +154,7 @@ LocalAccessPointConfig: object & object
 | `report.port` | 6443 |
 | `accessPoints.port` | 443 |
 
-```text
+```text title="Text"
 client.setLocalAccessPointsV2({
   accessPoints: {
     serverList:["192.168.1.1","192.168.2.2"],
@@ -189,11 +173,9 @@ client.setLocalAccessPointsV2({
 })
 ```
 
-<a id="optimizationmode"></a>
+### OptimizationMode [#optimizationmode]
 
-### OptimizationMode
-
-```ts
+```ts title="TypeScript"
 OptimizationMode: "motion" | "detail" | "balanced"
 ```
 
@@ -212,19 +194,15 @@ OptimizationMode: "motion" | "detail" | "balanced"
   - 对于屏幕共享视频流，SDK 默认的优化策略为清晰优先。
   - 对于其他视频流，SDK 默认的优化策略为坚固清晰合流畅，弱网条件下，帧率和分辨率都会被调整。
 
-<a id="requiredonlyoneof"></a>
+### RequiredOnlyOneOf [#requiredonlyoneof]
 
-### RequiredOnlyOneOf
-
-```ts
+```ts title="TypeScript"
 RequiredOnlyOneOf<T, K>: object[K] extends infer O ? object : never
 ```
 
-<a id="sdk_codec"></a>
+### SDK_CODEC [#sdk_codec]
 
-### SDK_CODEC
-
-```ts
+```ts title="TypeScript"
 SDK_CODEC: keyof typeof VideoCodec
 ```
 
@@ -251,11 +229,9 @@ SDK_CODEC: keyof typeof VideoCodec
 
 如果使用 H.265 编码，请确保参与互通的 Native SDK 版本为 v4.6.0 以上，否则 Native 端会收不到 H265 的流。
 
-<a id="sdk_mode"></a>
+### SDK_MODE [#sdk_mode]
 
-### SDK_MODE
-
-```ts
+```ts title="TypeScript"
 SDK_MODE: "live" | "rtc"
 ```
 
@@ -268,11 +244,9 @@ Agora Web SDK 需知道 app 的使用场景（例如通信模式或直播模式�
 - `"live"`: 直播场景，有主播和观众两种用户角色，可以通过 [setClientRole](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#setclientrole) 方法设置主播和观众的角色。主播可以收发音视频流，而观众只能接收音视频流，无法发送。
 - `"rtc"`: 通信场景，用于常见的一对一通话或群聊，频道中的任何用户可以自由说话。
 
-<a id="screenaudiotrackinitconfig"></a>
+### ScreenAudioTrackInitConfig [#screenaudiotrackinitconfig]
 
-### ScreenAudioTrackInitConfig
-
-```ts
+```ts title="TypeScript"
 ScreenAudioTrackInitConfig: object
 ```
 
@@ -329,11 +303,9 @@ ScreenAudioTrackInitConfig: object
 
 该参数仅支持 Chrome 109 及以上、Edge 109 及以上和 Opera 95 及以上。
 
-<a id="screenencoderconfigurationpreset"></a>
+### ScreenEncoderConfigurationPreset [#screenencoderconfigurationpreset]
 
-### ScreenEncoderConfigurationPreset
-
-```ts
+```ts title="TypeScript"
 ScreenEncoderConfigurationPreset: keyof typeof SUPPORT_SCREEN_ENCODER_CONFIG_LIST
 ```
 
@@ -361,11 +333,9 @@ SDK 预设的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interface
 
 ① `"720p_auto"` 仅推荐在 Safari 上设置，用于确保能够动态调整编码分辨率，详见 [发版说明](https://doc.shengwang.cn/doc/rtc/javascript/overview/release-notes)。
 
-<a id="screensourcetype"></a>
+### ScreenSourceType [#screensourcetype]
 
-### ScreenSourceType
-
-```ts
+```ts title="TypeScript"
 ScreenSourceType: "screen" | "window" | "application"
 ```
 
@@ -375,11 +345,9 @@ ScreenSourceType: "screen" | "window" | "application"
 - `"application"`: 共享某一个 app 的所有窗口。
 - `"window"`: 共享某一个 app 的某一个窗口。
 
-<a id="uid"></a>
+### UID [#uid]
 
-### UID
-
-```ts
+```ts title="TypeScript"
 UID: number | string
 ```
 
@@ -387,11 +355,9 @@ UID: number | string
 
 为保证最佳的用户体验，声网强烈建议你不要使用字符串作为用户 ID。详见 [join](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#join) 方法中的说明。
 
-<a id="videoencoderconfigurationpreset"></a>
+### VideoEncoderConfigurationPreset [#videoencoderconfigurationpreset]
 
-### VideoEncoderConfigurationPreset
-
-```ts
+```ts title="TypeScript"
 VideoEncoderConfigurationPreset: keyof typeof SUPPORT_VIDEO_ENCODER_CONFIG_LIST
 ```
 
@@ -403,11 +369,9 @@ SDK 支持预设的视频属性，以及在各浏览器上的支持情况，请�
 
 ## 事件
 
-<a id="event_track_updated"></a>
+### track-updated [#event_track_updated]
 
-### track-updated
-
-```ts
+```ts title="TypeScript"
 track-updated(track: MediaStreamTrack): void
 ```
 
@@ -425,11 +389,9 @@ void
 
 ## 变量
 
-<a id="audio_encoder_config_settings"></a>
+### Const AUDIO_ENCODER_CONFIG_SETTINGS [#audio_encoder_config_settings]
 
-### Const AUDIO_ENCODER_CONFIG_SETTINGS
-
-```ts
+```ts title="TypeScript"
 AUDIO_ENCODER_CONFIG_SETTINGS: object
 ```
 
@@ -447,34 +409,26 @@ AUDIO_ENCODER_CONFIG_SETTINGS: object
 
 ##### `standard_stereo: AudioEncoderConfiguration`
 
-<a id="agorartc"></a>
+### Const AgoraRTC [#agorartc]
 
-### Const AgoraRTC
-
-```ts
+```ts title="TypeScript"
 AgoraRTC: IAgoraRTC
 ```
 
-<a id="support_screen_encoder_config_list"></a>
+### Const SUPPORT_SCREEN_ENCODER_CONFIG_LIST [#support_screen_encoder_config_list]
 
-### Const SUPPORT_SCREEN_ENCODER_CONFIG_LIST
-
-```ts
+```ts title="TypeScript"
 SUPPORT_SCREEN_ENCODER_CONFIG_LIST: Record<string, VideoEncoderConfiguration>
 ```
 
-<a id="support_svc_config_list"></a>
+### Const SUPPORT_SVC_CONFIG_LIST [#support_svc_config_list]
 
-### Const SUPPORT_SVC_CONFIG_LIST
-
-```ts
+```ts title="TypeScript"
 SUPPORT_SVC_CONFIG_LIST: Record<string, SVCConfiguration>
 ```
 
-<a id="support_video_encoder_config_list"></a>
+### Const SUPPORT_VIDEO_ENCODER_CONFIG_LIST [#support_video_encoder_config_list]
 
-### Const SUPPORT_VIDEO_ENCODER_CONFIG_LIST
-
-```ts
+```ts title="TypeScript"
 SUPPORT_VIDEO_ENCODER_CONFIG_LIST: Record<string, VideoEncoderConfiguration>
 ```

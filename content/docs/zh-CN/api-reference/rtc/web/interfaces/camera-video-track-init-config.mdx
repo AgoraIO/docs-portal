@@ -9,11 +9,9 @@ description: "CameraVideoTrackInitConfig API 参考。"
 
 ## 属性
 
-<a id="cameraid"></a>
+### Optional cameraId [#cameraid]
 
-### Optional cameraId
-
-```ts
+```ts title="TypeScript"
 cameraId: string
 ```
 
@@ -21,11 +19,9 @@ cameraId: string
 
 你可以通过 [AgoraRTC.getCameras](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#getcameras) 来获取当前的摄像头设备列表。
 
-<a id="encoderconfig"></a>
+### Optional encoderConfig [#encoderconfig]
 
-### Optional encoderConfig
-
-```ts
+```ts title="TypeScript"
 encoderConfig: VideoEncoderConfiguration | VideoEncoderConfigurationPreset
 ```
 
@@ -37,11 +33,9 @@ encoderConfig: VideoEncoderConfiguration | VideoEncoderConfigurationPreset
 - 通过传入一个 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/video-encoder-configuration) 对象来自定义视频编码配置。
 - 不传或留空，使用 SDK 的默认值 `"480p_1"` （分辨率 640 × 480、帧率 15 fps、码率 500 Kbps）。
 
-<a id="facingmode"></a>
+### Optional facingMode [#facingmode]
 
-### Optional facingMode
-
-```ts
+```ts title="TypeScript"
 facingMode: VideoFacingModeEnum
 ```
 
@@ -52,11 +46,9 @@ facingMode: VideoFacingModeEnum
 - `"user"`: 前置摄像头
 - `"environment"`: 后置摄像头
 
-<a id="optimizationmode"></a>
+### Optional optimizationMode [#optimizationmode]
 
-### Optional optimizationMode
-
-```ts
+```ts title="TypeScript"
 optimizationMode: OptimizationMode
 ```
 

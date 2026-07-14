@@ -11,11 +11,9 @@ Agora Web SDK 的入口。
 
 ## 事件
 
-<a id="event_audio_context_state_changed"></a>
+### audio-context-state-changed [#event_audio_context_state_changed]
 
-### audio-context-state-changed
-
-```ts
+```ts title="TypeScript"
 audio-context-state-changed(currState: AudioContextState | "interrupted", prevState: AudioContextState | "interrupted" | undefined): void
 ```
 
@@ -36,11 +34,9 @@ audio-context-state-changed(currState: AudioContextState | "interrupted", prevSt
 
 void
 
-<a id="event_autoplay_failed"></a>
+### autoplay-failed [#event_autoplay_failed]
 
-### autoplay-failed
-
-```ts
+```ts title="TypeScript"
 autoplay-failed(): void
 ```
 
@@ -50,7 +46,7 @@ autoplay-failed(): void
 
 如果你需要更灵活地监听自动播放失败事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#on) 方法中传入该回调来代替 [onAutoplayFailed](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#onautoplayfailed)。
 
-```text
+```text title="Text"
 AgoraRTC.on("autoplay-failed", (info) => {
   console.log("Autoplay failed!", info.state, info.device);
 });
@@ -60,11 +56,9 @@ AgoraRTC.on("autoplay-failed", (info) => {
 
 void
 
-<a id="event_camera_changed"></a>
+### camera-changed [#event_camera_changed]
 
-### camera-changed
-
-```ts
+```ts title="TypeScript"
 camera-changed(deviceInfo: DeviceInfo): void
 ```
 
@@ -74,7 +68,7 @@ camera-changed(deviceInfo: DeviceInfo): void
 
 如果你需要更灵活地监听视频采集设备状态变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#on) 方法中传入该回调来代替 [onCameraChanged](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#oncamerachanged)。
 
-```text
+```text title="Text"
 AgoraRTC.on("camera-changed", (info) => {
   console.log("Camera changed!", info.state, info.device);
 });
@@ -90,11 +84,9 @@ AgoraRTC.on("camera-changed", (info) => {
 
 void
 
-<a id="event_microphone_changed"></a>
+### microphone-changed [#event_microphone_changed]
 
-### microphone-changed
-
-```ts
+```ts title="TypeScript"
 microphone-changed(deviceInfo: DeviceInfo): void
 ```
 
@@ -104,7 +96,7 @@ microphone-changed(deviceInfo: DeviceInfo): void
 
 如果你需要更灵活地监听麦克风设备变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#on) 方法中传入该回调来代替 [onMicrophoneChanged](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#onmicrophonechanged)。
 
-```text
+```text title="Text"
 AgoraRTC.on("microphone-changed", (info) => {
   console.log("Microphone changed!", info.state, info.device);
 });
@@ -120,11 +112,9 @@ AgoraRTC.on("microphone-changed", (info) => {
 
 void
 
-<a id="event_playback_device_changed"></a>
+### playback-device-changed [#event_playback_device_changed]
 
-### playback-device-changed
-
-```ts
+```ts title="TypeScript"
 playback-device-changed(deviceInfo: DeviceInfo): void
 ```
 
@@ -134,7 +124,7 @@ playback-device-changed(deviceInfo: DeviceInfo): void
 
 如果你需要更灵活地监听音频播放设备变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#on) 方法中传入该回调来代替 [onPlaybackDeviceChanged](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#onplaybackdevicechanged)。
 
-```text
+```text title="Text"
 AgoraRTC.on("playback-device-changed", (info) => {
   console.log("Playback device changed!", info.state, info.device);
 });
@@ -150,11 +140,9 @@ AgoraRTC.on("playback-device-changed", (info) => {
 
 void
 
-<a id="event_security_policy_violation"></a>
+### security-policy-violation [#event_security_policy_violation]
 
-### security-policy-violation
-
-```ts
+```ts title="TypeScript"
 security-policy-violation(): void
 ```
 
@@ -164,7 +152,7 @@ security-policy-violation(): void
 
 如果你需要更灵活地监听触发 CSP 规则事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#on) 方法中传入该回调来代替 [onSecurityPolicyViolation](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#onsecuritypolicyviolation)。
 
-```text
+```text title="Text"
 AgoraRTC.on("security-policy-violation", (info) => {
   console.log("Security policy violation!", info.state, info.device);
 });
@@ -176,11 +164,9 @@ void
 
 ## 全局回调属性
 
-<a id="onaudioautoplayfailed"></a>
+### Optional onAudioAutoplayFailed [#onaudioautoplayfailed]
 
-### Optional onAudioAutoplayFailed
-
-```ts
+```ts title="TypeScript"
 onAudioAutoplayFailed: function
 ```
 
@@ -203,7 +189,7 @@ onAudioAutoplayFailed: function
 
 下面的示例代码演示了当检测到自动播放失败后的处理：在页面上动态显示一个按钮让用户点击。
 
-```text
+```text title="Text"
  let isAudioAutoplayFailed = false;
  AgoraRTC.onAudioAutoplayFailed = () => {
   if (isAudioAutoplayFailed) return;
@@ -221,11 +207,9 @@ onAudioAutoplayFailed: function
 
 需要注意的是，短时间内可能会有多个音频轨道对象都调用了 `play`，此时会触发多次 `onAudioAutoplayFailed`。示例代码中通过 `isAudioAutoplayFailed` 这个对象防止创建重复的按钮对象。
 
-<a id="onautoplayfailed"></a>
+### Optional onAutoplayFailed [#onautoplayfailed]
 
-### Optional onAutoplayFailed
-
-```ts
+```ts title="TypeScript"
 onAutoplayFailed: function
 ```
 
@@ -249,7 +233,7 @@ SDK 在音频或视频轨道自动播放失败时触发该回调。
 
 下面的示例代码演示了当检测到自动播放失败后的处理：在页面上动态显示一个按钮让用户点击。
 
-```text
+```text title="Text"
  AgoraRTC.onAutoplayFailed = () => {
   const btn = document.createElement("button");
   btn.innerText = "Click me to resume the audio/video playback";
@@ -261,11 +245,9 @@ SDK 在音频或视频轨道自动播放失败时触发该回调。
 
 由于自动播放失败后在用户通过手势点击恢复播放之前， `onAutoplayFailed` 只会触发一次，因此在业务代码中不需要像 `onAudioAutoplayFailed` 回调一样维护 `isAutoplayFailed` 状态。
 
-<a id="oncamerachanged"></a>
+### Optional onCameraChanged [#oncamerachanged]
 
-### Optional onCameraChanged
-
-```ts
+```ts title="TypeScript"
 onCameraChanged: function
 ```
 
@@ -275,7 +257,7 @@ onCameraChanged: function
 
 注意事项：当该回调提示有设备被添加时，如果该设备是虚拟设备，可能无法采集到音频或视频。
 
-```text
+```text title="Text"
 AgoraRTC.onCameraChanged = (info) => {
   console.log("camera changed!", info.state, info.device);
 };
@@ -285,11 +267,9 @@ AgoraRTC.onCameraChanged = (info) => {
 
 - **deviceInfo**：设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/device-info)。
 
-<a id="onmicrophonechanged"></a>
+### Optional onMicrophoneChanged [#onmicrophonechanged]
 
-### Optional onMicrophoneChanged
-
-```ts
+```ts title="TypeScript"
 onMicrophoneChanged: function
 ```
 
@@ -299,7 +279,7 @@ onMicrophoneChanged: function
 
 注意事项：当该回调提示有设备被添加时，如果该设备是虚拟设备，可能无法采集到音频或视频。
 
-```text
+```text title="Text"
 AgoraRTC.onMicrophoneChanged = (info) => {
   console.log("microphone changed!", info.state, info.device);
 };
@@ -309,11 +289,9 @@ AgoraRTC.onMicrophoneChanged = (info) => {
 
 - **deviceInfo**：设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/device-info)。
 
-<a id="onplaybackdevicechanged"></a>
+### Optional onPlaybackDeviceChanged [#onplaybackdevicechanged]
 
-### Optional onPlaybackDeviceChanged
-
-```ts
+```ts title="TypeScript"
 onPlaybackDeviceChanged: function
 ```
 
@@ -325,7 +303,7 @@ onPlaybackDeviceChanged: function
 
 该回调提示有音频播放设备被添加或移除。
 
-```text
+```text title="Text"
 AgoraRTC.onPlaybackDeviceChanged = (info) => {
   console.log("speaker changed!", info.state, info.device);
 };
@@ -335,11 +313,9 @@ AgoraRTC.onPlaybackDeviceChanged = (info) => {
 
 - **deviceInfo**：设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/device-info)。
 
-<a id="onsecuritypolicyviolation"></a>
+### Optional onSecurityPolicyViolation [#onsecuritypolicyviolation]
 
-### Optional onSecurityPolicyViolation
-
-```ts
+```ts title="TypeScript"
 onSecurityPolicyViolation: function
 ```
 
@@ -353,11 +329,9 @@ onSecurityPolicyViolation: function
 
 ## 其他属性
 
-<a id="version"></a>
+### VERSION [#version]
 
-### VERSION
-
-```ts
+```ts title="TypeScript"
 VERSION: string
 ```
 
@@ -365,11 +339,9 @@ Agora Web SDK 的版本信息。
 
 ## Agora 核心方法
 
-<a id="createclient"></a>
+### createClient [#createclient]
 
-### createClient
-
-```ts
+```ts title="TypeScript"
 createClient(config: ClientConfig): IAgoraRTCClient
 ```
 
@@ -387,11 +359,9 @@ createClient(config: ClientConfig): IAgoraRTCClient
 
 ## 本地轨道方法
 
-<a id="createbuffersourceaudiotrack"></a>
+### createBufferSourceAudioTrack [#createbuffersourceaudiotrack]
 
-### createBufferSourceAudioTrack
-
-```ts
+```ts title="TypeScript"
 createBufferSourceAudioTrack(config: BufferSourceAudioTrackInitConfig): Promise<IBufferSourceAudioTrack>
 ```
 
@@ -415,11 +385,9 @@ Promise &lt; [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/i
 
 返回的音频轨道对象相对于普通的音频轨道对象增加了一些控制音频播放流程的方法。包括播放、暂停、跳转、实时播放状态获取等。
 
-<a id="createcameravideotrack"></a>
+### createCameraVideoTrack [#createcameravideotrack]
 
-### createCameraVideoTrack
-
-```ts
+```ts title="TypeScript"
 createCameraVideoTrack(config?: CameraVideoTrackInitConfig): Promise<ICameraVideoTrack>
 ```
 
@@ -435,11 +403,9 @@ createCameraVideoTrack(config?: CameraVideoTrackInitConfig): Promise<ICameraVide
 
 Promise &lt; [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icamera-video-track) &gt;
 
-<a id="createcustomaudiotrack"></a>
+### createCustomAudioTrack [#createcustomaudiotrack]
 
-### createCustomAudioTrack
-
-```ts
+```ts title="TypeScript"
 createCustomAudioTrack(config: CustomAudioTrackInitConfig): ILocalAudioTrack
 ```
 
@@ -457,11 +423,9 @@ createCustomAudioTrack(config: CustomAudioTrackInitConfig): ILocalAudioTrack
 
 [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-audio-track)
 
-<a id="createcustomvideotrack"></a>
+### createCustomVideoTrack [#createcustomvideotrack]
 
-### createCustomVideoTrack
-
-```ts
+```ts title="TypeScript"
 createCustomVideoTrack(config: CustomVideoTrackInitConfig): ILocalVideoTrack
 ```
 
@@ -479,11 +443,9 @@ createCustomVideoTrack(config: CustomVideoTrackInitConfig): ILocalVideoTrack
 
 [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track)
 
-<a id="createmicrophoneandcameratracks"></a>
+### createMicrophoneAndCameraTracks [#createmicrophoneandcameratracks]
 
-### createMicrophoneAndCameraTracks
-
-```ts
+```ts title="TypeScript"
 createMicrophoneAndCameraTracks(audioConfig?: MicrophoneAudioTrackInitConfig, videoConfig?: CameraVideoTrackInitConfig): Promise<[IMicrophoneAudioTrack, ICameraVideoTrack]>
 ```
 
@@ -504,11 +466,9 @@ createMicrophoneAndCameraTracks(audioConfig?: MicrophoneAudioTrackInitConfig, vi
 
 Promise &lt; [[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophone-audio-track), [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icamera-video-track)] &gt;
 
-<a id="createmicrophoneaudiotrack"></a>
+### createMicrophoneAudioTrack [#createmicrophoneaudiotrack]
 
-### createMicrophoneAudioTrack
-
-```ts
+```ts title="TypeScript"
 createMicrophoneAudioTrack(config?: MicrophoneAudioTrackInitConfig): Promise<IMicrophoneAudioTrack>
 ```
 
@@ -524,19 +484,17 @@ createMicrophoneAudioTrack(config?: MicrophoneAudioTrackInitConfig): Promise<IMi
 
 Promise &lt; [IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophone-audio-track) &gt;
 
-<a id="createscreenvideotrack"></a>
+### createScreenVideoTrack [#createscreenvideotrack]
 
-### createScreenVideoTrack
-
-```ts
+```ts title="TypeScript"
 createScreenVideoTrack(config: ScreenVideoTrackInitConfig, withAudio: "enable"): Promise<[ILocalVideoTrack, ILocalAudioTrack]>
 ```
 
-```ts
+```ts title="TypeScript"
 createScreenVideoTrack(config: ScreenVideoTrackInitConfig, withAudio: "disable"): Promise<ILocalVideoTrack>
 ```
 
-```ts
+```ts title="TypeScript"
 createScreenVideoTrack(config: ScreenVideoTrackInitConfig, withAudio?: "enable" | "disable" | "auto" | ScreenAudioTrackInitConfig): Promise<[ILocalVideoTrack, ILocalAudioTrack] | ILocalVideoTrack>
 ```
 
@@ -602,11 +560,9 @@ Promise &lt; [[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-
 
 ## 日志方法
 
-<a id="disablelogupload"></a>
+### disableLogUpload [#disablelogupload]
 
-### disableLogUpload
-
-```ts
+```ts title="TypeScript"
 disableLogUpload(): void
 ```
 
@@ -618,11 +574,9 @@ disableLogUpload(): void
 
 void
 
-<a id="enablelogupload"></a>
+### enableLogUpload [#enablelogupload]
 
-### enableLogUpload
-
-```ts
+```ts title="TypeScript"
 enableLogUpload(): void
 ```
 
@@ -636,11 +590,9 @@ enableLogUpload(): void
 
 void
 
-<a id="setloglevel"></a>
+### setLogLevel [#setloglevel]
 
-### setLogLevel
-
-```ts
+```ts title="TypeScript"
 setLogLevel(level: number): void
 ```
 
@@ -660,11 +612,9 @@ void
 
 ## 媒体设备方法
 
-<a id="getcameras"></a>
+### getCameras [#getcameras]
 
-### getCameras
-
-```ts
+```ts title="TypeScript"
 getCameras(skipPermissionCheck?: boolean): Promise<MediaDeviceInfo[]>
 ```
 
@@ -684,11 +634,9 @@ getCameras(skipPermissionCheck?: boolean): Promise<MediaDeviceInfo[]>
 
 Promise &lt; MediaDeviceInfo [] &gt;
 
-<a id="getdevices"></a>
+### getDevices [#getdevices]
 
-### getDevices
-
-```ts
+```ts title="TypeScript"
 getDevices(skipPermissionCheck?: boolean): Promise<MediaDeviceInfo[]>
 ```
 
@@ -696,7 +644,7 @@ getDevices(skipPermissionCheck?: boolean): Promise<MediaDeviceInfo[]>
 
 注意事项： 调用本方法会暂时打开摄像头和麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。 即使是对于同一设备，SDK 返回的 [MediaDeviceInfo.deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId) 也可能会发生变化，例如用户清除 Cookie 后， `deviceId` 就会被重置。因此，声网不建议基于 `deviceId` 开发业务逻辑。
 
-```text
+```text title="Text"
 getDevices().then(devices => {
   console.log("first device id", devices[0].deviceId);
 }).catch(e => {
@@ -714,11 +662,9 @@ getDevices().then(devices => {
 
 Promise &lt; MediaDeviceInfo [] &gt;
 
-<a id="getelectronscreensources"></a>
+### getElectronScreenSources [#getelectronscreensources]
 
-### getElectronScreenSources
-
-```ts
+```ts title="TypeScript"
 getElectronScreenSources(type?: ScreenSourceType): Promise<ElectronDesktopCapturerSource[]>
 ```
 
@@ -728,7 +674,7 @@ getElectronScreenSources(type?: ScreenSourceType): Promise<ElectronDesktopCaptur
 
 如果你的 Electron 运行环境开启了 contextIsolation 配置，调用此方法会报错。你需要自己使用 contextBridge.exposeInMainWorld 来获取视频源 id。
 
-```text
+```text title="Text"
 // preload.js
 
 const {
@@ -762,11 +708,9 @@ contextBridge.exposeInMainWorld(
 
 Promise &lt; [ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/web/interfaces/electron-desktop-capturer-source) [] &gt;
 
-<a id="getmicrophones"></a>
+### getMicrophones [#getmicrophones]
 
-### getMicrophones
-
-```ts
+```ts title="TypeScript"
 getMicrophones(skipPermissionCheck?: boolean): Promise<MediaDeviceInfo[]>
 ```
 
@@ -786,11 +730,9 @@ getMicrophones(skipPermissionCheck?: boolean): Promise<MediaDeviceInfo[]>
 
 Promise &lt; MediaDeviceInfo [] &gt;
 
-<a id="getplaybackdevices"></a>
+### getPlaybackDevices [#getplaybackdevices]
 
-### getPlaybackDevices
-
-```ts
+```ts title="TypeScript"
 getPlaybackDevices(skipPermissionCheck?: boolean): Promise<MediaDeviceInfo[]>
 ```
 
@@ -816,11 +758,9 @@ Promise &lt; MediaDeviceInfo [] &gt;
 
 ## 其他方法
 
-<a id="checkaudiotrackisactive"></a>
+### checkAudioTrackIsActive [#checkaudiotrackisactive]
 
-### checkAudioTrackIsActive
-
-```ts
+```ts title="TypeScript"
 checkAudioTrackIsActive(track: ILocalAudioTrack | IRemoteAudioTrack, timeout?: number): Promise<boolean>
 ```
 
@@ -832,7 +772,7 @@ SDK 通过检测指定时间范围内音量是否发生变化来判断音频轨�
 
 注意事项： 极为安静的环境下可能检测失败，所以声网建议你在使用此方法的时候提示用户发出声响。 当音频轨道被 mute 时，会返回 `false`。 不建议频繁调用此方法。
 
-```text
+```text title="Text"
 const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({ microphoneId });
 AgoraRTC.checkAudioTrackIsActive(audioTrack).then(result => {
   console.log(`${ microphoneLabel } is ${ result ? "available" : "unavailable" }`);
@@ -857,11 +797,9 @@ Promise &lt; boolean &gt;
 - `true`: 音量大小有变化。对于麦克风音频轨道，说明音频采集设备采集到了声音。
 - `false`: 音量大小未变化，说明音频采集设备没有采集到声音，或自定义音频轨道中没有音量变化，或音频轨道被 mute。
 
-<a id="checksystemrequirements"></a>
+### checkSystemRequirements [#checksystemrequirements]
 
-### checkSystemRequirements
-
-```ts
+```ts title="TypeScript"
 checkSystemRequirements(): boolean
 ```
 
@@ -878,11 +816,9 @@ boolean
 - `true`: 支持。
 - `false`: 不支持。
 
-<a id="checkvideotrackisactive"></a>
+### checkVideoTrackIsActive [#checkvideotrackisactive]
 
-### checkVideoTrackIsActive
-
-```ts
+```ts title="TypeScript"
 checkVideoTrackIsActive(track: ILocalVideoTrack | IRemoteVideoTrack, timeout?: number): Promise<boolean>
 ```
 
@@ -894,7 +830,7 @@ SDK 通过检测指定时间范围内视频图像是否发生变动来判断视�
 
 注意事项： 当视频轨道被 mute 时，会返回 `false`。 不建议频繁调用此方法。
 
-```text
+```text title="Text"
 const videoTrack = await AgoraRTC.createCameraVideoTrack({ cameraId });
 AgoraRTC.checkVideoTrackIsActive(videoTrack).then(result => {
   console.log(`${ cameraLabel } is ${ result ? "available" : "unavailable" }`);
@@ -919,11 +855,9 @@ Promise &lt; boolean &gt;
 - `true`: 视频画面发生变动。对于摄像头视频轨道，说明视频采集设备采集到了画面。
 - `false`: 视频画面未变动，说明视频采集设备异常或被完全遮挡，或视频轨道被 mute。
 
-<a id="createchannelmediarelayconfiguration"></a>
+### createChannelMediaRelayConfiguration [#createchannelmediarelayconfiguration]
 
-### createChannelMediaRelayConfiguration
-
-```ts
+```ts title="TypeScript"
 createChannelMediaRelayConfiguration(): IChannelMediaRelayConfiguration
 ```
 
@@ -933,11 +867,9 @@ createChannelMediaRelayConfiguration(): IChannelMediaRelayConfiguration
 
 [IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannel-media-relay-configuration)
 
-<a id="getlisteners"></a>
+### getListeners [#getlisteners]
 
-### getListeners
-
-```ts
+```ts title="TypeScript"
 getListeners(event: string): Function[]
 ```
 
@@ -953,11 +885,9 @@ getListeners(event: string): Function[]
 
 Function []
 
-<a id="getsupportedcodec"></a>
+### getSupportedCodec [#getsupportedcodec]
 
-### getSupportedCodec
-
-```ts
+```ts title="TypeScript"
 getSupportedCodec(): Promise<object>
 ```
 
@@ -967,7 +897,7 @@ getSupportedCodec(): Promise<object>
 
 注意事项： 该方法支持所有浏览器。对于不支持 WebRTC 或无法识别的浏览器环境，编解码列表返回为空。 返回的音视频编码为浏览器通过 SDP 声称的编码类型，为参考值。 目前部分安卓手机 H.264 与其他平台 H.264 存在无法互通或单通问题，对于这部分机型推荐使用 VP8 编码格式。
 
-```text
+```text title="Text"
 AgoraRTC.getSupportedCodec().then(result => {
  console.log(`Supported video codec: ${result.video.join(",")}`);
  console.log(`Supported audio codec: ${result.audio.join(",")}`);
@@ -983,11 +913,9 @@ Promise &lt; object &gt;
 - `video`: 数组类型，支持的视频编解码格式。可能含有 `"H264"`、 `"VP8"` 两种取值，或为空数组。
 - `audio`: 数组类型，支持的音频编解码格式。可能含有 `"OPUS"`，或为空数组。
 
-<a id="off"></a>
+### off [#off]
 
-### off
-
-```ts
+```ts title="TypeScript"
 off(event: string, listener: Function): void
 ```
 
@@ -1004,31 +932,29 @@ off(event: string, listener: Function): void
 
 void
 
-<a id="on"></a>
+### on [#on]
 
-### on
-
-```ts
+```ts title="TypeScript"
 on(event: "camera-changed", listener: typeof event_camera_changed): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "microphone-changed", listener: typeof event_microphone_changed): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "playback-device-changed", listener: typeof event_playback_device_changed): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "autoplay-failed", listener: typeof event_autoplay_failed): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "security-policy-violation", listener: typeof event_security_policy_violation): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "audio-context-state-changed", listener: typeof event_audio_context_state_changed): void
 ```
 
@@ -1122,11 +1048,9 @@ void
 
 void
 
-<a id="once"></a>
+### once [#once]
 
-### once
-
-```ts
+```ts title="TypeScript"
 once(event: string, listener: Function): void
 ```
 
@@ -1145,11 +1069,9 @@ once(event: string, listener: Function): void
 
 void
 
-<a id="preload"></a>
+### preload [#preload]
 
-### preload
-
-```ts
+```ts title="TypeScript"
 preload(appid: string, channel: string, token: string | null, uid?: UID | null): Promise<void>
 ```
 
@@ -1174,11 +1096,9 @@ preload(appid: string, channel: string, token: string | null, uid?: UID | null):
 
 Promise &lt; void &gt;
 
-<a id="processexternalmediaaec"></a>
+### processExternalMediaAEC [#processexternalmediaaec]
 
-### processExternalMediaAEC
-
-```ts
+```ts title="TypeScript"
 processExternalMediaAEC(element: HTMLMediaElement): void
 ```
 
@@ -1190,7 +1110,7 @@ processExternalMediaAEC(element: HTMLMediaElement): void
 
 在多个用户同时播放一个媒体文件的场景中，例如一起看电影，如果用户 A 在 Chrome 浏览器上通过 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 使用扬声器播放媒体文件，扬声器播放的声音会和人声一起被 SDK 采集，因此其他用户会听到自己本地播放的媒体音频以及用户 A 发送的媒体音频，从而产生回声。针对这种情况，你可以调用 `processExternalMediaAEC` 方法传入 `HTMLMediaElement`，对本地播放的媒体进行回声消除，提升音频体验。
 
-```text
+```text title="Text"
 <audio crossOrigin="anonymous" src="http://www.test.com/test.mp3" id="audioDom"></audio>
 <script>
   const element = document.getElementById("audioDom");
@@ -1210,11 +1130,9 @@ processExternalMediaAEC(element: HTMLMediaElement): void
 
 void
 
-<a id="registerextensions"></a>
+### registerExtensions [#registerextensions]
 
-### registerExtensions
-
-```ts
+```ts title="TypeScript"
 registerExtensions(extensions: IExtension<any>[]): void
 ```
 
@@ -1234,11 +1152,9 @@ registerExtensions(extensions: IExtension<any>[]): void
 
 void
 
-<a id="removealllisteners"></a>
+### removeAllListeners [#removealllisteners]
 
-### removeAllListeners
-
-```ts
+```ts title="TypeScript"
 removeAllListeners(event?: string): void
 ```
 
@@ -1254,11 +1170,9 @@ removeAllListeners(event?: string): void
 
 void
 
-<a id="resumeaudiocontext"></a>
+### resumeAudioContext [#resumeaudiocontext]
 
-### resumeAudioContext
-
-```ts
+```ts title="TypeScript"
 resumeAudioContext(): void
 ```
 
@@ -1275,11 +1189,9 @@ resumeAudioContext(): void
 
 void
 
-<a id="setarea"></a>
+### setArea [#setarea]
 
-### setArea
-
-```ts
+```ts title="TypeScript"
 setArea(area: AREAS[] | object): void
 ```
 
@@ -1293,7 +1205,7 @@ setArea(area: AREAS[] | object): void
 
 默认情况下，SDK 会就近选择声网服务器进行连接。设置访问区域之后，SDK 只会连接到指定区域内的声网服务器。
 
-```text
+```text title="Text"
 // 指定仅访问北美的服务器。
 AgoraRTC.setArea({
   areaCode:"NORTH_AMERICA"
@@ -1310,11 +1222,9 @@ AgoraRTC.setArea({
 
 void
 
-<a id="startlastmileprobetest"></a>
+### startLastmileProbeTest [#startlastmileprobetest]
 
-### startLastmileProbeTest
-
-```ts
+```ts title="TypeScript"
 startLastmileProbeTest(appid: string, channel: string, token: string | null, uid?: UID | null): Promise<LastmileProbeResult>
 ```
 

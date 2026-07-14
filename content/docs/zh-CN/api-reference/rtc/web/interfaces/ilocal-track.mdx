@@ -14,11 +14,9 @@ description: "ILocalTrack API 参考。"
 
 ## 事件
 
-<a id="event_track_ended"></a>
+### track-ended [#event_track_ended]
 
-### track-ended
-
-```ts
+```ts title="TypeScript"
 track-ended(): void
 ```
 
@@ -35,11 +33,9 @@ track-ended(): void
 
 void
 
-<a id="event_transceiver_updated"></a>
+### transceiver-updated [#event_transceiver_updated]
 
-### transceiver-updated
-
-```ts
+```ts title="TypeScript"
 transceiver-updated(transceiver: RTCRtpTransceiver, type?: StreamType): void
 ```
 
@@ -58,21 +54,17 @@ void
 
 ## 属性
 
-<a id="enabled"></a>
+### enabled [#enabled]
 
-### enabled
-
-```ts
+```ts title="TypeScript"
 enabled: boolean
 ```
 
 本地轨道当前的启用状态。
 
-<a id="isplaying"></a>
+### isPlaying [#isplaying]
 
-### isPlaying
-
-```ts
+```ts title="TypeScript"
 isPlaying: boolean
 ```
 
@@ -81,21 +73,17 @@ isPlaying: boolean
 - `true`: 媒体轨道正在页面上播放。
 - `false`: 媒体轨道没有在页面上播放。
 
-<a id="muted"></a>
+### muted [#muted]
 
-### muted
-
-```ts
+```ts title="TypeScript"
 muted: boolean
 ```
 
 本地媒体轨道当前的静音状态。
 
-<a id="trackmediatype"></a>
+### trackMediaType [#trackmediatype]
 
-### trackMediaType
-
-```ts
+```ts title="TypeScript"
 trackMediaType: "audio" | "video"
 ```
 
@@ -106,11 +94,9 @@ trackMediaType: "audio" | "video"
 
 ## 方法
 
-<a id="close"></a>
+### close [#close]
 
-### close
-
-```ts
+```ts title="TypeScript"
 close(): void
 ```
 
@@ -122,11 +108,9 @@ close(): void
 
 void
 
-<a id="getlisteners"></a>
+### getListeners [#getlisteners]
 
-### getListeners
-
-```ts
+```ts title="TypeScript"
 getListeners(event: string): Function[]
 ```
 
@@ -142,11 +126,9 @@ getListeners(event: string): Function[]
 
 Function []
 
-<a id="getmediastreamtrack"></a>
+### getMediaStreamTrack [#getmediastreamtrack]
 
-### getMediaStreamTrack
-
-```ts
+```ts title="TypeScript"
 getMediaStreamTrack(): MediaStreamTrack
 ```
 
@@ -158,11 +140,9 @@ MediaStreamTrack
 
 一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-<a id="getrtcrtptransceiver"></a>
+### getRTCRtpTransceiver [#getrtcrtptransceiver]
 
-### getRTCRtpTransceiver
-
-```ts
+```ts title="TypeScript"
 getRTCRtpTransceiver(type?: StreamType): RTCRtpTransceiver | undefined
 ```
 
@@ -184,11 +164,9 @@ RTCRtpTransceiver | undefined
 
 当前轨道的 `RTCRtpTransceiver` 实例。
 
-<a id="getstats"></a>
+### getStats [#getstats]
 
-### getStats
-
-```ts
+```ts title="TypeScript"
 getStats(): LocalVideoTrackStats | LocalAudioTrackStats
 ```
 
@@ -204,11 +182,9 @@ getStats(): LocalVideoTrackStats | LocalAudioTrackStats
 
 [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-video-track-stats) | [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-audio-track-stats)
 
-<a id="gettrackid"></a>
+### getTrackId [#gettrackid]
 
-### getTrackId
-
-```ts
+```ts title="TypeScript"
 getTrackId(): string
 ```
 
@@ -220,11 +196,9 @@ string
 
 媒体轨道 ID。
 
-<a id="gettracklabel"></a>
+### getTrackLabel [#gettracklabel]
 
-### getTrackLabel
-
-```ts
+```ts title="TypeScript"
 getTrackLabel(): string
 ```
 
@@ -240,11 +214,9 @@ string
 - 如果是通过 `createScreenVideoTrack` 创建的轨道，返回屏幕共享的 `sourceId`。
 - 如果是 `createCustomAudioTrack` 或 `createCustomVideoTrack` 创建的轨道，返回 [MediaStreamTrack.label](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/label) 字段。
 
-<a id="off"></a>
+### off [#off]
 
-### off
-
-```ts
+```ts title="TypeScript"
 off(event: string, listener: Function): void
 ```
 
@@ -261,19 +233,17 @@ off(event: string, listener: Function): void
 
 void
 
-<a id="on"></a>
+### on [#on]
 
-### on
-
-```ts
+```ts title="TypeScript"
 on(event: "track-updated", listener: typeof event_track_updated): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "track-ended", listener: typeof event_track_ended): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
 ```
 
@@ -312,11 +282,9 @@ void
 
 void
 
-<a id="once"></a>
+### once [#once]
 
-### once
-
-```ts
+```ts title="TypeScript"
 once(event: string, listener: Function): void
 ```
 
@@ -335,11 +303,9 @@ once(event: string, listener: Function): void
 
 void
 
-<a id="play"></a>
+### play [#play]
 
-### play
-
-```ts
+```ts title="TypeScript"
 play(element?: string | HTMLElement): void
 ```
 
@@ -355,11 +321,9 @@ play(element?: string | HTMLElement): void
 
 void
 
-<a id="removealllisteners"></a>
+### removeAllListeners [#removealllisteners]
 
-### removeAllListeners
-
-```ts
+```ts title="TypeScript"
 removeAllListeners(event?: string): void
 ```
 
@@ -375,11 +339,9 @@ removeAllListeners(event?: string): void
 
 void
 
-<a id="setenabled"></a>
+### setEnabled [#setenabled]
 
-### setEnabled
-
-```ts
+```ts title="TypeScript"
 setEnabled(enabled: boolean): Promise<void>
 ```
 
@@ -403,11 +365,9 @@ setEnabled(enabled: boolean): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="setmuted"></a>
+### setMuted [#setmuted]
 
-### setMuted
-
-```ts
+```ts title="TypeScript"
 setMuted(muted: boolean): Promise<void>
 ```
 
@@ -431,11 +391,9 @@ setMuted(muted: boolean): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="stop"></a>
+### stop [#stop]
 
-### stop
-
-```ts
+```ts title="TypeScript"
 stop(): void
 ```
 

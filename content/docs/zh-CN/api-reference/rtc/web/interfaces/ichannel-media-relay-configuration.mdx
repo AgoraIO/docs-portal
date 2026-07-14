@@ -7,7 +7,7 @@ description: "IChannelMediaRelayConfiguration API 参考。"
 
 在调用 [startChannelMediaRelay](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#startchannelmediarelay) 和 [updateChannelMediaRelay](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#updatechannelmediarelay) 时，通过该接口设置跨频道媒体流转发的具体信息。
 
-```text
+```text title="Text"
 const configuration = AgoraRTC.createChannelMediaRelayConfiguration();
 configuration.setSrcChannelInfo({ channelName: "test", token: "xxx", uid: 12345 });
 configuration.addDestChannelInfo({ channelName: "test2", token: "xxx", uid: 23456 });
@@ -17,11 +17,9 @@ configuration.addDestChannelInfo({ channelName: "test2", token: "xxx", uid: 2345
 
 ## 方法
 
-<a id="adddestchannelinfo"></a>
+### addDestChannelInfo [#adddestchannelinfo]
 
-### addDestChannelInfo
-
-```ts
+```ts title="TypeScript"
 addDestChannelInfo(info: ChannelMediaRelayInfo): void
 ```
 
@@ -29,7 +27,7 @@ addDestChannelInfo(info: ChannelMediaRelayInfo): void
 
 如果你想将流转发到多个目标频道，可以多次调用该方法。该方法支持最多设置 4 个目标频道。
 
-```text
+```text title="Text"
 const config = AgoraRTC.createChannelMediaRelayConfiguration();
 config.addDestChannelInfo({ channelName: "test2", token: "xxx", uid: 23456 });
 config.addDestChannelInfo({ channelName: "test3", token: "xxx", uid: 23457 });
@@ -45,11 +43,9 @@ config.addDestChannelInfo({ channelName: "test3", token: "xxx", uid: 23457 });
 
 void
 
-<a id="removedestchannelinfo"></a>
+### removeDestChannelInfo [#removedestchannelinfo]
 
-### removeDestChannelInfo
-
-```ts
+```ts title="TypeScript"
 removeDestChannelInfo(channelName: string): void
 ```
 
@@ -65,17 +61,15 @@ removeDestChannelInfo(channelName: string): void
 
 void
 
-<a id="setsrcchannelinfo"></a>
+### setSrcChannelInfo [#setsrcchannelinfo]
 
-### setSrcChannelInfo
-
-```ts
+```ts title="TypeScript"
 setSrcChannelInfo(info: ChannelMediaRelayInfo): void
 ```
 
 设置源频道信息。
 
-```text
+```text title="Text"
 const config = AgoraRTC.createChannelMediaRelayConfiguration();
 config.setSrcChannelInfo({ channelName: "test", token: "xxx", uid: 123456 });
 ```

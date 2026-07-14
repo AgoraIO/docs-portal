@@ -9,9 +9,7 @@ description: "WhiteWebSdk API 参考。"
 
 ## 构造函数
 
-<a id="constructor"></a>
-
-### constructor
+### constructor [#constructor]
 
 ```ts title="TypeScript"
 new WhiteWebSdk(params: WhiteWebSdkConfiguration): WhiteWebSdk
@@ -33,9 +31,7 @@ new WhiteWebSdk(params: WhiteWebSdkConfiguration): WhiteWebSdk
 
 ## 属性
 
-<a id="devicetype"></a>
-
-### deviceType
+### deviceType [#devicetype]
 
 ```ts title="TypeScript"
 deviceType: DeviceType
@@ -43,9 +39,7 @@ deviceType: DeviceType
 
 该客户端的设备类型，决定 SDK 如何处理鼠标事件和触碰事件。
 
-<a id="region"></a>
-
-### region
+### region [#region]
 
 ```ts title="TypeScript"
 region: string
@@ -65,9 +59,7 @@ region: string
 
 该方法设置的数据中心必须与 [创建房间](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-rooms) 时设置的数据中心一致；否则，SDK 将无法连接到房间。
 
-<a id="renderengine"></a>
-
-### renderEngine
+### renderEngine [#renderengine]
 
 ```ts title="TypeScript"
 renderEngine: RenderEngine
@@ -75,9 +67,7 @@ renderEngine: RenderEngine
 
 渲染模式，详见 [RenderEngine](/zh-CN/api-reference/whiteboard/web/enums/render-engine)。
 
-<a id="screentype"></a>
-
-### screenType
+### screenType [#screentype]
 
 ```ts title="TypeScript"
 screenType: ScreenType
@@ -85,9 +75,7 @@ screenType: ScreenType
 
 用户的屏幕类型，用于调整手势识别参数。
 
-<a id="version"></a>
-
-### version
+### version [#version]
 
 ```ts title="TypeScript"
 version: string
@@ -101,9 +89,7 @@ version: string
 
 ## 方法
 
-<a id="isplayable"></a>
-
-### isPlayable
+### isPlayable [#isplayable]
 
 ```ts title="TypeScript"
 isPlayable(params: PlayableCheckingParams): Promise<boolean>
@@ -124,9 +110,7 @@ Promise &lt; boolean &gt;
 - 如果方法调用成功，则返回 `true`。
 - 如果方法调用失败，则返回 `false`。
 
-<a id="joinroom"></a>
-
-### joinRoom
+### joinRoom [#joinroom]
 
 ```ts title="TypeScript"
 joinRoom(params: JoinRoomParams, callbacks?: Partial<RoomCallbacks>): Promise<Room>
@@ -163,9 +147,7 @@ Promise &lt; [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room) &gt;
 - 如果方法调用成功，则返回房间对象，详见 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room)。
 - 如果方法调用失败，则返回错误信息。
 
-<a id="replayroom"></a>
-
-### replayRoom
+### replayRoom [#replayroom]
 
 ```ts title="TypeScript"
 replayRoom(params: ReplayRoomParams, callbacks?: Partial<PlayerCallbacks>): Promise<Player>

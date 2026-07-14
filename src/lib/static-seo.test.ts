@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { createStaticSeoManifest, injectStaticSeoHead } from './static-seo';
+import {
+  createDocsRouteSeoHead,
+  createStaticSeoManifest,
+  injectStaticSeoHead,
+} from './static-seo';
 
 describe('static SEO metadata', () => {
   it('creates page-specific crawler metadata from docs pages', () => {
@@ -116,6 +120,25 @@ describe('static SEO metadata', () => {
 
     expect(result).toContain('<title>Introduction | Agora Docs</title>');
     expect(result).not.toContain('Introduction | Agora Docs | Agora Docs');
+  });
+
+  it('uses SEO metadata serialized by the server during client hydration', () => {
+    const head = createDocsRouteSeoHead({
+      activePath: '/zh-CN/api-reference/rtc/web',
+      description: 'RTC Web API reference.',
+      seo: {
+        canonicalUrl: 'https://doc.shengwang.cn/zh-CN/api-reference/rtc/web',
+        description: 'RTC Web API reference.',
+        imageUrl: 'https://assets-docs.agora.io/og/docs.png',
+        title: 'RTC Web | Agora Docs',
+      },
+      title: 'RTC Web',
+    });
+
+    expect(head.links).toContainEqual({
+      href: 'https://doc.shengwang.cn/zh-CN/api-reference/rtc/web',
+      rel: 'canonical',
+    });
   });
 });
 

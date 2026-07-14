@@ -11,9 +11,7 @@ description: "Room<CALLBACKS> API 参考。"
 
 ## 属性
 
-<a id="calibrationtimestamp"></a>
-
-### calibrationTimestamp
+### calibrationTimestamp [#calibrationtimestamp]
 
 ```ts title="TypeScript"
 calibrationTimestamp: number
@@ -25,9 +23,7 @@ calibrationTimestamp: number
 
 2.13.8
 
-<a id="callbacks"></a>
-
-### callbacks
+### callbacks [#callbacks]
 
 ```ts title="TypeScript"
 callbacks: Callbacks<CALLBACKS>
@@ -55,9 +51,7 @@ displayer.callbacks.once("onSliceChanged", function(slice) {
 });
 ```
 
-<a id="canredosteps"></a>
-
-### canRedoSteps
+### canRedoSteps [#canredosteps]
 
 ```ts title="TypeScript"
 canRedoSteps: number
@@ -65,9 +59,7 @@ canRedoSteps: number
 
 可重做次数。即此时此刻，还可以调用多少次 [redo](/zh-CN/api-reference/whiteboard/web/interfaces/room#redo) 方法。
 
-<a id="canundosteps"></a>
-
-### canUndoSteps
+### canUndoSteps [#canundosteps]
 
 ```ts title="TypeScript"
 canUndoSteps: number
@@ -75,9 +67,7 @@ canUndoSteps: number
 
 可撤销次数。即此时此刻，还可以调用多少次 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room#undo) 方法。
 
-<a id="devicetype"></a>
-
-### deviceType
+### deviceType [#devicetype]
 
 ```ts title="TypeScript"
 deviceType: DeviceType
@@ -85,9 +75,7 @@ deviceType: DeviceType
 
 该客户端的设备类型，决定 SDK 如何处理鼠标事件和触碰事件。
 
-<a id="disablecameratransform"></a>
-
-### disableCameraTransform
+### disableCameraTransform [#disablecameratransform]
 
 ```ts title="TypeScript"
 disableCameraTransform: boolean
@@ -102,9 +90,7 @@ disableCameraTransform: boolean
 
 该属性不影响 `setCameraBound`、 `moveCamera`、 `moveCameraToContain` 方法的使用。
 
-<a id="disabledeviceinputs"></a>
-
-### disableDeviceInputs
+### disableDeviceInputs [#disabledeviceinputs]
 
 ```ts title="TypeScript"
 disableDeviceInputs: boolean
@@ -117,9 +103,7 @@ disableDeviceInputs: boolean
 
 该方法与 `isWritable` 的区别详见 [《禁止设备操作｜禁止操作》](https://developer.netless.link/javascript-zh/home/disable#%E7%A6%81%E6%AD%A2%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C)。
 
-<a id="disableeraseimage"></a>
-
-### disableEraseImage
+### disableEraseImage [#disableeraseimage]
 
 ```ts title="TypeScript"
 disableEraseImage: boolean
@@ -134,9 +118,7 @@ disableEraseImage: boolean
 
 2.3.12
 
-<a id="disableothersselectingbox"></a>
-
-### disableOthersSelectingBox
+### disableOthersSelectingBox [#disableothersselectingbox]
 
 ```ts title="TypeScript"
 disableOthersSelectingBox: boolean
@@ -155,9 +137,7 @@ disableOthersSelectingBox: boolean
 
 该属性不影响自己的高亮框显示。
 
-<a id="disableserialization"></a>
-
-### disableSerialization
+### disableSerialization [#disableserialization]
 
 ```ts title="TypeScript"
 disableSerialization: boolean
@@ -184,9 +164,7 @@ disableSerialization: boolean
 - Android SDK 2.9.3 或之后版本
 - iOS SDK 2.9.3 或之后版本
 
-<a id="enablewritenow"></a>
-
-### enableWriteNow
+### enableWriteNow [#enablewritenow]
 
 ```ts title="TypeScript"
 enableWriteNow: boolean
@@ -201,9 +179,7 @@ enableWriteNow: boolean
 - `true`：有写的权限。
 - `false`：没有写的权限。
 
-<a id="handtoolactive"></a>
-
-### handToolActive
+### handToolActive [#handtoolactive]
 
 ```ts title="TypeScript"
 handToolActive: boolean
@@ -214,9 +190,7 @@ handToolActive: boolean
 - `true`：启用抓手工具。
 - `false`：不启用抓手工具。
 
-<a id="handtoolkey"></a>
-
-### handToolKey
+### handToolKey [#handtoolkey]
 
 ```ts title="TypeScript"
 handToolKey: string | undefined
@@ -224,9 +198,7 @@ handToolKey: string | undefined
 
 抓手工具的快捷键。用户可以使用抓手工具拖动页面。如果设为 `undefined`，表示不启用快捷键功能。
 
-<a id="iswritable"></a>
-
-### isWritable
+### isWritable [#iswritable]
 
 ```ts title="TypeScript"
 isWritable: boolean
@@ -237,9 +209,7 @@ isWritable: boolean
 - `true`： 互动模式，即对白板具有读写权限。
 - `false`：订阅模式，即对白板具有只读权限。
 
-<a id="observerid"></a>
-
-### observerId
+### observerId [#observerid]
 
 ```ts title="TypeScript"
 observerId: number
@@ -253,9 +223,7 @@ observerId: number
   - 当用户的 `ObserverMode` 为 `Directory` 时， `observerId` 为被跟随的用户的用户 ID。
   - 当用户的 `ObserverMode` 为 `Freedom` 时，为 `AdminObserverId`。
 
-<a id="phase"></a>
-
-### phase
+### phase [#phase]
 
 ```ts title="TypeScript"
 phase: RoomPhase
@@ -263,9 +231,7 @@ phase: RoomPhase
 
 房间的连接状态，详见 [RoomPhase](/zh-CN/api-reference/whiteboard/web/enums/room-phase)。
 
-<a id="region"></a>
-
-### region
+### region [#region]
 
 ```ts title="TypeScript"
 region: string
@@ -281,9 +247,7 @@ region: string
 | `eu` | 欧洲（法兰克福） | 欧洲 |
 | `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
 
-<a id="roomtoken"></a>
-
-### roomToken
+### roomToken [#roomtoken]
 
 ```ts title="TypeScript"
 roomToken: string
@@ -291,9 +255,7 @@ roomToken: string
 
 房间的 Room Token，用于加入房间时的用户鉴权。
 
-<a id="screentype"></a>
-
-### screenType
+### screenType [#screentype]
 
 ```ts title="TypeScript"
 screenType: ScreenType
@@ -301,9 +263,7 @@ screenType: ScreenType
 
 用户的屏幕类型，用于调整手势识别参数。
 
-<a id="session"></a>
-
-### session
+### session [#session]
 
 ```ts title="TypeScript"
 session: string
@@ -311,9 +271,7 @@ session: string
 
 房间当前 session 的 UUID。如果开启了自动日志上报功能，日志中会上报该参数。如果上报时尚未与服务器建立连接，则为 `undefined`。
 
-<a id="slice"></a>
-
-### slice
+### slice [#slice]
 
 ```ts title="TypeScript"
 slice: string
@@ -321,9 +279,7 @@ slice: string
 
 当前所处分片的 UUID。
 
-<a id="state"></a>
-
-### state
+### state [#state]
 
 ```ts title="TypeScript"
 state: RoomState
@@ -331,9 +287,7 @@ state: RoomState
 
 房间的业务状态，详见 [管理房间业务状态](/doc/whiteboard/javascript/whiteboard-sdk/basic-features/manage-room-status)。
 
-<a id="timedelay"></a>
-
-### timeDelay
+### timeDelay [#timedelay]
 
 ```ts title="TypeScript"
 timeDelay: number
@@ -345,9 +299,7 @@ timeDelay: number
 
 在音视频传输延时较大的场景中，如使用 CDN 推送音视频流时，你可以使用该参数延迟显示接收到的远端白板内容，以确保白板内容与音视频同步。
 
-<a id="uid"></a>
-
-### uid
+### uid [#uid]
 
 ```ts title="TypeScript"
 uid: string
@@ -355,9 +307,7 @@ uid: string
 
 房间内用户的唯一标识符，字符串格式。
 
-<a id="usenativeclipboard"></a>
-
-### useNativeClipboard
+### useNativeClipboard [#usenativeclipboard]
 
 ```ts title="TypeScript"
 useNativeClipboard: boolean
@@ -372,9 +322,7 @@ useNativeClipboard: boolean
 
 此功能需要浏览器支持以及用户授予剪贴板权限，否则将自动回退到虚拟剪贴板实现。
 
-<a id="uuid"></a>
-
-### uuid
+### uuid [#uuid]
 
 ```ts title="TypeScript"
 uuid: string
@@ -382,9 +330,7 @@ uuid: string
 
 房间的 UUID，即房间的唯一标识符。
 
-<a id="version"></a>
-
-### version
+### version [#version]
 
 ```ts title="TypeScript"
 version: string
@@ -398,9 +344,7 @@ version: string
 
 ## 方法
 
-<a id="addmagixeventlistener"></a>
-
-### addMagixEventListener
+### addMagixEventListener [#addmagixeventlistener]
 
 ```ts title="TypeScript"
 addMagixEventListener(event: string, listener: EventListener, options?: MagixEventListenerOptions): void
@@ -462,9 +406,7 @@ displayer.addMagixEventListener("my-event", listener, 100);
 
 void
 
-<a id="bindhtmlelement"></a>
-
-### bindHtmlElement
+### bindHtmlElement [#bindhtmlelement]
 
 ```ts title="TypeScript"
 bindHtmlElement(element: HTMLDivElement | null): void
@@ -482,9 +424,7 @@ bindHtmlElement(element: HTMLDivElement | null): void
 
 void
 
-<a id="cleancurrentscene"></a>
-
-### cleanCurrentScene
+### cleanCurrentScene [#cleancurrentscene]
 
 ```ts title="TypeScript"
 cleanCurrentScene(retainPpt?: boolean): void
@@ -502,9 +442,7 @@ cleanCurrentScene(retainPpt?: boolean): void
 
 void
 
-<a id="clearundohistory"></a>
-
-### clearUndoHistory
+### clearUndoHistory [#clearundohistory]
 
 ```ts title="TypeScript"
 clearUndoHistory(includeRedo?: boolean): void
@@ -526,9 +464,7 @@ clearUndoHistory(includeRedo?: boolean): void
 
 void
 
-<a id="completeimageupload"></a>
-
-### completeImageUpload
+### completeImageUpload [#completeimageupload]
 
 ```ts title="TypeScript"
 completeImageUpload(uuid: string, src: string): void
@@ -553,9 +489,7 @@ completeImageUpload(uuid: string, src: string): void
 
 void
 
-<a id="converttopointinworld"></a>
-
-### convertToPointInWorld
+### convertToPointInWorld [#converttopointinworld]
 
 ```ts title="TypeScript"
 convertToPointInWorld(point: { x: number; y: number }): { x: number; y: number }
@@ -584,9 +518,7 @@ convertToPointInWorld(point: { x: number; y: number }): { x: number; y: number }
 
   点在世界坐标系上的 Y 轴坐标。
 
-<a id="copy"></a>
-
-### copy
+### copy [#copy]
 
 ```ts title="TypeScript"
 copy(): void
@@ -607,9 +539,7 @@ copy(): void
 
 void
 
-<a id="createinvisibleplugin"></a>
-
-### createInvisiblePlugin
+### createInvisiblePlugin [#createinvisibleplugin]
 
 ```ts title="TypeScript"
 createInvisiblePlugin<K, A, P>(pluginClass: InvisiblePluginClass<K, A, P>, attributes: A): Promise<InvisiblePlugin<A>>
@@ -630,9 +560,7 @@ Promise &lt; [InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invis
 
 创建的不可见插件对象。
 
-<a id="createscenescallback"></a>
-
-### createScenesCallback
+### createScenesCallback [#createscenescallback]
 
 ```ts title="TypeScript"
 createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): ScenesCallbacksNode | null
@@ -661,9 +589,7 @@ createScenesCallback(path: string, callbacks?: Partial<ScenesCallbacks>): Scenes
 - 方法调用成功时，返回 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node) 对象。
 - 方法调用失败时，返回 `null`。方法调用失败可能是因为指定的场景目录不存在。
 
-<a id="delete"></a>
-
-### delete
+### delete [#delete]
 
 ```ts title="TypeScript"
 delete(): void
@@ -675,9 +601,7 @@ delete(): void
 
 void
 
-<a id="disconnect"></a>
-
-### disconnect
+### disconnect [#disconnect]
 
 ```ts title="TypeScript"
 disconnect(): Promise<void>
@@ -694,9 +618,7 @@ Promise &lt; void &gt;
 - 如果方法调用成功，则返回房间的全局状态。
 - 如果方法调用失败，则返回错误信息。
 
-<a id="dispatchmagixevent"></a>
-
-### dispatchMagixEvent
+### dispatchMagixEvent [#dispatchmagixevent]
 
 ```ts title="TypeScript"
 dispatchMagixEvent(event: string, payload: any): void
@@ -719,9 +641,7 @@ dispatchMagixEvent(event: string, payload: any): void
 
 void
 
-<a id="duplicate"></a>
-
-### duplicate
+### duplicate [#duplicate]
 
 ```ts title="TypeScript"
 duplicate(): void
@@ -742,9 +662,7 @@ duplicate(): void
 
 void
 
-<a id="entirescenes"></a>
-
-### entireScenes
+### entireScenes [#entirescenes]
 
 ```ts title="TypeScript"
 entireScenes(): SceneMap
@@ -758,9 +676,7 @@ entireScenes(): SceneMap
 
 当前房间内所有场景的信息。
 
-<a id="exportscene"></a>
-
-### exportScene
+### exportScene [#exportscene]
 
 ```ts title="TypeScript"
 exportScene(scenePath: string): Promise<Blob>
@@ -788,9 +704,7 @@ Promise &lt; Blob &gt;
 
 导出场景内容的 Blob 对象。
 
-<a id="fillscenesnapshot"></a>
-
-### fillSceneSnapshot
+### fillSceneSnapshot [#fillscenesnapshot]
 
 ```ts title="TypeScript"
 fillSceneSnapshot(scenePath: string, div: HTMLElement, width: number, height: number): void
@@ -811,9 +725,7 @@ fillSceneSnapshot(scenePath: string, div: HTMLElement, width: number, height: nu
 
 void
 
-<a id="generatescreenshot"></a>
-
-### generateScreenshot
+### generateScreenshot [#generatescreenshot]
 
 ```ts title="TypeScript"
 generateScreenshot(scenePath?: string, width?: number, height?: number): Promise<string>
@@ -843,9 +755,7 @@ Promise &lt; string &gt;
 
 如果场景中展示了图片或动态 PPT 幻灯片，请确保该图片或 PPT 幻灯片的存储服务器支持跨域资源共享；否则，生成的截图中可能不会显示该图片或 PPT 幻灯片。
 
-<a id="getinvisibleplugin"></a>
-
-### getInvisiblePlugin
+### getInvisiblePlugin [#getinvisibleplugin]
 
 ```ts title="TypeScript"
 getInvisiblePlugin<A>(kind: string): InvisiblePlugin<A> | null
@@ -865,9 +775,7 @@ getInvisiblePlugin<A>(kind: string): InvisiblePlugin<A> | null
 
 指定的不可见插件。
 
-<a id="getpluginattributes"></a>
-
-### getPluginAttributes
+### getPluginAttributes [#getpluginattributes]
 
 ```ts title="TypeScript"
 getPluginAttributes(identifier: Identifier): any | undefined
@@ -885,9 +793,7 @@ getPluginAttributes(identifier: Identifier): any | undefined
 
 any | undefined
 
-<a id="getpluginrectangle"></a>
-
-### getPluginRectangle
+### getPluginRectangle [#getpluginrectangle]
 
 ```ts title="TypeScript"
 getPluginRectangle(identifier: string): Rectangle | undefined
@@ -907,9 +813,7 @@ getPluginRectangle(identifier: string): Rectangle | undefined
 
 组件插件对象的矩形。
 
-<a id="getscene"></a>
-
-### getScene
+### getScene [#getscene]
 
 ```ts title="TypeScript"
 getScene(path: string): WhiteScene | undefined
@@ -929,9 +833,7 @@ getScene(path: string): WhiteScene | undefined
 
 场景信息。详见 [WhiteScene](/zh-CN/api-reference/whiteboard/web/globals#whitescene)。
 
-<a id="importscene"></a>
-
-### importScene
+### importScene [#importscene]
 
 ```ts title="TypeScript"
 importScene(dir: string, payload: Blob): Promise<SceneDefinition>
@@ -958,9 +860,7 @@ Promise &lt; [SceneDefinition](/zh-CN/api-reference/whiteboard/web/globals#scene
 
 方法调用成功后，返回 [SceneDefinition](/zh-CN/api-reference/whiteboard/web/globals#scenedefinition) 对象，其中包含导入场景的 `name`。导入场景的路径即为 `dir` + `name`。 如果需要修改场景路径，可以调用 [moveScene](/zh-CN/api-reference/whiteboard/web/interfaces/room#movescene)。
 
-<a id="insertimage"></a>
-
-### insertImage
+### insertImage [#insertimage]
 
 ```ts title="TypeScript"
 insertImage(imageInfo: ImageInformation): void
@@ -982,9 +882,7 @@ SDK 会根据你传入的 `imageInfo` 在白板上设置并插入图片占位符
 
 void
 
-<a id="insertplugin"></a>
-
-### insertPlugin
+### insertPlugin [#insertplugin]
 
 ```ts title="TypeScript"
 insertPlugin(kind: string, description?: PluginDescription): Identifier
@@ -1005,9 +903,7 @@ insertPlugin(kind: string, description?: PluginDescription): Identifier
 
 组件插件对象在房间内的唯一标识符。
 
-<a id="inserttext"></a>
-
-### insertText
+### insertText [#inserttext]
 
 ```ts title="TypeScript"
 insertText(x: number, y: number, textContent?: string): Identifier
@@ -1029,9 +925,7 @@ insertText(x: number, y: number, textContent?: string): Identifier
 
 文字的标识符，字符串格式。
 
-<a id="lockimage"></a>
-
-### lockImage
+### lockImage [#lockimage]
 
 ```ts title="TypeScript"
 lockImage(uuid: string, locked: boolean): void
@@ -1052,9 +946,7 @@ lockImage(uuid: string, locked: boolean): void
 
 void
 
-<a id="lockimages"></a>
-
-### lockImages
+### lockImages [#lockimages]
 
 ```ts title="TypeScript"
 lockImages(locked: boolean): void
@@ -1078,9 +970,7 @@ v2.14.5
 
 void
 
-<a id="memberstate"></a>
-
-### memberState
+### memberState [#memberstate]
 
 ```ts title="TypeScript"
 memberState(memberId: number): MemberState
@@ -1100,9 +990,7 @@ memberState(memberId: number): MemberState
 
 指定用户的白板工具状态。
 
-<a id="movecamera"></a>
-
-### moveCamera
+### moveCamera [#movecamera]
 
 ```ts title="TypeScript"
 moveCamera(camera: Partial<Camera> & Readonly<{ animationMode?: AnimationMode }>): void
@@ -1120,9 +1008,7 @@ moveCamera(camera: Partial<Camera> & Readonly<{ animationMode?: AnimationMode }>
 
 void
 
-<a id="movecameratocontain"></a>
-
-### moveCameraToContain
+### moveCameraToContain [#movecameratocontain]
 
 ```ts title="TypeScript"
 moveCameraToContain(rectangle: Rectangle & Readonly<{ animationMode?: AnimationMode }>): void
@@ -1140,9 +1026,7 @@ moveCameraToContain(rectangle: Rectangle & Readonly<{ animationMode?: AnimationM
 
 void
 
-<a id="movescene"></a>
-
-### moveScene
+### moveScene [#movescene]
 
 ```ts title="TypeScript"
 moveScene(originalPath: string, targetPath: string): void
@@ -1163,9 +1047,7 @@ moveScene(originalPath: string, targetPath: string): void
 
 void
 
-<a id="moveselectedcomponentstobottom"></a>
-
-### moveSelectedComponentsToBottom
+### moveSelectedComponentsToBottom [#moveselectedcomponentstobottom]
 
 ```ts title="TypeScript"
 moveSelectedComponentsToBottom(): void
@@ -1181,9 +1063,7 @@ v2.14.5
 
 void
 
-<a id="moveselectedcomponentstotop"></a>
-
-### moveSelectedComponentsToTop
+### moveSelectedComponentsToTop [#moveselectedcomponentstotop]
 
 ```ts title="TypeScript"
 moveSelectedComponentsToTop(): void
@@ -1199,9 +1079,7 @@ v2.14.5
 
 void
 
-<a id="paste"></a>
-
-### paste
+### paste [#paste]
 
 ```ts title="TypeScript"
 paste(): void
@@ -1223,9 +1101,7 @@ paste(): void
 
 void
 
-<a id="pptnextstep"></a>
-
-### pptNextStep
+### pptNextStep [#pptnextstep]
 
 ```ts title="TypeScript"
 pptNextStep(): void
@@ -1239,9 +1115,7 @@ pptNextStep(): void
 
 void
 
-<a id="pptpreviousstep"></a>
-
-### pptPreviousStep
+### pptPreviousStep [#pptpreviousstep]
 
 ```ts title="TypeScript"
 pptPreviousStep(): void
@@ -1255,9 +1129,7 @@ pptPreviousStep(): void
 
 void
 
-<a id="putscenes"></a>
-
-### putScenes
+### putScenes [#putscenes]
 
 ```ts title="TypeScript"
 putScenes(path: string, scenes: ReadonlyArray<SceneDefinition>, index?: number): void
@@ -1281,9 +1153,7 @@ putScenes(path: string, scenes: ReadonlyArray<SceneDefinition>, index?: number):
 
 void
 
-<a id="redo"></a>
-
-### redo
+### redo [#redo]
 
 ```ts title="TypeScript"
 redo(): number
@@ -1301,9 +1171,7 @@ number
 
 剩余的可重做次数。
 
-<a id="refreshviewsize"></a>
-
-### refreshViewSize
+### refreshViewSize [#refreshviewsize]
 
 ```ts title="TypeScript"
 refreshViewSize(): void
@@ -1317,9 +1185,7 @@ refreshViewSize(): void
 
 void
 
-<a id="removemagixeventlistener"></a>
-
-### removeMagixEventListener
+### removeMagixEventListener [#removemagixeventlistener]
 
 ```ts title="TypeScript"
 removeMagixEventListener(event: string, listener?: EventListener): void
@@ -1338,9 +1204,7 @@ removeMagixEventListener(event: string, listener?: EventListener): void
 
 void
 
-<a id="removeplugin"></a>
-
-### removePlugin
+### removePlugin [#removeplugin]
 
 ```ts title="TypeScript"
 removePlugin(identifier: Identifier): boolean
@@ -1358,9 +1222,7 @@ removePlugin(identifier: Identifier): boolean
 
 boolean
 
-<a id="removescenes"></a>
-
-### removeScenes
+### removeScenes [#removescenes]
 
 ```ts title="TypeScript"
 removeScenes(path: string): void
@@ -1390,9 +1252,7 @@ removeScenes(path: string): void
 
 void
 
-<a id="scaleppttofit"></a>
-
-### scalePptToFit
+### scalePptToFit [#scaleppttofit]
 
 ```ts title="TypeScript"
 scalePptToFit(animationMode?: AnimationMode): void
@@ -1414,9 +1274,7 @@ scalePptToFit(animationMode?: AnimationMode): void
 
 void
 
-<a id="scenepathtype"></a>
-
-### scenePathType
+### scenePathType [#scenepathtype]
 
 ```ts title="TypeScript"
 scenePathType(path: string): ScenePathType
@@ -1436,9 +1294,7 @@ scenePathType(path: string): ScenePathType
 
 场景路径的类型。
 
-<a id="scenepreview"></a>
-
-### scenePreview
+### scenePreview [#scenepreview]
 
 ```ts title="TypeScript"
 scenePreview(scenePath: string, div: HTMLElement, width: number | undefined, height: number | undefined): void
@@ -1459,9 +1315,7 @@ scenePreview(scenePath: string, div: HTMLElement, width: number | undefined, hei
 
 void
 
-<a id="screenshottocanvas"></a>
-
-### screenshotToCanvas
+### screenshotToCanvas [#screenshottocanvas]
 
 ```ts title="TypeScript"
 screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number): void
@@ -1484,9 +1338,7 @@ screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: 
 
 void
 
-<a id="screenshottocanvasasync"></a>
-
-### screenshotToCanvasAsync
+### screenshotToCanvasAsync [#screenshottocanvasasync]
 
 ```ts title="TypeScript"
 screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number, timeout?: number): Promise<void>
@@ -1516,9 +1368,7 @@ screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, wi
 
 Promise &lt; void &gt;
 
-<a id="setcamerabound"></a>
-
-### setCameraBound
+### setCameraBound [#setcamerabound]
 
 ```ts title="TypeScript"
 setCameraBound(cameraBound: CameraBound): void
@@ -1536,9 +1386,7 @@ setCameraBound(cameraBound: CameraBound): void
 
 void
 
-<a id="setglobalstate"></a>
-
-### setGlobalState
+### setGlobalState [#setglobalstate]
 
 ```ts title="TypeScript"
 setGlobalState(modifyState: Partial<GlobalState>): GlobalState
@@ -1580,9 +1428,7 @@ room.setGlobalState({
 
 修改后的房间公共全局状态。
 
-<a id="setmemberstate"></a>
-
-### setMemberState
+### setMemberState [#setmemberstate]
 
 ```ts title="TypeScript"
 setMemberState(modifyState: Partial<MemberState>): MemberState
@@ -1624,9 +1470,7 @@ room.setMemberState({
 
 修改后的白板工具状态，
 
-<a id="setsceneindex"></a>
-
-### setSceneIndex
+### setSceneIndex [#setsceneindex]
 
 ```ts title="TypeScript"
 setSceneIndex(index: number): void
@@ -1650,9 +1494,7 @@ setSceneIndex(index: number): void
 
 void
 
-<a id="setscenepath"></a>
-
-### setScenePath
+### setScenePath [#setscenepath]
 
 ```ts title="TypeScript"
 setScenePath(scenePath: string): void
@@ -1682,9 +1524,7 @@ setScenePath(scenePath: string): void
 
 void
 
-<a id="setviewmode"></a>
-
-### setViewMode
+### setViewMode [#setviewmode]
 
 ```ts title="TypeScript"
 setViewMode(viewMode: ViewMode): void
@@ -1716,9 +1556,7 @@ setViewMode(viewMode: ViewMode): void
 
 void
 
-<a id="setwritable"></a>
-
-### setWritable
+### setWritable [#setwritable]
 
 ```ts title="TypeScript"
 setWritable(isWritable: boolean): Promise<void>
@@ -1736,9 +1574,7 @@ setWritable(isWritable: boolean): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="stopblocktimestamp"></a>
-
-### stopBlockTimestamp
+### stopBlockTimestamp [#stopblocktimestamp]
 
 ```ts title="TypeScript"
 stopBlockTimestamp(): void
@@ -1754,9 +1590,7 @@ stopBlockTimestamp(): void
 
 void
 
-<a id="syncblocktimestamp"></a>
-
-### syncBlockTimestamp
+### syncBlockTimestamp [#syncblocktimestamp]
 
 ```ts title="TypeScript"
 syncBlockTimestamp(timestamp: number): void
@@ -1782,9 +1616,7 @@ syncBlockTimestamp(timestamp: number): void
 
 void
 
-<a id="undo"></a>
-
-### undo
+### undo [#undo]
 
 ```ts title="TypeScript"
 undo(): number
@@ -1802,9 +1634,7 @@ number
 
 剩余的可撤销次数。
 
-<a id="updateplugin"></a>
-
-### updatePlugin
+### updatePlugin [#updateplugin]
 
 ```ts title="TypeScript"
 updatePlugin(identifier: Identifier, description: PluginDescription): boolean
@@ -1823,9 +1653,7 @@ updatePlugin(identifier: Identifier, description: PluginDescription): boolean
 
 boolean
 
-<a id="updateselectedtext"></a>
-
-### updateSelectedText
+### updateSelectedText [#updateselectedtext]
 
 ```ts title="TypeScript"
 updateSelectedText(format: TextFormat): void
@@ -1845,9 +1673,7 @@ updateSelectedText(format: TextFormat): void
 
 void
 
-<a id="updatetext"></a>
-
-### updateText
+### updateText [#updatetext]
 
 ```ts title="TypeScript"
 updateText(identifier: Identifier, textContent: string): void
@@ -1868,9 +1694,7 @@ updateText(identifier: Identifier, textContent: string): void
 
 void
 
-<a id="waitmagixevent"></a>
-
-### waitMagixEvent
+### waitMagixEvent [#waitmagixevent]
 
 ```ts title="TypeScript"
 waitMagixEvent(filter: EventFilter): Promise<Event>

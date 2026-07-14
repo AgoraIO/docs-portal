@@ -3204,8 +3204,7 @@ function renderDartdocSummarySection(
 
   const parts = [];
   const id = section.attr('id');
-  if (id) parts.push(`<a id="${id}"></a>`);
-  parts.push(`## ${title}`);
+  parts.push(`## ${title}${id ? ` [#${id}]` : ''}`);
 
   for (const term of section.find('> dl > dt').toArray()) {
     const item = renderDartdocDefinitionItem(
@@ -3235,9 +3234,8 @@ function renderDartdocDefinitionItem(
 
   const description = term.next('dd').first();
   const parts = [];
-  if (id) parts.push(`<a id="${id}"></a>`);
   const nameLink = nameNode.find('a[href]').first();
-  parts.push(`### ${escapeInlineText(name)}`);
+  parts.push(`### ${escapeInlineText(name)}${id ? ` [#${id}]` : ''}`);
   if (nameLink.length > 0) {
     const renderedLink = renderAnchor(
       nameLink,
@@ -3281,11 +3279,9 @@ function renderDartdocSourceSection(sourceSection) {
   if (!sourceSection || sourceSection.length === 0) return '';
   const code = sourceSection.find('pre code').first().text().trimEnd();
   return code
-    ? [
-        '<a id="source"></a>',
-        '## Implementation',
-        renderCodeFence(code, 'dart'),
-      ].join('\n\n')
+    ? ['## Implementation [#source]', renderCodeFence(code, 'dart')].join(
+        '\n\n',
+      )
     : '';
 }
 
@@ -3455,8 +3451,7 @@ function renderTypeDocMember(
   const anchor = member.children('a.tsd-anchor[id], a[id], a[name]').first();
   const id = anchor.attr('id') ?? anchor.attr('name');
   const parts = [];
-  if (id) parts.push(`<a id="${id}"></a>`);
-  parts.push(`### ${title}`);
+  parts.push(`### ${title}${id ? ` [#${id}]` : ''}`);
 
   const signature = renderTypeDocSignatures($, member);
   if (signature) parts.push(signature);

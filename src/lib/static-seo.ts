@@ -7,7 +7,7 @@ export type StaticSeoPage = {
   url: string;
 };
 
-type StaticSeoMetadata = {
+export type StaticSeoMetadata = {
   canonicalUrl: string;
   description: string;
   imageUrl: string;
@@ -29,6 +29,7 @@ export type StaticSeoHead = {
 export type StaticSeoRouteData = {
   activePath: string;
   description?: string;
+  seo: StaticSeoMetadata;
   title?: string;
 };
 
@@ -141,14 +142,10 @@ export function createStaticSeoHead(
 }
 
 export function createDocsRouteSeoHead(loaderData: StaticSeoRouteData) {
-  return createStaticSeoHead({
-    description: loaderData.description,
-    title: loaderData.title,
-    url: loaderData.activePath,
-  });
+  return createStaticSeoHead(loaderData.seo);
 }
 
-function createStaticSeoMetadata(
+export function createStaticSeoMetadata(
   page: StaticSeoPage,
   baseUrl = getSitemapBaseUrl(),
 ): StaticSeoMetadata {

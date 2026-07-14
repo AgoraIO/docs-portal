@@ -11,11 +11,9 @@ description: "IAgoraRTCClient API 参考。"
 
 ## 事件
 
-<a id="event_channel_media_relay_event"></a>
+### channel-media-relay-event [#event_channel_media_relay_event]
 
-### channel-media-relay-event
-
-```ts
+```ts title="TypeScript"
 channel-media-relay-event(event: ChannelMediaRelayEvent): void
 ```
 
@@ -31,11 +29,9 @@ channel-media-relay-event(event: ChannelMediaRelayEvent): void
 
 void
 
-<a id="event_channel_media_relay_state"></a>
+### channel-media-relay-state [#event_channel_media_relay_state]
 
-### channel-media-relay-state
-
-```ts
+```ts title="TypeScript"
 channel-media-relay-state(state: ChannelMediaRelayState, code: ChannelMediaRelayError): void
 ```
 
@@ -56,11 +52,9 @@ channel-media-relay-state(state: ChannelMediaRelayState, code: ChannelMediaRelay
 
 void
 
-<a id="event_connection_state_change"></a>
+### connection-state-change [#event_connection_state_change]
 
-### connection-state-change
-
-```ts
+```ts title="TypeScript"
 connection-state-change(curState: ConnectionState, revState: ConnectionState, reason?: ConnectionDisconnectedReason): void
 ```
 
@@ -78,17 +72,15 @@ SDK 与服务器的连接状态发生改变回调。
 
 void
 
-<a id="event_content_inspect_connection_state_change"></a>
+### content-inspect-connection-state-change [#event_content_inspect_connection_state_change]
 
-### content-inspect-connection-state-change
-
-```ts
+```ts title="TypeScript"
 content-inspect-connection-state-change(preState: InspectState, newState: InspectState): void
 ```
 
 视频截图上传服务的连接状态发生改变回调。
 
-```text
+```text title="Text"
 client.on("content-inspect-connection-state-change", (preState, state) => {
   console.error(`Content Inspect Connection State Change: ${preState} -> ${state}` )
 })
@@ -105,17 +97,15 @@ client.on("content-inspect-connection-state-change", (preState, state) => {
 
 void
 
-<a id="event_content_inspect_error"></a>
+### content-inspect-error [#event_content_inspect_error]
 
-### content-inspect-error
-
-```ts
+```ts title="TypeScript"
 content-inspect-error(error?: AgoraRTCError): void
 ```
 
 开启视频截图上传服务出错回调。
 
-```text
+```text title="Text"
 client.on("content-inspect-error", error => {
    console.error("Content Inspect Error:", error)
    error.code === "OPERATION_ABORTED" && client.disableContentInspect()
@@ -132,11 +122,9 @@ client.on("content-inspect-error", error => {
 
 void
 
-<a id="event_crypt_error"></a>
+### crypt-error [#event_crypt_error]
 
-### crypt-error
-
-```ts
+```ts title="TypeScript"
 crypt-error(): void
 ```
 
@@ -148,11 +136,9 @@ crypt-error(): void
 
 void
 
-<a id="event_exception"></a>
+### exception [#event_exception]
 
-### exception
-
-```ts
+```ts title="TypeScript"
 exception(event: object): void
 ```
 
@@ -200,17 +186,15 @@ SDK 监测到异常事件回调。
 
 void
 
-<a id="event_image_moderation_connection_state_change"></a>
+### image-moderation-connection-state-change [#event_image_moderation_connection_state_change]
 
-### image-moderation-connection-state-change
-
-```ts
+```ts title="TypeScript"
 image-moderation-connection-state-change(newState: ImageModerationConnectionState, preState: ImageModerationConnectionState): void
 ```
 
 第三方视频审核服务连接状态发生改变回调。
 
-```text
+```text title="Text"
 client.on("image-moderation-connection-state-change", (curState, preState) => {
    // image-moderation-connection-state-change: CONNECTING to CONNECTED
    console.info(`image-moderation-connection-state-change: ${preState} to ${curState}`);
@@ -228,11 +212,9 @@ client.on("image-moderation-connection-state-change", (curState, preState) => {
 
 void
 
-<a id="event_is_using_cloud_proxy"></a>
+### is-using-cloud-proxy [#event_is_using_cloud_proxy]
 
-### is-using-cloud-proxy
-
-```ts
+```ts title="TypeScript"
 is-using-cloud-proxy(isUsingProxy: boolean): void
 ```
 
@@ -255,11 +237,9 @@ SDK 通过这个回调通知当前媒体流是否经云代理服务转发。触�
 
 void
 
-<a id="event_join_fallback_to_proxy"></a>
+### join-fallback-to-proxy [#event_join_fallback_to_proxy]
 
-### join-fallback-to-proxy
-
-```ts
+```ts title="TypeScript"
 join-fallback-to-proxy(proxyServer: string): void
 ```
 
@@ -281,11 +261,9 @@ SDK 自动切换至 TCP/TLS 443 回调。
 
 void
 
-<a id="event_live_streaming_error"></a>
+### live-streaming-error [#event_live_streaming_error]
 
-### live-streaming-error
-
-```ts
+```ts title="TypeScript"
 live-streaming-error(url: string, err: AgoraRTCError): void
 ```
 
@@ -313,11 +291,9 @@ live-streaming-error(url: string, err: AgoraRTCError): void
 
 void
 
-<a id="event_live_streaming_warning"></a>
+### live-streaming-warning [#event_live_streaming_warning]
 
-### live-streaming-warning
-
-```ts
+```ts title="TypeScript"
 live-streaming-warning(url: string, warning: AgoraRTCError): void
 ```
 
@@ -342,11 +318,9 @@ live-streaming-warning(url: string, warning: AgoraRTCError): void
 
 void
 
-<a id="event_media_reconnect_end"></a>
+### media-reconnect-end [#event_media_reconnect_end]
 
-### media-reconnect-end
-
-```ts
+```ts title="TypeScript"
 media-reconnect-end(uid: UID): void
 ```
 
@@ -362,11 +336,9 @@ SDK 重新建立媒体连接（用于发布和订阅）结束的回调。
 
 void
 
-<a id="event_media_reconnect_start"></a>
+### media-reconnect-start [#event_media_reconnect_start]
 
-### media-reconnect-start
-
-```ts
+```ts title="TypeScript"
 media-reconnect-start(uid: UID): void
 ```
 
@@ -382,11 +354,9 @@ SDK 开始尝试重新建立媒体连接（用于发布和订阅）的回调。
 
 void
 
-<a id="event_network_quality"></a>
+### network-quality [#event_network_quality]
 
-### network-quality
-
-```ts
+```ts title="TypeScript"
 network-quality(stats: NetworkQuality): void
 ```
 
@@ -406,11 +376,9 @@ network-quality(stats: NetworkQuality): void
 
 void
 
-<a id="event_peerconnection_state_change"></a>
+### peerconnection-state-change [#event_peerconnection_state_change]
 
-### peerconnection-state-change
-
-```ts
+```ts title="TypeScript"
 peerconnection-state-change(curState: RTCPeerConnectionState, revState: RTCPeerConnectionState): void
 ```
 
@@ -431,11 +399,9 @@ peerconnection-state-change(curState: RTCPeerConnectionState, revState: RTCPeerC
 
 void
 
-<a id="event_published_user_list"></a>
+### published-user-list [#event_published_user_list]
 
-### published-user-list
-
-```ts
+```ts title="TypeScript"
 published-user-list(users: IAgoraRTCRemoteUser[]): void
 ```
 
@@ -457,11 +423,9 @@ published-user-list(users: IAgoraRTCRemoteUser[]): void
 
 void
 
-<a id="event_stream_fallback"></a>
+### stream-fallback [#event_stream_fallback]
 
-### stream-fallback
-
-```ts
+```ts title="TypeScript"
 stream-fallback(uid: UID, isFallbackOrRecover: "fallback" | "recover"): void
 ```
 
@@ -480,17 +444,15 @@ stream-fallback(uid: UID, isFallbackOrRecover: "fallback" | "recover"): void
 
 void
 
-<a id="event_stream_message"></a>
+### stream-message [#event_stream_message]
 
-### stream-message
-
-```ts
+```ts title="TypeScript"
 stream-message(uid: UID, payload: Uint8Array): void
 ```
 
 收到数据流消息的回调。
 
-```text
+```text title="Text"
 client.on("stream-message", (uid, payload) => {
    console.info(`received data stream message from ${uid}: `, payload);
 });
@@ -507,11 +469,9 @@ client.on("stream-message", (uid, payload) => {
 
 void
 
-<a id="event_stream_type_changed"></a>
+### stream-type-changed [#event_stream_type_changed]
 
-### stream-type-changed
-
-```ts
+```ts title="TypeScript"
 stream-type-changed(uid: UID, streamType: RemoteStreamType): void
 ```
 
@@ -530,11 +490,9 @@ stream-type-changed(uid: UID, streamType: RemoteStreamType): void
 
 void
 
-<a id="event_token_privilege_did_expire"></a>
+### token-privilege-did-expire [#event_token_privilege_did_expire]
 
-### token-privilege-did-expire
-
-```ts
+```ts title="TypeScript"
 token-privilege-did-expire(): void
 ```
 
@@ -544,7 +502,7 @@ Token 已过期回调。
 
 一般情况下，在收到该消息之后，应向服务端重新申请 token，并调用 [join](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#join) 方法传入新的 token 重新加入频道。
 
-```text
+```text title="Text"
 client.on("token-privilege-did-expire", async () => {
   // 重新申请 token 后
   await client.join(<APPID>, <CHANNEL NAME>, <NEW TOKEN>);
@@ -555,11 +513,9 @@ client.on("token-privilege-did-expire", async () => {
 
 void
 
-<a id="event_token_privilege_will_expire"></a>
+### token-privilege-will-expire [#event_token_privilege_will_expire]
 
-### token-privilege-will-expire
-
-```ts
+```ts title="TypeScript"
 token-privilege-will-expire(): void
 ```
 
@@ -569,7 +525,7 @@ Token 即将过期回调。
 
 在收到该回调之后，应向服务端重新申请 token，并调用 [renewToken](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#renewtoken) 方法传入新的 token。
 
-```text
+```text title="Text"
 client.on("token-privilege-will-expire", async function(){
   // 重新申请 token 后
   await client.renewToken(token);
@@ -580,11 +536,9 @@ client.on("token-privilege-will-expire", async function(){
 
 void
 
-<a id="event_user_info_updated"></a>
+### user-info-updated [#event_user_info_updated]
 
-### user-info-updated
-
-```ts
+```ts title="TypeScript"
 user-info-updated(uid: UID, msg: "mute-audio" | "mute-video" | "enable-local-video" | "unmute-audio" | "unmute-video" | "disable-local-video"): void
 ```
 
@@ -605,11 +559,9 @@ user-info-updated(uid: UID, msg: "mute-audio" | "mute-video" | "enable-local-vid
 
 void
 
-<a id="event_user_joined"></a>
+### user-joined [#event_user_joined]
 
-### user-joined
-
-```ts
+```ts title="TypeScript"
 user-joined(user: IAgoraRTCRemoteUser): void
 ```
 
@@ -634,11 +586,9 @@ user-joined(user: IAgoraRTCRemoteUser): void
 
 void
 
-<a id="event_user_left"></a>
+### user-left [#event_user_left]
 
-### user-left
-
-```ts
+```ts title="TypeScript"
 user-left(user: IAgoraRTCRemoteUser, reason: string): void
 ```
 
@@ -663,11 +613,9 @@ user-left(user: IAgoraRTCRemoteUser, reason: string): void
 
 void
 
-<a id="event_user_published"></a>
+### user-published [#event_user_published]
 
-### user-published
-
-```ts
+```ts title="TypeScript"
 user-published(user: IAgoraRTCRemoteUser, mediaType: "audio" | "video" | "datachannel", config?: IDataChannelConfig): void
 ```
 
@@ -677,7 +625,7 @@ user-published(user: IAgoraRTCRemoteUser, mediaType: "audio" | "video" | "datach
 
 如果用户加入频道时频道内已经有其他用户的音视频轨道，也会收到该回调报告已经存在的远端轨道。
 
-```text
+```text title="Text"
 client.on("user-published", async (user, mediaType) => {
   await client.subscribe(user, mediaType);
   if (mediaType === "video") {
@@ -703,11 +651,9 @@ client.on("user-published", async (user, mediaType) => {
 
 void
 
-<a id="event_user_unpublished"></a>
+### user-unpublished [#event_user_unpublished]
 
-### user-unpublished
-
-```ts
+```ts title="TypeScript"
 user-unpublished(user: IAgoraRTCRemoteUser, mediaType: "audio" | "video" | "datachannel", config?: IDataChannelConfig): void
 ```
 
@@ -725,11 +671,9 @@ user-unpublished(user: IAgoraRTCRemoteUser, mediaType: "audio" | "video" | "data
 
 void
 
-<a id="event_volume_indicator"></a>
+### volume-indicator [#event_volume_indicator]
 
-### volume-indicator
-
-```ts
+```ts title="TypeScript"
 volume-indicator(result: object[]): void
 ```
 
@@ -739,7 +683,7 @@ volume-indicator(result: object[]): void
 
 音量范围为 0 到 100 之间。通常在列表中音量大于 60 的用户为持续说话的人。
 
-```text
+```text title="Text"
 client.on("volume-indicator", function(result){
     result.forEach(function(volume, index){
     console.log(`${index} UID ${volume.uid} Level ${volume.level}`);
@@ -759,11 +703,9 @@ void
 
 ## 属性
 
-<a id="channelname"></a>
+### Optional Readonly channelName [#channelname]
 
-### Optional Readonly channelName
-
-```ts
+```ts title="TypeScript"
 channelName: string
 ```
 
@@ -771,21 +713,17 @@ channelName: string
 
 如果本地用户没有加入频道，该属性值为 `undefined`。
 
-<a id="connectionstate"></a>
+### Readonly connectionState [#connectionstate]
 
-### Readonly connectionState
-
-```ts
+```ts title="TypeScript"
 connectionState: ConnectionState
 ```
 
 SDK 和声网服务器的连接状态。
 
-<a id="localtracks"></a>
+### Readonly localTracks [#localtracks]
 
-### Readonly localTracks
-
-```ts
+```ts title="TypeScript"
 localTracks: ILocalTrack[]
 ```
 
@@ -798,11 +736,9 @@ localTracks: ILocalTrack[]
 - 调用 [publish](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#publish) 成功后，发布的轨道对象会自动添加到这个列表中。
 - 调用 [unpublish](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#unpublish) 成功后，取消发布的轨道对象会自动从这个列表中移除。
 
-<a id="remoteusers"></a>
+### Readonly remoteUsers [#remoteusers]
 
-### Readonly remoteUsers
-
-```ts
+```ts title="TypeScript"
 remoteUsers: IAgoraRTCRemoteUser[]
 ```
 
@@ -810,11 +746,9 @@ remoteUsers: IAgoraRTCRemoteUser[]
 
 如果本地用户没有加入频道，该列表为空。
 
-<a id="uid"></a>
+### Optional Readonly uid [#uid]
 
-### Optional Readonly uid
-
-```ts
+```ts title="TypeScript"
 uid: UID
 ```
 
@@ -824,11 +758,9 @@ uid: UID
 
 ## Agora 核心方法
 
-<a id="join"></a>
+### join [#join]
 
-### join
-
-```ts
+```ts title="TypeScript"
 join(appid: string, channel: string, token: string | null, uid?: UID | null, options?: object): Promise<UID>
 ```
 
@@ -860,11 +792,9 @@ Promise 对象，包含本地用户的 ID：
 - 如果你使用字符串型 uid 加入频道，则返回字符串型 uid。
 - 如果你不指定或设为 `null`，声网服务器自动分配一个整数型 uid 并返回。
 
-<a id="leave"></a>
+### leave [#leave]
 
-### leave
-
-```ts
+```ts title="TypeScript"
 leave(): Promise<void>
 ```
 
@@ -880,11 +810,9 @@ leave(): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="publish"></a>
+### publish [#publish]
 
-### publish
-
-```ts
+```ts title="TypeScript"
 publish(tracks: ILocalTrack | ILocalTrack[]): Promise<void>
 ```
 
@@ -906,25 +834,23 @@ publish(tracks: ILocalTrack | ILocalTrack[]): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="subscribe"></a>
+### subscribe [#subscribe]
 
-### subscribe
-
-```ts
+```ts title="TypeScript"
 subscribe(user: IAgoraRTCRemoteUser | UID, mediaType: "video"): Promise<IRemoteVideoTrack>
 ```
 
-```ts
+```ts title="TypeScript"
 subscribe(user: IAgoraRTCRemoteUser | UID, mediaType: "audio"): Promise<IRemoteAudioTrack>
 ```
 
-```ts
+```ts title="TypeScript"
 subscribe(user: IAgoraRTCRemoteUser | UID, mediaType: "video" | "audio" | "datachannel", channelId?: number): Promise<IRemoteTrack | IRemoteDataChannel>
 ```
 
 订阅远端用户的音视频轨道。
 
-```text
+```text title="Text"
 await client.subscribe(user，"audio");
 user.audioTrack.play();
 ```
@@ -946,7 +872,7 @@ Promise &lt; [IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote
 
 订阅远端用户的音视频轨道。
 
-```text
+```text title="Text"
 await client.subscribe(user，"audio");
 user.audioTrack.play();
 ```
@@ -972,7 +898,7 @@ Promise &lt; [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote
 
 订阅远端用户的音视频轨道。
 
-```text
+```text title="Text"
 await client.subscribe(user，"audio");
 user.audioTrack.play();
 ```
@@ -997,11 +923,9 @@ Promise &lt; [IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-trac
 
 如果指定要订阅的音视频轨道不存在会抛出 `TRACK_IS_NOT_PUBLISHED` 错误。
 
-<a id="unpublish"></a>
+### unpublish [#unpublish]
 
-### unpublish
-
-```ts
+```ts title="TypeScript"
 unpublish(tracks?: ILocalTrack | ILocalTrack[]): Promise<void>
 ```
 
@@ -1021,11 +945,9 @@ unpublish(tracks?: ILocalTrack | ILocalTrack[]): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="unsubscribe"></a>
+### unsubscribe [#unsubscribe]
 
-### unsubscribe
-
-```ts
+```ts title="TypeScript"
 unsubscribe(user: IAgoraRTCRemoteUser | UID, mediaType?: "video" | "audio" | "datachannel", channelId?: number): Promise<void>
 ```
 
@@ -1047,11 +969,9 @@ Promise &lt; void &gt;
 
 ## 跨频道媒体流转发方法
 
-<a id="startchannelmediarelay"></a>
+### startChannelMediaRelay [#startchannelmediarelay]
 
-### startChannelMediaRelay
-
-```ts
+```ts title="TypeScript"
 startChannelMediaRelay(config: IChannelMediaRelayConfiguration): Promise<void>
 ```
 
@@ -1068,7 +988,7 @@ startChannelMediaRelay(config: IChannelMediaRelayConfiguration): Promise<void>
 
 注意事项： 跨频道媒体流转发功能需要联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 开通。 该功能不支持 String 型 UID。 请在成功加入频道后调用该方法。 直播场景下，只有主播可以调用该方法。 成功调用该方法后，若你想再次调用该方法，必须先调用 [stopChannelMediaRelay](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#stopchannelmediarelay) 方法退出当前的转发状态。
 
-```text
+```text title="Text"
 client.startChannelMediaRelay(config).then(() => {
   console.log("startChannelMediaRelay success");
 }).catch(e => {
@@ -1088,11 +1008,9 @@ Promise &lt; void &gt;
 
 Promise 对象。当 Promise resolve 后，表示成功开启了跨频道服务。
 
-<a id="stopchannelmediarelay"></a>
+### stopChannelMediaRelay [#stopchannelmediarelay]
 
-### stopChannelMediaRelay
-
-```ts
+```ts title="TypeScript"
 stopChannelMediaRelay(): Promise<void>
 ```
 
@@ -1106,11 +1024,9 @@ Promise &lt; void &gt;
 
 Promise 对象。当 Promise resolve 后，表示成功停止了跨频道服务。
 
-<a id="updatechannelmediarelay"></a>
+### updateChannelMediaRelay [#updatechannelmediarelay]
 
-### updateChannelMediaRelay
-
-```ts
+```ts title="TypeScript"
 updateChannelMediaRelay(config: IChannelMediaRelayConfiguration): Promise<void>
 ```
 
@@ -1134,11 +1050,9 @@ Promise 对象。当 Promise resolve 后，表示更新成功，否则更新失�
 
 ## 双流方法
 
-<a id="disabledualstream"></a>
+### disableDualStream [#disabledualstream]
 
-### disableDualStream
-
-```ts
+```ts title="TypeScript"
 disableDualStream(): Promise<void>
 ```
 
@@ -1148,11 +1062,9 @@ disableDualStream(): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="enabledualstream"></a>
+### enableDualStream [#enabledualstream]
 
-### enableDualStream
-
-```ts
+```ts title="TypeScript"
 enableDualStream(): Promise<void>
 ```
 
@@ -1165,7 +1077,7 @@ enableDualStream(): Promise<void>
 
 注意事项： 在部分 Android 设备的浏览器上调用 `enableDualStream` 方法开启双流，会出现对端无法切换小流的问题。 Android Chrome 上无法使用 H.264 编码发送大小流。 在部分使用 Intel 芯片的 Mac 设备的 Safari 浏览器 上，调用 `enableDualStream` 开启 H.264 编码的视频双流模式时，小流与大流分辨率比率低于 1/4 可能会导致系统卡顿。
 
-```text
+```text title="Text"
 client.enableDualStream().then(() => {
   console.log("Enable Dual stream success!");
 }).catch(err => {
@@ -1177,11 +1089,9 @@ client.enableDualStream().then(() => {
 
 Promise &lt; void &gt;
 
-<a id="setlowstreamparameter"></a>
+### setLowStreamParameter [#setlowstreamparameter]
 
-### setLowStreamParameter
-
-```ts
+```ts title="TypeScript"
 setLowStreamParameter(streamParameter: LowStreamParameter): void
 ```
 
@@ -1203,11 +1113,9 @@ setLowStreamParameter(streamParameter: LowStreamParameter): void
 
 void
 
-<a id="setremotedefaultvideostreamtype"></a>
+### setRemoteDefaultVideoStreamType [#setremotedefaultvideostreamtype]
 
-### setRemoteDefaultVideoStreamType
-
-```ts
+```ts title="TypeScript"
 setRemoteDefaultVideoStreamType(streamType: RemoteStreamType): Promise<void>
 ```
 
@@ -1227,11 +1135,9 @@ setRemoteDefaultVideoStreamType(streamType: RemoteStreamType): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="setremotevideostreamtype"></a>
+### setRemoteVideoStreamType [#setremotevideostreamtype]
 
-### setRemoteVideoStreamType
-
-```ts
+```ts title="TypeScript"
 setRemoteVideoStreamType(uid: UID, streamType: RemoteStreamType): Promise<void>
 ```
 
@@ -1252,11 +1158,9 @@ setRemoteVideoStreamType(uid: UID, streamType: RemoteStreamType): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="setstreamfallbackoption"></a>
+### setStreamFallbackOption [#setstreamfallbackoption]
 
-### setStreamFallbackOption
-
-```ts
+```ts title="TypeScript"
 setStreamFallbackOption(uid: UID, fallbackType: RemoteStreamFallbackType): Promise<void>
 ```
 
@@ -1281,11 +1185,9 @@ Promise &lt; void &gt;
 
 ## 直播方法
 
-<a id="setlivetranscoding"></a>
+### setLiveTranscoding [#setlivetranscoding]
 
-### setLiveTranscoding
-
-```ts
+```ts title="TypeScript"
 setLiveTranscoding(config: LiveStreamingTranscodingConfig): Promise<void>
 ```
 
@@ -1305,11 +1207,9 @@ setLiveTranscoding(config: LiveStreamingTranscodingConfig): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="startlivestreaming"></a>
+### startLiveStreaming [#startlivestreaming]
 
-### startLiveStreaming
-
-```ts
+```ts title="TypeScript"
 startLiveStreaming(url: string, transcodingEnabled?: boolean): Promise<void>
 ```
 
@@ -1319,7 +1219,7 @@ startLiveStreaming(url: string, transcodingEnabled?: boolean): Promise<void>
 
 注意事项： 该方法每次只能增加一路旁路推流地址。
 
-```text
+```text title="Text"
 await client.setLiveTranscoding(config);
 await client.startLiveStreaming("rtmp://xxxx", true);
 ```
@@ -1335,11 +1235,9 @@ await client.startLiveStreaming("rtmp://xxxx", true);
 
 Promise &lt; void &gt;
 
-<a id="stoplivestreaming"></a>
+### stopLiveStreaming [#stoplivestreaming]
 
-### stopLiveStreaming
-
-```ts
+```ts title="TypeScript"
 stopLiveStreaming(url: string): Promise<void>
 ```
 
@@ -1359,11 +1257,9 @@ Promise &lt; void &gt;
 
 ## 其他方法
 
-<a id="_isprerender"></a>
+### _isPreRender [#_isprerender]
 
-### _isPreRender
-
-```ts
+```ts title="TypeScript"
 _isPreRender(): boolean
 ```
 
@@ -1371,11 +1267,9 @@ _isPreRender(): boolean
 
 boolean
 
-<a id="_setrteinfo"></a>
+### _setRteInfo [#_setrteinfo]
 
-### _setRteInfo
-
-```ts
+```ts title="TypeScript"
 _setRteInfo(rteUrl: string, rteSid: string): void
 ```
 
@@ -1390,11 +1284,9 @@ _setRteInfo(rteUrl: string, rteSid: string): void
 
 void
 
-<a id="disablecontentinspect"></a>
+### disableContentInspect [#disablecontentinspect]
 
-### disableContentInspect
-
-```ts
+```ts title="TypeScript"
 disableContentInspect(): Promise<void>
 ```
 
@@ -1404,11 +1296,9 @@ disableContentInspect(): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="enableaudiovolumeindicator"></a>
+### enableAudioVolumeIndicator [#enableaudiovolumeindicator]
 
-### enableAudioVolumeIndicator
-
-```ts
+```ts title="TypeScript"
 enableAudioVolumeIndicator(): void
 ```
 
@@ -1420,7 +1310,7 @@ enableAudioVolumeIndicator(): void
 
 如果本地用户离开频道后再加入频道，你需要重新调用 `enableAudioVolumeIndicator`。
 
-```text
+```text title="Text"
 client.enableAudioVolumeIndicator();
 client.on("volume-indicator", volumes => {
   volumes.forEach((volume, index) => {
@@ -1433,11 +1323,9 @@ client.on("volume-indicator", volumes => {
 
 void
 
-<a id="enablecontentinspect"></a>
+### enableContentInspect [#enablecontentinspect]
 
-### enableContentInspect
-
-```ts
+```ts title="TypeScript"
 enableContentInspect(inspectConfig: InspectConfiguration): Promise<void>
 ```
 
@@ -1447,7 +1335,7 @@ enableContentInspect(inspectConfig: InspectConfiguration): Promise<void>
 
 SDK 目前支持的最高截图频率为 1000 毫秒/次。
 
-```text
+```text title="Text"
 client.enableContentInspect({
   // 设置每 5000ms 对本地视频轨道截一次图
   interval:5000,
@@ -1468,11 +1356,9 @@ client.enableContentInspect({
 
 Promise &lt; void &gt;
 
-<a id="getlisteners"></a>
+### getListeners [#getlisteners]
 
-### getListeners
-
-```ts
+```ts title="TypeScript"
 getListeners(event: string): Function[]
 ```
 
@@ -1488,11 +1374,9 @@ getListeners(event: string): Function[]
 
 Function []
 
-<a id="getlocalaudiostats"></a>
+### getLocalAudioStats [#getlocalaudiostats]
 
-### getLocalAudioStats
-
-```ts
+```ts title="TypeScript"
 getLocalAudioStats(): LocalAudioTrackStats
 ```
 
@@ -1506,11 +1390,9 @@ getLocalAudioStats(): LocalAudioTrackStats
 
 [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-audio-track-stats)
 
-<a id="getlocalvideostats"></a>
+### getLocalVideoStats [#getlocalvideostats]
 
-### getLocalVideoStats
-
-```ts
+```ts title="TypeScript"
 getLocalVideoStats(): LocalVideoTrackStats
 ```
 
@@ -1522,11 +1404,9 @@ getLocalVideoStats(): LocalVideoTrackStats
 
 [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-video-track-stats)
 
-<a id="getnetworkquality"></a>
+### getNetworkQuality [#getnetworkquality]
 
-### getNetworkQuality
-
-```ts
+```ts title="TypeScript"
 getNetworkQuality(): NetworkQuality
 ```
 
@@ -1534,11 +1414,9 @@ getNetworkQuality(): NetworkQuality
 
 [NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/network-quality)
 
-<a id="getntpwalltimeinms"></a>
+### getNtpWallTimeInMs [#getntpwalltimeinms]
 
-### getNtpWallTimeInMs
-
-```ts
+```ts title="TypeScript"
 getNtpWallTimeInMs(): number
 ```
 
@@ -1550,11 +1428,9 @@ getNtpWallTimeInMs(): number
 
 number
 
-<a id="getrtcstats"></a>
+### getRTCStats [#getrtcstats]
 
-### getRTCStats
-
-```ts
+```ts title="TypeScript"
 getRTCStats(): AgoraRTCStats
 ```
 
@@ -1566,11 +1442,9 @@ getRTCStats(): AgoraRTCStats
 
 通话相关的统计信息。
 
-<a id="getremoteaudiostats"></a>
+### getRemoteAudioStats [#getremoteaudiostats]
 
-### getRemoteAudioStats
-
-```ts
+```ts title="TypeScript"
 getRemoteAudioStats(): object
 ```
 
@@ -1594,11 +1468,9 @@ object
 
 - ##### [uid: string]: RemoteAudioTrackStats
 
-<a id="getremotenetworkquality"></a>
+### getRemoteNetworkQuality [#getremotenetworkquality]
 
-### getRemoteNetworkQuality
-
-```ts
+```ts title="TypeScript"
 getRemoteNetworkQuality(): object
 ```
 
@@ -1620,11 +1492,9 @@ object
 
 - ##### [uid: string]: NetworkQuality
 
-<a id="getremotevideostats"></a>
+### getRemoteVideoStats [#getremotevideostats]
 
-### getRemoteVideoStats
-
-```ts
+```ts title="TypeScript"
 getRemoteVideoStats(): object
 ```
 
@@ -1648,11 +1518,9 @@ object
 
 - ##### [uid: string]: RemoteVideoTrackStats
 
-<a id="masssubscribe"></a>
+### massSubscribe [#masssubscribe]
 
-### massSubscribe
-
-```ts
+```ts title="TypeScript"
 massSubscribe(subscribeList: object[]): Promise<object[]>
 ```
 
@@ -1662,7 +1530,7 @@ massSubscribe(subscribeList: object[]): Promise<object[]>
 
 批量订阅远端用户的音视频轨道。
 
-```text
+```text title="Text"
 const result = await client.massSubscribe([{user:userA, mediaType:'audio'}, {user: userB, mediaType:'audio'}]);
 
 for(const {track, mediaType, error} of result) {
@@ -1701,11 +1569,9 @@ Promise &lt; object [] &gt;
 - `track`：远端轨道对象，详见 [RemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-track)。
 - `error`：错误信息。如果对单个用户的音视频轨道订阅失败，会通过这个参数返回错误。
 
-<a id="massunsubscribe"></a>
+### massUnsubscribe [#massunsubscribe]
 
-### massUnsubscribe
-
-```ts
+```ts title="TypeScript"
 massUnsubscribe(unsubscribeList: object[]): Promise<void>
 ```
 
@@ -1715,7 +1581,7 @@ massUnsubscribe(unsubscribeList: object[]): Promise<void>
 
 批量取消订阅远端用户的音视频轨道。
 
-```text
+```text title="Text"
 client.massUnsubscribe([{user:userA}, {user: userB}]);
 ```
 
@@ -1729,11 +1595,9 @@ client.massUnsubscribe([{user:userA}, {user: userB}]);
 
 Promise &lt; void &gt;
 
-<a id="off"></a>
+### off [#off]
 
-### off
-
-```ts
+```ts title="TypeScript"
 off(event: string, listener: Function): void
 ```
 
@@ -1750,123 +1614,121 @@ off(event: string, listener: Function): void
 
 void
 
-<a id="on"></a>
+### on [#on]
 
-### on
-
-```ts
+```ts title="TypeScript"
 on(event: "peerconnection-state-change", listener: typeof event_peerconnection_state_change): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "connection-state-change", listener: typeof event_connection_state_change): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "user-joined", listener: typeof event_user_joined): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "user-left", listener: typeof event_user_left): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "user-published", listener: typeof event_user_published): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "user-unpublished", listener: typeof event_user_unpublished): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "user-info-updated", listener: typeof event_user_info_updated): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "media-reconnect-start", listener: typeof event_media_reconnect_start): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "media-reconnect-end", listener: typeof event_media_reconnect_end): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "stream-type-changed", listener: typeof event_stream_type_changed): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "stream-fallback", listener: typeof event_stream_fallback): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "channel-media-relay-state", listener: typeof event_channel_media_relay_state): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "channel-media-relay-event", listener: typeof event_channel_media_relay_event): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "volume-indicator", listener: typeof event_volume_indicator): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "crypt-error", listener: typeof event_crypt_error): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "token-privilege-will-expire", listener: typeof event_token_privilege_will_expire): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "token-privilege-did-expire", listener: typeof event_token_privilege_did_expire): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "network-quality", listener: typeof event_network_quality): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "live-streaming-error", listener: typeof event_live_streaming_error): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "live-streaming-warning", listener: typeof event_live_streaming_warning): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "exception", listener: typeof event_exception): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "is-using-cloud-proxy", listener: typeof event_is_using_cloud_proxy): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "join-fallback-to-proxy", listener: typeof event_join_fallback_to_proxy): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "published-user-list", listener: typeof event_published_user_list): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "content-inspect-connection-state-change", listener: typeof event_content_inspect_connection_state_change): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "content-inspect-error", listener: typeof event_content_inspect_error): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "image-moderation-connection-state-change", listener: typeof event_image_moderation_connection_state_change): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: "stream-message", listener: typeof event_stream_message): void
 ```
 
-```ts
+```ts title="TypeScript"
 on(event: string, listener: Function): void
 ```
 
@@ -2253,11 +2115,9 @@ void
 
 void
 
-<a id="once"></a>
+### once [#once]
 
-### once
-
-```ts
+```ts title="TypeScript"
 once(event: string, listener: Function): void
 ```
 
@@ -2276,19 +2136,17 @@ once(event: string, listener: Function): void
 
 void
 
-<a id="presubscribe"></a>
+### presubscribe [#presubscribe]
 
-### presubscribe
-
-```ts
+```ts title="TypeScript"
 presubscribe(uid: UID, mediaType: "audio"): Promise<IRemoteAudioTrack>
 ```
 
-```ts
+```ts title="TypeScript"
 presubscribe(uid: UID, mediaType: "video"): Promise<IRemoteVideoTrack>
 ```
 
-```ts
+```ts title="TypeScript"
 presubscribe(uid: UID, mediaType: "video" | "audio"): Promise<IRemoteTrack>
 ```
 
@@ -2325,11 +2183,9 @@ Promise &lt; [IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote
 
 Promise &lt; [IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-track) &gt;
 
-<a id="removealllisteners"></a>
+### removeAllListeners [#removealllisteners]
 
-### removeAllListeners
-
-```ts
+```ts title="TypeScript"
 removeAllListeners(event?: string): void
 ```
 
@@ -2345,11 +2201,9 @@ removeAllListeners(event?: string): void
 
 void
 
-<a id="renewtoken"></a>
+### renewToken [#renewtoken]
 
-### renewToken
-
-```ts
+```ts title="TypeScript"
 renewToken(token: string): Promise<void>
 ```
 
@@ -2367,11 +2221,9 @@ renewToken(token: string): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="sendcustomreportmessage"></a>
+### sendCustomReportMessage [#sendcustomreportmessage]
 
-### sendCustomReportMessage
-
-```ts
+```ts title="TypeScript"
 sendCustomReportMessage(reports: EventCustomReportParams[] | EventCustomReportParams): Promise<void>
 ```
 
@@ -2383,17 +2235,15 @@ sendCustomReportMessage(reports: EventCustomReportParams[] | EventCustomReportPa
 
 | 名称 | 描述 |
 | --- | --- |
-| reports: EventCustomReportParams[] \| EventCustomReportParams | 上报的事件，允许一次上传多条事件。<br />```text<br />client.sendCustomReportMessage({<br />  reportId: "id1", category: "category1", event: "custom", label: "label1", value: 0,<br />}).then(() => {<br />  console.log("send custom report success");<br />}).catch(e => {<br />  console.error("send custom report error");<br />});<br />``` |
+| reports: EventCustomReportParams[] \| EventCustomReportParams | 上报的事件，允许一次上传多条事件。<br />```text title="Text"<br />client.sendCustomReportMessage({<br />  reportId: "id1", category: "category1", event: "custom", label: "label1", value: 0,<br />}).then(() => {<br />  console.log("send custom report success");<br />}).catch(e => {<br />  console.error("send custom report error");<br />});<br />``` |
 
 #### 返回值
 
 Promise &lt; void &gt;
 
-<a id="setclientrole"></a>
+### setClientRole [#setclientrole]
 
-### setClientRole
-
-```ts
+```ts title="TypeScript"
 setClientRole(role: ClientRole, options?: ClientRoleOptions): Promise<void>
 ```
 
@@ -2415,11 +2265,9 @@ setClientRole(role: ClientRole, options?: ClientRoleOptions): Promise<void>
 
 Promise &lt; void &gt;
 
-<a id="setdualstreammode"></a>
+### setDualStreamMode [#setdualstreammode]
 
-### setDualStreamMode
-
-```ts
+```ts title="TypeScript"
 setDualStreamMode(mode: SIMULCAST_STREAM_MODE, streamParameter?: LowStreamParameter): Promise<void>
 ```
 
@@ -2455,11 +2303,9 @@ setDualStreamMode(mode: SIMULCAST_STREAM_MODE, streamParameter?: LowStreamParame
 
 Promise &lt; void &gt;
 
-<a id="setencryptionconfig"></a>
+### setEncryptionConfig [#setencryptionconfig]
 
-### setEncryptionConfig
-
-```ts
+```ts title="TypeScript"
 setEncryptionConfig(encryptionMode: EncryptionMode, secret: string, salt?: Uint8Array, encryptDataStream?: boolean): void
 ```
 
@@ -2484,15 +2330,13 @@ setEncryptionConfig(encryptionMode: EncryptionMode, secret: string, salt?: Uint8
 
 void
 
-<a id="setimagemoderation"></a>
+### setImageModeration [#setimagemoderation]
 
-### setImageModeration
-
-```ts
+```ts title="TypeScript"
 setImageModeration(enabled: false): Promise<void>
 ```
 
-```ts
+```ts title="TypeScript"
 setImageModeration(enabled: true, config: ImageModerationConfiguration): Promise<void>
 ```
 
@@ -2525,11 +2369,9 @@ Promise &lt; void &gt;
 
 Promise &lt; void &gt;
 
-<a id="setlocalaccesspointsv2"></a>
+### setLocalAccessPointsV2 [#setlocalaccesspointsv2]
 
-### setLocalAccessPointsV2
-
-```ts
+```ts title="TypeScript"
 setLocalAccessPointsV2(config: LocalAccessPointConfig): void
 ```
 
@@ -2543,7 +2385,7 @@ setLocalAccessPointsV2(config: LocalAccessPointConfig): void
 
 Note: 使用混合云或私有化平台时，不支持开启云代理服务，因此该方法不能与 [startProxyServer](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#startproxyserver) 一起调用。 成功配置混合云或私有化平台后，SDK 如果直接连接 SD-RTN™ 失败，将不会自动切换到 TCP/TLS 443 通道，即不会再触发 `join-fallback-to-proxy` 回调。 由于 [Chrome 已知问题](https://bugs.chromium.org/p/chromium/issues/detail?id=1290390)，使用该接口过程中 Chrome 控制台可能会误报错误信息提示，开发者可以忽略。
 
-```text
+```text title="Text"
 client.setLocalAccessPointsV2({
   accessPoints: {
     serverList:["192.168.1.1","192.168.2.2"],
@@ -2572,11 +2414,9 @@ void
 
 ## 代理方法
 
-<a id="setproxyserver"></a>
+### setProxyServer [#setproxyserver]
 
-### setProxyServer
-
-```ts
+```ts title="TypeScript"
 setProxyServer(proxyServer: string): void
 ```
 
@@ -2603,11 +2443,9 @@ setProxyServer(proxyServer: string): void
 
 void
 
-<a id="startproxyserver"></a>
+### startProxyServer [#startproxyserver]
 
-### startProxyServer
-
-```ts
+```ts title="TypeScript"
 startProxyServer(mode?: number): void
 ```
 
@@ -2627,11 +2465,9 @@ startProxyServer(mode?: number): void
 
 void
 
-<a id="stopproxyserver"></a>
+### stopProxyServer [#stopproxyserver]
 
-### stopProxyServer
-
-```ts
+```ts title="TypeScript"
 stopProxyServer(): void
 ```
 

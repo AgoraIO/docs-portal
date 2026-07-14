@@ -201,4 +201,20 @@ describe('migrated HTML API navigation scopes', () => {
       ),
     ).toBe(true);
   });
+
+  it.each([
+    'android',
+    'ios',
+  ])('renders the Flexible Classroom %s DITA API root without redirecting it', async (platform) => {
+    const route = `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference`;
+    const payload = await loadDocsPagePayload('zh-CN', 'api-reference', [
+      'flexible-classroom',
+      platform,
+      'api-reference',
+    ]);
+
+    expect(payload && 'activePath' in payload ? payload.activePath : null).toBe(
+      route,
+    );
+  });
 });

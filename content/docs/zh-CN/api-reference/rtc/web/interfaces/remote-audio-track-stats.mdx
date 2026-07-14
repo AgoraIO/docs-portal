@@ -9,11 +9,9 @@ description: "RemoteAudioTrackStats API 参考。"
 
 ## 属性
 
-<a id="codectype"></a>
+### Optional codecType [#codectype]
 
-### Optional codecType
-
-```ts
+```ts title="TypeScript"
 codecType: "opus" | "aac" | "PCMU" | "PCMA" | "G722"
 ```
 
@@ -27,21 +25,17 @@ codecType: "opus" | "aac" | "PCMU" | "PCMA" | "G722"
 
 Firefox 上无法获取该值。
 
-<a id="currentpacketlossrate"></a>
+### currentPacketLossRate [#currentpacketlossrate]
 
-### currentPacketLossRate
-
-```ts
+```ts title="TypeScript"
 currentPacketLossRate: number
 ```
 
 接收的音频在 400ms 内的丢包率。
 
-<a id="end2enddelay"></a>
+### end2EndDelay [#end2enddelay]
 
-### end2EndDelay
-
-```ts
+```ts title="TypeScript"
 end2EndDelay: number
 ```
 
@@ -49,61 +43,49 @@ end2EndDelay: number
 
 从远端采集音频到本地播放音频的延迟。该延迟不包括发送端编码和接收端解码的时间。
 
-<a id="freezerate"></a>
+### freezeRate [#freezerate]
 
-### freezeRate
-
-```ts
+```ts title="TypeScript"
 freezeRate: number
 ```
 
 接收的音频卡顿率。
 
-<a id="packetlossrate"></a>
+### packetLossRate [#packetlossrate]
 
-### packetLossRate
-
-```ts
+```ts title="TypeScript"
 packetLossRate: number
 ```
 
 接收的音频总丢包率。
 
-<a id="publishduration"></a>
+### publishDuration [#publishduration]
 
-### publishDuration
-
-```ts
+```ts title="TypeScript"
 publishDuration: number
 ```
 
 远端发布音频时长 如果为 -1，说明暂时还无法获取发布时长
 
-<a id="receivebitrate"></a>
+### receiveBitrate [#receivebitrate]
 
-### receiveBitrate
-
-```ts
+```ts title="TypeScript"
 receiveBitrate: number
 ```
 
 接收的音频码率（bps）。
 
-<a id="receivebytes"></a>
+### receiveBytes [#receivebytes]
 
-### receiveBytes
-
-```ts
+```ts title="TypeScript"
 receiveBytes: number
 ```
 
 接收的音频总字节数。
 
-<a id="receivedelay"></a>
+### receiveDelay [#receivedelay]
 
-### receiveDelay
-
-```ts
+```ts title="TypeScript"
 receiveDelay: number
 ```
 
@@ -113,11 +95,9 @@ receiveDelay: number
 
 Safari 和 Firefox 上该字段不准确。
 
-<a id="receivelevel"></a>
+### receiveLevel [#receivelevel]
 
-### receiveLevel
-
-```ts
+```ts title="TypeScript"
 receiveLevel: number
 ```
 
@@ -125,61 +105,49 @@ receiveLevel: number
 
 该值通过 WebRTC-Stats 获取，不能确保实时性。如果你想获取当前实时的音量等级，调用 [RemoteAudioTrack.getVolumeLevel](/zh-CN/api-reference/rtc/web/interfaces/iremote-audio-track#getvolumelevel)。
 
-<a id="receivepackets"></a>
+### receivePackets [#receivepackets]
 
-### receivePackets
-
-```ts
+```ts title="TypeScript"
 receivePackets: number
 ```
 
 接收的音频总包数。
 
-<a id="receivepacketsdiscarded"></a>
+### receivePacketsDiscarded [#receivepacketsdiscarded]
 
-### receivePacketsDiscarded
-
-```ts
+```ts title="TypeScript"
 receivePacketsDiscarded: number
 ```
 
 因过早或过晚到达抖动缓冲器而被丢弃的数据包数量。
 
-<a id="receivepacketslost"></a>
+### receivePacketsLost [#receivepacketslost]
 
-### receivePacketsLost
-
-```ts
+```ts title="TypeScript"
 receivePacketsLost: number
 ```
 
 接收的音频总丢包数。
 
-<a id="totalduration"></a>
+### totalDuration [#totalduration]
 
-### totalDuration
-
-```ts
+```ts title="TypeScript"
 totalDuration: number
 ```
 
 接收的音频总时长，单位为秒。
 
-<a id="totalfreezetime"></a>
+### totalFreezeTime [#totalfreezetime]
 
-### totalFreezeTime
-
-```ts
+```ts title="TypeScript"
 totalFreezeTime: number
 ```
 
 接收的音频总卡顿时长，单位为秒。
 
-<a id="transportdelay"></a>
+### transportDelay [#transportdelay]
 
-### transportDelay
-
-```ts
+```ts title="TypeScript"
 transportDelay: number
 ```
 

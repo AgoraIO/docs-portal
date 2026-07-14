@@ -9,11 +9,9 @@ description: "LiveStreamingTranscodingConfig API 参考。"
 
 ## 属性
 
-<a id="audiobitrate"></a>
+### Optional audioBitrate [#audiobitrate]
 
-### Optional audioBitrate
-
-```ts
+```ts title="TypeScript"
 audioBitrate: number
 ```
 
@@ -21,11 +19,9 @@ audioBitrate: number
 
 正整数，默认值为 48，最大值为 128。
 
-<a id="audiochannels"></a>
+### Optional audioChannels [#audiochannels]
 
-### Optional audioChannels
-
-```ts
+```ts title="TypeScript"
 audioChannels: 1 | 2 | 3 | 4 | 5
 ```
 
@@ -39,11 +35,9 @@ audioChannels: 1 | 2 | 3 | 4 | 5
 - 4: 四声道
 - 5: 五声道
 
-<a id="audiosamplerate"></a>
+### Optional audioSampleRate [#audiosamplerate]
 
-### Optional audioSampleRate
-
-```ts
+```ts title="TypeScript"
 audioSampleRate: 32000 | 44100 | 48000
 ```
 
@@ -53,11 +47,9 @@ audioSampleRate: 32000 | 44100 | 48000
 - 44100: 音频采样率 44.1 kHz。
 - 48000: （默认值）音频采样率 48 kHz。
 
-<a id="backgroundcolor"></a>
+### Optional backgroundColor [#backgroundcolor]
 
-### Optional backgroundColor
-
-```ts
+```ts title="TypeScript"
 backgroundColor: number
 ```
 
@@ -65,21 +57,17 @@ backgroundColor: number
 
 默认 0x000000，必须是 16 进制格式。
 
-<a id="backgroundimage"></a>
+### Optional backgroundImage [#backgroundimage]
 
-### Optional backgroundImage
-
-```ts
+```ts title="TypeScript"
 backgroundImage: LiveStreamingTranscodingImage
 ```
 
 用于给直播推流的视频添加背景图片。
 
-<a id="height"></a>
+### Optional height [#height]
 
-### Optional height
-
-```ts
+```ts title="TypeScript"
 height: number
 ```
 
@@ -88,11 +76,9 @@ height: number
 - 如果推视频流， `height` 值不得低于 64，否则声网会调整为 64。
 - 如果推音频流，请将 `width` 和 `height` 设为 0。
 
-<a id="images"></a>
+### Optional images [#images]
 
-### Optional images
-
-```ts
+```ts title="TypeScript"
 images: LiveStreamingTranscodingImage[]
 ```
 
@@ -104,11 +90,9 @@ images: LiveStreamingTranscodingImage[]
 
 目前推流后台只支持添加一张水印图片
 
-<a id="transcodingusers"></a>
+### Optional transcodingUsers [#transcodingusers]
 
-### Optional transcodingUsers
-
-```ts
+```ts title="TypeScript"
 transcodingUsers: LiveStreamingTranscodingUser[]
 ```
 
@@ -116,31 +100,25 @@ transcodingUsers: LiveStreamingTranscodingUser[]
 
 最多支持 17 人同时转码合图。
 
-<a id="userconfigextrainfo"></a>
+### Optional userConfigExtraInfo [#userconfigextrainfo]
 
-### Optional userConfigExtraInfo
-
-```ts
+```ts title="TypeScript"
 userConfigExtraInfo: string
 ```
 
 用户自定义的发送到旁路推流客户端的信息，用于填充 H264/H265 视频中 SEI 帧内容。长度限制：4096字节。关于 SEI 的详细信息，详见 [SEI 帧相关问题](https://docs.agora.io/cn/faq/sei)。
 
-<a id="videobitrate"></a>
+### Optional videoBitrate [#videobitrate]
 
-### Optional videoBitrate
-
-```ts
+```ts title="TypeScript"
 videoBitrate: number
 ```
 
 用于直播推流的输出视频的码率，单位为 Kbps，默认值 400。
 
-<a id="videocodecprofile"></a>
+### Optional videoCodecProfile [#videocodecprofile]
 
-### Optional videoCodecProfile
-
-```ts
+```ts title="TypeScript"
 videoCodecProfile: 66 | 77 | 100
 ```
 
@@ -152,11 +130,9 @@ videoCodecProfile: 66 | 77 | 100
 - `77`: Main 级别的视频编码规格，一般用于主流消费类电子产品，如 MP4、便携的视频播放器、PSP 和 iPad 等。
 - `100`:（默认）High 级别的视频编码规格，一般用于广播及视频碟片存储，高清电视。
 
-<a id="videoframerate"></a>
+### Optional videoFrameRate [#videoframerate]
 
-### Optional videoFrameRate
-
-```ts
+```ts title="TypeScript"
 videoFrameRate: number
 ```
 
@@ -164,31 +140,25 @@ videoFrameRate: number
 
 声网会将高于 30 的帧率设置改为 30。
 
-<a id="videogop"></a>
+### Optional videoGop [#videogop]
 
-### Optional videoGop
-
-```ts
+```ts title="TypeScript"
 videoGop: number
 ```
 
 用于直播推流的输出视频的 GOP，单位为帧，默认值 30。
 
-<a id="watermark"></a>
+### Optional watermark [#watermark]
 
-### Optional watermark
-
-```ts
+```ts title="TypeScript"
 watermark: LiveStreamingTranscodingImage
 ```
 
 用于给直播推流的视频添加水印。
 
-<a id="width"></a>
+### Optional width [#width]
 
-### Optional width
-
-```ts
+```ts title="TypeScript"
 width: number
 ```
 

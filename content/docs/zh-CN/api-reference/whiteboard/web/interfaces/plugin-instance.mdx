@@ -9,9 +9,7 @@ description: "PluginInstance<C, A> API 参考。"
 
 ## 属性
 
-<a id="attributes"></a>
-
-### attributes
+### attributes [#attributes]
 
 ```ts title="TypeScript"
 attributes: A
@@ -19,9 +17,7 @@ attributes: A
 
 组件插件对象的属性。
 
-<a id="context"></a>
-
-### context
+### context [#context]
 
 ```ts title="TypeScript"
 context: C
@@ -29,9 +25,7 @@ context: C
 
 自定义的组件插件上下文。
 
-<a id="height"></a>
-
-### height
+### height [#height]
 
 ```ts title="TypeScript"
 height: number
@@ -39,9 +33,7 @@ height: number
 
 组件插件对象的高。
 
-<a id="identifier"></a>
-
-### identifier
+### identifier [#identifier]
 
 ```ts title="TypeScript"
 identifier: Identifier
@@ -49,9 +41,7 @@ identifier: Identifier
 
 组件插件对象在房间内的唯一标识符。
 
-<a id="isdraging"></a>
-
-### isDraging
+### isDraging [#isdraging]
 
 ```ts title="TypeScript"
 isDraging: boolean
@@ -62,9 +52,7 @@ isDraging: boolean
 - `true`：在拖拽。
 - `false`：不在拖拽。
 
-<a id="isplaying"></a>
-
-### isPlaying
+### isPlaying [#isplaying]
 
 ```ts title="TypeScript"
 isPlaying: boolean
@@ -75,9 +63,7 @@ isPlaying: boolean
 - `true`：在播放。在白板实时房间内，取值一直为 `true`。
 - `false`：不在播放。
 
-<a id="isresizing"></a>
-
-### isResizing
+### isResizing [#isresizing]
 
 ```ts title="TypeScript"
 isResizing: boolean
@@ -88,9 +74,7 @@ isResizing: boolean
 - `true`：在改变。
 - `false`：不在改变。
 
-<a id="kind"></a>
-
-### kind
+### kind [#kind]
 
 ```ts title="TypeScript"
 kind: string
@@ -98,9 +82,7 @@ kind: string
 
 组件插件的类型，是组件插件的唯一标识符。
 
-<a id="originx"></a>
-
-### originX
+### originX [#originx]
 
 ```ts title="TypeScript"
 originX: number
@@ -108,9 +90,7 @@ originX: number
 
 组件插件对象的左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
 
-<a id="originy"></a>
-
-### originY
+### originY [#originy]
 
 ```ts title="TypeScript"
 originY: number
@@ -118,9 +98,7 @@ originY: number
 
 组件插件对象的左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
 
-<a id="playbackspeed"></a>
-
-### playbackSpeed
+### playbackSpeed [#playbackspeed]
 
 ```ts title="TypeScript"
 playbackSpeed: number
@@ -128,9 +106,7 @@ playbackSpeed: number
 
 组件插件对象当前的播放速率倍率（若为实时房间，则恒为 `1.0` ）。
 
-<a id="playertimestamp"></a>
-
-### playerTimestamp
+### playerTimestamp [#playertimestamp]
 
 ```ts title="TypeScript"
 playerTimestamp: number
@@ -138,9 +114,7 @@ playerTimestamp: number
 
 组件插件对象当前播放位置的 Unix 时间戳（若为实时房间，则恒为 0）。
 
-<a id="selectable"></a>
-
-### selectable
+### selectable [#selectable]
 
 ```ts title="TypeScript"
 selectable: boolean
@@ -151,9 +125,7 @@ selectable: boolean
 - `true`：能选中组件插件对象。
 - `false`：不能选中组件插件对象。
 
-<a id="width"></a>
-
-### width
+### width [#width]
 
 ```ts title="TypeScript"
 width: number
@@ -163,9 +135,7 @@ width: number
 
 ## 方法
 
-<a id="putattributes"></a>
-
-### putAttributes
+### putAttributes [#putattributes]
 
 ```ts title="TypeScript"
 putAttributes(attributes: Partial<A>): void
@@ -183,9 +153,7 @@ putAttributes(attributes: Partial<A>): void
 
 void
 
-<a id="remove"></a>
-
-### remove
+### remove [#remove]
 
 ```ts title="TypeScript"
 remove(): void
@@ -197,9 +165,7 @@ remove(): void
 
 void
 
-<a id="removeattributekeys"></a>
-
-### removeAttributeKeys
+### removeAttributeKeys [#removeattributekeys]
 
 ```ts title="TypeScript"
 removeAttributeKeys<K>(...keys: K[]): void
@@ -217,9 +183,7 @@ removeAttributeKeys<K>(...keys: K[]): void
 
 void
 
-<a id="update"></a>
-
-### update
+### update [#update]
 
 ```ts title="TypeScript"
 update(description: PluginDescription<A>): void

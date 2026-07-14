@@ -13,13 +13,9 @@ The following code shows how to get the number of the unread messages from the c
   int? unreadCount = con?.unreadCount;
 ```
 
-<a id="instance-properties"></a>
+## Properties [#instance-properties]
 
-## Properties
-
-<a id="ext"></a>
-
-### ext
+### ext [#ext]
 
 [ext](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/ext)
 
@@ -29,9 +25,7 @@ ext -> Map<String, String>?
 
 _read-only._
 
-<a id="hashCode"></a>
-
-### hashCode
+### hashCode [#hashCode]
 
 [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
 
@@ -45,9 +39,7 @@ _read-only, inherited._
 
 _Inherited._
 
-<a id="id"></a>
-
-### id
+### id [#id]
 
 [id](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/id)
 
@@ -59,9 +51,7 @@ The conversation ID.
 
 _final._
 
-<a id="isChatThread"></a>
-
-### isChatThread
+### isChatThread [#isChatThread]
 
 [isChatThread](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/is-chat-thread)
 
@@ -73,9 +63,7 @@ Is chat thread conversation.
 
 _final._
 
-<a id="runtimeType"></a>
-
-### runtimeType
+### runtimeType [#runtimeType]
 
 [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
 
@@ -89,9 +77,7 @@ _read-only, inherited._
 
 _Inherited._
 
-<a id="type"></a>
-
-### type
+### type [#type]
 
 [type](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/type)
 
@@ -103,13 +89,9 @@ The conversation type.
 
 _final._
 
-<a id="instance-methods"></a>
+## Methods [#instance-methods]
 
-## Methods
-
-<a id="appendMessage"></a>
-
-### appendMessage
+### appendMessage [#appendMessage]
 
 [appendMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/append-message)
 
@@ -119,9 +101,7 @@ appendMessage(ChatMessage message) -> Future<void>
 
 Inserts a message to the end of a conversation in the local database.
 
-<a id="deleteAllMessages"></a>
-
-### deleteAllMessages
+### deleteAllMessages [#deleteAllMessages]
 
 [deleteAllMessages](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/delete-all-messages)
 
@@ -131,9 +111,7 @@ deleteAllMessages() -> Future<void>
 
 Deletes all the messages of the conversation from both the memory and local database.
 
-<a id="deleteMessage"></a>
-
-### deleteMessage
+### deleteMessage [#deleteMessage]
 
 [deleteMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/delete-message)
 
@@ -143,9 +121,7 @@ deleteMessage(String messageId) -> Future<void>
 
 Deletes a message in the local database.
 
-<a id="insertMessage"></a>
-
-### insertMessage
+### insertMessage [#insertMessage]
 
 [insertMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/insert-message)
 
@@ -155,9 +131,7 @@ insertMessage(ChatMessage message) -> Future<void>
 
 Inserts a message to a conversation in the local database and the SDK will automatically update the last message.
 
-<a id="lastReceivedMessage"></a>
-
-### lastReceivedMessage
+### lastReceivedMessage [#lastReceivedMessage]
 
 [lastReceivedMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/last-received-message)
 
@@ -167,9 +141,7 @@ lastReceivedMessage() -> Future<ChatMessage?>
 
 Gets the latest message from the conversation.
 
-<a id="latestMessage"></a>
-
-### latestMessage
+### latestMessage [#latestMessage]
 
 [latestMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/latest-message)
 
@@ -179,9 +151,7 @@ latestMessage() -> Future<ChatMessage?>
 
 Gets the last message from the conversation.
 
-<a id="loadMessage"></a>
-
-### loadMessage
+### loadMessage [#loadMessage]
 
 [loadMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/load-message)
 
@@ -191,9 +161,7 @@ loadMessage(String messageId) -> Future<ChatMessage?>
 
 Gets the message with a specific message ID.
 
-<a id="loadMessages"></a>
-
-### loadMessages
+### loadMessages [#loadMessages]
 
 [loadMessages](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/load-messages)
 
@@ -203,9 +171,7 @@ loadMessages({String startMsgId = '', int loadCount = 20, ChatSearchDirection di
 
 Loads multiple messages from the local database.
 
-<a id="loadMessagesFromTime"></a>
-
-### loadMessagesFromTime
+### loadMessagesFromTime [#loadMessagesFromTime]
 
 [loadMessagesFromTime](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/load-messages-from-time)
 
@@ -215,9 +181,7 @@ loadMessagesFromTime({required int startTime, required int endTime, int count = 
 
 Loads messages from the local database according the following parameters: start timestamp, end timestamp, count.
 
-<a id="loadMessagesWithKeyword"></a>
-
-### loadMessagesWithKeyword
+### loadMessagesWithKeyword [#loadMessagesWithKeyword]
 
 [loadMessagesWithKeyword](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/load-messages-with-keyword)
 
@@ -227,9 +191,7 @@ loadMessagesWithKeyword(String keywords, {String? sender, int timestamp = -1, in
 
 Loads messages from the local database by the following parameters: keywords, timestamp, max count, sender, search direction.
 
-<a id="loadMessagesWithMsgType"></a>
-
-### loadMessagesWithMsgType
+### loadMessagesWithMsgType [#loadMessagesWithMsgType]
 
 [loadMessagesWithMsgType](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/load-messages-with-msg-type)
 
@@ -239,9 +201,7 @@ loadMessagesWithMsgType({required MessageType type, int timestamp = -1, int coun
 
 Retrieves messages from the database according to the following parameters: the message type, the Unix timestamp, max count, sender.
 
-<a id="markAllMessagesAsRead"></a>
-
-### markAllMessagesAsRead
+### markAllMessagesAsRead [#markAllMessagesAsRead]
 
 [markAllMessagesAsRead](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/mark-all-messages-as-read)
 
@@ -251,9 +211,7 @@ markAllMessagesAsRead() -> Future<void>
 
 Marks all messages as read.
 
-<a id="markMessageAsRead"></a>
-
-### markMessageAsRead
+### markMessageAsRead [#markMessageAsRead]
 
 [markMessageAsRead](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/mark-message-as-read)
 
@@ -263,9 +221,7 @@ markMessageAsRead(String messageId) -> Future<void>
 
 Marks a message as read.
 
-<a id="messagesCount"></a>
-
-### messagesCount
+### messagesCount [#messagesCount]
 
 [messagesCount](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/messages-count)
 
@@ -275,9 +231,7 @@ messagesCount() -> Future<int>
 
 Message count
 
-<a id="noSuchMethod"></a>
-
-### noSuchMethod
+### noSuchMethod [#noSuchMethod]
 
 [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
 
@@ -291,9 +245,7 @@ _inherited._
 
 _Inherited._
 
-<a id="setExt"></a>
-
-### setExt
+### setExt [#setExt]
 
 [setExt](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/set-ext)
 
@@ -301,9 +253,7 @@ _Inherited._
 setExt(Map<String, String>? ext) -> Future<void>
 ```
 
-<a id="toString"></a>
-
-### toString
+### toString [#toString]
 
 [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
 
@@ -317,9 +267,7 @@ _inherited._
 
 _Inherited._
 
-<a id="unreadCount"></a>
-
-### unreadCount
+### unreadCount [#unreadCount]
 
 [unreadCount](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/unread-count)
 
@@ -329,9 +277,7 @@ unreadCount() -> Future<int>
 
 Gets the unread message count of the conversation.
 
-<a id="updateMessage"></a>
-
-### updateMessage
+### updateMessage [#updateMessage]
 
 [updateMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation/update-message)
 
@@ -341,13 +287,9 @@ updateMessage(ChatMessage message) -> Future<void>
 
 Updates a message in the local database.
 
-<a id="operators"></a>
+## Operators [#operators]
 
-## Operators
-
-<a id="operator =="></a>
-
-### operator ==
+### operator == [#operator ==]
 
 [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
 
