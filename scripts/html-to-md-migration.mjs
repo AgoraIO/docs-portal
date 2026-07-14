@@ -4359,7 +4359,35 @@ async function registerDartdocAncestorNavigation(targetRoot) {
   );
 }
 
-async function registerWhiteboardWebAncestorNavigation(
+function findApiReferenceAncestor(targetRoot) {
+  let currentDir = path.dirname(targetRoot);
+  while (path.dirname(currentDir) !== currentDir) {
+    if (path.basename(currentDir) === 'api-reference') return currentDir;
+    currentDir = path.dirname(currentDir);
+  }
+  return null;
+}
+
+async function registerTypeDocAncestorNavigation(targetRoot) {
+  const apiReferenceDir = findApiReferenceAncestor(targetRoot);
+  if (!apiReferenceDir) return;
+
+  let childDir = targetRoot;
+  let parentDir = path.dirname(childDir);
+  while (parentDir !== apiReferenceDir) {
+    const parentMetaPath = path.join(parentDir, 'meta.json');
+    if (!(await fileExists(parentMetaPath))) return;
+    await registerNavigationChild(parentMetaPath, path.basename(childDir));
+    childDir = parentDir;
+    parentDir = path.dirname(childDir);
+  }
+
+  const apiReferenceMetaPath = path.join(apiReferenceDir, 'meta.json');
+  if (!(await fileExists(apiReferenceMetaPath))) return;
+  await registerNavigationChild(apiReferenceMetaPath, path.basename(childDir));
+}
+
+async function configureWhiteboardWebAncestorNavigation(
   targetRoot,
   opts,
   targetBasePath,
@@ -4385,8 +4413,6 @@ async function registerWhiteboardWebAncestorNavigation(
     apiReferenceMeta.pages,
     targetBasePath,
   );
-  await registerNavigationChild(productMetaPath, path.basename(targetRoot));
-
   const productMeta = JSON.parse(await fs.readFile(productMetaPath, 'utf8'));
   let productMetaChanged = false;
   if (hasVisibleWebLink && productMeta.sidebarHidden !== true) {
@@ -4397,11 +4423,6 @@ async function registerWhiteboardWebAncestorNavigation(
     productMetaChanged = true;
   }
   if (productMetaChanged) await writeJson(productMetaPath, productMeta);
-
-  await registerNavigationChild(
-    apiReferenceMetaPath,
-    path.basename(productDir),
-  );
 }
 
 async function registerNavigationChild(metaPath, childSlug, fallbackTitle) {
@@ -4906,7 +4927,8 @@ async function main() {
   }
 
   if (sourceStructure.id === SOURCE_TYPES.TYPEDOC.id) {
-    await registerWhiteboardWebAncestorNavigation(
+    await registerTypeDocAncestorNavigation(targetRoot);
+    await configureWhiteboardWebAncestorNavigation(
       targetRoot,
       opts,
       targetBasePath,

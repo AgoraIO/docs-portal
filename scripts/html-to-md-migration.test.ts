@@ -1793,6 +1793,55 @@ describe('html-to-md-migration', () => {
     expect(unlinkedProductMeta).not.toHaveProperty('sidebarHidden');
   });
 
+  it('registers RTC Mini Program TypeDoc output in existing ancestor navigation', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'typedoc-source');
+    const apiReferenceDir = path.join(
+      rootDir,
+      'content',
+      'docs',
+      'zh-CN',
+      'api-reference',
+    );
+    const productDir = path.join(apiReferenceDir, 'rtc');
+    const outputDir = path.join(productDir, 'mini-program');
+    await writeTypeDocFixture(sourceDir);
+    await writeFixture(
+      path.join(apiReferenceDir, 'meta.json'),
+      `${JSON.stringify({ title: '参考中心', pages: ['rtc'] }, null, 2)}\n`,
+    );
+    await writeFixture(
+      path.join(productDir, 'meta.json'),
+      `${JSON.stringify(
+        { title: 'RTC', pages: ['android', 'react-sdk', '!legacy-platform'] },
+        null,
+        2,
+      )}\n`,
+    );
+
+    const args = [
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'mini-program',
+    ];
+    runMigration(args);
+    runMigration(args);
+
+    await expect(
+      readJson(path.join(productDir, 'meta.json')),
+    ).resolves.toMatchObject({
+      pages: ['android', 'react-sdk', 'mini-program', '!legacy-platform'],
+    });
+    await expect(
+      readJson(path.join(apiReferenceDir, 'meta.json')),
+    ).resolves.toMatchObject({ pages: ['rtc'] });
+  });
+
   it('rejects Web SDK sources mapped to the React SDK platform route', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'typedoc-source');
