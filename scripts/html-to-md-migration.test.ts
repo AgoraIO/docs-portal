@@ -326,6 +326,25 @@ async function writeTypeDocFixture(sourceDir: string) {
   );
 }
 
+async function writeWhiteboardWebTypeDocFixture(sourceDir: string) {
+  await writeTypeDocFixture(sourceDir);
+  for (const [source, title] of [
+    ['classes/whitewebsdk.html', 'Class WhiteWebSdk'],
+    ['interfaces/room.html', 'Interface Room&lt;CALLBACKS&gt;'],
+    ['interfaces/player.html', 'Interface Player&lt;CALLBACKS&gt;'],
+    ['interfaces/displayer.html', 'Interface Displayer&lt;CALLBACKS&gt;'],
+    ['globals.html', 'Globals'],
+  ]) {
+    await writeFixture(
+      path.join(sourceDir, source),
+      `<!doctype html><html><body>
+        <header><div class="tsd-page-title"><h1>${title}</h1></div></header>
+        <div class="col-content"><p>Public Whiteboard Web API.</p></div>
+      </body></html>`,
+    );
+  }
+}
+
 async function writeDoxygenFixture(sourceDir: string) {
   await writeFixture(path.join(sourceDir, 'doxygen.css'), '/* marker */');
   await writeFixture(
@@ -1069,6 +1088,169 @@ describe('html-to-md-migration', () => {
     await expect(
       readJson(path.join(outputDir, 'meta.json')),
     ).resolves.toMatchObject({ navScope: {} });
+  });
+
+  it('uses the Whiteboard Web public navigation with stable interface routes', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'typedoc-source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeWhiteboardWebTypeDocFixture(sourceDir);
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'whiteboard',
+      '--platform',
+      'web',
+      '--target-base-path',
+      '/zh-CN/api-reference/whiteboard/web',
+    ]);
+
+    const meta = await readJson(path.join(outputDir, 'meta.json'));
+    expect(meta.pages).toEqual(
+      expect.arrayContaining([
+        '[WhiteWebSdk](/zh-CN/api-reference/whiteboard/web/classes/white-web-sdk)',
+        '[Room](/zh-CN/api-reference/whiteboard/web/interfaces/room)',
+        '[Player](/zh-CN/api-reference/whiteboard/web/interfaces/player)',
+        '[Displayer](/zh-CN/api-reference/whiteboard/web/interfaces/displayer)',
+        '[Globals](/zh-CN/api-reference/whiteboard/web/globals)',
+        '!classes',
+        '!interfaces',
+      ]),
+    );
+    expect(meta.pages).not.toContain('classes');
+    expect(meta.pages).not.toContain('interfaces');
+    for (const route of ['room', 'player', 'displayer']) {
+      await expect(
+        pathExists(path.join(outputDir, 'interfaces', `${route}.mdx`)),
+      ).resolves.toBe(true);
+      await expect(
+        pathExists(
+          path.join(outputDir, 'interfaces', `${route}-callbacks.mdx`),
+        ),
+      ).resolves.toBe(false);
+    }
+  });
+
+  it('registers Whiteboard Web output in existing ancestor navigation', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'typedoc-source');
+    const apiReferenceDir = path.join(
+      rootDir,
+      'content',
+      'docs',
+      'zh-CN',
+      'api-reference',
+    );
+    const productDir = path.join(apiReferenceDir, 'whiteboard');
+    const outputDir = path.join(productDir, 'web');
+    await writeWhiteboardWebTypeDocFixture(sourceDir);
+    await writeFixture(
+      path.join(apiReferenceDir, 'meta.json'),
+      `${JSON.stringify(
+        {
+          title: '参考中心',
+          pages: [
+            'overview',
+            {
+              pages: ['[Web SDK](/zh-CN/api-reference/whiteboard/web)'],
+              title: '互动白板',
+              type: 'group',
+            },
+            '!legacy-product',
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+    await writeFixture(
+      path.join(productDir, 'meta.json'),
+      `${JSON.stringify(
+        { title: '互动白板', pages: ['fastboard', 'android'] },
+        null,
+        2,
+      )}\n`,
+    );
+
+    const args = [
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'whiteboard',
+      '--platform',
+      'web',
+    ];
+    runMigration(args);
+    runMigration(args);
+
+    await expect(
+      readJson(path.join(apiReferenceDir, 'meta.json')),
+    ).resolves.toMatchObject({
+      pages: [
+        'overview',
+        {
+          pages: ['[Web SDK](/zh-CN/api-reference/whiteboard/web)'],
+          title: '互动白板',
+          type: 'group',
+        },
+        'whiteboard',
+        '!legacy-product',
+      ],
+    });
+    await expect(
+      readJson(path.join(productDir, 'meta.json')),
+    ).resolves.toMatchObject({
+      pages: ['fastboard', 'android', 'web'],
+      sidebarHidden: true,
+    });
+
+    const unlinkedApiReferenceDir = path.join(
+      rootDir,
+      'unlinked',
+      'content',
+      'docs',
+      'zh-CN',
+      'api-reference',
+    );
+    const unlinkedProductDir = path.join(unlinkedApiReferenceDir, 'whiteboard');
+    const unlinkedOutputDir = path.join(unlinkedProductDir, 'web');
+    await writeFixture(
+      path.join(unlinkedApiReferenceDir, 'meta.json'),
+      `${JSON.stringify({ title: '参考中心', pages: ['overview'] }, null, 2)}\n`,
+    );
+    await writeFixture(
+      path.join(unlinkedProductDir, 'meta.json'),
+      `${JSON.stringify(
+        { title: '互动白板', sidebarHidden: true, pages: ['android'] },
+        null,
+        2,
+      )}\n`,
+    );
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      unlinkedOutputDir,
+      '--product',
+      'whiteboard',
+      '--platform',
+      'web',
+    ]);
+
+    await expect(
+      readJson(path.join(unlinkedApiReferenceDir, 'meta.json')),
+    ).resolves.toMatchObject({ pages: ['overview', 'whiteboard'] });
+    const unlinkedProductMeta = await readJson(
+      path.join(unlinkedProductDir, 'meta.json'),
+    );
+    expect(unlinkedProductMeta.pages).toEqual(['android', 'web']);
+    expect(unlinkedProductMeta).not.toHaveProperty('sidebarHidden');
   });
 
   it('rejects Web SDK sources mapped to the React SDK platform route', async () => {

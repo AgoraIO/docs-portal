@@ -2767,7 +2767,9 @@ function typedocRouteSegmentsForSourceName(sourceName, pageTitleBySource) {
 
   const title = normalizeTypeDocTitle(pageTitleBySource.get(sourceName) ?? '');
   if (!title) return null;
-  return [folder, toKebab(title)];
+  const genericStart = title.indexOf('<');
+  const routeTitle = genericStart === -1 ? title : title.slice(0, genericStart);
+  return [folder, toKebab(routeTitle)];
 }
 
 function titleFromSlug(slug) {
@@ -2790,6 +2792,83 @@ async function writeJson(filePath, data) {
 async function writeFile(filePath, contents) {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   await fs.writeFile(filePath, contents, 'utf8');
+}
+
+async function registerWhiteboardWebAncestorNavigation(
+  targetRoot,
+  opts,
+  targetBasePath,
+) {
+  if (opts.product !== 'whiteboard' || opts.platform !== 'web') return;
+
+  const productDir = path.dirname(targetRoot);
+  const apiReferenceDir = path.dirname(productDir);
+  if (path.basename(apiReferenceDir) !== 'api-reference') return;
+
+  const apiReferenceMetaPath = path.join(apiReferenceDir, 'meta.json');
+  const productMetaPath = path.join(productDir, 'meta.json');
+  if (
+    !(await fileExists(apiReferenceMetaPath)) ||
+    !(await fileExists(productMetaPath))
+  ) {
+    return;
+  }
+
+  const apiReferenceMeta = JSON.parse(
+    await fs.readFile(apiReferenceMetaPath, 'utf8'),
+  );
+  const hasVisibleWebLink = navigationPagesContainLink(
+    apiReferenceMeta.pages,
+    targetBasePath,
+  );
+  await registerNavigationChild(productMetaPath, path.basename(targetRoot), {
+    sidebarHidden: hasVisibleWebLink,
+  });
+  await registerNavigationChild(
+    apiReferenceMetaPath,
+    path.basename(productDir),
+  );
+}
+
+function navigationPagesContainLink(pages, targetPath) {
+  if (!Array.isArray(pages)) return false;
+  return pages.some((page) => {
+    if (typeof page === 'string') {
+      return page.match(/\]\(([^)#?]+)(?:[#?][^)]*)?\)/)?.[1] === targetPath;
+    }
+    return navigationPagesContainLink(page?.pages, targetPath);
+  });
+}
+
+async function registerNavigationChild(metaPath, childSlug, options = {}) {
+  const meta = JSON.parse(await fs.readFile(metaPath, 'utf8'));
+  if (!Array.isArray(meta.pages)) return;
+
+  let changed = false;
+  const alreadyRegistered = meta.pages.some(
+    (page) => page === childSlug || page === `!${childSlug}`,
+  );
+  if (!alreadyRegistered) {
+    const firstHiddenIndex = meta.pages.findIndex(
+      (page) => typeof page === 'string' && page.startsWith('!'),
+    );
+    meta.pages.splice(
+      firstHiddenIndex === -1 ? meta.pages.length : firstHiddenIndex,
+      0,
+      childSlug,
+    );
+    changed = true;
+  }
+  if (Object.hasOwn(options, 'sidebarHidden')) {
+    if (options.sidebarHidden && meta.sidebarHidden !== true) {
+      meta.sidebarHidden = true;
+      changed = true;
+    } else if (!options.sidebarHidden && 'sidebarHidden' in meta) {
+      delete meta.sidebarHidden;
+      changed = true;
+    }
+  }
+  if (changed) await writeJson(metaPath, meta);
 }
 
 function collectPlannedOutputPaths(targetRoot, tocNodes) {
@@ -3113,6 +3192,14 @@ async function main() {
     if (opts.verbose) console.log(`  ✅ ${node.slug}`);
   }
 
+  if (sourceStructure.id === SOURCE_TYPES.TYPEDOC.id) {
+    await registerWhiteboardWebAncestorNavigation(
+      targetRoot,
+      opts,
+      targetBasePath,
+    );
+  }
+
   console.log(`\n${'─'.repeat(50)}`);
   console.log(`✨ Migration complete!`);
   console.log(`   Pages written: ${writtenCount}`);
@@ -3128,19 +3215,31 @@ async function applyBuiltInNavigationPreset(opts, sourceStructure) {
   }
 
   opts.navigation = 'generated';
-  if (
-    sourceStructure.id !== SOURCE_TYPES.TYPEDOC.id ||
-    opts.product !== 'flexible-classroom' ||
-    opts.platform !== 'web'
-  ) {
-    return;
-  }
+  if (sourceStructure.id !== SOURCE_TYPES.TYPEDOC.id) return;
+
+  const preset = [
+    {
+      fileName: 'flexible-classroom-store.json',
+      platform: 'web',
+      product: 'flexible-classroom',
+    },
+    {
+      fileName: 'whiteboard-web.json',
+      platform: 'web',
+      product: 'whiteboard',
+    },
+  ].find(
+    (candidate) =>
+      candidate.product === opts.product &&
+      candidate.platform === opts.platform,
+  );
+  if (!preset) return;
 
   const manifestPath = path.join(
     SCRIPT_DIR,
     'html-migration',
     'navigation',
-    'flexible-classroom-store.json',
+    preset.fileName,
   );
   const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
   const knownSources = new Set(
