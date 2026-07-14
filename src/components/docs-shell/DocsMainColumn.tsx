@@ -57,10 +57,7 @@ export function DocsMainColumn({
             />
           </div>
         </div>
-        <DocsSiteFooter
-          className="relative left-1/2 w-screen -translate-x-1/2 lg:hidden"
-          locale={locale}
-        />
+        <DocsSiteFooter className="relative left-1/2 w-screen -translate-x-1/2 lg:hidden" />
       </div>
     </main>
   );
