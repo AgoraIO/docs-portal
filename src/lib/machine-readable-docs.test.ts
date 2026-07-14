@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   filterMachineReadableDocsPages,
+  getMachineReadableLocale,
   isMachineReadableDocsPath,
   isMachineReadableLocale,
   isPublicMarkdownLocale,
@@ -11,6 +12,8 @@ import {
 describe('machine-readable docs filters', () => {
   it('allows only English docs in machine-readable feeds', () => {
     expect(MACHINE_READABLE_LOCALE).toBe('en');
+    expect(getMachineReadableLocale('global')).toBe('en');
+    expect(getMachineReadableLocale('cn')).toBe('zh-CN');
     expect(isMachineReadableLocale('en')).toBe(true);
     expect(isMachineReadableLocale('zh-CN')).toBe(false);
     expect(isMachineReadableDocsPath('/en/introduction/about-agora')).toBe(

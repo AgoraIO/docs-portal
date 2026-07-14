@@ -1,0 +1,28 @@
+---
+title: "fetchPushConfigsFromServer method"
+description: "API docs for the fetchPushConfigsFromServer method from the ChatPushManager class, for the Dart programming language."
+---
+
+Gets the push configurations from the server.
+
+```dart title="Dart"
+Future<ChatPushConfigs> fetchPushConfigsFromServer()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatPushConfigs> fetchPushConfigsFromServer() async {
+  Map result = await PushChannel.invokeMethod(
+      ChatMethodKeys.getImPushConfigFromServer);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatPushConfigs.fromJson(
+        result[ChatMethodKeys.getImPushConfigFromServer]);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

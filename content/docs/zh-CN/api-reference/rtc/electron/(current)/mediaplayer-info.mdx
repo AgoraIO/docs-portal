@@ -2,6 +2,7 @@
 title: "播放信息获取"
 description: "获取播放媒体文件时的音频缓冲延迟。"
 ---
+
 <a id="toc_mediaplayer_info"></a>
 
 ## 播放信息获取
@@ -35,7 +36,6 @@ abstract getAudioBufferDelay(): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getduration"></a>
@@ -58,7 +58,6 @@ abstract getDuration(): number;
 
 媒体文件总时长（毫秒）。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getmediaplayerid"></a>
@@ -82,7 +81,6 @@ abstract getMediaPlayerId(): number;
 - 方法调用成功，返回播放器 ID。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getmute"></a>
@@ -106,7 +104,6 @@ abstract getMute(): boolean;
 - true：当前播放的媒体文件为静音。
 - false：当前播放的媒体文件没有静音。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplayoutvolume"></a>
@@ -132,7 +129,6 @@ abstract getPlayoutVolume(): number;
 - 0: 无声。
 - 100: （默认）媒体文件的原始播放音量。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplayposition"></a>
@@ -156,7 +152,6 @@ abstract getPlayPosition(): number;
 - 方法调用成功，返回当前播放进度（毫秒）。
 - &lt; 0: 方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplaysrc_imediaplayer"></a>
@@ -179,7 +174,6 @@ abstract getPlaySrc(): string;
 
 播放的媒体资源的路径。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getpublishsignalvolume"></a>
@@ -203,7 +197,6 @@ abstract getPublishSignalVolume(): number;
 - ≥ 0: 播放文件的远端播放音量。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstate"></a>
@@ -226,7 +219,6 @@ abstract getState(): MediaPlayerState;
 
 播放器当前状态，详见 [MediaPlayerState](/zh-CN/api-reference/rtc/electron/enum-mediaplayerstate)。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstreamcount"></a>
@@ -254,7 +246,6 @@ abstract getStreamCount(): number;
 - 方法调用成功，返回该媒体文件中媒体流的数量。
 - &lt; 0: 方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstreaminfo"></a>
@@ -292,7 +283,6 @@ abstract getStreamInfo(index: number): PlayerStreamInfo;
 - 方法调用成功，返回媒体流信息，详见 [PlayerStreamInfo](/zh-CN/api-reference/rtc/electron/class-playerstreaminfo)。
 - 方法调用失败，返回 null。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="callback_imediaplayersourceobserver_onplayerplaybackstats"></a>
@@ -319,5 +309,4 @@ onPlayerPlaybackStats?(stats: PlayerPlaybackStats): void;
 
 媒体资源的相关信息，详见 [PlayerPlaybackStats](/zh-CN/api-reference/rtc/electron/class-playerplaybackstats)。
 
-### 所属接口类
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayersourceobserver)

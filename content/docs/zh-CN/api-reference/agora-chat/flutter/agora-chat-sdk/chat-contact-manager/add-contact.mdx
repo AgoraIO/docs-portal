@@ -1,0 +1,42 @@
+---
+title: "addContact method"
+description: "API docs for the addContact method from the ChatContactManager class, for the Dart programming language."
+---
+
+Adds a new contact.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `userId` | The user to be added. |
+| `reason` | (optional) The invitation message. |
+
+```dart title="Dart"
+Future<void> addContact(String userId, {String? reason})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> addContact(
+  String userId, {
+  String? reason,
+}) async {
+  Map req = {
+    'username': userId,
+  };
+  req.setValueWithOutNull("reason", reason);
+
+  Map result = await _channel.invokeMethod(ChatMethodKeys.addContact, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

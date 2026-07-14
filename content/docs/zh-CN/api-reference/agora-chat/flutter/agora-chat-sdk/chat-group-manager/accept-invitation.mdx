@@ -1,0 +1,42 @@
+---
+title: "acceptInvitation method"
+description: "API docs for the acceptInvitation method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Accepts a group invitation.
+
+**Return** The group instance which the user has accepted the invitation to join.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `inviter` | The user who initiates the invitation. |
+
+```dart title="Dart"
+Future<ChatGroup> acceptInvitation(String groupId, String inviter)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatGroup> acceptInvitation(
+  String groupId,
+  String inviter,
+) async {
+  Map req = {'groupId': groupId, 'inviter': inviter};
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.acceptInvitationFromGroup, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatGroup.fromJson(result[ChatMethodKeys.acceptInvitationFromGroup]);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

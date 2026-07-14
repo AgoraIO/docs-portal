@@ -2,9 +2,8 @@
 title: "视频渲染"
 description: "视频渲染 API reference."
 ---
-<a id="toc_video_rendering"></a>
 
-## 视频渲染
+<a id="toc_video_rendering"></a>
 
 <a id="api_irtcengine_enableinstantmediarendering"></a>
 
@@ -51,7 +50,6 @@ public abstract int EnableInstantMediaRendering();
 
   - -7: [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalrendermode"></a>
@@ -72,7 +70,7 @@ public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode);
 
 #### `弃用：`
 
-该方法已废弃，请使用 [SetLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_irtcengine_setlocalrendermode2) 作为替代。
+该方法已废弃，请使用 [SetLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengine_setlocalrendermode2) 作为替代。
 
 该方法设置本地视图显示模式。 App 可以多次调用此方法更改显示模式。
 
@@ -142,7 +140,6 @@ public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode, VIDEO_MIRROR
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvideomirrormode"></a>
@@ -180,7 +177,6 @@ public abstract int SetLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremoterendermode2"></a>
@@ -228,7 +224,6 @@ public abstract int SetRemoteRenderMode(uint uid, RENDER_MODE_TYPE renderMode, V
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremoterendermodeex"></a>
@@ -306,7 +301,6 @@ public abstract int SetRenderMode(RENDER_MODE_TYPE renderMode);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imediaplayer)
 
 <a id="api_irtcengine_setuplocalvideo"></a>
@@ -329,7 +323,7 @@ public abstract int SetupLocalVideo(VideoCanvas canvas);
 
 :::warning[注意]
 - 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 [VideoSurface](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_videosurface) 类来实现。
-- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 [SetLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
+- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 [SetLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
 :::
 
 <a id="api_irtcengine_setuplocalvideo__scenario"></a>
@@ -393,8 +387,8 @@ public abstract int SetupRemoteVideo(VideoCanvas canvas);
 
 :::warning[注意]
 - 如果你想要在原生窗口上渲染图像，请调用此方法；如果你仅需在 Unity 项目内渲染图像，可直接通过 [VideoSurface](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_videosurface) 类来实现。
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [SetRemoteRenderMode](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_irtcengine_setremoterendermode2) 方法。
-- 当使用录制服务时，由于它不会发送视频流，App 无需为它绑定视图。如果 App 无法识别录制服务，可以在收到 [OnFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/csharp-windows/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时再绑定远端用户视图。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [SetRemoteRenderMode](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengine_setremoterendermode2) 方法。
+- 当使用录制服务时，由于它不会发送视频流，App 无需为它绑定视图。如果 App 无法识别录制服务，可以在收到 [OnFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时再绑定远端用户视图。
 :::
 
 <a id="api_irtcengine_setupremotevideo__parameters"></a>
@@ -440,7 +434,7 @@ public abstract int SetupRemoteVideoEx(VideoCanvas canvas, RtcConnection connect
 
 :::warning[注意]
 - 该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_joinchannelex) 之后调用。
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [SetRemoteRenderModeEx](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [SetRemoteRenderModeEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
 :::
 
 <a id="api_irtcengineex_setupremotevideoex__parameters"></a>
@@ -478,7 +472,7 @@ public abstract int StartMediaRenderingTracing();
 
 ### 详情
 
-成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
+成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
 
 :::info[注]
 - 如果你未调用该方法，SDK 默认以调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
@@ -500,7 +494,6 @@ public abstract int StartMediaRenderingTracing();
 
   - -7: [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startmediarenderingtracingex"></a>
@@ -519,7 +512,7 @@ public abstract int StartMediaRenderingTracingEx(RtcConnection connection);
 
 ### 详情
 
-成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
+成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [OnVideoRenderingTracingResult](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
 
 :::info[注]
 - 如果你未调用该方法，SDK 默认以调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
@@ -547,7 +540,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult"></a>
@@ -564,7 +556,7 @@ public virtual void OnVideoRenderingTracingResult(RtcConnection connection, uint
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__detailed_desc"></a>
 
-调用 [StartMediaRenderingTracing](/zh-CN/api-reference/rtc/csharp-windows/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后，SDK 会触发该回调，报告视频帧渲染的事件和渲染过程中的指标。开发者可以针对指标进行专项优化，以提高出图效率。
+调用 [StartMediaRenderingTracing](/zh-CN/api-reference/rtc/csharp-windows/video/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后，SDK 会触发该回调，报告视频帧渲染的事件和渲染过程中的指标。开发者可以针对指标进行专项优化，以提高出图效率。
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__parameters"></a>
 
@@ -586,5 +578,4 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 视频帧渲染过程中的指标。开发者需要尽可能降低指标值，以提高出图效率。详见 [VideoRenderingTracingInfo](/zh-CN/api-reference/rtc/csharp-windows/class-videorenderingtracinginfo)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)

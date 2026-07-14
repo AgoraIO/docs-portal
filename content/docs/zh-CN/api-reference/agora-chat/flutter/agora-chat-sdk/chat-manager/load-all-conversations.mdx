@@ -1,0 +1,37 @@
+---
+title: "loadAllConversations method"
+description: "API docs for the loadAllConversations method from the ChatManager class, for the Dart programming language."
+---
+
+Gets all conversations from the local database.
+
+Conversations will be first loaded from the cache. If no conversation is found, the SDK loads from the local database.
+
+**Return** All the conversations from the cache or local database.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+```dart title="Dart"
+Future<List<ChatConversation>> loadAllConversations()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<List<ChatConversation>> loadAllConversations() async {
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.loadAllConversations);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatConversation> conversationList = [];
+    result[ChatMethodKeys.loadAllConversations]?.forEach((element) {
+      conversationList.add(ChatConversation.fromJson(element));
+    });
+    return conversationList;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

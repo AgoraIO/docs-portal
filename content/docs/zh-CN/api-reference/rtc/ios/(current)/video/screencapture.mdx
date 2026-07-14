@@ -1,14 +1,9 @@
 ---
 title: "屏幕采集"
-description: "查询设备在屏幕共享时支持的最高帧率。"
+description: "屏幕采集 API reference."
 ---
-<a id="toc_screencapture"></a>
 
-## 屏幕采集
-
-<a id="api_irtcengine_queryscreencapturecapability"></a>
-
-## queryScreenCaptureCapability
+## <span id="toc_screencapture"></span>queryScreenCaptureCapability [#api_irtcengine_queryscreencapturecapability]
 
 查询设备在屏幕共享时支持的最高帧率。
 
@@ -18,37 +13,26 @@ description: "查询设备在屏幕共享时支持的最高帧率。"
 - (AgoraScreenCaptureFrameRateCapability)queryScreenCaptureCapability NS_SWIFT_NAME(queryScreenCaptureCapability());
 ```
 
-<a id="api_irtcengine_queryscreencapturecapability__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_queryscreencapturecapability__detailed_desc]
 
 自 v4.2.0 版本新增。
 
-<a id="api_irtcengine_queryscreencapturecapability__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_queryscreencapturecapability__scenario]
 
 为确保屏幕共享的最佳性能，特别是在启用如 60 fps 的高帧率时，建议你在共享前使用该方法查询设备支持的最高帧率。
 
-<a id="api_irtcengine_queryscreencapturecapability__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_queryscreencapturecapability__timing]
 
 你可以在开始屏幕共享前调用该方法，查询设备支持的最高帧率，以确保屏幕共享的最佳性能，特别是在启用如 60 fps 的高帧率时。如果设备不支持高帧率，你可以相应地降低屏幕共享流的帧率，以避免影响共享质量，确保共享效果符合预期。
 
-<a id="api_irtcengine_queryscreencapturecapability__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_queryscreencapturecapability__return_values]
 
 - 方法调用成功，返回设备支持的最高帧率。详见 [AgoraScreenCaptureFrameRateCapability](/zh-CN/api-reference/rtc/ios/enum-screencaptureframeratecapability)。
 - 方法调用失败，返回 nil。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setscreencapturescenario"></a>
-
-## setScreenCaptureScenario:
+## setScreenCaptureScenario: [#api_irtcengine_setscreencapturescenario]
 
 设置屏幕共享场景。
 
@@ -66,27 +50,20 @@ description: "查询设备在屏幕共享时支持的最高帧率。"
 声网建议你在加入频道前调用此方法。
 :::
 
-<a id="api_irtcengine_setscreencapturescenario__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setscreencapturescenario__parameters]
 
 #### `scenarioType`
 
 屏幕共享场景。详见 [AgoraScreenScenarioType](/zh-CN/api-reference/rtc/ios/enum-screenscenariotype)。
 
-<a id="api_irtcengine_setscreencapturescenario__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setscreencapturescenario__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_startscreencapture"></a>
-
-## startScreenCapture:
+## startScreenCapture: [#api_irtcengine_startscreencapture]
 
 开始屏幕采集。
 
@@ -112,50 +89,37 @@ description: "查询设备在屏幕共享时支持的最高帧率。"
   - 如果传入该值，声网按传入的值计费。
 :::
 
-<a id="api_irtcengine_startscreencapture__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_startscreencapture__scenario]
 
 在屏幕共享场景中。
 
-<a id="api_irtcengine_startscreencapture__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_startscreencapture__timing]
 
 你可以在加入频道前或加入频道后调用此方法，具体区别如下：
 
 - 先调用此方法，再调用 `joinChannelByToken` 加入频道，并将 `publishScreenCaptureVideo` 设置为 YES，即可开始屏幕共享。
 - 加入频道后调用此方法，再调用 `updateChannelWithMediaOptions` 并将 `publishScreenCaptureVideo` 设置为 YES，即可开始屏幕共享。
 
-<a id="api_irtcengine_startscreencapture__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_startscreencapture__related]
 
 当屏幕共享扩展进程的状态发生变化时，SDK 会触发 [rtcEngine:localVideoStateChangedOfState:reason:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调。当 `sourceType` 的类型为 `AgoraVideoSourceTypeScreen` 时， `state` 参数表示屏幕共享的状态。
 
-<a id="api_irtcengine_startscreencapture__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_startscreencapture__parameters]
 
 #### `parameters`
 
 屏幕共享的编码参数。详见 [AgoraScreenCaptureParameters2](/zh-CN/api-reference/rtc/ios/class-screencaptureparameters2)。
 
-<a id="api_irtcengine_startscreencapture__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_startscreencapture__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
   - -2：参数为 nil。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_stopscreencapture"></a>
-
-## stopScreenCapture
+## stopScreenCapture [#api_irtcengine_stopscreencapture]
 
 停止屏幕采集。
 
@@ -165,36 +129,25 @@ description: "查询设备在屏幕共享时支持的最高帧率。"
 - (int)stopScreenCapture NS_SWIFT_NAME(stopScreenCapture());
 ```
 
-<a id="api_irtcengine_stopscreencapture__detailed_desc"></a>
-
-<a id="api_irtcengine_stopscreencapture__scenario"></a>
-
-### 适用场景
+### <span id="api_irtcengine_stopscreencapture__detailed_desc"></span>适用场景 [#api_irtcengine_stopscreencapture__scenario]
 
 适用于以下场景：
 
 - iOS：如果你通过调用 `startScreenCapture:` 开始屏幕采集，则需要调用此方法停止屏幕采集。
 - macOS：如果你通过调用 `startScreenCaptureByWindowId:regionRect:captureParams:` 或 `startScreenCaptureByDisplayId:regionRect:captureParams:` 开始屏幕采集，则需要调用此方法停止屏幕采集。
 
-<a id="api_irtcengine_stopscreencapture__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_stopscreencapture__timing]
 
 你可以在加入频道前或后调用此方法。
 
-<a id="api_irtcengine_stopscreencapture__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_stopscreencapture__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_updatescreencapture"></a>
-
-## updateScreenCapture:
+## updateScreenCapture: [#api_irtcengine_updatescreencapture]
 
 更新屏幕共享配置。
 
@@ -210,20 +163,15 @@ description: "查询设备在屏幕共享时支持的最高帧率。"
 该方法仅适用于 iOS 11 及以上版本。
 :::
 
-<a id="api_irtcengine_updatescreencapture__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_updatescreencapture__parameters]
 
 #### `parameters`
 
 屏幕共享的配置参数。详见 [AgoraScreenCaptureParameters2](/zh-CN/api-reference/rtc/ios/class-screencaptureparameters2)。
 
-<a id="api_irtcengine_updatescreencapture__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_updatescreencapture__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)

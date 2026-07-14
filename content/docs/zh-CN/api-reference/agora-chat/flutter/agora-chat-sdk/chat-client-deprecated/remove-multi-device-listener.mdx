@@ -1,0 +1,29 @@
+---
+title: "removeMultiDeviceListener method"
+description: "API docs for the removeMultiDeviceListener method from the ChatClientDeprecated extension, for the Dart programming language."
+---
+
+Removes the multi-device listener.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The listener to be removed: \{ChatMultiDeviceListener\}. |
+
+```dart title="Dart"
+@Deprecated("Use #removeMultiDeviceEventHandler to instead")void removeMultiDeviceListener(ChatMultiDeviceListener listener)@Deprecated("Use #removeMultiDeviceEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+@Deprecated("Use #removeMultiDeviceEventHandler to instead")
+void removeMultiDeviceListener(ChatMultiDeviceListener listener) {
+  if (_multiDeviceListeners.contains(listener)) {
+    _multiDeviceListeners.remove(listener);
+  }
+}
+```

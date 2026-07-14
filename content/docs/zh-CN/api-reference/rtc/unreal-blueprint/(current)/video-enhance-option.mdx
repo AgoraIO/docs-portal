@@ -2,9 +2,8 @@
 title: "视频增强"
 description: "视频增强 API reference."
 ---
-<a id="toc_video_enhance_option"></a>
 
-## 视频增强
+<a id="toc_video_enhance_option"></a>
 
 <a id="api_irtcengine_getfaceshapeareaoptions"></a>
 
@@ -33,7 +32,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
+请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
 
 <a id="api_irtcengine_getfaceshapeareaoptions__restriction"></a>
 
@@ -71,7 +70,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getfaceshapebeautyoptions"></a>
@@ -101,7 +99,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
+请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
 
 <a id="api_irtcengine_getfaceshapebeautyoptions__restriction"></a>
 
@@ -135,7 +133,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setbeautyeffectoptions"></a>
@@ -159,7 +156,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 或 [StartPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_startpreview2) 之后调用该方法。
+请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 或 [StartPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_startpreview2) 之后调用该方法。
 
 <a id="api_irtcengine_setbeautyeffectoptions__restriction"></a>
 
@@ -205,7 +202,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setcolorenhanceoptions"></a>
@@ -230,7 +226,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 你可以调用该方法开启色彩增强功能并设置色彩增强的效果。
 
 :::warning[注意]
-- 请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 后调用该方法。
+- 请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 后调用该方法。
 - 色彩增强对设备性能有一定要求。开启色彩增强后，如果设备出现严重发烫等问题，建议你将色彩增强等级修改为消耗性能较少的等级或关闭色彩增强功能。
 - 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
@@ -268,7 +264,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setfaceshapeareaoptions"></a>
@@ -286,17 +281,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setfaceshapeareaoptions__detailed_desc"></a>
 
-如果在 [SetFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/unreal-blueprint/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) 方法中实现的预设美型效果达不到预期，你可以通过该方法设置美型部位选项，对人脸的各个部位单独微调，实现更加精细的美型效果。
+如果在 [SetFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) 方法中实现的预设美型效果达不到预期，你可以通过该方法设置美型部位选项，对人脸的各个部位单独微调，实现更加精细的美型效果。
 
 :::error[危险]
-美型属于增值服务，计费方式详见 [计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+美型属于增值服务，计费方式详见 [计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
 :::
 
 <a id="api_irtcengine_setfaceshapeareaoptions__timing"></a>
 
 ### 调用时机
 
-请在 [SetFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/unreal-blueprint/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) 之后调用该方法。
+请在 [SetFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) 之后调用该方法。
 
 <a id="api_irtcengine_setfaceshapeareaoptions__restriction"></a>
 
@@ -337,7 +332,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 4.4，不支持该操作，建议更换设备或升级操作系统。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setfaceshapebeautyoptions"></a>
@@ -358,14 +352,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 调用该方法可对人脸各部位进行修饰，使用预设的参数一次性实现瘦脸、大眼、瘦鼻等微整形效果，支持微调整体的修饰力度。
 
 :::error[危险]
-美型属于增值服务，计费方式详见 [计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+美型属于增值服务，计费方式详见 [计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
 :::
 
 <a id="api_irtcengine_setfaceshapebeautyoptions__timing"></a>
 
 ### 调用时机
 
-请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
+请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
 
 <a id="api_irtcengine_setfaceshapebeautyoptions__restriction"></a>
 
@@ -413,7 +407,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 4.4，不支持该操作，建议更换设备或升级操作系统。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setfiltereffectoptions"></a>
@@ -435,7 +428,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
+请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
 
 <a id="api_irtcengine_setfiltereffectoptions__restriction"></a>
 
@@ -477,7 +470,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlowlightenhanceoptions"></a>
@@ -507,7 +499,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 后调用该方法。
+请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 后调用该方法。
 
 <a id="api_irtcengine_setlowlightenhanceoptions__restriction"></a>
 
@@ -515,7 +507,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 - 该方法依赖于视频增强动态库 libagora_clear_vision_extension.dll，如果删除该动态库会导致无法正常开启该功能。
 - 暗光增强对设备性能有一定要求。开启暗光增强后，如果设备出现严重发烫等问题，建议你将暗光增强等级修改为消耗性能较少的等级或关闭暗光增强功能。
-- 如果要实现优先画质 (LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY) 的暗光增强，需要先调用 [SetVideoDenoiserOptions](/zh-CN/api-reference/rtc/unreal-blueprint/video-enhance-option#api_irtcengine_setvideodenoiseroptions) 实现视频降噪，具体对应关系如下：
+- 如果要实现优先画质 (LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY) 的暗光增强，需要先调用 [SetVideoDenoiserOptions](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-prenpro/video-enhance-option#api_irtcengine_setvideodenoiseroptions) 实现视频降噪，具体对应关系如下：
 
   - 暗光增强为自动模式 (LOW_LIGHT_ENHANCE_AUTO) 时，视频降噪需设置为优先画质 (VIDEO_DENOISER_LEVEL_HIGH_QUALITY)、自动模式 (VIDEO_DENOISER_AUTO)。
   - 暗光增强为手动模式 (LOW_LIGHT_ENHANCE_MANUAL) 时，视频降噪需设置为优先画质 (VIDEO_DENOISER_LEVEL_HIGH_QUALITY)、手动模式 (VIDEO_DENOISER_MANUAL)。
@@ -553,7 +545,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvideodenoiseroptions"></a>
@@ -574,7 +565,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 你可以调用该方法开启视频降噪功能并设置视频降噪的效果。
 
 :::info[注]
-如果该方法实现的降噪强度无法满足你的需求，声网推荐你调用 [SetBeautyEffectOptions](/zh-CN/api-reference/rtc/unreal-blueprint/video-enhance-option#api_irtcengine_setbeautyeffectoptions) 方法启用美颜磨皮功能，以获得更好的视频降噪效果。强效降噪效果的 [FBeautyOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-beautyoptions) 推荐设置如下：
+如果该方法实现的降噪强度无法满足你的需求，声网推荐你调用 [SetBeautyEffectOptions](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-prenpro/video-enhance-option#api_irtcengine_setbeautyeffectoptions) 方法启用美颜磨皮功能，以获得更好的视频降噪效果。强效降噪效果的 [FBeautyOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-beautyoptions) 推荐设置如下：
 
 - lighteningContrastLevel： LIGHTENING_CONTRAST_NORMAL
 - lighteningLevel：0.0
@@ -593,7 +584,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 后调用该方法。
+请在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 后调用该方法。
 
 <a id="api_irtcengine_setvideodenoiseroptions__restriction"></a>
 
@@ -635,5 +626,4 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)

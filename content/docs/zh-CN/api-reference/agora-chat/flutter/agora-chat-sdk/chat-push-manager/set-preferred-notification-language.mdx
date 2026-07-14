@@ -1,0 +1,37 @@
+---
+title: "setPreferredNotificationLanguage method"
+description: "API docs for the setPreferredNotificationLanguage method from the ChatPushManager class, for the Dart programming language."
+---
+
+Set user push translation language.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `languageCode` | language code. |
+
+```dart title="Dart"
+Future<void> setPreferredNotificationLanguage(String languageCode)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> setPreferredNotificationLanguage(String languageCode) async {
+  Map req = {"code": languageCode};
+  Map result = await PushChannel.invokeMethod(
+    ChatMethodKeys.setPreferredNotificationLanguage,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

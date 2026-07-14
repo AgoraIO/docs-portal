@@ -2,7 +2,7 @@ import { notFound } from '@tanstack/react-router';
 import {
   getSourceSlugs,
   getSourceSlugsFromContentPath,
-  isSupportedDocLocale,
+  isPublishedDocLocale,
 } from './docs-routing';
 import { isPublicMarkdownLocale } from './machine-readable-docs';
 import {
@@ -34,7 +34,7 @@ export async function getPublicDocsMarkdownResponse({
     return null;
   }
 
-  if (!isSupportedDocLocale(locale) || !isPublicMarkdownLocale(locale)) {
+  if (!isPublishedDocLocale(locale) || !isPublicMarkdownLocale(locale)) {
     throw notFound();
   }
 

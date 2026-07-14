@@ -916,8 +916,8 @@ AgoraAIGCService SDK 主要包含以下两大类：
 
 本文提供 AgoraAIGCService SDK 的 API 参考。
 
-<a id="aigcservice"></a>
-<a id="create"></a>
+<a id="aigcservice-2"></a>
+<a id="create-2"></a>
 ## AgoraAIGCService
 ### create
 
@@ -931,7 +931,7 @@ AgoraAIGCService SDK 主要包含以下两大类：
 
 成功创建后，该方法会返回一个 `AgoraAIGCService` 实例。
 
-<a id="initialize"></a>
+<a id="initialize-2"></a>
 ### initialize
 
 ```objc
@@ -948,7 +948,7 @@ AgoraAIGCService SDK 主要包含以下两大类：
 | --- | --- |
 | config | `AgoraAIGC` 初始化参数。详见 [`AgoraAIGCConfigure`](#aigcserviceconfig)。|
 
-<a id="getroles"></a>
+<a id="getroles-2"></a>
 ### getRoles
 
 ```objc
@@ -965,7 +965,7 @@ AgoraAIGCService SDK 主要包含以下两大类：
 
 SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
-<a id="setrole"></a>
+<a id="setrole-2"></a>
 ### setRoleWithId
 
 ```objc
@@ -984,7 +984,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 | --- | --- |
 | `roleId` | 标明 `AgoraAIGCAIRole` 的 ID。 |
 
-<a id="getcurrentrole"></a>
+<a id="getcurrentrole-2"></a>
 ### getCurrentRole
 
 ```objc
@@ -1001,7 +1001,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 当前使用的 `AgoraAIGCAIRole`。
 
-<a id="getservicevendors"></a>
+<a id="getservicevendors-2"></a>
 ### getServiceVendors
 
 ```objc
@@ -1018,7 +1018,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 包含了所有 AI 服务商信息的 `AgoraAIGCServiceVendorGroup` 对象，由多个 [`AgoraAIGCSTTVendor`](#sttvendor)、[`AgoraAIGCLLMVendor`](#llmvendor) 和 [`AgoraAIGCTTSVendor`](#ttsvendor) 组成。
 
-<a id="setservicevendor"></a>
+<a id="setservicevendor-2"></a>
 ### setServiceVendor
 
 ```objc
@@ -1041,7 +1041,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
 
-<a id="start"></a>
+<a id="start-2"></a>
 ### start
 
 ```objc
@@ -1056,7 +1056,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 该方法需要在成功调用 `initialize`，且收到 `onEventResultWithEvent(Initialize, Success)` 后调用。
 :::
 
-<a id="stop"></a>
+<a id="stop-2"></a>
 ### stop
 
 ```objc
@@ -1071,7 +1071,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 该方法需要在成功调用 `start`，且收到 `onEventResultWithEvent(Start, Success)` 后调用。
 :::
 
-<a id="pushspeechdialogue"></a>
+<a id="pushspeechdialogue-2"></a>
 ### pushSpeechDialogueWithData
 
 ```objc
@@ -1109,7 +1109,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
 
-<a id="pushtxtdialogue"></a>
+<a id="pushtxtdialogue-2"></a>
 ### pushTxtDialogue
 
 ```objc
@@ -1145,7 +1145,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
 
-<a id="pushmessagestollm"></a>
+<a id="pushmessagestollm-2"></a>
 ### pushMessagesToLlm
 
 ```objc
@@ -1184,7 +1184,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
 
-<a id="pushtxttotts"></a>
+<a id="pushtxttotts-2"></a>
 ### pushTxtToTTS
 
 ```objc
@@ -1218,7 +1218,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
 
-<a id="interrupt"></a>
+<a id="interrupt-2"></a>
 ### interrupt
 
 ```objc
@@ -1237,7 +1237,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 | ------ | ------------------------------------------------------------ |
 | `mask` | 服务类型的掩码值。详见 [`AgoraAIGCServiceInterruptMask`](#AgoraAIGCServiceInterruptMask)。服务类型支持使用按位或运算符（|）进行组合，例：`mask = AgoraAIGCServiceInterruptMaskSTT \|  AgoraAIGCServiceInterruptMaskLLM` 代表同时中断 STT 和 LLM 服务。 |
 
-<a id="setsttmode"></a>
+<a id="setsttmode-2"></a>
 ### setSTTMode
 
 ```objc
@@ -1260,7 +1260,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
 
-<a id="setprompt"></a>
+<a id="setprompt-2"></a>
 ### setPrompt
 
 ```obc
@@ -1283,7 +1283,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
 
-<a id="getversion"></a>
+<a id="getversion-2"></a>
 ### getSdkVersion
 
 ```objc
@@ -1296,7 +1296,7 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 当前 SDK 的版本号。
 
-<a id="destroy"></a>
+<a id="destroy-2"></a>
 ### destroy
 
 ```objc
@@ -1307,8 +1307,8 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 该方法为异步操作。调用结果会在 [`onEventResultWithEvent`](#oneventresult) 回调中返回。
 
-<a id="aigcservicecallback"></a>
-<a id="oneventresult"></a>
+<a id="aigcservicecallback-2"></a>
+<a id="oneventresult-2"></a>
 ## AgoraAIGCServiceDelegate
 ### onEventResultWithEvent
 
@@ -1330,7 +1330,7 @@ AIGCService 实例事件回调。
 | `code` | 该服务事件的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。|
 | `message` | 事件信息。该字串可能为空。|
 
-<a id="onspeech2textresult"></a>
+<a id="onspeech2textresult-2"></a>
 ### onSpeech2TextWithRoundId
 
 ```objc
@@ -1380,7 +1380,7 @@ AIGCService 实例事件回调。
 该规则仅在 `recognizedSpeech` 返回 `YES` 下有效。
 :::
 
-<a id="onllmresult"></a>
+<a id="onllmresult-2"></a>
 ### onLLMResultWithRoundId
 
 ```objc
@@ -1428,7 +1428,7 @@ AIGCService 实例事件回调。
 - `AgoraAIGCHandleResultContinue`：SDK 会继续处理后续流程
 - `AgoraAIGCHandleResultDiscard`：SDK 会中断处理后续流程
 
-<a id="ontext2speechresult"></a>
+<a id="ontext2speechresult-2"></a>
 ### onText2SpeechResultWithRoundId
 
 ```objc
@@ -1473,7 +1473,7 @@ AIGCService 实例事件回调。
 该回调是目前最后一个业务流程，返回值 `Continue` 和 `Discard` 效果一样，均不会影响后续业务。后续版本中我们可能会在该回调后添加其他业务。
 :::
 
-<a id="onspeechstatechange"></a>
+<a id="onspeechstatechange-2"></a>
 ### onSpeechStateChange
 
 ```objc
@@ -1488,7 +1488,7 @@ AIGCService 实例事件回调。
 | --- | --- |
 | `state` | 语音的状态。详见 [`AgoraAIGCServiceSpeechState`](#AgoraAIGCServiceSpeechState)。 |
 
-<a id="aigcserviceconfig"></a>
+<a id="aigcserviceconfig-2"></a>
 ## 类型定义
 ### AgoraAIGCConfigure
 
@@ -1591,7 +1591,7 @@ speechRecognitionCompletenessLevel:(AgoraSpeechRecognitionCompletenessLevel)spee
 
 </Slot>
 
-<a id="airole"></a>
+<a id="airole-2"></a>
 ### AgoraAIGCAIRole
 
 ```objc
@@ -1622,7 +1622,7 @@ AI 服务的属性。
 | `profession` | AI 服务的职业。 |
 | `gender` | AI 服务的性别：`"male"` 表示男性，`"female"` 表示女性。|
 
-<a id="scenemode"></a>
+<a id="scenemode-2"></a>
 ### AgoraAIGCSceneMode
 
 ```objc
@@ -1649,7 +1649,7 @@ AI 服务的属性。
 | `speechFrameSampleRates` | 语音数据 (PCM) 的采样率。SDK 仅支持 16000。 |
 | `speechFrameChannels` | 语音数据 (PCM) 的通道数。SDK 仅支持 1。 |
 
-<a id="sttvendor"></a>
+<a id="sttvendor-2"></a>
 ### AgoraAIGCSTTVendor
 
 ```objc
@@ -1675,7 +1675,7 @@ AI 服务的属性。
 | `vendorName` | 供应商名称。|
 | `accountInJson` | 供应商自有的账号信息。若使用该字段，联系 sales@shengwang.cn 了解字段的 JSON 格式。|
 
-<a id="llmvendor"></a>
+<a id="llmvendor-2"></a>
 ### AgoraAIGCLLMVendor
 
 ```objc
@@ -1706,7 +1706,7 @@ AI 服务的属性。
 | `model` | 模型参数。|
 | `accountInJson` | 供应商自有的账号信息。若使用该字段，联系 sales@shengwang.cn 了解字段的 JSON 格式。|
 
-<a id="ttsvendor"></a>
+<a id="ttsvendor-2"></a>
 ### AgoraAIGCTTSVendor
 
 ```objc
@@ -1746,7 +1746,7 @@ AI 服务的属性。
 | `voiceStyle` | （选填）发言人风格参数值。|
 | `accountInJson` | 供应商自有的账号信息。若使用该字段，联系 sales@shengwang.cn 了解字段的 JSON 格式。|
 
-<a id="serviceevent"></a>
+<a id="serviceevent-2"></a>
 ### AgoraAIGCServiceEvent
 
 服务事件类型。
@@ -1759,7 +1759,7 @@ AI 服务的属性。
 | `AgoraAIGCServiceEventStop` | `3` | 停止服务状态，对应调用 `stop` 方法。 |
 | `AgoraAIGCServiceEventDestory` | `4` | 销毁服务状态，对应调用 `destroy` 方法。|
 
-<a id="servicecode"></a>
+<a id="servicecode-2"></a>
 ### AgoraAIGCServiceCode
 
 服务事件结果。
@@ -1774,7 +1774,7 @@ AI 服务的属性。
 | `AgoraAIGCServiceCodeTimeout` | `9` |   服务超时。   |
 | `AgoraAIGCServiceCodeContentManagementPolicy` | `10` |  LLM 判定请求内容不合规，触发内容审核。    |
 
-<a id="vad"></a>
+<a id="vad-2"></a>
 ### AgoraAIGCVad
 
 本地是否有人声。
@@ -1785,7 +1785,7 @@ AI 服务的属性。
 | `AgoraAIGCVadMute` | `0`| 本地无人声。|
 | `AgoraAIGCVadNonMute` | `1` | 本地有人声。 |
 
-<a id="language"></a>
+<a id="language-2"></a>
 ### AgoraAIGCLanguage
 
 语言类型。
@@ -1795,7 +1795,7 @@ AI 服务的属性。
 | `AgoraAIGCLanguageZH_CN` | `0` | 中文。 |
 | `AgoraAIGCLanguageEN_US` | `1` | 英文。 |
 
-<a id="noiseenvironment"></a>
+<a id="noiseenvironment-2"></a>
 ### AgoraNoiseEnvironment
 
 噪音环境级别。
@@ -1806,7 +1806,7 @@ AI 服务的属性。
 | `AgoraNoiseEnvironmentNormal` | `1` | 周围环境噪音正常。|
 | `AgoraNoiseEnvironmentNoise` | `2` | 周围环境噪音很强。|
 
-<a id="speechrecognitioncompletenesslevel"></a>
+<a id="speechrecognitioncompletenesslevel-2"></a>
 ### AgoraSpeechRecognitionCompletenessLevel
 
 语音识别句子的完整性级别。级别越高，则识别句子的完整性越好；相应地，语音识别的整体时间也会越长。
@@ -1817,7 +1817,7 @@ AI 服务的属性。
 | `AgoraSpeechRecognitionCompletenessLevelNormal` | `1` | 正常级别。|
 | `AgoraSpeechRecognitionCompletenessLevelHigh` | `2` | 高级别。|
 
-<a id="constants"></a>
+<a id="constants-2"></a>
 ### AgoraAIGCServiceInterruptMask
 
 服务类型的掩码值。
@@ -1828,7 +1828,7 @@ AI 服务的属性。
 | `AgoraAIGCServiceInterruptMaskLLM`    | `0b0010` | LLM 服务类型值。 |
 | `AgoraAIGCServiceInterruptMaskTTS` | `0b0100` | TTS 服务类型值。 |
 
-<a id="sttmode"></a>
+<a id="sttmode-2"></a>
 ### AgoraAIGCServiceSTTMode
 
 STT 服务模式类型。
@@ -1838,7 +1838,7 @@ STT 服务模式类型。
 | `AgoraAIGCServiceSTTModeFreeStyle`  | `0`    | （默认）自由模式，适用于实时对话、实时语音识别。 |
 | `AgoraAIGCServiceSTTModeControlled` | `1`    | 受控模式，适用于单段语音输入。     |
 
-<a id="speechstate"></a>
+<a id="speechstate-2"></a>
 ### AgoraAIGCServiceSpeechState
 
 语音的状态

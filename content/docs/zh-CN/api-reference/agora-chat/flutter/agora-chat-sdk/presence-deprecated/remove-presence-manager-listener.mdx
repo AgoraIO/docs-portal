@@ -1,0 +1,29 @@
+---
+title: "removePresenceManagerListener method"
+description: "API docs for the removePresenceManagerListener method from the PresenceDeprecated extension, for the Dart programming language."
+---
+
+Removes the contact listener.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The presence manager listener to be removed. |
+
+```dart title="Dart"
+@Deprecated("Use #removeEventHandler to instead")void removePresenceManagerListener(ChatPresenceManagerListener listener)@Deprecated("Use #removeEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+@Deprecated("Use #removeEventHandler to instead")
+void removePresenceManagerListener(ChatPresenceManagerListener listener) {
+  if (_listeners.contains(listener)) {
+    _listeners.remove(listener);
+  }
+}
+```

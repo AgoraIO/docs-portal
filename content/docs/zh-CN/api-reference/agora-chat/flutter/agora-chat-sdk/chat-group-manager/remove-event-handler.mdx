@@ -1,0 +1,26 @@
+---
+title: "removeEventHandler method"
+description: "API docs for the removeEventHandler method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Remove the group event handler.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `identifier` | The custom handler identifier. |
+
+```dart title="Dart"
+void removeEventHandler(String identifier)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+void removeEventHandler(String identifier) {
+  _eventHandlesMap.remove(identifier);
+}
+```

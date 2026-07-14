@@ -2,9 +2,8 @@
 title: "数据流 Datastream"
 description: "数据流 Datastream API reference."
 ---
-<a id="toc_datastream"></a>
 
-## 数据流 Datastream
+<a id="toc_datastream"></a>
 
 <a id="api_irtcengine_createdatastream2"></a>
 
@@ -52,7 +51,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 创建数据流成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_createdatastreamex2"></a>
@@ -105,7 +103,6 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 - 0: 创建数据流成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_sendstreammessage"></a>
@@ -125,17 +122,17 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
-调用 [CreateDataStream](/zh-CN/api-reference/rtc/unreal-blueprint/datastream#api_irtcengine_createdatastream2) 后，你可以调用该方法向频道内所有用户发送数据流消息。
+调用 [CreateDataStream](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengine_createdatastream2) 后，你可以调用该方法向频道内所有用户发送数据流消息。
 
 SDK 对该方法的实现进行了如下限制：
 
 - 频道内每个客户端最多可以同时拥有 5 个数据通道，所有数据通道共用的总发包码率限制为 30 KB/s。
 - 每个数据通道每秒最多能发送 60 个包，每个包最大为 1 KB。
 
-成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/unreal-blueprint/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
+成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::warning[注意]
-- 该方法需要在加入频道后、且调用 [CreateDataStream](/zh-CN/api-reference/rtc/unreal-blueprint/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
+- 该方法需要在加入频道后、且调用 [CreateDataStream](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
 - 该方法仅适用于主播用户。
 :::
 
@@ -162,7 +159,6 @@ SDK 对该方法的实现进行了如下限制：
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_sendstreammessageex"></a>
@@ -182,14 +178,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
-调用 [CreateDataStreamEx](/zh-CN/api-reference/rtc/unreal-blueprint/datastream#api_irtcengineex_createdatastreamex2) 后，你可以调用本方法向频道内所有用户发送数据流消息。
+调用 [CreateDataStreamEx](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengineex_createdatastreamex2) 后，你可以调用本方法向频道内所有用户发送数据流消息。
 
 SDK 对该方法的实现进行了如下限制：
 
 - 频道内每个客户端最多可以同时拥有 5 个数据通道，所有数据通道共用的总发包码率限制为 30 KB/s。
 - 每个数据通道每秒最多能发送 60 个包，每个包最大为 1 KB。
 
-成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/unreal-blueprint/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
+成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::warning[注意]
 - 该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_joinchannelex) 后调用。
@@ -223,7 +219,6 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onstreammessage"></a>
@@ -241,7 +236,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onstreammessage__detailed_desc"></a>
 
-该回调表示本地用户收到了远端用户调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
+该回调表示本地用户收到了远端用户调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
 
 <a id="callback_irtcengineeventhandler_onstreammessage__parameters"></a>
 
@@ -267,7 +262,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 数据流发出的时间。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror"></a>
@@ -285,7 +279,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__detailed_desc"></a>
 
-该回调表示本地用户未收到远端用户调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
+该回调表示本地用户未收到远端用户调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__parameters"></a>
 
@@ -311,5 +305,4 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 数据流中断时，后面缓存的消息数量。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,14 +1,9 @@
 ---
 title: "发布和订阅"
-description: "在发送端启用或禁用双流模式。"
+description: "发布和订阅 API reference."
 ---
-<a id="toc_publishnsubscribe"></a>
 
-## 发布和订阅
-
-<a id="api_irtcengine_enabledualstreammode"></a>
-
-## enableDualStreamMode [1/2]
+## <span id="toc_publishnsubscribe"></span>enableDualStreamMode [1/2] [#api_irtcengine_enabledualstreammode]
 
 在发送端启用或禁用双流模式。
 
@@ -18,9 +13,7 @@ description: "在发送端启用或禁用双流模式。"
 public abstract int enableDualStreamMode(boolean enabled)
 ```
 
-<a id="api_irtcengine_enabledualstreammode__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_enabledualstreammode__detailed_desc]
 
 自 v4.2.0 版本废弃，请改用 `setDualStreamMode`。
 
@@ -35,9 +28,7 @@ public abstract int enableDualStreamMode(boolean enabled)
 - 你可以在加入频道前或加入频道后调用该方法。
 :::
 
-<a id="api_irtcengine_enabledualstreammode__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enabledualstreammode__parameters]
 
 #### `enabled`
 
@@ -46,19 +37,14 @@ public abstract int enableDualStreamMode(boolean enabled)
 - true：启用双流模式。
 - false：（默认）禁用双流模式。
 
-<a id="api_irtcengine_enabledualstreammode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enabledualstreammode__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_enabledualstreammode3"></a>
-
-## enableDualStreamMode [2/2]
+## enableDualStreamMode [2/2] [#api_irtcengine_enabledualstreammode3]
 
 设置发送端的双流模式和视频小流。
 
@@ -68,9 +54,7 @@ public abstract int enableDualStreamMode(boolean enabled)
 public abstract int enableDualStreamMode(boolean enabled, SimulcastStreamConfig streamConfig)
 ```
 
-<a id="api_irtcengine_enabledualstreammode3__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_enabledualstreammode3__detailed_desc]
 
 自 v4.2.0 版本废弃，请改用 `setDualStreamMode`。
 
@@ -87,9 +71,7 @@ public abstract int enableDualStreamMode(boolean enabled, SimulcastStreamConfig 
 - 你可以在加入频道前或加入频道后调用此方法。
 :::
 
-<a id="api_irtcengine_enabledualstreammode3__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enabledualstreammode3__parameters]
 
 #### `enabled`
 
@@ -106,19 +88,14 @@ public abstract int enableDualStreamMode(boolean enabled, SimulcastStreamConfig 
 当 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` 时，设置 `streamConfig` 不生效。
 :::
 
-<a id="api_irtcengine_enabledualstreammode3__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enabledualstreammode3__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_enabledualstreammodeex"></a>
-
-## enableDualStreamModeEx
+## enableDualStreamModeEx [#api_irtcengineex_enabledualstreammodeex]
 
 在发送端启用或关闭双流模式。
 
@@ -128,9 +105,7 @@ public abstract int enableDualStreamMode(boolean enabled, SimulcastStreamConfig 
 public abstract int enableDualStreamModeEx(boolean enabled, SimulcastStreamConfig streamConfig, RtcConnection connection);
 ```
 
-<a id="api_irtcengineex_enabledualstreammodeex__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengineex_enabledualstreammodeex__detailed_desc]
 
 自 v4.2.0 版本废弃。请使用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 代替。
 
@@ -145,15 +120,11 @@ public abstract int enableDualStreamModeEx(boolean enabled, SimulcastStreamConfi
 该方法适用于发送端的所有类型视频流，包括但不限于摄像头采集的视频流、屏幕共享流和自定义采集的视频流。
 :::
 
-<a id="api_irtcengineex_enabledualstreammodeex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_enabledualstreammodeex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_enabledualstreammodeex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_enabledualstreammodeex__parameters]
 
 #### `enabled`
 
@@ -174,19 +145,14 @@ public abstract int enableDualStreamModeEx(boolean enabled, SimulcastStreamConfi
 
 连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_enabledualstreammodeex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_enabledualstreammodeex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_muteallremoteaudiostreams"></a>
-
-## muteAllRemoteAudioStreams
+## muteAllRemoteAudioStreams [#api_irtcengine_muteallremoteaudiostreams]
 
 停止或恢复订阅所有远端用户的音频流。
 
@@ -204,15 +170,11 @@ public abstract int muteAllRemoteAudioStreams(boolean muted);
 如果你调用该方法后又调用了 [enableAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_enableaudio) 或 [disableAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_disableaudio)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的音频流。你可以在调用 `joinChannel` 加入频道时将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置为 false，以取消加入频道时对所有用户音频流的订阅。
 :::
 
-<a id="api_irtcengine_muteallremoteaudiostreams__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_muteallremoteaudiostreams__timing]
 
 请在加入频道后调用该方法。
 
-<a id="api_irtcengine_muteallremoteaudiostreams__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_muteallremoteaudiostreams__parameters]
 
 #### `muted`
 
@@ -221,19 +183,14 @@ public abstract int muteAllRemoteAudioStreams(boolean muted);
 - true：停止订阅所有远端用户的音频流。
 - false：（默认）订阅所有远端用户的音频流。
 
-<a id="api_irtcengine_muteallremoteaudiostreams__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_muteallremoteaudiostreams__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_muteallremoteaudiostreamsex"></a>
-
-## muteAllRemoteAudioStreamsEx
+## muteAllRemoteAudioStreamsEx [#api_irtcengineex_muteallremoteaudiostreamsex]
 
 停止或恢复订阅所有远端用户的音频流。
 
@@ -243,24 +200,16 @@ public abstract int muteAllRemoteAudioStreams(boolean muted);
 public abstract int muteAllRemoteAudioStreamsEx(boolean muted, RtcConnection connection);
 ```
 
-<a id="api_irtcengineex_muteallremoteaudiostreamsex__detailed_desc"></a>
-
-<a id="api_irtcengineex_muteallremoteaudiostreamsex__scenario"></a>
-
-### 适用场景
+### <span id="api_irtcengineex_muteallremoteaudiostreamsex__detailed_desc"></span>适用场景 [#api_irtcengineex_muteallremoteaudiostreamsex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_muteallremoteaudiostreamsex__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengineex_muteallremoteaudiostreamsex__timing]
 
 - 请在加入频道后调用该方法。
 - 如果你希望在加入频道前不订阅远端用户的音频流，可以在调用 `joinChannel` 时将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `autoSubscribeAudio` 设置为 false。
 
-<a id="api_irtcengineex_muteallremoteaudiostreamsex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_muteallremoteaudiostreamsex__parameters]
 
 #### `muted`
 
@@ -273,19 +222,14 @@ public abstract int muteAllRemoteAudioStreamsEx(boolean muted, RtcConnection con
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_muteallremoteaudiostreamsex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_muteallremoteaudiostreamsex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_muteallremotevideostreams"></a>
-
-## muteAllRemoteVideoStreams
+## muteAllRemoteVideoStreams [#api_irtcengine_muteallremotevideostreams]
 
 停止或恢复订阅所有远端用户的视频流。
 
@@ -303,15 +247,11 @@ public abstract int muteAllRemoteVideoStreams(boolean muted);
 如果你调用该方法后又调用了 [enableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_disablevideo)，以最后一次调用为准。默认情况下，加入频道时 SDK 会自动订阅所有远端用户的视频流。你可以在调用 `joinChannel` 加入频道时将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `autoSubscribeVideo` 设置为 false，以取消加入频道时对所有用户的视频流订阅。
 :::
 
-<a id="api_irtcengine_muteallremotevideostreams__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_muteallremotevideostreams__timing]
 
 请在加入频道后调用该方法。
 
-<a id="api_irtcengine_muteallremotevideostreams__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_muteallremotevideostreams__parameters]
 
 #### `muted`
 
@@ -322,19 +262,14 @@ public abstract int muteAllRemoteVideoStreams(boolean muted);
 - false：（默认）订阅所有远端用户的视频流。
 :::
 
-<a id="api_irtcengine_muteallremotevideostreams__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_muteallremotevideostreams__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_muteallremotevideostreamsex"></a>
-
-## muteAllRemoteVideoStreamsEx
+## muteAllRemoteVideoStreamsEx [#api_irtcengineex_muteallremotevideostreamsex]
 
 停止或恢复订阅所有远端用户的视频流。
 
@@ -348,15 +283,11 @@ public abstract int muteAllRemoteVideoStreamsEx(boolean muted, RtcConnection con
 
 调用该方法后，你将停止或恢复订阅所有远端用户的视频流，包括之后加入频道的用户。
 
-<a id="api_irtcengineex_muteallremotevideostreamsex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_muteallremotevideostreamsex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_muteallremotevideostreamsex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_muteallremotevideostreamsex__parameters]
 
 #### `muted`
 
@@ -369,19 +300,14 @@ public abstract int muteAllRemoteVideoStreamsEx(boolean muted, RtcConnection con
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_muteallremotevideostreamsex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_muteallremotevideostreamsex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_mutelocalaudiostream"></a>
-
-## muteLocalAudioStream
+## muteLocalAudioStream [#api_irtcengine_mutelocalaudiostream]
 
 停止或恢复发布本地采集音频流。
 
@@ -395,21 +321,15 @@ public abstract int muteLocalAudioStream(boolean muted);
 
 调用该方法停止发布本地音频流时，音频采集设备仍会正常工作，不受影响。
 
-<a id="api_irtcengine_mutelocalaudiostream__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_mutelocalaudiostream__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_mutelocalaudiostream__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_mutelocalaudiostream__related]
 
 调用该方法成功后，本地会触发回调 [onAudioPublishStateChanged](/zh-CN/api-reference/rtc/android/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged)；远端会触发回调 [onUserMuteAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
 
-<a id="api_irtcengine_mutelocalaudiostream__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_mutelocalaudiostream__parameters]
 
 #### `muted`
 
@@ -418,19 +338,14 @@ public abstract int muteLocalAudioStream(boolean muted);
 - true：停止发布本地音频流。
 - false：（默认）恢复发布本地音频流。
 
-<a id="api_irtcengine_mutelocalaudiostream__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_mutelocalaudiostream__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_mutelocalaudiostreamex"></a>
-
-## muteLocalAudioStreamEx
+## muteLocalAudioStreamEx [#api_irtcengineex_mutelocalaudiostreamex]
 
 停止或恢复发布本地音频流。
 
@@ -448,15 +363,11 @@ public abstract int muteLocalAudioStreamEx(boolean muted, RtcConnection connecti
 该方法不会影响任何正在进行的音频录制，因为它不会禁用音频采集设备。
 :::
 
-<a id="api_irtcengineex_mutelocalaudiostreamex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_mutelocalaudiostreamex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_mutelocalaudiostreamex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_mutelocalaudiostreamex__parameters]
 
 #### `muted`
 
@@ -469,19 +380,14 @@ public abstract int muteLocalAudioStreamEx(boolean muted, RtcConnection connecti
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_mutelocalaudiostreamex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_mutelocalaudiostreamex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_mutelocalvideostream"></a>
-
-## muteLocalVideoStream
+## muteLocalVideoStream [#api_irtcengine_mutelocalvideostream]
 
 停止或恢复发布本地视频流。
 
@@ -495,21 +401,15 @@ public abstract int muteLocalVideoStream(boolean muted);
 
 该方法用于控制是否发布本地采集的视频流。调用该方法停止发布本地视频流时，视频采集设备仍会继续工作，不受影响。相比通过将 [enableLocalVideo](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablelocalvideo) 设为 false 来关闭本地视频采集从而取消发布视频流，该方法响应更快。
 
-<a id="api_irtcengine_mutelocalvideostream__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_mutelocalvideostream__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_mutelocalvideostream__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_mutelocalvideostream__related]
 
 调用该方法成功后，本地会触发回调 [onVideoPublishStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged)；远端会触发回调 [onUserMuteVideo](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) 和 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged)。
 
-<a id="api_irtcengine_mutelocalvideostream__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_mutelocalvideostream__parameters]
 
 #### `muted`
 
@@ -518,19 +418,14 @@ public abstract int muteLocalVideoStream(boolean muted);
 - true：停止发布本地视频流。
 - false：（默认）发布本地视频流。
 
-<a id="api_irtcengine_mutelocalvideostream__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_mutelocalvideostream__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_mutelocalvideostreamex"></a>
-
-## muteLocalVideoStreamEx
+## muteLocalVideoStreamEx [#api_irtcengineex_mutelocalvideostreamex]
 
 停止或恢复发布本地视频流。
 
@@ -548,15 +443,11 @@ public abstract int muteLocalVideoStreamEx(boolean muted, RtcConnection connecti
 该方法不会影响正在进行的视频录制，因为它不会关闭摄像头。
 :::
 
-<a id="api_irtcengineex_mutelocalvideostreamex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_mutelocalvideostreamex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_mutelocalvideostreamex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_mutelocalvideostreamex__parameters]
 
 #### `muted`
 
@@ -569,19 +460,14 @@ public abstract int muteLocalVideoStreamEx(boolean muted, RtcConnection connecti
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_mutelocalvideostreamex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_mutelocalvideostreamex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_muteremoteaudiostream"></a>
-
-## muteRemoteAudioStream
+## muteRemoteAudioStream [#api_irtcengine_muteremoteaudiostream]
 
 停止或恢复订阅指定远端用户的音频流。
 
@@ -591,23 +477,15 @@ public abstract int muteLocalVideoStreamEx(boolean muted, RtcConnection connecti
 public abstract int muteRemoteAudioStream(int uid, boolean muted);
 ```
 
-<a id="api_irtcengine_muteremoteaudiostream__detailed_desc"></a>
-
-<a id="api_irtcengine_muteremoteaudiostream__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_muteremoteaudiostream__detailed_desc"></span>调用时机 [#api_irtcengine_muteremoteaudiostream__timing]
 
 在加入频道后调用该方法。
 
-<a id="api_irtcengine_muteremoteaudiostream__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_muteremoteaudiostream__related]
 
 调用该方法成功后，SDK 会触发 [onAudioSubscribeStateChanged](/zh-CN/api-reference/rtc/android/publishnsubscribe#callback_irtcengineeventhandler_onaudiosubscribestatechanged) 回调。
 
-<a id="api_irtcengine_muteremoteaudiostream__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_muteremoteaudiostream__parameters]
 
 #### `uid`
 
@@ -620,19 +498,14 @@ public abstract int muteRemoteAudioStream(int uid, boolean muted);
 - true：停止订阅该用户的音频流。
 - false：订阅该用户的音频流。
 
-<a id="api_irtcengine_muteremoteaudiostream__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_muteremoteaudiostream__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_muteremoteaudiostreamex"></a>
-
-## muteRemoteAudioStreamEx
+## muteRemoteAudioStreamEx [#api_irtcengineex_muteremoteaudiostreamex]
 
 停止或恢复接收指定用户的音频流。
 
@@ -646,15 +519,11 @@ public abstract int muteRemoteAudioStreamEx(int uid, boolean muted, RtcConnectio
 
 你可以在加入频道前或加入频道后调用该方法。如果用户离开频道，方法的设置将失效。
 
-<a id="api_irtcengineex_muteremoteaudiostreamex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_muteremoteaudiostreamex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_muteremoteaudiostreamex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_muteremoteaudiostreamex__parameters]
 
 #### `uid`
 
@@ -671,19 +540,14 @@ public abstract int muteRemoteAudioStreamEx(int uid, boolean muted, RtcConnectio
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_muteremoteaudiostreamex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_muteremoteaudiostreamex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_muteremotevideostream"></a>
-
-## muteRemoteVideoStream
+## muteRemoteVideoStream [#api_irtcengine_muteremotevideostream]
 
 停止或恢复订阅指定远端用户的视频流。
 
@@ -693,23 +557,15 @@ public abstract int muteRemoteAudioStreamEx(int uid, boolean muted, RtcConnectio
 public abstract int muteRemoteVideoStream(int uid, boolean muted);
 ```
 
-<a id="api_irtcengine_muteremotevideostream__detailed_desc"></a>
-
-<a id="api_irtcengine_muteremotevideostream__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_muteremotevideostream__detailed_desc"></span>调用时机 [#api_irtcengine_muteremotevideostream__timing]
 
 请在加入频道后调用该方法。
 
-<a id="api_irtcengine_muteremotevideostream__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_muteremotevideostream__related]
 
 调用该方法成功后，SDK 会触发 [onVideoSubscribeStateChanged](/zh-CN/api-reference/rtc/android/publishnsubscribe#callback_irtcengineeventhandler_onvideosubscribestatechanged) 回调。
 
-<a id="api_irtcengine_muteremotevideostream__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_muteremotevideostream__parameters]
 
 #### `uid`
 
@@ -722,19 +578,14 @@ public abstract int muteRemoteVideoStream(int uid, boolean muted);
 - true：停止订阅该用户的视频流。
 - false：订阅该用户的视频流（默认）。
 
-<a id="api_irtcengine_muteremotevideostream__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_muteremotevideostream__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_muteremotevideostreamex"></a>
-
-## muteRemoteVideoStreamEx
+## muteRemoteVideoStreamEx [#api_irtcengineex_muteremotevideostreamex]
 
 停止或恢复接收指定用户的视频流。
 
@@ -748,15 +599,11 @@ public abstract int muteRemoteVideoStreamEx(int uid, boolean muted, RtcConnectio
 
 你可以在加入频道前或加入频道后调用该方法。如果该用户离开频道，设置将失效。
 
-<a id="api_irtcengineex_muteremotevideostreamex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_muteremotevideostreamex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_muteremotevideostreamex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_muteremotevideostreamex__parameters]
 
 #### `uid`
 
@@ -773,19 +620,14 @@ public abstract int muteRemoteVideoStreamEx(int uid, boolean muted, RtcConnectio
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_muteremotevideostreamex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_muteremotevideostreamex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setdualstreammode"></a>
-
-## setDualStreamMode [1/2]
+## setDualStreamMode [1/2] [#api_irtcengine_setdualstreammode]
 
 设置发送端的视频流模式，用于控制是否发送视频小流。
 
@@ -810,27 +652,20 @@ public abstract int setDualStreamMode(Constants.SimulcastStreamMode mode);
 - 两个方法都可以在加入频道前或后调用。如果两个方法都被调用，则以后调用的方法设置优先生效。
 :::
 
-<a id="api_irtcengine_setdualstreammode__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setdualstreammode__parameters]
 
 #### `mode`
 
 发送视频流的模式。详见 [SimulcastStreamMode](/zh-CN/api-reference/rtc/android/enum-simulcaststreammode)。
 
-<a id="api_irtcengine_setdualstreammode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setdualstreammode__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setdualstreammode2"></a>
-
-## setDualStreamMode [2/2]
+## setDualStreamMode [2/2] [#api_irtcengine_setdualstreammode2]
 
 设置发送端的不同质量层级的视频流模式配置。
 
@@ -855,9 +690,7 @@ SDK 默认在发送端开启视频小流自适应模式（`AUTO_SIMULCAST_STREAM
 - 两个方法都可以在加入频道前或后调用。如果两个方法都被调用，则以后调用的方法设置优先生效。
 :::
 
-<a id="api_irtcengine_setdualstreammode2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setdualstreammode2__parameters]
 
 #### `mode`
 
@@ -871,19 +704,14 @@ SDK 默认在发送端开启视频小流自适应模式（`AUTO_SIMULCAST_STREAM
 当 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` 时，设置该参数无效。
 :::
 
-<a id="api_irtcengine_setdualstreammode2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setdualstreammode2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setdualstreammodeex"></a>
-
-## setDualStreamModeEx
+## setDualStreamModeEx [#api_irtcengineex_setdualstreammodeex]
 
 设置发送端的视频流模式，用于控制是否发送视频小流。
 
@@ -908,15 +736,11 @@ SDK 默认在发送端开启视频小流自适应模式（`AUTO_SIMULCAST_STREAM
 - 两个方法均可在加入频道前或后调用。如果两个方法都被调用，则以后调用的方法设置优先生效。
 :::
 
-<a id="api_irtcengineex_setdualstreammodeex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setdualstreammodeex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setdualstreammodeex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setdualstreammodeex__parameters]
 
 #### `mode`
 
@@ -934,19 +758,14 @@ SDK 默认在发送端开启视频小流自适应模式（`AUTO_SIMULCAST_STREAM
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_setdualstreammodeex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setdualstreammodeex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setremotedefaultvideostreamtype"></a>
-
-## setRemoteDefaultVideoStreamType [1/2]
+## setRemoteDefaultVideoStreamType [1/2] [#api_irtcengine_setremotedefaultvideostreamtype]
 
 设置默认订阅的视频流类型。
 
@@ -970,33 +789,24 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 如果同时调用该方法和 `setRemoteVideoStreamType`，则以 `setRemoteVideoStreamType` 的设置为准。
 :::
 
-<a id="api_irtcengine_setremotedefaultvideostreamtype__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setremotedefaultvideostreamtype__timing]
 
 请在加入频道前调用该方法。SDK 不支持在加入频道后更改默认订阅的视频流类型。
 
-<a id="api_irtcengine_setremotedefaultvideostreamtype__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremotedefaultvideostreamtype__parameters]
 
 #### `streamType`
 
 视频流类型。详见 [VideoStreamType](/zh-CN/api-reference/rtc/android/enum-videostreamtype)。
 
-<a id="api_irtcengine_setremotedefaultvideostreamtype__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremotedefaultvideostreamtype__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setremotedefaultvideostreamtype2"></a>
-
-## setRemoteDefaultVideoStreamType [2/2]
+## setRemoteDefaultVideoStreamType [2/2] [#api_irtcengine_setremotedefaultvideostreamtype2]
 
 设置默认订阅的视频流类型。
 
@@ -1006,9 +816,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 public abstract int setRemoteDefaultVideoStreamType(int streamType)
 ```
 
-<a id="api_irtcengine_setremotedefaultvideostreamtype2__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_setremotedefaultvideostreamtype2__detailed_desc]
 
 该方法已废弃，请改用 [setRemoteDefaultVideoStreamType [1/2]](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype)。
 
@@ -1024,15 +832,11 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 如果同时调用该方法和 `setRemoteVideoStreamType`，则以 `setRemoteVideoStreamType` 的设置为准。
 :::
 
-<a id="api_irtcengine_setremotedefaultvideostreamtype2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setremotedefaultvideostreamtype2__timing]
 
 请在加入频道前调用该方法。SDK 不支持在加入频道后更改默认订阅的视频流类型。
 
-<a id="api_irtcengine_setremotedefaultvideostreamtype2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremotedefaultvideostreamtype2__parameters]
 
 #### `streamType`
 
@@ -1041,19 +845,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - `VIDEO_STREAM_HIGH` （0）：视频大流，即高分辨率和高码率的视频流。
 - `VIDEO_STREAM_LOW` （1）：视频小流，即低分辨率和低码率的视频流。
 
-<a id="api_irtcengine_setremotedefaultvideostreamtype2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremotedefaultvideostreamtype2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setremotevideostreamtype"></a>
-
-## setRemoteVideoStreamType [1/2]
+## setRemoteVideoStreamType [1/2] [#api_irtcengine_setremotevideostreamtype]
 
 设置要订阅的视频流类型。
 
@@ -1078,9 +877,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 如果同时调用该方法和 `setRemoteDefaultVideoStreamType`，则以该方法的设置为准。
 :::
 
-<a id="api_irtcengine_setremotevideostreamtype__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremotevideostreamtype__parameters]
 
 #### `uid`
 
@@ -1090,19 +887,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 视频流类型。详见 [VideoStreamType](/zh-CN/api-reference/rtc/android/enum-videostreamtype)。
 
-<a id="api_irtcengine_setremotevideostreamtype__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremotevideostreamtype__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setremotevideostreamtype2"></a>
-
-## setRemoteVideoStreamType [2/2]
+## setRemoteVideoStreamType [2/2] [#api_irtcengine_setremotevideostreamtype2]
 
 设置要订阅的视频流类型。
 
@@ -1112,9 +904,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 public abstract int setRemoteVideoStreamType(int uid, int streamType)
 ```
 
-<a id="api_irtcengine_setremotevideostreamtype2__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_setremotevideostreamtype2__detailed_desc]
 
 该方法已废弃，请改用 `setRemoteVideoStreamType(int uid, Constants.VideoStreamType streamType)`。
 
@@ -1131,9 +921,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 如果同时调用此方法和 `setRemoteDefaultVideoStreamType`，则以此方法的设置为准。
 :::
 
-<a id="api_irtcengine_setremotevideostreamtype2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremotevideostreamtype2__parameters]
 
 #### `uid`
 
@@ -1146,19 +934,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 - 0：视频大流。
 - 1：视频小流。
 
-<a id="api_irtcengine_setremotevideostreamtype2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremotevideostreamtype2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setremotevideostreamtypeex"></a>
-
-## setRemoteVideoStreamTypeEx [1/2]
+## setRemoteVideoStreamTypeEx [1/2] [#api_irtcengineex_setremotevideostreamtypeex]
 
 设置要订阅的视频流类型。
 
@@ -1182,15 +965,11 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 如果发送端已调用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 并将 `mode` 设置为 `DISABLE_SIMULCAST_STREAM`，则调用该方法无效。你需要在发送端再次调用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 并调整设置。
 :::
 
-<a id="api_irtcengineex_setremotevideostreamtypeex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setremotevideostreamtypeex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setremotevideostreamtypeex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setremotevideostreamtypeex__parameters]
 
 #### `uid`
 
@@ -1204,19 +983,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_setremotevideostreamtypeex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setremotevideostreamtypeex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengineex_setremotevideostreamtypeex2"></a>
-
-## setRemoteVideoStreamTypeEx [2/2]
+## setRemoteVideoStreamTypeEx [2/2] [#api_irtcengineex_setremotevideostreamtypeex2]
 
 设置要订阅的视频流类型。
 
@@ -1226,9 +1000,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 public abstract int setRemoteVideoStreamTypeEx(int uid, int streamType, RtcConnection connection);
 ```
 
-<a id="api_irtcengineex_setremotevideostreamtypeex2__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengineex_setremotevideostreamtypeex2__detailed_desc]
 
 该方法已废弃，请改用 [setRemoteVideoStreamTypeEx [1/2]](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengineex_setremotevideostreamtypeex)。
 
@@ -1244,15 +1016,11 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 如果发送端已调用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 并将 `mode` 设置为 `DISABLE_SIMULCAST_STREAM` （从不发送视频小流），则调用该方法无效。你应在发送端重新调用 [setDualStreamModeEx](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengineex_setdualstreammodeex) 并调整设置。
 :::
 
-<a id="api_irtcengineex_setremotevideostreamtypeex2__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setremotevideostreamtypeex2__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setremotevideostreamtypeex2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setremotevideostreamtypeex2__parameters]
 
 #### `uid`
 
@@ -1269,19 +1037,14 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_setremotevideostreamtypeex2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setremotevideostreamtypeex2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setremotevideosubscriptionoptions"></a>
-
-## setRemoteVideoSubscriptionOptions
+## setRemoteVideoSubscriptionOptions [#api_irtcengine_setremotevideosubscriptionoptions]
 
 设置订阅远端视频流的选项。
 
@@ -1301,9 +1064,7 @@ public abstract int setRemoteVideoSubscriptionOptions(int uid, VideoSubscription
 
 如果你希望修改默认行为，或为不同的用户 ID 设置不同的订阅选项，可以调用该方法进行设置。
 
-<a id="api_irtcengine_setremotevideosubscriptionoptions__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremotevideosubscriptionoptions__parameters]
 
 #### `uid`
 
@@ -1313,19 +1074,14 @@ public abstract int setRemoteVideoSubscriptionOptions(int uid, VideoSubscription
 
 视频订阅选项，详见 [VideoSubscriptionOptions](/zh-CN/api-reference/rtc/android/class-videosubscriptionoptions)。
 
-<a id="api_irtcengine_setremotevideosubscriptionoptions__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremotevideosubscriptionoptions__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setremotevideosubscriptionoptionsex"></a>
-
-## setRemoteVideoSubscriptionOptionsEx
+## setRemoteVideoSubscriptionOptionsEx [#api_irtcengineex_setremotevideosubscriptionoptionsex]
 
 设置订阅远端视频流的选项。
 
@@ -1339,15 +1095,11 @@ public abstract int setRemoteVideoSubscriptionOptionsEx(int uid, VideoSubscripti
 
 该方法适用于多频道场景。当远端用户开启双流模式时，你可以调用该方法设置订阅该远端用户发送的视频流的选项。
 
-<a id="api_irtcengineex_setremotevideosubscriptionoptionsex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setremotevideosubscriptionoptionsex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setremotevideosubscriptionoptionsex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setremotevideosubscriptionoptionsex__parameters]
 
 #### `uid`
 
@@ -1361,19 +1113,14 @@ public abstract int setRemoteVideoSubscriptionOptionsEx(int uid, VideoSubscripti
 
 连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_setremotevideosubscriptionoptionsex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setremotevideosubscriptionoptionsex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setsubscribeaudioallowlist"></a>
-
-## setSubscribeAudioAllowlist
+## setSubscribeAudioAllowlist [#api_irtcengine_setsubscribeaudioallowlist]
 
 设置音频流订阅的白名单。
 
@@ -1392,27 +1139,20 @@ public abstract int setSubscribeAudioAllowlist(int[] uidList);
 - 如果某个用户同时被添加到白名单和黑名单中，则仅黑名单生效。
 :::
 
-<a id="api_irtcengine_setsubscribeaudioallowlist__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setsubscribeaudioallowlist__parameters]
 
 #### `uidList`
 
 你希望订阅的用户 ID 列表。调用该方法时，仅订阅该列表中用户的音频流。如果你希望将某个用户从白名单中移除，需要重新调用 [setSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) 方法，并在新的列表中仅包含你希望订阅的用户 ID。
 
-<a id="api_irtcengine_setsubscribeaudioallowlist__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setsubscribeaudioallowlist__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setsubscribeaudioallowlistex"></a>
-
-## setSubscribeAudioAllowlistEx
+## setSubscribeAudioAllowlistEx [#api_irtcengineex_setsubscribeaudioallowlistex]
 
 设置音频流订阅的白名单。
 
@@ -1431,15 +1171,11 @@ public abstract int setSubscribeAudioAllowlistEx(int[] uidList, RtcConnection co
 - 如果某个用户同时被添加到白名单和黑名单中，则以黑名单为准。
 :::
 
-<a id="api_irtcengineex_setsubscribeaudioallowlistex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setsubscribeaudioallowlistex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setsubscribeaudioallowlistex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setsubscribeaudioallowlistex__parameters]
 
 #### `uidList`
 
@@ -1449,19 +1185,14 @@ public abstract int setSubscribeAudioAllowlistEx(int[] uidList, RtcConnection co
 
 连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_setsubscribeaudioallowlistex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setsubscribeaudioallowlistex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setsubscribeaudioblocklist"></a>
-
-## setSubscribeAudioBlocklist
+## setSubscribeAudioBlocklist [#api_irtcengine_setsubscribeaudioblocklist]
 
 设置音频流订阅的黑名单。
 
@@ -1480,9 +1211,7 @@ public abstract int setSubscribeAudioBlocklist(int[] uidList);
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。
 :::
 
-<a id="api_irtcengine_setsubscribeaudioblocklist__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setsubscribeaudioblocklist__parameters]
 
 #### `uidList`
 
@@ -1490,19 +1219,14 @@ public abstract int setSubscribeAudioBlocklist(int[] uidList);
 
 - 如果你希望将某个用户从黑名单中移除，需要调用 [setSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) 方法更新用户 ID 列表，即在新的列表中仅保留不希望订阅的用户 ID。
 
-<a id="api_irtcengine_setsubscribeaudioblocklist__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setsubscribeaudioblocklist__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setsubscribeaudioblocklistex"></a>
-
-## setSubscribeAudioBlocklistEx
+## setSubscribeAudioBlocklistEx [#api_irtcengineex_setsubscribeaudioblocklistex]
 
 设置音频流订阅的黑名单。
 
@@ -1523,15 +1247,11 @@ public abstract int setSubscribeAudioBlocklistEx(int[] uidList, RtcConnection co
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。
 :::
 
-<a id="api_irtcengineex_setsubscribeaudioblocklistex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setsubscribeaudioblocklistex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setsubscribeaudioblocklistex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setsubscribeaudioblocklistex__parameters]
 
 #### `uidList`
 
@@ -1546,19 +1266,14 @@ public abstract int setSubscribeAudioBlocklistEx(int[] uidList, RtcConnection co
 
 连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_setsubscribeaudioblocklistex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setsubscribeaudioblocklistex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setsubscribevideoallowlist"></a>
-
-## setSubscribeVideoAllowlist
+## setSubscribeVideoAllowlist [#api_irtcengine_setsubscribevideoallowlist]
 
 设置视频流订阅的白名单。
 
@@ -1577,9 +1292,7 @@ public abstract int setSubscribeVideoAllowlist(int[] uidList);
 - 如果某个用户同时被添加到白名单和黑名单中，则仅黑名单生效。
 :::
 
-<a id="api_irtcengine_setsubscribevideoallowlist__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setsubscribevideoallowlist__parameters]
 
 #### `uidList`
 
@@ -1588,19 +1301,14 @@ public abstract int setSubscribeVideoAllowlist(int[] uidList);
 - 如果你希望订阅某个用户的视频流，请将该用户的用户 ID 添加到该列表中。
 - 如果你希望将某个用户从白名单中移除，需要调用 [setSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) 方法更新用户 ID 列表，即在新的用户 ID 列表中仅包含你希望订阅的用户的用户 ID。
 
-<a id="api_irtcengine_setsubscribevideoallowlist__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setsubscribevideoallowlist__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setsubscribevideoallowlistex"></a>
-
-## setSubscribeVideoAllowlistEx
+## setSubscribeVideoAllowlistEx [#api_irtcengineex_setsubscribevideoallowlistex]
 
 设置视频流订阅的白名单。
 
@@ -1619,15 +1327,11 @@ public abstract int setSubscribeVideoAllowlistEx(int[] uidList, RtcConnection co
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。
 :::
 
-<a id="api_irtcengineex_setsubscribevideoallowlistex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setsubscribevideoallowlistex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setsubscribevideoallowlistex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setsubscribevideoallowlistex__parameters]
 
 #### `uidList`
 
@@ -1640,19 +1344,14 @@ public abstract int setSubscribeVideoAllowlistEx(int[] uidList, RtcConnection co
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_setsubscribevideoallowlistex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setsubscribevideoallowlistex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_setsubscribevideoblocklist"></a>
-
-## setSubscribeVideoBlocklist
+## setSubscribeVideoBlocklist [#api_irtcengine_setsubscribevideoblocklist]
 
 设置视频流订阅的阻止名单。
 
@@ -1671,9 +1370,7 @@ public abstract int setSubscribeVideoBlocklist(int[] uidList);
 - 如果某个用户同时被添加到允许名单和阻止名单中，则仅阻止名单生效。
 :::
 
-<a id="api_irtcengine_setsubscribevideoblocklist__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setsubscribevideoblocklist__parameters]
 
 #### `uidList`
 
@@ -1682,19 +1379,14 @@ public abstract int setSubscribeVideoBlocklist(int[] uidList);
 - 如果你希望屏蔽某个用户的视频流，请将该用户的用户 ID 添加到该列表中。
 - 如果你希望将某个用户从阻止名单中移除，需要调用 [setSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) 方法更新该列表，即仅在新的列表中保留你仍希望屏蔽的用户 ID。
 
-<a id="api_irtcengine_setsubscribevideoblocklist__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setsubscribevideoblocklist__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setsubscribevideoblocklistex"></a>
-
-## setSubscribeVideoBlocklistEx
+## setSubscribeVideoBlocklistEx [#api_irtcengineex_setsubscribevideoblocklistex]
 
 设置视频流订阅的黑名单。
 
@@ -1713,15 +1405,11 @@ public abstract int setSubscribeVideoBlocklistEx(int[] uidList, RtcConnection co
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。
 :::
 
-<a id="api_irtcengineex_setsubscribevideoblocklistex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setsubscribevideoblocklistex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setsubscribevideoblocklistex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setsubscribevideoblocklistex__parameters]
 
 #### `uidList`
 
@@ -1731,19 +1419,14 @@ public abstract int setSubscribeVideoBlocklistEx(int[] uidList, RtcConnection co
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_setsubscribevideoblocklistex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setsubscribevideoblocklistex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="callback_irtcengineeventhandler_onaudiopublishstatechanged"></a>
-
-## onAudioPublishStateChanged
+## onAudioPublishStateChanged [#callback_irtcengineeventhandler_onaudiopublishstatechanged]
 
 音频发布状态发生变化回调。
 
@@ -1753,17 +1436,11 @@ public abstract int setSubscribeVideoBlocklistEx(int[] uidList, RtcConnection co
 public void onAudioPublishStateChanged(String channel, int oldState, int newState, int elapseSinceLastState)
 ```
 
-<a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__detailed_desc"></a>
-
-<a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__timing"></a>
-
-### 触发时机
+### <span id="callback_irtcengineeventhandler_onaudiopublishstatechanged__detailed_desc"></span>触发时机 [#callback_irtcengineeventhandler_onaudiopublishstatechanged__timing]
 
 该回调在音频发布状态发生变化时被触发。
 
-<a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onaudiopublishstatechanged__parameters]
 
 #### `channel`
 
@@ -1791,12 +1468,9 @@ public void onAudioPublishStateChanged(String channel, int oldState, int newStat
 
 从上一个状态到当前状态所经过的时间，单位为毫秒。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged"></a>
-
-## onAudioSubscribeStateChanged
+## onAudioSubscribeStateChanged [#callback_irtcengineeventhandler_onaudiosubscribestatechanged]
 
 音频订阅状态发生变化回调。
 
@@ -1810,15 +1484,11 @@ public void onAudioSubscribeStateChanged(String channel, int uid, int oldState, 
 
 该回调在本地用户订阅远端音频流的状态发生变化时触发。
 
-<a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onaudiosubscribestatechanged__timing]
 
 该回调在本地用户订阅远端音频流的状态发生变化时被触发。
 
-<a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onaudiosubscribestatechanged__parameters]
 
 #### `channel`
 
@@ -1872,12 +1542,9 @@ public void onAudioSubscribeStateChanged(String channel, int uid, int oldState, 
 
 从上一个状态到当前状态所经过的时间，单位为毫秒。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged"></a>
-
-## onVideoSubscribeStateChanged
+## onVideoSubscribeStateChanged [#callback_irtcengineeventhandler_onvideosubscribestatechanged]
 
 视频订阅状态发生变化回调。
 
@@ -1887,17 +1554,11 @@ public void onAudioSubscribeStateChanged(String channel, int uid, int oldState, 
 public void onVideoSubscribeStateChanged(String channel, int uid, int oldState, int newState, int elapseSinceLastState)
 ```
 
-<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__detailed_desc"></a>
-
-<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__timing"></a>
-
-### 触发时机
+### <span id="callback_irtcengineeventhandler_onvideosubscribestatechanged__detailed_desc"></span>触发时机 [#callback_irtcengineeventhandler_onvideosubscribestatechanged__timing]
 
 该回调在本地用户订阅远端视频流的状态发生变化时被触发。
 
-<a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onvideosubscribestatechanged__parameters]
 
 #### `channel`
 
@@ -1951,5 +1612,4 @@ public void onVideoSubscribeStateChanged(String channel, int uid, int oldState, 
 
 从上一个状态到当前状态所经过的时间，单位为毫秒。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

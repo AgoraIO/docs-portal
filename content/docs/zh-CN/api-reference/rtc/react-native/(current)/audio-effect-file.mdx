@@ -1,10 +1,9 @@
 ---
 title: "音效文件播放"
-description: "获取指定音效文件的播放进度。"
+description: "音效文件播放 API reference."
 ---
-<a id="toc_audio_effect_file"></a>
 
-## 音效文件播放
+<a id="toc_audio_effect_file"></a>
 
 <a id="api_irtcengine_geteffectcurrentposition"></a>
 
@@ -21,7 +20,7 @@ abstract getEffectCurrentPosition(soundId: number): number;
 <a id="api_irtcengine_geteffectcurrentposition__detailed_desc"></a>
 
 :::info[注]
-该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
 :::
 
 <a id="api_irtcengine_geteffectcurrentposition__parameters"></a>
@@ -39,7 +38,6 @@ abstract getEffectCurrentPosition(soundId: number): number;
 - 方法调用成功，返回指定音效文件的播放进度（毫秒）。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_geteffectduration"></a>
@@ -78,7 +76,6 @@ abstract getEffectDuration(filePath: string): number;
 - 方法调用成功，返回指定音效文件时长（毫秒）。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_geteffectsvolume"></a>
@@ -98,7 +95,7 @@ abstract getEffectsVolume(): number;
 音量范围为 0~100。100 （默认值）为原始文件音量。
 
 :::info[注]
-该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
 :::
 
 <a id="api_irtcengine_geteffectsvolume__return_values"></a>
@@ -108,7 +105,6 @@ abstract getEffectsVolume(): number;
 - 音效文件的音量。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getvolumeofeffect"></a>
@@ -140,7 +136,6 @@ abstract getVolumeOfEffect(soundId: number): number;
 - ≥ 0: 方法调用成功，返回播放音量。音量范围为 [0,100]。100 为原始音量。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pausealleffects"></a>
@@ -164,7 +159,6 @@ abstract pauseAllEffects(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pauseeffect"></a>
@@ -196,7 +190,6 @@ abstract pauseEffect(soundId: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_playalleffects"></a>
@@ -219,7 +212,7 @@ abstract playAllEffects(
 
 <a id="api_irtcengine_playalleffects__detailed_desc"></a>
 
-多次调用 [preloadEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_preloadeffect) 预加载多个音效文件后，你可以调用本方法播放所有预加载的音效文件。
+多次调用 [preloadEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_preloadeffect) 预加载多个音效文件后，你可以调用本方法播放所有预加载的音效文件。
 
 <a id="api_irtcengine_playalleffects__parameters"></a>
 
@@ -229,7 +222,7 @@ abstract playAllEffects(
 
 音效文件循环播放的次数：
 
-- -1: 无限循环播放音效文件，直至调用 [stopEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_stopalleffects) 后停止。
+- -1: 无限循环播放音效文件，直至调用 [stopEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_stopalleffects) 后停止。
 - 0: 播放音效文件一次。
 - 1: 播放音效文件两次。
 
@@ -263,7 +256,6 @@ abstract playAllEffects(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_playeffect3"></a>
@@ -292,7 +284,7 @@ abstract playEffect(
 你可以多次调用该方法，传入不同的 `soundID` 和 `filePath`，同时播放多个音效文件。为获得最佳用户体验，建议同时播放的音效文件不超过 3 个。
 
 :::info[注]
-如果你需要播放在线音效文件，声网建议先将在线音效文件缓存到本地设备，调用 [preloadEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_preloadeffect) 将缓存的音效文件预加载到内存中，然后再调用此方法播放音效。否则，可能出现因在线音效文件加载超时、加载失败而导致的播放失败和无声的问题。
+如果你需要播放在线音效文件，声网建议先将在线音效文件缓存到本地设备，调用 [preloadEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_preloadeffect) 将缓存的音效文件预加载到内存中，然后再调用此方法播放音效。否则，可能出现因在线音效文件加载超时、加载失败而导致的播放失败和无声的问题。
 :::
 
 <a id="api_irtcengine_playeffect3__timing"></a>
@@ -305,7 +297,7 @@ abstract playEffect(
 
 ### 相关回调
 
-音效文件播放结束后，SDK 会触发 [onAudioEffectFinished](/zh-CN/api-reference/rtc/react-native/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调。
+音效文件播放结束后，SDK 会触发 [onAudioEffectFinished](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调。
 
 <a id="api_irtcengine_playeffect3__parameters"></a>
 
@@ -316,7 +308,7 @@ abstract playEffect(
 音效的 ID。每个音效的 ID 具有唯一性。
 
 :::info[注]
-如果你已通过 [preloadEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 [preloadEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_preloadeffect) 中设置的 `soundId` 相同。
+如果你已通过 [preloadEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 [preloadEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_preloadeffect) 中设置的 `soundId` 相同。
 :::
 
 #### `filePath`
@@ -324,7 +316,7 @@ abstract playEffect(
 播放文件的地址，支持在线文件的 URL 地址、播放文件的绝对路径，需精确到文件名及后缀。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV、3GP 等。
 
 :::info[注]
-如果你已通过 [preloadEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 [preloadEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_preloadeffect) 中设置的 `filePath` 相同。
+如果你已通过 [preloadEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 [preloadEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_preloadeffect) 中设置的 `filePath` 相同。
 :::
 
 #### `loopCount`
@@ -368,7 +360,6 @@ abstract playEffect(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_playeffectex"></a>
@@ -403,9 +394,9 @@ abstract playEffectEx(
 
 :::info[注]
 - 声网建议不要同时播放超过三个音效。
-- 该方法中的音效 ID 和文件路径必须与 [preloadEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_preloadeffectex) 方法中的保持一致。
-- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_playeffectex) 之前调用了 [preloadEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_preloadeffectex)， [playEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_playeffectex) 执行后不会关闭文件资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_playeffectex) 时会直接从头开始播放。
-- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_playeffectex) 之前未调用 [preloadEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_preloadeffectex)， [playEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_playeffectex) 执行后会销毁资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_playeffectex) 时会尝试重新打开文件并从头播放。
+- 该方法中的音效 ID 和文件路径必须与 [preloadEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_preloadeffectex) 方法中的保持一致。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_playeffectex) 之前调用了 [preloadEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_preloadeffectex)， [playEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_playeffectex) 执行后不会关闭文件资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_playeffectex) 时会直接从头开始播放。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_playeffectex) 之前未调用 [preloadEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_preloadeffectex)， [playEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_playeffectex) 执行后会销毁资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_playeffectex) 时会尝试重新打开文件并从头播放。
 :::
 
 <a id="api_irtcengineex_playeffectex__scenario"></a>
@@ -434,7 +425,7 @@ abstract playEffectEx(
 
 音效的循环播放次数：
 
-- `-1`：无限循环，直到调用 [stopEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_stopalleffects)。
+- `-1`：无限循环，直到调用 [stopEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_stopalleffects)。
 - `0`：播放一次。
 - `1`：播放两次。
 
@@ -472,7 +463,6 @@ abstract playEffectEx(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_preloadeffect"></a>
@@ -527,7 +517,6 @@ abstract preloadEffect(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_preloadeffectex"></a>
@@ -553,13 +542,13 @@ abstract preloadEffectEx(
 
 自 v4.6.2 版本新增。
 
-每次调用该方法时，只能将一个音效文件预加载到内存中。如果需要预加载多个音效文件，请多次调用该方法。预加载完成后，可以调用 [playEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_playeffect3) 播放预加载的音效，或调用 [playAllEffects](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_playalleffects) 播放所有预加载的音效。
+每次调用该方法时，只能将一个音效文件预加载到内存中。如果需要预加载多个音效文件，请多次调用该方法。预加载完成后，可以调用 [playEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3) 播放预加载的音效，或调用 [playAllEffects](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playalleffects) 播放所有预加载的音效。
 
 :::info[注]
 - 为确保使用体验流畅，音效文件的大小不应超过限制。
 - 声网建议在加入频道前调用该方法。
-- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_playeffectex) 前已调用 [preloadEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_preloadeffectex)，则 [playEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_playeffectex) 执行后不会关闭文件资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_playeffectex) 时会直接从头开始播放。
-- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_playeffectex) 前未调用 [preloadEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_preloadeffectex)，则 [playEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_playeffectex) 执行后会销毁资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengineex_playeffectex) 时会尝试重新打开文件并从头开始播放。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_playeffectex) 前已调用 [preloadEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_preloadeffectex)，则 [playEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_playeffectex) 执行后不会关闭文件资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_playeffectex) 时会直接从头开始播放。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_playeffectex) 前未调用 [preloadEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_preloadeffectex)，则 [playEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_playeffectex) 执行后会销毁资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengineex_playeffectex) 时会尝试重新打开文件并从头开始播放。
 :::
 
 <a id="api_irtcengineex_preloadeffectex__scenario"></a>
@@ -595,7 +584,6 @@ abstract preloadEffectEx(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_resumealleffects"></a>
@@ -612,13 +600,13 @@ abstract resumeAllEffects(): number;
 
 <a id="api_irtcengine_resumealleffects__detailed_desc"></a>
 
-当你调用 [pauseAllEffects](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_pausealleffects) 暂停播放所有音效文件后，如需恢复播放，可以调用该方法。
+当你调用 [pauseAllEffects](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_pausealleffects) 暂停播放所有音效文件后，如需恢复播放，可以调用该方法。
 
 <a id="api_irtcengine_resumealleffects__timing"></a>
 
 ### 调用时机
 
-该方法需要在 [pauseAllEffects](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_pausealleffects) 后调用。
+该方法需要在 [pauseAllEffects](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_pausealleffects) 后调用。
 
 <a id="api_irtcengine_resumealleffects__return_values"></a>
 
@@ -627,7 +615,6 @@ abstract resumeAllEffects(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_resumeeffect"></a>
@@ -659,7 +646,6 @@ abstract resumeEffect(soundId: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_seteffectposition"></a>
@@ -679,7 +665,7 @@ abstract setEffectPosition(soundId: number, pos: number): number;
 成功设置后，本地音效文件会在指定位置开始播放。
 
 :::info[注]
-该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
 :::
 
 <a id="api_irtcengine_seteffectposition__parameters"></a>
@@ -701,7 +687,6 @@ abstract setEffectPosition(soundId: number, pos: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_seteffectsvolume"></a>
@@ -722,7 +707,7 @@ abstract setEffectsVolume(volume: number): number;
 
 ### 调用时机
 
-该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
 
 <a id="api_irtcengine_seteffectsvolume__parameters"></a>
 
@@ -739,7 +724,6 @@ abstract setEffectsVolume(volume: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvolumeofeffect"></a>
@@ -760,7 +744,7 @@ abstract setVolumeOfEffect(soundId: number, volume: number): number;
 
 ### 调用时机
 
-该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
 
 <a id="api_irtcengine_setvolumeofeffect__parameters"></a>
 
@@ -781,7 +765,6 @@ abstract setVolumeOfEffect(soundId: number, volume: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopalleffects"></a>
@@ -798,13 +781,13 @@ abstract stopAllEffects(): number;
 
 <a id="api_irtcengine_stopalleffects__detailed_desc"></a>
 
-当你不需要再播放音效文件时，可以调用该方法停止播放。如果你仅需暂停播放，请调用 [pauseAllEffects](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_pausealleffects)。
+当你不需要再播放音效文件时，可以调用该方法停止播放。如果你仅需暂停播放，请调用 [pauseAllEffects](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_pausealleffects)。
 
 <a id="api_irtcengine_stopalleffects__timing"></a>
 
 ### 调用时机
 
-该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_playeffect3) 之后调用。
+该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3) 之后调用。
 
 <a id="api_irtcengine_stopalleffects__return_values"></a>
 
@@ -813,7 +796,6 @@ abstract stopAllEffects(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopeffect"></a>
@@ -830,13 +812,13 @@ abstract stopEffect(soundId: number): number;
 
 <a id="api_irtcengine_stopeffect__detailed_desc"></a>
 
-当你不需要再播放某一音效文件时，可以调用该方法停止播放。如果你仅需暂停播放，请调用 [pauseEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_pauseeffect)。
+当你不需要再播放某一音效文件时，可以调用该方法停止播放。如果你仅需暂停播放，请调用 [pauseEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_pauseeffect)。
 
 <a id="api_irtcengine_stopeffect__timing"></a>
 
 ### 调用时机
 
-该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_playeffect3) 之后调用。
+该方法需要在 [playEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3) 之后调用。
 
 <a id="api_irtcengine_stopeffect__parameters"></a>
 
@@ -853,7 +835,6 @@ abstract stopEffect(soundId: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unloadalleffects"></a>
@@ -877,7 +858,6 @@ abstract unloadAllEffects(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unloadeffect"></a>
@@ -894,7 +874,7 @@ abstract unloadEffect(soundId: number): number;
 
 <a id="api_irtcengine_unloadeffect__detailed_desc"></a>
 
-调用 [preloadEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_preloadeffect) 将音效文件加载至内存后，如需释放该音效文件，请调用该方法。
+调用 [preloadEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效文件加载至内存后，如需释放该音效文件，请调用该方法。
 
 <a id="api_irtcengine_unloadeffect__timing"></a>
 
@@ -917,7 +897,6 @@ abstract unloadEffect(soundId: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudioeffectfinished"></a>
@@ -944,5 +923,4 @@ onAudioEffectFinished?(soundId: number): void;
 
 指定音效的 ID。每个音效均有唯一的 ID。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)

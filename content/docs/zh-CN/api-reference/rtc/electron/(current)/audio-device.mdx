@@ -1,10 +1,9 @@
 ---
 title: "音频设备管理"
-description: "获取系统中所有的播放设备列表。"
+description: "音频设备管理 API reference."
 ---
-<a id="toc_audio_device"></a>
 
-## 音频设备管理
+<a id="toc_audio_device"></a>
 
 <a id="api_iaudiodevicemanager_enumerateplaybackdevices"></a>
 
@@ -27,7 +26,6 @@ abstract enumeratePlaybackDevices(): AudioDeviceInfo[];
 - 方法调用成功，返回 [AudioDeviceInfo](/zh-CN/api-reference/rtc/electron/class-audiodeviceinfo) 数组，包含所有音频播放设备的设备 ID 和设备名称。
 - 方法调用失败: 返回空列表。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_enumeraterecordingdevices"></a>
@@ -51,7 +49,6 @@ abstract enumerateRecordingDevices(): AudioDeviceInfo[];
 - 方法调用成功，返回一个 [AudioDeviceInfo](/zh-CN/api-reference/rtc/electron/class-audiodeviceinfo) 数组，包含所有音频采集设备的设备 ID 和设备名称。
 - 方法调用失败: 返回空列表。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice"></a>
@@ -88,7 +85,6 @@ abstract followSystemLoopbackDevice(enable: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice"></a>
@@ -123,7 +119,6 @@ abstract followSystemPlaybackDevice(enable: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice"></a>
@@ -158,7 +153,6 @@ abstract followSystemRecordingDevice(enable: boolean): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_irtcengine_getaudiodevicemanager"></a>
@@ -181,7 +175,6 @@ abstract getAudioDeviceManager(): IAudioDeviceManager;
 
 一个 [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager) 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_iaudiodevicemanager_getloopbackdevice"></a>
@@ -206,7 +199,6 @@ abstract getLoopbackDevice(): string;
 
 当前声卡采集设备的 ID。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdefaultdevice"></a>
@@ -233,7 +225,6 @@ abstract getPlaybackDefaultDevice(): AudioDeviceInfo;
 
 默认音频播放设备的信息。详见 [AudioDeviceInfo](/zh-CN/api-reference/rtc/electron/class-audiodeviceinfo)。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdevice"></a>
@@ -256,7 +247,6 @@ abstract getPlaybackDevice(): string;
 
 当前音频播放设备。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo"></a>
@@ -279,7 +269,6 @@ abstract getPlaybackDeviceInfo(): AudioDeviceInfo;
 
 [AudioDeviceInfo](/zh-CN/api-reference/rtc/electron/class-audiodeviceinfo) 对象，包含音频播放设备的设备 ID 和设备名称。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdevicemute"></a>
@@ -303,7 +292,6 @@ abstract getPlaybackDeviceMute(): boolean;
 - true: 播放设备为静音状态。
 - false: 播放设备为非静音状态。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdevicevolume"></a>
@@ -326,7 +314,6 @@ abstract getPlaybackDeviceVolume(): number;
 
 播放设备音量。取值范围 [0,255]。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdefaultdevice"></a>
@@ -353,7 +340,6 @@ abstract getRecordingDefaultDevice(): AudioDeviceInfo;
 
 默认音频采集设备的信息。详见 [AudioDeviceInfo](/zh-CN/api-reference/rtc/electron/class-audiodeviceinfo)。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdevice"></a>
@@ -376,7 +362,6 @@ abstract getRecordingDevice(): string;
 
 当前音频采集设备。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo"></a>
@@ -399,7 +384,6 @@ abstract getRecordingDeviceInfo(): AudioDeviceInfo;
 
 [AudioDeviceInfo](/zh-CN/api-reference/rtc/electron/class-audiodeviceinfo) 对象，包含音频采集设备的设备 ID 和设备名称。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdevicemute"></a>
@@ -423,7 +407,6 @@ abstract getRecordingDeviceMute(): boolean;
 - true: 采集设备为静音状态。
 - false: 采集设备为非静音状态。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdevicevolume"></a>
@@ -450,7 +433,6 @@ abstract getRecordingDeviceVolume(): number;
 
 音频采集设备音量。取值范围 [0,255]。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_release_iaudiodevicemanager"></a>
@@ -467,7 +449,6 @@ abstract release(): void;
 
 <a id="api_iaudiodevicemanager_release_iaudiodevicemanager__detailed_desc"></a>
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setloopbackdevice"></a>
@@ -500,7 +481,7 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 #### `deviceId`
 
-指定 SDK 的声卡采集设备。由 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/electron/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。 最大长度为 [MaxDeviceIdLengthType](/zh-CN/api-reference/rtc/electron/enum-maxdeviceidlengthtype)。
+指定 SDK 的声卡采集设备。由 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/electron/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。 最大长度为 [MaxDeviceIdLengthType](/zh-CN/api-reference/rtc/electron/enum-maxdeviceidlengthtype)。
 
 <a id="api_iaudiodevicemanager_setloopbackdevice__return_values"></a>
 
@@ -509,7 +490,6 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setplaybackdevice"></a>
@@ -534,7 +514,7 @@ abstract setPlaybackDevice(deviceId: string): number;
 
 #### `deviceId`
 
-指定播放设备。由 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/electron/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。 最大长度为 [MaxDeviceIdLengthType](/zh-CN/api-reference/rtc/electron/enum-maxdeviceidlengthtype)。
+指定播放设备。由 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/electron/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。 最大长度为 [MaxDeviceIdLengthType](/zh-CN/api-reference/rtc/electron/enum-maxdeviceidlengthtype)。
 
 <a id="api_iaudiodevicemanager_setplaybackdevice__return_values"></a>
 
@@ -543,7 +523,6 @@ abstract setPlaybackDevice(deviceId: string): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute"></a>
@@ -578,7 +557,6 @@ abstract setPlaybackDeviceMute(mute: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume"></a>
@@ -614,7 +592,6 @@ abstract setPlaybackDeviceVolume(volume: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevice"></a>
@@ -639,7 +616,7 @@ abstract setRecordingDevice(deviceId: string): number;
 
 #### `deviceId`
 
-音频采集设备的 Device ID。可通过 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/electron/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取。插拔设备不会影响 `deviceId`。 最大长度为 [MaxDeviceIdLengthType](/zh-CN/api-reference/rtc/electron/enum-maxdeviceidlengthtype)。
+音频采集设备的 Device ID。可通过 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/electron/device-management/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取。插拔设备不会影响 `deviceId`。 最大长度为 [MaxDeviceIdLengthType](/zh-CN/api-reference/rtc/electron/enum-maxdeviceidlengthtype)。
 
 <a id="api_iaudiodevicemanager_setrecordingdevice__return_values"></a>
 
@@ -648,7 +625,6 @@ abstract setRecordingDevice(deviceId: string): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute"></a>
@@ -683,7 +659,6 @@ abstract setRecordingDeviceMute(mute: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume"></a>
@@ -717,7 +692,6 @@ abstract setRecordingDeviceVolume(volume: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest"></a>
@@ -734,13 +708,13 @@ abstract startAudioDeviceLoopbackTest(indicationInterval: number): number;
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__detailed_desc"></a>
 
-该方法测试音频采集和播放设备是否能正常工作。一旦测试开始，音频采集设备会采集本地音频，然后使用音频播放设备播放出来。SDK 会按设置的时间间隔触发两个 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告音频采集设备（`uid` = 0）和音频播放设置（`uid` = 1）的音量信息。
+该方法测试音频采集和播放设备是否能正常工作。一旦测试开始，音频采集设备会采集本地音频，然后使用音频播放设备播放出来。SDK 会按设置的时间间隔触发两个 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告音频采集设备（`uid` = 0）和音频播放设置（`uid` = 1）的音量信息。
 
 :::info[注]
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
 - 该方法仅在本地进行音频设备测试，不涉及网络连接。
-- 完成测试后，必须调用 [stopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/electron/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
+- 完成测试后，必须调用 [stopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/electron/device-management/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__parameters"></a>
@@ -749,7 +723,7 @@ abstract startAudioDeviceLoopbackTest(indicationInterval: number): number;
 
 #### `indicationInterval`
 
-SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒。建议设置到大于 200 毫秒。不得少于 10 毫秒，否则会收不到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
+SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒。建议设置到大于 200 毫秒。不得少于 10 毫秒，否则会收不到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__return_values"></a>
 
@@ -758,7 +732,6 @@ SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio-bas
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest"></a>
@@ -775,10 +748,10 @@ abstract startPlaybackDeviceTest(testAudioFilePath: string): number;
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__detailed_desc"></a>
 
-该方法用于测试本地音频播放设备是否能正常工作。启动测试后，SDK 播放指定的音频文件，测试者如果能听到声音，说明播放设备能正常工作。 调用该方法后，SDK 会每隔 100 毫秒触发一次 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 1 及播放设备的音量信息。 该方法和 [startEchoTest](/zh-CN/api-reference/rtc/electron/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频播放设备能否正常工作，后者可以检测音视频设备及网络是否正常。
+该方法用于测试本地音频播放设备是否能正常工作。启动测试后，SDK 播放指定的音频文件，测试者如果能听到声音，说明播放设备能正常工作。 调用该方法后，SDK 会每隔 100 毫秒触发一次 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 1 及播放设备的音量信息。 该方法和 [startEchoTest](/zh-CN/api-reference/rtc/electron/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频播放设备能否正常工作，后者可以检测音视频设备及网络是否正常。
 
 :::info[注]
-该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/electron/audio-device#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
+该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/electron/device-management/audio-device#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
 :::
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__parameters"></a>
@@ -799,7 +772,6 @@ abstract startPlaybackDeviceTest(testAudioFilePath: string): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest"></a>
@@ -816,10 +788,10 @@ abstract startRecordingDeviceTest(indicationInterval: number): number;
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__detailed_desc"></a>
 
-该方法用于测试本地音频采集设备是否能正常工作。调用该方法后，SDK 会按设置的时间间隔触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 0 及采集设备的音量信息。 该方法和 [startEchoTest](/zh-CN/api-reference/rtc/electron/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频采集设备能否正常工作，后者可以检测音视频设备及网络是否正常。
+该方法用于测试本地音频采集设备是否能正常工作。调用该方法后，SDK 会按设置的时间间隔触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 0 及采集设备的音量信息。 该方法和 [startEchoTest](/zh-CN/api-reference/rtc/electron/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频采集设备能否正常工作，后者可以检测音视频设备及网络是否正常。
 
 :::info[注]
-该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/electron/audio-device#api_iaudiodevicemanager_stoprecordingdevicetest) 停止设备测试。
+该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/electron/device-management/audio-device#api_iaudiodevicemanager_stoprecordingdevicetest) 停止设备测试。
 :::
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__parameters"></a>
@@ -828,7 +800,7 @@ abstract startRecordingDeviceTest(indicationInterval: number): number;
 
 #### `indicationInterval`
 
-SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒，最小取值为 10，否则会收不到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，SDK 会返回错误码 `-2`。声网推荐你将该值设为 100。
+SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒，最小取值为 10，否则会收不到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，SDK 会返回错误码 `-2`。声网推荐你将该值设为 100。
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__return_values"></a>
 
@@ -839,7 +811,6 @@ SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio-bas
 
   - -2: 参数设置错误，请重新设置参数。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest"></a>
@@ -859,7 +830,7 @@ abstract stopAudioDeviceLoopbackTest(): number;
 :::info[注]
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
-- 在调用 [startAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/electron/audio-device#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 后，必须调用该方法停止音频设备回路测试。
+- 在调用 [startAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/electron/device-management/audio-device#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 后，必须调用该方法停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__return_values"></a>
@@ -869,7 +840,6 @@ abstract stopAudioDeviceLoopbackTest(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest"></a>
@@ -886,7 +856,7 @@ abstract stopPlaybackDeviceTest(): number;
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest__detailed_desc"></a>
 
-该方法用于停止音频播放设备测试。调用 [startPlaybackDeviceTest](/zh-CN/api-reference/rtc/electron/audio-device#api_iaudiodevicemanager_startplaybackdevicetest) 后，必须调用该方法停止测试。
+该方法用于停止音频播放设备测试。调用 [startPlaybackDeviceTest](/zh-CN/api-reference/rtc/electron/device-management/audio-device#api_iaudiodevicemanager_startplaybackdevicetest) 后，必须调用该方法停止测试。
 
 :::info[注]
 该方法需要在加入频道前调用。
@@ -899,7 +869,6 @@ abstract stopPlaybackDeviceTest(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest"></a>
@@ -916,7 +885,7 @@ abstract stopRecordingDeviceTest(): number;
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest__detailed_desc"></a>
 
-该方法用于停止音频采集设备测试。调用 [startRecordingDeviceTest](/zh-CN/api-reference/rtc/electron/audio-device#api_iaudiodevicemanager_startrecordingdevicetest) 后，必须调用该方法停止测试。
+该方法用于停止音频采集设备测试。调用 [startRecordingDeviceTest](/zh-CN/api-reference/rtc/electron/device-management/audio-device#api_iaudiodevicemanager_startrecordingdevicetest) 后，必须调用该方法停止测试。
 
 :::info[注]
 该方法需要在加入频道前调用。
@@ -929,7 +898,6 @@ abstract stopRecordingDeviceTest(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged"></a>
@@ -968,7 +936,6 @@ onAudioDeviceStateChanged?(
 
 设备状态，详见 [MediaDeviceStateType](/zh-CN/api-reference/rtc/electron/enum-mediadevicestatetype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiodevicevolumechanged"></a>
@@ -1010,5 +977,4 @@ onAudioDeviceVolumeChanged?(
 - true: 音频设备已静音。
 - false: 音频设备未被静音。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)

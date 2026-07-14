@@ -1,10 +1,9 @@
 ---
 title: "本地截图上传"
-description: "启用或关闭本地截图上传功能。"
+description: "本地截图上传 API reference."
 ---
-<a id="toc_snapshot"></a>
 
-## 本地截图上传
+<a id="toc_snapshot"></a>
 
 <a id="api_irtcengine_enablecontentinspect"></a>
 
@@ -55,7 +54,6 @@ virtual int enableContentInspect(bool enabled, const media::ContentInspectConfig
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enablecontentinspectex"></a>
@@ -116,7 +114,6 @@ virtual int enableContentInspectEx(bool enabled, const media::ContentInspectConf
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_takesnapshot"></a>
@@ -150,7 +147,7 @@ virtual int takeSnapshot(uid_t uid, const char* filePath) = 0;
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onSnapshotTaken](/zh-CN/api-reference/rtc/cpp-all-platforms/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
+成功调用该方法后，SDK 会触发 [onSnapshotTaken](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
 
 <a id="api_irtcengine_takesnapshot__parameters"></a>
 
@@ -180,7 +177,6 @@ virtual int takeSnapshot(uid_t uid, const char* filePath) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_takesnapshot2"></a>
@@ -212,7 +208,7 @@ virtual int takeSnapshot(uid_t uid, const media::SnapshotConfig& config) = 0;
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onSnapshotTaken](/zh-CN/api-reference/rtc/cpp-all-platforms/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
+成功调用该方法后，SDK 会触发 [onSnapshotTaken](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
 
 <a id="api_irtcengine_takesnapshot2__parameters"></a>
 
@@ -233,7 +229,6 @@ virtual int takeSnapshot(uid_t uid, const media::SnapshotConfig& config) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_takesnapshotex"></a>
@@ -268,7 +263,7 @@ virtual int takeSnapshotEx(const RtcConnection& connection, uid_t uid, const cha
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onSnapshotTaken](/zh-CN/api-reference/rtc/cpp-all-platforms/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
+成功调用该方法后，SDK 会触发 [onSnapshotTaken](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
 
 <a id="api_irtcengineex_takesnapshotex__parameters"></a>
 
@@ -302,7 +297,6 @@ virtual int takeSnapshotEx(const RtcConnection& connection, uid_t uid, const cha
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengineex_takesnapshotex2"></a>
@@ -342,7 +336,7 @@ virtual int takeSnapshotEx(const RtcConnection& connection, uid_t uid, const med
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onSnapshotTaken](/zh-CN/api-reference/rtc/cpp-all-platforms/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
+成功调用该方法后，SDK 会触发 [onSnapshotTaken](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功以及截图的详细信息。
 
 <a id="api_irtcengineex_takesnapshotex2__parameters"></a>
 
@@ -371,7 +365,6 @@ virtual int takeSnapshotEx(const RtcConnection& connection, uid_t uid, const med
 - 0：调用成功。
 - &lt; 0：调用失败。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken"></a>
@@ -427,5 +420,4 @@ virtual void onSnapshotTaken(uid_t uid, const char* filePath, int width, int hei
   - -2：调用 `takeSnapshot` 方法成功后 1 秒内未找到指定用户的视频流。可能原因包括：本地采集停止、远端停止发布或视频数据处理阻塞。
   - -3：调用 `takeSnapshot` 方法过于频繁。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

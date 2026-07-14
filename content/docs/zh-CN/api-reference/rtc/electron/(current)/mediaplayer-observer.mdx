@@ -1,10 +1,9 @@
 ---
 title: "音视频观测器"
-description: "注册音频帧观测器。"
+description: "音视频观测器 API reference."
 ---
-<a id="toc_mediaplayer_observer"></a>
 
-## 音视频观测器
+<a id="toc_mediaplayer_observer"></a>
 
 <a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer"></a>
 
@@ -42,7 +41,6 @@ abstract registerAudioFrameObserver(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_registerplayersourceobserver"></a>
@@ -82,7 +80,6 @@ abstract registerPlayerSourceObserver(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_registervideoframeobserver_imediaplayer"></a>
@@ -118,7 +115,6 @@ abstract registerVideoFrameObserver(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_unregisteraudioframeobserver_imediaplayer"></a>
@@ -150,7 +146,6 @@ abstract unregisterAudioFrameObserver(observer: IAudioPcmFrameSink): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_unregisterplayersourceobserver"></a>
@@ -184,7 +179,6 @@ abstract unregisterPlayerSourceObserver(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_unregistervideoframeobserver_imediaplayer"></a>
@@ -218,7 +212,6 @@ abstract unregisterVideoFrameObserver(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver"></a>
@@ -245,7 +238,6 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 播放器的当前音量，取值范围为 [0,255]。
 
-### 所属接口类
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink"></a>
@@ -272,7 +264,6 @@ onFrame?(frame: AudioPcmFrame): void;
 
 音频帧信息。详见 [AudioPcmFrame](/zh-CN/api-reference/rtc/electron/class-audiopcmframe)。
 
-### 所属接口类
 - [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_iaudiopcmframesink)
 
 <a id="callback_imediaplayersourceobserver_onmetadata"></a>
@@ -303,7 +294,6 @@ onMetaData?(data: Uint8Array, length: number): void;
 
 数据长度，单位为 byte。
 
-### 所属接口类
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated"></a>
@@ -333,7 +323,6 @@ onPlayBufferUpdated?(playCachedBuffer: number): void;
 
 当前缓冲的数据能支持的播放时间 (毫秒)。
 
-### 所属接口类
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayerevent"></a>
@@ -354,7 +343,7 @@ onPlayerEvent?(
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__detailed_desc"></a>
 
-- 调用 [seek](/zh-CN/api-reference/rtc/electron/mediaplayer-control#api_imediaplayer_seek) 定位播放后，SDK 会触发该回调，报告定位播放的结果。
+- 调用 [seek](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 定位播放后，SDK 会触发该回调，报告定位播放的结果。
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__parameters"></a>
 
@@ -372,7 +361,6 @@ onPlayerEvent?(
 
 事件的信息。
 
-### 所属接口类
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated"></a>
@@ -399,7 +387,6 @@ onPlayerInfoUpdated?(info: PlayerUpdatedInfo): void;
 
 媒体播放器相关信息。详见 [PlayerUpdatedInfo](/zh-CN/api-reference/rtc/electron/class-playerupdatedinfo)。
 
-### 所属接口类
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged"></a>
@@ -433,7 +420,6 @@ onPlayerSourceStateChanged?(
 
 播放器状态改变的原因，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged"></a>
@@ -462,7 +448,6 @@ onPlayerSrcInfoChanged?(from: SrcInfo, to: SrcInfo): void;
 
 变化后，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/electron/class-srcinfo)。
 
-### 所属接口类
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged"></a>
@@ -497,7 +482,6 @@ onPositionChanged?(positionMs: number, timestampMs: number): void;
 该参数仅在频道内生效。
 :::
 
-### 所属接口类
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent"></a>
@@ -526,5 +510,4 @@ onPreloadEvent?(src: string, event: PlayerPreloadEvent): void;
 
 预加载媒体资源时发生的事件。详见 [PlayerPreloadEvent](/zh-CN/api-reference/rtc/electron/enum-playerpreloadevent)。
 
-### 所属接口类
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayersourceobserver)

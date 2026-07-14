@@ -1,0 +1,43 @@
+---
+title: "leaveChatThread method"
+description: "API docs for the leaveChatThread method from the ChatThreadManager class, for the Dart programming language."
+---
+
+Leave Chat Thread.
+
+The operation is available to Chat Thread members. After leave chat thread, the multiple devices will receive the notification event. You can set \{@ChatMultiDeviceEventHandler\} to listen on the event. The event callback function is [ChatMultiDeviceEventHandler.onChatThreadEvent](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-multi-device-event-handler/on-chat-thread-event), where the first parameter is the event, and chat thread exit event is [ChatMultiDevicesEvent.CHAT_THREAD_LEAVE](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-multi-devices-event).
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `chatThreadId` | Chat Thread ID. |
+
+```dart title="Dart"
+Future<void> leaveChatThread({required String chatThreadId})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> leaveChatThread({
+  required String chatThreadId,
+}) async {
+  Map req = {
+    "threadId": chatThreadId,
+  };
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.leaveChatThread,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

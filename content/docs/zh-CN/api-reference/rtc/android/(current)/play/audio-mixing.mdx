@@ -1,14 +1,9 @@
 ---
 title: "音乐文件播放"
-description: "调节本地播放的混音音量。"
+description: "音乐文件播放 API reference."
 ---
-<a id="toc_audio_mixing"></a>
 
-## 音乐文件播放
-
-<a id="api_irtcengine_adjustaudiomixingplayoutvolume"></a>
-
-## adjustAudioMixingPlayoutVolume
+## <span id="toc_audio_mixing"></span>adjustAudioMixingPlayoutVolume [#api_irtcengine_adjustaudiomixingplayoutvolume]
 
 调节本地播放的混音音量。
 
@@ -22,15 +17,11 @@ public abstract int adjustAudioMixingPlayoutVolume(int volume);
 
 你需要在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用此方法。
 
-<a id="api_irtcengine_adjustaudiomixingplayoutvolume__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_adjustaudiomixingplayoutvolume__timing]
 
 你需要在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用此方法。
 
-<a id="api_irtcengine_adjustaudiomixingplayoutvolume__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_adjustaudiomixingplayoutvolume__parameters]
 
 #### `volume`
 
@@ -39,19 +30,14 @@ public abstract int adjustAudioMixingPlayoutVolume(int volume);
 - 0：静音。
 - 100：原始音量。
 
-<a id="api_irtcengine_adjustaudiomixingplayoutvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_adjustaudiomixingplayoutvolume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_adjustaudiomixingpublishvolume"></a>
-
-## adjustAudioMixingPublishVolume
+## adjustAudioMixingPublishVolume [#api_irtcengine_adjustaudiomixingpublishvolume]
 
 调节用于发布的混音音量。
 
@@ -65,33 +51,24 @@ public abstract int adjustAudioMixingPublishVolume(int volume);
 
 该方法用于调节发送给其他用户的混音音量。
 
-<a id="api_irtcengine_adjustaudiomixingpublishvolume__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_adjustaudiomixingpublishvolume__timing]
 
 请在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用该方法。
 
-<a id="api_irtcengine_adjustaudiomixingpublishvolume__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_adjustaudiomixingpublishvolume__parameters]
 
 #### `volume`
 
 用于发布的混音音量。取值范围为 0 到 100，默认值为 100，表示原始音量。
 
-<a id="api_irtcengine_adjustaudiomixingpublishvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_adjustaudiomixingpublishvolume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_adjustaudiomixingvolume"></a>
-
-## adjustAudioMixingVolume
+## adjustAudioMixingVolume [#api_irtcengine_adjustaudiomixingvolume]
 
 调节混音时的音量。
 
@@ -109,33 +86,24 @@ public abstract int adjustAudioMixingVolume(int volume);
 [adjustAudioMixingVolume](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_adjustaudiomixingvolume) 不会影响通过 `playEffect` 方法设置的音效文件的音量。
 :::
 
-<a id="api_irtcengine_adjustaudiomixingvolume__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_adjustaudiomixingvolume__timing]
 
 请在调用 `startAudioMixing` 方法之后调用该方法。
 
-<a id="api_irtcengine_adjustaudiomixingvolume__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_adjustaudiomixingvolume__parameters]
 
 #### `volume`
 
 混音音量，取值范围为 0 到 100。（默认值为 100，表示原始音量。）
 
-<a id="api_irtcengine_adjustaudiomixingvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_adjustaudiomixingvolume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getaudiomixingcurrentposition"></a>
-
-## getAudioMixingCurrentPosition
+## getAudioMixingCurrentPosition [#api_irtcengine_getaudiomixingcurrentposition]
 
 获取当前混音的播放位置（毫秒）。
 
@@ -152,19 +120,14 @@ public abstract int getAudioMixingCurrentPosition();
 - 如果需要多次调用 [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_getaudiomixingcurrentposition)，请确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
-<a id="api_irtcengine_getaudiomixingcurrentposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getaudiomixingcurrentposition__return_values]
 
 - 方法调用成功，返回当前混音的播放位置（毫秒）。0 表示当前音乐文件尚未开始播放。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getaudiomixingduration"></a>
-
-## getAudioMixingDuration
+## getAudioMixingDuration [#api_irtcengine_getaudiomixingduration]
 
 获取音频文件的混音时长（毫秒）。
 
@@ -174,27 +137,18 @@ public abstract int getAudioMixingCurrentPosition();
 public abstract int getAudioMixingDuration();
 ```
 
-<a id="api_irtcengine_getaudiomixingduration__detailed_desc"></a>
-
-<a id="api_irtcengine_getaudiomixingduration__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_getaudiomixingduration__detailed_desc"></span>调用时机 [#api_irtcengine_getaudiomixingduration__timing]
 
 请在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用该方法。
 
-<a id="api_irtcengine_getaudiomixingduration__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getaudiomixingduration__return_values]
 
 - 方法调用成功，返回混音的时长（毫秒）。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getaudiomixingplayoutvolume"></a>
-
-## getAudioMixingPlayoutVolume
+## getAudioMixingPlayoutVolume [#api_irtcengine_getaudiomixingplayoutvolume]
 
 获取本地播放的混音音量。
 
@@ -208,25 +162,18 @@ public abstract int getAudioMixingPlayoutVolume();
 
 你可以调用该方法获取混音音频文件的本地播放音量，有助于排查与音量相关的问题。
 
-<a id="api_irtcengine_getaudiomixingplayoutvolume__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_getaudiomixingplayoutvolume__timing]
 
 在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用此方法。
 
-<a id="api_irtcengine_getaudiomixingplayoutvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getaudiomixingplayoutvolume__return_values]
 
 - 方法调用成功，返回混音音量，取值范围为 [0, 100]。
 - 方法调用失败，返回小于 0 的错误码。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getaudiomixingpublishvolume"></a>
-
-## getAudioMixingPublishVolume
+## getAudioMixingPublishVolume [#api_irtcengine_getaudiomixingpublishvolume]
 
 获取用于发布的混音音量。
 
@@ -244,19 +191,14 @@ public abstract int getAudioMixingPublishVolume();
 你需要在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用该方法。
 :::
 
-<a id="api_irtcengine_getaudiomixingpublishvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getaudiomixingpublishvolume__return_values]
 
 - ≥ 0：方法调用成功，返回混音音量，取值范围为 [0, 100]。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getaudiotrackcount"></a>
-
-## getAudioTrackCount
+## getAudioTrackCount [#api_irtcengine_getaudiotrackcount]
 
 获取当前音乐文件的音轨索引。
 
@@ -272,19 +214,14 @@ public abstract int getAudioTrackCount();
 你需要在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用此方法。
 :::
 
-<a id="api_irtcengine_getaudiotrackcount__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getaudiotrackcount__return_values]
 
 - 方法调用成功，返回音轨的索引。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_pauseaudiomixing"></a>
-
-## pauseAudioMixing
+## pauseAudioMixing [#api_irtcengine_pauseaudiomixing]
 
 暂停播放和混音的音乐文件。
 
@@ -298,25 +235,18 @@ public abstract int pauseAudioMixing();
 
 调用 `startAudioMixing` 播放音乐文件后，可以调用该方法暂停播放。如果需要停止播放，请调用 [stopAudioMixing](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_stopaudiomixing)。
 
-<a id="api_irtcengine_pauseaudiomixing__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_pauseaudiomixing__timing]
 
 请在加入频道后调用该方法。
 
-<a id="api_irtcengine_pauseaudiomixing__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_pauseaudiomixing__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_resumeaudiomixing"></a>
-
-## resumeAudioMixing
+## resumeAudioMixing [#api_irtcengine_resumeaudiomixing]
 
 恢复播放和混音的音乐文件。
 
@@ -330,25 +260,18 @@ public abstract int resumeAudioMixing();
 
 调用 [pauseAudioMixing](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_pauseaudiomixing) 后，可以调用 [resumeAudioMixing](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_resumeaudiomixing) 恢复播放。
 
-<a id="api_irtcengine_resumeaudiomixing__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_resumeaudiomixing__timing]
 
 请在加入频道后调用此方法。
 
-<a id="api_irtcengine_resumeaudiomixing__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_resumeaudiomixing__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_selectaudiotrack"></a>
-
-## selectAudioTrack
+## selectAudioTrack [#api_irtcengine_selectaudiotrack]
 
 选择播放过程中使用的音轨。
 
@@ -367,27 +290,20 @@ public abstract int selectAudioTrack(int audioIndex);
 - 你需要在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后再调用该方法。
 :::
 
-<a id="api_irtcengine_selectaudiotrack__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_selectaudiotrack__parameters]
 
 #### `audioIndex`
 
 你想要指定的音轨索引。该值应大于 0 且小于 [getAudioTrackCount](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_getaudiotrackcount) 返回的值。
 
-<a id="api_irtcengine_selectaudiotrack__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_selectaudiotrack__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_imediaplayer_selectmultiaudiotrack"></a>
-
-## selectMultiAudioTrack
+## selectMultiAudioTrack [#api_imediaplayer_selectmultiaudiotrack]
 
 选择要在本地设备播放和发布到频道的音轨。
 
@@ -401,15 +317,11 @@ int selectMultiAudioTrack(int playoutTrackIndex, int publishTrackIndex);
 
 在调用该方法前，你需要通过 [openWithMediaSource](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体文件，并在 [MediaPlayerSource](/zh-CN/api-reference/rtc/android/class-mediasource) 中将 `enableMultiAudioTrack` 设置为 true。
 
-<a id="api_imediaplayer_selectmultiaudiotrack__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_imediaplayer_selectmultiaudiotrack__scenario]
 
 该方法适用于例如 KTV 场景：主持人可以选择在本地播放原唱音轨，同时将伴奏音轨发布到频道。
 
-<a id="api_imediaplayer_selectmultiaudiotrack__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_selectmultiaudiotrack__parameters]
 
 #### `playoutTrackIndex`
 
@@ -419,19 +331,14 @@ int selectMultiAudioTrack(int playoutTrackIndex, int publishTrackIndex);
 
 要发布到频道中的音轨索引。你可以通过 [getStreamInfo](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取该索引。
 
-<a id="api_imediaplayer_selectmultiaudiotrack__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_selectmultiaudiotrack__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediaplayer)
 
-<a id="api_irtcengine_setaudiomixingdualmonomode"></a>
-
-## setAudioMixingDualMonoMode
+## setAudioMixingDualMonoMode [#api_irtcengine_setaudiomixingdualmonomode]
 
 设置当前音频文件的声道模式。
 
@@ -452,42 +359,31 @@ public abstract int setAudioMixingDualMonoMode(Constants.AudioMixingDualMonoMode
 该方法仅适用于立体声音频文件。
 :::
 
-<a id="api_irtcengine_setaudiomixingdualmonomode__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_setaudiomixingdualmonomode__scenario]
 
 在 KTV 场景中，音乐文件的左声道存储伴奏，右声道存储原唱人声。你可以根据实际需求进行设置：
 
 - 如果你只想听到伴奏，调用该方法将声道模式设置为左声道模式。
 - 如果你需要同时听到伴奏和原唱人声，调用该方法将声道模式设置为混合模式。
 
-<a id="api_irtcengine_setaudiomixingdualmonomode__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setaudiomixingdualmonomode__timing]
 
 在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用该方法。
 
-<a id="api_irtcengine_setaudiomixingdualmonomode__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setaudiomixingdualmonomode__parameters]
 
 #### `mode`
 
 声道模式。详见 [AudioMixingDualMonoMode](/zh-CN/api-reference/rtc/android/enum-audiomixingdualmonomode)。
 
-<a id="api_irtcengine_setaudiomixingdualmonomode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setaudiomixingdualmonomode__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setaudiomixingpitch"></a>
-
-## setAudioMixingPitch
+## setAudioMixingPitch [#api_irtcengine_setaudiomixingpitch]
 
 设置本地音乐文件的音调。
 
@@ -501,33 +397,24 @@ public abstract int setAudioMixingPitch(int pitch);
 
 你需要在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用该方法。
 
-<a id="api_irtcengine_setaudiomixingpitch__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setaudiomixingpitch__timing]
 
 你需要在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调后调用该方法。
 
-<a id="api_irtcengine_setaudiomixingpitch__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setaudiomixingpitch__parameters]
 
 #### `pitch`
 
 按半音阶设置本地音乐文件的音调（默认值为 0）。取值范围为 -12 到 12，相邻数值之间的音调差为一个半音。该参数的绝对值越大，音调变化越明显。
 
-<a id="api_irtcengine_setaudiomixingpitch__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setaudiomixingpitch__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setaudiomixingplaybackspeed"></a>
-
-## setAudioMixingPlaybackSpeed
+## setAudioMixingPlaybackSpeed [#api_irtcengine_setaudiomixingplaybackspeed]
 
 设置当前音频文件的播放速度。
 
@@ -541,9 +428,7 @@ public abstract int setAudioMixingPlaybackSpeed(int speed);
 
 请确保在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) 回调，报告状态为 `AUDIO_MIXING_STATE_PLAYING` 后再调用此方法。
 
-<a id="api_irtcengine_setaudiomixingplaybackspeed__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setaudiomixingplaybackspeed__parameters]
 
 #### `speed`
 
@@ -553,19 +438,14 @@ public abstract int setAudioMixingPlaybackSpeed(int speed);
 - 100：原始速度。
 - 400：原始速度的 4 倍。
 
-<a id="api_irtcengine_setaudiomixingplaybackspeed__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setaudiomixingplaybackspeed__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setaudiomixingposition"></a>
-
-## setAudioMixingPosition
+## setAudioMixingPosition [#api_irtcengine_setaudiomixingposition]
 
 设置混音的播放位置。
 
@@ -575,35 +455,24 @@ public abstract int setAudioMixingPlaybackSpeed(int speed);
 public abstract int setAudioMixingPosition(int pos);
 ```
 
-<a id="api_irtcengine_setaudiomixingposition__detailed_desc"></a>
-
-<a id="api_irtcengine_setaudiomixingposition__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_setaudiomixingposition__detailed_desc"></span>调用时机 [#api_irtcengine_setaudiomixingposition__timing]
 
 请在调用 `startAudioMixing` 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) 回调后调用此方法。
 
-<a id="api_irtcengine_setaudiomixingposition__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setaudiomixingposition__parameters]
 
 #### `pos`
 
 播放位置，单位为毫秒。
 
-<a id="api_irtcengine_setaudiomixingposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setaudiomixingposition__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_startaudiomixing"></a>
-
-## startAudioMixing [1/2]
+## startAudioMixing [1/2] [#api_irtcengine_startaudiomixing]
 
 开始播放音乐文件。
 
@@ -613,9 +482,7 @@ public abstract int setAudioMixingPosition(int pos);
 public abstract int startAudioMixing(String filePath, boolean loopback, int cycle);
 ```
 
-<a id="api_irtcengine_startaudiomixing__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_startaudiomixing__detailed_desc]
 
 该方法已废弃。请改用 [startAudioMixing [2/2]](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_startaudiomixing2)。
 
@@ -631,21 +498,15 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
   - 如果在模拟器上调用该方法，需确保音乐文件位于 `/sdcard/` 目录下，且格式为 MP3。
 :::
 
-<a id="api_irtcengine_startaudiomixing__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_startaudiomixing__timing]
 
 你可以在加入频道前或后调用该方法。
 
-<a id="api_irtcengine_startaudiomixing__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_startaudiomixing__related]
 
 成功调用该方法会触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调。当音频混音文件播放结束时，SDK 会在本地客户端触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_STOPPED` ）回调。
 
-<a id="api_irtcengine_startaudiomixing__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_startaudiomixing__parameters]
 
 #### `filePath`
 
@@ -676,9 +537,7 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
 - &gt; 0：播放指定次数，例如 1 表示播放 1 次。
 - -1：无限循环播放。
 
-<a id="api_irtcengine_startaudiomixing__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_startaudiomixing__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
@@ -691,12 +550,9 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
     - 程序未完成。
     - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_startaudiomixing2"></a>
-
-## startAudioMixing [2/2]
+## startAudioMixing [2/2] [#api_irtcengine_startaudiomixing2]
 
 开始播放音乐文件。
 
@@ -720,21 +576,15 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
   - 如果在模拟器上调用该方法，请确保音乐文件位于 `/sdcard/` 目录下，且格式为 MP3。
 :::
 
-<a id="api_irtcengine_startaudiomixing2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_startaudiomixing2__timing]
 
 你可以在加入频道前或加入频道后调用该方法。
 
-<a id="api_irtcengine_startaudiomixing2__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_startaudiomixing2__related]
 
 成功调用该方法会触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_PLAYING` ）回调。当音频混音文件播放结束时，SDK 会在本地触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AUDIO_MIXING_STATE_STOPPED` ）回调。
 
-<a id="api_irtcengine_startaudiomixing2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_startaudiomixing2__parameters]
 
 #### `filePath`
 
@@ -758,9 +608,7 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
 
 音乐文件的播放起始位置（单位：毫秒）。
 
-<a id="api_irtcengine_startaudiomixing2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_startaudiomixing2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
@@ -773,12 +621,9 @@ public abstract int startAudioMixing(String filePath, boolean loopback, int cycl
     - 程序未完成。
     - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 初始化失败，请重新初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_stopaudiomixing"></a>
-
-## stopAudioMixing
+## stopAudioMixing [#api_irtcengine_stopaudiomixing]
 
 停止播放音乐文件。
 
@@ -792,25 +637,18 @@ public abstract int stopAudioMixing();
 
 调用 `startAudioMixing` 播放音乐文件后，可以调用该方法停止播放。如果只需要暂停播放，请调用 [pauseAudioMixing](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_pauseaudiomixing)。
 
-<a id="api_irtcengine_stopaudiomixing__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_stopaudiomixing__timing]
 
 请在加入频道后调用此方法。
 
-<a id="api_irtcengine_stopaudiomixing__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_stopaudiomixing__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="callback_irtcengineeventhandler_onaudiomixingfinished"></a>
-
-## onAudioMixingFinished
+## onAudioMixingFinished [#callback_irtcengineeventhandler_onaudiomixingfinished]
 
 本地音乐文件播放结束回调。
 
@@ -820,26 +658,19 @@ public abstract int stopAudioMixing();
 public void onAudioMixingFinished()
 ```
 
-<a id="callback_irtcengineeventhandler_onaudiomixingfinished__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#callback_irtcengineeventhandler_onaudiomixingfinished__detailed_desc]
 
 该方法已废弃，请改用 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/android/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)。
 
 调用 `startAudioMixing` 播放本地音乐文件后，播放结束时会触发该回调。如果调用 `startAudioMixing` 失败，会返回错误码 `WARN_AUDIO_MIXING_OPEN_ERROR`。
 
-<a id="callback_irtcengineeventhandler_onaudiomixingfinished__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onaudiomixingfinished__timing]
 
 该回调在本地音乐文件播放结束时被触发。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged"></a>
-
-## onAudioMixingPositionChanged
+## onAudioMixingPositionChanged [#callback_irtcengineeventhandler_onaudiomixingpositionchanged]
 
 音乐文件播放进度回调。
 
@@ -853,26 +684,19 @@ public void onAudioMixingPositionChanged(long position)
 
 调用 `startAudioMixing` 方法播放音乐文件后，SDK 每两秒触发一次该回调，报告音乐文件的播放进度。
 
-<a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onaudiomixingpositionchanged__timing]
 
 该回调在调用 `startAudioMixing` 播放音乐文件后，每两秒触发一次。
 
-<a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onaudiomixingpositionchanged__parameters]
 
 #### `position`
 
 播放进度，单位为毫秒。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onaudiomixingstatechanged"></a>
-
-## onAudioMixingStateChanged
+## onAudioMixingStateChanged [#callback_irtcengineeventhandler_onaudiomixingstatechanged]
 
 音乐文件播放状态变化回调。
 
@@ -886,15 +710,11 @@ public void onAudioMixingStateChanged(int state, int reason)
 
 该回调报告当前音乐文件的播放状态和错误码。
 
-<a id="callback_irtcengineeventhandler_onaudiomixingstatechanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onaudiomixingstatechanged__timing]
 
 该回调在音乐文件播放状态发生变化时被触发。
 
-<a id="callback_irtcengineeventhandler_onaudiomixingstatechanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onaudiomixingstatechanged__parameters]
 
 #### `state`
 
@@ -917,5 +737,4 @@ public void onAudioMixingStateChanged(int state, int reason)
 - `AUDIO_MIXING_REASON_ALL_LOOPS_COMPLETED` (723)：音乐文件完成所有循环播放。
 - `AUDIO_MIXING_REASON_STOPPED_BY_USER` (724)：通过调用 [stopAudioMixing](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_stopaudiomixing) 停止音乐文件播放。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

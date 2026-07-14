@@ -1,10 +1,9 @@
 ---
 title: "人声音效"
-description: "启用或关闭语音 AI 调音器。"
+description: "人声音效 API reference."
 ---
-<a id="toc_audio_effect"></a>
 
-## 人声音效
+<a id="toc_audio_effect"></a>
 
 <a id="api_irtcengine_enablevoiceaituner"></a>
 
@@ -56,7 +55,6 @@ description: "启用或关闭语音 AI 调音器。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setadvancedaudiooptions"></a>
@@ -76,7 +74,7 @@ description: "启用或关闭语音 AI 调音器。"
 如果你有高级音频处理需求，例如采集和发送立体声音频，可以调用此方法设置音频高级选项。
 
 :::info[注]
-请在调用 `joinChannelByToken`、 [enableAudio](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_enableaudio) 和 `enableLocalAudio` 之前调用此方法。
+请在调用 `joinChannelByToken`、 [enableAudio](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_enableaudio) 和 `enableLocalAudio` 之前调用此方法。
 :::
 
 <a id="api_irtcengine_setadvancedaudiooptions__parameters"></a>
@@ -94,7 +92,6 @@ description: "启用或关闭语音 AI 调音器。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setainsmode"></a>
@@ -160,7 +157,6 @@ AI 降噪模式，详见 [AUDIO_AINS_MODE](/zh-CN/api-reference/rtc/macos/enum-a
 
 0：方法调用成功。 &lt; 0：方法调用失败。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioeffectparameters"></a>
@@ -184,22 +180,22 @@ AI 降噪模式，详见 [AUDIO_AINS_MODE](/zh-CN/api-reference/rtc/macos/enum-a
 
 不同的歌曲有不同的调式和主音。声网建议将该方法与界面元素绑定，以便你交互式地调整音高修正效果。 设置音效参数后，频道内所有用户都能听到效果。 为了获得更好的人声效果，建议你在调用该方法前调用以下 API：
 
-- 调用 [setAudioScenario:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质音频场景，即 `AgoraAudioScenarioGameStreaming` （3）。
-- 调用 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioprofile2) 将 `profile` 参数设置为 `AgoraAudioProfileMusicHighQuality` （4）或 `AgoraAudioProfileMusicHighQualityStereo` （5）。
+- 调用 [setAudioScenario:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质音频场景，即 `AgoraAudioScenarioGameStreaming` （3）。
+- 调用 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioprofile2) 将 `profile` 参数设置为 `AgoraAudioProfileMusicHighQuality` （4）或 `AgoraAudioProfileMusicHighQualityStereo` （5）。
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用该方法。
-- 不要将 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileSpeechStandard` （1），否则该方法不生效。
+- 不要将 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileSpeechStandard` （1），否则该方法不生效。
 - 该方法在人声处理方面效果最佳，声网不建议使用该方法处理包含音乐的音频数据。
-- 调用 [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectparameters) 后，不建议再调用以下方法，否则会覆盖该方法设置的效果：
+- 调用 [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 后，不建议再调用以下方法，否则会覆盖该方法设置的效果：
 
-  - [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectpreset)
-  - [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoicebeautifierpreset)
-  - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoicereverb)
-  - [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoicebeautifierparameters)
-  - [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
 - 该方法依赖于语音美声动态库 `AgoraAudioBeautyExtension.xcframework` （iOS）或 AgoraAudioBeautyExtension.framework （macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
 
@@ -213,7 +209,7 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 - `AgoraAudioEffectPresetRoomAcous3DVoice` （10）：3D 人声效果。
 
-  - 在设置该枚举值前，你需要将 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileMusicStandardStereo` （3）或 `AgoraAudioProfileMusicHighQualityStereo` （5），否则设置不生效。
+  - 在设置该枚举值前，你需要将 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileMusicStandardStereo` （3）或 `AgoraAudioProfileMusicHighQualityStereo` （5），否则设置不生效。
   - 启用 3D 人声效果后，用户需使用立体声播放设备才能听到预期效果。
 - `AgoraAudioEffectPresetPitchCorrection` （11）：音高修正效果。
 
@@ -251,7 +247,6 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioeffectpreset"></a>
@@ -270,20 +265,20 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 你可以调用该方法为发送音频流的本地用户设置声网预设的音效效果。该音效不会改变原始声音的性别特征。设置后，频道内所有用户都能听到该音效效果。 建议你在调用该方法前，先调用以下 API 以获得更好的人声效果：
 
-- 调用 [setAudioScenario:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质音频场景，即 `AgoraAudioScenarioGameStreaming` （3）。
-- 调用 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioprofile2) 将 `profile` 参数设置为 `AgoraAudioProfileMusicHighQuality` （4）或 `AgoraAudioProfileMusicHighQualityStereo` （5）。
+- 调用 [setAudioScenario:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质音频场景，即 `AgoraAudioScenarioGameStreaming` （3）。
+- 调用 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioprofile2) 将 `profile` 参数设置为 `AgoraAudioProfileMusicHighQuality` （4）或 `AgoraAudioProfileMusicHighQualityStereo` （5）。
 
 :::info[注]
-- 不要将 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileSpeechStandard` （1），否则该方法不生效。
-- 如果调用 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectpreset) 并设置的枚举值不是 `AgoraAudioEffectPresetRoomAcous3DVoice` 或 `AgoraAudioEffectPresetPitchCorrection`，请不要调用 [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectparameters)，否则 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectpreset) 的设置会被覆盖。
-- 调用 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectpreset) 后，声网不建议你再调用以下方法，否则 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectpreset) 设置的效果会被覆盖：
+- 不要将 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileSpeechStandard` （1），否则该方法不生效。
+- 如果调用 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 并设置的枚举值不是 `AgoraAudioEffectPresetRoomAcous3DVoice` 或 `AgoraAudioEffectPresetPitchCorrection`，请不要调用 [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)，否则 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 的设置会被覆盖。
+- 调用 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 后，声网不建议你再调用以下方法，否则 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 设置的效果会被覆盖：
 
-  - [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoicebeautifierpreset)
-  - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoicereverb)
-  - [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoicebeautifierparameters)
-  - [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
 - 该方法依赖于美声特效动态库 `AgoraAudioBeautyExtension.xcframework` （iOS）或 AgoraAudioBeautyExtension.framework （macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
 
@@ -308,7 +303,6 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvoiceequalization"></a>
@@ -350,7 +344,6 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvoiceformant"></a>
@@ -367,7 +360,7 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 <a id="api_irtcengine_setlocalvoiceformant__detailed_desc"></a>
 
-共振峰比例会影响声音的音色。值越小，声音越低沉；值越大，声音越尖锐。设置共振峰比例后，频道内所有用户都能听到改变后的声音。如果你希望同时改变音色和音调，声网建议同时使用 [setLocalVoiceFormant:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoiceformant) 和 [setLocalVoicePitch:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoicepitch) 方法。
+共振峰比例会影响声音的音色。值越小，声音越低沉；值越大，声音越尖锐。设置共振峰比例后，频道内所有用户都能听到改变后的声音。如果你希望同时改变音色和音调，声网建议同时使用 [setLocalVoiceFormant:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceformant) 和 [setLocalVoicePitch:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch) 方法。
 
 <a id="api_irtcengine_setlocalvoiceformant__scenario"></a>
 
@@ -400,7 +393,6 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvoicepitch"></a>
@@ -438,7 +430,6 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvoicereverb"></a>
@@ -455,7 +446,7 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 <a id="api_irtcengine_setlocalvoicereverb__detailed_desc"></a>
 
-你可以在加入频道前或加入频道后调用该方法。SDK 提供了更易用的方法 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectpreset)，可直接实现如流行、R&B 和 KTV 等预设混响效果。
+你可以在加入频道前或加入频道后调用该方法。SDK 提供了更易用的方法 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)，可直接实现如流行、R&B 和 KTV 等预设混响效果。
 
 <a id="api_irtcengine_setlocalvoicereverb__parameters"></a>
 
@@ -476,7 +467,6 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvoicebeautifierparameters"></a>
@@ -495,22 +485,22 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 调用该方法为美声特效设置性别特征和混响效果。该方法为发送音频流的本地用户设置参数。设置完成后，频道内所有用户都能听到该效果。为了获得更好的人声效果，建议在调用本方法前调用以下 API：
 
-- 调用 [setAudioScenario:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质音频场景，即 `AgoraAudioScenarioGameStreaming` （3）。
-- 调用 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioprofile2) 将 `profile` 参数设置为 `AgoraAudioProfileMusicHighQuality` （4）或 `AgoraAudioProfileMusicHighQualityStereo` （5）。
+- 调用 [setAudioScenario:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质音频场景，即 `AgoraAudioScenarioGameStreaming` （3）。
+- 调用 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioprofile2) 将 `profile` 参数设置为 `AgoraAudioProfileMusicHighQuality` （4）或 `AgoraAudioProfileMusicHighQualityStereo` （5）。
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用该方法。
-- 请勿将 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileSpeechStandard` （1），否则该方法不生效。
+- 请勿将 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileSpeechStandard` （1），否则该方法不生效。
 - 该方法对人声处理效果最佳，不建议用于处理包含音乐的音频数据。
-- 调用 [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoicebeautifierparameters) 后，不建议再调用以下方法，否则会覆盖该方法设置的效果：
+- 调用 [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters) 后，不建议再调用以下方法，否则会覆盖该方法设置的效果：
 
-  - [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectpreset)
-  - [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectparameters)
-  - [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoicebeautifierpreset)
-  - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoicereverb)
-  - [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
 - 该方法依赖于美声特效动态库 `AgoraAudioBeautyExtension.xcframework` （iOS）或 AgoraAudioBeautyExtension.framework （macOS）。如果该动态库被删除，功能将无法正常启用。
 :::
 
@@ -546,7 +536,6 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvoicebeautifierpreset"></a>
@@ -566,17 +555,17 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 调用该方法为发送音频流的本地用户设置预设的美声特效。设置后，频道内所有用户都能听到该特效。你可以根据不同场景设置不同的美声特效。
 
 :::info[注]
-- 不要将 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileSpeechStandard` （1），否则该方法不生效。
+- 不要将 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileSpeechStandard` （1），否则该方法不生效。
 - 此方法对人声处理效果最佳，不建议用于处理包含音乐的音频数据。
-- 调用 [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoicebeautifierpreset) 后，不建议再调用以下方法，否则会覆盖该方法设置的效果：
+- 调用 [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 后，不建议再调用以下方法，否则会覆盖该方法设置的效果：
 
-  - [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectpreset)
-  - [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectparameters)
-  - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoicereverb)
-  - [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoicebeautifierparameters)
-  - [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
 - 此方法依赖于美声特效动态库 `AgoraAudioBeautyExtension.xcframework` （iOS）或 AgoraAudioBeautyExtension.framework （macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
 
@@ -601,7 +590,6 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvoiceconversionpreset"></a>
@@ -621,18 +609,18 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 调用该方法为在频道中发布音频流的本地用户设置预设的变声效果。设置后，频道内所有用户都能听到该变声效果。你可以根据不同的场景为用户设置不同的变声效果。
 
 :::info[注]
-- 不要将 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileSpeechStandard` （1），否则该方法不生效。
+- 不要将 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioprofile2) 中的 `profile` 参数设置为 `AgoraAudioProfileSpeechStandard` （1），否则该方法不生效。
 - 该方法对人声处理效果最佳，声网不建议使用该方法处理包含音乐的音频数据。
-- 调用 [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoiceconversionpreset) 后，声网不建议你再调用以下方法，否则会覆盖 [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoiceconversionpreset) 设置的效果：
+- 调用 [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 后，声网不建议你再调用以下方法，否则会覆盖 [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 设置的效果：
 
-  - [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectpreset)
-  - [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setaudioeffectparameters)
-  - [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoicebeautifierpreset)
-  - [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setvoicebeautifierparameters)
-  - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceFormant:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoiceformant)
-  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/macos/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setAudioEffectPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [setAudioEffectParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [setVoiceBeautifierParameters:param1:param2:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setLocalVoicePitch:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceFormant:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceformant)
+  - [setLocalVoiceEqualizationOfBandFrequency:withGain:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverbOfType:withValue:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
 - 该方法依赖于美声特效动态库 `AgoraAudioBeautyExtension.xcframework` （iOS）或 AgoraAudioBeautyExtension.framework （macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
 
@@ -642,8 +630,8 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 该方法可以在加入频道前或加入频道后调用。为获得更好的音效，建议在调用该方法前先调用以下方法：
 
-- 调用 [setAudioScenario:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质场景，即 `AgoraAudioScenarioGameStreaming` （3）。
-- 调用 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioprofile2) 并将 `profile` 参数设置为 `AgoraAudioProfileMusicHighQuality` （4）或 `AgoraAudioProfileMusicHighQualityStereo` （5）。
+- 调用 [setAudioScenario:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质场景，即 `AgoraAudioScenarioGameStreaming` （3）。
+- 调用 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioprofile2) 并将 `profile` 参数设置为 `AgoraAudioProfileMusicHighQuality` （4）或 `AgoraAudioProfileMusicHighQualityStereo` （5）。
 
 <a id="api_irtcengine_setvoiceconversionpreset__parameters"></a>
 
@@ -660,5 +648,4 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)

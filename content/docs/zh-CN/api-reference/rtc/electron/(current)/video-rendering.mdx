@@ -1,10 +1,9 @@
 ---
 title: "视频渲染"
-description: "销毁多个视频渲染器对象。"
+description: "视频渲染 API reference."
 ---
-<a id="toc_video_rendering"></a>
 
-## 视频渲染
+<a id="toc_video_rendering"></a>
 
 <a id="api_irtcengine_destroyrendererbyconfig"></a>
 
@@ -32,7 +31,6 @@ abstract destroyRendererByConfig(sourceType: VideoSourceType, channelId?: string
 
 远端用户 ID。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroyrendererbyview"></a>
@@ -57,7 +55,6 @@ abstract destroyRendererByView(view: any): void;
 
 需要销毁的 HTMLElement 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableinstantmediarendering"></a>
@@ -101,7 +98,6 @@ abstract enableInstantMediaRendering(): number;
 
   - -7: [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalrendermode2"></a>
@@ -124,14 +120,14 @@ abstract setLocalRenderMode(
 初始化本地用户视图后，你可以调用该方法更新本地用户视图的渲染和镜像模式。该方法只影响本地用户看到的视频画面，不影响本地视频的发布。
 
 :::info[注]
-该方法仅对第一个摄像头 `(PrimaryCameraSource)` 生效。在自定义视频采集或使用其他类型视频源的场景下，你需要使用 [setupLocalVideo](/zh-CN/api-reference/rtc/electron/video-rendering#api_irtcengine_setuplocalvideo) 方法替代该方法。
+该方法仅对第一个摄像头 `(PrimaryCameraSource)` 生效。在自定义视频采集或使用其他类型视频源的场景下，你需要使用 [setupLocalVideo](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_setuplocalvideo) 方法替代该方法。
 :::
 
 <a id="api_irtcengine_setlocalrendermode2__timing"></a>
 
 ### 调用时机
 
-- 请在调用 [setupLocalVideo](/zh-CN/api-reference/rtc/electron/video-rendering#api_irtcengine_setuplocalvideo) 方法初始化本地视图后，调用该方法。
+- 请在调用 [setupLocalVideo](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_setuplocalvideo) 方法初始化本地视图后，调用该方法。
 - 你可以在通话中多次调用该方法，多次更新本地用户视图的显示模式。
 
 <a id="api_irtcengine_setlocalrendermode2__parameters"></a>
@@ -157,7 +153,6 @@ abstract setLocalRenderMode(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalrendertargetfps"></a>
@@ -212,7 +207,6 @@ abstract setLocalRenderTargetFps(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvideomirrormode"></a>
@@ -248,7 +242,6 @@ abstract setLocalVideoMirrorMode(mirrorMode: VideoMirrorModeType): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremoterendermode2"></a>
@@ -272,7 +265,7 @@ abstract setRemoteRenderMode(
 初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
 
 :::info[注]
-- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/electron/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后，调用该方法。
+- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后，调用该方法。
 - 你可以在通话中多次调用该方法，多次更新远端用户视图的显示模式。
 :::
 
@@ -299,7 +292,6 @@ abstract setRemoteRenderMode(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremoterendermodeex"></a>
@@ -350,7 +342,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setremoterendertargetfps"></a>
@@ -398,7 +389,6 @@ abstract setRemoteRenderTargetFps(targetFps: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayer_setrendermode"></a>
@@ -430,7 +420,6 @@ abstract setRenderMode(renderMode: RenderModeType): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_irtcengine_setuplocalvideo"></a>
@@ -480,7 +469,6 @@ abstract setupLocalVideo(canvas: VideoCanvas): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setupremotevideo"></a>
@@ -500,7 +488,7 @@ abstract setupRemoteVideo(canvas: VideoCanvas): number;
 该方法绑定远端用户和显示视图，并设置远端用户视图在本地显示时的渲染模式和镜像模式，只影响本地用户看到的视频画面。 调用该方法时需要指定远端视频的用户 ID，一般可以在进频道前提前设置好。如果无法在加入频道前得到远端用户的 ID，可以在收到 [onUserJoined](/zh-CN/api-reference/rtc/electron/channel#callback_irtcengineeventhandler_onuserjoined) 回调时调用该方法。 如需解除某个远端用户的绑定视图，可以调用该方法并将 `view` 设置为空。 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
 :::info[注]
-- 当使用录制服务时，由于它不会发送视频流，App 无需为它绑定视图。如果 App 无法识别录制服务，可以在收到 [onFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/electron/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时再绑定远端用户视图。
+- 当使用录制服务时，由于它不会发送视频流，App 无需为它绑定视图。如果 App 无法识别录制服务，可以在收到 [onFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/electron/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时再绑定远端用户视图。
 - 如果想要停止渲染视图，需要将 `view` 设为 null 后再次调用该方法，以停止渲染并清理渲染缓存。
 :::
 
@@ -519,7 +507,6 @@ abstract setupRemoteVideo(canvas: VideoCanvas): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setupremotevideoex"></a>
@@ -544,7 +531,7 @@ abstract setupRemoteVideoEx(
 :::info[注]
 - 该方法需要在 [joinChannelEx](/zh-CN/api-reference/rtc/electron/channel#api_irtcengineex_joinchannelex) 之后调用。
 - 在 Flutter 中你不需要主动调用该方法，请使用 `AgoraVideoView` 渲染本地和远端视图。
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderModeEx](/zh-CN/api-reference/rtc/electron/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderModeEx](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
 :::
 
 <a id="api_irtcengineex_setupremotevideoex__parameters"></a>
@@ -566,7 +553,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_startmediarenderingtracing"></a>
@@ -583,7 +569,7 @@ abstract startMediaRenderingTracing(): number;
 
 <a id="api_irtcengine_startmediarenderingtracing__detailed_desc"></a>
 
-成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/electron/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
+成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/electron/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
 
 :::info[注]
 - 如果你未调用该方法，SDK 默认以调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
@@ -605,7 +591,6 @@ abstract startMediaRenderingTracing(): number;
 
   - -7: [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startmediarenderingtracingex"></a>
@@ -622,7 +607,7 @@ abstract startMediaRenderingTracingEx(connection: RtcConnection): number;
 
 <a id="api_irtcengineex_startmediarenderingtracingex__detailed_desc"></a>
 
-成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/electron/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
+成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/electron/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
 
 :::info[注]
 - 如果你未调用该方法，SDK 默认以调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
@@ -650,7 +635,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult"></a>
@@ -672,7 +656,7 @@ onVideoRenderingTracingResult?(
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__detailed_desc"></a>
 
-调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后，SDK 会触发该回调，报告视频帧渲染的事件和渲染过程中的指标。开发者可以针对指标进行专项优化，以提高出图效率。
+调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后，SDK 会触发该回调，报告视频帧渲染的事件和渲染过程中的指标。开发者可以针对指标进行专项优化，以提高出图效率。
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__parameters"></a>
 
@@ -694,5 +678,4 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 视频帧渲染过程中的指标。开发者需要尽可能降低指标值，以提高出图效率。详见 [VideoRenderingTracingInfo](/zh-CN/api-reference/rtc/electron/class-videorenderingtracinginfo)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)

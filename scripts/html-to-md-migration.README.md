@@ -36,6 +36,9 @@ node scripts/html-to-md-migration.mjs \
 |----------|-------------|---------|
 | `--locale, -l` | Locale for output | `zh-CN` |
 | `--route-base-path, -r` | Base path for links | `/api-reference` |
+| `--target-base-path` | Exact route for generated links when the output directory adds route segments | Derived from `content/docs/<locale>/...` output paths, otherwise from route base, product, and platform |
+| `--navigation` | TypeDoc sidebar source: `generated` or `public-index` | Known legacy preset, otherwise `generated` |
+| `--navigation-manifest` | JSON array of public `{ label, source }` entries used to preserve legacy TypeDoc IA | - |
 | `--version-dir, -V` | Version directory name | - |
 | `--dry-run, -d` | Preview detected source type, file count, and planned output paths without writing files | `false` |
 | `--verbose, -v` | Show detailed output | `false` |
@@ -47,6 +50,10 @@ node scripts/html-to-md-migration.mjs \
 | Lane | Expected source shape | Behavior |
 |------|-----------------------|----------|
 | DITA-OT/Oxygen API reference | `<source>/API/*.html`, with optional `<source>/index.html` TOC | Converts HTML pages to `.mdx`, preserves DITA-OT TOC order when present, and writes `meta.json` files. |
+| TypeDoc | `index.html`, `modules.html`, `classes/`, `interfaces/`, `enums/`, `assets/` | Converts overview and symbol pages, localizes generated structure labels for `zh-CN`, rewrites links, and can preserve a curated public sidebar while retaining hidden symbol routes. |
+| Doxygen/Javadoc | `annotated.html`, `classes.html`, `doxygen.css`, generated `class*.html` / `interface*.html`, `search/`, or Javadoc indexes | Converts index and symbol pages; preserves common index-link order and rewrites internal `.html` links. |
+| iOS doc-generator/Jazzy/appledoc | `Classes/`, `Protocols/`, `Constants/`, `Blocks/`, `Categories/`, `hierarchy.html` | Converts Objective-C/Swift index and symbol pages while preserving stable anchors and folder navigation. |
+| Dartdoc | `index.html`, `index.json`, `categories.json`, `library-index.html`, `static-assets/` | Converts library and API pages while preserving folder navigation and internal `.html` links. |
 
 ### Unsupported
 
@@ -54,10 +61,6 @@ The script detects these layouts and fails before reading `API/`:
 
 | Detected lane | Common markers | Required action |
 |---------------|----------------|-----------------|
-| TypeDoc | `modules.html`, `classes/`, `interfaces/`, `enums/`, TypeDoc page text | Use or build a TypeDoc-specific migration lane. |
-| Doxygen/Javadoc | `annotated.html`, `classes.html`, `doxygen.css`, `allclasses-index.html`, `package-summary.html`, Javadoc page text | Use or build a Doxygen/Javadoc-specific migration lane. |
-| iOS-doc-generator | `Classes/`, `Protocols/`, `Constants/`, `Blocks/`, `hierarchy.html`, appledoc/Jazzy/iOS-doc-generator markers | Use or build an iOS-doc-generator-specific migration lane. |
-| Dartdoc | `index.json`, `categories.json`, `library-index.html`, `static-assets/`, Dartdoc page text | Use or build a Dartdoc-specific migration lane. |
 | RESTful/OpenAPI or other layouts | `openapi.yaml`, `openapi.json`, `swagger.yaml`, endpoint folders, root HTML without `API/` | Use the OpenAPI/Fumadocs REST API lane or add a source-specific converter. |
 
 ## Examples
@@ -81,6 +84,23 @@ node scripts/html-to-md-migration.mjs \
   --product signaling \
   --platform ios
 ```
+
+### Flexible Classroom TypeDoc with the legacy public navigation
+
+The real Flexible Classroom Web export automatically uses the bundled public navigation manifest. The explicit options below remain available when migrating an equivalent export from a non-standard source layout.
+
+```bash
+node scripts/html-to-md-migration.mjs \
+  --source /path/to/shengwang-doc-source/html-docs/flexible-classroom/Web \
+  --output content/docs/zh-CN/api-reference/flexible-classroom/web/api-reference \
+  --product flexible-classroom \
+  --platform web \
+  --target-base-path /zh-CN/api-reference/flexible-classroom/web/api-reference \
+  --navigation public-index \
+  --navigation-manifest scripts/html-migration/navigation/flexible-classroom-store.json
+```
+
+RTC React SDK is not sourced from `html-docs/rtc/React`, because that export contains Web SDK TypeDoc. Migrate the React-specific legacy MDX with `scripts/migrate-rtc-react-api-reference.mjs`; the script resolves its Web SDK cross-links against the actual Web TypeDoc source.
 
 Dry-run output includes:
 

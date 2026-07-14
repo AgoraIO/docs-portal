@@ -2,9 +2,8 @@
 title: "音频基础功能"
 description: "音频基础功能 API reference."
 ---
-<a id="toc_audio_basic"></a>
 
-## 音频基础功能
+<a id="toc_audio_basic"></a>
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume"></a>
 
@@ -57,7 +56,6 @@ public abstract adjustUserPlaybackSignalVolume(uid:number,volume:number):number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex"></a>
@@ -115,7 +113,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_disableaudio"></a>
@@ -146,7 +143,7 @@ public abstract disableAudio(): number;
 
 该方法重置整个引擎，响应时间较慢，因此声网建议使用如下方法来控制音频模块：
 
-- [enableLocalAudio](/zh-CN/api-reference/rtc/harmonyos/audio-capture#api_irtcengine_enablelocalaudio)：是否启动麦克风采集并创建本地音频流。
+- [enableLocalAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-capture#api_irtcengine_enablelocalaudio)：是否启动麦克风采集并创建本地音频流。
 - [muteLocalAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：是否发布本地音频流。
 - [muteRemoteAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteremoteaudiostream)：是否接收并播放远端音频流。
 - [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)：是否接收并播放所有远端音频流。
@@ -158,7 +155,6 @@ public abstract disableAudio(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudio"></a>
@@ -175,7 +171,7 @@ public abstract enableAudio(): number;
 
 <a id="api_irtcengine_enableaudio__detailed_desc"></a>
 
-音频模块默认开启。如果你调用 [disableAudio](/zh-CN/api-reference/rtc/harmonyos/audio-basic#api_irtcengine_disableaudio) 关闭了音频模块，可调用该方法重新开启。
+音频模块默认开启。如果你调用 [disableAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_disableaudio) 关闭了音频模块，可调用该方法重新开启。
 
 <a id="api_irtcengine_enableaudio__timing"></a>
 
@@ -189,7 +185,7 @@ public abstract enableAudio(): number;
 
 - 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制音频模块的某一项功能：
 
-  - [enableLocalAudio](/zh-CN/api-reference/rtc/harmonyos/audio-capture#api_irtcengine_enablelocalaudio): 是否启动麦克风采集并创建本地音频流。
+  - [enableLocalAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-capture#api_irtcengine_enablelocalaudio): 是否启动麦克风采集并创建本地音频流。
   - [muteLocalAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalaudiostream): 是否发布本地音频流。
   - [muteRemoteAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteremoteaudiostream): 是否接收并播放远端音频流。
   - [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams): 是否接收并播放所有远端音频流。
@@ -202,7 +198,6 @@ public abstract enableAudio(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudiovolumeindication"></a>
@@ -237,7 +232,7 @@ public abstract enableAudioVolumeIndication(interval: number, smooth: number, re
 
 ### 相关回调
 
-成功调用该方法、且频道内存在发流用户时，SDK 会按设置的时间间隔触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
+成功调用该方法、且频道内存在发流用户时，SDK 会按设置的时间间隔触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
 <a id="api_irtcengine_enableaudiovolumeindication__parameters"></a>
 
@@ -266,7 +261,6 @@ public abstract enableAudioVolumeIndication(interval: number, smooth: number, re
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex"></a>
@@ -301,7 +295,7 @@ public abstract enableAudioVolumeIndicationEx(interval:number,smooth:number,repo
 
 ### 相关回调
 
-成功调用该方法、且频道内存在发流用户时，SDK 会按设置的时间间隔触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
+成功调用该方法、且频道内存在发流用户时，SDK 会按设置的时间间隔触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__parameters"></a>
 
@@ -334,7 +328,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setaudioprofile2"></a>
@@ -351,7 +344,7 @@ public abstract setAudioProfile(profile: Constants.AudioProfileType): number;
 
 <a id="api_irtcengine_setaudioprofile2__detailed_desc"></a>
 
-如果你想设置音频应用场景，可以直接调用 [setAudioScenario](/zh-CN/api-reference/rtc/harmonyos/audio-basic#api_irtcengine_setaudioscenario) 方法进行设置，也可以调用 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 并设置 [RtcEngineConfig](/zh-CN/api-reference/rtc/harmonyos/class-rtcengineconfig) 结构体中的 mAudioScenario。
+如果你想设置音频应用场景，可以直接调用 [setAudioScenario](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_setaudioscenario) 方法进行设置，也可以调用 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 并设置 [RtcEngineConfig](/zh-CN/api-reference/rtc/harmonyos/class-rtcengineconfig) 结构体中的 mAudioScenario。
 
 <a id="api_irtcengine_setaudioprofile2__scenario"></a>
 
@@ -386,7 +379,6 @@ public abstract setAudioProfile(profile: Constants.AudioProfileType): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioscenario"></a>
@@ -434,7 +426,6 @@ public abstract setAudioScenario(scenario: Constants.AudioScenarioType): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication"></a>
@@ -451,7 +442,7 @@ onAudioVolumeIndication?:( speakers:Array<AudioVolumeInfo>,  totalVolume:number)
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__detailed_desc"></a>
 
-该回调默认禁用，你可以通过 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/audio-basic#api_irtcengine_enableaudiovolumeindication) 开启。 开启后，只要频道内有发流用户，SDK 会在加入频道后按 enableAudioVolumeIndication 中设置的时间间隔触发 onAudioVolumeIndication 回调。每次会触发两个 onAudioVolumeIndication 回调，一个报告本地发流用户的音量相关信息，另一个报告瞬时音量最高的远端用户（最多 3 位）的音量相关信息。
+该回调默认禁用，你可以通过 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 开启。 开启后，只要频道内有发流用户，SDK 会在加入频道后按 enableAudioVolumeIndication 中设置的时间间隔触发 onAudioVolumeIndication 回调。每次会触发两个 onAudioVolumeIndication 回调，一个报告本地发流用户的音量相关信息，另一个报告瞬时音量最高的远端用户（最多 3 位）的音量相关信息。
 
 :::warning[注意]
 启用该功能后，如果有用户将自己静音（调用了 [muteLocalAudioStream](/zh-CN/api-reference/rtc/harmonyos/publishnsubscribe#api_irtcengine_mutelocalaudiostream) ），SDK 会继续报告本地用户的音量提示回调。
@@ -472,9 +463,8 @@ onAudioVolumeIndication?:( speakers:Array<AudioVolumeInfo>,  totalVolume:number)
 混音后的总音量，取值范围为 [0,255]。
 
 - 在本地用户的回调中， totalVolume 为本地发流用户的音量。
-- 在远端用户的回调中， totalVolume 为瞬时音量最高的远端用户（最多 3 位）混音后的总音量。 如果用户调用了 [startAudioMixing](/zh-CN/api-reference/rtc/harmonyos/audio-mixing#api_irtcengine_startaudiomixing2)，则 totalVolume 为音乐文件和用户声音的总音量。
+- 在远端用户的回调中， totalVolume 为瞬时音量最高的远端用户（最多 3 位）混音后的总音量。 如果用户调用了 [startAudioMixing](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_startaudiomixing2)，则 totalVolume 为音乐文件和用户声音的总音量。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged"></a>
@@ -509,7 +499,6 @@ onLocalAudioStateChanged?:(state:Constants.LocalAudioStreamState,error:Constants
 
 本地音频状态改变原因。详见 [LocalAudioStreamReason](/zh-CN/api-reference/rtc/harmonyos/enum-localaudiostreamreason)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats"></a>
@@ -536,7 +525,6 @@ SDK 每 2 秒触发该回调一次。
 
 本地音频统计数据。详见 [LocalAudioStats](/zh-CN/api-reference/rtc/harmonyos/class-localaudiostats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged"></a>
@@ -579,7 +567,6 @@ onRemoteAudioStateChanged ? : (uid:number, state: Constants.RemoteAudioStreamSta
 
 从本地用户调用 joinChannelWithOptions 方法到发生本事件经历的时间，单位为毫秒。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats"></a>
@@ -606,7 +593,6 @@ onRemoteAudioStats?:(stats:RemoteAudioStats) => void;
 
 接收到的远端音频统计数据，详见 [RemoteAudioStats](/zh-CN/api-reference/rtc/harmonyos/class-remoteaudiostats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio"></a>
@@ -644,5 +630,4 @@ onUserMuteAudio?:(uid:number,muted:boolean) =>void;
 - `true`: 该用户已将音频静音。
 - `false`: 该用户取消了音频静音。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

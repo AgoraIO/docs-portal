@@ -1,0 +1,52 @@
+---
+title: "fetchChatThreadsWithParentId method"
+description: "API docs for the fetchChatThreadsWithParentId method from the ChatThreadManager class, for the Dart programming language."
+---
+
+Get the subareas under a group from the server
+
+**Return** result of `ChatCursorResult`, including the cursor for getting data next time and the chat thread object list.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `parentId` | Parent ID, generally refers to group ID. |
+| `cursor` | The initial value can be empty or empty string. |
+| `limit` | The number of fetches at one time. Value range (0, 50]. |
+
+```dart title="Dart"
+Future<ChatCursorResult<ChatThread>> fetchChatThreadsWithParentId({required String parentId, String? cursor, int limit = 20})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatCursorResult<ChatThread>> fetchChatThreadsWithParentId({
+  required String parentId,
+  String? cursor,
+  int limit = 20,
+}) async {
+  Map req = {
+    "parentId": parentId,
+    "pageSize": limit,
+  };
+  req.setValueWithOutNull("cursor", cursor);
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.fetchChatThreadsWithParentId, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatCursorResult.fromJson(
+        result[ChatMethodKeys.fetchChatThreadsWithParentId],
+        dataItemCallback: (map) {
+      return ChatThread.fromJson(map);
+    });
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

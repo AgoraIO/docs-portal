@@ -2,9 +2,8 @@
 title: "屏幕采集"
 description: "屏幕采集 API reference."
 ---
-<a id="toc_screencapture"></a>
 
-## 屏幕采集
+<a id="toc_screencapture"></a>
 
 <a id="api_irtcengine_getscreencapturesources"></a>
 
@@ -22,7 +21,7 @@ public abstract ScreenCaptureSourceInfo[] GetScreenCaptureSources(SIZE thumbSize
 
 ### 详情
 
-屏幕共享或窗口共享前，你可以调用该方法获取可共享的屏幕和窗口的对象列表，方便用户通过列表中的缩略图选择共享某个显示器的屏幕或某个窗口。列表中包含窗口 ID 和屏幕 ID 等重要信息，你可以获取到 ID 后再调用 [StartScreenCaptureByWindowId](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapturebywindowid) 或 [StartScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapturebydisplayid) 开启共享。
+屏幕共享或窗口共享前，你可以调用该方法获取可共享的屏幕和窗口的对象列表，方便用户通过列表中的缩略图选择共享某个显示器的屏幕或某个窗口。列表中包含窗口 ID 和屏幕 ID 等重要信息，你可以获取到 ID 后再调用 [StartScreenCaptureByWindowId](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapturebywindowid) 或 [StartScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开启共享。
 
 <a id="api_irtcengine_getscreencapturesources__parameters"></a>
 
@@ -116,9 +115,8 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setscreencapturescenario"></a>
@@ -158,7 +156,6 @@ public abstract int SetScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapture2"></a>
@@ -187,8 +184,8 @@ public abstract int StartScreenCapture(VIDEO_SOURCE_TYPE sourceType, ScreenCaptu
 
 SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别，请根据实际场景选用：
 
-- [StartScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapturebydisplayid) / [StartScreenCaptureByWindowId](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapturebywindowid)：仅支持采集单个屏幕或窗口，适合仅共享单个屏幕的场景。
-- [StartScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapture2)：支持指定多个视频源，以采集多路屏幕共享流，用于本地合图或者多频道发布场景。
+- [StartScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapturebydisplayid) / [StartScreenCaptureByWindowId](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapturebywindowid)：仅支持采集单个屏幕或窗口，适合仅共享单个屏幕的场景。
+- [StartScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapture2)：支持指定多个视频源，以采集多路屏幕共享流，用于本地合图或者多频道发布场景。
 
 <a id="api_irtcengine_startscreencapture2__timing"></a>
 
@@ -203,7 +200,7 @@ SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别�
 
 ### 调用限制
 
-- 如果调用该方法开始屏幕采集，则停止屏幕采集时需要调用 [StopScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_stopscreencapture2)。
+- 如果调用该方法开始屏幕采集，则停止屏幕采集时需要调用 [StopScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_stopscreencapture2)。
 - 在 Windows 平台上，最多支持 4 路屏幕采集的视频流。
 
 <a id="api_irtcengine_startscreencapture2__parameters"></a>
@@ -281,7 +278,7 @@ public abstract int StartScreenCaptureByDisplayId(uint displayId, Rectangle regi
 屏幕共享的参数配置。默认的视频编码分辨率为 1920 × 1080，即 2073600 像素。该像素值为计费标准。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/csharp-windows/class-screencaptureparameters)。
 
 :::warning[注意]
-屏幕共享流的视频属性只需通过该参数设置，与 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
+屏幕共享流的视频属性只需通过该参数设置，与 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
 :::
 
 <a id="api_irtcengine_startscreencapturebydisplayid__return_values"></a>
@@ -292,7 +289,7 @@ public abstract int StartScreenCaptureByDisplayId(uint displayId, Rectangle regi
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 <a id="api_irtcengine_startscreencapturebyscreenrect"></a>
 
@@ -313,7 +310,7 @@ public abstract int StartScreenCaptureByScreenRect(Rectangle screenRect, Rectang
 
 #### `弃用：`
 
-该方法已废弃。请改用 [StartScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapturebydisplayid)。如果你需要在设备外接其他显示屏的情况下开启屏幕共享，强烈建议你使用 StartScreenCaptureByDisplayId。
+该方法已废弃。请改用 [StartScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapturebydisplayid)。如果你需要在设备外接其他显示屏的情况下开启屏幕共享，强烈建议你使用 StartScreenCaptureByDisplayId。
 
 共享一个屏幕或该屏幕的部分区域。你需要在该方法中指定想要共享的屏幕区域。
 
@@ -346,7 +343,7 @@ public abstract int StartScreenCaptureByScreenRect(Rectangle screenRect, Rectang
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 <a id="api_irtcengine_startscreencapturebywindowid"></a>
 
@@ -442,7 +439,7 @@ SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Gr
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
 <a id="api_irtcengine_stopscreencapture"></a>
 
@@ -462,7 +459,7 @@ public abstract int StopScreenCapture();
 
 ### 适用场景
 
-如果你调用了 [StartScreenCaptureByWindowId](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapturebywindowid) 或 [StartScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapturebydisplayid) 开启屏幕采集，则停止屏幕采集时需要调用该方法。
+如果你调用了 [StartScreenCaptureByWindowId](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapturebywindowid) 或 [StartScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开启屏幕采集，则停止屏幕采集时需要调用该方法。
 
 <a id="api_irtcengine_stopscreencapture__timing"></a>
 
@@ -483,7 +480,6 @@ public abstract int StopScreenCapture();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopscreencapture2"></a>
@@ -504,7 +500,7 @@ public abstract int StopScreenCapture(VIDEO_SOURCE_TYPE sourceType);
 
 ### 适用场景
 
-如果你调用了 [StartScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapture2) 开启一路或多路屏幕采集，则停止屏幕采集时需要调用该方法，并通过 sourceType 参数指定屏幕。
+如果你调用了 [StartScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapture2) 开启一路或多路屏幕采集，则停止屏幕采集时需要调用该方法，并通过 sourceType 参数指定屏幕。
 
 <a id="api_irtcengine_stopscreencapture2__timing"></a>
 
@@ -562,7 +558,7 @@ public abstract int UpdateScreenCaptureParameters(ScreenCaptureParameters captur
 屏幕共享的编码参数配置。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/csharp-windows/class-screencaptureparameters)。
 
 :::warning[注意]
-屏幕共享流的视频属性只需通过该参数设置，与 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
+屏幕共享流的视频属性只需通过该参数设置，与 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
 :::
 
 <a id="api_irtcengine_updatescreencaptureparameters__return_values"></a>
@@ -573,9 +569,8 @@ public abstract int UpdateScreenCaptureParameters(ScreenCaptureParameters captur
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatescreencaptureregion"></a>
@@ -614,7 +609,6 @@ public abstract int UpdateScreenCaptureRegion(Rectangle regionRect);
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [StopScreenCapture [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)

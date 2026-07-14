@@ -1,0 +1,44 @@
+---
+title: "ChatEventHandler constructor"
+description: "API docs for the ChatEventHandler constructor from Class ChatEventHandler from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The chat event handler.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| [onMessagesReceived](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-event-handler/on-messages-received) | Message is received callback. |
+| [onCmdMessagesReceived](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-event-handler/on-cmd-messages-received) | Command message is received callback. |
+| [onMessagesRead](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-event-handler/on-messages-read) | Read receipt is received for a message callback. |
+| [onGroupMessageRead](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-event-handler/on-group-message-read) | Read receipt is received for a group message callback. |
+| [onReadAckForGroupMessageUpdated](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-event-handler/on-read-ack-for-group-message-updated) | Group message read status is received callback. |
+| [onMessagesDelivered](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-event-handler/on-messages-delivered) | Delivery receipt is received callback. |
+| [onMessagesRecalled](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-event-handler/on-messages-recalled) | Received message is recalled callback. |
+| [onConversationsUpdate](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-event-handler/on-conversations-update) | Conversation updated callback. |
+| [onConversationRead](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-event-handler/on-conversation-read) | Conversation read receipt is received callback. |
+| [onMessageReactionDidChange](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-event-handler/on-message-reaction-did-change) | Reaction data changes callback. |
+
+```dart title="Dart"
+ChatEventHandler({void onMessagesReceived(List<ChatMessage> messages)?, void onCmdMessagesReceived(List<ChatMessage> messages)?, void onMessagesRead(List<ChatMessage> messages)?, void onGroupMessageRead(List<ChatGroupMessageAck> groupMessageAcks)?, VoidCallback? onReadAckForGroupMessageUpdated, void onMessagesDelivered(List<ChatMessage> messages)?, void onMessagesRecalled(List<ChatMessage> messages)?, VoidCallback? onConversationsUpdate, void onConversationRead(String from, String to)?, void onMessageReactionDidChange(List<ChatMessageReactionEvent> events)?})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+ChatEventHandler({
+  this.onMessagesReceived,
+  this.onCmdMessagesReceived,
+  this.onMessagesRead,
+  this.onGroupMessageRead,
+  this.onReadAckForGroupMessageUpdated,
+  this.onMessagesDelivered,
+  this.onMessagesRecalled,
+  this.onConversationsUpdate,
+  this.onConversationRead,
+  this.onMessageReactionDidChange,
+});
+```

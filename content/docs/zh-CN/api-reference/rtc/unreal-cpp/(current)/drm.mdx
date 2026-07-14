@@ -2,6 +2,7 @@
 title: "版权音乐"
 description: "版权音乐 API reference."
 ---
+
 <a id="toc_drm"></a>
 
 ## 版权音乐
@@ -31,7 +32,6 @@ virtual agora_refptr<IMusicPlayer> createMusicPlayer() = 0;
 - 方法调用成功：返回 [IMusicPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusicplayer) 对象。
 - 方法调用失败：返回空指针。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_destroymusicplayer"></a>
@@ -77,7 +77,6 @@ virtual int destroyMusicPlayer(agora_refptr<IMusicPlayer> music_player) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getcaches"></a>
@@ -122,7 +121,6 @@ virtual int getCaches(MusicCacheInfo *cacheInfo, int32_t* cacheInfoSize) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_musiccollection_getcount"></a>
@@ -225,7 +223,6 @@ virtual int getInternalSongCode(int64_t songCode, const char* jsonOption, int64_
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getlyric"></a>
@@ -272,7 +269,6 @@ virtual int getLyric(agora::util::AString& requestId, int64_t songCode, int32_t 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_musiccollection_getmusic"></a>
@@ -338,7 +334,6 @@ virtual int getMusicCharts(agora::util::AString& requestId) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid"></a>
@@ -395,7 +390,6 @@ virtual int getMusicCollectionByMusicChartId(agora::util::AString& requestId, in
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_musiccollection_getpage"></a>
@@ -503,7 +497,6 @@ virtual int getSongSimpleInfo(agora::util::AString& requestId, int64_t songCode)
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_initialize"></a>
@@ -539,7 +532,6 @@ IMusicContentCenter 的设置，详见 [MusicContentCenterConfiguration](/zh-CN/
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_ispreloaded"></a>
@@ -575,7 +567,6 @@ virtual int isPreloaded(int64_t songCode) = 0;
 - 0: 方法调用成功，该音乐资源已被预加载。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicontentcenter_preload"></a>
@@ -633,7 +624,6 @@ virtual int preload(int64_t songCode, const char* jsonOption = nullptr) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicontentcenter_preload2"></a>
@@ -679,7 +669,6 @@ virtual int preload(agora::util::AString& requestId, int64_t songCode) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_registereventhandler"></a>
@@ -713,7 +702,6 @@ virtual int registerEventHandler(IMusicContentCenterEventHandler* eventHandler) 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_release"></a>
@@ -734,7 +722,6 @@ virtual void release() = 0;
 
 该方法需要在 IRtcEngine 的 [Release](/zh-CN/api-reference/rtc/unreal-cpp/initialize#api_irtcengine_release) 方法前调用。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_removecache"></a>
@@ -774,7 +761,6 @@ virtual int removeCache(int64_t songCode) = 0;
 - 0: 方法调用成功，音乐资源已删除。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_renewtoken"></a>
@@ -810,7 +796,6 @@ virtual int renewToken(const char* token) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_searchmusic"></a>
@@ -867,7 +852,6 @@ virtual int searchMusic(agora::util::AString& requestId, const char* keyWord, in
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicplayer_setplaymode"></a>
@@ -925,7 +909,6 @@ virtual int setPlayMode(MusicPlayMode mode) = 0;
 
   - -2: 参数设置错误，请重新设置参数。
 
-### 所属接口类
 - [IMusicPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusicplayer)
 
 <a id="api_imusiccontentcenter_unregistereventhandler"></a>
@@ -951,7 +934,6 @@ virtual int unregisterEventHandler() = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult"></a>
@@ -986,7 +968,6 @@ virtual void onLyricResult(const char* requestId, int64_t songCode, const char* 
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unreal-cpp/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult"></a>
@@ -1021,7 +1002,6 @@ virtual void onMusicChartsResult(const char* requestId, agora_refptr<MusicChartC
 
 当前可播放的音乐榜单列表。 详见 [MusicChartInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-musicchartinfo) [MusicChartCollection](/zh-CN/api-reference/rtc/unreal-cpp/class-musicchartcollection)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult"></a>
@@ -1056,7 +1036,6 @@ virtual void onMusicCollectionResult(const char* requestId, agora_refptr<MusicCo
 
 音乐资源列表的详细信息。 详见 [MusicCollection](/zh-CN/api-reference/rtc/unreal-cpp/class-musiccollection)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent"></a>
@@ -1103,7 +1082,6 @@ virtual void onPreLoadEvent(const char* requestId, int64_t songCode, int percent
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unreal-cpp/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult"></a>
@@ -1150,7 +1128,6 @@ virtual void onSongSimpleInfoResult(const char* requestId, int64_t songCode, con
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unreal-cpp/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="api_imusicplayer_open"></a>
@@ -1196,5 +1173,4 @@ virtual int open(int64_t songCode, int64_t startPos = 0) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMusicPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusicplayer)

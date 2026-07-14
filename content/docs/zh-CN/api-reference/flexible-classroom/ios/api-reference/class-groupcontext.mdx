@@ -2,9 +2,8 @@
 title: "AgoraEduGroupContext"
 description: "AgoraEduGroupContext 类。"
 ---
-<a id="class_groupcontext"></a>
 
-## AgoraEduGroupContext
+<a id="class_groupcontext"></a>
 
 AgoraEduGroupContext 类。
 
@@ -28,7 +27,7 @@ AgoraEduContextGroupInfo getGroupInfo()
 
 ### 返回值
 
-返回分组信息对象 [AgoraEduContextGroupInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_groupinfo)。
+返回分组信息对象 [AgoraEduContextGroupInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_groupinfo)。
 
 <a id="api_addsubroomlist"></a>
 
@@ -50,7 +49,7 @@ void addSubRoomList(Array<AgoraEduContextSubRoomCreateConfig> configList,
 
 #### `configs`
 
-创建子房间配置数组，详见 [AgoraEduContextSubRoomCreateConfig](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_subroomcreateconfig)。
+创建子房间配置数组，详见 [AgoraEduContextSubRoomCreateConfig](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_subroomcreateconfig)。
 
 #### `success`
 
@@ -58,7 +57,7 @@ void addSubRoomList(Array<AgoraEduContextSubRoomCreateConfig> configList,
 
 #### `fail`
 
-调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
 
 <a id="api_removesubroomlist"></a>
 
@@ -88,7 +87,7 @@ void removeSubRoomList(Array<String> subRoomList,
 
 #### `fail`
 
-调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
 
 <a id="api_removeallsubroomlist"></a>
 
@@ -113,7 +112,7 @@ void removeAllSubRoomList(Callback<Void> success,
 
 #### `fail`
 
-调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
 
 <a id="api_getsubroomlist"></a>
 
@@ -131,7 +130,7 @@ Array<AgoraEduContextSubRoomInfo> getSubRoomList()
 
 ### 返回值
 
-调用成功，则返回子房间信息 [AgoraEduContextSubRoomInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_subroominfo) 列表。
+调用成功，则返回子房间信息 [AgoraEduContextSubRoomInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_subroominfo) 列表。
 
 <a id="api_createsubroomobject"></a>
 
@@ -161,7 +160,7 @@ AgoraEduContextSubRoom createSubRoomObject(String subRoomUuid)
 
 ### 返回值
 
-返回 [AgoraEduSubRoomContext](/zh-CN/api-reference/flexible-classroom/ios/api-reference/class-subroomcontext#class_subroomcontext) 子房间对象。如果本地用户未在 subRoomUuid 所对应的子房间的用户列表中，则返回空对象。
+返回 [AgoraEduSubRoomContext](/zh-CN/api-reference/flexible-classroom/ios/class-subroomcontext#class_subroomcontext) 子房间对象。如果本地用户未在 subRoomUuid 所对应的子房间的用户列表中，则返回空对象。
 
 <a id="api_getuserlistfromsubRoom"></a>
 
@@ -222,7 +221,7 @@ void inviteUserListToSubRoom(Array<String> userList,
 
 #### `fail`
 
-调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
 
 <a id="api_userlistacceptinvitationtosubRoom"></a>
 
@@ -257,7 +256,7 @@ void userListAcceptInvitationToSubRoom(Array<String> userList,
 
 #### `fail`
 
-调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
 
 <a id="api_userlistrejectinvitationtosubroom"></a>
 
@@ -292,7 +291,7 @@ void userListRejectInvitationToSubRoom(Array<String> userList,
 
 #### `fail`
 
-调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
 
 <a id="api_adduserlisttosubroom"></a>
 
@@ -331,7 +330,7 @@ void adddUserListToSubRoom(Array<String> userList,
 
 #### `fail`
 
-调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
 
 <a id="api_removeuserlistfromsubroom"></a>
 
@@ -366,7 +365,7 @@ void removeUserListFromSubRoom(Array<String> userList,
 
 #### `fail`
 
-调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
 
 <a id="api_moveuserlisttosubroom"></a>
 
@@ -406,4 +405,4 @@ void moveUserListToSubRoom(Array<String> userList,
 
 #### `fail`
 
-调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。

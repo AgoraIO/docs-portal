@@ -1,14 +1,9 @@
 ---
 title: "音视频观测器"
-description: "设置原始视频数据的格式。"
+description: "音视频观测器 API reference."
 ---
-<a id="toc_mediaplayer_observer"></a>
 
-## 音视频观测器
-
-<a id="api_agorartcmediaplayervideoframedelegate_agorartcmediaplayergetvideopixelformat"></a>
-
-## AgoraRtcMediaPlayerGetVideoPixelFormat
+## <span id="toc_mediaplayer_observer"></span>AgoraRtcMediaPlayerGetVideoPixelFormat [#api_agorartcmediaplayervideoframedelegate_agorartcmediaplayergetvideopixelformat]
 
 设置原始视频数据的格式。
 
@@ -22,18 +17,13 @@ description: "设置原始视频数据的格式。"
 
 你需要在调用 [setVideoFrameDelegate:](/zh-CN/api-reference/rtc/ios/video/video-raw#api_irtcengine_registervideoframeobserver) 方法时注册回调。当媒体播放器接收到每一帧视频时，会触发该回调。你可以在该回调的返回值中设置期望的视频数据格式。
 
-<a id="api_agorartcmediaplayervideoframedelegate_agorartcmediaplayergetvideopixelformat__return_values"></a>
-
-### 返回值
+### 返回值 [#api_agorartcmediaplayervideoframedelegate_agorartcmediaplayergetvideopixelformat__return_values]
 
 你为原始视频数据设置的期望格式，详见 [AgoraVideoFormat](/zh-CN/api-reference/rtc/ios/enum-videopixelformat)。默认情况下，原始视频像素格式（`AgoraVideoFormatDefault` ）可能是 `I420` 或 `CVPixelBufferRef`。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerVideoFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agorartcmediaplayervideoframedelegate)
 
-<a id="api_agorartcmediaplayervideoframedelegate_didreceivepixelbuffer"></a>
-
-## AgoraRtcMediaPlayer:didReceivePixelBuffer:
+## AgoraRtcMediaPlayer:didReceivePixelBuffer: [#api_agorartcmediaplayervideoframedelegate_didreceivepixelbuffer]
 
 媒体播放器接收到视频源的像素缓冲区时触发的回调。
 
@@ -48,15 +38,11 @@ description: "设置原始视频数据的格式。"
 
 触发该回调以报告类型为 `CVPixelBufferRef` 的像素缓冲区的详细信息。你可以使用这些信息进行图像处理与分析、自定义渲染等。
 
-<a id="api_agorartcmediaplayervideoframedelegate_didreceivepixelbuffer__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_agorartcmediaplayervideoframedelegate_didreceivepixelbuffer__timing]
 
 该回调在媒体播放器接收到视频源的像素缓冲区时被触发。
 
-<a id="api_agorartcmediaplayervideoframedelegate_didreceivepixelbuffer__parameters"></a>
-
-### 参数
+### 参数 [#api_agorartcmediaplayervideoframedelegate_didreceivepixelbuffer__parameters]
 
 #### `playerKit`
 
@@ -66,12 +52,9 @@ description: "设置原始视频数据的格式。"
 
 包含像素缓冲区详细信息的 `CVPixelBufferRef` 对象。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerVideoFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agorartcmediaplayervideoframedelegate)
 
-<a id="api_agorartcmediaplayervideoframedelegate_didreceivevideoframe"></a>
-
-## AgoraRtcMediaPlayer:didReceiveVideoFrame:
+## AgoraRtcMediaPlayer:didReceiveVideoFrame: [#api_agorartcmediaplayervideoframedelegate_didreceivevideoframe]
 
 每次播放器接收到视频帧时触发的回调。
 
@@ -82,17 +65,11 @@ description: "设置原始视频数据的格式。"
        didReceiveVideoFrame:(AgoraOutputVideoFrame * _Nonnull)videoFrame NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didReceiveVideoFrame:));
 ```
 
-<a id="api_agorartcmediaplayervideoframedelegate_didreceivevideoframe__detailed_desc"></a>
-
-<a id="api_agorartcmediaplayervideoframedelegate_didreceivevideoframe__timing"></a>
-
-### 调用时机
+### <span id="api_agorartcmediaplayervideoframedelegate_didreceivevideoframe__detailed_desc"></span>调用时机 [#api_agorartcmediaplayervideoframedelegate_didreceivevideoframe__timing]
 
 该回调在播放器每次接收到视频帧时被触发。
 
-<a id="api_agorartcmediaplayervideoframedelegate_didreceivevideoframe__parameters"></a>
-
-### 参数
+### 参数 [#api_agorartcmediaplayervideoframedelegate_didreceivevideoframe__parameters]
 
 #### `playerKit`
 
@@ -102,12 +79,9 @@ description: "设置原始视频数据的格式。"
 
 视频帧信息。详见 [AgoraOutputVideoFrame](/zh-CN/api-reference/rtc/ios/class-videoframe)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerVideoFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_agorartcmediaplayervideoframedelegate)
 
-<a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver"></a>
-
-## AgoraRtcMediaPlayer:volumeIndicationDidReceive:
+## AgoraRtcMediaPlayer:volumeIndicationDidReceive: [#callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver]
 
 报告媒体播放器的音量。
 
@@ -122,15 +96,11 @@ description: "设置原始视频数据的格式。"
 
 该回调每 200 毫秒触发一次，用于报告当前媒体播放器的音量。
 
-<a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__timing]
 
 该回调每 200 毫秒触发一次。
 
-<a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__parameters"></a>
-
-### 参数
+### 参数 [#callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__parameters]
 
 #### `playerKit`
 
@@ -140,12 +110,9 @@ description: "设置原始视频数据的格式。"
 
 媒体播放器的音量，取值范围为 0 到 255。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver)
 
-<a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink"></a>
-
-## AgoraRtcMediaPlayer:didReceiveAudioFrame:
+## AgoraRtcMediaPlayer:didReceiveAudioFrame: [#callback_iaudiopcmframesink_onframe_iaudiopcmframesink]
 
 每次播放器接收到音频帧时触发的回调。
 
@@ -160,15 +127,11 @@ description: "设置原始视频数据的格式。"
 
 注册音频帧观察器后，每次播放器接收到音频帧时，都会触发该回调，报告音频帧的详细信息。
 
-<a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_iaudiopcmframesink_onframe_iaudiopcmframesink__timing]
 
 每次播放器接收到音频帧时触发。
 
-<a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink__parameters"></a>
-
-### 参数
+### 参数 [#callback_iaudiopcmframesink_onframe_iaudiopcmframesink__parameters]
 
 #### `playerKit`
 
@@ -178,12 +141,9 @@ description: "设置原始视频数据的格式。"
 
 音频帧信息，详见 [AgoraAudioFrame](/zh-CN/api-reference/rtc/ios/class-audioframe)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerAudioFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudiopcmframesink)
 
-<a id="callback_imediaplayersourceobserver_onmetadata"></a>
-
-## AgoraRtcMediaPlayer:didReceiveData:length:
+## AgoraRtcMediaPlayer:didReceiveData:length: [#callback_imediaplayersourceobserver_onmetadata]
 
 接收到媒体元数据时触发的回调。
 
@@ -199,15 +159,11 @@ description: "设置原始视频数据的格式。"
 
 播放器接收到媒体元数据时，会触发该回调并上报媒体元数据的详细信息。
 
-<a id="callback_imediaplayersourceobserver_onmetadata__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_imediaplayersourceobserver_onmetadata__timing]
 
 该回调在播放器接收到媒体元数据时触发。
 
-<a id="callback_imediaplayersourceobserver_onmetadata__parameters"></a>
-
-### 参数
+### 参数 [#callback_imediaplayersourceobserver_onmetadata__parameters]
 
 #### `playerKit`
 
@@ -221,12 +177,9 @@ description: "设置原始视频数据的格式。"
 
 数据长度（字节）。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver)
 
-<a id="callback_imediaplayersourceobserver_onplaybufferupdated"></a>
-
-## AgoraRtcMediaPlayer:didPlayBufferUpdated:
+## AgoraRtcMediaPlayer:didPlayBufferUpdated: [#callback_imediaplayersourceobserver_onplaybufferupdated]
 
 报告缓冲数据可支持的播放时长。
 
@@ -242,15 +195,11 @@ description: "设置原始视频数据的格式。"
 - 当缓冲数据可支持的播放时长小于阈值（默认值为 0）时，SDK 返回 `AgoraMediaPlayerEventBufferLow` （6）。
 - 当缓冲数据可支持的播放时长大于阈值（默认值为 0）时，SDK 返回 `AgoraMediaPlayerEventBufferRecover` （7）。
 
-<a id="callback_imediaplayersourceobserver_onplaybufferupdated__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_imediaplayersourceobserver_onplaybufferupdated__timing]
 
 播放在线媒体资源时，SDK 每两秒触发一次该回调。
 
-<a id="callback_imediaplayersourceobserver_onplaybufferupdated__parameters"></a>
-
-### 参数
+### 参数 [#callback_imediaplayersourceobserver_onplaybufferupdated__parameters]
 
 #### `playerKit`
 
@@ -260,12 +209,9 @@ description: "设置原始视频数据的格式。"
 
 缓冲数据可支持的播放时长（毫秒）。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver)
 
-<a id="callback_imediaplayersourceobserver_onplayerevent"></a>
-
-## AgoraRtcMediaPlayer:didOccurEvent:elapsedTime:message:
+## AgoraRtcMediaPlayer:didOccurEvent:elapsedTime:message: [#callback_imediaplayersourceobserver_onplayerevent]
 
 上报播放器事件。
 
@@ -282,15 +228,11 @@ description: "设置原始视频数据的格式。"
 
 调用 [seekToPosition:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 方法后，SDK 会触发该回调，上报跳转播放位置操作的结果。
 
-<a id="callback_imediaplayersourceobserver_onplayerevent__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_imediaplayersourceobserver_onplayerevent__timing]
 
 该回调在你调用 [seekToPosition:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 方法后触发，用于上报跳转播放位置操作的结果。
 
-<a id="callback_imediaplayersourceobserver_onplayerevent__parameters"></a>
-
-### 参数
+### 参数 [#callback_imediaplayersourceobserver_onplayerevent__parameters]
 
 #### `playerKit`
 
@@ -308,12 +250,9 @@ description: "设置原始视频数据的格式。"
 
 事件的相关信息。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver)
 
-<a id="callback_imediaplayersourceobserver_onplayerinfoupdated"></a>
-
-## AgoraRtcMediaPlayer:infoUpdated:
+## AgoraRtcMediaPlayer:infoUpdated: [#callback_imediaplayersourceobserver_onplayerinfoupdated]
 
 媒体播放器相关信息发生变化时的回调。
 
@@ -327,15 +266,11 @@ description: "设置原始视频数据的格式。"
 
 你可以通过该回调获取媒体播放器的最新信息，用于故障排查。
 
-<a id="callback_imediaplayersourceobserver_onplayerinfoupdated__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_imediaplayersourceobserver_onplayerinfoupdated__timing]
 
 该回调在媒体播放器相关信息发生变化时被触发。
 
-<a id="callback_imediaplayersourceobserver_onplayerinfoupdated__parameters"></a>
-
-### 参数
+### 参数 [#callback_imediaplayersourceobserver_onplayerinfoupdated__parameters]
 
 #### `playerKit`
 
@@ -345,12 +280,9 @@ description: "设置原始视频数据的格式。"
 
 媒体播放器相关的信息。详见 [AgoraMediaPlayerUpdatedInfo](/zh-CN/api-reference/rtc/ios/class-playerupdatedinfo)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver)
 
-<a id="callback_imediaplayersourceobserver_onplayersourcestatechanged"></a>
-
-## AgoraRtcMediaPlayer:didChangedToState:reason:
+## AgoraRtcMediaPlayer:didChangedToState:reason: [#callback_imediaplayersourceobserver_onplayersourcestatechanged]
 
 播放状态发生变化时触发的回调。
 
@@ -366,15 +298,11 @@ description: "设置原始视频数据的格式。"
 
 播放状态发生变化时触发的回调。
 
-<a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_imediaplayersourceobserver_onplayersourcestatechanged__timing]
 
 该回调在媒体播放器播放状态发生变化时被触发。
 
-<a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_imediaplayersourceobserver_onplayersourcestatechanged__parameters]
 
 #### `playerKit`
 
@@ -388,12 +316,9 @@ description: "设置原始视频数据的格式。"
 
 播放状态变化的原因。详见 [AgoraMediaPlayerReason](/zh-CN/api-reference/rtc/ios/enum-mediaplayerreason)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver)
 
-<a id="callback_imediaplayersourceobserver_onplayersrcinfochanged"></a>
-
-## AgoraRtcMediaPlayer:playerSrcInfoDidChange:from:
+## AgoraRtcMediaPlayer:playerSrcInfoDidChange:from: [#callback_imediaplayersourceobserver_onplayersrcinfochanged]
 
 媒体文件播放源信息变化回调。
 
@@ -407,15 +332,11 @@ description: "设置原始视频数据的格式。"
 
 该回调在播放媒体文件过程中每两秒触发一次，用于报告播放源信息的变化。
 
-<a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_imediaplayersourceobserver_onplayersrcinfochanged__timing]
 
 该回调在播放媒体文件过程中每两秒触发一次。
 
-<a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_imediaplayersourceobserver_onplayersrcinfochanged__parameters]
 
 #### `playerKit`
 
@@ -429,12 +350,9 @@ description: "设置原始视频数据的格式。"
 
 变更前的媒体播放器源信息。详见 [AgoraMediaPlayerSrcInfo](/zh-CN/api-reference/rtc/ios/class-srcinfo)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver)
 
-<a id="callback_imediaplayersourceobserver_onpositionchanged"></a>
-
-## AgoraRtcMediaPlayer:didChangedToPosition:atTimestamp:
+## AgoraRtcMediaPlayer:didChangedToPosition:atTimestamp: [#callback_imediaplayersourceobserver_onpositionchanged]
 
 播放进度回调。
 
@@ -450,15 +368,11 @@ description: "设置原始视频数据的格式。"
 
 该回调在播放过程中每秒触发一次，用于报告当前播放进度。
 
-<a id="callback_imediaplayersourceobserver_onpositionchanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_imediaplayersourceobserver_onpositionchanged__timing]
 
 该回调在播放过程中每秒触发一次。
 
-<a id="callback_imediaplayersourceobserver_onpositionchanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_imediaplayersourceobserver_onpositionchanged__parameters]
 
 #### `playerKit`
 
@@ -476,12 +390,9 @@ description: "设置原始视频数据的格式。"
 该参数仅在频道内生效。
 :::
 
-### 所属接口类
 - [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver)
 
-<a id="callback_imediaplayersourceobserver_onpreloadevent"></a>
-
-## AgoraRtcMediaPlayer:didPreloadEvent:
+## AgoraRtcMediaPlayer:didPreloadEvent: [#callback_imediaplayersourceobserver_onpreloadevent]
 
 上报预加载媒体资源的事件。
 
@@ -492,17 +403,11 @@ description: "设置原始视频数据的格式。"
             didPreloadEvent:(AgoraMediaPlayerPreloadEvent)event NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didPreloadEvent:));
 ```
 
-<a id="callback_imediaplayersourceobserver_onpreloadevent__detailed_desc"></a>
-
-<a id="callback_imediaplayersourceobserver_onpreloadevent__timing"></a>
-
-### 触发时机
+### <span id="callback_imediaplayersourceobserver_onpreloadevent__detailed_desc"></span>触发时机 [#callback_imediaplayersourceobserver_onpreloadevent__timing]
 
 该回调在媒体资源预加载过程中发生事件时被触发。
 
-<a id="callback_imediaplayersourceobserver_onpreloadevent__parameters"></a>
-
-### 参数
+### 参数 [#callback_imediaplayersourceobserver_onpreloadevent__parameters]
 
 #### `playerKit`
 
@@ -512,5 +417,4 @@ description: "设置原始视频数据的格式。"
 
 预加载媒体资源时发生的事件，详见 [AgoraMediaPlayerPreloadEvent](/zh-CN/api-reference/rtc/ios/enum-playerpreloadevent)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver)

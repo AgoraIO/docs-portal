@@ -2,6 +2,7 @@
 title: "音频路由"
 description: "检查扬声器状态启用状态。"
 ---
+
 <a id="toc_audio_route"></a>
 
 ## 音频路由
@@ -37,7 +38,6 @@ Future<bool> isSpeakerphoneEnabled();
 - true: 扬声器已开启，语音会输出到扬声器。
 - false: 扬声器未开启，语音会输出到非扬声器（听筒，耳机等）。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone"></a>
@@ -96,7 +96,6 @@ Future<void> setDefaultAudioRouteToSpeakerphone(bool defaultToSpeaker);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setenablespeakerphone"></a>
@@ -157,7 +156,6 @@ Future<void> setEnableSpeakerphone(bool speakerOn);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setrouteincommunicationmode"></a>
@@ -215,7 +213,6 @@ Future<void> setRouteInCommunicationMode(int route);
 
 无实际意义。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudioroutingchanged"></a>
@@ -244,5 +241,4 @@ final void Function(int routing)? onAudioRoutingChanged;
 
 当前的音频路由。详见 [AudioRoute](/zh-CN/api-reference/rtc/flutter/enum-audioroute)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,10 +1,9 @@
 ---
 title: "音频采集"
-description: "调节声卡采集信号音量。"
+description: "音频采集 API reference."
 ---
-<a id="toc_audio_capture"></a>
 
-## 音频采集
+<a id="toc_audio_capture"></a>
 
 <a id="api_irtcengine_adjustloopbacksignalvolume"></a>
 
@@ -20,7 +19,7 @@ Future<void> adjustLoopbackSignalVolume(int volume);
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__detailed_desc"></a>
 
-调用 [enableLoopbackRecording](/zh-CN/api-reference/rtc/flutter/audio-capture#api_irtcengine_enableloopbackrecording) 开启声卡采集后，你可以调用该方法调节声卡采集的信号音量。
+调用 [enableLoopbackRecording](/zh-CN/api-reference/rtc/flutter/audio/audio-capture#api_irtcengine_enableloopbackrecording) 开启声卡采集后，你可以调用该方法调节声卡采集的信号音量。
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__parameters"></a>
 
@@ -38,7 +37,6 @@ Future<void> adjustLoopbackSignalVolume(int volume);
 
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustrecordingsignalvolume"></a>
@@ -55,7 +53,7 @@ Future<void> adjustRecordingSignalVolume(int volume);
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__detailed_desc"></a>
 
-如果你只需将音频信号静音，建议你使用 [muteRecordingSignal](/zh-CN/api-reference/rtc/flutter/audio-capture#api_irtcengine_muterecordingsignal)。
+如果你只需将音频信号静音，建议你使用 [muteRecordingSignal](/zh-CN/api-reference/rtc/flutter/audio/audio-capture#api_irtcengine_muterecordingsignal)。
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__timing"></a>
 
@@ -81,7 +79,6 @@ Future<void> adjustRecordingSignalVolume(int volume);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableinearmonitoring2"></a>
@@ -133,7 +130,6 @@ Future<void> enableInEarMonitoring(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablelocalaudio"></a>
@@ -152,7 +148,7 @@ Future<void> enableLocalAudio(bool enabled);
 
 当用户加入频道时，音频功能默认是开启的。该方法可以关闭或重新开启本地音频功能，即停止或重新开始本地音频采集。 该方法与 [muteLocalAudioStream](/zh-CN/api-reference/rtc/flutter/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 的区别在于：
 
-- [enableLocalAudio](/zh-CN/api-reference/rtc/flutter/audio-capture#api_irtcengine_enablelocalaudio): 开启或关闭本地音频采集及处理。使用 [enableLocalAudio](/zh-CN/api-reference/rtc/flutter/audio-capture#api_irtcengine_enablelocalaudio) 关闭或开启本地采集后，本地听远端播放会有短暂中断。
+- [enableLocalAudio](/zh-CN/api-reference/rtc/flutter/audio/audio-capture#api_irtcengine_enablelocalaudio): 开启或关闭本地音频采集及处理。使用 [enableLocalAudio](/zh-CN/api-reference/rtc/flutter/audio/audio-capture#api_irtcengine_enablelocalaudio) 关闭或开启本地采集后，本地听远端播放会有短暂中断。
 - [muteLocalAudioStream](/zh-CN/api-reference/rtc/flutter/publishnsubscribe#api_irtcengine_mutelocalaudiostream): 停止或继续发送本地音频流，不影响音频的采集状态。
 
 <a id="api_irtcengine_enablelocalaudio__scenario"></a>
@@ -171,7 +167,7 @@ Future<void> enableLocalAudio(bool enabled);
 
 ### 相关回调
 
-音频功能关闭或重新开启后，会收到 [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/flutter/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，并报告 `localAudioStreamStateStopped` (0) 或 `localAudioStreamStateRecording` (1)。
+音频功能关闭或重新开启后，会收到 [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，并报告 `localAudioStreamStateStopped` (0) 或 `localAudioStreamStateRecording` (1)。
 
 <a id="api_irtcengine_enablelocalaudio__parameters"></a>
 
@@ -188,7 +184,6 @@ Future<void> enableLocalAudio(bool enabled);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableloopbackrecording"></a>
@@ -211,7 +206,7 @@ Future<void> enableLoopbackRecording(
 :::info[注]
 - 该方法仅适用于 macOS 和 Windows 平台。
 - 该方法在加入频道前后都能调用。
-- 如果你调用了 [disableAudio](/zh-CN/api-reference/rtc/flutter/audio-basic#api_irtcengine_disableaudio) 关闭音频模块，声卡采集功能也会被关闭。如果你需要再次启用声卡采集功能，需要调用 [enableAudio](/zh-CN/api-reference/rtc/flutter/audio-basic#api_irtcengine_enableaudio) 启用音频模块后再次调用 [enableLoopbackRecording](/zh-CN/api-reference/rtc/flutter/audio-capture#api_irtcengine_enableloopbackrecording)。
+- 如果你调用了 [disableAudio](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#api_irtcengine_disableaudio) 关闭音频模块，声卡采集功能也会被关闭。如果你需要再次启用声卡采集功能，需要调用 [enableAudio](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#api_irtcengine_enableaudio) 启用音频模块后再次调用 [enableLoopbackRecording](/zh-CN/api-reference/rtc/flutter/audio/audio-capture#api_irtcengine_enableloopbackrecording)。
 :::
 
 <a id="api_irtcengine_enableloopbackrecording__parameters"></a>
@@ -236,7 +231,6 @@ Future<void> enableLoopbackRecording(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableloopbackrecordingex"></a>
@@ -290,7 +284,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muterecordingsignal"></a>
@@ -307,7 +300,7 @@ Future<void> muteRecordingSignal(bool mute);
 
 <a id="api_irtcengine_muterecordingsignal__detailed_desc"></a>
 
-如果你已经调用 [adjustRecordingSignalVolume](/zh-CN/api-reference/rtc/flutter/audio-capture#api_irtcengine_adjustrecordingsignalvolume) 调节了音频采集信号音量，则调用该方法并设置为 true 时，SDK 的行为如下：
+如果你已经调用 [adjustRecordingSignalVolume](/zh-CN/api-reference/rtc/flutter/audio/audio-capture#api_irtcengine_adjustrecordingsignalvolume) 调节了音频采集信号音量，则调用该方法并设置为 true 时，SDK 的行为如下：
 
 1. 记录调节后的音量。
 2. 将音频采集信号静音。
@@ -335,7 +328,6 @@ Future<void> muteRecordingSignal(bool mute);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setinearmonitoringvolume"></a>
@@ -376,5 +368,4 @@ Future<void> setInEarMonitoringVolume(int volume);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)

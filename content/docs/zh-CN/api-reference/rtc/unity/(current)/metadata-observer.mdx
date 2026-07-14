@@ -2,6 +2,7 @@
 title: "媒体流附属信息分发"
 description: "注册媒体 metadata 观测器用于接收或发送 metadata。"
 ---
+
 <a id="toc_metadata_observer"></a>
 
 ## 媒体流附属信息分发
@@ -45,7 +46,6 @@ metadata 类型。目前仅支持 `VIDEO_METADATA`。详见 [METADATA_TYPE](/zh-
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_sendmetadata"></a>
@@ -83,7 +83,6 @@ public abstract int SendMetadata(Metadata metadata, VIDEO_SOURCE_TYPE source_typ
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setmaxmetadatasize"></a>
@@ -117,7 +116,6 @@ public abstract int SetMaxMetadataSize(int size);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unregistermediametadataobserver"></a>
@@ -141,7 +139,6 @@ public abstract int UnregisterMediaMetadataObserver();
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="callback_imetadataobserver_onmetadatareceived"></a>
@@ -169,7 +166,6 @@ public virtual void OnMetadataReceived(Metadata metadata)
 
 接收到的 metadata，详见 [Metadata](/zh-CN/api-reference/rtc/unity/class-metadata)。
 
-### 所属接口类
 - [IMetadataObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imetadataobserver)
 
 <a id="callback_imetadataobserver_onreadytosendmetadata"></a>
@@ -210,5 +206,4 @@ public virtual bool OnReadyToSendMetadata(ref Metadata metadata, VIDEO_SOURCE_TY
 - true: 发送
 - false: 不发送
 
-### 所属接口类
 - [IMetadataObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imetadataobserver)

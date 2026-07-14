@@ -2,6 +2,7 @@
 title: "初始化相关"
 description: "创建并初始化 AgoraRtcEngineKit 实例。"
 ---
+
 <a id="toc_initialize"></a>
 
 ## 初始化相关
@@ -48,7 +49,6 @@ description: "创建并初始化 AgoraRtcEngineKit 实例。"
 - 方法调用成功，返回 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。
 - 方法调用失败，返回一个其内部引擎字段为 nil 的 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。你可以通过 [delegate](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_delegate) 的 [rtcEngine:didOccurError:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onerror) 回调获取错误码。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroy1"></a>
@@ -82,7 +82,6 @@ description: "创建并初始化 AgoraRtcEngineKit 实例。"
 - 非 nil：异步销毁。方法会立即返回，但引擎资源可能尚未完全释放。引擎销毁后会触发 `engineReleasedBlock` 回调。
 - nil：同步销毁。方法仅在引擎资源完全释放后才返回。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_initialize"></a>
@@ -131,7 +130,6 @@ description: "创建并初始化 AgoraRtcEngineKit 实例。"
 - 方法调用成功时，返回初始化后的 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。
 - 方法调用失败时，返回一个其内部引擎字段为 nil 的 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象。你可以通过 [delegate](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_delegate) 的 [rtcEngine:didOccurError:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onerror) 回调获取错误码。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_release"></a>
@@ -154,5 +152,4 @@ description: "创建并初始化 AgoraRtcEngineKit 实例。"
 声网不建议你在 SDK 的任何回调中调用 [destroy](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_release) 方法。否则，SDK 需等待回调返回结果后才能释放资源，可能导致死锁。
 :::
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)

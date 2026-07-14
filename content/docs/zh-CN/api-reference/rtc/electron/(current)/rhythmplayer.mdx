@@ -1,10 +1,9 @@
 ---
 title: "虚拟节拍器"
-description: "配置虚拟节拍器。"
+description: "虚拟节拍器 API reference."
 ---
-<a id="toc_rhythmplayer"></a>
 
-## 虚拟节拍器
+<a id="toc_rhythmplayer"></a>
 
 <a id="api_irtcengine_configrhythmplayer"></a>
 
@@ -24,7 +23,7 @@ abstract configRhythmPlayer(config: AgoraRhythmPlayerConfig): number;
 
 自 v4.6.2 版本废弃。
 
-- 调用 [startRhythmPlayer](/zh-CN/api-reference/rtc/electron/rhythmplayer#api_irtcengine_startrhythmplayer) 后，你可以调用该方法重新配置虚拟节拍器。
+- 调用 [startRhythmPlayer](/zh-CN/api-reference/rtc/electron/play/rhythmplayer#api_irtcengine_startrhythmplayer) 后，你可以调用该方法重新配置虚拟节拍器。
 - 开启虚拟节拍器后，SDK 会从头开始播放指定的音频文件，并根据你在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/electron/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，将 `beatsPerMinute` 设为 `60`，则 SDK 会 1 秒播放 1 个节拍。如果文件时长超过了节拍时长，则 SDK 只播放节拍时长部分的音频。
 - 虚拟节拍器的声音默认不会发布至远端，如果你希望远端用户听到虚拟节拍器的声音，你可以在调用该方法后，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/electron/class-channelmediaoptions) 中的 `publishRhythmPlayerTrack` 设为 true。
 
@@ -38,7 +37,7 @@ abstract configRhythmPlayer(config: AgoraRhythmPlayerConfig): number;
 
 ### 相关回调
 
-成功调用该方法后，SDK 会在本地触发 [onRhythmPlayerStateChanged](/zh-CN/api-reference/rtc/electron/rhythmplayer#callback_irtcengineeventhandler_onrhythmplayerstatechanged) 回调，报告虚拟节拍器的状态。
+成功调用该方法后，SDK 会在本地触发 [onRhythmPlayerStateChanged](/zh-CN/api-reference/rtc/electron/play/rhythmplayer#callback_irtcengineeventhandler_onrhythmplayerstatechanged) 回调，报告虚拟节拍器的状态。
 
 <a id="api_irtcengine_configrhythmplayer__parameters"></a>
 
@@ -48,7 +47,6 @@ abstract configRhythmPlayer(config: AgoraRhythmPlayerConfig): number;
 
 节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/electron/class-agorarhythmplayerconfig)。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startrhythmplayer"></a>
@@ -92,7 +90,7 @@ abstract startRhythmPlayer(
 
 ### 相关回调
 
-成功调用该方法后，SDK 会在本地触发 [onRhythmPlayerStateChanged](/zh-CN/api-reference/rtc/electron/rhythmplayer#callback_irtcengineeventhandler_onrhythmplayerstatechanged) 回调，报告虚拟节拍器的状态。
+成功调用该方法后，SDK 会在本地触发 [onRhythmPlayerStateChanged](/zh-CN/api-reference/rtc/electron/play/rhythmplayer#callback_irtcengineeventhandler_onrhythmplayerstatechanged) 回调，报告虚拟节拍器的状态。
 
 <a id="api_irtcengine_startrhythmplayer__parameters"></a>
 
@@ -110,7 +108,6 @@ abstract startRhythmPlayer(
 
 节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/electron/class-agorarhythmplayerconfig)。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoprhythmplayer"></a>
@@ -131,9 +128,8 @@ abstract stopRhythmPlayer(): number;
 
 自 v4.6.2 版本废弃。
 
-调用 [startRhythmPlayer](/zh-CN/api-reference/rtc/electron/rhythmplayer#api_irtcengine_startrhythmplayer) 后，你可以调用该方法关闭虚拟节拍器。
+调用 [startRhythmPlayer](/zh-CN/api-reference/rtc/electron/play/rhythmplayer#api_irtcengine_startrhythmplayer) 后，你可以调用该方法关闭虚拟节拍器。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged"></a>
@@ -171,5 +167,4 @@ onRhythmPlayerStateChanged?(
 
 虚拟节拍器发生错误的错误码和错误信息，详见 [RhythmPlayerReason](/zh-CN/api-reference/rtc/electron/enum-rhythmplayerreason)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)

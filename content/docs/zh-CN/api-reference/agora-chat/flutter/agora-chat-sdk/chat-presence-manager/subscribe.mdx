@@ -1,0 +1,46 @@
+---
+title: "subscribe method"
+description: "API docs for the subscribe method from the ChatPresenceManager class, for the Dart programming language."
+---
+
+Subscribes to a user's presence states. If the subscription succeeds, the subscriber will receive the callback when the user's presence state changes.
+
+**Return** Which contains IDs of users whose presence states you have subscribed to.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `members` | The list of IDs of users whose presence states you want to subscribe to. |
+| `expiry` | The expiration time of the presence subscription. |
+
+```dart title="Dart"
+Future<List<ChatPresence>> subscribe({required List<String> members, required int expiry})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<List<ChatPresence>> subscribe({
+  required List<String> members,
+  required int expiry,
+}) async {
+  Map req = {'members': members, "expiry": expiry};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.presenceSubscribe, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatPresence> list = [];
+    result[ChatMethodKeys.presenceSubscribe]?.forEach((element) {
+      list.add(ChatPresence.fromJson(element));
+    });
+    return list;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

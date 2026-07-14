@@ -1,10 +1,9 @@
 ---
 title: "音乐文件播放"
-description: "调节音乐文件在本地播放的音量。"
+description: "音乐文件播放 API reference."
 ---
-<a id="toc_audio_mixing"></a>
 
-## 音乐文件播放
+<a id="toc_audio_mixing"></a>
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume"></a>
 
@@ -24,7 +23,7 @@ abstract adjustAudioMixingPlayoutVolume(volume: number): number;
 
 ### 调用时机
 
-你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
+你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__parameters"></a>
 
@@ -41,7 +40,6 @@ abstract adjustAudioMixingPlayoutVolume(volume: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume"></a>
@@ -64,7 +62,7 @@ abstract adjustAudioMixingPublishVolume(volume: number): number;
 
 ### 调用时机
 
-你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
+你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__parameters"></a>
 
@@ -81,7 +79,6 @@ abstract adjustAudioMixingPublishVolume(volume: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustaudiomixingvolume"></a>
@@ -101,14 +98,14 @@ abstract adjustAudioMixingVolume(volume: number): number;
 该方法调节混音音乐文件在本端和远端的播放音量大小。
 
 :::info[注]
-调用该方法不会影响 [playEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_playeffect3) 方法中设置的音效文件播放音量。
+调用该方法不会影响 [playEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3) 方法中设置的音效文件播放音量。
 :::
 
 <a id="api_irtcengine_adjustaudiomixingvolume__timing"></a>
 
 ### 调用时机
 
-该方法需要在 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 后调用。
+该方法需要在 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 后调用。
 
 <a id="api_irtcengine_adjustaudiomixingvolume__parameters"></a>
 
@@ -125,7 +122,6 @@ abstract adjustAudioMixingVolume(volume: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingcurrentposition"></a>
@@ -145,8 +141,8 @@ abstract getAudioMixingCurrentPosition(): number;
 该方法获取当前音乐文件播放进度，单位为毫秒。
 
 :::info[注]
-- 你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
-- 如需多次调用 [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_getaudiomixingcurrentposition)，请确保调用间隔大于 500 ms。
+- 你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
+- 如需多次调用 [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_getaudiomixingcurrentposition)，请确保调用间隔大于 500 ms。
 :::
 
 <a id="api_irtcengine_getaudiomixingcurrentposition__return_values"></a>
@@ -156,7 +152,6 @@ abstract getAudioMixingCurrentPosition(): number;
 - ≥ 0: 方法调用成功，返回当前音乐文件播放进度（ms）。0 表示当前音乐文件未开始播放。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingduration"></a>
@@ -179,7 +174,7 @@ abstract getAudioMixingDuration(): number;
 
 ### 调用时机
 
-该方法需要在 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用。
+该方法需要在 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用。
 
 <a id="api_irtcengine_getaudiomixingduration__return_values"></a>
 
@@ -188,7 +183,6 @@ abstract getAudioMixingDuration(): number;
 - ≥ 0: 方法调用成功则返回音乐文件时长。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume"></a>
@@ -211,7 +205,7 @@ abstract getAudioMixingPlayoutVolume(): number;
 
 ### 调用时机
 
-该方法需要在 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用。
+该方法需要在 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用。
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume__return_values"></a>
 
@@ -220,7 +214,6 @@ abstract getAudioMixingPlayoutVolume(): number;
 - ≥ 0: 方法调用成功则返回音量值，范围为 [0,100]。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingpublishvolume"></a>
@@ -240,7 +233,7 @@ abstract getAudioMixingPublishVolume(): number;
 该接口可以方便开发者排查音量相关问题。
 
 :::info[注]
-你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
+你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_getaudiomixingpublishvolume__return_values"></a>
@@ -250,7 +243,6 @@ abstract getAudioMixingPublishVolume(): number;
 - ≥ 0: 方法调用成功则返回音量值，范围为 [0,100]。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiotrackcount"></a>
@@ -268,7 +260,7 @@ abstract getAudioTrackCount(): number;
 <a id="api_irtcengine_getaudiotrackcount__detailed_desc"></a>
 
 :::info[注]
-- 你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
+- 你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_getaudiotrackcount__return_values"></a>
@@ -278,7 +270,6 @@ abstract getAudioTrackCount(): number;
 - 方法调用成功时，返回当前音乐文件的音轨索引。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pauseaudiomixing"></a>
@@ -295,7 +286,7 @@ abstract pauseAudioMixing(): number;
 
 <a id="api_irtcengine_pauseaudiomixing__detailed_desc"></a>
 
-当你调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，如需暂停播放，请调用该方法。如果你需要停止播放，请调用 [stopAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_stopaudiomixing)。
+当你调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，如需暂停播放，请调用该方法。如果你需要停止播放，请调用 [stopAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_stopaudiomixing)。
 
 <a id="api_irtcengine_pauseaudiomixing__timing"></a>
 
@@ -310,7 +301,6 @@ abstract pauseAudioMixing(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_resumeaudiomixing"></a>
@@ -327,7 +317,7 @@ abstract resumeAudioMixing(): number;
 
 <a id="api_irtcengine_resumeaudiomixing__detailed_desc"></a>
 
-当你调用 [pauseAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件后，如需恢复播放，请调用该方法。
+当你调用 [pauseAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件后，如需恢复播放，请调用该方法。
 
 <a id="api_irtcengine_resumeaudiomixing__timing"></a>
 
@@ -342,7 +332,6 @@ abstract resumeAudioMixing(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_selectaudiotrack"></a>
@@ -363,7 +352,7 @@ abstract selectAudioTrack(index: number): number;
 
 :::info[注]
 - 该方法支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件？](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。
-- 你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
+- 你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_selectaudiotrack__parameters"></a>
@@ -372,7 +361,7 @@ abstract selectAudioTrack(index: number): number;
 
 #### `index`
 
-指定的播放音轨。取值范围应大于等于 0 且小于 [getAudioTrackCount](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_getaudiotrackcount) 的返回值。
+指定的播放音轨。取值范围应大于等于 0 且小于 [getAudioTrackCount](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_getaudiotrackcount) 的返回值。
 
 <a id="api_irtcengine_selectaudiotrack__return_values"></a>
 
@@ -381,7 +370,6 @@ abstract selectAudioTrack(index: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayer_selectmultiaudiotrack"></a>
@@ -401,7 +389,7 @@ abstract selectMultiAudioTrack(
 
 <a id="api_imediaplayer_selectmultiaudiotrack__detailed_desc"></a>
 
-你可以调用该方法分别设置本地播放和发送到远端的音轨。 在调用该方法前，你需要通过 [openWithMediaSource](/zh-CN/api-reference/rtc/react-native/mediaplayer-open#api_imediaplayer_openwithmediasource) 来打开媒体文件，并通过 [MediaSource](/zh-CN/api-reference/rtc/react-native/class-mediasource) 将 `enableMultiAudioTrack` 设为 true。
+你可以调用该方法分别设置本地播放和发送到远端的音轨。 在调用该方法前，你需要通过 [openWithMediaSource](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 来打开媒体文件，并通过 [MediaSource](/zh-CN/api-reference/rtc/react-native/class-mediasource) 将 `enableMultiAudioTrack` 设为 true。
 
 <a id="api_imediaplayer_selectmultiaudiotrack__scenario"></a>
 
@@ -415,11 +403,11 @@ abstract selectMultiAudioTrack(
 
 #### `playoutTrackIndex`
 
-用于本地播放的音轨索引。你可以通过 [getStreamInfo](/zh-CN/api-reference/rtc/react-native/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
+用于本地播放的音轨索引。你可以通过 [getStreamInfo](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
 
 #### `publishTrackIndex`
 
-用于发送至远端的音轨索引。你可以通过 [getStreamInfo](/zh-CN/api-reference/rtc/react-native/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
+用于发送至远端的音轨索引。你可以通过 [getStreamInfo](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
 
 <a id="api_imediaplayer_selectmultiaudiotrack__return_values"></a>
 
@@ -428,7 +416,6 @@ abstract selectMultiAudioTrack(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
 
 <a id="api_irtcengine_setaudiomixingdualmonomode"></a>
@@ -464,7 +451,7 @@ abstract setAudioMixingDualMonoMode(mode: AudioMixingDualMonoMode): number;
 
 ### 调用时机
 
-该方法需要在 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用。
+该方法需要在 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用。
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__parameters"></a>
 
@@ -481,7 +468,6 @@ abstract setAudioMixingDualMonoMode(mode: AudioMixingDualMonoMode): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingpitch"></a>
@@ -504,7 +490,7 @@ abstract setAudioMixingPitch(pitch: number): number;
 
 ### 调用时机
 
-你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
+你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
 
 <a id="api_irtcengine_setaudiomixingpitch__parameters"></a>
 
@@ -521,7 +507,6 @@ abstract setAudioMixingPitch(pitch: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed"></a>
@@ -538,7 +523,7 @@ abstract setAudioMixingPlaybackSpeed(speed: number): number;
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__detailed_desc"></a>
 
-你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/react-native/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) 回调报告播放状态为 `AudioMixingStatePlaying` 后再调用该方法。
+你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) 回调报告播放状态为 `AudioMixingStatePlaying` 后再调用该方法。
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__parameters"></a>
 
@@ -559,7 +544,6 @@ abstract setAudioMixingPlaybackSpeed(speed: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingposition"></a>
@@ -582,7 +566,7 @@ abstract setAudioMixingPosition(pos: number): number;
 
 ### 调用时机
 
-该方法需要在 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用。
+该方法需要在 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用。
 
 <a id="api_irtcengine_setaudiomixingposition__parameters"></a>
 
@@ -599,7 +583,6 @@ abstract setAudioMixingPosition(pos: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startaudiomixing2"></a>
@@ -624,7 +607,7 @@ abstract startAudioMixing(
 该方法支持播放的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。如果本地音乐文件不存在、文件格式不支持或无法访问在线音乐文件 URL，则 SDK 会报告 AudioMixingReasonCanNotOpen。
 
 :::info[注]
-- 使用该方法播放时长较短的音效文件可能会导致播放失败。如需播放音效文件，建议使用 [playEffect](/zh-CN/api-reference/rtc/react-native/audio-effect-file#api_irtcengine_playeffect3)。
+- 使用该方法播放时长较短的音效文件可能会导致播放失败。如需播放音效文件，建议使用 [playEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3)。
 - 如需多次调用该方法，请确保调用间隔大于 500 ms。
 - 在 Android 平台上调用该方法时，请注意如下事项：
 
@@ -643,7 +626,7 @@ abstract startAudioMixing(
 
 ### 相关回调
 
-调用该方法成功播放音乐文件后，本地会触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/react-native/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AudioMixingStatePlaying`) 回调。播放结束后，本地会触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/react-native/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AudioMixingStateStopped`) 回调。
+调用该方法成功播放音乐文件后，本地会触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AudioMixingStatePlaying`) 回调。播放结束后，本地会触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AudioMixingStateStopped`) 回调。
 
 <a id="api_irtcengine_startaudiomixing2__parameters"></a>
 
@@ -689,7 +672,6 @@ abstract startAudioMixing(
     - 请检查程序集完整性。
     - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopaudiomixing"></a>
@@ -706,7 +688,7 @@ abstract stopAudioMixing(): number;
 
 <a id="api_irtcengine_stopaudiomixing__detailed_desc"></a>
 
-当你调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，如需停止播放，可调用该方法。如果仅需暂停播放，请调用 [pauseAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_pauseaudiomixing)。
+当你调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，如需停止播放，可调用该方法。如果仅需暂停播放，请调用 [pauseAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_pauseaudiomixing)。
 
 <a id="api_irtcengine_stopaudiomixing__timing"></a>
 
@@ -721,7 +703,6 @@ abstract stopAudioMixing(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished"></a>
@@ -740,11 +721,10 @@ onAudioMixingFinished?(): void;
 
 #### `废弃`
 
-弃用： 请改用 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/react-native/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)。
+弃用： 请改用 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)。
 
-当调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 播放本地音乐文件结束后，会触发该回调。如果调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 失败，会返回错误码 `WARN_AUDIO_MIXING_OPEN_ERROR`。
+当调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 播放本地音乐文件结束后，会触发该回调。如果调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 失败，会返回错误码 `WARN_AUDIO_MIXING_OPEN_ERROR`。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged"></a>
@@ -761,7 +741,7 @@ onAudioMixingPositionChanged?(position: number): void;
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__detailed_desc"></a>
 
-当你调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，SDK 会每隔一秒触发一次该回调，报告音乐文件当前的播放进度。
+当你调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，SDK 会每隔一秒触发一次该回调，报告音乐文件当前的播放进度。
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__parameters"></a>
 
@@ -778,7 +758,6 @@ onAudioMixingPositionChanged?(position: number): void;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingstatechanged"></a>
@@ -812,5 +791,4 @@ onAudioMixingStateChanged?(
 
 错误码。详见 [AudioMixingReasonType](/zh-CN/api-reference/rtc/react-native/enum-audiomixingreasontype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)

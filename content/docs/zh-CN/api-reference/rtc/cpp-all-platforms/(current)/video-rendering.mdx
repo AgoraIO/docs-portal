@@ -1,10 +1,9 @@
 ---
 title: "视频渲染"
-description: "启用音视频帧的极速渲染。"
+description: "视频渲染 API reference."
 ---
-<a id="toc_video_rendering"></a>
 
-## 视频渲染
+<a id="toc_video_rendering"></a>
 
 <a id="api_irtcengine_enableinstantmediarendering"></a>
 
@@ -51,7 +50,6 @@ virtual int enableInstantMediaRendering() = 0;
 
   - -7：在 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 初始化之前调用了该方法。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalrendermode1"></a>
@@ -70,12 +68,12 @@ virtual int setLocalRenderMode(media::base::RENDER_MODE_TYPE renderMode) __depre
 
 #### `废弃`
 
-自 v4.0.0 版本废弃，请改用 [setLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_setlocalrendermode2)。
+自 v4.0.0 版本废弃，请改用 [setLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setlocalrendermode2)。
 
 你可以在初始化本地视频画面后调用该方法，更新其渲染模式和镜像模式。该方法仅影响本地用户看到的视频画面，不影响发布的视频流。
 
 :::info[注]
-- 请确保在调用该方法前已调用 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_setuplocalvideo) 初始化本地视频画面。
+- 请确保在调用该方法前已调用 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setuplocalvideo) 初始化本地视频画面。
 - 通话过程中，你可以多次调用该方法以更新本地视频画面。
 :::
 
@@ -94,7 +92,6 @@ virtual int setLocalRenderMode(media::base::RENDER_MODE_TYPE renderMode) __depre
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalrendermode2"></a>
@@ -114,14 +111,14 @@ virtual int setLocalRenderMode(media::base::RENDER_MODE_TYPE renderMode, VIDEO_M
 你可以在初始化本地视频画面后调用该方法，更新其渲染模式和镜像模式。该方法仅影响本地用户看到的视频画面，不影响本地视频的发布。
 
 :::info[注]
-`setLocalRenderMode` 仅对主摄像头（`PRIMARY_CAMERA_SOURCE` ）生效。在使用自定义视频采集或其他视频源的场景中，请使用 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_setuplocalvideo) 代替。
+`setLocalRenderMode` 仅对主摄像头（`PRIMARY_CAMERA_SOURCE` ）生效。在使用自定义视频采集或其他视频源的场景中，请使用 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setuplocalvideo) 代替。
 :::
 
 <a id="api_irtcengine_setlocalrendermode2__timing"></a>
 
 ### 调用时机
 
-- 请确保在调用该方法前已调用 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_setuplocalvideo) 初始化本地视频画面。
+- 请确保在调用该方法前已调用 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setuplocalvideo) 初始化本地视频画面。
 - 通话过程中，可多次调用该方法更新本地视频画面的显示模式。
 
 <a id="api_irtcengine_setlocalrendermode2__parameters"></a>
@@ -147,7 +144,6 @@ virtual int setLocalRenderMode(media::base::RENDER_MODE_TYPE renderMode, VIDEO_M
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalrendertargetfps"></a>
@@ -199,7 +195,6 @@ virtual int setLocalRenderTargetFps(VIDEO_SOURCE_TYPE sourceType, int targetFps)
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvideomirrormode"></a>
@@ -218,7 +213,7 @@ virtual int setLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode) __depreca
 
 #### `废弃`
 
-该方法已废弃，请改用 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_setuplocalvideo) 或 `setLocalRenderMode`。
+该方法已废弃，请改用 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setuplocalvideo) 或 `setLocalRenderMode`。
 
 <a id="api_irtcengine_setlocalvideomirrormode__parameters"></a>
 
@@ -235,7 +230,6 @@ virtual int setLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode) __depreca
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremoterendermode2"></a>
@@ -255,7 +249,7 @@ virtual int setRemoteRenderMode(uid_t uid, media::base::RENDER_MODE_TYPE renderM
 你可以在初始化远端用户视频视图后调用此方法，更新其渲染模式和镜像模式。该方法仅影响本地用户看到的远端视频视图。
 
 :::info[注]
-- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_setupremotevideo) 初始化远端视图后再调用此方法。
+- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setupremotevideo) 初始化远端视图后再调用此方法。
 - 通话过程中，你可以根据需要多次调用此方法更新远端用户视频视图的显示模式。
 :::
 
@@ -282,7 +276,6 @@ virtual int setRemoteRenderMode(uid_t uid, media::base::RENDER_MODE_TYPE renderM
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremoterendermodeex"></a>
@@ -299,10 +292,10 @@ virtual int setRemoteRenderModeEx(uid_t uid, media::base::RENDER_MODE_TYPE rende
 
 <a id="api_irtcengineex_setremoterendermodeex__detailed_desc"></a>
 
-调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_setupremotevideo) 初始化远端用户的视频视图后，可以调用该方法更新其渲染模式和镜像模式。该方法仅影响本地用户看到的视频视图。
+调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setupremotevideo) 初始化远端用户的视频视图后，可以调用该方法更新其渲染模式和镜像模式。该方法仅影响本地用户看到的视频视图。
 
 :::info[注]
-- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_setupremotevideo) 初始化远端视图后调用此方法。
+- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setupremotevideo) 初始化远端视图后调用此方法。
 - 通话过程中，可以多次调用此方法更新远端用户视频视图的显示模式。
 :::
 
@@ -339,7 +332,6 @@ virtual int setRemoteRenderModeEx(uid_t uid, media::base::RENDER_MODE_TYPE rende
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setremoterendertargetfps"></a>
@@ -385,7 +377,6 @@ virtual int setRemoteRenderTargetFps(int targetFps) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayer_setrendermode"></a>
@@ -417,7 +408,6 @@ virtual int setRenderMode(media::base::RENDER_MODE_TYPE renderMode) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
 
 <a id="api_irtcengine_setuplocalvideo"></a>
@@ -467,7 +457,6 @@ virtual int setupLocalVideo(const VideoCanvas& canvas) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setupremotevideo"></a>
@@ -487,8 +476,8 @@ virtual int setupRemoteVideo(const VideoCanvas& canvas) = 0;
 该方法在本地设备上初始化远端视频流的视频视图，仅影响本地用户所见的视频画面。你可以通过该方法将远端视频流绑定到指定视图，并设置该视图的渲染模式和镜像模式。你需要在调用该方法时指定远端用户的 ID。如果应用尚未获取远端用户的 ID，请在收到 [onUserJoined](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onuserjoined) 回调后再设置。若要解绑远端用户与视图的绑定关系，可将 `view` 参数设置为 NULL。当远端用户离开频道时，SDK 会自动解绑该用户。在移动端进行视频合流布局自定义的场景中，你可以调用该方法，并为合流视频流中的每个子视频流设置独立的 `view` 进行渲染。
 
 :::info[注]
-- 若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 [setRemoteRenderMode](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_setremoterendermode2) 方法。
-- 使用录制服务时，应用无需绑定视图，因为录制服务不会发送视频流。如果你的应用无法识别录制服务，请在 SDK 触发 [onFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时将远端用户绑定到视图。
+- 若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 [setRemoteRenderMode](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setremoterendermode2) 方法。
+- 使用录制服务时，应用无需绑定视图，因为录制服务不会发送视频流。如果你的应用无法识别录制服务，请在 SDK 触发 [onFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时将远端用户绑定到视图。
 :::
 
 <a id="api_irtcengine_setupremotevideo__parameters"></a>
@@ -506,7 +495,6 @@ virtual int setupRemoteVideo(const VideoCanvas& canvas) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setupremotevideoex"></a>
@@ -526,7 +514,7 @@ virtual int setupRemoteVideoEx(const VideoCanvas& canvas, const RtcConnection& c
 该方法在本地设备上初始化远端视频流的视图，仅影响你本地看到的画面。调用该方法可以将远端视频流绑定到指定视图，并设置该视图的渲染模式和镜像模式。 你需要在远端用户加入频道前，通过 [VideoCanvas](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videocanvas) 设置远端用户的用户 ID。如果你尚未获取远端用户 ID，可以在收到 [onUserJoined](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onuserjoined) 回调后再设置。 如果启用了视频录制功能，录制服务会以虚拟客户端身份加入频道，其他客户端也会因此收到 [onUserJoined](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onuserjoined) 回调。不要将该虚拟客户端绑定到视图，因为它不会发送任何视频流。 若要解除远端用户与视图的绑定，可将 `view` 参数设置为 NULL。当远端用户离开频道后，SDK 会自动解除绑定。
 
 :::info[注]
-若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 [setRemoteRenderModeEx](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
+若需在通话过程中更新远端视频视图的渲染模式或镜像模式，请使用 [setRemoteRenderModeEx](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
 :::
 
 <a id="api_irtcengineex_setupremotevideoex__scenario"></a>
@@ -554,7 +542,6 @@ virtual int setupRemoteVideoEx(const VideoCanvas& canvas, const RtcConnection& c
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_startmediarenderingtracing"></a>
@@ -575,7 +562,7 @@ virtual int startMediaRenderingTracing() = 0;
 
 自 v4.1.1 版本新增。
 
-从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关信息。
+从成功调用该方法开始，SDK 会追踪频道中视频帧的渲染状态，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关信息。
 
 :::info[注]
 - 如果你未调用该方法，SDK 会从调用 `joinChannel` 加入频道时开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时间调用该方法，以设置追踪视频渲染事件的起始位置。
@@ -586,7 +573,7 @@ virtual int startMediaRenderingTracing() = 0;
 
 ### 适用场景
 
-你可以结合应用中的 UI 设置（如按钮、滑块）调用该方法，以提升用户体验。例如，在用户点击“加入频道”按钮时调用该方法，然后通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调获取视频帧渲染过程所耗费的时间，从而优化相关指标。
+你可以结合应用中的 UI 设置（如按钮、滑块）调用该方法，以提升用户体验。例如，在用户点击“加入频道”按钮时调用该方法，然后通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调获取视频帧渲染过程所耗费的时间，从而优化相关指标。
 
 <a id="api_irtcengine_startmediarenderingtracing__return_values"></a>
 
@@ -597,7 +584,6 @@ virtual int startMediaRenderingTracing() = 0;
 
   - -7：在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 之前调用了该方法。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startmediarenderingtracingex"></a>
@@ -618,7 +604,7 @@ virtual int startMediaRenderingTracingEx(const RtcConnection& connection) = 0;
 
 自 v4.1.1 版本新增。
 
-调用该方法后，SDK 会从调用时刻开始追踪频道中视频帧的渲染状态，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关信息。你可以结合应用中的 UI 控件（如按钮、滑块）调用该方法，以优化用户体验，例如在用户点击“加入频道”按钮时调用该方法，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调获取视频帧渲染过程所耗时间，从而优化相关指标。
+调用该方法后，SDK 会从调用时刻开始追踪频道中视频帧的渲染状态，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关信息。你可以结合应用中的 UI 控件（如按钮、滑块）调用该方法，以优化用户体验，例如在用户点击“加入频道”按钮时调用该方法，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调获取视频帧渲染过程所耗时间，从而优化相关指标。
 
 :::info[注]
 - 如果你未调用该方法，SDK 会从调用 `joinChannel` 加入频道时开始追踪视频帧的渲染事件。你可以根据实际应用场景在合适的时间调用该方法，以设置追踪视频渲染事件的起始位置。
@@ -646,7 +632,6 @@ virtual int startMediaRenderingTracingEx(const RtcConnection& connection) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo"></a>
@@ -699,7 +684,6 @@ virtual void onTranscodedStreamLayoutInfo(uid_t uid, int width, int height, int 
 
 子视频流的布局信息数组。详见 [VideoLayout](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videolayout)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult"></a>
@@ -716,13 +700,13 @@ virtual void onVideoRenderingTracingResult(uid_t uid, MEDIA_TRACE_EVENT currentE
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__detailed_desc"></a>
 
-调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后，SDK 会触发该回调，用于上报视频帧渲染事件及渲染过程中的各项指标。你可以通过优化这些指标，提高首帧视频的渲染效率。
+调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后，SDK 会触发该回调，用于上报视频帧渲染事件及渲染过程中的各项指标。你可以通过优化这些指标，提高首帧视频的渲染效率。
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__timing"></a>
 
 ### 触发时机
 
-调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后触发。
+调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后触发。
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__parameters"></a>
 
@@ -740,5 +724,4 @@ virtual void onVideoRenderingTracingResult(uid_t uid, MEDIA_TRACE_EVENT currentE
 
 视频帧渲染过程中的各项指标，详见 [VideoRenderingTracingInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videorenderingtracinginfo)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,10 +1,9 @@
 ---
 title: "屏幕采集"
-description: "查询设备在屏幕共享时支持的最高帧率。"
+description: "屏幕采集 API reference."
 ---
-<a id="toc_screencapture"></a>
 
-## 屏幕采集
+<a id="toc_screencapture"></a>
 
 <a id="api_irtcengine_queryscreencapturecapability"></a>
 
@@ -33,7 +32,6 @@ abstract queryScreenCaptureCapability(): number;
 - 方法调用成功时，返回设备支持的最高帧率。详见 [ScreenCaptureFramerateCapability](/zh-CN/api-reference/rtc/react-native/enum-screencaptureframeratecapability)。
 - &lt;0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setexternalmediaprojection"></a>
@@ -69,7 +67,7 @@ abstract setExternalMediaProjection(mediaProjection: any): number;
 
 ### 调用时机
 
-该方法需要在 [startScreenCapture](/zh-CN/api-reference/rtc/react-native/screencapture#api_irtcengine_startscreencapture) 之前调用。
+该方法需要在 [startScreenCapture](/zh-CN/api-reference/rtc/react-native/video/screencapture#api_irtcengine_startscreencapture) 之前调用。
 
 <a id="api_irtcengine_setexternalmediaprojection__parameters"></a>
 
@@ -86,7 +84,6 @@ abstract setExternalMediaProjection(mediaProjection: any): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setscreencapturecontenthint"></a>
@@ -125,9 +122,8 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/react-native/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/react-native/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setscreencapturescenario"></a>
@@ -165,7 +161,6 @@ abstract setScreenCaptureScenario(screenScenario: ScreenScenarioType): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapture"></a>
@@ -196,7 +191,7 @@ abstract startScreenCapture(captureParams: ScreenCaptureParameters2): number;
 - 因 Android 性能限制，屏幕共享不支持 Android TV。
 - 因 Android 系统限制，使用华为手机进行屏幕共享时，为避免崩溃，请不要在共享过程中调节屏幕共享流的视频编码分辨率。
 - 因 Android 系统限制，部分小米手机不支持屏幕共享时采集系统音频。
-- 为提高屏幕共享时采集系统音频的成功率，建议你在加入频道前通过 [setAudioScenario](/zh-CN/api-reference/rtc/react-native/audio-basic#api_irtcengine_setaudioscenario) 方法设置音频场景为 `AudioScenarioGameStreaming`。
+- 为提高屏幕共享时采集系统音频的成功率，建议你在加入频道前通过 [setAudioScenario](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#api_irtcengine_setaudioscenario) 方法设置音频场景为 `AudioScenarioGameStreaming`。
 :::
 
 <a id="api_irtcengine_startscreencapture__scenario"></a>
@@ -233,7 +228,6 @@ abstract startScreenCapture(captureParams: ScreenCaptureParameters2): number;
   - -2 (Anroid 平台): 系统版本过低，请确保 Android API 级别不低于 21。
   - -3 (Anroid 平台): 无法采集系统音频，请确保 Android API 级别不低于 29。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopscreencapture"></a>
@@ -269,7 +263,6 @@ abstract stopScreenCapture(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatescreencapture"></a>
@@ -312,9 +305,8 @@ abstract updateScreenCapture(captureParams: ScreenCaptureParameters2): number;
 - &lt; 0: 方法调用失败。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/react-native/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/react-native/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatescreencaptureparameters"></a>
@@ -346,7 +338,7 @@ abstract updateScreenCaptureParameters(
 屏幕共享的编码参数配置。详见 [ScreenCaptureParameters2](/zh-CN/api-reference/rtc/react-native/class-screencaptureparameters2)。
 
 :::info[注]
-屏幕共享流的视频属性只需通过该参数设置，与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
+屏幕共享流的视频属性只需通过该参数设置，与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
 :::
 
 <a id="api_irtcengine_updatescreencaptureparameters__return_values"></a>
@@ -357,9 +349,8 @@ abstract updateScreenCaptureParameters(
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/react-native/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/react-native/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatescreencaptureregion1"></a>
@@ -388,7 +379,6 @@ abstract updateScreenCaptureRegion(regionRect: Rectangle): number;
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/react-native/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture](/zh-CN/api-reference/rtc/react-native/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)

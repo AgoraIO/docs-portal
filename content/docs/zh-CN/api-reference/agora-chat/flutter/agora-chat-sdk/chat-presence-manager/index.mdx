@@ -1,0 +1,182 @@
+---
+title: "ChatPresenceManager class"
+description: "API docs for the ChatPresenceManager class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The Manager that defines how to manage presence states.
+
+### Available Extensions
+
+- [PresenceDeprecated](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/presence-deprecated)
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart title="Dart"
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart title="Dart"
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="addEventHandler"></a>
+
+### [addEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-presence-manager/add-event-handler)
+
+```dart title="Dart"
+addEventHandler(String identifier, ChatPresenceEventHandler handler) -> void
+```
+
+Adds the presence event handler. After calling this method, you can handle for new presence event when they arrive.
+
+<a id="clearEventHandlers"></a>
+
+### [clearEventHandlers](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-presence-manager/clear-event-handlers)
+
+```dart title="Dart"
+clearEventHandlers() -> void
+```
+
+Clear all presence event handlers.
+
+<a id="fetchPresenceStatus"></a>
+
+### [fetchPresenceStatus](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-presence-manager/fetch-presence-status)
+
+```dart title="Dart"
+fetchPresenceStatus({required List<String> members}) -> Future<List<ChatPresence>>
+```
+
+Gets the current presence state of users.
+
+<a id="fetchSubscribedMembers"></a>
+
+### [fetchSubscribedMembers](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-presence-manager/fetch-subscribed-members)
+
+```dart title="Dart"
+fetchSubscribedMembers({int pageNum = 1, int pageSize = 20}) -> Future<List<String>>
+```
+
+Uses pagination to get a list of users whose presence states you have subscribed to.
+
+<a id="getEventHandler"></a>
+
+### [getEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-presence-manager/get-event-handler)
+
+```dart title="Dart"
+getEventHandler(String identifier) -> ChatPresenceEventHandler?
+```
+
+Get the presence event handler.
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart title="Dart"
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="publishPresence"></a>
+
+### [publishPresence](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-presence-manager/publish-presence)
+
+```dart title="Dart"
+publishPresence(String description) -> Future<void>
+```
+
+Publishes a custom presence state.
+
+<a id="removeEventHandler"></a>
+
+### [removeEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-presence-manager/remove-event-handler)
+
+```dart title="Dart"
+removeEventHandler(String identifier) -> void
+```
+
+Remove the presence event handler.
+
+<a id="subscribe"></a>
+
+### [subscribe](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-presence-manager/subscribe)
+
+```dart title="Dart"
+subscribe({required List<String> members, required int expiry}) -> Future<List<ChatPresence>>
+```
+
+Subscribes to a user's presence states. If the subscription succeeds, the subscriber will receive the callback when the user's presence state changes.
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart title="Dart"
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="unsubscribe"></a>
+
+### [unsubscribe](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-presence-manager/unsubscribe)
+
+```dart title="Dart"
+unsubscribe({required List<String> members}) -> Future<void>
+```
+
+Unsubscribes from a user's presence states.
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart title="Dart"
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

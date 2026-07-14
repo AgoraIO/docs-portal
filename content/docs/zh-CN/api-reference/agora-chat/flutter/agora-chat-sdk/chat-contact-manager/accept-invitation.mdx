@@ -1,0 +1,35 @@
+---
+title: "acceptInvitation method"
+description: "API docs for the acceptInvitation method from the ChatContactManager class, for the Dart programming language."
+---
+
+Accepts a friend invitation。
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `username` | The user who sends the friend invitation. |
+
+```dart title="Dart"
+Future<void> acceptInvitation(String username)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> acceptInvitation(String username) async {
+  Map req = {'username': username};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.acceptInvitation, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

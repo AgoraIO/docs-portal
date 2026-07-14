@@ -1,10 +1,9 @@
 ---
 title: "原始视频数据"
-description: "设置是否镜像采集的视频。"
+description: "原始视频数据 API reference."
 ---
-<a id="toc_video_raw"></a>
 
-## 原始视频数据
+<a id="toc_video_raw"></a>
 
 <a id="api_ivideoframeobserver_getmirrorapplied"></a>
 
@@ -20,11 +19,11 @@ description: "设置是否镜像采集的视频。"
 
 <a id="api_ivideoframeobserver_getmirrorapplied__detailed_desc"></a>
 
-如果你希望获取的视频数据是原始视频的镜像图像，在调用 [setVideoFrameDelegate:](/zh-CN/api-reference/rtc/macos/video-raw#api_irtcengine_registervideoframeobserver) 时需要注册该回调。成功注册视频帧观察器后，SDK 每次接收到视频帧时都会触发该回调。你需要在该回调的返回值中设置是否对视频帧进行镜像处理。
+如果你希望获取的视频数据是原始视频的镜像图像，在调用 [setVideoFrameDelegate:](/zh-CN/api-reference/rtc/macos/video/video-raw#api_irtcengine_registervideoframeobserver) 时需要注册该回调。成功注册视频帧观察器后，SDK 每次接收到视频帧时都会触发该回调。你需要在该回调的返回值中设置是否对视频帧进行镜像处理。
 
 - 在 iOS 平台，该回调支持的视频数据格式包括：I420、RGBA 和 `CVPixelBuffer`。
 - 在 macOS 平台，该回调支持的视频数据格式包括：I420 和 RGBA。
-- 此方法和 [setVideoEncoderConfiguration:](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_setvideoencoderconfiguration) 方法都支持设置镜像效果。声网建议你仅使用其中一种方式进行设置，同时使用两种方式会导致镜像效果叠加，镜像设置失效。
+- 此方法和 [setVideoEncoderConfiguration:](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 方法都支持设置镜像效果。声网建议你仅使用其中一种方式进行设置，同时使用两种方式会导致镜像效果叠加，镜像设置失效。
 
 <a id="api_ivideoframeobserver_getmirrorapplied__timing"></a>
 
@@ -41,7 +40,6 @@ description: "设置是否镜像采集的视频。"
 - YES：镜像采集的视频。
 - NO：（默认）不镜像采集的视频。
 
-### 所属接口类
 - [AgoraVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="api_ivideoframeobserver_getobservedframeposition"></a>
@@ -68,7 +66,7 @@ description: "设置是否镜像采集的视频。"
 - 使用 `|` （按位或运算符）以观察多个帧位置。
 - 默认情况下，该回调观察 `AgoraVideoModulePositionPostCapture` (1 &lt;&lt; 0) 和 `AgoraVideoModulePositionPreRenderer` (1 &lt;&lt; 1)。
 - 为节省系统资源，你可以减少需要观察的帧位置数量。
-- 当视频处理模式为 `AgoraVideoFrameProcessModeReadWrite` 且观察位置设置为 `AgoraVideoModulePositionPreEncoder | AgoraVideoModulePositionPostCapture` 时， [getMirrorApplied](/zh-CN/api-reference/rtc/macos/video-raw#api_ivideoframeobserver_getmirrorapplied) 不生效。你需要修改视频处理模式或观察器的位置。
+- 当视频处理模式为 `AgoraVideoFrameProcessModeReadWrite` 且观察位置设置为 `AgoraVideoModulePositionPreEncoder | AgoraVideoModulePositionPostCapture` 时， [getMirrorApplied](/zh-CN/api-reference/rtc/macos/video/video-raw#api_ivideoframeobserver_getmirrorapplied) 不生效。你需要修改视频处理模式或观察器的位置。
 :::
 
 <a id="api_ivideoframeobserver_getobservedframeposition__return_values"></a>
@@ -77,7 +75,6 @@ description: "设置是否镜像采集的视频。"
 
 用于控制你希望观察的视频帧位置的位掩码。详见 [AgoraVideoFramePosition](/zh-CN/api-reference/rtc/macos/enum-videoframeposition)。
 
-### 所属接口类
 - [AgoraVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="api_ivideoframeobserver_getrotationapplied"></a>
@@ -108,7 +105,6 @@ description: "设置是否镜像采集的视频。"
 - YES：旋转采集的视频。
 - NO：（默认）不旋转采集的视频。
 
-### 所属接口类
 - [AgoraVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="api_ivideoframeobserver_getvideoformatpreference"></a>
@@ -125,7 +121,7 @@ description: "设置是否镜像采集的视频。"
 
 <a id="api_ivideoframeobserver_getvideoformatpreference__detailed_desc"></a>
 
-调用 [setVideoFrameDelegate:](/zh-CN/api-reference/rtc/macos/video-raw#api_irtcengine_registervideoframeobserver) 方法注册回调后，SDK 每次接收到视频帧时会触发该回调。你需要在该回调的返回值中设置所需的视频数据格式。
+调用 [setVideoFrameDelegate:](/zh-CN/api-reference/rtc/macos/video/video-raw#api_irtcengine_registervideoframeobserver) 方法注册回调后，SDK 每次接收到视频帧时会触发该回调。你需要在该回调的返回值中设置所需的视频数据格式。
 
 :::info[注]
 原始视频的默认像素格式类型（`AgoraVideoFormatDefault` ）如下：
@@ -139,7 +135,6 @@ description: "设置是否镜像采集的视频。"
 
 方法调用成功时，返回原始视频数据的格式，详见 [AgoraVideoFormat](/zh-CN/api-reference/rtc/macos/enum-videopixelformat)。
 
-### 所属接口类
 - [AgoraVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="api_ivideoframeobserver_getvideoframeprocessmode"></a>
@@ -170,7 +165,6 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 
 方法调用成功时，返回你设置的视频帧处理模式，详见 [AgoraVideoFrameProcessMode](/zh-CN/api-reference/rtc/macos/enum-videoframeprocessmode)。
 
-### 所属接口类
 - [AgoraVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="api_irtcengine_registervideoframeobserver"></a>
@@ -211,7 +205,6 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 - NO：注册原始视频帧观察者失败。
 - `<0`：方法调用失败。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe"></a>
@@ -228,12 +221,12 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__detailed_desc"></a>
 
-你可以通过该回调获取本地设备采集的原始视频数据，并根据需要进行预处理。预处理完成后，你可以直接在该回调中修改 `videoFrame`，并将返回值设置为 YES，以将修改后的视频数据发送给 SDK。如果你需要将预处理后的视频数据发送给 SDK，需先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/macos/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) 将视频处理模式设置为读写模式（`AgoraVideoFrameProcessModeReadWrite` ）。
+你可以通过该回调获取本地设备采集的原始视频数据，并根据需要进行预处理。预处理完成后，你可以直接在该回调中修改 `videoFrame`，并将返回值设置为 YES，以将修改后的视频数据发送给 SDK。如果你需要将预处理后的视频数据发送给 SDK，需先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/macos/video/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) 将视频处理模式设置为读写模式（`AgoraVideoFrameProcessModeReadWrite` ）。
 
 :::info[注]
 - 如果你获取的视频数据类型为 RGBA，SDK 不支持处理 alpha 通道的数据。
 - 建议你确保 `videoFrame` 中修改后的参数与视频帧缓冲区中视频帧的实际情况一致，否则可能导致本地预览和远端视频显示出现异常旋转、拉伸等问题。
-- 默认通过该回调获取的视频格式为 I420 或 `CVPixelBufferRef`。如果你需要其他格式，可以在 [getVideoFormatPreference](/zh-CN/api-reference/rtc/macos/video-raw#api_ivideoframeobserver_getvideoformatpreference) 回调中设置期望的数据格式。
+- 默认通过该回调获取的视频格式为 I420 或 `CVPixelBufferRef`。如果你需要其他格式，可以在 [getVideoFormatPreference](/zh-CN/api-reference/rtc/macos/video/video-raw#api_ivideoframeobserver_getvideoformatpreference) 回调中设置期望的数据格式。
 :::
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__timing"></a>
@@ -269,7 +262,6 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
   - YES：设置 SDK 接收该视频帧。
   - NO：设置 SDK 丢弃该视频帧。
 
-### 所属接口类
 - [AgoraVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe"></a>
@@ -289,8 +281,8 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 在你成功注册视频帧观察器后，SDK 每次接收到视频帧时都会触发该回调。在该回调中，你可以获取编码前的视频数据，并根据具体场景对其进行处理。处理完成后，你可以将处理后的视频数据返回给 SDK。
 
 :::info[注]
-- 如果你需要将预处理后的视频数据发送回 SDK，你需要先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/macos/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) 将视频处理模式设置为读写模式（`AgoraVideoFrameProcessModeReadWrite` ）。
-- 如果你需要获取从第二屏幕采集的编码前的视频数据，你需要通过 [getObservedFramePosition](/zh-CN/api-reference/rtc/macos/video-raw#api_ivideoframeobserver_getobservedframeposition) 设置帧位置为 `AgoraVideoModulePositionPreEncoder` （1 &lt;&lt; 2）。
+- 如果你需要将预处理后的视频数据发送回 SDK，你需要先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/macos/video/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) 将视频处理模式设置为读写模式（`AgoraVideoFrameProcessModeReadWrite` ）。
+- 如果你需要获取从第二屏幕采集的编码前的视频数据，你需要通过 [getObservedFramePosition](/zh-CN/api-reference/rtc/macos/video/video-raw#api_ivideoframeobserver_getobservedframeposition) 设置帧位置为 `AgoraVideoModulePositionPreEncoder` （1 &lt;&lt; 2）。
 - 该回调获取的视频数据已被预处理，包括裁剪、旋转和美颜特效。
 - 建议你确保 `videoFrame` 中修改后的参数与视频帧缓冲区中视频帧的实际情况一致。否则，可能会导致本地预览和远端视频显示出现意外的旋转、变形等问题。
 :::
@@ -328,7 +320,6 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
   - YES：设置 SDK 接收该视频帧。
   - NO：设置 SDK 丢弃该视频帧。
 
-### 所属接口类
 - [AgoraVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onrendervideoframe"></a>
@@ -345,10 +336,10 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__detailed_desc"></a>
 
-在你成功注册视频帧观察器后，SDK 每次接收到视频帧时都会触发该回调。在该回调中，你可以在渲染前获取远端发送的视频数据，并根据具体场景进行处理。通过该回调获取的视频格式默认为 I420 或 `CVPixelBufferRef`。如果你需要其他格式，可以在 [getVideoFormatPreference](/zh-CN/api-reference/rtc/macos/video-raw#api_ivideoframeobserver_getvideoformatpreference) 回调中设置期望的数据格式。
+在你成功注册视频帧观察器后，SDK 每次接收到视频帧时都会触发该回调。在该回调中，你可以在渲染前获取远端发送的视频数据，并根据具体场景进行处理。通过该回调获取的视频格式默认为 I420 或 `CVPixelBufferRef`。如果你需要其他格式，可以在 [getVideoFormatPreference](/zh-CN/api-reference/rtc/macos/video/video-raw#api_ivideoframeobserver_getvideoformatpreference) 回调中设置期望的数据格式。
 
 :::info[注]
-- 如果你需要将预处理后的视频数据发送给 SDK，需要先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/macos/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) 将视频处理模式设置为读写模式（`AgoraVideoFrameProcessModeReadWrite` ）。
+- 如果你需要将预处理后的视频数据发送给 SDK，需要先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/macos/video/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) 将视频处理模式设置为读写模式（`AgoraVideoFrameProcessModeReadWrite` ）。
 - 如果你获取的视频数据类型为 RGBA，SDK 不支持处理 alpha 通道的数据。
 - 建议确保 `videoFrame` 中修改后的参数与视频帧缓冲区中视频帧的实际情况一致，否则可能导致本地预览和远端视频显示出现异常旋转、拉伸等问题。
 :::
@@ -390,5 +381,4 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
   - YES：设置 SDK 接收该视频帧。
   - NO：设置 SDK 丢弃该视频帧。
 
-### 所属接口类
 - [AgoraVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoframeobserver)

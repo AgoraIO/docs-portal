@@ -1,10 +1,9 @@
 ---
 title: "音频基础功能"
-description: "调节本地播放的所有远端用户信号音量。"
+description: "音频基础功能 API reference."
 ---
-<a id="toc_audio_basic"></a>
 
-## 音频基础功能
+<a id="toc_audio_basic"></a>
 
 <a id="api_irtcengine_adjustplaybacksignalvolume"></a>
 
@@ -20,7 +19,7 @@ public abstract int AdjustPlaybackSignalVolume(int volume);
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__detailed_desc"></a>
 
-该方法用于调节所有远端用户混音后在本地播放的信号音量，如果你需要调节指定远端用户在本地播放的信号音量，建议你调用 [AdjustUserPlaybackSignalVolume](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_adjustuserplaybacksignalvolume)。
+该方法用于调节所有远端用户混音后在本地播放的信号音量，如果你需要调节指定远端用户在本地播放的信号音量，建议你调用 [AdjustUserPlaybackSignalVolume](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_adjustuserplaybacksignalvolume)。
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__timing"></a>
 
@@ -47,7 +46,6 @@ public abstract int AdjustPlaybackSignalVolume(int volume);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume"></a>
@@ -95,7 +93,6 @@ public abstract int AdjustUserPlaybackSignalVolume(uint uid, int volume);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex"></a>
@@ -147,7 +144,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_disableaudio"></a>
@@ -169,8 +165,8 @@ public abstract int DisableAudio();
 :::info[注]
 该方法重置整个引擎，响应时间较慢，因此声网建议使用如下方法来控制音频模块：
 
-- [EnableLocalAudio](/zh-CN/api-reference/rtc/unity/audio-capture#api_irtcengine_enablelocalaudio)：是否启动麦克风采集并创建本地音频流。
-- [EnableLoopbackRecording](/zh-CN/api-reference/rtc/unity/audio-capture#api_irtcengine_enableloopbackrecording)：是否开启声卡采集。
+- [EnableLocalAudio](/zh-CN/api-reference/rtc/unity/audio/audio-capture#api_irtcengine_enablelocalaudio)：是否启动麦克风采集并创建本地音频流。
+- [EnableLoopbackRecording](/zh-CN/api-reference/rtc/unity/audio/audio-capture#api_irtcengine_enableloopbackrecording)：是否开启声卡采集。
 - [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：是否发布本地音频流。
 - [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteremoteaudiostream)：是否接收并播放远端音频流。
 - [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)：是否接收并播放所有远端音频流。
@@ -189,7 +185,6 @@ public abstract int DisableAudio();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudio"></a>
@@ -206,16 +201,16 @@ public abstract int EnableAudio();
 
 <a id="api_irtcengine_enableaudio__detailed_desc"></a>
 
-音频模块默认开启。如果你调用 [DisableAudio](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_disableaudio) 关闭了音频模块，可调用该方法重新开启。
+音频模块默认开启。如果你调用 [DisableAudio](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_disableaudio) 关闭了音频模块，可调用该方法重新开启。
 
 :::info[注]
 - 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制音频模块的某一项功能：
 
-  - [EnableLocalAudio](/zh-CN/api-reference/rtc/unity/audio-capture#api_irtcengine_enablelocalaudio): 是否启动麦克风采集并创建本地音频流。
+  - [EnableLocalAudio](/zh-CN/api-reference/rtc/unity/audio/audio-capture#api_irtcengine_enablelocalaudio): 是否启动麦克风采集并创建本地音频流。
   - [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream): 是否发布本地音频流。
   - [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteremoteaudiostream): 是否接收并播放远端音频流。
   - [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams): 是否接收并播放所有远端音频流。
-- 在频道内调用该方法时，会重置 [EnableLocalAudio](/zh-CN/api-reference/rtc/unity/audio-capture#api_irtcengine_enablelocalaudio)、 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteremoteaudiostream) 和 [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 的设置，需谨慎使用。
+- 在频道内调用该方法时，会重置 [EnableLocalAudio](/zh-CN/api-reference/rtc/unity/audio/audio-capture#api_irtcengine_enablelocalaudio)、 [MuteRemoteAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteremoteaudiostream) 和 [MuteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 的设置，需谨慎使用。
 :::
 
 <a id="api_irtcengine_enableaudio__timing"></a>
@@ -231,7 +226,6 @@ public abstract int EnableAudio();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudiovolumeindication"></a>
@@ -260,7 +254,7 @@ public abstract int EnableAudioVolumeIndication(int interval, int smooth, bool r
 
 ### 相关回调
 
-成功调用该方法、且频道内存在发流用户时，SDK 会按设置的时间间隔触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
+成功调用该方法、且频道内存在发流用户时，SDK 会按设置的时间间隔触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
 <a id="api_irtcengine_enableaudiovolumeindication__parameters"></a>
 
@@ -271,7 +265,7 @@ public abstract int EnableAudioVolumeIndication(int interval, int smooth, bool r
 指定音量提示的时间间隔：
 
 - ≤ 0: 禁用音量提示功能。
-- &gt; 0: 返回音量提示的间隔，单位为毫秒。建议设置到大于 100 毫秒，不得小于 10 毫秒，否则会收不到 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
+- &gt; 0: 返回音量提示的间隔，单位为毫秒。建议设置到大于 100 毫秒，不得小于 10 毫秒，否则会收不到 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
 #### `smooth`
 
@@ -279,8 +273,8 @@ public abstract int EnableAudioVolumeIndication(int interval, int smooth, bool r
 
 #### `reportVad`
 
-- true：开启本地人声检测功能。开启后， [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数会报告是否在本地检测到人声。
-- false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数不会报告是否在本地检测到人声。
+- true：开启本地人声检测功能。开启后， [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数会报告是否在本地检测到人声。
+- false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数不会报告是否在本地检测到人声。
 
 <a id="api_irtcengine_enableaudiovolumeindication__return_values"></a>
 
@@ -289,7 +283,6 @@ public abstract int EnableAudioVolumeIndication(int interval, int smooth, bool r
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex"></a>
@@ -318,7 +311,7 @@ public abstract int EnableAudioVolumeIndicationEx(int interval, int smooth, bool
 
 ### 相关回调
 
-成功调用该方法、且频道内存在发流用户时，SDK 会按设置的时间间隔触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
+成功调用该方法、且频道内存在发流用户时，SDK 会按设置的时间间隔触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__parameters"></a>
 
@@ -329,7 +322,7 @@ public abstract int EnableAudioVolumeIndicationEx(int interval, int smooth, bool
 指定音量提示的时间间隔：
 
 - ≤ 0: 禁用音量提示功能。
-- &gt; 0: 返回音量提示的间隔，单位为毫秒。建议设置到大于 100 毫秒，不得小于 10 毫秒，否则会收不到 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
+- &gt; 0: 返回音量提示的间隔，单位为毫秒。建议设置到大于 100 毫秒，不得小于 10 毫秒，否则会收不到 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
 #### `smooth`
 
@@ -337,8 +330,8 @@ public abstract int EnableAudioVolumeIndicationEx(int interval, int smooth, bool
 
 #### `reportVad`
 
-- true：开启本地人声检测功能。开启后， [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数会报告是否在本地检测到人声。
-- false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数不会报告是否在本地检测到人声。
+- true：开启本地人声检测功能。开启后， [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数会报告是否在本地检测到人声。
+- false：（默认）关闭本地人声检测功能。除引擎自动进行本地人声检测的场景外， [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的 `vad` 参数不会报告是否在本地检测到人声。
 
 #### `connection`
 
@@ -351,7 +344,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setaudioprofile"></a>
@@ -370,7 +362,7 @@ public abstract int SetAudioProfile(AUDIO_PROFILE_TYPE profile, AUDIO_SCENARIO_T
 
 #### `废弃`
 
-弃用： 此方法已废弃，如需设置音频编码属性，请改用 [SetAudioProfile [2/2]](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_setaudioprofile2)；如需设置音频场景，请改用 [SetAudioScenario](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_setaudioscenario)。
+弃用： 此方法已废弃，如需设置音频编码属性，请改用 [SetAudioProfile [2/2]](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_setaudioprofile2)；如需设置音频场景，请改用 [SetAudioScenario](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_setaudioscenario)。
 
 :::info[注]
 由于 iOS 系统限制，部分音频路由在通话音量模式下无法识别。因此，如需使用外接声卡，建议将音频应用场景设置为高音质场景 `AUDIO_SCENARIO_GAME_STREAMING` (3)。在这种场景下，SDK 会切换到媒体音量规避该问题。
@@ -407,7 +399,6 @@ public abstract int SetAudioProfile(AUDIO_PROFILE_TYPE profile, AUDIO_SCENARIO_T
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioprofile2"></a>
@@ -424,7 +415,7 @@ public abstract int SetAudioProfile(AUDIO_PROFILE_TYPE profile);
 
 <a id="api_irtcengine_setaudioprofile2__detailed_desc"></a>
 
-如果你想设置音频应用场景，可以直接调用 [SetAudioScenario](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_setaudioscenario) 方法进行设置，也可以调用 [Initialize](/zh-CN/api-reference/rtc/unity/initialize#api_irtcengine_initialize) 并设置 [RtcEngineContext](/zh-CN/api-reference/rtc/unity/class-rtcengineconfig) 结构体中的 `audioScenario`。
+如果你想设置音频应用场景，可以直接调用 [SetAudioScenario](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_setaudioscenario) 方法进行设置，也可以调用 [Initialize](/zh-CN/api-reference/rtc/unity/initialize#api_irtcengine_initialize) 并设置 [RtcEngineContext](/zh-CN/api-reference/rtc/unity/class-rtcengineconfig) 结构体中的 `audioScenario`。
 
 <a id="api_irtcengine_setaudioprofile2__scenario"></a>
 
@@ -445,7 +436,6 @@ public abstract int SetAudioProfile(AUDIO_PROFILE_TYPE profile);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioscenario"></a>
@@ -493,7 +483,6 @@ public abstract int SetAudioScenario(AUDIO_SCENARIO_TYPE scenario);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiosessionoperationrestriction"></a>
@@ -532,7 +521,6 @@ SDK 对 Audio Session 的操作权限，详见 [AUDIO_SESSION_OPERATION_RESTRICT
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onactivespeaker"></a>
@@ -549,9 +537,9 @@ public virtual void OnActiveSpeaker(RtcConnection connection, uint uid) { }
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__detailed_desc"></a>
 
-成功调用 [EnableAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_enableaudiovolumeindication) 后，SDK 会持续监测音量最大的远端用户，并统计该用户被判断为音量最大者的次数。当前时间段内，该次数累积最多的远端用户为最活跃的用户。 当频道内用户数量大于或等于 2 且有远端活跃用户时，SDK 会触发该回调并报告远端最活跃用户的 `uid`。
+成功调用 [EnableAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 后，SDK 会持续监测音量最大的远端用户，并统计该用户被判断为音量最大者的次数。当前时间段内，该次数累积最多的远端用户为最活跃的用户。 当频道内用户数量大于或等于 2 且有远端活跃用户时，SDK 会触发该回调并报告远端最活跃用户的 `uid`。
 
-- 如果远端最活跃用户一直是同一位用户，则 SDK 不会再次触发 [OnActiveSpeaker](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onactivespeaker) 回调。
+- 如果远端最活跃用户一直是同一位用户，则 SDK 不会再次触发 [OnActiveSpeaker](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onactivespeaker) 回调。
 - 如果远端最活跃用户有变化，则 SDK 会再次触发该回调并报告新的远端最活跃用户的 `uid`。
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__parameters"></a>
@@ -566,7 +554,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 远端最活跃用户的 ID。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudioquality"></a>
@@ -585,7 +572,7 @@ public virtual void OnAudioQuality(RtcConnection connection, uint remoteUid, int
 
 #### `废弃`
 
-弃用： 请改用 [OnRemoteAudioStats](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。
+弃用： 请改用 [OnRemoteAudioStats](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。
 
 该回调描述远端用户在通话中的音频质量，针对每个远端用户/主播每 2 秒触发一次。如果远端同时存在多个用户/主播，该回调每 2 秒会被触发多次。
 
@@ -613,7 +600,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 音频包从发送端到接收端的丢包率 (%)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication"></a>
@@ -630,7 +616,7 @@ public virtual void OnAudioVolumeIndication(RtcConnection connection, AudioVolum
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__detailed_desc"></a>
 
-该回调默认禁用，你可以通过 [EnableAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_enableaudiovolumeindication) 开启。 开启后，只要频道内有发流用户，SDK 会在加入频道后按 [EnableAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_enableaudiovolumeindication) 中设置的时间间隔触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。每次会触发两个 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，一个报告本地发流用户的音量相关信息，另一个报告瞬时音量最高的远端用户（最多 3 位）的音量相关信息。
+该回调默认禁用，你可以通过 [EnableAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 开启。 开启后，只要频道内有发流用户，SDK 会在加入频道后按 [EnableAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 中设置的时间间隔触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。每次会触发两个 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，一个报告本地发流用户的音量相关信息，另一个报告瞬时音量最高的远端用户（最多 3 位）的音量相关信息。
 
 :::info[注]
 启用该功能后，如果有用户将自己静音（调用了 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream) ），SDK 会继续报告本地用户的音量提示回调。 瞬时音量最高的远端用户静音后 20 秒，远端的音量提示回调中将不再包含该用户；如果远端所有用户都将自己静音，20 秒后 SDK 停止报告远端用户的音量提示回调。
@@ -662,7 +648,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 - 在本地用户的回调中， `totalVolume` 为本地发流用户的音量。
 - 在远端用户的回调中， `totalVolume` 为瞬时音量最高的远端用户（最多 3 位）混音后的总音量。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished"></a>
@@ -683,8 +668,8 @@ SDK 会在以下时机触发该回调：
 
 - 开启本地音频的情况下，调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 成功加入频道后。
 - 调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream) (`true)`，再调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream) (`false)` 后。
-- 调用 [DisableAudio](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_disableaudio)，再调用 [EnableAudio](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_enableaudio) 后。
-- 调用 [PushAudioFrame](/zh-CN/api-reference/rtc/unity/audio-custom-capturenrendering#api_imediaengine_pushaudioframe) 成功向 SDK 推送音频帧后。
+- 调用 [DisableAudio](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_disableaudio)，再调用 [EnableAudio](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_enableaudio) 后。
+- 调用 [PushAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe) 成功向 SDK 推送音频帧后。
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__parameters"></a>
 
@@ -698,7 +683,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 从调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded"></a>
@@ -717,7 +701,7 @@ public virtual void OnFirstRemoteAudioDecoded(RtcConnection connection, uint uid
 
 #### `废弃`
 
-弃用： 请改用 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
+弃用： 请改用 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
 
 SDK 会在以下时机触发该回调：
 
@@ -727,7 +711,7 @@ SDK 会在以下时机触发该回调：
   - 远端用户离开频道
   - 远端用户掉线
   - 远端用户调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法停止发送音频流
-  - 远端用户调用 [DisableAudio](/zh-CN/api-reference/rtc/unity/audio-basic#api_irtcengine_disableaudio) 方法关闭音频
+  - 远端用户调用 [DisableAudio](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_disableaudio) 方法关闭音频
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__parameters"></a>
 
@@ -745,7 +729,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 从本地用户调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 直至该回调触发的延迟，单位为毫秒。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe"></a>
@@ -764,7 +747,7 @@ public virtual void OnFirstRemoteAudioFrame(RtcConnection connection, uint userI
 
 #### `废弃`
 
-弃用： 请改用 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
+弃用： 请改用 [OnRemoteAudioStateChanged](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__parameters"></a>
 
@@ -782,7 +765,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 从本地用户调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 直至该回调触发的延迟，单位为毫秒。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged"></a>
@@ -821,7 +803,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 本地音频状态改变原因。详见 [LOCAL_AUDIO_STREAM_REASON](/zh-CN/api-reference/rtc/unity/enum-localaudiostreamreason)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats"></a>
@@ -852,7 +833,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 本地音频统计数据。详见 [LocalAudioStats](/zh-CN/api-reference/rtc/unity/class-localaudiostats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged"></a>
@@ -899,7 +879,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 从本地用户调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 方法到发生本事件经历的时间，单位为毫秒。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats"></a>
@@ -930,7 +909,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 接收到的远端音频统计数据，详见 [RemoteAudioStats](/zh-CN/api-reference/rtc/unity/class-remoteaudiostats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats"></a>
@@ -947,7 +925,7 @@ public virtual void OnRemoteAudioTransportStats(RtcConnection connection, uint r
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__detailed_desc"></a>
 
-弃用： 请改用 [OnRemoteAudioStats](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。 该回调描述远端用户通话中端到端的网络统计信息，通过音频包计算，用客观的数据，如丢包、 网络延迟等，展示当前网络状态。通话中，当用户收到远端用户/主播发送的音频数据包后，会每 2 秒触发一次该回调。
+弃用： 请改用 [OnRemoteAudioStats](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。 该回调描述远端用户通话中端到端的网络统计信息，通过音频包计算，用客观的数据，如丢包、 网络延迟等，展示当前网络状态。通话中，当用户收到远端用户/主播发送的音频数据包后，会每 2 秒触发一次该回调。
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__parameters"></a>
 
@@ -973,7 +951,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 远端音频包的接收码率（Kbps）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio"></a>
@@ -1015,5 +992,4 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 - true: 该用户已将音频静音。
 - false: 该用户取消了音频静音。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)

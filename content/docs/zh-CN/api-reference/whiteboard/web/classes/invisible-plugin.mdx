@@ -1,0 +1,190 @@
+---
+title: "InvisiblePlugin<A>"
+description: "InvisiblePlugin<A> API 参考。"
+---
+
+不可见插件的描述。
+
+### `since`
+
+2.10.0
+
+Agora 支持的自定义插件包括组件插件和不可见插件。二者的主要区别有：
+
+- 不可见插件全局唯一，只能建立一个对象。
+- 不可见插件不会显示在白板界面上，但它的 attributes 状态会在全房间自动同步。
+
+- InvisiblePlugin
+
+## 构造函数
+
+<a id="constructor"></a>
+
+### constructor
+
+```ts title="TypeScript"
+new InvisiblePlugin(context: InvisiblePluginContext): InvisiblePlugin
+```
+
+不可见插件的构造函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| context: InvisiblePluginContext | 不可见插件的上下文。 |
+
+#### 返回值
+
+[InvisiblePlugin](/zh-CN/api-reference/whiteboard/web/classes/invisible-plugin)
+
+## 属性
+
+<a id="attributes"></a>
+
+### attributes
+
+```ts title="TypeScript"
+attributes: A
+```
+
+不可见插件的属性。
+
+<a id="callbacks"></a>
+
+### callbacks
+
+```ts title="TypeScript"
+callbacks: Callbacks<InvisibleCallbacks<A>>
+```
+
+不可见插件的事件回调。
+
+<a id="displayer"></a>
+
+### displayer
+
+```ts title="TypeScript"
+displayer: Displayer
+```
+
+不可见插件的 `Displayer` 对象。
+
+## 方法
+
+<a id="destroy"></a>
+
+### destroy
+
+```ts title="TypeScript"
+destroy(): void
+```
+
+删除不可见插件。
+
+#### 返回值
+
+void
+
+<a id="getattributesvalue"></a>
+
+### getAttributesValue
+
+```ts title="TypeScript"
+getAttributesValue(key: string[] | string): any
+```
+
+获取不可见插件属性的值。
+
+##### `since`
+
+2.13.7
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| key: string[] \| string | 属性对应的 key。 |
+
+#### 返回值
+
+any
+
+<a id="onattributesupdate"></a>
+
+### onAttributesUpdate
+
+```ts title="TypeScript"
+onAttributesUpdate(attributes: A): void
+```
+
+不可见插件属性更新的回调。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| attributes: A | 更新的 attributes。 |
+
+#### 返回值
+
+void
+
+<a id="ondestroy"></a>
+
+### onDestroy
+
+```ts title="TypeScript"
+onDestroy(): void
+```
+
+不可见插件删除的回调。
+
+#### 返回值
+
+void
+
+<a id="setattributes"></a>
+
+### setAttributes
+
+```ts title="TypeScript"
+setAttributes(modifyAttributes: Partial<A>): void
+```
+
+设置不可见插件的属性。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| modifyAttributes: Partial&lt;A&gt; | 不可见插件的属性。 |
+
+#### 返回值
+
+void
+
+<a id="updateattributes"></a>
+
+### updateAttributes
+
+```ts title="TypeScript"
+updateAttributes(keys: string | string[], value: any): void
+```
+
+更新不可见插件的属性。
+
+##### `since`
+
+2.13.7
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| keys: string \| string[] | 单个或多个属性对应的 key。 |
+| value: any | 属性的值。 |
+
+#### 返回值
+
+void

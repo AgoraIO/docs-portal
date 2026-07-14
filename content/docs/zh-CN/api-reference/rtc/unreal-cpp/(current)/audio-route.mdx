@@ -2,6 +2,7 @@
 title: "音频路由"
 description: "音频路由 API reference."
 ---
+
 <a id="toc_audio_route"></a>
 
 ## 音频路由
@@ -43,7 +44,6 @@ virtual bool isSpeakerphoneEnabled() = 0;
 - `true`: 扬声器已开启，语音会输出到扬声器。
 - `false`: 扬声器未开启，语音会输出到非扬声器（听筒，耳机等）。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone"></a>
@@ -111,7 +111,6 @@ virtual int setDefaultAudioRouteToSpeakerphone(bool defaultToSpeaker) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setenablespeakerphone"></a>
@@ -175,7 +174,6 @@ virtual int setEnableSpeakerphone(bool speakerOn) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setrouteincommunicationmode"></a>
@@ -239,7 +237,6 @@ virtual int setRouteInCommunicationMode(int route) = 0;
 
 无实际意义。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudioroutingchanged"></a>
@@ -268,5 +265,4 @@ virtual void onAudioRoutingChanged(int routing) { (void)routing; }
 
 当前的音频路由。详见 [AudioRoute](/zh-CN/api-reference/rtc/unreal-cpp/enum-audioroute)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

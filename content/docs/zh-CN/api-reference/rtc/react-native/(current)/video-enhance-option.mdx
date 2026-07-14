@@ -1,10 +1,9 @@
 ---
 title: "视频增强"
-description: "添加或更新指定视频特效节点和模板的特效。"
+description: "视频增强 API reference."
 ---
-<a id="toc_video_enhance_option"></a>
 
-## 视频增强
+<a id="toc_video_enhance_option"></a>
 
 <a id="api_ivideoeffectobject_addorupdatevideoeffect"></a>
 
@@ -50,7 +49,6 @@ abstract addOrUpdateVideoEffect(nodeId: number, templateName: string): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_irtcengine_createvideoeffectobject"></a>
@@ -93,7 +91,6 @@ abstract createVideoEffectObject(
 - 方法调用成功，返回 [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject) 对象指针，详见 [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)。
 - 方法调用失败，返回 `NULL`。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroyvideoeffectobject"></a>
@@ -131,7 +128,6 @@ abstract destroyVideoEffectObject(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getfaceshapeareaoptions"></a>
@@ -163,7 +159,7 @@ abstract getFaceShapeAreaOptions(
 
 ### 调用时机
 
-请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
+请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
 
 <a id="api_irtcengine_getfaceshapeareaoptions__parameters"></a>
 
@@ -191,7 +187,6 @@ abstract getFaceShapeAreaOptions(
 - 方法调用成功，返回 [FaceShapeAreaOptions](/zh-CN/api-reference/rtc/react-native/class-faceshapeareaoptions) 对象。
 - 方法调用失败，返回 null。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getfaceshapebeautyoptions"></a>
@@ -222,7 +217,7 @@ abstract getFaceShapeBeautyOptions(
 
 ### 调用时机
 
-请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
+请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
 
 <a id="api_irtcengine_getfaceshapebeautyoptions__parameters"></a>
 
@@ -246,7 +241,6 @@ abstract getFaceShapeBeautyOptions(
 - 方法调用成功，返回 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/react-native/class-faceshapebeautyoptions) 对象。
 - 方法调用失败，返回 null。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_ivideoeffectobject_getvideoeffectboolparam"></a>
@@ -286,7 +280,6 @@ abstract getVideoEffectBoolParam(option: string, key: string): boolean;
 - true：参数已启用。
 - false：参数未启用或不存在。
 
-### 所属接口类
 - [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_getvideoeffectfloatparam"></a>
@@ -326,7 +319,6 @@ abstract getVideoEffectFloatParam(option: string, key: string): number;
 - 如果参数存在，返回对应的 `float` 值。
 - 如果参数不存在或发生错误，返回 0.0f。
 
-### 所属接口类
 - [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_getvideoeffectintparam"></a>
@@ -366,7 +358,6 @@ abstract getVideoEffectIntParam(option: string, key: string): number;
 - 如果参数存在，返回对应的整数值。
 - 如果参数不存在或发生错误，返回 0。
 
-### 所属接口类
 - [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_performvideoeffectaction"></a>
@@ -409,7 +400,6 @@ abstract performVideoEffectAction(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_removevideoeffect"></a>
@@ -445,7 +435,6 @@ abstract removeVideoEffect(nodeId: number): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_irtcengine_setbeautyeffectoptions"></a>
@@ -477,7 +466,7 @@ abstract setBeautyEffectOptions(
 
 ### 调用时机
 
-请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 或 [startPreview](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_startpreview2) 之后调用该方法。
+请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 或 [startPreview](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview2) 之后调用该方法。
 
 <a id="api_irtcengine_setbeautyeffectoptions__parameters"></a>
 
@@ -517,7 +506,6 @@ abstract setBeautyEffectOptions(
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 5.0，不支持该操作，建议更换设备或升级操作系统。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setcolorenhanceoptions"></a>
@@ -541,7 +529,7 @@ abstract setColorEnhanceOptions(
 摄像头采集到的视频画面可能存在色彩失真的现象。色彩增强功能可以通过智能调节饱和度和对比度等视频特性，提升视频色彩丰富度和色彩还原度，最终使视频画面更生动。 你可以调用该方法开启色彩增强功能并设置色彩增强的效果。
 
 :::info[注]
-- 请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 后调用该方法。
+- 请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 后调用该方法。
 - 色彩增强对设备性能有一定要求。开启色彩增强后，如果设备出现严重发烫等问题，建议你将色彩增强等级修改为消耗性能较少的等级或关闭色彩增强功能。
 - 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
@@ -579,7 +567,6 @@ abstract setColorEnhanceOptions(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setfaceshapeareaoptions"></a>
@@ -599,10 +586,10 @@ abstract setFaceShapeAreaOptions(
 
 <a id="api_irtcengine_setfaceshapeareaoptions__detailed_desc"></a>
 
-如果在 [setFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/react-native/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) 方法中实现的预设美型效果达不到预期，你可以通过该方法设置美型部位选项，对人脸的各个部位单独微调，实现更加精细的美型效果。
+如果在 [setFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/react-native/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) 方法中实现的预设美型效果达不到预期，你可以通过该方法设置美型部位选项，对人脸的各个部位单独微调，实现更加精细的美型效果。
 
 :::info[注]
-美型属于增值服务，计费方式详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+美型属于增值服务，计费方式详见[计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
 
 - 在 Android 平台上，该方法仅适用于 Android 4.4 及以上版本。
 - 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
@@ -613,7 +600,7 @@ abstract setFaceShapeAreaOptions(
 
 ### 调用时机
 
-请在 [setFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/react-native/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) 之后调用该方法。
+请在 [setFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/react-native/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) 之后调用该方法。
 
 <a id="api_irtcengine_setfaceshapeareaoptions__parameters"></a>
 
@@ -646,7 +633,6 @@ abstract setFaceShapeAreaOptions(
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 4.4，不支持该操作，建议更换设备或升级操作系统。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setfaceshapebeautyoptions"></a>
@@ -670,7 +656,7 @@ abstract setFaceShapeBeautyOptions(
 调用该方法可对人脸各部位进行修饰，使用预设的参数一次性实现瘦脸、大眼、瘦鼻等微整形效果，支持微调整体的修饰力度。
 
 :::info[注]
-美型属于增值服务，计费方式详见[计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+美型属于增值服务，计费方式详见[计费策略](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
 
 - 在 Android 平台上，该方法仅适用于 Android 4.4 及以上版本。
 - 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
@@ -681,7 +667,7 @@ abstract setFaceShapeBeautyOptions(
 
 ### 调用时机
 
-请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
+请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
 
 <a id="api_irtcengine_setfaceshapebeautyoptions__parameters"></a>
 
@@ -721,7 +707,6 @@ abstract setFaceShapeBeautyOptions(
     - 当前设备能力不满足美颜的使用要求，建议更换性能更高的设备。
     - 当前设备版本低于 Android 4.4，不支持该操作，建议更换设备或升级操作系统。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setfiltereffectoptions"></a>
@@ -751,7 +736,7 @@ abstract setFilterEffectOptions(
 
 ### 调用时机
 
-请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
+请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
 
 <a id="api_irtcengine_setfiltereffectoptions__parameters"></a>
 
@@ -786,7 +771,6 @@ abstract setFilterEffectOptions(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlowlightenhanceoptions"></a>
@@ -812,7 +796,7 @@ abstract setLowlightEnhanceOptions(
 :::info[注]
 - 该方法依赖于视频增强动态库 `libagora_clear_vision_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 - 暗光增强对设备性能有一定要求。开启暗光增强后，如果设备出现严重发烫等问题，建议你将暗光增强等级修改为消耗性能较少的等级或关闭暗光增强功能。
-- 如果要实现优先画质 (LowLightEnhanceLevelHighQuality) 的暗光增强，需要先调用 [setVideoDenoiserOptions](/zh-CN/api-reference/rtc/react-native/video-enhance-option#api_irtcengine_setvideodenoiseroptions) 实现视频降噪，具体对应关系如下：
+- 如果要实现优先画质 (LowLightEnhanceLevelHighQuality) 的暗光增强，需要先调用 [setVideoDenoiserOptions](/zh-CN/api-reference/rtc/react-native/video/video-prenpro/video-enhance-option#api_irtcengine_setvideodenoiseroptions) 实现视频降噪，具体对应关系如下：
 
   - 暗光增强为自动模式 (LowLightEnhanceAuto) 时，视频降噪需设置为优先画质 (VideoDenoiserLevelHighQuality)、自动模式 (VideoDenoiserAuto)。
   - 暗光增强为手动模式 (LowLightEnhanceManual) 时，视频降噪需设置为优先画质 (VideoDenoiserLevelHighQuality)、手动模式 (VideoDenoiserManual)。
@@ -828,7 +812,7 @@ abstract setLowlightEnhanceOptions(
 
 ### 调用时机
 
-请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 后调用该方法。
+请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 后调用该方法。
 
 <a id="api_irtcengine_setlowlightenhanceoptions__parameters"></a>
 
@@ -863,7 +847,6 @@ abstract setLowlightEnhanceOptions(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvideodenoiseroptions"></a>
@@ -887,7 +870,7 @@ abstract setVideoDenoiserOptions(
 你可以调用该方法开启视频降噪功能并设置视频降噪的效果。
 
 :::info[注]
-如果该方法实现的降噪强度无法满足你的需求，声网推荐你调用 [setBeautyEffectOptions](/zh-CN/api-reference/rtc/react-native/video-enhance-option#api_irtcengine_setbeautyeffectoptions) 方法启用美颜磨皮功能，以获得更好的视频降噪效果。强效降噪效果的 [BeautyOptions](/zh-CN/api-reference/rtc/react-native/class-beautyoptions) 推荐设置如下：
+如果该方法实现的降噪强度无法满足你的需求，声网推荐你调用 [setBeautyEffectOptions](/zh-CN/api-reference/rtc/react-native/video/video-prenpro/video-enhance-option#api_irtcengine_setbeautyeffectoptions) 方法启用美颜磨皮功能，以获得更好的视频降噪效果。强效降噪效果的 [BeautyOptions](/zh-CN/api-reference/rtc/react-native/class-beautyoptions) 推荐设置如下：
 
 - `lighteningContrastLevel`：LighteningContrastNormal
 - `lighteningLevel`：0.0
@@ -908,7 +891,7 @@ abstract setVideoDenoiserOptions(
 
 ### 调用时机
 
-请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) 后调用该方法。
+请在 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 后调用该方法。
 
 <a id="api_irtcengine_setvideodenoiseroptions__parameters"></a>
 
@@ -943,7 +926,6 @@ abstract setVideoDenoiserOptions(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_ivideoeffectobject_setvideoeffectboolparam"></a>
@@ -994,7 +976,6 @@ abstract setVideoEffectBoolParam(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_setvideoeffectfloatparam"></a>
@@ -1042,7 +1023,6 @@ abstract setVideoEffectFloatParam(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_setvideoeffectintparam"></a>
@@ -1090,5 +1070,4 @@ abstract setVideoEffectIntParam(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IVideoEffectObject](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_ivideoeffectobject)

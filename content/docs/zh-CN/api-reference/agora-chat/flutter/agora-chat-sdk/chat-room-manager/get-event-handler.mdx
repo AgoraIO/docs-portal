@@ -1,0 +1,28 @@
+---
+title: "getEventHandler method"
+description: "API docs for the getEventHandler method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Get the room event handler.
+
+**Return** The room event handler.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `identifier` | The custom handler identifier. |
+
+```dart title="Dart"
+ChatRoomEventHandler? getEventHandler(String identifier)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+ChatRoomEventHandler? getEventHandler(String identifier) {
+  return _eventHandlesMap[identifier];
+}
+```

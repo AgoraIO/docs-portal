@@ -2,6 +2,7 @@
 title: "音频路由"
 description: "检查扬声器是否启用。"
 ---
+
 <a id="toc_audio_route"></a>
 
 ## 音频路由
@@ -37,7 +38,6 @@ virtual bool isSpeakerphoneEnabled() = 0;
 - true：扬声器已启用，音频将从扬声器播放。
 - false：扬声器未启用，音频将从其他设备播放，例如耳机或听筒。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone"></a>
@@ -95,7 +95,6 @@ virtual int setDefaultAudioRouteToSpeakerphone(bool defaultToSpeaker) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setenablespeakerphone"></a>
@@ -152,7 +151,6 @@ virtual int setEnableSpeakerphone(bool speakerOn) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setrouteincommunicationmode"></a>
@@ -209,7 +207,6 @@ virtual int setRouteInCommunicationMode(int route) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudioroutingchanged"></a>
@@ -238,5 +235,4 @@ virtual void onAudioRoutingChanged(int routing) { (void)routing; }
 
 当前的音频路由，详见 [AudioRoute](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioroute)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

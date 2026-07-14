@@ -1,14 +1,9 @@
 ---
 title: "人脸检测"
-description: "启用或关闭本地用户的人脸检测功能。"
+description: "人脸检测 API reference."
 ---
-<a id="toc_face_detection"></a>
 
-## 人脸检测
-
-<a id="api_irtcengine_enablefacedetection"></a>
-
-## enableFaceDetection:
+## <span id="toc_face_detection"></span>enableFaceDetection: [#api_irtcengine_enablefacedetection]
 
 启用或关闭本地用户的人脸检测功能。
 
@@ -26,15 +21,11 @@ description: "启用或关闭本地用户的人脸检测功能。"
 - 人脸在本地视图中的位置。
 - 人脸与屏幕之间的距离。
 
-<a id="api_irtcengine_enablefacedetection__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_enablefacedetection__timing]
 
 该方法需要在摄像头启动后调用，例如调用 [startPreview:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_startpreview2) 或 [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) 方法后。
 
-<a id="api_irtcengine_enablefacedetection__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablefacedetection__parameters]
 
 #### `enable`
 
@@ -43,19 +34,14 @@ description: "启用或关闭本地用户的人脸检测功能。"
 - YES：启用人脸检测。
 - NO：（默认）关闭人脸检测。
 
-<a id="api_irtcengine_enablefacedetection__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablefacedetection__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="callback_irtcengineeventhandler_onfacepositionchanged"></a>
-
-## rtcEngine:facePositionDidChangeWidth:previewHeight:faces:
+## rtcEngine:facePositionDidChangeWidth:previewHeight:faces: [#callback_irtcengineeventhandler_onfacepositionchanged]
 
 上报本地用户的人脸检测结果。
 
@@ -65,9 +51,7 @@ description: "启用或关闭本地用户的人脸检测功能。"
 - (void)rtcEngine:(AgoraRtcEngineKit* _Nonnull)engine facePositionDidChangeWidth:(int)width previewHeight:(int)height faces:(NSArray<AgoraFacePositionInfo*>* _Nullable)faces  NS_SWIFT_NAME(rtcEngine(_:facePositionDidChangeWidth:previewHeight:faces:));
 ```
 
-<a id="callback_irtcengineeventhandler_onfacepositionchanged__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#callback_irtcengineeventhandler_onfacepositionchanged__detailed_desc]
 
 自 v3.0.1 版本新增。
 
@@ -84,15 +68,11 @@ description: "启用或关闭本地用户的人脸检测功能。"
 - 当人脸靠近屏幕时，SDK 会停止触发该回调。
 :::
 
-<a id="callback_irtcengineeventhandler_onfacepositionchanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onfacepositionchanged__timing]
 
 该回调在检测到人脸位置或数量发生变化时被触发。
 
-<a id="callback_irtcengineeventhandler_onfacepositionchanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onfacepositionchanged__parameters]
 
 #### `engine`
 
@@ -110,5 +90,4 @@ description: "启用或关闭本地用户的人脸检测功能。"
 
 检测到的人脸信息，详见 [AgoraFacePositionInfo](/zh-CN/api-reference/rtc/ios/class-agorafacepositioninfo)。该回调中返回的 [AgoraFacePositionInfo](/zh-CN/api-reference/rtc/ios/class-agorafacepositioninfo) 数组数量取决于检测到的人脸数量。数组长度可能为 0，表示摄像头前未检测到人脸。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)

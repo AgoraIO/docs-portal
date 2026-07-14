@@ -1,10 +1,9 @@
 ---
 title: "音频采集"
-description: "调节音频采集信号音量。"
+description: "音频采集 API reference."
 ---
-<a id="toc_audio_capture"></a>
 
-## 音频采集
+<a id="toc_audio_capture"></a>
 
 <a id="api_irtcengine_adjustrecordingsignalvolume"></a>
 
@@ -20,7 +19,7 @@ abstract adjustRecordingSignalVolume(volume: number): number;
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__detailed_desc"></a>
 
-如果你只需将音频信号静音，建议你使用 [muteRecordingSignal](/zh-CN/api-reference/rtc/react-native/audio-capture#api_irtcengine_muterecordingsignal)。
+如果你只需将音频信号静音，建议你使用 [muteRecordingSignal](/zh-CN/api-reference/rtc/react-native/audio/audio-capture#api_irtcengine_muterecordingsignal)。
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__timing"></a>
 
@@ -47,7 +46,6 @@ abstract adjustRecordingSignalVolume(volume: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableinearmonitoring2"></a>
@@ -103,7 +101,6 @@ abstract enableInEarMonitoring(
 
   - -8: 请确保当前的音频路由为蓝牙或耳机。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablelocalaudio"></a>
@@ -122,7 +119,7 @@ abstract enableLocalAudio(enabled: boolean): number;
 
 当用户加入频道时，音频功能默认是开启的。该方法可以关闭或重新开启本地音频功能，即停止或重新开始本地音频采集。 该方法与 [muteLocalAudioStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 的区别在于：
 
-- [enableLocalAudio](/zh-CN/api-reference/rtc/react-native/audio-capture#api_irtcengine_enablelocalaudio): 开启或关闭本地音频采集及处理。使用 [enableLocalAudio](/zh-CN/api-reference/rtc/react-native/audio-capture#api_irtcengine_enablelocalaudio) 关闭或开启本地采集后，本地听远端播放会有短暂中断。
+- [enableLocalAudio](/zh-CN/api-reference/rtc/react-native/audio/audio-capture#api_irtcengine_enablelocalaudio): 开启或关闭本地音频采集及处理。使用 [enableLocalAudio](/zh-CN/api-reference/rtc/react-native/audio/audio-capture#api_irtcengine_enablelocalaudio) 关闭或开启本地采集后，本地听远端播放会有短暂中断。
 - [muteLocalAudioStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_mutelocalaudiostream): 停止或继续发送本地音频流，不影响音频的采集状态。
 
 <a id="api_irtcengine_enablelocalaudio__scenario"></a>
@@ -141,7 +138,7 @@ abstract enableLocalAudio(enabled: boolean): number;
 
 ### 相关回调
 
-音频功能关闭或重新开启后，会收到 [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/react-native/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，并报告 `LocalAudioStreamStateStopped` (0) 或 `LocalAudioStreamStateRecording` (1)。
+音频功能关闭或重新开启后，会收到 [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，并报告 `LocalAudioStreamStateStopped` (0) 或 `LocalAudioStreamStateRecording` (1)。
 
 <a id="api_irtcengine_enablelocalaudio__parameters"></a>
 
@@ -159,7 +156,6 @@ abstract enableLocalAudio(enabled: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_muterecordingsignal"></a>
@@ -176,7 +172,7 @@ abstract muteRecordingSignal(mute: boolean): number;
 
 <a id="api_irtcengine_muterecordingsignal__detailed_desc"></a>
 
-如果你已经调用 [adjustRecordingSignalVolume](/zh-CN/api-reference/rtc/react-native/audio-capture#api_irtcengine_adjustrecordingsignalvolume) 调节了音频采集信号音量，则调用该方法并设置为 true 时，SDK 的行为如下：
+如果你已经调用 [adjustRecordingSignalVolume](/zh-CN/api-reference/rtc/react-native/audio/audio-capture#api_irtcengine_adjustrecordingsignalvolume) 调节了音频采集信号音量，则调用该方法并设置为 true 时，SDK 的行为如下：
 
 1. 记录调节后的音量。
 2. 将音频采集信号静音。
@@ -205,7 +201,6 @@ abstract muteRecordingSignal(mute: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setinearmonitoringvolume"></a>
@@ -249,5 +244,4 @@ abstract setInEarMonitoringVolume(volume: number): number;
 
   - -2: 参数设置无效，例如耳返音量超出取值范围 (&lt; 0 或 &gt; 400)。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)

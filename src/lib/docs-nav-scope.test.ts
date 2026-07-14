@@ -272,6 +272,122 @@ describe('docs nav scope', () => {
     });
   });
 
+  it.each([
+    {
+      activePath: '/en/api-reference/rtc/android/class-video-canvas',
+      expectedFolder: 'android-current-folder',
+      expectedVersion: 'current',
+    },
+    {
+      activePath: '/en/api-reference/rtc/android/4.6.0/class-video-canvas',
+      expectedFolder: 'android-4-6-0-folder',
+      expectedVersion: '4.6.0',
+    },
+  ])('inherits the $expectedVersion scope for a page hidden from the sidebar tree', ({
+    activePath,
+    expectedFolder,
+    expectedVersion,
+  }) => {
+    const scope = resolveDocsNavScope({
+      activePath,
+      getNodeMeta,
+      root: apiReferenceTree,
+      tab: 'api-reference',
+    });
+
+    expect(scope?.scope.node.$id).toBe('android-folder');
+    expect(scope?.activeVersion?.id).toBe(expectedVersion);
+    expect(scope?.sidebarRoot.$id).toBe(expectedFolder);
+  });
+
+  it('inherits the nearest scope for a Dartdoc method page hidden from the sidebar tree', () => {
+    const flutterTree: Root = {
+      children: [
+        {
+          children: [
+            {
+              children: [
+                {
+                  children: [
+                    {
+                      $id: 'flutter-folder',
+                      children: [
+                        {
+                          children: [
+                            {
+                              children: [],
+                              index: {
+                                name: 'ChatManager class',
+                                type: 'page',
+                                url: '/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-manager',
+                              },
+                              name: 'ChatManager class',
+                              type: 'folder',
+                            },
+                          ],
+                          index: {
+                            name: 'agora_chat_sdk library',
+                            type: 'page',
+                            url: '/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk',
+                          },
+                          name: 'agora_chat_sdk library',
+                          type: 'folder',
+                        },
+                      ],
+                      index: {
+                        name: 'Agora Chat Flutter API',
+                        type: 'page',
+                        url: '/zh-CN/api-reference/agora-chat/flutter',
+                      },
+                      name: 'Agora Chat Flutter API',
+                      type: 'folder',
+                    },
+                  ],
+                  name: 'Agora Chat',
+                  type: 'folder',
+                },
+              ],
+              name: 'Reference',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '简体中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+    const getFlutterMeta = (node: Folder | Root): DocsMeta | undefined =>
+      node.$id === 'flutter-folder'
+        ? {
+            navScope: {},
+            pages: ['index', 'agora-chat-sdk'],
+            title: 'Agora Chat Flutter API',
+          }
+        : undefined;
+    const scope = resolveDocsNavScope({
+      activePath:
+        '/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-manager/send-message',
+      getNodeMeta: getFlutterMeta,
+      root: flutterTree,
+      tab: 'api-reference',
+    });
+
+    expect(scope?.scope.node.$id).toBe('flutter-folder');
+    expect(scope?.sidebarRoot.$id).toBe('flutter-folder');
+    expect(
+      JSON.stringify(
+        scope
+          ? getScopedNavScopeSidebarNodes({
+              getNodeMeta: getFlutterMeta,
+              navScope: scope,
+            })
+          : [],
+      ),
+    ).not.toContain('send-message');
+  });
+
   it('falls back to the target version index when the relative page is missing', () => {
     const scope = resolveDocsNavScope({
       activePath: '/en/api-reference/rtc/android/audio/audio-basic',

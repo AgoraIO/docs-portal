@@ -2,6 +2,7 @@
 title: "初始化相关"
 description: "添加主回调事件。"
 ---
+
 <a id="toc_initialize"></a>
 
 ## 初始化相关
@@ -36,7 +37,6 @@ void registerEventHandler(RtcEngineEventHandler eventHandler);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_createagorartcengine"></a>
@@ -63,7 +63,6 @@ RtcEngine createAgoraRtcEngine() {
 
 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 对象。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_createagorartcengineex"></a>
@@ -90,7 +89,6 @@ RtcEngineEx createAgoraRtcEngineEx() {
 
 [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex) 对象。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_getmediaengine"></a>
@@ -117,7 +115,6 @@ MediaEngine getMediaEngine();
 
 [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine) 对象。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_initialize"></a>
@@ -166,7 +163,6 @@ Future<void> initialize(RtcEngineContext context);
   - -22: 资源申请失败。当 App 占用资源过多，或系统资源耗尽时，SDK 分配资源失败，会返回该错误。
   - -101: App ID 无效。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_mediaplayercontroller_initialize_mediaplayercontroller"></a>
@@ -183,7 +179,6 @@ Future<void> initialize();
 
 <a id="api_mediaplayercontroller_initialize_mediaplayercontroller__detailed_desc"></a>
 
-### 所属接口类
 - [MediaPlayerController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_mediaplayercontroller)
 
 <a id="api_irtcengine_release"></a>
@@ -218,7 +213,6 @@ Future<void> release({bool sync = false});
 - true:该方法为同步调用。
 - false:该方法为异步调用。目前该方法仅支持同步调用，请不要将该参数设置为该值。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_removehandler"></a>
@@ -251,5 +245,4 @@ void unregisterEventHandler(RtcEngineEventHandler eventHandler);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)

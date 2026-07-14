@@ -2,9 +2,8 @@
 title: "原始音频数据"
 description: "原始音频数据 API reference."
 ---
-<a id="toc_audio_raw"></a>
 
-## 原始音频数据
+<a id="toc_audio_raw"></a>
 
 <a id="api_imediaengine_registeraudioframeobserver"></a>
 
@@ -20,7 +19,7 @@ virtual int registerAudioFrameObserver(IAudioFrameObserver* observer) = 0;
 
 <a id="api_imediaengine_registeraudioframeobserver__detailed_desc"></a>
 
-该方法用于注册音频观测器对象，即注册回调。当需要 SDK 触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe)、 [onRecordAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe)、 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe)、 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 和 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调时，需要调用该方法注册回调。
+该方法用于注册音频观测器对象，即注册回调。当需要 SDK 触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe)、 [onRecordAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe)、 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe)、 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 和 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调时，需要调用该方法注册回调。
 
 <a id="api_imediaengine_registeraudioframeobserver__timing"></a>
 
@@ -49,7 +48,6 @@ virtual int registerAudioFrameObserver(IAudioFrameObserver* observer) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaengine)
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters"></a>
@@ -70,10 +68,10 @@ virtual int setEarMonitoringAudioFrameParameters(int sampleRate, int channel,
 
 ### 详情
 
-该方法用于设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调的耳返音频数据格式。
+该方法用于设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调的耳返音频数据格式。
 
 :::warning[注意]
-- 调用该方法前，你需要先调用 [enableInEarMonitoring](/zh-CN/api-reference/rtc/unreal-cpp/audio-capture#api_irtcengine_enableinearmonitoring2)，将 includeAudioFilters 设置为 EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS 或 EAR_MONITORING_FILTER_NOISE_SUPPRESSION。
+- 调用该方法前，你需要先调用 [enableInEarMonitoring](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-capture#api_irtcengine_enableinearmonitoring2)，将 includeAudioFilters 设置为 EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS 或 EAR_MONITORING_FILTER_NOISE_SUPPRESSION。
 - SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计算出采样间隔，计算公式为 采样间隔 = samplesPerCall /(sampleRate × channel)。请确保采样间隔不小于 0.01 秒。 SDK 会根据该采样间隔触发 onEarMonitoringAudioFrame 回调。
 :::
 
@@ -107,7 +105,6 @@ onEarMonitoringAudioFrame 中报告的音频的采样点数，如旁路推流应
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setmixedaudioframeparameters"></a>
@@ -124,7 +121,7 @@ virtual int setMixedAudioFrameParameters(int sampleRate, int channel, int sample
 
 <a id="api_irtcengine_setmixedaudioframeparameters__detailed_desc"></a>
 
-SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计算出采样间隔，计算公式为 采样间隔 = samplesPerCall /(sampleRate × channel)。请确保采样间隔不小于 0.01 秒。 SDK 会根据该采样间隔触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调。
+SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计算出采样间隔，计算公式为 采样间隔 = samplesPerCall /(sampleRate × channel)。请确保采样间隔不小于 0.01 秒。 SDK 会根据该采样间隔触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调。
 
 <a id="api_irtcengine_setmixedaudioframeparameters__timing"></a>
 
@@ -164,7 +161,6 @@ SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计�
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters"></a>
@@ -181,7 +177,7 @@ virtual int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int chan
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__detailed_desc"></a>
 
-SDK 会根据该采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
+SDK 会根据该采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__timing"></a>
 
@@ -217,7 +213,6 @@ SDK 会根据该采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframeparameters"></a>
@@ -237,7 +232,7 @@ virtual int setPlaybackAudioFrameParameters(int sampleRate,
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__detailed_desc"></a>
 
-SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计算出采样间隔，计算公式为 采样间隔 = samplesPerCall /(sampleRate × channel)。请确保采样间隔不小于 0.01 秒。 SDK 会根据该采样间隔触发 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调。
+SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计算出采样间隔，计算公式为 采样间隔 = samplesPerCall /(sampleRate × channel)。请确保采样间隔不小于 0.01 秒。 SDK 会根据该采样间隔触发 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调。
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__timing"></a>
 
@@ -281,7 +276,6 @@ SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setrecordingaudioframeparameters"></a>
@@ -301,7 +295,7 @@ virtual int setRecordingAudioFrameParameters(int sampleRate,
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__detailed_desc"></a>
 
-SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计算出采样间隔，计算公式为 采样间隔 = samplesPerCall /(sampleRate × channel)。请确保采样间隔不小于 0.01 秒。 SDK 会根据该采样间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调。
+SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计算出采样间隔，计算公式为 采样间隔 = samplesPerCall /(sampleRate × channel)。请确保采样间隔不小于 0.01 秒。 SDK 会根据该采样间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调。
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__timing"></a>
 
@@ -345,7 +339,6 @@ SDK 会通过该方法中的 samplesPerCall、 sampleRate 和 channel 参数计�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="callback_iaudioframeobserverbase_getearmonitoringaudioparams"></a>
@@ -366,7 +359,7 @@ virtual AudioParams getEarMonitoringAudioParams() = 0;
 
 v4.0.1
 
-你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_imediaengine_registeraudioframeobserver) 方法时注册该回调。成功注册音频数据观测器后，SDK 会触发该回调，你可以在该回调的返回值中设置耳返的音频数据格式。
+你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 方法时注册该回调。成功注册音频数据观测器后，SDK 会触发该回调，你可以在该回调的返回值中设置耳返的音频数据格式。
 
 :::warning[注意]
 SDK 会通过你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-audioparams) 计算采样间隔触发 onEarMonitoringAudioFrame 回调。计算公式为 采样间隔 = samplesPerCall /(sampleRate × channel)。
@@ -380,7 +373,6 @@ SDK 会通过你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/
 
 耳返的音频数据，详见 [AudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-audioparams)。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_getmixedaudioparams"></a>
@@ -397,7 +389,7 @@ virtual AudioParams getMixedAudioParams() = 0;
 
 <a id="callback_iaudioframeobserverbase_getmixedaudioparams__detailed_desc"></a>
 
-你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_imediaengine_registeraudioframeobserver) 方法时注册该回调。成功注册音频数据观测器后，SDK 会触发该回调，你可以在该回调的返回值中设置 SDK 采集和播放音频混音后的数据格式。
+你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 方法时注册该回调。成功注册音频数据观测器后，SDK 会触发该回调，你可以在该回调的返回值中设置 SDK 采集和播放音频混音后的数据格式。
 
 :::warning[注意]
 SDK 会通过你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-audioparams) 计算采样间隔触发 onMixedAudioFrame 回调。计算公式为 采样间隔 = samplesPerCall /(sampleRate × channel)。
@@ -411,7 +403,6 @@ SDK 会通过你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/
 
 SDK 采集和播放音频混音后的音频数据，详见 [AudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-audioparams)。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_getobservedaudioframeposition"></a>
@@ -430,11 +421,11 @@ virtual int getObservedAudioFramePosition() = 0;
 
 成功注册音频数据观测器后，SDK 会在每个特定的音频帧处理节点通过该回调来判断是否触发如下回调：
 
-- [onRecordAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe)
-- [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe)
-- [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing)
-- [onMixedAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe)
-- [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe)
+- [onRecordAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe)
+- [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe)
+- [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing)
+- [onMixedAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe)
+- [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe)
 
 你可以根据场景需求，通过修改 getObservedAudioFramePosition 的返回值，设置你需要观测的某个或多个位置。
 
@@ -452,7 +443,6 @@ virtual int getObservedAudioFramePosition() = 0;
 - AUDIO_FRAME_POSITION_BEFORE_MIXING (0x0008)：该位置可观测单个远端用户混音前的音频，对应 onPlaybackAudioFrameBeforeMixing 回调。
 - AUDIO_FRAME_POSITION_EAR_MONITORING (0x0010)：该位置可观测单个本地用户耳返的音频，对应 onEarMonitoringAudioFrame 回调。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_getplaybackaudioparams"></a>
@@ -469,7 +459,7 @@ virtual AudioParams getPlaybackAudioParams() = 0;
 
 <a id="callback_iaudioframeobserverbase_getplaybackaudioparams__detailed_desc"></a>
 
-你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_imediaengine_registeraudioframeobserver) 方法时注册该回调。成功注册音频数据观测器后，SDK 会触发该回调，你可以在该回调的返回值中设置 SDK 播放的音频数据格式。
+你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 方法时注册该回调。成功注册音频数据观测器后，SDK 会触发该回调，你可以在该回调的返回值中设置 SDK 播放的音频数据格式。
 
 :::warning[注意]
 SDK 会通过你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-audioparams) 计算采样间隔触发 onPlaybackAudioFrame 回调。计算公式为 采样间隔 = samplesPerCall /(sampleRate × channel)。
@@ -483,7 +473,6 @@ SDK 会通过你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/
 
 SDK 播放的音频数据，详见 [AudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-audioparams)。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_getrecordaudioparams"></a>
@@ -500,7 +489,7 @@ virtual AudioParams getRecordAudioParams() = 0;
 
 <a id="callback_iaudioframeobserverbase_getrecordaudioparams__detailed_desc"></a>
 
-你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_imediaengine_registeraudioframeobserver) 方法时注册该回调。成功注册音频数据观测器后，SDK 会触发该回调，你可以在该回调的返回值中设置 SDK 采集的音频数据格式。
+你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 方法时注册该回调。成功注册音频数据观测器后，SDK 会触发该回调，你可以在该回调的返回值中设置 SDK 采集的音频数据格式。
 
 :::warning[注意]
 SDK 会通过你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-audioparams) 计算采样间隔触发 onRecordAudioFrame 回调。计算公式为 采样间隔 = samplesPerCall /(sampleRate × channel)。
@@ -514,7 +503,6 @@ SDK 会通过你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/
 
 SDK 采集的音频数据，详见 [AudioParams](/zh-CN/api-reference/rtc/unreal-cpp/class-audioparams)。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe"></a>
@@ -533,8 +521,8 @@ virtual bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) = 0;
 
 为保证耳返的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置耳返音频数据格式：
 
-- 方法一：调用 [setEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 设置音频数据格式后，调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 onEarMonitoringAudioFrame 回调。
-- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_getobservedaudioframeposition) 回调的返回值中设置具体的音频观测位置，然后在 [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_getearmonitoringaudioparams) 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 onEarMonitoringAudioFrame 回调。
+- 方法一：调用 [setEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 设置音频数据格式后，调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 onEarMonitoringAudioFrame 回调。
+- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getobservedaudioframeposition) 回调的返回值中设置具体的音频观测位置，然后在 [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getearmonitoringaudioparams) 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 onEarMonitoringAudioFrame 回调。
 
 :::info[注]
 - 方法一的优先级高于方法二，如果已使用方法一设置了音频数据格式，则使用方法二的设置不生效。
@@ -554,7 +542,6 @@ virtual bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) = 0;
 
 无实际含义。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe"></a>
@@ -573,8 +560,8 @@ virtual bool onPlaybackAudioFrame(const char* channelId, AudioFrame& audioFrame)
 
 为保证播放的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
-- 方法一：调用 [setPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 设置音频数据格式后，调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 onPlaybackAudioFrame 回调。
-- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_getobservedaudioframeposition) 回调的返回值中设置具体的音频观测位置，然后在 [getPlaybackAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_getplaybackaudioparams) 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 onPlaybackAudioFrame 回调。
+- 方法一：调用 [setPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 设置音频数据格式后，调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 onPlaybackAudioFrame 回调。
+- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getobservedaudioframeposition) 回调的返回值中设置具体的音频观测位置，然后在 [getPlaybackAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getplaybackaudioparams) 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 onPlaybackAudioFrame 回调。
 
 :::info[注]
 - 方法一的优先级高于方法二，如果使用方法一设置音频数据格式，方法二设置无效。
@@ -598,7 +585,6 @@ virtual bool onPlaybackAudioFrame(const char* channelId, AudioFrame& audioFrame)
 
 无实际含义。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing"></a>
@@ -651,8 +637,8 @@ virtual bool onRecordAudioFrame(const char* channelId, AudioFrame& audioFrame) =
 
 为保证采集的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
-- 方法一：调用 [setRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式后，调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 onRecordAudioFrame 回调。
-- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_getobservedaudioframeposition) 回调的返回值中设置具体的音频观测位置，然后在 [getRecordAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_getrecordaudioparams) 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 onRecordAudioFrame 回调。
+- 方法一：调用 [setRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式后，调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 onRecordAudioFrame 回调。
+- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getobservedaudioframeposition) 回调的返回值中设置具体的音频观测位置，然后在 [getRecordAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getrecordaudioparams) 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 onRecordAudioFrame 回调。
 
 :::info[注]
 - 方法一的优先级高于方法二，如果使用方法一设置音频数据格式，方法二设置无效。
@@ -676,7 +662,6 @@ virtual bool onRecordAudioFrame(const char* channelId, AudioFrame& audioFrame) =
 
 无实际含义。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe"></a>
@@ -695,8 +680,8 @@ virtual bool onMixedAudioFrame(const char* channelId, AudioFrame& audioFrame) = 
 
 为保证采集和播放混音后的音频数据格式符合预期，你可以在如下两种方法中任选一种，设置音频的数据格式：
 
-- 方法一：调用 [setMixedAudioFrameParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_irtcengine_setmixedaudioframeparameters) 设置音频数据格式后，调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 onMixedAudioFrame 回调。
-- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_getobservedaudioframeposition) 回调的返回值中设置具体的音频观测位置，然后在 [getMixedAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio-raw#callback_iaudioframeobserverbase_getmixedaudioparams) 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 onMixedAudioFrame 回调。
+- 方法一：调用 [setMixedAudioFrameParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_irtcengine_setmixedaudioframeparameters) 设置音频数据格式后，调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 onMixedAudioFrame 回调。
+- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getobservedaudioframeposition) 回调的返回值中设置具体的音频观测位置，然后在 [getMixedAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getmixedaudioparams) 回调的返回值中设置音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 onMixedAudioFrame 回调。
 
 :::info[注]
 - 方法一的优先级高于方法二，如果使用方法一设置音频数据格式，方法二设置无效。
@@ -720,5 +705,4 @@ virtual bool onMixedAudioFrame(const char* channelId, AudioFrame& audioFrame) = 
 
 无实际含义。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioframeobserverbase)

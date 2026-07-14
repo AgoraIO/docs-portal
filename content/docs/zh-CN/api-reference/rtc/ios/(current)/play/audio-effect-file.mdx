@@ -1,14 +1,9 @@
 ---
 title: "音效文件播放"
-description: "获取音效文件的播放位置。"
+description: "音效文件播放 API reference."
 ---
-<a id="toc_audio_effect_file"></a>
 
-## 音效文件播放
-
-<a id="api_irtcengine_geteffectcurrentposition"></a>
-
-## getEffectCurrentPosition:
+## <span id="toc_audio_effect_file"></span>getEffectCurrentPosition: [#api_irtcengine_geteffectcurrentposition]
 
 获取音效文件的播放位置。
 
@@ -26,27 +21,20 @@ description: "获取音效文件的播放位置。"
 请在调用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用此方法。
 :::
 
-<a id="api_irtcengine_geteffectcurrentposition__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_geteffectcurrentposition__parameters]
 
 #### `soundId`
 
 音效 ID。每个音效文件的 ID 是唯一的。
 
-<a id="api_irtcengine_geteffectcurrentposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_geteffectcurrentposition__return_values]
 
 - 0：方法调用成功，返回指定音效文件的播放位置（单位为毫秒）。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_geteffectduration"></a>
-
-## getEffectDuration:
+## getEffectDuration: [#api_irtcengine_geteffectduration]
 
 获取音效文件的时长。
 
@@ -62,9 +50,7 @@ description: "获取音效文件的播放位置。"
 请在加入频道后调用该方法。
 :::
 
-<a id="api_irtcengine_geteffectduration__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_geteffectduration__parameters]
 
 #### `filePath`
 
@@ -72,19 +58,14 @@ description: "获取音效文件的播放位置。"
 
 - iOS 或 macOS：音效文件的绝对路径或 URL 地址（包括文件名后缀）。例如： /var/mobile/Containers/Data/audio.mp4。
 
-<a id="api_irtcengine_geteffectduration__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_geteffectduration__return_values]
 
 - 0：方法调用成功，返回指定音效文件的总时长（毫秒）。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_geteffectsvolume"></a>
-
-## getEffectsVolume
+## getEffectsVolume [#api_irtcengine_geteffectsvolume]
 
 获取音效的音量。
 
@@ -102,19 +83,14 @@ description: "获取音效文件的播放位置。"
 请在调用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect3) 方法后调用此方法。
 :::
 
-<a id="api_irtcengine_geteffectsvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_geteffectsvolume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_getvolumeofeffect"></a>
-
-## getVolumeOfEffect:
+## getVolumeOfEffect: [#api_irtcengine_getvolumeofeffect]
 
 获取指定音效文件的音量。
 
@@ -124,29 +100,20 @@ description: "获取音效文件的播放位置。"
 - (int)getVolumeOfEffect:(int)soundId NS_SWIFT_NAME(getVolumeOfEffect(_:));
 ```
 
-<a id="api_irtcengine_getvolumeofeffect__detailed_desc"></a>
-
-<a id="api_irtcengine_getvolumeofeffect__parameters"></a>
-
-### 参数
+### <span id="api_irtcengine_getvolumeofeffect__detailed_desc"></span>参数 [#api_irtcengine_getvolumeofeffect__parameters]
 
 #### `soundId`
 
 音效文件的 ID。
 
-<a id="api_irtcengine_getvolumeofeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_getvolumeofeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_pausealleffects"></a>
-
-## pauseAllEffects
+## pauseAllEffects [#api_irtcengine_pausealleffects]
 
 暂停所有音效。
 
@@ -156,21 +123,14 @@ description: "获取音效文件的播放位置。"
 - (int)pauseAllEffects NS_SWIFT_NAME(pauseAllEffects());
 ```
 
-<a id="api_irtcengine_pausealleffects__detailed_desc"></a>
-
-<a id="api_irtcengine_pausealleffects__return_values"></a>
-
-### 返回值
+### <span id="api_irtcengine_pausealleffects__detailed_desc"></span>返回值 [#api_irtcengine_pausealleffects__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_pauseeffect"></a>
-
-## pauseEffect:
+## pauseEffect: [#api_irtcengine_pauseeffect]
 
 暂停指定的音效文件。
 
@@ -184,27 +144,20 @@ description: "获取音效文件的播放位置。"
 
 你可以调用该方法暂停指定的音效文件。
 
-<a id="api_irtcengine_pauseeffect__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_pauseeffect__parameters]
 
 #### `soundId`
 
 音效 ID。每个音效文件的 ID 是唯一的。
 
-<a id="api_irtcengine_pauseeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_pauseeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_playalleffects"></a>
-
-## playAllEffectsWithLoopCount:pitch:pan:gain:publish:
+## playAllEffectsWithLoopCount:pitch:pan:gain:publish: [#api_irtcengine_playalleffects]
 
 播放所有音效。
 
@@ -222,9 +175,7 @@ description: "获取音效文件的播放位置。"
 
 在多次调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_preloadeffect2) 预加载多个音效到内存中后，你可以调用此方法为频道内的所有用户播放所有预加载的音效。
 
-<a id="api_irtcengine_playalleffects__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_playalleffects__parameters]
 
 #### `loopCount`
 
@@ -257,19 +208,14 @@ description: "获取音效文件的播放位置。"
 - YES：将音效发布到远端。
 - NO：不将音效发布到远端。
 
-<a id="api_irtcengine_playalleffects__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_playalleffects__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_playeffect1"></a>
-
-## playEffect:filePath:loopCount:pitch:pan:gain:
+## playEffect:filePath:loopCount:pitch:pan:gain: [#api_irtcengine_playeffect1]
 
 播放指定的本地或在线音效文件。
 
@@ -294,15 +240,11 @@ description: "获取音效文件的播放位置。"
 - 如果在调用 `playEffect` 之前未调用 `preloadEffect`， `playEffect` 播放后将销毁资源。下次调用 `playEffect` 时将尝试重新打开文件并从头开始播放。
 :::
 
-<a id="api_irtcengine_playeffect1__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_playeffect1__timing]
 
 你可以在加入频道前或后调用该方法。
 
-<a id="api_irtcengine_playeffect1__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_playeffect1__parameters]
 
 #### `soundId`
 
@@ -335,19 +277,14 @@ description: "获取音效文件的播放位置。"
 
 音效的音量。取值范围为 0 到 100。默认值为 100，表示原始音量。值越小，音量越低。
 
-<a id="api_irtcengine_playeffect1__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_playeffect1__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_playeffect2"></a>
-
-## playEffect:filePath:loopCount:pitch:pan:gain:publish:
+## playEffect:filePath:loopCount:pitch:pan:gain:publish: [#api_irtcengine_playeffect2]
 
 播放指定的本地或在线音效文件。
 
@@ -373,21 +310,15 @@ description: "获取音效文件的播放位置。"
 - 如果在调用 `playEffect` 之前未调用 `preloadEffect`，则 `playEffect` 执行后会销毁资源。下次调用 `playEffect` 时将尝试重新打开文件并从头开始播放。
 :::
 
-<a id="api_irtcengine_playeffect2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_playeffect2__timing]
 
 你可以在加入频道前或加入频道后调用此方法。
 
-<a id="api_irtcengine_playeffect2__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_playeffect2__related]
 
 音效文件播放完成后，SDK 会触发 [rtcEngineDidAudioEffectFinish:soundId:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调。
 
-<a id="api_irtcengine_playeffect2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_playeffect2__parameters]
 
 #### `soundId`
 
@@ -435,18 +366,13 @@ description: "获取音效文件的播放位置。"
 - YES：将音效发布给远端用户，你和远端用户都能听到音效。
 - NO：不将音效发布给远端用户，只有你能听到音效。
 
-<a id="api_irtcengine_playeffect2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_playeffect2__return_values]
 
 0：方法调用成功。 &lt; 0：方法调用失败。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_playeffect3"></a>
-
-## playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:
+## playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos: [#api_irtcengine_playeffect3]
 
 播放指定的本地或在线音效文件。
 
@@ -473,21 +399,15 @@ description: "获取音效文件的播放位置。"
 - 如果在调用 `playEffect` 之前未调用 `preloadEffect`，则 `playEffect` 执行后资源将被销毁。下次调用 `playEffect` 时将尝试重新打开文件并从头开始播放。
 :::
 
-<a id="api_irtcengine_playeffect3__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_playeffect3__timing]
 
 你可以在加入频道前或后调用该方法。
 
-<a id="api_irtcengine_playeffect3__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_playeffect3__related]
 
 播放音效文件结束后，SDK 会触发 [rtcEngineDidAudioEffectFinish:soundId:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调。
 
-<a id="api_irtcengine_playeffect3__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_playeffect3__parameters]
 
 #### `soundId`
 
@@ -539,19 +459,14 @@ description: "获取音效文件的播放位置。"
 
 音效文件的播放起始位置（单位为毫秒）。
 
-<a id="api_irtcengine_playeffect3__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_playeffect3__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_playeffectex"></a>
-
-## playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:publish:startPos:
+## playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:publish:startPos: [#api_irtcengineex_playeffectex]
 
 在频道中播放指定的音效。
 
@@ -569,9 +484,7 @@ description: "获取音效文件的播放位置。"
          startPos:(int)startPos NS_SWIFT_NAME(playEffectEx(_:soundId:filePath:loopCount:pitch:pan:gain:publish:startPos:));
 ```
 
-<a id="api_irtcengineex_playeffectex__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_playeffectex__detailed_desc]
 
 自 v4.6.0 版本新增。
 
@@ -584,15 +497,11 @@ description: "获取音效文件的播放位置。"
 - 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
 :::
 
-<a id="api_irtcengineex_playeffectex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_playeffectex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_playeffectex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_playeffectex__parameters]
 
 #### `connection`
 
@@ -641,19 +550,14 @@ description: "获取音效文件的播放位置。"
 
 音效文件的播放起始位置（单位为毫秒）。
 
-<a id="api_irtcengineex_playeffectex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_playeffectex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengineex_playeffectex2"></a>
-
-## playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:publish:
+## playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:publish: [#api_irtcengineex_playeffectex2]
 
 在频道中播放指定的音效。
 
@@ -670,9 +574,7 @@ description: "获取音效文件的播放位置。"
             publish:(BOOL)publish NS_SWIFT_NAME(playEffectEx(_:soundId:filePath:loopCount:pitch:pan:gain:publish:));
 ```
 
-<a id="api_irtcengineex_playeffectex2__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_playeffectex2__detailed_desc]
 
 自 v4.6.0 版本新增。
 
@@ -685,15 +587,11 @@ description: "获取音效文件的播放位置。"
 - 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后资源将被销毁。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
 :::
 
-<a id="api_irtcengineex_playeffectex2__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_playeffectex2__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_playeffectex2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_playeffectex2__parameters]
 
 #### `connection`
 
@@ -738,19 +636,14 @@ description: "获取音效文件的播放位置。"
 - YES：在频道中发布音效，远端用户可以听到。
 - NO：不在频道中发布音效。
 
-<a id="api_irtcengineex_playeffectex2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_playeffectex2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengineex_playeffectex3"></a>
-
-## playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:startPos:
+## playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:startPos: [#api_irtcengineex_playeffectex3]
 
 在频道中播放指定的音效。
 
@@ -767,9 +660,7 @@ description: "获取音效文件的播放位置。"
             startPos:(int)startPos NS_SWIFT_NAME(playEffectEx(_:soundId:filePath:loopCount:pitch:pan:gain:startPos:));
 ```
 
-<a id="api_irtcengineex_playeffectex3__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_playeffectex3__detailed_desc]
 
 自 v4.6.0 版本新增。
 
@@ -782,15 +673,11 @@ description: "获取音效文件的播放位置。"
 - 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后资源将被销毁。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
 :::
 
-<a id="api_irtcengineex_playeffectex3__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_playeffectex3__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_playeffectex3__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_playeffectex3__parameters]
 
 #### `connection`
 
@@ -832,19 +719,14 @@ description: "获取音效文件的播放位置。"
 
 音效文件的播放起始位置（单位为毫秒）。
 
-<a id="api_irtcengineex_playeffectex3__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_playeffectex3__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengineex_playeffectex4"></a>
-
-## playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:
+## playEffectEx:soundId:filePath:loopCount:pitch:pan:gain: [#api_irtcengineex_playeffectex4]
 
 在频道中播放指定的音效。
 
@@ -860,9 +742,7 @@ description: "获取音效文件的播放位置。"
                 gain:(NSInteger)gain NS_SWIFT_NAME(playEffectEx(_:soundId:filePath:loopCount:pitch:pan:gain:));
 ```
 
-<a id="api_irtcengineex_playeffectex4__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_playeffectex4__detailed_desc]
 
 自 v4.6.0 版本新增。
 
@@ -875,15 +755,11 @@ description: "获取音效文件的播放位置。"
 - 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx:filePath:`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
 :::
 
-<a id="api_irtcengineex_playeffectex4__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_playeffectex4__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_playeffectex4__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_playeffectex4__parameters]
 
 #### `connection`
 
@@ -921,19 +797,14 @@ description: "获取音效文件的播放位置。"
 
 音效的音量。取值范围为 0 到 100，默认值为 100。值越小，音量越低。
 
-<a id="api_irtcengineex_playeffectex4__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_playeffectex4__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_preloadeffect"></a>
-
-## preloadEffect:filePath:startPos:
+## preloadEffect:filePath:startPos: [#api_irtcengine_preloadeffect]
 
 预加载指定的音效文件。
 
@@ -954,15 +825,11 @@ description: "获取音效文件的播放位置。"
 - 如果在调用 `playEffect` 之前调用了 `preloadEffect`，则 `playEffect` 执行后不会关闭文件资源。下次调用 `playEffect` 时将直接从头开始播放。
 - 如果在调用 `playEffect` 之前未调用 `preloadEffect`，则 `playEffect` 执行后会销毁资源。下次调用 `playEffect` 时会尝试重新打开文件并从头开始播放。
 
-<a id="api_irtcengine_preloadeffect__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_preloadeffect__timing]
 
 声网建议你在加入频道前调用该方法。
 
-<a id="api_irtcengine_preloadeffect__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_preloadeffect__parameters]
 
 #### `soundId`
 
@@ -976,19 +843,14 @@ description: "获取音效文件的播放位置。"
 
 音效文件的播放起始位置（单位为毫秒）。
 
-<a id="api_irtcengine_preloadeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_preloadeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_preloadeffect2"></a>
-
-## preloadEffect:filePath:
+## preloadEffect:filePath: [#api_irtcengine_preloadeffect2]
 
 将指定的音效文件预加载到内存中。
 
@@ -1008,15 +870,11 @@ description: "获取音效文件的播放位置。"
 - 如果你在调用 `playEffectEx` 之前未调用 `preloadEffect`，则在 `playEffect` 执行后资源会被销毁。下次调用 `playEffect` 时会尝试重新打开文件并从头开始播放。
 :::
 
-<a id="api_irtcengine_preloadeffect2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_preloadeffect2__timing]
 
 声网建议你在加入频道前调用该方法。
 
-<a id="api_irtcengine_preloadeffect2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_preloadeffect2__parameters]
 
 #### `soundId`
 
@@ -1028,19 +886,14 @@ description: "获取音效文件的播放位置。"
 
 - iOS 或 macOS：音效文件的绝对路径或 URL 地址（包括文件名后缀）。例如： /var/mobile/Containers/Data/audio.mp4。
 
-<a id="api_irtcengine_preloadeffect2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_preloadeffect2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_preloadeffectex"></a>
-
-## preloadEffectEx:soundId:filePath:startPos:
+## preloadEffectEx:soundId:filePath:startPos: [#api_irtcengineex_preloadeffectex]
 
 预加载指定的音效文件到频道中。
 
@@ -1053,9 +906,7 @@ description: "获取音效文件的播放位置。"
              startPos:(int)startPos NS_SWIFT_NAME(preloadEffectEx(_:soundId:filePath:startPos:));
 ```
 
-<a id="api_irtcengineex_preloadeffectex__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_preloadeffectex__detailed_desc]
 
 自 v4.6.0 版本新增。
 
@@ -1068,15 +919,11 @@ description: "获取音效文件的播放位置。"
 - 如果在调用 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时会尝试重新打开文件并从头开始播放。
 :::
 
-<a id="api_irtcengineex_preloadeffectex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_preloadeffectex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_preloadeffectex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_preloadeffectex__parameters]
 
 #### `connection`
 
@@ -1094,19 +941,14 @@ description: "获取音效文件的播放位置。"
 
 音效文件的播放起始位置（单位为毫秒）。
 
-<a id="api_irtcengineex_preloadeffectex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_preloadeffectex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengineex_preloadeffectex2"></a>
-
-## preloadEffectEx:soundId:filePath:
+## preloadEffectEx:soundId:filePath: [#api_irtcengineex_preloadeffectex2]
 
 预加载指定的音效文件到频道中。
 
@@ -1118,9 +960,7 @@ description: "获取音效文件的播放位置。"
              filePath:(NSString* _Nonnull)filePath NS_SWIFT_NAME(preloadEffectEx(_:soundId:filePath:));
 ```
 
-<a id="api_irtcengineex_preloadeffectex2__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_preloadeffectex2__detailed_desc]
 
 自 v4.6.0 版本新增。
 
@@ -1133,15 +973,11 @@ description: "获取音效文件的播放位置。"
 - 如果在调用 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时会尝试重新打开文件并从头开始播放。
 :::
 
-<a id="api_irtcengineex_preloadeffectex2__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_preloadeffectex2__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_preloadeffectex2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_preloadeffectex2__parameters]
 
 #### `connection`
 
@@ -1155,19 +991,14 @@ description: "获取音效文件的播放位置。"
 
 本地文件的绝对路径或在线文件的 URL。支持的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv 和 wav。
 
-<a id="api_irtcengineex_preloadeffectex2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_preloadeffectex2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_resumealleffects"></a>
-
-## resumeAllEffects
+## resumeAllEffects [#api_irtcengine_resumealleffects]
 
 恢复播放所有音效文件。
 
@@ -1181,25 +1012,18 @@ description: "获取音效文件的播放位置。"
 
 调用 [pauseAllEffects](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_pausealleffects) 后，可以调用该方法恢复播放。
 
-<a id="api_irtcengine_resumealleffects__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_resumealleffects__timing]
 
 请在调用 [pauseAllEffects](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_pausealleffects) 之后调用该方法。
 
-<a id="api_irtcengine_resumealleffects__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_resumealleffects__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_resumeeffect"></a>
-
-## resumeEffect:
+## resumeEffect: [#api_irtcengine_resumeeffect]
 
 恢复播放指定的音效。
 
@@ -1209,29 +1033,20 @@ description: "获取音效文件的播放位置。"
 - (int)resumeEffect:(int)soundId NS_SWIFT_NAME(resumeEffect(_:));
 ```
 
-<a id="api_irtcengine_resumeeffect__detailed_desc"></a>
-
-<a id="api_irtcengine_resumeeffect__parameters"></a>
-
-### 参数
+### <span id="api_irtcengine_resumeeffect__detailed_desc"></span>参数 [#api_irtcengine_resumeeffect__parameters]
 
 #### `soundId`
 
 音效 ID。每个音效文件的 ID 是唯一的。
 
-<a id="api_irtcengine_resumeeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_resumeeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_seteffectposition"></a>
-
-## setEffectPosition:pos:
+## setEffectPosition:pos: [#api_irtcengine_seteffectposition]
 
 设置音效文件的播放位置。
 
@@ -1249,9 +1064,7 @@ description: "获取音效文件的播放位置。"
 请在调用 `playEffect` 方法之后调用此方法。
 :::
 
-<a id="api_irtcengine_seteffectposition__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_seteffectposition__parameters]
 
 #### `soundId`
 
@@ -1261,19 +1074,14 @@ description: "获取音效文件的播放位置。"
 
 音效文件的播放位置，单位为毫秒。
 
-<a id="api_irtcengine_seteffectposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_seteffectposition__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_seteffectsvolume"></a>
-
-## setEffectsVolume:
+## setEffectsVolume: [#api_irtcengine_seteffectsvolume]
 
 设置音效的播放音量。
 
@@ -1283,35 +1091,24 @@ description: "获取音效文件的播放位置。"
 - (int)setEffectsVolume:(NSInteger)volume NS_SWIFT_NAME(setEffectsVolume(_:));
 ```
 
-<a id="api_irtcengine_seteffectsvolume__detailed_desc"></a>
-
-<a id="api_irtcengine_seteffectsvolume__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_seteffectsvolume__detailed_desc"></span>调用时机 [#api_irtcengine_seteffectsvolume__timing]
 
 在调用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用。
 
-<a id="api_irtcengine_seteffectsvolume__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_seteffectsvolume__parameters]
 
 #### `volume`
 
 播放音量。取值范围为 [0, 100]。（默认）为 100，表示原始音量。
 
-<a id="api_irtcengine_seteffectsvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_seteffectsvolume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setvolumeofeffect"></a>
-
-## setVolumeOfEffect:withVolume:
+## setVolumeOfEffect:withVolume: [#api_irtcengine_setvolumeofeffect]
 
 设置指定音效文件的播放音量。
 
@@ -1326,15 +1123,11 @@ description: "获取音效文件的播放位置。"
 
 调用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect3) 方法后，可调用该方法设置指定音效文件的播放音量。
 
-<a id="api_irtcengine_setvolumeofeffect__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setvolumeofeffect__timing]
 
 在调用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect3) 方法后调用。
 
-<a id="api_irtcengine_setvolumeofeffect__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setvolumeofeffect__parameters]
 
 #### `soundId`
 
@@ -1344,19 +1137,14 @@ description: "获取音效文件的播放位置。"
 
 播放音量。取值范围为 [0, 100]。默认值为 100，表示原始音量。
 
-<a id="api_irtcengine_setvolumeofeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setvolumeofeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_stopalleffects"></a>
-
-## stopAllEffects
+## stopAllEffects [#api_irtcengine_stopalleffects]
 
 停止播放所有音效。
 
@@ -1370,25 +1158,18 @@ description: "获取音效文件的播放位置。"
 
 当你不再需要播放音效时，可以调用此方法停止播放所有音效。如果你只需要暂停播放，请调用 [pauseAllEffects](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_pausealleffects) 方法。
 
-<a id="api_irtcengine_stopalleffects__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_stopalleffects__timing]
 
 请在调用 `playEffect` 方法之后调用此方法。
 
-<a id="api_irtcengine_stopalleffects__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_stopalleffects__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_stopeffect"></a>
-
-## stopEffect:
+## stopEffect: [#api_irtcengine_stopeffect]
 
 停止播放指定的音效。
 
@@ -1402,33 +1183,24 @@ description: "获取音效文件的播放位置。"
 
 当你不再需要播放某个音效时，可以调用该方法停止播放。如果你只需要暂停播放，请调用 [pauseEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_pauseeffect) 方法。
 
-<a id="api_irtcengine_stopeffect__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_stopeffect__timing]
 
 在调用 [playEffect:filePath:loopCount:pitch:pan:gain:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect1)、 [playEffect:filePath:loopCount:pitch:pan:gain:publish:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect2) 或 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用。
 
-<a id="api_irtcengine_stopeffect__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_stopeffect__parameters]
 
 #### `soundId`
 
 音效的 ID。每个音效都有唯一的 ID。
 
-<a id="api_irtcengine_stopeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_stopeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_unloadeffect"></a>
-
-## unloadEffect:
+## unloadEffect: [#api_irtcengine_unloadeffect]
 
 释放指定的预加载音效文件。
 
@@ -1442,33 +1214,24 @@ description: "获取音效文件的播放位置。"
 
 调用 [preloadEffect:filePath:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_preloadeffect2) 方法将音效文件加载到内存后，如需释放该音效文件，可调用 [unloadEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_unloadeffect) 方法。
 
-<a id="api_irtcengine_unloadeffect__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_unloadeffect__timing]
 
 你可以在加入频道前或后调用此方法。
 
-<a id="api_irtcengine_unloadeffect__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_unloadeffect__parameters]
 
 #### `soundId`
 
 音效的 ID。每个音效均有唯一的 ID。
 
-<a id="api_irtcengine_unloadeffect__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_unloadeffect__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="callback_irtcengineeventhandler_onaudioeffectfinished"></a>
-
-## rtcEngineDidAudioEffectFinish:soundId:
+## rtcEngineDidAudioEffectFinish:soundId: [#callback_irtcengineeventhandler_onaudioeffectfinished]
 
 本地音效文件播放完成时的回调。
 
@@ -1482,15 +1245,11 @@ description: "获取音效文件的播放位置。"
 
 该回调在本地音效文件播放完成时触发。
 
-<a id="callback_irtcengineeventhandler_onaudioeffectfinished__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onaudioeffectfinished__timing]
 
 该回调在本地音效文件播放完成时被触发。
 
-<a id="callback_irtcengineeventhandler_onaudioeffectfinished__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onaudioeffectfinished__parameters]
 
 #### `engine`
 
@@ -1500,5 +1259,4 @@ description: "获取音效文件的播放位置。"
 
 音效 ID，每个音效文件的唯一标识。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,10 +1,9 @@
 ---
 title: "音效文件播放"
-description: "获取指定音效文件的播放位置。"
+description: "音效文件播放 API reference."
 ---
-<a id="toc_audio_effect_file"></a>
 
-## 音效文件播放
+<a id="toc_audio_effect_file"></a>
 
 <a id="api_irtcengine_geteffectcurrentposition"></a>
 
@@ -21,7 +20,7 @@ virtual int getEffectCurrentPosition(int soundId) = 0;
 <a id="api_irtcengine_geteffectcurrentposition__detailed_desc"></a>
 
 :::info[注]
-请在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 后使用此方法。
+请在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 后使用此方法。
 :::
 
 <a id="api_irtcengine_geteffectcurrentposition__parameters"></a>
@@ -43,7 +42,6 @@ virtual int getEffectCurrentPosition(int soundId) = 0;
 - 方法调用成功，返回指定音效文件的播放位置（毫秒）。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_geteffectduration"></a>
@@ -83,7 +81,6 @@ virtual int getEffectDuration(const char* filePath) = 0;
 - 方法调用成功，返回指定音效文件的总时长（毫秒）。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_geteffectsvolume"></a>
@@ -103,7 +100,7 @@ virtual int getEffectsVolume() = 0;
 音量为 0 到 100 之间的整数，默认值为 100，表示原始音量。
 
 :::info[注]
-请在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 后调用此方法。
+请在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 后调用此方法。
 :::
 
 <a id="api_irtcengine_geteffectsvolume__return_values"></a>
@@ -113,7 +110,6 @@ virtual int getEffectsVolume() = 0;
 - 0：方法调用成功，返回音效的音量。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getvolumeofeffect"></a>
@@ -145,7 +141,6 @@ virtual int getVolumeOfEffect(int soundId) = 0;
 - 方法调用成功，返回指定音效的音量，取值范围为 0 到 100，100 表示原始音量。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pausealleffects"></a>
@@ -169,7 +164,6 @@ virtual int pauseAllEffects() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pauseeffect"></a>
@@ -201,7 +195,6 @@ virtual int pauseEffect(int soundId) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_playalleffects"></a>
@@ -218,7 +211,7 @@ virtual int playAllEffects(int loopCount, double pitch, double pan, int gain, bo
 
 <a id="api_irtcengine_playalleffects__detailed_desc"></a>
 
-多次调用 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_preloadeffect) 将多个音效文件预加载到内存后，可以调用该方法为频道内的所有用户播放所有已加载的音效文件。
+多次调用 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_preloadeffect) 将多个音效文件预加载到内存后，可以调用该方法为频道内的所有用户播放所有已加载的音效文件。
 
 <a id="api_irtcengine_playalleffects__parameters"></a>
 
@@ -228,7 +221,7 @@ virtual int playAllEffects(int loopCount, double pitch, double pan, int gain, bo
 
 音效文件的循环播放次数：
 
-- -1：无限循环播放，直到调用 [stopEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_stopalleffects)。
+- -1：无限循环播放，直到调用 [stopEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_stopalleffects)。
 - 0：播放一次。
 - 1：播放两次。
 
@@ -262,7 +255,6 @@ virtual int playAllEffects(int loopCount, double pitch, double pan, int gain, bo
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_playeffect3"></a>
@@ -279,14 +271,14 @@ virtual int playEffect(int soundId, const char* filePath, int loopCount, double 
 
 <a id="api_irtcengine_playeffect3__detailed_desc"></a>
 
-调用 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_preloadeffect) 后，可以调用该方法为频道内所有用户播放指定的音效。每次调用该方法只能播放一个音效。如需同时播放多个音效，需要多次调用该方法。
+调用 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_preloadeffect) 后，可以调用该方法为频道内所有用户播放指定的音效。每次调用该方法只能播放一个音效。如需同时播放多个音效，需要多次调用该方法。
 
 :::info[注]
-- 如果需要播放在线音效文件，声网建议先将其缓存到本地设备，调用 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_preloadeffect) 将其预加载到内存中，再调用该方法播放音效。否则，可能因加载超时或失败导致播放失败或无声。
+- 如果需要播放在线音效文件，声网建议先将其缓存到本地设备，调用 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_preloadeffect) 将其预加载到内存中，再调用该方法播放音效。否则，可能因加载超时或失败导致播放失败或无声。
 - 建议同时播放的音效数量不超过三个。
-- 该方法中的音效 ID 和文件路径必须与 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_preloadeffect) 中的一致。
-- 如果在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 前调用了 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_preloadeffect)，则在 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 执行后文件资源不会被关闭。下次调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 时将直接从头开始播放。
-- 如果在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 前未调用 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_preloadeffect)，则在 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 执行后资源将被销毁。下次调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 时将尝试重新打开文件并从头播放。
+- 该方法中的音效 ID 和文件路径必须与 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_preloadeffect) 中的一致。
+- 如果在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 前调用了 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_preloadeffect)，则在 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 执行后文件资源不会被关闭。下次调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 时将直接从头开始播放。
+- 如果在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 前未调用 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_preloadeffect)，则在 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 执行后资源将被销毁。下次调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 时将尝试重新打开文件并从头播放。
 :::
 
 <a id="api_irtcengine_playeffect3__timing"></a>
@@ -299,7 +291,7 @@ virtual int playEffect(int soundId, const char* filePath, int loopCount, double 
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onAudioEffectFinished](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调报告音效播放完成。
+成功调用该方法后，SDK 会触发 [onAudioEffectFinished](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调报告音效播放完成。
 
 <a id="api_irtcengine_playeffect3__parameters"></a>
 
@@ -317,7 +309,7 @@ virtual int playEffect(int soundId, const char* filePath, int loopCount, double 
 
 音效的循环播放次数：
 
-- `-1`：无限循环播放，直到调用 [stopEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_stopalleffects)。
+- `-1`：无限循环播放，直到调用 [stopEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_stopalleffects)。
 - `0`：播放一次。
 - `1`：播放两次。
 
@@ -355,7 +347,6 @@ virtual int playEffect(int soundId, const char* filePath, int loopCount, double 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_playeffectex"></a>
@@ -380,9 +371,9 @@ virtual int playEffectEx(const RtcConnection& connection, int soundId, const cha
 
 :::info[注]
 - 声网建议不要同时播放超过三个音效。
-- 该方法中的音效 ID 和文件路径必须与 [preloadEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_preloadeffectex) 方法中的保持一致。
-- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_playeffectex) 之前调用了 [preloadEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_preloadeffectex)， [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_playeffectex) 执行后不会关闭文件资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_playeffectex) 时会直接从头开始播放。
-- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_playeffectex) 之前未调用 [preloadEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_preloadeffectex)， [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_playeffectex) 执行后会销毁资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_playeffectex) 时会尝试重新打开文件并从头播放。
+- 该方法中的音效 ID 和文件路径必须与 [preloadEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_preloadeffectex) 方法中的保持一致。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_playeffectex) 之前调用了 [preloadEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_preloadeffectex)， [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_playeffectex) 执行后不会关闭文件资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_playeffectex) 时会直接从头开始播放。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_playeffectex) 之前未调用 [preloadEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_preloadeffectex)， [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_playeffectex) 执行后会销毁资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_playeffectex) 时会尝试重新打开文件并从头播放。
 :::
 
 <a id="api_irtcengineex_playeffectex__scenario"></a>
@@ -411,7 +402,7 @@ virtual int playEffectEx(const RtcConnection& connection, int soundId, const cha
 
 音效的循环播放次数：
 
-- `-1`：无限循环，直到调用 [stopEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_stopalleffects)。
+- `-1`：无限循环，直到调用 [stopEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_stopalleffects)。
 - `0`：播放一次。
 - `1`：播放两次。
 
@@ -449,7 +440,6 @@ virtual int playEffectEx(const RtcConnection& connection, int soundId, const cha
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_preloadeffect"></a>
@@ -466,13 +456,13 @@ virtual int preloadEffect(int soundId, const char* filePath, int startPos = 0) =
 
 <a id="api_irtcengine_preloadeffect__detailed_desc"></a>
 
-该方法每次调用时仅将一个指定的音效文件预加载到内存中。要预加载多个音效文件，需要多次调用该方法。预加载完成后，你可以调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 播放预加载的音效，或调用 [playAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playalleffects) 播放所有预加载的音效。
+该方法每次调用时仅将一个指定的音效文件预加载到内存中。要预加载多个音效文件，需要多次调用该方法。预加载完成后，你可以调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 播放预加载的音效，或调用 [playAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playalleffects) 播放所有预加载的音效。
 
 :::info[注]
 - 为确保通信顺畅，请限制音效文件的大小。
 - 声网建议在加入频道前调用该方法。
-- 如果在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 之前调用了 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_preloadeffect)，则在 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 执行后文件资源不会被关闭。下次调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 时会从头开始播放。
-- 如果在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 之前未调用 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_preloadeffect)，则在 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 执行后资源会被销毁。下次调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 时会尝试重新打开文件并从头开始播放。
+- 如果在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 之前调用了 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_preloadeffect)，则在 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 执行后文件资源不会被关闭。下次调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 时会从头开始播放。
+- 如果在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 之前未调用 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_preloadeffect)，则在 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 执行后资源会被销毁。下次调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 时会尝试重新打开文件并从头开始播放。
 :::
 
 <a id="api_irtcengine_preloadeffect__timing"></a>
@@ -504,7 +494,6 @@ virtual int preloadEffect(int soundId, const char* filePath, int startPos = 0) =
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_preloadeffectex"></a>
@@ -525,13 +514,13 @@ virtual int preloadEffectEx(const RtcConnection& connection, int soundId, const 
 
 自 v4.6.0 版本新增。
 
-每次调用该方法时，只能将一个音效文件预加载到内存中。如果需要预加载多个音效文件，请多次调用该方法。预加载完成后，可以调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 播放预加载的音效，或调用 [playAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playalleffects) 播放所有预加载的音效。
+每次调用该方法时，只能将一个音效文件预加载到内存中。如果需要预加载多个音效文件，请多次调用该方法。预加载完成后，可以调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 播放预加载的音效，或调用 [playAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playalleffects) 播放所有预加载的音效。
 
 :::info[注]
 - 为确保使用体验流畅，音效文件的大小不应超过限制。
 - 声网建议在加入频道前调用该方法。
-- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_playeffectex) 前已调用 [preloadEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_preloadeffectex)，则 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_playeffectex) 执行后不会关闭文件资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_playeffectex) 时会直接从头开始播放。
-- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_playeffectex) 前未调用 [preloadEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_preloadeffectex)，则 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_playeffectex) 执行后会销毁资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengineex_playeffectex) 时会尝试重新打开文件并从头开始播放。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_playeffectex) 前已调用 [preloadEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_preloadeffectex)，则 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_playeffectex) 执行后不会关闭文件资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_playeffectex) 时会直接从头开始播放。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_playeffectex) 前未调用 [preloadEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_preloadeffectex)，则 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_playeffectex) 执行后会销毁资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengineex_playeffectex) 时会尝试重新打开文件并从头开始播放。
 :::
 
 <a id="api_irtcengineex_preloadeffectex__scenario"></a>
@@ -567,7 +556,6 @@ virtual int preloadEffectEx(const RtcConnection& connection, int soundId, const 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_resumealleffects"></a>
@@ -584,13 +572,13 @@ virtual int resumeAllEffects() = 0;
 
 <a id="api_irtcengine_resumealleffects__detailed_desc"></a>
 
-调用 [pauseAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_pausealleffects) 暂停播放后，可以调用该方法恢复播放。
+调用 [pauseAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_pausealleffects) 暂停播放后，可以调用该方法恢复播放。
 
 <a id="api_irtcengine_resumealleffects__timing"></a>
 
 ### 调用时机
 
-请在调用 [pauseAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_pausealleffects) 之后调用此方法。
+请在调用 [pauseAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_pausealleffects) 之后调用此方法。
 
 <a id="api_irtcengine_resumealleffects__return_values"></a>
 
@@ -599,7 +587,6 @@ virtual int resumeAllEffects() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_resumeeffect"></a>
@@ -631,7 +618,6 @@ virtual int resumeEffect(int soundId) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_seteffectposition"></a>
@@ -651,7 +637,7 @@ virtual int setEffectPosition(int soundId, int pos) = 0;
 设置成功后，音效文件将从指定位置开始播放。
 
 :::info[注]
-请在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 方法后调用此方法。
+请在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 方法后调用此方法。
 :::
 
 <a id="api_irtcengine_seteffectposition__parameters"></a>
@@ -673,7 +659,6 @@ virtual int setEffectPosition(int soundId, int pos) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_seteffectsvolume"></a>
@@ -694,7 +679,7 @@ virtual int setEffectsVolume(int volume) = 0;
 
 ### 调用时机
 
-在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用。
+在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用。
 
 <a id="api_irtcengine_seteffectsvolume__parameters"></a>
 
@@ -711,7 +696,6 @@ virtual int setEffectsVolume(int volume) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvolumeofeffect"></a>
@@ -732,7 +716,7 @@ virtual int setVolumeOfEffect(int soundId, int volume) = 0;
 
 ### 调用时机
 
-在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 之后调用该方法。
+在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 之后调用该方法。
 
 <a id="api_irtcengine_setvolumeofeffect__parameters"></a>
 
@@ -753,7 +737,6 @@ virtual int setVolumeOfEffect(int soundId, int volume) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopalleffects"></a>
@@ -770,13 +753,13 @@ virtual int stopAllEffects() = 0;
 
 <a id="api_irtcengine_stopalleffects__detailed_desc"></a>
 
-调用该方法可以停止所有音效的播放。如果只需暂停播放，请调用 [pauseAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_pausealleffects)。
+调用该方法可以停止所有音效的播放。如果只需暂停播放，请调用 [pauseAllEffects](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_pausealleffects)。
 
 <a id="api_irtcengine_stopalleffects__timing"></a>
 
 ### 调用时机
 
-请在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 之后调用此方法。
+请在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 之后调用此方法。
 
 <a id="api_irtcengine_stopalleffects__return_values"></a>
 
@@ -785,7 +768,6 @@ virtual int stopAllEffects() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopeffect"></a>
@@ -802,13 +784,13 @@ virtual int stopEffect(int soundId) = 0;
 
 <a id="api_irtcengine_stopeffect__detailed_desc"></a>
 
-调用该方法可停止播放指定的音效。如果只需暂停播放，请调用 [pauseEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_pauseeffect) 方法。
+调用该方法可停止播放指定的音效。如果只需暂停播放，请调用 [pauseEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_pauseeffect) 方法。
 
 <a id="api_irtcengine_stopeffect__timing"></a>
 
 ### 调用时机
 
-请在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用此方法。
+请在调用 [playEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用此方法。
 
 <a id="api_irtcengine_stopeffect__parameters"></a>
 
@@ -825,7 +807,6 @@ virtual int stopEffect(int soundId) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unloadalleffects"></a>
@@ -849,7 +830,6 @@ virtual int unloadAllEffects() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unloadeffect"></a>
@@ -866,7 +846,7 @@ virtual int unloadEffect(int soundId) = 0;
 
 <a id="api_irtcengine_unloadeffect__detailed_desc"></a>
 
-调用 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-effect-file#api_irtcengine_preloadeffect) 将音效文件加载到内存后，如需释放该音效文件，可调用该方法。
+调用 [preloadEffect](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效文件加载到内存后，如需释放该音效文件，可调用该方法。
 
 <a id="api_irtcengine_unloadeffect__timing"></a>
 
@@ -889,7 +869,6 @@ virtual int unloadEffect(int soundId) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudioeffectfinished"></a>
@@ -916,5 +895,4 @@ virtual void onAudioEffectFinished(int soundId) {}
 
 音效 ID，每个音效文件的唯一标识。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

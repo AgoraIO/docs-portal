@@ -1,0 +1,242 @@
+---
+title: "ChatContactManager class"
+description: "API docs for the ChatContactManager class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The contact manager class, which manages chat contacts such as adding, deleting, retrieving, and modifying contacts.
+
+### Available Extensions
+
+- [ChatContactManagerDeprecated](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager-deprecated)
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart title="Dart"
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart title="Dart"
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="acceptInvitation"></a>
+
+### [acceptInvitation](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/accept-invitation)
+
+```dart title="Dart"
+acceptInvitation(String username) -> Future<void>
+```
+
+Accepts a friend invitation。
+
+<a id="addContact"></a>
+
+### [addContact](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/add-contact)
+
+```dart title="Dart"
+addContact(String userId, {String? reason}) -> Future<void>
+```
+
+Adds a new contact.
+
+<a id="addEventHandler"></a>
+
+### [addEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/add-event-handler)
+
+```dart title="Dart"
+addEventHandler(String identifier, ContactEventHandler handler) -> void
+```
+
+Adds the contact event handler. After calling this method, you can handle for new contact event when they arrive.
+
+<a id="addUserToBlockList"></a>
+
+### [addUserToBlockList](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/add-user-to-block-list)
+
+```dart title="Dart"
+addUserToBlockList(String username) -> Future<void>
+```
+
+Adds a user to the block list. You can send messages to the users on the block list, but cannot receive messages from them.
+
+<a id="clearEventHandlers"></a>
+
+### [clearEventHandlers](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/clear-event-handlers)
+
+```dart title="Dart"
+clearEventHandlers() -> void
+```
+
+Clear all contact event handlers.
+
+<a id="declineInvitation"></a>
+
+### [declineInvitation](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/decline-invitation)
+
+```dart title="Dart"
+declineInvitation(String username) -> Future<void>
+```
+
+Declines a friend invitation.
+
+<a id="deleteContact"></a>
+
+### [deleteContact](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/delete-contact)
+
+```dart title="Dart"
+deleteContact(String username, {bool keepConversation = false}) -> Future<void>
+```
+
+Deletes a contact and all the related conversations.
+
+<a id="getAllContactsFromDB"></a>
+
+### [getAllContactsFromDB](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/get-all-contacts-from-db)
+
+```dart title="Dart"
+getAllContactsFromDB() -> Future<List<String>>
+```
+
+Gets the contact list from the local database.
+
+<a id="getAllContactsFromServer"></a>
+
+### [getAllContactsFromServer](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/get-all-contacts-from-server)
+
+```dart title="Dart"
+getAllContactsFromServer() -> Future<List<String>>
+```
+
+Gets all the contacts from the server.
+
+<a id="getBlockListFromDB"></a>
+
+### [getBlockListFromDB](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/get-block-list-from-db)
+
+```dart title="Dart"
+getBlockListFromDB() -> Future<List<String>>
+```
+
+Gets the block list from the local database.
+
+<a id="getBlockListFromServer"></a>
+
+### [getBlockListFromServer](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/get-block-list-from-server)
+
+```dart title="Dart"
+getBlockListFromServer() -> Future<List<String>>
+```
+
+Gets the block list from the server.
+
+<a id="getEventHandler"></a>
+
+### [getEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/get-event-handler)
+
+```dart title="Dart"
+getEventHandler(String identifier) -> ContactEventHandler?
+```
+
+Get the contact event handler.
+
+<a id="getSelfIdsOnOtherPlatform"></a>
+
+### [getSelfIdsOnOtherPlatform](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/get-self-ids-on-other-platform)
+
+```dart title="Dart"
+getSelfIdsOnOtherPlatform() -> Future<List<String>>
+```
+
+Gets the unique IDs of the current user on the other devices. The ID is in the format of username + "/" + resource.
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart title="Dart"
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="removeEventHandler"></a>
+
+### [removeEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/remove-event-handler)
+
+```dart title="Dart"
+removeEventHandler(String identifier) -> void
+```
+
+Remove the contact event handler.
+
+<a id="removeUserFromBlockList"></a>
+
+### [removeUserFromBlockList](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager/remove-user-from-block-list)
+
+```dart title="Dart"
+removeUserFromBlockList(String username) -> Future<void>
+```
+
+Removes the contact from the block list.
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart title="Dart"
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart title="Dart"
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

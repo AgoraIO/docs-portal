@@ -1,0 +1,28 @@
+---
+title: "addContactManagerListener method"
+description: "API docs for the addContactManagerListener method from the ChatContactManagerDeprecated extension, for the Dart programming language."
+---
+
+Registers a new contact manager listener.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The contact manager listener to be registered: [ChatContactManagerListener](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-contact-manager-listener). |
+
+```dart title="Dart"
+@Deprecated("Use addEventHandler to instead")void addContactManagerListener(ChatContactManagerListener listener)@Deprecated("Use addEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+@Deprecated("Use addEventHandler to instead")
+void addContactManagerListener(ChatContactManagerListener listener) {
+  _listeners.remove(listener);
+  _listeners.add(listener);
+}
+```

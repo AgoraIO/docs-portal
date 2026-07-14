@@ -1,13 +1,13 @@
 ---
 title: "AgoraRteWebClientMain"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "AgoraRteWebClientMain API 参考。"
 ---
 
 - [AgoraRteWebClientBase](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-base)
 
   - AgoraRteWebClientMain
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -17,9 +17,9 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new AgoraRteWebClientMain(channelName: string, configs: RtcAdapterWebConfig, base: RtcAdapterBase, connectionType: AGRtcConnectionType, audioRawDataDispatcher: AGAudioRawDataDispatcher): AgoraRteWebClientMain
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | channelName: string |  |
 | configs: RtcAdapterWebConfig |  |
@@ -27,11 +27,11 @@ new AgoraRteWebClientMain(channelName: string, configs: RtcAdapterWebConfig, bas
 | connectionType: AGRtcConnectionType |  |
 | audioRawDataDispatcher: AGAudioRawDataDispatcher |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
+[AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
 
-## Properties
+## 属性
 
 <a id="logger"></a>
 
@@ -41,7 +41,7 @@ Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-
 logger: "agora-rte-sdk/src/core/logger/type".Logger
 ```
 
-## Accessors
+## 访问器
 
 <a id="base"></a>
 
@@ -51,9 +51,9 @@ logger: "agora-rte-sdk/src/core/logger/type".Logger
 get base(): RtcAdapterWeb
 ```
 
-#### Returns
+#### 返回值
 
-Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-web)
+[RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/rtc-adapter-web)
 
 <a id="ready"></a>
 
@@ -63,9 +63,9 @@ Returns [RtcAdapterWeb](/zh-CN/api-reference/flexible-classroom/web/api-referenc
 get ready(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="remoteRtcUsers"></a>
 
@@ -75,11 +75,11 @@ Returns boolean
 get remoteRtcUsers(): Map<string, IAgoraRTCRemoteUser>
 ```
 
-#### Returns
+#### 返回值
 
-Returns Map &lt; string, IAgoraRTCRemoteUser &gt;
+Map &lt; string, IAgoraRTCRemoteUser &gt;
 
-## Methods
+## 方法
 
 <a id="emit"></a>
 
@@ -89,16 +89,16 @@ Returns Map &lt; string, IAgoraRTCRemoteUser &gt;
 emit(evt: string, ...args: any[]): AgoraRteWebClientMain
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | Rest ...args: any[] |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
+[AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
 
 <a id="enableDualStream"></a>
 
@@ -108,15 +108,15 @@ Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-
 enableDualStream(enable: boolean): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enable: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="getClientSessionId"></a>
 
@@ -126,9 +126,9 @@ Returns Promise &lt; void &gt;
 getClientSessionId(): any
 ```
 
-#### Returns
+#### 返回值
 
-Returns any
+any
 
 <a id="join"></a>
 
@@ -138,17 +138,17 @@ Returns any
 join(appId: string, token: string, streamUuid: string): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | appId: string |  |
 | token: string |  |
 | streamUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="leave"></a>
 
@@ -158,9 +158,9 @@ Returns Promise &lt; void &gt;
 leave(): Promise<void>
 ```
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="muteLocalAudio"></a>
 
@@ -170,15 +170,15 @@ Returns Promise &lt; void &gt;
 muteLocalAudio(mute: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteLocalScreenShare"></a>
 
@@ -188,15 +188,15 @@ Returns number
 muteLocalScreenShare(mute: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteLocalVideo"></a>
 
@@ -206,15 +206,15 @@ Returns number
 muteLocalVideo(mute: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteRemoteAudio"></a>
 
@@ -224,16 +224,16 @@ Returns number
 muteRemoteAudio(streamUuid: string, mute: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteRemoteVideo"></a>
 
@@ -243,16 +243,16 @@ Returns number
 muteRemoteVideo(streamUuid: string, mute: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteRemoteVideoMass"></a>
 
@@ -262,16 +262,16 @@ Returns number
 muteRemoteVideoMass(streamUuids: string[], mute: boolean): Promise<string[]>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuids: string[] |  |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; string [] &gt;
+Promise &lt; string [] &gt;
 
 <a id="notifyAudioPlaybackUpdate"></a>
 
@@ -281,15 +281,15 @@ Returns Promise &lt; string [] &gt;
 notifyAudioPlaybackUpdate(deviceId: string): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | deviceId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="off"></a>
 
@@ -299,16 +299,16 @@ Returns void
 off(evt: string, cb: CallableFunction): AgoraRteWebClientMain
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
+[AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
 
 <a id="on"></a>
 
@@ -318,16 +318,16 @@ Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-
 on(evt: string, cb: CallableFunction): AgoraRteWebClientMain
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
+[AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
 
 <a id="once"></a>
 
@@ -337,16 +337,16 @@ Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-
 once(evt: string, cb: CallableFunction): AgoraRteWebClientMain
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
+[AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-web-client-main)
 
 <a id="removeAllEventListeners"></a>
 
@@ -356,9 +356,9 @@ Returns [AgoraRteWebClientMain](/zh-CN/api-reference/flexible-classroom/web/api-
 removeAllEventListeners(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setCloudProxy"></a>
 
@@ -368,15 +368,15 @@ Returns void
 setCloudProxy(proxyType: AgoraCloudProxyType): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | proxyType: AgoraCloudProxyType |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setLatencyLevel"></a>
 
@@ -386,15 +386,15 @@ Returns void
 setLatencyLevel(level: AgoraLatencyLevel): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | level: AgoraLatencyLevel |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setLowStreamParameter"></a>
 
@@ -404,15 +404,15 @@ Returns void
 setLowStreamParameter(streamParameter: AGLowStreamParameter): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamParameter: AGLowStreamParameter |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setRemoteTrackVolume"></a>
 
@@ -422,16 +422,16 @@ Returns number
 setRemoteTrackVolume(streamUuid: string, volume: number): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | volume: number |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setRemoteVideoStreamType"></a>
 
@@ -441,16 +441,16 @@ Returns void
 setRemoteVideoStreamType(streamUuid: string, streamType: AGRemoteVideoStreamType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | streamType: AGRemoteVideoStreamType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="videoSubscribeThread"></a>
 
@@ -460,12 +460,12 @@ Returns number
 videoSubscribeThread(streamUuid: string): undefined | AgoraRteSubscribeThread
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns undefined | [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-subscribe-thread)
+undefined | [AgoraRteSubscribeThread](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-rte-subscribe-thread)

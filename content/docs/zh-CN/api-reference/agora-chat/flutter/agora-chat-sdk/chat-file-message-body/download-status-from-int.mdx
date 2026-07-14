@@ -1,0 +1,26 @@
+---
+title: "downloadStatusFromInt method"
+description: "API docs for the downloadStatusFromInt method from the ChatFileMessageBody class, for the Dart programming language."
+---
+
+```dart title="Dart"
+DownloadStatus downloadStatusFromInt(int? status)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+static DownloadStatus downloadStatusFromInt(int? status) {
+  if (status == 0) {
+    return DownloadStatus.DOWNLOADING;
+  } else if (status == 1) {
+    return DownloadStatus.SUCCESS;
+  } else if (status == 2) {
+    return DownloadStatus.FAILED;
+  } else {
+    return DownloadStatus.PENDING;
+  }
+}
+```

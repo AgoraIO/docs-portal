@@ -1,0 +1,43 @@
+---
+title: "importMessages method"
+description: "API docs for the importMessages method from the ChatManager class, for the Dart programming language."
+---
+
+Imports messages to the local database.
+
+Before importing, ensure that the sender or receiver of the message is the current user.
+
+For each method call, we recommends to import less than 1,000 messages.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `messages` | The message list. |
+
+```dart title="Dart"
+Future<void> importMessages(List<ChatMessage> messages)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> importMessages(List<ChatMessage> messages) async {
+  List<Map> list = [];
+  messages.forEach((element) {
+    list.add(element.toJson());
+  });
+  Map req = {"messages": list};
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.importMessages, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

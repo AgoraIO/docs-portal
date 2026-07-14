@@ -1,10 +1,9 @@
 ---
 title: "听声辨位"
-description: "开启/关闭远端用户的语音立体声。"
+description: "听声辨位 API reference."
 ---
-<a id="toc_sound_position"></a>
 
-## 听声辨位
+<a id="toc_sound_position"></a>
 
 <a id="api_irtcengine_enablesoundpositionindication"></a>
 
@@ -20,7 +19,7 @@ Future<void> enableSoundPositionIndication(bool enabled);
 
 <a id="api_irtcengine_enablesoundpositionindication__detailed_desc"></a>
 
-如果想调用 [setRemoteVoicePosition](/zh-CN/api-reference/rtc/flutter/sound-position#api_irtcengine_setremotevoiceposition) 实现听声辨位的功能，请确保在加入频道前调用该方法开启远端用户的语音立体声。
+如果想调用 [setRemoteVoicePosition](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/sound-position#api_irtcengine_setremotevoiceposition) 实现听声辨位的功能，请确保在加入频道前调用该方法开启远端用户的语音立体声。
 
 <a id="api_irtcengine_enablesoundpositionindication__parameters"></a>
 
@@ -39,7 +38,6 @@ Future<void> enableSoundPositionIndication(bool enabled);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremotevoiceposition"></a>
@@ -60,7 +58,7 @@ Future<void> setRemoteVoicePosition(
 设置远端用户声音的 2D 位置和音量，方便本地用户听声辨位。 通过调用该接口设置远端用户声音出现的位置，左右声道的声音差异会产生声音的方位感，从而判断出远端用户的实时位置。在多人在线游戏场景，如吃鸡游戏中，该方法能有效增加游戏角色的方位感，模拟真实场景。
 
 :::info[注]
-- 使用该方法需要在加入频道前调用 [enableSoundPositionIndication](/zh-CN/api-reference/rtc/flutter/sound-position#api_irtcengine_enablesoundpositionindication) 开启远端用户的语音立体声。
+- 使用该方法需要在加入频道前调用 [enableSoundPositionIndication](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/sound-position#api_irtcengine_enablesoundpositionindication) 开启远端用户的语音立体声。
 - 为获得最佳听觉体验，建议使用该方法时使用有线耳机。
 - 该方法需要在加入频道后调用。
 :::
@@ -91,7 +89,6 @@ Future<void> setRemoteVoicePosition(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremotevoicepositionex"></a>
@@ -149,5 +146,4 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)

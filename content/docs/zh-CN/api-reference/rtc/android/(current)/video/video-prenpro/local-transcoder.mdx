@@ -1,14 +1,9 @@
 ---
 title: "本地合图"
-description: "开始本地视频合图。"
+description: "本地合图 API reference."
 ---
-<a id="toc_local_transcoder"></a>
 
-## 本地合图
-
-<a id="api_irtcengine_startlocalvideotranscoder"></a>
-
-## startLocalVideoTranscoder
+## <span id="toc_local_transcoder"></span>startLocalVideoTranscoder [#api_irtcengine_startlocalvideotranscoder]
 
 开始本地视频合图。
 
@@ -36,46 +31,33 @@ public abstract int startLocalVideoTranscoder(LocalTranscoderConfiguration confi
 - 混合后的视频流的最大分辨率为 4096 × 2160。
 :::
 
-<a id="api_irtcengine_startlocalvideotranscoder__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_startlocalvideotranscoder__scenario]
 
 适用于远程会议、直播、在线教育等场景，便于用户查看和管理多个视频流，并支持人像画中画等功能。
 
-<a id="api_irtcengine_startlocalvideotranscoder__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_startlocalvideotranscoder__timing]
 
 - 如果需要混合本地采集的视频流，需要在调用 [startCameraCapture](/zh-CN/api-reference/rtc/android/video/camera-capture#api_irtcengine_startcameracapture) 或 [startScreenCapture](/zh-CN/api-reference/rtc/android/video/screencapture#api_irtcengine_startscreencapture) 之后调用该方法。
 - 如果希望将混合后的视频流发布到频道中，需要在调用 `joinChannel` 或 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_updatechannelmediaoptions) 时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `publishTranscodedVideoTrack` 设置为 true。
 
-<a id="api_irtcengine_startlocalvideotranscoder__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_startlocalvideotranscoder__related]
 
 当调用该方法失败时，SDK 会触发 [onLocalVideoTranscoderError](/zh-CN/api-reference/rtc/android/video/video-prenpro/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) 回调报告失败原因。
 
-<a id="api_irtcengine_startlocalvideotranscoder__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_startlocalvideotranscoder__parameters]
 
 #### `config`
 
 本地视频合图的配置，详见 [LocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/class-localtranscoderconfiguration)。
 
-<a id="api_irtcengine_startlocalvideotranscoder__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_startlocalvideotranscoder__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_stoplocalvideotranscoder"></a>
-
-## stopLocalVideoTranscoder
+## stopLocalVideoTranscoder [#api_irtcengine_stoplocalvideotranscoder]
 
 停止本地合图。
 
@@ -89,19 +71,14 @@ public abstract int stopLocalVideoTranscoder();
 
 调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如需停止本地合图，可调用该方法。
 
-<a id="api_irtcengine_stoplocalvideotranscoder__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_stoplocalvideotranscoder__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_updatelocaltranscoderconfiguration"></a>
-
-## updateLocalTranscoderConfiguration
+## updateLocalTranscoderConfiguration [#api_irtcengine_updatelocaltranscoderconfiguration]
 
 更新本地合图配置。
 
@@ -119,27 +96,20 @@ public abstract int updateLocalTranscoderConfiguration(LocalTranscoderConfigurat
 如果你想更新用于本地合图的视频源类型，例如添加第二个摄像头或屏幕进行视频采集，需要在调用 [startCameraCapture](/zh-CN/api-reference/rtc/android/video/camera-capture#api_irtcengine_startcameracapture) 或 [startScreenCapture](/zh-CN/api-reference/rtc/android/video/screencapture#api_irtcengine_startscreencapture) 后调用该方法。
 :::
 
-<a id="api_irtcengine_updatelocaltranscoderconfiguration__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_updatelocaltranscoderconfiguration__parameters]
 
 #### `config`
 
 本地合图配置。详见 [LocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/class-localtranscoderconfiguration)。
 
-<a id="api_irtcengine_updatelocaltranscoderconfiguration__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_updatelocaltranscoderconfiguration__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="callback_irtcengineeventhandler_onlocalvideotranscodererror"></a>
-
-## onLocalVideoTranscoderError
+## onLocalVideoTranscoderError [#callback_irtcengineeventhandler_onlocalvideotranscodererror]
 
 本地视频合图过程中发生错误回调。
 
@@ -153,15 +123,11 @@ public void onLocalVideoTranscoderError(LocalTranscoderConfiguration.Transcoding
 
 当调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder) 或 [updateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/video/video-prenpro/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) 失败时，SDK 会触发该回调报告失败原因。
 
-<a id="callback_irtcengineeventhandler_onlocalvideotranscodererror__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onlocalvideotranscodererror__timing]
 
 该回调在调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/android/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder) 或 [updateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/android/video/video-prenpro/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) 失败时被触发。
 
-<a id="callback_irtcengineeventhandler_onlocalvideotranscodererror__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onlocalvideotranscodererror__parameters]
 
 #### `stream`
 
@@ -178,5 +144,4 @@ public void onLocalVideoTranscoderError(LocalTranscoderConfiguration.Transcoding
 - 5：合图后的视频分辨率无效。
 - 20：内部错误。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

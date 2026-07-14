@@ -1,6 +1,6 @@
 ---
 title: "IAgoraRTCClient"
-description: "IAgoraRTCClient API reference."
+description: "IAgoraRTCClient API 参考。"
 ---
 
 提供音视频通话的核心功能，比如加入频道、发布和订阅音视频轨道等。 你可以通过 [createClient](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createclient) 创建一个 `AgoraRTCClient` 对象。一个 `AgoraRTCClient` 对象代表一个本地客户端。
@@ -9,7 +9,7 @@ description: "IAgoraRTCClient API reference."
 
   - IAgoraRTCClient
 
-## Events
+## 事件
 
 <a id="event_channel_media_relay_event"></a>
 
@@ -21,15 +21,15 @@ channel-media-relay-event(event: ChannelMediaRelayEvent): void
 
 跨频道媒体流转发事件回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: ChannelMediaRelayEvent | 事件码，详见 [ChannelMediaRelayEvent](/zh-CN/api-reference/rtc/web/enums/channel-media-relay-event)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_channel_media_relay_state"></a>
 
@@ -45,16 +45,16 @@ channel-media-relay-state(state: ChannelMediaRelayState, code: ChannelMediaRelay
 
 回调会携带当前跨频道媒体流转发服务的状态 [ChannelMediaRelayState](/zh-CN/api-reference/rtc/web/enums/channel-media-relay-state)，如果状态异常，相应的错误码可以通过 [ChannelMediaRelayError](/zh-CN/api-reference/rtc/web/enums/channel-media-relay-error) 获取（比如 token 过期，重连失败等）。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | state: ChannelMediaRelayState | 跨频道媒体流转发服务的状态。 |
 | code: ChannelMediaRelayError | 跨频道媒体流转发错误码。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_connection_state_change"></a>
 
@@ -66,17 +66,17 @@ connection-state-change(curState: ConnectionState, revState: ConnectionState, re
 
 SDK 与服务器的连接状态发生改变回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | curState: ConnectionState | 当前的连接状态。 |
 | revState: ConnectionState | 之前的连接状态。 |
 | Optional reason: ConnectionDisconnectedReason | 如果 `curState` 为 `"DISCONNECTED"`，这里表示断开连接的原因。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_content_inspect_connection_state_change"></a>
 
@@ -94,16 +94,16 @@ client.on("content-inspect-connection-state-change", (preState, state) => {
 })
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | preState: InspectState | 之前的连接状态。 |
 | newState: InspectState | 新的连接状态。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_content_inspect_error"></a>
 
@@ -122,15 +122,15 @@ client.on("content-inspect-error", error => {
 })
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional error: AgoraRTCError | 抛出的错误对象 `AgoraRTCError`，该对象包含以下属性：<br />- code: 错误码。<br />- message: 错误消息。<br />- data:（可选）与错误相关的其它信息。<br />当前可能返回的错误码如下：<br />\| 错误码 \| 错误消息 \| 原因 \|<br />\| --- \| --- \| --- \|<br />\| OPERATION_ABORTED \| Content inspect was cancelled because it left the channel \| 本地用户已经离开频道 \| |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_crypt_error"></a>
 
@@ -144,9 +144,9 @@ crypt-error(): void
 
 该回调表示用户在订阅过程中出现了解密失败，通常是由于和发布端设置的加密参数不一致导致的。详见 [setEncryptionConfig](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#setencryptionconfig)。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_exception"></a>
 
@@ -190,15 +190,15 @@ SDK 监测到异常事件回调。
 | 4003 | SEND_AUDIO_BITRATE_TOO_LOW_RECOVER | 音频发送码率恢复正常 |
 | 4005 | RECV_AUDIO_DECODE_FAILED_RECOVER | 接收音频解码恢复正常 |
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: object |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_image_moderation_connection_state_change"></a>
 
@@ -217,16 +217,16 @@ client.on("image-moderation-connection-state-change", (curState, preState) => {
 });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | newState: ImageModerationConnectionState | 新的连接状态。 |
 | preState: ImageModerationConnectionState | 之前的连接状态。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_is_using_cloud_proxy"></a>
 
@@ -245,15 +245,15 @@ SDK 通过这个回调通知当前媒体流是否经云代理服务转发。触�
 - v4.10.0 之前：成功调用 [publish](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#publish) 后。
 - v4.10.0 及之后：成功调用 [join](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#join) 后。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | isUsingProxy: boolean | 当前媒体流是否经云代理服务转发：<br />- `true`: 经云代理服务转发。<br />- `false`: 没有经云代理服务转发。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_join_fallback_to_proxy"></a>
 
@@ -271,15 +271,15 @@ SDK 自动切换至 TCP/TLS 443 回调。
 
 自 v4.11.0 起，如果调用 [join](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#join) 后 SDK 直接连接 SD-RTN™ 失败，SDK 会自动切换到 TCP/TLS 443 通道，从而保障 SDK 的连通性。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | proxyServer: string | 切换后使用的服务器地址。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_live_streaming_error"></a>
 
@@ -302,16 +302,16 @@ live-streaming-error(url: string, err: AgoraRTCError): void
 - `LIVE_STREAMING_CDN_ERROR`: 推流的目标 CDN 出现错误导致推流失败。
 - `LIVE_STREAMING_INVALID_RAW_STREAM`: 推流超时，请确认目标流是否存在。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | url: string | 发生错误的直播推流地址。 |
 | err: AgoraRTCError | 详细的错误信息。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_live_streaming_warning"></a>
 
@@ -331,16 +331,16 @@ live-streaming-warning(url: string, warning: AgoraRTCError): void
 - `LIVE_STREAMING_WARN_FAILED_LOAD_IMAGE`: 推流中的背景图片或者水印地址无法拉取。
 - `LIVE_STREAMING_WARN_FREQUENT_REQUEST`: 推流请求太频繁。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | url: string | 发生警告的直播推流地址。 |
 | warning: AgoraRTCError | 详细的警告信息。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_media_reconnect_end"></a>
 
@@ -352,15 +352,15 @@ media-reconnect-end(uid: UID): void
 
 SDK 重新建立媒体连接（用于发布和订阅）结束的回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: UID | 重新建立的媒体连接所对应的用户 ID。如果是本地 `uid` 说明是重新发布，如果是远端 `uid` 说明是重新订阅。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_media_reconnect_start"></a>
 
@@ -372,15 +372,15 @@ media-reconnect-start(uid: UID): void
 
 SDK 开始尝试重新建立媒体连接（用于发布和订阅）的回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: UID | 重新建立的媒体连接所对应的用户 ID。如果是本地 `uid` 说明是重新发布，如果是远端 `uid` 说明是重新订阅。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_network_quality"></a>
 
@@ -396,15 +396,15 @@ network-quality(stats: NetworkQuality): void
 
 我们推荐使用此回调来展示你的网络状态。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | stats: NetworkQuality | 网络质量。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_peerconnection_state_change"></a>
 
@@ -420,16 +420,16 @@ peerconnection-state-change(curState: RTCPeerConnectionState, revState: RTCPeerC
 
 本地媒体连接 PeerConnection 的状态回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | curState: RTCPeerConnectionState | 当前的连接状态。详见 [RTCPeerConnectionState](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/connectionstatechange_event)。 |
 | revState: RTCPeerConnectionState | 之前的连接状态。详见 [RTCPeerConnectionState](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/connectionstatechange_event)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_published_user_list"></a>
 
@@ -447,15 +447,15 @@ published-user-list(users: IAgoraRTCRemoteUser[]): void
 
 注意事项： 频道内所有用户必须都使用整数型用户 ID（`uid` ）， `published-user-list` 才会触发。 `published-user-list` 对 [AgoraRTCClient.on("user-joined")](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_joined) 和 [AgoraRTCClient.on("user-published")](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_published) 有以下影响： 如果监听了 `published-user-list`，已经在 `published-user-list` 中返回的用户不会再通过 `user-joined` 和 `user-published` 重复返回。 如果没有监听 `published-user-list`， `user-joined` 和 `user-published` 会正常触发。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | users: IAgoraRTCRemoteUser[] | 远端用户对象。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_stream_fallback"></a>
 
@@ -469,16 +469,16 @@ stream-fallback(uid: UID, isFallbackOrRecover: "fallback" | "recover"): void
 
 如果在 [setStreamFallbackOption](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#setstreamfallbackoption) 中将 `fallbackType` 设为 2，当下行网络环境不理想、仅接收远端音频流时，或当下行网络改善、恢复订阅音视频流时，会触发该回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: UID | 远端流对应的用户 ID。 |
 | isFallbackOrRecover: "fallback" \| "recover" | 订阅流是回退还是恢复：<br />- `"fallback"`: 从音视频流回退为纯音频流。<br />- `"recover"`: 从音频流恢复为音视频。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_stream_message"></a>
 
@@ -496,16 +496,16 @@ client.on("stream-message", (uid, payload) => {
 });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: UID | 消息发送者的 ID。 |
 | payload: Uint8Array | 消息内容。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_stream_type_changed"></a>
 
@@ -519,16 +519,16 @@ stream-type-changed(uid: UID, streamType: RemoteStreamType): void
 
 视频流类型改变指视频大流（高码率、高分辨率）变为视频小流（低码率、低分辨率），或视频小流变为视频大流。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: UID | 远端流对应的用户 ID。 |
 | streamType: RemoteStreamType | 改变后的视频流类型:<br />- 0: 视频大流，即高码率、高分辨率的视频流。<br />- 1: 视频小流，即低码率、低分辨率的视频流。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_token_privilege_did_expire"></a>
 
@@ -551,9 +551,9 @@ client.on("token-privilege-did-expire", async () => {
 });
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_token_privilege_will_expire"></a>
 
@@ -576,9 +576,9 @@ client.on("token-privilege-will-expire", async function(){
 });
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_user_info_updated"></a>
 
@@ -594,16 +594,16 @@ user-info-updated(uid: UID, msg: "mute-audio" | "mute-video" | "enable-local-vid
 
 即使用户状态表示该用户的音视频流是活跃的，不一定意味着该用户可订阅。是否可订阅的唯一标志是收到 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_published) 事件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: UID | 发生状态变化的用户 ID。 |
 | msg: "mute-audio" \| "mute-video" \| "enable-local-video" \| "unmute-audio" \| "unmute-video" \| "disable-local-video" | 当前用户状态。其中， `"enable-local-video"` 和 `"disable-local-video"` 仅当和 Agora RTC Native SDK 互通时会触发。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_user_joined"></a>
 
@@ -624,15 +624,15 @@ user-joined(user: IAgoraRTCRemoteUser): void
 - 直播场景的远端观众加入频道后调用 [setClientRole](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#setclientrole) 将用户角色改变为主播。
 - 通信场景的远端用户/直播场景的远端主播网络中断后重新加入频道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | user: IAgoraRTCRemoteUser | 加入频道的用户信息。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_user_left"></a>
 
@@ -652,16 +652,16 @@ user-left(user: IAgoraRTCRemoteUser, reason: string): void
 
 在直播场景中，只有角色为主播的用户会触发该回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | user: IAgoraRTCRemoteUser | 离线的用户信息。 |
 | reason: string | 用户离线的原因。<br />- `"Quit"`: 用户调用了 [leave](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#leave) 主动离开频道。<br />- `"ServerTimeOut"`: 因过长时间收不到对方数据包，超时掉线。注意：由于 SDK 使用的是不可靠通道，也有可能对方主动离开本方没收到对方离开消息而误判为超时掉线。<br />- `"BecomeAudience"`: 用户角色从主播切换为观众。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_user_published"></a>
 
@@ -691,17 +691,17 @@ client.on("user-published", async (user, mediaType) => {
 })
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | user: IAgoraRTCRemoteUser | 远端用户信息。 |
 | mediaType: "audio" \| "video" \| "datachannel" | 远端用户发布的媒体类型。<br />- `"audio"`: 远端用户发布了音频轨道。<br />- `"video"`: 远端用户发布了视频轨道。<br />- `"datachannel"`: 预留参数。 |
 | Optional config: IDataChannelConfig | 预留参数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_user_unpublished"></a>
 
@@ -713,17 +713,17 @@ user-unpublished(user: IAgoraRTCRemoteUser, mediaType: "audio" | "video" | "data
 
 该回调通知远端用户取消发布了音频或视频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | user: IAgoraRTCRemoteUser | 远端用户信息。 |
 | mediaType: "audio" \| "video" \| "datachannel" | 远端用户取消发布的媒体类型。<br />- `"audio"`: 远端用户取消发布了音频轨道。<br />- `"video"`: 远端用户取消发布了视频轨道。<br />- `"datachannel"`: 预留参数。 |
 | Optional config: IDataChannelConfig | 预留参数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_volume_indicator"></a>
 
@@ -747,17 +747,17 @@ client.on("volume-indicator", function(result){
 });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | result: object[] | 包含以下属性：<br />- level：音量，范围是 0 到 100。<br />- uid：说话者的用户 ID。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-## Properties
+## 属性
 
 <a id="channelname"></a>
 
@@ -822,7 +822,7 @@ uid: UID
 
 如果本地用户没有加入频道，该属性值为 `undefined`。
 
-## Agora Core Methods
+## Agora 核心方法
 
 <a id="join"></a>
 
@@ -840,9 +840,9 @@ join(appid: string, channel: string, token: string | null, uid?: UID | null, opt
 
 通信场景下的用户和直播场景下的主播加入频道后，远端会触发 [AgoraRTCClient.on("user-joined")](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_joined) 回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | appid: string | 你的声网项目的 [App ID](https://doc.shengwang.cn/basics/glossary#app-id)。 |
 | channel: string | 标识通话的频道名称，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:<br />- 26 个小写字母 a-z。<br />- 26 个大写字母 A-Z。<br />- 10 个数字 0-9。<br />- 空格。<br />- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "\|", "~", ","。 |
@@ -850,9 +850,9 @@ join(appid: string, channel: string, token: string | null, uid?: UID | null, opt
 | Optional uid: UID \| null | 标识用户的 ID。整数或字符串，ASCII 字符，需保证唯一性。如果不指定或设为 `null`，服务器会自动分配一个整数型 uid 并在 Promise 中返回。<br />- 如果使用整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (2 32 -1)。<br />- 如果使用字符串作为用户 ID，长度不超过 255 个字符。<br />为保证最佳的用户体验，声网强烈建议你不要使用字符串作为用户 ID。<br />注意事项： 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见 [使用 String 型的用户名](https://docs.agora.io/cn/faq/string)。 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。 |
 | Optional options: object | 加入频道选项。详见 [IJoinOptions](/zh-CN/api-reference/rtc/web/interfaces/ijoin-options)。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [UID](/zh-CN/api-reference/rtc/web/globals#uid) &gt;
+Promise &lt; [UID](/zh-CN/api-reference/rtc/web/globals#uid) &gt;
 
 Promise 对象，包含本地用户的 ID：
 
@@ -876,9 +876,9 @@ leave(): Promise<void>
 
 通信场景下的用户和直播场景下的主播离开频道后，远端会触发 [AgoraRTCClient.on("user-left")](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_left) 回调。
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="publish"></a>
 
@@ -896,15 +896,15 @@ publish(tracks: ILocalTrack | ILocalTrack[]): Promise<void>
 
 注意事项： 直播场景中，调用该方法前，必须先调用 [setClientRole](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#setclientrole) 将用户角色设为主播。 你可以多次调用该方法添加要发布的轨道。 一个 `AgoraRTCClient` 对象可以发布多个音频轨道，SDK 会自动混音，将多个音频轨道合并为一个音频轨道。Safari 12 之前的版本不支持发布多个音频轨道。 一个 `AgoraRTCClient` 对象 **只能发布一个视频轨道**。如果你想要更换视频轨道，例如已经发布了一个摄像头视频轨道，想要切换为屏幕共享视频轨道，你必须先取消发布。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | tracks: ILocalTrack \| ILocalTrack[] | 通过 [AgoraRTC.createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createmicrophoneaudiotrack) / [AgoraRTC.createCameraTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createcameravideotrack) 或其他方法创建的本地 Track 对象。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="subscribe"></a>
 
@@ -929,16 +929,16 @@ await client.subscribe(user，"audio");
 user.audioTrack.play();
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | user: IAgoraRTCRemoteUser \| UID | 远端用户对象。 |
 | mediaType: "video" | 订阅的轨道媒体类型。<br />- `"video"`: 订阅指定用户发布的视频轨道。<br />- `"audio"`: 订阅指定用户发布的音频轨道。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-video-track) &gt;
+Promise &lt; [IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-video-track) &gt;
 
 订阅的异步操作完成后，返回远端轨道对象，该对象也会在 [user.audioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcremote-user#audiotrack) 和 [user.videoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcremote-user#videotrack) 上更新， 之后直接调用 [audioTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremote-audio-track#play) 或 [videoTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremote-video-track#play) 就可以播放了。
 
@@ -955,16 +955,16 @@ user.audioTrack.play();
 
 Agora Core
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | user: IAgoraRTCRemoteUser \| UID | 远端用户对象。 |
 | mediaType: "audio" | 订阅的轨道媒体类型。<br />- `"video"`: 订阅指定用户发布的视频轨道。<br />- `"audio"`: 订阅指定用户发布的音频轨道。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-audio-track) &gt;
+Promise &lt; [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-audio-track) &gt;
 
 订阅的异步操作完成后，返回远端轨道对象，该对象也会在 [user.audioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcremote-user#audiotrack) 和 [user.videoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcremote-user#videotrack) 上更新， 之后直接调用 [audioTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremote-audio-track#play) 或 [videoTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremote-video-track#play) 就可以播放了。
 
@@ -981,17 +981,17 @@ user.audioTrack.play();
 
 Agora Core
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | user: IAgoraRTCRemoteUser \| UID | 远端用户对象。 |
 | mediaType: "video" \| "audio" \| "datachannel" | 订阅的轨道媒体类型。<br />- `"video"`: 订阅指定用户发布的视频轨道。<br />- `"audio"`: 订阅指定用户发布的音频轨道。<br />- `"datachannel"`: 预留参数。 |
 | Optional channelId: number |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-track) | IRemoteDataChannel &gt;
+Promise &lt; [IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-track) | IRemoteDataChannel &gt;
 
 订阅的异步操作完成后，返回远端轨道对象，该对象也会在 [user.audioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcremote-user#audiotrack) 和 [user.videoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcremote-user#videotrack) 上更新， 之后直接调用 [audioTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremote-audio-track#play) 或 [videoTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremote-video-track#play) 就可以播放了。
 
@@ -1011,15 +1011,15 @@ unpublish(tracks?: ILocalTrack | ILocalTrack[]): Promise<void>
 
 注意事项：直播场景中，主播调用 [unpublish](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#unpublish) 取消发布轨道之后，用户角色不会自动切换为观众。如需将用户角色切换为观众，必须调用 [setClientRole](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#setclientrole)。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional tracks: ILocalTrack \| ILocalTrack[] | 要取消发布的轨道。如果留空，会将所有发布过的音视频轨道取消发布。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="unsubscribe"></a>
 
@@ -1031,21 +1031,21 @@ unsubscribe(user: IAgoraRTCRemoteUser | UID, mediaType?: "video" | "audio" | "da
 
 取消订阅远端用户的音视频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | user: IAgoraRTCRemoteUser \| UID | 远端用户对象。 |
 | Optional mediaType: "video" \| "audio" \| "datachannel" | 取消订阅的轨道媒体类型。<br />- `"video"`: 仅取消订阅指定用户的视频轨道。<br />- `“audio”`: 仅取消订阅指定用户的音频轨道。<br />- 如不填，取消订阅该用户发布的所有轨道。<br />- `"datachannel"`: 预留参数。 |
 | Optional channelId: number | 预留参数。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 如果指定的音视频轨道不存在会抛出 `TRACK_IS_NOT_SUBSCRIBED` 错误。
 
-## Channel Media Relay Methods
+## 跨频道媒体流转发方法
 
 <a id="startchannelmediarelay"></a>
 
@@ -1076,15 +1076,15 @@ client.startChannelMediaRelay(config).then(() => {
 })
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: IChannelMediaRelayConfiguration | 跨频道媒体流转发参数配置，详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannel-media-relay-configuration)。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 Promise 对象。当 Promise resolve 后，表示成功开启了跨频道服务。
 
@@ -1100,9 +1100,9 @@ stopChannelMediaRelay(): Promise<void>
 
 一旦停止转发，用户会退出所有的目标频道。
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 Promise 对象。当 Promise resolve 后，表示成功停止了跨频道服务。
 
@@ -1120,19 +1120,19 @@ updateChannelMediaRelay(config: IChannelMediaRelayConfiguration): Promise<void>
 
 注意事项： 请在 [startChannelMediaRelay](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#startchannelmediarelay) 后调用该方法，更新媒体流转发的频道。 跨频道媒体流转发最多支持 4 个目标频道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: IChannelMediaRelayConfiguration | 跨频道媒体流转发参数配置，详见 [ChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannel-media-relay-configuration)。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 Promise 对象。当 Promise resolve 后，表示更新成功，否则更新失败。出错后跨频道媒体流转发状态会被重置，你需要调用 [startChannelMediaRelay](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#startchannelmediarelay) 重新开始跨频道媒体流转发。
 
-## Dual Stream Methods
+## 双流方法
 
 <a id="disabledualstream"></a>
 
@@ -1144,9 +1144,9 @@ disableDualStream(): Promise<void>
 
 关闭双流模式。
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="enabledualstream"></a>
 
@@ -1173,9 +1173,9 @@ client.enableDualStream().then(() => {
 })
 ```
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setlowstreamparameter"></a>
 
@@ -1193,15 +1193,15 @@ setLowStreamParameter(streamParameter: LowStreamParameter): void
 
 注意事项： 由于不同的设备和浏览器对于视频参数设置有不同的限制， `setLowStreamParameter` 设置的视频参数可能不会生效： Firefox 上帧率设置不生效，浏览器会把帧率固定在 30 fps。此外，在 Mac Firefox 73+ 上设置帧率实际生效值偏小，且存在分辨率不准确的问题。 Safari 14 至 17.2 上的帧率设置不生效，浏览器会把帧率固定在 15 fps 左右，且小流的分辨率必须与大流的分辨率成比例。此外，在 iOS Safari 上设置 `LowStreamParameter.bitrate` 不生效。 部分浏览器上设置视频分辨率可能不会生效，这种情况下浏览器会自动调整分辨率，计费也将按照实际分辨率计算。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamParameter: LowStreamParameter | 小流的视频属性。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setremotedefaultvideostreamtype"></a>
 
@@ -1217,15 +1217,15 @@ setRemoteDefaultVideoStreamType(streamType: RemoteStreamType): Promise<void>
 
 建议在加入频道前调用 `setRemoteDefaultVideoStreamType`。 如果你调用了 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#setremotevideostreamtype) 指定某个用户的流类型，则以该调用为准。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamType: RemoteStreamType | 订阅的视频流类型，0 代表大流，1 代表小流，详见 [RemoteStreamType](/zh-CN/api-reference/rtc/web/enums/remote-stream-type)。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setremotevideostreamtype"></a>
 
@@ -1241,16 +1241,16 @@ setRemoteVideoStreamType(uid: UID, streamType: RemoteStreamType): Promise<void>
 
 该方法只可在发送端通过 [enableDualStream](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#enabledualstream) 开启双流模式的情况下使用。 若该方法和 [setStreamFallbackOption](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#setstreamfallbackoption) 同时被调用，用户实际订阅的视频流取决于不同的设置。主要包括以下两种情况： [setStreamFallbackOption](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#setstreamfallbackoption) 的参数设置为 `0` (DISABLE)时，订阅的视频流类型将由 `setRemoteVideoStreamType` 的设置决定。 [setStreamFallbackOption](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#setstreamfallbackoption) 的参数设置为 `1` (VIDEO_STREAM_LOW) 或 `2` (VIDEO_STREAM_HIGH)，则订阅的视频流类型会先按照 `setRemoteVideoStreamType` 设置，但会根据网络状况进行动态调整。 例如，将 `setRemoteVideoStreamType` 参数设置为 `0` （订阅大流），但网络状况较差，SDK 将按照 `setStreamFallbackOption` 的设置进行弱网回退操作。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: UID | 远端用户的 ID。 |
 | streamType: RemoteStreamType | 订阅的视频流类型，0 代表大流，1 代表小流，详见 [RemoteStreamType](/zh-CN/api-reference/rtc/web/enums/remote-stream-type)。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setstreamfallbackoption"></a>
 
@@ -1268,18 +1268,18 @@ setStreamFallbackOption(uid: UID, fallbackType: RemoteStreamFallbackType): Promi
 
 该方法仅在远端用户调用 [enableDualStream](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#enabledualstream) 开启双流模式后生效。 远端用户开启双流模式后，如果本地没有调用过 `setStreamFallbackOption`，默认的回退策略将生效，即在弱网环境下 SDK 会自动订阅远端用户的视频小流（[RemoteStreamFallbackType](/zh-CN/api-reference/rtc/web/enums/remote-stream-fallback-type) 为 `1` ）。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: UID | 远端用户的 UID |
 | fallbackType: RemoteStreamFallbackType | 回退策略选项，详见 [RemoteStreamFallbackType](/zh-CN/api-reference/rtc/web/enums/remote-stream-fallback-type)。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
-## Live Streaming Methods
+## 直播方法
 
 <a id="setlivetranscoding"></a>
 
@@ -1295,15 +1295,15 @@ setLiveTranscoding(config: LiveStreamingTranscodingConfig): Promise<void>
 
 使用前请确保已 [开通旁路推流](https://doc.shengwang.cn/doc/media-push/restful/overview/product-overview)。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: LiveStreamingTranscodingConfig | 直播转码的设置，详见 [LiveStreamingTranscodingConfig](/zh-CN/api-reference/rtc/web/interfaces/live-streaming-transcoding-config)。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="startlivestreaming"></a>
 
@@ -1324,16 +1324,16 @@ await client.setLiveTranscoding(config);
 await client.startLiveStreaming("rtmp://xxxx", true);
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | url: string | 直播推流的地址，ASCII 字符。支持 RTMP 协议。 |
 | Optional transcodingEnabled: boolean | (可选) 是否启用直播转码。转码是指在旁路推流时对音视频流进行转码处理后，再推送到其他 RTMP 服务器，适用于频道内有多个主播，需要进行混流、合图的场景。如果设为 `true`，需要在调用该方法前先调用 [setLiveTranscoding](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#setlivetranscoding)。<br />- `true`: 启用转码，需要在调用该方法前先调用 [setLiveTranscoding](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#setlivetranscoding)。<br />- `false`: （默认）不启用转码，这种情况下需要保证当前用户正在发布。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="stoplivestreaming"></a>
 
@@ -1347,17 +1347,17 @@ stopLiveStreaming(url: string): Promise<void>
 
 该方法每次只能删除一路旁路推流地址。若需删除多路流，则需多次调用该方法。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | url: string | 待删除的推流地址。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
-## Other Methods
+## 其他方法
 
 <a id="_isprerender"></a>
 
@@ -1367,9 +1367,9 @@ Returns Promise &lt; void &gt;
 _isPreRender(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="_setrteinfo"></a>
 
@@ -1379,16 +1379,16 @@ Returns boolean
 _setRteInfo(rteUrl: string, rteSid: string): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | rteUrl: string |  |
 | rteSid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="disablecontentinspect"></a>
 
@@ -1400,9 +1400,9 @@ disableContentInspect(): Promise<void>
 
 关闭视频截图上传。
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="enableaudiovolumeindicator"></a>
 
@@ -1429,9 +1429,9 @@ client.on("volume-indicator", volumes => {
 })
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="enablecontentinspect"></a>
 
@@ -1458,15 +1458,15 @@ client.enableContentInspect({
 })
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | inspectConfig: InspectConfiguration | 视频截图上传配置。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="getlisteners"></a>
 
@@ -1478,15 +1478,15 @@ getListeners(event: string): Function[]
 
 指定一个事件名，获取当前所有监听这个事件的回调函数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 事件名称。 |
 
-#### Returns
+#### 返回值
 
-Returns Function []
+Function []
 
 <a id="getlocalaudiostats"></a>
 
@@ -1502,9 +1502,9 @@ getLocalAudioStats(): LocalAudioTrackStats
 
 获取本地音频相关信息。
 
-#### Returns
+#### 返回值
 
-Returns [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-audio-track-stats)
+[LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-audio-track-stats)
 
 <a id="getlocalvideostats"></a>
 
@@ -1518,9 +1518,9 @@ getLocalVideoStats(): LocalVideoTrackStats
 
 注意事项：iOS 14.4 及更早版本上无法获取到 `encodeDelay` 字段。
 
-#### Returns
+#### 返回值
 
-Returns [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-video-track-stats)
+[LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-video-track-stats)
 
 <a id="getnetworkquality"></a>
 
@@ -1530,9 +1530,9 @@ Returns [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-vid
 getNetworkQuality(): NetworkQuality
 ```
 
-#### Returns
+#### 返回值
 
-Returns [NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/network-quality)
+[NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/network-quality)
 
 <a id="getntpwalltimeinms"></a>
 
@@ -1546,9 +1546,9 @@ getNtpWallTimeInMs(): number
 
 在实时合唱的场景中，特别是在各个接收端由于网络原因导致下行链路不一致的情况下， 可以调用该方法来获取当前的 NTP 时间作为基准时间，以对齐多个接收端的歌词和音乐。
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="getrtcstats"></a>
 
@@ -1560,9 +1560,9 @@ getRTCStats(): AgoraRTCStats
 
 获取当前通话的统计信息。
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRTCStats](/zh-CN/api-reference/rtc/web/interfaces/agora-rtcstats)
+[AgoraRTCStats](/zh-CN/api-reference/rtc/web/interfaces/agora-rtcstats)
 
 通话相关的统计信息。
 
@@ -1582,15 +1582,15 @@ getRemoteAudioStats(): object
 
 Note: 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | [uid: string]: RemoteAudioTrackStats |  |
 
-#### Returns
+#### 返回值
 
-Returns object
+object
 
 - ##### [uid: string]: RemoteAudioTrackStats
 
@@ -1608,15 +1608,15 @@ getRemoteNetworkQuality(): object
 
 获取本地订阅的所有远端用户的上下行网络质量。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | [uid: string]: NetworkQuality |  |
 
-#### Returns
+#### 返回值
 
-Returns object
+object
 
 - ##### [uid: string]: NetworkQuality
 
@@ -1636,15 +1636,15 @@ getRemoteVideoStats(): object
 
 Note: 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | [uid: string]: RemoteVideoTrackStats |  |
 
-#### Returns
+#### 返回值
 
-Returns object
+object
 
 - ##### [uid: string]: RemoteVideoTrackStats
 
@@ -1681,15 +1681,15 @@ for(const {track, mediaType, error} of result) {
 }
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | subscribeList: object[] | 订阅的远端用户列表。列表中的每一条都包含以下信息：<br />- `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcremote-user)。<br />- `mediaType`：订阅的轨道媒体类型。<br />  - `"video"`: 订阅指定用户的视频轨道。<br />  - `"audio"`: 订阅指定用户的音频轨道。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; object [] &gt;
+Promise &lt; object [] &gt;
 
 正常情况下，返回列表的长度与顺序和 `subscribeList` 一致。列表中的每一条都包含以下信息：
 
@@ -1719,15 +1719,15 @@ massUnsubscribe(unsubscribeList: object[]): Promise<void>
 client.massUnsubscribe([{user:userA}, {user: userB}]);
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | unsubscribeList: object[] | 取消订阅的远端用户列表。列表中的每一条都包含以下信息：<br />- `user`：远端用户对象，详见 [AgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcremote-user)。<br />- `mediaType`：取消订阅的轨道媒体类型。<br />  - `"video"`: 取消订阅指定用户的视频轨道。<br />  - `"audio"`: 取消订阅指定用户的音频轨道。<br />  - 如不填，取消订阅该用户发布的所有轨道。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="off"></a>
 
@@ -1739,16 +1739,16 @@ off(event: string, listener: Function): void
 
 取消一个指定事件的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 监听事件时传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="on"></a>
 
@@ -1876,382 +1876,382 @@ on(event: string, listener: Function): void
 
 本地媒体连接 PeerConnection 的状态回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "peerconnection-state-change" | 事件名称。 |
 | listener: typeof event_peerconnection_state_change | 详见 [peerconnection-state-change](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_peerconnection_state_change)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 SDK 与服务器的连接状态发生改变回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "connection-state-change" | 事件名称。 |
 | listener: typeof event_connection_state_change | 详见 [connection-state-change](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_connection_state_change)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 远端用户或主播加入频道回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "user-joined" | 事件名称。 |
 | listener: typeof event_user_joined | 详见 [user-joined](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_joined)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 远端用户离线回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "user-left" | 事件名称。 |
 | listener: typeof event_user_left | 详见 [user-left](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_left)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 远端用户发布了新的音频轨道或视频轨道回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "user-published" | 事件名称。 |
 | listener: typeof event_user_published | 详见 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_published)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 远端用户停止或取消发布了音频或视频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "user-unpublished" | 事件名称。 |
 | listener: typeof event_user_unpublished | 详见 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_unpublished)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 用户状态发生变化回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "user-info-updated" | 事件名称。 |
 | listener: typeof event_user_info_updated | 详见 [user-info-updated](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_info_updated)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 SDK 开始尝试重新建立媒体连接（用于发布和订阅）的回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "media-reconnect-start" | 事件名称。 |
 | listener: typeof event_media_reconnect_start | 详见 [media-reconnect-start](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_media_reconnect_start)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 SDk 重新建立媒体连接（用于发布和订阅）结束的回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "media-reconnect-end" | 事件名称。 |
 | listener: typeof event_media_reconnect_end | 详见 [media-reconnect-end](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_media_reconnect_end)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 视频的订阅流类型发生改变回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "stream-type-changed" | 事件名称。 |
 | listener: typeof event_stream_type_changed | 详见 [stream-type-changed](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_stream_type_changed)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 订阅的音视频流回退为音频流或恢复为音视频流回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "stream-fallback" | 事件名称。 |
 | listener: typeof event_stream_fallback | 详见 [stream-fallback](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_stream_fallback)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 跨频道媒体流转发状态发生改变回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "channel-media-relay-state" | 事件名称。 |
 | listener: typeof event_channel_media_relay_state | 详见 [channel-media-relay-state](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_channel_media_relay_state)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 跨频道媒体流转发事件回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "channel-media-relay-event" | 事件名称。 |
 | listener: typeof event_channel_media_relay_event | 详见 [channel-media-relay-event](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_channel_media_relay_event)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 报告频道内正在说话的本地和远端用户及其音量的回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "volume-indicator" | 事件名称。 |
 | listener: typeof event_volume_indicator | 详见 [volume-indicator](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_volume_indicator)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 解密失败回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "crypt-error" | 事件名称。 |
 | listener: typeof event_crypt_error | 详见 [crypt-error](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_crypt_error)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 Token 即将过期回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "token-privilege-will-expire" | 事件名称。 |
 | listener: typeof event_token_privilege_will_expire | 详见 [token-privilege-will-expire](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_token_privilege_will_expire)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 Token 已过期回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "token-privilege-did-expire" | 事件名称。 |
 | listener: typeof event_token_privilege_did_expire | 详见 [token-privilege-did-expire](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_token_privilege_did_expire)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 网络上下行质量报告回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "network-quality" | 事件名称。 |
 | listener: typeof event_network_quality | 详见 [network-quality](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_network_quality)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 推流发生错误回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "live-streaming-error" | 事件名称。 |
 | listener: typeof event_live_streaming_error | 详见 [live-streaming-error](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_live_streaming_error)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 推流发生警告回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "live-streaming-warning" | 事件名称。 |
 | listener: typeof event_live_streaming_warning | 详见 [live-streaming-warning](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_live_streaming_warning)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 SDk 检测到异常事件回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "exception" | 事件名称。 |
 | listener: typeof event_exception | 详见 [exception](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_exception)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 通知当前媒体流是否经云代理服务转发回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "is-using-cloud-proxy" | 事件名称。 |
 | listener: typeof event_is_using_cloud_proxy | 详见 [is-using-cloud-proxy](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_is_using_cloud_proxy)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 ##### `deprecated`
 
 自 4.19.0 起废弃。 SDK 自动切换连接通道回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "join-fallback-to-proxy" | 事件名称。 |
 | listener: typeof event_join_fallback_to_proxy | 详见 [join-fallback-to-proxy](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_join_fallback_to_proxy)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 128 人场景下，报告当前频道内发布音频和视频轨道的用户。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "published-user-list" | 事件名称。 |
 | listener: typeof event_published_user_list | 详见 [published-user-list](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_published_user_list)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 视频截图上传服务的连接状态发生改变回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "content-inspect-connection-state-change" | 事件名称。 |
 | listener: typeof event_content_inspect_connection_state_change | 详见 [content-inspect-connection-state-change](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_content_inspect_connection_state_change)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 开启视频上传服务出错回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "content-inspect-error" | 事件名称。 |
 | listener: typeof event_content_inspect_error | 详见 [content-inspect-error](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_content_inspect_error)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 第三方视频审核服务连接状态发生改变回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "image-moderation-connection-state-change" | 事件名称。 |
 | listener: typeof event_image_moderation_connection_state_change | 详见 [image-moderation-connection-state-change](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_image_moderation_connection_state_change)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 收到数据流消息回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "stream-message" | 事件名称。 |
 | listener: typeof event_stream_message | 详见 [stream-message](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_stream_message)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 当指定的事件触发时，会调用传入的回调函数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 事件名称。 |
 | listener: Function | 回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="once"></a>
 
@@ -2265,16 +2265,16 @@ once(event: string, listener: Function): void
 
 当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="presubscribe"></a>
 
@@ -2292,38 +2292,38 @@ presubscribe(uid: UID, mediaType: "video"): Promise<IRemoteVideoTrack>
 presubscribe(uid: UID, mediaType: "video" | "audio"): Promise<IRemoteTrack>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: UID |  |
 | mediaType: "audio" |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-audio-track) &gt;
+Promise &lt; [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-audio-track) &gt;
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: UID |  |
 | mediaType: "video" |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-video-track) &gt;
+Promise &lt; [IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-video-track) &gt;
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | uid: UID |  |
 | mediaType: "video" \| "audio" |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-track) &gt;
+Promise &lt; [IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremote-track) &gt;
 
 <a id="removealllisteners"></a>
 
@@ -2335,15 +2335,15 @@ removeAllListeners(event?: string): void
 
 指定一个事件，取消其所有的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional event: string | 指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="renewtoken"></a>
 
@@ -2357,15 +2357,15 @@ renewToken(token: string): Promise<void>
 
 如果启用了 token 机制，过一段时间后 token 会失效。当收到 [AgoraRTCClient.on("token-privilege-will-expire")](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_token_privilege_will_expire) 回调时, 调用该方法传入新的 token，否则 SDK 会无法和服务器建立连接。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | token: string | 新的 token。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="sendcustomreportmessage"></a>
 
@@ -2379,15 +2379,15 @@ sendCustomReportMessage(reports: EventCustomReportParams[] | EventCustomReportPa
 
 目前支持 5s 内最多上报 20 条事件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | reports: EventCustomReportParams[] \| EventCustomReportParams | 上报的事件，允许一次上传多条事件。<br />```text<br />client.sendCustomReportMessage({<br />  reportId: "id1", category: "category1", event: "custom", label: "label1", value: 0,<br />}).then(() => {<br />  console.log("send custom report success");<br />}).catch(e => {<br />  console.error("send custom report error");<br />});<br />``` |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setclientrole"></a>
 
@@ -2404,16 +2404,16 @@ setClientRole(role: ClientRole, options?: ClientRoleOptions): Promise<void>
 
 注意事项： 通信场景（[mode](/zh-CN/api-reference/rtc/web/interfaces/client-config#mode) 设为 `"rtc"` ）无法使用本方法，默认所有用户都是 `"host"` 角色。 如果在加入频道后调用该方法切换用户角色，远端会触发 [AgoraRTCClient.on("user-joined")](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_joined) 或者 [AgoraRTCClient.on("user-left")](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_left) 回调。 如果已经调用了 [publish](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#publish)，想要将用户角色切换为 `"audience"` 时，必须先调用 [unpublish](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#unpublish) 取消发布后再调用本方法，否则会设置失败并抛出异常。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | role: ClientRole | 用户角色。 |
 | Optional options: ClientRoleOptions | 用户具体设置，包含观众延时级别。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setdualstreammode"></a>
 
@@ -2444,16 +2444,16 @@ setDualStreamMode(mode: SIMULCAST_STREAM_MODE, streamParameter?: LowStreamParame
 
 `setDualStreamMode` 有如下限制，如有需要，可以 [联系技术支持](https://tickets.shengwang.cn) 申请开通。 **观众身份** 发送小流申请主播发送端默认无响应； 在和 Native 互通的场景中，Native 端申请 Web 端主播小流，默认不支持。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mode: SIMULCAST_STREAM_MODE | 发送视频流的模式。 |
 | Optional streamParameter: LowStreamParameter | 小流的视频属性。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setencryptionconfig"></a>
 
@@ -2471,18 +2471,18 @@ setEncryptionConfig(encryptionMode: EncryptionMode, secret: string, salt?: Uint8
 
 注意事项： 同一频道内的所有用户必须设置相同的加密模式、密钥和盐值才能进行互通。 该方法必须在加入频道前调用，否则加密不生效。 自 v4.7.0 起，用户离开频道后，SDK 会自动关闭加密。如需重新开启加密，你需要在用户再次加入频道前调用该方法。 请勿在 CDN 推流场景中使用内置加密功能。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | encryptionMode: EncryptionMode | 加密模式。 |
 | secret: string | ASCII 字符。当用户设置的密码为弱密码时，SDK 会在控制台打印警告信息，提醒用户设置强密码，即密码必须包含大写字母、小写字母、数字和特殊字符，以及长度至少 8 个字符。由于浏览器加密算法限制，密钥长度不能超过 62 个字符。声网推荐你在服务端使用 OpenSSL 生成密钥，详见 [媒体流加密](http://doc.shengwang.cn/doc/rtc/javascript/advanced-features/channel-encryption)。 |
 | Optional salt: Uint8Array | 盐值，仅当加密模式为 `"aes-128-gcm2"` 或 `"aes-256-gcm2"` 时有效。声网推荐你在服务端使用 OpenSSL 生成盐值，详见 [媒体流加密](http://doc.shengwang.cn/doc/rtc/javascript/advanced-features/channel-encryption)。 |
 | Optional encryptDataStream: boolean | 是否加密数据流。数据流加密模式需与媒体流一致。数据流加密目前仅支持 `"aes-128-gcm2"` 和 `"aes-256-gcm2"` 模式，使用其他加密模式会出现报错。<br />- `true`: 启用数据流加密。<br />- `false`: 不启用数据流加密。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setimagemoderation"></a>
 
@@ -2498,15 +2498,15 @@ setImageModeration(enabled: true, config: ImageModerationConfiguration): Promise
 
 关闭第三方视频审核服务。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enabled: false | 默认为 `false` 且只能设为 `false`。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 开启和配置第三方视频审核服务。
 
@@ -2514,16 +2514,16 @@ Returns Promise &lt; void &gt;
 
 调用该方法前，请确保满足以下要求： 已经开通第三方视频审核服务。 本地用户已加入频道，本地视频轨道已经发布并且处于启用状态。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enabled: true | 默认为 `true` 且只能设为 `true`。 |
 | config: ImageModerationConfiguration | 视频审核服务的配置。详见 [ImageModerationConfiguration](/zh-CN/api-reference/rtc/web/interfaces/image-moderation-configuration)。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setlocalaccesspointsv2"></a>
 
@@ -2560,17 +2560,17 @@ client.setLocalAccessPointsV2({
 })
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: LocalAccessPointConfig | 混合云或私有化平台的配置参数。详见 [LocalAccessPointConfig](/zh-CN/api-reference/rtc/web/globals#localaccesspointconfig)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-## Proxy Methods
+## 代理方法
 
 <a id="setproxyserver"></a>
 
@@ -2593,15 +2593,15 @@ setProxyServer(proxyServer: string): void
 
 注意事项： 该方法必须在 [join](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#join) 之前调用。 在使用 Firefox 浏览器时，跨运营商代理速度会比较慢。声网建议使用同运营商进行代理。如果必须使用跨运营商代理，则避免使用 Firefox 浏览器。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | proxyServer: string | 你的代理服务器域名，ASCII 字符。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="startproxyserver"></a>
 
@@ -2617,15 +2617,15 @@ startProxyServer(mode?: number): void
 
 使用云代理服务还需要一些额外设置，详见 [使用云代理服务](http://doc.shengwang.cn/doc/rtc/javascript/basic-features/firewall)。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional mode: number | 云代理模式：<br />- `3`: UDP 协议的云代理，即 Force UDP 云代理模式。在该模式下，SDK 始终通过 UDP 协议传输数据。<br />- `5`: TCP（加密）协议的云代理，即 Force TCP 云代理模式。在该模式下，SDK 始终通过 TLS 443 传输数据。<br />注意事项： 自 v4.15.0 起， `mode` 的默认值为 `3`。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="stopproxyserver"></a>
 
@@ -2639,6 +2639,6 @@ stopProxyServer(): void
 
 该方法必须在加入频道前或离开频道后调用。
 
-#### Returns
+#### 返回值
 
-Returns void
+void

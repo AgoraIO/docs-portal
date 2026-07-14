@@ -1,10 +1,9 @@
 ---
 title: "音频设备管理"
-description: "枚举系统中的音频播放设备。"
+description: "音频设备管理 API reference."
 ---
-<a id="toc_audio_device"></a>
 
-## 音频设备管理
+<a id="toc_audio_device"></a>
 
 <a id="api_iaudiodevicemanager_enumerateplaybackdevices"></a>
 
@@ -20,7 +19,7 @@ virtual IAudioDeviceCollection *enumeratePlaybackDevices() = 0;
 
 <a id="api_iaudiodevicemanager_enumerateplaybackdevices__detailed_desc"></a>
 
-该方法返回一个 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection) 对象，包含系统中的所有音频播放设备。使用该对象后，必须调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_release_iaudiodevicemanager) 方法释放资源。
+该方法返回一个 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection) 对象，包含系统中的所有音频播放设备。使用该对象后，必须调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_release_iaudiodevicemanager) 方法释放资源。
 
 :::info[注]
 该方法仅适用于 Windows 和 macOS 平台。
@@ -33,7 +32,6 @@ virtual IAudioDeviceCollection *enumeratePlaybackDevices() = 0;
 - 方法调用成功，返回一个 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection) 对象，详见 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)。
 - 方法调用失败，返回 NULL。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_enumeraterecordingdevices"></a>
@@ -50,7 +48,7 @@ virtual IAudioDeviceCollection *enumerateRecordingDevices() = 0;
 
 <a id="api_iaudiodevicemanager_enumeraterecordingdevices__detailed_desc"></a>
 
-该方法返回一个 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection) 对象，其中包含系统中的所有音频采集设备。使用该对象后，你必须调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_release_iaudiodevicemanager) 方法释放资源。
+该方法返回一个 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection) 对象，其中包含系统中的所有音频采集设备。使用该对象后，你必须调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_release_iaudiodevicemanager) 方法释放资源。
 
 :::info[注]
 该方法仅适用于 Windows 和 macOS 平台。
@@ -63,7 +61,6 @@ virtual IAudioDeviceCollection *enumerateRecordingDevices() = 0;
 - 方法调用成功，返回 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection) 对象，详见 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)。
 - 方法调用失败，返回 NULL。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice"></a>
@@ -100,7 +97,6 @@ virtual int followSystemLoopbackDevice(bool enable) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice"></a>
@@ -139,7 +135,6 @@ virtual int followSystemPlaybackDevice(bool enable) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice"></a>
@@ -178,7 +173,6 @@ virtual int followSystemRecordingDevice(bool enable) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicecollection_getapplicationvolume"></a>
@@ -210,7 +204,6 @@ virtual int getApplicationVolume(int &volume) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_irtcengine_getaudiodeviceinfo"></a>
@@ -249,7 +242,6 @@ virtual int getAudioDeviceInfo(DeviceInfo& deviceInfo) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_iaudiodevicecollection_getcount_iaudiodevicecollection"></a>
@@ -266,7 +258,7 @@ virtual int getCount() = 0;
 
 <a id="api_iaudiodevicecollection_getcount_iaudiodevicecollection__detailed_desc"></a>
 
-如果在调用该方法前调用了 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices)，SDK 会返回音频播放设备的数量；如果在调用该方法前调用了 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices)，SDK 会返回音频采集设备的数量。
+如果在调用该方法前调用了 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices)，SDK 会返回音频播放设备的数量；如果在调用该方法前调用了 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices)，SDK 会返回音频采集设备的数量。
 
 <a id="api_iaudiodevicecollection_getcount_iaudiodevicecollection__return_values"></a>
 
@@ -274,7 +266,6 @@ virtual int getCount() = 0;
 
 方法调用成功，返回音频播放设备或音频采集设备的总数。
 
-### 所属接口类
 - [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicecollection_getdefaultdevice2_iaudiodevicecollection"></a>
@@ -291,7 +282,7 @@ virtual int getDefaultDevice(char deviceName[MAX_DEVICE_ID_LENGTH], char deviceT
 
 <a id="api_iaudiodevicecollection_getdefaultdevice2_iaudiodevicecollection__detailed_desc"></a>
 
-该方法仅适用于 macOS 平台。调用该方法前，你需要先调用 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 或 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取设备列表。
+该方法仅适用于 macOS 平台。调用该方法前，你需要先调用 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 或 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取设备列表。
 
 <a id="api_iaudiodevicecollection_getdefaultdevice2_iaudiodevicecollection__parameters"></a>
 
@@ -316,7 +307,6 @@ virtual int getDefaultDevice(char deviceName[MAX_DEVICE_ID_LENGTH], char deviceT
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicecollection_getdefaultdevice_iaudiodevicecollection"></a>
@@ -334,7 +324,7 @@ virtual int getDefaultDevice(char deviceName[MAX_DEVICE_ID_LENGTH], char deviceI
 <a id="api_iaudiodevicecollection_getdefaultdevice_iaudiodevicecollection__detailed_desc"></a>
 
 - 该方法仅适用于 Windows 和 macOS 平台。
-- 在调用该方法前，你需要先调用 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 或 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取设备列表。
+- 在调用该方法前，你需要先调用 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 或 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取设备列表。
 
 <a id="api_iaudiodevicecollection_getdefaultdevice_iaudiodevicecollection__parameters"></a>
 
@@ -355,7 +345,6 @@ virtual int getDefaultDevice(char deviceName[MAX_DEVICE_ID_LENGTH], char deviceI
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicecollection_getdevice2_iaudiodevicecollection"></a>
@@ -403,7 +392,6 @@ virtual int getDevice(int index, char deviceName[MAX_DEVICE_ID_LENGTH], char dev
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicecollection_getdevice_iaudiodevicecollection"></a>
@@ -426,7 +414,7 @@ virtual int getDevice(int index, char deviceName[MAX_DEVICE_ID_LENGTH], char dev
 
 #### `index`
 
-视频设备的索引值。该值必须小于 [getCount](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicecollection_getcount_iaudiodevicecollection) 返回的设备数量。
+视频设备的索引值。该值必须小于 [getCount](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicecollection_getcount_iaudiodevicecollection) 返回的设备数量。
 
 #### `deviceName`
 
@@ -443,7 +431,6 @@ virtual int getDevice(int index, char deviceName[MAX_DEVICE_ID_LENGTH], char dev
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicemanager_getloopbackdevice"></a>
@@ -477,7 +464,6 @@ virtual int getLoopbackDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdevice"></a>
@@ -513,7 +499,6 @@ virtual int getPlaybackDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo"></a>
@@ -553,7 +538,6 @@ virtual int getPlaybackDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char devi
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo2"></a>
@@ -595,7 +579,6 @@ virtual int getPlaybackDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char devi
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdevicemute"></a>
@@ -630,7 +613,6 @@ virtual int getPlaybackDeviceMute(bool *mute) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdevicevolume"></a>
@@ -662,7 +644,6 @@ virtual int getPlaybackDeviceVolume(int *volume) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdevice"></a>
@@ -698,7 +679,6 @@ virtual int getRecordingDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo"></a>
@@ -738,7 +718,6 @@ virtual int getRecordingDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char dev
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo2"></a>
@@ -780,7 +759,6 @@ virtual int getRecordingDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char dev
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdevicemute"></a>
@@ -815,7 +793,6 @@ virtual int getRecordingDeviceMute(bool *mute) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdevicevolume"></a>
@@ -851,7 +828,6 @@ virtual int getRecordingDeviceVolume(int *volume) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicecollection_isapplicationmute"></a>
@@ -886,7 +862,6 @@ virtual int isApplicationMute(bool &mute) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicecollection_release_iaudiodevicecollection"></a>
@@ -903,7 +878,6 @@ virtual void release() = 0;
 
 <a id="api_iaudiodevicecollection_release_iaudiodevicecollection__detailed_desc"></a>
 
-### 所属接口类
 - [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicemanager_release_iaudiodevicemanager"></a>
@@ -920,7 +894,6 @@ virtual void release() = 0;
 
 <a id="api_iaudiodevicemanager_release_iaudiodevicemanager__detailed_desc"></a>
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicecollection_setapplicationmute"></a>
@@ -955,7 +928,6 @@ virtual int setApplicationMute(bool mute) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicecollection_setapplicationvolume"></a>
@@ -987,7 +959,6 @@ virtual int setApplicationVolume(int volume) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicecollection_setdevice_iaudiodevicecollection"></a>
@@ -1015,7 +986,7 @@ virtual int setDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 #### `deviceId`
 
-设备 ID。你可以通过调用 [enumerateVideoDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/video-device#api_ivideodevicemanager_enumeratevideodevices) 获取。
+设备 ID。你可以通过调用 [enumerateVideoDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/video-device#api_ivideodevicemanager_enumeratevideodevices) 获取。
 
 :::info[注]
 最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-maxdeviceidlengthtype)。
@@ -1028,7 +999,6 @@ virtual int setDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicecollection)
 
 <a id="api_iaudiodevicemanager_setloopbackdevice"></a>
@@ -1067,7 +1037,7 @@ SDK 默认使用当前播放设备作为声卡采集设备。如果你希望指�
 
 #### `deviceId`
 
-指定 SDK 的声卡采集设备。你可以通过调用 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取设备 ID。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-maxdeviceidlengthtype)。
+指定 SDK 的声卡采集设备。你可以通过调用 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取设备 ID。最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-maxdeviceidlengthtype)。
 
 <a id="api_iaudiodevicemanager_setloopbackdevice__return_values"></a>
 
@@ -1076,7 +1046,6 @@ SDK 默认使用当前播放设备作为声卡采集设备。如果你希望指�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setplaybackdevice"></a>
@@ -1105,7 +1074,7 @@ virtual int setPlaybackDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 #### `deviceId`
 
-指定音频播放设备的 ID。你可以通过调用 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取设备 ID。连接或断开音频设备不会改变 `deviceId` 的值。
+指定音频播放设备的 ID。你可以通过调用 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取设备 ID。连接或断开音频设备不会改变 `deviceId` 的值。
 
 :::info[注]
 最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-maxdeviceidlengthtype)。
@@ -1118,7 +1087,6 @@ virtual int setPlaybackDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute"></a>
@@ -1153,7 +1121,6 @@ virtual int setPlaybackDeviceMute(bool mute) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume"></a>
@@ -1189,7 +1156,6 @@ virtual int setPlaybackDeviceVolume(int volume) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevice"></a>
@@ -1218,7 +1184,7 @@ virtual int setRecordingDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 #### `deviceId`
 
-音频采集设备的 ID。你可以通过调用 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取设备 ID。连接或断开音频设备不会改变 `deviceId` 的值。
+音频采集设备的 ID。你可以通过调用 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取设备 ID。连接或断开音频设备不会改变 `deviceId` 的值。
 
 <a id="api_iaudiodevicemanager_setrecordingdevice__return_values"></a>
 
@@ -1227,7 +1193,6 @@ virtual int setRecordingDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute"></a>
@@ -1262,7 +1227,6 @@ virtual int setRecordingDeviceMute(bool mute) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume"></a>
@@ -1296,7 +1260,6 @@ virtual int setRecordingDeviceVolume(int volume) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest"></a>
@@ -1313,14 +1276,14 @@ virtual int startAudioDeviceLoopbackTest(int indicationInterval) = 0;
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__detailed_desc"></a>
 
-该方法用于测试本地音频采集设备和播放设备是否正常工作。调用该方法后，音频采集设备会采集本地音频，音频播放设备会播放采集到的音频。SDK 会按照设置的时间间隔触发两个独立的 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告采集设备（`uid` = 0）和播放设备（`uid` = 1）的音量信息。
+该方法用于测试本地音频采集设备和播放设备是否正常工作。调用该方法后，音频采集设备会采集本地音频，音频播放设备会播放采集到的音频。SDK 会按照设置的时间间隔触发两个独立的 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告采集设备（`uid` = 0）和播放设备（`uid` = 1）的音量信息。
 
 :::info[注]
 - 该方法仅适用于 Windows 和 macOS 平台。
 - 可以在加入频道前或加入频道后调用该方法。
 - 该方法仅在主播角色调用时生效。
 - 该方法仅测试本地音频设备，不涉及网络状况。
-- 测试完成后，请调用 [stopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
+- 测试完成后，请调用 [stopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__parameters"></a>
@@ -1329,7 +1292,7 @@ virtual int startAudioDeviceLoopbackTest(int indicationInterval) = 0;
 
 #### `indicationInterval`
 
-SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔（毫秒）。建议设置为大于 200 毫秒的值。该值不能小于 10 毫秒，否则无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
+SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔（毫秒）。建议设置为大于 200 毫秒的值。该值不能小于 10 毫秒，否则无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__return_values"></a>
 
@@ -1338,7 +1301,6 @@ SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest_iaudiodevicemanager"></a>
@@ -1355,10 +1317,10 @@ virtual int startPlaybackDeviceTest(const char *testAudioFilePath) = 0;
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest_iaudiodevicemanager__detailed_desc"></a>
 
-该方法用于测试本地音频播放设备是否正常工作。调用该方法后，SDK 会播放你指定的音频文件。如果你能听到声音，说明播放设备工作正常。调用该方法后，SDK 每 100 毫秒触发一次 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 1 及播放设备的音量信息。该方法与 [startEchoTest](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_startechotest3) 的区别在于， [startPlaybackDeviceTest](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_startplaybackdevicetest_iaudiodevicemanager) 仅检测本地音频播放设备是否正常，而 [startEchoTest](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_startechotest3) 可同时检测音视频设备和网络状况。
+该方法用于测试本地音频播放设备是否正常工作。调用该方法后，SDK 会播放你指定的音频文件。如果你能听到声音，说明播放设备工作正常。调用该方法后，SDK 每 100 毫秒触发一次 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 1 及播放设备的音量信息。该方法与 [startEchoTest](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_startechotest3) 的区别在于， [startPlaybackDeviceTest](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_startplaybackdevicetest_iaudiodevicemanager) 仅检测本地音频播放设备是否正常，而 [startEchoTest](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_startechotest3) 可同时检测音视频设备和网络状况。
 
 :::info[注]
-请在加入频道前调用该方法。测试完成后，请调用 [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_stopplaybackdevicetest_iaudiodevicemanager) 停止测试，再加入频道。
+请在加入频道前调用该方法。测试完成后，请调用 [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_stopplaybackdevicetest_iaudiodevicemanager) 停止测试，再加入频道。
 :::
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest_iaudiodevicemanager__parameters"></a>
@@ -1376,7 +1338,6 @@ virtual int startPlaybackDeviceTest(const char *testAudioFilePath) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest_iaudiodevicemanager"></a>
@@ -1393,10 +1354,10 @@ virtual int startRecordingDeviceTest(int indicationInterval) = 0;
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest_iaudiodevicemanager__detailed_desc"></a>
 
-调用该方法可以测试本地音频采集设备是否正常工作。调用后，SDK 会按照设定的时间间隔触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` 为 0 的采集设备音量信息。该方法仅检测本地音频采集设备，而 [startEchoTest](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_startechotest3) 方法还可检测音视频设备和网络状况。
+调用该方法可以测试本地音频采集设备是否正常工作。调用后，SDK 会按照设定的时间间隔触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` 为 0 的采集设备音量信息。该方法仅检测本地音频采集设备，而 [startEchoTest](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_startechotest3) 方法还可检测音视频设备和网络状况。
 
 :::info[注]
-请在加入频道前调用该方法。测试完成后，请在加入频道前调用 [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_stoprecordingdevicetest_iaudiodevicemanager) 停止测试。
+请在加入频道前调用该方法。测试完成后，请在加入频道前调用 [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_stoprecordingdevicetest_iaudiodevicemanager) 停止测试。
 :::
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest_iaudiodevicemanager__parameters"></a>
@@ -1405,7 +1366,7 @@ virtual int startRecordingDeviceTest(int indicationInterval) = 0;
 
 #### `indicationInterval`
 
-触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔（毫秒）。该值必须大于 10，否则无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，且 SDK 返回错误码 -2。建议设置为 100。
+触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔（毫秒）。该值必须大于 10，否则无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，且 SDK 返回错误码 -2。建议设置为 100。
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest_iaudiodevicemanager__return_values"></a>
 
@@ -1416,7 +1377,6 @@ virtual int startRecordingDeviceTest(int indicationInterval) = 0;
 
   - -2：参数无效，请检查参数设置。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest"></a>
@@ -1434,7 +1394,7 @@ virtual int stopAudioDeviceLoopbackTest() = 0;
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__detailed_desc"></a>
 
 :::info[注]
-[stopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 方法仅适用于 Windows 和 macOS 平台。你可以在加入频道前或加入频道后调用该方法。该方法仅在主播角色调用时生效。调用 [startAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 方法开始回路测试后，请确保调用该方法停止回路测试。
+[stopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 方法仅适用于 Windows 和 macOS 平台。你可以在加入频道前或加入频道后调用该方法。该方法仅在主播角色调用时生效。调用 [startAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 方法开始回路测试后，请确保调用该方法停止回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__return_values"></a>
@@ -1444,7 +1404,6 @@ virtual int stopAudioDeviceLoopbackTest() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest_iaudiodevicemanager"></a>
@@ -1461,7 +1420,7 @@ virtual int stopPlaybackDeviceTest() = 0;
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest_iaudiodevicemanager__detailed_desc"></a>
 
-调用 [startPlaybackDeviceTest](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_startplaybackdevicetest_iaudiodevicemanager) 开始测试后，必须调用该方法停止测试。
+调用 [startPlaybackDeviceTest](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_startplaybackdevicetest_iaudiodevicemanager) 开始测试后，必须调用该方法停止测试。
 
 :::info[注]
 请在加入频道前调用该方法。
@@ -1474,7 +1433,6 @@ virtual int stopPlaybackDeviceTest() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest_iaudiodevicemanager"></a>
@@ -1491,7 +1449,7 @@ virtual int stopRecordingDeviceTest() = 0;
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest_iaudiodevicemanager__detailed_desc"></a>
 
-调用 [startRecordingDeviceTest](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-device#api_iaudiodevicemanager_startrecordingdevicetest_iaudiodevicemanager) 开始音频采集设备测试后，必须调用该方法停止测试。
+调用 [startRecordingDeviceTest](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_startrecordingdevicetest_iaudiodevicemanager) 开始音频采集设备测试后，必须调用该方法停止测试。
 
 :::info[注]
 请在加入频道前调用该方法。
@@ -1504,7 +1462,6 @@ virtual int stopRecordingDeviceTest() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged"></a>
@@ -1543,7 +1500,6 @@ virtual void onAudioDeviceStateChanged(const char* deviceId, int deviceType, int
 
 设备状态，详见 [MEDIA_DEVICE_STATE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediadevicestatetype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiodevicevolumechanged"></a>
@@ -1583,5 +1539,4 @@ virtual void onAudioDeviceVolumeChanged(MEDIA_DEVICE_TYPE deviceType, int volume
 - true：音频设备已静音。
 - false：音频设备未静音。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,0 +1,28 @@
+---
+title: "addPresenceManagerListener method"
+description: "API docs for the addPresenceManagerListener method from the PresenceDeprecated extension, for the Dart programming language."
+---
+
+Registers a new presence manager listener.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The presence manager listener to be registered: [ChatPresenceManagerListener](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-presence-manager-listener). |
+
+```dart title="Dart"
+@Deprecated("Use addEventHandler to instead")void addPresenceManagerListener(ChatPresenceManagerListener listener)@Deprecated("Use addEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+@Deprecated("Use addEventHandler to instead")
+void addPresenceManagerListener(ChatPresenceManagerListener listener) {
+  _listeners.remove(listener);
+  _listeners.add(listener);
+}
+```

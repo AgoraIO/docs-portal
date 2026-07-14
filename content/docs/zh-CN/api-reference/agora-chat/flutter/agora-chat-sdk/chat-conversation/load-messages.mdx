@@ -1,0 +1,60 @@
+---
+title: "loadMessages method"
+description: "API docs for the loadMessages method from the ChatConversation class, for the Dart programming language."
+---
+
+Loads multiple messages from the local database.
+
+Loads messages from the local database before the specified message.
+
+The loaded messages will also join the existing messages of the conversation stored in the memory.
+
+- `ChatSearchDirection.Up`: Messages are retrieved in the reverse chronological order of when the server received messages.
+- `ChatSearchDirection.Down`: Messages are retrieved in the chronological order of when the server received messages.
+
+**Return** The message list.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `startMsgId` | The starting message ID. Message loaded in the memory before this message ID will be loaded. If the `startMsgId` is set as "" or null, the SDK will first load the latest messages in the database. |
+| `loadCount` | The number of messages per page. |
+| `direction` | The direction in which the message is loaded: ChatSearchDirection. |
+
+```dart title="Dart"
+Future<List<ChatMessage>> loadMessages({String startMsgId = '', int loadCount = 20, ChatSearchDirection direction = ChatSearchDirection.Up})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<List<ChatMessage>> loadMessages({
+  String startMsgId = '',
+  int loadCount = 20,
+  ChatSearchDirection direction = ChatSearchDirection.Up,
+}) async {
+  Map req = this._toJson();
+  req["startId"] = startMsgId;
+  req['count'] = loadCount;
+  req['direction'] = direction == ChatSearchDirection.Up ? "up" : "down";
+
+  Map<String, dynamic> result = await _emConversationChannel.invokeMethod(
+      ChatMethodKeys.loadMsgWithStartId, req);
+
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatMessage> msgList = [];
+    result[ChatMethodKeys.loadMsgWithStartId]?.forEach((element) {
+      msgList.add(ChatMessage.fromJson(element));
+    });
+    return msgList;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

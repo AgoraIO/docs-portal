@@ -1,10 +1,9 @@
 ---
 title: "本地截图上传"
-description: "开启/关闭本地截图上传。"
+description: "本地截图上传 API reference."
 ---
-<a id="toc_snapshot"></a>
 
-## 本地截图上传
+<a id="toc_snapshot"></a>
 
 <a id="api_irtcengine_enablecontentinspect"></a>
 
@@ -55,7 +54,6 @@ public abstract int EnableContentInspect(bool enabled, ContentInspectConfig conf
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enablecontentinspectex"></a>
@@ -110,7 +108,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_takesnapshot"></a>
@@ -145,7 +142,7 @@ public abstract int TakeSnapshot(uint uid, string filePath);
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [OnSnapshotTaken](/zh-CN/api-reference/rtc/unity/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功和获取截图的详情。
+成功调用该方法后，SDK 会触发 [OnSnapshotTaken](/zh-CN/api-reference/rtc/unity/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功和获取截图的详情。
 
 <a id="api_irtcengine_takesnapshot__parameters"></a>
 
@@ -175,7 +172,6 @@ public abstract int TakeSnapshot(uint uid, string filePath);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_takesnapshot2"></a>
@@ -209,7 +205,7 @@ public abstract int TakeSnapshot(uint uid, SnapshotConfig config);
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [OnSnapshotTaken](/zh-CN/api-reference/rtc/unity/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功和获取截图的详情。
+成功调用该方法后，SDK 会触发 [OnSnapshotTaken](/zh-CN/api-reference/rtc/unity/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功和获取截图的详情。
 
 <a id="api_irtcengine_takesnapshot2__parameters"></a>
 
@@ -230,7 +226,6 @@ public abstract int TakeSnapshot(uint uid, SnapshotConfig config);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_takesnapshotex"></a>
@@ -265,7 +260,7 @@ public abstract int TakeSnapshotEx(RtcConnection connection, uint uid, string fi
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [OnSnapshotTaken](/zh-CN/api-reference/rtc/unity/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功和获取截图的详情。
+成功调用该方法后，SDK 会触发 [OnSnapshotTaken](/zh-CN/api-reference/rtc/unity/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功和获取截图的详情。
 
 <a id="api_irtcengineex_takesnapshotex__parameters"></a>
 
@@ -299,7 +294,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengineex_takesnapshotex2"></a>
@@ -334,7 +328,7 @@ public abstract int TakeSnapshotEx(RtcConnection connection, uint uid, SnapshotC
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [OnSnapshotTaken](/zh-CN/api-reference/rtc/unity/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功和获取截图的详情。
+成功调用该方法后，SDK 会触发 [OnSnapshotTaken](/zh-CN/api-reference/rtc/unity/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 回调，报告截图是否成功和获取截图的详情。
 
 <a id="api_irtcengineex_takesnapshotex2__parameters"></a>
 
@@ -359,7 +353,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken"></a>
@@ -376,7 +369,7 @@ public virtual void OnSnapshotTaken(RtcConnection connection, uint uid, string f
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken__detailed_desc"></a>
 
-成功调用 [TakeSnapshot [1/2]](/zh-CN/api-reference/rtc/unity/snapshot#api_irtcengine_takesnapshot) 后，SDK 触发该回调报告截图是否成功和获取截图的详情。
+成功调用 [TakeSnapshot [1/2]](/zh-CN/api-reference/rtc/unity/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 后，SDK 触发该回调报告截图是否成功和获取截图的详情。
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken__parameters"></a>
 
@@ -410,8 +403,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 - &lt; 0: 截图失败。
 
   - -1：写入文件失败或 JPEG 编码失败。
-  - -2： [TakeSnapshot [1/2]](/zh-CN/api-reference/rtc/unity/snapshot#api_irtcengine_takesnapshot) 方法调用后 1 秒内没有收到指定用户的视频帧。可能的原因有：本地采集停止、远端停止发布或者视频数据处理堵塞。
-  - -3： [TakeSnapshot [1/2]](/zh-CN/api-reference/rtc/unity/snapshot#api_irtcengine_takesnapshot) 方法调用过于频繁。
+  - -2： [TakeSnapshot [1/2]](/zh-CN/api-reference/rtc/unity/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法调用后 1 秒内没有收到指定用户的视频帧。可能的原因有：本地采集停止、远端停止发布或者视频数据处理堵塞。
+  - -3： [TakeSnapshot [1/2]](/zh-CN/api-reference/rtc/unity/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) 方法调用过于频繁。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)

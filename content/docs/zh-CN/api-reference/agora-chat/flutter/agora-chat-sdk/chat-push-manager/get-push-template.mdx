@@ -1,0 +1,31 @@
+---
+title: "getPushTemplate method"
+description: "API docs for the getPushTemplate method from the ChatPushManager class, for the Dart programming language."
+---
+
+Gets the offline push template for Settings.
+
+**Return** The push template name.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+```dart title="Dart"
+Future<String?> getPushTemplate()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<String?> getPushTemplate() async {
+  Map result = await PushChannel.invokeMethod(ChatMethodKeys.getPushTemplate);
+  try {
+    ChatError.hasErrorFromResult(result);
+    String? ret = result[ChatMethodKeys.getPushTemplate];
+    return ret;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

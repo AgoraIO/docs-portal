@@ -1,0 +1,27 @@
+---
+title: "addCustomListener method"
+description: "API docs for the addCustomListener method from the ChatClientDeprecated extension, for the Dart programming language."
+---
+
+Adds a custom listener to receive data from iOS or Android devices.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The custom native listener to be added. |
+
+```dart title="Dart"
+@Deprecated("Use #customEventHandler to instead")void addCustomListener(ChatCustomListener listener)@Deprecated("Use #customEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+@Deprecated("Use #customEventHandler to instead")
+void addCustomListener(ChatCustomListener listener) {
+  _customListeners.add(listener);
+}
+```

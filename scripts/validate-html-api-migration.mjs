@@ -20,6 +20,27 @@ const matrix = [
     source: 'rtc/Android',
   },
   {
+    contentChecks: [
+      {
+        file: 'index.mdx',
+        includes: [
+          '### Cloud Drive Store',
+          '/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/cloud-drive-store',
+        ],
+        excludes: [
+          '[Cloud Drive Store](#cloud-drive-store)',
+          '/zh-CN/api-reference/flexible-classroom/web/classes/',
+        ],
+      },
+      {
+        file: 'meta.json',
+        includes: [
+          '[CloudDriveStore]',
+          '[WidgetStore]',
+          '"!modules"',
+        ],
+      },
+    ],
     id: 'typedoc-flex-web',
     lane: 'TypeDoc',
     platform: 'web',
@@ -29,9 +50,28 @@ const matrix = [
       'classes/agora-rte-engine.mdx',
     ],
     source: 'flexible-classroom/Web',
+    targetRouteSuffix: 'flexible-classroom/web/api-reference',
+    navigationManifest:
+      'scripts/html-migration/navigation/flexible-classroom-store.json',
   },
   {
     contentChecks: [
+      {
+        file: 'index.mdx',
+        includes: ['### SDK 初始化', '### 实时房间管理'],
+        excludes: ['[SDK 初始化](#sdk-初始化)'],
+      },
+      {
+        file: 'meta.json',
+        includes: [
+          '[WhiteWebSdk]',
+          '[Room]',
+          '[Player]',
+          '[Displayer]',
+          '[Globals]',
+          '"!interfaces"',
+        ],
+      },
       {
         file: 'globals.mdx',
         includes: [
@@ -81,6 +121,8 @@ const matrix = [
     product: 'whiteboard',
     sampleFiles: ['globals.mdx'],
     source: 'whiteboard/Web',
+    navigationManifest:
+      'scripts/html-migration/navigation/whiteboard-web.json',
   },
   {
     id: 'doxygen-recording-cpp',
@@ -192,6 +234,20 @@ function migrationArgs(entry, sourceDir, outputDir, opts, dryRun) {
     entry.platform,
     '--route-base-path',
     opts.routeBasePath,
+    ...(entry.targetRouteSuffix
+      ? [
+          '--target-base-path',
+          `${opts.routeBasePath}/${entry.targetRouteSuffix}`,
+        ]
+      : []),
+    ...(entry.navigationManifest
+      ? [
+          '--navigation',
+          'public-index',
+          '--navigation-manifest',
+          entry.navigationManifest,
+        ]
+      : []),
     ...(dryRun ? ['--dry-run'] : []),
   ];
 }
@@ -271,9 +327,59 @@ export function hasInvalidMarkdownHeading(text) {
   return false;
 }
 
-async function scanGeneratedOutput(outputDir, sampleFiles, contentChecks = []) {
+export function findDuplicateExplicitAnchorIds(text) {
+  const counts = new Map();
+  for (const match of text.matchAll(/<a id="([^"]+)"><\/a>/g)) {
+    counts.set(match[1], (counts.get(match[1]) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .filter(([, count]) => count > 1)
+    .map(([id]) => id)
+    .sort();
+}
+
+export function hasPageDescriptionCopiedFromFirstMember(text) {
+  const descriptionMatch = text.match(
+    /^description: ("(?:[^"\\]|\\.)*")$/m,
+  );
+  if (!descriptionMatch) return false;
+
+  let description;
+  try {
+    description = JSON.parse(descriptionMatch[1]);
+  } catch {
+    return false;
+  }
+
+  const body = text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
+  const lines = body.split(/\r?\n/).map((line) => line.trim());
+  const isCompatibilityAnchor = (line) => /^<(?:a|span)\b/.test(line);
+  const firstContentIndex = lines.findIndex(
+    (line) => line && !isCompatibilityAnchor(line),
+  );
+  if (
+    firstContentIndex === -1 ||
+    !/^#{1,6}\s+/.test(lines[firstContentIndex])
+  ) {
+    return false;
+  }
+
+  const firstMemberDescription = lines
+    .slice(firstContentIndex + 1)
+    .find((line) => line && !isCompatibilityAnchor(line));
+  return firstMemberDescription === description;
+}
+
+async function scanGeneratedOutput(
+  outputDir,
+  sampleFiles,
+  contentChecks = [],
+  lane,
+) {
   const issues = {
     contentMismatches: [],
+    copiedMemberDescriptions: [],
+    duplicateAnchors: [],
     helperPollution: [],
     internalHtmlLinks: [],
     invalidHeadings: [],
@@ -336,6 +442,17 @@ async function scanGeneratedOutput(outputDir, sampleFiles, contentChecks = []) {
       if (helperPattern.test(text)) issues.helperPollution.push(relative);
       if (hasInvalidMarkdownHeading(text))
         issues.invalidHeadings.push(relative);
+      if (entry.name.endsWith('.mdx')) {
+        for (const id of findDuplicateExplicitAnchorIds(text)) {
+          issues.duplicateAnchors.push(`${relative}: ${id}`);
+        }
+        if (
+          lane === 'DITA/Oxygen' &&
+          hasPageDescriptionCopiedFromFirstMember(text)
+        ) {
+          issues.copiedMemberDescriptions.push(relative);
+        }
+      }
 
       for (const match of text.matchAll(markdownHtmlLinkPattern)) {
         const href = match[1];
@@ -437,6 +554,7 @@ function renderReport({ compileResult, opts, restResult, results }) {
       `- Sample files checked: ${result.sampleFiles.map((file) => `\`${file}\``).join(', ')}`,
       `- Missing required files: ${result.issues.missingFiles.length}`,
       `- Content assertion mismatches: ${result.issues.contentMismatches.length}`,
+      `- Duplicate explicit anchors: ${result.issues.duplicateAnchors.length}`,
       `- Internal relative .html links: ${result.issues.internalHtmlLinks.length}`,
       `- Helper-page pollution matches: ${result.issues.helperPollution.length}`,
       `- Invalid level-7+ headings: ${result.issues.invalidHeadings.length}`,
@@ -526,6 +644,7 @@ async function main() {
       outputDir,
       entry.sampleFiles,
       entry.contentChecks,
+      entry.lane,
     );
     assertOutputAuditsPassed(issues, entry.id);
 

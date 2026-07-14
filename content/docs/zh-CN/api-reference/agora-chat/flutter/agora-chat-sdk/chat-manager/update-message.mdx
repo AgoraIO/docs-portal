@@ -1,0 +1,31 @@
+---
+title: "updateMessage method"
+description: "API docs for the updateMessage method from the ChatManager class, for the Dart programming language."
+---
+
+Updates the local message.
+
+The message will be updated both in the cache and local database.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+```dart title="Dart"
+Future<void> updateMessage(ChatMessage message)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> updateMessage(ChatMessage message) async {
+  Map req = {"message": message.toJson()};
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.updateChatMessage, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

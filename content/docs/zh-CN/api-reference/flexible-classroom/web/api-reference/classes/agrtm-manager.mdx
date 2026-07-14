@@ -1,13 +1,13 @@
 ---
 title: "AGRtmManager"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "AGRtmManager API 参考。"
 ---
 
 - EventEmitter
 
   - AGRtmManager
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -17,11 +17,11 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new AGRtmManager(): AGRtmManager
 ```
 
-#### Returns
+#### 返回值
 
-Returns [AGRtmManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agrtm-manager)
+[AGRtmManager](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agrtm-manager)
 
-## Accessors
+## 访问器
 
 <a id="client"></a>
 
@@ -31,9 +31,9 @@ Returns [AGRtmManager](/zh-CN/api-reference/flexible-classroom/web/api-reference
 get client(): RtmClient
 ```
 
-#### Returns
+#### 返回值
 
-Returns RtmClient
+RtmClient
 
 <a id="connectionState"></a>
 
@@ -43,9 +43,9 @@ Returns RtmClient
 get connectionState(): AgoraRtmConnectionState
 ```
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/web/api-reference/enums/agora-rtm-connection-state)
+[AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/web/api-reference/enums/agora-rtm-connection-state)
 
 <a id="logFilter"></a>
 
@@ -55,9 +55,9 @@ Returns [AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/web/ap
 get logFilter(): { debug: boolean; error: boolean; info: boolean; track: boolean; warn: boolean }
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | debug: boolean |  |
 | error: boolean |  |
@@ -65,9 +65,9 @@ get logFilter(): { debug: boolean; error: boolean; info: boolean; track: boolean
 | track: boolean |  |
 | warn: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns \{debug: boolean; error: boolean; info: boolean; track: boolean; warn: boolean \}
+\{debug: boolean; error: boolean; info: boolean; track: boolean; warn: boolean \}
 
 - ##### debug: boolean
 - ##### error: boolean
@@ -83,11 +83,11 @@ Returns \{debug: boolean; error: boolean; info: boolean; track: boolean; warn: b
 get sessionId(): string
 ```
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
-## Methods
+## 方法
 
 <a id="createObserverChannel"></a>
 
@@ -97,15 +97,15 @@ Returns string
 createObserverChannel(channelName: string): [RtmChannel, EventEmitter]
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | channelName: string |  |
 
-#### Returns
+#### 返回值
 
-Returns [RtmChannel, EventEmitter]
+[RtmChannel, EventEmitter]
 
 <a id="destroyRtm"></a>
 
@@ -115,9 +115,9 @@ Returns [RtmChannel, EventEmitter]
 destroyRtm(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="join"></a>
 
@@ -127,17 +127,17 @@ Returns void
 join(channel: RtmChannel, bus: EventEmitter, channelName: string): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | channel: RtmChannel |  |
 | bus: EventEmitter |  |
 | channelName: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="leave"></a>
 
@@ -147,15 +147,15 @@ Returns Promise &lt; void &gt;
 leave(channelName: string): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | channelName: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="login"></a>
 
@@ -165,17 +165,17 @@ Returns Promise &lt; void &gt;
 login(token: string, uid: string, configs: AGRtmManagerInitConfig): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | token: string |  |
 | uid: string |  |
 | configs: AGRtmManagerInitConfig |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="reset"></a>
 
@@ -185,9 +185,9 @@ Returns Promise &lt; void &gt;
 reset(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="sendChannelMessage"></a>
 
@@ -197,17 +197,17 @@ Returns void
 sendChannelMessage(channelName: string, message: any, options: any): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | channelName: string |  |
 | message: any |  |
 | options: any |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="sendPeerMessage"></a>
 
@@ -217,14 +217,14 @@ Returns Promise &lt; void &gt;
 sendPeerMessage(peerId: string, message: any, options: any): Promise<boolean>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | peerId: string |  |
 | message: any |  |
 | options: any |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; boolean &gt;
+Promise &lt; boolean &gt;

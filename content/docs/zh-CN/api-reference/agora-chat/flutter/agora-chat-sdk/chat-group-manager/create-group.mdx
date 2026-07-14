@@ -1,0 +1,59 @@
+---
+title: "createGroup method"
+description: "API docs for the createGroup method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Creates a group instance.
+
+After the group is created, the data in the cache and database will be updated and multiple devices will receive the notification event and update the group data to the cache and database. You can set [ChatMultiDeviceEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-multi-device-event-handler) to listen for the event. If an event occurs, the callback function [ChatMultiDeviceEventHandler.onGroupEvent](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-multi-device-event-handler/on-group-event) is triggered, where the first parameter is the event which is [ChatMultiDevicesEvent.GROUP_CREATE](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-multi-devices-event) for a group creation event.
+
+- The maximum number of group members. The default value is 200.
+- The group style. See [ChatGroupStyle](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-style). The default value is [ChatGroupStyle.PrivateOnlyOwnerInvite](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-style).
+- Whether to ask for permission when inviting a user to join the group. The default value is `false`, indicating that invitees are automatically added to the group without their permission.
+- The group detail extensions.
+
+**Return** The created group instance.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupName` | The group name. |
+| `desc` | The group description. |
+| `inviteMembers` | The group member array. The group owner ID is optional. |
+| `inviteReason` | The group joining invitation. |
+| `options` | The options for creating a group. See [ChatGroupOptions](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-options). The options are as follows: |
+
+```dart title="Dart"
+Future<ChatGroup> createGroup({String? groupName, String? desc, List<String>? inviteMembers, String? inviteReason, required ChatGroupOptions options})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatGroup> createGroup({
+  String? groupName,
+  String? desc,
+  List<String>? inviteMembers,
+  String? inviteReason,
+  required ChatGroupOptions options,
+}) async {
+  Map req = {'options': options.toJson()};
+  req.setValueWithOutNull("groupName", groupName);
+  req.setValueWithOutNull("desc", desc);
+  req.setValueWithOutNull("inviteMembers", inviteMembers);
+  req.setValueWithOutNull("inviteReason", inviteReason);
+
+  Map result = await _channel.invokeMethod(ChatMethodKeys.createGroup, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatGroup.fromJson(result[ChatMethodKeys.createGroup]);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

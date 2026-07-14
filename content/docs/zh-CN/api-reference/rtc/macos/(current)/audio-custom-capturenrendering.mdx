@@ -1,10 +1,9 @@
 ---
 title: "自定义音频采集和渲染"
-description: "调节本地播放的自定义音频轨道的音量。"
+description: "自定义音频采集和渲染 API reference."
 ---
-<a id="toc_audio_custom_capturenrendering"></a>
 
-## 自定义音频采集和渲染
+<a id="toc_audio_custom_capturenrendering"></a>
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume"></a>
 
@@ -23,7 +22,7 @@ description: "调节本地播放的自定义音频轨道的音量。"
 如果你想更改本地播放的音频音量，需要再次调用该方法。
 
 :::info[注]
-请确保在调用该方法前已调用 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 创建自定义音频轨道。
+请确保在调用该方法前已调用 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 创建自定义音频轨道。
 :::
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume__parameters"></a>
@@ -32,7 +31,7 @@ description: "调节本地播放的自定义音频轨道的音量。"
 
 #### `trackId`
 
-音频轨道 ID。请设置为 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 返回的自定义音频轨道 ID。
+音频轨道 ID。请设置为 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 返回的自定义音频轨道 ID。
 
 #### `volume`
 
@@ -48,7 +47,6 @@ description: "调节本地播放的自定义音频轨道的音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume"></a>
@@ -68,7 +66,7 @@ description: "调节本地播放的自定义音频轨道的音量。"
 如果你想更改远端播放的音频音量，需要再次调用此方法。
 
 :::info[注]
-请确保在调用此方法前已调用 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法创建自定义音频轨道。
+请确保在调用此方法前已调用 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法创建自定义音频轨道。
 :::
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume__parameters"></a>
@@ -77,7 +75,7 @@ description: "调节本地播放的自定义音频轨道的音量。"
 
 #### `trackId`
 
-音频轨道 ID。请设置为 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
+音频轨道 ID。请设置为 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
 
 #### `volume`
 
@@ -93,7 +91,6 @@ description: "调节本地播放的自定义音频轨道的音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_createcustomaudiotrack"></a>
@@ -142,7 +139,6 @@ description: "调节本地播放的自定义音频轨道的音量。"
 - 方法调用成功，返回音频轨道 ID，作为该音频轨道的唯一标识符。
 - 方法调用失败，返回 0xffffffff。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroycustomaudiotrack"></a>
@@ -165,7 +161,7 @@ description: "调节本地播放的自定义音频轨道的音量。"
 
 #### `trackId`
 
-调用 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 时返回的自定义音频轨道 ID。
+调用 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 时返回的自定义音频轨道 ID。
 
 <a id="api_irtcengine_destroycustomaudiotrack__return_values"></a>
 
@@ -174,7 +170,6 @@ description: "调节本地播放的自定义音频轨道的音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback"></a>
@@ -191,10 +186,10 @@ description: "调节本地播放的自定义音频轨道的音量。"
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback__detailed_desc"></a>
 
-调用该方法启用外部音频源的本地播放后，如需停止本地播放，可再次调用该方法并将 `enabled` 设置为 NO。你可以调用 [adjustCustomAudioPlayoutVolume:volume:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudioplayoutvolume) 方法调整自定义音频轨道的本地播放音量。
+调用该方法启用外部音频源的本地播放后，如需停止本地播放，可再次调用该方法并将 `enabled` 设置为 NO。你可以调用 [adjustCustomAudioPlayoutVolume:volume:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudioplayoutvolume) 方法调整自定义音频轨道的本地播放音量。
 
 :::info[注]
-请确保在调用该方法前已通过 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法创建自定义音频轨道。
+请确保在调用该方法前已通过 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法创建自定义音频轨道。
 :::
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback__parameters"></a>
@@ -203,7 +198,7 @@ description: "调节本地播放的自定义音频轨道的音量。"
 
 #### `trackId`
 
-音频轨道 ID。该参数需设置为 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
+音频轨道 ID。该参数需设置为 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
 
 #### `enabled`
 
@@ -219,7 +214,6 @@ description: "调节本地播放的自定义音频轨道的音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pullaudioframe"></a>
@@ -237,15 +231,15 @@ description: "调节本地播放的自定义音频轨道的音量。"
 
 <a id="api_irtcengine_pullaudioframe__detailed_desc"></a>
 
-调用该方法成功后，你可以拉取解码并混音后的远端音频数据用于播放。调用该方法前，请先调用 [enableExternalAudioSink:sampleRate:channels:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) （`enabled: YES` ）以开启并设置外部音频渲染。
+调用该方法成功后，你可以拉取解码并混音后的远端音频数据用于播放。调用该方法前，请先调用 [enableExternalAudioSink:sampleRate:channels:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) （`enabled: YES` ）以开启并设置外部音频渲染。
 
 :::info[注]
-[pullPlaybackAudioFrameRawData:lengthInByte:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_pullaudioframe) 方法和 `onPlaybackAudioFrame:` 回调都可用于获取远端混音后的音频数据。调用 [enableExternalAudioSink:sampleRate:channels:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) 开启外部音频渲染后，将无法再通过 `onPlaybackAudioFrame:` 回调获取数据。请根据实际业务需求选择使用该方法或 `onPlaybackAudioFrame:` 回调。两者的具体区别如下：
+[pullPlaybackAudioFrameRawData:lengthInByte:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_pullaudioframe) 方法和 `onPlaybackAudioFrame:` 回调都可用于获取远端混音后的音频数据。调用 [enableExternalAudioSink:sampleRate:channels:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) 开启外部音频渲染后，将无法再通过 `onPlaybackAudioFrame:` 回调获取数据。请根据实际业务需求选择使用该方法或 `onPlaybackAudioFrame:` 回调。两者的具体区别如下：
 
-- 调用 [pullPlaybackAudioFrameRawData:lengthInByte:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_pullaudioframe) 方法后，你会自动从 SDK 拉取音频数据。通过设置音频数据参数，SDK 会调整帧缓冲区以帮助你处理延迟，有效避免音频播放卡顿。
+- 调用 [pullPlaybackAudioFrameRawData:lengthInByte:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_pullaudioframe) 方法后，你会自动从 SDK 拉取音频数据。通过设置音频数据参数，SDK 会调整帧缓冲区以帮助你处理延迟，有效避免音频播放卡顿。
 - 注册 `onPlaybackAudioFrame:` 回调后，SDK 会通过回调将音频数据发送给你。若处理音频帧存在延迟，可能会导致音频卡顿。
 
-该方法仅用于获取远端混音后的音频数据。如需获取采集、播放等其他音频处理阶段的数据，可通过调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/macos/audio-raw#api_irtcengine_registeraudioframeobserver) 注册相应的回调。
+该方法仅用于获取远端混音后的音频数据。如需获取采集、播放等其他音频处理阶段的数据，可通过调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/macos/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册相应的回调。
 :::
 
 <a id="api_irtcengine_pullaudioframe__timing"></a>
@@ -264,7 +258,7 @@ description: "调节本地播放的自定义音频轨道的音量。"
 
 #### `lengthInByte`
 
-数据长度（字节）。该参数的值与音频时长，以及在 [enableExternalAudioSink:sampleRate:channels:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) 中设置的 `sampleRate` 和 `channels` 参数有关。 `lengthInByte` = `sampleRate` / 1000 × 2 × `channels` × 音频时长（毫秒）。
+数据长度（字节）。该参数的值与音频时长，以及在 [enableExternalAudioSink:sampleRate:channels:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) 中设置的 `sampleRate` 和 `channels` 参数有关。 `lengthInByte` = `sampleRate` / 1000 × 2 × `channels` × 音频时长（毫秒）。
 
 <a id="api_irtcengine_pullaudioframe__return_values"></a>
 
@@ -273,7 +267,6 @@ description: "调节本地播放的自定义音频轨道的音量。"
 - YES：调用成功。
 - NO：调用失败。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pullplaybackaudioframesamplebufferbylengthinbyte"></a>
@@ -306,7 +299,6 @@ description: "调节本地播放的自定义音频轨道的音量。"
 
 方法调用成功，返回 `CMSampleBufferRef` 对象；失败时返回 nil。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pushaudioframe2"></a>
@@ -368,7 +360,6 @@ description: "调节本地播放的自定义音频轨道的音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pushexternalaudioframesamplebuffer1"></a>
@@ -387,7 +378,7 @@ description: "调节本地播放的自定义音频轨道的音量。"
 
 #### `废弃`
 
-该方法已废弃，请改用 [pushExternalAudioFrameSampleBuffer:sampleRate:channels:trackId:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_pushexternalaudioframesamplebuffer2)。
+该方法已废弃，请改用 [pushExternalAudioFrameSampleBuffer:sampleRate:channels:trackId:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_pushexternalaudioframesamplebuffer2)。
 
 <a id="api_irtcengine_pushexternalaudioframesamplebuffer1__parameters"></a>
 
@@ -404,7 +395,6 @@ description: "调节本地播放的自定义音频轨道的音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pushexternalaudioframesamplebuffer2"></a>
@@ -456,7 +446,6 @@ description: "调节本地播放的自定义音频轨道的音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setexternalaudiosink"></a>
@@ -475,7 +464,7 @@ description: "调节本地播放的自定义音频轨道的音量。"
 
 <a id="api_irtcengine_setexternalaudiosink__detailed_desc"></a>
 
-启用外部音频渲染后，你可以调用 [pullPlaybackAudioFrameRawData:lengthInByte:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_pullaudioframe) 方法拉取远端音频帧，应用程序可以处理远端音频，并使用期望的音效进行播放。
+启用外部音频渲染后，你可以调用 [pullPlaybackAudioFrameRawData:lengthInByte:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_pullaudioframe) 方法拉取远端音频帧，应用程序可以处理远端音频，并使用期望的音效进行播放。
 
 :::info[注]
 启用外部音频渲染后，应用程序将无法从 `onPlaybackAudioFrame:` 回调中获取任何音频数据。
@@ -515,7 +504,6 @@ description: "调节本地播放的自定义音频轨道的音量。"
 - 1：单声道。
 - 2：双声道。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setexternalaudiosource"></a>
@@ -536,9 +524,9 @@ description: "调节本地播放的自定义音频轨道的音量。"
 
 #### `废弃`
 
-该方法已废弃，请改用 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack)。
+该方法已废弃，请改用 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack)。
 
-在调用 `joinChannelByToken` 和 [startPreview](/zh-CN/api-reference/rtc/macos/video-basic#api_irtcengine_startpreview) 之前调用该方法。
+在调用 `joinChannelByToken` 和 [startPreview](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_startpreview) 之前调用该方法。
 
 <a id="api_irtcengine_setexternalaudiosource__parameters"></a>
 
@@ -567,7 +555,6 @@ description: "调节本地播放的自定义音频轨道的音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setexternalaudiosource2"></a>
@@ -590,7 +577,7 @@ description: "调节本地播放的自定义音频轨道的音量。"
 
 #### `废弃`
 
-该方法已废弃，请改用 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack)。
+该方法已废弃，请改用 [createCustomAudioTrack:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack)。
 
 <a id="api_irtcengine_setexternalaudiosource2__timing"></a>
 
@@ -638,5 +625,4 @@ description: "调节本地播放的自定义音频轨道的音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)

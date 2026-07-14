@@ -1,0 +1,264 @@
+---
+title: "ChatThreadManager class"
+description: "API docs for the ChatThreadManager class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The chat thread manager class.
+
+### Available Extensions
+
+- [ChatThreadManagerDeprecated](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager-deprecated)
+
+<a id="constructors"></a>
+
+## Constructors
+
+<a id="ChatThreadManager"></a>
+
+### [ChatThreadManager](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/chat-thread-manager)
+
+```dart title="Dart"
+ChatThreadManager()
+```
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart title="Dart"
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart title="Dart"
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="addEventHandler"></a>
+
+### [addEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/add-event-handler)
+
+```dart title="Dart"
+addEventHandler(String identifier, ChatThreadEventHandler handler) -> void
+```
+
+Adds the chat thread event handler. After calling this method, you can handle for chat thread event when they arrive.
+
+<a id="clearEventHandlers"></a>
+
+### [clearEventHandlers](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/clear-event-handlers)
+
+```dart title="Dart"
+clearEventHandlers() -> void
+```
+
+Clear all chat thread event handlers.
+
+<a id="createChatThread"></a>
+
+### [createChatThread](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/create-chat-thread)
+
+```dart title="Dart"
+createChatThread({required String name, required String messageId, required String parentId}) -> Future<ChatThread>
+```
+
+Create Chat Thread.
+
+<a id="destroyChatThread"></a>
+
+### [destroyChatThread](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/destroy-chat-thread)
+
+```dart title="Dart"
+destroyChatThread({required String chatThreadId}) -> Future<void>
+```
+
+Disband Chat Thread.
+
+<a id="fetchChatThread"></a>
+
+### [fetchChatThread](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/fetch-chat-thread)
+
+```dart title="Dart"
+fetchChatThread({required String chatThreadId}) -> Future<ChatThread?>
+```
+
+Get Chat Thread details from server.
+
+<a id="fetchChatThreadMembers"></a>
+
+### [fetchChatThreadMembers](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/fetch-chat-thread-members)
+
+```dart title="Dart"
+fetchChatThreadMembers({required String chatThreadId, String? cursor, int limit = 20}) -> Future<List<String>>
+```
+
+Paging to get Chat Thread members.
+
+<a id="fetchChatThreadsWithParentId"></a>
+
+### [fetchChatThreadsWithParentId](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/fetch-chat-threads-with-parent-id)
+
+```dart title="Dart"
+fetchChatThreadsWithParentId({required String parentId, String? cursor, int limit = 20}) -> Future<ChatCursorResult<ChatThread>>
+```
+
+Get the subareas under a group from the server
+
+<a id="fetchJoinedChatThreads"></a>
+
+### [fetchJoinedChatThreads](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/fetch-joined-chat-threads)
+
+```dart title="Dart"
+fetchJoinedChatThreads({String? cursor, int limit = 20}) -> Future<ChatCursorResult<ChatThread>>
+```
+
+Paging to get the list of Chat Threads that the current user has joined from the server
+
+<a id="fetchJoinedChatThreadsWithParentId"></a>
+
+### [fetchJoinedChatThreadsWithParentId](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/fetch-joined-chat-threads-with-parent-id)
+
+```dart title="Dart"
+fetchJoinedChatThreadsWithParentId({required String parentId, String? cursor, int limit = 20}) -> Future<ChatCursorResult<ChatThread>>
+```
+
+Paging to get the list of Chat Threads that the current user has joined the specified group from the server。
+
+<a id="fetchLatestMessageWithChatThreads"></a>
+
+### [fetchLatestMessageWithChatThreads](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/fetch-latest-message-with-chat-threads)
+
+```dart title="Dart"
+fetchLatestMessageWithChatThreads({required List<String> chatThreadIds}) -> Future<Map<String, ChatMessage>>
+```
+
+Get the latest news of the specified Chat Thread list from the server.
+
+<a id="getEventHandler"></a>
+
+### [getEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/get-event-handler)
+
+```dart title="Dart"
+getEventHandler(String identifier) -> ChatThreadEventHandler?
+```
+
+Get the chat thread event handler.
+
+<a id="joinChatThread"></a>
+
+### [joinChatThread](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/join-chat-thread)
+
+```dart title="Dart"
+joinChatThread({required String chatThreadId}) -> Future<ChatThread>
+```
+
+Join Chat Thread.
+
+<a id="leaveChatThread"></a>
+
+### [leaveChatThread](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/leave-chat-thread)
+
+```dart title="Dart"
+leaveChatThread({required String chatThreadId}) -> Future<void>
+```
+
+Leave Chat Thread.
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart title="Dart"
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="removeEventHandler"></a>
+
+### [removeEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/remove-event-handler)
+
+```dart title="Dart"
+removeEventHandler(String identifier) -> void
+```
+
+Remove the chat thread event handler.
+
+<a id="removeMemberFromChatThread"></a>
+
+### [removeMemberFromChatThread](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/remove-member-from-chat-thread)
+
+```dart title="Dart"
+removeMemberFromChatThread({required String memberId, required String chatThreadId}) -> Future<void>
+```
+
+Remove member from Chat Thread.
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart title="Dart"
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="updateChatThreadName"></a>
+
+### [updateChatThreadName](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager/update-chat-thread-name)
+
+```dart title="Dart"
+updateChatThreadName({required String chatThreadId, required String newName}) -> Future<void>
+```
+
+Change Chat Thread name.
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart title="Dart"
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

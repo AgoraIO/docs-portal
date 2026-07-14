@@ -1,10 +1,9 @@
 ---
 title: "旁路推流"
-description: "开始向 CDN 推送未经转码的媒体流。"
+description: "旁路推流 API reference."
 ---
-<a id="toc_media_push"></a>
 
-## 旁路推流
+<a id="toc_media_push"></a>
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding"></a>
 
@@ -25,14 +24,14 @@ virtual int startRtmpStreamWithoutTranscoding(const char* url) = 0;
 :::info[注]
 - 请在加入频道后调用该方法。
 - 仅在 `LIVE_BROADCASTING` 模式下的主播角色可调用该方法。
-- 若推流失败后需要重试，请先调用 [stopRtmpStream](/zh-CN/api-reference/rtc/cpp-all-platforms/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
+- 若推流失败后需要重试，请先调用 [stopRtmpStream](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
 :::
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding__related"></a>
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+成功调用该方法后，SDK 会触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding__parameters"></a>
 
@@ -57,7 +56,6 @@ virtual int startRtmpStreamWithoutTranscoding(const char* url) = 0;
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换其他地址。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex"></a>
@@ -74,12 +72,12 @@ virtual int startRtmpStreamWithoutTranscodingEx(const char* url, const RtcConnec
 
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__detailed_desc"></a>
 
-声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 你可以调用该方法将音频或视频流推送到指定的 CDN 地址。该方法一次只能向一个 CDN 地址推送媒体流。如需推送到多个地址，请多次调用该方法。调用该方法后，SDK 会在本地客户端触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 你可以调用该方法将音频或视频流推送到指定的 CDN 地址。该方法一次只能向一个 CDN 地址推送媒体流。如需推送到多个地址，请多次调用该方法。调用该方法后，SDK 会在本地客户端触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
 :::info[注]
 - 请在加入频道后调用该方法。
 - 仅在 `LIVE_BROADCASTING` 频道场景中的主播角色可以调用该方法。
-- 如果推流失败后需要重试，请先调用 [stopRtmpStream](/zh-CN/api-reference/rtc/cpp-all-platforms/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重试，否则 SDK 会返回与上次失败相同的错误码。
+- 如果推流失败后需要重试，请先调用 [stopRtmpStream](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重试，否则 SDK 会返回与上次失败相同的错误码。
 :::
 
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__scenario"></a>
@@ -92,7 +90,7 @@ virtual int startRtmpStreamWithoutTranscodingEx(const char* url, const RtcConnec
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+成功调用该方法后，SDK 会触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__parameters"></a>
 
@@ -117,7 +115,6 @@ virtual int startRtmpStreamWithoutTranscodingEx(const char* url, const RtcConnec
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换其他地址。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding"></a>
@@ -139,7 +136,7 @@ virtual int startRtmpStreamWithTranscoding(const char* url, const LiveTranscodin
 :::info[注]
 - 请在加入频道后调用该方法。
 - 只有在直播频道场景中的主播角色可以调用该方法。
-- 如果你想在推流失败后重试推流，请先调用 [stopRtmpStream](/zh-CN/api-reference/rtc/cpp-all-platforms/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重试，否则 SDK 会返回与上次推流失败相同的错误码。
+- 如果你想在推流失败后重试推流，请先调用 [stopRtmpStream](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重试，否则 SDK 会返回与上次推流失败相同的错误码。
 :::
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding__parameters"></a>
@@ -165,7 +162,6 @@ virtual int startRtmpStreamWithTranscoding(const char* url, const LiveTranscodin
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换地址。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startrtmpstreamwithtranscodingex"></a>
@@ -188,7 +184,7 @@ virtual int startRtmpStreamWithTranscodingEx(const char* url, const LiveTranscod
 - 使用该方法前，请确保已启用旁路推流服务。
 - 请在加入频道后调用该方法。
 - 仅在直播场景下的主播角色可以调用该方法。
-- 如果推流失败后需要重试，请先调用 [stopRtmpStreamEx](/zh-CN/api-reference/rtc/cpp-all-platforms/media-push#api_irtcengineex_stoprtmpstreamex) 停止推流，再调用该方法重试，否则 SDK 会返回与上次失败相同的错误码。
+- 如果推流失败后需要重试，请先调用 [stopRtmpStreamEx](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#api_irtcengineex_stoprtmpstreamex) 停止推流，再调用该方法重试，否则 SDK 会返回与上次失败相同的错误码。
 :::
 
 <a id="api_irtcengineex_startrtmpstreamwithtranscodingex__scenario"></a>
@@ -224,7 +220,6 @@ virtual int startRtmpStreamWithTranscodingEx(const char* url, const LiveTranscod
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换其他地址。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_stoprtmpstream"></a>
@@ -247,7 +242,7 @@ virtual int stopRtmpStream(const char* url) = 0;
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+成功调用该方法后，SDK 会触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
 <a id="api_irtcengine_stoprtmpstream__parameters"></a>
 
@@ -268,7 +263,6 @@ virtual int stopRtmpStream(const char* url) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_stoprtmpstreamex"></a>
@@ -297,7 +291,7 @@ virtual int stopRtmpStreamEx(const char* url, const RtcConnection& connection) =
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+成功调用该方法后，SDK 会触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
 <a id="api_irtcengineex_stoprtmpstreamex__parameters"></a>
 
@@ -318,7 +312,6 @@ virtual int stopRtmpStreamEx(const char* url, const RtcConnection& connection) =
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_updatertmptranscoding"></a>
@@ -335,7 +328,7 @@ virtual int updateRtmpTranscoding(const LiveTranscoding& transcoding) = 0;
 
 <a id="api_irtcengine_updatertmptranscoding__detailed_desc"></a>
 
-声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 开始使用转码功能将媒体流推送到 CDN 后，你可以根据实际场景动态更新转码配置。更新配置后，SDK 会触发 [onTranscodingUpdated](/zh-CN/api-reference/rtc/cpp-all-platforms/media-push#callback_irtcengineeventhandler_ontranscodingupdated) 回调。
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 开始使用转码功能将媒体流推送到 CDN 后，你可以根据实际场景动态更新转码配置。更新配置后，SDK 会触发 [onTranscodingUpdated](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) 回调。
 
 <a id="api_irtcengine_updatertmptranscoding__parameters"></a>
 
@@ -352,7 +345,6 @@ virtual int updateRtmpTranscoding(const LiveTranscoding& transcoding) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatertmptranscodingex"></a>
@@ -369,7 +361,7 @@ virtual int updateRtmpTranscodingEx(const LiveTranscoding& transcoding, const Rt
 
 <a id="api_irtcengineex_updatertmptranscodingex__detailed_desc"></a>
 
-声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 开始使用转码功能将媒体流推送到 CDN 后，你可以根据实际场景动态更新转码配置。更新配置后，SDK 会触发 [onTranscodingUpdated](/zh-CN/api-reference/rtc/cpp-all-platforms/media-push#callback_irtcengineeventhandler_ontranscodingupdated) 回调。
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 开始使用转码功能将媒体流推送到 CDN 后，你可以根据实际场景动态更新转码配置。更新配置后，SDK 会触发 [onTranscodingUpdated](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) 回调。
 
 <a id="api_irtcengineex_updatertmptranscodingex__scenario"></a>
 
@@ -396,7 +388,6 @@ virtual int updateRtmpTranscodingEx(const LiveTranscoding& transcoding, const Rt
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingevent"></a>
@@ -425,7 +416,6 @@ virtual void onRtmpStreamingEvent(const char* url, RTMP_STREAMING_EVENT eventCod
 
 旁路推流的事件码，详见 [RTMP_STREAMING_EVENT](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rtmpstreamingevent)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged"></a>
@@ -460,7 +450,6 @@ virtual void onRtmpStreamingStateChanged(const char* url, RTMP_STREAM_PUBLISH_ST
 
 旁路推流状态变化的原因，详见 [RTMP_STREAM_PUBLISH_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rtmpstreampublishreason)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_ontranscodingupdated"></a>
@@ -477,11 +466,10 @@ virtual void onTranscodingUpdated() {}
 
 <a id="callback_irtcengineeventhandler_ontranscodingupdated__detailed_desc"></a>
 
-当你调用 [startRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/cpp-all-platforms/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法并更新其中的 [LiveTranscoding](/zh-CN/api-reference/rtc/cpp-all-platforms/class-livetranscoding) 配置时，SDK 会触发该回调以报告更新信息。
+当你调用 [startRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法并更新其中的 [LiveTranscoding](/zh-CN/api-reference/rtc/cpp-all-platforms/class-livetranscoding) 配置时，SDK 会触发该回调以报告更新信息。
 
 :::info[注]
-如果你首次调用 [startRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/cpp-all-platforms/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法设置 [LiveTranscoding](/zh-CN/api-reference/rtc/cpp-all-platforms/class-livetranscoding)，SDK 不会触发该回调。
+如果你首次调用 [startRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法设置 [LiveTranscoding](/zh-CN/api-reference/rtc/cpp-all-platforms/class-livetranscoding)，SDK 不会触发该回调。
 :::
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

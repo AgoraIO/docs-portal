@@ -1,0 +1,232 @@
+---
+title: "ChatConnectionListener class"
+description: "API docs for the ChatConnectionListener class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The chat connection listener.
+
+For the occasion of onDisconnected during unstable network condition, you don't need to reconnect manually, the chat SDK will handle it automatically.
+
+There are only two states: onConnected, onDisconnected.
+
+Note: We recommend not to update UI based on those methods, because this method is called on worker thread. If you update UI in those methods, other UI errors might be invoked. Also do not insert heavy computation work here, which might invoke other listeners to handle this connection event.
+
+Register:
+
+```dart title="Dart"
+    ChatClient.getInstance.addConnectionListener(mConnectionListener);
+```
+
+Unregister:
+
+```dart title="Dart"
+    ChatClient.getInstance.removeConnectionListener(mConnectionListener);
+```
+
+### Annotations
+
+- @ [Deprecated](https://api.flutter.dev/flutter/dart-core/Deprecated-class.html) ("Use ConnectionEventHandler to instead")
+
+<a id="constructors"></a>
+
+## Constructors
+
+<a id="ChatConnectionListener"></a>
+
+### [ChatConnectionListener](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-connection-listener/chat-connection-listener)
+
+```dart title="Dart"
+ChatConnectionListener()
+```
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart title="Dart"
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart title="Dart"
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart title="Dart"
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="onConnected"></a>
+
+### [onConnected](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-connection-listener/on-connected)
+
+```dart title="Dart"
+onConnected() -> void
+```
+
+Occurs when the SDK connects to the chat server successfully.
+
+<a id="onDisconnected"></a>
+
+### [onDisconnected](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-connection-listener/on-disconnected)
+
+```dart title="Dart"
+onDisconnected() -> void
+```
+
+Occurs when the SDK disconnect from the chat server.
+
+<a id="onTokenDidExpire"></a>
+
+### [onTokenDidExpire](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-connection-listener/on-token-did-expire)
+
+```dart title="Dart"
+onTokenDidExpire() -> void
+```
+
+Occurs when the token has expired.
+
+<a id="onTokenWillExpire"></a>
+
+### [onTokenWillExpire](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-connection-listener/on-token-will-expire)
+
+```dart title="Dart"
+onTokenWillExpire() -> void
+```
+
+Occurs when the token is about to expire.
+
+<a id="onUserAuthenticationFailed"></a>
+
+### [onUserAuthenticationFailed](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-connection-listener/on-user-authentication-failed)
+
+```dart title="Dart"
+onUserAuthenticationFailed() -> void
+```
+
+Occurs when the current chat user authentication failed.
+
+<a id="onUserDidChangePassword"></a>
+
+### [onUserDidChangePassword](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-connection-listener/on-user-did-change-password)
+
+```dart title="Dart"
+onUserDidChangePassword() -> void
+```
+
+Occurs when the current chat user is changed password.
+
+<a id="onUserDidForbidByServer"></a>
+
+### [onUserDidForbidByServer](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-connection-listener/on-user-did-forbid-by-server)
+
+```dart title="Dart"
+onUserDidForbidByServer() -> void
+```
+
+Occurs when the current chat user is forbid from the server.
+
+<a id="onUserDidLoginFromOtherDevice"></a>
+
+### [onUserDidLoginFromOtherDevice](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-connection-listener/on-user-did-login-from-other-device)
+
+```dart title="Dart"
+onUserDidLoginFromOtherDevice() -> void
+```
+
+Occurs when the current user account is logged in to another device.
+
+<a id="onUserDidLoginTooManyDevice"></a>
+
+### [onUserDidLoginTooManyDevice](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-connection-listener/on-user-did-login-too-many-device)
+
+```dart title="Dart"
+onUserDidLoginTooManyDevice() -> void
+```
+
+Occurs when the current chat user logged to many devices.
+
+<a id="onUserDidRemoveFromServer"></a>
+
+### [onUserDidRemoveFromServer](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-connection-listener/on-user-did-remove-from-server)
+
+```dart title="Dart"
+onUserDidRemoveFromServer() -> void
+```
+
+Occurs when the current chat user is removed from the server.
+
+<a id="onUserKickedByOtherDevice"></a>
+
+### [onUserKickedByOtherDevice](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-connection-listener/on-user-kicked-by-other-device)
+
+```dart title="Dart"
+onUserKickedByOtherDevice() -> void
+```
+
+Occurs when the current chat user kicked by other device.
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart title="Dart"
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart title="Dart"
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

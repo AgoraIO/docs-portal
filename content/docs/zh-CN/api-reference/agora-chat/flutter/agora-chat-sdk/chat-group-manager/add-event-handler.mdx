@@ -1,0 +1,30 @@
+---
+title: "addEventHandler method"
+description: "API docs for the addEventHandler method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Adds the group event handler. After calling this method, you can handle for new group event when they arrive.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `identifier` | The custom handler identifier, is used to find the corresponding handler. |
+| `handler` | The handle for group event. See [ChatGroupEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler). |
+
+```dart title="Dart"
+void addEventHandler(String identifier, ChatGroupEventHandler handler)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+void addEventHandler(
+  String identifier,
+  ChatGroupEventHandler handler,
+) {
+  _eventHandlesMap[identifier] = handler;
+}
+```

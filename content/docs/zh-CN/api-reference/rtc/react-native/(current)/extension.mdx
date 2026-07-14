@@ -1,10 +1,9 @@
 ---
 title: "插件"
-description: "启用/禁用插件。"
+description: "插件 API reference."
 ---
-<a id="toc_extension"></a>
 
-## 插件
+<a id="toc_extension"></a>
 
 <a id="api_irtcengine_enableextension"></a>
 
@@ -74,7 +73,6 @@ abstract enableExtension(
 
   - -3: 该插件动态库没有被加载。声网推荐你检查该动态库是否存放在预期的位置，或该动态库名是否正确。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getextensionproperty2"></a>
@@ -134,7 +132,6 @@ abstract getExtensionProperty(
 - 方法调用成功，则返回插件信息。
 - 方法调用失败，则返回空字符串。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_loadextensionprovider"></a>
@@ -188,7 +185,6 @@ abstract loadExtensionProvider(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registerextension"></a>
@@ -221,7 +217,7 @@ abstract registerExtension(
 ### 调用时机
 
 - 建议你在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 后、加入频道前调用该方法。
-- 对于视频相关插件（例如美颜插件），需要在启用视频模块（[enableVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablevideo) / [enableLocalVideo](/zh-CN/api-reference/rtc/react-native/video-basic#api_irtcengine_enablelocalvideo) ）之前调用该方法。
+- 对于视频相关插件（例如美颜插件），需要在启用视频模块（[enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) / [enableLocalVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablelocalvideo) ）之前调用该方法。
 - 调用该方法前，需要先调用 [loadExtensionProvider](/zh-CN/api-reference/rtc/react-native/extension#api_irtcengine_loadextensionprovider) 加载插件。
 
 <a id="api_irtcengine_registerextension__parameters"></a>
@@ -240,7 +236,6 @@ abstract registerExtension(
 
 插件的媒体源类型。详见 [MediaSourceType](/zh-CN/api-reference/rtc/react-native/enum-mediasourcetype)。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setextensionproperty"></a>
@@ -312,7 +307,6 @@ abstract setExtensionProperty(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setextensionproviderproperty"></a>
@@ -368,7 +362,6 @@ abstract setExtensionProviderProperty(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onextensionerrorwithcontext"></a>
@@ -407,7 +400,6 @@ onExtensionErrorWithContext?(
 
 错误原因。详见插件服务商提供的插件文档。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onextensioneventwithcontext"></a>
@@ -446,7 +438,6 @@ onExtensionEventWithContext?(
 
 插件属性 Key 对应的值。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onextensionstartedwithcontext"></a>
@@ -473,7 +464,6 @@ onExtensionStartedWithContext?(context: ExtensionContext): void;
 
 插件上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/react-native/class-extensioncontext)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext"></a>
@@ -500,5 +490,4 @@ onExtensionStoppedWithContext?(context: ExtensionContext): void;
 
 插件上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/react-native/class-extensioncontext)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)

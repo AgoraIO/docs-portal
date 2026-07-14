@@ -1,0 +1,35 @@
+---
+title: "removeUserFromBlockList method"
+description: "API docs for the removeUserFromBlockList method from the ChatContactManager class, for the Dart programming language."
+---
+
+Removes the contact from the block list.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `username` | The contact to be removed from the block list. |
+
+```dart title="Dart"
+Future<void> removeUserFromBlockList(String username)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> removeUserFromBlockList(String username) async {
+  Map req = {'username': username};
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.removeUserFromBlockList, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

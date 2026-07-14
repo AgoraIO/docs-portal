@@ -2,9 +2,8 @@
 title: "音效文件播放"
 description: "音效文件播放 API reference."
 ---
-<a id="toc_audio_effect_file"></a>
 
-## 音效文件播放
+<a id="toc_audio_effect_file"></a>
 
 <a id="api_irtcengine_geteffectcurrentposition"></a>
 
@@ -41,7 +40,6 @@ public abstract int GetEffectCurrentPosition(int soundId);
 - 方法调用成功，返回指定音效文件的播放进度（毫秒）。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_geteffectduration"></a>
@@ -81,7 +79,6 @@ public abstract int GetEffectDuration(string filePath);
 - 方法调用成功，返回指定音效文件时长（毫秒）。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_geteffectsvolume"></a>
@@ -103,7 +100,7 @@ public abstract int GetEffectsVolume();
 音量范围为 0~100。100 （默认值）为原始文件音量。
 
 :::warning[注意]
-该方法需要在 [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+该方法需要在 [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
 :::
 
 <a id="api_irtcengine_geteffectsvolume__return_values"></a>
@@ -113,7 +110,6 @@ public abstract int GetEffectsVolume();
 - 音效文件的音量。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getvolumeofeffect"></a>
@@ -143,7 +139,6 @@ public abstract int GetVolumeOfEffect(int soundId);
 - ≥ 0: 方法调用成功，返回播放音量。音量范围为 [0,100]。100 为原始音量。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pausealleffects"></a>
@@ -165,7 +160,6 @@ public abstract int PauseAllEffects();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pauseeffect"></a>
@@ -195,7 +189,6 @@ public abstract int PauseEffect(int soundId);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_playalleffects"></a>
@@ -214,7 +207,7 @@ public abstract int PlayAllEffects(int loopCount, double pitch, double pan, int 
 
 ### 详情
 
-多次调用 [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_preloadeffect) 预加载多个音效文件后，你可以调用本方法播放所有预加载的音效文件。
+多次调用 [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_preloadeffect) 预加载多个音效文件后，你可以调用本方法播放所有预加载的音效文件。
 
 <a id="api_irtcengine_playalleffects__parameters"></a>
 
@@ -224,7 +217,7 @@ public abstract int PlayAllEffects(int loopCount, double pitch, double pan, int 
 
 音效文件循环播放的次数：
 
-- -1: 无限循环播放音效文件，直至调用 [StopEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_stopeffect) 或 [StopAllEffects](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_stopalleffects) 后停止。
+- -1: 无限循环播放音效文件，直至调用 [StopEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_stopeffect) 或 [StopAllEffects](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_stopalleffects) 后停止。
 - 0: 播放音效文件一次。
 - 1: 播放音效文件两次。
 
@@ -258,7 +251,6 @@ public abstract int PlayAllEffects(int loopCount, double pitch, double pan, int 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_playeffect3"></a>
@@ -287,7 +279,7 @@ public abstract int PlayEffect(int soundId, string filePath, int loopCount, doub
 
 ### 调用限制
 
-如果你需要播放在线音效文件，声网建议先将在线音效文件缓存到本地设备，调用 [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_preloadeffect) 将缓存的音效文件预加载到内存中，然后再调用此方法播放音效。否则，可能出现因在线音效文件加载超时、加载失败而导致的播放失败和无声的问题。
+如果你需要播放在线音效文件，声网建议先将在线音效文件缓存到本地设备，调用 [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_preloadeffect) 将缓存的音效文件预加载到内存中，然后再调用此方法播放音效。否则，可能出现因在线音效文件加载超时、加载失败而导致的播放失败和无声的问题。
 
 <a id="api_irtcengine_playeffect3__related"></a>
 
@@ -304,7 +296,7 @@ public abstract int PlayEffect(int soundId, string filePath, int loopCount, doub
 音效的 ID。每个音效的 ID 具有唯一性。
 
 :::warning[注意]
-如果你已通过 [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 PreloadEffect 中设置的 soundId 相同。
+如果你已通过 [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 PreloadEffect 中设置的 soundId 相同。
 :::
 
 #### `filePath`
@@ -312,7 +304,7 @@ public abstract int PlayEffect(int soundId, string filePath, int loopCount, doub
 播放文件的地址，支持在线文件的 URL 地址、播放文件的绝对路径，需精确到文件名及后缀。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV、3GP 等。
 
 :::warning[注意]
-如果你已通过 [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 PreloadEffect 中设置的 filePath 相同。
+如果你已通过 [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 PreloadEffect 中设置的 filePath 相同。
 :::
 
 #### `loopCount`
@@ -356,7 +348,6 @@ public abstract int PlayEffect(int soundId, string filePath, int loopCount, doub
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_preloadeffect"></a>
@@ -414,7 +405,6 @@ public abstract int PreloadEffect(int soundId, string filePath, int startPos = 0
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_resumealleffects"></a>
@@ -431,13 +421,13 @@ public abstract int ResumeAllEffects();
 
 <a id="api_irtcengine_resumealleffects__detailed_desc"></a>
 
-当你调用 [PauseAllEffects](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_pausealleffects) 暂停播放所有音效文件后，如需恢复播放，可以调用该方法。
+当你调用 [PauseAllEffects](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_pausealleffects) 暂停播放所有音效文件后，如需恢复播放，可以调用该方法。
 
 <a id="api_irtcengine_resumealleffects__timing"></a>
 
 ### 调用时机
 
-该方法需要在 [PauseAllEffects](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_pausealleffects) 后调用。
+该方法需要在 [PauseAllEffects](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_pausealleffects) 后调用。
 
 <a id="api_irtcengine_resumealleffects__restriction"></a>
 
@@ -452,7 +442,6 @@ public abstract int ResumeAllEffects();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_resumeeffect"></a>
@@ -482,7 +471,6 @@ public abstract int ResumeEffect(int soundId);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_seteffectposition"></a>
@@ -526,7 +514,6 @@ public abstract int SetEffectPosition(int soundId, int pos);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_seteffectsvolume"></a>
@@ -547,7 +534,7 @@ public abstract int SetEffectsVolume(int volume);
 
 ### 调用时机
 
-该方法需要在 [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+该方法需要在 [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
 
 <a id="api_irtcengine_seteffectsvolume__restriction"></a>
 
@@ -570,7 +557,6 @@ public abstract int SetEffectsVolume(int volume);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvolumeofeffect"></a>
@@ -591,7 +577,7 @@ public abstract int SetVolumeOfEffect(int soundId, int volume);
 
 ### 调用时机
 
-该方法需要在 [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+该方法需要在 [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
 
 <a id="api_irtcengine_setvolumeofeffect__restriction"></a>
 
@@ -618,7 +604,6 @@ public abstract int SetVolumeOfEffect(int soundId, int volume);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopalleffects"></a>
@@ -635,13 +620,13 @@ public abstract int StopAllEffects();
 
 <a id="api_irtcengine_stopalleffects__detailed_desc"></a>
 
-当你不需要再播放音效文件时，可以调用该方法停止播放。如果你仅需暂停播放，请调用 [PauseAllEffects](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_pausealleffects)。
+当你不需要再播放音效文件时，可以调用该方法停止播放。如果你仅需暂停播放，请调用 [PauseAllEffects](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_pausealleffects)。
 
 <a id="api_irtcengine_stopalleffects__timing"></a>
 
 ### 调用时机
 
-该方法需要在 [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_playeffect3) 之后调用。
+该方法需要在 [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_playeffect3) 之后调用。
 
 <a id="api_irtcengine_stopalleffects__restriction"></a>
 
@@ -656,7 +641,6 @@ public abstract int StopAllEffects();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopeffect"></a>
@@ -673,13 +657,13 @@ public abstract int StopEffect(int soundId);
 
 <a id="api_irtcengine_stopeffect__detailed_desc"></a>
 
-当你不需要再播放某一音效文件时，可以调用该方法停止播放。如果你仅需暂停播放，请调用 [PauseEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_pauseeffect)。
+当你不需要再播放某一音效文件时，可以调用该方法停止播放。如果你仅需暂停播放，请调用 [PauseEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_pauseeffect)。
 
 <a id="api_irtcengine_stopeffect__timing"></a>
 
 ### 调用时机
 
-该方法需要在 [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_playeffect3) 之后调用。
+该方法需要在 [PlayEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_playeffect3) 之后调用。
 
 <a id="api_irtcengine_stopeffect__restriction"></a>
 
@@ -702,7 +686,6 @@ public abstract int StopEffect(int soundId);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unloadalleffects"></a>
@@ -724,7 +707,6 @@ public abstract int UnloadAllEffects();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unloadeffect"></a>
@@ -741,7 +723,7 @@ public abstract int UnloadEffect(int soundId);
 
 <a id="api_irtcengine_unloadeffect__detailed_desc"></a>
 
-调用 [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/audio-effect-file#api_irtcengine_preloadeffect) 将音效文件加载至内存后，如需释放该音效文件，请调用该方法。
+调用 [PreloadEffect](/zh-CN/api-reference/rtc/csharp-windows/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效文件加载至内存后，如需释放该音效文件，请调用该方法。
 
 <a id="api_irtcengine_unloadeffect__timing"></a>
 
@@ -770,7 +752,6 @@ public abstract int UnloadEffect(int soundId);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudioeffectfinished"></a>
@@ -797,5 +778,4 @@ public virtual void OnAudioEffectFinished(int soundId)
 
 指定音效的 ID。每个音效均有唯一的 ID。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)

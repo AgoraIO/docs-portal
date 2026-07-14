@@ -351,7 +351,7 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
         - `nextId`: String 型，下一批数据的起始 ID。如为 null，则表示没有下一批数据。如不为 null，则可用此 `nextId` 继续查询，直到查到 null 为止。
         - `total`: Integer 型，数据总条数。
         - `unready`: Boolean 型，值为 `true` 表示录制失败。如果在开启录制时设置了 `retryTimeout` 参数，由于超时未报告 `ready` 而被自动终止的录制任务会被添加 `unready` 标记。
-      - `webRecordUrlQuery`: String 型，页面录制中的 query 参数。拼接 [`LaunchOption`](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launchoption) 参数传入的录制页面的 `recordUrl` 的值和 `webRecordUrlQuery` 的值即可得到录制页面的 URL，可用于本地调试。
+      - `webRecordUrlQuery`: String 型，页面录制中的 query 参数。拼接 `LaunchOption` 参数传入的录制页面的 `recordUrl` 的值和 `webRecordUrlQuery` 的值即可得到录制页面的 URL，可用于本地调试。
 
       :::warning[注意]
       本地访问录制页面时，远端开启录制的用户会被踢出，请确保录制停止后再访问录制页面。

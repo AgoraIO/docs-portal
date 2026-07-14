@@ -1,6 +1,6 @@
 ---
 title: "ILocalTrack"
-description: "ILocalTrack API reference."
+description: "ILocalTrack API 参考。"
 ---
 
 `LocalTrack` 为本地轨道的基础类，为音频轨道 [LocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-audio-track) 和视频轨道 [LocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track) 提供一些公共的方法。
@@ -12,7 +12,7 @@ description: "ILocalTrack API reference."
     - [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-audio-track)
     - [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track)
 
-## Events
+## 事件
 
 <a id="event_track_ended"></a>
 
@@ -31,9 +31,9 @@ track-ended(): void
 - 媒体设备故障
 - 正在使用中的媒体设备的权限被收回
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_transceiver_updated"></a>
 
@@ -45,18 +45,18 @@ transceiver-updated(transceiver: RTCRtpTransceiver, type?: StreamType): void
 
 当前轨道的 `RTCRtpTransceiver` 实例更新回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | transceiver: RTCRtpTransceiver | 新的 `RTCRtpTransceiver` 实例。 |
 | Optional type: StreamType | 当前轨道所属视频流的类型。详见 [StreamType](/zh-CN/api-reference/rtc/web/enums/stream-type)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-## Properties
+## 属性
 
 <a id="enabled"></a>
 
@@ -104,7 +104,7 @@ trackMediaType: "audio" | "video"
 - `"audio"`: 音频轨道。
 - `"video"`: 视频轨道。
 
-## Methods
+## 方法
 
 <a id="close"></a>
 
@@ -118,9 +118,9 @@ close(): void
 
 一旦本地轨道被关闭，就无法再次使用。如需再次使用本地轨道，需要重新创建。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="getlisteners"></a>
 
@@ -132,15 +132,15 @@ getListeners(event: string): Function[]
 
 指定一个事件名，获取当前所有监听这个事件的回调函数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 事件名称。 |
 
-#### Returns
+#### 返回值
 
-Returns Function []
+Function []
 
 <a id="getmediastreamtrack"></a>
 
@@ -152,9 +152,9 @@ getMediaStreamTrack(): MediaStreamTrack
 
 获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
-#### Returns
+#### 返回值
 
-Returns MediaStreamTrack
+MediaStreamTrack
 
 一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
 
@@ -172,15 +172,15 @@ getRTCRtpTransceiver(type?: StreamType): RTCRtpTransceiver | undefined
 
 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例： 本地轨道： [ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track#event_transceiver_updated) 远端轨道： [IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremote-track#event_transceiver_updated_2)
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional type: StreamType | 视频流的类型。详见 [StreamType](/zh-CN/api-reference/rtc/web/enums/stream-type)。 |
 
-#### Returns
+#### 返回值
 
-Returns RTCRtpTransceiver | undefined
+RTCRtpTransceiver | undefined
 
 当前轨道的 `RTCRtpTransceiver` 实例。
 
@@ -200,9 +200,9 @@ getStats(): LocalVideoTrackStats | LocalAudioTrackStats
 
 注意事项：获取本地视频轨道数据时，iOS 上无法获取到 `encodeDelay` 字段。
 
-#### Returns
+#### 返回值
 
-Returns [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-video-track-stats) | [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-audio-track-stats)
+[LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-video-track-stats) | [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/local-audio-track-stats)
 
 <a id="gettrackid"></a>
 
@@ -214,9 +214,9 @@ getTrackId(): string
 
 获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
 媒体轨道 ID。
 
@@ -230,9 +230,9 @@ getTrackLabel(): string
 
 获取本地轨道的来源描述。
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
 可能返回以下值：
 
@@ -250,16 +250,16 @@ off(event: string, listener: Function): void
 
 取消一个指定事件的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 监听事件时传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="on"></a>
 
@@ -277,40 +277,40 @@ on(event: "track-ended", listener: typeof event_track_ended): void
 on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "track-updated" | 事件名称。 |
 | listener: typeof event_track_updated | 详见 [track-updated](/zh-CN/api-reference/rtc/web/globals#event_track_updated)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "track-ended" | 事件名称。 |
 | listener: typeof event_track_ended | 详见 [track-ended](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track#event_track_ended)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 添加事件监听器。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "transceiver-updated" | 事件名称。 |
 | listener: typeof event_transceiver_updated | 详见 [ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track#event_transceiver_updated)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="once"></a>
 
@@ -324,16 +324,16 @@ once(event: string, listener: Function): void
 
 当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="play"></a>
 
@@ -345,15 +345,15 @@ play(element?: string | HTMLElement): void
 
 在页面上播放媒体轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional element: string \| HTMLElement | 指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：<br />- `string`: 指定该 DOM 元素的 ID 值。<br />- `HTMLElement`: 直接传入一个 DOM 元素对象。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removealllisteners"></a>
 
@@ -365,15 +365,15 @@ removeAllListeners(event?: string): void
 
 指定一个事件，取消其所有的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional event: string | 指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setenabled"></a>
 
@@ -393,15 +393,15 @@ setEnabled(enabled: boolean): Promise<void>
 
 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track#event_track_ended) 事件。 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient#event_user_published) 事件。 `setEnabled` 和 `setMuted` 不能同时调用。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enabled: boolean | 是否启用该轨道:<br />- `true`: 启用该轨道。<br />- `false`: 禁用该轨道。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="setmuted"></a>
 
@@ -421,15 +421,15 @@ setMuted(muted: boolean): Promise<void>
 
 与 [setEnabled](/zh-CN/api-reference/rtc/web/interfaces/ilocal-track#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](http://doc.shengwang.cn/faq/integration-issues/diff-setenabled-setmuted)。 `setEnabled` 和 `setMuted` 不能同时调用。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | muted: boolean | 是否发送该轨道的媒体数据:<br />- `true`: 暂停发送该轨道的媒体数据。<br />- `false`: 恢复发送该轨道的媒体数据。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="stop"></a>
 
@@ -441,6 +441,6 @@ stop(): void
 
 停止播放。
 
-#### Returns
+#### 返回值
 
-Returns void
+void

@@ -20,6 +20,26 @@ describe('sitemap', () => {
     }
   });
 
+  it('requires an explicit canonical host for cn deployments', () => {
+    const previousSiteUrl = process.env.SITE_URL;
+    const previousViteSiteUrl = process.env.VITE_SITE_URL;
+    const previousPublicSiteUrl = process.env.PUBLIC_SITE_URL;
+
+    delete process.env.SITE_URL;
+    process.env.VITE_SITE_URL = 'https://vite-alias.example.com';
+    process.env.PUBLIC_SITE_URL = 'https://public-alias.example.com';
+
+    try {
+      expect(() => getSitemapBaseUrl('cn')).toThrow(
+        'SITE_URL is required when VITE_DOCS_REGION=cn',
+      );
+    } finally {
+      restoreEnvValue('SITE_URL', previousSiteUrl);
+      restoreEnvValue('VITE_SITE_URL', previousViteSiteUrl);
+      restoreEnvValue('PUBLIC_SITE_URL', previousPublicSiteUrl);
+    }
+  });
+
   it('normalizes configured English docs hosts to the canonical root', () => {
     const previousSiteUrl = process.env.SITE_URL;
 

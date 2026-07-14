@@ -1,0 +1,58 @@
+---
+title: "ChatMessage.createVideoSendMessage constructor"
+description: "API docs for the ChatMessage.createVideoSendMessage constructor from Class ChatMessage from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Creates a video message instance for sending.
+
+- For a one-to-one chat, it is the username of the peer user.
+- For a group chat, it is the group ID.
+- For a chat room, it is the chat room ID.
+
+**Return** The message instance.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `targetId` | The ID of the message recipient. |
+| `filePath` | The path of the video file. |
+| `displayName` | The video name. |
+| `duration` | The video duration in seconds. |
+| `fileSize` | The video file size in bytes. |
+| `thumbnailLocalPath` | The local path of the thumbnail, which is usually the first frame of video. |
+| `width` | The width of the video thumbnail, in pixels. |
+| `height` | The height of the video thumbnail, in pixels. |
+
+```dart title="Dart"
+ChatMessage.createVideoSendMessage({required String targetId, required String filePath, String? displayName, int duration = 0, int? fileSize, String? thumbnailLocalPath, double? width, double? height, ChatType chatType = ChatType.Chat})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+ChatMessage.createVideoSendMessage({
+  required String targetId,
+  required String filePath,
+  String? displayName,
+  int duration = 0,
+  int? fileSize,
+  String? thumbnailLocalPath,
+  double? width,
+  double? height,
+  ChatType chatType = ChatType.Chat,
+}) : this.createSendMessage(
+          chatType: chatType,
+          to: targetId,
+          body: ChatVideoMessageBody(
+            localPath: filePath,
+            displayName: displayName,
+            duration: duration,
+            fileSize: fileSize,
+            thumbnailLocalPath: thumbnailLocalPath,
+            width: width,
+            height: height,
+          ));
+```

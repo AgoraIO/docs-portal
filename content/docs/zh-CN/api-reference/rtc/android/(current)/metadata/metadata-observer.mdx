@@ -1,14 +1,9 @@
 ---
 title: "媒体流附属信息分发"
-description: "当 SDK 请求元数据最大大小时触发的回调。"
+description: "媒体流附属信息分发 API reference."
 ---
-<a id="toc_metadata_observer"></a>
 
-## 媒体流附属信息分发
-
-<a id="api_imetadataobserver_getmaxmetadatasize"></a>
-
-## getMaxMetadataSize
+## <span id="toc_metadata_observer"></span>getMaxMetadataSize [#api_imetadataobserver_getmaxmetadatasize]
 
 当 SDK 请求元数据最大大小时触发的回调。
 
@@ -22,18 +17,13 @@ public abstract int getMaxMetadataSize()
 
 调用 [registerMediaMetadataObserver](/zh-CN/api-reference/rtc/android/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) 成功注册后，SDK 在每发送一帧视频时会触发该回调。你需要在该回调的返回值中指定元数据的最大大小。
 
-<a id="api_imetadataobserver_getmaxmetadatasize__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imetadataobserver_getmaxmetadatasize__return_values]
 
 方法调用成功，返回你希望使用的元数据 `buffer` 的最大大小，单位为字节。最大值为 1024 字节。请确保设置返回值。
 
-### 所属接口类
 - [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)
 
-<a id="api_irtcengine_registermediametadataobserver"></a>
-
-## registerMediaMetadataObserver
+## registerMediaMetadataObserver [#api_irtcengine_registermediametadataobserver]
 
 注册元数据观察器。
 
@@ -51,9 +41,7 @@ public abstract int registerMediaMetadataObserver(IMetadataObserver observer, in
 请在调用 `joinChannel` 之前调用此方法。
 :::
 
-<a id="api_irtcengine_registermediametadataobserver__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_registermediametadataobserver__parameters]
 
 #### `observer`
 
@@ -65,19 +53,14 @@ public abstract int registerMediaMetadataObserver(IMetadataObserver observer, in
 
 - `VIDEO_METADATA`：视频元数据。
 
-<a id="api_irtcengine_registermediametadataobserver__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_registermediametadataobserver__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_unregistermediametadataobserver"></a>
-
-## unregisterMediaMetadataObserver
+## unregisterMediaMetadataObserver [#api_irtcengine_unregistermediametadataobserver]
 
 取消注册指定的元数据观察者。
 
@@ -87,11 +70,7 @@ public abstract int registerMediaMetadataObserver(IMetadataObserver observer, in
 public abstract int unregisterMediaMetadataObserver(IMetadataObserver observer, int type);
 ```
 
-<a id="api_irtcengine_unregistermediametadataobserver__detailed_desc"></a>
-
-<a id="api_irtcengine_unregistermediametadataobserver__parameters"></a>
-
-### 参数
+### <span id="api_irtcengine_unregistermediametadataobserver__detailed_desc"></span>参数 [#api_irtcengine_unregistermediametadataobserver__parameters]
 
 #### `observer`
 
@@ -103,19 +82,14 @@ public abstract int unregisterMediaMetadataObserver(IMetadataObserver observer, 
 
 - `VIDEO_METADATA`：视频元数据。
 
-<a id="api_irtcengine_unregistermediametadataobserver__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_unregistermediametadataobserver__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="callback_imetadataobserver_onmetadatareceived"></a>
-
-## onMetadataReceived
+## onMetadataReceived [#callback_imetadataobserver_onmetadatareceived]
 
 本地用户接收到元数据时触发的回调。
 
@@ -125,28 +99,19 @@ public abstract int unregisterMediaMetadataObserver(IMetadataObserver observer, 
 public abstract void onMetadataReceived(AgoraMetadata metadata)
 ```
 
-<a id="callback_imetadataobserver_onmetadatareceived__detailed_desc"></a>
-
-<a id="callback_imetadataobserver_onmetadatareceived__timing"></a>
-
-### 触发时机
+### <span id="callback_imetadataobserver_onmetadatareceived__detailed_desc"></span>触发时机 [#callback_imetadataobserver_onmetadatareceived__timing]
 
 该回调在本地用户接收到元数据时被触发。
 
-<a id="callback_imetadataobserver_onmetadatareceived__parameters"></a>
-
-### 参数
+### 参数 [#callback_imetadataobserver_onmetadatareceived__parameters]
 
 #### `metadata`
 
 接收到的元数据。详见 [AgoraMetadata](/zh-CN/api-reference/rtc/android/class-metadata)。
 
-### 所属接口类
 - [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)
 
-<a id="callback_imetadataobserver_onreadytosendmetadata"></a>
-
-## onReadyToSendMetadata
+## onReadyToSendMetadata [#callback_imetadataobserver_onreadytosendmetadata]
 
 SDK 准备好发送元数据时触发的回调。
 
@@ -162,15 +127,11 @@ public abstract byte[] onReadyToSendMetadata(long timeStampMs, int sourceType)
 请确保元数据的大小不超过 [getMaxMetadataSize](/zh-CN/api-reference/rtc/android/metadata/metadata-observer#api_imetadataobserver_getmaxmetadatasize) 回调中设置的值。
 :::
 
-<a id="callback_imetadataobserver_onreadytosendmetadata__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_imetadataobserver_onreadytosendmetadata__timing]
 
 该回调在 SDK 准备好发送元数据时被触发。
 
-<a id="callback_imetadataobserver_onreadytosendmetadata__parameters"></a>
-
-### 参数
+### 参数 [#callback_imetadataobserver_onreadytosendmetadata__parameters]
 
 #### `timeStampMs`
 
@@ -180,11 +141,8 @@ public abstract byte[] onReadyToSendMetadata(long timeStampMs, int sourceType)
 
 视频数据类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。
 
-<a id="callback_imetadataobserver_onreadytosendmetadata__return_values"></a>
-
-### 返回值
+### 返回值 [#callback_imetadataobserver_onreadytosendmetadata__return_values]
 
 方法调用成功时，返回希望发送的元数据，格式为字节数组。
 
-### 所属接口类
 - [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)

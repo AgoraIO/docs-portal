@@ -1,21 +1,21 @@
 ---
 title: "Agora Interactive Whiteboard Web SDK API Reference"
-description: "Agora Interactive Whiteboard Web SDK API Reference API reference."
+description: "Agora Interactive Whiteboard Web SDK API Reference API 参考。"
 ---
 
-## Type aliases
+## 类型别名
 
 <a id="broadcaststate"></a>
 
 ### BroadcastState
 
-```ts
+```ts title="TypeScript"
 BroadcastState: { broadcasterId?: number; mode: ViewMode }
 ```
 
 视角状态，包含视角为主播模式的用户信息。
 
-#### Type declaration
+#### 类型声明
 
 ##### `broadcasterId?: number`
 
@@ -29,13 +29,13 @@ BroadcastState: { broadcasterId?: number; mode: ViewMode }
 
 ### Camera
 
-```ts
+```ts title="TypeScript"
 Camera: { centerX: number; centerY: number; scale: number }
 ```
 
 视角的描述。
 
-#### Type declaration
+#### 类型声明
 
 ##### `centerX: number`
 
@@ -53,7 +53,7 @@ Camera: { centerX: number; centerY: number; scale: number }
 
 ### CameraBound
 
-```ts
+```ts title="TypeScript"
 CameraBound: { centerX?: number; centerY?: number; damping?: number; height?: number; maxContentMode?: ContentMode; minContentMode?: ContentMode; width?: number }
 ```
 
@@ -61,7 +61,7 @@ CameraBound: { centerX?: number; centerY?: number; damping?: number; height?: nu
 
 视角边界是白板上用户可以看见的部分。在视角边界内，用户可以自由移动和缩放视角。视角如果超出了视角边界的范围，会被 SDK 拉回视角边界内。
 
-#### Type declaration
+#### 类型声明
 
 ##### `centerX?: number`
 
@@ -98,7 +98,7 @@ CameraBound: { centerX?: number; centerY?: number; damping?: number; height?: nu
 
 ### CameraState
 
-```ts
+```ts title="TypeScript"
 CameraState: Camera & { height: number; width: number }
 ```
 
@@ -119,7 +119,7 @@ CameraState: Camera & { height: number; width: number }
 
 ### Color
 
-```ts
+```ts title="TypeScript"
 Color: number[]
 ```
 
@@ -129,13 +129,13 @@ Color: number[]
 
 ### ConstructRoomParams
 
-```ts
+```ts title="TypeScript"
 ConstructRoomParams: { cameraBound?: CameraBound; commandWheelToZoom?: boolean; cursorAdapter?: CursorAdapter | false; disableAutoResize?: boolean; disableCameraTransform?: boolean; disableOthersSelectingBox?: boolean; invisiblePlugins?: ReadonlyArray<InvisiblePluginClass<string, any, any>>; wrappedComponents?: WrappedComponents }
 ```
 
-[Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 对象和 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 对象共用的参数配置。
+[Room](/zh-CN/api-reference/whiteboard/web/interfaces/room) 对象和 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room) 对象共用的参数配置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `cameraBound?: CameraBound`
 
@@ -202,7 +202,7 @@ ConstructRoomParams: { cameraBound?: CameraBound; commandWheelToZoom?: boolean; 
 
 ### ContentMode
 
-```ts
+```ts title="TypeScript"
 ContentMode: (screenSize: Size, boundSize: Size) => number
 ```
 
@@ -224,13 +224,13 @@ ContentMode: (screenSize: Size, boundSize: Size) => number
 
 ### ConvertedFile
 
-```ts
+```ts title="TypeScript"
 ConvertedFile: { conversionFileUrl: string; height: number; preview?: string; width: number }
 ```
 
 转换后生成的图片或动态 PPT 页。
 
-#### Type declaration
+#### 类型声明
 
 ##### `conversionFileUrl: string`
 
@@ -252,13 +252,13 @@ ConvertedFile: { conversionFileUrl: string; height: number; preview?: string; wi
 
 ### CursorDescription
 
-```ts
+```ts title="TypeScript"
 CursorDescription: { height: number; width: number; x: number; y: number }
 ```
 
 光标的描述。
 
-#### Type declaration
+#### 类型声明
 
 ##### `height: number`
 
@@ -280,13 +280,13 @@ CursorDescription: { height: number; width: number; x: number; y: number }
 
 ### DisplayerCallbacks
 
-```ts
+```ts title="TypeScript"
 DisplayerCallbacks: { onBackgroundError: (url: string) => void; onCatchErrorWhenAppendFrame: (userId: number, error: Error) => void; onCatchErrorWhenRender: (error: Error) => void; onEnableWriteNowChanged: (enableWriteNow: boolean) => void; onHandToolActive: (active: boolean) => void; onPPTMediaPause: (shapeId: string, type: MediaType) => void; onPPTMediaPlay: (shapeId: string, type: MediaType) => void; onPPTMediaPlayError: (shapeId: string, type: MediaType, error: Error) => void; onRenderDuration: (renderDuration: number) => void; onSliceChanged: (slice: string) => void }
 ```
 
 `Displayer` 对象的回调。
 
-#### Type declaration
+#### 类型声明
 
 ##### `onBackgroundError: (url: string) => void`
 
@@ -314,13 +314,13 @@ DisplayerCallbacks: { onBackgroundError: (url: string) => void; onCatchErrorWhen
 
 ### DisplayerState
 
-```ts
+```ts title="TypeScript"
 DisplayerState: { cameraState: CameraState; globalState: GlobalState; roomMembers: ReadonlyArray<RoomMember>; sceneState: SceneState }
 ```
 
 `DisplayerState` 是 `Room` 对象和 `Player` 对象共有的类型。
 
-#### Type declaration
+#### 类型声明
 
 ##### `cameraState: CameraState`
 
@@ -346,13 +346,13 @@ DisplayerState: { cameraState: CameraState; globalState: GlobalState; roomMember
 
 ### Event
 
-```ts
+```ts title="TypeScript"
 Event: { authorId: number; event: string; payload: any; phase: EventPhase; scope: Scope }
 ```
 
 自定义事件。
 
-#### Type declaration
+#### 类型声明
 
 ##### `authorId: number`
 
@@ -378,7 +378,7 @@ Event: { authorId: number; event: string; payload: any; phase: EventPhase; scope
 
 ### EventFilter
 
-```ts
+```ts title="TypeScript"
 EventFilter: (event: Event) => boolean
 ```
 
@@ -388,7 +388,7 @@ EventFilter: (event: Event) => boolean
 
 ### EventListener
 
-```ts
+```ts title="TypeScript"
 EventListener: (event: Event) => void
 ```
 
@@ -398,7 +398,7 @@ EventListener: (event: Event) => void
 
 ### EventsListener
 
-```ts
+```ts title="TypeScript"
 EventsListener: (events: Event[]) => void
 ```
 
@@ -408,13 +408,13 @@ EventsListener: (events: Event[]) => void
 
 ### FloatBarOptions
 
-```ts
+```ts title="TypeScript"
 FloatBarOptions: { colors: ReadonlyArray<Readonly<Color>> }
 ```
 
 悬浮条的配置参数。
 
-#### Type declaration
+#### 类型声明
 
 ##### `colors: ReadonlyArray<Readonly<Color>>`
 
@@ -424,7 +424,7 @@ FloatBarOptions: { colors: ReadonlyArray<Readonly<Color>> }
 
 ### GlobalState
 
-```ts
+```ts title="TypeScript"
 GlobalState: {}
 ```
 
@@ -436,7 +436,7 @@ GlobalState: {}
 
 ### HotKey
 
-```ts
+```ts title="TypeScript"
 HotKey: string | HotKeyDescription | ReadonlyArray<string | HotKeyDescription> | HotKeyChecker
 ```
 
@@ -446,7 +446,7 @@ HotKey: string | HotKeyDescription | ReadonlyArray<string | HotKeyDescription> |
 
 ### HotKeyChecker
 
-```ts
+```ts title="TypeScript"
 HotKeyChecker: (event: HotKeyEvent, kind: KeyboardKind) => boolean
 ```
 
@@ -471,13 +471,13 @@ HotKeyChecker: (event: HotKeyEvent, kind: KeyboardKind) => boolean
 
 ### HotKeyDescription
 
-```ts
+```ts title="TypeScript"
 HotKeyDescription: { altKey: boolean | null; ctrlKey: boolean | null; key: string; shiftKey: boolean | null }
 ```
 
 自定义快捷键的描述。
 
-#### Type declaration
+#### 类型声明
 
 ##### `altKey: boolean | null`
 
@@ -499,13 +499,13 @@ HotKeyDescription: { altKey: boolean | null; ctrlKey: boolean | null; key: strin
 
 ### HotKeyEvent
 
-```ts
+```ts title="TypeScript"
 HotKeyEvent: { altKey: boolean; ctrlKey: boolean; key: string; kind: "KeyDown" | "KeyUp"; nativeEvent?: KeyboardEvent; shiftKey: boolean }
 ```
 
 自定义快捷键的事件。
 
-#### Type declaration
+#### 类型声明
 
 ##### `altKey: boolean`
 
@@ -538,13 +538,13 @@ HotKeyEvent: { altKey: boolean; ctrlKey: boolean; key: string; kind: "KeyDown" |
 
 ### HotKeys
 
-```ts
+```ts title="TypeScript"
 HotKeys: { changeToArrow: HotKey; changeToClick: HotKey; changeToEllipse: HotKey; changeToEraser: HotKey; changeToHand: HotKey; changeToLaserPointer: HotKey; changeToPencil: HotKey; changeToRectangle: HotKey; changeToSelector: HotKey; changeToStraight: HotKey; changeToText: HotKey; copy: HotKey; delete: HotKey; duplicate: HotKey; lock: HotKey; paste: HotKey; redo: HotKey; undo: HotKey }
 ```
 
 快捷键对应的效果。
 
-#### Type declaration
+#### 类型声明
 
 ##### `changeToArrow: HotKey`
 
@@ -622,7 +622,7 @@ HotKeys: { changeToArrow: HotKey; changeToClick: HotKey; changeToEllipse: HotKey
 
 ### Identifier
 
-```ts
+```ts title="TypeScript"
 Identifier: string
 ```
 
@@ -632,13 +632,13 @@ Identifier: string
 
 ### ImageInformation
 
-```ts
+```ts title="TypeScript"
 ImageInformation: { centerX: number; centerY: number; crossOrigin?: boolean | string; height: number; locked: boolean; uniformScale?: boolean; uuid: string; width: number }
 ```
 
 图片的描述。
 
-#### Type declaration
+#### 类型声明
 
 ##### `centerX: number`
 
@@ -693,13 +693,13 @@ ImageInformation: { centerX: number; centerY: number; crossOrigin?: boolean | st
 
 ### International
 
-```ts
+```ts title="TypeScript"
 International: { displayNote?: string; displaySidebar?: string; hideNote?: string; hideSidebar?: string; jumpTo?: string; nextPage?: string; nextStep?: string; pageNumber?: string; prePage?: string; preStep?: string; resetCurrentPPTAnimation?: string; resetCurrentSlideAnimation?: string }
 ```
 
 `International` 类，用于添加 PPT 预览菜单栏的界面文字。你可以直接传入要展示的文字，例如 “Next”。
 
-#### Type declaration
+#### 类型声明
 
 ##### `displayNote?: string`
 
@@ -753,13 +753,13 @@ International: { displayNote?: string; displaySidebar?: string; hideNote?: strin
 
 ### InvisibleCallbacks
 
-```ts
+```ts title="TypeScript"
 InvisibleCallbacks<A>: { onAttributesUpdate: (attributes: A) => void; onDestroy: () => void }
 ```
 
 不可见插件的回调事件。
 
-#### Type declaration
+#### 类型声明
 
 ##### `onAttributesUpdate: (attributes: A) => void`
 
@@ -769,13 +769,13 @@ InvisibleCallbacks<A>: { onAttributesUpdate: (attributes: A) => void; onDestroy:
 
 ### InvisiblePluginClass
 
-```ts
+```ts title="TypeScript"
 InvisiblePluginClass<K, A, P>: { kind: K; onCreate?: (plugin: P) => void; onDestroy?: (plugin: P) => void }
 ```
 
 不可见插件。
 
-#### Type declaration
+#### 类型声明
 
 ##### `kind: K`
 
@@ -789,13 +789,13 @@ InvisiblePluginClass<K, A, P>: { kind: K; onCreate?: (plugin: P) => void; onDest
 
 ### InvisiblePluginContext
 
-```ts
+```ts title="TypeScript"
 InvisiblePluginContext: { displayer: Displayer; kind: string }
 ```
 
 不可见插件的上下文。
 
-#### Type declaration
+#### 类型声明
 
 ##### `displayer: Displayer`
 
@@ -809,11 +809,11 @@ InvisiblePluginContext: { displayer: Displayer; kind: string }
 
 ### JoinRoomParams
 
-```ts
+```ts title="TypeScript"
 JoinRoomParams: ConstructRoomParams & { disableDeviceInputs?: boolean; disableEraseImage?: boolean; disableMagixEventDispatchLimit?: boolean; disableNewPencil?: boolean; disablePencilWrittingLimitFrequency?: boolean; enableDrawPoint?: boolean; floatBar?: boolean | Partial<FloatBarOptions>; hotKeys?: Partial<HotKeys>; isWritable?: boolean; newPencilWritingQuality?: NewPencilWritingQuality; optimizeOptions?: OptimizeOptions; region?: string; rejectWhenReadonlyErrorLevel?: RoomErrorLevel; roomToken: string; uid: string; userPayload?: {}; uuid: string }
 ```
 
-[Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 对象的参数设置，用于加入互动白板实时房间。该类型继承 [ConstructRoomParams](/zh-CN/api-reference/whiteboard/web/globals#constructroomparams) 且包含以下属性：
+[Room](/zh-CN/api-reference/whiteboard/web/interfaces/room) 对象的参数设置，用于加入互动白板实时房间。该类型继承 [ConstructRoomParams](/zh-CN/api-reference/whiteboard/web/globals#constructroomparams) 且包含以下属性：
 
 - **uuid**: *string*
 
@@ -848,7 +848,7 @@ JoinRoomParams: ConstructRoomParams & { disableDeviceInputs?: boolean; disableEr
 
 ##### `example`
 
-```text
+```text title="Text"
 for (var member of room.state.roomMembers) {
     // 读取房间内某个用户的 userPayload 字段
     console.log(member.userPayload);
@@ -954,7 +954,7 @@ for (var member of room.state.roomMembers) {
 
 ### Level
 
-```ts
+```ts title="TypeScript"
 Level: "debug" | "info" | "warn" | "error"
 ```
 
@@ -975,13 +975,13 @@ Level: "debug" | "info" | "warn" | "error"
 
 ### LoggerOptions
 
-```ts
+```ts title="TypeScript"
 LoggerOptions: { printLevelMask?: Level; reportDebugLogMode?: LoggerReportMode; reportLevelMask?: Level; reportQualityMode?: LoggerReportMode }
 ```
 
 日志的配置参数。
 
-#### Type declaration
+#### 类型声明
 
 ##### `printLevelMask?: Level`
 
@@ -1003,7 +1003,7 @@ SDK 上报连接质量数据的模式。
 
 ### MagixEventListenerOptions
 
-```ts
+```ts title="TypeScript"
 MagixEventListenerOptions: { fireInterval?: number; fireSelfEventAfterCommit?: boolean }
 ```
 
@@ -1013,7 +1013,7 @@ MagixEventListenerOptions: { fireInterval?: number; fireSelfEventAfterCommit?: b
 
 v2.15.2
 
-#### Type declaration
+#### 类型声明
 
 ##### `fireInterval?: number`
 
@@ -1023,22 +1023,22 @@ SDK 会根据该参数的值周期性触发自定义事件回调。
 
 ##### `fireSelfEventAfterCommit?: boolean`
 
-设置是否待服务器确认 [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#dispatchmagixevent) 方法调用成功后再发送事件回调：
+设置是否待服务器确认 [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/web/interfaces/room#dispatchmagixevent) 方法调用成功后再发送事件回调：
 
-- true：调用 [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#dispatchmagixevent) 后立即触发事件回调。
+- true：调用 [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/web/interfaces/room#dispatchmagixevent) 后立即触发事件回调。
 - false：（默认）待服务器确认事件发送成功后再发送事件回调。
 
 <a id="margin"></a>
 
 ### Margin
 
-```ts
+```ts title="TypeScript"
 Margin: { bottom: number; left: number; right: number; top: number }
 ```
 
 空白区域的设置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `bottom: number`
 
@@ -1060,7 +1060,7 @@ Margin: { bottom: number; left: number; right: number; top: number }
 
 ### MediaType
 
-```ts
+```ts title="TypeScript"
 MediaType: "video" | "audio"
 ```
 
@@ -1073,7 +1073,7 @@ MediaType: "video" | "audio"
 
 ### MemberInformation
 
-```ts
+```ts title="TypeScript"
 MemberInformation: { id: number; payload: any; session: string }
 ```
 
@@ -1083,7 +1083,7 @@ MemberInformation: { id: number; payload: any; session: string }
 
 已废弃。请改用 [JoinRoomParams](/zh-CN/api-reference/whiteboard/web/globals#joinroomparams) 中的 `userPayload`。
 
-#### Type declaration
+#### 类型声明
 
 ##### `id: number`
 
@@ -1095,13 +1095,13 @@ MemberInformation: { id: number; payload: any; session: string }
 
 ### MemberState
 
-```ts
+```ts title="TypeScript"
 MemberState: { arrowCompleteToSelector?: boolean; bold?: boolean; currentApplianceName: ApplianceNames; dottedLine?: boolean; ellipseCompleteToSelector?: boolean; fillColor?: Color; italic?: boolean; lineThrough?: boolean; rectangleCompleteToSelector?: boolean; shapeCompleteToSelector?: boolean; shapeType?: ShapeType; straightCompleteToSelector?: boolean; strokeColor: Color; strokeWidth: number; textCanSelectText?: boolean; textColor?: Color; textCompleteToSelector?: boolean; textSize: number; textSizeOverride?: number; underline?: boolean }
 ```
 
 互动白板实时房间的白板工具状态。
 
-#### Type declaration
+#### 类型声明
 
 ##### `arrowCompleteToSelector?: boolean`
 
@@ -1223,7 +1223,7 @@ MemberState: { arrowCompleteToSelector?: boolean; bold?: boolean; currentApplian
 
 ### NativeEvent
 
-```ts
+```ts title="TypeScript"
 NativeEvent: MouseEvent | WheelEvent | KeyboardEvent | TouchEvent
 ```
 
@@ -1238,13 +1238,13 @@ NativeEvent: MouseEvent | WheelEvent | KeyboardEvent | TouchEvent
 
 ### PlayableCheckingParams
 
-```ts
+```ts title="TypeScript"
 PlayableCheckingParams: { beginTimestamp?: number; duration?: number; region?: string; room: string; roomToken: string; slice?: string }
 ```
 
 检查白板房间是否可以回放的参数配置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `beginTimestamp?: number`
 
@@ -1294,7 +1294,7 @@ PlayableCheckingParams: { beginTimestamp?: number; duration?: number; region?: s
 
 ### PlayerCallbacks
 
-```ts
+```ts title="TypeScript"
 PlayerCallbacks: DisplayerCallbacks & { onIsPlayableChanged: (isPlayable: boolean) => void; onLoadFirstFrame: () => void; onPhaseChanged: (phase: PlayerPhase) => void; onPlayerStateChanged: (modifyState: Partial<PlayerState>) => void; onProgressTimeChanged: (progressTimestamp: number) => void; onStoppedWithError: (error: Error) => void }
 ```
 
@@ -1350,7 +1350,7 @@ PlayerCallbacks: DisplayerCallbacks & { onIsPlayableChanged: (isPlayable: boolea
 
 ### PlayerState
 
-```ts
+```ts title="TypeScript"
 PlayerState: DisplayerState & { observerMode: ObserverMode }
 ```
 
@@ -1364,13 +1364,13 @@ PlayerState: DisplayerState & { observerMode: ObserverMode }
 
 ### Plugin
 
-```ts
+```ts title="TypeScript"
 Plugin<C, T>: { defaultAttributes?: T; hitTest?: (plugin: PluginInstance<C, T>, x: number, y: number, selectorRadius: number) => boolean; kind?: string; render: ComponentType<PluginProps<C, T>>; willInterruptEvent?: (plugin: PluginInstance<C, T>, event: NativeEvent) => boolean }
 ```
 
 组件插件的描述。Agora 支持的自定义插件包括组件插件和不可见插件。
 
-#### Type declaration
+#### 类型声明
 
 ##### `defaultAttributes?: T`
 
@@ -1392,13 +1392,13 @@ Plugin<C, T>: { defaultAttributes?: T; hitTest?: (plugin: PluginInstance<C, T>, 
 
 ### PluginDescription
 
-```ts
+```ts title="TypeScript"
 PluginDescription<A>: { attributes?: A; height?: number; originX?: number; originY?: number; selectable?: boolean; width?: number }
 ```
 
 组件插件对象的描述。
 
-#### Type declaration
+#### 类型声明
 
 ##### `attributes?: A`
 
@@ -1431,13 +1431,13 @@ PluginDescription<A>: { attributes?: A; height?: number; originX?: number; origi
 
 ### PluginProps
 
-```ts
+```ts title="TypeScript"
 PluginProps<C, T>: { margin: Margin; origin: Point; plugin: PluginInstance<C, T>; scale: number; size: Size }
 ```
 
 组件插件的外观设置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `margin: Margin`
 
@@ -1463,13 +1463,13 @@ PluginProps<C, T>: { margin: Margin; origin: Point; plugin: PluginInstance<C, T>
 
 ### Point
 
-```ts
+```ts title="TypeScript"
 Point: { x: number; y: number }
 ```
 
 世界坐标系（以白板初始化时的中心点为原点的坐标系）的点坐标。
 
-#### Type declaration
+#### 类型声明
 
 ##### `x: number`
 
@@ -1483,7 +1483,7 @@ Point: { x: number; y: number }
 
 ### PptDescription
 
-```ts
+```ts title="TypeScript"
 PptDescription: { height: number; previewURL?: string; src: string; width: number }
 ```
 
@@ -1501,7 +1501,7 @@ PptDescription: { height: number; previewURL?: string; src: string; width: numbe
 - 一个场景只能插入一张图片或动态 PPT 页。
 - 插入的图片或动态 PPT 页的中心点坐标默认为世界坐标系的原点。图片或动态 PPT 页插入场景后，你无法改变它在白板上的位置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `height: number`
 
@@ -1526,13 +1526,13 @@ PptDescription: { height: number; previewURL?: string; src: string; width: numbe
 
 ### PreviewConfig
 
-```ts
+```ts title="TypeScript"
 PreviewConfig: { international?: International }
 ```
 
 PPT 预览页面的配置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `international?: International`
 
@@ -1542,13 +1542,13 @@ PPT 预览页面的配置。
 
 ### Progress
 
-```ts
+```ts title="TypeScript"
 Progress: { convertedFileList: ConvertedFile[]; convertedPageSize: number; convertedPercentage: number; currentStep?: CurrentStep; totalPageSize: number }
 ```
 
 文档转换任务的进度详情。
 
-#### Type declaration
+#### 类型声明
 
 ##### `convertedFileList: ConvertedFile[]`
 
@@ -1574,7 +1574,7 @@ Progress: { convertedFileList: ConvertedFile[]; convertedPageSize: number; conve
 
 ### RTCClient
 
-```ts
+```ts title="TypeScript"
 RTCClient: { adjustAudioMixingPlayoutVolume?: (volume: number) => number; adjustAudioMixingPublishVolume?: (volume: number) => number; adjustAudioMixingVolume?: (volume: number) => number; getAudioMixingCurrentPosition?: () => number; getAudioMixingDuration?: () => number; getAudioMixingPlayoutVolume?: () => number; getAudioMixingPublishVolume?: () => number; pauseAudioMixing: () => number; resumeAudioMixing: () => number; setAudioMixingPosition: (position: number) => number; startAudioMixing: (filePath: string, loopback: boolean, replace: boolean, cycle: number, callback?: (state: number, errorCode: number) => void) => number; stopAudioMixing: (callback?: (state: number, errorCode: number) => void) => number }
 ```
 
@@ -1591,7 +1591,7 @@ RTCClient: { adjustAudioMixingPlayoutVolume?: (volume: number) => number; adjust
 
 目前仅支持 Electron 平台的 Agora RTC SDK.
 
-#### Type declaration
+#### 类型声明
 
 ##### `adjustAudioMixingPlayoutVolume?: (volume: number) => number`
 
@@ -1621,13 +1621,13 @@ RTCClient: { adjustAudioMixingPlayoutVolume?: (volume: number) => number; adjust
 
 ### ReconnectionOptions
 
-```ts
+```ts title="TypeScript"
 ReconnectionOptions: { disableReconnect: boolean }
 ```
 
 断线重连设置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `disableReconnect: boolean`
 
@@ -1640,7 +1640,7 @@ ReconnectionOptions: { disableReconnect: boolean }
 
 ### Rectangle
 
-```ts
+```ts title="TypeScript"
 Rectangle: Size & { originX: number; originY: number }
 ```
 
@@ -1657,13 +1657,13 @@ Rectangle: Size & { originX: number; originY: number }
 
 ### RenderPlugin
 
-```ts
+```ts title="TypeScript"
 RenderPlugin<C, T>: { defaultAttributes?: T; hitTest?: (plugin: PluginInstance<C, T>, x: number, y: number, selectorRadius: number) => boolean; kind: string; render: ComponentType<PluginProps<C, T>>; willInterruptEvent?: (plugin: PluginInstance<C, T>, event: NativeEvent) => boolean }
 ```
 
 组件插件的渲染。
 
-#### Type declaration
+#### 类型声明
 
 ##### `defaultAttributes?: T`
 
@@ -1685,7 +1685,7 @@ RenderPlugin<C, T>: { defaultAttributes?: T; hitTest?: (plugin: PluginInstance<C
 
 ### ReplayRoomParams
 
-```ts
+```ts title="TypeScript"
 ReplayRoomParams: ConstructRoomParams & { alignmentInterval?: number; alignmentThreshold?: number; beginTimestamp?: number; crops?: Array<{ from: number; to: number }>; duration?: number; region?: string; room: string; roomToken: string; slice?: string }
 ```
 
@@ -1762,7 +1762,7 @@ ReplayRoomParams: ConstructRoomParams & { alignmentInterval?: number; alignmentT
 
 ### RoomCallbacks
 
-```ts
+```ts title="TypeScript"
 RoomCallbacks: DisplayerCallbacks & { onCanRedoStepsUpdate: (canRedoSteps: number) => void; onCanUndoStepsUpdate: (canUndoSteps: number) => void; onConnection: (duration: number) => void; onDisconnectWithError: (error: Error) => void; onKeyDown: (event: KeyboardEvent) => void; onKeyUp: (event: KeyboardEvent) => void; onKickedWithReason: (reason: string) => void; onObjectsLimit: (limit: number, soft: boolean) => void; onPhaseChanged: (phase: RoomPhase) => void; onRoomStateChanged: (modifyState: Partial<RoomState>) => void; willInterceptKeyboardEvent: (event: KeyboardEvent) => boolean }
 ```
 
@@ -1836,7 +1836,7 @@ RoomCallbacks: DisplayerCallbacks & { onCanRedoStepsUpdate: (canRedoSteps: numbe
 
   可撤销次数发生变化回调。
 
-  当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#undo) 撤销上一步操作时，会触发该回调，报告剩余的可撤销次数。
+  当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room#undo) 撤销上一步操作时，会触发该回调，报告剩余的可撤销次数。
 
 ##### `param`
 
@@ -1846,7 +1846,7 @@ RoomCallbacks: DisplayerCallbacks & { onCanRedoStepsUpdate: (canRedoSteps: numbe
 
   可重做次数发生变化回调。
 
-  当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#undo) 重做上一步操作时，会触发该回调，报告剩余的可重做次数。
+  当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room#undo) 重做上一步操作时，会触发该回调，报告剩余的可重做次数。
 
 ##### `param`
 
@@ -1869,13 +1869,13 @@ RoomCallbacks: DisplayerCallbacks & { onCanRedoStepsUpdate: (canRedoSteps: numbe
 
 ### RoomMember
 
-```ts
+```ts title="TypeScript"
 RoomMember: { memberId: number; memberState: MemberState; payload: UserPayload; session: string }
 ```
 
 实时房间内互动模式（具有读写权限）用户的信息。
 
-#### Type declaration
+#### 类型声明
 
 ##### `memberId: number`
 
@@ -1903,7 +1903,7 @@ v2.15.0
 
 ### RoomState
 
-```ts
+```ts title="TypeScript"
 RoomState: DisplayerState & { broadcastState: Readonly<BroadcastState>; memberState: MemberState }
 ```
 
@@ -1920,13 +1920,13 @@ RoomState: DisplayerState & { broadcastState: Readonly<BroadcastState>; memberSt
 
 ### SceneDefinition
 
-```ts
+```ts title="TypeScript"
 SceneDefinition: { name?: string; ppt?: PptDescription }
 ```
 
 场景定义。
 
-#### Type declaration
+#### 类型声明
 
 ##### `name?: string`
 
@@ -1940,7 +1940,7 @@ SceneDefinition: { name?: string; ppt?: PptDescription }
 
 ### SceneMap
 
-```ts
+```ts title="TypeScript"
 SceneMap: {}
 ```
 
@@ -1950,13 +1950,13 @@ SceneMap: {}
 
 ### SceneState
 
-```ts
+```ts title="TypeScript"
 SceneState: { contextPath: string; index: number; sceneName: string; scenePath: string; scenes: ReadonlyArray<WhiteScene> }
 ```
 
 场景状态。
 
-#### Type declaration
+#### 类型声明
 
 ##### `contextPath: string`
 
@@ -1990,13 +1990,13 @@ SceneState: { contextPath: string; index: number; sceneName: string; scenePath: 
 
 ### ScenesCallbacks
 
-```ts
+```ts title="TypeScript"
 ScenesCallbacks: { onAddScene: (scenesCallbacks: ScenesCallbacksNode, name: string) => void; onAddSceneGroup: (scenesCallbacks: ScenesCallbacksNode, name: string) => void; onRemoveScene: (scenesCallbacks: ScenesCallbacksNode, name: string) => void; onRemoveSceneGroup: (scenesCallbacks: ScenesCallbacksNode, name: string) => void; onScenesCountUpdate: (scenesCallbacks: ScenesCallbacksNode, scenesCount: number) => void; onScenesGroupCountUpdate: (scenesCallbacks: ScenesCallbacksNode, sceneGroupsCount: number) => void }
 ```
 
 场景回调。
 
-#### Type declaration
+#### 类型声明
 
 ##### `onAddScene: (scenesCallbacks: ScenesCallbacksNode, name: string) => void`
 
@@ -2074,13 +2074,13 @@ ScenesCallbacks: { onAddScene: (scenesCallbacks: ScenesCallbacksNode, name: stri
 
 ### Size
 
-```ts
+```ts title="TypeScript"
 Size: { height: number; width: number }
 ```
 
 尺寸大小。
 
-#### Type declaration
+#### 类型声明
 
 ##### `height: number`
 
@@ -2094,13 +2094,13 @@ Size: { height: number; width: number }
 
 ### TextFormat
 
-```ts
+```ts title="TypeScript"
 TextFormat: { bold?: boolean; color?: Color; fontSize?: number; italic?: boolean; lineThrough?: boolean; underline?: boolean }
 ```
 
 字体样式。
 
-#### Type declaration
+#### 类型声明
 
 ##### `bold?: boolean`
 
@@ -2142,7 +2142,7 @@ TextFormat: { bold?: boolean; color?: Color; fontSize?: number; italic?: boolean
 
 ### UserCursorIcons
 
-```ts
+```ts title="TypeScript"
 UserCursorIcons: {}
 ```
 
@@ -2152,7 +2152,7 @@ UserCursorIcons: {}
 
 ### UserFonts
 
-```ts
+```ts title="TypeScript"
 UserFonts: {}
 ```
 
@@ -2162,7 +2162,7 @@ UserFonts: {}
 
 ### UserPayload
 
-```ts
+```ts title="TypeScript"
 UserPayload: {} & { uid: string }
 ```
 
@@ -2185,13 +2185,13 @@ v2.15.0
 
 ### WhiteScene
 
-```ts
+```ts title="TypeScript"
 WhiteScene: { name: string; ppt?: PptDescription }
 ```
 
 白板场景。
 
-#### Type declaration
+#### 类型声明
 
 ##### `name: string`
 
@@ -2205,7 +2205,7 @@ WhiteScene: { name: string; ppt?: PptDescription }
 
 ### WhiteWebSdkConfiguration
 
-```ts
+```ts title="TypeScript"
 WhiteWebSdkConfiguration: { appIdentifier: string; deviceType?: DeviceType; disableCurveAnimes?: boolean; disableNewPencilStroke?: boolean; disableRotation?: boolean; fontFamily?: string; fonts?: UserFonts; handToolKey?: string; invisiblePlugins?: ReadonlyArray<InvisiblePluginClass<string, any, any>>; loggerOptions?: LoggerOptions; onWhiteSetupFailed?: (error: Error) => void; onlyCallbackRemoteStateModify?: boolean; plugins?: Plugins; preloadDynamicPPT?: boolean; reconnectionOptions?: Partial<ReconnectionOptions> | false; region?: string; renderEngine?: RenderEngine; screenType?: ScreenType; urlInterrupter?: (url: string) => string; useMobXState?: boolean; wrappedComponents?: WrappedComponents }
 ```
 
@@ -2215,7 +2215,7 @@ WhiteWebSdkConfiguration: { appIdentifier: string; deviceType?: DeviceType; disa
 
 成功初始化 `WhiteWebSdk` 后，无法再调用 `WhiteWebSdkConfiguration` 中的任何方法修改 `WhiteWebSdk` 的配置。
 
-#### Type declaration
+#### 类型声明
 
 ##### `appIdentifier: string`
 
@@ -2351,7 +2351,7 @@ Agora 不推荐设置 `preloadDynamicPPT(true)`，这样会使 PPT 显示缓慢�
 
 ###### `example`
 
-```text
+```text title="Text"
 import React from "react";
 
 class WrappedComponent extends React.Component {
@@ -2376,7 +2376,7 @@ const whiteWebSdk = new WhiteWebSdk({
 
 ### WorldViewRectangle
 
-```ts
+```ts title="TypeScript"
 WorldViewRectangle: { height: number; originX: number; originY: number; width: number }
 ```
 
@@ -2386,7 +2386,7 @@ WorldViewRectangle: { height: number; originX: number; originY: number; width: n
 
 你可以根据要展示的 PPT 幻灯片或图像的尺寸设置视觉矩形，以确保相同的内容在不同尺寸的屏幕上都可以完整显示。
 
-#### Type declaration
+#### 类型声明
 
 ##### `height: number`
 
@@ -2412,19 +2412,19 @@ WorldViewRectangle: { height: number; originX: number; originY: number; width: n
 
 ### WrappedComponents
 
-```ts
+```ts title="TypeScript"
 WrappedComponents: ReadonlyArray<ComponentType<{}>>
 ```
 
 由 `React.ComponentType` 类型组成的数组，用于包装白板的界面。默认值为 []。
 
-## Variables
+## 变量
 
 <a id="adminobserverid"></a>
 
 ### Const AdminObserverId
 
-```ts
+```ts title="TypeScript"
 AdminObserverId: number
 ```
 
@@ -2434,7 +2434,7 @@ AdminObserverId: number
 
 ### Const AkkoVersion
 
-```ts
+```ts title="TypeScript"
 AkkoVersion: any
 ```
 
@@ -2444,7 +2444,7 @@ Akko 的版本。
 
 ### Const DefaultHotKeys
 
-```ts
+```ts title="TypeScript"
 DefaultHotKeys: Partial<HotKeys>
 ```
 
@@ -2463,7 +2463,7 @@ DefaultHotKeys: Partial<HotKeys>
 
 ### Const DisplayerConsumer
 
-```ts
+```ts title="TypeScript"
 DisplayerConsumer: Consumer<Displayer>
 ```
 
@@ -2473,7 +2473,7 @@ DisplayerConsumer: Consumer<Displayer>
 
 ### Const PlayerConsumer
 
-```ts
+```ts title="TypeScript"
 PlayerConsumer: Consumer<Player | undefined>
 ```
 
@@ -2483,7 +2483,7 @@ PlayerConsumer: Consumer<Player | undefined>
 
 ### Const RoomConsumer
 
-```ts
+```ts title="TypeScript"
 RoomConsumer: Consumer<Room | undefined>
 ```
 
@@ -2493,27 +2493,27 @@ RoomConsumer: Consumer<Room | undefined>
 
 ### Const WhiteVersion
 
-```ts
+```ts title="TypeScript"
 WhiteVersion: string
 ```
 
 当前 SDK 的版本号，格式为字符串，如 `"2.12.11"`。
 
-## Functions
+## 函数
 
 <a id="contentmodeaspectfill"></a>
 
 ### contentModeAspectFill
 
-```ts
+```ts title="TypeScript"
 contentModeAspectFill(): ContentMode
 ```
 
 等比例缩放视角，使视角边界的短边正好顶住与其垂直的屏幕的两边，以保证视角边界铺满屏幕。
 
-#### Returns
+#### 返回值
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
+[ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 视角的实时缩放比例。
 
@@ -2521,21 +2521,21 @@ Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 ### contentModeAspectFillScale
 
-```ts
+```ts title="TypeScript"
 contentModeAspectFillScale(scale: number): ContentMode
 ```
 
 等比例缩放视角，使视角边界的短边正好顶住与其垂直的屏幕的两边，以保证视角边界铺满屏幕；在此基础上再将视角边界缩放指定的倍数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | scale: number | 在等比例缩放的基础上再缩放视角边界的倍数。 |
 
-#### Returns
+#### 返回值
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
+[ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 视角的实时缩放比例。
 
@@ -2543,15 +2543,15 @@ Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 ### contentModeAspectFit
 
-```ts
+```ts title="TypeScript"
 contentModeAspectFit(): ContentMode
 ```
 
 等比例缩放视角，使视角边界的长边正好顶住与其垂直的屏幕的两边，以保证在屏幕上完整展示视角边界。
 
-#### Returns
+#### 返回值
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
+[ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 实时缩放比例。
 
@@ -2559,21 +2559,21 @@ Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 ### contentModeAspectFitScale
 
-```ts
+```ts title="TypeScript"
 contentModeAspectFitScale(scale: number): ContentMode
 ```
 
 等比例缩放视角，使视角边界的长边正好顶住与其垂直的屏幕的两边，以保证在屏幕上完整展示视角边界；在此基础上，再将视角边界缩放指定的倍数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | scale: number | 在等比例缩放的基础上再缩放视角边界的倍数。 |
 
-#### Returns
+#### 返回值
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
+[ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 实时缩放比例。
 
@@ -2581,21 +2581,21 @@ Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 ### contentModeAspectFitSpace
 
-```ts
+```ts title="TypeScript"
 contentModeAspectFitSpace(space: number): ContentMode
 ```
 
 等比例缩放视角，使视角边界的长边正好顶住与其垂直的屏幕的两边；在此基础上，在视角边界的四周填充指定的空白空间。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | space: number | 在等比例缩放的基础上再填充的空白空间，单位为像素。 |
 
-#### Returns
+#### 返回值
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
+[ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 实时缩放比例。
 
@@ -2603,21 +2603,21 @@ Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 ### contentModeScale
 
-```ts
+```ts title="TypeScript"
 contentModeScale(scale: number): ContentMode
 ```
 
 按指定的比例缩放视角边界。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | scale: number | 指定的缩放比例。 |
 
-#### Returns
+#### 返回值
 
-Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
+[ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 实时缩放比例。
 
@@ -2625,61 +2625,61 @@ Returns [ContentMode](/zh-CN/api-reference/whiteboard/web/globals#contentmode)
 
 ### createPlugins
 
-```ts
+```ts title="TypeScript"
 createPlugins<C_MAP>(plugins: Readonly<{}>): Plugins<C_MAP>
 ```
 
 创建插件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | plugins: Readonly&lt;\{\}&gt; | 创建的插件。 |
 
-#### Returns
+#### 返回值
 
-Returns [Plugins](/zh-CN/api-reference/whiteboard/web/interfaces/plugins-c-map) &lt; C_MAP &gt;
+[Plugins](/zh-CN/api-reference/whiteboard/web/interfaces/plugins) &lt; C_MAP &gt;
 
 <a id="injectcustomstyle"></a>
 
 ### injectCustomStyle
 
-```ts
+```ts title="TypeScript"
 injectCustomStyle(icons: UserCursorIcons): void
 ```
 
 添加自定义的图标。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | icons: UserCursorIcons | 自定义的图标。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="isplayer"></a>
 
 ### isPlayer
 
-```ts
+```ts title="TypeScript"
 isPlayer(displayer: Displayer): boolean
 ```
 
 判断 `Displayer` 对象是否为 `Player` 对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | displayer: Displayer | `Displayer` 对象。 |
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 该 `Displayer` 对象是否为 `Player` 对象：
 
@@ -2690,21 +2690,21 @@ Returns boolean
 
 ### isRoom
 
-```ts
+```ts title="TypeScript"
 isRoom(displayer: Displayer): boolean
 ```
 
 判断 `Displayer` 对象是否为 `Room` 对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | displayer: Displayer | `Displayer` 对象。 |
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 `Displayer` 对象是否为 `Room` 对象：
 
@@ -2715,18 +2715,18 @@ Returns boolean
 
 ### setAsyncModuleLoadMode
 
-```ts
+```ts title="TypeScript"
 setAsyncModuleLoadMode(mode: AsyncModuleLoadMode): void
 ```
 
 设置异步模块的加载模式。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mode: AsyncModuleLoadMode | 异步模块的加载模式，详见 [AsyncModuleLoadMode](/zh-CN/api-reference/whiteboard/web/enums/async-module-load-mode)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void

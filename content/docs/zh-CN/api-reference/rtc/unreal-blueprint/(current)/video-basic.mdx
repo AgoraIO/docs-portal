@@ -2,9 +2,8 @@
 title: "视频基础功能"
 description: "视频基础功能 API reference."
 ---
-<a id="toc_video_basic"></a>
 
-## 视频基础功能
+<a id="toc_video_basic"></a>
 
 <a id="api_irtcengine_disablevideo"></a>
 
@@ -30,7 +29,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 加入频道前后均可调用：
 
 - 如果在加入频道前调用，则开启纯音频模式。
-- 如果在加入频道后调用，则由视频模式切换为纯音频模式，然后再调用 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 方法可开启视频模式。
+- 如果在加入频道后调用，则由视频模式切换为纯音频模式，然后再调用 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 方法可开启视频模式。
 
 <a id="api_irtcengine_disablevideo__restriction"></a>
 
@@ -39,7 +38,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 该方法设置的是内部引擎为禁用状态，在离开频道后仍然有效。
 - 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制视频模块的某一项功能：
 
-  - [EnableLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablelocalvideo): 是否启动摄像头采集并创建本地视频流。
+  - [EnableLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablelocalvideo): 是否启动摄像头采集并创建本地视频流。
   - [MuteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_mutelocalvideostream): 是否发布本地视频流。
   - [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremotevideostream): 是否接收并播放远端视频流。
   - [MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremotevideostreams): 是否接收并播放所有远端视频流。
@@ -48,7 +47,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 相关回调
 
-成功调用该方法后，远端会触发 [OnUserEnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onuserenablevideo) (`false`) 回调。
+成功调用该方法后，远端会触发 [OnUserEnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#callback_irtcengineeventhandler_onuserenablevideo) (`false`) 回调。
 
 <a id="api_irtcengine_disablevideo__return_values"></a>
 
@@ -57,7 +56,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablelocalvideo"></a>
@@ -79,11 +77,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 该方法禁用或重新启用本地视频采集，不影响接收远端视频。
 
-调用 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 后，本地视频采集即默认开启。
+调用 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 后，本地视频采集即默认开启。
 
-如果你在频道内调用 [EnableLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablelocalvideo) (`false`) 关闭本地视频采集，也会同时停止在频道内发布视频流。如果想要重新开启，则可调用 EnableLocalVideo (`true`)，然后调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_updatechannelmediaoptions) 并设置 options 参数，将本地采集的视频流发布到频道中。
+如果你在频道内调用 [EnableLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablelocalvideo) (`false`) 关闭本地视频采集，也会同时停止在频道内发布视频流。如果想要重新开启，则可调用 EnableLocalVideo (`true`)，然后调用 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_updatechannelmediaoptions) 并设置 options 参数，将本地采集的视频流发布到频道中。
 
-成功禁用或启用本地视频采集后，远端会触发 [OnRemoteVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
+成功禁用或启用本地视频采集后，远端会触发 [OnRemoteVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
 
 :::warning[注意]
 - 该方法在加入频道前后均可调用，但加入频道前调用的设置，在加入频道后才会生效。
@@ -108,7 +106,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablevideo"></a>
@@ -126,7 +123,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_enablevideo__detailed_desc"></a>
 
-视频模块默认为关闭状态，需要调用该方法启用。如果后续需要关闭视频模块，需调用 [DisableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_disablevideo) 方法。
+视频模块默认为关闭状态，需要调用该方法启用。如果后续需要关闭视频模块，需调用 [DisableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_disablevideo) 方法。
 
 <a id="api_irtcengine_enablevideo__timing"></a>
 
@@ -144,7 +141,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 该方法设置的是内部引擎为启用状态，在离开频道后仍然有效。
 - 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制视频模块的某一项功能：
 
-  - [EnableLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablelocalvideo): 是否启动摄像头采集并创建本地视频流。
+  - [EnableLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablelocalvideo): 是否启动摄像头采集并创建本地视频流。
   - [MuteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_mutelocalvideostream): 是否发布本地视频流。
   - [MuteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteremotevideostream): 是否接收并播放远端视频流。
   - [MuteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_muteallremotevideostreams): 是否接收并播放所有远端视频流。
@@ -154,7 +151,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 相关回调
 
-成功调用该方法后，远端会触发 [OnRemoteVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
+成功调用该方法后，远端会触发 [OnRemoteVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
 
 <a id="api_irtcengine_enablevideo__return_values"></a>
 
@@ -163,7 +160,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvideoencoderconfiguration"></a>
@@ -187,7 +183,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-该方法在加入频道前后都能调用。如果用户在加入频道后不需要重新设置视频编码属性，则建议在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 前调用该方法，可以加快首帧出图的时间。
+该方法在加入频道前后都能调用。如果用户在加入频道后不需要重新设置视频编码属性，则建议在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 前调用该方法，可以加快首帧出图的时间。
 
 <a id="api_irtcengine_setvideoencoderconfiguration__restriction"></a>
 
@@ -210,7 +206,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex"></a>
@@ -261,7 +256,6 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setvideoscenario"></a>
@@ -301,7 +295,7 @@ APPLICATION_SCENARIO_MEETING (1) 适用于会议场景。SDK 会针对该场景�
 - 实时监测接收端大流的订阅人数，根据订阅人数动态调节大流配置：
 
   - 无人订阅大流时，会自动降低大流的码率和帧率，节省上行带宽和消耗。
-  - 有人订阅大流时，大流会重置为用户最近一次调用 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_setvideoencoderconfiguration) 时的 [FUABT_VideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/class-videoencoderconfiguration) 配置。如果用户此前没有进行设置，则使用如下值：
+  - 有人订阅大流时，大流会重置为用户最近一次调用 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 时的 [FUABT_VideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/class-videoencoderconfiguration) 配置。如果用户此前没有进行设置，则使用如下值：
 
     - 视频分辨率：桌面端为 1280 × 720；移动端为 960 × 540
     - 视频帧率：15 fps
@@ -321,7 +315,7 @@ APPLICATION_SCENARIO_MEETING (1) 适用于会议场景。SDK 会针对该场景�
 
 APPLICATION_SCENARIO_1V1 (2) 适用于 [视频 1v1 通话](https://doc.shengwang.cn/doc/one-to-one-live/android/rtm/overview/product-overview) 场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。
 
-APPLICATION_SCENARIO_LIVESHOW (3) 适用于 [秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview) 场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [EnableInstantMediaRendering](/zh-CN/api-reference/rtc/unreal-blueprint/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+APPLICATION_SCENARIO_LIVESHOW (3) 适用于 [秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview) 场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [EnableInstantMediaRendering](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
 
 <a id="api_irtcengine_setvideoscenario__return_values"></a>
 
@@ -334,7 +328,6 @@ APPLICATION_SCENARIO_LIVESHOW (3) 适用于 [秀场直播](https://doc.shengwang
   - -4：不支持设置视频业务场景。可能的原因是当前使用的是音频 SDK。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startpreview2"></a>
@@ -358,14 +351,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 和 [SetupLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-rendering#api_irtcengine_setuplocalvideo) 之后调用。
+该方法必须在 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 和 [SetupLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-rendering#api_irtcengine_setuplocalvideo) 之后调用。
 
 <a id="api_irtcengine_startpreview2__restriction"></a>
 
 ### 调用限制
 
 - 本地预览默认开启镜像功能。
-- 在离开频道后，本地预览依然处于开启状态。你需要调用 [StopPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_stoppreview2) 关闭本地预览。
+- 在离开频道后，本地预览依然处于开启状态。你需要调用 [StopPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_stoppreview2) 关闭本地预览。
 
 <a id="api_irtcengine_startpreview2__parameters"></a>
 
@@ -382,7 +375,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoppreview2"></a>
@@ -404,7 +396,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 适用场景
 
-调用 [StartPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_startpreview2) 开启预览后，如果你想关闭本地视频预览，请调用该方法。
+调用 [StartPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_startpreview2) 开启预览后，如果你想关闭本地视频预览，请调用该方法。
 
 <a id="api_irtcengine_stoppreview2__timing"></a>
 
@@ -433,7 +425,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe"></a>
@@ -471,9 +462,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 #### `elapsed`
 
-从调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道时到发生此事件过去的时间（毫秒）。如果在加入频道前调用了 [StartPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_startpreview2)，则该参数表示从调用 StartPreview 开启本地视频预览到发生此事件过去的时间。
+从调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道时到发生此事件过去的时间（毫秒）。如果在加入频道前调用了 [StartPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_startpreview2)，则该参数表示从调用 StartPreview 开启本地视频预览到发生此事件过去的时间。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished"></a>
@@ -495,7 +485,7 @@ SDK 会在以下三种时机触发该回调：
 
 - 开启本地视频模块的情况下，调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 成功加入频道后。
 - 调用 [MuteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_mutelocalvideostream) (`true`)，再调用 MuteLocalVideoStream (`false`) 后。
-- 调用 [DisableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_disablevideo)，再调用 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 后。
+- 调用 [DisableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_disablevideo)，再调用 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 后。
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__parameters"></a>
 
@@ -509,7 +499,6 @@ SDK 会在以下三种时机触发该回调：
 
 从调用 JoinChannelWithOptions 方法到触发该回调的时间间隔（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded"></a>
@@ -534,7 +523,7 @@ SDK 会在以下时机触发该回调：
 
   - 远端用户离开频道。
   - 远端用户掉线。
-  - 远端用户调用 [DisableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_disablevideo) 方法关闭视频模块。
+  - 远端用户调用 [DisableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_disablevideo) 方法关闭视频模块。
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__parameters"></a>
 
@@ -556,7 +545,6 @@ SDK 会在以下时机触发该回调：
 
 从本地调用 JoinChannelWithOptions 开始到该回调触发的延迟（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe"></a>
@@ -598,7 +586,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 从本地调用 JoinChannelWithOptions 到发生此事件过去的时间（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged"></a>
@@ -638,7 +625,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
   :::info[注]
   - 帧重复检测仅针对分辨率大于 200 × 200、帧率大于等于 10 fps、码率小于 20 Kbps 的视频帧。
-  - 如果视频采集出现异常，正常情况下可以通过该回调的 `reason` 参数来排查问题。但在部分设备上，采集出现问题时（如卡死） Android 系统不会抛出任何错误回调，因此 SDK 无法报告本地视频状态改变的原因，此时你可以通过下列方式来判断采集是否无帧：该回调报告 `state` 为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` 或 `LOCAL_VIDEO_STREAM_STATE_ENCODING`，且 [OnLocalVideoStats](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostats) 回调的 `captureFrameRate` 为 0。
+  - 如果视频采集出现异常，正常情况下可以通过该回调的 `reason` 参数来排查问题。但在部分设备上，采集出现问题时（如卡死） Android 系统不会抛出任何错误回调，因此 SDK 无法报告本地视频状态改变的原因，此时你可以通过下列方式来判断采集是否无帧：该回调报告 `state` 为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` 或 `LOCAL_VIDEO_STREAM_STATE_ENCODING`，且 [OnLocalVideoStats](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats) 回调的 `captureFrameRate` 为 0。
   :::
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__parameters"></a>
@@ -657,7 +644,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 本地视频状态改变原因，详见 [ELOCAL_VIDEO_STREAM_REASON](/zh-CN/api-reference/rtc/unreal-blueprint/enum-localvideostreamreason)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalvideostats"></a>
@@ -689,7 +675,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 本地视频流统计信息。详见 [FLocalVideoStats](/zh-CN/api-reference/rtc/unreal-blueprint/class-localvideostats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged"></a>
@@ -731,7 +716,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 从本地用户调用 JoinChannelWithOptions 方法到发生本事件经历的时间，单位为毫秒。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideostats"></a>
@@ -759,7 +743,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 远端视频统计数据。详见 [FRemoteVideoStats](/zh-CN/api-reference/rtc/unreal-blueprint/class-remotevideostats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats"></a>
@@ -779,7 +762,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 #### `弃用：`
 
-该回调已被废弃，请改用 [OnRemoteVideoStats](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onremotevideostats)。
+该回调已被废弃，请改用 [OnRemoteVideoStats](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#callback_irtcengineeventhandler_onremotevideostats)。
 
 该回调描述远端用户通话中端到端的网络统计信息，通过视频包计算，用客观的数据，如丢包、 网络延迟等，展示当前网络状态。
 
@@ -805,7 +788,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 远端视频包的接收码率（Kbps）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo"></a>
@@ -825,12 +807,12 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 #### `弃用：`
 
-该回调已废弃，请改用 [OnRemoteVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调的如下枚举：
+该回调已废弃，请改用 [OnRemoteVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调的如下枚举：
 
 - REMOTE_VIDEO_STATE_STOPPED (0) 和 REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED (5)。
 - REMOTE_VIDEO_STATE_DECODING (2) 和 REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED (6)。
 
-该回调是由远端用户调用 [EnableLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablelocalvideo) 方法开启或关闭视频采集触发的。
+该回调是由远端用户调用 [EnableLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablelocalvideo) 方法开启或关闭视频采集触发的。
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__parameters"></a>
 
@@ -847,7 +829,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 - `true`: 该用户已启用视频功能。启用后，其他用户可以接收到该用户的视频流。
 - `false`: 该用户已关闭视频功能。关闭后，该用户仍然可以接收其他用户的视频流，但其他用户接收不到该用户的视频流。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo"></a>
@@ -867,7 +848,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 关闭视频功能是指该用户只能进行语音通话，不能显示、发送自己的视频，也不能接收、显示别人的视频。
 
-该回调是由远端用户调用 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_enablevideo) 或 [DisableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_disablevideo) 方法开启或关闭视频模块触发的。
+该回调是由远端用户调用 [EnableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_enablevideo) 或 [DisableVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_disablevideo) 方法开启或关闭视频模块触发的。
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo__parameters"></a>
 
@@ -882,7 +863,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 - `true`: 该用户已启用视频功能。
 - `false`: 该用户已关闭视频功能。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onusermutevideo"></a>
@@ -921,7 +901,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 - `true`: 取消发布视频流。
 - `false`: 发布视频流。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideopublishstatechanged"></a>
@@ -963,7 +942,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 两次状态变化时间间隔（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideosizechanged"></a>
@@ -1007,7 +985,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 在 iOS 平台上，该参数值始终为 0。
 :::
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideostopped"></a>
@@ -1027,9 +1004,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 #### `弃用：`
 
-请改用 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调中的 LOCAL_VIDEO_STREAM_STATE_STOPPED (0)。
+请改用 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调中的 LOCAL_VIDEO_STREAM_STATE_STOPPED (0)。
 
 App 如需在停止视频后对 view 做其他处理（比如显示其他画面），可以在这个回调中进行。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)

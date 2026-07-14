@@ -1,10 +1,9 @@
 ---
 title: "媒体资源打开"
-description: "打开媒体资源。"
+description: "媒体资源打开 API reference."
 ---
-<a id="toc_mediaplayer_open"></a>
 
-## 媒体资源打开
+<a id="toc_mediaplayer_open"></a>
 
 <a id="api_imediaplayer_open"></a>
 
@@ -34,7 +33,7 @@ description: "打开媒体资源。"
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 `didChangedToState:reason:` 回调。在收到播放状态为 `AgoraMediaPlayerStateOpenCompleted` 的报告后，可以调用 [play](/zh-CN/api-reference/rtc/macos/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
+成功调用该方法后，SDK 会触发 `didChangedToState:reason:` 回调。在收到播放状态为 `AgoraMediaPlayerStateOpenCompleted` 的报告后，可以调用 [play](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
 
 <a id="api_imediaplayer_open__parameters"></a>
 
@@ -55,7 +54,6 @@ description: "打开媒体资源。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_openwithmediasource"></a>
@@ -75,7 +73,7 @@ description: "打开媒体资源。"
 该方法支持打开不同类型的媒体文件，包括以 `ipod-library://` 开头的文件，并设置播放选项。
 
 :::info[注]
-[openWithMediaSource:](/zh-CN/api-reference/rtc/macos/mediaplayer-open#api_imediaplayer_openwithmediasource) 为异步调用。如果你需要播放媒体文件，请确保在调用 [play](/zh-CN/api-reference/rtc/macos/mediaplayer-control#api_imediaplayer_play) 方法播放文件之前，已收到 [AgoraRtcMediaPlayer:didChangedToState:reason:](/zh-CN/api-reference/rtc/macos/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调并报告 `AgoraMediaPlayerStateOpenCompleted`。
+[openWithMediaSource:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 为异步调用。如果你需要播放媒体文件，请确保在调用 [play](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放文件之前，已收到 [AgoraRtcMediaPlayer:didChangedToState:reason:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调并报告 `AgoraMediaPlayerStateOpenCompleted`。
 :::
 
 <a id="api_imediaplayer_openwithmediasource__timing"></a>
@@ -99,7 +97,6 @@ description: "打开媒体资源。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_preloadsrc"></a>
@@ -116,10 +113,10 @@ description: "打开媒体资源。"
 
 <a id="api_imediaplayer_preloadsrc__detailed_desc"></a>
 
-你可以调用此方法将媒体资源预加载到播放列表中。如果需要预加载多个媒体资源，可以多次调用此方法。如果预加载成功并希望播放该媒体资源，请调用 [playPreloadedSrc:](/zh-CN/api-reference/rtc/macos/mediaplayer-control#api_imediaplayer_playpreloadedsrc)；如果希望清空播放列表，请调用 `stop`。
+你可以调用此方法将媒体资源预加载到播放列表中。如果需要预加载多个媒体资源，可以多次调用此方法。如果预加载成功并希望播放该媒体资源，请调用 [playPreloadedSrc:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-control#api_imediaplayer_playpreloadedsrc)；如果希望清空播放列表，请调用 `stop`。
 
 :::info[注]
-- 在调用此方法之前，请确保已成功调用 [open:startPos:](/zh-CN/api-reference/rtc/macos/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource:](/zh-CN/api-reference/rtc/macos/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体资源。
+- 在调用此方法之前，请确保已成功调用 [open:startPos:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体资源。
 - 不支持将重复的媒体资源预加载到播放列表中。但你可以将正在播放的媒体资源再次预加载到播放列表中。
 :::
 
@@ -142,7 +139,6 @@ description: "打开媒体资源。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_switchsrc"></a>
@@ -165,10 +161,10 @@ description: "打开媒体资源。"
 - 当网络良好时，将播放的媒体资源切换为码率较高的媒体资源地址。
 
 :::info[注]
-确保在调用该方法前已调用 [open:startPos:](/zh-CN/api-reference/rtc/macos/mediaplayer-open#api_imediaplayer_open) 方法。 为确保正常播放，调用该方法时请注意以下事项：
+确保在调用该方法前已调用 [open:startPos:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法。 为确保正常播放，调用该方法时请注意以下事项：
 
 - 播放暂停时不要调用该方法。
-- 切换过程中不要调用 [seekToPosition:](/zh-CN/api-reference/rtc/macos/mediaplayer-control#api_imediaplayer_seek) 方法。
+- 切换过程中不要调用 [seekToPosition:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 方法。
 - 切换媒体资源前，请确保播放位置未超过要切换的媒体资源的总时长。
 :::
 
@@ -200,7 +196,6 @@ description: "打开媒体资源。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_unloadsrc"></a>
@@ -218,7 +213,7 @@ description: "打开媒体资源。"
 <a id="api_imediaplayer_unloadsrc__detailed_desc"></a>
 
 :::info[注]
-[unloadSrc:](/zh-CN/api-reference/rtc/macos/mediaplayer-open#api_imediaplayer_unloadsrc) 方法无法释放正在播放的媒体资源。
+[unloadSrc:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_unloadsrc) 方法无法释放正在播放的媒体资源。
 :::
 
 <a id="api_imediaplayer_unloadsrc__parameters"></a>
@@ -236,5 +231,4 @@ description: "打开媒体资源。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)

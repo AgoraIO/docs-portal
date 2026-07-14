@@ -2,6 +2,7 @@
 title: "版权音乐"
 description: "创建音乐播放器。"
 ---
+
 <a id="toc_drm"></a>
 
 ## 版权音乐
@@ -29,7 +30,6 @@ public abstract IMusicPlayer CreateMusicPlayer();
 - 方法调用成功：返回 [IMusicPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusicplayer) 对象。
 - 方法调用失败：返回空指针。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_destroymusicplayer"></a>
@@ -69,7 +69,6 @@ public abstract int DestroyMusicPlayer(IMusicPlayer music_player);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getcaches"></a>
@@ -110,7 +109,6 @@ public abstract int GetCaches(ref MusicCacheInfo[] cacheInfo, ref Int32 cacheInf
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getinternalsongcode"></a>
@@ -163,7 +161,6 @@ public abstract int GetInternalSongCode(Int64 songCode, string jsonOption, ref I
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getlyric"></a>
@@ -208,7 +205,6 @@ public abstract int GetLyric(ref string requestId, Int64 songCode, int LyricType
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getmusiccharts"></a>
@@ -242,7 +238,6 @@ public abstract int GetMusicCharts(ref string requestId);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid"></a>
@@ -302,7 +297,6 @@ public abstract int GetMusicCollectionByMusicChartId(ref string requestId, int m
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_irtcengine_getmusiccontentcenter"></a>
@@ -325,7 +319,6 @@ public abstract IMusicContentCenter GetMusicContentCenter();
 
 一个 [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter) 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo"></a>
@@ -363,7 +356,6 @@ public abstract int GetSongSimpleInfo(ref string requestId, Int64 songCode);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter"></a>
@@ -397,7 +389,6 @@ public abstract int Initialize(MusicContentCenterConfiguration configuration);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_ispreloaded"></a>
@@ -431,7 +422,6 @@ public abstract int IsPreloaded(Int64 songCode);
 - 0: 方法调用成功，该音乐资源已被预加载。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicplayer_open_imusicplayer"></a>
@@ -473,7 +463,6 @@ public abstract int Open(Int64 songCode, Int64 startPos);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusicplayer)
 
 <a id="api_imusiccontentcenter_preload"></a>
@@ -527,7 +516,6 @@ public abstract int Preload(Int64 songCode, string jsonOption = "");
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_preload2"></a>
@@ -569,7 +557,6 @@ public abstract int Preload(ref string requestId, Int64 songCode);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter"></a>
@@ -601,7 +588,6 @@ public abstract int RegisterEventHandler(IMusicContentCenterEventHandler eventHa
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_removecache"></a>
@@ -635,7 +621,6 @@ public abstract int RemoveCache(Int64 songCode);
 - 0: 方法调用成功，音乐资源已删除。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter"></a>
@@ -676,7 +661,6 @@ public override int RenewToken(string token)
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_searchmusic"></a>
@@ -736,7 +720,6 @@ public abstract int SearchMusic(ref string requestId, string keyWord, int page, 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicplayer_setplaymode"></a>
@@ -788,7 +771,6 @@ public abstract int SetPlayMode(MusicPlayMode mode);
 
   - -2: 参数设置错误，请重新设置参数。
 
-### 所属接口类
 - [IMusicPlayer](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusicplayer)
 
 <a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter"></a>
@@ -812,7 +794,6 @@ public abstract int UnregisterEventHandler();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult"></a>
@@ -851,7 +832,6 @@ public abstract void OnLyricResult(string requestId, long songCode, string lyric
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unity/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult"></a>
@@ -886,7 +866,6 @@ public abstract void OnMusicChartsResult(string requestId, MusicChartInfo[] resu
 
 当前可播放的音乐榜单列表。详见 [MusicChartInfo](/zh-CN/api-reference/rtc/unity/class-musicchartinfo)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult"></a>
@@ -921,7 +900,6 @@ public abstract void OnMusicCollectionResult(string requestId, MusicCollection r
 
 音乐资源列表的详细信息。详见 [MusicCollection](/zh-CN/api-reference/rtc/unity/class-musiccollection)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler"></a>
@@ -968,7 +946,6 @@ public abstract void OnPreLoadEvent(string requestId, long songCode, int percent
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unity/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult"></a>
@@ -1013,5 +990,4 @@ public abstract void OnSongSimpleInfoResult(string requestId, long songCode, str
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/unity/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imusiccontentcentereventhandler)

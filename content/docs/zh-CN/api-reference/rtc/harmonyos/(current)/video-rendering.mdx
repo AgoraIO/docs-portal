@@ -2,9 +2,8 @@
 title: "视频渲染"
 description: "视频渲染 API reference."
 ---
-<a id="toc_video_rendering"></a>
 
-## 视频渲染
+<a id="toc_video_rendering"></a>
 
 <a id="api_irtcengine_setlocalrendermode2"></a>
 
@@ -26,7 +25,7 @@ public abstract setLocalRenderMode(renderMode: number, mirrorMode: number): numb
 
 ### 调用时机
 
-- 请在调用 [setupLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video-rendering#api_irtcengine_setuplocalvideo) 方法初始化本地视图后，调用该方法。
+- 请在调用 [setupLocalVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setuplocalvideo) 方法初始化本地视图后，调用该方法。
 - 你可以在通话中多次调用该方法，多次更新本地用户视图的显示模式。
 
 <a id="api_irtcengine_setlocalrendermode2__restriction"></a>
@@ -65,7 +64,6 @@ public abstract setLocalRenderMode(renderMode: number, mirrorMode: number): numb
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremoterendermode2"></a>
@@ -87,7 +85,7 @@ public abstract setRemoteRenderMode(uid: number, renderMode: number, mirrorMode:
 初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
 
 :::warning[注意]
-- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/harmonyos/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后，调用该方法。
+- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后，调用该方法。
 - 你可以在通话中多次调用该方法，多次更新远端用户视图的显示模式。
 :::
 
@@ -121,7 +119,6 @@ public abstract setRemoteRenderMode(uid: number, renderMode: number, mirrorMode:
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremoterendermodeex"></a>
@@ -143,7 +140,7 @@ public abstract setRemoteRenderModeEx(uid:number,renderMode:number,mirrorMode:nu
 初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
 
 :::warning[注意]
-- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/harmonyos/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后，调用该方法。
+- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后，调用该方法。
 - 你可以在通话中多次调用该方法，多次更新远端用户视图的显示模式。
 :::
 
@@ -210,7 +207,6 @@ public abstract setRenderMode(mode:number):number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_irtcengine_setuplocalvideo"></a>
@@ -232,7 +228,7 @@ public abstract setupLocalVideo(canvas: VideoCanvas): number;
 退出频道后绑定仍然有效。如果需要停止渲染或解除绑定，可以调用该方法将参数 view 设为 NULL，以停止渲染并清理渲染缓存。
 
 :::warning[注意]
-- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 [setLocalRenderMode](/zh-CN/api-reference/rtc/harmonyos/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
+- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 [setLocalRenderMode](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
 :::
 
 <a id="api_irtcengine_setuplocalvideo__scenario"></a>
@@ -270,7 +266,6 @@ public abstract setupLocalVideo(canvas: VideoCanvas): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setupremotevideo"></a>
@@ -298,7 +293,7 @@ public abstract setupRemoteVideo(canvas: VideoCanvas): number;
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
 :::warning[注意]
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderMode](/zh-CN/api-reference/rtc/harmonyos/video-rendering#api_irtcengine_setremoterendermode2) 方法。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderMode](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setremoterendermode2) 方法。
 :::
 
 <a id="api_irtcengine_setupremotevideo__parameters"></a>
@@ -316,7 +311,6 @@ public abstract setupRemoteVideo(canvas: VideoCanvas): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setupremotevideoex"></a>
@@ -346,7 +340,7 @@ public abstract setupRemoteVideoEx(remote:VideoCanvas, connection:RtcConnection)
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
 :::warning[注意]
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderModeEx](/zh-CN/api-reference/rtc/harmonyos/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderModeEx](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
 :::
 
 <a id="api_irtcengineex_setupremotevideoex__parameters"></a>
@@ -368,5 +362,4 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)

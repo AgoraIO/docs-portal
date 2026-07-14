@@ -1,0 +1,42 @@
+---
+title: "loadMessage method"
+description: "API docs for the loadMessage method from the ChatManager class, for the Dart programming language."
+---
+
+Loads a message from the local database by message ID.
+
+**Return** The message object specified by the message ID. Returns null if the message does not exist.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `messageId` | The message ID. |
+
+```dart title="Dart"
+Future<ChatMessage?> loadMessage(String messageId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatMessage?> loadMessage(String messageId) async {
+  Map req = {"msg_id": messageId};
+  Map<String, dynamic> result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.getMessage, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    if (result.containsKey(ChatMethodKeys.getMessage)) {
+      return ChatMessage.fromJson(result[ChatMethodKeys.getMessage]);
+    } else {
+      return null;
+    }
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -2,9 +2,8 @@
 title: "API 概览"
 description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配的 API 组合，实现质量可靠的实时音视频通信。"
 ---
-<a id="rtc_api_overview__toc_initialize"></a>
 
-## 初始化相关
+## 初始化相关 [#rtc_api_overview__toc_initialize]
 
 | API | 描述 |
 | --- | --- |
@@ -13,9 +12,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [destroy:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_destroy1) | 销毁 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例并释放相关资源。 |
 | [destroy](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_release) | 释放 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。 |
 
-<a id="rtc_api_overview__toc_channel"></a>
-
-## 频道相关
+## 频道相关 [#rtc_api_overview__toc_channel]
 
 | API | 描述 |
 | --- | --- |
@@ -49,9 +46,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [rtcEngine:didJoinedOfUid:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onuserjoined) | 远端用户或主播加入频道回调。 |
 | [rtcEngine:didOfflineOfUid:reason:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onuseroffline) | 远端用户或主播离开频道时的回调。 |
 
-<a id="rtc_api_overview__toc_publishnsubscribe"></a>
-
-## 发布和订阅
+## 发布和订阅 [#rtc_api_overview__toc_publishnsubscribe]
 
 | API | 描述 |
 | --- | --- |
@@ -87,9 +82,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [rtcEngine:didAudioSubscribeStateChange:uid:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#callback_irtcengineeventhandler_onaudiosubscribestatechanged) | 音频订阅状态发生变化回调。 |
 | [rtcEngine:didVideoSubscribeStateChange:uid:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#callback_irtcengineeventhandler_onvideosubscribestatechanged) | 远端视频订阅状态发生变化回调。 |
 
-<a id="rtc_api_overview__toc_audio_basic"></a>
-
-## 音频基础功能
+## 音频基础功能 [#rtc_api_overview__toc_audio_basic]
 
 | API | 描述 |
 | --- | --- |
@@ -113,9 +106,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [rtcEngine:remoteAudioStats:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats) | 上报每个远端音频流的传输层统计信息。 |
 | [rtcEngine:didAudioMuted:byUid:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) | 当远端用户或主播停止或恢复发送音频流时触发。 |
 
-<a id="rtc_api_overview__toc_audio_capture"></a>
-
-## 音频采集
+## 音频采集 [#rtc_api_overview__toc_audio_capture]
 
 | API | 描述 |
 | --- | --- |
@@ -126,9 +117,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [muteRecordingSignal:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_muterecordingsignal) | 设置是否静音录制信号。 |
 | [setInEarMonitoringVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_setinearmonitoringvolume) | 设置耳返音量。 |
 
-<a id="rtc_api_overview__toc_audio_effect"></a>
-
-## 人声音效
+## 人声音效 [#rtc_api_overview__toc_audio_effect]
 
 | API | 描述 |
 | --- | --- |
@@ -145,9 +134,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) | 设置预设的美声特效。 |
 | [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) | 设置预设的变声效果。 |
 
-<a id="rtc_api_overview__toc_sound_position"></a>
-
-## 听声辨位
+## 听声辨位 [#rtc_api_overview__toc_sound_position]
 
 | API | 描述 |
 | --- | --- |
@@ -155,9 +142,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [setRemoteVoicePosition:pan:gain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/sound-position#api_irtcengine_setremotevoiceposition) | 设置远端用户语音的二维位置和音量。 |
 | [setRemoteVoicePositionEx:pan:gain:connection:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/sound-position#api_irtcengineex_setremotevoicepositionex) | 设置远端用户语音的二维位置和音量。 |
 
-<a id="rtc_api_overview__toc_spatial_audio"></a>
-
-## 空间音频
+## 空间音频 [#rtc_api_overview__toc_spatial_audio]
 
 | API | 描述 |
 | --- | --- |
@@ -184,9 +169,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [updateSelfPosition:axisForward:axisRight:axisUp:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselfposition) | 更新本地用户的空间位置。 |
 | [updateSelfTransform:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselftransform) | 更新坐标转换。 |
 
-<a id="rtc_api_overview__toc_audiomixer"></a>
-
-## 本地音频合流
+## 本地音频合流 [#rtc_api_overview__toc_audiomixer]
 
 | API | 描述 |
 | --- | --- |
@@ -194,9 +177,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [stopLocalAudioMixer](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audiomixer#api_irtcengine_stoplocalaudiomixer) | 停止本地混音。 |
 | [updateLocalAudioMixerConfiguration:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audiomixer#api_irtcengine_updatelocalaudiomixerconfiguration) | 更新本地混音配置。 |
 
-<a id="rtc_api_overview__toc_audio_raw"></a>
-
-## 原始音频数据
+## 原始音频数据 [#rtc_api_overview__toc_audio_raw]
 
 | API | 描述 |
 | --- | --- |
@@ -218,9 +199,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [onPlaybackAudioFrameBeforeMixing:channelId:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) | 获取已订阅远端用户在混音前的音频帧。 |
 | [onRecordAudioFrame:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) | 采集到音频帧时触发的回调。 |
 
-<a id="rtc_api_overview__toc_audio_encoded"></a>
-
-## 已编码音频数据
+## 已编码音频数据 [#rtc_api_overview__toc_audio_encoded]
 
 | API | 描述 |
 | --- | --- |
@@ -229,9 +208,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [onPlaybackEncodedAudioFrame:info:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#callback_iaudioencodedframeobserver_onplaybackaudioencodedframe) | 获取所有远端用户的编码音频数据回调。 |
 | [onRecordEncodedAudioFrame:info:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#callback_iaudioencodedframeobserver_onrecordaudioencodedframe) | 获取本地用户的编码音频数据回调。 |
 
-<a id="rtc_api_overview__toc_audio_custom_capturenrendering"></a>
-
-## 自定义音频采集和渲染
+## 自定义音频采集和渲染 [#rtc_api_overview__toc_audio_custom_capturenrendering]
 
 | API | 描述 |
 | --- | --- |
@@ -246,9 +223,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [pushExternalAudioFrameSampleBuffer:sampleRate:channels:trackId:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_pushexternalaudioframesamplebuffer2) | 通过自定义音频轨道将外部 `CMSampleBuffer` 音频帧推送到频道中。 |
 | [enableExternalAudioSink:sampleRate:channels:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) | 设置外部音频渲染。 |
 
-<a id="rtc_api_overview__toc_audio_spectrum"></a>
-
-## 音频频谱
+## 音频频谱 [#rtc_api_overview__toc_audio_spectrum]
 
 | API | 描述 |
 | --- | --- |
@@ -259,9 +234,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) | 获取本地音频频谱数据。 |
 | [onRemoteAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) | 获取远端音频频谱信息回调。 |
 
-<a id="rtc_api_overview__toc_video_basic"></a>
-
-## 视频基础功能
+## 视频基础功能 [#rtc_api_overview__toc_video_basic]
 
 | API | 描述 |
 | --- | --- |
@@ -287,9 +260,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [rtcEngine:didVideoPublishStateChange:sourceType:oldState:newState:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) | 视频发布状态发生变化回调。 |
 | [rtcEngine:videoSizeChangedOfSourceType:uid:size:rotation:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged) | 当指定用户的视频尺寸或旋转信息发生变化时触发。 |
 
-<a id="rtc_api_overview__toc_camera_capture"></a>
-
-## 摄像头采集
+## 摄像头采集 [#rtc_api_overview__toc_camera_capture]
 
 | API | 描述 |
 | --- | --- |
@@ -297,9 +268,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [startCameraCapture:config:](/zh-CN/api-reference/rtc/ios/video/camera-capture#api_irtcengine_startcameracapture) | 开始视频采集。 |
 | [stopCameraCapture:](/zh-CN/api-reference/rtc/ios/video/camera-capture#api_irtcengine_stopcameracapture) | 停止视频采集。 |
 
-<a id="rtc_api_overview__toc_screencapture"></a>
-
-## 屏幕采集
+## 屏幕采集 [#rtc_api_overview__toc_screencapture]
 
 | API | 描述 |
 | --- | --- |
@@ -309,9 +278,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [stopScreenCapture](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_stopscreencapture) | 停止屏幕采集。 |
 | [updateScreenCapture:](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_updatescreencapture) | 更新屏幕共享配置。 |
 
-<a id="rtc_api_overview__toc_snapshot"></a>
-
-## 本地截图上传
+## 本地截图上传 [#rtc_api_overview__toc_snapshot]
 
 | API | 描述 |
 | --- | --- |
@@ -323,18 +290,14 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [takeSnapshotExWithConfig:uid:config:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengineex_takesnapshotex2) | 获取指定用户视频流的截图。 |
 | [rtcEngine:snapshotTaken:filePath:width:height:errCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) | 报告视频截图的结果。 |
 
-<a id="rtc_api_overview__toc_virtualbackground"></a>
-
-## 虚拟背景
+## 虚拟背景 [#rtc_api_overview__toc_virtualbackground]
 
 | API | 描述 |
 | --- | --- |
 | [enableVirtualBackground:backData:segData:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground) | 启用或关闭虚拟背景功能。 |
 | [enableVirtualBackground:backData:segData:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground2) | 启用虚拟背景并指定媒体源，或关闭虚拟背景。 |
 
-<a id="rtc_api_overview__toc_local_transcoder"></a>
-
-## 本地合图
+## 本地合图 [#rtc_api_overview__toc_local_transcoder]
 
 | API | 描述 |
 | --- | --- |
@@ -343,9 +306,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [updateLocalTranscoderConfiguration:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) | 更新本地合图配置。 |
 | [rtcEngine:didLocalVideoTranscoderErrorWithStream:errorCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) | 本地合图过程中发生错误时触发的回调。 |
 
-<a id="rtc_api_overview__toc_video_enhance_option"></a>
-
-## 视频增强
+## 视频增强 [#rtc_api_overview__toc_video_enhance_option]
 
 | API | 描述 |
 | --- | --- |
@@ -379,27 +340,21 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [setVideoEffectFloatParamWithOption:key:floatValue:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectfloatparam) | 设置视频特效的浮点参数。 |
 | [setVideoEffectIntParamWithOption:key:intValue:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectintparam) | 设置视频特效的整数参数。 |
 
-<a id="rtc_api_overview__toc_face_detection"></a>
-
-## 人脸检测
+## 人脸检测 [#rtc_api_overview__toc_face_detection]
 
 | API | 描述 |
 | --- | --- |
 | [enableFaceDetection:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/face-detection#api_irtcengine_enablefacedetection) | 启用或关闭本地用户的人脸检测功能。 |
 | [rtcEngine:facePositionDidChangeWidth:previewHeight:faces:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/face-detection#callback_irtcengineeventhandler_onfacepositionchanged) | 上报本地用户的人脸检测结果。 |
 
-<a id="rtc_api_overview__toc_center_stage"></a>
-
-## 人像锁定
+## 人像锁定 [#rtc_api_overview__toc_center_stage]
 
 | API | 描述 |
 | --- | --- |
 | [enableCameraCenterStage:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/center-stage#api_irtcengine_enablecameracenterstage) | 开启或关闭人像锁定功能。 |
 | [isCameraCenterStageSupported](/zh-CN/api-reference/rtc/ios/video/video-prenpro/center-stage#api_irtcengine_iscameracenterstagesupported) | 检查当前摄像头是否支持人像锁定。 |
 
-<a id="rtc_api_overview__toc_watermark"></a>
-
-## 直播水印
+## 直播水印 [#rtc_api_overview__toc_watermark]
 
 | API | 描述 |
 | --- | --- |
@@ -410,17 +365,13 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [removeVideoWatermark:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_removevideowatermark) | 从本地视频中移除水印图像。 |
 | [removeVideoWatermarkEx:connection:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengineex_removevideowatermarkex) | 从本地或远端视频流中移除指定的水印图像。 |
 
-<a id="rtc_api_overview__toc_image_source"></a>
-
-## 垫片推流
+## 垫片推流 [#rtc_api_overview__toc_image_source]
 
 | API | 描述 |
 | --- | --- |
 | [enableVideoImageSource:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/image-source#api_irtcengine_enablevideoimagesource) | 设置在发布视频流时是否用图片替代当前视频画面。 |
 
-<a id="rtc_api_overview__toc_video_rendering"></a>
-
-## 视频渲染
+## 视频渲染 [#rtc_api_overview__toc_video_rendering]
 
 | API | 描述 |
 | --- | --- |
@@ -439,9 +390,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [rtcEngine:didTranscodedStreamLayoutInfoUpdatedWithUserId:videoLayoutInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo) | 当本地用户接收到携带视频合流布局信息的合图视频时触发。 |
 | [rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) | 视频帧渲染事件的回调。 |
 
-<a id="rtc_api_overview__toc_video_raw"></a>
-
-## 原始视频数据
+## 原始视频数据 [#rtc_api_overview__toc_video_raw]
 
 | API | 描述 |
 | --- | --- |
@@ -455,18 +404,14 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [onPreEncodeVideoFrame:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) | 每次 SDK 接收到编码前视频帧时触发。 |
 | [onRenderVideoFrame:uid:channelId:](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) | 每次 SDK 接收到远端用户发送的视频帧时触发。 |
 
-<a id="rtc_api_overview__toc_video_encoded"></a>
-
-## 已编码视频数据
+## 已编码视频数据 [#rtc_api_overview__toc_video_encoded]
 
 | API | 描述 |
 | --- | --- |
 | [setEncodedVideoFrameDelegate:](/zh-CN/api-reference/rtc/ios/video/video-encoded#api_irtcengine_registervideoencodedframeobserver) | 注册一个用于接收编码后视频图像的对象。 |
 | [onEncodedVideoFrameReceived:length:info:channelId:uid:](/zh-CN/api-reference/rtc/ios/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) | 本地回调远端发送的待解码视频帧信息。 |
 
-<a id="rtc_api_overview__toc_video_custom_capturenrendering"></a>
-
-## 自定义视频采集和渲染
+## 自定义视频采集和渲染 [#rtc_api_overview__toc_video_custom_capturenrendering]
 
 | API | 描述 |
 | --- | --- |
@@ -475,9 +420,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [pushExternalVideoFrame:videoTrackId:](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe) | 通过视频轨道将外部原始视频帧推送到 SDK。 |
 | [setExternalVideoSource:useTexture:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource) | 配置外部视频源。 |
 
-<a id="rtc_api_overview__toc_audio_mixing"></a>
-
-## 音乐文件播放
+## 音乐文件播放 [#rtc_api_overview__toc_audio_mixing]
 
 | API | 描述 |
 | --- | --- |
@@ -503,9 +446,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [rtcEngine:audioMixingPositionChanged:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingpositionchanged) | 报告音乐文件的播放进度。 |
 | [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) | 音乐文件播放状态发生变化回调。 |
 
-<a id="rtc_api_overview__toc_audio_effect_file"></a>
-
-## 音效文件播放
+## 音效文件播放 [#rtc_api_overview__toc_audio_effect_file]
 
 | API | 描述 |
 | --- | --- |
@@ -537,9 +478,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [unloadEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_unloadeffect) | 释放指定的预加载音效文件。 |
 | [rtcEngineDidAudioEffectFinish:soundId:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) | 本地音效文件播放完成时的回调。 |
 
-<a id="rtc_api_overview__toc_mediaplayer_initialize"></a>
-
-## 初始化
+## 初始化 [#rtc_api_overview__toc_mediaplayer_initialize]
 
 | API | 描述 |
 | --- | --- |
@@ -548,9 +487,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [createMediaPlayerCacheManager](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-initialize#api_imediaplayercachemanager_getmediaplayercachemanager) | 创建一个 [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager) 实例。 |
 | [setVideoFrameDelegate:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-initialize#api_imediaplayer_setvideoframedelegate) | 注册媒体播放器的视频帧观察者对象。 |
 
-<a id="rtc_api_overview__toc_mediaplayer_open"></a>
-
-## 媒体资源打开
+## 媒体资源打开 [#rtc_api_overview__toc_mediaplayer_open]
 
 | API | 描述 |
 | --- | --- |
@@ -560,9 +497,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [switchSrc:syncPts:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_switchsrc) | 切换正在播放的媒体资源。 |
 | [unloadSrc:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_unloadsrc) | 卸载你预加载的媒体资源。 |
 
-<a id="rtc_api_overview__toc_mediaplayer_playnrender"></a>
-
-## 媒体资源播放和渲染
+## 媒体资源播放和渲染 [#rtc_api_overview__toc_mediaplayer_playnrender]
 
 | API | 描述 |
 | --- | --- |
@@ -575,9 +510,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [setPlayerOptionString:value:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) | 设置媒体播放器的选项。 |
 | [setView:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setview) | 设置渲染视图。 |
 
-<a id="rtc_api_overview__toc_mediaplayer_control"></a>
-
-## 播放器控制
+## 播放器控制 [#rtc_api_overview__toc_mediaplayer_control]
 
 | API | 描述 |
 | --- | --- |
@@ -591,9 +524,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [seekToPosition:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) | 跳转到新的播放位置。 |
 | [stop:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_stop) | 停止播放媒体轨道。 |
 
-<a id="rtc_api_overview__toc_mediaplayer_info"></a>
-
-## 播放信息获取
+## 播放信息获取 [#rtc_api_overview__toc_mediaplayer_info]
 
 | API | 描述 |
 | --- | --- |
@@ -610,9 +541,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [getStreamByIndex:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) | 获取媒体流的详细信息。 |
 | [AgoraRtcMediaPlayer:playbackStats:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#callback_imediaplayersourceobserver_onplayerplaybackstats) | 播放媒体文件的统计信息回调。 |
 
-<a id="rtc_api_overview__toc_mediaplayer_observer"></a>
-
-## 音视频观测器
+## 音视频观测器 [#rtc_api_overview__toc_mediaplayer_observer]
 
 | API | 描述 |
 | --- | --- |
@@ -630,9 +559,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [AgoraRtcMediaPlayer:didChangedToPosition:atTimestamp:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpositionchanged) | 播放进度回调。 |
 | [AgoraRtcMediaPlayer:didPreloadEvent:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpreloadevent) | 上报预加载媒体资源的事件。 |
 
-<a id="rtc_api_overview__toc_mediaplayer_cache"></a>
-
-## 媒体播放器缓存
+## 媒体播放器缓存 [#rtc_api_overview__toc_mediaplayer_cache]
 
 | API | 描述 |
 | --- | --- |
@@ -650,9 +577,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [sharedInstance](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_sharedinstance) | 获取 [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager) 实例。 |
 | [AgoraRtcMediaPlayer:cacheStats:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#callback_imediaplayersourceobserver_onplayercachestats) | 上报正在缓存的媒体文件的统计信息。 |
 
-<a id="rtc_api_overview__toc_drm"></a>
-
-## 版权音乐
+## 版权音乐 [#rtc_api_overview__toc_drm]
 
 | API | 描述 |
 | --- | --- |
@@ -681,9 +606,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [onPreLoadEvent:songCode:percent:lyricUrl:state:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) | 上报预加载音乐资源的事件。 |
 | [onSongSimpleInfoResult:songCode:simpleInfo:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) | 获取音乐资源详细信息的回调。 |
 
-<a id="rtc_api_overview__toc_recording"></a>
-
-## 音视频录制
+## 音视频录制 [#rtc_api_overview__toc_recording]
 
 | API | 描述 |
 | --- | --- |
@@ -699,9 +622,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [mediaRecorder:informationDidUpdated:uid:info:](/zh-CN/api-reference/rtc/ios/recording#callback_imediarecorderobserver_onrecorderinfoupdated) | 录制信息更新回调。 |
 | [mediaRecorder:stateDidChanged:uid:state:reason:](/zh-CN/api-reference/rtc/ios/recording#callback_imediarecorderobserver_onrecorderstatechanged) | 录制状态发生变化时的回调。 |
 
-<a id="rtc_api_overview__toc_channel_media_relay"></a>
-
-## 跨频道媒体流转发
+## 跨频道媒体流转发 [#rtc_api_overview__toc_channel_media_relay]
 
 | API | 描述 |
 | --- | --- |
@@ -715,9 +636,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [stopChannelMediaRelayEx:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengineex_stopchannelmediarelayex) | 停止跨频道媒体流转发。 |
 | [rtcEngine:channelMediaRelayStateDidChange:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) | 跨频道媒体流转发状态发生变化回调。 |
 
-<a id="rtc_api_overview__toc_media_push"></a>
-
-## 旁路推流
+## 旁路推流 [#rtc_api_overview__toc_media_push]
 
 | API | 描述 |
 | --- | --- |
@@ -733,9 +652,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) | RTMP 或 RTMPS 推流状态发生变化时触发的回调。 |
 | [rtcEngineTranscodingUpdated:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) | 发布端的云端转码设置更新时触发的回调。 |
 
-<a id="rtc_api_overview__toc_datastream"></a>
-
-## 数据流 Datastream
+## 数据流 Datastream [#rtc_api_overview__toc_datastream]
 
 | API | 描述 |
 | --- | --- |
@@ -746,9 +663,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [rtcEngine:receiveStreamMessageFromUid:streamId:data:](/zh-CN/api-reference/rtc/ios/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) | 当本地用户收到远端用户发送的数据流时触发。 |
 | [rtcEngine:didOccurStreamMessageErrorFromUid:streamId:error:missed:cached:](/zh-CN/api-reference/rtc/ios/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) | 当本地用户未收到远端用户发送的数据流时触发的回调。 |
 
-<a id="rtc_api_overview__toc_metadata_observer"></a>
-
-## 媒体流附属信息分发
+## 媒体流附属信息分发 [#rtc_api_overview__toc_metadata_observer]
 
 | API | 描述 |
 | --- | --- |
@@ -758,9 +673,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [setMediaMetadataDataSource:withType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_irtcengine_setmediametadatadatasource) | 设置元数据的数据源。 |
 | [didMetadataReceived:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#callback_imetadataobserver_onmetadatareceived) | 当本地用户接收到元数据时触发。 |
 
-<a id="rtc_api_overview__toc_audio_route"></a>
-
-## 音频路由
+## 音频路由 [#rtc_api_overview__toc_audio_route]
 
 | API | 描述 |
 | --- | --- |
@@ -769,9 +682,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [setEnableSpeakerphone:](/zh-CN/api-reference/rtc/ios/device-management/audio-route#api_irtcengine_setenablespeakerphone) | 设置是否将音频路由到扬声器。 |
 | [rtcEngine:didAudioRouteChanged:](/zh-CN/api-reference/rtc/ios/device-management/audio-route#callback_irtcengineeventhandler_onaudioroutingchanged) | 本地音频路由发生变化时的回调。 |
 
-<a id="rtc_api_overview__toc_video_device"></a>
-
-## 视频设备管理
+## 视频设备管理 [#rtc_api_overview__toc_video_device]
 
 | API | 描述 |
 | --- | --- |
@@ -798,9 +709,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [rtcEngine:cameraExposureDidChangedToRect:](/zh-CN/api-reference/rtc/ios/device-management/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) | 摄像头曝光区域发生变化回调。 |
 | [rtcEngine:cameraFocusDidChangedToRect:](/zh-CN/api-reference/rtc/ios/device-management/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged) | 摄像头对焦区域发生变化时的回调。 |
 
-<a id="rtc_api_overview__toc_audio_device"></a>
-
-## 音频设备管理
+## 音频设备管理 [#rtc_api_overview__toc_audio_device]
 
 | API | 描述 |
 | --- | --- |
@@ -809,9 +718,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_stopplaybackdevicetest) | 停止音频播放设备测试。 |
 | [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_stoprecordingdevicetest) | 停止音频采集设备测试。 |
 
-<a id="rtc_api_overview__toc_extension"></a>
-
-## 插件
+## 插件 [#rtc_api_overview__toc_extension]
 
 | API | 描述 |
 | --- | --- |
@@ -826,9 +733,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [onExtensionStartedWithContext:](/zh-CN/api-reference/rtc/ios/extension#callback_irtcengineeventhandler_onextensionstartedwithcontext) | 扩展启用成功时触发的回调。 |
 | [onExtensionStoppedWithContext:](/zh-CN/api-reference/rtc/ios/extension#callback_irtcengineeventhandler_onextensionstoppedwithcontext) | 当扩展被禁用时触发的回调。 |
 
-<a id="rtc_api_overview__toc_network"></a>
-
-## 网络及其他
+## 网络及其他 [#rtc_api_overview__toc_network]
 
 | API | 描述 |
 | --- | --- |

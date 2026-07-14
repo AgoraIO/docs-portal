@@ -1,10 +1,9 @@
 ---
 title: "媒体资源播放和渲染"
-description: "指定当前音频文件的播放音轨。"
+description: "媒体资源播放和渲染 API reference."
 ---
-<a id="toc_mediaplayer_playnrender"></a>
 
-## 媒体资源播放和渲染
+<a id="toc_mediaplayer_playnrender"></a>
 
 <a id="api_imediaplayer_selectaudiotrack_imediaplayer"></a>
 
@@ -23,7 +22,7 @@ Future<void> selectAudioTrack(int index);
 获取音频文件的音轨索引后，你可以调用该方法指定任一音轨进行播放。如果一个多音轨文件的不同音轨存放了不同语言的歌曲，你可以调用该方法设置播放语言。
 
 :::info[注]
-你需要在调用 [getStreamInfo](/zh-CN/api-reference/rtc/flutter/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取音频流索引值后调用该方法。
+你需要在调用 [getStreamInfo](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取音频流索引值后调用该方法。
 :::
 
 <a id="api_imediaplayer_selectaudiotrack_imediaplayer__parameters"></a>
@@ -40,7 +39,6 @@ Future<void> selectAudioTrack(int index);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setaudiodualmonomode"></a>
@@ -60,7 +58,7 @@ Future<void> setAudioDualMonoMode(AudioDualMonoMode mode);
 在双声道音频文件中，左声道和右声道可以存储不同的音频数据。根据实际需要，你可以设置声道模式为原始模式、左声道模式、右声道模式或混合模式。例如，在 KTV 场景中，音频文件的左声道存储了伴奏，右声道存储了原唱的歌声。如果你只需听伴奏，调用该方法设置音频文件的声道模式为左声道模式；如果你需要同时听伴奏和原唱，调用该方法设置声道模式为混合模式。
 
 :::info[注]
-- 你需要在调用 [open](/zh-CN/api-reference/rtc/flutter/mediaplayer-open#api_imediaplayer_open) 后调用该方法。
+- 你需要在调用 [open](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后调用该方法。
 - 该方法仅适用于双声道的音频文件。
 :::
 
@@ -78,7 +76,6 @@ Future<void> setAudioDualMonoMode(AudioDualMonoMode mode);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setaudiopitch"></a>
@@ -96,7 +93,7 @@ Future<void> setAudioPitch(int pitch);
 <a id="api_imediaplayer_setaudiopitch__detailed_desc"></a>
 
 :::info[注]
-你需要在调用 [open](/zh-CN/api-reference/rtc/flutter/mediaplayer-open#api_imediaplayer_open) 后调用该方法。
+你需要在调用 [open](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后调用该方法。
 :::
 
 <a id="api_imediaplayer_setaudiopitch__parameters"></a>
@@ -113,7 +110,6 @@ Future<void> setAudioPitch(int pitch);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setloopcount"></a>
@@ -130,7 +126,7 @@ Future<void> setLoopCount(int loopCount);
 
 <a id="api_imediaplayer_setloopcount__detailed_desc"></a>
 
-如果你希望循环播放，请调用该方法并设置循环播放次数。 循环播放结束时，SDK 会触发 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/flutter/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调，向你报告播放状态为 playerStatePlaybackAllLoopsCompleted。
+如果你希望循环播放，请调用该方法并设置循环播放次数。 循环播放结束时，SDK 会触发 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调，向你报告播放状态为 playerStatePlaybackAllLoopsCompleted。
 
 <a id="api_imediaplayer_setloopcount__parameters"></a>
 
@@ -149,7 +145,6 @@ Future<void> setLoopCount(int loopCount);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setplaybackspeed"></a>
@@ -166,7 +161,7 @@ Future<void> setPlaybackSpeed(int speed);
 
 <a id="api_imediaplayer_setplaybackspeed__detailed_desc"></a>
 
-你需要在 [open](/zh-CN/api-reference/rtc/flutter/mediaplayer-open#api_imediaplayer_open) 后调用该方法。
+你需要在 [open](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后调用该方法。
 
 <a id="api_imediaplayer_setplaybackspeed__parameters"></a>
 
@@ -186,7 +181,6 @@ Future<void> setPlaybackSpeed(int speed);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setplayeroption"></a>
@@ -203,7 +197,7 @@ Future<void> setPlayerOptionInInt({required String key, required int value});
 
 <a id="api_imediaplayer_setplayeroption__detailed_desc"></a>
 
-媒体播放器支持通过 `key` 和 `value` 来设置选项。 该方法和 [setPlayerOptionInString](/zh-CN/api-reference/rtc/flutter/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的区别在于，该方法的 `value` 是 Int 型， [setPlayerOptionInString](/zh-CN/api-reference/rtc/flutter/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的 `value` 是 String 型。二者不可混用。
+媒体播放器支持通过 `key` 和 `value` 来设置选项。 该方法和 [setPlayerOptionInString](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的区别在于，该方法的 `value` 是 Int 型， [setPlayerOptionInString](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的 `value` 是 String 型。二者不可混用。
 
 <a id="api_imediaplayer_setplayeroption__scenario"></a>
 
@@ -215,7 +209,7 @@ Future<void> setPlayerOptionInInt({required String key, required int value});
 
 ### 调用时机
 
-该方法需要在 [open](/zh-CN/api-reference/rtc/flutter/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/flutter/mediaplayer-open#api_imediaplayer_openwithmediasource) 之前调用。
+该方法需要在 [open](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 之前调用。
 
 <a id="api_imediaplayer_setplayeroption__parameters"></a>
 
@@ -235,7 +229,6 @@ value 值。
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setplayeroption2"></a>
@@ -253,7 +246,7 @@ Future<void> setPlayerOptionInString(
 
 <a id="api_imediaplayer_setplayeroption2__detailed_desc"></a>
 
-媒体播放器支持通过 `key` 和 `value` 来设置选项。 该方法和 [setPlayerOptionInInt](/zh-CN/api-reference/rtc/flutter/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的区别在于，该方法的 `value` 是 String 型， [setPlayerOptionInInt](/zh-CN/api-reference/rtc/flutter/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的 `value` 是 Int 型。二者不可混用。
+媒体播放器支持通过 `key` 和 `value` 来设置选项。 该方法和 [setPlayerOptionInInt](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的区别在于，该方法的 `value` 是 String 型， [setPlayerOptionInInt](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的 `value` 是 Int 型。二者不可混用。
 
 <a id="api_imediaplayer_setplayeroption2__scenario"></a>
 
@@ -265,7 +258,7 @@ Future<void> setPlayerOptionInString(
 
 ### 调用时机
 
-该方法需要在 [open](/zh-CN/api-reference/rtc/flutter/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/flutter/mediaplayer-open#api_imediaplayer_openwithmediasource) 之前调用。
+该方法需要在 [open](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 之前调用。
 
 <a id="api_imediaplayer_setplayeroption2__parameters"></a>
 
@@ -285,7 +278,6 @@ value 值。
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setview"></a>
@@ -326,5 +318,4 @@ Future<void> setView(int view);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)

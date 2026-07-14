@@ -1,0 +1,106 @@
+---
+title: "ChatOptions constructor"
+description: "API docs for the ChatOptions constructor from Class ChatOptions from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Sets the app options.
+
+```dart title="Dart"
+ChatOptions({required String appKey, bool autoLogin = true, bool debugModel = false, bool acceptInvitationAlways = false, bool autoAcceptGroupInvitation = false, bool requireAck = true, bool requireDeliveryAck = false, bool deleteMessagesAsExitGroup = true, bool deleteMessagesAsExitChatRoom = true, bool isChatRoomOwnerLeaveAllowed = true, bool sortMessageByServerTime = true, bool usingHttpsOnly = true, bool serverTransfer = true, bool isAutoDownloadThumbnail = true, bool enableDNSConfig = true, String? dnsUrl, String? restServer, int? imPort, String? imServer, int areaCode = AreaCode.GLOB})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+ChatOptions({
+  /// Param [appKey] The app key that you get from the console when creating an app.
+  required this.appKey,
+
+  /// Param [autoLogin] Whether to enable automatic login.
+  /// - `true`: (Default) Yes;
+  /// - `false`: No.
+  this.autoLogin = true,
+
+  /// Param [debugModel] Whether to output the debug information. Make sure to call the method after the ChatClient is initialized. See [ChatClient.init].
+  /// - `true`: Yes.
+  /// - `false`: (Default) No.
+  this.debugModel = false,
+
+  /// Param [acceptInvitationAlways] Whether to accept friend invitations from other users automatically.
+  /// - `true`: Yes;
+  /// - `false`: (Default) No.
+  this.acceptInvitationAlways = false,
+
+  /// Param [autoAcceptGroupInvitation] Whether to accept group invitations automatically.
+  /// - `true`: Yes;
+  /// - `false`: (Default) No.
+  this.autoAcceptGroupInvitation = false,
+
+  /// Param [requireAck] Whether the read receipt is required.
+  /// - `true`: (Default) Yes;
+  /// - `false`: No.
+  this.requireAck = true,
+
+  /// Param [requireDeliveryAck] Whether the delivery receipt is required.
+  /// - `true`: Yes;
+  /// - `false`: (Default) No.
+  this.requireDeliveryAck = false,
+
+  /// Param [deleteMessagesAsExitGroup] Whether to delete the related group messages when leaving a group.
+  /// - `true`: (Default) Yes;
+  /// - `false`: No.
+  this.deleteMessagesAsExitGroup = true,
+
+  /// Param [deleteMessagesAsExitChatRoom] Whether to delete the related chat room messages when leaving the chat room.
+  /// - `true`: (Default) Yes;
+  /// - `false`: No.
+  this.deleteMessagesAsExitChatRoom = true,
+
+  /// Param [isChatRoomOwnerLeaveAllowed] Whether to allow the chat room owner to leave the chat room.
+  /// - `true`: (Default) Yes;
+  /// - `false`: No.
+  this.isChatRoomOwnerLeaveAllowed = true,
+
+  /// Param [sortMessageByServerTime] Whether to sort the messages by the time the server receives messages.
+  /// - `true`: (Default) Yes;
+  /// - `false`: No.
+  this.sortMessageByServerTime = true,
+
+  /// Param [usingHttpsOnly] Whether only HTTPS is used for REST operations.
+  /// - `true`: (Default) Yes;
+  /// - `false`: No.
+  this.usingHttpsOnly = true,
+
+  /// Param [serverTransfer] Whether to upload the message attachments automatically to the chat server.
+  /// - `true`: (Default) Yes;
+  /// - `false`: No.
+  this.serverTransfer = true,
+
+  /// Param [isAutoDownloadThumbnail] Whether to automatically download the thumbnail.
+  /// - `true`: (Default) Yes;
+  /// - `false`: No.
+  this.isAutoDownloadThumbnail = true,
+
+  /// Param [enableDNSConfig] Whether to enable DNS.
+  /// - `true`: (Default) Yes;
+  /// - `false`: No.
+  this.enableDNSConfig = true,
+
+  /// Param [dnsUrl] The DNS url.
+  this.dnsUrl,
+
+  /// Param [restServer] The REST server for private deployments.
+  this.restServer,
+
+  /// Param [imPort] The IM server port for private deployments.
+  this.imPort,
+
+  /// Param [imServer] The IM server URL for private deployment.
+  this.imServer,
+
+  /// Param [areaCode] The area code.
+  this.areaCode = AreaCode.GLOB,
+});
+```

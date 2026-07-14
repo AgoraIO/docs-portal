@@ -1,0 +1,41 @@
+---
+title: "changeGroupDescription method"
+description: "API docs for the changeGroupDescription method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Changes the group description.
+
+Only the group owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `desc` | The new group description. |
+
+```dart title="Dart"
+Future<void> changeGroupDescription(String groupId, String desc)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> changeGroupDescription(
+  String groupId,
+  String desc,
+) async {
+  Map req = {'desc': desc, 'groupId': groupId};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.updateDescription, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

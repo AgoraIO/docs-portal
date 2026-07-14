@@ -27,7 +27,7 @@ describe('/__static/docs-search/$ route', () => {
   });
 
   it('rejects non-json and unsupported locale requests', async () => {
-    for (const splat of ['en.txt', 'fr.json']) {
+    for (const splat of ['en.txt', 'fr.json', 'zh-CN.json']) {
       try {
         await getDocsSearchIndexResponse(splat);
       } catch (error) {

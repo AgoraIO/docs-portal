@@ -1,0 +1,44 @@
+---
+title: "ChatMessage.createTxtSendMessage constructor"
+description: "API docs for the ChatMessage.createTxtSendMessage constructor from Class ChatMessage from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Creates a text message for sending.
+
+- For a one-to-one chat, it is the username of the peer user.
+- For a group chat, it is the group ID.
+- For a chat room, it is the chat room ID.
+
+**Return** The message instance.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `targetId` | The ID of the message recipient. |
+| `content` | The text content. |
+| `targetLanguages` | Target languages. |
+
+```dart title="Dart"
+ChatMessage.createTxtSendMessage({required String targetId, required String content, List<String>? targetLanguages, ChatType chatType = ChatType.Chat})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+ChatMessage.createTxtSendMessage({
+  required String targetId,
+  required String content,
+  List<String>? targetLanguages,
+  ChatType chatType = ChatType.Chat,
+}) : this.createSendMessage(
+        chatType: chatType,
+        to: targetId,
+        body: ChatTextMessageBody(
+          content: content,
+          targetLanguages: targetLanguages,
+        ),
+      );
+```

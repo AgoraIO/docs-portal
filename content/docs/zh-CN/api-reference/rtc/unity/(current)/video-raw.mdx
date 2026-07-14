@@ -1,10 +1,9 @@
 ---
 title: "原始视频数据"
-description: "注册原始视频观测器对象。"
+description: "原始视频数据 API reference."
 ---
-<a id="toc_video_raw"></a>
 
-## 原始视频数据
+<a id="toc_video_raw"></a>
 
 <a id="api_imediaengine_registervideoframeobserver"></a>
 
@@ -68,7 +67,6 @@ public abstract int RegisterVideoFrameObserver(IVideoFrameObserver videoFrameObs
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaengine)
 
 <a id="api_imediaengine_unregistervideoframeobserver_imediaengine"></a>
@@ -92,7 +90,6 @@ public abstract int UnRegisterVideoFrameObserver();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaengine)
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe"></a>
@@ -141,7 +138,6 @@ public virtual bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame
 - true：设置 SDK 接收视频帧。
 - false：设置 SDK 丢弃视频帧。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe"></a>
@@ -161,7 +157,7 @@ public virtual bool OnPreEncodeVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFra
 成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取编码前的视频数据，然后根据场景需要，对视频数据进行处理。 完成处理后，你可以在该回调中，传入处理后的视频数据将其发送回 SDK。
 
 :::info[注]
-- 你需要通过 [RegisterVideoFrameObserver](/zh-CN/api-reference/rtc/unity/video-raw#api_imediaengine_registervideoframeobserver) 的 `position` 参数设置观测 `POSITION_PRE_ENCODER` (1 &lt;&lt; 2) 后，才能使用该回调获取本地视频编码前的视频数据。
+- 你需要通过 [RegisterVideoFrameObserver](/zh-CN/api-reference/rtc/unity/video/video-raw#api_imediaengine_registervideoframeobserver) 的 `position` 参数设置观测 `POSITION_PRE_ENCODER` (1 &lt;&lt; 2) 后，才能使用该回调获取本地视频编码前的视频数据。
 - 此处获取的视频数据已经过前处理，如裁剪、旋转和美颜等。
 - 建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
 :::
@@ -185,7 +181,6 @@ public virtual bool OnPreEncodeVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFra
 - true：设置 SDK 接收视频帧。
 - false：设置 SDK 丢弃视频帧。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onrendervideoframe"></a>
@@ -205,7 +200,7 @@ public virtual bool OnRenderVideoFrame(string channelId, uint remoteUid, VideoFr
 成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取远端发送的渲染前的视频数据，然后根据场景需要，对视频数据进行处理。
 
 :::info[注]
-Unity 仅支持将 YUV 格式的视频数据发回 SDK。请确保调用 [RegisterVideoFrameObserver](/zh-CN/api-reference/rtc/unity/video-raw#api_imediaengine_registervideoframeobserver) 方法注册原始视频帧观测器时，将 `mode` 设置为 `INTPTR`。
+Unity 仅支持将 YUV 格式的视频数据发回 SDK。请确保调用 [RegisterVideoFrameObserver](/zh-CN/api-reference/rtc/unity/video/video-raw#api_imediaengine_registervideoframeobserver) 方法注册原始视频帧观测器时，将 `mode` 设置为 `INTPTR`。
 :::
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__parameters"></a>
@@ -231,5 +226,4 @@ Unity 仅支持将 YUV 格式的视频数据发回 SDK。请确保调用 [Regist
 - true：设置 SDK 接收视频帧。
 - false：设置 SDK 丢弃视频帧。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoframeobserver)

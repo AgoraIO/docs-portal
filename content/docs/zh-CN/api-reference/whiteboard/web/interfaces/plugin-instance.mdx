@@ -1,0 +1,238 @@
+---
+title: "PluginInstance<C, A>"
+description: "PluginInstance<C, A> API 参考。"
+---
+
+组件插件对象的接口。
+
+- PluginInstance
+
+## 属性
+
+<a id="attributes"></a>
+
+### attributes
+
+```ts title="TypeScript"
+attributes: A
+```
+
+组件插件对象的属性。
+
+<a id="context"></a>
+
+### context
+
+```ts title="TypeScript"
+context: C
+```
+
+自定义的组件插件上下文。
+
+<a id="height"></a>
+
+### height
+
+```ts title="TypeScript"
+height: number
+```
+
+组件插件对象的高。
+
+<a id="identifier"></a>
+
+### identifier
+
+```ts title="TypeScript"
+identifier: Identifier
+```
+
+组件插件对象在房间内的唯一标识符。
+
+<a id="isdraging"></a>
+
+### isDraging
+
+```ts title="TypeScript"
+isDraging: boolean
+```
+
+是否正在拖拽组件插件对象。
+
+- `true`：在拖拽。
+- `false`：不在拖拽。
+
+<a id="isplaying"></a>
+
+### isPlaying
+
+```ts title="TypeScript"
+isPlaying: boolean
+```
+
+是否正在播放组件插件对象。
+
+- `true`：在播放。在白板实时房间内，取值一直为 `true`。
+- `false`：不在播放。
+
+<a id="isresizing"></a>
+
+### isResizing
+
+```ts title="TypeScript"
+isResizing: boolean
+```
+
+是否正在改变组件插件对象的大小。
+
+- `true`：在改变。
+- `false`：不在改变。
+
+<a id="kind"></a>
+
+### kind
+
+```ts title="TypeScript"
+kind: string
+```
+
+组件插件的类型，是组件插件的唯一标识符。
+
+<a id="originx"></a>
+
+### originX
+
+```ts title="TypeScript"
+originX: number
+```
+
+组件插件对象的左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+<a id="originy"></a>
+
+### originY
+
+```ts title="TypeScript"
+originY: number
+```
+
+组件插件对象的左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+<a id="playbackspeed"></a>
+
+### playbackSpeed
+
+```ts title="TypeScript"
+playbackSpeed: number
+```
+
+组件插件对象当前的播放速率倍率（若为实时房间，则恒为 `1.0` ）。
+
+<a id="playertimestamp"></a>
+
+### playerTimestamp
+
+```ts title="TypeScript"
+playerTimestamp: number
+```
+
+组件插件对象当前播放位置的 Unix 时间戳（若为实时房间，则恒为 0）。
+
+<a id="selectable"></a>
+
+### selectable
+
+```ts title="TypeScript"
+selectable: boolean
+```
+
+能否选中组件插件对象：
+
+- `true`：能选中组件插件对象。
+- `false`：不能选中组件插件对象。
+
+<a id="width"></a>
+
+### width
+
+```ts title="TypeScript"
+width: number
+```
+
+组件插件对象的宽。
+
+## 方法
+
+<a id="putattributes"></a>
+
+### putAttributes
+
+```ts title="TypeScript"
+putAttributes(attributes: Partial<A>): void
+```
+
+修改组件插件属性中的部分字段。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| attributes: Partial&lt;A&gt; | 要修改的字段。 |
+
+#### 返回值
+
+void
+
+<a id="remove"></a>
+
+### remove
+
+```ts title="TypeScript"
+remove(): void
+```
+
+删除组件插件对象。
+
+#### 返回值
+
+void
+
+<a id="removeattributekeys"></a>
+
+### removeAttributeKeys
+
+```ts title="TypeScript"
+removeAttributeKeys<K>(...keys: K[]): void
+```
+
+删除组件插件属性中的部分字段。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| Rest ...keys: K[] | 要删除的字段。 |
+
+#### 返回值
+
+void
+
+<a id="update"></a>
+
+### update
+
+```ts title="TypeScript"
+update(description: PluginDescription<A>): void
+```
+
+修改组件插件对象的描述。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| description: PluginDescription&lt;A&gt; | 要修改的描述。 |
+
+#### 返回值
+
+void

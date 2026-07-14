@@ -2,9 +2,8 @@
 title: "频道相关"
 description: "频道相关 API reference."
 ---
-<a id="toc_channel"></a>
 
-## 频道相关
+<a id="toc_channel"></a>
 
 <a id="api_irtcengine_getuserinfobyuid"></a>
 
@@ -76,7 +75,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getuserinfobyuseraccount"></a>
@@ -149,7 +147,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannel"></a>
@@ -328,7 +325,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_joinchannelex"></a>
@@ -360,7 +356,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 该方法需要在 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 之后调用。
 
-在多摄像头采集场景下，你需要在调用该方法之后调用 [StartPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video-basic#api_irtcengine_startpreview2) 方法设置 sourceType 为 VIDEO_SOURCE_CAMERA_SECONDARY，以确保第二个摄像头采集正常。
+在多摄像头采集场景下，你需要在调用该方法之后调用 [StartPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_startpreview2) 方法设置 sourceType 为 VIDEO_SOURCE_CAMERA_SECONDARY，以确保第二个摄像头采集正常。
 
 <a id="api_irtcengineex_joinchannelex__restriction"></a>
 
@@ -422,7 +418,6 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_joinchannelwithuseraccount2"></a>
@@ -523,7 +518,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannelwithuseraccountex"></a>
@@ -628,7 +622,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_leavechannel"></a>
@@ -748,7 +741,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_leavechannelex2"></a>
@@ -825,7 +817,6 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_preloadchannel"></a>
@@ -908,7 +899,6 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_preloadchannelwithuseraccount"></a>
@@ -998,7 +988,6 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registerlocaluseraccount"></a>
@@ -1065,7 +1054,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_renewtoken"></a>
@@ -1123,7 +1111,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
     - 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致，
     - 生成的 Token 和加入频道使用的 Token 一致。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setchannelprofile"></a>
@@ -1144,7 +1131,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 你可以调用该方法设置频道的使用场景。SDK 会针对不同的使用场景采用不同的优化策略，如直播场景优先保证画质。SDK 初始化后默认的频道场景为直播场景。
 
 :::warning[注意]
-不同的频道场景下，SDK 的默认音频路由是不同的，详见 [SetDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/unreal-blueprint/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) 中的说明。
+不同的频道场景下，SDK 的默认音频路由是不同的，详见 [SetDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) 中的说明。
 :::
 
 <a id="api_irtcengine_setchannelprofile__timing"></a>
@@ -1177,7 +1164,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
   - -2: 参数无效。
   - -7: SDK 尚未初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole2"></a>
@@ -1203,7 +1189,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 该方法在加入频道前后均可调用。
 
-如果你在加入频道前调用该方法设置用户角色为主播、并且通过 [SetupLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video-rendering#api_irtcengine_setuplocalvideo) 方法设置了本地视频属性，则用户加入频道时会自动开启本地视频预览。
+如果你在加入频道前调用该方法设置用户角色为主播、并且通过 [SetupLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-rendering#api_irtcengine_setuplocalvideo) 方法设置了本地视频属性，则用户加入频道时会自动开启本地视频预览。
 
 如果你在加入频道后调用该方法切换用户角色，调用成功后，SDK 会自动调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [MuteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_mutelocalvideostream) 修改发布音视频流的状态。
 
@@ -1258,7 +1244,6 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
   - -5: 调用被拒绝。
   - -7: SDK 尚未初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatechannelmediaoptions"></a>
@@ -1293,7 +1278,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -8： IRtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果收到 CONNECTION_STATE_DISCONNECTED (1) 或 CONNECTION_STATE_FAILED (5)，则表示用户不在频道中。你需要在调用该方法前调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex"></a>
@@ -1332,7 +1316,6 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -8： IRtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果收到 CONNECTION_STATE_DISCONNECTED (1) 或 CONNECTION_STATE_FAILED (5)，则表示用户不在频道中。你需要在调用该方法前调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_updatepreloadchanneltoken"></a>
@@ -1378,7 +1361,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
   - -2：传入的参数无效。例如，使用了不合法的 Token。你需要填入有效的参数，重新加入频道。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged"></a>
@@ -1427,7 +1409,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 切换后的角色属性。详见 [FClientRoleOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-clientroleoptions)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed"></a>
@@ -1471,7 +1452,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 当前用户角色。详见 [ECLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-clientroletype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onerror"></a>
@@ -1554,10 +1534,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
   该枚举已废弃。请改用 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 CONNECTION_CHANGED_INVALID_TOKEN (8)。
 - ERR_CONNECTION_INTERRUPTED (111)：网络连接中断。SDK 在和服务器建立连接后，失去网络连接超过 4 秒。
 - ERR_CONNECTION_LOST (112)：网络连接丢失。网络连接中断，且 SDK 无法在 10 秒内连接服务器。
-- ERR_NOT_IN_CHANNEL (113)：调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/datastream#api_irtcengine_sendstreammessage) 方法时用户不在频道内。
+- ERR_NOT_IN_CHANNEL (113)：调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengine_sendstreammessage) 方法时用户不在频道内。
 - ERR_SIZE_TOO_LARGE (114)：在调用 SendStreamMessage 时，发送的数据长度大于 1 KB。
 - ERR_BITRATE_LIMIT (115)：在调用 SendStreamMessage 时，发送数据的频率超过限制（6 KB/s）。
-- ERR_TOO_MANY_DATA_STREAMS (116)：在调用 [CreateDataStream](/zh-CN/api-reference/rtc/unreal-blueprint/datastream#api_irtcengine_createdatastream2) 时，创建的数据流超过限制（5 个）。
+- ERR_TOO_MANY_DATA_STREAMS (116)：在调用 [CreateDataStream](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengine_createdatastream2) 时，创建的数据流超过限制（5 个）。
 - ERR_STREAM_MESSAGE_TIMEOUT (117)：数据流发送超时。
 - ERR_SET_CLIENT_ROLE_NOT_AUTHORIZED (119)：用户切换角色失败，请尝试重新加入频道。
 - ERR_DECRYPTION_FAILED (120)：解密失败。可能是用户加入频道时使用了错误的密码。请检查用户加入频道时填入的密码，或引导用户尝试重新加入频道。
@@ -1575,7 +1555,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 - ERR_ADM_STOP_RECORDING (1013)：停止录音设备出错。
 - ERR_VDM_CAMERA_NOT_AUTHORIZED (1501)：没有摄像头使用权限。请检查是否已经打开摄像头权限。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess"></a>
@@ -1623,7 +1602,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 从本地调用 JoinChannelWithOptions 开始到发生此事件过去的时间（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onleavechannel"></a>
@@ -1663,7 +1641,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 通话的统计数据，详见 [FRtcStats](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcstats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered"></a>
@@ -1695,7 +1672,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 本地用户的 User Account。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess"></a>
@@ -1741,7 +1717,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 从调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrequesttoken"></a>
@@ -1777,7 +1752,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__parameters"></a>
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrtcstats"></a>
@@ -1815,7 +1789,6 @@ SDK 定期向 App 报告当前通话的统计信息，每两秒触发一次。
 
 RTC 引擎统计数据，详见 [FRtcStats](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcstats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire"></a>
@@ -1861,7 +1834,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 即将过期的 Token。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated"></a>
@@ -1893,7 +1865,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 标识用户信息的 UserInfo 对象，包含用户 UID 和 User Account。详见 [FUserInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-userinfo) 类。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserjoined"></a>
@@ -1946,7 +1917,6 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 从本地用户调用 JoinChannel 或 JoinChannelWithOptions 到该回调触发的延迟（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuseroffline"></a>
@@ -1993,5 +1963,4 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 远端用户（通信场景）或主播（直播场景）离线的原因，详见 [EUSER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-userofflinereasontype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)

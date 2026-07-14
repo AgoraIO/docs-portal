@@ -1,10 +1,9 @@
 ---
 title: "视频基础功能"
-description: "禁用视频模块。"
+description: "视频基础功能 API reference."
 ---
-<a id="toc_video_basic"></a>
 
-## 视频基础功能
+<a id="toc_video_basic"></a>
 
 <a id="api_irtcengine_disablevideo"></a>
 
@@ -22,7 +21,7 @@ virtual int disableVideo() = 0;
 
 该方法会影响内部引擎，且可以在离开频道后调用。调用该方法会重置整个引擎，可能导致响应时间变慢。你可以根据实际需求，使用以下方法分别控制视频模块的具体功能：
 
-- [enableLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablelocalvideo)：是否启用摄像头以创建本地视频流。
+- [enableLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablelocalvideo)：是否启用摄像头以创建本地视频流。
 - [muteLocalVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalvideostream)：是否发布本地视频流。
 - [muteRemoteVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremotevideostream)：是否订阅并播放远端视频流。
 - [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremotevideostreams)：是否订阅并播放所有远端视频流。
@@ -36,7 +35,7 @@ virtual int disableVideo() = 0;
 - 如果在加入频道前调用，则进入纯语音模式。
 - 如果在加入频道后调用，则从视频模式切换为纯语音模式。
 
-之后调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablevideo) 可重新切换回视频模式。
+之后调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 可重新切换回视频模式。
 
 <a id="api_irtcengine_disablevideo__related"></a>
 
@@ -51,7 +50,6 @@ virtual int disableVideo() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablelocalvideo"></a>
@@ -68,7 +66,7 @@ virtual int enableLocalVideo(bool enabled) = 0;
 
 <a id="api_irtcengine_enablelocalvideo__detailed_desc"></a>
 
-该方法用于关闭或重新启用本地视频采集，不影响接收远端视频流。调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablevideo) 后，默认启用本地视频采集。如果在频道内调用 `enableLocalVideo(false)` 关闭本地视频采集，则会同时停止在频道内发布视频流。若需重新开始视频采集，可调用 `enableLocalVideo(true)`，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions) 设置 `options` 参数以在频道中发布本地采集的视频流。
+该方法用于关闭或重新启用本地视频采集，不影响接收远端视频流。调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 后，默认启用本地视频采集。如果在频道内调用 `enableLocalVideo(false)` 关闭本地视频采集，则会同时停止在频道内发布视频流。若需重新开始视频采集，可调用 `enableLocalVideo(true)`，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions) 设置 `options` 参数以在频道中发布本地采集的视频流。
 
 :::info[注]
 - 可以在加入频道前或加入频道后调用该方法。但如果在加入频道前调用，设置仅在加入频道后生效。
@@ -79,7 +77,7 @@ virtual int enableLocalVideo(bool enabled) = 0;
 
 ### 相关回调
 
-成功关闭或重新启用本地视频采集后，SDK 会在远端客户端触发 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调报告状态变化。
+成功关闭或重新启用本地视频采集后，SDK 会在远端客户端触发 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调报告状态变化。
 
 <a id="api_irtcengine_enablelocalvideo__parameters"></a>
 
@@ -99,7 +97,6 @@ virtual int enableLocalVideo(bool enabled) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablevideo"></a>
@@ -116,17 +113,17 @@ virtual int enableVideo() = 0;
 
 <a id="api_irtcengine_enablevideo__detailed_desc"></a>
 
-默认情况下，视频模块处于关闭状态。调用该方法可启用视频模块。如果你需要在之后关闭视频模块，需要调用 [disableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_disablevideo) 方法。
+默认情况下，视频模块处于关闭状态。调用该方法可启用视频模块。如果你需要在之后关闭视频模块，需要调用 [disableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_disablevideo) 方法。
 
 :::info[注]
 该方法会启用内部引擎，离开频道后依然有效。 调用该方法会重置整个引擎，可能导致响应变慢。你可以根据实际需求使用以下方法分别控制视频模块的具体功能：
 
-- [enableLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablelocalvideo)：是否启用摄像头以创建本地视频流。
+- [enableLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablelocalvideo)：是否启用摄像头以创建本地视频流。
 - [muteLocalVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalvideostream)：是否发布本地视频流。
 - [muteRemoteVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremotevideostream)：是否订阅并播放远端视频流。
 - [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremotevideostreams)：是否订阅并播放所有远端视频流。
 
-成功调用该方法会重置 [enableLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablelocalvideo)、 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremotevideostream) 和 [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 的设置，请谨慎使用。
+成功调用该方法会重置 [enableLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablelocalvideo)、 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteremotevideostream) 和 [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 的设置，请谨慎使用。
 :::
 
 <a id="api_irtcengine_enablevideo__timing"></a>
@@ -142,7 +139,7 @@ virtual int enableVideo() = 0;
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调，报告远端视频状态发生变化。
+成功调用该方法后，SDK 会触发 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调，报告远端视频状态发生变化。
 
 <a id="api_irtcengine_enablevideo__return_values"></a>
 
@@ -151,7 +148,6 @@ virtual int enableVideo() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvideoencoderconfiguration"></a>
@@ -169,7 +165,7 @@ virtual int setVideoEncoderConfiguration(const VideoEncoderConfiguration& config
 <a id="api_irtcengine_setvideoencoderconfiguration__detailed_desc"></a>
 
 :::info[注]
-- 该方法和 [getMirrorApplied](/zh-CN/api-reference/rtc/cpp-all-platforms/video-raw#api_ivideoframeobserver_getmirrorapplied) 方法都支持设置镜像效果。声网建议只使用其中一种方法进行设置，同时使用两种方法会导致镜像效果叠加，从而使设置失效。
+- 该方法和 [getMirrorApplied](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#api_ivideoframeobserver_getmirrorapplied) 方法都支持设置镜像效果。声网建议只使用其中一种方法进行设置，同时使用两种方法会导致镜像效果叠加，从而使设置失效。
 - 该方法中指定的 `config` 是在理想网络条件下的最大值。如果由于网络条件不稳定，视频引擎无法使用指定的 `config` 渲染视频，则会依次尝试列表中更低的参数，直到找到可用的配置。
 :::
 
@@ -177,7 +173,7 @@ virtual int setVideoEncoderConfiguration(const VideoEncoderConfiguration& config
 
 ### 调用时机
 
-你可以在加入频道前或后调用该方法。如果在加入频道后不需要重新设置视频编码属性，声网建议在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablevideo) 之前调用该方法，以减少首帧视频渲染时间。
+你可以在加入频道前或后调用该方法。如果在加入频道后不需要重新设置视频编码属性，声网建议在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 之前调用该方法，以减少首帧视频渲染时间。
 
 <a id="api_irtcengine_setvideoencoderconfiguration__parameters"></a>
 
@@ -194,7 +190,6 @@ virtual int setVideoEncoderConfiguration(const VideoEncoderConfiguration& config
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex"></a>
@@ -223,7 +218,7 @@ virtual int setVideoEncoderConfigurationEx(const VideoEncoderConfiguration& conf
 
 ### 调用时机
 
-你可以在加入频道前或后调用此方法。如果你在加入频道后不需要重新设置视频编码属性，声网建议你在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablevideo) 之前调用此方法，以减少首帧视频渲染时间。
+你可以在加入频道前或后调用此方法。如果你在加入频道后不需要重新设置视频编码属性，声网建议你在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 之前调用此方法，以减少首帧视频渲染时间。
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__parameters"></a>
 
@@ -244,7 +239,6 @@ virtual int setVideoEncoderConfigurationEx(const VideoEncoderConfiguration& conf
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setvideoscenario"></a>
@@ -283,7 +277,7 @@ virtual int setVideoScenario(VIDEO_APPLICATION_SCENARIO_TYPE scenarioType) = 0;
   - SDK 实时监控高画质视频流的订阅人数，并动态调整其配置：
 
     - 若无人订阅高画质视频流，SDK 会自动降低其码率和帧率以节省上行带宽。
-    - 若有人订阅高画质视频流，SDK 会将其重置为最近一次调用 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoencoderconfiguration) 配置；若未设置，则使用以下默认值：
+    - 若有人订阅高画质视频流，SDK 会将其重置为最近一次调用 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoencoderconfiguration) 配置；若未设置，则使用以下默认值：
 
       - 分辨率：（Windows 和 macOS）1280 × 720；（Android 和 iOS）960 × 540。
       - 帧率：15 fps。
@@ -298,7 +292,7 @@ virtual int setVideoScenario(VIDEO_APPLICATION_SCENARIO_TYPE scenarioType) = 0;
       - 帧率：15 fps。
       - 码率：500 Kbps。
 - `APPLICATION_SCENARIO_1V1` （2）：适用于一对一直播场景。SDK 会优化策略，以满足低延迟和高画质的需求，提升视频质量、首帧渲染速度、中低端设备的延迟表现以及弱网环境下的流畅性。注意：该枚举值仅适用于主播对主播的场景。
-- `APPLICATION_SCENARIO_LIVESHOW` （3）：适用于秀场场景。SDK 会启用多项性能优化，包括自动启用音视频帧加速渲染（无需调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_enableinstantmediarendering) ）以减少首帧延迟，以及启用 B 帧编码以提升图像质量和带宽效率，即使在弱网或低端设备上也能提供更好的视频质量和播放流畅性。
+- `APPLICATION_SCENARIO_LIVESHOW` （3）：适用于秀场场景。SDK 会启用多项性能优化，包括自动启用音视频帧加速渲染（无需调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_enableinstantmediarendering) ）以减少首帧延迟，以及启用 B 帧编码以提升图像质量和带宽效率，即使在弱网或低端设备上也能提供更好的视频质量和播放流畅性。
 
 <a id="api_irtcengine_setvideoscenario__return_values"></a>
 
@@ -311,7 +305,6 @@ virtual int setVideoScenario(VIDEO_APPLICATION_SCENARIO_TYPE scenarioType) = 0;
   - -4：不支持视频应用场景，可能是因为使用了语音 SDK 而非视频 SDK。
   - -7： [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象尚未初始化。请在调用该方法前初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startpreview"></a>
@@ -337,7 +330,7 @@ virtual int startPreview() = 0;
 
 ### 调用时机
 
-此方法必须在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablevideo) 和 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_setuplocalvideo) 之后调用。
+此方法必须在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 和 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setuplocalvideo) 之后调用。
 
 <a id="api_irtcengine_startpreview__return_values"></a>
 
@@ -346,7 +339,6 @@ virtual int startPreview() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startpreview2"></a>
@@ -372,7 +364,7 @@ virtual int startPreview(VIDEO_SOURCE_TYPE sourceType) = 0;
 
 ### 调用时机
 
-必须在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablevideo) 和 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-rendering#api_irtcengine_setuplocalvideo) 之后调用该方法。
+必须在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 和 [setupLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setuplocalvideo) 之后调用该方法。
 
 <a id="api_irtcengine_startpreview2__parameters"></a>
 
@@ -389,7 +381,6 @@ virtual int startPreview(VIDEO_SOURCE_TYPE sourceType) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoppreview"></a>
@@ -421,7 +412,6 @@ virtual int stopPreview() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoppreview2"></a>
@@ -461,7 +451,6 @@ virtual int stopPreview(VIDEO_SOURCE_TYPE sourceType) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe"></a>
@@ -504,7 +493,6 @@ virtual void onFirstLocalVideoFrame(VIDEO_SOURCE_TYPE source, int width, int hei
 
 从本地用户调用 `joinChannel` 加入频道到该回调触发的时间间隔，单位为毫秒。如果在加入频道前调用了 `startPreview`，该参数表示从调用 `startPreview` 到该事件触发的时间间隔。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished"></a>
@@ -525,8 +513,8 @@ virtual void onFirstLocalVideoFramePublished(VIDEO_SOURCE_TYPE source, int elaps
 
 - 本地客户端启用视频模块并调用 `joinChannel` 成功加入频道。
 - 本地客户端依次调用 `muteLocalVideoStream(true)` 和 `muteLocalVideoStream(false)`。
-- 本地客户端依次调用 [disableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_disablevideo) 和 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablevideo)。
-- 本地客户端调用 [pushVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video-custom-capturenrendering#api_imediaengine_pushvideoframe_imediaengine) 成功向 SDK 推送视频帧。
+- 本地客户端依次调用 [disableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_disablevideo) 和 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo)。
+- 本地客户端调用 [pushVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe_imediaengine) 成功向 SDK 推送视频帧。
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__timing"></a>
 
@@ -546,7 +534,6 @@ virtual void onFirstLocalVideoFramePublished(VIDEO_SOURCE_TYPE source, int elaps
 
 从本地用户调用 `joinChannel` 到该回调触发的时间间隔（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded"></a>
@@ -571,7 +558,7 @@ virtual void onFirstRemoteVideoDecoded(uid_t uid, int width, int height, int ela
 
 ### 触发时机
 
-当远端用户加入频道并发送视频流，或在停止发送视频流 15 秒后重新发送时触发。中断的原因包括：远端用户离开频道、掉线或调用 [disableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_disablevideo) 关闭视频。
+当远端用户加入频道并发送视频流，或在停止发送视频流 15 秒后重新发送时触发。中断的原因包括：远端用户离开频道、掉线或调用 [disableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_disablevideo) 关闭视频。
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__parameters"></a>
 
@@ -593,7 +580,6 @@ virtual void onFirstRemoteVideoDecoded(uid_t uid, int width, int height, int ela
 
 从本地用户调用 `joinChannel` 加入频道到 SDK 触发该回调的时间（单位为毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe"></a>
@@ -611,7 +597,7 @@ virtual void onFirstRemoteVideoFrame(uid_t uid, int width, int height, int elaps
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__detailed_desc"></a>
 
 :::info[注]
-[onFirstRemoteVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#callback_irtcengineeventhandler_onfirstremotevideoframe) 回调仅在视频帧由 SDK 渲染时触发。如果你使用自定义视频渲染，则不会触发该回调。你需要使用 SDK 之外的方法独立实现此功能。
+[onFirstRemoteVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideoframe) 回调仅在视频帧由 SDK 渲染时触发。如果你使用自定义视频渲染，则不会触发该回调。你需要使用 SDK 之外的方法独立实现此功能。
 :::
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__timing"></a>
@@ -640,7 +626,6 @@ virtual void onFirstRemoteVideoFrame(uid_t uid, int width, int height, int elaps
 
 从本地用户调用 `joinChannel` 到触发该回调的时间（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalvideoevent"></a>
@@ -675,7 +660,6 @@ virtual void onLocalVideoEvent(VIDEO_SOURCE_TYPE source, LOCAL_VIDEO_EVENT_TYPE 
 
 本地视频事件类型，详见 [LOCAL_VIDEO_EVENT_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-localvideoeventtype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged"></a>
@@ -693,7 +677,7 @@ virtual void onLocalVideoStateChanged(VIDEO_SOURCE_TYPE source, LOCAL_VIDEO_STRE
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__detailed_desc"></a>
 
 :::info[注]
-请注意，视频帧重复检测仅适用于分辨率大于 200 × 200、帧率大于等于 10 fps 且码率小于 20 Kbps 的视频帧。 通常情况下，如果视频采集出现异常，可以通过该回调中的 `reason` 参数排查问题。但在部分设备上，采集异常（如卡顿）时，Android 系统不会抛出任何错误回调，导致 SDK 无法上报本地视频状态变化的原因。此时，你可以通过以下方式判断是否未采集到视频帧：该回调上报的 `state` 为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` 或 `LOCAL_VIDEO_STREAM_STATE_ENCODING`，且 [onLocalVideoStats](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#callback_irtcengineeventhandler_onlocalvideostats) 回调中的 `captureFrameRate` 为 0。
+请注意，视频帧重复检测仅适用于分辨率大于 200 × 200、帧率大于等于 10 fps 且码率小于 20 Kbps 的视频帧。 通常情况下，如果视频采集出现异常，可以通过该回调中的 `reason` 参数排查问题。但在部分设备上，采集异常（如卡顿）时，Android 系统不会抛出任何错误回调，导致 SDK 无法上报本地视频状态变化的原因。此时，你可以通过以下方式判断是否未采集到视频帧：该回调上报的 `state` 为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` 或 `LOCAL_VIDEO_STREAM_STATE_ENCODING`，且 [onLocalVideoStats](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats) 回调中的 `captureFrameRate` 为 0。
 :::
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__timing"></a>
@@ -704,7 +688,7 @@ SDK 在以下情况下会触发该回调，并将 `state` 设置为 `LOCAL_VIDEO
 
 - 应用切换到后台，系统回收了摄像头资源。
 - 在 Android 9 及以上版本中，应用在后台运行一段时间后，系统自动回收摄像头权限。
-- 在 Android 6 及以上版本中，摄像头被第三方应用占用一段时间后释放，SDK 会触发该回调并上报 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调， `state` 为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING`， `reason` 为 `LOCAL_VIDEO_STREAM_REASON_OK`。
+- 在 Android 6 及以上版本中，摄像头被第三方应用占用一段时间后释放，SDK 会触发该回调并上报 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调， `state` 为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING`， `reason` 为 `LOCAL_VIDEO_STREAM_REASON_OK`。
 - 摄像头正常启动，但连续四秒未输出视频帧。
 - 当摄像头输出采集的视频帧时，若 SDK 检测到连续 15 帧重复的视频帧，会触发该回调， `state` 为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING`， `reason` 为 `LOCAL_VIDEO_STREAM_REASON_CAPTURE_FAILURE`。
 
@@ -724,7 +708,6 @@ SDK 在以下情况下会触发该回调，并将 `state` 设置为 `LOCAL_VIDEO
 
 本地视频状态变化的原因，详见 [LOCAL_VIDEO_STREAM_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-localvideostreamreason)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalvideostats"></a>
@@ -759,7 +742,6 @@ SDK 每两秒触发一次该回调。
 
 本地视频流的统计信息。详见 [LocalVideoStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-localvideostats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged"></a>
@@ -806,7 +788,6 @@ virtual void onRemoteVideoStateChanged(uid_t uid, REMOTE_VIDEO_STATE state, REMO
 
 从本地用户调用 `joinChannel` 方法到 SDK 触发该回调的时间间隔（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideostats"></a>
@@ -837,7 +818,6 @@ SDK 每两秒为每位远端用户触发一次该回调。如果频道中有多�
 
 远端视频流的统计信息。详见 [RemoteVideoStats](/zh-CN/api-reference/rtc/cpp-all-platforms/class-remotevideostats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats"></a>
@@ -856,7 +836,7 @@ virtual void onRemoteVideoTransportStats(uid_t uid, unsigned short delay, unsign
 
 #### `废弃`
 
-该方法已废弃，请改用 [onRemoteVideoStats](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#callback_irtcengineeventhandler_onremotevideostats)。
+该方法已废弃，请改用 [onRemoteVideoStats](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onremotevideostats)。
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats__timing"></a>
 
@@ -884,7 +864,6 @@ virtual void onRemoteVideoTransportStats(uid_t uid, unsigned short delay, unsign
 
 接收视频的码率（Kbps）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo"></a>
@@ -903,9 +882,9 @@ virtual void onUserEnableLocalVideo(uid_t uid, bool enabled) __deprecated
 
 #### `废弃`
 
-该方法已废弃。请改用 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调中的以下枚举值： `REMOTE_VIDEO_STATE_STOPPED` 和 `REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED`， `REMOTE_VIDEO_STATE_DECODING` 和 `REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED`。
+该方法已废弃。请改用 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调中的以下枚举值： `REMOTE_VIDEO_STATE_STOPPED` 和 `REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED`， `REMOTE_VIDEO_STATE_DECODING` 和 `REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED`。
 
-当远端用户调用 [enableLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablelocalvideo) 恢复或停止视频采集时，SDK 会触发该回调。
+当远端用户调用 [enableLocalVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablelocalvideo) 恢复或停止视频采集时，SDK 会触发该回调。
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__parameters"></a>
 
@@ -922,7 +901,6 @@ virtual void onUserEnableLocalVideo(uid_t uid, bool enabled) __deprecated
 - true：启用视频模块，频道内其他用户可以看到该远端用户的视频。
 - false：关闭视频模块，频道内其他用户无法接收该远端用户的视频流，但该远端用户仍可接收其他用户的视频流。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo"></a>
@@ -945,7 +923,7 @@ virtual void onUserEnableVideo(uid_t uid, bool enabled)
 
 ### 触发时机
 
-该回调在远端用户调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#api_irtcengine_disablevideo) 时触发。
+该回调在远端用户调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_disablevideo) 时触发。
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo__parameters"></a>
 
@@ -962,7 +940,6 @@ virtual void onUserEnableVideo(uid_t uid, bool enabled)
 - true：视频模块已启用。
 - false：视频模块已关闭。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onusermutevideo"></a>
@@ -1000,7 +977,6 @@ virtual void onUserMuteVideo(uid_t uid, bool muted)
 - true：远端用户停止发布视频流。
 - false：远端用户恢复发布视频流。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideopublishstatechanged"></a>
@@ -1041,7 +1017,6 @@ virtual void onVideoPublishStateChanged(VIDEO_SOURCE_TYPE source, const char* ch
 
 从上一个状态切换到当前状态所经历的时间（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideosizechanged"></a>
@@ -1090,7 +1065,6 @@ virtual void onVideoSizeChanged(VIDEO_SOURCE_TYPE sourceType, uid_t uid, int wid
 `rotation` 参数在 iOS 平台上始终为 0。
 :::
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideostopped"></a>
@@ -1109,11 +1083,10 @@ virtual void onVideoStopped() __deprecated {}
 
 #### `废弃`
 
-该方法已废弃，请改用 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调中的 `LOCAL_VIDEO_STREAM_STATE_STOPPED`。
+该方法已废弃，请改用 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调中的 `LOCAL_VIDEO_STREAM_STATE_STOPPED`。
 
 :::info[注]
 你可以在视频停止播放后使用该回调更改视图配置，例如在视图中显示其他图片。
 :::
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineeventhandler)

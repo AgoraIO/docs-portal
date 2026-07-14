@@ -1,0 +1,36 @@
+---
+title: "groupAckCount method"
+description: "API docs for the groupAckCount method from the ChatMessage class, for the Dart programming language."
+---
+
+Gets the number of members that have read the group message.
+
+**Return** group ack count
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error)
+
+```dart title="Dart"
+Future<int> groupAckCount()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<int> groupAckCount() async {
+  Map req = {"msgId": msgId};
+  Map result =
+      await _emMessageChannel.invokeMethod(ChatMethodKeys.groupAckCount, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    if (result.containsKey(ChatMethodKeys.groupAckCount)) {
+      return result[ChatMethodKeys.groupAckCount];
+    } else {
+      return 0;
+    }
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

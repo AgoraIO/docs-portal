@@ -1,10 +1,9 @@
 ---
 title: "版权音乐"
-description: "创建一个音乐播放器。"
+description: "版权音乐 API reference."
 ---
-<a id="toc_drm"></a>
 
-## 版权音乐
+<a id="toc_drm"></a>
 
 <a id="api_imusiccontentcenter_createmusicplayer"></a>
 
@@ -20,7 +19,7 @@ virtual agora_refptr<IMusicPlayer> createMusicPlayer() = 0;
 
 <a id="api_imusiccontentcenter_createmusicplayer__detailed_desc"></a>
 
-如果你需要播放来自声网 Music Content Center 的音乐资源，必须先调用 [createMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_createmusicplayer) 创建一个音乐播放器。
+如果你需要播放来自声网 Music Content Center 的音乐资源，必须先调用 [createMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_createmusicplayer) 创建一个音乐播放器。
 
 <a id="api_imusiccontentcenter_createmusicplayer__return_values"></a>
 
@@ -29,7 +28,6 @@ virtual agora_refptr<IMusicPlayer> createMusicPlayer() = 0;
 - 方法调用成功，返回一个 [IMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusicplayer) 对象，详见 [IMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusicplayer)。
 - 方法调用失败，返回 NULL。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_destroymusicplayer"></a>
@@ -46,13 +44,13 @@ virtual int destroyMusicPlayer(agora_refptr<IMusicPlayer> music_player) = 0;
 
 <a id="api_imusiccontentcenter_destroymusicplayer__detailed_desc"></a>
 
-当你不再需要使用音乐播放器时，可以调用此方法销毁该对象。如果销毁后需要再次使用音乐播放器，请调用 [createMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_createmusicplayer) 重新创建。
+当你不再需要使用音乐播放器时，可以调用此方法销毁该对象。如果销毁后需要再次使用音乐播放器，请调用 [createMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_createmusicplayer) 重新创建。
 
 <a id="api_imusiccontentcenter_destroymusicplayer__timing"></a>
 
 ### 调用时机
 
-该方法可以在加入频道前或加入频道后调用，但必须在调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_release_imusiccontentcenter) 方法之前调用。
+该方法可以在加入频道前或加入频道后调用，但必须在调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_release_imusiccontentcenter) 方法之前调用。
 
 <a id="api_imusiccontentcenter_destroymusicplayer__parameters"></a>
 
@@ -69,7 +67,6 @@ virtual int destroyMusicPlayer(agora_refptr<IMusicPlayer> music_player) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_musicchartcollection_get"></a>
@@ -101,7 +98,6 @@ virtual MusicChartInfo* get(int index) = 0;
 - 方法调用成功，返回 [MusicChartInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musicchartinfo) 实例，详见 [MusicChartInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musicchartinfo)。
 - 方法调用失败，返回 NULL。
 
-### 所属接口类
 - [MusicChartCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_musicchartcollection)
 
 <a id="api_imusiccontentcenter_getcaches"></a>
@@ -118,7 +114,7 @@ virtual int getCaches(MusicCacheInfo *cacheInfo, int32_t* cacheInfoSize) = 0;
 
 <a id="api_imusiccontentcenter_getcaches__detailed_desc"></a>
 
-调用该方法前，需要预先分配内存用于存储已缓存音乐资源的信息。如果希望设置可缓存的音乐资源数量，可以通过 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_initialize_imusiccontentcenter) 中的 `configuration` 参数进行配置。当不再需要这些缓存资源时，应及时释放内存以避免内存泄漏。
+调用该方法前，需要预先分配内存用于存储已缓存音乐资源的信息。如果希望设置可缓存的音乐资源数量，可以通过 [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_initialize_imusiccontentcenter) 中的 `configuration` 参数进行配置。当不再需要这些缓存资源时，应及时释放内存以避免内存泄漏。
 
 <a id="api_imusiccontentcenter_getcaches__parameters"></a>
 
@@ -142,7 +138,6 @@ virtual int getCaches(MusicCacheInfo *cacheInfo, int32_t* cacheInfoSize) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_musicchartcollection_getcount_musicchartcollection"></a>
@@ -165,7 +160,6 @@ virtual int getCount() = 0;
 
 方法调用成功，返回当前请求中的音乐排行榜数量。
 
-### 所属接口类
 - [MusicChartCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_musicchartcollection)
 
 <a id="api_musiccollection_getcount_musiccollection"></a>
@@ -188,7 +182,6 @@ virtual int getCount() = 0;
 
 方法调用成功，返回当前请求中的音乐项数量。
 
-### 所属接口类
 - [MusicCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musiccollection)
 
 <a id="api_imusiccontentcenter_getinternalsongcode"></a>
@@ -213,14 +206,14 @@ virtual int getInternalSongCode(int64_t songCode, const char* jsonOption, int64_
 
 #### `songCode`
 
-音乐资源的歌曲编码，用于标识资源。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_searchmusic) 获取，并从这些方法触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取该编码。
+音乐资源的歌曲编码，用于标识资源。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_searchmusic) 获取，并从这些方法触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取该编码。
 
 #### `jsonOption`
 
 扩展 JSON 字段，默认为 NULL。目前支持以下字段：
 
 - sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例代码 `{"sceneType":1}`。
-- highPart：副歌片段的索引，从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取，索引从 0 开始。示例代码 `{"format": {"highpart": 0}}`。
+- highPart：副歌片段的索引，从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取，索引从 0 开始。示例代码 `{"format": {"highpart": 0}}`。
 
 #### `internalSongCode`
 
@@ -233,7 +226,6 @@ virtual int getInternalSongCode(int64_t songCode, const char* jsonOption, int64_
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。详见错误码及其解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getlyric"></a>
@@ -254,7 +246,7 @@ virtual int getLyric(agora::util::AString& requestId, int64_t songCode, int32_t 
 
 ### 相关回调
 
-调用该方法后，SDK 会触发 [onLyricResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调报告歌词下载链接。
+调用该方法后，SDK 会触发 [onLyricResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调报告歌词下载链接。
 
 <a id="api_imusiccontentcenter_getlyric__parameters"></a>
 
@@ -282,7 +274,6 @@ virtual int getLyric(agora::util::AString& requestId, int64_t songCode, int32_t 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_musiccollection_getmusic_musiccollection"></a>
@@ -314,7 +305,6 @@ virtual Music* getMusic(int32_t index) = 0;
 - 方法调用成功，返回 [Music](/zh-CN/api-reference/rtc/cpp-all-platforms/class-music) 实例，详见 [Music](/zh-CN/api-reference/rtc/cpp-all-platforms/class-music)。
 - 方法调用失败，返回 NULL。
 
-### 所属接口类
 - [MusicCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musiccollection)
 
 <a id="api_imusiccontentcenter_getmusiccharts"></a>
@@ -335,7 +325,7 @@ virtual int getMusicCharts(agora::util::AString& requestId) = 0;
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onMusicChartsResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调，报告音乐排行榜的详细信息。
+成功调用该方法后，SDK 会触发 [onMusicChartsResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调，报告音乐排行榜的详细信息。
 
 <a id="api_imusiccontentcenter_getmusiccharts__parameters"></a>
 
@@ -352,7 +342,6 @@ virtual int getMusicCharts(agora::util::AString& requestId) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid"></a>
@@ -369,7 +358,7 @@ virtual int getMusicCollectionByMusicChartId(agora::util::AString& requestId, in
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__detailed_desc"></a>
 
-调用该方法后，SDK 会触发 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调，报告该榜单中的音乐资源详情。
+调用该方法后，SDK 会触发 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调，报告该榜单中的音乐资源详情。
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__parameters"></a>
 
@@ -381,7 +370,7 @@ virtual int getMusicCollectionByMusicChartId(agora::util::AString& requestId, in
 
 #### `musicChartId`
 
-音乐榜单的 ID。你可以通过 [onMusicChartsResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取该 ID，或通过 RESTful API 获取完整音乐库列表或增量音乐列表。
+音乐榜单的 ID。你可以通过 [onMusicChartsResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取该 ID，或通过 RESTful API 获取完整音乐库列表或增量音乐列表。
 
 #### `page`
 
@@ -416,7 +405,6 @@ virtual int getMusicCollectionByMusicChartId(agora::util::AString& requestId, in
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。请参见错误码文档获取详细信息和解决方案。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_musiccollection_getpage_musiccollection"></a>
@@ -439,7 +427,6 @@ virtual int getPage() = 0;
 
 方法调用成功，返回当前页码。
 
-### 所属接口类
 - [MusicCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musiccollection)
 
 <a id="api_musiccollection_getpagesize_musiccollection"></a>
@@ -462,7 +449,6 @@ virtual int getPageSize() = 0;
 
 方法调用成功，返回 SDK 实际返回的音乐资源数量。
 
-### 所属接口类
 - [MusicCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musiccollection)
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo"></a>
@@ -479,13 +465,13 @@ virtual int getSongSimpleInfo(agora::util::AString& requestId, int64_t songCode)
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__detailed_desc"></a>
 
-调用该方法前，你需要先获取目标音乐资源的歌曲编号。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_searchmusic) 方法，并从其触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取歌曲编号。调用该方法后，SDK 会触发 [onSongSimpleInfoResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调，返回该音乐资源的详细信息。
+调用该方法前，你需要先获取目标音乐资源的歌曲编号。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_searchmusic) 方法，并从其触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取歌曲编号。调用该方法后，SDK 会触发 [onSongSimpleInfoResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调，返回该音乐资源的详细信息。
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__related"></a>
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onSongSimpleInfoResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调，返回音乐资源的详细信息。
+成功调用该方法后，SDK 会触发 [onSongSimpleInfoResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调，返回音乐资源的详细信息。
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__parameters"></a>
 
@@ -506,7 +492,6 @@ virtual int getSongSimpleInfo(agora::util::AString& requestId, int64_t songCode)
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_musiccollection_gettotal_musiccollection"></a>
@@ -529,7 +514,6 @@ virtual int getTotal() = 0;
 
 方法调用成功，返回音乐资源的总数。
 
-### 所属接口类
 - [MusicCollection](/zh-CN/api-reference/rtc/cpp-all-platforms/class-musiccollection)
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter"></a>
@@ -563,7 +547,6 @@ virtual int initialize(const MusicContentCenterConfiguration & configuration) = 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_ispreloaded"></a>
@@ -597,7 +580,6 @@ virtual int isPreloaded(int64_t songCode) = 0;
 - 0：方法调用成功，音乐资源已预加载。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。详见错误码。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicplayer_open_imusicplayer"></a>
@@ -614,17 +596,17 @@ virtual int open(int64_t songCode, int64_t startPos = 0) = 0;
 
 <a id="api_imusicplayer_open_imusicplayer__detailed_desc"></a>
 
-在调用该方法前，请确保要播放的音乐资源已加载。你可以调用 [isPreloaded](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_ispreloaded) 方法检查资源是否已预加载，或监听 [onPreLoadEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调。 调用该方法后，SDK 会触发 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。当你收到 `PLAYER_STATE_OPEN_COMPLETED` 播放状态后，可以调用 [play](/zh-CN/api-reference/rtc/cpp-all-platforms/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
+在调用该方法前，请确保要播放的音乐资源已加载。你可以调用 [isPreloaded](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_ispreloaded) 方法检查资源是否已预加载，或监听 [onPreLoadEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调。 调用该方法后，SDK 会触发 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。当你收到 `PLAYER_STATE_OPEN_COMPLETED` 播放状态后，可以调用 [play](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
 
 :::info[注]
-如果要打开的音乐资源受数字版权管理（DRM）保护，必须使用该方法打开。对于非 DRM 保护的资源，你可以选择使用该方法或 [open](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusicplayer_open_imusicplayer) 方法打开。
+如果要打开的音乐资源受数字版权管理（DRM）保护，必须使用该方法打开。对于非 DRM 保护的资源，你可以选择使用该方法或 [open](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusicplayer_open_imusicplayer) 方法打开。
 :::
 
 <a id="api_imusicplayer_open_imusicplayer__related"></a>
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态。
+成功调用该方法后，SDK 会触发 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态。
 
 <a id="api_imusicplayer_open_imusicplayer__parameters"></a>
 
@@ -645,7 +627,6 @@ virtual int open(int64_t songCode, int64_t startPos = 0) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusicplayer)
 
 <a id="api_imusiccontentcenter_preload"></a>
@@ -664,12 +645,12 @@ virtual int preload(int64_t songCode, const char* jsonOption) __deprecated = 0;
 
 #### `废弃`
 
-该方法已废弃，请改用 [preload [2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_preload2) 方法。
+该方法已废弃，请改用 [preload [2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_preload2) 方法。
 
-你可以调用该方法预加载想要播放的音乐资源。成功调用该方法后，SDK 会触发 [onPreLoadEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载事件。在调用该方法之前，你需要先调用 `getMusicCollectionWithMusicChartId` 或 [searchMusic](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_searchmusic) 获取目标音乐资源，并从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取歌曲编号 `songCode`。
+你可以调用该方法预加载想要播放的音乐资源。成功调用该方法后，SDK 会触发 [onPreLoadEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载事件。在调用该方法之前，你需要先调用 `getMusicCollectionWithMusicChartId` 或 [searchMusic](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_searchmusic) 获取目标音乐资源，并从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取歌曲编号 `songCode`。
 
 :::info[注]
-在销毁 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象前，请确保已收到 [onPreLoadEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后再调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_release_imusiccontentcenter) 方法。
+在销毁 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象前，请确保已收到 [onPreLoadEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后再调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_release_imusiccontentcenter) 方法。
 :::
 
 <a id="api_imusiccontentcenter_preload__parameters"></a>
@@ -699,7 +680,6 @@ virtual int preload(int64_t songCode, const char* jsonOption) __deprecated = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_preload2"></a>
@@ -716,10 +696,10 @@ virtual int preload(agora::util::AString& requestId, int64_t songCode) = 0;
 
 <a id="api_imusiccontentcenter_preload2__detailed_desc"></a>
 
-调用该方法可以预加载想要播放的音乐资源。调用成功后，SDK 会触发 [onPreLoadEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载事件。在调用该方法之前，需要先调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_searchmusic) 获取目标音乐资源，并从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取歌曲编码（`songCode` ）。
+调用该方法可以预加载想要播放的音乐资源。调用成功后，SDK 会触发 [onPreLoadEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载事件。在调用该方法之前，需要先调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_searchmusic) 获取目标音乐资源，并从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取歌曲编码（`songCode` ）。
 
 :::info[注]
-在销毁 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象前，请确保已收到 [onPreLoadEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后再调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_release_imusiccontentcenter) 方法。
+在销毁 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象前，请确保已收到 [onPreLoadEvent](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后再调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_release_imusiccontentcenter) 方法。
 :::
 
 <a id="api_imusiccontentcenter_preload2__parameters"></a>
@@ -741,7 +721,6 @@ virtual int preload(agora::util::AString& requestId, int64_t songCode) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter"></a>
@@ -773,7 +752,6 @@ virtual int registerEventHandler(IMusicContentCenterEventHandler* eventHandler) 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_release_imusiccontentcenter"></a>
@@ -790,9 +768,8 @@ virtual void release() = 0;
 
 <a id="api_imusiccontentcenter_release_imusiccontentcenter__detailed_desc"></a>
 
-该方法必须在调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_release_imusiccontentcenter) 之前调用。
+该方法必须在调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_release_imusiccontentcenter) 之前调用。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_removecache"></a>
@@ -830,7 +807,6 @@ virtual int removeCache(int64_t songCode) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter"></a>
@@ -864,7 +840,6 @@ virtual int renewToken(const char* token) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_searchmusic"></a>
@@ -885,7 +860,7 @@ virtual int searchMusic(agora::util::AString& requestId, const char* keyWord, in
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调报告检索到的音乐资源列表。
+成功调用该方法后，SDK 会触发 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调报告检索到的音乐资源列表。
 
 <a id="api_imusiccontentcenter_searchmusic__parameters"></a>
 
@@ -929,7 +904,6 @@ virtual int searchMusic(agora::util::AString& requestId, const char* keyWord, in
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicplayer_setplaymode"></a>
@@ -949,7 +923,7 @@ virtual int setPlayMode(MusicPlayMode mode) = 0;
 你可以调用该方法启用原唱、伴奏或导唱模式。如果不调用该方法，默认播放伴奏；若音乐资源不包含伴奏，则播放原唱。
 
 :::info[注]
-你可以通过 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的详细信息，并从 `result` 参数中判断该音乐资源支持的播放模式。
+你可以通过 [onMusicCollectionResult](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的详细信息，并从 `result` 参数中判断该音乐资源支持的播放模式。
 :::
 
 <a id="api_imusicplayer_setplaymode__scenario"></a>
@@ -962,7 +936,7 @@ virtual int setPlayMode(MusicPlayMode mode) = 0;
 
 ### 调用时机
 
-该方法必须在调用 [createMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_createmusicplayer) 之后调用。
+该方法必须在调用 [createMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_createmusicplayer) 之后调用。
 
 <a id="api_imusicplayer_setplaymode__parameters"></a>
 
@@ -981,7 +955,6 @@ virtual int setPlayMode(MusicPlayMode mode) = 0;
 
   - -2：参数无效。请重新设置参数。
 
-### 所属接口类
 - [IMusicPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusicplayer)
 
 <a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter"></a>
@@ -1005,7 +978,6 @@ virtual int unregisterEventHandler() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult"></a>
@@ -1022,7 +994,7 @@ virtual void onLyricResult(const char* requestId, int64_t songCode, const char* 
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__detailed_desc"></a>
 
-调用 [getLyric](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_getlyric) 获取某首歌曲的歌词下载链接后，SDK 会触发该回调。
+调用 [getLyric](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_getlyric) 获取某首歌曲的歌词下载链接后，SDK 会触发该回调。
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__parameters"></a>
 
@@ -1044,7 +1016,6 @@ virtual void onLyricResult(const char* requestId, int64_t songCode, const char* 
 
 请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult"></a>
@@ -1061,7 +1032,7 @@ virtual void onMusicChartsResult(const char* requestId, agora_refptr<MusicChartC
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__detailed_desc"></a>
 
-调用 [getMusicCharts](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_getmusiccharts) 后，SDK 会触发该回调。
+调用 [getMusicCharts](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_getmusiccharts) 后，SDK 会触发该回调。
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__parameters"></a>
 
@@ -1079,7 +1050,6 @@ virtual void onMusicChartsResult(const char* requestId, agora_refptr<MusicChartC
 
 请求的状态码。详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult"></a>
@@ -1096,13 +1066,13 @@ virtual void onMusicCollectionResult(const char* requestId, agora_refptr<MusicCo
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__detailed_desc"></a>
 
-调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 获取某个榜单的音乐资源列表，或调用 [searchMusic](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_searchmusic) 搜索音乐资源时，SDK 会触发该回调，返回音乐资源列表的详细信息。
+调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 获取某个榜单的音乐资源列表，或调用 [searchMusic](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_searchmusic) 搜索音乐资源时，SDK 会触发该回调，返回音乐资源列表的详细信息。
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__timing"></a>
 
 ### 触发时机
 
-调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_searchmusic) 后触发。
+调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_searchmusic) 后触发。
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__parameters"></a>
 
@@ -1120,7 +1090,6 @@ virtual void onMusicCollectionResult(const char* requestId, agora_refptr<MusicCo
 
 请求状态码。详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler"></a>
@@ -1167,7 +1136,6 @@ virtual void onPreLoadEvent(const char* requestId, int64_t songCode, int percent
 
 来自音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult"></a>
@@ -1184,13 +1152,13 @@ virtual void onSongSimpleInfoResult(const char* requestId, int64_t songCode, con
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__detailed_desc"></a>
 
-调用 [getSongSimpleInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_getsongsimpleinfo) 后，SDK 会触发该回调。
+调用 [getSongSimpleInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_getsongsimpleinfo) 后，SDK 会触发该回调。
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__timing"></a>
 
 ### 触发时机
 
-调用 [getSongSimpleInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/drm#api_imusiccontentcenter_getsongsimpleinfo) 后触发。
+调用 [getSongSimpleInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/play/drm#api_imusiccontentcenter_getsongsimpleinfo) 后触发。
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__parameters"></a>
 
@@ -1218,5 +1186,4 @@ virtual void onSongSimpleInfoResult(const char* requestId, int64_t songCode, con
 
 请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imusiccontentcentereventhandler)

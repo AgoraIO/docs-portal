@@ -2,6 +2,7 @@
 title: "频道相关"
 description: "频道相关 API reference."
 ---
+
 <a id="toc_channel"></a>
 
 ## 频道相关
@@ -75,7 +76,6 @@ virtual int getUserInfoByUid(uid_t uid, rtc::UserInfo* userInfo, const char* cha
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getuserinfobyuseraccount"></a>
@@ -147,7 +147,6 @@ virtual int getUserInfoByUserAccount(const char* userAccount, rtc::UserInfo* use
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannel"></a>
@@ -238,7 +237,6 @@ virtual int joinChannel(const char* token, const char* channelId, const char* in
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannel2"></a>
@@ -329,7 +327,6 @@ virtual int joinChannel(const char* token, const char* channelId, uid_t uid,
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_joinchannelex"></a>
@@ -424,7 +421,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_joinchannelwithuseraccount"></a>
@@ -522,7 +518,6 @@ virtual int joinChannelWithUserAccount(const char* token,
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannelwithuseraccount2"></a>
@@ -625,7 +620,6 @@ virtual int joinChannelWithUserAccount(const char* token,
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannelwithuseraccountex"></a>
@@ -731,7 +725,6 @@ virtual int joinChannelWithUserAccountEx(const char* token, const char* channelI
   - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_leavechannel"></a>
@@ -791,7 +784,6 @@ virtual int leaveChannel() = 0;
   - -2: 参数无效。
   - -7: SDK 尚未初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_leavechannel2"></a>
@@ -852,7 +844,6 @@ virtual int leaveChannel(const LeaveChannelOptions& options) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_leavechannelex"></a>
@@ -920,7 +911,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengineex_leavechannelex2"></a>
@@ -996,7 +986,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_preloadchannel"></a>
@@ -1078,7 +1067,6 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_preloadchannelwithuseraccount"></a>
@@ -1167,7 +1155,6 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registerlocaluseraccount"></a>
@@ -1233,7 +1220,6 @@ virtual int registerLocalUserAccount(const char* appId, const char* userAccount)
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_renewtoken"></a>
@@ -1290,7 +1276,6 @@ virtual int renewToken(const char* token) = 0;
     - 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致，
     - 生成的 Token 和加入频道使用的 Token 一致。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setchannelprofile"></a>
@@ -1343,7 +1328,6 @@ virtual int setChannelProfile(CHANNEL_PROFILE_TYPE profile) = 0;
   - -2: 参数无效。
   - -7: SDK 尚未初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole"></a>
@@ -1416,7 +1400,6 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
   - -2: 参数无效。
   - -7: SDK 尚未初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole2"></a>
@@ -1498,7 +1481,6 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
   - -5: 调用被拒绝。
   - -7: SDK 尚未初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatechannelmediaoptions"></a>
@@ -1532,7 +1514,6 @@ virtual int updateChannelMediaOptions(const ChannelMediaOptions& options) = 0;
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -8： IRtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果收到 CONNECTION_STATE_DISCONNECTED (1) 或 CONNECTION_STATE_FAILED (5)，则表示用户不在频道中。你需要在调用该方法前调用 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex"></a>
@@ -1570,7 +1551,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
   - -8： IRtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果收到 CONNECTION_STATE_DISCONNECTED (1) 或 CONNECTION_STATE_FAILED (5)，则表示用户不在频道中。你需要在调用该方法前调用 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_updatepreloadchanneltoken"></a>
@@ -1615,7 +1595,6 @@ virtual int updatePreloadChannelToken(const char* token) = 0;
   - -2：传入的参数无效。例如，使用了不合法的 Token。你需要填入有效的参数，重新加入频道。
   - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged"></a>
@@ -1667,7 +1646,6 @@ virtual void onClientRoleChanged(CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newR
 
 切换后的角色属性。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/unreal-cpp/class-clientroleoptions)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed"></a>
@@ -1713,7 +1691,6 @@ virtual void onClientRoleChangeFailed(CLIENT_ROLE_CHANGE_FAILED_REASON reason, C
 
 当前用户角色。详见 [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-clientroletype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onerror"></a>
@@ -1747,7 +1724,6 @@ virtual void onError(int err, const char* msg) {
 
 错误描述。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess"></a>
@@ -1800,7 +1776,6 @@ virtual void onJoinChannelSuccess(const char* channel,
 
 从本地调用 joinChannel [2/2] 开始到发生此事件过去的时间（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onleavechannel"></a>
@@ -1841,7 +1816,6 @@ virtual void onLeaveChannel(const RtcStats& stats) {
 
 通话的统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcstats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered"></a>
@@ -1875,7 +1849,6 @@ virtual void onLocalUserRegistered(uid_t uid, const char* userAccount) {
 
 本地用户的 User Account。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess"></a>
@@ -1924,7 +1897,6 @@ virtual void onRejoinChannelSuccess(const char* channel, uid_t uid, int elapsed)
 
 从调用 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrequesttoken"></a>
@@ -1959,7 +1931,6 @@ virtual void onRequestToken()
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__parameters"></a>
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrtcstats"></a>
@@ -1998,7 +1969,6 @@ SDK 定期向 App 报告当前通话的统计信息，每两秒触发一次。
 
 RTC 引擎统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcstats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire"></a>
@@ -2045,7 +2015,6 @@ virtual void onTokenPrivilegeWillExpire(const char* token) {
 
 即将过期的 Token。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated"></a>
@@ -2079,7 +2048,6 @@ virtual void onUserInfoUpdated(uid_t uid, const UserInfo& info) {
 
 标识用户信息的 UserInfo 对象，包含用户 UID 和 User Account。详见 [UserInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-userinfo) 类。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserjoined"></a>
@@ -2134,7 +2102,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 从本地用户调用 joinChannel [1/2] 或 joinChannel [2/2] 到该回调触发的延迟（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuseroffline"></a>
@@ -2183,5 +2150,4 @@ virtual void onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason) {
 
 远端用户（通信场景）或主播（直播场景）离线的原因，详见 [USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-userofflinereasontype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

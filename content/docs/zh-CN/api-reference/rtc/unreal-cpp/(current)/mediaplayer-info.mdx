@@ -2,6 +2,7 @@
 title: "播放信息获取"
 description: "播放信息获取 API reference."
 ---
+
 <a id="toc_mediaplayer_info"></a>
 
 ## 播放信息获取
@@ -33,7 +34,6 @@ virtual int getDuration(int64_t& duration) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getmediaplayerid"></a>
@@ -55,7 +55,6 @@ virtual int getMediaPlayerId() const = 0;
 - 方法调用成功，返回播放器 ID。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getmute"></a>
@@ -88,7 +87,6 @@ virtual int getMute(bool& mute) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplayoutvolume"></a>
@@ -121,7 +119,6 @@ virtual int getPlayoutVolume(int& volume) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplayposition"></a>
@@ -151,7 +148,6 @@ virtual int getPlayPosition(int64_t& pos) = 0;
 - 方法调用成功，返回当前播放进度（毫秒）。
 - &lt; 0: 方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getplaysrc"></a>
@@ -172,7 +168,6 @@ virtual const char* getPlaySrc() = 0;
 
 播放的媒体资源的路径。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getpublishsignalvolume"></a>
@@ -202,7 +197,6 @@ virtual int getPublishSignalVolume(int& volume) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstate"></a>
@@ -223,7 +217,6 @@ virtual media::base::MEDIA_PLAYER_STATE getState() = 0;
 
 播放器当前状态，详见 [MEDIA_PLAYER_STATE](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerstate)。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstreamcount"></a>
@@ -261,7 +254,6 @@ virtual int getStreamCount(int64_t& count) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_getstreaminfo"></a>
@@ -309,7 +301,6 @@ virtual int getStreamInfo(int64_t index, media::base::PlayerStreamInfo* info) = 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="callback_imediaplayersourceobserver_onplayerplaybackstats"></a>
@@ -340,5 +331,4 @@ virtual void onPlayerPlaybackStats(const media::base::PlayerPlaybackStats& stats
 
 媒体资源的相关信息，详见 [PlayerPlaybackStats](/zh-CN/api-reference/rtc/unreal-cpp/class-playerplaybackstats)。
 
-### 所属接口类
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver)

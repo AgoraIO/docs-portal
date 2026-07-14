@@ -1,0 +1,41 @@
+---
+title: "getThreadConversation method"
+description: "API docs for the getThreadConversation method from the ChatManager class, for the Dart programming language."
+---
+
+Gets the thread conversation by thread ID.
+
+**Return** The conversation object.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `threadId` | The thread ID. |
+
+```dart title="Dart"
+Future<ChatConversation> getThreadConversation(String threadId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatConversation> getThreadConversation(String threadId) async {
+  Map result = await ChatChannel.invokeMethod(
+    ChatMethodKeys.getThreadConversation,
+    {"con_id", threadId},
+  );
+
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatConversation.fromJson(
+        result[ChatMethodKeys.getThreadConversation]);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

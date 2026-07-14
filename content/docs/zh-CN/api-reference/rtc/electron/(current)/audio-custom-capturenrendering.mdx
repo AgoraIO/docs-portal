@@ -1,10 +1,9 @@
 ---
 title: "自定义音频采集和渲染"
-description: "调节自定义音频采集轨道在本地播放的音量。"
+description: "自定义音频采集和渲染 API reference."
 ---
-<a id="toc_audio_custom_capturenrendering"></a>
 
-## 自定义音频采集和渲染
+<a id="toc_audio_custom_capturenrendering"></a>
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume"></a>
 
@@ -26,7 +25,7 @@ abstract adjustCustomAudioPlayoutVolume(
 调用该方法设置音频在本地播放的音量后，如果你想重新调整音量，你可以再次调用该方法。
 
 :::info[注]
-在调用该方法前，请确保你已经调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
+在调用该方法前，请确保你已经调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
 :::
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume__parameters"></a>
@@ -35,7 +34,7 @@ abstract adjustCustomAudioPlayoutVolume(
 
 #### `trackId`
 
-音频轨道 ID。将该参数设置为调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
+音频轨道 ID。将该参数设置为调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
 
 #### `volume`
 
@@ -48,7 +47,6 @@ abstract adjustCustomAudioPlayoutVolume(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume"></a>
@@ -71,7 +69,7 @@ abstract adjustCustomAudioPublishVolume(
 调用该方法设置音频在远端播放的音量后，如果你想重新调整音量，你可以再次调用该方法。
 
 :::info[注]
-在调用该方法前，请确保你已经调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
+在调用该方法前，请确保你已经调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
 :::
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume__parameters"></a>
@@ -80,7 +78,7 @@ abstract adjustCustomAudioPublishVolume(
 
 #### `trackId`
 
-音频轨道 ID。将该参数设置为调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
+音频轨道 ID。将该参数设置为调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
 
 #### `volume`
 
@@ -93,7 +91,6 @@ abstract adjustCustomAudioPublishVolume(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaengine_createcustomaudiotrack"></a>
@@ -117,7 +114,7 @@ abstract createCustomAudioTrack(
 
 1. 调用该方法创建音频轨道并获得音频轨道 ID。
 2. 调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/electron/class-channelmediaoptions) 中的 `publishCustomAudioTrackId` 设置为你想要发布的音频轨道 ID，并将 `publishCustomAudioTrack` 设置为 true。
-3. 调用 [pushAudioFrame](/zh-CN/api-reference/rtc/electron/audio-custom-capturenrendering#api_imediaengine_pushaudioframe) 将 `trackId` 指定为步骤 2 中指定的音频轨道 ID，即可实现在频道内发布对应的自定义音频源。
+3. 调用 [pushAudioFrame](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe) 将 `trackId` 指定为步骤 2 中指定的音频轨道 ID，即可实现在频道内发布对应的自定义音频源。
 
 :::info[注]
 该方法需要在加入频道前调用。
@@ -146,7 +143,6 @@ abstract createCustomAudioTrack(
 - 方法调用成功，返回音频轨道 ID 作为该音频轨道的唯一标识。
 - 方法调用失败，返回 0xffffffff。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
 
 <a id="api_imediaengine_destroycustomaudiotrack"></a>
@@ -169,7 +165,7 @@ abstract destroyCustomAudioTrack(trackId: number): number;
 
 #### `trackId`
 
-调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
+调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
 
 <a id="api_imediaengine_destroycustomaudiotrack__return_values"></a>
 
@@ -178,7 +174,6 @@ abstract destroyCustomAudioTrack(trackId: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback"></a>
@@ -198,10 +193,10 @@ abstract enableCustomAudioLocalPlayback(
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback__detailed_desc"></a>
 
-调用该方法设置在本地播放外部采集的音频源后，如需停止本地播放，可以再次调用该方法并设置 `enabled` 为 false。 你可以调用 [adjustCustomAudioPlayoutVolume](/zh-CN/api-reference/rtc/electron/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudioplayoutvolume) 调节自定义音频采集轨道在本地播放的音量。
+调用该方法设置在本地播放外部采集的音频源后，如需停止本地播放，可以再次调用该方法并设置 `enabled` 为 false。 你可以调用 [adjustCustomAudioPlayoutVolume](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudioplayoutvolume) 调节自定义音频采集轨道在本地播放的音量。
 
 :::info[注]
-在调用该方法前，请确保你已经调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
+在调用该方法前，请确保你已经调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
 :::
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback__parameters"></a>
@@ -210,7 +205,7 @@ abstract enableCustomAudioLocalPlayback(
 
 #### `trackId`
 
-音频轨道 ID。将该参数设置为调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
+音频轨道 ID。将该参数设置为调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
 
 #### `enabled`
 
@@ -226,7 +221,6 @@ abstract enableCustomAudioLocalPlayback(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaengine_pullaudioframe"></a>
@@ -246,12 +240,12 @@ abstract pullAudioFrame(): AudioFrame;
 调用该方法后，App 会采取主动拉取的方式获取远端已解码和混音后的音频数据，用于音频播放。
 
 :::info[注]
-该方法和 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/electron/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调均可用于获取远端混音后的音频播放数据。在调用 [setExternalAudioSink](/zh-CN/api-reference/rtc/electron/audio-custom-capturenrendering#api_imediaengine_setexternalaudiosink) 开启外部音频渲染后，App 将无法从 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/electron/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调中获得数据。因此，请根据实际的业务需求在该方法和 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/electron/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调之间进行选择。二者的处理机制不同，具体区别如下：
+该方法和 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调均可用于获取远端混音后的音频播放数据。在调用 [setExternalAudioSink](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_setexternalaudiosink) 开启外部音频渲染后，App 将无法从 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调中获得数据。因此，请根据实际的业务需求在该方法和 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调之间进行选择。二者的处理机制不同，具体区别如下：
 
 - 调用该方法后，App 会主动拉取音频数据。通过设置音频数据，SDK 可以调整缓存，帮助 App 处理延时，从而有效避免音频播放抖动。
-- 注册 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/electron/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调后，SDK 通过该回调将音频数据传输给 App。App 在处理音频帧的延迟时，可能会导致音频播放抖动。
+- 注册 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调后，SDK 通过该回调将音频数据传输给 App。App 在处理音频帧的延迟时，可能会导致音频播放抖动。
 
-该方法仅用于拉取远端混音后的音频播放数据，如需获取采集的原始音频数据、混音前每条拉流单独的原始音频播放数据等，可以通过调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/electron/audio-raw#api_imediaengine_registeraudioframeobserver) 注册相应的回调。
+该方法仅用于拉取远端混音后的音频播放数据，如需获取采集的原始音频数据、混音前每条拉流单独的原始音频播放数据等，可以通过调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/electron/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册相应的回调。
 :::
 
 <a id="api_imediaengine_pullaudioframe__timing"></a>
@@ -267,7 +261,6 @@ abstract pullAudioFrame(): AudioFrame;
 - 方法调用成功，返回一个 [AudioFrame](/zh-CN/api-reference/rtc/electron/class-audioframe) 对象。
 - 方法调用失败，返回错误码。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
 
 <a id="api_imediaengine_pushaudioframe"></a>
@@ -292,7 +285,7 @@ abstract pushAudioFrame(frame: AudioFrame, trackId?: number): number;
 
 调用该方法推送外部音频数据前，请先进行以下操作：
 
-1. 调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 创建音频轨道并获得音频轨道 ID。
+1. 调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 创建音频轨道并获得音频轨道 ID。
 2. 调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/electron/class-channelmediaoptions) 中的 `publishCustomAudioTrackId` 设置为你想要发布的音频轨道 ID，并将 `publishCustomAudioTrack` 设置为 true。
 
 <a id="api_imediaengine_pushaudioframe__parameters"></a>
@@ -314,7 +307,6 @@ abstract pushAudioFrame(frame: AudioFrame, trackId?: number): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
 
 <a id="api_imediaengine_setexternalaudiosink"></a>
@@ -335,10 +327,10 @@ abstract setExternalAudioSink(
 
 <a id="api_imediaengine_setexternalaudiosink__detailed_desc"></a>
 
-调用该方法开启外部音频渲染后，你可以调用 [pullAudioFrame](/zh-CN/api-reference/rtc/electron/audio-custom-capturenrendering#api_imediaengine_pullaudioframe) 拉取远端音频数据。App 可以对拉取到的原始音频数据进行处理后再渲染，获取想要的音频效果。
+调用该方法开启外部音频渲染后，你可以调用 [pullAudioFrame](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_pullaudioframe) 拉取远端音频数据。App 可以对拉取到的原始音频数据进行处理后再渲染，获取想要的音频效果。
 
 :::info[注]
-调用该方法开启外部音频渲染后，App 将无法从 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/electron/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调中获得数据。
+调用该方法开启外部音频渲染后，App 将无法从 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调中获得数据。
 :::
 
 <a id="api_imediaengine_setexternalaudiosink__scenario"></a>
@@ -382,7 +374,6 @@ abstract setExternalAudioSink(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
 
 <a id="api_imediaengine_setexternalaudiosource2"></a>
@@ -407,7 +398,7 @@ abstract setExternalAudioSource(
 
 #### `废弃`
 
-弃用： 该方法已废弃，请改用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack)。
+弃用： 该方法已废弃，请改用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/electron/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack)。
 
 <a id="api_imediaengine_setexternalaudiosource2__timing"></a>
 
@@ -455,5 +446,4 @@ abstract setExternalAudioSource(
 - 0：方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)

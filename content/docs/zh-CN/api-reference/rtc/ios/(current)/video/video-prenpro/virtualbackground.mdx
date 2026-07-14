@@ -1,14 +1,9 @@
 ---
 title: "虚拟背景"
-description: "启用或关闭虚拟背景功能。"
+description: "虚拟背景 API reference."
 ---
-<a id="toc_virtualbackground"></a>
 
-## 虚拟背景
-
-<a id="api_irtcengine_enablevirtualbackground"></a>
-
-## enableVirtualBackground:backData:segData:
+## <span id="toc_virtualbackground"></span>enableVirtualBackground:backData:segData: [#api_irtcengine_enablevirtualbackground]
 
 启用或关闭虚拟背景功能。
 
@@ -18,9 +13,7 @@ description: "启用或关闭虚拟背景功能。"
 - (int)enableVirtualBackground:(BOOL)enable backData:(AgoraVirtualBackgroundSource* _Nullable)backData segData:(AgoraSegmentationProperty* _Nullable)segData NS_SWIFT_NAME(enableVirtualBackground(_:backData:segData:));
 ```
 
-<a id="api_irtcengine_enablevirtualbackground__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_enablevirtualbackground__detailed_desc]
 
 自 v3.7.200 版本新增。
 
@@ -46,9 +39,7 @@ description: "启用或关闭虚拟背景功能。"
 - 此方法依赖虚拟背景动态库 AgoraVideoSegmentationExtension.xcframework （iOS）或 `AgoraVideoSegmentationExtension.framework` （macOS）。若该动态库被删除，则无法正常启用该功能。
 :::
 
-<a id="api_irtcengine_enablevirtualbackground__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablevirtualbackground__parameters]
 
 #### `enable`
 
@@ -65,21 +56,16 @@ description: "启用或关闭虚拟背景功能。"
 
 背景图像的处理属性，详见 [AgoraSegmentationProperty](/zh-CN/api-reference/rtc/ios/class-segmentationproperty)。
 
-<a id="api_irtcengine_enablevirtualbackground__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablevirtualbackground__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
   - -4：设备性能不满足虚拟背景功能的要求。声网建议你在性能更高的设备上尝试使用该功能。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_enablevirtualbackground2"></a>
-
-## enableVirtualBackground:backData:segData:sourceType:
+## enableVirtualBackground:backData:segData:sourceType: [#api_irtcengine_enablevirtualbackground2]
 
 启用虚拟背景并指定媒体源，或关闭虚拟背景。
 
@@ -89,9 +75,7 @@ description: "启用或关闭虚拟背景功能。"
 - (int)enableVirtualBackground:(BOOL)enable backData:(AgoraVirtualBackgroundSource* _Nullable)backData segData:(AgoraSegmentationProperty* _Nullable)segData sourceType:(AgoraMediaSourceType)sourceType NS_SWIFT_NAME(enableVirtualBackground(_:backData:segData:sourceType:));
 ```
 
-<a id="api_irtcengine_enablevirtualbackground2__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_enablevirtualbackground2__detailed_desc]
 
 自 v3.7.200 版本新增。
 
@@ -117,9 +101,7 @@ description: "启用或关闭虚拟背景功能。"
 - 本方法依赖虚拟背景动态库 AgoraVideoSegmentationExtension.xcframework （iOS）或 `AgoraVideoSegmentationExtension.framework` （macOS）。若该动态库被删除，则无法正常启用该功能。
 :::
 
-<a id="api_irtcengine_enablevirtualbackground2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablevirtualbackground2__parameters]
 
 #### `enable`
 
@@ -143,14 +125,11 @@ description: "启用或关闭虚拟背景功能。"
 - 默认值为 `AgoraMediaSourceTypePrimaryCamera`。
 - 若使用自定义视频源，请设置为 `AgoraMediaSourceTypeCustomVideo`。
 
-<a id="api_irtcengine_enablevirtualbackground2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablevirtualbackground2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
   - -4：设备性能不满足虚拟背景功能的要求。声网建议你在性能更高的设备上尝试。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)

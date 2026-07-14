@@ -1,10 +1,9 @@
 ---
 title: "人声音效"
-description: "开启或关闭 AI 调音器功能。"
+description: "人声音效 API reference."
 ---
-<a id="toc_audio_effect"></a>
 
-## 人声音效
+<a id="toc_audio_effect"></a>
 
 <a id="api_irtcengine_enablevoiceaituner"></a>
 
@@ -56,7 +55,6 @@ AI 调音器音效类型，详见 [VoiceAiTunerType](/zh-CN/api-reference/rtc/el
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setadvancedaudiooptions"></a>
@@ -76,7 +74,7 @@ abstract setAdvancedAudioOptions(options: AdvancedAudioOptions): number;
 如果你对音频处理有进阶需求，例如需要采集和发送立体声，可以调用该方法设置音频的高级选项。
 
 :::info[注]
-你需要在 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2)、 [enableAudio](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_enableaudio) 和 [enableLocalAudio](/zh-CN/api-reference/rtc/electron/audio-capture#api_irtcengine_enablelocalaudio) 前调用该方法。
+你需要在 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2)、 [enableAudio](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_enableaudio) 和 [enableLocalAudio](/zh-CN/api-reference/rtc/electron/audio/audio-capture#api_irtcengine_enablelocalaudio) 前调用该方法。
 :::
 
 <a id="api_irtcengine_setadvancedaudiooptions__parameters"></a>
@@ -94,7 +92,6 @@ abstract setAdvancedAudioOptions(options: AdvancedAudioOptions): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setainsmode"></a>
@@ -157,7 +154,6 @@ abstract setAINSMode(enabled: boolean, mode: AudioAinsMode): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioeffectparameters"></a>
@@ -181,22 +177,22 @@ abstract setAudioEffectParameters(preset: AudioEffectPreset, param1: number, par
 
 设置后，频道内所有用户都能听到该效果。 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 `AudioScenarioGameStreaming` (3)。
-- 调用 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioprofile) 将 `profile` 设为 `AudioProfileMusicHighQuality` (4) 或 `AudioProfileMusicHighQualityStereo` (5)。
+- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 `AudioScenarioGameStreaming` (3)。
+- 调用 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioprofile) 将 `profile` 设为 `AudioProfileMusicHighQuality` (4) 或 `AudioProfileMusicHighQualityStereo` (5)。
 
 :::info[注]
 - 该方法在加入频道前后都能调用。
-- 请勿将 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioprofile) 的 `profile` 参数设置为 `AudioProfileSpeechStandard` (1) 或 `AudioProfileIot` (6)，否则该方法不生效。
+- 请勿将 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioprofile) 的 `profile` 参数设置为 `AudioProfileSpeechStandard` (1) 或 `AudioProfileIot` (6)，否则该方法不生效。
 - 该方法对人声的处理效果最佳，不建议调用该方法处理含音乐的音频数据。
-- 调用 [setAudioEffectParameters](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectparameters) 后，不建议调用以下方法，否则 [setAudioEffectParameters](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectparameters) 设置的效果会被覆盖：
+- 调用 [setAudioEffectParameters](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 后，不建议调用以下方法，否则 [setAudioEffectParameters](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 设置的效果会被覆盖：
 
-  - [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectpreset)
-  - [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoicebeautifierpreset)
-  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoicereverb)
-  - [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoicebeautifierparameters)
-  - [setVoiceConversionPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setVoiceConversionPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
 - 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
 
@@ -210,7 +206,7 @@ SDK 预设的音效，支持以下设置：
 
 - `RoomAcoustics3dVoice`，3D 人声音效。
 
-  - 你需要在使用该枚举前将 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioprofile) 的 `profile` 参数设置 为 `AudioProfileMusicStandardStereo` (3) 或 `AudioProfileMusicHighQualityStereo` (5)，否则该枚举设置无效。
+  - 你需要在使用该枚举前将 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioprofile) 的 `profile` 参数设置 为 `AudioProfileMusicStandardStereo` (3) 或 `AudioProfileMusicHighQualityStereo` (5)，否则该枚举设置无效。
   - 启用 3D 人声后，用户需要使用支持双声道的音频播放设备才能听到预期效果。
 - `PitchCorrection`，电音音效。
 
@@ -248,7 +244,6 @@ SDK 预设的音效，支持以下设置：
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioeffectpreset"></a>
@@ -268,16 +263,16 @@ abstract setAudioEffectPreset(preset: AudioEffectPreset): number;
 调用该方法可以为本地发流用户设置 SDK 预设的人声音效，且不会改变原声的性别特征。设置音效后，频道内所有用户都能听到该效果。
 
 :::info[注]
-- 请勿将 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioprofile) 的 `profile` 参数设置为 `AudioProfileSpeechStandard` (1) 或 `AudioProfileIot` (6)，否则该方法不生效。
-- 如果调用 [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectpreset) 并设置除 `RoomAcoustics3dVoice` 或 `PitchCorrection` 外的枚举，请勿再调用 [setAudioEffectParameters](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectparameters)，否则 [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectpreset) 设置的效果会被覆盖。
-- 调用 [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectpreset) 后，不建议调用以下方法，否则 [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectpreset) 设置的效果会被覆盖：
+- 请勿将 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioprofile) 的 `profile` 参数设置为 `AudioProfileSpeechStandard` (1) 或 `AudioProfileIot` (6)，否则该方法不生效。
+- 如果调用 [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 并设置除 `RoomAcoustics3dVoice` 或 `PitchCorrection` 外的枚举，请勿再调用 [setAudioEffectParameters](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)，否则 [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 设置的效果会被覆盖。
+- 调用 [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 后，不建议调用以下方法，否则 [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) 设置的效果会被覆盖：
 
-  - [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoicebeautifierpreset)
-  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoicereverb)
-  - [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoicebeautifierparameters)
-  - [setVoiceConversionPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setVoiceConversionPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
 - 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
 
@@ -287,8 +282,8 @@ abstract setAudioEffectPreset(preset: AudioEffectPreset): number;
 
 加入频道前后均可调用。 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 `AudioScenarioGameStreaming` (3)。
-- 调用 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioprofile) 将 `profile` 设为 `AudioProfileMusicHighQuality` (4) 或 `AudioProfileMusicHighQualityStereo` (5)。
+- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 `AudioScenarioGameStreaming` (3)。
+- 调用 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioprofile) 将 `profile` 设为 `AudioProfileMusicHighQuality` (4) 或 `AudioProfileMusicHighQualityStereo` (5)。
 
 <a id="api_irtcengine_setaudioeffectpreset__parameters"></a>
 
@@ -305,7 +300,6 @@ abstract setAudioEffectPreset(preset: AudioEffectPreset): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvoiceequalization"></a>
@@ -350,7 +344,6 @@ abstract setLocalVoiceEqualization(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvoiceformant"></a>
@@ -367,7 +360,7 @@ abstract setLocalVoiceFormant(formantRatio: number): number;
 
 <a id="api_irtcengine_setlocalvoiceformant__detailed_desc"></a>
 
-共振峰比率是影响声音音色的一个参数，共振峰比率取值越小声音会更低沉，取值越大声音会更尖锐。设置共振峰比率后，频道内所有用户都能听到该效果。如果你想要在调整音色的同时改变音调，声网推荐你搭配 [setLocalVoicePitch](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoicepitch) 一起使用。
+共振峰比率是影响声音音色的一个参数，共振峰比率取值越小声音会更低沉，取值越大声音会更尖锐。设置共振峰比率后，频道内所有用户都能听到该效果。如果你想要在调整音色的同时改变音调，声网推荐你搭配 [setLocalVoicePitch](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch) 一起使用。
 
 <a id="api_irtcengine_setlocalvoiceformant__scenario"></a>
 
@@ -400,7 +393,6 @@ abstract setLocalVoiceFormant(formantRatio: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvoicepitch"></a>
@@ -438,7 +430,6 @@ abstract setLocalVoicePitch(pitch: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvoicereverb"></a>
@@ -458,7 +449,7 @@ abstract setLocalVoiceReverb(
 
 <a id="api_irtcengine_setlocalvoicereverb__detailed_desc"></a>
 
-SDK 提供一个使用更为简便的方法 [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectpreset)，直接实现流行、R&B、KTV 等预置的混响效果。
+SDK 提供一个使用更为简便的方法 [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)，直接实现流行、R&B、KTV 等预置的混响效果。
 
 :::info[注]
 该方法在加入频道前后都能调用。
@@ -483,7 +474,6 @@ SDK 提供一个使用更为简便的方法 [setAudioEffectPreset](/zh-CN/api-re
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvoicebeautifierparameters"></a>
@@ -502,22 +492,22 @@ abstract setVoiceBeautifierParameters(preset: VoiceBeautifierPreset, param1: num
 
 调用该方法可以设置歌唱美声效果的性别特征和混响效果。该方法对本地发流用户进行设置。设置后，频道内所有用户都能听到该效果。 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 `AudioScenarioGameStreaming` (3)。
-- 调用 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioprofile) 将 `profile` 设为 `AudioProfileMusicHighQuality` (4) 或 `AudioProfileMusicHighQualityStereo` (5)。
+- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 `AudioScenarioGameStreaming` (3)。
+- 调用 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioprofile) 将 `profile` 设为 `AudioProfileMusicHighQuality` (4) 或 `AudioProfileMusicHighQualityStereo` (5)。
 
 :::info[注]
 - 该方法在加入频道前后都能调用。
-- 请勿将 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioprofile) 的 `profile` 参数设置为 `AudioProfileSpeechStandard` (1) 或 `AudioProfileIot` (6)，否则该方法不生效。
+- 请勿将 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioprofile) 的 `profile` 参数设置为 `AudioProfileSpeechStandard` (1) 或 `AudioProfileIot` (6)，否则该方法不生效。
 - 该方法对人声的处理效果最佳，不建议调用该方法处理含音乐的音频数据。
-- 调用 [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoicebeautifierparameters)，不建议调用以下方法，否则 [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoicebeautifierparameters) 设置的效果会被覆盖：
+- 调用 [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)，不建议调用以下方法，否则 [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters) 设置的效果会被覆盖：
 
-  - [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectpreset)
-  - [setAudioEffectParameters](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectparameters)
-  - [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoicebeautifierpreset)
-  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoicereverb)
-  - [setVoiceConversionPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [setAudioEffectParameters](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceConversionPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
 - 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
 
@@ -553,7 +543,6 @@ abstract setVoiceBeautifierParameters(preset: VoiceBeautifierPreset, param1: num
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvoicebeautifierpreset"></a>
@@ -573,17 +562,17 @@ abstract setVoiceBeautifierPreset(preset: VoiceBeautifierPreset): number;
 调用该方法可以为本地发流用户设置预设的人声美化效果。设置美声效果后，频道内所有用户都能听到该效果。根据不同的场景，你可以为用户设置不同的美声效果。
 
 :::info[注]
-- 请勿将 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioprofile) 的 `profile` 参数设置为 `AudioProfileSpeechStandard` (1) 或 `AudioProfileIot` (6)，否则该方法不生效。
+- 请勿将 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioprofile) 的 `profile` 参数设置为 `AudioProfileSpeechStandard` (1) 或 `AudioProfileIot` (6)，否则该方法不生效。
 - 该方法对人声的处理效果最佳，不建议调用该方法处理含音乐的音频数据。
-- 调用 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoicebeautifierpreset)，不建议调用以下方法，否则 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoicebeautifierpreset) 设置的效果会被覆盖：
+- 调用 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)，不建议调用以下方法，否则 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 设置的效果会被覆盖：
 
-  - [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectpreset)
-  - [setAudioEffectParameters](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectparameters)
-  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoicereverb)
-  - [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoicebeautifierparameters)
-  - [setVoiceConversionPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoiceconversionpreset)
+  - [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [setAudioEffectParameters](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setVoiceConversionPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
 - 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
 
@@ -593,8 +582,8 @@ abstract setVoiceBeautifierPreset(preset: VoiceBeautifierPreset): number;
 
 加入频道前后均可调用。 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 `AudioScenarioGameStreaming` (3)。
-- 调用 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioprofile) 将 `profile` 设为 `AudioProfileMusicHighQuality` (4) 或 `AudioProfileMusicHighQualityStereo` (5)。
+- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 `AudioScenarioGameStreaming` (3)。
+- 调用 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioprofile) 将 `profile` 设为 `AudioProfileMusicHighQuality` (4) 或 `AudioProfileMusicHighQualityStereo` (5)。
 
 <a id="api_irtcengine_setvoicebeautifierpreset__parameters"></a>
 
@@ -611,7 +600,6 @@ abstract setVoiceBeautifierPreset(preset: VoiceBeautifierPreset): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvoiceconversionpreset"></a>
@@ -631,18 +619,18 @@ abstract setVoiceConversionPreset(preset: VoiceConversionPreset): number;
 调用该方法可以为本地发流用户设置 SDK 预设的变声效果。设置变声效果后，频道内所有用户都能听到该效果。根据不同的场景，你可以为用户设置不同的变声效果。
 
 :::info[注]
-- 请勿将 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioprofile) 的 `profile` 参数设置为 `AudioProfileSpeechStandard` (1) 或 `AudioProfileIot` (6)，否则该方法不生效。
+- 请勿将 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioprofile) 的 `profile` 参数设置为 `AudioProfileSpeechStandard` (1) 或 `AudioProfileIot` (6)，否则该方法不生效。
 - 该方法对人声的处理效果最佳，不建议调用该方法处理含音乐的音频数据。
-- 调用 [setVoiceConversionPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoiceconversionpreset) 后，不建议调用以下方法，否则 [setVoiceConversionPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoiceconversionpreset) 设置的效果会被覆盖：
+- 调用 [setVoiceConversionPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 后，不建议调用以下方法，否则 [setVoiceConversionPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) 设置的效果会被覆盖：
 
-  - [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectpreset)
-  - [setAudioEffectParameters](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setaudioeffectparameters)
-  - [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoicebeautifierpreset)
-  - [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setvoicebeautifierparameters)
-  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoicepitch)
-  - [setLocalVoiceFormant](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoiceformant)
-  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoiceequalization)
-  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/electron/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [setAudioEffectPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [setAudioEffectParameters](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [setLocalVoicePitch](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [setLocalVoiceFormant](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceformant)
+  - [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [setLocalVoiceReverb](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
 - 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
 
@@ -652,8 +640,8 @@ abstract setVoiceConversionPreset(preset: VoiceConversionPreset): number;
 
 加入频道前后均可调用。 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 `AudioScenarioGameStreaming` (3)。
-- 调用 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio-basic#api_irtcengine_setaudioprofile) 将 `profile` 设为 `AudioProfileMusicHighQuality` (4) 或 `AudioProfileMusicHighQualityStereo` (5)。
+- 调用 [setAudioScenario](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 `AudioScenarioGameStreaming` (3)。
+- 调用 [setAudioProfile](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_setaudioprofile) 将 `profile` 设为 `AudioProfileMusicHighQuality` (4) 或 `AudioProfileMusicHighQualityStereo` (5)。
 
 <a id="api_irtcengine_setvoiceconversionpreset__parameters"></a>
 
@@ -670,5 +658,4 @@ abstract setVoiceConversionPreset(preset: VoiceConversionPreset): number;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)

@@ -1,0 +1,40 @@
+---
+title: "fetchChatRoomAnnouncement method"
+description: "API docs for the fetchChatRoomAnnouncement method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Gets the chat room announcement from the server.
+
+**Return** The chat room announcement.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+
+```dart title="Dart"
+Future<String?> fetchChatRoomAnnouncement(String roomId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<String?> fetchChatRoomAnnouncement(
+  String roomId,
+) async {
+  Map req = {"roomId": roomId};
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.fetchChatRoomAnnouncement, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result[ChatMethodKeys.fetchChatRoomAnnouncement];
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

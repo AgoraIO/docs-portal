@@ -1,0 +1,40 @@
+---
+title: "sendConversationReadAck method"
+description: "API docs for the sendConversationReadAck method from the ChatManager class, for the Dart programming language."
+---
+
+Sends the conversation read receipt to the server. This method is only for one-to-one chat conversations.
+
+This method informs the server to set the unread message count of the conversation to 0. In multi-device scenarios, all the devices receive the [ChatEventHandler.onConversationRead](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-event-handler/on-conversation-read) callback.
+
+**Note** This method applies to one-to-one chat conversations only. To send a group message read receipt, call [sendGroupMessageReadAck](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-manager/send-group-message-read-ack).
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `conversationId` | The conversation ID. |
+
+```dart title="Dart"
+Future<bool> sendConversationReadAck(String conversationId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<bool> sendConversationReadAck(String conversationId) async {
+  Map req = {"con_id": conversationId};
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.ackConversationRead, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result.boolValue(ChatMethodKeys.ackConversationRead);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

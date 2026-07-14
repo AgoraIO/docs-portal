@@ -1,0 +1,35 @@
+---
+title: "getSelfIdsOnOtherPlatform method"
+description: "API docs for the getSelfIdsOnOtherPlatform method from the ChatContactManager class, for the Dart programming language."
+---
+
+Gets the unique IDs of the current user on the other devices. The ID is in the format of username + "/" + resource.
+
+**Return** The list of unique IDs of users on the other devices if the method succeeds.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+```dart title="Dart"
+Future<List<String>> getSelfIdsOnOtherPlatform()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<List<String>> getSelfIdsOnOtherPlatform() async {
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.getSelfIdsOnOtherPlatform);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<String> devices = [];
+    result[ChatMethodKeys.getSelfIdsOnOtherPlatform]?.forEach((element) {
+      devices.add(element);
+    });
+    return devices;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

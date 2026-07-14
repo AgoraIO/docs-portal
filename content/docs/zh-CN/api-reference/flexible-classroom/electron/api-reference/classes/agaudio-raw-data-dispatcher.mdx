@@ -1,11 +1,11 @@
 ---
 title: "AGAudioRawDataDispatcher"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "AGAudioRawDataDispatcher API 参考。"
 ---
 
 - AGAudioRawDataDispatcher
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -15,11 +15,11 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new AGAudioRawDataDispatcher(): AGAudioRawDataDispatcher
 ```
 
-#### Returns
+#### 返回值
 
-Returns [AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agaudio-raw-data-dispatcher)
+[AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/agaudio-raw-data-dispatcher)
 
-## Properties
+## 属性
 
 <a id="logger"></a>
 
@@ -29,7 +29,7 @@ Returns [AGAudioRawDataDispatcher](/zh-CN/api-reference/flexible-classroom/elect
 logger: "agora-rte-sdk/src/core/logger/type".Logger
 ```
 
-## Accessors
+## 访问器
 
 <a id="audioTrackRawDataConfig"></a>
 
@@ -39,9 +39,9 @@ logger: "agora-rte-sdk/src/core/logger/type".Logger
 get audioTrackRawDataConfig(): AgoraRteAudioRawDataConfig
 ```
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/interfaces/agora-rte-audio-raw-data-config)
+[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/interfaces/agora-rte-audio-raw-data-config)
 
 <a id="hasAudioTrackRawDataObservers"></a>
 
@@ -51,9 +51,9 @@ Returns [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/ele
 get hasAudioTrackRawDataObservers(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="hasMicrophoneRawDataObservers"></a>
 
@@ -63,9 +63,9 @@ Returns boolean
 get hasMicrophoneRawDataObservers(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="isStarted"></a>
 
@@ -75,9 +75,9 @@ Returns boolean
 get isStarted(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="microphoneTrackRawDataConfig"></a>
 
@@ -87,11 +87,11 @@ Returns boolean
 get microphoneTrackRawDataConfig(): AgoraRteAudioRawDataConfig
 ```
 
-#### Returns
+#### 返回值
 
-Returns [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/interfaces/agora-rte-audio-raw-data-config)
+[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/interfaces/agora-rte-audio-raw-data-config)
 
-## Methods
+## 方法
 
 <a id="addAudioRawDataObserver"></a>
 
@@ -101,16 +101,16 @@ Returns [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/ele
 addAudioRawDataObserver(observer: AgoraRteAudioRawDataObserver, position: AgoraRteAudioRawDataPosition): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | observer: AgoraRteAudioRawDataObserver |  |
 | position: AgoraRteAudioRawDataPosition |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="dispatch"></a>
 
@@ -152,104 +152,104 @@ dispatch(event: "Start", ...params: []): void
 dispatch(event: "Stop", ...params: []): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "AudioRawDataRecored" |  |
 | Rest ...params: [rawData: AgoraRteAudioRawData] |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "AudioRawDataBeforeMixed" |  |
 | Rest ...params: [rawData: AgoraRteAudioRawData, streamUuid: string, channelName: string] |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "ObserverChanged" |  |
 | Rest ...params: [position: AgoraRteAudioRawDataPosition] |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "MicrophoneTrackCreated" |  |
 | Rest ...params: [track: ILocalAudioTrack] |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "AudioTrackSubscribed" |  |
 | Rest ...params: [track: IRemoteAudioTrack, streamUuid: string, channelName: string] |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "MicrophoneTrackDestroyed" |  |
 | Rest ...params: [] |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "AudioTrackUnsubscribed" |  |
 | Rest ...params: [streamUuid: string, channelName: string] |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "Start" |  |
 | Rest ...params: [] |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "Stop" |  |
 | Rest ...params: [] |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="register"></a>
 
@@ -291,104 +291,104 @@ register(event: "Start", callback: CallbackStart): void
 register(event: "Stop", callback: CallbackStop): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "AudioRawDataRecored" |  |
 | callback: CallbackRawDataRecorded |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "AudioRawDataBeforeMixed" |  |
 | callback: CallbackRawDataBeforeMixed |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "ObserverChanged" |  |
 | callback: CallbackObserverChanged |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "MicrophoneTrackCreated" |  |
 | callback: CallbackMicrophoneTrackCreated |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "AudioTrackSubscribed" |  |
 | callback: CallbackAudioTrackSubscribed |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "MicrophoneTrackDestroyed" |  |
 | callback: CallbackMicrophoneTrackDestroyed |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "AudioTrackUnsubscribed" |  |
 | callback: CallbackAudioTrackUnsubscribed |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "Start" |  |
 | callback: CallbackStart |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "Stop" |  |
 | callback: CallbackStop |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removeAudioRawDataObserver"></a>
 
@@ -398,16 +398,16 @@ Returns void
 removeAudioRawDataObserver(observer: AgoraRteAudioRawDataObserver, position: AgoraRteAudioRawDataPosition): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | observer: AgoraRteAudioRawDataObserver |  |
 | position: AgoraRteAudioRawDataPosition |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setConfig"></a>
 
@@ -417,16 +417,16 @@ Returns void
 setConfig(config: AgoraRteAudioRawDataConfig, position: AgoraRteAudioRawDataPosition): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: AgoraRteAudioRawDataConfig |  |
 | position: AgoraRteAudioRawDataPosition |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="start"></a>
 
@@ -436,9 +436,9 @@ Returns void
 start(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="stop"></a>
 
@@ -448,9 +448,9 @@ Returns void
 stop(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="unregister"></a>
 
@@ -492,101 +492,101 @@ unregister(event: "Start", callback: CallbackStart): void
 unregister(event: "Stop", callback: CallbackStop): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "AudioRawDataRecored" |  |
 | callback: CallbackRawDataRecorded |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "AudioRawDataBeforeMixed" |  |
 | callback: CallbackRawDataBeforeMixed |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "ObserverChanged" |  |
 | callback: CallbackObserverChanged |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "MicrophoneTrackCreated" |  |
 | callback: CallbackMicrophoneTrackCreated |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "AudioTrackSubscribed" |  |
 | callback: CallbackAudioTrackSubscribed |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "MicrophoneTrackDestroyed" |  |
 | callback: CallbackMicrophoneTrackDestroyed |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "AudioTrackUnsubscribed" |  |
 | callback: CallbackAudioTrackUnsubscribed |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "Start" |  |
 | callback: CallbackStart |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "Stop" |  |
 | callback: CallbackStop |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void

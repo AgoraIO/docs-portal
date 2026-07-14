@@ -1,0 +1,404 @@
+---
+title: "ChatGroupEventHandler class"
+description: "API docs for the ChatGroupEventHandler class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The group event handler.
+
+Occurs when the following group events happens: requesting to join a group, approving or declining a group request, and kicking a user out of a group.
+
+Adds a group event handler:
+
+```dart title="Dart"
+  ChatClient.getInstance.groupManager.addEventHandler(UNIQUE_HANDLER_ID, ChatGroupEventHandler());
+```
+
+Remove a group event handler:
+
+```dart title="Dart"
+  ChatClient.getInstance.groupManager.removeEventHandler(UNIQUE_HANDLER_ID);
+```
+
+<a id="constructors"></a>
+
+## Constructors
+
+<a id="ChatGroupEventHandler"></a>
+
+### [ChatGroupEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/chat-group-event-handler)
+
+```dart title="Dart"
+ChatGroupEventHandler({void onAdminAddedFromGroup(String groupId, String admin)?, void onAdminRemovedFromGroup(String groupId, String admin)?, void onAllGroupMemberMuteStateChanged(String groupId, bool isAllMuted)?, void onAllowListAddedFromGroup(String groupId, List<String> members)?, void onAllowListRemovedFromGroup(String groupId, List<String> members)?, void onAnnouncementChangedFromGroup(String groupId, String announcement)?, void onAutoAcceptInvitationFromGroup(String groupId, String inviter, String? inviteMessage)?, void onGroupDestroyed(String groupId, String? groupName)?, void onInvitationAcceptedFromGroup(String groupId, String invitee, String? reason)?, void onInvitationDeclinedFromGroup(String groupId, String invitee, String? reason)?, void onInvitationReceivedFromGroup(String groupId, String? groupName, String inviter, String? reason)?, void onMemberExitedFromGroup(String groupId, String member)?, void onMemberJoinedFromGroup(String groupId, String member)?, void onMuteListAddedFromGroup(String groupId, List<String> mutes, int? muteExpire)?, void onMuteListRemovedFromGroup(String groupId, List<String> mutes)?, void onOwnerChangedFromGroup(String groupId, String newOwner, String oldOwner)?, void onRequestToJoinAcceptedFromGroup(String groupId, String? groupName, String accepter)?, void onRequestToJoinDeclinedFromGroup(String groupId, String? groupName, String decliner, String? reason)?, void onRequestToJoinReceivedFromGroup(String groupId, String? groupName, String applicant, String? reason)?, void onSharedFileAddedFromGroup(String groupId, ChatGroupSharedFile sharedFile)?, void onSharedFileDeletedFromGroup(String groupId, String fileId)?, void onUserRemovedFromGroup(String groupId, String? groupName)?, void onSpecificationDidUpdate(ChatGroup group)?, void onDisableChanged(String groupId, bool isDisable)?})
+```
+
+The group manager listener callback.
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart title="Dart"
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="onAdminAddedFromGroup"></a>
+
+### [onAdminAddedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-admin-added-from-group)
+
+```dart title="Dart"
+onAdminAddedFromGroup ->(void Function?(String groupId, String admin)?)
+```
+
+Occurs when a member is set as an admin.
+
+_final._
+
+<a id="onAdminRemovedFromGroup"></a>
+
+### [onAdminRemovedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-admin-removed-from-group)
+
+```dart title="Dart"
+onAdminRemovedFromGroup ->(void Function?(String groupId, String admin)?)
+```
+
+Occurs when a member's admin privileges are removed.
+
+_final._
+
+<a id="onAllGroupMemberMuteStateChanged"></a>
+
+### [onAllGroupMemberMuteStateChanged](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-all-group-member-mute-state-changed)
+
+```dart title="Dart"
+onAllGroupMemberMuteStateChanged ->(void Function?(String groupId, bool isAllMuted)?)
+```
+
+Occurs when all group members are muted or unmuted.
+
+_final._
+
+<a id="onAllowListAddedFromGroup"></a>
+
+### [onAllowListAddedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-allow-list-added-from-group)
+
+```dart title="Dart"
+onAllowListAddedFromGroup ->(void Function?(String groupId, List<String> members)?)
+```
+
+Occurs when one or more group members are added to the allowlist.
+
+_final._
+
+<a id="onAllowListRemovedFromGroup"></a>
+
+### [onAllowListRemovedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-allow-list-removed-from-group)
+
+```dart title="Dart"
+onAllowListRemovedFromGroup ->(void Function?(String groupId, List<String> members)?)
+```
+
+Occurs when one or more members are removed from the allowlist.
+
+_final._
+
+<a id="onAnnouncementChangedFromGroup"></a>
+
+### [onAnnouncementChangedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-announcement-changed-from-group)
+
+```dart title="Dart"
+onAnnouncementChangedFromGroup ->(void Function?(String groupId, String announcement)?)
+```
+
+Occurs when the announcement is updated.
+
+_final._
+
+<a id="onAutoAcceptInvitationFromGroup"></a>
+
+### [onAutoAcceptInvitationFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-auto-accept-invitation-from-group)
+
+```dart title="Dart"
+onAutoAcceptInvitationFromGroup ->(void Function?(String groupId, String inviter, String? inviteMessage)?)
+```
+
+Occurs when the group invitation is accepted automatically. For settings, See [ChatOptions.autoAcceptGroupInvitation](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-options/auto-accept-group-invitation). The SDK will join the group before notifying the app of the acceptance of the group invitation.
+
+_final._
+
+<a id="onDisableChanged"></a>
+
+### [onDisableChanged](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-disable-changed)
+
+```dart title="Dart"
+onDisableChanged ->(void Function?(String groupId, bool isDisable)?)
+```
+
+Occurs when the group is enabled or disabled.
+
+_final._
+
+<a id="onGroupDestroyed"></a>
+
+### [onGroupDestroyed](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-group-destroyed)
+
+```dart title="Dart"
+onGroupDestroyed ->(void Function?(String groupId, String? groupName)?)
+```
+
+Occurs when a group is destroyed.
+
+_final._
+
+<a id="onInvitationAcceptedFromGroup"></a>
+
+### [onInvitationAcceptedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-invitation-accepted-from-group)
+
+```dart title="Dart"
+onInvitationAcceptedFromGroup ->(void Function?(String groupId, String invitee, String? reason)?)
+```
+
+Occurs when a group invitation is accepted.
+
+_final._
+
+<a id="onInvitationDeclinedFromGroup"></a>
+
+### [onInvitationDeclinedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-invitation-declined-from-group)
+
+```dart title="Dart"
+onInvitationDeclinedFromGroup ->(void Function?(String groupId, String invitee, String? reason)?)
+```
+
+Occurs when a group invitation is declined.
+
+_final._
+
+<a id="onInvitationReceivedFromGroup"></a>
+
+### [onInvitationReceivedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-invitation-received-from-group)
+
+```dart title="Dart"
+onInvitationReceivedFromGroup ->(void Function?(String groupId, String? groupName, String inviter, String? reason)?)
+```
+
+Occurs when the user receives a group invitation.
+
+_final._
+
+<a id="onMemberExitedFromGroup"></a>
+
+### [onMemberExitedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-member-exited-from-group)
+
+```dart title="Dart"
+onMemberExitedFromGroup ->(void Function?(String groupId, String member)?)
+```
+
+Occurs when a member proactively leaves the group.
+
+_final._
+
+<a id="onMemberJoinedFromGroup"></a>
+
+### [onMemberJoinedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-member-joined-from-group)
+
+```dart title="Dart"
+onMemberJoinedFromGroup ->(void Function?(String groupId, String member)?)
+```
+
+Occurs when a member joins a group.
+
+_final._
+
+<a id="onMuteListAddedFromGroup"></a>
+
+### [onMuteListAddedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-mute-list-added-from-group)
+
+```dart title="Dart"
+onMuteListAddedFromGroup ->(void Function?(String groupId, List<String> mutes, int? muteExpire)?)
+```
+
+Occurs when one or more group members are muted.
+
+_final._
+
+<a id="onMuteListRemovedFromGroup"></a>
+
+### [onMuteListRemovedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-mute-list-removed-from-group)
+
+```dart title="Dart"
+onMuteListRemovedFromGroup ->(void Function?(String groupId, List<String> mutes)?)
+```
+
+Occurs when one or more group members are unmuted.
+
+_final._
+
+<a id="onOwnerChangedFromGroup"></a>
+
+### [onOwnerChangedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-owner-changed-from-group)
+
+```dart title="Dart"
+onOwnerChangedFromGroup ->(void Function?(String groupId, String newOwner, String oldOwner)?)
+```
+
+Occurs when the group ownership is transferred.
+
+_final._
+
+<a id="onRequestToJoinAcceptedFromGroup"></a>
+
+### [onRequestToJoinAcceptedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-request-to-join-accepted-from-group)
+
+```dart title="Dart"
+onRequestToJoinAcceptedFromGroup ->(void Function?(String groupId, String? groupName, String accepter)?)
+```
+
+Occurs when a group request is accepted.
+
+_final._
+
+<a id="onRequestToJoinDeclinedFromGroup"></a>
+
+### [onRequestToJoinDeclinedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-request-to-join-declined-from-group)
+
+```dart title="Dart"
+onRequestToJoinDeclinedFromGroup ->(void Function?(String groupId, String? groupName, String decliner, String? reason)?)
+```
+
+Occurs when a group request is declined.
+
+_final._
+
+<a id="onRequestToJoinReceivedFromGroup"></a>
+
+### [onRequestToJoinReceivedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-request-to-join-received-from-group)
+
+```dart title="Dart"
+onRequestToJoinReceivedFromGroup ->(void Function?(String groupId, String? groupName, String applicant, String? reason)?)
+```
+
+Occurs when the group owner or administrator receives a group request from a user.
+
+_final._
+
+<a id="onSharedFileAddedFromGroup"></a>
+
+### [onSharedFileAddedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-shared-file-added-from-group)
+
+```dart title="Dart"
+onSharedFileAddedFromGroup ->(void Function?(String groupId, ChatGroupSharedFile sharedFile)?)
+```
+
+Occurs when a shared file is added to a group.
+
+_final._
+
+<a id="onSharedFileDeletedFromGroup"></a>
+
+### [onSharedFileDeletedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-shared-file-deleted-from-group)
+
+```dart title="Dart"
+onSharedFileDeletedFromGroup ->(void Function?(String groupId, String fileId)?)
+```
+
+Occurs when a shared file is removed from a group.
+
+_final._
+
+<a id="onSpecificationDidUpdate"></a>
+
+### [onSpecificationDidUpdate](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-specification-did-update)
+
+```dart title="Dart"
+onSpecificationDidUpdate ->(void Function?(ChatGroup group)?)
+```
+
+Occurs when the group detail information is updated.
+
+_final._
+
+<a id="onUserRemovedFromGroup"></a>
+
+### [onUserRemovedFromGroup](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-event-handler/on-user-removed-from-group)
+
+```dart title="Dart"
+onUserRemovedFromGroup ->(void Function?(String groupId, String? groupName)?)
+```
+
+Occurs when the current user is removed from the group by the group admin.
+
+_final._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart title="Dart"
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart title="Dart"
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart title="Dart"
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart title="Dart"
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

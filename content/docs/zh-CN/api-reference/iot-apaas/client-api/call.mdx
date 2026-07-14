@@ -731,7 +731,7 @@ func getMqttIsConnected() -> Bool
 - `true`: 已连接。
 - `false`: 已断开连接。
 
-<a id="initialize"></a>
+<a id="initialize-2"></a>
 ### initialize
 
 ```swift
@@ -748,7 +748,7 @@ func initialize(initParam: InitParam,sdkStatus:@escaping(SdkStatus,String)->Void
 | `sdkStatus` | SDK 状态，详见 [SdkStatus](#iagoracallkitsdkStatus)。 |
 | `callbackFilter` | 回调函数返回错误码/错误消息的集中过滤。所有带有 result 回调的接口，都会在调用 result 回调前触发该回调，返回 (ErrCode,ErrMessage)。 |
 
-<a id="release"></a>
+<a id="release-2"></a>
 ### release
 
 ```swift
@@ -822,12 +822,12 @@ var notificationMgr: INotificationMgr{get}
 
 - 通知信息接口，详见 [INotificationMgr](#inotificationmgr)。
 
-<a id="iaccountmgr"></a>
+<a id="iaccountmgr-2"></a>
 ## IAccountMgr
 
 账号管理接口。
 
-<a id="logout"></a>
+<a id="logout-2"></a>
 ### logout
 
 ```swift
@@ -840,7 +840,7 @@ func logout(result:@escaping (Int,String)->Void)
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="getuserid"></a>
+<a id="getuserid-2"></a>
 ### getUserId
 
 ```swift
@@ -910,7 +910,7 @@ func updateHeadIcon(image:UIImage,result:@escaping(Int,String,String?)->Void)
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="login"></a>
+<a id="login-2"></a>
 ### login
 
 ```swift
@@ -956,7 +956,7 @@ func publicKeySet(publicKey:String, _ result:@escaping (Int,String)->Void)
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="icallkitmgr"></a>
+<a id="icallkitmgr-2"></a>
 ## ICallkitMgr
 
 呼叫系统管理接口。
@@ -972,7 +972,7 @@ func register(incoming: @escaping (String,String, ActionAck) -> Void,memberState
 
 通过该方法定义 `incoming` 和 `memberState` 回调函数后，如果你收到来电，SDK 会通过 `incoming` 和 `memberState` 回调通知你来电的设备、用户 ID 等相关信息。
 
-声网推荐你在 [login](#login) 之后调用该方法。
+声网推荐你在 [login](#login-2) 之后调用该方法。
 
 **参数**
 
@@ -1000,7 +1000,7 @@ func register(incoming: @escaping (String,String, ActionAck) -> Void,memberState
 
 </Slot>
 
-<a id="calldial"></a>
+<a id="calldial-2"></a>
 ### callDial
 
 ```swift
@@ -1036,7 +1036,7 @@ func callDial(
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="callhangup"></a>
+<a id="callhangup-2"></a>
 ### callHangup
 
 ```swift
@@ -1049,7 +1049,7 @@ func callHangup(result:@escaping(Int,String)->Void)
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="callanswer"></a>
+<a id="callanswer-2"></a>
 ### callAnswer
 
 ```swift
@@ -1080,7 +1080,7 @@ func callAnswer(result:@escaping(Int,String)->Void,
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="setlocalvideoview"></a>
+<a id="setlocalvideoview-2"></a>
 ### setLocalVideoView
 
 ```swift
@@ -1099,7 +1099,7 @@ func setLocalVideoView(localView: UIView?) -> Int
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="setpeervideoview"></a>
+<a id="setpeervideoview-2"></a>
 ### setPeerVideoView
 
 ```swift
@@ -1118,7 +1118,7 @@ func setPeerVideoView(peerView: UIView?) -> Int
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="mutelocalvideo"></a>
+<a id="mutelocalvideo-2"></a>
 ### muteLocalVideo
 
 ```swift
@@ -1146,7 +1146,7 @@ func muteLocalVideo(mute: Bool,result:@escaping(Int,String)->Void)
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="mutelocalaudio"></a>
+<a id="mutelocalaudio-2"></a>
 ### muteLocalAudio
 
 ```swift
@@ -1174,7 +1174,7 @@ func muteLocaAudio(mute: Bool,result:@escaping(Int,String)->Void)
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="mutepeervideo"></a>
+<a id="mutepeervideo-2"></a>
 ### mutePeerVideo
 
 ```swift
@@ -1202,7 +1202,7 @@ func mutePeerVideo(mute: Bool,result:@escaping(Int,String)->Void)
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="mutepeeraudio"></a>
+<a id="mutepeeraudio-2"></a>
 ### mutePeerAudio
 
 ```swift
@@ -1230,7 +1230,7 @@ func mutePeerAudio(mute: Bool,result:@escaping(Int,String)->Void)
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="setvolume"></a>
+<a id="setvolume-2"></a>
 ### setVolume
 
 ```swift
@@ -1268,7 +1268,7 @@ func setAudioEffect(effectId: AudioEffectId,result:@escaping(Int,String)->Void)
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="talkingrecordstart"></a>
+<a id="talkingrecordstart-2"></a>
 ### talkingRecordStart
 
 ```swift
@@ -1281,7 +1281,7 @@ func talkingRecordStart(result:@escaping(Int,String)->Void)
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="talkingrecordstop"></a>
+<a id="talkingrecordstop-2"></a>
 ### talkingRecordStop
 
 ```swift
@@ -1294,7 +1294,7 @@ func talkingRecordStop(result:@escaping(Int,String)->Void)
 
 - 错误码，详见 [ErrCode](#errcode)。
 
-<a id="capturepeervideoframe"></a>
+<a id="capturepeervideoframe-2"></a>
 ### capturePeerVideoFrame
 
 ```swift
@@ -1482,7 +1482,7 @@ func getEid()->String
 
 eid。
 
-<a id="errcode"></a>
+<a id="errcode-2"></a>
 ## ErrCode
 
 ### 全局错误
@@ -1529,8 +1529,8 @@ eid。
 | `-40012` | `XERR_CALLKIT_SAME_ID`     | 主叫和被叫同一个 ID。 |
 | `-4001` | `XERR_CALLKIT_APPID_DIFF`     | 客户端和设备端使用的 App ID 不一致。 |
 
-<a id="数据类型"></a>
-<a id="initparam"></a>
+<a id="数据类型-2"></a>
+<a id="initparam-2"></a>
 ## 数据类型
 ### InitParam
 
@@ -2271,7 +2271,7 @@ public class RtcNetworkStatus : NSObject{
 | `CallOutgoing`     | 本地去电振铃。     |
 | `UnknownAction`    | 未知错误。         |
 
-<a id="audioeffectid"></a>
+<a id="audioeffectid-2"></a>
 ### AudioEffectId
 
 音频特效。

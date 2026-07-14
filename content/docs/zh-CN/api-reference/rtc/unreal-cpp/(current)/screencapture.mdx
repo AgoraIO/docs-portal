@@ -2,9 +2,8 @@
 title: "屏幕采集"
 description: "屏幕采集 API reference."
 ---
-<a id="toc_screencapture"></a>
 
-## 屏幕采集
+<a id="toc_screencapture"></a>
 
 <a id="api_iscreencapturesourcelist_getcount"></a>
 
@@ -32,7 +31,6 @@ virtual unsigned int getCount() = 0;
 
 可共享的窗口和屏幕的个数。
 
-### 所属接口类
 - [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iscreencapturesourcelist)
 
 <a id="api_irtcengine_getscreencapturesources"></a>
@@ -51,7 +49,7 @@ virtual IScreenCaptureSourceList* getScreenCaptureSources(const SIZE& thumbSize,
 
 ### 详情
 
-屏幕共享或窗口共享前，你可以调用该方法获取可共享的屏幕和窗口的对象列表，方便用户通过列表中的缩略图选择共享某个显示器的屏幕或某个窗口。列表中包含窗口 ID 和屏幕 ID 等重要信息，你可以获取到 ID 后再调用 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_startscreencapturebywindowid) 或 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_startscreencapturebydisplayid) 开启共享。
+屏幕共享或窗口共享前，你可以调用该方法获取可共享的屏幕和窗口的对象列表，方便用户通过列表中的缩略图选择共享某个显示器的屏幕或某个窗口。列表中包含窗口 ID 和屏幕 ID 等重要信息，你可以获取到 ID 后再调用 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapturebywindowid) 或 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开启共享。
 
 :::info[注]
 该方法仅适用于 macOS 和 Windows。
@@ -82,7 +80,6 @@ virtual IScreenCaptureSourceList* getScreenCaptureSources(const SIZE& thumbSize,
 
 [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iscreencapturesourcelist)
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_iscreencapturesourcelist_getsourceinfo"></a>
@@ -113,7 +110,7 @@ virtual ScreenCaptureSourceInfo getSourceInfo(unsigned int index) = 0;
 
 #### `index`
 
-指定的可共享窗口或屏幕的索引。索引值范围为 [0, [getCount](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_iscreencapturesourcelist_getcount) `()`)。
+指定的可共享窗口或屏幕的索引。索引值范围为 [0, [getCount](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_iscreencapturesourcelist_getcount) `()`)。
 
 <a id="api_iscreencapturesourcelist_getsourceinfo__return_values"></a>
 
@@ -121,7 +118,6 @@ virtual ScreenCaptureSourceInfo getSourceInfo(unsigned int index) = 0;
 
 [ScreenCaptureSourceInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-screencapturesourceinfo)
 
-### 所属接口类
 - [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iscreencapturesourcelist)
 
 <a id="api_irtcengine_queryscreencapturecapability"></a>
@@ -157,7 +153,6 @@ virtual ScreenCaptureSourceInfo getSourceInfo(unsigned int index) = 0;
 - 方法调用成功时，返回设备支持的最高帧率。 详见 SCREEN_CAPTURE_FRAMERATE_CAPABILITY。
 - &lt;0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_iscreencapturesourcelist_release"></a>
@@ -182,7 +177,6 @@ virtual void release() = 0;
 该方法仅适用于 macOS 和 Windows。
 :::
 
-### 所属接口类
 - [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iscreencapturesourcelist)
 
 <a id="api_irtcengine_setexternalmediaprojection"></a>
@@ -220,7 +214,7 @@ virtual int setExternalMediaProjection(void* mediaProjection) = 0;
 
 ### 调用时机
 
-该方法需要在 [startScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_startscreencapture) 之前调用。
+该方法需要在 [startScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapture) 之前调用。
 
 <a id="api_irtcengine_setexternalmediaprojection__restriction"></a>
 
@@ -281,9 +275,8 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setscreencapturescenario"></a>
@@ -323,7 +316,6 @@ virtual int setScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapture"></a>
@@ -378,7 +370,7 @@ virtual int setScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario) = 0;
 - 因 Android 性能限制，屏幕共享不支持 Android TV。
 - 因 Android 系统限制，使用华为手机进行屏幕共享时，为避免崩溃，请不要在共享过程中调节屏幕共享流的视频编码分辨率。
 - 因 Android 系统限制，部分小米手机不支持屏幕共享时采集系统音频。
-- 为提高屏幕共享时采集系统音频的成功率，建议你在加入频道前通过 [setAudioScenario](/zh-CN/api-reference/rtc/unreal-cpp/audio-basic#api_irtcengine_setaudioscenario) 方法设置音频场景为 AUDIO_SCENARIO_GAME_STREAMING。
+- 为提高屏幕共享时采集系统音频的成功率，建议你在加入频道前通过 [setAudioScenario](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_setaudioscenario) 方法设置音频场景为 AUDIO_SCENARIO_GAME_STREAMING。
 
 <a id="api_irtcengine_startscreencapture__related"></a>
 
@@ -401,7 +393,6 @@ virtual int setScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario) = 0;
   - -2 (Anroid 平台): 系统版本过低，请确保 Android API 级别不低于 21。
   - -3 (Anroid 平台): 无法采集系统音频，请确保 Android API 级别不低于 29。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapture2"></a>
@@ -430,8 +421,8 @@ virtual int startScreenCapture(VIDEO_SOURCE_TYPE sourceType, const ScreenCapture
 
 SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别，请根据实际场景选用：
 
-- [startScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_startscreencapture) / [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_startscreencapturebydisplayid) / [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_startscreencapturebywindowid)：仅支持采集单个屏幕或窗口，适合仅共享单个屏幕的场景。
-- [startScreenCapture [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_startscreencapture2)：支持指定多个视频源，以采集多路屏幕共享流，用于本地合图或者多频道发布场景。
+- [startScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapture) / [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapturebydisplayid) / [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapturebywindowid)：仅支持采集单个屏幕或窗口，适合仅共享单个屏幕的场景。
+- [startScreenCapture [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapture2)：支持指定多个视频源，以采集多路屏幕共享流，用于本地合图或者多频道发布场景。
 
 <a id="api_irtcengine_startscreencapture2__timing"></a>
 
@@ -446,7 +437,7 @@ SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别�
 
 ### 调用限制
 
-- 如果调用该方法开始屏幕采集，则停止屏幕采集时需要调用 [stopScreenCapture [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_stopscreencapture2)。
+- 如果调用该方法开始屏幕采集，则停止屏幕采集时需要调用 [stopScreenCapture [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_stopscreencapture2)。
 - 在 Windows 平台上，最多支持 4 路屏幕采集的视频流。
 - 在 macOS 平台上，最多支持 1 路屏幕采集的视频流。
 
@@ -473,7 +464,6 @@ SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别�
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapturebydisplayid"></a>
@@ -541,7 +531,7 @@ virtual int startScreenCaptureByDisplayId(int64_t displayId, const Rectangle& re
 屏幕共享的参数配置。默认的视频编码分辨率为 1920 × 1080，即 2073600 像素。该像素值为计费标准。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/unreal-cpp/class-screencaptureparameters)。
 
 :::warning[注意]
-屏幕共享流的视频属性只需通过该参数设置，与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
+屏幕共享流的视频属性只需通过该参数设置，与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
 :::
 
 <a id="api_irtcengine_startscreencapturebydisplayid__return_values"></a>
@@ -552,9 +542,8 @@ virtual int startScreenCaptureByDisplayId(int64_t displayId, const Rectangle& re
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapturebyscreenrect"></a>
@@ -577,7 +566,7 @@ virtual int startScreenCaptureByScreenRect(const Rectangle& screenRect,
 
 #### `弃用：`
 
-该方法已废弃。请改用 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_startscreencapturebydisplayid)。如果你需要在设备外接其他显示屏的情况下开启屏幕共享，强烈建议你使用 startScreenCaptureByDisplayId。
+该方法已废弃。请改用 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapturebydisplayid)。如果你需要在设备外接其他显示屏的情况下开启屏幕共享，强烈建议你使用 startScreenCaptureByDisplayId。
 
 共享一个屏幕或该屏幕的部分区域。你需要在该方法中指定想要共享的屏幕区域。
 
@@ -614,9 +603,8 @@ virtual int startScreenCaptureByScreenRect(const Rectangle& screenRect,
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startscreencapturebywindowid"></a>
@@ -715,9 +703,8 @@ SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Gr
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopscreencapture"></a>
@@ -740,7 +727,7 @@ SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Gr
 
 ### 适用场景
 
-如果你调用了 [startScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_startscreencapture)、 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_startscreencapturebywindowid) 或 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_startscreencapturebydisplayid) 开启屏幕采集，则停止屏幕采集时需要调用该方法。
+如果你调用了 [startScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapture)、 [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapturebywindowid) 或 [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 开启屏幕采集，则停止屏幕采集时需要调用该方法。
 
 <a id="api_irtcengine_stopscreencapture__timing"></a>
 
@@ -761,7 +748,6 @@ SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Gr
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopscreencapture2"></a>
@@ -786,7 +772,7 @@ virtual int stopScreenCapture(VIDEO_SOURCE_TYPE sourceType) = 0;
 
 ### 适用场景
 
-如果你调用了 [startScreenCapture [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_startscreencapture2) 开启一路或多路屏幕采集，则停止屏幕采集时需要调用该方法，并通过 sourceType 参数指定屏幕。
+如果你调用了 [startScreenCapture [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapture2) 开启一路或多路屏幕采集，则停止屏幕采集时需要调用该方法，并通过 sourceType 参数指定屏幕。
 
 <a id="api_irtcengine_stopscreencapture2__timing"></a>
 
@@ -815,7 +801,6 @@ virtual int stopScreenCapture(VIDEO_SOURCE_TYPE sourceType) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatescreencapture"></a>
@@ -860,9 +845,8 @@ virtual int updateScreenCapture(const ScreenCaptureParameters2& captureParams) =
 - &lt; 0: 方法调用失败。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatescreencaptureparameters"></a>
@@ -895,7 +879,7 @@ virtual int updateScreenCaptureParameters(const ScreenCaptureParameters& capture
 屏幕共享的编码参数配置。详见 [ScreenCaptureParameters](/zh-CN/api-reference/rtc/unreal-cpp/class-screencaptureparameters)。
 
 :::warning[注意]
-屏幕共享流的视频属性只需通过该参数设置，与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
+屏幕共享流的视频属性只需通过该参数设置，与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
 :::
 
 <a id="api_irtcengine_updatescreencaptureparameters__return_values"></a>
@@ -906,9 +890,8 @@ virtual int updateScreenCaptureParameters(const ScreenCaptureParameters& capture
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatescreencaptureregion"></a>
@@ -947,7 +930,6 @@ virtual int updateScreenCaptureRegion(const Rectangle& regionRect) = 0;
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
   - -2：传入的参数无效。
-  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
+  - -8：屏幕共享状态无效。可能因为你已经共享了其他屏幕或窗口。尝试调用 [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_stopscreencapture) 停止当前共享，再重新开始共享屏幕。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)

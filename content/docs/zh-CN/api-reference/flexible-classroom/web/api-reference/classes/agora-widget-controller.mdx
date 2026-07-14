@@ -1,11 +1,11 @@
 ---
 title: "AgoraWidgetController"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "AgoraWidgetController API 参考。"
 ---
 
 - AgoraWidgetController
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -15,19 +15,19 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new AgoraWidgetController(_scene: AgoraRteScene, _api: EduApiService, _stateListeners: AgoraWidgetStateListener[]): AgoraWidgetController
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | _scene: AgoraRteScene |  |
 | _api: EduApiService |  |
 | _stateListeners: AgoraWidgetStateListener[] |  |
 
-#### Returns
+#### 返回值
 
-Returns [AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-widget-controller)
+[AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-widget-controller)
 
-## Properties
+## 属性
 
 <a id="logger"></a>
 
@@ -37,7 +37,7 @@ Returns [AgoraWidgetController](/zh-CN/api-reference/flexible-classroom/web/api-
 logger: LoggerFacade
 ```
 
-## Accessors
+## 访问器
 
 <a id="classroomConfig"></a>
 
@@ -49,9 +49,9 @@ get classroomConfig(): EduClassroomConfig
 
 房间配置
 
-#### Returns
+#### 返回值
 
-Returns [EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/edu-classroom-config)
+[EduClassroomConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/edu-classroom-config)
 
 <a id="eventBus"></a>
 
@@ -63,9 +63,9 @@ get eventBus(): AGEventEmitter
 
 widget消息总线
 
-#### Returns
+#### 返回值
 
-Returns [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agevent-emitter)
+[AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agevent-emitter)
 
 <a id="widgetIds"></a>
 
@@ -77,9 +77,9 @@ get widgetIds(): string[]
 
 当前存在的 Widget 实例ID列表
 
-#### Returns
+#### 返回值
 
-Returns string []
+string []
 
 <a id="zIndexController"></a>
 
@@ -91,11 +91,11 @@ get zIndexController(): AgoraWidgetZIndexController
 
 层级控制器
 
-#### Returns
+#### 返回值
 
-Returns [AgoraWidgetZIndexController](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-widget-zindex-controller)
+[AgoraWidgetZIndexController](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agora-widget-zindex-controller)
 
-## Methods
+## 方法
 
 <a id="addBroadcastListener"></a>
 
@@ -107,15 +107,15 @@ addBroadcastListener(listener: Omit<AgoraWidgetMessageListener<unknown>, "widget
 
 监听广播消息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | listener: Omit&lt;AgoraWidgetMessageListener&lt;unknown&gt;, "widgetId"&gt; |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="addWidgetMessageListener"></a>
 
@@ -127,15 +127,15 @@ addWidgetMessageListener(listener: AgoraWidgetMessageListener<unknown>): void
 
 增加一个消息监听器
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | listener: AgoraWidgetMessageListener&lt;unknown&gt; |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="addWidgetStateListener"></a>
 
@@ -147,15 +147,15 @@ addWidgetStateListener(listener: AgoraWidgetStateListener): void
 
 添加一个组件状态监听器
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | listener: AgoraWidgetStateListener |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="broadcast"></a>
 
@@ -167,16 +167,16 @@ broadcast(messageType: string, message?: unknown): void
 
 广播消息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | messageType: string |  |
 | Optional message: unknown |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="deleteWidget"></a>
 
@@ -188,15 +188,15 @@ deleteWidget(widgetId: string): Promise<{ data: any }>
 
 删除房间 Widget
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="destroy"></a>
 
@@ -208,9 +208,9 @@ destroy(): void
 
 销毁
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="getWidgetProperties"></a>
 
@@ -222,15 +222,15 @@ getWidgetProperties(widgetId: string): any
 
 获取 Widget 属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns any
+any
 
 <a id="getWidgetState"></a>
 
@@ -242,15 +242,15 @@ getWidgetState(widgetId: string): any
 
 获取 Widget 状态
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns any
+any
 
 <a id="getWidgetTrack"></a>
 
@@ -262,15 +262,15 @@ getWidgetTrack(widgetId: string): any
 
 获取 Widget 轨迹同步信息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns any
+any
 
 <a id="getWidgetUserProperties"></a>
 
@@ -282,15 +282,15 @@ getWidgetUserProperties(widgetId: string): any
 
 获取 Widget 用户属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 
-#### Returns
+#### 返回值
 
-Returns any
+any
 
 <a id="removeBroadcastListener"></a>
 
@@ -302,15 +302,15 @@ removeBroadcastListener(listener: Omit<AgoraWidgetMessageListener<unknown>, "wid
 
 移除一个广播消息监听器
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | listener: Omit&lt;AgoraWidgetMessageListener&lt;unknown&gt;, "widgetId"&gt; |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removeWidgetExtraProperties"></a>
 
@@ -322,16 +322,16 @@ removeWidgetExtraProperties(widgetId: string, keys?: string[]): Promise<{ data: 
 
 删除扩展信息字段
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 | Optional keys: string[] |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="removeWidgetMessageListener"></a>
 
@@ -343,15 +343,15 @@ removeWidgetMessageListener(listener: AgoraWidgetMessageListener<unknown>): void
 
 移除一个消息监听器
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | listener: AgoraWidgetMessageListener&lt;unknown&gt; |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removeWidgetStateListener"></a>
 
@@ -363,15 +363,15 @@ removeWidgetStateListener(listener: AgoraWidgetStateListener): void
 
 移除一个组件状态监听器
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | listener: AgoraWidgetStateListener |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removeWidgetUserProperties"></a>
 
@@ -383,16 +383,16 @@ removeWidgetUserProperties(widgetId: string, keys?: string[]): Promise<{ data: a
 
 删除用户属性字段
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 | Optional keys: string[] |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="sendMessage"></a>
 
@@ -404,17 +404,17 @@ sendMessage(toWidgetId: string, messageType: string, message?: unknown): void
 
 向指定 Widget 发送消息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | toWidgetId: string |  |
 | messageType: string |  |
 | Optional message: unknown |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setWidegtActive"></a>
 
@@ -426,17 +426,17 @@ setWidegtActive(widgetId: string, props?: any, ownerUserUuid?: string): Promise<
 
 设置 widget 为活跃
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 | Optional props: any |  |
 | Optional ownerUserUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="setWidgetInactive"></a>
 
@@ -448,16 +448,16 @@ setWidgetInactive(widgetId: string, props?: any): Promise<{ data: any }>
 
 设置 widget 为不活跃
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 | Optional props: any |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="updateWidgetProperties"></a>
 
@@ -469,16 +469,16 @@ updateWidgetProperties(widgetId: string, props: any): Promise<{ data: any }>
 
 更新 widget 属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 | props: any |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{data: any \} &gt;
+Promise &lt; \{data: any \} &gt;
 
 <a id="updateWidgetUserProperties"></a>
 
@@ -490,13 +490,13 @@ updateWidgetUserProperties(widgetId: string, props: any): void
 
 更新 widget 用户属性
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | widgetId: string |  |
 | props: any |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void

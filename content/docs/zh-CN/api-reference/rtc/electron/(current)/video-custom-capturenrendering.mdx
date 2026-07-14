@@ -1,10 +1,9 @@
 ---
 title: "自定义视频采集和渲染"
-description: "创建一个自定义的视频轨道。"
+description: "自定义视频采集和渲染 API reference."
 ---
-<a id="toc_video_custom_capturenrendering"></a>
 
-## 自定义视频采集和渲染
+<a id="toc_video_custom_capturenrendering"></a>
 
 <a id="api_irtcengine_createcustomvideotrack"></a>
 
@@ -24,7 +23,7 @@ abstract createCustomVideoTrack(): number;
 
 1. 调用该方法创建视频轨道并获得视频轨道 ID。
 2. 调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/electron/class-channelmediaoptions) 中的 `customVideoTrackId` 设置为你想要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 true。
-3. 调用 [pushVideoFrame](/zh-CN/api-reference/rtc/electron/video-custom-capturenrendering#api_imediaengine_pushvideoframe) 将 `videoTrackId` 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
+3. 调用 [pushVideoFrame](/zh-CN/api-reference/rtc/electron/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe) 将 `videoTrackId` 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
 
 <a id="api_irtcengine_createcustomvideotrack__return_values"></a>
 
@@ -33,7 +32,6 @@ abstract createCustomVideoTrack(): number;
 - 方法调用成功，返回视频轨道 ID 作为该视频轨道的唯一标识。
 - 方法调用失败，返回 0xffffffff。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroycustomvideotrack"></a>
@@ -56,7 +54,7 @@ abstract destroyCustomVideoTrack(videoTrackId: number): number;
 
 #### `videoTrackId`
 
-调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/electron/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
+调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/electron/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
 
 <a id="api_irtcengine_destroycustomvideotrack__return_values"></a>
 
@@ -65,7 +63,6 @@ abstract destroyCustomVideoTrack(videoTrackId: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaengine_pushvideoframe"></a>
@@ -87,14 +84,14 @@ abstract pushVideoFrame(
 
 当你需要在频道中发布自定义采集视频时，可参考以下步骤：
 
-1. 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/electron/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法创建视频轨道并获得视频轨道 ID。
+1. 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/electron/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法创建视频轨道并获得视频轨道 ID。
 2. 调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/electron/class-channelmediaoptions) 中的 `customVideoTrackId` 设置为你想要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 true。
 3. 调用该方法将 `videoTrackId` 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
 
 :::info[注]
 调用该方法后，即使你停止推送外部视频帧到 SDK，自定义采集的视频流仍然会被计入视频时长用量并产生费用，声网建议你根据实际情况采取相应措施避免此类视频计费：
 
-- 如果你不再需要采集外部视频数据，可以调用 [destroyCustomVideoTrack](/zh-CN/api-reference/rtc/electron/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) 销毁自定义采集的视频轨道。
+- 如果你不再需要采集外部视频数据，可以调用 [destroyCustomVideoTrack](/zh-CN/api-reference/rtc/electron/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) 销毁自定义采集的视频轨道。
 - 如果你只想将采集到的外部视频数据用于本地预览、而不在频道内发布，可以调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_mutelocalvideostream) 取消发送视频流，或调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_updatechannelmediaoptions) 将 `publishCustomVideoTrack` 设置为 false。
 :::
 
@@ -108,7 +105,7 @@ abstract pushVideoFrame(
 
 #### `videoTrackId`
 
-调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/electron/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
+调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/electron/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
 
 :::info[注]
 如果你只需推送一路外部视频流， `videoTrackId` 设置为 0 即可。
@@ -121,7 +118,6 @@ abstract pushVideoFrame(
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
 
 <a id="api_imediaengine_setexternalvideosource"></a>
@@ -143,7 +139,7 @@ abstract setExternalVideoSource(
 
 <a id="api_imediaengine_setexternalvideosource__detailed_desc"></a>
 
-调用该方法启用外部视频源后，你可以调用 [pushVideoFrame](/zh-CN/api-reference/rtc/electron/video-custom-capturenrendering#api_imediaengine_pushvideoframe) 向 SDK 推送外部视频数据。
+调用该方法启用外部视频源后，你可以调用 [pushVideoFrame](/zh-CN/api-reference/rtc/electron/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe) 向 SDK 推送外部视频数据。
 
 :::info[注]
 不支持在频道内动态切换视频源。如果已调用该方法启用外部视频源并加入频道，若想切换为内部视频源，必须先退出频道，然后调用该方法关闭外部视频源，再重新加入频道。
@@ -188,5 +184,4 @@ abstract setExternalVideoSource(
 - 0：方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)

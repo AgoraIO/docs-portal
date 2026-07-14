@@ -1,10 +1,9 @@
 ---
 title: "视频渲染"
-description: "开启音视频帧加速渲染。"
+description: "视频渲染 API reference."
 ---
-<a id="toc_video_rendering"></a>
 
-## 视频渲染
+<a id="toc_video_rendering"></a>
 
 <a id="api_irtcengine_enableinstantmediarendering"></a>
 
@@ -44,7 +43,6 @@ Future<void> enableInstantMediaRendering();
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalrendermode2"></a>
@@ -67,14 +65,14 @@ Future<void> setLocalRenderMode(
 初始化本地用户视图后，你可以调用该方法更新本地用户视图的渲染和镜像模式。该方法只影响本地用户看到的视频画面，不影响本地视频的发布。
 
 :::info[注]
-该方法仅对第一个摄像头 `(primaryCameraSource)` 生效。在自定义视频采集或使用其他类型视频源的场景下，你需要使用 [setupLocalVideo](/zh-CN/api-reference/rtc/flutter/video-rendering#api_irtcengine_setuplocalvideo) 方法替代该方法。
+该方法仅对第一个摄像头 `(primaryCameraSource)` 生效。在自定义视频采集或使用其他类型视频源的场景下，你需要使用 [setupLocalVideo](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_setuplocalvideo) 方法替代该方法。
 :::
 
 <a id="api_irtcengine_setlocalrendermode2__timing"></a>
 
 ### 调用时机
 
-- 请在调用 [setupLocalVideo](/zh-CN/api-reference/rtc/flutter/video-rendering#api_irtcengine_setuplocalvideo) 方法初始化本地视图后，调用该方法。
+- 请在调用 [setupLocalVideo](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_setuplocalvideo) 方法初始化本地视图后，调用该方法。
 - 你可以在通话中多次调用该方法，多次更新本地用户视图的显示模式。
 
 <a id="api_irtcengine_setlocalrendermode2__parameters"></a>
@@ -99,7 +97,6 @@ Future<void> setLocalRenderMode(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalrendertargetfps"></a>
@@ -151,7 +148,6 @@ Future<void> setLocalRenderTargetFps(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvideomirrormode"></a>
@@ -186,7 +182,6 @@ Future<void> setLocalVideoMirrorMode(VideoMirrorModeType mirrorMode);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremoterendermode2"></a>
@@ -209,7 +204,7 @@ Future<void> setRemoteRenderMode(
 初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
 
 :::info[注]
-- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/flutter/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后，调用该方法。
+- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后，调用该方法。
 - 你可以在通话中多次调用该方法，多次更新远端用户视图的显示模式。
 :::
 
@@ -237,7 +232,6 @@ Future<void> setRemoteRenderMode(
 
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremoterendermodeex"></a>
@@ -288,7 +282,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setremoterendertargetfps"></a>
@@ -335,7 +328,6 @@ Future<void> setRemoteRenderTargetFps(int targetFps);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayer_setrendermode"></a>
@@ -366,7 +358,6 @@ Future<void> setRenderMode(RenderModeType renderMode);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_irtcengine_setuplocalvideo"></a>
@@ -387,7 +378,7 @@ Future<void> setupLocalVideo(VideoCanvas canvas);
 
 :::info[注]
 - 在 Flutter 中你不需要主动调用该方法，请使用 [AgoraVideoView](/zh-CN/api-reference/rtc/flutter/class-agoravideoview) 渲染本地和远端视图。
-- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 [setLocalRenderMode](/zh-CN/api-reference/rtc/flutter/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
+- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 [setLocalRenderMode](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
 :::
 
 <a id="api_irtcengine_setuplocalvideo__scenario"></a>
@@ -418,7 +409,6 @@ Future<void> setupLocalVideo(VideoCanvas canvas);
 
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setupremotevideo"></a>
@@ -439,8 +429,8 @@ Future<void> setupRemoteVideo(VideoCanvas canvas);
 
 :::info[注]
 - 在 Flutter 中你不需要主动调用该方法，请使用 [AgoraVideoView](/zh-CN/api-reference/rtc/flutter/class-agoravideoview) 渲染本地和远端视图。
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderMode](/zh-CN/api-reference/rtc/flutter/video-rendering#api_irtcengine_setremoterendermode2) 方法。
-- 当使用录制服务时，由于它不会发送视频流，App 无需为它绑定视图。如果 App 无法识别录制服务，可以在收到 [onFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/flutter/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时再绑定远端用户视图。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderMode](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_setremoterendermode2) 方法。
+- 当使用录制服务时，由于它不会发送视频流，App 无需为它绑定视图。如果 App 无法识别录制服务，可以在收到 [onFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/flutter/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调时再绑定远端用户视图。
 :::
 
 <a id="api_irtcengine_setupremotevideo__parameters"></a>
@@ -459,7 +449,6 @@ Future<void> setupRemoteVideo(VideoCanvas canvas);
 
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setupremotevideoex"></a>
@@ -482,7 +471,7 @@ Future<void> setupRemoteVideoEx(
 :::info[注]
 - 该方法需要在 [joinChannelEx](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengineex_joinchannelex) 之后调用。
 - 在 Flutter 中你不需要主动调用该方法，请使用 [AgoraVideoView](/zh-CN/api-reference/rtc/flutter/class-agoravideoview) 渲染本地和远端视图。
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderModeEx](/zh-CN/api-reference/rtc/flutter/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderModeEx](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
 :::
 
 <a id="api_irtcengineex_setupremotevideoex__parameters"></a>
@@ -505,7 +494,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_startmediarenderingtracing"></a>
@@ -522,7 +510,7 @@ Future<void> startMediaRenderingTracing();
 
 <a id="api_irtcengine_startmediarenderingtracing__detailed_desc"></a>
 
-成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/flutter/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
+成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/flutter/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
 
 :::info[注]
 - 如果你未调用该方法，SDK 默认以调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
@@ -541,7 +529,6 @@ Future<void> startMediaRenderingTracing();
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startmediarenderingtracingex"></a>
@@ -558,7 +545,7 @@ Future<void> startMediaRenderingTracingEx(RtcConnection connection);
 
 <a id="api_irtcengineex_startmediarenderingtracingex__detailed_desc"></a>
 
-成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/flutter/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
+成功调用该方法后，SDK 会以调用该方法的时刻作为起点，并通过 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/flutter/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染的相关信息。
 
 :::info[注]
 - 如果你未调用该方法，SDK 默认以调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 加入频道的时刻为起始点开始打点，自动开始跟踪视频的渲染事件。你可以根据实际业务场景，在合适的时机调用该方法，进行自定义打点。
@@ -585,7 +572,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo"></a>
@@ -642,7 +628,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 某一路合图视频流的详细布局信息。详见 [VideoLayout](/zh-CN/api-reference/rtc/flutter/class-videolayout)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult"></a>
@@ -663,7 +648,7 @@ final void Function(
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__detailed_desc"></a>
 
-调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后，SDK 会触发该回调，报告视频帧渲染的事件和渲染过程中的指标。开发者可以针对指标进行专项优化，以提高出图效率。
+调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_startmediarenderingtracing) 方法或加入频道后，SDK 会触发该回调，报告视频帧渲染的事件和渲染过程中的指标。开发者可以针对指标进行专项优化，以提高出图效率。
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__parameters"></a>
 
@@ -685,5 +670,4 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 视频帧渲染过程中的指标。开发者需要尽可能降低指标值，以提高出图效率。详见 [VideoRenderingTracingInfo](/zh-CN/api-reference/rtc/flutter/class-videorenderingtracinginfo)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,10 +1,9 @@
 ---
 title: "自定义视频采集和渲染"
-description: "创建一个自定义视频轨道。"
+description: "自定义视频采集和渲染 API reference."
 ---
-<a id="toc_video_custom_capturenrendering"></a>
 
-## 自定义视频采集和渲染
+<a id="toc_video_custom_capturenrendering"></a>
 
 <a id="api_irtcengine_createcustomvideotrack"></a>
 
@@ -33,7 +32,6 @@ description: "创建一个自定义视频轨道。"
 - 方法调用成功时，返回视频轨道 ID，作为该视频轨道的唯一标识符。
 - 方法调用失败时，返回 `0xffffffff`。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroycustomvideotrack"></a>
@@ -56,7 +54,7 @@ description: "创建一个自定义视频轨道。"
 
 #### `videoTrackId`
 
-调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/macos/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
+调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/macos/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
 
 <a id="api_irtcengine_destroycustomvideotrack__return_values"></a>
 
@@ -65,7 +63,6 @@ description: "创建一个自定义视频轨道。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pushvideoframe"></a>
@@ -84,9 +81,9 @@ description: "创建一个自定义视频轨道。"
 
 要发布自定义视频源，请按照以下步骤操作：
 
-1. 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/macos/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 创建视频轨道并获取视频轨道 ID。
+1. 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/macos/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 创建视频轨道并获取视频轨道 ID。
 2. 调用 `joinChannelByToken` 加入频道。在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中，将 `customVideoTrackId` 设置为要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 YES。
-3. 调用 [pushExternalVideoFrame:videoTrackId:](/zh-CN/api-reference/rtc/macos/video-custom-capturenrendering#api_irtcengine_pushvideoframe) 方法，并将 `videoTrackId` 指定为第 2 步中设置的视频轨道 ID，即可在频道中发布相应的自定义视频源。
+3. 调用 [pushExternalVideoFrame:videoTrackId:](/zh-CN/api-reference/rtc/macos/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe) 方法，并将 `videoTrackId` 指定为第 2 步中设置的视频轨道 ID，即可在频道中发布相应的自定义视频源。
 
 <a id="api_irtcengine_pushvideoframe__parameters"></a>
 
@@ -98,7 +95,7 @@ description: "创建一个自定义视频轨道。"
 
 #### `videoTrackId`
 
-通过调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/macos/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
+通过调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/macos/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
 
 - 如果你只需推送一个自定义视频源，请将该参数设置为 0。
 
@@ -109,7 +106,6 @@ description: "创建一个自定义视频轨道。"
 - YES：推送外部视频帧成功。
 - NO：推送外部视频帧失败。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pushvideoframe2"></a>
@@ -130,7 +126,7 @@ description: "创建一个自定义视频轨道。"
 
 该方法已废弃，请改用 `pushExternalVideoFrame:frame,videoTrackId`。
 
-调用 [setExternalVideoSource:useTexture:sourceType:](/zh-CN/api-reference/rtc/macos/video-custom-capturenrendering#api_irtcengine_setexternalvideosource) 方法，并将 `enabled` 参数设置为 YES， `encodedFrame` 参数设置为 NO 后，可以调用该方法将外部原始视频帧推送到 SDK。
+调用 [setExternalVideoSource:useTexture:sourceType:](/zh-CN/api-reference/rtc/macos/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource) 方法，并将 `enabled` 参数设置为 YES， `encodedFrame` 参数设置为 NO 后，可以调用该方法将外部原始视频帧推送到 SDK。
 
 <a id="api_irtcengine_pushvideoframe2__parameters"></a>
 
@@ -147,7 +143,6 @@ description: "创建一个自定义视频轨道。"
 - YES：方法调用成功。
 - NO：方法调用失败。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setexternalvideosource"></a>
@@ -164,7 +159,7 @@ description: "创建一个自定义视频轨道。"
 
 <a id="api_irtcengine_setexternalvideosource__detailed_desc"></a>
 
-调用该方法启用外部视频源后，可以调用 [pushExternalVideoFrame:videoTrackId:](/zh-CN/api-reference/rtc/macos/video-custom-capturenrendering#api_irtcengine_pushvideoframe) 方法将外部视频数据推送到 SDK。
+调用该方法启用外部视频源后，可以调用 [pushExternalVideoFrame:videoTrackId:](/zh-CN/api-reference/rtc/macos/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe) 方法将外部视频数据推送到 SDK。
 
 :::info[注]
 频道内不支持动态切换视频源。如需从外部视频源切换为内部视频源，必须先离开频道，调用该方法关闭外部视频源，再重新加入频道。
@@ -198,5 +193,4 @@ description: "创建一个自定义视频轨道。"
 
 外部视频帧的类型，详见 [AgoraExternalVideoSourceType](/zh-CN/api-reference/rtc/macos/enum-externalvideosourcetype)。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)

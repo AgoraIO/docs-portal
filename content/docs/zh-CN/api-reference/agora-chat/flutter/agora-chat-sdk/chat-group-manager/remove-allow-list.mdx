@@ -1,0 +1,41 @@
+---
+title: "removeAllowList method"
+description: "API docs for the removeAllowList method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Removes members from the allow list of the group.
+
+Only the group owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `members` | The members to be removed from the allow list of the group. |
+
+```dart title="Dart"
+Future<void> removeAllowList(String groupId, List<String> members)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> removeAllowList(
+  String groupId,
+  List<String> members,
+) async {
+  Map req = {'groupId': groupId, 'members': members};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.removeWhiteList, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

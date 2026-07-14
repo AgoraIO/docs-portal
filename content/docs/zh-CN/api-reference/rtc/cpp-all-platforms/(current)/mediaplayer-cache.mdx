@@ -2,6 +2,7 @@
 title: "媒体播放器缓存"
 description: "设置是否自动删除缓存的媒体文件。"
 ---
+
 <a id="toc_mediaplayer_cache"></a>
 
 ## 媒体播放器缓存
@@ -40,7 +41,6 @@ virtual int enableAutoRemoveCache(bool enable) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_getcachedir"></a>
@@ -78,7 +78,6 @@ virtual int getCacheDir(char* path, int length) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_getcachefilecount"></a>
@@ -102,7 +101,6 @@ virtual int getCacheFileCount() = 0;
 - 方法调用成功，返回已缓存的媒体文件数量。
 - &lt; 0：方法调用失败，参见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_getmaxcachefilecount"></a>
@@ -126,7 +124,6 @@ virtual int getMaxCacheFileCount() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_getmaxcachefilesize"></a>
@@ -152,7 +149,6 @@ virtual int64_t getMaxCacheFileSize() = 0;
 - 方法调用成功，返回缓存媒体文件聚合存储空间的最大大小（单位为字节）。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_removeallcaches"></a>
@@ -180,7 +176,6 @@ virtual int removeAllCaches() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_removecachebyuri"></a>
@@ -216,7 +211,6 @@ virtual int removeCacheByUri(const char *uri) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_removeoldcache"></a>
@@ -246,7 +240,6 @@ virtual int removeOldCache() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_setcachedir"></a>
@@ -286,7 +279,6 @@ virtual int setCacheDir(const char *path) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_setmaxcachefilecount"></a>
@@ -318,7 +310,6 @@ virtual int setMaxCacheFileCount(int count) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_setmaxcachefilesize"></a>
@@ -350,7 +341,6 @@ virtual int setMaxCacheFileSize(int64_t cacheSize) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
-### 所属接口类
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="callback_imediaplayersourceobserver_onplayercachestats"></a>
@@ -377,5 +367,4 @@ virtual void onPlayerCacheStats(const media::base::CacheStatistics& stats)
 
 媒体文件缓存统计信息。详见 [CacheStatistics](/zh-CN/api-reference/rtc/cpp-all-platforms/class-cachestatistics)。
 
-### 所属接口类
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayersourceobserver)

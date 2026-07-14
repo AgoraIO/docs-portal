@@ -1,10 +1,9 @@
 ---
 title: "音频采集"
-description: "调整声卡采集信号的音量。"
+description: "音频采集 API reference."
 ---
-<a id="toc_audio_capture"></a>
 
-## 音频采集
+<a id="toc_audio_capture"></a>
 
 <a id="api_irtcengine_adjustloopbacksignalvolume"></a>
 
@@ -20,7 +19,7 @@ virtual int adjustLoopbackSignalVolume(int volume) = 0;
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__detailed_desc"></a>
 
-在调用 [enableLoopbackRecording](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-capture#api_irtcengine_enableloopbackrecording) 启用环路音频采集后，可以调用该方法调整声卡采集信号的音量。
+在调用 [enableLoopbackRecording](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-capture#api_irtcengine_enableloopbackrecording) 启用环路音频采集后，可以调用该方法调整声卡采集信号的音量。
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__parameters"></a>
 
@@ -37,7 +36,6 @@ virtual int adjustLoopbackSignalVolume(int volume) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustrecordingsignalvolume"></a>
@@ -54,7 +52,7 @@ virtual int adjustRecordingSignalVolume(int volume) = 0;
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__detailed_desc"></a>
 
-如果你只需要静音音频信号，声网建议使用 [muteRecordingSignal](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-capture#api_irtcengine_muterecordingsignal) 方法。
+如果你只需要静音音频信号，声网建议使用 [muteRecordingSignal](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-capture#api_irtcengine_muterecordingsignal) 方法。
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__timing"></a>
 
@@ -81,7 +79,6 @@ virtual int adjustRecordingSignalVolume(int volume) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableinearmonitoring2"></a>
@@ -134,7 +131,6 @@ virtual int enableInEarMonitoring(bool enabled, int includeAudioFilters) = 0;
 
   - -8：请确保当前的音频路由为蓝牙或有线耳机。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablelocalaudio"></a>
@@ -153,7 +149,7 @@ virtual int enableLocalAudio(bool enabled) = 0;
 
 该方法用于关闭或重新启用本地音频功能，从而停止或重新开始本地音频采集。 该方法与 [muteLocalAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 的区别如下：
 
-- [enableLocalAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-capture#api_irtcengine_enablelocalaudio)：关闭或重新启用本地音频采集和处理。如果通过该方法关闭或重新启用本地音频采集，本地用户可能会听到远端音频播放的中断。
+- [enableLocalAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-capture#api_irtcengine_enablelocalaudio)：关闭或重新启用本地音频采集和处理。如果通过该方法关闭或重新启用本地音频采集，本地用户可能会听到远端音频播放的中断。
 - [muteLocalAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：仅停止或恢复发送本地音频流，不影响音频采集状态。
 
 该方法不影响接收远端音频流。将 `enabled` 设置为 false 适用于只接收远端音频流而不发送本地音频的场景。 你可以在加入频道前或加入频道后调用该方法。在加入频道前调用该方法仅设置设备状态，并在加入频道后立即生效。
@@ -174,7 +170,7 @@ virtual int enableLocalAudio(bool enabled) = 0;
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，报告 `LOCAL_AUDIO_STREAM_STATE_STOPPED` （0）或 `LOCAL_AUDIO_STREAM_STATE_RECORDING` （1）。
+成功调用该方法后，SDK 会触发 [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，报告 `LOCAL_AUDIO_STREAM_STATE_STOPPED` （0）或 `LOCAL_AUDIO_STREAM_STATE_RECORDING` （1）。
 
 <a id="api_irtcengine_enablelocalaudio__parameters"></a>
 
@@ -194,7 +190,6 @@ virtual int enableLocalAudio(bool enabled) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableloopbackrecording"></a>
@@ -216,7 +211,7 @@ virtual int enableLoopbackRecording(bool enabled, const char* deviceName = NULL)
 :::info[注]
 - 该方法仅适用于 macOS 和 Windows 平台。
 - 你可以在加入频道前或加入频道后调用该方法。
-- 如果你调用了 [disableAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#api_irtcengine_disableaudio) 方法禁用了音频模块，音频采集也会被禁用。若需启用音频采集，请先调用 [enableAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#api_irtcengine_enableaudio) 方法启用音频模块，再调用 [enableLoopbackRecording](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-capture#api_irtcengine_enableloopbackrecording) 方法。
+- 如果你调用了 [disableAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#api_irtcengine_disableaudio) 方法禁用了音频模块，音频采集也会被禁用。若需启用音频采集，请先调用 [enableAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#api_irtcengine_enableaudio) 方法启用音频模块，再调用 [enableLoopbackRecording](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-capture#api_irtcengine_enableloopbackrecording) 方法。
 :::
 
 <a id="api_irtcengine_enableloopbackrecording__parameters"></a>
@@ -242,7 +237,6 @@ virtual int enableLoopbackRecording(bool enabled, const char* deviceName = NULL)
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableloopbackrecordingex"></a>
@@ -300,7 +294,6 @@ virtual int enableLoopbackRecordingEx(const RtcConnection& connection, bool enab
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muterecordingsignal"></a>
@@ -317,7 +310,7 @@ virtual int muteRecordingSignal(bool mute) = 0;
 
 <a id="api_irtcengine_muterecordingsignal__detailed_desc"></a>
 
-如果你已经调用 [adjustRecordingSignalVolume](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-capture#api_irtcengine_adjustrecordingsignalvolume) 方法调整了录制信号的音量，当你调用该方法并将参数设置为 true 时，SDK 会执行以下操作：
+如果你已经调用 [adjustRecordingSignalVolume](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-capture#api_irtcengine_adjustrecordingsignalvolume) 方法调整了录制信号的音量，当你调用该方法并将参数设置为 true 时，SDK 会执行以下操作：
 
 - 记录当前调整后的音量。
 - 静音录制信号。
@@ -348,7 +341,6 @@ virtual int muteRecordingSignal(bool mute) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setinearmonitoringvolume"></a>
@@ -392,5 +384,4 @@ virtual int setInEarMonitoringVolume(int volume) = 0;
 
   - -2：参数设置不合法，例如耳返音量超出有效范围（小于 0 或大于 400）。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)

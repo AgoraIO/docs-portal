@@ -1,10 +1,9 @@
 ---
 title: "网络及其他"
-description: "投诉通话质量。"
+description: "网络及其他 API reference."
 ---
-<a id="toc_network"></a>
 
-## 网络及其他
+<a id="toc_network"></a>
 
 <a id="api_irtcengine_complain"></a>
 
@@ -45,7 +44,6 @@ abstract complain(callId: string, description: string): number;
   - -2: 参数无效。
   - -7: [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableencryption"></a>
@@ -107,7 +105,6 @@ abstract enableEncryption(enabled: boolean, config: EncryptionConfig): number;
   - -4: 设置的加密模式不正确或加载外部加密库失败。需检查枚举值是否正确或重新加载外部加密库。
   - -7: SDK 尚未初始化。需在调用 API 之前已创建 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 对象并完成初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableencryptionex"></a>
@@ -173,7 +170,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_enablewebsdkinteroperability"></a>
@@ -214,7 +210,6 @@ abstract enableWebSdkInteroperability(enabled: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getcallid"></a>
@@ -246,7 +241,6 @@ abstract getCallId(): string;
 - 方法调用成功则返回当前的通话 ID。
 - 方法调用失败则返回空字符串。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getcallidex"></a>
@@ -279,7 +273,6 @@ abstract getCallIdEx(connection: RtcConnection): string;
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_getconnectionstate"></a>
@@ -308,7 +301,6 @@ abstract getConnectionState(): ConnectionStateType;
 
 当前网络连接状态。详见 [ConnectionStateType](/zh-CN/api-reference/rtc/electron/enum-connectionstatetype)。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getconnectionstateex"></a>
@@ -345,7 +337,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 当前网络连接状态。详见 [ConnectionStateType](/zh-CN/api-reference/rtc/electron/enum-connectionstatetype)。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_getcurrentmonotonictimeinms"></a>
@@ -377,7 +368,6 @@ Monotonic Time 是指一个单调递增的时间序列，它的值会随着时�
 - ≥ 0: 方法调用成功，返回 SDK 当前的 Monotonic Time（毫秒）。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_geterrordescription"></a>
@@ -408,7 +398,6 @@ SDK 报告的错误码。
 
 具体的错误描述。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getnativehandle"></a>
@@ -433,7 +422,6 @@ abstract getNativeHandle(): number;
 
 SDK 引擎的 Native 句柄。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getnetworktype"></a>
@@ -473,7 +461,6 @@ abstract getNetworkType(): number;
 
   - -1：网络连接类型未知。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getntpwalltimeinms"></a>
@@ -498,7 +485,6 @@ abstract getNtpWallTimeInMs(): number;
 
 当前 NTP 时间的 Unix 时间戳 (毫秒)。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getversion"></a>
@@ -521,7 +507,6 @@ abstract getVersion(): SDKBuildInfo;
 
 [SDKBuildInfo](/zh-CN/api-reference/rtc/electron/class-sdkbuildinfo) 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_isfeatureavailableondevice"></a>
@@ -561,7 +546,6 @@ abstract isFeatureAvailableOnDevice(type: FeatureType): boolean;
 - true: 设备支持指定进阶功能。
 - false: 设备不支持指定进阶功能。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_querydevicescore"></a>
@@ -591,7 +575,6 @@ abstract queryDeviceScore(): number;
 - &gt; 0: 方法调用成功，值为当前设备的评分等级，取值范围为[0,100]，数值越大表示设备能力越强。大部分设备的评分在 60 到 100 之间。
 - &lt; 0: 方法调用失败。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_rate"></a>
@@ -638,7 +621,6 @@ abstract rate(callId: string, rating: number, description: string): number;
   - -1: 一般性的错误（未明确归类）。
   - -2: 参数无效。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_sendcustomreportmessage"></a>
@@ -663,7 +645,6 @@ abstract sendCustomReportMessage(
 
 声网提供自定义数据上报和分析服务。该服务当前处于免费内测期。内测期提供的能力为 6 秒内最多上报 10 条数据，每条自定义数据不能超过 256 字节，每个字符串不能超过 100 字节。如需试用该服务，请[联系销售](https://www.shengwang.cn/contact-sales/)开通并商定自定义数据格式。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_sendcustomreportmessageex"></a>
@@ -689,7 +670,6 @@ abstract sendCustomReportMessageEx(
 
 声网提供自定义数据上报和分析服务。该服务当前处于免费内测期。内测期提供的能力为 6 秒内最多上报 10 条数据，每条自定义数据不能超过 256 字节，每个字符串不能超过 100 字节。如需试用该服务，请[联系销售](https://www.shengwang.cn/contact-sales/)开通并商定自定义数据格式。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setavsyncsource"></a>
@@ -731,7 +711,6 @@ abstract setAVSyncSource(channelId: string, uid: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setcloudproxy"></a>
@@ -753,7 +732,7 @@ abstract setCloudProxy(proxyType: CloudProxyType): number;
 :::info[注]
 - 建议你在频道外调用该方法。
 - 如果用户处于内网防火墙环境下，使用 Force UDP 云代理时，旁路推流和跨频道媒体流转发功能不可用。
-- 使用 Force UDP 云代理时，调用 [startAudioMixing](/zh-CN/api-reference/rtc/electron/audio-mixing#api_irtcengine_startaudiomixing2) 方法时无法播放 HTTP 协议的在线音频文件。旁路推流和跨频道媒体流转发功能会使用 TCP 协议的云代理。
+- 使用 Force UDP 云代理时，调用 [startAudioMixing](/zh-CN/api-reference/rtc/electron/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法时无法播放 HTTP 协议的在线音频文件。旁路推流和跨频道媒体流转发功能会使用 TCP 协议的云代理。
 :::
 
 <a id="api_irtcengine_setcloudproxy__parameters"></a>
@@ -774,7 +753,6 @@ abstract setCloudProxy(proxyType: CloudProxyType): number;
   - -2: 传入的参数无效。
   - -7: SDK 尚未初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalaccesspoint"></a>
@@ -809,7 +787,7 @@ abstract setLocalAccessPoint(config: LocalAccessPointConfiguration): number;
 
 #### `config`
 
-Local Access Point 配置。详见 [LocalAccessPointConfiguration](/zh-CN/api-reference/rtc/electron/class-localaccesspointconfiguration)。
+Local Access Point 配置。详见 LocalAccessPointConfiguration。
 
 <a id="api_irtcengine_setlocalaccesspoint__return_values"></a>
 
@@ -818,7 +796,6 @@ Local Access Point 配置。详见 [LocalAccessPointConfiguration](/zh-CN/api-re
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlogfile"></a>
@@ -866,7 +843,6 @@ App 必须保证指定的目录存在而且可写。
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlogfilesize"></a>
@@ -921,7 +897,6 @@ abstract setLogFileSize(fileSizeInKBytes: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlogfilter"></a>
@@ -959,7 +934,6 @@ abstract setLogFilter(filter: LogFilterType): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setloglevel"></a>
@@ -997,7 +971,6 @@ abstract setLogLevel(level: LogLevel): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setparameters"></a>
@@ -1029,7 +1002,6 @@ JSON 字符串形式的参数。
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremotesubscribefallbackoption"></a>
@@ -1065,7 +1037,6 @@ abstract setRemoteSubscribeFallbackOption(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startechotest3"></a>
@@ -1111,7 +1082,6 @@ abstract startEchoTest(config: EchoTestConfiguration): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startlastmileprobetest"></a>
@@ -1160,7 +1130,6 @@ Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopechotest"></a>
@@ -1188,7 +1157,6 @@ abstract stopEchoTest(): number;
 
   - -5(ERR_REFUSED): 停止测试失败，可能是测试不在运行中。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoplastmileprobetest"></a>
@@ -1212,7 +1180,6 @@ abstract stopLastmileProbeTest(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned"></a>
@@ -1241,7 +1208,6 @@ onConnectionBanned?(connection: RtcConnection): void;
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted"></a>
@@ -1277,7 +1243,6 @@ SDK 在和服务器建立连接后，失去了网络连接超过 4 秒，会触�
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onconnectionlost"></a>
@@ -1304,7 +1269,6 @@ SDK 在调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcen
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged"></a>
@@ -1343,7 +1307,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 引起当前网络连接状态改变的原因。详见 [ConnectionChangedReasonType](/zh-CN/api-reference/rtc/electron/enum-connectionchangedreasontype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onencryptionerror"></a>
@@ -1377,7 +1340,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 错误类型，详见 [EncryptionErrorType](/zh-CN/api-reference/rtc/electron/enum-encryptionerrortype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult"></a>
@@ -1404,7 +1366,6 @@ onLastmileProbeResult?(result: LastmileProbeResult): void;
 
 上下行 Last mile 质量探测结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/electron/class-lastmileproberesult)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlastmilequality"></a>
@@ -1431,7 +1392,6 @@ onLastmileQuality?(quality: QualityType): void;
 
 Last mile 网络质量。详见 [QualityType](/zh-CN/api-reference/rtc/electron/enum-qualitytype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onmultipathstats"></a>
@@ -1466,7 +1426,6 @@ onMultipathStats?(connection: RtcConnection, stats: MultipathStats): void;
 
 多路径传输统计信息。详见 [MultipathStats](/zh-CN/api-reference/rtc/electron/class-multipathstats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onnetworkquality"></a>
@@ -1514,7 +1473,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 该用户的下行网络质量，基于下行网络的丢包率、平均往返延时和网络抖动计算。详见 [QualityType](/zh-CN/api-reference/rtc/electron/enum-qualitytype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onnetworktypechanged"></a>
@@ -1545,7 +1503,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 本地网络连接类型。详见 [NetworkType](/zh-CN/api-reference/rtc/electron/enum-networktype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onpermissionerror"></a>
@@ -1572,7 +1529,6 @@ onPermissionError?(permissionType: PermissionType): void;
 
 设备权限类型。详见 [PermissionType](/zh-CN/api-reference/rtc/electron/enum-permissiontype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onproxyconnected"></a>
@@ -1621,7 +1577,6 @@ onProxyConnected?(
 
 从调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 到 SDK 触发该回调的经过的时间（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly"></a>
@@ -1647,7 +1602,7 @@ onRemoteSubscribeFallbackToAudioOnly?(
 - 下行网络环境改善，订阅音频流恢复为音视频流
 
 :::info[注]
-订阅流因弱网环境而回退为视频小流时，你可以通过 [onRemoteVideoStats](/zh-CN/api-reference/rtc/electron/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调来监控远端视频大小流的切换。
+订阅流因弱网环境而回退为视频小流时，你可以通过 [onRemoteVideoStats](/zh-CN/api-reference/rtc/electron/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调来监控远端视频大小流的切换。
 :::
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__parameters"></a>
@@ -1663,7 +1618,6 @@ onRemoteSubscribeFallbackToAudioOnly?(
 - true: 由于网络环境不理想，订阅流已回退为音频流。
 - false: 由于网络环境改善，订阅流已恢复为音视频流。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated"></a>
@@ -1694,5 +1648,4 @@ onUplinkNetworkInfoUpdated?(info: UplinkNetworkInfo): void;
 
 上行网络信息，详见 [UplinkNetworkInfo](/zh-CN/api-reference/rtc/electron/class-uplinknetworkinfo)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)

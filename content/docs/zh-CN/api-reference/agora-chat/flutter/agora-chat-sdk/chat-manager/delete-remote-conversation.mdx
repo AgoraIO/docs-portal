@@ -1,0 +1,54 @@
+---
+title: "deleteRemoteConversation method"
+description: "API docs for the deleteRemoteConversation method from the ChatManager class, for the Dart programming language."
+---
+
+Deletes the specified conversation and the related historical messages from the server.
+
+- `true`: (default) Yes.
+- `false`: No.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `conversationId` | The conversation ID. |
+| `conversationType` | The conversation type. See [ChatConversationType](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-conversation-type). |
+| `isDeleteMessage` | Whether to delete the chat history when deleting the conversation. |
+
+```dart title="Dart"
+Future<void> deleteRemoteConversation(String conversationId, {ChatConversationType conversationType = ChatConversationType.Chat, bool isDeleteMessage = true})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> deleteRemoteConversation(
+  String conversationId, {
+  ChatConversationType conversationType = ChatConversationType.Chat,
+  bool isDeleteMessage = true,
+}) async {
+  Map req = {};
+  req["conversationId"] = conversationId;
+  if (conversationType == ChatConversationType.Chat) {
+    req["conversationType"] = 0;
+  } else if (conversationType == ChatConversationType.GroupChat) {
+    req["conversationType"] = 1;
+  } else {
+    req["conversationType"] = 2;
+  }
+  req["isDeleteRemoteMessage"] = isDeleteMessage;
+
+  Map data = await ChatChannel.invokeMethod(
+      ChatMethodKeys.deleteRemoteConversation, req);
+  try {
+    ChatError.hasErrorFromResult(data);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,43 +1,43 @@
 ---
 title: "WhiteWebSdk"
-description: "WhiteWebSdk API reference."
+description: "WhiteWebSdk API 参考。"
 ---
 
 `WhiteWebSdk` 类用于初始化 `WhiteWebSdk` 对象。
 
 - WhiteWebSdk
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
 ### constructor
 
-```ts
+```ts title="TypeScript"
 new WhiteWebSdk(params: WhiteWebSdkConfiguration): WhiteWebSdk
 ```
 
 `WhiteWebSdk` 的构造函数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: WhiteWebSdkConfiguration | 构造参数。 |
 
-#### Returns
+#### 返回值
 
-Returns [WhiteWebSdk](/zh-CN/api-reference/whiteboard/web/classes/white-web-sdk)
+[WhiteWebSdk](/zh-CN/api-reference/whiteboard/web/classes/white-web-sdk)
 
 构造的 `WhiteWebSdk` 对象。
 
-## Properties
+## 属性
 
 <a id="devicetype"></a>
 
 ### deviceType
 
-```ts
+```ts title="TypeScript"
 deviceType: DeviceType
 ```
 
@@ -47,7 +47,7 @@ deviceType: DeviceType
 
 ### region
 
-```ts
+```ts title="TypeScript"
 region: string
 ```
 
@@ -69,7 +69,7 @@ region: string
 
 ### renderEngine
 
-```ts
+```ts title="TypeScript"
 renderEngine: RenderEngine
 ```
 
@@ -79,7 +79,7 @@ renderEngine: RenderEngine
 
 ### screenType
 
-```ts
+```ts title="TypeScript"
 screenType: ScreenType
 ```
 
@@ -89,7 +89,7 @@ screenType: ScreenType
 
 ### version
 
-```ts
+```ts title="TypeScript"
 version: string
 ```
 
@@ -99,27 +99,27 @@ version: string
 
 2.13.14
 
-## Methods
+## 方法
 
 <a id="isplayable"></a>
 
 ### isPlayable
 
-```ts
+```ts title="TypeScript"
 isPlayable(params: PlayableCheckingParams): Promise<boolean>
 ```
 
 查看房间是否有回放数据。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: PlayableCheckingParams | 检查白板房间是否可以回放的参数配置，详见 [PlayableCheckingParams](/zh-CN/api-reference/whiteboard/web/globals#playablecheckingparams)。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; boolean &gt;
+Promise &lt; boolean &gt;
 
 - 如果方法调用成功，则返回 `true`。
 - 如果方法调用失败，则返回 `false`。
@@ -128,7 +128,7 @@ Returns Promise &lt; boolean &gt;
 
 ### joinRoom
 
-```ts
+```ts title="TypeScript"
 joinRoom(params: JoinRoomParams, callbacks?: Partial<RoomCallbacks>): Promise<Room>
 ```
 
@@ -136,7 +136,7 @@ joinRoom(params: JoinRoomParams, callbacks?: Partial<RoomCallbacks>): Promise<Ro
 
 ##### `example`
 
-```text
+```text title="Text"
 const joinRoomParams = {...};
 const roomCallbacks = {...};
 
@@ -149,25 +149,25 @@ whiteWebSdk.joinRoom(joinRoomParams, roomCallbacks)
            });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: JoinRoomParams | 互动白板实时房间的参数配置，详见 [JoinRoomParams](/zh-CN/api-reference/whiteboard/web/globals#joinroomparams)。 |
 | Optional callbacks: Partial&lt;RoomCallbacks&gt; | 实时房间的事件回调。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) &gt;
+Promise &lt; [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room) &gt;
 
-- 如果方法调用成功，则返回房间对象，详见 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks)。
+- 如果方法调用成功，则返回房间对象，详见 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room)。
 - 如果方法调用失败，则返回错误信息。
 
 <a id="replayroom"></a>
 
 ### replayRoom
 
-```ts
+```ts title="TypeScript"
 replayRoom(params: ReplayRoomParams, callbacks?: Partial<PlayerCallbacks>): Promise<Player>
 ```
 
@@ -175,7 +175,7 @@ replayRoom(params: ReplayRoomParams, callbacks?: Partial<PlayerCallbacks>): Prom
 
 ##### `example`
 
-```text
+```text title="Text"
 const replayRoomParams = {...};
 const replayCallbacks = {...};
 
@@ -188,16 +188,16 @@ whiteWebSdk.replayRoom(replayRoomParams, replayCallbacks)
            });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | params: ReplayRoomParams | `Player` 对象的参数配置，详见 [ReplayRoomParams](/zh-CN/api-reference/whiteboard/web/globals#replayroomparams)。 |
 | Optional callbacks: Partial&lt;PlayerCallbacks&gt; | `Player` 对象的事件回调。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks) &gt;
+Promise &lt; [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player) &gt;
 
-- 如果方法调用成功，则返回房间对象，详见 [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks)。
+- 如果方法调用成功，则返回房间对象，详见 [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player)。
 - 如果方法调用失败，则返回错误信息。

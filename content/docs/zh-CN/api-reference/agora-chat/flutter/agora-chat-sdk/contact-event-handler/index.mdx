@@ -1,0 +1,176 @@
+---
+title: "ContactEventHandler class"
+description: "API docs for the ContactEventHandler class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The contact event handler.
+
+Occurs when the contact changes, including requests to add friends, notifications to delete friends, requests to accept friends, and requests to reject friends.
+
+Adds a contact event handler:
+
+```dart title="Dart"
+  ChatClient.getInstance.contactManager.addEventHandler(UNIQUE_HANDLER_ID, ContactEventHandler());
+```
+
+Remove a contact event handler:
+
+```dart title="Dart"
+  ChatClient.getInstance.contactManager.removeEventHandler(UNIQUE_HANDLER_ID);
+```
+
+<a id="constructors"></a>
+
+## Constructors
+
+<a id="ContactEventHandler"></a>
+
+### [ContactEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/contact-event-handler/contact-event-handler)
+
+```dart title="Dart"
+ContactEventHandler({void onContactAdded(String userId)?, void onContactDeleted(String userId)?, void onContactInvited(String userId, String? reason)?, void onFriendRequestAccepted(String userId)?, void onFriendRequestDeclined(String userId)?})
+```
+
+The contact updates listener callback.
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart title="Dart"
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="onContactAdded"></a>
+
+### [onContactAdded](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/contact-event-handler/on-contact-added)
+
+```dart title="Dart"
+onContactAdded ->(void Function?(String userId)?)
+```
+
+Occurs when user is added as a contact by another user.
+
+_final._
+
+<a id="onContactDeleted"></a>
+
+### [onContactDeleted](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/contact-event-handler/on-contact-deleted)
+
+```dart title="Dart"
+onContactDeleted ->(void Function?(String userId)?)
+```
+
+Occurs when a user is removed from the contact list by another user.
+
+_final._
+
+<a id="onContactInvited"></a>
+
+### [onContactInvited](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/contact-event-handler/on-contact-invited)
+
+```dart title="Dart"
+onContactInvited ->(void Function?(String userId, String? reason)?)
+```
+
+Occurs when a user receives a friend request.
+
+_final._
+
+<a id="onFriendRequestAccepted"></a>
+
+### [onFriendRequestAccepted](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/contact-event-handler/on-friend-request-accepted)
+
+```dart title="Dart"
+onFriendRequestAccepted ->(void Function?(String userId)?)
+```
+
+Occurs when a friend request is approved.
+
+_final._
+
+<a id="onFriendRequestDeclined"></a>
+
+### [onFriendRequestDeclined](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/contact-event-handler/on-friend-request-declined)
+
+```dart title="Dart"
+onFriendRequestDeclined ->(void Function?(String userId)?)
+```
+
+Occurs when a friend request is declined.
+
+_final._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart title="Dart"
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart title="Dart"
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart title="Dart"
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart title="Dart"
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

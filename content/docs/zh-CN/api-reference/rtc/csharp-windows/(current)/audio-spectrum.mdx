@@ -2,6 +2,7 @@
 title: "音频频谱"
 description: "音频频谱 API reference."
 ---
+
 <a id="toc_audio_spectrum"></a>
 
 ## 音频频谱
@@ -43,7 +44,6 @@ public abstract int RegisterAudioSpectrumObserver(IAudioSpectrumObserver observe
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver"></a>
@@ -75,7 +75,6 @@ public abstract int UnregisterAudioSpectrumObserver();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_disableaudiospectrummonitor"></a>
@@ -107,7 +106,6 @@ public abstract int DisableAudioSpectrumMonitor();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudiospectrummonitor"></a>
@@ -149,7 +147,6 @@ SDK 触发 [OnLocalAudioSpectrum](/zh-CN/api-reference/rtc/csharp-windows/audio-
 
   - -2: 参数设置错误。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum"></a>
@@ -188,7 +185,6 @@ public virtual bool OnLocalAudioSpectrum(AudioSpectrumData data)
 - `true`: 接收。
 - `false`: 不接收。
 
-### 所属接口类
 - [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudiospectrumobserver)
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum"></a>
@@ -231,5 +227,4 @@ public virtual bool OnRemoteAudioSpectrum(UserAudioSpectrumInfo[] spectrums, uin
 - `true`: 接收。
 - `false`: 不接收。
 
-### 所属接口类
 - [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudiospectrumobserver)

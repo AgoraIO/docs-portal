@@ -2,6 +2,7 @@
 title: "初始化相关"
 description: "添加主回调事件。"
 ---
+
 <a id="toc_initialize"></a>
 
 ## 初始化相关
@@ -37,7 +38,6 @@ public abstract int InitEventHandler(IRtcEngineEventHandler engineEventHandler);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_createagorartcengine"></a>
@@ -65,7 +65,6 @@ public static IRtcEngine CreateAgoraRtcEngine()
 
 [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine) 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_createagorartcengineex"></a>
@@ -93,7 +92,6 @@ public static IRtcEngineEx CreateAgoraRtcEngineEx()
 
 [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex) 对象。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_initialize"></a>
@@ -135,7 +133,6 @@ public abstract int Initialize(RtcEngineContext context);
   - -22: 资源申请失败。当 App 占用资源过多，或系统资源耗尽时，SDK 分配资源失败，会返回该错误。
   - -101: App ID 无效。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_release"></a>
@@ -170,5 +167,4 @@ public abstract void Dispose(bool sync = false);
 - true:该方法为同步调用。
 - false:该方法为异步调用。目前该方法仅支持同步调用，请不要将该参数设置为该值。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)

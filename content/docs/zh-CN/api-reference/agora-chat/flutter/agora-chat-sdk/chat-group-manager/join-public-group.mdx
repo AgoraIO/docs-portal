@@ -1,0 +1,39 @@
+---
+title: "joinPublicGroup method"
+description: "API docs for the joinPublicGroup method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Joins a public group.
+
+For a group that requires no authentication，users can join it freely without obtaining permissions from the group owner. For a group that requires authentication, users need to wait for the group owner to agree before joining the group. For details, See [ChatGroupStyle](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-style).
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+
+```dart title="Dart"
+Future<void> joinPublicGroup(String groupId)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> joinPublicGroup(
+  String groupId,
+) async {
+  Map req = {'groupId': groupId};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.joinPublicGroup, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

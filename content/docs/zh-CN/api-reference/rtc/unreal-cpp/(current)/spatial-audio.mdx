@@ -2,9 +2,8 @@
 title: "空间音频"
 description: "空间音频 API reference."
 ---
-<a id="toc_spatial_audio"></a>
 
-## 空间音频
+<a id="toc_spatial_audio"></a>
 
 <a id="api_ilocalspatialaudioengine_initialize"></a>
 
@@ -43,7 +42,6 @@ ILocalSpatialAudioEngine 的配置。详见 [LocalSpatialAudioConfig](/zh-CN/api
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams"></a>
@@ -67,7 +65,7 @@ virtual int muteAllRemoteAudioStreams(bool mute) = 0;
 :::info[注]
 - 该方法需要在 [joinChannel [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel) 或 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 后调用。
 - 在使用空间音频时，如需设置是否订阅所有远端用户的音频流，建议调用该方法替代 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine) 的 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 方法。
-- 在调用该方法后，你需要调用 [updateSelfPosition](/zh-CN/api-reference/rtc/unreal-cpp/spatial-audio#api_ibasespatialaudioengine_updateselfposition) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/unreal-cpp/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 更新本地用户和远端用户的空间位置，否则该方法中的设置不会生效。
+- 在调用该方法后，你需要调用 [updateSelfPosition](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselfposition) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 更新本地用户和远端用户的空间位置，否则该方法中的设置不会生效。
 :::
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams__parameters"></a>
@@ -88,7 +86,6 @@ virtual int muteAllRemoteAudioStreams(bool mute) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream"></a>
@@ -111,7 +108,7 @@ virtual int muteLocalAudioStream(bool mute) = 0;
 - 该方法不影响音频采集状态，因为没有禁用音频采集设备。
 - 该方法需要在 [joinChannel [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel) 或 [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 后调用。
 - 在使用空间音频时，如需设置是否发布本地音频流，建议调用该方法替代 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine) 的 [muteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法。
-- 成功调用该方法后，远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+- 成功调用该方法后，远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 :::
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream__parameters"></a>
@@ -132,7 +129,6 @@ virtual int muteLocalAudioStream(bool mute) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream"></a>
@@ -178,7 +174,6 @@ virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_updateremoteposition"></a>
@@ -222,7 +217,6 @@ virtual int updateRemotePosition(uid_t uid, const RemoteVoicePositionInfo &posIn
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_updateselfposition"></a>
@@ -241,7 +235,7 @@ virtual int updateSelfPosition(float position[3], float axisForward[3], float ax
 
 ### 详情
 
-- 在 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ilocalspatialaudioengine) 类下，该方法需要和 [updateRemotePosition](/zh-CN/api-reference/rtc/unreal-cpp/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 搭配使用。SDK 会根据该方法和 updateRemotePosition 设置的参数计算本地和远端用户之间的相对位置，从而计算用户的空间音频参数。
+- 在 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ilocalspatialaudioengine) 类下，该方法需要和 [updateRemotePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 搭配使用。SDK 会根据该方法和 updateRemotePosition 设置的参数计算本地和远端用户之间的相对位置，从而计算用户的空间音频参数。
 
 <a id="api_ibasespatialaudioengine_updateselfposition__parameters"></a>
 
@@ -270,7 +264,6 @@ virtual int updateSelfPosition(float position[3], float axisForward[3], float ax
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_release"></a>
@@ -297,7 +290,6 @@ virtual void release() = 0;
 该方法需要在 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine) 的 [Release](/zh-CN/api-reference/rtc/unreal-cpp/initialize#api_irtcengine_release) 方法前调用。
 :::
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_clearremotepositions"></a>
@@ -327,7 +319,6 @@ virtual int clearRemotePositions() = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition"></a>
@@ -348,7 +339,7 @@ virtual int removeRemotePosition(uid_t uid) = 0;
 
 成功调用该方法后，本地用户将听不到指定的远端用户。
 
-离开频道后，为避免计算资源的浪费，你需要调用该方法删除指定远端用户的空间位置信息。否则，该用户的空间位置信息会一直被保存。当远端用户人数大于 [setMaxAudioRecvCount](/zh-CN/api-reference/rtc/unreal-cpp/spatial-audio#api_ibasespatialaudioengine_setmaxaudiorecvcount) 中设定的可接收音频流数时，会按照相对距离依次自动取消订阅距离最远的用户的音频流。
+离开频道后，为避免计算资源的浪费，你需要调用该方法删除指定远端用户的空间位置信息。否则，该用户的空间位置信息会一直被保存。当远端用户人数大于 [setMaxAudioRecvCount](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setmaxaudiorecvcount) 中设定的可接收音频流数时，会按照相对距离依次自动取消订阅距离最远的用户的音频流。
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition__parameters"></a>
 
@@ -365,7 +356,6 @@ virtual int removeRemotePosition(uid_t uid) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setaudiorecvrange"></a>
@@ -401,7 +391,6 @@ virtual int setAudioRecvRange(float range) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setdistanceunit"></a>
@@ -439,7 +428,6 @@ virtual int setDistanceUnit(float unit) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_irtcengine_setheadphoneeqparameters"></a>
@@ -458,7 +446,7 @@ virtual int setHeadphoneEQParameters(int lowGain, int highGain) = 0;
 
 ### 详情
 
-在空间音频场景下，如果在调用 [setHeadphoneEQPreset](/zh-CN/api-reference/rtc/unreal-cpp/spatial-audio#api_irtcengine_setheadphoneeqpreset) 方法使用预设的耳机均衡效果后仍未达到预期，你可以通过调用该方法进一步调节耳机均衡效果。
+在空间音频场景下，如果在调用 [setHeadphoneEQPreset](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqpreset) 方法使用预设的耳机均衡效果后仍未达到预期，你可以通过调用该方法进一步调节耳机均衡效果。
 
 <a id="api_irtcengine_setheadphoneeqparameters__parameters"></a>
 
@@ -481,7 +469,6 @@ virtual int setHeadphoneEQParameters(int lowGain, int highGain) = 0;
 
   - -1：一般性的错误（未明确归类）。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setheadphoneeqpreset"></a>
@@ -523,7 +510,6 @@ virtual int setHeadphoneEQPreset(HEADPHONE_EQUALIZER_PRESET preset) = 0;
 
   - -1：一般性的错误（未明确归类）。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_ibasespatialaudioengine_setmaxaudiorecvcount"></a>
@@ -559,7 +545,6 @@ virtual int setMaxAudioRecvCount(int maxCount) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation"></a>
@@ -584,7 +569,7 @@ virtual int setPlayerAttenuation(int playerId, double attenuation, bool forceSet
 
 #### `playerId`
 
-媒体播放器 ID。 可通过 [getMediaPlayerId](/zh-CN/api-reference/rtc/unreal-cpp/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取。
+媒体播放器 ID。 可通过 [getMediaPlayerId](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取。
 
 #### `attenuation`
 
@@ -612,7 +597,6 @@ virtual int setPlayerAttenuation(int playerId, double attenuation, bool forceSet
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation"></a>
@@ -665,7 +649,6 @@ virtual int setRemoteAudioAttenuation(uid_t uid, double attenuation, bool forceS
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams"></a>
@@ -684,7 +667,7 @@ virtual int setRemoteUserSpatialAudioParams(uid_t uid, const agora::SpatialAudio
 
 ### 详情
 
-该方法需要在 [enableSpatialAudio](/zh-CN/api-reference/rtc/unreal-cpp/spatial-audio#api_irtcengine_enablespatialaudio) 后调用。成功设置远端用户的空间音频参数后，本地用户听远端用户会有空间感。
+该方法需要在 [enableSpatialAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_irtcengine_enablespatialaudio) 后调用。成功设置远端用户的空间音频参数后，本地用户听远端用户会有空间感。
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams__parameters"></a>
 
@@ -705,7 +688,6 @@ virtual int setRemoteUserSpatialAudioParams(uid_t uid, const agora::SpatialAudio
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayer_setspatialaudioparams"></a>
@@ -743,7 +725,6 @@ virtual int setSpatialAudioParams(const SpatialAudioParams& params) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_ibasespatialaudioengine_setzones"></a>
@@ -789,7 +770,6 @@ virtual int setZones(const SpatialAudioZone *zones, unsigned int zoneCount) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_updateplayerpositioninfo"></a>
@@ -826,7 +806,7 @@ virtual int updatePlayerPositionInfo(int playerId, const RemoteVoicePositionInfo
 
 #### `playerId`
 
-媒体播放器 ID。 可通过 [getMediaPlayerId](/zh-CN/api-reference/rtc/unreal-cpp/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取。
+媒体播放器 ID。 可通过 [getMediaPlayerId](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取。
 
 #### `positionInfo`
 
@@ -839,7 +819,6 @@ virtual int updatePlayerPositionInfo(int playerId, const RemoteVoicePositionInfo
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_irtcengine_enablespatialaudio"></a>
@@ -858,7 +837,7 @@ virtual int enableSpatialAudio(bool enabled) = 0;
 
 ### 详情
 
-开启空间音频后，你可以调用 [setRemoteUserSpatialAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音频参数。
+开启空间音频后，你可以调用 [setRemoteUserSpatialAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音频参数。
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
@@ -883,5 +862,4 @@ virtual int enableSpatialAudio(bool enabled) = 0;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)

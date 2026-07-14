@@ -1,14 +1,9 @@
 ---
 title: "空间音频"
-description: "移除所有远端用户的空间位置。"
+description: "空间音频 API reference."
 ---
-<a id="toc_spatial_audio"></a>
 
-## 空间音频
-
-<a id="api_ibasespatialaudioengine_clearremotepositions"></a>
-
-## clearRemotePositions:
+## <span id="toc_spatial_audio"></span>clearRemotePositions: [#api_ibasespatialaudioengine_clearremotepositions]
 
 移除所有远端用户的空间位置。
 
@@ -22,19 +17,14 @@ description: "移除所有远端用户的空间位置。"
 
 调用该方法后，你将无法再听到任何远端用户的声音。离开频道后，为避免资源浪费，也可以调用该方法。
 
-<a id="api_ibasespatialaudioengine_clearremotepositions__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ibasespatialaudioengine_clearremotepositions__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ibasespatialaudioengine)
 
-<a id="api_irtcengine_enablespatialaudio"></a>
-
-## enableSpatialAudio:
+## enableSpatialAudio: [#api_irtcengine_enablespatialaudio]
 
 启用或关闭空间音效。
 
@@ -52,9 +42,7 @@ description: "移除所有远端用户的空间位置。"
 - 该方法依赖空间音效动态库 AgoraSpatialAudioExtension.xcframework （iOS）或 `AgoraSpatialAudioExtension.framework` （macOS）。如果该动态库被删除，该功能将无法正常启用。
 :::
 
-<a id="api_irtcengine_enablespatialaudio__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablespatialaudio__parameters]
 
 #### `enabled`
 
@@ -63,19 +51,14 @@ description: "移除所有远端用户的空间位置。"
 - YES：启用空间音效。
 - NO：关闭空间音效。
 
-<a id="api_irtcengine_enablespatialaudio__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablespatialaudio__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine"></a>
-
-## sharedLocalSpatialAudioWithConfig:
+## sharedLocalSpatialAudioWithConfig: [#api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine]
 
 初始化 AgoraLocalSpatialAudioKit 实例。
 
@@ -93,27 +76,20 @@ description: "移除所有远端用户的空间位置。"
 - 每个 App 仅支持创建一个 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
 :::
 
-<a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__parameters"></a>
-
-### 参数
+### 参数 [#api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__parameters]
 
 #### `config`
 
 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ilocalspatialaudioengine) 的配置。详见 [AgoraLocalSpatialAudioConfig](/zh-CN/api-reference/rtc/ios/class-localspatialaudioconfig)。
 
-<a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ilocalspatialaudioengine)
 
-<a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine"></a>
-
-## muteAllRemoteAudioStreams:
+## muteAllRemoteAudioStreams: [#api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine]
 
 停止或恢复订阅所有远端用户的音频流。
 
@@ -133,9 +109,7 @@ description: "移除所有远端用户的空间位置。"
 - 调用此方法后，你需要调用 `updateSelfPosition` 和 `updateRemotePosition` 方法更新本地用户和远端用户的空间位置，否则该方法的设置不会生效。
 :::
 
-<a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__parameters"></a>
-
-### 参数
+### 参数 [#api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__parameters]
 
 #### `mute`
 
@@ -144,19 +118,14 @@ description: "移除所有远端用户的空间位置。"
 - YES：停止订阅所有远端用户的音频流。
 - NO：订阅所有远端用户的音频流。
 
-<a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ibasespatialaudioengine)
 
-<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine"></a>
-
-## muteLocalAudioStream:
+## muteLocalAudioStream: [#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine]
 
 停止或恢复发布本地音频流。
 
@@ -170,21 +139,15 @@ description: "移除所有远端用户的空间位置。"
 
 你可以通过该方法停止或恢复发布本地音频流。 该方法不会影响任何正在进行的音频录制，因为它不会禁用音频采集设备。 使用空间音效时，如果你需要设置是否停止订阅指定用户的音频流，声网推荐你调用该方法，而不是 `AgoraRtcEngine` 下的同名方法。
 
-<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__timing]
 
 请在加入频道后调用该方法。
 
-<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__related"></a>
-
-### 相关回调
+### 相关回调 [#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__related]
 
 该方法成功调用后会触发远端的 [rtcEngine:didAudioMuted:byUid:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 
-<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__parameters"></a>
-
-### 参数
+### 参数 [#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__parameters]
 
 #### `mute`
 
@@ -193,19 +156,14 @@ description: "移除所有远端用户的空间位置。"
 - YES：停止发布本地音频流。
 - NO：发布本地音频流。
 
-<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ibasespatialaudioengine)
 
-<a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine"></a>
-
-## muteRemoteAudioStream:mute:
+## muteRemoteAudioStream:mute: [#api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine]
 
 停止或恢复订阅指定用户的音频流。
 
@@ -221,9 +179,7 @@ description: "移除所有远端用户的空间位置。"
 调用该方法需在 [joinChannelByToken:channelId:info:uid:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel1) 或 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 方法之后进行。使用空间音效时，如需设置是否停止订阅指定用户的音频流，声网建议使用此方法，而非 [muteRemoteAudioStream:mute:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine) 方法。
 :::
 
-<a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__parameters"></a>
-
-### 参数
+### 参数 [#api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__parameters]
 
 #### `uid`
 
@@ -236,19 +192,14 @@ description: "移除所有远端用户的空间位置。"
 - YES：停止订阅指定用户的音频流。
 - NO （默认）：订阅指定用户的音频流。SDK 会根据本地用户与远端用户之间的距离决定是否订阅。
 
-<a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ibasespatialaudioengine)
 
-<a id="api_ilocalspatialaudioengine_release_ilocalspatialaudioengine"></a>
-
-## destroy
+## destroy [#api_ilocalspatialaudioengine_release_ilocalspatialaudioengine]
 
 销毁 AgoraLocalSpatialAudioKit 实例。
 
@@ -266,12 +217,9 @@ description: "移除所有远端用户的空间位置。"
 请在调用 [destroy](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_release_ilocalspatialaudioengine) 方法之前调用此方法。
 :::
 
-### 所属接口类
 - [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ilocalspatialaudioengine)
 
-<a id="api_ilocalspatialaudioengine_removeremoteposition"></a>
-
-## removeRemotePosition:
+## removeRemotePosition: [#api_ilocalspatialaudioengine_removeremoteposition]
 
 移除指定远端用户的空间位置。
 
@@ -285,27 +233,20 @@ description: "移除所有远端用户的空间位置。"
 
 调用该方法后，你将不再听到该远端用户的声音。离开频道后，为避免浪费计算资源，建议调用该方法删除指定远端用户的空间位置信息。否则，该用户的空间位置信息将持续保留。当远端用户数量超过通过 [setMaxAudioRecvCount:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setmaxaudiorecvcount) 设置的可接收音频流数量时，系统会根据相对距离自动取消订阅距离最远用户的音频流。
 
-<a id="api_ilocalspatialaudioengine_removeremoteposition__parameters"></a>
-
-### 参数
+### 参数 [#api_ilocalspatialaudioengine_removeremoteposition__parameters]
 
 #### `uid`
 
 `uid`。该参数必须与用户加入频道时传入的用户 ID 相同。
 
-<a id="api_ilocalspatialaudioengine_removeremoteposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ilocalspatialaudioengine_removeremoteposition__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ilocalspatialaudioengine)
 
-<a id="api_ibasespatialaudioengine_setaudiorecvrange"></a>
-
-## setAudioRecvRange:
+## setAudioRecvRange: [#api_ibasespatialaudioengine_setaudiorecvrange]
 
 设置你可接收的音频范围。
 
@@ -319,27 +260,20 @@ description: "移除所有远端用户的空间位置。"
 
 设置成功后，你只能听到在设定范围内或与你属于同一队伍的远端用户的音频。你可以在任意时刻调用该方法以更新音频接收范围。
 
-<a id="api_ibasespatialaudioengine_setaudiorecvrange__parameters"></a>
-
-### 参数
+### 参数 [#api_ibasespatialaudioengine_setaudiorecvrange__parameters]
 
 #### `range`
 
 最大音频接收范围，单位为米。该参数的值必须大于 0，默认值为 20。
 
-<a id="api_ibasespatialaudioengine_setaudiorecvrange__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ibasespatialaudioengine_setaudiorecvrange__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ibasespatialaudioengine)
 
-<a id="api_ibasespatialaudioengine_setdistanceunit"></a>
-
-## setDistanceUnit:
+## setDistanceUnit: [#api_ibasespatialaudioengine_setdistanceunit]
 
 设置游戏引擎中每个单位距离对应的米数。
 
@@ -353,27 +287,20 @@ description: "移除所有远端用户的空间位置。"
 
 声网的空间音效算法中，距离以米为单位进行测量。SDK 默认将游戏引擎中的每个单位距离转换为 1 米。你可以调用 [setDistanceUnit:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setdistanceunit) 方法将游戏引擎中的每个单位距离转换为指定的米数。
 
-<a id="api_ibasespatialaudioengine_setdistanceunit__parameters"></a>
-
-### 参数
+### 参数 [#api_ibasespatialaudioengine_setdistanceunit__parameters]
 
 #### `unit`
 
 游戏引擎中每个单位距离对应的米数。该参数的值必须大于 0.00，默认值为 1.00（默认）。例如，将 `unit` 设置为 2.00 表示游戏引擎中每个单位距离等于 2 米。值越大，当远端用户远离你时，你听到的声音衰减得越快。
 
-<a id="api_ibasespatialaudioengine_setdistanceunit__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ibasespatialaudioengine_setdistanceunit__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ibasespatialaudioengine)
 
-<a id="api_irtcengine_setheadphoneeqparameters"></a>
-
-## setHeadphoneEQParameters:highGain:
+## setHeadphoneEQParameters:highGain: [#api_irtcengine_setheadphoneeqparameters]
 
 设置耳机均衡器的低频和高频参数。
 
@@ -387,9 +314,7 @@ description: "移除所有远端用户的空间位置。"
 
 如果你调用 [setHeadphoneEQPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqpreset) 方法后未达到预设的耳机均衡效果，可以通过调用该方法进一步调整耳机均衡效果。
 
-<a id="api_irtcengine_setheadphoneeqparameters__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setheadphoneeqparameters__parameters]
 
 #### `lowGain`
 
@@ -399,21 +324,16 @@ description: "移除所有远端用户的空间位置。"
 
 耳机均衡器的高频参数。取值范围为 [-10, 10]。值越大，声音越清晰。
 
-<a id="api_irtcengine_setheadphoneeqparameters__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setheadphoneeqparameters__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
   - -1：发生通用错误（无明确原因）。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setheadphoneeqpreset"></a>
-
-## setHeadphoneEQPreset:
+## setHeadphoneEQPreset: [#api_irtcengine_setheadphoneeqpreset]
 
 设置预设的耳机均衡效果。
 
@@ -431,29 +351,22 @@ description: "移除所有远端用户的空间位置。"
 如果你使用的耳机本身已经具有良好的均衡效果，调用该方法可能不会带来显著提升，甚至可能降低体验。
 :::
 
-<a id="api_irtcengine_setheadphoneeqpreset__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setheadphoneeqpreset__parameters]
 
 #### `preset`
 
 预设的耳机均衡效果，详见 [AgoraHeadphoneEQPreset](/zh-CN/api-reference/rtc/ios/enum-headphoneequalizerpreset)。
 
-<a id="api_irtcengine_setheadphoneeqpreset__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setheadphoneeqpreset__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
   - -1：发生通用错误（无具体原因）。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_ibasespatialaudioengine_setmaxaudiorecvcount"></a>
-
-## setMaxAudioRecvCount:
+## setMaxAudioRecvCount: [#api_ibasespatialaudioengine_setmaxaudiorecvcount]
 
 设置你在指定音频接收范围内可接收的最大音频流数量。
 
@@ -467,27 +380,20 @@ description: "移除所有远端用户的空间位置。"
 
 如果可接收的音频流数量超过该设置值，你将接收距离你最近的 `maxCount` 条音频流。
 
-<a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__parameters"></a>
-
-### 参数
+### 参数 [#api_ibasespatialaudioengine_setmaxaudiorecvcount__parameters]
 
 #### `maxCount`
 
 你在指定音频接收范围内可接收的最大音频流数量。该值应小于或等于 16，默认值为 10。
 
-<a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ibasespatialaudioengine_setmaxaudiorecvcount__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ibasespatialaudioengine)
 
-<a id="api_ibasespatialaudioengine_setplayerattenuation"></a>
-
-## setPlayerAttenuation:playerId:forceSet:
+## setPlayerAttenuation:playerId:forceSet: [#api_ibasespatialaudioengine_setplayerattenuation]
 
 设置媒体播放器的声音衰减属性。
 
@@ -497,11 +403,7 @@ description: "移除所有远端用户的空间位置。"
 - (int)setPlayerAttenuation:(double)attenuation playerId:(NSUInteger)playerId forceSet:(BOOL)forceSet NS_SWIFT_NAME(setPlayerAttenuation(_:playerId:forceSet:));
 ```
 
-<a id="api_ibasespatialaudioengine_setplayerattenuation__detailed_desc"></a>
-
-<a id="api_ibasespatialaudioengine_setplayerattenuation__parameters"></a>
-
-### 参数
+### <span id="api_ibasespatialaudioengine_setplayerattenuation__detailed_desc"></span>参数 [#api_ibasespatialaudioengine_setplayerattenuation__parameters]
 
 #### `attenuation`
 
@@ -526,19 +428,14 @@ description: "移除所有远端用户的空间位置。"
   - 如果声源和听众分别位于隔音区内外，声音衰减效果由 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/ios/class-spatialaudiozone) 中的 `audioAttenuation` 决定。
   - 如果声源和听众位于同一隔音区内，或都在隔音区外，声音衰减效果由本方法中的 `attenuation` 参数决定。
 
-<a id="api_ibasespatialaudioengine_setplayerattenuation__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ibasespatialaudioengine_setplayerattenuation__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ibasespatialaudioengine)
 
-<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation"></a>
-
-## setRemoteAudioAttenuation:uid:forceSet:
+## setRemoteAudioAttenuation:uid:forceSet: [#api_ilocalspatialaudioengine_setremoteaudioattenuation]
 
 设置指定用户的声音衰减效果。
 
@@ -548,11 +445,7 @@ description: "移除所有远端用户的空间位置。"
 - (int)setRemoteAudioAttenuation:(double)attenuation uid:(NSUInteger)uid forceSet:(BOOL)forceSet NS_SWIFT_NAME(setRemoteAudioAttenuation(_:uid:forceSet:));
 ```
 
-<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__detailed_desc"></a>
-
-<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__parameters"></a>
-
-### 参数
+### <span id="api_ilocalspatialaudioengine_setremoteaudioattenuation__detailed_desc"></span>参数 [#api_ilocalspatialaudioengine_setremoteaudioattenuation__parameters]
 
 #### `attenuation`
 
@@ -577,19 +470,14 @@ description: "移除所有远端用户的空间位置。"
   - 若声源和接收者分别位于隔音区内外，衰减效果由 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/ios/class-spatialaudiozone) 中的 `audioAttenuation` 决定；
   - 若声源和接收者位于同一隔音区内或同一隔音区外，衰减效果由本方法中的 `attenuation` 决定。
 
-<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ilocalspatialaudioengine_setremoteaudioattenuation__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ilocalspatialaudioengine)
 
-<a id="api_irtcengine_setremoteuserspatialaudioparams"></a>
-
-## setRemoteUserSpatialAudioParams:params:
+## setRemoteUserSpatialAudioParams:params: [#api_irtcengine_setremoteuserspatialaudioparams]
 
 设置远端用户的空间音效参数。
 
@@ -604,9 +492,7 @@ description: "移除所有远端用户的空间位置。"
 
 调用 [enableSpatialAudio:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_irtcengine_enablespatialaudio) 方法后，使用该方法设置远端用户的空间音效参数。成功设置后，你可以听到具有空间感的远端用户的声音。
 
-<a id="api_irtcengine_setremoteuserspatialaudioparams__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremoteuserspatialaudioparams__parameters]
 
 #### `uid`
 
@@ -616,19 +502,14 @@ description: "移除所有远端用户的空间位置。"
 
 空间音效参数。详见 [AgoraSpatialAudioParams](/zh-CN/api-reference/rtc/ios/class-spatialaudioparams)。
 
-<a id="api_irtcengine_setremoteuserspatialaudioparams__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremoteuserspatialaudioparams__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_imediaplayer_setspatialaudioparams"></a>
-
-## setSpatialAudioParams:
+## setSpatialAudioParams: [#api_imediaplayer_setspatialaudioparams]
 
 启用或关闭媒体播放器的空间音效。
 
@@ -642,27 +523,20 @@ description: "移除所有远端用户的空间位置。"
 
 成功设置媒体播放器的空间音效参数后，SDK 会为媒体播放器启用空间音效。若需关闭媒体播放器的空间音效，请将 `params` 参数设为 nil。
 
-<a id="api_imediaplayer_setspatialaudioparams__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_setspatialaudioparams__parameters]
 
 #### `params`
 
 媒体播放器的空间音效参数。详见 [AgoraSpatialAudioParams](/zh-CN/api-reference/rtc/ios/class-spatialaudioparams)。
 
-<a id="api_imediaplayer_setspatialaudioparams__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_setspatialaudioparams__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_ibasespatialaudioengine_setzones"></a>
-
-## setZones:
+## setZones: [#api_ibasespatialaudioengine_setzones]
 
 设置声源隔音区域。
 
@@ -684,27 +558,20 @@ description: "移除所有远端用户的空间位置。"
 如果多次调用该方法，以最后一次设置的隔音区域为准。
 :::
 
-<a id="api_ibasespatialaudioengine_setzones__parameters"></a>
-
-### 参数
+### 参数 [#api_ibasespatialaudioengine_setzones__parameters]
 
 #### `zones`
 
 隔音区域设置。当该参数设置为 nil 时，表示清除所有隔音区域。详见 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/ios/class-spatialaudiozone)。
 
-<a id="api_ibasespatialaudioengine_setzones__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ibasespatialaudioengine_setzones__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ibasespatialaudioengine)
 
-<a id="api_ibasespatialaudioengine_updateplayerpositioninfo"></a>
-
-## updatePlayerPositionInfo:positionInfo:
+## updatePlayerPositionInfo:positionInfo: [#api_ibasespatialaudioengine_updateplayerpositioninfo]
 
 更新媒体播放器的空间位置。
 
@@ -714,17 +581,11 @@ description: "移除所有远端用户的空间位置。"
 - (int)updatePlayerPositionInfo:(NSInteger)playerId positionInfo:(AgoraRemoteVoicePositionInfo* _Nonnull)positionInfo NS_SWIFT_NAME(updatePlayerPositionInfo(_:positionInfo:));
 ```
 
-<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__detailed_desc"></a>
-
-<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__timing"></a>
-
-### 调用时机
+### <span id="api_ibasespatialaudioengine_updateplayerpositioninfo__detailed_desc"></span>调用时机 [#api_ibasespatialaudioengine_updateplayerpositioninfo__timing]
 
 你可以在加入频道前或后调用该方法。
 
-<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__parameters"></a>
-
-### 参数
+### 参数 [#api_ibasespatialaudioengine_updateplayerpositioninfo__parameters]
 
 #### `playerId`
 
@@ -734,19 +595,14 @@ description: "移除所有远端用户的空间位置。"
 
 媒体播放器的空间位置信息，详见 [AgoraRemoteVoicePositionInfo](/zh-CN/api-reference/rtc/ios/class-remotevoicepositioninfo)。
 
-<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ibasespatialaudioengine_updateplayerpositioninfo__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ibasespatialaudioengine)
 
-<a id="api_ilocalspatialaudioengine_updateremoteposition"></a>
-
-## updateRemotePosition:positionInfo:
+## updateRemotePosition:positionInfo: [#api_ilocalspatialaudioengine_updateremoteposition]
 
 更新指定远端用户的空间位置。
 
@@ -764,9 +620,7 @@ description: "移除所有远端用户的空间位置。"
 请在调用 `joinChannelByToken` 方法后再调用此方法。
 :::
 
-<a id="api_ilocalspatialaudioengine_updateremoteposition__parameters"></a>
-
-### 参数
+### 参数 [#api_ilocalspatialaudioengine_updateremoteposition__parameters]
 
 #### `uid`
 
@@ -776,19 +630,14 @@ description: "移除所有远端用户的空间位置。"
 
 远端用户的空间位置。详见 [AgoraRemoteVoicePositionInfo](/zh-CN/api-reference/rtc/ios/class-remotevoicepositioninfo)。
 
-<a id="api_ilocalspatialaudioengine_updateremoteposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ilocalspatialaudioengine_updateremoteposition__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ilocalspatialaudioengine)
 
-<a id="api_ibasespatialaudioengine_updateselfposition"></a>
-
-## updateSelfPosition:axisForward:axisRight:axisUp:
+## updateSelfPosition:axisForward:axisRight:axisUp: [#api_ibasespatialaudioengine_updateselfposition]
 
 更新本地用户的空间位置。
 
@@ -802,9 +651,7 @@ description: "移除所有远端用户的空间位置。"
 
 你需要将该方法与 [updateRemotePosition:positionInfo:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 方法配合使用。SDK 会根据这两个方法中的参数设置计算本地用户与远端用户之间的相对位置，并据此计算空间音效参数。
 
-<a id="api_ibasespatialaudioengine_updateselfposition__parameters"></a>
-
-### 参数
+### 参数 [#api_ibasespatialaudioengine_updateselfposition__parameters]
 
 #### `position`
 
@@ -822,19 +669,14 @@ description: "移除所有远端用户的空间位置。"
 
 坐标系中 z 轴的单位向量。该参数为长度为 3 的数组，三个值依次表示前、右、上的坐标。
 
-<a id="api_ibasespatialaudioengine_updateselfposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ibasespatialaudioengine_updateselfposition__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ibasespatialaudioengine)
 
-<a id="api_ibasespatialaudioengine_updateselftransform"></a>
-
-## updateSelfTransform:
+## updateSelfTransform: [#api_ibasespatialaudioengine_updateselftransform]
 
 更新坐标转换。
 
@@ -844,28 +686,19 @@ description: "移除所有远端用户的空间位置。"
 - (int)updateSelfTransform:(simd_float4x4)transform NS_SWIFT_NAME(updateSelfTransform(_:));
 ```
 
-<a id="api_ibasespatialaudioengine_updateselftransform__detailed_desc"></a>
-
-<a id="api_ibasespatialaudioengine_updateselftransform__scenario"></a>
-
-### 适用场景
+### <span id="api_ibasespatialaudioengine_updateselftransform__detailed_desc"></span>适用场景 [#api_ibasespatialaudioengine_updateselftransform__scenario]
 
 当你使用原生 iOS 框架（如 `SceneKit` 或 `RealityKit` ）时，可以调用此方法将位置向量直接传递给上述框架进行渲染。
 
-<a id="api_ibasespatialaudioengine_updateselftransform__parameters"></a>
-
-### 参数
+### 参数 [#api_ibasespatialaudioengine_updateselftransform__parameters]
 
 #### `transform`
 
 转换参数。是一个 4 × 4 的矩阵。
 
-<a id="api_ibasespatialaudioengine_updateselftransform__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ibasespatialaudioengine_updateselftransform__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ibasespatialaudioengine)

@@ -2,9 +2,8 @@
 title: "数据流 Datastream"
 description: "数据流 Datastream API reference."
 ---
-<a id="toc_datastream"></a>
 
-## 数据流 Datastream
+<a id="toc_datastream"></a>
 
 <a id="api_irtcengine_createdatastream"></a>
 
@@ -38,7 +37,7 @@ virtual int createDataStream(int* streamId, bool reliable, bool ordered) = 0;
 
 ### 相关回调
 
-将 reliable 设置为 `true` 后，如果接收方 5 秒没有收到发送方所发送的数据，会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/unreal-cpp/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并获得相应报错信息。
+将 reliable 设置为 `true` 后，如果接收方 5 秒没有收到发送方所发送的数据，会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并获得相应报错信息。
 
 <a id="api_irtcengine_createdatastream__parameters"></a>
 
@@ -73,7 +72,6 @@ virtual int createDataStream(int* streamId, bool reliable, bool ordered) = 0;
 - 0: 创建数据流成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_createdatastreamex"></a>
@@ -92,7 +90,7 @@ virtual int createDataStreamEx(int* streamId, bool reliable, bool ordered, const
 
 #### `弃用：`
 
-该方法已废弃。请改用 [createDataStreamEx [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/datastream#api_irtcengineex_createdatastreamex2)。
+该方法已废弃。请改用 [createDataStreamEx [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#api_irtcengineex_createdatastreamex2)。
 
 你可以调用该方法创建数据流并提高数据传输的可靠性和有序性。
 
@@ -112,7 +110,7 @@ virtual int createDataStreamEx(int* streamId, bool reliable, bool ordered, const
 
 ### 相关回调
 
-将 reliable 设置为 `true` 后，如果接收方 5 秒没有收到发送方所发送的数据，会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/unreal-cpp/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并获得相应报错信息。
+将 reliable 设置为 `true` 后，如果接收方 5 秒没有收到发送方所发送的数据，会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并获得相应报错信息。
 
 <a id="api_irtcengineex_createdatastreamex__parameters"></a>
 
@@ -151,7 +149,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 - 0: 创建数据流成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_createdatastream2"></a>
@@ -168,7 +165,7 @@ virtual int createDataStream(int* streamId, DataStreamConfig& config) = 0;
 
 <a id="api_irtcengine_createdatastream2__detailed_desc"></a>
 
-相比 [createDataStream [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/datastream#api_irtcengine_createdatastream)，本方法不保证数据传输的可靠性。接收方会丢弃超出发送时间 5 秒后的数据包。
+相比 [createDataStream [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#api_irtcengine_createdatastream)，本方法不保证数据传输的可靠性。接收方会丢弃超出发送时间 5 秒后的数据包。
 
 <a id="api_irtcengine_createdatastream2__timing"></a>
 
@@ -201,7 +198,6 @@ virtual int createDataStream(int* streamId, DataStreamConfig& config) = 0;
 - 0: 创建数据流成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_createdatastreamex2"></a>
@@ -218,7 +214,7 @@ virtual int createDataStreamEx(int* streamId, DataStreamConfig& config, const Rt
 
 <a id="api_irtcengineex_createdatastreamex2__detailed_desc"></a>
 
-相比 [createDataStreamEx [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/datastream#api_irtcengineex_createdatastreamex)，本方法不保证数据传输的可靠性。接收方会丢弃超出发送时间 5 秒后的数据包。
+相比 [createDataStreamEx [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#api_irtcengineex_createdatastreamex)，本方法不保证数据传输的可靠性。接收方会丢弃超出发送时间 5 秒后的数据包。
 
 <a id="api_irtcengineex_createdatastreamex2__timing"></a>
 
@@ -255,7 +251,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 - 0: 创建数据流成功。
 - &lt; 0：方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_sendstreammessage"></a>
@@ -276,17 +271,17 @@ virtual int sendStreamMessage(int streamId,
 
 ### 详情
 
-调用 [createDataStream [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/datastream#api_irtcengine_createdatastream2) 后，你可以调用该方法向频道内所有用户发送数据流消息。
+调用 [createDataStream [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#api_irtcengine_createdatastream2) 后，你可以调用该方法向频道内所有用户发送数据流消息。
 
 SDK 对该方法的实现进行了如下限制：
 
 - 频道内每个客户端最多可以同时拥有 5 个数据通道，所有数据通道共用的总发包码率限制为 30 KB/s。
 - 每个数据通道每秒最多能发送 60 个包，每个包最大为 1 KB。
 
-成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/unreal-cpp/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
+成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::warning[注意]
-- 该方法需要在加入频道后、且调用 [createDataStream [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
+- 该方法需要在加入频道后、且调用 [createDataStream [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
 - 该方法仅适用于主播用户。
 :::
 
@@ -313,7 +308,6 @@ SDK 对该方法的实现进行了如下限制：
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_sendstreammessageex"></a>
@@ -332,14 +326,14 @@ virtual int sendStreamMessageEx(int streamId, const char* data, size_t length, c
 
 ### 详情
 
-调用 [createDataStreamEx [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/datastream#api_irtcengineex_createdatastreamex2) 后，你可以调用本方法向频道内所有用户发送数据流消息。
+调用 [createDataStreamEx [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#api_irtcengineex_createdatastreamex2) 后，你可以调用本方法向频道内所有用户发送数据流消息。
 
 SDK 对该方法的实现进行了如下限制：
 
 - 频道内每个客户端最多可以同时拥有 5 个数据通道，所有数据通道共用的总发包码率限制为 30 KB/s。
 - 每个数据通道每秒最多能发送 60 个包，每个包最大为 1 KB。
 
-成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/unreal-cpp/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
+成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::warning[注意]
 - 该方法需要在 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_joinchannelex) 后调用。
@@ -373,7 +367,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onstreammessage"></a>
@@ -396,7 +389,7 @@ virtual void onStreamMessage(uid_t userId, int streamId, const char* data, size_
 
 <a id="callback_irtcengineeventhandler_onstreammessage__detailed_desc"></a>
 
-该回调表示本地用户收到了远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
+该回调表示本地用户收到了远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
 
 <a id="callback_irtcengineeventhandler_onstreammessage__parameters"></a>
 
@@ -422,7 +415,6 @@ virtual void onStreamMessage(uid_t userId, int streamId, const char* data, size_
 
 数据流发出的时间。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror"></a>
@@ -445,7 +437,7 @@ virtual void onStreamMessageError(uid_t userId, int streamId, int code, int miss
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__detailed_desc"></a>
 
-该回调表示本地用户未收到远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
+该回调表示本地用户未收到远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__parameters"></a>
 
@@ -471,5 +463,4 @@ virtual void onStreamMessageError(uid_t userId, int streamId, int code, int miss
 
 数据流中断时，后面缓存的消息数量。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,0 +1,28 @@
+---
+title: "enableMeiZuPush method"
+description: "API docs for the enableMeiZuPush method from the ChatOptions class, for the Dart programming language."
+---
+
+Enable MeiZu Push on MeiZu devices.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `appId` | The app ID for MeiZu Push. |
+| `appKey` | The app key for MeiZu Push. |
+
+```dart title="Dart"
+void enableMeiZuPush(String appId, String appKey)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+void enableMeiZuPush(String appId, String appKey) {
+  _pushConfig.mzAppId = appId;
+  _pushConfig.mzAppKey = appKey;
+}
+```

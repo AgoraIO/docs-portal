@@ -1,0 +1,28 @@
+---
+title: "addChatThreadManagerListener method"
+description: "API docs for the addChatThreadManagerListener method from the ChatThreadManagerDeprecated extension, for the Dart programming language."
+---
+
+Adds the chat thread manager listener. After calling this method, you can listen for new chat threads when they arrive.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `listener` | The chat thread manager listener that listens for new chat thread. See [ChatThreadManagerListener](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-manager-listener). |
+
+```dart title="Dart"
+@Deprecated("Use addEventHandler to instead")void addChatThreadManagerListener(ChatThreadManagerListener listener)@Deprecated("Use addEventHandler to instead")
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+@Deprecated("Use addEventHandler to instead")
+void addChatThreadManagerListener(ChatThreadManagerListener listener) {
+  _listeners.remove(listener);
+  _listeners.add(listener);
+}
+```

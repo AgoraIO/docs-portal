@@ -1,125 +1,126 @@
 ---
 title: "Agora Interactive Whiteboard Web SDK API Reference"
-description: "Agora Interactive Whiteboard Web SDK API Reference API reference."
+description: "Agora Interactive Whiteboard Web SDK API Reference API 参考。"
 ---
+
 声网通过全球部署的虚拟网络，提供可以灵活搭配的 API 组合，提供稳定可靠、功能丰富的实时互动白板。
 
 - [WhiteWebSdk](/zh-CN/api-reference/whiteboard/web/classes/white-web-sdk) 类提供初始化互动白板 SDK、加入互动白板实时房间、创建白板回放的主要方法。
-- [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 接口提供管理互动白板实时房间的方法。
-- [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks) 接口提供控制白板回放的方法。
-- [Displayer](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks) 接口为 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 接口和 [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks) 接口的父接口。 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks) 和 [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks) 对象都可以调用该接口中的方法。
+- [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room) 接口提供管理互动白板实时房间的方法。
+- [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player) 接口提供控制白板回放的方法。
+- [Displayer](/zh-CN/api-reference/whiteboard/web/interfaces/displayer) 接口为 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room) 接口和 [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player) 接口的父接口。 [Room](/zh-CN/api-reference/whiteboard/web/interfaces/room) 和 [Player](/zh-CN/api-reference/whiteboard/web/interfaces/player) 对象都可以调用该接口中的方法。
 
-[SDK 初始化](#sdk-初始化)
+### SDK 初始化
 
 | 方法 | 描述 |
 | --- | --- |
 | [WhiteWebSdk](/zh-CN/api-reference/whiteboard/web/classes/white-web-sdk) | 初始化 [WhiteWebSdk](/zh-CN/api-reference/whiteboard/web/classes/white-web-sdk) 实例 |
-| [Callbacks](/zh-CN/api-reference/whiteboard/web/interfaces/callbacks-callbacks) | 设置事件回调 |
+| [Callbacks](/zh-CN/api-reference/whiteboard/web/interfaces/callbacks) | 设置事件回调 |
 | [joinRoom](/zh-CN/api-reference/whiteboard/web/classes/white-web-sdk#joinroom) | 加入互动白板实时房间并设置房间事件回调 |
 | [replayRoom](/zh-CN/api-reference/whiteboard/web/classes/white-web-sdk#replayroom) | 创建互动白板回放房间并设置回放事件回调 |
 | [isPlayable](/zh-CN/api-reference/whiteboard/web/classes/white-web-sdk#isplayable) | 查看房间是否有回放数据 |
 | [WhiteVersion](/zh-CN/api-reference/whiteboard/web/globals#whiteversion) | 查询 SDK 版本号 |
 
-[实时房间管理](#实时房间管理)
+### 实时房间管理
 
 | 方法 | 描述 |
 | --- | --- |
-| [setWritable](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#setwritable) | 设置用户是否为互动模式 |
-| [disconnect](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disconnect) | 断开用户与实时房间的连接 |
-| [setGlobalState](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#setglobalstate) | 修改房间的全局状态 |
-| [isWritable](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#iswritable) | 获取用户是否为互动模式 |
+| [setWritable](/zh-CN/api-reference/whiteboard/web/interfaces/room#setwritable) | 设置用户是否为互动模式 |
+| [disconnect](/zh-CN/api-reference/whiteboard/web/interfaces/room#disconnect) | 断开用户与实时房间的连接 |
+| [setGlobalState](/zh-CN/api-reference/whiteboard/web/interfaces/room#setglobalstate) | 修改房间的全局状态 |
+| [isWritable](/zh-CN/api-reference/whiteboard/web/interfaces/room#iswritable) | 获取用户是否为互动模式 |
 
-[白板工具设置](#白板工具设置)
+### 白板工具设置
 
 | 方法 | 描述 |
 | --- | --- |
-| [setMemberState](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#setmemberstate) | 修改房间的白板工具状态 |
+| [setMemberState](/zh-CN/api-reference/whiteboard/web/interfaces/room#setmemberstate) | 修改房间的白板工具状态 |
 | [MemberState](/zh-CN/api-reference/whiteboard/web/globals#memberstate) | 获取白板工具状态 |
-| [copy](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#copy) | 复制选中内容 |
-| [paste](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#paste) | 粘贴复制的内容 |
-| [duplicate](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#duplicate) | 复制并粘贴选中的内容 |
-| [delete](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#delete) | 删除选中的内容 |
-| [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disableserialization) | 开启/禁止本地序列化 |
-| [redo](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#redo) | 重做 |
-| [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#undo) | 撤销上一步操作 |
-| [disableEraseImage](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disableeraseimage) | 关闭/开启橡皮擦擦除图片功能 |
-| [disableDeviceInputs](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#disabledeviceinputs) | 禁止/允许用户操作白板工具 |
+| [copy](/zh-CN/api-reference/whiteboard/web/interfaces/room#copy) | 复制选中内容 |
+| [paste](/zh-CN/api-reference/whiteboard/web/interfaces/room#paste) | 粘贴复制的内容 |
+| [duplicate](/zh-CN/api-reference/whiteboard/web/interfaces/room#duplicate) | 复制并粘贴选中的内容 |
+| [delete](/zh-CN/api-reference/whiteboard/web/interfaces/room#delete) | 删除选中的内容 |
+| [disableSerialization](/zh-CN/api-reference/whiteboard/web/interfaces/room#disableserialization) | 开启/禁止本地序列化 |
+| [redo](/zh-CN/api-reference/whiteboard/web/interfaces/room#redo) | 重做 |
+| [undo](/zh-CN/api-reference/whiteboard/web/interfaces/room#undo) | 撤销上一步操作 |
+| [disableEraseImage](/zh-CN/api-reference/whiteboard/web/interfaces/room#disableeraseimage) | 关闭/开启橡皮擦擦除图片功能 |
+| [disableDeviceInputs](/zh-CN/api-reference/whiteboard/web/interfaces/room#disabledeviceinputs) | 禁止/允许用户操作白板工具 |
 
-[视角操作](#视角操作)
+### 视角操作
 
 | 方法 | 描述 |
 | --- | --- |
-| [setViewMode](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#setviewmode) | 切换视角模式 |
-| [setCameraBound](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#setcamerabound) | 设置视角边界 |
-| [disableCameraTransform](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#disablecameratransform) | 禁止/允许用户调整（移动或缩放）视角 |
-| [moveCamera](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#movecamera) | 调整视角 |
-| [moveCameraToContain](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#movecameratocontain) | 调整视角以完整显示视觉矩形中的内容 |
-| [scalePptToFit](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#scaleppttofit) | 调整视角以完整显示 PPT 的内容（指定动画模式） |
+| [setViewMode](/zh-CN/api-reference/whiteboard/web/interfaces/room#setviewmode) | 切换视角模式 |
+| [setCameraBound](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#setcamerabound) | 设置视角边界 |
+| [disableCameraTransform](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#disablecameratransform) | 禁止/允许用户调整（移动或缩放）视角 |
+| [moveCamera](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#movecamera) | 调整视角 |
+| [moveCameraToContain](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#movecameratocontain) | 调整视角以完整显示视觉矩形中的内容 |
+| [scalePptToFit](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#scaleppttofit) | 调整视角以完整显示 PPT 的内容（指定动画模式） |
 | [BroadcastState](/zh-CN/api-reference/whiteboard/web/globals#broadcaststate) | 获取用户的视角状态 |
 
-[场景管理](#场景管理)
+### 场景管理
 
 | 方法 | 描述 |
 | --- | --- |
-| [insertImage](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#insertimage) | 插入图片占位符 |
-| [completeImageUpload](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#completeimageupload) | 展示图片 |
+| [insertImage](/zh-CN/api-reference/whiteboard/web/interfaces/room#insertimage) | 插入图片占位符 |
+| [completeImageUpload](/zh-CN/api-reference/whiteboard/web/interfaces/room#completeimageupload) | 展示图片 |
 | [SceneState](/zh-CN/api-reference/whiteboard/web/globals#scenestate) | 获取当前场景目录下的场景状态 |
-| [createScenesCallback](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#createscenescallback) | 创建场景目录的监听器对象 |
+| [createScenesCallback](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#createscenescallback) | 创建场景目录的监听器对象 |
 | [SceneMap](/zh-CN/api-reference/whiteboard/web/globals#scenemap) | 获取当前场景目录下的场景列表 |
-| [getScene](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#getscene) | 获取指定场景的信息 |
-| [setScenePath](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#setscenepath) | 切换至指定的场景 |
-| [setSceneIndex](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#setsceneindex) | 切换至当前场景目录下的指定场景 |
-| [putScenes](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#putscenes) | 在指定场景目录下插入多个场景 |
-| [moveScene](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#movescene) | 移动场景 |
-| [exportScene](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#exportscene) | 导出场景 |
-| [importScene](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#importscene) | 导入场景 |
-| [removeScenes](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#removescenes) | 删除场景或者场景目录 |
-| [cleanCurrentScene](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#cleancurrentscene) | 清除当前场景的所有内容 |
-| [lockImages](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#lockimages) | 锁定选中图片 |
-| [insertText](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#inserttext) | 在指定位置插入文字 |
-| [updateText](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#updatetext) | 修改指定的文字 |
-| [updateSelectedText](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#updateselectedtext) | 修改当前被选中文字的字体样式 |
-| [pptNextStep](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#pptnextstep) | 播放动态 PPT 下一页 |
-| [pptPreviousStep](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#pptpreviousstep) | 返回动态 PPT 上一页 |
-| [scenePathType](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#scenepathtype) | 查询场景路径类型 |
-| [entireScenes](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#entirescenes) | 获取当前房间内所有场景的信息 |
-| [scenePreview](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#scenepreview) | 获取指定场景的预览图 |
-| [fillSceneSnapshot](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#fillscenesnapshot) | 获取指定场景的屏幕快照 |
-| [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#screenshottocanvasasync) | 等待目标场景的图片加载完成后生成屏幕快照 |
+| [getScene](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#getscene) | 获取指定场景的信息 |
+| [setScenePath](/zh-CN/api-reference/whiteboard/web/interfaces/room#setscenepath) | 切换至指定的场景 |
+| [setSceneIndex](/zh-CN/api-reference/whiteboard/web/interfaces/room#setsceneindex) | 切换至当前场景目录下的指定场景 |
+| [putScenes](/zh-CN/api-reference/whiteboard/web/interfaces/room#putscenes) | 在指定场景目录下插入多个场景 |
+| [moveScene](/zh-CN/api-reference/whiteboard/web/interfaces/room#movescene) | 移动场景 |
+| [exportScene](/zh-CN/api-reference/whiteboard/web/interfaces/room#exportscene) | 导出场景 |
+| [importScene](/zh-CN/api-reference/whiteboard/web/interfaces/room#importscene) | 导入场景 |
+| [removeScenes](/zh-CN/api-reference/whiteboard/web/interfaces/room#removescenes) | 删除场景或者场景目录 |
+| [cleanCurrentScene](/zh-CN/api-reference/whiteboard/web/interfaces/room#cleancurrentscene) | 清除当前场景的所有内容 |
+| [lockImages](/zh-CN/api-reference/whiteboard/web/interfaces/room#lockimages) | 锁定选中图片 |
+| [insertText](/zh-CN/api-reference/whiteboard/web/interfaces/room#inserttext) | 在指定位置插入文字 |
+| [updateText](/zh-CN/api-reference/whiteboard/web/interfaces/room#updatetext) | 修改指定的文字 |
+| [updateSelectedText](/zh-CN/api-reference/whiteboard/web/interfaces/room#updateselectedtext) | 修改当前被选中文字的字体样式 |
+| [pptNextStep](/zh-CN/api-reference/whiteboard/web/interfaces/room#pptnextstep) | 播放动态 PPT 下一页 |
+| [pptPreviousStep](/zh-CN/api-reference/whiteboard/web/interfaces/room#pptpreviousstep) | 返回动态 PPT 上一页 |
+| [scenePathType](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#scenepathtype) | 查询场景路径类型 |
+| [entireScenes](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#entirescenes) | 获取当前房间内所有场景的信息 |
+| [scenePreview](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#scenepreview) | 获取指定场景的预览图 |
+| [fillSceneSnapshot](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#fillscenesnapshot) | 获取指定场景的屏幕快照 |
+| [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#screenshottocanvasasync) | 等待目标场景的图片加载完成后生成屏幕快照 |
 
-[回放管理](#回放管理)
-
-| 方法 | 描述 |
-| --- | --- |
-| [playbackSpeed](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks#playbackspeed) | 设置白板回放的倍速 |
-| [play](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks#play) | 开始白板回放 |
-| [pause](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks#pause) | 暂停白板回放 |
-| [stop](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks#stop) | 停止白板回放 |
-| [seekToProgressTime](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks#seektoprogresstime) | 设置白板回放的播放位置 |
-| [setObserverMode](/zh-CN/api-reference/whiteboard/web/interfaces/player-callbacks#setobservermode) | 设置白板回放的查看模式 |
-
-[自定义事件](#自定义事件)
+### 回放管理
 
 | 方法 | 描述 |
 | --- | --- |
-| [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#dispatchmagixevent) | 发送自定义事件 |
-| [addMagixEventListener](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#addmagixeventlistener) | 注册自定义事件监听 |
-| [removeMagixEventListener](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#removemagixeventlistener) | 移除自定义事件监听 |
+| [playbackSpeed](/zh-CN/api-reference/whiteboard/web/interfaces/player#playbackspeed) | 设置白板回放的倍速 |
+| [play](/zh-CN/api-reference/whiteboard/web/interfaces/player#play) | 开始白板回放 |
+| [pause](/zh-CN/api-reference/whiteboard/web/interfaces/player#pause) | 暂停白板回放 |
+| [stop](/zh-CN/api-reference/whiteboard/web/interfaces/player#stop) | 停止白板回放 |
+| [seekToProgressTime](/zh-CN/api-reference/whiteboard/web/interfaces/player#seektoprogresstime) | 设置白板回放的播放位置 |
+| [setObserverMode](/zh-CN/api-reference/whiteboard/web/interfaces/player#setobservermode) | 设置白板回放的查看模式 |
 
-[其他方法](#其他方法)
+### 自定义事件
 
 | 方法 | 描述 |
 | --- | --- |
-| [timeDelay](/zh-CN/api-reference/whiteboard/web/interfaces/room-callbacks#timedelay) | 设置白板同步延时 |
-| [convertToPointInWorld](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#converttopointinworld) | 转换白板上点的坐标 |
-| [refreshViewSize](/zh-CN/api-reference/whiteboard/web/interfaces/displayer-callbacks#refreshviewsize) | 刷新白板的界面 |
-| \{@link createPPTTask createPPTTask\} | 创建 `PPTTask` 对象 |
+| [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/web/interfaces/room#dispatchmagixevent) | 发送自定义事件 |
+| [addMagixEventListener](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#addmagixeventlistener) | 注册自定义事件监听 |
+| [removeMagixEventListener](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#removemagixeventlistener) | 移除自定义事件监听 |
 
-[事件回调](#事件回调)
+### 其他方法
+
+| 方法 | 描述 |
+| --- | --- |
+| [timeDelay](/zh-CN/api-reference/whiteboard/web/interfaces/room#timedelay) | 设置白板同步延时 |
+| [convertToPointInWorld](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#converttopointinworld) | 转换白板上点的坐标 |
+| [refreshViewSize](/zh-CN/api-reference/whiteboard/web/interfaces/displayer#refreshviewsize) | 刷新白板的界面 |
+| createPPTTask | 创建 `PPTTask` 对象 |
+
+### 事件回调
 
 | 事件 | 描述 |
 | --- | --- |
 | [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/web/globals#displayercallbacks) | `Displayer` 对象的事件回调 |
 | [RoomCallbacks](/zh-CN/api-reference/whiteboard/web/globals#roomcallbacks) | 白板房间的事件回调 |
 | [PlayerCallbacks](/zh-CN/api-reference/whiteboard/web/globals#playercallbacks) | 白板回放的事件回调 |
-| \{@link PPTTaskCallbacks PPTTaskCallbacks\} | 文档转换任务的进度和结果回调 |
+| PPTTaskCallbacks | 文档转换任务的进度和结果回调 |

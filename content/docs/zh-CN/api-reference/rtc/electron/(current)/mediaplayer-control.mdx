@@ -1,10 +1,9 @@
 ---
 title: "播放器控制"
-description: "调节本地播放音量。"
+description: "播放器控制 API reference."
 ---
-<a id="toc_mediaplayer_control"></a>
 
-## 播放器控制
+<a id="toc_mediaplayer_control"></a>
 
 <a id="api_imediaplayer_adjustplayoutvolume"></a>
 
@@ -44,7 +43,6 @@ abstract adjustPlayoutVolume(volume: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_adjustpublishsignalvolume"></a>
@@ -88,7 +86,6 @@ abstract adjustPublishSignalVolume(volume: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_mute"></a>
@@ -129,7 +126,6 @@ abstract mute(muted: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_pause"></a>
@@ -159,7 +155,6 @@ abstract pause(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_play"></a>
@@ -180,8 +175,8 @@ abstract play(): number;
 
 ### 调用时机
 
-- 在调用 [open](/zh-CN/api-reference/rtc/electron/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/electron/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体文件、且收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态为 PlayerStateOpenCompleted 后，调用该方法。
-- 在调用 [seek](/zh-CN/api-reference/rtc/electron/mediaplayer-control#api_imediaplayer_seek) 后调用该方法。
+- 在调用 [open](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体文件、且收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态为 PlayerStateOpenCompleted 后，调用该方法。
+- 在调用 [seek](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 后调用该方法。
 
 <a id="api_imediaplayer_play__return_values"></a>
 
@@ -190,7 +185,6 @@ abstract play(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_playpreloadedsrc"></a>
@@ -207,7 +201,7 @@ abstract playPreloadedSrc(src: string): number;
 
 <a id="api_imediaplayer_playpreloadedsrc__detailed_desc"></a>
 
-调用 [preloadSrc](/zh-CN/api-reference/rtc/electron/mediaplayer-open#api_imediaplayer_preloadsrc) 方法将媒体资源预加载到播放列表后，可以调用该方法播放已预加载的媒体资源。调用该方法后，如果你收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态 `PlayerStatePlaying`，则表示播放成功。 如果你想更换播放的预加载媒体资源，你可以再次调用该方法并指定新的媒体资源路径。如果你想重新播放媒体资源，你需要在播放前调用 [preloadSrc](/zh-CN/api-reference/rtc/electron/mediaplayer-open#api_imediaplayer_preloadsrc) 重新将该媒体资源预加载到播放列表。如果你想清空播放列表，请调用 [stop](/zh-CN/api-reference/rtc/electron/mediaplayer-control#api_imediaplayer_stop)。
+调用 [preloadSrc](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc) 方法将媒体资源预加载到播放列表后，可以调用该方法播放已预加载的媒体资源。调用该方法后，如果你收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告状态 `PlayerStatePlaying`，则表示播放成功。 如果你想更换播放的预加载媒体资源，你可以再次调用该方法并指定新的媒体资源路径。如果你想重新播放媒体资源，你需要在播放前调用 [preloadSrc](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc) 重新将该媒体资源预加载到播放列表。如果你想清空播放列表，请调用 [stop](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-control#api_imediaplayer_stop)。
 
 :::info[注]
 如果你在播放暂停时调用该方法，该方法会在恢复播放后才生效。
@@ -219,7 +213,7 @@ abstract playPreloadedSrc(src: string): number;
 
 #### `src`
 
-播放列表中的媒体资源 URL 地址，必须与 [preloadSrc](/zh-CN/api-reference/rtc/electron/mediaplayer-open#api_imediaplayer_preloadsrc) 方法设置的 `src` 一致，否则无法播放。
+播放列表中的媒体资源 URL 地址，必须与 [preloadSrc](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc) 方法设置的 `src` 一致，否则无法播放。
 
 <a id="api_imediaplayer_playpreloadedsrc__return_values"></a>
 
@@ -228,7 +222,6 @@ abstract playPreloadedSrc(src: string): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_resume"></a>
@@ -252,7 +245,6 @@ abstract resume(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_seek"></a>
@@ -269,8 +261,8 @@ abstract seek(newPos: number): number;
 
 <a id="api_imediaplayer_seek__detailed_desc"></a>
 
-- 如果你在播放已经完成后（收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 PlayerStatePlaybackCompleted 或 PlayerStatePlaybackAllLoopsCompleted）再调用 [seek](/zh-CN/api-reference/rtc/electron/mediaplayer-control#api_imediaplayer_seek)，方法调用成功后，SDK 会从你指定的位置开始自动播放，此时你会收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 PlayerStatePlaying。
-- 如果你在播放暂停的情况下调用 [seek](/zh-CN/api-reference/rtc/electron/mediaplayer-control#api_imediaplayer_seek)，调用成功后 SDK 会定位到你指定位置，如需播放，请调用 [resume](/zh-CN/api-reference/rtc/electron/mediaplayer-control#api_imediaplayer_resume) 或 [play](/zh-CN/api-reference/rtc/electron/mediaplayer-control#api_imediaplayer_play)。
+- 如果你在播放已经完成后（收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 PlayerStatePlaybackCompleted 或 PlayerStatePlaybackAllLoopsCompleted）再调用 [seek](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek)，方法调用成功后，SDK 会从你指定的位置开始自动播放，此时你会收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 PlayerStatePlaying。
+- 如果你在播放暂停的情况下调用 [seek](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek)，调用成功后 SDK 会定位到你指定位置，如需播放，请调用 [resume](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-control#api_imediaplayer_resume) 或 [play](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-control#api_imediaplayer_play)。
 
 <a id="api_imediaplayer_seek__timing"></a>
 
@@ -282,7 +274,7 @@ abstract seek(newPos: number): number;
 
 ### 相关回调
 
-成功调用该方法后，你会收到 [onPlayerEvent](/zh-CN/api-reference/rtc/electron/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调，报告当前播放器发生的事件，如定位开始、定位成功或定位失败。
+成功调用该方法后，你会收到 [onPlayerEvent](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) 回调，报告当前播放器发生的事件，如定位开始、定位成功或定位失败。
 
 <a id="api_imediaplayer_seek__parameters"></a>
 
@@ -299,7 +291,6 @@ abstract seek(newPos: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_stop"></a>
@@ -316,7 +307,7 @@ abstract stop(): number;
 
 <a id="api_imediaplayer_stop__detailed_desc"></a>
 
-调用该方法停止播放后，如需重新播放，需要调用 [open](/zh-CN/api-reference/rtc/electron/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/electron/mediaplayer-open#api_imediaplayer_openwithmediasource) 再次打开媒体资源。
+调用该方法停止播放后，如需重新播放，需要调用 [open](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource](/zh-CN/api-reference/rtc/electron/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 再次打开媒体资源。
 
 <a id="api_imediaplayer_stop__timing"></a>
 
@@ -331,5 +322,4 @@ abstract stop(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)

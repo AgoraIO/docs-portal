@@ -1,10 +1,9 @@
 ---
 title: "音视频录制"
-description: "创建一个媒体录制器实例。"
+description: "音视频录制 API reference."
 ---
-<a id="toc_recording"></a>
 
-## 音视频录制
+<a id="toc_recording"></a>
 
 <a id="api_irtcengine_createmediarecorder"></a>
 
@@ -37,7 +36,6 @@ description: "创建一个媒体录制器实例。"
 - 方法调用成功，返回 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediarecorder) 对象。
 - 方法调用失败，返回 nil。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroymediarecorder"></a>
@@ -71,7 +69,6 @@ description: "创建一个媒体录制器实例。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。请参阅错误码获取详细信息和排查建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_enablemainqueuedispatch_imediarecorder"></a>
@@ -108,7 +105,6 @@ description: "创建一个媒体录制器实例。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。详见错误码获取详情和排查建议。
 
-### 所属接口类
 - [AgoraMediaRecorder](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediarecorder)
 
 <a id="api_imediarecorder_setmediarecorderobserver"></a>
@@ -146,7 +142,6 @@ description: "创建一个媒体录制器实例。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraMediaRecorder](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediarecorder)
 
 <a id="api_irtcengine_startaudiorecording1"></a>
@@ -196,7 +191,6 @@ description: "创建一个媒体录制器实例。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startaudiorecording3"></a>
@@ -241,7 +235,6 @@ description: "创建一个媒体录制器实例。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_startrecording"></a>
@@ -303,7 +296,6 @@ description: "创建一个媒体录制器实例。"
   - -4：当前 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 的状态不支持该操作。可能是由于已有录制任务正在进行，或录制错误导致录制已停止。
   - -7：调用该方法时 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 尚未初始化。请确保在调用该方法前已创建 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediarecorder) 对象。
 
-### 所属接口类
 - [AgoraMediaRecorder](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediarecorder)
 
 <a id="api_irtcengine_stopaudiorecording"></a>
@@ -327,7 +319,6 @@ description: "创建一个媒体录制器实例。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_stoprecording"></a>
@@ -361,7 +352,6 @@ description: "创建一个媒体录制器实例。"
 
   - -7：在初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 之前调用该方法。请确保在调用此方法之前已创建 `Recorder` 对象。
 
-### 所属接口类
 - [AgoraMediaRecorder](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediarecorder)
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated"></a>
@@ -410,7 +400,6 @@ description: "创建一个媒体录制器实例。"
 
 录制文件信息，详见 [AgoraMediaRecorderInfo](/zh-CN/api-reference/rtc/macos/class-recorderinfo)。
 
-### 所属接口类
 - [AgoraMediaRecorderDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediarecorderobserver)
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged"></a>
@@ -461,5 +450,4 @@ description: "创建一个媒体录制器实例。"
 
 录制状态变化的原因，详见 [AgoraMediaRecorderReasonCode](/zh-CN/api-reference/rtc/macos/enum-recorderreasoncode)。
 
-### 所属接口类
 - [AgoraMediaRecorderDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediarecorderobserver)

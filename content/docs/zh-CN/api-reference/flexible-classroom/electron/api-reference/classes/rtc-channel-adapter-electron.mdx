@@ -1,13 +1,13 @@
 ---
 title: "RtcChannelAdapterElectron"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "RtcChannelAdapterElectron API 参考。"
 ---
 
 - [RtcChannelAdapterBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/rtc-channel-adapter-base)
 
   - RtcChannelAdapterElectron
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -17,19 +17,19 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new RtcChannelAdapterElectron(channelName: string, configs: RtcAdapterElectronConfig, base: RtcAdapterBase): RtcChannelAdapterElectron
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | channelName: string |  |
 | configs: RtcAdapterElectronConfig |  |
 | base: RtcAdapterBase |  |
 
-#### Returns
+#### 返回值
 
-Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/rtc-channel-adapter-electron)
+[RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/rtc-channel-adapter-electron)
 
-## Properties
+## 属性
 
 <a id="base"></a>
 
@@ -63,7 +63,7 @@ logger: "agora-rte-sdk/src/core/logger/type".Logger
 uid?: number
 ```
 
-## Accessors
+## 访问器
 
 <a id="isLocalAudioMuted"></a>
 
@@ -73,9 +73,9 @@ uid?: number
 get isLocalAudioMuted(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="isLocalVideoMuted"></a>
 
@@ -85,11 +85,11 @@ Returns boolean
 get isLocalVideoMuted(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
-## Methods
+## 方法
 
 <a id="emit"></a>
 
@@ -99,16 +99,16 @@ Returns boolean
 emit(evt: string, ...args: any[]): RtcChannelAdapterElectron
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | Rest ...args: any[] |  |
 
-#### Returns
+#### 返回值
 
-Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/rtc-channel-adapter-electron)
+[RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/rtc-channel-adapter-electron)
 
 <a id="enableDualStream"></a>
 
@@ -118,15 +118,15 @@ Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/elec
 enableDualStream(enable: boolean): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enable: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="getCurrentFrameData"></a>
 
@@ -136,15 +136,15 @@ Returns Promise &lt; void &gt;
 getCurrentFrameData(_streamUuid: string): ImageData
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | _streamUuid: string |  |
 
-#### Returns
+#### 返回值
 
-Returns ImageData
+ImageData
 
 <a id="getSessionId"></a>
 
@@ -154,9 +154,9 @@ Returns ImageData
 getSessionId(): string
 ```
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
 <a id="join"></a>
 
@@ -166,17 +166,17 @@ Returns string
 join(token: string, streamUuid: string, connectionType: AGRtcConnectionType): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | token: string |  |
 | streamUuid: string |  |
 | connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="leave"></a>
 
@@ -186,15 +186,15 @@ Returns Promise &lt; void &gt;
 leave(connectionType?: AGRtcConnectionType): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="muteLocalAudio"></a>
 
@@ -204,16 +204,16 @@ Returns Promise &lt; void &gt;
 muteLocalAudio(mute: boolean, connectionType: AGRtcConnectionType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mute: boolean |  |
 | connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteLocalAudioStream"></a>
 
@@ -223,15 +223,15 @@ Returns number
 muteLocalAudioStream(mute: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteLocalScreenShare"></a>
 
@@ -241,16 +241,16 @@ Returns number
 muteLocalScreenShare(mute: boolean, connectionType: AGRtcConnectionType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mute: boolean |  |
 | connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteLocalVideo"></a>
 
@@ -260,16 +260,16 @@ Returns number
 muteLocalVideo(mute: boolean, connectionType: AGRtcConnectionType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mute: boolean |  |
 | connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteLocalVideoStream"></a>
 
@@ -279,15 +279,15 @@ Returns number
 muteLocalVideoStream(mute: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteRemoteAudio"></a>
 
@@ -297,16 +297,16 @@ Returns number
 muteRemoteAudio(streamUuid: string, mute: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteRemoteVideo"></a>
 
@@ -316,16 +316,16 @@ Returns number
 muteRemoteVideo(streamUuid: string, mute: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteRemoteVideoMass"></a>
 
@@ -335,16 +335,16 @@ Returns number
 muteRemoteVideoMass(streamUuids: string[], mute: boolean): Promise<string[]>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuids: string[] |  |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; string [] &gt;
+Promise &lt; string [] &gt;
 
 <a id="off"></a>
 
@@ -354,16 +354,16 @@ Returns Promise &lt; string [] &gt;
 off(evt: string, cb: CallableFunction): RtcChannelAdapterElectron
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/rtc-channel-adapter-electron)
+[RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/rtc-channel-adapter-electron)
 
 <a id="on"></a>
 
@@ -373,16 +373,16 @@ Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/elec
 on(evt: string, cb: CallableFunction): RtcChannelAdapterElectron
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/rtc-channel-adapter-electron)
+[RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/rtc-channel-adapter-electron)
 
 <a id="onAudioVolumeIndication"></a>
 
@@ -392,15 +392,15 @@ Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/elec
 onAudioVolumeIndication(cb: (volumes: Map<string, number>) => void): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: (volumes: Map&lt;string, number&gt;) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onConnectedThroughCloudProxy"></a>
 
@@ -410,15 +410,15 @@ Returns number
 onConnectedThroughCloudProxy(cb: (connectionType: AGRtcConnectionType) => void): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: (connectionType: AGRtcConnectionType) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onConnectionStateChanged"></a>
 
@@ -428,15 +428,15 @@ Returns number
 onConnectionStateChanged(cb: (state: AGRtcState, connectionType: AGRtcConnectionType) => void): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: (state: AGRtcState, connectionType: AGRtcConnectionType) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onNetworkStats"></a>
 
@@ -446,15 +446,15 @@ Returns number
 onNetworkStats(cb: (stats: AGNetworkStats) => void): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: (stats: AGNetworkStats) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onPublishedThroughCloudProxy"></a>
 
@@ -464,15 +464,15 @@ Returns number
 onPublishedThroughCloudProxy(cb: (connectionType: AGRtcConnectionType, isUsingCloudProxy: boolean) => void): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: (connectionType: AGRtcConnectionType, isUsingCloudProxy: boolean) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="once"></a>
 
@@ -482,16 +482,16 @@ Returns number
 once(evt: string, cb: CallableFunction): RtcChannelAdapterElectron
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | evt: string |  |
 | cb: CallableFunction |  |
 
-#### Returns
+#### 返回值
 
-Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/rtc-channel-adapter-electron)
+[RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/rtc-channel-adapter-electron)
 
 <a id="removeAllEventListeners"></a>
 
@@ -501,9 +501,9 @@ Returns [RtcChannelAdapterElectron](/zh-CN/api-reference/flexible-classroom/elec
 removeAllEventListeners(): void
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setCloudProxy"></a>
 
@@ -513,15 +513,15 @@ Returns void
 setCloudProxy(proxyType: AgoraCloudProxyType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | proxyType: AgoraCloudProxyType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setLatencyLevel"></a>
 
@@ -531,15 +531,15 @@ Returns number
 setLatencyLevel(level: AgoraLatencyLevel): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | level: AgoraLatencyLevel |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setLowStreamParameter"></a>
 
@@ -549,15 +549,15 @@ Returns void
 setLowStreamParameter(streamParameter: AGLowStreamParameter): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamParameter: AGLowStreamParameter |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setRemoteTrackVolume"></a>
 
@@ -567,16 +567,16 @@ Returns number
 setRemoteTrackVolume(streamUuid: string, volume: number): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | volume: number |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setRemoteVideoStreamType"></a>
 
@@ -586,13 +586,13 @@ Returns number
 setRemoteVideoStreamType(streamUuid: string, streamType: AGRemoteVideoStreamType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | streamType: AGRemoteVideoStreamType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number

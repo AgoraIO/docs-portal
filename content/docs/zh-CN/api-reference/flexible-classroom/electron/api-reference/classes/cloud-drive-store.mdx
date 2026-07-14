@@ -1,6 +1,6 @@
 ---
 title: "CloudDriveStore"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "CloudDriveStore API 参考。"
 ---
 
 `CloudDriveStore` 类提供云盘相关能力。
@@ -9,7 +9,7 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 
   - CloudDriveStore
 
-## Properties
+## 属性
 
 <a id="personalResources"></a>
 
@@ -31,7 +31,7 @@ uploadProgress: Map<string, CloudDriveUploadingProgress>
 
 云盘资源上传进度
 
-## Methods
+## 方法
 
 <a id="addPersonalResource"></a>
 
@@ -43,16 +43,16 @@ addPersonalResource(resourceUuid: string, resourceInfo: CloudDriveResourceInfo):
 
 将已上传的资源文件映射为云盘内的一个文件
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | resourceUuid: string | 资源 UUID |
 | resourceInfo: CloudDriveResourceInfo | 资源信息 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="calcResourceUuid"></a>
 
@@ -64,15 +64,15 @@ calcResourceUuid(resource: string | File): Promise<string>
 
 计算资源文件 UUID
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | resource: string \| File |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; string &gt;
+Promise &lt; string &gt;
 
 资源文件 UUID
 
@@ -86,15 +86,15 @@ cancelUpload(resourceUuid: string): Promise<void>
 
 取消上传资源
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | resourceUuid: string | 资源 ID |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="fetchPersonalResources"></a>
 
@@ -106,15 +106,15 @@ fetchPersonalResources(options: CloudDrivePagingOption): Promise<{ list: never[]
 
 获取个人云盘资源
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | options: CloudDrivePagingOption | 分页参数 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; \{list: never []; total: number \} &gt;
+Promise &lt; \{list: never []; total: number \} &gt;
 
 云盘资源分页信息
 
@@ -128,15 +128,15 @@ removePersonalResources(resourceUuids: string[]): Promise<undefined>
 
 移除个人资源
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | resourceUuids: string[] | 资源 ID |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; undefined &gt;
+Promise &lt; undefined &gt;
 
 <a id="retryUpload"></a>
 
@@ -148,15 +148,15 @@ retryUpload(resourceUuid: string): void
 
 重新上传资源
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | resourceUuid: string | 资源 ID |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="updatePersonalResource"></a>
 
@@ -168,16 +168,16 @@ updatePersonalResource(resourceUuid: string, resourceInfo: Pick<CloudDriveResour
 
 更新云盘文件信息
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | resourceUuid: string |  |
 | resourceInfo: Pick&lt;CloudDriveResourceInfo, "resourceName"&gt; |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; any &gt;
+Promise &lt; any &gt;
 
 <a id="uploadPersonalResource"></a>
 
@@ -189,9 +189,9 @@ uploadPersonalResource(file: File, progressUuid: string, ext: string, contentTyp
 
 上传资源到云盘，上传后需要调用 addPersonalResource 方法创建一条资源对应的课件记录即可在云盘中使用。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | file: File | 资源文件对象 |
 | progressUuid: string | 上传 UUID |
@@ -199,8 +199,8 @@ uploadPersonalResource(file: File, progressUuid: string, ext: string, contentTyp
 | contentType: string | static: 静态， dynamic：动态 |
 | Optional conversion: Partial&lt;\{ canvasVersion: boolean; outputFormat: string; preview: boolean; scale: number; type: string \}&gt; | 转换选项 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; undefined | \{ext: string; resourceName: string; resourceUuid: any; url: string \} | \{ext?: undefined; resourceName?: undefined; resourceUuid?: undefined; url?: undefined \} &gt;
+Promise &lt; undefined | \{ext: string; resourceName: string; resourceUuid: any; url: string \} | \{ext?: undefined; resourceName?: undefined; resourceUuid?: undefined; url?: undefined \} &gt;
 
 上传成功后的文件信息

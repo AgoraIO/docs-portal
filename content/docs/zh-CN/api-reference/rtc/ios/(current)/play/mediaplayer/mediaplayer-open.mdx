@@ -1,14 +1,9 @@
 ---
 title: "媒体资源打开"
-description: "打开媒体资源。"
+description: "媒体资源打开 API reference."
 ---
-<a id="toc_mediaplayer_open"></a>
 
-## 媒体资源打开
-
-<a id="api_imediaplayer_open"></a>
-
-## open:startPos:
+## <span id="toc_mediaplayer_open"></span>open:startPos: [#api_imediaplayer_open]
 
 打开媒体资源。
 
@@ -24,21 +19,15 @@ description: "打开媒体资源。"
 该方法为异步调用。
 :::
 
-<a id="api_imediaplayer_open__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_imediaplayer_open__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_imediaplayer_open__related"></a>
-
-### 相关回调
+### 相关回调 [#api_imediaplayer_open__related]
 
 成功调用该方法后，SDK 会触发 `didChangedToState:reason:` 回调。在收到播放状态为 `AgoraMediaPlayerStateOpenCompleted` 的报告后，可以调用 [play](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
 
-<a id="api_imediaplayer_open__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_open__parameters]
 
 #### `url`
 
@@ -48,19 +37,14 @@ description: "打开媒体资源。"
 
 播放的起始位置（毫秒）。默认值为 0。
 
-<a id="api_imediaplayer_open__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_open__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_openwithmediasource"></a>
-
-## openWithMediaSource:
+## openWithMediaSource: [#api_imediaplayer_openwithmediasource]
 
 打开媒体文件并配置播放场景。
 
@@ -78,33 +62,24 @@ description: "打开媒体资源。"
 [openWithMediaSource:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 为异步调用。如果你需要播放媒体文件，请确保在调用 [play](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放文件之前，已收到 [AgoraRtcMediaPlayer:didChangedToState:reason:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调并报告 `AgoraMediaPlayerStateOpenCompleted`。
 :::
 
-<a id="api_imediaplayer_openwithmediasource__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_imediaplayer_openwithmediasource__timing]
 
 你可以在加入频道前或加入频道后调用该方法。
 
-<a id="api_imediaplayer_openwithmediasource__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_openwithmediasource__parameters]
 
 #### `source`
 
 媒体资源。详见 [AgoraMediaSource](/zh-CN/api-reference/rtc/ios/class-mediasource)。
 
-<a id="api_imediaplayer_openwithmediasource__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_openwithmediasource__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_preloadsrc"></a>
-
-## preloadSrc:startPos:
+## preloadSrc:startPos: [#api_imediaplayer_preloadsrc]
 
 预加载媒体资源。
 
@@ -123,9 +98,7 @@ description: "打开媒体资源。"
 - 不支持将重复的媒体资源预加载到播放列表中。但你可以将正在播放的媒体资源再次预加载到播放列表中。
 :::
 
-<a id="api_imediaplayer_preloadsrc__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_preloadsrc__parameters]
 
 #### `src`
 
@@ -135,19 +108,14 @@ description: "打开媒体资源。"
 
 媒体资源预加载到播放列表后开始播放的位置（毫秒）。预加载直播流时，将该参数设置为 0。
 
-<a id="api_imediaplayer_preloadsrc__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_preloadsrc__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_switchsrc"></a>
-
-## switchSrc:syncPts:
+## switchSrc:syncPts: [#api_imediaplayer_switchsrc]
 
 切换正在播放的媒体资源。
 
@@ -172,15 +140,11 @@ description: "打开媒体资源。"
 - 切换媒体资源前，请确保播放位置未超过要切换的媒体资源的总时长。
 :::
 
-<a id="api_imediaplayer_switchsrc__related"></a>
-
-### 相关回调
+### 相关回调 [#api_imediaplayer_switchsrc__related]
 
 成功调用该方法后，SDK 会触发 `didOccurEvent:elapsedTime:message:` 回调报告 `AgoraMediaPlayerEventSwitchComplete` 事件表示切换成功。如果切换失败，SDK 会自动重试 3 次，若仍失败，会触发 `didOccurEvent:elapsedTime:message:` 回调报告 `AgoraMediaPlayerEventSwitchError` 事件表示切换出错。
 
-<a id="api_imediaplayer_switchsrc__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_switchsrc__parameters]
 
 #### `src`
 
@@ -193,19 +157,14 @@ description: "打开媒体资源。"
 - YES：同步切换前后的播放位置。
 - NO：（默认）不同步切换前后的播放位置。
 
-<a id="api_imediaplayer_switchsrc__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_switchsrc__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_unloadsrc"></a>
-
-## unloadSrc:
+## unloadSrc: [#api_imediaplayer_unloadsrc]
 
 卸载你预加载的媒体资源。
 
@@ -221,20 +180,15 @@ description: "打开媒体资源。"
 [unloadSrc:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_unloadsrc) 方法无法释放正在播放的媒体资源。
 :::
 
-<a id="api_imediaplayer_unloadsrc__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_unloadsrc__parameters]
 
 #### `src`
 
 媒体资源的 URL。
 
-<a id="api_imediaplayer_unloadsrc__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_unloadsrc__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)

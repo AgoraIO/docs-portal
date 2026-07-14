@@ -1,14 +1,9 @@
 ---
 title: "人声音效"
-description: "启用或关闭语音 AI 调音器。"
+description: "人声音效 API reference."
 ---
-<a id="toc_audio_effect"></a>
 
-## 人声音效
-
-<a id="api_irtcengine_enablevoiceaituner"></a>
-
-## enableVoiceAITuner:type:
+## <span id="toc_audio_effect"></span>enableVoiceAITuner:type: [#api_irtcengine_enablevoiceaituner]
 
 启用或关闭语音 AI 调音器。
 
@@ -22,21 +17,15 @@ description: "启用或关闭语音 AI 调音器。"
 
 支持增强音质和调整音色风格。
 
-<a id="api_irtcengine_enablevoiceaituner__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_enablevoiceaituner__scenario]
 
 社交娱乐场景，包括在线 KTV、在线播客和展厅直播等对音质要求较高的场景。
 
-<a id="api_irtcengine_enablevoiceaituner__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_enablevoiceaituner__timing]
 
 你可以在加入频道前或后调用该方法。
 
-<a id="api_irtcengine_enablevoiceaituner__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablevoiceaituner__parameters]
 
 #### `enabled`
 
@@ -49,19 +38,14 @@ description: "启用或关闭语音 AI 调音器。"
 
 语音 AI 调音器的音效类型，详见 [AgoraVoiceAITunerType](/zh-CN/api-reference/rtc/ios/enum-voiceaitunertype)。
 
-<a id="api_irtcengine_enablevoiceaituner__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablevoiceaituner__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setadvancedaudiooptions"></a>
-
-## setAdvancedAudioOptions:
+## setAdvancedAudioOptions: [#api_irtcengine_setadvancedaudiooptions]
 
 设置音频高级选项。
 
@@ -79,27 +63,20 @@ description: "启用或关闭语音 AI 调音器。"
 请在调用 `joinChannelByToken`、 [enableAudio](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_enableaudio) 和 `enableLocalAudio` 之前调用此方法。
 :::
 
-<a id="api_irtcengine_setadvancedaudiooptions__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setadvancedaudiooptions__parameters]
 
 #### `options`
 
 音频的高级选项，详见 [AgoraAdvancedAudioOptions](/zh-CN/api-reference/rtc/ios/class-advancedaudiooptions)。
 
-<a id="api_irtcengine_setadvancedaudiooptions__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setadvancedaudiooptions__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setainsmode"></a>
-
-## setAINSMode:mode:
+## setAINSMode:mode: [#api_irtcengine_setainsmode]
 
 设置是否启用 AI 降噪功能并设置降噪模式。
 
@@ -127,21 +104,15 @@ description: "启用或关闭语音 AI 调音器。"
 该方法依赖 AI 降噪动态库 AgoraAiNoiseSuppressionExtension.xcframework。如果该动态库被删除，则无法启用该功能。
 :::
 
-<a id="api_irtcengine_setainsmode__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_setainsmode__scenario]
 
 在连麦、在线教育和视频会议等场景中，该功能可检测并减少背景噪声，从而提升体验。
 
-<a id="api_irtcengine_setainsmode__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setainsmode__timing]
 
 你可以在加入频道前或加入频道后调用此方法。
 
-<a id="api_irtcengine_setainsmode__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setainsmode__parameters]
 
 #### `enabled`
 
@@ -154,18 +125,13 @@ description: "启用或关闭语音 AI 调音器。"
 
 AI 降噪模式，详见 [AUDIO_AINS_MODE](/zh-CN/api-reference/rtc/ios/enum-audioainsmode)。
 
-<a id="api_irtcengine_setainsmode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setainsmode__return_values]
 
 0：方法调用成功。 &lt; 0：方法调用失败。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setaudioeffectparameters"></a>
-
-## setAudioEffectParameters:param1:param2:
+## setAudioEffectParameters:param1:param2: [#api_irtcengine_setaudioeffectparameters]
 
 设置 SDK 预设音效的参数。
 
@@ -203,9 +169,7 @@ AI 降噪模式，详见 [AUDIO_AINS_MODE](/zh-CN/api-reference/rtc/ios/enum-aud
 - 该方法依赖于语音美声动态库 AgoraAudioBeautyExtension.xcframework （iOS）或 `AgoraAudioBeautyExtension.framework` （macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
 
-<a id="api_irtcengine_setaudioeffectparameters__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setaudioeffectparameters__parameters]
 
 #### `preset`
 
@@ -244,19 +208,14 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
   - `11`：G
   - `12`：G#
 
-<a id="api_irtcengine_setaudioeffectparameters__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setaudioeffectparameters__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setaudioeffectpreset"></a>
-
-## setAudioEffectPreset:
+## setAudioEffectPreset: [#api_irtcengine_setaudioeffectpreset]
 
 设置 SDK 预设的音效效果。
 
@@ -287,33 +246,24 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 该方法依赖于美声特效动态库 AgoraAudioBeautyExtension.xcframework （iOS）或 `AgoraAudioBeautyExtension.framework` （macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
 
-<a id="api_irtcengine_setaudioeffectpreset__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setaudioeffectpreset__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_setaudioeffectpreset__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setaudioeffectpreset__parameters]
 
 #### `preset`
 
 声网预设的音效选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference/rtc/ios/enum-audioeffectpreset)。
 
-<a id="api_irtcengine_setaudioeffectpreset__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setaudioeffectpreset__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlocalvoiceequalization"></a>
-
-## setLocalVoiceEqualizationOfBandFrequency:withGain:
+## setLocalVoiceEqualizationOfBandFrequency:withGain: [#api_irtcengine_setlocalvoiceequalization]
 
 设置本地语音的均衡效果。
 
@@ -323,17 +273,11 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - (int)setLocalVoiceEqualizationOfBandFrequency:(AgoraAudioEqualizationBandFrequency)bandFrequency withGain:(NSInteger)gain NS_SWIFT_NAME(setLocalVoiceEqualizationOf(_:withGain:));
 ```
 
-<a id="api_irtcengine_setlocalvoiceequalization__detailed_desc"></a>
-
-<a id="api_irtcengine_setlocalvoiceequalization__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_setlocalvoiceequalization__detailed_desc"></span>调用时机 [#api_irtcengine_setlocalvoiceequalization__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_setlocalvoiceequalization__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlocalvoiceequalization__parameters]
 
 #### `bandFrequency`
 
@@ -343,19 +287,14 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 每个频段的增益值，单位为 dB。取值范围为 -15 到 15，默认值为 0。
 
-<a id="api_irtcengine_setlocalvoiceequalization__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlocalvoiceequalization__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlocalvoiceformant"></a>
-
-## setLocalVoiceFormant:
+## setLocalVoiceFormant: [#api_irtcengine_setlocalvoiceformant]
 
 设置共振峰比例以改变人声音色。
 
@@ -369,21 +308,15 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 共振峰比例会影响声音的音色。值越小，声音越低沉；值越大，声音越尖锐。设置共振峰比例后，频道内所有用户都能听到改变后的声音。如果你希望同时改变音色和音调，声网建议同时使用 [setLocalVoiceFormant:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceformant) 和 [setLocalVoicePitch:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch) 方法。
 
-<a id="api_irtcengine_setlocalvoiceformant__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengine_setlocalvoiceformant__scenario]
 
 你可以调用该方法设置本地音频的共振峰比例，以改变人声音色。
 
-<a id="api_irtcengine_setlocalvoiceformant__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setlocalvoiceformant__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_setlocalvoiceformant__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlocalvoiceformant__parameters]
 
 #### `formantRatio`
 
@@ -393,19 +326,14 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 声网建议将该值设置在 [-0.4, 0.6] 范围内，否则声音可能会严重失真。
 :::
 
-<a id="api_irtcengine_setlocalvoiceformant__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlocalvoiceformant__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlocalvoicepitch"></a>
-
-## setLocalVoicePitch:
+## setLocalVoicePitch: [#api_irtcengine_setlocalvoicepitch]
 
 改变本地语音的音调。
 
@@ -415,35 +343,24 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - (int)setLocalVoicePitch:(double)pitch NS_SWIFT_NAME(setLocalVoicePitch(_:));
 ```
 
-<a id="api_irtcengine_setlocalvoicepitch__detailed_desc"></a>
-
-<a id="api_irtcengine_setlocalvoicepitch__timing"></a>
-
-### 调用时机
+### <span id="api_irtcengine_setlocalvoicepitch__detailed_desc"></span>调用时机 [#api_irtcengine_setlocalvoicepitch__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_setlocalvoicepitch__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlocalvoicepitch__parameters]
 
 #### `pitch`
 
 本地语音的音调。取值范围为 [0.5, 2.0]，值越小，音调越低。默认值为 1.0（默认），表示不改变音调。
 
-<a id="api_irtcengine_setlocalvoicepitch__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlocalvoicepitch__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setlocalvoicereverb"></a>
-
-## setLocalVoiceReverbOfType:withValue:
+## setLocalVoiceReverbOfType:withValue: [#api_irtcengine_setlocalvoicereverb]
 
 设置本地语音的混响效果。
 
@@ -457,9 +374,7 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 你可以在加入频道前或加入频道后调用该方法。SDK 提供了更易用的方法 [setAudioEffectPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)，可直接实现如流行、R&B 和 KTV 等预设混响效果。
 
-<a id="api_irtcengine_setlocalvoicereverb__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setlocalvoicereverb__parameters]
 
 #### `reverbType`
 
@@ -469,19 +384,14 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 
 混响键的取值。
 
-<a id="api_irtcengine_setlocalvoicereverb__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setlocalvoicereverb__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setvoicebeautifierparameters"></a>
-
-## setVoiceBeautifierParameters:param1:param2:
+## setVoiceBeautifierParameters:param1:param2: [#api_irtcengine_setvoicebeautifierparameters]
 
 设置预设美声特效的参数。
 
@@ -514,9 +424,7 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 该方法依赖于美声特效动态库 AgoraAudioBeautyExtension.xcframework （iOS）或 `AgoraAudioBeautyExtension.framework` （macOS）。如果该动态库被删除，功能将无法正常启用。
 :::
 
-<a id="api_irtcengine_setvoicebeautifierparameters__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setvoicebeautifierparameters__parameters]
 
 #### `preset`
 
@@ -539,19 +447,14 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - `2`：大房间混响效果。
 - `3`：大厅混响效果。
 
-<a id="api_irtcengine_setvoicebeautifierparameters__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setvoicebeautifierparameters__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setvoicebeautifierpreset"></a>
-
-## setVoiceBeautifierPreset:
+## setVoiceBeautifierPreset: [#api_irtcengine_setvoicebeautifierpreset]
 
 设置预设的美声特效。
 
@@ -580,33 +483,24 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 此方法依赖于美声特效动态库 AgoraAudioBeautyExtension.xcframework （iOS）或 `AgoraAudioBeautyExtension.framework` （macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
 
-<a id="api_irtcengine_setvoicebeautifierpreset__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setvoicebeautifierpreset__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_irtcengine_setvoicebeautifierpreset__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setvoicebeautifierpreset__parameters]
 
 #### `preset`
 
 预设的美声特效选项，详见 [AgoraVoiceBeautifierPreset](/zh-CN/api-reference/rtc/ios/enum-voicebeautifierpreset)。
 
-<a id="api_irtcengine_setvoicebeautifierpreset__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setvoicebeautifierpreset__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setvoiceconversionpreset"></a>
-
-## setVoiceConversionPreset:
+## setVoiceConversionPreset: [#api_irtcengine_setvoiceconversionpreset]
 
 设置预设的变声效果。
 
@@ -636,29 +530,22 @@ SDK 预设音效的选项，详见 [AgoraAudioEffectPreset](/zh-CN/api-reference
 - 该方法依赖于美声特效动态库 AgoraAudioBeautyExtension.xcframework （iOS）或 `AgoraAudioBeautyExtension.framework` （macOS）。如果该动态库被删除，则无法正常启用该功能。
 :::
 
-<a id="api_irtcengine_setvoiceconversionpreset__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setvoiceconversionpreset__timing]
 
 该方法可以在加入频道前或加入频道后调用。为获得更好的音效，建议在调用该方法前先调用以下方法：
 
 - 调用 [setAudioScenario:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设置为高音质场景，即 `AgoraAudioScenarioGameStreaming` （3）。
 - 调用 [setAudioProfile:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioprofile2) 并将 `profile` 参数设置为 `AgoraAudioProfileMusicHighQuality` （4）或 `AgoraAudioProfileMusicHighQualityStereo` （5）。
 
-<a id="api_irtcengine_setvoiceconversionpreset__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setvoiceconversionpreset__parameters]
 
 #### `preset`
 
 预设的变声效果选项，详见 [AgoraVoiceConversionPreset](/zh-CN/api-reference/rtc/ios/enum-voiceconversionpreset)。
 
-<a id="api_irtcengine_setvoiceconversionpreset__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setvoiceconversionpreset__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)

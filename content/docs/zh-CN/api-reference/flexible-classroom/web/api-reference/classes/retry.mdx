@@ -1,11 +1,11 @@
 ---
 title: "Retry"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "Retry API 参考。"
 ---
 
 - Retry
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -15,19 +15,19 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new Retry(fn: "agora-rte-sdk/src/core/utils/utils".AnyFunction, args: unknown[], opts?: RetryOptions): Retry
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | fn: "agora-rte-sdk/src/core/utils/utils".AnyFunction | target function |
 | args: unknown[] | arguments the target function to be called with |
 | Optional opts: RetryOptions | options |
 
-#### Returns
+#### 返回值
 
-Returns [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/retry)
+[Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/retry)
 
-## Methods
+## 方法
 
 <a id="abort"></a>
 
@@ -39,15 +39,15 @@ abort(fn: AbortCallback): Retry
 
 Registers a callback to be called when the target function and all retries fail
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | fn: AbortCallback | callback function to be called |
 
-#### Returns
+#### 返回值
 
-Returns [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/retry)
+[Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/retry)
 
 <a id="exec"></a>
 
@@ -59,9 +59,9 @@ exec(): Promise<void>
 
 Starts executes the target function retriesMax would be 3 and maxBackoff would be 10000(10 sceonds) by default
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="fail"></a>
 
@@ -73,12 +73,12 @@ fail(fn: AttemptFailCallback): Retry
 
 Registers a callback to be called when the target function fails This callback function can be used to manage, by yourself, the retry system. It's called when an error occurred and before to retry. This method can have three behaviors: you can throw an error if it returns truthy value then normal retry system continues if it returns falsy value then the retry system stop
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | fn: AttemptFailCallback | callback function to be called |
 
-#### Returns
+#### 返回值
 
-Returns [Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/retry)
+[Retry](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/retry)

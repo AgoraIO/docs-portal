@@ -1,10 +1,9 @@
 ---
 title: "音乐文件播放"
-description: "调整本地播放的混音音量。"
+description: "音乐文件播放 API reference."
 ---
-<a id="toc_audio_mixing"></a>
 
-## 音乐文件播放
+<a id="toc_audio_mixing"></a>
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume"></a>
 
@@ -43,7 +42,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume"></a>
@@ -66,7 +64,7 @@ description: "调整本地播放的混音音量。"
 
 ### 调用时机
 
-在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用。
+在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用。
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__parameters"></a>
 
@@ -83,7 +81,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustaudiomixingvolume"></a>
@@ -103,14 +100,14 @@ description: "调整本地播放的混音音量。"
 你可以通过该方法在本地客户端和远端客户端调节混音音量。
 
 :::info[注]
-该方法不会影响通过 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_playeffect3) 方法设置的音效文件的音量。
+该方法不会影响通过 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法设置的音效文件的音量。
 :::
 
 <a id="api_irtcengine_adjustaudiomixingvolume__timing"></a>
 
 ### 调用时机
 
-请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_startaudiomixing2) 方法之后调用该方法。
+请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法之后调用该方法。
 
 <a id="api_irtcengine_adjustaudiomixingvolume__parameters"></a>
 
@@ -127,7 +124,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingcurrentposition"></a>
@@ -147,8 +143,8 @@ description: "调整本地播放的混音音量。"
 获取音频混音的播放位置（毫秒）。
 
 :::info[注]
-- 你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged` 回调（`AgoraAudioMixingStateTypePlaying` ）后调用此方法。
-- 如果你需要多次调用 [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_getaudiomixingcurrentposition)，请确保两次调用之间的时间间隔大于 500 毫秒。
+- 你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged` 回调（`AgoraAudioMixingStateTypePlaying` ）后调用此方法。
+- 如果你需要多次调用 [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_getaudiomixingcurrentposition)，请确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
 <a id="api_irtcengine_getaudiomixingcurrentposition__return_values"></a>
@@ -158,7 +154,6 @@ description: "调整本地播放的混音音量。"
 - ≥ 0：方法调用成功，返回当前混音的播放位置（毫秒）。返回 0 表示当前音乐文件尚未开始播放。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingduration"></a>
@@ -179,7 +174,7 @@ description: "调整本地播放的混音音量。"
 
 ### 调用时机
 
-在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用该方法。
+在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用该方法。
 
 <a id="api_irtcengine_getaudiomixingduration__return_values"></a>
 
@@ -188,7 +183,6 @@ description: "调整本地播放的混音音量。"
 - ≥ 0：方法调用成功，返回音频混音的时长（毫秒）。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume"></a>
@@ -211,7 +205,7 @@ description: "调整本地播放的混音音量。"
 
 ### 调用时机
 
-请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用此方法。
+请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用此方法。
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume__return_values"></a>
 
@@ -220,7 +214,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingpublishvolume"></a>
@@ -250,7 +243,6 @@ description: "调整本地播放的混音音量。"
 - ≥ 0：方法调用成功，返回混音音量，取值范围为 [0,100]。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiotrackcount"></a>
@@ -268,7 +260,7 @@ description: "调整本地播放的混音音量。"
 <a id="api_irtcengine_getaudiotrackcount__detailed_desc"></a>
 
 :::info[注]
-你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用此方法。
+你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用此方法。
 :::
 
 <a id="api_irtcengine_getaudiotrackcount__return_values"></a>
@@ -278,7 +270,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pauseaudiomixing"></a>
@@ -295,7 +286,7 @@ description: "调整本地播放的混音音量。"
 
 <a id="api_irtcengine_pauseaudiomixing__detailed_desc"></a>
 
-调用 `startAudioMixing` 播放音乐文件后，你可以调用该方法暂停播放。若需停止播放，请调用 [stopAudioMixing](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_stopaudiomixing)。
+调用 `startAudioMixing` 播放音乐文件后，你可以调用该方法暂停播放。若需停止播放，请调用 [stopAudioMixing](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_stopaudiomixing)。
 
 <a id="api_irtcengine_pauseaudiomixing__timing"></a>
 
@@ -310,7 +301,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_resumeaudiomixing"></a>
@@ -327,7 +317,7 @@ description: "调整本地播放的混音音量。"
 
 <a id="api_irtcengine_resumeaudiomixing__detailed_desc"></a>
 
-调用 [pauseAudioMixing](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_pauseaudiomixing) 后，你可以调用此方法恢复播放。
+调用 [pauseAudioMixing](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_pauseaudiomixing) 后，你可以调用此方法恢复播放。
 
 <a id="api_irtcengine_resumeaudiomixing__timing"></a>
 
@@ -342,7 +332,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_selectaudiotrack"></a>
@@ -372,7 +361,7 @@ description: "调整本地播放的混音音量。"
 
 #### `index`
 
-你想要指定的音轨索引。该值应大于等于 0 且小于 [getAudioTrackCount](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_getaudiotrackcount) 返回的值。
+你想要指定的音轨索引。该值应大于等于 0 且小于 [getAudioTrackCount](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_getaudiotrackcount) 返回的值。
 
 <a id="api_irtcengine_selectaudiotrack__return_values"></a>
 
@@ -381,7 +370,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayer_selectmultiaudiotrack"></a>
@@ -398,7 +386,7 @@ description: "调整本地播放的混音音量。"
 
 <a id="api_imediaplayer_selectmultiaudiotrack__detailed_desc"></a>
 
-调用该方法可分别设置要在本地设备上播放和发布到频道的音轨。在调用该方法前，需要先调用 [openWithMediaSource:](/zh-CN/api-reference/rtc/macos/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体文件，并在 [AgoraMediaSource](/zh-CN/api-reference/rtc/macos/class-mediasource) 中将 `enableMultiAudioTrack` 设置为 YES。
+调用该方法可分别设置要在本地设备上播放和发布到频道的音轨。在调用该方法前，需要先调用 [openWithMediaSource:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体文件，并在 [AgoraMediaSource](/zh-CN/api-reference/rtc/macos/class-mediasource) 中将 `enableMultiAudioTrack` 设置为 YES。
 
 <a id="api_imediaplayer_selectmultiaudiotrack__scenario"></a>
 
@@ -412,11 +400,11 @@ description: "调整本地播放的混音音量。"
 
 #### `playoutTrackIndex`
 
-用于本地播放的音轨索引。你可以通过 [getStreamByIndex:](/zh-CN/api-reference/rtc/macos/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取该索引。
+用于本地播放的音轨索引。你可以通过 [getStreamByIndex:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取该索引。
 
 #### `publishTrackIndex`
 
-要发布到频道中的音轨索引。你可以通过 [getStreamByIndex:](/zh-CN/api-reference/rtc/macos/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取该索引。
+要发布到频道中的音轨索引。你可以通过 [getStreamByIndex:](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取该索引。
 
 <a id="api_imediaplayer_selectmultiaudiotrack__return_values"></a>
 
@@ -425,7 +413,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_irtcengine_setaudiomixingdualmonomode"></a>
@@ -464,7 +451,7 @@ description: "调整本地播放的混音音量。"
 
 ### 调用时机
 
-在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:` （`AgoraAudioMixingStateTypePlaying` ）回调后调用该方法。
+在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:` （`AgoraAudioMixingStateTypePlaying` ）回调后调用该方法。
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__parameters"></a>
 
@@ -481,7 +468,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingpitch"></a>
@@ -504,7 +490,7 @@ description: "调整本地播放的混音音量。"
 
 ### 调用时机
 
-你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用该方法。
+你需要在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用该方法。
 
 <a id="api_irtcengine_setaudiomixingpitch__parameters"></a>
 
@@ -521,7 +507,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed"></a>
@@ -538,7 +523,7 @@ description: "调整本地播放的混音音量。"
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__detailed_desc"></a>
 
-请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged:reasonCode:` 回调报告状态为 `AgoraAudioMixingStateTypePlaying` 后调用此方法。
+请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `audioMixingStateChanged:reasonCode:` 回调报告状态为 `AgoraAudioMixingStateTypePlaying` 后调用此方法。
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__parameters"></a>
 
@@ -559,7 +544,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingposition"></a>
@@ -582,7 +566,7 @@ description: "调整本地播放的混音音量。"
 
 ### 调用时机
 
-请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用该方法。
+请在调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法并收到 `audioMixingStateChanged:reasonCode:` 回调（状态为 `AgoraAudioMixingStateTypePlaying` ）后调用该方法。
 
 <a id="api_irtcengine_setaudiomixingposition__parameters"></a>
 
@@ -599,7 +583,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startaudiomixing"></a>
@@ -621,7 +604,7 @@ description: "调整本地播放的混音音量。"
 关于该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些音频文件格式](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。如果本地音乐文件不存在、SDK 不支持该文件格式，或 SDK 无法访问音乐文件的 URL，SDK 会返回 `AgoraAudioMixingReasonCanNotOpen`。
 
 :::info[注]
-- 如果你调用该方法播放短音效文件，可能会导致播放失败。声网建议使用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_playeffect3) 方法播放此类文件。
+- 如果你调用该方法播放短音效文件，可能会导致播放失败。声网建议使用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法播放此类文件。
 - 如果你需要多次调用该方法，请确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
@@ -670,7 +653,6 @@ description: "调整本地播放的混音音量。"
     - 程序未完成。
     - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startaudiomixing2"></a>
@@ -693,7 +675,7 @@ description: "调整本地播放的混音音量。"
 关于该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些音频文件格式](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。如果本地音乐文件不存在、SDK 不支持该文件格式，或无法访问音乐文件的 URL，SDK 会返回 `AgoraAudioMixingReasonCanNotOpen`。
 
 :::info[注]
-- 如果你调用该方法播放短音效文件，可能会遇到播放失败的情况。声网建议使用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/audio-effect-file#api_irtcengine_playeffect3) 方法播放此类文件。
+- 如果你调用该方法播放短音效文件，可能会遇到播放失败的情况。声网建议使用 [playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法播放此类文件。
 - 如果需要多次调用该方法，确保两次调用之间的时间间隔大于 500 毫秒。
 :::
 
@@ -707,7 +689,7 @@ description: "调整本地播放的混音音量。"
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AgoraAudioMixingStateTypePlaying` ）回调。当音频混音文件播放结束时，SDK 会在本地客户端触发 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AgoraAudioMixingStateTypeStopped` ）回调。
+成功调用该方法后，SDK 会触发 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AgoraAudioMixingStateTypePlaying` ）回调。当音频混音文件播放结束时，SDK 会在本地客户端触发 [rtcEngine:audioMixingStateChanged:reasonCode:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) （`AgoraAudioMixingStateTypeStopped` ）回调。
 
 <a id="api_irtcengine_startaudiomixing2__parameters"></a>
 
@@ -752,7 +734,6 @@ description: "调整本地播放的混音音量。"
     - 程序未完整。
     - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopaudiomixing"></a>
@@ -769,7 +750,7 @@ description: "调整本地播放的混音音量。"
 
 <a id="api_irtcengine_stopaudiomixing__detailed_desc"></a>
 
-调用 `startAudioMixing` 播放音乐文件后，可以调用该方法停止播放。如果只需要暂停播放，请调用 [pauseAudioMixing](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_pauseaudiomixing)。
+调用 `startAudioMixing` 播放音乐文件后，可以调用该方法停止播放。如果只需要暂停播放，请调用 [pauseAudioMixing](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_pauseaudiomixing)。
 
 <a id="api_irtcengine_stopaudiomixing__timing"></a>
 
@@ -784,7 +765,6 @@ description: "调整本地播放的混音音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished"></a>
@@ -821,7 +801,6 @@ description: "调整本地播放的混音音量。"
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged"></a>
@@ -838,13 +817,13 @@ description: "调整本地播放的混音音量。"
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__detailed_desc"></a>
 
-你调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，SDK 每两秒触发一次该回调，报告音乐文件的播放进度。
+你调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，SDK 每两秒触发一次该回调，报告音乐文件的播放进度。
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__timing"></a>
 
 ### 触发时机
 
-你调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，SDK 每两秒触发一次该回调。
+你调用 [startAudioMixing:loopback:cycle:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，SDK 每两秒触发一次该回调。
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__parameters"></a>
 
@@ -858,7 +837,6 @@ description: "调整本地播放的混音音量。"
 
 播放进度，单位为毫秒。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingstatechanged"></a>
@@ -900,5 +878,4 @@ description: "调整本地播放的混音音量。"
 
 错误码，详见 [AgoraAudioMixingReasonCode](/zh-CN/api-reference/rtc/macos/enum-audiomixingreasontype)。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)

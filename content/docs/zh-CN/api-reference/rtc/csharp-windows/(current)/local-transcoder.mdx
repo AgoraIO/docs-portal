@@ -2,9 +2,8 @@
 title: "本地合图"
 description: "本地合图 API reference."
 ---
-<a id="toc_local_transcoder"></a>
 
-## 本地合图
+<a id="toc_local_transcoder"></a>
 
 <a id="api_irtcengine_startlocalvideotranscoder"></a>
 
@@ -30,15 +29,15 @@ public abstract int StartLocalVideoTranscoder(LocalTranscoderConfiguration confi
 
 以下是一个实现人像画中画的典型场景：
 
-1. 调用 [EnableVirtualBackground](/zh-CN/api-reference/rtc/csharp-windows/virtualbackground#api_irtcengine_enablevirtualbackground)，并将自定义背景图设置为 BACKGROUND_NONE，即：在摄像头采集的视频中将人像和背景分割。
-2. 调用 [StartScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapture2)，开始采集屏幕共享视频流。
+1. 调用 [EnableVirtualBackground](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground)，并将自定义背景图设置为 BACKGROUND_NONE，即：在摄像头采集的视频中将人像和背景分割。
+2. 调用 [StartScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapture2)，开始采集屏幕共享视频流。
 3. 调用该方法，并将采集人像的视频源设置为参与本地合图的视频源之一，即可在合图后的视频中实现人像画中画。
 
 <a id="api_irtcengine_startlocalvideotranscoder__timing"></a>
 
 ### 调用时机
 
-- 如果你需要对本地采集的视频流进行合图，需要在 [StartCameraCapture](/zh-CN/api-reference/rtc/csharp-windows/camera-capture#api_irtcengine_startcameracapture) 或 [StartScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapture2) 之后调用该方法。
+- 如果你需要对本地采集的视频流进行合图，需要在 [StartCameraCapture](/zh-CN/api-reference/rtc/csharp-windows/video/camera-capture#api_irtcengine_startcameracapture) 或 [StartScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapture2) 之后调用该方法。
 - 如果你要将合图后的视频流发布到频道中，需要在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 或 [UpdateChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_updatechannelmediaoptions) 时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 publishTranscodedVideoTrack 设置为 true。
 
 <a id="api_irtcengine_startlocalvideotranscoder__restriction"></a>
@@ -55,7 +54,7 @@ public abstract int StartLocalVideoTranscoder(LocalTranscoderConfiguration confi
 
 ### 相关回调
 
-当你调用该方法失败时，SDK 会触发 [OnLocalVideoTranscoderError](/zh-CN/api-reference/rtc/csharp-windows/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) 回调，报告合图失败的原因。
+当你调用该方法失败时，SDK 会触发 [OnLocalVideoTranscoderError](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) 回调，报告合图失败的原因。
 
 <a id="api_irtcengine_startlocalvideotranscoder__parameters"></a>
 
@@ -77,7 +76,6 @@ public abstract int StartLocalVideoTranscoder(LocalTranscoderConfiguration confi
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoplocalvideotranscoder"></a>
@@ -96,7 +94,7 @@ public abstract int StopLocalVideoTranscoder();
 
 ### 详情
 
-调用 [StartLocalVideoTranscoder](/zh-CN/api-reference/rtc/csharp-windows/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如果你希望停止本地合图，请调用该方法。
+调用 [StartLocalVideoTranscoder](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如果你希望停止本地合图，请调用该方法。
 
 <a id="api_irtcengine_stoplocalvideotranscoder__return_values"></a>
 
@@ -105,7 +103,6 @@ public abstract int StopLocalVideoTranscoder();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatelocaltranscoderconfiguration"></a>
@@ -124,10 +121,10 @@ public abstract int UpdateLocalTranscoderConfiguration(LocalTranscoderConfigurat
 
 ### 详情
 
-调用 [StartLocalVideoTranscoder](/zh-CN/api-reference/rtc/csharp-windows/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如果你希望更新本地合图配置，请调用该方法。
+调用 [StartLocalVideoTranscoder](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如果你希望更新本地合图配置，请调用该方法。
 
 :::info[注]
-如果你想要更新用于合图的的本地采集视频源类型，比如：增加第二路摄像头或者屏幕采集的视频，需要在 [StartCameraCapture](/zh-CN/api-reference/rtc/csharp-windows/camera-capture#api_irtcengine_startcameracapture) 或 [StartScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/screencapture#api_irtcengine_startscreencapture2) 之后调用该方法。
+如果你想要更新用于合图的的本地采集视频源类型，比如：增加第二路摄像头或者屏幕采集的视频，需要在 [StartCameraCapture](/zh-CN/api-reference/rtc/csharp-windows/video/camera-capture#api_irtcengine_startcameracapture) 或 [StartScreenCapture [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/screencapture#api_irtcengine_startscreencapture2) 之后调用该方法。
 :::
 
 <a id="api_irtcengine_updatelocaltranscoderconfiguration__parameters"></a>
@@ -145,7 +142,6 @@ public abstract int UpdateLocalTranscoderConfiguration(LocalTranscoderConfigurat
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onlocalvideotranscodererror"></a>
@@ -164,7 +160,7 @@ public virtual void OnLocalVideoTranscoderError(TranscodingVideoStream stream, V
 
 ### 详情
 
-当你调用 [StartLocalVideoTranscoder](/zh-CN/api-reference/rtc/csharp-windows/local-transcoder#api_irtcengine_startlocalvideotranscoder) 或 [UpdateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) 失败时，SDK 会触发该回调，报告合图失败的原因。
+当你调用 [StartLocalVideoTranscoder](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/local-transcoder#api_irtcengine_startlocalvideotranscoder) 或 [UpdateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) 失败时，SDK 会触发该回调，报告合图失败的原因。
 
 <a id="callback_irtcengineeventhandler_onlocalvideotranscodererror__parameters"></a>
 
@@ -178,5 +174,4 @@ public virtual void OnLocalVideoTranscoderError(TranscodingVideoStream stream, V
 
 本地合图出错原因。 详见 [VIDEO_TRANSCODER_ERROR](/zh-CN/api-reference/rtc/csharp-windows/enum-videotranscodererror)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)

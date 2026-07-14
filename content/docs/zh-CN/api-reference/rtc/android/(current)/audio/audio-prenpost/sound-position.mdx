@@ -1,14 +1,9 @@
 ---
 title: "听声辨位"
-description: "启用或关闭远端用户的立体声声像功能。"
+description: "听声辨位 API reference."
 ---
-<a id="toc_sound_position"></a>
 
-## 听声辨位
-
-<a id="api_irtcengine_enablesoundpositionindication"></a>
-
-## enableSoundPositionIndication
+## <span id="toc_sound_position"></span>enableSoundPositionIndication [#api_irtcengine_enablesoundpositionindication]
 
 启用或关闭远端用户的立体声声像功能。
 
@@ -22,9 +17,7 @@ public abstract int enableSoundPositionIndication(boolean enabled);
 
 请在加入频道前调用该方法。启用后，本地用户可以通过调用 [setRemoteVoicePosition](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/sound-position#api_irtcengine_setremotevoiceposition) 跟踪远端用户的位置。
 
-<a id="api_irtcengine_enablesoundpositionindication__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablesoundpositionindication__parameters]
 
 #### `enabled`
 
@@ -33,19 +26,14 @@ public abstract int enableSoundPositionIndication(boolean enabled);
 - true：启用立体声声像。
 - false：关闭立体声声像。
 
-<a id="api_irtcengine_enablesoundpositionindication__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablesoundpositionindication__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setremotevoiceposition"></a>
-
-## setRemoteVoicePosition
+## setRemoteVoicePosition [#api_irtcengine_setremotevoiceposition]
 
 设置远端用户语音的二维位置和音量。
 
@@ -65,9 +53,7 @@ public abstract int setRemoteVoicePosition(int uid, double pan, double gain);
 - 请在加入频道后调用该方法。
 :::
 
-<a id="api_irtcengine_setremotevoiceposition__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremotevoiceposition__parameters]
 
 #### `uid`
 
@@ -85,19 +71,14 @@ public abstract int setRemoteVoicePosition(int uid, double pan, double gain);
 
 远端用户的音量，取值范围为 0.0 到 100.0。默认值为 100.0（远端用户的原始音量）。数值越小，音量越低。
 
-<a id="api_irtcengine_setremotevoiceposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremotevoiceposition__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setremotevoicepositionex"></a>
-
-## setRemoteVoicePositionEx
+## setRemoteVoicePositionEx [#api_irtcengineex_setremotevoicepositionex]
 
 设置远端用户语音的二维位置和音量。
 
@@ -116,15 +97,11 @@ public abstract int setRemoteVoicePositionEx(int uid, double pan, double gain, R
 - 请在加入频道后调用该方法。
 :::
 
-<a id="api_irtcengineex_setremotevoicepositionex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setremotevoicepositionex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setremotevoicepositionex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setremotevoicepositionex__parameters]
 
 #### `uid`
 
@@ -146,12 +123,9 @@ public abstract int setRemoteVoicePositionEx(int uid, double pan, double gain, R
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_setremotevoicepositionex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setremotevoicepositionex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)

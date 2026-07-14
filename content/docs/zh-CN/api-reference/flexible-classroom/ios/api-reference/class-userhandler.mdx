@@ -2,9 +2,8 @@
 title: "AgoraEduUserHandler"
 description: "AgoraEduUserContext 类包含用户相关事件回调。"
 ---
-<a id="class_userhandler"></a>
 
-## AgoraEduUserHandler
+<a id="class_userhandler"></a>
 
 <a id="api_onremoteuserjoined"></a>
 
@@ -24,7 +23,7 @@ void onRemoteUserJoined(AgoraEduContextUserInfo userInfo)
 
 #### `userInfo`
 
-加入房间的用户的信息，详见 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)。
+加入房间的用户的信息，详见 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)。
 
 <a id="api_onremoteuserleft"></a>
 
@@ -46,15 +45,15 @@ void onRemoteUserLeft(AgoraEduContextUserInfo user,
 
 #### `user`
 
-离开房间的用户的信息，详见 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)。
+离开房间的用户的信息，详见 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)。
 
 #### `operator`
 
-操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)。如果远端用户是被踢出房间，则返回该参数。
+操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)。如果远端用户是被踢出房间，则返回该参数。
 
 #### `reason`
 
-离开房间的原因，详见 [AgoraEduContextUserLeaveReason](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#enum_userleavereason)。默认为 normal。
+离开房间的原因，详见 [AgoraEduContextUserLeaveReason](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#enum_userleavereason)。默认为 normal。
 
 <a id="api_onuserupdated"></a>
 
@@ -75,11 +74,11 @@ void onUserUpdated(AgoraEduContextUserInfo user,
 
 #### `userInfo`
 
-信息发生变化的用户的 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)。
+信息发生变化的用户的 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)。
 
 #### `operator`
 
-操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)，可为空。
+操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)，可为空。
 
 <a id="api_oncohostuserlistadded"></a>
 
@@ -102,11 +101,11 @@ void onCoHostUserListAdded(Array<AgoraEduContextUserInfo> userList,
 
 #### `userList`
 
-上讲台用户列表，为 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo) 数组。
+上讲台用户列表，为 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo) 数组。
 
 #### `operator`
 
-操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)，可为空。
+操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)，可为空。
 
 <a id="api_oncohostuserlistremoved"></a>
 
@@ -127,11 +126,11 @@ void onCoHostUserListRemoved(Array<AgoraEduContextUserInfo> userList,
 
 #### `userList`
 
-上讲台用户列表，为 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo) 数组。
+上讲台用户列表，为 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo) 数组。
 
 #### `operator`
 
-操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)，可为空。
+操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)，可为空。
 
 <a id="api_onuserpropertiesupdated"></a>
 
@@ -156,7 +155,7 @@ void onUserPropertiesUpdated(AgoraEduContextUserInfo user,
 
 #### `user`
 
-用户信息 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)。
+用户信息 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)。
 
 #### `changedProperties`
 
@@ -168,7 +167,7 @@ void onUserPropertiesUpdated(AgoraEduContextUserInfo user,
 
 #### `operator`
 
-操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)，可为空。
+操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)，可为空。
 
 <a id="api_onuserpropertiesdeleted"></a>
 
@@ -191,7 +190,7 @@ void onUserPropertiesDeleted(AgoraEduContextUserInfo user,
 
 #### `user`
 
-用户信息 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)。
+用户信息 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)。
 
 #### `deletedProperties`
 
@@ -203,7 +202,7 @@ void onUserPropertiesDeleted(AgoraEduContextUserInfo user,
 
 #### `operator`
 
-操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)，可为空。
+操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)，可为空。
 
 <a id="api_onuserrewarded"></a>
 
@@ -225,7 +224,7 @@ void onUserRewarded(AgoraEduContextUserInfo user,
 
 #### `user`
 
-用户信息 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)。
+用户信息 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)。
 
 #### `rewardCount`
 
@@ -233,7 +232,7 @@ void onUserRewarded(AgoraEduContextUserInfo user,
 
 #### `operator`
 
-操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)，可为空。
+操作者 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)，可为空。
 
 <a id="api_onlocaluserkickedout"></a>
 
@@ -334,4 +333,4 @@ SDK 会在以下两种情况下触发此回调：
 
 #### `user`
 
-手放下的用户 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_userinfo)。
+手放下的用户 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_userinfo)。

@@ -2,9 +2,8 @@
 title: "AgoraEduRoomContext"
 description: "AgoraEduRoomContext 类。"
 ---
-<a id="class_roomcontext"></a>
 
-## AgoraEduRoomContext
+<a id="class_roomcontext"></a>
 
 <a id="api_joinroom"></a>
 
@@ -25,11 +24,11 @@ void joinRoom(Callback<Void> success,
 
 #### `success`
 
-调用成功，则返回当前的房间信息 [AgoraEduContextRoomInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_roominfo)。
+调用成功，则返回当前的房间信息 [AgoraEduContextRoomInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_roominfo)。
 
 #### `fail`
 
-调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
 
 <a id="api_leaveroom"></a>
 
@@ -54,7 +53,7 @@ void leaveRoom(Callback<Void> success,
 
 #### `fail`
 
-调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
 
 <a id="api_getroominfo"></a>
 
@@ -72,7 +71,7 @@ AgoraEduContextRoomInfo getRoomInfo()
 
 ### 返回值
 
-调用成功，则返回 [AgoraEduContextRoomInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_roominfo)。
+调用成功，则返回 [AgoraEduContextRoomInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_roominfo)。
 
 <a id="api_getroomproperties"></a>
 
@@ -111,7 +110,7 @@ void updateRoomProperties(Map<String, Any> properties,
 
 详见 [如何设置自定义房间属性](https://doc.shengwang.cn/faq/integration-issues/class-properties)。
 
-属性成功更新后，会触发 [onRoomPropertiesUpdated](/zh-CN/api-reference/flexible-classroom/ios/api-reference/class-roomhandler#api_onroompropertiesupdated) 回调。
+属性成功更新后，会触发 [onRoomPropertiesUpdated](/zh-CN/api-reference/flexible-classroom/ios/class-roomhandler#api_onroompropertiesupdated) 回调。
 
 <a id="api_updateroomproperties__parameters"></a>
 
@@ -131,7 +130,7 @@ void updateRoomProperties(Map<String, Any> properties,
 
 #### `fail`
 
-调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
 
 <a id="api_deleteroomproperties"></a>
 
@@ -166,7 +165,7 @@ void deleteRoomProperties(Array<String> keyPaths,
 
 #### `fail`
 
-调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_error)。
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_error)。
 
 <a id="api_getclassinfo"></a>
 
@@ -184,7 +183,7 @@ AgoraEduContextClassInfo getClassInfo()
 
 ### 返回值
 
-调用成功，则返回 [AgoraEduContextClassInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#class_classinfo)。
+调用成功，则返回 [AgoraEduContextClassInfo](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#class_classinfo)。
 
 <a id="api_getrecordingstate"></a>
 
@@ -202,4 +201,4 @@ FcrRecordingState getRecordingState()
 
 ### 返回值
 
-调用成功，则返回 [FcrRecordingState](/zh-CN/api-reference/flexible-classroom/ios/api-reference/api-data-type#enum_fcrrecordingstate)。
+调用成功，则返回 [FcrRecordingState](/zh-CN/api-reference/flexible-classroom/ios/api-data-type#enum_fcrrecordingstate)。

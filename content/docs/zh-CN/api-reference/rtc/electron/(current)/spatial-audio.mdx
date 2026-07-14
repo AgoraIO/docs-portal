@@ -1,10 +1,9 @@
 ---
 title: "空间音频"
-description: "删除所有远端用户的空间位置信息。"
+description: "空间音频 API reference."
 ---
-<a id="toc_spatial_audio"></a>
 
-## 空间音频
+<a id="toc_spatial_audio"></a>
 
 <a id="api_ilocalspatialaudioengine_clearremotepositions"></a>
 
@@ -29,7 +28,6 @@ abstract clearRemotePositions(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_irtcengine_enablespatialaudio"></a>
@@ -46,7 +44,7 @@ abstract enableSpatialAudio(enabled: boolean): number;
 
 <a id="api_irtcengine_enablespatialaudio__detailed_desc"></a>
 
-开启空间音频后，你可以调用 [setRemoteUserSpatialAudioParams](/zh-CN/api-reference/rtc/electron/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音频参数。
+开启空间音频后，你可以调用 [setRemoteUserSpatialAudioParams](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音频参数。
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
@@ -71,7 +69,6 @@ abstract enableSpatialAudio(enabled: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getlocalspatialaudioengine"></a>
@@ -98,7 +95,6 @@ abstract getLocalSpatialAudioEngine(): ILocalSpatialAudioEngine;
 
 一个 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine) 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine"></a>
@@ -127,7 +123,6 @@ abstract initialize(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine"></a>
@@ -148,8 +143,8 @@ abstract muteAllRemoteAudioStreams(mute: boolean): number;
 
 :::info[注]
 - 该方法需要在 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 后调用。
-- 在使用空间音频时，如需设置是否订阅所有远端用户的音频流，建议调用该方法替代 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 的 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/electron/spatial-audio#api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine) 方法。
-- 在调用该方法后，你需要调用 [updateSelfPosition](/zh-CN/api-reference/rtc/electron/spatial-audio#api_ibasespatialaudioengine_updateselfposition) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/electron/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 更新本地用户和远端用户的空间位置，否则该方法中的设置不会生效。
+- 在使用空间音频时，如需设置是否订阅所有远端用户的音频流，建议调用该方法替代 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 的 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine) 方法。
+- 在调用该方法后，你需要调用 [updateSelfPosition](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselfposition) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 更新本地用户和远端用户的空间位置，否则该方法中的设置不会生效。
 :::
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__parameters"></a>
@@ -170,7 +165,6 @@ abstract muteAllRemoteAudioStreams(mute: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine"></a>
@@ -190,8 +184,8 @@ abstract muteLocalAudioStream(mute: boolean): number;
 :::info[注]
 - 该方法不影响音频采集状态，因为没有禁用音频采集设备。
 - 该方法需要在 `joinChannel1` 或 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 后调用。
-- 在使用空间音频时，如需设置是否发布本地音频流，建议调用该方法替代 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 的 [muteLocalAudioStream](/zh-CN/api-reference/rtc/electron/spatial-audio#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine) 方法。
-- 成功调用该方法后，远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/electron/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/electron/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+- 在使用空间音频时，如需设置是否发布本地音频流，建议调用该方法替代 [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine) 的 [muteLocalAudioStream](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine) 方法。
+- 成功调用该方法后，远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 :::
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__parameters"></a>
@@ -212,7 +206,6 @@ abstract muteLocalAudioStream(mute: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine"></a>
@@ -251,7 +244,6 @@ abstract muteRemoteAudioStream(uid: number, mute: boolean): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_release_ibasespatialaudioengine"></a>
@@ -270,7 +262,6 @@ abstract release(): void;
 
 该方法释放 [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine) 下的所有资源。当用户不需要使用空间音频时，你可以调用该方法将资源释放出来用于其他操作。 调用该方法后，你将无法再使用 [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine) 下的任何 API。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition"></a>
@@ -287,7 +278,7 @@ abstract removeRemotePosition(uid: number): number;
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition__detailed_desc"></a>
 
-成功调用该方法后，本地用户将听不到指定的远端用户。 离开频道后，为避免计算资源的浪费，你需要调用该方法删除指定远端用户的空间位置信息。否则，该用户的空间位置信息会一直被保存。当远端用户人数大于 [setMaxAudioRecvCount](/zh-CN/api-reference/rtc/electron/spatial-audio#api_ibasespatialaudioengine_setmaxaudiorecvcount) 中设定的可接收音频流数时，会按照相对距离依次自动取消订阅距离最远的用户的音频流。
+成功调用该方法后，本地用户将听不到指定的远端用户。 离开频道后，为避免计算资源的浪费，你需要调用该方法删除指定远端用户的空间位置信息。否则，该用户的空间位置信息会一直被保存。当远端用户人数大于 [setMaxAudioRecvCount](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setmaxaudiorecvcount) 中设定的可接收音频流数时，会按照相对距离依次自动取消订阅距离最远的用户的音频流。
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition__parameters"></a>
 
@@ -304,7 +295,6 @@ abstract removeRemotePosition(uid: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setaudiorecvrange"></a>
@@ -338,7 +328,6 @@ abstract setAudioRecvRange(range: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setdistanceunit"></a>
@@ -372,7 +361,6 @@ abstract setDistanceUnit(unit: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_irtcengine_setheadphoneeqparameters"></a>
@@ -389,7 +377,7 @@ abstract setHeadphoneEQParameters(lowGain: number, highGain: number): number;
 
 <a id="api_irtcengine_setheadphoneeqparameters__detailed_desc"></a>
 
-在空间音频场景下，如果在调用 [setHeadphoneEQPreset](/zh-CN/api-reference/rtc/electron/spatial-audio#api_irtcengine_setheadphoneeqpreset) 方法使用预设的耳机均衡效果后仍未达到预期，你可以通过调用该方法进一步调节耳机均衡效果。
+在空间音频场景下，如果在调用 [setHeadphoneEQPreset](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqpreset) 方法使用预设的耳机均衡效果后仍未达到预期，你可以通过调用该方法进一步调节耳机均衡效果。
 
 <a id="api_irtcengine_setheadphoneeqparameters__parameters"></a>
 
@@ -412,7 +400,6 @@ abstract setHeadphoneEQParameters(lowGain: number, highGain: number): number;
 
   - -1：一般性的错误（未明确归类）。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setheadphoneeqpreset"></a>
@@ -452,7 +439,6 @@ abstract setHeadphoneEQPreset(preset: HeadphoneEqualizerPreset): number;
 
   - -1：一般性的错误（未明确归类）。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_ibasespatialaudioengine_setmaxaudiorecvcount"></a>
@@ -486,7 +472,6 @@ abstract setMaxAudioRecvCount(maxCount: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation"></a>
@@ -541,7 +526,6 @@ abstract setPlayerAttenuation(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation"></a>
@@ -591,7 +575,6 @@ abstract setRemoteAudioAttenuation(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams"></a>
@@ -611,7 +594,7 @@ abstract setRemoteUserSpatialAudioParams(
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams__detailed_desc"></a>
 
-该方法需要在 [enableSpatialAudio](/zh-CN/api-reference/rtc/electron/spatial-audio#api_irtcengine_enablespatialaudio) 后调用。成功设置远端用户的空间音频参数后，本地用户听远端用户会有空间感。
+该方法需要在 [enableSpatialAudio](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_irtcengine_enablespatialaudio) 后调用。成功设置远端用户的空间音频参数后，本地用户听远端用户会有空间感。
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams__parameters"></a>
 
@@ -628,7 +611,6 @@ abstract setRemoteUserSpatialAudioParams(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayer_setspatialaudioparams"></a>
@@ -654,7 +636,6 @@ abstract setSpatialAudioParams(params: SpatialAudioParams): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayer)
 
 <a id="api_ibasespatialaudioengine_setzones"></a>
@@ -674,7 +655,7 @@ abstract setZones(zones: SpatialAudioZone, zoneCount: number): number;
 在虚拟互动场景下，你可以通过该方法设置隔声区域和声音衰减系数。当音源（可以为用户或媒体播放器）跟听声者分属于隔声区域内部和外部时，会体验到类似真实环境中声音在遇到建筑隔断时的衰减效果。
 
 - 当音源跟听声者分属于隔声区域内部和外部时，声音的衰减效果由 [SpatialAudioZone](/zh-CN/api-reference/rtc/electron/class-spatialaudiozone) 中的声音衰减系数决定。
-- 如果用户或媒体播放器同在一个隔声区域内，则不受 [SpatialAudioZone](/zh-CN/api-reference/rtc/electron/class-spatialaudiozone) 的影响，声音的衰减效果由 [setPlayerAttenuation](/zh-CN/api-reference/rtc/electron/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/electron/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation) 中的 `attenuation` 参数决定。如果不调用 [setPlayerAttenuation](/zh-CN/api-reference/rtc/electron/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/electron/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation)，则 SDK 默认声音的衰减系数为 0.5，即模拟声音在真实环境下的衰减。
+- 如果用户或媒体播放器同在一个隔声区域内，则不受 [SpatialAudioZone](/zh-CN/api-reference/rtc/electron/class-spatialaudiozone) 的影响，声音的衰减效果由 [setPlayerAttenuation](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation) 中的 `attenuation` 参数决定。如果不调用 [setPlayerAttenuation](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation)，则 SDK 默认声音的衰减系数为 0.5，即模拟声音在真实环境下的衰减。
 - 如果音源跟接收者分别属于两个隔声区域，则接收者无法听到音源。
 
 :::info[注]
@@ -704,7 +685,6 @@ abstract setZones(zones: SpatialAudioZone, zoneCount: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_updateplayerpositioninfo"></a>
@@ -751,7 +731,6 @@ abstract updatePlayerPositionInfo(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_updateremoteposition"></a>
@@ -796,7 +775,6 @@ abstract updateRemotePosition(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_updateselfposition"></a>
@@ -818,7 +796,7 @@ abstract updateSelfPosition(
 
 <a id="api_ibasespatialaudioengine_updateselfposition__detailed_desc"></a>
 
-- 在 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine) 类下，该方法需要和 [updateRemotePosition](/zh-CN/api-reference/rtc/electron/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 搭配使用。SDK 会根据该方法和 [updateRemotePosition](/zh-CN/api-reference/rtc/electron/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 设置的参数计算本地和远端用户之间的相对位置，从而计算用户的空间音频参数。
+- 在 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ilocalspatialaudioengine) 类下，该方法需要和 [updateRemotePosition](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 搭配使用。SDK 会根据该方法和 [updateRemotePosition](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 设置的参数计算本地和远端用户之间的相对位置，从而计算用户的空间音频参数。
 
 <a id="api_ibasespatialaudioengine_updateselfposition__parameters"></a>
 
@@ -847,5 +825,4 @@ abstract updateSelfPosition(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IBaseSpatialAudioEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ibasespatialaudioengine)

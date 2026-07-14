@@ -1,11 +1,11 @@
 ---
 title: "Track"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "Track API 参考。"
 ---
 
 - Track
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -15,18 +15,18 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new Track(context: TrackContext, _posOnly?: boolean): Track
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | context: TrackContext |  |
 | Optional _posOnly: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns [Track](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/track)
+[Track](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classes/track)
 
-## Accessors
+## 访问器
 
 <a id="isCovered"></a>
 
@@ -36,9 +36,9 @@ Returns [Track](/zh-CN/api-reference/flexible-classroom/electron/api-reference/c
 get isCovered(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="needTransition"></a>
 
@@ -48,9 +48,9 @@ Returns boolean
 get needTransition(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 <a id="ratioVal"></a>
 
@@ -60,16 +60,16 @@ Returns boolean
 get ratioVal(): { ratioDimensions: { height: number; width: number }; ratioPosition: { x: number; y: number } }
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | ratioDimensions: \{ height: number; width: number \} |  |
 | ratioPosition: \{ x: number; y: number \} |  |
 
-#### Returns
+#### 返回值
 
-Returns \{ratioDimensions: \{height: number; width: number \}; ratioPosition: \{x: number; y: number \} \}
+\{ratioDimensions: \{height: number; width: number \}; ratioPosition: \{x: number; y: number \} \}
 
 - ##### ratioDimensions: \{ height: number; width: number \}
 
@@ -88,16 +88,16 @@ Returns \{ratioDimensions: \{height: number; width: number \}; ratioPosition: \{
 get realVal(): { dimensions: { height: number; width: number }; position: { x: number; y: number } }
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | dimensions: \{ height: number; width: number \} |  |
 | position: \{ x: number; y: number \} |  |
 
-#### Returns
+#### 返回值
 
-Returns \{dimensions: \{height: number; width: number \}; position: \{x: number; y: number \} \}
+\{dimensions: \{height: number; width: number \}; position: \{x: number; y: number \} \}
 
 - ##### dimensions: \{ height: number; width: number \}
 
@@ -116,9 +116,9 @@ Returns \{dimensions: \{height: number; width: number \}; position: \{x: number;
 get trackContext(): TrackContext
 ```
 
-#### Returns
+#### 返回值
 
-Returns [TrackContext](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)
+[TrackContext](/zh-CN/api-reference/flexible-classroom/electron/api-reference/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)
 
 <a id="visible"></a>
 
@@ -128,11 +128,11 @@ Returns [TrackContext](/zh-CN/api-reference/flexible-classroom/electron/api-refe
 get visible(): boolean
 ```
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
-## Methods
+## 方法
 
 <a id="reposition"></a>
 
@@ -142,15 +142,15 @@ Returns boolean
 reposition(needTransition?: boolean): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional needTransition: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setRatio"></a>
 
@@ -160,17 +160,17 @@ Returns void
 setRatio(position: Point, dimensions: Dimensions, needTransition?: boolean): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | position: Point |  |
 | dimensions: Dimensions |  |
 | Optional needTransition: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setRatioDimensions"></a>
 
@@ -180,16 +180,16 @@ Returns void
 setRatioDimensions(ratioDimensions: Dimensions, needTransition?: boolean): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | ratioDimensions: Dimensions |  |
 | Optional needTransition: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setRatioPos"></a>
 
@@ -199,16 +199,16 @@ Returns void
 setRatioPos(ratioPos: Point, needTransition?: boolean): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | ratioPos: Point |  |
 | Optional needTransition: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setReal"></a>
 
@@ -218,17 +218,17 @@ Returns void
 setReal(position: Point, dimensions: Dimensions, needTransition?: boolean): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | position: Point |  |
 | dimensions: Dimensions |  |
 | Optional needTransition: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setRealDimensions"></a>
 
@@ -238,16 +238,16 @@ Returns void
 setRealDimensions(dimensions: Dimensions, needTransition?: boolean): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | dimensions: Dimensions |  |
 | Optional needTransition: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setRealPos"></a>
 
@@ -257,16 +257,16 @@ Returns void
 setRealPos(position: Point, needTransition?: boolean): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | position: Point |  |
 | Optional needTransition: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setVisibility"></a>
 
@@ -276,15 +276,15 @@ Returns void
 setVisibility(visible: boolean): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | visible: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="updateContext"></a>
 
@@ -294,12 +294,12 @@ Returns void
 updateContext(context: Partial<TrackContext>): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | context: Partial&lt;TrackContext&gt; |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void

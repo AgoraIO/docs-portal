@@ -1,0 +1,32 @@
+---
+title: "ChatFileMessageBody constructor"
+description: "API docs for the ChatFileMessageBody constructor from Class ChatFileMessageBody from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Creates a message with an attachment.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| [localPath](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-file-message-body/local-path) | The path of the image file. |
+| [displayName](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-file-message-body/display-name) | The file name. |
+| [fileSize](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-file-message-body/file-size) | The size of the file in bytes. |
+| `type` | The file type. |
+
+```dart title="Dart"
+ChatFileMessageBody({required String localPath, String? displayName, int? fileSize, MessageType type = MessageType.FILE})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+ChatFileMessageBody({
+  required this.localPath,
+  this.displayName,
+  this.fileSize,
+  MessageType type = MessageType.FILE,
+}) : super(type: type);
+```

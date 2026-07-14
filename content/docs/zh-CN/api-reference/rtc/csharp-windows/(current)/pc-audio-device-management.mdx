@@ -2,9 +2,8 @@
 title: "桌面端音频设备管理"
 description: "桌面端音频设备管理 API reference."
 ---
-<a id="toc_pc_audio_device_management"></a>
 
-## 桌面端音频设备管理
+<a id="toc_pc_audio_device_management"></a>
 
 <a id="api_iaudiodevicemanager_enumerateplaybackdevices"></a>
 
@@ -509,7 +508,7 @@ public abstract int SetDevice(string deviceIdUTF8);
 
 #### `deviceIdUTF8`
 
-设备 ID。可通过调用 [EnumerateVideoDevices](/zh-CN/api-reference/rtc/csharp-windows/pc-video-device-management#api_ivideodevicemanager_enumeratevideodevices) 方法获取。
+设备 ID。可通过调用 [EnumerateVideoDevices](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-video-device-management#api_ivideodevicemanager_enumeratevideodevices) 方法获取。
 
 <a id="api_ivideodevicemanager_setdevice__return_values"></a>
 
@@ -554,7 +553,7 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 #### `deviceId`
 
-指定 SDK 的声卡采集设备。由 [EnumeratePlaybackDevices](/zh-CN/api-reference/rtc/csharp-windows/pc-audio-device-management#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 deviceId。
+指定 SDK 的声卡采集设备。由 [EnumeratePlaybackDevices](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 deviceId。
 
 <a id="api_iaudiodevicemanager_setloopbackdevice__return_values"></a>
 
@@ -587,7 +586,7 @@ public abstract int SetPlaybackDevice(string deviceId);
 
 #### `deviceId`
 
-指定播放设备。由 [EnumeratePlaybackDevices](/zh-CN/api-reference/rtc/csharp-windows/pc-audio-device-management#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 deviceId。
+指定播放设备。由 [EnumeratePlaybackDevices](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 deviceId。
 
 <a id="api_iaudiodevicemanager_setplaybackdevice__return_values"></a>
 
@@ -681,7 +680,7 @@ public abstract int SetRecordingDevice(string deviceId);
 
 #### `deviceId`
 
-音频采集设备的 Device ID。可通过 [EnumerateRecordingDevices](/zh-CN/api-reference/rtc/csharp-windows/pc-audio-device-management#api_iaudiodevicemanager_enumeraterecordingdevices) 获取。插拔设备不会影响 deviceId。
+音频采集设备的 Device ID。可通过 [EnumerateRecordingDevices](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_enumeraterecordingdevices) 获取。插拔设备不会影响 deviceId。
 
 <a id="api_iaudiodevicemanager_setrecordingdevice__return_values"></a>
 
@@ -767,13 +766,13 @@ public abstract int StartAudioDeviceLoopbackTest(int indicationInterval);
 
 ### 详情
 
-该方法测试音频采集和播放设备是否能正常工作。一旦测试开始，音频采集设备会采集本地音频，然后使用音频播放设备播放出来。SDK 会按设置的时间间隔触发两个 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告音频采集设备（uid = 0）和音频播放设置（uid = 1）的音量信息。
+该方法测试音频采集和播放设备是否能正常工作。一旦测试开始，音频采集设备会采集本地音频，然后使用音频播放设备播放出来。SDK 会按设置的时间间隔触发两个 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告音频采集设备（uid = 0）和音频播放设置（uid = 1）的音量信息。
 
 :::warning[注意]
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
 - 该方法仅在本地进行音频设备测试，不涉及网络连接。
-- 完成测试后，必须调用 [StopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/csharp-windows/pc-audio-device-management#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
+- 完成测试后，必须调用 [StopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__parameters"></a>
@@ -809,12 +808,12 @@ public abstract int StartPlaybackDeviceTest(string testAudioFilePath);
 
 该方法用于测试本地音频播放设备是否能正常工作。启动测试后，SDK 播放指定的音频文件，测试者如果能听到声音，说明播放设备能正常工作。
 
-调用该方法后，SDK 会每隔 100 毫秒触发一次 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 uid = 1 及播放设备的音量信息。
+调用该方法后，SDK 会每隔 100 毫秒触发一次 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 uid = 1 及播放设备的音量信息。
 
 该方法和 [StartEchoTest](/zh-CN/api-reference/rtc/csharp-windows/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频播放设备能否正常工作，后者可以检测音视频设备及网络是否正常。
 
 :::warning[注意]
-该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopPlaybackDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/pc-audio-device-management#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
+该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopPlaybackDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
 :::
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__parameters"></a>
@@ -851,12 +850,12 @@ public abstract int StartRecordingDeviceTest(int indicationInterval);
 
 ### 详情
 
-该方法用于测试本地音频采集设备是否能正常工作。调用该方法后，SDK 会按设置的时间间隔触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 uid = 0 及采集设备的音量信息。
+该方法用于测试本地音频采集设备是否能正常工作。调用该方法后，SDK 会按设置的时间间隔触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 uid = 0 及采集设备的音量信息。
 
 该方法和 [StartEchoTest](/zh-CN/api-reference/rtc/csharp-windows/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频采集设备能否正常工作，后者可以检测音视频设备及网络是否正常。
 
 :::info[注]
-该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopRecordingDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/pc-audio-device-management#api_iaudiodevicemanager_stoprecordingdevicetest) 停止设备测试。
+该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopRecordingDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_stoprecordingdevicetest) 停止设备测试。
 :::
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__parameters"></a>
@@ -865,7 +864,7 @@ public abstract int StartRecordingDeviceTest(int indicationInterval);
 
 #### `indicationInterval`
 
-SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒，最小取值为 10，否则会收不到 OnAudioVolumeIndication 回调，SDK 会返回错误码 `-2`。声网推荐你将该值设为 100。
+SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒，最小取值为 10，否则会收不到 OnAudioVolumeIndication 回调，SDK 会返回错误码 `-2`。声网推荐你将该值设为 100。
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__return_values"></a>
 
@@ -895,7 +894,7 @@ public abstract int StopAudioDeviceLoopbackTest();
 :::warning[注意]
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
-- 在调用 [StartAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/csharp-windows/pc-audio-device-management#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 后，必须调用该方法停止音频设备回路测试。
+- 在调用 [StartAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 后，必须调用该方法停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__return_values"></a>
@@ -921,7 +920,7 @@ public abstract int StopPlaybackDeviceTest();
 
 ### 详情
 
-该方法用于停止音频播放设备测试。调用 [StartPlaybackDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/pc-audio-device-management#api_iaudiodevicemanager_startplaybackdevicetest) 后，必须调用该方法停止测试。
+该方法用于停止音频播放设备测试。调用 [StartPlaybackDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_startplaybackdevicetest) 后，必须调用该方法停止测试。
 
 :::warning[注意]
 该方法需要在加入频道前调用。
@@ -950,7 +949,7 @@ public abstract int StopRecordingDeviceTest();
 
 ### 详情
 
-该方法用于停止音频采集设备测试。调用 [StartRecordingDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/pc-audio-device-management#api_iaudiodevicemanager_startrecordingdevicetest) 后，必须调用该方法停止测试。
+该方法用于停止音频采集设备测试。调用 [StartRecordingDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_startrecordingdevicetest) 后，必须调用该方法停止测试。
 
 :::info[注]
 该方法需要在加入频道前调用。

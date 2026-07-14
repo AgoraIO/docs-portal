@@ -1,14 +1,9 @@
 ---
 title: "已编码音频数据"
-description: "注册编码音频数据的观察者。"
+description: "已编码音频数据 API reference."
 ---
-<a id="toc_audio_encoded"></a>
 
-## 已编码音频数据
-
-<a id="api_irtcengine_registeraudioencodedframeobserver"></a>
-
-## setAudioEncodedFrameDelegate:config:
+## <span id="toc_audio_encoded"></span>setAudioEncodedFrameDelegate:config: [#api_irtcengine_registeraudioencodedframeobserver]
 
 注册编码音频数据的观察者。
 
@@ -24,9 +19,7 @@ description: "注册编码音频数据的观察者。"
 该方法需在加入频道后调用。你可以调用该方法或 [startAudioRecordingWithConfig:](/zh-CN/api-reference/rtc/ios/recording#api_irtcengine_startaudiorecording3) 来设置音频文件的录制类型和质量，但声网不建议同时使用这两个方法。只有后调用的方法会生效。
 :::
 
-<a id="api_irtcengine_registeraudioencodedframeobserver__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_registeraudioencodedframeobserver__parameters]
 
 #### `delegate`
 
@@ -36,19 +29,14 @@ description: "注册编码音频数据的观察者。"
 
 编码音频数据的观察者配置。详见 [AgoraAudioEncodedFrameDelegateConfig](/zh-CN/api-reference/rtc/ios/class-audioencodedframeobserverconfig)。
 
-<a id="api_irtcengine_registeraudioencodedframeobserver__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_registeraudioencodedframeobserver__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe"></a>
-
-## onMixedEncodedAudioFrame:info:
+## onMixedEncodedAudioFrame:info: [#callback_iaudioencodedframeobserver_onmixedaudioencodedframe]
 
 获取本地和所有远端用户的混音编码音频数据回调。
 
@@ -62,15 +50,11 @@ description: "注册编码音频数据的观察者。"
 
 调用 [setAudioEncodedFrameDelegate:config:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频配置设置为 `AgoraAudioEncodedFrameObserverPositionMixed` 后，可以通过该回调获取本地和所有远端用户的混音编码音频数据。
 
-<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_iaudioencodedframeobserver_onmixedaudioencodedframe__timing]
 
 该回调在调用 [setAudioEncodedFrameDelegate:config:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频配置设置为 `AgoraAudioEncodedFrameObserverPositionMixed` 后触发。
 
-<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__parameters"></a>
-
-### 参数
+### 参数 [#callback_iaudioencodedframeobserver_onmixedaudioencodedframe__parameters]
 
 #### `frameData`
 
@@ -80,12 +64,9 @@ description: "注册编码音频数据的观察者。"
 
 编码后的音频信息，详见 [AgoraEncodedAudioFrameInfo](/zh-CN/api-reference/rtc/ios/class-encodedaudioframeinfo)。
 
-### 所属接口类
 - [AgoraAudioEncodedFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioencodedframeobserver)
 
-<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe"></a>
-
-## onPlaybackEncodedAudioFrame:info:
+## onPlaybackEncodedAudioFrame:info: [#callback_iaudioencodedframeobserver_onplaybackaudioencodedframe]
 
 获取所有远端用户的编码音频数据回调。
 
@@ -99,15 +80,11 @@ description: "注册编码音频数据的观察者。"
 
 调用 [setAudioEncodedFrameDelegate:config:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将编码音频设置为 `AgoraAudioEncodedFrameObserverPositionPlayback` 后，该回调会返回所有远端用户的编码音频数据。
 
-<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__timing]
 
 该回调在获取到所有远端用户的编码音频数据时被触发。
 
-<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__parameters"></a>
-
-### 参数
+### 参数 [#callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__parameters]
 
 #### `frameData`
 
@@ -117,12 +94,9 @@ description: "注册编码音频数据的观察者。"
 
 编码后的音频信息，详见 [AgoraEncodedAudioFrameInfo](/zh-CN/api-reference/rtc/ios/class-encodedaudioframeinfo)。
 
-### 所属接口类
 - [AgoraAudioEncodedFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioencodedframeobserver)
 
-<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe"></a>
-
-## onRecordEncodedAudioFrame:info:
+## onRecordEncodedAudioFrame:info: [#callback_iaudioencodedframeobserver_onrecordaudioencodedframe]
 
 获取本地用户的编码音频数据回调。
 
@@ -136,15 +110,11 @@ description: "注册编码音频数据的观察者。"
 
 调用 [setAudioEncodedFrameDelegate:config:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将编码音频设置为 `AgoraAudioEncodedFrameObserverPositionRecord` 后，该回调返回本地用户的编码音频数据。
 
-<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_iaudioencodedframeobserver_onrecordaudioencodedframe__timing]
 
 该回调在获取到本地用户的编码音频数据时被触发。
 
-<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__parameters"></a>
-
-### 参数
+### 参数 [#callback_iaudioencodedframeobserver_onrecordaudioencodedframe__parameters]
 
 #### `frameData`
 
@@ -154,5 +124,4 @@ description: "注册编码音频数据的观察者。"
 
 编码后的音频信息，详见 [AgoraEncodedAudioFrameInfo](/zh-CN/api-reference/rtc/ios/class-encodedaudioframeinfo)。
 
-### 所属接口类
 - [AgoraAudioEncodedFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_iaudioencodedframeobserver)

@@ -1,14 +1,9 @@
 ---
 title: "旁路推流"
-description: "开始向 CDN 推送音视频流（不进行转码）。"
+description: "旁路推流 API reference."
 ---
-<a id="toc_media_push"></a>
 
-## 旁路推流
-
-<a id="api_irtcengine_startrtmpstreamwithouttranscoding"></a>
-
-## startRtmpStreamWithoutTranscoding
+## <span id="toc_media_push"></span>startRtmpStreamWithoutTranscoding [#api_irtcengine_startrtmpstreamwithouttranscoding]
 
 开始向 CDN 推送音视频流（不进行转码）。
 
@@ -28,23 +23,17 @@ public abstract int startRtmpStreamWithoutTranscoding(String url);
 - 如果推流失败后需要重试，请先调用 [stopRtmpStream](/zh-CN/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
 :::
 
-<a id="api_irtcengine_startrtmpstreamwithouttranscoding__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_startrtmpstreamwithouttranscoding__related]
 
 成功调用该方法后，SDK 会触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/android/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
-<a id="api_irtcengine_startrtmpstreamwithouttranscoding__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_startrtmpstreamwithouttranscoding__parameters]
 
 #### `url`
 
 推流地址，格式为 RTMP 或 RTMPS，长度不能超过 1024 字节。不支持中文等特殊字符。
 
-<a id="api_irtcengine_startrtmpstreamwithouttranscoding__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_startrtmpstreamwithouttranscoding__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
@@ -53,12 +42,9 @@ public abstract int startRtmpStreamWithoutTranscoding(String url);
   - -7：调用该方法前未初始化 SDK。
   - -19：推流地址已被使用，请更换地址。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex"></a>
-
-## startRtmpStreamWithoutTranscodingEx
+## startRtmpStreamWithoutTranscodingEx [#api_irtcengineex_startrtmpstreamwithouttranscodingex]
 
 开始向 CDN 推送未经转码的媒体流。
 
@@ -78,21 +64,15 @@ public abstract int startRtmpStreamWithoutTranscodingEx(String url, RtcConnectio
 - 如果推流失败后需要重试，请先调用 [stopRtmpStream](/zh-CN/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
 :::
 
-<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_startrtmpstreamwithouttranscodingex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengineex_startrtmpstreamwithouttranscodingex__related]
 
 成功调用该方法后，SDK 会触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/android/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
-<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_startrtmpstreamwithouttranscodingex__parameters]
 
 #### `url`
 
@@ -102,9 +82,7 @@ public abstract int startRtmpStreamWithoutTranscodingEx(String url, RtcConnectio
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_startrtmpstreamwithouttranscodingex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
@@ -113,12 +91,9 @@ public abstract int startRtmpStreamWithoutTranscodingEx(String url, RtcConnectio
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换地址。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_startrtmpstreamwithtranscoding"></a>
-
-## startRtmpStreamWithTranscoding
+## startRtmpStreamWithTranscoding [#api_irtcengine_startrtmpstreamwithtranscoding]
 
 开始旁路推流并设置转码配置。
 
@@ -138,15 +113,11 @@ public abstract int startRtmpStreamWithTranscoding(String url, LiveTranscoding t
 - 如果推流失败后需要重试，请先调用 [stopRtmpStream](/zh-CN/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
 :::
 
-<a id="api_irtcengine_startrtmpstreamwithtranscoding__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengine_startrtmpstreamwithtranscoding__related]
 
 成功调用该方法后，SDK 会触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/android/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
-<a id="api_irtcengine_startrtmpstreamwithtranscoding__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_startrtmpstreamwithtranscoding__parameters]
 
 #### `url`
 
@@ -156,9 +127,7 @@ public abstract int startRtmpStreamWithTranscoding(String url, LiveTranscoding t
 
 旁路推流的转码配置，详见 [LiveTranscoding](/zh-CN/api-reference/rtc/android/class-livetranscoding)。
 
-<a id="api_irtcengine_startrtmpstreamwithtranscoding__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_startrtmpstreamwithtranscoding__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
@@ -167,12 +136,9 @@ public abstract int startRtmpStreamWithTranscoding(String url, LiveTranscoding t
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换其他地址。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_startrtmpstreamwithtranscodingex"></a>
-
-## startRtmpStreamWithTranscodingEx
+## startRtmpStreamWithTranscodingEx [#api_irtcengineex_startrtmpstreamwithtranscodingex]
 
 开始旁路推流并设置转码配置。
 
@@ -193,15 +159,11 @@ public abstract int startRtmpStreamWithTranscodingEx(String url, LiveTranscoding
 - 如果推流失败后需要重试，请先调用 [stopRtmpStreamEx](/zh-CN/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengineex_stoprtmpstreamex) 停止推流，再调用该方法重试，否则 SDK 会返回与上次失败相同的错误码。
 :::
 
-<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_startrtmpstreamwithtranscodingex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_startrtmpstreamwithtranscodingex__parameters]
 
 #### `url`
 
@@ -215,9 +177,7 @@ public abstract int startRtmpStreamWithTranscodingEx(String url, LiveTranscoding
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_startrtmpstreamwithtranscodingex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
@@ -226,12 +186,9 @@ public abstract int startRtmpStreamWithTranscodingEx(String url, LiveTranscoding
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换地址。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_stoprtmpstream"></a>
-
-## stopRtmpStream
+## stopRtmpStream [#api_irtcengine_stoprtmpstream]
 
 停止向指定 CDN 地址推送媒体流。
 
@@ -245,27 +202,20 @@ public abstract int stopRtmpStream(String url);
 
 声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 你可以调用该方法停止向指定的 CDN 地址推送媒体流。该方法每次只能停止一个地址的推流，如需停止多个地址的推流，请多次调用该方法。
 
-<a id="api_irtcengine_stoprtmpstream__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_stoprtmpstream__parameters]
 
 #### `url`
 
 旁路推流地址，格式为 RTMP 或 RTMPS，字符长度不能超过 1024 字节。不支持中文等特殊字符。
 
-<a id="api_irtcengine_stoprtmpstream__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_stoprtmpstream__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_stoprtmpstreamex"></a>
-
-## stopRtmpStreamEx
+## stopRtmpStreamEx [#api_irtcengineex_stoprtmpstreamex]
 
 停止向指定 CDN 地址推送媒体流。
 
@@ -279,21 +229,15 @@ public abstract int stopRtmpStreamEx(String url, RtcConnection connection);
 
 声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 你可以调用该方法停止向指定 CDN 地址的直播推流。该方法每次只能停止向一个 CDN 地址推流，如果需要停止多个地址的推流，请多次调用该方法。
 
-<a id="api_irtcengineex_stoprtmpstreamex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_stoprtmpstreamex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_stoprtmpstreamex__related"></a>
-
-### 相关回调
+### 相关回调 [#api_irtcengineex_stoprtmpstreamex__related]
 
 成功调用该方法后，SDK 会触发 [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/android/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
-<a id="api_irtcengineex_stoprtmpstreamex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_stoprtmpstreamex__parameters]
 
 #### `url`
 
@@ -303,19 +247,14 @@ public abstract int stopRtmpStreamEx(String url, RtcConnection connection);
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_stoprtmpstreamex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_stoprtmpstreamex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_updatertmptranscoding"></a>
-
-## updateRtmpTranscoding
+## updateRtmpTranscoding [#api_irtcengine_updatertmptranscoding]
 
 更新旁路推流的转码配置。
 
@@ -329,27 +268,20 @@ public abstract int updateRtmpTranscoding(LiveTranscoding transcoding);
 
 声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。
 
-<a id="api_irtcengine_updatertmptranscoding__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_updatertmptranscoding__parameters]
 
 #### `transcoding`
 
 旁路推流的转码配置。详见 [LiveTranscoding](/zh-CN/api-reference/rtc/android/class-livetranscoding)。
 
-<a id="api_irtcengine_updatertmptranscoding__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_updatertmptranscoding__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_updatertmptranscodingex"></a>
-
-## updateRtmpTranscodingEx
+## updateRtmpTranscodingEx [#api_irtcengineex_updatertmptranscodingex]
 
 更新旁路推流的转码配置。
 
@@ -363,15 +295,11 @@ public abstract int updateRtmpTranscodingEx(LiveTranscoding transcoding, RtcConn
 
 声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。 开始使用转码功能将媒体流推送到 CDN 后，你可以根据场景动态更新转码配置。更新配置后，SDK 会触发 [onTranscodingUpdated](/zh-CN/api-reference/rtc/android/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) 回调。
 
-<a id="api_irtcengineex_updatertmptranscodingex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_updatertmptranscodingex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_updatertmptranscodingex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_updatertmptranscodingex__parameters]
 
 #### `transcoding`
 
@@ -381,19 +309,14 @@ public abstract int updateRtmpTranscodingEx(LiveTranscoding transcoding, RtcConn
 
 连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
 
-<a id="api_irtcengineex_updatertmptranscodingex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_updatertmptranscodingex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
-<a id="callback_irtcengineeventhandler_onrtmpstreamingevent"></a>
-
-## onRtmpStreamingEvent
+## onRtmpStreamingEvent [#callback_irtcengineeventhandler_onrtmpstreamingevent]
 
 旁路推流事件回调。
 
@@ -403,15 +326,11 @@ public abstract int updateRtmpTranscodingEx(LiveTranscoding transcoding, RtcConn
 public void onRtmpStreamingEvent(String url, int event)
 ```
 
-<a id="callback_irtcengineeventhandler_onrtmpstreamingevent__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#callback_irtcengineeventhandler_onrtmpstreamingevent__detailed_desc]
 
 自 v3.1.0 版本新增。
 
-<a id="callback_irtcengineeventhandler_onrtmpstreamingevent__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onrtmpstreamingevent__parameters]
 
 #### `url`
 
@@ -426,12 +345,9 @@ public void onRtmpStreamingEvent(String url, int event)
 - `RTMP_STREAMING_EVENT_ADVANCED_FEATURE_NOT_SUPPORT` （3）：该功能不支持。
 - `RTMP_STREAMING_EVENT_REQUEST_TOO_OFTEN` （4）：保留参数。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged"></a>
-
-## onRtmpStreamingStateChanged
+## onRtmpStreamingStateChanged [#callback_irtcengineeventhandler_onrtmpstreamingstatechanged]
 
 旁路推流状态发生变化回调。
 
@@ -445,15 +361,11 @@ public void onRtmpStreamingStateChanged(String url, int state, int reason)
 
 该回调用于指示旁路推流的状态。当旁路推流状态发生变化时，SDK 会触发该回调，并返回对应的 URL 地址和当前的推流状态。当出现异常时，你可以参考错误码参数中的详细错误信息进行排查。
 
-<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onrtmpstreamingstatechanged__timing]
 
 该回调在旁路推流状态发生变化时被触发。
 
-<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onrtmpstreamingstatechanged__parameters]
 
 #### `url`
 
@@ -494,12 +406,9 @@ public void onRtmpStreamingStateChanged(String url, int state, int reason)
 - `RTMP_STREAM_PUBLISH_REASON_INVALID_PRIVILEGE` (16)：项目无权限使用旁路推流服务。
 - `RTMP_STREAM_UNPUBLISH_REASON_OK` (100)：已正常停止旁路推流。调用 [stopRtmpStream](/zh-CN/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流后，SDK 返回该值。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_ontranscodingupdated"></a>
-
-## onTranscodingUpdated
+## onTranscodingUpdated [#callback_irtcengineeventhandler_ontranscodingupdated]
 
 发布端云端转码配置更新回调。
 
@@ -517,11 +426,8 @@ public void onTranscodingUpdated() {}
 如果首次调用 [startRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 设置 [LiveTranscoding](/zh-CN/api-reference/rtc/android/class-livetranscoding) 配置，SDK 不会触发该回调。
 :::
 
-<a id="callback_irtcengineeventhandler_ontranscodingupdated__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_ontranscodingupdated__timing]
 
 该回调在发布端的云端转码配置发生更新时被触发。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

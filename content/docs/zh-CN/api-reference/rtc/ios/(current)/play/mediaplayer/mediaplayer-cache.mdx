@@ -1,14 +1,9 @@
 ---
 title: "媒体播放器缓存"
-description: "设置是否自动删除缓存的媒体文件。"
+description: "媒体播放器缓存 API reference."
 ---
-<a id="toc_mediaplayer_cache"></a>
 
-## 媒体播放器缓存
-
-<a id="api_imediaplayercachemanager_enableautoremovecache"></a>
-
-## enableAutoRemoveCache:
+## <span id="toc_mediaplayer_cache"></span>enableAutoRemoveCache: [#api_imediaplayercachemanager_enableautoremovecache]
 
 设置是否自动删除缓存的媒体文件。
 
@@ -22,9 +17,7 @@ description: "设置是否自动删除缓存的媒体文件。"
 
 当缓存的媒体文件超过设置的数量或大小限制时，如果启用该功能，SDK 会自动删除最近最少使用的缓存文件。
 
-<a id="api_imediaplayercachemanager_enableautoremovecache__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayercachemanager_enableautoremovecache__parameters]
 
 #### `enable`
 
@@ -33,19 +26,14 @@ description: "设置是否自动删除缓存的媒体文件。"
 - YES：自动删除缓存的媒体文件。
 - NO：（默认）不自动删除缓存的媒体文件。
 
-<a id="api_imediaplayercachemanager_enableautoremovecache__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayercachemanager_enableautoremovecache__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [AgoraMediaPlayerReason](/zh-CN/api-reference/rtc/ios/enum-mediaplayerreason)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager)
 
-<a id="api_imediaplayercachemanager_getcachedir"></a>
-
-## cacheDir
+## cacheDir [#api_imediaplayercachemanager_getcachedir]
 
 获取缓存媒体文件的存储路径。
 
@@ -59,19 +47,14 @@ description: "设置是否自动删除缓存的媒体文件。"
 
 如果在调用该方法前未调用 [setCacheDir:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_setcachedir) 方法设置缓存媒体文件的存储路径，则该方法返回 SDK 默认使用的存储路径。
 
-<a id="api_imediaplayercachemanager_getcachedir__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayercachemanager_getcachedir__return_values]
 
 - 方法调用成功时，返回缓存媒体文件的存储路径。
 - 方法调用失败，返回 nil，详见 [AgoraMediaPlayerReason](/zh-CN/api-reference/rtc/ios/enum-mediaplayerreason)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager)
 
-<a id="api_imediaplayercachemanager_getcachefilecount"></a>
-
-## cacheFileCount
+## cacheFileCount [#api_imediaplayercachemanager_getcachefilecount]
 
 获取已缓存的媒体文件数量。
 
@@ -81,21 +64,14 @@ description: "设置是否自动删除缓存的媒体文件。"
 - (NSInteger)cacheFileCount NS_SWIFT_NAME(cacheFileCount());
 ```
 
-<a id="api_imediaplayercachemanager_getcachefilecount__detailed_desc"></a>
-
-<a id="api_imediaplayercachemanager_getcachefilecount__return_values"></a>
-
-### 返回值
+### <span id="api_imediaplayercachemanager_getcachefilecount__detailed_desc"></span>返回值 [#api_imediaplayercachemanager_getcachefilecount__return_values]
 
 - 方法调用成功，返回已缓存的媒体文件数量。
 - 方法调用失败，返回小于 0 的错误码，详见 [AgoraMediaPlayerReason](/zh-CN/api-reference/rtc/ios/enum-mediaplayerreason)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager)
 
-<a id="api_imediaplayercachemanager_getmaxcachefilecount"></a>
-
-## maxCacheFileCount
+## maxCacheFileCount [#api_imediaplayercachemanager_getmaxcachefilecount]
 
 获取可缓存的媒体文件的最大数量。
 
@@ -109,20 +85,15 @@ description: "设置是否自动删除缓存的媒体文件。"
 
 默认情况下，最多可以缓存 1,000 个媒体文件。
 
-<a id="api_imediaplayercachemanager_getmaxcachefilecount__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayercachemanager_getmaxcachefilecount__return_values]
 
 方法调用成功，返回可缓存的媒体文件的最大数量。
 
 - &lt; 0：方法调用失败，返回错误码，详见 [AgoraMediaPlayerReason](/zh-CN/api-reference/rtc/ios/enum-mediaplayerreason)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager)
 
-<a id="api_imediaplayercachemanager_getmaxcachefilesize"></a>
-
-## maxCacheFileSize
+## maxCacheFileSize [#api_imediaplayercachemanager_getmaxcachefilesize]
 
 获取缓存媒体文件的聚合存储空间的最大大小。
 
@@ -136,19 +107,14 @@ description: "设置是否自动删除缓存的媒体文件。"
 
 你可以调用 [setMaxCacheFileSize:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilesize) 方法根据你的使用场景设置该限制。默认情况下，缓存媒体文件的聚合存储空间的最大大小为 1 GB。
 
-<a id="api_imediaplayercachemanager_getmaxcachefilesize__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayercachemanager_getmaxcachefilesize__return_values]
 
 - 方法调用成功，返回缓存媒体文件的聚合存储空间的最大大小（单位为字节）。
 - 方法调用失败，返回小于 0 的错误码，详见 [AgoraMediaPlayerReason](/zh-CN/api-reference/rtc/ios/enum-mediaplayerreason)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager)
 
-<a id="api_imediaplayercachemanager_removeallcaches"></a>
-
-## removeAllCaches
+## removeAllCaches [#api_imediaplayercachemanager_removeallcaches]
 
 删除媒体播放器中所有缓存的媒体文件。
 
@@ -164,19 +130,14 @@ description: "设置是否自动删除缓存的媒体文件。"
 [removeAllCaches](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removeallcaches) 不会删除当前正在播放的缓存媒体文件。
 :::
 
-<a id="api_imediaplayercachemanager_removeallcaches__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayercachemanager_removeallcaches__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [AgoraMediaPlayerReason](/zh-CN/api-reference/rtc/ios/enum-mediaplayerreason)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager)
 
-<a id="api_imediaplayercachemanager_removecachebyuri"></a>
-
-## removeCacheByUri:
+## removeCacheByUri: [#api_imediaplayercachemanager_removecachebyuri]
 
 删除缓存的媒体文件。
 
@@ -192,27 +153,20 @@ description: "设置是否自动删除缓存的媒体文件。"
 [removeCacheByUri:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removecachebyuri) 当前正在播放的缓存媒体文件不会被删除。
 :::
 
-<a id="api_imediaplayercachemanager_removecachebyuri__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayercachemanager_removecachebyuri__parameters]
 
 #### `uri`
 
 要删除的媒体文件的 URI（统一资源标识符）。
 
-<a id="api_imediaplayercachemanager_removecachebyuri__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayercachemanager_removecachebyuri__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [AgoraMediaPlayerReason](/zh-CN/api-reference/rtc/ios/enum-mediaplayerreason)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager)
 
-<a id="api_imediaplayercachemanager_removeoldcache"></a>
-
-## removeOldCache
+## removeOldCache [#api_imediaplayercachemanager_removeoldcache]
 
 删除最少使用的缓存媒体文件。
 
@@ -230,19 +184,14 @@ description: "设置是否自动删除缓存的媒体文件。"
 [removeOldCache](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removeoldcache) 当前不会删除正在播放的缓存媒体文件。
 :::
 
-<a id="api_imediaplayercachemanager_removeoldcache__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayercachemanager_removeoldcache__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [AgoraMediaPlayerReason](/zh-CN/api-reference/rtc/ios/enum-mediaplayerreason)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager)
 
-<a id="api_imediaplayercachemanager_setcachedir"></a>
-
-## setCacheDir:
+## setCacheDir: [#api_imediaplayercachemanager_setcachedir]
 
 设置要缓存的媒体文件的存储路径。
 
@@ -258,27 +207,20 @@ description: "设置是否自动删除缓存的媒体文件。"
 请确保在调用该方法前已初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 :::
 
-<a id="api_imediaplayercachemanager_setcachedir__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayercachemanager_setcachedir__parameters]
 
 #### `cacheDir`
 
 要缓存的媒体文件的绝对路径。确保该目录存在且可写。
 
-<a id="api_imediaplayercachemanager_setcachedir__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayercachemanager_setcachedir__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。详见 [AgoraMediaPlayerReason](/zh-CN/api-reference/rtc/ios/enum-mediaplayerreason)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager)
 
-<a id="api_imediaplayercachemanager_setmaxcachefilecount"></a>
-
-## setMaxCacheFileCount:
+## setMaxCacheFileCount: [#api_imediaplayercachemanager_setmaxcachefilecount]
 
 设置可缓存的媒体文件数量上限。
 
@@ -288,29 +230,20 @@ description: "设置是否自动删除缓存的媒体文件。"
 - (int)setMaxCacheFileCount:(NSInteger)count NS_SWIFT_NAME(setMaxCacheFileCount(_:));
 ```
 
-<a id="api_imediaplayercachemanager_setmaxcachefilecount__detailed_desc"></a>
-
-<a id="api_imediaplayercachemanager_setmaxcachefilecount__parameters"></a>
-
-### 参数
+### <span id="api_imediaplayercachemanager_setmaxcachefilecount__detailed_desc"></span>参数 [#api_imediaplayercachemanager_setmaxcachefilecount__parameters]
 
 #### `count`
 
 可缓存的媒体文件数量上限（默认值为 1,000）。
 
-<a id="api_imediaplayercachemanager_setmaxcachefilecount__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayercachemanager_setmaxcachefilecount__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。详见 [AgoraMediaPlayerReason](/zh-CN/api-reference/rtc/ios/enum-mediaplayerreason)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager)
 
-<a id="api_imediaplayercachemanager_setmaxcachefilesize"></a>
-
-## setMaxCacheFileSize:
+## setMaxCacheFileSize: [#api_imediaplayercachemanager_setmaxcachefilesize]
 
 设置用于缓存媒体文件的聚合存储空间的最大大小。
 
@@ -320,29 +253,20 @@ description: "设置是否自动删除缓存的媒体文件。"
 - (int)setMaxCacheFileSize:(NSInteger)cacheSize NS_SWIFT_NAME(setMaxCacheFileSize(_:));
 ```
 
-<a id="api_imediaplayercachemanager_setmaxcachefilesize__detailed_desc"></a>
-
-<a id="api_imediaplayercachemanager_setmaxcachefilesize__parameters"></a>
-
-### 参数
+### <span id="api_imediaplayercachemanager_setmaxcachefilesize__detailed_desc"></span>参数 [#api_imediaplayercachemanager_setmaxcachefilesize__parameters]
 
 #### `cacheSize`
 
 缓存媒体文件的聚合存储空间的最大大小（字节）（默认值为 1 GB）。
 
-<a id="api_imediaplayercachemanager_setmaxcachefilesize__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayercachemanager_setmaxcachefilesize__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败，详见 [AgoraMediaPlayerReason](/zh-CN/api-reference/rtc/ios/enum-mediaplayerreason)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager)
 
-<a id="api_imediaplayercachemanager_sharedinstance"></a>
-
-## sharedInstance
+## sharedInstance [#api_imediaplayercachemanager_sharedinstance]
 
 获取 AgoraRtcMediaPlayerCacheManagerProtocol 实例。
 
@@ -352,20 +276,13 @@ description: "设置是否自动删除缓存的媒体文件。"
 + (instancetype)sharedInstance NS_SWIFT_NAME(sharedInstance());
 ```
 
-<a id="api_imediaplayercachemanager_sharedinstance__detailed_desc"></a>
-
-<a id="api_imediaplayercachemanager_sharedinstance__return_values"></a>
-
-### 返回值
+### <span id="api_imediaplayercachemanager_sharedinstance__detailed_desc"></span>返回值 [#api_imediaplayercachemanager_sharedinstance__return_values]
 
 方法调用成功，返回 [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager) 实例。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager)
 
-<a id="callback_imediaplayersourceobserver_onplayercachestats"></a>
-
-## AgoraRtcMediaPlayer:cacheStats:
+## AgoraRtcMediaPlayer:cacheStats: [#callback_imediaplayersourceobserver_onplayercachestats]
 
 上报正在缓存的媒体文件的统计信息。
 
@@ -375,17 +292,11 @@ description: "设置是否自动删除缓存的媒体文件。"
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit cacheStats:(AgoraMediaPlayerCacheStatistics *_Nonnull)info NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:cacheStats:));
 ```
 
-<a id="callback_imediaplayersourceobserver_onplayercachestats__detailed_desc"></a>
-
-<a id="callback_imediaplayersourceobserver_onplayercachestats__timing"></a>
-
-### 触发时机
+### <span id="callback_imediaplayersourceobserver_onplayercachestats__detailed_desc"></span>触发时机 [#callback_imediaplayersourceobserver_onplayercachestats__timing]
 
 该回调在你调用 [openWithMediaSource:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法并将 `enableCache` 设置为 YES 后，每秒触发一次。
 
-<a id="callback_imediaplayersourceobserver_onplayercachestats__parameters"></a>
-
-### 参数
+### 参数 [#callback_imediaplayersourceobserver_onplayercachestats__parameters]
 
 #### `playerKit`
 
@@ -395,5 +306,4 @@ description: "设置是否自动删除缓存的媒体文件。"
 
 正在缓存的媒体文件的统计信息。详见 [AgoraMediaPlayerCacheStatistics](/zh-CN/api-reference/rtc/ios/class-cachestatistics)。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayersourceobserver)

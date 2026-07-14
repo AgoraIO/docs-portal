@@ -2,6 +2,7 @@
 title: "本地截图上传"
 description: "本地截图上传 API reference."
 ---
+
 <a id="toc_snapshot"></a>
 
 ## 本地截图上传
@@ -57,7 +58,6 @@ public abstract enableContentInspect(enabled:boolean,config:ContentInspectConfig
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_takesnapshot"></a>
@@ -121,7 +121,6 @@ public abstract takeSnapshot(uid: number, filePath: string): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_takesnapshotex"></a>
@@ -236,5 +235,4 @@ onSnapshotTaken?:(uid:number, filePath:string , width:number, height:number, err
   - -2： takeSnapshot 方法调用后 1 秒内没有收到指定用户的视频帧。可能的原因有：本地采集停止、远端停止发布或者视频数据处理堵塞。
   - -3： takeSnapshot 方法调用过于频繁。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

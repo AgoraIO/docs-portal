@@ -2,9 +2,8 @@
 title: "视频双流"
 description: "视频双流 API reference."
 ---
-<a id="toc_dual_stream"></a>
 
-## 视频双流
+<a id="toc_dual_stream"></a>
 
 <a id="api_irtcengine_setdualstreammode2"></a>
 
@@ -22,7 +21,7 @@ public abstract setDualStreamMode(mode: Constants.SimulcastStreamMode, streamCon
 
 ### 详情
 
-SDK 默认在发送端开启小流自适应模式 (AUTO)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/harmonyos/dual-stream#api_irtcengine_setremotevideostreamtype) 发起小流申请，发送端收到申请后开始自动发送小流。
+SDK 默认在发送端开启小流自适应模式 (AUTO)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/dual-stream#api_irtcengine_setremotevideostreamtype) 发起小流申请，发送端收到申请后开始自动发送小流。
 
 - 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE （始终不发送小流）或 ENABLE （始终发送小流）。
 - 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 mode 设置为 AUTO。
@@ -66,7 +65,7 @@ public abstract setDualStreamModeEx(mode:Constants.SimulcastStreamMode,streamCon
 
 ### 详情
 
-SDK 默认在发送端开启小流自适应模式 (AUTO)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [setRemoteVideoStreamTypeEx](/zh-CN/api-reference/rtc/harmonyos/dual-stream#api_irtcengineex_setremotevideostreamtypeex) 发起小流申请，发送端收到申请后开始自动发送小流。
+SDK 默认在发送端开启小流自适应模式 (AUTO)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [setRemoteVideoStreamTypeEx](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/dual-stream#api_irtcengineex_setremotevideostreamtypeex) 发起小流申请，发送端收到申请后开始自动发送小流。
 
 - 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE （始终不发送小流）或 ENABLE （始终发送小流）。
 - 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 mode 设置为 AUTO。
@@ -98,7 +97,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype"></a>
@@ -115,7 +113,7 @@ public abstract setRemoteDefaultVideoStreamType(streamType: Constants.VideoStrea
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__detailed_desc"></a>
 
-取决于发送端的默认行为和调用 [setDualStreamMode](/zh-CN/api-reference/rtc/harmonyos/dual-stream#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
+取决于发送端的默认行为和调用 [setDualStreamMode](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/dual-stream#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
 - SDK 默认在发送端开启小流自适应模式 (AUTO)，即：发送端仅发送大流，仅 **主播身份** 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
 - 当发送端调用 setDualStreamMode 并将 mode 设置为 DISABLE （始终不发送小流），则调用该方法不生效。
@@ -133,7 +131,7 @@ public abstract setRemoteDefaultVideoStreamType(streamType: Constants.VideoStrea
 
 ### 调用限制
 
-如果你既调用了该方法，也调用了 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/harmonyos/dual-stream#api_irtcengine_setremotevideostreamtype)，则 SDK 以 setRemoteVideoStreamType 中的设置为准。
+如果你既调用了该方法，也调用了 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/dual-stream#api_irtcengine_setremotevideostreamtype)，则 SDK 以 setRemoteVideoStreamType 中的设置为准。
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__parameters"></a>
 
@@ -150,7 +148,6 @@ public abstract setRemoteDefaultVideoStreamType(streamType: Constants.VideoStrea
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremotevideostreamtype"></a>
@@ -169,7 +166,7 @@ public abstract setRemoteVideoStreamType(uid: number, streamType: Constants.Vide
 
 ### 详情
 
-取决于发送端的默认行为和调用 [setDualStreamMode](/zh-CN/api-reference/rtc/harmonyos/dual-stream#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
+取决于发送端的默认行为和调用 [setDualStreamMode](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/dual-stream#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
 - SDK 默认在发送端开启小流自适应模式 (AUTO)，即：发送端仅发送大流，仅 **主播身份** 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
 - 当发送端调用 setDualStreamMode 并将 mode 设置为 DISABLE （始终不发送小流），则调用该方法不生效。
@@ -179,7 +176,7 @@ public abstract setRemoteVideoStreamType(uid: number, streamType: Constants.Vide
 
 :::warning[注意]
 - 该方法在加入频道前后都能调用。
-- 如果既调用了该方法，也调用了 [setRemoteDefaultVideoStreamType](/zh-CN/api-reference/rtc/harmonyos/dual-stream#api_irtcengine_setremotedefaultvideostreamtype)，则 SDK 以该方法中的设置为准。
+- 如果既调用了该方法，也调用了 [setRemoteDefaultVideoStreamType](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/dual-stream#api_irtcengine_setremotedefaultvideostreamtype)，则 SDK 以该方法中的设置为准。
 :::
 
 <a id="api_irtcengine_setremotevideostreamtype__parameters"></a>
@@ -201,7 +198,6 @@ public abstract setRemoteVideoStreamType(uid: number, streamType: Constants.Vide
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremotevideostreamtypeex"></a>
@@ -220,7 +216,7 @@ public abstract setRemoteVideoStreamTypeEx(uid:number,streamType:number,connecti
 
 ### 详情
 
-取决于发送端的默认行为和调用 [setDualStreamMode](/zh-CN/api-reference/rtc/harmonyos/dual-stream#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
+取决于发送端的默认行为和调用 [setDualStreamMode](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/dual-stream#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
 - SDK 默认在发送端开启小流自适应模式 (AUTO)，即：发送端仅发送大流，仅 **主播身份** 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
 - 当发送端调用 setDualStreamMode 并将 mode 设置为 DISABLE （始终不发送小流），则调用该方法不生效。
@@ -255,5 +251,4 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/harmonyos/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)

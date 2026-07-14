@@ -1,14 +1,9 @@
 ---
 title: "直播水印"
-description: "向本地视频添加水印图像。"
+description: "直播水印 API reference."
 ---
-<a id="toc_watermark"></a>
 
-## 直播水印
-
-<a id="api_irtcengine_addvideowatermark1"></a>
-
-## addVideoWatermark:
+## <span id="toc_watermark"></span>addVideoWatermark: [#api_irtcengine_addvideowatermark1]
 
 向本地视频添加水印图像。
 
@@ -18,9 +13,7 @@ description: "向本地视频添加水印图像。"
 - (int)addVideoWatermark:(AgoraImage * _Nonnull)watermark NS_SWIFT_NAME(addVideoWatermark(_:)) __deprecated_msg("use addVideoWatermarkWithConfig:config instead.");
 ```
 
-<a id="api_irtcengine_addvideowatermark1__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_addvideowatermark1__detailed_desc]
 
 自 v4.5.0 版本废弃，请改用 [addVideoWatermarkWithConfig:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_addvideowatermark3)。
 
@@ -32,27 +25,20 @@ description: "向本地视频添加水印图像。"
 - SDK 仅支持在本地视频或 CDN 推流中添加一个水印图像。新添加的水印图像会替换之前的图像。
 :::
 
-<a id="api_irtcengine_addvideowatermark1__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_addvideowatermark1__parameters]
 
 #### `watermark`
 
 要添加到本地直播中的水印图像。详见 [AgoraImage](/zh-CN/api-reference/rtc/ios/class-rtcimage)。
 
-<a id="api_irtcengine_addvideowatermark1__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_addvideowatermark1__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_addvideowatermark2"></a>
-
-## addVideoWatermark:options:
+## addVideoWatermark:options: [#api_irtcengine_addvideowatermark2]
 
 向本地视频添加水印图像。
 
@@ -62,9 +48,7 @@ description: "向本地视频添加水印图像。"
 - (int)addVideoWatermark:(NSURL* _Nonnull)url options:(WatermarkOptions* _Nonnull)options NS_SWIFT_NAME(addVideoWatermark(_:options:)) __deprecated_msg("use addVideoWatermarkWithConfig:config instead.");
 ```
 
-<a id="api_irtcengine_addvideowatermark2__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_addvideowatermark2__detailed_desc]
 
 自 v4.5.0 版本废弃，请改用 `addVideoWatermarkWithConfig:config`。
 
@@ -87,9 +71,7 @@ description: "向本地视频添加水印图像。"
 - 如果你为本地视频启用了镜像模式，本地视频中的水印也会被镜像。为避免水印被镜像，声网建议你不要同时使用本地视频的镜像和水印功能。你可以在应用层实现水印功能。
 :::
 
-<a id="api_irtcengine_addvideowatermark2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_addvideowatermark2__parameters]
 
 #### `url`
 
@@ -99,19 +81,14 @@ description: "向本地视频添加水印图像。"
 
 水印图像的相关选项。详见 [WatermarkOptions](/zh-CN/api-reference/rtc/ios/class-watermarkoptions)。
 
-<a id="api_irtcengine_addvideowatermark2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_addvideowatermark2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_addvideowatermark3"></a>
-
-## addVideoWatermarkWithConfig:
+## addVideoWatermarkWithConfig: [#api_irtcengine_addvideowatermark3]
 
 向本地视频添加水印图像。
 
@@ -121,35 +98,26 @@ description: "向本地视频添加水印图像。"
 - (int)addVideoWatermarkWithConfig:(WatermarkConfig* _Nonnull)config NS_SWIFT_NAME(addVideoWatermark(_:));
 ```
 
-<a id="api_irtcengine_addvideowatermark3__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_addvideowatermark3__detailed_desc]
 
 自 v4.6.0 版本新增。
 
 你可以使用此方法在本地视频流上叠加水印图像，并通过 [WatermarkConfig](/zh-CN/api-reference/rtc/ios/class-watermarkconfig) 配置水印的位置、大小以及在预览中的可见性。
 
-<a id="api_irtcengine_addvideowatermark3__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_addvideowatermark3__parameters]
 
 #### `config`
 
 水印图像的配置。详见 [WatermarkConfig](/zh-CN/api-reference/rtc/ios/class-watermarkconfig)。
 
-<a id="api_irtcengine_addvideowatermark3__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_addvideowatermark3__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_addvideowatermarkex"></a>
-
-## addVideoWatermarkEx:options:connection:
+## addVideoWatermarkEx:options:connection: [#api_irtcengineex_addvideowatermarkex]
 
 向本地视频添加水印图像。
 
@@ -159,9 +127,7 @@ description: "向本地视频添加水印图像。"
 - (int)addVideoWatermarkEx:(NSURL* _Nonnull)url options:(WatermarkOptions* _Nonnull)options connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(addVideoWatermarkEx(_:options:connection:)) __deprecated_msg("use addVideoWatermark:config connection instead.");
 ```
 
-<a id="api_irtcengineex_addvideowatermarkex__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengineex_addvideowatermarkex__detailed_desc]
 
 自 v4.5.0 版本废弃，请改用 `addVideoWatermark:config connection`。
 
@@ -179,15 +145,11 @@ description: "向本地视频添加水印图像。"
 - 如果你已为本地视频启用镜像模式，本地视频中的水印也会被镜像。为避免水印被镜像，声网建议你不要同时使用本地视频的镜像和水印功能。你可以在应用层实现水印功能。
 :::
 
-<a id="api_irtcengineex_addvideowatermarkex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_addvideowatermarkex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_addvideowatermarkex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_addvideowatermarkex__parameters]
 
 #### `url`
 
@@ -201,19 +163,14 @@ description: "向本地视频添加水印图像。"
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_addvideowatermarkex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_addvideowatermarkex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengineex_addvideowatermarkex1"></a>
-
-## addVideoWatermarkEx:connection:
+## addVideoWatermarkEx:connection: [#api_irtcengineex_addvideowatermarkex1]
 
 向本地视频添加水印图像。
 
@@ -223,21 +180,15 @@ description: "向本地视频添加水印图像。"
 - (int)addVideoWatermarkEx:(WatermarkConfig* _Nonnull)configs connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(addVideoWatermarkEx(_:connection:));
 ```
 
-<a id="api_irtcengineex_addvideowatermarkex1__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_addvideowatermarkex1__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_irtcengineex_addvideowatermarkex1__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_addvideowatermarkex1__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_addvideowatermarkex1__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_addvideowatermarkex1__parameters]
 
 #### `configs`
 
@@ -247,19 +198,14 @@ description: "向本地视频添加水印图像。"
 
 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection) 对象。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_addvideowatermarkex1__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_addvideowatermarkex1__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengineex_clearvideowatermarkex"></a>
-
-## clearVideoWatermarkEx:
+## clearVideoWatermarkEx: [#api_irtcengineex_clearvideowatermarkex]
 
 从视频流中移除水印图像。
 
@@ -269,35 +215,24 @@ description: "向本地视频添加水印图像。"
 - (int)clearVideoWatermarkEx:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(clearVideoWatermarkEx(_:));
 ```
 
-<a id="api_irtcengineex_clearvideowatermarkex__detailed_desc"></a>
-
-<a id="api_irtcengineex_clearvideowatermarkex__scenario"></a>
-
-### 适用场景
+### <span id="api_irtcengineex_clearvideowatermarkex__detailed_desc"></span>适用场景 [#api_irtcengineex_clearvideowatermarkex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_clearvideowatermarkex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_clearvideowatermarkex__parameters]
 
 #### `connection`
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_clearvideowatermarkex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_clearvideowatermarkex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_clearvideowatermarks"></a>
-
-## clearVideoWatermarks
+## clearVideoWatermarks [#api_irtcengine_clearvideowatermarks]
 
 从视频流中移除水印图像。
 
@@ -307,21 +242,14 @@ description: "向本地视频添加水印图像。"
 - (int)clearVideoWatermarks NS_SWIFT_NAME(clearVideoWatermarks());
 ```
 
-<a id="api_irtcengine_clearvideowatermarks__detailed_desc"></a>
-
-<a id="api_irtcengine_clearvideowatermarks__return_values"></a>
-
-### 返回值
+### <span id="api_irtcengine_clearvideowatermarks__detailed_desc"></span>返回值 [#api_irtcengine_clearvideowatermarks__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_removevideowatermark"></a>
-
-## removeVideoWatermark:
+## removeVideoWatermark: [#api_irtcengine_removevideowatermark]
 
 从本地视频中移除水印图像。
 
@@ -331,35 +259,26 @@ description: "向本地视频添加水印图像。"
 - (int)removeVideoWatermark:(NSString* _Nonnull)id NS_SWIFT_NAME(removeVideoWatermark(_:));
 ```
 
-<a id="api_irtcengine_removevideowatermark__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengine_removevideowatermark__detailed_desc]
 
 自 v4.6.0 版本新增。
 
 该方法使用你指定的唯一标识符，从本地视频流中移除之前添加的水印图像。
 
-<a id="api_irtcengine_removevideowatermark__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_removevideowatermark__parameters]
 
 #### `id`
 
 要移除的水印的标识符。
 
-<a id="api_irtcengine_removevideowatermark__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_removevideowatermark__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_removevideowatermarkex"></a>
-
-## removeVideoWatermarkEx:connection:
+## removeVideoWatermarkEx:connection: [#api_irtcengineex_removevideowatermarkex]
 
 从本地或远端视频流中移除指定的水印图像。
 
@@ -369,21 +288,15 @@ description: "向本地视频添加水印图像。"
 - (int)removeVideoWatermarkEx:(NSString* _Nonnull)id connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(removeVideoWatermarkEx(_:connection:));
 ```
 
-<a id="api_irtcengineex_removevideowatermarkex__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#api_irtcengineex_removevideowatermarkex__detailed_desc]
 
 自 v4.6.0 版本新增。
 
-<a id="api_irtcengineex_removevideowatermarkex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_removevideowatermarkex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_removevideowatermarkex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_removevideowatermarkex__parameters]
 
 #### `id`
 
@@ -393,12 +306,9 @@ description: "向本地视频添加水印图像。"
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_removevideowatermarkex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_removevideowatermarkex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)

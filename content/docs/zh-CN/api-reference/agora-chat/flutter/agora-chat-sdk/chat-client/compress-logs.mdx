@@ -1,0 +1,33 @@
+---
+title: "compressLogs method"
+description: "API docs for the compressLogs method from the ChatClient class, for the Dart programming language."
+---
+
+Compresses the debug log into a gzip archive.
+
+Best practice is to delete this debug archive as soon as it is no longer used.
+
+**Return** The path of the compressed gzip file.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+```dart title="Dart"
+Future<String> compressLogs()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<String> compressLogs() async {
+  EMLog.v('compressLogs:');
+  Map result = await ClientChannel.invokeMethod(ChatMethodKeys.compressLogs);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result[ChatMethodKeys.compressLogs];
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,0 +1,42 @@
+---
+title: "fetchChatRoomInfoFromServer method"
+description: "API docs for the fetchChatRoomInfoFromServer method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Gets the details of the chat room from the server. By default, the details do not include the chat room member list.
+
+**Return** The chat room instance.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+
+```dart title="Dart"
+Future<ChatRoom> fetchChatRoomInfoFromServer(String roomId, {bool fetchMembers = false})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatRoom> fetchChatRoomInfoFromServer(
+  String roomId, {
+  bool fetchMembers = false,
+}) async {
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.fetchChatRoomInfoFromServer,
+      {"roomId": roomId, "fetchMembers": fetchMembers});
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatRoom.fromJson(
+        result[ChatMethodKeys.fetchChatRoomInfoFromServer]);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

@@ -1,10 +1,9 @@
 ---
 title: "音频基础功能"
-description: "调节所有远端用户的播放信号音量。"
+description: "音频基础功能 API reference."
 ---
-<a id="toc_audio_basic"></a>
 
-## 音频基础功能
+<a id="toc_audio_basic"></a>
 
 <a id="api_irtcengine_adjustplaybacksignalvolume"></a>
 
@@ -47,7 +46,6 @@ description: "调节所有远端用户的播放信号音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume"></a>
@@ -95,7 +93,6 @@ description: "调节所有远端用户的播放信号音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex"></a>
@@ -155,7 +152,6 @@ description: "调节所有远端用户的播放信号音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_disableaudio"></a>
@@ -177,8 +173,8 @@ description: "调节所有远端用户的播放信号音量。"
 :::info[注]
 该方法会重置内部引擎，并需要一些时间生效。声网建议使用以下 API 分别控制音频模块：
 
-- [enableLocalAudio:](/zh-CN/api-reference/rtc/macos/audio-capture#api_irtcengine_enablelocalaudio)：是否启用麦克风以创建本地音频流。
-- （仅适用于 macOS） [enableLoopbackRecording:deviceName:](/zh-CN/api-reference/rtc/macos/audio-capture#api_irtcengine_enableloopbackrecording)：是否启用回采音频采集。
+- [enableLocalAudio:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enablelocalaudio)：是否启用麦克风以创建本地音频流。
+- （仅适用于 macOS） [enableLoopbackRecording:deviceName:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enableloopbackrecording)：是否启用回采音频采集。
 - [muteLocalAudioStream:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：是否发布本地音频流。
 - [muteRemoteAudioStream:mute:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteremoteaudiostream)：是否订阅并播放远端音频流。
 - [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)：是否订阅并播放所有远端音频流。
@@ -197,7 +193,6 @@ description: "调节所有远端用户的播放信号音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudio"></a>
@@ -214,16 +209,16 @@ description: "调节所有远端用户的播放信号音量。"
 
 <a id="api_irtcengine_enableaudio__detailed_desc"></a>
 
-音频模块默认处于启用状态。你在调用 [disableAudio](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_disableaudio) 方法禁用音频模块后，可以调用该方法重新启用音频模块。
+音频模块默认处于启用状态。你在调用 [disableAudio](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_disableaudio) 方法禁用音频模块后，可以调用该方法重新启用音频模块。
 
 :::info[注]
 - 调用该方法会重置整个引擎，导致响应时间变慢。你可以根据实际需求，使用以下方法分别控制音频模块的具体功能：
 
-  - [enableLocalAudio:](/zh-CN/api-reference/rtc/macos/audio-capture#api_irtcengine_enablelocalaudio)：是否启用麦克风以创建本地音频流。
+  - [enableLocalAudio:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enablelocalaudio)：是否启用麦克风以创建本地音频流。
   - [muteLocalAudioStream:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：是否发布本地音频流。
   - [muteRemoteAudioStream:mute:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteremoteaudiostream)：是否订阅并播放远端音频流。
   - [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)：是否订阅并播放所有远端音频流。
-- 成功调用该方法会重置 [enableLocalAudio:](/zh-CN/api-reference/rtc/macos/audio-capture#api_irtcengine_enablelocalaudio)、 [muteRemoteAudioStream:mute:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteremoteaudiostream) 和 [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 的设置，请谨慎使用。
+- 成功调用该方法会重置 [enableLocalAudio:](/zh-CN/api-reference/rtc/macos/audio/audio-capture#api_irtcengine_enablelocalaudio)、 [muteRemoteAudioStream:mute:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteremoteaudiostream) 和 [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 的设置，请谨慎使用。
 :::
 
 <a id="api_irtcengine_enableaudio__timing"></a>
@@ -239,7 +234,6 @@ description: "调节所有远端用户的播放信号音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudiovolumeindication"></a>
@@ -275,7 +269,7 @@ description: "调节所有远端用户的播放信号音量。"
 设置两次音量提示之间的时间间隔（单位为毫秒）：
 
 - ≤ 0：关闭音量提示功能。
-- &gt; 0：两次音量提示之间的时间间隔。确保该参数值大于 10，否则你将无法收到 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。建议设置为大于 100。
+- &gt; 0：两次音量提示之间的时间间隔。确保该参数值大于 10，否则你将无法收到 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。建议设置为大于 100。
 
 #### `smooth`
 
@@ -285,7 +279,7 @@ description: "调节所有远端用户的播放信号音量。"
 
 是否启用本地用户的语音活动检测（Voice Activity Detection）：
 
-- YES：启用语音活动检测。启用后， [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
+- YES：启用语音活动检测。启用后， [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
 - NO：（默认）关闭语音活动检测。关闭后，除非引擎自动检测本地用户的语音活动，否则 `vad` 参数不会报告本地用户的语音活动状态。
 
 <a id="api_irtcengine_enableaudiovolumeindication__return_values"></a>
@@ -295,7 +289,6 @@ description: "调节所有远端用户的播放信号音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex"></a>
@@ -333,7 +326,7 @@ description: "调节所有远端用户的播放信号音量。"
 
 ### 相关回调
 
-成功调用该方法后，若频道中有用户发布流，SDK 会根据设置的时间间隔触发 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告音量信息。
+成功调用该方法后，若频道中有用户发布流，SDK 会根据设置的时间间隔触发 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告音量信息。
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__parameters"></a>
 
@@ -344,7 +337,7 @@ description: "调节所有远端用户的播放信号音量。"
 设置两次音量提示之间的时间间隔（毫秒）：
 
 - ≤ 0：关闭音量提示功能。
-- &gt; 0：两次音量提示之间的时间间隔（单位为毫秒）。确保该参数值大于 10，否则你将无法收到 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。声网建议将该值设置为大于 100。
+- &gt; 0：两次音量提示之间的时间间隔（单位为毫秒）。确保该参数值大于 10，否则你将无法收到 [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。声网建议将该值设置为大于 100。
 
 #### `smooth`
 
@@ -354,8 +347,8 @@ description: "调节所有远端用户的播放信号音量。"
 
 是否启用本地用户的语音活动检测（Voice Activity Detection）：
 
-- YES：启用本地用户的语音活动检测。启用后， [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
-- NO：（默认）关闭本地用户的语音活动检测。关闭后， [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数不会报告本地用户的语音活动状态，除非引擎自动检测到本地用户的语音活动。
+- YES：启用本地用户的语音活动检测。启用后， [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
+- NO：（默认）关闭本地用户的语音活动检测。关闭后， [rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数不会报告本地用户的语音活动状态，除非引擎自动检测到本地用户的语音活动。
 
 #### `connection`
 
@@ -368,7 +361,6 @@ description: "调节所有远端用户的播放信号音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setaudioprofile"></a>
@@ -387,7 +379,7 @@ description: "调节所有远端用户的播放信号音量。"
 
 #### `废弃`
 
-该方法已废弃，请改用 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioprofile2)。
+该方法已废弃，请改用 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioprofile2)。
 
 该方法适用于多种音频场景，可根据需要选择。例如，在音乐教学等对音质要求较高的场景中，建议将 `profile` 设置为 `AgoraAudioProfileMusicHighQuality` （4），将 `scenario` 设置为 `AgoraAudioScenarioGameStreaming` （3）。
 
@@ -426,7 +418,6 @@ description: "调节所有远端用户的播放信号音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioprofile2"></a>
@@ -443,13 +434,13 @@ description: "调节所有远端用户的播放信号音量。"
 
 <a id="api_irtcengine_setaudioprofile2__detailed_desc"></a>
 
-如果你需要设置音频场景，可以调用 [setAudioScenario:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioscenario)，或者调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 并在 [AgoraRtcEngineConfig](/zh-CN/api-reference/rtc/macos/class-rtcengineconfig) 中设置 `audioScenario`。
+如果你需要设置音频场景，可以调用 [setAudioScenario:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioscenario)，或者调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 并在 [AgoraRtcEngineConfig](/zh-CN/api-reference/rtc/macos/class-rtcengineconfig) 中设置 `audioScenario`。
 
 <a id="api_irtcengine_setaudioprofile2__scenario"></a>
 
 ### 适用场景
 
-你可以根据实际需求选择合适的音频配置文件。例如，在音乐教学等对音质要求较高的场景中，建议将 `profile` 设置为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY` （4）。如果你需要设置音频场景，可以调用 [setAudioScenario:](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_setaudioscenario)，或者调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 并在 [AgoraRtcEngineConfig](/zh-CN/api-reference/rtc/macos/class-rtcengineconfig) 中设置 `audioScenario`。
+你可以根据实际需求选择合适的音频配置文件。例如，在音乐教学等对音质要求较高的场景中，建议将 `profile` 设置为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY` （4）。如果你需要设置音频场景，可以调用 [setAudioScenario:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioscenario)，或者调用 [sharedEngineWithConfig:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 并在 [AgoraRtcEngineConfig](/zh-CN/api-reference/rtc/macos/class-rtcengineconfig) 中设置 `audioScenario`。
 
 <a id="api_irtcengine_setaudioprofile2__timing"></a>
 
@@ -472,7 +463,6 @@ description: "调节所有远端用户的播放信号音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioscenario"></a>
@@ -522,7 +512,6 @@ description: "调节所有远端用户的播放信号音量。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onactivespeaker"></a>
@@ -562,7 +551,6 @@ description: "调节所有远端用户的播放信号音量。"
 
 最活跃远端说话用户的用户 ID。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudioquality"></a>
@@ -596,7 +584,6 @@ description: "调节所有远端用户的播放信号音量。"
 - `delay`：时延，单位为毫秒。
 - `lost`：丢包率，单位为 %。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication"></a>
@@ -644,7 +631,6 @@ description: "调节所有远端用户的播放信号音量。"
 - 对于本地用户的回调， `totalVolume` 是发送音频流的本地用户的音量。
 - 对于远端用户的回调， `totalVolume` 是瞬时音量最高的最多三位远端用户的音量总和。如果你调用了 `startAudioMixing`，则 `totalVolume` 是混音后的音量。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished"></a>
@@ -665,7 +651,7 @@ description: "调节所有远端用户的播放信号音量。"
 
 - 启用音频模块并成功调用 `joinChannelByToken` 加入频道。
 - 依次调用 `muteLocalAudioStream` （设为 YES ）和 `muteLocalAudioStream` （设为 NO ）。
-- 依次调用 [disableAudio](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_disableaudio) 和 [enableAudio](/zh-CN/api-reference/rtc/macos/audio-basic#api_irtcengine_enableaudio)。
+- 依次调用 [disableAudio](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_disableaudio) 和 [enableAudio](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_enableaudio)。
 - 调用 `pushExternalAudioFrameRawData` 成功向 SDK 推送自定义音频帧。
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__timing"></a>
@@ -686,7 +672,6 @@ description: "调节所有远端用户的播放信号音量。"
 
 从调用 `joinChannelByToken` 到 SDK 触发该回调的时间间隔（毫秒）。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded"></a>
@@ -705,7 +690,7 @@ description: "调节所有远端用户的播放信号音量。"
 
 #### `废弃`
 
-自 v3.0.0 版本废弃，请改用 [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
+自 v3.0.0 版本废弃，请改用 [rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__timing"></a>
 
@@ -729,7 +714,6 @@ description: "调节所有远端用户的播放信号音量。"
 
 从调用 [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 方法到 SDK 触发该回调的时间间隔（毫秒）。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe"></a>
@@ -768,7 +752,6 @@ description: "调节所有远端用户的播放信号音量。"
 
 从本地用户调用 `joinChannelByToken` 到该回调被触发的时间（毫秒）。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged"></a>
@@ -813,7 +796,6 @@ description: "调节所有远端用户的播放信号音量。"
 
 本地音频状态变化的原因。详见 [AgoraAudioLocalReason](/zh-CN/api-reference/rtc/macos/enum-localaudiostreamreason)。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats"></a>
@@ -848,7 +830,6 @@ description: "调节所有远端用户的播放信号音量。"
 
 本地音频统计信息，详见 [AgoraRtcLocalAudioStats](/zh-CN/api-reference/rtc/macos/class-localaudiostats)。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged"></a>
@@ -901,7 +882,6 @@ description: "调节所有远端用户的播放信号音量。"
 
 从调用 `joinChannelByToken` 方法到 SDK 触发该回调的时间（毫秒）。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats"></a>
@@ -938,7 +918,6 @@ description: "调节所有远端用户的播放信号音量。"
 
 接收的远端音频流的统计信息，详见 [AgoraRtcRemoteAudioStats](/zh-CN/api-reference/rtc/macos/class-remoteaudiostats)。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats"></a>
@@ -957,7 +936,7 @@ description: "调节所有远端用户的播放信号音量。"
 
 #### `废弃`
 
-该方法已废弃，请改用 [rtcEngine:remoteAudioStats:](/zh-CN/api-reference/rtc/macos/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。
+该方法已废弃，请改用 [rtcEngine:remoteAudioStats:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__timing"></a>
 
@@ -989,7 +968,6 @@ description: "调节所有远端用户的播放信号音量。"
 
 接收到的音频码率（Kbps）。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio"></a>
@@ -1037,5 +1015,4 @@ description: "调节所有远端用户的播放信号音量。"
 
 远端用户 ID。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)

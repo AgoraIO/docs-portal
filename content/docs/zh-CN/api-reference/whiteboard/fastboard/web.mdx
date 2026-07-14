@@ -569,7 +569,6 @@ clear(): void;
 该方法可以删除插件中心的所有按钮，但不能删除白板工具条上的插件中心（**apps**）按钮。如果你需要隐藏白板工具条上的插件按钮，可以通过 `mount` 方法的 `options` 参数将 `config.toolbar.apps.enable` 设为 `false`。
 
 <a id="appintoolbar"></a>
-<a id="appintoolbar"></a>
 ## 类型定义
 ### AppInToolbar
 
@@ -671,7 +670,6 @@ hand = "hand"
 抓手工具。
 
 <a id="camera"></a>
-<a id="camera"></a>
 ### Camera
 
 `Camera` 接口包含以下属性：
@@ -680,7 +678,6 @@ hand = "hand"
 - `centerY`：Number。网页元素中心在白板坐标系（以网页元素的中心为原点的坐标系）中的 Y 轴坐标。默认值为 0。
 - `scale`：Number。视角的缩放比例，默认值为 1，即缩放比例为 100%。
 
-<a id="color"></a>
 <a id="color"></a>
 ### Color
 
@@ -694,7 +691,6 @@ hand = "hand"
 - `appId`: （可选）String。目标文档的标识符。如果不传入，则发送事件给当前焦点所在的文档。
 - `page`：（可选）Number。发送 `jumpToPage` 事件时想要跳转的页码。取值范围为 `1` 至文档最大页数。
 
-<a id="fastboardoptions"></a>
 <a id="fastboardoptions"></a>
 ### FastboardOptions
 
@@ -738,7 +734,6 @@ export interface FastboardOptions {
   - `AppInMainViewOptions`：采用自定义配置启用插件，详见 [`AppInMainViewOptions`](https://github.com/netless-io/appInMainView/blob/main/README.zh-cn.md#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE)。
 
 <a id="fastboardreplayoptions"></a>
-<a id="fastboardreplayoptions"></a>
 ### FastboardReplayOptions
 
 ```typescript
@@ -779,7 +774,6 @@ export interface FastboardReplayOptions {
   - `true`：采用默认配置启用插件。
   - `AppInMainViewOptions`：采用自定义配置启用插件，详见 [`AppInMainViewOptions`](https://github.com/netless-io/appInMainView/blob/main/README.zh-cn.md#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE)。
 
-<a id="fastboardprops"></a>
 <a id="fastboardprops"></a>
 ### FastboardProps
 
@@ -926,7 +920,6 @@ export interface InsertDocsStatic {
 - `title`: （可选）String。窗口标题。
 
 <a id="mountprops"></a>
-<a id="mountprops"></a>
 ### MountProps
 
 ```typescript
@@ -952,7 +945,6 @@ UI 配置选项，包含以下属性：
   - `container`：容纳白板应用的网页元素。
 - `config`：组件配置。详见 [`FastboardUIConfig`](#uiconfig)。
 
-<a id="rectangle"></a>
 <a id="rectangle"></a>
 ### Rectangle
 

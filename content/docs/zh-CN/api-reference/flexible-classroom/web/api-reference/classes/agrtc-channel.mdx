@@ -1,11 +1,11 @@
 ---
 title: "AGRtcChannel"
-description: "Documentation for Edu Store Typescript API Reference for Web"
+description: "AGRtcChannel API 参考。"
 ---
 
 - AGRtcChannel
 
-## Constructors
+## 构造函数
 
 <a id="constructor"></a>
 
@@ -15,18 +15,18 @@ description: "Documentation for Edu Store Typescript API Reference for Web"
 new AGRtcChannel(channelName: string, adapter: RtcChannelAdapterBase): AGRtcChannel
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | channelName: string |  |
 | adapter: RtcChannelAdapterBase |  |
 
-#### Returns
+#### 返回值
 
-Returns [AGRtcChannel](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agrtc-channel)
+[AGRtcChannel](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/agrtc-channel)
 
-## Properties
+## 属性
 
 <a id="channelName"></a>
 
@@ -36,7 +36,7 @@ Returns [AGRtcChannel](/zh-CN/api-reference/flexible-classroom/web/api-reference
 channelName: string
 ```
 
-## Methods
+## 方法
 
 <a id="enableDualStream"></a>
 
@@ -46,16 +46,16 @@ channelName: string
 enableDualStream(enable: boolean, connectionType?: AGRtcConnectionType): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | enable: boolean |  |
 | Optional connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="getRtcSid"></a>
 
@@ -65,9 +65,9 @@ Returns Promise &lt; void &gt;
 getRtcSid(): string
 ```
 
-#### Returns
+#### 返回值
 
-Returns string
+string
 
 <a id="join"></a>
 
@@ -77,17 +77,17 @@ Returns string
 join(token: string, streamUuid: string, connectionType?: AGRtcConnectionType): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | token: string |  |
 | streamUuid: string |  |
 | Optional connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="leave"></a>
 
@@ -97,15 +97,15 @@ Returns Promise &lt; void &gt;
 leave(connectionType?: AGRtcConnectionType): Promise<void>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="muteLocalAudioStream"></a>
 
@@ -115,16 +115,16 @@ Returns Promise &lt; void &gt;
 muteLocalAudioStream(mute: boolean, connectionType?: AGRtcConnectionType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mute: boolean |  |
 | Optional connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteLocalScreenStream"></a>
 
@@ -134,16 +134,16 @@ Returns number
 muteLocalScreenStream(mute: boolean, connectionType?: AGRtcConnectionType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mute: boolean |  |
 | Optional connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteLocalVideoStream"></a>
 
@@ -153,16 +153,16 @@ Returns number
 muteLocalVideoStream(mute: boolean, connectionType?: AGRtcConnectionType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | mute: boolean |  |
 | Optional connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteRemoteAudioStream"></a>
 
@@ -172,16 +172,16 @@ Returns number
 muteRemoteAudioStream(streamUuid: string, mute: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteRemoteVideoStream"></a>
 
@@ -191,16 +191,16 @@ Returns number
 muteRemoteVideoStream(streamUuid: string, mute: boolean): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="muteRemoteVideoStreamMass"></a>
 
@@ -210,16 +210,16 @@ Returns number
 muteRemoteVideoStreamMass(streamUuids: string[], mute: boolean): Promise<string[]>
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuids: string[] |  |
 | mute: boolean |  |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; string [] &gt;
+Promise &lt; string [] &gt;
 
 <a id="onAudioVolumeIndication"></a>
 
@@ -229,15 +229,15 @@ Returns Promise &lt; string [] &gt;
 onAudioVolumeIndication(cb: (volumes: Map<string, number>) => void): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: (volumes: Map&lt;string, number&gt;) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onConnectedThroughCloudProxy"></a>
 
@@ -247,15 +247,15 @@ Returns number
 onConnectedThroughCloudProxy(cb: (connectionType: AGRtcConnectionType) => void): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: (connectionType: AGRtcConnectionType) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onConnectionStageChanged"></a>
 
@@ -265,15 +265,15 @@ Returns number
 onConnectionStageChanged(cb: (state: AGRtcState, connectionType: AGRtcConnectionType) => void): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: (state: AGRtcState, connectionType: AGRtcConnectionType) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onNetworkStats"></a>
 
@@ -283,15 +283,15 @@ Returns number
 onNetworkStats(cb: (stats: AGNetworkStats) => void): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: (stats: AGNetworkStats) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="onPublishedThroughCloudProxy"></a>
 
@@ -301,15 +301,15 @@ Returns number
 onPublishedThroughCloudProxy(cb: (connectionType: AGRtcConnectionType, isUsingCloudProxy: boolean) => void): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | cb: (connectionType: AGRtcConnectionType, isUsingCloudProxy: boolean) =&gt; void |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setCloudProxy"></a>
 
@@ -319,15 +319,15 @@ Returns number
 setCloudProxy(proxyType: AgoraCloudProxyType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | proxyType: AgoraCloudProxyType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setLatencyLevel"></a>
 
@@ -337,15 +337,15 @@ Returns number
 setLatencyLevel(level: AgoraLatencyLevel): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | level: AgoraLatencyLevel |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setLowStreamParameter"></a>
 
@@ -355,16 +355,16 @@ Returns void
 setLowStreamParameter(streamParameter: AGLowStreamParameter, connectionType?: AGRtcConnectionType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamParameter: AGLowStreamParameter |  |
 | Optional connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number
 
 <a id="setRemoteTrackVolume"></a>
 
@@ -374,16 +374,16 @@ Returns number
 setRemoteTrackVolume(streamUuid: string, volume: number): void
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | volume: number |  |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setRemoteVideoStreamType"></a>
 
@@ -393,14 +393,14 @@ Returns void
 setRemoteVideoStreamType(streamUuid: string, streamType: AGRemoteVideoStreamType, connectionType?: AGRtcConnectionType): number
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | streamUuid: string |  |
 | streamType: AGRemoteVideoStreamType |  |
 | Optional connectionType: AGRtcConnectionType |  |
 
-#### Returns
+#### 返回值
 
-Returns number
+number

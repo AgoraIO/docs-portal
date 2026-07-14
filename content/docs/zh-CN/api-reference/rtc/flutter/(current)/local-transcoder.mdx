@@ -1,10 +1,9 @@
 ---
 title: "本地合图"
-description: "开启本地合图。"
+description: "本地合图 API reference."
 ---
-<a id="toc_local_transcoder"></a>
 
-## 本地合图
+<a id="toc_local_transcoder"></a>
 
 <a id="api_irtcengine_startlocalvideotranscoder"></a>
 
@@ -46,14 +45,14 @@ Future<void> startLocalVideoTranscoder(LocalTranscoderConfiguration config);
 
 ### 调用时机
 
-- 如果你需要对本地采集的视频流进行合图，需要在 [startCameraCapture](/zh-CN/api-reference/rtc/flutter/camera-capture#api_irtcengine_startcameracapture) 或 [startScreenCaptureBySourceType](/zh-CN/api-reference/rtc/flutter/screencapture#api_irtcengine_startscreencapture2) 之后调用该方法。
+- 如果你需要对本地采集的视频流进行合图，需要在 [startCameraCapture](/zh-CN/api-reference/rtc/flutter/video/camera-capture#api_irtcengine_startcameracapture) 或 [startScreenCaptureBySourceType](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_startscreencapture2) 之后调用该方法。
 - 如果你要将合图后的视频流发布到频道中，需要在调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 或 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_updatechannelmediaoptions) 时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中的 `publishTranscodedVideoTrack` 设置为 true。
 
 <a id="api_irtcengine_startlocalvideotranscoder__related"></a>
 
 ### 相关回调
 
-当你调用该方法失败时，SDK 会触发 [onLocalVideoTranscoderError](/zh-CN/api-reference/rtc/flutter/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) 回调，报告合图失败的原因。
+当你调用该方法失败时，SDK 会触发 [onLocalVideoTranscoderError](/zh-CN/api-reference/rtc/flutter/video/video-prenpro/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) 回调，报告合图失败的原因。
 
 <a id="api_irtcengine_startlocalvideotranscoder__parameters"></a>
 
@@ -74,7 +73,6 @@ Future<void> startLocalVideoTranscoder(LocalTranscoderConfiguration config);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoplocalvideotranscoder"></a>
@@ -91,7 +89,7 @@ Future<void> stopLocalVideoTranscoder();
 
 <a id="api_irtcengine_stoplocalvideotranscoder__detailed_desc"></a>
 
-调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/flutter/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如果你希望停止本地合图，请调用该方法。
+调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/flutter/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如果你希望停止本地合图，请调用该方法。
 
 <a id="api_irtcengine_stoplocalvideotranscoder__return_values"></a>
 
@@ -99,7 +97,6 @@ Future<void> stopLocalVideoTranscoder();
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatelocaltranscoderconfiguration"></a>
@@ -117,10 +114,10 @@ Future<void> updateLocalTranscoderConfiguration(
 
 <a id="api_irtcengine_updatelocaltranscoderconfiguration__detailed_desc"></a>
 
-调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/flutter/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如果你希望更新本地合图配置，请调用该方法。
+调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/flutter/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder) 后，如果你希望更新本地合图配置，请调用该方法。
 
 :::info[注]
-如果你想要更新用于合图的的本地采集视频源类型，比如：增加第二路摄像头或者屏幕采集的视频，需要在 [startCameraCapture](/zh-CN/api-reference/rtc/flutter/camera-capture#api_irtcengine_startcameracapture) 或 [startScreenCaptureBySourceType](/zh-CN/api-reference/rtc/flutter/screencapture#api_irtcengine_startscreencapture2) 之后调用该方法。
+如果你想要更新用于合图的的本地采集视频源类型，比如：增加第二路摄像头或者屏幕采集的视频，需要在 [startCameraCapture](/zh-CN/api-reference/rtc/flutter/video/camera-capture#api_irtcengine_startcameracapture) 或 [startScreenCaptureBySourceType](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_startscreencapture2) 之后调用该方法。
 :::
 
 <a id="api_irtcengine_updatelocaltranscoderconfiguration__parameters"></a>
@@ -137,7 +134,6 @@ Future<void> updateLocalTranscoderConfiguration(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onlocalvideotranscodererror"></a>
@@ -156,7 +152,7 @@ final void Function(
 
 <a id="callback_irtcengineeventhandler_onlocalvideotranscodererror__detailed_desc"></a>
 
-当你调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/flutter/local-transcoder#api_irtcengine_startlocalvideotranscoder) 或 [updateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/flutter/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) 失败时，SDK 会触发该回调，报告合图失败的原因。
+当你调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/flutter/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder) 或 [updateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/flutter/video/video-prenpro/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) 失败时，SDK 会触发该回调，报告合图失败的原因。
 
 <a id="callback_irtcengineeventhandler_onlocalvideotranscodererror__parameters"></a>
 
@@ -170,5 +166,4 @@ final void Function(
 
 本地合图出错原因。详见 [VideoTranscoderError](/zh-CN/api-reference/rtc/flutter/enum-videotranscodererror)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)

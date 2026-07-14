@@ -1,0 +1,35 @@
+---
+title: "getUnreadMessageCount method"
+description: "API docs for the getUnreadMessageCount method from the ChatManager class, for the Dart programming language."
+---
+
+Gets the count of the unread messages.
+
+**Return** The count of the unread messages.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+```dart title="Dart"
+Future<int> getUnreadMessageCount()
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<int> getUnreadMessageCount() async {
+  Map result =
+      await ChatChannel.invokeMethod(ChatMethodKeys.getUnreadMessageCount);
+  try {
+    int ret = 0;
+    ChatError.hasErrorFromResult(result);
+    if (result.containsKey(ChatMethodKeys.getUnreadMessageCount)) {
+      ret = result[ChatMethodKeys.getUnreadMessageCount] as int;
+    }
+    return ret;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

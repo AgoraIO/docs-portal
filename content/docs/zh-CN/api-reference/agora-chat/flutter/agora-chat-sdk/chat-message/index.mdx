@@ -1,0 +1,449 @@
+---
+title: "ChatMessage class"
+description: "API docs for the ChatMessage class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The message class.
+
+The sample code for constructing a text message to send is as follows.
+
+```dart title="Dart"
+  ChatMessage msg = ChatMessage.createTxtSendMessage(
+     username: "user1",
+     content: "hello",
+   );
+```
+
+<a id="constructors"></a>
+
+## Constructors
+
+<a id="ChatMessage.createCmdSendMessage"></a>
+
+### [ChatMessage.createCmdSendMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/chat-message-create-cmd-send-message)
+
+```dart title="Dart"
+ChatMessage.createCmdSendMessage({required String targetId, required dynamic action, bool deliverOnlineOnly = false, ChatType chatType = ChatType.Chat})
+```
+
+Creates a command message for sending.
+
+<a id="ChatMessage.createCustomSendMessage"></a>
+
+### [ChatMessage.createCustomSendMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/chat-message-create-custom-send-message)
+
+```dart title="Dart"
+ChatMessage.createCustomSendMessage({required String targetId, required dynamic event, Map<String, String>? params, ChatType chatType = ChatType.Chat})
+```
+
+Creates a custom message for sending.
+
+<a id="ChatMessage.createFileSendMessage"></a>
+
+### [ChatMessage.createFileSendMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/chat-message-create-file-send-message)
+
+```dart title="Dart"
+ChatMessage.createFileSendMessage({required String targetId, required String filePath, String? displayName, ChatType chatType = ChatType.Chat, int? fileSize})
+```
+
+Creates a file message for sending.
+
+<a id="ChatMessage.createImageSendMessage"></a>
+
+### [ChatMessage.createImageSendMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/chat-message-create-image-send-message)
+
+```dart title="Dart"
+ChatMessage.createImageSendMessage({required String targetId, required String filePath, String? displayName, String? thumbnailLocalPath, bool sendOriginalImage = false, int? fileSize, double? width, double? height, ChatType chatType = ChatType.Chat})
+```
+
+Creates an image message for sending.
+
+<a id="ChatMessage.createLocationSendMessage"></a>
+
+### [ChatMessage.createLocationSendMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/chat-message-create-location-send-message)
+
+```dart title="Dart"
+ChatMessage.createLocationSendMessage({required String targetId, required double latitude, required double longitude, String? address, String? buildingName, ChatType chatType = ChatType.Chat})
+```
+
+Creates a location message for sending.
+
+<a id="ChatMessage.createReceiveMessage"></a>
+
+### [ChatMessage.createReceiveMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/chat-message-create-receive-message)
+
+```dart title="Dart"
+ChatMessage.createReceiveMessage({required ChatMessageBody body, ChatType chatType = ChatType.Chat})
+```
+
+Creates a received message instance.
+
+<a id="ChatMessage.createSendMessage"></a>
+
+### [ChatMessage.createSendMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/chat-message-create-send-message)
+
+```dart title="Dart"
+ChatMessage.createSendMessage({required ChatMessageBody body, String? to, ChatType chatType = ChatType.Chat})
+```
+
+Creates a message instance for sending.
+
+<a id="ChatMessage.createTxtSendMessage"></a>
+
+### [ChatMessage.createTxtSendMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/chat-message-create-txt-send-message)
+
+```dart title="Dart"
+ChatMessage.createTxtSendMessage({required String targetId, required String content, List<String>? targetLanguages, ChatType chatType = ChatType.Chat})
+```
+
+Creates a text message for sending.
+
+<a id="ChatMessage.createVideoSendMessage"></a>
+
+### [ChatMessage.createVideoSendMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/chat-message-create-video-send-message)
+
+```dart title="Dart"
+ChatMessage.createVideoSendMessage({required String targetId, required String filePath, String? displayName, int duration = 0, int? fileSize, String? thumbnailLocalPath, double? width, double? height, ChatType chatType = ChatType.Chat})
+```
+
+Creates a video message instance for sending.
+
+<a id="ChatMessage.createVoiceSendMessage"></a>
+
+### [ChatMessage.createVoiceSendMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/chat-message-create-voice-send-message)
+
+```dart title="Dart"
+ChatMessage.createVoiceSendMessage({required String targetId, required String filePath, int duration = 0, int? fileSize, String? displayName, ChatType chatType = ChatType.Chat})
+```
+
+Creates a voice message for sending.
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="attributes"></a>
+
+### [attributes](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/attributes)
+
+```dart title="Dart"
+attributes <-> Map?
+```
+
+Message's extension attribute.
+
+_read / write._
+
+<a id="body"></a>
+
+### [body](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/body)
+
+```dart title="Dart"
+body <-> ChatMessageBody
+```
+
+Message body. We recommend you use `ChatMessageBody`.
+
+_read / write._
+
+<a id="chatType"></a>
+
+### [chatType](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/chat-type)
+
+```dart title="Dart"
+chatType <-> ChatType
+```
+
+The enumeration of the chat type.
+
+_read / write._
+
+<a id="conversationId"></a>
+
+### [conversationId](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/conversation-id)
+
+```dart title="Dart"
+conversationId <-> String?
+```
+
+The conversation ID.
+
+_read / write._
+
+<a id="direction"></a>
+
+### [direction](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/direction)
+
+```dart title="Dart"
+direction <-> MessageDirection
+```
+
+The message direction. see [MessageDirection](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/message-direction)
+
+_read / write._
+
+<a id="from"></a>
+
+### [from](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/from)
+
+```dart title="Dart"
+from <-> String?
+```
+
+The ID of the message sender.
+
+_read / write._
+
+<a id="hasDeliverAck"></a>
+
+### [hasDeliverAck](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/has-deliver-ack)
+
+```dart title="Dart"
+hasDeliverAck <-> bool
+```
+
+The delivery receipt, which is to check whether the other party has received the message.
+
+_read / write._
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart title="Dart"
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="hasRead"></a>
+
+### [hasRead](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/has-read)
+
+```dart title="Dart"
+hasRead <-> bool
+```
+
+Whether the message is read.
+
+_read / write._
+
+<a id="hasReadAck"></a>
+
+### [hasReadAck](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/has-read-ack)
+
+```dart title="Dart"
+hasReadAck <-> bool
+```
+
+Whether the recipient has read the message.
+
+_read / write._
+
+<a id="isChatThreadMessage"></a>
+
+### [isChatThreadMessage](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/is-chat-thread-message)
+
+```dart title="Dart"
+isChatThreadMessage <-> bool
+```
+
+Is it a message sent within a thread
+
+_read / write._
+
+<a id="localTime"></a>
+
+### [localTime](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/local-time)
+
+```dart title="Dart"
+localTime <-> int
+```
+
+The local timestamp when the message is created on the local device, in milliseconds.
+
+_read / write._
+
+<a id="msgId"></a>
+
+### [msgId](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/msg-id)
+
+```dart title="Dart"
+msgId -> String
+```
+
+Gets the message ID.
+
+_read-only._
+
+<a id="needGroupAck"></a>
+
+### [needGroupAck](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/need-group-ack)
+
+```dart title="Dart"
+needGroupAck <-> bool
+```
+
+Whether read receipts are required for group messages.
+
+_read / write._
+
+<a id="onlineState"></a>
+
+### [onlineState](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/online-state)
+
+```dart title="Dart"
+onlineState <-> bool
+```
+
+Message Online Status
+
+_late, final._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart title="Dart"
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="serverTime"></a>
+
+### [serverTime](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/server-time)
+
+```dart title="Dart"
+serverTime <-> int
+```
+
+The timestamp when the message is received by the server.
+
+_read / write._
+
+<a id="status"></a>
+
+### [status](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/status)
+
+```dart title="Dart"
+status <-> MessageStatus
+```
+
+Gets the message sending/reception status. see [MessageStatus](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/message-status)
+
+_read / write._
+
+<a id="to"></a>
+
+### [to](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/to)
+
+```dart title="Dart"
+to <-> String?
+```
+
+The ID of the message recipient.
+
+_read / write._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="chatThread"></a>
+
+### [chatThread](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/chat-thread)
+
+```dart title="Dart"
+chatThread() -> Future<ChatThread?>
+```
+
+Get an overview of the thread in the message (currently only supported by group messages)
+
+<a id="dispose"></a>
+
+### [dispose](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/dispose)
+
+```dart title="Dart"
+dispose() -> void
+```
+
+<a id="groupAckCount"></a>
+
+### [groupAckCount](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/group-ack-count)
+
+```dart title="Dart"
+groupAckCount() -> Future<int>
+```
+
+Gets the number of members that have read the group message.
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart title="Dart"
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="reactionList"></a>
+
+### [reactionList](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/reaction-list)
+
+```dart title="Dart"
+reactionList() -> Future<List<ChatMessageReaction>>
+```
+
+Gets the Reaction list.
+
+<a id="setMessageStatusCallBack"></a>
+
+### [setMessageStatusCallBack](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/set-message-status-call-back)
+
+```dart title="Dart"
+setMessageStatusCallBack(MessageStatusCallBack? callback) -> void
+```
+
+<a id="toString"></a>
+
+### [toString](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/to-string)
+
+```dart title="Dart"
+toString() -> String
+```
+
+A string representation of this object.
+
+_override._
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart title="Dart"
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

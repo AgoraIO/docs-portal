@@ -1,14 +1,9 @@
 ---
 title: "已编码视频数据"
-description: "注册一个用于接收编码后视频图像的对象。"
+description: "已编码视频数据 API reference."
 ---
-<a id="toc_video_encoded"></a>
 
-## 已编码视频数据
-
-<a id="api_irtcengine_registervideoencodedframeobserver"></a>
-
-## setEncodedVideoFrameDelegate:
+## <span id="toc_video_encoded"></span>setEncodedVideoFrameDelegate: [#api_irtcengine_registervideoencodedframeobserver]
 
 注册一个用于接收编码后视频图像的对象。
 
@@ -26,27 +21,20 @@ description: "注册一个用于接收编码后视频图像的对象。"
 请在加入频道前调用此方法。
 :::
 
-<a id="api_irtcengine_registervideoencodedframeobserver__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_registervideoencodedframeobserver__parameters]
 
 #### `delegate`
 
 观察者实例。设置为 nil 可释放该实例。详见 [AgoraEncodedVideoFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoencodedframeobserver)。
 
-<a id="api_irtcengine_registervideoencodedframeobserver__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_registervideoencodedframeobserver__return_values]
 
 - YES：方法调用成功。
 - NO：方法调用失败。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived"></a>
-
-## onEncodedVideoFrameReceived:length:info:channelId:uid:
+## onEncodedVideoFrameReceived:length:info:channelId:uid: [#callback_ivideoencodedframeobserver_onencodedvideoframereceived]
 
 本地回调远端发送的待解码视频帧信息。
 
@@ -56,23 +44,17 @@ description: "注册一个用于接收编码后视频图像的对象。"
 - (BOOL)onEncodedVideoFrameReceived:(NSData * _Nonnull )videoData length:(size_t)length info:(AgoraEncodedVideoFrameInfo * _Nonnull)videoFrameInfo channelId:(NSString * _Nonnull)channelId uid:(NSUInteger)uid NS_SWIFT_NAME(onEncodedVideoFrameReceived(_:length:info:channelId:uid:));
 ```
 
-<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__detailed_desc"></a>
-
-#### `自从`
+#### `自从` [#callback_ivideoencodedframeobserver_onencodedvideoframereceived__detailed_desc]
 
 自 v4.6.0 版本新增。
 
 如果你调用了 `setRemoteVideoSubscriptionOptions` 方法，并将 `encodedFrameOnly` 设置为 YES，SDK 会在本地触发该回调，用于上报接收到的编码视频帧信息。
 
-<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_ivideoencodedframeobserver_onencodedvideoframereceived__timing]
 
 该回调在你设置 `encodedFrameOnly` 为 YES 后，接收到远端编码视频帧时被触发。
 
-<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__parameters"></a>
-
-### 参数
+### 参数 [#callback_ivideoencodedframeobserver_onencodedvideoframereceived__parameters]
 
 #### `videoData`
 
@@ -94,12 +76,9 @@ description: "注册一个用于接收编码后视频图像的对象。"
 
 远端用户 ID。
 
-<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__return_values"></a>
-
-### 返回值
+### 返回值 [#callback_ivideoencodedframeobserver_onencodedvideoframereceived__return_values]
 
 - YES：回调处理成功。
 - NO：回调处理失败。
 
-### 所属接口类
 - [AgoraEncodedVideoFrameDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoencodedframeobserver)

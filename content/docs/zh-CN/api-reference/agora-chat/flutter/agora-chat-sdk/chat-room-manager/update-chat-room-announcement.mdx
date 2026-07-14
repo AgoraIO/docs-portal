@@ -1,0 +1,41 @@
+---
+title: "updateChatRoomAnnouncement method"
+description: "API docs for the updateChatRoomAnnouncement method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Updates the chat room announcement.
+
+Only the chat room owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `announcement` | The announcement content. |
+
+```dart title="Dart"
+Future<void> updateChatRoomAnnouncement(String roomId, String announcement)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> updateChatRoomAnnouncement(
+  String roomId,
+  String announcement,
+) async {
+  Map req = {"roomId": roomId, "announcement": announcement};
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.updateChatRoomAnnouncement, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

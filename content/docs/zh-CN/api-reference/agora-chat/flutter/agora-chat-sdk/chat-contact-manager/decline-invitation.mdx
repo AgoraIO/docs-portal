@@ -1,0 +1,35 @@
+---
+title: "declineInvitation method"
+description: "API docs for the declineInvitation method from the ChatContactManager class, for the Dart programming language."
+---
+
+Declines a friend invitation.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `username` | The user who sends the friend invitation. |
+
+```dart title="Dart"
+Future<void> declineInvitation(String username)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> declineInvitation(String username) async {
+  Map req = {'username': username};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.declineInvitation, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

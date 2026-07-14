@@ -2,6 +2,7 @@
 title: "媒体流附属信息分发"
 description: "当 SDK 请求元数据最大大小时触发的回调。"
 ---
+
 <a id="toc_metadata_observer"></a>
 
 ## 媒体流附属信息分发
@@ -28,7 +29,6 @@ virtual int getMaxMetadataSize() { return DEFAULT_METADATA_SIZE_IN_BYTE; }
 
 方法调用成功，返回你希望使用的元数据 `buffer` 的最大大小，单位为字节。最大值为 1024 字节。
 
-### 所属接口类
 - [IMetadataObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imetadataobserver)
 
 <a id="api_irtcengine_registermediametadataobserver"></a>
@@ -70,7 +70,6 @@ virtual int registerMediaMetadataObserver(IMetadataObserver *observer, IMetadata
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unregistermediametadataobserver"></a>
@@ -106,7 +105,6 @@ virtual int unregisterMediaMetadataObserver(IMetadataObserver* observer, IMetada
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="callback_imetadataobserver_onmetadatareceived"></a>
@@ -131,7 +129,6 @@ virtual void onMetadataReceived(const Metadata& metadata) = 0;
 
 接收到的元数据。详见 [Metadata](/zh-CN/api-reference/rtc/cpp-all-platforms/class-metadata)。
 
-### 所属接口类
 - [IMetadataObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imetadataobserver)
 
 <a id="callback_imetadataobserver_onreadytosendmetadata"></a>
@@ -177,5 +174,4 @@ virtual bool onReadyToSendMetadata(Metadata &metadata, VIDEO_SOURCE_TYPE source_
 - true：发送该视频帧。
 - false：不发送该视频帧。
 
-### 所属接口类
 - [IMetadataObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imetadataobserver)

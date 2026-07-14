@@ -1,10 +1,9 @@
 ---
 title: "版权音乐"
-description: "创建音乐播放器。"
+description: "版权音乐 API reference."
 ---
-<a id="toc_drm"></a>
 
-## 版权音乐
+<a id="toc_drm"></a>
 
 <a id="api_imusiccontentcenter_createmusicplayer"></a>
 
@@ -29,7 +28,6 @@ abstract createMusicPlayer(): IMusicPlayer;
 - 方法调用成功：返回 [IMusicPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusicplayer) 对象。
 - 方法调用失败：返回空指针。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_destroymusicplayer"></a>
@@ -46,13 +44,13 @@ abstract destroyMusicPlayer(musicPlayer: IMusicPlayer): number;
 
 <a id="api_imusiccontentcenter_destroymusicplayer__detailed_desc"></a>
 
-当你不再需要使用音乐播放器时，你可以调用该方法来销毁音乐播放器对象。销毁之后如果需要重新使用音乐播放器，需要调用 [createMusicPlayer](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_createmusicplayer) 重新创建一个音乐播放器对象。
+当你不再需要使用音乐播放器时，你可以调用该方法来销毁音乐播放器对象。销毁之后如果需要重新使用音乐播放器，需要调用 [createMusicPlayer](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_createmusicplayer) 重新创建一个音乐播放器对象。
 
 <a id="api_imusiccontentcenter_destroymusicplayer__timing"></a>
 
 ### 调用时机
 
-该方法在加入频道前后均可调用，但请确保在 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 的 [release](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_release_imusiccontentcenter) 方法前调用。
+该方法在加入频道前后均可调用，但请确保在 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 的 [release](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_release_imusiccontentcenter) 方法前调用。
 
 <a id="api_imusiccontentcenter_destroymusicplayer__parameters"></a>
 
@@ -69,7 +67,6 @@ abstract destroyMusicPlayer(musicPlayer: IMusicPlayer): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_musicchartcollection_get"></a>
@@ -100,7 +97,6 @@ abstract get(index: number): MusicChartInfo;
 
 [MusicChartInfo](/zh-CN/api-reference/rtc/react-native/class-musicchartinfo)，包含音乐榜单的详细信息。
 
-### 所属接口类
 - [MusicChartCollection](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_musicchartcollection)
 
 <a id="api_imusiccontentcenter_getcaches"></a>
@@ -117,7 +113,7 @@ abstract getCaches(): { cacheInfo: MusicCacheInfo[]; cacheInfoSize: number };
 
 <a id="api_imusiccontentcenter_getcaches__detailed_desc"></a>
 
-调用该方法前，你需要预先分配一定大小的内存空间用来存储缓存音乐资源的信息。如果你需要设置可缓存的音乐资源数量，可通过 [initialize](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_initialize_imusiccontentcenter) 的 `configuration` 来设置。 当你不再需要使用已缓存的音乐资源时，你需要及时释放内存以防止内存泄漏。
+调用该方法前，你需要预先分配一定大小的内存空间用来存储缓存音乐资源的信息。如果你需要设置可缓存的音乐资源数量，可通过 [initialize](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_initialize_imusiccontentcenter) 的 `configuration` 来设置。 当你不再需要使用已缓存的音乐资源时，你需要及时释放内存以防止内存泄漏。
 
 <a id="api_imusiccontentcenter_getcaches__return_values"></a>
 
@@ -128,7 +124,6 @@ abstract getCaches(): { cacheInfo: MusicCacheInfo[]; cacheInfoSize: number };
 - `cacheInfo`：音乐缓存信息数组。
 - `cacheInfoSize`：音乐缓存信息数组的长度。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_musicchartcollection_getcount_musicchartcollection"></a>
@@ -151,7 +146,6 @@ abstract getCount(): number;
 
 本次请求的音乐榜单数量。
 
-### 所属接口类
 - [MusicChartCollection](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_musicchartcollection)
 
 <a id="api_musiccollection_getcount_musiccollection"></a>
@@ -174,7 +168,6 @@ abstract getCount(): number;
 
 本次请求的音乐数量。
 
-### 所属接口类
 - [MusicCollection](/zh-CN/api-reference/rtc/react-native/class-musiccollection)
 
 <a id="api_imusiccontentcenter_getinternalsongcode"></a>
@@ -203,7 +196,7 @@ abstract getInternalSongCode(songCode: number, jsonOption: string): number;
 
 #### `songCode`
 
-音乐资源编号，用于标识音乐资源。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_searchmusic) 方法来获取音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode` ）。
+音乐资源编号，用于标识音乐资源。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode` ）。
 
 #### `jsonOption`
 
@@ -214,7 +207,7 @@ abstract getInternalSongCode(songCode: number, jsonOption: string): number;
 扩展 JSON 字段，默认为 null。目前支持传入下列值：
 
 - sceneType：场景类型。1：直播场景，在线 K 歌房和背景音乐播放；2：直播场景，背景音乐播放；3：（默认）声动语聊场景，在线 K 歌房；4：声动语聊场景，背景音乐播放；5：VR 场景，在线 K 歌房和背景音乐播放。示例： `{"sceneType":1}`。
-- highPart：副歌片段的索引，从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取，索引从 0 开始。示例： `{"format": {"highpart": 0}}`。
+- highPart：副歌片段的索引，从 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调中获取，索引从 0 开始。示例： `{"format": {"highpart": 0}}`。
 
 <a id="api_imusiccontentcenter_getinternalsongcode__return_values"></a>
 
@@ -223,7 +216,6 @@ abstract getInternalSongCode(songCode: number, jsonOption: string): number;
 - 方法调用成功，返回创建的音乐资源内部编号。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getlyric"></a>
@@ -240,7 +232,7 @@ abstract getLyric(songCode: number, lyricType?: number): string;
 
 <a id="api_imusiccontentcenter_getlyric__detailed_desc"></a>
 
-成功调用该方法后，SDK 会触发 [onLyricResult](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调报告歌词的下载地址。
+成功调用该方法后，SDK 会触发 [onLyricResult](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 回调报告歌词的下载地址。
 
 <a id="api_imusiccontentcenter_getlyric__parameters"></a>
 
@@ -263,7 +255,6 @@ abstract getLyric(songCode: number, lyricType?: number): string;
 
 一个 `requestId`，为本次请求的唯一标识。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_musiccollection_getmusic_musiccollection"></a>
@@ -294,7 +285,6 @@ abstract getMusic(index: number): Music;
 
 一个 [Music](/zh-CN/api-reference/rtc/react-native/class-music) 实例。
 
-### 所属接口类
 - [MusicCollection](/zh-CN/api-reference/rtc/react-native/class-musiccollection)
 
 <a id="api_imusiccontentcenter_getmusiccharts"></a>
@@ -311,7 +301,7 @@ abstract getMusicCharts(): string;
 
 <a id="api_imusiccontentcenter_getmusiccharts__detailed_desc"></a>
 
-当你调用该方法后，SDK 会触发 [onMusicChartsResult](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调报告音乐榜单的详细信息。
+当你调用该方法后，SDK 会触发 [onMusicChartsResult](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调报告音乐榜单的详细信息。
 
 <a id="api_imusiccontentcenter_getmusiccharts__return_values"></a>
 
@@ -319,7 +309,6 @@ abstract getMusicCharts(): string;
 
 一个 `requestId`，为本次请求的唯一标识。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid"></a>
@@ -341,7 +330,7 @@ abstract getMusicCollectionByMusicChartId(
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__detailed_desc"></a>
 
-成功调用该方法后，SDK 会触发 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调报告榜单中音乐资源列表的详细信息。
+成功调用该方法后，SDK 会触发 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调报告榜单中音乐资源列表的详细信息。
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__parameters"></a>
 
@@ -349,7 +338,7 @@ abstract getMusicCollectionByMusicChartId(
 
 #### `musicChartId`
 
-音乐榜单的 ID，可以通过 [onMusicChartsResult](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取。你也可以通过 RESTful API 来[获取曲库所有歌曲列表](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E6%9B%B2%E5%BA%93%E6%89%80%E6%9C%89%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8)或[获取增量歌曲列表](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E5%A2%9E%E9%87%8F%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8)。
+音乐榜单的 ID，可以通过 [onMusicChartsResult](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 回调获取。你也可以通过 RESTful API 来[获取曲库所有歌曲列表](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E6%9B%B2%E5%BA%93%E6%89%80%E6%9C%89%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8)或[获取增量歌曲列表](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E5%A2%9E%E9%87%8F%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8)。
 
 #### `page`
 
@@ -379,7 +368,6 @@ abstract getMusicCollectionByMusicChartId(
 
 一个 `requestId`，为本次请求的唯一标识。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_irtcengine_getmusiccontentcenter"></a>
@@ -402,7 +390,6 @@ abstract getMusicContentCenter(): IMusicContentCenter;
 
 一个 [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter) 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_musiccollection_getpage_musiccollection"></a>
@@ -425,7 +412,6 @@ abstract getPage(): number;
 
 当前页的页码。
 
-### 所属接口类
 - [MusicCollection](/zh-CN/api-reference/rtc/react-native/class-musiccollection)
 
 <a id="api_musiccollection_getpagesize_musiccollection"></a>
@@ -448,7 +434,6 @@ virtual int getPageSize() = 0;
 
 SDK 实际返回的音乐资源数量。
 
-### 所属接口类
 - [MusicCollection](/zh-CN/api-reference/rtc/react-native/class-musiccollection)
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo"></a>
@@ -465,7 +450,7 @@ abstract getSongSimpleInfo(songCode: number): string;
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__detailed_desc"></a>
 
-在调用该方法前，你需要先获取到对应的音乐资源的编号。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_searchmusic) 方法来获取音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode` ）。 当你调用该方法后，SDK 会触发 [onSongSimpleInfoResult](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调报告音乐资源的详细信息。
+在调用该方法前，你需要先获取到对应的音乐资源的编号。你可以通过调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode` ）。 当你调用该方法后，SDK 会触发 [onSongSimpleInfoResult](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调报告音乐资源的详细信息。
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__parameters"></a>
 
@@ -481,7 +466,6 @@ abstract getSongSimpleInfo(songCode: number): string;
 
 一个 `requestId`，为本次请求的唯一标识。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_musiccollection_gettotal_musiccollection"></a>
@@ -504,7 +488,6 @@ abstract getTotal(): number;
 
 列表内音乐资源的总数量。
 
-### 所属接口类
 - [MusicCollection](/zh-CN/api-reference/rtc/react-native/class-musiccollection)
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter"></a>
@@ -538,7 +521,6 @@ abstract initialize(configuration: MusicContentCenterConfiguration): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_ispreloaded"></a>
@@ -555,7 +537,7 @@ abstract isPreloaded(songCode: number): number;
 
 <a id="api_imusiccontentcenter_ispreloaded__detailed_desc"></a>
 
-该方法为同步调用。如需预加载新的音乐资源，可调用 [Preload](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_preload2)。
+该方法为同步调用。如需预加载新的音乐资源，可调用 [Preload](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_preload2)。
 
 <a id="api_imusiccontentcenter_ispreloaded__parameters"></a>
 
@@ -572,7 +554,6 @@ abstract isPreloaded(songCode: number): number;
 - 0: 方法调用成功，该音乐资源已被预加载。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicplayer_open_imusicplayer"></a>
@@ -589,10 +570,10 @@ abstract openWithSongCode(songCode: number, startPos?: number): number;
 
 <a id="api_imusicplayer_open_imusicplayer__detailed_desc"></a>
 
-在调用此方法之前，请确保需要播放的音乐资源已加载完成。你可以调用 [isPreloaded](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_ispreloaded) 方法来检测音乐资源是否已被预加载，或通过 [onPreLoadEvent](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调得知。 调用该方法后会触发 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/react-native/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。在收到报告播放状态为 `PlayerStateOpenCompleted` 后，你可以调用 [play](/zh-CN/api-reference/rtc/react-native/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
+在调用此方法之前，请确保需要播放的音乐资源已加载完成。你可以调用 [isPreloaded](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_ispreloaded) 方法来检测音乐资源是否已被预加载，或通过 [onPreLoadEvent](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调得知。 调用该方法后会触发 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。在收到报告播放状态为 `PlayerStateOpenCompleted` 后，你可以调用 [play](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法播放媒体文件。
 
 :::info[注]
-如果你想要打开的音乐资源受数字版权保护，则需要调用此方法打开。对于不受数字版权保护的音乐资源，你可以选择通过调用此方法或 [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer) 类下的 [open](/zh-CN/api-reference/rtc/react-native/mediaplayer-open#api_imediaplayer_open) 方法来打开。
+如果你想要打开的音乐资源受数字版权保护，则需要调用此方法打开。对于不受数字版权保护的音乐资源，你可以选择通过调用此方法或 [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer) 类下的 [open](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 方法来打开。
 :::
 
 <a id="api_imusicplayer_open_imusicplayer__parameters"></a>
@@ -614,7 +595,6 @@ abstract openWithSongCode(songCode: number, startPos?: number): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusicplayer)
 
 <a id="api_imusiccontentcenter_preload2"></a>
@@ -631,10 +611,10 @@ abstract preload(songCode: number): string;
 
 <a id="api_imusiccontentcenter_preload2__detailed_desc"></a>
 
-你可以调用该方法预先加载需要播放的音乐资源。成功调用该方法后，SDK 会触发 [onPreLoadEvent](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载音乐资源的事件。 在调用该方法来预加载音乐资源之前，你需要调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_searchmusic) 方法来获取你需要播放的音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode` ）。
+你可以调用该方法预先加载需要播放的音乐资源。成功调用该方法后，SDK 会触发 [onPreLoadEvent](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调报告预加载音乐资源的事件。 在调用该方法来预加载音乐资源之前，你需要调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 或 [searchMusic](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_searchmusic) 方法来获取你需要播放的音乐资源，并通过由此触发的 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的编号（`songCode` ）。
 
 :::info[注]
-如需销毁 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象，请在收到 [onPreLoadEvent](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后，再调用 [release](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_release_imusiccontentcenter) 方法。
+如需销毁 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象，请在收到 [onPreLoadEvent](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) 回调后，再调用 [release](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_release_imusiccontentcenter) 方法。
 :::
 
 <a id="api_imusiccontentcenter_preload2__parameters"></a>
@@ -651,7 +631,6 @@ abstract preload(songCode: number): string;
 
 一个 `requestId`，为本次请求的唯一标识。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter"></a>
@@ -685,7 +664,6 @@ abstract registerEventHandler(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_release_imusiccontentcenter"></a>
@@ -702,9 +680,8 @@ abstract release(): void;
 
 <a id="api_imusiccontentcenter_release_imusiccontentcenter__detailed_desc"></a>
 
-该方法需要在 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 的 [release](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_release_imusiccontentcenter) 方法前调用。
+该方法需要在 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 的 [release](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_release_imusiccontentcenter) 方法前调用。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_removecache"></a>
@@ -738,7 +715,6 @@ abstract removeCache(songCode: number): number;
 - 0: 方法调用成功，音乐资源已删除。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter"></a>
@@ -772,7 +748,6 @@ abstract renewToken(token: string): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusiccontentcenter_searchmusic"></a>
@@ -795,7 +770,7 @@ abstract searchMusic(
 
 <a id="api_imusiccontentcenter_searchmusic__detailed_desc"></a>
 
-成功调用该方法后，SDK 会触发 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调报告检索到的音乐资源列表。
+成功调用该方法后，SDK 会触发 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调报告检索到的音乐资源列表。
 
 <a id="api_imusiccontentcenter_searchmusic__parameters"></a>
 
@@ -838,7 +813,6 @@ abstract searchMusic(
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="api_imusicplayer_setplaymode"></a>
@@ -858,7 +832,7 @@ abstract setPlayMode(mode: MusicPlayMode): number;
 你可以调用该方法来设置启用原唱、伴奏或导唱。如不调用该方法进行设置，则默认播放伴奏；如果音乐资源没有伴奏，则播放原唱。
 
 :::info[注]
-你可以通过 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的详细信息，并可通过其中的 `result` 参数得知需播放的版权音乐所支持的播放类型。
+你可以通过 [onMusicCollectionResult](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 回调获取音乐资源的详细信息，并可通过其中的 `result` 参数得知需播放的版权音乐所支持的播放类型。
 :::
 
 <a id="api_imusicplayer_setplaymode__scenario"></a>
@@ -871,7 +845,7 @@ abstract setPlayMode(mode: MusicPlayMode): number;
 
 ### 调用时机
 
-该方法需要在 [createMusicPlayer](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_createmusicplayer) 之后调用。
+该方法需要在 [createMusicPlayer](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_createmusicplayer) 之后调用。
 
 <a id="api_imusicplayer_setplaymode__parameters"></a>
 
@@ -890,7 +864,6 @@ abstract setPlayMode(mode: MusicPlayMode): number;
 
   - -2: 参数设置错误，请重新设置参数。
 
-### 所属接口类
 - [IMusicPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusicplayer)
 
 <a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter"></a>
@@ -914,7 +887,6 @@ abstract unregisterEventHandler(): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMusicContentCenter](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter)
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult"></a>
@@ -936,7 +908,7 @@ onLyricResult?(
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__detailed_desc"></a>
 
-当你调用 [getLyric](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_getlyric) 获取指定歌曲的歌词下载地址后，SDK 会触发该回调。
+当你调用 [getLyric](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_getlyric) 获取指定歌曲的歌词下载地址后，SDK 会触发该回调。
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__parameters"></a>
 
@@ -958,7 +930,6 @@ onLyricResult?(
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/react-native/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult"></a>
@@ -979,7 +950,7 @@ onMusicChartsResult?(
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__detailed_desc"></a>
 
-当你调用 [getMusicCharts](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_getmusiccharts) 方法获取全部音乐榜单之后，SDK 会触发该回调。
+当你调用 [getMusicCharts](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_getmusiccharts) 方法获取全部音乐榜单之后，SDK 会触发该回调。
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__parameters"></a>
 
@@ -997,7 +968,6 @@ onMusicChartsResult?(
 
 当前可播放的音乐榜单列表。详见 [MusicChartInfo](/zh-CN/api-reference/rtc/react-native/class-musicchartinfo)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult"></a>
@@ -1018,7 +988,7 @@ onMusicCollectionResult?(
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__detailed_desc"></a>
 
-当你调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 方法来获取指定榜单的音乐资源列表或调用 [searchMusic](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_searchmusic) 来搜索音乐资源时，SDK 会触发此回调报告榜单中音乐资源列表的详细信息。
+当你调用 [getMusicCollectionByMusicChartId](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) 方法来获取指定榜单的音乐资源列表或调用 [searchMusic](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_searchmusic) 来搜索音乐资源时，SDK 会触发此回调报告榜单中音乐资源列表的详细信息。
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__parameters"></a>
 
@@ -1036,7 +1006,6 @@ onMusicCollectionResult?(
 
 音乐资源列表的详细信息。详见 [MusicCollection](/zh-CN/api-reference/rtc/react-native/class-musiccollection)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler"></a>
@@ -1060,7 +1029,7 @@ onPreLoadEvent?(
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__detailed_desc"></a>
 
-当你调用 [Preload](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_preload2) 方法预加载音乐资源后，SDK 会触发该回调。
+当你调用 [Preload](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_preload2) 方法预加载音乐资源后，SDK 会触发该回调。
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__parameters"></a>
 
@@ -1090,7 +1059,6 @@ onPreLoadEvent?(
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/react-native/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcentereventhandler)
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult"></a>
@@ -1112,7 +1080,7 @@ onSongSimpleInfoResult?(
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__detailed_desc"></a>
 
-当你调用 [getSongSimpleInfo](/zh-CN/api-reference/rtc/react-native/drm#api_imusiccontentcenter_getsongsimpleinfo) 获取某一音乐资源的详细信息后，SDK 会触发该回调。
+当你调用 [getSongSimpleInfo](/zh-CN/api-reference/rtc/react-native/play/drm#api_imusiccontentcenter_getsongsimpleinfo) 获取某一音乐资源的详细信息后，SDK 会触发该回调。
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__parameters"></a>
 
@@ -1140,5 +1108,4 @@ onSongSimpleInfoResult?(
 
 音乐内容中心的请求状态码，详见 [MusicContentCenterStateReason](/zh-CN/api-reference/rtc/react-native/enum-musiccontentcenterstatereason)。
 
-### 所属接口类
 - [IMusicContentCenterEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcentereventhandler)

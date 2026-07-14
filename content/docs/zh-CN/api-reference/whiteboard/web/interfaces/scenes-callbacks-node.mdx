@@ -1,21 +1,21 @@
 ---
 title: "ScenesCallbacksNode"
-description: "ScenesCallbacksNode API reference."
+description: "ScenesCallbacksNode API 参考。"
 ---
 
 场景目录的信息。
 
-- [Callbacks](/zh-CN/api-reference/whiteboard/web/interfaces/callbacks-callbacks) &lt; [ScenesCallbacks](/zh-CN/api-reference/whiteboard/web/globals#scenescallbacks) &gt;
+- [Callbacks](/zh-CN/api-reference/whiteboard/web/interfaces/callbacks) &lt; [ScenesCallbacks](/zh-CN/api-reference/whiteboard/web/globals#scenescallbacks) &gt;
 
   - ScenesCallbacksNode
 
-## Properties
+## 属性
 
 <a id="path"></a>
 
 ### path
 
-```ts
+```ts title="TypeScript"
 path: string
 ```
 
@@ -25,7 +25,7 @@ path: string
 
 ### sceneGroups
 
-```ts
+```ts title="TypeScript"
 sceneGroups: ReadonlyArray<string>
 ```
 
@@ -35,7 +35,7 @@ sceneGroups: ReadonlyArray<string>
 
 ### sceneGroupsCount
 
-```ts
+```ts title="TypeScript"
 sceneGroupsCount: number
 ```
 
@@ -45,7 +45,7 @@ sceneGroupsCount: number
 
 ### scenes
 
-```ts
+```ts title="TypeScript"
 scenes: ReadonlyArray<string>
 ```
 
@@ -55,108 +55,108 @@ scenes: ReadonlyArray<string>
 
 ### scenesCount
 
-```ts
+```ts title="TypeScript"
 scenesCount: number
 ```
 
 场景目录下场景的数量。
 
-## Methods
+## 方法
 
 <a id="dispose"></a>
 
 ### dispose
 
-```ts
+```ts title="TypeScript"
 dispose(): void
 ```
 
 释放监听器对象。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="forwardto"></a>
 
 ### forwardTo
 
-```ts
+```ts title="TypeScript"
 forwardTo<NAME>(name: NAME, toCallbacks: Callbacks<ScenesCallbacks>): any
 ```
 
 将注册的回调转到另一个 `Callbacks` 对象。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | name: NAME | 注册回调的名称。 |
 | toCallbacks: Callbacks&lt;ScenesCallbacks&gt; | 转到的 `Callbacks` 对象。 |
 
-#### Returns
+#### 返回值
 
-Returns any
+any
 
 <a id="off"></a>
 
 ### off
 
-```ts
+```ts title="TypeScript"
 off<NAME>(name?: NAME, listener?: any): void
 ```
 
 注销回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional name: NAME | 回调名。 |
 | Optional listener: any | 回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="on"></a>
 
 ### on
 
-```ts
+```ts title="TypeScript"
 on<NAME>(name: NAME, listener: any): void
 ```
 
 注册一个回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | name: NAME | 回调名。 |
 | listener: any | 回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="once"></a>
 
 ### once
 
-```ts
+```ts title="TypeScript"
 once<NAME>(name: NAME, listener: any): void
 ```
 
 注册只使用一次的回调。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | name: NAME | 回调名。 |
 | listener: any | 回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void

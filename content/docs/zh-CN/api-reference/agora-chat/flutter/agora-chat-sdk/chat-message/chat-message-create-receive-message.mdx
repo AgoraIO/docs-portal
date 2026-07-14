@@ -1,0 +1,32 @@
+---
+title: "ChatMessage.createReceiveMessage constructor"
+description: "API docs for the ChatMessage.createReceiveMessage constructor from Class ChatMessage from the agora_chat_sdk library, for the Dart programming language."
+---
+
+Creates a received message instance.
+
+**Return** The message instance.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| [body](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-message/body) | The message body. |
+
+```dart title="Dart"
+ChatMessage.createReceiveMessage({required ChatMessageBody body, ChatType chatType = ChatType.Chat})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+ChatMessage.createReceiveMessage({
+  required this.body,
+  this.chatType = ChatType.Chat,
+}) {
+  this.onlineState = true;
+  this.direction = MessageDirection.RECEIVE;
+}
+```

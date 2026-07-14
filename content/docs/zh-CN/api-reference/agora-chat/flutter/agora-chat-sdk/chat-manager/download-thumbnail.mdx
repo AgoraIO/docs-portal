@@ -1,0 +1,34 @@
+---
+title: "downloadThumbnail method"
+description: "API docs for the downloadThumbnail method from the ChatManager class, for the Dart programming language."
+---
+
+Downloads the thumbnail if the message has not been downloaded before or if the download fails.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `message` | The message object. |
+
+```dart title="Dart"
+Future<void> downloadThumbnail(ChatMessage message)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> downloadThumbnail(ChatMessage message) async {
+  Map result = await ChatChannel.invokeMethod(
+      ChatMethodKeys.downloadThumbnail, {"message": message.toJson()});
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

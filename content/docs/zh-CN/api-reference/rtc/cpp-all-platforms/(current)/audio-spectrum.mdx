@@ -2,6 +2,7 @@
 title: "音频频谱"
 description: "禁用音频频谱监测。"
 ---
+
 <a id="toc_audio_spectrum"></a>
 
 ## 音频频谱
@@ -33,7 +34,6 @@ virtual int disableAudioSpectrumMonitor() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudiospectrummonitor"></a>
@@ -77,7 +77,6 @@ SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/cpp-all-platforms/aud
 
   - -2：参数无效。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registeraudiospectrumobserver"></a>
@@ -115,7 +114,6 @@ virtual int registerAudioSpectrumObserver(agora::media::IAudioSpectrumObserver *
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver"></a>
@@ -153,7 +151,6 @@ virtual int unregisterAudioSpectrumObserver(agora::media::IAudioSpectrumObserver
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum"></a>
@@ -187,7 +184,6 @@ virtual bool onLocalAudioSpectrum(const AudioSpectrumData& data) = 0;
 - true：接收到频谱数据。
 - false：未接收到频谱数据。
 
-### 所属接口类
 - [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiospectrumobserver)
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum"></a>
@@ -231,5 +227,4 @@ SDK 会按照你设置的时间间隔触发该回调，报告接收到的远端�
 - true：接收到频谱数据。
 - false：未接收到频谱数据。
 
-### 所属接口类
 - [IAudioSpectrumObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiospectrumobserver)

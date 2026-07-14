@@ -1,0 +1,44 @@
+---
+title: "fetchGroupInfoFromServer method"
+description: "API docs for the fetchGroupInfoFromServer method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Gets the group information from the server.
+
+This method does not get member information. If member information is required, call [fetchMemberListFromServer](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-manager/fetch-member-list-from-server).
+
+**Return** The group instance.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+
+```dart title="Dart"
+Future<ChatGroup> fetchGroupInfoFromServer(String groupId, {bool fetchMembers = false})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatGroup> fetchGroupInfoFromServer(
+  String groupId, {
+  bool fetchMembers = false,
+}) async {
+  Map req = {"groupId": groupId, "fetchMembers": fetchMembers};
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.getGroupSpecificationFromServer, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    return ChatGroup.fromJson(
+        result[ChatMethodKeys.getGroupSpecificationFromServer]);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

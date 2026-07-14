@@ -1,0 +1,40 @@
+---
+title: "removeMembers method"
+description: "API docs for the removeMembers method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Removes a member from the group.
+
+Only the group owner or admin can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `members` | The username of the member to be removed. |
+
+```dart title="Dart"
+Future<void> removeMembers(String groupId, List<String> members)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> removeMembers(
+  String groupId,
+  List<String> members,
+) async {
+  Map req = {'groupId': groupId, 'members': members};
+  Map result = await _channel.invokeMethod(ChatMethodKeys.removeMembers, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

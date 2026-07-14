@@ -1,6 +1,6 @@
 ---
 title: "IAgoraRTC"
-description: "IAgoraRTC API reference."
+description: "IAgoraRTC API 参考。"
 ---
 
 Agora Web SDK 的入口。
@@ -9,7 +9,7 @@ Agora Web SDK 的入口。
 
   - IAgoraRTC
 
-## Events
+## 事件
 
 <a id="event_audio_context_state_changed"></a>
 
@@ -25,16 +25,16 @@ audio-context-state-changed(currState: AudioContextState | "interrupted", prevSt
 
 音频上下文 ([Audio Context](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext)) 状态发生改变回调。该回调中的 `"interrupted"` 状态当前只会在 iOS 上触发。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | currState: AudioContextState \| "interrupted" | 当前的状态，取值如下：<br />- `AudioContextState`：枚举值的含义详见 [BaseAudioContext.state](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state)。<br />- `"interrupted"`：App 的音视频播放被微信通话或系统电话打断。你可以调用 [resumeAudioContext](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#resumeaudiocontext) 方法恢复音视频播放。 |
 | prevState: AudioContextState \| "interrupted" \| undefined | 之前的状态，取值如下：<br />- `AudioContextState`：枚举值的含义详见 [BaseAudioContext.state](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state)。<br />- `"interrupted"`：App 的音视频播放被微信通话或系统电话打断。<br />- `undefined`：无先前状态。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_autoplay_failed"></a>
 
@@ -56,9 +56,9 @@ AgoraRTC.on("autoplay-failed", (info) => {
 });
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_camera_changed"></a>
 
@@ -80,15 +80,15 @@ AgoraRTC.on("camera-changed", (info) => {
 });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | deviceInfo: DeviceInfo | 设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/device-info)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_microphone_changed"></a>
 
@@ -110,15 +110,15 @@ AgoraRTC.on("microphone-changed", (info) => {
 });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | deviceInfo: DeviceInfo | 设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/device-info)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_playback_device_changed"></a>
 
@@ -140,15 +140,15 @@ AgoraRTC.on("playback-device-changed", (info) => {
 });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | deviceInfo: DeviceInfo | 设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/device-info)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="event_security_policy_violation"></a>
 
@@ -170,11 +170,11 @@ AgoraRTC.on("security-policy-violation", (info) => {
 });
 ```
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-## Global Callback Properties
+## 全局回调属性
 
 <a id="onaudioautoplayfailed"></a>
 
@@ -351,7 +351,7 @@ onSecurityPolicyViolation: function
 
 当声网服务相关的资源加载或请求发送因为触发浏览器的 CSP（Content Security Policy，内容安全策略）规则而失败时，SDK 会触发该回调。 收到该回调后，请及时调整你的 CSP 设置，确保能正常体验声网的服务。
 
-## Other Properties
+## 其他属性
 
 <a id="version"></a>
 
@@ -363,7 +363,7 @@ VERSION: string
 
 Agora Web SDK 的版本信息。
 
-## Agora Core Methods
+## Agora 核心方法
 
 <a id="createclient"></a>
 
@@ -375,17 +375,17 @@ createClient(config: ClientConfig): IAgoraRTCClient
 
 创建一个客户端对象用于通话/直播管理，通常来说这是使用 Agora Web SDK 的第一步。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: ClientConfig | 客户端的配置，包括通话场景、编码格式等，默认使用 `vp8` 编码， `rtc` 通话场景。详见 [ClientConfig](/zh-CN/api-reference/rtc/web/interfaces/client-config)。 |
 
-#### Returns
+#### 返回值
 
-Returns [IAgoraRTCClient](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient)
+[IAgoraRTCClient](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtcclient)
 
-## Local Track Methods
+## 本地轨道方法
 
 <a id="createbuffersourceaudiotrack"></a>
 
@@ -403,15 +403,15 @@ createBufferSourceAudioTrack(config: BufferSourceAudioTrackInitConfig): Promise<
 - AAC
 - 浏览器支持的其他音频格式
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: BufferSourceAudioTrackInitConfig | 通过该配置指定文件路径、缓存策略和编码配置。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffer-source-audio-track) &gt;
+Promise &lt; [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffer-source-audio-track) &gt;
 
 返回的音频轨道对象相对于普通的音频轨道对象增加了一些控制音频播放流程的方法。包括播放、暂停、跳转、实时播放状态获取等。
 
@@ -425,15 +425,15 @@ createCameraVideoTrack(config?: CameraVideoTrackInitConfig): Promise<ICameraVide
 
 通过摄像头采集的视频创建一个视频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional config: CameraVideoTrackInitConfig | 采集视频的配置，包括采集设备、编码配置等。详见 [CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/camera-video-track-init-config)。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icamera-video-track) &gt;
+Promise &lt; [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icamera-video-track) &gt;
 
 <a id="createcustomaudiotrack"></a>
 
@@ -447,15 +447,15 @@ createCustomAudioTrack(config: CustomAudioTrackInitConfig): ILocalAudioTrack
 
 你可以使用这个方法将自己维护的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 转换成一个可以用于 SDK 的音频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: CustomAudioTrackInitConfig | 自定义音频的配置，详见 [CustomAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/custom-audio-track-init-config)。 |
 
-#### Returns
+#### 返回值
 
-Returns [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-audio-track)
+[ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-audio-track)
 
 <a id="createcustomvideotrack"></a>
 
@@ -469,15 +469,15 @@ createCustomVideoTrack(config: CustomVideoTrackInitConfig): ILocalVideoTrack
 
 你可以使用这个方法将自己维护的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 转换成一个可以用于 SDK 的视频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: CustomVideoTrackInitConfig | 自定义视频轨道的配置，详见 [CustomVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/custom-video-track-init-config)。<br />自 v4.17.1 起，自定义视频轨道配置 [config](/zh-CN/api-reference/rtc/web/interfaces/custom-video-track-init-config) 除了支持设置码率，还支持设置分辨率和帧率。 |
 
-#### Returns
+#### 返回值
 
-Returns [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track)
+[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track)
 
 <a id="createmicrophoneandcameratracks"></a>
 
@@ -493,16 +493,16 @@ createMicrophoneAndCameraTracks(audioConfig?: MicrophoneAudioTrackInitConfig, vi
 
 调用该方法和分别调用 [createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createmicrophoneaudiotrack) 以及 [createCameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createcameravideotrack) 的区别是： 调用该方法会同时要求麦克风和摄像头的授权，用户只需授权一次。 分别创建音频轨道和视频轨道需要用户分别对麦克风和摄像头进行授权，也就是说用户需要授权两次。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional audioConfig: MicrophoneAudioTrackInitConfig | 采集音频的配置，包括采集设备、编码配置等。 |
 | Optional videoConfig: CameraVideoTrackInitConfig | 采集视频的配置，包括采集设备、编码配置等。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophone-audio-track), [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icamera-video-track)] &gt;
+Promise &lt; [[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophone-audio-track), [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icamera-video-track)] &gt;
 
 <a id="createmicrophoneaudiotrack"></a>
 
@@ -514,15 +514,15 @@ createMicrophoneAudioTrack(config?: MicrophoneAudioTrackInitConfig): Promise<IMi
 
 通过麦克风采集的音频创建一个音频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional config: MicrophoneAudioTrackInitConfig | 麦克风采集音频的配置，包括采集设备、音频编码配置等，详见 [MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/microphone-audio-track-init-config)。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophone-audio-track) &gt;
+Promise &lt; [IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophone-audio-track) &gt;
 
 <a id="createscreenvideotrack"></a>
 
@@ -542,16 +542,16 @@ createScreenVideoTrack(config: ScreenVideoTrackInitConfig, withAudio?: "enable" 
 
 创建用于屏幕共享的视频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: ScreenVideoTrackInitConfig | 屏幕共享的视频配置，包括编码配置、采集配置等。 |
 | withAudio: "enable" | 屏幕共享时是否同时分享 **屏幕共享输入源** 的音频。<br />- `enable`: 分享音频。<br />- `disable`: （默认）不分享音频。<br />- `auto`: 根据浏览器是否支持决定是否分享音频。<br />- [ScreenAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/globals#screenaudiotrackinitconfig): 自定义音频共享的初始化配置，包含 3A 处理参数 (`AEC`、 `AGC`、 `ANS` ）和本地音频播放设置。<br />  注意事项： 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见 [浏览器兼容性和已知问题](https://doc.shengwang.cn/doc/rtc/javascript/overview/browser-compatibility)。 关于各操作系统平台的浏览器版本及功能支持的补充说明如下： 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选 **分享音频** 才能真正生效。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track), [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-audio-track)] &gt;
+Promise &lt; [[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track), [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-audio-track)] &gt;
 
 - 如果 `withAudio` 设为 `enable`，返回包含屏幕共享视频轨道和一个音频轨道的列表。如果用户没有勾选 **分享音频**，SDK 会抛出错误。
 - 如果 `withAudio` 设为 `disable`，返回屏幕共享的视频轨道。
@@ -562,16 +562,16 @@ Returns Promise &lt; [[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 创建用于屏幕共享的视频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: ScreenVideoTrackInitConfig | 屏幕共享的视频配置，包括编码配置、采集配置等。 |
 | withAudio: "disable" | 屏幕共享时是否同时分享 **屏幕共享输入源** 的音频。<br />- `enable`: 分享音频。<br />- `disable`: （默认）不分享音频。<br />- `auto`: 根据浏览器是否支持决定是否分享音频。<br />- [ScreenAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/globals#screenaudiotrackinitconfig): 自定义音频共享的初始化配置，包含 3A 处理参数 (`AEC`、 `AGC`、 `ANS` ）和本地音频播放设置。<br />  注意事项： 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见 [浏览器兼容性和已知问题](https://doc.shengwang.cn/doc/rtc/javascript/overview/browser-compatibility)。 关于各操作系统平台的浏览器版本及功能支持的补充说明如下： 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选 **分享音频** 才能真正生效。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track) &gt;
+Promise &lt; [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track) &gt;
 
 - 如果 `withAudio` 设为 `enable`，返回包含屏幕共享视频轨道和一个音频轨道的列表。如果用户没有勾选 **分享音频**，SDK 会抛出错误。
 - 如果 `withAudio` 设为 `disable`，返回屏幕共享的视频轨道。
@@ -582,16 +582,16 @@ Returns Promise &lt; [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/
 
 创建用于屏幕共享的视频轨道。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | config: ScreenVideoTrackInitConfig | 屏幕共享的视频配置，包括编码配置、采集配置等。 |
 | Optional withAudio: "enable" \| "disable" \| "auto" \| ScreenAudioTrackInitConfig | 屏幕共享时是否同时分享 **屏幕共享输入源** 的音频。<br />- `enable`: 分享音频。<br />- `disable`: （默认）不分享音频。<br />- `auto`: 根据浏览器是否支持决定是否分享音频。<br />- [ScreenAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/globals#screenaudiotrackinitconfig): 自定义音频共享的初始化配置，包含 3A 处理参数 (`AEC`、 `AGC`、 `ANS`) 和本地音频播放及采集设置。<br />  该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见 [浏览器兼容性和已知问题](https://doc.shengwang.cn/doc/rtc/javascript/overview/browser-compatibility)。 关于各操作系统平台的浏览器版本及功能支持的补充说明如下： 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选 **分享音频** 才能真正生效。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track), [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-audio-track)] | [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track) &gt;
+Promise &lt; [[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track), [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-audio-track)] | [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocal-video-track) &gt;
 
 - 如果 `withAudio` 设为 `enable`，返回包含屏幕共享视频轨道和一个音频轨道的列表。如果用户没有勾选 **分享音频**，SDK 会抛出错误。
 - 如果 `withAudio` 设为 `disable`，返回屏幕共享的视频轨道。
@@ -600,7 +600,7 @@ Returns Promise &lt; [[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces
   - 如果用户勾选了 **分享音频**，会返回包含屏幕共享视频轨道和一个音频轨道的列表。
   - 如果用户没有勾选 **分享音频**，只返回屏幕共享视频轨道。
 
-## Logger Methods
+## 日志方法
 
 <a id="disablelogupload"></a>
 
@@ -614,9 +614,9 @@ disableLogUpload(): void
 
 日志上传默认是关闭状态，如果你调用了开启日志上传（[enableLogUpload](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#enablelogupload))，可以通过本方法停止上传日志。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="enablelogupload"></a>
 
@@ -632,9 +632,9 @@ enableLogUpload(): void
 
 如果没有成功加入频道，则服务器上无法查看日志信息。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setloglevel"></a>
 
@@ -648,17 +648,17 @@ setLogLevel(level: number): void
 
 选择一个级别，你就可以看到在该级别及该级别以上所有级别的日志信息。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | level: number | SDK 日志输出级别。按照输出日志最全到最少排列：<br />- 0: DEBUG。输出所有的 SDK 日志。<br />- 1: INFO。输出 INFO、WARNING 和 ERROR 级别的日志。<br />- 2: WARNING。输出 WARNING 和 ERROR 级别的日志。<br />- 3: ERROR。输出 ERROR 级别的日志。<br />- 4: NONE。不输出日志。<br />例如，如果你输入代码 `AgoraRTC.setLogLevel(1);`，就可以看到 INFO，WARNING 和 ERROR 级别的日志信息。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
-## Media Devices Methods
+## 媒体设备方法
 
 <a id="getcameras"></a>
 
@@ -674,15 +674,15 @@ getCameras(skipPermissionCheck?: boolean): Promise<MediaDeviceInfo[]>
 
 调用本方法会暂时打开摄像头以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional skipPermissionCheck: boolean | 是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。<br />- `true`: 跳过权限检查。<br />- `false`:（默认）不跳过权限检查。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; MediaDeviceInfo [] &gt;
+Promise &lt; MediaDeviceInfo [] &gt;
 
 <a id="getdevices"></a>
 
@@ -704,15 +704,15 @@ getDevices().then(devices => {
 });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional skipPermissionCheck: boolean | 是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。<br />- `true`: 跳过权限检查。<br />- `false`:（默认）不跳过权限检查。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; MediaDeviceInfo [] &gt;
+Promise &lt; MediaDeviceInfo [] &gt;
 
 <a id="getelectronscreensources"></a>
 
@@ -752,15 +752,15 @@ contextBridge.exposeInMainWorld(
 })()
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional type: ScreenSourceType | 需要获取的共享源类型（窗口/应用/屏幕），详见 [ScreenSourceType](/zh-CN/api-reference/rtc/web/globals#screensourcetype)。如果为空则获取所有可以获取的共享源。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/web/interfaces/electron-desktop-capturer-source) [] &gt;
+Promise &lt; [ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/web/interfaces/electron-desktop-capturer-source) [] &gt;
 
 <a id="getmicrophones"></a>
 
@@ -776,15 +776,15 @@ getMicrophones(skipPermissionCheck?: boolean): Promise<MediaDeviceInfo[]>
 
 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional skipPermissionCheck: boolean | 是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。<br />- `true`: 跳过权限检查。<br />- `false`:（默认）不跳过权限检查。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; MediaDeviceInfo [] &gt;
+Promise &lt; MediaDeviceInfo [] &gt;
 
 <a id="getplaybackdevices"></a>
 
@@ -804,17 +804,17 @@ getPlaybackDevices(skipPermissionCheck?: boolean): Promise<MediaDeviceInfo[]>
 
 Chrome、Firefox、Edge 浏览器上支持该方法。Safari 支持情况如下：macOS 上的 Safari 18.4 及以上版本支持该方法；iOS 上的 Safari 26 及以上版本支持该方法。 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+ 和 Firefox 70+ 浏览器上，没有媒体设备权限时无法获取到准确的设备信息。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional skipPermissionCheck: boolean | 是否跳过权限检查。你可以通过将该参数设置成 `true` 来跳过媒体设备权限申请步骤，但是 SDK 无法保证可以通过本方法获取准确的媒体设备信息。<br />- `true`: 跳过权限检查。<br />- `false`:（默认）不跳过权限检查。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; MediaDeviceInfo [] &gt;
+Promise &lt; MediaDeviceInfo [] &gt;
 
-## Other Methods
+## 其他方法
 
 <a id="checkaudiotrackisactive"></a>
 
@@ -841,16 +841,16 @@ AgoraRTC.checkAudioTrackIsActive(audioTrack).then(result => {
 });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | track: ILocalAudioTrack \| IRemoteAudioTrack | 需要进行检测的本地或远端音频轨道。 |
 | Optional timeout: number | 音频轨道检测的超时时间，单位为毫秒，默认 5,000 毫秒。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; boolean &gt;
+Promise &lt; boolean &gt;
 
 传入该方法的音频轨道中的音量大小是否发生了变化：
 
@@ -869,9 +869,9 @@ checkSystemRequirements(): boolean
 
 该方法必须在创建客户端对象 [createClient](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#createclient) 之前调用。
 
-#### Returns
+#### 返回值
 
-Returns boolean
+boolean
 
 是否支持当前浏览器。
 
@@ -903,16 +903,16 @@ AgoraRTC.checkVideoTrackIsActive(videoTrack).then(result => {
 });
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | track: ILocalVideoTrack \| IRemoteVideoTrack | 需要进行检测的本地或远端视频轨道。 |
 | Optional timeout: number | 视频轨道检测的超时时间，单位为毫秒，默认 5,000 毫秒。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; boolean &gt;
+Promise &lt; boolean &gt;
 
 传入该方法的视频轨道中的图像是否发生了变动：
 
@@ -929,9 +929,9 @@ createChannelMediaRelayConfiguration(): IChannelMediaRelayConfiguration
 
 创建跨频道媒体流转发的配置对象。
 
-#### Returns
+#### 返回值
 
-Returns [IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannel-media-relay-configuration)
+[IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannel-media-relay-configuration)
 
 <a id="getlisteners"></a>
 
@@ -943,15 +943,15 @@ getListeners(event: string): Function[]
 
 指定一个事件名，获取当前所有监听这个事件的回调函数。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 事件名称。 |
 
-#### Returns
+#### 返回值
 
-Returns Function []
+Function []
 
 <a id="getsupportedcodec"></a>
 
@@ -974,9 +974,9 @@ AgoraRTC.getSupportedCodec().then(result => {
 });
 ```
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; object &gt;
+Promise &lt; object &gt;
 
 调用该方法会返回一个 `Promise` 对象，在 `.then(function(result){})` 回调中， `result` 包含以下属性：
 
@@ -993,16 +993,16 @@ off(event: string, listener: Function): void
 
 取消一个指定事件的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 监听事件时传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="on"></a>
 
@@ -1036,91 +1036,91 @@ on(event: "audio-context-state-changed", listener: typeof event_audio_context_st
 
 <br /> *4.18.0*
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "camera-changed" | 事件名称。 |
 | listener: typeof event_camera_changed | 详见 [event_camera_changed](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#event_camera_changed)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 ##### `自从`
 
 <br /> *4.18.0*
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "microphone-changed" | 事件名称。 |
 | listener: typeof event_microphone_changed | 详见 [event_microphone_changed](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#event_microphone_changed)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 ##### `自从`
 
 <br /> *4.18.0*
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "playback-device-changed" | 事件名称。 |
 | listener: typeof event_playback_device_changed | 详见 [event_playback_device_changed](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#event_playback_device_changed)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 ##### `自从`
 
 <br /> *4.18.0*
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "autoplay-failed" | 事件名称。 |
 | listener: typeof event_autoplay_failed | 详见 [event_autoplay_failed](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#event_autoplay_failed)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 ##### `自从`
 
 <br /> *4.18.0*
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "security-policy-violation" | 事件名称。 |
 | listener: typeof event_security_policy_violation | 详见 [event_security_policy_violation](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#event_security_policy_violation)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 ##### `自从`
 
 <br /> *4.20.0*
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: "audio-context-state-changed" | 事件名称。 |
 | listener: typeof event_audio_context_state_changed | 详见 [event_audio_context_state_changed](/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc#event_audio_context_state_changed)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="once"></a>
 
@@ -1134,16 +1134,16 @@ once(event: string, listener: Function): void
 
 当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | event: string | 指定事件的名称。 |
 | listener: Function | 传入的回调函数。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="preload"></a>
 
@@ -1161,18 +1161,18 @@ preload(appid: string, channel: string, token: string | null, uid?: UID | null):
 
 预加载的有效时间只有两分钟。 为了保护页面性能，此方法采取一次性尽力而为的策略，无法保证一定成功。但预加载失败不会影响观众正常加入频道，也不会增加加入频道的耗时。 系统最多缓存 10 条最新的不同预加载数据。 目前此方法不支持通过 proxy 代理进行转发。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | appid: string | 你的声网项目的 [App ID](https://doc.shengwang.cn/basics/glossary#app-id)。 |
 | channel: string | 标识通话的频道名称，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:<br />- 26 个小写字母 a-z。<br />- 26 个大写字母 A-Z。<br />- 10 个数字 0-9。<br />- 空格。<br />- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "\|", "~", ","。 |
 | token: string \| null | 用于鉴权的 token。<br />- 如果你的项目没有开启 token 鉴权，这里填 `null`。<br />- 安全要求不高: 你可以使用控制台生成的临时 token，详见 [获取 RTC 临时 Token](http://doc.shengwang.cn/doc/rtc/javascript/get-started/enable-service)。<br />- 安全要求高：传入从你的服务端获得的正式 token，详见 [使用 Token 鉴权](http://doc.shengwang.cn/doc/rtc/javascript/basic-features/token-authentication)。 |
 | Optional uid: UID \| null | 标识用户的 ID。整数或字符串，ASCII 字符，需保证唯一性。如果不指定或设为 `null`，服务器会自动分配一个整数型 uid。<br />- 如果使用整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (2 32 -1)。<br />- 如果使用字符串作为用户 ID，长度不超过 255 个字符。<br />为保证最佳的用户体验，声网强烈建议你不要使用字符串作为用户 ID。<br />注意事项： 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见 [使用 String 型的用户名](https://docs.agora.io/cn/faq/string)。 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; void &gt;
+Promise &lt; void &gt;
 
 <a id="processexternalmediaaec"></a>
 
@@ -1200,15 +1200,15 @@ processExternalMediaAEC(element: HTMLMediaElement): void
 
 注意事项：如果本地播放的媒体元素的地址是跨域地址，必须设置 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 中的 `crossOrigin` 属性为 `"anonymous"` 以允许跨域媒体被重采集。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | element: HTMLMediaElement | 需要进行回声消除的媒体元素，详见 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement)。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="registerextensions"></a>
 
@@ -1224,15 +1224,15 @@ registerExtensions(extensions: IExtension<any>[]): void
 
 注册插件。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | extensions: IExtension&lt;any&gt;[] | 插件实例。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="removealllisteners"></a>
 
@@ -1244,15 +1244,15 @@ removeAllListeners(event?: string): void
 
 指定一个事件，取消其所有的监听。
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | Optional event: string | 指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="resumeaudiocontext"></a>
 
@@ -1271,9 +1271,9 @@ resumeAudioContext(): void
 - 当状态变为 `"interrupted"` 时，弹窗提示用户 App 通话被打断，需要点击按钮恢复通话。用户点击按钮后，调用 `resumeAudioContext`。
 - 当状态变为 `"running"` 时，关闭弹窗。
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="setarea"></a>
 
@@ -1300,15 +1300,15 @@ AgoraRTC.setArea({
 })
 ```
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | area: AREAS[] \| object | 服务器的访问区域。区域码详见 [AREAS](/zh-CN/api-reference/rtc/web/enums/areas)。你可以设置 `areaCode` 参数指定单个访问区域。 |
 
-#### Returns
+#### 返回值
 
-Returns void
+void
 
 <a id="startlastmileprobetest"></a>
 
@@ -1324,15 +1324,15 @@ startLastmileProbeTest(appid: string, channel: string, token: string | null, uid
 
 <br /> *4.24.1* <br />
 
-#### Parameters
+#### 参数
 
-| Name | Description |
+| 名称 | 描述 |
 | --- | --- |
 | appid: string | 你的声网项目的 [App ID](https://doc.shengwang.cn/basics/glossary#app-id)。 |
 | channel: string | 标识通话的频道名称，长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:<br />- 26 个小写字母 a-z。<br />- 26 个大写字母 A-Z。<br />- 10 个数字 0-9。<br />- 空格。<br />- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "\{", "\}", "\|", "~", ","。 |
 | token: string \| null | 用于鉴权的 Token。<br />- 如果你的项目没有开启 Token 鉴权，这里填 `null`。<br />- 安全要求不高: 你可以使用控制台生成的临时 Token，详见 [获取 RTC 临时 Token](http://doc.shengwang.cn/doc/rtc/javascript/get-started/enable-service)。<br />- 安全要求高：传入从你的服务端获得的正式 Token，详见 [使用 Token 鉴权](http://doc.shengwang.cn/doc/rtc/javascript/basic-features/token-authentication)。 |
 | Optional uid: UID \| null | 标识用户的 ID。整数或字符串，ASCII 字符，需保证唯一性。如果不指定或设为 `null`，服务器会自动分配一个整数型 uid。<br />- 如果使用整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (2 32 -1)。<br />- 如果使用字符串作为用户 ID，长度不超过 255 个字符。<br />为保证最佳的用户体验，声网强烈建议你不要使用字符串作为用户 ID。<br />注意事项： 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见 [使用 String 型的用户名](https://doc.shengwang.cn/faq/integration-issues/string-uid)。 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。 |
 
-#### Returns
+#### 返回值
 
-Returns Promise &lt; [LastmileProbeResult](/zh-CN/api-reference/rtc/web/interfaces/lastmile-probe-result) &gt;
+Promise &lt; [LastmileProbeResult](/zh-CN/api-reference/rtc/web/interfaces/lastmile-probe-result) &gt;

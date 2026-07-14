@@ -2,9 +2,8 @@
 title: "视频双流"
 description: "视频双流 API reference."
 ---
-<a id="toc_dual_stream"></a>
 
-## 视频双流
+<a id="toc_dual_stream"></a>
 
 <a id="api_irtcengine_enabledualstreammode"></a>
 
@@ -24,18 +23,18 @@ public abstract int EnableDualStreamMode(bool enabled);
 
 #### `弃用：`
 
-从 v4.2.0 起废弃，请改用 [SetDualStreamMode [1/2]](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setdualstreammode)。
+从 v4.2.0 起废弃，请改用 [SetDualStreamMode [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setdualstreammode)。
 
 双流指视频大流和视频小流：
 
 - 视频大流：高分辨率、高帧率的视频流。
 - 视频小流：低分辨率、低帧率的视频流。
 
-开启双流模式后，你可以在收流端调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setremotevideostreamtype) 选择接收视频大流或视频小流。
+开启双流模式后，你可以在收流端调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setremotevideostreamtype) 选择接收视频大流或视频小流。
 
 :::info[注]
 - 该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
-- 如果需要在多频道场景下开启视频双流，可以调用 [EnableDualStreamModeEx](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengineex_enabledualstreammodeex) 方法。
+- 如果需要在多频道场景下开启视频双流，可以调用 [EnableDualStreamModeEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengineex_enabledualstreammodeex) 方法。
 - 该方法可以在加入频道前后调用。
 :::
 
@@ -75,18 +74,18 @@ public abstract int EnableDualStreamMode(bool enabled, SimulcastStreamConfig str
 
 #### `弃用：`
 
-从 v4.2.0 起废弃，请改用 [SetDualStreamMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setdualstreammode2)。
+从 v4.2.0 起废弃，请改用 [SetDualStreamMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setdualstreammode2)。
 
 你可以在发流端调用该方法开启或关闭双流模式。双流指视频大流和视频小流：
 
 - 视频大流：高分辨率、高帧率的视频流。
 - 视频小流：低分辨率、低帧率的视频流。
 
-开启双流模式后，你可以在收流端调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setremotevideostreamtype) 选择接收视频大流或视频小流。
+开启双流模式后，你可以在收流端调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setremotevideostreamtype) 选择接收视频大流或视频小流。
 
 :::info[注]
 - 该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
-- 如果需要在多频道场景下开启视频双流，可以调用 [EnableDualStreamModeEx](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengineex_enabledualstreammodeex) 方法。
+- 如果需要在多频道场景下开启视频双流，可以调用 [EnableDualStreamModeEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengineex_enabledualstreammodeex) 方法。
 - 该方法可以在加入频道前后调用。
 :::
 
@@ -116,7 +115,6 @@ public abstract int EnableDualStreamMode(bool enabled, SimulcastStreamConfig str
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enabledualstreammodeex"></a>
@@ -137,14 +135,14 @@ public abstract int EnableDualStreamModeEx(bool enabled, SimulcastStreamConfig s
 
 #### `弃用：`
 
-从 v4.2.0 起废弃，请改用 [SetDualStreamModeEx](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengineex_setdualstreammodeex)。
+从 v4.2.0 起废弃，请改用 [SetDualStreamModeEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengineex_setdualstreammodeex)。
 
 你可以在发流端调用该方法开启或关闭双流模式。双流指视频大流和视频小流：
 
 - 视频大流：高分辨率、高帧率的视频流。
 - 视频小流：低分辨率、低帧率的视频流。
 
-开启双流模式后，你可以在收流端调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setremotevideostreamtype) 选择接收视频大流或视频小流。
+开启双流模式后，你可以在收流端调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setremotevideostreamtype) 选择接收视频大流或视频小流。
 
 :::info[注]
 该方法适用于发送端发送的所有类型的流，包括且不限于来自摄像头采集的视频流、屏幕共享流、自定义采集的视频流。
@@ -180,7 +178,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setdualstreammode"></a>
@@ -199,13 +196,13 @@ public abstract int SetDualStreamMode(SIMULCAST_STREAM_MODE mode);
 
 ### 详情
 
-SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setremotevideostreamtype) 发起小流申请，发送端收到申请后开始自动发送小流。
+SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setremotevideostreamtype) 发起小流申请，发送端收到申请后开始自动发送小流。
 
 - 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE_SIMULCAST_STREAM （始终不发送小流）或 ENABLE_SIMULCAST_STREAM （始终发送小流）。
 - 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 mode 设置为 AUTO_SIMULCAST_STREAM。
 
 :::info[注]
-该方法和 [EnableDualStreamMode [1/2]](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_enabledualstreammode) 的区别与联系如下：
+该方法和 [EnableDualStreamMode [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_enabledualstreammode) 的区别与联系如下：
 
 - 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟 EnableDualStreamMode [1/2] `(false)` 的效果相同。
 - 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟 EnableDualStreamMode [1/2] `(true)` 的效果相同。
@@ -243,15 +240,15 @@ public abstract int SetDualStreamMode(SIMULCAST_STREAM_MODE mode, SimulcastStrea
 
 ### 详情
 
-SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setremotevideostreamtype) 发起小流申请，发送端收到申请后开始自动发送小流。
+SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setremotevideostreamtype) 发起小流申请，发送端收到申请后开始自动发送小流。
 
 - 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE_SIMULCAST_STREAM （始终不发送小流）或 ENABLE_SIMULCAST_STREAM （始终发送小流）。
 - 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 mode 设置为 AUTO_SIMULCAST_STREAM。
 
-该方法跟 [SetDualStreamMode [1/2]](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setdualstreammode) 的区别在于，该方法还可以进行视频小流的配置，SDK 会根据 streamConfig 中的配置发送小流。
+该方法跟 [SetDualStreamMode [1/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setdualstreammode) 的区别在于，该方法还可以进行视频小流的配置，SDK 会根据 streamConfig 中的配置发送小流。
 
 :::info[注]
-该方法和 [EnableDualStreamMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_enabledualstreammode3) 的区别与联系如下：
+该方法和 [EnableDualStreamMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_enabledualstreammode3) 的区别与联系如下：
 
 - 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟调用 EnableDualStreamMode [2/2] 并设置 enabled 为 `false` 的效果相同。
 - 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟调用 EnableDualStreamMode [2/2] 并设置 enabled 为 `true` 的效果相同。
@@ -281,7 +278,6 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setdualstreammodeex"></a>
@@ -300,13 +296,13 @@ public abstract int SetDualStreamModeEx(SIMULCAST_STREAM_MODE mode, SimulcastStr
 
 ### 详情
 
-SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [SetRemoteVideoStreamTypeEx](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengineex_setremotevideostreamtypeex) 发起小流申请，发送端收到申请后开始自动发送小流。
+SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即发送端不主动发送小流， **主播身份** 的接收端可以调用 [SetRemoteVideoStreamTypeEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengineex_setremotevideostreamtypeex) 发起小流申请，发送端收到申请后开始自动发送小流。
 
 - 如果你想修改此行为，可以调用该方法并修改 mode 为 DISABLE_SIMULCAST_STREAM （始终不发送小流）或 ENABLE_SIMULCAST_STREAM （始终发送小流）。
 - 如果你在进行修改后又想恢复该默认行为，可重新调用该方法，并将 mode 设置为 AUTO_SIMULCAST_STREAM。
 
 :::info[注]
-该方法和 [EnableDualStreamModeEx](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengineex_enabledualstreammodeex) 的区别与联系如下：
+该方法和 [EnableDualStreamModeEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengineex_enabledualstreammodeex) 的区别与联系如下：
 
 - 调用该方法并设置 mode 为 DISABLE_SIMULCAST_STREAM 时，跟 EnableDualStreamModeEx `(false)` 的效果相同。
 - 调用该方法并设置 mode 为 ENABLE_SIMULCAST_STREAM 时，跟 EnableDualStreamModeEx `(true)` 的效果相同。
@@ -340,7 +336,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype"></a>
@@ -357,7 +352,7 @@ public abstract int SetRemoteDefaultVideoStreamType(VIDEO_STREAM_TYPE streamType
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__detailed_desc"></a>
 
-取决于发送端的默认行为和调用 [SetDualStreamMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
+取决于发送端的默认行为和调用 [SetDualStreamMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
 - SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 **主播身份** 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
 - 当发送端调用 SetDualStreamMode [2/2] 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效。
@@ -375,7 +370,7 @@ public abstract int SetRemoteDefaultVideoStreamType(VIDEO_STREAM_TYPE streamType
 
 ### 调用限制
 
-如果你既调用了该方法，也调用了 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setremotevideostreamtype)，则 SDK 以 SetRemoteVideoStreamType 中的设置为准。
+如果你既调用了该方法，也调用了 [SetRemoteVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setremotevideostreamtype)，则 SDK 以 SetRemoteVideoStreamType 中的设置为准。
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__parameters"></a>
 
@@ -392,7 +387,6 @@ public abstract int SetRemoteDefaultVideoStreamType(VIDEO_STREAM_TYPE streamType
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremotevideostreamtype"></a>
@@ -411,7 +405,7 @@ public abstract int SetRemoteVideoStreamType(uint uid, VIDEO_STREAM_TYPE streamT
 
 ### 详情
 
-取决于发送端的默认行为和调用 [SetDualStreamMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
+取决于发送端的默认行为和调用 [SetDualStreamMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
 - SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 **主播身份** 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
 - 当发送端调用 SetDualStreamMode [2/2] 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效。
@@ -421,7 +415,7 @@ public abstract int SetRemoteVideoStreamType(uint uid, VIDEO_STREAM_TYPE streamT
 
 :::warning[注意]
 - 该方法在加入频道前后都能调用。
-- 如果既调用了该方法，也调用了 [SetRemoteDefaultVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setremotedefaultvideostreamtype)，则 SDK 以该方法中的设置为准。
+- 如果既调用了该方法，也调用了 [SetRemoteDefaultVideoStreamType](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setremotedefaultvideostreamtype)，则 SDK 以该方法中的设置为准。
 :::
 
 <a id="api_irtcengine_setremotevideostreamtype__parameters"></a>
@@ -443,7 +437,6 @@ public abstract int SetRemoteVideoStreamType(uint uid, VIDEO_STREAM_TYPE streamT
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremotevideostreamtypeex"></a>
@@ -462,7 +455,7 @@ public abstract int SetRemoteVideoStreamTypeEx(uint uid, VIDEO_STREAM_TYPE strea
 
 ### 详情
 
-取决于发送端的默认行为和调用 [SetDualStreamMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
+取决于发送端的默认行为和调用 [SetDualStreamMode [2/2]](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengine_setdualstreammode2) 的具体设置，接收端调用该方法分为以下几种情况：
 
 - SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即：发送端仅发送大流，仅 **主播身份** 的接收端可以调用该方法发起小流申请，发送端收到申请后开始自动发送小流，此时频道内所有用户均可调用该方法切换到小流订阅模式。
 - 当发送端调用 SetDualStreamMode [2/2] 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效。
@@ -471,7 +464,7 @@ public abstract int SetRemoteVideoStreamTypeEx(uint uid, VIDEO_STREAM_TYPE strea
 在接收视频小流时，SDK 会根据视频窗口的大小动态调整对应视频流的大小，以节约带宽和计算资源。视频小流默认的宽高比和视频大流的宽高比一致。根据当前大流的宽高比，系统会自动分配小流的分辨率、帧率及码率。
 
 :::warning[注意]
-如果发送端已调用 [SetDualStreamModeEx](/zh-CN/api-reference/rtc/csharp-windows/dual-stream#api_irtcengineex_setdualstreammodeex) 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效，你需要在发送端重新调用 SetDualStreamModeEx 修改设置。
+如果发送端已调用 [SetDualStreamModeEx](/zh-CN/api-reference/rtc/csharp-windows/video/video-codec/dual-stream#api_irtcengineex_setdualstreammodeex) 并将 mode 设置为 DISABLE_SIMULCAST_STREAM （始终不发送小流），则调用该方法不生效，你需要在发送端重新调用 SetDualStreamModeEx 修改设置。
 :::
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__parameters"></a>
@@ -497,5 +490,4 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)

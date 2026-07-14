@@ -1,10 +1,9 @@
 ---
 title: "空间音频"
-description: "移除所有远端用户的空间位置。"
+description: "空间音频 API reference."
 ---
-<a id="toc_spatial_audio"></a>
 
-## 空间音频
+<a id="toc_spatial_audio"></a>
 
 <a id="api_ilocalspatialaudioengine_clearremotepositions_ilocalspatialaudioengine"></a>
 
@@ -29,7 +28,6 @@ virtual int clearRemotePositions() = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_irtcengine_enablespatialaudio"></a>
@@ -46,7 +44,7 @@ virtual int enableSpatialAudio(bool enabled) = 0;
 
 <a id="api_irtcengine_enablespatialaudio__detailed_desc"></a>
 
-启用空间音效后，你可以调用 [setRemoteUserSpatialAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音效参数。
+启用空间音效后，你可以调用 [setRemoteUserSpatialAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音效参数。
 
 :::info[注]
 - 你可以在加入频道前或加入频道后调用此方法。
@@ -71,7 +69,6 @@ virtual int enableSpatialAudio(bool enabled) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine"></a>
@@ -105,7 +102,6 @@ virtual int initialize(const LocalSpatialAudioConfig& config) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_muteallremoteaudiostreams_ilocalspatialaudioengine"></a>
@@ -127,7 +123,7 @@ virtual int muteAllRemoteAudioStreams(bool mute) = 0;
 :::info[注]
 - 请在调用 `joinChannel` 方法后调用本方法。
 - 使用空间音效时，如需设置是否停止订阅所有远端用户的音频流，声网推荐使用本方法，而非 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 下的同名方法。
-- 调用本方法后，需要调用 [updateSelfPosition](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_updateselfposition_ilocalspatialaudioengine) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 更新本地用户和远端用户的空间位置，否则本方法的设置不会生效。
+- 调用本方法后，需要调用 [updateSelfPosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateselfposition_ilocalspatialaudioengine) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 更新本地用户和远端用户的空间位置，否则本方法的设置不会生效。
 :::
 
 <a id="api_ilocalspatialaudioengine_muteallremoteaudiostreams_ilocalspatialaudioengine__parameters"></a>
@@ -148,7 +144,6 @@ virtual int muteAllRemoteAudioStreams(bool mute) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_mutelocalaudiostream_ilocalspatialaudioengine"></a>
@@ -173,7 +168,7 @@ virtual int muteLocalAudioStream(bool mute) = 0;
 
 ### 相关回调
 
-成功调用该方法后，远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+成功调用该方法后，远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 
 <a id="api_ilocalspatialaudioengine_mutelocalaudiostream_ilocalspatialaudioengine__parameters"></a>
 
@@ -193,7 +188,6 @@ virtual int muteLocalAudioStream(bool mute) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_muteremoteaudiostream_ilocalspatialaudioengine"></a>
@@ -212,7 +206,7 @@ virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 
 :::info[注]
 - 请在调用 `joinChannel` 方法后调用此方法。
-- 使用空间音效时，如需设置是否停止订阅指定用户的音频流，声网建议调用此方法，而非 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_muteremoteaudiostream_ilocalspatialaudioengine) 方法。
+- 使用空间音效时，如需设置是否停止订阅指定用户的音频流，声网建议调用此方法，而非 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_muteremoteaudiostream_ilocalspatialaudioengine) 方法。
 :::
 
 <a id="api_ilocalspatialaudioengine_muteremoteaudiostream_ilocalspatialaudioengine__parameters"></a>
@@ -237,7 +231,6 @@ virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_release_ilocalspatialaudioengine"></a>
@@ -257,10 +250,9 @@ virtual void release() = 0;
 调用该方法可释放 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine) 下的所有资源。调用该方法后，将无法再使用 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine) 下的任何 API。
 
 :::info[注]
-请在调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_release_ilocalspatialaudioengine) 方法之前调用该方法。
+请在调用 [release](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_release_ilocalspatialaudioengine) 方法之前调用该方法。
 :::
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition"></a>
@@ -277,7 +269,7 @@ virtual int removeRemotePosition(uid_t uid) = 0;
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition__detailed_desc"></a>
 
-调用该方法后，本地用户将无法再听到指定远端用户的声音。离开频道后，为避免浪费计算资源，建议调用该方法移除该远端用户的空间位置信息，否则该信息将持续保留。当远端用户数量超过通过 [setMaxAudioRecvCount](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_setmaxaudiorecvcount_ilocalspatialaudioengine) 设置的最大可接收音频流数量时，系统会根据相对距离自动取消订阅距离最远用户的音频流。
+调用该方法后，本地用户将无法再听到指定远端用户的声音。离开频道后，为避免浪费计算资源，建议调用该方法移除该远端用户的空间位置信息，否则该信息将持续保留。当远端用户数量超过通过 [setMaxAudioRecvCount](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_setmaxaudiorecvcount_ilocalspatialaudioengine) 设置的最大可接收音频流数量时，系统会根据相对距离自动取消订阅距离最远用户的音频流。
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition__parameters"></a>
 
@@ -294,7 +286,6 @@ virtual int removeRemotePosition(uid_t uid) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_setaudiorecvrange_ilocalspatialaudioengine"></a>
@@ -328,7 +319,6 @@ virtual int setAudioRecvRange(float range) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_setdistanceunit_ilocalspatialaudioengine"></a>
@@ -345,7 +335,7 @@ virtual int setDistanceUnit(float unit) = 0;
 
 <a id="api_ilocalspatialaudioengine_setdistanceunit_ilocalspatialaudioengine__detailed_desc"></a>
 
-在声网的空间音效算法中，距离以米为单位进行测量，而游戏引擎中的距离单位是自定义的。SDK 默认将游戏引擎中的每个单位距离转换为 1 米。你可以调用 [setDistanceUnit](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_setdistanceunit_ilocalspatialaudioengine) 方法，将游戏引擎中的单位距离转换为指定的米数。
+在声网的空间音效算法中，距离以米为单位进行测量，而游戏引擎中的距离单位是自定义的。SDK 默认将游戏引擎中的每个单位距离转换为 1 米。你可以调用 [setDistanceUnit](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_setdistanceunit_ilocalspatialaudioengine) 方法，将游戏引擎中的单位距离转换为指定的米数。
 
 <a id="api_ilocalspatialaudioengine_setdistanceunit_ilocalspatialaudioengine__parameters"></a>
 
@@ -362,7 +352,6 @@ virtual int setDistanceUnit(float unit) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_irtcengine_setheadphoneeqparameters"></a>
@@ -379,7 +368,7 @@ virtual int setHeadphoneEQParameters(int lowGain, int highGain) = 0;
 
 <a id="api_irtcengine_setheadphoneeqparameters__detailed_desc"></a>
 
-在空间音效场景中，如果调用 [setHeadphoneEQPreset](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_irtcengine_setheadphoneeqpreset) 后未达到预期的耳机均衡效果，可以通过调用该方法进一步调整。
+在空间音效场景中，如果调用 [setHeadphoneEQPreset](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqpreset) 后未达到预期的耳机均衡效果，可以通过调用该方法进一步调整。
 
 <a id="api_irtcengine_setheadphoneeqparameters__parameters"></a>
 
@@ -402,7 +391,6 @@ virtual int setHeadphoneEQParameters(int lowGain, int highGain) = 0;
 
   - -1：发生通用错误（无具体原因）。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setheadphoneeqpreset"></a>
@@ -442,7 +430,6 @@ virtual int setHeadphoneEQPreset(HEADPHONE_EQUALIZER_PRESET preset) = 0;
 
   - -1：发生通用错误（无具体原因）。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_ilocalspatialaudioengine_setmaxaudiorecvcount_ilocalspatialaudioengine"></a>
@@ -476,7 +463,6 @@ virtual int setMaxAudioRecvCount(int maxCount) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_setplayerattenuation_ilocalspatialaudioengine"></a>
@@ -499,7 +485,7 @@ virtual int setPlayerAttenuation(int playerId, double attenuation, bool forceSet
 
 #### `playerId`
 
-媒体播放器的 ID。你可以通过调用 [getMediaPlayerId](/zh-CN/api-reference/rtc/cpp-all-platforms/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取设备 ID。
+媒体播放器的 ID。你可以通过调用 [getMediaPlayerId](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取设备 ID。
 
 #### `attenuation`
 
@@ -527,7 +513,6 @@ virtual int setPlayerAttenuation(int playerId, double attenuation, bool forceSet
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation"></a>
@@ -578,7 +563,6 @@ virtual int setRemoteAudioAttenuation(uid_t uid, double attenuation, bool forceS
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams"></a>
@@ -595,7 +579,7 @@ virtual int setRemoteUserSpatialAudioParams(uid_t uid, const agora::SpatialAudio
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams__detailed_desc"></a>
 
-调用 [enableSpatialAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_irtcengine_enablespatialaudio) 后调用该方法。设置成功后，你可以听到具有空间感的远端用户的声音。
+调用 [enableSpatialAudio](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_irtcengine_enablespatialaudio) 后调用该方法。设置成功后，你可以听到具有空间感的远端用户的声音。
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams__parameters"></a>
 
@@ -616,7 +600,6 @@ virtual int setRemoteUserSpatialAudioParams(uid_t uid, const agora::SpatialAudio
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayer_setspatialaudioparams"></a>
@@ -650,7 +633,6 @@ virtual int setSpatialAudioParams(const SpatialAudioParams& params) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer)
 
 <a id="api_ilocalspatialaudioengine_setzones_ilocalspatialaudioengine"></a>
@@ -670,7 +652,7 @@ virtual int setZones(const SpatialAudioZone *zones, unsigned int zoneCount) = 0;
 在虚拟互动场景中，你可以使用该方法设置隔音区域及其声音衰减系数。当声源（用户或媒体播放器）和接收者分别位于隔音区域的内外时，可以模拟现实中声音被建筑物阻隔时的衰减效果：
 
 - 当声源和接收者分别位于隔音区域的内外时，声音的衰减效果由 [SpatialAudioZone](/zh-CN/api-reference/rtc/cpp-all-platforms/class-spatialaudiozone) 中的衰减系数决定。
-- 当用户或媒体播放器处于同一个隔音区域内时，不受 [SpatialAudioZone](/zh-CN/api-reference/rtc/cpp-all-platforms/class-spatialaudiozone) 的影响，声音衰减效果由 [setPlayerAttenuation](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_setplayerattenuation_ilocalspatialaudioengine) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation) 中的 `attenuation` 参数决定。若未调用上述方法，SDK 默认使用 0.5 的声音衰减系数。
+- 当用户或媒体播放器处于同一个隔音区域内时，不受 [SpatialAudioZone](/zh-CN/api-reference/rtc/cpp-all-platforms/class-spatialaudiozone) 的影响，声音衰减效果由 [setPlayerAttenuation](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_setplayerattenuation_ilocalspatialaudioengine) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation) 中的 `attenuation` 参数决定。若未调用上述方法，SDK 默认使用 0.5 的声音衰减系数。
 - 当声源和接收者分别位于两个不同的隔音区域中，接收者将无法听到声源。
 
 :::info[注]
@@ -700,7 +682,6 @@ virtual int setZones(const SpatialAudioZone *zones, unsigned int zoneCount) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_updateplayerpositioninfo_ilocalspatialaudioengine"></a>
@@ -731,7 +712,7 @@ virtual int updatePlayerPositionInfo(int playerId, const RemoteVoicePositionInfo
 
 #### `playerId`
 
-媒体播放器的 ID。你可以通过调用 [getMediaPlayerId](/zh-CN/api-reference/rtc/cpp-all-platforms/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取该 ID。
+媒体播放器的 ID。你可以通过调用 [getMediaPlayerId](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取该 ID。
 
 #### `positionInfo`
 
@@ -744,7 +725,6 @@ virtual int updatePlayerPositionInfo(int playerId, const RemoteVoicePositionInfo
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_updateremoteposition"></a>
@@ -786,7 +766,6 @@ virtual int updateRemotePosition(uid_t uid, const RemoteVoicePositionInfo &posIn
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_updateselfposition_ilocalspatialaudioengine"></a>
@@ -803,7 +782,7 @@ virtual int updateSelfPosition(const float position[3], const float axisForward[
 
 <a id="api_ilocalspatialaudioengine_updateselfposition_ilocalspatialaudioengine__detailed_desc"></a>
 
-该方法属于 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine) 类，需要与 [updateRemotePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 搭配使用。SDK 会根据该方法和 [updateRemotePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 中的参数设置，计算本地用户与远端用户之间的相对位置，并据此生成空间音效参数。
+该方法属于 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine) 类，需要与 [updateRemotePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 搭配使用。SDK 会根据该方法和 [updateRemotePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 中的参数设置，计算本地用户与远端用户之间的相对位置，并据此生成空间音效参数。
 
 <a id="api_ilocalspatialaudioengine_updateselfposition_ilocalspatialaudioengine__parameters"></a>
 
@@ -832,5 +811,4 @@ virtual int updateSelfPosition(const float position[3], const float axisForward[
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ilocalspatialaudioengine)

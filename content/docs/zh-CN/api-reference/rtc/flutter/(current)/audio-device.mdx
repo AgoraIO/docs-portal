@@ -1,10 +1,9 @@
 ---
 title: "音频设备管理"
-description: "获取系统中所有的播放设备列表。"
+description: "音频设备管理 API reference."
 ---
-<a id="toc_audio_device"></a>
 
-## 音频设备管理
+<a id="toc_audio_device"></a>
 
 <a id="api_iaudiodevicemanager_enumerateplaybackdevices"></a>
 
@@ -31,7 +30,6 @@ List<AudioDeviceInfo> enumeratePlaybackDevices();
 - 方法调用成功，返回 [AudioDeviceInfo](/zh-CN/api-reference/rtc/flutter/class-audiodeviceinfo) 数组，包含所有音频播放设备的设备 ID 和设备名称。
 - 方法调用失败: 返回空列表。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_enumeraterecordingdevices"></a>
@@ -59,7 +57,6 @@ List<AudioDeviceInfo> enumerateRecordingDevices();
 - 方法调用成功，返回一个 [AudioDeviceInfo](/zh-CN/api-reference/rtc/flutter/class-audiodeviceinfo) 数组，包含所有音频采集设备的设备 ID 和设备名称。
 - 方法调用失败: 返回空列表。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice"></a>
@@ -95,7 +92,6 @@ Future<void> followSystemLoopbackDevice(bool enable);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice"></a>
@@ -133,7 +129,6 @@ Future<void> followSystemPlaybackDevice(bool enable);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice"></a>
@@ -171,7 +166,6 @@ Future<void> followSystemRecordingDevice(bool enable);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_irtcengine_getaudiodeviceinfo"></a>
@@ -204,7 +198,6 @@ Future<DeviceInfo> getAudioDeviceInfo();
 - 非空：方法调用成功。
 - 空：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiodevicemanager"></a>
@@ -227,7 +220,6 @@ AudioDeviceManager getAudioDeviceManager();
 
 一个 [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager) 对象。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_iaudiodevicemanager_getloopbackdevice"></a>
@@ -252,7 +244,6 @@ Future<String> getLoopbackDevice();
 
 当前声卡采集设备的 ID。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdefaultdevice"></a>
@@ -279,7 +270,6 @@ Future<AudioDeviceInfo> getPlaybackDefaultDevice();
 
 默认音频播放设备的信息。详见 [AudioDeviceInfo](/zh-CN/api-reference/rtc/flutter/class-audiodeviceinfo)。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdevice"></a>
@@ -306,7 +296,6 @@ Future<String> getPlaybackDevice();
 
 当前音频播放设备。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo"></a>
@@ -333,7 +322,6 @@ Future<AudioDeviceInfo> getPlaybackDeviceInfo();
 
 [AudioDeviceInfo](/zh-CN/api-reference/rtc/flutter/class-audiodeviceinfo) 对象，包含音频播放设备的设备 ID 和设备名称。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdevicemute"></a>
@@ -357,7 +345,6 @@ Future<bool> getPlaybackDeviceMute();
 - true: 播放设备为静音状态。
 - false: 播放设备为非静音状态。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdevicevolume"></a>
@@ -380,7 +367,6 @@ Future<int> getPlaybackDeviceVolume();
 
 播放设备音量。取值范围 [0,255]。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdefaultdevice"></a>
@@ -407,7 +393,6 @@ Future<AudioDeviceInfo> getRecordingDefaultDevice();
 
 默认音频采集设备的信息。详见 [AudioDeviceInfo](/zh-CN/api-reference/rtc/flutter/class-audiodeviceinfo)。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdevice"></a>
@@ -434,7 +419,6 @@ Future<String> getRecordingDevice();
 
 当前音频采集设备。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo"></a>
@@ -461,7 +445,6 @@ Future<AudioDeviceInfo> getRecordingDeviceInfo();
 
 [AudioDeviceInfo](/zh-CN/api-reference/rtc/flutter/class-audiodeviceinfo) 对象，包含音频采集设备的设备 ID 和设备名称。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdevicemute"></a>
@@ -485,7 +468,6 @@ Future<bool> getRecordingDeviceMute();
 - true: 采集设备为静音状态。
 - false: 采集设备为非静音状态。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdevicevolume"></a>
@@ -512,7 +494,6 @@ Future<int> getRecordingDeviceVolume();
 
 音频采集设备音量。取值范围 [0,255]。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_release_iaudiodevicemanager"></a>
@@ -529,7 +510,6 @@ Future<void> release();
 
 <a id="api_iaudiodevicemanager_release_iaudiodevicemanager__detailed_desc"></a>
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setloopbackdevice"></a>
@@ -562,7 +542,7 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 #### `deviceId`
 
-指定 SDK 的声卡采集设备。由 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/flutter/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。 最大长度为 [MaxDeviceIdLengthType](/zh-CN/api-reference/rtc/flutter/enum-maxdeviceidlengthtype)。
+指定 SDK 的声卡采集设备。由 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/flutter/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。 最大长度为 [MaxDeviceIdLengthType](/zh-CN/api-reference/rtc/flutter/enum-maxdeviceidlengthtype)。
 
 <a id="api_iaudiodevicemanager_setloopbackdevice__return_values"></a>
 
@@ -570,7 +550,6 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setplaybackdevice"></a>
@@ -599,7 +578,7 @@ Future<void> setPlaybackDevice(String deviceId);
 
 #### `deviceId`
 
-指定播放设备。由 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/flutter/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。
+指定播放设备。由 [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/flutter/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。
 
 <a id="api_iaudiodevicemanager_setplaybackdevice__return_values"></a>
 
@@ -607,7 +586,6 @@ Future<void> setPlaybackDevice(String deviceId);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute"></a>
@@ -641,7 +619,6 @@ Future<void> setPlaybackDeviceMute(bool mute);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume"></a>
@@ -676,7 +653,6 @@ Future<void> setPlaybackDeviceVolume(int volume);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevice"></a>
@@ -705,7 +681,7 @@ Future<void> setRecordingDevice(String deviceId);
 
 #### `deviceId`
 
-音频采集设备的 Device ID。可通过 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/flutter/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取。插拔设备不会影响 `deviceId`。
+音频采集设备的 Device ID。可通过 [enumerateRecordingDevices](/zh-CN/api-reference/rtc/flutter/device-management/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取。插拔设备不会影响 `deviceId`。
 
 <a id="api_iaudiodevicemanager_setrecordingdevice__return_values"></a>
 
@@ -713,7 +689,6 @@ Future<void> setRecordingDevice(String deviceId);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute"></a>
@@ -747,7 +722,6 @@ Future<void> setRecordingDeviceMute(bool mute);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume"></a>
@@ -780,7 +754,6 @@ Future<void> setRecordingDeviceVolume(int volume);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest"></a>
@@ -797,14 +770,14 @@ Future<void> startAudioDeviceLoopbackTest(int indicationInterval);
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__detailed_desc"></a>
 
-该方法测试音频采集和播放设备是否能正常工作。一旦测试开始，音频采集设备会采集本地音频，然后使用音频播放设备播放出来。SDK 会按设置的时间间隔触发两个 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告音频采集设备（`uid` = 0）和音频播放设置（`uid` = 1）的音量信息。
+该方法测试音频采集和播放设备是否能正常工作。一旦测试开始，音频采集设备会采集本地音频，然后使用音频播放设备播放出来。SDK 会按设置的时间间隔触发两个 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告音频采集设备（`uid` = 0）和音频播放设置（`uid` = 1）的音量信息。
 
 :::info[注]
 - 该方法仅适用于 Windows 和 macOS。
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
 - 该方法仅在本地进行音频设备测试，不涉及网络连接。
-- 完成测试后，必须调用 [stopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/flutter/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
+- 完成测试后，必须调用 [stopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/flutter/device-management/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__parameters"></a>
@@ -813,7 +786,7 @@ Future<void> startAudioDeviceLoopbackTest(int indicationInterval);
 
 #### `indicationInterval`
 
-SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒。建议设置到大于 200 毫秒。不得少于 10 毫秒，否则会收不到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
+SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒。建议设置到大于 200 毫秒。不得少于 10 毫秒，否则会收不到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__return_values"></a>
 
@@ -821,7 +794,6 @@ SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio-basi
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest"></a>
@@ -838,10 +810,10 @@ Future<void> startPlaybackDeviceTest(String testAudioFilePath);
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__detailed_desc"></a>
 
-该方法用于测试本地音频播放设备是否能正常工作。启动测试后，SDK 播放指定的音频文件，测试者如果能听到声音，说明播放设备能正常工作。 调用该方法后，SDK 会每隔 100 毫秒触发一次 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 1 及播放设备的音量信息。 该方法和 [startEchoTest](/zh-CN/api-reference/rtc/flutter/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频播放设备能否正常工作，后者可以检测音视频设备及网络是否正常。
+该方法用于测试本地音频播放设备是否能正常工作。启动测试后，SDK 播放指定的音频文件，测试者如果能听到声音，说明播放设备能正常工作。 调用该方法后，SDK 会每隔 100 毫秒触发一次 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 1 及播放设备的音量信息。 该方法和 [startEchoTest](/zh-CN/api-reference/rtc/flutter/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频播放设备能否正常工作，后者可以检测音视频设备及网络是否正常。
 
 :::info[注]
-该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/flutter/audio-device#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
+该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/flutter/device-management/audio-device#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
 :::
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__parameters"></a>
@@ -861,7 +833,6 @@ Future<void> startPlaybackDeviceTest(String testAudioFilePath);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest"></a>
@@ -878,10 +849,10 @@ Future<void> startRecordingDeviceTest(int indicationInterval);
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__detailed_desc"></a>
 
-该方法用于测试本地音频采集设备是否能正常工作。调用该方法后，SDK 会按设置的时间间隔触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 0 及采集设备的音量信息。 该方法和 [startEchoTest](/zh-CN/api-reference/rtc/flutter/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频采集设备能否正常工作，后者可以检测音视频设备及网络是否正常。
+该方法用于测试本地音频采集设备是否能正常工作。调用该方法后，SDK 会按设置的时间间隔触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 0 及采集设备的音量信息。 该方法和 [startEchoTest](/zh-CN/api-reference/rtc/flutter/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频采集设备能否正常工作，后者可以检测音视频设备及网络是否正常。
 
 :::info[注]
-该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/flutter/audio-device#api_iaudiodevicemanager_stoprecordingdevicetest) 停止设备测试。
+该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/flutter/device-management/audio-device#api_iaudiodevicemanager_stoprecordingdevicetest) 停止设备测试。
 :::
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__parameters"></a>
@@ -890,7 +861,7 @@ Future<void> startRecordingDeviceTest(int indicationInterval);
 
 #### `indicationInterval`
 
-SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒，最小取值为 10，否则会收不到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，SDK 会返回错误码 `-2`。声网推荐你将该值设为 100。
+SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒，最小取值为 10，否则会收不到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，SDK 会返回错误码 `-2`。声网推荐你将该值设为 100。
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__return_values"></a>
 
@@ -902,7 +873,6 @@ SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/flutter/audio-basi
 
   - -2: 参数设置错误，请重新设置参数。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest"></a>
@@ -923,7 +893,7 @@ Future<void> stopAudioDeviceLoopbackTest();
 - 该方法仅适用于 Windows 和 macOS。
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
-- 在调用 [startAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/flutter/audio-device#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 后，必须调用该方法停止音频设备回路测试。
+- 在调用 [startAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/flutter/device-management/audio-device#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 后，必须调用该方法停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__return_values"></a>
@@ -932,7 +902,6 @@ Future<void> stopAudioDeviceLoopbackTest();
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest"></a>
@@ -949,7 +918,7 @@ Future<void> stopPlaybackDeviceTest();
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest__detailed_desc"></a>
 
-该方法用于停止音频播放设备测试。调用 [startPlaybackDeviceTest](/zh-CN/api-reference/rtc/flutter/audio-device#api_iaudiodevicemanager_startplaybackdevicetest) 后，必须调用该方法停止测试。
+该方法用于停止音频播放设备测试。调用 [startPlaybackDeviceTest](/zh-CN/api-reference/rtc/flutter/device-management/audio-device#api_iaudiodevicemanager_startplaybackdevicetest) 后，必须调用该方法停止测试。
 
 :::info[注]
 该方法需要在加入频道前调用。
@@ -961,7 +930,6 @@ Future<void> stopPlaybackDeviceTest();
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest"></a>
@@ -978,7 +946,7 @@ Future<void> stopRecordingDeviceTest();
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest__detailed_desc"></a>
 
-该方法用于停止音频采集设备测试。调用 [startRecordingDeviceTest](/zh-CN/api-reference/rtc/flutter/audio-device#api_iaudiodevicemanager_startrecordingdevicetest) 后，必须调用该方法停止测试。
+该方法用于停止音频采集设备测试。调用 [startRecordingDeviceTest](/zh-CN/api-reference/rtc/flutter/device-management/audio-device#api_iaudiodevicemanager_startrecordingdevicetest) 后，必须调用该方法停止测试。
 
 :::info[注]
 该方法需要在加入频道前调用。
@@ -990,7 +958,6 @@ Future<void> stopRecordingDeviceTest();
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AudioDeviceManager](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged"></a>
@@ -1030,7 +997,6 @@ final void Function(String deviceId, MediaDeviceType deviceType,
 
 设备状态，详见 [MediaDeviceStateType](/zh-CN/api-reference/rtc/flutter/enum-mediadevicestatetype)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiodevicevolumechanged"></a>
@@ -1073,5 +1039,4 @@ final void Function(MediaDeviceType deviceType, int volume, bool muted)?
 - true: 音频设备已静音。
 - false: 音频设备未被静音。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)

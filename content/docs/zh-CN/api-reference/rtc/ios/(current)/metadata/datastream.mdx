@@ -1,14 +1,9 @@
 ---
 title: "数据流 Datastream"
-description: "创建数据流。"
+description: "数据流 Datastream API reference."
 ---
-<a id="toc_datastream"></a>
 
-## 数据流 Datastream
-
-<a id="api_irtcengine_createdatastream1"></a>
-
-## createDataStream:reliable:ordered:
+## <span id="toc_datastream"></span>createDataStream:reliable:ordered: [#api_irtcengine_createdatastream1]
 
 创建数据流。
 
@@ -28,15 +23,11 @@ description: "创建数据流。"
 每个用户在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的生命周期内最多可创建五个数据流。离开频道时数据流会被销毁，如需继续使用需重新创建。如果你需要更全面的低延时、高并发、可扩展的实时消息和状态同步方案，建议使用实时消息。
 :::
 
-<a id="api_irtcengine_createdatastream1__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_createdatastream1__timing]
 
 你可以在加入频道前或后调用该方法。
 
-<a id="api_irtcengine_createdatastream1__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_createdatastream1__parameters]
 
 #### `streamId`
 
@@ -58,19 +49,14 @@ description: "创建数据流。"
 - YES：接收端按发送顺序接收数据。
 - NO：接收端不按发送顺序接收数据。
 
-<a id="api_irtcengine_createdatastream1__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_createdatastream1__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_createdatastream2"></a>
-
-## createDataStream:config:
+## createDataStream:config: [#api_irtcengine_createdatastream2]
 
 创建一个数据流。
 
@@ -89,15 +75,11 @@ description: "创建数据流。"
 每个用户在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的生命周期内最多可以创建五个数据流。离开频道时数据流会被销毁，如需使用需重新创建。如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
 :::
 
-<a id="api_irtcengine_createdatastream2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_createdatastream2__timing]
 
 你可以在加入频道前或加入频道后调用该方法。
 
-<a id="api_irtcengine_createdatastream2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_createdatastream2__parameters]
 
 #### `streamId`
 
@@ -107,19 +89,14 @@ description: "创建数据流。"
 
 数据流的配置，详见 [AgoraDataStreamConfig](/zh-CN/api-reference/rtc/ios/class-datastreamconfig)。
 
-<a id="api_irtcengine_createdatastream2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_createdatastream2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_createdatastreamex1"></a>
-
-## createDataStreamEx:reliable:ordered:connection:
+## createDataStreamEx:reliable:ordered:connection: [#api_irtcengineex_createdatastreamex1]
 
 创建一个数据流。
 
@@ -132,9 +109,7 @@ description: "创建数据流。"
                connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(createDataStreamEx(_:reliable:ordered:connection:));
 ```
 
-<a id="api_irtcengineex_createdatastreamex1__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengineex_createdatastreamex1__detailed_desc]
 
 该方法已废弃，请改用 [createDataStreamEx:config:connection:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengineex_createdatastreamex2)。
 
@@ -144,21 +119,15 @@ description: "创建数据流。"
 每个用户在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的生命周期中最多可创建五个数据流。离开频道时数据流会被销毁，如需使用需重新创建。
 :::
 
-<a id="api_irtcengineex_createdatastreamex1__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_createdatastreamex1__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_createdatastreamex1__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengineex_createdatastreamex1__timing]
 
 请在调用 `joinChannelExByToken` 之后调用此方法。
 
-<a id="api_irtcengineex_createdatastreamex1__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_createdatastreamex1__parameters]
 
 #### `streamId`
 
@@ -184,19 +153,14 @@ description: "创建数据流。"
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_createdatastreamex1__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_createdatastreamex1__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengineex_createdatastreamex2"></a>
-
-## createDataStreamEx:config:connection:
+## createDataStreamEx:config:connection: [#api_irtcengineex_createdatastreamex2]
 
 创建一个数据流。
 
@@ -216,21 +180,15 @@ description: "创建数据流。"
 每个用户在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的生命周期内最多可以创建五个数据流。离开频道时数据流会被销毁，如需使用需重新创建。如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
 :::
 
-<a id="api_irtcengineex_createdatastreamex2__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_createdatastreamex2__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_createdatastreamex2__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengineex_createdatastreamex2__timing]
 
 请在调用 `joinChannelExByToken` 方法后调用该方法。
 
-<a id="api_irtcengineex_createdatastreamex2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_createdatastreamex2__parameters]
 
 #### `streamId`
 
@@ -244,19 +202,14 @@ description: "创建数据流。"
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_createdatastreamex2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_createdatastreamex2__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
-<a id="api_irtcengine_sendstreammessage"></a>
-
-## sendStreamMessage:data:
+## sendStreamMessage:data: [#api_irtcengine_sendstreammessage]
 
 发送数据流消息。
 
@@ -281,9 +234,7 @@ description: "创建数据流。"
 - 此方法仅适用于主播。
 :::
 
-<a id="api_irtcengine_sendstreammessage__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_sendstreammessage__parameters]
 
 #### `streamId`
 
@@ -293,19 +244,14 @@ description: "创建数据流。"
 
 要发送的消息。
 
-<a id="api_irtcengine_sendstreammessage__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_sendstreammessage__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="callback_irtcengineeventhandler_onstreammessage"></a>
-
-## rtcEngine:receiveStreamMessageFromUid:streamId:data:
+## rtcEngine:receiveStreamMessageFromUid:streamId:data: [#callback_irtcengineeventhandler_onstreammessage]
 
 当本地用户收到远端用户发送的数据流时触发。
 
@@ -323,15 +269,11 @@ description: "创建数据流。"
 如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
 :::
 
-<a id="callback_irtcengineeventhandler_onstreammessage__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onstreammessage__timing]
 
 该回调在你收到远端用户发送的数据流时被触发。
 
-<a id="callback_irtcengineeventhandler_onstreammessage__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onstreammessage__parameters]
 
 #### `engine`
 
@@ -349,12 +291,9 @@ description: "创建数据流。"
 
 接收到的数据内容，
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
-<a id="callback_irtcengineeventhandler_onstreammessageerror"></a>
-
-## rtcEngine:didOccurStreamMessageErrorFromUid:streamId:error:missed:cached:
+## rtcEngine:didOccurStreamMessageErrorFromUid:streamId:error:missed:cached: [#callback_irtcengineeventhandler_onstreammessageerror]
 
 当本地用户未收到远端用户发送的数据流时触发的回调。
 
@@ -372,15 +311,11 @@ description: "创建数据流。"
 如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
 :::
 
-<a id="callback_irtcengineeventhandler_onstreammessageerror__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_irtcengineeventhandler_onstreammessageerror__timing]
 
 该回调在本地用户未收到远端用户发送的数据流时被触发。
 
-<a id="callback_irtcengineeventhandler_onstreammessageerror__parameters"></a>
-
-### 参数
+### 参数 [#callback_irtcengineeventhandler_onstreammessageerror__parameters]
 
 #### `engine`
 
@@ -406,5 +341,4 @@ description: "创建数据流。"
 
 数据流中断时缓存的传入消息数量。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)

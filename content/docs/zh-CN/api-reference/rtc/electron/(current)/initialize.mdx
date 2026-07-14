@@ -2,6 +2,7 @@
 title: "初始化相关"
 description: "添加主回调事件。"
 ---
+
 <a id="toc_initialize"></a>
 
 ## 初始化相关
@@ -37,7 +38,6 @@ abstract registerEventHandler(eventHandler: IRtcEngineEventHandler): boolean;
 - true：方法调用成功。
 - false：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_addlistener"></a>
@@ -76,7 +76,6 @@ const onJoinChannelSuccess = (connection: RtcConnection, elapsed: number) => {};
 engine.addListener('onJoinChannelSuccess', onJoinChannelSuccess);
 ```
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_createagorartcengine"></a>
@@ -103,7 +102,6 @@ export function createAgoraRtcEngine(): IRtcEngineEx {
 
 [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex) 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getmediaengine"></a>
@@ -130,7 +128,6 @@ abstract getMediaEngine(): IMediaEngine;
 
 [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine) 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_initialize"></a>
@@ -178,7 +175,6 @@ abstract initialize(context: RtcEngineContext): number;
   - -22: 资源申请失败。当 App 占用资源过多，或系统资源耗尽时，SDK 分配资源失败，会返回该错误。
   - -101: App ID 无效。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_release"></a>
@@ -213,7 +209,6 @@ abstract release(sync?: boolean): void;
 - true:该方法为同步调用。
 - false:该方法为异步调用。目前该方法仅支持同步调用，请不要将该参数设置为该值。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_removealllisteners"></a>
@@ -240,7 +235,6 @@ removeAllListeners?<EventType extends keyof IMediaEngineEvent>(
 
 需要监听的目标事件名。详见 [IRtcEngineEvent](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineevent)。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_removehandler"></a>
@@ -274,7 +268,6 @@ abstract unregisterEventHandler(eventHandler: IRtcEngineEventHandler): boolean;
 - true: 方法调用成功。
 - false: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/electron/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_removelistener"></a>
@@ -314,5 +307,4 @@ engine.addListener('onJoinChannelSuccess', onJoinChannelSuccess);
 engine.removeListener('onJoinChannelSuccess', onJoinChannelSuccess);
 ```
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)

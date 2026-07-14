@@ -1,10 +1,9 @@
 ---
 title: "自定义视频采集和渲染"
-description: "创建一个自定义视频轨道。"
+description: "自定义视频采集和渲染 API reference."
 ---
-<a id="toc_video_custom_capturenrendering"></a>
 
-## 自定义视频采集和渲染
+<a id="toc_video_custom_capturenrendering"></a>
 
 <a id="api_irtcengine_createcustomvideotrack"></a>
 
@@ -24,7 +23,7 @@ virtual video_track_id_t createCustomVideoTrack() = 0;
 
 1. 调用该方法创建一个视频轨道，并获取视频轨道 ID。
 2. 调用 `joinChannel` 加入频道。在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中，将 `customVideoTrackId` 设置为你要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 true。
-3. 调用 [pushVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video-custom-capturenrendering#api_imediaengine_pushvideoframe_imediaengine)，并将 `videoTrackId` 设置为第 2 步中设置的视频轨道 ID，即可在频道中发布对应的自定义视频源。
+3. 调用 [pushVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe_imediaengine)，并将 `videoTrackId` 设置为第 2 步中设置的视频轨道 ID，即可在频道中发布对应的自定义视频源。
 
 <a id="api_irtcengine_createcustomvideotrack__return_values"></a>
 
@@ -33,7 +32,6 @@ virtual video_track_id_t createCustomVideoTrack() = 0;
 - 方法调用成功，返回视频轨道 ID，作为该视频轨道的唯一标识符。
 - 方法调用失败，返回 `0xffffffff`。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroycustomvideotrack"></a>
@@ -56,7 +54,7 @@ virtual int destroyCustomVideoTrack(video_track_id_t video_track_id) = 0;
 
 #### `video_track_id`
 
-视频轨道 ID，由调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回。
+视频轨道 ID，由调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回。
 
 <a id="api_irtcengine_destroycustomvideotrack__return_values"></a>
 
@@ -65,7 +63,6 @@ virtual int destroyCustomVideoTrack(video_track_id_t video_track_id) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaengine_pushvideoframe_imediaengine"></a>
@@ -84,14 +81,14 @@ virtual int pushVideoFrame(base::ExternalVideoFrame* frame, unsigned int videoTr
 
 要发布自定义视频源，请按照以下步骤操作：
 
-1. 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 创建视频轨道并获取视频轨道 ID。
+1. 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 创建视频轨道并获取视频轨道 ID。
 2. 调用 `joinChannel` 加入频道。在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中，将 `customVideoTrackId` 设置为要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 true。
-3. 调用 [pushVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video-custom-capturenrendering#api_imediaengine_pushvideoframe_imediaengine)，并将 `videoTrackId` 设置为第 2 步中设置的视频轨道 ID，即可在频道中发布对应的自定义视频源。
+3. 调用 [pushVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe_imediaengine)，并将 `videoTrackId` 设置为第 2 步中设置的视频轨道 ID，即可在频道中发布对应的自定义视频源。
 
 :::info[注]
-如果你只需向频道中推送一个自定义视频源，可以直接调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/cpp-all-platforms/video-custom-capturenrendering#api_imediaengine_setexternalvideosource_imediaengine) 方法，SDK 会自动创建一个 `videoTrackId` 为 0 的视频轨道。 警告：调用 [pushVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video-custom-capturenrendering#api_imediaengine_pushvideoframe_imediaengine) 后，即使你停止向 SDK 推送外部视频帧，自定义视频流仍会计入视频时长并产生费用。声网建议你根据实际情况采取适当措施以避免此类视频计费：
+如果你只需向频道中推送一个自定义视频源，可以直接调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_imediaengine_setexternalvideosource_imediaengine) 方法，SDK 会自动创建一个 `videoTrackId` 为 0 的视频轨道。 警告：调用 [pushVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe_imediaengine) 后，即使你停止向 SDK 推送外部视频帧，自定义视频流仍会计入视频时长并产生费用。声网建议你根据实际情况采取适当措施以避免此类视频计费：
 
-- 如果你不再需要采集外部视频数据，可以调用 [destroyCustomVideoTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) 销毁自定义视频轨道。
+- 如果你不再需要采集外部视频数据，可以调用 [destroyCustomVideoTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) 销毁自定义视频轨道。
 - 如果你只想将外部视频数据用于本地预览而不在频道中发布，可以调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalvideostream) 停止发送视频流，或调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions) 将 `publishCustomVideoTrack` 设置为 false。
 :::
 
@@ -99,7 +96,7 @@ virtual int pushVideoFrame(base::ExternalVideoFrame* frame, unsigned int videoTr
 
 ### 适用场景
 
-自 v4.2.3 起，SDK 支持 `ID3D11Texture2D` 视频格式，该格式广泛应用于游戏场景。当你需要将此类视频帧推送到 SDK 时，调用 [pushVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video-custom-capturenrendering#api_imediaengine_pushvideoframe_imediaengine)，并将 `frame` 中的 `format` 设置为 `VIDEO_TEXTURE_ID3D11TEXTURE2D`，设置 `d3d11_texture_2d` 和 `texture_slice_index` 成员，并将视频帧格式设置为 `ID3D11Texture2D`。
+自 v4.2.3 起，SDK 支持 `ID3D11Texture2D` 视频格式，该格式广泛应用于游戏场景。当你需要将此类视频帧推送到 SDK 时，调用 [pushVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe_imediaengine)，并将 `frame` 中的 `format` 设置为 `VIDEO_TEXTURE_ID3D11TEXTURE2D`，设置 `d3d11_texture_2d` 和 `texture_slice_index` 成员，并将视频帧格式设置为 `ID3D11Texture2D`。
 
 <a id="api_imediaengine_pushvideoframe_imediaengine__parameters"></a>
 
@@ -111,7 +108,7 @@ virtual int pushVideoFrame(base::ExternalVideoFrame* frame, unsigned int videoTr
 
 #### `videoTrackId`
 
-调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回的视频轨道 ID。
+调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 返回的视频轨道 ID。
 
 :::info[注]
 如果你只需推送一个自定义视频源，请将 `videoTrackId` 设置为 0。
@@ -124,7 +121,6 @@ virtual int pushVideoFrame(base::ExternalVideoFrame* frame, unsigned int videoTr
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
 
 <a id="api_imediaengine_setexternalremoteeglcontext_imediaengine"></a>
@@ -168,7 +164,6 @@ virtual int setExternalRemoteEglContext(void* eglContext) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
 
 <a id="api_imediaengine_setexternalvideosource_imediaengine"></a>
@@ -185,7 +180,7 @@ virtual int setExternalVideoSource(bool enabled, bool useTexture, EXTERNAL_VIDEO
 
 <a id="api_imediaengine_setexternalvideosource_imediaengine__detailed_desc"></a>
 
-调用该方法启用外部视频源后，可以调用 [pushVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video-custom-capturenrendering#api_imediaengine_pushvideoframe_imediaengine) 向 SDK 推送外部视频数据。
+调用该方法启用外部视频源后，可以调用 [pushVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe_imediaengine) 向 SDK 推送外部视频数据。
 
 :::info[注]
 频道内不支持动态切换视频源。如需从外部视频源切换为内部视频源，必须先离开频道，调用该方法关闭外部视频源，再重新加入频道。
@@ -234,5 +229,4 @@ virtual int setExternalVideoSource(bool enabled, bool useTexture, EXTERNAL_VIDEO
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)

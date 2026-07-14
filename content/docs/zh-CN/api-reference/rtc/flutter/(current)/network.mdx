@@ -1,10 +1,9 @@
 ---
 title: "网络及其他"
-description: "投诉通话质量。"
+description: "网络及其他 API reference."
 ---
-<a id="toc_network"></a>
 
-## 网络及其他
+<a id="toc_network"></a>
 
 <a id="api_irtcengine_complain"></a>
 
@@ -40,7 +39,6 @@ Future<void> complain({required String callId, required String description});
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableencryption"></a>
@@ -98,7 +96,6 @@ Future<void> enableEncryption(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableencryptionex"></a>
@@ -162,7 +159,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_enablewebsdkinteroperability"></a>
@@ -202,7 +198,6 @@ Future<void> enableWebSdkInteroperability(bool enabled);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_rtcengineext_getassetabsolutepath"></a>
@@ -233,7 +228,6 @@ pubspec.yaml 文件中配置的 `flutter -> assets` 字段。
 
 Asset 的实际路径。
 
-### 所属接口类
 - [RtcEngineExt](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_rtcengineext)
 
 <a id="api_irtcengine_getcallid"></a>
@@ -264,7 +258,6 @@ Future<String> getCallId();
 
 通话 ID。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getcallidex"></a>
@@ -297,7 +290,6 @@ Future<String> getCallIdEx(RtcConnection connection);
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_getconnectionstate"></a>
@@ -326,7 +318,6 @@ Future<ConnectionStateType> getConnectionState();
 
 当前网络连接状态。详见 [ConnectionStateType](/zh-CN/api-reference/rtc/flutter/enum-connectionstatetype)。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_getconnectionstateex"></a>
@@ -363,7 +354,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 当前网络连接状态。详见 [ConnectionStateType](/zh-CN/api-reference/rtc/flutter/enum-connectionstatetype)。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_getcurrentmonotonictimeinms"></a>
@@ -395,7 +385,6 @@ Monotonic Time 是指一个单调递增的时间序列，它的值会随着时�
 - ≥ 0: 方法调用成功，返回 SDK 当前的 Monotonic Time（毫秒）。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_geterrordescription"></a>
@@ -426,7 +415,6 @@ SDK 报告的错误码。
 
 具体的错误描述。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getnativehandle"></a>
@@ -451,7 +439,6 @@ Future<int> getNativeHandle();
 
 SDK 引擎的 Native 句柄。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getnetworktype"></a>
@@ -491,7 +478,6 @@ Future<int> getNetworkType();
 
   - -1：网络连接类型未知。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getntpwalltimeinms"></a>
@@ -516,7 +502,6 @@ Future<int> getNtpWallTimeInMs();
 
 当前 NTP 时间的 Unix 时间戳 (毫秒)。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getversion"></a>
@@ -539,7 +524,6 @@ Future<SDKBuildInfo> getVersion();
 
 [SDKBuildInfo](/zh-CN/api-reference/rtc/flutter/class-sdkbuildinfo) 对象。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_isfeatureavailableondevice"></a>
@@ -579,7 +563,6 @@ Future<bool> isFeatureAvailableOnDevice(FeatureType type);
 - true: 设备支持指定进阶功能。
 - false: 设备不支持指定进阶功能。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_querydevicescore"></a>
@@ -610,7 +593,6 @@ Future<int> queryDeviceScore();
 
 - &lt; 0: 方法调用失败。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_rate"></a>
@@ -656,7 +638,6 @@ Future<void> rate(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_sendcustomreportmessage"></a>
@@ -680,7 +661,6 @@ Future<void> sendCustomReportMessage(
 
 声网提供自定义数据上报和分析服务。该服务当前处于免费内测期。内测期提供的能力为 6 秒内最多上报 10 条数据，每条自定义数据不能超过 256 字节，每个字符串不能超过 100 字节。如需试用该服务，请[联系销售](https://www.shengwang.cn/contact-sales/)开通并商定自定义数据格式。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_sendcustomreportmessageex"></a>
@@ -705,7 +685,6 @@ Future<void> sendCustomReportMessageEx(
 
 声网提供自定义数据上报和分析服务。该服务当前处于免费内测期。内测期提供的能力为 6 秒内最多上报 10 条数据，每条自定义数据不能超过 256 字节，每个字符串不能超过 100 字节。如需试用该服务，请[联系销售](https://www.shengwang.cn/contact-sales/)开通并商定自定义数据格式。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setavsyncsource"></a>
@@ -746,7 +725,6 @@ Future<void> setAVSyncSource({required String channelId, required int uid});
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setcloudproxy"></a>
@@ -768,7 +746,7 @@ Future<void> setCloudProxy(CloudProxyType proxyType);
 :::info[注]
 - 建议你在频道外调用该方法。
 - 如果用户处于内网防火墙环境下，使用 Force UDP 云代理时，旁路推流和跨频道媒体流转发功能不可用。
-- 使用 Force UDP 云代理时，调用 [startAudioMixing](/zh-CN/api-reference/rtc/flutter/audio-mixing#api_irtcengine_startaudiomixing2) 方法时无法播放 HTTP 协议的在线音频文件。旁路推流和跨频道媒体流转发功能会使用 TCP 协议的云代理。
+- 使用 Force UDP 云代理时，调用 [startAudioMixing](/zh-CN/api-reference/rtc/flutter/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法时无法播放 HTTP 协议的在线音频文件。旁路推流和跨频道媒体流转发功能会使用 TCP 协议的云代理。
 :::
 
 <a id="api_irtcengine_setcloudproxy__parameters"></a>
@@ -785,7 +763,6 @@ Future<void> setCloudProxy(CloudProxyType proxyType);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalaccesspoint"></a>
@@ -820,7 +797,7 @@ Future<void> setLocalAccessPoint(LocalAccessPointConfiguration config);
 
 #### `config`
 
-Local Access Point 配置。详见 [LocalAccessPointConfiguration](/zh-CN/api-reference/rtc/flutter/class-localaccesspointconfiguration)。
+Local Access Point 配置。详见 LocalAccessPointConfiguration。
 
 <a id="api_irtcengine_setlocalaccesspoint__return_values"></a>
 
@@ -828,7 +805,6 @@ Local Access Point 配置。详见 [LocalAccessPointConfiguration](/zh-CN/api-re
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlogfile"></a>
@@ -875,7 +851,6 @@ App 必须保证指定的目录存在而且可写。
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlogfilesize"></a>
@@ -929,7 +904,6 @@ Future<void> setLogFileSize(int fileSizeInKBytes);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlogfilter"></a>
@@ -966,7 +940,6 @@ Future<void> setLogFilter(LogFilterType filter);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setloglevel"></a>
@@ -1003,7 +976,6 @@ Future<void> setLogLevel(LogLevel level);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setparameters"></a>
@@ -1034,7 +1006,6 @@ JSON 字符串形式的参数。
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremotesubscribefallbackoption"></a>
@@ -1067,7 +1038,6 @@ Future<void> setRemoteSubscribeFallbackOption(StreamFallbackOptions option);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startechotest3"></a>
@@ -1113,7 +1083,6 @@ Future<void> startEchoTest(EchoTestConfiguration config);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startlastmileprobetest"></a>
@@ -1161,7 +1130,6 @@ Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopechotest"></a>
@@ -1186,7 +1154,6 @@ Future<void> stopEchoTest();
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoplastmileprobetest"></a>
@@ -1209,7 +1176,6 @@ Future<void> stopLastmileProbeTest();
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned"></a>
@@ -1238,7 +1204,6 @@ final void Function(RtcConnection connection)? onConnectionBanned;
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted"></a>
@@ -1274,7 +1239,6 @@ SDK 在和服务器建立连接后，失去了网络连接超过 4 秒，会触�
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onconnectionlost"></a>
@@ -1301,7 +1265,6 @@ SDK 在调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtceng
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged"></a>
@@ -1337,7 +1300,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 引起当前网络连接状态改变的原因。详见 [ConnectionChangedReasonType](/zh-CN/api-reference/rtc/flutter/enum-connectionchangedreasontype)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onencryptionerror"></a>
@@ -1369,7 +1331,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 错误类型，详见 [EncryptionErrorType](/zh-CN/api-reference/rtc/flutter/enum-encryptionerrortype)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult"></a>
@@ -1396,7 +1357,6 @@ final void Function(LastmileProbeResult result)? onLastmileProbeResult;
 
 上下行 Last mile 质量探测结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/flutter/class-lastmileproberesult)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlastmilequality"></a>
@@ -1423,7 +1383,6 @@ final void Function(QualityType quality)? onLastmileQuality;
 
 Last mile 网络质量。详见 [QualityType](/zh-CN/api-reference/rtc/flutter/enum-qualitytype)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onmultipathstats"></a>
@@ -1459,7 +1418,6 @@ Last mile 网络质量。详见 [QualityType](/zh-CN/api-reference/rtc/flutter/e
 
 多路径传输统计信息。详见 [MultipathStats](/zh-CN/api-reference/rtc/flutter/class-multipathstats)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onnetworkquality"></a>
@@ -1503,7 +1461,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 该用户的下行网络质量，基于下行网络的丢包率、平均往返延时和网络抖动计算。详见 [QualityType](/zh-CN/api-reference/rtc/flutter/enum-qualitytype)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onnetworktypechanged"></a>
@@ -1535,7 +1492,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 本地网络连接类型。详见 [NetworkType](/zh-CN/api-reference/rtc/flutter/enum-networktype)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onpermissionerror"></a>
@@ -1562,7 +1518,6 @@ final void Function(PermissionType permissionType)? onPermissionError;
 
 设备权限类型。详见 [PermissionType](/zh-CN/api-reference/rtc/flutter/enum-permissiontype)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onpermissiongranted"></a>
@@ -1588,7 +1543,6 @@ final void Function(PermissionType permissionType)? onPermissionError;
 
 权限类型，详见 [PermissionType](/zh-CN/api-reference/rtc/flutter/enum-permissiontype)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onproxyconnected"></a>
@@ -1628,7 +1582,6 @@ final void Function(String channel, int uid, ProxyType proxyType,
 
 从调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 到 SDK 触发该回调的经过的时间（毫秒）。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly"></a>
@@ -1652,7 +1605,7 @@ final void Function(int uid, bool isFallbackOrRecover)?
 - 下行网络环境改善，订阅音频流恢复为音视频流
 
 :::info[注]
-订阅流因弱网环境而回退为视频小流时，你可以通过 [onRemoteVideoStats](/zh-CN/api-reference/rtc/flutter/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调来监控远端视频大小流的切换。
+订阅流因弱网环境而回退为视频小流时，你可以通过 [onRemoteVideoStats](/zh-CN/api-reference/rtc/flutter/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调来监控远端视频大小流的切换。
 :::
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__parameters"></a>
@@ -1668,7 +1621,6 @@ final void Function(int uid, bool isFallbackOrRecover)?
 - true: 由于网络环境不理想，订阅流已回退为音频流。
 - false: 由于网络环境改善，订阅流已恢复为音视频流。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated"></a>
@@ -1699,5 +1651,4 @@ final void Function(UplinkNetworkInfo info)? onUplinkNetworkInfoUpdated;
 
 上行网络信息，详见 [UplinkNetworkInfo](/zh-CN/api-reference/rtc/flutter/class-uplinknetworkinfo)。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)

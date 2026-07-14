@@ -1,0 +1,63 @@
+---
+title: "Plugins<C_MAP>"
+description: "Plugins<C_MAP> API 参考。"
+---
+
+组件插件。
+
+- Plugins
+
+## 属性
+
+<a id="plugins-1"></a>
+
+### plugins
+
+```ts title="TypeScript"
+plugins: Readonly<{}>
+```
+
+组件插件的描述。
+
+## 方法
+
+<a id="getplugincontext"></a>
+
+### getPluginContext
+
+```ts title="TypeScript"
+getPluginContext<K>(kind: K): any | undefined
+```
+
+获取组件插件的上下文。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| kind: K | 组件插件的类型。 |
+
+#### 返回值
+
+any | undefined
+
+<a id="setplugincontext"></a>
+
+### setPluginContext
+
+```ts title="TypeScript"
+setPluginContext<K>(kind: K, context: any): void
+```
+
+设置组件插件的上下文。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| kind: K | 组件插件的类型。 |
+| context: any | 组件插件的上下文。 |
+
+#### 返回值
+
+void

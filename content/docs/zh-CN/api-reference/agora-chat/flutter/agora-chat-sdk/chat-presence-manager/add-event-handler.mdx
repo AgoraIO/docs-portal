@@ -1,0 +1,30 @@
+---
+title: "addEventHandler method"
+description: "API docs for the addEventHandler method from the ChatPresenceManager class, for the Dart programming language."
+---
+
+Adds the presence event handler. After calling this method, you can handle for new presence event when they arrive.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `identifier` | The custom handler identifier, is used to find the corresponding handler. |
+| `handler` | The handle for presence event. See [ChatPresenceEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-presence-event-handler). |
+
+```dart title="Dart"
+void addEventHandler(String identifier, ChatPresenceEventHandler handler)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+void addEventHandler(
+  String identifier,
+  ChatPresenceEventHandler handler,
+) {
+  _eventHandlesMap[identifier] = handler;
+}
+```

@@ -2,6 +2,7 @@
 title: "频道相关"
 description: "通过 UID 获取用户信息。"
 ---
+
 <a id="toc_channel"></a>
 
 ## 频道相关
@@ -49,7 +50,6 @@ abstract getUserInfoByUid(uid: number): UserInfo;
 - 方法调用成功，返回 [UserInfo](/zh-CN/api-reference/rtc/react-native/class-userinfo) 对象。
 - 方法调用失败，则返回 null。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getuserinfobyuseraccount"></a>
@@ -95,7 +95,6 @@ abstract getUserInfoByUserAccount(userAccount: string): UserInfo;
 - 方法调用成功，返回 [UserInfo](/zh-CN/api-reference/rtc/react-native/class-userinfo) 对象。
 - 方法调用失败，则返回 null。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannel2"></a>
@@ -188,7 +187,6 @@ abstract joinChannel(
   - -102：频道名无效。你需要在 `channelId` 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_joinchannelex"></a>
@@ -275,7 +273,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
   - -102：频道名无效。你需要在 `channelId` 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_joinchannelwithuseraccount2"></a>
@@ -365,7 +362,6 @@ abstract joinChannelWithUserAccount(
   - -102：频道名无效。你需要在 `channelId` 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_joinchannelwithuseraccountex"></a>
@@ -455,7 +451,6 @@ abstract joinChannelWithUserAccountEx(
   - -102：频道名无效。你需要在 `channelId` 中填入有效的频道名，重新加入频道。
   - -121：用户 ID 无效。你需要在 `uid` 中填入有效的用户 ID，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_leavechannel2"></a>
@@ -508,7 +503,6 @@ abstract leaveChannel(options?: LeaveChannelOptions): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_leavechannelex2"></a>
@@ -581,7 +575,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_preloadchannel"></a>
@@ -655,7 +648,6 @@ abstract preloadChannel(
   - -7： [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要在调用该方法前成功初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象。
   - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_preloadchannelwithuseraccount"></a>
@@ -736,7 +728,6 @@ abstract preloadChannelWithUserAccount(
   - -7： [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要在调用该方法前成功初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象。
   - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registerlocaluseraccount"></a>
@@ -794,7 +785,6 @@ abstract registerLocalUserAccount(appId: string, userAccount: string): number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/rn/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_renewtoken"></a>
@@ -844,7 +834,6 @@ abstract renewToken(token: string): number;
     - 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致，
     - 生成的 Token 和加入频道使用的 Token 一致。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setchannelprofile"></a>
@@ -891,7 +880,6 @@ abstract setChannelProfile(profile: ChannelProfileType): number;
   - -2: 参数无效。
   - -7: SDK 尚未初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setclientrole2"></a>
@@ -962,7 +950,6 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
   - -5: 调用被拒绝。
   - -7: SDK 尚未初始化。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_updatechannelmediaoptions"></a>
@@ -998,7 +985,6 @@ abstract updateChannelMediaOptions(options: ChannelMediaOptions): number;
   - -7： [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要在调用该方法前成功初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象。
   - -8： [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象内部状态错误。可能的原因是用户不在频道中。建议通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果收到 `ConnectionStateDisconnected` (1) 或 `ConnectionStateFailed` (5)，则表示用户不在频道中。你需要在调用该方法前调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 加入频道。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex"></a>
@@ -1041,7 +1027,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
   - -7： [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要在调用该方法前成功初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象。
   - -8： [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象内部状态错误。可能的原因是用户不在频道中。建议通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果收到 `ConnectionStateDisconnected` (1) 或 `ConnectionStateFailed` (5)，则表示用户不在频道中。你需要在调用该方法前调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 加入频道。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_updatepreloadchanneltoken"></a>
@@ -1084,7 +1069,6 @@ abstract updatePreloadChannelToken(token: string): number;
   - -2：传入的参数无效。例如，使用了不合法的 Token。你需要填入有效的参数，重新加入频道。
   - -7： [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要在调用该方法前成功初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged"></a>
@@ -1139,7 +1123,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 切换后的角色属性。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/react-native/class-clientroleoptions)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed"></a>
@@ -1184,7 +1167,6 @@ onClientRoleChangeFailed?(
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onerror"></a>
@@ -1215,7 +1197,6 @@ onError?(err: ErrorCodeType, msg: string): void;
 
 错误描述。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess"></a>
@@ -1252,7 +1233,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 从本地调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 开始到发生此事件过去的时间（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onleavechannel"></a>
@@ -1289,7 +1269,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 通话的统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/react-native/class-rtcstats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered"></a>
@@ -1320,7 +1299,6 @@ onLocalUserRegistered?(uid: number, userAccount: string): void;
 
 本地用户的 User Account。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess"></a>
@@ -1355,7 +1333,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 从调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrenewtokenresult"></a>
@@ -1390,7 +1367,6 @@ onRenewTokenResult?(connection: RtcConnection, token: string, code: RenewTokenEr
 
 错误码，详见 [RenewTokenErrorCode](/zh-CN/api-reference/rtc/react-native/enum-renewtokenerrorcode)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrequesttoken"></a>
@@ -1423,7 +1399,6 @@ onRequestToken?(connection: RtcConnection): void;
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrtcstats"></a>
@@ -1458,7 +1433,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 RTC 引擎统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/react-native/class-rtcstats)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire"></a>
@@ -1501,7 +1475,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 即将过期的 Token。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated"></a>
@@ -1532,7 +1505,6 @@ onUserInfoUpdated?(uid: number, info: UserInfo): void;
 
 标识用户信息的 UserInfo 对象，包含用户 UID 和 User Account。详见 [UserInfo](/zh-CN/api-reference/rtc/react-native/class-userinfo) 类。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserjoined"></a>
@@ -1582,7 +1554,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 从本地用户调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 到该回调触发的延迟（毫秒）。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuseroffline"></a>
@@ -1630,5 +1601,4 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 远端用户（通信场景）或主播（直播场景）离线的原因，详见 [UserOfflineReasonType](/zh-CN/api-reference/rtc/react-native/enum-userofflinereasontype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)

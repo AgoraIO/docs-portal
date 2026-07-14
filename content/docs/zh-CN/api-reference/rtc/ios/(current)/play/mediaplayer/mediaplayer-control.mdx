@@ -1,14 +1,9 @@
 ---
 title: "播放器控制"
-description: "调整本地播放音量。"
+description: "播放器控制 API reference."
 ---
-<a id="toc_mediaplayer_control"></a>
 
-## 播放器控制
-
-<a id="api_imediaplayer_adjustplayoutvolume"></a>
-
-## adjustPlayoutVolume:
+## <span id="toc_mediaplayer_control"></span>adjustPlayoutVolume: [#api_imediaplayer_adjustplayoutvolume]
 
 调整本地播放音量。
 
@@ -18,17 +13,11 @@ description: "调整本地播放音量。"
 - (int)adjustPlayoutVolume:(int)volume NS_SWIFT_NAME(adjustPlayoutVolume(_:));
 ```
 
-<a id="api_imediaplayer_adjustplayoutvolume__detailed_desc"></a>
-
-<a id="api_imediaplayer_adjustplayoutvolume__timing"></a>
-
-### 调用时机
+### <span id="api_imediaplayer_adjustplayoutvolume__detailed_desc"></span>调用时机 [#api_imediaplayer_adjustplayoutvolume__timing]
 
 你可以在加入频道前或加入频道后调用该方法。
 
-<a id="api_imediaplayer_adjustplayoutvolume__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_adjustplayoutvolume__parameters]
 
 #### `volume`
 
@@ -37,19 +26,14 @@ description: "调整本地播放音量。"
 - 0：静音。
 - 100：（默认）原始音量。
 
-<a id="api_imediaplayer_adjustplayoutvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_adjustplayoutvolume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_adjustpublishsignalvolume"></a>
-
-## adjustPublishSignalVolume:
+## adjustPublishSignalVolume: [#api_imediaplayer_adjustpublishsignalvolume]
 
 调节用于发布的媒体文件音量。
 
@@ -63,15 +47,11 @@ description: "调整本地播放音量。"
 
 你可以调用该方法调节远端用户听到的媒体文件音量。该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_imediaplayer_adjustpublishsignalvolume__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_imediaplayer_adjustpublishsignalvolume__timing]
 
 该方法可以在加入频道前或加入频道后调用。
 
-<a id="api_imediaplayer_adjustpublishsignalvolume__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_adjustpublishsignalvolume__parameters]
 
 #### `volume`
 
@@ -81,19 +61,14 @@ description: "调整本地播放音量。"
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
 
-<a id="api_imediaplayer_adjustpublishsignalvolume__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_adjustpublishsignalvolume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_mute"></a>
-
-## mute:
+## mute: [#api_imediaplayer_mute]
 
 设置是否静音媒体文件。
 
@@ -103,17 +78,11 @@ description: "调整本地播放音量。"
 - (int)mute:(BOOL)isMute NS_SWIFT_NAME(mute(_:));
 ```
 
-<a id="api_imediaplayer_mute__detailed_desc"></a>
-
-<a id="api_imediaplayer_mute__timing"></a>
-
-### 调用时机
+### <span id="api_imediaplayer_mute__detailed_desc"></span>调用时机 [#api_imediaplayer_mute__timing]
 
 你可以在加入频道前或加入频道后调用该方法。
 
-<a id="api_imediaplayer_mute__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_mute__parameters]
 
 #### `isMute`
 
@@ -122,19 +91,14 @@ description: "调整本地播放音量。"
 - YES：静音媒体文件。
 - NO：（默认）取消静音媒体文件。
 
-<a id="api_imediaplayer_mute__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_mute__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_pause"></a>
-
-## pause
+## pause [#api_imediaplayer_pause]
 
 暂停播放。
 
@@ -144,27 +108,18 @@ description: "调整本地播放音量。"
 - (int)pause NS_SWIFT_NAME(pause());
 ```
 
-<a id="api_imediaplayer_pause__detailed_desc"></a>
-
-<a id="api_imediaplayer_pause__timing"></a>
-
-### 调用时机
+### <span id="api_imediaplayer_pause__detailed_desc"></span>调用时机 [#api_imediaplayer_pause__timing]
 
 你可以在加入频道前或后调用该方法。
 
-<a id="api_imediaplayer_pause__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_pause__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_play"></a>
-
-## play
+## play [#api_imediaplayer_play]
 
 播放媒体文件。
 
@@ -178,26 +133,19 @@ description: "调整本地播放音量。"
 
 你可以调用该方法播放媒体文件。
 
-<a id="api_imediaplayer_play__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_imediaplayer_play__timing]
 
 - 在调用 [open:startPos:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体文件，并收到 `didChangedToState:reason:` 回调报告状态为 `AgoraMediaPlayerStateOpenCompleted` 后调用该方法。
 - 在调用 [seekToPosition:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 后调用该方法。
 
-<a id="api_imediaplayer_play__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_play__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_playpreloadedsrc"></a>
-
-## playPreloadedSrc:
+## playPreloadedSrc: [#api_imediaplayer_playpreloadedsrc]
 
 播放已预加载的媒体资源。
 
@@ -219,27 +167,20 @@ description: "调整本地播放音量。"
 如果在播放暂停时调用此方法，该方法在播放恢复前不会生效。
 :::
 
-<a id="api_imediaplayer_playpreloadedsrc__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_playpreloadedsrc__parameters]
 
 #### `src`
 
 播放列表中媒体资源的 URL，必须与调用 [preloadSrc:startPos:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc) 方法时设置的 `src` 保持一致，否则无法播放该媒体资源。
 
-<a id="api_imediaplayer_playpreloadedsrc__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_playpreloadedsrc__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_resume"></a>
-
-## resume
+## resume [#api_imediaplayer_resume]
 
 恢复播放媒体文件。
 
@@ -249,21 +190,14 @@ description: "调整本地播放音量。"
 - (int)resume NS_SWIFT_NAME(resume());
 ```
 
-<a id="api_imediaplayer_resume__detailed_desc"></a>
-
-<a id="api_imediaplayer_resume__return_values"></a>
-
-### 返回值
+### <span id="api_imediaplayer_resume__detailed_desc"></span>返回值 [#api_imediaplayer_resume__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_seek"></a>
-
-## seekToPosition:
+## seekToPosition: [#api_imediaplayer_seek]
 
 跳转到新的播放位置。
 
@@ -278,33 +212,24 @@ description: "调整本地播放音量。"
 - 如果你在播放完成后调用该方法（收到回调 `didChangedToState:reason:`，播放状态为 `AgoraMediaPlayerStatePlayBackCompleted` 或 `AgoraMediaPlayerStatePlayBackAllLoopsCompleted` ），SDK 会从指定位置开始播放媒体文件。此时，你会收到回调 `didChangedToState:reason:`，播放状态为 `AgoraMediaPlayerStatePlaying`。
 - 如果你在播放暂停时调用该方法，调用成功后，SDK 会跳转到指定位置。要恢复播放，请调用 [resume](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_resume) 或 [play](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法。
 
-<a id="api_imediaplayer_seek__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_imediaplayer_seek__timing]
 
 你可以在加入频道前或后调用该方法。
 
-<a id="api_imediaplayer_seek__parameters"></a>
-
-### 参数
+### 参数 [#api_imediaplayer_seek__parameters]
 
 #### `position`
 
 新的播放位置（单位为毫秒）。
 
-<a id="api_imediaplayer_seek__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_seek__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)
 
-<a id="api_imediaplayer_stop"></a>
-
-## stop:
+## stop: [#api_imediaplayer_stop]
 
 停止播放媒体轨道。
 
@@ -318,18 +243,13 @@ description: "调整本地播放音量。"
 
 调用该方法停止播放后，如果你需要再次播放，需要调用 [open:startPos:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 或 [openWithMediaSource:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法重新打开媒体资源。
 
-<a id="api_imediaplayer_stop__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_imediaplayer_stop__timing]
 
 请在播放后调用该方法。
 
-<a id="api_imediaplayer_stop__return_values"></a>
-
-### 返回值
+### 返回值 [#api_imediaplayer_stop__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayer)

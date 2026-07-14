@@ -1,0 +1,41 @@
+---
+title: "changeOwner method"
+description: "API docs for the changeOwner method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Transfers the chat room ownership.
+
+Only the chat room owner can call this method.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `newOwner` | The ID of the new chat room owner. |
+
+```dart title="Dart"
+Future<void> changeOwner(String roomId, String newOwner)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> changeOwner(
+  String roomId,
+  String newOwner,
+) async {
+  Map req = {"roomId": roomId, "newOwner": newOwner};
+  Map result =
+      await _channel.invokeMethod(ChatMethodKeys.changeChatRoomOwner, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

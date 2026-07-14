@@ -1,0 +1,162 @@
+---
+title: "ChatThreadEventHandler class"
+description: "API docs for the ChatThreadEventHandler class from the agora_chat_sdk library, for the Dart programming language."
+---
+
+The message thread event handler. which handle for message thread events such as creating or leaving a message thread.
+
+Adds a message thread event handler:
+
+```dart title="Dart"
+  ChatClient.getInstance.chatThreadManager.addEventHandler(UNIQUE_HANDLER_ID, ChatThreadEventHandler());
+```
+
+Remove a chat event handler:
+
+```dart title="Dart"
+ChatClient.getInstance.chatThreadManager.removeEventHandler(UNIQUE_HANDLER_ID);
+```
+
+<a id="constructors"></a>
+
+## Constructors
+
+<a id="ChatThreadEventHandler"></a>
+
+### [ChatThreadEventHandler](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-event-handler/chat-thread-event-handler)
+
+```dart title="Dart"
+ChatThreadEventHandler({void onChatThreadCreate(ChatThreadEvent event)?, void onChatThreadDestroy(ChatThreadEvent event)?, void onChatThreadUpdate(ChatThreadEvent event)?, void onUserKickOutOfChatThread(ChatThreadEvent event)?})
+```
+
+The message thread listener callback
+
+<a id="instance-properties"></a>
+
+## Properties
+
+<a id="hashCode"></a>
+
+### [hashCode](https://api.flutter.dev/flutter/dart-core/Object/hashCode.html)
+
+```dart title="Dart"
+hashCode -> int
+```
+
+The hash code for this object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="onChatThreadCreate"></a>
+
+### [onChatThreadCreate](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-event-handler/on-chat-thread-create)
+
+```dart title="Dart"
+onChatThreadCreate ->(void Function?(ChatThreadEvent event)?)
+```
+
+Occurs when a message thread is created.
+
+_final._
+
+<a id="onChatThreadDestroy"></a>
+
+### [onChatThreadDestroy](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-event-handler/on-chat-thread-destroy)
+
+```dart title="Dart"
+onChatThreadDestroy ->(void Function?(ChatThreadEvent event)?)
+```
+
+Occurs when a message thread is destroyed.
+
+_final._
+
+<a id="onChatThreadUpdate"></a>
+
+### [onChatThreadUpdate](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-event-handler/on-chat-thread-update)
+
+```dart title="Dart"
+onChatThreadUpdate ->(void Function?(ChatThreadEvent event)?)
+```
+
+Occurs when a message thread is updated.
+
+_final._
+
+<a id="onUserKickOutOfChatThread"></a>
+
+### [onUserKickOutOfChatThread](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-thread-event-handler/on-user-kick-out-of-chat-thread)
+
+```dart title="Dart"
+onUserKickOutOfChatThread ->(void Function?(ChatThreadEvent event)?)
+```
+
+Occurs when the current user is removed from the message thread by the group owner or a group admin to which the message thread belongs.
+
+_final._
+
+<a id="runtimeType"></a>
+
+### [runtimeType](https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html)
+
+```dart title="Dart"
+runtimeType -> Type
+```
+
+A representation of the runtime type of the object.
+
+_read-only, inherited._
+
+_Inherited._
+
+<a id="instance-methods"></a>
+
+## Methods
+
+<a id="noSuchMethod"></a>
+
+### [noSuchMethod](https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html)
+
+```dart title="Dart"
+noSuchMethod(Invocation invocation) -> dynamic
+```
+
+Invoked when a non-existent method or property is accessed.
+
+_inherited._
+
+_Inherited._
+
+<a id="toString"></a>
+
+### [toString](https://api.flutter.dev/flutter/dart-core/Object/toString.html)
+
+```dart title="Dart"
+toString() -> String
+```
+
+A string representation of this object.
+
+_inherited._
+
+_Inherited._
+
+<a id="operators"></a>
+
+## Operators
+
+<a id="operator =="></a>
+
+### [operator ==](https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html)
+
+```dart title="Dart"
+operator ==(Object other) -> bool
+```
+
+The equality operator.
+
+_inherited._
+
+_Inherited._

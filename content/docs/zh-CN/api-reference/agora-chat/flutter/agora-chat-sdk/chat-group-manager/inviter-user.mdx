@@ -1,0 +1,51 @@
+---
+title: "inviterUser method"
+description: "API docs for the inviterUser method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Invites users to join the group.
+
+This method works only for groups with the style of [ChatGroupStyle.PrivateOnlyOwnerInvite](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-style), [ChatGroupStyle.PrivateMemberCanInvite](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-style), or [ChatGroupStyle.PublicJoinNeedApproval](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-style). For a group with the [ChatGroupStyle.PrivateOnlyOwnerInvite](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-style) style, only the group owner can invite users to join the group; For a group with the [ChatGroupStyle.PrivateMemberCanInvite](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-style) style, each group member can invite users to join the group.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `groupId` | The group ID. |
+| `members` | The array of new members to invite. |
+| `reason` | The invitation reason. |
+
+```dart title="Dart"
+Future<void> inviterUser(String groupId, List<String> members, {String? reason})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> inviterUser(
+  String groupId,
+  List<String> members, {
+  String? reason,
+}) async {
+  Map req = {
+    'groupId': groupId,
+    'members': members,
+  };
+  req.setValueWithOutNull("reason", reason);
+
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.inviterUser,
+    req,
+  );
+
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

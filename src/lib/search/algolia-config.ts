@@ -1,3 +1,6 @@
+import { DOCS_REGION } from '../site-region';
+import { getDocsSearchProvider } from './search-provider';
+
 export const DEFAULT_ALGOLIA_INDEX_NAME = 'docs_portal_en';
 
 // The index name is overridable via env so a local build can point at a
@@ -9,8 +12,13 @@ export const ALGOLIA_INDEX_NAME =
 export function getAlgoliaSearchConfig() {
   const appId = import.meta.env.VITE_ALGOLIA_APP_ID;
   const searchApiKey = import.meta.env.VITE_ALGOLIA_SEARCH_API_KEY;
+  const hasAlgoliaConfig = Boolean(appId && searchApiKey);
 
-  if (!appId || !searchApiKey) {
+  if (
+    getDocsSearchProvider(DOCS_REGION, hasAlgoliaConfig) !== 'algolia' ||
+    !appId ||
+    !searchApiKey
+  ) {
     return null;
   }
 

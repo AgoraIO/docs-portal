@@ -739,6 +739,27 @@ describe('DocsShell', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('mounts docs content once so hash targets stay unique across breakpoints', async () => {
+    renderDocsShell({
+      children: (
+        <>
+          <h1>Agora Web SDK API Reference</h1>
+          <h2 id="legacy-api-anchor">Legacy API entry</h2>
+        </>
+      ),
+    });
+
+    await screen.findByTestId('docs-body-shell');
+
+    expect(
+      screen.getAllByRole('heading', {
+        level: 1,
+        name: 'Agora Web SDK API Reference',
+      }),
+    ).toHaveLength(1);
+    expect(document.querySelectorAll('#legacy-api-anchor')).toHaveLength(1);
+  });
+
   it('renders the Agora site footer as a shell-level full-width footer on desktop', async () => {
     renderDocsShell();
 
@@ -924,7 +945,7 @@ describe('DocsShell', () => {
     );
     expect(mainColumn).toHaveClass('min-w-0', 'bg-background');
     expect(mainColumn).not.toHaveClass('h-full', 'min-h-0', 'overflow-hidden');
-    expect(desktopContent).toHaveClass('hidden', 'lg:block');
+    expect(desktopContent).not.toHaveClass('hidden');
     expect(desktopContent).not.toHaveClass(
       'docs-scrollbar',
       'h-full',

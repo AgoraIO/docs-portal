@@ -1,14 +1,9 @@
 ---
 title: "原始视频数据"
-description: "每次 SDK 接收到视频帧时触发的回调，用于设置是否对采集的视频进行镜像。"
+description: "原始视频数据 API reference."
 ---
-<a id="toc_video_raw"></a>
 
-## 原始视频数据
-
-<a id="api_ivideoframeobserver_getmirrorapplied"></a>
-
-## getMirrorApplied
+## <span id="toc_video_raw"></span>getMirrorApplied [#api_ivideoframeobserver_getmirrorapplied]
 
 每次 SDK 接收到视频帧时触发的回调，用于设置是否对采集的视频进行镜像。
 
@@ -27,27 +22,20 @@ description: "每次 SDK 接收到视频帧时触发的回调，用于设置是�
 - 该方法与 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 都支持设置镜像效果。建议你仅使用其中一种方式进行设置，同时使用两种方式会导致镜像效果叠加，从而使设置失效。
 :::
 
-<a id="api_ivideoframeobserver_getmirrorapplied__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_ivideoframeobserver_getmirrorapplied__timing]
 
 该回调在 SDK 每次接收到视频帧时被触发。
 
-<a id="api_ivideoframeobserver_getmirrorapplied__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoframeobserver_getmirrorapplied__return_values]
 
 是否对采集的视频进行镜像：
 
 - true：对采集的视频进行镜像。
 - false：（默认）不对采集的视频进行镜像。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
-<a id="api_ivideoframeobserver_getobservedframeposition"></a>
-
-## getObservedFramePosition
+## getObservedFramePosition [#api_ivideoframeobserver_getobservedframeposition]
 
 设置视频观察器的帧位置。
 
@@ -65,9 +53,7 @@ description: "每次 SDK 接收到视频帧时触发的回调，用于设置是�
 - `VIDEO_MODULE_POSITION_PRE_RENDERER` (1 &lt;&lt; 1)：远端视频渲染前的位置，对应 [onRenderVideoFrame](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调。
 - `VIDEO_MODULE_POSITION_PRE_ENCODER` (1 &lt;&lt; 2)：编码前的位置，对应 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调。
 
-<a id="api_ivideoframeobserver_getobservedframeposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoframeobserver_getobservedframeposition__return_values]
 
 方法调用成功，返回用于控制视频观察器帧位置的位掩码：
 
@@ -75,12 +61,9 @@ description: "每次 SDK 接收到视频帧时触发的回调，用于设置是�
 - `VIDEO_MODULE_POSITION_PRE_RENDERER` (1 &lt;&lt; 1)：远端视频渲染前的位置。
 - `VIDEO_MODULE_POSITION_PRE_ENCODER` (1 &lt;&lt; 2)：编码前的位置。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
-<a id="api_ivideoframeobserver_getrotationapplied"></a>
-
-## getRotationApplied
+## getRotationApplied [#api_ivideoframeobserver_getrotationapplied]
 
 getRotationApplied 回调在每次 SDK 接收到视频帧时触发，用于设置是否旋转采集的视频。
 
@@ -98,25 +81,18 @@ getRotationApplied 回调在每次 SDK 接收到视频帧时触发，用于设�
 在 Android 平台上，该回调支持的视频数据格式包括：I420、RGBA 和 Texture。
 :::
 
-<a id="api_ivideoframeobserver_getrotationapplied__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_ivideoframeobserver_getrotationapplied__timing]
 
 该回调在 SDK 每次接收到视频帧时被触发。
 
-<a id="api_ivideoframeobserver_getrotationapplied__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoframeobserver_getrotationapplied__return_values]
 
 - true：旋转采集的视频。
 - false：（默认）不旋转采集的视频。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
-<a id="api_ivideoframeobserver_getvideoformatpreference"></a>
-
-## getVideoFormatPreference
+## getVideoFormatPreference [#api_ivideoframeobserver_getvideoformatpreference]
 
 设置 SDK 输出的原始视频数据格式。
 
@@ -141,9 +117,7 @@ getRotationApplied 回调在每次 SDK 接收到视频帧时触发，用于设�
 - 已集成美颜特效扩展并启用了视频降噪或弱光增强功能。
 :::
 
-<a id="api_ivideoframeobserver_getvideoformatpreference__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoframeobserver_getvideoformatpreference__return_values]
 
 方法调用成功，返回 SDK 输出的原始数据格式：
 
@@ -152,12 +126,9 @@ getRotationApplied 回调在每次 SDK 接收到视频帧时触发，用于设�
 - `VIDEO_PIXEL_RGBA` （4）：RGBA 格式。
 - `VIDEO_PIXEL_I422` （16）：I422 格式。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
-<a id="api_ivideoframeobserver_getvideoframeprocessmode"></a>
-
-## getVideoFrameProcessMode
+## getVideoFrameProcessMode [#api_ivideoframeobserver_getvideoframeprocessmode]
 
 getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并提示你设置视频帧的处理模式。
 
@@ -171,21 +142,16 @@ getVideoFrameProcessMode 回调。每次 SDK 接收到视频帧时触发，并�
 
 在成功注册视频帧观察器后，SDK 每次接收到视频帧时会触发 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/android/video/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) 回调。你需要在该回调的返回值中设置偏好的处理模式。
 
-<a id="api_ivideoframeobserver_getvideoframeprocessmode__return_values"></a>
-
-### 返回值
+### 返回值 [#api_ivideoframeobserver_getvideoframeprocessmode__return_values]
 
 视频帧的处理模式：
 
 - `PROCESS_MODE_READ_ONLY` （0）：（默认）只读取视频帧。
 - `PROCESS_MODE_READ_WRITE` （1）：读取并写入视频帧。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
-<a id="api_irtcengine_registervideoframeobserver"></a>
-
-## registerVideoFrameObserver
+## registerVideoFrameObserver [#api_irtcengine_registervideoframeobserver]
 
 注册原始视频帧观察器对象。
 
@@ -206,15 +172,11 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
 - 当用户调整视频配置时，回调中返回的视频分辨率也会随之变化。
 :::
 
-<a id="api_irtcengine_registervideoframeobserver__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_registervideoframeobserver__timing]
 
 请在加入频道前调用此方法。
 
-<a id="api_irtcengine_registervideoframeobserver__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_registervideoframeobserver__parameters]
 
 #### `observer`
 
@@ -224,19 +186,14 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
 如需释放该实例，请将该参数设为 `null`。
 :::
 
-<a id="api_irtcengine_registervideoframeobserver__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_registervideoframeobserver__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
-<a id="callback_ivideoframeobserver_oncapturevideoframe"></a>
-
-## onCaptureVideoFrame
+## onCaptureVideoFrame [#callback_ivideoframeobserver_oncapturevideoframe]
 
 本地设备采集到视频帧时触发的回调。
 
@@ -256,15 +213,11 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
 - 通过该回调获取的视频格式默认可能为 `I420Buffer` 或 `TextureBuffer`。 `TextureBuffer` 的纹理格式可能为 `OES` 格式或 `RGB` 格式。如果你需要其他格式的视频数据，可以在 [getVideoFormatPreference](/zh-CN/api-reference/rtc/android/video/video-raw#api_ivideoframeobserver_getvideoformatpreference) 回调的返回值中设置期望的数据格式。
 :::
 
-<a id="callback_ivideoframeobserver_oncapturevideoframe__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_ivideoframeobserver_oncapturevideoframe__timing]
 
 该回调在成功注册视频数据观察器后，每次 SDK 采集到视频帧时被触发。
 
-<a id="callback_ivideoframeobserver_oncapturevideoframe__parameters"></a>
-
-### 参数
+### 参数 [#callback_ivideoframeobserver_oncapturevideoframe__parameters]
 
 #### `sourceType`
 
@@ -280,9 +233,7 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
 - Android：I420 或 RGB（GLES20.GL_TEXTURE_2D）
 :::
 
-<a id="callback_ivideoframeobserver_oncapturevideoframe__return_values"></a>
-
-### 返回值
+### 返回值 [#callback_ivideoframeobserver_oncapturevideoframe__return_values]
 
 - 当视频处理模式为 `PROCESS_MODE_READ_ONLY` 时：
 
@@ -293,12 +244,9 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
   - true：设置 SDK 接收该视频帧。
   - false：设置 SDK 丢弃该视频帧。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
-<a id="callback_ivideoframeobserver_onpreencodevideoframe"></a>
-
-## onPreEncodeVideoFrame
+## onPreEncodeVideoFrame [#callback_ivideoframeobserver_onpreencodevideoframe]
 
 每次 SDK 接收到编码前视频帧时触发该回调。
 
@@ -319,15 +267,11 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
 - 建议确保 `videoFrame` 中修改后的参数与视频帧缓冲区中视频帧的实际情况一致，否则可能导致本地预览和远端视频显示出现异常旋转、图像拉伸等问题。
 :::
 
-<a id="callback_ivideoframeobserver_onpreencodevideoframe__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_ivideoframeobserver_onpreencodevideoframe__timing]
 
 该回调在 SDK 每次接收到编码前的视频帧时被触发。
 
-<a id="callback_ivideoframeobserver_onpreencodevideoframe__parameters"></a>
-
-### 参数
+### 参数 [#callback_ivideoframeobserver_onpreencodevideoframe__parameters]
 
 #### `sourceType`
 
@@ -343,9 +287,7 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
 - Android：I420 或 RGB（GLES20.GL_TEXTURE_2D）。
 :::
 
-<a id="callback_ivideoframeobserver_onpreencodevideoframe__return_values"></a>
-
-### 返回值
+### 返回值 [#callback_ivideoframeobserver_onpreencodevideoframe__return_values]
 
 - 当视频处理模式为 `PROCESS_MODE_READ_ONLY` 时：
 
@@ -356,12 +298,9 @@ public abstract int registerVideoFrameObserver(IVideoFrameObserver observer);
   - true：SDK 接收该视频帧。
   - false：SDK 丢弃该视频帧。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)
 
-<a id="callback_ivideoframeobserver_onrendervideoframe"></a>
-
-## onRenderVideoFrame
+## onRenderVideoFrame [#callback_ivideoframeobserver_onrendervideoframe]
 
 远端用户发送视频帧时触发的回调。
 
@@ -381,15 +320,11 @@ boolean onRenderVideoFrame(String channelId, int uid, VideoFrame videoFrame)
 - 建议你确保 `videoFrame` 中修改后的参数与视频帧缓冲区中视频帧的实际情况一致。否则，可能会导致本地预览和远端视频显示出现异常旋转、图像拉伸等问题。
 :::
 
-<a id="callback_ivideoframeobserver_onrendervideoframe__timing"></a>
-
-### 触发时机
+### 触发时机 [#callback_ivideoframeobserver_onrendervideoframe__timing]
 
 该回调在 SDK 接收到远端用户发送的视频帧时被触发。
 
-<a id="callback_ivideoframeobserver_onrendervideoframe__parameters"></a>
-
-### 参数
+### 参数 [#callback_ivideoframeobserver_onrendervideoframe__parameters]
 
 #### `channelId`
 
@@ -403,9 +338,7 @@ boolean onRenderVideoFrame(String channelId, int uid, VideoFrame videoFrame)
 
 视频帧。
 
-<a id="callback_ivideoframeobserver_onrendervideoframe__return_values"></a>
-
-### 返回值
+### 返回值 [#callback_ivideoframeobserver_onrendervideoframe__return_values]
 
 - 当视频处理模式为 `PROCESS_MODE_READ_ONLY` 时：
 
@@ -416,5 +349,4 @@ boolean onRenderVideoFrame(String channelId, int uid, VideoFrame videoFrame)
   - true：SDK 接收该视频帧。
   - false：SDK 丢弃该视频帧。
 
-### 所属接口类
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoframeobserver)

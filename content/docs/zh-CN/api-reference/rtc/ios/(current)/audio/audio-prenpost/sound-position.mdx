@@ -1,14 +1,9 @@
 ---
 title: "听声辨位"
-description: "启用或关闭远端用户的立体声声像功能。"
+description: "听声辨位 API reference."
 ---
-<a id="toc_sound_position"></a>
 
-## 听声辨位
-
-<a id="api_irtcengine_enablesoundpositionindication"></a>
-
-## enableSoundPositionIndication:
+## <span id="toc_sound_position"></span>enableSoundPositionIndication: [#api_irtcengine_enablesoundpositionindication]
 
 启用或关闭远端用户的立体声声像功能。
 
@@ -22,9 +17,7 @@ description: "启用或关闭远端用户的立体声声像功能。"
 
 请确保在加入频道前调用该方法，从而使你可以通过调用 [setRemoteVoicePosition:pan:gain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/sound-position#api_irtcengine_setremotevoiceposition) 跟踪远端用户的位置。
 
-<a id="api_irtcengine_enablesoundpositionindication__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_enablesoundpositionindication__parameters]
 
 #### `enabled`
 
@@ -33,19 +26,14 @@ description: "启用或关闭远端用户的立体声声像功能。"
 - YES：启用立体声声像。
 - NO：关闭立体声声像。
 
-<a id="api_irtcengine_enablesoundpositionindication__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_enablesoundpositionindication__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setremotevoiceposition"></a>
-
-## setRemoteVoicePosition:pan:gain:
+## setRemoteVoicePosition:pan:gain: [#api_irtcengine_setremotevoiceposition]
 
 设置远端用户语音的二维位置和音量。
 
@@ -65,9 +53,7 @@ description: "启用或关闭远端用户的立体声声像功能。"
 - 请在加入频道后调用该方法。
 :::
 
-<a id="api_irtcengine_setremotevoiceposition__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setremotevoiceposition__parameters]
 
 #### `uid`
 
@@ -85,19 +71,14 @@ description: "启用或关闭远端用户的立体声声像功能。"
 
 远端用户的音量。取值范围为 0.0 到 100.0。默认值为 100.0（远端用户的原始音量）。数值越小，音量越低。
 
-<a id="api_irtcengine_setremotevoiceposition__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_setremotevoiceposition__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengineex_setremotevoicepositionex"></a>
-
-## setRemoteVoicePositionEx:pan:gain:connection:
+## setRemoteVoicePositionEx:pan:gain:connection: [#api_irtcengineex_setremotevoicepositionex]
 
 设置远端用户语音的二维位置和音量。
 
@@ -119,15 +100,11 @@ description: "启用或关闭远端用户的立体声声像功能。"
 - 请在加入频道后调用该方法。
 :::
 
-<a id="api_irtcengineex_setremotevoicepositionex__scenario"></a>
-
-### 适用场景
+### 适用场景 [#api_irtcengineex_setremotevoicepositionex__scenario]
 
 该方法适用于多频道场景。
 
-<a id="api_irtcengineex_setremotevoicepositionex__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengineex_setremotevoicepositionex__parameters]
 
 #### `uid`
 
@@ -149,12 +126,9 @@ description: "启用或关闭远端用户的立体声声像功能。"
 
 连接信息，详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
 
-<a id="api_irtcengineex_setremotevoicepositionex__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengineex_setremotevoicepositionex__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)

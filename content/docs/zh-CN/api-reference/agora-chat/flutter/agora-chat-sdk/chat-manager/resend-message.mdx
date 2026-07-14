@@ -1,0 +1,38 @@
+---
+title: "resendMessage method"
+description: "API docs for the resendMessage method from the ChatManager class, for the Dart programming language."
+---
+
+Resend a message.
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `message` | The message object to be resent: `ChatMessage`. |
+
+```dart title="Dart"
+Future<ChatMessage> resendMessage(ChatMessage message)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<ChatMessage> resendMessage(ChatMessage message) async {
+  message.status = MessageStatus.PROGRESS;
+  Map result = await ChatChannel.invokeMethod(
+      ChatMethodKeys.resendMessage, message.toJson());
+  try {
+    ChatError.hasErrorFromResult(result);
+    ChatMessage msg = ChatMessage.fromJson(result[ChatMethodKeys.resendMessage]);
+    message.from = msg.from;
+    message.to = msg.to;
+    message.status = msg.status;
+    return message;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

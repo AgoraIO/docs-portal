@@ -1,0 +1,41 @@
+---
+title: "removeConversationSilentMode method"
+description: "API docs for the removeConversationSilentMode method from the ChatPushManager class, for the Dart programming language."
+---
+
+Remove the setting of offline push notification type for the special conversation. After clearing, the session follows the Settings of the current logged-in user [ChatPushManager.setSilentModeForAll](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-push-manager/set-silent-mode-for-all).
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `conversationId` | The conversation id. |
+| `type` | The conversation type. |
+
+```dart title="Dart"
+Future<void> removeConversationSilentMode({required String conversationId, required ChatConversationType type})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<void> removeConversationSilentMode({
+  required String conversationId,
+  required ChatConversationType type,
+}) async {
+  Map req = {};
+  req["conversationId"] = conversationId;
+  req["conversationType"] = conversationTypeToInt(type);
+  Map result = await PushChannel.invokeMethod(
+      ChatMethodKeys.removeConversationSilentMode, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

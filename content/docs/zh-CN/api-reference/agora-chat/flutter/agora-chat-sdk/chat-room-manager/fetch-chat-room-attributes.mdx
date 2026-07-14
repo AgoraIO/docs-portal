@@ -1,0 +1,47 @@
+---
+title: "fetchChatRoomAttributes method"
+description: "API docs for the fetchChatRoomAttributes method from the ChatRoomManager class, for the Dart programming language."
+---
+
+Gets the list of custom chat room attributes based on the attribute key list.
+
+**Return** The chat room attributes in key-value pairs. **Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `roomId` | The chat room ID. |
+| `keys` | The key list of attributes to get. If you set it as `null` or leave it empty, this method retrieves all custom attributes. |
+
+```dart title="Dart"
+Future<Map<String, String>?> fetchChatRoomAttributes(String roomId, List<String>? keys)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<Map<String, String>?> fetchChatRoomAttributes(
+  String roomId,
+  List<String>? keys,
+) async {
+  Map req = {
+    "roomId": roomId,
+    "keys": keys,
+  };
+
+  Map result = await _channel.invokeMethod(
+    ChatMethodKeys.fetchChatRoomAttributes,
+    req,
+  );
+  try {
+    ChatError.hasErrorFromResult(result);
+    return result[ChatMethodKeys.fetchChatRoomAttributes]
+        ?.cast<String, String>();
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

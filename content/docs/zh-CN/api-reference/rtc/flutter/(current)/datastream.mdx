@@ -1,10 +1,9 @@
 ---
 title: "数据流 Datastream"
-description: "创建数据流。"
+description: "数据流 Datastream API reference."
 ---
-<a id="toc_datastream"></a>
 
-## 数据流 Datastream
+<a id="toc_datastream"></a>
 
 <a id="api_irtcengine_createdatastream2"></a>
 
@@ -45,7 +44,6 @@ Future<int> createDataStream(DataStreamConfig config);
 - 创建的数据流的 ID：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_createdatastreamex2"></a>
@@ -92,7 +90,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 - 创建的数据流的 ID：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_sendstreammessage"></a>
@@ -110,17 +107,17 @@ Future<void> sendStreamMessage(
 
 <a id="api_irtcengine_sendstreammessage__detailed_desc"></a>
 
-调用 [createDataStream](/zh-CN/api-reference/rtc/flutter/datastream#api_irtcengine_createdatastream2) 后，你可以调用该方法向频道内所有用户发送数据流消息。 SDK 对该方法的实现进行了如下限制：
+调用 [createDataStream](/zh-CN/api-reference/rtc/flutter/metadata/datastream#api_irtcengine_createdatastream2) 后，你可以调用该方法向频道内所有用户发送数据流消息。 SDK 对该方法的实现进行了如下限制：
 
 - 频道内每个客户端最多可以同时拥有 5 个数据通道，所有数据通道共用的总发包码率限制为 30 KB/s。
 - 每个数据通道每秒最多能发送 60 个包，每个包最大为 1 KB。
 
-成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc/flutter/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/flutter/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
+成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc/flutter/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/flutter/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::info[注]
 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](https://doc.shengwang.cn/doc/rtm2/flutter/landing-page)。
 
-- 该方法需要在加入频道后、且调用 [createDataStream](/zh-CN/api-reference/rtc/flutter/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
+- 该方法需要在加入频道后、且调用 [createDataStream](/zh-CN/api-reference/rtc/flutter/metadata/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
 - 该方法仅适用于主播用户。
 :::
 
@@ -130,7 +127,7 @@ Future<void> sendStreamMessage(
 
 #### `streamId`
 
-数据流 ID。可以通过 [createDataStream](/zh-CN/api-reference/rtc/flutter/datastream#api_irtcengine_createdatastream2) 获取。
+数据流 ID。可以通过 [createDataStream](/zh-CN/api-reference/rtc/flutter/metadata/datastream#api_irtcengine_createdatastream2) 获取。
 
 #### `data`
 
@@ -146,7 +143,6 @@ Future<void> sendStreamMessage(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_sendstreammessageex"></a>
@@ -167,17 +163,17 @@ Future<void> sendStreamMessageEx(
 
 <a id="api_irtcengineex_sendstreammessageex__detailed_desc"></a>
 
-调用 [createDataStreamEx](/zh-CN/api-reference/rtc/flutter/datastream#api_irtcengineex_createdatastreamex2) 后，你可以调用本方法向频道内所有用户发送数据流消息。 SDK 对该方法的实现进行了如下限制：
+调用 [createDataStreamEx](/zh-CN/api-reference/rtc/flutter/metadata/datastream#api_irtcengineex_createdatastreamex2) 后，你可以调用本方法向频道内所有用户发送数据流消息。 SDK 对该方法的实现进行了如下限制：
 
 - 频道内每个客户端最多可以同时拥有 5 个数据通道，所有数据通道共用的总发包码率限制为 30 KB/s。
 - 每个数据通道每秒最多能发送 60 个包，每个包最大为 1 KB。
 
-成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc/flutter/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/flutter/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
+成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc/flutter/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [onStreamMessageError](/zh-CN/api-reference/rtc/flutter/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
 :::info[注]
 - 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](https://doc.shengwang.cn/doc/rtm2/flutter/landing-page)。
 - 该方法需要在 [joinChannelEx](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengineex_joinchannelex) 后调用。
-- 请确保在调用该方法前，已调用 [createDataStreamEx](/zh-CN/api-reference/rtc/flutter/datastream#api_irtcengineex_createdatastreamex2) 创建了数据通道。
+- 请确保在调用该方法前，已调用 [createDataStreamEx](/zh-CN/api-reference/rtc/flutter/metadata/datastream#api_irtcengineex_createdatastreamex2) 创建了数据通道。
 :::
 
 <a id="api_irtcengineex_sendstreammessageex__parameters"></a>
@@ -186,7 +182,7 @@ Future<void> sendStreamMessageEx(
 
 #### `streamId`
 
-数据流 ID。可以通过 [createDataStreamEx](/zh-CN/api-reference/rtc/flutter/datastream#api_irtcengineex_createdatastreamex2) 获取。
+数据流 ID。可以通过 [createDataStreamEx](/zh-CN/api-reference/rtc/flutter/metadata/datastream#api_irtcengineex_createdatastreamex2) 获取。
 
 #### `data`
 
@@ -206,7 +202,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onstreammessage"></a>
@@ -224,7 +219,7 @@ final void Function(RtcConnection connection, int remoteUid, int streamId,
 
 <a id="callback_irtcengineeventhandler_onstreammessage__detailed_desc"></a>
 
-该回调表示本地用户收到了远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc/flutter/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
+该回调表示本地用户收到了远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc/flutter/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
 
 :::info[注]
 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](https://doc.shengwang.cn/doc/rtm2/flutter/landing-page)。
@@ -258,7 +253,6 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 数据流发出的时间。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror"></a>
@@ -276,7 +270,7 @@ final void Function(RtcConnection connection, int remoteUid, int streamId,
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__detailed_desc"></a>
 
-该回调表示本地用户未收到远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc/flutter/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
+该回调表示本地用户未收到远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc/flutter/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
 
 :::info[注]
 如你需要更加全面的低延时、高并发、可扩展的实时消息及状态同步解决方案，推荐使用[实时消息](https://doc.shengwang.cn/doc/rtm2/flutter/landing-page)。
@@ -310,5 +304,4 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 数据流中断时，后面缓存的消息数量。
 
-### 所属接口类
 - [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)

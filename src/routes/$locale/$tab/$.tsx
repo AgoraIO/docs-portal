@@ -9,7 +9,10 @@ import type {
 } from '@/lib/docs-page.server';
 import { resolveMovedDocsRedirect } from '@/lib/docs-moved-redirects';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
-import { isSupportedDocLocale } from '@/lib/docs-routing';
+import {
+  isPublishedDocLocale,
+  isSupportedDocLocale,
+} from '@/lib/docs-routing';
 import {
   resolvePlatformStaticDocsPayload,
   shouldUseStaticDocsPayload,
@@ -56,6 +59,10 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       throw redirect({
         href: preserveRedirectSearch(movedDocsRedirect, location),
       });
+    }
+
+    if (!isPublishedDocLocale(params.locale)) {
+      throw notFound();
     }
 
     if (shouldUseStaticDocsPayload()) {

@@ -1,10 +1,9 @@
 ---
 title: "旁路推流"
-description: "开始向 CDN 推流（不进行转码）。"
+description: "旁路推流 API reference."
 ---
-<a id="toc_media_push"></a>
 
-## 旁路推流
+<a id="toc_media_push"></a>
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding"></a>
 
@@ -25,14 +24,14 @@ description: "开始向 CDN 推流（不进行转码）。"
 :::info[注]
 - 请在加入频道后调用该方法。
 - 只有在 `LIVE_BROADCASTING` 频道场景中的主播可以调用该方法。
-- 如果推流失败后需要重试，必须先调用 [stopRtmpStream:](/zh-CN/api-reference/rtc/macos/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
+- 如果推流失败后需要重试，必须先调用 [stopRtmpStream:](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
 :::
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding__related"></a>
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/macos/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+成功调用该方法后，SDK 会触发 [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding__parameters"></a>
 
@@ -53,7 +52,6 @@ description: "开始向 CDN 推流（不进行转码）。"
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用。请更换其他地址。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex"></a>
@@ -76,7 +74,7 @@ description: "开始向 CDN 推流（不进行转码）。"
 :::info[注]
 - 请在加入频道后调用该方法。
 - 只有在 `LIVE_BROADCASTING` 频道场景中的主播可以调用该方法。
-- 如果推流失败后需要重试，请先调用 [stopRtmpStream:](/zh-CN/api-reference/rtc/macos/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
+- 如果推流失败后需要重试，请先调用 [stopRtmpStream:](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
 :::
 
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__scenario"></a>
@@ -89,7 +87,7 @@ description: "开始向 CDN 推流（不进行转码）。"
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/macos/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+成功调用该方法后，SDK 会触发 [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__parameters"></a>
 
@@ -114,7 +112,6 @@ description: "开始向 CDN 推流（不进行转码）。"
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换地址。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding"></a>
@@ -136,14 +133,14 @@ description: "开始向 CDN 推流（不进行转码）。"
 :::info[注]
 - 请在加入频道后调用该方法。
 - 只有在 `LIVE_BROADCASTING` 频道场景中的主播角色可以调用该方法。
-- 如果你在推流失败后需要重试，请先调用 [stopRtmpStream:](/zh-CN/api-reference/rtc/macos/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
+- 如果你在推流失败后需要重试，请先调用 [stopRtmpStream:](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
 :::
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding__related"></a>
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/macos/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+成功调用该方法后，SDK 会触发 [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding__parameters"></a>
 
@@ -168,7 +165,6 @@ description: "开始向 CDN 推流（不进行转码）。"
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换地址。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_startrtmpstreamwithtranscodingex"></a>
@@ -203,7 +199,7 @@ description: "开始向 CDN 推流（不进行转码）。"
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/macos/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+成功调用该方法后，SDK 会触发 [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
 <a id="api_irtcengineex_startrtmpstreamwithtranscodingex__parameters"></a>
 
@@ -232,7 +228,6 @@ description: "开始向 CDN 推流（不进行转码）。"
   - -7：调用该方法前未初始化 SDK。
   - -19：旁路推流地址已被使用，请更换地址。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_stoprtmpstream"></a>
@@ -255,7 +250,7 @@ description: "开始向 CDN 推流（不进行转码）。"
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/macos/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+成功调用该方法后，SDK 会触发 [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
 <a id="api_irtcengine_stoprtmpstream__parameters"></a>
 
@@ -272,7 +267,6 @@ description: "开始向 CDN 推流（不进行转码）。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_stoprtmpstreamex"></a>
@@ -302,7 +296,7 @@ description: "开始向 CDN 推流（不进行转码）。"
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/macos/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+成功调用该方法后，SDK 会触发 [rtcEngine:rtmpStreamingChangedToState:state:reason:](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
 
 <a id="api_irtcengineex_stoprtmpstreamex__parameters"></a>
 
@@ -323,7 +317,6 @@ description: "开始向 CDN 推流（不进行转码）。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_updatertmptranscoding"></a>
@@ -357,7 +350,6 @@ description: "开始向 CDN 推流（不进行转码）。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_updatertmptranscodingex"></a>
@@ -402,7 +394,6 @@ description: "开始向 CDN 推流（不进行转码）。"
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/macos/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingevent"></a>
@@ -445,7 +436,6 @@ description: "开始向 CDN 推流（不进行转码）。"
 
 旁路推流的事件码。详见 [AgoraRtmpStreamingEvent](/zh-CN/api-reference/rtc/macos/enum-rtmpstreamingevent)。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged"></a>
@@ -490,7 +480,6 @@ RTMP 或 RTMPS 推流状态，详见 [AgoraRtmpStreamingState](/zh-CN/api-refere
 
 推流的详细错误信息，详见 [AgoraRtmpStreamingReason](/zh-CN/api-reference/rtc/macos/enum-rtmpstreampublishreason)。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_ontranscodingupdated"></a>
@@ -507,10 +496,10 @@ RTMP 或 RTMPS 推流状态，详见 [AgoraRtmpStreamingState](/zh-CN/api-refere
 
 <a id="callback_irtcengineeventhandler_ontranscodingupdated__detailed_desc"></a>
 
-当你在 [startRtmpStreamWithTranscoding:transcoding:](/zh-CN/api-reference/rtc/macos/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法中更新 [AgoraLiveTranscoding](/zh-CN/api-reference/rtc/macos/class-livetranscoding) 时，SDK 会触发该回调以报告更新信息。
+当你在 [startRtmpStreamWithTranscoding:transcoding:](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法中更新 [AgoraLiveTranscoding](/zh-CN/api-reference/rtc/macos/class-livetranscoding) 时，SDK 会触发该回调以报告更新信息。
 
 :::info[注]
-如果你首次调用 [startRtmpStreamWithTranscoding:transcoding:](/zh-CN/api-reference/rtc/macos/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法设置 [AgoraLiveTranscoding](/zh-CN/api-reference/rtc/macos/class-livetranscoding)，SDK 不会触发该回调。
+如果你首次调用 [startRtmpStreamWithTranscoding:transcoding:](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法设置 [AgoraLiveTranscoding](/zh-CN/api-reference/rtc/macos/class-livetranscoding)，SDK 不会触发该回调。
 :::
 
 <a id="callback_irtcengineeventhandler_ontranscodingupdated__timing"></a>
@@ -527,5 +516,4 @@ RTMP 或 RTMPS 推流状态，详见 [AgoraRtmpStreamingState](/zh-CN/api-refere
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
 
-### 所属接口类
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)

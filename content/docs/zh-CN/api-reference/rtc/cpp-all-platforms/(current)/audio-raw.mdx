@@ -1,10 +1,9 @@
 ---
 title: "原始音频数据"
-description: "onEarMonitoringAudioFrame 回调的音频格式设置回调。"
+description: "原始音频数据 API reference."
 ---
-<a id="toc_audio_raw"></a>
 
-## 原始音频数据
+<a id="toc_audio_raw"></a>
 
 <a id="api_iaudioframeobserverbase_getearmonitoringaudioparams_iaudioframeobserverbase"></a>
 
@@ -20,10 +19,10 @@ virtual AudioParams getEarMonitoringAudioParams() = 0;
 
 <a id="api_iaudioframeobserverbase_getearmonitoringaudioparams_iaudioframeobserverbase__detailed_desc"></a>
 
-调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者时，需要实现该回调。注册成功后，SDK 会触发该回调，你可以在返回值中设置音频格式。
+调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者时，需要实现该回调。注册成功后，SDK 会触发该回调，你可以在返回值中设置音频格式。
 
 :::info[注]
-SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调。计算公式为：采样间隔（秒） = samplePerCall / (sampleRate × channel)。请确保采样间隔 ≥ 0.01 秒。
+SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调。计算公式为：采样间隔（秒） = samplePerCall / (sampleRate × channel)。请确保采样间隔 ≥ 0.01 秒。
 :::
 
 <a id="api_iaudioframeobserverbase_getearmonitoringaudioparams_iaudioframeobserverbase__return_values"></a>
@@ -32,7 +31,6 @@ SDK 会根据你在返回值中设置的采样间隔计算公式触发 [onEarMon
 
 方法调用成功时，返回一个 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 对象，表示耳返音频数据格式，详见 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams)。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="api_iaudioframeobserverbase_getmixedaudioparams_iaudioframeobserverbase"></a>
@@ -49,10 +47,10 @@ virtual AudioParams getMixedAudioParams() = 0;
 
 <a id="api_iaudioframeobserverbase_getmixedaudioparams_iaudioframeobserverbase__detailed_desc"></a>
 
-调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 方法注册音频帧观察器时，你需要实现该回调。在成功注册音频帧观察器后，SDK 会触发该回调，你可以通过该回调的返回值设置音频格式。
+调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 方法注册音频帧观察器时，你需要实现该回调。在成功注册音频帧观察器后，SDK 会触发该回调，你可以通过该回调的返回值设置音频格式。
 
 :::info[注]
-SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 计算采样间隔，并以此触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase) 回调。采样间隔的计算公式为：采样间隔（秒） = `samplePerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。
+SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 计算采样间隔，并以此触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase) 回调。采样间隔的计算公式为：采样间隔（秒） = `samplePerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。
 :::
 
 <a id="api_iaudioframeobserverbase_getmixedaudioparams_iaudioframeobserverbase__return_values"></a>
@@ -61,7 +59,6 @@ SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/
 
 方法调用成功时，返回一个 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 实例，表示混合后的采集和播放音频数据，详见 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams)。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase"></a>
@@ -80,13 +77,13 @@ virtual int getObservedAudioFramePosition() = 0;
 
 成功注册音频数据观察器后，SDK 会在每个特定的音频帧处理节点调用该回调，以判断是否触发以下回调：
 
-- [onRecordAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase)
-- [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase)
-- [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase)
-- [onMixedAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase)
-- [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase)
+- [onRecordAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase)
+- [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase)
+- [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase)
+- [onMixedAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase)
+- [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase)
 
-你可以根据实际场景，通过修改 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase) 的返回值设置需要观察的一个或多个位置。 如果需要同时观察多个位置，需使用按位或运算符（|）。为节省系统资源，建议只设置必要的观察位置。
+你可以根据实际场景，通过修改 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase) 的返回值设置需要观察的一个或多个位置。 如果需要同时观察多个位置，需使用按位或运算符（|）。为节省系统资源，建议只设置必要的观察位置。
 
 <a id="api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase__return_values"></a>
 
@@ -94,13 +91,12 @@ virtual int getObservedAudioFramePosition() = 0;
 
 一个位掩码，用于设置观察位置，具体取值如下：
 
-- `AUDIO_FRAME_POSITION_PLAYBACK` （0x0001）：可观察所有远端用户混音后的播放音频。对应回调为 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase)。
-- `AUDIO_FRAME_POSITION_RECORD` （0x0002）：可观察本地用户采集的音频。对应回调为 [onRecordAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase)。
-- `AUDIO_FRAME_POSITION_MIXED` （0x0004）：可观察本地用户与所有远端用户混音后的播放音频。对应回调为 [onMixedAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase)。
-- `AUDIO_FRAME_POSITION_BEFORE_MIXING` （0x0008）：可观察单个远端用户混音前的音频。对应回调为 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase)。
-- `AUDIO_FRAME_POSITION_EAR_MONITORING` （0x0010）：可观察本地用户的耳返音频。对应回调为 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase)。
+- `AUDIO_FRAME_POSITION_PLAYBACK` （0x0001）：可观察所有远端用户混音后的播放音频。对应回调为 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase)。
+- `AUDIO_FRAME_POSITION_RECORD` （0x0002）：可观察本地用户采集的音频。对应回调为 [onRecordAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase)。
+- `AUDIO_FRAME_POSITION_MIXED` （0x0004）：可观察本地用户与所有远端用户混音后的播放音频。对应回调为 [onMixedAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase)。
+- `AUDIO_FRAME_POSITION_BEFORE_MIXING` （0x0008）：可观察单个远端用户混音前的音频。对应回调为 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase)。
+- `AUDIO_FRAME_POSITION_EAR_MONITORING` （0x0010）：可观察本地用户的耳返音频。对应回调为 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase)。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="api_iaudioframeobserverbase_getplaybackaudioparams_iaudioframeobserverbase"></a>
@@ -117,10 +113,10 @@ virtual AudioParams getPlaybackAudioParams() = 0;
 
 <a id="api_iaudioframeobserverbase_getplaybackaudioparams_iaudioframeobserverbase__detailed_desc"></a>
 
-你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 方法时注册回调。注册成功后，SDK 会触发该回调，你可以在该回调的返回值中设置音频格式。
+你需要在调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 方法时注册回调。注册成功后，SDK 会触发该回调，你可以在该回调的返回值中设置音频格式。
 
 :::info[注]
-SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 计算采样间隔，并以此触发 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调。采样间隔的计算公式为：采样间隔（秒） = `samplePerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。
+SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 计算采样间隔，并以此触发 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调。采样间隔的计算公式为：采样间隔（秒） = `samplePerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。
 :::
 
 <a id="api_iaudioframeobserverbase_getplaybackaudioparams_iaudioframeobserverbase__return_values"></a>
@@ -129,7 +125,6 @@ SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/
 
 方法调用成功时，返回一个用于播放的音频参数，详见 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams)。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="api_iaudioframeobserverbase_getrecordaudioparams_iaudioframeobserverbase"></a>
@@ -146,10 +141,10 @@ virtual AudioParams getRecordAudioParams() = 0;
 
 <a id="api_iaudioframeobserverbase_getrecordaudioparams_iaudioframeobserverbase__detailed_desc"></a>
 
-调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者后，SDK 会触发该回调。你可以在该回调的返回值中设置音频格式。
+调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者后，SDK 会触发该回调。你可以在该回调的返回值中设置音频格式。
 
 :::info[注]
-SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 计算采样间隔，并以此触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase) 回调。采样间隔的计算公式为：采样间隔（秒） = `samplePerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。
+SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 计算采样间隔，并以此触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase) 回调。采样间隔的计算公式为：采样间隔（秒） = `samplePerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。
 :::
 
 <a id="api_iaudioframeobserverbase_getrecordaudioparams_iaudioframeobserverbase__return_values"></a>
@@ -158,7 +153,6 @@ SDK 会根据你在返回值中设置的 [AudioParams](/zh-CN/api-reference/rtc/
 
 方法调用成功时，返回一个 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams) 实例，详见 [AudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioparams)。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="api_imediaengine_registeraudioframeobserver_imediaengine"></a>
@@ -175,7 +169,7 @@ virtual int registerAudioFrameObserver(IAudioFrameObserver* observer) = 0;
 
 <a id="api_imediaengine_registeraudioframeobserver_imediaengine__detailed_desc"></a>
 
-调用该方法可注册音频帧观测器对象。当你需要 SDK 触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase)、 [onRecordAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase)、 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase)、 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 或 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调时，需调用该方法进行注册。
+调用该方法可注册音频帧观测器对象。当你需要 SDK 触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase)、 [onRecordAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase)、 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase)、 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 或 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调时，需调用该方法进行注册。
 
 <a id="api_imediaengine_registeraudioframeobserver_imediaengine__timing"></a>
 
@@ -198,7 +192,6 @@ virtual int registerAudioFrameObserver(IAudioFrameObserver* observer) = 0;
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters"></a>
@@ -215,11 +208,11 @@ virtual int setEarMonitoringAudioFrameParameters(int sampleRate, int channel, RA
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__detailed_desc"></a>
 
-该方法用于设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调中报告的耳返音频数据格式。
+该方法用于设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调中报告的耳返音频数据格式。
 
 :::info[注]
-- 在调用该方法前，需先调用 [enableInEarMonitoring](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-capture#api_irtcengine_enableinearmonitoring2)，并将 `includeAudioFilters` 设置为 `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS` 或 `EAR_MONITORING_FILTER_NOISE_SUPPRESSION`。
-- SDK 会根据该方法中设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（秒）= `samplesPerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调。
+- 在调用该方法前，需先调用 [enableInEarMonitoring](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-capture#api_irtcengine_enableinearmonitoring2)，并将 `includeAudioFilters` 设置为 `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS` 或 `EAR_MONITORING_FILTER_NOISE_SUPPRESSION`。
+- SDK 会根据该方法中设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（秒）= `samplesPerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调。
 :::
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__parameters"></a>
@@ -228,11 +221,11 @@ virtual int setEarMonitoringAudioFrameParameters(int sampleRate, int channel, RA
 
 #### `sampleRate`
 
-[onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调中报告的音频采样率。可设置为 8000、16000、32000、44100 或 48000 Hz。
+[onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调中报告的音频采样率。可设置为 8000、16000、32000、44100 或 48000 Hz。
 
 #### `channel`
 
-[onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调中报告的音频通道数。
+[onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调中报告的音频通道数。
 
 - 1：单声道。
 - 2：立体声。
@@ -243,7 +236,7 @@ virtual int setEarMonitoringAudioFrameParameters(int sampleRate, int channel, RA
 
 #### `samplesPerCall`
 
-[onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调中每次报告的采样点数量，例如媒体推流时为 1024。
+[onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase) 回调中每次报告的采样点数量，例如媒体推流时为 1024。
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__return_values"></a>
 
@@ -252,7 +245,6 @@ virtual int setEarMonitoringAudioFrameParameters(int sampleRate, int channel, RA
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setmixedaudioframeparameters"></a>
@@ -269,7 +261,7 @@ virtual int setMixedAudioFrameParameters(int sampleRate, int channel, int sample
 
 <a id="api_irtcengine_setmixedaudioframeparameters__detailed_desc"></a>
 
-[setMixedAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_irtcengine_setmixedaudioframeparameters) 会根据设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（秒） = `samplesPerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase) 回调。
+[setMixedAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_irtcengine_setmixedaudioframeparameters) 会根据设置的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（秒） = `samplesPerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase) 回调。
 
 <a id="api_irtcengine_setmixedaudioframeparameters__timing"></a>
 
@@ -303,7 +295,6 @@ virtual int setMixedAudioFrameParameters(int sampleRate, int channel, int sample
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters"></a>
@@ -320,7 +311,7 @@ virtual int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int chan
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__detailed_desc"></a>
 
-SDK 会根据采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 回调。请在加入频道前调用该方法。
+SDK 会根据采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 回调。请在加入频道前调用该方法。
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__timing"></a>
 
@@ -350,7 +341,6 @@ SDK 会根据采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-re
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1"></a>
@@ -367,7 +357,7 @@ virtual int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int chan
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__detailed_desc"></a>
 
-设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 回调中返回音频数据的采样率、声道数和每次回调的采样点数。
+设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 回调中返回音频数据的采样率、声道数和每次回调的采样点数。
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__timing"></a>
 
@@ -381,18 +371,18 @@ virtual int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int chan
 
 #### `sampleRate`
 
-设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 回调中返回音频数据的采样率。可设置为以下值：8000、16000、32000、44100 或 48000。
+设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 回调中返回音频数据的采样率。可设置为以下值：8000、16000、32000、44100 或 48000。
 
 #### `channel`
 
-设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 回调中返回音频数据的声道数。
+设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 回调中返回音频数据的声道数。
 
 - 1：单声道。
 - 2：立体声。
 
 #### `samplesPerCall`
 
-设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 回调中返回音频数据的采样点数。在 RTMP 推流场景中，建议设置为 1024。
+设置 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase) 回调中返回音频数据的采样点数。在 RTMP 推流场景中，建议设置为 1024。
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__return_values"></a>
 
@@ -401,7 +391,6 @@ virtual int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int chan
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setplaybackaudioframeparameters"></a>
@@ -418,7 +407,7 @@ virtual int setPlaybackAudioFrameParameters(int sampleRate, int channel, RAW_AUD
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__detailed_desc"></a>
 
-SDK 会根据 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（单位：秒） = `samplesPerCall / (sampleRate × channel)`。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调。
+SDK 会根据 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（单位：秒） = `samplesPerCall / (sampleRate × channel)`。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调。
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__timing"></a>
 
@@ -430,7 +419,7 @@ SDK 会根据 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样�
 
 ### 相关回调
 
-成功调用该方法后，SDK 会触发 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调报告播放音频帧。
+成功调用该方法后，SDK 会触发 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调报告播放音频帧。
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__parameters"></a>
 
@@ -462,7 +451,6 @@ SDK 会根据 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样�
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setrecordingaudioframeparameters"></a>
@@ -479,7 +467,7 @@ virtual int setRecordingAudioFrameParameters(int sampleRate, int channel, RAW_AU
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__detailed_desc"></a>
 
-[setRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 会根据 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（单位：秒） = `samplesPerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase) 回调。
+[setRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 会根据 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔。采样间隔（单位：秒） = `samplesPerCall` /（`sampleRate` × `channel` ）。请确保采样间隔 ≥ 0.01 秒。SDK 会根据采样间隔触发 [onRecordAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase) 回调。
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__timing"></a>
 
@@ -517,7 +505,6 @@ virtual int setRecordingAudioFrameParameters(int sampleRate, int channel, RAW_AU
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/windows/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase"></a>
@@ -536,11 +523,11 @@ virtual bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) = 0;
 
 为了确保获取的耳返音频数据符合预期，声网建议你通过以下两种方法之一设置耳返音频数据格式：
 
-- 方法一：调用 [setEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 设置音频数据格式，并调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照该间隔触发该回调。
-- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase) 回调的返回值中设置音频数据格式。SDK 会根据 [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_iaudioframeobserverbase_getearmonitoringaudioparams_iaudioframeobserverbase) 回调的返回值计算采样间隔，并按照该间隔触发该回调。
+- 方法一：调用 [setEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 设置音频数据格式，并调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按照该间隔触发该回调。
+- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase) 回调的返回值中设置音频数据格式。SDK 会根据 [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getearmonitoringaudioparams_iaudioframeobserverbase) 回调的返回值计算采样间隔，并按照该间隔触发该回调。
 
 :::info[注]
-[setEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 的优先级高于 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase)。如果使用方法一设置音频数据格式，则方法二的设置无效。
+[setEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 的优先级高于 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase)。如果使用方法一设置音频数据格式，则方法二的设置无效。
 :::
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase__parameters"></a>
@@ -558,7 +545,6 @@ virtual bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) = 0;
 - true：回调处理成功。
 - false：回调处理失败。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase"></a>
@@ -577,8 +563,8 @@ virtual bool onMixedAudioFrame(const char* channelId, AudioFrame& audioFrame) = 
 
 为了确保混合采集和播放音频帧的数据格式符合预期，声网建议通过以下两种方式之一设置音频数据格式：
 
-- 方法一：调用 [setMixedAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_irtcengine_setmixedaudioframeparameters) 设置音频数据格式，并调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按该间隔触发该回调。
-- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase) 回调的返回值中设置音频数据格式。SDK 会根据 [getMixedAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_iaudioframeobserverbase_getmixedaudioparams_iaudioframeobserverbase) 回调的返回值计算采样间隔，并按该间隔触发该回调。
+- 方法一：调用 [setMixedAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_irtcengine_setmixedaudioframeparameters) 设置音频数据格式，并调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按该间隔触发该回调。
+- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase) 回调的返回值中设置音频数据格式。SDK 会根据 [getMixedAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getmixedaudioparams_iaudioframeobserverbase) 回调的返回值计算采样间隔，并按该间隔触发该回调。
 
 方法一的优先级高于方法二。如果使用方法一设置音频数据格式，则方法二的设置无效。
 
@@ -601,7 +587,6 @@ virtual bool onMixedAudioFrame(const char* channelId, AudioFrame& audioFrame) = 
 - true：回调处理成功。
 - false：回调处理失败。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase"></a>
@@ -620,8 +605,8 @@ virtual bool onPlaybackAudioFrame(const char* channelId, AudioFrame& audioFrame)
 
 为了确保播放音频帧的数据格式符合预期，声网建议你通过以下两种方式之一设置音频数据格式：
 
-- 方法一：调用 [setPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 设置音频数据格式，并调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按该间隔触发该回调。
-- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase) 回调的返回值中设置音频数据格式。SDK 会根据 [getPlaybackAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_iaudioframeobserverbase_getplaybackaudioparams_iaudioframeobserverbase) 回调的返回值计算采样间隔，并按该间隔触发该回调。
+- 方法一：调用 [setPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 设置音频数据格式，并调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象。SDK 会根据设置的参数计算采样间隔，并按该间隔触发该回调。
+- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase) 回调的返回值中设置音频数据格式。SDK 会根据 [getPlaybackAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getplaybackaudioparams_iaudioframeobserverbase) 回调的返回值计算采样间隔，并按该间隔触发该回调。
 
 方法一的优先级高于方法二。如果使用方法一设置音频数据格式，则方法二的设置无效。
 
@@ -644,7 +629,6 @@ virtual bool onPlaybackAudioFrame(const char* channelId, AudioFrame& audioFrame)
 - true：回调处理成功。
 - false：回调处理失败。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase"></a>
@@ -684,7 +668,6 @@ virtual bool onPlaybackAudioFrameBeforeMixing(const char* channelId, base::user_
 - true：回调处理成功。
 - false：回调处理失败。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)
 
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase"></a>
@@ -703,8 +686,8 @@ virtual bool onRecordAudioFrame(const char* channelId, AudioFrame& audioFrame) =
 
 为了确保采集到的音频帧格式符合预期，你可以通过以下两种方式之一设置音频数据格式：
 
-- 方法一：调用 [setRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式，并调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象后，SDK 会根据设置的参数计算采样间隔，并按该间隔触发该回调。
-- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase) 的返回值中设置音频数据格式。然后 SDK 会根据 [getRecordAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/audio-raw#api_iaudioframeobserverbase_getrecordaudioparams_iaudioframeobserverbase) 的返回值计算采样间隔，并按该间隔触发该回调。
+- 方法一：调用 [setRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式，并调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象后，SDK 会根据设置的参数计算采样间隔，并按该间隔触发该回调。
+- 方法二：调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册音频帧观察者对象后，在 [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase) 的返回值中设置音频数据格式。然后 SDK 会根据 [getRecordAudioParams](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_iaudioframeobserverbase_getrecordaudioparams_iaudioframeobserverbase) 的返回值计算采样间隔，并按该间隔触发该回调。
 
 方法一的优先级高于方法二。如果使用方法一设置音频数据格式，则方法二的设置无效。
 
@@ -733,5 +716,4 @@ SDK 根据采样间隔触发该回调。
 - true：回调处理成功。
 - false：回调处理失败。
 
-### 所属接口类
 - [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserverbase)

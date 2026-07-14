@@ -1,0 +1,56 @@
+---
+title: "fetchJoinedGroupsFromServer method"
+description: "API docs for the fetchJoinedGroupsFromServer method from the ChatGroupManager class, for the Dart programming language."
+---
+
+Gets all groups of the current user from the server.
+
+This method returns a group list which does not contain member information. If you want to update information of a group to include its member information, call [fetchGroupInfoFromServer](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-group-manager/fetch-group-info-from-server).
+
+**Return** The list of groups that the current user joins.
+
+**Throws** A description of the exception. See [ChatError](/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-error).
+
+## Parameters
+
+| Name | Description |
+| --- | --- |
+| `pageSize` | The size of groups per page. |
+| `pageNum` | The page number. |
+| `needMemberCount` | The return result contains the number of group members |
+| `needRole` | The result contains the current user's role in the group |
+
+```dart title="Dart"
+Future<List<ChatGroup>> fetchJoinedGroupsFromServer({int pageSize = 20, int pageNum = 0, bool needMemberCount = false, bool needRole = false})
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+Future<List<ChatGroup>> fetchJoinedGroupsFromServer({
+  int pageSize = 20,
+  int pageNum = 0,
+  bool needMemberCount = false,
+  bool needRole = false,
+}) async {
+  Map req = {
+    'pageSize': pageSize,
+    'pageNum': pageNum,
+    "needMemberCount": needMemberCount,
+    "needRole": needRole,
+  };
+  Map result = await _channel.invokeMethod(
+      ChatMethodKeys.getJoinedGroupsFromServer, req);
+  try {
+    ChatError.hasErrorFromResult(result);
+    List<ChatGroup> list = [];
+    result[ChatMethodKeys.getJoinedGroupsFromServer]
+        ?.forEach((element) => list.add(ChatGroup.fromJson(element)));
+    return list;
+  } on ChatError catch (e) {
+    throw e;
+  }
+}
+```

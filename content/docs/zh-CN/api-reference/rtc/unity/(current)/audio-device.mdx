@@ -1,10 +1,9 @@
 ---
 title: "音频设备管理"
-description: "获取系统中所有的播放设备列表。"
+description: "音频设备管理 API reference."
 ---
-<a id="toc_audio_device"></a>
 
-## 音频设备管理
+<a id="toc_audio_device"></a>
 
 <a id="api_iaudiodevicemanager_enumerateplaybackdevices"></a>
 
@@ -31,7 +30,6 @@ public abstract DeviceInfo[] EnumeratePlaybackDevices();
 - 方法调用成功，返回一个 DeviceInfo 数组，包含所有音频播放设备的设备 ID 和设备名称。
 - 方法调用失败: `null`。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_enumeraterecordingdevices"></a>
@@ -59,7 +57,6 @@ abstract DeviceInfo[] EnumerateRecordingDevices();
 - 方法调用成功，返回一个 DeviceInfo 数组，包含所有音频采集设备的设备 ID 和设备名称。
 - 方法调用失败: `null`。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice"></a>
@@ -96,7 +93,6 @@ public abstract int FollowSystemLoopbackDevice(bool enable);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice"></a>
@@ -135,7 +131,6 @@ public abstract int FollowSystemPlaybackDevice(bool enable);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice"></a>
@@ -174,7 +169,6 @@ public abstract int FollowSystemRecordingDevice(bool enable);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_irtcengine_getaudiodeviceinfo"></a>
@@ -213,7 +207,6 @@ public abstract int GetAudioDeviceInfo(ref DeviceInfoMobile deviceInfo);
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiodevicemanager"></a>
@@ -236,7 +229,6 @@ public abstract IAudioDeviceManager GetAudioDeviceManager();
 
 一个 [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager) 对象。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
 
 <a id="api_iaudiodevicemanager_getloopbackdevice"></a>
@@ -270,7 +262,6 @@ public abstract int GetLoopbackDevice(ref string deviceId);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdefaultdevice"></a>
@@ -310,7 +301,6 @@ public abstract int GetPlaybackDefaultDevice(ref string deviceId, ref string dev
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdefaultdevice2"></a>
@@ -354,7 +344,6 @@ public abstract int GetPlaybackDefaultDevice(ref string deviceId, ref string dev
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdevice"></a>
@@ -390,7 +379,6 @@ public abstract int GetPlaybackDevice(ref string deviceId);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo"></a>
@@ -430,7 +418,6 @@ public abstract int GetPlaybackDeviceInfo(ref string deviceId, ref string device
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo2"></a>
@@ -472,7 +459,6 @@ public abstract int GetPlaybackDeviceInfo(ref string deviceId, ref string device
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getplaybackdevicevolume"></a>
@@ -495,7 +481,6 @@ public abstract int GetPlaybackDeviceVolume();
 
 播放设备音量。取值范围 [0,255]。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdefaultdevice"></a>
@@ -535,7 +520,6 @@ public abstract int GetRecordingDefaultDevice(ref string deviceId, ref string de
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdefaultdevice2"></a>
@@ -579,7 +563,6 @@ public abstract int GetRecordingDefaultDevice(ref string deviceId, ref string de
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdevice"></a>
@@ -615,7 +598,6 @@ public abstract int GetRecordingDevice(ref string deviceId);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo"></a>
@@ -655,7 +637,6 @@ public abstract int GetRecordingDeviceInfo(ref string deviceId, ref string devic
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo2"></a>
@@ -697,7 +678,6 @@ public abstract int GetRecordingDeviceInfo(ref string deviceId, ref string devic
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdevicemute"></a>
@@ -721,7 +701,6 @@ public abstract bool GetRecordingDeviceMute();
 - true: 采集设备为静音状态。
 - false: 采集设备为非静音状态。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_getrecordingdevicevolume"></a>
@@ -748,7 +727,6 @@ public abstract int GetRecordingDeviceVolume();
 
 音频采集设备音量。取值范围 [0,255]。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setloopbackdevice"></a>
@@ -781,7 +759,7 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 #### `deviceId`
 
-指定 SDK 的声卡采集设备。由 [EnumeratePlaybackDevices](/zh-CN/api-reference/rtc/unity/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。
+指定 SDK 的声卡采集设备。由 [EnumeratePlaybackDevices](/zh-CN/api-reference/rtc/unity/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。
 
 <a id="api_iaudiodevicemanager_setloopbackdevice__return_values"></a>
 
@@ -790,7 +768,6 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setplaybackdevice"></a>
@@ -819,7 +796,7 @@ public abstract int SetPlaybackDevice(string deviceId);
 
 #### `deviceId`
 
-指定播放设备。由 [EnumeratePlaybackDevices](/zh-CN/api-reference/rtc/unity/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。
+指定播放设备。由 [EnumeratePlaybackDevices](/zh-CN/api-reference/rtc/unity/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 `deviceId`。
 
 <a id="api_iaudiodevicemanager_setplaybackdevice__return_values"></a>
 
@@ -828,7 +805,6 @@ public abstract int SetPlaybackDevice(string deviceId);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute"></a>
@@ -863,7 +839,6 @@ public abstract int SetPlaybackDeviceMute(bool mute);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume"></a>
@@ -899,7 +874,6 @@ public abstract int SetPlaybackDeviceVolume(int volume);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevice"></a>
@@ -928,7 +902,7 @@ public abstract int SetRecordingDevice(string deviceId);
 
 #### `deviceId`
 
-音频采集设备的 Device ID。可通过 [EnumerateRecordingDevices](/zh-CN/api-reference/rtc/unity/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取。插拔设备不会影响 `deviceId`。
+音频采集设备的 Device ID。可通过 [EnumerateRecordingDevices](/zh-CN/api-reference/rtc/unity/device-management/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) 获取。插拔设备不会影响 `deviceId`。
 
 <a id="api_iaudiodevicemanager_setrecordingdevice__return_values"></a>
 
@@ -937,7 +911,6 @@ public abstract int SetRecordingDevice(string deviceId);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute"></a>
@@ -972,7 +945,6 @@ public abstract int SetRecordingDeviceMute(bool mute);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume"></a>
@@ -1006,7 +978,6 @@ public abstract int SetRecordingDeviceVolume(int volume);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest"></a>
@@ -1023,14 +994,14 @@ public abstract int StartAudioDeviceLoopbackTest(int indicationInterval);
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__detailed_desc"></a>
 
-该方法测试音频采集和播放设备是否能正常工作。一旦测试开始，音频采集设备会采集本地音频，然后使用音频播放设备播放出来。SDK 会按设置的时间间隔触发两个 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告音频采集设备（`uid` = 0）和音频播放设置（`uid` = 1）的音量信息。
+该方法测试音频采集和播放设备是否能正常工作。一旦测试开始，音频采集设备会采集本地音频，然后使用音频播放设备播放出来。SDK 会按设置的时间间隔触发两个 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告音频采集设备（`uid` = 0）和音频播放设置（`uid` = 1）的音量信息。
 
 :::info[注]
 - 该方法仅适用于 Windows 和 macOS。
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
 - 该方法仅在本地进行音频设备测试，不涉及网络连接。
-- 完成测试后，必须调用 [StopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/unity/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
+- 完成测试后，必须调用 [StopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/unity/device-management/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__parameters"></a>
@@ -1039,7 +1010,7 @@ public abstract int StartAudioDeviceLoopbackTest(int indicationInterval);
 
 #### `indicationInterval`
 
-SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒。建议设置到大于 200 毫秒。不得少于 10 毫秒，否则会收不到 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
+SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒。建议设置到大于 200 毫秒。不得少于 10 毫秒，否则会收不到 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__return_values"></a>
 
@@ -1048,7 +1019,6 @@ SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest"></a>
@@ -1065,10 +1035,10 @@ public abstract int StartPlaybackDeviceTest(string testAudioFilePath);
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__detailed_desc"></a>
 
-该方法用于测试本地音频播放设备是否能正常工作。启动测试后，SDK 播放指定的音频文件，测试者如果能听到声音，说明播放设备能正常工作。 调用该方法后，SDK 会每隔 100 毫秒触发一次 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 1 及播放设备的音量信息。 该方法和 [StartEchoTest](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频播放设备能否正常工作，后者可以检测音视频设备及网络是否正常。
+该方法用于测试本地音频播放设备是否能正常工作。启动测试后，SDK 播放指定的音频文件，测试者如果能听到声音，说明播放设备能正常工作。 调用该方法后，SDK 会每隔 100 毫秒触发一次 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 1 及播放设备的音量信息。 该方法和 [StartEchoTest](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频播放设备能否正常工作，后者可以检测音视频设备及网络是否正常。
 
 :::info[注]
-该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopPlaybackDeviceTest](/zh-CN/api-reference/rtc/unity/audio-device#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
+该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopPlaybackDeviceTest](/zh-CN/api-reference/rtc/unity/device-management/audio-device#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
 :::
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__parameters"></a>
@@ -1089,7 +1059,6 @@ public abstract int StartPlaybackDeviceTest(string testAudioFilePath);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest"></a>
@@ -1106,10 +1075,10 @@ public abstract int StartRecordingDeviceTest(int indicationInterval);
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__detailed_desc"></a>
 
-该方法用于测试本地音频采集设备是否能正常工作。调用该方法后，SDK 会按设置的时间间隔触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 0 及采集设备的音量信息。 该方法和 [StartEchoTest](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频采集设备能否正常工作，后者可以检测音视频设备及网络是否正常。
+该方法用于测试本地音频采集设备是否能正常工作。调用该方法后，SDK 会按设置的时间间隔触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 `uid` = 0 及采集设备的音量信息。 该方法和 [StartEchoTest](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频采集设备能否正常工作，后者可以检测音视频设备及网络是否正常。
 
 :::info[注]
-该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopRecordingDeviceTest](/zh-CN/api-reference/rtc/unity/audio-device#api_iaudiodevicemanager_stoprecordingdevicetest) 停止设备测试。
+该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopRecordingDeviceTest](/zh-CN/api-reference/rtc/unity/device-management/audio-device#api_iaudiodevicemanager_stoprecordingdevicetest) 停止设备测试。
 :::
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__parameters"></a>
@@ -1118,7 +1087,7 @@ public abstract int StartRecordingDeviceTest(int indicationInterval);
 
 #### `indicationInterval`
 
-SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒，最小取值为 10，否则会收不到 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，SDK 会返回错误码 `-2`。声网推荐你将该值设为 100。
+SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒，最小取值为 10，否则会收不到 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，SDK 会返回错误码 `-2`。声网推荐你将该值设为 100。
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__return_values"></a>
 
@@ -1129,7 +1098,6 @@ SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unity/audio-basic#
 
   - -2: 参数设置错误，请重新设置参数。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest"></a>
@@ -1150,7 +1118,7 @@ public abstract int StopAudioDeviceLoopbackTest();
 - 该方法仅适用于 Windows 和 macOS。
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
-- 在调用 [StartAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/unity/audio-device#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 后，必须调用该方法停止音频设备回路测试。
+- 在调用 [StartAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/unity/device-management/audio-device#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 后，必须调用该方法停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__return_values"></a>
@@ -1160,7 +1128,6 @@ public abstract int StopAudioDeviceLoopbackTest();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest"></a>
@@ -1177,7 +1144,7 @@ public abstract int StopPlaybackDeviceTest();
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest__detailed_desc"></a>
 
-该方法用于停止音频播放设备测试。调用 [StartPlaybackDeviceTest](/zh-CN/api-reference/rtc/unity/audio-device#api_iaudiodevicemanager_startplaybackdevicetest) 后，必须调用该方法停止测试。
+该方法用于停止音频播放设备测试。调用 [StartPlaybackDeviceTest](/zh-CN/api-reference/rtc/unity/device-management/audio-device#api_iaudiodevicemanager_startplaybackdevicetest) 后，必须调用该方法停止测试。
 
 :::info[注]
 该方法需要在加入频道前调用。
@@ -1190,7 +1157,6 @@ public abstract int StopPlaybackDeviceTest();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest"></a>
@@ -1207,7 +1173,7 @@ public abstract int StopRecordingDeviceTest();
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest__detailed_desc"></a>
 
-该方法用于停止音频采集设备测试。调用 [StartRecordingDeviceTest](/zh-CN/api-reference/rtc/unity/audio-device#api_iaudiodevicemanager_startrecordingdevicetest) 后，必须调用该方法停止测试。
+该方法用于停止音频采集设备测试。调用 [StartRecordingDeviceTest](/zh-CN/api-reference/rtc/unity/device-management/audio-device#api_iaudiodevicemanager_startrecordingdevicetest) 后，必须调用该方法停止测试。
 
 :::info[注]
 该方法需要在加入频道前调用。
@@ -1220,7 +1186,6 @@ public abstract int StopRecordingDeviceTest();
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [IAudioDeviceManager](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudiodevicemanager)
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged"></a>
@@ -1259,7 +1224,6 @@ public virtual void OnAudioDeviceStateChanged(string deviceId, MEDIA_DEVICE_TYPE
 
 设备状态，详见 [MEDIA_DEVICE_STATE_TYPE](/zh-CN/api-reference/rtc/unity/enum-mediadevicestatetype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiodevicevolumechanged"></a>
@@ -1301,5 +1265,4 @@ public virtual void OnAudioDeviceVolumeChanged(MEDIA_DEVICE_TYPE deviceType, int
 - true: 音频设备已静音。
 - false: 音频设备未被静音。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengineeventhandler)

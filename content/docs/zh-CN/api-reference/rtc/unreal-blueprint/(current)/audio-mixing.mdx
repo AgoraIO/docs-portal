@@ -2,9 +2,8 @@
 title: "音乐文件播放"
 description: "音乐文件播放 API reference."
 ---
-<a id="toc_audio_mixing"></a>
 
-## 音乐文件播放
+<a id="toc_audio_mixing"></a>
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume"></a>
 
@@ -25,7 +24,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
+你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__restriction"></a>
 
@@ -48,7 +47,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume"></a>
@@ -72,7 +70,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
+你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__restriction"></a>
 
@@ -95,7 +93,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustaudiomixingvolume"></a>
@@ -116,14 +113,14 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 该方法调节混音音乐文件在本端和远端的播放音量大小。
 
 :::info[注]
-调用该方法不会影响 [PlayEffect](/zh-CN/api-reference/rtc/unreal-blueprint/audio-effect-file#api_irtcengine_playeffect3) 方法中设置的音效文件播放音量。
+调用该方法不会影响 [PlayEffect](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-effect-file#api_irtcengine_playeffect3) 方法中设置的音效文件播放音量。
 :::
 
 <a id="api_irtcengine_adjustaudiomixingvolume__timing"></a>
 
 ### 调用时机
 
-该方法需要在 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 后调用。
+该方法需要在 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 后调用。
 
 <a id="api_irtcengine_adjustaudiomixingvolume__restriction"></a>
 
@@ -146,7 +143,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustplaybacksignalvolume"></a>
@@ -164,7 +160,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__detailed_desc"></a>
 
-该方法用于调节所有远端用户混音后在本地播放的信号音量，如果你需要调节指定远端用户在本地播放的信号音量，建议你调用 [AdjustUserPlaybackSignalVolume](/zh-CN/api-reference/rtc/unreal-blueprint/audio-basic#api_irtcengine_adjustuserplaybacksignalvolume)。
+该方法用于调节所有远端用户混音后在本地播放的信号音量，如果你需要调节指定远端用户在本地播放的信号音量，建议你调用 [AdjustUserPlaybackSignalVolume](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_adjustuserplaybacksignalvolume)。
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__timing"></a>
 
@@ -197,7 +193,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingcurrentposition"></a>
@@ -220,7 +215,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 该方法获取当前音乐文件播放进度，单位为毫秒。
 
 :::warning[注意]
-- 你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
+- 你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 - 如需多次调用 GetAudioMixingCurrentPosition，请确保调用间隔大于 500 ms。
 :::
 
@@ -231,7 +226,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - ≥ 0: 方法调用成功，返回当前音乐文件播放进度（ms）。0 表示当前音乐文件未开始播放。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingduration"></a>
@@ -255,7 +249,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-该方法需要在 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
+该方法需要在 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
 
 <a id="api_irtcengine_getaudiomixingduration__restriction"></a>
 
@@ -270,7 +264,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - ≥ 0: 方法调用成功则返回音乐文件时长。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume"></a>
@@ -294,7 +287,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-该方法需要在 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
+该方法需要在 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume__restriction"></a>
 
@@ -309,7 +302,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - ≥ 0: 方法调用成功则返回音量值，范围为 [0,100]。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingpublishvolume"></a>
@@ -332,7 +324,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 该接口可以方便开发者排查音量相关问题。
 
 :::warning[注意]
-你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
+你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_getaudiomixingpublishvolume__return_values"></a>
@@ -342,7 +334,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - ≥ 0: 方法调用成功则返回音量值，范围为 [0,100]。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiotrackcount"></a>
@@ -363,7 +354,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 ### 详情
 
 :::info[注]
-- 你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
+- 你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 OnAudioMixingStateChanged `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_getaudiotrackcount__return_values"></a>
@@ -373,7 +364,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 方法调用成功时，返回当前音乐文件的音轨索引。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pauseaudiomixing"></a>
@@ -391,7 +381,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_pauseaudiomixing__detailed_desc"></a>
 
-当你调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，如需暂停播放，请调用该方法。如果你需要停止播放，请调用 [StopAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_stopaudiomixing)。
+当你调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，如需暂停播放，请调用该方法。如果你需要停止播放，请调用 [StopAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_stopaudiomixing)。
 
 <a id="api_irtcengine_pauseaudiomixing__timing"></a>
 
@@ -412,7 +402,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_resumeaudiomixing"></a>
@@ -430,7 +419,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_resumeaudiomixing__detailed_desc"></a>
 
-当你调用 [PauseAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件后，如需恢复播放，请调用该方法。
+当你调用 [PauseAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件后，如需恢复播放，请调用该方法。
 
 <a id="api_irtcengine_resumeaudiomixing__timing"></a>
 
@@ -451,7 +440,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_selectaudiotrack"></a>
@@ -475,7 +463,7 @@ int SelectAudioTrack(int index);
 
 :::info[注]
 - 该方法支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件？](https://doc.shengwang.cn/faq/general-product-inquiry/audio-format)。
-- 你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
+- 你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_selectaudiotrack__parameters"></a>
@@ -484,7 +472,7 @@ int SelectAudioTrack(int index);
 
 #### `index`
 
-指定的播放音轨。取值范围应大于等于 0 且小于 [GetAudioTrackCount](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_getaudiotrackcount) 的返回值。
+指定的播放音轨。取值范围应大于等于 0 且小于 [GetAudioTrackCount](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_getaudiotrackcount) 的返回值。
 
 <a id="api_irtcengine_selectaudiotrack__return_values"></a>
 
@@ -493,7 +481,6 @@ int SelectAudioTrack(int index);
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayer_selectmultiaudiotrack"></a>
@@ -515,7 +502,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 你可以调用该方法分别设置本地播放和发送到远端的音轨。
 
-在调用该方法前，你需要通过 [OpenWithMediaSource](/zh-CN/api-reference/rtc/unreal-blueprint/mediaplayer-open#api_imediaplayer_openwithmediasource) 来打开媒体文件，并通过 [FAgoraMediaSource](/zh-CN/api-reference/rtc/unreal-blueprint/class-mediasource) 将 enableMultiAudioTrack 设为 `true`。
+在调用该方法前，你需要通过 [OpenWithMediaSource](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 来打开媒体文件，并通过 [FAgoraMediaSource](/zh-CN/api-reference/rtc/unreal-blueprint/class-mediasource) 将 enableMultiAudioTrack 设为 `true`。
 
 <a id="api_imediaplayer_selectmultiaudiotrack__scenario"></a>
 
@@ -529,11 +516,11 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 #### `playoutTrackIndex`
 
-用于本地播放的音轨索引。你可以通过 [GetStreamInfo](/zh-CN/api-reference/rtc/unreal-blueprint/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
+用于本地播放的音轨索引。你可以通过 [GetStreamInfo](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
 
 #### `publishTrackIndex`
 
-用于发送至远端的音轨索引。你可以通过 [GetStreamInfo](/zh-CN/api-reference/rtc/unreal-blueprint/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
+用于发送至远端的音轨索引。你可以通过 [GetStreamInfo](/zh-CN/api-reference/rtc/unreal-blueprint/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
 
 <a id="api_imediaplayer_selectmultiaudiotrack__return_values"></a>
 
@@ -541,7 +528,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 - &lt; 0: 方法调用失败。
 
-### 所属接口类
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_imediaplayer)
 
 <a id="api_irtcengine_setaudiomixingdualmonomode"></a>
@@ -574,7 +560,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-该方法需要在 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
+该方法需要在 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__restriction"></a>
 
@@ -597,7 +583,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingpitch"></a>
@@ -644,7 +629,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed"></a>
@@ -664,7 +648,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
-你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) 回调报告播放状态为 AUDIO_MIXING_STATE_PLAYING 后再调用该方法。
+你需要在调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) 回调报告播放状态为 AUDIO_MIXING_STATE_PLAYING 后再调用该方法。
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__parameters"></a>
 
@@ -685,7 +669,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingposition"></a>
@@ -709,7 +692,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用时机
 
-该方法需要在 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
+该方法需要在 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 之后，并收到 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) `(AUDIO_MIXING_STATE_PLAYING)` 回调后调用。
 
 <a id="api_irtcengine_setaudiomixingposition__restriction"></a>
 
@@ -732,7 +715,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startaudiomixing2"></a>
@@ -762,7 +744,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 调用限制
 
-- 使用该方法播放时长较短的音效文件可能会导致播放失败。如需播放音效文件，建议使用 [PlayEffect](/zh-CN/api-reference/rtc/unreal-blueprint/audio-effect-file#api_irtcengine_playeffect3)。
+- 使用该方法播放时长较短的音效文件可能会导致播放失败。如需播放音效文件，建议使用 [PlayEffect](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-effect-file#api_irtcengine_playeffect3)。
 - 如需多次调用该方法，请确保调用间隔大于 500 ms。
 - 在 Android 平台上调用该方法时，请注意如下事项：
 
@@ -774,7 +756,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 相关回调
 
-调用该方法成功播放音乐文件后，本地会触发 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AUDIO_MIXING_STATE_PLAYING`) 回调。播放结束后，本地会触发 OnAudioMixingStateChanged (`AUDIO_MIXING_STATE_STOPPED`) 回调。
+调用该方法成功播放音乐文件后，本地会触发 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AUDIO_MIXING_STATE_PLAYING`) 回调。播放结束后，本地会触发 OnAudioMixingStateChanged (`AUDIO_MIXING_STATE_STOPPED`) 回调。
 
 <a id="api_irtcengine_startaudiomixing2__parameters"></a>
 
@@ -820,7 +802,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
     - 请检查程序集完整性。
     - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 IRtcEngine。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopaudiomixing"></a>
@@ -838,7 +819,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_stopaudiomixing__detailed_desc"></a>
 
-当你调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，如需停止播放，可调用该方法。如果仅需暂停播放，请调用 [PauseAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_pauseaudiomixing)。
+当你调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，如需停止播放，可调用该方法。如果仅需暂停播放，请调用 [PauseAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_pauseaudiomixing)。
 
 <a id="api_irtcengine_stopaudiomixing__timing"></a>
 
@@ -859,7 +840,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished"></a>
@@ -879,11 +859,10 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 #### `弃用：`
 
-请改用 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)。
+请改用 [OnAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)。
 
-当调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 播放本地音乐文件结束后，会触发该回调。如果调用 StartAudioMixing 失败，会返回错误码 WARN_AUDIO_MIXING_OPEN_ERROR。
+当调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 播放本地音乐文件结束后，会触发该回调。如果调用 StartAudioMixing 失败，会返回错误码 WARN_AUDIO_MIXING_OPEN_ERROR。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged"></a>
@@ -903,7 +882,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 详情
 
-当你调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，SDK 会每隔一秒触发一次该回调，报告音乐文件当前的播放进度。
+当你调用 [StartAudioMixing](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_startaudiomixing2) 方法播放音乐文件后，SDK 会每隔一秒触发一次该回调，报告音乐文件当前的播放进度。
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__parameters"></a>
 
@@ -920,7 +899,6 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingstatechanged"></a>
@@ -952,5 +930,4 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 错误码。 详见 [FENUMWRAP_AUDIO_MIXING_REASON_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-audiomixingreasontype)。
 
-### 所属接口类
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)

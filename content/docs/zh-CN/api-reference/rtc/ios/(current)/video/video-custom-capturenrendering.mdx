@@ -1,14 +1,9 @@
 ---
 title: "自定义视频采集和渲染"
-description: "创建一个自定义视频轨道。"
+description: "自定义视频采集和渲染 API reference."
 ---
-<a id="toc_video_custom_capturenrendering"></a>
 
-## 自定义视频采集和渲染
-
-<a id="api_irtcengine_createcustomvideotrack"></a>
-
-## createCustomVideoTrack
+## <span id="toc_video_custom_capturenrendering"></span>createCustomVideoTrack [#api_irtcengine_createcustomvideotrack]
 
 创建一个自定义视频轨道。
 
@@ -26,19 +21,14 @@ description: "创建一个自定义视频轨道。"
 2. 调用 `joinChannelByToken` 加入频道。在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中，将 `customVideoTrackId` 设置为你想要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 YES。
 3. 调用 `pushExternalVideoFrame`，并将 `videoTrackId` 设置为第 2 步中设置的视频轨道 ID，即可在频道中发布对应的自定义视频源。
 
-<a id="api_irtcengine_createcustomvideotrack__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_createcustomvideotrack__return_values]
 
 - 方法调用成功时，返回视频轨道 ID，作为该视频轨道的唯一标识符。
 - 方法调用失败时，返回 `0xffffffff`。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_destroycustomvideotrack"></a>
-
-## destroyCustomVideoTrack:
+## destroyCustomVideoTrack: [#api_irtcengine_destroycustomvideotrack]
 
 销毁指定的视频轨道。
 
@@ -48,29 +38,20 @@ description: "创建一个自定义视频轨道。"
 - (int)destroyCustomVideoTrack:(NSUInteger)videoTrackId NS_SWIFT_NAME(destroyCustomVideoTrack(_:));
 ```
 
-<a id="api_irtcengine_destroycustomvideotrack__detailed_desc"></a>
-
-<a id="api_irtcengine_destroycustomvideotrack__parameters"></a>
-
-### 参数
+### <span id="api_irtcengine_destroycustomvideotrack__detailed_desc"></span>参数 [#api_irtcengine_destroycustomvideotrack__parameters]
 
 #### `videoTrackId`
 
 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
 
-<a id="api_irtcengine_destroycustomvideotrack__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_destroycustomvideotrack__return_values]
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/ios/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_pushvideoframe"></a>
-
-## pushExternalVideoFrame:videoTrackId:
+## pushExternalVideoFrame:videoTrackId: [#api_irtcengine_pushvideoframe]
 
 通过视频轨道将外部原始视频帧推送到 SDK。
 
@@ -88,9 +69,7 @@ description: "创建一个自定义视频轨道。"
 2. 调用 `joinChannelByToken` 加入频道。在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中，将 `customVideoTrackId` 设置为要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 YES。
 3. 调用 [pushExternalVideoFrame:videoTrackId:](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe) 方法，并将 `videoTrackId` 指定为第 2 步中设置的视频轨道 ID，即可在频道中发布相应的自定义视频源。
 
-<a id="api_irtcengine_pushvideoframe__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_pushvideoframe__parameters]
 
 #### `frame`
 
@@ -102,19 +81,14 @@ description: "创建一个自定义视频轨道。"
 
 - 如果你只需推送一个自定义视频源，请将该参数设置为 0。
 
-<a id="api_irtcengine_pushvideoframe__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_pushvideoframe__return_values]
 
 - YES：推送外部视频帧成功。
 - NO：推送外部视频帧失败。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_pushvideoframe2"></a>
-
-## pushExternalVideoFrame:
+## pushExternalVideoFrame: [#api_irtcengine_pushvideoframe2]
 
 将外部原始视频帧推送到 SDK。
 
@@ -124,35 +98,26 @@ description: "创建一个自定义视频轨道。"
 - (BOOL)pushExternalVideoFrame:(AgoraVideoFrame * _Nonnull)frame NS_SWIFT_NAME(pushExternalVideoFrame(_:)) __deprecated_msg("use pushExternalVideoFrame:frame,videoTrackId options instead.");
 ```
 
-<a id="api_irtcengine_pushvideoframe2__detailed_desc"></a>
-
-#### `废弃`
+#### `废弃` [#api_irtcengine_pushvideoframe2__detailed_desc]
 
 该方法已废弃，请改用 `pushExternalVideoFrame:frame,videoTrackId`。
 
 调用 [setExternalVideoSource:useTexture:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource) 方法，并将 `enabled` 参数设置为 YES， `encodedFrame` 参数设置为 NO 后，可以调用该方法将外部原始视频帧推送到 SDK。
 
-<a id="api_irtcengine_pushvideoframe2__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_pushvideoframe2__parameters]
 
 #### `frame`
 
 要推送的外部原始视频帧。详见 [AgoraVideoFrame](/zh-CN/api-reference/rtc/ios/class-externalvideoframe)。
 
-<a id="api_irtcengine_pushvideoframe2__return_values"></a>
-
-### 返回值
+### 返回值 [#api_irtcengine_pushvideoframe2__return_values]
 
 - YES：方法调用成功。
 - NO：方法调用失败。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setexternalvideosource"></a>
-
-## setExternalVideoSource:useTexture:sourceType:
+## setExternalVideoSource:useTexture:sourceType: [#api_irtcengine_setexternalvideosource]
 
 配置外部视频源。
 
@@ -170,15 +135,11 @@ description: "创建一个自定义视频轨道。"
 频道内不支持动态切换视频源。如需从外部视频源切换为内部视频源，必须先离开频道，调用该方法关闭外部视频源，再重新加入频道。
 :::
 
-<a id="api_irtcengine_setexternalvideosource__timing"></a>
-
-### 调用时机
+### 调用时机 [#api_irtcengine_setexternalvideosource__timing]
 
 该方法需要在加入频道前调用。
 
-<a id="api_irtcengine_setexternalvideosource__parameters"></a>
-
-### 参数
+### 参数 [#api_irtcengine_setexternalvideosource__parameters]
 
 #### `enable`
 
@@ -198,5 +159,4 @@ description: "创建一个自定义视频轨道。"
 
 外部视频帧的类型，详见 [AgoraExternalVideoSourceType](/zh-CN/api-reference/rtc/ios/enum-externalvideosourcetype)。
 
-### 所属接口类
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)

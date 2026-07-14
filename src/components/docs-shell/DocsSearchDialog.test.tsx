@@ -267,10 +267,10 @@ describe('DocsSearchDialog', () => {
             productScopes={[
               {
                 description: 'Real-time voice.',
-                filter: 'product:"voice"',
                 group: 'Realtime Media',
                 id: 'product:voice',
                 label: 'Voice Calling',
+                scope: { field: 'product', value: 'voice' },
               },
             ]}
           />
@@ -294,7 +294,9 @@ describe('DocsSearchDialog', () => {
 
     await waitFor(() => {
       expect(createAlgoliaDocsClient).toHaveBeenCalledWith(
-        expect.objectContaining({ scopeFilter: 'product:"voice"' }),
+        expect.objectContaining({
+          scope: { field: 'product', value: 'voice' },
+        }),
       );
     });
   });

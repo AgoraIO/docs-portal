@@ -1,0 +1,23 @@
+---
+title: "setMessageStatusCallBack method"
+description: "API docs for the setMessageStatusCallBack method from the ChatMessage class, for the Dart programming language."
+---
+
+```dart title="Dart"
+void setMessageStatusCallBack(MessageStatusCallBack? callback)
+```
+
+<a id="source"></a>
+
+## Implementation
+
+```dart title="Dart"
+void setMessageStatusCallBack(MessageStatusCallBack? callback) {
+  _messageStatusCallBack = callback;
+  if (callback != null) {
+    MessageCallBackManager.getInstance.addMessage(this);
+  } else {
+    MessageCallBackManager.getInstance.removeMessage(localTime.toString());
+  }
+}
+```

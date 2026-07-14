@@ -2,9 +2,8 @@
 title: "音频采集"
 description: "音频采集 API reference."
 ---
-<a id="toc_audio_capture"></a>
 
-## 音频采集
+<a id="toc_audio_capture"></a>
 
 <a id="api_irtcengine_adjustloopbacksignalvolume"></a>
 
@@ -23,7 +22,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 详情
 
-调用 [EnableLoopbackRecording](/zh-CN/api-reference/rtc/unreal-blueprint/audio-capture#api_irtcengine_enableloopbackrecording) 开启声卡采集后，你可以调用该方法调节声卡采集的信号音量。
+调用 [EnableLoopbackRecording](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-capture#api_irtcengine_enableloopbackrecording) 开启声卡采集后，你可以调用该方法调节声卡采集的信号音量。
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__parameters"></a>
 
@@ -40,7 +39,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustrecordingsignalvolume"></a>
@@ -58,7 +56,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__detailed_desc"></a>
 
-如果你只需将音频信号静音，建议你使用 [MuteRecordingSignal](/zh-CN/api-reference/rtc/unreal-blueprint/audio-capture#api_irtcengine_muterecordingsignal)。
+如果你只需将音频信号静音，建议你使用 [MuteRecordingSignal](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-capture#api_irtcengine_muterecordingsignal)。
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__timing"></a>
 
@@ -91,7 +89,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableinearmonitoring2"></a>
@@ -156,7 +153,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
   - - 8: 请确保当前的音频路由为蓝牙或耳机。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablelocalaudio"></a>
@@ -203,7 +199,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 相关回调
 
-音频功能关闭或重新开启后，会收到 [OnLocalAudioStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，并报告 LOCAL_AUDIO_STREAM_STATE_STOPPED (0) 或 LOCAL_AUDIO_STREAM_STATE_RECORDING (1)。
+音频功能关闭或重新开启后，会收到 [OnLocalAudioStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，并报告 LOCAL_AUDIO_STREAM_STATE_STOPPED (0) 或 LOCAL_AUDIO_STREAM_STATE_RECORDING (1)。
 
 <a id="api_irtcengine_enablelocalaudio__parameters"></a>
 
@@ -221,7 +217,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableloopbackrecording"></a>
@@ -246,7 +241,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 :::warning[注意]
 - 该方法仅适用于 macOS 和 Windows 平台。
 - 该方法在加入频道前后都能调用。
-- 如果你调用了 [DisableAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio-basic#api_irtcengine_disableaudio) 关闭音频模块，声卡采集功能也会被关闭。如果你需要再次启用声卡采集功能，需要调用 [EnableAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio-basic#api_irtcengine_enableaudio) 启用音频模块后再次调用 EnableLoopbackRecording。
+- 如果你调用了 [DisableAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_disableaudio) 关闭音频模块，声卡采集功能也会被关闭。如果你需要再次启用声卡采集功能，需要调用 [EnableAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_enableaudio) 启用音频模块后再次调用 EnableLoopbackRecording。
 :::
 
 <a id="api_irtcengine_enableloopbackrecording__parameters"></a>
@@ -272,7 +267,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableloopbackrecordingex"></a>
@@ -327,7 +321,6 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muterecordingsignal"></a>
@@ -345,7 +338,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_muterecordingsignal__detailed_desc"></a>
 
-如果你已经调用 [AdjustRecordingSignalVolume](/zh-CN/api-reference/rtc/unreal-blueprint/audio-capture#api_irtcengine_adjustrecordingsignalvolume) 调节了音频采集信号音量，则调用该方法并设置为 `true` 时，SDK 的行为如下：
+如果你已经调用 [AdjustRecordingSignalVolume](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-capture#api_irtcengine_adjustrecordingsignalvolume) 调节了音频采集信号音量，则调用该方法并设置为 `true` 时，SDK 的行为如下：
 
 1. 记录调节后的音量。
 2. 将音频采集信号静音。
@@ -380,7 +373,6 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/error-code) 了解详情和解决建议。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setinearmonitoringvolume"></a>
@@ -431,5 +423,4 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
   - -2: 参数设置无效，例如耳返音量超出取值范围 (&lt; 0 或 &gt; 400)。
 
-### 所属接口类
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)

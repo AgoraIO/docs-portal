@@ -1,0 +1,96 @@
+---
+title: "Callbacks<CALLBACKS>"
+description: "Callbacks<CALLBACKS> API 参考。"
+---
+
+回调。
+
+- Callbacks
+
+  - [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/web/interfaces/scenes-callbacks-node)
+
+## 方法
+
+<a id="forwardto"></a>
+
+### forwardTo
+
+```ts title="TypeScript"
+forwardTo<NAME>(name: NAME, toCallbacks: Callbacks<CALLBACKS>): any
+```
+
+将注册的回调转到另一个 `Callbacks` 对象。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| name: NAME | 注册回调的名称。 |
+| toCallbacks: Callbacks&lt;CALLBACKS&gt; | 转到的 `Callbacks` 对象。 |
+
+#### 返回值
+
+any
+
+<a id="off"></a>
+
+### off
+
+```ts title="TypeScript"
+off<NAME>(name?: NAME, listener?: any): void
+```
+
+注销回调。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| Optional name: NAME | 回调名。 |
+| Optional listener: any | 回调函数。 |
+
+#### 返回值
+
+void
+
+<a id="on"></a>
+
+### on
+
+```ts title="TypeScript"
+on<NAME>(name: NAME, listener: any): void
+```
+
+注册一个回调。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| name: NAME | 回调名。 |
+| listener: any | 回调函数。 |
+
+#### 返回值
+
+void
+
+<a id="once"></a>
+
+### once
+
+```ts title="TypeScript"
+once<NAME>(name: NAME, listener: any): void
+```
+
+注册只使用一次的回调。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| name: NAME | 回调名。 |
+| listener: any | 回调函数。 |
+
+#### 返回值
+
+void

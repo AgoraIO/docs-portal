@@ -1,10 +1,9 @@
 ---
 title: "空间音频"
-description: "删除所有远端用户的空间位置信息。"
+description: "空间音频 API reference."
 ---
-<a id="toc_spatial_audio"></a>
 
-## 空间音频
+<a id="toc_spatial_audio"></a>
 
 <a id="api_ilocalspatialaudioengine_clearremotepositions"></a>
 
@@ -28,7 +27,6 @@ Future<void> clearRemotePositions();
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [LocalSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_irtcengine_enablespatialaudio"></a>
@@ -45,7 +43,7 @@ Future<void> enableSpatialAudio(bool enabled);
 
 <a id="api_irtcengine_enablespatialaudio__detailed_desc"></a>
 
-开启空间音频后，你可以调用 [setRemoteUserSpatialAudioParams](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音频参数。
+开启空间音频后，你可以调用 [setRemoteUserSpatialAudioParams](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音频参数。
 
 :::info[注]
 - 该方法在加入频道前后均可调用。
@@ -69,7 +67,6 @@ Future<void> enableSpatialAudio(bool enabled);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getlocalspatialaudioengine"></a>
@@ -96,7 +93,6 @@ LocalSpatialAudioEngine getLocalSpatialAudioEngine();
 
 一个 [LocalSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ilocalspatialaudioengine) 对象。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine"></a>
@@ -124,7 +120,6 @@ Future<void> initialize();
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [LocalSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine"></a>
@@ -145,8 +140,8 @@ Future<void> muteAllRemoteAudioStreams(bool mute);
 
 :::info[注]
 - 该方法需要在 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 后调用。
-- 在使用空间音频时，如需设置是否订阅所有远端用户的音频流，建议调用该方法替代 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 的 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine) 方法。
-- 在调用该方法后，你需要调用 [updateSelfPosition](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_ibasespatialaudioengine_updateselfposition) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 更新本地用户和远端用户的空间位置，否则该方法中的设置不会生效。
+- 在使用空间音频时，如需设置是否订阅所有远端用户的音频流，建议调用该方法替代 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 的 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine) 方法。
+- 在调用该方法后，你需要调用 [updateSelfPosition](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselfposition) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 更新本地用户和远端用户的空间位置，否则该方法中的设置不会生效。
 :::
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__parameters"></a>
@@ -166,7 +161,6 @@ Future<void> muteAllRemoteAudioStreams(bool mute);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [BaseSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine"></a>
@@ -186,8 +180,8 @@ Future<void> muteLocalAudioStream(bool mute);
 :::info[注]
 - 该方法不影响音频采集状态，因为没有禁用音频采集设备。
 - 该方法需要在 `joinChannel1` 或 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 后调用。
-- 在使用空间音频时，如需设置是否发布本地音频流，建议调用该方法替代 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 的 [muteLocalAudioStream](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine) 方法。
-- 成功调用该方法后，远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/flutter/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/flutter/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+- 在使用空间音频时，如需设置是否发布本地音频流，建议调用该方法替代 [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine) 的 [muteLocalAudioStream](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine) 方法。
+- 成功调用该方法后，远端会触发 [onUserMuteAudio](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 回调和 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
 :::
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__parameters"></a>
@@ -207,7 +201,6 @@ Future<void> muteLocalAudioStream(bool mute);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [BaseSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine"></a>
@@ -245,7 +238,6 @@ Future<void> muteRemoteAudioStream({required int uid, required bool mute});
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [BaseSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_release_ibasespatialaudioengine"></a>
@@ -264,7 +256,6 @@ abstract release(): void;
 
 该方法释放 [BaseSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ibasespatialaudioengine) 下的所有资源。当用户不需要使用空间音频时，你可以调用该方法将资源释放出来用于其他操作。 调用该方法后，你将无法再使用 [BaseSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ibasespatialaudioengine) 下的任何 API。
 
-### 所属接口类
 - [BaseSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition"></a>
@@ -281,7 +272,7 @@ Future<void> removeRemotePosition(int uid);
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition__detailed_desc"></a>
 
-成功调用该方法后，本地用户将听不到指定的远端用户。 离开频道后，为避免计算资源的浪费，你需要调用该方法删除指定远端用户的空间位置信息。否则，该用户的空间位置信息会一直被保存。当远端用户人数大于 [setMaxAudioRecvCount](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_ibasespatialaudioengine_setmaxaudiorecvcount) 中设定的可接收音频流数时，会按照相对距离依次自动取消订阅距离最远的用户的音频流。
+成功调用该方法后，本地用户将听不到指定的远端用户。 离开频道后，为避免计算资源的浪费，你需要调用该方法删除指定远端用户的空间位置信息。否则，该用户的空间位置信息会一直被保存。当远端用户人数大于 [setMaxAudioRecvCount](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setmaxaudiorecvcount) 中设定的可接收音频流数时，会按照相对距离依次自动取消订阅距离最远的用户的音频流。
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition__parameters"></a>
 
@@ -297,7 +288,6 @@ Future<void> removeRemotePosition(int uid);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [LocalSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setaudiorecvrange"></a>
@@ -330,7 +320,6 @@ Future<void> setAudioRecvRange(double range);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [BaseSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setdistanceunit"></a>
@@ -363,7 +352,6 @@ Future<void> setDistanceUnit(double unit);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [BaseSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_irtcengine_setheadphoneeqparameters"></a>
@@ -381,7 +369,7 @@ Future<void> setHeadphoneEQParameters(
 
 <a id="api_irtcengine_setheadphoneeqparameters__detailed_desc"></a>
 
-在空间音频场景下，如果在调用 [setHeadphoneEQPreset](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_irtcengine_setheadphoneeqpreset) 方法使用预设的耳机均衡效果后仍未达到预期，你可以通过调用该方法进一步调节耳机均衡效果。
+在空间音频场景下，如果在调用 [setHeadphoneEQPreset](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqpreset) 方法使用预设的耳机均衡效果后仍未达到预期，你可以通过调用该方法进一步调节耳机均衡效果。
 
 <a id="api_irtcengine_setheadphoneeqparameters__parameters"></a>
 
@@ -401,7 +389,6 @@ Future<void> setHeadphoneEQParameters(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setheadphoneeqpreset"></a>
@@ -438,7 +425,6 @@ Future<void> setHeadphoneEQPreset(HeadphoneEqualizerPreset preset);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_ibasespatialaudioengine_setmaxaudiorecvcount"></a>
@@ -471,7 +457,6 @@ Future<void> setMaxAudioRecvCount(int maxCount);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [BaseSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation"></a>
@@ -524,7 +509,6 @@ Future<void> setPlayerAttenuation(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [BaseSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation"></a>
@@ -570,7 +554,6 @@ Future<void> setRemoteAudioAttenuation(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [LocalSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams"></a>
@@ -588,7 +571,7 @@ Future<void> setRemoteUserSpatialAudioParams(
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams__detailed_desc"></a>
 
-该方法需要在 [enableSpatialAudio](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_irtcengine_enablespatialaudio) 后调用。成功设置远端用户的空间音频参数后，本地用户听远端用户会有空间感。
+该方法需要在 [enableSpatialAudio](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_irtcengine_enablespatialaudio) 后调用。成功设置远端用户的空间音频参数后，本地用户听远端用户会有空间感。
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams__parameters"></a>
 
@@ -608,7 +591,6 @@ Future<void> setRemoteUserSpatialAudioParams(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayer_setspatialaudioparams"></a>
@@ -641,7 +623,6 @@ Future<void> setSpatialAudioParams(SpatialAudioParams params);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
 
 <a id="api_ibasespatialaudioengine_setzones"></a>
@@ -662,7 +643,7 @@ Future<void> setZones(
 在虚拟互动场景下，你可以通过该方法设置隔声区域和声音衰减系数。当音源（可以为用户或媒体播放器）跟听声者分属于隔声区域内部和外部时，会体验到类似真实环境中声音在遇到建筑隔断时的衰减效果。
 
 - 当音源跟听声者分属于隔声区域内部和外部时，声音的衰减效果由 [SpatialAudioZone](/zh-CN/api-reference/rtc/flutter/class-spatialaudiozone) 中的声音衰减系数决定。
-- 如果用户或媒体播放器同在一个隔声区域内，则不受 [SpatialAudioZone](/zh-CN/api-reference/rtc/flutter/class-spatialaudiozone) 的影响，声音的衰减效果由 [setPlayerAttenuation](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation) 中的 `attenuation` 参数决定。如果不调用 [setPlayerAttenuation](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation)，则 SDK 默认声音的衰减系数为 0.5，即模拟声音在真实环境下的衰减。
+- 如果用户或媒体播放器同在一个隔声区域内，则不受 [SpatialAudioZone](/zh-CN/api-reference/rtc/flutter/class-spatialaudiozone) 的影响，声音的衰减效果由 [setPlayerAttenuation](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation) 中的 `attenuation` 参数决定。如果不调用 [setPlayerAttenuation](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 [setRemoteAudioAttenuation](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation)，则 SDK 默认声音的衰减系数为 0.5，即模拟声音在真实环境下的衰减。
 - 如果音源跟接收者分别属于两个隔声区域，则接收者无法听到音源。
 
 :::info[注]
@@ -691,7 +672,6 @@ Future<void> setZones(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [BaseSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_updateplayerpositioninfo"></a>
@@ -735,7 +715,6 @@ Future<void> updatePlayerPositionInfo(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [BaseSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ibasespatialaudioengine)
 
 <a id="api_ilocalspatialaudioengine_updateremoteposition"></a>
@@ -777,7 +756,6 @@ Future<void> updateRemotePosition(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [LocalSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ilocalspatialaudioengine)
 
 <a id="api_ibasespatialaudioengine_updateselfposition"></a>
@@ -798,7 +776,7 @@ Future<void> updateSelfPosition(
 
 <a id="api_ibasespatialaudioengine_updateselfposition__detailed_desc"></a>
 
-- 在 [LocalSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ilocalspatialaudioengine) 类下，该方法需要和 [updateRemotePosition](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 搭配使用。SDK 会根据该方法和 [updateRemotePosition](/zh-CN/api-reference/rtc/flutter/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 设置的参数计算本地和远端用户之间的相对位置，从而计算用户的空间音频参数。
+- 在 [LocalSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ilocalspatialaudioengine) 类下，该方法需要和 [updateRemotePosition](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 搭配使用。SDK 会根据该方法和 [updateRemotePosition](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 设置的参数计算本地和远端用户之间的相对位置，从而计算用户的空间音频参数。
 
 <a id="api_ibasespatialaudioengine_updateselfposition__parameters"></a>
 
@@ -826,5 +804,4 @@ Future<void> updateSelfPosition(
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [BaseSpatialAudioEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ibasespatialaudioengine)

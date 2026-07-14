@@ -2,6 +2,7 @@
 title: "原始视频数据"
 description: "注册原始视频观测器对象。"
 ---
+
 <a id="toc_video_raw"></a>
 
 ## 原始视频数据
@@ -57,7 +58,6 @@ void registerVideoFrameObserver(VideoFrameObserver observer);
 
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
 
 <a id="api_imediaengine_unregistervideoframeobserver_imediaengine"></a>
@@ -88,7 +88,6 @@ void unregisterVideoFrameObserver(VideoFrameObserver observer);
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/flutter/error-code)了解详情和解决建议。
 
-### 所属接口类
 - [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe"></a>
@@ -141,7 +140,6 @@ final void Function(VideoSourceType sourceType, VideoFrame videoFrame)?
 - Windows：YUV420
 :::
 
-### 所属接口类
 - [VideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_imediaplayervideoframeobserver_onframe_imediaplayervideoframeobserver"></a>
@@ -168,7 +166,6 @@ final void Function(VideoFrame frame)? onFrame;
 
 视频帧信息，详见 [VideoFrame](/zh-CN/api-reference/rtc/flutter/class-videoframe)。
 
-### 所属接口类
 - [MediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayervideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe"></a>
@@ -214,7 +211,6 @@ final void Function(VideoFrame videoFrame)? onPreEncodeVideoFrame;
 - Windows：YUV420
 :::
 
-### 所属接口类
 - [VideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onrendervideoframe"></a>
@@ -265,5 +261,4 @@ final void Function(String channelId, int remoteUid, VideoFrame videoFrame)?
 
 频道 ID。
 
-### 所属接口类
 - [VideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ivideoframeobserver)
