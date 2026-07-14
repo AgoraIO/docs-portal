@@ -210,6 +210,7 @@ async function writeTypeDocFixture(sourceDir: string) {
     <main>
       <h1>Modules</h1>
       <p>Open the <a href="classes/Client.html#connect">Client class</a>.</p>
+      <p id="createclient">Use <a href="modules.html#createclient">createClient</a> here.</p>
       <ul><li><code>createClient</code></li></ul>
     </main>
   </body>
@@ -695,6 +696,7 @@ describe('html-to-md-migration', () => {
         ],
         'modules.mdx': [
           '[Client class](/api-reference/web/typescript/classes/client#connect)',
+          '[createClient](/api-reference/web/typescript/modules#createclient)',
         ],
       },
       outputDir,
