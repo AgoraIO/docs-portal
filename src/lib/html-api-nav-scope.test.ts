@@ -14,6 +14,22 @@ const affectedRoutes = [
     route: '/zh-CN/api-reference/rtc/android/class-videocanvas',
   },
   {
+    root: '/zh-CN/api-reference/rtc/android',
+    route: '/zh-CN/api-reference/rtc/android/class-rtcconnection',
+  },
+  {
+    root: '/zh-CN/api-reference/rtc/ios',
+    route: '/zh-CN/api-reference/rtc/ios/class-rtcconnection',
+  },
+  {
+    root: '/zh-CN/api-reference/rtc/flutter',
+    route: '/zh-CN/api-reference/rtc/flutter/class-rtcconnection',
+  },
+  {
+    root: '/zh-CN/api-reference/rtc/cpp-all-platforms',
+    route: '/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection',
+  },
+  {
     root: '/zh-CN/api-reference/rtc/web',
     route: '/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc',
   },
