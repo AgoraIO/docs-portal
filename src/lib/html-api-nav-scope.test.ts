@@ -105,4 +105,31 @@ describe('migrated HTML API navigation scopes', () => {
     expect(urls.every((url) => url.startsWith(routeRoot))).toBe(true);
     expect(urls.some((url) => /doxygen-crawl|-members/.test(url))).toBe(false);
   });
+
+  it('uses the RTC React SDK sidebar for the canonical React route', () => {
+    const route = '/zh-CN/api-reference/rtc/react/react-sdk/components';
+    const navScope = resolveDocsNavScope({
+      activePath: route,
+      getNodeMeta: getZhNodeMeta,
+      root: source.getPageTree('zh-CN'),
+      tab: 'api-reference',
+    });
+
+    expect(navScope).not.toBeNull();
+    if (!navScope) return;
+
+    const urls = collectPageUrls(
+      getScopedNavScopeSidebarNodes({
+        getNodeMeta: getZhNodeMeta,
+        navScope,
+      }),
+    );
+    expect(urls).toContain(route);
+    expect(urls).toContain('/zh-CN/api-reference/rtc/react/react-sdk/hooks');
+    expect(
+      urls.some((url) =>
+        url.startsWith('/zh-CN/api-reference/conversational-ai/'),
+      ),
+    ).toBe(false);
+  });
 });
