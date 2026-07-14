@@ -72,7 +72,9 @@ export function resolveDocsNavScope({
     return null;
   }
 
-  const ancestors = findFolderAncestorsByUrl(tabNode, activePath);
+  const ancestors =
+    findFolderAncestorsByUrl(tabNode, activePath) ??
+    findFolderAncestorsByRoutePrefix(tabNode, activePath);
   if (!ancestors) {
     return null;
   }
@@ -690,15 +692,35 @@ function resolveActiveVersion({
 
   const matches = versions.flatMap((version) => {
     const node = findVersionFolder(scope, version);
-    if (!node || !nodeContainsUrl(node, activePath)) {
+    if (
+      !node ||
+      (!nodeContainsUrl(node, activePath) &&
+        !folderRouteContainsUrl(node, activePath))
+    ) {
       return [];
     }
 
-    return [{ ...version, node }];
+    return [
+      {
+        ...version,
+        matchLength: getFolderRoutePrefix(node).length,
+        node,
+      },
+    ];
   });
+  const matchedVersion = matches.sort(
+    (left, right) => right.matchLength - left.matchLength,
+  )[0];
 
   return (
-    matches.at(0) ??
+    (matchedVersion
+      ? {
+          id: matchedVersion.id,
+          label: matchedVersion.label,
+          node: matchedVersion.node,
+          path: matchedVersion.path,
+        }
+      : undefined) ??
     versions
       .map((version) => {
         const node = findVersionFolder(scope, version);
@@ -830,6 +852,27 @@ function findFolderAncestorsByUrl(
   return null;
 }
 
+function findFolderAncestorsByRoutePrefix(
+  folder: Folder,
+  url: string,
+  ancestors: Folder[] = [],
+): Folder[] | null {
+  const nextAncestors = [...ancestors, folder];
+  let bestMatch = folderRouteContainsUrl(folder, url) ? nextAncestors : null;
+
+  for (const child of folder.children) {
+    if (child.type !== 'folder' || !folderRouteContainsUrl(child, url)) {
+      continue;
+    }
+    const result = findFolderAncestorsByRoutePrefix(child, url, nextAncestors);
+    if (result && (!bestMatch || result.length > bestMatch.length)) {
+      bestMatch = result;
+    }
+  }
+
+  return bestMatch;
+}
+
 function findVersionFolder(
   scope: Folder,
   version: DocsNavScopeVersion,
@@ -871,6 +914,49 @@ function nodeContainsUrl(node: Node, url: string): boolean {
     node.index?.url === url ||
     node.children.some((child) => nodeContainsUrl(child, url))
   );
+}
+
+function folderRouteContainsUrl(folder: Folder, url: string): boolean {
+  const routePrefix = getFolderRoutePrefix(folder).replace(/\/$/, '');
+  const normalizedUrl = url.replace(/\/$/, '');
+  return (
+    routePrefix.length > 0 &&
+    (normalizedUrl === routePrefix ||
+      normalizedUrl.startsWith(`${routePrefix}/`))
+  );
+}
+
+function getFolderRoutePrefix(folder: Folder): string {
+  const idMatch = /^([^:]+):(.+)$/.exec(String(folder.$id ?? ''));
+  if (idMatch) {
+    const pathSegments = idMatch[2]
+      .split('/')
+      .filter((segment) => !/^\(.+\)$/.test(segment));
+    return `/${idMatch[1]}/${pathSegments.join('/')}`;
+  }
+
+  const urls = collectDescendantPageUrls(folder);
+  if (urls.length === 0) return '';
+  const sharedSegments = urls[0].split('/');
+  for (const url of urls.slice(1)) {
+    const segments = url.split('/');
+    while (
+      sharedSegments.length > 0 &&
+      sharedSegments.some((segment, index) => segment !== segments[index])
+    ) {
+      sharedSegments.pop();
+    }
+  }
+  return sharedSegments.join('/') || '/';
+}
+
+function collectDescendantPageUrls(folder: Folder): string[] {
+  const urls = folder.index ? [folder.index.url] : [];
+  for (const child of folder.children) {
+    if (child.type === 'page') urls.push(child.url);
+    if (child.type === 'folder') urls.push(...collectDescendantPageUrls(child));
+  }
+  return urls;
 }
 
 function getRelativePath(folder: Folder, activePath: string): string[] {

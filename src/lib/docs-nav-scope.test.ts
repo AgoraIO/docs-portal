@@ -254,6 +254,94 @@ describe('docs nav scope', () => {
     });
   });
 
+  it('inherits the nearest scope for a Dartdoc method page hidden from the sidebar tree', () => {
+    const flutterTree: Root = {
+      children: [
+        {
+          children: [
+            {
+              children: [
+                {
+                  children: [
+                    {
+                      $id: 'flutter-folder',
+                      children: [
+                        {
+                          children: [
+                            {
+                              children: [],
+                              index: {
+                                name: 'ChatManager class',
+                                type: 'page',
+                                url: '/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-manager',
+                              },
+                              name: 'ChatManager class',
+                              type: 'folder',
+                            },
+                          ],
+                          index: {
+                            name: 'agora_chat_sdk library',
+                            type: 'page',
+                            url: '/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk',
+                          },
+                          name: 'agora_chat_sdk library',
+                          type: 'folder',
+                        },
+                      ],
+                      index: {
+                        name: 'Agora Chat Flutter API',
+                        type: 'page',
+                        url: '/zh-CN/api-reference/agora-chat/flutter',
+                      },
+                      name: 'Agora Chat Flutter API',
+                      type: 'folder',
+                    },
+                  ],
+                  name: 'Agora Chat',
+                  type: 'folder',
+                },
+              ],
+              name: 'Reference',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '简体中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+    const getFlutterMeta = (node: Folder | Root): DocsMeta | undefined =>
+      node.$id === 'flutter-folder'
+        ? {
+            navScope: {},
+            pages: ['index', 'agora-chat-sdk'],
+            title: 'Agora Chat Flutter API',
+          }
+        : undefined;
+    const scope = resolveDocsNavScope({
+      activePath:
+        '/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-manager/send-message',
+      getNodeMeta: getFlutterMeta,
+      root: flutterTree,
+      tab: 'api-reference',
+    });
+
+    expect(scope?.scope.node.$id).toBe('flutter-folder');
+    expect(scope?.sidebarRoot.$id).toBe('flutter-folder');
+    expect(
+      JSON.stringify(
+        scope
+          ? getScopedNavScopeSidebarNodes({
+              getNodeMeta: getFlutterMeta,
+              navScope: scope,
+            })
+          : [],
+      ),
+    ).not.toContain('send-message');
+  });
+
   it('falls back to the target version index when the relative page is missing', () => {
     const scope = resolveDocsNavScope({
       activePath: '/en/api-reference/rtc/android/audio/audio-basic',
