@@ -428,7 +428,10 @@ async function detectSourceStructure(sourceDir) {
     [lowerDetectionText.includes('appledoc'), 'appledoc page marker'],
     [lowerDetectionText.includes('jazzy'), 'Jazzy page marker'],
   ]);
-  if (iosDocGeneratorMarkers.length > 0) {
+  const hasStrongIosDocGeneratorMarker = iosDocGeneratorMarkers.some(
+    (marker) => marker !== 'hierarchy.html',
+  );
+  if (hasStrongIosDocGeneratorMarker) {
     return supportedGeneratedHtmlStructure(
       sourceDir,
       SOURCE_TYPES.IOS_DOC_GENERATOR,

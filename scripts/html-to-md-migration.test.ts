@@ -449,6 +449,7 @@ async function writeDoxygenFixture(sourceDir: string) {
     'deprecated.html',
     'doxygen_crawl.html',
     'examples.html',
+    'hierarchy.html',
     'pages.html',
     'dir_8f3a.html',
   ]) {
