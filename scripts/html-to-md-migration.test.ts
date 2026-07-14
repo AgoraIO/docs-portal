@@ -1797,7 +1797,8 @@ describe('html-to-md-migration', () => {
           '<a id="classes"></a>',
           '## Classes',
           '<a id="RtcEngine"></a>',
-          '### [RtcEngine](/api-reference/rtc/dart/agora-rtc/rtc-engine)',
+          '### RtcEngine',
+          '[RtcEngine](/api-reference/rtc/dart/agora-rtc/rtc-engine)',
           'Primary Dart RTC engine.',
           '1. Initialize the engine.',
           '<a id="enums"></a>',
@@ -1811,7 +1812,8 @@ describe('html-to-md-migration', () => {
           '<a id="instance-methods"></a>',
           '## Methods',
           '<a id="connect"></a>',
-          '### [connect](/api-reference/rtc/dart/agora-rtc/rtc-engine/connect)',
+          '### connect',
+          '[connect](/api-reference/rtc/dart/agora-rtc/rtc-engine/connect)',
           '```dart title="Dart"\nconnect(String channel) -> Future<void>\n```',
           '[ChannelProfile](/api-reference/rtc/dart/agora-rtc/channel-profile)',
           '_Inherited._',
@@ -1838,6 +1840,10 @@ describe('html-to-md-migration', () => {
       platform: 'dart',
       product: 'rtc',
       sourceDir,
+      unexpectedPageContents: {
+        'agora-rtc/index.mdx': ['### ['],
+        'agora-rtc/rtc-engine/index.mdx': ['### ['],
+      },
     });
 
     const rootMeta = await readJson(path.join(outputDir, 'meta.json'));

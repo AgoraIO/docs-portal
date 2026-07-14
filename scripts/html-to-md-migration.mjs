@@ -3177,11 +3177,16 @@ function renderDartdocDefinitionItem(
   const parts = [];
   if (id) parts.push(`<a id="${id}"></a>`);
   const nameLink = nameNode.find('a[href]').first();
-  const headingLabel =
-    nameLink.length > 0
-      ? renderAnchor(nameLink, pageTitleBySource, sourceToRoute, targetBasePath)
-      : escapeInlineText(name);
-  parts.push(`### ${headingLabel}`);
+  parts.push(`### ${escapeInlineText(name)}`);
+  if (nameLink.length > 0) {
+    const renderedLink = renderAnchor(
+      nameLink,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+    );
+    if (renderedLink) parts.push(renderedLink);
+  }
 
   const signature = normalizeDartdocSignature(
     term.clone().find('.features').remove().end().text(),
