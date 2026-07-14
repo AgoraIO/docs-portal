@@ -1323,6 +1323,7 @@ function renderHref(label, href, sourceToRoute, targetBasePath) {
     return sourceName.endsWith('.html') ? label : `[${label}](${href})`;
   }
   if (
+    sourceToRoute.sourceTypeId === SOURCE_TYPES.DITA_OT_API.id &&
     hashPart &&
     sourceToRoute.currentSource &&
     routeTarget.sourceName === normalizeSourcePath(sourceToRoute.currentSource)
@@ -4494,6 +4495,7 @@ async function main() {
   // Assign routes
   const sourceToRoute = new Map();
   sourceToRoute.locale = opts.locale;
+  sourceToRoute.sourceTypeId = sourceStructure.id;
   sourceToRoute.typeDocSymbolHrefs = typeDocSymbolHrefs;
   sourceToRoute.product = opts.product;
   sourceToRoute.platform = opts.platform;
