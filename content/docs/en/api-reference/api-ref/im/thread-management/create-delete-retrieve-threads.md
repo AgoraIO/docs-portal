@@ -14,17 +14,16 @@ The following table lists common request and response parameters of the Chat RES
 | Parameter | Type | Description | Required |
 | :--------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 
 ### Response parameters 
 
 | Parameter | Type | Description |
 | :---------------- | :----- | :---------------------------------------------------------------- |
 | `action` | String | The request method. |
-| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. |
 | `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
-| `applicationName` | String | The unique identifier assigned to each app by the Chat service. This is the same as `app_name`. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service. |
 | `data` | JSON | The details of the response. |
 | `timestamp` | Number | The Unix timestamp (ms) of the HTTP response. |
 | `duration` | Number | The duration (ms) from when the HTTP request is sent to the time the response is received. |
@@ -52,7 +51,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/thread
+POST https://{host}/app-id/{app_id}/thread
 ```
 
 #### Path parameter
@@ -125,7 +124,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-PUT https://{host}/{org_name}/{app_name}/thread/{thread_id}
+PUT https://{host}/app-id/{app_id}/thread/{thread_id}
 ```
 
 #### Path parameter
@@ -191,7 +190,7 @@ Deletes the specified thread.
 ### HTTP request
 
 ```html
-DELETE https://{host}/{org_name}/{app_name}/thread/{thread_id}
+DELETE https://{host}/app-id/{app_id}/thread/{thread_id}
 ```
 
 #### Path parameter
@@ -253,7 +252,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/thread?limit={limit}&cursor={cursor}&sort={sort}
+GET https://{host}/app-id/{app_id}/thread?limit={limit}&cursor={cursor}&sort={sort}
 ```
 
 #### Path parameter
@@ -323,7 +322,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/threads/user/{username}?limit={limit}&cursor={cursor}&sort={sort}
+GET https://{host}/app-id/{app_id}/threads/user/{username}?limit={limit}&cursor={cursor}&sort={sort}
 ```
 
 #### Path parameter
@@ -406,7 +405,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```html
-GET https://{host}/{org_name}/{app_name}/threads/chatgroups/{group_id}/user/{username}?limit={limit}&cursor={cursor}&sort={sort}
+GET https://{host}/app-id/{app_id}/threads/chatgroups/{group_id}/user/{username}?limit={limit}&cursor={cursor}&sort={sort}
 ```
 
 #### Path parameter

@@ -34,14 +34,14 @@ Whether a chat group is public or private, the chat group owner and chat group a
 
    Does a group invitation require consent from an invitee to add them to the group (`inviteNeedConfirm`):
     - Yes (`option.InviteNeedConfirm` is set to`true`). After creating a group and sending group invitations, the subsequent logic varies based on whether an invitee automatically consents to the group invitation (`autoAcceptGroupInvitation`):
-        - Yes (`autoAcceptGroupInvitation` is set to `true`). The invitee automatically joins the chat group and receives the `GroupChangeListener#onAutoAcceptInvitationFromGroup` callback, the inviter receives the `GroupChangeListener#onInvitationAccepted` and `GroupChangeListeneronMemberJoined `callbacks, and the other chat group members receive the `GroupChangeListener#onMemberJoined` callback.
+        - Yes (`autoAcceptGroupInvitation` is set to `true`). The invitee automatically joins the chat group and receives the `GroupChangeListener#onAutoAcceptInvitationFromGroup` callback, the inviter receives the `GroupChangeListener#onInvitationAccepted` and `GroupChangeListener#onMembersJoined` callbacks, and the other chat group members receive the `GroupChangeListener#onMembersJoined` callback.
         - No (`autoAcceptGroupInvitation` is set to `false`). The invitee receives the GroupChangeListener#onInvitationReceived callback and chooses whether to join the chat group:
-            - If the invitee accepts the group invitation, the inviter receives the `GroupChangeListener#onInvitationAccepted` and `GroupChangeListener#onMemberJoined` callbacks and the other chat group members receive the `GroupChangeListener#onMemberJoined` callback;
+            - If the invitee accepts the group invitation, the inviter receives the `GroupChangeListener#onInvitationAccepted` and `GroupChangeListener#onMembersJoined` callbacks and the other chat group members receive the `GroupChangeListener#onMembersJoined` callback;
             - If the invitee declines the group invitation, the chat group owner receives the `GroupChangeListener#groupInvitationDidDecline` callback.
 
-    - No (`option.InviteNeedConfirm` is set to `false`). After creating a chat group and sending group invitations, an invitee is added to the chat group regardless of their `autoAcceptGroupInvitation` setting. The invitee receives the `GroupChangeListener#onAutoAcceptInvitationFromGroup` callback, the inviter receives the `GroupChangeListener#onInvitationAccepted` and `GroupChangeListener#onMemberJoined` callbacks and the other chat group members receive the `GroupChangeListener#onMemberJoined` callback.
+    - No (`option.InviteNeedConfirm` is set to `false`). After creating a chat group and sending group invitations, an invitee is added to the chat group regardless of their `autoAcceptGroupInvitation` setting. The invitee receives the `GroupChangeListener#onAutoAcceptInvitationFromGroup` callback, the inviter receives the `GroupChangeListener#onInvitationAccepted` and `GroupChangeListener#onMembersJoined` callbacks and the other chat group members receive the `GroupChangeListener#onMembersJoined` callback.
 3. Remove chat group members from a chat group.
-The chat group owner and chat group admins can remove chat group members from a chat group, whereas chat group members do not have this privilege. Once a group member is removed, the removed member receives the `onUserRemoved` callback and all other members in the group receive the `onMemberExited` callback.
+The chat group owner and chat group admins can remove chat group members from a chat group, whereas chat group members do not have this privilege. Once a group member is removed, the removed member receives the `onUserRemoved` callback and all other members in the group receive the `onMembersExited` callback.
 
 Refer to the following sample code to add and remove a user:
 
@@ -396,7 +396,7 @@ try {
 
 ### Remove a member from a chat group
 
-Only the chat group owner and admins can call `removeMembers` to remove one or more members from a chat group. Once removed from the chat group, the member receives the `ChatGroupEventHandler#onUserRemovedFromGroup` callback, while all the other members receive the `ChatGroupEventHandler#onMemberExitedFromGroup` callback. Users can join the chat group again after being removed.
+Only the chat group owner and admins can call `removeMembers` to remove one or more members from a chat group. Once removed from the chat group, the member receives the `ChatGroupEventHandler#onUserRemovedFromGroup` callback, while all the other members receive the `ChatGroupEventHandler#onMembersExitedFromGroup` callback. Users can join the chat group again after being removed.
 
 The following code sample shows how to remove a member from a chat group:
 
@@ -452,7 +452,7 @@ try {
 
 #### Add a member to the chat group blocklist
 
-Only the chat group owner and admins can call `blockMembers` to add the specified member to the chat group blocklist. Once added to the blocklist, this member receives the `ChatGroupEventHandler#onUserRemovedFromGroup` callback, while all the other members receive the `ChatGroupEventHandler#onMemberExitedFromGroup` callback. After being added to blocklist, this user cannot send or receive messages in the chat group. They can no longer join the chat room until they are removed from the blocklist.
+Only the chat group owner and admins can call `blockMembers` to add the specified member to the chat group blocklist. Once added to the blocklist, this member receives the `ChatGroupEventHandler#onUserRemovedFromGroup` callback, while all the other members receive the `ChatGroupEventHandler#onMembersExitedFromGroup` callback. After being added to blocklist, this user cannot send or receive messages in the chat group. They can no longer join the chat room until they are removed from the blocklist.
 
 The following code sample shows how to add a member to the chat group blocklist:
 
@@ -696,7 +696,7 @@ ChatClient.getInstance()
 
 ### Remove a member from a chat group
 
-Only the chat group owner and admins can call `removeMembers` to remove one or more members from a chat group. Once removed from the chat group, the member receives the `ChatGroupEventListener#onUserRemoved` callback, while all the other members receive the `ChatGroupEventListener#onMemberExited` callback. Users can join the chat group again after being removed.
+Only the chat group owner and admins can call `removeMembers` to remove one or more members from a chat group. Once removed from the chat group, the member receives the `ChatGroupEventListener#onUserRemoved` callback, while all the other members receive the `ChatGroupEventListener#onMembersExited` callback. Users can join the chat group again after being removed.
 
 The following code sample shows how to remove a member from a chat group:
 
@@ -768,7 +768,7 @@ ChatClient.getInstance()
 
 #### Add a member to the chat group blocklist
 
-Only the chat group owner and admins can call `blockMembers` to add the specified member to the chat group blocklist. Once added to the blocklist, this member receives the `ChatGroupEventListener#onUserRemoved` callback, while all the other members receive the `ChatGroupEventListener#onMemberExited` callback. After being added to blocklist, this user cannot send or receive messages in the chat group. They can no longer join the chat room until they are removed from the blocklist.
+Only the chat group owner and admins can call `blockMembers` to add the specified member to the chat group blocklist. Once added to the blocklist, this member receives the `ChatGroupEventListener#onUserRemoved` callback, while all the other members receive the `ChatGroupEventListener#onMembersExited` callback. After being added to blocklist, this user cannot send or receive messages in the chat group. They can no longer join the chat room until they are removed from the blocklist.
 
 The following code sample shows how to add a member to the chat group blocklist:
 
@@ -1030,7 +1030,7 @@ SDKClient.Instance.GroupManager.AddGroupMembers(groupId, members, new CallBack(
 
 ### Remove a member from a chat group
 
-Only the chat group owner and admins can call `DeleteGroupMembers` to remove one or more member from a chat group. Once removed from the chat group, the member receives the `IGroupManagerDelegate#OnUserRemovedFromGroup` callback, while all the other members receive the `IGroupManagerDelegate#OnMemberExitedFromGroup` callback. Users can join the chat group again after being removed.
+Only the chat group owner and admins can call `DeleteGroupMembers` to remove one or more member from a chat group. Once removed from the chat group, the member receives the `IGroupManagerDelegate#OnUserRemovedFromGroup` callback, while all the other members receive the `IGroupManagerDelegate#OnMembersExitedFromGroup` callback. Users can join the chat group again after being removed.
 
 The following code sample shows how to remove a member from a chat group:
 
@@ -1102,7 +1102,7 @@ SDKClient.Instance.GroupManager.RemoveGroupAdmin(groupId, adminId, new CallBack(
 
 #### Add a member to the chat group blocklist
 
-Only the chat group owner and admins can call `BlockGroupMembers` to add the specified member to the chat group blocklist. Once added to the blocklist, this member receives the `IGroupManagerDelegate#OnUserRemovedFromGroup` callback, while all the other members receive the `IGroupManagerDelegate#OnMemberExitedFromGroup`. After being added to blocklist, this user cannot send or receive messages in the chat group. They can no longer join the chat group until they are removed from the blocklist.
+Only the chat group owner and admins can call `BlockGroupMembers` to add the specified member to the chat group blocklist. Once added to the blocklist, this member receives the `IGroupManagerDelegate#OnUserRemovedFromGroup` callback, while all the other members receive the `IGroupManagerDelegate#OnMembersExitedFromGroup`. After being added to blocklist, this user cannot send or receive messages in the chat group. They can no longer join the chat group until they are removed from the blocklist.
 
 The following code sample shows how to add a member to the chat group blocklist:
 
@@ -1355,7 +1355,7 @@ SDKClient.Instance.GroupManager.AddGroupMembers(groupId, members, new CallBack(
 
 ### Remove a member from a chat group
 
-Only the chat group owner and admins can call `DeleteGroupMembers` to remove one or more members from a chat group. Once removed from the chat group, the member receives the `IGroupManagerDelegate#OnUserRemovedFromGroup` callback, while all the other members receive the `IGroupManagerDelegate#OnMemberExitedFromGroup` callback. Users can join the chat group again after being removed.
+Only the chat group owner and admins can call `DeleteGroupMembers` to remove one or more members from a chat group. Once removed from the chat group, the member receives the `IGroupManagerDelegate#OnUserRemovedFromGroup` callback, while all the other members receive the `IGroupManagerDelegate#OnMembersExitedFromGroup` callback. Users can join the chat group again after being removed.
 
 The following code sample shows how to remove a member from a chat group:
 
@@ -1427,7 +1427,7 @@ SDKClient.Instance.GroupManager.RemoveGroupAdmin(groupId, adminId, new CallBack(
 
 #### Add a member to the chat group blocklist
 
-Only the chat group owner and admins can call `BlockGroupMembers` to add the specified member to the chat group blocklist. Once added to the blocklist, this member receives the `IGroupManagerDelegate#OnUserRemovedFromGroup` callback, while all the other members receive the `IGroupManagerDelegate#OnMemberExitedFromGroup`. After being added to blocklist, this user cannot send or receive messages in the chat group. They can no longer join the chat group until they are removed from the blocklist.
+Only the chat group owner and admins can call `BlockGroupMembers` to add the specified member to the chat group blocklist. Once added to the blocklist, this member receives the `IGroupManagerDelegate#OnUserRemovedFromGroup` callback, while all the other members receive the `IGroupManagerDelegate#OnMembersExitedFromGroup`. After being added to blocklist, this user cannot send or receive messages in the chat group. They can no longer join the chat group until they are removed from the blocklist.
 
 The following code sample shows how to add a member to the chat group blocklist:
 

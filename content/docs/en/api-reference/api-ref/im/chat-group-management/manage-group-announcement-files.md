@@ -14,8 +14,7 @@ The following table lists common request and response parameters of the Chat RES
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Required |
 | :--------- | :----- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
 
 <Slot for="username">
@@ -27,7 +26,7 @@ The unique login account of the user. The user ID must be 64 characters or less 
 - "\_", "-", "."
 
 :::info
-Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same app is unique.
+Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same App ID is unique.
 :::
 
 </Slot>
@@ -37,9 +36,9 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | Parameter | Type | Description |
 | :---------------- | :----- | :---------------------------------------------------------------- |
 | `action` | String | The request method. |
-| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. |
 | `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
-| `applicationName` | String | The unique identifier assigned to each app by the Chat service. This is the same as `app_name`. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service. |
 | `uri` | String | The request URI. |
 | `path` | String | The request path, which is part of the request URI. You can safely ignore this parameter. |
 | `entities ` | JSON | The response entity. |
@@ -66,7 +65,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```bash
-GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/announcement
+GET https://{host}/app-id/{app_id}/chatgroups/{group_id}/announcement
 ```
 
 #### Path parameter
@@ -104,7 +103,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/announcement'
+curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatgroups/66021836783617/announcement'
 ```
 
 #### Response example
@@ -113,7 +112,7 @@ curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H
 {
     "action": "get",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/66021836783617/announcement",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/66021836783617/announcement",
     "entities": [],
     "data": {
       "announcement" : "group announcement..."
@@ -134,7 +133,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```bash
-POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/announcement
+POST https://{host}/app-id/{app_id}/chatgroups/{group_id}/announcement
 ```
 
 #### Path parameter
@@ -179,7 +178,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{"announcement" : "group announcement…"}' 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/announcement'
+curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{"announcement" : "group announcement…"}' 'http://XXXX/app-id/XXXX/chatgroups/66021836783617/announcement'
 ```
 
 #### Response example
@@ -188,7 +187,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 {
     "action": "post",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/66021836783617/announcement",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/66021836783617/announcement",
     "entities": [],
     "data": {
       "id" : "66021836783617",
@@ -212,10 +211,10 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```bash
-GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/share_files
+GET https://{host}/app-id/{app_id}/chatgroups/{group_id}/share_files
 
 // Gets a group's shared files with pagination.
-GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/share_files?pagenum=1&pagesize=10
+GET https://{host}/app-id/{app_id}/chatgroups/{group_id}/share_files?pagenum=1&pagesize=10
 ```
 
 #### Path parameter
@@ -257,7 +256,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files?pagenum=1&pagesize=10'
+curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatgroups/66021836783617/share_files?pagenum=1&pagesize=10'
 ```
 
 #### Response example
@@ -274,7 +273,7 @@ curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H
               "1"
           ]
       },
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/66021836783617/share_files",
     "entities": [],
     "data": [
           {
@@ -308,7 +307,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```bash
-POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/share_files
+POST https://{host}/app-id/{app_id}/chatgroups/{group_id}/share_files
 ```
 
 #### Path parameter
@@ -351,7 +350,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X POST 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files' -H 'Accept: application/json' -H 'Authorization: Bearer ' -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' -F file=@/Users/test/image/IMG_3.JPG
+curl -X POST 'http://XXXX/app-id/XXXX/chatgroups/66021836783617/share_files' -H 'Accept: application/json' -H 'Authorization: Bearer ' -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' -F file=@/Users/test/image/IMG_3.JPG
 ```
 
 #### Response example
@@ -360,10 +359,10 @@ curl -X POST 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files' -H 'A
 {
     "action" : "post",
     "application" : "7f7b5180-XXXX-XXXX-9558-092397c841ef",
-    "uri" : "http://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files",
+    "uri" : "http://XXXX/app-id/XXXX/chatgroups/66021836783617/share_files",
     "entities" : [ ],
     "data" : {
-      "file_url" : "https://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files/c6906aa0-ed19-11ea-b480-f3cf141d15c0",
+      "file_url" : "https://XXXX/app-id/XXXX/chatgroups/66021836783617/share_files/c6906aa0-ed19-11ea-b480-f3cf141d15c0",
       "group_id" : "66021836783617",
       "file_name" : "img_3.jpg",
       "created" : 1599050554954,
@@ -386,7 +385,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```bash
-GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/share_files/{file_id}
+GET https://{host}/app-id/{app_id}/chatgroups/{group_id}/share_files/{file_id}
 ```
 
 #### Path parameter
@@ -418,7 +417,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files/b30e0be0-XXXX-XXXX-8732-172a3f85134f'
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatgroups/66021836783617/share_files/b30e0be0-XXXX-XXXX-8732-172a3f85134f'
 ```
 
 #### Response example
@@ -434,7 +433,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 ### HTTP request
 
 ```bash
-DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/share_files/{file_id}
+DELETE https://{host}/app-id/{app_id}/chatgroups/{group_id}/share_files/{file_id}
 ```
 
 #### Path parameter
@@ -474,7 +473,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files/b30e0be0-XXXX-XXXX-8732-172a3f85134f'
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatgroups/66021836783617/share_files/b30e0be0-XXXX-XXXX-8732-172a3f85134f'
 ```
 
 #### Response example
@@ -483,7 +482,7 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 {
     "action": "delete",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files/b30e0be0-e1d4-11ea-8732-172a3f85134f",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/66021836783617/share_files/b30e0be0-e1d4-11ea-8732-172a3f85134f",
     "entities": [],
     "data": {
         "group_id": "66021836783617",

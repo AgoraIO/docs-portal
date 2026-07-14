@@ -66,7 +66,7 @@ Indicates that the specified resources of the API request could not be found by 
 
 | Status code | Error code | Error message | Description | Fix |
 | :---------- | :--------- | :------------ | :---------- | :--- |
-| `404` | `organization_application_not_found` | "Could not find application for `{org_url}` from URI: `{app_url}`/token." | The specified organization or application does not exist. | Pass the correct `org_name` and `app_name` when calling the RESTful API. |
+| `404` | `organization_application_not_found` | "Could not find application for `{org_url}` from URI: `{app_url}`/token." | The specified organization or application does not exist. | Pass the correct `app_id` when calling the RESTful API. |
 | `404` | `service_resource_not_found` | "Service resource not found." | The specified user, group, or chat room does not exist when calling user-, group-, or chat room–related APIs. | Pass the correct User ID, Group ID, or Chat Room ID when calling the RESTful API. |
 | `404` | `resource_not_found` | "username XXXX doesn't exist" | The specified user does not exist. For example, the invited user during group creation does not exist. | Pass the correct User ID when calling the RESTful API. |
 | `404` | `service_resource_not_found` | "Service resource not found." | The specified user does not exist, or dirty data blocks the operation. Delete the user by UUID and re-register the same username. | Pass the UUID to delete the user, then register the username again. |

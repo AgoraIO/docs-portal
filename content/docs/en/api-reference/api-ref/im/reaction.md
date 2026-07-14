@@ -17,8 +17,7 @@ The following table lists common request and response parameters of the Chat RES
 | Parameter | Type | Description  | Required |
 | :--------- | :----- |:-------------| :------- |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).      | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).     | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).| Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
 
 <Slot for="username">
@@ -30,7 +29,7 @@ The unique login account of the user. The user ID must be 64 characters or less 
 - "\_", "-", "."
 
 :::info
-Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same app is unique. Do not set this parameter as a [UUID](https://www.rfc-editor.org/rfc/rfc9562.html), email address, phone number, or other sensitive information.
+Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same App ID is unique. Do not set this parameter as a [UUID](https://www.rfc-editor.org/rfc/rfc9562.html), email address, phone number, or other sensitive information.
 :::
 
 </Slot>
@@ -61,7 +60,7 @@ This method creates or adds a reaction to a specified message in one-to-one chat
 ### HTTP request
 
 ```html
-POST https://{host}/{org_name}/{app_name}/reaction/user/{userId}
+POST https://{host}/app-id/{app_id}/reaction/user/{userId}
 ```
 
 #### Path parameter
@@ -112,7 +111,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```bash
-curl -g -X POST 'http://XXXX/XXXX/XXXX/reaction/user/e1' -H 'Authorization: Bearer {YourAppToken}' -H 'Content-Type: application/json' --data-raw '{
+curl -g -X POST 'http://XXXX/app-id/XXXX/reaction/user/e1' -H 'Authorization: Bearer {YourAppToken}' -H 'Content-Type: application/json' --data-raw '{
     "msgId":"997625372793113144",
     "message":"emoji_40"
 }'
@@ -145,7 +144,7 @@ For each method call, you can retrieve reactions in either one-to-one chats or g
 ### HTTP request
 
 ```bash
-GET https://{host}/{org_name}/{app_name}/reaction/user/{userId}?msgIdList={N,M}&msgType={msgType}&groupId={groupId}
+GET https://{host}/app-id/{app_id}/reaction/user/{userId}?msgIdList={N,M}&msgType={msgType}&groupId={groupId}
 ```
 
 #### Path parameter
@@ -194,7 +193,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```bash
-curl -g -X GET 'http://XXXX/XXXX/XXXX/reaction/user/{{userId}}?msgIdList=msgId1&msgType=chat' -H 'Authorization: Bearer {YourAppToken}'
+curl -g -X GET 'http://XXXX/app-id/XXXX/reaction/user/{{userId}}?msgIdList=msgId1&msgType=chat' -H 'Authorization: Bearer {YourAppToken}'
 ```
 
 #### Response example
@@ -245,7 +244,7 @@ This method deletes a reaction.
 ### HTTP request
 
 ```bash
-DELETE https://{host}/{org_name}/{app_name}/reaction/user/{userId}
+DELETE https://{host}/app-id/{app_id}/reaction/user/{userId}
 ```
 
 #### Path parameter
@@ -290,7 +289,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 #### Request example
 
 ```bash
-curl -g -X DELETE 'http://XXXX/XXXX/XXXX/reaction/user/wz?msgId=997625372793113144&message=emoji_40' -H 'Authorization: Bearer {YourAppToken}'
+curl -g -X DELETE 'http://XXXX/app-id/XXXX/reaction/user/wz?msgId=997625372793113144&message=emoji_40' -H 'Authorization: Bearer {YourAppToken}'
 ```
 
 #### Response example
@@ -309,7 +308,7 @@ This method retrieves the detailed information of the reaction by specifying the
 ### HTTP request
 
 ```bash
-https://{host}/{org_name}/{app_name}/reaction/user/{userId}/detail?msgId={msgId}&message={message}&limit={limit}&cursor={cursor}
+https://{host}/app-id/{app_id}/reaction/user/{userId}/detail?msgId={msgId}&message={message}&limit={limit}&cursor={cursor}
 ```
 
 #### Path parameter
@@ -366,10 +365,10 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ```bash
 // Starts querying from the first page
-curl -g -X GET 'http://XXXX/XXXX/XXXX/reaction/user/wz/detail?msgId=997627787730750008&message=emoji_40&limit=50' -H 'Authorization: Bearer {YourAppToken}'
+curl -g -X GET 'http://XXXX/app-id/XXXX/reaction/user/wz/detail?msgId=997627787730750008&message=emoji_40&limit=50' -H 'Authorization: Bearer {YourAppToken}'
 
 // Starts querying from the second page
-curl -g -X GET 'http://XXXX/XXXX/XXXX/reaction/user/wz/detail?msgId=997627787730750008&message=emoji_40&cursor=944330529971449164&limit=50' -H 'Authorization: Authorization: Bearer {YourAppToken}'
+curl -g -X GET 'http://XXXX/app-id/XXXX/reaction/user/wz/detail?msgId=997627787730750008&message=emoji_40&cursor=944330529971449164&limit=50' -H 'Authorization: Authorization: Bearer {YourAppToken}'
 ```
 
 #### Response example

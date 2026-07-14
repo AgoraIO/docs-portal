@@ -16,8 +16,7 @@ The following table lists common request and response parameters of the Chat RES
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Required |
 | :--------- | :----- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                      | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                           | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                              | Yes |
+| `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
 
 <Slot for="username">
@@ -29,7 +28,7 @@ The unique login account of the user. The user ID must be 64 characters or less 
 - "\_", "-", "."
 
 :::info
-Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same app is unique.
+Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same App ID is unique.
 :::
 
 </Slot>
@@ -39,9 +38,9 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | Parameter | Type | Description |
 | :---------------- | :----- | :---------------------------------------------------------------- |
 | `action` | String | The request method. |
-| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. |
 | `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
-| `applicationName` | String | The unique identifier assigned to each app by the Chat service. This is the same as `app_name`. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service. |
 | `uri` | String | The request URI. |
 | `path` | String | The request path, which is part of the request URI. You can safely ignore this parameter. |
 | `entities ` | JSON | The response entity. |
@@ -66,10 +65,10 @@ Retrieves the member list of the specified chat group with pagination.
 ### HTTP request
 
 ```bash
-GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users
+GET https://{host}/app-id/{app_id}/chatgroups/{group_id}/users
 
 // Gets the member list of the group with pagination.
-GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users?pagenum={N}&pagesize={N}
+GET https://{host}/app-id/{app_id}/chatgroups/{group_id}/users?pagenum={N}&pagesize={N}
 ```
 
 #### Path parameter
@@ -115,7 +114,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X GET -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/users?pagenum=2&pagesize=2' -H 'Authorization: Bearer '
+curl -X GET -H 'Accept: application/json' 'http://XXXX/app-id/XXXX/chatgroups/10130212061185/users?pagenum=2&pagesize=2' -H 'Authorization: Bearer '
 ```
 
 #### Response example
@@ -132,7 +131,7 @@ curl -X GET -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/1013
           "2"
         ]
     },
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/10130212061185/users",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/10130212061185/users",
     "entities": [],
     "data": [
     {
@@ -157,7 +156,7 @@ Adds the specified user to the chat group. If the user is already a member of th
 ### HTTP request
 
 ```bash
-POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users/{username}
+POST https://{host}/app-id/{app_id}/chatgroups/{group_id}/users/{username}
 ```
 
 #### Path parameter
@@ -198,7 +197,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users/user4'
+curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatgroups/66016455491585/users/user4'
 ```
 
 #### Response example
@@ -207,7 +206,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 {
     "action": "post",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users/user4",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/66016455491585/users/user4",
     "entities": [],
     "data": {
       "result": true,
@@ -228,7 +227,7 @@ Adds multiple users to the specified chat group. You can add a maximum of 60 use
 ### HTTP request
 
 ```bash
-POST https://{host}/{org_name}/{app_name}/chatgroups/{chatgroupid}/users
+POST https://{host}/app-id/{app_id}/chatgroups/{chatgroupid}/users
 ```
 
 #### Path parameter
@@ -278,7 +277,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
     "usernames": [
       "user4","user5"
     ]
-}' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users'
+}' 'http://XXXX/app-id/XXXX/chatgroups/66016455491585/users'
 ```
 
 #### Response example
@@ -287,7 +286,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 {
     "action": "post",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/66016455491585/users",
     "entities": [],
     "data": {
       "newmembers": [
@@ -313,7 +312,7 @@ Once a member is removed from a chat group, they are also removed from all the t
 ### HTTP request
 
 ```bash
-DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users/{username}
+DELETE https://{host}/app-id/{app_id}/chatgroups/{group_id}/users/{username}
 ```
 
 #### Path parameter
@@ -353,7 +352,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users/user3'
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatgroups/66016455491585/users/user3'
 ```
 
 #### Response example
@@ -362,7 +361,7 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 {
     "action": "delete",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users/user3",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/66016455491585/users/user3",
     "entities": [],
     "data": {
       "result": true,
@@ -386,7 +385,7 @@ Once a member is removed from a chat group, they are also removed from all the t
 ### HTTP request
 
 ```bash
-DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users/{members}
+DELETE https://{host}/app-id/{app_id}/chatgroups/{group_id}/users/{members}
 ```
 
 #### Path parameter
@@ -428,7 +427,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users/ttestuser0015981,user2,user3'
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/app-id/XXXX/chatgroups/66016455491585/users/ttestuser0015981,user2,user3'
 ```
 
 #### Response example
@@ -437,7 +436,7 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 {
     "action": "delete",
     "application": "9b848cf0-XXXX-XXXX-b5b8-0f74e8e740f7",
-    "uri": "https://XXXX/XXXX/XXXX",
+    "uri": "https://XXXX/app-id/XXXX",
     "entities": [],
     "data": [{
         "result": false,
@@ -472,7 +471,7 @@ Sets the custom attributes of a group member, such as adding a nickname or avata
 ### HTTP request
 
 ```bash
-PUT https://{host}/{org_name}/{app_name}/metadata/chatgroup/{group_id}/user/{username}
+PUT https://{host}/app-id/{app_id}/metadata/chatgroup/{group_id}/user/{username}
 ```
  
 #### Path parameter
@@ -516,7 +515,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl --location --request PUT 'https://XXXX/XXXX/XXXX/metadata/chatgroup/207059303858177/user/test2' \
+curl --location --request PUT 'https://XXXX/app-id/XXXX/metadata/chatgroup/207059303858177/user/test2' \
 -H 'Content-Type: application/json' \
 -H 'Accept: application/json'
 -H 'Authorization: Bearer ' \
@@ -546,7 +545,7 @@ Retrieves all custom attributes of a group member.
 ### HTTP request
 
 ```bash
-GET https://{host}/{org_name}/{app_name}/metadata/chatgroup/{group_id}/user/{username}
+GET https://{host}/app-id/{app_id}/metadata/chatgroup/{group_id}/user/{username}
 ```
 
 #### Path parameter
@@ -584,7 +583,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl --location --request GET 'https://XXXX/XXXX/XXXX/metadata/chatgroup/207059303858177/user/test2' \
+curl --location --request GET 'https://XXXX/app-id/XXXX/metadata/chatgroup/207059303858177/user/test2' \
 -H 'Content-Type: application/json' \
 -H 'Accept: application/json'
 -H 'Authorization: Bearer ' \
@@ -610,7 +609,7 @@ Retrieves custom attributes of multiple group members by attribute key. You can 
 ### HTTP request
 
 ```bash
-POST https://{host}/{org_name}/{app_name}/metadata/chatgroup/{group_id}/get
+POST https://{host}/app-id/{app_id}/metadata/chatgroup/{group_id}/get
 ```
 
 #### Path parameter
@@ -651,7 +650,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl --location --request POST 'https://XXXX/XXXX/XXXX/metadata/chatgroup/207059303858177/get' \
+curl --location --request POST 'https://XXXX/app-id/XXXX/metadata/chatgroup/207059303858177/get' \
 -H 'Content-Type: application/json' \
 -H 'Accept: application/json'
 -H 'Authorization: Bearer ' \
@@ -685,7 +684,7 @@ Retrieves the list of the chat group admins.
 ### HTTP request
 
 ```bash
-GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/admin
+GET https://{host}/app-id/{app_id}/chatgroups/{group_id}/admin
 ```
 
 #### Path parameter
@@ -716,7 +715,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X GET HTTP://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin -H 'Authorization: Bearer '
+curl -X GET HTTP://XXXX/app-id/XXXX/chatgroups/10130212061185/admin -H 'Authorization: Bearer '
 ```
 
 #### Response example
@@ -725,7 +724,7 @@ curl -X GET HTTP://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin -H 'Authorizat
 {
     "action": "get",
     "application": "527cd7e0-XXXX-XXXX-9f59-ef10ecd81ff0",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/10130212061185/admin",
     "entities": [],
     "data": ["user1"],
     "timestamp": 1489073361210,
@@ -743,7 +742,7 @@ Adds a regular group member to the group admin list. A chat group admin has the 
 ### HTTP request
 
 ```bash
-POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/admin
+POST https://{host}/app-id/{app_id}/chatgroups/{group_id}/admin
 ```
 
 #### Path parameter
@@ -788,7 +787,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X POST -H 'Content-type: application/json' -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin' -d '{"newadmin":"user1"}' -H 'Authorization: Bearer '
+curl -X POST -H 'Content-type: application/json' -H 'Accept: application/json' 'http://XXXX/app-id/XXXX/chatgroups/10130212061185/admin' -d '{"newadmin":"user1"}' -H 'Authorization: Bearer '
 ```
 
 #### Response example
@@ -807,7 +806,7 @@ curl -X POST -H 'Content-type: application/json' -H 'Accept: application/json' '
     "organization": "XXXX",
     "properties": {},
     "timestamp": 1680074570600,
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/190141728620545/admin"
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/190141728620545/admin"
 }
 ```
 
@@ -818,7 +817,7 @@ Removes the specified user from the chat group admin list.
 ### HTTP request
 
 ```bash
-DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/admin/{username}
+DELETE https://{host}/app-id/{app_id}/chatgroups/{group_id}/admin/{username}
 ```
 
 #### Path parameter
@@ -856,7 +855,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X DELETE -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin/user1' -H 'Authorization: Bearer '
+curl -X DELETE -H 'Accept: application/json' 'http://XXXX/app-id/XXXX/chatgroups/10130212061185/admin/user1' -H 'Authorization: Bearer '
 ```
 
 #### Response example
@@ -865,7 +864,7 @@ curl -X DELETE -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/1
 {
     "action": "delete",
     "application": "527cd7e0-XXXX-XXXX-9f59-ef10ecd81ff0",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin/user1",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/10130212061185/admin/user1",
     "entities": [],
     "data": {
         "result": "success",
@@ -885,7 +884,7 @@ Changes the group owner to another group member. Group owners possess all group 
 ### HTTP request
 
 ```bash
-PUT https://{host}/{org_name}/{app_name}/chatgroups/{group_id}
+PUT https://{host}/app-id/{app_id}/chatgroups/{group_id}
 ```
 
 #### Path parameter
@@ -929,7 +928,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 #### Request example
 
 ```bash
-curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{     "newowner": "user2"   }' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585'
+curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{     "newowner": "user2"   }' 'http://XXXX/app-id/XXXX/chatgroups/66016455491585'
 ```
 
 #### Response example
@@ -938,7 +937,7 @@ curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H
 {
     "action": "put",
     "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
-    "uri": "http://XXXX/XXXX/XXXX/chatgroups/66016455491585",
+    "uri": "http://XXXX/app-id/XXXX/chatgroups/66016455491585",
     "entities": [],
     "data": {
       "newowner": true
