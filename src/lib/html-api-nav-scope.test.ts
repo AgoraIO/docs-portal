@@ -9,6 +9,10 @@ import { source } from './source.server';
 
 const affectedRoutes = [
   {
+    root: '/zh-CN/api-reference/rtc/web',
+    route: '/zh-CN/api-reference/rtc/web/interfaces/iagora-rtc',
+  },
+  {
     root: '/zh-CN/api-reference/iot-apaas/android',
     route:
       '/zh-CN/api-reference/iot-apaas/android/interfacecom-1-1agora-1-1iotsdk20-1-1-i-agora-iot-app-sdk',
