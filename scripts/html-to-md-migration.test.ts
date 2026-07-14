@@ -1188,9 +1188,10 @@ describe('html-to-md-migration', () => {
           '### join()',
           '```cpp\nint agora::rtc::Client::join(const char* channel)\n```',
           'Joins a channel.',
-          '#### Parameters',
+          '#### 参数',
+          '| 名称 | 描述 |',
           '| channel | Channel name |',
-          '#### Returns',
+          '#### 返回值',
           'Zero on success.',
           '[sales@shengwang.cn](mailto:sales@shengwang.cn)',
           '[second overload](#join-2)',
@@ -1238,6 +1239,90 @@ describe('html-to-md-migration', () => {
         'functions.mdx',
       ],
     });
+  });
+
+  it('deduplicates and localizes zh-CN Doxygen member documentation', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'doxygen-source');
+    const outputDir = path.join(rootDir, 'output');
+    const englishOutputDir = path.join(rootDir, 'english-output');
+    await writeDoxygenFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'class_recording_engine.html'),
+      `<!doctype html><html>
+        <head><meta name="description" content="该类包含应用程序调用的主要方法。"></head>
+        <body>
+          <div class="header"><div class="headertitle"><div class="title">IRecordingEngine 类参考</div></div></div>
+          <div class="contents">
+            <h2 class="groupheader">详细描述</h2>
+            <div class="textblock"><p>该类包含应用程序调用的主要方法。</p></div>
+            <a id="create"></a><h2 class="memtitle">create()</h2>
+            <div class="memitem">
+              <div class="memproto">IRecordingEngine* create(const char* appId)</div>
+              <div class="memdoc">
+                <p>创建录制引擎。</p>
+                <dl class="params"><dt>Parameters</dt><dd><table class="params"><tr><td class="paramname">appId</td><td>应用 ID。</td></tr></table></dd></dl>
+                <dl class="section return"><dt>Returns</dt><dd>录制引擎实例。</dd></dl>
+                <table class="fieldtable"><tr><td class="fieldname">OK</td><td class="fielddoc">成功。</td></tr></table>
+              </div>
+            </div>
+          </div>
+        </body>
+      </html>`,
+    );
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'recording',
+      '--platform',
+      'cpp',
+    ]);
+
+    const output = await fs.readFile(
+      path.join(outputDir, 'class-recording-engine.mdx'),
+      'utf8',
+    );
+    expect(output.match(/该类包含应用程序调用的主要方法。/g)).toHaveLength(1);
+    expect(output).toContain('## 成员');
+    expect(output).toContain('#### 参数');
+    expect(output).toContain('| 名称 | 描述 |');
+    expect(output).toContain('#### 返回值');
+    expect(output).toContain('#### 值');
+    expect(output).not.toContain('#### Parameters');
+    expect(output).not.toContain('| Name | Description |');
+    expect(output).not.toContain('#### Returns');
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      englishOutputDir,
+      '--product',
+      'recording',
+      '--platform',
+      'cpp',
+      '--locale',
+      'en',
+    ]);
+
+    const englishOutput = await fs.readFile(
+      path.join(englishOutputDir, 'class-recording-engine.mdx'),
+      'utf8',
+    );
+    expect(englishOutput).toContain('## Members');
+    expect(englishOutput).toContain('#### Parameters');
+    expect(englishOutput).toContain('| Name | Description |');
+    expect(englishOutput).toContain('#### Returns');
+    expect(englishOutput).toContain('#### Values');
+    expect(englishOutput).not.toContain('## 成员');
+    expect(englishOutput).not.toContain('#### 参数');
+    expect(englishOutput).not.toContain('| 名称 | 描述 |');
+    expect(englishOutput).not.toContain('#### 返回值');
+    expect(englishOutput).not.toContain('#### 值');
   });
 
   it('creates a scoped sidebar for Whiteboard Android API output', async () => {
