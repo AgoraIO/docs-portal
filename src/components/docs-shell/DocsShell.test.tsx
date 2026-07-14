@@ -730,6 +730,16 @@ describe('DocsShell', () => {
     expect(document.querySelectorAll('#legacy-api-anchor')).toHaveLength(1);
   });
 
+  it('renders a migrated Doxygen page title once', async () => {
+    renderDocsShell({
+      children: <h1 id="doxygen-page-title">Doxygen API Reference</h1>,
+    });
+
+    await screen.findByTestId('docs-body-shell');
+
+    expect(document.querySelectorAll('#doxygen-page-title')).toHaveLength(1);
+  });
+
   it('renders the Agora site footer as a shell-level full-width footer on desktop', async () => {
     renderDocsShell();
 
