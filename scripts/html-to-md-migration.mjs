@@ -4572,6 +4572,10 @@ async function main() {
             : ['index']),
           ...tocNodes.filter((node) => !node.hidden).map((node) => node.slug),
         ];
+  const scopedMetaPages =
+    sourceStructure.id === SOURCE_TYPES.TYPEDOC.id
+      ? labelTypeDocGlobalsEntry(metaPages, sourceToRoute, targetBasePath)
+      : metaPages;
 
   // Write meta.json
   const sourceRootTitle = sourceStructure.rootIndexSource
@@ -4585,11 +4589,12 @@ async function main() {
   await writeJson(path.join(targetRoot, 'meta.json'), {
     title: rootTitle,
     ...(sourceStructure.id === SOURCE_TYPES.DOXYGEN_JAVADOC.id ||
+    sourceStructure.id === SOURCE_TYPES.TYPEDOC.id ||
     (opts.product === 'whiteboard' &&
       ['android', 'ios', 'web'].includes(opts.platform))
       ? { navScope: {} }
       : {}),
-    pages: metaPages,
+    pages: scopedMetaPages,
   });
 
   // Write all pages
@@ -4613,6 +4618,19 @@ async function main() {
   console.log(`   Pages written: ${writtenCount}`);
   console.log(`   Output: ${targetRoot}`);
   console.log(`${'─'.repeat(50)}\n`);
+}
+
+function labelTypeDocGlobalsEntry(metaPages, sourceToRoute, targetBasePath) {
+  const globalsRoute = sourceToRoute.get('globals.html');
+  if (!globalsRoute || !metaPages.includes('globals')) return metaPages;
+
+  const globalsEntry = `[Globals](${routeSegmentsToDocPath(
+    globalsRoute,
+    targetBasePath,
+  )})`;
+  return metaPages.flatMap((page) =>
+    page === 'globals' ? [globalsEntry, '!globals'] : [page],
+  );
 }
 
 main().catch((error) => {
