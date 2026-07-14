@@ -27,7 +27,7 @@ To start a Video Calling session, implement the following steps in your app:
 ## Prerequisites
 
 - A camera and a microphone.
-- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
 - [Android Studio](https://developer.android.com/studio) 4.2 or higher.
 - Android SDK API Level 21 or higher.
 - Two mobile devices running Android 5.0 or higher.
@@ -243,7 +243,7 @@ import io.agora.rtc2.ChannelMediaOptions
 
 ### Initialize the engine
 
-For real-time communication, initialize an `RtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineConfig` to specify the application context, [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate), and custom [event handler](#subscribe-to-video-sdk-events), then call `RtcEngine.create(config)` to initialize the engine, enabling further channel operations. In your `MainActivity` file, add the following code:
+For real-time communication, initialize an `RtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineConfig` to specify the application context, [App ID](/en/introduction/account#get-the-app-id-and-app-certificate), and custom [event handler](#subscribe-to-video-sdk-events), then call `RtcEngine.create(config)` to initialize the engine, enabling further channel operations. In your `MainActivity` file, add the following code:
 
 <Tabs defaultValue="java">
 <TabsList>
@@ -307,7 +307,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/video/manage-agora-account#generate-temporary-tokens).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
@@ -1364,7 +1364,7 @@ To start a Video Calling session, implement the following steps in your app:
 ## Prerequisites
 
 - A camera and a microphone.
-- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
 - Xcode 13.0 or higher.
 - An Apple developer account.
 - If you use CocoaPods to integrate the SDK, make sure [CocoaPods is installed](https://guides.cocoapods.org/using/getting-started.html#getting-started).
@@ -1511,7 +1511,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/introduction/account#get-the-app-id-and-app-certificate) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
 
 
 ```swift
@@ -1531,7 +1531,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/video/manage-agora-account#generate-temporary-tokens).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `didJoinChannel` callback.
 
@@ -2024,7 +2024,7 @@ To start a Video Calling session, implement the following steps in your app:
 ## Prerequisites
 
 - A camera and a microphone.
-- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
 - Xcode 13.0 or higher.
 - An Apple developer account.
 - If you use CocoaPods to integrate the SDK, make sure [CocoaPods is installed](https://guides.cocoapods.org/using/getting-started.html#getting-started).
@@ -2166,7 +2166,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/introduction/account#get-the-app-id-and-app-certificate) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
 
 
 ```swift
@@ -2186,7 +2186,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/video/manage-agora-account#generate-temporary-tokens).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `didJoinChannel` callback.
 
@@ -2665,7 +2665,7 @@ To start a Video Calling session, implement the following steps in your app:
 ## Prerequisites
 
 - A camera and a microphone.
-- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
 - A [supported browser](/en/realtime-media/video/reference/supported-platforms#mobile-browsers).
   Agora strongly recommends using the latest stable version of Google Chrome.
 - [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
@@ -2777,11 +2777,11 @@ function initializeClient() {
 
 To join a channel, call `join` with the following parameters:
 
-- **App ID**: The [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate) for your project.
+- **App ID**: The [App ID](/en/introduction/account#get-the-app-id-and-app-certificate) for your project.
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/video/manage-agora-account#generate-temporary-tokens).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID.
 
@@ -3293,7 +3293,7 @@ To start a Video Calling session, implement the following steps in your app:
 ## Prerequisites
 
 - A camera and a microphone.
-- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
 - A device running Windows 7 or higher.
 - Microsoft Visual Studio 2017 or higher with [C++ desktop development](https://devblogs.microsoft.com/cppblog/windows-desktop-development-with-c-in-visual-studio/) support and C++ 11 or above.
 - If you use C# for development, you also need the [.NET Framework](https://learn.microsoft.com/en-us/dotnet/framework/install/guide-for-developers).
@@ -3385,7 +3385,7 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 
 ### Initialize the engine
 
-For real-time communication, initialize an `IRtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate), and custom [event handler](#subscribe-to-video-sdk-events), then call `initialize` to initialize the engine, enabling further channel operations. Add the following code to your header and `.cpp` files:
+For real-time communication, initialize an `IRtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineContext` to specify the [App ID](/en/introduction/account#get-the-app-id-and-app-certificate), and custom [event handler](#subscribe-to-video-sdk-events), then call `initialize` to initialize the engine, enabling further channel operations. Add the following code to your header and `.cpp` files:
 
 ```cpp
 // Declare the required variables
@@ -3424,7 +3424,7 @@ To join a channel, call `joinChannel`[2/2] with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/video/manage-agora-account#generate-temporary-tokens).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
@@ -4154,7 +4154,7 @@ To start a Video Calling session, implement the following steps in your app:
 ## Prerequisites
 
 - A camera and a microphone.
-- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
 - [Node.js](https://nodejs.org/en/download/) 14 or higher.
 
 ## Set up your project
@@ -4412,7 +4412,7 @@ let uid = 123;
 
 ### Initialize the engine
 
-For real-time communication, create an `IRtcEngine` object by calling `createAgoraRtcEngine` and then call `initialize` with `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate). Call `registerEventHandler` to register a custom [event handler](#subscribe-to-video-sdk-events) for managing user interactions within the channel.
+For real-time communication, create an `IRtcEngine` object by calling `createAgoraRtcEngine` and then call `initialize` with `RtcEngineContext` to specify the [App ID](/en/introduction/account#get-the-app-id-and-app-certificate). Call `registerEventHandler` to register a custom [event handler](#subscribe-to-video-sdk-events) for managing user interactions within the channel.
 
 ```js
 let rtcEngine;
@@ -4449,7 +4449,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/video/manage-agora-account#generate-temporary-tokens).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
@@ -4949,7 +4949,7 @@ To start a Video Calling session, implement the following steps in your app:
 ## Prerequisites
 
 - A camera and a microphone.
-- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
 - [Flutter](https://docs.flutter.dev/get-started/install) 2.10.5 or higher with Dart 2.14.0 or higher.
 - [Android Studio](https://developer.android.com/studio), IntelliJ, VS Code, or another IDE that supports Flutter. See [Set up an editor](https://docs.flutter.dev/get-started/editor).
 - Prepare your development and testing environment according to your [target platform](/en/realtime-media/video/reference/supported-platforms).
@@ -5052,7 +5052,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 ### Initialize the engine
 
-For real-time communication, initialize an `RtcEngine` instance. Use `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate), and other configuration parameters. In your dart file, add the following code:
+For real-time communication, initialize an `RtcEngine` instance. Use `RtcEngineContext` to specify the [App ID](/en/introduction/account#get-the-app-id-and-app-certificate), and other configuration parameters. In your dart file, add the following code:
 
 
 ```dart
@@ -5073,7 +5073,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/video/manage-agora-account#generate-temporary-tokens).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
@@ -5587,7 +5587,7 @@ To start a Video Calling session, implement the following steps in your app:
 ## Prerequisites
 
 - A camera and a microphone.
-- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
 - React Native 0.60 or later. See [Get Started with React Native](https://reactnative.dev/docs/environment-setup).
 - Node.js 16 or later.
 - Depending on your target platform:
@@ -5679,7 +5679,7 @@ import {
 
 
 ### Initialize the engine
-For real-time communication, call `createAgoraRtcEngine` to create an `RtcEngine` instance, and then `initialize` the engine using `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate).
+For real-time communication, call `createAgoraRtcEngine` to create an `RtcEngine` instance, and then `initialize` the engine using `RtcEngineContext` to specify the [App ID](/en/introduction/account#get-the-app-id-and-app-certificate).
 
 
 ```tsx
@@ -5700,7 +5700,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/video/manage-agora-account#generate-temporary-tokens).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
@@ -6393,7 +6393,7 @@ Use the React SDK for basic real-time audio and video features. For advanced or 
 ## Prerequisites
 
 - A camera and a microphone.
-- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
 - A [supported browser](/en/realtime-media/video/reference/supported-platforms#mobile-browsers).
 - A JavaScript package manager such as [npm](https://www.npmjs.com/package/npm).
 
@@ -6505,11 +6505,11 @@ export const VideoCalling = () => {
 
 To join a channel, use the `useJoin` hook. You can specify the following `joinOptions`:
 
-- **App ID**: [`appid`](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate) identifies the project you created in Agora Console.
+- **App ID**: [`appid`](/en/introduction/account#get-the-app-id-and-app-certificate) identifies the project you created in Agora Console.
 
 - **Channel name**: The name of the `channel` to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A `token` is a dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/video/manage-agora-account#generate-temporary-tokens).
+- **Authentication token**: A `token` is a dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
 
 - **User ID**: `uid` is a 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you do not set a user ID or set it to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value.
 
@@ -6802,7 +6802,7 @@ To start a Video Calling session, implement the following steps in your app:
 ## Prerequisites
 
 - A camera and a microphone.
-- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
 - [Unity Hub](https://unity.com/download) and [Unity Editor](https://unity.com/releases/editor/archive) 2018.4.0 or higher.
 - A suitable operating system and compiler for your development platform:
 
@@ -6934,7 +6934,7 @@ To join a channel, call `JoinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/video/manage-agora-account#generate-temporary-tokens).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `OnJoinChannelSuccess` callback.
 
@@ -7530,7 +7530,7 @@ To start a Video Calling session, implement the following steps in your app:
 ## Prerequisites
 
 - A camera and a microphone.
-- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
 - Unreal Engine 4.27 or higher.
 - Prepare your development environment according to your target platform and engine version:
 
@@ -7660,7 +7660,7 @@ To import Agora library, add the following to `AgoraWidget.h`:
 
 ### Initialize the engine
 
-For real-time communication, initialize an `IRtcEngine` instance and set up an event handler to manage user interactions within the channel. Use `RtcEngineContext` to specify [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id-and-app-certificate), and custom [event handler](#subscribe-to-video-sdk-events), then call `RtcEngineProxy->initialize(RtcEngineContext)` to initialize the engine, enabling further channel operations.
+For real-time communication, initialize an `IRtcEngine` instance and set up an event handler to manage user interactions within the channel. Use `RtcEngineContext` to specify [App ID](/en/introduction/account#get-the-app-id-and-app-certificate), and custom [event handler](#subscribe-to-video-sdk-events), then call `RtcEngineProxy->initialize(RtcEngineContext)` to initialize the engine, enabling further channel operations.
 
 Add the `SetupSDKEngine` method declaration and implementation to the following files:
 
@@ -7701,7 +7701,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/video/manage-agora-account#generate-temporary-tokens).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
@@ -8439,7 +8439,7 @@ To start a Video Calling session, implement the following steps in your app:
 ## Prerequisites
 
 - A camera and a microphone.
-- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
 - Unreal Engine 4.27 or higher.
 - Prepare your development environment according to your target platform and engine version:
 

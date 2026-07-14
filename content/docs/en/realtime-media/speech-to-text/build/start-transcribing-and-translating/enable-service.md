@@ -16,7 +16,7 @@ To follow this procedure, you must:
 - Have a valid [Agora Account](https://console.agora.io/v2).
 
 - Have a valid Agora project with an app ID and a temporary token or a token
-server. For details, see [Agora account management](/en/realtime-media/voice/manage-agora-account).
+server. For details, see [Agora account management](/en/introduction/account).
 
 - Have a computer with access to the internet. If your network has a firewall, follow the steps in [Firewall requirements](../../reference/firewall).
 

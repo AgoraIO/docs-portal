@@ -30,7 +30,7 @@ To start a Broadcast Streaming session, implement the following steps in your ap
 
 - A camera and a microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
 
 ## Set up your project
 
@@ -177,7 +177,7 @@ import io.agora.rtc2.ChannelMediaOptions
 </CodeBlockTabs>
 ### Initialize the engine
 
-For real-time communication, initialize an `RtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineConfig` to specify the application context, [App ID](manage-agora-account.md), and custom [event handler](#subscribe-to--events), then call `RtcEngine.create(config)` to initialize the engine, enabling further channel operations. In your `MainActivity` file, add the following code:
+For real-time communication, initialize an `RtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineConfig` to specify the application context, [App ID](/en/introduction/account), and custom [event handler](#subscribe-to--events), then call `RtcEngine.create(config)` to initialize the engine, enabling further channel operations. In your `MainActivity` file, add the following code:
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -233,7 +233,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
@@ -1185,7 +1185,7 @@ To start a Broadcast Streaming session, implement the following steps in your ap
 
 - A camera and a microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
 
 ## Set up your project
 
@@ -1296,7 +1296,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](manage-agora-account.md) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/introduction/account) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
 
 ```swift
 var agoraKit: AgoraRtcEngineKit!
@@ -1314,7 +1314,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `didJoinChannel` callback.
 
@@ -1810,7 +1810,7 @@ To start a Broadcast Streaming session, implement the following steps in your ap
 
 - A camera and a microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
 
 ## Set up your project
 
@@ -1917,7 +1917,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](manage-agora-account.md) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/introduction/account) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
 
 ```swift
 var agoraKit: AgoraRtcEngineKit!
@@ -1935,7 +1935,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `didJoinChannel` callback.
 
@@ -2383,7 +2383,7 @@ To start a Broadcast Streaming session, implement the following steps in your ap
 
 - A camera and a microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
 
 ## Set up your project
 
@@ -2466,11 +2466,11 @@ function initializeClient() {
 
 To join a channel, call `join` with the following parameters:
 
-- **App ID**: The [App ID](manage-agora-account.md) for your project.
+- **App ID**: The [App ID](/en/introduction/account) for your project.
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID.
 
@@ -2997,7 +2997,7 @@ To start a Broadcast Streaming session, implement the following steps in your ap
 
 - A camera and a microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
 
 ## Set up your project
 
@@ -3067,7 +3067,7 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 
 ### Initialize the engine
 
-For real-time communication, initialize an `IRtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineContext` to specify the [App ID](manage-agora-account.md), and custom [event handler](#subscribe-to--events), then call `initialize` to initialize the engine, enabling further channel operations. Add the following code to your header and `.cpp` files:
+For real-time communication, initialize an `IRtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineContext` to specify the [App ID](/en/introduction/account), and custom [event handler](#subscribe-to--events), then call `initialize` to initialize the engine, enabling further channel operations. Add the following code to your header and `.cpp` files:
 
 ```cpp
 // Declare the required variables
@@ -3104,7 +3104,7 @@ To join a channel, call `joinChannel`[2/2] with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
@@ -3779,7 +3779,7 @@ To start a Broadcast Streaming session, implement the following steps in your ap
 
 - A camera and a microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
 
 ## Set up your project
 
@@ -4005,7 +4005,7 @@ let uid = 123;
 
 ### Initialize the engine
 
-For real-time communication, create an `IRtcEngine` object by calling `createAgoraRtcEngine` and then call `initialize` with `RtcEngineContext` to specify the [App ID](manage-agora-account.md). Call `registerEventHandler` to register a custom [event handler](#subscribe-to--events) for managing user interactions within the channel.
+For real-time communication, create an `IRtcEngine` object by calling `createAgoraRtcEngine` and then call `initialize` with `RtcEngineContext` to specify the [App ID](/en/introduction/account). Call `registerEventHandler` to register a custom [event handler](#subscribe-to--events) for managing user interactions within the channel.
 
 ```js
 let rtcEngine;
@@ -4040,7 +4040,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
@@ -4516,7 +4516,7 @@ To start a Broadcast Streaming session, implement the following steps in your ap
 
 - A camera and a microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
 
 ## Set up your project
 
@@ -4598,7 +4598,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 ### Initialize the engine
 
-For real-time communication, initialize an `RtcEngine` instance. Use `RtcEngineContext` to specify the [App ID](manage-agora-account.md), and other configuration parameters. In your dart file, add the following code:
+For real-time communication, initialize an `RtcEngine` instance. Use `RtcEngineContext` to specify the [App ID](/en/introduction/account), and other configuration parameters. In your dart file, add the following code:
 
 ```dart
 // Set up the Agora RTC engine instance
@@ -4617,7 +4617,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
@@ -5128,7 +5128,7 @@ For your target platform, prepare the following:
 
 - A camera and a microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
 
 ## Set up your project
 
@@ -5195,7 +5195,7 @@ import {
 ```
 
 ### Initialize the engine
-For real-time communication, call `createAgoraRtcEngine` to create an `RtcEngine` instance, and then `initialize` the engine using `RtcEngineContext` to specify the [App ID](manage-agora-account.md).
+For real-time communication, call `createAgoraRtcEngine` to create an `RtcEngine` instance, and then `initialize` the engine using `RtcEngineContext` to specify the [App ID](/en/introduction/account).
 
 ```tsx
 const appId = '<-- Insert app ID -->';
@@ -5214,7 +5214,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
@@ -5875,7 +5875,7 @@ Use the React SDK for basic real-time audio and video features. For advanced or 
 
 - A camera and a microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
 
 ## Set up your project
 
@@ -5973,11 +5973,11 @@ For Broadcast Streaming, set the `mode` property of `ClientConfig` to `"live"`, 
 
 To join a channel, use the `useJoin` hook. You can specify the following `joinOptions`:
 
-- **App ID**: [`appid`](manage-agora-account.md) identifies the project you created in Agora Console.
+- **App ID**: [`appid`](/en/introduction/account) identifies the project you created in Agora Console.
 
 - **Channel name**: The name of the `channel` to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A `token` is a dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
+- **Authentication token**: A `token` is a dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
 
 - **User ID**: `uid` is a 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you do not set a user ID or set it to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value.
 
@@ -6268,7 +6268,7 @@ To start a Broadcast Streaming session, implement the following steps in your ap
 
 - A camera and a microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
 
 ## Set up your project
 
@@ -6371,7 +6371,7 @@ To join a channel, call `JoinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `OnJoinChannelSuccess` callback.
 
@@ -6924,7 +6924,7 @@ To start a Broadcast Streaming session, implement the following steps in your ap
 
 - A camera and a microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
 
 ## Set up your project
 
@@ -7027,7 +7027,7 @@ To import Agora library, add the following to `AgoraWidget.h`:
 
 ### Initialize the engine
 
-For real-time communication, initialize an `IRtcEngine` instance and set up an event handler to manage user interactions within the channel. Use `RtcEngineContext` to specify [App ID](manage-agora-account.md), and custom [event handler](#subscribe-to--events), then call `RtcEngineProxy->initialize(RtcEngineContext)` to initialize the engine, enabling further channel operations.
+For real-time communication, initialize an `IRtcEngine` instance and set up an event handler to manage user interactions within the channel. Use `RtcEngineContext` to specify [App ID](/en/introduction/account), and custom [event handler](#subscribe-to--events), then call `RtcEngineProxy->initialize(RtcEngineContext)` to initialize the engine, enabling further channel operations.
 
 Add the `SetupSDKEngine` method declaration and implementation to the following files:
 
@@ -7068,7 +7068,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
@@ -7763,7 +7763,7 @@ To start a Broadcast Streaming session, implement the following steps in your ap
 
 - A camera and a microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
 
 ## Set up your project
 
@@ -8092,7 +8092,7 @@ To start a Broadcast Streaming session, implement the following steps in your ap
 
 - A camera and a microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
 
 ## Set up your project
 

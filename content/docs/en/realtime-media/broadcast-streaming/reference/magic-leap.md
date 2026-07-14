@@ -23,7 +23,7 @@ To start a session, implement the following steps in your app:
 In order to follow this procedure, you must have:
 
 To test the code used in this page you need to have:
-* An Agora [account](../manage-agora-account) and [project](../manage-agora-account).
+* An Agora [account](/en/introduction/account) and [project](/en/introduction/account).
 * A computer with Internet access.
   Ensure that no firewall is blocking your network communication.
 
@@ -83,7 +83,7 @@ Agora recommends you run this project on a physical mobile device, as some simul
 
 1. Obtain an App ID with token enabled.
 
-2. [Generate a temporary token](../manage-agora-account) in Agora Console.
+2. [Generate a temporary token](/en/introduction/account) in Agora Console.
 
 3. In your browser, navigate to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) and update `App ID`, `Channel`, and `Token` with the values for your temporary token, then click **Join**.
 

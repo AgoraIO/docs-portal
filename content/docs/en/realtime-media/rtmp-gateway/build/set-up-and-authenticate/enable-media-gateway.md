@@ -16,7 +16,7 @@ In order to follow this procedure you must:
 
 To enable Media Gateway, take the following steps:
 
-1. Obtain your app ID, app certificate, customer ID, and customer secret. See [Agora account management](../manage-agora-account.md) for details.
+1. Obtain your app ID, app certificate, customer ID, and customer secret. See [Agora account management](/en/introduction/account) for details.
 2. Open **My Projects** and click to edit the project for which you need Media Gateway.
 3. Under **All Features**, select **Media Gateway** and toggle to enable it.
 

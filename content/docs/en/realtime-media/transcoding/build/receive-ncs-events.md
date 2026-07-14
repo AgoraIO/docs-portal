@@ -21,8 +21,8 @@ If Notifications receives `200 OK` within 10 seconds of sending the initial noti
 
 To set up and use Notifications, you must have:
 
-- A [valid Agora account](manage-agora-account).
-- An [active Agora project](manage-agora-account).
+- A [valid Agora account](/en/introduction/account#sign-up-for-an-agora-account).
+- An [active Agora project](/en/introduction/account#your-first-agora-project).
 - A computer with Internet access.
 
     If your network access is restricted by a firewall, call the [IP address query API](#ip-address-query-api) to retrieve the Notifications IP addresses , then configure the firewall to allow these IP addresses.

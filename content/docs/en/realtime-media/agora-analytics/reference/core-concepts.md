@@ -11,7 +11,7 @@ This article introduces the key processes and concepts you need to know to use A
 
 ## Using the Agora Console
 
-To use Agora SDKs, create an audio and video project in the Agora Console first. See [Agora account management](/en/realtime-media/agora-analytics/build/manage-agora-account) for details.
+To use Agora SDKs, create an audio and video project in the Agora Console first. See [Agora account management](/en/introduction/account) for details.
 
 ![Create project in Agora Console](https://assets-docs.agora.io/images/common/create-project.svg)
 

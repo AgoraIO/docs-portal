@@ -13,13 +13,13 @@ Each month, Agora calculates your bill for using Chat, [issues your bill, and de
 
 ## Composition
 
-When each month finishes, Agora calculates your usage of Chat in your [Agora account](/en/realtime-media/im/get-started/manage-agora-account#sign-up-for-an-agora-account). After deducting the usage included in your plan, Agora multiplies any excess usage by the corresponding unit price and adds this to the plan fee to get the total cost for that month. The formula is as follows:
+When each month finishes, Agora calculates your usage of Chat in your [Agora account](/en/introduction/account#sign-up-for-an-agora-account). After deducting the usage included in your plan, Agora multiplies any excess usage by the corresponding unit price and adds this to the plan fee to get the total cost for that month. The formula is as follows:
 
 **Total cost = Plan fee + Excess usage × Unit price of the excess usage + (Optional) Add-on fee**
 
 ### Plan fee
 
-Agora bills you based on the total number of MAUs (Monthly Active Users) in the [Agora account](/en/realtime-media/im/get-started/manage-agora-account#sign-up-for-an-agora-account).
+Agora bills you based on the total number of MAUs (Monthly Active Users) in the [Agora account](/en/introduction/account#sign-up-for-an-agora-account).
 
 - MAU is the number of unique end users who log in to Agora Chat, connect to Agora Chat servers, and establish a long-lived connection at any time across a calendar month.
 - If a unique end-user connects to Agora Chat multiple times across a calendar month, they are counted as 1 MAU.

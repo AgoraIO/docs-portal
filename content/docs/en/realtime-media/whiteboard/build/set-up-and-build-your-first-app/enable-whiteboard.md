@@ -9,7 +9,7 @@ To use Interactive Whiteboard, you need to enable and configure it in [Agora Con
 
 Before enabling the whiteboard feature, ensure that you meet the following requirements:
 - A valid Agora account. If you have a Netless account, you must complete the account migration first. See [Migrate from Netless to Agora](../migrate-and-accelerate-development/migration-guide.md).
-- Active Agora projects. If you have not created a project, see [Agora account management](../manage-agora-account.md#create-an-agora-project).
+- Active Agora projects. If you have not created a project, see [Agora account management](/en/introduction/account#your-first-agora-project).
 
 ## Enable Interactive Whiteboard
 
