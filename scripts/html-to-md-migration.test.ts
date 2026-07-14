@@ -1563,6 +1563,21 @@ describe('html-to-md-migration', () => {
     ).resolves.toMatchObject({
       title: '互动白板 iOS API 参考',
     });
+
+    const nonIosOutputDir = path.join(rootDir, 'non-ios-output');
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      nonIosOutputDir,
+      '--product',
+      'whiteboard',
+      '--platform',
+      'web',
+    ]);
+    await expect(
+      readJson(path.join(nonIosOutputDir, 'meta.json')),
+    ).resolves.toMatchObject({ title: 'Reference' });
   });
 
   it.each([
