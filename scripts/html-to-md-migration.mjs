@@ -861,6 +861,44 @@ function selectContentRoot($) {
   return $('body').first();
 }
 
+function hasMeaningfulSourceBody($, sourceTypeId) {
+  if (sourceTypeId === SOURCE_TYPES.DITA_OT_API.id) {
+    const article = $('main article, article').first().clone();
+    article.find('h1, .shortdesc, nav:not(.related-links)').remove();
+    return normalizeText(article.text()).length > 0;
+  }
+  if (sourceTypeId === SOURCE_TYPES.TYPEDOC.id) {
+    const content = $('.col-content').first();
+    if (content.length > 0) return normalizeText(content.text()).length > 0;
+    const main = $('main').first().clone();
+    main.find('nav, header, footer, aside').remove();
+    return normalizeText(main.text()).length > 0;
+  }
+  return true;
+}
+
+async function filterSourcesWithoutMeaningfulBody(sourceStructure) {
+  if (
+    ![SOURCE_TYPES.DITA_OT_API.id, SOURCE_TYPES.TYPEDOC.id].includes(
+      sourceStructure.id,
+    )
+  ) {
+    return;
+  }
+
+  const meaningful = [];
+  for (const sourceName of sourceStructure.fileNames) {
+    const html = await fs.readFile(
+      path.join(sourceStructure.sourceDir, sourceName),
+      'utf8',
+    );
+    if (hasMeaningfulSourceBody(cheerio.load(html), sourceStructure.id)) {
+      meaningful.push(sourceName);
+    }
+  }
+  sourceStructure.fileNames = meaningful;
+}
+
 function headingElementDepth(heading, fallbackDepth = 2) {
   const match = heading.get(0)?.tagName?.match(/^h([1-6])$/i);
   return match ? Number(match[1]) : fallbackDepth;
@@ -1676,8 +1714,8 @@ function renderRelatedLinks(
   targetBasePath,
 ) {
   if (!nav || nav.length === 0) return '';
-  const title = nav.find('strong').first().text().trim();
-  const items = nav.find('li > a').toArray();
+  const title = nav.children('strong').first().text().trim();
+  const items = nav.find('li > a, li > strong > a').toArray();
   if (items.length === 0) return '';
 
   const lines = title ? [`### ${title}`] : [];
@@ -1758,6 +1796,15 @@ function renderPage({
     );
     if (rendered) sections.push(rendered);
   }
+
+  const related = renderRelatedLinks(
+    $,
+    body.find('> nav.related-links').first(),
+    pageTitleBySource,
+    sourceToRoute,
+    targetBasePath,
+  );
+  if (related) sections.push(related);
 
   if (sections.length === 0) {
     const fallbackRoot = body.find('> .body').first();
@@ -2246,7 +2293,13 @@ async function buildTocNodes(sourceStructure, pageTitleBySource = new Map()) {
         'utf8',
       );
       const toc$ = cheerio.load(tocHtml);
-      const tocNodes = parseTocTree(toc$);
+      const knownSources = new Set(
+        sourceStructure.fileNames.map(normalizeSourcePath),
+      );
+      const tocNodes = pruneUnavailableTocNodes(
+        parseTocTree(toc$),
+        knownSources,
+      );
       if (tocNodes.length > 0) return tocNodes;
     } catch {
       console.log(
@@ -2268,6 +2321,25 @@ async function buildTocNodes(sourceStructure, pageTitleBySource = new Map()) {
     sourceStructure.id,
     pageTitleBySource,
   );
+}
+
+function pruneUnavailableTocNodes(nodes, knownSources) {
+  const available = [];
+  for (const node of nodes) {
+    node.children = pruneUnavailableTocNodes(node.children, knownSources);
+    if (
+      node.sourceName &&
+      !knownSources.has(normalizeSourcePath(node.sourceName))
+    ) {
+      if (node.children.length === 0) continue;
+      node.slug ??= toKebab(
+        stripHtml(path.posix.basename(node.sourceName)).replace(/^toc_/, ''),
+      );
+      node.sourceName = null;
+    }
+    available.push(node);
+  }
+  return available;
 }
 
 async function collectIndexedSourceOrder(sourceStructure) {
@@ -2701,6 +2773,7 @@ async function main() {
     throw new SourceStructureError(sourceStructure);
   }
   const lane = getSourceLane(sourceStructure);
+  await filterSourcesWithoutMeaningfulBody(sourceStructure);
 
   console.log(`\n📄 HTML to Markdown Migration Tool`);
   console.log(`${'─'.repeat(50)}`);
