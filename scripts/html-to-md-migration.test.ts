@@ -74,6 +74,10 @@ function ditaPage(title: string) {
           <section id="details">
             <h2>Details</h2>
             <p>Call <code>join</code> from this page.</p>
+            <pre class="language-kotlin">fun join()</pre>
+            <pre class="language-arkts">rtcEngine.joinChannel()</pre>
+            <pre class="language-gradle">implementation 'io.agora:rtc:1.0.0'</pre>
+            <pre>{ "state": "connected" }</pre>
           </section>
         </div>
       </article>
@@ -529,7 +533,20 @@ describe('html-to-md-migration', () => {
     ).resolves.toContain('title: "Overview"');
     await expect(
       fs.readFile(path.join(outputDir, 'class-video-canvas.mdx'), 'utf8'),
-    ).resolves.toContain('Call `join` from this page.');
+    ).resolves.toContain('```kotlin title="Kotlin"\nfun join()\n```');
+    await expect(
+      fs.readFile(path.join(outputDir, 'class-video-canvas.mdx'), 'utf8'),
+    ).resolves.toContain(
+      '```typescript title="ArkTS"\nrtcEngine.joinChannel()\n```',
+    );
+    await expect(
+      fs.readFile(path.join(outputDir, 'class-video-canvas.mdx'), 'utf8'),
+    ).resolves.toContain(
+      '```text title="Gradle"\nimplementation \'io.agora:rtc:1.0.0\'\n```',
+    );
+    await expect(
+      fs.readFile(path.join(outputDir, 'class-video-canvas.mdx'), 'utf8'),
+    ).resolves.toContain('```text title="Text"\n{ "state": "connected" }\n```');
   });
 
   it('preserves a curated DITA root map while still writing hidden linked pages', async () => {
@@ -856,7 +873,7 @@ describe('html-to-md-migration', () => {
           '<a id="connect"></a>',
           '## 方法',
           '### connect',
-          '```ts\nconnect(appId: string): Promise<void>\n```',
+          '```ts title="TypeScript"\nconnect(appId: string): Promise<void>\n```',
           'Call `connect` before publishing.',
           '#### 参数',
           '| 名称 | 描述 |',
