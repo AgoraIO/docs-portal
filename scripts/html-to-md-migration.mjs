@@ -2719,9 +2719,13 @@ async function main() {
   const targetRoot = opts.dryRun
     ? path.resolve(opts.output)
     : assertSafeOutputPath(opts.output, opts, sourceStructure);
+  const versionRouteSegment =
+    opts.versionDir && opts.versionDir !== '(current)'
+      ? `/${opts.versionDir}`
+      : '';
   const targetBasePath =
     opts.targetBasePath ??
-    `${opts.routeBasePath}/${opts.product}/${opts.platform}`;
+    `${opts.routeBasePath}/${opts.product}/${opts.platform}${versionRouteSegment}`;
 
   // Read page titles and descriptions
   const pageTitleBySource = new Map();
