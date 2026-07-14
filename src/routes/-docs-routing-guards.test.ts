@@ -37,6 +37,17 @@ vi.mock('@/lib/docs-page', () => ({
   },
 }));
 
+vi.mock('@/lib/docs-static-manifest', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('@/lib/docs-static-manifest')>();
+
+  return {
+    ...actual,
+    shouldUseStaticDocsPayload: vi.fn(() => false),
+  };
+});
+
+import { shouldUseStaticDocsPayload } from '@/lib/docs-static-manifest';
 import {
   Route as DocPageRoute,
   getKnownPlatformSearchParam,
@@ -242,6 +253,24 @@ describe('docs route locale guards', () => {
     },
     REAL_DOCS_ROUTE_TIMEOUT,
   );
+
+  it('leaves static tab roots to the index route payload loader', async () => {
+    vi.mocked(shouldUseStaticDocsPayload).mockReturnValueOnce(true);
+
+    await expect(
+      getLoader(TabLayoutRoute)({
+        location: {
+          hash: '',
+          pathname: '/zh-CN/introduction',
+          searchStr: '',
+        },
+        params: {
+          locale: 'zh-CN',
+          tab: 'introduction',
+        },
+      } as never),
+    ).resolves.toBeNull();
+  });
 
   it('leaves child docs pages to child route loaders', async () => {
     await expect(
