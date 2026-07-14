@@ -1287,6 +1287,97 @@ describe('html-to-md-migration', () => {
     ).resolves.toBe(true);
   });
 
+  it('prefers Doxygen/Javadoc when a Doxygen tree also has modules.html', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'doxygen-source');
+    const outputDir = path.join(rootDir, 'dry-output');
+    await writeDoxygenFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'modules.html'),
+      '<!doctype html><html><body><div class="contents"><h1>Modules</h1></div></body></html>',
+    );
+
+    const output = runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc-server-sdk',
+      '--platform',
+      'cpp-api',
+      '--dry-run',
+    ]);
+
+    expect(output).toContain(
+      'Detected source type: Doxygen/Javadoc HTML reference',
+    );
+    expect(output).not.toContain('Detected source type: TypeDoc');
+  });
+
+  it('registers Doxygen output in existing ancestor navigation', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'doxygen-source');
+    const apiReferenceDir = path.join(
+      rootDir,
+      'content',
+      'docs',
+      'zh-CN',
+      'api-reference',
+    );
+    const productDir = path.join(apiReferenceDir, 'iot-apaas');
+    const outputDir = path.join(productDir, 'android');
+    await writeDoxygenFixture(sourceDir);
+    await writeFixture(
+      path.join(apiReferenceDir, 'meta.json'),
+      `${JSON.stringify(
+        {
+          title: '参考中心',
+          pages: ['overview', '!legacy-product'],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+    await writeFixture(
+      path.join(productDir, 'meta.json'),
+      `${JSON.stringify(
+        {
+          title: '物联网 aPaaS',
+          pages: ['!client-api', '!device-sdk'],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+
+    const args = [
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'iot-apaas',
+      '--platform',
+      'android',
+      '--target-base-path',
+      '/zh-CN/api-reference/iot-apaas/android',
+    ];
+    runMigration(args);
+    runMigration(args);
+
+    await expect(
+      readJson(path.join(apiReferenceDir, 'meta.json')),
+    ).resolves.toMatchObject({
+      pages: ['overview', 'iot-apaas', '!legacy-product'],
+    });
+    await expect(
+      readJson(path.join(productDir, 'meta.json')),
+    ).resolves.toMatchObject({
+      pages: ['android', '!client-api', '!device-sdk'],
+    });
+  });
+
   it('migrates iOS doc-generator output with dry-run planning and rewritten links', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'ios-source');
