@@ -2333,7 +2333,8 @@ function renderIosDocGeneratorPage({
     pageTitleBySource.get(currentSource) ?? stripHtml(currentSource);
   const pageTitle =
     currentSource === 'index.html' && /^Reference$/i.test(sourcePageTitle)
-      ? sourceToRoute.locale === 'zh-CN' && sourceToRoute.product === 'whiteboard'
+      ? sourceToRoute.locale === 'zh-CN' &&
+        sourceToRoute.product === 'whiteboard'
         ? '互动白板 iOS API 参考'
         : `${sourceToRoute.product} ${sourceToRoute.platform} API Reference`
       : sourcePageTitle;
@@ -3973,9 +3974,13 @@ async function main() {
       `${opts.platform.toUpperCase()} API Reference`)
     : `${opts.platform.toUpperCase()} API Reference`;
   const rootTitle =
-    sourceStructure.id === SOURCE_TYPES.IOS_DOC_GENERATOR.id
-      ? resolveIosRootTitle(sourceRootTitle, opts)
-      : sourceStructure.id === SOURCE_TYPES.TYPEDOC.id
+    sourceStructure.id === SOURCE_TYPES.IOS_DOC_GENERATOR.id &&
+    /^Reference$/i.test(sourceRootTitle) &&
+    opts.locale === 'zh-CN' &&
+    opts.product === 'whiteboard'
+      ? '互动白板 iOS API 参考'
+      : sourceStructure.id === SOURCE_TYPES.IOS_DOC_GENERATOR.id ||
+          sourceStructure.id === SOURCE_TYPES.TYPEDOC.id
         ? sourceRootTitle
         : `${opts.platform.toUpperCase()} API Reference`;
 
