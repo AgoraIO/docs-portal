@@ -918,6 +918,77 @@ describe('html-to-md-migration', () => {
     });
   });
 
+  it('uses the built-in public navigation for the real Flexible Classroom Web shape', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'typedoc-source');
+    const outputDir = path.join(rootDir, 'output');
+    const generatedOutputDir = path.join(rootDir, 'generated-output');
+    await writeTypeDocFixture(sourceDir);
+    const manifest = JSON.parse(
+      await fs.readFile(
+        path.join(
+          path.dirname(SCRIPT),
+          'html-migration',
+          'navigation',
+          'flexible-classroom-store.json',
+        ),
+        'utf8',
+      ),
+    ) as Array<{ label: string; source: string }>;
+    for (const entry of manifest) {
+      await writeFixture(
+        path.join(sourceDir, entry.source),
+        `<!doctype html><html><body><div class="col-content">
+          <h1>${entry.label}</h1>
+          <section class="tsd-panel tsd-comment"><div class="tsd-comment tsd-typography"><p>Public store API.</p></div></section>
+        </div></body></html>`,
+      );
+    }
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'flexible-classroom',
+      '--platform',
+      'web',
+      '--target-base-path',
+      '/zh-CN/api-reference/flexible-classroom/web/api-reference',
+    ]);
+
+    const meta = await readJson(path.join(outputDir, 'meta.json'));
+    expect(meta.pages).toContain(
+      '[CloudDriveStore](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/cloud-drive-store)',
+    );
+    expect(meta.pages).toContain(
+      '[WidgetStore](/zh-CN/api-reference/flexible-classroom/web/api-reference/classes/widget-store)',
+    );
+    expect(meta.pages).toContain('!classes');
+    expect(meta.pages).not.toContain('classes');
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      generatedOutputDir,
+      '--product',
+      'flexible-classroom',
+      '--platform',
+      'web',
+      '--navigation',
+      'generated',
+    ]);
+    const generatedMeta = await readJson(
+      path.join(generatedOutputDir, 'meta.json'),
+    );
+    expect(generatedMeta.pages).toContain('classes');
+    expect(generatedMeta.pages).not.toContain(
+      '[CloudDriveStore](/api-reference/flexible-classroom/web/classes/cloud-drive-store)',
+    );
+  });
+
   it('creates a scoped sidebar for Whiteboard Web API output', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'typedoc-source');
