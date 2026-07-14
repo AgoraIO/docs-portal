@@ -1692,23 +1692,14 @@ function renderSection(
   const id = section.attr('id');
   const heading = section.find('> h1, > h2, > h3, > h4, > h5, > h6').first();
   const title = inlineText(heading);
-  const parts = [];
-
-  if (id) parts.push(`<a id="${id}"></a>`);
-  if (title)
-    parts.push(
-      `${'#'.repeat(
-        markdownHeadingDepth(Math.max(depth, headingElementDepth(heading))),
-      )} ${title}`,
-    );
-
   const directList = section.find('> ul').first();
+  let renderedContent = '';
   if (
     directList.length > 0 &&
     directList.find('> li > a').length > 0 &&
     directList.siblings().filter('ul').length === 0
   ) {
-    const renderedList = renderList(
+    renderedContent = renderList(
       $,
       directList,
       pageTitleBySource,
@@ -1717,19 +1708,27 @@ function renderSection(
       false,
       { preferInlineOnly: true },
     );
-    if (renderedList) parts.push(renderedList);
-    return parts.join('\n\n').trim();
+  } else {
+    renderedContent = renderChildren(
+      $,
+      section,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath,
+      depth,
+    );
   }
+  if (!renderedContent) return '';
 
-  const rendered = renderChildren(
-    $,
-    section,
-    pageTitleBySource,
-    sourceToRoute,
-    targetBasePath,
-    depth,
-  );
-  if (rendered) parts.push(rendered);
+  const parts = [];
+  if (id) parts.push(`<a id="${id}"></a>`);
+  if (title)
+    parts.push(
+      `${'#'.repeat(
+        markdownHeadingDepth(Math.max(depth, headingElementDepth(heading))),
+      )} ${title}`,
+    );
+  parts.push(renderedContent);
 
   return parts.join('\n\n').trim();
 }

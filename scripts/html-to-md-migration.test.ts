@@ -1202,6 +1202,56 @@ describe('html-to-md-migration', () => {
     );
   });
 
+  it('omits title-only DITA sections while retaining non-empty sections', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDitaFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'API', 'overview.html'),
+      `<!doctype html>
+<html>
+  <body>
+    <main>
+      <article>
+        <h1>Overview</h1>
+        <div class="body">
+          <section id="empty-parameters"><h2>参数</h2></section>
+          <section id="documented-parameters"><h2>参数</h2><p>appId: App ID.</p></section>
+          <section id="nested-details">
+            <h2>Details</h2>
+            <section id="child-details"><h3>Child</h3><p>Nested content.</p></section>
+          </section>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>`,
+    );
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'rtc',
+      '--platform',
+      'android',
+    ]);
+
+    const output = await fs.readFile(
+      path.join(outputDir, 'overview.mdx'),
+      'utf8',
+    );
+    expect(output).not.toContain('empty-parameters');
+    expect(output).toContain('## 参数 [#documented-parameters]');
+    expect(output).toContain('appId: App ID.');
+    expect(output).toContain('## Details [#nested-details]');
+    expect(output).toContain('### Child [#child-details]');
+    expect(output).toContain('Nested content.');
+  });
+
   it('prints detected source type, file count, and planned paths in dry-run without writing', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'source');
