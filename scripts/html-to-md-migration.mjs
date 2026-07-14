@@ -4298,7 +4298,9 @@ function typedocRouteSegmentsForSourceName(sourceName, pageTitleBySource) {
 
   const title = normalizeTypeDocTitle(pageTitleBySource.get(sourceName) ?? '');
   if (!title) return null;
-  return [folder, toKebab(title)];
+  const genericStart = title.indexOf('<');
+  const routeTitle = genericStart === -1 ? title : title.slice(0, genericStart);
+  return [folder, toKebab(routeTitle)];
 }
 
 function titleFromSlug(slug) {
@@ -4357,6 +4359,51 @@ async function registerDartdocAncestorNavigation(targetRoot) {
   );
 }
 
+async function registerWhiteboardWebAncestorNavigation(
+  targetRoot,
+  opts,
+  targetBasePath,
+) {
+  if (opts.product !== 'whiteboard' || opts.platform !== 'web') return;
+  const productDir = path.dirname(targetRoot);
+  const apiReferenceDir = path.dirname(productDir);
+  if (path.basename(apiReferenceDir) !== 'api-reference') return;
+
+  const apiReferenceMetaPath = path.join(apiReferenceDir, 'meta.json');
+  const productMetaPath = path.join(productDir, 'meta.json');
+  if (
+    !(await fileExists(apiReferenceMetaPath)) ||
+    !(await fileExists(productMetaPath))
+  ) {
+    return;
+  }
+
+  const apiReferenceMeta = JSON.parse(
+    await fs.readFile(apiReferenceMetaPath, 'utf8'),
+  );
+  const hasVisibleWebLink = navigationPagesContainLink(
+    apiReferenceMeta.pages,
+    targetBasePath,
+  );
+  await registerNavigationChild(productMetaPath, path.basename(targetRoot));
+
+  const productMeta = JSON.parse(await fs.readFile(productMetaPath, 'utf8'));
+  let productMetaChanged = false;
+  if (hasVisibleWebLink && productMeta.sidebarHidden !== true) {
+    productMeta.sidebarHidden = true;
+    productMetaChanged = true;
+  } else if (!hasVisibleWebLink && 'sidebarHidden' in productMeta) {
+    delete productMeta.sidebarHidden;
+    productMetaChanged = true;
+  }
+  if (productMetaChanged) await writeJson(productMetaPath, productMeta);
+
+  await registerNavigationChild(
+    apiReferenceMetaPath,
+    path.basename(productDir),
+  );
+}
+
 async function registerNavigationChild(metaPath, childSlug, fallbackTitle) {
   let meta;
   try {
@@ -4381,6 +4428,16 @@ async function registerNavigationChild(metaPath, childSlug, fallbackTitle) {
     childSlug,
   );
   await writeJson(metaPath, meta);
+}
+
+function navigationPagesContainLink(pages, targetPath) {
+  if (!Array.isArray(pages)) return false;
+  return pages.some((page) => {
+    if (typeof page === 'string') {
+      return page.match(/\]\(([^)#?]+)(?:[#?][^)]*)?\)/)?.[1] === targetPath;
+    }
+    return navigationPagesContainLink(page?.pages, targetPath);
+  });
 }
 
 function collectPlannedOutputPaths(targetRoot, tocNodes) {
@@ -4848,7 +4905,13 @@ async function main() {
     if (opts.verbose) console.log(`  ✅ ${node.slug}`);
   }
 
-  if (sourceStructure.id === SOURCE_TYPES.DOXYGEN_JAVADOC.id) {
+  if (sourceStructure.id === SOURCE_TYPES.TYPEDOC.id) {
+    await registerWhiteboardWebAncestorNavigation(
+      targetRoot,
+      opts,
+      targetBasePath,
+    );
+  } else if (sourceStructure.id === SOURCE_TYPES.DOXYGEN_JAVADOC.id) {
     await registerDoxygenAncestorNavigation(targetRoot);
   } else if (sourceStructure.id === SOURCE_TYPES.DARTDOC.id) {
     await registerDartdocAncestorNavigation(targetRoot);
@@ -4869,19 +4932,31 @@ async function applyBuiltInNavigationPreset(opts, sourceStructure) {
   }
 
   opts.navigation = 'generated';
-  if (
-    sourceStructure.id !== SOURCE_TYPES.TYPEDOC.id ||
-    opts.product !== 'flexible-classroom' ||
-    opts.platform !== 'web'
-  ) {
-    return;
-  }
+  if (sourceStructure.id !== SOURCE_TYPES.TYPEDOC.id) return;
+
+  const preset = [
+    {
+      fileName: 'flexible-classroom-store.json',
+      platform: 'web',
+      product: 'flexible-classroom',
+    },
+    {
+      fileName: 'whiteboard-web.json',
+      platform: 'web',
+      product: 'whiteboard',
+    },
+  ].find(
+    (candidate) =>
+      candidate.product === opts.product &&
+      candidate.platform === opts.platform,
+  );
+  if (!preset) return;
 
   const manifestPath = path.join(
     SCRIPT_DIR,
     'html-migration',
     'navigation',
-    'flexible-classroom-store.json',
+    preset.fileName,
   );
   const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
   const knownSources = new Set(
