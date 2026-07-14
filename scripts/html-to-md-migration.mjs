@@ -39,6 +39,7 @@ import {
   getSourceLane,
   SOURCE_LANE_IDS,
 } from './html-migration/lanes/index.mjs';
+import { protectMarkdownCode } from './html-migration/markdown-code-segments.mjs';
 
 // ============================================================================
 // CLI Argument Parsing
@@ -3234,38 +3235,12 @@ function renderPageWithUniqueAnchors(options) {
   return deduplicateExplicitAnchors(renderPage(options));
 }
 
-function transformOutsideInlineCode(line, transform) {
-  const output = [];
-  let cursor = 0;
-  while (cursor < line.length) {
-    const opening = line.indexOf('`', cursor);
-    if (opening === -1) {
-      output.push(transform(line.slice(cursor)));
-      break;
-    }
-
-    let markerEnd = opening;
-    while (line[markerEnd] === '`') markerEnd += 1;
-    const marker = line.slice(opening, markerEnd);
-    const closing = line.indexOf(marker, markerEnd);
-    if (closing === -1) {
-      output.push(transform(line.slice(cursor)));
-      break;
-    }
-
-    output.push(transform(line.slice(cursor, opening)));
-    output.push(line.slice(opening, closing + marker.length));
-    cursor = closing + marker.length;
-  }
-  return output.join('');
-}
-
 function deduplicateExplicitAnchors(markdown) {
+  const protectedMarkdown = protectMarkdownCode(markdown);
   const counts = new Map();
   const activeIds = new Map();
   const usedIds = new Set();
   const output = [];
-  let fence = null;
   let previousStandaloneAnchor = null;
 
   const allocateId = (sourceId) => {
@@ -3281,29 +3256,7 @@ function deduplicateExplicitAnchors(markdown) {
     return uniqueId;
   };
 
-  for (const sourceLine of markdown.split('\n')) {
-    const fenceMatch = sourceLine.match(/^\s*(`{3,}|~{3,})(.*)$/);
-    if (fenceMatch) {
-      const marker = fenceMatch[1];
-      if (fence === null) {
-        fence = { character: marker[0], length: marker.length };
-      } else if (
-        marker[0] === fence.character &&
-        marker.length >= fence.length &&
-        fenceMatch[2].trim() === ''
-      ) {
-        fence = null;
-      }
-      output.push(sourceLine);
-      previousStandaloneAnchor = null;
-      continue;
-    }
-    if (fence !== null) {
-      output.push(sourceLine);
-      previousStandaloneAnchor = null;
-      continue;
-    }
-
+  for (const sourceLine of protectedMarkdown.text.split('\n')) {
     const standalone = sourceLine.match(/^\s*<a id="([^"]+)"><\/a>\s*$/);
     if (standalone) {
       const sourceId = standalone[1];
@@ -3314,28 +3267,23 @@ function deduplicateExplicitAnchors(markdown) {
       continue;
     }
 
-    const line = transformOutsideInlineCode(sourceLine, (text) => {
-      let transformed = text.replace(
-        /(<a id="([^"]+)"><\/a>)(?:[ \t]*\1)+/g,
-        '$1',
-      );
-      transformed = transformed.replace(
-        /<a id="([^"]+)"><\/a>/g,
-        (_, sourceId) => {
-          const uniqueId = allocateId(sourceId);
-          return `<a id="${uniqueId}"></a>`;
-        },
-      );
-      return transformed.replace(/\]\(#([^)]+)\)/g, (link, sourceId) => {
-        const activeId = activeIds.get(sourceId);
-        return activeId && activeId !== sourceId ? `](#${activeId})` : link;
-      });
+    let line = sourceLine.replace(
+      /(<a id="([^"]+)"><\/a>)(?:[ \t]*\1)+/g,
+      '$1',
+    );
+    line = line.replace(/<a id="([^"]+)"><\/a>/g, (_, sourceId) => {
+      const uniqueId = allocateId(sourceId);
+      return `<a id="${uniqueId}"></a>`;
+    });
+    line = line.replace(/\]\(#([^)]+)\)/g, (link, sourceId) => {
+      const activeId = activeIds.get(sourceId);
+      return activeId && activeId !== sourceId ? `](#${activeId})` : link;
     });
     output.push(line);
     if (line.trim()) previousStandaloneAnchor = null;
   }
 
-  return output.join('\n');
+  return protectedMarkdown.restore(output.join('\n'));
 }
 
 async function main() {

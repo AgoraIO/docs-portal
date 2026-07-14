@@ -426,6 +426,8 @@ async function writeDoxygenFixture(sourceDir: string) {
         <pre class="language-html">&lt;a id="join"&gt;&lt;/a&gt;
 [example](#join)</pre>
         <p>Inline example: <code>&lt;a id="join"&gt;&lt;/a&gt;</code>.</p>
+        <p>Multiline example: <code>&lt;a id="join"&gt;&lt;/a&gt;
+&lt;a id="join"&gt;&lt;/a&gt;</code>.</p>
       </div></div>
     </div>
     <hr class="footer"><address class="footer">制作者 <a href="https://www.doxygen.org/">Doxygen</a> 1.9.1</address>
@@ -1196,6 +1198,7 @@ describe('html-to-md-migration', () => {
           'Source suffix collision.',
           '```html\n<a id="join"></a>\n[example](#join)\n```',
           'Inline example: `<a id="join"></a>`.',
+          'Multiline example: `<a id="join"></a>\n<a id="join"></a>`.',
         ],
         'classes.mdx': [
           'title: "Class Index"',
