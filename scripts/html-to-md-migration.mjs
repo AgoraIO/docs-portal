@@ -2329,8 +2329,14 @@ function renderIosDocGeneratorPage({
   const previousCurrentSource = sourceToRoute.currentSource;
   sourceToRoute.currentSource = currentSource;
 
-  const pageTitle =
+  const sourcePageTitle =
     pageTitleBySource.get(currentSource) ?? stripHtml(currentSource);
+  const pageTitle =
+    currentSource === 'index.html' && /^Reference$/i.test(sourcePageTitle)
+      ? sourceToRoute.locale === 'zh-CN' && sourceToRoute.product === 'whiteboard'
+        ? '互动白板 iOS API 参考'
+        : `${sourceToRoute.product} ${sourceToRoute.platform} API Reference`
+      : sourcePageTitle;
   const description = pageDescriptionBySource.get(currentSource);
   const sections = [];
 
@@ -2430,7 +2436,16 @@ function renderIosIndexNavigation(
     .find('> .index-container > .index-column')
     .toArray()) {
     const node = $(column);
-    const title = inlineText(node.children('.index-title').first());
+    const sourceTitle = inlineText(node.children('.index-title').first());
+    const title =
+      sourceToRoute.locale === 'zh-CN'
+        ? ({
+            'Programming Guides': '编程指南',
+            'Class References': '类参考',
+            'Protocol References': '协议参考',
+            'Constant References': '常量参考',
+          }[sourceTitle] ?? sourceTitle)
+        : sourceTitle;
     const list = renderList(
       $,
       node.children('ul').first(),
@@ -3867,6 +3882,8 @@ async function main() {
   sourceToRoute.locale = opts.locale;
   sourceToRoute.sourceTypeId = sourceStructure.id;
   sourceToRoute.typeDocSymbolHrefs = typeDocSymbolHrefs;
+  sourceToRoute.product = opts.product;
+  sourceToRoute.platform = opts.platform;
   assignRoutes(tocNodes, [], sourceToRoute);
   if (sourceStructure.rootIndexSource) {
     setRouteForSource(sourceToRoute, sourceStructure.rootIndexSource, []);
