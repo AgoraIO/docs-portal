@@ -532,6 +532,49 @@ describe('html-to-md-migration', () => {
     ).resolves.toContain('Call `join` from this page.');
   });
 
+  it('preserves a curated DITA root map while still writing hidden linked pages', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const outputDir = path.join(rootDir, 'output');
+    await writeDitaFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'index.html'),
+      `<!doctype html><html><body><nav><ul class="map"><li>
+        <span>Edu Context Kotlin API Reference</span><ul>
+          <li><a href="API/overview.html">概览</a></li>
+          <li><a href="API/class_video_canvas.html#class_video_canvas">VideoCanvas</a></li>
+        </ul>
+      </li><li><a href="API/class_callback.html">Callback</a></li></ul></nav></body></html>`,
+    );
+    await writeFixture(
+      path.join(sourceDir, 'API', 'class_callback.html'),
+      ditaPage('Callback'),
+    );
+    await writeFixture(
+      path.join(sourceDir, 'API', 'class_error.html'),
+      ditaPage('Error'),
+    );
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'flexible-classroom',
+      '--platform',
+      'android',
+    ]);
+
+    await expect(readJson(path.join(outputDir, 'meta.json'))).resolves.toEqual({
+      pages: ['index', 'overview', 'class-video-canvas', 'class-callback'],
+      title: 'ANDROID API Reference',
+    });
+    await expect(
+      fs.readFile(path.join(outputDir, 'class-error.mdx'), 'utf8'),
+    ).resolves.toContain('title: "Error"');
+  });
+
   it('keeps DITA links to the current source page fragment-only', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'source');
