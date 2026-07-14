@@ -969,13 +969,88 @@ function renderHeading(_$, heading) {
   return parts.join('\n\n');
 }
 
+const CODE_LANGUAGE_PRESENTATIONS = new Map([
+  ['arkts', { language: 'typescript', title: 'ArkTS' }],
+  ['bash', { language: 'bash', title: 'Bash' }],
+  ['c', { language: 'cpp', title: 'C' }],
+  ['cpp', { language: 'cpp', title: 'C++' }],
+  ['csharp', { language: 'csharp', title: 'C#' }],
+  ['chsarp', { language: 'csharp', title: 'C#' }],
+  ['css', { language: 'css', title: 'CSS' }],
+  ['dart', { language: 'dart', title: 'Dart' }],
+  ['go', { language: 'go', title: 'Go' }],
+  ['gradle', { language: 'text', title: 'Gradle' }],
+  ['html', { language: 'html', title: 'HTML' }],
+  ['java', { language: 'java', title: 'Java' }],
+  ['javascript', { language: 'javascript', title: 'JavaScript' }],
+  ['js', { language: 'javascript', title: 'JavaScript' }],
+  ['json', { language: 'json', title: 'JSON' }],
+  ['kotlin', { language: 'kotlin', title: 'Kotlin' }],
+  ['markdown', { language: 'markdown', title: 'Markdown' }],
+  ['md', { language: 'markdown', title: 'Markdown' }],
+  ['objc', { language: 'objc', title: 'Objective-C' }],
+  ['objectivec', { language: 'objc', title: 'Objective-C' }],
+  ['php', { language: 'php', title: 'PHP' }],
+  ['python', { language: 'python', title: 'Python' }],
+  ['ruby', { language: 'ruby', title: 'Ruby' }],
+  ['sh', { language: 'sh', title: 'Shell' }],
+  ['swift', { language: 'swift', title: 'Swift' }],
+  ['text', { language: 'text', title: 'Text' }],
+  ['txt', { language: 'text', title: 'Text' }],
+  ['ts', { language: 'ts', title: 'TypeScript' }],
+  ['tsx', { language: 'tsx', title: 'TSX' }],
+  ['typescript', { language: 'typescript', title: 'TypeScript' }],
+  ['xml', { language: 'xml', title: 'XML' }],
+  ['yaml', { language: 'yaml', title: 'YAML' }],
+]);
+
+function codeLanguagePresentation(language) {
+  return CODE_LANGUAGE_PRESENTATIONS.get(language?.toLowerCase()) ?? null;
+}
+
+function platformCodeLanguagePresentation(platform) {
+  const normalized = platform?.toLowerCase() ?? '';
+  if (normalized === 'c') return codeLanguagePresentation('c');
+  if (normalized.includes('cpp') || normalized.includes('c++')) {
+    return codeLanguagePresentation('cpp');
+  }
+  if (normalized.includes('csharp') || normalized.includes('c#')) {
+    return codeLanguagePresentation('csharp');
+  }
+  if (normalized === 'android' || normalized.includes('java')) {
+    return codeLanguagePresentation('java');
+  }
+  if (normalized === 'ios' || normalized === 'macos') {
+    return codeLanguagePresentation('objc');
+  }
+  if (normalized === 'flutter' || normalized === 'dart') {
+    return codeLanguagePresentation('dart');
+  }
+  if (normalized === 'web' || normalized.includes('javascript')) {
+    return codeLanguagePresentation('javascript');
+  }
+  return null;
+}
+
+function renderCodeFence(code, language, title) {
+  const presentation = codeLanguagePresentation(language);
+  const fenceLanguage = presentation?.language ?? language ?? 'text';
+  const visibleTitle = title ?? presentation?.title;
+  const metadata = visibleTitle ? ` title="${visibleTitle}"` : '';
+  return `\`\`\`${fenceLanguage}${metadata}\n${code}\n\`\`\``;
+}
+
 function renderCodeBlock(pre) {
   if (!pre || pre.length === 0) return '';
   const classAttr = pre.attr('class') ?? '';
-  const lang =
-    classAttr.match(/language-([a-z0-9+-]+)/i)?.[1]?.toLowerCase() ?? 'text';
+  const explicitLanguage = classAttr
+    .match(/language-([a-z0-9+-]+)/i)?.[1]
+    ?.toLowerCase();
+  const presentation =
+    codeLanguagePresentation(explicitLanguage) ??
+    codeLanguagePresentation('text');
   const code = decodeHtml(pre.text()).trimEnd();
-  return `\`\`\`${lang}\n${code}\n\`\`\``;
+  return renderCodeFence(code, presentation.language, presentation.title);
 }
 
 function renderTable(
@@ -2129,7 +2204,14 @@ function renderDoxygenMember(
   const signature = normalizeDoxygenSignature(
     member.item.find('.memproto').first().text(),
   );
-  if (signature) parts.push(`\`\`\`cpp\n${signature}\n\`\`\``);
+  if (signature) {
+    const presentation =
+      platformCodeLanguagePresentation(sourceToRoute.platform) ??
+      codeLanguagePresentation('cpp');
+    parts.push(
+      renderCodeFence(signature, presentation.language, presentation.title),
+    );
+  }
 
   const memdoc = member.item.find('.memdoc').first().clone();
   const parameters = renderDoxygenParameters(
@@ -2538,7 +2620,7 @@ function renderIosMethod(
   const signature = normalizeText(
     method.find('.method-declaration code').first().text(),
   );
-  if (signature) parts.push(`\`\`\`objc\n${signature}\n\`\`\``);
+  if (signature) parts.push(renderCodeFence(signature, 'objc'));
 
   const brief = method.find('.brief-description').first();
   if (brief.length > 0) {
@@ -2728,7 +2810,7 @@ function renderIosConstants(
   const definition = normalizeText(
     main.find('> .section > code').first().text(),
   );
-  if (definition) parts.push(`\`\`\`objc\n${definition}\n\`\`\``);
+  if (definition) parts.push(renderCodeFence(definition, 'objc'));
 
   const rows = [];
   const terms = constantList.children('dt').toArray();
@@ -2794,7 +2876,7 @@ function renderIosBlock(
     );
     if (renderedBrief) parts.push(renderedBrief);
   }
-  if (declaration) parts.push(`\`\`\`objc\n${declaration}\n\`\`\``);
+  if (declaration) parts.push(renderCodeFence(declaration, 'objc'));
   return parts.join('\n\n');
 }
 
@@ -3050,7 +3132,7 @@ function renderTypeDocSignatures($, member) {
 
   if (signatures.length === 0) return '';
   return signatures
-    .map((signature) => `\`\`\`ts\n${signature}\n\`\`\``)
+    .map((signature) => renderCodeFence(signature, 'ts'))
     .join('\n\n');
 }
 
@@ -3899,6 +3981,7 @@ async function main() {
   // Assign routes
   const sourceToRoute = new Map();
   sourceToRoute.locale = opts.locale;
+  sourceToRoute.platform = opts.platform;
   sourceToRoute.sourceTypeId = sourceStructure.id;
   sourceToRoute.typeDocSymbolHrefs = typeDocSymbolHrefs;
   sourceToRoute.product = opts.product;
