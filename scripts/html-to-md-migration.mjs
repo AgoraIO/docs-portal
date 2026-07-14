@@ -237,6 +237,31 @@ function inlineText(node) {
   return escapeInlineText(normalizeInline(decodeHtml(node.text())));
 }
 
+function renderInlineTextValue(value, sourceToRoute, targetBasePath) {
+  const text = normalizeText(value);
+  const parts = [];
+  const linkPattern =
+    /\{@(?:link|linkplain|linkcode)\s+([^\s}|]+)(?:\s*\|\s*|\s+)?([^}]*)\}/g;
+  let cursor = 0;
+
+  for (const match of text.matchAll(linkPattern)) {
+    parts.push(escapeInlineText(text.slice(cursor, match.index)));
+    const target = match[1];
+    const label = match[2].trim() || target;
+    const href =
+      sourceToRoute.typeDocSymbolHrefs?.get(target) ??
+      sourceToRoute.typeDocSymbolHrefs?.get(target.toLowerCase());
+    const rendered = href
+      ? renderHref(label, href, sourceToRoute, targetBasePath)
+      : escapeInlineText(label);
+    parts.push(rendered);
+    cursor = match.index + match[0].length;
+  }
+
+  parts.push(escapeInlineText(text.slice(cursor)));
+  return parts.join('');
+}
+
 function normalizeInline(value) {
   return value
     .replace(/[ \t]+\n/g, '\n')
@@ -990,7 +1015,11 @@ function renderList(
       for (const child of $(li).contents().toArray()) {
         const element = $(child);
         if (child.type === 'text') {
-          const text = escapeInlineText(normalizeText($(child).text()));
+          const text = renderInlineTextValue(
+            $(child).text(),
+            sourceToRoute,
+            targetBasePath,
+          );
           if (text) inlineParts.push(text);
           continue;
         }
@@ -1050,7 +1079,11 @@ function renderList(
     for (const child of $(li).contents().toArray()) {
       const element = $(child);
       if (child.type === 'text') {
-        const text = escapeInlineText(normalizeText($(child).text()));
+        const text = renderInlineTextValue(
+          $(child).text(),
+          sourceToRoute,
+          targetBasePath,
+        );
         if (text) inlineParts.push(text);
         continue;
       }
@@ -1168,6 +1201,10 @@ function renderAnchor(
   if (!href && id) return `<a id="${id}"></a>`;
   if (!href) return label;
 
+  return renderHref(label, href, sourceToRoute, targetBasePath);
+}
+
+function renderHref(label, href, sourceToRoute, targetBasePath) {
   if (isExternalHref(href)) {
     return `[${label}](${href})`;
   }
@@ -1211,6 +1248,22 @@ function resolveRouteForHref(filePart, currentSource, sourceToRoute) {
     if (routeSegments) return routeSegments;
   }
   return null;
+}
+
+function sourceRelativeHref(href, currentSource) {
+  if (isExternalHref(href)) return null;
+  const hashIndex = href.indexOf('#');
+  const filePart = hashIndex === -1 ? href : href.slice(0, hashIndex);
+  const hashPart = hashIndex === -1 ? '' : href.slice(hashIndex + 1);
+  const sourceName = filePart
+    ? normalizeSourcePath(
+        path.posix.normalize(
+          path.posix.join(path.posix.dirname(currentSource), filePart),
+        ),
+      )
+    : currentSource;
+  if (!sourceName.endsWith('.html')) return null;
+  return `${sourceName}${hashPart ? `#${hashPart}` : ''}`;
 }
 
 function routeSegmentsToDocPath(routeSegments, targetBasePath) {
@@ -1276,7 +1329,11 @@ function inlineChildren(
   const parts = [];
   for (const child of node.contents().toArray()) {
     if (child.type === 'text') {
-      const text = escapeInlineText(normalizeText($(child).text()));
+      const text = renderInlineTextValue(
+        $(child).text(),
+        sourceToRoute,
+        targetBasePath,
+      );
       if (text) parts.push(text);
       continue;
     }
@@ -1435,7 +1492,11 @@ function renderChildren(
 
   for (const node of parent.contents().toArray()) {
     if (node.type === 'text') {
-      const text = escapeInlineText(normalizeText($(node).text()));
+      const text = renderInlineTextValue(
+        $(node).text(),
+        sourceToRoute,
+        targetBasePath,
+      );
       if (text) inlineParts.push(text);
       continue;
     }
@@ -2657,6 +2718,7 @@ async function main() {
   // Read page titles and descriptions
   const pageTitleBySource = new Map();
   const pageDescriptionBySource = new Map();
+  const typeDocSymbolHrefs = new Map();
   const fileNames = sourceStructure.fileNames;
 
   const titleSourceNames = sourceStructure.rootIndexSource
@@ -2672,6 +2734,21 @@ async function main() {
         : readDescription($);
     pageTitleBySource.set(name, title);
     if (description) pageDescriptionBySource.set(name, description);
+    if (sourceStructure.id === SOURCE_TYPES.TYPEDOC.id) {
+      for (const anchor of $('a[href]').toArray()) {
+        const label = normalizeText($(anchor).text());
+        if (!/^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)*$/.test(label)) {
+          continue;
+        }
+        const href = sourceRelativeHref($(anchor).attr('href') ?? '', name);
+        if (!href) continue;
+        if (!typeDocSymbolHrefs.has(label)) typeDocSymbolHrefs.set(label, href);
+        const lowerLabel = label.toLowerCase();
+        if (!typeDocSymbolHrefs.has(lowerLabel)) {
+          typeDocSymbolHrefs.set(lowerLabel, href);
+        }
+      }
+    }
   }
 
   const tocNodes = await buildTocNodes(sourceStructure, pageTitleBySource);
@@ -2679,6 +2756,7 @@ async function main() {
   // Assign routes
   const sourceToRoute = new Map();
   sourceToRoute.locale = opts.locale;
+  sourceToRoute.typeDocSymbolHrefs = typeDocSymbolHrefs;
   assignRoutes(tocNodes, [], sourceToRoute);
   if (sourceStructure.rootIndexSource) {
     setRouteForSource(sourceToRoute, sourceStructure.rootIndexSource, []);
