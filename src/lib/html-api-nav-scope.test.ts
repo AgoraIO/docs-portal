@@ -58,30 +58,28 @@ function collectPageUrls(nodes: DocsSidebarNode[]): string[] {
 }
 
 describe('migrated HTML API navigation scopes', () => {
-  it.each(affectedRoutes)(
-    'uses the generated local sidebar for $root',
-    ({ root: routeRoot, route }) => {
-      const navScope = resolveDocsNavScope({
-        activePath: route,
+  it.each(affectedRoutes)('uses the generated local sidebar for $root', ({
+    root: routeRoot,
+    route,
+  }) => {
+    const navScope = resolveDocsNavScope({
+      activePath: route,
+      getNodeMeta: getZhNodeMeta,
+      root: source.getPageTree('zh-CN'),
+      tab: 'api-reference',
+    });
+
+    expect(navScope).not.toBeNull();
+    if (!navScope) return;
+
+    const urls = collectPageUrls(
+      getScopedNavScopeSidebarNodes({
         getNodeMeta: getZhNodeMeta,
-        root: source.getPageTree('zh-CN'),
-        tab: 'api-reference',
-      });
-
-      expect(navScope).not.toBeNull();
-      if (!navScope) return;
-
-      const urls = collectPageUrls(
-        getScopedNavScopeSidebarNodes({
-          getNodeMeta: getZhNodeMeta,
-          navScope,
-        }),
-      );
-      expect(urls.length).toBeGreaterThan(1);
-      expect(urls.every((url) => url.startsWith(routeRoot))).toBe(true);
-      expect(urls.some((url) => /doxygen-crawl|-members/.test(url))).toBe(
-        false,
-      );
-    },
-  );
+        navScope,
+      }),
+    );
+    expect(urls.length).toBeGreaterThan(1);
+    expect(urls.every((url) => url.startsWith(routeRoot))).toBe(true);
+    expect(urls.some((url) => /doxygen-crawl|-members/.test(url))).toBe(false);
+  });
 });

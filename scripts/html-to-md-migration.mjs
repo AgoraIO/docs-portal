@@ -4574,7 +4574,11 @@ async function main() {
         ];
   const scopedMetaPages =
     sourceStructure.id === SOURCE_TYPES.TYPEDOC.id
-      ? labelTypeDocGlobalsEntry(metaPages, sourceToRoute, targetBasePath)
+      ? replaceTypeDocGlobalsWithLabeledLink(
+          metaPages,
+          sourceToRoute,
+          targetBasePath,
+        )
       : metaPages;
 
   // Write meta.json
@@ -4620,7 +4624,11 @@ async function main() {
   console.log(`${'─'.repeat(50)}\n`);
 }
 
-function labelTypeDocGlobalsEntry(metaPages, sourceToRoute, targetBasePath) {
+function replaceTypeDocGlobalsWithLabeledLink(
+  metaPages,
+  sourceToRoute,
+  targetBasePath,
+) {
   const globalsRoute = sourceToRoute.get('globals.html');
   if (!globalsRoute || !metaPages.includes('globals')) return metaPages;
 

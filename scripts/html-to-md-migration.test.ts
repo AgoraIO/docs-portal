@@ -1365,6 +1365,7 @@ describe('html-to-md-migration', () => {
     await expect(
       readJson(path.join(outputDir, 'meta.json')),
     ).resolves.toMatchObject({
+      title: 'TypeDoc API',
       navScope: {},
       pages: expect.arrayContaining([
         'index',
