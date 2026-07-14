@@ -4185,6 +4185,47 @@ async function writeFile(filePath, contents) {
   await fs.writeFile(filePath, contents, 'utf8');
 }
 
+async function registerDoxygenAncestorNavigation(targetRoot) {
+  const productDir = path.dirname(targetRoot);
+  const apiReferenceDir = path.dirname(productDir);
+  if (path.basename(apiReferenceDir) !== 'api-reference') return;
+
+  await registerNavigationChild(
+    path.join(productDir, 'meta.json'),
+    path.basename(targetRoot),
+  );
+  await registerNavigationChild(
+    path.join(apiReferenceDir, 'meta.json'),
+    path.basename(productDir),
+  );
+}
+
+async function registerNavigationChild(metaPath, childSlug) {
+  let meta;
+  try {
+    meta = JSON.parse(await fs.readFile(metaPath, 'utf8'));
+  } catch (error) {
+    if (error?.code === 'ENOENT') return;
+    throw error;
+  }
+
+  if (!Array.isArray(meta.pages)) return;
+  const alreadyRegistered = meta.pages.some(
+    (page) => page === childSlug || page === `!${childSlug}`,
+  );
+  if (alreadyRegistered) return;
+
+  const firstHiddenIndex = meta.pages.findIndex(
+    (page) => typeof page === 'string' && page.startsWith('!'),
+  );
+  meta.pages.splice(
+    firstHiddenIndex === -1 ? meta.pages.length : firstHiddenIndex,
+    0,
+    childSlug,
+  );
+  await writeJson(metaPath, meta);
+}
+
 function collectPlannedOutputPaths(targetRoot, tocNodes) {
   const planned = [
     path.join(targetRoot, 'index.mdx'),
@@ -4646,6 +4687,10 @@ async function main() {
     );
     writtenCount++;
     if (opts.verbose) console.log(`  ✅ ${node.slug}`);
+  }
+
+  if (sourceStructure.id === SOURCE_TYPES.DOXYGEN_JAVADOC.id) {
+    await registerDoxygenAncestorNavigation(targetRoot);
   }
 
   console.log(`\n${'─'.repeat(50)}`);
