@@ -1296,7 +1296,10 @@ function renderAnchor(
   sourceToRoute,
   targetBasePath,
 ) {
-  const decodedEmail = decodeDoxygenMailto(anchor.attr('onclick'));
+  const decodedEmail =
+    sourceToRoute.sourceTypeId === SOURCE_TYPES.DOXYGEN_JAVADOC.id
+      ? decodeDoxygenMailto(anchor.attr('onclick'))
+      : null;
   if (decodedEmail) {
     return `[${decodedEmail}](mailto:${decodedEmail})`;
   }
@@ -3161,22 +3164,20 @@ async function writeNode(
     if (node.sourceName) {
       await writeFile(
         path.join(dir, 'index.mdx'),
-        deduplicateExplicitAnchors(
-          renderPage({
-            $: cheerio.load(
-              await fs.readFile(
-                path.join(output.sourceDir, node.sourceName),
-                'utf8',
-              ),
+        renderPageWithUniqueAnchors({
+          $: cheerio.load(
+            await fs.readFile(
+              path.join(output.sourceDir, node.sourceName),
+              'utf8',
             ),
-            currentSource: node.sourceName,
-            lane,
-            pageDescriptionBySource,
-            pageTitleBySource,
-            sourceToRoute,
-            targetBasePath: output.targetBasePath,
-          }),
-        ),
+          ),
+          currentSource: node.sourceName,
+          lane,
+          pageDescriptionBySource,
+          pageTitleBySource,
+          sourceToRoute,
+          targetBasePath: output.targetBasePath,
+        }),
       );
     } else {
       await writeFile(
@@ -3205,22 +3206,17 @@ async function writeNode(
   );
   await writeFile(
     filePath,
-    deduplicateExplicitAnchors(
-      renderPage({
-        $: cheerio.load(
-          await fs.readFile(
-            path.join(output.sourceDir, node.sourceName),
-            'utf8',
-          ),
-        ),
-        currentSource: node.sourceName,
-        lane,
-        pageDescriptionBySource,
-        pageTitleBySource,
-        sourceToRoute,
-        targetBasePath: output.targetBasePath,
-      }),
-    ),
+    renderPageWithUniqueAnchors({
+      $: cheerio.load(
+        await fs.readFile(path.join(output.sourceDir, node.sourceName), 'utf8'),
+      ),
+      currentSource: node.sourceName,
+      lane,
+      pageDescriptionBySource,
+      pageTitleBySource,
+      sourceToRoute,
+      targetBasePath: output.targetBasePath,
+    }),
   );
 }
 
@@ -3234,15 +3230,42 @@ This section contains migrated API reference pages.
 `;
 }
 
+function renderPageWithUniqueAnchors(options) {
+  return deduplicateExplicitAnchors(renderPage(options));
+}
+
+function transformOutsideInlineCode(line, transform) {
+  const output = [];
+  let cursor = 0;
+  while (cursor < line.length) {
+    const opening = line.indexOf('`', cursor);
+    if (opening === -1) {
+      output.push(transform(line.slice(cursor)));
+      break;
+    }
+
+    let markerEnd = opening;
+    while (line[markerEnd] === '`') markerEnd += 1;
+    const marker = line.slice(opening, markerEnd);
+    const closing = line.indexOf(marker, markerEnd);
+    if (closing === -1) {
+      output.push(transform(line.slice(cursor)));
+      break;
+    }
+
+    output.push(transform(line.slice(cursor, opening)));
+    output.push(line.slice(opening, closing + marker.length));
+    cursor = closing + marker.length;
+  }
+  return output.join('');
+}
+
 function deduplicateExplicitAnchors(markdown) {
-  const collapsedMarkdown = markdown.replace(
-    /(<a id="([^"]+)"><\/a>)(?:[ \t]*\1)+/g,
-    '$1',
-  );
   const counts = new Map();
   const activeIds = new Map();
   const usedIds = new Set();
   const output = [];
+  let fence = null;
   let previousStandaloneAnchor = null;
 
   const allocateId = (sourceId) => {
@@ -3258,7 +3281,29 @@ function deduplicateExplicitAnchors(markdown) {
     return uniqueId;
   };
 
-  for (const sourceLine of collapsedMarkdown.split('\n')) {
+  for (const sourceLine of markdown.split('\n')) {
+    const fenceMatch = sourceLine.match(/^\s*(`{3,}|~{3,})(.*)$/);
+    if (fenceMatch) {
+      const marker = fenceMatch[1];
+      if (fence === null) {
+        fence = { character: marker[0], length: marker.length };
+      } else if (
+        marker[0] === fence.character &&
+        marker.length >= fence.length &&
+        fenceMatch[2].trim() === ''
+      ) {
+        fence = null;
+      }
+      output.push(sourceLine);
+      previousStandaloneAnchor = null;
+      continue;
+    }
+    if (fence !== null) {
+      output.push(sourceLine);
+      previousStandaloneAnchor = null;
+      continue;
+    }
+
     const standalone = sourceLine.match(/^\s*<a id="([^"]+)"><\/a>\s*$/);
     if (standalone) {
       const sourceId = standalone[1];
@@ -3269,13 +3314,22 @@ function deduplicateExplicitAnchors(markdown) {
       continue;
     }
 
-    let line = sourceLine.replace(/<a id="([^"]+)"><\/a>/g, (_, sourceId) => {
-      const uniqueId = allocateId(sourceId);
-      return `<a id="${uniqueId}"></a>`;
-    });
-    line = line.replace(/\]\(#([^)]+)\)/g, (link, sourceId) => {
-      const activeId = activeIds.get(sourceId);
-      return activeId && activeId !== sourceId ? `](#${activeId})` : link;
+    const line = transformOutsideInlineCode(sourceLine, (text) => {
+      let transformed = text.replace(
+        /(<a id="([^"]+)"><\/a>)(?:[ \t]*\1)+/g,
+        '$1',
+      );
+      transformed = transformed.replace(
+        /<a id="([^"]+)"><\/a>/g,
+        (_, sourceId) => {
+          const uniqueId = allocateId(sourceId);
+          return `<a id="${uniqueId}"></a>`;
+        },
+      );
+      return transformed.replace(/\]\(#([^)]+)\)/g, (link, sourceId) => {
+        const activeId = activeIds.get(sourceId);
+        return activeId && activeId !== sourceId ? `](#${activeId})` : link;
+      });
     });
     output.push(line);
     if (line.trim()) previousStandaloneAnchor = null;
@@ -3420,22 +3474,20 @@ async function main() {
   if (sourceStructure.rootIndexSource) {
     await writeFile(
       path.join(targetRoot, 'index.mdx'),
-      deduplicateExplicitAnchors(
-        renderPage({
-          $: cheerio.load(
-            await fs.readFile(
-              path.join(apiSourceDir, sourceStructure.rootIndexSource),
-              'utf8',
-            ),
+      renderPageWithUniqueAnchors({
+        $: cheerio.load(
+          await fs.readFile(
+            path.join(apiSourceDir, sourceStructure.rootIndexSource),
+            'utf8',
           ),
-          currentSource: sourceStructure.rootIndexSource,
-          lane,
-          pageDescriptionBySource,
-          pageTitleBySource,
-          sourceToRoute,
-          targetBasePath,
-        }),
-      ),
+        ),
+        currentSource: sourceStructure.rootIndexSource,
+        lane,
+        pageDescriptionBySource,
+        pageTitleBySource,
+        sourceToRoute,
+        targetBasePath,
+      }),
     );
   } else {
     await writeFile(
