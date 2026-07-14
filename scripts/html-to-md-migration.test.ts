@@ -662,7 +662,7 @@ describe('html-to-md-migration', () => {
     );
   });
 
-  it('renders DITA related links and omits source pages without meaningful body content', async () => {
+  it('retains DITA descriptions and related links while omitting title-only pages', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'source');
     const outputDir = path.join(rootDir, 'output');
@@ -672,6 +672,7 @@ describe('html-to-md-migration', () => {
       `<!doctype html><html><body><nav class="toc"><ul><li><span>API Reference</span><ul>
         <li><a href="API/overview.html">Overview</a></li>
         <li><a href="API/class_empty.html">EmptyClass</a></li>
+        <li><a href="API/class_title_only.html">TitleOnlyClass</a></li>
         <li><a href="API/class_video_canvas.html">VideoCanvas</a></li>
       </ul></li></ul></nav></body></html>`,
     );
@@ -685,6 +686,10 @@ describe('html-to-md-migration', () => {
     await writeFixture(
       path.join(sourceDir, 'API', 'class_empty.html'),
       '<!doctype html><html><body><main><article><h1>EmptyClass</h1><p class="shortdesc">No source body.</p></article></main></body></html>',
+    );
+    await writeFixture(
+      path.join(sourceDir, 'API', 'class_title_only.html'),
+      '<!doctype html><html><body><main><article><h1>TitleOnlyClass</h1></article></main></body></html>',
     );
 
     runMigration([
@@ -704,12 +709,15 @@ describe('html-to-md-migration', () => {
       '[VideoCanvas](/api-reference/rtc/android/class-video-canvas)',
     );
     await expect(
-      pathExists(path.join(outputDir, 'class-empty.mdx')),
+      fs.readFile(path.join(outputDir, 'class-empty.mdx'), 'utf8'),
+    ).resolves.toContain('No source body.');
+    await expect(
+      pathExists(path.join(outputDir, 'class-title-only.mdx')),
     ).resolves.toBe(false);
     await expect(
       readJson(path.join(outputDir, 'meta.json')),
     ).resolves.toMatchObject({
-      pages: ['index', 'overview', 'class-video-canvas'],
+      pages: ['index', 'overview', 'class-empty', 'class-video-canvas'],
     });
   });
 

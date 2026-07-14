@@ -882,7 +882,7 @@ function selectContentRoot($) {
 function hasMeaningfulSourceBody($, sourceTypeId) {
   if (sourceTypeId === SOURCE_TYPES.DITA_OT_API.id) {
     const article = $('main article, article').first().clone();
-    article.find('h1, .shortdesc, nav:not(.related-links)').remove();
+    article.find('h1, nav:not(.related-links)').remove();
     return normalizeText(article.text()).length > 0;
   }
   if (sourceTypeId === SOURCE_TYPES.TYPEDOC.id) {
@@ -1823,6 +1823,15 @@ function renderPage({
     targetBasePath,
   );
   if (related) sections.push(related);
+
+  if (sections.length === 0) {
+    const shortDescription = body
+      .find('> .shortdesc, > .body > .shortdesc')
+      .first()
+      .text()
+      .trim();
+    if (shortDescription) sections.push(shortDescription);
+  }
 
   if (sections.length === 0) {
     const fallbackRoot = body.find('> .body').first();
