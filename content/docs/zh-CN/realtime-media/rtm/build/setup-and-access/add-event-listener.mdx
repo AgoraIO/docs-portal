@@ -7,7 +7,7 @@ title: "添加事件监听"
 
 RTM 采用统一入口的方式处理消息和事件通知，每一种消息和事件通知都有对应的事件处理程序入口，你可以在其中实现自己的业务处理逻辑：
 
-```csharp
+```csharp tab="C#" tabGroup="rtm-build-manage-messages-add-event-listener-1"
 // add message event listener
 rtmClient.OnMessageEvent += newMessageEvent =>
 {
@@ -89,7 +89,7 @@ rtmClient.OnTokenPrivilegeWillExpire += channelName =>
 };
 ```
 
-```javascript
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-add-event-listener-1"
 // Handle message event
 rtm.addEventListener("message", event => {
     const channelType = event.channelType;      // The channel type need to be "STREAM", "MESSAGE" or "USER".
@@ -166,7 +166,7 @@ rtm.addEventListener("tokenPrivilegeWillExpire", (channelName) => {
 });
 ```
 
-```java
+```java tab="Java" tabGroup="rtm-build-manage-messages-add-event-listener-1"
 RtmEventListener eventListener = new RtmEventListener() {
       @Override
       public void onMessageEvent(MessageEvent event) {
@@ -207,7 +207,7 @@ rtmConfig.eventListener = eventListener;
 mRtmClient = RtmClient.create(rtmConfig);
 ```
 
-```swift
+```swift tab="Swift" tabGroup="rtm-build-manage-messages-add-event-listener-1"
 class RtmListener: NSObject, AgoraRtmClientDelegate {
 
     func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveLinkStateEvent event: AgoraRtmLinkStateEvent) {
@@ -247,7 +247,7 @@ do {
 }
 ```
 
-```objc
+```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-add-event-listener-1"
 // define RTM Event Listener
 @interface RtmListener : NSObject <AgoraRtmClientDelegate>
 
@@ -346,7 +346,7 @@ NSError* initError = nil;
 AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
 ```
 
-```cpp
+```cpp tab="C++" tabGroup="rtm-build-manage-messages-add-event-listener-1"
 class RtmEventHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) override {}
     void onTopicEvent(const TopicEvent &event) override {}
@@ -369,7 +369,7 @@ if (!rtmClient || errorCode != 0) {
 }
 ```
 
-```dart showLineNumbers
+```dart tab="Dart" tabGroup="rtm-build-manage-messages-add-event-listener-1" showLineNumbers
 rtmClient.addListener(
     // Handle message event
     message: (MessageEvent event) {
@@ -549,7 +549,7 @@ rtmClient.addEventListener('token', (event: object) => {
 
 为避免内存泄漏、错误和异常（即空指针异常）引起的性能下降，声网建议你在不需要使用某个事件处理程序时对其进行注销。如需注销事件监听程序，则需在添加事件监听时避免采用匿名函数的方式，以下是添加和注销事件监听程序的示例代码。例如，如果不想关注 Lock 事件通知，删除对 `config.onlockevent` 函数的定义即可。Java SDK 会在释放 `channel.irtmclient` 时自动销毁事件处理程序。
 
-```csharp
+```csharp tab="C#" tabGroup="rtm-build-manage-messages-add-event-listener-2"
 private void AddEventsListener()
 {
     rtmClient.OnMessageEvent += OnMessageEvent;
@@ -579,7 +579,7 @@ private void OnPresenceEvent( PresenceEvent Event) { }
 private void OnTopicEvent( TopicEvent Event) { }
 ```
 
-```javascript showLineNumbers
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-add-event-listener-2" showLineNumbers
 const messageReceived = (event) => {
     const channelType = event.channelType;      // Which channel type it is, Should be "STREAM", "MESSAGE" or "USER".
     const channelName = event.channelName;      // Which channel does this message come from
@@ -597,7 +597,7 @@ rtm.addEventListener("message", messageReceived);
 rtm.removeEventListener("message", messageReceived);
 ```
 
-```dart
+```dart tab="Dart" tabGroup="rtm-build-manage-messages-add-event-listener-2"
 // 定义消息时间处理函数
 void onMessageReceived(MessageEvent event) {
   print('Received message event: $event');
@@ -612,7 +612,7 @@ rtmClient.removeListener(
 );
 ```
 
-```typescript
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-messages-add-event-listener-2"
 import { MessageEvent } from '@shengwang/rtm-full';
 
 // Define message event handler function

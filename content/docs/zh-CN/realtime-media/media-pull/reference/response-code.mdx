@@ -32,7 +32,7 @@ title: "响应状态码"
 | `200 OK` | 无该字段。 | 无需排查。 |
 | `400 Bad Request` | <Slot name="response-code-markdown-0-2-1" /> | 检查报错的字段是否符合 API 文档的描述。 |
 | `401 Unauthorized` | Invalid authentication credentials. | 检查 [HTTP 基本认证](/zh-CN/realtime-media/media-pull/build/setup-and-access/http-basic-auth)是否符合要求。 |
-| `403 Forbidden` | <Slot name="response-code-markdown-0-4-1" /> | 检查是否已[开通服务](/zh-CN/realtime-media/media-pull/build/setup-and-access/enable-service)。 |
+| `403 Forbidden` | <Slot name="response-code-markdown-0-4-1" /> | 检查是否已[开通拉流服务](/zh-CN/realtime-media/media-pull/build/setup-and-access/enable-service)。 |
 | `404 Not Found` | Resource is not found and destroyed. | 使用[退避重试策略](/zh-CN/realtime-media/media-pull/build/optimize-and-operate/rest-availability#使用退避重试策略)。 |
 | `409 Conflict` | Resource with the same name already exists. | 删除已存在的同名云端播放器，然后重新请求创建。 |
 | `429 Too Many Requests` | <Slot name="response-code-markdown-0-7-1" /> | 超出配额限制，等待一段时间再重试。 |

@@ -46,7 +46,7 @@ title: "媒体流加密"
 
 连接频道之前，调用 `enableEncryption` 开启内置加密。你还需要设置加密模式和秘钥。在同一频道的用户必须使用相同的加密模式和秘钥。
 
-```cpp
+```cpp tab="C++" tabGroup="zh-cn-realtime-media-rtc-server-sdk-build-implement-core-features-encryption-1"
 // Create EncryptionConfig object
 agora::rtc::EncryptionConfig Config;
 // 256-bit AES, GCM2 mode
@@ -62,7 +62,7 @@ if (connection->enableEncryption(options.encryptionMode, Config) < 0) {
 AG_LOG(INFO, "Enable encryption successfully");
 ```
 
-```java
+```java tab="Java" tabGroup="zh-cn-realtime-media-rtc-server-sdk-build-implement-core-features-encryption-1"
 EncryptionConfig encryptionConfig = new EncryptionConfig();
 encryptionConfig.setEncryptionMode(Constants.ENCRYPTION_MODE_AES_256_GCM);
 encryptionConfig.setEncryptionKey(encryptionKey);

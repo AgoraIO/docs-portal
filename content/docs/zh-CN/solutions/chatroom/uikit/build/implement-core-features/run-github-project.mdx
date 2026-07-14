@@ -1,5 +1,5 @@
 ---
-title: "跑通示例项目"
+title: "跑通语聊房 UIKit 示例项目"
 ---
 
 <PlatformStructured platform="android">
@@ -41,7 +41,7 @@ title: "跑通示例项目"
 
 开始前，请确保满足以下前提条件：
 
-- [开通服务](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service)
+- [开通语聊房 UIKit 相关服务](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service)
 - [Git](https://git-scm.com/downloads)
 - [Java Development Kit](https://www.oracle.com/java/technologies/javase-downloads.html)
 - [Android Studio](https://developer.android.com/studio/) 4.1 及以上
@@ -80,7 +80,7 @@ git clone git@github.com:AgoraIO-Community/AUIVoiceRoom.git
     | `SERVER_HOST`    | 语聊后端服务的 Host URL。如果你暂时无意部署后端服务，可以使用 `https://service.shengwang.cn/uikit-v2` 作为 Host URL。这是声网为测试体验提供的地址，请你不要商用。    |
     | `AGORA_APP_ID`    | 声网项目的 App ID，详见[获取 App ID](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service#获取-app-id)。    |
     | `AGORA_APP_CERT`   | 声网项目的 App 证书，详见[获取 App 证书](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service#获取-app-证书)。    |
-    | `AGORA_BASIC_AUTH`    | 声网 RESTful 服务所需的 HTTP 基本认证的 `Authorization` 值。请先获取[客户 ID 和客户密钥](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service#获取客户-id-和客户密钥)，再生成 [HTTP 基本认证](/zh-CN/realtime-media/rtc/build/security-and-auth/http-basic-auth)的 `Authorization` 值。   |
+    | `AGORA_BASIC_AUTH`    | 声网 RESTful 服务所需的 HTTP 基本认证的 `Authorization` 值。请先获取[客户 ID 和客户密钥](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service#获取客户-id-和客户密钥)，再生成 [HTTP 基本认证](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth)的 `Authorization` 值。   |
     | `IM_APP_KEY`    | 环信 IM 服务的 App Key，详见[获取 IM 信息](https://docs-im-beta.easemob.com/document/server-side/enable_and_configure_IM.html#获取环信即时通讯-im-的信息)。    |
     | `IM_CLIENT_ID`       | 环信 IM 服务的 Client ID。登录[环信管理后台](https://console.easemob.com/user/login)，到**应用列表** > **查看**获取。   |
     | `IM_CLIENT_SECRET`   | 环信 IM 服务的 Client Secret。登录[环信管理后台](https://console.easemob.com/user/login)，到**应用列表** > **查看**获取。    |
@@ -141,7 +141,7 @@ git clone git@github.com:AgoraIO-Community/AUIVoiceRoom.git
 - [Xcode](https://apps.apple.com/cn/app/xcode/id497799835?mt=12) 13.0 及以上
 - iOS 设备，版本 13.0 及以上
 - 有效的苹果开发者账号
-- [开通服务](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service)
+- [开通语聊房 UIKit 相关服务](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service)
 
 :::warning[注意]
 - 如果 CocoaPods 版本低于 1.12.0，你会遇到[常见问题](#常见问题)。
@@ -177,7 +177,7 @@ git clone git@github.com:AgoraIO-Community/AUIVoiceRoom.git
     | `HostUrl`    | 语聊后端服务的 Host URL。如果你暂时无意部署后端服务，可以使用 `https://service.shengwang.cn/uikit-v2` 作为 Host URL。这是声网为测试体验提供的地址，请你不要商用。    |
     | `AppId`    | 声网项目的 App ID，详见[获取 App ID](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service#获取-app-id)。    |
     | `AppCertificate`   | 声网项目的 App 证书，详见[获取 App 证书](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service#获取-app-证书)。    |
-    | `AppBasicAuth`    | 声网 RESTful 服务所需的 HTTP 基本认证的 `Authorization` 值。请先获取[客户 ID 和客户密钥](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service#获取客户-id-和客户密钥)，再生成 [HTTP 基本认证](/zh-CN/realtime-media/rtc/build/security-and-auth/http-basic-auth) 的 `Authorization` 值。   |
+    | `AppBasicAuth`    | 声网 RESTful 服务所需的 HTTP 基本认证的 `Authorization` 值。请先获取[客户 ID 和客户密钥](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service#获取客户-id-和客户密钥)，再生成 [HTTP 基本认证](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth) 的 `Authorization` 值。   |
     | `IMAppKey`    | 环信 IM 服务的 App Key，详见[获取 IM 信息](https://docs-im-beta.easemob.com/document/server-side/enable_and_configure_IM.html#获取环信即时通讯-im-的信息)。    |
     | `IMClientId`       | 环信 IM 服务的 Client ID。登录[环信管理后台](https://console.easemob.com)，到**应用列表** > **查看**获取。   |
     | `IMClientSecret`   | 环信 IM 服务的 Client Secret。登录[环信管理后台](https://console.easemob.com)，到**应用列表** > **查看**获取。    |

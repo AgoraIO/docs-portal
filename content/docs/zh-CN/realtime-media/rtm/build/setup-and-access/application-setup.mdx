@@ -29,7 +29,7 @@ title: "应用配置"
 
 在 `MESSAGE` 服务中，所有功能特性将共享一条传输连接，该连接在 `config.login` 时建立，在 `config.logout` 时关闭。而在 `STREAM` 服务中，传输连接的数量取决于加入的 `STREAM CHANNEL` 数量，即每个加入的 `STREAM CHANNEL` 实例都拥有独立的连接，连接在 `channel.join` 时建立，在 `channel.leave` 时关闭。
 
-所有传输连接都由 SDK 统一管理，并通过 `config.onlinkstateevent` 事件通知给用户，详见[连接管理](/zh-CN/realtime-media/rtm/build/manage-connections/link-basic)。深入理解 RTM 服务类型的区别，有助于你更准确地选择和使用相关能力。
+所有传输连接都由 SDK 统一管理，并通过 `config.onlinkstateevent` 事件通知给用户，详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。深入理解 RTM 服务类型的区别，有助于你更准确地选择和使用相关能力。
 
 此外，服务类型还涉及私有化配置的选择。用户可以选择私有化一个服务，或者同时私有化两种服务，具体取决于应用场景和预算。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
 
@@ -40,30 +40,30 @@ title: "应用配置"
 
 在某些情况下，用户可能会发现他们的网络不支持 UDP 端口的传输，这可能是暂时的，也可能是永久性的。在这种情况下，为了确保双链路设计能够最大程度地发挥作用，SDK 允许用户将两条链路都配置成 TCP 协议，只需在 `config.rtm` 中设置 `protocolType` 字段即可。以下是一个将双链路都配置为 TCP 协议的代码示例：
 
-```java
+```java tab="Java" tabGroup="rtm-build-setup-and-access-application-setup-1"
 RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
     .protocolType(RtmProtocolType.TCP_ONLY)
     .build();
 ```
 
-```swift
+```swift tab="Swift" tabGroup="rtm-build-setup-and-access-application-setup-1"
 let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
 rtmConfig.protocolType = .tcpOnly
 ```
 
-```objc
+```objc tab="Objective-C" tabGroup="rtm-build-setup-and-access-application-setup-1"
 AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
 rtm_config.protocolType = AgoraRtmProtocolTypeTcpOnly;
 ```
 
-```cpp
+```cpp tab="C++" tabGroup="rtm-build-setup-and-access-application-setup-1"
 RtmConfig config;
 config.appId = "appid";
 config.userId = "userId";
 config.protocolType = RTM_PROTOCOL_TYPE_TCP_ONLY;
 ```
 
-```dart
+```dart tab="Dart" tabGroup="rtm-build-setup-and-access-application-setup-1"
 late RtmClient rtmClient;
 const protocolType = RtmProtocolType.tcpOnly;
 const rtmConfig = RtmConfig( protocolType:protocolType );
@@ -80,7 +80,7 @@ try {
 }
 ```
 
-```typescript
+```typescript tab="TypeScript" tabGroup="rtm-build-setup-and-access-application-setup-1"
 const rtmConfig: RtmConfig = {
   appId: "your_appId",
   userId: "your_userId",
@@ -114,117 +114,157 @@ SDK 不支持将两条链路同时配置为 UDP 协议。
 
    **场景一**：项目仅使用 RTM 产品，且没有集成声网任何版本的 RTC 产品。
 
-```shell tab="使用 npm" tabGroup="package"
-npm install agora-rtm
-```
+   <Tabs defaultValue="npm" groupId="package" persist>
+   <TabsList>
+     <TabsTrigger value="npm">使用 npm</TabsTrigger>
+     <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
+     <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
+   </TabsList>
 
-```shell tab="使用 pnpm" tabGroup="package"
-pnpm add agora-rtm
-```
+   <TabsContent value="npm">
 
-```shell tab="使用 Yarn" tabGroup="package"
-yarn add agora-rtm
-yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
-```
+   ```shell
+   npm install agora-rtm
+   ```
 
-    **场景二**：项目中已经集成了 RTC 产品，需要新接入 RTM 产品。
+   </TabsContent>
 
-<Tabs defaultValue="npm" groupId="package" persist>
-<TabsList>
-  <TabsTrigger value="npm">使用 npm</TabsTrigger>
-  <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
-  <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
-</TabsList>
+   <TabsContent value="pnpm">
 
-<TabsContent value="npm">
+   ```shell
+   pnpm add agora-rtm
+   ```
 
-```shell
-npm install agora-rtm
-```
+   </TabsContent>
 
-</TabsContent>
+   <TabsContent value="yarn">
 
-<TabsContent value="pnpm">
+   ```shell
+   yarn add agora-rtm
+   yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+   ```
 
-```shell
-pnpm add agora-rtm
-```
+   </TabsContent>
+   </Tabs>
 
-如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
+   **场景二**：项目中已经集成了 RTC 产品，需要新接入 RTM 产品。
 
-```shell
-pnpm update agora-rtc-sdk-ng@4.22.0
-```
+   <Tabs defaultValue="npm" groupId="package" persist>
+   <TabsList>
+     <TabsTrigger value="npm">使用 npm</TabsTrigger>
+     <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
+     <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
+   </TabsList>
 
-或者通过以下命令同时保留两个版本的 RTC 库：
+   <TabsContent value="npm">
 
-```shell
-pnpm add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
-pnpm add agora-rtc-sdk-ng@4.22.0 --save-exact
-```
+   ```shell
+   npm install agora-rtm
+   ```
 
-然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
+   </TabsContent>
 
-```javascript
-import AgoraRTC from "agora-rtc-sdk-ng-4.16"
-```
+   <TabsContent value="pnpm">
 
-:::warning[注意]
-保留两个版本的 RTC 库会增加项目的包体积。
-:::
+   ```shell
+   pnpm add agora-rtm
+   ```
 
-</TabsContent>
+   如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
 
-<TabsContent value="yarn">
+   ```shell
+   pnpm update agora-rtc-sdk-ng@4.22.0
+   ```
 
-```shell
-yarn add agora-rtm
-```
+   或者通过以下命令同时保留两个版本的 RTC 库：
 
-如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
+   ```shell
+   pnpm add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
+   pnpm add agora-rtc-sdk-ng@4.22.0 --save-exact
+   ```
 
-```shell
-yarn upgrade agora-rtc-sdk-ng@4.22.0
-```
+   然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
 
-或者通过以下命令同时保留两个版本的 RTC 库：
+   ```javascript
+   import AgoraRTC from "agora-rtc-sdk-ng-4.16"
+   ```
 
-```shell
-yarn add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
-yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
-```
+   :::warning[注意]
+   保留两个版本的 RTC 库会增加项目的包体积。
+   :::
 
-然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
+   </TabsContent>
 
-```javascript
-import AgoraRTC from "agora-rtc-sdk-ng-4.16"
-```
+   <TabsContent value="yarn">
 
-:::warning[注意]
-保留两个版本的 RTC 库会增加项目的包体积。
-:::
+   ```shell
+   yarn add agora-rtm
+   ```
 
-</TabsContent>
-</Tabs>
+   如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
 
-    **场景三**：你的项目是全新的，且需要同时集成 RTM 和 RTC，以利用其共频道、数据优先级控制等能力。这种场景下建议你集成融合版本的 SDK。
+   ```shell
+   yarn upgrade agora-rtc-sdk-ng@4.22.0
+   ```
 
-```shell tab="使用 npm" tabGroup="package"
-npm install agora-rtx
-```
+   或者通过以下命令同时保留两个版本的 RTC 库：
 
-```shell tab="使用 pnpm" tabGroup="package"
-pnpm add agora-rtx --shamefully-hoist
-```
+   ```shell
+   yarn add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
+   yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+   ```
 
-```shell tab="使用 Yarn" tabGroup="package"
-# 若版本为 2.2.0
-# yarn add agora-rtx
-# yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+   然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
 
-# 2.2.0 及之后版本
-yarn add agora-rtx
-```
+   ```javascript
+   import AgoraRTC from "agora-rtc-sdk-ng-4.16"
+   ```
+
+   :::warning[注意]
+   保留两个版本的 RTC 库会增加项目的包体积。
+   :::
+
+   </TabsContent>
+   </Tabs>
+
+   **场景三**：你的项目是全新的，且需要同时集成 RTM 和 RTC，以利用其共频道、数据优先级控制等能力。这种场景下建议你集成融合版本的 SDK。
+
+   <Tabs defaultValue="npm" groupId="package" persist>
+   <TabsList>
+     <TabsTrigger value="npm">使用 npm</TabsTrigger>
+     <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
+     <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
+   </TabsList>
+
+   <TabsContent value="npm">
+
+   ```shell
+   npm install agora-rtx
+   ```
+
+   </TabsContent>
+
+   <TabsContent value="pnpm">
+
+   ```shell
+   pnpm add agora-rtx --shamefully-hoist
+   ```
+
+   </TabsContent>
+
+   <TabsContent value="yarn">
+
+   ```shell
+   # 若版本为 2.2.0
+   # yarn add agora-rtx
+   # yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+
+   # 2.2.0 及之后版本
+   yarn add agora-rtx
+   ```
+
+   </TabsContent>
+   </Tabs>
 
 2. 完成安装后，在你的 `app.js` 中引入 RTM：
 
@@ -440,7 +480,7 @@ npm i --save agora-react-native-rtm
 
 在一个客户端中，你只需要初始化一次 RTM 对象实例，即可在后续实现中通过该对象实例调用 RTM 的其他 API。
 
-```csharp showLineNumbers
+```csharp tab="C#" tabGroup="rtm-build-setup-and-access-application-setup-2" showLineNumbers
 using Agora.Rtm;
 
 private IRtmClient rtmClient;
@@ -460,7 +500,7 @@ catch (RTMException e)
 }
 ```
 
-```javascript
+```javascript tab="JavaScript" tabGroup="rtm-build-setup-and-access-application-setup-2"
 const { RTM } = AgoraRTM;
 // Fill in the App ID of your project.
 const appId = "your_appId";
@@ -474,7 +514,7 @@ try {
 }
 ```
 
-```java
+```java tab="Java" tabGroup="rtm-build-setup-and-access-application-setup-2"
 RtmConfig rtmConfig = new RtmConfig();
 rtmConfig.userId = "your_userId";
 rtmConfig.appId = "your_appId";
@@ -485,7 +525,7 @@ try {
 }
 ```
 
-```swift
+```swift tab="Swift" tabGroup="rtm-build-setup-and-access-application-setup-2"
 do {
     let config = AgoraRtmClientConfig(appId: "yourAppId", userId: "uniqueUserId")
     // Initializing the RTM client
@@ -498,13 +538,13 @@ do {
 }
 ```
 
-```objc
+```objc tab="Objective-C" tabGroup="rtm-build-setup-and-access-application-setup-2"
 AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
 NSError* initError = nil;
 AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
 ```
 
-```cpp
+```cpp tab="C++" tabGroup="rtm-build-setup-and-access-application-setup-2"
 RtmConfig config;
 config.appId = "your_appid";
 config.userId = "your_userId";
@@ -517,7 +557,7 @@ if (!rtmClient || errorCode != 0) {
 }
 ```
 
-```dart
+```dart tab="Dart" tabGroup="rtm-build-setup-and-access-application-setup-2"
 late RtmClient rtmClient;
 
 const rtmConfig = RtmConfig(
@@ -537,7 +577,7 @@ try {
 }
 ```
 
-```typescript
+```typescript tab="TypeScript" tabGroup="rtm-build-setup-and-access-application-setup-2"
 import { RtmClient, RtmConfig } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -564,7 +604,7 @@ try {
 
 当你的应用处于开发、测试阶段时，你可能需要 SDK 输出更详细的信息来定位并修复问题。你可以在初始化 RTM 实例的时候通过设置 `config.rtm` 中的 `enumv.loglevel` 来开启日志输出并设置日志信息等级，之后即可在相应平台的日志输出位置查看日志信息。
 
-```csharp showLineNumbers
+```csharp tab="C#" tabGroup="rtm-build-setup-and-access-application-setup-3" showLineNumbers
 using Agora.Rtm;
 
 private IRtmClient rtmClient;
@@ -594,7 +634,7 @@ catch (RTMException e)
 }
 ```
 
-```javascript showLineNumbers
+```javascript tab="JavaScript" tabGroup="rtm-build-setup-and-access-application-setup-3" showLineNumbers
 const { RTM } = AgoraRTM;
 const appId = "your_appId";
 const userId = "your_userId";
@@ -602,7 +642,7 @@ const rtmConfig = { logLevel : "debug" };
 const rtm = new RTM(appId, userId, rtmConfig);
 ```
 
-```java
+```java tab="Java" tabGroup="rtm-build-setup-and-access-application-setup-3"
 RtmLogConfig logConfig = new RtmLogConfig()
 // set log file path.
 logConfig.filePath = "./logfile/";
@@ -622,7 +662,7 @@ try {
 }
 ```
 
-```swift
+```swift tab="Swift" tabGroup="rtm-build-setup-and-access-application-setup-3"
 do {
     let logConfig = AgoraRtmLogConfig()
     logConfig.level = .error
@@ -641,7 +681,7 @@ do {
 }
 ```
 
-```objc
+```objc tab="Objective-C" tabGroup="rtm-build-setup-and-access-application-setup-3"
 AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
 
 // set log config
@@ -661,7 +701,7 @@ if (rtm != nil) {
 }
 ```
 
-```cpp
+```cpp tab="C++" tabGroup="rtm-build-setup-and-access-application-setup-3"
 RtmConfig config;
 config.appId = "your_appid";
 config.userId = "your_name";
@@ -678,7 +718,7 @@ if (!rtmClient || errorCode != 0) {
 }
 ```
 
-```dart showLineNumbers
+```dart tab="Dart" tabGroup="rtm-build-setup-and-access-application-setup-3" showLineNumbers
 const logConfig = RtmLogConfig(
     filePath: './rtm_logfile/',
     fileSizeInKB: 1024,
@@ -687,7 +727,7 @@ const logConfig = RtmLogConfig(
 const rtmConfig = RtmConfig( logConfig:logConfig );
 ```
 
-```typescript
+```typescript tab="TypeScript" tabGroup="rtm-build-setup-and-access-application-setup-3"
 import { RtmClient, RtmConfig, RtmLogConfig, RtmLogLevel } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -759,7 +799,7 @@ const rtm = new RTM(appId, userId, rtmConfig);
 
 在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Proxy 代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
 
-```csharp showLineNumbers
+```csharp tab="C#" tabGroup="rtm-build-setup-and-access-application-setup-4" showLineNumbers
 using Agora.Rtm;
 
 private IRtmClient rtmClient;
@@ -792,7 +832,7 @@ catch (RTMException e)
 }
 ```
 
-```java
+```java tab="Java" tabGroup="rtm-build-setup-and-access-application-setup-4"
 RtmProxyConfig proxyConfig = new RtmProxyConfig()
 
 // set proxy type as HTTP.
@@ -817,7 +857,7 @@ try {
 }
 ```
 
-```swift
+```swift tab="Swift" tabGroup="rtm-build-setup-and-access-application-setup-4"
 do {
 let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
 
@@ -839,7 +879,7 @@ let rtmClient = try AgoraRtmClientKit(rtmConfig, delegate: nil)
 }
 ```
 
-```objc
+```objc tab="Objective-C" tabGroup="rtm-build-setup-and-access-application-setup-4"
 AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
 
 // set proxy config
@@ -861,7 +901,7 @@ if (rtm != nil) {
 }
 ```
 
-```cpp
+```cpp tab="C++" tabGroup="rtm-build-setup-and-access-application-setup-4"
 RtmConfig config;
 config.appId = "your_appid";
 config.userId = "your_name";
@@ -880,7 +920,7 @@ if (!rtmClient || errorCode != 0) {
 }
 ```
 
-```dart
+```dart tab="Dart" tabGroup="rtm-build-setup-and-access-application-setup-4"
 const proxyConfig = RtmProxyConfig(
     proxyType: RtmProxyType.http,
     server: "x.x.x.x",
@@ -891,7 +931,7 @@ const proxyConfig = RtmProxyConfig(
 const rtmConfig = RtmConfig( proxyConfig:proxyConfig );
 ```
 
-```typescript
+```typescript tab="TypeScript" tabGroup="rtm-build-setup-and-access-application-setup-4"
 import { RtmClient, RtmConfig, RtmProxyConfig, RtmProxyType } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 

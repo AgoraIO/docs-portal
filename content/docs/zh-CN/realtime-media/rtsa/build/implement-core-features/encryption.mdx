@@ -65,7 +65,7 @@ RTSA SDK 目前支持以下加密模式：
 
 以下示例代码展示了该逻辑的实现过程：
 
-``` c
+```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-encryption-1"
 rtc_channel_options_t channel_options = { 0 };
 // 开启加密
 channel_options.crypto_opt.enable = true;
@@ -83,7 +83,7 @@ free(salt_bytes);
 agora_rtc_join_channel(conn_id, channel_name, uid, token, &channel_options);
 ```
 
-``` java
+```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-encryption-1"
 import java.util.Base64;
 ChannelOptions chOptions = new ChannelOptions();
 // 开启加密

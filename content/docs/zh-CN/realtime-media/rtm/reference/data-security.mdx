@@ -19,7 +19,7 @@ RTM 提供了基于 TLS 加密的传输层安全保护，此功能默认开启�
 
 SDK 内置 `enumv.aestwofivesix` 加密算法，你只需要在初始化 RTM 实例的时候配置加密模式、加密密钥和盐，即可自动开通端到端加密和解密功能。此功能一旦开启，同一个 App ID 下，你在所有频道发送的消息都会被 SDK 自动加密和解密。示例代码如下：
 
-```csharp
+```csharp tab="C#" tabGroup="rtm-reference-data-security-1"
 var cipherConfig = new RtmEncryptionConfig()
 cipherConfig.encryptionMode = RTM_ENCRYPTION_MODE.AES_256_GCM;
 // 将 your_encryptionKey 替换为你使用的密钥
@@ -45,7 +45,7 @@ catch (RTMException e)
 }
 ```
 
-```javascript
+```javascript tab="JavaScript" tabGroup="rtm-reference-data-security-1"
 const { RTM } = AgoraRTM;
 const appId = "your_appId";
 const userId = "your_userId";
@@ -60,7 +60,7 @@ const rtmConfig = {
 const rtm = new RTM(appId, userId, rtmConfig);
 ```
 
-```java
+```java tab="Java" tabGroup="rtm-reference-data-security-1"
 RtmEncryptionConfig config = new RtmEncryptionConfig()
 // 设置端侧加密模式，可以是 `AES_256_GCM` 或者 `NONE`，默认值为 `NONE`，即不开启加密。
 config.encryptionMode = RTM_ENCRYPTION_MODE.AES_256_GCM;
@@ -79,7 +79,7 @@ rtmConfig.userId = "your_userId";
 mRtmClient = RtmClient.create(rtmConfig);
 ```
 
-```swift
+```swift tab="Swift" tabGroup="rtm-reference-data-security-1"
 do {
 let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
 
@@ -103,7 +103,7 @@ let rtmClient = try AgoraRtmClientKit(rtmConfig, delegate: nil)
 }
 ```
 
-```objc
+```objc tab="Objective-C" tabGroup="rtm-reference-data-security-1"
 AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
 
 AgoraRtmEncryptionConfig* encryption_config = [[AgoraRtmEncryptionConfig alloc] init];
@@ -119,7 +119,7 @@ NSError* initError = nil;
 AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
 ```
 
-```cpp
+```cpp tab="C++" tabGroup="rtm-reference-data-security-1"
 RtmConfig config;
 config.appId = "your_appid";
 config.userId = "your_name";
@@ -134,7 +134,7 @@ int errorCode = 0;
 IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
 ```
 
-```dart
+```dart tab="Dart" tabGroup="rtm-reference-data-security-1"
 final userId = 'your_userId';
 final appId = 'your_appId';
 late RtmClient rtmClient;
@@ -159,7 +159,7 @@ try {
 
 ```
 
-```typescript
+```typescript tab="TypeScript" tabGroup="rtm-reference-data-security-1"
 import { RtmClient, RtmConfig, RtmEncryptionConfig, RtmEncryptionMode } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 

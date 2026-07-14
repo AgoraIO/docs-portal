@@ -36,8 +36,8 @@ title: "实现音视频互动"
 - Android Studio 4.1 以上版本。
 - Android API 级别 16 或以上。
 - 两台运行 Android 4.1 或以上版本的移动设备。
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
 
 :::warning[注意]
       临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
@@ -693,8 +693,8 @@ protected void onCreate(Bundle savedInstanceState) {
 
 在完成音视频互动后，你可以阅读以下文档进一步了解：
 
-- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为保证通信安全，声网推荐从服务器中获取 Token，详情请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
-- 如果你想要实现极速直播场景，可以在实时音视频互动的基础上，通过修改观众端的延时级别为低延时 (`AUDIENCE_LATENCY_LEVEL_LOW_LATENCY`) 实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为保证通信安全，声网推荐从服务器中获取 Token，详情请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- 如果你想要实现极速直播场景，可以在实时音视频互动的基础上，通过修改观众端的延时级别为低延时 (`AUDIENCE_LATENCY_LEVEL_LOW_LATENCY`) 实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)。
 
 ## 参考信息
 
@@ -720,7 +720,7 @@ protected void onCreate(Bundle savedInstanceState) {
 ### 相关文档
 
 - [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
-- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection)
 
 </PlatformStructured>
 
@@ -759,8 +759,8 @@ protected void onCreate(Bundle savedInstanceState) {
 - Apple 开发者账号。
 - 如需使用 Cocoapods 集成 SDK，则确保已安装 Cocoapods，否则请参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 进行安装。
 - 两台 iOS 9.0 或以上版本的设备。
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
 
 :::warning[注意]
       临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
@@ -1200,8 +1200,8 @@ override func viewDidLoad() {
 
 ## 后续步骤
 
-- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
-- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`AgoraAudienceLatencyLevelLowLatency`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`AgoraAudienceLatencyLevelLowLatency`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)。
 
 ## 参考信息
 
@@ -1229,7 +1229,7 @@ override func viewDidLoad() {
 ### 相关文档
 
 - [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
-- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection)
 
 </PlatformStructured>
 
@@ -1268,8 +1268,8 @@ override func viewDidLoad() {
 - Apple 开发者账号。
 - 如需使用 Cocoapods 集成 SDK，则确保已安装 Cocoapods，否则请参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 进行安装。
 - 两台 macOS 10.10 或以上版本的设备。
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
 
 :::warning[注意]
       临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
@@ -1726,8 +1726,8 @@ override func viewDidLoad() {
 
 ## 后续步骤
 
-- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
-- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`AgoraAudienceLatencyLevelLowLatency`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`AgoraAudienceLatencyLevelLowLatency`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)。
 
 ## 参考信息
 
@@ -1753,7 +1753,7 @@ override func viewDidLoad() {
 ### 相关文档
 
 - [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
-- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection)
 
 </PlatformStructured>
 
@@ -1775,10 +1775,10 @@ override func viewDidLoad() {
 - Windows 或 macOS 计算机，需满足以下要求：
   - 下载满足声网 [Web SDK 兼容性的浏览器](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。声网强烈推荐使用[最新稳定版 Google Chrome 浏览器](https://www.google.com/chrome/)。
   - 具备物理音视频采集设备。
-  - 可连接到互联网。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+  - 可连接到互联网。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
   - 搭载 2.2 GHz Intel 第二代 i3/i5/i7 处理器或同等性能的其他处理器。
 
-- 有效的声网账户和声网项目，请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，在声网控制台注册、登录并创建声网项目，然后获取项目的 App ID 和临时 Token。
+- 有效的声网账户和声网项目，请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，在声网控制台注册、登录并创建声网项目，然后获取项目的 App ID 和临时 Token。
 - 安装 [Node.js](https://nodejs.org/en/download/) 18 或更高版本。
 
   :::info[信息]
@@ -2395,8 +2395,8 @@ npm run start:dev
 
  在完成音视频互动后，你可以阅读以下文档进一步了解：
 
- - 本文的示例使用了临时 Token 加入频道。在正式生产环境中，为保障通信安全，你需要在自己的 App 服务端生成 Token。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
- - 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+ - 本文的示例使用了临时 Token 加入频道。在正式生产环境中，为保障通信安全，你需要在自己的 App 服务端生成 Token。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+ - 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)。
 
  ## 参考信息
 
@@ -2410,7 +2410,7 @@ npm run start:dev
 
  ### 其它集成方式
 
- 使用 npm 集成 Web SDK 还支持开启 Tree shaking 来减小集成 SDK 后的 App 体积，详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/build/implement-core-features/tree-shaking)。
+ 使用 npm 集成 Web SDK 还支持开启 Tree shaking 来减小集成 SDK 后的 App 体积，详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/build/optimize-and-operate/tree-shaking)。
 
  除使用 npm 获取 Web SDK 之外，你还可以使用以下方法获取 SDK：
 
@@ -2486,8 +2486,8 @@ npm run start:dev
 - Microsoft Visual Studio 2017 或以上版本。
 - C++ 11 或以上版本。
 - 如果使用 C# 开发，还需要 [.NET 桌面开发组件](https://learn.microsoft.com/en-us/dotnet/framework/install/guide-for-developers)。
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
 
 :::warning[注意]
       临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
@@ -3554,8 +3554,8 @@ namespace WindowsFormsApp2
 
 ## 后续步骤
 
-- 在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
-- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`AUDIENCE_LATENCY_LEVEL_LOW_LATENCY`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+- 在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`AUDIENCE_LATENCY_LEVEL_LOW_LATENCY`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)。
 
 ## 参考信息
 
@@ -3600,7 +3600,7 @@ namespace WindowsFormsApp2
 ### 相关文档
 
 - [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
-- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection)
 
 </PlatformStructured>
 
@@ -3640,8 +3640,8 @@ namespace WindowsFormsApp2
 - API Version 11 的 HarmonyOS NEXT 2.0.0.59 操作系统及以上版本。
 - 华为开发者账号。可在[华为开发者联盟](https://developer.huawei.com/consumer/cn/)注册账号。
 - 两台支持 HarmonyOS 的设备，建议使用 Mate 60 Pro 及更高性能的设备。
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
 
 :::warning[注意]
       临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
@@ -4161,8 +4161,8 @@ Button("Join")
 
 在完成音视频互动后，你可以阅读以下文档进一步了解：
 
-- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为保证通信安全，声网推荐从服务器中获取 Token，详情请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
-- 如果你想要实现极速直播场景，可以在实时音视频互动的基础上，通过修改观众端的延时级别为低延时 (`LOW_LATENCY`) 实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为保证通信安全，声网推荐从服务器中获取 Token，详情请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- 如果你想要实现极速直播场景，可以在实时音视频互动的基础上，通过修改观众端的延时级别为低延时 (`LOW_LATENCY`) 实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)。
 
 ## 参考信息
 
@@ -4187,7 +4187,7 @@ Button("Join")
 ### 相关文档
 
 - [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
-- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection)
 
 </PlatformStructured>
 
@@ -4201,7 +4201,7 @@ Button("Join")
 
 - 一个经过企业认证的微信小程序账号。在调试小程序 Demo 过程中，需要使用 live-pusher 和 live-player 组件。只有特定行业的认证企业账号才可以使用这两个组件。详见[小程序官网文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。
 - 下载并安装最新版本的[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)。
-- 参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)在控制台创建项目、获取 App ID 和临时 Token，并开启小程序服务。
+- 参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)在控制台创建项目、获取 App ID 和临时 Token，并开启小程序服务。
 
   :::warning[注意]
   临时 Token 的有效期是 24 小时。Token 过期会导致鉴权失败或无法加入频道。
@@ -4396,7 +4396,7 @@ await client.init(APPID)
 
 调用 [`client.join`](/api-ref/rtc/mini-program/classes/client#join) 方法加入频道。
 
-在 `client.join` 中你需要将 `yourToken` 替换成你自己生成的 Token。并填入想要加入的频道名以及用户 `uid`。在测试阶段，你可以直接在控制台[生成临时 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。在生产环境，我们推荐你在自己的服务端生成 Token，详见在[服务端生成 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+在 `client.join` 中你需要将 `yourToken` 替换成你自己生成的 Token。并填入想要加入的频道名以及用户 `uid`。在测试阶段，你可以直接在控制台[生成临时 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。在生产环境，我们推荐你在自己的服务端生成 Token，详见在[服务端生成 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
 ```javascript
 // Callback 形式调用
@@ -4610,8 +4610,8 @@ client = AgoraRtc.createClient({mode: "live", codec: "h264"});
 ## 前提条件
 
 - [Node.js](https://nodejs.org/en/download/) 6.9.1 或更高版本。
-- 可以访问互联网的 Windows 或 macOS 电脑。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 可以访问互联网的 Windows 或 macOS 电脑。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
     - App ID：声网随机生成的字符串，用于识别你的项目。
     - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
 
@@ -5180,7 +5180,7 @@ rtcEngine.release();
 
 参考以下步骤测试你的 Electron 项目：
 
-1. 确保已经在代码中传入了有效的 `appId`，`channelName` 和 `token`。详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+1. 确保已经在代码中传入了有效的 `appId`，`channelName` 和 `token`。详见[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
 
 2. 在终端中进入项目根目录，运行以下命令：
 
@@ -5196,8 +5196,8 @@ rtcEngine.release();
 
 ## 后续步骤
 
-- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
-- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`audienceLatencyLevelLowLatency`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`audienceLatencyLevelLowLatency`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)。
 
 ## 参考信息
 
@@ -5225,7 +5225,7 @@ rtcEngine.release();
 ### 相关文档
 
 - [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
-- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection)
 
 </PlatformStructured>
 
@@ -5264,7 +5264,7 @@ rtcEngine.release();
 
 - Unity 2018.4.0 或以上版本。
 
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
 
 - 不同开发平台的操作系统与编译器需满足下列版本要求：
 
@@ -5275,7 +5275,7 @@ rtcEngine.release();
 | macOS | macOS 10.10 或以上 | Xcode 9.0 或以上 |
 | Windows | Windows 7 或以上 | Microsoft Visual Studio 2017 或以上 |
 
-- 一个有效的声网账号以及声网项目。请参考 [开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获得 App ID 和临时 Token。
+- 一个有效的声网账号以及声网项目。请参考 [开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获得 App ID 和临时 Token。
 
   :::warning[注意]
   临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
@@ -5871,7 +5871,7 @@ void OnApplicationQuit()
 
 按照以下步骤来测试你的音视频互动项目：
 
-1. 在声网控制台获取一个临时 Token。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)获取。
+1. 在声网控制台获取一个临时 Token。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)获取。
 3. 在 `JoinChannelVideo.cs` 中，将你的项目的 App ID、频道名以及临时 Token 分别填入到 `_appID`、`_channelName`、`_token` 之后。
 4. 在 Unity Editor 中，点击 **Play** 按钮来运行你的项目，然后点击 **Join** 按钮加入频道。
 6. 邀请一位朋友通过另一台设备来使用相同的 App ID、Token、频道名加入频道。你的朋友加入频道后，你们可以听见、看见对方。
@@ -5880,8 +5880,8 @@ void OnApplicationQuit()
 
 在完成音视频互动后，你可以阅读以下文档进一步了解：
 
-- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
-- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`AUDIENCE_LATENCY_LEVEL_LOW_LATENCY`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`AUDIENCE_LATENCY_LEVEL_LOW_LATENCY`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)。
 
 ## 参考信息
 
@@ -5906,7 +5906,7 @@ void OnApplicationQuit()
 ### 相关文档
 
 - [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
-- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection)
 
 </PlatformStructured>
 
@@ -5988,8 +5988,8 @@ void OnApplicationQuit()
 - 你可以运行 `flutter doctor` 命令检查开发和运行环境是否达到要求。
 :::
 
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
     - App ID：声网随机生成的字符串，用于识别你的项目。
     - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
 
@@ -6479,8 +6479,8 @@ Future<void> _dispose() async {
 
 ## 后续步骤
 
-- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
-- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`audienceLatencyLevelLowLatency`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`audienceLatencyLevelLowLatency`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)。
 
 ## 参考信息
 
@@ -6508,7 +6508,7 @@ Future<void> _dispose() async {
 ### 相关文档
 
 - [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
-- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection)
 
 </PlatformStructured>
 
@@ -6552,8 +6552,8 @@ Future<void> _dispose() async {
 - 已参考 [React Native 官方文档](https://reactnative.dev/docs/environment-setup)搭建好开发环境。
 - macOS、Windows 或 Linux 操作系统
 - Android 5.0 或以上设备
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 有效的声网账户和声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获取以下信息：
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 有效的声网账户和声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获取以下信息：
    - App ID：声网随机生成的字符串，用于识别你的 App。
    - 临时 Token：你的 App 客户端加入频道时会使用 Token 对用户进行鉴权。临时 Token 的有效期为 24 小时。
 
@@ -6565,8 +6565,8 @@ Future<void> _dispose() async {
 - macOS 操作系统
 - iOS 9.0 或以上设备。如果你使用 React Native 0.63 或以上版本，请确保 iOS 的版本高于 10.0。
 - 已安装 CocoaPods，否则请参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 进行安装。
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 有效的声网账户和声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获取以下信息：
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 有效的声网账户和声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获取以下信息：
    - App ID：声网随机生成的字符串，用于识别你的 App。
    - 临时 Token：你的 App 客户端加入频道时会使用 Token 对用户进行鉴权。临时 Token 的有效期为 24 小时。
 
@@ -7254,8 +7254,8 @@ agoraEngineRef.current?.release();
 
 ## 后续步骤
 
-- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
-- 如果你想要实现极速直播场景，可以在实时音视频互动的基础上，通过修改观众端的延时级别为低延时 (`AudienceLatencyLevelLowLatency`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- 如果你想要实现极速直播场景，可以在实时音视频互动的基础上，通过修改观众端的延时级别为低延时 (`AudienceLatencyLevelLowLatency`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)。
 
 ## 参考信息
 
@@ -7281,7 +7281,7 @@ agoraEngineRef.current?.release();
 ### 相关文档
 
 - [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
-- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection)
 
 </PlatformStructured>
 
@@ -7322,8 +7322,8 @@ agoraEngineRef.current?.release();
   | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。 |
   | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。 |
   | Windows | [Windows 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 32 位 Windows 仅支持 Unreal Engine 4 及以下版本，你需要在 `AgoraPluginLibrary.Build.cs` 文件中将 Windows 32 相关的代码取消注释。 |
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
     - App ID：声网随机生成的字符串，用于识别你的项目。
     - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
     - 频道名：用于标识频道的字符串。
@@ -8014,8 +8014,8 @@ void UAgoraWidget::NativeDestruct()
 ## 后续步骤
 
 - 如果你的目标平台是 macOS 或 iOS，则需要在打包时添加实时互动所需的摄像头和麦克风等权限，详见[如何为 Unreal Engine 项目添加实时互动所需的权限？](/zh-CN/api-reference/faq/integration/unreal_permissions)
-- 在本文示例中，使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
-- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`AUDIENCE_LATENCY_LEVEL_LOW_LATENCY`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+- 在本文示例中，使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`AUDIENCE_LATENCY_LEVEL_LOW_LATENCY`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)。
 
 ## 参考信息
 
@@ -8042,7 +8042,7 @@ void UAgoraWidget::NativeDestruct()
 ### 相关文档
 
 - [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
-- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection)
 
 </PlatformStructured>
 
@@ -8083,8 +8083,8 @@ void UAgoraWidget::NativeDestruct()
   | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。 |
   | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。 |
   | Windows | [Windows 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 32 位 Windows 仅支持 Unreal Engine 4 及以下版本，你需要在 `AgoraPluginLibrary.Build.cs` 文件中将 Windows 32 相关的代码取消注释。 |
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
     - App ID：声网随机生成的字符串，用于识别你的项目。
     - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
     - 频道名：用于标识频道的字符串。
@@ -8382,8 +8382,8 @@ void UAgoraWidget::NativeDestruct()
 ## 后续步骤
 
 - 如果你的目标平台是 macOS 或 iOS，则需要在打包时添加实时互动所需的摄像头和麦克风等权限，详见[如何为 Unreal Engine 项目添加实时互动所需的权限？](/zh-CN/api-reference/faq/integration/unreal_permissions)
-- 在本文示例中，使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
-- 如果你想要实现极速直播场景，可以在实时互动直播的基础上，通过修改观众端的延时级别为低延时 (`AUDIENCE_LATENCY_LEVEL_LOW_LATENCY`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+- 在本文示例中，使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- 如果你想要实现极速直播场景，可以在实时互动直播的基础上，通过修改观众端的延时级别为低延时 (`AUDIENCE_LATENCY_LEVEL_LOW_LATENCY`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/advanced-channel/ls-quick-start)。
 
 ## 测试你的项目
 
@@ -8417,7 +8417,7 @@ void UAgoraWidget::NativeDestruct()
 ### 相关文档
 
 - [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
-- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection)
 
 </PlatformStructured>
 
@@ -8429,7 +8429,7 @@ void UAgoraWidget::NativeDestruct()
 
 开始之前你需要满足以下前提条件：
 
-- 创建一个声网项目，并获取 App ID、频道名和临时 Token，详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+- 创建一个声网项目，并获取 App ID、频道名和临时 Token，详见[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
 - 了解 [React 基础知识](https://react.dev/learn)。
 
 ## 立即体验
@@ -8500,7 +8500,7 @@ root.render(
 
 在 `<App />` 组件中，我们再创建一个 `<Basics />` 组件，实现音视频通话的逻辑。
 
-首先使用 `useJoin` 这个 Hook 来加入频道，其中传入的 `joinOptions` 包含以下字段，获取方式详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)：
+首先使用 `useJoin` 这个 Hook 来加入频道，其中传入的 `joinOptions` 包含以下字段，获取方式详见[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)：
 
 - `appid`：标识你在声网控制台创建的项目。
 - `channel`：标识用户所在的频道。频道是用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
@@ -8788,7 +8788,7 @@ export default Basics;
 
 ## 后续步骤
 
-在测试或生产环境中，为保证通信安全，声网推荐从服务器中获取 Token，详情请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+在测试或生产环境中，为保证通信安全，声网推荐从服务器中获取 Token，详情请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
 ## 参考信息
 

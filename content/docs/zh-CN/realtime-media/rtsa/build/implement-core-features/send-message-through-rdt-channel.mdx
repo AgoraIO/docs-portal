@@ -48,7 +48,7 @@ RDT 消息分为控制消息和数据消息，区别如下：
 - 在智能摄像头、智能门铃等 IoT 场景中，可能只需要让所有客户端和设备端收发 RDT 消息，但无需让客户端之间收发 RDT 消息。在这种情况下，你需要在设备端加入频道时设置 `vars.connectrdt` 为 `true`，让设备端与每一个客户端都建立 RDT 连接；在客户端加入频道时设置 `vars.connectrdt` 为 `false`，让客户端之间不建立 RDT 连接。
 - 在视频会议、实时协作等办公场景中，可能需要让所有用户之间都能收发数据。在这种情况下，你需要在所有用户加入频道时设置 `vars.connectrdt` 为 `true`，让所有用户都相互建立 RDT 连接。
 
-```c
+```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-send-message-through-rdt-channel-1"
 int ret = 0;
 connection_id_t conn_id = 0;
 
@@ -68,7 +68,7 @@ if (ret != 0) {
 }
 ```
 
-```java
+```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-send-message-through-rdt-channel-1"
 int ret = 0;
 int connId = 0;
 
@@ -100,7 +100,7 @@ if (ret != 0) {
   - 如果重新连接失败，则连接状态会变为 `RDT_STATE_CLOSED`，SDK 会清除 RDT 通道中发送和接收缓冲区中的历史数据。
 - `RDT_STATE_BROKEN`：与 RDT 通道的连接已损坏，SDK 会尝试重新连接。SDK 不论能否成功连接，都会清空 RDT 通道中发送和接收缓冲区中的历史数据。
 
-```c
+```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-send-message-through-rdt-channel-2"
 rdt_state_e g_rdt_state_for_uid_xxx = RDT_STATE_CLOSED;
 
 void __on_rdt_state(connection_id_t conn_id, uint32_t uid, rdt_state_e state)
@@ -109,7 +109,7 @@ void __on_rdt_state(connection_id_t conn_id, uint32_t uid, rdt_state_e state)
 }
 ```
 
-```java
+```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-send-message-through-rdt-channel-2"
 RdtState g_rdt_state_for_uid_xxx = RdtState.RDT_STATE_CLOSED;
 
 @Override
@@ -180,14 +180,14 @@ if (g_rdt_state_for_uid_xxx == RdtState.RDT_STATE_OPENED) {
 
 如需接收 RDT 消息，你可以监听 `vars.onrdtmsg` 回调。
 
-```c
+```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-send-message-through-rdt-channel-3"
 void __on_rdt_msg(connection_id_t conn_id, uint32_t uid, rdt_stream_type_e type, const void *msg, size_t len)
 {
     printf("received rdt msg from uid=%u type=%d msg len=%zu\n", uid, type, len);
 }
 ```
 
-```java
+```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-send-message-through-rdt-channel-3"
 @Override
 public void onRdtMsg(int connId, int uid, int type, byte[] msg)
 {

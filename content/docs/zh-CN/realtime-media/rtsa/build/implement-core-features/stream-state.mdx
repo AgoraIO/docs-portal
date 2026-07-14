@@ -17,7 +17,7 @@ title: "更改音视频流传输状态"
 
 示例代码如下：
 
-```c
+```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-stream-state-1"
 // 暂停向指定 Connection 发送音频流
 agora_rtc_mute_local_audio(12345, 1);
 // 恢复向指定 Connection 发送音频流
@@ -28,7 +28,7 @@ agora_rtc_mute_local_video(12345, 1);
 agora_rtc_mute_local_video(12345, 0);
 ```
 
-```java
+```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-stream-state-1"
 // 暂停向指定 Connection 发送音频流
 mRtcService.muteLocalAudio(12345, 1);
 // 恢复向指定 Connection 发送音频流
@@ -97,7 +97,7 @@ public void onUserMuteVideo(int connId, int uid, boolean muted) {
 
 示例代码如下：
 
-```c
+```c tab="C" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-stream-state-2"
 const uint32_t remote_uid = 789;
 
 // 暂停接收指定 Connection 中远端用户的音频流
@@ -110,7 +110,7 @@ agora_rtc_mute_remote_video (12345, remote_uid, 1);
 agora_rtc_mute_remote_video (12345, remote_uid, 0);
 ```
 
-```java
+```java tab="Java" tabGroup="zh-cn-realtime-media-rtsa-build-implement-core-features-stream-state-2"
 int remote_uid = 789;
 
 // 暂停接收指定 Connection 中远端用户的音频流

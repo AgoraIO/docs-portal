@@ -19,7 +19,7 @@ title: "在线状态基础"
 
 下面是查询频道内在线用户列表及其临时状态的示例代码：
 
-```csharp showLineNumbers
+```csharp tab="C#" tabGroup="rtm-build-manage-presence-presence-basic-1" showLineNumbers
 var channelType = RTM_CHANNEL_TYPE.MESSAGE;
 var options = new PresenceOptions();
 options.withState = true;
@@ -54,7 +54,7 @@ else
 }
 ```
 
-```javascript
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-presence-presence-basic-1"
 const options = {
     includedUserId: true,
     includedState: true
@@ -73,7 +73,7 @@ try {
 }
 ```
 
-```java
+```java tab="Java" tabGroup="rtm-build-manage-presence-presence-basic-1"
 // 根据实际需求设置 channelType，支持 MESSAGE 和 STREAM 类型
 RtmChannelType channelType = RtmChannelType.MESSAGE;
 PresenceOptions options = new PresenceOptions()
@@ -99,7 +99,7 @@ mRtmClient.getPresence().whoNow(channelName, channelType, options, new ResultCal
 });
 ```
 
-```swift
+```swift tab="Swift" tabGroup="rtm-build-manage-presence-presence-basic-1"
 let presenceOptions = AgoraRtmPresenceOptions()
 presenceOptions.includeState = true
 presenceOptions.includeUserId = true
@@ -118,7 +118,7 @@ rtm.getPresence()?.whoNow(channelName: "your_channel", channelType: .message, op
 }
 ```
 
-```objc
+```objc tab="Objective-C" tabGroup="rtm-build-manage-presence-presence-basic-1"
 AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresenceOptions alloc] init];
 presence_opt.includeState = true;
 presence_opt.includeUserId = true;
@@ -135,7 +135,7 @@ presence_opt.includeUserId = true;
 }];
 ```
 
-```cpp
+```cpp tab="C++" tabGroup="rtm-build-manage-presence-presence-basic-1"
 PresenceOptions options;
 options.includeState = true;
 options.includeUserId =true;
@@ -146,7 +146,7 @@ rtmClient->getPresence()->whoNow("channelName", RTM_CHANNEL_TYPE_MESSAGE, option
 
 调用该方法后，SDK 会触发 `config.onwhonowresult` 回调并返回 API 调用结果。
 
-```cpp
+```cpp tab="C++" tabGroup="rtm-build-manage-presence-presence-basic-2"
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onWhoNowResult(const uint64_t requestId, const UserState *userStateList, const size_t count, const char *nextPage, RTM_ERROR_CODE errorCode) override {
@@ -165,7 +165,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart
+```dart tab="Dart" tabGroup="rtm-build-manage-presence-presence-basic-2"
 final channelName = 'chat_room';
 try {
     var (status,response) = await rtmClient.getPresence.whoNow(
@@ -189,7 +189,7 @@ try {
 }
 ```
 
-```typescript
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-presence-presence-basic-2"
 import { RtmChannelType, PresenceOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -224,7 +224,7 @@ try {
 
 `presence.whonow` 方法一次返回一页数据，一页数据最多包含 100 个在线用户信息，如果频道在线用户超过 100 人，则会在返回结果中的 `presence.nextpage` 字段包含下一页数据的书签。你需要在每次查询后判断 `presence.nextpageresult` 是否为空，从而判断是否还有下一页数据。查询下一页数据时，将 `presence.nextpageresult` 的值填入 `presence.whonow` 方法的 `page` 字段即可实现分页查询，以此往复，直到 `presence.nextpageresult` 的值为空便是最后一页。例如：
 
-```csharp showLineNumbers
+```csharp tab="C#" tabGroup="rtm-build-manage-presence-presence-basic-3" showLineNumbers
 var options = new PresenceOptions();
 options.withState = true;
 options.withUserId = true;
@@ -234,7 +234,7 @@ var (status,response) = await rtmClient.GetPresence().WhoNowAsync("Chat_room", R
 ...
 ```
 
-```javascript
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-presence-presence-basic-3"
 const options = {
     includedUserId: true,
     includedState: true,
@@ -254,7 +254,7 @@ try {
 }
 ```
 
-```java
+```java tab="Java" tabGroup="rtm-build-manage-presence-presence-basic-3"
 PresenceOptions options = new PresenceOptions();
 options.setIncludeUserId(true);
 options.setIncludeState(true);
@@ -282,7 +282,7 @@ mRtmClient.getPresence().whoNow(channelName, channelType, options, new ResultCal
 });
 ```
 
-```swift
+```swift tab="Swift" tabGroup="rtm-build-manage-presence-presence-basic-3"
 let presenceOptions = AgoraRtmPresenceOptions()
 presenceOptions.includeState = true
 presenceOptions.includeUserId = true
@@ -304,7 +304,7 @@ rtm.getPresence()?.whoNow("your_channel", channelType: .message, options: presen
 }
 ```
 
-```objc
+```objc tab="Objective-C" tabGroup="rtm-build-manage-presence-presence-basic-3"
 AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresence alloc] init];
 presence_opt.includeState = true;
 presence_opt.includeUserId = true;
@@ -323,7 +323,7 @@ presence_opt.page = @"your_Next_Page_Bookmark";
 }];
 ```
 
-```cpp
+```cpp tab="C++" tabGroup="rtm-build-manage-presence-presence-basic-3"
 PresenceOptions options;
 options.includeState = true;
 options.includeUserId =true;
@@ -333,7 +333,7 @@ uint64_t requestId;
 rtmClient->getPresence()->whoNow("channelName", RTM_CHANNEL_TYPE_MESSAGE, options, requestId);
 ```
 
-```dart
+```dart tab="Dart" tabGroup="rtm-build-manage-presence-presence-basic-3"
 final channelName = 'chat_room';
 try {
     var (status,response) = await rtmClient.getPresence.whoNow(
@@ -358,7 +358,7 @@ try {
 }
 ```
 
-```typescript
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-presence-presence-basic-3"
 import { RtmChannelType, PresenceOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -394,7 +394,7 @@ try {
 
 当频道中人数众多时，你可能只关心频道中在线用户数量，而不关心他们是谁及其临时状态如何。此时可以设置 `presence.whonow` 方法中的 `presence.withstate` 和 `presence.withuserid` 字段为 `false`。例如：
 
-```csharp showLineNumbers
+```csharp tab="C#" tabGroup="rtm-build-manage-presence-presence-basic-4" showLineNumbers
 var options = new PresenceOptions();
 options.withState = false;
 options.withUserId = false;
@@ -411,7 +411,7 @@ else
 }
 ```
 
-```javascript
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-presence-presence-basic-4"
 const options = {
     includedUserId: false,
     includedState: false,
@@ -430,7 +430,7 @@ try {
 }
 ```
 
-```java
+```java tab="Java" tabGroup="rtm-build-manage-presence-presence-basic-4"
 PresenceOptions options = new PresenceOptions();
 options.setIncludeUserId(false);
 options.setIncludeState(false);
@@ -458,7 +458,7 @@ mRtmClient.getPresence().whoNow(channelName, channelType, options, new ResultCal
 });
 ```
 
-```swift
+```swift tab="Swift" tabGroup="rtm-build-manage-presence-presence-basic-4"
 let presenceOptions = AgoraRtmPresenceOptions()
 presenceOptions.includeState = false
 presenceOptions.includeUserId = false
@@ -475,7 +475,7 @@ rtm.getPresence()?.whoNow(channelName: "your_channel", channelType: .message, op
 }
 ```
 
-```objc
+```objc tab="Objective-C" tabGroup="rtm-build-manage-presence-presence-basic-4"
 AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresence alloc] init];
 presence_opt.includeState = false;
 presence_opt.includeUserId = false;
@@ -490,7 +490,7 @@ presence_opt.includeUserId = false;
 }];
 ```
 
-```cpp
+```cpp tab="C++" tabGroup="rtm-build-manage-presence-presence-basic-4"
 PresenceOptions options;
 options.includeState = false;
 options.includeUserId =false;
@@ -499,7 +499,7 @@ uint64_t requestId;
 rtmClient->getPresence()->whoNow("channelName", RTM_CHANNEL_TYPE_MESSAGE, options, requestId);
 ```
 
-```dart
+```dart tab="Dart" tabGroup="rtm-build-manage-presence-presence-basic-4"
 final channelName = 'chat_room';
 try {
     var (status,response) = await rtmClient.getPresence.whoNow(
@@ -521,7 +521,7 @@ try {
 }
 ```
 
-```typescript
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-presence-presence-basic-4"
 import { RtmChannelType, PresenceOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -553,7 +553,7 @@ try {
 
 你可能需要查询某个用户当前在哪些频道中，例如订阅了哪些 Message Channel 或加入了哪些 Stream Channel。特别是作为 App 管理员想要追踪用户路径时，这个功能就显得特别重要，此时你可以调用 `presence.wherenow` 方法来实现。
 
-```csharp showLineNumbers
+```csharp tab="C#" tabGroup="rtm-build-manage-presence-presence-basic-5" showLineNumbers
 var (status,response) = await rtmClient.GetPresence().WhereNowAsync("Tony");
 if (status.Error)
 {
@@ -574,7 +574,7 @@ else
 }
 ```
 
-```javascript
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-presence-presence-basic-5"
 try {
     const whereNowResult = await rtmClient.presence.whereNow(userId);
     const { channels, totalChannel } = whereNowResult;
@@ -587,7 +587,7 @@ try {
 }
 ```
 
-```java
+```java tab="Java" tabGroup="rtm-build-manage-presence-presence-basic-5"
 mRtmClient.getPresence().whereNow("userid", new ResultCallback<ArrayList<ChannelInfo>>() {
     @Override
     public void onSuccess(ArrayList<ChannelInfo> channels) {
@@ -604,7 +604,7 @@ mRtmClient.getPresence().whereNow("userid", new ResultCallback<ArrayList<Channel
 });
 ```
 
-```swift
+```swift tab="Swift" tabGroup="rtm-build-manage-presence-presence-basic-5"
 rtm.getPresence()?.whereNow("userId") { response, errorInfo in
     if errorInfo == nil {
         print("whereNow success!!")
@@ -618,7 +618,7 @@ rtm.getPresence()?.whereNow("userId") { response, errorInfo in
 }
 ```
 
-```objc
+```objc tab="Objective-C" tabGroup="rtm-build-manage-presence-presence-basic-5"
 [[rtm getPresence] whereNow:@"userId" completion:^(AgoraRtmWhereNowResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"whereNow success!!");
@@ -630,14 +630,14 @@ rtm.getPresence()?.whereNow("userId") { response, errorInfo in
 }];
 ```
 
-```cpp
+```cpp tab="C++" tabGroup="rtm-build-manage-presence-presence-basic-5"
 uint64_t requestId;
 rtmClient->getPresence()->whereNow("tony", requestId);
 ```
 
 调用该方法后，SDK 会触发 `config.onwherenowresult` 回调并返回 API 调用结果。
 
-```cpp
+```cpp tab="C++" tabGroup="rtm-build-manage-presence-presence-basic-6"
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onWhereNowResult(const uint64_t requestId, const ChannelInfo *channels, const size_t count, RTM_ERROR_CODE errorCode) override {
@@ -653,7 +653,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart
+```dart tab="Dart" tabGroup="rtm-build-manage-presence-presence-basic-6"
 try {
     var (status,response) = await rtmClient.getPresence.whereNow("Tony");
     if (status == true){
@@ -670,7 +670,7 @@ try {
 }
 ```
 
-```typescript
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-presence-presence-basic-6"
 import { RtmError } from '@shengwang/rtm-full';
 
 const userId = "Tony";

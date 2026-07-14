@@ -14,8 +14,8 @@ title: "频道事件类型"
 | 字段名               | 值                                                           |
 | :------------------- | :----------------------------------------------------------- |
 | `Content-Type`       | application/json                                             |
-| `Agora-Signature`    | 声网用客户密钥和 HMAC/SHA1 算法生成的签名值。你需要使用客户密钥和 HMAC/SHA1 算法来验证该签名值。详见[验证签名](/zh-CN/realtime-media/rtc/build/monitor-events/receive_webhook#验证签名)。 |
-| `Agora-Signature-V2` | 声网用客户密钥和 HMAC/SHA256 算法生成的签名值。你需要使用客户密钥和 HMAC/SHA256 算法来验证该签名值。详见[验证签名](/zh-CN/realtime-media/rtc/build/monitor-events/receive_webhook#验证签名)。 |
+| `Agora-Signature`    | 声网用客户密钥和 HMAC/SHA1 算法生成的签名值。你需要使用客户密钥和 HMAC/SHA1 算法来验证该签名值。详见[验证签名](/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook#验证签名)。 |
+| `Agora-Signature-V2` | 声网用客户密钥和 HMAC/SHA256 算法生成的签名值。你需要使用客户密钥和 HMAC/SHA256 算法来验证该签名值。详见[验证签名](/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook#验证签名)。 |
 
 ## 请求的 Body
 
@@ -121,7 +121,7 @@ title: "频道事件类型"
 | `uid` | Number | 主播在频道内的用户 ID。 |
 | `platform` | Number | <Slot name="events-html-1-3-2" /> |
 | `clientType` | Number | <Slot name="events-html-1-4-2" /> |
-| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/quality-and-operations/online-user-status)。 |
+| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。 |
 | `ts` | Number | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
 | `account` | string | String 类型的用户 ID。 |
 
@@ -178,7 +178,7 @@ title: "频道事件类型"
 | `uid` | Number | 主播在频道内的用户 ID。 |
 | `platform` | Number | <Slot name="events-html-2-3-2" /> |
 | `clientType` | Number | <Slot name="events-html-2-4-2" /> |
-| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/quality-and-operations/online-user-status)。 |
+| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。 |
 | `reason` | Number | <Slot name="events-html-2-6-2" /> |
 | `ts` | Number | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
 | `duration` | Number | 主播在频道内的时长 (s)。 |
@@ -262,7 +262,7 @@ title: "频道事件类型"
 | `uid` | Number | 观众在频道内的用户 ID。 |
 | `platform` | Number | <Slot name="events-html-3-3-2" /> |
 | `clientType` | Number | <Slot name="events-html-3-4-2" /> |
-| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/quality-and-operations/online-user-status)。 |
+| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。 |
 | `ts` | Number | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
 | `account` | String | String 类型的用户 ID。 |
 
@@ -319,7 +319,7 @@ title: "频道事件类型"
 | `uid` | Number | 观众在频道内的用户 ID。 |
 | `platform` | Number | <Slot name="events-html-4-3-2" /> |
 | `clientType` | Number | <Slot name="events-html-4-4-2" /> |
-| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/quality-and-operations/online-user-status)。 |
+| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。 |
 | `reason` | Number | <Slot name="events-html-4-6-2" /> |
 | `ts` | Number | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
 | `duration` | Number | 观众在频道内的时长 (s)。 |
@@ -402,7 +402,7 @@ title: "频道事件类型"
 | `channelName` | String | 频道名。 |
 | `uid` | Number | 用户在频道内的用户 ID。 |
 | `platform` | Number | <Slot name="events-html-5-3-2" /> |
-| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/quality-and-operations/online-user-status)。 |
+| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。 |
 | `ts` | Number | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
 | `account` | string | String 类型的用户 ID。 |
 
@@ -444,7 +444,7 @@ title: "频道事件类型"
 | `channelName` | String | 频道名。 |
 | `uid` | Number | 用户在频道内的用户 ID。 |
 | `platform` | Number | <Slot name="events-html-6-3-2" /> |
-| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/quality-and-operations/online-user-status)。 |
+| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。 |
 | `reason` | Number | <Slot name="events-html-6-5-2" /> |
 | `ts` | Number | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
 | `duration` | Number | 用户在频道内的时长 (s)。 |
@@ -504,7 +504,7 @@ title: "频道事件类型"
 | :------------ | :------- | :------------------------------------------- |
 | `channelName` | String   | 频道名。                                     |
 | `uid`         | Number   | 用户在频道内的用户 ID。                      |
-| `clientSeq`  | Number   | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/quality-and-operations/online-user-status)。|
+| `clientSeq`  | Number   | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。|
 | `ts`          | Number   | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
 | `account`          | String   | String 类型的用户 ID。                 |
 
@@ -529,7 +529,7 @@ title: "频道事件类型"
 | :------------ | :------- | :------------------------------------------- |
 | `channelName` | String   | 频道名。                                     |
 | `uid`         | Number   | 用户在频道内的用户 ID。                      |
-| `clientSeq`  | Number   | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/quality-and-operations/online-user-status)。|
+| `clientSeq`  | Number   | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。|
 | `ts`          | Number   | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
 | `account`          | String   | String 类型的用户 ID。                 |
 

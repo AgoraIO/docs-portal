@@ -11,12 +11,12 @@ title: "录制崩溃后修复录制文件"
 
 在初始化 `AgoraService` 时，通过设置私有参数，启用录制生成文件可恢复模式：
 
-```java
+```java tab="Java" tabGroup="zh-cn-realtime-media-recording-local-server-recording-build-optimize-and-operate-restore-files-1"
 AgoraParameter parameter = agoraService.getAgoraParameter();
 parameter.setBool("che.media_recorder_recover_files", true);
 ```
 
-```cpp
+```cpp tab="C++" tabGroup="zh-cn-realtime-media-recording-local-server-recording-build-optimize-and-operate-restore-files-1"
 auto agoraParameter = service->getAgoraParameter();
 agoraParameter->setBool("che.media_recorder_recover_files", true);
 ```

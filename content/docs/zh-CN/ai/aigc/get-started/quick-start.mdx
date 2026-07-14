@@ -237,7 +237,7 @@ mAIGCService.start()
 
 如果用户发送的是语音消息，进行如下步骤：
 
-1. 采集本地用户发送的音频数据。如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/advanced-features/raw-audio-data)，从 `onRecordAudioFrame` 回调中获取。
+1. 采集本地用户发送的音频数据。如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/build/audio/raw-audio-data)，从 `onRecordAudioFrame` 回调中获取。
 
 2. 获取到音频数据后，调用 [`pushSpeechDialogue`](/api-ref/aigc/android/aigcservice#pushspeechdialogue) 方法将数据发送给 `AIGCService`。
 
@@ -350,7 +350,7 @@ public HandleResult onText2SpeechResult(String roundId, Data<byte[]> voice, int 
 接收到处理后的数据后，如果是文字消息，你可以直接返回；如果是语音消息，还需要播放获取到的音频数据。
 
 :::info[信息]
-如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/advanced-features/raw-audio-data)，使用 `onPlaybackAudioFrame` 播放。
+如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/build/audio/raw-audio-data)，使用 `onPlaybackAudioFrame` 播放。
 :::
 
 ### 7. 停止 AIGCService
@@ -397,7 +397,7 @@ AIGCService.destroy();
 如果你选择使用声网的 RTC SDK 来实现原始音频数据采集和播放功能，也可以参考：
 
 <Cards>
-  <Card title="原始音频数据" href="/zh-CN/realtime-media/rtc/advanced-features/raw-audio-data" />
+  <Card title="原始音频数据" href="/zh-CN/realtime-media/rtc/build/audio/raw-audio-data" />
 </Cards>
 
 </PlatformStructured>
@@ -664,7 +664,7 @@ service.start()
 
 如果用户发送的是语音消息，进行如下步骤：
 
-1. 采集本地用户发送的音频数据。如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/advanced-features/raw-audio-data)，从 `onRecordAudioFrame` 回调中获取。
+1. 采集本地用户发送的音频数据。如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/build/audio/raw-audio-data)，从 `onRecordAudioFrame` 回调中获取。
 
 2. 获取到音频数据后，调用 [`pushSpeechDialogueWithData`](/api-ref/aigc/ios/aigcservice#pushspeechdialogue) 方法将数据发送给 `AgoraAIGCService`。
 
@@ -827,7 +827,7 @@ func onText2SpeechResult(withRoundId roundId: String,
 接收到处理后的数据后，如果是文字消息，你可以直接回复给 App 用户；如果是语音消息，还需要播放获取到的音频数据。
 
 :::info[信息]
-如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/advanced-features/raw-audio-data)，使用 `onPlaybackAudioFrame` 播放。
+如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/build/audio/raw-audio-data)，使用 `onPlaybackAudioFrame` 播放。
 :::
 
 ### 7. 停止 AIGCService
@@ -874,7 +874,7 @@ AgoraAIGCService.destroy()
 如果你选择使用声网的 RTC SDK 来实现原始音频数据采集和播放功能，也可以参考：
 
 <Cards>
-  <Card title="原始音频数据" href="/zh-CN/realtime-media/rtc/advanced-features/raw-audio-data" />
+  <Card title="原始音频数据" href="/zh-CN/realtime-media/rtc/build/audio/raw-audio-data" />
 </Cards>
 
 </PlatformStructured>

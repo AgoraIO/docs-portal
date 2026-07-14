@@ -19,7 +19,7 @@ Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送
 
 开始之前，请确保你满足以下条件：
 
-- 有效的声网开发者账号和声网控制台项目。详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+- 有效的声网开发者账号和声网控制台项目。详见[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
 - 满足以下条件的服务器：
   - 支持 HTTPS 协议。为提高安全性，声网消息通知服务不再支持 HTTP 服务器地址。
   - （推荐）支持 HTTPS 连接重用，即 keep-alive 模式，以降低消息投递延时。声网建议进行如下设置：
@@ -486,4 +486,4 @@ func calcSignatureV1(secret, payload string) string {
 
 ## 更多功能
 
-你可以根据业务需求，将[频道管理 RESTful API](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-management) 和[消息通知服务](/zh-CN/realtime-media/rtc/build/monitor-events/receive_webhook)结合使用，实现稳定可靠、实时有效的频道管理和状态同步。
+你可以根据业务需求，将[频道管理 RESTful API](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-management) 和[消息通知服务](/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook)结合使用，实现稳定可靠、实时有效的频道管理和状态同步。
