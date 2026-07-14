@@ -20,11 +20,11 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 
 该版本为 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join) 接口的 `turn_detection.config.start_of_speech.mode` 和 `turn_detection.config.end_of_speech.mode` 新增 `manual` 取值。你可以根据业务场景分别将用户开始说话或结束说话的检测方式设为手动。对于设置为 `manual` 的一侧，服务端不再自动检测，而是由客户端通过 RTM 信令显式提交对应的回合边界。
 
-该能力适用于长回答、对讲机、面试、答题等对用户回合边界控制要求较高的场景，可减少用户停顿、思考或语气词被误判为结束说话的情况。详情见[手动控制说话开始和结束](/zh-CN/ai/best-practices/manual-turn-control)。
+该能力适用于长回答、对讲机、面试、答题等对用户回合边界控制要求较高的场景，可减少用户停顿、思考或语气词被误判为结束说话的情况。详情见[手动控制说话开始和结束](/zh-CN/ai/build/shape-the-conversation/manual-turn-control)。
 
 #### 获取智能体状态
 
-该版本新增通过 RTM Message 获取智能体状态的能力。开启 RTM 服务并将 `data_channel` 设置为 `rtm` 后，你可以直接监听 `state.listening`、`state.thinking` 和 `state.speaking` 等状态事件，以消息事件的方式感知智能体状态变化。详见[获取智能体状态](/zh-CN/ai/best-practices/get-agent-state)。
+该版本新增通过 RTM Message 获取智能体状态的能力。开启 RTM 服务并将 `data_channel` 设置为 `rtm` 后，你可以直接监听 `state.listening`、`state.thinking` 和 `state.speaking` 等状态事件，以消息事件的方式感知智能体状态变化。详见[获取智能体状态](/zh-CN/ai/build/handle-runtime-events/get-agent-state)。
 
 #### 开场白支持录音 URL 导入
 
@@ -623,7 +623,7 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 - [实时字幕](/zh-CN/ai/build/transcripts)：将用户与智能体的对话内容实时以文本输出并显示到终端界面上。该版本全面升级了字幕组件，提供更完善的功能支持、更强的可扩展性、更好的错误处理、更完善的会话管理和更强大的通信机制。
 - [打断智能体](/zh-CN/ai/build/shape-the-conversation/interrupt-agent)：打断智能体说话和思考流程，让智能体“闭嘴”。
 - [监听智能体相关事件](/zh-CN/ai/build/handle-runtime-events/event-notifications)：监听智能体对话状态变更、性能指标和错误事件。
-- [设置最佳音频参数](/zh-CN/ai/best-practices/audio-setup)：快速设置音频参数最佳实践，提升对话式智能体的对话体验。
+- [设置最佳音频参数](/zh-CN/ai/build/harden-and-optimize/audio-setup)：快速设置音频参数最佳实践，提升对话式智能体的对话体验。
 
 ### API 变更
 
