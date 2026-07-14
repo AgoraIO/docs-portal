@@ -10,6 +10,7 @@ import { getDocsTabIndex } from '@/lib/docs-page';
 import type { DocsPagePayload } from '@/lib/docs-page.server';
 import { isSupportedDocLocale } from '@/lib/docs-routing';
 import { readStaticDocsSearchIndex } from '@/lib/docs-search-index';
+import { shouldUseStaticDocsPayload } from '@/lib/docs-static-manifest';
 
 export const Route = createFileRoute('/$locale/$tab')({
   server: {
@@ -35,6 +36,10 @@ export const Route = createFileRoute('/$locale/$tab')({
 
     const tabPath = `/${params.locale}/${params.tab}`;
     if (normalizePathname(location.pathname) !== tabPath) {
+      return null;
+    }
+
+    if (shouldUseStaticDocsPayload()) {
       return null;
     }
 
