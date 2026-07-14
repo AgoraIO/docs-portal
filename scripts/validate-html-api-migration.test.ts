@@ -42,6 +42,20 @@ describe('validate-html-api-migration', () => {
     ).toEqual(['join']);
   });
 
+  it('ignores anchor literals in fenced and inline code', () => {
+    expect(
+      findDuplicateExplicitAnchorIds(
+        [
+          '```html',
+          '<a id="example"></a>',
+          '<a id="example"></a>',
+          '```',
+          'Inline `<a id="inline"></a>` and `<a id="inline"></a>`.',
+        ].join('\n'),
+      ),
+    ).toEqual([]);
+  });
+
   it('detects a page description copied from its first API member', () => {
     expect(
       hasPageDescriptionCopiedFromFirstMember(`---
