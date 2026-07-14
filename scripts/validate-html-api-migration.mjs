@@ -272,9 +272,7 @@ export function hasInvalidMarkdownHeading(text) {
 }
 
 export function hasPageDescriptionCopiedFromFirstMember(text) {
-  const descriptionMatch = text.match(
-    /^description: ("(?:[^"\\]|\\.)*")$/m,
-  );
+  const descriptionMatch = text.match(/^description: ("(?:[^"\\]|\\.)*")$/m);
   if (!descriptionMatch) return false;
 
   let description;
@@ -303,6 +301,17 @@ export function hasPageDescriptionCopiedFromFirstMember(text) {
   return firstMemberDescription === description;
 }
 
+export function findDuplicateExplicitAnchorIds(text) {
+  const counts = new Map();
+  for (const match of text.matchAll(/<a id="([^"]+)"><\/a>/g)) {
+    counts.set(match[1], (counts.get(match[1]) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .filter(([, count]) => count > 1)
+    .map(([id]) => id)
+    .sort();
+}
+
 async function scanGeneratedOutput(
   outputDir,
   sampleFiles,
@@ -312,6 +321,7 @@ async function scanGeneratedOutput(
   const issues = {
     contentMismatches: [],
     copiedMemberDescriptions: [],
+    duplicateAnchors: [],
     helperPollution: [],
     internalHtmlLinks: [],
     invalidHeadings: [],
@@ -375,6 +385,9 @@ async function scanGeneratedOutput(
       if (hasInvalidMarkdownHeading(text))
         issues.invalidHeadings.push(relative);
       if (entry.name.endsWith('.mdx')) {
+        for (const id of findDuplicateExplicitAnchorIds(text)) {
+          issues.duplicateAnchors.push(`${relative}: ${id}`);
+        }
         if (
           lane === 'DITA/Oxygen' &&
           hasPageDescriptionCopiedFromFirstMember(text)
@@ -483,6 +496,7 @@ function renderReport({ compileResult, opts, restResult, results }) {
       `- Sample files checked: ${result.sampleFiles.map((file) => `\`${file}\``).join(', ')}`,
       `- Missing required files: ${result.issues.missingFiles.length}`,
       `- Content assertion mismatches: ${result.issues.contentMismatches.length}`,
+      `- Duplicate explicit anchors: ${result.issues.duplicateAnchors.length}`,
       `- Internal relative .html links: ${result.issues.internalHtmlLinks.length}`,
       `- Helper-page pollution matches: ${result.issues.helperPollution.length}`,
       `- Invalid level-7+ headings: ${result.issues.invalidHeadings.length}`,
@@ -506,6 +520,13 @@ function renderReport({ compileResult, opts, restResult, results }) {
       lines.push(
         'Content assertion mismatches:',
         markdownList(result.issues.contentMismatches.slice(0, 20)),
+        '',
+      );
+    }
+    if (result.issues.duplicateAnchors.length > 0) {
+      lines.push(
+        'Duplicate explicit anchors:',
+        markdownList(result.issues.duplicateAnchors.slice(0, 20)),
         '',
       );
     }

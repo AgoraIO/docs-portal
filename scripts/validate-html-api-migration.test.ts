@@ -2,8 +2,9 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  hasPageDescriptionCopiedFromFirstMember,
+  findDuplicateExplicitAnchorIds,
   hasInvalidMarkdownHeading,
+  hasPageDescriptionCopiedFromFirstMember,
 } from './validate-html-api-migration.mjs';
 
 function listMdxFiles(root: string): string[] {
@@ -32,6 +33,15 @@ describe('validate-html-api-migration', () => {
       ),
     ).toBe(false);
   });
+
+  it('reports duplicate explicit anchor IDs per generated page', () => {
+    expect(
+      findDuplicateExplicitAnchorIds(
+        '<a id="join"></a>\n<a id="other"></a>\n<a id="join"></a>',
+      ),
+    ).toEqual(['join']);
+  });
+
   it('detects a page description copied from its first API member', () => {
     expect(
       hasPageDescriptionCopiedFromFirstMember(`---
