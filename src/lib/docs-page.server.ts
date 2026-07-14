@@ -1121,7 +1121,11 @@ function resolveFlexibleClassroomPlatformRedirect(normalizedPath: string) {
     return null;
   }
 
-  if (platform === 'android' || platform === 'ios') {
+  if (platform === 'android') {
+    return `/zh-CN/api-reference/flexible-classroom/android/api-reference/${slug}`;
+  }
+
+  if (platform === 'ios') {
     if (slug === 'classroom-sdk' || slug === 'proctor-sdk') {
       return `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference/${slug}`;
     }

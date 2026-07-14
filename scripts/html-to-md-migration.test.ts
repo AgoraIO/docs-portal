@@ -1203,6 +1203,55 @@ describe('html-to-md-migration', () => {
     );
   });
 
+  it('derives generated link routes from a nested content/docs output path', async () => {
+    const rootDir = await makeTempDir();
+    const sourceDir = path.join(rootDir, 'source');
+    const outputDir = path.join(
+      rootDir,
+      'content',
+      'docs',
+      'zh-CN',
+      'api-reference',
+      'flexible-classroom',
+      'android',
+      'api-reference',
+    );
+    await writeDitaFixture(sourceDir);
+    await writeFixture(
+      path.join(sourceDir, 'API', 'overview.html'),
+      `<!doctype html>
+<html>
+  <body>
+    <main>
+      <article>
+        <h1>Overview</h1>
+        <div class="body">
+          <p><a href="class_video_canvas.html#details">VideoCanvas details</a></p>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>`,
+    );
+
+    runMigration([
+      '--source',
+      sourceDir,
+      '--output',
+      outputDir,
+      '--product',
+      'flexible-classroom',
+      '--platform',
+      'android',
+    ]);
+
+    await expect(
+      fs.readFile(path.join(outputDir, 'overview.mdx'), 'utf8'),
+    ).resolves.toContain(
+      '[VideoCanvas details](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-video-canvas#details)',
+    );
+  });
+
   it('omits title-only DITA sections while retaining non-empty sections', async () => {
     const rootDir = await makeTempDir();
     const sourceDir = path.join(rootDir, 'source');

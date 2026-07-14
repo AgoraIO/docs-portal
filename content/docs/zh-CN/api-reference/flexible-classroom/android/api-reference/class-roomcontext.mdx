@@ -23,7 +23,7 @@ abstract fun joinRoom(callback: EduContextCallback<Unit>?)
 
 #### `callback`
 
-通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-callback) 异步获取调用结果。
 
 <a id="api_leaveroom"></a>
 
@@ -43,7 +43,7 @@ abstract fun leaveRoom(callback: EduContextCallback<Unit>?)
 
 #### `callback`
 
-通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-callback) 异步获取调用结果。
 
 <a id="api_getroominfo"></a>
 
@@ -61,7 +61,7 @@ abstract fun getRoomInfo(): EduContextRoomInfo
 
 ### 返回值
 
-调用成功，则返回 [EduContextRoomInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_roominfo)。
+调用成功，则返回 [EduContextRoomInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_roominfo)。
 
 <a id="api_getroomproperties"></a>
 
@@ -99,7 +99,7 @@ abstract fun updateRoomProperties(properties: MutableMap<String, Any>,
 
 详见 [如何设置自定义房间属性](https://doc.shengwang.cn/faq/integration-issues/class-properties)。
 
-属性成功更新后，会触发 [onRoomPropertiesUpdated](/zh-CN/api-reference/flexible-classroom/android/class-roomhandler#api_onroompropertiesupdated) 回调。
+属性成功更新后，会触发 [onRoomPropertiesUpdated](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-roomhandler#api_onroompropertiesupdated) 回调。
 
 <a id="api_updateroomproperties__parameters"></a>
 
@@ -115,7 +115,7 @@ abstract fun updateRoomProperties(properties: MutableMap<String, Any>,
 
 #### `callback`
 
-通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-callback) 异步获取调用结果。
 
 <a id="api_deleteroomproperties"></a>
 
@@ -145,7 +145,7 @@ abstract fun deleteRoomProperties(keyPaths: MutableList<String>,
 
 #### `callback`
 
-通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-callback) 异步获取调用结果。
 
 <a id="api_getclassinfo"></a>
 
@@ -163,4 +163,4 @@ abstract fun getClassInfo(): AgoraEduContextClassInfo
 
 ### 返回值
 
-调用成功，则返回 [AgoraEduContextClassInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_classinfo)。
+调用成功，则返回 [AgoraEduContextClassInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_classinfo)。

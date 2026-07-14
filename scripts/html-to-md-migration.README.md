@@ -36,7 +36,7 @@ node scripts/html-to-md-migration.mjs \
 |----------|-------------|---------|
 | `--locale, -l` | Locale for output | `zh-CN` |
 | `--route-base-path, -r` | Base path for links | `/api-reference` |
-| `--target-base-path` | Exact route for generated links when the output directory adds route segments | Derived from route base, product, and platform |
+| `--target-base-path` | Exact route for generated links when the output directory adds route segments | Derived from `content/docs/<locale>/...` output paths, otherwise from route base, product, and platform |
 | `--navigation` | TypeDoc sidebar source: `generated` or `public-index` | `generated` |
 | `--navigation-manifest` | JSON array of public `{ label, source }` entries used to preserve legacy TypeDoc IA | - |
 | `--version-dir, -V` | Version directory name | - |

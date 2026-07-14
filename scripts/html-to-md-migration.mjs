@@ -735,6 +735,27 @@ function assertSafeOutputPath(targetRoot, opts, sourceStructure) {
   return resolvedTarget;
 }
 
+function inferTargetBasePathFromOutput(outputPath, locale) {
+  const segments = path.resolve(outputPath).split(path.sep).filter(Boolean);
+
+  for (let index = segments.length - 3; index >= 0; index -= 1) {
+    if (
+      segments[index] !== 'content' ||
+      segments[index + 1] !== 'docs' ||
+      segments[index + 2] !== locale
+    ) {
+      continue;
+    }
+
+    const routeSegments = segments.slice(index + 2);
+    if (routeSegments.length >= 4) {
+      return `/${routeSegments.join('/')}`;
+    }
+  }
+
+  return null;
+}
+
 function isSameOrParent(parentPath, childPath) {
   const relativePath = path.relative(parentPath, childPath);
   return (
@@ -4446,6 +4467,7 @@ async function main() {
       : '';
   const targetBasePath =
     opts.targetBasePath ??
+    inferTargetBasePathFromOutput(targetRoot, opts.locale) ??
     `${opts.routeBasePath}/${opts.product}/${opts.platform}${versionRouteSegment}`;
 
   // Read page titles and descriptions

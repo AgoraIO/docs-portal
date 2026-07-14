@@ -30,7 +30,7 @@ abstract fun getLocalUserInfo(): AgoraEduContextUserInfo
 
 ### 返回值
 
-调用成功，则返回 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_userinfo)。
+调用成功，则返回 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_userinfo)。
 
 <a id="api_getcohostlist"></a>
 
@@ -48,7 +48,7 @@ abstract fun getCoHostList(): List<AgoraEduContextUserInfo>
 
 ### 返回值
 
-调用成功，则返回 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_userinfo) 数组。
+调用成功，则返回 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_userinfo) 数组。
 
 <a id="api_getuserlist"></a>
 
@@ -68,13 +68,13 @@ abstract fun getUserList(role: AgoraEduContextUserRole): List<AgoraEduContextUse
 
 #### `role`
 
-用户角色，详见 [AgoraEduContextUserRole](/zh-CN/api-reference/flexible-classroom/android/api-data-type#enum_userrole)。
+用户角色，详见 [AgoraEduContextUserRole](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#enum_userrole)。
 
 <a id="api_getuserlist__return_values"></a>
 
 ### 返回值
 
-调用成功，则返回 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_userinfo) 数组。
+调用成功，则返回 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_userinfo) 数组。
 
 <a id="api_getalluserlist"></a>
 
@@ -92,7 +92,7 @@ abstract fun getAllUserList(): List<AgoraEduContextUserInfo>
 
 ### 返回值
 
-调用成功，则返回 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_userinfo) 数组。
+调用成功，则返回 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_userinfo) 数组。
 
 <a id="api_updateuserproperties"></a>
 
@@ -113,7 +113,7 @@ abstract fun updateUserProperties(userUuid: String,
 
 详见 [如何设置自定义用户属性](https://doc.shengwang.cn/faq/integration-issues/class-properties)。
 
-属性成功更新后，会触发 [onUserPropertiesUpdated](/zh-CN/api-reference/flexible-classroom/android/class-userhandler#api_onuserpropertiesupdated) 回调。
+属性成功更新后，会触发 [onUserPropertiesUpdated](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-userhandler#api_onuserpropertiesupdated) 回调。
 
 <a id="api_updateuserproperties__parameters"></a>
 
@@ -133,7 +133,7 @@ abstract fun updateUserProperties(userUuid: String,
 
 #### `callback`
 
-通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-callback) 异步获取调用结果。
 
 <a id="api_deleteuserproperties"></a>
 
@@ -168,7 +168,7 @@ abstract fun deleteUserProperties(userUuid: String,
 
 #### `callback`
 
-通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-callback) 异步获取调用结果。
 
 <a id="api_getuserproperties"></a>
 
@@ -271,7 +271,7 @@ abstract fun handsWave(duration: Int,
 
 #### `callback`
 
-通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-callback) 异步获取调用结果。
 
 <a id="api_handsdown"></a>
 
@@ -291,4 +291,4 @@ abstract fun handsDown(callback: EduContextCallback<Unit>? = null)
 
 #### `callback`
 
-通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-callback) 异步获取调用结果。

@@ -3,8 +3,8 @@ import { join, relative, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
   findDuplicateExplicitAnchorIds,
-  hasPageDescriptionCopiedFromFirstMember,
   hasInvalidMarkdownHeading,
+  hasPageDescriptionCopiedFromFirstMember,
 } from './validate-html-api-migration.mjs';
 
 function listMdxFiles(root: string): string[] {
@@ -94,6 +94,20 @@ class AudioParams {}
       .filter((file) =>
         hasPageDescriptionCopiedFromFirstMember(readFileSync(file, 'utf8')),
       )
+      .map((file) => relative(process.cwd(), file));
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('keeps committed Flexible Classroom Android links inside the migrated API reference route', () => {
+    const androidRoot = resolve(
+      process.cwd(),
+      'content/docs/zh-CN/api-reference/flexible-classroom/android/api-reference',
+    );
+    const legacyRoutePattern =
+      /\/zh-CN\/api-reference\/flexible-classroom\/android\/(?!api-reference(?:\/|$))/;
+    const offenders = listMdxFiles(androidRoot)
+      .filter((file) => legacyRoutePattern.test(readFileSync(file, 'utf8')))
       .map((file) => relative(process.cwd(), file));
 
     expect(offenders).toEqual([]);

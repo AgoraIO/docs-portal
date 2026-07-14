@@ -1409,6 +1409,30 @@ describe('loadDocsPagePayload', () => {
     mockedGetNodeMeta.mockReturnValue(undefined);
   });
 
+  it('redirects legacy Flexible Classroom Android API routes to the migrated flat API reference', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'flexible-classroom',
+        'android',
+        'api-data-type',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type',
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'flexible-classroom',
+        'android',
+        'class-groupcontext',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/zh-CN/api-reference/flexible-classroom/android/api-reference/class-groupcontext',
+    });
+  });
+
   it('falls back to generating TOC from processed markdown', async () => {
     await expect(
       loadDocsPagePayload('en', 'introduction', ['about-agora']),

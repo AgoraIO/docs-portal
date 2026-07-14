@@ -33,13 +33,13 @@ abstract fun getLocalDevices(deviceType: AgoraEduContextDeviceType): List<AgoraE
 
 #### `deviceType`
 
-设备类型。详见 [AgoraEduContextDeviceType](/zh-CN/api-reference/flexible-classroom/android/api-data-type#enum_devicetype)。
+设备类型。详见 [AgoraEduContextDeviceType](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#enum_devicetype)。
 
 <a id="api_getlocaldevices__return_values"></a>
 
 ### 返回值
 
-由 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_deviceinfo) 组成的设备列表。
+由 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_deviceinfo) 组成的设备列表。
 
 <a id="api_openlocaldevice"></a>
 
@@ -60,11 +60,11 @@ abstract fun openLocalDevice(deviceInfo: AgoraEduContextDeviceInfo,
 
 #### `deviceInfo`
 
-设备信息，详见 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_deviceinfo)。
+设备信息，详见 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_deviceinfo)。
 
 #### `callback`
 
-通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-callback) 异步获取调用结果。
 
 <a id="api_closelocaldevice"></a>
 
@@ -85,11 +85,11 @@ abstract fun closeLocalDevice(deviceInfo: AgoraEduContextDeviceInfo,
 
 #### `deviceInfo`
 
-设备信息，详见 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_deviceinfo)。
+设备信息，详见 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_deviceinfo)。
 
 #### `callback`
 
-通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步获取调用结果。
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-callback) 异步获取调用结果。
 
 <a id="api_getlocaldevicestate"></a>
 
@@ -110,11 +110,11 @@ abstract fun getLocalDeviceState(deviceInfo: AgoraEduContextDeviceInfo,
 
 #### `deviceInfo`
 
-设备信息，详见 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_deviceinfo)。
+设备信息，详见 [AgoraEduContextDeviceInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_deviceinfo)。
 
 #### `callback`
 
-通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/class-callback) 异步返回设备状态 [AgoraEduContextDeviceState2](/zh-CN/api-reference/flexible-classroom/android/api-data-type#enum_devicestate)。
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-callback) 异步返回设备状态 [AgoraEduContextDeviceState2](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#enum_devicestate)。
 
 <a id="api_startrendervideo"></a>
 
@@ -140,7 +140,7 @@ abstract fun startRenderLocalVideo(config: EduContextRenderConfig,
 
 #### `config`
 
-视频渲染配置，详见 [EduContextRenderConfig](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_renderconfig)。
+视频渲染配置，详见 [EduContextRenderConfig](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_renderconfig)。
 
 #### `container`
 
@@ -172,7 +172,7 @@ abstract fun startRenderVideoFromCdn(
 
 #### `config`
 
-视频渲染配置，详见 [EduContextRenderConfig](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_renderconfig)。
+视频渲染配置，详见 [EduContextRenderConfig](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_renderconfig)。
 
 #### `container`
 
@@ -428,7 +428,7 @@ abstract fun getSnapshot(
 
 #### `callback`
 
-调用成功，则返回截图信息 [FcrSnapshotInfo](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_fcrsnapshotinfo)。
+调用成功，则返回截图信息 [FcrSnapshotInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_fcrsnapshotinfo)。
 
 <a id="api_setaudiorawdataconfig"></a>
 
@@ -453,11 +453,11 @@ AgoraEduContextError setAudioRawDataConfig(FcrAudioRawDataConfig config,
 
 #### `config`
 
-观察者，详见 [FcrAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_audiorawdataconfig)。
+观察者，详见 [FcrAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_audiorawdataconfig)。
 
 #### `position`
 
-音频管道的输出位置，详见 [FcrAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/android/enum-audiorawdataposition)。
+音频管道的输出位置，详见 [FcrAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/android/api-reference/enum-audiorawdataposition)。
 
 <a id="api_addaudiorawdataobserver"></a>
 
@@ -484,11 +484,11 @@ abstract fun addAudioRawDataObserver(
 
 #### `observer`
 
-观察者，详见 [FcrAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/android/class-audiorawdataobserver#class_audiorawdataobserver)。
+观察者，详见 [FcrAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-audiorawdataobserver#class_audiorawdataobserver)。
 
 #### `config`
 
-音频管道的输出配置，详见 [FcrAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/android/api-data-type#class_audiorawdataconfig)。
+音频管道的输出配置，详见 [FcrAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/android/api-reference/api-data-type#class_audiorawdataconfig)。
 
 <a id="api_removeaudiorawdataobserver"></a>
 
@@ -508,4 +508,4 @@ abstract fun removeAudioRawDataObserver(observer: FcrMediaRawDataObserver)
 
 #### `observer`
 
-观察者，详见 [FcrAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/android/class-audiorawdataobserver#class_audiorawdataobserver)。
+观察者，详见 [FcrAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/android/api-reference/class-audiorawdataobserver#class_audiorawdataobserver)。
