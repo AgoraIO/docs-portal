@@ -3602,7 +3602,8 @@ function parseTocTree($) {
   const rootMapList = $('nav > ul.map').first();
   const rootMapItem = rootMapList.children('li').first();
   const rootList = rootMapList.length
-    ? rootMapItem.children('a').length === 0 &&
+    ? rootMapList.children('li').length === 1 &&
+      rootMapItem.children('a').length === 0 &&
       rootMapItem.children('ul').length > 0
       ? rootMapItem.children('ul').first()
       : rootMapList
@@ -3614,8 +3615,13 @@ function parseList($, list) {
   return list
     .children('li')
     .toArray()
-    .map((li) => parseItem($, $(li)))
-    .filter(Boolean);
+    .flatMap((li) => {
+      const item = $(li);
+      const parsed = parseItem($, item);
+      if (parsed) return [parsed];
+      const childrenList = item.children('ul').first();
+      return childrenList.length ? parseList($, childrenList) : [];
+    });
 }
 
 function parseItem($, item) {
