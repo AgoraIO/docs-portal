@@ -133,7 +133,7 @@ describe('migrated HTML API navigation scopes', () => {
     ).toBe(false);
   });
 
-  it('mounts Agora Chat Flutter Dartdoc under its canonical API route', () => {
+  it('mounts Agora Chat Flutter Dartdoc under its canonical API route', async () => {
     const route =
       '/zh-CN/api-reference/agora-chat/flutter/agora-chat-sdk/chat-manager/send-message';
     const navScope = resolveDocsNavScope({
@@ -144,6 +144,29 @@ describe('migrated HTML API navigation scopes', () => {
     });
 
     expect(source.getPages('zh-CN').map((page) => page.url)).toContain(route);
+    expect(
+      source.getPage(
+        [
+          'api-reference',
+          'agora-chat',
+          'flutter',
+          'agora-chat-sdk',
+          'chat-manager',
+          'send-message',
+        ],
+        'zh-CN',
+      ),
+    ).toBeDefined();
+    const payload = await loadDocsPagePayload('zh-CN', 'api-reference', [
+      'agora-chat',
+      'flutter',
+      'agora-chat-sdk',
+      'chat-manager',
+      'send-message',
+    ]);
+    expect(payload && 'activePath' in payload ? payload.activePath : null).toBe(
+      route,
+    );
     expect(navScope).not.toBeNull();
     if (!navScope) return;
 
