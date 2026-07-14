@@ -4695,6 +4695,28 @@ function attachDitaAnchorsToHeadings(markdown) {
   return output.join('\n');
 }
 
+function renderDartdocRootIndex(
+  title,
+  description,
+  tocNodes,
+  targetBasePath,
+  locale,
+) {
+  const links = tocNodes.map(
+    (node) =>
+      `- [${normalizeDartdocTitle(node.title)}](${targetBasePath}/${node.slug})`,
+  );
+  return `---
+title: ${escapeYaml(title)}
+description: ${escapeYaml(description)}
+---
+
+${locale === 'zh-CN' ? '本节包含迁移后的 Flutter API 参考。' : 'This section contains migrated Flutter API reference pages.'}
+
+${links.join('\n')}
+`;
+}
+
 async function main() {
   globalThis.File ??= class File {};
   const opts = parseArgs();
@@ -4832,8 +4854,39 @@ async function main() {
   await fs.rm(targetRoot, { force: true, recursive: true });
   await fs.mkdir(targetRoot, { recursive: true });
 
+  const isAgoraChatFlutter =
+    opts.locale === 'zh-CN' &&
+    opts.product === 'agora-chat' &&
+    opts.platform === 'flutter';
+  const sourceRootTitle = sourceStructure.rootIndexSource
+    ? (pageTitleBySource.get(sourceStructure.rootIndexSource) ??
+      `${opts.platform.toUpperCase()} API Reference`)
+    : `${opts.platform.toUpperCase()} API Reference`;
+  const rootTitle = isAgoraChatFlutter
+    ? '即时通讯 Flutter API 参考'
+    : sourceStructure.id === SOURCE_TYPES.DARTDOC.id ||
+        sourceStructure.id === SOURCE_TYPES.TYPEDOC.id
+      ? sourceRootTitle
+      : sourceStructure.id === SOURCE_TYPES.IOS_DOC_GENERATOR.id
+        ? resolveIosRootTitle(sourceRootTitle, opts)
+        : `${opts.platform.toUpperCase()} API Reference`;
+  const rootDescription = isAgoraChatFlutter
+    ? '即时通讯 Flutter SDK API 参考。'
+    : `${opts.product} ${opts.platform} API reference.`;
+
   // Write index
-  if (sourceStructure.rootIndexSource) {
+  if (sourceStructure.id === SOURCE_TYPES.DARTDOC.id) {
+    await writeFile(
+      path.join(targetRoot, 'index.mdx'),
+      renderDartdocRootIndex(
+        rootTitle,
+        rootDescription,
+        tocNodes,
+        targetBasePath,
+        opts.locale,
+      ),
+    );
+  } else if (sourceStructure.rootIndexSource) {
     await writeFile(
       path.join(targetRoot, 'index.mdx'),
       deduplicateExplicitAnchors(
@@ -4891,17 +4944,10 @@ async function main() {
       : metaPages;
 
   // Write meta.json
-  const sourceRootTitle = sourceStructure.rootIndexSource
-    ? (pageTitleBySource.get(sourceStructure.rootIndexSource) ??
-      `${opts.platform.toUpperCase()} API Reference`)
-    : `${opts.platform.toUpperCase()} API Reference`;
-  const rootTitle =
-    sourceStructure.id === SOURCE_TYPES.IOS_DOC_GENERATOR.id
-      ? resolveIosRootTitle(sourceRootTitle, opts)
-      : sourceRootTitle;
   await writeJson(path.join(targetRoot, 'meta.json'), {
     title: rootTitle,
-    ...(sourceStructure.id === SOURCE_TYPES.DOXYGEN_JAVADOC.id ||
+    ...(sourceStructure.id === SOURCE_TYPES.DARTDOC.id ||
+    sourceStructure.id === SOURCE_TYPES.DOXYGEN_JAVADOC.id ||
     sourceStructure.id === SOURCE_TYPES.TYPEDOC.id ||
     (opts.product === 'whiteboard' &&
       ['android', 'ios', 'web'].includes(opts.platform))
