@@ -83,7 +83,7 @@ func main() {
 
     session := agent.CreateSession(agentkit.CreateSessionOptions{
         Channel:     "<your_channel_name>",
-        AgentUID:    "1001",
+        AgentUID:    "0",
         RemoteUIDs:  []string{"1002"},
         IdleTimeout: Agora.Int(120),
     })
@@ -134,7 +134,7 @@ const agent = new Agent({ client })
 const session = agent.createSession({
   name: 'support-assistant',
   channel: '<your_channel_name>',
-  agentUid: '1001',
+  agentUid: '0',
   remoteUids: ['1002'],
   idleTimeout: 120,
 });
@@ -183,7 +183,7 @@ agent = (
 session = agent.create_session(
     name='support-assistant',
     channel='<your_channel_name>',
-    agent_uid='1001',
+    agent_uid='0',
     remote_uids=['1002'],
     idle_timeout=120,
 )
@@ -202,7 +202,7 @@ curl --request POST \
     "properties": {
       "channel": "<your_channel_name>",
       "token": "<your_rtc_token>",
-      "agent_rtc_uid": "1001",
+      "agent_rtc_uid": "0",
       "remote_rtc_uids": ["1002"],
       "enable_string_uid": false,
       "idle_timeout": 120,
