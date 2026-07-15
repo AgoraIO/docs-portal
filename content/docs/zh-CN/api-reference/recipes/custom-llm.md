@@ -1,9 +1,9 @@
 ---
 title: 自定义 LLM
-description: 将 Agora 语音智能体接入自定义语言模型。
+description: 将 Agora 对话式 AI 引擎接入自定义语言模型。
 ---
 
-将 Agora 语音智能体接入自定义语言模型。
+将 Agora 对话式 AI 引擎接入自定义语言模型。
 
 ## 配方信息
 
