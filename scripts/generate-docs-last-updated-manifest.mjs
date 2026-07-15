@@ -12,15 +12,27 @@ const OUTPUT_PATH = path.join(
 );
 
 async function main() {
+  const outputExists = await pathExists(OUTPUT_PATH);
+  const hasGitHistory = await isGitHistoryAvailable();
+
+  if (!hasGitHistory) {
+    if (outputExists) {
+      warnKeepingExistingManifest('Git history is unavailable');
+      return;
+    }
+
+    throw new Error(
+      'Unable to generate docs last-updated manifest without Git history',
+    );
+  }
+
   const manifest = await loadGitLastUpdatedIndex();
 
   if (
-    (await pathExists(OUTPUT_PATH)) &&
+    outputExists &&
     (!manifest || manifest.size === 0 || (await isGitHistoryIncomplete()))
   ) {
-    console.warn(
-      `[docs-last-updated] git history is unavailable or incomplete; keeping existing ${path.relative(process.cwd(), OUTPUT_PATH)}`,
-    );
+    warnKeepingExistingManifest('Git history is incomplete');
     return;
   }
 
@@ -63,6 +75,19 @@ async function loadGitLastUpdatedIndex() {
   }
 }
 
+async function isGitHistoryAvailable() {
+  try {
+    await execFileAsync('git', ['rev-parse', '--git-dir'], {
+      cwd: process.cwd(),
+      encoding: 'utf8',
+    });
+
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function isGitHistoryIncomplete() {
   try {
     const { stdout } = await execFileAsync(
@@ -78,6 +103,12 @@ async function isGitHistoryIncomplete() {
   } catch {
     return true;
   }
+}
+
+function warnKeepingExistingManifest(reason) {
+  console.warn(
+    `[docs-last-updated] ${reason}; keeping existing ${path.relative(process.cwd(), OUTPUT_PATH)}`,
+  );
 }
 
 async function pathExists(filePath) {
