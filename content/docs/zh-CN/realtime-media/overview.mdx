@@ -1,13 +1,13 @@
 ---
-title: 实时与媒体概览
-description: 按能力层浏览实时与媒体产品，从实时互动、会话内容处理到外部媒体接入、媒体分发和扩展能力。
+title: 实时互动概览
+description: 按能力层浏览实时互动产品，从实时互动、会话内容处理到外部媒体接入、媒体分发和扩展能力。
 ---
 
 ## 构建实时互动
 
 <SolutionCardGrid size="small">
   <SolutionCard
-    title="语音与视频 RTC"
+    title="实时互动 RTC"
     href="/zh-CN/realtime-media/rtc"
     icon="video-calling"
     tone="blue"
@@ -31,12 +31,20 @@ description: 按能力层浏览实时与媒体产品，从实时互动、会话�
     description="面向应用内聊天、会话、消息通知和用户关系场景的即时通讯能力。"
   />
   <SolutionCard
-    title="互动白板"
-    href="/zh-CN/realtime-media/whiteboard"
-    icon="whiteboard"
+    title="RTC 服务端 SDK"
+    href="/zh-CN/realtime-media/rtc-server-sdk"
+    icon="server-sdk"
     tone="blue"
     size="small"
-    description="在实时会话中加入共享画布、标注、文件展示和视觉协作。"
+    description="让服务端参与实时频道中的媒体收发、订阅、混流和控制流程。"
+  />
+  <SolutionCard
+    title="媒体流加速 RTSA"
+    href="/zh-CN/realtime-media/rtsa"
+    icon="video-calling"
+    tone="blue"
+    size="small"
+    description="面向嵌入式设备和轻量设备提供实时音视频传输接入能力。"
   />
 </SolutionCardGrid>
 
@@ -52,15 +60,23 @@ description: 按能力层浏览实时与媒体产品，从实时互动、会话�
     description="为实时音频生成字幕、转写文本和多语言翻译结果。"
   />
   <SolutionCard
-    title="录制"
-    href="/zh-CN/realtime-media/recording/cloud-recording"
+    title="云端录制"
+    href="/zh-CN/realtime-media/cloud-recording"
     icon="cloud-recording"
     tone="green"
     size="small"
-    description="将通话、直播和协作会话录制下来，用于回放、审核和归档。"
+    description="通过云端录制 RESTful API 录制音视频通话或直播内容，无需自行部署录制服务器。"
   />
   <SolutionCard
-    title="转码"
+    title="本地服务端录制"
+    href="/zh-CN/realtime-media/local-server-recording"
+    icon="on-premise-recording"
+    tone="green"
+    size="small"
+    description="在 Linux 服务器部署录制 SDK，录制音视频通话或直播内容并生成本地录制文件。"
+  />
+  <SolutionCard
+    title="云端转码"
     href="/zh-CN/realtime-media/transcoding"
     icon="transcoding"
     tone="green"
@@ -86,7 +102,7 @@ description: 按能力层浏览实时与媒体产品，从实时互动、会话�
 
 <SolutionCardGrid size="small">
   <SolutionCard
-    title="推流"
+    title="旁路推流"
     href="/zh-CN/realtime-media/media-push"
     icon="media-push"
     tone="purple"
@@ -94,7 +110,7 @@ description: 按能力层浏览实时与媒体产品，从实时互动、会话�
     description="将 RTC 频道中的媒体流推送到 CDN 或外部媒体系统。"
   />
   <SolutionCard
-    title="拉流"
+    title="输入在线媒体流"
     href="/zh-CN/realtime-media/media-pull"
     icon="media-pull"
     tone="purple"
@@ -115,7 +131,7 @@ description: 按能力层浏览实时与媒体产品，从实时互动、会话�
 
 <SolutionCardGrid size="small">
   <SolutionCard
-    title="融合 CDN"
+    title="融合 CDN 直播"
     href="/zh-CN/realtime-media/fusion-cdn"
     icon="broadcast"
     tone="sand"
@@ -124,30 +140,17 @@ description: 按能力层浏览实时与媒体产品，从实时互动、会话�
   />
 </SolutionCardGrid>
 
-## 服务端与传输能力
-
-<SolutionCardGrid size="small">
-  <SolutionCard
-    title="RTC 服务端 SDK"
-    href="/zh-CN/realtime-media/rtc-server-sdk"
-    icon="server-sdk"
-    tone="sand"
-    size="small"
-    description="让服务端参与实时频道中的媒体收发、订阅、混流和控制流程。"
-  />
-  <SolutionCard
-    title="实时音视频加速"
-    href="/zh-CN/realtime-media/rtsa"
-    icon="video-calling"
-    tone="sand"
-    size="small"
-    description="面向嵌入式设备和轻量设备提供实时音视频传输接入能力。"
-  />
-</SolutionCardGrid>
-
 ## 扩展能力
 
 <SolutionCardGrid size="small">
+  <SolutionCard
+    title="互动白板"
+    href="/zh-CN/realtime-media/whiteboard"
+    icon="whiteboard"
+    tone="sand"
+    size="small"
+    description="在实时会话中加入共享画布、标注、文件展示和视觉协作。"
+  />
   <SolutionCard
     title="内容审核"
     href="/zh-CN/realtime-media/content-moderation"
