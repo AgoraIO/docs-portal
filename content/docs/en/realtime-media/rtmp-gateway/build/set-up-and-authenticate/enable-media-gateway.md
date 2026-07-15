@@ -2,7 +2,7 @@
 title: "Enable Media Gateway"
 description: "Enable Media Gateway for your Agora project in Agora Console."
 ---
-To use Media Gateway, you first need to activate and configure it. This page explains how to do this in Agora Console.
+To use Media Gateway, enable it for your project in Agora Console.
 
 ## Prerequisites
 
@@ -16,8 +16,5 @@ In order to follow this procedure you must:
 
 To enable Media Gateway, take the following steps:
 
-1. Obtain your app ID, app certificate, customer ID, and customer secret. See [Agora account management](/en/introduction/account) for details.
-2. Open **My Projects** and click to edit the project for which you need Media Gateway.
-3. Under **All Features**, select **Media Gateway** and toggle to enable it.
-
-    ![Enable Media Gateway](https://assets-docs.agora.io/images/media-gateway/enable-media-gateway.png)
+1. Obtain your App ID, App Certificate, Customer ID, and Customer Secret. See [Agora account management](/en/introduction/account) for details.
+2. In [Agora Console](https://console.agora.io/v2), go to **Realtime Services**, select **Media Gateway** under **Media Services**, and turn on the **Active** toggle.
