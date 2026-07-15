@@ -2,7 +2,6 @@
 title: "发版说明"
 description: "查看实时互动 RTC 的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
 ---
-该版本删除了 EncodedVideoFrameInfo 结构体中的 uid 参数。
 
 <PlatformStructured platform="android">
 
@@ -37,7 +36,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 #### EncodedVideoFrameInfo 结构体删除参数 uid
 
-你可以直接从 [`onEncodedVideoFrameReceived`](/api-ref/rtc/android/API/toc_video_encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) 回调中获取远端用户的 `remoteUid` 信息。如果你之前集成过相关代码，请相应更新集成逻辑。
+该版本删除了 `EncodedVideoFrameInfo` 结构体中的 `uid` 参数。你可以直接从 [`onEncodedVideoFrameReceived`](/api-ref/rtc/android/API/toc_video_encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) 回调中获取远端用户的 `remoteUid` 信息。如果你之前集成过相关代码，请相应更新集成逻辑。
 
 #### Lite 和 Voice 包中去除音频频谱功能
 
@@ -327,7 +326,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 #### AI 对话场景
 
-   该版本新增了专为与[声网对话式 AI 引擎](https://doc.shengwang.cn/doc/convoai/restful/landing-page)创建的智能体互动设计的 `AUDIO_SCENARIO_AI_CLIENT` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
+   该版本新增了专为与[声网对话式 AI 引擎](/zh-CN/ai)创建的智能体互动设计的 `AUDIO_SCENARIO_AI_CLIENT` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
 
 ### 问题修复
 
@@ -2210,7 +2209,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### AI 对话场景
 
-   该版本新增了专为与[声网对话式 AI 引擎](https://doc.shengwang.cn/doc/convoai/restful/landing-page)创建的智能体互动设计的 `AgoraAudioScenarioAiClient` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
+   该版本新增了专为与[声网对话式 AI 引擎](/zh-CN/ai)创建的智能体互动设计的 `AgoraAudioScenarioAiClient` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
 
 ### 改进
 
@@ -4047,7 +4046,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### AI 对话场景
 
-   该版本新增了专为与[声网对话式 AI 引擎](https://doc.shengwang.cn/doc/convoai/restful/landing-page)创建的智能体互动设计的 `AgoraAudioScenarioAiClient` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
+   该版本新增了专为与[声网对话式 AI 引擎](/zh-CN/ai)创建的智能体互动设计的 `AgoraAudioScenarioAiClient` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
 
 ### 问题修复
 
@@ -7522,7 +7521,7 @@ v4.0.0 修复了以下问题：
 
 #### AI 对话场景
 
-   该版本新增了专为与[声网对话式 AI 引擎](https://doc.shengwang.cn/doc/convoai/restful/landing-page)创建的智能体互动设计的 `AUDIO_SCENARIO_AI_CLIENT` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
+   该版本新增了专为与[声网对话式 AI 引擎](/zh-CN/ai)创建的智能体互动设计的 `AUDIO_SCENARIO_AI_CLIENT` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
 
 ### 问题修复
 
@@ -9826,7 +9825,7 @@ https://miniapp-4.agoraio.cn
 
 #### AI 对话场景
 
-   该版本新增了专为与[声网对话式 AI 引擎](https://doc.shengwang.cn/doc/convoai/restful/landing-page)创建的智能体互动设计的 `AudioScenarioAiClient` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
+   该版本新增了专为与[声网对话式 AI 引擎](/zh-CN/ai)创建的智能体互动设计的 `AudioScenarioAiClient` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
 
 ### 问题修复
 
@@ -11562,7 +11561,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/electron/API/clas
 
 #### AI 对话场景
 
-   该版本新增了专为与[声网对话式 AI 引擎](https://doc.shengwang.cn/doc/convoai/restful/landing-page)创建的智能体互动设计的 `AUDIO_SCENARIO_AI_CLIENT` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
+   该版本新增了专为与[声网对话式 AI 引擎](/zh-CN/ai)创建的智能体互动设计的 `AUDIO_SCENARIO_AI_CLIENT` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
 
 ### 改进
 
@@ -13690,7 +13689,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/unity/API/class_v
 
 #### AI 对话场景
 
-   该版本新增了专为与[声网对话式 AI 引擎](https://doc.shengwang.cn/doc/convoai/restful/landing-page)创建的智能体互动设计的 `audioScenarioAiClient` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
+   该版本新增了专为与[声网对话式 AI 引擎](/zh-CN/ai)创建的智能体互动设计的 `audioScenarioAiClient` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
 
 ### 改进
 
@@ -15702,7 +15701,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/flutter/API/class
 
 #### AI 对话场景
 
-   该版本新增了专为与[声网对话式 AI 引擎](https://doc.shengwang.cn/doc/convoai/restful/landing-page)创建的智能体互动设计的 `AudioScenarioAiClient` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
+   该版本新增了专为与[声网对话式 AI 引擎](/zh-CN/ai)创建的智能体互动设计的 `AudioScenarioAiClient` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
 
 ### 改进
 
@@ -17243,7 +17242,7 @@ AudioMixerModuleName=
 
 #### AI 对话场景
 
-   该版本新增了专为与[声网对话式 AI 引擎](https://doc.shengwang.cn/doc/convoai/restful/landing-page)创建的智能体互动设计的 `AUDIO_SCENARIO_AI_CLIENT` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
+   该版本新增了专为与[声网对话式 AI 引擎](/zh-CN/ai)创建的智能体互动设计的 `AUDIO_SCENARIO_AI_CLIENT` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
 
 ### 改进
 
@@ -17567,7 +17566,7 @@ AudioMixerModuleName=
 
 #### AI 对话场景
 
-   该版本新增了专为与[声网对话式 AI 引擎](https://doc.shengwang.cn/doc/convoai/restful/landing-page)创建的智能体互动设计的 `AUDIO_SCENARIO_AI_CLIENT` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
+   该版本新增了专为与[声网对话式 AI 引擎](/zh-CN/ai)创建的智能体互动设计的 `AUDIO_SCENARIO_AI_CLIENT` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
 
 ### 改进
 
