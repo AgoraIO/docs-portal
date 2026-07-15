@@ -1,5 +1,5 @@
 ---
-title: "Set up HTTP callbacks"
+title: "Receive webhook notifications"
 description: "Shows how to use the Agora Chat SDK to implement SetupWebhook management."
 ---
 
