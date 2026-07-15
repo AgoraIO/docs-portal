@@ -189,7 +189,7 @@ describe('zh-CN product IA standard', () => {
         'manage-file',
         'playback',
       ],
-      '/zh-CN/realtime-media/recording/cloud-recording/build/manage-recorded-files/playback',
+      '/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/playback',
     ],
     [
       'solutions',

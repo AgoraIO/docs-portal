@@ -1,5 +1,5 @@
 const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
-  'realtime-media/recording': '/zh-CN/realtime-media/recording/cloud-recording',
+  'realtime-media/recording': '/zh-CN/realtime-media/cloud-recording',
   'realtime-media/danmaku/api/api-limits':
     '/zh-CN/realtime-media/danmaku/reference/api-limits',
   'realtime-media/danmaku/api/base-url':
@@ -241,131 +241,131 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/online-ktv/online-ktv-sdk/resources':
     '/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/downloads',
   'realtime-media/recording/cloud-recording/api/reference':
-    '/zh-CN/realtime-media/recording/cloud-recording/reference/api-reference',
+    '/zh-CN/realtime-media/cloud-recording/reference/api-reference',
   'realtime-media/recording/cloud-recording/best-practices/checklist':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/optimize-and-operate/checklist',
+    '/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/checklist',
   'realtime-media/recording/cloud-recording/best-practices/recording-status':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/optimize-and-operate/recording-status',
+    '/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/recording-status',
   'realtime-media/recording/cloud-recording/best-practices/rest-availability':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/optimize-and-operate/rest-availability',
+    '/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/rest-availability',
   'realtime-media/recording/cloud-recording/best-practices/webpage':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/optimize-and-operate/webpage',
+    '/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/webpage',
   'realtime-media/recording/cloud-recording/get-started/enable-service':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/cloud-recording/build/setup-and-access/enable-service',
   'realtime-media/recording/cloud-recording/get-started/quick-start-nodejs':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/quick-start-nodejs',
+    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/quick-start-nodejs',
   'realtime-media/recording/cloud-recording/overview/billing-strategy/billing':
-    '/zh-CN/realtime-media/recording/cloud-recording/reference/billing-strategy/billing',
+    '/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/billing',
   'realtime-media/recording/cloud-recording/overview/billing-strategy/payment':
-    '/zh-CN/realtime-media/recording/cloud-recording/reference/billing-strategy/payment',
+    '/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/payment',
   'realtime-media/recording/cloud-recording/overview/billing-strategy/snapshot-billing':
-    '/zh-CN/realtime-media/recording/cloud-recording/reference/billing-strategy/snapshot-billing',
+    '/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/snapshot-billing',
   'realtime-media/recording/cloud-recording/overview/billing-strategy/webpage-billing':
-    '/zh-CN/realtime-media/recording/cloud-recording/reference/billing-strategy/webpage-billing',
+    '/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/webpage-billing',
   'realtime-media/recording/cloud-recording/overview/concepts':
-    '/zh-CN/realtime-media/recording/cloud-recording/reference/concepts',
+    '/zh-CN/realtime-media/cloud-recording/reference/concepts',
   'realtime-media/recording/cloud-recording/overview/product-overview':
-    '/zh-CN/realtime-media/recording/cloud-recording',
+    '/zh-CN/realtime-media/cloud-recording',
   'realtime-media/recording/cloud-recording/overview/release-notes':
-    '/zh-CN/realtime-media/recording/cloud-recording/reference/release-notes',
+    '/zh-CN/realtime-media/cloud-recording/reference/release-notes',
   'realtime-media/recording/cloud-recording/quota':
-    '/zh-CN/realtime-media/recording/cloud-recording/reference/quota',
+    '/zh-CN/realtime-media/cloud-recording/reference/quota',
   'realtime-media/recording/cloud-recording/response-code':
-    '/zh-CN/realtime-media/recording/cloud-recording/reference/response-code',
+    '/zh-CN/realtime-media/cloud-recording/reference/response-code',
   'realtime-media/recording/cloud-recording/user-guides/http-basic-auth':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/http-basic-auth',
+    '/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth',
   'realtime-media/recording/cloud-recording/user-guides/individual-mode/set-individual':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/individual-mode/set-individual',
+    '/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual',
   'realtime-media/recording/cloud-recording/user-guides/individual-mode/set-individual-without-transcoding':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/individual-mode/set-individual-without-transcoding',
+    '/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual-without-transcoding',
   'realtime-media/recording/cloud-recording/user-guides/manage-file/convert-format':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/manage-recorded-files/convert-format',
+    '/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/convert-format',
   'realtime-media/recording/cloud-recording/user-guides/manage-file/introduce-recorded-files':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/manage-recorded-files/introduce-recorded-files',
+    '/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/introduce-recorded-files',
   'realtime-media/recording/cloud-recording/user-guides/manage-file/play-online':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/manage-recorded-files/play-online',
+    '/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/play-online',
   'realtime-media/recording/cloud-recording/user-guides/manage-file/playback':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/manage-recorded-files/playback',
+    '/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/playback',
   'realtime-media/recording/cloud-recording/user-guides/mix-mode/set-composite':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/mix-mode/set-composite',
+    '/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite',
   'realtime-media/recording/cloud-recording/user-guides/mix-mode/set-composite-layout':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/mix-mode/set-composite-layout',
+    '/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite-layout',
   'realtime-media/recording/cloud-recording/user-guides/snapshot':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/snapshot',
+    '/zh-CN/realtime-media/cloud-recording/build/recording-modes/snapshot',
   'realtime-media/recording/cloud-recording/user-guides/web-mode/set-webpage-recording':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/web-mode/set-webpage-recording',
+    '/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording',
   'realtime-media/recording/cloud-recording/webhook/enable-ncs':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/monitor-events/enable-ncs',
+    '/zh-CN/realtime-media/cloud-recording/build/monitor-events/enable-ncs',
   'realtime-media/recording/cloud-recording/webhook/ncs-events':
-    '/zh-CN/realtime-media/recording/cloud-recording/reference/ncs-events',
+    '/zh-CN/realtime-media/cloud-recording/reference/ncs-events',
   'realtime-media/recording/cloud-recording/webhook/service':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/service',
+    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/service',
   'realtime-media/recording/cloud-recording/webhook/status':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/status',
+    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/status',
   'realtime-media/recording/cloud-recording/webhook/uploading':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/uploading',
+    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading',
   'realtime-media/recording/cloud-recording/webhook/webpage':
-    '/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/webpage',
+    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage',
   'realtime-media/recording/local-server-recording/best-practice/restore-files':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/restore-files',
+    '/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/restore-files',
   'realtime-media/recording/local-server-recording/get-started/enable-service':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/local-server-recording/build/setup-and-access/enable-service',
   'realtime-media/recording/local-server-recording/legacy/collect-logs':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/legacy/collect-logs',
+    '/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/legacy/collect-logs',
   'realtime-media/recording/local-server-recording/legacy/composite-mode':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/composite-mode',
+    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/composite-mode',
   'realtime-media/recording/local-server-recording/legacy/docker':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/docker',
+    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/docker',
   'realtime-media/recording/local-server-recording/legacy/individual-mode':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/individual-mode',
+    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/individual-mode',
   'realtime-media/recording/local-server-recording/legacy/integrate-sdk':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/integrate-sdk',
+    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/integrate-sdk',
   'realtime-media/recording/local-server-recording/legacy/manage-files':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/manage-files',
+    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/manage-files',
   'realtime-media/recording/local-server-recording/legacy/merge-files':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/merge-files',
+    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/merge-files',
   'realtime-media/recording/local-server-recording/legacy/raw-data':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/raw-data',
+    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/raw-data',
   'realtime-media/recording/local-server-recording/legacy/record-by-api':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/record-by-api',
+    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/record-by-api',
   'realtime-media/recording/local-server-recording/legacy/record-by-cmd':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/record-by-cmd',
+    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/record-by-cmd',
   'realtime-media/recording/local-server-recording/legacy/restore-files':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/legacy/restore-files',
+    '/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/legacy/restore-files',
   'realtime-media/recording/local-server-recording/legacy/screenshot':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/legacy/screenshot',
+    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/screenshot',
   'realtime-media/recording/local-server-recording/legacy/set-layout':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/legacy/set-layout',
+    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/set-layout',
   'realtime-media/recording/local-server-recording/legacy/set-output-video':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/set-output-video',
+    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/set-output-video',
   'realtime-media/recording/local-server-recording/legacy/watermark':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/legacy/watermark',
+    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/watermark',
   'realtime-media/recording/local-server-recording/overview/billing':
-    '/zh-CN/realtime-media/recording/local-server-recording/reference/billing',
+    '/zh-CN/realtime-media/local-server-recording/reference/billing',
   'realtime-media/recording/local-server-recording/overview/migration-guide':
-    '/zh-CN/realtime-media/recording/local-server-recording/reference/migration-guide',
+    '/zh-CN/realtime-media/local-server-recording/reference/migration-guide',
   'realtime-media/recording/local-server-recording/overview/payment':
-    '/zh-CN/realtime-media/recording/local-server-recording/reference/payment',
+    '/zh-CN/realtime-media/local-server-recording/reference/payment',
   'realtime-media/recording/local-server-recording/overview/product-overview':
-    '/zh-CN/realtime-media/recording/local-server-recording',
+    '/zh-CN/realtime-media/local-server-recording',
   'realtime-media/recording/local-server-recording/overview/release-notes':
-    '/zh-CN/realtime-media/recording/local-server-recording/reference/release-notes',
+    '/zh-CN/realtime-media/local-server-recording/reference/release-notes',
   'realtime-media/recording/local-server-recording/overview/sunset':
-    '/zh-CN/realtime-media/recording/local-server-recording/reference/sunset',
+    '/zh-CN/realtime-media/local-server-recording/reference/sunset',
   'realtime-media/recording/local-server-recording/resources':
-    '/zh-CN/realtime-media/recording/local-server-recording/reference/downloads',
+    '/zh-CN/realtime-media/local-server-recording/reference/downloads',
   'realtime-media/recording/local-server-recording/user-guides/cloud-proxy':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/setup-and-access/cloud-proxy',
+    '/zh-CN/realtime-media/local-server-recording/build/setup-and-access/cloud-proxy',
   'realtime-media/recording/local-server-recording/user-guides/generate-token':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/setup-and-access/generate-token',
+    '/zh-CN/realtime-media/local-server-recording/build/setup-and-access/generate-token',
   'realtime-media/recording/local-server-recording/user-guides/recording-mode':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/recording-mode',
+    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/recording-mode',
   'realtime-media/recording/local-server-recording/user-guides/screen-capture':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/screen-capture',
+    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/screen-capture',
   'realtime-media/recording/local-server-recording/user-guides/set-layout':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/set-layout',
+    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/set-layout',
   'realtime-media/recording/local-server-recording/user-guides/watermark':
-    '/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/watermark',
+    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/watermark',
   'realtime-media/rtc-server-sdk/advanced-features/cloud-proxy':
     '/zh-CN/realtime-media/rtc-server-sdk/build/setup-and-access/cloud-proxy',
   'realtime-media/rtc-server-sdk/advanced-features/encryption':
@@ -1395,6 +1395,17 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/voip-call/reference/voip-events',
 };
 
+const ZH_CN_PRODUCT_IA_PREFIX_REDIRECTS: Array<[string, string]> = [
+  [
+    'realtime-media/recording/cloud-recording',
+    '/zh-CN/realtime-media/cloud-recording',
+  ],
+  [
+    'realtime-media/recording/local-server-recording',
+    '/zh-CN/realtime-media/local-server-recording',
+  ],
+];
+
 export function resolveZhCnProductIaRedirect(
   locale: string,
   tab: string,
@@ -1404,7 +1415,15 @@ export function resolveZhCnProductIaRedirect(
     return null;
   }
 
-  return ZH_CN_PRODUCT_IA_REDIRECTS[`${tab}/${slugSegments.join('/')}`] ?? null;
+  const path = `${tab}/${slugSegments.join('/')}`;
+
+  for (const [sourcePrefix, targetPrefix] of ZH_CN_PRODUCT_IA_PREFIX_REDIRECTS) {
+    if (path === sourcePrefix || path.startsWith(`${sourcePrefix}/`)) {
+      return `${targetPrefix}${path.slice(sourcePrefix.length)}`;
+    }
+  }
+
+  return ZH_CN_PRODUCT_IA_REDIRECTS[path] ?? null;
 }
 
 export { ZH_CN_PRODUCT_IA_REDIRECTS };
