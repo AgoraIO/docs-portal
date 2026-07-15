@@ -1,0 +1,82 @@
+---
+title: 内容审核概览
+description: 对实时互动场景中的音频内容和视频画面进行风险识别，并将审核结果联动到业务处置流程。
+---
+
+内容审核服务用于识别实时互动场景中的音频内容和视频画面风险，并将审核结果联动到你的业务处置流程，帮助平台及时处理违规、不良或高风险内容。
+
+声网联合头部审核厂商提供内容审核方案。你可以根据房间类型、审核对象和成本预算，开启音频审核、视频审核，或组合使用两类能力。
+
+## 开始构建
+
+<Cards>
+  <Card title="快速开始" href="/zh-CN/realtime-media/content-moderation/enable-service" description="在控制台开通内容审核，并获取接入所需参数。" />
+  <Card title="配置说明" href="/zh-CN/realtime-media/content-moderation/build/configuration" description="设计透传字段、回调地址和业务关联方式。" />
+  <Card title="使用网易易盾视频审核" href="/zh-CN/realtime-media/content-moderation/build/netease-yidun-video-moderation" description="对实时视频流开启审核并接收结果回调。" />
+  <Card title="使用网易易盾音频审核" href="/zh-CN/realtime-media/content-moderation/build/audio-moderation-api" description="对频道内音频流进行审核并接入回调。" />
+  <Card title="内容审核最佳实践" href="/zh-CN/realtime-media/content-moderation/build/best-practices" description="查看 SDK 调用、透传字段和回调联调阶段的推荐做法。" />
+  <Card title="计费说明" href="/zh-CN/realtime-media/content-moderation/reference/billing" description="了解内容审核测试期、套餐包和关联产品计费规则。" />
+</Cards>
+
+## 技术原理
+
+内容审核会将实时音频流或视频截图传输至第三方审核厂商进行机审。审核厂商根据涉黄、涉恐、涉政、广告等审核模型识别风险内容，并返回审核结果。
+
+内容审核包含以下两类能力：
+
+- 音频审核：对频道内的实时音频流进行审核。
+- 视频审核：通过 SDK 按设定频率对视频流截图，并将截图送审。
+
+审核结果由第三方审核厂商回调到你配置的业务服务器。你可以根据审核结果联动业务侧的管控措施，例如禁言、下麦、断播、封禁账号或转人工复核。
+
+在实际接入中，建议你提前规划以下三类信息：
+
+- 审核对象：确定业务需要审核音频、视频，或两者同时审核。
+- 业务关联字段：提前设计房间 ID、用户 ID、场次 ID 等透传字段，便于在回调侧精确定位风险内容。
+- 处置策略：根据风险等级预设提醒、禁言、下麦、断播、复核或封禁等动作。
+
+## 技术架构
+
+声网内容审核服务由以下三段链路组成：
+
+- 客户端链路：用户加入 RTC 频道，采集实时音频流，并在需要时通过审核插件对视频进行周期性截图。
+- 声网链路：声网云端接收音频流或截图内容，完成云端录制、音频采集、截图加密转发等能力编排。
+- 审核厂商链路：第三方审核厂商完成语音审核或图片审核，并通过 Webhook 将审核结果回调给你的业务服务器。
+
+![内容审核技术架构](https://assets-docs.agora.io/images/content-moderation/architecture.png)
+
+## 适用场景
+
+你可以使用内容审核服务实现如下业务场景：
+
+| 业务场景 | 功能描述 |
+| --- | --- |
+| 语聊房 | 对房间实时音频流进行智能风控核验，识别低俗色情、言语冲突、恶意引流等违规信息，并联动禁言、下麦、房间封禁等管控手段，实现违规行为即时处置。 |
+| 直播间 | 对公开直播间，同步审核主播音频和视频画面，在风险触发后实时预警，并自动执行断播、账号管控或转入人工复核。对私密房间，通过重点视频帧巡检和音频审核识别低俗互动、不雅画面及引流行为。 |
+| 在线 K 歌 | 针对用户演唱间隙出现的辱骂、涉政、色情等违规言论，持续审核麦上语音，并辅以视频画面抽帧巡检，维持演唱互动场景秩序。 |
+| 游戏语音开黑 | 针对玩家辱骂、不当时政言论、商业引流等违规语音，实时完成语音审核，并结合提醒、禁言、封禁等分级处置机制进行治理。 |
+| 在线教育和会议 | 检测共享画面、镜头画面和实时语音中的违规内容，精准定位违规主体，减少对整体课堂或会议流程的影响。 |
+
+## 服务优势
+
+| 优势 | 描述 |
+| --- | --- |
+| 音视频风险内容检测能力 | 支持对互动场景中的音频内容与视频画面进行安全检测，辅助识别色情低俗、暴恐违禁、广告引流等风险内容。 |
+| 多场景审核接入能力 | 支持语聊房、直播间、连麦互动、社交房等实时音视频场景接入，适配不同业务形态下的内容安全治理需求。 |
+| 审核结果联动能力 | 支持汇聚音频审核结果与视频审核结果，便于业务侧结合房间、用户、时间点等维度进行统一风险判断与后续处置。 |
+| 灵活策略配置能力 | 支持根据场景特点配置审核频率、风险等级和处置策略，在审核效果、业务成本和运营效率之间进行平衡。 |
+| 出海内容安全一站解决 | 声网 RTC 覆盖 200 多个国家和地区，并联合头部审核厂商提供多语种内容审核能力，帮助你搭建全球化内容安全体系。 |
+
+## 接入路径建议
+
+建议按以下顺序完成内容审核接入：
+
+1. 阅读[快速开始](/zh-CN/realtime-media/content-moderation/enable-service)，在控制台开通音频审核、视频审核并准备 App ID、Token 和回调地址。
+2. 阅读[配置说明](/zh-CN/realtime-media/content-moderation/build/configuration)，设计透传字段和服务端回调处理逻辑。
+3. 按需接入[使用网易易盾视频审核](/zh-CN/realtime-media/content-moderation/build/netease-yidun-video-moderation)或[使用网易易盾音频审核](/zh-CN/realtime-media/content-moderation/build/audio-moderation-api)。
+4. 参考[内容审核最佳实践](/zh-CN/realtime-media/content-moderation/build/best-practices)完成 SDK 调用规范、回调联调和常见问题排查。
+5. 阅读[计费说明](/zh-CN/realtime-media/content-moderation/reference/billing)，确认测试期、套餐包额度和超额计费规则。
+
+## 业务上下文透传
+
+在接入内容审核时，建议根据业务需要透传房间、用户和业务标识等上下文信息，用于在回调侧快速完成业务关联和后续处置。具体字段设计和配置方式请参考[配置说明](/zh-CN/realtime-media/content-moderation/build/configuration)。
