@@ -310,15 +310,15 @@ describe('docs tree helpers', () => {
                   children: [],
                   index: {
                     $id: 'zh-CN-rtc-index',
-                    name: '实时音视频',
+                    name: '实时互动 RTC',
                     type: 'page',
                     url: '/zh-CN/realtime-media/rtc',
                   },
-                  name: '实时音视频',
+                  name: '实时互动 RTC',
                   type: 'folder',
                 },
               ],
-              name: '实时与媒体',
+              name: '实时互动',
               root: true,
               type: 'folder',
             },
@@ -333,7 +333,7 @@ describe('docs tree helpers', () => {
     expect(getTabSummaries(tree)).toEqual([
       {
         id: 'realtime-media',
-        title: '实时与媒体',
+        title: '实时互动',
         url: '/zh-CN/realtime-media/rtc',
       },
     ]);
@@ -791,11 +791,11 @@ describe('docs tree helpers', () => {
               ],
               index: {
                 $id: 'realtime-index',
-                name: '实时与媒体',
+                name: '实时互动',
                 type: 'page',
                 url: '/zh-CN/realtime-media',
               },
-              name: '实时与媒体',
+              name: '实时互动',
               root: true,
               type: 'folder',
             },
@@ -810,7 +810,7 @@ describe('docs tree helpers', () => {
     expect(getTabSummaries(nestedProductTree)).toEqual([
       {
         id: 'realtime-media',
-        title: '实时与媒体',
+        title: '实时互动',
         url: '/zh-CN/realtime-media',
       },
     ]);
@@ -818,7 +818,7 @@ describe('docs tree helpers', () => {
     expect(getSidebarNodes(nestedProductTree, 'realtime-media')).toEqual([
       {
         id: '/zh-CN/realtime-media',
-        title: '实时与媒体',
+        title: '实时互动',
         type: 'page',
         url: '/zh-CN/realtime-media',
       },

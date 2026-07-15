@@ -879,7 +879,7 @@ const ROOT_TAB_IDS_BY_TITLE: Record<
   'API 参考': 'api-reference',
   AI: 'ai',
   介绍: 'introduction',
-  实时与媒体: 'realtime-media',
+  实时互动: 'realtime-media',
   解决方案: 'solutions',
 };
 
