@@ -9,7 +9,7 @@ description: "Provides periodic call-usage and call-quality statistics."
 
 1. Subscribe to a [pricing plan](../../reference/pricing.md) to enable the **Data Insights** feature for your project.
 
-2. Log in to [Agora Console](https://console.agora.io/v2) and click **Agora Analytics** on the left navigation bar.
+2. In [Agora Console](https://console.agora.io/v2), select **Analytics** in the left navigation to open Agora Analytics in a new tab.
 
 3. Select a project in the top-left corner.
 

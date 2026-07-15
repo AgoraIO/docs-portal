@@ -1,5 +1,5 @@
 ---
-title: "Receive notifications about channel events"
+title: "Receive webhook notifications"
 description: "Subscribe to Media Gateway events and receive webhook notifications in real time."
 ---
 A webhook is a user-defined callback over HTTPS that allows your app or back-end system to receive notifications when certain events occur. Agora calls your webhook endpoint from its servers to send notifications about Media Gateway events. With Notifications, you can subscribe to Media Gateway events and receive notifications in real time.
@@ -138,14 +138,25 @@ To obtain an auth token, [sign up](https://dashboard.ngrok.com/signup) with ngro
 
 ## Enable Notifications
 
-In Agora Console, open your project, configure the webhook URL, and subscribe to the Media Gateway events you need.
+To enable Notifications for Media Gateway events:
 
-Relevant UI screenshots:
+1. In [Agora Console](https://console.agora.io/v2), go to **Realtime Services** and select **Notifications** under **Media Services**.
 
-![Project tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-project-tabs.png)
-![Notification tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-notification-tab.png)
-![Notification configuration tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-configuration-tab.png)
-![Apply settings](https://assets-docs.agora.io/images/video-sdk/enable-ncs-apply-settings.png)
+1. In the notification type list, select **Media Gateway**.
+
+1. Copy the **Secret** for the notification type. You use this secret to [Add signature verification](#add-signature-verification).
+
+1. Select **Create notification** and fill in the following:
+
+   * **Receiving region**: Select the region where your server that receives the notifications is located. Agora connects to the nearest Agora node server based on your selection.
+
+   * **Receiving URL**: The `HTTPS` public address of your server that receives the notifications, for example `https://1111-123-456-789-99.ap.ngrok.io/ncsNotify`. Only `HTTPS` endpoints are supported.
+
+   * **Subscribed events**: Select all the events that you want to subscribe to.
+
+   * **IP whitelist**: If your server is behind a firewall, enable this option and add the Agora Notifications server IP addresses to the firewall's allowed IP list.
+
+1. Select **Run health check**, and when it succeeds, select **Save**.
 
 ## Verify Notifications signatures
 

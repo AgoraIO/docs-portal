@@ -17,7 +17,7 @@ To access the Real-time Monitoring page, do the following:
 
 1. Subscribe to a [pricing plan](../../reference/pricing.md) to enable the **Real-time Monitoring** feature for your project.
 
-2. Log in to [Agora Console](https://console.agora.io/v2) and click **Agora Analytics** &gt; **Real-time Monitoring** on the left navigation bar.
+2. In [Agora Console](https://console.agora.io/v2), select **Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Real-time Monitoring**.
 
 This section walks you through the Real-time Monitoring page and its basic features.
 
