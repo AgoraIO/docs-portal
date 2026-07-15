@@ -194,21 +194,22 @@ print('Agent started:', agent_id)
 
 ```bash tab="REST API" tabGroup="agent-sdk-language"
 curl --request POST \
-  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join \
+  --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/join \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --data '{
-    "name": "unique_name",
+    "name": "support-assistant",
     "properties": {
       "channel": "<your_channel_name>",
       "token": "<your_rtc_token>",
-      "agent_rtc_uid": "0",
+      "agent_rtc_uid": "1001",
       "remote_rtc_uids": ["1002"],
       "enable_string_uid": false,
       "idle_timeout": 120,
       "llm": {
-        "url": "https://api.openai.com/v1/chat/completions",
-        "api_key": "<your_llm_api_key>",
+        "vendor": "aliyun",
+        "url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+        "api_key": "<your_aliyun_api_key>",
         "system_messages": [
           {
             "role": "system",
@@ -219,18 +220,28 @@ curl --request POST \
         "failure_message": "抱歉，我暂时无法回答这个问题。",
         "max_history": 10,
         "params": {
-          "model": "gpt-4o-mini"
+          "model": "qwen-plus"
         }
       },
       "asr": {
-        "language": "zh-CN"
+        "language": "zh-CN",
+        "vendor": "fengming"
       },
       "tts": {
-        "vendor": "microsoft",
+        "vendor": "minimax",
         "params": {
+          "group_id": "<your_minimax_group_id>",
           "key": "<your_tts_api_key>",
-          "region": "eastus",
-          "voice_name": "zh-CN-XiaoxiaoNeural"
+          "model": "speech-01-turbo",
+          "voice_setting": {
+            "voice_id": "female-shaonv",
+            "speed": 1,
+            "vol": 1,
+            "pitch": 0
+          },
+          "audio_setting": {
+            "sample_rate": 16000
+          }
         }
       }
     }
@@ -267,7 +278,7 @@ session.stop()
 
 ```bash tab="REST API" tabGroup="agent-sdk-language"
 curl --request POST \
-  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave \
+  --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --data '{}'
 ```

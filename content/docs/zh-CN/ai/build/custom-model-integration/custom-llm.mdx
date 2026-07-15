@@ -364,86 +364,19 @@ func main() {
 
 ### 配置声网对话式 AI 引擎
 
-通过 Agents SDK 创建会话或调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时，将 LLM 配置指向你的自定义服务。
+在调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时，将 LLM 配置指向你的自定义服务：
 
 :::info[信息]
-- 在中国大陆区域路由场景下，Python、TypeScript 和 Go 版 Agents SDK 都可以接入自定义兼容 OpenAI API 的 LLM 服务。
-- 其中，TypeScript SDK 将 `CustomLLM` 显式纳入了 CN LLM vendor 类型；Go 和 Python SDK 则复用全局 `CustomLLM` 构造器/类，但同样可以配合中国大陆区域路由使用。
-- 如果访问你的自定义大模型服务需要校验身份，请在 `api_key`、`apiKey` 或 `APIKey` 字段中传入你的认证信息。
+如果访问你的自定义大模型服务需要校验身份，请在 `api_key` 字段中传入你的认证信息。
 :::
 
-```python tab="Python SDK" tabGroup="agent-sdk-language"
-from agora_agent import Agent, Agora, Area, CustomLLM
-
-client = Agora(
-    area=Area.CN,
-    app_id="your-app-id",
-    app_certificate="your-app-certificate",
-)
-
-agent = Agent(client=client).with_llm(
-    CustomLLM(
-        api_key="your-llm-api-key",
-        base_url="https://your-custom-llm-service/chat/completions",
-        model="your-model-name",
-        system_messages=[
-            {"role": "system", "content": "You are a helpful assistant."}
-        ],
-    )
-)
-```
-
-```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
-import { AgoraClient, Agent, Area, CustomLLM } from 'agora-agents';
-
-const client = new AgoraClient({
-  area: Area.CN,
-  appId: 'your-app-id',
-  appCertificate: 'your-app-certificate',
-});
-
-const agent = new Agent({ client }).withLlm(new CustomLLM({
-  url: 'https://your-custom-llm-service/chat/completions',
-  model: 'your-model-name',
-  apiKey: 'your-llm-api-key',
-  systemMessages: [
-    {
-      role: 'system',
-      content: 'You are a helpful assistant.',
-    },
-  ],
-}));
-```
-
-```go tab="Go SDK" tabGroup="agent-sdk-language"
-import (
-    agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
-    vendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-)
-
-client := agentkit.NewAgoraClient(agentkit.ClientOptions{
-    AppID:          "your-app-id",
-    AppCertificate: "your-app-certificate",
-})
-
-agent := agentkit.NewAgent(client).WithLlm(
-    vendors.NewCustomLLM(vendors.CustomLLMOptions{
-        APIKey:  "your-llm-api-key",
-        BaseURL: "https://your-custom-llm-service/chat/completions",
-        Model:   "your-model-name",
-        SystemMessages: []map[string]interface{}{
-            {"role": "system", "content": "You are a helpful assistant."},
-        },
-    }),
-)
-```
-
-```json tab="REST API" tabGroup="agent-sdk-language"
+```json
 {
   "llm": {
+    // highlight-start  
     "url": "https://your-custom-llm-service/chat/completions",
-    "api_key": "your-llm-api-key",
-    "model": "your-model-name",
+    "api_key": "",
+    // highlight-end
     "system_messages": [
       {
         "role": "system",
@@ -967,92 +900,17 @@ func (s *Server) readTextFile(filePath string) (string, error) {
 }
 ```
 
-如果你通过 Agents SDK 接入，只需将 `CustomLLM` 的请求地址指向音频输出接口；如果你直接调用 REST API，则按以下 `llm` 配置传入。
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时，参考如下配置：
 
-:::info[信息]
-在中国大陆区域路由场景下，Python、TypeScript 和 Go 版 Agents SDK 都可以把 `CustomLLM` 指向支持音频输出的自定义接口。
-:::
-
-```python tab="Python SDK" tabGroup="agent-sdk-language"
-from agora_agent import Agent, Agora, Area, CustomLLM
-
-client = Agora(
-    area=Area.CN,
-    app_id="your-app-id",
-    app_certificate="your-app-certificate",
-)
-
-agent = Agent(client=client).with_llm(
-    CustomLLM(
-        api_key="your-llm-api-key",
-        base_url="https://your-custom-llm-service/audio/chat/completions",
-        model="your-model-name",
-        input_modalities=["text"],
-        output_modalities=["text", "audio"],
-        system_messages=[
-            {"role": "system", "content": "You are a helpful assistant."}
-        ],
-    )
-)
-```
-
-```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
-import { AgoraClient, Agent, Area, CustomLLM } from 'agora-agents';
-
-const client = new AgoraClient({
-  area: Area.CN,
-  appId: 'your-app-id',
-  appCertificate: 'your-app-certificate',
-});
-
-const agent = new Agent({ client }).withLlm(new CustomLLM({
-  apiKey: 'your-llm-api-key',
-  url: 'https://your-custom-llm-service/audio/chat/completions',
-  model: 'your-model-name',
-  inputModalities: ['text'],
-  outputModalities: ['text', 'audio'],
-  systemMessages: [
-    {
-      role: 'system',
-      content: 'You are a helpful assistant.',
-    },
-  ],
-}));
-```
-
-```go tab="Go SDK" tabGroup="agent-sdk-language"
-import (
-    agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
-    vendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-)
-
-client := agentkit.NewAgoraClient(agentkit.ClientOptions{
-    AppID:          "your-app-id",
-    AppCertificate: "your-app-certificate",
-})
-
-agent := agentkit.NewAgent(client).WithLlm(
-    vendors.NewCustomLLM(vendors.CustomLLMOptions{
-        APIKey:           "your-llm-api-key",
-        BaseURL:          "https://your-custom-llm-service/audio/chat/completions",
-        Model:            "your-model-name",
-        InputModalities:  []string{"text"},
-        OutputModalities: []string{"text", "audio"},
-        SystemMessages: []map[string]interface{}{
-            {"role": "system", "content": "You are a helpful assistant."},
-        },
-    }),
-)
-```
-
-```json tab="REST API" tabGroup="agent-sdk-language"
+```json
 {
   "llm": {
     "url": "http://your-custom-llm-service/audio/chat/completions",
     "api_key": "your_api_key",
-    "model": "your-model-name",
+    // highlight-start
     "input_modalities": ["text"],
-    "output_modalities": ["text", "audio"],
+    "output_modalities": ["text", "audio"]
+    // highlight-end
     "system_messages": [
       {
         "role": "system",
