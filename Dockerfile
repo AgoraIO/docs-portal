@@ -1,9 +1,11 @@
 # syntax=docker/dockerfile:1
 # check=skip=SecretsUsedInArgOrEnv
 
-FROM oven/bun:1.3.12-alpine AS dependencies
+FROM node:22-bookworm AS dependencies
 
 WORKDIR /app
+
+RUN npm install -g bun@1.3.12
 
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile --ignore-scripts
@@ -22,7 +24,7 @@ ARG VITE_ALGOLIA_INDEX_NAME=
 ARG VITE_POSTHOG_KEY=
 ARG VITE_POSTHOG_HOST=https://us.i.posthog.com
 # The complete docs build needs a container/build agent with at least 4 GiB RAM.
-ARG NODE_MAX_OLD_SPACE_SIZE=1536
+ARG NODE_MAX_OLD_SPACE_SIZE=4096
 
 ENV VITE_DOCS_REGION=${VITE_DOCS_REGION}
 ENV SITE_URL=${SITE_URL}
