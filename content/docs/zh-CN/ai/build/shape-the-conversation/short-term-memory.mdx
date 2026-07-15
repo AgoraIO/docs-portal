@@ -119,29 +119,8 @@ description: "了解如何在对话式 AI 引擎中智能体短期记忆，包�
 
 声网对话式 AI 引擎支持两种方式获取短期记忆：
 
-- 智能体运行期间，你可以通过 Agents SDK 或 [GET 获取智能体短期记忆](/zh-CN/api-reference/api-ref/conversational-ai/history)接口获取短期记忆 JSON。该接口会得到智能体生命周期内储存的完整的短期记忆。
+- 智能体运行期间，你可以调用 [GET 获取智能体短期记忆](/zh-CN/api-reference/api-ref/conversational-ai/history)接口获取短期记忆 JSON。该接口会得到智能体生命周期内储存的完整的短期记忆。
 - 智能体停止后，声网会通过消息通知服务将短期记忆回调至你的业务服务器，详见[消息通知事件类型](/zh-CN/ai/reference/event-types#103-agent-history)。
-
-```go tab="Go SDK" tabGroup="agent-sdk-language"
-history, err := session.GetHistory(ctx)
-if err != nil {
-    log.Fatal(err)
-}
-```
-
-```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
-const history = await session.getHistory();
-```
-
-```python tab="Python SDK" tabGroup="agent-sdk-language"
-history = session.get_history()
-```
-
-```bash tab="REST API" tabGroup="agent-sdk-language"
-curl --request GET \
-  --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/history \
-  --header 'Authorization: agora token="007abcxxxxxxx123"'
-```
 
 ## 短期记忆的应用
 
@@ -288,57 +267,4 @@ curl --request GET \
 ]
 ```
 
-此外，自 v1.4 起，支持在智能体运行时，通过 Agents SDK 或 [POST 更新智能体配置](/zh-CN/api-reference/api-ref/conversational-ai/update)更新 `system_messages` 字段，从而实现记忆内容的更新。
-
-```go tab="Go SDK" tabGroup="agent-sdk-language"
-// properties 使用 REST API 的 properties 更新结构，
-// 其中 llm.system_messages 写入新的记忆内容。
-if err := session.Update(ctx, properties); err != nil {
-    log.Fatal(err)
-}
-```
-
-```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
-await session.update({
-  llm: {
-    system_messages: [
-      {
-        role: 'system',
-        content: '用户此前提到的偏好：喜欢简洁回答，并关注价格信息。',
-      },
-    ],
-  },
-});
-```
-
-```python tab="Python SDK" tabGroup="agent-sdk-language"
-session.update({
-    'llm': {
-        'system_messages': [
-            {
-                'role': 'system',
-                'content': '用户此前提到的偏好：喜欢简洁回答，并关注价格信息。',
-            },
-        ],
-    },
-})
-```
-
-```bash tab="REST API" tabGroup="agent-sdk-language"
-curl --request POST \
-  --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/update \
-  --header 'Authorization: agora token="007abcxxxxxxx123"' \
-  --header 'Content-Type: application/json' \
-  --data '{
-    "properties": {
-      "llm": {
-        "system_messages": [
-          {
-            "role": "system",
-            "content": "用户此前提到的偏好：喜欢简洁回答，并关注价格信息。"
-          }
-        ]
-      }
-    }
-  }'
-```
+此外，自 v1.4 起，支持在智能体运行时，调用 [POST 更新智能体配置](/zh-CN/api-reference/api-ref/conversational-ai/update)更新 `system_messages` 字段, 从而实现记忆内容的更新。
