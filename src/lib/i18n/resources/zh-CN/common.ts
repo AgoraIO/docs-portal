@@ -126,8 +126,8 @@ const zhCnCommon = {
         title: '声网能力域',
         items: {
           platformOverview: '平台总览',
-          ai: '对话式 AI',
-          rtc: '实时音视频',
+          ai: '对话式 AI 引擎',
+          rtc: '实时互动 RTC',
           messaging: '实时消息',
           media: '媒体服务',
           solutions: '场景方案',
@@ -148,12 +148,12 @@ const zhCnCommon = {
     },
     featureCards: {
       aiQuickstart: {
-        title: '对话式 AI 快速开始',
+        title: '对话式 AI 引擎快速开始',
         body: '从实时对话、语音模型和 Agent 集成开始，建立第一条 AI 交互链路。',
       },
       rtcQuickstart: {
         title: 'RTC 快速开始',
-        body: '接入实时音视频核心能力，完成通话、直播或互动场景的第一条音视频链路。',
+        body: '接入实时互动 RTC 核心能力，完成通话、直播或互动场景的第一条音视频链路。',
       },
       rtmQuickstart: {
         title: '实时消息快速开始',
@@ -171,7 +171,7 @@ const zhCnCommon = {
         },
         rtc: {
           title: 'RTC',
-          body: '客户端 SDK、服务端 SDK、实时音视频核心能力。',
+          body: '客户端 SDK、服务端 SDK、实时互动 RTC 核心能力。',
         },
         messaging: {
           title: '实时消息',
@@ -260,7 +260,7 @@ const zhCnCommon = {
         },
       },
       aiDomain: {
-        title: '对话式 AI',
+        title: '对话式 AI 引擎',
         description:
           '围绕 ConvoAI、Device Kit 和 Agent 集成组织文档，帮助开发者从实时语音对话走到完整的 AI 交互产品实现。',
         section1: {
@@ -275,7 +275,7 @@ const zhCnCommon = {
         },
       },
       rtcDomain: {
-        title: '实时音视频',
+        title: '实时互动 RTC',
         description:
           'RTC 是声网最核心的基础能力之一，对应客户端 SDK、服务端 SDK、互动直播和实时通话的主链路。',
         section1: {

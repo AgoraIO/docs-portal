@@ -19619,389 +19619,389 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-09T02:41:49.000Z',
   'content/docs/zh-CN/realtime-media/overview.mdx': '2026-07-09T02:43:19.000Z',
   'content/docs/zh-CN/realtime-media/recording.md': '2026-05-14T11:07:52.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/api/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/api/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/api/reference.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/api/reference.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/best-practices/checklist.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/best-practices/checklist.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/best-practices/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/best-practices/meta.json':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/best-practices/recording-status.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/best-practices/recording-status.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/best-practices/rest-availability.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/best-practices/rest-availability.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/best-practices/webpage.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/best-practices/webpage.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/implement-core-features/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/quick-start-nodejs.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/implement-core-features/quick-start-nodejs.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/service.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/implement-core-features/service.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/status.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/implement-core-features/status.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/uploading.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/webpage.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/manage-recorded-files/convert-format.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/convert-format.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/manage-recorded-files/introduce-recorded-files.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/introduce-recorded-files.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/manage-recorded-files/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/manage-recorded-files/play-online.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/play-online.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/manage-recorded-files/playback.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/playback.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/meta.json':
     '2026-07-09T02:43:17.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/monitor-events/enable-ncs.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/monitor-events/enable-ncs.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/monitor-events/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/monitor-events/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/optimize-and-operate/checklist.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/checklist.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/optimize-and-operate/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/optimize-and-operate/recording-status.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/recording-status.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/optimize-and-operate/rest-availability.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/rest-availability.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/optimize-and-operate/webpage.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/webpage.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/individual-mode/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/meta.json':
     '2026-07-09T02:43:17.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/individual-mode/set-individual-without-transcoding.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual-without-transcoding.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/individual-mode/set-individual.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/meta.json':
     '2026-07-09T02:43:17.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/mix-mode/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/meta.json':
     '2026-07-09T02:43:17.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/mix-mode/set-composite-layout.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite-layout.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/mix-mode/set-composite.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/snapshot.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/snapshot.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/web-mode/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/meta.json':
     '2026-07-09T02:43:17.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/web-mode/set-webpage-recording.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/enable-service.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/setup-and-access/enable-service.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/http-basic-auth.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/build/setup-and-access/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/get-started/enable-service.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/get-started/enable-service.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/get-started/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/get-started/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/get-started/quick-start-go.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/get-started/quick-start-go.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/get-started/quick-start-java.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/get-started/quick-start-java.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/get-started/quick-start-nodejs.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/get-started/quick-start-nodejs.mdx':
     '2026-07-09T02:38:53.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/get-started/quick-start.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/get-started/quick-start.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/index.md':
+  'content/docs/zh-CN/realtime-media/cloud-recording/index.md':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/index.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/index.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/mcp-integrate.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/mcp-integrate.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/overview/billing-strategy/billing.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/overview/billing-strategy/billing.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/overview/billing-strategy/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/overview/billing-strategy/meta.json':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/overview/billing-strategy/payment.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/overview/billing-strategy/payment.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/overview/billing-strategy/snapshot-billing.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/overview/billing-strategy/snapshot-billing.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/overview/billing-strategy/webpage-billing.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/overview/billing-strategy/webpage-billing.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/overview/concepts.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/overview/concepts.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/overview/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/overview/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/overview/product-overview.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/overview/product-overview.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/overview/release-notes.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/overview/release-notes.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/quota.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/quota.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/reference/api-reference.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/reference/api-reference.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/reference/billing-strategy/billing.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/billing.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/reference/billing-strategy/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/meta.json':
     '2026-07-09T02:41:50.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/reference/billing-strategy/payment.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/payment.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/reference/billing-strategy/snapshot-billing.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/snapshot-billing.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/reference/billing-strategy/webpage-billing.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/webpage-billing.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/reference/concepts.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/reference/concepts.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/reference/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/reference/meta.json':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/reference/ncs-events.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/reference/ncs-events.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/reference/quota.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/reference/quota.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/reference/release-notes.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/reference/release-notes.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/reference/response-code.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/reference/response-code.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/response-code.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/response-code.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/skills-integrate.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/skills-integrate.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/http-basic-auth.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/http-basic-auth.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/individual-mode/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/individual-mode/meta.json':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/individual-mode/set-individual-without-transcoding.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/individual-mode/set-individual-without-transcoding.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/individual-mode/set-individual.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/individual-mode/set-individual.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/convert-format.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/manage-file/convert-format.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/introduce-recorded-files.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/manage-file/introduce-recorded-files.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/manage-file/meta.json':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/play-online.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/manage-file/play-online.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/playback.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/manage-file/playback.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/meta.json':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/mix-mode/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/mix-mode/meta.json':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/mix-mode/set-composite-layout.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/mix-mode/set-composite-layout.mdx':
     '2026-07-09T02:38:53.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/mix-mode/set-composite.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/mix-mode/set-composite.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/snapshot.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/snapshot.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/web-mode/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/web-mode/meta.json':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/web-mode/set-webpage-recording.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/user-guides/web-mode/set-webpage-recording.mdx':
     '2026-07-09T02:41:48.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/webhook/enable-ncs.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/webhook/enable-ncs.mdx':
     '2026-07-09T02:38:53.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/webhook/meta.json':
+  'content/docs/zh-CN/realtime-media/cloud-recording/webhook/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/webhook/ncs-events.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/webhook/ncs-events.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/webhook/service.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/webhook/service.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/webhook/status.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/webhook/status.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/webhook/uploading.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/webhook/uploading.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/cloud-recording/webhook/webpage.mdx':
+  'content/docs/zh-CN/realtime-media/cloud-recording/webhook/webpage.mdx':
     '2026-07-09T02:38:51.000Z',
   'content/docs/zh-CN/realtime-media/recording/index.md':
     '2026-07-09T02:41:48.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/best-practice/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/best-practice/meta.json':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/best-practice/restore-files.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/best-practice/restore-files.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/composite-mode.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/composite-mode.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/docker.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/docker.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/individual-mode.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/individual-mode.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/integrate-sdk.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/integrate-sdk.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/manage-files.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/manage-files.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/merge-files.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/merge-files.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/meta.json':
     '2026-07-09T02:43:17.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/raw-data.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/raw-data.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/record-by-cmd.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/record-by-cmd.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/set-output-video.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/set-output-video.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/meta.json':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/record-by-api.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/record-by-api.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/legacy/collect-logs.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/legacy/collect-logs.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/legacy/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/legacy/meta.json':
     '2026-07-09T02:43:17.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/legacy/restore-files.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/legacy/restore-files.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/restore-files.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/restore-files.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/legacy/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/meta.json':
     '2026-07-09T02:43:17.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/legacy/screenshot.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/screenshot.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/legacy/set-layout.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/set-layout.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/legacy/watermark.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/watermark.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/recording-mode.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/recording-mode.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/screen-capture.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/screen-capture.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/set-layout.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/set-layout.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/watermark.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/watermark.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/setup-and-access/cloud-proxy.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/setup-and-access/cloud-proxy.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/setup-and-access/enable-service.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/setup-and-access/enable-service.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/setup-and-access/generate-token.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/setup-and-access/generate-token.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/setup-and-access/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/setup-and-access/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/get-started/enable-service.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/get-started/enable-service.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/get-started/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/get-started/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/get-started/start-recording.cpp.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/get-started/start-recording.cpp.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/get-started/start-recording.java.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/get-started/start-recording.java.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/get-started/start-recording.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/get-started/start-recording.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/index.md':
+  'content/docs/zh-CN/realtime-media/local-server-recording/index.md':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/index.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/index.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/collect-logs.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/collect-logs.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/composite-mode.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/composite-mode.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/docker.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/docker.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/individual-mode.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/individual-mode.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/integrate-sdk.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/integrate-sdk.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/manage-files.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/manage-files.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/merge-files.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/merge-files.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/meta.json':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/raw-data.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/raw-data.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/record-by-api.cpp.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/record-by-api.cpp.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/record-by-api.java.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/record-by-api.java.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/record-by-api.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/record-by-api.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/record-by-cmd.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/record-by-cmd.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/restore-files.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/restore-files.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/screenshot.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/screenshot.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/set-layout.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/set-layout.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/set-output-video.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/set-output-video.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/legacy/watermark.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/legacy/watermark.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/mcp-integrate.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/mcp-integrate.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/meta.json':
     '2026-07-09T02:43:17.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/overview/billing.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/overview/billing.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/overview/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/overview/meta.json':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/overview/migration-guide.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/overview/migration-guide.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/overview/payment.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/overview/payment.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/overview/product-overview.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/overview/product-overview.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/overview/release-notes.cpp.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/overview/release-notes.cpp.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/overview/release-notes.java.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/overview/release-notes.java.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/overview/release-notes.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/overview/release-notes.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/overview/sunset.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/overview/sunset.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/reference/billing.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/reference/billing.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/reference/downloads.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/reference/downloads.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/reference/downloads/index.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/reference/downloads/index.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/reference/downloads/linux-cpp.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/reference/downloads/linux-cpp.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/reference/downloads/linux-java.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/reference/downloads/linux-java.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/reference/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/reference/meta.json':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/reference/migration-guide.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/reference/migration-guide.mdx':
     '2026-07-09T02:43:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/reference/payment.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/reference/payment.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/reference/record-by-api.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/reference/record-by-api.mdx':
     '2026-07-09T02:43:18.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/reference/release-notes.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/reference/release-notes.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/reference/sunset.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/reference/sunset.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/resources.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/resources.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/skills-integrate.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/skills-integrate.mdx':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/user-guides/cloud-proxy.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/user-guides/cloud-proxy.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/user-guides/generate-token.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/user-guides/generate-token.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/user-guides/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/user-guides/meta.json':
     '2026-07-09T02:41:49.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/user-guides/recording-mode.cpp.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/user-guides/recording-mode.cpp.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/user-guides/recording-mode.java.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/user-guides/recording-mode.java.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/user-guides/recording-mode.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/user-guides/recording-mode.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/user-guides/screen-capture.cpp.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/user-guides/screen-capture.cpp.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/user-guides/screen-capture.java.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/user-guides/screen-capture.java.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/user-guides/screen-capture.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/user-guides/screen-capture.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/user-guides/set-layout.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/user-guides/set-layout.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/user-guides/watermark.cpp.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/user-guides/watermark.cpp.mdx':
     '2026-07-09T02:41:47.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/user-guides/watermark.java.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/user-guides/watermark.java.mdx':
     '2026-07-09T02:38:51.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/user-guides/watermark.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/user-guides/watermark.mdx':
     '2026-07-09T02:41:47.000Z',
   'content/docs/zh-CN/realtime-media/recording/meta.json':
     '2026-07-09T02:41:49.000Z',

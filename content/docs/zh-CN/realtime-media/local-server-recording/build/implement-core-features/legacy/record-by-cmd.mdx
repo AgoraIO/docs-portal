@@ -1,0 +1,255 @@
+---
+title: "使用命令行录制"
+description: "了解如何在本地服务端录制中命令行录制，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+声网服务端录制 SDK 支持使用命令行或调用 API 的方式实现录制。
+
+你可以根据自己的开发习惯选择一种方式。本文介绍如何通过命令行实现录制。
+
+## 前提条件
+
+开始前请确保你已经完成录制 SDK 的环境准备和集成工作，且编译了 SDK 包中的代码示例，详见[集成客户端](/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/integrate-sdk)。
+
+:::info[信息]
+当录制 SDK 加入频道时，相当于一个哑客户端加入频道，因此需要跟声网 RTC SDK 加入相同的频道，并使用相同的 App ID 和频道场景。
+:::
+
+## 开始录制
+
+参考如下步骤，选择一种编程语言开始录制。
+
+在命令行中输入 `./recorder_local` 加上必要的参数设置，即可快速开始录制，例如：
+
+```shell
+./recorder_local --appId {你的 App ID} --channel {频道名} --uid 0 --channelProfile {0 通信模式，1 直播模式} --appliteDir Agora_Recording_SDK_for_Linux_FULL/bin
+```
+
+打开命令行工具，在 **/samples/java/bin** 目录下执行 `java RecordingSample` 并加上必要的参数设置，即可快速开始录制，例如：
+
+```shell
+java RecordingSample --appId {你的 App ID} --channel {频道名} --uid 0 --channelProfile {0 通信模式，1 直播模式} --appliteDir Agora_Recording_SDK_for_Linux_FULL/bin
+```
+
+其中：
+
+- `appId`，`channel` 和 `channelProfile` 的设置必须与声网 RTC SDK 中设置的一致。
+- `appliteDir` 必须设置为 `AgoraCoreServices` 存放的路径，SDK 包内该文件位于 `bin` 文件夹下。
+
+## 设置录制选项
+
+除上面示例中的参数外，示例项目还提供很多参数设置选项。
+
+在 **samples/cpp** 目录下执行 `./recorder_local` 命令，即可看到录制 Demo 全部的参数和选项，你可以参考下表根据需要自行设置。
+
+在 **/samples/java/bin** 目录下执行 `java RecordingSample` 命令，即可看到录制 Demo 全部的参数和选项，你可以参考下表根据需要自行设置。
+
+:::warning[注意]
+`appId`，`uid`，`channel` 和 `appliteDir` 这几个参数必须设置，如不设置则无法录制。
+:::
+
+以下参数为必填。请确保你在命令行中对其设值：
+
+- `appId`：App ID，必须和声网 RTC SDK 的 App ID 一致，详见[获取 App ID](/zh-CN/realtime-media/local-server-recording/build/setup-and-access/enable-service)。
+- `uid`：标识录制实例的用户 ID，32 位无符号整数。建议设置范围：1 到（232-1），并保证唯一性。有两种设置方式：
+  - 设置为 `0`，系统将自动分配一个用户 ID。
+  - 设置一个唯一的用户 ID（不能与频道内的任何用户 ID 重复）。
+- `channel`：希望录制的通话或直播的频道名。
+- `appliteDir`：必须设置为 `AgoraCoreServices` 存放的目录，SDK 包内该文件路径为：`Agora_Recording_SDK_for_Linux_FULL/bin/`。
+
+以下参数不是必填，但是要根据实际情况确认是否需要设置：
+
+- `channelKey`：动态密钥。如果待录制频道设置了 Token，该参数必须设置。
+- `channelProfile`：频道场景，必须和待录制频道使用相同的频道场景，否则可能导致问题。
+  - `0`：（默认）通信场景
+  - `1`：直播场景
+- `decryptionMode`：频道加密时，录制 SDK 可以启用内置的解密功能。解密方式必须与频道设置的加密方式一致。
+- `secret`：启用解密模式后，设置的解密密码。
+
+### 设置端口范围
+
+我们建议指定录制进程使用端口的范围。你可以为多个录制进程统一配置较大的端口范围（建议 40000 - 41000 或更大）。此时，录制 SDK 会在指定范围内为每个录制进程分配端口，并避免端口的冲突。
+
+:::warning[注意]
+如果不指定参数 `lowUdpPort` 和 `highUdpPort`，录制进程所使用的端口为随机端口，会有端口冲突的风险。
+
+- `lowUdpPort`：最低 UDP 端口。所设置的端口必须为正整数，且最高 UDP 端口与最低 UDP 端口差值不能小于 6。
+- `highUdpPort`：最高 UDP 端口。所设置的端口必须为正整数，且最高 UDP 端口与最低 UDP 端口差值不能小于 6。
+:::
+
+### 控制录制进程
+
+通过如下字段来控制录制进程：
+
+- `triggerMode`：选择录制启动模式。
+  - 0：（默认）自动模式，加入频道自动开始录制，离开频道自动停止录制。
+  - 1：手动模式，手动输入命令开始和结束录制。详见[当使用命令行录制时，如何控制录制进程？](/zh-CN/api-reference/faq/integration/cmd_control_record)。
+- `idle`：设置空闲频道超时退出时间，单位为秒，最小值为 3 秒，默认值为 300 秒。如果频道空闲的状态持续超过该时间，录制程序会自动退出。`idle` 的时间也会纳入计费。频道空闲包括以下情况：
+  - 通信场景下频道内没有用户发布流。
+  - 直播场景下频道内没有主播。
+
+### 选择录制内容
+
+通过如下字段对录制内容进行设置：
+
+- `isAudioOnly`：是否仅录制音频。
+  - `0`：（默认）音视频同时录制。
+  - `1`：仅启用音频录制功能，关闭视频录制。
+- `isVideoOnly`：是否仅录制视频。
+  - `0`：（默认）音视频同时录制。
+  - `1`：仅启用视频录制功能，关闭音频录制。
+- `streamType`：设置录制的视频流类型，只有在待录制频道开启了双流模式时该设置才会生效。
+  - `0`：（默认）录制视频大流。
+  - `1`：录制视频小流。
+- `autoSubscribe`：设置录制全部用户还是指定用户：
+  - `0`：录制指定用户。该参数设为 `0` 后，必须设置 `subscribeVideoUids` 或 `subscribeAudioUids` 参数选择音频流或视频流进行录制，否则就不会录制。
+  - `1`：（默认）录制所有用户。
+- `subscribeVideoUids`：录制指定用户的视频流。仅在 `autoSubscribe` 为 `0` 时生效。填入需要录制视频的用户的 UID，用逗号隔开，不要加空格，例如 --`subscribeVideoUids 123,456,789`。
+- `subscribeAudioUids`：录制指定用户的音频流。仅在 `autoSubscribe` 为 `0` 时生效。填入需要录制音频的用户的 UID，用逗号隔开，不要加空格，例如 --`subscribeAudioUids 123,456,789`。
+
+:::warning[注意]
+`isAudioOnly` 和 `isVideoOnly` 不能同时设置为 `1`。
+:::
+
+### 设置录制格式
+
+通过如下参数设置录制输出的数据格式：
+
+- `getAudioFrame`：录制音频格式。该参数设为 `1`，`2` 或 `3` （即录制原始音频数据）时，不可将 `isMixingEnabled` 设为 `1`。
+  - `0`：默认音频文件格式。
+  - `1`：原始音频数据 AAC 帧格式。
+  - `2`：原始音频数据 PCM 帧格式。
+  - `3`：原始音频数据 PCM 帧混音格式。
+
+  :::info[信息]
+  - 支持设置录制 PCM 帧格式的原始音频数据(`getAudioFrame` 为 `2` 或 `3`)的采样率。通过配置 `cfgFilePath` 参数指定 JSON 配置文件路径，JSON 配置文件示例：`{"Pcm_Sample_Rate":16000}`。
+    - `Pcm_Sample_Rate` 支持 8000 Hz, 16000 Hz, 32000 Hz。如果设置的采样率不在上述范围内，则配置不生效。
+  :::
+
+- `getVideoFrame`：录制视频格式。该参数设为 1，2，3 或 4 时，不可将 `isMixingEnabled` 设为 1。
+  - `0`：默认视频文件格式。
+  - `1`：原始视频数据 H.264 帧格式。
+  - `2`：原始视频数据 YUV 帧格式。
+  - `3`：原始视频数据 JPG 帧格式。
+  - `4`：JPG 文件格式。
+  - `5`：JPG 文件格式 + MP4 视频文件格式。
+    - 单流模式（`isMixingEnabled` 为 0）下，录制得到多个 MP4 视频文件，并截图获得多个 JPG 文件。
+    - 合流模式（`isMixingEnabled` 为 1）下，对合流录制，得到一个 MP4 视频文件。
+- `captureInterval`：截图的时间间隔，最小值为 1 秒，默认值为 5 秒，只有在 `getVideoFrame` 设为 `3`、`4` 或 `5`（单流模式）时生效。
+
+### 合流模式录制
+
+使用如下参数对合流录制进行设置：
+
+- `isMixingEnabled`：是否启用合流模式。
+  - `0`：（默认）启用单流模式录制。一个 UID 对应一个音频文件和一个视频文件。录制文件的音频属性为：采样率固定为 48 kHz，声道数和码率与原始音频流保持一致。录制文件的视频属性与原始视频流保持一致。
+  - `1`：启用合流模式录制。多个 UID 的音频混合成一个纯音频文件，多个 UID 的视频混合成一个纯视频文件。无论频道内有多少用户，都只生成 1 个混合音频文件和 1 个混合视频文件。混合文件的音频属性通过 `audioProfile` 参数进行设置，视频属性通过 `mixResolution`参数进行设置。
+
+- `mixedVideoAudio`：如果 `isMixingEnabled` 设为 `1` ，该参数可以设置是否实时混合语音和视频:
+  - `0`：（默认）不混合音频和视频。
+  - `1`：音频和视频混合成一个文件，录制文件格式为 MP4，但播放器支持有限。
+  - `2`：音频和视频混合成一个文件，录制文件格式为 MP4，支持更多播放器。
+  - `6`：音频和视频混合成一个文件，仅生成 TS 格式文件。
+  - `7`：音频和视频混合成一个文件，同时生成 MP4 和 TS 格式文件。录制成功后 SDK 会删除 TS 格式文件。
+ 具体的播放器支持请参考[录制生成的文件支持哪些播放器？](/zh-CN/api-reference/faq/integration/recording_player)。
+
+- `layoutMode`：设置视频合流布局。详见[设置合流布局](/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/set-layout)。
+  - `0`：（默认）悬浮布局。第一个加入频道的用户在屏幕上会显示为大视窗，铺满整个画布，其他用户的视频画面会显示为小视窗，从下到上水平排列，最多 4 行，每行 4 个画面，最多支持共 17 个录制画面。
+  - `1`：自适应布局。根据用户的数量自动调整每个画面的大小，每个用户的画面大小一致，最多支持 17 个录制画面。
+  - `2`：垂直布局。指定一个用户在屏幕左侧显示大视窗画面，其他用户的小视窗画面在右侧垂直排列，最多两列，一列 8 个画面，最多支持共 17 个录制画面。
+
+- `maxResolutionUid`：如果 `layoutMode` 设为 `2`（垂直布局），用该参数设置显示大流画面的用户 UID。
+- `audioProfile`：设置音频编码配置，包括采样率、码率和声道数。仅在 `isMixingEnabled` 设为 `1` 时生效。
+  - `0`：音频默认设置，采样率 48 kHz，单声道，编码码率为 48 Kbps。
+  - `1`：高音质，采样率 48 kHz，单声道，编码码率 128 Kbps。
+  - `2`：高音质立体声，采样率 48 kHz，双声道，编码码率 192 Kbps。双声道不支持原始音频数据。
+
+- `mixResolution`：如果 `isMixingEnabled` 设为 1，可以通过该参数设置合流视频的分辨率，格式为：`width`，`height`，`fps`，`Kbps`，从左至右分别对应合图的宽、高、帧率和码率。你可以参考[视频属性表](/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/set-output-video#分辨率帧率码率对照表)进行设置。
+- `defaultVideoBg`：设置合流模式下画布的默认背景图片的路径，仅支持本地 JPEG 文件。如不设置会显示黑色。
+- `defaultUserBg`：设置合流模式下用户的默认背景图片的路径，仅支持本地 JPEG 文件。如不设置会显示黑色。合流模式下，如果某用户没有视频流，就会显示该图片。
+
+  :::warning[注意]
+  该设置对声网 RTC Web SDK 的用户无效。
+  :::
+
+- `keepLastFrame`：合流模式下用户离开频道后，是否显示其视频的最后一帧：
+  - `0`：（默认）不显示视频的最后一帧。
+  - `1`：显示视频最后一帧。
+-  `cfgFilePath`：录制音频时(`isAudioOnly(1)`, `isMixingEnabled(1)`)，生成的音频文件新增 MP3 格式，且支持只生成 MP3 格式音频文件。通过配置 `cfgFilePath` 参数指定 JSON 配置文件路径，JSON 配置文件示例代码如下：
+   - 录制 AAC 和 MP3 格式音频文件
+
+     ```shell
+     {
+       # 生成音频文件增加 MP3 格式
+       "Secondary_Recorder":"mp3",
+       # 设置音频采样率
+       "Audio_Sample_Rate":16000
+     }
+     ```
+
+   - 只录制 MP3 格式音频文件
+
+     ```shell
+     {
+       # 只录制 MP3 格式音频文件
+       "Audio_Only_Record":"mp3",
+       # 设置音频采样率
+       "Audio_Sample_Rate":16000
+     }
+     ```
+
+### 录制文件路径
+
+以下两个参数都可以设置录制文件保存的路径，两个参数只能选择一个设置，不能同时使用。
+
+- `recordFileRootDir`：设置录制文件存放的根目录。设置该参数后，会按照录制日期自动生成子目录保存录制文件。
+- `cfgFilePath`：指定配置文件的路径。在该配置文件里，你可以设置保存录制文件的绝对路径，但不会自动生成子目录。配置文件的内容必须为 JSON 格式，例如：`{"Recording_Dir" : "recording path"}`，其中 `"Recording_Dir"` 是固定的，不能改动。
+
+### 其他设置
+
+- `proxyServer`：代理服务器的 IP 地址和端口号，如 `127.0.0.1:1080`。成功部署声网混合云、私有化平台后，你需要指定 Local Access Point 来设置本地代理。你可以联系 sales@shengwang.cn 了解和部署声网混合云或声网私有化平台。
+
+- `enableCloudProxy`：是否启用云代理服务。使用云代理需要先联系声网申请开通，详见[应对防火墙限制](/zh-CN/realtime-media/local-server-recording/build/setup-and-access/cloud-proxy)。
+
+  - `0`：（默认）关闭云代理服务。
+  - `1`：启用云代理服务。
+
+- `audioIndicationInterval`：说话者监测的时间间隔。默认禁用。
+
+  - `0`：（默认）禁用说话者监测的功能。
+  - `> 0`：说话者监测的时间间隔，单位为 ms。建议设置时间间隔大于 200 ms。一旦检测到频道内有人说话，命令行中会打印出当前时间段内声音最大的用户的 UID 以及当前时间段内所有说话者的 UID 和音量。
+
+- `logLevel`：设置日志过滤等级。设置完成后，只有低于和等于所设等级的日志才会被生成。默认值为 `5`。
+  - `1`：日志等级为 `Fatal`。
+  - `2`：日志等级为 `Error`。
+  - `3`：日志等级为 `Warn`。
+  - `4`：日志等级为 `Notice`。
+  - `5`：日志等级为 `Info`。
+  - `6`：日志等级为 `Debug`。
+
+- `enableIntraRequest`：是否启用关键帧请求。该参数默认为 `1`，可改善弱网下的音视频体验。如需使单流模式下录制的视频可指定播放位置，须将 `enableIntraRequest` 设为 `0`。
+
+  - `0`：禁用关键帧请求，频道内的所有发流端均每 2 秒发送一次关键帧。禁用后，单流模式下录制的视频可指定播放位置。
+  - `1`：（默认）由发流端控制是否启用关键帧请求。启用后，单流模式下录制的视频文件播放时无法指定播放位置。
+
+  :::warning[注意]
+  如发流端使用的是声网 Native SDK v2.9.2 及之前的版本，通信场景下设置该参数将无效，仅在直播场景下生效。
+  :::
+
+- `enableH265Support`：设置是否支持录制 H.265 视频流：
+
+  - `0`：（默认）不支持录制 H.265 视频流。频道内的远端用户无法发 H.265 视频流。
+  - `1`：支持录制 H.265 视频流。
+- `localAp`：配置与声网私有媒体服务器 Native 接入模块的连接。你需要传入 Local Access Point 的域名和 IP 信息，如：`localAp [ IP1 | Domain1 ], [ IP2 | Domain2 ],...[ IPN | DomainN ]`
+
+## 相关文档
+
+在录制过程中，你还可以参考如下文档：
+
+- 录制完成后，你可能需要使用转码脚本将录制的文件进行合成，详见[使用转码脚本](/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/merge-files)。
+- 如果你希望了解如何通过调用 API 实现录制，可以参考[调用 API 录制](/zh-CN/realtime-media/local-server-recording/build/implement-core-features/record-by-api)。
+
+- 录制过程中，如果出现错误码或警告码，请参考[警告码](/api-ref/recording/cpp/namespaceagora_1_1linuxsdk#a467894afed372a4fe76594a6223869a0)。
+
+- 录制过程中，如果出现错误码或警告码，请参考[警告码](/api-ref/recording/java/enumio_1_1agora_1_1recording_1_1common_1_1_common_1_1_e_r_r_o_r___c_o_d_e___t_y_p_e)和[错误码](/api-ref/recording/java/enumio_1_1agora_1_1recording_1_1common_1_1_common_1_1_e_r_r_o_r___c_o_d_e___t_y_p_e)。
+
+- 如果录制文件或状态出现异常，你还可以参考[录制文件异常](/zh-CN/api-reference/faq/quality/record_file_issue)和[录制状态异常](/zh-CN/api-reference/faq/quality/record_status_error)定位和排查问题。
