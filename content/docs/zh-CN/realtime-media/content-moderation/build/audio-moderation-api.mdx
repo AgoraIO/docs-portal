@@ -1,12 +1,12 @@
 ---
 title: "使用网易易盾音频审核"
-description: "了解如何在云市场中网易易盾音频审核，包括适用场景、配置步骤、实现要点和注意事项。"
+description: "了解如何在内容审核中网易易盾音频审核，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
 # 技术原理
 
-本文介绍如何在你的项目中使用网易易盾语音审核插件。
+本文介绍如何在你的项目中使用网易易盾音频审核服务。
 
-通过[声网云端录制](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)提供的 RESTful API，你可以对声网频道内的音频流使用第三方语音审核服务。当频道内有用户发送音频流时，审核结果会由第三方直接返回到你的服务器。
+通过[声网云端录制](/zh-CN/realtime-media/recording/cloud-recording/reference/api-reference)提供的 RESTful API，你可以对声网频道内的音频流使用第三方语音审核服务。当频道内有用户发送音频流时，审核结果会由第三方直接返回到你的服务器。
 
 ![语音审核流程](https://web-cdn.agora.io/docs-files/1669343507453)
 
@@ -24,7 +24,7 @@ description: "了解如何在云市场中网易易盾音频审核，包括适用
 
 ### 开通语音审核服务
 
-1. 注册声网开发者账号，创建项目并获取声网 App ID 和 RTC 临时 Token。详情请参考[开通云市场服务](/zh-CN/realtime-media/marketplace/get-started/enable-service)。
+1. 注册声网开发者账号，创建项目并获取声网 App ID 和 RTC 临时 Token。详情请参考[快速开始](/zh-CN/realtime-media/content-moderation/enable-service)。
 
 2. [开通云端录制服务](/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/enable-service#开通云端录制服务)。
 
@@ -44,7 +44,7 @@ description: "了解如何在云市场中网易易盾音频审核，包括适用
 
 ## 调用流程
 
-本节介绍使用网易易盾语音审核插件的基本流程。详细的 RESTful API 参数解释参见[API 参考](#api-参考)。
+本节介绍使用网易易盾音频审核服务的基本流程。详细的 RESTful API 参数解释参见[API 参考](#api-参考)。
 
 ### 1. 获取审核资源
 
@@ -183,7 +183,7 @@ curl --location --request POST  'https://api.agora.io/v1/apps/{appid}/cloud_reco
 </Tabs>
 
 :::info[信息]
-如果你需要在审核的同时录制音频流，在调用 `/start` 时可以通过 `recordingFileConfig` 配置录制文件格式，通过 `storageConfig` 配置第三方云存储。具体参数详见[开始云端录制 API](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start)。
+如果你需要在审核的同时录制音频流，在调用 `/start` 时可以通过 `recordingFileConfig` 配置录制文件格式，通过 `storageConfig` 配置第三方云存储。具体参数详见[开始云端录制 API](/zh-CN/realtime-media/recording/cloud-recording/reference/api-reference)。
 
 开启录制音频流的功能后，你可以从 `/stop` 请求的响应包体中获取录制文件上传的状态和录制文件的信息。
 :::
@@ -238,19 +238,9 @@ curl --location --request POST 'https://api.agora.io/v1/apps/{appid}/cloud_recor
 
 | 参数 | 类型 | 描述 | 备注 |
 | --- | --- | --- | --- |
-| `appid` | String | 你的[声网 App ID](/zh-CN/realtime-media/marketplace/get-started/enable-service#获取-app-id)。必须使用待审核的频道所对应的 App ID。 | 路径参数 |
+| `appid` | String | 你的[声网 App ID](/zh-CN/realtime-media/content-moderation/enable-service#获取-app-id)。必须使用待审核的频道所对应的 App ID。 | 路径参数 |
 | `cname` | String | 待审核的频道名。 | Body 参数 |
-| `uid` | String | <Slot name="audio-moderation-api-html-0-3-2" /> | Body 参数 |
-
-<Slot for="audio-moderation-api-html-0-3-2">
-
-标识语音审核服务（相当于频道内一个不发流的客户端）的用户 ID，例如`"527841"`。需满足以下条件：
-
-        - 取值范围 1 到 (232-1)，不可设置为 0。
-        - 不能与当前频道内的任何用户 ID 重复。
-        - 字段引号内为整型用户 ID，且频道内所有用户均使用整型用户 ID。
-
-</Slot>
+| `uid` | String | 标识音频审核服务（相当于频道内一个不发流的客户端）的用户 ID，例如 `"527841"`。取值范围为 `[1, 2^32 - 1]`，不可设置为 `0`，不能与当前频道内的任何用户 ID 重复，且频道内所有用户均需使用整型用户 ID。 | Body 参数 |
 
 ##### 公共响应参数
 
@@ -276,16 +266,7 @@ curl --location --request POST 'https://api.agora.io/v1/apps/{appid}/cloud_recor
 
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
-| `clientRequest` | Object | <Slot name="audio-moderation-api-html-1-1-2" /> |
-
-<Slot for="audio-moderation-api-html-1-1-2">
-
-客户请求参数，使用语音审核时你需要设置该对象的 `resourceExpiredHour` 字段。
-
-        - `resourceExpiredHour` 为 Number 类型，单位为小时，用于设置语音审核 RESTful API 的调用时效，从成功开启审核任务并获得 `sid` （审核 ID）后开始计算。超时后，你将无法调用 `/query`、`/update` 和 `/stop` 接口。
-        - `resourceExpiredHour` 需大于等于 `1`， 且小于等于 `720`，默认值为 `72`。
-
-</Slot>
+| `clientRequest` | Object | 客户请求参数，使用音频审核时你需要设置该对象的 `resourceExpiredHour` 字段，用于设置音频审核 RESTful API 的调用时效。 |
 
 #### 响应参数
 
@@ -343,16 +324,7 @@ POST https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/acquire HTTPS/1.
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `resourceid` | String | 通过 `/acquire` 请求获取的审核资源 ID。 |
-| `mode` | String | <Slot name="audio-moderation-api-html-2-2-2" /> |
-
-<Slot for="audio-moderation-api-html-2-2-2">
-
-审核模式，支持以下模式：
-
-        - 单流模式（`individual`）：分开审核频道内每个 UID 的音频流。
-        - 合流模式（`mix`）：将频道内所有（或指定）UID 的音频流混合为一路流后进行审核。
-
-</Slot>
+| `mode` | String | 审核模式，支持 `individual`（单流模式）和 `mix`（合流模式）。 |
 
 ##### Body 参数
 
@@ -360,17 +332,7 @@ POST https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/acquire HTTPS/1.
 
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
-| `clientRequest` | Object | <Slot name="audio-moderation-api-html-3-1-2" /> |
-
-<Slot for="audio-moderation-api-html-3-1-2">
-
-特定的客户请求参数，对于该请求包含以下参数：
-
-        - `token`：String 类型，用于鉴权的 RTC Token。如果你的项目已启用 App 证书，则务必在该参数中传入你项目的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
-        - `recordingConfig`：JSON Object 类型，声网频道内音频流订阅的详细设置，声网会将你订阅的音频流发送给第三方语音审核服务。详见 [recordingConfig 成员列表](#recordingConfig)。
-        - `extensionServiceConfig`：JSON Object 类型，第三方语音审核服务的详细设置。详见 [extensionServiceConfig 成员列表](#extensionServiceConfig)。
-
-</Slot>
+| `clientRequest` | Object | 特定的客户请求参数，包含 `token`、`recordingConfig` 和 `extensionServiceConfig` 等字段。 |
 
 **recordingConfig 成员如下：** <a id="recordingConfig"></a>
 
@@ -556,16 +518,7 @@ POST https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/resourceid/{reso
 | --- | --- | --- |
 | `resourceid` | String | 通过 `/acquire` 请求获取的审核资源 ID。 |
 | `sid` | String | 通过 `/start` 请求获取的审核任务 ID。 |
-| `mode` | String | <Slot name="audio-moderation-api-html-4-3-2" /> |
-
-<Slot for="audio-moderation-api-html-4-3-2">
-
-审核模式，支持以下模式：
-
-         - 单流模式（`individual`）：分开审核频道内每个 UID 的音频流。
-         - 合流模式（`mix`）：将频道内所有（或指定）UID 的音频流混合为一路流后进行审核。
-
-</Slot>
+| `mode` | String | 审核模式，支持 `individual`（单流模式）和 `mix`（合流模式）。 |
 
 #### 响应参数
 
@@ -644,16 +597,7 @@ GET https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/resourceid/{resou
 | --- | --- | --- |
 | `resourceid` | String | 通过 `/acquire` 请求获取的审核资源 ID。 |
 | `sid` | String | 通过 `/start` 请求获取的审核任务 ID。 |
-| `mode` | String | <Slot name="audio-moderation-api-html-5-3-2" /> |
-
-<Slot for="audio-moderation-api-html-5-3-2">
-
-审核模式，支持以下模式：
-
-        - 单流模式（`individual`）：分开审核频道内每个 UID 的音频流。
-        - 合流模式（`mix`）：将频道内所有（或指定）UID 的音频流混合为一路流后进行审核。
-
-</Slot>
+| `mode` | String | 审核模式，支持 `individual`（单流模式）和 `mix`（合流模式）。 |
 
 ##### Body 参数
 
@@ -727,16 +671,7 @@ POST https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resource
 | --- | --- | --- |
 | `resourceid` | String | 通过 `/acquire` 请求获取的审核资源 ID。 |
 | `sid` | String | 通过 `/start` 请求获取的审核任务 ID。 |
-| `mode` | String | <Slot name="audio-moderation-api-html-6-3-2" /> |
-
-<Slot for="audio-moderation-api-html-6-3-2">
-
-审核模式，支持以下模式：
-
-      - 单流模式（`individual`）：分开审核频道内每个 UID 的音频流。
-      - 合流模式（`mix`）：将频道内所有（或指定）UID 的音频流混合为一路流后进行审核。
-
-</Slot>
+| `mode` | String | 审核模式，支持 `individual`（单流模式）和 `mix`（合流模式）。 |
 
 ##### Body 参数
 

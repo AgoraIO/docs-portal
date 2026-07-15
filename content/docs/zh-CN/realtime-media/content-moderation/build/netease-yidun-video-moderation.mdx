@@ -1,12 +1,12 @@
 ---
 title: "使用网易易盾视频审核"
-description: "了解云市场在不同平台上的网易易盾视频审核方式，包括接入流程、关键配置和平台差异。"
+description: "了解内容审核在不同平台上的网易易盾视频审核方式，包括接入流程、关键配置和平台差异。"
 ---
 <PlatformStructured platform="android">
 
 ## 技术原理
 
-云市场视频审核采用 SDK 截图 + 三方审核的模式。集成声网视频 SDK 后，你可以对声网频道内的视频流使用第三方视频审核服务。当频道内有用户发送视频流时，审核结果会由第三方服务器直接返回到你的服务器。具体流程如下：
+内容审核视频审核采用 SDK 截图 + 三方审核的模式。集成声网视频 SDK 后，你可以对声网频道内的视频流使用第三方视频审核服务。当频道内有用户发送视频流时，审核结果会由第三方服务器直接返回到你的服务器。具体流程如下：
 
 ![视频审核流程](https://web-cdn.agora.io/docs-files/1673867371709)
 
@@ -47,7 +47,7 @@ description: "了解云市场在不同平台上的网易易盾视频审核方式
 
 - `ContentInspectModule.type`：必须设为 `CONTENT_INSPECT_TYPE_IMAGE_MODERATION`。
 - `ContentInspectModule.interval`：从视频流中截图并送审的时间间隔。
-- `extraInfo`：（可选）传入 `cname` 和 `uid` 字段，可用于关联审核频道和发流端。该字段会随审核结果回调一起发送到你的服务器，并在网易易盾回调结果的 `name` 字段中体现，详见[审核结果回调](/zh-CN/realtime-media/marketplace/build/integrate-extensions/netease-yidun-video-moderation#3-接收审核结果)。
+- `extraInfo`：（可选）传入 `cname` 和 `uid` 字段，可用于关联审核频道和发流端。该字段会随审核结果回调一起发送到你的服务器，并在网易易盾回调结果的 `name` 字段中体现，详见[审核结果回调](/zh-CN/realtime-media/content-moderation/build/netease-yidun-video-moderation#3-接收审核结果)。
 
 示例代码如下：
 
@@ -55,7 +55,7 @@ description: "了解云市场在不同平台上的网易易盾视频审核方式
 ContentInspectConfig config = new ContentInspectConfig();
 config.extraInfo = "{\"cname\":\"YourChannelName\",\"uid\":\"12345\"}";
 config.moduleCount = 1;
-// 设置功能模块的类型为 SDK 端截图并且使用云市场视频审核服务对视频流审核
+// 设置功能模块的类型为 SDK 端截图并且使用内容审核视频审核服务对视频流审核
 config.modules[0].type = ContentInspectConfig.CONTENT_INSPECT_TYPE_IMAGE_MODERATION;
 // 设置本地截图上传的频率为 2 秒一次
 config.modules[0].interval = 2;
@@ -91,7 +91,7 @@ mRtcEngine.enableContentInspect(true, config);
 
 ## 技术原理
 
-云市场视频审核采用 SDK 截图 + 三方审核的模式。集成声网视频 SDK 后，你可以对声网频道内的视频流使用第三方视频审核服务。当频道内有用户发送视频流时，审核结果会由第三方服务器直接返回到你的服务器。具体流程如下：
+内容审核视频审核采用 SDK 截图 + 三方审核的模式。集成声网视频 SDK 后，你可以对声网频道内的视频流使用第三方视频审核服务。当频道内有用户发送视频流时，审核结果会由第三方服务器直接返回到你的服务器。具体流程如下：
 
 ![视频审核流程](https://web-cdn.agora.io/docs-files/1673867371709)
 
@@ -132,7 +132,7 @@ mRtcEngine.enableContentInspect(true, config);
 
 - `AgoraContentInspectModule.type`：必须设为 `AgoraContentInspectTypeImageModeration`。
 - `AgoraContentInspectModule.interval`：从视频流中截图并送审的时间间隔。
-- `extraInfo`：（可选）传入 `cname` 和 `uid` 字段，可用于关联审核频道和发流端。该字段会随审核结果回调一起发送到你的服务器，并在网易易盾回调结果的 `name` 字段中体现，详见[审核结果回调](/zh-CN/realtime-media/marketplace/build/integrate-extensions/netease-yidun-video-moderation#3-接收审核结果)。
+- `extraInfo`：（可选）传入 `cname` 和 `uid` 字段，可用于关联审核频道和发流端。该字段会随审核结果回调一起发送到你的服务器，并在网易易盾回调结果的 `name` 字段中体现，详见[审核结果回调](/zh-CN/realtime-media/content-moderation/build/netease-yidun-video-moderation#3-接收审核结果)。
 
 示例代码如下：
 
@@ -141,7 +141,7 @@ let inspectExtraConfig = AgoraContentInspectConfig()
 inspectExtraConfig.extraInfo = "{\"cname\":\"YourChannelName\",\"uid\":\"12345\"}"
 var modules = [AgoraContentInspectModule]()
 let module1 = AgoraContentInspectModule()
-// 设置功能模块的类型为 SDK 端截图并且使用云市场视频审核服务对视频流审核
+// 设置功能模块的类型为 SDK 端截图并且使用内容审核视频审核服务对视频流审核
 module1.type = .imageModeration
 // 设置本地截图上传的频率为 2 秒一次
 module1.interval = 2
@@ -179,7 +179,7 @@ agoraKit.enableContentInspect(true, config:inspectExtraConfig)
 
 ## 技术原理
 
-云市场视频审核采用 SDK 截图 + 三方审核的模式。集成声网视频 SDK 后，你可以对声网频道内的视频流使用第三方视频审核服务。当频道内有用户发送视频流时，审核结果会由第三方服务器直接返回到你的服务器。具体流程如下：
+内容审核视频审核采用 SDK 截图 + 三方审核的模式。集成声网视频 SDK 后，你可以对声网频道内的视频流使用第三方视频审核服务。当频道内有用户发送视频流时，审核结果会由第三方服务器直接返回到你的服务器。具体流程如下：
 
 ![视频审核流程](https://web-cdn.agora.io/docs-files/1673867371709)
 
