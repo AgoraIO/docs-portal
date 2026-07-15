@@ -1,8 +1,9 @@
 ---
 title: 视频 SDK
-description: "了解如何在声网安全与合规文档中视频 SDK，包括适用场景、配置步骤、实现要点和注意事项。"
+description: "了解 App 使用视频 SDK 时的权限、初始化时机、可选个人信息配置、隐私政策披露示例和最终用户权利响应建议。"
 ---
-# 视频 SDK 合规使用说明
+
+## 一、概述
 
 根据中国法律法规和监管部门规章要求，App 开发运营者在提供网络产品服务时应尊重和保护最终用户个人信息，不得违法违规收集使用个人信息，保证个人信息处理行为获得最终用户的授权同意，遵循最小必要原则，并采取有效的技术措施和组织措施确保个人信息安全。
 
@@ -12,8 +13,8 @@ description: "了解如何在声网安全与合规文档中视频 SDK，包括�
 
 SDK 向您提供了可选个人信息及权限的控制开关，您可以根据 App 所需的 SDK 功能服务自行配置打开或关闭隐私信息请求开关。
 
-- 基本功能：本 SDK 的基本功能是为开发者提供稳定的音频功能，包括音频通话、音频互动等基础音频功能。
-- 扩展功能：在基本功能的基础上，本 SDK 还提供了额外的扩展功能，例如[云端录制](/zh-CN/realtime-media/recording/cloud-recording)、[云端转码](/zh-CN/realtime-media/transcoding)、[对话式 AI](/zh-CN/ai)。其中 AI 智能识别涉及到可选个人信息收集，具体请参考下文。
+- 基本功能：本 SDK 的基本功能是为开发者提供稳定的视频功能，包括视频通话、视频互动等基础视频功能。
+- 扩展功能：在基本功能的基础上，本 SDK 还提供了额外的扩展功能，例如[云端录制](/zh-CN/realtime-media/cloud-recording)、[云端转码](/zh-CN/realtime-media/transcoding)、[对话式 AI](/zh-CN/ai)。其中 AI 智能识别涉及到可选个人信息收集，具体请参考下文。
 
 ### 1. SDK 所需的系统权限的说明
 
@@ -32,7 +33,7 @@ Android 操作系统应用权限列表：
 | --- | --- | --- | --- |
 | INTERNET 访问网络 | 用于在加入频道时接入网络 | 必选 | 当需要接入网络时 |
 | ACCESS_NETWORK_STATE 查看网络状态 | 用于查看网络连接状态 | 可选 | 当需要查看网络状态时 |
-| ACCESS_WIFI_STATE 查看 WiFi 状态 | 用于查看 WiFi 连接状态 | 可选 | 当需要查看 WiFi状态时 |
+| ACCESS_WIFI_STATE 查看 WiFi 状态 | 用于查看 WiFi 连接状态 | 可选 | 当需要查看 WiFi 状态时 |
 | CAMERA 摄像头权限 | 用于提供视频通话和互动功能，传输交互视频画面 | 可选 | 当 App 需要使用摄像头时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
 | RECORD_AUDIO 麦克风权限 | 用于提供语音通话和互动功能，传输交互语音信息 | 可选 | 当 App 需要使用麦克风时<br /><br />信息：SDK 检查 App 是否获得相应授权，不会主动申请权限。 |
 | MODIFY_AUDIO_SETTINGS 麦克风设置权限 | 用于提供音视频通话设置功能 | 可选 | 当用户设置麦克风时 |
@@ -71,13 +72,13 @@ SDK 功能、接口配置方式及示例说明：
 
 | 系统 | 业务功能 | 相关个人信息 | 配置方式及示例 | 时机 |
 | --- | --- | --- | --- | --- |
-| Android | 音视频互动 | 必要：设备品牌、设备型号、操作系统版本、CPU信息、内存使用情况、电池电量信息、屏幕分辨率、IP地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；<br /><br />可选：频道内用户ID；<br /><br />权限：摄像头权限、麦克风权限 | **配置开启示例：**<br /><br />`RTCEngine.joinChannel(String token,  String channelId, int uid, ChannelMediaOptions options)；`<br /><br />参数：<br />- `token`：在服务端生成的用于鉴权的动态密钥<br />- `channel Id`：频道名<br />- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集该信息<br />- `options`：频道媒体设置选项<br /><br />**配置关闭示例：**<br /><br />`RTCEngine.leaveChannel()` | 用户加入频道开启音视频通话时 |
+| Android | 音视频互动 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；<br /><br />可选：频道内用户 ID；<br /><br />权限：摄像头权限、麦克风权限 | **配置开启示例：**<br /><br />`RTCEngine.joinChannel(String token,  String channelId, int uid, ChannelMediaOptions options)；`<br /><br />参数：<br />- `token`：在服务端生成的用于鉴权的动态密钥<br />- `channel Id`：频道名<br />- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集该信息<br />- `options`：频道媒体设置选项<br /><br />**配置关闭示例：**<br /><br />`RTCEngine.leaveChannel()` | 用户加入频道开启音视频通话时 |
 | Android | 极速直播 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；<br /><br />权限：摄像头权限、麦克风权限 | **配置开启、关闭示例：**<br /><br />`RTCEngine.setClientRole(int role,  ClientRoleOptions options)；`<br /><br />参数：<br />- `role`：直播场景中用户角色<br />- `options`：用户具体设置，包含用户级别，当 `audienceLatencyLevel` = `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` 时开启极速直播，否则就关闭极速直播 | 用户加入频道开启极速直播时 |
 | Android | 屏幕共享 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向） | **配置开始示例：**<br /><br />`RTCEngine.startScreenCapture(ScreenCaptureParameters  screenCaptureParameters);`<br /><br />参数：`screenCaptureParameters`：屏幕共享的编码参数配置<br /><br />**配置关闭示例：**<br /><br />`RTCEngine.stopScreenCapture()` | 用户音视频互动时，将屏幕以视频方式分享给其他用户时 |
-| Android | 播放音乐文件 | 必要：设备品牌、设备型号、操作系统版本、CPU信息、内存使用情况、电池电量信息、IP地址、网络接入方式和类型 | **配置开启示例：**<br /><br />`RTCEngine.startAudioMixing(String  filePath, boolean loopback, int cycle, int startPos);`<br /><br />参数：<br />- `filePath`：文件路径<br />- `loopback`：是否只在本地播放音乐文件<br />- `cycle`：音乐文件播放次数<br />- `startPos`：音乐文件播放位置<br /><br />**配置关闭示例：**<br /><br />`RTCEngine.stopAudioMixing()` | 用户加入频道后，在音视频互动时播放音乐文件时 |
-| iOS | 音视频互动 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；<br /><br />可选：频道内用户ID；<br /><br />权限：摄像头权限、麦克风权限 | **配置开启示例：**<br /><br />`agoraKit.joinChannel(byToken:  <#Your Token#>, channelId: <#Your Channel Name#>, uid: 0, mediaOptions:  option)`<br /><br />参数：<br />- `byToken`：在服务端生成的用于鉴权的动态密钥<br />- `channelId`：频道名<br />- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集该信息<br />- `option`：频道媒体设置选项<br /><br />**配置关闭示例：**<br /><br />`agoraKit.leaveChannel()` | 用户加入频道开启音视频通话时 |
+| Android | 播放音乐文件 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型 | **配置开启示例：**<br /><br />`RTCEngine.startAudioMixing(String  filePath, boolean loopback, int cycle, int startPos);`<br /><br />参数：<br />- `filePath`：文件路径<br />- `loopback`：是否只在本地播放音乐文件<br />- `cycle`：音乐文件播放次数<br />- `startPos`：音乐文件播放位置<br /><br />**配置关闭示例：**<br /><br />`RTCEngine.stopAudioMixing()` | 用户加入频道后，在音视频互动时播放音乐文件时 |
+| iOS | 音视频互动 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；<br /><br />可选：频道内用户 ID；<br /><br />权限：摄像头权限、麦克风权限 | **配置开启示例：**<br /><br />`agoraKit.joinChannel(byToken:  <#Your Token#>, channelId: <#Your Channel Name#>, uid: 0, mediaOptions:  option)`<br /><br />参数：<br />- `byToken`：在服务端生成的用于鉴权的动态密钥<br />- `channelId`：频道名<br />- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集该信息<br />- `option`：频道媒体设置选项<br /><br />**配置关闭示例：**<br /><br />`agoraKit.leaveChannel()` | 用户加入频道开启音视频通话时 |
 | iOS | 极速直播 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）；<br /><br />权限：摄像头权限、麦克风权限 | **配置开启、关闭示例：**<br /><br />`agoraKit.setClientRole(role, options:  options)；`<br /><br />参数：<br />- `role`：直播场景中的用户角色<br />- `options`：用户具体设置，包含用户级别，当 `audienceLatencyLevel` = `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` 时开启极速直播，否则关闭极速直播 | 用户加入频道开启极速直播时 |
-| iOS | 屏幕共享 | 必要：设备品牌、设备型号、操作系统版本、CPU信息、内存使用情况、电池电量信息、屏幕分辨率、IP地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向） | **配置开始示例：**<br /><br />`agoraKit.startScreenCapture(screenParams);`<br /><br />参数：`screenCaptureParameters`：屏幕共享的编码参数配置<br /><br />**配置关闭示例：**<br />`agoraKit.stopScreenCapture()` | 用户音视频互动时，将屏幕以视频方式分享给其他用户时 |
+| iOS | 屏幕共享 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向） | **配置开始示例：**<br /><br />`agoraKit.startScreenCapture(screenParams);`<br /><br />参数：`screenCaptureParameters`：屏幕共享的编码参数配置<br /><br />**配置关闭示例：**<br />`agoraKit.stopScreenCapture()` | 用户音视频互动时，将屏幕以视频方式分享给其他用户时 |
 | iOS | 播放音乐文件 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型 | **配置开启示例：**<br /><br />`agoraKit.startAudioMixing(filePath,  loopback: loopback, replace: replace, cycle: cycle)`<br /><br />参数：<br />- `filePath`：文件路径<br />- `loopback`：是否只在本地播放音乐文件<br />- `cycle`：音乐文件的播放次数<br />- `startPos`：音乐文件的播放位置<br /><br />**配置关闭示例：**<br />`agoraKit.stopAudioMixing();` | 用户加入频道后，在音视频互动时播放音乐文件时 |
 | HarmonyOS | 音视频互动 | 必要：设备品牌、设备型号、操作系统版本；<br /><br />可选：频道内用户 ID；<br /><br />权限：摄像头权限、麦克风权限、网络权限 | **配置开启示例：**<br /><br />`RTCEngine.joinChannel(token:string, channelId:string, uid:number, options:ChannelMediaOptions)；`<br /><br />参数：<br />- `token`：在服务端生成的用于鉴权的动态密钥<br />- `channelId`：频道名<br />- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集该信息<br />- `options`：频道媒体设置选项<br /><br />**配置关闭示例：**<br /><br />`RTCEngine.leaveChannel()` | 用户加入频道开启音视频通话时 |
 | HarmonyOS | 极速直播 | 必要：设备品牌、设备型号、操作系统版本；<br /><br />权限：摄像头权限、麦克风权限、网络权限 | **配置开启、关闭示例：**<br /><br />`RTCEngine.setClientRole(role:number,options:ClientRoleOptions)；`<br /><br />参数：<br />- `role`，直播场景中用户角色<br />- `options`：用户具体设置，包含用户级别，当 `audienceLatencyLevel` = `Constants.AudienceLatencyLevel.LOW_LATENCY` 时开启极速直播，否则就关闭极速直播 | 用户加入频道开启极速直播时 |
@@ -85,18 +86,17 @@ SDK 功能、接口配置方式及示例说明：
 
 ### 3. 配置可选个人信息
 
-在基本功能的基础上，我司还提供了额外的扩展功能，例如[云端录制](/zh-CN/realtime-media/recording/cloud-recording)、[云端转码](/zh-CN/realtime-media/transcoding)、[对话式 AI](/zh-CN/ai)、[高级美颜](/doc/rtc/android/advanced-features/advanced-beauty)。其涉及到可选个人信息收集，具体请参考下文。
+在基本功能的基础上，我司还提供了额外的扩展功能，例如[云端录制](/zh-CN/realtime-media/cloud-recording)、[云端转码](/zh-CN/realtime-media/transcoding)、[对话式 AI](/zh-CN/ai)、高级美颜。其涉及到可选个人信息收集，具体请参考下文。
 
 | 个人信息名称 | 处理目的 | 使用场景 | 处理方式 |
 | --- | --- | --- | --- |
-| 视频信息 | 对视频进行录制或转码 | 视频录制、视频转码场景、美颜场景 | 录制场景中视频信息处理完成后会传输至客户制定的存储地点，除非客户有存储需求我们不会做任何存储。<br /><br />在转码场景中视频信息仅作转码处理，不会进行任何形式的存储。<br /><br />在美颜场景中，我们不会收集任何个人信息，仅会在客户端本地使用部分面部特征值信息对视频中的人脸进行美颜处理，不会回传、储存或共享终端用户的任何面部特征值信息。 |
+| 视频信息 | 对视频进行录制或转码 | 视频录制、视频转码场景、美颜场景 | 录制场景中视频信息处理完成后会传输至客户指定的存储地点，除非客户有存储需求我们不会做任何存储。<br /><br />在转码场景中视频信息仅作转码处理，不会进行任何形式的存储。<br /><br />在美颜场景中，我们不会收集任何个人信息，仅会在客户端本地使用部分面部特征值信息对视频中的人脸进行美颜处理，不会回传、储存或共享终端用户的任何面部特征值信息。 |
 | 音频信息 | 对音频内容进行转文本处理 | 语音智能识别 | 音频信息处理完成后即时删除，我们不会在服务器中留存；生成的文本在完成识别后即时删除，除非您开启了查错模式，我们不会在服务器中留存。 |
 
 由于扩展功能均需要您在声网控制台单独开通，并在配置中写入必要的参数方可启用。请您查阅以下文档理解扩展业务功能可选个人信息的具体调用方法并进行相应配置:
-- [云端录制](/zh-CN/realtime-media/recording/cloud-recording)
+- [云端录制](/zh-CN/realtime-media/cloud-recording)
 - [云端转码](/zh-CN/realtime-media/transcoding)
 - [对话式 AI 引擎](/zh-CN/ai)
-- [高级美颜](/doc/rtc/android/advanced-features/advanced-beauty)
 
 ### 4. SDK 隐私政策披露要求与示例说明
 
@@ -112,8 +112,8 @@ SDK 功能、接口配置方式及示例说明：
 - SDK 公司名称：上海声网科技有限公司
 - SDK 使用目的和功能场景：提供实时音视频通信服务，包括视频通话、互动直播、极速直播等
 - SDK 涉及的个人信息类型：
-  必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）
-  可选：频道内用户ID
+  - 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、网络接入方式和类型、加速度传感器信息（设备屏幕旋转方向）
+  - 可选：频道内用户 ID
 - 实现 SDK 功能所需权限：摄像头、麦克风、麦克风设置、蓝牙连接、读取电话状态、访问网络、查看网络状态、查看 WiFi 状态
 - SDK 隐私政策链接：https://www.shengwang.cn/SDK-privacy-policy/
 
@@ -123,8 +123,8 @@ SDK 功能、接口配置方式及示例说明：
 - SDK 公司名称：上海声网科技有限公司
 - SDK 使用目的和功能场景：提供实时音视频通信服务，包括视频通话、互动直播、极速直播等
 - SDK 涉及的个人信息类型：
-  必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、加速度传感器信息（设备屏幕旋转方向）
-  可选：频道内用户ID
+  - 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、屏幕分辨率、IP 地址、加速度传感器信息（设备屏幕旋转方向）
+  - 可选：频道内用户 ID
 - 实现 SDK 功能所需权限：摄像头、麦克风
 - SDK 隐私政策链接：https://www.shengwang.cn/SDK-privacy-policy/
 
@@ -134,8 +134,8 @@ SDK 功能、接口配置方式及示例说明：
 - SDK 公司名称：上海声网科技有限公司
 - SDK 使用目的和功能场景：提供实时音视频通信服务，包括视频通话、互动直播、极速直播等
 - SDK 涉及的个人信息类型：
-  必要：设备品牌、设备型号、操作系统版本、网络接入方式和类型、IP 地址
-  可选：频道内的用户 ID
+  - 必要：设备品牌、设备型号、操作系统版本、网络接入方式和类型、IP 地址
+  - 可选：频道内的用户 ID
 - 实现 SDK 功能所需权限：摄像头、麦克风、访问网络、获取网络信息、后台运行
 - SDK 隐私政策链接：https://www.shengwang.cn/SDK-privacy-policy/
 

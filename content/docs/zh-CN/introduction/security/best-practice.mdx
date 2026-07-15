@@ -1,6 +1,6 @@
 ---
 title: 安全最佳实践
-description: "了解如何在声网安全与合规文档中安全最佳实践，包括适用场景、配置步骤、实现要点和注意事项。"
+description: "了解声网实时互动场景中的资源隔离、频道隔离、身份认证、数据加密和限定访问区域等安全最佳实践。"
 ---
 安全与合规是实时互动的基本要求。
 
@@ -9,10 +9,10 @@ description: "了解如何在声网安全与合规文档中安全最佳实践，
 此外，声网产品在设计和构建过程中，根据音视频传输领域常见的攻击类型和安全需求，还集成了多重防护措施，满足客户及终端用户的数据安全要求。
 
 | 防护措施 | 是否默认应用 | 推荐场景 |
-| ---------------- | ---------------- | ---------------- |
-| 资源隔离      | 是      | 所有实时场景。      |
+| --- | --- | --- |
+| 资源隔离 | 是 | 所有实时场景。 |
 | 频道隔离 | 是 | 所有实时场景。 |
-| 身份认证 | 否 |声网推荐正式生产阶段的 App 均使用该措施。 |
+| 身份认证 | 否 | 声网推荐正式生产阶段的 App 均使用该措施。 |
 | 加密 | 否 | 对于有保密需求的实时互动场景，声网推荐使用该措施。 |
 | 限定访问区域 | 否 | 适用于将音视频数据及实时消息数据传输限定在某一区域范围内的场景。 |
 
@@ -38,7 +38,7 @@ description: "了解如何在声网安全与合规文档中安全最佳实践，
 - 支持自定义 Token 有效期。Token 的默认有效期为 24 小时。客户可以根据自己的安全需求自定义 Token 的服务有效期。
 - 支持定制不同的服务权限。
 
-详细的生成 Token 的方法及注意事项，请参考[使用 Token 鉴权](https://docportal.shengwang.cn/cn/video-call-4.x/token_server_android_ng?platform=Android)。
+详细的生成 Token 的方法及注意事项，请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
 ## 数据加密
 
@@ -75,11 +75,11 @@ description: "了解如何在声网安全与合规文档中安全最佳实践，
 
 不同平台设置加密方案的步骤详见：
 
-- [Android](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_android_ng?platform=Android)
-- [iOS](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_apple_ng?platform=iOS)
-- [macOS](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_apple_ng?platform=macOS)
-- [Web](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_web_ng?platform=Web)
-- [Windows](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/channel_encryption_windows_ng?platform=Windows)
+- [Android](/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption)
+- [iOS](/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption)
+- [macOS](/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption)
+- [Web](/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption)
+- [Windows](/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption)
 
 ## 限定访问区域
 
@@ -99,8 +99,8 @@ description: "了解如何在声网安全与合规文档中安全最佳实践，
 
 具体使用方法，详见：
 
-- [Android](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_android_ng?platform=Android)
-- [iOS](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_apple_ng?platform=iOS)
-- [macOS](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_apple_ng?platform=macOS)
-- [Web](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_web_ng_rtc?platform=Web)
-- [Windows](https://docportal.shengwang.cn/cn/live-streaming-premium-4.x/region_windows_ng?platform=Windows)
+- [Android](/zh-CN/realtime-media/rtc/build/security-and-auth/region)
+- [iOS](/zh-CN/realtime-media/rtc/build/security-and-auth/region)
+- [macOS](/zh-CN/realtime-media/rtc/build/security-and-auth/region)
+- [Web](/zh-CN/realtime-media/rtc/build/security-and-auth/region)
+- [Windows](/zh-CN/realtime-media/rtc/build/security-and-auth/region)

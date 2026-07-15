@@ -1,8 +1,7 @@
 ---
 title: 互动白板 SDK
-description: "了解如何在声网安全与合规文档中互动白板 SDK，包括适用场景、配置步骤、实现要点和注意事项。"
+description: "了解 App 使用互动白板 SDK 时的权限、初始化时机、隐私政策披露示例和最终用户权利响应建议。"
 ---
-# 互动白板 SDK 合规使用说明
 
 根据中国法律法规和监管部门规章要求，App 开发运营者（以下简称“开发者”或“您”）在提供网络产品服务时应尊重和保护最终用户个人信息，不得违法违规收集使用个人信息，保证和承诺个人信息处理行为获得最终用户的授权同意，遵循最小必要原则，并且应当采取有效的技术措施和组织措施，确保个人信息安全。
 
@@ -32,17 +31,17 @@ description: "了解如何在声网安全与合规文档中互动白板 SDK，�
 您应确保在最终用户同意 App 隐私政策后，再进行互动白板 SDK 的初始化。并且，在用户同意隐私政策前，您应避免动态申请涉及用户个人信息的敏感设备权限；也应避免私自采集和上报个人信息。如果最终用户不同意 App 隐私政策，则不能初始化互动白板 SDK，无法使用 SDK 功能。
 
 SDK 初始化和相关功能配置，请查阅相关配置文档：
-- Android：[加入白板房间](/doc/whiteboard/android/whiteboard-sdk/get-started/join-room-wb)
-- iOS：[加入白板房间](/doc/whiteboard/ios/whiteboard-sdk/get-started/join-room-wb)
+- Android：[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)
+- iOS：[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)
 
 SDK 功能、接口配置方式及示例说明：
 
 | 系统 | 业务功能 | 相关个人信息 | 配置方式及示例 | 时机 |
 | --- | --- | --- | --- | --- |
-| Android | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户ID | **配置开启示例：**<br /><br /><pre><code class="language-java">WhiteSdk.joinRoom(<br />RoomParams roomParams,<br />RoomListener roomListener,<br />Promise&lt;Room&gt; roomPromise<br />)</code></pre><br />参数：<br />- `roomParams`：互动白板实时房间的参数配置<br />- `roomListener`：房间事件回调<br />- `roomPromise`：调用结果回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-java">Room.disconnect()</code></pre> | 加入互动白板房间时 |
-| Android | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户ID | **配置开启示例：**  <br /><br /><pre><code class="language-java">/// 创建 Player<br />WhiteSdk.createPlayer(<br />PlayerConfiguration configuration,<br />PlayerListener listener,<br />Promise&lt;Player&gt; playerPromise)<br />// 开始演示<br />player.play()</code></pre><br />参数：<br />- `configuration`：白板回放的参数配置<br />- `listener`：白板回放事件的回调<br />- `playerPromise`：调用结果回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-java">player.stop()</code></pre> | 当展示互动白板内容时 |
-| iOS | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户ID | **配置开启示例：**<br /><pre><code class="language-swift">joinRoomWithConfig:(WhiteRoomConfig *)config<br />callbacks:(nullable id&lt;WhiteRoomCallbackDelegate&gt;)callbacks<br />completionHandler:(void (^) (<br />BOOL success,<br />WhiteRoom * _Nullable room,<br />NSError * _Nullable error<br />)<br />)completionHandler;</code></pre><br />参数：<br />- `config`：互动白板实时房间的参数配置<br />- `callbacks`：房间事件回调<br />- `completionHandler`：调用结果回调<br /><br /><br />**配置关闭示例：**<br />```swift<br />aRoom.disconnect:(void (^ _Nullable) (void))completeHandler<br />```<br />参数：<br />- `completeHandler`: 关闭回调 | 开启和加入互动白板房间时 |
-| iOS | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户ID | **配置开启示例：**<br /><pre><code class="language-swift">// 创建 Player<br />createReplayerWithConfig:(WhitePlayerConfig *)config<br />callbacks:(nullable id&lt;WhitePlayerEventDelegate&gt;)eventCallbacks<br />completionHandler:(void (^) (<br />BOOL success,<br />WhitePlayer * _Nullable player,<br />NSError * _Nullable error<br />)<br />)completionHandler;<br />// 开始演示<br />player.play()</code></pre><br />参数：<br />- `config`：白板回放的参数配置<br />- `callbacks`：白板回放事件的回调<br />- `completionHandler`：调用结果回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-swift">player.stop()</code></pre> | 当展示互动白板内容时 |
+| Android | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><br /><pre><code class="language-java">WhiteSdk.joinRoom(<br />RoomParams roomParams,<br />RoomListener roomListener,<br />Promise&lt;Room&gt; roomPromise<br />)</code></pre><br />参数：<br />- `roomParams`：互动白板实时房间的参数配置<br />- `roomListener`：房间事件回调<br />- `roomPromise`：调用结果回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-java">Room.disconnect()</code></pre> | 加入互动白板房间时 |
+| Android | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**  <br /><br /><pre><code class="language-java">/// 创建 Player<br />WhiteSdk.createPlayer(<br />PlayerConfiguration configuration,<br />PlayerListener listener,<br />Promise&lt;Player&gt; playerPromise)<br />// 开始演示<br />player.play()</code></pre><br />参数：<br />- `configuration`：白板回放的参数配置<br />- `listener`：白板回放事件的回调<br />- `playerPromise`：调用结果回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-java">player.stop()</code></pre> | 当展示互动白板内容时 |
+| iOS | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><pre><code class="language-swift">joinRoomWithConfig:(WhiteRoomConfig *)config<br />callbacks:(nullable id&lt;WhiteRoomCallbackDelegate&gt;)callbacks<br />completionHandler:(void (^) (<br />BOOL success,<br />WhiteRoom * _Nullable room,<br />NSError * _Nullable error<br />)<br />)completionHandler;</code></pre><br />参数：<br />- `config`：互动白板实时房间的参数配置<br />- `callbacks`：房间事件回调<br />- `completionHandler`：调用结果回调<br /><br /><br />**配置关闭示例：**<br />```swift<br />aRoom.disconnect:(void (^ _Nullable) (void))completeHandler<br />```<br />参数：<br />- `completeHandler`: 关闭回调 | 开启和加入互动白板房间时 |
+| iOS | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><pre><code class="language-swift">// 创建 Player<br />createReplayerWithConfig:(WhitePlayerConfig *)config<br />callbacks:(nullable id&lt;WhitePlayerEventDelegate&gt;)eventCallbacks<br />completionHandler:(void (^) (<br />BOOL success,<br />WhitePlayer * _Nullable player,<br />NSError * _Nullable error<br />)<br />)completionHandler;<br />// 开始演示<br />player.play()</code></pre><br />参数：<br />- `config`：白板回放的参数配置<br />- `callbacks`：白板回放事件的回调<br />- `completionHandler`：调用结果回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-swift">player.stop()</code></pre> | 当展示互动白板内容时 |
 
 ### 3. SDK 隐私政策披露要求与示例说明
 
@@ -57,8 +56,8 @@ SDK 功能、接口配置方式及示例说明：
 - SDK 名称：互动白板 SDK
 - SDK 公司名称：上海声网科技有限公司
 - SDK 使用目的和功能场景：提供实时互动白板功能和服务
--	SDK 涉及的个人信息类型：设备品牌、设备型号、操作系统版本、IP 地址、频道内用户ID
--	实现 SDK 功能所需权限：无
+- SDK 涉及的个人信息类型：设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID
+- 实现 SDK 功能所需权限：无
 - SDK 隐私政策链接：https://www.shengwang.cn/SDK-privacy-policy/
 
 #### iOS 示例
@@ -66,8 +65,8 @@ SDK 功能、接口配置方式及示例说明：
 - SDK 名称：互动白板 SDK
 - SDK 公司名称：上海声网科技有限公司
 - SDK 使用目的和功能场景：提供实时互动白板功能和服务
--	SDK 涉及的个人信息类型：设备品牌、设备型号、操作系统版本、IP 地址、频道内用户ID
--	实现 SDK 功能所需权限：无
+- SDK 涉及的个人信息类型：设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID
+- 实现 SDK 功能所需权限：无
 - SDK 隐私政策链接：https://www.shengwang.cn/SDK-privacy-policy/
 
 ### 4. 最终用户同意方式的建议方式说明
@@ -88,11 +87,11 @@ App 开发者应根据相关法律法规为最终用户提供行使个人信息�
 
 相关配置操作，请查阅相关配置文档：
 - Android：
-  - [开启互动白板](/doc/whiteboard/android/whiteboard-sdk/get-started/join-room-wb#4-%E5%88%9D%E5%A7%8B%E5%8C%96-sdk-%E5%B9%B6%E5%8A%A0%E5%85%A5%E6%88%BF%E9%97%B4)
-  - [断开互动白板](/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_room#disconnect()%20[1/2])
+  - [开启互动白板](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb#4-初始化-sdk-并加入房间)
+  - [断开互动白板](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/manage-room-phase#主动离开房间)
 - iOS：
-  - [开启互动白板](/doc/whiteboard/ios/whiteboard-sdk/get-started/join-room-wb#3-%E5%88%9D%E5%A7%8B%E5%8C%96-sdk-%E5%B9%B6%E5%8A%A0%E5%85%A5%E6%88%BF%E9%97%B4)
-  - [断开互动白板](/api-ref/whiteboard/ios/Classes/WhiteRoom#disconnect:)
+  - [开启互动白板](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb#3-初始化-sdk-并加入房间)
+  - [断开互动白板](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/manage-room-phase#主动离开房间)
 
 ## 三、开发者合规注意事项
 

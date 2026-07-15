@@ -1,8 +1,7 @@
 ---
 title: Fastboard SDK
-description: "了解如何在声网安全与合规文档中 Fastboard SDK，包括适用场景、配置步骤、实现要点和注意事项。"
+description: "了解 App 使用 Fastboard SDK 时的权限、初始化时机、隐私政策披露示例和最终用户权利响应建议。"
 ---
-# Fastboard SDK 合规使用说明
 
 根据中国法律法规和监管部门规章要求，App 开发运营者（以下简称“开发者”或“您”）在提供网络产品服务时应尊重和保护最终用户个人信息，不得违法违规收集使用个人信息，保证和承诺个人信息处理行为获得最终用户的授权同意，遵循最小必要原则，并且应当采取有效的技术措施和组织措施，确保个人信息安全。
 
@@ -32,17 +31,17 @@ Fastboard SDK 功能和服务无需获取 App 权限。SDK 只会检查 App 是�
 您应确保在最终用户同意 App 隐私政策后，再进行 Fastboard SDK 的初始化。并且，在用户同意隐私政策前，您应避免动态申请涉及用户个人信息的敏感设备权限；也应避免私自采集和上报个人信息。如果最终用户不同意 App 隐私政策，则不能初始化 Fastboard SDK，无法使用 SDK 功能。
 
 SDK 初始化和相关功能配置，请查阅相关配置文档：
-- Android：[加入白板房间](/doc/whiteboard/android/fastboard-sdk/get-started/join-room-fb)
-- iOS：[加入白板房间](/doc/whiteboard/ios/fastboard-sdk/get-started/join-room-fb)
+- Android：[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)
+- iOS：[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)
 
 SDK 功能、接口配置方式及示例说明：
 
 | 系统 | 业务功能 | 相关个人信息 | 配置方式及示例 | 时机 |
 | --- | --- | --- | --- | --- |
-| Android | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户ID | **配置开启示例：**<br /><pre><code class="language-java">// 初始化<br />Fastboard.createFastRoom(FastRoomOptions roomOptions)<br />// 加入房间<br />FastRoom.join();</code></pre><br />参数：<br />- `roomOptions`：房间配置<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-java">// 销毁房间<br />Room.disconnect()</code></pre> | 加入互动白板房间时 |
-| Android | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户ID | **配置开启示例：**<br /><pre><code class="language-java">FastRoom.insertPptx(<br />String taskUuid,<br />String prefixUrl,<br />String title,<br />FastResult&lt;String&gt; result<br />)</code></pre><br />参数：<br />- `taskUuid`：文档转换任务的 Task UUID<br />- `prefixUrl`：文档转换 URL 前缀<br />- `title`：文档显示名称<br />- `result`：插入成功/失败回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-java">FastRoom.getRoom().closeApp(<br />String appId,<br />Promise&lt;Boolean&gt; result<br />)</code></pre><br />参数：<br />- `appId`：打开的文档标识<br />- `result`：关闭成功/失败回调<br /> | 当展示互动白板内容时 |
-| iOS | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户ID | **配置开启示例：**<br /><pre><code class="language-swift">// 初始化<br />Fastboard.createFastRoom(FastRoomConfiguration config)<br />// 加入房间<br />FastRoom.joinRoom();</code></pre><br />参数：<br />- `config`：房间配置<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-swift">// 销毁房间<br />FastRoom.disconnectRoom()</code></pre> | 开启和加入互动白板房间时 |
-| iOS | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户ID | **配置开启示例：**<br /><pre><code class="language-swift">FastRoom.insertPptx(<br />uuid: String,<br />url: String,<br />title: String,<br />completionHandler: ((String)-&gt;Void)? = nil<br />)</code></pre><br />参数：<br />- `taskUuid`：文档转换任务的 Task UUID<br />- `prefixUrl`：文档转换 URL 前缀<br />- `title`：文档显示名称<br />- `result`：插入成功/失败回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-swift">FastRoom.room.closeApp:(NSString *)appId<br />completionHandler:(void (^)(<br />BOOL success,<br />NSError *error<br />))completionHandler)</code></pre><br />参数：<br />- `appId`：打开的文档标识<br />- `result`：关闭成功/失败回调 | 当展示互动白板内容时 |
+| Android | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><pre><code class="language-java">// 初始化<br />Fastboard.createFastRoom(FastRoomOptions roomOptions)<br />// 加入房间<br />FastRoom.join();</code></pre><br />参数：<br />- `roomOptions`：房间配置<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-java">// 销毁房间<br />Room.disconnect()</code></pre> | 加入互动白板房间时 |
+| Android | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><pre><code class="language-java">FastRoom.insertPptx(<br />String taskUuid,<br />String prefixUrl,<br />String title,<br />FastResult&lt;String&gt; result<br />)</code></pre><br />参数：<br />- `taskUuid`：文档转换任务的 Task UUID<br />- `prefixUrl`：文档转换 URL 前缀<br />- `title`：文档显示名称<br />- `result`：插入成功/失败回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-java">FastRoom.getRoom().closeApp(<br />String appId,<br />Promise&lt;Boolean&gt; result<br />)</code></pre><br />参数：<br />- `appId`：打开的文档标识<br />- `result`：关闭成功/失败回调<br /> | 当展示互动白板内容时 |
+| iOS | 配置和加入互动白板房间 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><pre><code class="language-swift">// 初始化<br />Fastboard.createFastRoom(FastRoomConfiguration config)<br />// 加入房间<br />FastRoom.joinRoom();</code></pre><br />参数：<br />- `config`：房间配置<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-swift">// 销毁房间<br />FastRoom.disconnectRoom()</code></pre> | 开启和加入互动白板房间时 |
+| iOS | 演示互动白板内容 | 设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID | **配置开启示例：**<br /><pre><code class="language-swift">FastRoom.insertPptx(<br />uuid: String,<br />url: String,<br />title: String,<br />completionHandler: ((String)-&gt;Void)? = nil<br />)</code></pre><br />参数：<br />- `taskUuid`：文档转换任务的 Task UUID<br />- `prefixUrl`：文档转换 URL 前缀<br />- `title`：文档显示名称<br />- `result`：插入成功/失败回调<br /><br /><br />**配置关闭示例：**<br /><pre><code class="language-swift">FastRoom.room.closeApp:(NSString *)appId<br />completionHandler:(void (^)(<br />BOOL success,<br />NSError *error<br />))completionHandler)</code></pre><br />参数：<br />- `appId`：打开的文档标识<br />- `result`：关闭成功/失败回调 | 当展示互动白板内容时 |
 
 ### 3. SDK 隐私政策披露要求与示例说明
 
@@ -54,20 +53,20 @@ SDK 功能、接口配置方式及示例说明：
 
 #### Android 示例
 
-- SDK 名称： Fastboard SDK
+- SDK 名称：Fastboard SDK
 - SDK 公司名称：上海声网科技有限公司
 - SDK 使用目的和功能场景：提供实时互动白板功能和服务
--	SDK 涉及的个人信息类型：设备品牌、设备型号、操作系统版本、IP 地址、频道内用户ID
--	实现 SDK 功能所需权限：无
+- SDK 涉及的个人信息类型：设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID
+- 实现 SDK 功能所需权限：无
 - SDK 隐私政策链接：https://www.shengwang.cn/SDK-privacy-policy/
 
 #### iOS 示例
 
-- SDK 名称： Fastboard SDK
+- SDK 名称：Fastboard SDK
 - SDK 公司名称：上海声网科技有限公司
 - SDK 使用目的和功能场景：提供实时互动白板功能和服务
--	SDK 涉及的个人信息类型：设备品牌、设备型号、操作系统版本、IP 地址、频道内用户ID
--	实现 SDK 功能所需权限：无
+- SDK 涉及的个人信息类型：设备品牌、设备型号、操作系统版本、IP 地址、频道内用户 ID
+- 实现 SDK 功能所需权限：无
 - SDK 隐私政策链接：https://www.shengwang.cn/SDK-privacy-policy/
 
 ### 4. 最终用户同意方式的建议方式说明
@@ -88,10 +87,10 @@ App 开发者应根据相关法律法规为最终用户提供行使个人信息�
 
 相关配置操作，请查阅相关配置文档：
 - Android：
-  - [开启互动白板](/doc/whiteboard/android/fastboard-sdk/get-started/join-room-fb)
+  - [开启互动白板](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)
   - [断开互动白板](/zh-CN/api-reference/whiteboard/fastboard/android#destroy)
 - iOS：
-  - [开启互动白板](/doc/whiteboard/ios/fastboard-sdk/get-started/join-room-fb)
+  - [开启互动白板](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)
   - [断开互动白板](/zh-CN/api-reference/whiteboard/fastboard/ios#disconnectroom)
 
 ## 三、开发者合规注意事项
