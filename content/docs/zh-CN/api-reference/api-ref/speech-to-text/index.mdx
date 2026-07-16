@@ -1,0 +1,23 @@
+---
+title: 实时转录翻译概览
+description: 使用实时转录翻译 RESTful API 管理实时转录、翻译和字幕录制任务。
+---
+
+实时转录翻译 RESTful API 提供服务端实时转录、翻译和字幕录制能力。你可以从业务服务器启动和管理加入 RTC 频道的转写任务，并获取实时字幕输出。
+
+## API 基础信息
+
+所有请求都发送到 `api.sd-rtn.com`。
+
+- **鉴权**：所有 API 都需要 HTTP 基本认证。详见[实现 HTTP 基本认证](/zh-CN/realtime-media/speech-to-text/build/start-transcribing-and-translating/http-basic-auth)。
+- **请求**：请求包体使用 JSON。
+- **响应**：响应包体使用 JSON。
+- **Base URL**：`https://api.sd-rtn.com/cn/api/speech-to-text/v1/projects/<appid>`，其中 `<appid>` 是你的声网项目 App ID。
+
+## REST API
+
+- [加入频道开始实时转录翻译](join)：创建并启动加入指定 RTC 频道的实时转录翻译任务。
+- [获取实时转录翻译任务的状态](query)：查询指定实时转录翻译任务的当前状态。
+- [停止实时转录翻译](leave)：停止正在运行的实时转录翻译任务。
+- [更新实时转录翻译任务](update)：更新正在运行的实时转录翻译任务配置。
+- [获取实时转录翻译任务列表](list)：获取当前项目下的实时转录翻译任务列表。

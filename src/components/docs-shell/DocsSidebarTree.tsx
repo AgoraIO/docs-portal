@@ -262,6 +262,7 @@ function SidebarSection({
                     url={child.url}
                   >
                     <SidebarPageLabel
+                      linked={child.linked}
                       method={child.method}
                       title={getSidebarDisplayTitle(child.title, child.url)}
                     />
@@ -367,6 +368,7 @@ function SidebarLinkedSection({
                     url={child.url}
                   >
                     <SidebarPageLabel
+                      linked={child.linked}
                       method={child.method}
                       title={getSidebarDisplayTitle(child.title, child.url)}
                     />
@@ -443,6 +445,7 @@ function SidebarQuickstartGroup({
                   to={child.url}
                 >
                   <SidebarPageLabel
+                    linked={child.linked}
                     method={child.method}
                     title={getSidebarDisplayTitle(child.title, child.url)}
                   />
@@ -525,6 +528,7 @@ function SidebarNestedSection({
                   url={child.url}
                 >
                   <SidebarPageLabel
+                    linked={child.linked}
                     method={child.method}
                     title={getSidebarDisplayTitle(child.title, child.url)}
                   />

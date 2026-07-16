@@ -104,4 +104,48 @@ describe('api reference sidebar does not leak REST endpoint pages', () => {
       ]),
     );
   });
+
+  it('lists the Chinese Speech-to-Text lane in the overview and focused endpoint view', async () => {
+    const overviewPayload = await loadDocsPagePayload(
+      'zh-CN',
+      'api-reference',
+      ['overview'],
+    );
+
+    if (!overviewPayload || 'redirectUrl' in overviewPayload) {
+      throw new Error('expected a Chinese api-reference overview payload');
+    }
+
+    const speechToText = findSection(
+      overviewPayload.sidebar as SidebarNode[],
+      '实时转录翻译',
+    );
+    expect(speechToText).toBeDefined();
+    expect(
+      speechToText?.children?.some(
+        (child) => child.url === '/zh-CN/api-reference/api-ref/speech-to-text',
+      ),
+    ).toBe(true);
+
+    const focusedPayload = await loadDocsPagePayload('zh-CN', 'api-reference', [
+      'api-ref',
+      'speech-to-text',
+    ]);
+
+    if (!focusedPayload || 'redirectUrl' in focusedPayload) {
+      throw new Error('expected a Chinese Speech-to-Text lane payload');
+    }
+
+    const urls = flattenUrls(focusedPayload.sidebar as SidebarNode[]);
+    expect(urls).toEqual(
+      expect.arrayContaining([
+        '/zh-CN/api-reference/api-ref/speech-to-text',
+        '/zh-CN/api-reference/api-ref/speech-to-text/join',
+        '/zh-CN/api-reference/api-ref/speech-to-text/query',
+        '/zh-CN/api-reference/api-ref/speech-to-text/leave',
+        '/zh-CN/api-reference/api-ref/speech-to-text/update',
+        '/zh-CN/api-reference/api-ref/speech-to-text/list',
+      ]),
+    );
+  });
 });

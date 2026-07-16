@@ -473,6 +473,52 @@ describe('DocsSidebarTree', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('renders linked page indicators inside expanded sections', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/zh-CN/api-reference/api-ref/conversational-ai',
+            linked: true,
+            title: 'RESTful API',
+            type: 'page',
+            url: '/zh-CN/api-reference/api-ref/conversational-ai',
+          },
+          {
+            id: '/zh-CN/ai/reference/pricing',
+            title: '计费说明',
+            type: 'page',
+            url: '/zh-CN/ai/reference/pricing',
+          },
+        ],
+        collapsible: true,
+        id: 'folder-zh-CN:ai/reference',
+        title: '参考',
+        type: 'section',
+      },
+    ];
+
+    const { container } = renderSidebarTree(
+      tree,
+      '/zh-CN/api-reference/api-ref/conversational-ai',
+    );
+
+    const link = await screen.findByRole('link', { name: 'RESTful API' });
+
+    expect(link).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/api-ref/conversational-ai',
+    );
+    expect(link.querySelector('.lucide-chevron-down')).toHaveClass(
+      '-rotate-90',
+    );
+    expect(
+      container
+        .querySelector('a[href="/zh-CN/ai/reference/pricing"]')
+        ?.querySelector('.lucide-chevron-down'),
+    ).toBeNull();
+  });
+
   it('renders reference product sections as always-expanded headings', async () => {
     const tree: DocsSidebarNode[] = [
       {
