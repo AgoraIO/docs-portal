@@ -38,7 +38,7 @@ npx skills add github:AgoraIO/skills
 Install the Agora CLI:
 
 ```bash
-curl -fsSL https://agoraio.github.io/cli/install.sh | sh
+curl -fsSL https://dl.agora.io/cli/install.sh | sh
 agora --version
 ```
 
