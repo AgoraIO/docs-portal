@@ -163,7 +163,7 @@ export function DocsContent({
     <article
       className={cn(
         'flex min-w-0 flex-col',
-        'gap-4',
+        platformTabs ? 'gap-3' : 'gap-4',
         contentFillsWidth ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
@@ -313,7 +313,7 @@ export function DocsContent({
             </Suspense>
           ) : null}
           {resolvedBody?.kind === 'platform-group' ? (
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-4" data-platform-group-shell>
               <Suspense fallback={<DocsContentSkeleton />}>
                 <DocsContentBody contentPath={resolvedBody.contentPath} />
               </Suspense>

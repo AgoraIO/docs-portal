@@ -21,6 +21,7 @@ import {
   MessagesSquareIcon,
   MonitorSmartphoneIcon,
   NetworkIcon,
+  NewspaperIcon,
   PhoneIcon,
   PresentationIcon,
   RadioIcon,
@@ -50,6 +51,12 @@ const SdksCatalog = lazy(() =>
   })),
 );
 
+const ApiReferenceCards = lazy(() =>
+  import('./ApiReferenceCards').then((module) => ({
+    default: module.ApiReferenceCards,
+  })),
+);
+
 const FaqLanding = lazy(() =>
   import('../faq/FaqLanding').then((module) => ({
     default: module.FaqLanding,
@@ -64,6 +71,7 @@ const FaqCategory = lazy(() =>
 
 export function getOverviewMDXComponents(): MDXComponents {
   return {
+    ApiReferenceCards,
     CardGrid,
     FeatureCard,
     FaqLanding,
@@ -152,7 +160,7 @@ type HelpHubCard = {
   cta: string;
   description: string;
   href: string;
-  icon: 'discord' | 'stack-overflow' | 'status' | 'ticket';
+  icon: 'blog' | 'discord' | 'stack-overflow' | 'status' | 'ticket';
   title: string;
 };
 
@@ -164,19 +172,36 @@ type HelpHubLink = {
 function HelpHub({
   cards,
   knowledgeBase,
+  locale = 'en',
   topics,
 }: {
   cards: HelpHubCard[];
   knowledgeBase: HelpHubLink[];
+  locale?: 'en' | 'zh-CN';
   topics: HelpHubLink[];
 }) {
+  const copy =
+    locale === 'zh-CN'
+      ? {
+          browseByTopic: '按主题浏览',
+          intro: '选择最快的支持渠道，获取产品问题、服务状态和社区资源帮助。',
+          popularKnowledgeBase: '热门知识库',
+          quickAnswers: '快速解答',
+        }
+      : {
+          browseByTopic: 'Browse By Topic',
+          intro:
+            'Choose the fastest path for product questions, service health, and community support.',
+          popularKnowledgeBase: 'Popular Knowledge Base',
+          quickAnswers: 'Quick answers',
+        };
+
   return (
     <section className="not-prose my-8 space-y-5">
       <div className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
         <div className="max-w-2xl">
           <p className="text-sm leading-6 text-muted-foreground">
-            Choose the fastest path for product questions, service health, and
-            community support.
+            {copy.intro}
           </p>
         </div>
 
@@ -215,10 +240,10 @@ function HelpHub({
         <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
           <div className="flex items-center justify-between gap-3">
             <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Popular Knowledge Base
+              {copy.popularKnowledgeBase}
             </h4>
             <span className="hidden text-[11px] uppercase tracking-[0.18em] text-muted-foreground sm:inline">
-              Quick answers
+              {copy.quickAnswers}
             </span>
           </div>
           <ul className="mt-4 space-y-2">
@@ -244,7 +269,7 @@ function HelpHub({
 
         <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
           <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Browse By Topic
+            {copy.browseByTopic}
           </h4>
           <div className="mt-4 space-y-2">
             {topics.map((item) => (
@@ -271,6 +296,10 @@ function HelpHub({
 function HelpHubIcon({ kind }: { kind: HelpHubCard['icon'] }) {
   if (kind === 'ticket') {
     return <TicketIcon className="size-4" />;
+  }
+
+  if (kind === 'blog') {
+    return <NewspaperIcon className="size-4" />;
   }
 
   if (kind === 'stack-overflow') {

@@ -59,7 +59,6 @@ import {
   PlatformStructured,
 } from './mdx/PlatformContent';
 import { PlatformPanel, PlatformTabsGroup } from './mdx/PlatformTabsGroup';
-import { PlanCards, PricingCards } from './mdx/PlanCards';
 import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
 
 type MDXContext = {
@@ -73,6 +72,9 @@ const FumadocsCards = defaultMdxComponents.Cards as ComponentType<
 const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
 const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
 const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
+const FumadocsCallout = defaultMdxComponents.Callout;
+const FumadocsCalloutContainer = defaultMdxComponents.CalloutContainer;
+const FumadocsCalloutTitle = defaultMdxComponents.CalloutTitle;
 const FumadocsImage = defaultMdxComponents.img;
 const RouterFumadocsAnchor = createLink(FumadocsAnchor);
 const RouterFumadocsCard = createLink(FumadocsCard);
@@ -108,6 +110,8 @@ type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
   onValueChange?: (value: string) => void;
   value?: string;
 };
+type CalloutProps = ComponentProps<typeof FumadocsCallout>;
+type CalloutContainerProps = ComponentProps<typeof FumadocsCalloutContainer>;
 type PreProps = CodeBlockProps;
 type ParameterListProps = ComponentProps<'div'> & {
   nullable?: boolean;
@@ -174,6 +178,78 @@ export function MDXAccordionProvider({ children }: { children: ReactNode }) {
 
 function escapeTabValue(value: string) {
   return value.toLowerCase().replace(/\s/, '-');
+}
+
+function DocsCallout(props: CalloutProps) {
+  const isSdkCompliance = props.title === 'SDK 合规信息公示';
+
+  if (!isSdkCompliance) {
+    return <FumadocsCallout {...props} />;
+  }
+
+  return (
+    <div data-sdk-compliance="true">
+      <FumadocsCallout {...props} />
+    </div>
+  );
+}
+
+function DocsCalloutContainer(props: CalloutContainerProps) {
+  const isSdkCompliance = hasSdkComplianceCalloutTitle(props.children);
+
+  if (!isSdkCompliance) {
+    return <FumadocsCalloutContainer {...props} />;
+  }
+
+  return (
+    <div data-sdk-compliance="true">
+      <FumadocsCalloutContainer {...props} />
+    </div>
+  );
+}
+
+function hasSdkComplianceCalloutTitle(children: ReactNode): boolean {
+  let found = false;
+
+  Children.forEach(children, (child) => {
+    if (found || !isValidElement(child)) {
+      return;
+    }
+
+    const element = child as ReactElement<{ children?: ReactNode }>;
+
+    if (
+      element.type === FumadocsCalloutTitle &&
+      getPlainText(element.props.children) === 'SDK 合规信息公示'
+    ) {
+      found = true;
+      return;
+    }
+
+    if (hasSdkComplianceCalloutTitle(element.props.children)) {
+      found = true;
+    }
+  });
+
+  return found;
+}
+
+function getPlainText(value: ReactNode): string {
+  if (typeof value === 'string' || typeof value === 'number') {
+    return String(value);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(getPlainText).join('');
+  }
+
+  if (isValidElement(value)) {
+    const element = value as ReactElement<{ children?: ReactNode }>;
+
+    return getPlainText(element.props.children);
+  }
+
+  return '';
 }
 
 function collectTabValues(children: ReactNode, values: string[] = []) {
@@ -1174,6 +1250,8 @@ export function getMDXComponents(
 
   return {
     ...defaultMdxComponents,
+    Callout: DocsCallout,
+    CalloutContainer: DocsCalloutContainer,
     img: ZoomableImage,
     h2: (props) => <TabAwareHeading as="h2" {...props} />,
     h3: (props) => <TabAwareHeading as="h3" {...props} />,

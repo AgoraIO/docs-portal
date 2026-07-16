@@ -2141,6 +2141,20 @@ Web body
     });
   });
 
+  it('redirects the retired zh-CN aggregate API reference page to the merged API page', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', ['api-ref']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/api-reference/api',
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', ['api-ref', 'rtc']),
+    ).resolves.not.toEqual({
+      redirectUrl: '/zh-CN/api-reference/api',
+    });
+  });
+
   it('includes OpenAPI endpoint sidebar items on the real MDX parent page', async () => {
     const overviewPage = {
       ...createPage(),
