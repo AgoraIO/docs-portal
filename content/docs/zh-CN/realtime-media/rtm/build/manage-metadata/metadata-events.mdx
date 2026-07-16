@@ -4,9 +4,7 @@ description: "了解如何在实时消息 RTM 中元数据事件通知，包括�
 ---
 ## 添加事件监听
 
-如果想要接收 Storage 事件通知，你需要实现事件监听程序，详见事件监听。
-
-除此之外，如果你想要接收 Channel Metadata 的事件通知，你需要在订阅或加入频道时将 `features` 参数设为 `enumv.joinchannelfeaturemetadata` 或 `enumv.subscribechannelfeaturemetadata`你需要在订阅或加入频道时将 `withMetadata` 参数设置成 `true`。如果你想要接收 User Metadata 的事件通知，你需要调用 `storage.subscribeuser` 订阅指定用户的 User Metadata。
+如果想要接收 Storage 事件通知，你需要实现事件监听程序，详见[事件监听](/zh-CN/realtime-media/rtm/build/manage-messages/add-event-listener)。除此之外，如果你想要接收 Channel Metadata 的事件通知，你需要在订阅或加入频道时将 `features` 参数设为 `enumv.joinchannelfeaturemetadata` 或 `enumv.subscribechannelfeaturemetadata`，或将 `withMetadata` 参数设置成 `true`。如果你想要接收 User Metadata 的事件通知，你需要调用 `storage.subscribeuser` 订阅指定用户的 User Metadata。
 
 ## 事件通知模式
 

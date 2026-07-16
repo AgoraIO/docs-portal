@@ -55,6 +55,18 @@ type PlatformPanelComponent = ComponentType<{
   children: ReactNode;
   platform: string;
 }>;
+type CalloutComponent = ComponentType<{
+  children: ReactNode;
+  title?: ReactNode;
+  type?: 'info';
+}>;
+type CalloutContainerComponent = ComponentType<{
+  children: ReactNode;
+  type?: 'info';
+}>;
+type CalloutTitleComponent = ComponentType<{
+  children: ReactNode;
+}>;
 type CodeBlockPreComponent = ComponentType<{
   children: ReactNode;
   className?: string;
@@ -235,7 +247,8 @@ describe('common MDX registry', () => {
     expect(components.table).toBe(defaults.table);
     expect(components.Card).not.toBe(defaults.Card);
     expect(components.Cards).not.toBe(defaults.Cards);
-    expect(components.Callout).toBe(defaults.Callout);
+    expect(components.Callout).not.toBe(defaults.Callout);
+    expect(components.CalloutContainer).not.toBe(defaults.CalloutContainer);
 
     expect(components.a).not.toBe(defaults.a);
     expect(components.CommandBlock).toBeDefined();
@@ -257,6 +270,51 @@ describe('common MDX registry', () => {
     expect(components.TabsList).toBe(fumadocsTabs.TabsList);
     expect(components.TabsTrigger).toBe(fumadocsTabs.TabsTrigger);
     expect(components.TabsContent).not.toBe(fumadocsTabs.TabsContent);
+  });
+
+  it('marks SDK compliance callouts for platform download spacing', () => {
+    const components = getMDXComponents();
+    const CalloutContainer =
+      components.CalloutContainer as CalloutContainerComponent;
+    const CalloutTitle = components.CalloutTitle as CalloutTitleComponent;
+
+    const { rerender } = render(
+      <CalloutContainer type="info">
+        <CalloutTitle>SDK 合规信息公示</CalloutTitle>
+        合规说明
+      </CalloutContainer>,
+    );
+
+    expect(document.querySelector('[data-sdk-compliance]')).toHaveAttribute(
+      'data-sdk-compliance',
+      'true',
+    );
+
+    rerender(
+      <CalloutContainer type="info">
+        <CalloutTitle>信息</CalloutTitle>
+        普通说明
+      </CalloutContainer>,
+    );
+
+    expect(screen.getByText('普通说明')).toBeInTheDocument();
+    expect(document.querySelector('[data-sdk-compliance]')).toBeNull();
+  });
+
+  it('marks direct SDK compliance callouts for platform download spacing', () => {
+    const components = getMDXComponents();
+    const Callout = components.Callout as CalloutComponent;
+
+    render(
+      <Callout title="SDK 合规信息公示" type="info">
+        合规说明
+      </Callout>,
+    );
+
+    expect(document.querySelector('[data-sdk-compliance]')).toHaveAttribute(
+      'data-sdk-compliance',
+      'true',
+    );
   });
 
   it('opens MDX images in a zoom dialog', async () => {

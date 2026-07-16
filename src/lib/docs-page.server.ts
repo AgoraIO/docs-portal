@@ -1112,6 +1112,10 @@ function resolveApiReferenceRedirect(
     return `/${locale}/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}`;
   }
 
+  if (locale === 'zh-CN' && normalizedPath === 'api-ref') {
+    return '/zh-CN/api-reference/api';
+  }
+
   if (
     locale === 'en' &&
     CONSOLE_API_REFERENCE_DUPLICATE_PATHS.has(normalizedPath)

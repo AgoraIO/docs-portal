@@ -298,6 +298,7 @@ describe('DocsSidebarTree', () => {
     expect(link).toHaveAttribute('href', 'https://example.com/resources');
     expect(link).toHaveAttribute('rel', 'noreferrer noopener');
     expect(link).toHaveAttribute('target', '_blank');
+    expect(link.querySelector('.lucide-external-link')).toBeInTheDocument();
   });
 
   it('renders HTTP method badges for OpenAPI endpoint pages', async () => {
@@ -442,21 +443,31 @@ describe('DocsSidebarTree', () => {
   });
 
   it.each([
-    ['rtc', '计费与限制'],
-    ['rtm', '计费说明'],
-    ['local-server-recording', '计费说明'],
-    ['media-push', '计费说明'],
-    ['media-pull', '计费说明'],
-    ['rtmp-gateway', '计费说明'],
-  ])('keeps the %s billing root section collapsible', async (product, title) => {
+    ['rtc', '计费与限制', 'reference/billing-strategy', '计费策略'],
+    ['rtm', '计费说明', 'reference/billing/billing-strategy', '计费说明'],
+    [
+      'cloud-recording',
+      '计费说明',
+      'reference/billing-strategy/billing',
+      '单流和合流录制',
+    ],
+    ['local-server-recording', '计费说明', 'reference/billing', '计费说明'],
+    ['media-push', '计费说明', 'reference/billing', '计费说明'],
+    ['media-pull', '计费说明', 'reference/billing', '计费说明'],
+    ['rtmp-gateway', '计费说明', 'reference/billing', '计费说明'],
+    ['whiteboard/fastboard-sdk', '计费说明', 'reference/billing', '计费说明'],
+    ['whiteboard/whiteboard-sdk', '计费说明', 'reference/billing', '计费说明'],
+  ])('keeps the %s billing root section collapsible', async (product, title, pagePath, pageTitle) => {
+    const url = `/zh-CN/realtime-media/${product}/${pagePath}`;
+
     const tree: DocsSidebarNode[] = [
       {
         children: [
           {
-            id: `/zh-CN/realtime-media/${product}/reference/billing`,
-            title: '计费说明',
+            id: url,
+            title: pageTitle,
             type: 'page',
-            url: `/zh-CN/realtime-media/${product}/reference/billing`,
+            url,
           },
         ],
         collapsible: true,
@@ -478,7 +489,7 @@ describe('DocsSidebarTree', () => {
     fireEvent.click(toggle);
 
     expect(
-      await screen.findByRole('link', { name: '计费说明' }),
+      await screen.findByRole('link', { name: pageTitle }),
     ).toBeInTheDocument();
   });
 
@@ -550,13 +561,11 @@ describe('DocsSidebarTree', () => {
       'href',
       '/zh-CN/api-reference/api-ref/conversational-ai',
     );
-    expect(link.querySelector('.lucide-chevron-down')).toHaveClass(
-      '-rotate-90',
-    );
+    expect(link.querySelector('.lucide-external-link')).toBeInTheDocument();
     expect(
       container
         .querySelector('a[href="/zh-CN/ai/reference/pricing"]')
-        ?.querySelector('.lucide-chevron-down'),
+        ?.querySelector('.lucide-external-link'),
     ).toBeNull();
   });
 
