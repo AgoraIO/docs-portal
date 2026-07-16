@@ -557,6 +557,28 @@ describe('DocsContent', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('uses rendered headings when the payload TOC is incomplete', async () => {
+    renderWithRouter(
+      <AppProviders>
+        <article>
+          <h2 id="overview">Overview</h2>
+          <h2 id="guide">Guide</h2>
+          <h3 id="late-section">Late section</h3>
+          <DocsTableOfContents
+            toc={[
+              { depth: 2, title: 'Overview', url: '#overview' },
+              { depth: 2, title: 'Guide', url: '#guide' },
+            ]}
+          />
+        </article>
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('link', { name: 'Late section' }),
+    ).toHaveAttribute('href', '#late-section');
+  });
+
   it('renders scope tabs in the content header when the sidebar header requests tabs presentation', async () => {
     renderWithRouter(
       <DocsContent
