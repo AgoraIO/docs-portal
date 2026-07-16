@@ -1,7 +1,7 @@
+import { existsSync } from 'node:fs';
 import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
-import { existsSync } from 'node:fs';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import { resolveMovedDocsRedirect } from './docs-moved-redirects';
@@ -223,8 +223,7 @@ const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
   'private-room/call-api': '/zh-CN/api-reference/private-room/android',
   'api-ref/private-room/android/call-api':
     '/zh-CN/api-reference/private-room/android',
-  'api-ref/private-room/ios/call-api':
-    '/zh-CN/api-reference/private-room/ios',
+  'api-ref/private-room/ios/call-api': '/zh-CN/api-reference/private-room/ios',
   rtm: '/zh-CN/api-reference/rtm/android/configuration',
   'rtm/components-hooks':
     '/zh-CN/api-reference/rtm/react-native/components-hooks',
@@ -237,10 +236,8 @@ const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
     '/zh-CN/api-reference/rtm/android/configuration',
   'rtm/toc-lock/lock': '/zh-CN/api-reference/rtm/android/lock',
   'rtm/toc-message/message': '/zh-CN/api-reference/rtm/android/message',
-  'rtm/toc-message/publish':
-    '/zh-CN/api-reference/api-ref/signaling/publish',
-  'rtm/toc-message/receive':
-    '/zh-CN/api-reference/api-ref/signaling/receive',
+  'rtm/toc-message/publish': '/zh-CN/api-reference/api-ref/signaling/publish',
+  'rtm/toc-message/receive': '/zh-CN/api-reference/api-ref/signaling/receive',
   'rtm/toc-message/response-code':
     '/zh-CN/realtime-media/rtm/reference/response-code',
   'rtm/toc-presence/presence': '/zh-CN/api-reference/rtm/android/presence',
@@ -249,14 +246,12 @@ const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
   'rtm/toc-topic/topic': '/zh-CN/api-reference/rtm/android/topic',
   'api-ref/signaling': '/zh-CN/api-reference/api-ref/signaling/publish',
   'api-ref/signaling/index': '/zh-CN/api-reference/api-ref/signaling/publish',
-  'api-ref/signaling/restful':
-    '/zh-CN/api-reference/api-ref/signaling/publish',
+  'api-ref/signaling/restful': '/zh-CN/api-reference/api-ref/signaling/publish',
   'api-ref/signaling/response-code':
     '/zh-CN/realtime-media/rtm/reference/response-code',
   'api-ref/ppt-conversion-service/status-codes':
     '/zh-CN/solutions/ppt-transcoding/reference/response-code',
-  'api-ref/whiteboard':
-    '/zh-CN/api-reference/api-ref/whiteboard/restful',
+  'api-ref/whiteboard': '/zh-CN/api-reference/api-ref/whiteboard/restful',
   'api-ref/fastboard/android/fastboard-api':
     '/zh-CN/api-reference/whiteboard/fastboard/android',
   'api-ref/fastboard/ios/fastboard-api':
@@ -267,8 +262,7 @@ const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
     '/zh-CN/api-reference/whiteboard/fastboard/android',
   'api-ref/whiteboard/ios/fastboard-api':
     '/zh-CN/api-reference/whiteboard/fastboard/ios',
-  'whiteboard/fastboard':
-    '/zh-CN/api-reference/whiteboard/fastboard/android',
+  'whiteboard/fastboard': '/zh-CN/api-reference/whiteboard/fastboard/android',
   'whiteboard/fastboard/fastboard-api':
     '/zh-CN/api-reference/whiteboard/fastboard/android',
   'flexible-classroom/classroom-sdk':
@@ -1932,74 +1926,205 @@ function isOpenApiTabUrl(url: string) {
   return url.includes('/api-reference/openapi/');
 }
 
-const REALTIME_MEDIA_API_REFERENCE_LINKS = [
+const PRODUCT_API_REFERENCE_LINKS = [
   {
+    locale: 'en',
     productSlug: 'broadcast-streaming',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/rtc',
   },
   {
+    locale: 'en',
     productSlug: 'cloud-recording',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/cloud-recording',
   },
   {
+    locale: 'en',
     productSlug: 'im',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/im',
   },
   {
+    locale: 'en',
     productSlug: 'media-pull',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/media-pull',
   },
   {
+    locale: 'en',
     productSlug: 'media-push',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/media-push',
   },
   {
+    locale: 'en',
     productSlug: 'on-premise-recording',
+    tab: 'realtime-media',
     title: 'API reference',
     url: '/en/api-reference/api-ref/on-premise-recording',
   },
   {
+    locale: 'en',
     productSlug: 'rtm',
+    tab: 'realtime-media',
     title: 'Signaling REST API',
     url: '/en/api-reference/api-ref/signaling',
   },
   {
+    locale: 'en',
     productSlug: 'rtmp-gateway',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/rtmp-gateway',
   },
   {
+    locale: 'en',
     productSlug: 'speech-to-text',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/speech-to-text',
   },
   {
+    locale: 'en',
     productSlug: 'video',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/rtc',
   },
   {
+    locale: 'en',
     productSlug: 'voice',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/rtc',
   },
   {
+    locale: 'en',
     productSlug: 'whiteboard',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/whiteboard',
   },
+  {
+    locale: 'zh-CN',
+    productSlug: 'rtc',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/rtc',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'rtm',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/signaling/publish',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'speech-to-text',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/speech-to-text',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'cloud-recording',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/cloud-recording',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'transcoding',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/cloud-transcoding',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'usage-analytics',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/agora-analytics',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'media-push',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/media-push',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'media-pull',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/media-pull',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'rtmp-gateway',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/rtmp-gateway',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'fusion-cdn',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/fusion-cdn',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'whiteboard',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/whiteboard/restful',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'danmaku',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/danmaku',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'ppt-transcoding',
+    tab: 'solutions',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/ppt-conversion-service',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'voip-call',
+    tab: 'solutions',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/voip-callkit',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'flexible-classroom',
+    tab: 'solutions',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  },
 ] as const;
+
+type ProductApiReferenceLink = (typeof PRODUCT_API_REFERENCE_LINKS)[number];
 
 function addRealtimeMediaApiReferenceSidebarItem(
   nodes: DocsSidebarNode[],
   activePath?: string,
 ): DocsSidebarNode[] {
-  const link = getRealtimeMediaApiReferenceLink(activePath);
+  const link = getProductApiReferenceLink(activePath);
 
   if (!link) {
     return nodes;
@@ -2015,45 +2140,71 @@ function addRealtimeMediaApiReferenceSidebarItem(
 
   const existingUrls = new Set([
     link.url,
-    ...getRealtimeMediaLegacyApiReferenceUrls(link.productSlug),
+    ...getProductLegacyApiReferenceUrls(link),
   ]);
 
   return nodes.map((node) => {
-    if (node.type !== 'section' || node.title !== 'Reference') {
+    if (node.type !== 'section') {
       return node;
+    }
+
+    if (isProductReferenceSectionTitle(node.title, link.locale)) {
+      return {
+        ...node,
+        children: [
+          pageNode,
+          ...filterSidebarNodes(
+            node.children,
+            (child) => child.type !== 'page' || !existingUrls.has(child.url),
+          ),
+        ],
+      };
     }
 
     return {
       ...node,
-      children: [
-        pageNode,
-        ...filterSidebarNodes(
-          node.children,
-          (child) => child.type !== 'page' || !existingUrls.has(child.url),
-        ),
-      ],
+      children: addRealtimeMediaApiReferenceSidebarItem(
+        node.children,
+        activePath,
+      ),
     };
   });
 }
 
-function getRealtimeMediaApiReferenceLink(activePath?: string) {
-  if (!activePath?.startsWith('/en/realtime-media/')) {
+function getProductApiReferenceLink(activePath?: string) {
+  const [, locale, tab, productSlug] = activePath?.split('/') ?? [];
+
+  if (!locale || !tab || !productSlug) {
     return null;
   }
 
-  const productSlug = activePath.split('/').filter(Boolean)[2];
-
   return (
-    REALTIME_MEDIA_API_REFERENCE_LINKS.find(
-      (link) => link.productSlug === productSlug,
+    PRODUCT_API_REFERENCE_LINKS.find(
+      (link) =>
+        link.locale === locale &&
+        link.tab === tab &&
+        link.productSlug === productSlug,
     ) ?? null
   );
 }
 
-function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
-  const prefix = `/en/realtime-media/${productSlug}`;
+function isProductReferenceSectionTitle(
+  title: string,
+  locale: ProductApiReferenceLink['locale'],
+) {
+  return locale === 'zh-CN'
+    ? title === '参考' || title === '参考信息'
+    : title === 'Reference';
+}
 
-  switch (productSlug) {
+function getProductLegacyApiReferenceUrls(link: ProductApiReferenceLink) {
+  if (link.locale !== 'en') {
+    return [];
+  }
+
+  const prefix = `/en/${link.tab}/${link.productSlug}`;
+
+  switch (link.productSlug) {
     case 'broadcast-streaming':
       return [
         `${prefix}/reference/agora-console-rest-api`,
@@ -2252,13 +2403,15 @@ function buildAiProductSidebar(
     !referenceSection ||
     !deviceKitSection
   ) {
-    return filterSidebarNodes(nodes, (node) => {
+    const filteredNodes = filterSidebarNodes(nodes, (node) => {
       if (node.type !== 'page') {
         return true;
       }
 
       return !node.url.includes('/ai/choose-your-path/');
     });
+
+    return addAiRestApiReferenceSidebarItem(filteredNodes);
   }
 
   const conversationalAiApiReferenceSection = findTopLevelSidebarSection(
@@ -2278,14 +2431,12 @@ function buildAiProductSidebar(
 
   const isZhCn = aiOverview.url.startsWith('/zh-CN/');
   const aiLocalePrefix = isZhCn ? '/zh-CN' : '/en';
-  const restApiUrl = isZhCn
-    ? `${aiLocalePrefix}/api-reference/conversational-ai/rest-api/authentication`
-    : `${aiLocalePrefix}/api-reference/api-ref/conversational-ai/authentication`;
+  const restApiUrl = `${aiLocalePrefix}/api-reference/api-ref/conversational-ai`;
 
   const restApiPage = {
     id: restApiUrl,
     linked: true,
-    title: isZhCn ? 'REST API' : 'RESTful API',
+    title: 'RESTful API',
     type: 'page',
     url: restApiUrl,
   } satisfies DocsSidebarPageNode;
@@ -2388,16 +2539,138 @@ function buildAiProductSidebar(
   ];
 }
 
+function addAiRestApiReferenceSidebarItem(
+  nodes: DocsSidebarNode[],
+): DocsSidebarNode[] {
+  const locale = getSidebarLocale(nodes);
+
+  if (!locale) {
+    return nodes;
+  }
+
+  const restApiUrl = `/${locale}/api-reference/api-ref/conversational-ai`;
+  const restApiPage = {
+    id: restApiUrl,
+    linked: true,
+    title: 'RESTful API',
+    type: 'page',
+    url: restApiUrl,
+  } satisfies DocsSidebarPageNode;
+  const existingUrls = new Set([
+    restApiUrl,
+    `/${locale}/ai/reference/restful-api`,
+    `/${locale}/api-reference/api-ref/conversational-ai/authentication`,
+    `/${locale}/api-reference/conversational-ai/rest-api`,
+    `/${locale}/api-reference/conversational-ai/rest-api/authentication`,
+  ]);
+
+  return nodes.map((node) => {
+    if (
+      node.type !== 'section' ||
+      !isAiSoftwareClientsSectionTitle(node.title)
+    ) {
+      return node;
+    }
+
+    return {
+      ...node,
+      children: addAiRestApiReferenceToReferenceSection(
+        node.children,
+        restApiPage,
+        existingUrls,
+        locale,
+      ),
+    };
+  });
+}
+
+function addAiRestApiReferenceToReferenceSection(
+  nodes: DocsSidebarNode[],
+  restApiPage: DocsSidebarPageNode,
+  existingUrls: Set<string>,
+  locale: AppLocale,
+): DocsSidebarNode[] {
+  return nodes.map((node) => {
+    if (node.type !== 'section') {
+      return node;
+    }
+
+    if (isProductReferenceSectionTitle(node.title, locale)) {
+      return {
+        ...node,
+        children: [
+          restApiPage,
+          ...filterSidebarNodes(
+            node.children,
+            (child) => child.type !== 'page' || !existingUrls.has(child.url),
+          ),
+        ],
+      };
+    }
+
+    return {
+      ...node,
+      children: addAiRestApiReferenceToReferenceSection(
+        node.children,
+        restApiPage,
+        existingUrls,
+        locale,
+      ),
+    };
+  });
+}
+
+function isAiSoftwareClientsSectionTitle(title: string) {
+  return (
+    title === 'Voice Agent in apps' ||
+    title === 'Voice agent in apps' ||
+    title === '对话式 AI 引擎'
+  );
+}
+
+function getSidebarLocale(nodes: DocsSidebarNode[]): AppLocale | null {
+  for (const node of nodes) {
+    const locale = getSidebarNodeLocale(node);
+    if (locale) {
+      return locale;
+    }
+  }
+
+  return null;
+}
+
+function getSidebarNodeLocale(node: DocsSidebarNode): AppLocale | null {
+  if (node.type === 'page') {
+    if (node.url.startsWith('/zh-CN/')) {
+      return 'zh-CN';
+    }
+
+    if (node.url.startsWith('/en/')) {
+      return 'en';
+    }
+
+    return null;
+  }
+
+  for (const child of node.children) {
+    const locale = getSidebarNodeLocale(child);
+    if (locale) {
+      return locale;
+    }
+  }
+
+  return null;
+}
+
 function flattenDeviceKitSidebarChildren(
   children: DocsSidebarNode[],
 ): DocsSidebarNode[] {
   const flattened: DocsSidebarNode[] = [];
   let hasPushedReleaseNotes = false;
-  const releaseNotes =
-    findSidebarPageByExactUrlInNodes(
-      children,
-      '/en/ai/device-kit/reference/release-notes',
-    );
+  const releaseNotes = findSidebarPageByExactUrlInNodes(
+    children,
+    '/en/ai/device-kit/reference/release-notes',
+  );
 
   for (const child of children) {
     if (child.type === 'page') {
@@ -2408,9 +2681,7 @@ function flattenDeviceKitSidebarChildren(
         continue;
       }
 
-      if (
-        child.url === '/en/ai/device-kit/reference/release-notes'
-      ) {
+      if (child.url === '/en/ai/device-kit/reference/release-notes') {
         hasPushedReleaseNotes = true;
       }
       flattened.push(child);
@@ -2418,11 +2689,10 @@ function flattenDeviceKitSidebarChildren(
     }
 
     if (child.title === 'Start here' || child.title === '从这里开始') {
-      const quickstart =
-        findSidebarPageByExactUrl(
-          child,
-          '/en/ai/device-kit/start-here/quickstart',
-        );
+      const quickstart = findSidebarPageByExactUrl(
+        child,
+        '/en/ai/device-kit/start-here/quickstart',
+      );
 
       if (quickstart) {
         if (releaseNotes && !hasPushedReleaseNotes) {
